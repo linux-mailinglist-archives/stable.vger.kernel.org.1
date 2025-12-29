@@ -1,51 +1,50 @@
-Return-Path: <stable+bounces-204067-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204078-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19596CE791B
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:36:39 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF48BCE7867
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:33:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A0741301054D
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:32:56 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4727130019FE
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:33:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10ABE33506C;
-	Mon, 29 Dec 2025 16:32:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 267DE334C0B;
+	Mon, 29 Dec 2025 16:33:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JsGVo+q8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BJy+7e+q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4096A334C31;
-	Mon, 29 Dec 2025 16:32:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D78A3334368;
+	Mon, 29 Dec 2025 16:33:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767025957; cv=none; b=f27ZVc0FyoJWs9j/hfv/R8dHrYaa0/c4oZ9vmb4BYwwmQ7Uu/u0Ktj4BTeGIhUA9ZSlEzlKgEZpLjSXJKRNgbGfW3ZFGrzDd2gFPmVjZE5Wa6i/WSKIp4zgpRI4qQFyLeM+3+kJuRNpyJKrQUkeriOo/TvnL8gakKjz+cmlBJZE=
+	t=1767025987; cv=none; b=Tc4UuABrnQIaw9dabgZYdEsc1iy77mwUJO3HtxwqkXay+uOH7R1HATCbgNj3kupWV5FNRwCLVfZjxo+87pln1fgUqJ73OnqGpL6Xss6nFmew2P3qbv8KRLiyI+hOGYEbQgIunW7s6EYBc9n3LlADiSues68vFE1ucM1xCFRtgUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767025957; c=relaxed/simple;
-	bh=xCUxvr5LI2pT0jKjnPg8brHKdVCmQOqxPp1pUzJIGW8=;
+	s=arc-20240116; t=1767025987; c=relaxed/simple;
+	bh=PfDGb6kxfCE8toBzATbZaLRLqUdUiHvfFqK01GfIObk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N9y+tuEG5VBZmIA0e6nW9RHt3AQPz4PdeNipXChXKat9zBIGVJhizXp3fyVhMwX6FHIk83tdU8P+fJvJqTWWF/5px0cB+AIjLTETDfLFzbDmL8r6tGxUcaPum0n/pWP8RbTT2ecyDMZ2DQl7HgOdR7KEtPpDg4G9QnG2URoiWmI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JsGVo+q8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13876C19421;
-	Mon, 29 Dec 2025 16:32:35 +0000 (UTC)
+	 MIME-Version; b=PSNx3x87Ht73d6PG1fxtoTeYKVu3P9rV46WSCYpVTUBzsWR8GmGCwsB60v2mQWBhm0h0g7lq/5sKODNzwMHmxnmEhVRzDfiaYs//XCiptt8d3k3zwW131WfzLFnakT23FrBXaWRUXfpz3EMaKZX++J8L1KplautRd3oqw2tEtUY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BJy+7e+q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61781C116C6;
+	Mon, 29 Dec 2025 16:33:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767025956;
-	bh=xCUxvr5LI2pT0jKjnPg8brHKdVCmQOqxPp1pUzJIGW8=;
+	s=korg; t=1767025987;
+	bh=PfDGb6kxfCE8toBzATbZaLRLqUdUiHvfFqK01GfIObk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JsGVo+q8ciDy+dHD2yN3r8oIk/5YyF7hhwy7IBSi8tR7g/C5GSOhpWExSNKeSMcTF
-	 fpy+hZysKHtl3dOE0Z6KuExsaHW3Le7IXrQRUr3fy8VObd37nTxdqc3dyN0MKS3ZBm
-	 v0B5QGE972bvcZMq1En3LSh+wHFtqVErupsH8Iaw=
+	b=BJy+7e+qejHxupTUmznTE67giaGuQ5L1/KR+qnMB4wB9l3kUnO5/UR/0ORgX/Obw0
+	 B27V3ftgGUM24jrbcbTidAf5yC8WJTvUeg4TRkz1cKwmC1jA9LVm8rQCrryxLTI+UL
+	 C8+Wx4iimtTO0n2pttcOe4+sFTim3GQOxnIlUMpg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vyacheslav Kovalevsky <slva.kovalevskiy.2014@gmail.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.18 379/430] btrfs: dont log conflicting inode if its a dir moved in the current transaction
-Date: Mon, 29 Dec 2025 17:13:01 +0100
-Message-ID: <20251229160738.268800211@linuxfoundation.org>
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Tejun Heo <tj@kernel.org>
+Subject: [PATCH 6.18 380/430] cgroup: rstat: use LOCK CMPXCHG in css_rstat_updated
+Date: Mon, 29 Dec 2025 17:13:02 +0100
+Message-ID: <20251229160738.306179870@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251229160724.139406961@linuxfoundation.org>
 References: <20251229160724.139406961@linuxfoundation.org>
@@ -64,270 +63,103 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Shakeel Butt <shakeel.butt@linux.dev>
 
-commit 266273eaf4d99475f1ae57f687b3e42bc71ec6f0 upstream.
+commit 3309b63a2281efb72df7621d60cc1246b6286ad3 upstream.
 
-We can't log a conflicting inode if it's a directory and it was moved
-from one parent directory to another parent directory in the current
-transaction, as this can result an attempt to have a directory with
-two hard links during log replay, one for the old parent directory and
-another for the new parent directory.
+On x86-64, this_cpu_cmpxchg() uses CMPXCHG without LOCK prefix which
+means it is only safe for the local CPU and not for multiple CPUs.
+Recently the commit 36df6e3dbd7e ("cgroup: make css_rstat_updated nmi
+safe") make css_rstat_updated lockless and uses lockless list to allow
+reentrancy. Since css_rstat_updated can invoked from process context,
+IRQ and NMI, it uses this_cpu_cmpxchg() to select the winner which will
+inset the lockless lnode into the global per-cpu lockless list.
 
-The following scenario triggers that issue:
+However the commit missed one case where lockless node of a cgroup can
+be accessed and modified by another CPU doing the flushing. Basically
+llist_del_first_init() in css_process_update_tree().
 
-1) We have directories "dir1" and "dir2" created in a past transaction.
-   Directory "dir1" has inode A as its parent directory;
+On a cursory look, it can be questioned how css_process_update_tree()
+can see a lockless node in global lockless list where the updater is at
+this_cpu_cmpxchg() and before llist_add() call in css_rstat_updated().
+This can indeed happen in the presence of IRQs/NMI.
 
-2) We move "dir1" to some other directory;
+Consider this scenario: Updater for cgroup stat C on CPU A in process
+context is after llist_on_list() check and before this_cpu_cmpxchg() in
+css_rstat_updated() where it get interrupted by IRQ/NMI. In the IRQ/NMI
+context, a new updater calls css_rstat_updated() for same cgroup C and
+successfully inserts rstatc_pcpu->lnode.
 
-3) We create a file with the name "dir1" in directory inode A;
+Now concurrently CPU B is running the flusher and it calls
+llist_del_first_init() for CPU A and got rstatc_pcpu->lnode of cgroup C
+which was added by the IRQ/NMI updater.
 
-4) We fsync the new file. This results in logging the inode of the new file
-   and the inode for the directory "dir1" that was previously moved in the
-   current transaction. So the log tree has the INODE_REF item for the
-   new location of "dir1";
+Now imagine CPU B calling init_llist_node() on cgroup C's
+rstatc_pcpu->lnode of CPU A and on CPU A, the process context updater
+calling this_cpu_cmpxchg(rstatc_pcpu->lnode) concurrently.
 
-5) We move the new file to some other directory. This results in updating
-   the log tree to included the new INODE_REF for the new location of the
-   file and removes the INODE_REF for the old location. This happens
-   during the rename when we call btrfs_log_new_name();
+The CMPXCNG without LOCK on CPU A is not safe and thus we need LOCK
+prefix.
 
-6) We fsync the file, and that persists the log tree changes done in the
-   previous step (btrfs_log_new_name() only updates the log tree in
-   memory);
+In Meta's fleet running the kernel with the commit 36df6e3dbd7e, we are
+observing on some machines the memcg stats are getting skewed by more
+than the actual memory on the system. On close inspection, we noticed
+that lockless node for a workload for specific CPU was in the bad state
+and thus all the updates on that CPU for that cgroup was being lost.
 
-7) We have a power failure;
+To confirm if this skew was indeed due to this CMPXCHG without LOCK in
+css_rstat_updated(), we created a repro (using AI) at [1] which shows
+that CMPXCHG without LOCK creates almost the same lnode corruption as
+seem in Meta's fleet and with LOCK CMPXCHG the issue does not
+reproduces.
 
-8) Next time the fs is mounted, log replay happens and when processing
-   the inode for directory "dir1" we find a new INODE_REF and add that
-   link, but we don't remove the old link of the inode since we have
-   not logged the old parent directory of the directory inode "dir1".
-
-As a result after log replay finishes when we trigger writeback of the
-subvolume tree's extent buffers, the tree check will detect that we have
-a directory a hard link count of 2 and we get a mount failure.
-The errors and stack traces reported in dmesg/syslog are like this:
-
-   [ 3845.729764] BTRFS info (device dm-0): start tree-log replay
-   [ 3845.730304] page: refcount:3 mapcount:0 mapping:000000005c8a3027 index:0x1d00 pfn:0x11510c
-   [ 3845.731236] memcg:ffff9264c02f4e00
-   [ 3845.731751] aops:btree_aops [btrfs] ino:1
-   [ 3845.732300] flags: 0x17fffc00000400a(uptodate|private|writeback|node=0|zone=2|lastcpupid=0x1ffff)
-   [ 3845.733346] raw: 017fffc00000400a 0000000000000000 dead000000000122 ffff9264d978aea8
-   [ 3845.734265] raw: 0000000000001d00 ffff92650e6d4738 00000003ffffffff ffff9264c02f4e00
-   [ 3845.735305] page dumped because: eb page dump
-   [ 3845.735981] BTRFS critical (device dm-0): corrupt leaf: root=5 block=30408704 slot=6 ino=257, invalid nlink: has 2 expect no more than 1 for dir
-   [ 3845.737786] BTRFS info (device dm-0): leaf 30408704 gen 10 total ptrs 17 free space 14881 owner 5
-   [ 3845.737789] BTRFS info (device dm-0): refs 4 lock_owner 0 current 30701
-   [ 3845.737792] 	item 0 key (256 INODE_ITEM 0) itemoff 16123 itemsize 160
-   [ 3845.737794] 		inode generation 3 transid 9 size 16 nbytes 16384
-   [ 3845.737795] 		block group 0 mode 40755 links 1 uid 0 gid 0
-   [ 3845.737797] 		rdev 0 sequence 2 flags 0x0
-   [ 3845.737798] 		atime 1764259517.0
-   [ 3845.737800] 		ctime 1764259517.572889464
-   [ 3845.737801] 		mtime 1764259517.572889464
-   [ 3845.737802] 		otime 1764259517.0
-   [ 3845.737803] 	item 1 key (256 INODE_REF 256) itemoff 16111 itemsize 12
-   [ 3845.737805] 		index 0 name_len 2
-   [ 3845.737807] 	item 2 key (256 DIR_ITEM 2363071922) itemoff 16077 itemsize 34
-   [ 3845.737808] 		location key (257 1 0) type 2
-   [ 3845.737810] 		transid 9 data_len 0 name_len 4
-   [ 3845.737811] 	item 3 key (256 DIR_ITEM 2676584006) itemoff 16043 itemsize 34
-   [ 3845.737813] 		location key (258 1 0) type 2
-   [ 3845.737814] 		transid 9 data_len 0 name_len 4
-   [ 3845.737815] 	item 4 key (256 DIR_INDEX 2) itemoff 16009 itemsize 34
-   [ 3845.737816] 		location key (257 1 0) type 2
-   [ 3845.737818] 		transid 9 data_len 0 name_len 4
-   [ 3845.737819] 	item 5 key (256 DIR_INDEX 3) itemoff 15975 itemsize 34
-   [ 3845.737820] 		location key (258 1 0) type 2
-   [ 3845.737821] 		transid 9 data_len 0 name_len 4
-   [ 3845.737822] 	item 6 key (257 INODE_ITEM 0) itemoff 15815 itemsize 160
-   [ 3845.737824] 		inode generation 9 transid 10 size 6 nbytes 0
-   [ 3845.737825] 		block group 0 mode 40755 links 2 uid 0 gid 0
-   [ 3845.737826] 		rdev 0 sequence 1 flags 0x0
-   [ 3845.737827] 		atime 1764259517.572889464
-   [ 3845.737828] 		ctime 1764259517.572889464
-   [ 3845.737830] 		mtime 1764259517.572889464
-   [ 3845.737831] 		otime 1764259517.572889464
-   [ 3845.737832] 	item 7 key (257 INODE_REF 256) itemoff 15801 itemsize 14
-   [ 3845.737833] 		index 2 name_len 4
-   [ 3845.737834] 	item 8 key (257 INODE_REF 258) itemoff 15787 itemsize 14
-   [ 3845.737836] 		index 2 name_len 4
-   [ 3845.737837] 	item 9 key (257 DIR_ITEM 2507850652) itemoff 15754 itemsize 33
-   [ 3845.737838] 		location key (259 1 0) type 1
-   [ 3845.737839] 		transid 10 data_len 0 name_len 3
-   [ 3845.737840] 	item 10 key (257 DIR_INDEX 2) itemoff 15721 itemsize 33
-   [ 3845.737842] 		location key (259 1 0) type 1
-   [ 3845.737843] 		transid 10 data_len 0 name_len 3
-   [ 3845.737844] 	item 11 key (258 INODE_ITEM 0) itemoff 15561 itemsize 160
-   [ 3845.737846] 		inode generation 9 transid 10 size 8 nbytes 0
-   [ 3845.737847] 		block group 0 mode 40755 links 1 uid 0 gid 0
-   [ 3845.737848] 		rdev 0 sequence 1 flags 0x0
-   [ 3845.737849] 		atime 1764259517.572889464
-   [ 3845.737850] 		ctime 1764259517.572889464
-   [ 3845.737851] 		mtime 1764259517.572889464
-   [ 3845.737852] 		otime 1764259517.572889464
-   [ 3845.737853] 	item 12 key (258 INODE_REF 256) itemoff 15547 itemsize 14
-   [ 3845.737855] 		index 3 name_len 4
-   [ 3845.737856] 	item 13 key (258 DIR_ITEM 1843588421) itemoff 15513 itemsize 34
-   [ 3845.737857] 		location key (257 1 0) type 2
-   [ 3845.737858] 		transid 10 data_len 0 name_len 4
-   [ 3845.737860] 	item 14 key (258 DIR_INDEX 2) itemoff 15479 itemsize 34
-   [ 3845.737861] 		location key (257 1 0) type 2
-   [ 3845.737862] 		transid 10 data_len 0 name_len 4
-   [ 3845.737863] 	item 15 key (259 INODE_ITEM 0) itemoff 15319 itemsize 160
-   [ 3845.737865] 		inode generation 10 transid 10 size 0 nbytes 0
-   [ 3845.737866] 		block group 0 mode 100600 links 1 uid 0 gid 0
-   [ 3845.737867] 		rdev 0 sequence 2 flags 0x0
-   [ 3845.737868] 		atime 1764259517.580874966
-   [ 3845.737869] 		ctime 1764259517.586121869
-   [ 3845.737870] 		mtime 1764259517.580874966
-   [ 3845.737872] 		otime 1764259517.580874966
-   [ 3845.737873] 	item 16 key (259 INODE_REF 257) itemoff 15306 itemsize 13
-   [ 3845.737874] 		index 2 name_len 3
-   [ 3845.737875] BTRFS error (device dm-0): block=30408704 write time tree block corruption detected
-   [ 3845.739448] ------------[ cut here ]------------
-   [ 3845.740092] WARNING: CPU: 5 PID: 30701 at fs/btrfs/disk-io.c:335 btree_csum_one_bio+0x25a/0x270 [btrfs]
-   [ 3845.741439] Modules linked in: btrfs dm_flakey crc32c_cryptoapi (...)
-   [ 3845.750626] CPU: 5 UID: 0 PID: 30701 Comm: mount Tainted: G        W           6.18.0-rc6-btrfs-next-218+ #1 PREEMPT(full)
-   [ 3845.752414] Tainted: [W]=WARN
-   [ 3845.752828] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.2-0-gea1b7a073390-prebuilt.qemu.org 04/01/2014
-   [ 3845.754499] RIP: 0010:btree_csum_one_bio+0x25a/0x270 [btrfs]
-   [ 3845.755460] Code: 31 f6 48 89 (...)
-   [ 3845.758685] RSP: 0018:ffffa8d9c5677678 EFLAGS: 00010246
-   [ 3845.759450] RAX: 0000000000000000 RBX: ffff92650e6d4738 RCX: 0000000000000000
-   [ 3845.760309] RDX: 0000000000000000 RSI: ffffffff9aab45b9 RDI: ffff9264c4748000
-   [ 3845.761239] RBP: ffff9264d4324000 R08: 0000000000000000 R09: ffffa8d9c5677468
-   [ 3845.762607] R10: ffff926bdc1fffa8 R11: 0000000000000003 R12: ffffa8d9c5677680
-   [ 3845.764099] R13: 0000000000004000 R14: ffff9264dd624000 R15: ffff9264d978aba8
-   [ 3845.765094] FS:  00007f751fa5a840(0000) GS:ffff926c42a82000(0000) knlGS:0000000000000000
-   [ 3845.766226] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-   [ 3845.766970] CR2: 0000558df1815380 CR3: 000000010ed88003 CR4: 0000000000370ef0
-   [ 3845.768009] Call Trace:
-   [ 3845.768392]  <TASK>
-   [ 3845.768714]  btrfs_submit_bbio+0x6ee/0x7f0 [btrfs]
-   [ 3845.769640]  ? write_one_eb+0x28e/0x340 [btrfs]
-   [ 3845.770588]  btree_write_cache_pages+0x2f0/0x550 [btrfs]
-   [ 3845.771286]  ? alloc_extent_state+0x19/0x100 [btrfs]
-   [ 3845.771967]  ? merge_next_state+0x1a/0x90 [btrfs]
-   [ 3845.772586]  ? set_extent_bit+0x233/0x8b0 [btrfs]
-   [ 3845.773198]  ? xas_load+0x9/0xc0
-   [ 3845.773589]  ? xas_find+0x14d/0x1a0
-   [ 3845.773969]  do_writepages+0xc6/0x160
-   [ 3845.774367]  filemap_fdatawrite_wbc+0x48/0x60
-   [ 3845.775003]  __filemap_fdatawrite_range+0x5b/0x80
-   [ 3845.775902]  btrfs_write_marked_extents+0x61/0x170 [btrfs]
-   [ 3845.776707]  btrfs_write_and_wait_transaction+0x4e/0xc0 [btrfs]
-   [ 3845.777379]  ? _raw_spin_unlock_irqrestore+0x23/0x40
-   [ 3845.777923]  btrfs_commit_transaction+0x5ea/0xd20 [btrfs]
-   [ 3845.778551]  ? _raw_spin_unlock+0x15/0x30
-   [ 3845.778986]  ? release_extent_buffer+0x34/0x160 [btrfs]
-   [ 3845.779659]  btrfs_recover_log_trees+0x7a3/0x7c0 [btrfs]
-   [ 3845.780416]  ? __pfx_replay_one_buffer+0x10/0x10 [btrfs]
-   [ 3845.781499]  open_ctree+0x10bb/0x15f0 [btrfs]
-   [ 3845.782194]  btrfs_get_tree.cold+0xb/0x16c [btrfs]
-   [ 3845.782764]  ? fscontext_read+0x15c/0x180
-   [ 3845.783202]  ? rw_verify_area+0x50/0x180
-   [ 3845.783667]  vfs_get_tree+0x25/0xd0
-   [ 3845.784047]  vfs_cmd_create+0x59/0xe0
-   [ 3845.784458]  __do_sys_fsconfig+0x4f6/0x6b0
-   [ 3845.784914]  do_syscall_64+0x50/0x1220
-   [ 3845.785340]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-   [ 3845.785980] RIP: 0033:0x7f751fc7f4aa
-   [ 3845.786759] Code: 73 01 c3 48 (...)
-   [ 3845.789951] RSP: 002b:00007ffcdba45dc8 EFLAGS: 00000246 ORIG_RAX: 00000000000001af
-   [ 3845.791402] RAX: ffffffffffffffda RBX: 000055ccc8291c20 RCX: 00007f751fc7f4aa
-   [ 3845.792688] RDX: 0000000000000000 RSI: 0000000000000006 RDI: 0000000000000003
-   [ 3845.794308] RBP: 000055ccc8292120 R08: 0000000000000000 R09: 0000000000000000
-   [ 3845.795829] R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-   [ 3845.797183] R13: 00007f751fe11580 R14: 00007f751fe1326c R15: 00007f751fdf8a23
-   [ 3845.798633]  </TASK>
-   [ 3845.799067] ---[ end trace 0000000000000000 ]---
-   [ 3845.800215] BTRFS: error (device dm-0) in btrfs_commit_transaction:2553: errno=-5 IO failure (Error while writing out transaction)
-   [ 3845.801860] BTRFS warning (device dm-0 state E): Skipping commit of aborted transaction.
-   [ 3845.802815] BTRFS error (device dm-0 state EA): Transaction aborted (error -5)
-   [ 3845.803728] BTRFS: error (device dm-0 state EA) in cleanup_transaction:2036: errno=-5 IO failure
-   [ 3845.805374] BTRFS: error (device dm-0 state EA) in btrfs_replay_log:2083: errno=-5 IO failure (Failed to recover log tree)
-   [ 3845.807919] BTRFS error (device dm-0 state EA): open_ctree failed: -5
-
-Fix this by never logging a conflicting inode that is a directory and was
-moved in the current transaction (its last_unlink_trans equals the current
-transaction) and instead fallback to a transaction commit.
-
-A test case for fstests will follow soon.
-
-Reported-by: Vyacheslav Kovalevsky <slva.kovalevskiy.2014@gmail.com>
-Link: https://lore.kernel.org/linux-btrfs/7bbc9419-5c56-450a-b5a0-efeae7457113@gmail.com/
-CC: stable@vger.kernel.org # 6.1+
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Link: http://lore.kernel.org/efiagdwmzfwpdzps74fvcwq3n4cs36q33ij7eebcpssactv3zu@se4hqiwxcfxq [1]
+Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: stable@vger.kernel.org # v6.17+
+Fixes: 36df6e3dbd7e ("cgroup: make css_rstat_updated nmi safe")
+Signed-off-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/tree-log.c |   38 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 38 insertions(+)
+ kernel/cgroup/rstat.c |   13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
---- a/fs/btrfs/tree-log.c
-+++ b/fs/btrfs/tree-log.c
-@@ -6050,6 +6050,33 @@ static int conflicting_inode_is_dir(stru
- 	return ret;
- }
+--- a/kernel/cgroup/rstat.c
++++ b/kernel/cgroup/rstat.c
+@@ -71,7 +71,6 @@ __bpf_kfunc void css_rstat_updated(struc
+ {
+ 	struct llist_head *lhead;
+ 	struct css_rstat_cpu *rstatc;
+-	struct css_rstat_cpu __percpu *rstatc_pcpu;
+ 	struct llist_node *self;
  
-+static bool can_log_conflicting_inode(const struct btrfs_trans_handle *trans,
-+				      const struct btrfs_inode *inode)
-+{
-+	if (!S_ISDIR(inode->vfs_inode.i_mode))
-+		return true;
-+
-+	if (inode->last_unlink_trans < trans->transid)
-+		return true;
-+
-+	/*
-+	 * If this is a directory and its unlink_trans is not from a past
-+	 * transaction then we must fallback to a transaction commit in order
-+	 * to avoid getting a directory with 2 hard links after log replay.
+ 	/*
+@@ -104,18 +103,22 @@ __bpf_kfunc void css_rstat_updated(struc
+ 	/*
+ 	 * This function can be renentered by irqs and nmis for the same cgroup
+ 	 * and may try to insert the same per-cpu lnode into the llist. Note
+-	 * that llist_add() does not protect against such scenarios.
++	 * that llist_add() does not protect against such scenarios. In addition
++	 * this same per-cpu lnode can be modified through init_llist_node()
++	 * from css_rstat_flush() running on a different CPU.
+ 	 *
+ 	 * To protect against such stacked contexts of irqs/nmis, we use the
+ 	 * fact that lnode points to itself when not on a list and then use
+-	 * this_cpu_cmpxchg() to atomically set to NULL to select the winner
++	 * try_cmpxchg() to atomically set to NULL to select the winner
+ 	 * which will call llist_add(). The losers can assume the insertion is
+ 	 * successful and the winner will eventually add the per-cpu lnode to
+ 	 * the llist.
 +	 *
-+	 * This happens if a directory A is renamed, moved from one parent
-+	 * directory to another one, a new file is created in the old parent
-+	 * directory with the old name of our directory A, the new file is
-+	 * fsynced, then we moved the new file to some other parent directory
-+	 * and fsync again the new file. This results in a log tree where we
-+	 * logged that directory A existed, with the INODE_REF item for the
-+	 * new location but without having logged its old parent inode, so
-+	 * that on log replay we add a new link for the new location but the
-+	 * old link remains, resulting in a link count of 2.
-+	 */
-+	return false;
-+}
-+
- static int add_conflicting_inode(struct btrfs_trans_handle *trans,
- 				 struct btrfs_root *root,
- 				 struct btrfs_path *path,
-@@ -6153,6 +6180,11 @@ static int add_conflicting_inode(struct
- 		return 0;
- 	}
++	 * Please note that we can not use this_cpu_cmpxchg() here as on some
++	 * archs it is not safe against modifications from multiple CPUs.
+ 	 */
+ 	self = &rstatc->lnode;
+-	rstatc_pcpu = css->rstat_cpu;
+-	if (this_cpu_cmpxchg(rstatc_pcpu->lnode.next, self, NULL) != self)
++	if (!try_cmpxchg(&rstatc->lnode.next, &self, NULL))
+ 		return;
  
-+	if (!can_log_conflicting_inode(trans, inode)) {
-+		btrfs_add_delayed_iput(inode);
-+		return BTRFS_LOG_FORCE_COMMIT;
-+	}
-+
- 	btrfs_add_delayed_iput(inode);
- 
- 	ino_elem = kmalloc(sizeof(*ino_elem), GFP_NOFS);
-@@ -6217,6 +6249,12 @@ static int log_conflicting_inodes(struct
- 				break;
- 			}
- 
-+			if (!can_log_conflicting_inode(trans, inode)) {
-+				btrfs_add_delayed_iput(inode);
-+				ret = BTRFS_LOG_FORCE_COMMIT;
-+				break;
-+			}
-+
- 			/*
- 			 * Always log the directory, we cannot make this
- 			 * conditional on need_log_inode() because the directory
+ 	lhead = ss_lhead_cpu(css->ss, cpu);
 
 
 
