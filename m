@@ -1,41 +1,41 @@
-Return-Path: <stable+bounces-203745-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203747-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 482E9CE75B7
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:18:56 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E50ACE75C9
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:19:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E49BF30161C6
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:17:30 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 041873016F81
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:17:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A057432F751;
-	Mon, 29 Dec 2025 16:17:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60011330305;
+	Mon, 29 Dec 2025 16:17:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hJAQP5lO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F4HQrn07"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F1EC222560;
-	Mon, 29 Dec 2025 16:17:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14B1C32B99B;
+	Mon, 29 Dec 2025 16:17:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767025050; cv=none; b=XnU3gRwNA86sOMU9hcN20bK5IkbugfuswOu98YRzW6ZuVU6R9qjBxrQrMa8SFbgQHynllMIYmNwrDy1Gqb4tXNU1NIteG6VhxHLnB82jJbIiI112lWHaiDQkfSpI7yNmWPpgYP50jqgkkLDMYMNIwOAUnFxamO/cM2OsiOPqcng=
+	t=1767025056; cv=none; b=pEdM0Ga1ryL1uNSAyGdVmFOxcVI4XOvmdst2RuJpuRyOdkARpaMCT32blFDzRhaeciRd9mwFjHy/AOAEc5nVbhA1xlJF1ksl7+VzzXsTbgDoC7MesZiVd/c3l8+EDehvf6M/GRfRy0DtuJMQzgsad0WEkxpunuAfXTVkIkQr1bw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767025050; c=relaxed/simple;
-	bh=nfuGNecyRvPjN0Pi9K8Ip1mAUY8Pqn5Avh1TceDCaBo=;
+	s=arc-20240116; t=1767025056; c=relaxed/simple;
+	bh=ybjlOOcbKc6+Hb/3VHQk4VXjajZ/UGqBjnYwDgfOoQQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jjcw4GhDPJq70BZn3heS5ej95H5Z6TxsAqhQdkB/mDJVPOj151hmIFNMeF8jz50gJVHZLGhsqR9Szcbvp4JctKMcAD6JwLBMqXo5bA/4vrg8D9c/0Nn5Oer9iRTyoiIEsNBIBPYsn+4Wu3YbTRCLy8k5iUdyXCTimLPScn2C1AY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hJAQP5lO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDD04C4CEF7;
-	Mon, 29 Dec 2025 16:17:29 +0000 (UTC)
+	 MIME-Version; b=rrAQnljetbigUm98sByG8bYhHrpB3g3fyBHy4cenimHvFVr/pUVz82ZnwWE7u9eZj5jDtjMdUYzDDicI9IrOXKyQ772YmKO+fLagrs9cURvEHVKvnS++HwxZbiaQMP81Q9FwtLAVbJR8aWKBhFF/t6WRb4nDnBSmj5C9M5sI5Rg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F4HQrn07; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 902B1C4CEF7;
+	Mon, 29 Dec 2025 16:17:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767025050;
-	bh=nfuGNecyRvPjN0Pi9K8Ip1mAUY8Pqn5Avh1TceDCaBo=;
+	s=korg; t=1767025055;
+	bh=ybjlOOcbKc6+Hb/3VHQk4VXjajZ/UGqBjnYwDgfOoQQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hJAQP5lODc+6DcwD1XJNQ3FBDHIytradC0A++Cp6nnOlqa5bAN27PGqQaLFIi7Fc/
-	 TCdsqD9pz5DF7YZMyAp14lxEusTxlqzWP3SOaRvCJJnOJbFIX0gjL1jx5nurjQ9E71
-	 00SV3cXaEGEhyfWtqsgFloVZe2syL8qfjF1+FTFo=
+	b=F4HQrn07gQ1ZWdZl5SAhgM3/YNRPw/AoGf0dIHrUIqVS3eKFzADkiUJonC2oqgDy3
+	 8sy1TgnTVduiYWqgVVYDF65ObawA+Ac+NYQ6OZpfK1O/Tt74Csypyszt5M7zEaI1Fw
+	 wtng9IIkQkY5HqhnUfi7hw62n9VpkIJ3inRkvCA4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -43,9 +43,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 077/430] inet: frags: add inet_frag_queue_flush()
-Date: Mon, 29 Dec 2025 17:07:59 +0100
-Message-ID: <20251229160727.198619172@linuxfoundation.org>
+Subject: [PATCH 6.18 078/430] inet: frags: flush pending skbs in fqdir_pre_exit()
+Date: Mon, 29 Dec 2025 17:08:00 +0100
+Message-ID: <20251229160727.235327836@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251229160724.139406961@linuxfoundation.org>
 References: <20251229160724.139406961@linuxfoundation.org>
@@ -66,92 +66,182 @@ Content-Transfer-Encoding: 8bit
 
 From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 1231eec6994be29d6bb5c303dfa54731ed9fc0e6 ]
+[ Upstream commit 006a5035b495dec008805df249f92c22c89c3d2e ]
 
-Instead of exporting inet_frag_rbtree_purge() which requires that
-caller takes care of memory accounting, add a new helper. We will
-need to call it from a few places in the next patch.
+We have been seeing occasional deadlocks on pernet_ops_rwsem since
+September in NIPA. The stuck task was usually modprobe (often loading
+a driver like ipvlan), trying to take the lock as a Writer.
+lockdep does not track readers for rwsems so the read wasn't obvious
+from the reports.
 
+On closer inspection the Reader holding the lock was conntrack looping
+forever in nf_conntrack_cleanup_net_list(). Based on past experience
+with occasional NIPA crashes I looked thru the tests which run before
+the crash and noticed that the crash follows ip_defrag.sh. An immediate
+red flag. Scouring thru (de)fragmentation queues reveals skbs sitting
+around, holding conntrack references.
+
+The problem is that since conntrack depends on nf_defrag_ipv6,
+nf_defrag_ipv6 will load first. Since nf_defrag_ipv6 loads first its
+netns exit hooks run _after_ conntrack's netns exit hook.
+
+Flush all fragment queue SKBs during fqdir_pre_exit() to release
+conntrack references before conntrack cleanup runs. Also flush
+the queues in timer expiry handlers when they discover fqdir->dead
+is set, in case packet sneaks in while we're running the pre_exit
+flush.
+
+The commit under Fixes is not exactly the culprit, but I think
+previously the timer firing would eventually unblock the spinning
+conntrack.
+
+Fixes: d5dd88794a13 ("inet: fix various use-after-free in defrags units")
 Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20251207010942.1672972-3-kuba@kernel.org
+Link: https://patch.msgid.link/20251207010942.1672972-4-kuba@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 006a5035b495 ("inet: frags: flush pending skbs in fqdir_pre_exit()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/inet_frag.h  |  5 ++---
- net/ipv4/inet_fragment.c | 15 ++++++++++++---
- net/ipv4/ip_fragment.c   |  6 +-----
- 3 files changed, 15 insertions(+), 11 deletions(-)
+ include/net/inet_frag.h  | 13 +------------
+ include/net/ipv6_frag.h  |  9 ++++++---
+ net/ipv4/inet_fragment.c | 36 ++++++++++++++++++++++++++++++++++++
+ net/ipv4/ip_fragment.c   | 12 +++++++-----
+ 4 files changed, 50 insertions(+), 20 deletions(-)
 
 diff --git a/include/net/inet_frag.h b/include/net/inet_frag.h
-index 0eccd9c3a883f..3ffaceee7bbc0 100644
+index 3ffaceee7bbc0..365925c9d2628 100644
 --- a/include/net/inet_frag.h
 +++ b/include/net/inet_frag.h
-@@ -141,9 +141,8 @@ void inet_frag_kill(struct inet_frag_queue *q, int *refs);
- void inet_frag_destroy(struct inet_frag_queue *q);
- struct inet_frag_queue *inet_frag_find(struct fqdir *fqdir, void *key);
+@@ -123,18 +123,7 @@ void inet_frags_fini(struct inet_frags *);
  
--/* Free all skbs in the queue; return the sum of their truesizes. */
--unsigned int inet_frag_rbtree_purge(struct rb_root *root,
--				    enum skb_drop_reason reason);
-+void inet_frag_queue_flush(struct inet_frag_queue *q,
-+			   enum skb_drop_reason reason);
+ int fqdir_init(struct fqdir **fqdirp, struct inet_frags *f, struct net *net);
  
- static inline void inet_frag_putn(struct inet_frag_queue *q, int refs)
- {
+-static inline void fqdir_pre_exit(struct fqdir *fqdir)
+-{
+-	/* Prevent creation of new frags.
+-	 * Pairs with READ_ONCE() in inet_frag_find().
+-	 */
+-	WRITE_ONCE(fqdir->high_thresh, 0);
+-
+-	/* Pairs with READ_ONCE() in inet_frag_kill(), ip_expire()
+-	 * and ip6frag_expire_frag_queue().
+-	 */
+-	WRITE_ONCE(fqdir->dead, true);
+-}
++void fqdir_pre_exit(struct fqdir *fqdir);
+ void fqdir_exit(struct fqdir *fqdir);
+ 
+ void inet_frag_kill(struct inet_frag_queue *q, int *refs);
+diff --git a/include/net/ipv6_frag.h b/include/net/ipv6_frag.h
+index 38ef66826939e..41d9fc6965f9a 100644
+--- a/include/net/ipv6_frag.h
++++ b/include/net/ipv6_frag.h
+@@ -69,9 +69,6 @@ ip6frag_expire_frag_queue(struct net *net, struct frag_queue *fq)
+ 	int refs = 1;
+ 
+ 	rcu_read_lock();
+-	/* Paired with the WRITE_ONCE() in fqdir_pre_exit(). */
+-	if (READ_ONCE(fq->q.fqdir->dead))
+-		goto out_rcu_unlock;
+ 	spin_lock(&fq->q.lock);
+ 
+ 	if (fq->q.flags & INET_FRAG_COMPLETE)
+@@ -80,6 +77,12 @@ ip6frag_expire_frag_queue(struct net *net, struct frag_queue *fq)
+ 	fq->q.flags |= INET_FRAG_DROP;
+ 	inet_frag_kill(&fq->q, &refs);
+ 
++	/* Paired with the WRITE_ONCE() in fqdir_pre_exit(). */
++	if (READ_ONCE(fq->q.fqdir->dead)) {
++		inet_frag_queue_flush(&fq->q, 0);
++		goto out;
++	}
++
+ 	dev = dev_get_by_index_rcu(net, fq->iif);
+ 	if (!dev)
+ 		goto out;
 diff --git a/net/ipv4/inet_fragment.c b/net/ipv4/inet_fragment.c
-index 30f4fa50ee2d7..1bf969b5a1cb5 100644
+index 1bf969b5a1cb5..001ee5c4d962e 100644
 --- a/net/ipv4/inet_fragment.c
 +++ b/net/ipv4/inet_fragment.c
-@@ -263,8 +263,8 @@ static void inet_frag_destroy_rcu(struct rcu_head *head)
- 	kmem_cache_free(f->frags_cachep, q);
- }
+@@ -218,6 +218,41 @@ static int __init inet_frag_wq_init(void)
  
--unsigned int inet_frag_rbtree_purge(struct rb_root *root,
--				    enum skb_drop_reason reason)
-+static unsigned int
-+inet_frag_rbtree_purge(struct rb_root *root, enum skb_drop_reason reason)
- {
- 	struct rb_node *p = rb_first(root);
- 	unsigned int sum = 0;
-@@ -284,7 +284,16 @@ unsigned int inet_frag_rbtree_purge(struct rb_root *root,
- 	}
- 	return sum;
- }
--EXPORT_SYMBOL(inet_frag_rbtree_purge);
-+
-+void inet_frag_queue_flush(struct inet_frag_queue *q,
-+			   enum skb_drop_reason reason)
+ pure_initcall(inet_frag_wq_init);
+ 
++void fqdir_pre_exit(struct fqdir *fqdir)
 +{
-+	unsigned int sum;
++	struct inet_frag_queue *fq;
++	struct rhashtable_iter hti;
 +
-+	sum = inet_frag_rbtree_purge(&q->rb_fragments, reason);
-+	sub_frag_mem_limit(q->fqdir, sum);
++	/* Prevent creation of new frags.
++	 * Pairs with READ_ONCE() in inet_frag_find().
++	 */
++	WRITE_ONCE(fqdir->high_thresh, 0);
++
++	/* Pairs with READ_ONCE() in inet_frag_kill(), ip_expire()
++	 * and ip6frag_expire_frag_queue().
++	 */
++	WRITE_ONCE(fqdir->dead, true);
++
++	rhashtable_walk_enter(&fqdir->rhashtable, &hti);
++	rhashtable_walk_start(&hti);
++
++	while ((fq = rhashtable_walk_next(&hti))) {
++		if (IS_ERR(fq)) {
++			if (PTR_ERR(fq) != -EAGAIN)
++				break;
++			continue;
++		}
++		spin_lock_bh(&fq->lock);
++		if (!(fq->flags & INET_FRAG_COMPLETE))
++			inet_frag_queue_flush(fq, 0);
++		spin_unlock_bh(&fq->lock);
++	}
++
++	rhashtable_walk_stop(&hti);
++	rhashtable_walk_exit(&hti);
 +}
-+EXPORT_SYMBOL(inet_frag_queue_flush);
- 
- void inet_frag_destroy(struct inet_frag_queue *q)
++EXPORT_SYMBOL(fqdir_pre_exit);
++
+ void fqdir_exit(struct fqdir *fqdir)
  {
+ 	INIT_WORK(&fqdir->destroy_work, fqdir_work_fn);
+@@ -290,6 +325,7 @@ void inet_frag_queue_flush(struct inet_frag_queue *q,
+ {
+ 	unsigned int sum;
+ 
++	reason = reason ?: SKB_DROP_REASON_FRAG_REASM_TIMEOUT;
+ 	sum = inet_frag_rbtree_purge(&q->rb_fragments, reason);
+ 	sub_frag_mem_limit(q->fqdir, sum);
+ }
 diff --git a/net/ipv4/ip_fragment.c b/net/ipv4/ip_fragment.c
-index d7bccdc9dc693..32f1c1a46ba72 100644
+index 32f1c1a46ba72..56b0f738d2f27 100644
 --- a/net/ipv4/ip_fragment.c
 +++ b/net/ipv4/ip_fragment.c
-@@ -240,14 +240,10 @@ static int ip_frag_too_far(struct ipq *qp)
+@@ -134,11 +134,6 @@ static void ip_expire(struct timer_list *t)
+ 	net = qp->q.fqdir->net;
  
- static int ip_frag_reinit(struct ipq *qp)
- {
--	unsigned int sum_truesize = 0;
+ 	rcu_read_lock();
 -
- 	if (!mod_timer_pending(&qp->q.timer, jiffies + qp->q.fqdir->timeout))
- 		return -ETIMEDOUT;
+-	/* Paired with WRITE_ONCE() in fqdir_pre_exit(). */
+-	if (READ_ONCE(qp->q.fqdir->dead))
+-		goto out_rcu_unlock;
+-
+ 	spin_lock(&qp->q.lock);
  
--	sum_truesize = inet_frag_rbtree_purge(&qp->q.rb_fragments,
--					      SKB_DROP_REASON_FRAG_TOO_FAR);
--	sub_frag_mem_limit(qp->q.fqdir, sum_truesize);
-+	inet_frag_queue_flush(&qp->q, SKB_DROP_REASON_FRAG_TOO_FAR);
+ 	if (qp->q.flags & INET_FRAG_COMPLETE)
+@@ -146,6 +141,13 @@ static void ip_expire(struct timer_list *t)
  
- 	qp->q.flags = 0;
- 	qp->q.len = 0;
+ 	qp->q.flags |= INET_FRAG_DROP;
+ 	inet_frag_kill(&qp->q, &refs);
++
++	/* Paired with WRITE_ONCE() in fqdir_pre_exit(). */
++	if (READ_ONCE(qp->q.fqdir->dead)) {
++		inet_frag_queue_flush(&qp->q, 0);
++		goto out;
++	}
++
+ 	__IP_INC_STATS(net, IPSTATS_MIB_REASMFAILS);
+ 	__IP_INC_STATS(net, IPSTATS_MIB_REASMTIMEOUT);
+ 
 -- 
 2.51.0
 
