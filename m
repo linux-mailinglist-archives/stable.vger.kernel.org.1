@@ -1,53 +1,51 @@
-Return-Path: <stable+bounces-203843-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203845-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AEABCE7732
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:27:03 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C32ACE76BA
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:23:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9D2BB309546B
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:22:08 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A380F3010774
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:22:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7088C24EF8C;
-	Mon, 29 Dec 2025 16:22:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4857C2571BE;
+	Mon, 29 Dec 2025 16:22:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ETE5fO6h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hBOmYdjJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2516223C39A;
-	Mon, 29 Dec 2025 16:22:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2DDD2222CB;
+	Mon, 29 Dec 2025 16:22:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767025327; cv=none; b=hS/ODCAzS1ZUTNI6WyIR3J2OpGQPzRTz80goYP6y6BRwSvNFG2iR6BcghKPkN+i4M5o5skKvN+qdwkCWrAIe3zdwzYNjdGmdmzJl+Ys5menKSfSU7ENsRXr2VGee7qdWctIQxcHDJFcsxhuzzgo11x6uAIjRivT2J7fXf1T03qQ=
+	t=1767025330; cv=none; b=ETz6uoVZXNxsJIm8PCS8jAmObWwDOC2ohRQrip6kzGTJJB2ej3RRSA9ijUOqBb7GMdtHPlcLeceAYVL4UFq64XXteO6bOWKwacX2RTtxMK5ULKSAEqfwOK8/xGctNwnxQyc6fnTLlK0+vvb0fxXL2rKL/wCM5AOGcLbwrS9/y98=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767025327; c=relaxed/simple;
-	bh=9S7FymlM62HlXvvLCZ5R6vfIXq8rXY01mduNL66bHto=;
+	s=arc-20240116; t=1767025330; c=relaxed/simple;
+	bh=tgGSg42yH0BdPKMlpVuD3OMyNimZPvZttiW6lmVWJZg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TjncWxjY1lui04GGldKdY3wHnQtKUyT7N1AQH+9v5aqRMxTFpA+oKEMgs/WWj2BnXa21z1N+bG9zrWrkQxn9J5UbcP7EMhjQMEss19G/GjUWACW5+l8nY3MZnR1nScqRFDUiUA/S3Kvp43CKhLUpZhfC9INK2q/x178ulHHJem4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ETE5fO6h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A459FC116C6;
-	Mon, 29 Dec 2025 16:22:06 +0000 (UTC)
+	 MIME-Version; b=PRlTZG7lRLPVChkLFfu9M3sNuLCZIlmFlIWT/mQGqi2Sa9k3hTbCaGNhDDz31hjPVo/FXgQJUE2Rgbek7ZwHzILJufjmYl4f+LryrZkzTE7jqwMkYtQ9SaW1ngP//GuI0/qjMaLU/GDePU3wMwb8ZkfOzAeEV7hNNI4p2J7rLDc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hBOmYdjJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AB76C4CEF7;
+	Mon, 29 Dec 2025 16:22:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767025327;
-	bh=9S7FymlM62HlXvvLCZ5R6vfIXq8rXY01mduNL66bHto=;
+	s=korg; t=1767025329;
+	bh=tgGSg42yH0BdPKMlpVuD3OMyNimZPvZttiW6lmVWJZg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ETE5fO6h5gAelh6ptCR24kUbEKK6GeWyceOx9C4JHKnCLL7dfcisuFqrExmszaFU5
-	 sJXrZbm7l/83Bclh+XONmt/52EE3bfahH/i6hpCLzV9MHxGiBPak5JsMrDlIeEQCrh
-	 75itGsWkp9YJ6nvO8F7GiZL0eFlhgZeLefhTuMRU=
+	b=hBOmYdjJVWJwVwOmpV2b8kkm/ZOkgcD61D79TH4Ek+6rckaK0rVVDK9e9SOqlIBj0
+	 wCfHX7Emy77jB96IbUHYdhlXbuxTmqZmv5DEhOvzErlEpisuHHcygx8XjdS21riM1a
+	 dwdAvH7k6XRDX1htLpYBb7SeYUn53HH90kIxnOAw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Binding <sbinding@opensource.cirrus.com>,
-	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Charles Keepax <ckeepax@opensource.cirrus.com>
-Subject: [PATCH 6.18 175/430] ASoC: ops: fix snd_soc_get_volsw for sx controls
-Date: Mon, 29 Dec 2025 17:09:37 +0100
-Message-ID: <20251229160730.801113869@linuxfoundation.org>
+	Jinhui Guo <guojinhui.liam@bytedance.com>,
+	Corey Minyard <corey@minyard.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 176/430] ipmi: Fix the race between __scan_channels() and deliver_response()
+Date: Mon, 29 Dec 2025 17:09:38 +0100
+Message-ID: <20251229160730.837385555@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251229160724.139406961@linuxfoundation.org>
 References: <20251229160724.139406961@linuxfoundation.org>
@@ -66,129 +64,87 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Stefan Binding <sbinding@opensource.cirrus.com>
+From: Jinhui Guo <guojinhui.liam@bytedance.com>
 
-[ Upstream commit 095d621141826a2841dae85b52c784c147ea99d3 ]
+[ Upstream commit 936750fdba4c45e13bbd17f261bb140dd55f5e93 ]
 
-SX controls are currently broken, since the clamp introduced in
-commit a0ce874cfaaa ("ASoC: ops: improve snd_soc_get_volsw") does not
-handle SX controls, for example where the min value in the clamp is
-greater than the max value in the clamp.
+The race window between __scan_channels() and deliver_response() causes
+the parameters of some channels to be set to 0.
 
-Add clamp parameter to prevent clamping in SX controls.
-The nature of SX controls mean that it wraps around 0, with a variable
-number of bits, therefore clamping the value becomes complicated and
-prone to error.
+1.[CPUA] __scan_channels() issues an IPMI request and waits with
+         wait_event() until all channels have been scanned.
+         wait_event() internally calls might_sleep(), which might
+         yield the CPU. (Moreover, an interrupt can preempt
+         wait_event() and force the task to yield the CPU.)
+2.[CPUB] deliver_response() is invoked when the CPU receives the
+         IPMI response. After processing a IPMI response,
+         deliver_response() directly assigns intf->wchannels to
+         intf->channel_list and sets intf->channels_ready to true.
+         However, not all channels are actually ready for use.
+3.[CPUA] Since intf->channels_ready is already true, wait_event()
+         never enters __wait_event(). __scan_channels() immediately
+         clears intf->null_user_handler and exits.
+4.[CPUB] Once intf->null_user_handler is set to NULL, deliver_response()
+         ignores further IPMI responses, leaving the remaining
+	 channels zero-initialized and unusable.
 
-Fixes 35 kunit tests for soc_ops_test_access.
+CPUA                             CPUB
+-------------------------------  -----------------------------
+__scan_channels()
+ intf->null_user_handler
+       = channel_handler;
+ send_channel_info_cmd(intf,
+       0);
+ wait_event(intf->waitq,
+       intf->channels_ready);
+  do {
+   might_sleep();
+                                 deliver_response()
+                                  channel_handler()
+                                   intf->channel_list =
+				         intf->wchannels + set;
+                                   intf->channels_ready = true;
+                                   send_channel_info_cmd(intf,
+                                         intf->curr_channel);
+   if (condition)
+    break;
+   __wait_event(wq_head,
+          condition);
+  } while(0)
+ intf->null_user_handler
+       = NULL;
+                                 deliver_response()
+                                  if (!msg->user)
+                                   if (intf->null_user_handler)
+                                    rv = -EINVAL;
+                                  return rv;
+-------------------------------  -----------------------------
 
-Fixes: a0ce874cfaaa ("ASoC: ops: improve snd_soc_get_volsw")
+Fix the race between __scan_channels() and deliver_response() by
+deferring both the assignment intf->channel_list = intf->wchannels
+and the flag intf->channels_ready = true until all channels have
+been successfully scanned or until the IPMI request has failed.
 
-Co-developed-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
-Tested-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Link: https://patch.msgid.link/20251216134938.788625-1-sbinding@opensource.cirrus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Jinhui Guo <guojinhui.liam@bytedance.com>
+Message-ID: <20250930074239.2353-2-guojinhui.liam@bytedance.com>
+Signed-off-by: Corey Minyard <corey@minyard.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/soc-ops.c | 32 ++++++++++++++++++++------------
- 1 file changed, 20 insertions(+), 12 deletions(-)
+ drivers/char/ipmi/ipmi_msghandler.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/sound/soc/soc-ops.c b/sound/soc/soc-ops.c
-index ce86978c158d..624e9269fc25 100644
---- a/sound/soc/soc-ops.c
-+++ b/sound/soc/soc-ops.c
-@@ -111,7 +111,8 @@ int snd_soc_put_enum_double(struct snd_kcontrol *kcontrol,
- EXPORT_SYMBOL_GPL(snd_soc_put_enum_double);
- 
- static int sdca_soc_q78_reg_to_ctl(struct soc_mixer_control *mc, unsigned int reg_val,
--				unsigned int mask, unsigned int shift, int max)
-+				   unsigned int mask, unsigned int shift, int max,
-+				   bool sx)
- {
- 	int val = reg_val;
- 
-@@ -141,20 +142,26 @@ static unsigned int sdca_soc_q78_ctl_to_reg(struct soc_mixer_control *mc, int va
- }
- 
- static int soc_mixer_reg_to_ctl(struct soc_mixer_control *mc, unsigned int reg_val,
--				unsigned int mask, unsigned int shift, int max)
-+				unsigned int mask, unsigned int shift, int max,
-+				bool sx)
- {
- 	int val = (reg_val >> shift) & mask;
- 
- 	if (mc->sign_bit)
- 		val = sign_extend32(val, mc->sign_bit);
- 
--	val = clamp(val, mc->min, mc->max);
--	val -= mc->min;
-+	if (sx) {
-+		val -= mc->min; // SX controls intentionally can overflow here
-+		val = min_t(unsigned int, val & mask, max);
-+	} else {
-+		val = clamp(val, mc->min, mc->max);
-+		val -= mc->min;
-+	}
- 
- 	if (mc->invert)
- 		val = max - val;
- 
--	return val & mask;
-+	return val;
- }
- 
- static unsigned int soc_mixer_ctl_to_reg(struct soc_mixer_control *mc, int val,
-@@ -280,9 +287,10 @@ static int soc_put_volsw(struct snd_kcontrol *kcontrol,
- 
- static int soc_get_volsw(struct snd_kcontrol *kcontrol,
- 			 struct snd_ctl_elem_value *ucontrol,
--			 struct soc_mixer_control *mc, int mask, int max)
-+			 struct soc_mixer_control *mc, int mask, int max, bool sx)
- {
--	int (*reg_to_ctl)(struct soc_mixer_control *, unsigned int, unsigned int, unsigned int, int);
-+	int (*reg_to_ctl)(struct soc_mixer_control *, unsigned int, unsigned int,
-+			  unsigned int, int, bool);
- 	struct snd_soc_component *component = snd_kcontrol_chip(kcontrol);
- 	unsigned int reg_val;
- 	int val;
-@@ -293,16 +301,16 @@ static int soc_get_volsw(struct snd_kcontrol *kcontrol,
- 		reg_to_ctl = soc_mixer_reg_to_ctl;
- 
- 	reg_val = snd_soc_component_read(component, mc->reg);
--	val = reg_to_ctl(mc, reg_val, mask, mc->shift, max);
-+	val = reg_to_ctl(mc, reg_val, mask, mc->shift, max, sx);
- 
- 	ucontrol->value.integer.value[0] = val;
- 
- 	if (snd_soc_volsw_is_stereo(mc)) {
- 		if (mc->reg == mc->rreg) {
--			val = reg_to_ctl(mc, reg_val, mask, mc->rshift, max);
-+			val = reg_to_ctl(mc, reg_val, mask, mc->rshift, max, sx);
+diff --git a/drivers/char/ipmi/ipmi_msghandler.c b/drivers/char/ipmi/ipmi_msghandler.c
+index 3700ab4eba3e..d3f84deee451 100644
+--- a/drivers/char/ipmi/ipmi_msghandler.c
++++ b/drivers/char/ipmi/ipmi_msghandler.c
+@@ -3417,8 +3417,6 @@ channel_handler(struct ipmi_smi *intf, struct ipmi_recv_msg *msg)
+ 			intf->channels_ready = true;
+ 			wake_up(&intf->waitq);
  		} else {
- 			reg_val = snd_soc_component_read(component, mc->rreg);
--			val = reg_to_ctl(mc, reg_val, mask, mc->shift, max);
-+			val = reg_to_ctl(mc, reg_val, mask, mc->shift, max, sx);
+-			intf->channel_list = intf->wchannels + set;
+-			intf->channels_ready = true;
+ 			rv = send_channel_info_cmd(intf, intf->curr_channel);
  		}
- 
- 		ucontrol->value.integer.value[1] = val;
-@@ -371,7 +379,7 @@ int snd_soc_get_volsw(struct snd_kcontrol *kcontrol,
- 		(struct soc_mixer_control *)kcontrol->private_value;
- 	unsigned int mask = soc_mixer_mask(mc);
- 
--	return soc_get_volsw(kcontrol, ucontrol, mc, mask, mc->max - mc->min);
-+	return soc_get_volsw(kcontrol, ucontrol, mc, mask, mc->max - mc->min, false);
- }
- EXPORT_SYMBOL_GPL(snd_soc_get_volsw);
- 
-@@ -413,7 +421,7 @@ int snd_soc_get_volsw_sx(struct snd_kcontrol *kcontrol,
- 		(struct soc_mixer_control *)kcontrol->private_value;
- 	unsigned int mask = soc_mixer_sx_mask(mc);
- 
--	return soc_get_volsw(kcontrol, ucontrol, mc, mask, mc->max);
-+	return soc_get_volsw(kcontrol, ucontrol, mc, mask, mc->max, true);
- }
- EXPORT_SYMBOL_GPL(snd_soc_get_volsw_sx);
  
 -- 
 2.51.0
