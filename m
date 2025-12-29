@@ -1,69 +1,69 @@
-Return-Path: <stable+bounces-203589-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203591-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24B7CCE6F34
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 15:00:19 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E2FECE6F37
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 15:00:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 91DF230071B3
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 14:00:16 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id BC74F3000E97
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 14:00:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71EC9319616;
-	Mon, 29 Dec 2025 14:00:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59B6E1397;
+	Mon, 29 Dec 2025 14:00:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dfJU75b0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W4b0KZ0m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F37533093C1
-	for <stable@vger.kernel.org>; Mon, 29 Dec 2025 14:00:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 177E8226D1E
+	for <stable@vger.kernel.org>; Mon, 29 Dec 2025 14:00:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767016814; cv=none; b=PzMkgkV3L2UPxPo/DHxC4CFzdMhqEazuLpTkH9tEIl8tgf0JQTvWyLr8buBLXod/mky8+auYF8nMtve77BPkbovaTCE/Tzi5Zz8l433SjmoYncrv7hwZ2ymP0ohX9xYWzUUcLusWzHWEFCmOJCZym6Xm/srbRTi3nfZ4AuZ2PA8=
+	t=1767016824; cv=none; b=B2m85q3ZMflvUA8h6tkLuLgFCrVCxEcjLCh3LkNPraobIfsi/ItUlzzZ7ZR/mrOY4gRYAsfpI1DGWjv+AgKQXPRxvvuuJtrK1y9MEK3YBaVgMwJwumKaPcXS6fxoMQPJOKfNE/M1/wRLZOHLxDaNk0yfh81xJpj3pIb3WRk4+RQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767016814; c=relaxed/simple;
-	bh=ycsGLYzAati5o5xY4ZxgGN/FaLNnW6HkBUsgOnoIO9g=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=GMikF4u5FdAIq1yP3CyJCC4TslawUgO3x9E/qeoXfuVCYwvCzCUb77QJIvCSDNZYzOSwDs/PCf3Gg3jLH9Ec1pokbAJlzxDXvBwedz70gBz7cV51R+3vhGqnvR8p7fpm2xWzPApI0DmUHMiSLIebj6Z4M3XRkRkGphgDG24OXF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dfJU75b0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05ACCC4CEF7;
-	Mon, 29 Dec 2025 14:00:12 +0000 (UTC)
+	s=arc-20240116; t=1767016824; c=relaxed/simple;
+	bh=nH3TlIch5m4et2fr59aHxW3AlqreOBpvr8ucvCBwJqE=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=vAdaAdqqgvYzq33W+DJd849eTNqUe4TIfIFiA5gHaH6v6ZHXhBlFyfD3k+N1sMeOV7i98L/+qXDq18lNuBiCHtzJVu9x5pGuwG0RjnDeAllQb1QUF538a9Bbmx5lP1OMea3Dh727+C0X3UsHqjT4VObOq9Gcj4WZdOScOrJViok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W4b0KZ0m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF62FC4CEF7;
+	Mon, 29 Dec 2025 14:00:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767016813;
-	bh=ycsGLYzAati5o5xY4ZxgGN/FaLNnW6HkBUsgOnoIO9g=;
+	s=korg; t=1767016823;
+	bh=nH3TlIch5m4et2fr59aHxW3AlqreOBpvr8ucvCBwJqE=;
 	h=Subject:To:Cc:From:Date:From;
-	b=dfJU75b0BVRepdX6geiJcHxYdNQwbogwvzRb9ZtCi7GRnXIoFqZK/R9Y18zbh4iEk
-	 qZuqn8DmaQp+9iQZ0KdJOmupdJxpppuSDBA00yx7qEj3tkN2iIHlbS16j+WvArHPhn
-	 L8yopEaX6EfTm2PwcxvNJ4PzlRGbFTmq45qgW2pU=
-Subject: FAILED: patch "[PATCH] f2fs: fix to avoid updating zero-sized extent in extent cache" failed to apply to 5.10-stable tree
-To: chao@kernel.org,jaegeuk@kernel.org
+	b=W4b0KZ0maJnLji+w/hX2J4xiAB6CUzbPxZ9JRJLm4l8oLqErahr6GQBzoY9pw6cEs
+	 jAD9UYkf4dgt6VlzQ0GTZQFIEHXB9CDb/tphe4SdeYxlB/UoYOPFC3FfZvn1FBLbva
+	 2kOExnygSkUx67rYpYYX8/8N1Nv5+vg8Ou5lvLxA=
+Subject: FAILED: patch "[PATCH] f2fs: use global inline_xattr_slab instead of per-sb slab" failed to apply to 6.12-stable tree
+To: chao@kernel.org,jaegeuk@kernel.org,yhong@link.cuhk.edu.hk
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 29 Dec 2025 15:00:00 +0100
-Message-ID: <2025122900-cinnamon-repacking-8930@gregkh>
+Date: Mon, 29 Dec 2025 15:00:20 +0100
+Message-ID: <2025122920-cubical-gauze-9ec7@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.12-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x 7c37c79510329cd951a4dedf3f7bf7e2b18dccec
+git cherry-pick -x 1f27ef42bb0b7c0740c5616ec577ec188b8a1d05
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025122900-cinnamon-repacking-8930@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025122920-cubical-gauze-9ec7@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
@@ -75,64 +75,242 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 7c37c79510329cd951a4dedf3f7bf7e2b18dccec Mon Sep 17 00:00:00 2001
+From 1f27ef42bb0b7c0740c5616ec577ec188b8a1d05 Mon Sep 17 00:00:00 2001
 From: Chao Yu <chao@kernel.org>
-Date: Mon, 20 Oct 2025 10:42:12 +0800
-Subject: [PATCH] f2fs: fix to avoid updating zero-sized extent in extent cache
+Date: Tue, 21 Oct 2025 11:48:56 +0800
+Subject: [PATCH] f2fs: use global inline_xattr_slab instead of per-sb slab
+ cache
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-As syzbot reported:
+As Hong Yun reported in mailing list:
 
-F2FS-fs (loop0): __update_extent_tree_range: extent len is zero, type: 0, extent [0, 0, 0], age [0, 0]
+loop7: detected capacity change from 0 to 131072
 ------------[ cut here ]------------
-kernel BUG at fs/f2fs/extent_cache.c:678!
-Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
-CPU: 0 UID: 0 PID: 5336 Comm: syz.0.0 Not tainted syzkaller #0 PREEMPT(full)
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-RIP: 0010:__update_extent_tree_range+0x13bc/0x1500 fs/f2fs/extent_cache.c:678
+kmem_cache of name 'f2fs_xattr_entry-7:7' already exists
+WARNING: CPU: 0 PID: 24426 at mm/slab_common.c:110 kmem_cache_sanity_check mm/slab_common.c:109 [inline]
+WARNING: CPU: 0 PID: 24426 at mm/slab_common.c:110 __kmem_cache_create_args+0xa6/0x320 mm/slab_common.c:307
+CPU: 0 UID: 0 PID: 24426 Comm: syz.7.1370 Not tainted 6.17.0-rc4 #1 PREEMPT(full)
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
+RIP: 0010:kmem_cache_sanity_check mm/slab_common.c:109 [inline]
+RIP: 0010:__kmem_cache_create_args+0xa6/0x320 mm/slab_common.c:307
 Call Trace:
- <TASK>
- f2fs_update_read_extent_cache_range+0x192/0x3e0 fs/f2fs/extent_cache.c:1085
- f2fs_do_zero_range fs/f2fs/file.c:1657 [inline]
- f2fs_zero_range+0x10c1/0x1580 fs/f2fs/file.c:1737
- f2fs_fallocate+0x583/0x990 fs/f2fs/file.c:2030
- vfs_fallocate+0x669/0x7e0 fs/open.c:342
- ioctl_preallocate fs/ioctl.c:289 [inline]
- file_ioctl+0x611/0x780 fs/ioctl.c:-1
- do_vfs_ioctl+0xb33/0x1430 fs/ioctl.c:576
- __do_sys_ioctl fs/ioctl.c:595 [inline]
- __se_sys_ioctl+0x82/0x170 fs/ioctl.c:583
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f07bc58eec9
+ __kmem_cache_create include/linux/slab.h:353 [inline]
+ f2fs_kmem_cache_create fs/f2fs/f2fs.h:2943 [inline]
+ f2fs_init_xattr_caches+0xa5/0xe0 fs/f2fs/xattr.c:843
+ f2fs_fill_super+0x1645/0x2620 fs/f2fs/super.c:4918
+ get_tree_bdev_flags+0x1fb/0x260 fs/super.c:1692
+ vfs_get_tree+0x43/0x140 fs/super.c:1815
+ do_new_mount+0x201/0x550 fs/namespace.c:3808
+ do_mount fs/namespace.c:4136 [inline]
+ __do_sys_mount fs/namespace.c:4347 [inline]
+ __se_sys_mount+0x298/0x2f0 fs/namespace.c:4324
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x8e/0x3a0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
 
-In error path of f2fs_zero_range(), it may add a zero-sized extent
-into extent cache, it should be avoided.
+The bug can be reproduced w/ below scripts:
+- mount /dev/vdb /mnt1
+- mount /dev/vdc /mnt2
+- umount /mnt1
+- mounnt /dev/vdb /mnt1
 
-Fixes: 6e9619499f53 ("f2fs: support in batch fzero in dnode page")
+The reason is if we created two slab caches, named f2fs_xattr_entry-7:3
+and f2fs_xattr_entry-7:7, and they have the same slab size. Actually,
+slab system will only create one slab cache core structure which has
+slab name of "f2fs_xattr_entry-7:3", and two slab caches share the same
+structure and cache address.
+
+So, if we destroy f2fs_xattr_entry-7:3 cache w/ cache address, it will
+decrease reference count of slab cache, rather than release slab cache
+entirely, since there is one more user has referenced the cache.
+
+Then, if we try to create slab cache w/ name "f2fs_xattr_entry-7:3" again,
+slab system will find that there is existed cache which has the same name
+and trigger the warning.
+
+Let's changes to use global inline_xattr_slab instead of per-sb slab cache
+for fixing.
+
+Fixes: a999150f4fe3 ("f2fs: use kmem_cache pool during inline xattr lookups")
 Cc: stable@kernel.org
-Reported-by: syzbot+24124df3170c3638b35f@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-f2fs-devel/68e5d698.050a0220.256323.0032.GAE@google.com
+Reported-by: Hong Yun <yhong@link.cuhk.edu.hk>
+Tested-by: Hong Yun <yhong@link.cuhk.edu.hk>
 Signed-off-by: Chao Yu <chao@kernel.org>
 Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 
-diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
-index ffa045b39c01..c045e38e60ee 100644
---- a/fs/f2fs/file.c
-+++ b/fs/f2fs/file.c
-@@ -1654,8 +1654,11 @@ static int f2fs_do_zero_range(struct dnode_of_data *dn, pgoff_t start,
- 		f2fs_set_data_blkaddr(dn, NEW_ADDR);
+diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
+index e69b01c1173a..9ca2124aac84 100644
+--- a/fs/f2fs/f2fs.h
++++ b/fs/f2fs/f2fs.h
+@@ -1885,9 +1885,6 @@ struct f2fs_sb_info {
+ 	spinlock_t error_lock;			/* protect errors/stop_reason array */
+ 	bool error_dirty;			/* errors of sb is dirty */
+ 
+-	struct kmem_cache *inline_xattr_slab;	/* inline xattr entry */
+-	unsigned int inline_xattr_slab_size;	/* default inline xattr slab size */
+-
+ 	/* For reclaimed segs statistics per each GC mode */
+ 	unsigned int gc_segment_mode;		/* GC state for reclaimed segments */
+ 	unsigned int gc_reclaimed_segs[MAX_GC_MODE];	/* Reclaimed segs for each mode */
+diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
+index d0b5791a1f8c..f76ba2b08be0 100644
+--- a/fs/f2fs/super.c
++++ b/fs/f2fs/super.c
+@@ -2027,7 +2027,6 @@ static void f2fs_put_super(struct super_block *sb)
+ 	kfree(sbi->raw_super);
+ 
+ 	f2fs_destroy_page_array_cache(sbi);
+-	f2fs_destroy_xattr_caches(sbi);
+ #ifdef CONFIG_QUOTA
+ 	for (i = 0; i < MAXQUOTAS; i++)
+ 		kfree(F2FS_OPTION(sbi).s_qf_names[i]);
+@@ -4975,13 +4974,9 @@ static int f2fs_fill_super(struct super_block *sb, struct fs_context *fc)
+ 	if (err)
+ 		goto free_iostat;
+ 
+-	/* init per sbi slab cache */
+-	err = f2fs_init_xattr_caches(sbi);
+-	if (err)
+-		goto free_percpu;
+ 	err = f2fs_init_page_array_cache(sbi);
+ 	if (err)
+-		goto free_xattr_cache;
++		goto free_percpu;
+ 
+ 	/* get an inode for meta space */
+ 	sbi->meta_inode = f2fs_iget(sb, F2FS_META_INO(sbi));
+@@ -5310,8 +5305,6 @@ static int f2fs_fill_super(struct super_block *sb, struct fs_context *fc)
+ 	sbi->meta_inode = NULL;
+ free_page_array_cache:
+ 	f2fs_destroy_page_array_cache(sbi);
+-free_xattr_cache:
+-	f2fs_destroy_xattr_caches(sbi);
+ free_percpu:
+ 	destroy_percpu_info(sbi);
+ free_iostat:
+@@ -5514,10 +5507,15 @@ static int __init init_f2fs_fs(void)
+ 	err = f2fs_create_casefold_cache();
+ 	if (err)
+ 		goto free_compress_cache;
+-	err = register_filesystem(&f2fs_fs_type);
++	err = f2fs_init_xattr_cache();
+ 	if (err)
+ 		goto free_casefold_cache;
++	err = register_filesystem(&f2fs_fs_type);
++	if (err)
++		goto free_xattr_cache;
+ 	return 0;
++free_xattr_cache:
++	f2fs_destroy_xattr_cache();
+ free_casefold_cache:
+ 	f2fs_destroy_casefold_cache();
+ free_compress_cache:
+@@ -5558,6 +5556,7 @@ static int __init init_f2fs_fs(void)
+ static void __exit exit_f2fs_fs(void)
+ {
+ 	unregister_filesystem(&f2fs_fs_type);
++	f2fs_destroy_xattr_cache();
+ 	f2fs_destroy_casefold_cache();
+ 	f2fs_destroy_compress_cache();
+ 	f2fs_destroy_compress_mempool();
+diff --git a/fs/f2fs/xattr.c b/fs/f2fs/xattr.c
+index 58632a2b6613..b4e5c406632f 100644
+--- a/fs/f2fs/xattr.c
++++ b/fs/f2fs/xattr.c
+@@ -23,11 +23,12 @@
+ #include "xattr.h"
+ #include "segment.h"
+ 
++static struct kmem_cache *inline_xattr_slab;
+ static void *xattr_alloc(struct f2fs_sb_info *sbi, int size, bool *is_inline)
+ {
+-	if (likely(size == sbi->inline_xattr_slab_size)) {
++	if (likely(size == DEFAULT_XATTR_SLAB_SIZE)) {
+ 		*is_inline = true;
+-		return f2fs_kmem_cache_alloc(sbi->inline_xattr_slab,
++		return f2fs_kmem_cache_alloc(inline_xattr_slab,
+ 					GFP_F2FS_ZERO, false, sbi);
  	}
- 
--	f2fs_update_read_extent_cache_range(dn, start, 0, index - start);
--	f2fs_update_age_extent_cache_range(dn, start, index - start);
-+	if (index > start) {
-+		f2fs_update_read_extent_cache_range(dn, start, 0,
-+							index - start);
-+		f2fs_update_age_extent_cache_range(dn, start, index - start);
-+	}
- 
- 	return ret;
+ 	*is_inline = false;
+@@ -38,7 +39,7 @@ static void xattr_free(struct f2fs_sb_info *sbi, void *xattr_addr,
+ 							bool is_inline)
+ {
+ 	if (is_inline)
+-		kmem_cache_free(sbi->inline_xattr_slab, xattr_addr);
++		kmem_cache_free(inline_xattr_slab, xattr_addr);
+ 	else
+ 		kfree(xattr_addr);
  }
+@@ -830,25 +831,14 @@ int f2fs_setxattr(struct inode *inode, int index, const char *name,
+ 	return err;
+ }
+ 
+-int f2fs_init_xattr_caches(struct f2fs_sb_info *sbi)
++int __init f2fs_init_xattr_cache(void)
+ {
+-	dev_t dev = sbi->sb->s_bdev->bd_dev;
+-	char slab_name[32];
+-
+-	sprintf(slab_name, "f2fs_xattr_entry-%u:%u", MAJOR(dev), MINOR(dev));
+-
+-	sbi->inline_xattr_slab_size = F2FS_OPTION(sbi).inline_xattr_size *
+-					sizeof(__le32) + XATTR_PADDING_SIZE;
+-
+-	sbi->inline_xattr_slab = f2fs_kmem_cache_create(slab_name,
+-					sbi->inline_xattr_slab_size);
+-	if (!sbi->inline_xattr_slab)
+-		return -ENOMEM;
+-
+-	return 0;
++	inline_xattr_slab = f2fs_kmem_cache_create("f2fs_xattr_entry",
++					DEFAULT_XATTR_SLAB_SIZE);
++	return inline_xattr_slab ? 0 : -ENOMEM;
+ }
+ 
+-void f2fs_destroy_xattr_caches(struct f2fs_sb_info *sbi)
++void f2fs_destroy_xattr_cache(void)
+ {
+-	kmem_cache_destroy(sbi->inline_xattr_slab);
+-}
++	kmem_cache_destroy(inline_xattr_slab);
++}
+\ No newline at end of file
+diff --git a/fs/f2fs/xattr.h b/fs/f2fs/xattr.h
+index 4fc0b2305fbd..bce3d93e4755 100644
+--- a/fs/f2fs/xattr.h
++++ b/fs/f2fs/xattr.h
+@@ -89,6 +89,8 @@ struct f2fs_xattr_entry {
+ 			F2FS_TOTAL_EXTRA_ATTR_SIZE / sizeof(__le32) -	\
+ 			DEF_INLINE_RESERVED_SIZE -			\
+ 			MIN_INLINE_DENTRY_SIZE / sizeof(__le32))
++#define DEFAULT_XATTR_SLAB_SIZE	(DEFAULT_INLINE_XATTR_ADDRS *		\
++				sizeof(__le32) + XATTR_PADDING_SIZE)
+ 
+ /*
+  * On-disk structure of f2fs_xattr
+@@ -132,8 +134,8 @@ int f2fs_setxattr(struct inode *, int, const char *, const void *,
+ int f2fs_getxattr(struct inode *, int, const char *, void *,
+ 		size_t, struct folio *);
+ ssize_t f2fs_listxattr(struct dentry *, char *, size_t);
+-int f2fs_init_xattr_caches(struct f2fs_sb_info *);
+-void f2fs_destroy_xattr_caches(struct f2fs_sb_info *);
++int __init f2fs_init_xattr_cache(void);
++void f2fs_destroy_xattr_cache(void);
+ #else
+ 
+ #define f2fs_xattr_handlers	NULL
+@@ -150,8 +152,8 @@ static inline int f2fs_getxattr(struct inode *inode, int index,
+ {
+ 	return -EOPNOTSUPP;
+ }
+-static inline int f2fs_init_xattr_caches(struct f2fs_sb_info *sbi) { return 0; }
+-static inline void f2fs_destroy_xattr_caches(struct f2fs_sb_info *sbi) { }
++static inline int __init f2fs_init_xattr_cache(void) { return 0; }
++static inline void f2fs_destroy_xattr_cache(void) { }
+ #endif
+ 
+ #ifdef CONFIG_F2FS_FS_SECURITY
 
 
