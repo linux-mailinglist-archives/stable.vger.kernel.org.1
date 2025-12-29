@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-203554-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203555-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC5F3CE6B77
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 13:36:55 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 818C4CE6CF9
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 14:03:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2FEFB3006618
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 12:36:46 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 798F930024F5
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 13:03:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25A4930FF36;
-	Mon, 29 Dec 2025 12:36:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EE6C1E9915;
+	Mon, 29 Dec 2025 13:03:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WaIXlm6A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zYtOd68c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D912830FC3F
-	for <stable@vger.kernel.org>; Mon, 29 Dec 2025 12:36:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D9F81DE8BF
+	for <stable@vger.kernel.org>; Mon, 29 Dec 2025 13:03:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767011804; cv=none; b=c455N7CnMqwvwNVg94Repdya+lZV5HGnQJiN27plyXWwsGemFgy0HPlKScH6LJulhyviHNV7TkTMFyfWOOMGnnFH1LG3kgJhdKKoo4RDlVxC82SVopQsTaN23Q3fcVrr/HcaXexA+6ga+XRYblmHUTphhuXMZ+PqPi/xM81E3hw=
+	t=1767013435; cv=none; b=mj708hSs0WvmLLzIMRzxtoXgyUs1asm8yUbHd6LIZOkiu5VFwAicXPP/4KGP2v0IgEsRUR/ebU7Djs7JkOKz47VaGLRyj1moO4aXuzfbBRLvBC8zC0eQ3Lj3qXbaqMVwMnnTB9UG1k+LOmtusUWUrtXihN/1k5A9bUHt3ZTmumk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767011804; c=relaxed/simple;
-	bh=2mjdDSJ7JBCW86+YtwNtWyhDVCtBMFQfcVNajhRnOYI=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=p/tJZ58PLR8hdtHnhy/2fftg5DJumf9BorwZK+g01ZX96+9zhaBEsatl9tC/Pch3lPYoSSMXuTlXHTXebwlLakGl8TiRGGBiSDU0Q6YnMAjQMgTaYYxzLRfnxpwC8jhW46pUJHQrYo6zhMbmy77eF6iNFJZIhkM7aJWmxgS/OLY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WaIXlm6A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57AF8C4CEF7;
-	Mon, 29 Dec 2025 12:36:44 +0000 (UTC)
+	s=arc-20240116; t=1767013435; c=relaxed/simple;
+	bh=7T8ofw5fOnrrIODClPxnCTznSUXRQGs/9FRftwGGdds=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=o1XKVtLktv5f2cmpsJPwEgT/eGyRpHDH9xtYzl3fujzrLTNe5pUl/ctsg2pfBD9B1Bvw/s9BNBqYAVkoD2p0nO72JRuPSxs820WQA6kEo+CwINHXDp5yCOaYQtD3AA+jDxfyOx/DqN6kGh9AsgjvwPXGOj+KX7YokE0b+LwGR5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zYtOd68c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6111CC116C6;
+	Mon, 29 Dec 2025 13:03:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767011804;
-	bh=2mjdDSJ7JBCW86+YtwNtWyhDVCtBMFQfcVNajhRnOYI=;
+	s=korg; t=1767013434;
+	bh=7T8ofw5fOnrrIODClPxnCTznSUXRQGs/9FRftwGGdds=;
 	h=Subject:To:Cc:From:Date:From;
-	b=WaIXlm6ALQvvBxGP2Vt7oPsoZV1f5P+VRbfX2JW9zDieQgWK5mQ//gOJhM/hfNfsR
-	 PDbE4OM9tO2Mp7tNJrgUtpeCIXQfQXoFVIpjnwu0lSIyAGIOhOneVGMxJxGdo1GO8d
-	 Z69WciAk3tBfsmK0RNpXWYQgRWEsBygdK1EfF0z8=
-Subject: FAILED: patch "[PATCH] mptcp: avoid deadlock on fallback while reinjecting" failed to apply to 6.1-stable tree
+	b=zYtOd68cSovGauzaMXHXAg6GQDvHInZDq6A7RugLOPpxQNYjsegpa9VPqxhbeorm1
+	 ZDGNojiDGsJSRSDYCc7dTMiGuJ/ouenUNqssYv8upoedl+zu4QPNl9PV09FqF9oIvx
+	 awvG1GDmI6lqY4dS8B23uNfwCrJZ50KL+U4tO3U4=
+Subject: FAILED: patch "[PATCH] mptcp: schedule rtx timer only after pushing data" failed to apply to 6.1-stable tree
 To: pabeni@redhat.com,kuba@kernel.org,matttbe@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 29 Dec 2025 13:36:42 +0100
-Message-ID: <2025122942-stonework-habitant-a877@gregkh>
+Date: Mon, 29 Dec 2025 14:03:52 +0100
+Message-ID: <2025122951-slurp-ascent-4d97@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,10 +60,10 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x ffb8c27b0539dd90262d1021488e7817fae57c42
+git cherry-pick -x 2ea6190f42d0416a4310e60a7fcb0b49fcbbd4fb
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025122942-stonework-habitant-a877@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025122951-slurp-ascent-4d97@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -75,109 +75,70 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From ffb8c27b0539dd90262d1021488e7817fae57c42 Mon Sep 17 00:00:00 2001
+From 2ea6190f42d0416a4310e60a7fcb0b49fcbbd4fb Mon Sep 17 00:00:00 2001
 From: Paolo Abeni <pabeni@redhat.com>
-Date: Fri, 5 Dec 2025 19:55:17 +0100
-Subject: [PATCH] mptcp: avoid deadlock on fallback while reinjecting
+Date: Fri, 5 Dec 2025 19:55:16 +0100
+Subject: [PATCH] mptcp: schedule rtx timer only after pushing data
 
-Jakub reported an MPTCP deadlock at fallback time:
+The MPTCP protocol usually schedule the retransmission timer only
+when there is some chances for such retransmissions to happen.
 
- WARNING: possible recursive locking detected
- 6.18.0-rc7-virtme #1 Not tainted
- --------------------------------------------
- mptcp_connect/20858 is trying to acquire lock:
- ff1100001da18b60 (&msk->fallback_lock){+.-.}-{3:3}, at: __mptcp_try_fallback+0xd8/0x280
+With a notable exception: __mptcp_push_pending() currently schedule
+such timer unconditionally, potentially leading to unnecessary rtx
+timer expiration.
 
- but task is already holding lock:
- ff1100001da18b60 (&msk->fallback_lock){+.-.}-{3:3}, at: __mptcp_retrans+0x352/0xaa0
+The issue is present since the blamed commit below but become easily
+reproducible after commit 27b0e701d387 ("mptcp: drop bogus optimization
+in __mptcp_check_push()")
 
- other info that might help us debug this:
-  Possible unsafe locking scenario:
-
-        CPU0
-        ----
-   lock(&msk->fallback_lock);
-   lock(&msk->fallback_lock);
-
-  *** DEADLOCK ***
-
-  May be due to missing lock nesting notation
-
- 3 locks held by mptcp_connect/20858:
-  #0: ff1100001da18290 (sk_lock-AF_INET){+.+.}-{0:0}, at: mptcp_sendmsg+0x114/0x1bc0
-  #1: ff1100001db40fd0 (k-sk_lock-AF_INET#2){+.+.}-{0:0}, at: __mptcp_retrans+0x2cb/0xaa0
-  #2: ff1100001da18b60 (&msk->fallback_lock){+.-.}-{3:3}, at: __mptcp_retrans+0x352/0xaa0
-
- stack backtrace:
- CPU: 0 UID: 0 PID: 20858 Comm: mptcp_connect Not tainted 6.18.0-rc7-virtme #1 PREEMPT(full)
- Hardware name: Bochs, BIOS Bochs 01/01/2011
- Call Trace:
-  <TASK>
-  dump_stack_lvl+0x6f/0xa0
-  print_deadlock_bug.cold+0xc0/0xcd
-  validate_chain+0x2ff/0x5f0
-  __lock_acquire+0x34c/0x740
-  lock_acquire.part.0+0xbc/0x260
-  _raw_spin_lock_bh+0x38/0x50
-  __mptcp_try_fallback+0xd8/0x280
-  mptcp_sendmsg_frag+0x16c2/0x3050
-  __mptcp_retrans+0x421/0xaa0
-  mptcp_release_cb+0x5aa/0xa70
-  release_sock+0xab/0x1d0
-  mptcp_sendmsg+0xd5b/0x1bc0
-  sock_write_iter+0x281/0x4d0
-  new_sync_write+0x3c5/0x6f0
-  vfs_write+0x65e/0xbb0
-  ksys_write+0x17e/0x200
-  do_syscall_64+0xbb/0xfd0
-  entry_SYSCALL_64_after_hwframe+0x4b/0x53
- RIP: 0033:0x7fa5627cbc5e
- Code: 4d 89 d8 e8 14 bd 00 00 4c 8b 5d f8 41 8b 93 08 03 00 00 59 5e 48 83 f8 fc 74 11 c9 c3 0f 1f 80 00 00 00 00 48 8b 45 10 0f 05 <c9> c3 83 e2 39 83 fa 08 75 e7 e8 13 ff ff ff 0f 1f 00 f3 0f 1e fa
- RSP: 002b:00007fff1fe14700 EFLAGS: 00000202 ORIG_RAX: 0000000000000001
- RAX: ffffffffffffffda RBX: 0000000000000005 RCX: 00007fa5627cbc5e
- RDX: 0000000000001f9c RSI: 00007fff1fe16984 RDI: 0000000000000005
- RBP: 00007fff1fe14710 R08: 0000000000000000 R09: 0000000000000000
- R10: 0000000000000000 R11: 0000000000000202 R12: 00007fff1fe16920
- R13: 0000000000002000 R14: 0000000000001f9c R15: 0000000000001f9c
-
-The packet scheduler could attempt a reinjection after receiving an
-MP_FAIL and before the infinite map has been transmitted, causing a
-deadlock since MPTCP needs to do the reinjection atomically from WRT
-fallback.
-
-Address the issue explicitly avoiding the reinjection in the critical
-scenario. Note that this is the only fallback critical section that
-could potentially send packets and hit the double-lock.
-
-Reported-by: Jakub Kicinski <kuba@kernel.org>
-Closes: https://netdev-ctrl.bots.linux.dev/logs/vmksft/mptcp-dbg/results/412720/1-mptcp-join-sh/stderr
-Fixes: f8a1d9b18c5e ("mptcp: make fallback action and fallback decision atomic")
+Fixes: 33d41c9cd74c ("mptcp: more accurate timeout")
 Cc: stable@vger.kernel.org
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20251205-net-mptcp-misc-fixes-6-19-rc1-v1-4-9e4781a6c1b8@kernel.org
+Link: https://patch.msgid.link/20251205-net-mptcp-misc-fixes-6-19-rc1-v1-3-9e4781a6c1b8@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 
 diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index d8a7f7029164..9b1fafd87cb9 100644
+index e212c1374bd0..d8a7f7029164 100644
 --- a/net/mptcp/protocol.c
 +++ b/net/mptcp/protocol.c
-@@ -2769,10 +2769,13 @@ static void __mptcp_retrans(struct sock *sk)
+@@ -1623,7 +1623,7 @@ void __mptcp_push_pending(struct sock *sk, unsigned int flags)
+ 	struct mptcp_sendmsg_info info = {
+ 				.flags = flags,
+ 	};
+-	bool do_check_data_fin = false;
++	bool copied = false;
+ 	int push_count = 1;
  
- 			/*
- 			 * make the whole retrans decision, xmit, disallow
--			 * fallback atomic
-+			 * fallback atomic, note that we can't retrans even
-+			 * when an infinite fallback is in progress, i.e. new
-+			 * subflows are disallowed.
- 			 */
- 			spin_lock_bh(&msk->fallback_lock);
--			if (__mptcp_check_fallback(msk)) {
-+			if (__mptcp_check_fallback(msk) ||
-+			    !msk->allow_subflows) {
- 				spin_unlock_bh(&msk->fallback_lock);
- 				release_sock(ssk);
- 				goto clear_scheduled;
+ 	while (mptcp_send_head(sk) && (push_count > 0)) {
+@@ -1665,7 +1665,7 @@ void __mptcp_push_pending(struct sock *sk, unsigned int flags)
+ 						push_count--;
+ 					continue;
+ 				}
+-				do_check_data_fin = true;
++				copied = true;
+ 			}
+ 		}
+ 	}
+@@ -1674,11 +1674,14 @@ void __mptcp_push_pending(struct sock *sk, unsigned int flags)
+ 	if (ssk)
+ 		mptcp_push_release(ssk, &info);
+ 
+-	/* ensure the rtx timer is running */
+-	if (!mptcp_rtx_timer_pending(sk))
+-		mptcp_reset_rtx_timer(sk);
+-	if (do_check_data_fin)
++	/* Avoid scheduling the rtx timer if no data has been pushed; the timer
++	 * will be updated on positive acks by __mptcp_cleanup_una().
++	 */
++	if (copied) {
++		if (!mptcp_rtx_timer_pending(sk))
++			mptcp_reset_rtx_timer(sk);
+ 		mptcp_check_send_data_fin(sk);
++	}
+ }
+ 
+ static void __mptcp_subflow_push_pending(struct sock *sk, struct sock *ssk, bool first)
 
 
