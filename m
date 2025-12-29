@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-203630-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203631-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99D2FCE71BF
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 15:45:59 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A683BCE71AA
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 15:45:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CE94E3067676
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 14:41:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 705CC302A399
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 14:41:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE03932ED5B;
-	Mon, 29 Dec 2025 14:34:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E689532F741;
+	Mon, 29 Dec 2025 14:34:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pWbqOaLg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sz0c2tHE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D01032ED56
-	for <stable@vger.kernel.org>; Mon, 29 Dec 2025 14:34:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A811832ED56
+	for <stable@vger.kernel.org>; Mon, 29 Dec 2025 14:34:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767018889; cv=none; b=UrZ8Zb07xXFyqYjOetmVIhQoMv+NhYJdCzPhF8ehaADNR0RLIvEWG9d3DZur4rh1UibpC1KAlpyOi9b2BUbgDNE8LFwubV2c8JzJJNYy6bH7LHjoXzDeSMzoTa2yAGmlfBbNfWOE7vrhzuc02KWV1GehVccObHuV3Vm0P7b0p2o=
+	t=1767018897; cv=none; b=Io//urGnRCCk+96+XkbnbA4xHVO045fE5WNeANbaPEO5cVhSSbK/fLbMsriaVIQisxLK5PIhX3vvRJ7dJBwzVBVRAuXzrRW6SxaVkwXZMOGJ1HOgEBXc7mKScCxDluv2zOe5NN/KN8u+0h+WkUrRDpgX7MPWMXgHFTkyGu48q+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767018889; c=relaxed/simple;
-	bh=C+kaO+Ep+P1CfDMg3ATKczymjxSzX0ttSH99g6amkwE=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=r0YVdVGDbmugUHwDThjdj644z4+WQtdd3BQOZtSuPLtoQZu1wh30xFC9SqQCP9j71A0ZbmIeQjBBgjaOxG/rgznNhpYWz1fqAMoXl0ec9GNtiOygnqeaH5PVpY/8+neSbzlhYn8FU3RhVpcWpGGw93W2Gi4z7c0wypOZbGTfSIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pWbqOaLg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90494C4CEF7;
-	Mon, 29 Dec 2025 14:34:48 +0000 (UTC)
+	s=arc-20240116; t=1767018897; c=relaxed/simple;
+	bh=DsU3VlwIZ9RP/KcYOKkDs/4sXqyr4JN2uzN6hgiU0O0=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=VFwq7kzWEmWU4WdisRjRpfTs4UwRKDCkMaxMBQr5fDDEDpcDAoGHT4cShZFYueKsgCwXy+WjCo2F+v5aZfvTbwO9oLZ3aGDZ4z+8Ddwqa/ve5u8qcFL9KVB0juQj67UWUN7Yw2BkE6MjxFv9dZL/YqPdfRHNOq+/ygqtWziS19Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sz0c2tHE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5285C4CEF7;
+	Mon, 29 Dec 2025 14:34:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767018889;
-	bh=C+kaO+Ep+P1CfDMg3ATKczymjxSzX0ttSH99g6amkwE=;
+	s=korg; t=1767018897;
+	bh=DsU3VlwIZ9RP/KcYOKkDs/4sXqyr4JN2uzN6hgiU0O0=;
 	h=Subject:To:Cc:From:Date:From;
-	b=pWbqOaLgz9FGnqIbhO5gT6oJi45DAN3cbXDUauvyF71AqUp7a6cLLDWwp+t7jRImo
-	 IcKpcOLtzFIkjyzAjyFla18H4/IAEK8cfqSOO3/BiVMntsrChFs0VcTQNCCYn7H1s2
-	 TI01awNkU1ICJe4qiXOXSx/r0Vcu0nfG48t9WEFo=
-Subject: FAILED: patch "[PATCH] gpiolib: acpi: Add quirk for Dell Precision 7780" failed to apply to 6.12-stable tree
+	b=Sz0c2tHErLnuiZEYZdSi1cYXp41GK9wQgbNbvoZ6BrFbvemK/kh2ML6FBmWMde6Z0
+	 Ge1BeaLe0pY6WJFBna/SAxgUe0FfMYeKLcXP+VzYEkQsQ4VKcUROnWRCBfjk1pKuNo
+	 7qhGJiGiJNytFbocvA690EWsPUnWJZhdHZ+3Ygaw=
+Subject: FAILED: patch "[PATCH] gpiolib: acpi: Add quirk for Dell Precision 7780" failed to apply to 6.6-stable tree
 To: safinaskar@gmail.com,andriy.shevchenko@linux.intel.com,bartosz.golaszewski@oss.qualcomm.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
 Date: Mon, 29 Dec 2025 15:34:46 +0100
-Message-ID: <2025122946-rotunda-passenger-2915@gregkh>
+Message-ID: <2025122946-phonebook-gusty-03ac@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -51,19 +51,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.12-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
 git cherry-pick -x 2d967310c49ed93ac11cef408a55ddf15c3dd52e
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025122946-rotunda-passenger-2915@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025122946-phonebook-gusty-03ac@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
