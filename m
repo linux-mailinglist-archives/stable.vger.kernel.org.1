@@ -1,50 +1,51 @@
-Return-Path: <stable+bounces-203828-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203830-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77165CE76F3
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:25:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B4A87CE76FC
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:25:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6738F301AD19
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:21:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 554963062E28
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:21:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6F0B3314AE;
-	Mon, 29 Dec 2025 16:21:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 288193314A9;
+	Mon, 29 Dec 2025 16:21:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w1cXthin"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HhgTnZxt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64F2233120C;
-	Mon, 29 Dec 2025 16:21:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D530F330B2A;
+	Mon, 29 Dec 2025 16:21:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767025282; cv=none; b=m59Dwqfphm4zNk2YWqo9LyBnVq2I7ZAncgrN1wgrxcda4HfsHOjmyv2IFqV0xHmtOHPg1r/goqVmkiJUF/G5HmhRIWD9B+N2USY1qbz5JiJENox/oDr+e9jecGpJKRZhyBmLDGTPFl/bG5oY/xbaWJ9IdLA++mPdiMnsFU/N/2o=
+	t=1767025287; cv=none; b=DqNN06PMsJc+P832a25yi17WvNEKZd1JX0Y5gRptrx1kmSQwwcbk93CtcoKlm9SlUYHEE2/xr8jAUc5s2+8Xjwi9gjbq/z+as/GagqAQmmgMo8cvpaPInyfcsKS62xfcIh0DhTH9FlnIQpmTRYF+dol/XrYqG87/6z30Ihk3M6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767025282; c=relaxed/simple;
-	bh=gkt4NVLNFnQZjQd/PHUYc+t2CmKsofm6W76Z3eRRLdA=;
+	s=arc-20240116; t=1767025287; c=relaxed/simple;
+	bh=Q24UvHqexRt0vOvrNmFBb779AaHI8ttcJYzei96uy90=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fZF95OexPAjDMIe4OSJaQUSbD8UN7jrpo9Mg1Gy3jnmldR/cnkOmMlkm4B3RlhclBPjHE0w+9Tsz1T+XrPrW6dadHgRqEdlff0rsGsSqv63gy2YOEfR7vDlJn/KbAtVjAne/9ccWTRcCG3dj1fm6FVEI0iB8wbqp2XJDQ6HlKhk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w1cXthin; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E22AEC4CEF7;
-	Mon, 29 Dec 2025 16:21:21 +0000 (UTC)
+	 MIME-Version; b=jpg7oGVXKkIcHcEGLxaX5RtSqr6w/NY0891P4GjHEpbmIswHyXPApFghk9nbL3LvkBHaRRQK+FxvyLfmg9WceilpFl3gCIt3IqfIQdzI+MvraTWbNJiv7upDbiGlVvSiAGVJHxbrhJB6G2/UqQGkICjoPvPmW+Xxyh4n20WNkGE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HhgTnZxt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60A84C4CEF7;
+	Mon, 29 Dec 2025 16:21:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767025282;
-	bh=gkt4NVLNFnQZjQd/PHUYc+t2CmKsofm6W76Z3eRRLdA=;
+	s=korg; t=1767025287;
+	bh=Q24UvHqexRt0vOvrNmFBb779AaHI8ttcJYzei96uy90=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w1cXthinuyGkdiC1bvL8io/KrYXEWNXqJF2VxvgUgu1tPZIxBgrUtvMzdeGw0qoX6
-	 cguOfIXXfIjXIPgkTs6pJi4YhffkefDIliZXn8tT9WQ1PrHfsJsMcX1GHStGlMBjbR
-	 Ql/BnwcAd2NWT+SHXjdnET/tKJ5cmJwH2SPxCvK0=
+	b=HhgTnZxti+2wCjfR5HKLAg4IFDCrk1bS6FLjXfl1BQRj9oecIh+plRRenEIcviw5B
+	 i8ZgKynEoRTJT9YHWRTsLyZl0ulUzsTy4qKqlOrB8VZimxdUlqOVbalujNLWv4o4+f
+	 K0C2ZqAy4wfH77Jh/SDkDM2XrR7A49iF7gLe8iGw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pengjie Zhang <zhangpengjie2@huawei.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.18 158/430] ACPI: CPPC: Fix missing PCC check for guaranteed_perf
-Date: Mon, 29 Dec 2025 17:09:20 +0100
-Message-ID: <20251229160730.175024212@linuxfoundation.org>
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Sverdlin Alexander <alexander.sverdlin@siemens.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.18 159/430] spi: fsl-cpm: Check length parity before switching to 16 bit mode
+Date: Mon, 29 Dec 2025 17:09:21 +0100
+Message-ID: <20251229160730.213992014@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251229160724.139406961@linuxfoundation.org>
 References: <20251229160724.139406961@linuxfoundation.org>
@@ -63,41 +64,47 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Pengjie Zhang <zhangpengjie2@huawei.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-commit 6ea3a44cef28add2d93b1ef119d84886cb1e3c9b upstream.
+commit 1417927df8049a0194933861e9b098669a95c762 upstream.
 
-The current implementation overlooks the 'guaranteed_perf'
-register in this check.
+Commit fc96ec826bce ("spi: fsl-cpm: Use 16 bit mode for large transfers
+with even size") failed to make sure that the size is really even
+before switching to 16 bit mode. Until recently the problem went
+unnoticed because kernfs uses a pre-allocated bounce buffer of size
+PAGE_SIZE for reading EEPROM.
 
-If the Guaranteed Performance register is located in the PCC
-subspace, the function currently attempts to read it without
-acquiring the lock and without sending the CMD_READ doorbell
-to the firmware. This can result in reading stale data.
+But commit 8ad6249c51d0 ("eeprom: at25: convert to spi-mem API")
+introduced an additional dynamically allocated bounce buffer whose size
+is exactly the size of the transfer, leading to a buffer overrun in
+the fsl-cpm driver when that size is odd.
 
-Fixes: 29523f095397 ("ACPI / CPPC: Add support for guaranteed performance")
-Signed-off-by: Pengjie Zhang <zhangpengjie2@huawei.com>
-Cc: 4.20+ <stable@vger.kernel.org> # 4.20+
-[ rjw: Subject and changelog edits ]
-Link: https://patch.msgid.link/20251210132227.1988380-1-zhangpengjie2@huawei.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Add the missing length parity verification and remain in 8 bit mode
+when the length is not even.
+
+Fixes: fc96ec826bce ("spi: fsl-cpm: Use 16 bit mode for large transfers with even size")
+Cc: stable@vger.kernel.org
+Closes: https://lore.kernel.org/all/638496dd-ec60-4e53-bad7-eb657f67d580@csgroup.eu/
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Reviewed-by: Sverdlin Alexander <alexander.sverdlin@siemens.com>
+Link: https://patch.msgid.link/3c4d81c3923c93f95ec56702a454744a4bad3cfc.1763627618.git.christophe.leroy@csgroup.eu
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/cppc_acpi.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/spi/spi-fsl-spi.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/acpi/cppc_acpi.c
-+++ b/drivers/acpi/cppc_acpi.c
-@@ -1366,7 +1366,8 @@ int cppc_get_perf_caps(int cpunum, struc
- 	/* Are any of the regs PCC ?*/
- 	if (CPC_IN_PCC(highest_reg) || CPC_IN_PCC(lowest_reg) ||
- 		CPC_IN_PCC(lowest_non_linear_reg) || CPC_IN_PCC(nominal_reg) ||
--		CPC_IN_PCC(low_freq_reg) || CPC_IN_PCC(nom_freq_reg)) {
-+		CPC_IN_PCC(low_freq_reg) || CPC_IN_PCC(nom_freq_reg) ||
-+		CPC_IN_PCC(guaranteed_reg)) {
- 		if (pcc_ss_id < 0) {
- 			pr_debug("Invalid pcc_ss_id\n");
- 			return -ENODEV;
+--- a/drivers/spi/spi-fsl-spi.c
++++ b/drivers/spi/spi-fsl-spi.c
+@@ -335,7 +335,7 @@ static int fsl_spi_prepare_message(struc
+ 			if (t->bits_per_word == 16 || t->bits_per_word == 32)
+ 				t->bits_per_word = 8; /* pretend its 8 bits */
+ 			if (t->bits_per_word == 8 && t->len >= 256 &&
+-			    (mpc8xxx_spi->flags & SPI_CPM1))
++			    !(t->len & 1) && (mpc8xxx_spi->flags & SPI_CPM1))
+ 				t->bits_per_word = 16;
+ 		}
+ 	}
 
 
 
