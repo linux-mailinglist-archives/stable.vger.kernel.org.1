@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-204044-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204049-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id B295DCE784C
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:32:30 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07BBCCE7AB6
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:44:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1F6B0300F71C
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:32:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A217B3025587
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:32:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B462433343F;
-	Mon, 29 Dec 2025 16:31:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1656333755;
+	Mon, 29 Dec 2025 16:31:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R1j2u1sm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ilOIJ9Ii"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7015233343B;
-	Mon, 29 Dec 2025 16:31:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F25F3314C0;
+	Mon, 29 Dec 2025 16:31:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767025891; cv=none; b=fe4A3KXZRVtNvEnuupeXpMJ0DOF+XfoPG0RuHC6dfrlwfpdmDgcC1SmVxZoyuFZv78QxlW4BDoOtUeFAFSvbf0o881STozFfSTjcvShQ1M43kBNztHbRe2Q1RMDvy3O86cgivu2plmNH7xcSafvEsTiW/NxhMqNoXW4W4fYfGiE=
+	t=1767025905; cv=none; b=CFHhm2BbF4U2xF1SkIdodlb04s7DFF65n7ZG2ySxev3gNpt2rtXqcbfzf1hd/53oUv3qcf4OSi3eciIj+kZRdC8tPnKg0qjbS7kBl8+IYJL43Gc2v99TKLICMF2AfJgLUzqAjh8+RJamQTy2P20TPiP4269N7YfWpbWUeuQG3wU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767025891; c=relaxed/simple;
-	bh=GNhsg9CsVbPm3ErOus944og/LkGag1FPhb+J4cGyD20=;
+	s=arc-20240116; t=1767025905; c=relaxed/simple;
+	bh=uEqpNlfsNuC0h66dxAC3ohI1Notarjol9gSQ2hC9fxc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PIWTeXUb2rbUQXH3EYkggiOVJ2XDYnFHrxZgq7Uch6UFRARMhk8XWyk5PiheqhqVn+/P8wcutCZDgGiuUGs0cpSIyO8n+NMJkoU8diFA6gk6w7YvrMSQ4LxJZXGbb+NhwFAVjsQ5Z2EiHeNerzDeiuNkOMDoCUu1fEjqKe41IPA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R1j2u1sm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D701C16AAE;
-	Mon, 29 Dec 2025 16:31:30 +0000 (UTC)
+	 MIME-Version; b=OsZqrod3H8nxl+aD+px02WI11gWFZufYnqy/tfokpEWfZqs/uGg1xvbSgZ9tbRNoW59o2sVSE7geudAu5gXEYjJK1Iwdxx2C/K7WisVucOQ2ik1dNQ9sS2hyqHx7y5Qg8/1Va0w8XC/xUSsUc1ucJAIGyesQ1QvtfPXRVfGruto=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ilOIJ9Ii; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAEB4C4CEF7;
+	Mon, 29 Dec 2025 16:31:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767025891;
-	bh=GNhsg9CsVbPm3ErOus944og/LkGag1FPhb+J4cGyD20=;
+	s=korg; t=1767025905;
+	bh=uEqpNlfsNuC0h66dxAC3ohI1Notarjol9gSQ2hC9fxc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R1j2u1sm+u8toqqkyUfLyq3lM6yRCssWM8gFjCyVVS/XFVARHyAorWWYWmNFDX68x
-	 ibburjRj5IFOTc7bD4Jzk0wQ0D8AyAWPZuQFjGXCoUPETwizIoH04M2eksydfJnHnu
-	 hK3+uztNWHh26XAMVB4abO1R5UWnIQ4QeXlgwdK4=
+	b=ilOIJ9IimVMfnXe1zV0OpROlslbWQ1KnkVN0sHq+9ozSSUYl7dfCzzFFHUBMyvhX/
+	 ETNl1N2ycwSbUi8TgJJHvy5FB8mHjuRsCk/NGgwuI8sxUUuTi9mY2qeR8Hkt9sYSDU
+	 qyr6Yn0k9EFyx+TaWnmaNOpFnQpc8ge6gVN55mjM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wanpeng Li <wanpengli@tencent.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 6.18 346/430] KVM: Fix last_boosted_vcpu index assignment bug
-Date: Mon, 29 Dec 2025 17:12:28 +0100
-Message-ID: <20251229160737.060779623@linuxfoundation.org>
+	Matteo Rizzo <matteorizzo@google.com>,
+	Jim Mattson <jmattson@google.com>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.18 347/430] KVM: SVM: Mark VMCB_PERM_MAP as dirty on nested VMRUN
+Date: Mon, 29 Dec 2025 17:12:29 +0100
+Message-ID: <20251229160737.096961279@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251229160724.139406961@linuxfoundation.org>
 References: <20251229160724.139406961@linuxfoundation.org>
@@ -64,39 +64,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Wanpeng Li <wanpengli@tencent.com>
+From: Jim Mattson <jmattson@google.com>
 
-commit 32bd348be3fa07b26c5ea6b818a161c142dcc2f2 upstream.
+commit 93c9e107386dbe1243287a5b14ceca894de372b9 upstream.
 
-In kvm_vcpu_on_spin(), the loop counter 'i' is incorrectly written to
-last_boosted_vcpu instead of the actual vCPU index 'idx'. This causes
-last_boosted_vcpu to store the loop iteration count rather than the
-vCPU index, leading to incorrect round-robin behavior in subsequent
-directed yield operations.
+Mark the VMCB_PERM_MAP bit as dirty in nested_vmcb02_prepare_control()
+on every nested VMRUN.
 
-Fix this by using 'idx' instead of 'i' in the assignment.
+If L1 changes MSR interception (INTERCEPT_MSR_PROT) between two VMRUN
+instructions on the same L1 vCPU, the msrpm_base_pa in the associated
+vmcb02 will change, and the VMCB_PERM_MAP clean bit should be cleared.
 
-Signed-off-by: Wanpeng Li <wanpengli@tencent.com>
-Reviewed-by: Sean Christopherson <seanjc@google.com>
-Message-ID: <20251110033232.12538-7-kernellwp@gmail.com>
+Fixes: 4bb170a5430b ("KVM: nSVM: do not mark all VMCB02 fields dirty on nested vmexit")
+Reported-by: Matteo Rizzo <matteorizzo@google.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: Jim Mattson <jmattson@google.com>
+Link: https://lore.kernel.org/r/20250922162935.621409-2-jmattson@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- virt/kvm/kvm_main.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kvm/svm/nested.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -4026,7 +4026,7 @@ void kvm_vcpu_on_spin(struct kvm_vcpu *m
+--- a/arch/x86/kvm/svm/nested.c
++++ b/arch/x86/kvm/svm/nested.c
+@@ -752,6 +752,7 @@ static void nested_vmcb02_prepare_contro
+ 	vmcb02->control.nested_ctl = vmcb01->control.nested_ctl;
+ 	vmcb02->control.iopm_base_pa = vmcb01->control.iopm_base_pa;
+ 	vmcb02->control.msrpm_base_pa = vmcb01->control.msrpm_base_pa;
++	vmcb_mark_dirty(vmcb02, VMCB_PERM_MAP);
  
- 		yielded = kvm_vcpu_yield_to(vcpu);
- 		if (yielded > 0) {
--			WRITE_ONCE(kvm->last_boosted_vcpu, i);
-+			WRITE_ONCE(kvm->last_boosted_vcpu, idx);
- 			break;
- 		} else if (yielded < 0 && !--try) {
- 			break;
+ 	/*
+ 	 * Stash vmcb02's counter if the guest hasn't moved past the guilty
 
 
 
