@@ -1,127 +1,140 @@
-Return-Path: <stable+bounces-203527-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203528-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D14FECE6AB7
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 13:21:32 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 540F8CE6AC3
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 13:22:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 298F13007FF2
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 12:21:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AD8083007C6A
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 12:22:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C5712DA775;
-	Mon, 29 Dec 2025 12:21:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B1F82F5A35;
+	Mon, 29 Dec 2025 12:22:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0BJMoExz"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="N612hSIS"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 428DD2D9EC2
-	for <stable@vger.kernel.org>; Mon, 29 Dec 2025 12:21:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 464522BE634
+	for <stable@vger.kernel.org>; Mon, 29 Dec 2025 12:22:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767010889; cv=none; b=iEE8yKmPzjlMjqhGHo16mtSrmtnuPLThooA+jIbZhSAfoBDklTluWLKkn4zpX/xnPAbAk7ojGPm4Egb+9fxvQVJydIahZZ/I6eLpY5PSsR2t2kS255kcm/UpLS4llat41wCtdXDJPcq5ep0+nOr6jyq6upRsm0tQufN5CM7ys50=
+	t=1767010925; cv=none; b=Mpvsz958OtRQY61g+n5Yf7GN6I+IXhTTd+ip4NxWSHR6BruVRW4vA2bMukPOXbnIouMNGmzipPCQxnGMwV5TTVGfnRm90RKPSedBz/ugakFI4n9tDZzU+dlUY2ce8yUzFzxJeoGZi1MHajzml6KMz5ZjyEPj+7CMourjXVa6hr4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767010889; c=relaxed/simple;
-	bh=bvZPWtH78xTFw0Hg8Tkzsnnxi9M7OqZGUKF6dIsCZ4k=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=dGjzf3kolgxiBo5SoNj/agfRXWrbx9++v9MKBwwprG76C2nP5rHipgYp2mgVTSqI9Iq3lfHkgugbuf9PkPMGXMn1t84FYpH/Z3+Qwfbuh7tuHrsFeltwPY7107VbZ96nfZ1vQwdSvuEN5ONkLHf4nLuTQTva4oo4ePJW2G/kjgg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0BJMoExz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6BD6C116C6;
-	Mon, 29 Dec 2025 12:21:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767010889;
-	bh=bvZPWtH78xTFw0Hg8Tkzsnnxi9M7OqZGUKF6dIsCZ4k=;
-	h=Subject:To:Cc:From:Date:From;
-	b=0BJMoExz7ApQlx+uivIzxk8mB330X+8EYG/NrfW868YNM6eTpbtkPpU50sMrBSAce
-	 dYGcmESFEjgLCJAZUvpGSRlJKBZMh9PLe1exl/7NZkSCpLkkIb1OusBGz12cm5CUct
-	 O1RveYfGtgfjqeeAvp7pk2Z9xdOb/CsqXQXEIev0=
-Subject: FAILED: patch "[PATCH] io_uring/poll: correctly handle io_poll_add() return value on" failed to apply to 6.6-stable tree
-To: axboe@kernel.dk
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 29 Dec 2025 13:21:26 +0100
-Message-ID: <2025122926-disarray-agile-9880@gregkh>
+	s=arc-20240116; t=1767010925; c=relaxed/simple;
+	bh=+AvOBIsE4krpZyP/Ji61+mCd/yiWaRXqTnRPs1WO28Q=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=QEnLIy50LMAjlVEE/6bexJRbolgdYJpFM5YOgS3kTnm1zPPJ2mpYQPtsSsJ8JVoMpUTgxN7TT1yN4utbONy86izvJS/+NuqNlqQQrrjlDdctxggD5WF047j/xQSW3bJlVTzgODZIaAMJR7x/sdInd/jiYokZ/dnPf0+ewBX7OIk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=N612hSIS; arc=none smtp.client-ip=209.85.167.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-5943b62c47dso8610625e87.1
+        for <stable@vger.kernel.org>; Mon, 29 Dec 2025 04:22:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1767010921; x=1767615721; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9QhdQD9sez4u9PrqF7TTQ4EApIGtLGMe+4rm2lt3vjQ=;
+        b=N612hSISdQ4dWpOjBT39HOZT5oEMyHd4Q2tL5VFu5+q6qjNoHcjzZcEE3p/uBJqWF3
+         nAv8xXHmwFUS4CK/KlX+QAZYdnojGTvID8bwbPt5ATKPb6zs42Jnj3Ii8yIF4CY+56Vx
+         ys0tX98wgJIaBsjQ2VmyMn9ojVnm2lidSf2jU=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767010921; x=1767615721;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=9QhdQD9sez4u9PrqF7TTQ4EApIGtLGMe+4rm2lt3vjQ=;
+        b=dPldOB1GcMXVcbJqGjT7reukiqt66AeKRrr9gk/hMEdyruC8GvNDtXD1Gtwwd3r/0m
+         uaZcm/SUBsN4QPix7iF/dkRdcjg3OX7jofa+DJ93OHB/Ei0/bLB6jaLkETAEn4f/NsYJ
+         UVELb5KjbUa7510amnzO012Vjsq2czV8w8VlGBuUFlcF6xEGt6dRfQG6VFqNulOOpftb
+         FHPwQOIcHORbY1oMM1QOHCfELvwitfXxTfmng3WMZY2sX5HkuypBVyAk7TocFUov5Ch+
+         R9jBuMZCWpQDL0IUyz23ZpIbel82EbpyFwXtQ6kj2Zi5WGwZ3rWMuR/EtL2bwtqBrfgg
+         sWxw==
+X-Gm-Message-State: AOJu0YzcLoYeEXFN6IDC+iVTLX+Xh79VaHLHxz1LI5dmj//RvP6hzuGf
+	jeuuog0Zfc8bX9ePTKrK3pf2cTsaumcmpBmcNoi9/O0j2O81bJq9CEJLN5pqIZzK0fuJNM6GMPC
+	KJ0Voar0jUA/ZxEEIZVImOnnE1rHFkE5WzFVv3vh18rZKRCkV8NSO
+X-Gm-Gg: AY/fxX7ZuxoowhxGVf5WA0PfgjLjQuSTTob7jufacVVMi/iSGZuNjFZA0ekBDyvzTxh
+	WGE6F5rU1cHVXy7bhEVxXuHPPVsZ5PXiokU5RLCEaqEwHyLpFY2tMRt6wZTU28WaD4L0oqC5Ef0
+	a9KdBteX+zyrDQ8yQWFd2ADGHERlwx9sSzzlaSdfP3YeKEk+sUpsmzzyHALdx5Kl9NJZSMPnoKV
+	/MTod4BGxXDhCwzOXJGO62uTySBjg8lOhVURgEn2LAvJ9fiAyZvGBfXm7GKxMeWWomPsqluuJbb
+	/eA=
+X-Google-Smtp-Source: AGHT+IHonvcgrl4/HTercFRzTIm1AzMSSRNazJgOgixzZP6/QrEYuJWc1Z75wLVIAAjYWxBnXvezKrrG5633hslKDS4=
+X-Received: by 2002:a05:6512:2241:b0:594:51bd:8fcd with SMTP id
+ 2adb3069b0e04-59a17d0aedbmr11401147e87.16.1767010921341; Mon, 29 Dec 2025
+ 04:22:01 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+References: <2025120110-coastal-litigator-8952@gregkh> <20251208130137.296454-1-sashal@kernel.org>
+In-Reply-To: <20251208130137.296454-1-sashal@kernel.org>
+From: =?UTF-8?Q?=C5=81ukasz_Bartosik?= <ukaszb@chromium.org>
+Date: Mon, 29 Dec 2025 13:21:50 +0100
+X-Gm-Features: AQt7F2pg8N6QRtKjtThB7OLHxF65pmwu0-R1l9859NxTUnVM9aqZ4q-YIAOO9Kg
+Message-ID: <CALwA+NbCx000Cw8tJWMsP4WnM5-ZNWrGnAt3hHwjLDEAsagezg@mail.gmail.com>
+Subject: Re: [PATCH 5.10.y] xhci: dbgtty: fix device unregister
+To: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org, stable <stable@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Mon, Dec 8, 2025 at 2:01=E2=80=AFPM Sasha Levin <sashal@kernel.org> wrot=
+e:
+>
+> From: =C5=81ukasz Bartosik <ukaszb@chromium.org>
+>
+> [ Upstream commit 1f73b8b56cf35de29a433aee7bfff26cea98be3f ]
+>
+> When DbC is disconnected then xhci_dbc_tty_unregister_device()
+> is called. However if there is any user space process blocked
+> on write to DbC terminal device then it will never be signalled
+> and thus stay blocked indifinitely.
+>
+> This fix adds a tty_vhangup() call in xhci_dbc_tty_unregister_device().
+> The tty_vhangup() wakes up any blocked writers and causes subsequent
+> write attempts to DbC terminal device to fail.
+>
+> Cc: stable <stable@kernel.org>
+> Fixes: dfba2174dc42 ("usb: xhci: Add DbC support in xHCI driver")
+> Signed-off-by: =C5=81ukasz Bartosik <ukaszb@chromium.org>
+> Link: https://patch.msgid.link/20251119212910.1245694-1-ukaszb@google.com
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> [ Adjust context ]
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+>  drivers/usb/host/xhci-dbgtty.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
+>
+> diff --git a/drivers/usb/host/xhci-dbgtty.c b/drivers/usb/host/xhci-dbgtt=
+y.c
+> index 980235169d811..d03eea7beeca0 100644
+> --- a/drivers/usb/host/xhci-dbgtty.c
+> +++ b/drivers/usb/host/xhci-dbgtty.c
+> @@ -468,6 +468,12 @@ static void xhci_dbc_tty_unregister_device(struct xh=
+ci_dbc *dbc)
+>
+>         if (!port->registered)
+>                 return;
+> +       /*
+> +        * Hang up the TTY. This wakes up any blocked
+> +        * writers and causes subsequent writes to fail.
+> +        */
+> +       tty_vhangup(port->port.tty);
+> +
+>         tty_unregister_device(dbc_tty_driver, 0);
+>         xhci_dbc_tty_exit_port(port);
+>         port->registered =3D false;
+> --
+> 2.51.0
+>
 
-The patch below does not apply to the 6.6-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Thank you very much Sasha for resolving the conflict for me.
 
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
-git checkout FETCH_HEAD
-git cherry-pick -x 84230ad2d2afbf0c44c32967e525c0ad92e26b4e
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025122926-disarray-agile-9880@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
-
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 84230ad2d2afbf0c44c32967e525c0ad92e26b4e Mon Sep 17 00:00:00 2001
-From: Jens Axboe <axboe@kernel.dk>
-Date: Mon, 1 Dec 2025 13:25:22 -0700
-Subject: [PATCH] io_uring/poll: correctly handle io_poll_add() return value on
- update
-
-When the core of io_uring was updated to handle completions
-consistently and with fixed return codes, the POLL_REMOVE opcode
-with updates got slightly broken. If a POLL_ADD is pending and
-then POLL_REMOVE is used to update the events of that request, if that
-update causes the POLL_ADD to now trigger, then that completion is lost
-and a CQE is never posted.
-
-Additionally, ensure that if an update does cause an existing POLL_ADD
-to complete, that the completion value isn't always overwritten with
--ECANCELED. For that case, whatever io_poll_add() set the value to
-should just be retained.
-
-Cc: stable@vger.kernel.org
-Fixes: 97b388d70b53 ("io_uring: handle completions in the core")
-Reported-by: syzbot+641eec6b7af1f62f2b99@syzkaller.appspotmail.com
-Tested-by: syzbot+641eec6b7af1f62f2b99@syzkaller.appspotmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-
-diff --git a/io_uring/poll.c b/io_uring/poll.c
-index 8aa4e3a31e73..3f1d716dcfab 100644
---- a/io_uring/poll.c
-+++ b/io_uring/poll.c
-@@ -937,12 +937,17 @@ int io_poll_remove(struct io_kiocb *req, unsigned int issue_flags)
- 
- 		ret2 = io_poll_add(preq, issue_flags & ~IO_URING_F_UNLOCKED);
- 		/* successfully updated, don't complete poll request */
--		if (!ret2 || ret2 == -EIOCBQUEUED)
-+		if (ret2 == IOU_ISSUE_SKIP_COMPLETE)
- 			goto out;
-+		/* request completed as part of the update, complete it */
-+		else if (ret2 == IOU_COMPLETE)
-+			goto complete;
- 	}
- 
--	req_set_fail(preq);
- 	io_req_set_res(preq, -ECANCELED, 0);
-+complete:
-+	if (preq->cqe.res < 0)
-+		req_set_fail(preq);
- 	preq->io_task_work.func = io_req_task_complete;
- 	io_req_task_work_add(preq);
- out:
-
+Regards,
+=C5=81ukasz
 
