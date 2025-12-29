@@ -1,53 +1,50 @@
-Return-Path: <stable+bounces-203971-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203973-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82E4ACE7A32
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:41:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 820D3CE7A35
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:41:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D04DC303DD04
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:28:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 33188302D2B7
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:28:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B59FD33064C;
-	Mon, 29 Dec 2025 16:28:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DECC32F77B;
+	Mon, 29 Dec 2025 16:28:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tfsXT9Mm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eteaHKYd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 500563191AC;
-	Mon, 29 Dec 2025 16:28:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B40B347C6;
+	Mon, 29 Dec 2025 16:28:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767025687; cv=none; b=YWtwlV2u1IILQGYeF6llzkFztRSdy5ErgX008ks7vqYLq6jBlV6TdL3pN6RrEjm2evflsz2pNQEl7gnlKX3uXZKOd+hu26mElrvNiz12rP977N4EofBAQ0/HBfsSfhjLyH0AyRtx4zZqC2MX+YbQMJqBkwef/Q+VhCHcIBnYxL0=
+	t=1767025693; cv=none; b=dOnK2vpLX8UiQlZQrBqFcj9tuoCH+V6hNiX+XrhwRkcmfb4eypCEv6nzO4ZadzAhVDJVqk0/vkF1iohe7w9BoYyxbGveZGccbbNCFOctMIsPSJLO0rQZ1aJwKBzETEwtUaeWZcF9chossDWXy3kWSw6tNSMsQjn1PRVr4dspJVE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767025687; c=relaxed/simple;
-	bh=UXgVkuGW93uykhIjngBvG8xl5qh2V0mnBb8DXFs6jPE=;
+	s=arc-20240116; t=1767025693; c=relaxed/simple;
+	bh=7TutfBuyZBbzkEFVc4uwKBt1F1x8pnZnpI108fEqhoc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h67RJGeMDFhXteh69GIolrPQ/VP7G66AHkYageAecYkg/eba6ZHjr5Q0QXPoQWB96w5m+DTMTaz6EqcDDw/EnJMmyIoLYlxGtzjrWqh4wZClkbkXRU5FsDH/QjDYz8GOMKSmgJIUy1ajYtQ4SKuELqJBG95DXBT+TS68Uucd1kk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tfsXT9Mm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D11D6C4CEF7;
-	Mon, 29 Dec 2025 16:28:06 +0000 (UTC)
+	 MIME-Version; b=Me0tEmPmpYgBZ8+dykbF1fJVPbOT0CKraINYav9Y0acu63uqJGHvQYBbeKtd4CVBXqtVHs+jjaz+xk/HuAJpl9ikP12ThZgqrhyBqImEBymE1TPzWiM0bLubtUVz8DyXDy82ZuMOEe20b8/IpCuGBhZY3/4w6D/EUOv1Wv1/ucI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eteaHKYd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89A32C4CEF7;
+	Mon, 29 Dec 2025 16:28:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767025687;
-	bh=UXgVkuGW93uykhIjngBvG8xl5qh2V0mnBb8DXFs6jPE=;
+	s=korg; t=1767025692;
+	bh=7TutfBuyZBbzkEFVc4uwKBt1F1x8pnZnpI108fEqhoc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tfsXT9MmlopxRk+1mqAtAlQC9tUr6qyZqE1zB/z1wtbtrC6kFT07yqJlfyNLaZkBu
-	 6C+s8MX0nutS0TMwYNiaZGBZlEtsi2DcRgl8M+nKUgh/uM8lo5y8i+bMOUZoPVB0mb
-	 flx9t8VgU8xxBNM+jhUOR/FoAAeS8z5uBko0UjN8=
+	b=eteaHKYdWABIeWSHrGAiVHAlMYAayXU1k0vMw7aXqWeX1amouZGVS1rqzMAFiqvs5
+	 EgmwJtken1Cwtk/tLBlgHPJC8boXQUN/Juh56KHlZrOWOUOT+vPcYEdHXBpNPfrmhy
+	 uyFRpg49MnT7eavYHwG8NR08GSbpXIrWDKMmwHpo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	stable <stable@kernel.org>,
-	Cosmin Tanislav <demonsingur@gmail.com>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Michael Walle <mwalle@kernel.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>
-Subject: [PATCH 6.18 301/430] serial: core: Fix serial device initialization
-Date: Mon, 29 Dec 2025 17:11:43 +0100
-Message-ID: <20251229160735.413665140@linuxfoundation.org>
+	Jakub Turek <jakub.turek@elsta.tech>
+Subject: [PATCH 6.18 302/430] serial: xilinx_uartps: fix rs485 delay_rts_after_send
+Date: Mon, 29 Dec 2025 17:11:44 +0100
+Message-ID: <20251229160735.449722786@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251229160724.139406961@linuxfoundation.org>
 References: <20251229160724.139406961@linuxfoundation.org>
@@ -66,37 +63,64 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
+From: j.turek <jakub.turek@elsta.tech>
 
-commit f54151148b969fb4b62bec8093d255306d20df30 upstream.
+commit 267ee93c417e685d9f8e079e41c70ba6ee4df5a5 upstream.
 
-During restoring sysfs fwnode information the information of_node_reused
-was dropped. This was previously set by device_set_of_node_from_dev().
-Add it back manually
+RTS line control with delay should be triggered when there is no more
+bytes in kfifo and hardware buffer is empty. Without this patch RTS
+control is scheduled right after feeding hardware buffer and this is too
+early.
 
-Fixes: 24ec03cc5512 ("serial: core: Restore sysfs fwnode information")
+RTS line may change state before hardware buffer is empty.
+
+With this patch delayed RTS state change is triggered when function
+cdns_uart_handle_tx is called from cdns_uart_isr on
+CDNS_UART_IXR_TXEMPTY exactly when hardware completed transmission
+
+Fixes: fccc9d9233f9 ("tty: serial: uartps: Add rs485 support to uartps driver")
 Cc: stable <stable@kernel.org>
-Suggested-by: Cosmin Tanislav <demonsingur@gmail.com>
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Tested-by: Michael Walle <mwalle@kernel.org>
-Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Tested-by: Cosmin Tanislav <demonsingur@gmail.com>
-Link: https://patch.msgid.link/20251219152813.1893982-1-alexander.stein@ew.tq-group.com
+Link: https://patch.msgid.link/20251221103221.1971125-1-jakub.turek@elsta.tech
+Signed-off-by: Jakub Turek  <jakub.turek@elsta.tech>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/serial_base_bus.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/tty/serial/xilinx_uartps.c |   14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
---- a/drivers/tty/serial/serial_base_bus.c
-+++ b/drivers/tty/serial/serial_base_bus.c
-@@ -74,6 +74,7 @@ static int serial_base_device_init(struc
- 	dev->parent = parent_dev;
- 	dev->bus = &serial_base_bus_type;
- 	dev->release = release;
-+	dev->of_node_reused = true;
+--- a/drivers/tty/serial/xilinx_uartps.c
++++ b/drivers/tty/serial/xilinx_uartps.c
+@@ -430,10 +430,17 @@ static void cdns_uart_handle_tx(void *de
+ 	struct tty_port *tport = &port->state->port;
+ 	unsigned int numbytes;
+ 	unsigned char ch;
++	ktime_t rts_delay;
  
- 	device_set_node(dev, fwnode_handle_get(dev_fwnode(parent_dev)));
+ 	if (kfifo_is_empty(&tport->xmit_fifo) || uart_tx_stopped(port)) {
+ 		/* Disable the TX Empty interrupt */
+ 		writel(CDNS_UART_IXR_TXEMPTY, port->membase + CDNS_UART_IDR);
++		/* Set RTS line after delay */
++		if (cdns_uart->port->rs485.flags & SER_RS485_ENABLED) {
++			cdns_uart->tx_timer.function = &cdns_rs485_rx_callback;
++			rts_delay = ns_to_ktime(cdns_calc_after_tx_delay(cdns_uart));
++			hrtimer_start(&cdns_uart->tx_timer, rts_delay, HRTIMER_MODE_REL);
++		}
+ 		return;
+ 	}
  
+@@ -450,13 +457,6 @@ static void cdns_uart_handle_tx(void *de
+ 
+ 	/* Enable the TX Empty interrupt */
+ 	writel(CDNS_UART_IXR_TXEMPTY, cdns_uart->port->membase + CDNS_UART_IER);
+-
+-	if (cdns_uart->port->rs485.flags & SER_RS485_ENABLED &&
+-	    (kfifo_is_empty(&tport->xmit_fifo) || uart_tx_stopped(port))) {
+-		hrtimer_update_function(&cdns_uart->tx_timer, cdns_rs485_rx_callback);
+-		hrtimer_start(&cdns_uart->tx_timer,
+-			      ns_to_ktime(cdns_calc_after_tx_delay(cdns_uart)), HRTIMER_MODE_REL);
+-	}
+ }
+ 
+ /**
 
 
 
