@@ -1,51 +1,58 @@
-Return-Path: <stable+bounces-203471-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203472-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48E6CCE62B6
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 08:53:44 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CC0FCE62E6
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 08:54:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0BBEB30053E5
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 07:53:43 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8F7133007282
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 07:53:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ADC326A1B5;
-	Mon, 29 Dec 2025 07:53:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DC592F6582;
+	Mon, 29 Dec 2025 07:53:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="qaR1iYCW"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="iCJz9seD"
 X-Original-To: stable@vger.kernel.org
-Received: from out-187.mta1.migadu.com (out-187.mta1.migadu.com [95.215.58.187])
+Received: from out-174.mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F9091A4F3C
-	for <stable@vger.kernel.org>; Mon, 29 Dec 2025 07:53:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.187
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 440352E7BB6
+	for <stable@vger.kernel.org>; Mon, 29 Dec 2025 07:53:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766994822; cv=none; b=gCtgFf1BZk1dHdet336cZa5HwKEPumNTD15OSh6C0ye9byHmOoINwwaTio7FIdvGKvueQLyDvR1IcL4gvulKxmRwihqNydULCo/TL9TULSTcnaRLfMCtkUOsCfdwKXeBMY2RVeSBMt1euRCFvTXdq2uEetZq4TlYXxkGDq+72e8=
+	t=1766994828; cv=none; b=pKMXM1zAjmdvZhLIaUDsJQq6zH5LUQE5xHME/A3owwAS+bEev5/2zONmo8cL36ZSckOgVhfHcBkRkh1vbJnZHR5RblGTGQFYlFZp30rlLxWKOZZE58SnMfmQSRtTpWe22rE+hpg+zO3KFna+jastOVGaGlafwmkdvrEtVVx6wOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766994822; c=relaxed/simple;
-	bh=1VWzVXsgPj9vHaa4QreuNha982gkYmnazV/B2ritDHY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=MN0I6hL9+k2ciSwIu0SwQR2lw42QHf6MO2pS/6Tahm5GH34zfa6HkdlP0zRgt9YRS3iK4cFLLFPulZCCa0bnoMLxhDlorRbRyKY5NrO+LMkkJV8QznvCcAZeI6RS6g59jxlM7oaBIM+E7IbzuphXkbAV1DGwtM5q6puypdE+o4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=qaR1iYCW; arc=none smtp.client-ip=95.215.58.187
+	s=arc-20240116; t=1766994828; c=relaxed/simple;
+	bh=In7ygRa6yMVlSqp03kpVzYj74vznT1830dk9buqIO28=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=RPQkttU5ls2yv1K7DsP7qwaqaew2Qz8H+Bcvb/PX5ErisVkgxKDwZoMEuTnObDk/bce56meLX1hAuTzEgW6RTP9PSPYtttEPMJcSQty/FpplOd/aQdzhLSc9EYEtZKlTeyDWQHY9bkANHVck6wfX0QRiHK+4N0USA6xRizJiOdg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=iCJz9seD; arc=none smtp.client-ip=95.215.58.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1766994818;
+	t=1766994823;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=2aEiYRTSi0JQw1+rh+RFBJta3Dp/hmtXQMqUQmhArsE=;
-	b=qaR1iYCW1DHuAS667KhsF2oshRznCQtR6D4QC49cQ9DMRJdrrnpchgr8BYv99j+OWR5roq
-	ia9abdRHsR2Awmx1ztzddgqfkgmaM+agvkckDtD78VrRvs3SEKM1aQmVoP3wPg7apQYXpZ
-	Y/w9VERGR4dWbmKGztJBD5uIlrY8dfs=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2ut8b6Uv7ViGKRg+za4xHgifseDFr7+75EmfnpBkeGc=;
+	b=iCJz9seDYbuOnMBUz80CXRlBBhaW2U/ru5jyDsZaxXwQJyuBA4kwSp8FNEPxxSPoLmV5PE
+	+yBlbhOaet+NdAT+VXECut6igAOoZa7Off1CQ17zErGe5HTJAatHYwUTEl8XgsrUuafqIW
+	SNxMrNm8G3fIq4aeFMrbV/Ke9gUwG68=
 From: wen.yang@linux.dev
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc: stable@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Wen Yang <wen.yang@linux.dev>
-Subject: [PATCH 6.6 0/2] fix do_softirq_post_smp_call_flush warnings caused by NET_RX_SOFTIRQ
-Date: Mon, 29 Dec 2025 15:53:15 +0800
-Message-Id: <cover.1766987153.git.wen.yang@linux.dev>
+Subject: [PATCH 6.6 1/2] net: Remove conditional threaded-NAPI wakeup based on task state.
+Date: Mon, 29 Dec 2025 15:53:16 +0800
+Message-Id: <b530eb6ed51ef4ca7940dddd981de2878834fcef.1766987153.git.wen.yang@linux.dev>
+In-Reply-To: <cover.1766987153.git.wen.yang@linux.dev>
+References: <cover.1766987153.git.wen.yang@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -55,27 +62,82 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
 
-From: Wen Yang <wen.yang@linux.dev>
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-do_softirq_post_smp_call_flush() on PREEMPT_RT kernels carries a
-WARN_ON_ONCE() for any SOFTIRQ being raised from an SMP-call-function.
-Since do_softirq_post_smp_call_flush() is called with preempt disabled,
-raising a SOFTIRQ during flush_smp_call_function_queue() can lead to
-longer preempt disabled sections.
+commit 56364c910691f6d10ba88c964c9041b9ab777bd6 upstream.
 
-RPS distributes network processing load across CPUs by enqueuing
-packets on a remote CPU's backlog and raising NET_RX_SOFTIRQ to
-process them.
-    
-The following patches fixes this issue.
+A NAPI thread is scheduled by first setting NAPI_STATE_SCHED bit. If
+successful (the bit was not yet set) then the NAPI_STATE_SCHED_THREADED
+is set but only if thread's state is not TASK_INTERRUPTIBLE (is
+TASK_RUNNING) followed by task wakeup.
 
-Sebastian Andrzej Siewior (2):
-  net: Remove conditional threaded-NAPI wakeup based on task state.
-  net: Allow to use SMP threads for backlog NAPI.
+If the task is idle (TASK_INTERRUPTIBLE) then the
+NAPI_STATE_SCHED_THREADED bit is not set. The thread is no relying on
+the bit but always leaving the wait-loop after returning from schedule()
+because there must have been a wakeup.
 
- net/core/dev.c | 162 +++++++++++++++++++++++++++++++++++--------------
- 1 file changed, 115 insertions(+), 47 deletions(-)
+The smpboot-threads implementation for per-CPU threads requires an
+explicit condition and does not support "if we get out of schedule()
+then there must be something to do".
 
+Removing this optimisation simplifies the following integration.
+
+Set NAPI_STATE_SCHED_THREADED unconditionally on wakeup and rely on it
+in the wait path by removing the `woken' condition.
+
+Acked-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Wen Yang <wen.yang@linux.dev>
+---
+ net/core/dev.c | 14 ++------------
+ 1 file changed, 2 insertions(+), 12 deletions(-)
+
+diff --git a/net/core/dev.c b/net/core/dev.c
+index 2d3e0e4130c2..d62cab2e4878 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -4526,13 +4526,7 @@ static inline void ____napi_schedule(struct softnet_data *sd,
+ 		 */
+ 		thread = READ_ONCE(napi->thread);
+ 		if (thread) {
+-			/* Avoid doing set_bit() if the thread is in
+-			 * INTERRUPTIBLE state, cause napi_thread_wait()
+-			 * makes sure to proceed with napi polling
+-			 * if the thread is explicitly woken from here.
+-			 */
+-			if (READ_ONCE(thread->__state) != TASK_INTERRUPTIBLE)
+-				set_bit(NAPI_STATE_SCHED_THREADED, &napi->state);
++			set_bit(NAPI_STATE_SCHED_THREADED, &napi->state);
+ 			wake_up_process(thread);
+ 			return;
+ 		}
+@@ -6688,8 +6682,6 @@ static int napi_poll(struct napi_struct *n, struct list_head *repoll)
+ 
+ static int napi_thread_wait(struct napi_struct *napi)
+ {
+-	bool woken = false;
+-
+ 	set_current_state(TASK_INTERRUPTIBLE);
+ 
+ 	while (!kthread_should_stop()) {
+@@ -6698,15 +6690,13 @@ static int napi_thread_wait(struct napi_struct *napi)
+ 		 * Testing SCHED bit is not enough because SCHED bit might be
+ 		 * set by some other busy poll thread or by napi_disable().
+ 		 */
+-		if (test_bit(NAPI_STATE_SCHED_THREADED, &napi->state) || woken) {
++		if (test_bit(NAPI_STATE_SCHED_THREADED, &napi->state)) {
+ 			WARN_ON(!list_empty(&napi->poll_list));
+ 			__set_current_state(TASK_RUNNING);
+ 			return 0;
+ 		}
+ 
+ 		schedule();
+-		/* woken being true indicates this thread owns this napi. */
+-		woken = true;
+ 		set_current_state(TASK_INTERRUPTIBLE);
+ 	}
+ 	__set_current_state(TASK_RUNNING);
 -- 
 2.25.1
 
