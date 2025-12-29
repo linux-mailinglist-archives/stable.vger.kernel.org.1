@@ -1,50 +1,51 @@
-Return-Path: <stable+bounces-203900-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203902-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 419F8CE782E
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:32:05 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2604CE782B
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:31:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 86EB630255B2
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:24:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2725D30596BF
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:24:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5304E329E70;
-	Mon, 29 Dec 2025 16:24:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E788732B9AE;
+	Mon, 29 Dec 2025 16:24:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nlW8wKOK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w2UhEx6W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A591625B662;
-	Mon, 29 Dec 2025 16:24:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10091329E49;
+	Mon, 29 Dec 2025 16:24:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767025488; cv=none; b=eUK2+56mOoGAD6QJoYcTN6Ft/E0UeIJKOwglqKglDbt9M6Odq+8fZg2erE7j4ABSzc5q+OnsORz2esWNyjjl++AKleHgFD1Y5uqPyp9CuinCHZcYIcuYM0d02/9YMNAxA72ZJjLzJHM4YEtcKLh4VW5Uvi6Lcek+DeQrAWvJyGQ=
+	t=1767025492; cv=none; b=YATZ7YOh9ZvnzjcQ2z3c1OAj5Ec1Gp5GLHOj+RE2zKGptdhvE/e637K4YEeCFiEuyioxw9BvhDHl6fE8honFELnkTC9z3MM67myUD3WIR6fqNOqGhauf5QyUAIJhQhjxZ5Ns6WEpGVVXzn8TxBdB6kYF3XgD2I0Owd6QPrOC24o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767025488; c=relaxed/simple;
-	bh=sG3xSJBHCLxYNe+yQ1jmP/NbHtOtHbAIfPzWBAl+T30=;
+	s=arc-20240116; t=1767025492; c=relaxed/simple;
+	bh=Q7RcDElNCkdQdoHDHk0MUifjBvfDYopT1skSTTMF9ck=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sSr31m8D1qoM4bzXLjIJZ8JxNpvgBgas1Jd+amEfTIHT/iXLbvNE5C0Qr7ztNHmUjkNa64zT294hYV71PeLZ8l6Dti+/0+qwyxkFDiEHNSJR1k+d8jsqBpOQBZfYSkqNkQp3kKhqeVvks3XV5lub5/q7Wo1ed1gds9ZJMNrbj3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nlW8wKOK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9C98C4CEF7;
-	Mon, 29 Dec 2025 16:24:45 +0000 (UTC)
+	 MIME-Version; b=L2MEiinqNkQQ9F4Z+TT20shUnGQyJ4d+vj90ChI2IgskWAjE3y+hUzQhfiqXndm98lQhqWNEtw+GBWWA9sFsDLbBcctG2Q813DIemOM3cvYw7LhqcWRhEFxcMs+NRrkGe+jlIRAHIGyuivRz8BhrgKqI1pOQVUtD3oUaLAdTyc0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w2UhEx6W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8701BC4CEF7;
+	Mon, 29 Dec 2025 16:24:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767025486;
-	bh=sG3xSJBHCLxYNe+yQ1jmP/NbHtOtHbAIfPzWBAl+T30=;
+	s=korg; t=1767025491;
+	bh=Q7RcDElNCkdQdoHDHk0MUifjBvfDYopT1skSTTMF9ck=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nlW8wKOKsTGNobI9PKu0DbJ7qnXugJMeBqNh7F4D8/JFw9i4QAk5L1sBTKA1/oILg
-	 LecDWwFG1LJWZRWSJbkU20xP6pgTV88YIk48ORpmIRvyrnOCEtCDYTSp1OevWFKbFG
-	 J4Osgn03OBW3355+WB2ONr4jfAFJjFB4lxhLhuC8=
+	b=w2UhEx6WpGz4Y2RAhuTF80dYywbPPtAq0ZLbc0rS5e9Bu/F6L+8syzxdt1AE1qDnq
+	 XK1EyVeuQvQ6XSKoYqxKOtFDeCNEmrTubYzg8uHjK81K+8OTwyECoOFEDNGYARLSLx
+	 KP446tXBKTKXL6gOnYTVdD894NI9/ls6qV8eavYU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tip ten Brink <tip@tenbrinkmeijs.com>,
+	syzbot+00e61c43eb5e4740438f@syzkaller.appspotmail.com,
+	Prithvi Tambewagh <activprithvi@gmail.com>,
 	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.18 230/430] io_uring: fix min_wait wakeups for SQPOLL
-Date: Mon, 29 Dec 2025 17:10:32 +0100
-Message-ID: <20251229160732.818889985@linuxfoundation.org>
+Subject: [PATCH 6.18 231/430] io_uring: fix filename leak in __io_openat_prep()
+Date: Mon, 29 Dec 2025 17:10:33 +0100
+Message-ID: <20251229160732.855330119@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251229160724.139406961@linuxfoundation.org>
 References: <20251229160724.139406961@linuxfoundation.org>
@@ -63,65 +64,50 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Prithvi Tambewagh <activprithvi@gmail.com>
 
-commit e15cb2200b934e507273510ba6bc747d5cde24a3 upstream.
+commit b14fad555302a2104948feaff70503b64c80ac01 upstream.
 
-Using min_wait, two timeouts are given:
+ __io_openat_prep() allocates a struct filename using getname(). However,
+for the condition of the file being installed in the fixed file table as
+well as having O_CLOEXEC flag set, the function returns early. At that
+point, the request doesn't have REQ_F_NEED_CLEANUP flag set. Due to this,
+the memory for the newly allocated struct filename is not cleaned up,
+causing a memory leak.
 
-1) The min_wait timeout, within which up to 'wait_nr' events are
-   waited for.
-2) The overall long timeout, which is entered if no events are generated
-   in the min_wait window.
+Fix this by setting the REQ_F_NEED_CLEANUP for the request just after the
+successful getname() call, so that when the request is torn down, the
+filename will be cleaned up, along with other resources needing cleanup.
 
-If the min_wait has expired, any event being posted must wake the task.
-For SQPOLL, that isn't the case, as it won't trigger the io_has_work()
-condition, as it will have already processed the task_work that happened
-when an event was posted. This causes any event to trigger post the
-min_wait to not always cause the waiting application to wakeup, and
-instead it will wait until the overall timeout has expired. This can be
-shown in a test case that has a 1 second min_wait, with a 5 second
-overall wait, even if an event triggers after 1.5 seconds:
-
-axboe@m2max-kvm /d/iouring-mre (master)> zig-out/bin/iouring
-info: MIN_TIMEOUT supported: true, features: 0x3ffff
-info: Testing: min_wait=1000ms, timeout=5s, wait_nr=4
-info: 1 cqes in 5000.2ms
-
-where the expected result should be:
-
-axboe@m2max-kvm /d/iouring-mre (master)> zig-out/bin/iouring
-info: MIN_TIMEOUT supported: true, features: 0x3ffff
-info: Testing: min_wait=1000ms, timeout=5s, wait_nr=4
-info: 1 cqes in 1500.3ms
-
-When the min_wait timeout triggers, reset the number of completions
-needed to wake the task. This should ensure that any future events will
-wake the task, regardless of how many events it originally wanted to
-wait for.
-
-Reported-by: Tip ten Brink <tip@tenbrinkmeijs.com>
+Reported-by: syzbot+00e61c43eb5e4740438f@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=00e61c43eb5e4740438f
+Tested-by: syzbot+00e61c43eb5e4740438f@syzkaller.appspotmail.com
 Cc: stable@vger.kernel.org
-Fixes: 1100c4a2656d ("io_uring: add support for batch wait timeout")
-Link: https://github.com/axboe/liburing/issues/1477
+Signed-off-by: Prithvi Tambewagh <activprithvi@gmail.com>
+Fixes: b9445598d8c6 ("io_uring: openat directly into fixed fd table")
 Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/io_uring.c |    3 +++
- 1 file changed, 3 insertions(+)
+ io_uring/openclose.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -2551,6 +2551,9 @@ static enum hrtimer_restart io_cqring_mi
- 			goto out_wake;
+--- a/io_uring/openclose.c
++++ b/io_uring/openclose.c
+@@ -73,13 +73,13 @@ static int __io_openat_prep(struct io_ki
+ 		open->filename = NULL;
+ 		return ret;
  	}
++	req->flags |= REQ_F_NEED_CLEANUP;
  
-+	/* any generated CQE posted past this time should wake us up */
-+	iowq->cq_tail = iowq->cq_min_tail;
-+
- 	hrtimer_update_function(&iowq->t, io_cqring_timer_wakeup);
- 	hrtimer_set_expires(timer, iowq->timeout);
- 	return HRTIMER_RESTART;
+ 	open->file_slot = READ_ONCE(sqe->file_index);
+ 	if (open->file_slot && (open->how.flags & O_CLOEXEC))
+ 		return -EINVAL;
+ 
+ 	open->nofile = rlimit(RLIMIT_NOFILE);
+-	req->flags |= REQ_F_NEED_CLEANUP;
+ 	if (io_openat_force_async(open))
+ 		req->flags |= REQ_F_FORCE_ASYNC;
+ 	return 0;
 
 
 
