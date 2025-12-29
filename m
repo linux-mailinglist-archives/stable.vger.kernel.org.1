@@ -1,50 +1,51 @@
-Return-Path: <stable+bounces-204078-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204085-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF48BCE7867
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:33:17 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E5F5CE7999
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:38:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4727130019FE
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:33:17 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 180F7302B9B9
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:33:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 267DE334C0B;
-	Mon, 29 Dec 2025 16:33:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18F59334C10;
+	Mon, 29 Dec 2025 16:33:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BJy+7e+q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TBIGlOpF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D78A3334368;
-	Mon, 29 Dec 2025 16:33:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB7CD264FBD;
+	Mon, 29 Dec 2025 16:33:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767025987; cv=none; b=Tc4UuABrnQIaw9dabgZYdEsc1iy77mwUJO3HtxwqkXay+uOH7R1HATCbgNj3kupWV5FNRwCLVfZjxo+87pln1fgUqJ73OnqGpL6Xss6nFmew2P3qbv8KRLiyI+hOGYEbQgIunW7s6EYBc9n3LlADiSues68vFE1ucM1xCFRtgUI=
+	t=1767026007; cv=none; b=Um6LNV2r+Tk3IXRrZB0TDc17hUO9rj8J7C7pqXQ50UdeZX+u4ZBpuWAFgPkZXInBbgwUvXdtVz6hH9vuSDj4yoBIKwjse21b+v5xWoRNI5d84Msvd6QDYcgNUXvFN5bUIf2eIrgTQj+5pdVvjHFdaUQzhS/40M2jX2Gkha7Nu8Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767025987; c=relaxed/simple;
-	bh=PfDGb6kxfCE8toBzATbZaLRLqUdUiHvfFqK01GfIObk=;
+	s=arc-20240116; t=1767026007; c=relaxed/simple;
+	bh=X8Ns0LSm0WaIPXB5B70GOXsV3cllhVabIC2C4B+lQzg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PSNx3x87Ht73d6PG1fxtoTeYKVu3P9rV46WSCYpVTUBzsWR8GmGCwsB60v2mQWBhm0h0g7lq/5sKODNzwMHmxnmEhVRzDfiaYs//XCiptt8d3k3zwW131WfzLFnakT23FrBXaWRUXfpz3EMaKZX++J8L1KplautRd3oqw2tEtUY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BJy+7e+q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61781C116C6;
-	Mon, 29 Dec 2025 16:33:07 +0000 (UTC)
+	 MIME-Version; b=krfT4n3CuqBYOMuNF7F6SgRwp9PJ71IEYhtScsSkhHfPOYVCzkvu/DXTNuI7CSX8eIFPWvPOQZsc1X6OCbOoPBFT/9Xwu1e2QxsLCuNIWTmp3i9zb/O3bvHDBtfgh6K8CRiwoQJ4pL5lnYNo13hNtr9m9VABUBuEEpf1y49By+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TBIGlOpF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B402C4CEF7;
+	Mon, 29 Dec 2025 16:33:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767025987;
-	bh=PfDGb6kxfCE8toBzATbZaLRLqUdUiHvfFqK01GfIObk=;
+	s=korg; t=1767026007;
+	bh=X8Ns0LSm0WaIPXB5B70GOXsV3cllhVabIC2C4B+lQzg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BJy+7e+qejHxupTUmznTE67giaGuQ5L1/KR+qnMB4wB9l3kUnO5/UR/0ORgX/Obw0
-	 B27V3ftgGUM24jrbcbTidAf5yC8WJTvUeg4TRkz1cKwmC1jA9LVm8rQCrryxLTI+UL
-	 C8+Wx4iimtTO0n2pttcOe4+sFTim3GQOxnIlUMpg=
+	b=TBIGlOpF1odroOG4W4150Dhsbe2PlhoOZGiktqQk1xyRq58dWWHy30zF30TvLQ0Bv
+	 RDhen0cXp8diTRHMuRbwNFEzswYgPn4OBWUVPNP8vAk9tVI1mMOCBZJhW23pwNehSu
+	 Mepj/P8eUh6hTdKsHZamRWPaE8t1bUoLMuBg4I08=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Tejun Heo <tj@kernel.org>
-Subject: [PATCH 6.18 380/430] cgroup: rstat: use LOCK CMPXCHG in css_rstat_updated
-Date: Mon, 29 Dec 2025 17:13:02 +0100
-Message-ID: <20251229160738.306179870@linuxfoundation.org>
+	Peter Oberparleiter <oberpar@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>
+Subject: [PATCH 6.18 381/430] s390/ipl: Clear SBP flag when bootprog is set
+Date: Mon, 29 Dec 2025 17:13:03 +0100
+Message-ID: <20251229160738.343628699@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251229160724.139406961@linuxfoundation.org>
 References: <20251229160724.139406961@linuxfoundation.org>
@@ -63,103 +64,154 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Shakeel Butt <shakeel.butt@linux.dev>
+From: Sven Schnelle <svens@linux.ibm.com>
 
-commit 3309b63a2281efb72df7621d60cc1246b6286ad3 upstream.
+commit b1aa01d31249bd116b18c7f512d3e46b4b4ad83b upstream.
 
-On x86-64, this_cpu_cmpxchg() uses CMPXCHG without LOCK prefix which
-means it is only safe for the local CPU and not for multiple CPUs.
-Recently the commit 36df6e3dbd7e ("cgroup: make css_rstat_updated nmi
-safe") make css_rstat_updated lockless and uses lockless list to allow
-reentrancy. Since css_rstat_updated can invoked from process context,
-IRQ and NMI, it uses this_cpu_cmpxchg() to select the winner which will
-inset the lockless lnode into the global per-cpu lockless list.
+With z16 a new flag 'search boot program' was introduced for
+list-directed IPL (SCSI, NVMe, ECKD DASD). If this flag is set,
+e.g. via selecting the "Automatic" value for the "Boot program
+selector" control on an HMC load panel, it is copied to the reipl
+structure from the initial ipl structure. When a user now sets a
+boot prog via sysfs, the flag is not cleared and the bootloader
+will again automatically select the boot program, ignoring user
+configuration.
 
-However the commit missed one case where lockless node of a cgroup can
-be accessed and modified by another CPU doing the flushing. Basically
-llist_del_first_init() in css_process_update_tree().
+To avoid that, clear the SBP flag when a bootprog sysfs file is
+written.
 
-On a cursory look, it can be questioned how css_process_update_tree()
-can see a lockless node in global lockless list where the updater is at
-this_cpu_cmpxchg() and before llist_add() call in css_rstat_updated().
-This can indeed happen in the presence of IRQs/NMI.
-
-Consider this scenario: Updater for cgroup stat C on CPU A in process
-context is after llist_on_list() check and before this_cpu_cmpxchg() in
-css_rstat_updated() where it get interrupted by IRQ/NMI. In the IRQ/NMI
-context, a new updater calls css_rstat_updated() for same cgroup C and
-successfully inserts rstatc_pcpu->lnode.
-
-Now concurrently CPU B is running the flusher and it calls
-llist_del_first_init() for CPU A and got rstatc_pcpu->lnode of cgroup C
-which was added by the IRQ/NMI updater.
-
-Now imagine CPU B calling init_llist_node() on cgroup C's
-rstatc_pcpu->lnode of CPU A and on CPU A, the process context updater
-calling this_cpu_cmpxchg(rstatc_pcpu->lnode) concurrently.
-
-The CMPXCNG without LOCK on CPU A is not safe and thus we need LOCK
-prefix.
-
-In Meta's fleet running the kernel with the commit 36df6e3dbd7e, we are
-observing on some machines the memcg stats are getting skewed by more
-than the actual memory on the system. On close inspection, we noticed
-that lockless node for a workload for specific CPU was in the bad state
-and thus all the updates on that CPU for that cgroup was being lost.
-
-To confirm if this skew was indeed due to this CMPXCHG without LOCK in
-css_rstat_updated(), we created a repro (using AI) at [1] which shows
-that CMPXCHG without LOCK creates almost the same lnode corruption as
-seem in Meta's fleet and with LOCK CMPXCHG the issue does not
-reproduces.
-
-Link: http://lore.kernel.org/efiagdwmzfwpdzps74fvcwq3n4cs36q33ij7eebcpssactv3zu@se4hqiwxcfxq [1]
-Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: stable@vger.kernel.org # v6.17+
-Fixes: 36df6e3dbd7e ("cgroup: make css_rstat_updated nmi safe")
-Signed-off-by: Tejun Heo <tj@kernel.org>
+Cc: stable@vger.kernel.org
+Reviewed-by: Peter Oberparleiter <oberpar@linux.ibm.com>
+Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Sven Schnelle <svens@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/cgroup/rstat.c |   13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ arch/s390/include/uapi/asm/ipl.h |    1 
+ arch/s390/kernel/ipl.c           |   48 +++++++++++++++++++++++++++++----------
+ 2 files changed, 37 insertions(+), 12 deletions(-)
 
---- a/kernel/cgroup/rstat.c
-+++ b/kernel/cgroup/rstat.c
-@@ -71,7 +71,6 @@ __bpf_kfunc void css_rstat_updated(struc
- {
- 	struct llist_head *lhead;
- 	struct css_rstat_cpu *rstatc;
--	struct css_rstat_cpu __percpu *rstatc_pcpu;
- 	struct llist_node *self;
+--- a/arch/s390/include/uapi/asm/ipl.h
++++ b/arch/s390/include/uapi/asm/ipl.h
+@@ -15,6 +15,7 @@ struct ipl_pl_hdr {
+ #define IPL_PL_FLAG_IPLPS	0x80
+ #define IPL_PL_FLAG_SIPL	0x40
+ #define IPL_PL_FLAG_IPLSR	0x20
++#define IPL_PL_FLAG_SBP		0x10
  
- 	/*
-@@ -104,18 +103,22 @@ __bpf_kfunc void css_rstat_updated(struc
- 	/*
- 	 * This function can be renentered by irqs and nmis for the same cgroup
- 	 * and may try to insert the same per-cpu lnode into the llist. Note
--	 * that llist_add() does not protect against such scenarios.
-+	 * that llist_add() does not protect against such scenarios. In addition
-+	 * this same per-cpu lnode can be modified through init_llist_node()
-+	 * from css_rstat_flush() running on a different CPU.
- 	 *
- 	 * To protect against such stacked contexts of irqs/nmis, we use the
- 	 * fact that lnode points to itself when not on a list and then use
--	 * this_cpu_cmpxchg() to atomically set to NULL to select the winner
-+	 * try_cmpxchg() to atomically set to NULL to select the winner
- 	 * which will call llist_add(). The losers can assume the insertion is
- 	 * successful and the winner will eventually add the per-cpu lnode to
- 	 * the llist.
-+	 *
-+	 * Please note that we can not use this_cpu_cmpxchg() here as on some
-+	 * archs it is not safe against modifications from multiple CPUs.
- 	 */
- 	self = &rstatc->lnode;
--	rstatc_pcpu = css->rstat_cpu;
--	if (this_cpu_cmpxchg(rstatc_pcpu->lnode.next, self, NULL) != self)
-+	if (!try_cmpxchg(&rstatc->lnode.next, &self, NULL))
- 		return;
+ /* IPL Parameter Block header */
+ struct ipl_pb_hdr {
+--- a/arch/s390/kernel/ipl.c
++++ b/arch/s390/kernel/ipl.c
+@@ -262,6 +262,24 @@ static struct kobj_attribute sys_##_pref
+ 			sys_##_prefix##_##_name##_show,			\
+ 			sys_##_prefix##_##_name##_store)
  
- 	lhead = ss_lhead_cpu(css->ss, cpu);
++#define DEFINE_IPL_ATTR_BOOTPROG_RW(_prefix, _name, _fmt_out, _fmt_in, _hdr, _value)	\
++	IPL_ATTR_SHOW_FN(_prefix, _name, _fmt_out, (unsigned long long) _value)		\
++static ssize_t sys_##_prefix##_##_name##_store(struct kobject *kobj,			\
++		struct kobj_attribute *attr,						\
++		const char *buf, size_t len)						\
++{											\
++	unsigned long long value;							\
++	if (sscanf(buf, _fmt_in, &value) != 1)						\
++		return -EINVAL;								\
++	(_value) = value;								\
++	(_hdr).flags &= ~IPL_PL_FLAG_SBP;						\
++	return len;									\
++}											\
++static struct kobj_attribute sys_##_prefix##_##_name##_attr =				\
++	__ATTR(_name, 0644,								\
++			sys_##_prefix##_##_name##_show,					\
++			sys_##_prefix##_##_name##_store)
++
+ #define DEFINE_IPL_ATTR_STR_RW(_prefix, _name, _fmt_out, _fmt_in, _value)\
+ IPL_ATTR_SHOW_FN(_prefix, _name, _fmt_out, _value)			\
+ static ssize_t sys_##_prefix##_##_name##_store(struct kobject *kobj,	\
+@@ -818,12 +836,13 @@ DEFINE_IPL_ATTR_RW(reipl_fcp, wwpn, "0x%
+ 		   reipl_block_fcp->fcp.wwpn);
+ DEFINE_IPL_ATTR_RW(reipl_fcp, lun, "0x%016llx\n", "%llx\n",
+ 		   reipl_block_fcp->fcp.lun);
+-DEFINE_IPL_ATTR_RW(reipl_fcp, bootprog, "%lld\n", "%lld\n",
+-		   reipl_block_fcp->fcp.bootprog);
+ DEFINE_IPL_ATTR_RW(reipl_fcp, br_lba, "%lld\n", "%lld\n",
+ 		   reipl_block_fcp->fcp.br_lba);
+ DEFINE_IPL_ATTR_RW(reipl_fcp, device, "0.0.%04llx\n", "0.0.%llx\n",
+ 		   reipl_block_fcp->fcp.devno);
++DEFINE_IPL_ATTR_BOOTPROG_RW(reipl_fcp, bootprog, "%lld\n", "%lld\n",
++			    reipl_block_fcp->hdr,
++			    reipl_block_fcp->fcp.bootprog);
+ 
+ static void reipl_get_ascii_loadparm(char *loadparm,
+ 				     struct ipl_parameter_block *ibp)
+@@ -942,10 +961,11 @@ DEFINE_IPL_ATTR_RW(reipl_nvme, fid, "0x%
+ 		   reipl_block_nvme->nvme.fid);
+ DEFINE_IPL_ATTR_RW(reipl_nvme, nsid, "0x%08llx\n", "%llx\n",
+ 		   reipl_block_nvme->nvme.nsid);
+-DEFINE_IPL_ATTR_RW(reipl_nvme, bootprog, "%lld\n", "%lld\n",
+-		   reipl_block_nvme->nvme.bootprog);
+ DEFINE_IPL_ATTR_RW(reipl_nvme, br_lba, "%lld\n", "%lld\n",
+ 		   reipl_block_nvme->nvme.br_lba);
++DEFINE_IPL_ATTR_BOOTPROG_RW(reipl_nvme, bootprog, "%lld\n", "%lld\n",
++			    reipl_block_nvme->hdr,
++			    reipl_block_nvme->nvme.bootprog);
+ 
+ static struct attribute *reipl_nvme_attrs[] = {
+ 	&sys_reipl_nvme_fid_attr.attr,
+@@ -1038,8 +1058,9 @@ static const struct bin_attribute *const
+ };
+ 
+ DEFINE_IPL_CCW_ATTR_RW(reipl_eckd, device, reipl_block_eckd->eckd);
+-DEFINE_IPL_ATTR_RW(reipl_eckd, bootprog, "%lld\n", "%lld\n",
+-		   reipl_block_eckd->eckd.bootprog);
++DEFINE_IPL_ATTR_BOOTPROG_RW(reipl_eckd, bootprog, "%lld\n", "%lld\n",
++			    reipl_block_eckd->hdr,
++			    reipl_block_eckd->eckd.bootprog);
+ 
+ static struct attribute *reipl_eckd_attrs[] = {
+ 	&sys_reipl_eckd_device_attr.attr,
+@@ -1567,12 +1588,13 @@ DEFINE_IPL_ATTR_RW(dump_fcp, wwpn, "0x%0
+ 		   dump_block_fcp->fcp.wwpn);
+ DEFINE_IPL_ATTR_RW(dump_fcp, lun, "0x%016llx\n", "%llx\n",
+ 		   dump_block_fcp->fcp.lun);
+-DEFINE_IPL_ATTR_RW(dump_fcp, bootprog, "%lld\n", "%lld\n",
+-		   dump_block_fcp->fcp.bootprog);
+ DEFINE_IPL_ATTR_RW(dump_fcp, br_lba, "%lld\n", "%lld\n",
+ 		   dump_block_fcp->fcp.br_lba);
+ DEFINE_IPL_ATTR_RW(dump_fcp, device, "0.0.%04llx\n", "0.0.%llx\n",
+ 		   dump_block_fcp->fcp.devno);
++DEFINE_IPL_ATTR_BOOTPROG_RW(dump_fcp, bootprog, "%lld\n", "%lld\n",
++			    dump_block_fcp->hdr,
++			    dump_block_fcp->fcp.bootprog);
+ 
+ DEFINE_IPL_ATTR_SCP_DATA_RW(dump_fcp, dump_block_fcp->hdr,
+ 			    dump_block_fcp->fcp,
+@@ -1604,10 +1626,11 @@ DEFINE_IPL_ATTR_RW(dump_nvme, fid, "0x%0
+ 		   dump_block_nvme->nvme.fid);
+ DEFINE_IPL_ATTR_RW(dump_nvme, nsid, "0x%08llx\n", "%llx\n",
+ 		   dump_block_nvme->nvme.nsid);
+-DEFINE_IPL_ATTR_RW(dump_nvme, bootprog, "%lld\n", "%llx\n",
+-		   dump_block_nvme->nvme.bootprog);
+ DEFINE_IPL_ATTR_RW(dump_nvme, br_lba, "%lld\n", "%llx\n",
+ 		   dump_block_nvme->nvme.br_lba);
++DEFINE_IPL_ATTR_BOOTPROG_RW(dump_nvme, bootprog, "%lld\n", "%llx\n",
++			    dump_block_nvme->hdr,
++			    dump_block_nvme->nvme.bootprog);
+ 
+ DEFINE_IPL_ATTR_SCP_DATA_RW(dump_nvme, dump_block_nvme->hdr,
+ 			    dump_block_nvme->nvme,
+@@ -1635,8 +1658,9 @@ static const struct attribute_group dump
+ 
+ /* ECKD dump device attributes */
+ DEFINE_IPL_CCW_ATTR_RW(dump_eckd, device, dump_block_eckd->eckd);
+-DEFINE_IPL_ATTR_RW(dump_eckd, bootprog, "%lld\n", "%llx\n",
+-		   dump_block_eckd->eckd.bootprog);
++DEFINE_IPL_ATTR_BOOTPROG_RW(dump_eckd, bootprog, "%lld\n", "%llx\n",
++			    dump_block_eckd->hdr,
++			    dump_block_eckd->eckd.bootprog);
+ 
+ IPL_ATTR_BR_CHR_SHOW_FN(dump, dump_block_eckd->eckd);
+ IPL_ATTR_BR_CHR_STORE_FN(dump, dump_block_eckd->eckd);
 
 
 
