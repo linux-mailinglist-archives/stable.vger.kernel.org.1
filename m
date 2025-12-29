@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-203901-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203907-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28A07CE7828
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:31:55 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88C4ECE7846
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:32:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C3BF5307291E
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:24:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8E50C307765A
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:25:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C835A25B662;
-	Mon, 29 Dec 2025 16:24:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5819F27EC7C;
+	Mon, 29 Dec 2025 16:25:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HIC8xViS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oYO3iAP+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AC0C32C933;
-	Mon, 29 Dec 2025 16:24:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 703B9327BF3;
+	Mon, 29 Dec 2025 16:25:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767025489; cv=none; b=NDK0Diu9lFw9NLMLOpE/arT1oXTYJ4yjtkF2YFcNluIDjjCZI690tPfdrQWxBx5sId9MORFIg7d9bF84PXbsXdd5QWme5JSeFSa+pKdbqbEidOr7rNm/7zUi2o3b7549KRIDv+wj4La0+9sgo15m9PiRdG1f+WaChD1tMXgO6xk=
+	t=1767025506; cv=none; b=nQf46wgLdJxDma8NCh0N1bMA5tI6rxvVIsZPMuURIGabQEZjJm9aNyqqsakt/1UTXyH9zGCXJkf+uVRexbQclq5KDxxSTB6dK+B6f9mptEeibibnC2w96OhVnp7wGBNRBX5ZSsoE4R8aPmMtkiFrLkq0vkPbJQbHMyjUTYcY7Vo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767025489; c=relaxed/simple;
-	bh=QPdvk71Gj2U5Mms3sThvI6pXVb/NGo9iEisZPLtFQmY=;
+	s=arc-20240116; t=1767025506; c=relaxed/simple;
+	bh=qJkZ5yRuEjAbXYXzFl7359hty8At24kFsetBejzpLqc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ju2fz0s7JcKdQgPgPpc9PJEZF0sKSLCggnxIyE0de/oLeSR7RPlRq3UbuL5Jny7YFemAkSqOo7b3atGAIjRGF7B4JTBW7W7XKJe+hUMWrmHTE6XaeyjXg2BQt99dVBS5FDpp6aTqFC/weYNpamqwHXZlPx8XbkhnzonUh4NM5jM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HIC8xViS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4EA5C16AAE;
-	Mon, 29 Dec 2025 16:24:48 +0000 (UTC)
+	 MIME-Version; b=txwg6q4WFLhHFShxiyRoQ1zBj285rmA0bvMQ5zO7DP1nJ38BSrieqSuPvpIs3Yd45ACB+fik+4d8n1NiYANVITWgUu1A0RwmosevLPtPzmS7iEaMEbY1XM/awyzhpdITg5IMZldABrPs/6F0QnJ5UcdIlV3Sgdubaj62MUcdY9M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oYO3iAP+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C19F2C4CEF7;
+	Mon, 29 Dec 2025 16:25:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767025489;
-	bh=QPdvk71Gj2U5Mms3sThvI6pXVb/NGo9iEisZPLtFQmY=;
+	s=korg; t=1767025506;
+	bh=qJkZ5yRuEjAbXYXzFl7359hty8At24kFsetBejzpLqc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HIC8xViSTddkjccQ8/Iz/dlcDrQd+JYEc0MghyRFwfFgzOHz/wYSYVCTdCD+x6dVP
-	 f0frf/ODyqZjc+Ue+d1jNhUyj2/ZkPb05OSwPgJ1UW1VkIufWS2c3f7sB7Fkvf12fm
-	 TKusrCsq6NyoDE7u+PMaV7SXvnF9TE870fJAnqng=
+	b=oYO3iAP+ZzD6QWlUNKLwwxICW6rpxr3pnTsA5Jowan4hSxYvyQuE8iI/GdAx213dR
+	 0SIJUwsHjUrXNplbk/RilrIUkpLQzFHedUwl3lbCfNvd+MYShJb1peholF/EJ3M+6l
+	 T/j/tY4YVPMm+uYiXDlrqfZMVy2DAAgSRWWOJVj4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Reidel <adrian@mainlining.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Jinhui Guo <guojinhui.liam@bytedance.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 204/430] clk: qcom: dispcc-sm7150: Fix dispcc_mdss_pclk0_clk_src
-Date: Mon, 29 Dec 2025 17:10:06 +0100
-Message-ID: <20251229160731.861503146@linuxfoundation.org>
+Subject: [PATCH 6.18 205/430] i2c: designware: Disable SMBus interrupts to prevent storms from mis-configured firmware
+Date: Mon, 29 Dec 2025 17:10:07 +0100
+Message-ID: <20251229160731.898799356@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251229160724.139406961@linuxfoundation.org>
 References: <20251229160724.139406961@linuxfoundation.org>
@@ -65,36 +66,57 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jens Reidel <adrian@mainlining.org>
+From: Jinhui Guo <guojinhui.liam@bytedance.com>
 
-[ Upstream commit e3c13e0caa8ceb7dec1a7c4fcfd9dbef56a69fbe ]
+[ Upstream commit d3429178ee51dd7155445d15a5ab87a45fae3c73 ]
 
-Set CLK_OPS_PARENT_ENABLE to ensure the parent gets prepared and enabled
-when switching to it, fixing an "rcg didn't update its configuration"
-warning.
+When probing the I2C master, disable SMBus interrupts to prevent
+storms caused by broken firmware mis-configuring IC_SMBUS=1; the
+handler never services them and a mis-configured SMBUS Master
+extend-clock timeout or SMBUS Slave extend-clock timeout can
+flood the CPU.
 
-Signed-off-by: Jens Reidel <adrian@mainlining.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250919-sm7150-dispcc-fixes-v1-3-308ad47c5fce@mainlining.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Jinhui Guo <guojinhui.liam@bytedance.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://lore.kernel.org/r/20251021075714.3712-2-guojinhui.liam@bytedance.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/dispcc-sm7150.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/i2c/busses/i2c-designware-core.h   | 1 +
+ drivers/i2c/busses/i2c-designware-master.c | 7 +++++++
+ 2 files changed, 8 insertions(+)
 
-diff --git a/drivers/clk/qcom/dispcc-sm7150.c b/drivers/clk/qcom/dispcc-sm7150.c
-index bdfff246ed3f..ddc7230b8aea 100644
---- a/drivers/clk/qcom/dispcc-sm7150.c
-+++ b/drivers/clk/qcom/dispcc-sm7150.c
-@@ -356,7 +356,7 @@ static struct clk_rcg2 dispcc_mdss_pclk0_clk_src = {
- 		.name = "dispcc_mdss_pclk0_clk_src",
- 		.parent_data = dispcc_parent_data_4,
- 		.num_parents = ARRAY_SIZE(dispcc_parent_data_4),
--		.flags = CLK_SET_RATE_PARENT,
-+		.flags = CLK_SET_RATE_PARENT | CLK_OPS_PARENT_ENABLE,
- 		.ops = &clk_pixel_ops,
- 	},
- };
+diff --git a/drivers/i2c/busses/i2c-designware-core.h b/drivers/i2c/busses/i2c-designware-core.h
+index 347843b4f5dd..436555543c79 100644
+--- a/drivers/i2c/busses/i2c-designware-core.h
++++ b/drivers/i2c/busses/i2c-designware-core.h
+@@ -78,6 +78,7 @@
+ #define DW_IC_TX_ABRT_SOURCE			0x80
+ #define DW_IC_ENABLE_STATUS			0x9c
+ #define DW_IC_CLR_RESTART_DET			0xa8
++#define DW_IC_SMBUS_INTR_MASK			0xcc
+ #define DW_IC_COMP_PARAM_1			0xf4
+ #define DW_IC_COMP_VERSION			0xf8
+ #define DW_IC_SDA_HOLD_MIN_VERS			0x3131312A /* "111*" == v1.11* */
+diff --git a/drivers/i2c/busses/i2c-designware-master.c b/drivers/i2c/busses/i2c-designware-master.c
+index 41e9b5ecad20..45bfca05bb30 100644
+--- a/drivers/i2c/busses/i2c-designware-master.c
++++ b/drivers/i2c/busses/i2c-designware-master.c
+@@ -220,6 +220,13 @@ static int i2c_dw_init_master(struct dw_i2c_dev *dev)
+ 	/* Disable the adapter */
+ 	__i2c_dw_disable(dev);
+ 
++	/*
++	 * Mask SMBus interrupts to block storms from broken
++	 * firmware that leaves IC_SMBUS=1; the handler never
++	 * services them.
++	 */
++	regmap_write(dev->map, DW_IC_SMBUS_INTR_MASK, 0);
++
+ 	/* Write standard speed timing parameters */
+ 	regmap_write(dev->map, DW_IC_SS_SCL_HCNT, dev->ss_hcnt);
+ 	regmap_write(dev->map, DW_IC_SS_SCL_LCNT, dev->ss_lcnt);
 -- 
 2.51.0
 
