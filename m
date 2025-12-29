@@ -1,52 +1,51 @@
-Return-Path: <stable+bounces-203972-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203979-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A7F3CE7906
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:36:15 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BE22CE7A3E
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:41:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 49EE1303D8A4
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:28:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7D65631466DD
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:28:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C33603164B0;
-	Mon, 29 Dec 2025 16:28:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54D0C32FA3C;
+	Mon, 29 Dec 2025 16:28:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="esKDEbEk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rnx0XOSM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80E1D347C6;
-	Mon, 29 Dec 2025 16:28:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 140E93191A7;
+	Mon, 29 Dec 2025 16:28:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767025690; cv=none; b=tVKjLLjdf9OayDfD0XfuYgLfcO+N2yVAFv1nT8dkQTn8VRO7hi9Jxv6QIU0ZfB2pj5gfJZFUmbsgRY0NOuXWvE1vpQgRWKvfh5iKu4RQgrE14UtfMIVG03QAztTdYhPqFxLeMlK9qHM20Tm4trY/HQbQBdhfg7jivJoS45bzf6k=
+	t=1767025710; cv=none; b=hIM/wbbHyQpd4xmE6/VyIxqp3cl8zsiF9w6d9MxTMip4ahHA6Rn2fLC23fVXHlVxXmyGc0wFZs5E4K3CRZkor92giOFrvnukWbaPNVnG8uAZrRrYBaKjpl2QPv0FG/mgah1xqItZuq+1qm2CsVfFXs0lOHGoHXhRjQVzajoHdbk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767025690; c=relaxed/simple;
-	bh=Z/JWr4oPLtV7pJum0E+pmy96tRRcWlti3xAcLlmwob4=;
+	s=arc-20240116; t=1767025710; c=relaxed/simple;
+	bh=X0G/swgpvbjbAjmnoFnlNycuZ5q/ZZyvhN/itsL0o7I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A9gXMAi+DqpLjiVmJm1n/VO7X+UCROrjWiDDTcETsw8kK6uQT7/LZWBBq8kPF1f0yqC0WGR0VyVrBRGLu0CjhSAuBExlqUNlTFbgsV9jOSDqgpsndZKtTUKdfrzwx2LQlLxYTHbQ7TM5yMFW4C9iG+KoKyDEG2dBUaCeW8iglIY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=esKDEbEk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADE21C4CEF7;
-	Mon, 29 Dec 2025 16:28:09 +0000 (UTC)
+	 MIME-Version; b=mxob1WsyjkiNPfhU3ee+w2MLwf8LKeeiXpVgILkW1P0rly1CFGKE52KbV9rjzov1oR0TUEl8fkCEs0k7rI/t5+7fslzB1xwPJ6kbP0LNurj3xki1icIkhIXbYAAXGqprFw22pLpTCxvRwZXdZIaH4wGMYlWtFbOtBeQ/muKq8Tc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rnx0XOSM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DCD5C4CEF7;
+	Mon, 29 Dec 2025 16:28:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767025690;
-	bh=Z/JWr4oPLtV7pJum0E+pmy96tRRcWlti3xAcLlmwob4=;
+	s=korg; t=1767025709;
+	bh=X0G/swgpvbjbAjmnoFnlNycuZ5q/ZZyvhN/itsL0o7I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=esKDEbEkKDhzECo4rZLgb65H4K8/BRQAS3Li8yuBn1JHTzOv0biQ6WElnn8QxWZPs
-	 yCrHSAu073ClOJ7P3giryqNnIKjLB/aIuOZ+afxp1P5bCKGTBYpQwb5+1lTjOVNvhW
-	 O1qRCmbBWv58pHtWyiPGDUseLTm9BSqPCgiXF6rw=
+	b=Rnx0XOSMvrpA/zdWtTXqHYQh4+xcJP92D8RYPMZVsHCbaUedKAqTHddReFv7Fb2CN
+	 +KO9NzLsXeGDVGR1uVe9hkKsASzV/4gxpMnsZBRH+Avrb4DIRZEgR2UHoE/+XUl1XX
+	 9XSlDV+LP0buM7/Os9PXA6aDG+lCuPzQskxhuC2Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Daniel Gomez <da.gomez@samsung.com>,
-	Jon Hunter <jonathanh@nvidia.com>
-Subject: [PATCH 6.18 275/430] mm/slab: introduce kvfree_rcu_barrier_on_cache() for cache destruction
-Date: Mon, 29 Dec 2025 17:11:17 +0100
-Message-ID: <20251229160734.470519224@linuxfoundation.org>
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.18 276/430] mptcp: pm: ignore unknown endpoint flags
+Date: Mon, 29 Dec 2025 17:11:18 +0100
+Message-ID: <20251229160734.506795270@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251229160724.139406961@linuxfoundation.org>
 References: <20251229160724.139406961@linuxfoundation.org>
@@ -65,254 +64,64 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Harry Yoo <harry.yoo@oracle.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-commit 0f35040de59371ad542b915d7b91176c9910dadc upstream.
+commit 0ace3297a7301911e52d8195cb1006414897c859 upstream.
 
-Currently, kvfree_rcu_barrier() flushes RCU sheaves across all slab
-caches when a cache is destroyed. This is unnecessary; only the RCU
-sheaves belonging to the cache being destroyed need to be flushed.
+Before this patch, the kernel was saving any flags set by the userspace,
+even unknown ones. This doesn't cause critical issues because the kernel
+is only looking at specific ones. But on the other hand, endpoints dumps
+could tell the userspace some recent flags seem to be supported on older
+kernel versions.
 
-As suggested by Vlastimil Babka, introduce a weaker form of
-kvfree_rcu_barrier() that operates on a specific slab cache.
+Instead, ignore all unknown flags when parsing them. By doing that, the
+userspace can continue to set unsupported flags, but it has a way to
+verify what is supported by the kernel.
 
-Factor out flush_rcu_sheaves_on_cache() from flush_all_rcu_sheaves() and
-call it from flush_all_rcu_sheaves() and kvfree_rcu_barrier_on_cache().
+Note that it sounds better to continue accepting unsupported flags not
+to change the behaviour, but also that eases things on the userspace
+side by adding "optional" endpoint types only supported by newer kernel
+versions without having to deal with the different kernel versions.
 
-Call kvfree_rcu_barrier_on_cache() instead of kvfree_rcu_barrier() on
-cache destruction.
+A note for the backports: there will be conflicts in mptcp.h on older
+versions not having the mentioned flags, the new line should still be
+added last, and the '5' needs to be adapted to have the same value as
+the last entry.
 
-The performance benefit is evaluated on a 12 core 24 threads AMD Ryzen
-5900X machine (1 socket), by loading slub_kunit module.
-
-Before:
-  Total calls: 19
-  Average latency (us): 18127
-  Total time (us): 344414
-
-After:
-  Total calls: 19
-  Average latency (us): 10066
-  Total time (us): 191264
-
-Two performance regression have been reported:
-  - stress module loader test's runtime increases by 50-60% (Daniel)
-  - internal graphics test's runtime on Tegra234 increases by 35% (Jon)
-
-They are fixed by this change.
-
-Suggested-by: Vlastimil Babka <vbabka@suse.cz>
-Fixes: ec66e0d59952 ("slab: add sheaf support for batching kfree_rcu() operations")
+Fixes: 01cacb00b35c ("mptcp: add netlink-based PM")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/linux-mm/1bda09da-93be-4737-aef0-d47f8c5c9301@suse.cz
-Reported-and-tested-by: Daniel Gomez <da.gomez@samsung.com>
-Closes: https://lore.kernel.org/linux-mm/0406562e-2066-4cf8-9902-b2b0616dd742@kernel.org
-Reported-and-tested-by: Jon Hunter <jonathanh@nvidia.com>
-Closes: https://lore.kernel.org/linux-mm/e988eff6-1287-425e-a06c-805af5bbf262@nvidia.com
-Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
-Link: https://patch.msgid.link/20251207154148.117723-1-harry.yoo@oracle.com
-Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20251205-net-mptcp-misc-fixes-6-19-rc1-v1-1-9e4781a6c1b8@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/slab.h |    7 ++++++
- mm/slab.h            |    1 
- mm/slab_common.c     |   52 +++++++++++++++++++++++++++++++++-------------
- mm/slub.c            |   57 +++++++++++++++++++++++++++------------------------
- 4 files changed, 76 insertions(+), 41 deletions(-)
+ include/uapi/linux/mptcp.h |    1 +
+ net/mptcp/pm_netlink.c     |    3 ++-
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
---- a/include/linux/slab.h
-+++ b/include/linux/slab.h
-@@ -1150,10 +1150,17 @@ static inline void kvfree_rcu_barrier(vo
- 	rcu_barrier();
- }
+--- a/include/uapi/linux/mptcp.h
++++ b/include/uapi/linux/mptcp.h
+@@ -40,6 +40,7 @@
+ #define MPTCP_PM_ADDR_FLAG_FULLMESH		_BITUL(3)
+ #define MPTCP_PM_ADDR_FLAG_IMPLICIT		_BITUL(4)
+ #define MPTCP_PM_ADDR_FLAG_LAMINAR		_BITUL(5)
++#define MPTCP_PM_ADDR_FLAGS_MASK		GENMASK(5, 0)
  
-+static inline void kvfree_rcu_barrier_on_cache(struct kmem_cache *s)
-+{
-+	rcu_barrier();
-+}
-+
- static inline void kfree_rcu_scheduler_running(void) { }
- #else
- void kvfree_rcu_barrier(void);
- 
-+void kvfree_rcu_barrier_on_cache(struct kmem_cache *s);
-+
- void kfree_rcu_scheduler_running(void);
- #endif
- 
---- a/mm/slab.h
-+++ b/mm/slab.h
-@@ -442,6 +442,7 @@ static inline bool is_kmalloc_normal(str
- 
- bool __kfree_rcu_sheaf(struct kmem_cache *s, void *obj);
- void flush_all_rcu_sheaves(void);
-+void flush_rcu_sheaves_on_cache(struct kmem_cache *s);
- 
- #define SLAB_CORE_FLAGS (SLAB_HWCACHE_ALIGN | SLAB_CACHE_DMA | \
- 			 SLAB_CACHE_DMA32 | SLAB_PANIC | \
---- a/mm/slab_common.c
-+++ b/mm/slab_common.c
-@@ -492,7 +492,7 @@ void kmem_cache_destroy(struct kmem_cach
- 		return;
- 
- 	/* in-flight kfree_rcu()'s may include objects from our cache */
--	kvfree_rcu_barrier();
-+	kvfree_rcu_barrier_on_cache(s);
- 
- 	if (IS_ENABLED(CONFIG_SLUB_RCU_DEBUG) &&
- 	    (s->flags & SLAB_TYPESAFE_BY_RCU)) {
-@@ -2039,25 +2039,13 @@ unlock_return:
- }
- EXPORT_SYMBOL_GPL(kvfree_call_rcu);
- 
--/**
-- * kvfree_rcu_barrier - Wait until all in-flight kvfree_rcu() complete.
-- *
-- * Note that a single argument of kvfree_rcu() call has a slow path that
-- * triggers synchronize_rcu() following by freeing a pointer. It is done
-- * before the return from the function. Therefore for any single-argument
-- * call that will result in a kfree() to a cache that is to be destroyed
-- * during module exit, it is developer's responsibility to ensure that all
-- * such calls have returned before the call to kmem_cache_destroy().
-- */
--void kvfree_rcu_barrier(void)
-+static inline void __kvfree_rcu_barrier(void)
- {
- 	struct kfree_rcu_cpu_work *krwp;
- 	struct kfree_rcu_cpu *krcp;
- 	bool queued;
- 	int i, cpu;
- 
--	flush_all_rcu_sheaves();
--
- 	/*
- 	 * Firstly we detach objects and queue them over an RCU-batch
- 	 * for all CPUs. Finally queued works are flushed for each CPU.
-@@ -2119,8 +2107,43 @@ void kvfree_rcu_barrier(void)
- 		}
- 	}
- }
-+
-+/**
-+ * kvfree_rcu_barrier - Wait until all in-flight kvfree_rcu() complete.
-+ *
-+ * Note that a single argument of kvfree_rcu() call has a slow path that
-+ * triggers synchronize_rcu() following by freeing a pointer. It is done
-+ * before the return from the function. Therefore for any single-argument
-+ * call that will result in a kfree() to a cache that is to be destroyed
-+ * during module exit, it is developer's responsibility to ensure that all
-+ * such calls have returned before the call to kmem_cache_destroy().
-+ */
-+void kvfree_rcu_barrier(void)
-+{
-+	flush_all_rcu_sheaves();
-+	__kvfree_rcu_barrier();
-+}
- EXPORT_SYMBOL_GPL(kvfree_rcu_barrier);
- 
-+/**
-+ * kvfree_rcu_barrier_on_cache - Wait for in-flight kvfree_rcu() calls on a
-+ *                               specific slab cache.
-+ * @s: slab cache to wait for
-+ *
-+ * See the description of kvfree_rcu_barrier() for details.
-+ */
-+void kvfree_rcu_barrier_on_cache(struct kmem_cache *s)
-+{
-+	if (s->cpu_sheaves)
-+		flush_rcu_sheaves_on_cache(s);
-+	/*
-+	 * TODO: Introduce a version of __kvfree_rcu_barrier() that works
-+	 * on a specific slab cache.
-+	 */
-+	__kvfree_rcu_barrier();
-+}
-+EXPORT_SYMBOL_GPL(kvfree_rcu_barrier_on_cache);
-+
- static unsigned long
- kfree_rcu_shrink_count(struct shrinker *shrink, struct shrink_control *sc)
- {
-@@ -2216,4 +2239,3 @@ void __init kvfree_rcu_init(void)
- }
- 
- #endif /* CONFIG_KVFREE_RCU_BATCHED */
--
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -4118,42 +4118,47 @@ static void flush_rcu_sheaf(struct work_
- 
- 
- /* needed for kvfree_rcu_barrier() */
--void flush_all_rcu_sheaves(void)
-+void flush_rcu_sheaves_on_cache(struct kmem_cache *s)
- {
- 	struct slub_flush_work *sfw;
--	struct kmem_cache *s;
- 	unsigned int cpu;
- 
-+	mutex_lock(&flush_lock);
-+
-+	for_each_online_cpu(cpu) {
-+		sfw = &per_cpu(slub_flush, cpu);
-+
-+		/*
-+		 * we don't check if rcu_free sheaf exists - racing
-+		 * __kfree_rcu_sheaf() might have just removed it.
-+		 * by executing flush_rcu_sheaf() on the cpu we make
-+		 * sure the __kfree_rcu_sheaf() finished its call_rcu()
-+		 */
-+
-+		INIT_WORK(&sfw->work, flush_rcu_sheaf);
-+		sfw->s = s;
-+		queue_work_on(cpu, flushwq, &sfw->work);
-+	}
-+
-+	for_each_online_cpu(cpu) {
-+		sfw = &per_cpu(slub_flush, cpu);
-+		flush_work(&sfw->work);
-+	}
-+
-+	mutex_unlock(&flush_lock);
-+}
-+
-+void flush_all_rcu_sheaves(void)
-+{
-+	struct kmem_cache *s;
-+
- 	cpus_read_lock();
- 	mutex_lock(&slab_mutex);
- 
- 	list_for_each_entry(s, &slab_caches, list) {
- 		if (!s->cpu_sheaves)
- 			continue;
--
--		mutex_lock(&flush_lock);
--
--		for_each_online_cpu(cpu) {
--			sfw = &per_cpu(slub_flush, cpu);
--
--			/*
--			 * we don't check if rcu_free sheaf exists - racing
--			 * __kfree_rcu_sheaf() might have just removed it.
--			 * by executing flush_rcu_sheaf() on the cpu we make
--			 * sure the __kfree_rcu_sheaf() finished its call_rcu()
--			 */
--
--			INIT_WORK(&sfw->work, flush_rcu_sheaf);
--			sfw->s = s;
--			queue_work_on(cpu, flushwq, &sfw->work);
--		}
--
--		for_each_online_cpu(cpu) {
--			sfw = &per_cpu(slub_flush, cpu);
--			flush_work(&sfw->work);
--		}
--
--		mutex_unlock(&flush_lock);
-+		flush_rcu_sheaves_on_cache(s);
+ struct mptcp_info {
+ 	__u8	mptcpi_subflows;
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -119,7 +119,8 @@ int mptcp_pm_parse_entry(struct nlattr *
  	}
  
- 	mutex_unlock(&slab_mutex);
+ 	if (tb[MPTCP_PM_ADDR_ATTR_FLAGS])
+-		entry->flags = nla_get_u32(tb[MPTCP_PM_ADDR_ATTR_FLAGS]);
++		entry->flags = nla_get_u32(tb[MPTCP_PM_ADDR_ATTR_FLAGS]) &
++			       MPTCP_PM_ADDR_FLAGS_MASK;
+ 
+ 	if (tb[MPTCP_PM_ADDR_ATTR_PORT])
+ 		entry->addr.port = htons(nla_get_u16(tb[MPTCP_PM_ADDR_ATTR_PORT]));
 
 
 
