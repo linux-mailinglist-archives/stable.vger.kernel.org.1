@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-203666-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203667-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05E3CCE7466
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:58:32 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72F94CE7469
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:58:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E9C9130169A2
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 15:58:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C07F33017F25
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 15:58:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 415223128BC;
-	Mon, 29 Dec 2025 15:58:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D02F532B9BA;
+	Mon, 29 Dec 2025 15:58:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AoZTrs+T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hMs2uKQu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2CD5264627
-	for <stable@vger.kernel.org>; Mon, 29 Dec 2025 15:58:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DDDF32B9A8
+	for <stable@vger.kernel.org>; Mon, 29 Dec 2025 15:58:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767023894; cv=none; b=QX2Q5IvnRhTriUkqjPYtM5uZvo4R+a43j4rHcuss3/murlN5RCyqal9PaRCDGxddHozcZM3k/SxQTV6KFFS3v6wwl964gScrX7DD0BZCrsH3XapJNx+CWLLrrGeZv+lTk5OueflR22sms3DU8M+7HkvBE5RmutDmn9TyrvTjutQ=
+	t=1767023898; cv=none; b=OCrnrT0GjZIFB/3n08hUrxB5YNO1el98C9oLswk1oaU/4k8O7qicpZuTfasJWuD62g4xvBbBUGgT+uwcCtChU9K8GjH5vWZyUcJLf6DozOM9pvi6PLW5PI5Qj31tpAijkJ5rKZC80p/+KW3pibfQWIg9Mhi5YQBnMvoAe7xyAuw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767023894; c=relaxed/simple;
-	bh=jz+Tg6281t9Y1t2zAY+LbQjhy8Kwx2GdSzc9Ie0prTs=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=GIr2s4YULyjIeSph+tUYoUlH/rHIucFb8BRRrmu1kFDkDe2mb+rR95mI+DRYPW2/weHL0pyUu59dsMDs8s+VgS8QQrN8IOoEbgfZhziW4wLlNvVBdz1YKGQlBQm3BnhBK49Qxsx7hKRE0lnuwmqGdV4yrh5oiss0wQwpxgtoZ54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AoZTrs+T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 341DCC4CEF7;
-	Mon, 29 Dec 2025 15:58:13 +0000 (UTC)
+	s=arc-20240116; t=1767023898; c=relaxed/simple;
+	bh=cNRg0bU/H7s+okx5ngJR6Lcm76AyhjTlCTl+hV1SlZk=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=GboJULNaNwB18m63a3vxtp9gz7UxWXL9ErXM7EMj6Fmd2zm0hVnLZvJ3PWmmxzNOm8fDMImCDG6IyPO5qNn4bEkGWsc7klLAPW+yCbYJC7Uw3PRTWLCMfB9da0fs2V91ger7OyHyN3vfy75RdgUlU3HapPInbibiVda6KD5cFNw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hMs2uKQu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98E1AC4CEF7;
+	Mon, 29 Dec 2025 15:58:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767023893;
-	bh=jz+Tg6281t9Y1t2zAY+LbQjhy8Kwx2GdSzc9Ie0prTs=;
+	s=korg; t=1767023898;
+	bh=cNRg0bU/H7s+okx5ngJR6Lcm76AyhjTlCTl+hV1SlZk=;
 	h=Subject:To:Cc:From:Date:From;
-	b=AoZTrs+TrULoMhgebiy778UShhHYhgsV46Zt+weQHdp07p8TSmDrtMkIdpaViIMt9
-	 1VSPi/0lhLo1LaPEpmZ1vv9IR00VqDPqRyou2JgRnHS3ARhvoeVAKMsoZww9peF4SS
-	 LhmV4DxakpppXK9WzhhjmGJPxu4t4lBbS5o51noA=
-Subject: FAILED: patch "[PATCH] ARM: dts: microchip: sama7g5: fix uart fifo size to 32" failed to apply to 5.15-stable tree
+	b=hMs2uKQuIEZsxMdfS5C0iqYT9X5rjqFM5ZKjmqg4vrzT/M0OK1iDx5zh/p/RVpd/c
+	 Gojz2WCRR4jK7u1SQfSXL0yrCzzWlCiX2n8H1h+KUUU8z+x+RTHKeAVu9S8vn0WMFJ
+	 QmPJD7yVd+3U0XE6BMmTmGtdVaLRschWBgkXusaE=
+Subject: FAILED: patch "[PATCH] ARM: dts: microchip: sama7g5: fix uart fifo size to 32" failed to apply to 5.10-stable tree
 To: nicolas.ferre@microchip.com,claudiu.beznea@tuxon.dev
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 29 Dec 2025 16:58:00 +0100
-Message-ID: <2025122900-ripple-expert-4378@gregkh>
+Date: Mon, 29 Dec 2025 16:58:05 +0100
+Message-ID: <2025122905-crawfish-unaware-fb3a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -51,19 +51,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x 5654889a94b0de5ad6ceae3793e7f5e0b61b50b6
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025122900-ripple-expert-4378@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025122905-crawfish-unaware-fb3a@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
