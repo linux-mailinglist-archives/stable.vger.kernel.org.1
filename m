@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-203518-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203519-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F796CE690C
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 12:40:53 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 259F6CE692A
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 12:42:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3D4ED3002A5C
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 11:40:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id ECE9D3016DCE
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 11:40:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DF8630C622;
-	Mon, 29 Dec 2025 11:40:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5533D2DC344;
+	Mon, 29 Dec 2025 11:40:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A3SOxFu5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0cdniZPs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 620DF2D2384
-	for <stable@vger.kernel.org>; Mon, 29 Dec 2025 11:40:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 502F830C618
+	for <stable@vger.kernel.org>; Mon, 29 Dec 2025 11:40:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767008448; cv=none; b=l+ucgMVYpE9lieF7AN8wCxD8DndFUvjY2SoKHz7m2Kv0fEqorAyKH95/7DUJbCGKGDbOVQkMy/TwKNEpcrAfgkXCbsUf4DuyUjXeicDtVjpN5LhzRdf23Ukg1dSXbm7oJ6vUM0QsyjUX7zKhDEqn4ImyC/vkSd2RZonv3sawn4M=
+	t=1767008450; cv=none; b=TAfxCvkvCUpFGdqkTggA5bXOXetIu6510yJ859LhIsdMW+RJ4CsZfKayRr9NIOhUUrta2ijyBDe4RaQJbgg8m0lKx+7T72j9gpA62QUCuua7MU38SktHipRq3IjoUniDZjpKvyyKUXCVgtdwbttImp+K2gG+UouHkk947+wPLc8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767008448; c=relaxed/simple;
-	bh=35Zkr357Cn18ytiA+xd0fmyjstN/5ha243sOyyynGkc=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=KtyscxD+cRpf8XUSnS0SGcHwUyvxZC+W0TkNTRjKLgjhNK0e/nBmIMM0U2OSD/Z4xQCCPJTRetIZkYdruGCXnqNT7/cuUKpJOEBEk/WQ7vDAi2/gbZPAH/bVk9qUBZXPORcUBEKaGmf+OOelzO7Q/JEV1eO8lVUuVNgCmmcvA+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A3SOxFu5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9E88C4CEF7;
-	Mon, 29 Dec 2025 11:40:45 +0000 (UTC)
+	s=arc-20240116; t=1767008450; c=relaxed/simple;
+	bh=4+1GJxsfjk/VOvPR42ftrKuTkdCWrp9k9tSwngLJb8M=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=iN5SBAci08hy+VhrSOO4Q+Jf918wTlbScAMXzlz/s3tTqdsxGQT01QNRwGGvHqQmxQocNu6ea9HnhPn2mxLD2gjcd9M5weOAEmoj+XrF2EPl5myvVWGsf9qsUlXyu2tRI5QXiEQvQQykT7cMPnC51/DgFpzSkr4tYO1AjKnjSgg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0cdniZPs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79DADC116C6;
+	Mon, 29 Dec 2025 11:40:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767008446;
-	bh=35Zkr357Cn18ytiA+xd0fmyjstN/5ha243sOyyynGkc=;
+	s=korg; t=1767008448;
+	bh=4+1GJxsfjk/VOvPR42ftrKuTkdCWrp9k9tSwngLJb8M=;
 	h=Subject:To:Cc:From:Date:From;
-	b=A3SOxFu5H/ijal8nAdXk6LjBtDog6ne4UUWFcEL2IUlOblQzuuTJGdbFIBXRfAAaK
-	 9eEdhwHi8zkrLqU3yufOLIXtTKe83WwDj1TgKG01lzUNbfk0YHu/s8EIKHww+R4sfq
-	 qTaiy38TfldjCmkf31SklgG3ttdKvYiOYBcHbSe8=
-Subject: FAILED: patch "[PATCH] jbd2: fix the inconsistency between checksum and data in" failed to apply to 5.15-stable tree
+	b=0cdniZPscytg+7Yg8lOt8VAvmknCpbhZow7Uh36xpSR54WYSl9UZmIo2UhLvBDpjb
+	 nn6nyfBC6KbsADjJf/M6tyWJN3uN/uvy459jrLCH5ipv5W8vyBuD6gbBARkzqp8wPe
+	 cybq4gxnL6xDEoqkPnvqWswE8LkxsO5dlmivKnqg=
+Subject: FAILED: patch "[PATCH] jbd2: fix the inconsistency between checksum and data in" failed to apply to 5.10-stable tree
 To: yebin10@huawei.com,djwong@kernel.org,jack@suse.cz,libaokun1@huawei.com,tytso@mit.edu
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 29 Dec 2025 12:40:35 +0100
-Message-ID: <2025122935-turban-sweep-c818@gregkh>
+Date: Mon, 29 Dec 2025 12:40:36 +0100
+Message-ID: <2025122936-jaunt-sliding-0a13@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -51,19 +51,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x 6abfe107894af7e8ce3a2e120c619d81ee764ad5
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025122935-turban-sweep-c818@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025122936-jaunt-sliding-0a13@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
