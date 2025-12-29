@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-203853-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203855-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D368CE7753
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:27:49 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6925CE775C
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:28:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 543C730C900E
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:22:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9F20B302CBA9
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:22:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC909246782;
-	Mon, 29 Dec 2025 16:22:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94DB7246782;
+	Mon, 29 Dec 2025 16:22:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fn5Hg5n/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iszJgovn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5FDE202F65;
-	Mon, 29 Dec 2025 16:22:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5174E9460;
+	Mon, 29 Dec 2025 16:22:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767025352; cv=none; b=CkfXRjEHNx+aeKJTzTzfg0t6lVuA++NVLA7EX8lXyJH8FKRrtwBiYZpvlPdc2bx0wDglWJmpW/HfYIs6KsqLLYsteVMAvgMPoexPJh4lCMSqbhpKASjNuTs8LR/l06/aDuoBUSkKc2B01kcojpMQr30I2FA7duD77WaQDwEMbIA=
+	t=1767025358; cv=none; b=MERVkdOzAmGPqokdsFcHZv7w7HsP9AL+53vvq2/bCgW3++c2KBzTj4rzst1b8mnioJ0nN9F1HRQ5v7f7nr8TVqOmS0O1vrR6qWFa3oye5eN7Yyk6qwMd5iQ7PzauSQVv7HEQe+NnjQdzGzTViPfM1tIQGIdsUg95xEO6sdiQ72I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767025352; c=relaxed/simple;
-	bh=GGvO/JocYJsLoVc8VuV+5juFMg6Sc5f+cEzX+MrqSUk=;
+	s=arc-20240116; t=1767025358; c=relaxed/simple;
+	bh=7CKROYoCKAEDpMMdgdShnowNb+HEyfOKiZtHtWjzeVM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ouoyHRaC5J4GhlBq/R3rQjPj4tUdMGM+Th+cNJAEsCir1R9i9aE5UOy6ehUIL8zuRjndB5dfBV1uFC09oSBFTXexKAE1dei0LwD/OL6Zs62TwVq4bnz3CNFh7u9yo1MgcLdSL6llTkcf9QdR28pygc6kkZKpLVBMCi6gAdOfjEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fn5Hg5n/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BBEBC4CEF7;
-	Mon, 29 Dec 2025 16:22:31 +0000 (UTC)
+	 MIME-Version; b=gIYqNXO/VeoAvoHV7gILnCb9ZurXmkqRhHCgbdobVop3zzHaDF+LjtQko4740Q4qOuSSXvMTAJ9iXXQNNzL6FgwcDx+UAER5c5iuD8RWZrv0UfiFdQYN7GiTQSCrnJasvFEj0ww+Cy5Sg8xSRjuN0Qft9uqshGvjUpPGpsFhEtA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iszJgovn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAB2BC4CEF7;
+	Mon, 29 Dec 2025 16:22:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767025352;
-	bh=GGvO/JocYJsLoVc8VuV+5juFMg6Sc5f+cEzX+MrqSUk=;
+	s=korg; t=1767025358;
+	bh=7CKROYoCKAEDpMMdgdShnowNb+HEyfOKiZtHtWjzeVM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fn5Hg5n/9i6EWl5dnN3m/VNEMijbU3goNQGubBtn4FH5LrkY1zibVHqCUory/bgF5
-	 293cDPnjhOJG8Ng0n4wR0Kgs8+T41WUSXLqAlfK0cOYg2m8YmdJnzceFUGMz85Bmc3
-	 8SirOE+v9B38x04gyQxtF9EY0KkYb8fsN71j/9Fk=
+	b=iszJgovnRFfQv2gGQxfBH3+wmdogHPdlko8pgr5I0HhNzlbfAn6gBiYZqyAVIn0e1
+	 0rNboq5LPPXyuAbetEunLTco8o4YNPfOt59Uz8HRRC0q66qzdAUFrykautJqHacBU/
+	 msM2zFdEAHNTAUz/MinFd/DoCLM7jMZHM8EGTUA8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josua Mayer <josua@solid-run.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Gregory CLEMENT <gregory.clement@bootlin.com>,
+	Ben Collins <bcollins@kernel.org>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 184/430] clk: mvebu: cp110 add CLK_IGNORE_UNUSED to pcie_x10, pcie_x11 & pcie_x4
-Date: Mon, 29 Dec 2025 17:09:46 +0100
-Message-ID: <20251229160731.129215771@linuxfoundation.org>
+Subject: [PATCH 6.18 185/430] powerpc/addnote: Fix overflow on 32-bit builds
+Date: Mon, 29 Dec 2025 17:09:47 +0100
+Message-ID: <20251229160731.165937355@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251229160724.139406961@linuxfoundation.org>
 References: <20251229160724.139406961@linuxfoundation.org>
@@ -65,76 +65,48 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Josua Mayer <josua@solid-run.com>
+From: Ben Collins <bcollins@kernel.org>
 
-[ Upstream commit f0e6bc0c3ef4b4afb299bd6912586cafd5d864e9 ]
+[ Upstream commit 825ce89a3ef17f84cf2c0eacfa6b8dc9fd11d13f ]
 
-CP110 based platforms rely on the bootloader for pci port
-initialization.
-TF-A actively prevents non-uboot re-configuration of pci lanes, and many
-boards do not have software control over the pci card reset.
+The PUT_64[LB]E() macros need to cast the value to unsigned long long
+like the GET_64[LB]E() macros. Caused lots of warnings when compiled
+on 32-bit, and clobbered addresses (36-bit P4080).
 
-If a pci port had link at boot-time and the clock is stopped at a later
-point, the link fails and can not be recovered.
-
-PCI controller driver probe - and by extension ownership of a driver for
-the pci clocks - may be delayed especially on large modular kernels,
-causing the clock core to start disabling unused clocks.
-
-Add the CLK_IGNORE_UNUSED flag to the three pci port's clocks to ensure
-they are not stopped before the pci controller driver has taken
-ownership and tested for an existing link.
-
-This fixes failed pci link detection when controller driver probes late,
-e.g. with arm64 defconfig and CONFIG_PHY_MVEBU_CP110_COMPHY=m.
-
-Closes: https://lore.kernel.org/r/b71596c7-461b-44b6-89ab-3cfbd492639f@solid-run.com
-Signed-off-by: Josua Mayer <josua@solid-run.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Gregory CLEMENT <gregory.clement@bootlin.com>
+Signed-off-by: Ben Collins <bcollins@kernel.org>
+Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/2025042122-mustard-wrasse-694572@boujee-and-buff
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/mvebu/cp110-system-controller.c | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+ arch/powerpc/boot/addnote.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/clk/mvebu/cp110-system-controller.c b/drivers/clk/mvebu/cp110-system-controller.c
-index 03c59bf22106..b47c86906046 100644
---- a/drivers/clk/mvebu/cp110-system-controller.c
-+++ b/drivers/clk/mvebu/cp110-system-controller.c
-@@ -110,6 +110,25 @@ static const char * const gate_base_names[] = {
- 	[CP110_GATE_EIP197]	= "eip197"
- };
+diff --git a/arch/powerpc/boot/addnote.c b/arch/powerpc/boot/addnote.c
+index 53b3b2621457..78704927453a 100644
+--- a/arch/powerpc/boot/addnote.c
++++ b/arch/powerpc/boot/addnote.c
+@@ -68,8 +68,8 @@ static int e_class = ELFCLASS32;
+ #define PUT_16BE(off, v)(buf[off] = ((v) >> 8) & 0xff, \
+ 			 buf[(off) + 1] = (v) & 0xff)
+ #define PUT_32BE(off, v)(PUT_16BE((off), (v) >> 16L), PUT_16BE((off) + 2, (v)))
+-#define PUT_64BE(off, v)((PUT_32BE((off), (v) >> 32L), \
+-			  PUT_32BE((off) + 4, (v))))
++#define PUT_64BE(off, v)((PUT_32BE((off), (unsigned long long)(v) >> 32L), \
++			  PUT_32BE((off) + 4, (unsigned long long)(v))))
  
-+static unsigned long gate_flags(const u8 bit_idx)
-+{
-+	switch (bit_idx) {
-+	case CP110_GATE_PCIE_X1_0:
-+	case CP110_GATE_PCIE_X1_1:
-+	case CP110_GATE_PCIE_X4:
-+		/*
-+		 * If a port had an active link at boot time, stopping
-+		 * the clock creates a failed state from which controller
-+		 * driver can not recover.
-+		 * Prevent stopping this clock till after a driver has taken
-+		 * ownership.
-+		 */
-+		return CLK_IGNORE_UNUSED;
-+	default:
-+		return 0;
-+	}
-+};
-+
- struct cp110_gate_clk {
- 	struct clk_hw hw;
- 	struct regmap *regmap;
-@@ -171,6 +190,7 @@ static struct clk_hw *cp110_register_gate(const char *name,
- 	init.ops = &cp110_gate_ops;
- 	init.parent_names = &parent_name;
- 	init.num_parents = 1;
-+	init.flags = gate_flags(bit_idx);
+ #define GET_16LE(off)	((buf[off]) + (buf[(off)+1] << 8))
+ #define GET_32LE(off)	(GET_16LE(off) + (GET_16LE((off)+2U) << 16U))
+@@ -78,7 +78,8 @@ static int e_class = ELFCLASS32;
+ #define PUT_16LE(off, v) (buf[off] = (v) & 0xff, \
+ 			  buf[(off) + 1] = ((v) >> 8) & 0xff)
+ #define PUT_32LE(off, v) (PUT_16LE((off), (v)), PUT_16LE((off) + 2, (v) >> 16L))
+-#define PUT_64LE(off, v) (PUT_32LE((off), (v)), PUT_32LE((off) + 4, (v) >> 32L))
++#define PUT_64LE(off, v) (PUT_32LE((off), (unsigned long long)(v)), \
++			  PUT_32LE((off) + 4, (unsigned long long)(v) >> 32L))
  
- 	gate->regmap = regmap;
- 	gate->bit_idx = bit_idx;
+ #define GET_16(off)	(e_data == ELFDATA2MSB ? GET_16BE(off) : GET_16LE(off))
+ #define GET_32(off)	(e_data == ELFDATA2MSB ? GET_32BE(off) : GET_32LE(off))
 -- 
 2.51.0
 
