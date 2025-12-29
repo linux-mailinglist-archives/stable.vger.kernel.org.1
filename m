@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-203841-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203808-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A017CE7720
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:26:49 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B91FCCE76B4
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:23:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1E62530365B0
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:21:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 255DF301C928
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:20:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E726F24EF8C;
-	Mon, 29 Dec 2025 16:21:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF9CA3314A4;
+	Mon, 29 Dec 2025 16:20:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AhvzGUOK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W9u5a5Of"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2F991AF0AF;
-	Mon, 29 Dec 2025 16:21:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D5A833123A;
+	Mon, 29 Dec 2025 16:20:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767025318; cv=none; b=Q7r3EPZgTMNv2OBKneS5xTC82VfUVwRA5w4fMXTB4Zs3HIH3kj0n9ldtexn6Gc56ZPeXk8OYt/yaeO4kPP2q7g2Nmt/jVbdCYFrgMtjWrJ2vgJsPxN0HzwWrgCBpRLx9OxIsjLqU+6W6tNpXfwW94Kg3tUGPEDFfKguOstIHc/4=
+	t=1767025225; cv=none; b=f96OAB2JaN5LeJZ1RSCte6Jxhls2gP0MKhpx9dtS/xLkZre0BTcs2nd1h98WEv9vvwyzJ4V6xZ/qW7pXph1lKY6vC4HyH5GTr4oY/U8fos/t6hMRDwmYjNXBRyEiqK47vSVwNGf5DxSRHT1FO4rfRlpXzKYAC07nehqQrAu37rE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767025318; c=relaxed/simple;
-	bh=SYmXgv4FllHkFMPSWzxJ7WWL+G/uXvgkAEBoqgFY2PU=;
+	s=arc-20240116; t=1767025225; c=relaxed/simple;
+	bh=yrl2TaHWmfUDq2Fh6pRu8NnMuOtl0BbPx690NWWsPPM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AWd3InaaUCeTbZ9nZ8FG1z9cuEUGOhTrxVTequ3uChSbk+vnK58nwbX1XOi7v22HWhdCnCvYizmNUhI4NQcZJeweSAOfbbj90XQIzuI5ubqkyDLlJZOCLVSXRNDTzZ5HSqUk4tWbvST872Am2Xjzck9o9rMidy48HXbMoPolENU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AhvzGUOK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 279B3C4CEF7;
-	Mon, 29 Dec 2025 16:21:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Ra3M6HjskQzYsdRfhB6mdC/IyojaRfqasBRyAjRMn4MxbKc2R3JnNK+eXdW5SMBffhhWlx3m9LuKAeHJb4bcvc1oYuQ5mbA/Q6yEpSyJZ+UEPKUM0d5bIzYc+Mnb4Vfym1AyfB1O0TczmMSz+9IY7Sdwb3zJ25z0IyHZQ4Y8JLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W9u5a5Of; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27030C4CEF7;
+	Mon, 29 Dec 2025 16:20:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767025318;
-	bh=SYmXgv4FllHkFMPSWzxJ7WWL+G/uXvgkAEBoqgFY2PU=;
+	s=korg; t=1767025225;
+	bh=yrl2TaHWmfUDq2Fh6pRu8NnMuOtl0BbPx690NWWsPPM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AhvzGUOKQBlnjjONeTkwqrb+rPbSWDWOeF4mUkuyaFooJatYS4O2PBNn0S+Qi42XL
-	 Qi2hvLVJXUcUa2dyZpXyjE8+E/q7JXUP7XxN2PCbi1AaZNY+qMSRcGWkOeBYMbKu2M
-	 L1GXkmJ1n7IjwxQ9fb3nmOPRGhPe/bRAlULXEBio=
+	b=W9u5a5OfbAv3WYMA5vN/n4oT/UAuhjdughbZtWHnU7lnLxMsGw6liLKmLFAvsV980
+	 O8jEB1836wo4bFqoSQo5oSD9S8ClwY0RhOk4d3rukhpBBFwqr4viriGpLpqKYAHAzm
+	 Jm7acdBRHe9sL0LGY+IcFaLB1MsqsEaK4GfEbnys=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Brost <matthew.brost@intel.com>,
 	Ashutosh Dixit <ashutosh.dixit@intel.com>,
-	Shuicheng Lin <shuicheng.lin@intel.com>,
+	Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
 	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 138/430] drm/xe/oa: Limit num_syncs to prevent oversized allocations
-Date: Mon, 29 Dec 2025 17:09:00 +0100
-Message-ID: <20251229160729.442941974@linuxfoundation.org>
+Subject: [PATCH 6.18 139/430] drm/xe/oa: Always set OAG_OAGLBCTXCTRL_COUNTER_RESUME
+Date: Mon, 29 Dec 2025 17:09:01 +0100
+Message-ID: <20251229160729.479571377@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251229160724.139406961@linuxfoundation.org>
 References: <20251229160724.139406961@linuxfoundation.org>
@@ -67,47 +66,46 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Shuicheng Lin <shuicheng.lin@intel.com>
+From: Ashutosh Dixit <ashutosh.dixit@intel.com>
 
-[ Upstream commit f8dd66bfb4e184c71bd26418a00546ebe7f5c17a ]
+[ Upstream commit 256edb267a9d0b5aef70e408e9fba4f930f9926e ]
 
-The OA open parameters did not validate num_syncs, allowing
-userspace to pass arbitrarily large values, potentially
-leading to excessive allocations.
+Reports can be written out to the OA buffer using ways other than periodic
+sampling. These include mmio trigger and context switches. To support these
+use cases, when periodic sampling is not enabled,
+OAG_OAGLBCTXCTRL_COUNTER_RESUME must be set.
 
-Add check to ensure that num_syncs does not exceed DRM_XE_MAX_SYNCS,
-returning -EINVAL when the limit is violated.
-
-v2: use XE_IOCTL_DBG() and drop duplicated check. (Ashutosh)
-
-Fixes: c8507a25cebd ("drm/xe/oa/uapi: Define and parse OA sync properties")
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Signed-off-by: Shuicheng Lin <shuicheng.lin@intel.com>
-Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
-Link: https://patch.msgid.link/20251205234715.2476561-6-shuicheng.lin@intel.com
-(cherry picked from commit e057b2d2b8d815df3858a87dffafa2af37e5945b)
+Fixes: 1db9a9dc90ae ("drm/xe/oa: OA stream initialization (OAG)")
+Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Link: https://patch.msgid.link/20251205212613.826224-4-ashutosh.dixit@intel.com
+(cherry picked from commit 88d98e74adf3e20f678bb89581a5c3149fdbdeaa)
 Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_oa.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/xe/xe_oa.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/gpu/drm/xe/xe_oa.c b/drivers/gpu/drm/xe/xe_oa.c
-index 125698a9ecf1..10047373e184 100644
+index 10047373e184..d0ceb67af83e 100644
 --- a/drivers/gpu/drm/xe/xe_oa.c
 +++ b/drivers/gpu/drm/xe/xe_oa.c
-@@ -1253,6 +1253,9 @@ static int xe_oa_set_no_preempt(struct xe_oa *oa, u64 value,
- static int xe_oa_set_prop_num_syncs(struct xe_oa *oa, u64 value,
- 				    struct xe_oa_open_param *param)
- {
-+	if (XE_IOCTL_DBG(oa->xe, value > DRM_XE_MAX_SYNCS))
-+		return -EINVAL;
-+
- 	param->num_syncs = value;
- 	return 0;
- }
+@@ -1104,11 +1104,12 @@ static int xe_oa_enable_metric_set(struct xe_oa_stream *stream)
+ 			oag_buf_size_select(stream) |
+ 			oag_configure_mmio_trigger(stream, true));
+ 
+-	xe_mmio_write32(mmio, __oa_regs(stream)->oa_ctx_ctrl, stream->periodic ?
+-			(OAG_OAGLBCTXCTRL_COUNTER_RESUME |
++	xe_mmio_write32(mmio, __oa_regs(stream)->oa_ctx_ctrl,
++			OAG_OAGLBCTXCTRL_COUNTER_RESUME |
++			(stream->periodic ?
+ 			 OAG_OAGLBCTXCTRL_TIMER_ENABLE |
+ 			 REG_FIELD_PREP(OAG_OAGLBCTXCTRL_TIMER_PERIOD_MASK,
+-					stream->period_exponent)) : 0);
++					 stream->period_exponent) : 0));
+ 
+ 	/*
+ 	 * Initialize Super Queue Internal Cnt Register
 -- 
 2.51.0
 
