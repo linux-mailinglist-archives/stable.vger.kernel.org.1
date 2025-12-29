@@ -1,50 +1,51 @@
-Return-Path: <stable+bounces-203878-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203844-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC825CE77AD
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:29:59 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C215CE7738
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:27:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E333E305964D
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:23:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C9BF930983E3
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:22:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0E2225DB1A;
-	Mon, 29 Dec 2025 16:23:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F34AB2571BE;
+	Mon, 29 Dec 2025 16:22:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="We4imbqD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Psbj5vA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 143082749D2;
-	Mon, 29 Dec 2025 16:23:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B033E2222CB;
+	Mon, 29 Dec 2025 16:22:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767025424; cv=none; b=c2w5TADrJbHbs+8QnYELuszOBbN+SfrQzAX50hfwdFdK4TImjUdJwm/2++4UCnuBfv28qsGNrHe+og+na5Y/KDqTA3M1HVhf77p8gwPs2xkRh7GZI/pK8SOel0QLnihf7d0NaewNuzNyKf5cG3g9cNrJ1SOVa9REiyJxNy6KUt8=
+	t=1767025327; cv=none; b=cIljUPXzQaISzZ/rlHkcz7KdzuYbu9P6F8BGhR5mbfUGPjnSOK+3C6NFVZ1fnNd5Mzb0k/ON6zA+VqexoSy8BX0JVDkO6GsuDbm8VCWdCTb8RKSdDGIvZH9Wkb1zbBZ4m5+WdIFWa0c/WjNctSqanprq03s/EXkIHJqPdd7bFC4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767025424; c=relaxed/simple;
-	bh=3Sn/CXGObT3JFmtMH7B8tQ21yJ/Tvouvac64aiXl84U=;
+	s=arc-20240116; t=1767025327; c=relaxed/simple;
+	bh=DF0FeAo3wYFF3pu4koczl8auHu371tUu1KT86bfLEaI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LdefLHLtVwefBjdJ/OSoPc9RsZK2TFjzBqNdBhSSxSUBmx8/hLYhYQbkHozsHpWJmZAVoJ953ZCykCLbCYDZJi8DHiJHARBUSHCp5rquDAuT9fLrqRb1lZ3/DpxjS6iu4IjQqONvdz2GsTKK2mCHa7VkpVqI1OaEumopEoNeE3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=We4imbqD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 738C8C19421;
-	Mon, 29 Dec 2025 16:23:43 +0000 (UTC)
+	 MIME-Version; b=lETckAnQyWSLZbFDJApFfjF0LlRgDTL6d/vdcXa+06mulriWLbsNqSGzk6YD9ELxJqOFf+zYYwTptxB0yCMoACRqZlIJa92hym295BhSN/K7Hy0xlU5qGjGYkC4cT8qFkJ2dxvnLpoIorEbne4QBpnLu+W6cfXU2HubSsfmCoTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Psbj5vA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA345C4CEF7;
+	Mon, 29 Dec 2025 16:22:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767025423;
-	bh=3Sn/CXGObT3JFmtMH7B8tQ21yJ/Tvouvac64aiXl84U=;
+	s=korg; t=1767025324;
+	bh=DF0FeAo3wYFF3pu4koczl8auHu371tUu1KT86bfLEaI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=We4imbqDziP53M5InMK1O6evsytHeGqHoe99k+gj0okSlnlttTC2CRVbbrALQLN1u
-	 GnHZIXa3HG9Cm3nIyrj3u/9Qj6EfrWSWA0TKX8yC6Qc4kLK7RDzK4x5Iqw/Y/Pwh/f
-	 IbmU71MbUcd5w3m/oGMXUvbx/1ZZjH6td56+490w=
+	b=2Psbj5vAowwknm0m2HcNLLCYL0mdHkds5JB0ZRjAN02VMQ6qkC128k9b4IDiyH4/i
+	 RXHISILrap5x6iuec3CAGo5H1cfQ9ssyIPxhMgQnvI2rucyTbw12nS2KyhFWOVimA9
+	 XqPQSDetpUR2fG+4D5wO24Hv0aNnPdIkSVdSELB0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luigi Rizzo <lrizzo@google.com>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 6.18 165/430] x86/msi: Make irq_retrigger() functional for posted MSI
-Date: Mon, 29 Dec 2025 17:09:27 +0100
-Message-ID: <20251229160730.435135109@linuxfoundation.org>
+	Yongxin Liu <yongxin.liu@windriver.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 166/430] x86/fpu: Fix FPU state core dump truncation on CPUs with no extended xfeatures
+Date: Mon, 29 Dec 2025 17:09:28 +0100
+Message-ID: <20251229160730.472646370@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251229160724.139406961@linuxfoundation.org>
 References: <20251229160724.139406961@linuxfoundation.org>
@@ -63,156 +64,54 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Yongxin Liu <yongxin.liu@windriver.com>
 
-commit 0edc78b82bea85e1b2165d8e870a5c3535919695 upstream.
+[ Upstream commit c8161e5304abb26e6c0bec6efc947992500fa6c5 ]
 
-Luigi reported that retriggering a posted MSI interrupt does not work
-correctly.
+Zero can be a valid value of num_records. For example, on Intel Atom x6425RE,
+only x87 and SSE are supported (features 0, 1), and fpu_user_cfg.max_features
+is 3. The for_each_extended_xfeature() loop only iterates feature 2, which is
+not enabled, so num_records = 0. This is valid and should not cause core dump
+failure.
 
-The reason is that the retrigger happens at the vector domain by sending an
-IPI to the actual vector on the target CPU. That works correctly exactly
-once because the posted MSI interrupt chip does not issue an EOI as that's
-only required for the posted MSI notification vector itself.
+The issue is that dump_xsave_layout_desc() returns 0 for both genuine errors
+(dump_emit() failure) and valid cases (no extended features). Use negative
+return values for errors and only abort on genuine failures.
 
-As a consequence the vector becomes stale in the ISR, which not only
-affects this vector but also any lower priority vector in the affected
-APIC because the ISR bit is not cleared.
-
-Luigi proposed to set the vector in the remap PIR bitmap and raise the
-posted MSI notification vector. That works, but that still does not cure a
-related problem:
-
-  If there is ever a stray interrupt on such a vector, then the related
-  APIC ISR bit becomes stale due to the lack of EOI as described above.
-  Unlikely to happen, but if it happens it's not debuggable at all.
-
-So instead of playing games with the PIR, this can be actually solved
-for both cases by:
-
- 1) Keeping track of the posted interrupt vector handler state
-
- 2) Implementing a posted MSI specific irq_ack() callback which checks that
-    state. If the posted vector handler is inactive it issues an EOI,
-    otherwise it delegates that to the posted handler.
-
-This is correct versus affinity changes and concurrent events on the posted
-vector as the actual handler invocation is serialized through the interrupt
-descriptor lock.
-
-Fixes: ed1e48ea4370 ("iommu/vt-d: Enable posted mode for device MSIs")
-Reported-by: Luigi Rizzo <lrizzo@google.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Luigi Rizzo <lrizzo@google.com>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20251125214631.044440658@linutronix.de
-Closes: https://lore.kernel.org/lkml/20251124104836.3685533-1-lrizzo@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: ba386777a30b ("x86/elf: Add a new FPU buffer layout info to x86 core files")
+Signed-off-by: Yongxin Liu <yongxin.liu@windriver.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://patch.msgid.link/20251210000219.4094353-2-yongxin.liu@windriver.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/irq_remapping.h |    7 +++++++
- arch/x86/kernel/irq.c                |   23 +++++++++++++++++++++++
- drivers/iommu/intel/irq_remapping.c  |    8 ++++----
- 3 files changed, 34 insertions(+), 4 deletions(-)
+ arch/x86/kernel/fpu/xstate.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/x86/include/asm/irq_remapping.h
-+++ b/arch/x86/include/asm/irq_remapping.h
-@@ -87,4 +87,11 @@ static inline void panic_if_irq_remap(co
- }
+diff --git a/arch/x86/kernel/fpu/xstate.c b/arch/x86/kernel/fpu/xstate.c
+index 28e4fd65c9da..5f54a207ace4 100644
+--- a/arch/x86/kernel/fpu/xstate.c
++++ b/arch/x86/kernel/fpu/xstate.c
+@@ -1945,7 +1945,7 @@ static int dump_xsave_layout_desc(struct coredump_params *cprm)
+ 		};
  
- #endif /* CONFIG_IRQ_REMAP */
-+
-+#ifdef CONFIG_X86_POSTED_MSI
-+void intel_ack_posted_msi_irq(struct irq_data *irqd);
-+#else
-+#define intel_ack_posted_msi_irq	NULL
-+#endif
-+
- #endif /* __X86_IRQ_REMAPPING_H */
---- a/arch/x86/kernel/irq.c
-+++ b/arch/x86/kernel/irq.c
-@@ -396,6 +396,7 @@ DEFINE_IDTENTRY_SYSVEC_SIMPLE(sysvec_kvm
+ 		if (!dump_emit(cprm, &xc, sizeof(xc)))
+-			return 0;
++			return -1;
  
- /* Posted Interrupt Descriptors for coalesced MSIs to be posted */
- DEFINE_PER_CPU_ALIGNED(struct pi_desc, posted_msi_pi_desc);
-+static DEFINE_PER_CPU_CACHE_HOT(bool, posted_msi_handler_active);
+ 		num_records++;
+ 	}
+@@ -1983,7 +1983,7 @@ int elf_coredump_extra_notes_write(struct coredump_params *cprm)
+ 		return 1;
  
- void intel_posted_msi_init(void)
- {
-@@ -413,6 +414,25 @@ void intel_posted_msi_init(void)
- 	this_cpu_write(posted_msi_pi_desc.ndst, destination);
- }
+ 	num_records = dump_xsave_layout_desc(cprm);
+-	if (!num_records)
++	if (num_records < 0)
+ 		return 1;
  
-+void intel_ack_posted_msi_irq(struct irq_data *irqd)
-+{
-+	irq_move_irq(irqd);
-+
-+	/*
-+	 * Handle the rare case that irq_retrigger() raised the actual
-+	 * assigned vector on the target CPU, which means that it was not
-+	 * invoked via the posted MSI handler below. In that case APIC EOI
-+	 * is required as otherwise the ISR entry becomes stale and lower
-+	 * priority interrupts are never going to be delivered after that.
-+	 *
-+	 * If the posted handler invoked the device interrupt handler then
-+	 * the EOI would be premature because it would acknowledge the
-+	 * posted vector.
-+	 */
-+	if (unlikely(!__this_cpu_read(posted_msi_handler_active)))
-+		apic_eoi();
-+}
-+
- static __always_inline bool handle_pending_pir(unsigned long *pir, struct pt_regs *regs)
- {
- 	unsigned long pir_copy[NR_PIR_WORDS];
-@@ -445,6 +465,8 @@ DEFINE_IDTENTRY_SYSVEC(sysvec_posted_msi
- 
- 	pid = this_cpu_ptr(&posted_msi_pi_desc);
- 
-+	/* Mark the handler active for intel_ack_posted_msi_irq() */
-+	__this_cpu_write(posted_msi_handler_active, true);
- 	inc_irq_stat(posted_msi_notification_count);
- 	irq_enter();
- 
-@@ -473,6 +495,7 @@ DEFINE_IDTENTRY_SYSVEC(sysvec_posted_msi
- 
- 	apic_eoi();
- 	irq_exit();
-+	__this_cpu_write(posted_msi_handler_active, false);
- 	set_irq_regs(old_regs);
- }
- #endif /* X86_POSTED_MSI */
---- a/drivers/iommu/intel/irq_remapping.c
-+++ b/drivers/iommu/intel/irq_remapping.c
-@@ -1303,17 +1303,17 @@ static struct irq_chip intel_ir_chip = {
-  *	irq_enter();
-  *		handle_edge_irq()
-  *			irq_chip_ack_parent()
-- *				irq_move_irq(); // No EOI
-+ *				intel_ack_posted_msi_irq(); // No EOI
-  *			handle_irq_event()
-  *				driver_handler()
-  *		handle_edge_irq()
-  *			irq_chip_ack_parent()
-- *				irq_move_irq(); // No EOI
-+ *				intel_ack_posted_msi_irq(); // No EOI
-  *			handle_irq_event()
-  *				driver_handler()
-  *		handle_edge_irq()
-  *			irq_chip_ack_parent()
-- *				irq_move_irq(); // No EOI
-+ *				intel_ack_posted_msi_irq(); // No EOI
-  *			handle_irq_event()
-  *				driver_handler()
-  *	apic_eoi()
-@@ -1322,7 +1322,7 @@ static struct irq_chip intel_ir_chip = {
-  */
- static struct irq_chip intel_ir_chip_post_msi = {
- 	.name			= "INTEL-IR-POST",
--	.irq_ack		= irq_move_irq,
-+	.irq_ack		= intel_ack_posted_msi_irq,
- 	.irq_set_affinity	= intel_ir_set_affinity,
- 	.irq_compose_msi_msg	= intel_ir_compose_msi_msg,
- 	.irq_set_vcpu_affinity	= intel_ir_set_vcpu_affinity,
+ 	/* Total size should be equal to the number of records */
+-- 
+2.51.0
+
 
 
 
