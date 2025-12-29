@@ -1,48 +1,74 @@
-Return-Path: <stable+bounces-204119-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204120-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60427CE7CD7
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 19:13:26 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 674CACE7D45
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 19:39:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 807C43001BC5
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 18:13:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1F3F03060250
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 18:35:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4254032C932;
-	Mon, 29 Dec 2025 18:13:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5A143321BD;
+	Mon, 29 Dec 2025 18:35:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="huvdEHwI"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OuiJeaZU"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFD142D63FC;
-	Mon, 29 Dec 2025 18:13:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4AF633122E;
+	Mon, 29 Dec 2025 18:34:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767032004; cv=none; b=LhDMZKLTcnjihy6wAHoJC26omCEtl39038oSbBIALrdwF1hjW7dJgL7EyFCZhBZ+7k7CV0hJ+R/nEmcvvlXTNG4retRQ4LKe1LwQF8oo8k4+vG3IOTachSo1e8PTIGp8eg0DDtb9tZ31tU1AlqSbNm9UhnDEhytfLMLFyQ18YZ0=
+	t=1767033300; cv=none; b=M5mYlOsJkhWwpbQqQP+raZ1zNpvuJtopFR3V9dUqGCD6cpnxG7IS+VTs+4W4DB5cUwJMeyW55zy3IPJRww46KGmXv3K6LarnEO4VqROKodecPkbKoq3FoQbC+VRpRIYYcAUKF38+FEPEPi21FCOE/kPeva9ry7yeAD/CLqRB4Uc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767032004; c=relaxed/simple;
-	bh=Sx6td9lE4hKxIcubYKlGUxkmTnJwqHdVst8KiyaS81A=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=OceEzLZj0WKNNLKjwbVU5OxwQxaYnvtkBxc4JkWHgI0mwi5EaWCqsLbedESuNlUTQtOyGeeygMqF1tEGUYBDMg0hd2SamIF7JF4rW3jx9xuGqk+0kd2aNZLqsSSUQ+BZw2d3/dK4ySCJLgFPax+xWHS8svuGrGvZKnNcATuc/UI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=huvdEHwI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73859C4CEF7;
-	Mon, 29 Dec 2025 18:13:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767032003;
-	bh=Sx6td9lE4hKxIcubYKlGUxkmTnJwqHdVst8KiyaS81A=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=huvdEHwIRCJ2VkVIhQ0zScq24SMYFzZDkePcd1jlMCYsxfn2uqOOG79smJ6OA6Nky
-	 cvmf4lR/b07bg1NkKR5CG+pLP4oLM0oQnRqlL3kVXd3TeBZqorleISKOWor3AAcTXO
-	 OpObe8NNmxcr0VL6ahH1d2Yrh81+398pkhGHJHazLjuKrW1OguahZYo4IpUF0dOUHp
-	 eRItZ3UxWVmHNVFChU1dal4jce8vM0xV5N+t+KWk9ewypmBwCGbSfDTxDVUpuP95Ol
-	 8xoLsDDatRtYbSAqijptvkcbAT8M/tZtT7BSe/r0tYq4u/yi3jZ51tnd0F48yiCl5+
-	 ukspwNOBvkODQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3B7BD3808200;
-	Mon, 29 Dec 2025 18:10:07 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1767033300; c=relaxed/simple;
+	bh=VLsmDFWtMsuAsB/lyKJEUjtf1LGGqwugmcXpvfUHRzk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=G9HkcJHfocqZvVuKLVSkCV+6LCyIWcx0wrxhwErQbj8h578BHjV/xnYj0PAQDAc/VPpkF3zi2YUysp1nUFFC6YoK681T98VLdxbRrvMghAkwsXyvUZXdw1agM4xnLetNXTzCcWJyCVHupK+cMjMcrz1YyeRWqN+Fi0WhjNcIugs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OuiJeaZU; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1767033299; x=1798569299;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=VLsmDFWtMsuAsB/lyKJEUjtf1LGGqwugmcXpvfUHRzk=;
+  b=OuiJeaZUYGDQYbWOiY1Ho8PE0KTO32uehn5q8FFQQ5XiQZOIUDYPeAAC
+   i7BkRaStElYt2Wwn7JhON1Lv19zgysNd4VT3WT+XfmWHa7TnDI8QRPpY8
+   ZvpQjdPMJnfT7mINOUKpQvJPOleh5XbGPdli4TSyHZkO40aI08FBB1w0T
+   AydkLdmocObt654angL46Ah43QUuREcJTEmPdSX1MH/1jkwzt3XQPjq6R
+   ty6fRpAJpjELwYevGR65EyJGURpgxSjiDSmMl1B/hutZJMSpyLBlofTnY
+   2o+/j6hq94aWC6AlxdqLxD9q4EPEWp7SMNF9nVrQ/JyTaTg1NH3zROfrn
+   w==;
+X-CSE-ConnectionGUID: PvnjQcG+Qf+hxt7cqGStEw==
+X-CSE-MsgGUID: DzoPtNWGQcqCAcnJ++IwsQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11656"; a="86218720"
+X-IronPort-AV: E=Sophos;i="6.21,186,1763452800"; 
+   d="scan'208";a="86218720"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Dec 2025 10:34:56 -0800
+X-CSE-ConnectionGUID: x54Y5Sq7RE+0kJ6Fhi2ZJA==
+X-CSE-MsgGUID: egmceNQ6RR2YXqvL3YN4dQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,186,1763452800"; 
+   d="scan'208";a="205120425"
+Received: from spandruv-desk.jf.intel.com ([10.54.55.20])
+  by orviesa003.jf.intel.com with ESMTP; 29 Dec 2025 10:34:56 -0800
+From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+To: hansg@kernel.org,
+	ilpo.jarvinen@linux.intel.com
+Cc: platform-driver-x86@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	stable@vger.kernel.org
+Subject: [PATCH 1/2] platform/x86: ISST: Add missing write block check
+Date: Mon, 29 Dec 2025 10:34:49 -0800
+Message-ID: <20251229183450.823244-2-srinivas.pandruvada@linux.intel.com>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251229183450.823244-1-srinivas.pandruvada@linux.intel.com>
+References: <20251229183450.823244-1-srinivas.pandruvada@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,55 +76,32 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] gve: defer interrupt enabling until NAPI registration
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <176703180604.3020297.10151848837603097522.git-patchwork-notify@kernel.org>
-Date: Mon, 29 Dec 2025 18:10:06 +0000
-References: <20251219102945.2193617-1-hramamurthy@google.com>
-In-Reply-To: <20251219102945.2193617-1-hramamurthy@google.com>
-To: Harshitha Ramamurthy <hramamurthy@google.com>
-Cc: netdev@vger.kernel.org, joshwash@google.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- willemb@google.com, pkaligineedi@google.com, sdf@fomichev.me,
- jordanrhee@google.com, nktgrg@google.com, shailend@google.com,
- horms@kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
 
-Hello:
+If writes are blocked, then return error during SST-CP enable command.
+Add missing write block check in this code path.
 
-This patch was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
+Fixes: 8bed9ff7dbcc ("platform/x86: ISST: Process read/write blocked feature status")
+Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Cc: <stable@vger.kernel.org>
+---
+ drivers/platform/x86/intel/speed_select_if/isst_tpmi_core.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-On Fri, 19 Dec 2025 10:29:45 +0000 you wrote:
-> From: Ankit Garg <nktgrg@google.com>
-> 
-> Currently, interrupts are automatically enabled immediately upon
-> request. This allows interrupt to fire before the associated NAPI
-> context is fully initialized and cause failures like below:
-> 
-> [    0.946369] Call Trace:
-> [    0.946369]  <IRQ>
-> [    0.946369]  __napi_poll+0x2a/0x1e0
-> [    0.946369]  net_rx_action+0x2f9/0x3f0
-> [    0.946369]  handle_softirqs+0xd6/0x2c0
-> [    0.946369]  ? handle_edge_irq+0xc1/0x1b0
-> [    0.946369]  __irq_exit_rcu+0xc3/0xe0
-> [    0.946369]  common_interrupt+0x81/0xa0
-> [    0.946369]  </IRQ>
-> [    0.946369]  <TASK>
-> [    0.946369]  asm_common_interrupt+0x22/0x40
-> [    0.946369] RIP: 0010:pv_native_safe_halt+0xb/0x10
-> 
-> [...]
-
-Here is the summary with links:
-  - [net] gve: defer interrupt enabling until NAPI registration
-    https://git.kernel.org/netdev/net/c/3d970eda0034
-
-You are awesome, thank you!
+diff --git a/drivers/platform/x86/intel/speed_select_if/isst_tpmi_core.c b/drivers/platform/x86/intel/speed_select_if/isst_tpmi_core.c
+index 34bff2f65a83..f587709ddd47 100644
+--- a/drivers/platform/x86/intel/speed_select_if/isst_tpmi_core.c
++++ b/drivers/platform/x86/intel/speed_select_if/isst_tpmi_core.c
+@@ -612,6 +612,9 @@ static long isst_if_core_power_state(void __user *argp)
+ 		return -EINVAL;
+ 
+ 	if (core_power.get_set) {
++		if (power_domain_info->write_blocked)
++			return -EPERM;
++
+ 		_write_cp_info("cp_enable", core_power.enable, SST_CP_CONTROL_OFFSET,
+ 			       SST_CP_ENABLE_START, SST_CP_ENABLE_WIDTH, SST_MUL_FACTOR_NONE)
+ 		_write_cp_info("cp_prio_type", core_power.priority_type, SST_CP_CONTROL_OFFSET,
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.52.0
 
 
