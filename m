@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-203657-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203658-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDF04CE742D
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:52:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 66562CE7436
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:54:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 35B8E3014602
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 15:52:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7CD1F30141F6
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 15:53:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FA1732B9A3;
-	Mon, 29 Dec 2025 15:52:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66D8E2C08C2;
+	Mon, 29 Dec 2025 15:53:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rhNPa0Kf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MSJc+ngX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F1AE23BD06
-	for <stable@vger.kernel.org>; Mon, 29 Dec 2025 15:52:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27FF7261B9F
+	for <stable@vger.kernel.org>; Mon, 29 Dec 2025 15:53:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767023563; cv=none; b=ZORxxXhiFzk3TYrN6md0/EUoos8m+kdv4mqgExC3jknvrQZv6Ob0CvBwZovGt5cU2KVNKoMUDDrNVlgtPNN5SJtMNoZ1+ufitwhKs6WArb7ThQ3I6b8DKnBKdLvoTHcpK32Jsg4YpgeaTFgDk9U3UTvUkvMt67MVg+zgFQse8ow=
+	t=1767023625; cv=none; b=B++nEC1ar4wFFZav79+HS3TSp/i2jmr3TBK6aAySmqbZAOrEKbP8SZX6uvvZHoQmKA01ZEiDGS1onmOkUHmAepJdFYtmBnUHeNyXPrOqFLFKPzWSY7FLRjx2JTa76YT6fgsezS/JazP0CdlJ6iVlKn2NDxW+djxswbbRZZWV5gM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767023563; c=relaxed/simple;
-	bh=y6jfd4sEfUgOgilSJOpb3PAY5N+s7aS1orkoaODXJqk=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=L2rW/OWMmTuavVVkLtcNs4iD7TVihGA+YnwL0FUZR2luqZTj6O7HRHFUt6eCozNqK4IrAPkLGt3B2O5ATqye/v7ggfMgQtQOZNulpCCzdgq1UUOZSmnKxVDMPfRTTZ9AS+yxJYMLuR4bStjSCa1I392SfdrYdE717g4bacv23Y8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rhNPa0Kf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB976C4CEF7;
-	Mon, 29 Dec 2025 15:52:42 +0000 (UTC)
+	s=arc-20240116; t=1767023625; c=relaxed/simple;
+	bh=GUtjWINYL/fA6hzcMPB3Owj8vdyBsy/zHtihHeHWryA=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=UPv3byddkx4mOPR6CqEwibgLVdAW40LCj+r2KKEIAMFcbG38mDTa4Z6ZGTWE2XkAGk3KV51NCM+YuDZ0K5aK8NZjGIhCinHfySvDALxBMhtYPPq8KuF/89ZaWxP/nDIZUlFvmECfCzG740I4+4JOii1wXjXT+arkhgz1o2V/TwQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MSJc+ngX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F094C4CEF7;
+	Mon, 29 Dec 2025 15:53:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767023563;
-	bh=y6jfd4sEfUgOgilSJOpb3PAY5N+s7aS1orkoaODXJqk=;
+	s=korg; t=1767023624;
+	bh=GUtjWINYL/fA6hzcMPB3Owj8vdyBsy/zHtihHeHWryA=;
 	h=Subject:To:Cc:From:Date:From;
-	b=rhNPa0Kf/Y1dm63UTo1UQqzPY1njRYmMc9CnZqCv5yQHzSpae922ONLyyiWF8tQ0v
-	 /giUFj6Tu0iSj1Pyu0iqj/5dn/6jFZ4Dsgo4WvXAu3l64lZF9crw5PDDlnBF33+LQ9
-	 osVg4nYdt64e+ZjNyTjWJth4Wvmet44F8jDE544E=
-Subject: FAILED: patch "[PATCH] crypto: af_alg - zero initialize memory allocated via" failed to apply to 5.10-stable tree
-To: shivani.agarwal@broadcom.com,herbert@gondor.apana.org.au
+	b=MSJc+ngXAVmk56g3c7EKuG8I+NEmPoAQYWU5X3N1OBDEufZhlH50S2lIs3unU0zvk
+	 c/7QtFlsjoFd+d45CP9kpn3esLf5pXxuR/V5khBPtHDvePfbx/d2dchNujNH3S3u5F
+	 WvK2E7cB59pDStFD4T8OYS1pyf85LQuRUTkpuCiA=
+Subject: FAILED: patch "[PATCH] tracing: Fix fixed array of synthetic event" failed to apply to 6.1-stable tree
+To: rostedt@goodmis.org,douglas.raillard@arm.com,mathieu.desnoyers@efficios.com,mhiramat@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 29 Dec 2025 16:52:30 +0100
-Message-ID: <2025122930-sinner-squad-c6cd@gregkh>
+Date: Mon, 29 Dec 2025 16:53:41 +0100
+Message-ID: <2025122941-citric-sushi-4f65@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -51,19 +51,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x 6f6e309328d53a10c0fe1f77dec2db73373179b6
+git cherry-pick -x 47ef834209e5981f443240d8a8b45bf680df22aa
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025122930-sinner-squad-c6cd@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025122941-citric-sushi-4f65@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -75,100 +75,57 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 6f6e309328d53a10c0fe1f77dec2db73373179b6 Mon Sep 17 00:00:00 2001
-From: Shivani Agarwal <shivani.agarwal@broadcom.com>
-Date: Tue, 23 Sep 2025 23:01:48 -0700
-Subject: [PATCH] crypto: af_alg - zero initialize memory allocated via
- sock_kmalloc
+From 47ef834209e5981f443240d8a8b45bf680df22aa Mon Sep 17 00:00:00 2001
+From: Steven Rostedt <rostedt@goodmis.org>
+Date: Thu, 4 Dec 2025 15:19:35 -0500
+Subject: [PATCH] tracing: Fix fixed array of synthetic event
 
-Several crypto user API contexts and requests allocated with
-sock_kmalloc() were left uninitialized, relying on callers to
-set fields explicitly. This resulted in the use of uninitialized
-data in certain error paths or when new fields are added in the
-future.
+The commit 4d38328eb442d ("tracing: Fix synth event printk format for str
+fields") replaced "%.*s" with "%s" but missed removing the number size of
+the dynamic and static strings. The commit e1a453a57bc7 ("tracing: Do not
+add length to print format in synthetic events") fixed the dynamic part
+but did not fix the static part. That is, with the commands:
 
-The ACVP patches also contain two user-space interface files:
-algif_kpp.c and algif_akcipher.c. These too rely on proper
-initialization of their context structures.
+  # echo 's:wake_lat char[] wakee; u64 delta;' >> /sys/kernel/tracing/dynamic_events
+  # echo 'hist:keys=pid:ts=common_timestamp.usecs if !(common_flags & 0x18)' > /sys/kernel/tracing/events/sched/sched_waking/trigger
+  # echo 'hist:keys=next_pid:delta=common_timestamp.usecs-$ts:onmatch(sched.sched_waking).trace(wake_lat,next_comm,$delta)' > /sys/kernel/tracing/events/sched/sched_switch/trigger
 
-A particular issue has been observed with the newly added
-'inflight' variable introduced in af_alg_ctx by commit:
+That caused the output of:
 
-  67b164a871af ("crypto: af_alg - Disallow multiple in-flight AIO requests")
+          <idle>-0       [001] d..5.   193.428167: wake_lat: wakee=(efault)sshd-sessiondelta=155
+    sshd-session-879     [001] d..5.   193.811080: wake_lat: wakee=(efault)kworker/u34:5delta=58
+          <idle>-0       [002] d..5.   193.811198: wake_lat: wakee=(efault)bashdelta=91
 
-Because the context is not memset to zero after allocation,
-the inflight variable has contained garbage values. As a result,
-af_alg_alloc_areq() has incorrectly returned -EBUSY randomly when
-the garbage value was interpreted as true:
+The commit e1a453a57bc7 fixed the part where the synthetic event had
+"char[] wakee". But if one were to replace that with a static size string:
 
-  https://github.com/gregkh/linux/blame/master/crypto/af_alg.c#L1209
+  # echo 's:wake_lat char[16] wakee; u64 delta;' >> /sys/kernel/tracing/dynamic_events
 
-The check directly tests ctx->inflight without explicitly
-comparing against true/false. Since inflight is only ever set to
-true or false later, an uninitialized value has triggered
--EBUSY failures. Zero-initializing memory allocated with
-sock_kmalloc() ensures inflight and other fields start in a known
-state, removing random issues caused by uninitialized data.
+Where "wakee" is defined as "char[16]" and not "char[]" making it a static
+size, the code triggered the "(efaul)" again.
 
-Fixes: fe869cdb89c9 ("crypto: algif_hash - User-space interface for hash operations")
-Fixes: 5afdfd22e6ba ("crypto: algif_rng - add random number generator support")
-Fixes: 2d97591ef43d ("crypto: af_alg - consolidation of duplicate code")
-Fixes: 67b164a871af ("crypto: af_alg - Disallow multiple in-flight AIO requests")
+Remove the added STR_VAR_LEN_MAX size as the string is still going to be
+nul terminated.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Douglas Raillard <douglas.raillard@arm.com>
+Link: https://patch.msgid.link/20251204151935.5fa30355@gandalf.local.home
+Fixes: e1a453a57bc7 ("tracing: Do not add length to print format in synthetic events")
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-diff --git a/crypto/af_alg.c b/crypto/af_alg.c
-index ca6fdcc6c54a..6c271e55f44d 100644
---- a/crypto/af_alg.c
-+++ b/crypto/af_alg.c
-@@ -1212,15 +1212,14 @@ struct af_alg_async_req *af_alg_alloc_areq(struct sock *sk,
- 	if (unlikely(!areq))
- 		return ERR_PTR(-ENOMEM);
- 
-+	memset(areq, 0, areqlen);
-+
- 	ctx->inflight = true;
- 
- 	areq->areqlen = areqlen;
- 	areq->sk = sk;
- 	areq->first_rsgl.sgl.sgt.sgl = areq->first_rsgl.sgl.sgl;
--	areq->last_rsgl = NULL;
- 	INIT_LIST_HEAD(&areq->rsgl_list);
--	areq->tsgl = NULL;
--	areq->tsgl_entries = 0;
- 
- 	return areq;
- }
-diff --git a/crypto/algif_hash.c b/crypto/algif_hash.c
-index e3f1a4852737..4d3dfc60a16a 100644
---- a/crypto/algif_hash.c
-+++ b/crypto/algif_hash.c
-@@ -416,9 +416,8 @@ static int hash_accept_parent_nokey(void *private, struct sock *sk)
- 	if (!ctx)
- 		return -ENOMEM;
- 
--	ctx->result = NULL;
-+	memset(ctx, 0, len);
- 	ctx->len = len;
--	ctx->more = false;
- 	crypto_init_wait(&ctx->wait);
- 
- 	ask->private = ctx;
-diff --git a/crypto/algif_rng.c b/crypto/algif_rng.c
-index 10c41adac3b1..1a86e40c8372 100644
---- a/crypto/algif_rng.c
-+++ b/crypto/algif_rng.c
-@@ -248,9 +248,8 @@ static int rng_accept_parent(void *private, struct sock *sk)
- 	if (!ctx)
- 		return -ENOMEM;
- 
-+	memset(ctx, 0, len);
- 	ctx->len = len;
--	ctx->addtl = NULL;
--	ctx->addtl_len = 0;
- 
- 	/*
- 	 * No seeding done at that point -- if multiple accepts are
+diff --git a/kernel/trace/trace_events_synth.c b/kernel/trace/trace_events_synth.c
+index 2f19bbe73d27..4554c458b78c 100644
+--- a/kernel/trace/trace_events_synth.c
++++ b/kernel/trace/trace_events_synth.c
+@@ -375,7 +375,6 @@ static enum print_line_t print_synth_event(struct trace_iterator *iter,
+ 				n_u64++;
+ 			} else {
+ 				trace_seq_printf(s, print_fmt, se->fields[i]->name,
+-						 STR_VAR_LEN_MAX,
+ 						 (char *)&entry->fields[n_u64].as_u64,
+ 						 i == se->n_fields - 1 ? "" : " ");
+ 				n_u64 += STR_VAR_LEN_MAX / sizeof(u64);
 
 
