@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-204140-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204141-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E87E8CE83D1
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 22:58:08 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA5E2CE842E
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 23:03:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7B564301142F
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 21:58:07 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id EAB19300AB35
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 22:03:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95F8E30F7E3;
-	Mon, 29 Dec 2025 21:58:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B9B9330D36;
+	Mon, 29 Dec 2025 22:03:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N8bqGrTL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GyEdW5U+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5459A30EF9F
-	for <stable@vger.kernel.org>; Mon, 29 Dec 2025 21:58:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 585BA2E613A
+	for <stable@vger.kernel.org>; Mon, 29 Dec 2025 22:03:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767045486; cv=none; b=TKSX+AAjWl06rikAbXQoH/ZWMdVq7ci1ydWwoOOQFN8rwTh8GwNWqygArdXUVCa9JcUkzotY6zEb6JVvxbTsZ1qtK4U+YokrggTHgOxJJI73VGoWtqyGKeOi/hvxEw9cKzVjEcHRUJFo737SqamAu7qsgp+JFv3ZG8Ab7508QO0=
+	t=1767045820; cv=none; b=AiFpRRPTPC64EP/FaCicHDK8SE5RHF7FocsMJesrlnn92RBrdxlyx14OJcjlgdEFD/Dlav+2Dk1xW7FhHF0OgvPpLSFCKffIcXLJMihRgexMrBRFynGG7WMvpcPD04vbRk2KojArvlqG/RSP9f//BIo7muVB+gA6ybTuVlz0NOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767045486; c=relaxed/simple;
-	bh=hwjkGSf3V1U1iq8WOQRwMLq2SVPPglt6wmAXZC7wClw=;
+	s=arc-20240116; t=1767045820; c=relaxed/simple;
+	bh=mhI1P+R7kTuy2fuNQfRln2gu7iyVpKIHKNOFhR8sW4Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l+HeMES2y0o0+hRFh2TWu4zKQVPR9zE5g9PAPbORo0mEO2Dnz8hDgB2R3vAr/D31rJnSNbcosY4ljdrqaVjf6SLuM94vbO7bkBabiDYB4EVOMzlXV3nbkni4/ar/qqR/fKwLLamXYUN2M7QwfLTNF0PvwzcVzWUjafL4dX7+lK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N8bqGrTL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50B29C4CEF7;
-	Mon, 29 Dec 2025 21:58:03 +0000 (UTC)
+	 MIME-Version; b=Dt245YILaSBtSiGKtaD5HgwBRl70qS1ieHfRGjtzrR5pDuZ1gsDXNQLIfbT/FG23zPfhM2wgW/2QiIfwlN4xe+j36Ekbsh83HkyQV4239vwuWEDikUOh5RNTSOggMmaGHfZVAyt3C+peHvhMY2y8sT2Y2U1NUTDx3pTTqoA0ThA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GyEdW5U+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06999C4CEF7;
+	Mon, 29 Dec 2025 22:03:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767045483;
-	bh=hwjkGSf3V1U1iq8WOQRwMLq2SVPPglt6wmAXZC7wClw=;
+	s=k20201202; t=1767045819;
+	bh=mhI1P+R7kTuy2fuNQfRln2gu7iyVpKIHKNOFhR8sW4Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N8bqGrTLEW+hOd/idUy7uziQQojZbGypVtNVjj7O5+1zAX3CRhMuUQX9wCcjXANGk
-	 S67DWGIsG0pMcnic+AkfYyqIFs5PA9U10GLR3/tOCt/3l5NFV9HRXro9ZS8R0osJ2D
-	 gcSzfIlVQmmgoBbL58099ZsRxURLeTCIk6SAb3bj/lWRMj6l8DR+o69LHzsnW2h4/8
-	 f9jXGlPbGeVk99vT0/NXAdpzk3E5MOoUNbnJvFRKw2mvIaAfqJ59aIy1J18Lc6R5Dz
-	 RkXVdZz560q5eY8DOqhS8rCLBcZKoFXRtRDjEy6LcvqlsAF2uqM3Djj9dWvyOSqWcf
-	 Ra+vasTT+b5ZA==
+	b=GyEdW5U+XhSEurjcnZeqL978Ow5tn+iCQpBZbXnKQu4f2RC/oPb0R+MEvdnqSxQ5x
+	 VDCds6pUKY7mDGALnTyWaHGRwYKh7rFACLJHcS3ozOdNnHecp7FCXhLxU+WdL/9lTM
+	 gZx0lrxvXJDcX2HlOy4DG2BLAbqz2sUqvrbIcri2plg0cmqnGPTBPEQ3RHg5grOYJO
+	 HfnICDAokj11LWLkGwsoARj9aPoYW4Qqw4CRIqcxYNtcscRYAkg0pVLafao9Zi4kx5
+	 5Kir65Jr0ZbBPS1DRvYvVj1hE4zw6yUa5KrGjGUXnI96X2Ja6QUTyt5MUO83IeFyMe
+	 IAeM47GDIdFTA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: "Sven Eckelmann (Plasma Cloud)" <se@simonwunderlich.de>,
-	Felix Fietkau <nbd@nbd.name>,
+Cc: Josef Bacik <josef@toxicpanda.com>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Daniel Vacek <neelx@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y] wifi: mt76: Fix DTS power-limits on little endian systems
-Date: Mon, 29 Dec 2025 16:58:01 -0500
-Message-ID: <20251229215801.1732809-1-sashal@kernel.org>
+Subject: [PATCH 6.1.y] btrfs: don't rewrite ret from inode_permission
+Date: Mon, 29 Dec 2025 17:03:37 -0500
+Message-ID: <20251229220337.1736680-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025122937-ninetieth-giddiness-50de@gregkh>
-References: <2025122937-ninetieth-giddiness-50de@gregkh>
+In-Reply-To: <2025122955-nephew-flick-11f1@gregkh>
+References: <2025122955-nephew-flick-11f1@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,138 +60,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: "Sven Eckelmann (Plasma Cloud)" <se@simonwunderlich.de>
+From: Josef Bacik <josef@toxicpanda.com>
 
-[ Upstream commit 38b845e1f9e810869b0a0b69f202b877b7b7fb12 ]
+[ Upstream commit 0185c2292c600993199bc6b1f342ad47a9e8c678 ]
 
-The power-limits for ru and mcs and stored in the devicetree as bytewise
-array (often with sizes which are not a multiple of 4). These arrays have a
-prefix which defines for how many modes a line is applied. This prefix is
-also only a byte - but the code still tried to fix the endianness of this
-byte with a be32 operation. As result, loading was mostly failing or was
-sending completely unexpected values to the firmware.
+In our user safe ino resolve ioctl we'll just turn any ret into -EACCES
+from inode_permission().  This is redundant, and could potentially be
+wrong if we had an ENOMEM in the security layer or some such other
+error, so simply return the actual return value.
 
-Since the other rates are also stored in the devicetree as bytewise arrays,
-just drop the u32 access + be32_to_cpu conversion and directly access them
-as bytes arrays.
+Note: The patch was taken from v5 of fscrypt patchset
+(https://lore.kernel.org/linux-btrfs/cover.1706116485.git.josef@toxicpanda.com/)
+which was handled over time by various people: Omar Sandoval, Sweet Tea
+Dorminy, Josef Bacik.
 
-Cc: stable@vger.kernel.org
-Fixes: 22b980badc0f ("mt76: add functions for parsing rate power limits from DT")
-Fixes: a9627d992b5e ("mt76: extend DT rate power limits to support 11ax devices")
-Signed-off-by: Sven Eckelmann (Plasma Cloud) <se@simonwunderlich.de>
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Fixes: 23d0b79dfaed ("btrfs: Add unprivileged version of ino_lookup ioctl")
+CC: stable@vger.kernel.org # 5.4+
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Signed-off-by: Daniel Vacek <neelx@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+[ add note ]
+Signed-off-by: David Sterba <dsterba@suse.com>
 [ Adjust context ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/eeprom.c | 37 +++++++++++++--------
- 1 file changed, 24 insertions(+), 13 deletions(-)
+ fs/btrfs/ioctl.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/eeprom.c b/drivers/net/wireless/mediatek/mt76/eeprom.c
-index 05f5ba184cfb..5776671f8424 100644
---- a/drivers/net/wireless/mediatek/mt76/eeprom.c
-+++ b/drivers/net/wireless/mediatek/mt76/eeprom.c
-@@ -173,6 +173,19 @@ mt76_get_of_array(struct device_node *np, char *name, size_t *len, int min)
- 	return prop->value;
- }
+diff --git a/fs/btrfs/ioctl.c b/fs/btrfs/ioctl.c
+index a30379936af5..9b48b9d2d77c 100644
+--- a/fs/btrfs/ioctl.c
++++ b/fs/btrfs/ioctl.c
+@@ -2897,10 +2897,8 @@ static int btrfs_search_path_in_tree_user(struct user_namespace *mnt_userns,
+ 			ret = inode_permission(mnt_userns, temp_inode,
+ 					       MAY_READ | MAY_EXEC);
+ 			iput(temp_inode);
+-			if (ret) {
+-				ret = -EACCES;
++			if (ret)
+ 				goto out_put;
+-			}
  
-+static const s8 *
-+mt76_get_of_array_s8(struct device_node *np, char *name, size_t *len, int min)
-+{
-+	struct property *prop = of_find_property(np, name, NULL);
-+
-+	if (!prop || !prop->value || prop->length < min)
-+		return NULL;
-+
-+	*len = prop->length;
-+
-+	return prop->value;
-+}
-+
- static struct device_node *
- mt76_find_channel_node(struct device_node *np, struct ieee80211_channel *chan)
- {
-@@ -212,7 +225,7 @@ mt76_get_txs_delta(struct device_node *np, u8 nss)
- }
- 
- static void
--mt76_apply_array_limit(s8 *pwr, size_t pwr_len, const __be32 *data,
-+mt76_apply_array_limit(s8 *pwr, size_t pwr_len, const s8 *data,
- 		       s8 target_power, s8 nss_delta, s8 *max_power)
- {
- 	int i;
-@@ -221,15 +234,14 @@ mt76_apply_array_limit(s8 *pwr, size_t pwr_len, const __be32 *data,
- 		return;
- 
- 	for (i = 0; i < pwr_len; i++) {
--		pwr[i] = min_t(s8, target_power,
--			       be32_to_cpu(data[i]) + nss_delta);
-+		pwr[i] = min_t(s8, target_power, data[i] + nss_delta);
- 		*max_power = max(*max_power, pwr[i]);
- 	}
- }
- 
- static void
- mt76_apply_multi_array_limit(s8 *pwr, size_t pwr_len, s8 pwr_num,
--			     const __be32 *data, size_t len, s8 target_power,
-+			     const s8 *data, size_t len, s8 target_power,
- 			     s8 nss_delta, s8 *max_power)
- {
- 	int i, cur;
-@@ -237,8 +249,7 @@ mt76_apply_multi_array_limit(s8 *pwr, size_t pwr_len, s8 pwr_num,
- 	if (!data)
- 		return;
- 
--	len /= 4;
--	cur = be32_to_cpu(data[0]);
-+	cur = data[0];
- 	for (i = 0; i < pwr_num; i++) {
- 		if (len < pwr_len + 1)
- 			break;
-@@ -253,7 +264,7 @@ mt76_apply_multi_array_limit(s8 *pwr, size_t pwr_len, s8 pwr_num,
- 		if (!len)
- 			break;
- 
--		cur = be32_to_cpu(data[0]);
-+		cur = data[0];
- 	}
- }
- 
-@@ -264,7 +275,7 @@ s8 mt76_get_rate_power_limits(struct mt76_phy *phy,
- {
- 	struct mt76_dev *dev = phy->dev;
- 	struct device_node *np;
--	const __be32 *val;
-+	const s8 *val;
- 	char name[16];
- 	u32 mcs_rates = dev->drv->mcs_rates;
- 	u32 ru_rates = ARRAY_SIZE(dest->ru[0]);
-@@ -307,21 +318,21 @@ s8 mt76_get_rate_power_limits(struct mt76_phy *phy,
- 
- 	txs_delta = mt76_get_txs_delta(np, hweight8(phy->antenna_mask));
- 
--	val = mt76_get_of_array(np, "rates-cck", &len, ARRAY_SIZE(dest->cck));
-+	val = mt76_get_of_array_s8(np, "rates-cck", &len, ARRAY_SIZE(dest->cck));
- 	mt76_apply_array_limit(dest->cck, ARRAY_SIZE(dest->cck), val,
- 			       target_power, txs_delta, &max_power);
- 
--	val = mt76_get_of_array(np, "rates-ofdm",
--				&len, ARRAY_SIZE(dest->ofdm));
-+	val = mt76_get_of_array_s8(np, "rates-ofdm",
-+				   &len, ARRAY_SIZE(dest->ofdm));
- 	mt76_apply_array_limit(dest->ofdm, ARRAY_SIZE(dest->ofdm), val,
- 			       target_power, txs_delta, &max_power);
- 
--	val = mt76_get_of_array(np, "rates-mcs", &len, mcs_rates + 1);
-+	val = mt76_get_of_array_s8(np, "rates-mcs", &len, mcs_rates + 1);
- 	mt76_apply_multi_array_limit(dest->mcs[0], ARRAY_SIZE(dest->mcs[0]),
- 				     ARRAY_SIZE(dest->mcs), val, len,
- 				     target_power, txs_delta, &max_power);
- 
--	val = mt76_get_of_array(np, "rates-ru", &len, ru_rates + 1);
-+	val = mt76_get_of_array_s8(np, "rates-ru", &len, ru_rates + 1);
- 	mt76_apply_multi_array_limit(dest->ru[0], ARRAY_SIZE(dest->ru[0]),
- 				     ARRAY_SIZE(dest->ru), val, len,
- 				     target_power, txs_delta, &max_power);
+ 			if (key.offset == upper_limit.objectid)
+ 				break;
 -- 
 2.51.0
 
