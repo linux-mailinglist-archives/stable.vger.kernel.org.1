@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-203539-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203540-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFB25CE6B23
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 13:33:02 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B87DCE6B26
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 13:33:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1FB99300A1E4
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 12:32:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 262A230084C3
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 12:33:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C75B30FF03;
-	Mon, 29 Dec 2025 12:32:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BF922F25F1;
+	Mon, 29 Dec 2025 12:33:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ikky+rZH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vljd+R2W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBCC9275AE4
-	for <stable@vger.kernel.org>; Mon, 29 Dec 2025 12:32:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D30326D4CD
+	for <stable@vger.kernel.org>; Mon, 29 Dec 2025 12:33:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767011556; cv=none; b=eVY5neO4V0U1fy98Nh1Mk9JmEi0emD23IEMUmKkFFSROf2rzRDnk1pAFuJk4b9ZM9mdEMRE/k3OQwSo1KlV3NWstv/M4EZ5W+94hBLf9TP9pnoIzlzo7sHpsSvNYClOYshWbBtBZjUp3UwKS/erto8G7YugXauvz1jd/RQfyjkE=
+	t=1767011608; cv=none; b=PU3eqeYSTx5Y6kTcuHoUzt2vBwU1mA37nTPBcSRFLwMNsFV2UJa2EKVs9KvoY9wM4NgwUcp96ek/HBWkIsUKBu+T+LWaLsvOZH5qyJbDMO2HT1j8zk9SsJfsRGugOmMh/mbffcSk+ZU3UhF0yLTV+m51kUkLaLxRSAhwYgBTm5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767011556; c=relaxed/simple;
-	bh=tmFmTCIlpzUkSzRn7xJ0hku2zQddfsGNlDUYQT3XWKE=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=gOCubHtU9w9ynzRqP5kVzoI5fN9eofZANJrddUUlG4VBa/Qsyl2K7RjuWdfLMFnviGpCN82DlqcMNBzNOURjbcUwIxOXQ8OhCkwBw66+/4SfXH07XShA90OkjOuKy7xki8pOyn9XMj8mt2fmZG0hSZAiFqtUGJmICk5z3huvKdQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ikky+rZH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F4D7C4CEF7;
-	Mon, 29 Dec 2025 12:32:36 +0000 (UTC)
+	s=arc-20240116; t=1767011608; c=relaxed/simple;
+	bh=+AfT6j2fV1FAL/gzF90O4nopIQckNjJirXVgZQOyPto=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=kqCoD/zQ5f3KS6DWNMdY9t2tEG6P6d6MkJl/mffmB13/eLIu+lIuorbr8xGc4hnbDarfa4f6TJFvkhnYcSz7lj1jcJ+BgBL7hNIvQ5ba1EgA8ZRhtYyUKBHcVfbAo6Ze+MGLreWoNRWw3yq1dIbgCkck8hILqZQqef6BYgNW30I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vljd+R2W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 629B4C4CEF7;
+	Mon, 29 Dec 2025 12:33:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767011556;
-	bh=tmFmTCIlpzUkSzRn7xJ0hku2zQddfsGNlDUYQT3XWKE=;
+	s=korg; t=1767011607;
+	bh=+AfT6j2fV1FAL/gzF90O4nopIQckNjJirXVgZQOyPto=;
 	h=Subject:To:Cc:From:Date:From;
-	b=ikky+rZHBtUbF+K5LRowa+EI4Ilj7N/a0wBL4C41iizxdXBTtERqW24d+YDpWUl9E
-	 Pa8iNPa4zX+w4i4IVoIc0gs+2PejWQO0jRYfrFyHFqsA6LEj8kJhCn/kYSoB1unh+f
-	 duHsMHfPINeoOcf8pUAxTbbP4xAdqLJJnCEPn2fM=
-Subject: FAILED: patch "[PATCH] mm/ksm: fix exec/fork inheritance support for prctl" failed to apply to 6.6-stable tree
-To: xu.xin16@zte.com.cn,akpm@linux-foundation.org,david@redhat.com,shr@devkernel.io,stable@vger.kernel.org,tujinjiang@huawei.com,wang.yaxin@zte.com.cn,yang.yang29@zte.com.cn
+	b=vljd+R2W3KBzu0jvnQqo/Cet+kMaT9SKXsMXug0ueJQU1bB7YjXrs175XXj0D/G2h
+	 Kvod/Qszp9Ftrg8RkVh6KhgQG9FU8Pk8HIUriEJLHchreJ6oiKbFsvVeyIeP/utFkt
+	 RXgpNdHqBCg8IGy0SykegVVQKJSEjGg4wWvLPfbc=
+Subject: FAILED: patch "[PATCH] mm/huge_memory: merge uniform_split_supported() and" failed to apply to 6.18-stable tree
+To: richard.weiyang@gmail.com,akpm@linux-foundation.org,baohua@kernel.org,baolin.wang@linux.alibaba.com,david@kernel.org,dev.jain@arm.com,lance.yang@linux.dev,liam.howlett@oracle.com,lorenzo.stoakes@oracle.com,npache@redhat.com,ryan.roberts@arm.com,stable@vger.kernel.org,ziy@nvidia.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 29 Dec 2025 13:32:26 +0100
-Message-ID: <2025122925-designed-overture-2e7d@gregkh>
+Date: Mon, 29 Dec 2025 13:33:25 +0100
+Message-ID: <2025122925-victory-numeral-2346@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -51,19 +51,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.18-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.18.y
 git checkout FETCH_HEAD
-git cherry-pick -x 590c03ca6a3fbb114396673314e2aa483839608b
+git cherry-pick -x 8a0e4bdddd1c998b894d879a1d22f1e745606215
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025122925-designed-overture-2e7d@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025122925-victory-numeral-2346@gregkh' --subject-prefix 'PATCH 6.18.y' HEAD^..
 
 Possible dependencies:
 
@@ -75,143 +75,182 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 590c03ca6a3fbb114396673314e2aa483839608b Mon Sep 17 00:00:00 2001
-From: xu xin <xu.xin16@zte.com.cn>
-Date: Tue, 7 Oct 2025 18:28:21 +0800
-Subject: [PATCH] mm/ksm: fix exec/fork inheritance support for prctl
+From 8a0e4bdddd1c998b894d879a1d22f1e745606215 Mon Sep 17 00:00:00 2001
+From: Wei Yang <richard.weiyang@gmail.com>
+Date: Thu, 6 Nov 2025 03:41:55 +0000
+Subject: [PATCH] mm/huge_memory: merge uniform_split_supported() and
+ non_uniform_split_supported()
 
-Patch series "ksm: fix exec/fork inheritance", v2.
+uniform_split_supported() and non_uniform_split_supported() share
+significantly similar logic.
 
-This series fixes exec/fork inheritance.  See the detailed description of
-the issue below.
+The only functional difference is that uniform_split_supported() includes
+an additional check on the requested @new_order.
 
+The reason for this check comes from the following two aspects:
 
-This patch (of 2):
+  * some file system or swap cache just supports order-0 folio
+  * the behavioral difference between uniform/non-uniform split
 
-Background
-==========
+The behavioral difference between uniform split and non-uniform:
 
-commit d7597f59d1d33 ("mm: add new api to enable ksm per process")
-introduced MMF_VM_MERGE_ANY for mm->flags, and allowed user to set it by
-prctl() so that the process's VMAs are forcibly scanned by ksmd.
+  * uniform split splits folio directly to @new_order
+  * non-uniform split creates after-split folios with orders from
+    folio_order(folio) - 1 to new_order.
 
-Subsequently, the 3c6f33b7273a ("mm/ksm: support fork/exec for prctl")
-supported inheriting the MMF_VM_MERGE_ANY flag when a task calls execve().
+This means for non-uniform split or !new_order split we should check the
+file system and swap cache respectively.
 
-Finally, commit 3a9e567ca45fb ("mm/ksm: fix ksm exec support for prctl")
-fixed the issue that ksmd doesn't scan the mm_struct with MMF_VM_MERGE_ANY
-by adding the mm_slot to ksm_mm_head in __bprm_mm_init().
+This commit unifies the logic and merge the two functions into a single
+combined helper, removing redundant code and simplifying the split
+support checking mechanism.
 
-Problem
-=======
-
-In some extreme scenarios, however, this inheritance of MMF_VM_MERGE_ANY
-during exec/fork can fail.  For example, when the scanning frequency of
-ksmd is tuned extremely high, a process carrying MMF_VM_MERGE_ANY may
-still fail to pass it to the newly exec'd process.  This happens because
-ksm_execve() is executed too early in the do_execve flow (prematurely
-adding the new mm_struct to the ksm_mm_slot list).
-
-As a result, before do_execve completes, ksmd may have already performed a
-scan and found that this new mm_struct has no VM_MERGEABLE VMAs, thus
-clearing its MMF_VM_MERGE_ANY flag.  Consequently, when the new program
-executes, the flag MMF_VM_MERGE_ANY inheritance missed.
-
-Root reason
-===========
-
-commit d7597f59d1d33 ("mm: add new api to enable ksm per process") clear
-the flag MMF_VM_MERGE_ANY when ksmd found no VM_MERGEABLE VMAs.
-
-Solution
-========
-
-Firstly, Don't clear MMF_VM_MERGE_ANY when ksmd found no VM_MERGEABLE
-VMAs, because perhaps their mm_struct has just been added to ksm_mm_slot
-list, and its process has not yet officially started running or has not
-yet performed mmap/brk to allocate anonymous VMAS.
-
-Secondly, recheck MMF_VM_MERGEABLE again if a process takes
-MMF_VM_MERGE_ANY, and create a mm_slot and join it into ksm_scan_list
-again.
-
-Link: https://lkml.kernel.org/r/20251007182504440BJgK8VXRHh8TD7IGSUIY4@zte.com.cn
-Link: https://lkml.kernel.org/r/20251007182821572h_SoFqYZXEP1mvWI4n9VL@zte.com.cn
-Fixes: 3c6f33b7273a ("mm/ksm: support fork/exec for prctl")
-Fixes: d7597f59d1d3 ("mm: add new api to enable ksm per process")
-Signed-off-by: xu xin <xu.xin16@zte.com.cn>
-Cc: Stefan Roesch <shr@devkernel.io>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Jinjiang Tu <tujinjiang@huawei.com>
-Cc: Wang Yaxin <wang.yaxin@zte.com.cn>
-Cc: Yang Yang <yang.yang29@zte.com.cn>
+Link: https://lkml.kernel.org/r/20251106034155.21398-3-richard.weiyang@gmail.com
+Fixes: c010d47f107f ("mm: thp: split huge page to any lower order pages")
+Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+Reviewed-by: Zi Yan <ziy@nvidia.com>
+Cc: Zi Yan <ziy@nvidia.com>
+Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Barry Song <baohua@kernel.org>
+Cc: Dev Jain <dev.jain@arm.com>
+Cc: Lance Yang <lance.yang@linux.dev>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Nico Pache <npache@redhat.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 
-diff --git a/include/linux/ksm.h b/include/linux/ksm.h
-index 067538fc4d58..c982694c987b 100644
---- a/include/linux/ksm.h
-+++ b/include/linux/ksm.h
-@@ -17,7 +17,7 @@
- #ifdef CONFIG_KSM
- int ksm_madvise(struct vm_area_struct *vma, unsigned long start,
- 		unsigned long end, int advice, vm_flags_t *vm_flags);
--vm_flags_t ksm_vma_flags(const struct mm_struct *mm, const struct file *file,
-+vm_flags_t ksm_vma_flags(struct mm_struct *mm, const struct file *file,
- 			 vm_flags_t vm_flags);
- int ksm_enable_merge_any(struct mm_struct *mm);
- int ksm_disable_merge_any(struct mm_struct *mm);
-@@ -103,7 +103,7 @@ bool ksm_process_mergeable(struct mm_struct *mm);
+diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
+index b74708dc5b5f..19d4a5f52ca2 100644
+--- a/include/linux/huge_mm.h
++++ b/include/linux/huge_mm.h
+@@ -374,10 +374,8 @@ int __split_huge_page_to_list_to_order(struct page *page, struct list_head *list
+ 		unsigned int new_order, bool unmapped);
+ int min_order_for_split(struct folio *folio);
+ int split_folio_to_list(struct folio *folio, struct list_head *list);
+-bool uniform_split_supported(struct folio *folio, unsigned int new_order,
+-		bool warns);
+-bool non_uniform_split_supported(struct folio *folio, unsigned int new_order,
+-		bool warns);
++bool folio_split_supported(struct folio *folio, unsigned int new_order,
++		enum split_type split_type, bool warns);
+ int folio_split(struct folio *folio, unsigned int new_order, struct page *page,
+ 		struct list_head *list);
  
- #else  /* !CONFIG_KSM */
- 
--static inline vm_flags_t ksm_vma_flags(const struct mm_struct *mm,
-+static inline vm_flags_t ksm_vma_flags(struct mm_struct *mm,
- 		const struct file *file, vm_flags_t vm_flags)
+@@ -408,7 +406,7 @@ static inline int split_huge_page_to_order(struct page *page, unsigned int new_o
+ static inline int try_folio_split_to_order(struct folio *folio,
+ 		struct page *page, unsigned int new_order)
  {
- 	return vm_flags;
-diff --git a/mm/ksm.c b/mm/ksm.c
-index cdefba633856..4f672f4f2140 100644
---- a/mm/ksm.c
-+++ b/mm/ksm.c
-@@ -2712,8 +2712,14 @@ static struct ksm_rmap_item *scan_get_next_rmap_item(struct page **page)
- 		spin_unlock(&ksm_mmlist_lock);
- 
- 		mm_slot_free(mm_slot_cache, mm_slot);
-+		/*
-+		 * Only clear MMF_VM_MERGEABLE. We must not clear
-+		 * MMF_VM_MERGE_ANY, because for those MMF_VM_MERGE_ANY process,
-+		 * perhaps their mm_struct has just been added to ksm_mm_slot
-+		 * list, and its process has not yet officially started running
-+		 * or has not yet performed mmap/brk to allocate anonymous VMAS.
-+		 */
- 		mm_flags_clear(MMF_VM_MERGEABLE, mm);
--		mm_flags_clear(MMF_VM_MERGE_ANY, mm);
- 		mmap_read_unlock(mm);
- 		mmdrop(mm);
- 	} else {
-@@ -2831,12 +2837,20 @@ static int __ksm_del_vma(struct vm_area_struct *vma)
-  *
-  * Returns: @vm_flags possibly updated to mark mergeable.
-  */
--vm_flags_t ksm_vma_flags(const struct mm_struct *mm, const struct file *file,
-+vm_flags_t ksm_vma_flags(struct mm_struct *mm, const struct file *file,
- 			 vm_flags_t vm_flags)
- {
- 	if (mm_flags_test(MMF_VM_MERGE_ANY, mm) &&
--	    __ksm_should_add_vma(file, vm_flags))
-+	    __ksm_should_add_vma(file, vm_flags)) {
- 		vm_flags |= VM_MERGEABLE;
-+		/*
-+		 * Generally, the flags here always include MMF_VM_MERGEABLE.
-+		 * However, in rare cases, this flag may be cleared by ksmd who
-+		 * scans a cycle without finding any mergeable vma.
-+		 */
-+		if (unlikely(!mm_flags_test(MMF_VM_MERGEABLE, mm)))
-+			__ksm_enter(mm);
-+	}
- 
- 	return vm_flags;
+-	if (!non_uniform_split_supported(folio, new_order, /* warns= */ false))
++	if (!folio_split_supported(folio, new_order, SPLIT_TYPE_NON_UNIFORM, /* warns= */ false))
+ 		return split_huge_page_to_order(&folio->page, new_order);
+ 	return folio_split(folio, new_order, page, NULL);
  }
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index 4118f330c55e..d79a4bb363de 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -3593,8 +3593,8 @@ static int __split_unmapped_folio(struct folio *folio, int new_order,
+ 	return 0;
+ }
+ 
+-bool non_uniform_split_supported(struct folio *folio, unsigned int new_order,
+-		bool warns)
++bool folio_split_supported(struct folio *folio, unsigned int new_order,
++		enum split_type split_type, bool warns)
+ {
+ 	if (folio_test_anon(folio)) {
+ 		/* order-1 is not supported for anonymous THP. */
+@@ -3602,48 +3602,41 @@ bool non_uniform_split_supported(struct folio *folio, unsigned int new_order,
+ 				"Cannot split to order-1 folio");
+ 		if (new_order == 1)
+ 			return false;
+-	} else if (IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) &&
+-	    !mapping_large_folio_support(folio->mapping)) {
+-		/*
+-		 * No split if the file system does not support large folio.
+-		 * Note that we might still have THPs in such mappings due to
+-		 * CONFIG_READ_ONLY_THP_FOR_FS. But in that case, the mapping
+-		 * does not actually support large folios properly.
+-		 */
+-		VM_WARN_ONCE(warns,
+-			"Cannot split file folio to non-0 order");
+-		return false;
+-	}
+-
+-	/* Only swapping a whole PMD-mapped folio is supported */
+-	if (folio_test_swapcache(folio)) {
+-		VM_WARN_ONCE(warns,
+-			"Cannot split swapcache folio to non-0 order");
+-		return false;
+-	}
+-
+-	return true;
+-}
+-
+-/* See comments in non_uniform_split_supported() */
+-bool uniform_split_supported(struct folio *folio, unsigned int new_order,
+-		bool warns)
+-{
+-	if (folio_test_anon(folio)) {
+-		VM_WARN_ONCE(warns && new_order == 1,
+-				"Cannot split to order-1 folio");
+-		if (new_order == 1)
+-			return false;
+-	} else  if (new_order) {
++	} else if (split_type == SPLIT_TYPE_NON_UNIFORM || new_order) {
+ 		if (IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) &&
+ 		    !mapping_large_folio_support(folio->mapping)) {
++			/*
++			 * We can always split a folio down to a single page
++			 * (new_order == 0) uniformly.
++			 *
++			 * For any other scenario
++			 *   a) uniform split targeting a large folio
++			 *      (new_order > 0)
++			 *   b) any non-uniform split
++			 * we must confirm that the file system supports large
++			 * folios.
++			 *
++			 * Note that we might still have THPs in such
++			 * mappings, which is created from khugepaged when
++			 * CONFIG_READ_ONLY_THP_FOR_FS is enabled. But in that
++			 * case, the mapping does not actually support large
++			 * folios properly.
++			 */
+ 			VM_WARN_ONCE(warns,
+ 				"Cannot split file folio to non-0 order");
+ 			return false;
+ 		}
+ 	}
+ 
+-	if (new_order && folio_test_swapcache(folio)) {
++	/*
++	 * swapcache folio could only be split to order 0
++	 *
++	 * non-uniform split creates after-split folios with orders from
++	 * folio_order(folio) - 1 to new_order, making it not suitable for any
++	 * swapcache folio split. Only uniform split to order-0 can be used
++	 * here.
++	 */
++	if ((split_type == SPLIT_TYPE_NON_UNIFORM || new_order) && folio_test_swapcache(folio)) {
+ 		VM_WARN_ONCE(warns,
+ 			"Cannot split swapcache folio to non-0 order");
+ 		return false;
+@@ -3711,11 +3704,7 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
+ 	if (new_order >= old_order)
+ 		return -EINVAL;
+ 
+-	if (split_type == SPLIT_TYPE_UNIFORM && !uniform_split_supported(folio, new_order, true))
+-		return -EINVAL;
+-
+-	if (split_type == SPLIT_TYPE_NON_UNIFORM &&
+-	    !non_uniform_split_supported(folio, new_order, true))
++	if (!folio_split_supported(folio, new_order, split_type, /* warn = */ true))
+ 		return -EINVAL;
+ 
+ 	is_hzp = is_huge_zero_folio(folio);
 
 
