@@ -1,52 +1,50 @@
-Return-Path: <stable+bounces-203721-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203728-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42B54CE75E4
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:19:27 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57E7DCE7569
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:17:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 31F3D30456AE
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:16:40 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C3F0B30133ED
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:16:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B30D032ED2C;
-	Mon, 29 Dec 2025 16:16:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEFFF3128CE;
+	Mon, 29 Dec 2025 16:16:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XZJQYmGd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="blZlJw5a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66C20319858;
-	Mon, 29 Dec 2025 16:16:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A2DA145B27;
+	Mon, 29 Dec 2025 16:16:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767024982; cv=none; b=WLNvDLlcBKX5wUtGrnvWByUU8Ri3hYVakxqerRFLFSQY4NynywdXY+lEoYBbXRkWUNXKswxZ4rFhLDHzueB4aiZHSF3rFi7LlRWMtImcEdaB8NqzlIp9Iitm6yp2jf/kJqWjqNBLFzrY3+qVjWsupuVaGIDUaq4gwb8pYCDHv5A=
+	t=1767025002; cv=none; b=pw6Iziv87nzZQ+q6tyyc0jQzff2tz96jxINw7hTVu2rrSyxAy0IRp1yECB3daRpZiV0XJjIEbfbukKbCZ7Hk2Zbo20TUQ2p4icUFaFEwN4Sx65sJxMir/NM2XwY3jTjZjczymSOl8laO0U4WIYyY2laS+0RfMPdH6umgOtHwSgU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767024982; c=relaxed/simple;
-	bh=xCWot3U2ZiH+qxK3lwDpPZxc5nybJFmHITChkuU/uqc=;
+	s=arc-20240116; t=1767025002; c=relaxed/simple;
+	bh=G133j5kxnd2Fd0MBMQKa0j20x35ZDbeR9UQ38SbkeEA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rXhuxmokU75PPo6QukrRmvkilOcdti8F8i/z3AWxPxF0Xa2u8QrjxQUnp4LrTUzo0g3FxKJ5bKns18dplIcojJEWSkdSc2wVSf7ql/9eDMT2VJfRykE6nTNlsSdB5cX3cOfrZhBWlKoYtaUQTn8aivRohXPVyPMX8Ky1xzTEpZg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XZJQYmGd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4645C4CEF7;
-	Mon, 29 Dec 2025 16:16:21 +0000 (UTC)
+	 MIME-Version; b=itIB2ON6RmUSURHhkYAU1oXxIPOQ2lZXobJhwZkK0z7cV0HE6zJe9U6yn9DIOtCiVAsF0kdIfY2Qz0vUF+3YpJjdjuC02egrTmFynEqbR66T53DMaEcdlzb+5W5Ahr5Wu+Z0cuY7Mchg7hF8Q9Hzm40GBOqxB1BUPReojkRkjA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=blZlJw5a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD73FC116C6;
+	Mon, 29 Dec 2025 16:16:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767024982;
-	bh=xCWot3U2ZiH+qxK3lwDpPZxc5nybJFmHITChkuU/uqc=;
+	s=korg; t=1767025002;
+	bh=G133j5kxnd2Fd0MBMQKa0j20x35ZDbeR9UQ38SbkeEA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XZJQYmGdHimW1P9nz2E+NpIOqEjlxoZSwXnUHHyLzBzp+TUxcpNsVqk9DgyTrcFou
-	 KMDIABU7y42U/RHVJzj7JmrCKc3kZXAhZ2g3Ua0fM+rS1DsZgvRbTmngSlzgbYTGaU
-	 8sxLmEb28KqfyTX8Rb2cuRMyDHfcFD0L5ggT+Jzk=
+	b=blZlJw5apK+g4iWpjkPjaBtEF+p7e0lio84J//9tLwuYJ/tdDNDEkaHys4lpWGUu5
+	 2V2U/dApqjZ+KJLiIofAo8uUvSuNVjVoXVkeNhE0RGH5BAvh5KS8sWlvG/jxrykZRo
+	 jQYvKBRhFBHl1ERIOT28k1kImamhsiWnaROV2a7Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Mario Limonciello (AMD)" <superm1@kernel.org>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 025/430] crypto: ccp - Add support for PCI device 0x115A
-Date: Mon, 29 Dec 2025 17:07:07 +0100
-Message-ID: <20251229160725.084951436@linuxfoundation.org>
+Subject: [PATCH 6.18 026/430] fs/ntfs3: Support timestamps prior to epoch
+Date: Mon, 29 Dec 2025 17:07:08 +0100
+Message-ID: <20251229160725.121847500@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251229160724.139406961@linuxfoundation.org>
 References: <20251229160724.139406961@linuxfoundation.org>
@@ -65,65 +63,41 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Mario Limonciello (AMD) <superm1@kernel.org>
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-[ Upstream commit 9fc6290117259a8dbf8247cb54559df62fd1550f ]
+[ Upstream commit 5180138604323895b5c291eca6aa7c20be494ade ]
 
-PCI device 0x115A is similar to pspv5, except it doesn't have platform
-access mailbox support.
+Before it used an unsigned 64-bit type, which prevented proper handling
+of timestamps earlier than 1970-01-01. Switch to a signed 64-bit type to
+support pre-epoch timestamps. The issue was caught by xfstests.
 
-Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
-Acked-by: Tom Lendacky <thomas.lendacky@amd.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/ccp/sp-pci.c | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ fs/ntfs3/ntfs_fs.h | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/crypto/ccp/sp-pci.c b/drivers/crypto/ccp/sp-pci.c
-index e7bb803912a6d..8891ceee1d7d0 100644
---- a/drivers/crypto/ccp/sp-pci.c
-+++ b/drivers/crypto/ccp/sp-pci.c
-@@ -459,6 +459,17 @@ static const struct psp_vdata pspv6 = {
- 	.intsts_reg             = 0x10514,	/* P2CMSG_INTSTS */
- };
+diff --git a/fs/ntfs3/ntfs_fs.h b/fs/ntfs3/ntfs_fs.h
+index 630128716ea73..2649fbe16669d 100644
+--- a/fs/ntfs3/ntfs_fs.h
++++ b/fs/ntfs3/ntfs_fs.h
+@@ -979,11 +979,12 @@ static inline __le64 kernel2nt(const struct timespec64 *ts)
+  */
+ static inline void nt2kernel(const __le64 tm, struct timespec64 *ts)
+ {
+-	u64 t = le64_to_cpu(tm) - _100ns2seconds * SecondsToStartOf1970;
++	s32 t32;
++	/* use signed 64 bit to support timestamps prior to epoch. xfstest 258. */
++	s64 t = le64_to_cpu(tm) - _100ns2seconds * SecondsToStartOf1970;
  
-+static const struct psp_vdata pspv7 = {
-+	.tee			= &teev2,
-+	.cmdresp_reg		= 0x10944,	/* C2PMSG_17 */
-+	.cmdbuff_addr_lo_reg	= 0x10948,	/* C2PMSG_18 */
-+	.cmdbuff_addr_hi_reg	= 0x1094c,	/* C2PMSG_19 */
-+	.bootloader_info_reg	= 0x109ec,	/* C2PMSG_59 */
-+	.feature_reg		= 0x109fc,	/* C2PMSG_63 */
-+	.inten_reg		= 0x10510,	/* P2CMSG_INTEN */
-+	.intsts_reg		= 0x10514,	/* P2CMSG_INTSTS */
-+};
-+
- #endif
+-	// WARNING: do_div changes its first argument(!)
+-	ts->tv_nsec = do_div(t, _100ns2seconds) * 100;
+-	ts->tv_sec = t;
++	ts->tv_sec = div_s64_rem(t, _100ns2seconds, &t32);
++	ts->tv_nsec = t32 * 100;
+ }
  
- static const struct sp_dev_vdata dev_vdata[] = {
-@@ -525,6 +536,13 @@ static const struct sp_dev_vdata dev_vdata[] = {
- 		.psp_vdata = &pspv6,
- #endif
- 	},
-+	{	/* 9 */
-+		.bar = 2,
-+#ifdef CONFIG_CRYPTO_DEV_SP_PSP
-+		.psp_vdata = &pspv7,
-+#endif
-+	},
-+
- };
- static const struct pci_device_id sp_pci_table[] = {
- 	{ PCI_VDEVICE(AMD, 0x1537), (kernel_ulong_t)&dev_vdata[0] },
-@@ -539,6 +557,7 @@ static const struct pci_device_id sp_pci_table[] = {
- 	{ PCI_VDEVICE(AMD, 0x17E0), (kernel_ulong_t)&dev_vdata[7] },
- 	{ PCI_VDEVICE(AMD, 0x156E), (kernel_ulong_t)&dev_vdata[8] },
- 	{ PCI_VDEVICE(AMD, 0x17D8), (kernel_ulong_t)&dev_vdata[8] },
-+	{ PCI_VDEVICE(AMD, 0x115A), (kernel_ulong_t)&dev_vdata[9] },
- 	/* Last entry must be zero */
- 	{ 0, }
- };
+ static inline struct ntfs_sb_info *ntfs_sb(struct super_block *sb)
 -- 
 2.51.0
 
