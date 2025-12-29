@@ -1,50 +1,50 @@
-Return-Path: <stable+bounces-204055-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204021-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5085FCE78F7
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:36:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F705CE77DD
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:30:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 716763006E38
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:32:48 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id BA96130036E4
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:30:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F58B33344C;
-	Mon, 29 Dec 2025 16:32:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5C2D3321DC;
+	Mon, 29 Dec 2025 16:30:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HumBFlIk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WcWzLs5q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35E16334690;
-	Mon, 29 Dec 2025 16:32:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A263533064D;
+	Mon, 29 Dec 2025 16:30:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767025922; cv=none; b=sca9C4UNkpljT0soTTxZypyxaWchMeIwyqb5b1+csakVZfHOaiBGneueP98HN3GxmK0f20tLwM3qu09DYKR0c47F43MXbi4pLSOouz0vAveKwGiuwXOn8pOBkP3/4qsr1kWQ+P1/7dIYZuYUecuR3BBe5LeLVHnFFIOAk4YTxAA=
+	t=1767025828; cv=none; b=tMVtKeMXX/4bPDniVnXd9FVkig8YYnYJOegduwHIz1kws1u4XnAjsB9xxJvg/AKGldd4ytBWgr5YzVLzZl9Iqs1oM7189qp/XPM8Lp9BcKy2mHjgUDAjyq0x4fC6ImXVaku3fW7yVLZtPeaHkbM+nn7UesUO7dOT0cd24h4gOHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767025922; c=relaxed/simple;
-	bh=OJpSrXIlBJV+0LiDoXBdEqjqg2NMCCsINRgkYaCcNOU=;
+	s=arc-20240116; t=1767025828; c=relaxed/simple;
+	bh=HkynEkO0qhkw5lynPKGcmMYlnLIVVzUfSigj3+2uQ/k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jdfDlY1bvpHBILx1IRBB3RMUqP52tmn4OkC92VEj/gv4JlCBJZGrTx9iuSSL1Xru1JGrTylRYvue1aHYBwwspCriQo6T/7IkSbTewc+FpidON6i9bVClCnAY33YYU/ppm6P9c+KT62OoRUAdmC4PfNFzRYLCaiMtMHipeloFQIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HumBFlIk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B034EC4CEF7;
-	Mon, 29 Dec 2025 16:32:01 +0000 (UTC)
+	 MIME-Version; b=aulMWqg4B+0blagW2l39tz5+uA1VuoO/u3JFbbT4RbtBmOfMAXwwhsioqbtAMDJhNMZTUV0Z1ZlKnauGulFy/sEosI7CAchPkWI3hC4SeTHVFpFq6wxawY79vN1ZaDQ4rKsrLaW+aPQvY/ZTrjmxL93Ixl5BV2ER8n4WGMGoC4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WcWzLs5q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E9EEC4CEF7;
+	Mon, 29 Dec 2025 16:30:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767025922;
-	bh=OJpSrXIlBJV+0LiDoXBdEqjqg2NMCCsINRgkYaCcNOU=;
+	s=korg; t=1767025828;
+	bh=HkynEkO0qhkw5lynPKGcmMYlnLIVVzUfSigj3+2uQ/k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HumBFlIkaC3WOp9irK7sb2RZgBXVa6pYq2Unxex8IKPYaiUOwxWCGxxQgcJ/tMdyk
-	 sOFbFhs4UiKEF+BYPyUz4YCR9jlV6AJJZ4G4zGIvBwD5FEpbT/7124g3zTn8fhQM0l
-	 RU+dSiPqq86u3rjbcTfxF0sFa7wung35Fs6sGIfM=
+	b=WcWzLs5qvqQ5rzoBbs6hV+2sHb2+sALBequqrGnjaE68STER0WQoE1cBIVI2ukrBb
+	 M5NEFzM/8aeZI7vXViijQzaG8t97e1calj63COlrc3MW1qUfN8tpCRcpF+/9TKMTNP
+	 VnRqn2yMYxhRN8cJSxgg3hbypW1cBD8bBg06Y7FE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jim Mattson <jmattson@google.com>,
+	David Matlack <dmatlack@google.com>,
 	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.18 343/430] KVM: SVM: Mark VMCB_NPT as dirty on nested VMRUN
-Date: Mon, 29 Dec 2025 17:12:25 +0100
-Message-ID: <20251229160736.951771689@linuxfoundation.org>
+Subject: [PATCH 6.18 344/430] KVM: selftests: Forcefully override ARCH from x86_64 to x86
+Date: Mon, 29 Dec 2025 17:12:26 +0100
+Message-ID: <20251229160736.988154594@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251229160724.139406961@linuxfoundation.org>
 References: <20251229160724.139406961@linuxfoundation.org>
@@ -63,37 +63,35 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jim Mattson <jmattson@google.com>
+From: Sean Christopherson <seanjc@google.com>
 
-commit 7c8b465a1c91f674655ea9cec5083744ec5f796a upstream.
+commit 17e5a9b77716564540d81f0c1e6082d28cf305c9 upstream.
 
-Mark the VMCB_NPT bit as dirty in nested_vmcb02_prepare_save()
-on every nested VMRUN.
+Forcefully override ARCH from x86_64 to x86 to handle the scenario where
+the user specifies ARCH=x86_64 on the command line.
 
-If L1 changes the PAT MSR between two VMRUN instructions on the same
-L1 vCPU, the g_pat field in the associated vmcb02 will change, and the
-VMCB_NPT clean bit should be cleared.
-
-Fixes: 4bb170a5430b ("KVM: nSVM: do not mark all VMCB02 fields dirty on nested vmexit")
+Fixes: 9af04539d474 ("KVM: selftests: Override ARCH for x86_64 instead of using ARCH_DIR")
 Cc: stable@vger.kernel.org
-Signed-off-by: Jim Mattson <jmattson@google.com>
-Link: https://lore.kernel.org/r/20250922162935.621409-3-jmattson@google.com
+Reported-by: David Matlack <dmatlack@google.com>
+Closes: https://lore.kernel.org/all/20250724213130.3374922-1-dmatlack@google.com
+Link: https://lore.kernel.org/r/20251007223057.368082-1-seanjc@google.com
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/svm/nested.c |    1 +
- 1 file changed, 1 insertion(+)
+ tools/testing/selftests/kvm/Makefile |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/kvm/svm/nested.c
-+++ b/arch/x86/kvm/svm/nested.c
-@@ -613,6 +613,7 @@ static void nested_vmcb02_prepare_save(s
- 	struct kvm_vcpu *vcpu = &svm->vcpu;
- 
- 	nested_vmcb02_compute_g_pat(svm);
-+	vmcb_mark_dirty(vmcb02, VMCB_NPT);
- 
- 	/* Load the nested guest state */
- 	if (svm->nested.vmcb12_gpa != svm->nested.last_vmcb12_gpa) {
+--- a/tools/testing/selftests/kvm/Makefile
++++ b/tools/testing/selftests/kvm/Makefile
+@@ -6,7 +6,7 @@ ARCH            ?= $(SUBARCH)
+ ifeq ($(ARCH),$(filter $(ARCH),arm64 s390 riscv x86 x86_64 loongarch))
+ # Top-level selftests allows ARCH=x86_64 :-(
+ ifeq ($(ARCH),x86_64)
+-	ARCH := x86
++	override ARCH := x86
+ endif
+ include Makefile.kvm
+ else
 
 
 
