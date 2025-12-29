@@ -1,172 +1,99 @@
-Return-Path: <stable+bounces-203525-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203526-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A26D2CE6A6E
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 13:10:34 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04F2ECE6A7A
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 13:15:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 22ED5300091E
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 12:10:31 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 611693011F6F
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 12:15:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCBDD27A130;
-	Mon, 29 Dec 2025 12:10:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B76AA197A7D;
+	Mon, 29 Dec 2025 12:15:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="BLoYEx1E";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="UWB/Dw0P"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="fl0i5p8G";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="tfNmxvy2"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25861205E25
-	for <stable@vger.kernel.org>; Mon, 29 Dec 2025 12:10:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D77B4290F;
+	Mon, 29 Dec 2025 12:15:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767010227; cv=none; b=Tbbjq0rvjfFAr0V/UZML4KuYM9NhlR1MBUQ4ZYX5n9ZkiI5pKpTSjtQqMhKByQY4ZyFi3uvQT4YhfCCyK5ITPhUBO4jZ8BFTLdLzULAKGLbCvSaXFLJcXsMMBz4LoXOUr1wTjMGDD8X99RewRmMqAQGduUAKxwQEpFLhx/PNwu8=
+	t=1767010530; cv=none; b=JRHbVZ0CKgrQx5Fo0gX7uf+PZk8GEMZ+Tn4Xy0sKsi463eF8Z6maKzMfTVmNFLvExjJjY7C0zBWwgVE28PuhTqKxTdacfk04m2Cfc1AWzE6FlOSsdW4xcbA2tMP9oRf0Gnb1SewMEreupJKmn+NbdiVvAW6jGMXVIqYRSb1vvHc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767010227; c=relaxed/simple;
-	bh=A8l/+tDY4TSpp5rdRSoRXaPmugwLl49j/YF2EoHHkPY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=joJbkMAcMzKrJYq1CAv/h3ASEK7Di0k5aKKiGQQnXK4O6Yw3/jthRzCbt+07rJ8lNBXcaDK+59c579Cjgc23/9SxibvBQuUeF6yYxIG0kNwIsK2ix/kmV20Jg+G7eXAU3YIt7RsQ7TQ+5u41PGI92wZER/pj4Oc8d/9RUaSdR3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=BLoYEx1E; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=UWB/Dw0P; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5BTA52tp956363
-	for <stable@vger.kernel.org>; Mon, 29 Dec 2025 12:10:25 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	UmRcezJoOaqIculwtm+fWIvmXsoW/ApmQVfbb+Mg22k=; b=BLoYEx1EISjcIZyy
-	fpmNK0s13xsxN5PV8gfPO7I46X+5K4ieea1rJgAHkWBFDVwIEK23juj/Kl21VXPP
-	qYJCszqcvo5Rb6VWvMBEbluZ00LlnwGOn+IVOtEbMW6hjRrXvw05dcnS3Xw/PdgY
-	licow/pNbO7p+MmSuxt7DO60KBULfKeTSpujplhMM2baZEAiLXS0vGRrCj03n+Cc
-	emZ1RW8JOaFkY4y5i86UDyviNdIHmRqVnfMQr/j3GpNMa3EgGTs23KLaDK4eDNPf
-	nm+k6XEBwrim4Fw69UwAkHnGp08PgtJKK8CIdCZtrSdZxvBaYnd3w3LMXdicQA7S
-	2fRNBA==
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com [209.85.160.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4bbqk1876q-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Mon, 29 Dec 2025 12:10:25 +0000 (GMT)
-Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-4f1aba09639so27019761cf.0
-        for <stable@vger.kernel.org>; Mon, 29 Dec 2025 04:10:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1767010224; x=1767615024; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=UmRcezJoOaqIculwtm+fWIvmXsoW/ApmQVfbb+Mg22k=;
-        b=UWB/Dw0P6tYqXlttQ1MpO9ZJ6gtln6lVXXztcdPE3nZ65+43K2Dnminvecf9FK7Y1g
-         pizJjMTBt6CajjtzSSvt2WGOEU3DuMV6mIP5r8ce9PP4pOsvV8BUtBZusMS5U9YYS9mO
-         i93acPVmuCocPufWSWODVlKOa8Fy8rq6NkOh920ypLN1KcwqHUQT9DZHA+IoESeljbgn
-         jZg9te7gASoq8qZzvuAa6hxQwzT2xJG+TllocvDWMclqesVid84N7+qImvq4fxUyTKdA
-         u4WtjEiHL+W+DSL200IJ8+s27UXzT/7E5MUiW5lFZ+8Q6MUYKPMtsV1bYRJsVvQzZPJ4
-         X2Fw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767010224; x=1767615024;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=UmRcezJoOaqIculwtm+fWIvmXsoW/ApmQVfbb+Mg22k=;
-        b=px3Z2M4TIo8mIFED2SNgyiZJdfyncAVqKNdQYT08O+PCgsviz7mSHuNw7VeCzpUleI
-         mE5ccQFdDMvlxlUQaDDVcgdJ2A+SAOeli9FOtE6jAuC9ebQYjbN/FgSTILZJiYIFGvuS
-         kWe7sbOpoC0ybPcU6I1V0Z27iXZPo0GhHUKCTk6E4H79Op1HbZFsth8I4/6dz/PJMhfi
-         9dFRz7Ckd6vIYXHTZVx1rKBnSMK5BuhemTmqT8VferJ1r80p7bzb2ibHsDoz/t2aH0+b
-         aZRI9fSwe9MPu4RPgbjAEQYgtqMaeipj+Hn9K8Gf30qloDXyka311RDaEdQ5UlCfpyn/
-         S/MQ==
-X-Gm-Message-State: AOJu0YyNdIRJ4znFz4n+UiQw9ApsyCNKZSK5sZRuWWhG7zqq19cFd0PC
-	oS7z2l9oBUDoA78H5bEdBakxiBiZuxheSuM9yp1+/VPlACOFabMkgo+DLEtTd25wqtqL1bxQQWS
-	ZNZx7kPbzhKiSI9f1uBP0QV+7fzkWIu3SH0UI1GFTyI9j7T4I/PVn1fdYfhQ=
-X-Gm-Gg: AY/fxX54mSybLpptvEwmCKyM/U2Dad4jEVwzk5+G6GkOLTpOju6hWbn40Sz0tc168BT
-	WV8jBJo24GjbQguIlFLBx3Pqgv9tnBGTULqtA4A0DNsi5PZVnS88cdzPSM0UQGIcH1siinMeYTs
-	RMZyWStEud8phDtVTM3lRWjDZVluDBeMrFuN6Z1HHx/3AYS8kSIhPtBdz7jnCdOOpTOXfYRaMwv
-	DIiA/3yoB/a3Rmeviwe1H4PH0wEk3wiNCNAalHbE/nmaXoZz+1U3O5Jks2LClL5pKHlHqYGWZvQ
-	rsEoI8C33+6DAZRnL9mJpDjeJp8/MokkiEpC0UgWD6xp0mXZmXtBJMbpFWGIpnMmcoMFt6glVKg
-	PRx3bOSkoOgrQdOK4Zm4/EUP8xYRU9PJ5hJp0cJSh/lUtTjkHoNtS83GLH18dvDd1tA==
-X-Received: by 2002:a05:622a:1920:b0:4ee:2580:9bc5 with SMTP id d75a77b69052e-4f4abce1e37mr308986391cf.2.1767010224111;
-        Mon, 29 Dec 2025 04:10:24 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFMKnFdxvstgWTORVPMJFQFOVOtZCz+Jhu7xlTUqWcjCXkeMyACTrlFS4i7qyXEw5yTNfv1NQ==
-X-Received: by 2002:a05:622a:1920:b0:4ee:2580:9bc5 with SMTP id d75a77b69052e-4f4abce1e37mr308986151cf.2.1767010223711;
-        Mon, 29 Dec 2025 04:10:23 -0800 (PST)
-Received: from [192.168.119.72] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b8037a60500sm3289805666b.13.2025.12.29.04.10.21
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 29 Dec 2025 04:10:23 -0800 (PST)
-Message-ID: <fab117be-d9a1-4f4a-b91d-e808c50960e2@oss.qualcomm.com>
-Date: Mon, 29 Dec 2025 13:10:20 +0100
+	s=arc-20240116; t=1767010530; c=relaxed/simple;
+	bh=QHq/Lso702AHpeRtQVR7YUX8eMVqM50P+v30WX1uJOg=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=MduceazPofuq4Ze3cuNzT4WKIFS3gI2cGTMbPCUg/+L2t6IX1pgK/vKc8qSZffaQldYJqxfPs0JBCmsPbt/yCYa3idOy7iDlh0T5p1vUuwbpj4m8Uq45oxGeuIV4ZbzQQ2Cy7OBDyYm2uAth8QAh3HpNF4hG84bbSh8sRliiBhE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=fl0i5p8G; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=tfNmxvy2; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+From: John Ogness <john.ogness@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1767010526;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6kLfQS1q9JNXykk+4gVed8AeFxOiYJJs8EgVmrDYMRU=;
+	b=fl0i5p8GeArBa/Na9CWzS0aCBFWwIUsDQpFZU5HgR5yQURUIqyVfN4MbFVpuVbtC7x7Vqx
+	wJKmZ5TkGW7HG9Qmr3EorMgXh/Ir+s6B/8ogQAYZLmq8s94kVGkQlEMUtSKZZ6n/yPULBt
+	GL6ZCWCKtfqO34euWiCYayRhANz3FLZwy2MSHT3u4XcnHTC10u53QSjJsm6kDxAQ8NoIjc
+	IvEceklU6FRLKcW2HLvp253wP6umCAtr/RGXYGirHt0IOoluEaKEhJdrFsNEs/NhUVM/gC
+	f74ztFnwGlYGh31sQFIzlIW9Y9gngCxgGOlufrjDAHpKqk2naA6p8Qx8oz9IDw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1767010526;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6kLfQS1q9JNXykk+4gVed8AeFxOiYJJs8EgVmrDYMRU=;
+	b=tfNmxvy2o4cCIQxgl9D8J+kzx3g/zlJCE0Nl2BvYr7TdXFWlazEcqGdWRlXvBBkZsKcOeT
+	Xux2PEmkAiKediCw==
+To: gregkh@linuxfoundation.org, gregkh@linuxfoundation.org,
+ pmladek@suse.com, sherry.sun@nxp.com, stable@vger.kernel.org
+Cc: stable-commits@vger.kernel.org
+Subject: Re: Patch "printk: Avoid scheduling irq_work on suspend" has been
+ added to the 6.18-stable tree
+In-Reply-To: <2025122945-trial-frosted-cef9@gregkh>
+References: <2025122945-trial-frosted-cef9@gregkh>
+Date: Mon, 29 Dec 2025 13:21:25 +0106
+Message-ID: <877bu58owy.fsf@jogness.linutronix.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] arm64: qcom: sm8750: Fix BAM DMA probing
-To: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley
- <conor+dt@kernel.org>,
-        Gaurav Kashyap <quic_gaurkash@quicinc.com>,
-        Melody Olvera <quic_molvera@quicinc.com>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org
-References: <20251229115734.205744-2-krzysztof.kozlowski@oss.qualcomm.com>
-Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-In-Reply-To: <20251229115734.205744-2-krzysztof.kozlowski@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-ORIG-GUID: iEfvFplxiZ8WQwcAw2yXrQVb_bbJC2iB
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjI5MDExMiBTYWx0ZWRfX0ccow4oFMVca
- jAUpsYnXAoB76xbJVHZasvh3TI5yeh3YAgNINy9Wr6loOozFKvr2j4hvl30JjCkkP0ZNpNFqocB
- oMahS02C1JQTBuklkQBuFEpGqy/Uh5TMRPw90/cDw+JJiCQb6ADzRZDLwY1OTSJkz3Ta9NdXhet
- I+lb1lBr5LNi0+/BJxJUfPpd1tuJ6ASTIvpU62efx81pmoQgjE/l8PJh+SsRKf4fhllHyr+RprO
- +VkVtwELJqhcB1+DmxMZGUYji80cwAtRjlEFbqfElRhTJB6pGCzrvoM4iHZcqed2PA7FufkcuLS
- LqxKd0X/XOBb/nWvMY+1ms/sa8J6WQSqXNabEJo5bzbcN+MtWvNceKF7iI22pmEUZPLZNdx5O4r
- HH5PjiAGnG+PnEmEbNWTQwF3h2d9FF3rHkLMK1RiSh8O1yyW9PFQLPAVf4mSLVMWcWJjn1VsQ28
- 8E0bRYqFwXwhwzdQmZw==
-X-Authority-Analysis: v=2.4 cv=Tf6bdBQh c=1 sm=1 tr=0 ts=69526fb1 cx=c_pps
- a=mPf7EqFMSY9/WdsSgAYMbA==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
- a=IkcTkHD0fZMA:10 a=wP3pNCr1ah4A:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8
- a=HqMmv6ACb4lSiKHDWTEA:9 a=QEXdDO2ut3YA:10 a=dawVfQjAaf238kedN5IG:22
-X-Proofpoint-GUID: iEfvFplxiZ8WQwcAw2yXrQVb_bbJC2iB
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-12-29_03,2025-12-29_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 clxscore=1015 impostorscore=0 suspectscore=0 malwarescore=0
- spamscore=0 lowpriorityscore=0 phishscore=0 priorityscore=1501 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2512120000 definitions=main-2512290112
+Content-Type: text/plain
 
-On 12/29/25 12:57 PM, Krzysztof Kozlowski wrote:
-> Bindings always required "qcom,num-ees" and "num-channels" properties,
-> as reported by dtbs_check:
-> 
->   sm8750-mtp.dtb: dma-controller@1dc4000 (qcom,bam-v1.7.4): 'anyOf' conditional failed, one must be fixed:
->     'qcom,powered-remotely' is a required property
->     'num-channels' is a required property
->     'qcom,num-ees' is a required property
->     'clocks' is a required property
->     'clock-names' is a required property
-> 
-> However since commit 5068b5254812 ("dmaengine: qcom: bam_dma: Fix DT
-> error handling for num-channels/ees") missing properties are actually
-> fatal and BAM does not probe:
-> 
->   bam-dma-engine 1dc4000.dma-controller: num-channels unspecified in dt
->   bam-dma-engine 1dc4000.dma-controller: probe with driver bam-dma-engine failed with error -22
-> 
-> Fixes: eeb0f3e4ea67 ("arm64: dts: qcom: sm8750: Add QCrypto nodes")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-> ---
+Hi Greg,
 
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+On 2025-12-29, <gregkh@linuxfoundation.org> wrote:
+> This is a note to let you know that I've just added the patch titled
+>
+>     printk: Avoid scheduling irq_work on suspend
+>
+> to the 6.18-stable tree which can be found at:
+>     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+>
+> The filename of the patch is:
+>      printk-avoid-scheduling-irq_work-on-suspend.patch
+> and it can be found in the queue-6.18 subdirectory.
+>
+> If you, or anyone else, feels it should not be added to the stable tree,
+> please let <stable@vger.kernel.org> know about it.
 
-Konrad
+This patch should be accompanied with the preceeding commit:
+
+d01ff281bd9b ("printk: Allow printk_trigger_flush() to flush all types")
+
+and the later commit:
+
+66e7c1e0ee08 ("printk: Avoid irq_work for printk_deferred() on suspend")
+
+in order to completely avoid irq_work triggering during suspend for all
+possible call paths.
+
+John Ogness
 
