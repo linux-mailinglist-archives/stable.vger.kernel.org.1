@@ -1,50 +1,51 @@
-Return-Path: <stable+bounces-203997-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204008-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA907CE7978
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:37:58 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33EFDCE77BF
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:30:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D40F13058902
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:29:55 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 71118300FA29
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:30:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FD93330B10;
-	Mon, 29 Dec 2025 16:29:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B689331219;
+	Mon, 29 Dec 2025 16:29:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DiYjMXFN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qq+FdrAP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D6A4330B05;
-	Mon, 29 Dec 2025 16:29:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 288EA33064F;
+	Mon, 29 Dec 2025 16:29:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767025761; cv=none; b=HLlZ+lhFz0mJNb1AYr76PVEgNKm/xGmyW3N9FgwHoDUI9+bUwCmW9EYbS3q/AzfOm2RsXsMK2KSfSlmmxbNNMJ85Fg+YKAxHvwoup+aQQInIbT0bpugqQqrYymW1Orv0oHVX+FLQkIfi0xI3dEFVGXQuXLDl/kse4+tWmJjC1KM=
+	t=1767025792; cv=none; b=EjA6Wb6RghNM+RQc7zOUAkCzqFxZrzZcWF4ZvGVCq1S3PvDCGrsSMcqx0pZKIeoGss03WfMo6JpV0iaveshFJcaXLia8muB6Cl/PqkBCEf5xr5AgaT3YubgDn2UdEjNhKrFM/X4oboXG1k321FLc/cxE7dpcCV27BKY6MQJiyzg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767025761; c=relaxed/simple;
-	bh=TUHzXw5wAwJBvCENSMD/6Zyu8FwJiqQ6nPRRUGbhx4s=;
+	s=arc-20240116; t=1767025792; c=relaxed/simple;
+	bh=/0Cc5hSvvW6ISYpSslGOaHor7aF2T5lE48NdxIAq2cw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bKQbuMhFPD3KClD2veIqNkK0qNnMf+W4vjI8Jh+5sdY/C5/+tBMGaknJNeahKXuqK2K+7+Mn1kX3X66axsL6rSmDzu0NtwKVswhQAVLsy+lP7bqkT1coJH1ifWAZ8pMm/9cwx4A3QtmgW0XZLEcLVI0Dv9Q7VdQ9dnN0PYjEPIk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DiYjMXFN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F927C4CEF7;
-	Mon, 29 Dec 2025 16:29:20 +0000 (UTC)
+	 MIME-Version; b=PigQDaDNRKegy+h8B8f5QI7vXlY0ryBSX863QewVlYflkAboerDPsgzMWxfLYlNmvdNU2IfgHsFOcNm3hQyl79XKC1LOueNUAfyPtJ9t2w1dF0Pu4Hwvat35eFFcSwwNCub54pb4Q85JQAn+pQ0oAkOtqYSLrbeBeDNnFbuc7XQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qq+FdrAP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B4A4C4CEF7;
+	Mon, 29 Dec 2025 16:29:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767025761;
-	bh=TUHzXw5wAwJBvCENSMD/6Zyu8FwJiqQ6nPRRUGbhx4s=;
+	s=korg; t=1767025791;
+	bh=/0Cc5hSvvW6ISYpSslGOaHor7aF2T5lE48NdxIAq2cw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DiYjMXFNRdIKq8FK/cZhqh2zXQS4T1cT7FH7nRqhx0euLZeEHd+VTLuwnwguUVpYw
-	 /RDGsdvUauev+yun/i9ClTSqf0LwdUHCURofgOPf7gyZpEAz7oemUcYqfAOVNMrHlA
-	 Wcdxne3b/wxHGMdQfI1u0cUVy7D2f1zgjdBCFiFA=
+	b=Qq+FdrAPBwuDjVNIj8cAk6pYBDNPlEH+U8L6YEtDT7b4m2jvtRSg5EnvD1+ls1GyN
+	 aJ9TFdC1Xls0CZQBMRl3qK9/DGnkLoMwfP4mLW67ebMI1Fg+GQDyW93V12PNLE8vnG
+	 kWovKubKpYXBDAzN38SF5VtQ5Fd+NWFTGBWdq6c4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chandrakanth Patil <chandrakanth.patil@broadcom.com>,
+	Seunghwan Baek <sh8267.baek@samsung.com>,
+	Peter Wang <peter.wang@mediatek.com>,
 	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.18 310/430] scsi: mpi3mr: Read missing IOCFacts flag for reply queue full overflow
-Date: Mon, 29 Dec 2025 17:11:52 +0100
-Message-ID: <20251229160735.741390479@linuxfoundation.org>
+Subject: [PATCH 6.18 311/430] scsi: ufs: core: Add ufshcd_update_evt_hist() for UFS suspend error
+Date: Mon, 29 Dec 2025 17:11:53 +0100
+Message-ID: <20251229160735.776530021@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251229160724.139406961@linuxfoundation.org>
 References: <20251229160724.139406961@linuxfoundation.org>
@@ -63,47 +64,46 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chandrakanth Patil <chandrakanth.patil@broadcom.com>
+From: Seunghwan Baek <sh8267.baek@samsung.com>
 
-commit d373163194982f43b92c552c138c29d9f0b79553 upstream.
+commit c9f36f04a8a2725172cdf2b5e32363e4addcb14c upstream.
 
-The driver was not reading the MAX_REQ_PER_REPLY_QUEUE_LIMIT IOCFacts
-flag, so the reply-queue-full handling was never enabled, even on
-firmware that supports it. Reading this flag enables the feature and
-prevents reply queue overflow.
+If UFS resume fails, the event history is updated in ufshcd_resume(), but
+there is no code anywhere to record UFS suspend. Therefore, add code to
+record UFS suspend error event history.
 
-Fixes: f08b24d82749 ("scsi: mpi3mr: Avoid reply queue full condition")
+Fixes: dd11376b9f1b ("scsi: ufs: Split the drivers/scsi/ufs directory")
 Cc: stable@vger.kernel.org
-Signed-off-by: Chandrakanth Patil <chandrakanth.patil@broadcom.com>
-Link: https://patch.msgid.link/20251211002929.22071-1-chandrakanth.patil@broadcom.com
+Signed-off-by: Seunghwan Baek <sh8267.baek@samsung.com>
+Reviewed-by: Peter Wang <peter.wang@mediatek.com>
+Link: https://patch.msgid.link/20251210063854.1483899-2-sh8267.baek@samsung.com
 Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/mpi3mr/mpi/mpi30_ioc.h |    1 +
- drivers/scsi/mpi3mr/mpi3mr_fw.c     |    2 ++
- 2 files changed, 3 insertions(+)
+ drivers/ufs/core/ufshcd.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/scsi/mpi3mr/mpi/mpi30_ioc.h
-+++ b/drivers/scsi/mpi3mr/mpi/mpi30_ioc.h
-@@ -166,6 +166,7 @@ struct mpi3_ioc_facts_data {
- #define MPI3_IOCFACTS_FLAGS_SIGNED_NVDATA_REQUIRED            (0x00010000)
- #define MPI3_IOCFACTS_FLAGS_DMA_ADDRESS_WIDTH_MASK            (0x0000ff00)
- #define MPI3_IOCFACTS_FLAGS_DMA_ADDRESS_WIDTH_SHIFT           (8)
-+#define MPI3_IOCFACTS_FLAGS_MAX_REQ_PER_REPLY_QUEUE_LIMIT     (0x00000040)
- #define MPI3_IOCFACTS_FLAGS_INITIAL_PORT_ENABLE_MASK          (0x00000030)
- #define MPI3_IOCFACTS_FLAGS_INITIAL_PORT_ENABLE_SHIFT		(4)
- #define MPI3_IOCFACTS_FLAGS_INITIAL_PORT_ENABLE_NOT_STARTED   (0x00000000)
---- a/drivers/scsi/mpi3mr/mpi3mr_fw.c
-+++ b/drivers/scsi/mpi3mr/mpi3mr_fw.c
-@@ -3158,6 +3158,8 @@ static void mpi3mr_process_factsdata(str
- 	mrioc->facts.dma_mask = (facts_flags &
- 	    MPI3_IOCFACTS_FLAGS_DMA_ADDRESS_WIDTH_MASK) >>
- 	    MPI3_IOCFACTS_FLAGS_DMA_ADDRESS_WIDTH_SHIFT;
-+	mrioc->facts.max_req_limit = (facts_flags &
-+			MPI3_IOCFACTS_FLAGS_MAX_REQ_PER_REPLY_QUEUE_LIMIT);
- 	mrioc->facts.protocol_flags = facts_data->protocol_flags;
- 	mrioc->facts.mpi_version = le32_to_cpu(facts_data->mpi_version.word);
- 	mrioc->facts.max_reqs = le16_to_cpu(facts_data->max_outstanding_requests);
+--- a/drivers/ufs/core/ufshcd.c
++++ b/drivers/ufs/core/ufshcd.c
+@@ -10223,7 +10223,7 @@ static int ufshcd_suspend(struct ufs_hba
+ 	ret = ufshcd_setup_clocks(hba, false);
+ 	if (ret) {
+ 		ufshcd_enable_irq(hba);
+-		return ret;
++		goto out;
+ 	}
+ 	if (ufshcd_is_clkgating_allowed(hba)) {
+ 		hba->clk_gating.state = CLKS_OFF;
+@@ -10235,6 +10235,9 @@ static int ufshcd_suspend(struct ufs_hba
+ 	/* Put the host controller in low power mode if possible */
+ 	ufshcd_hba_vreg_set_lpm(hba);
+ 	ufshcd_pm_qos_update(hba, false);
++out:
++	if (ret)
++		ufshcd_update_evt_hist(hba, UFS_EVT_SUSPEND_ERR, (u32)ret);
+ 	return ret;
+ }
+ 
 
 
 
