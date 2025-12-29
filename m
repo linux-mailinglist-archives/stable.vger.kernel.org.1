@@ -1,50 +1,50 @@
-Return-Path: <stable+bounces-204054-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204022-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49605CE788E
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:34:06 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C3E9CE77D8
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:30:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 30BE2300C1E5
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:32:19 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B8E353002167
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:30:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE09D334694;
-	Mon, 29 Dec 2025 16:32:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD6443328EA;
+	Mon, 29 Dec 2025 16:30:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P47bbdHy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dkTZFCXL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AF3233374A;
-	Mon, 29 Dec 2025 16:31:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AF743328E1;
+	Mon, 29 Dec 2025 16:30:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767025920; cv=none; b=sv5eUQX06XjoduCVGUr7HXFvsvkvrMkxpCses3Y++NJU+QeDHmjXf3U3SpazjyhAHZUm4UTEnIv01EOVS9eGWk5RWVTXMHbmBz6eG1tPDzGBoU3iGYxaqje6BD1XOjhWcnx634mLN31MyEVbMvHALyS/1aSelMk1Ib7X/asUmlE=
+	t=1767025831; cv=none; b=RC6oNtJdVtOSf4YEy1hcbWI0z88vTQ0vYo1Ap22JVqmhFI4bHXjoZH0gFyxpY/H9wKVd82fzbZ9i+QVvMagQdnQjuLO8apDD9qspqOJZRdS3tU2OrwAbn8TDh3s1n2qp/jnTtxj6gedrzEK0sr9+1hfNAzaFEdJWa06ksjQ3Hw4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767025920; c=relaxed/simple;
-	bh=znjiqAKiOY8be9/9N7jYioaBxLrRIgrnSbCvnJihBt8=;
+	s=arc-20240116; t=1767025831; c=relaxed/simple;
+	bh=G0o8CmFdB/CkmnzHuVnRDzy0UvURe6ex+g2+Fvr7tB8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M10hd1T8S79IYfNN0FEK24sNkbwKKdxJ7D+kS1fOW8r6LpaX3rdcUZFCFEfXv0pxI5A43Tr9C6Z1KjmA1dr+5m0+KQ9iZZ7673bhsK3uQ/ZYYvs/LmO8l1a0nU6EimRdsPEku+PSNh0OEdkYvn/Un7yHu6NzvSl1zAji0Xaz7ro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P47bbdHy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD66AC4CEF7;
-	Mon, 29 Dec 2025 16:31:58 +0000 (UTC)
+	 MIME-Version; b=U4qzwd0Z53+gSHC+aeHzPra3mejlrj/jpYNA9cAB/hV/Am3Sfs3XU1Bx2gSBhBkNnx8y73c7MvBN9I9LTaNPbUEsCAwmnjcoJdFIw5tw+6qTKkGkpW2v/yL7WHaeDQrCG5WNZQ4XFl42OnkTavbeJpBzX1hi9FvFhysLBC1wmsk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dkTZFCXL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03999C4CEF7;
+	Mon, 29 Dec 2025 16:30:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767025919;
-	bh=znjiqAKiOY8be9/9N7jYioaBxLrRIgrnSbCvnJihBt8=;
+	s=korg; t=1767025831;
+	bh=G0o8CmFdB/CkmnzHuVnRDzy0UvURe6ex+g2+Fvr7tB8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P47bbdHyhvg2b2ZU/y9erCNUqdS81z+iMn3qesairXcNdH/FbC4iVivyQ8bBFVSJU
-	 PFaPODP85SgAXZQRdEJoeKTjYZEkIZ4K1huo8Xh0GQ2Wh5B1k/olX7UBneGNrMssds
-	 8Ud65yimPtHPDcKO94b4nEVFQQNqdfIxXZkqVkSw=
+	b=dkTZFCXL3OJdtGnuAMNhjYiTunUtIVjh4V7zsKsP0neE5i0hItCBD3dPmjlXeF4z9
+	 3zlGCcdnoSruCFtZSk2o/XyJUXYpCn2noN0EnS93i00DRcZbGlYuh4SlvWVHGXBUvW
+	 E8q5KBQUR/VA+7ZxH/eHvjyicnYaUX1yk3dMo4G8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Igor Mammedov <imammedo@redhat.com>,
+	Gavin Shan <gshan@redhat.com>,
 	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.18 352/430] KVM: x86: Apply runtime updates to current CPUID during KVM_SET_CPUID{,2}
-Date: Mon, 29 Dec 2025 17:12:34 +0100
-Message-ID: <20251229160737.280164584@linuxfoundation.org>
+Subject: [PATCH 6.18 353/430] KVM: selftests: Add missing "break" in rseq_tests param parsing
+Date: Mon, 29 Dec 2025 17:12:35 +0100
+Message-ID: <20251229160737.316117091@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251229160724.139406961@linuxfoundation.org>
 References: <20251229160724.139406961@linuxfoundation.org>
@@ -63,54 +63,44 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Gavin Shan <gshan@redhat.com>
 
-commit e2b43fb25243d502ad36b07bab9de09f4b76fff9 upstream.
+commit 1b9439c933b500cb24710bbd81fe56e9b0025b6f upstream.
 
-When handling KVM_SET_CPUID{,2}, do runtime CPUID updates on the vCPU's
-current CPUID (and caps) prior to swapping in the incoming CPUID state so
-that KVM doesn't lose pending updates if the incoming CPUID is rejected,
-and to prevent a false failure on the equality check.
+In commit 0297cdc12a87 ("KVM: selftests: Add option to rseq test to
+override /dev/cpu_dma_latency"), a 'break' is missed before the option
+'l' in the argument parsing loop, which leads to an unexpected core
+dump in atoi_paranoid(). It tries to get the latency from non-existent
+argument.
 
-Note, runtime updates are unconditionally performed on the incoming/new
-CPUID (and associated caps), i.e. clearing the dirty flag won't negatively
-affect the new CPUID.
+  host$ ./rseq_test -u
+  Random seed: 0x6b8b4567
+  Segmentation fault (core dumped)
 
-Fixes: 93da6af3ae56 ("KVM: x86: Defer runtime updates of dynamic CPUID bits until CPUID emulation")
-Reported-by: Igor Mammedov <imammedo@redhat.com>
-Closes: https://lore.kernel.org/all/20251128123202.68424a95@imammedo
-Cc: stable@vger.kernel.org
-Acked-by: Igor Mammedov <imammedo@redhat.com>
-Tested-by: Igor Mammedov <imammedo@redhat.com>
-Link: https://patch.msgid.link/20251202015049.1167490-2-seanjc@google.com
+Add a 'break' before the option 'l' in the argument parsing loop to avoid
+the unexpected core dump.
+
+Fixes: 0297cdc12a87 ("KVM: selftests: Add option to rseq test to override /dev/cpu_dma_latency")
+Cc: stable@vger.kernel.org # v6.15+
+Signed-off-by: Gavin Shan <gshan@redhat.com>
+Link: https://patch.msgid.link/20251124050427.1924591-1-gshan@redhat.com
+[sean: describe code change in shortlog]
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/cpuid.c |   11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ tools/testing/selftests/kvm/rseq_test.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/x86/kvm/cpuid.c
-+++ b/arch/x86/kvm/cpuid.c
-@@ -510,10 +510,17 @@ static int kvm_set_cpuid(struct kvm_vcpu
- 	int r;
- 
- 	/*
-+	 * Apply pending runtime CPUID updates to the current CPUID entries to
-+	 * avoid false positives due to mismatches on KVM-owned feature flags.
-+	 */
-+	if (vcpu->arch.cpuid_dynamic_bits_dirty)
-+		kvm_update_cpuid_runtime(vcpu);
-+
-+	/*
- 	 * Swap the existing (old) entries with the incoming (new) entries in
- 	 * order to massage the new entries, e.g. to account for dynamic bits
--	 * that KVM controls, without clobbering the current guest CPUID, which
--	 * KVM needs to preserve in order to unwind on failure.
-+	 * that KVM controls, without losing the current guest CPUID, which KVM
-+	 * needs to preserve in order to unwind on failure.
- 	 *
- 	 * Similarly, save the vCPU's current cpu_caps so that the capabilities
- 	 * can be updated alongside the CPUID entries when performing runtime
+--- a/tools/testing/selftests/kvm/rseq_test.c
++++ b/tools/testing/selftests/kvm/rseq_test.c
+@@ -215,6 +215,7 @@ int main(int argc, char *argv[])
+ 		switch (opt) {
+ 		case 'u':
+ 			skip_sanity_check = true;
++			break;
+ 		case 'l':
+ 			latency = atoi_paranoid(optarg);
+ 			break;
 
 
 
