@@ -1,50 +1,50 @@
-Return-Path: <stable+bounces-204013-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204055-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB7ABCE7921
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:36:45 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5085FCE78F7
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:36:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 82F493010766
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:36:41 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 716763006E38
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:32:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FA5333122E;
-	Mon, 29 Dec 2025 16:30:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F58B33344C;
+	Mon, 29 Dec 2025 16:32:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ClgKVw0P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HumBFlIk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DC3C3314DE;
-	Mon, 29 Dec 2025 16:30:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35E16334690;
+	Mon, 29 Dec 2025 16:32:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767025806; cv=none; b=XZjGAKnalNxhcghGhBbWV/WrJZAbpO/mWWH4jvEsAM078K2ntaaF/rb1kQKuHK9btcL7Fv2MQH53SIxlgzX3lo+lWGqg2TkLLiB0mIPO92ZMWYWnMbBAhvyqtta7dg3qq4H6qOjF3hQqeFYx+HbTZBTPkHDSJX43uI5jktC3DnM=
+	t=1767025922; cv=none; b=sca9C4UNkpljT0soTTxZypyxaWchMeIwyqb5b1+csakVZfHOaiBGneueP98HN3GxmK0f20tLwM3qu09DYKR0c47F43MXbi4pLSOouz0vAveKwGiuwXOn8pOBkP3/4qsr1kWQ+P1/7dIYZuYUecuR3BBe5LeLVHnFFIOAk4YTxAA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767025806; c=relaxed/simple;
-	bh=eGYLzXwgRfjmKeGrZP4LL6d/Wgf3Owd4etLJcLWOOEY=;
+	s=arc-20240116; t=1767025922; c=relaxed/simple;
+	bh=OJpSrXIlBJV+0LiDoXBdEqjqg2NMCCsINRgkYaCcNOU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TTrb3t7eQBr/K2MpWoRBcKGKZn2GNg2691DbhIayBfdV4wqYJi9LydAj19z026i8iwgaN24BhH9GCk5ixg2kkfPq8LDa6aArx9UPRf2LfjCd1SfApx1yAIgv5y9Ow8Av+u/7jdEv/U3MR/g1Kpj/QkGVEKkPoienP4DJ6hJq9g8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ClgKVw0P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88D33C4CEF7;
-	Mon, 29 Dec 2025 16:30:05 +0000 (UTC)
+	 MIME-Version; b=jdfDlY1bvpHBILx1IRBB3RMUqP52tmn4OkC92VEj/gv4JlCBJZGrTx9iuSSL1Xru1JGrTylRYvue1aHYBwwspCriQo6T/7IkSbTewc+FpidON6i9bVClCnAY33YYU/ppm6P9c+KT62OoRUAdmC4PfNFzRYLCaiMtMHipeloFQIU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HumBFlIk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B034EC4CEF7;
+	Mon, 29 Dec 2025 16:32:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767025805;
-	bh=eGYLzXwgRfjmKeGrZP4LL6d/Wgf3Owd4etLJcLWOOEY=;
+	s=korg; t=1767025922;
+	bh=OJpSrXIlBJV+0LiDoXBdEqjqg2NMCCsINRgkYaCcNOU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ClgKVw0PzmWao1O4Nkw30lxVCQSZmJ+6bg8OjWtt5ZQiAM7zdBCOYds/WQQ/FzI5V
-	 eieZkaH6BPYzVaWBndLOLeY1BWG26+UhLGLM/Z6LkSPp0nX/McnM4wwYzPeqJ7sPZ8
-	 Uz3pEo/3Z6XPqi2I7ET5QqJ4MD44ke8wMTvTkmpg=
+	b=HumBFlIkaC3WOp9irK7sb2RZgBXVa6pYq2Unxex8IKPYaiUOwxWCGxxQgcJ/tMdyk
+	 sOFbFhs4UiKEF+BYPyUz4YCR9jlV6AJJZ4G4zGIvBwD5FEpbT/7124g3zTn8fhQM0l
+	 RU+dSiPqq86u3rjbcTfxF0sFa7wung35Fs6sGIfM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yosry Ahmed <yosry.ahmed@linux.dev>,
+	Jim Mattson <jmattson@google.com>,
 	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.18 342/430] KVM: nSVM: Avoid incorrect injection of SVM_EXIT_CR0_SEL_WRITE
-Date: Mon, 29 Dec 2025 17:12:24 +0100
-Message-ID: <20251229160736.915087536@linuxfoundation.org>
+Subject: [PATCH 6.18 343/430] KVM: SVM: Mark VMCB_NPT as dirty on nested VMRUN
+Date: Mon, 29 Dec 2025 17:12:25 +0100
+Message-ID: <20251229160736.951771689@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251229160724.139406961@linuxfoundation.org>
 References: <20251229160724.139406961@linuxfoundation.org>
@@ -57,84 +57,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yosry Ahmed <yosry.ahmed@linux.dev>
+From: Jim Mattson <jmattson@google.com>
 
-commit 3d80f4c93d3d26d0f9a0dd2844961a632eeea634 upstream.
+commit 7c8b465a1c91f674655ea9cec5083744ec5f796a upstream.
 
-When emulating L2 instructions, svm_check_intercept() checks whether a
-write to CR0 should trigger a synthesized #VMEXIT with
-SVM_EXIT_CR0_SEL_WRITE. However, it does not check whether L1 enabled
-the intercept for SVM_EXIT_WRITE_CR0, which has higher priority
-according to the APM (24593—Rev.  3.42—March 2024, Table 15-7):
+Mark the VMCB_NPT bit as dirty in nested_vmcb02_prepare_save()
+on every nested VMRUN.
 
-  When both selective and non-selective CR0-write intercepts are active at
-  the same time, the non-selective intercept takes priority. With respect
-  to exceptions, the priority of this intercept is the same as the generic
-  CR0-write intercept.
+If L1 changes the PAT MSR between two VMRUN instructions on the same
+L1 vCPU, the g_pat field in the associated vmcb02 will change, and the
+VMCB_NPT clean bit should be cleared.
 
-Make sure L1 does NOT intercept SVM_EXIT_WRITE_CR0 before checking if
-SVM_EXIT_CR0_SEL_WRITE needs to be injected.
-
-Opportunistically tweak the "not CR0" logic to explicitly bail early so
-that it's more obvious that only CR0 has a selective intercept, and that
-modifying icpt_info.exit_code is functionally necessary so that the call
-to nested_svm_exit_handled() checks the correct exit code.
-
-Fixes: cfec82cb7d31 ("KVM: SVM: Add intercept check for emulated cr accesses")
+Fixes: 4bb170a5430b ("KVM: nSVM: do not mark all VMCB02 fields dirty on nested vmexit")
 Cc: stable@vger.kernel.org
-Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
-Link: https://patch.msgid.link/20251024192918.3191141-4-yosry.ahmed@linux.dev
-[sean: isolate non-CR0 write logic, tweak comments accordingly]
+Signed-off-by: Jim Mattson <jmattson@google.com>
+Link: https://lore.kernel.org/r/20250922162935.621409-3-jmattson@google.com
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/svm/svm.c |   24 +++++++++++++++++++-----
- 1 file changed, 19 insertions(+), 5 deletions(-)
+ arch/x86/kvm/svm/nested.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -4528,15 +4528,29 @@ static int svm_check_intercept(struct kv
- 	case SVM_EXIT_WRITE_CR0: {
- 		unsigned long cr0, val;
+--- a/arch/x86/kvm/svm/nested.c
++++ b/arch/x86/kvm/svm/nested.c
+@@ -613,6 +613,7 @@ static void nested_vmcb02_prepare_save(s
+ 	struct kvm_vcpu *vcpu = &svm->vcpu;
  
--		if (info->intercept == x86_intercept_cr_write)
-+		/*
-+		 * Adjust the exit code accordingly if a CR other than CR0 is
-+		 * being written, and skip straight to the common handling as
-+		 * only CR0 has an additional selective intercept.
-+		 */
-+		if (info->intercept == x86_intercept_cr_write && info->modrm_reg) {
- 			icpt_info.exit_code += info->modrm_reg;
-+			break;
-+		}
+ 	nested_vmcb02_compute_g_pat(svm);
++	vmcb_mark_dirty(vmcb02, VMCB_NPT);
  
--		if (icpt_info.exit_code != SVM_EXIT_WRITE_CR0 ||
--		    info->intercept == x86_intercept_clts)
-+		/*
-+		 * Convert the exit_code to SVM_EXIT_CR0_SEL_WRITE if a
-+		 * selective CR0 intercept is triggered (the common logic will
-+		 * treat the selective intercept as being enabled).  Note, the
-+		 * unconditional intercept has higher priority, i.e. this is
-+		 * only relevant if *only* the selective intercept is enabled.
-+		 */
-+		if (vmcb12_is_intercept(&svm->nested.ctl, INTERCEPT_CR0_WRITE) ||
-+		    !(vmcb12_is_intercept(&svm->nested.ctl, INTERCEPT_SELECTIVE_CR0)))
- 			break;
- 
--		if (!(vmcb12_is_intercept(&svm->nested.ctl,
--					INTERCEPT_SELECTIVE_CR0)))
-+		/* CLTS never triggers INTERCEPT_SELECTIVE_CR0 */
-+		if (info->intercept == x86_intercept_clts)
- 			break;
- 
- 		cr0 = vcpu->arch.cr0 & ~SVM_CR0_SELECTIVE_MASK;
+ 	/* Load the nested guest state */
+ 	if (svm->nested.vmcb12_gpa != svm->nested.last_vmcb12_gpa) {
 
 
 
