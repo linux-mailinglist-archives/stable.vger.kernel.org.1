@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-203567-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203568-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 547EBCE6EA1
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 14:54:04 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2D7CCE6EA4
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 14:54:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 238123005FF5
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 13:54:03 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B063430080C6
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 13:54:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7557F22F16E;
-	Mon, 29 Dec 2025 13:54:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0D8822A4EB;
+	Mon, 29 Dec 2025 13:54:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1mzbEZFZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u6yorgXF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36705224AF0
-	for <stable@vger.kernel.org>; Mon, 29 Dec 2025 13:54:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FDDD224AF0
+	for <stable@vger.kernel.org>; Mon, 29 Dec 2025 13:54:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767016441; cv=none; b=J3hfIatMwH5Gq3/xBIMNUFnL5Ur6zVyGxDlPXa/nStgj3JqLOHP+C54xOkqhq8WTX/iDwS/+26EKUkpFUlgF2rAH5cyHzkRMoA3jXt72I/PiedmJ9SaAotuWKERJCvu9tIe/1aoq1j6Cbw1QRtsGP82Byk9eWkiRiNsDQ2i+RhM=
+	t=1767016454; cv=none; b=YO7+4GKXFWwKiKJkH3p0iPkEoEdjKbwdPoFttrqGS8iHc5yHLTClvR7aHsvukFIG3tW9sCcyjqNq5GR1S1r8/65KkZPMUy87HFn60YaHYcvbl+lhciKOtEVJphz/qFmQvIA8+J9uKx4KhSOnoDE0j0hnv82UuTnct6vByJ6O0aE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767016441; c=relaxed/simple;
-	bh=DhfI5Z+WcNIPWDjVCyVzYSjRYxJPIw5o11TCzLRBvY0=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=S6SU+8FtzLvabHzBZvyStOUgdFkKsXl9aP2WLl5t7w1BaEp38bzf4/5ArAnM4EnSmuZZP4ztXUwCU5enfqCd9PHYAgZGU3/8Pb9W4HYA0rOf84k7ZqJ5/wRhFXPWX162N+1aC6WfYVzzHSWGm2VJpzOE6btpWetJaeD9NxBDdRY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1mzbEZFZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8F57C4CEF7;
-	Mon, 29 Dec 2025 13:54:00 +0000 (UTC)
+	s=arc-20240116; t=1767016454; c=relaxed/simple;
+	bh=+y4HpYnaqD1h7/U6hvvVUh34gC50CZwQ0lTPsRiMaZU=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=M3u5bL2i1hx9nmPNKfoQUjlBP8iXd2XrwVQGSTJ8wLFltuTolfxFQqa0ZFFk9dFg5VxSIGsyTCtuPnRXa/r9/8rsRsNNFY/pD9Qto8UVenptzxq49+n62Kl6Ns0w6ukQqJVIs6tW3nFZagL2boJJV/lZQfO1/HyhwSxq8HeKb7c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u6yorgXF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AA38C4CEF7;
+	Mon, 29 Dec 2025 13:54:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767016441;
-	bh=DhfI5Z+WcNIPWDjVCyVzYSjRYxJPIw5o11TCzLRBvY0=;
+	s=korg; t=1767016453;
+	bh=+y4HpYnaqD1h7/U6hvvVUh34gC50CZwQ0lTPsRiMaZU=;
 	h=Subject:To:Cc:From:Date:From;
-	b=1mzbEZFZPSF/qPqk7nP2MU/gcQnXS+8ufwSc6mfwDXHHRqzg7oHLBlskbTUhLw8TM
-	 OZH+pELlsg5U0YQ/E8865YcUUMAv1JRcpJcc0qlcLScFmQlf/WfBBFTZkhLlryoGsg
-	 ET8Y1VU6VcruutD+gcG1V0xDTP9GUV6ffaP+8XYM=
-Subject: FAILED: patch "[PATCH] usb: gadget: lpc32xx_udc: fix clock imbalance in error path" failed to apply to 5.10-stable tree
-To: johan@kernel.org,gregkh@linuxfoundation.org,make24@iscas.ac.cn,vz@mleia.com
+	b=u6yorgXF2QY9fkHyHtpetfSIyvANRqDgnhOr2Ljjb1b29RInX7f/Zb/pzwg+DVZBE
+	 4hDNwc7JJIC/P1Fm0HVvzkiIZcpnunhxeGLtO9KS+PHleI6NN2XBhrUid2B+wYyFIs
+	 mIcW2PuAYvZ1HnA5990hGzToB9z3B3Co7gXisNnE=
+Subject: FAILED: patch "[PATCH] usb: dwc3: keep susphy enabled during exit to avoid" failed to apply to 6.1-stable tree
+To: udipto.goswami@oss.qualcomm.com,Thinh.Nguyen@synopsys.com,gregkh@linuxfoundation.org,stable@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 29 Dec 2025 14:53:45 +0100
-Message-ID: <2025122945-exemplary-politely-9c27@gregkh>
+Date: Mon, 29 Dec 2025 14:54:11 +0100
+Message-ID: <2025122911-secrecy-pedometer-eaa0@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -51,19 +51,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x 782be79e4551550d7a82b1957fc0f7347e6d461f
+git cherry-pick -x e1003aa7ec9eccdde4c926bd64ef42816ad55f25
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025122945-exemplary-politely-9c27@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025122911-secrecy-pedometer-eaa0@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -75,102 +75,54 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 782be79e4551550d7a82b1957fc0f7347e6d461f Mon Sep 17 00:00:00 2001
-From: Johan Hovold <johan@kernel.org>
-Date: Thu, 18 Dec 2025 16:35:15 +0100
-Subject: [PATCH] usb: gadget: lpc32xx_udc: fix clock imbalance in error path
+From e1003aa7ec9eccdde4c926bd64ef42816ad55f25 Mon Sep 17 00:00:00 2001
+From: Udipto Goswami <udipto.goswami@oss.qualcomm.com>
+Date: Wed, 26 Nov 2025 11:12:21 +0530
+Subject: [PATCH] usb: dwc3: keep susphy enabled during exit to avoid
+ controller faults
 
-A recent change fixing a device reference leak introduced a clock
-imbalance by reusing an error path so that the clock may be disabled
-before having been enabled.
+On some platforms, switching USB roles from host to device can trigger
+controller faults due to premature PHY power-down. This occurs when the
+PHY is disabled too early during teardown, causing synchronization
+issues between the PHY and controller.
 
-Note that the clock framework allows for passing in NULL clocks so there
-is no risk for a NULL pointer dereference.
+Keep susphy enabled during dwc3_host_exit() and dwc3_gadget_exit()
+ensures the PHY remains in a low-power state capable of handling
+required commands during role switch.
 
-Also drop the bogus I2C client NULL check added by the offending commit
-as the pointer has already been verified to be non-NULL.
-
-Fixes: c84117912bdd ("USB: lpc32xx_udc: Fix error handling in probe")
-Cc: stable@vger.kernel.org
-Cc: Ma Ke <make24@iscas.ac.cn>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: Vladimir Zapolskiy <vz@mleia.com>
-Link: https://patch.msgid.link/20251218153519.19453-2-johan@kernel.org
+Cc: stable <stable@kernel.org>
+Fixes: 6d735722063a ("usb: dwc3: core: Prevent phy suspend during init")
+Suggested-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Signed-off-by: Udipto Goswami <udipto.goswami@oss.qualcomm.com>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://patch.msgid.link/20251126054221.120638-1-udipto.goswami@oss.qualcomm.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-diff --git a/drivers/usb/gadget/udc/lpc32xx_udc.c b/drivers/usb/gadget/udc/lpc32xx_udc.c
-index 73c0f28a8585..a962d4294fbe 100644
---- a/drivers/usb/gadget/udc/lpc32xx_udc.c
-+++ b/drivers/usb/gadget/udc/lpc32xx_udc.c
-@@ -3020,7 +3020,7 @@ static int lpc32xx_udc_probe(struct platform_device *pdev)
- 	pdev->dev.dma_mask = &lpc32xx_usbd_dmamask;
- 	retval = dma_set_coherent_mask(&pdev->dev, DMA_BIT_MASK(32));
- 	if (retval)
--		goto i2c_fail;
-+		goto err_put_client;
+diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
+index bc3fe31638b9..8a35a6901db7 100644
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -4826,7 +4826,7 @@ void dwc3_gadget_exit(struct dwc3 *dwc)
+ 	if (!dwc->gadget)
+ 		return;
  
- 	udc->board = &lpc32xx_usbddata;
+-	dwc3_enable_susphy(dwc, false);
++	dwc3_enable_susphy(dwc, true);
+ 	usb_del_gadget(dwc->gadget);
+ 	dwc3_gadget_free_endpoints(dwc);
+ 	usb_put_gadget(dwc->gadget);
+diff --git a/drivers/usb/dwc3/host.c b/drivers/usb/dwc3/host.c
+index cf6512ed17a6..96b588bd08cd 100644
+--- a/drivers/usb/dwc3/host.c
++++ b/drivers/usb/dwc3/host.c
+@@ -227,7 +227,7 @@ void dwc3_host_exit(struct dwc3 *dwc)
+ 	if (dwc->sys_wakeup)
+ 		device_init_wakeup(&dwc->xhci->dev, false);
  
-@@ -3040,7 +3040,7 @@ static int lpc32xx_udc_probe(struct platform_device *pdev)
- 		udc->udp_irq[i] = platform_get_irq(pdev, i);
- 		if (udc->udp_irq[i] < 0) {
- 			retval = udc->udp_irq[i];
--			goto i2c_fail;
-+			goto err_put_client;
- 		}
- 	}
- 
-@@ -3048,7 +3048,7 @@ static int lpc32xx_udc_probe(struct platform_device *pdev)
- 	if (IS_ERR(udc->udp_baseaddr)) {
- 		dev_err(udc->dev, "IO map failure\n");
- 		retval = PTR_ERR(udc->udp_baseaddr);
--		goto i2c_fail;
-+		goto err_put_client;
- 	}
- 
- 	/* Get USB device clock */
-@@ -3056,14 +3056,14 @@ static int lpc32xx_udc_probe(struct platform_device *pdev)
- 	if (IS_ERR(udc->usb_slv_clk)) {
- 		dev_err(udc->dev, "failed to acquire USB device clock\n");
- 		retval = PTR_ERR(udc->usb_slv_clk);
--		goto i2c_fail;
-+		goto err_put_client;
- 	}
- 
- 	/* Enable USB device clock */
- 	retval = clk_prepare_enable(udc->usb_slv_clk);
- 	if (retval < 0) {
- 		dev_err(udc->dev, "failed to start USB device clock\n");
--		goto i2c_fail;
-+		goto err_put_client;
- 	}
- 
- 	/* Setup deferred workqueue data */
-@@ -3165,9 +3165,10 @@ static int lpc32xx_udc_probe(struct platform_device *pdev)
- 	dma_free_coherent(&pdev->dev, UDCA_BUFF_SIZE,
- 			  udc->udca_v_base, udc->udca_p_base);
- i2c_fail:
--	if (udc->isp1301_i2c_client)
--		put_device(&udc->isp1301_i2c_client->dev);
- 	clk_disable_unprepare(udc->usb_slv_clk);
-+err_put_client:
-+	put_device(&udc->isp1301_i2c_client->dev);
-+
- 	dev_err(udc->dev, "%s probe failed, %d\n", driver_name, retval);
- 
- 	return retval;
-@@ -3195,10 +3196,9 @@ static void lpc32xx_udc_remove(struct platform_device *pdev)
- 	dma_free_coherent(&pdev->dev, UDCA_BUFF_SIZE,
- 			  udc->udca_v_base, udc->udca_p_base);
- 
--	if (udc->isp1301_i2c_client)
--		put_device(&udc->isp1301_i2c_client->dev);
--
- 	clk_disable_unprepare(udc->usb_slv_clk);
-+
-+	put_device(&udc->isp1301_i2c_client->dev);
+-	dwc3_enable_susphy(dwc, false);
++	dwc3_enable_susphy(dwc, true);
+ 	platform_device_unregister(dwc->xhci);
+ 	dwc->xhci = NULL;
  }
- 
- #ifdef CONFIG_PM
 
 
