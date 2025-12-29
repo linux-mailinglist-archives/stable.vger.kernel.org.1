@@ -1,416 +1,186 @@
-Return-Path: <stable+bounces-203486-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203487-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E71A8CE6637
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 11:41:57 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id B08FFCE6655
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 11:42:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 000513010A8E
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 10:41:56 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BDC0D30069AD
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 10:42:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBE2D2E8881;
-	Mon, 29 Dec 2025 10:41:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 299822F3618;
+	Mon, 29 Dec 2025 10:42:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Rru5ukHU";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="fmBn5j8W"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8859426056D;
-	Mon, 29 Dec 2025 10:41:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BF3619D065
+	for <stable@vger.kernel.org>; Mon, 29 Dec 2025 10:42:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767004915; cv=none; b=SN374a+cxRjCGnOn5uytHB8uf+bHUn4E2880IW/i09bX/290cKwdRrEFxdnDbfATivzkZghcyDNQ169nfebYM1fmf8F4s94hejKJyEf6MKTnK2igmJnBtX09/G4Mr0NCF0hnz/GMjKFZ2Sa5UmY/YPFR0nDSVUW9IyHx1LaGKIw=
+	t=1767004971; cv=none; b=SYFPcmGrlA6nzciwCJYwgg95sm+3Fbj6xmFXoMzBp9qHt/eSeC3SMvzaRi6dj9yOQBrcRDFkWfiWa/jbcIvhs1SieKohQfqAP6xVEY6aVB+EOYVrk1GFgIraJZ1FvEECAt7Ek2qxLxNrCCCSkZHyEMc0O2K/DYcrIvbAtKe6OIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767004915; c=relaxed/simple;
-	bh=dNRixogdwkkXT3ZIMOQ+3F0ZThi0GagA5SDoZDLwtOM=;
-	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=bwvPzVnv3R73aH7GDkdyGkAlTLJhL7fAVlx2K4bI8jEGFAw3KfucwOtCrqPd3wo7k9NoPJ23bPiP8d6PcFXCfLj53oPeifHk8+pIJLRQoQpJCMkxv8i4VcdzXjNvw/xT/+wK7iMB9gZHF4pgbJiw0IlS5unl7AiLEFsl26eq8gw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [111.9.175.10])
-	by gateway (Coremail) with SMTP id _____8CxVvDnWlJpDRAEAA--.13252S3;
-	Mon, 29 Dec 2025 18:41:43 +0800 (CST)
-Received: from [10.136.12.26] (unknown [111.9.175.10])
-	by front1 (Coremail) with SMTP id qMiowJCx98DeWlJpRysGAA--.2622S3;
-	Mon, 29 Dec 2025 18:41:38 +0800 (CST)
-Subject: Re: [PATCH V3 2/2] LoongArch: KVM: fix "unreliable stack" issue
-To: lixianglai <lixianglai@loongson.cn>
-Cc: loongarch@lists.linux.dev, linux-kernel@vger.kernel.org,
- kvm@vger.kernel.org, stable@vger.kernel.org,
- Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
- Tianrui Zhao <zhaotianrui@loongson.cn>, Bibo Mao <maobibo@loongson.cn>,
- Charlie Jenkins <charlie@rivosinc.com>, Thomas Gleixner
- <tglx@linutronix.de>, Tiezhu Yang <yangtiezhu@loongson.cn>
-References: <20251227012712.2921408-1-lixianglai@loongson.cn>
- <20251227012712.2921408-3-lixianglai@loongson.cn>
- <08143343-cb10-9376-e7df-68ad854b9275@loongson.cn>
- <9e1a8d4f-251f-f78e-01a3-5c483249fac8@loongson.cn>
- <dec5cb06-6858-20f2-facb-d5e7f44f5d16@loongson.cn>
- <df8f52e3-fea5-763a-d5fd-629308dc6fcc@loongson.cn>
-From: Jinyang He <hejinyang@loongson.cn>
-Message-ID: <a1009e1e-34de-68b4-7680-d2a99a06a71c@loongson.cn>
-Date: Mon, 29 Dec 2025 18:41:33 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+	s=arc-20240116; t=1767004971; c=relaxed/simple;
+	bh=Pc8e+pp7p6i6HMm7KEhfgmtCTmbOT4hNYIxGiQKg+B4=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Ai2XQZd/BOJNYlla5ED+9bd4Q7h42r7pGHFPYep7BbRkPPELo85M2SY6trv38kWEnGOdwOMkr2EYwaGmIDsOPvhc+cGgjlCgmKHnm0pVcRk0O/XDYPHOStAT8VDBHSRDO4KhAECJhZm7JWH+yB6SE8mtmWZEij3gMDlV6Ef+JFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Rru5ukHU; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=fmBn5j8W; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5BTA0wQ44154610
+	for <stable@vger.kernel.org>; Mon, 29 Dec 2025 10:42:49 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=84jGZ7ZSC4WVxRFYKZtE7e
+	uop94RbHLxBmtr9Ml0uQk=; b=Rru5ukHUYzW0gaMm+OPje2AYjd8shdFk24IsMS
+	NYs3J6mqeOzQU5VXrEMJaAoNSOp23oM/qdJ64BrabjXEV1Ovihs0U6nLq3QFcck7
+	+ViZbkkyUCtYgKDmXF7oz0UfKDYT5OMUie40FmchJaTmIaIbUr3jPrcnQCl4KvqV
+	9o0dZmELDkqE4o7zsvf8zALUqQf6FUlZ8q23fve++DvFdxguuM4dz57dQGkBlupp
+	z2Ksw28hx6JPB1J26h5CtnxONcyil5ZdZ8KekEp9zx0ywklbFcqDguE8SSDH7I0x
+	Og3nq1rGe798k/HsPNSwcJEiaLP3R1PpPIqOjIkvRz1wYuGA==
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4ba7u5m333-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <stable@vger.kernel.org>; Mon, 29 Dec 2025 10:42:49 +0000 (GMT)
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-29f1450189eso82915385ad.1
+        for <stable@vger.kernel.org>; Mon, 29 Dec 2025 02:42:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1767004968; x=1767609768; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=84jGZ7ZSC4WVxRFYKZtE7euop94RbHLxBmtr9Ml0uQk=;
+        b=fmBn5j8WCy/9+5n/xkBtb+gDkMFZxRBCQ/SS0R6cwhEslteDHhuc9YHbHQIfb1lQPn
+         AP0LN/vOgoKWkjoI2rZdNN9unO7bCF6e0NBFxfKo7scoM+2tgJP/OYj42W8gdjaHGYej
+         IO8cCHnt3UXGFtxyRRMRshJvIgB1kg6S7+EMrhgTaPMUOcbGAXuo2JECV1fV60/holK/
+         m8SFevOB5q4ivA662hAvpKWJyvG8zUt6ckbkaqigMQq/602F6jRfdtiLsswRrFGuzoBF
+         owRPLie6dlLOgEZeZJLjyfQAmdNZIwKqcOJ8dhxiDgwUUMV425tmtiVdYdqk8gkWYji7
+         O2AA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767004968; x=1767609768;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=84jGZ7ZSC4WVxRFYKZtE7euop94RbHLxBmtr9Ml0uQk=;
+        b=tZQnQDPYu33HQKYCL6V8jJq8mxni6V6XwqTsejBri5mag3ZVd8hFOwLTyVzlBSN/FE
+         Ov+ZHtt9Qr5CshbUx7GkfxpWomJzklKtse2FnI+xylzVpcpDhCASd3gTrciPMHI3C2mO
+         fTlZ1Q/E9Kd9kNq4J4IlToj4BZ/GkqoLKksOyFN6f7aAZmCegUcPe2kVXzYqqVSiUgaj
+         7HEdnG6LQ8PeQCA/URtb8fKd+E4k4iEIWfoFLrCfuTKbf/iIu7zxiBOF7U0jHeB0YFfl
+         94tcu3uw8iIDRyo8unm5HPaYp2OLYctoxiAG9TozXO2xWUv9THCTvvDLiE69xCw5hRhZ
+         21gQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW28675rK38+fXuqT+ph3MGvCzgQqL6ONQ7xo1h68wMHnF9bj5SaVFhLYvSKvX2MLteNNDjEgE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwhV6F45pc44UTk/sAzacPKG3MJE9HLT+u+lNhac1U2K4ejP1BJ
+	2fip0c408pvxMDc5mM7TBNoinZxr8WxbG+LVZcoDy0ROQAu8chma//gB+ZcU19MnXN/HXpidaMG
+	AtM5tr0Kv/tClj8a6tTppN1aaArNY1Dk6pyiv6UsBjFnFp91xAvfhvi7YBR4=
+X-Gm-Gg: AY/fxX4AVe2mVito8X8M/zCSugXY8PQ9XPFn0CFbKh440ecHZIWku465jhpYoAxGKDb
+	pcUVN3N+SxwVzws9QK5FNIuRNJuYq2GGCblxTRFTnO5sbB94jaP9wyMS1syXK3qDHVGhyNcS9nA
+	u2X2VGtTGrFlm4TDFk37MxtfpbpM5GCvGmGkg7KiMB1VNcT3Zlz9fButi9VJ4mqIJn96NpbmNye
+	ZJvgwwf/XoaD0QSZVNJg10y9iPz+tO/6V35C66LgC+GHb2WPmKMynNOt+3DmzGNYAgUl4ev7AWY
+	tcYY190g7wj6iw1Cc2AIfOldEnIdeVF9BLRLF1GmN52/DfHC2b9hRd+aWbwQ8rDJBjXxCnX7HNc
+	mrL0oiEKfBrsjoR4F+c+TwfCfUrJE+7zkGmSTltObSMB7
+X-Received: by 2002:a17:903:2291:b0:294:f6e5:b91a with SMTP id d9443c01a7336-2a2caad1ac5mr394155875ad.13.1767004968314;
+        Mon, 29 Dec 2025 02:42:48 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGvDHMjenLpKspQqCMQIXNVHnUA6GWy+2xfF2XuP8qmMkdtBzejdc7b9u4BVmfjT1GPiP/PRA==
+X-Received: by 2002:a17:903:2291:b0:294:f6e5:b91a with SMTP id d9443c01a7336-2a2caad1ac5mr394155385ad.13.1767004967484;
+        Mon, 29 Dec 2025 02:42:47 -0800 (PST)
+Received: from hu-krichai-hyd.qualcomm.com ([202.46.23.25])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a2f3d4cbb7sm273412365ad.59.2025.12.29.02.42.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 29 Dec 2025 02:42:46 -0800 (PST)
+From: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
+Subject: [PATCH v2 0/3] PCI: dwc: Fix missing iATU setup when ECAM is
+ enabled
+Date: Mon, 29 Dec 2025 16:12:40 +0530
+Message-Id: <20251229-ecam_io_fix-v2-0-41a0e56a6faa@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <df8f52e3-fea5-763a-d5fd-629308dc6fcc@loongson.cn>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-CM-TRANSID:qMiowJCx98DeWlJpRysGAA--.2622S3
-X-CM-SenderInfo: pkhmx0p1dqwqxorr0wxvrqhubq/
-X-Coremail-Antispam: 1Uk129KBj9fXoW3uw17ur47try3Gr48Cw48AFc_yoW8JFWUJo
-	Z093WIvw1rtF1UKF1DJwsrtr45Jw18GrnrtryUGr13Gr1Ut3WUX3yxGry7Kay5trn5Gr43
-	Jry3X34qyFyrtF18l-sFpf9Il3svdjkaLaAFLSUrUUUU8b8apTn2vfkv8UJUUUU8wcxFpf
-	9Il3svdxBIdaVrn0xqx4xG64xvF2IEw4CE5I8CrVC2j2Jv73VFW2AGmfu7bjvjm3AaLaJ3
-	UjIYCTnIWjp_UUUYA7kC6x804xWl14x267AKxVWUJVW8JwAFc2x0x2IEx4CE42xK8VAvwI
-	8IcIk0rVWrJVCq3wAFIxvE14AKwVWUXVWUAwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xG
-	Y2AK021l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF7I0E14
-	v26r1j6r4UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIEc7CjxVAF
-	wI0_Gr1j6F4UJwAaw2AFwI0_Jrv_JF1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2
-	xF0cIa020Ex4CE44I27wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_
-	JF0_Jw1lYx0Ex4A2jsIE14v26r4j6F4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwI
-	xGrwCYjI0SjxkI62AI1cAE67vIY487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY
-	6r1j6r4UMxCIbckI1I0E14v26r1q6r43MI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7
-	xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xII
-	jxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw2
-	0EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Gr0_Cr1lIxAIcVC2z280aVCY1x02
-	67AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU8uuWJUUUUU==
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIACBbUmkC/22M3QqCQBBGX0XmupX9QbOueo8Q2cYxB9KtnZJC9
+ t3bvO7mg3PgOysIRSaBY7FCpIWFw5zB7grA0c9XUtxnBqttZax2itBPHYdu4LeqSdd6IOzdpYH
+ 8uEfKequd28wjyzPEzxZfzM/+7yxGaVUhut7t6wOa5hREysfL3zBMU5kH2pTSF4czDyGtAAAA
+X-Change-ID: 20251203-ecam_io_fix-6e060fecd3b8
+To: Jingoo Han <jingoohan1@gmail.com>, Manivannan Sadhasivam <mani@kernel.org>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+        Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+        Frank Li <Frank.Li@nxp.com>,
+        Serge Semin <Sergey.Semin@baikalelectronics.ru>
+Cc: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, macro@orcam.me.uk,
+        Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>,
+        stable@vger.kernel.org
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1767004963; l=1576;
+ i=krishna.chundru@oss.qualcomm.com; s=20230907; h=from:subject:message-id;
+ bh=Pc8e+pp7p6i6HMm7KEhfgmtCTmbOT4hNYIxGiQKg+B4=;
+ b=gzKqNstDG5S7x48NHsnQsYGAWFsBPtTfLJ+u5OTfc5PIgAwQRp0rY9p7pHWe0HRfQJGdwAo8+
+ i+hc4+5NLrlAkbW9q2x8Jz9zJA8kw8lkKwP48ArTPIZIqUFpNhtHADF
+X-Developer-Key: i=krishna.chundru@oss.qualcomm.com; a=ed25519;
+ pk=10CL2pdAKFyzyOHbfSWHCD0X0my7CXxj8gJScmn1FAg=
+X-Proofpoint-GUID: gYIbWphklYX0MXK2i8RqdClNMD8sVCzY
+X-Proofpoint-ORIG-GUID: gYIbWphklYX0MXK2i8RqdClNMD8sVCzY
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjI5MDA5OSBTYWx0ZWRfX0WvjUghIAepB
+ 6L9Mu3FBa1WPYuwcc0dunKFN1UsBO5h4RJN/etS2WmAGezRMX7njLR7qFG6VEH1UO0++0jgsOXg
+ vgIPBXPSujWZVElCRTNe7z+zeuIDxM/atskf4WkMs8hDpKxKUDviMl1rYTc5kA8/Ad6NEsu58E7
+ pUvPuijmv2HJZkyExIkSzT1S5Bk5jto09mzxcj4LEJyvHJFGRxNOQDcl1PExNOtIvHhe/GBKYzy
+ ue3QyuDg+mHUFJmPWLW1rIOSi3qvKTmwUHCPtQ+HjK46kti7V+bS6XA63TpDZFjskiKsb5BQKoo
+ wGbf/V3S+bRu96WuHgjEz+Gv3nK0B7rgz3uxQNqpSYamPcbWMCtC1CRx8i9sE5V/E8kxxGskjQQ
+ 7MuNuKdMclUUFy1gXzoUa2C7LHcuKR7SIDoovi1szb9mTmWaEdFaw99i2ln5GS6EarV7AlbVuZT
+ qWcR1ELq+hPvo9ubF9g==
+X-Authority-Analysis: v=2.4 cv=DptbOW/+ c=1 sm=1 tr=0 ts=69525b29 cx=c_pps
+ a=MTSHoo12Qbhz2p7MsH1ifg==:117 a=ZePRamnt/+rB5gQjfz0u9A==:17
+ a=IkcTkHD0fZMA:10 a=wP3pNCr1ah4A:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8
+ a=qIbWdXD6M1inJYch3NYA:9 a=QEXdDO2ut3YA:10 a=GvdueXVYPmCkWapjIL-Q:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-12-29_03,2025-12-29_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 adultscore=0 clxscore=1015 spamscore=0 priorityscore=1501
+ suspectscore=0 bulkscore=0 impostorscore=0 lowpriorityscore=0 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2512120000 definitions=main-2512290099
 
-On 2025-12-29 18:11, lixianglai wrote:
+When ECAM is enabled, the driver skipped calling dw_pcie_iatu_setup()
+before configuring ECAM iATU entries. This left IO and MEM outbound
+windows unprogrammed, resulting in broken IO transactions. Additionally,
+dw_pcie_config_ecam_iatu() was only called during host initialization,
+so ECAM-related iATU entries were not restored after suspend/resume,
+leading to failures in configuration space access.
 
-> Hi Jinyang:
->>
->> On 2025-12-29 11:53, lixianglai wrote:
->>> Hi Jinyang:
->>>> On 2025-12-27 09:27, Xianglai Li wrote:
->>>>
->>>>> Insert the appropriate UNWIND macro definition into the 
->>>>> kvm_exc_entry in
->>>>> the assembly function to guide the generation of correct ORC table 
->>>>> entries,
->>>>> thereby solving the timeout problem of loading the 
->>>>> livepatch-sample module
->>>>> on a physical machine running multiple vcpus virtual machines.
->>>>>
->>>>> While solving the above problems, we have gained an additional 
->>>>> benefit,
->>>>> that is, we can obtain more call stack information
->>>>>
->>>>> Stack information that can be obtained before the problem is fixed:
->>>>> [<0>] kvm_vcpu_block+0x88/0x120 [kvm]
->>>>> [<0>] kvm_vcpu_halt+0x68/0x580 [kvm]
->>>>> [<0>] kvm_emu_idle+0xd4/0xf0 [kvm]
->>>>> [<0>] kvm_handle_gspr+0x7c/0x700 [kvm]
->>>>> [<0>] kvm_handle_exit+0x160/0x270 [kvm]
->>>>> [<0>] kvm_exc_entry+0x100/0x1e0
->>>>>
->>>>> Stack information that can be obtained after the problem is fixed:
->>>>> [<0>] kvm_vcpu_block+0x88/0x120 [kvm]
->>>>> [<0>] kvm_vcpu_halt+0x68/0x580 [kvm]
->>>>> [<0>] kvm_emu_idle+0xd4/0xf0 [kvm]
->>>>> [<0>] kvm_handle_gspr+0x7c/0x700 [kvm]
->>>>> [<0>] kvm_handle_exit+0x160/0x270 [kvm]
->>>>> [<0>] kvm_exc_entry+0x104/0x1e4
->>>>> [<0>] kvm_enter_guest+0x38/0x11c
->>>>> [<0>] kvm_arch_vcpu_ioctl_run+0x26c/0x498 [kvm]
->>>>> [<0>] kvm_vcpu_ioctl+0x200/0xcf8 [kvm]
->>>>> [<0>] sys_ioctl+0x498/0xf00
->>>>> [<0>] do_syscall+0x98/0x1d0
->>>>> [<0>] handle_syscall+0xb8/0x158
->>>>>
->>>>> Cc: stable@vger.kernel.org
->>>>> Signed-off-by: Xianglai Li <lixianglai@loongson.cn>
->>>>> ---
->>>>> Cc: Huacai Chen <chenhuacai@kernel.org>
->>>>> Cc: WANG Xuerui <kernel@xen0n.name>
->>>>> Cc: Tianrui Zhao <zhaotianrui@loongson.cn>
->>>>> Cc: Bibo Mao <maobibo@loongson.cn>
->>>>> Cc: Charlie Jenkins <charlie@rivosinc.com>
->>>>> Cc: Xianglai Li <lixianglai@loongson.cn>
->>>>> Cc: Thomas Gleixner <tglx@linutronix.de>
->>>>> Cc: Tiezhu Yang <yangtiezhu@loongson.cn>
->>>>>
->>>>>   arch/loongarch/kvm/switch.S | 28 +++++++++++++++++++---------
->>>>>   1 file changed, 19 insertions(+), 9 deletions(-)
->>>>>
->>>>> diff --git a/arch/loongarch/kvm/switch.S 
->>>>> b/arch/loongarch/kvm/switch.S
->>>>> index 93845ce53651..a3ea9567dbe5 100644
->>>>> --- a/arch/loongarch/kvm/switch.S
->>>>> +++ b/arch/loongarch/kvm/switch.S
->>>>> @@ -10,6 +10,7 @@
->>>>>   #include <asm/loongarch.h>
->>>>>   #include <asm/regdef.h>
->>>>>   #include <asm/unwind_hints.h>
->>>>> +#include <linux/kvm_types.h>
->>>>>     #define HGPR_OFFSET(x)        (PT_R0 + 8*x)
->>>>>   #define GGPR_OFFSET(x)        (KVM_ARCH_GGPR + 8*x)
->>>>> @@ -110,9 +111,9 @@
->>>>>        * need to copy world switch code to DMW area.
->>>>>        */
->>>>>       .text
->>>>> +    .p2align PAGE_SHIFT
->>>>>       .cfi_sections    .debug_frame
->>>>>   SYM_CODE_START(kvm_exc_entry)
->>>>> -    .p2align PAGE_SHIFT
->>>>>       UNWIND_HINT_UNDEFINED
->>>>>       csrwr    a2,   KVM_TEMP_KS
->>>>>       csrrd    a2,   KVM_VCPU_KS
->>>>> @@ -170,6 +171,7 @@ SYM_CODE_START(kvm_exc_entry)
->>>>>       /* restore per cpu register */
->>>>>       ld.d    u0, a2, KVM_ARCH_HPERCPU
->>>>>       addi.d    sp, sp, -PT_SIZE
->>>>> +    UNWIND_HINT_REGS
->>>>>         /* Prepare handle exception */
->>>>>       or    a0, s0, zero
->>>>> @@ -200,7 +202,7 @@ ret_to_host:
->>>>>       jr      ra
->>>>>     SYM_CODE_END(kvm_exc_entry)
->>>>> -EXPORT_SYMBOL(kvm_exc_entry)
->>>>> +EXPORT_SYMBOL_FOR_KVM(kvm_exc_entry)
->>>>>     /*
->>>>>    * int kvm_enter_guest(struct kvm_run *run, struct kvm_vcpu *vcpu)
->>>>> @@ -215,6 +217,14 @@ SYM_FUNC_START(kvm_enter_guest)
->>>>>       /* Save host GPRs */
->>>>>       kvm_save_host_gpr a2
->>>>>   +    /*
->>>>> +     * The csr_era member variable of the pt_regs structure is 
->>>>> required
->>>>> +     * for unwinding orc to perform stack traceback, so we need 
->>>>> to put
->>>>> +     * pc into csr_era member variable here.
->>>>> +     */
->>>>> +    pcaddi    t0, 0
->>>>> +    st.d    t0, a2, PT_ERA
->>>> Hi, Xianglai,
->>>>
->>>> It should use `SYM_CODE_START` to mark the `kvm_enter_guest` rather 
->>>> than
->>>> `SYM_FUNC_START`, since the `SYM_FUNC_START` is used to mark 
->>>> "C-likely"
->>>> asm functionw. 
->>>
->>> Ok, I will use SYM_CODE_START to mark kvm_enter_guest in the next 
->>> version.
->>>
->>>> I guess the kvm_enter_guest is something like exception
->>>> handler becuase the last instruction is "ertn". So usually it should
->>>> mark UNWIND_HINT_REGS where can find last frame info by "$sp".
->>>> However, all info is store to "$a2", this mark should be
->>>>   `UNWIND_HINT sp_reg=ORC_REG_A2(???) type=UNWIND_HINT_TYPE_REGS`.
->>>> I don't konw why save this function internal PC here by `pcaddi t0, 
->>>> 0`,
->>>> and I think it is no meaning(, for exception handler, they save 
->>>> last PC
->>>> by read CSR.ERA). The `kvm_enter_guest` saves registers by
->>>> "$a2"("$sp" - PT_REGS) beyond stack ("$sp"), it is dangerous if IE
->>>> is enable. So I wonder if there is really a stacktrace through this 
->>>> function?
->>>>
->>> The stack backtracking issue in switch.S is rather complex because 
->>> it involves the switching between cpu root-mode and guest-mode:
->>> Real stack backtracking should be divided into two parts:
->>> part 1:
->>>     [<0>] kvm_enter_guest+0x38/0x11c
->>>     [<0>] kvm_arch_vcpu_ioctl_run+0x26c/0x498 [kvm]
->>>     [<0>] kvm_vcpu_ioctl+0x200/0xcf8 [kvm]
->>>     [<0>] sys_ioctl+0x498/0xf00
->>>     [<0>] do_syscall+0x98/0x1d0
->>>     [<0>] handle_syscall+0xb8/0x158
->>>
->>> part 2:
->>>     [<0>] kvm_vcpu_block+0x88/0x120 [kvm]
->>>     [<0>] kvm_vcpu_halt+0x68/0x580 [kvm]
->>>     [<0>] kvm_emu_idle+0xd4/0xf0 [kvm]
->>>     [<0>] kvm_handle_gspr+0x7c/0x700 [kvm]
->>>     [<0>] kvm_handle_exit+0x160/0x270 [kvm]
->>>     [<0>] kvm_exc_entry+0x104/0x1e4
->>>
->>>
->>> In "part 1", after executing kvm_enter_guest, the cpu switches from 
->>> root-mode to guest-mode.
->>> In this case, stack backtracking is indeed very rare.
->>>
->>> In "part 2", the cpu switches from the guest-mode to the root-mode,
->>> and most of the stack backtracking occurs during this phase.
->>>
->>> To obtain the longest call chain, we save pc in kvm_enter_guest to 
->>> pt_regs.csr_era,
->>> and after restoring the sp of the root-mode cpu in kvm_exc_entry,
->>> The ORC entry was re-established using "UNWIND_HINT_REGS",
->>>  and then we obtained the following stack backtrace as we wanted:
->>>
->>>     [<0>] kvm_vcpu_block+0x88/0x120 [kvm]
->>>     [<0>] kvm_vcpu_halt+0x68/0x580 [kvm]
->>>     [<0>] kvm_emu_idle+0xd4/0xf0 [kvm]
->>>     [<0>] kvm_handle_gspr+0x7c/0x700 [kvm]
->>>     [<0>] kvm_handle_exit+0x160/0x270 [kvm]
->>>     [<0>] kvm_exc_entry+0x104/0x1e4
->> I found this might be a coincidence—correct behavior due to the 
->> incorrect
->> UNWIND_HINT_REGS mark and unusual stack adjustment.
->>
->> First, the kvm_enter_guest contains only a single branch instruction, 
->> ertn.
->> It hardware-jump to the CSR.ERA address directly, jump into 
->> kvm_exc_entry.
->>
->> At this point, the stack layout looks like this:
->> -------------------------------
->>   frame from call to `kvm_enter_guest`
->> -------------------------------  <- $sp
->>   PT_REGS
->> -------------------------------  <- $a2
->>
->> Then kvm_exc_entry adjust stack without save any register (e.g. $ra, 
->> $sp)
->> but still marked UNWIND_HINT_REGS.
->> After the adjustment:
->> -------------------------------
->>   frame from call to `kvm_enter_guest`
->> -------------------------------
->>   PT_REGS
->> -------------------------------  <- $a2, new $sp
->>
->> During unwinding, when the unwinder reaches kvm_exc_entry,
->> it meets the mark of PT_REGS and correctly recovers
->>  pc = regs.csr_era, sp = regs.sp, ra = regs.ra
->>
-> Yes, here unwinder does work as you say.
->
->> a) Can we avoid "ertn" rather than `jr reg (or jirl ra, reg, 0)`
->> instead, like call?
-> No,  we need to rely on the 'ertn instruction return PIE to CRMD IE,
-> at the same time to ensure that its atomic,
-> there should be no other instruction than' ertn 'more appropriate here.
-You are right! I got it.
->
->> The kvm_exc_entry cannot back to kvm_enter_guest
->> if we use "ertn", so should the kvm_enter_guest appear on the 
->> stacktrace?
->>
->
-> It is flexible. As I mentioned above, the cpu completes the switch 
-> from host-mode to guest mode through kvm_enter_guest,
-> and then the switch from guest mode to host-mode through 
-> kvm_exc_entry. When we ignore the details of the host-mode
-> and guest-mode switching in the middle, we can understand that the 
-> host cpu has completed kvm_enter_guest->kvm_exc_entry.
-> From this perspective, I think it can exist in the call stack, and at 
-> the same time, we have obtained the maximum call stack information.
->
->
->> b) Can we adjust $sp before entering kvm_exc_entry? Then we can mark
->> UNWIND_HINT_REGS at the beginning of kvm_exc_entry, which something
->> like ret_from_kernel_thread_asm.
->>
-> The following command can be used to dump the orc entries of the kernel:
-> ./tools/objtool/objtool --dump vmlinux
->
-> You can observe that not all orc entries are generated at the 
-> beginning of the function.
-> For example:
-> handle_tlb_protect
-> ftrace_stub
-> handle_reserved
->
-> So, is it unnecessary for us to modify UNWIND_HINT_REGS in order to 
-> place it at the beginning of the function.
->
-> If you have a better solution, could you provide an example of the 
-> modification?
-> I can test the feasibility of the solution.
->
-The expression at the beginning of the function is incorrect (feeling 
-sorry).
-It should be marked where have all stacktrace info.
-Thanks for all the explaining, since I'm unfamiliar with kvm, I need 
-these to help my understanding.
+To resolve these issues, the ECAM iATU configuration is moved into
+dw_pcie_setup_rc(). At the same time, dw_pcie_iatu_setup() is invoked
+when ECAM is enabled.
 
-Can you try with follows, with save regs by $sp, set more precise era to 
-pt_regs, and more unwind hint.
+Signed-off-by: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
+---
+Changes in v2:
+- Fixed the index 0 of the ATU window skipping.
+- Keep the ob_atu_index in dw_pcie instead of dw_pcie_rp & couple of nitpicks (Bjorn).
+- Link to v1: https://lore.kernel.org/r/20251203-ecam_io_fix-v1-0-5cc3d3769c18@oss.qualcomm.com
 
+---
+Krishna Chaitanya Chundru (3):
+      PCI: dwc: Fix skipped index 0 in outbound ATU setup
+      PCI: dwc: Correct iATU index increment for MSG TLP region
+      PCI: dwc: Fix missing iATU setup when ECAM is enabled
 
-diff --git a/arch/loongarch/kvm/switch.S b/arch/loongarch/kvm/switch.S
-index f1768b7a6194..8ed1d7b72c54 100644
---- a/arch/loongarch/kvm/switch.S
-+++ b/arch/loongarch/kvm/switch.S
-@@ -14,13 +14,13 @@
-  #define GGPR_OFFSET(x)        (KVM_ARCH_GGPR + 8*x)
+ drivers/pci/controller/dwc/pcie-designware-host.c | 53 ++++++++++++++---------
+ drivers/pci/controller/dwc/pcie-designware.c      |  3 ++
+ drivers/pci/controller/dwc/pcie-designware.h      |  2 +-
+ 3 files changed, 37 insertions(+), 21 deletions(-)
+---
+base-commit: 3f9f0252130e7dd60d41be0802bf58f6471c691d
+change-id: 20251203-ecam_io_fix-6e060fecd3b8
 
-  .macro kvm_save_host_gpr base
--    .irp n,1,2,3,22,23,24,25,26,27,28,29,30,31
-+    .irp n,1,2,22,23,24,25,26,27,28,29,30,31
-      st.d    $r\n, \base, HGPR_OFFSET(\n)
-      .endr
-  .endm
-
-  .macro kvm_restore_host_gpr base
--    .irp n,1,2,3,22,23,24,25,26,27,28,29,30,31
-+    .irp n,1,2,22,23,24,25,26,27,28,29,30,31
-      ld.d    $r\n, \base, HGPR_OFFSET(\n)
-      .endr
-  .endm
-@@ -88,6 +88,7 @@
-      /* Load KVM_ARCH register */
-      ld.d    a2, a2,    (KVM_ARCH_GGPR + 8 * REG_A2)
-
-+111:
-      ertn /* Switch to guest: GSTAT.PGM = 1, ERRCTL.ISERR = 0, 
-TLBRPRMD.ISTLBR = 0 */
-  .endm
-
-@@ -158,9 +159,10 @@ SYM_CODE_START(kvm_exc_entry)
-      csrwr    t0, LOONGARCH_CSR_GTLBC
-      ld.d    tp, a2, KVM_ARCH_HTP
-      ld.d    sp, a2, KVM_ARCH_HSP
-+    UNWIND_HINT_REGS
-+
-      /* restore per cpu register */
-      ld.d    u0, a2, KVM_ARCH_HPERCPU
--    addi.d    sp, sp, -PT_SIZE
-
-      /* Prepare handle exception */
-      or    a0, s0, zero
-@@ -184,10 +186,11 @@ SYM_CODE_START(kvm_exc_entry)
-      csrwr    s1, KVM_VCPU_KS
-      kvm_switch_to_guest
-
-+    UNWIND_HINT_UNDEFINED
-  ret_to_host:
--    ld.d    a2, a2, KVM_ARCH_HSP
--    addi.d  a2, a2, -PT_SIZE
--    kvm_restore_host_gpr    a2
-+    ld.d    sp, a2, KVM_ARCH_HSP
-+    kvm_restore_host_gpr    sp
-+    addi.d    sp, sp, PT_SIZE
-      jr      ra
-
-  SYM_INNER_LABEL(kvm_exc_entry_end, SYM_L_LOCAL)
-@@ -200,11 +203,15 @@ SYM_CODE_END(kvm_exc_entry)
-   *  a0: kvm_run* run
-   *  a1: kvm_vcpu* vcpu
-   */
--SYM_FUNC_START(kvm_enter_guest)
-+SYM_CODE_START(kvm_enter_guest)
-+    UNWIND_HINT_UNDEFINED
-      /* Allocate space in stack bottom */
--    addi.d    a2, sp, -PT_SIZE
-+    addi.d    sp, sp, -PT_SIZE
-      /* Save host GPRs */
--    kvm_save_host_gpr a2
-+    kvm_save_host_gpr sp
-+    la.pcrel a2, 111f
-+    st.d     a2, sp, PT_ERA
-+    UNWIND_HINT_REGS
-
-      addi.d    a2, a1, KVM_VCPU_ARCH
-      st.d    sp, a2, KVM_ARCH_HSP
-
-Jinyang
+Best regards,
+-- 
+Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
 
 
