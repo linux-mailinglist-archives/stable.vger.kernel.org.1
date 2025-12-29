@@ -1,316 +1,314 @@
-Return-Path: <stable+bounces-203466-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203467-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EBECCE5DF7
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 04:36:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F2B08CE5E57
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 04:57:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 524C93007955
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 03:36:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 65A1B3007977
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 03:56:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DAE426CE1E;
-	Mon, 29 Dec 2025 03:36:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="P9pIOnCw"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB95325F98A;
+	Mon, 29 Dec 2025 03:56:54 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54B312264A9
-	for <stable@vger.kernel.org>; Mon, 29 Dec 2025 03:36:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73EB91F1315;
+	Mon, 29 Dec 2025 03:56:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766979402; cv=none; b=J7piFaPI7L3JaBcKREvNdaw4DKw4DXAXdK1QHjpbq3HJ7YWW365Pax1mDDqC6+VMeRiajrLtWmwU8tqlvq4ISn0HGkAFLBTGg/gb7FxG/XKa5tPFkR3eQ/NNDeGVIlq3+0g4zP7Docu0ELWkEgIiMOUTXoeq3kHl2oLupvSdGX0=
+	t=1766980614; cv=none; b=pPRjcThKuvFPNmrJgjG7g/3yU7bnuqdaIFF8x3uzcruYCbUUSBByBC/be9BqmpxprBRyQtz5m8h/Ft7SQApI0C6OqFHhwVufK90B9PvPOChpIdQC44pyKgWKcJCEkm0mgROWnWq5seOMFi3XeCUP1AuqtyodFaOUr/kmo9X/Jc4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766979402; c=relaxed/simple;
-	bh=SwFi47220NhM2jT+6v2eoVvt8M1LxXGA37HBJu3RwRQ=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=May4roLpjDg3q4CCqMaiLacJ9CCNCz/4H9hc1EHhPY9gYXMLbtOXje/GqvtQTHxdrj+CspyLHfcEUhO7nl+QsZvYqNx+qBloucLBJo62UQ8+emX+AwHBNceBZyeSvvYy+jStU79ZkjdgaYIls8tE4J1E33bLNLRT5HzRNfK0SRE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--lucaswei.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=P9pIOnCw; arc=none smtp.client-ip=209.85.214.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--lucaswei.bounces.google.com
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2a0a0bad5dfso184449635ad.0
-        for <stable@vger.kernel.org>; Sun, 28 Dec 2025 19:36:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1766979400; x=1767584200; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=tlgzro7FncjNJuzBeVV+gMjPrzzsyNIqE/qYSbMjGMc=;
-        b=P9pIOnCwsi8AYWux9yb1sJN0pSE4YxSRO7kfLIxj/uESeDlLITPipyxchHaxEAyXSc
-         Pk3BwwPJd7BPIhQXGDgmLuJz/exwEuJHkf6bAC1fie6jMyGazD1+q4B5asDmSZPQM47R
-         S29NpYa7jPNsKPp5reziFQRI75RXpWw7hCq44wsCdnSHuV3qnPAFqcGpViRfpMe7bTF4
-         ECZK3PvD0gVROhjsMjgMwbYhHWzWUXmLaEdXEVS+hedyCdRJ/1Bzy58PMmNL4knRO4Lr
-         5SUFws5OPPHBK+HubnW6XnH2ehTnmjSAeTpaMTO4JnOgB5mljgA+bpSVOptYwervqTjC
-         Rr0g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766979400; x=1767584200;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=tlgzro7FncjNJuzBeVV+gMjPrzzsyNIqE/qYSbMjGMc=;
-        b=AiVCg/aE1z7n0Sr/PBYXBerbUABjykA4gu+xj7KS8REDEcZYG9x2dyBfnAPEC4HX5/
-         o+5X2Wmqw8Ay0mzOlkU6bWtPzZ7bxeZfnzcAbKH7XJ8QKw8bsatrNOkhv+J4iV7fzj1B
-         TZErTszrl9tPybET6EERapRwoU6z9sOvAxWxEV8CDX4opXmnQCYEx4iJyqnsozekO5QS
-         7+yy0zwLLDDSvY1OCE295VsIaXnA8qhKBToq62E3lOt64xvZbyPEUzrHoldlrSLOMmZi
-         O+CIjsP7bogAjf8NGtoxl8YviPe+mFxPwlNnv9lncTywK0cYd01+8DIIh2STB1npRozp
-         TRtQ==
-X-Forwarded-Encrypted: i=1; AJvYcCULIUN+0/Re3J6JtKBM6LChmCsQAp/rztjQTPh5UgKpzJKh2tJoWp9S39NzM2zfLml9XF6Yfr8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz6sirTbkXMtkr8ziWd8EOo3wFR0eXbY2m0bjaX3muEwKtiip86
-	VjeNovk4qIPoneJWDsEk2v0yVpmpr6guCK5Klqbh9zi3D33xYlUzr+TOgSHy9i2crBeLoKzAXjq
-	IeBVPXv+4WA3aUQ==
-X-Google-Smtp-Source: AGHT+IEi02veFKPSaH8rSwZrrtPejgrT+aWN21tWglweLgCEKAGkZvcU4SKqoS1kr3Pi2TTzu5lhwViTWhZE1g==
-X-Received: from pltj6.prod.google.com ([2002:a17:902:76c6:b0:29f:1480:6153])
- (user=lucaswei job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:903:32cd:b0:2a0:ad09:750b with SMTP id d9443c01a7336-2a2f222aef2mr216742645ad.9.1766979399578;
- Sun, 28 Dec 2025 19:36:39 -0800 (PST)
-Date: Mon, 29 Dec 2025 03:36:19 +0000
+	s=arc-20240116; t=1766980614; c=relaxed/simple;
+	bh=auME+iOUeBLbnYL2aNtxKWeY0Dek3Zio5HMa2rdq8bc=;
+	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=IZ0wLbSlGAW0ou76AZo2Moe4WtDktp2TVuG3G2Oke+mVeXkbzeR4EQZDsXnoikrdNMJIiJPPJYxE1eCFyjKRXu746+XcifiNwfM/hK+PNYVuhDEPik5mvL59fcLppcOUzYs8nb9lSXsDv6OsoCbW2JBY7aSXuf91pupknnc8euE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [10.20.42.126])
+	by gateway (Coremail) with SMTP id _____8DxPMP_+1FpzPsDAA--.12339S3;
+	Mon, 29 Dec 2025 11:56:47 +0800 (CST)
+Received: from [10.20.42.126] (unknown [10.20.42.126])
+	by front1 (Coremail) with SMTP id qMiowJCxPML5+1FpyQ0GAA--.14067S3;
+	Mon, 29 Dec 2025 11:56:43 +0800 (CST)
+Subject: Re: [PATCH V3 2/2] LoongArch: KVM: fix "unreliable stack" issue
+To: Jinyang He <hejinyang@loongson.cn>, loongarch@lists.linux.dev,
+ linux-kernel@vger.kernel.org, kvm@vger.kernel.org
+Cc: stable@vger.kernel.org, Huacai Chen <chenhuacai@kernel.org>,
+ WANG Xuerui <kernel@xen0n.name>, Tianrui Zhao <zhaotianrui@loongson.cn>,
+ Bibo Mao <maobibo@loongson.cn>, Charlie Jenkins <charlie@rivosinc.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Tiezhu Yang <yangtiezhu@loongson.cn>
+References: <20251227012712.2921408-1-lixianglai@loongson.cn>
+ <20251227012712.2921408-3-lixianglai@loongson.cn>
+ <08143343-cb10-9376-e7df-68ad854b9275@loongson.cn>
+From: lixianglai <lixianglai@loongson.cn>
+Message-ID: <9e1a8d4f-251f-f78e-01a3-5c483249fac8@loongson.cn>
+Date: Mon, 29 Dec 2025 11:53:13 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.52.0.358.g0dd7633a29-goog
-Message-ID: <20251229033621.996546-1-lucaswei@google.com>
-Subject: [PATCH v2] arm64: errata: Workaround for SI L1 downstream coherency issue
-From: Lucas Wei <lucaswei@google.com>
-To: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Jonathan Corbet <corbet@lwn.net>
-Cc: sjadavani@google.com, Lucas Wei <lucaswei@google.com>, 
-	kernel test robot <lkp@intel.com>, stable@vger.kernel.org, kernel-team@android.com, 
-	linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+In-Reply-To: <08143343-cb10-9376-e7df-68ad854b9275@loongson.cn>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+X-CM-TRANSID:qMiowJCxPML5+1FpyQ0GAA--.14067S3
+X-CM-SenderInfo: 5ol0xt5qjotxo6or00hjvr0hdfq/
+X-Coremail-Antispam: 1Uk129KBj93XoW3JFyUZF4xAr1kAFy8Xw4UJrc_yoWDJw1Upw
+	nayFs0yFWDC3s5Xw4UGFyDAryftF4kJ3WUWrn7JFyrJr1UGryYqF18Xw1q9r9rXw48JFyk
+	Xa4UXrn8ZrWDJagCm3ZEXasCq-sJn29KB7ZKAUJUUUU7529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUBFb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv6xkF7I0E14v2
+	6r4UJVWxJr1ln4kS14v26r1Y6r17M2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12
+	xvs2x26I8E6xACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r12
+	6r1DMcIj6I8E87Iv67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr4
+	1lc7I2V7IY0VAS07AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWU
+	JVW8JwCFI7km07C267AKxVWUXVWUAwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4
+	vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IY
+	x2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26c
+	xKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r4j6F4UMIIF0xvEx4A2jsIEc7CjxVAF
+	wI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07jFE__UUUUU=
 
-When software issues a Cache Maintenance Operation (CMO) targeting a
-dirty cache line, the CPU and DSU cluster may optimize the operation by
-combining the CopyBack Write and CMO into a single combined CopyBack
-Write plus CMO transaction presented to the interconnect (MCN).
-For these combined transactions, the MCN splits the operation into two
-separate transactions, one Write and one CMO, and then propagates the
-write and optionally the CMO to the downstream memory system or external
-Point of Serialization (PoS).
-However, the MCN may return an early CompCMO response to the DSU cluster
-before the corresponding Write and CMO transactions have completed at
-the external PoS or downstream memory. As a result, stale data may be
-observed by external observers that are directly connected to the
-external PoS or downstream memory.
+Hi Jinyang:
+> On 2025-12-27 09:27, Xianglai Li wrote:
+>
+>> Insert the appropriate UNWIND macro definition into the kvm_exc_entry in
+>> the assembly function to guide the generation of correct ORC table 
+>> entries,
+>> thereby solving the timeout problem of loading the livepatch-sample 
+>> module
+>> on a physical machine running multiple vcpus virtual machines.
+>>
+>> While solving the above problems, we have gained an additional benefit,
+>> that is, we can obtain more call stack information
+>>
+>> Stack information that can be obtained before the problem is fixed:
+>> [<0>] kvm_vcpu_block+0x88/0x120 [kvm]
+>> [<0>] kvm_vcpu_halt+0x68/0x580 [kvm]
+>> [<0>] kvm_emu_idle+0xd4/0xf0 [kvm]
+>> [<0>] kvm_handle_gspr+0x7c/0x700 [kvm]
+>> [<0>] kvm_handle_exit+0x160/0x270 [kvm]
+>> [<0>] kvm_exc_entry+0x100/0x1e0
+>>
+>> Stack information that can be obtained after the problem is fixed:
+>> [<0>] kvm_vcpu_block+0x88/0x120 [kvm]
+>> [<0>] kvm_vcpu_halt+0x68/0x580 [kvm]
+>> [<0>] kvm_emu_idle+0xd4/0xf0 [kvm]
+>> [<0>] kvm_handle_gspr+0x7c/0x700 [kvm]
+>> [<0>] kvm_handle_exit+0x160/0x270 [kvm]
+>> [<0>] kvm_exc_entry+0x104/0x1e4
+>> [<0>] kvm_enter_guest+0x38/0x11c
+>> [<0>] kvm_arch_vcpu_ioctl_run+0x26c/0x498 [kvm]
+>> [<0>] kvm_vcpu_ioctl+0x200/0xcf8 [kvm]
+>> [<0>] sys_ioctl+0x498/0xf00
+>> [<0>] do_syscall+0x98/0x1d0
+>> [<0>] handle_syscall+0xb8/0x158
+>>
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Xianglai Li <lixianglai@loongson.cn>
+>> ---
+>> Cc: Huacai Chen <chenhuacai@kernel.org>
+>> Cc: WANG Xuerui <kernel@xen0n.name>
+>> Cc: Tianrui Zhao <zhaotianrui@loongson.cn>
+>> Cc: Bibo Mao <maobibo@loongson.cn>
+>> Cc: Charlie Jenkins <charlie@rivosinc.com>
+>> Cc: Xianglai Li <lixianglai@loongson.cn>
+>> Cc: Thomas Gleixner <tglx@linutronix.de>
+>> Cc: Tiezhu Yang <yangtiezhu@loongson.cn>
+>>
+>>   arch/loongarch/kvm/switch.S | 28 +++++++++++++++++++---------
+>>   1 file changed, 19 insertions(+), 9 deletions(-)
+>>
+>> diff --git a/arch/loongarch/kvm/switch.S b/arch/loongarch/kvm/switch.S
+>> index 93845ce53651..a3ea9567dbe5 100644
+>> --- a/arch/loongarch/kvm/switch.S
+>> +++ b/arch/loongarch/kvm/switch.S
+>> @@ -10,6 +10,7 @@
+>>   #include <asm/loongarch.h>
+>>   #include <asm/regdef.h>
+>>   #include <asm/unwind_hints.h>
+>> +#include <linux/kvm_types.h>
+>>     #define HGPR_OFFSET(x)        (PT_R0 + 8*x)
+>>   #define GGPR_OFFSET(x)        (KVM_ARCH_GGPR + 8*x)
+>> @@ -110,9 +111,9 @@
+>>        * need to copy world switch code to DMW area.
+>>        */
+>>       .text
+>> +    .p2align PAGE_SHIFT
+>>       .cfi_sections    .debug_frame
+>>   SYM_CODE_START(kvm_exc_entry)
+>> -    .p2align PAGE_SHIFT
+>>       UNWIND_HINT_UNDEFINED
+>>       csrwr    a2,   KVM_TEMP_KS
+>>       csrrd    a2,   KVM_VCPU_KS
+>> @@ -170,6 +171,7 @@ SYM_CODE_START(kvm_exc_entry)
+>>       /* restore per cpu register */
+>>       ld.d    u0, a2, KVM_ARCH_HPERCPU
+>>       addi.d    sp, sp, -PT_SIZE
+>> +    UNWIND_HINT_REGS
+>>         /* Prepare handle exception */
+>>       or    a0, s0, zero
+>> @@ -200,7 +202,7 @@ ret_to_host:
+>>       jr      ra
+>>     SYM_CODE_END(kvm_exc_entry)
+>> -EXPORT_SYMBOL(kvm_exc_entry)
+>> +EXPORT_SYMBOL_FOR_KVM(kvm_exc_entry)
+>>     /*
+>>    * int kvm_enter_guest(struct kvm_run *run, struct kvm_vcpu *vcpu)
+>> @@ -215,6 +217,14 @@ SYM_FUNC_START(kvm_enter_guest)
+>>       /* Save host GPRs */
+>>       kvm_save_host_gpr a2
+>>   +    /*
+>> +     * The csr_era member variable of the pt_regs structure is required
+>> +     * for unwinding orc to perform stack traceback, so we need to put
+>> +     * pc into csr_era member variable here.
+>> +     */
+>> +    pcaddi    t0, 0
+>> +    st.d    t0, a2, PT_ERA
+> Hi, Xianglai,
+>
+> It should use `SYM_CODE_START` to mark the `kvm_enter_guest` rather than
+> `SYM_FUNC_START`, since the `SYM_FUNC_START` is used to mark "C-likely"
+> asm functionw. 
 
-This erratum affects any system topology in which the following
-conditions apply:
- - The Point of Serialization (PoS) is located downstream of the
-   interconnect.
- - A downstream observer accesses memory directly, bypassing the
-   interconnect.
+Ok, I will use SYM_CODE_START to mark kvm_enter_guest in the next version.
 
-Conditions:
-This erratum occurs only when all of the following conditions are met:
- 1. Software executes a data cache maintenance operation, specifically,
-    a clean or invalidate by virtual address (DC CVAC, DC CIVAC, or DC
-    IVAC), that hits on unique dirty data in the CPU or DSU cache. This
-    results in a combined CopyBack and CMO being issued to the
-    interconnect.
- 2. The interconnect splits the combined transaction into separate Write
-    and CMO transactions and returns an early completion response to the
-    CPU or DSU before the write has completed at the downstream memory
-    or PoS.
- 3. A downstream observer accesses the affected memory address after the
-    early completion response is issued but before the actual memory
-    write has completed. This allows the observer to read stale data
-    that has not yet been updated at the PoS or downstream memory.
+> I guess the kvm_enter_guest is something like exception
+> handler becuase the last instruction is "ertn". So usually it should
+> mark UNWIND_HINT_REGS where can find last frame info by "$sp".
+> However, all info is store to "$a2", this mark should be
+>   `UNWIND_HINT sp_reg=ORC_REG_A2(???) type=UNWIND_HINT_TYPE_REGS`.
+> I don't konw why save this function internal PC here by `pcaddi t0, 0`,
+> and I think it is no meaning(, for exception handler, they save last PC
+> by read CSR.ERA). The `kvm_enter_guest` saves registers by
+> "$a2"("$sp" - PT_REGS) beyond stack ("$sp"), it is dangerous if IE
+> is enable. So I wonder if there is really a stacktrace through this 
+> function?
+>
+The stack backtracking issue in switch.S is rather complex because it 
+involves the switching between cpu root-mode and guest-mode:
+Real stack backtracking should be divided into two parts:
+part 1:
+     [<0>] kvm_enter_guest+0x38/0x11c
+     [<0>] kvm_arch_vcpu_ioctl_run+0x26c/0x498 [kvm]
+     [<0>] kvm_vcpu_ioctl+0x200/0xcf8 [kvm]
+     [<0>] sys_ioctl+0x498/0xf00
+     [<0>] do_syscall+0x98/0x1d0
+     [<0>] handle_syscall+0xb8/0x158
 
-The implementation of workaround put a second loop of CMOs at the same
-virtual address whose operation meet erratum conditions to wait until
-cache data be cleaned to PoC.. This way of implementation mitigates
-performance panalty compared to purly duplicate orignial CMO.
+part 2:
+     [<0>] kvm_vcpu_block+0x88/0x120 [kvm]
+     [<0>] kvm_vcpu_halt+0x68/0x580 [kvm]
+     [<0>] kvm_emu_idle+0xd4/0xf0 [kvm]
+     [<0>] kvm_handle_gspr+0x7c/0x700 [kvm]
+     [<0>] kvm_handle_exit+0x160/0x270 [kvm]
+     [<0>] kvm_exc_entry+0x104/0x1e4
 
-Reported-by: kernel test robot <lkp@intel.com>
-Cc: stable@vger.kernel.org # 6.12.x
-Signed-off-by: Lucas Wei <lucaswei@google.com>
----
 
-Changes in v2:
+In "part 1", after executing kvm_enter_guest, the cpu switches from 
+root-mode to guest-mode.
+In this case, stack backtracking is indeed very rare.
 
- 1. Fixed warning from kernel test robot by changing
-    arm_si_l1_workaround_4311569 to static 
-    [Reported-by: kernel test robot <lkp@intel.com>]
+In "part 2", the cpu switches from the guest-mode to the root-mode,
+and most of the stack backtracking occurs during this phase.
 
----
- Documentation/arch/arm64/silicon-errata.rst |  3 ++
- arch/arm64/Kconfig                          | 19 +++++++++++++
- arch/arm64/include/asm/assembler.h          | 10 +++++++
- arch/arm64/kernel/cpu_errata.c              | 31 +++++++++++++++++++++
- arch/arm64/mm/cache.S                       | 13 ++++++++-
- arch/arm64/tools/cpucaps                    |  1 +
- 6 files changed, 76 insertions(+), 1 deletion(-)
+To obtain the longest call chain, we save pc in kvm_enter_guest to 
+pt_regs.csr_era,
+and after restoring the sp of the root-mode cpu in kvm_exc_entry,
+The ORC entry was re-established using "UNWIND_HINT_REGS",
+  and then we obtained the following stack backtrace as we wanted:
 
-diff --git a/Documentation/arch/arm64/silicon-errata.rst b/Documentation/arch/arm64/silicon-errata.rst
-index a7ec57060f64..98efdf528719 100644
---- a/Documentation/arch/arm64/silicon-errata.rst
-+++ b/Documentation/arch/arm64/silicon-errata.rst
-@@ -213,6 +213,9 @@ stable kernels.
- | ARM            | GIC-700         | #2941627        | ARM64_ERRATUM_2941627       |
- +----------------+-----------------+-----------------+-----------------------------+
- +----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | SI L1           | #4311569        | ARM64_ERRATUM_4311569       |
-++----------------+-----------------+-----------------+-----------------------------+
-++----------------+-----------------+-----------------+-----------------------------+
- | Broadcom       | Brahma-B53      | N/A             | ARM64_ERRATUM_845719        |
- +----------------+-----------------+-----------------+-----------------------------+
- | Broadcom       | Brahma-B53      | N/A             | ARM64_ERRATUM_843419        |
-diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-index 65db12f66b8f..a834d30859cc 100644
---- a/arch/arm64/Kconfig
-+++ b/arch/arm64/Kconfig
-@@ -1153,6 +1153,25 @@ config ARM64_ERRATUM_3194386
- 
- 	  If unsure, say Y.
- 
-+config ARM64_ERRATUM_4311569
-+	bool "SI L1: 4311569: workaround for premature CMO completion erratum"
-+	default y
-+	help
-+	  This option adds the workaround for ARM SI L1 erratum 4311569.
-+
-+	  The erratum of SI L1 can cause an early response to a combined write
-+	  and cache maintenance operation (WR+CMO) before the operation is fully
-+	  completed to the Point of Serialization (POS).
-+	  This can result in a non-I/O coherent agent observing stale data,
-+	  potentially leading to system instability or incorrect behavior.
-+
-+	  Enabling this option implements a software workaround by inserting a
-+	  second loop of Cache Maintenance Operation (CMO) immediately following the
-+	  end of function to do CMOs. This ensures that the data is correctly serialized
-+	  before the buffer is handed off to a non-coherent agent.
-+
-+	  If unsure, say Y.
-+
- config CAVIUM_ERRATUM_22375
- 	bool "Cavium erratum 22375, 24313"
- 	default y
-diff --git a/arch/arm64/include/asm/assembler.h b/arch/arm64/include/asm/assembler.h
-index f0ca7196f6fa..d3d46e5f7188 100644
---- a/arch/arm64/include/asm/assembler.h
-+++ b/arch/arm64/include/asm/assembler.h
-@@ -381,6 +381,9 @@ alternative_endif
- 	.macro dcache_by_myline_op op, domain, start, end, linesz, tmp, fixup
- 	sub	\tmp, \linesz, #1
- 	bic	\start, \start, \tmp
-+alternative_if ARM64_WORKAROUND_4311569
-+	mov	\tmp, \start
-+alternative_else_nop_endif
- .Ldcache_op\@:
- 	.ifc	\op, cvau
- 	__dcache_op_workaround_clean_cache \op, \start
-@@ -402,6 +405,13 @@ alternative_endif
- 	add	\start, \start, \linesz
- 	cmp	\start, \end
- 	b.lo	.Ldcache_op\@
-+alternative_if ARM64_WORKAROUND_4311569
-+	.ifnc	\op, cvau
-+	mov	\start, \tmp
-+	mov	\tmp, xzr
-+	cbnz	\start, .Ldcache_op\@
-+	.endif
-+alternative_else_nop_endif
- 	dsb	\domain
- 
- 	_cond_uaccess_extable .Ldcache_op\@, \fixup
-diff --git a/arch/arm64/kernel/cpu_errata.c b/arch/arm64/kernel/cpu_errata.c
-index 8cb3b575a031..5c0ab6bfd44a 100644
---- a/arch/arm64/kernel/cpu_errata.c
-+++ b/arch/arm64/kernel/cpu_errata.c
-@@ -141,6 +141,30 @@ has_mismatched_cache_type(const struct arm64_cpu_capabilities *entry,
- 	return (ctr_real != sys) && (ctr_raw != sys);
- }
- 
-+#ifdef CONFIG_ARM64_ERRATUM_4311569
-+static DEFINE_STATIC_KEY_FALSE(arm_si_l1_workaround_4311569);
-+static int __init early_arm_si_l1_workaround_4311569_cfg(char *arg)
-+{
-+	static_branch_enable(&arm_si_l1_workaround_4311569);
-+	pr_info("Enabling cache maintenance workaround for ARM SI-L1 erratum 4311569\n");
-+
-+	return 0;
-+}
-+early_param("arm_si_l1_workaround_4311569", early_arm_si_l1_workaround_4311569_cfg);
-+
-+/*
-+ * We have some earlier use cases to call cache maintenance operation functions, for example,
-+ * dcache_inval_poc() and dcache_clean_poc() in head.S, before making decision to turn on this
-+ * workaround. Since the scope of this workaround is limited to non-coherent DMA agents, its
-+ * safe to have the workaround off by default.
-+ */
-+static bool
-+need_arm_si_l1_workaround_4311569(const struct arm64_cpu_capabilities *entry, int scope)
-+{
-+	return static_branch_unlikely(&arm_si_l1_workaround_4311569);
-+}
-+#endif
-+
- static void
- cpu_enable_trap_ctr_access(const struct arm64_cpu_capabilities *cap)
- {
-@@ -870,6 +894,13 @@ const struct arm64_cpu_capabilities arm64_errata[] = {
- 		ERRATA_MIDR_RANGE_LIST(erratum_spec_ssbs_list),
- 	},
- #endif
-+#ifdef CONFIG_ARM64_ERRATUM_4311569
-+	{
-+		.capability = ARM64_WORKAROUND_4311569,
-+		.type = ARM64_CPUCAP_SYSTEM_FEATURE,
-+		.matches = need_arm_si_l1_workaround_4311569,
-+	},
-+#endif
- #ifdef CONFIG_ARM64_WORKAROUND_SPECULATIVE_UNPRIV_LOAD
- 	{
- 		.desc = "ARM errata 2966298, 3117295",
-diff --git a/arch/arm64/mm/cache.S b/arch/arm64/mm/cache.S
-index 503567c864fd..ddf0097624ed 100644
---- a/arch/arm64/mm/cache.S
-+++ b/arch/arm64/mm/cache.S
-@@ -143,9 +143,14 @@ SYM_FUNC_END(dcache_clean_pou)
-  *	- end     - kernel end address of region
-  */
- SYM_FUNC_START(__pi_dcache_inval_poc)
-+alternative_if ARM64_WORKAROUND_4311569
-+	mov	x4, x0
-+	mov	x5, x1
-+	mov	x6, #1
-+alternative_else_nop_endif
- 	dcache_line_size x2, x3
- 	sub	x3, x2, #1
--	tst	x1, x3				// end cache line aligned?
-+again:	tst	x1, x3				// end cache line aligned?
- 	bic	x1, x1, x3
- 	b.eq	1f
- 	dc	civac, x1			// clean & invalidate D / U line
-@@ -158,6 +163,12 @@ SYM_FUNC_START(__pi_dcache_inval_poc)
- 3:	add	x0, x0, x2
- 	cmp	x0, x1
- 	b.lo	2b
-+alternative_if ARM64_WORKAROUND_4311569
-+	mov	x0, x4
-+	mov	x1, x5
-+	sub	x6, x6, #1
-+	cbz	x6, again
-+alternative_else_nop_endif
- 	dsb	sy
- 	ret
- SYM_FUNC_END(__pi_dcache_inval_poc)
-diff --git a/arch/arm64/tools/cpucaps b/arch/arm64/tools/cpucaps
-index 1b32c1232d28..3b18734f9744 100644
---- a/arch/arm64/tools/cpucaps
-+++ b/arch/arm64/tools/cpucaps
-@@ -101,6 +101,7 @@ WORKAROUND_2077057
- WORKAROUND_2457168
- WORKAROUND_2645198
- WORKAROUND_2658417
-+WORKAROUND_4311569
- WORKAROUND_AMPERE_AC03_CPU_38
- WORKAROUND_AMPERE_AC04_CPU_23
- WORKAROUND_TRBE_OVERWRITE_FILL_MODE
+     [<0>] kvm_vcpu_block+0x88/0x120 [kvm]
+     [<0>] kvm_vcpu_halt+0x68/0x580 [kvm]
+     [<0>] kvm_emu_idle+0xd4/0xf0 [kvm]
+     [<0>] kvm_handle_gspr+0x7c/0x700 [kvm]
+     [<0>] kvm_handle_exit+0x160/0x270 [kvm]
+     [<0>] kvm_exc_entry+0x104/0x1e4
+     [<0>] kvm_enter_guest+0x38/0x11c
+     [<0>] kvm_arch_vcpu_ioctl_run+0x26c/0x498 [kvm]
+     [<0>] kvm_vcpu_ioctl+0x200/0xcf8 [kvm]
+     [<0>] sys_ioctl+0x498/0xf00
+     [<0>] do_syscall+0x98/0x1d0
+     [<0>] handle_syscall+0xb8/0x158
 
-base-commit: edde060637b92607f3522252c03d64ad06369933
--- 
-2.52.0.358.g0dd7633a29-goog
+Doing so is equivalent to ignoring the details of the cpu root-mode and 
+guest-mode switching.
+About what you said in the IE enable phase is dangerous,
+interrupts are always off during the cpu root-mode and guest-mode 
+switching in kvm_enter_guest and kvm_exc_entry.
+
+Thanks!
+Xianglai.
+
+> Jinyang
+>
+>
+>> +
+>>       addi.d    a2, a1, KVM_VCPU_ARCH
+>>       st.d    sp, a2, KVM_ARCH_HSP
+>>       st.d    tp, a2, KVM_ARCH_HTP
+>> @@ -225,7 +235,7 @@ SYM_FUNC_START(kvm_enter_guest)
+>>       csrwr    a1, KVM_VCPU_KS
+>>       kvm_switch_to_guest
+>>   SYM_FUNC_END(kvm_enter_guest)
+>> -EXPORT_SYMBOL(kvm_enter_guest)
+>> +EXPORT_SYMBOL_FOR_KVM(kvm_enter_guest)
+>>     SYM_FUNC_START(kvm_save_fpu)
+>>       fpu_save_csr    a0 t1
+>> @@ -233,7 +243,7 @@ SYM_FUNC_START(kvm_save_fpu)
+>>       fpu_save_cc    a0 t1 t2
+>>       jr              ra
+>>   SYM_FUNC_END(kvm_save_fpu)
+>> -EXPORT_SYMBOL(kvm_save_fpu)
+>> +EXPORT_SYMBOL_FOR_KVM(kvm_save_fpu)
+>>     SYM_FUNC_START(kvm_restore_fpu)
+>>       fpu_restore_double a0 t1
+>> @@ -241,7 +251,7 @@ SYM_FUNC_START(kvm_restore_fpu)
+>>       fpu_restore_cc       a0 t1 t2
+>>       jr                 ra
+>>   SYM_FUNC_END(kvm_restore_fpu)
+>> -EXPORT_SYMBOL(kvm_restore_fpu)
+>> +EXPORT_SYMBOL_FOR_KVM(kvm_restore_fpu)
+>>     #ifdef CONFIG_CPU_HAS_LSX
+>>   SYM_FUNC_START(kvm_save_lsx)
+>> @@ -250,7 +260,7 @@ SYM_FUNC_START(kvm_save_lsx)
+>>       lsx_save_data   a0 t1
+>>       jr              ra
+>>   SYM_FUNC_END(kvm_save_lsx)
+>> -EXPORT_SYMBOL(kvm_save_lsx)
+>> +EXPORT_SYMBOL_FOR_KVM(kvm_save_lsx)
+>>     SYM_FUNC_START(kvm_restore_lsx)
+>>       lsx_restore_data a0 t1
+>> @@ -258,7 +268,7 @@ SYM_FUNC_START(kvm_restore_lsx)
+>>       fpu_restore_csr  a0 t1 t2
+>>       jr               ra
+>>   SYM_FUNC_END(kvm_restore_lsx)
+>> -EXPORT_SYMBOL(kvm_restore_lsx)
+>> +EXPORT_SYMBOL_FOR_KVM(kvm_restore_lsx)
+>>   #endif
+>>     #ifdef CONFIG_CPU_HAS_LASX
+>> @@ -268,7 +278,7 @@ SYM_FUNC_START(kvm_save_lasx)
+>>       lasx_save_data  a0 t1
+>>       jr              ra
+>>   SYM_FUNC_END(kvm_save_lasx)
+>> -EXPORT_SYMBOL(kvm_save_lasx)
+>> +EXPORT_SYMBOL_FOR_KVM(kvm_save_lasx)
+>>     SYM_FUNC_START(kvm_restore_lasx)
+>>       lasx_restore_data a0 t1
+>> @@ -276,7 +286,7 @@ SYM_FUNC_START(kvm_restore_lasx)
+>>       fpu_restore_csr   a0 t1 t2
+>>       jr                ra
+>>   SYM_FUNC_END(kvm_restore_lasx)
+>> -EXPORT_SYMBOL(kvm_restore_lasx)
+>> +EXPORT_SYMBOL_FOR_KVM(kvm_restore_lasx)
+>>   #endif
+>>     #ifdef CONFIG_CPU_HAS_LBT
 
 
