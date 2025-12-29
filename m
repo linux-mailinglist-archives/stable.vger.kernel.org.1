@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-203710-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203721-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B282BCE75BA
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:18:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 42B54CE75E4
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:19:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D0F6030422A7
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:16:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 31F3D30456AE
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:16:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 823C1330657;
-	Mon, 29 Dec 2025 16:15:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B30D032ED2C;
+	Mon, 29 Dec 2025 16:16:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qF7jLNjO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XZJQYmGd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 321DA330332;
-	Mon, 29 Dec 2025 16:15:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66C20319858;
+	Mon, 29 Dec 2025 16:16:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767024951; cv=none; b=gt28JhmmFBis3OZIS6+uUJ35umAmTTibS7cVsBbDwlxsyFBUTu3ee0/CXwi9Sa+c+VY5AKh5l/10Llu0Z1Kx9mX85uaM/xMmRyQZnVizxgHSuerhO1waQAM1SkGuroNGUceIttrPvZsPuHCjTHLVu2mpvtPt5xDDECYjPoElFBU=
+	t=1767024982; cv=none; b=WLNvDLlcBKX5wUtGrnvWByUU8Ri3hYVakxqerRFLFSQY4NynywdXY+lEoYBbXRkWUNXKswxZ4rFhLDHzueB4aiZHSF3rFi7LlRWMtImcEdaB8NqzlIp9Iitm6yp2jf/kJqWjqNBLFzrY3+qVjWsupuVaGIDUaq4gwb8pYCDHv5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767024951; c=relaxed/simple;
-	bh=FN/oP63bEJeSbNMODkH1oVbu8omN075BSqVQZgssMNk=;
+	s=arc-20240116; t=1767024982; c=relaxed/simple;
+	bh=xCWot3U2ZiH+qxK3lwDpPZxc5nybJFmHITChkuU/uqc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JYMXyMtI+tFlQbf8oT3NIzBqVnjJAEPsgIiYcEgu+ReEtEcnxVtPy3QdyZQPxUNEloD8Lxp8RWBSmYxbAI5tx7a08xdlx++XObJrznPSZ52dx0DN+M8fjYQG5jBIq2ozXTsCZefR5hqc0Wz74YS+x97OXQqisYaUxjMLIb1Zf8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qF7jLNjO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC1F0C4CEF7;
-	Mon, 29 Dec 2025 16:15:50 +0000 (UTC)
+	 MIME-Version; b=rXhuxmokU75PPo6QukrRmvkilOcdti8F8i/z3AWxPxF0Xa2u8QrjxQUnp4LrTUzo0g3FxKJ5bKns18dplIcojJEWSkdSc2wVSf7ql/9eDMT2VJfRykE6nTNlsSdB5cX3cOfrZhBWlKoYtaUQTn8aivRohXPVyPMX8Ky1xzTEpZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XZJQYmGd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4645C4CEF7;
+	Mon, 29 Dec 2025 16:16:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767024951;
-	bh=FN/oP63bEJeSbNMODkH1oVbu8omN075BSqVQZgssMNk=;
+	s=korg; t=1767024982;
+	bh=xCWot3U2ZiH+qxK3lwDpPZxc5nybJFmHITChkuU/uqc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qF7jLNjO+8wauqp4s3GRvYPsIncWpTdR60jgeUZaee50QadbmEKEWVSn05qPqL2OQ
-	 I0+QoYfEMR5TPwA4A5PDU6hk5ae+EPaP+haVYiPN/Sc9kLoVT4z5KTs6jmajOyH/d7
-	 PImhPT79v0HVdbahDHsbt2aHhtw5ivU6mn9Zn91U=
+	b=XZJQYmGdHimW1P9nz2E+NpIOqEjlxoZSwXnUHHyLzBzp+TUxcpNsVqk9DgyTrcFou
+	 KMDIABU7y42U/RHVJzj7JmrCKc3kZXAhZ2g3Ua0fM+rS1DsZgvRbTmngSlzgbYTGaU
+	 8sxLmEb28KqfyTX8Rb2cuRMyDHfcFD0L5ggT+Jzk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Song Liu <song@kernel.org>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Petr Mladek <pmladek@suse.com>,
+	"Mario Limonciello (AMD)" <superm1@kernel.org>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 024/430] livepatch: Match old_sympos 0 and 1 in klp_find_func()
-Date: Mon, 29 Dec 2025 17:07:06 +0100
-Message-ID: <20251229160725.048134773@linuxfoundation.org>
+Subject: [PATCH 6.18 025/430] crypto: ccp - Add support for PCI device 0x115A
+Date: Mon, 29 Dec 2025 17:07:07 +0100
+Message-ID: <20251229160725.084951436@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251229160724.139406961@linuxfoundation.org>
 References: <20251229160724.139406961@linuxfoundation.org>
@@ -65,86 +65,65 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Song Liu <song@kernel.org>
+From: Mario Limonciello (AMD) <superm1@kernel.org>
 
-[ Upstream commit 139560e8b973402140cafeb68c656c1374bd4c20 ]
+[ Upstream commit 9fc6290117259a8dbf8247cb54559df62fd1550f ]
 
-When there is only one function of the same name, old_sympos of 0 and 1
-are logically identical. Match them in klp_find_func().
+PCI device 0x115A is similar to pspv5, except it doesn't have platform
+access mailbox support.
 
-This is to avoid a corner case with different toolchain behavior.
-
-In this specific issue, two versions of kpatch-build were used to
-build livepatch for the same kernel. One assigns old_sympos == 0 for
-unique local functions, the other assigns old_sympos == 1 for unique
-local functions. Both versions work fine by themselves. (PS: This
-behavior change was introduced in a downstream version of kpatch-build.
-This change does not exist in upstream kpatch-build.)
-
-However, during livepatch upgrade (with the replace flag set) from a
-patch built with one version of kpatch-build to the same fix built with
-the other version of kpatch-build, livepatching fails with errors like:
-
-[   14.218706] sysfs: cannot create duplicate filename 'xxx/somefunc,1'
-...
-[   14.219466] Call Trace:
-[   14.219468]  <TASK>
-[   14.219469]  dump_stack_lvl+0x47/0x60
-[   14.219474]  sysfs_warn_dup.cold+0x17/0x27
-[   14.219476]  sysfs_create_dir_ns+0x95/0xb0
-[   14.219479]  kobject_add_internal+0x9e/0x260
-[   14.219483]  kobject_add+0x68/0x80
-[   14.219485]  ? kstrdup+0x3c/0xa0
-[   14.219486]  klp_enable_patch+0x320/0x830
-[   14.219488]  patch_init+0x443/0x1000 [ccc_0_6]
-[   14.219491]  ? 0xffffffffa05eb000
-[   14.219492]  do_one_initcall+0x2e/0x190
-[   14.219494]  do_init_module+0x67/0x270
-[   14.219496]  init_module_from_file+0x75/0xa0
-[   14.219499]  idempotent_init_module+0x15a/0x240
-[   14.219501]  __x64_sys_finit_module+0x61/0xc0
-[   14.219503]  do_syscall_64+0x5b/0x160
-[   14.219505]  entry_SYSCALL_64_after_hwframe+0x4b/0x53
-[   14.219507] RIP: 0033:0x7f545a4bd96d
-...
-[   14.219516] kobject: kobject_add_internal failed for somefunc,1 with
-    -EEXIST, don't try to register things with the same name ...
-
-This happens because klp_find_func() thinks somefunc with old_sympos==0
-is not the same as somefunc with old_sympos==1, and klp_add_object_nops
-adds another xxx/func,1 to the list of functions to patch.
-
-Signed-off-by: Song Liu <song@kernel.org>
-Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
-[pmladek@suse.com: Fixed some typos.]
-Reviewed-by: Petr Mladek <pmladek@suse.com>
-Tested-by: Petr Mladek <pmladek@suse.com>
-Signed-off-by: Petr Mladek <pmladek@suse.com>
+Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
+Acked-by: Tom Lendacky <thomas.lendacky@amd.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/livepatch/core.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/crypto/ccp/sp-pci.c | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-diff --git a/kernel/livepatch/core.c b/kernel/livepatch/core.c
-index 0e73fac55f8eb..4e7a5cbc40a91 100644
---- a/kernel/livepatch/core.c
-+++ b/kernel/livepatch/core.c
-@@ -88,8 +88,14 @@ static struct klp_func *klp_find_func(struct klp_object *obj,
- 	struct klp_func *func;
+diff --git a/drivers/crypto/ccp/sp-pci.c b/drivers/crypto/ccp/sp-pci.c
+index e7bb803912a6d..8891ceee1d7d0 100644
+--- a/drivers/crypto/ccp/sp-pci.c
++++ b/drivers/crypto/ccp/sp-pci.c
+@@ -459,6 +459,17 @@ static const struct psp_vdata pspv6 = {
+ 	.intsts_reg             = 0x10514,	/* P2CMSG_INTSTS */
+ };
  
- 	klp_for_each_func(obj, func) {
-+		/*
-+		 * Besides identical old_sympos, also consider old_sympos
-+		 * of 0 and 1 are identical.
-+		 */
- 		if ((strcmp(old_func->old_name, func->old_name) == 0) &&
--		    (old_func->old_sympos == func->old_sympos)) {
-+		    ((old_func->old_sympos == func->old_sympos) ||
-+		     (old_func->old_sympos == 0 && func->old_sympos == 1) ||
-+		     (old_func->old_sympos == 1 && func->old_sympos == 0))) {
- 			return func;
- 		}
- 	}
++static const struct psp_vdata pspv7 = {
++	.tee			= &teev2,
++	.cmdresp_reg		= 0x10944,	/* C2PMSG_17 */
++	.cmdbuff_addr_lo_reg	= 0x10948,	/* C2PMSG_18 */
++	.cmdbuff_addr_hi_reg	= 0x1094c,	/* C2PMSG_19 */
++	.bootloader_info_reg	= 0x109ec,	/* C2PMSG_59 */
++	.feature_reg		= 0x109fc,	/* C2PMSG_63 */
++	.inten_reg		= 0x10510,	/* P2CMSG_INTEN */
++	.intsts_reg		= 0x10514,	/* P2CMSG_INTSTS */
++};
++
+ #endif
+ 
+ static const struct sp_dev_vdata dev_vdata[] = {
+@@ -525,6 +536,13 @@ static const struct sp_dev_vdata dev_vdata[] = {
+ 		.psp_vdata = &pspv6,
+ #endif
+ 	},
++	{	/* 9 */
++		.bar = 2,
++#ifdef CONFIG_CRYPTO_DEV_SP_PSP
++		.psp_vdata = &pspv7,
++#endif
++	},
++
+ };
+ static const struct pci_device_id sp_pci_table[] = {
+ 	{ PCI_VDEVICE(AMD, 0x1537), (kernel_ulong_t)&dev_vdata[0] },
+@@ -539,6 +557,7 @@ static const struct pci_device_id sp_pci_table[] = {
+ 	{ PCI_VDEVICE(AMD, 0x17E0), (kernel_ulong_t)&dev_vdata[7] },
+ 	{ PCI_VDEVICE(AMD, 0x156E), (kernel_ulong_t)&dev_vdata[8] },
+ 	{ PCI_VDEVICE(AMD, 0x17D8), (kernel_ulong_t)&dev_vdata[8] },
++	{ PCI_VDEVICE(AMD, 0x115A), (kernel_ulong_t)&dev_vdata[9] },
+ 	/* Last entry must be zero */
+ 	{ 0, }
+ };
 -- 
 2.51.0
 
