@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-203961-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203972-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5571CCE7759
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:28:00 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A7F3CE7906
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:36:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BD762300F1B2
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:27:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 49EE1303D8A4
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:28:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8EDC32C933;
-	Mon, 29 Dec 2025 16:27:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C33603164B0;
+	Mon, 29 Dec 2025 16:28:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dpOf/E75"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="esKDEbEk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75436319858;
-	Mon, 29 Dec 2025 16:27:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80E1D347C6;
+	Mon, 29 Dec 2025 16:28:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767025659; cv=none; b=DCoa4B0J/w72/PuFa1aLfBT2rdEyzJxniBQGvbCYxKml0LQq0VzNuY8DPRlJFl5g4Th7Z1v+kwKhAS856VB5aPT9/Qi5ijYhinMx1+YiNW37yvwAQyoJdA4v1AbgNC5rg6VyxtI2YPv5K417uJe9rchJpQ/sCpZMvRzSzmhjv08=
+	t=1767025690; cv=none; b=tVKjLLjdf9OayDfD0XfuYgLfcO+N2yVAFv1nT8dkQTn8VRO7hi9Jxv6QIU0ZfB2pj5gfJZFUmbsgRY0NOuXWvE1vpQgRWKvfh5iKu4RQgrE14UtfMIVG03QAztTdYhPqFxLeMlK9qHM20Tm4trY/HQbQBdhfg7jivJoS45bzf6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767025659; c=relaxed/simple;
-	bh=KlWCkFySZZbISRc4YoUUR3Wv9YMiQVgW0GkhDomzQ1c=;
+	s=arc-20240116; t=1767025690; c=relaxed/simple;
+	bh=Z/JWr4oPLtV7pJum0E+pmy96tRRcWlti3xAcLlmwob4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=erOaMiP07/JiXB0kGuTuEPlq9qye1XwZ3CjLBUERHPbGLUI002EgUi2GjO+WeHWNBeGC3C6Tmi1aWJq9M4A/fXcSbEsGKbTz+uRLDjX4Bw15LbqounUCiMg3dhO+io/AfULH+x2xAK/Ybg13tTVY0NAHDYN6rSjGeQzkAYFQDng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dpOf/E75; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3D28C116C6;
-	Mon, 29 Dec 2025 16:27:38 +0000 (UTC)
+	 MIME-Version; b=A9gXMAi+DqpLjiVmJm1n/VO7X+UCROrjWiDDTcETsw8kK6uQT7/LZWBBq8kPF1f0yqC0WGR0VyVrBRGLu0CjhSAuBExlqUNlTFbgsV9jOSDqgpsndZKtTUKdfrzwx2LQlLxYTHbQ7TM5yMFW4C9iG+KoKyDEG2dBUaCeW8iglIY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=esKDEbEk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADE21C4CEF7;
+	Mon, 29 Dec 2025 16:28:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767025659;
-	bh=KlWCkFySZZbISRc4YoUUR3Wv9YMiQVgW0GkhDomzQ1c=;
+	s=korg; t=1767025690;
+	bh=Z/JWr4oPLtV7pJum0E+pmy96tRRcWlti3xAcLlmwob4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dpOf/E75XhgINvGmJ9wM7lML1khROAz49WNBORBWasKMPOYsbIrjKDMclJ6V6Lgn8
-	 WGdKHfQvcQOdLvj83o9gu0yjvMXjSaFFiX6bqhLAVB36rJK3Vqx5dmB6FKj0NG6Gzl
-	 7XfeUvTtIgmbb6CgOIJOKZZKR/Gwk6w9QEBZ+O8o=
+	b=esKDEbEkKDhzECo4rZLgb65H4K8/BRQAS3Li8yuBn1JHTzOv0biQ6WElnn8QxWZPs
+	 yCrHSAu073ClOJ7P3giryqNnIKjLB/aIuOZ+afxp1P5bCKGTBYpQwb5+1lTjOVNvhW
+	 O1qRCmbBWv58pHtWyiPGDUseLTm9BSqPCgiXF6rw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	James Clark <james.clark@linaro.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Hans de Goede <johannes.goede@oss.qualcomm.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>
-Subject: [PATCH 6.18 274/430] dma-mapping: Fix DMA_BIT_MASK() macro being broken
-Date: Mon, 29 Dec 2025 17:11:16 +0100
-Message-ID: <20251229160734.434153239@linuxfoundation.org>
+	Vlastimil Babka <vbabka@suse.cz>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	Daniel Gomez <da.gomez@samsung.com>,
+	Jon Hunter <jonathanh@nvidia.com>
+Subject: [PATCH 6.18 275/430] mm/slab: introduce kvfree_rcu_barrier_on_cache() for cache destruction
+Date: Mon, 29 Dec 2025 17:11:17 +0100
+Message-ID: <20251229160734.470519224@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251229160724.139406961@linuxfoundation.org>
 References: <20251229160724.139406961@linuxfoundation.org>
@@ -66,65 +65,254 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Hans de Goede <johannes.goede@oss.qualcomm.com>
+From: Harry Yoo <harry.yoo@oracle.com>
 
-commit 31b931bebd11a0f00967114f62c8c38952f483e5 upstream.
+commit 0f35040de59371ad542b915d7b91176c9910dadc upstream.
 
-After commit a50f7456f853 ("dma-mapping: Allow use of DMA_BIT_MASK(64) in
-global scope"), the DMA_BIT_MASK() macro is broken when passed non trivial
-statements for the value of 'n'. This is caused by the new version missing
-parenthesis around 'n' when evaluating 'n'.
+Currently, kvfree_rcu_barrier() flushes RCU sheaves across all slab
+caches when a cache is destroyed. This is unnecessary; only the RCU
+sheaves belonging to the cache being destroyed need to be flushed.
 
-One example of this breakage is the IPU6 driver now crashing due to
-it getting DMA-addresses with address bit 32 set even though it has
-tried to set a 32 bit DMA mask.
+As suggested by Vlastimil Babka, introduce a weaker form of
+kvfree_rcu_barrier() that operates on a specific slab cache.
 
-The IPU6 CSI2 engine has a DMA mask of either 31 or 32 bits depending
-on if it is in secure mode or not and it sets this masks like this:
+Factor out flush_rcu_sheaves_on_cache() from flush_all_rcu_sheaves() and
+call it from flush_all_rcu_sheaves() and kvfree_rcu_barrier_on_cache().
 
-        mmu_info->aperture_end =
-                (dma_addr_t)DMA_BIT_MASK(isp->secure_mode ?
-                                         IPU6_MMU_ADDR_BITS :
-                                         IPU6_MMU_ADDR_BITS_NON_SECURE);
+Call kvfree_rcu_barrier_on_cache() instead of kvfree_rcu_barrier() on
+cache destruction.
 
-So the 'n' argument here is "isp->secure_mode ? IPU6_MMU_ADDR_BITS :
-IPU6_MMU_ADDR_BITS_NON_SECURE" which gets expanded into:
+The performance benefit is evaluated on a 12 core 24 threads AMD Ryzen
+5900X machine (1 socket), by loading slub_kunit module.
 
-isp->secure_mode ? IPU6_MMU_ADDR_BITS : IPU6_MMU_ADDR_BITS_NON_SECURE - 1
+Before:
+  Total calls: 19
+  Average latency (us): 18127
+  Total time (us): 344414
 
-With the -1 only being applied in the non secure case, causing
-the secure mode mask to be one 1 bit too large.
+After:
+  Total calls: 19
+  Average latency (us): 10066
+  Total time (us): 191264
 
-Fixes: a50f7456f853 ("dma-mapping: Allow use of DMA_BIT_MASK(64) in global scope")
-Cc: Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc: James Clark <james.clark@linaro.org>
-Cc: Nathan Chancellor <nathan@kernel.org>
+Two performance regression have been reported:
+  - stress module loader test's runtime increases by 50-60% (Daniel)
+  - internal graphics test's runtime on Tegra234 increases by 35% (Jon)
+
+They are fixed by this change.
+
+Suggested-by: Vlastimil Babka <vbabka@suse.cz>
+Fixes: ec66e0d59952 ("slab: add sheaf support for batching kfree_rcu() operations")
 Cc: stable@vger.kernel.org
-Signed-off-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Link: https://lore.kernel.org/r/20251207184756.97904-1-johannes.goede@oss.qualcomm.com
+Link: https://lore.kernel.org/linux-mm/1bda09da-93be-4737-aef0-d47f8c5c9301@suse.cz
+Reported-and-tested-by: Daniel Gomez <da.gomez@samsung.com>
+Closes: https://lore.kernel.org/linux-mm/0406562e-2066-4cf8-9902-b2b0616dd742@kernel.org
+Reported-and-tested-by: Jon Hunter <jonathanh@nvidia.com>
+Closes: https://lore.kernel.org/linux-mm/e988eff6-1287-425e-a06c-805af5bbf262@nvidia.com
+Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
+Link: https://patch.msgid.link/20251207154148.117723-1-harry.yoo@oracle.com
+Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/dma-mapping.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/slab.h |    7 ++++++
+ mm/slab.h            |    1 
+ mm/slab_common.c     |   52 +++++++++++++++++++++++++++++++++-------------
+ mm/slub.c            |   57 +++++++++++++++++++++++++++------------------------
+ 4 files changed, 76 insertions(+), 41 deletions(-)
 
-diff --git a/include/linux/dma-mapping.h b/include/linux/dma-mapping.h
-index 2ceda49c609f..aa36a0d1d9df 100644
---- a/include/linux/dma-mapping.h
-+++ b/include/linux/dma-mapping.h
-@@ -90,7 +90,7 @@
-  */
- #define DMA_MAPPING_ERROR		(~(dma_addr_t)0)
+--- a/include/linux/slab.h
++++ b/include/linux/slab.h
+@@ -1150,10 +1150,17 @@ static inline void kvfree_rcu_barrier(vo
+ 	rcu_barrier();
+ }
  
--#define DMA_BIT_MASK(n)	GENMASK_ULL(n - 1, 0)
-+#define DMA_BIT_MASK(n)	GENMASK_ULL((n) - 1, 0)
++static inline void kvfree_rcu_barrier_on_cache(struct kmem_cache *s)
++{
++	rcu_barrier();
++}
++
+ static inline void kfree_rcu_scheduler_running(void) { }
+ #else
+ void kvfree_rcu_barrier(void);
  
- struct dma_iova_state {
- 	dma_addr_t addr;
--- 
-2.52.0
-
++void kvfree_rcu_barrier_on_cache(struct kmem_cache *s);
++
+ void kfree_rcu_scheduler_running(void);
+ #endif
+ 
+--- a/mm/slab.h
++++ b/mm/slab.h
+@@ -442,6 +442,7 @@ static inline bool is_kmalloc_normal(str
+ 
+ bool __kfree_rcu_sheaf(struct kmem_cache *s, void *obj);
+ void flush_all_rcu_sheaves(void);
++void flush_rcu_sheaves_on_cache(struct kmem_cache *s);
+ 
+ #define SLAB_CORE_FLAGS (SLAB_HWCACHE_ALIGN | SLAB_CACHE_DMA | \
+ 			 SLAB_CACHE_DMA32 | SLAB_PANIC | \
+--- a/mm/slab_common.c
++++ b/mm/slab_common.c
+@@ -492,7 +492,7 @@ void kmem_cache_destroy(struct kmem_cach
+ 		return;
+ 
+ 	/* in-flight kfree_rcu()'s may include objects from our cache */
+-	kvfree_rcu_barrier();
++	kvfree_rcu_barrier_on_cache(s);
+ 
+ 	if (IS_ENABLED(CONFIG_SLUB_RCU_DEBUG) &&
+ 	    (s->flags & SLAB_TYPESAFE_BY_RCU)) {
+@@ -2039,25 +2039,13 @@ unlock_return:
+ }
+ EXPORT_SYMBOL_GPL(kvfree_call_rcu);
+ 
+-/**
+- * kvfree_rcu_barrier - Wait until all in-flight kvfree_rcu() complete.
+- *
+- * Note that a single argument of kvfree_rcu() call has a slow path that
+- * triggers synchronize_rcu() following by freeing a pointer. It is done
+- * before the return from the function. Therefore for any single-argument
+- * call that will result in a kfree() to a cache that is to be destroyed
+- * during module exit, it is developer's responsibility to ensure that all
+- * such calls have returned before the call to kmem_cache_destroy().
+- */
+-void kvfree_rcu_barrier(void)
++static inline void __kvfree_rcu_barrier(void)
+ {
+ 	struct kfree_rcu_cpu_work *krwp;
+ 	struct kfree_rcu_cpu *krcp;
+ 	bool queued;
+ 	int i, cpu;
+ 
+-	flush_all_rcu_sheaves();
+-
+ 	/*
+ 	 * Firstly we detach objects and queue them over an RCU-batch
+ 	 * for all CPUs. Finally queued works are flushed for each CPU.
+@@ -2119,8 +2107,43 @@ void kvfree_rcu_barrier(void)
+ 		}
+ 	}
+ }
++
++/**
++ * kvfree_rcu_barrier - Wait until all in-flight kvfree_rcu() complete.
++ *
++ * Note that a single argument of kvfree_rcu() call has a slow path that
++ * triggers synchronize_rcu() following by freeing a pointer. It is done
++ * before the return from the function. Therefore for any single-argument
++ * call that will result in a kfree() to a cache that is to be destroyed
++ * during module exit, it is developer's responsibility to ensure that all
++ * such calls have returned before the call to kmem_cache_destroy().
++ */
++void kvfree_rcu_barrier(void)
++{
++	flush_all_rcu_sheaves();
++	__kvfree_rcu_barrier();
++}
+ EXPORT_SYMBOL_GPL(kvfree_rcu_barrier);
+ 
++/**
++ * kvfree_rcu_barrier_on_cache - Wait for in-flight kvfree_rcu() calls on a
++ *                               specific slab cache.
++ * @s: slab cache to wait for
++ *
++ * See the description of kvfree_rcu_barrier() for details.
++ */
++void kvfree_rcu_barrier_on_cache(struct kmem_cache *s)
++{
++	if (s->cpu_sheaves)
++		flush_rcu_sheaves_on_cache(s);
++	/*
++	 * TODO: Introduce a version of __kvfree_rcu_barrier() that works
++	 * on a specific slab cache.
++	 */
++	__kvfree_rcu_barrier();
++}
++EXPORT_SYMBOL_GPL(kvfree_rcu_barrier_on_cache);
++
+ static unsigned long
+ kfree_rcu_shrink_count(struct shrinker *shrink, struct shrink_control *sc)
+ {
+@@ -2216,4 +2239,3 @@ void __init kvfree_rcu_init(void)
+ }
+ 
+ #endif /* CONFIG_KVFREE_RCU_BATCHED */
+-
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -4118,42 +4118,47 @@ static void flush_rcu_sheaf(struct work_
+ 
+ 
+ /* needed for kvfree_rcu_barrier() */
+-void flush_all_rcu_sheaves(void)
++void flush_rcu_sheaves_on_cache(struct kmem_cache *s)
+ {
+ 	struct slub_flush_work *sfw;
+-	struct kmem_cache *s;
+ 	unsigned int cpu;
+ 
++	mutex_lock(&flush_lock);
++
++	for_each_online_cpu(cpu) {
++		sfw = &per_cpu(slub_flush, cpu);
++
++		/*
++		 * we don't check if rcu_free sheaf exists - racing
++		 * __kfree_rcu_sheaf() might have just removed it.
++		 * by executing flush_rcu_sheaf() on the cpu we make
++		 * sure the __kfree_rcu_sheaf() finished its call_rcu()
++		 */
++
++		INIT_WORK(&sfw->work, flush_rcu_sheaf);
++		sfw->s = s;
++		queue_work_on(cpu, flushwq, &sfw->work);
++	}
++
++	for_each_online_cpu(cpu) {
++		sfw = &per_cpu(slub_flush, cpu);
++		flush_work(&sfw->work);
++	}
++
++	mutex_unlock(&flush_lock);
++}
++
++void flush_all_rcu_sheaves(void)
++{
++	struct kmem_cache *s;
++
+ 	cpus_read_lock();
+ 	mutex_lock(&slab_mutex);
+ 
+ 	list_for_each_entry(s, &slab_caches, list) {
+ 		if (!s->cpu_sheaves)
+ 			continue;
+-
+-		mutex_lock(&flush_lock);
+-
+-		for_each_online_cpu(cpu) {
+-			sfw = &per_cpu(slub_flush, cpu);
+-
+-			/*
+-			 * we don't check if rcu_free sheaf exists - racing
+-			 * __kfree_rcu_sheaf() might have just removed it.
+-			 * by executing flush_rcu_sheaf() on the cpu we make
+-			 * sure the __kfree_rcu_sheaf() finished its call_rcu()
+-			 */
+-
+-			INIT_WORK(&sfw->work, flush_rcu_sheaf);
+-			sfw->s = s;
+-			queue_work_on(cpu, flushwq, &sfw->work);
+-		}
+-
+-		for_each_online_cpu(cpu) {
+-			sfw = &per_cpu(slub_flush, cpu);
+-			flush_work(&sfw->work);
+-		}
+-
+-		mutex_unlock(&flush_lock);
++		flush_rcu_sheaves_on_cache(s);
+ 	}
+ 
+ 	mutex_unlock(&slab_mutex);
 
 
 
