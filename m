@@ -1,127 +1,153 @@
-Return-Path: <stable+bounces-204112-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204113-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F619CE7B44
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 18:04:24 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DF62CE7B68
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 18:14:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3DF88300E820
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:04:23 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C65B4300102D
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:14:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09A8632FA3C;
-	Mon, 29 Dec 2025 17:04:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBD1833067F;
+	Mon, 29 Dec 2025 17:14:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="d7XAhona"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dvVnM5rd"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f73.google.com (mail-ed1-f73.google.com [209.85.208.73])
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 395BC2367DC
-	for <stable@vger.kernel.org>; Mon, 29 Dec 2025 17:04:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 346B72853FD
+	for <stable@vger.kernel.org>; Mon, 29 Dec 2025 17:14:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767027861; cv=none; b=uXBp2uXCCd0+LLqmqdGJbJg4nWKzd2EE1mvEiHEd+kSLIdoeNPwAwIDTfCbb0dVEtvU80t6ddWu//eyBBCpjddox09lh1SyHYbrzaZzlg5YNYjujB5DUeQ1IoNsmu0p9bEgCToAMhRcHF/jkpLgs7vCitUgYJcg/Xz/+JTU2bnA=
+	t=1767028469; cv=none; b=Fe4jS4STy61cF2QznxP+0GZsdioQjLiThE6kLQmWxwzRWlc6rUyNDqg9nsfywhbNlGJFzBHB8FhHP2CHY8J6aebg5mzp/8BEG4pnfMyQdIHqyqtHItGmAHzeMJOLKdK7z6+9EfXgoN4SSj6AkCzXoH3cIjOX4VLr8eZ5MkUwhrU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767027861; c=relaxed/simple;
-	bh=zF2T1FIl8egI/W9aqc85qpNv1XV7tvAFANGtUovKdKI=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Hosha6UHverXL1zwDEhE3i1f7Q1Zm8l81rHihb3oNpJ5lN9uR2cYNIW5kBmEaR7yysWUqI2Dk7VONSLPFdzdi9aSDx/HGdWMj16KcYpFiCJpuWf1bmjnDwO7upkcx+/yEKREiDSFzKewKUXv5brUZyvXyePjRq6p6K2wW0qswfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=d7XAhona; arc=none smtp.client-ip=209.85.208.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
-Received: by mail-ed1-f73.google.com with SMTP id 4fb4d7f45d1cf-64d5bec0e59so8109022a12.0
-        for <stable@vger.kernel.org>; Mon, 29 Dec 2025 09:04:20 -0800 (PST)
+	s=arc-20240116; t=1767028469; c=relaxed/simple;
+	bh=W6aUeOEN1SgFtWQZemlJwqK1F1smQGCcFNxoAevcZJ0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=tsOzQJ+MpnZE1cUrqAe5ERpzNiGIrRXAWeGFQugPzjmgaF2tVEnHAGtH6X1w8mmQlnBdGnqu/kPw7AfC0kKuHa9UeRcGP+6hMRQZzCOyRxbFNDG3GF3scFacw44/baWOqwzK5lI1Xo2O7XMopGSep7iCH2jJ4W0lR0YxXBb1uTs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dvVnM5rd; arc=none smtp.client-ip=209.85.210.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-7e1651ae0d5so7153337b3a.1
+        for <stable@vger.kernel.org>; Mon, 29 Dec 2025 09:14:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1767027859; x=1767632659; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=b1dWu0jtPAE2ll/Vi4qV+X83f54fPzcnMdMPnW/x9j4=;
-        b=d7XAhona9cWgvTrVcgAgmpSUxrawsZnr4PCDwh8XKyS9jHzVAllFSKLn42sVrYzmma
-         E8NI/KsBlGeLKpMeUf6DkhO2YCzmUJgqawBamCA6OtoIFA3/yzA49ZZo42oh/WipBmmC
-         Kl4JPhp1geEQ8c3Il7SCrGbUSi2usRMzpt9lpBmurjQ9Jbr8dGNiY4NpIAmkmAPYqGXJ
-         qRS+McjU9jPFUMNOB7jKaxpnppe3yiIrCfJUdcYM8x7hpqpfiaPsdz+4BHcbuEhz4D8r
-         soveB55I3cO1QzXE4sKfBRhGgYrImPk3J7yviqPIJsey6ktcCUoF0MZM+HddeR10BNv1
-         uiIw==
+        d=gmail.com; s=20230601; t=1767028467; x=1767633267; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=5NK6dp2s8X6NtEpLJQM+0l1rM8deukQbR1S/tTFRVRA=;
+        b=dvVnM5rd/jX/Ai4hZK7yFww5FH7uhh6LGZXiiKIP48o5dkkUtM/QVUqq8kxg6gxDuR
+         h4MoI3TW+ApwVBtmHumq5EySJbungMQ3xmXqaQ8O8CaFK6XKPY8IkSIm800RI8zRV7oq
+         OV4X84JKgoxxSoof8ShyOYlnPnya94/IIj3B2nzU6mq78IJ+GvaFZ5Y6KVTGssDjs2e2
+         /2/q33MIhmCqSjFQL58aERPtyH4Ea8lERMqHQ7thp2q/bkjr3++A0MxlM74oD11EdS0a
+         b33/HiInivdxkoYftQrdxtrjEVSTNRHqKNM5ovhNN91L74NEWgOUh/D9c9Q5VVjJ/pNr
+         oE/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767027859; x=1767632659;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=b1dWu0jtPAE2ll/Vi4qV+X83f54fPzcnMdMPnW/x9j4=;
-        b=LJSx1yo+Lyzw1SzKGsnCl6g0fnZHgPy7yODiIM3I2jB48NgPIhre6IaTGvPR7iP9/n
-         LwXOTwk4rBBiHL1YRuhqf5tZmfIUu+6tbl2u5bqAZSaiUzPoidyWaMvy0Uu16l5+0Pgj
-         Q9fCT6CkR6AcjSJtmu1R44eE7vOMyn1xo27M78FUQp/6k8YGFkRywkU4U0KKQnBcdvrU
-         cC1r3m/QcLYHra8V01Yui0sK45Od/MhiZqq9WcNynLw2CLFfQE6fOAutoNvV86EH+UNN
-         bep6zQQ7NP1VQ/2Mtlf9ZeNlGqV6dcrU/uPpAi6ZqZcw+mxCoEIngNw2r5E83WnCNlWY
-         6bQA==
-X-Forwarded-Encrypted: i=1; AJvYcCVOsygwRR0AvYZjHjHbSu5sVEoxzGXFZiGHOelxAzru2Q06rgvVU2G56Cg0RRQwM73F/ZNfkCs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzNxTIEv+zIx5mK7gYivPAl7Penr2OpU/0UDpBB+jy4qYrv7JX8
-	wCFgwPqBzOYxL6Pt/So77SGp+taDdks2JbloFInevSDaEGUqsRDQY3dxcTb3k9h7oJl7j1L+hJ0
-	QOndL0B2ENHl3Y9TUfg==
-X-Google-Smtp-Source: AGHT+IGLicJi0comVcZ+prfwADDY35NYQ7QvSvuuC0CbbcqM5kwPagTxVkdtOrm9mfXbStXzIexWIboT7EXsQU4=
-X-Received: from edvf21.prod.google.com ([2002:a05:6402:1615:b0:64b:96ec:ef6a])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6402:5213:b0:640:edb3:90b5 with SMTP id 4fb4d7f45d1cf-64b8e93c176mr31064441a12.7.1767027858737;
- Mon, 29 Dec 2025 09:04:18 -0800 (PST)
-Date: Mon, 29 Dec 2025 17:04:17 +0000
-In-Reply-To: <20251229164544.1baf659b.gary@garyguo.net>
+        d=1e100.net; s=20230601; t=1767028467; x=1767633267;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5NK6dp2s8X6NtEpLJQM+0l1rM8deukQbR1S/tTFRVRA=;
+        b=ZcxvBOwypNrOFUccsvSmQRkXMZv5Krwf4ZwRfopnt5fE6JzzHhaxRPuGystrkV0rqX
+         Mp9gu3eWP2qRjqV+tZEkIKVY8UQEBtj/LWjh8LKjWODduwG3ClEYRsEvMKG9Gnzufpd0
+         hr+ZYXpWMJrz0gZe2yJcc0ntpMjRsnY788K9fAthbebof9rpcLuljfrvWF52+fnCJKPa
+         R6cd8uV3QHx7Z5Z97N+I09bKc6Ux9Z7EkZL0rAVtSMHEQc7sTa0Ojx6k4cI5pSlvVdbw
+         ydF2YD5b5w4QFZoQ5tPiNwJqvp4famr2RKMlW6KsKCFasMVN/KKE21AeLpanJFxQu8IK
+         dSwQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUwV8RgRt5mwK/L04rk0kpsdiJ6R+vL0Cyl3Lc0cpO1wTqSTdTTxaNQ7JSORwKkYPC8ndz+qUs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxqkZjJP4/CyB8GH86nKz/rfov+93A7/93A/r/7t4IDuOD7xQes
+	hbH2vJxuuN2Tpom1yAjmDCGzJH4KpBNxYSZVDuw6gRZ10B5xHdyvwh/4
+X-Gm-Gg: AY/fxX5sEpfuk29NVf1pod6AQWRYhuhPlnxQhnCGRRfTfpjS5bLwCbZkzsMC4HkIm0V
+	xcjsFs8/Z0qkMLKORqc8t+EFonoEZrt6lhKu6qGfQruGO2O5hEqaI2ONKtyDv46gybk/MEVUn+U
+	37+rqWFAaoIfEiVQSb7JR1eAQlc87hInWVEY3quV7KhZ3WdH6FYnuuOMufebmWivBrFz72KR0iL
+	cf5BcjT400BZsrVzCyw8uyjA7iW+vmzQlpM5DW/6FGXOfMVyplyD4F1g6yQC5Gq7fFXWCn7+/S+
+	A+d3CGZTkVOOuCvO0I1dojXknZw0ZiuHkpPsd+wcEH5i16Nkb9CCfdiI7YNqJJXAySlT0//fYwO
+	oI8Q62PhLRL7wiEJ1FuMWI1x2u7oHaTmgBBeTbEL2XLLIDQWtcljYU8zQ86I8g2igMv/kmjnONl
+	t4KxRfyZ1RQq1phOt2PuI=
+X-Google-Smtp-Source: AGHT+IE0UQafWJtzQnLvkcd4tjvwk6WEjuZXQW80bW7BYX7qVp8/RiTlljt2VidyeoCSfiVHLlor+g==
+X-Received: by 2002:a05:6a00:1f0c:b0:7e8:4587:e8c4 with SMTP id d2e1a72fcca58-7ff66479a55mr26456010b3a.55.1767028467371;
+        Mon, 29 Dec 2025 09:14:27 -0800 (PST)
+Received: from [172.16.80.107] ([210.228.119.9])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7ff7e48cffesm29656429b3a.49.2025.12.29.09.14.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 29 Dec 2025 09:14:26 -0800 (PST)
+From: Ryota Sakamoto <sakamo.ryota@gmail.com>
+Date: Tue, 30 Dec 2025 02:12:51 +0900
+Subject: [PATCH] gfs2: Fix use-after-free in gfs2_fill_super
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20251229-fda-zero-v1-1-58a41cb0e7ec@google.com> <20251229164544.1baf659b.gary@garyguo.net>
-Message-ID: <aVK0kS3KqUmpGSDz@google.com>
-Subject: Re: [PATCH] rust_binder: correctly handle FDA objects of length zero
-From: Alice Ryhl <aliceryhl@google.com>
-To: Gary Guo <gary@garyguo.net>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, stable@vger.kernel.org, 
-	DeepChirp <DeepChirp@outlook.com>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251230-fix-use-after-free-gfs2-v1-1-ef0e46db6ec9@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x2MQQqDUAwFryJZG9B8lOJVShdf+6LZWElaEcS7+
+ +lyYGZOCrghaKhOcuwW9lkLtHVF05LXGWzvwiSNdK2khtUO/gU46xfO6gDPGsJ9P+kISWPODyr
+ 15ijq//x8XdcNrx2XbmkAAAA=
+X-Change-ID: 20251230-fix-use-after-free-gfs2-66cfbe23baa8
+To: Andreas Gruenbacher <agruenba@redhat.com>
+Cc: gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
+ syzbot+4cb0d0336db6bc6930e9@syzkaller.appspotmail.com, 
+ stable@vger.kernel.org, Ryota Sakamoto <sakamo.ryota@gmail.com>
+X-Mailer: b4 0.14.2
 
-On Mon, Dec 29, 2025 at 04:45:44PM +0000, Gary Guo wrote:
-> On Mon, 29 Dec 2025 15:38:14 +0000
-> Alice Ryhl <aliceryhl@google.com> wrote:
-> 
-> > Fix a bug where an empty FDA (fd array) object with 0 fds would cause an
-> > out-of-bounds error. The previous implementation used `skip == 0` to
-> > mean "this is a pointer fixup", but 0 is also the correct skip length
-> > for an empty FDA. If the FDA is at the end of the buffer, then this
-> > results in an attempt to write 8-bytes out of bounds. This is caught and
-> > results in an EINVAL error being returned to userspace.
-> > 
-> > The pattern of using `skip == 0` as a special value originates from the
-> > C-implementation of Binder. As part of fixing this bug, this pattern is
-> > replaced with a Rust enum.
-> 
-> I was curious and checked the C binder implementation. Apparently the C
-> binder implementation returns early when translating a FD array with
-> length 0.
-> 
-> Would it still make sense to do something similar in the Rust binder? The
-> enum change is still good to make, though.
+The issue occurs when gfs2_freeze_lock_shared() fails in
+gfs2_fill_super(). If !sb_rdonly(sb), threads for the quotad and logd
+were started, however, in the error path for gfs2_freeze_lock_shared(),
+the threads are not stopped by gfs2_destroy_threads() before jumping to
+fail_per_node.
 
-Based on where the early return is, that'd be equivalent in wrapping
-this:
+This patch introduces fail_threads to handle stopping the threads if the
+threads were started.
 
-	parent_entry
-	    .pointer_fixups
-	    .push(
-	        PointerFixupEntry::Skip {
-	            skip: fds_len,
-	            target_offset: info.target_offset,
-	        },
-	        GFP_KERNEL,
-	    )
-	    .map_err(|_| ENOMEM)?;
+Reported-by: syzbot+4cb0d0336db6bc6930e9@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=4cb0d0336db6bc6930e9
+Fixes: a28dc123fa66 ("gfs2: init system threads before freeze lock")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ryota Sakamoto <sakamo.ryota@gmail.com>
+---
+ fs/gfs2/ops_fstype.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-in an `if fds_len > 0 {}` block. I don't believe it makes any
-difference, but not having a special case may be cleaner?
+diff --git a/fs/gfs2/ops_fstype.c b/fs/gfs2/ops_fstype.c
+index e7a88b717991ae3647c1da039636daef7005a7f0..4b5ac1a7050f1fd34e10be4100a2bc381f49c83d 100644
+--- a/fs/gfs2/ops_fstype.c
++++ b/fs/gfs2/ops_fstype.c
+@@ -1269,21 +1269,23 @@ static int gfs2_fill_super(struct super_block *sb, struct fs_context *fc)
+ 
+ 	error = gfs2_freeze_lock_shared(sdp);
+ 	if (error)
+-		goto fail_per_node;
++		goto fail_threads;
+ 
+ 	if (!sb_rdonly(sb))
+ 		error = gfs2_make_fs_rw(sdp);
+ 
+ 	if (error) {
+ 		gfs2_freeze_unlock(sdp);
+-		gfs2_destroy_threads(sdp);
+ 		fs_err(sdp, "can't make FS RW: %d\n", error);
+-		goto fail_per_node;
++		goto fail_threads;
+ 	}
+ 	gfs2_glock_dq_uninit(&mount_gh);
+ 	gfs2_online_uevent(sdp);
+ 	return 0;
+ 
++fail_threads:
++	if (!sb_rdonly(sb))
++		gfs2_destroy_threads(sdp);
+ fail_per_node:
+ 	init_per_node(sdp, UNDO);
+ fail_inodes:
 
-Alice
+---
+base-commit: 7839932417dd53bb09eb5a585a7a92781dfd7cb2
+change-id: 20251230-fix-use-after-free-gfs2-66cfbe23baa8
+
+Best regards,
+-- 
+Ryota Sakamoto <sakamo.ryota@gmail.com>
+
 
