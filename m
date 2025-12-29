@@ -1,58 +1,52 @@
-Return-Path: <stable+bounces-204123-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204124-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAAA2CE7F61
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 19:56:32 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F417CE7F76
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 19:58:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D3A9E3021FA6
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 18:54:36 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id BF9C03004616
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 18:58:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08E8B3321C1;
-	Mon, 29 Dec 2025 18:54:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6469C23AE87;
+	Mon, 29 Dec 2025 18:58:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LL9dmHaj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uo4N9IRq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD5BB285CA9
-	for <stable@vger.kernel.org>; Mon, 29 Dec 2025 18:54:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DF0F21ABAC;
+	Mon, 29 Dec 2025 18:58:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767034475; cv=none; b=dQ05hEpYM0mh48LkpDsVadch8PvPGkdR4waRjp3K24+DjO9gQQiBBmfMZBUocKChl0dp0N4ALv7Az3CRlTaDGt5etA+6iDmXGXUBvPw7FbgTiMnesj+7vTX/IIiw5sMMhlRdgBixl6GWAPUUF359yVuf81x/+aaEOZ3bpHmsNUE=
+	t=1767034683; cv=none; b=eUnY/sN8KR8XaRykFgddGxV1s1+a0HxZ6LOU7EwApAlhVOR2zB5fVpAWhyF8yl6nirM7OpJS1NXaBoncj/FvoSz1j4nlGgM/32vawPrEJkQI8wL3XctXOKm3Y20BWJPJKy+c1fXgiqR4iPVwsSqpbJuFI9jnBQk9AlImdJQTd24=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767034475; c=relaxed/simple;
-	bh=kLFVQ/OqEDKsbTjq/JibHHXBb3V2B4O4f6d0H8YcYUw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R28Zyj/ocPmOJziCfBmprxmFNJxzl/dqQxXcfUtBD9KaYTlZHrvyD8M95fO//jKcVQoCy8EjIJ0tteVCeC13oZuh5yO5aQOZ5b0sF6jYF8yVm/A6cawEOkk85dGHsXn/MvGBoWOtMNLkIUNisFKVV7b0Iaof8KKvvxpN/q1xaJM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LL9dmHaj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A397DC16AAE;
-	Mon, 29 Dec 2025 18:54:34 +0000 (UTC)
+	s=arc-20240116; t=1767034683; c=relaxed/simple;
+	bh=7+LeXcurmTBOVO36bBzbTi7onIGqQLPY4eKkZIpXIlE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=H3N4moyud8b+a2QGt1ljZXhQcjjLdo+I+NpJWO0Pwqxz0D7AbnlVVKOnQbjpS3vcWjBrHWIzaHau1Xpbm1LpSSz8WAjJQl7zEeOdsR217skeRcL1eDNcp8tiiTt3f/tTKzPp7967VcvtDyOa0GijkqpI+VZey0Idsi5Q1obc5co=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uo4N9IRq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0E7EC4CEF7;
+	Mon, 29 Dec 2025 18:57:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767034475;
-	bh=kLFVQ/OqEDKsbTjq/JibHHXBb3V2B4O4f6d0H8YcYUw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LL9dmHajlkPtuTG5syPvay+0mdCKxX6ALRp/ThMhmI0g6QmuKOR7UHE8++7zuXcXu
-	 zbQr1TF15snrDVuBXkc9rMewCqhrDpoR4kcf2D1+nNVp2eEwr0k5kTbTEMJWWur5cF
-	 DUmPFjvB6OcVJyExYztpw0PlUAN0utTFrk048SKFOqXQo6mHL66kSHfyjO+hFnYf28
-	 7Y151G7Mb0QXK3Nkh86i7vdkVzt67EHdar5BHUt7NetPkDPQr5ds1QNBLPMDIRTvFV
-	 8C5F4m1xhZoy5KlY7jOfwFrirkbCHi1Bv/sN0O9HFWjX8fibzNsTNbab7jYcHGuova
-	 rfdH25mbdV4tQ==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Junbeom Yeom <junbeom.yeom@samsung.com>,
-	Jaewook Kim <jw5454.kim@samsung.com>,
-	Sungjong Seo <sj1557.seo@samsung.com>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18.y 2/2] erofs: fix unexpected EIO under memory pressure
-Date: Mon, 29 Dec 2025 13:54:32 -0500
-Message-ID: <20251229185432.1616355-2-sashal@kernel.org>
+	s=k20201202; t=1767034680;
+	bh=7+LeXcurmTBOVO36bBzbTi7onIGqQLPY4eKkZIpXIlE=;
+	h=From:To:Cc:Subject:Date:From;
+	b=uo4N9IRq/AvzzW9dqo1QG8mFHMjhv/iz9k2zrkLa50lwknnHw2IUgs37G9wkbHGm/
+	 UEVAY1qN80bTqP2FlMBfIrmhPELGQ2IzIEOylQ1/vgCrjO+8Gacbe4y9Di9SCXfPw3
+	 LUk8qAkv+2CTgxcQMhbxV6BDKXXTIGOPiifilZKBzLf/7AwFtDFfZx7peWvdvqKcdy
+	 ISNfqlKowKgRlCMy7ywzhEsAx9vRlM68EpwCC2E3FW4QpK0JlqA1ShlACjHK0QRtD6
+	 0mWsseX6uxzlUt5UD+sypMLpE/wkielPjwt3USR1LZ/muq4oTKA2NX7MH64/HlxdXB
+	 xB+hB/Uprs59A==
+From: Borislav Petkov <bp@kernel.org>
+To: <stable@vger.kernel.org>
+Cc: LKML <linux-kernel@vger.kernel.org>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Waiman Long <longman@redhat.com>
+Subject: [PATCH 6.18-stable] x86/microcode/AMD: Select which microcode patch to load
+Date: Mon, 29 Dec 2025 19:57:52 +0100
+Message-ID: <20251229185752.4358-1-bp@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251229185432.1616355-1-sashal@kernel.org>
-References: <2025122915-kitchen-june-49ec@gregkh>
- <20251229185432.1616355-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,130 +55,185 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Junbeom Yeom <junbeom.yeom@samsung.com>
+From: "Borislav Petkov (AMD)" <bp@alien8.de>
 
-[ Upstream commit 4012d78562193ef5eb613bad4b0c0fa187637cfe ]
+Commit 8d171045069c804e5ffaa18be590c42c6af0cf3f upstream.
 
-erofs readahead could fail with ENOMEM under the memory pressure because
-it tries to alloc_page with GFP_NOWAIT | GFP_NORETRY, while GFP_KERNEL
-for a regular read. And if readahead fails (with non-uptodate folios),
-the original request will then fall back to synchronous read, and
-`.read_folio()` should return appropriate errnos.
+All microcode patches up to the proper BIOS Entrysign fix are loaded
+only after the sha256 signature carried in the driver has been verified.
 
-However, in scenarios where readahead and read operations compete,
-read operation could return an unintended EIO because of an incorrect
-error propagation.
+Microcode patches after the Entrysign fix has been applied, do not need
+that signature verification anymore.
 
-To resolve this, this patch modifies the behavior so that, when the
-PCL is for read(which means pcl.besteffort is true), it attempts actual
-decompression instead of propagating the privios error except initial EIO.
+In order to not abandon machines which haven't received the BIOS update
+yet, add the capability to select which microcode patch to load.
 
-- Page size: 4K
-- The original size of FileA: 16K
-- Compress-ratio per PCL: 50% (Uncompressed 8K -> Compressed 4K)
-[page0, page1] [page2, page3]
-[PCL0]---------[PCL1]
+The corresponding microcode container supplied through firmware-linux
+has been modified to carry two patches per CPU type
+(family/model/stepping) so that the proper one gets selected.
 
-- functions declaration:
-  . pread(fd, buf, count, offset)
-  . readahead(fd, offset, count)
-- Thread A tries to read the last 4K
-- Thread B tries to do readahead 8K from 4K
-- RA, besteffort == false
-- R, besteffort == true
-
-        <process A>                   <process B>
-
-pread(FileA, buf, 4K, 12K)
-  do readahead(page3) // failed with ENOMEM
-  wait_lock(page3)
-    if (!uptodate(page3))
-      goto do_read
-                               readahead(FileA, 4K, 8K)
-                               // Here create PCL-chain like below:
-                               // [null, page1] [page2, null]
-                               //   [PCL0:RA]-----[PCL1:RA]
-...
-  do read(page3)        // found [PCL1:RA] and add page3 into it,
-                        // and then, change PCL1 from RA to R
-...
-                               // Now, PCL-chain is as below:
-                               // [null, page1] [page2, page3]
-                               //   [PCL0:RA]-----[PCL1:R]
-
-                                 // try to decompress PCL-chain...
-                                 z_erofs_decompress_queue
-                                   err = 0;
-
-                                   // failed with ENOMEM, so page 1
-                                   // only for RA will not be uptodated.
-                                   // it's okay.
-                                   err = decompress([PCL0:RA], err)
-
-                                   // However, ENOMEM propagated to next
-                                   // PCL, even though PCL is not only
-                                   // for RA but also for R. As a result,
-                                   // it just failed with ENOMEM without
-                                   // trying any decompression, so page2
-                                   // and page3 will not be uptodated.
-                ** BUG HERE ** --> err = decompress([PCL1:R], err)
-
-                                   return err as ENOMEM
-...
-    wait_lock(page3)
-      if (!uptodate(page3))
-        return EIO      <-- Return an unexpected EIO!
-...
-
-Fixes: 2349d2fa02db ("erofs: sunset unneeded NOFAILs")
-Cc: stable@vger.kernel.org
-Reviewed-by: Jaewook Kim <jw5454.kim@samsung.com>
-Reviewed-by: Sungjong Seo <sj1557.seo@samsung.com>
-Signed-off-by: Junbeom Yeom <junbeom.yeom@samsung.com>
-Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Tested-by: Waiman Long <longman@redhat.com>
+Link: https://patch.msgid.link/20251027133818.4363-1-bp@kernel.org
 ---
- fs/erofs/zdata.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/x86/kernel/cpu/microcode/amd.c | 113 ++++++++++++++++++----------
+ 1 file changed, 72 insertions(+), 41 deletions(-)
 
-diff --git a/fs/erofs/zdata.c b/fs/erofs/zdata.c
-index 461a929e0825..c23e0278c373 100644
---- a/fs/erofs/zdata.c
-+++ b/fs/erofs/zdata.c
-@@ -1262,7 +1262,7 @@ static int z_erofs_parse_in_bvecs(struct z_erofs_backend *be, bool *overlapped)
- 	return err;
+diff --git a/arch/x86/kernel/cpu/microcode/amd.c b/arch/x86/kernel/cpu/microcode/amd.c
+index a881bf4c2011..3821a985f4ff 100644
+--- a/arch/x86/kernel/cpu/microcode/amd.c
++++ b/arch/x86/kernel/cpu/microcode/amd.c
+@@ -186,50 +186,61 @@ static u32 cpuid_to_ucode_rev(unsigned int val)
+ 	return p.ucode_rev;
  }
  
--static int z_erofs_decompress_pcluster(struct z_erofs_backend *be, int err)
-+static int z_erofs_decompress_pcluster(struct z_erofs_backend *be, bool eio)
++static u32 get_cutoff_revision(u32 rev)
++{
++	switch (rev >> 8) {
++	case 0x80012: return 0x8001277; break;
++	case 0x80082: return 0x800820f; break;
++	case 0x83010: return 0x830107c; break;
++	case 0x86001: return 0x860010e; break;
++	case 0x86081: return 0x8608108; break;
++	case 0x87010: return 0x8701034; break;
++	case 0x8a000: return 0x8a0000a; break;
++	case 0xa0010: return 0xa00107a; break;
++	case 0xa0011: return 0xa0011da; break;
++	case 0xa0012: return 0xa001243; break;
++	case 0xa0082: return 0xa00820e; break;
++	case 0xa1011: return 0xa101153; break;
++	case 0xa1012: return 0xa10124e; break;
++	case 0xa1081: return 0xa108109; break;
++	case 0xa2010: return 0xa20102f; break;
++	case 0xa2012: return 0xa201212; break;
++	case 0xa4041: return 0xa404109; break;
++	case 0xa5000: return 0xa500013; break;
++	case 0xa6012: return 0xa60120a; break;
++	case 0xa7041: return 0xa704109; break;
++	case 0xa7052: return 0xa705208; break;
++	case 0xa7080: return 0xa708009; break;
++	case 0xa70c0: return 0xa70C009; break;
++	case 0xaa001: return 0xaa00116; break;
++	case 0xaa002: return 0xaa00218; break;
++	case 0xb0021: return 0xb002146; break;
++	case 0xb0081: return 0xb008111; break;
++	case 0xb1010: return 0xb101046; break;
++	case 0xb2040: return 0xb204031; break;
++	case 0xb4040: return 0xb404031; break;
++	case 0xb4041: return 0xb404101; break;
++	case 0xb6000: return 0xb600031; break;
++	case 0xb6080: return 0xb608031; break;
++	case 0xb7000: return 0xb700031; break;
++	default: break;
++
++	}
++	return 0;
++}
++
+ static bool need_sha_check(u32 cur_rev)
  {
- 	struct erofs_sb_info *const sbi = EROFS_SB(be->sb);
- 	struct z_erofs_pcluster *pcl = be->pcl;
-@@ -1270,7 +1270,7 @@ static int z_erofs_decompress_pcluster(struct z_erofs_backend *be, int err)
- 	const struct z_erofs_decompressor *alg =
- 				z_erofs_decomp[pcl->algorithmformat];
- 	bool try_free = true;
--	int i, j, jtop, err2;
-+	int i, j, jtop, err2, err = eio ? -EIO : 0;
- 	struct page *page;
- 	bool overlapped;
- 	const char *reason;
-@@ -1413,12 +1413,12 @@ static int z_erofs_decompress_queue(const struct z_erofs_decompressqueue *io,
- 		.pcl = io->head,
- 	};
- 	struct z_erofs_pcluster *next;
--	int err = io->eio ? -EIO : 0;
-+	int err = 0;
- 
- 	for (; be.pcl != Z_EROFS_PCLUSTER_TAIL; be.pcl = next) {
- 		DBG_BUGON(!be.pcl);
- 		next = READ_ONCE(be.pcl->next);
--		err = z_erofs_decompress_pcluster(&be, err) ?: err;
-+		err = z_erofs_decompress_pcluster(&be, io->eio) ?: err;
++	u32 cutoff;
++
+ 	if (!cur_rev) {
+ 		cur_rev = cpuid_to_ucode_rev(bsp_cpuid_1_eax);
+ 		pr_info_once("No current revision, generating the lowest one: 0x%x\n", cur_rev);
  	}
- 	return err;
+ 
+-	switch (cur_rev >> 8) {
+-	case 0x80012: return cur_rev <= 0x8001277; break;
+-	case 0x80082: return cur_rev <= 0x800820f; break;
+-	case 0x83010: return cur_rev <= 0x830107c; break;
+-	case 0x86001: return cur_rev <= 0x860010e; break;
+-	case 0x86081: return cur_rev <= 0x8608108; break;
+-	case 0x87010: return cur_rev <= 0x8701034; break;
+-	case 0x8a000: return cur_rev <= 0x8a0000a; break;
+-	case 0xa0010: return cur_rev <= 0xa00107a; break;
+-	case 0xa0011: return cur_rev <= 0xa0011da; break;
+-	case 0xa0012: return cur_rev <= 0xa001243; break;
+-	case 0xa0082: return cur_rev <= 0xa00820e; break;
+-	case 0xa1011: return cur_rev <= 0xa101153; break;
+-	case 0xa1012: return cur_rev <= 0xa10124e; break;
+-	case 0xa1081: return cur_rev <= 0xa108109; break;
+-	case 0xa2010: return cur_rev <= 0xa20102f; break;
+-	case 0xa2012: return cur_rev <= 0xa201212; break;
+-	case 0xa4041: return cur_rev <= 0xa404109; break;
+-	case 0xa5000: return cur_rev <= 0xa500013; break;
+-	case 0xa6012: return cur_rev <= 0xa60120a; break;
+-	case 0xa7041: return cur_rev <= 0xa704109; break;
+-	case 0xa7052: return cur_rev <= 0xa705208; break;
+-	case 0xa7080: return cur_rev <= 0xa708009; break;
+-	case 0xa70c0: return cur_rev <= 0xa70C009; break;
+-	case 0xaa001: return cur_rev <= 0xaa00116; break;
+-	case 0xaa002: return cur_rev <= 0xaa00218; break;
+-	case 0xb0021: return cur_rev <= 0xb002146; break;
+-	case 0xb0081: return cur_rev <= 0xb008111; break;
+-	case 0xb1010: return cur_rev <= 0xb101046; break;
+-	case 0xb2040: return cur_rev <= 0xb204031; break;
+-	case 0xb4040: return cur_rev <= 0xb404031; break;
+-	case 0xb4041: return cur_rev <= 0xb404101; break;
+-	case 0xb6000: return cur_rev <= 0xb600031; break;
+-	case 0xb6080: return cur_rev <= 0xb608031; break;
+-	case 0xb7000: return cur_rev <= 0xb700031; break;
+-	default: break;
+-	}
++	cutoff = get_cutoff_revision(cur_rev);
++	if (cutoff)
++		return cur_rev <= cutoff;
+ 
+ 	pr_info("You should not be seeing this. Please send the following couple of lines to x86-<at>-kernel.org\n");
+ 	pr_info("CPUID(1).EAX: 0x%x, current revision: 0x%x\n", bsp_cpuid_1_eax, cur_rev);
+@@ -494,6 +505,7 @@ static int verify_patch(const u8 *buf, size_t buf_size, u32 *patch_size)
+ {
+ 	u8 family = x86_family(bsp_cpuid_1_eax);
+ 	struct microcode_header_amd *mc_hdr;
++	u32 cur_rev, cutoff, patch_rev;
+ 	u32 sh_psize;
+ 	u16 proc_id;
+ 	u8 patch_fam;
+@@ -533,11 +545,32 @@ static int verify_patch(const u8 *buf, size_t buf_size, u32 *patch_size)
+ 	proc_id	= mc_hdr->processor_rev_id;
+ 	patch_fam = 0xf + (proc_id >> 12);
+ 
+-	ucode_dbg("Patch-ID 0x%08x: family: 0x%x\n", mc_hdr->patch_id, patch_fam);
+-
+ 	if (patch_fam != family)
+ 		return 1;
+ 
++	cur_rev = get_patch_level();
++
++	/* No cutoff revision means old/unaffected by signing algorithm weakness => matches */
++	cutoff = get_cutoff_revision(cur_rev);
++	if (!cutoff)
++		goto ok;
++
++	patch_rev = mc_hdr->patch_id;
++
++	ucode_dbg("cur_rev: 0x%x, cutoff: 0x%x, patch_rev: 0x%x\n",
++		  cur_rev, cutoff, patch_rev);
++
++	if (cur_rev <= cutoff && patch_rev <= cutoff)
++		goto ok;
++
++	if (cur_rev > cutoff && patch_rev > cutoff)
++		goto ok;
++
++	return 1;
++
++ok:
++	ucode_dbg("Patch-ID 0x%08x: family: 0x%x\n", mc_hdr->patch_id, patch_fam);
++
+ 	return 0;
  }
+ 
+@@ -606,8 +639,6 @@ static size_t parse_container(u8 *ucode, size_t size, struct cont_desc *desc)
+ 
+ 		mc = (struct microcode_amd *)(buf + SECTION_HDR_SIZE);
+ 
+-		ucode_dbg("patch_id: 0x%x\n", mc->hdr.patch_id);
+-
+ 		if (mc_patch_matches(mc, eq_id)) {
+ 			desc->psize = patch_size;
+ 			desc->mc = mc;
 -- 
 2.51.0
 
