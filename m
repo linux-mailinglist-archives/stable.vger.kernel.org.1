@@ -1,51 +1,50 @@
-Return-Path: <stable+bounces-204066-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204068-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51BABCE7915
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:36:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D1B83CE7924
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:36:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id ABF5A30210FE
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:32:53 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5DCE3301057D
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:33:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A606331A6F;
-	Mon, 29 Dec 2025 16:32:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20358334681;
+	Mon, 29 Dec 2025 16:32:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xPm3LAS6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a25VaQW9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5451B334C10;
-	Mon, 29 Dec 2025 16:32:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C567633469A;
+	Mon, 29 Dec 2025 16:32:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767025954; cv=none; b=GiG+xujnzCTyRS7nPQXqFH4NS+wGaBqXU8xtB0N4yvJ8f+v2orND+94YfYqRe5ISCA9bCfY0KVJjjNcdqEHRnU0oBEZJSG8JhC+yTaIGhGldXHcSUxvC4w22lSL1a6Zp0DTFzwToVg7ZzjKisXHTNns0R4DAVaroI/A9G2QNfQk=
+	t=1767025959; cv=none; b=pTI0nrqqL1ZYE3t2DBOZJg5i27AriZXjFBGKwmUbllqKTyniydFWaZ5thIWniLl6ZEPOLiLpqnJBgLe9H0g3cfnfk+eJXss0teTQgRVc3HXJejTm8p2OVOa1NOhVyzgMarddZk4wJP7RXOzJYi0Q5CGsE/gppv/8xww0GphD69I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767025954; c=relaxed/simple;
-	bh=ZGs1wGRffliGte0amoN2FTJ09JD81JNFfa0PLAaXWpo=;
+	s=arc-20240116; t=1767025959; c=relaxed/simple;
+	bh=pON4bH/dRJ89OPqyUVIwZu+67OGxyBWJ9CTuLGrW+Rk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vCPm5OyPIA4D2cM8Prxerq/vOaAhTBIaNDh47Ju+64ivo40CyV3gIZgbF4oZqqlvG65mOJZqqBmIXsv9hdW6aYVHRo/IY+oBr7/I8fCXasxtdo91vAPTyD9ZmartIWbwqMKvUJGHPOsWLARcRFXcuyYMeR1pIreCmyOYvcUVlgc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xPm3LAS6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DA9FC4CEF7;
-	Mon, 29 Dec 2025 16:32:32 +0000 (UTC)
+	 MIME-Version; b=qG2VB3MXrx+ksWQdcIkeS/EWsQ0cgaYBWaF8rlbDuJHeXEU9VIYvRfXKD5ChHKIhDFZvURg0lbcoCwCNJCKJwpXCcbHyvgXSMUgEhadU+QY4crojJvgSI+pnpkE+6wgRc36NjI0anSFrQHzuIL6SQaguWXFo91TMdaTXoBetZhI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a25VaQW9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED948C16AAE;
+	Mon, 29 Dec 2025 16:32:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767025953;
-	bh=ZGs1wGRffliGte0amoN2FTJ09JD81JNFfa0PLAaXWpo=;
+	s=korg; t=1767025959;
+	bh=pON4bH/dRJ89OPqyUVIwZu+67OGxyBWJ9CTuLGrW+Rk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xPm3LAS6qkIi0+1HNGbDS4OxgU2TmQqhIeByzHX0eB2i9CFmYHckxk7WFh/pjT6O5
-	 mQjd89EzpTM1+1O9A5SZU5RLkgaenvqObEXTOgifC5bEddwPMtR9jwDYE1ixufq4vW
-	 FPukbi6zYURS9AMUteFgPvPkSiNXW46WtJXTSl7I=
+	b=a25VaQW9aWr+JK8/R3ZjjCoQDQ3IHfHVTPUnOI4SIvyB17OpoW4M1CGfrQ85rr5Pz
+	 SvxAlPL67p5zzKcUVNrSABiVAwZ8HzuN5qQGU1S5znLGhhEPZvBehZgy8zjMEcUgtO
+	 sqC/fnNwNnc7np1ZIjnlCwUv1mNT5lQeK7J6Q5nc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	"Rob Herring (Arm)" <robh@kernel.org>
-Subject: [PATCH 6.18 396/430] dt-bindings: PCI: qcom,pcie-sm8550: Add missing required power-domains and resets
-Date: Mon, 29 Dec 2025 17:13:18 +0100
-Message-ID: <20251229160738.889415734@linuxfoundation.org>
+	Shivani Agarwal <shivani.agarwal@broadcom.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 6.18 397/430] crypto: af_alg - zero initialize memory allocated via sock_kmalloc
+Date: Mon, 29 Dec 2025 17:13:19 +0100
+Message-ID: <20251229160738.925577809@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251229160724.139406961@linuxfoundation.org>
 References: <20251229160724.139406961@linuxfoundation.org>
@@ -64,40 +63,99 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Shivani Agarwal <shivani.agarwal@broadcom.com>
 
-commit e60c6f34b9f3a83f96006243c0ef96c134520257 upstream.
+commit 6f6e309328d53a10c0fe1f77dec2db73373179b6 upstream.
 
-Commit b8d3404058a6 ("dt-bindings: PCI: qcom,pcie-sm8550: Move SM8550 to
-dedicated schema") move the device schema to separate file, but it
-missed a "if:not:...then:" clause in the original binding which was
-requiring power-domains and resets for this particular chip.
+Several crypto user API contexts and requests allocated with
+sock_kmalloc() were left uninitialized, relying on callers to
+set fields explicitly. This resulted in the use of uninitialized
+data in certain error paths or when new fields are added in the
+future.
 
-Fixes: b8d3404058a6 ("dt-bindings: PCI: qcom,pcie-sm8550: Move SM8550 to dedicated schema")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+The ACVP patches also contain two user-space interface files:
+algif_kpp.c and algif_akcipher.c. These too rely on proper
+initialization of their context structures.
+
+A particular issue has been observed with the newly added
+'inflight' variable introduced in af_alg_ctx by commit:
+
+  67b164a871af ("crypto: af_alg - Disallow multiple in-flight AIO requests")
+
+Because the context is not memset to zero after allocation,
+the inflight variable has contained garbage values. As a result,
+af_alg_alloc_areq() has incorrectly returned -EBUSY randomly when
+the garbage value was interpreted as true:
+
+  https://github.com/gregkh/linux/blame/master/crypto/af_alg.c#L1209
+
+The check directly tests ctx->inflight without explicitly
+comparing against true/false. Since inflight is only ever set to
+true or false later, an uninitialized value has triggered
+-EBUSY failures. Zero-initializing memory allocated with
+sock_kmalloc() ensures inflight and other fields start in a known
+state, removing random issues caused by uninitialized data.
+
+Fixes: fe869cdb89c9 ("crypto: algif_hash - User-space interface for hash operations")
+Fixes: 5afdfd22e6ba ("crypto: algif_rng - add random number generator support")
+Fixes: 2d97591ef43d ("crypto: af_alg - consolidation of duplicate code")
+Fixes: 67b164a871af ("crypto: af_alg - Disallow multiple in-flight AIO requests")
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20251030-dt-bindings-pci-qcom-fixes-power-domains-v2-8-28c1f11599fe@linaro.org
+Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/devicetree/bindings/pci/qcom,pcie-sm8550.yaml |    5 +++++
- 1 file changed, 5 insertions(+)
+ crypto/af_alg.c     |    5 ++---
+ crypto/algif_hash.c |    3 +--
+ crypto/algif_rng.c  |    3 +--
+ 3 files changed, 4 insertions(+), 7 deletions(-)
 
---- a/Documentation/devicetree/bindings/pci/qcom,pcie-sm8550.yaml
-+++ b/Documentation/devicetree/bindings/pci/qcom,pcie-sm8550.yaml
-@@ -83,6 +83,11 @@ properties:
-       - const: pci # PCIe core reset
-       - const: link_down # PCIe link down reset
+--- a/crypto/af_alg.c
++++ b/crypto/af_alg.c
+@@ -1212,15 +1212,14 @@ struct af_alg_async_req *af_alg_alloc_ar
+ 	if (unlikely(!areq))
+ 		return ERR_PTR(-ENOMEM);
  
-+required:
-+  - power-domains
-+  - resets
-+  - reset-names
++	memset(areq, 0, areqlen);
 +
- allOf:
-   - $ref: qcom,pcie-common.yaml#
+ 	ctx->inflight = true;
  
+ 	areq->areqlen = areqlen;
+ 	areq->sk = sk;
+ 	areq->first_rsgl.sgl.sgt.sgl = areq->first_rsgl.sgl.sgl;
+-	areq->last_rsgl = NULL;
+ 	INIT_LIST_HEAD(&areq->rsgl_list);
+-	areq->tsgl = NULL;
+-	areq->tsgl_entries = 0;
+ 
+ 	return areq;
+ }
+--- a/crypto/algif_hash.c
++++ b/crypto/algif_hash.c
+@@ -416,9 +416,8 @@ static int hash_accept_parent_nokey(void
+ 	if (!ctx)
+ 		return -ENOMEM;
+ 
+-	ctx->result = NULL;
++	memset(ctx, 0, len);
+ 	ctx->len = len;
+-	ctx->more = false;
+ 	crypto_init_wait(&ctx->wait);
+ 
+ 	ask->private = ctx;
+--- a/crypto/algif_rng.c
++++ b/crypto/algif_rng.c
+@@ -248,9 +248,8 @@ static int rng_accept_parent(void *priva
+ 	if (!ctx)
+ 		return -ENOMEM;
+ 
++	memset(ctx, 0, len);
+ 	ctx->len = len;
+-	ctx->addtl = NULL;
+-	ctx->addtl_len = 0;
+ 
+ 	/*
+ 	 * No seeding done at that point -- if multiple accepts are
 
 
 
