@@ -1,53 +1,51 @@
-Return-Path: <stable+bounces-203677-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203688-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD10FCE74F3
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:14:23 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F22B2CE7511
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:14:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 400BB3003B24
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:14:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E16313012778
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:14:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E80E32C306;
-	Mon, 29 Dec 2025 16:14:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E892832B99B;
+	Mon, 29 Dec 2025 16:14:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v+WdVXQ1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i6EZvJBx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B70B222CBD9;
-	Mon, 29 Dec 2025 16:14:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FEF931B111;
+	Mon, 29 Dec 2025 16:14:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767024857; cv=none; b=gSPQBeu5T6A8AvVT/MbPQVUUq9qRJJJvqUImZAeG7hijpJTrx2i6xqH/zzibjr6LH6JktzWLGmtLoGxBV0u9ictoZcQvzDxsF9ZAIiUTEGHdLb6sNuOx1V/XitQ1X1KQzgEh0vdacTfwYmwFjbC9akBfXIabTOeivV5cKhUKbCI=
+	t=1767024889; cv=none; b=VF69GC7DdRQTkx1DUYhM+OJMK/vxHR3EVTo/BuWsIU3u+9GzkwL13dWKmDx/vH49LpuvKASfmOVZ9SWT08ymxGMBtYKSj+Sg0q+80leptwMbxzDR+ve3hh9tK4iu9yG/lZlZQ1GuB01fZLKHIu+vnknPbyMv+E0IV+eI5sRMsys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767024857; c=relaxed/simple;
-	bh=UdMXJ4UBAEAvdGghkwy2/RisPHrnXFv6tH9e+Op6Ngg=;
+	s=arc-20240116; t=1767024889; c=relaxed/simple;
+	bh=kXlEgGIe5wbeNPLuixyM8IC92fg7QcVRFnogiqH5JZg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CAwei7YFi9NpyVFn2ksgi+KGVosvSUKzZ/sf4ZX5Sq7V+1Semx/DjZPIvsJm+HX6/l29ppLe0Q+XE+EIk1e3glwi1d7z4iIp4ditim+pUHVX5huh6N+UQZwaUXWON0K0aCcSx1SMeM/4qvR98xVdZv233zHKrVrXNtY4iWXSKF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v+WdVXQ1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC259C4CEF7;
-	Mon, 29 Dec 2025 16:14:16 +0000 (UTC)
+	 MIME-Version; b=SH+80URWCIh83fWv+JSmFNWRUBa+oIcN4pcFE3+7MLqtiVJgGD/XkMHgexBMsKdHus1mhF6SbficK9Ye/HnLXoWSddesqwskFargST2bmwPN+V8pcWyLeD+RqNowUHPwjbBC326Fb5gz+VnK8X2gBzCnec9GZXoSteXDP5BlUKY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i6EZvJBx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E54D3C4CEF7;
+	Mon, 29 Dec 2025 16:14:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767024857;
-	bh=UdMXJ4UBAEAvdGghkwy2/RisPHrnXFv6tH9e+Op6Ngg=;
+	s=korg; t=1767024888;
+	bh=kXlEgGIe5wbeNPLuixyM8IC92fg7QcVRFnogiqH5JZg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v+WdVXQ1m33Ukx59ZPIVA7JGx37IAZh9yOixTd34yZHpA8GsF/WTS2WLiD0j8OXUl
-	 mVEVxwh8vZb8BA2w/zB3Lt5/gQwsfoCXDNQhnu9fzB4ayLafljifwCMXZdgRLahFcX
-	 PqYNi7g/96SSPHWk6/cSZYCNteaiyMLXZ93qHgNg=
+	b=i6EZvJBxwIMNVJTuBbd305uLvREV9BjYr/qV5BrzYEhGtMKGRlm9SAPLyB2fZ8pNb
+	 7Zdw/8Qo+T0XeYgndBKGqvr//QCft/IB6Cb+ZUCjtT6xYRuE//X20USIL01yEtrKyo
+	 KtRxwfzITi/K5XtDpxXkjtwZvFb4lSMbgYY7hG0k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vyacheslav Kovalevsky <slava.kovalevskiy.2014@gmail.com>,
-	Boris Burkov <boris@bur.io>,
-	Filipe Manana <fdmanana@suse.com>,
+	Qu Wenruo <wqu@suse.com>,
 	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 001/430] btrfs: do not skip logging new dentries when logging a new name
-Date: Mon, 29 Dec 2025 17:06:43 +0100
-Message-ID: <20251229160724.199955913@linuxfoundation.org>
+Subject: [PATCH 6.18 002/430] btrfs: fix a potential path leak in print_data_reloc_error()
+Date: Mon, 29 Dec 2025 17:06:44 +0100
+Message-ID: <20251229160724.236586898@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251229160724.139406961@linuxfoundation.org>
 References: <20251229160724.139406961@linuxfoundation.org>
@@ -66,70 +64,47 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Qu Wenruo <wqu@suse.com>
 
-[ Upstream commit 5630f7557de61264ccb4f031d4734a1a97eaed16 ]
+[ Upstream commit 313ef70a9f0f637a09d9ef45222f5bdcf30a354b ]
 
-When we are logging a directory and the log context indicates that we
-are logging a new name for some other file (that is or was inside that
-directory), we skip logging the inodes for new dentries in the directory.
+Inside print_data_reloc_error(), if extent_from_logical() failed we
+return immediately.
 
-This is ok most of the time, but if after the rename or link operation
-that triggered the logging of that directory, we have an explicit fsync
-of that directory without the directory inode being evicted and reloaded,
-we end up never logging the inodes for the new dentries that we found
-during the new name logging, as the next directory fsync will only process
-dentries that were added after the last time we logged the directory (we
-are doing an incremental directory logging).
+However there are the following cases where extent_from_logical() can
+return error but still holds a path:
 
-So make sure we always log new dentries for a directory even if we are
-in a context of logging a new name.
+- btrfs_search_slot() returned 0
 
-We started skipping logging inodes for new dentries as of commit
-c48792c6ee7a ("btrfs: do not log new dentries when logging that a new name
-exists") and it was fine back then, because when logging a directory we
-always iterated over all the directory entries (for leaves changed in the
-current transaction) so a subsequent fsync would always log anything that
-was previously skipped while logging a directory when logging a new name
-(with btrfs_log_new_name()). But later support for incrementally logging
-a directory was added in commit dc2872247ec0 ("btrfs: keep track of the
-last logged keys when logging a directory"), to avoid checking all dir
-items every time we log a directory, so the check to skip dentry logging
-added in the first commit should have been removed when the incremental
-support for logging a directory was added.
+- No backref item found in extent tree
 
-A test case for fstests will follow soon.
+- No flags_ret provided
+  This is not possible in this call site though.
 
-Reported-by: Vyacheslav Kovalevsky <slava.kovalevskiy.2014@gmail.com>
-Link: https://lore.kernel.org/linux-btrfs/84c4e713-85d6-42b9-8dcf-0722ed26cb05@gmail.com/
-Fixes: dc2872247ec0 ("btrfs: keep track of the last logged keys when logging a directory")
-Reviewed-by: Boris Burkov <boris@bur.io>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
+So for the above two cases, we can return without releasing the path,
+causing extent buffer leaks.
+
+Fixes: b9a9a85059cd ("btrfs: output affected files when relocation fails")
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
 Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/tree-log.c | 8 --------
- 1 file changed, 8 deletions(-)
+ fs/btrfs/inode.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/btrfs/tree-log.c b/fs/btrfs/tree-log.c
-index 30f3c3b849c14..f55d886debe2f 100644
---- a/fs/btrfs/tree-log.c
-+++ b/fs/btrfs/tree-log.c
-@@ -5872,14 +5872,6 @@ static int log_new_dir_dentries(struct btrfs_trans_handle *trans,
- 	struct btrfs_inode *curr_inode = start_inode;
- 	int ret = 0;
- 
--	/*
--	 * If we are logging a new name, as part of a link or rename operation,
--	 * don't bother logging new dentries, as we just want to log the names
--	 * of an inode and that any new parents exist.
--	 */
--	if (ctx->logging_new_name)
--		return 0;
--
- 	path = btrfs_alloc_path();
- 	if (!path)
- 		return -ENOMEM;
+diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
+index 6282911e536f0..51401d586a7b6 100644
+--- a/fs/btrfs/inode.c
++++ b/fs/btrfs/inode.c
+@@ -256,6 +256,7 @@ static void print_data_reloc_error(const struct btrfs_inode *inode, u64 file_off
+ 	if (ret < 0) {
+ 		btrfs_err_rl(fs_info, "failed to lookup extent item for logical %llu: %d",
+ 			     logical, ret);
++		btrfs_release_path(&path);
+ 		return;
+ 	}
+ 	eb = path.nodes[0];
 -- 
 2.51.0
 
