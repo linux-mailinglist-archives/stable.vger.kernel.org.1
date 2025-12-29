@@ -1,50 +1,50 @@
-Return-Path: <stable+bounces-203709-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203711-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DD39CE753B
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:16:19 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1DFACE7708
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:25:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 514DD3001BDB
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:16:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 931BD30693E2
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:21:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AD1E330337;
-	Mon, 29 Dec 2025 16:15:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56B0232F75A;
+	Mon, 29 Dec 2025 16:15:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d0Qwch8c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Vd26iyI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55895330657;
-	Mon, 29 Dec 2025 16:15:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 139BB32FA16;
+	Mon, 29 Dec 2025 16:15:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767024948; cv=none; b=A/Zu5uqZSg91aYIQPmjBWwBfS3OgStUp+Aj6wo3FXph71v+GHxEd0XM5i8S/AYc9IUZ9wUWbBpBkwH8qgN93Hcc9Fb/YnN7aRrYI+6Zk7Wq1SSThPVtJQFYImSN9v7c9glTy3SUz4XrKdRYsPoVWR+vvp1T2NuZFrdOigSZGYhY=
+	t=1767024954; cv=none; b=MykzZ7DYZji6DLjfNEMPoCowiNKkezaFQ6XWyhsklEjR1ljTyzYMc4p+d/+/C8miO4VJrEEo4NokMZyP9H2gOh4SSPlp5KQxCrVovAOeSYKO7iuM5zBInVchyWgSE5k/8UhQ257lCyKffDu9+Pi/qTRGZbo4jjHzGm3WJkGrvqo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767024948; c=relaxed/simple;
-	bh=EtVAcF0b7PGDYclNNu4Rq2Ns5M5zPUMAUulDvSVNRLQ=;
+	s=arc-20240116; t=1767024954; c=relaxed/simple;
+	bh=J6jwGLL+gsQYZwTSvwd0ou2ws7ZUMau+M9PgO8f0NR8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZobVXyUWNMg7jP0bJi6YtTEyVSWof3K/TFWs39SRU0O2MnKlKF4VeXDA5cWUBZLmMaX+0ilTj7yjBg6gtfK+M2oeCT5OeP9W8xKbfpHdYdtBNzaVfvWHu7v/idWXymlu6F+EqRoGZyeBORdloDeqrVF/6Byosrust6GeJJUtvKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d0Qwch8c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3A72C4CEF7;
-	Mon, 29 Dec 2025 16:15:47 +0000 (UTC)
+	 MIME-Version; b=JbHiPhiJv7uDtApX3pyu0YiZZI9qTq5CuC5q52lsz7M85B9FWLfJUAZgBuiy1vNrvvU2b13BuNSr/C6G4vftGlz7gNILOvwLJWEIRB/EnxIZtXlKlGsBLj1SoIgisa7KcmUlzEOQEjabi9cmS7waVSJokL9Fz5w/2m32YMerPGA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Vd26iyI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70D7AC4CEF7;
+	Mon, 29 Dec 2025 16:15:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767024948;
-	bh=EtVAcF0b7PGDYclNNu4Rq2Ns5M5zPUMAUulDvSVNRLQ=;
+	s=korg; t=1767024953;
+	bh=J6jwGLL+gsQYZwTSvwd0ou2ws7ZUMau+M9PgO8f0NR8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d0Qwch8cZx3dwPhm3WF7r3zC7C+xueEYgoXqBbzzWa6g2l4eo6H6VgykUO22lIKvu
-	 5D0WuYbyqTXXi4Z6HXZEQAlNe+Sz9EJz6deSywrm2ZdaS5AILaf9Athee7IVY2BlPd
-	 X7tNB9tf5BCDyAkvFpte36A1U3jRs8bwNqRcLXAs=
+	b=1Vd26iyIUZfu4XvaWe2QGtiphmSWpicQM5Qskgs54+5qJwrKghT3gx3BFh0QX5eV5
+	 kroZsaApvAC6/LxUFX6ztDZv54ZKCUxp3wGtleYnjeuYbB6ehhKlDuIIzVA0zdZ36C
+	 Z9w8jm+VYRjhfA9EjlC6vJZ/TAH6drgn7hkt/Oyw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Andreas Gruenbacher <agruenba@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 041/430] gfs2: fix remote evict for read-only filesystems
-Date: Mon, 29 Dec 2025 17:07:23 +0100
-Message-ID: <20251229160725.878452812@linuxfoundation.org>
+Subject: [PATCH 6.18 042/430] gfs2: Fix "gfs2: Switch to wait_event in gfs2_quotad"
+Date: Mon, 29 Dec 2025 17:07:24 +0100
+Message-ID: <20251229160725.914881936@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251229160724.139406961@linuxfoundation.org>
 References: <20251229160724.139406961@linuxfoundation.org>
@@ -65,37 +65,34 @@ Content-Transfer-Encoding: 8bit
 
 From: Andreas Gruenbacher <agruenba@redhat.com>
 
-[ Upstream commit 64c10ed9274bc46416f502afea48b4ae11279669 ]
+[ Upstream commit dff1fb6d8b7abe5b1119fa060f5d6b3370bf10ac ]
 
-When a node tries to delete an inode, it first requests exclusive access
-to the iopen glock.  This triggers demote requests on all remote nodes
-currently holding the iopen glock.  To satisfy those requests, the
-remote nodes evict the inode in question, or they poke the corresponding
-inode glock to signal that the inode is still in active use.
+Commit e4a8b5481c59a ("gfs2: Switch to wait_event in gfs2_quotad") broke
+cyclic statfs syncing, so the numbers reported by "df" could easily get
+completely out of sync with reality.  Fix this by reverting part of
+commit e4a8b5481c59a for now.
 
-This behavior doesn't depend on whether or not a filesystem is
-read-only, so remove the incorrect read-only check.
+A follow-up commit will clean this code up later.
 
 Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/gfs2/glops.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ fs/gfs2/quota.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/gfs2/glops.c b/fs/gfs2/glops.c
-index 0c0a80b3bacab..0c68ab4432b08 100644
---- a/fs/gfs2/glops.c
-+++ b/fs/gfs2/glops.c
-@@ -630,8 +630,7 @@ static void iopen_go_callback(struct gfs2_glock *gl, bool remote)
- 	struct gfs2_inode *ip = gl->gl_object;
- 	struct gfs2_sbd *sdp = gl->gl_name.ln_sbd;
+diff --git a/fs/gfs2/quota.c b/fs/gfs2/quota.c
+index 2298e06797ac3..f2df01f801b81 100644
+--- a/fs/gfs2/quota.c
++++ b/fs/gfs2/quota.c
+@@ -1616,7 +1616,7 @@ int gfs2_quotad(void *data)
  
--	if (!remote || sb_rdonly(sdp->sd_vfs) ||
--	    test_bit(SDF_KILL, &sdp->sd_flags))
-+	if (!remote || test_bit(SDF_KILL, &sdp->sd_flags))
- 		return;
+ 		t = min(quotad_timeo, statfs_timeo);
  
- 	if (gl->gl_demote_state == LM_ST_UNLOCKED &&
+-		t = wait_event_freezable_timeout(sdp->sd_quota_wait,
++		t -= wait_event_freezable_timeout(sdp->sd_quota_wait,
+ 				sdp->sd_statfs_force_sync ||
+ 				gfs2_withdrawing_or_withdrawn(sdp) ||
+ 				kthread_should_stop(),
 -- 
 2.51.0
 
