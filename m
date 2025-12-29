@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-203792-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203794-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB59BCE7669
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:22:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CF9BCE7675
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:22:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 48500301EFB9
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:19:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0F71D301A18A
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:19:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E3993314A9;
-	Mon, 29 Dec 2025 16:19:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9797833123F;
+	Mon, 29 Dec 2025 16:19:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g+1LneYr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EhU6zCwe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDC7226FD9B;
-	Mon, 29 Dec 2025 16:19:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5547626FD9B;
+	Mon, 29 Dec 2025 16:19:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767025180; cv=none; b=uX8+Cd7sckQDfTO6swOS9MfqW5XScPGPAQpvWNbRt6OEQjLxzVNtkR0t7BLPqNonS/CIp/Nzpol0W6ukYNfIlF2i3XxIaYhiv2y62LYwvfvyc1JpmzHYouD5YXwINUJzPyEQJSBm96Afuaa9rKDMORY8lV0Eo86pJfTvl0qrYno=
+	t=1767025186; cv=none; b=eVHqZ1wgBozovk77Gg1RuOSsITPVviCL/ge47jzTNf7toEy3LiSHxqsbNmqFTE5zJYIpg/w/7K/uMJ9aikRWNswFTpYM6ycIx7E0LX/r4fegLFwFiy8F00L8N1DOhRF7EfXxfbi7O8u6u3nnO/tMW0Whtr92vseaY7JSQgi0wPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767025180; c=relaxed/simple;
-	bh=ibI2VCs5ETYkpbmmvghgqD5ivR/5/9wdaKkXHDYt/t8=;
+	s=arc-20240116; t=1767025186; c=relaxed/simple;
+	bh=32453DhAUMLeJANLNj0H6q0Yk63c3YdT8gm1J7kGfqA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YJp9hUqZlV5FdmUPpsJyeVd5DVKfy/QHypyogTOdF08BFzKBS0XgTeFe0K/AOdlo8fs9xkD6lXkCddN+zNqJpeP6g8Mtl5OH2yeKmTlhh3sT2IN4MIfvOwmaxbIYtzktBGAoUmGXL2SwJ6wdRe+fxnr+wcOkkFgV9Q/MrHU73Dg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g+1LneYr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CFB5C4CEF7;
-	Mon, 29 Dec 2025 16:19:40 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Nkhs+JykshP3A7OpZD1RMZ8WkwLLc1pYrXEtkJHtcBNCAQKBt3Nl/aS84HbeAKHTHhkZdUT8koP8+SYfyrNCJwGMVWH6BrnlDae1Zf8V0b2SzySUHsHJCTPW/X8YbeBtsUSiL9l9QQacnAwXTI9aIVwRbLLNRfum+kGgnxUfcsk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EhU6zCwe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D15E9C4CEF7;
+	Mon, 29 Dec 2025 16:19:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767025180;
-	bh=ibI2VCs5ETYkpbmmvghgqD5ivR/5/9wdaKkXHDYt/t8=;
+	s=korg; t=1767025186;
+	bh=32453DhAUMLeJANLNj0H6q0Yk63c3YdT8gm1J7kGfqA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g+1LneYr+4JQq5uMjtCnfFuanwPte78OyANqbdkm/GASiYMN75MGFLIGPGdvjywm+
-	 7Hc55eGsRsuW2Knx8nUq/AcNTW5k+dD6fSwhRdMSm84LFf4RKsVDJTunrlLaXIJH6j
-	 CMgwl0llwjvr6DfzfjtIMLASqfiQvAiokI1q6zBM=
+	b=EhU6zCwe66VFOJ0doZA7WSKRi5HWljqbdM8IMmJVlBlMx2ezK5nTiyb6PccR5/TLP
+	 5goCEjQb0SHvtEGAJjlRtUC/u526IteL9ErNtd7M8EUdI6f5g1i33QJLcsYVOlTaSz
+	 ohLAjUJULs4OPQHi7MJmjWXDTsOXaHE39q40W+gY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baoli Zhang <baoli.zhang@intel.com>,
-	Junxiao Chang <junxiao.chang@intel.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Maarten Lankhorst <dev@lankhorst.se>,
+	Jagmeet Randhawa <jagmeet.randhawa@intel.com>,
+	Jonathan Cavitt <jonathan.cavitt@intel.com>,
+	Matt Roper <matthew.d.roper@intel.com>,
 	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 122/430] drm/me/gsc: mei interrupt top half should be in irq disabled context
-Date: Mon, 29 Dec 2025 17:08:44 +0100
-Message-ID: <20251229160728.855560457@linuxfoundation.org>
+Subject: [PATCH 6.18 123/430] drm/xe: Increase TDF timeout
+Date: Mon, 29 Dec 2025 17:08:45 +0100
+Message-ID: <20251229160728.893138578@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251229160724.139406961@linuxfoundation.org>
 References: <20251229160724.139406961@linuxfoundation.org>
@@ -69,58 +67,43 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Junxiao Chang <junxiao.chang@intel.com>
+From: Jagmeet Randhawa <jagmeet.randhawa@intel.com>
 
-[ Upstream commit 17445af7dcc7d645b6fb8951fd10c8b72cc7f23f ]
+[ Upstream commit eafb6f62093f756535a7be1fc4559374a511e460 ]
 
-MEI GSC interrupt comes from i915 or xe driver. It has top half and
-bottom half. Top half is called from i915/xe interrupt handler. It
-should be in irq disabled context.
+There are some corner cases where flushing transient
+data may take slightly longer than the 150us timeout
+we currently allow.  Update the driver to use a 300us
+timeout instead based on the latest guidance from
+the hardware team. An update to the bspec to formally
+document this is expected to arrive soon.
 
-With RT kernel(PREEMPT_RT enabled), by default IRQ handler is in
-threaded IRQ. MEI GSC top half might be in threaded IRQ context.
-generic_handle_irq_safe API could be called from either IRQ or
-process context, it disables local IRQ then calls MEI GSC interrupt
-top half.
-
-This change fixes B580 GPU boot issue with RT enabled.
-
-Fixes: e02cea83d32d ("drm/xe/gsc: add Battlemage support")
-Tested-by: Baoli Zhang <baoli.zhang@intel.com>
-Signed-off-by: Junxiao Chang <junxiao.chang@intel.com>
-Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
-Link: https://patch.msgid.link/20251107033152.834960-1-junxiao.chang@intel.com
-Signed-off-by: Maarten Lankhorst <dev@lankhorst.se>
-(cherry picked from commit 3efadf028783a49ab2941294187c8b6dd86bf7da)
+Fixes: c01c6066e6fa ("drm/xe/device: implement transient flush")
+Signed-off-by: Jagmeet Randhawa <jagmeet.randhawa@intel.com>
+Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
+Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
+Link: https://patch.msgid.link/0201b1d6ec64d3651fcbff1ea21026efa915126a.1765487866.git.jagmeet.randhawa@intel.com
+Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
+(cherry picked from commit d69d3636f5f7a84bae7cd43473b3701ad9b7d544)
 Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_heci_gsc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/xe/xe_device.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_heci_gsc.c b/drivers/gpu/drm/xe/xe_heci_gsc.c
-index a415ca488791..32d509b11391 100644
---- a/drivers/gpu/drm/xe/xe_heci_gsc.c
-+++ b/drivers/gpu/drm/xe/xe_heci_gsc.c
-@@ -221,7 +221,7 @@ void xe_heci_gsc_irq_handler(struct xe_device *xe, u32 iir)
- 	if (xe->heci_gsc.irq < 0)
- 		return;
+diff --git a/drivers/gpu/drm/xe/xe_device.c b/drivers/gpu/drm/xe/xe_device.c
+index 456899238377..5f757790d6f5 100644
+--- a/drivers/gpu/drm/xe/xe_device.c
++++ b/drivers/gpu/drm/xe/xe_device.c
+@@ -1046,7 +1046,7 @@ static void tdf_request_sync(struct xe_device *xe)
+ 		 * transient and need to be flushed..
+ 		 */
+ 		if (xe_mmio_wait32(&gt->mmio, XE2_TDF_CTRL, TRANSIENT_FLUSH_REQUEST, 0,
+-				   150, NULL, false))
++				   300, NULL, false))
+ 			xe_gt_err_once(gt, "TD flush timeout\n");
  
--	ret = generic_handle_irq(xe->heci_gsc.irq);
-+	ret = generic_handle_irq_safe(xe->heci_gsc.irq);
- 	if (ret)
- 		drm_err_ratelimited(&xe->drm, "error handling GSC irq: %d\n", ret);
- }
-@@ -241,7 +241,7 @@ void xe_heci_csc_irq_handler(struct xe_device *xe, u32 iir)
- 	if (xe->heci_gsc.irq < 0)
- 		return;
- 
--	ret = generic_handle_irq(xe->heci_gsc.irq);
-+	ret = generic_handle_irq_safe(xe->heci_gsc.irq);
- 	if (ret)
- 		drm_err_ratelimited(&xe->drm, "error handling GSC irq: %d\n", ret);
- }
+ 		xe_force_wake_put(gt_to_fw(gt), fw_ref);
 -- 
 2.51.0
 
