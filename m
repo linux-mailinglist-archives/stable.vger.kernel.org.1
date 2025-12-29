@@ -1,51 +1,53 @@
-Return-Path: <stable+bounces-204007-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204009-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBFC3CE7A77
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:42:56 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FE2ECE7A7A
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:42:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 723C53049D06
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:30:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 38CE4305BA45
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:30:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69B07331215;
-	Mon, 29 Dec 2025 16:29:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0158B33067F;
+	Mon, 29 Dec 2025 16:29:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SJGwEIIo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2mi+Z+fq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27A6233066C;
-	Mon, 29 Dec 2025 16:29:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B201532FA3C;
+	Mon, 29 Dec 2025 16:29:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767025789; cv=none; b=XocOOwkNY4z8iJICcMzF0XHzYQjNdADpra/5ykKdA/zUPArFoEEwcYhn0dYr2T8Ksb10w5hGzErUzzSFzdY4UKveZH3V8jbAHHTgD+EMsNTFKacet1V3HNZNpfGYgm3gGebzoROD4kw3ecjQDU44vxPqvrH29bXBzpuX+2AMItw=
+	t=1767025794; cv=none; b=utM7PMGsrdtU9Q1ww0CC6kvCyeFejOK9k2h4x4WsUZUO/AjWoP072lfNIUZRbh6FQ64xHMv95o33JbC2XDUjy+1B7oPyXpe8QwNJLudztBGdYDXs6XoSyQ+ZgMSYVOPqcP7VOLiKv0Bj2dAVUQBBWVhfQGQoGS9u2RglRDVaeRQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767025789; c=relaxed/simple;
-	bh=0z0AwoEs7psMYX6+JRyozHKu/wRBETv0NhXktJeRCYI=;
+	s=arc-20240116; t=1767025794; c=relaxed/simple;
+	bh=Fu8IKOABUCqDVc8VWaX53X+P63mVamhusaGj8aVg+oU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o/YZB9A7ixMqLxX9BAze7k6ZjvmtYG3FL7CS9KPap8V6Q8hZCYLqlLjOC7pcTfgEXvTdQTR7qzwnSsjkVL1qUikxS1uAiXnnFQP4arazMpboGGJuGY3zsFwNRww08evNk5slNuornR7Bnt+OZPk3J9dJAel4/IS+TVMHVGWc/XQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SJGwEIIo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8E5BC4CEF7;
-	Mon, 29 Dec 2025 16:29:48 +0000 (UTC)
+	 MIME-Version; b=f9FndL3zEaZtaCqXHhw9P0YYTsRVEXvUArCrCUSOFs50eLqPPV9/qY5AUHXbeCQ3APxONWrB9uVAkEWa/7oIybiq5E+/M831MgYmsfGDFQ01u3Vb+71EtsNMkzmhqVvfQVPdRR6oHpDYF2eMUf5GkXAjcvbz32/zWqyv926vKDE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2mi+Z+fq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A2F8C4CEF7;
+	Mon, 29 Dec 2025 16:29:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767025789;
-	bh=0z0AwoEs7psMYX6+JRyozHKu/wRBETv0NhXktJeRCYI=;
+	s=korg; t=1767025794;
+	bh=Fu8IKOABUCqDVc8VWaX53X+P63mVamhusaGj8aVg+oU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SJGwEIIof4MMg9wLu+emi552XEuhiAfXUHxHT5kG9S5HiiQiF/QLnD/JwO6EhU7Yj
-	 QVqnz8aaGruyJBQcQ08aI0Vcxtikwz3qxDiDypSFCqSls67s5Xh42oegbV+UrZ8t+M
-	 uhveTxF+c/C9RLdb6jNwZhxRR9OUc2HB5t4W1IB4=
+	b=2mi+Z+fq+WQWBlKwXaujNO1vLP/jjpS+iXdSlG4oW4nFqp8C5ZsufwkvFmHQRl13n
+	 XNCWu+YxeTbfMfCM6KXAKijtjHwIPBMJvrP5OvVsVldwoGRel+XyGrNzAdAw6QJ7X9
+	 5WDYDBfyNdh0xDoZkKX/TXXvVfwbEJrBVkWqT6ro=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ziming zhang <ezrakiez@gmail.com>,
-	Ilya Dryomov <idryomov@gmail.com>,
-	Xiubo Li <xiubli@redhat.com>
-Subject: [PATCH 6.18 337/430] libceph: make decode_pool() more resilient against corrupted osdmaps
-Date: Mon, 29 Dec 2025 17:12:19 +0100
-Message-ID: <20251229160736.728500087@linuxfoundation.org>
+	Cedar Maxwell <cedarmaxwell@mac.com>,
+	Stan Johnson <userm57@yahoo.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Finn Thain <fthain@linux-m68k.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>
+Subject: [PATCH 6.18 338/430] powerpc: Add reloc_offset() to font bitmap pointer used for bootx_printf()
+Date: Mon, 29 Dec 2025 17:12:20 +0100
+Message-ID: <20251229160736.765335900@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251229160724.139406961@linuxfoundation.org>
 References: <20251229160724.139406961@linuxfoundation.org>
@@ -64,222 +66,65 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ilya Dryomov <idryomov@gmail.com>
+From: Finn Thain <fthain@linux-m68k.org>
 
-commit 8c738512714e8c0aa18f8a10c072d5b01c83db39 upstream.
+commit b94b73567561642323617155bf4ee24ef0d258fe upstream.
 
-If the osdmap is (maliciously) corrupted such that the encoded length
-of ceph_pg_pool envelope is less than what is expected for a particular
-encoding version, out-of-bounds reads may ensue because the only bounds
-check that is there is based on that length value.
+Since Linux v6.7, booting using BootX on an Old World PowerMac produces
+an early crash. Stan Johnson writes, "the symptoms are that the screen
+goes blank and the backlight stays on, and the system freezes (Linux
+doesn't boot)."
 
-This patch adds explicit bounds checks for each field that is decoded
-or skipped.
+Further testing revealed that the failure can be avoided by disabling
+CONFIG_BOOTX_TEXT. Bisection revealed that the regression was caused by
+a change to the font bitmap pointer that's used when btext_init() begins
+painting characters on the display, early in the boot process.
+
+Christophe Leroy explains, "before kernel text is relocated to its final
+location ... data is addressed with an offset which is added to the
+Global Offset Table (GOT) entries at the start of bootx_init()
+by function reloc_got2(). But the pointers that are located inside a
+structure are not referenced in the GOT and are therefore not updated by
+reloc_got2(). It is therefore needed to apply the offset manually by using
+PTRRELOC() macro."
 
 Cc: stable@vger.kernel.org
-Reported-by: ziming zhang <ezrakiez@gmail.com>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-Reviewed-by: Xiubo Li <xiubli@redhat.com>
-Tested-by: ziming zhang <ezrakiez@gmail.com>
+Link: https://lists.debian.org/debian-powerpc/2025/10/msg00111.html
+Link: https://lore.kernel.org/linuxppc-dev/d81ddca8-c5ee-d583-d579-02b19ed95301@yahoo.com/
+Reported-by: Cedar Maxwell <cedarmaxwell@mac.com>
+Closes: https://lists.debian.org/debian-powerpc/2025/09/msg00031.html
+Bisected-by: Stan Johnson <userm57@yahoo.com>
+Tested-by: Stan Johnson <userm57@yahoo.com>
+Fixes: 0ebc7feae79a ("powerpc: Use shared font data")
+Suggested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Finn Thain <fthain@linux-m68k.org>
+Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/22b3b247425a052b079ab84da926706b3702c2c7.1762731022.git.fthain@linux-m68k.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ceph/osdmap.c |  118 ++++++++++++++++++++++++------------------------------
- 1 file changed, 53 insertions(+), 65 deletions(-)
+ arch/powerpc/kernel/btext.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/net/ceph/osdmap.c
-+++ b/net/ceph/osdmap.c
-@@ -806,51 +806,49 @@ static int decode_pool(void **p, void *e
- 	ceph_decode_need(p, end, len, bad);
- 	pool_end = *p + len;
+--- a/arch/powerpc/kernel/btext.c
++++ b/arch/powerpc/kernel/btext.c
+@@ -20,6 +20,7 @@
+ #include <asm/io.h>
+ #include <asm/processor.h>
+ #include <asm/udbg.h>
++#include <asm/setup.h>
  
-+	ceph_decode_need(p, end, 4 + 4 + 4, bad);
- 	pi->type = ceph_decode_8(p);
- 	pi->size = ceph_decode_8(p);
- 	pi->crush_ruleset = ceph_decode_8(p);
- 	pi->object_hash = ceph_decode_8(p);
--
- 	pi->pg_num = ceph_decode_32(p);
- 	pi->pgp_num = ceph_decode_32(p);
+ #define NO_SCROLL
  
--	*p += 4 + 4;  /* skip lpg* */
--	*p += 4;      /* skip last_change */
--	*p += 8 + 4;  /* skip snap_seq, snap_epoch */
-+	/* lpg*, last_change, snap_seq, snap_epoch */
-+	ceph_decode_skip_n(p, end, 8 + 4 + 8 + 4, bad);
+@@ -463,7 +464,7 @@ static noinline void draw_byte(unsigned
+ {
+ 	unsigned char *base	= calc_base(locX << 3, locY << 4);
+ 	unsigned int font_index = c * 16;
+-	const unsigned char *font	= font_sun_8x16.data + font_index;
++	const unsigned char *font = PTRRELOC(font_sun_8x16.data) + font_index;
+ 	int rb			= dispDeviceRowBytes;
  
- 	/* skip snaps */
--	num = ceph_decode_32(p);
-+	ceph_decode_32_safe(p, end, num, bad);
- 	while (num--) {
--		*p += 8;  /* snapid key */
--		*p += 1 + 1; /* versions */
--		len = ceph_decode_32(p);
--		*p += len;
-+		/* snapid key, pool snap (with versions) */
-+		ceph_decode_skip_n(p, end, 8 + 2, bad);
-+		ceph_decode_skip_string(p, end, bad);
- 	}
- 
--	/* skip removed_snaps */
--	num = ceph_decode_32(p);
--	*p += num * (8 + 8);
-+	/* removed_snaps */
-+	ceph_decode_skip_map(p, end, 64, 64, bad);
- 
-+	ceph_decode_need(p, end, 8 + 8 + 4, bad);
- 	*p += 8;  /* skip auid */
- 	pi->flags = ceph_decode_64(p);
- 	*p += 4;  /* skip crash_replay_interval */
- 
- 	if (ev >= 7)
--		pi->min_size = ceph_decode_8(p);
-+		ceph_decode_8_safe(p, end, pi->min_size, bad);
- 	else
- 		pi->min_size = pi->size - pi->size / 2;
- 
- 	if (ev >= 8)
--		*p += 8 + 8;  /* skip quota_max_* */
-+		/* quota_max_* */
-+		ceph_decode_skip_n(p, end, 8 + 8, bad);
- 
- 	if (ev >= 9) {
--		/* skip tiers */
--		num = ceph_decode_32(p);
--		*p += num * 8;
-+		/* tiers */
-+		ceph_decode_skip_set(p, end, 64, bad);
- 
-+		ceph_decode_need(p, end, 8 + 1 + 8 + 8, bad);
- 		*p += 8;  /* skip tier_of */
- 		*p += 1;  /* skip cache_mode */
--
- 		pi->read_tier = ceph_decode_64(p);
- 		pi->write_tier = ceph_decode_64(p);
- 	} else {
-@@ -858,86 +856,76 @@ static int decode_pool(void **p, void *e
- 		pi->write_tier = -1;
- 	}
- 
--	if (ev >= 10) {
--		/* skip properties */
--		num = ceph_decode_32(p);
--		while (num--) {
--			len = ceph_decode_32(p);
--			*p += len; /* key */
--			len = ceph_decode_32(p);
--			*p += len; /* val */
--		}
--	}
-+	if (ev >= 10)
-+		/* properties */
-+		ceph_decode_skip_map(p, end, string, string, bad);
- 
- 	if (ev >= 11) {
--		/* skip hit_set_params */
--		*p += 1 + 1; /* versions */
--		len = ceph_decode_32(p);
--		*p += len;
-+		/* hit_set_params (with versions) */
-+		ceph_decode_skip_n(p, end, 2, bad);
-+		ceph_decode_skip_string(p, end, bad);
- 
--		*p += 4; /* skip hit_set_period */
--		*p += 4; /* skip hit_set_count */
-+		/* hit_set_period, hit_set_count */
-+		ceph_decode_skip_n(p, end, 4 + 4, bad);
- 	}
- 
- 	if (ev >= 12)
--		*p += 4; /* skip stripe_width */
-+		/* stripe_width */
-+		ceph_decode_skip_32(p, end, bad);
- 
--	if (ev >= 13) {
--		*p += 8; /* skip target_max_bytes */
--		*p += 8; /* skip target_max_objects */
--		*p += 4; /* skip cache_target_dirty_ratio_micro */
--		*p += 4; /* skip cache_target_full_ratio_micro */
--		*p += 4; /* skip cache_min_flush_age */
--		*p += 4; /* skip cache_min_evict_age */
--	}
--
--	if (ev >=  14) {
--		/* skip erasure_code_profile */
--		len = ceph_decode_32(p);
--		*p += len;
--	}
-+	if (ev >= 13)
-+		/* target_max_*, cache_target_*, cache_min_* */
-+		ceph_decode_skip_n(p, end, 16 + 8 + 8, bad);
-+
-+	if (ev >= 14)
-+		/* erasure_code_profile */
-+		ceph_decode_skip_string(p, end, bad);
- 
- 	/*
- 	 * last_force_op_resend_preluminous, will be overridden if the
- 	 * map was encoded with RESEND_ON_SPLIT
- 	 */
- 	if (ev >= 15)
--		pi->last_force_request_resend = ceph_decode_32(p);
-+		ceph_decode_32_safe(p, end, pi->last_force_request_resend, bad);
- 	else
- 		pi->last_force_request_resend = 0;
- 
- 	if (ev >= 16)
--		*p += 4; /* skip min_read_recency_for_promote */
-+		/* min_read_recency_for_promote */
-+		ceph_decode_skip_32(p, end, bad);
- 
- 	if (ev >= 17)
--		*p += 8; /* skip expected_num_objects */
-+		/* expected_num_objects */
-+		ceph_decode_skip_64(p, end, bad);
- 
- 	if (ev >= 19)
--		*p += 4; /* skip cache_target_dirty_high_ratio_micro */
-+		/* cache_target_dirty_high_ratio_micro */
-+		ceph_decode_skip_32(p, end, bad);
- 
- 	if (ev >= 20)
--		*p += 4; /* skip min_write_recency_for_promote */
-+		/* min_write_recency_for_promote */
-+		ceph_decode_skip_32(p, end, bad);
- 
- 	if (ev >= 21)
--		*p += 1; /* skip use_gmt_hitset */
-+		/* use_gmt_hitset */
-+		ceph_decode_skip_8(p, end, bad);
- 
- 	if (ev >= 22)
--		*p += 1; /* skip fast_read */
-+		/* fast_read */
-+		ceph_decode_skip_8(p, end, bad);
- 
--	if (ev >= 23) {
--		*p += 4; /* skip hit_set_grade_decay_rate */
--		*p += 4; /* skip hit_set_search_last_n */
--	}
-+	if (ev >= 23)
-+		/* hit_set_grade_decay_rate, hit_set_search_last_n */
-+		ceph_decode_skip_n(p, end, 4 + 4, bad);
- 
- 	if (ev >= 24) {
--		/* skip opts */
--		*p += 1 + 1; /* versions */
--		len = ceph_decode_32(p);
--		*p += len;
-+		/* opts (with versions) */
-+		ceph_decode_skip_n(p, end, 2, bad);
-+		ceph_decode_skip_string(p, end, bad);
- 	}
- 
- 	if (ev >= 25)
--		pi->last_force_request_resend = ceph_decode_32(p);
-+		ceph_decode_32_safe(p, end, pi->last_force_request_resend, bad);
- 
- 	/* ignore the rest */
- 
+ 	rmci_maybe_on();
 
 
 
