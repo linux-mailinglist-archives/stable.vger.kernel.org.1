@@ -1,160 +1,82 @@
-Return-Path: <stable+bounces-203470-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203471-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58ACBCE626B
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 08:37:17 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48E6CCE62B6
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 08:53:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3F0C630053C6
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 07:33:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0BBEB30053E5
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 07:53:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 653132580EE;
-	Mon, 29 Dec 2025 07:33:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ADC326A1B5;
+	Mon, 29 Dec 2025 07:53:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="Ix5KZeyE"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="qaR1iYCW"
 X-Original-To: stable@vger.kernel.org
-Received: from canpmsgout06.his.huawei.com (canpmsgout06.his.huawei.com [113.46.200.221])
+Received: from out-187.mta1.migadu.com (out-187.mta1.migadu.com [95.215.58.187])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 643B819D8AC
-	for <stable@vger.kernel.org>; Mon, 29 Dec 2025 07:32:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.221
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F9091A4F3C
+	for <stable@vger.kernel.org>; Mon, 29 Dec 2025 07:53:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.187
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766993581; cv=none; b=hHVYKPq2jYnXFVFlrvkvRlLw9n1HKDEo86OmI6cokyvSVpELxmYFYK5JVeGhpfahamDu9PqrjIin24LcZAYVlNKJzBQDau0lNSwPluohsCIfvEZsfTQ/95sUK2gLqcNsEKjQhRVDAxqsYhdpRJxhyMekoPEki6vc9vTElIuPFiQ=
+	t=1766994822; cv=none; b=gCtgFf1BZk1dHdet336cZa5HwKEPumNTD15OSh6C0ye9byHmOoINwwaTio7FIdvGKvueQLyDvR1IcL4gvulKxmRwihqNydULCo/TL9TULSTcnaRLfMCtkUOsCfdwKXeBMY2RVeSBMt1euRCFvTXdq2uEetZq4TlYXxkGDq+72e8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766993581; c=relaxed/simple;
-	bh=grslXluBhUU1Jq9fZpsa455kg7WzOUcmC7NrXdUtN28=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=oMVXGxOz1TnHwTF07eUfYLy96yokLmb+NDaiTFlL5Y4bQR85K2c2+I9wJcskrWCalfPecviQZDaX8pulgtC4oeGz6OI5Y6z5M0Vv20498+a7H5PtC+OuItdXjhluxaW37i0uC9BRnq7cJe4sa/Ep+ynwDRf9kS+hK4WTmMKaTuw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=Ix5KZeyE; arc=none smtp.client-ip=113.46.200.221
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=grslXluBhUU1Jq9fZpsa455kg7WzOUcmC7NrXdUtN28=;
-	b=Ix5KZeyEukn4reQwpVaRjCKEEpk5Y7fdX041sLWiiInWs2BwEU0V93dq7RAgEn5Vj6p7MA3MR
-	lpG5iIcf5XtIhBi0/RkWgt8uYnvcI/tEywPy0ewrxTlG/ix7ryC1Eg2i3NraFrsGPd/7Kg54t0w
-	M9CsiDpbdIO4PrnkSY9zStw=
-Received: from mail.maildlp.com (unknown [172.19.162.197])
-	by canpmsgout06.his.huawei.com (SkyGuard) with ESMTPS id 4dfnst2YwZzRhS4;
-	Mon, 29 Dec 2025 15:29:38 +0800 (CST)
-Received: from dggemv706-chm.china.huawei.com (unknown [10.3.19.33])
-	by mail.maildlp.com (Postfix) with ESMTPS id 9436F40363;
-	Mon, 29 Dec 2025 15:32:48 +0800 (CST)
-Received: from kwepemq100007.china.huawei.com (7.202.195.175) by
- dggemv706-chm.china.huawei.com (10.3.19.33) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Mon, 29 Dec 2025 15:32:48 +0800
-Received: from kwepemq100009.china.huawei.com (7.202.195.112) by
- kwepemq100007.china.huawei.com (7.202.195.175) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Mon, 29 Dec 2025 15:32:48 +0800
-Received: from kwepemq100009.china.huawei.com ([7.202.195.112]) by
- kwepemq100009.china.huawei.com ([7.202.195.112]) with mapi id 15.02.1544.011;
- Mon, 29 Dec 2025 15:32:48 +0800
-From: chenridong <chenridong@huawei.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "stable@vger.kernel.org"
-	<stable@vger.kernel.org>
-CC: "patches@lists.linux.dev" <patches@lists.linux.dev>, Waiman Long
-	<longman@redhat.com>, Tejun Heo <tj@kernel.org>, Sasha Levin
-	<sashal@kernel.org>
-Subject: =?gb2312?B?tPC4tDogW1BBVENIIDYuMTggMzU0LzYxNF0gY3B1c2V0OiBUcmVhdCBjcHVz?=
- =?gb2312?Q?ets_in_attaching_as_populated?=
-Thread-Topic: [PATCH 6.18 354/614] cpuset: Treat cpusets in attaching as
- populated
-Thread-Index: AQHcbocfiZsXl0zib0iLW7RNkhFAvrU4TPOw
-Date: Mon, 29 Dec 2025 07:32:47 +0000
-Message-ID: <cd70856e52d344d5ae668525e030a56a@huawei.com>
-References: <20251216111401.280873349@linuxfoundation.org>
- <20251216111414.188059104@linuxfoundation.org>
-In-Reply-To: <20251216111414.188059104@linuxfoundation.org>
-Accept-Language: zh-CN, en-US
-Content-Language: zh-CN
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1766994822; c=relaxed/simple;
+	bh=1VWzVXsgPj9vHaa4QreuNha982gkYmnazV/B2ritDHY=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=MN0I6hL9+k2ciSwIu0SwQR2lw42QHf6MO2pS/6Tahm5GH34zfa6HkdlP0zRgt9YRS3iK4cFLLFPulZCCa0bnoMLxhDlorRbRyKY5NrO+LMkkJV8QznvCcAZeI6RS6g59jxlM7oaBIM+E7IbzuphXkbAV1DGwtM5q6puypdE+o4s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=qaR1iYCW; arc=none smtp.client-ip=95.215.58.187
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1766994818;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=2aEiYRTSi0JQw1+rh+RFBJta3Dp/hmtXQMqUQmhArsE=;
+	b=qaR1iYCW1DHuAS667KhsF2oshRznCQtR6D4QC49cQ9DMRJdrrnpchgr8BYv99j+OWR5roq
+	ia9abdRHsR2Awmx1ztzddgqfkgmaM+agvkckDtD78VrRvs3SEKM1aQmVoP3wPg7apQYXpZ
+	Y/w9VERGR4dWbmKGztJBD5uIlrY8dfs=
+From: wen.yang@linux.dev
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Wen Yang <wen.yang@linux.dev>
+Subject: [PATCH 6.6 0/2] fix do_softirq_post_smp_call_flush warnings caused by NET_RX_SOFTIRQ
+Date: Mon, 29 Dec 2025 15:53:15 +0800
+Message-Id: <cover.1766987153.git.wen.yang@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-DQoNCi0tLS0t08q8/tStvP4tLS0tLQ0Kt6K8/sjLOiBHcmVnIEtyb2FoLUhhcnRtYW4gPGdyZWdr
-aEBsaW51eGZvdW5kYXRpb24ub3JnPiANCreiy83KsbzkOiAyMDI1xOoxMtTCMTbI1SAxOToxMg0K
-ytW8/sjLOiBzdGFibGVAdmdlci5rZXJuZWwub3JnDQqzrcvNOiBHcmVnIEtyb2FoLUhhcnRtYW4g
-PGdyZWdraEBsaW51eGZvdW5kYXRpb24ub3JnPjsgcGF0Y2hlc0BsaXN0cy5saW51eC5kZXY7IGNo
-ZW5yaWRvbmcgPGNoZW5yaWRvbmdAaHVhd2VpLmNvbT47IFdhaW1hbiBMb25nIDxsb25nbWFuQHJl
-ZGhhdC5jb20+OyBUZWp1biBIZW8gPHRqQGtlcm5lbC5vcmc+OyBTYXNoYSBMZXZpbiA8c2FzaGFs
-QGtlcm5lbC5vcmc+DQrW98ziOiBbUEFUQ0ggNi4xOCAzNTQvNjE0XSBjcHVzZXQ6IFRyZWF0IGNw
-dXNldHMgaW4gYXR0YWNoaW5nIGFzIHBvcHVsYXRlZA0KDQo2LjE4LXN0YWJsZSByZXZpZXcgcGF0
-Y2guICBJZiBhbnlvbmUgaGFzIGFueSBvYmplY3Rpb25zLCBwbGVhc2UgbGV0IG1lIGtub3cuDQoN
-Ci0tLS0tLS0tLS0tLS0tLS0tLQ0KDQpGcm9tOiBDaGVuIFJpZG9uZyA8Y2hlbnJpZG9uZ0BodWF3
-ZWkuY29tPg0KDQpbIFVwc3RyZWFtIGNvbW1pdCBiMWJjYWVkMWUzOWE5ZTBkZmJlMzI0YTE1ZDJj
-YTQyNTNkZWRhMzE2IF0NCg0KQ3VycmVudGx5LCB0aGUgY2hlY2sgZm9yIHdoZXRoZXIgYSBwYXJ0
-aXRpb24gaXMgcG9wdWxhdGVkIGRvZXMgbm90IGFjY291bnQgZm9yIHRhc2tzIGluIHRoZSBjcHVz
-ZXQgb2YgYXR0YWNoaW5nLiBUaGlzIGlzIGEgY29ybmVyIGNhc2UgdGhhdCBjYW4gbGVhdmUgYSB0
-YXNrIHN0dWNrIGluIGEgcGFydGl0aW9uIHdpdGggbm8gZWZmZWN0aXZlIENQVXMuDQoNClRoZSBy
-YWNlIGNvbmRpdGlvbiBvY2N1cnMgYXMgZm9sbG93czoNCg0KY3B1MAkJCQljcHUxDQoJCQkJLy9j
-cHVzZXQgQSAgd2l0aCBjcHUgTg0KbWlncmF0ZSB0YXNrIHAgdG8gQQ0KY3B1c2V0X2Nhbl9hdHRh
-Y2gNCi8vIHdpdGggZWZmZWN0aXZlIGNwdXMNCi8vIGNoZWNrIG9rDQoNCi8vIGNwdXNldF9tdXRl
-eCBpcyBub3QgaGVsZAkvLyBjbGVhciBjcHVzZXQuY3B1cy5leGNsdXNpdmUNCgkJCQkvLyBtYWtp
-bmcgZWZmZWN0aXZlIGNwdXMgZW1wdHkNCgkJCQl1cGRhdGVfZXhjbHVzaXZlX2NwdW1hc2sNCgkJ
-CQkvLyB0YXNrc19ub2NwdV9lcnJvciBjaGVjayBvaw0KCQkJCS8vIGVtcHR5IGVmZmVjdGl2ZSBj
-cHVzLCBwYXJ0aXRpb24gdmFsaWQgY3B1c2V0X2F0dGFjaCAuLi4NCi8vIHRhc2sgcCBzdGF5cyBp
-biBBLCB3aXRoIG5vbi1lZmZlY3RpdmUgY3B1cy4NCg0KVG8gZml4IHRoaXMgaXNzdWUsIHRoaXMg
-cGF0Y2ggaW50cm9kdWNlcyBjc19pc19wb3B1bGF0ZWQsIHdoaWNoIGNvbnNpZGVycyB0YXNrcyBp
-biB0aGUgYXR0YWNoaW5nIGNwdXNldC4gVGhpcyBuZXcgaGVscGVyIGlzIHVzZWQgaW4gdmFsaWRh
-dGVfY2hhbmdlIGFuZCBwYXJ0aXRpb25faXNfcG9wdWxhdGVkLg0KDQpGaXhlczogZTJkNTk5MDBk
-OTM2ICgiY2dyb3VwL2NwdXNldDogQWxsb3cgbm8tdGFzayBwYXJ0aXRpb24gdG8gaGF2ZSBlbXB0
-eSBjcHVzZXQuY3B1cy5lZmZlY3RpdmUiKQ0KU2lnbmVkLW9mZi1ieTogQ2hlbiBSaWRvbmcgPGNo
-ZW5yaWRvbmdAaHVhd2VpLmNvbT4NClJldmlld2VkLWJ5OiBXYWltYW4gTG9uZyA8bG9uZ21hbkBy
-ZWRoYXQuY29tPg0KU2lnbmVkLW9mZi1ieTogVGVqdW4gSGVvIDx0akBrZXJuZWwub3JnPg0KU2ln
-bmVkLW9mZi1ieTogU2FzaGEgTGV2aW4gPHNhc2hhbEBrZXJuZWwub3JnPg0KLS0tDQoga2VybmVs
-L2Nncm91cC9jcHVzZXQuYyB8IDM1ICsrKysrKysrKysrKysrKysrKysrKysrKysrKy0tLS0tLS0t
-DQogMSBmaWxlIGNoYW5nZWQsIDI3IGluc2VydGlvbnMoKyksIDggZGVsZXRpb25zKC0pDQoNCmRp
-ZmYgLS1naXQgYS9rZXJuZWwvY2dyb3VwL2NwdXNldC5jIGIva2VybmVsL2Nncm91cC9jcHVzZXQu
-YyBpbmRleCA1MjQ2OGQyYzE3OGEzLi40ZGNkNjMzZmQ2ZGY1IDEwMDY0NA0KLS0tIGEva2VybmVs
-L2Nncm91cC9jcHVzZXQuYw0KKysrIGIva2VybmVsL2Nncm91cC9jcHVzZXQuYw0KQEAgLTM1Miw2
-ICszNTIsMTUgQEAgc3RhdGljIGlubGluZSBib29sIGlzX2luX3YyX21vZGUodm9pZCkNCiAJICAg
-ICAgKGNwdXNldF9jZ3JwX3N1YnN5cy5yb290LT5mbGFncyAmIENHUlBfUk9PVF9DUFVTRVRfVjJf
-TU9ERSk7ICB9DQogDQorc3RhdGljIGlubGluZSBib29sIGNwdXNldF9pc19wb3B1bGF0ZWQoc3Ry
-dWN0IGNwdXNldCAqY3MpIHsNCisJbG9ja2RlcF9hc3NlcnRfaGVsZCgmY3B1c2V0X211dGV4KTsN
-CisNCisJLyogQ3B1c2V0cyBpbiB0aGUgcHJvY2VzcyBvZiBhdHRhY2hpbmcgc2hvdWxkIGJlIGNv
-bnNpZGVyZWQgYXMgcG9wdWxhdGVkICovDQorCXJldHVybiBjZ3JvdXBfaXNfcG9wdWxhdGVkKGNz
-LT5jc3MuY2dyb3VwKSB8fA0KKwkJY3MtPmF0dGFjaF9pbl9wcm9ncmVzczsNCit9DQorDQogLyoq
-DQogICogcGFydGl0aW9uX2lzX3BvcHVsYXRlZCAtIGNoZWNrIGlmIHBhcnRpdGlvbiBoYXMgdGFz
-a3MNCiAgKiBAY3M6IHBhcnRpdGlvbiByb290IHRvIGJlIGNoZWNrZWQNCkBAIC0zNjQsMjEgKzM3
-MywzMSBAQCBzdGF0aWMgaW5saW5lIGJvb2wgaXNfaW5fdjJfbW9kZSh2b2lkKSAgc3RhdGljIGlu
-bGluZSBib29sIHBhcnRpdGlvbl9pc19wb3B1bGF0ZWQoc3RydWN0IGNwdXNldCAqY3MsDQogCQkJ
-CQkgIHN0cnVjdCBjcHVzZXQgKmV4Y2x1ZGVkX2NoaWxkKQ0KIHsNCi0Jc3RydWN0IGNncm91cF9z
-dWJzeXNfc3RhdGUgKmNzczsNCi0Jc3RydWN0IGNwdXNldCAqY2hpbGQ7DQorCXN0cnVjdCBjcHVz
-ZXQgKmNwOw0KKwlzdHJ1Y3QgY2dyb3VwX3N1YnN5c19zdGF0ZSAqcG9zX2NzczsNCiANCi0JaWYg
-KGNzLT5jc3MuY2dyb3VwLT5ucl9wb3B1bGF0ZWRfY3NldHMpDQorCS8qDQorCSAqIFdlIGNhbm5v
-dCBjYWxsIGNzX2lzX3BvcHVsYXRlZChjcykgZGlyZWN0bHksIGFzDQorCSAqIG5yX3BvcHVsYXRl
-ZF9kb21haW5fY2hpbGRyZW4gbWF5IGluY2x1ZGUgcG9wdWxhdGVkDQorCSAqIGNzZXRzIGZyb20g
-ZGVzY2VuZGFudHMgdGhhdCBhcmUgcGFydGl0aW9ucy4NCisJICovDQorCWlmIChjcy0+Y3NzLmNn
-cm91cC0+bnJfcG9wdWxhdGVkX2NzZXRzIHx8DQorCSAgICBjcy0+YXR0YWNoX2luX3Byb2dyZXNz
-KQ0KIAkJcmV0dXJuIHRydWU7DQogCWlmICghZXhjbHVkZWRfY2hpbGQgJiYgIWNzLT5ucl9zdWJw
-YXJ0cykNCiAJCXJldHVybiBjZ3JvdXBfaXNfcG9wdWxhdGVkKGNzLT5jc3MuY2dyb3VwKTsNCg0K
-DQpJIGNoZWNrZWQgdGhpcyBwYXRjaCwgQW5kIEkgZm91bmQgaGVyZSBzaG91bGQgYmUgJyBjcHVz
-ZXRfaXNfcG9wdWxhdGVkKGNzKScuDQoNCiAJcmN1X3JlYWRfbG9jaygpOw0KLQljcHVzZXRfZm9y
-X2VhY2hfY2hpbGQoY2hpbGQsIGNzcywgY3MpIHsNCi0JCWlmIChjaGlsZCA9PSBleGNsdWRlZF9j
-aGlsZCkNCisJY3B1c2V0X2Zvcl9lYWNoX2Rlc2NlbmRhbnRfcHJlKGNwLCBwb3NfY3NzLCBjcykg
-ew0KKwkJaWYgKGNwID09IGNzIHx8IGNwID09IGV4Y2x1ZGVkX2NoaWxkKQ0KIAkJCWNvbnRpbnVl
-Ow0KLQkJaWYgKGlzX3BhcnRpdGlvbl92YWxpZChjaGlsZCkpDQorDQorCQlpZiAoaXNfcGFydGl0
-aW9uX3ZhbGlkKGNwKSkgew0KKwkJCXBvc19jc3MgPSBjc3NfcmlnaHRtb3N0X2Rlc2NlbmRhbnQo
-cG9zX2Nzcyk7DQogCQkJY29udGludWU7DQotCQlpZiAoY2dyb3VwX2lzX3BvcHVsYXRlZChjaGls
-ZC0+Y3NzLmNncm91cCkpIHsNCisJCX0NCisNCisJCWlmIChjcHVzZXRfaXNfcG9wdWxhdGVkKGNw
-KSkgew0KIAkJCXJjdV9yZWFkX3VubG9jaygpOw0KIAkJCXJldHVybiB0cnVlOw0KIAkJfQ0KQEAg
-LTY2Myw3ICs2ODIsNyBAQCBzdGF0aWMgaW50IHZhbGlkYXRlX2NoYW5nZShzdHJ1Y3QgY3B1c2V0
-ICpjdXIsIHN0cnVjdCBjcHVzZXQgKnRyaWFsKQ0KIAkgKiBiZSBjaGFuZ2VkIHRvIGhhdmUgZW1w
-dHkgY3B1c19hbGxvd2VkIG9yIG1lbXNfYWxsb3dlZC4NCiAJICovDQogCXJldCA9IC1FTk9TUEM7
-DQotCWlmICgoY2dyb3VwX2lzX3BvcHVsYXRlZChjdXItPmNzcy5jZ3JvdXApIHx8IGN1ci0+YXR0
-YWNoX2luX3Byb2dyZXNzKSkgew0KKwlpZiAoY3B1c2V0X2lzX3BvcHVsYXRlZChjdXIpKSB7DQog
-CQlpZiAoIWNwdW1hc2tfZW1wdHkoY3VyLT5jcHVzX2FsbG93ZWQpICYmDQogCQkgICAgY3B1bWFz
-a19lbXB0eSh0cmlhbC0+Y3B1c19hbGxvd2VkKSkNCiAJCQlnb3RvIG91dDsNCi0tDQoyLjUxLjAN
-Cg0KDQoNCg==
+From: Wen Yang <wen.yang@linux.dev>
+
+do_softirq_post_smp_call_flush() on PREEMPT_RT kernels carries a
+WARN_ON_ONCE() for any SOFTIRQ being raised from an SMP-call-function.
+Since do_softirq_post_smp_call_flush() is called with preempt disabled,
+raising a SOFTIRQ during flush_smp_call_function_queue() can lead to
+longer preempt disabled sections.
+
+RPS distributes network processing load across CPUs by enqueuing
+packets on a remote CPU's backlog and raising NET_RX_SOFTIRQ to
+process them.
+    
+The following patches fixes this issue.
+
+Sebastian Andrzej Siewior (2):
+  net: Remove conditional threaded-NAPI wakeup based on task state.
+  net: Allow to use SMP threads for backlog NAPI.
+
+ net/core/dev.c | 162 +++++++++++++++++++++++++++++++++++--------------
+ 1 file changed, 115 insertions(+), 47 deletions(-)
+
+-- 
+2.25.1
+
 
