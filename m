@@ -1,151 +1,236 @@
-Return-Path: <stable+bounces-203575-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203576-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71DFECE6F04
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 14:59:21 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94773CE6F0D
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 14:59:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 75421300976F
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 13:59:20 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0611130022FE
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 13:59:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 024CA3191BF;
-	Mon, 29 Dec 2025 13:59:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C2CD2798E8;
+	Mon, 29 Dec 2025 13:59:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Jb4vi6OU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N4eODbkX"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20D7C2D0600
-	for <stable@vger.kernel.org>; Mon, 29 Dec 2025 13:59:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FFEB1E51E0
+	for <stable@vger.kernel.org>; Mon, 29 Dec 2025 13:59:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767016755; cv=none; b=AYG/cNycWnVPlut+5DzkV7itgkRwMBvdn+6S4Rzfuw/dYEOEb6otSF4KWO9WYZzTaykjpGLEN9/U5MiVJX0lBMuPKNxeB7CYzY+g1Dg6Rhxekz9YUzd4SjMAbKYSFAp+KR9n6Ktsfk9oppj28odqEfxPkqDmdhV3Ebh0gDeAzqU=
+	t=1767016764; cv=none; b=n5afkqpIaqcmh0GHS+eVwSq+heLdX4P5jWF1RiiNrLK6nMl9hnILW1YgreDOoOjWgv8U/jj7+1QgNt3PeatE/RyjpxRmzkBMQ/gmJ6CDVGHshJWr3MFSAcBaSmBClH9+kRm+wfh5DWNilE5ske7f9F0LtTEAKjWzgHAim8KfAEo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767016755; c=relaxed/simple;
-	bh=k257uZ3HPDKFfAze/hz1Hfmw8/7Hf+9ogZi61Nyan10=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=a0ZpElldPCe4vBRF9/Fh3gspEanZhJZqmxFhVeq4jGst8gAHdiUKD0yWjS0bPDi2m693uvgldbK6OGE8de/44rHxVwcxonoG52N9T9IGRhAFz8cK51zAnS1pwiJRqJvzCB70fIX5erUG5VraEH1VftVaTulwhBuKOwXc/5UtVrU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Jb4vi6OU; arc=none smtp.client-ip=209.85.221.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-430f3692d4aso615668f8f.1
-        for <stable@vger.kernel.org>; Mon, 29 Dec 2025 05:59:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767016752; x=1767621552; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=jnurlv5ZkeGevc2yEP3yL2OMFl89R04sLNUEhoXlc4A=;
-        b=Jb4vi6OUmolZ4NXViQlAkeq0JttPiAGs85sSgTroLRQN6PTW3eJ0Qx3lk4q4uljvuw
-         hY9QD7hSwXfbp/I/Uuldx6Pou/8Kv8NqMzpG1+EEMTiaOxSHjdDOUPMdooPJvLO3bgrQ
-         fCL2C1VDR+wLBEildF9gD831DPeJGwNsvtKw2eWJOCRVAgEIEVwo1HVLcH+aXZV4KGRO
-         DZX1zoLxHJ7+zgAsrUl5a+N7J5DC9d3PYmD1CsE1BDztKcCSRKebIWEKm//NvNf/38rp
-         ohxAD8pFkM6X7cwgMPp7NlvYiagUcfRxNBB2dPAcNvO1i8nCJWNeGB+GRHYYwDMjZv6u
-         z8bg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767016752; x=1767621552;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jnurlv5ZkeGevc2yEP3yL2OMFl89R04sLNUEhoXlc4A=;
-        b=PWcU/oemt1xDlB5ZLjL4kzZ/hybi8yaKwMITYJ3Z1RdTCETB2aylXw3n61v/D520bc
-         Yd/lmeewKlAL89vMLRJVlv2SCmGvlDvMKlXz+bdd+xF9Pa3L6WTODxq6jET8Yup5k/CK
-         xEWHcGCyXE+hjvBuPv+0U5u86UBD/szRyAY5K4SxJQ70ysY/NjjPHMWvaXMkQ1/rVGSQ
-         adT1ZqRb31F7kSXwomu4qp9N4qIJsr9uzEaPgunVokTcH+IzjFoLD8DXrB1fGl5We4Du
-         4Pzf/qqVjR2tGhnHXNbGl/YsQXpj+Ntek5bp1SJ4V5rxiXU8qF2Pgcy7xEmV6tYUDKy6
-         m/GA==
-X-Forwarded-Encrypted: i=1; AJvYcCV969Pufc8UMW/laiRwXWeY0tIMjsl2UYc7ntdtte7bk9UkscJBtN50SouA3mhNpVpeBCrCRh0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyOBrbA2g0+A4jWdqGP5S2A8WzTdE4BtDnMSHWI6fiy0oHsP98D
-	ibGa3l20WVsNBdDwr9Tq0T3R7zl2AXW5IrJr+lls+l3u16lwFyFrOWnj
-X-Gm-Gg: AY/fxX6Qf4RaEi9k0fcVftc/fDXxa4L9FthvdvFWO4LtPzdkl/H0Yf7kHPYLRwZU58x
-	m0NUSXbVu5D+Vv7cZ4d7yKIGdHduFzVO8sSS0fBu7ssPTFIZ/aZItL0UMFjlhSG1kZ3e517Yj4D
-	ud7/3yzZRJQpAn2nHp0+vs7ALfvd1NHgF5R+pq1PPksIWASv+nvk7po/L2i5fxYzB6K62khtzbu
-	/ulArhbgpkES5R154biNJLkpjRD8DXKXy7oHcZct/dbT7c2otyA8IK97JEYjHOkOXTdrYNBAQdf
-	xebAf1UJkt/+Z7wPiQz7ZS7JoMwDkV2twMaGWCqRRErEgZbFOlcgTYYTf+FKOI86mVa+8VKCEL5
-	tYdEJ0yTDnz7Mpme+IU2K00v2ry4zRFusRnaxWEpcmfTbYh95VaBXCzAVuk9ddxqS9FBOm2wgEd
-	zXszd8O0rfGxM1QVs8aHGuQZX9jHJr9Q4dHnOhG6AS8z51HTY2PzVAD5lKqJPH9WDKRl2uPVU7F
-	GyWDMs=
-X-Google-Smtp-Source: AGHT+IG9xRAmZubwF+oTURx72QKNS8IBmfurtixzLyk4corHAwr+82eB/ZvmEfCyKAkZ8m72tcMOWQ==
-X-Received: by 2002:a05:600c:3ba4:b0:468:7a5a:14cc with SMTP id 5b1f17b1804b1-47d1957af0emr232438825e9.3.1767016752121;
-        Mon, 29 Dec 2025 05:59:12 -0800 (PST)
-Received: from thomas-precision3591.paris.inria.fr (wifi-pro-83-215.paris.inria.fr. [128.93.83.215])
-        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-4324ea1b1bdsm61881417f8f.8.2025.12.29.05.59.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 29 Dec 2025 05:59:11 -0800 (PST)
-From: Thomas Fourier <fourier.thomas@gmail.com>
-To: 
-Cc: Thomas Fourier <fourier.thomas@gmail.com>,
-	stable@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Wayne Chang <waynec@nvidia.com>,
-	Haotien Hsu <haotienh@nvidia.com>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Liao Yuanhong <liaoyuanhong@vivo.com>,
-	Nagarjuna Kristam <nkristam@nvidia.com>,
-	Felipe Balbi <felipe.balbi@linux.intel.com>,
-	linux-usb@vger.kernel.org,
-	linux-tegra@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2] usb: gadget: Fix trb_virt_to_phys() error value
-Date: Mon, 29 Dec 2025 14:58:49 +0100
-Message-ID: <20251229135853.33222-1-fourier.thomas@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1767016764; c=relaxed/simple;
+	bh=AIY7lE/CWXyB62CxkBSkV5di5UWDf5QcV2b7SlrllQo=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=oNgSZgjkL6d6+C5MzAAQn/U9VxGmU0xVdbOB9Qrgu7/IT6WAY2bpqD4jsTxOFo7sw7uc4ezeV8d6Ptvrsu/ku+TJNKJE13qggzNP/t7x+sbJ8vgfBW8ROT1bFlLpeVvth2GYdOUpKwLaiZp61K7+1u+nRZfwYiIv1mTEFNnbngo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N4eODbkX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C04AC4CEF7;
+	Mon, 29 Dec 2025 13:59:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1767016763;
+	bh=AIY7lE/CWXyB62CxkBSkV5di5UWDf5QcV2b7SlrllQo=;
+	h=Subject:To:Cc:From:Date:From;
+	b=N4eODbkXoto++ismxlNjCW/6VtD2BLtNLAcT4qg87Wi9rMUcmwPJKD6CC82vfEdwD
+	 OkyvBZ77oTaGnvSuXqsrA1uLtiNSOuoh3sQDJQ1GwG4q8w59JnLyyaYcL6ahtz//1H
+	 Pm19/I1emT+wu7I75I3PWfrITmjRFUTTYTBE8sFE=
+Subject: FAILED: patch "[PATCH] f2fs: fix to avoid updating compression context during" failed to apply to 6.12-stable tree
+To: chao@kernel.org,jaegeuk@kernel.org,sjb7183@psu.edu
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 29 Dec 2025 14:59:21 +0100
+Message-ID: <2025122921-captivate-substance-994f@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
-0 is a valid DMA address, so returning DMA_MAPPING_ERROR in
-trb_virt_to_phys().  Also, dma_mapping_error() wouldn't
-flag 0 as an error address.
-Checking the return value directly because the dma_addr
-does not come directly from dma_map().
 
-Fixes: 49db427232fe ("usb: gadget: Add UDC driver for tegra XUSB device mode controller")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
----
-v1->v2:
-  - Add Cc: tag
- drivers/usb/gadget/udc/tegra-xudc.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+The patch below does not apply to the 6.12-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-diff --git a/drivers/usb/gadget/udc/tegra-xudc.c b/drivers/usb/gadget/udc/tegra-xudc.c
-index 9d2007f448c0..63f7eeddb401 100644
---- a/drivers/usb/gadget/udc/tegra-xudc.c
-+++ b/drivers/usb/gadget/udc/tegra-xudc.c
-@@ -904,7 +904,7 @@ static dma_addr_t trb_virt_to_phys(struct tegra_xudc_ep *ep,
- 	index = trb - ep->transfer_ring;
- 
- 	if (WARN_ON(index >= XUDC_TRANSFER_RING_SIZE))
--		return 0;
-+		return DMA_MAPPING_ERROR;
- 
- 	return (ep->transfer_ring_phys + index * sizeof(*trb));
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git checkout FETCH_HEAD
+git cherry-pick -x 10b591e7fb7cdc8c1e53e9c000dc0ef7069aaa76
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025122921-captivate-substance-994f@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 10b591e7fb7cdc8c1e53e9c000dc0ef7069aaa76 Mon Sep 17 00:00:00 2001
+From: Chao Yu <chao@kernel.org>
+Date: Wed, 22 Oct 2025 11:06:36 +0800
+Subject: [PATCH] f2fs: fix to avoid updating compression context during
+ writeback
+
+Bai, Shuangpeng <sjb7183@psu.edu> reported a bug as below:
+
+Oops: divide error: 0000 [#1] SMP KASAN PTI
+CPU: 0 UID: 0 PID: 11441 Comm: syz.0.46 Not tainted 6.17.0 #1 PREEMPT(full)
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
+RIP: 0010:f2fs_all_cluster_page_ready+0x106/0x550 fs/f2fs/compress.c:857
+Call Trace:
+ <TASK>
+ f2fs_write_cache_pages fs/f2fs/data.c:3078 [inline]
+ __f2fs_write_data_pages fs/f2fs/data.c:3290 [inline]
+ f2fs_write_data_pages+0x1c19/0x3600 fs/f2fs/data.c:3317
+ do_writepages+0x38e/0x640 mm/page-writeback.c:2634
+ filemap_fdatawrite_wbc mm/filemap.c:386 [inline]
+ __filemap_fdatawrite_range mm/filemap.c:419 [inline]
+ file_write_and_wait_range+0x2ba/0x3e0 mm/filemap.c:794
+ f2fs_do_sync_file+0x6e6/0x1b00 fs/f2fs/file.c:294
+ generic_write_sync include/linux/fs.h:3043 [inline]
+ f2fs_file_write_iter+0x76e/0x2700 fs/f2fs/file.c:5259
+ new_sync_write fs/read_write.c:593 [inline]
+ vfs_write+0x7e9/0xe00 fs/read_write.c:686
+ ksys_write+0x19d/0x2d0 fs/read_write.c:738
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xf7/0x470 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+The bug was triggered w/ below race condition:
+
+fsync				setattr			ioctl
+- f2fs_do_sync_file
+ - file_write_and_wait_range
+  - f2fs_write_cache_pages
+  : inode is non-compressed
+  : cc.cluster_size =
+    F2FS_I(inode)->i_cluster_size = 0
+   - tag_pages_for_writeback
+				- f2fs_setattr
+				 - truncate_setsize
+				 - f2fs_truncate
+							- f2fs_fileattr_set
+							 - f2fs_setflags_common
+							  - set_compress_context
+							  : F2FS_I(inode)->i_cluster_size = 4
+							  : set_inode_flag(inode, FI_COMPRESSED_FILE)
+   - f2fs_compressed_file
+   : return true
+   - f2fs_all_cluster_page_ready
+   : "pgidx % cc->cluster_size" trigger dividing 0 issue
+
+Let's change as below to fix this issue:
+- introduce a new atomic type variable .writeback in structure f2fs_inode_info
+to track the number of threads which calling f2fs_write_cache_pages().
+- use .i_sem lock to protect .writeback update.
+- check .writeback before update compression context in f2fs_setflags_common()
+to avoid race w/ ->writepages.
+
+Fixes: 4c8ff7095bef ("f2fs: support data compression")
+Cc: stable@kernel.org
+Reported-by: Bai, Shuangpeng <sjb7183@psu.edu>
+Tested-by: Bai, Shuangpeng <sjb7183@psu.edu>
+Closes: https://lore.kernel.org/lkml/44D8F7B3-68AD-425F-9915-65D27591F93F@psu.edu
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+
+diff --git a/fs/f2fs/data.c b/fs/f2fs/data.c
+index eec691262fec..b92d362a02d6 100644
+--- a/fs/f2fs/data.c
++++ b/fs/f2fs/data.c
+@@ -3222,6 +3222,19 @@ static inline bool __should_serialize_io(struct inode *inode,
+ 	return false;
  }
-@@ -1484,7 +1484,7 @@ __tegra_xudc_ep_dequeue(struct tegra_xudc_ep *ep,
- 			deq_ptr = trb_virt_to_phys(ep,
- 					&ep->transfer_ring[ep->enq_ptr]);
  
--			if (dma_mapping_error(xudc->dev, deq_ptr)) {
-+			if (deq_ptr == DMA_MAPPING_ERROR) {
- 				ret = -EINVAL;
- 			} else {
- 				ep_ctx_write_deq_ptr(ep->context, deq_ptr);
-@@ -2834,7 +2834,7 @@ static void tegra_xudc_reset(struct tegra_xudc *xudc)
- 
- 	deq_ptr = trb_virt_to_phys(ep0, &ep0->transfer_ring[ep0->deq_ptr]);
- 
--	if (!dma_mapping_error(xudc->dev, deq_ptr)) {
-+	if (deq_ptr != DMA_MAPPING_ERROR) {
- 		ep_ctx_write_deq_ptr(ep0->context, deq_ptr);
- 		ep_ctx_write_dcs(ep0->context, ep0->pcs);
++static inline void account_writeback(struct inode *inode, bool inc)
++{
++	if (!f2fs_sb_has_compression(F2FS_I_SB(inode)))
++		return;
++
++	f2fs_down_read(&F2FS_I(inode)->i_sem);
++	if (inc)
++		atomic_inc(&F2FS_I(inode)->writeback);
++	else
++		atomic_dec(&F2FS_I(inode)->writeback);
++	f2fs_up_read(&F2FS_I(inode)->i_sem);
++}
++
+ static int __f2fs_write_data_pages(struct address_space *mapping,
+ 						struct writeback_control *wbc,
+ 						enum iostat_type io_type)
+@@ -3267,10 +3280,14 @@ static int __f2fs_write_data_pages(struct address_space *mapping,
+ 		locked = true;
  	}
--- 
-2.43.0
+ 
++	account_writeback(inode, true);
++
+ 	blk_start_plug(&plug);
+ 	ret = f2fs_write_cache_pages(mapping, wbc, io_type);
+ 	blk_finish_plug(&plug);
+ 
++	account_writeback(inode, false);
++
+ 	if (locked)
+ 		mutex_unlock(&sbi->writepages);
+ 
+diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
+index 575f9666c3b7..e69b01c1173a 100644
+--- a/fs/f2fs/f2fs.h
++++ b/fs/f2fs/f2fs.h
+@@ -947,6 +947,7 @@ struct f2fs_inode_info {
+ 	unsigned char i_compress_level;		/* compress level (lz4hc,zstd) */
+ 	unsigned char i_compress_flag;		/* compress flag */
+ 	unsigned int i_cluster_size;		/* cluster size */
++	atomic_t writeback;			/* count # of writeback thread */
+ 
+ 	unsigned int atomic_write_cnt;
+ 	loff_t original_i_size;		/* original i_size before atomic write */
+@@ -4663,7 +4664,7 @@ static inline bool f2fs_disable_compressed_file(struct inode *inode)
+ 		f2fs_up_write(&fi->i_sem);
+ 		return true;
+ 	}
+-	if (f2fs_is_mmap_file(inode) ||
++	if (f2fs_is_mmap_file(inode) || atomic_read(&fi->writeback) ||
+ 		(S_ISREG(inode->i_mode) && F2FS_HAS_BLOCKS(inode))) {
+ 		f2fs_up_write(&fi->i_sem);
+ 		return false;
+diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
+index c045e38e60ee..6d42e2d28861 100644
+--- a/fs/f2fs/file.c
++++ b/fs/f2fs/file.c
+@@ -2128,8 +2128,9 @@ static int f2fs_setflags_common(struct inode *inode, u32 iflags, u32 mask)
+ 
+ 			f2fs_down_write(&fi->i_sem);
+ 			if (!f2fs_may_compress(inode) ||
+-					(S_ISREG(inode->i_mode) &&
+-					F2FS_HAS_BLOCKS(inode))) {
++				atomic_read(&fi->writeback) ||
++				(S_ISREG(inode->i_mode) &&
++				F2FS_HAS_BLOCKS(inode))) {
+ 				f2fs_up_write(&fi->i_sem);
+ 				return -EINVAL;
+ 			}
+diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
+index cb65ca90f9f6..d0b5791a1f8c 100644
+--- a/fs/f2fs/super.c
++++ b/fs/f2fs/super.c
+@@ -1759,6 +1759,7 @@ static struct inode *f2fs_alloc_inode(struct super_block *sb)
+ 	atomic_set(&fi->dirty_pages, 0);
+ 	atomic_set(&fi->i_compr_blocks, 0);
+ 	atomic_set(&fi->open_count, 0);
++	atomic_set(&fi->writeback, 0);
+ 	init_f2fs_rwsem(&fi->i_sem);
+ 	spin_lock_init(&fi->i_size_lock);
+ 	INIT_LIST_HEAD(&fi->dirty_list);
 
 
