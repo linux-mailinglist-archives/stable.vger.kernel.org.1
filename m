@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-203515-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203517-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id F32ADCE6921
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 12:42:12 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9547FCE6903
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 12:40:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 56CEC30275FF
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 11:40:26 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0FA7C3002D3E
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 11:40:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5EF12E7BD3;
-	Mon, 29 Dec 2025 11:40:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46EA32F7AD2;
+	Mon, 29 Dec 2025 11:40:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uRxHkiJr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OLFIbe4Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0EDF30CDB6
-	for <stable@vger.kernel.org>; Mon, 29 Dec 2025 11:40:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6D312F290B
+	for <stable@vger.kernel.org>; Mon, 29 Dec 2025 11:40:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767008421; cv=none; b=bmILzINWVDpgRqOxIg+apt/tXFAaC7BeOc+zwhzwbYKJQH6blE5/OvXSEr3z+v98u89W3BJZelK9eyRz6iAdNqjCJIvhVv4pxmr0ahgCQwAU6RRQEh2qZHZgASuVAOm0SO5077u8/S7TGzwaiZeRJ7DF5s1x8oM1wiW5xD2krA4=
+	t=1767008438; cv=none; b=aVfpx8d/TtVV9bANao+09h8q+s1OIRPceIyHD3Th9hfDCETl5YVWfutSox0ApKiazgP8Myn7neM5sqCoWd8fGSazq2zsANTEucZYq0X0/dvFfVTJ23D5bTa5EgZhAgKA1Lv66kDOKqgnZil+888ea9ITZEmLCoSZydPHGa6VGkE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767008421; c=relaxed/simple;
-	bh=iRw7BYWi9QXrOzu0H5y7Ww0CLBFa+/UtgBj/XOsPQQA=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=WY7801r7QNbDbZBdUWlsqlEOeLkkZCUc0fcSc+i+0aMbZm96srl87T+klIXqU4UDgennX1EA9CrLnjpzneqXTyqGbAglE1BfjSiHg2NQWmdPqbc7nBE47IdEvjP+o8NaOVFfA2CsP0L5aPPQmOMMWypB3KOXNpfxSH4SpGkgqQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uRxHkiJr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B990AC116C6;
-	Mon, 29 Dec 2025 11:40:19 +0000 (UTC)
+	s=arc-20240116; t=1767008438; c=relaxed/simple;
+	bh=INnw1COXPCbNahHl3jM9xs5NpHbF4tc28DjCZujPKUw=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=oTsIAqMx+O6owhljqKjnpbmbs5MMKp3sEITEA4Mv365A5UhNNj8kaMeFRYhO2VoXJi7hW+vkJuJfvYHDdton89XZlz/xy9TL8t+Qrci79xWB9rmdE3lIpD7bkIdKRvK5Hr2b779A9l+ISrnD071rxEvgTW/FFTvdKxa7g6ZC/5U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OLFIbe4Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9997C4CEF7;
+	Mon, 29 Dec 2025 11:40:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767008420;
-	bh=iRw7BYWi9QXrOzu0H5y7Ww0CLBFa+/UtgBj/XOsPQQA=;
+	s=korg; t=1767008437;
+	bh=INnw1COXPCbNahHl3jM9xs5NpHbF4tc28DjCZujPKUw=;
 	h=Subject:To:Cc:From:Date:From;
-	b=uRxHkiJrUx91LE8v0Me2cM8sdsG8xk0kReL9Esvh3WP06gXbIL0CmL6bnGk6FhAdB
-	 K4/FkiFJUslxDHnOIhaAZUe2OxnA0AElf8h7ND+pStjBYS/Vof1i3t9wC865LWhmr6
-	 ROOHDI+Ux+GV/6YIN29ygQSiiGaZ2tNalP5ZI+JA=
-Subject: FAILED: patch "[PATCH] gfs2: fix freeze error handling" failed to apply to 6.1-stable tree
-To: a.velichayshiy@ispras.ru,agruenba@redhat.com
+	b=OLFIbe4Zf6irk8pqymydTocY4T9tKERT9KwJci/C0ih0HxBV9ayM8GQa7hRRMHALN
+	 Rw66vGk83qF+25e1kcnCL9JBuSBtkHAahBg8IpnLQp4vUShDsxEUw+lw+UgYE2yDTg
+	 CIb6IQYCYTrV9oz3E7OpWWLcNR2FaDRiPBrUZejE=
+Subject: FAILED: patch "[PATCH] jbd2: fix the inconsistency between checksum and data in" failed to apply to 6.1-stable tree
+To: yebin10@huawei.com,djwong@kernel.org,jack@suse.cz,libaokun1@huawei.com,tytso@mit.edu
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 29 Dec 2025 12:40:07 +0100
-Message-ID: <2025122907-defense-blanching-5c39@gregkh>
+Date: Mon, 29 Dec 2025 12:40:34 +0100
+Message-ID: <2025122934-exclude-sevenfold-d418@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,10 +60,10 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x 4cfc7d5a4a01d2133b278cdbb1371fba1b419174
+git cherry-pick -x 6abfe107894af7e8ce3a2e120c619d81ee764ad5
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025122907-defense-blanching-5c39@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025122934-exclude-sevenfold-d418@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -75,41 +75,89 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 4cfc7d5a4a01d2133b278cdbb1371fba1b419174 Mon Sep 17 00:00:00 2001
-From: Alexey Velichayshiy <a.velichayshiy@ispras.ru>
-Date: Mon, 17 Nov 2025 12:05:18 +0300
-Subject: [PATCH] gfs2: fix freeze error handling
+From 6abfe107894af7e8ce3a2e120c619d81ee764ad5 Mon Sep 17 00:00:00 2001
+From: Ye Bin <yebin10@huawei.com>
+Date: Mon, 3 Nov 2025 09:01:23 +0800
+Subject: [PATCH] jbd2: fix the inconsistency between checksum and data in
+ memory for journal sb
 
-After commit b77b4a4815a9 ("gfs2: Rework freeze / thaw logic"),
-the freeze error handling is broken because gfs2_do_thaw()
-overwrites the 'error' variable, causing incorrect processing
-of the original freeze error.
+Copying the file system while it is mounted as read-only results in
+a mount failure:
+[~]# mkfs.ext4 -F /dev/sdc
+[~]# mount /dev/sdc -o ro /mnt/test
+[~]# dd if=/dev/sdc of=/dev/sda bs=1M
+[~]# mount /dev/sda /mnt/test1
+[ 1094.849826] JBD2: journal checksum error
+[ 1094.850927] EXT4-fs (sda): Could not load journal inode
+mount: mount /dev/sda on /mnt/test1 failed: Bad message
 
-Fix this by calling gfs2_do_thaw() when gfs2_lock_fs_check_clean()
-fails but ignoring its return value to preserve the original
-freeze error for proper reporting.
+The process described above is just an abstracted way I came up with to
+reproduce the issue. In the actual scenario, the file system was mounted
+read-only and then copied while it was still mounted. It was found that
+the mount operation failed. The user intended to verify the data or use
+it as a backup, and this action was performed during a version upgrade.
+Above issue may happen as follows:
+ext4_fill_super
+ set_journal_csum_feature_set(sb)
+  if (ext4_has_metadata_csum(sb))
+   incompat = JBD2_FEATURE_INCOMPAT_CSUM_V3;
+  if (test_opt(sb, JOURNAL_CHECKSUM)
+   jbd2_journal_set_features(sbi->s_journal, compat, 0, incompat);
+    lock_buffer(journal->j_sb_buffer);
+    sb->s_feature_incompat  |= cpu_to_be32(incompat);
+    //The data in the journal sb was modified, but the checksum was not
+      updated, so the data remaining in memory has a mismatch between the
+      data and the checksum.
+    unlock_buffer(journal->j_sb_buffer);
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+In this case, the journal sb copied over is in a state where the checksum
+and data are inconsistent, so mounting fails.
+To solve the above issue, update the checksum in memory after modifying
+the journal sb.
 
-Fixes: b77b4a4815a9 ("gfs2: Rework freeze / thaw logic")
-Cc: stable@vger.kernel.org # v6.5+
-Signed-off-by: Alexey Velichayshiy <a.velichayshiy@ispras.ru>
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Fixes: 4fd5ea43bc11 ("jbd2: checksum journal superblock")
+Signed-off-by: Ye Bin <yebin10@huawei.com>
+Reviewed-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Message-ID: <20251103010123.3753631-1-yebin@huaweicloud.com>
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
 
-diff --git a/fs/gfs2/super.c b/fs/gfs2/super.c
-index 644b2d1e7276..54c6f2098f01 100644
---- a/fs/gfs2/super.c
-+++ b/fs/gfs2/super.c
-@@ -749,9 +749,7 @@ static int gfs2_freeze_super(struct super_block *sb, enum freeze_holder who,
- 			break;
- 		}
+diff --git a/fs/jbd2/journal.c b/fs/jbd2/journal.c
+index 2fe1786a8f1b..c973162d5b31 100644
+--- a/fs/jbd2/journal.c
++++ b/fs/jbd2/journal.c
+@@ -2354,6 +2354,12 @@ int jbd2_journal_set_features(journal_t *journal, unsigned long compat,
+ 	sb->s_feature_compat    |= cpu_to_be32(compat);
+ 	sb->s_feature_ro_compat |= cpu_to_be32(ro);
+ 	sb->s_feature_incompat  |= cpu_to_be32(incompat);
++	/*
++	 * Update the checksum now so that it is valid even for read-only
++	 * filesystems where jbd2_write_superblock() doesn't get called.
++	 */
++	if (jbd2_journal_has_csum_v2or3(journal))
++		sb->s_checksum = jbd2_superblock_csum(sb);
+ 	unlock_buffer(journal->j_sb_buffer);
+ 	jbd2_journal_init_transaction_limits(journal);
  
--		error = gfs2_do_thaw(sdp, who, freeze_owner);
--		if (error)
--			goto out;
-+		(void)gfs2_do_thaw(sdp, who, freeze_owner);
+@@ -2383,9 +2389,17 @@ void jbd2_journal_clear_features(journal_t *journal, unsigned long compat,
  
- 		if (error == -EBUSY)
- 			fs_err(sdp, "waiting for recovery before freeze\n");
+ 	sb = journal->j_superblock;
+ 
++	lock_buffer(journal->j_sb_buffer);
+ 	sb->s_feature_compat    &= ~cpu_to_be32(compat);
+ 	sb->s_feature_ro_compat &= ~cpu_to_be32(ro);
+ 	sb->s_feature_incompat  &= ~cpu_to_be32(incompat);
++	/*
++	 * Update the checksum now so that it is valid even for read-only
++	 * filesystems where jbd2_write_superblock() doesn't get called.
++	 */
++	if (jbd2_journal_has_csum_v2or3(journal))
++		sb->s_checksum = jbd2_superblock_csum(sb);
++	unlock_buffer(journal->j_sb_buffer);
+ 	jbd2_journal_init_transaction_limits(journal);
+ }
+ EXPORT_SYMBOL(jbd2_journal_clear_features);
 
 
