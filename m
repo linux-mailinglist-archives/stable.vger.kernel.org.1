@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-204019-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203987-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54710CE77C8
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:30:25 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2598ACE794E
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:37:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4C105300E45E
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:30:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3BDF5315B429
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:29:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F3053321A7;
-	Mon, 29 Dec 2025 16:30:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C03CC330B0D;
+	Mon, 29 Dec 2025 16:28:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dEfb8vNE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dEwMe2+A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B0C63321A2;
-	Mon, 29 Dec 2025 16:30:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CA9D330B0F;
+	Mon, 29 Dec 2025 16:28:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767025823; cv=none; b=SZEX37ea7AUNrjUVudw7bKIXYGuIqhI4C/RJ0xqoZ22Mi5FPKWVyI1rONO8YkxSDa2MfVJMOI1o6FcUT6ahV9D4UcNxpjNIjLaNla6fNwIAV8GyZRgsbgf5j44UVx8fl994Cnxq/lZZmnTATP9LG+iHfppA+fhzuvQY97YoVSs0=
+	t=1767025732; cv=none; b=E45eb3fQdoYUYXmYrh2OJkZhm2tkPgXJBRXR7o+3Ns1sKNGVf0GMCdpKR3lmAG6DOf1RphHcxaIorCi6ofO45GDRxyRPGabTkORIwSDXZxgBBZXuis0wtauKt0T0iLkmjancFJhEH4QTKV0XsSywlkDFIKhWNLRVN8fGtnbDx5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767025823; c=relaxed/simple;
-	bh=sr2bFdQ/q5no1nlp+JfAT+JJb2G7EzbQNmAw75gYTbs=;
+	s=arc-20240116; t=1767025732; c=relaxed/simple;
+	bh=ijsIB2LVFcr9rrMHgKCRNGjbhezR5HmJvFCwDW8N4ag=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GEAGzjLw4x/03VRqGI5EDrOYwsNVI33EPNxqxIhVUd3kr/jcPcLAYGuAKdDWv3h5kqbXFjdSK5/p4p8SwyyfWRQSqRPyu01Uahs57WsjlBZpBE/XZLiPbG3kJRRsF8yrE6J326lKulu0CgY8jseKKPmdlz42d9OaCzm/KLggIN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dEfb8vNE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89301C4CEF7;
-	Mon, 29 Dec 2025 16:30:22 +0000 (UTC)
+	 MIME-Version:Content-Type; b=kKygyAQEXwNhGORrNO9LzSy2FvvXohZkViDpHDKjab5mzmUGBLP1d0EW5ff6bpywFfRnRbXfMT1aWUgeY2EaYpUSzcU8kZYczjIQN5dfUKccxKPCeQVMxtKXuuWr0ozQtflY92ETLyHeW93zW15KcnT/eusgUGN3WJeVfqofXqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dEwMe2+A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 053D5C116C6;
+	Mon, 29 Dec 2025 16:28:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767025822;
-	bh=sr2bFdQ/q5no1nlp+JfAT+JJb2G7EzbQNmAw75gYTbs=;
+	s=korg; t=1767025732;
+	bh=ijsIB2LVFcr9rrMHgKCRNGjbhezR5HmJvFCwDW8N4ag=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dEfb8vNE2owdD3UdyjskraTkrUyd59C7WYnDq9eYgGY0T0skANZT7eKc7swIcJOrV
-	 P+UOXTLpxO0qzemFPHUS14qZhsGbuv3/ZV6BD0+8pwvyB4K8PUmBJTjrQu7MCAWJJI
-	 d7GfnkgTHshpGnKA0AOHAdgqr79KuePQzQlRuJm4=
+	b=dEwMe2+AwSd63B3v+hVHgu5HKZarNgxkAdrSpi1cLN1k1RFqC+GbJd4CHUXjBIjE6
+	 6h58VsGl83SaAMfJAXFJDq42Loqr5T8RCRyJDNe7XGa/92wSJe7We6NOS+kvqiFKY+
+	 iqDkPu2B8pGt1JZPbJo4mAUaPaKHtJEkjKa6Y/yA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+632cf32276a9a564188d@syzkaller.appspotmail.com,
+	stable@kernel.org,
+	Hong Yun <yhong@link.cuhk.edu.hk>,
 	Chao Yu <chao@kernel.org>,
-	Deepanshu Kartikey <kartikey406@gmail.com>,
 	Jaegeuk Kim <jaegeuk@kernel.org>
-Subject: [PATCH 6.18 317/430] f2fs: invalidate dentry cache on failed whiteout creation
-Date: Mon, 29 Dec 2025 17:11:59 +0100
-Message-ID: <20251229160735.995453475@linuxfoundation.org>
+Subject: [PATCH 6.18 318/430] f2fs: use global inline_xattr_slab instead of per-sb slab cache
+Date: Mon, 29 Dec 2025 17:12:00 +0100
+Message-ID: <20251229160736.031935738@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251229160724.139406961@linuxfoundation.org>
 References: <20251229160724.139406961@linuxfoundation.org>
@@ -66,89 +66,237 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Deepanshu Kartikey <kartikey406@gmail.com>
+From: Chao Yu <chao@kernel.org>
 
-commit d33f89b34aa313f50f9a512d58dd288999f246b0 upstream.
+commit 1f27ef42bb0b7c0740c5616ec577ec188b8a1d05 upstream.
 
-F2FS can mount filesystems with corrupted directory depth values that
-get runtime-clamped to MAX_DIR_HASH_DEPTH. When RENAME_WHITEOUT
-operations are performed on such directories, f2fs_rename performs
-directory modifications (updating target entry and deleting source
-entry) before attempting to add the whiteout entry via f2fs_add_link.
+As Hong Yun reported in mailing list:
 
-If f2fs_add_link fails due to the corrupted directory structure, the
-function returns an error to VFS, but the partial directory
-modifications have already been committed to disk. VFS assumes the
-entire rename operation failed and does not update the dentry cache,
-leaving stale mappings.
+loop7: detected capacity change from 0 to 131072
+------------[ cut here ]------------
+kmem_cache of name 'f2fs_xattr_entry-7:7' already exists
+WARNING: CPU: 0 PID: 24426 at mm/slab_common.c:110 kmem_cache_sanity_check mm/slab_common.c:109 [inline]
+WARNING: CPU: 0 PID: 24426 at mm/slab_common.c:110 __kmem_cache_create_args+0xa6/0x320 mm/slab_common.c:307
+CPU: 0 UID: 0 PID: 24426 Comm: syz.7.1370 Not tainted 6.17.0-rc4 #1 PREEMPT(full)
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
+RIP: 0010:kmem_cache_sanity_check mm/slab_common.c:109 [inline]
+RIP: 0010:__kmem_cache_create_args+0xa6/0x320 mm/slab_common.c:307
+Call Trace:
+ __kmem_cache_create include/linux/slab.h:353 [inline]
+ f2fs_kmem_cache_create fs/f2fs/f2fs.h:2943 [inline]
+ f2fs_init_xattr_caches+0xa5/0xe0 fs/f2fs/xattr.c:843
+ f2fs_fill_super+0x1645/0x2620 fs/f2fs/super.c:4918
+ get_tree_bdev_flags+0x1fb/0x260 fs/super.c:1692
+ vfs_get_tree+0x43/0x140 fs/super.c:1815
+ do_new_mount+0x201/0x550 fs/namespace.c:3808
+ do_mount fs/namespace.c:4136 [inline]
+ __do_sys_mount fs/namespace.c:4347 [inline]
+ __se_sys_mount+0x298/0x2f0 fs/namespace.c:4324
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x8e/0x3a0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
 
-In the error path, VFS does not call d_move() to update the dentry
-cache. This results in new_dentry still pointing to the old inode
-(new_inode) which has already had its i_nlink decremented to zero.
-The stale cache causes subsequent operations to incorrectly reference
-the freed inode.
+The bug can be reproduced w/ below scripts:
+- mount /dev/vdb /mnt1
+- mount /dev/vdc /mnt2
+- umount /mnt1
+- mounnt /dev/vdb /mnt1
 
-This causes subsequent operations to use cached dentry information that
-no longer matches the on-disk state. When a second rename targets the
-same entry, VFS attempts to decrement i_nlink on the stale inode, which
-may already have i_nlink=0, triggering a WARNING in drop_nlink().
+The reason is if we created two slab caches, named f2fs_xattr_entry-7:3
+and f2fs_xattr_entry-7:7, and they have the same slab size. Actually,
+slab system will only create one slab cache core structure which has
+slab name of "f2fs_xattr_entry-7:3", and two slab caches share the same
+structure and cache address.
 
-Example sequence:
-1. First rename (RENAME_WHITEOUT): file2 → file1
-   - f2fs updates file1 entry on disk (points to inode 8)
-   - f2fs deletes file2 entry on disk
-   - f2fs_add_link(whiteout) fails (corrupted directory)
-   - Returns error to VFS
-   - VFS does not call d_move() due to error
-   - VFS cache still has: file1 → inode 7 (stale!)
-   - inode 7 has i_nlink=0 (already decremented)
+So, if we destroy f2fs_xattr_entry-7:3 cache w/ cache address, it will
+decrease reference count of slab cache, rather than release slab cache
+entirely, since there is one more user has referenced the cache.
 
-2. Second rename: file3 → file1
-   - VFS uses stale cache: file1 → inode 7
-   - Tries to drop_nlink on inode 7 (i_nlink already 0)
-   - WARNING in drop_nlink()
+Then, if we try to create slab cache w/ name "f2fs_xattr_entry-7:3" again,
+slab system will find that there is existed cache which has the same name
+and trigger the warning.
 
-Fix this by explicitly invalidating old_dentry and new_dentry when
-f2fs_add_link fails during whiteout creation. This forces VFS to
-refresh from disk on subsequent operations, ensuring cache consistency
-even when the rename partially succeeds.
+Let's changes to use global inline_xattr_slab instead of per-sb slab cache
+for fixing.
 
-Reproducer:
-1. Mount F2FS image with corrupted i_current_depth
-2. renameat2(file2, file1, RENAME_WHITEOUT)
-3. renameat2(file3, file1, 0)
-4. System triggers WARNING in drop_nlink()
-
-Fixes: 7e01e7ad746b ("f2fs: support RENAME_WHITEOUT")
-Reported-by: syzbot+632cf32276a9a564188d@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=632cf32276a9a564188d
-Suggested-by: Chao Yu <chao@kernel.org>
-Link: https://lore.kernel.org/all/20251022233349.102728-1-kartikey406@gmail.com/ [v1]
-Cc: stable@vger.kernel.org
-Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
+Fixes: a999150f4fe3 ("f2fs: use kmem_cache pool during inline xattr lookups")
+Cc: stable@kernel.org
+Reported-by: Hong Yun <yhong@link.cuhk.edu.hk>
+Tested-by: Hong Yun <yhong@link.cuhk.edu.hk>
+Signed-off-by: Chao Yu <chao@kernel.org>
 Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/namei.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ fs/f2fs/f2fs.h  |    3 ---
+ fs/f2fs/super.c |   17 ++++++++---------
+ fs/f2fs/xattr.c |   32 +++++++++++---------------------
+ fs/f2fs/xattr.h |   10 ++++++----
+ 4 files changed, 25 insertions(+), 37 deletions(-)
 
---- a/fs/f2fs/namei.c
-+++ b/fs/f2fs/namei.c
-@@ -1053,9 +1053,11 @@ static int f2fs_rename(struct mnt_idmap
- 	if (whiteout) {
- 		set_inode_flag(whiteout, FI_INC_LINK);
- 		err = f2fs_add_link(old_dentry, whiteout);
--		if (err)
-+		if (err) {
-+			d_invalidate(old_dentry);
-+			d_invalidate(new_dentry);
- 			goto put_out_dir;
+--- a/fs/f2fs/f2fs.h
++++ b/fs/f2fs/f2fs.h
+@@ -1886,9 +1886,6 @@ struct f2fs_sb_info {
+ 	spinlock_t error_lock;			/* protect errors/stop_reason array */
+ 	bool error_dirty;			/* errors of sb is dirty */
+ 
+-	struct kmem_cache *inline_xattr_slab;	/* inline xattr entry */
+-	unsigned int inline_xattr_slab_size;	/* default inline xattr slab size */
 -
-+		}
- 		spin_lock(&whiteout->i_lock);
- 		whiteout->i_state &= ~I_LINKABLE;
- 		spin_unlock(&whiteout->i_lock);
+ 	/* For reclaimed segs statistics per each GC mode */
+ 	unsigned int gc_segment_mode;		/* GC state for reclaimed segments */
+ 	unsigned int gc_reclaimed_segs[MAX_GC_MODE];	/* Reclaimed segs for each mode */
+--- a/fs/f2fs/super.c
++++ b/fs/f2fs/super.c
+@@ -2028,7 +2028,6 @@ static void f2fs_put_super(struct super_
+ 	kfree(sbi->raw_super);
+ 
+ 	f2fs_destroy_page_array_cache(sbi);
+-	f2fs_destroy_xattr_caches(sbi);
+ #ifdef CONFIG_QUOTA
+ 	for (i = 0; i < MAXQUOTAS; i++)
+ 		kfree(F2FS_OPTION(sbi).s_qf_names[i]);
+@@ -4997,13 +4996,9 @@ try_onemore:
+ 	if (err)
+ 		goto free_iostat;
+ 
+-	/* init per sbi slab cache */
+-	err = f2fs_init_xattr_caches(sbi);
+-	if (err)
+-		goto free_percpu;
+ 	err = f2fs_init_page_array_cache(sbi);
+ 	if (err)
+-		goto free_xattr_cache;
++		goto free_percpu;
+ 
+ 	/* get an inode for meta space */
+ 	sbi->meta_inode = f2fs_iget(sb, F2FS_META_INO(sbi));
+@@ -5331,8 +5326,6 @@ free_meta_inode:
+ 	sbi->meta_inode = NULL;
+ free_page_array_cache:
+ 	f2fs_destroy_page_array_cache(sbi);
+-free_xattr_cache:
+-	f2fs_destroy_xattr_caches(sbi);
+ free_percpu:
+ 	destroy_percpu_info(sbi);
+ free_iostat:
+@@ -5535,10 +5528,15 @@ static int __init init_f2fs_fs(void)
+ 	err = f2fs_create_casefold_cache();
+ 	if (err)
+ 		goto free_compress_cache;
+-	err = register_filesystem(&f2fs_fs_type);
++	err = f2fs_init_xattr_cache();
+ 	if (err)
+ 		goto free_casefold_cache;
++	err = register_filesystem(&f2fs_fs_type);
++	if (err)
++		goto free_xattr_cache;
+ 	return 0;
++free_xattr_cache:
++	f2fs_destroy_xattr_cache();
+ free_casefold_cache:
+ 	f2fs_destroy_casefold_cache();
+ free_compress_cache:
+@@ -5579,6 +5577,7 @@ fail:
+ static void __exit exit_f2fs_fs(void)
+ {
+ 	unregister_filesystem(&f2fs_fs_type);
++	f2fs_destroy_xattr_cache();
+ 	f2fs_destroy_casefold_cache();
+ 	f2fs_destroy_compress_cache();
+ 	f2fs_destroy_compress_mempool();
+--- a/fs/f2fs/xattr.c
++++ b/fs/f2fs/xattr.c
+@@ -23,11 +23,12 @@
+ #include "xattr.h"
+ #include "segment.h"
+ 
++static struct kmem_cache *inline_xattr_slab;
+ static void *xattr_alloc(struct f2fs_sb_info *sbi, int size, bool *is_inline)
+ {
+-	if (likely(size == sbi->inline_xattr_slab_size)) {
++	if (likely(size == DEFAULT_XATTR_SLAB_SIZE)) {
+ 		*is_inline = true;
+-		return f2fs_kmem_cache_alloc(sbi->inline_xattr_slab,
++		return f2fs_kmem_cache_alloc(inline_xattr_slab,
+ 					GFP_F2FS_ZERO, false, sbi);
+ 	}
+ 	*is_inline = false;
+@@ -38,7 +39,7 @@ static void xattr_free(struct f2fs_sb_in
+ 							bool is_inline)
+ {
+ 	if (is_inline)
+-		kmem_cache_free(sbi->inline_xattr_slab, xattr_addr);
++		kmem_cache_free(inline_xattr_slab, xattr_addr);
+ 	else
+ 		kfree(xattr_addr);
+ }
+@@ -830,25 +831,14 @@ int f2fs_setxattr(struct inode *inode, i
+ 	return err;
+ }
+ 
+-int f2fs_init_xattr_caches(struct f2fs_sb_info *sbi)
++int __init f2fs_init_xattr_cache(void)
+ {
+-	dev_t dev = sbi->sb->s_bdev->bd_dev;
+-	char slab_name[32];
+-
+-	sprintf(slab_name, "f2fs_xattr_entry-%u:%u", MAJOR(dev), MINOR(dev));
+-
+-	sbi->inline_xattr_slab_size = F2FS_OPTION(sbi).inline_xattr_size *
+-					sizeof(__le32) + XATTR_PADDING_SIZE;
+-
+-	sbi->inline_xattr_slab = f2fs_kmem_cache_create(slab_name,
+-					sbi->inline_xattr_slab_size);
+-	if (!sbi->inline_xattr_slab)
+-		return -ENOMEM;
+-
+-	return 0;
++	inline_xattr_slab = f2fs_kmem_cache_create("f2fs_xattr_entry",
++					DEFAULT_XATTR_SLAB_SIZE);
++	return inline_xattr_slab ? 0 : -ENOMEM;
+ }
+ 
+-void f2fs_destroy_xattr_caches(struct f2fs_sb_info *sbi)
++void f2fs_destroy_xattr_cache(void)
+ {
+-	kmem_cache_destroy(sbi->inline_xattr_slab);
+-}
++	kmem_cache_destroy(inline_xattr_slab);
++}
+\ No newline at end of file
+--- a/fs/f2fs/xattr.h
++++ b/fs/f2fs/xattr.h
+@@ -89,6 +89,8 @@ struct f2fs_xattr_entry {
+ 			F2FS_TOTAL_EXTRA_ATTR_SIZE / sizeof(__le32) -	\
+ 			DEF_INLINE_RESERVED_SIZE -			\
+ 			MIN_INLINE_DENTRY_SIZE / sizeof(__le32))
++#define DEFAULT_XATTR_SLAB_SIZE	(DEFAULT_INLINE_XATTR_ADDRS *		\
++				sizeof(__le32) + XATTR_PADDING_SIZE)
+ 
+ /*
+  * On-disk structure of f2fs_xattr
+@@ -132,8 +134,8 @@ int f2fs_setxattr(struct inode *, int, c
+ int f2fs_getxattr(struct inode *, int, const char *, void *,
+ 		size_t, struct folio *);
+ ssize_t f2fs_listxattr(struct dentry *, char *, size_t);
+-int f2fs_init_xattr_caches(struct f2fs_sb_info *);
+-void f2fs_destroy_xattr_caches(struct f2fs_sb_info *);
++int __init f2fs_init_xattr_cache(void);
++void f2fs_destroy_xattr_cache(void);
+ #else
+ 
+ #define f2fs_xattr_handlers	NULL
+@@ -150,8 +152,8 @@ static inline int f2fs_getxattr(struct i
+ {
+ 	return -EOPNOTSUPP;
+ }
+-static inline int f2fs_init_xattr_caches(struct f2fs_sb_info *sbi) { return 0; }
+-static inline void f2fs_destroy_xattr_caches(struct f2fs_sb_info *sbi) { }
++static inline int __init f2fs_init_xattr_cache(void) { return 0; }
++static inline void f2fs_destroy_xattr_cache(void) { }
+ #endif
+ 
+ #ifdef CONFIG_F2FS_FS_SECURITY
 
 
 
