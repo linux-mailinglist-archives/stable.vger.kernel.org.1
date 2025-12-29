@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-203493-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203495-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96EB2CE68AF
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 12:34:40 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90FE9CE68B5
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 12:35:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5A7763008F99
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 11:34:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 525C03008E9E
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 11:35:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DED92E7BA0;
-	Mon, 29 Dec 2025 11:34:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8607230C629;
+	Mon, 29 Dec 2025 11:35:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="INfiC0VJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fc2M8VL5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E981C2E54D1
-	for <stable@vger.kernel.org>; Mon, 29 Dec 2025 11:34:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D77082F1FE1
+	for <stable@vger.kernel.org>; Mon, 29 Dec 2025 11:35:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767008075; cv=none; b=ok5jFRBgjUxWGbgGsLuqV3iMZI9lnvfENFfdTx4AK4HUEkyN9u1Iec82NoZQtTRzfBmuUtyjkhTE49EBylsg31Rwqbdspxv+l2lJUkfjoAy3Q2IsjgGsz8h13jKz34BmRtXIW4yThHLw5qGDFA5lVSUCZEoWevt5JtBlImlbBv8=
+	t=1767008118; cv=none; b=OhU/n2XQdV0SZoP0aPtkfDlirE0W6hQoPUGzlbQAjjRJWnzHHp7DXTL0ihg9g8xTvza9NJOQvM2bbGnUkc+vZRcGvEv2w/j0r4SsqnPdDnczInoa+jS04bZ2bnuO8rIK0e3XI1p0OdWdm4xKhN4J6a1+6uH/lSs/1lKwKaUH+18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767008075; c=relaxed/simple;
-	bh=TDiFtPGmV5Aem9tE6F7Kq3qZPJG5W3Sbv3d8CbeA488=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=UNM1Mo56c6JwLo/NkBfsfx8CIQrwvjptxFB1jf1CPL58tSWJLXDsYjQ6ilKLai/VaZfxeIHTyF5TowS5NraEM7pacI7cgImBF6WIvC58sHfqEcMB9Mb+YPi4GTMUvIprTLURTZBb6ruNxxNCtO3CInsq3O0sl/baJI1n6ZKWFbA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=INfiC0VJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72F80C4CEF7;
-	Mon, 29 Dec 2025 11:34:33 +0000 (UTC)
+	s=arc-20240116; t=1767008118; c=relaxed/simple;
+	bh=AfJAfm6CpeyOTYyjis35gTooCjrFazh6E8u5OEyEh1M=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ojs+vP5jZ+p1GSW2mXpt3A2IjC/s4LF8/MXxtjAyPdPtxyY36JFF70wXMqwJMYMnIDcBCzCM6xPjWfBIabvMykVPlHaWkT2/E9URnmeFxRukxTaJ/DBIKop6/f2Uob/oU4Eg44leyO3nv83IjG7xOWqXeBHX0IPdd3XHcxE4Eyc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fc2M8VL5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66169C4CEF7;
+	Mon, 29 Dec 2025 11:35:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767008073;
-	bh=TDiFtPGmV5Aem9tE6F7Kq3qZPJG5W3Sbv3d8CbeA488=;
+	s=korg; t=1767008117;
+	bh=AfJAfm6CpeyOTYyjis35gTooCjrFazh6E8u5OEyEh1M=;
 	h=Subject:To:Cc:From:Date:From;
-	b=INfiC0VJVkzQxiS7bPynQgLjko9HpJ92othuuOuaBdzOpoHlz//mWJAmKy7KDTWaI
-	 9MU8LIyeM7XDWqFyUkAAdkV/ESLNs07alNf4JyVKNASpSNBgHp3d5KfKYwgkq+H6CL
-	 SahD/PtYCQbC387qhPR0/gAi1Bjpg+KcQYzRWvMg=
-Subject: FAILED: patch "[PATCH] io_uring: fix filename leak in __io_openat_prep()" failed to apply to 6.1-stable tree
-To: activprithvi@gmail.com,axboe@kernel.dk
+	b=fc2M8VL5h8jUhPCgRSBKTqKcQhzdL9LVXqVq0o/MizhyIf+29Bp0t2bfwI8ZT3POX
+	 WufhQtoLFR7dpFvzl1whPTyTWqAiMUh3zooB3Clegz+hF/KJY9rlsCiq6WXcs0cRMX
+	 hZmvvZK80GDHLkvfnL9UvT+qolTdGWfihuHoZ4uk=
+Subject: FAILED: patch "[PATCH] erofs: fix unexpected EIO under memory pressure" failed to apply to 6.18-stable tree
+To: junbeom.yeom@samsung.com,hsiangkao@linux.alibaba.com,jw5454.kim@samsung.com,sj1557.seo@samsung.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 29 Dec 2025 12:34:31 +0100
-Message-ID: <2025122931-primer-motivate-1780@gregkh>
+Date: Mon, 29 Dec 2025 12:35:15 +0100
+Message-ID: <2025122915-kitchen-june-49ec@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -51,19 +51,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 6.18-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.18.y
 git checkout FETCH_HEAD
-git cherry-pick -x b14fad555302a2104948feaff70503b64c80ac01
+git cherry-pick -x 4012d78562193ef5eb613bad4b0c0fa187637cfe
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025122931-primer-motivate-1780@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025122915-kitchen-june-49ec@gregkh' --subject-prefix 'PATCH 6.18.y' HEAD^..
 
 Possible dependencies:
 
@@ -75,48 +75,126 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From b14fad555302a2104948feaff70503b64c80ac01 Mon Sep 17 00:00:00 2001
-From: Prithvi Tambewagh <activprithvi@gmail.com>
-Date: Thu, 25 Dec 2025 12:58:29 +0530
-Subject: [PATCH] io_uring: fix filename leak in __io_openat_prep()
+From 4012d78562193ef5eb613bad4b0c0fa187637cfe Mon Sep 17 00:00:00 2001
+From: Junbeom Yeom <junbeom.yeom@samsung.com>
+Date: Fri, 19 Dec 2025 21:40:31 +0900
+Subject: [PATCH] erofs: fix unexpected EIO under memory pressure
 
- __io_openat_prep() allocates a struct filename using getname(). However,
-for the condition of the file being installed in the fixed file table as
-well as having O_CLOEXEC flag set, the function returns early. At that
-point, the request doesn't have REQ_F_NEED_CLEANUP flag set. Due to this,
-the memory for the newly allocated struct filename is not cleaned up,
-causing a memory leak.
+erofs readahead could fail with ENOMEM under the memory pressure because
+it tries to alloc_page with GFP_NOWAIT | GFP_NORETRY, while GFP_KERNEL
+for a regular read. And if readahead fails (with non-uptodate folios),
+the original request will then fall back to synchronous read, and
+`.read_folio()` should return appropriate errnos.
 
-Fix this by setting the REQ_F_NEED_CLEANUP for the request just after the
-successful getname() call, so that when the request is torn down, the
-filename will be cleaned up, along with other resources needing cleanup.
+However, in scenarios where readahead and read operations compete,
+read operation could return an unintended EIO because of an incorrect
+error propagation.
 
-Reported-by: syzbot+00e61c43eb5e4740438f@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=00e61c43eb5e4740438f
-Tested-by: syzbot+00e61c43eb5e4740438f@syzkaller.appspotmail.com
+To resolve this, this patch modifies the behavior so that, when the
+PCL is for read(which means pcl.besteffort is true), it attempts actual
+decompression instead of propagating the privios error except initial EIO.
+
+- Page size: 4K
+- The original size of FileA: 16K
+- Compress-ratio per PCL: 50% (Uncompressed 8K -> Compressed 4K)
+[page0, page1] [page2, page3]
+[PCL0]---------[PCL1]
+
+- functions declaration:
+  . pread(fd, buf, count, offset)
+  . readahead(fd, offset, count)
+- Thread A tries to read the last 4K
+- Thread B tries to do readahead 8K from 4K
+- RA, besteffort == false
+- R, besteffort == true
+
+        <process A>                   <process B>
+
+pread(FileA, buf, 4K, 12K)
+  do readahead(page3) // failed with ENOMEM
+  wait_lock(page3)
+    if (!uptodate(page3))
+      goto do_read
+                               readahead(FileA, 4K, 8K)
+                               // Here create PCL-chain like below:
+                               // [null, page1] [page2, null]
+                               //   [PCL0:RA]-----[PCL1:RA]
+...
+  do read(page3)        // found [PCL1:RA] and add page3 into it,
+                        // and then, change PCL1 from RA to R
+...
+                               // Now, PCL-chain is as below:
+                               // [null, page1] [page2, page3]
+                               //   [PCL0:RA]-----[PCL1:R]
+
+                                 // try to decompress PCL-chain...
+                                 z_erofs_decompress_queue
+                                   err = 0;
+
+                                   // failed with ENOMEM, so page 1
+                                   // only for RA will not be uptodated.
+                                   // it's okay.
+                                   err = decompress([PCL0:RA], err)
+
+                                   // However, ENOMEM propagated to next
+                                   // PCL, even though PCL is not only
+                                   // for RA but also for R. As a result,
+                                   // it just failed with ENOMEM without
+                                   // trying any decompression, so page2
+                                   // and page3 will not be uptodated.
+                ** BUG HERE ** --> err = decompress([PCL1:R], err)
+
+                                   return err as ENOMEM
+...
+    wait_lock(page3)
+      if (!uptodate(page3))
+        return EIO      <-- Return an unexpected EIO!
+...
+
+Fixes: 2349d2fa02db ("erofs: sunset unneeded NOFAILs")
 Cc: stable@vger.kernel.org
-Signed-off-by: Prithvi Tambewagh <activprithvi@gmail.com>
-Fixes: b9445598d8c6 ("io_uring: openat directly into fixed fd table")
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Reviewed-by: Jaewook Kim <jw5454.kim@samsung.com>
+Reviewed-by: Sungjong Seo <sj1557.seo@samsung.com>
+Signed-off-by: Junbeom Yeom <junbeom.yeom@samsung.com>
+Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
 
-diff --git a/io_uring/openclose.c b/io_uring/openclose.c
-index bfeb91b31bba..15dde9bd6ff6 100644
---- a/io_uring/openclose.c
-+++ b/io_uring/openclose.c
-@@ -73,13 +73,13 @@ static int __io_openat_prep(struct io_kiocb *req, const struct io_uring_sqe *sqe
- 		open->filename = NULL;
- 		return ret;
+diff --git a/fs/erofs/zdata.c b/fs/erofs/zdata.c
+index 65da21504632..3d31f7840ca0 100644
+--- a/fs/erofs/zdata.c
++++ b/fs/erofs/zdata.c
+@@ -1262,7 +1262,7 @@ static int z_erofs_parse_in_bvecs(struct z_erofs_backend *be, bool *overlapped)
+ 	return err;
+ }
+ 
+-static int z_erofs_decompress_pcluster(struct z_erofs_backend *be, int err)
++static int z_erofs_decompress_pcluster(struct z_erofs_backend *be, bool eio)
+ {
+ 	struct erofs_sb_info *const sbi = EROFS_SB(be->sb);
+ 	struct z_erofs_pcluster *pcl = be->pcl;
+@@ -1270,7 +1270,7 @@ static int z_erofs_decompress_pcluster(struct z_erofs_backend *be, int err)
+ 	const struct z_erofs_decompressor *alg =
+ 				z_erofs_decomp[pcl->algorithmformat];
+ 	bool try_free = true;
+-	int i, j, jtop, err2;
++	int i, j, jtop, err2, err = eio ? -EIO : 0;
+ 	struct page *page;
+ 	bool overlapped;
+ 	const char *reason;
+@@ -1413,12 +1413,12 @@ static int z_erofs_decompress_queue(const struct z_erofs_decompressqueue *io,
+ 		.pcl = io->head,
+ 	};
+ 	struct z_erofs_pcluster *next;
+-	int err = io->eio ? -EIO : 0;
++	int err = 0;
+ 
+ 	for (; be.pcl != Z_EROFS_PCLUSTER_TAIL; be.pcl = next) {
+ 		DBG_BUGON(!be.pcl);
+ 		next = READ_ONCE(be.pcl->next);
+-		err = z_erofs_decompress_pcluster(&be, err) ?: err;
++		err = z_erofs_decompress_pcluster(&be, io->eio) ?: err;
  	}
-+	req->flags |= REQ_F_NEED_CLEANUP;
- 
- 	open->file_slot = READ_ONCE(sqe->file_index);
- 	if (open->file_slot && (open->how.flags & O_CLOEXEC))
- 		return -EINVAL;
- 
- 	open->nofile = rlimit(RLIMIT_NOFILE);
--	req->flags |= REQ_F_NEED_CLEANUP;
- 	if (io_openat_force_async(open))
- 		req->flags |= REQ_F_FORCE_ASYNC;
- 	return 0;
+ 	return err;
+ }
 
 
