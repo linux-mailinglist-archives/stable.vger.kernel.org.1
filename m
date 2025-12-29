@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-203496-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203497-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C056CE68BB
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 12:35:38 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39085CE68C4
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 12:36:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EE2E33009A9F
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 11:35:35 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 34DFD30024F5
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 11:36:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 978402F1FE7;
-	Mon, 29 Dec 2025 11:35:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8996030BF78;
+	Mon, 29 Dec 2025 11:36:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TBVUvc7E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eXMblZJf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ADFB2E7160
-	for <stable@vger.kernel.org>; Mon, 29 Dec 2025 11:35:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE29530CD8A
+	for <stable@vger.kernel.org>; Mon, 29 Dec 2025 11:36:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767008128; cv=none; b=MmFCGKyiG/m4lC91uC80GKnlLUhDvRUHkjlcFOnk1c+KzMKvHzDzaeGUp1cL/ukarJ6lJDUhnRRaWECNkSGsTaUvz6M9VFDczYyd02+ZpkKMFuvSzxJGcV16GMrBoOTsF8hbh0NMPS4vyUNLAOB84QoebAvLg1mXR7DErBpZo2A=
+	t=1767008186; cv=none; b=KSsan7PqHBFDQWyAstqMofwYFvmeuY6NIyreB6TGrYNUQjDg37x7C+3df2VXqXbOJUUeY3P8QOM6pLl7HrPjMqder/EQmrpTeoJigs4fE6HRalWcsJhggMr8AFBxxZr4LP5+/fqUJsEbxUdCbycf36EN9zBZaGqSOkzM5accjdg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767008128; c=relaxed/simple;
-	bh=R4ura5i87jEGikUjJ2zmp5FXnIpIRyO6gIG9R1NQKqY=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=QkFElQ3o+QE9u+/xSV35c6gN0NupAv0e0uxTqK7cy/Ju0irfNpZRShia9FHy6E6HWWcS7c7mVGiykqJqczhA7wkcqzurO2AZnR0S8NaoXSyZerQZtWshhMkQ5qhr1iyf0cm5TvZFepfyGk0JbNpQi47JWw4tnsyK3/881YbLoxk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TBVUvc7E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B750CC4CEF7;
-	Mon, 29 Dec 2025 11:35:26 +0000 (UTC)
+	s=arc-20240116; t=1767008186; c=relaxed/simple;
+	bh=PaxtwEUNN5MmN9UpfeRjFroBa/g9z3m/WXiz5mgO33g=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=FQ8vPJK+gQoT/x+LkUanwjoNWl4MBHtNRZEa6WkdwgBTCLjNsOBpvOAG2p/IydiEx8IYUm3m4aJlD71I9o68ZPWUGoncYzghI6uPgjg0HVEd9T3w/kdeHg15o018LxvP6qSWyficqlXq7Eljfb1ju4wRIe/8I8D1otUKnW/mAhs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eXMblZJf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87115C4CEF7;
+	Mon, 29 Dec 2025 11:36:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767008127;
-	bh=R4ura5i87jEGikUjJ2zmp5FXnIpIRyO6gIG9R1NQKqY=;
+	s=korg; t=1767008184;
+	bh=PaxtwEUNN5MmN9UpfeRjFroBa/g9z3m/WXiz5mgO33g=;
 	h=Subject:To:Cc:From:Date:From;
-	b=TBVUvc7Ee2GGvfvOS5RezPcG9gPYntLDIR5ziy8AkSIYkmwEN7YHNYocJPXWvluyg
-	 6FSEZDLqPcgUdNeCTqagO9TCcK/G7BZZQum2HY8hKaag+0xBQKs9e1/U2Jyv4jxHFL
-	 D/FWBWTF/NYCEo8je0i1pdd5ys5XiyF5uC6+Q5l8=
-Subject: FAILED: patch "[PATCH] erofs: fix unexpected EIO under memory pressure" failed to apply to 6.12-stable tree
-To: junbeom.yeom@samsung.com,hsiangkao@linux.alibaba.com,jw5454.kim@samsung.com,sj1557.seo@samsung.com
+	b=eXMblZJfAsw/sMJVqCUpbSZcaQp9kpzBULyKaT0jpQPUXGd2QnxVoaQdWXYC4u+Zr
+	 GZxhoK3hhDmky3qhxYwjqNuVhTGWwSk1E2Sm8yiBlDCLA7CxSRxCm7UmNZePgUYN+2
+	 K8CZ70f3nWZuI4jrVfVY9mrOwcKB43fN2Kg+X2Y0=
+Subject: FAILED: patch "[PATCH] sched_ext: Factor out local_dsq_post_enq() from" failed to apply to 6.12-stable tree
+To: tj@kernel.org,arighi@nvidia.com,emil@etsalapatis.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 29 Dec 2025 12:35:16 +0100
-Message-ID: <2025122916-blimp-ladle-4239@gregkh>
+Date: Mon, 29 Dec 2025 12:36:22 +0100
+Message-ID: <2025122922-chubby-doctrine-9c07@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,10 +60,10 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x 4012d78562193ef5eb613bad4b0c0fa187637cfe
+git cherry-pick -x 530b6637c79e728d58f1d9b66bd4acf4b735b86d
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025122916-blimp-ladle-4239@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025122922-chubby-doctrine-9c07@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
@@ -75,126 +75,75 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 4012d78562193ef5eb613bad4b0c0fa187637cfe Mon Sep 17 00:00:00 2001
-From: Junbeom Yeom <junbeom.yeom@samsung.com>
-Date: Fri, 19 Dec 2025 21:40:31 +0900
-Subject: [PATCH] erofs: fix unexpected EIO under memory pressure
+From 530b6637c79e728d58f1d9b66bd4acf4b735b86d Mon Sep 17 00:00:00 2001
+From: Tejun Heo <tj@kernel.org>
+Date: Thu, 11 Dec 2025 15:45:03 -1000
+Subject: [PATCH] sched_ext: Factor out local_dsq_post_enq() from
+ dispatch_enqueue()
 
-erofs readahead could fail with ENOMEM under the memory pressure because
-it tries to alloc_page with GFP_NOWAIT | GFP_NORETRY, while GFP_KERNEL
-for a regular read. And if readahead fails (with non-uptodate folios),
-the original request will then fall back to synchronous read, and
-`.read_folio()` should return appropriate errnos.
+Factor out local_dsq_post_enq() which performs post-enqueue handling for
+local DSQs - triggering resched_curr() if SCX_ENQ_PREEMPT is specified or if
+the current CPU is idle. No functional change.
 
-However, in scenarios where readahead and read operations compete,
-read operation could return an unintended EIO because of an incorrect
-error propagation.
+This will be used by the next patch to fix move_local_task_to_local_dsq().
 
-To resolve this, this patch modifies the behavior so that, when the
-PCL is for read(which means pcl.besteffort is true), it attempts actual
-decompression instead of propagating the privios error except initial EIO.
+Cc: stable@vger.kernel.org # v6.12+
+Reviewed-by: Andrea Righi <arighi@nvidia.com>
+Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
 
-- Page size: 4K
-- The original size of FileA: 16K
-- Compress-ratio per PCL: 50% (Uncompressed 8K -> Compressed 4K)
-[page0, page1] [page2, page3]
-[PCL0]---------[PCL1]
-
-- functions declaration:
-  . pread(fd, buf, count, offset)
-  . readahead(fd, offset, count)
-- Thread A tries to read the last 4K
-- Thread B tries to do readahead 8K from 4K
-- RA, besteffort == false
-- R, besteffort == true
-
-        <process A>                   <process B>
-
-pread(FileA, buf, 4K, 12K)
-  do readahead(page3) // failed with ENOMEM
-  wait_lock(page3)
-    if (!uptodate(page3))
-      goto do_read
-                               readahead(FileA, 4K, 8K)
-                               // Here create PCL-chain like below:
-                               // [null, page1] [page2, null]
-                               //   [PCL0:RA]-----[PCL1:RA]
-...
-  do read(page3)        // found [PCL1:RA] and add page3 into it,
-                        // and then, change PCL1 from RA to R
-...
-                               // Now, PCL-chain is as below:
-                               // [null, page1] [page2, page3]
-                               //   [PCL0:RA]-----[PCL1:R]
-
-                                 // try to decompress PCL-chain...
-                                 z_erofs_decompress_queue
-                                   err = 0;
-
-                                   // failed with ENOMEM, so page 1
-                                   // only for RA will not be uptodated.
-                                   // it's okay.
-                                   err = decompress([PCL0:RA], err)
-
-                                   // However, ENOMEM propagated to next
-                                   // PCL, even though PCL is not only
-                                   // for RA but also for R. As a result,
-                                   // it just failed with ENOMEM without
-                                   // trying any decompression, so page2
-                                   // and page3 will not be uptodated.
-                ** BUG HERE ** --> err = decompress([PCL1:R], err)
-
-                                   return err as ENOMEM
-...
-    wait_lock(page3)
-      if (!uptodate(page3))
-        return EIO      <-- Return an unexpected EIO!
-...
-
-Fixes: 2349d2fa02db ("erofs: sunset unneeded NOFAILs")
-Cc: stable@vger.kernel.org
-Reviewed-by: Jaewook Kim <jw5454.kim@samsung.com>
-Reviewed-by: Sungjong Seo <sj1557.seo@samsung.com>
-Signed-off-by: Junbeom Yeom <junbeom.yeom@samsung.com>
-Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-
-diff --git a/fs/erofs/zdata.c b/fs/erofs/zdata.c
-index 65da21504632..3d31f7840ca0 100644
---- a/fs/erofs/zdata.c
-+++ b/fs/erofs/zdata.c
-@@ -1262,7 +1262,7 @@ static int z_erofs_parse_in_bvecs(struct z_erofs_backend *be, bool *overlapped)
- 	return err;
+diff --git a/kernel/sched/ext.c b/kernel/sched/ext.c
+index c4465ccefea4..c78efa99406f 100644
+--- a/kernel/sched/ext.c
++++ b/kernel/sched/ext.c
+@@ -982,6 +982,22 @@ static void refill_task_slice_dfl(struct scx_sched *sch, struct task_struct *p)
+ 	__scx_add_event(sch, SCX_EV_REFILL_SLICE_DFL, 1);
  }
  
--static int z_erofs_decompress_pcluster(struct z_erofs_backend *be, int err)
-+static int z_erofs_decompress_pcluster(struct z_erofs_backend *be, bool eio)
++static void local_dsq_post_enq(struct scx_dispatch_q *dsq, struct task_struct *p,
++			       u64 enq_flags)
++{
++	struct rq *rq = container_of(dsq, struct rq, scx.local_dsq);
++	bool preempt = false;
++
++	if ((enq_flags & SCX_ENQ_PREEMPT) && p != rq->curr &&
++	    rq->curr->sched_class == &ext_sched_class) {
++		rq->curr->scx.slice = 0;
++		preempt = true;
++	}
++
++	if (preempt || sched_class_above(&ext_sched_class, rq->curr->sched_class))
++		resched_curr(rq);
++}
++
+ static void dispatch_enqueue(struct scx_sched *sch, struct scx_dispatch_q *dsq,
+ 			     struct task_struct *p, u64 enq_flags)
  {
- 	struct erofs_sb_info *const sbi = EROFS_SB(be->sb);
- 	struct z_erofs_pcluster *pcl = be->pcl;
-@@ -1270,7 +1270,7 @@ static int z_erofs_decompress_pcluster(struct z_erofs_backend *be, int err)
- 	const struct z_erofs_decompressor *alg =
- 				z_erofs_decomp[pcl->algorithmformat];
- 	bool try_free = true;
--	int i, j, jtop, err2;
-+	int i, j, jtop, err2, err = eio ? -EIO : 0;
- 	struct page *page;
- 	bool overlapped;
- 	const char *reason;
-@@ -1413,12 +1413,12 @@ static int z_erofs_decompress_queue(const struct z_erofs_decompressqueue *io,
- 		.pcl = io->head,
- 	};
- 	struct z_erofs_pcluster *next;
--	int err = io->eio ? -EIO : 0;
-+	int err = 0;
+@@ -1093,22 +1109,10 @@ static void dispatch_enqueue(struct scx_sched *sch, struct scx_dispatch_q *dsq,
+ 	if (enq_flags & SCX_ENQ_CLEAR_OPSS)
+ 		atomic_long_set_release(&p->scx.ops_state, SCX_OPSS_NONE);
  
- 	for (; be.pcl != Z_EROFS_PCLUSTER_TAIL; be.pcl = next) {
- 		DBG_BUGON(!be.pcl);
- 		next = READ_ONCE(be.pcl->next);
--		err = z_erofs_decompress_pcluster(&be, err) ?: err;
-+		err = z_erofs_decompress_pcluster(&be, io->eio) ?: err;
- 	}
- 	return err;
+-	if (is_local) {
+-		struct rq *rq = container_of(dsq, struct rq, scx.local_dsq);
+-		bool preempt = false;
+-
+-		if ((enq_flags & SCX_ENQ_PREEMPT) && p != rq->curr &&
+-		    rq->curr->sched_class == &ext_sched_class) {
+-			rq->curr->scx.slice = 0;
+-			preempt = true;
+-		}
+-
+-		if (preempt || sched_class_above(&ext_sched_class,
+-						 rq->curr->sched_class))
+-			resched_curr(rq);
+-	} else {
++	if (is_local)
++		local_dsq_post_enq(dsq, p, enq_flags);
++	else
+ 		raw_spin_unlock(&dsq->lock);
+-	}
  }
+ 
+ static void task_unlink_from_dsq(struct task_struct *p,
 
 
