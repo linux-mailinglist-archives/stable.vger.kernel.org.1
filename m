@@ -1,142 +1,142 @@
-Return-Path: <stable+bounces-203669-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203671-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2FC9CE7463
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:58:29 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DD94CE7475
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:58:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 03AD0300CCC8
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 15:58:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A8FBF3017EE9
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 15:58:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F8F232BF48;
-	Mon, 29 Dec 2025 15:58:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFF2332BF21;
+	Mon, 29 Dec 2025 15:58:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DpEzgScj"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="h2/8SG9e"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBC8332BF20
-	for <stable@vger.kernel.org>; Mon, 29 Dec 2025 15:58:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C45E32B9A8
+	for <stable@vger.kernel.org>; Mon, 29 Dec 2025 15:58:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767023906; cv=none; b=JTFeklByhOMjcTQ+sccAjdRmnMspxwjZcElCzjgBUXsRZFZrkGEp+UNbPnXxvYkV0r9sLbA+7xInz2T5S039xmEK98kgnqrQbqbO8eBG1JxVuhDj9iA4L5l0i0sb5Ax8KjmifMHxjvEm44/Tcf4qjuXHvvJtInofPsdND1pM/e0=
+	t=1767023915; cv=none; b=KRPvZOTx4vuc+ZhiUSJr/RbpQu5P7zrQ3Z7pEcUFEh+R5WgnEr/j0vnlPlSkDpoCh0GuPdmsPsk0/XMin/WGFKiCGX44VuNOh+m1t+HmN6vZorB8h/AVaAc4jYL3oHs0MJk9Y1d1e1WI3jozLpGTUKBzYp0go5eVEL/zAtvfK3E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767023906; c=relaxed/simple;
-	bh=Q3ei4sodW9INe/jc8Ol0Tcwt1L2cndtGkA1xwJlB0E8=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=GvozN9GylpjCmdl8fxbqrNyzD8HGxmvltSTvnU+R8GpDyzQ/nVLVBH2ISYb3lv2/5udPJlfjX+r/Q46d345B/4IGT5Wbj5P7Zp0O13+VlCnV9kB2exx169Z8DXfcle/+B05QiW+Sqow4KdLTl+r+R0BKbr967NRi3r1YCLcHwZk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DpEzgScj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7E00C4CEF7;
-	Mon, 29 Dec 2025 15:58:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767023906;
-	bh=Q3ei4sodW9INe/jc8Ol0Tcwt1L2cndtGkA1xwJlB0E8=;
-	h=Subject:To:Cc:From:Date:From;
-	b=DpEzgScjvsyn1vSAjWiPHVVyJ1htV3x0d5QFOdVPEqBIIigJb1wzLDvbVGWRsq/YT
-	 1nUUPJVjuK3P4aqTrMjTWn2DUWiahhb6AWTzVUPpkuQx9Zew1s3912Cb7C8G3EJln9
-	 kt5rNIGQMCJCivZCnF+uQlcIIk2u7erVYAm2aZfw=
-Subject: FAILED: patch "[PATCH] ARM: dts: microchip: sama5d2: fix spi flexcom fifo size to 32" failed to apply to 5.15-stable tree
-To: nicolas.ferre@microchip.com,claudiu.beznea@tuxon.dev
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 29 Dec 2025 16:58:20 +0100
-Message-ID: <2025122920-atop-frisk-5877@gregkh>
+	s=arc-20240116; t=1767023915; c=relaxed/simple;
+	bh=1q4GxWTKxNhBnKy5rhKHfNQPUo5qaFihuAu+sE9BCE4=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=WBcBOrOW6wH6LNfJxkVQvn3WdEtuYEQJJvcsERK4vnAJaf+cOZODKymiXPAHIdGLMFp7UxGN13jMUPGlDoq12JmL46OOHY6xw0EFojd5BequGRxQm1o11a6z+rKE5qUemeGMgRigZrtlzaqMGNbogLGFNnUQr7omkZAQ/6+k94Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=h2/8SG9e; arc=none smtp.client-ip=209.85.210.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-7b952a966d7so18995902b3a.3
+        for <stable@vger.kernel.org>; Mon, 29 Dec 2025 07:58:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1767023913; x=1767628713; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZsY7DmCtEBPG/2V9InsEE1AQkRIUnM2k6RE8KjmAuX8=;
+        b=h2/8SG9e2kiB2JhaHXPFSxkc+WJ1MPn1mNSIQp9y1nVglKdDFsqlA4s09EC2Yq/L1o
+         JqD75zmweHzRbs2znEraTyC7E7fzA0AuytKPy63o5JW2AqJyWWUC3A+udiu7U8q3gRxW
+         dx1k6C/Eu5vHKirUyPmL66xRR2IzlWRxLJipfo6v6gbJZVN/niaRdbVyooTmdihAIPGy
+         UNkNA5BjNWgKgziw5zcEwuka+t37UQ3oIxd4LKYxdUKSle/kOPyTTn9MPIOQ9vGa4Y6R
+         6G1STHo7xXktHd+hURRwFJSsfS/7dxegbhGNAHlL/dDfeuhr3RUch2aBOiitSPD2/I2r
+         sLlA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767023913; x=1767628713;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZsY7DmCtEBPG/2V9InsEE1AQkRIUnM2k6RE8KjmAuX8=;
+        b=k42AePIgogk7Km/yq7FPMGU4+AQK5Ql9v4ne37Ipvmxmf0zuRb7QAV6wh3LK4pzOqH
+         qNXMjT5AgWSMdASC46Js2EIWxoXyvgxb32d/Fg18tjujt6AnpQm+07kg223BEPmseZYM
+         IWiNnnsfs+D6DMteCJ7TlY/7cY4FNKUT9A5yaP8I7iYKe00t8Vu6OHB5WK2Ufs0sJwO1
+         K8e8zh226g5x6zLQoTqKzgNn8c5wCCCH5wgSrCam4jhjTcTHCBiE9UO2wQzzwBd6sio/
+         kEV19e1FlHs5pyvOh5V/A+XvT01vc0hb+PgUvQCKzU5v6DlGFQEdrW5cTz3PPLWgXhCX
+         wcFA==
+X-Forwarded-Encrypted: i=1; AJvYcCWU8FKYGxyKsaXScumciRUCqLkzx8zGSxmMECs1DtsB64ZISOG7Ua/Otm7hurjerty4k3LZK7c=@vger.kernel.org
+X-Gm-Message-State: AOJu0YygX5lKNSqtZVKJK2bhNVnheTGfVvJYCn+fBP0ElbRKdK/isEa8
+	jq6Z3ZhMV+jLVl5i33eDgEgL/EieoOi+l1TtPaMiHNR4kgWO9yqiHToiysKjpsZFoo4xjd13Q8p
+	mDjg5Cw==
+X-Google-Smtp-Source: AGHT+IEm1Henxy7WNKshf2l4r3viWwWVwM5WWhx/D1rwx8s6sLIMg02yiyYe9UxrlES/7PAqEhXA6MKem3A=
+X-Received: from pfwp41.prod.google.com ([2002:a05:6a00:26e9:b0:776:1344:ca77])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:301f:b0:7aa:4f1d:c458
+ with SMTP id d2e1a72fcca58-7ff657a303bmr27264653b3a.19.1767023913436; Mon, 29
+ Dec 2025 07:58:33 -0800 (PST)
+Date: Mon, 29 Dec 2025 07:58:31 -0800
+In-Reply-To: <ub4djdh4iqy5mhl4ea6gpalu2tpv5ymnw63wdkwehldzh477eq@frxtjt3umsqh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <20251224001249.1041934-1-pbonzini@redhat.com> <20251224001249.1041934-2-pbonzini@redhat.com>
+ <ub4djdh4iqy5mhl4ea6gpalu2tpv5ymnw63wdkwehldzh477eq@frxtjt3umsqh>
+Message-ID: <aVKlJ5OBc8yRqjlF@google.com>
+Subject: Re: [PATCH 1/5] x86, fpu: introduce fpu_load_guest_fpstate()
+From: Sean Christopherson <seanjc@google.com>
+To: Yao Yuan <yaoyuan@linux.alibaba.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	x86@kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
+On Fri, Dec 26, 2025, Yao Yuan wrote:
+> On Wed, Dec 24, 2025 at 01:12:45AM +0800, Paolo Bonzini wrote:
+> > Create a variant of fpregs_lock_and_load() that KVM can use in its
+> > vCPU entry code after preemption has been disabled.  While basing
+> > it on the existing logic in vcpu_enter_guest(), ensure that
+> > fpregs_assert_state_consistent() always runs and sprinkle a few
+> > more assertions.
+> >
+> > Cc: stable@vger.kernel.org
+> > Fixes: 820a6ee944e7 ("kvm: x86: Add emulation for IA32_XFD", 2022-01-14)
+> > Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> > ---
+> >  arch/x86/include/asm/fpu/api.h |  1 +
+> >  arch/x86/kernel/fpu/core.c     | 17 +++++++++++++++++
+> >  arch/x86/kvm/x86.c             |  8 +-------
+> >  3 files changed, 19 insertions(+), 7 deletions(-)
+> >
+> > diff --git a/arch/x86/include/asm/fpu/api.h b/arch/x86/include/asm/fpu/api.h
+> > index cd6f194a912b..0820b2621416 100644
+> > --- a/arch/x86/include/asm/fpu/api.h
+> > +++ b/arch/x86/include/asm/fpu/api.h
+> > @@ -147,6 +147,7 @@ extern void *get_xsave_addr(struct xregs_state *xsave, int xfeature_nr);
+> >  /* KVM specific functions */
+> >  extern bool fpu_alloc_guest_fpstate(struct fpu_guest *gfpu);
+> >  extern void fpu_free_guest_fpstate(struct fpu_guest *gfpu);
+> > +extern void fpu_load_guest_fpstate(struct fpu_guest *gfpu);
+> >  extern int fpu_swap_kvm_fpstate(struct fpu_guest *gfpu, bool enter_guest);
+> >  extern int fpu_enable_guest_xfd_features(struct fpu_guest *guest_fpu, u64 xfeatures);
+> >
+> > diff --git a/arch/x86/kernel/fpu/core.c b/arch/x86/kernel/fpu/core.c
+> > index 3ab27fb86618..a480fa8c65d5 100644
+> > --- a/arch/x86/kernel/fpu/core.c
+> > +++ b/arch/x86/kernel/fpu/core.c
+> > @@ -878,6 +878,23 @@ void fpregs_lock_and_load(void)
+> >  	fpregs_assert_state_consistent();
+> >  }
+> >
+> > +void fpu_load_guest_fpstate(struct fpu_guest *gfpu)
+> > +{
+> > +#ifdef CONFIG_X86_DEBUG_FPU
+> > +	struct fpu *fpu = x86_task_fpu(current);
+> > +	WARN_ON_ONCE(gfpu->fpstate != fpu->fpstate);
+> > +#endif
+> > +
+> > +	lockdep_assert_preemption_disabled();
+> 
+> Hi Paolo,
+> 
+> Do we need make sure the irq is disabled w/ lockdep ?
 
-The patch below does not apply to the 5.15-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Yes please, e.g. see commit 2620fe268e80 ("KVM: x86: Revert "KVM: X86: Fix fpu
+state crash in kvm guest"").
 
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
-git checkout FETCH_HEAD
-git cherry-pick -x 7d5864dc5d5ea6a35983dd05295fb17f2f2f44ce
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025122920-atop-frisk-5877@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
-
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 7d5864dc5d5ea6a35983dd05295fb17f2f2f44ce Mon Sep 17 00:00:00 2001
-From: Nicolas Ferre <nicolas.ferre@microchip.com>
-Date: Fri, 14 Nov 2025 15:02:25 +0100
-Subject: [PATCH] ARM: dts: microchip: sama5d2: fix spi flexcom fifo size to 32
-
-Unlike standalone spi peripherals, on sama5d2, the flexcom spi have fifo
-size of 32 data. Fix flexcom/spi nodes where this property is wrong.
-
-Fixes: 6b9a3584c7ed ("ARM: dts: at91: sama5d2: Add missing flexcom definitions")
-Cc: stable@vger.kernel.org # 5.8+
-Signed-off-by: Nicolas Ferre <nicolas.ferre@microchip.com>
-Link: https://lore.kernel.org/r/20251114140225.30372-1-nicolas.ferre@microchip.com
-Signed-off-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
-
-diff --git a/arch/arm/boot/dts/microchip/sama5d2.dtsi b/arch/arm/boot/dts/microchip/sama5d2.dtsi
-index 17430d7f2055..fde890f18d20 100644
---- a/arch/arm/boot/dts/microchip/sama5d2.dtsi
-+++ b/arch/arm/boot/dts/microchip/sama5d2.dtsi
-@@ -571,7 +571,7 @@ AT91_XDMAC_DT_PERID(11))>,
- 						 AT91_XDMAC_DT_PER_IF(1) |
- 						 AT91_XDMAC_DT_PERID(12))>;
- 					dma-names = "tx", "rx";
--					atmel,fifo-size = <16>;
-+					atmel,fifo-size = <32>;
- 					status = "disabled";
- 				};
- 
-@@ -642,7 +642,7 @@ AT91_XDMAC_DT_PERID(13))>,
- 						 AT91_XDMAC_DT_PER_IF(1) |
- 						 AT91_XDMAC_DT_PERID(14))>;
- 					dma-names = "tx", "rx";
--					atmel,fifo-size = <16>;
-+					atmel,fifo-size = <32>;
- 					status = "disabled";
- 				};
- 
-@@ -854,7 +854,7 @@ AT91_XDMAC_DT_PERID(15))>,
- 						 AT91_XDMAC_DT_PER_IF(1) |
- 						 AT91_XDMAC_DT_PERID(16))>;
- 					dma-names = "tx", "rx";
--					atmel,fifo-size = <16>;
-+					atmel,fifo-size = <32>;
- 					status = "disabled";
- 				};
- 
-@@ -925,7 +925,7 @@ AT91_XDMAC_DT_PERID(17))>,
- 						 AT91_XDMAC_DT_PER_IF(1) |
- 						 AT91_XDMAC_DT_PERID(18))>;
- 					dma-names = "tx", "rx";
--					atmel,fifo-size = <16>;
-+					atmel,fifo-size = <32>;
- 					status = "disabled";
- 				};
- 
-@@ -997,7 +997,7 @@ AT91_XDMAC_DT_PERID(19))>,
- 						 AT91_XDMAC_DT_PER_IF(1) |
- 						 AT91_XDMAC_DT_PERID(20))>;
- 					dma-names = "tx", "rx";
--					atmel,fifo-size = <16>;
-+					atmel,fifo-size = <32>;
- 					status = "disabled";
- 				};
- 
-
+> The irq_fpu_usable() returns true for:
+> 
+> !in_nmi () && in_hardirq() and !softirq_count()
+> 
+> It's possible that the TIF_NEED_FPU_LOAD is set again
+> w/ interrupt is enabled.
 
