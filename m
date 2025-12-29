@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-203978-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204020-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D53FCE7771
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:28:32 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF44CCE7A86
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:43:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 475543003B0C
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:28:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8556A305DDA6
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:30:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80C8F330322;
-	Mon, 29 Dec 2025 16:28:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F9B53321CF;
+	Mon, 29 Dec 2025 16:30:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bGvA0bBS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y4thpgYq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F98532FA18;
-	Mon, 29 Dec 2025 16:28:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE2893321C9;
+	Mon, 29 Dec 2025 16:30:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767025707; cv=none; b=LUlJFVoUqrHzqOIkAOnAx/bX0C0Uu2hfor1r7IrjPVo5CoGBH+k8o/QAI5tUXlRKktVLa3Dem3S1VoWOlSKjaaUChHhXass48V3qEJV8l+0BUYRX/9/Oh67Vpy7YdKZoRCJ/OPoWhE7/57jZJAPswYfr0BtFLLrxrioyXGpg8rk=
+	t=1767025826; cv=none; b=Ey42WHUBXRxChNWmb6Q5GfJ7A9hyrttXOAGdwOA81iqPFiE/Me+cT6T7+HtIpyq8s6H0pFrpGQ7Z5qHlkl7i+xn97GNtigSnpeKSYVKXHvbyhEbXzwL7J+BActrzaeG4rUv3/gNIkjMU8Vagg7M3BvB7rupv9aCtkosqp36Exm8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767025707; c=relaxed/simple;
-	bh=p7A63HB/BKvFxmlNHPvjelsdS8PF+GZcYhHSbIBH1kg=;
+	s=arc-20240116; t=1767025826; c=relaxed/simple;
+	bh=gB9Cd0bgR8E4VdFwZZd8unpJs51PrZyfQdEqYV0VAf8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e0Jzt1Qx+m9h5lL1FGT02zGdMjt8WkVf02LML+LdqBAJqBJL8TkaQTJ3s2VRA7iV5TnrghfUuwCUXLnbbaHdC9PXHmflBPeKYHIT2AnbLXnafszhH2RxC/dw/jSpxCOqKAt/onWRdjE7jZ5YK0vh8kGruAH5AYbptBZh7MH+Nic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bGvA0bBS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B72FEC4CEF7;
-	Mon, 29 Dec 2025 16:28:26 +0000 (UTC)
+	 MIME-Version; b=NR8flhacQpUxqxhWzwA3ZmFmQrUkucCBhkfUc7Zh9OmcDtwCmbr+rqxJc6hQvdIMiMCX6RvcRa/KbhfGm71k7mz4i5B7yvOYfyepiyW9/7528j3fwYDdnGW4Cqvn9b43av1QpDvzO09Y5Xe4efotjN6IP2FhVGCrAK9rsUpr4AI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y4thpgYq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69FF7C4CEF7;
+	Mon, 29 Dec 2025 16:30:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767025707;
-	bh=p7A63HB/BKvFxmlNHPvjelsdS8PF+GZcYhHSbIBH1kg=;
+	s=korg; t=1767025825;
+	bh=gB9Cd0bgR8E4VdFwZZd8unpJs51PrZyfQdEqYV0VAf8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bGvA0bBS5Xe4LhCleXEZVdXc7oYsq7RDmpEPajNioq2Lj7U5yNYeqUhAxNT9cFgKH
-	 CnIwjpUE6K/QAmah9XP4DtXy13/+LDd3Dzpx+eIu6sLmk2r83jMMOI2OeufBU/Pz+l
-	 VfrIL5GMCC2HHDvdaVU30jQ+RYN7FODcC/FA0asQ=
+	b=Y4thpgYqBvndfAtafHVU9qDVKLzFQAHSxOCxqSreAW2rKjuJemMXMJafZyXj1ZqVq
+	 bgl1O1ci2DOICGyUQviBi/7xW/b3yrvgpyLembI1dQv6qJ5iS7N2b1Aeest1rgjTWM
+	 7HTHPmmbHnO4tZg0nnb43t/DNjr51h5f4WsckdEk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuhao Jiang <danisjiang@gmail.com>,
-	Junrui Luo <moonafterrain@outlook.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.18 307/430] scsi: aic94xx: fix use-after-free in device removal path
-Date: Mon, 29 Dec 2025 17:11:49 +0100
-Message-ID: <20251229160735.632343756@linuxfoundation.org>
+	Dai Ngo <dai.ngo@oracle.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.18 308/430] NFSD: use correct reservation type in nfsd4_scsi_fence_client
+Date: Mon, 29 Dec 2025 17:11:50 +0100
+Message-ID: <20251229160735.668385862@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251229160724.139406961@linuxfoundation.org>
 References: <20251229160724.139406961@linuxfoundation.org>
@@ -64,44 +64,35 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Junrui Luo <moonafterrain@outlook.com>
+From: Dai Ngo <dai.ngo@oracle.com>
 
-commit f6ab594672d4cba08540919a4e6be2e202b60007 upstream.
+commit 6f52063db9aabdaabea929b1e998af98c2e8d917 upstream.
 
-The asd_pci_remove() function fails to synchronize with pending tasklets
-before freeing the asd_ha structure, leading to a potential
-use-after-free vulnerability.
+The reservation type argument for the pr_preempt call should match the
+one used in nfsd4_block_get_device_info_scsi.
 
-When a device removal is triggered (via hot-unplug or module unload),
-race condition can occur.
-
-The fix adds tasklet_kill() before freeing the asd_ha structure,
-ensuring all scheduled tasklets complete before cleanup proceeds.
-
-Reported-by: Yuhao Jiang <danisjiang@gmail.com>
-Reported-by: Junrui Luo <moonafterrain@outlook.com>
-Fixes: 2908d778ab3e ("[SCSI] aic94xx: new driver")
+Fixes: f99d4fbdae67 ("nfsd: add SCSI layout support")
 Cc: stable@vger.kernel.org
-Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
-Link: https://patch.msgid.link/ME2PR01MB3156AB7DCACA206C845FC7E8AFFDA@ME2PR01MB3156.ausprd01.prod.outlook.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Dai Ngo <dai.ngo@oracle.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/aic94xx/aic94xx_init.c |    3 +++
- 1 file changed, 3 insertions(+)
+ fs/nfsd/blocklayout.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/scsi/aic94xx/aic94xx_init.c
-+++ b/drivers/scsi/aic94xx/aic94xx_init.c
-@@ -882,6 +882,9 @@ static void asd_pci_remove(struct pci_de
+--- a/fs/nfsd/blocklayout.c
++++ b/fs/nfsd/blocklayout.c
+@@ -344,7 +344,8 @@ nfsd4_scsi_fence_client(struct nfs4_layo
+ 	struct block_device *bdev = file->nf_file->f_path.mnt->mnt_sb->s_bdev;
  
- 	asd_disable_ints(asd_ha);
+ 	bdev->bd_disk->fops->pr_ops->pr_preempt(bdev, NFSD_MDS_PR_KEY,
+-			nfsd4_scsi_pr_key(clp), 0, true);
++			nfsd4_scsi_pr_key(clp),
++			PR_EXCLUSIVE_ACCESS_REG_ONLY, true);
+ }
  
-+	/* Ensure all scheduled tasklets complete before freeing resources */
-+	tasklet_kill(&asd_ha->seq.dl_tasklet);
-+
- 	asd_remove_dev_attrs(asd_ha);
- 
- 	/* XXX more here as needed */
+ const struct nfsd4_layout_ops scsi_layout_ops = {
 
 
 
