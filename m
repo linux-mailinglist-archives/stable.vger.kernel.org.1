@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-203781-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203783-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE1A2CE761F
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:21:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C976CE762C
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:21:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D482030275F0
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:19:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5FF9C3029216
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:19:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3760F33121F;
-	Mon, 29 Dec 2025 16:19:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E8D433122A;
+	Mon, 29 Dec 2025 16:19:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hy2jrCrj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j8UZlkQS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8886330D47;
-	Mon, 29 Dec 2025 16:19:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BCAB26FD9B;
+	Mon, 29 Dec 2025 16:19:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767025150; cv=none; b=HtaiE9U4t/l8kNm8E9QFew2L4eyNSw0OTjUB+suo2zqX9aWXUJMBEdMg+J/h5nI4JD1Ko0xeE+rVieSbjcnObVp+Yie/tYnRwRao6dUFmrWqE4kNEmv1c2LIrfB7jSEmosIGL2tUj24AmgtxKtzFtFBjiPSwK9nQ76vnrr5kQgM=
+	t=1767025155; cv=none; b=AbPVEpqOnICMLGFQaO87buofiYox86vN9PPIX49gAmDVyFepmXn5SiMX+6IDttpRUzeAlkW/bk4nTcPU56kfJlEkM9kWeglVW/D87ENlHDf0P/VkqJu5tZwoQMSkByN6qM/dn+jBBJHOLRgFW05KtSU3J5j9JX4u7X5dApW7c5g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767025150; c=relaxed/simple;
-	bh=Hj3VGpST1djQRQqD44meJv891baI0jN06SW5GZecmn8=;
+	s=arc-20240116; t=1767025155; c=relaxed/simple;
+	bh=glrNPGt1xWwsgnzLai9RZBnLTSGId962mPvriugj7oY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AprUtVcHZ+p2GyjAKdWyG4YUkL7p1zvTxjupr3QC1mqyOli4UoB3dJvWK5mP2JWDsKTPwKmPA7SwMrtajNi8FtIYB79ThQKAmxpz/8koDJSOL6pFaM1pBNMmn1D+QpNANr4cEAYN/8bT+mK0LjHzZgFuEMSnduZSPY6826snkpQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hy2jrCrj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15A93C4CEF7;
-	Mon, 29 Dec 2025 16:19:08 +0000 (UTC)
+	 MIME-Version; b=NM4OFKCk7eEeWty3vfqykxNYl+yVz86pKdL228ETbMUolYHZJrvd5cNNFk8nAMg38D0ENg65AQAbffpVlAwcHf46mR4bMdBATCHh+uYY0kOldWjhiENMY7RBkhCJ66yeSgLQv4ARYYZJUlaA4vThTLwMkFTVXiaNCgI7sBWTNN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j8UZlkQS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7EF3C4CEF7;
+	Mon, 29 Dec 2025 16:19:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767025149;
-	bh=Hj3VGpST1djQRQqD44meJv891baI0jN06SW5GZecmn8=;
+	s=korg; t=1767025155;
+	bh=glrNPGt1xWwsgnzLai9RZBnLTSGId962mPvriugj7oY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hy2jrCrjhvnS8A7MTTujKilNEmyg7dd5O+NKk8MjO0/5A1nqAuwIJ9gqIxLW4Gv1+
-	 HnzkIHNYyQ3ZlBofvTk6lpzSiojwhtux3JyzGP3SRcM6gGQSS2/DwK43RS05R6bHp7
-	 V6yrOhR/rf/SPQVLzUN1eRVla+tL0w6JRQCIkco0=
+	b=j8UZlkQSNRiwefbkV6cMdbwEWg82GObjdYv0N8cf9ZlcONRZ+g53HyIo8tYQK9VIs
+	 3MWViZI0xnG3FslHN32zrOC0tTGatD0Abwetn7GvLTQQSlt6HiU/asd60xqwx8Qs7K
+	 1fRKFJJKarnx5d/SFiGq7ZXv/C3enj5cG72ZpnAw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming Lei <ming.lei@redhat.com>,
-	Yu Kuai <yukuai@fnnas.com>,
 	Nilay Shroff <nilay@linux.ibm.com>,
+	Yu Kuai <yukuai@fnnas.com>,
+	Guangwu Zhang <guazhang@redhat.com>,
+	Ming Lei <ming.lei@redhat.com>,
 	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 112/430] block: use {alloc|free}_sched data methods
-Date: Mon, 29 Dec 2025 17:08:34 +0100
-Message-ID: <20251229160728.489160359@linuxfoundation.org>
+Subject: [PATCH 6.18 113/430] block: fix race between wbt_enable_default and IO submission
+Date: Mon, 29 Dec 2025 17:08:35 +0100
+Message-ID: <20251229160728.526082332@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251229160724.139406961@linuxfoundation.org>
 References: <20251229160724.139406961@linuxfoundation.org>
@@ -66,301 +67,201 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Nilay Shroff <nilay@linux.ibm.com>
+From: Ming Lei <ming.lei@redhat.com>
 
-[ Upstream commit 0315476e78c050048e80f66334a310e5581b46bb ]
+[ Upstream commit 9869d3a6fed381f3b98404e26e1afc75d680cbf9 ]
 
-The previous patch introduced ->alloc_sched_data and
-->free_sched_data methods. This patch builds upon that
-by now using these methods during elevator switch and
-nr_hw_queue update.
+When wbt_enable_default() is moved out of queue freezing in elevator_change(),
+it can cause the wbt inflight counter to become negative (-1), leading to hung
+tasks in the writeback path. Tasks get stuck in wbt_wait() because the counter
+is in an inconsistent state.
 
-It's also ensured that scheduler-specific data is
-allocated and freed through the new callbacks outside
-of the ->freeze_lock and ->elevator_lock locking contexts,
-thereby preventing any dependency on pcpu_alloc_mutex.
+The issue occurs because wbt_enable_default() could race with IO submission,
+allowing the counter to be decremented before proper initialization. This manifests
+as:
 
-Reviewed-by: Ming Lei <ming.lei@redhat.com>
-Reviewed-by: Yu Kuai <yukuai@fnnas.com>
-Signed-off-by: Nilay Shroff <nilay@linux.ibm.com>
+  rq_wait[0]:
+    inflight:             -1
+    has_waiters:        True
+
+rwb_enabled() checks the state, which can be updated exactly between wbt_wait()
+(rq_qos_throttle()) and wbt_track()(rq_qos_track()), then the inflight counter
+will become negative.
+
+And results in hung task warnings like:
+  task:kworker/u24:39 state:D stack:0 pid:14767
+  Call Trace:
+    rq_qos_wait+0xb4/0x150
+    wbt_wait+0xa9/0x100
+    __rq_qos_throttle+0x24/0x40
+    blk_mq_submit_bio+0x672/0x7b0
+    ...
+
+Fix this by:
+
+1. Splitting wbt_enable_default() into:
+   - __wbt_enable_default(): Returns true if wbt_init() should be called
+   - wbt_enable_default(): Wrapper for existing callers (no init)
+   - wbt_init_enable_default(): New function that checks and inits WBT
+
+2. Using wbt_init_enable_default() in blk_register_queue() to ensure
+   proper initialization during queue registration
+
+3. Move wbt_init() out of wbt_enable_default() which is only for enabling
+   disabled wbt from bfq and iocost, and wbt_init() isn't needed. Then the
+   original lock warning can be avoided.
+
+4. Removing the ELEVATOR_FLAG_ENABLE_WBT_ON_EXIT flag and its handling
+   code since it's no longer needed
+
+This ensures WBT is properly initialized before any IO can be submitted,
+preventing the counter from going negative.
+
+Cc: Nilay Shroff <nilay@linux.ibm.com>
+Cc: Yu Kuai <yukuai@fnnas.com>
+Cc: Guangwu Zhang <guazhang@redhat.com>
+Fixes: 78c271344b6f ("block: move wbt_enable_default() out of queue freezing from sched ->exit()")
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Reviewed-by: Nilay Shroff <nilay@linux.ibm.com>
 Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Stable-dep-of: 9869d3a6fed3 ("block: fix race between wbt_enable_default and IO submission")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-mq-sched.c | 27 +++++++++++++++++++++------
- block/blk-mq-sched.h |  5 ++++-
- block/elevator.c     | 34 ++++++++++++++++++++++------------
- block/elevator.h     |  4 +++-
- 4 files changed, 50 insertions(+), 20 deletions(-)
+ block/bfq-iosched.c |  2 +-
+ block/blk-sysfs.c   |  2 +-
+ block/blk-wbt.c     | 20 ++++++++++++++++----
+ block/blk-wbt.h     |  5 +++++
+ block/elevator.c    |  4 ----
+ block/elevator.h    |  1 -
+ 6 files changed, 23 insertions(+), 11 deletions(-)
 
-diff --git a/block/blk-mq-sched.c b/block/blk-mq-sched.c
-index 03ff16c49976..128f2be9d420 100644
---- a/block/blk-mq-sched.c
-+++ b/block/blk-mq-sched.c
-@@ -428,12 +428,17 @@ void blk_mq_free_sched_tags(struct elevator_tags *et,
- }
+diff --git a/block/bfq-iosched.c b/block/bfq-iosched.c
+index 4a8d3d96bfe4..6e54b1d3d8bc 100644
+--- a/block/bfq-iosched.c
++++ b/block/bfq-iosched.c
+@@ -7181,7 +7181,7 @@ static void bfq_exit_queue(struct elevator_queue *e)
  
- void blk_mq_free_sched_res(struct elevator_resources *res,
-+		struct elevator_type *type,
- 		struct blk_mq_tag_set *set)
+ 	blk_stat_disable_accounting(bfqd->queue);
+ 	blk_queue_flag_clear(QUEUE_FLAG_DISABLE_WBT_DEF, bfqd->queue);
+-	set_bit(ELEVATOR_FLAG_ENABLE_WBT_ON_EXIT, &e->flags);
++	wbt_enable_default(bfqd->queue->disk);
+ 
+ 	kfree(bfqd);
+ }
+diff --git a/block/blk-sysfs.c b/block/blk-sysfs.c
+index 76c47fe9b8d6..c0e4daaf9610 100644
+--- a/block/blk-sysfs.c
++++ b/block/blk-sysfs.c
+@@ -942,7 +942,7 @@ int blk_register_queue(struct gendisk *disk)
+ 		elevator_set_default(q);
+ 
+ 	blk_queue_flag_set(QUEUE_FLAG_REGISTERED, q);
+-	wbt_enable_default(disk);
++	wbt_init_enable_default(disk);
+ 
+ 	/* Now everything is ready and send out KOBJ_ADD uevent */
+ 	kobject_uevent(&disk->queue_kobj, KOBJ_ADD);
+diff --git a/block/blk-wbt.c b/block/blk-wbt.c
+index eb8037bae0bd..0974875f77bd 100644
+--- a/block/blk-wbt.c
++++ b/block/blk-wbt.c
+@@ -699,7 +699,7 @@ static void wbt_requeue(struct rq_qos *rqos, struct request *rq)
+ /*
+  * Enable wbt if defaults are configured that way
+  */
+-void wbt_enable_default(struct gendisk *disk)
++static bool __wbt_enable_default(struct gendisk *disk)
  {
- 	if (res->et) {
- 		blk_mq_free_sched_tags(res->et, set);
- 		res->et = NULL;
+ 	struct request_queue *q = disk->queue;
+ 	struct rq_qos *rqos;
+@@ -716,19 +716,31 @@ void wbt_enable_default(struct gendisk *disk)
+ 		if (enable && RQWB(rqos)->enable_state == WBT_STATE_OFF_DEFAULT)
+ 			RQWB(rqos)->enable_state = WBT_STATE_ON_DEFAULT;
+ 		mutex_unlock(&disk->rqos_state_mutex);
+-		return;
++		return false;
  	}
-+	if (res->data) {
-+		blk_mq_free_sched_data(type, res->data);
-+		res->data = NULL;
-+	}
- }
+ 	mutex_unlock(&disk->rqos_state_mutex);
  
- void blk_mq_free_sched_res_batch(struct xarray *elv_tbl,
-@@ -458,7 +463,7 @@ void blk_mq_free_sched_res_batch(struct xarray *elv_tbl,
- 				WARN_ON_ONCE(1);
- 				continue;
- 			}
--			blk_mq_free_sched_res(&ctx->res, set);
-+			blk_mq_free_sched_res(&ctx->res, ctx->type, set);
- 		}
- 	}
- }
-@@ -541,7 +546,9 @@ struct elevator_tags *blk_mq_alloc_sched_tags(struct blk_mq_tag_set *set,
- }
+ 	/* Queue not registered? Maybe shutting down... */
+ 	if (!blk_queue_registered(q))
+-		return;
++		return false;
  
- int blk_mq_alloc_sched_res(struct request_queue *q,
--		struct elevator_resources *res, unsigned int nr_hw_queues)
-+		struct elevator_type *type,
-+		struct elevator_resources *res,
-+		unsigned int nr_hw_queues)
+ 	if (queue_is_mq(q) && enable)
+-		wbt_init(disk);
++		return true;
++	return false;
++}
++
++void wbt_enable_default(struct gendisk *disk)
++{
++	__wbt_enable_default(disk);
+ }
+ EXPORT_SYMBOL_GPL(wbt_enable_default);
+ 
++void wbt_init_enable_default(struct gendisk *disk)
++{
++	if (__wbt_enable_default(disk))
++		WARN_ON_ONCE(wbt_init(disk));
++}
++
+ u64 wbt_default_latency_nsec(struct request_queue *q)
  {
- 	struct blk_mq_tag_set *set = q->tag_set;
+ 	/*
+diff --git a/block/blk-wbt.h b/block/blk-wbt.h
+index e5fc653b9b76..925f22475738 100644
+--- a/block/blk-wbt.h
++++ b/block/blk-wbt.h
+@@ -5,6 +5,7 @@
+ #ifdef CONFIG_BLK_WBT
  
-@@ -550,6 +557,12 @@ int blk_mq_alloc_sched_res(struct request_queue *q,
- 	if (!res->et)
- 		return -ENOMEM;
+ int wbt_init(struct gendisk *disk);
++void wbt_init_enable_default(struct gendisk *disk);
+ void wbt_disable_default(struct gendisk *disk);
+ void wbt_enable_default(struct gendisk *disk);
  
-+	res->data = blk_mq_alloc_sched_data(q, type);
-+	if (IS_ERR(res->data)) {
-+		blk_mq_free_sched_tags(res->et, set);
-+		return -ENOMEM;
-+	}
+@@ -16,6 +17,10 @@ u64 wbt_default_latency_nsec(struct request_queue *);
+ 
+ #else
+ 
++static inline void wbt_init_enable_default(struct gendisk *disk)
++{
++}
 +
- 	return 0;
+ static inline void wbt_disable_default(struct gendisk *disk)
+ {
  }
- 
-@@ -577,19 +590,21 @@ int blk_mq_alloc_sched_res_batch(struct xarray *elv_tbl,
- 				goto out_unwind;
- 			}
- 
--			ret = blk_mq_alloc_sched_res(q, &ctx->res,
--					nr_hw_queues);
-+			ret = blk_mq_alloc_sched_res(q, q->elevator->type,
-+					&ctx->res, nr_hw_queues);
- 			if (ret)
- 				goto out_unwind;
- 		}
- 	}
- 	return 0;
-+
- out_unwind:
- 	list_for_each_entry_continue_reverse(q, &set->tag_list, tag_set_list) {
- 		if (q->elevator) {
- 			ctx = xa_load(elv_tbl, q->id);
- 			if (ctx)
--				blk_mq_free_sched_res(&ctx->res, set);
-+				blk_mq_free_sched_res(&ctx->res,
-+						ctx->type, set);
- 		}
- 	}
- 	return ret;
-@@ -606,7 +621,7 @@ int blk_mq_init_sched(struct request_queue *q, struct elevator_type *e,
- 	unsigned long i;
- 	int ret;
- 
--	eq = elevator_alloc(q, e, et);
-+	eq = elevator_alloc(q, e, res);
- 	if (!eq)
- 		return -ENOMEM;
- 
-diff --git a/block/blk-mq-sched.h b/block/blk-mq-sched.h
-index 4e1b86e85a8a..02c40a72e959 100644
---- a/block/blk-mq-sched.h
-+++ b/block/blk-mq-sched.h
-@@ -26,7 +26,9 @@ void blk_mq_sched_free_rqs(struct request_queue *q);
- struct elevator_tags *blk_mq_alloc_sched_tags(struct blk_mq_tag_set *set,
- 		unsigned int nr_hw_queues, unsigned int nr_requests);
- int blk_mq_alloc_sched_res(struct request_queue *q,
--		struct elevator_resources *res, unsigned int nr_hw_queues);
-+		struct elevator_type *type,
-+		struct elevator_resources *res,
-+		unsigned int nr_hw_queues);
- int blk_mq_alloc_sched_res_batch(struct xarray *elv_tbl,
- 		struct blk_mq_tag_set *set, unsigned int nr_hw_queues);
- int blk_mq_alloc_sched_ctx_batch(struct xarray *elv_tbl,
-@@ -35,6 +37,7 @@ void blk_mq_free_sched_ctx_batch(struct xarray *elv_tbl);
- void blk_mq_free_sched_tags(struct elevator_tags *et,
- 		struct blk_mq_tag_set *set);
- void blk_mq_free_sched_res(struct elevator_resources *res,
-+		struct elevator_type *type,
- 		struct blk_mq_tag_set *set);
- void blk_mq_free_sched_res_batch(struct xarray *et_table,
- 		struct blk_mq_tag_set *set);
 diff --git a/block/elevator.c b/block/elevator.c
-index cbec292a4af5..5b37ef44f52d 100644
+index 5b37ef44f52d..a2f8b2251dc6 100644
 --- a/block/elevator.c
 +++ b/block/elevator.c
-@@ -121,7 +121,7 @@ static struct elevator_type *elevator_find_get(const char *name)
- static const struct kobj_type elv_ktype;
- 
- struct elevator_queue *elevator_alloc(struct request_queue *q,
--		struct elevator_type *e, struct elevator_tags *et)
-+		struct elevator_type *e, struct elevator_resources *res)
- {
- 	struct elevator_queue *eq;
- 
-@@ -134,7 +134,8 @@ struct elevator_queue *elevator_alloc(struct request_queue *q,
- 	kobject_init(&eq->kobj, &elv_ktype);
- 	mutex_init(&eq->sysfs_lock);
- 	hash_init(eq->hash);
--	eq->et = et;
-+	eq->et = res->et;
-+	eq->elevator_data = res->data;
- 
- 	return eq;
- }
-@@ -617,7 +618,7 @@ static void elv_exit_and_release(struct elv_change_ctx *ctx,
- 	mutex_unlock(&q->elevator_lock);
- 	blk_mq_unfreeze_queue(q, memflags);
- 	if (e) {
--		blk_mq_free_sched_res(&ctx->res, q->tag_set);
-+		blk_mq_free_sched_res(&ctx->res, ctx->type, q->tag_set);
- 		kobject_put(&e->kobj);
- 	}
- }
-@@ -628,12 +629,15 @@ static int elevator_change_done(struct request_queue *q,
- 	int ret = 0;
- 
- 	if (ctx->old) {
--		struct elevator_resources res = {.et = ctx->old->et};
-+		struct elevator_resources res = {
-+			.et = ctx->old->et,
-+			.data = ctx->old->elevator_data
-+		};
- 		bool enable_wbt = test_bit(ELEVATOR_FLAG_ENABLE_WBT_ON_EXIT,
- 				&ctx->old->flags);
+@@ -633,14 +633,10 @@ static int elevator_change_done(struct request_queue *q,
+ 			.et = ctx->old->et,
+ 			.data = ctx->old->elevator_data
+ 		};
+-		bool enable_wbt = test_bit(ELEVATOR_FLAG_ENABLE_WBT_ON_EXIT,
+-				&ctx->old->flags);
  
  		elv_unregister_queue(q, ctx->old);
--		blk_mq_free_sched_res(&res, q->tag_set);
-+		blk_mq_free_sched_res(&res, ctx->old->type, q->tag_set);
+ 		blk_mq_free_sched_res(&res, ctx->old->type, q->tag_set);
  		kobject_put(&ctx->old->kobj);
- 		if (enable_wbt)
- 			wbt_enable_default(q->disk);
-@@ -658,7 +662,8 @@ static int elevator_change(struct request_queue *q, struct elv_change_ctx *ctx)
- 	lockdep_assert_held(&set->update_nr_hwq_lock);
- 
- 	if (strncmp(ctx->name, "none", 4)) {
--		ret = blk_mq_alloc_sched_res(q, &ctx->res, set->nr_hw_queues);
-+		ret = blk_mq_alloc_sched_res(q, ctx->type, &ctx->res,
-+				set->nr_hw_queues);
- 		if (ret)
- 			return ret;
+-		if (enable_wbt)
+-			wbt_enable_default(q->disk);
  	}
-@@ -681,11 +686,12 @@ static int elevator_change(struct request_queue *q, struct elv_change_ctx *ctx)
- 	blk_mq_unfreeze_queue(q, memflags);
- 	if (!ret)
- 		ret = elevator_change_done(q, ctx);
-+
- 	/*
- 	 * Free sched resource if it's allocated but we couldn't switch elevator.
- 	 */
- 	if (!ctx->new)
--		blk_mq_free_sched_res(&ctx->res, set);
-+		blk_mq_free_sched_res(&ctx->res, ctx->type, set);
- 
- 	return ret;
- }
-@@ -711,11 +717,12 @@ void elv_update_nr_hw_queues(struct request_queue *q,
- 	blk_mq_unfreeze_queue_nomemrestore(q);
- 	if (!ret)
- 		WARN_ON_ONCE(elevator_change_done(q, ctx));
-+
- 	/*
- 	 * Free sched resource if it's allocated but we couldn't switch elevator.
- 	 */
- 	if (!ctx->new)
--		blk_mq_free_sched_res(&ctx->res, set);
-+		blk_mq_free_sched_res(&ctx->res, ctx->type, set);
- }
- 
- /*
-@@ -729,7 +736,6 @@ void elevator_set_default(struct request_queue *q)
- 		.no_uevent = true,
- 	};
- 	int err;
--	struct elevator_type *e;
- 
- 	/* now we allow to switch elevator */
- 	blk_queue_flag_clear(QUEUE_FLAG_NO_ELV_SWITCH, q);
-@@ -742,8 +748,8 @@ void elevator_set_default(struct request_queue *q)
- 	 * have multiple queues or mq-deadline is not available, default
- 	 * to "none".
- 	 */
--	e = elevator_find_get(ctx.name);
--	if (!e)
-+	ctx.type = elevator_find_get(ctx.name);
-+	if (!ctx.type)
- 		return;
- 
- 	if ((q->nr_hw_queues == 1 ||
-@@ -753,7 +759,7 @@ void elevator_set_default(struct request_queue *q)
- 			pr_warn("\"%s\" elevator initialization, failed %d, falling back to \"none\"\n",
- 					ctx.name, err);
- 	}
--	elevator_put(e);
-+	elevator_put(ctx.type);
- }
- 
- void elevator_set_none(struct request_queue *q)
-@@ -802,6 +808,7 @@ ssize_t elv_iosched_store(struct gendisk *disk, const char *buf,
- 	ctx.name = strstrip(elevator_name);
- 
- 	elv_iosched_load_module(ctx.name);
-+	ctx.type = elevator_find_get(ctx.name);
- 
- 	down_read(&set->update_nr_hwq_lock);
- 	if (!blk_queue_no_elv_switch(q)) {
-@@ -812,6 +819,9 @@ ssize_t elv_iosched_store(struct gendisk *disk, const char *buf,
- 		ret = -ENOENT;
- 	}
- 	up_read(&set->update_nr_hwq_lock);
-+
-+	if (ctx.type)
-+		elevator_put(ctx.type);
- 	return ret;
- }
- 
+ 	if (ctx->new) {
+ 		ret = elv_register_queue(q, ctx->new, !ctx->no_uevent);
 diff --git a/block/elevator.h b/block/elevator.h
-index e34043f6da26..3ee1d494f48a 100644
+index 3ee1d494f48a..021726376042 100644
 --- a/block/elevator.h
 +++ b/block/elevator.h
-@@ -33,6 +33,8 @@ struct elevator_tags {
- };
+@@ -156,7 +156,6 @@ struct elevator_queue
  
- struct elevator_resources {
-+	/* holds elevator data */
-+	void *data;
- 	/* holds elevator tags */
- 	struct elevator_tags *et;
- };
-@@ -185,7 +187,7 @@ ssize_t elv_iosched_store(struct gendisk *disk, const char *page, size_t count);
- 
- extern bool elv_bio_merge_ok(struct request *, struct bio *);
- struct elevator_queue *elevator_alloc(struct request_queue *,
--		struct elevator_type *, struct elevator_tags *);
-+		struct elevator_type *, struct elevator_resources *);
+ #define ELEVATOR_FLAG_REGISTERED	0
+ #define ELEVATOR_FLAG_DYING		1
+-#define ELEVATOR_FLAG_ENABLE_WBT_ON_EXIT	2
  
  /*
-  * Helper functions.
+  * block elevator interface
 -- 
 2.51.0
 
