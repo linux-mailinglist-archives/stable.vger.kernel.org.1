@@ -1,54 +1,51 @@
-Return-Path: <stable+bounces-203854-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-203865-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5642CCE7756
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:27:57 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 413D9CE777A
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 17:28:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5A25630D0E22
-	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:22:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AAAE13047947
+	for <lists+stable@lfdr.de>; Mon, 29 Dec 2025 16:23:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEB4D202F65;
-	Mon, 29 Dec 2025 16:22:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56CC6255F2D;
+	Mon, 29 Dec 2025 16:23:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xnEmD/br"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s4+POJPw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC55A23D2B2;
-	Mon, 29 Dec 2025 16:22:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 155C4202F65;
+	Mon, 29 Dec 2025 16:23:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767025355; cv=none; b=IQlTLeLxd4Irzf932RCktEWVOMUyKAh7kBiZKE6KNPbq4QOTYded1pvh37w2GQx3B6MaWCIILmLnhfbE9WxZjqAS1xNunLB/PJt+naja8C30Cew4kTeHCFQajGr8q1twdNUAV0eGdL3q26OT+iIoiT6I4xG5SxAN+HFs7/j6Jfs=
+	t=1767025387; cv=none; b=VnKiehLBcMcAn+A4JRtbTwhf+vtwfT6Fj9h2/+1iZhUJiNUdspNYzGW6RtPrm9mQW0W0CesbA3lbQuetaZh2nihcWs+06PHn9KItwuhK6yDL8fdOwFSeaiwMhfhYJSlf+t1Y//9ziNZyZTDgi4T9W8rP4kIdCPRF3BRMGaRwHFw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767025355; c=relaxed/simple;
-	bh=AC+3CpA4V/C1qrarpPIpXnIl2WDrVqDI1uIQGFf0nkk=;
+	s=arc-20240116; t=1767025387; c=relaxed/simple;
+	bh=Va2En5rHWgAqzlN7mA01u+OTR7aKkHjAcTcR/egQVHo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u0kbRa3gsV6OgiCk41Vh1GXlKS+pN5FCKE3Fr3E03IlV0Tr+sHnd3JiMxg3jX5JqSNwCzCUeyBf9GNJhsRLJG+F2vytpm9ophWBx96ipDqzZj/gPo7CxXa4SJQspw9UmhnPkci3hLnATuqjJoIeFAxzjPkRjqAoqeiMgtQjSfvg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xnEmD/br; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1859C4CEF7;
-	Mon, 29 Dec 2025 16:22:34 +0000 (UTC)
+	 MIME-Version; b=kak8ktiYxXW8lHJ1x2RSkyGPgQ9HOSIQnzQ1kz+3ReQmLA7g6fC0vksq6SFuXnWXbAXq07GXPS4bHgrSESFubRDe08sX4P+wEihs6vBc/pIGH+1tIeOwUtjW9dwZLobEDfH+i2sGM39gfmWj6inh3mhhZwH3VRQMz3aY7R+ayEc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s4+POJPw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9568FC4CEF7;
+	Mon, 29 Dec 2025 16:23:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767025355;
-	bh=AC+3CpA4V/C1qrarpPIpXnIl2WDrVqDI1uIQGFf0nkk=;
+	s=korg; t=1767025387;
+	bh=Va2En5rHWgAqzlN7mA01u+OTR7aKkHjAcTcR/egQVHo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xnEmD/br5hmbK2EHqzrm8ZicVx6oHKNgMiCjoJd1MOB5HAKwH5ghWpS8B2I//Fecy
-	 7Swhoc0+C8Ir/3yAseddi8adpXhxOusiNH9XBKNK56AgQSnc1yYpMn0uQ2hb+j20ay
-	 wZ83IZY4Tk9w0I7DPVfuiyQ1sGmsB4jPIbqGo3Dc=
+	b=s4+POJPwSzWCuGNg8wiNktOP4bqJR/Ppnx2rBpuFPPhDfjnEowzx998O+yhbHFnXt
+	 dR9420StbJhlqYKJmnES6vfke55RPMiosSsHpeKYmJ9E+tFegZLiF0CPpl+5bRyXvy
+	 RNUQa4fCydODu00ClmbfiXnd4RnyuutGWmvST/1w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tal Zussman <tz2294@columbia.edu>,
-	Ingo Molnar <mingo@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	David Hildenbrand <david@redhat.com>,
-	Rik van Riel <riel@surriel.com>,
+	Chancel Liu <chancel.liu@nxp.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 167/430] x86/mm/tlb/trace: Export the TLB_REMOTE_WRONG_CPU enum in <trace/events/tlb.h>
-Date: Mon, 29 Dec 2025 17:09:29 +0100
-Message-ID: <20251229160730.509076154@linuxfoundation.org>
+Subject: [PATCH 6.18 168/430] ASoC: fsl_sai: Constrain sample rates from audio PLLs only in master mode
+Date: Mon, 29 Dec 2025 17:09:30 +0100
+Message-ID: <20251229160730.545730568@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251229160724.139406961@linuxfoundation.org>
 References: <20251229160724.139406961@linuxfoundation.org>
@@ -67,47 +64,45 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Tal Zussman <tz2294@columbia.edu>
+From: Chancel Liu <chancel.liu@nxp.com>
 
-[ Upstream commit 8b62e64e6d30fa047b3aefb1a36e1f80c8acb3d2 ]
+[ Upstream commit 9f4d0899efd9892fc7514c9488270e1bb7dedd2b ]
 
-When the TLB_REMOTE_WRONG_CPU enum was introduced for the tlb_flush
-tracepoint, the enum was not exported to user-space. Add it to the
-appropriate macro definition to enable parsing by userspace tools, as
-per:
+If SAI works in master mode it will generate clocks for external codec
+from audio PLLs. Thus sample rates should be constrained according to
+audio PLL clocks. While SAI works in slave mode which means clocks are
+generated externally then constraints are independent of audio PLLs.
 
-  Link: https://lore.kernel.org/all/20150403013802.220157513@goodmis.org
-
-[ mingo: Capitalize IPI, etc. ]
-
-Fixes: 2815a56e4b72 ("x86/mm/tlb: Add tracepoint for TLB flush IPI to stale CPU")
-Signed-off-by: Tal Zussman <tz2294@columbia.edu>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Rik van Riel <riel@surriel.com>
-Link: https://patch.msgid.link/20251212-tlb-trace-fix-v2-1-d322e0ad9b69@columbia.edu
+Fixes: 4edc98598be4 ("ASoC: fsl_sai: Add sample rate constraint")
+Signed-off-by: Chancel Liu <chancel.liu@nxp.com>
+Link: https://patch.msgid.link/20251210062109.2577735-1-chancel.liu@nxp.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/trace/events/tlb.h | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ sound/soc/fsl/fsl_sai.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/include/trace/events/tlb.h b/include/trace/events/tlb.h
-index b4d8e7dc38f8..fb8369511685 100644
---- a/include/trace/events/tlb.h
-+++ b/include/trace/events/tlb.h
-@@ -12,8 +12,9 @@
- 	EM(  TLB_FLUSH_ON_TASK_SWITCH,	"flush on task switch" )	\
- 	EM(  TLB_REMOTE_SHOOTDOWN,	"remote shootdown" )		\
- 	EM(  TLB_LOCAL_SHOOTDOWN,	"local shootdown" )		\
--	EM(  TLB_LOCAL_MM_SHOOTDOWN,	"local mm shootdown" )		\
--	EMe( TLB_REMOTE_SEND_IPI,	"remote ipi send" )
-+	EM(  TLB_LOCAL_MM_SHOOTDOWN,	"local MM shootdown" )		\
-+	EM(  TLB_REMOTE_SEND_IPI,	"remote IPI send" )		\
-+	EMe( TLB_REMOTE_WRONG_CPU,	"remote wrong CPU" )
+diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
+index 72bfc91e21b9..86730c214914 100644
+--- a/sound/soc/fsl/fsl_sai.c
++++ b/sound/soc/fsl/fsl_sai.c
+@@ -917,8 +917,14 @@ static int fsl_sai_startup(struct snd_pcm_substream *substream,
+ 					   tx ? sai->dma_params_tx.maxburst :
+ 					   sai->dma_params_rx.maxburst);
  
- /*
-  * First define the enums in TLB_FLUSH_REASON to be exported to userspace
+-	ret = snd_pcm_hw_constraint_list(substream->runtime, 0,
+-					 SNDRV_PCM_HW_PARAM_RATE, &sai->constraint_rates);
++	if (sai->is_consumer_mode[tx])
++		ret = snd_pcm_hw_constraint_list(substream->runtime, 0,
++						 SNDRV_PCM_HW_PARAM_RATE,
++						 &fsl_sai_rate_constraints);
++	else
++		ret = snd_pcm_hw_constraint_list(substream->runtime, 0,
++						 SNDRV_PCM_HW_PARAM_RATE,
++						 &sai->constraint_rates);
+ 
+ 	return ret;
+ }
 -- 
 2.51.0
 
