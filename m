@@ -1,205 +1,202 @@
-Return-Path: <stable+bounces-204250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204251-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27283CEA33F
-	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 17:42:48 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74182CEA45A
+	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 18:11:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 677933002D08
-	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 16:42:44 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 49B75301D9C2
+	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 17:11:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78BA626056D;
-	Tue, 30 Dec 2025 16:42:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0CB032E14E;
+	Tue, 30 Dec 2025 17:05:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b="ovRK+fkp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A/TFdTJN"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9964E137923
-	for <stable@vger.kernel.org>; Tue, 30 Dec 2025 16:42:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DD5232E134
+	for <stable@vger.kernel.org>; Tue, 30 Dec 2025 17:05:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767112962; cv=none; b=muvQV9tUU1n9PxI6Txg8wqDvTNa0z8s5gBArWhmb/rmEN/MrltIMfGoBr+x/9LwdRTOyjqRZ7IPZ0IHfF/S3EJftZrmNo137T8RPuzHQvOm957kffmK9GeYa1ptLWkYT20+wMlthUFExMHsFzElga9Nf1m7yzQo5NEiGTXQjJVM=
+	t=1767114344; cv=none; b=KcJTb8GRqqbavrU1wsWBIwPu1aFcd20P088JOMhRIGS/t0e66kyKgKeiegtFgLdZ/jZ/IXzQP3G7aXYaey+GnNt59RRey2nzQKSkyLQP5eYWWXBQk/dQIW3nFox9Tq2SgxcyK6YN3gHg2aABsim6Bu45IkoDxCzKeAVVL9PRVu8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767112962; c=relaxed/simple;
-	bh=tcI5f57F7ym6jvYHz/Bcc/Mx2rq2d515wCZhg9iPIy4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Y6S4D1bfZ5bkrDr2E3QRU3DLiY7eZo47U8PoNQ/UW/e744g+fULV24RXuZkhTSPh58s/rCIIZOvVS5PDTULhLIyj+K9hmH4R+/Z0X8xRl/tuWWPwe81M+ZSWlWtwfzmADjBkTMGnQVT5jQGcC21wkAuOn33e/g3WsLg2X6vkBcA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu; spf=fail smtp.mailfrom=g.harvard.edu; dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b=ovRK+fkp; arc=none smtp.client-ip=209.85.160.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=g.harvard.edu
-Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-4f1b147eaa9so80415741cf.3
-        for <stable@vger.kernel.org>; Tue, 30 Dec 2025 08:42:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rowland.harvard.edu; s=google; t=1767112959; x=1767717759; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ANHVR9coAMge+WLBsY5cko52eRTlCq0nuigwEeNBZ6Y=;
-        b=ovRK+fkpo4CQUQ/lpQa9B6K+13qEatIkq6NFGvkNGeeOqUD2omORY4AVq0k2uKeReD
-         7gk66mZC8YweKMfi7GwrSRggz0O5/6toGYXlwbos5ZN0XDGS5KPhJSBfik/xjFY3W0Ba
-         fwLBav0w/9PlRLEidu/AqiDxwMIs5ip9bL74O7IQCEyPZ7EMOOuK9fF63UlHgQ163FQx
-         JMxvm6F9TO1gAVq2KrSYk/Oq9zwdNjv0U695NR8aip6qvL4I+S0su7qvw0ABCA8afuGz
-         /0142ZhIOeKL2sZKMhd6UqYGlIu7KKvxbHvpdqbGA01wpqKGOVvI7lLz+4RueleTVu7x
-         7KxQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767112959; x=1767717759;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ANHVR9coAMge+WLBsY5cko52eRTlCq0nuigwEeNBZ6Y=;
-        b=m+hTKGhjaA55M4Gu5CQVW47VKvwBWdqDKmsxKJYNyV+vFCRTG8B3o25+groMen3um9
-         wh8qMEArTzKGY6jb3VRv8mFh19mGxd5vwser9AMGg24kPxXiHd3Z2T/x1a0J30SpFN54
-         PD/VhWVNyen45Cr0OkEstrOL10FK6i37ZDJrzRud90X3N08CMX6IupQgi20Erz5spnoK
-         Br9lm9L05dpjtzijSELVZ7ej11N2UjO0eERJ77WYWBgil6NiP2b2HIs6npXDbI74ewEr
-         RT481s45PiLu3NMmaVeURGyCelFAC3uCfNcax1TOXV2HFUyD89li8kKAhJzlj+Qnynmd
-         FQvQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVDP+babB6BSeKVhDQb9Mqx84a405/mxkQgnI0RWhHCjYkhdiPEmHy4K0bG27y5aO3ka2UImf4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwK/omSQpzRSgZCruypBofxj4CvJn3UnRrplmWjUQy6jH62ZPFX
-	OOLmu0RpXXohWHrloIC9iHEQvYhxEJ2Lh43ZWGQwVmepK8zhWefnP39j4DwW23g40A==
-X-Gm-Gg: AY/fxX7i/02+v5g93T66liQzrg/2YTBod59hoL3sexoV1e0fqjQDI7tNZPM+74crarN
-	vqKUYhPdFEx7LgZPCw9bLy2eiQA8ap7fVALUpebJZ5zNAckYR8p7ipT62nA7ZNxDBuBVHp96R2t
-	Zv/vrqJYe5xCtYUQQM8zpNvjeuWEJ0sCHnfLaUy8L9TIY5jOjYDnjvryvm6w+r8k/LWKThgVyRY
-	BE7LsfRNardFDaj6YM9D8kgUasIHBn2r6ouhOkBlU4pQ+z7cqIgcvD/VPsQEAzSW8CxdHts97t+
-	HtDFvaIq3wzq1i4tFghFwSQFvbee6yJegYkYRD8TeXwux2qQnNZKrJkyAevHJpOkrxdG1SXiOKd
-	uZna3Juksk4RRhxVALOUqOJJg9gV/JazLfVnt0r0i+loXO3gXS9JeOx/xqBDut7H0Pyp4kivQfH
-	7XGjnmIT4cmH6E
-X-Google-Smtp-Source: AGHT+IGZ10x43nQ+FLvBRMXbLZtKA3EXPyhDzZklnkmuT26qzuiftxIwaVESBYneQ9nQxbWfNF/N/w==
-X-Received: by 2002:ac8:5746:0:b0:4ed:dab1:8109 with SMTP id d75a77b69052e-4f4abcf6a35mr445396981cf.17.1767112959383;
-        Tue, 30 Dec 2025 08:42:39 -0800 (PST)
-Received: from rowland.harvard.edu ([2601:19b:d03:1700::7e72])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4f4c46e4aabsm198873001cf.16.2025.12.30.08.42.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Dec 2025 08:42:38 -0800 (PST)
-Date: Tue, 30 Dec 2025 11:42:35 -0500
-From: Alan Stern <stern@rowland.harvard.edu>
-To: Diederik de Haas <diederik@cknow-tech.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	Huacai Chen <chenhuacai@kernel.org>, linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Shengwen Xiao <atzlinux@sina.com>,
-	linux-rockchip@lists.infradead.org
-Subject: Re: [PATCH] USB: OHCI/UHCI: Add soft dependencies on ehci_hcd
-Message-ID: <73d472ea-e660-474c-b319-b0e8758406c0@rowland.harvard.edu>
-References: <20251230080014.3934590-1-chenhuacai@loongson.cn>
- <2025123049-cadillac-straggler-d2fb@gregkh>
- <DFBMNYF0U5PK.24YOAUZFZ0ESB@cknow-tech.com>
+	s=arc-20240116; t=1767114344; c=relaxed/simple;
+	bh=duNvfmtAR7S6a41zadxq76wRebD0jhzScKAqaRJQFho=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=jw33Xc0nFnQyBdMSP8p+6yj1q2XBE+ucPkRgxW6qvsQaYLxh5hBsfC82S/4xFfv/PEU7lJlmW7GnOf335ira7dYOsSlYGOezK6t1m45soG3wo/bcdcA1zUJkiLSwygEHondrgPHDIFRw5Che+jiQ0tP5/Rw+IOglwJPrCQzbbl8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A/TFdTJN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B04FFC4CEFB;
+	Tue, 30 Dec 2025 17:05:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767114344;
+	bh=duNvfmtAR7S6a41zadxq76wRebD0jhzScKAqaRJQFho=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=A/TFdTJNly6i+rIzDa3PhsVY5sxbKJbD7JzoPEkT+nyxStxKpn2leiVg3r0bfJL7C
+	 PcVHGFedjVz2vrtnt1q54Xs/4ruqdHnQ5uWO6n9Kw8ZmT+AKBfckFMY5nAVfujLLl1
+	 MT89eE08e0yoRlS2KsEKF6mbbAFdqzfnWxEXdLZ+i98dP0lUC2UeFpwaod3kgxbLbn
+	 hZAnLZSXnCR7h8vOWeSze250c/yD18EiAcnQLzbwEkksqWRuOvPEJywyuN9fzdLurz
+	 g5ZFj4LwModlYudYke8foK4sXaIgEiUlaMwRIWT84QnxtyH4F67VcNKfX/2mI6P3CP
+	 guff/BjWxlMJQ==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6.y 1/4] f2fs: remove unused GC_FAILURE_PIN
+Date: Tue, 30 Dec 2025 12:05:37 -0500
+Message-ID: <20251230170540.2336679-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025122922-tyke-slip-919d@gregkh>
+References: <2025122922-tyke-slip-919d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DFBMNYF0U5PK.24YOAUZFZ0ESB@cknow-tech.com>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Dec 30, 2025 at 03:40:27PM +0100, Diederik de Haas wrote:
-> On Tue Dec 30, 2025 at 9:15 AM CET, Greg Kroah-Hartman wrote:
-> > On Tue, Dec 30, 2025 at 04:00:14PM +0800, Huacai Chen wrote:
-> >> Commit 9beeee6584b9aa4f ("USB: EHCI: log a warning if ehci-hcd is not
-> >> loaded first") said that ehci-hcd should be loaded before ohci-hcd and
-> >> uhci-hcd. However, commit 05c92da0c52494ca ("usb: ohci/uhci - add soft
-> >> dependencies on ehci_pci") only makes ohci-pci/uhci-pci depend on ehci-
-> >> pci, which is not enough and we may still see the warnings in boot log.
-> >> So fix it by also making ohci-hcd/uhci-hcd depend on ehci-hcd.
-> >> 
-> >> Cc: stable@vger.kernel.org
-> >> Reported-by: Shengwen Xiao <atzlinux@sina.com>
-> >> Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-> >> ---
-> >>  drivers/usb/host/ohci-hcd.c | 1 +
-> >>  drivers/usb/host/uhci-hcd.c | 1 +
-> >>  2 files changed, 2 insertions(+)
-> >> 
-> >> diff --git a/drivers/usb/host/ohci-hcd.c b/drivers/usb/host/ohci-hcd.c
-> >> index 9c7f3008646e..549c965b7fbe 100644
-> >> --- a/drivers/usb/host/ohci-hcd.c
-> >> +++ b/drivers/usb/host/ohci-hcd.c
-> >> @@ -1355,4 +1355,5 @@ static void __exit ohci_hcd_mod_exit(void)
-> >>  	clear_bit(USB_OHCI_LOADED, &usb_hcds_loaded);
-> >>  }
-> >>  module_exit(ohci_hcd_mod_exit);
-> >> +MODULE_SOFTDEP("pre: ehci_hcd");
-> >
-> > Ick, no, this way lies madness.  I hate the "softdep" stuff, it's
-> > usually a sign that something is wrong elsewhere.
-> >
-> > And don't add this _just_ to fix a warning message in a boot log, if you
-> > don't like that message, then build the module into your kernel, right?
-> >
-> > And I really should just go revert 05c92da0c524 ("usb: ohci/uhci - add
-> > soft dependencies on ehci_pci") as well, that feels wrong too.
-> 
-> FWIW, I've been seeing this warning on several of my Rockchip based
-> devices as well. I thought I had already mentioned that on some ML, but
-> couldn't find it on lore.k.o ... turns out I reported it on my 'own' ML:
-> https://lists.sr.ht/~diederik/pine64-discuss/%3CDD65LB64HB7K.15ZYRTB98X8G2@cknow.org%3E
-> (and likely on #linux-rockchip IRC channel)
-> 
-> Most of it is just my research notes, but the last post also had this:
-> 
-> ```
-> I checked the last 20 boots on my devices to see that warning (or not).
-> Device				Number of times that warning showed up
-> Rock64 (rk3328)			16x
-> RockPro64 (rk3399)		11x
-> Quartz64 Model A (rk3566)	 7x
-> Quartz64 Model B (rk3566)	14x
-> PineTab2 (rk3566)		17x
-> NanoPi R5S (rk3568)		13x
-> Rock 5B (rk3588)		12x
-> ```
-> 
-> While I generally don't like seeing warning messages, it often also
-> resulted in USB2 ports not working. Maybe even every time, but I only
-> notice it when I actually tried to use one of the USB2 ports.
-> 
-> The first post mentioned what I 'assume' to be the problem:
-> ```
-> CONFIG_USB_XHCI_HCD=m
-> CONFIG_USB_EHCI_HCD=m
-> CONFIG_USB_OHCI_HCD=m
-> ```
-> 
-> So I guess USB_EHCI_HCD doesn't work with '=m'.
+From: Chao Yu <chao@kernel.org>
 
-Not true, it really does work with "=m".
+[ Upstream commit 968c4f72b23c0c8f1e94e942eab89b8c5a3022e7 ]
 
-And in fact, your systems should work even if the modules are loaded in 
-the wrong order.  The issue is that doing so can cause a brief 
-interruption in the existing USB connections when the ehci-pci module is 
-loaded.
+After commit 3db1de0e582c ("f2fs: change the current atomic write way"),
+we removed all GC_FAILURE_ATOMIC usage, let's change i_gc_failures[]
+array to i_pin_failure for cleanup.
 
-If your systems don't use PCI for these host controllers then I don't 
-know how they would behave.  The issue is: How does the hardware route 
-low-speed and full-speed USB connections to the different types of 
-controller?
+Meanwhile, let's define i_current_depth and i_gc_failures as union
+variable due to they won't be valid at the same time.
 
-On PCI systems, when ehci-pci isn't loaded, the hardware routes all 
-connections directly to the companion UHCI or OHCI controller.  When 
-ehci-pci is loaded, the hardware routes connections to the EHCI 
-controller, and when the driver sees that a connection isn't running at 
-high speed (480 Mb/s), it tells the hardware to switch the connection 
-over to the companion.
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Stable-dep-of: 10b591e7fb7c ("f2fs: fix to avoid updating compression context during writeback")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ fs/f2fs/f2fs.h     | 14 +++++---------
+ fs/f2fs/file.c     | 12 +++++-------
+ fs/f2fs/inode.c    |  6 ++----
+ fs/f2fs/recovery.c |  3 +--
+ 4 files changed, 13 insertions(+), 22 deletions(-)
 
-So if a low-speed (1.5 Mb/s) or full-speed (12 Mb/s) device is connected 
-before ehci-pci loads, its connection will get routed to the companion 
-controller.  Then when ehci-pci loads, the connection will be switched 
-over to the EHCI controller, which will cause the existing connection to 
-be dropped.  Then the connection will be routed back to the companion 
-controller, but it will be perceived as a new connection, resulting in a 
-brief interruption in service.  For many devices this won't matter, but 
-for some it might.  The only way to avoid the problem is to load 
-ehci-pci before uhci-pci and ohci-pci.
+diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
+index 406243395b94..9112c3140ede 100644
+--- a/fs/f2fs/f2fs.h
++++ b/fs/f2fs/f2fs.h
+@@ -756,11 +756,6 @@ enum {
+ 
+ #define DEF_DIR_LEVEL		0
+ 
+-enum {
+-	GC_FAILURE_PIN,
+-	MAX_GC_FAILURE
+-};
+-
+ /* used for f2fs_inode_info->flags */
+ enum {
+ 	FI_NEW_INODE,		/* indicate newly allocated inode */
+@@ -808,9 +803,10 @@ struct f2fs_inode_info {
+ 	unsigned long i_flags;		/* keep an inode flags for ioctl */
+ 	unsigned char i_advise;		/* use to give file attribute hints */
+ 	unsigned char i_dir_level;	/* use for dentry level for large dir */
+-	unsigned int i_current_depth;	/* only for directory depth */
+-	/* for gc failure statistic */
+-	unsigned int i_gc_failures[MAX_GC_FAILURE];
++	union {
++		unsigned int i_current_depth;	/* only for directory depth */
++		unsigned int i_gc_failures;	/* for gc failure statistic */
++	};
+ 	unsigned int i_pino;		/* parent inode number */
+ 	umode_t i_acl_mode;		/* keep file acl mode temporarily */
+ 
+@@ -3167,7 +3163,7 @@ static inline void f2fs_i_depth_write(struct inode *inode, unsigned int depth)
+ static inline void f2fs_i_gc_failures_write(struct inode *inode,
+ 					unsigned int count)
+ {
+-	F2FS_I(inode)->i_gc_failures[GC_FAILURE_PIN] = count;
++	F2FS_I(inode)->i_gc_failures = count;
+ 	f2fs_mark_inode_dirty_sync(inode, true);
+ }
+ 
+diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
+index 6267ba6ef108..31d20800b475 100644
+--- a/fs/f2fs/file.c
++++ b/fs/f2fs/file.c
+@@ -3326,13 +3326,11 @@ int f2fs_pin_file_control(struct inode *inode, bool inc)
+ 
+ 	/* Use i_gc_failures for normal file as a risk signal. */
+ 	if (inc)
+-		f2fs_i_gc_failures_write(inode,
+-				fi->i_gc_failures[GC_FAILURE_PIN] + 1);
++		f2fs_i_gc_failures_write(inode, fi->i_gc_failures + 1);
+ 
+-	if (fi->i_gc_failures[GC_FAILURE_PIN] > sbi->gc_pin_file_threshold) {
++	if (fi->i_gc_failures > sbi->gc_pin_file_threshold) {
+ 		f2fs_warn(sbi, "%s: Enable GC = ino %lx after %x GC trials",
+-			  __func__, inode->i_ino,
+-			  fi->i_gc_failures[GC_FAILURE_PIN]);
++			  __func__, inode->i_ino, fi->i_gc_failures);
+ 		clear_inode_flag(inode, FI_PIN_FILE);
+ 		return -EAGAIN;
+ 	}
+@@ -3401,7 +3399,7 @@ static int f2fs_ioc_set_pin_file(struct file *filp, unsigned long arg)
+ 	}
+ 
+ 	set_inode_flag(inode, FI_PIN_FILE);
+-	ret = F2FS_I(inode)->i_gc_failures[GC_FAILURE_PIN];
++	ret = F2FS_I(inode)->i_gc_failures;
+ done:
+ 	f2fs_update_time(sbi, REQ_TIME);
+ out:
+@@ -3416,7 +3414,7 @@ static int f2fs_ioc_get_pin_file(struct file *filp, unsigned long arg)
+ 	__u32 pin = 0;
+ 
+ 	if (is_inode_flag_set(inode, FI_PIN_FILE))
+-		pin = F2FS_I(inode)->i_gc_failures[GC_FAILURE_PIN];
++		pin = F2FS_I(inode)->i_gc_failures;
+ 	return put_user(pin, (u32 __user *)arg);
+ }
+ 
+diff --git a/fs/f2fs/inode.c b/fs/f2fs/inode.c
+index 76ec2899cbe8..c67dbe4839e7 100644
+--- a/fs/f2fs/inode.c
++++ b/fs/f2fs/inode.c
+@@ -428,8 +428,7 @@ static int do_read_inode(struct inode *inode)
+ 	if (S_ISDIR(inode->i_mode))
+ 		fi->i_current_depth = le32_to_cpu(ri->i_current_depth);
+ 	else if (S_ISREG(inode->i_mode))
+-		fi->i_gc_failures[GC_FAILURE_PIN] =
+-					le16_to_cpu(ri->i_gc_failures);
++		fi->i_gc_failures = le16_to_cpu(ri->i_gc_failures);
+ 	fi->i_xattr_nid = le32_to_cpu(ri->i_xattr_nid);
+ 	fi->i_flags = le32_to_cpu(ri->i_flags);
+ 	if (S_ISREG(inode->i_mode))
+@@ -691,8 +690,7 @@ void f2fs_update_inode(struct inode *inode, struct page *node_page)
+ 		ri->i_current_depth =
+ 			cpu_to_le32(F2FS_I(inode)->i_current_depth);
+ 	else if (S_ISREG(inode->i_mode))
+-		ri->i_gc_failures =
+-			cpu_to_le16(F2FS_I(inode)->i_gc_failures[GC_FAILURE_PIN]);
++		ri->i_gc_failures = cpu_to_le16(F2FS_I(inode)->i_gc_failures);
+ 	ri->i_xattr_nid = cpu_to_le32(F2FS_I(inode)->i_xattr_nid);
+ 	ri->i_flags = cpu_to_le32(F2FS_I(inode)->i_flags);
+ 	ri->i_pino = cpu_to_le32(F2FS_I(inode)->i_pino);
+diff --git a/fs/f2fs/recovery.c b/fs/f2fs/recovery.c
+index f8852aa52640..223fcdf785f7 100644
+--- a/fs/f2fs/recovery.c
++++ b/fs/f2fs/recovery.c
+@@ -330,8 +330,7 @@ static int recover_inode(struct inode *inode, struct page *page)
+ 	F2FS_I(inode)->i_advise = raw->i_advise;
+ 	F2FS_I(inode)->i_flags = le32_to_cpu(raw->i_flags);
+ 	f2fs_set_inode_flags(inode);
+-	F2FS_I(inode)->i_gc_failures[GC_FAILURE_PIN] =
+-				le16_to_cpu(raw->i_gc_failures);
++	F2FS_I(inode)->i_gc_failures = le16_to_cpu(raw->i_gc_failures);
+ 
+ 	recover_inline_flags(inode, raw);
+ 
+-- 
+2.51.0
 
-(A similar problem can occur with high-speed-capable devices.  When 
-initially attached to the companion controller, they are forced to 
-connect at full speed.  But when the connection is changed to the EHCI 
-controller, they are able to run at high speed -- and again, the result 
-is a new connection, causing service to be interrupted and then start up 
-fresh but running much faster.)
-
-Alan Stern
 
