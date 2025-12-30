@@ -1,98 +1,94 @@
-Return-Path: <stable+bounces-204196-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204197-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 801A3CE9532
-	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 11:15:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22975CE96B0
+	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 11:36:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9983B301BE8E
-	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 10:14:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6EDBA3034362
+	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 10:33:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F148B2D5416;
-	Tue, 30 Dec 2025 10:14:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 874052E9748;
+	Tue, 30 Dec 2025 10:33:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ggqtloqw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KOVKQNMw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFDA72737F2;
-	Tue, 30 Dec 2025 10:14:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AE9E2E8DFE;
+	Tue, 30 Dec 2025 10:33:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767089656; cv=none; b=Ae7KM2lejjnIs43RGd1TGrcLzinJBQlpaQaAxVf2kwyI9T+wna41l+/99TXpFm/SXLQgfKJPaRFz8ZO4eQjHc4wu0bSbID/rZozhYVXrFjcyPUTjO4M0pNhxcFymMtx8VHIbctGYBaq4jG5e8gK4LiliB3LqQ+wDbKSkMUrc/Ts=
+	t=1767090807; cv=none; b=s65C8NDvohnujepBj8OZ32obECwsyvYJfzMPVHfXhZ/rPuj1nqVzQeRME2kFJ0dAVlpxlekYxXWSSlGLUgfYxNS95mDNX1lRRSqBjcYpRUPsdP6k5IBLs/+Jl5tNg6nidUfiITcxaJk/9cfrDFTAtbFyu33yXwIYY0JBrvpCEPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767089656; c=relaxed/simple;
-	bh=Caci6saiVAb+HvtzJHAbyeQq5WFsqlhsTwR5cy1cZ88=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GE3XvArxOChqDkNm7wGRZt+/ErqM1h4pk0lAJ2jY7DqZvItWYkMGiamrZZM8wXdranKvZvpmn2Uedx+gF7Utcbnj6/2jG+kjE1AZ1U/GnTEM/w7qODbxHstLjCnNIPdCfsS8p8da4L4gx0bdwvEnMyFDigfJYLbfbkzwa5LLZnI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ggqtloqw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09BC8C4CEFB;
-	Tue, 30 Dec 2025 10:14:12 +0000 (UTC)
+	s=arc-20240116; t=1767090807; c=relaxed/simple;
+	bh=2ANyrjuANu+qFdsCi/uswp1/kr4bYlks/T/a0CCxBJw=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=kGybK2a0RrvQhPUvvJf/kOKtqUYG5aKL1xoYIZyeDnOH+vdvgy297SjiNtY2OwXUBg2EYEPe3j0CF0WMidF7mwg6fO2+p4HXh6NEact21Y/VcUxClA+zIS3SSYFFKZjiz4PTkCOiWi0VyrPbRisaQO6KCVQXPG/jlRvgssnQN+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KOVKQNMw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1434C4CEFB;
+	Tue, 30 Dec 2025 10:33:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767089656;
-	bh=Caci6saiVAb+HvtzJHAbyeQq5WFsqlhsTwR5cy1cZ88=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=GgqtloqwQpYOstMbM/OQEP/BH6DDA/vpcGRA5le0/zyfMKUxErS2rx1yGo9m/PxRC
-	 MUjrSLl5AqGmYMS4FxjzggbrNw7zSxcTDIK4HZvnKErHrIZ1GNaLGt93Z7tzR2V8VD
-	 53WLcwF4EFuqTmyUtuUhd3dXAnUzQ2lOfw+eLIdHuXj6UGLc2bMESE6DL0q0Jb5a0c
-	 KhCYEz+hiIqpvp+0/hqYH/RaN5cb85sC7LadNBBSyCSh7F+02VtIZGU5umhFb+GrCn
-	 TJD7i+76tJxndoz9XY5D1OMc/aLe6EVLqTd9AZsMa2NxXHgoR7rld44AQCvxTRbhWy
-	 nDG67YabVwpnw==
-Date: Tue, 30 Dec 2025 11:14:10 +0100
-From: Niklas Cassel <cassel@kernel.org>
-To: Bjorn Helgaas <helgaas@kernel.org>
-Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Shawn Lin <shawn.lin@rock-chips.com>,
-	FUKAUMI Naoki <naoki@radxa.com>,
-	Krishna chaitanya chundru <quic_krichai@quicinc.com>,
-	Damien Le Moal <dlemoal@kernel.org>, stable@vger.kernel.org,
-	linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-rockchip@lists.infradead.org,
-	Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>
-Subject: Re: [PATCH v2 1/6] Revert "PCI: dw-rockchip: Don't wait for link
- since we can detect Link Up"
-Message-ID: <aVOl8mfKiYX51gRL@ryzen>
-References: <20251222064207.3246632-9-cassel@kernel.org>
- <20251226223159.GA4143516@bhelgaas>
+	s=k20201202; t=1767090806;
+	bh=2ANyrjuANu+qFdsCi/uswp1/kr4bYlks/T/a0CCxBJw=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=KOVKQNMwdDFwqbH4SmQoIlN/hXALuhjQIc8sZMUz3iRwDP+bf89SVPshjmCUlqMPA
+	 l9aidOgKIBWFx/HQyS04ma8yi2yNncaXLvKeBDkzsv93gIz/ou6TUz5RdBvKtxQg7D
+	 PYLYHPzPhdOeAvE5VQDg0FkXs2D1w/Jf9iMlDZloe+XnxEtAapsmCq4su/lkQA+cXP
+	 M47hch38NbhcvnOL+vx1czoJDB7VsPs4CK13zE5uunZANbCs6Zb4jOAAanBTrjK8Vw
+	 piWKSrz4Cz2Ewa/X5acnhfNv97/8ylbQyK2dBPiCTcOK/T5x+M1vxGPCZqHS0ty1lR
+	 fUVv7Uk6XqCSg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3B7373808205;
+	Tue, 30 Dec 2025 10:30:10 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251226223159.GA4143516@bhelgaas>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v3] net: macb: Relocate mog_init_rings() callback from
+ macb_mac_link_up() to macb_open()
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <176709060877.3205848.3719021860077682100.git-patchwork-notify@kernel.org>
+Date: Tue, 30 Dec 2025 10:30:08 +0000
+References: <20251222015624.1994551-1-xiaolei.wang@windriver.com>
+In-Reply-To: <20251222015624.1994551-1-xiaolei.wang@windriver.com>
+To: Xiaolei Wang <xiaolei.wang@windriver.com>
+Cc: pabeni@redhat.com, nicolas.ferre@microchip.com, claudiu.beznea@tuxon.dev,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, rmk+kernel@armlinux.org.uk, Kexin.Hao@windriver.com,
+ Xiaolei.Wang@windriver.com, netdev@vger.kernel.org, stable@vger.kernel.org,
+ linux-kernel@vger.kernel.org
 
-Hello Bjorn,
+Hello:
 
-On Fri, Dec 26, 2025 at 04:31:59PM -0600, Bjorn Helgaas wrote:
-> > The long term plan is to migrate this driver to the pwrctrl framework,
-> > once it adds proper support for powering up and enumerating PCIe switches.
+This patch was applied to netdev/net.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
+
+On Mon, 22 Dec 2025 09:56:24 +0800 you wrote:
+> In the non-RT kernel, local_bh_disable() merely disables preemption,
+> whereas it maps to an actual spin lock in the RT kernel. Consequently,
+> when attempting to refill RX buffers via netdev_alloc_skb() in
+> macb_mac_link_up(), a deadlock scenario arises as follows:
 > 
-> "Proper" is hiding some important details here.  pwrctrl already
-> supports powering up and enumerating switches.  I think this refers to
-> [1], where Mani says the plan is for pwrctrl to power up everything
-> before the initial bus scan so we can figure out how many buses are
-> needed.
+>    WARNING: possible circular locking dependency detected
+>    6.18.0-08691-g2061f18ad76e #39 Not tainted
 > 
-> [1] https://lore.kernel.org/linux-pci/fle74skju2rorxmfdvosmeyrx3g75rysuszov5ofvde2exj4ir@3kfjyfyhczmn/
+> [...]
 
-Correct.
+Here is the summary with links:
+  - [net,v3] net: macb: Relocate mog_init_rings() callback from macb_mac_link_up() to macb_open()
+    https://git.kernel.org/netdev/net/c/99537d5c476c
 
-This series has already been merged to the pci/controller/dwc branch
-(although for some reason this branch is not merged to pci/next yet),
-and I can see that Mani have rephrased the commit messages to be more
-specific and to avoid the word proper.
-
-Please tell me if there is some futher action needed from my part.
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
 
-Kind regards,
-Niklas
 
