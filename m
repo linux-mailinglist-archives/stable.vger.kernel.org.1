@@ -1,301 +1,269 @@
-Return-Path: <stable+bounces-204278-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204279-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFCF1CEA81C
-	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 19:54:17 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B73E1CEA85F
+	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 20:03:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 392A13003872
-	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 18:54:17 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 362AB300FA0E
+	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 19:03:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03BFE2749E0;
-	Tue, 30 Dec 2025 18:54:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE51D265606;
+	Tue, 30 Dec 2025 19:03:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GSpe+DOh"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="WcVPZSvM";
+	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="PgG+zH9S"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B91AE17AE11
-	for <stable@vger.kernel.org>; Tue, 30 Dec 2025 18:54:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767120855; cv=none; b=OeOzFAWYwUJVs6Ibo1pp1OTqu6AmM3SS6ms1zbdjVRRtJxwYBcnQ/8LzZPR+kseJ2uYiDXfjI7b5GL0Ujp9t0vlCfVUGMcXr3u6aa3foGCZcIRxZczWmoOKcV4/kMnwS2QM8mYzrm6LNL89+mwUH8iKOw3Nf0mqMlhcJkxEhzsY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767120855; c=relaxed/simple;
-	bh=BQGrsbYk5f9zNX3Pgb6i1AymqOBjePtvZqbTnE+rfm0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KYXHtOaGet1UYYyIGueP2/hJXx7d0zle3XhszWUsMcJQjzJ8NvR+Vk6sgYrf0wzUTGJEc9BoU/T6sRtQ1qWaJ62oyH+Bw5UJAMm6Rxnx8qk1+wWogThA+XVzujuzI44Yafa6/lMml1MiaEFZP6F+Be74kr7F6LdKpAcn7/hBMjY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GSpe+DOh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CD5AC4CEFB;
-	Tue, 30 Dec 2025 18:54:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767120855;
-	bh=BQGrsbYk5f9zNX3Pgb6i1AymqOBjePtvZqbTnE+rfm0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GSpe+DOhv0dlJavMExwVVDEwMEn3xS5ZNA4uARnCuVEJIUQURqMG4i3zumncMDm6f
-	 VFiHJ96+xECV6xkomTqN1JziXh1bfxsvkapbyZJXsGUk2ZOPRwymLp0+jSciwYPXfa
-	 /vKJFbUj/GG9pFHMsb5fT0SP7MyQSEEzHvffBa3oO1wbxzo+f3AKlRCBDy++jUGME+
-	 88z/WkysSbmYEZhSXDKc8AoqzC3WVDeaMOkkr2GlF/RLoPAD48QF0OzNIVR9IA+inN
-	 dkGVTygpa73+sO2Lo12aQaRbXuOkAEPW/L+Z2N87Dh4kNZVaaaey9E6L5laV2SKjbE
-	 WJvyH8+lfB33A==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Chao Yu <chao@kernel.org>,
-	stable@kernel.org,
-	Hong Yun <yhong@link.cuhk.edu.hk>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y] f2fs: use global inline_xattr_slab instead of per-sb slab cache
-Date: Tue, 30 Dec 2025 13:54:13 -0500
-Message-ID: <20251230185413.2413273-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025122922-dispatch-relic-d73b@gregkh>
-References: <2025122922-dispatch-relic-d73b@gregkh>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5113251795;
+	Tue, 30 Dec 2025 19:03:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.165.32
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1767121398; cv=fail; b=YaSoy/oLAd4e8M7NtAB8Df4UrxmAYEyPKeEsumKu1f8240MOUpS3Beq1rFsPel75r0pRar00lWkxuf4y2BnYHjJdeZqbhcK751HMiCIvSSvTrc4ExBrw6gYm3lErcH1nGDzridZ0G2wt/pk8yzl6riVtGRMJ1tsBj3RxmxTHpsE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1767121398; c=relaxed/simple;
+	bh=ySUMAYiRBz5qldhzMu9IhXEaIW0JXhRtveP2WtDQ8Eg=;
+	h=Message-ID:Date:From:Subject:References:To:Cc:In-Reply-To:
+	 Content-Type:MIME-Version; b=mYSpsVCzuYwvK9b/6IR/5keQWVLwTxU4jZQgLhBE3kv9R3/IY5nXWuI42HT8YLl+xk7Mfduf5c541zEYDRroIKBaRDfAAb0uYxYAH5VM1EWDWYJ7zn1hrglybk1PWQS1p/VQkRUeJNvGOlr9bm3xjnIunSEef8rreB8gf6n9raQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=WcVPZSvM; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=PgG+zH9S; arc=fail smtp.client-ip=205.220.165.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5BUBEMp54133800;
+	Tue, 30 Dec 2025 19:03:16 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:to; s=
+	corp-2025-04-25; bh=H48nr6FSkU2K4ZEsv7tT+xVcOVXGDyho3NCuO+lqk20=; b=
+	WcVPZSvMajQS1wQFNYLCPMqpb/z/eQ8LF4PvOu/GeMHlRzpUizTOPPw4vxt0JYuw
+	tB7o50vnyutSotvsFT2J85p3NGBLelVzHNo8I5AWTL7GoJX/+jffUGqR0YZ/+MUa
+	/KpnVpG1HEfzvfmVTNrWLZDhCwRAju/RjoZX2E0a3FJgJJw1nB1eJfS97eNHq8fS
+	VAIHCZpMsF0jbwFsbSr/ky9tNqYytBISWGIxHibMKU1+nc3jxESH3AbhfDQNLErs
+	uXVbeU39wlBdlw+PioEu8XljNcUO0QMEFXmPLIOt5mqkET7vSdqpTC+NVOeS8xzg
+	3hvGMlcmajpMhhlDGMzSXw==
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4ba7b5juyd-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 30 Dec 2025 19:03:15 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 5BUGMI2h014251;
+	Tue, 30 Dec 2025 19:03:14 GMT
+Received: from ch1pr05cu001.outbound.protection.outlook.com (mail-northcentralusazon11010034.outbound.protection.outlook.com [52.101.193.34])
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4ba5wc27qe-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 30 Dec 2025 19:03:14 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=R4djm6ImDmqjgj8+PKAMm+0J76B9OfsyWRH/Bw4HaOgVjX0kRjEVPoe+g5s/JA9ek64tL8qMt/1jYrYSnX+rvhVl8evPTB7zfNRyvoeimu0DiW1TVb2NQ0orRk2eKi1H++46uzUwsW04PthcZJUJnBjLaqVl+MG2FvbXV7aeHtjvnG20dio54zCS7AmWPiL6HZX6QZQF1QEg6J25LoUI87J57rcYO2kmlLSkK5XGHB6SrcXLbBQmIccDWwp0RH8rV/zz2WLmFQgsHTZc6KwQh6k6DDe5thu795ewlqPupJwmkCSB6LVaCy8bgLY48zw9S3oYcTHjr1nQuhl0/N+R5w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=H48nr6FSkU2K4ZEsv7tT+xVcOVXGDyho3NCuO+lqk20=;
+ b=YuJqbUN8/xMYZWjFkGl5UFN5zglq5JQdHKeBTUrBVNPQKD7RMGW270t5I9AcaQ6cvx2tX+AdCLCC4o4FofP0d0lQUBL9K2WcohLNUHVgPbMhb05lB0o8jm4BVpwGFVyV7tGDQCRolWuRGJI1E8GLWsqeU/NgofHlXVS9RzGm2byFRbltzqbJABls/U4YSGM4ebUSttD1I7fyIfnMsYrxs/hj0KVPiF4IVG0h0zY4nixwCQML3P+mJmSV1+N8R5xFX9j0G2p36g8RJHbcQbrWf8bOcJuwkPQaSel4fJl6Hf+czyvUZGCgwhA83M6bbVY5DVuULUfHrN6gkm/ERcorAA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=H48nr6FSkU2K4ZEsv7tT+xVcOVXGDyho3NCuO+lqk20=;
+ b=PgG+zH9Sgqrdm86gSWe+UGU8TtINUNPNs4dgAuGwo0dhoDzAvW7B2co6WWcKROMt9ZaZYTyT1i+XcgH/NGWLQAU4YWyppli/BtibBt6+NasX9vHfsCG/x2wIUOUMYGFwW/wos0t0bpcXTjadw99ESeya2MoF6JoaJ/NmB+oW5Cc=
+Received: from DM4PR10MB7476.namprd10.prod.outlook.com (2603:10b6:8:17d::6) by
+ DS0PR10MB7342.namprd10.prod.outlook.com (2603:10b6:8:f9::21) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9456.14; Tue, 30 Dec 2025 19:03:07 +0000
+Received: from DM4PR10MB7476.namprd10.prod.outlook.com
+ ([fe80::bc52:af88:ebf:dd16]) by DM4PR10MB7476.namprd10.prod.outlook.com
+ ([fe80::bc52:af88:ebf:dd16%6]) with mapi id 15.20.9478.004; Tue, 30 Dec 2025
+ 19:03:07 +0000
+Message-ID: <17cd5bef-e787-4dc9-9536-112d1e2cda2d@oracle.com>
+Date: Tue, 30 Dec 2025 13:02:41 -0600
+User-Agent: Mozilla Thunderbird
+From: Mark Tinguely <mark.tinguely@oracle.com>
+Subject: [PATCH] xfs: fix NULL ptr in xfs_attr_leaf_get
+Reply-To: Mark Tinguely <mark.tinguely@oracle.com>
+References: <20251230190029.32684-1-mark.tinguely@oracle.com>
+Content-Language: en-US
+To: linux-xfs@vger.kernel.org
+Cc: stable@vger.kernel.org
+In-Reply-To: <20251230190029.32684-1-mark.tinguely@oracle.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: PH7PR03CA0027.namprd03.prod.outlook.com
+ (2603:10b6:510:339::14) To DM4PR10MB7476.namprd10.prod.outlook.com
+ (2603:10b6:8:17d::6)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR10MB7476:EE_|DS0PR10MB7342:EE_
+X-MS-Office365-Filtering-Correlation-Id: 732bac1e-1ee2-42c8-ab44-08de47d61100
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?VVFEaHJlc0VaT2ZjSFVNQmR1L0Zyckp5b2diUnI0SkVhVkd2cjNIRUVGQkhG?=
+ =?utf-8?B?dzBIZEtraXJBd24wRjMrQ2h3Vk95alZUaEc5T1FCZDRHZHFCUDJQOENtd1JL?=
+ =?utf-8?B?WWJ4VWR4UDVNMzA5ZDlxckltMnhjaHM1WHBkejJhN2xPZ0pROGN2ZDJMV0lm?=
+ =?utf-8?B?aVJEVEhtZjN1M2dBbTZHMmdrREU0NExwNTk2YmtQYkFOcU5TNGJlNExqcjhI?=
+ =?utf-8?B?S1ZPdHV2dDBIeU1nQVR0S25CenhZMnd0Zy8reVZqWmwvTkd6Y1pUTVUwYVlq?=
+ =?utf-8?B?ZDdxOENuWE9WaTdKWXdpT1JhZWw0RGNaM3VBakRXR0t1NmVKNzEzZUtiZWVu?=
+ =?utf-8?B?d01sbkFRQ0NJbTVGVVhQWDE2cE51QWVlMW9iWExtdHR4ZXdIL3VOc3JONVhp?=
+ =?utf-8?B?WDRQUThuNlc0aEtnS0JhSHhMV1dOelVnOXd1a3dJRTBYRG1nUDlJWDhFNW80?=
+ =?utf-8?B?aGd5dDBWemVERFo0Z21SdWtmMjg4bVdJUER6OUpjQzdKSUVkNFQ0SHhQVitB?=
+ =?utf-8?B?ajBqSkpjWWdsNFZUVkRGWGJvSWR6WDZPUU9raDdYQnRrSTNiZWhDT0p6Sys1?=
+ =?utf-8?B?MmhoWU9tcUdaR1djZlR1R3ovN21ZQ2tiQkcwUVVBeS9UMEpaUGhRYXpYcEov?=
+ =?utf-8?B?YUNiamdtYzRLMnFjRW9NeVJJNm9QOVN3NGw3TmNuc0lHRlBlVTc4ZENUOFNU?=
+ =?utf-8?B?YTF4MDdGSXY0U3IwcE04ckIrN0NGOFMwMXJRYW9RcEJNZVBlUnkrUFlFTndo?=
+ =?utf-8?B?Vm85RFM1MkZXbTMzK05PbHo3cFdjUGJEdHhkTEk3RHhOU2RrOUl3MDVRcUha?=
+ =?utf-8?B?elNwbEo0L3VZUExxaDNsdXhhclowY0s1RmtmdE5MUnNwV2twNGVpUW1vU0pX?=
+ =?utf-8?B?djVTYXQ4R25wZW5Vd0RFR2lyR283SzVpSEZpTHFVUnNxQzM2MmJZMmllWXpn?=
+ =?utf-8?B?MTZkMmZRZlhiZExwdGpmdEk5Q01MelUxZ3QrbnFXZzhseGdlUVZGckxNcWlG?=
+ =?utf-8?B?dU5VTWE0cGdKUGpZZU43ZlYzSTl5ZFVDWWU4ZmRiYkdURU50ZTdHQmhvVVE4?=
+ =?utf-8?B?NGl2TnBNMkFTZ2dNdnlqSHZhcm5EYUh4OU55Mmg1aEtCZHZja1RhMlRtTkhL?=
+ =?utf-8?B?ZTQvVzhObUdhekRmTmFQaWhwMS81aHVmN1VmQjdqdTdGTi9ORk1vd3JqNDFZ?=
+ =?utf-8?B?YW0yemVZenpVRFJ1Q2d1T2xqMmgwZG8rRWQ3R2l3WW9HYnc3eU96WWVrVndS?=
+ =?utf-8?B?S09BbCtTL1liNDNBMHRPdmh3RmJTZUxnNlZJcWtHemZOR1VrVW1yNG91MDQ5?=
+ =?utf-8?B?VXQvaEFwK3NsZ3B1TzFCeW5KYUkrQ3dUd3pWV1dVdGlYbnNEeXVEdFhHR0Y1?=
+ =?utf-8?B?WUtkbkFsUVBCeXZDVVN6U3RJdUI1cVB5NkkrRnRad24xSVpJbXVvTER2Z0dY?=
+ =?utf-8?B?ak45YmF5OE14bEV1V2RxanBPeVZjYkpGMnU2VXhBdE40RlZFUEVCb0xCNFpI?=
+ =?utf-8?B?YjlKZjFGS1NsMVdUbGw2bWl2ejloQ0c3L3VBclVXTmY2ZDlRY3A5NUFXOWJT?=
+ =?utf-8?B?RTF2QldkdWdCMDVkT2tTcjkyRGF3S0c2ektYclZpUjdPam8xNDVSQnFKbU8y?=
+ =?utf-8?B?N3AzaVp5VlBDOGVYRTBlR1ppbGZiSWpwQnE5N1pxT1ZxaCtFVFpyZjR0OGdU?=
+ =?utf-8?B?a3NqbUpweHlnYW1CTlQ4clQ4VzRYSGRSem5ocE1NcnQwcHRxek9RdkFSSllH?=
+ =?utf-8?B?QndCVE5Ka0UrNDVsc0QrN2c5cHNXUWs4T0xrSk5CQXM3ZythVkkzdGpPVUVO?=
+ =?utf-8?B?WDhEY29UYk52RHBjb0VDQU1Iak5vNG9vR0RrVzJkTDhINTNmczFmazA3YldR?=
+ =?utf-8?B?SEk0cUJOaHlWNC9pc1hNMitFbnNFTmxSMFZRVG8zTVZaY0EyVm9kbDZoTjZP?=
+ =?utf-8?Q?2QcUnvLRGOg2lyT5E1d1h7U+cdcsQtG7?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB7476.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?azJMYXZxQWFLM0NQeng1VkpxWTZCYWR3R0RkYTdLTDZIc05YTW1YRUxSS1Q5?=
+ =?utf-8?B?OVhzTGZJMGtobnpHeW50ajZ4MU1rYmRnRVhtU083RjdiYXVPWFZLWDE3b2hn?=
+ =?utf-8?B?Y2JIREVmakVzYUVCMU5sQWlUVjg4Ry9BVTM0bWFUSU83NUtRQWdONGhCd3kr?=
+ =?utf-8?B?ZTVLMm9iV1l5dGdmVWptSTMrSHdLOTFBUFRXNGY5YUxXc0FJbkdLTDI2M1c3?=
+ =?utf-8?B?MTZRaDJLeWxieHV1TEFhTWtyVnFMdHFxUzBxMUJKYTZVNDFTdkhxY2oxcFRK?=
+ =?utf-8?B?eDQwcW5LdGRBOVhCZXhsajhlc3NoRTB1RjFDRnhjQy81NUExRTJBWWJYbUdY?=
+ =?utf-8?B?SHRTank4emdBSjRqbTNQNVZVZGUxVmdvZmlseVNFY3VYREJ1c1ZIUzVWV2hX?=
+ =?utf-8?B?a2JjcVlzVVhGWnF6Wm9QVU5xa3FWcDJXNk1KT0lkM1h6aVhzbGtxSjZ4elZG?=
+ =?utf-8?B?MTRIMWZiTGlVUFZZamROc2ZkOTNVNWpZWnFyVUFCYk1JeVNxSnNJT25uUmpT?=
+ =?utf-8?B?UjZZdzZLSkFPTzB0aE01ZnVmV3UxZkszeUkyQ1F5WXAvL1A2M3ZKU0hjSXBF?=
+ =?utf-8?B?QnQwSzRDK256bUNoZ2hlNnRsd280aVFyck5PNGJpSXFud2dNTDYxdXRSUExy?=
+ =?utf-8?B?SnhJSHlHWkhWbXpITDZQM3lNclNva3NJUnRTdE8xZ01HZnZ6TklWdEliZnFu?=
+ =?utf-8?B?U1p5QlVBaWdvdkZ3UzNBcE9BVG1Cb2Q5c3hXdG1HYUtaK0N5K3FtVTZlcEFR?=
+ =?utf-8?B?eHd3QldDamVFdkk3L0hRU05RemQ3N1d5QzlMRWZVOUs3K1MyWmtrY0ZvYW1q?=
+ =?utf-8?B?aG1CNU9IaCtlSmNnNmFKSFNpZGNUL1NHNTVIMU95dyszQXpPdnhvRjY1SkRz?=
+ =?utf-8?B?N3VTRmNSTml1N3dXOTVHY2dWN01Ybi9OWDkwaGcyem50SzNzUTQvUTdzeGUy?=
+ =?utf-8?B?OWxuZDV4R2oxOXQreDJFOHBxbDZvcEpva2h3QTFudkI4V05RVXptdFJDWFp1?=
+ =?utf-8?B?bnU3UkhIWUFXcDRodGRuR0ZRU09ycFBnRVUzazRJV21nR0lIYVBPZko2NXhE?=
+ =?utf-8?B?bzBkZVFLTHpBNXZYZ3dXYTE3bG9SMERYME5BbzltZVZHVHlaSXVUbURLUldE?=
+ =?utf-8?B?WXVYVytlM0N5bEhwOGJYbU5tdXJUcC9TQzJCNENMTTVJeVdRUFRocXpCaVhj?=
+ =?utf-8?B?QmZoZXlNN1Vvbng4NGJSVm9vQ1FKT1lVUlBySy8zRW9iSkp4UitVUGhuNW1O?=
+ =?utf-8?B?NTVyL250blJMY1ZWMmh2Z2JFaDQwQ1NTTmliUVl4cmNzVHFFcm1TVHVqZ1Bt?=
+ =?utf-8?B?Z0tDdlVZbEJnZjN6M3IyYnZBV0pCcVQ0SFdRZDJ1cHZZOU1BYVh4aFpQQzRZ?=
+ =?utf-8?B?V3ZLMk92ZkJrQTlrRmt4WkFmOUlhNVZobGRqZjQzRXcwOHU0a2tUaVVsVzBF?=
+ =?utf-8?B?b1pjVUFLSlVYOHl6QVJ4clkvU3VnK3hlSVZoZEJEd29FMDBCNDY4SjdkYVBn?=
+ =?utf-8?B?T0tFYUo3RlJPb1NHbk5OMGRESU5SZnk2TXpGTTBuNFJ0VkNrbWpLL3oreVlN?=
+ =?utf-8?B?V3RxRWEweW5mSUdIS2dvZytnd1R1QW1qeXl4dUsrY3N2NmZ0QlZJTThzYzBU?=
+ =?utf-8?B?K0tBU0YveDNEdzJaZVdTZlNOL1JIWG9qTWdlK1ViRDV4RjRWZHU1NFk5VS9X?=
+ =?utf-8?B?bjFQWHZwdzBXblYzcVluQlJvRmdTR1ZCcU41anh0OG44dEx2MHhhUmdQNVli?=
+ =?utf-8?B?NnRUREF3L29SdVVNcDNTTEhYTUZWSFErUmZOckZWekpMQnFjNHpvWXJHQVcx?=
+ =?utf-8?B?YXFISGpvWmNXRm9ob2VlWUFnVHdGRFpqZ3IrNXMzRCt2RXhlSXJsVXNIU0Rq?=
+ =?utf-8?B?Nzd2bUxUTkprd1I4V05mOE11RFZWaGxZeWdyZFNwZFl1U0ZHc3dnbGt0bW1E?=
+ =?utf-8?B?bDVHR2JPaWh0VlBIV291d1Z6NjJ4RnVSSXRWVmdmcDhZOHZxKzJrQkV6bzQv?=
+ =?utf-8?B?TWhNQUFGRWk2VFpibW43Qno3QmQzNDdVckRia2RTc2JGeG5WRW1jWXJXY3dX?=
+ =?utf-8?B?bFVFTU96MURoUFZmUDI1T3g2eXNGTTJyRnVnV2ZuaU8rQm8vaW54ZGNzZmFP?=
+ =?utf-8?B?aEgxdERFRDBXeUdna0ZDTWtyUzIyMW1rbnN0d1loZTFnaktuYSt5a2pjRG5M?=
+ =?utf-8?B?R3JnZmdGQmZSdnhPbmtrcXN6TENvZHRBNUN0Z0ppUkFKNStQclJjNTNkNUZn?=
+ =?utf-8?B?Z0prNXR1L1FnUWpGbFFkbGgzZVFlU2VXMmQ1dHdaWXpBcXRWUUNjZEc2cGFk?=
+ =?utf-8?B?Y1ZOZGN0TU9hYUZ3RjV3RFg4V0tZcE8yaTFDVWk5b3k1UW5ZRC9QNkthTnFY?=
+ =?utf-8?Q?YliGdxHOOb4r7R6w=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	5wx8XkI0FgTG4RPNmC7ffvQ30+0V9DjTR+gkWg82SCgHtqmVCINs6vApRxFchvUrKXT3XWYxEOarCCQzY96ZfOFz8tkT9pjI2s19lbZaPbJ3icJy952nlKiPreJERTG5whsg7y1tRSUU3StDndvtXIp7R/lF0toZzJqRzPXrkqtpfGj2UMocr/lMiE6uXlZC+5kqL4ipJ1D3mdC0vZQP84MRyqE4Eon5Zdiq1SVWXh799wAdoJbs1Bqdsk73xll8Hq+O7QX/y65IZ/6g+KqrSsVCMk7st8FGz3+rZXru/ZOMEfDHxdREOqklH0gMkOhgS0S7QlmvqmS6IlC6au34yXsnzZY5MvxlodhgO6iPM4iOtnCByiy2IUbIgbTPsAkDh1NIU4Mp47T5y9hx1KtSr9LnI6d7rMgUnFjTuIZh3QksHpAaLBInoyB9lEAliC437tB87UQ0qLSZToehVxoU4A5MEqq8JbP4PznORcqy/Xwb8MjY4iKnqeWVLxTZjz6JlRFet51QOtrWbKWHzO6IcHhNjLPvfWWn8aaaKhe+ncrR7RgBf5f70HBWLhHWXWOhv+JehGOuidC3S6MUJR+kuGGVJKegvjsTxVxH41HK6A4=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 732bac1e-1ee2-42c8-ab44-08de47d61100
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB7476.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Dec 2025 19:03:06.8998
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: wU1JMVKxHSaz3eq4/hfCRStPcsky6mZwW1C8Xp0fQH6NH2sHS5lytpmF3GqJPTVBEKp05a2GeOBbAm77NscdBmirBB04oZkFSGk3XpckpzE=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR10MB7342
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-12-30_03,2025-12-30_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 suspectscore=0
+ malwarescore=0 bulkscore=0 mlxlogscore=913 phishscore=0 adultscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2512120000 definitions=main-2512300171
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjMwMDE3MSBTYWx0ZWRfX45M108KDGl2h
+ Ek2vmPAAeAtr0vK0SxMuUDrgtGTLu85dEuEru/+RT/eiB5WlWpptUn+2S8Gpk5OiM6efnY1MLVq
+ 7ug1hqLv5kiQ8ca5oD/wB4C2k1O7jFoKgJPTWmiEzXsTTgj00drvIx4jPbrbFKMpCIttN5RYoRp
+ Fz9NzPHgvRwy6U3J8wkaqLMmxYO5a7Dim7i94mblCpXRfOajfx2khE37uw4WL4dAECATUj1dXx9
+ ztz6TcFEPloBGAkZ0wSMzDO9viRXiczos938/KTI9VRL4C3S51d8LKlWbjz3EecnOHwmIpscmOM
+ 6X0yXwQBc3ZyLcMwp4Je5tgbjukJ5ydvCtAZ6dXbAnqPmcYb9ScW+sc9y0pyhofMtYFSo4enHqz
+ r3x/Cri6G/PZNbFyjq8xgyM7TQZbrdk4IPonJyzoi8jR2AXVgfhvJnKtCzltDB3aeT0KvrjxKpM
+ VLTir+b08OnlUCuhA9iN7MXjcWHS5parlYn/6MBk=
+X-Proofpoint-GUID: n2nodYTKmwdD0pVTEVKKTltBf6CH1Szn
+X-Authority-Analysis: v=2.4 cv=ccjfb3DM c=1 sm=1 tr=0 ts=695421f3 b=1 cx=c_pps
+ a=zPCbziy225d3KhSqZt3L1A==:117 a=zPCbziy225d3KhSqZt3L1A==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
+ a=wP3pNCr1ah4A:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=VwQbUJbxAAAA:8 a=yPCof4ZbAAAA:8 a=awnD_I-WXSFK71HJXPUA:9 a=QEXdDO2ut3YA:10
+ cc=ntf awl=host:12109
+X-Proofpoint-ORIG-GUID: n2nodYTKmwdD0pVTEVKKTltBf6CH1Szn
 
-From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit 1f27ef42bb0b7c0740c5616ec577ec188b8a1d05 ]
+The error path of xfs_attr_leaf_hasname() can leave a NULL
+xfs_buf pointer. xfs_has_attr() checks for the NULL pointer but
+the other callers do not.
 
-As Hong Yun reported in mailing list:
+We tripped over the NULL pointer in xfs_attr_leaf_get() but fix
+the other callers too.
 
-loop7: detected capacity change from 0 to 131072
-------------[ cut here ]------------
-kmem_cache of name 'f2fs_xattr_entry-7:7' already exists
-WARNING: CPU: 0 PID: 24426 at mm/slab_common.c:110 kmem_cache_sanity_check mm/slab_common.c:109 [inline]
-WARNING: CPU: 0 PID: 24426 at mm/slab_common.c:110 __kmem_cache_create_args+0xa6/0x320 mm/slab_common.c:307
-CPU: 0 UID: 0 PID: 24426 Comm: syz.7.1370 Not tainted 6.17.0-rc4 #1 PREEMPT(full)
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
-RIP: 0010:kmem_cache_sanity_check mm/slab_common.c:109 [inline]
-RIP: 0010:__kmem_cache_create_args+0xa6/0x320 mm/slab_common.c:307
-Call Trace:
- __kmem_cache_create include/linux/slab.h:353 [inline]
- f2fs_kmem_cache_create fs/f2fs/f2fs.h:2943 [inline]
- f2fs_init_xattr_caches+0xa5/0xe0 fs/f2fs/xattr.c:843
- f2fs_fill_super+0x1645/0x2620 fs/f2fs/super.c:4918
- get_tree_bdev_flags+0x1fb/0x260 fs/super.c:1692
- vfs_get_tree+0x43/0x140 fs/super.c:1815
- do_new_mount+0x201/0x550 fs/namespace.c:3808
- do_mount fs/namespace.c:4136 [inline]
- __do_sys_mount fs/namespace.c:4347 [inline]
- __se_sys_mount+0x298/0x2f0 fs/namespace.c:4324
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x8e/0x3a0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
+Fixes v5.8-rc4-95-g07120f1abdff ("xfs: Add xfs_has_attr and subroutines")
+No reproducer.
 
-The bug can be reproduced w/ below scripts:
-- mount /dev/vdb /mnt1
-- mount /dev/vdc /mnt2
-- umount /mnt1
-- mounnt /dev/vdb /mnt1
-
-The reason is if we created two slab caches, named f2fs_xattr_entry-7:3
-and f2fs_xattr_entry-7:7, and they have the same slab size. Actually,
-slab system will only create one slab cache core structure which has
-slab name of "f2fs_xattr_entry-7:3", and two slab caches share the same
-structure and cache address.
-
-So, if we destroy f2fs_xattr_entry-7:3 cache w/ cache address, it will
-decrease reference count of slab cache, rather than release slab cache
-entirely, since there is one more user has referenced the cache.
-
-Then, if we try to create slab cache w/ name "f2fs_xattr_entry-7:3" again,
-slab system will find that there is existed cache which has the same name
-and trigger the warning.
-
-Let's changes to use global inline_xattr_slab instead of per-sb slab cache
-for fixing.
-
-Fixes: a999150f4fe3 ("f2fs: use kmem_cache pool during inline xattr lookups")
-Cc: stable@kernel.org
-Reported-by: Hong Yun <yhong@link.cuhk.edu.hk>
-Tested-by: Hong Yun <yhong@link.cuhk.edu.hk>
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-[ folio => page , context ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org # v5.19+ with another port for v5.9 - v5.18
+Signed-off-by: Mark Tinguely <mark.tinguely@oracle.com>
 ---
- fs/f2fs/f2fs.h  |  3 ---
- fs/f2fs/super.c | 15 +++++++--------
- fs/f2fs/xattr.c | 30 ++++++++++--------------------
- fs/f2fs/xattr.h | 10 ++++++----
- 4 files changed, 23 insertions(+), 35 deletions(-)
+  fs/xfs/libxfs/xfs_attr.c | 6 ++++--
+  1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
-index d8a32a02bcbc..524f5d3602a1 100644
---- a/fs/f2fs/f2fs.h
-+++ b/fs/f2fs/f2fs.h
-@@ -1800,9 +1800,6 @@ struct f2fs_sb_info {
- 	spinlock_t error_lock;			/* protect errors array */
- 	bool error_dirty;			/* errors of sb is dirty */
- 
--	struct kmem_cache *inline_xattr_slab;	/* inline xattr entry */
--	unsigned int inline_xattr_slab_size;	/* default inline xattr slab size */
--
- 	/* For reclaimed segs statistics per each GC mode */
- 	unsigned int gc_segment_mode;		/* GC state for reclaimed segments */
- 	unsigned int gc_reclaimed_segs[MAX_GC_MODE];	/* Reclaimed segs for each mode */
-diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
-index 84fc6591e3f9..dfa66339834f 100644
---- a/fs/f2fs/super.c
-+++ b/fs/f2fs/super.c
-@@ -1671,7 +1671,6 @@ static void f2fs_put_super(struct super_block *sb)
- 
- 	destroy_device_list(sbi);
- 	f2fs_destroy_page_array_cache(sbi);
--	f2fs_destroy_xattr_caches(sbi);
- 	mempool_destroy(sbi->write_io_dummy);
- #ifdef CONFIG_QUOTA
- 	for (i = 0; i < MAXQUOTAS; i++)
-@@ -4295,13 +4294,9 @@ static int f2fs_fill_super(struct super_block *sb, void *data, int silent)
- 		}
- 	}
- 
--	/* init per sbi slab cache */
--	err = f2fs_init_xattr_caches(sbi);
--	if (err)
--		goto free_io_dummy;
- 	err = f2fs_init_page_array_cache(sbi);
- 	if (err)
--		goto free_xattr_cache;
-+		goto free_io_dummy;
- 
- 	/* get an inode for meta space */
- 	sbi->meta_inode = f2fs_iget(sb, F2FS_META_INO(sbi));
-@@ -4611,8 +4606,6 @@ static int f2fs_fill_super(struct super_block *sb, void *data, int silent)
- 	sbi->meta_inode = NULL;
- free_page_array_cache:
- 	f2fs_destroy_page_array_cache(sbi);
--free_xattr_cache:
--	f2fs_destroy_xattr_caches(sbi);
- free_io_dummy:
- 	mempool_destroy(sbi->write_io_dummy);
- free_percpu:
-@@ -4779,7 +4772,12 @@ static int __init init_f2fs_fs(void)
- 	err = f2fs_create_casefold_cache();
- 	if (err)
- 		goto free_compress_cache;
-+	err = f2fs_init_xattr_cache();
-+	if (err)
-+		goto free_casefold_cache;
- 	return 0;
-+free_casefold_cache:
-+	f2fs_destroy_casefold_cache();
- free_compress_cache:
- 	f2fs_destroy_compress_cache();
- free_compress_mempool:
-@@ -4819,6 +4817,7 @@ static int __init init_f2fs_fs(void)
- 
- static void __exit exit_f2fs_fs(void)
- {
-+	f2fs_destroy_xattr_cache();
- 	f2fs_destroy_casefold_cache();
- 	f2fs_destroy_compress_cache();
- 	f2fs_destroy_compress_mempool();
-diff --git a/fs/f2fs/xattr.c b/fs/f2fs/xattr.c
-index 65437c18e01d..0c9ac0c85e8c 100644
---- a/fs/f2fs/xattr.c
-+++ b/fs/f2fs/xattr.c
-@@ -23,11 +23,12 @@
- #include "xattr.h"
- #include "segment.h"
- 
-+static struct kmem_cache *inline_xattr_slab;
- static void *xattr_alloc(struct f2fs_sb_info *sbi, int size, bool *is_inline)
- {
--	if (likely(size == sbi->inline_xattr_slab_size)) {
-+	if (likely(size == DEFAULT_XATTR_SLAB_SIZE)) {
- 		*is_inline = true;
--		return f2fs_kmem_cache_alloc(sbi->inline_xattr_slab,
-+		return f2fs_kmem_cache_alloc(inline_xattr_slab,
- 					GFP_F2FS_ZERO, false, sbi);
- 	}
- 	*is_inline = false;
-@@ -38,7 +39,7 @@ static void xattr_free(struct f2fs_sb_info *sbi, void *xattr_addr,
- 							bool is_inline)
- {
- 	if (is_inline)
--		kmem_cache_free(sbi->inline_xattr_slab, xattr_addr);
-+		kmem_cache_free(inline_xattr_slab, xattr_addr);
- 	else
- 		kfree(xattr_addr);
- }
-@@ -830,25 +831,14 @@ int f2fs_setxattr(struct inode *inode, int index, const char *name,
- 	return err;
- }
- 
--int f2fs_init_xattr_caches(struct f2fs_sb_info *sbi)
-+int __init f2fs_init_xattr_cache(void)
- {
--	dev_t dev = sbi->sb->s_bdev->bd_dev;
--	char slab_name[32];
--
--	sprintf(slab_name, "f2fs_xattr_entry-%u:%u", MAJOR(dev), MINOR(dev));
--
--	sbi->inline_xattr_slab_size = F2FS_OPTION(sbi).inline_xattr_size *
--					sizeof(__le32) + XATTR_PADDING_SIZE;
--
--	sbi->inline_xattr_slab = f2fs_kmem_cache_create(slab_name,
--					sbi->inline_xattr_slab_size);
--	if (!sbi->inline_xattr_slab)
--		return -ENOMEM;
--
--	return 0;
-+	inline_xattr_slab = f2fs_kmem_cache_create("f2fs_xattr_entry",
-+					DEFAULT_XATTR_SLAB_SIZE);
-+	return inline_xattr_slab ? 0 : -ENOMEM;
- }
- 
--void f2fs_destroy_xattr_caches(struct f2fs_sb_info *sbi)
-+void f2fs_destroy_xattr_cache(void)
- {
--	kmem_cache_destroy(sbi->inline_xattr_slab);
-+	kmem_cache_destroy(inline_xattr_slab);
- }
-diff --git a/fs/f2fs/xattr.h b/fs/f2fs/xattr.h
-index 416d652774a3..c1d3b3520ea6 100644
---- a/fs/f2fs/xattr.h
-+++ b/fs/f2fs/xattr.h
-@@ -88,6 +88,8 @@ struct f2fs_xattr_entry {
- 			F2FS_TOTAL_EXTRA_ATTR_SIZE / sizeof(__le32) -	\
- 			DEF_INLINE_RESERVED_SIZE -			\
- 			MIN_INLINE_DENTRY_SIZE / sizeof(__le32))
-+#define DEFAULT_XATTR_SLAB_SIZE	(DEFAULT_INLINE_XATTR_ADDRS *		\
-+				sizeof(__le32) + XATTR_PADDING_SIZE)
- 
- /*
-  * On-disk structure of f2fs_xattr
-@@ -131,8 +133,8 @@ extern int f2fs_setxattr(struct inode *, int, const char *,
- extern int f2fs_getxattr(struct inode *, int, const char *, void *,
- 						size_t, struct page *);
- extern ssize_t f2fs_listxattr(struct dentry *, char *, size_t);
--extern int f2fs_init_xattr_caches(struct f2fs_sb_info *);
--extern void f2fs_destroy_xattr_caches(struct f2fs_sb_info *);
-+int __init f2fs_init_xattr_cache(void);
-+void f2fs_destroy_xattr_cache(void);
- #else
- 
- #define f2fs_xattr_handlers	NULL
-@@ -149,8 +151,8 @@ static inline int f2fs_getxattr(struct inode *inode, int index,
- {
- 	return -EOPNOTSUPP;
- }
--static inline int f2fs_init_xattr_caches(struct f2fs_sb_info *sbi) { return 0; }
--static inline void f2fs_destroy_xattr_caches(struct f2fs_sb_info *sbi) { }
-+static inline int __init f2fs_init_xattr_cache(void) { return 0; }
-+static inline void f2fs_destroy_xattr_cache(void) { }
- #endif
- 
- #ifdef CONFIG_F2FS_FS_SECURITY
+diff --git a/fs/xfs/libxfs/xfs_attr.c b/fs/xfs/libxfs/xfs_attr.c
+index 8c04acd30d48..25e2ecf20d14 100644
+--- a/fs/xfs/libxfs/xfs_attr.c
++++ b/fs/xfs/libxfs/xfs_attr.c
+@@ -1266,7 +1266,8 @@ xfs_attr_leaf_removename(
+  
+  	error = xfs_attr_leaf_hasname(args, &bp);
+  	if (error == -ENOATTR) {
+-		xfs_trans_brelse(args->trans, bp);
++		if (bp)
++			xfs_trans_brelse(args->trans, bp);
+  		if (args->op_flags & XFS_DA_OP_RECOVERY)
+  			return 0;
+  		return error;
+@@ -1305,7 +1306,8 @@ xfs_attr_leaf_get(xfs_da_args_t *args)
+  	error = xfs_attr_leaf_hasname(args, &bp);
+  
+  	if (error == -ENOATTR)  {
+-		xfs_trans_brelse(args->trans, bp);
++		if (bp)
++			xfs_trans_brelse(args->trans, bp);
+  		return error;
+  	} else if (error != -EEXIST)
+  		return error;
 -- 
-2.51.0
+2.50.1 (Apple Git-155)
 
 
