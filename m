@@ -1,130 +1,199 @@
-Return-Path: <stable+bounces-204172-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204174-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08171CE88B8
-	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 03:24:50 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56002CE8903
+	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 03:31:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D29E630024B1
-	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 02:24:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F2DA030115FF
+	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 02:31:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4851D2DF6E9;
-	Tue, 30 Dec 2025 02:24:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40A701427A;
+	Tue, 30 Dec 2025 02:31:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="R7g9MZru"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="qNlDYSsR"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dy1-f201.google.com (mail-dy1-f201.google.com [74.125.82.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out30-97.freemail.mail.aliyun.com (out30-97.freemail.mail.aliyun.com [115.124.30.97])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CCCA2D8382
-	for <stable@vger.kernel.org>; Tue, 30 Dec 2025 02:24:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E347B3A1E99
+	for <stable@vger.kernel.org>; Tue, 30 Dec 2025 02:31:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.97
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767061486; cv=none; b=FFBkbOeZB3UAWifd56K5RpF0oNdk9gWP6L9wRIm1nZiCXkMxqXYJTMCmqN++oJhLtlNdJdF7LUm0da/GYLKwPAjuRYWvxJ1Q88DnPIRp64PpijFJxRRtP9v9S5/e5kFrMci+xI50cuLNP0q7qjEP3VKzbflVs/dizn58X/KD0Ec=
+	t=1767061870; cv=none; b=l5/6raR9NKWPMa0MXI4ENIJz+GlMRXXKVAll/alKaCJG3KddqsYXfIsjaxE3K3Cma0qw/bH6Mncc4lcAFBzSLjnzG8FeDL5dm2CR/XpMravti1/JadDtfXvlEmLR0F5RBnZoBqlZ/PJCjM/8yG41a8HmCQ6x4LgHBdPopK/JtTE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767061486; c=relaxed/simple;
-	bh=Y2d/CkXgDCUfq+HeES3Gz0BuPuu6qm4OAyv3mnAt3M4=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=fPZSbbVeuEzv8GiiO0szxyxXIY/xVdpZdRFb6qTKLguqkOG7awOtK6T4qoRPHJp9ezF7zZOkY50n9UQ3+IrpU9W9csg3LFBdteODhxXo+pgUfpuNXRh6k34+6NkeSUVadQchw4fCPB9U+f4MAKZpWwGrjEHBPGiWCszdbSvh0yo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ynaffit.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=R7g9MZru; arc=none smtp.client-ip=74.125.82.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ynaffit.bounces.google.com
-Received: by mail-dy1-f201.google.com with SMTP id 5a478bee46e88-2b0588c6719so9129826eec.0
-        for <stable@vger.kernel.org>; Mon, 29 Dec 2025 18:24:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1767061484; x=1767666284; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:user-agent:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=wBG9qGfwdN2gzPyM4vrD083y3HoBOEnU7+ZJVK/meSs=;
-        b=R7g9MZruu9+yIRrVlCa3zGQ8jfyRtdKNHjUcIPiAWaU3eFQeBE5z8Hy9zsfwUkqbgO
-         XhvlrJ4FP7IQdBy+go4G1bT4yghZ5HMbHVYJfsESDjKyN3Hw9W5Jcy0Lgf2jj6yWViUn
-         wJatIRUxsBoDccHu+qiBrw0nNQ36hEfKytlyfWt0wR+IWWvtTNTQwD2YSL4iHkeSFArm
-         ce4tGjpUrEOZcOsLx1sI/zkdLuH5+6if8Ar1DNif6Ey0qBxoCANjXZl3aiQ2MGm4qdUC
-         9A6bioeSy8Sucn69sUaBWm71511hLaJEq9rXefBxtNlofK46/qghjwZ7ezEx2ZE1CcVq
-         RtWQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767061484; x=1767666284;
-        h=cc:to:from:subject:message-id:user-agent:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wBG9qGfwdN2gzPyM4vrD083y3HoBOEnU7+ZJVK/meSs=;
-        b=CJlQfXbocZVZ14Nx99XuJLdAMQJSBSz1JYbwm5QWfmbdm30wUAO23DBLWzEAY7Yqjx
-         VGeKFfgDSpfP9RaSXVQi55+dILTtMxSLUxExwN0b9e0TTPX2eZb3W004m2JODIXbgWT5
-         wsBEUsVp2DGDd6lr4uOo8nFCNEIQc20x8gfhh+gTM1jbmoD1yF855OoQ/vrn0dpGhbTw
-         qfhR269JRC/XWimHJ8n7rmMzqwRunC3eZXp8c2J7wqWkIQ3uP5W04ppl4CjWrAllKkQz
-         Dn+H75pO9fEPkh6ZZgCN6krmXa/cWwqhE93fGezPmeHBDKpZigCxKB10O6xM0NDpJdgK
-         IEew==
-X-Forwarded-Encrypted: i=1; AJvYcCVzO2W/JJmb380SuNc3N5/FRgN6yg+fDlif6PpsCtj+h77cyN/yxJhheAuhDSxpCkQ0fTOIOlc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwJ1PUphVkLtjMnErHm/4iCjAb2kTV1NfvZNYvzjYrSx/8S96cN
-	eAKbqdthg2SCjveMIh8TrmoWugqChNIG3//qZMpZHiSy35KIkWoPLANkqFWkJ+rXXPydQoaWjGm
-	JOC/faSz5fQ==
-X-Google-Smtp-Source: AGHT+IGuKbBb2lRfg0zkm1s3qWA/FlYtdLZvNL3qHYsniInakt/sV+rfHnyjB/VJVAG4XIo5VyzVxdsJDy6k
-X-Received: from dybgp28.prod.google.com ([2002:a05:7301:211c:b0:2b0:5541:d643])
- (user=ynaffit job=prod-delivery.src-stubby-dispatcher) by 2002:a05:7300:80cc:b0:2ab:ca55:b75b
- with SMTP id 5a478bee46e88-2b05e6beb4emr39241858eec.20.1767061483570; Mon, 29
- Dec 2025 18:24:43 -0800 (PST)
-Date: Mon, 29 Dec 2025 18:24:41 -0800
-In-Reply-To: <20251204-b4-stable-disable-uninit-ptr-warn-5-15-v1-1-41212e2c6409@google.com>
- (Justin Stitt's message of "Thu, 04 Dec 2025 12:44:48 -0800")
+	s=arc-20240116; t=1767061870; c=relaxed/simple;
+	bh=W4oJRPKaivOPRpL18mJ/TxbxLbpq8anAVThdvibXgNs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=jVpx88pLnpM4btf0U+QWq1p9YpCclH0Fl0RXrQyZyGfd9e6JwWxCLSH+tPO8LAaKxjolEDhkF6D8TigVE5BuoD0eOZ/SdOLj0pDhcog16fQjyu4CI94NYS/Jc8eznz6IrmMNgzu0Q+42jVjnTY9slwNDahkRv8P9adTAa2P2APU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=qNlDYSsR; arc=none smtp.client-ip=115.124.30.97
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1767061859; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=jffYoQ/hbMXywNMgqFPKngokhp/eErJsRHR1Kywn7AA=;
+	b=qNlDYSsRee1Afap6laNWsiqM8PTLQ8Xsn3hHa40sCi0RXvhT6AyddwfTwU6Yi3TBU+Igek5qrcxJcasLvj9vUcEtGMs6fcdt1mbP+HUKMI7DtiC0L01Hhn6tV8wp3AwRKYO8eUUEzeiSak5epCgTe6N9jkCXQ2jaTaZLI3jmXRE=
+Received: from x31i01179.sqa.na131.tbsite.net(mailfrom:hsiangkao@linux.alibaba.com fp:SMTPD_---0WvyTNWw_1767061854 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Tue, 30 Dec 2025 10:30:58 +0800
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
+To: stable@vger.kernel.org,
+	gregkh@linuxfoundation.org,
+	Sasha Levin <sashal@kernel.org>
+Cc: linux-erofs@lists.ozlabs.org,
+	Junbeom Yeom <junbeom.yeom@samsung.com>,
+	Jaewook Kim <jw5454.kim@samsung.com>,
+	Sungjong Seo <sj1557.seo@samsung.com>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>
+Subject: [PATCH 6.18.y v2] erofs: fix unexpected EIO under memory pressure
+Date: Tue, 30 Dec 2025 10:30:53 +0800
+Message-ID: <20251230023053.3682970-1-hsiangkao@linux.alibaba.com>
+X-Mailer: git-send-email 2.43.5
+In-Reply-To: <20251229185432.1616355-2-sashal@kernel.org>
+References: <20251229185432.1616355-2-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20251204-b4-stable-disable-uninit-ptr-warn-5-15-v1-1-41212e2c6409@google.com>
-User-Agent: mu4e 1.12.12; emacs 30.1
-Message-ID: <dbx8cy3wso46.fsf@ynaffit-andsys.c.googlers.com>
-Subject: Re: [PATCH 5.15.y RESEND] KVM: arm64: sys_regs: disable
- -Wuninitialized-const-pointer warning
-From: Tiffany Yang <ynaffit@google.com>
-To: Justin Stitt <justinstitt@google.com>
-Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>, 
-	Alexandru Elisei <alexandru.elisei@arm.com>, Joey Gouly <joey.gouly@arm.com>, 
-	Suzuki K Poulose <suzuki.poulose@arm.com>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Zenghui Yu <yuzenghui@huawei.com>, Will Deacon <will@kernel.org>, 
-	Nathan Chancellor <nathan@kernel.org>, Christopher Covington <cov@codeaurora.org>, 
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.cs.columbia.edu, 
-	linux-kernel@vger.kernel.org, llvm@lists.linux.dev, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"; format=flowed; delsp=yes
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Justin Stitt <justinstitt@google.com> writes:
+From: Junbeom Yeom <junbeom.yeom@samsung.com>
 
-> A new warning in Clang 22 [1] complains that @clidr passed to
-> get_clidr_el1() is an uninitialized const pointer. get_clidr_el1()
-> doesn't really care since it casts away the const-ness anyways -- it is
-> a false positive.
+erofs readahead could fail with ENOMEM under the memory pressure because
+it tries to alloc_page with GFP_NOWAIT | GFP_NORETRY, while GFP_KERNEL
+for a regular read. And if readahead fails (with non-uptodate folios),
+the original request will then fall back to synchronous read, and
+`.read_folio()` should return appropriate errnos.
 
-> |  ../arch/arm64/kvm/sys_regs.c:2838:23: warning: variable 'clidr' is  
-> uninitialized when passed as a const pointer argument here  
-> [-Wuninitialized-const-pointer]
-> |   2838 |         get_clidr_el1(NULL, &clidr); /* Ugly... */
-> |        |                              ^~~~~
+However, in scenarios where readahead and read operations compete,
+read operation could return an unintended EIO because of an incorrect
+error propagation.
 
-> This patch isn't needed for anything past 6.1 as this code section was
-> reworked in Commit 7af0c2534f4c ("KVM: arm64: Normalize cache
-> configuration"). Since there is no upstream equivalent, this patch just
-> needs to be applied to 5.15.
+To resolve this, this patch modifies the behavior so that, when the
+PCL is for read(which means pcl.besteffort is true), it attempts actual
+decompression instead of propagating the privios error except initial EIO.
 
+- Page size: 4K
+- The original size of FileA: 16K
+- Compress-ratio per PCL: 50% (Uncompressed 8K -> Compressed 4K)
+[page0, page1] [page2, page3]
+[PCL0]---------[PCL1]
 
-This error has also been showing up in 5.10 since KernelCI started using
-clang-21.
+- functions declaration:
+  . pread(fd, buf, count, offset)
+  . readahead(fd, offset, count)
+- Thread A tries to read the last 4K
+- Thread B tries to do readahead 8K from 4K
+- RA, besteffort == false
+- R, besteffort == true
 
-> Disable this warning for sys_regs.o with an iron fist as it doesn't make
-> sense to waste maintainer's time or potentially break builds by
-> backporting large changelists from 6.2+.
+        <process A>                   <process B>
 
-> Cc: stable@vger.kernel.org
-> Fixes: 7c8c5e6a9101e ("arm64: KVM: system register handling")
-> Link:  
-> https://github.com/llvm/llvm-project/commit/00dacf8c22f065cb52efb14cd091d441f19b319e  
-> [1]
-> Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-> Signed-off-by: Justin Stitt <justinstitt@google.com>
-<snip>
+pread(FileA, buf, 4K, 12K)
+  do readahead(page3) // failed with ENOMEM
+  wait_lock(page3)
+    if (!uptodate(page3))
+      goto do_read
+                               readahead(FileA, 4K, 8K)
+                               // Here create PCL-chain like below:
+                               // [null, page1] [page2, null]
+                               //   [PCL0:RA]-----[PCL1:RA]
+...
+  do read(page3)        // found [PCL1:RA] and add page3 into it,
+                        // and then, change PCL1 from RA to R
+...
+                               // Now, PCL-chain is as below:
+                               // [null, page1] [page2, page3]
+                               //   [PCL0:RA]-----[PCL1:R]
 
-Reviewed-by: Tiffany Yang <ynaffit@google.com>
+                                 // try to decompress PCL-chain...
+                                 z_erofs_decompress_queue
+                                   err = 0;
 
+                                   // failed with ENOMEM, so page 1
+                                   // only for RA will not be uptodated.
+                                   // it's okay.
+                                   err = decompress([PCL0:RA], err)
+
+                                   // However, ENOMEM propagated to next
+                                   // PCL, even though PCL is not only
+                                   // for RA but also for R. As a result,
+                                   // it just failed with ENOMEM without
+                                   // trying any decompression, so page2
+                                   // and page3 will not be uptodated.
+                ** BUG HERE ** --> err = decompress([PCL1:R], err)
+
+                                   return err as ENOMEM
+...
+    wait_lock(page3)
+      if (!uptodate(page3))
+        return EIO      <-- Return an unexpected EIO!
+...
+
+Fixes: 2349d2fa02db ("erofs: sunset unneeded NOFAILs")
+Cc: stable@vger.kernel.org
+Reviewed-by: Jaewook Kim <jw5454.kim@samsung.com>
+Reviewed-by: Sungjong Seo <sj1557.seo@samsung.com>
+Signed-off-by: Junbeom Yeom <junbeom.yeom@samsung.com>
+Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+---
+Hi Greg and Sasha,
+
+Let's just merge this directly.
+No need to backport commit 831faabed812 ("erofs: improve decompression error reporting")
+for now.
+
+Thanks,
+Gao Xiang
+
+ fs/erofs/zdata.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/fs/erofs/zdata.c b/fs/erofs/zdata.c
+index bc80cfe482f7..683703aee5ef 100644
+--- a/fs/erofs/zdata.c
++++ b/fs/erofs/zdata.c
+@@ -1262,17 +1262,17 @@ static int z_erofs_parse_in_bvecs(struct z_erofs_backend *be, bool *overlapped)
+ 	return err;
+ }
+ 
+-static int z_erofs_decompress_pcluster(struct z_erofs_backend *be, int err)
++static int z_erofs_decompress_pcluster(struct z_erofs_backend *be, bool eio)
+ {
+ 	struct erofs_sb_info *const sbi = EROFS_SB(be->sb);
+ 	struct z_erofs_pcluster *pcl = be->pcl;
+ 	unsigned int pclusterpages = z_erofs_pclusterpages(pcl);
+ 	const struct z_erofs_decompressor *decomp =
+ 				z_erofs_decomp[pcl->algorithmformat];
+-	int i, j, jtop, err2;
++	bool try_free = true;
++	int i, j, jtop, err2, err = eio ? -EIO : 0;
+ 	struct page *page;
+ 	bool overlapped;
+-	bool try_free = true;
+ 
+ 	mutex_lock(&pcl->lock);
+ 	be->nr_pages = PAGE_ALIGN(pcl->length + pcl->pageofs_out) >> PAGE_SHIFT;
+@@ -1400,12 +1400,12 @@ static int z_erofs_decompress_queue(const struct z_erofs_decompressqueue *io,
+ 		.pcl = io->head,
+ 	};
+ 	struct z_erofs_pcluster *next;
+-	int err = io->eio ? -EIO : 0;
++	int err = 0;
+ 
+ 	for (; be.pcl != Z_EROFS_PCLUSTER_TAIL; be.pcl = next) {
+ 		DBG_BUGON(!be.pcl);
+ 		next = READ_ONCE(be.pcl->next);
+-		err = z_erofs_decompress_pcluster(&be, err) ?: err;
++		err = z_erofs_decompress_pcluster(&be, io->eio) ?: err;
+ 	}
+ 	return err;
+ }
 -- 
-Tiffany Y. Yang
+2.43.5
+
 
