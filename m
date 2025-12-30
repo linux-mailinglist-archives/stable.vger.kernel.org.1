@@ -1,44 +1,44 @@
-Return-Path: <stable+bounces-204177-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204178-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A517CE8983
-	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 03:49:44 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 238D3CE8998
+	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 03:54:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0D08E300D301
-	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 02:49:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E3FDC30109B5
+	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 02:54:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C0BF1DE8BF;
-	Tue, 30 Dec 2025 02:49:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9926B2494FE;
+	Tue, 30 Dec 2025 02:54:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NFLBcjKN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ny3Wqblb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E11EE1494DB
-	for <stable@vger.kernel.org>; Tue, 30 Dec 2025 02:49:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59AC71427A
+	for <stable@vger.kernel.org>; Tue, 30 Dec 2025 02:54:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767062982; cv=none; b=XER1WjWeimMhbk5HqaP5GIJQKjgWjDQkQ+EmcwHwZr8ZQmrQeL+rdB0IKWmNlMJby0I4XSiSErBZOeNo/spf4Wxd/Y5XyvTOrgJX/T7mg8NooJkDvVoOzQbbgzm4KSZBMAc0oRP0pcn8AHMy6kZ297xFvvEp1hrg9rCyoFxdug8=
+	t=1767063287; cv=none; b=taNUvAglSuJKNH48Wht+7qdLFX8DqhOiOsEKnwWlFs+7RMeOn4u6gZ+zw1kjGyG6IvDE8Db9gim/VK3V8CJ3XNteiIS79+TLU8rWw2whTsDwV7L++JARSiP87l2jVj68F+ySRoGwSE/MHrhTBnVMu1gDby7jkqOjnxp/0NSLjKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767062982; c=relaxed/simple;
-	bh=ZvyXmfjxWG4bZk1SqfL12lAVrD6spnwRotJC+MWMsFo=;
+	s=arc-20240116; t=1767063287; c=relaxed/simple;
+	bh=GeQc9UTFkim6ObLNMEA+TRdhwkjmuw0xg5uFoQFfsO4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CpB9Slkhp8N28IEloVVCvXwIRva0Tgs7j2WrxrIFctwpcQBXWuhYrN/zWVpnVH0KuZTzVJWvHs5mXwok2PaiFL5crIXYub8RCACgmzQoOGrLic30uyNpkrLIgElu6yoiqgeOaXT1pcheRZmlY2dpAENTOSCP4kSXnp6mvdKYqi8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NFLBcjKN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 802A6C116B1;
-	Tue, 30 Dec 2025 02:49:40 +0000 (UTC)
+	 MIME-Version; b=F3PmipaQv/Pc1dnjbb+Ppw/EbZBg7zxUA8UQlpDMJG9Ie2Rp2WYW7oxMBnM/O/bLmSx0VfdWnpsgB2N27gnbw3F5VcNIfXS69SgWmTbxXyhTgCjLUVvqCSgXJaKZaYBfQQuIxYMi5+uAFsJHPTswn5Ss0HoH+hk+DrPpGlK8mdE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ny3Wqblb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF7BFC4CEF7;
+	Tue, 30 Dec 2025 02:54:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767062981;
-	bh=ZvyXmfjxWG4bZk1SqfL12lAVrD6spnwRotJC+MWMsFo=;
+	s=k20201202; t=1767063286;
+	bh=GeQc9UTFkim6ObLNMEA+TRdhwkjmuw0xg5uFoQFfsO4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NFLBcjKNfnivQ0IpYgrIf2XOzcA7A95nFkY2EAIY5j+axWI8971SDulq3MCns8Gyq
-	 FZXgo41Y6y6Q+eXT9LQAppR/OrM9jwL4FHanGnoN5zBf0/C0J4a8+vF2NTVHxTtP37
-	 VEnNCQYpG8V5i/AWAcQo6s3cfb7+SsPJiuzHW/M5rnYt6q8ghKQLTNT1fE+VPlXOnz
-	 s/akmvSd396178z/gip3tfgNbr+A+x/rGBw2M9F4u/jGR2WE/gwriwiSXoPz3qYnxI
-	 5OFwFKQv8rNKeUX7jG4xmEkxHXxeExDw2txUJf+YxmQ6W4Mwc+OlMQkGaPgvO0kTJj
-	 3nlhr0OS0taKQ==
+	b=ny3Wqblb4K+31z2qoERG4Bz8O8Jzdgp8z+ua9gv7M8Sc3lInIvnLqVdReOEotFEtA
+	 dE5LoWt7HxSFhL43o/K85VdoOPNxtDUnGJspxVjZ9tH9Gcm298qiF54yQnhD/FAfb2
+	 FafiZA/cKT4X4hKrad/IqCMPAph+DwiEZq/xoqwDMuhB1r/bYnpCiaANeGsVlHmNJa
+	 sk8HXA6YCaL7VsTAuKfAHQ1mqkT49lC3l8vUBUkIxu0xccMcYGS2vitkS47wjk9ZK/
+	 Y6eyRvg0IelurBmzmIAXRXBrtuKgENav/mF55Pxj9r2R5GtmbGKoa9TPYmXLWdibwi
+	 37aJW2i686YLw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: xu xin <xu.xin16@zte.com.cn>,
@@ -49,12 +49,12 @@ Cc: xu xin <xu.xin16@zte.com.cn>,
 	Yang Yang <yang.yang29@zte.com.cn>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y] mm/ksm: fix exec/fork inheritance support for prctl
-Date: Mon, 29 Dec 2025 21:49:37 -0500
-Message-ID: <20251230024937.1975419-1-sashal@kernel.org>
+Subject: [PATCH 6.6.y] mm/ksm: fix exec/fork inheritance support for prctl
+Date: Mon, 29 Dec 2025 21:54:43 -0500
+Message-ID: <20251230025443.1980197-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025122924-reproach-foster-4189@gregkh>
-References: <2025122924-reproach-foster-4189@gregkh>
+In-Reply-To: <2025122925-designed-overture-2e7d@gregkh>
+References: <2025122925-designed-overture-2e7d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -140,10 +140,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 16 insertions(+), 2 deletions(-)
 
 diff --git a/mm/ksm.c b/mm/ksm.c
-index 1601e36a819d..15f558f69093 100644
+index 2e4cd681622d..96a0feb19c09 100644
 --- a/mm/ksm.c
 +++ b/mm/ksm.c
-@@ -2704,8 +2704,14 @@ static struct ksm_rmap_item *scan_get_next_rmap_item(struct page **page)
+@@ -2451,8 +2451,14 @@ static struct ksm_rmap_item *scan_get_next_rmap_item(struct page **page)
  		spin_unlock(&ksm_mmlist_lock);
  
  		mm_slot_free(mm_slot_cache, mm_slot);
@@ -159,7 +159,7 @@ index 1601e36a819d..15f558f69093 100644
  		mmap_read_unlock(mm);
  		mmdrop(mm);
  	} else {
-@@ -2820,8 +2826,16 @@ void ksm_add_vma(struct vm_area_struct *vma)
+@@ -2567,8 +2573,16 @@ void ksm_add_vma(struct vm_area_struct *vma)
  {
  	struct mm_struct *mm = vma->vm_mm;
  
