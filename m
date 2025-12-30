@@ -1,127 +1,154 @@
-Return-Path: <stable+bounces-204205-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204207-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 184B8CE9C49
-	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 14:21:17 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53863CE9C62
+	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 14:23:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DFD8A30115DE
-	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 13:21:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 73B833018D41
+	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 13:23:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F238E204583;
-	Tue, 30 Dec 2025 13:21:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 195F022D7B5;
+	Tue, 30 Dec 2025 13:23:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O8jV/50j"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XikhIr/T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B253B1EEA5F
-	for <stable@vger.kernel.org>; Tue, 30 Dec 2025 13:21:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C383C2222B7;
+	Tue, 30 Dec 2025 13:23:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767100874; cv=none; b=GuYj/Alb6HsuO7eW+XRMclnxTxEtRyTN702XxTgx1AREHbuRyzn9a0CKvyim9u3wGku3/WlPpiBiYlOJ9QNKPsPj6JF7Jbn3Sv2oze0NG0+oBmwXoQ/ZhALhR2fgG8M/nVtG6cd7/uvFKwJv2VHv+qxxDHyRCzDjFsYquytLkSo=
+	t=1767100987; cv=none; b=EmHovyxKygts2r2CzPVNJMLp54sDOr5Sh5GVdGa3A3I/zsUDIYA2A5WrXKXwzX2BpuQZlXZ3+KB52kREEnWSk8rJ9z7UxeEt/nOxYSW1zpaw9aW4gHU1+zjizj9xeG+irK2BnsutCA4wjAsnyaZLFRZFIQ/cLzmhGz7NbKsirjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767100874; c=relaxed/simple;
-	bh=zTlD67a2zRRvZej4XaDiVkkCr6Vjmnx5MzZD0QnpXEI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ue/LLgONCLll8YibqDe5Fl/2KAK6dkCPnI90VwK4CIwL6uohmGldC03YG7zunV2/ORDnrN8kIc2xyR//72xOCSSy7fm8JRDJnWVQx4wX/W3opx1C6mb+1izgrpUWRsIdHY2+LUzteDb8k0aDy/w/JIvVSV/AffhSPeHukFYdALw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O8jV/50j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AD47C4CEFB;
-	Tue, 30 Dec 2025 13:21:12 +0000 (UTC)
+	s=arc-20240116; t=1767100987; c=relaxed/simple;
+	bh=fQ6bL8jYrSxzdgJbfHwUYCbaXfudgMkK9XnQe/sw4ug=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=bgiHWnxkxdDw7NyOe0HaYKF6ufvqYJRyNAPHRpgHlyrfGISITVX5UU3O8V8ViKtGLtlbSWt8pxdbQC1HGXj9RrSwFkYvlpFLzO6A0zTAEj7l1wXNwu6mZZWHDIYQv9yvveqROKe2E952R5e+793pkypZWoUSygdmOo5YvujTGRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XikhIr/T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D87D5C4CEFB;
+	Tue, 30 Dec 2025 13:23:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767100873;
-	bh=zTlD67a2zRRvZej4XaDiVkkCr6Vjmnx5MzZD0QnpXEI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O8jV/50jmcRxIm1JPSKookdBNsBV+QuucMzEz+oALSrps2AYVpDCwtdbWcU7M5H2C
-	 iw7gE4tyTJSGzx0D6VxSAYaou6mz5Mbopo8p9lVrbzytPX2ilbJQJsdoJcAvTWIpfh
-	 F84G0P8+Vl7OV36U+GJqkzexy7jbg/Kn3YGvQ3IGb+xwjK44A7t5cjfZ9/JFGdWsOk
-	 ZRpfviWsp9EwCQxjGwmAtjq9jyL3uxNJvClXZu+3Jlx/iWk81cRkCyzLqlzhuhXVVz
-	 cI95uFB9sSRv94r3mewa8VUeEG3LREmi4LnZJPgA8ELI30hPTRpMW9n3edqFOYtDhy
-	 BABkmFeYJil7Q==
+	s=k20201202; t=1767100985;
+	bh=fQ6bL8jYrSxzdgJbfHwUYCbaXfudgMkK9XnQe/sw4ug=;
+	h=From:To:Cc:Subject:Date:From;
+	b=XikhIr/TZWfHaFNTggm8HY358cE/w+oIwKd/t/7PKyuw4//nvlrHVD98NklTd1FTc
+	 Mdi4MXMEVuWiqfHdW/1A8mAxttLTvwQrmNfCYMSZWX3p2aGXU9SsaoaF/GZnICCGJo
+	 yh5D/m05z/BNqiQXxIn7bpZ/Krs+myrRSY4Lp72422c81K7wX+9Z8oJHwYpP/OtMUo
+	 pyIU8AiZBbZajdhOGMyBuNyRw5Q9H6jjOxRlfKCWCQhIYoXECK51y7yaAYCZSGfSGM
+	 +IgFKksqFKLR43FPRw+542ng3eLjcodwpF05+hy1Il1xWhMyigRassxXB4MnXSpzp+
+	 PwFF23rVvn0cA==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Mat Martineau <martineau@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y] mptcp: pm: ignore unknown endpoint flags
-Date: Tue, 30 Dec 2025 08:21:11 -0500
-Message-ID: <20251230132111.2180152-1-sashal@kernel.org>
+To: patches@lists.linux.dev,
+	stable@vger.kernel.org
+Cc: Mateusz Litwin <mateusz.litwin@nokia.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	linux-spi@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.18-6.12] spi: cadence-quadspi: Prevent lost complete() call during indirect read
+Date: Tue, 30 Dec 2025 08:22:54 -0500
+Message-ID: <20251230132303.2194838-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025122921-regress-overhand-2900@gregkh>
-References: <2025122921-regress-overhand-2900@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.18.2
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+From: Mateusz Litwin <mateusz.litwin@nokia.com>
 
-[ Upstream commit 0ace3297a7301911e52d8195cb1006414897c859 ]
+[ Upstream commit d67396c9d697041b385d70ff2fd59cb07ae167e8 ]
 
-Before this patch, the kernel was saving any flags set by the userspace,
-even unknown ones. This doesn't cause critical issues because the kernel
-is only looking at specific ones. But on the other hand, endpoints dumps
-could tell the userspace some recent flags seem to be supported on older
-kernel versions.
+A race condition exists between the read loop and IRQ `complete()` call.
+An interrupt could call the complete() between the inner loop and
+reinit_completion(), potentially losing the completion event and causing
+an unnecessary timeout. Moving reinit_completion() before the loop
+prevents this. A premature signal will only result in a spurious wakeup
+and another wait cycle, which is preferable to waiting for a timeout.
 
-Instead, ignore all unknown flags when parsing them. By doing that, the
-userspace can continue to set unsupported flags, but it has a way to
-verify what is supported by the kernel.
-
-Note that it sounds better to continue accepting unsupported flags not
-to change the behaviour, but also that eases things on the userspace
-side by adding "optional" endpoint types only supported by newer kernel
-versions without having to deal with the different kernel versions.
-
-A note for the backports: there will be conflicts in mptcp.h on older
-versions not having the mentioned flags, the new line should still be
-added last, and the '5' needs to be adapted to have the same value as
-the last entry.
-
-Fixes: 01cacb00b35c ("mptcp: add netlink-based PM")
-Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20251205-net-mptcp-misc-fixes-6-19-rc1-v1-1-9e4781a6c1b8@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ GENMASK(5, 0) => GENMASK(4, 0) + context ]
+Signed-off-by: Mateusz Litwin <mateusz.litwin@nokia.com>
+Link: https://patch.msgid.link/20251218-cqspi_indirect_read_improve-v2-1-396079972f2a@nokia.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/uapi/linux/mptcp.h | 1 +
- net/mptcp/pm_netlink.c     | 3 ++-
- 2 files changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/include/uapi/linux/mptcp.h b/include/uapi/linux/mptcp.h
-index 5fd5b4cf75ca..e0fe5160d8bf 100644
---- a/include/uapi/linux/mptcp.h
-+++ b/include/uapi/linux/mptcp.h
-@@ -38,6 +38,7 @@
- #define MPTCP_PM_ADDR_FLAG_BACKUP                      (1 << 2)
- #define MPTCP_PM_ADDR_FLAG_FULLMESH                    (1 << 3)
- #define MPTCP_PM_ADDR_FLAG_IMPLICIT                    (1 << 4)
-+#define MPTCP_PM_ADDR_FLAGS_MASK		GENMASK(4, 0)
+LLM Generated explanations, may be completely bogus:
+
+### Summary
+
+**Pros for backporting:**
+1. ✅ Fixes a genuine race condition causing timeouts
+2. ✅ Small, surgical fix (< 10 lines changed)
+3. ✅ Logic is obviously correct and well-explained
+4. ✅ Low risk - worst case is benign spurious wakeup
+5. ✅ Reviewed by subsystem maintainer (Mark Brown)
+6. ✅ No dependencies on other commits
+7. ✅ Driver has been in the kernel since 2020, exists in all active
+   stable trees
+8. ✅ From a reputable source (Nokia) dealing with real hardware
+
+**Cons:**
+- None significant. The absence of explicit Fixes:/Cc: stable tags is
+  expected for commits under manual review.
+
+### Risk vs Benefit
+
+- **Risk**: Very low - the change is simple, localized, and
+  mathematically correct
+- **Benefit**: Prevents user-visible timeouts during SPI read operations
+  on affected hardware
+
+This commit is an excellent candidate for stable backporting. It fixes a
+real race condition bug with a small, obvious, and low-risk change. The
+fix has been reviewed by the SPI maintainer and addresses real hardware
+issues without introducing new features or significant complexity.
+
+**YES**
+
+ drivers/spi/spi-cadence-quadspi.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
+index af6d050da1c8..695dbf7142d1 100644
+--- a/drivers/spi/spi-cadence-quadspi.c
++++ b/drivers/spi/spi-cadence-quadspi.c
+@@ -769,6 +769,7 @@ static int cqspi_indirect_read_execute(struct cqspi_flash_pdata *f_pdata,
+ 	readl(reg_base + CQSPI_REG_INDIRECTRD); /* Flush posted write. */
  
- struct mptcp_info {
- 	__u8	mptcpi_subflows;
-diff --git a/net/mptcp/pm_netlink.c b/net/mptcp/pm_netlink.c
-index 42329ae21c46..0b4ab3c816da 100644
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -1409,7 +1409,8 @@ int mptcp_pm_parse_entry(struct nlattr *attr, struct genl_info *info,
- 	}
+ 	while (remaining > 0) {
++		ret = 0;
+ 		if (use_irq &&
+ 		    !wait_for_completion_timeout(&cqspi->transfer_complete,
+ 						 msecs_to_jiffies(CQSPI_READ_TIMEOUT_MS)))
+@@ -781,6 +782,14 @@ static int cqspi_indirect_read_execute(struct cqspi_flash_pdata *f_pdata,
+ 		if (cqspi->slow_sram)
+ 			writel(0x0, reg_base + CQSPI_REG_IRQMASK);
  
- 	if (tb[MPTCP_PM_ADDR_ATTR_FLAGS])
--		entry->flags = nla_get_u32(tb[MPTCP_PM_ADDR_ATTR_FLAGS]);
-+		entry->flags = nla_get_u32(tb[MPTCP_PM_ADDR_ATTR_FLAGS]) &
-+			       MPTCP_PM_ADDR_FLAGS_MASK;
++		/*
++		 * Prevent lost interrupt and race condition by reinitializing early.
++		 * A spurious wakeup and another wait cycle can occur here,
++		 * which is preferable to waiting until timeout if interrupt is lost.
++		 */
++		if (use_irq)
++			reinit_completion(&cqspi->transfer_complete);
++
+ 		bytes_to_read = cqspi_get_rd_sram_level(cqspi);
  
- 	if (tb[MPTCP_PM_ADDR_ATTR_PORT])
- 		entry->addr.port = htons(nla_get_u16(tb[MPTCP_PM_ADDR_ATTR_PORT]));
+ 		if (ret && bytes_to_read == 0) {
+@@ -813,7 +822,6 @@ static int cqspi_indirect_read_execute(struct cqspi_flash_pdata *f_pdata,
+ 		}
+ 
+ 		if (use_irq && remaining > 0) {
+-			reinit_completion(&cqspi->transfer_complete);
+ 			if (cqspi->slow_sram)
+ 				writel(CQSPI_REG_IRQ_WATERMARK, reg_base + CQSPI_REG_IRQMASK);
+ 		}
 -- 
 2.51.0
 
