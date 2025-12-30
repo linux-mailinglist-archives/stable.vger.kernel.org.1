@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-204253-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204255-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 172E7CEA463
-	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 18:12:38 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F9D6CEA454
+	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 18:11:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0E54C303E64C
-	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 17:11:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EE5A73017EC0
+	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 17:11:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11D2C32E750;
-	Tue, 30 Dec 2025 17:05:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF0C432ED38;
+	Tue, 30 Dec 2025 17:06:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WTujy8ce"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H42rxEje"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C476232E13E
-	for <stable@vger.kernel.org>; Tue, 30 Dec 2025 17:05:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CB62223DE5
+	for <stable@vger.kernel.org>; Tue, 30 Dec 2025 17:06:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767114346; cv=none; b=OXRMi4NMgV/ZzfhCsV+jqSUHHluxbL38HgTa1XCgS5Y7R2bfmPViL0IX9y5DFTNinOQ3uWr4k0N2q/N2/6IX5rrAtOhuHhmxmlKk+IFktAI0I3JjxYCyIYsunXJFlk45h+hX6P3mL9kwur+3tTqVg8Idy701AIR4IGEJIhSIzLk=
+	t=1767114386; cv=none; b=oiN+pJ9wlozmw82p+tPDqqxN/ljRSJSMwhQVJ0qMJT658anGhYddWXV7UwB2qVfoLvQY0SwZVOicRPk0Rew7sfOihOpgMAbDx1p7JTZe1GW0hPhprp4V9vZ3JAPVroaI0SeRYp1rhX9Zn7U749TKE5bWCuaMSGG3v7pz02457hc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767114346; c=relaxed/simple;
-	bh=FhS8EhANtrBrtnK4G+P3xN1LEDhzcv2EqD8kcbl5sc0=;
+	s=arc-20240116; t=1767114386; c=relaxed/simple;
+	bh=ADrq5DKJUHkjNsS2q0fC0LWCwPV5atNzsz3PTYahaME=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U6dmmn7dqeYluU4MO4zhXoWiluEuhXiMjpwnm4ESECupxlFhOwzMt/juXGVnVud3pdFue6RDsjeGVcedMOzjGwLB8aXCvjzWZlGJs/QIOfiLI6oUeUcFxbHv5PPUAwrIELC7+VKuPynEIhVqX2cwqZ4ISL3XtXI7vltJMfwx0TA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WTujy8ce; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEA38C4CEFB;
-	Tue, 30 Dec 2025 17:05:45 +0000 (UTC)
+	 MIME-Version; b=UBzLpheWIAytRqO+hqwM0glAMc2FNJj1FmCwIF1FUOIGeJ/rcoTdAUlZT78yShPhYkUmcdq66i+xXEAjiLH8hPwoETgyeFMNicC8TnRUJnGUIg4sMOGpox2sSOBXj5seHa+1aeh60C50tLX2RDQW5yv2n+nVzjwg7KtuAtS8DX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H42rxEje; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DD9CC116C6;
+	Tue, 30 Dec 2025 17:06:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767114346;
-	bh=FhS8EhANtrBrtnK4G+P3xN1LEDhzcv2EqD8kcbl5sc0=;
+	s=k20201202; t=1767114386;
+	bh=ADrq5DKJUHkjNsS2q0fC0LWCwPV5atNzsz3PTYahaME=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WTujy8cezv3n/KQ/RZUWoqYezvisMilWxj51M9o60UmFnjoAMU2ve0zGbl3HMHetK
-	 XoT06qpTpMnRC5ZowzrlFONUMcwzOlxYOKpwUGtzRvEu0zyjUG84NZ9MFGelS0xwM2
-	 Dk+tL6gROcn3iStyIXWDOdHyzPIk7K8d1Dz3EKjhh1TRDz+98pAzaxAb18KdGcDPQy
-	 LnKfgdk8zDykj15VwtrypMsMnzEx8KNJGgHOvq+RdfsUeXEnzN1db3fPoB/RJMjBdQ
-	 bq5RVy80TdaSQ8hxljAlr5Ihf3spFNwe1FWcHml/M5v9Gh8wecak/AGf0Vq97eK2Ko
-	 eRmgA+VhWBUfw==
+	b=H42rxEje4bceXmy2uEFieUTsPOBUCHKspGyL/x27dl9pm20WofhtDEFMD10P9GTQT
+	 wQEUJiSjuKY0BjHInBJOOE0KA4QqBCEyMRqWo0u1nFi3OX2ArRyb1vgfxGA8uRfjO5
+	 p8VLc6g7xXPdtepBlE7/sHTWFZ9BkA/WjCMn4gyfyvAdTBkWB0EezTQZohjgKlCrZ/
+	 dKuTG80QRRH0Ahl7zf4HcDTRisqIWeVegCJjAJ3ZdBCsm7nEFMt5bX47e9a1KEngnR
+	 i0+MwAuWtW7b0Td+E6zC682EmDxMxxqWczTQM0vAjRcGG4/YtpbmeB6SkYA+tg+gtO
+	 8r6W2kfugE3KQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Chao Yu <chao@kernel.org>,
 	stable@kernel.org,
-	"Bai, Shuangpeng" <sjb7183@psu.edu>,
+	syzbot+24124df3170c3638b35f@syzkaller.appspotmail.com,
 	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y 4/4] f2fs: fix to avoid updating compression context during writeback
-Date: Tue, 30 Dec 2025 12:05:40 -0500
-Message-ID: <20251230170540.2336679-4-sashal@kernel.org>
+Subject: [PATCH 6.1.y] f2fs: fix to avoid updating zero-sized extent in extent cache
+Date: Tue, 30 Dec 2025 12:06:23 -0500
+Message-ID: <20251230170624.2337217-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251230170540.2336679-1-sashal@kernel.org>
-References: <2025122922-tyke-slip-919d@gregkh>
- <20251230170540.2336679-1-sashal@kernel.org>
+In-Reply-To: <2025122959-opposing-shabby-fc70@gregkh>
+References: <2025122959-opposing-shabby-fc70@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,167 +62,64 @@ Content-Transfer-Encoding: 8bit
 
 From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit 10b591e7fb7cdc8c1e53e9c000dc0ef7069aaa76 ]
+[ Upstream commit 7c37c79510329cd951a4dedf3f7bf7e2b18dccec ]
 
-Bai, Shuangpeng <sjb7183@psu.edu> reported a bug as below:
+As syzbot reported:
 
-Oops: divide error: 0000 [#1] SMP KASAN PTI
-CPU: 0 UID: 0 PID: 11441 Comm: syz.0.46 Not tainted 6.17.0 #1 PREEMPT(full)
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
-RIP: 0010:f2fs_all_cluster_page_ready+0x106/0x550 fs/f2fs/compress.c:857
+F2FS-fs (loop0): __update_extent_tree_range: extent len is zero, type: 0, extent [0, 0, 0], age [0, 0]
+------------[ cut here ]------------
+kernel BUG at fs/f2fs/extent_cache.c:678!
+Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
+CPU: 0 UID: 0 PID: 5336 Comm: syz.0.0 Not tainted syzkaller #0 PREEMPT(full)
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
+RIP: 0010:__update_extent_tree_range+0x13bc/0x1500 fs/f2fs/extent_cache.c:678
 Call Trace:
  <TASK>
- f2fs_write_cache_pages fs/f2fs/data.c:3078 [inline]
- __f2fs_write_data_pages fs/f2fs/data.c:3290 [inline]
- f2fs_write_data_pages+0x1c19/0x3600 fs/f2fs/data.c:3317
- do_writepages+0x38e/0x640 mm/page-writeback.c:2634
- filemap_fdatawrite_wbc mm/filemap.c:386 [inline]
- __filemap_fdatawrite_range mm/filemap.c:419 [inline]
- file_write_and_wait_range+0x2ba/0x3e0 mm/filemap.c:794
- f2fs_do_sync_file+0x6e6/0x1b00 fs/f2fs/file.c:294
- generic_write_sync include/linux/fs.h:3043 [inline]
- f2fs_file_write_iter+0x76e/0x2700 fs/f2fs/file.c:5259
- new_sync_write fs/read_write.c:593 [inline]
- vfs_write+0x7e9/0xe00 fs/read_write.c:686
- ksys_write+0x19d/0x2d0 fs/read_write.c:738
+ f2fs_update_read_extent_cache_range+0x192/0x3e0 fs/f2fs/extent_cache.c:1085
+ f2fs_do_zero_range fs/f2fs/file.c:1657 [inline]
+ f2fs_zero_range+0x10c1/0x1580 fs/f2fs/file.c:1737
+ f2fs_fallocate+0x583/0x990 fs/f2fs/file.c:2030
+ vfs_fallocate+0x669/0x7e0 fs/open.c:342
+ ioctl_preallocate fs/ioctl.c:289 [inline]
+ file_ioctl+0x611/0x780 fs/ioctl.c:-1
+ do_vfs_ioctl+0xb33/0x1430 fs/ioctl.c:576
+ __do_sys_ioctl fs/ioctl.c:595 [inline]
+ __se_sys_ioctl+0x82/0x170 fs/ioctl.c:583
  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xf7/0x470 arch/x86/entry/syscall_64.c:94
+ do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f07bc58eec9
 
-The bug was triggered w/ below race condition:
+In error path of f2fs_zero_range(), it may add a zero-sized extent
+into extent cache, it should be avoided.
 
-fsync				setattr			ioctl
-- f2fs_do_sync_file
- - file_write_and_wait_range
-  - f2fs_write_cache_pages
-  : inode is non-compressed
-  : cc.cluster_size =
-    F2FS_I(inode)->i_cluster_size = 0
-   - tag_pages_for_writeback
-				- f2fs_setattr
-				 - truncate_setsize
-				 - f2fs_truncate
-							- f2fs_fileattr_set
-							 - f2fs_setflags_common
-							  - set_compress_context
-							  : F2FS_I(inode)->i_cluster_size = 4
-							  : set_inode_flag(inode, FI_COMPRESSED_FILE)
-   - f2fs_compressed_file
-   : return true
-   - f2fs_all_cluster_page_ready
-   : "pgidx % cc->cluster_size" trigger dividing 0 issue
-
-Let's change as below to fix this issue:
-- introduce a new atomic type variable .writeback in structure f2fs_inode_info
-to track the number of threads which calling f2fs_write_cache_pages().
-- use .i_sem lock to protect .writeback update.
-- check .writeback before update compression context in f2fs_setflags_common()
-to avoid race w/ ->writepages.
-
-Fixes: 4c8ff7095bef ("f2fs: support data compression")
+Fixes: 6e9619499f53 ("f2fs: support in batch fzero in dnode page")
 Cc: stable@kernel.org
-Reported-by: Bai, Shuangpeng <sjb7183@psu.edu>
-Tested-by: Bai, Shuangpeng <sjb7183@psu.edu>
-Closes: https://lore.kernel.org/lkml/44D8F7B3-68AD-425F-9915-65D27591F93F@psu.edu
+Reported-by: syzbot+24124df3170c3638b35f@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-f2fs-devel/68e5d698.050a0220.256323.0032.GAE@google.com
 Signed-off-by: Chao Yu <chao@kernel.org>
 Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-[ Adjust context ]
+[ adapted patch to only guard f2fs_update_read_extent_cache_range() ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/data.c  | 17 +++++++++++++++++
- fs/f2fs/f2fs.h  |  3 ++-
- fs/f2fs/file.c  |  5 +++--
- fs/f2fs/super.c |  1 +
- 4 files changed, 23 insertions(+), 3 deletions(-)
+ fs/f2fs/file.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/fs/f2fs/data.c b/fs/f2fs/data.c
-index f5252f3e840a..c863e27fd846 100644
---- a/fs/f2fs/data.c
-+++ b/fs/f2fs/data.c
-@@ -3233,6 +3233,19 @@ static inline bool __should_serialize_io(struct inode *inode,
- 	return false;
- }
- 
-+static inline void account_writeback(struct inode *inode, bool inc)
-+{
-+	if (!f2fs_sb_has_compression(F2FS_I_SB(inode)))
-+		return;
-+
-+	f2fs_down_read(&F2FS_I(inode)->i_sem);
-+	if (inc)
-+		atomic_inc(&F2FS_I(inode)->writeback);
-+	else
-+		atomic_dec(&F2FS_I(inode)->writeback);
-+	f2fs_up_read(&F2FS_I(inode)->i_sem);
-+}
-+
- static int __f2fs_write_data_pages(struct address_space *mapping,
- 						struct writeback_control *wbc,
- 						enum iostat_type io_type)
-@@ -3282,10 +3295,14 @@ static int __f2fs_write_data_pages(struct address_space *mapping,
- 		locked = true;
- 	}
- 
-+	account_writeback(inode, true);
-+
- 	blk_start_plug(&plug);
- 	ret = f2fs_write_cache_pages(mapping, wbc, io_type);
- 	blk_finish_plug(&plug);
- 
-+	account_writeback(inode, false);
-+
- 	if (locked)
- 		mutex_unlock(&sbi->writepages);
- 
-diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
-index 4b295671df8b..b45f7ce568e6 100644
---- a/fs/f2fs/f2fs.h
-+++ b/fs/f2fs/f2fs.h
-@@ -863,6 +863,7 @@ struct f2fs_inode_info {
- 	unsigned char i_compress_level;		/* compress level (lz4hc,zstd) */
- 	unsigned char i_compress_flag;		/* compress flag */
- 	unsigned int i_cluster_size;		/* cluster size */
-+	atomic_t writeback;			/* count # of writeback thread */
- 
- 	unsigned int atomic_write_cnt;
- 	loff_t original_i_size;		/* original i_size before atomic write */
-@@ -4480,7 +4481,7 @@ static inline bool f2fs_disable_compressed_file(struct inode *inode)
- 		f2fs_up_write(&F2FS_I(inode)->i_sem);
- 		return true;
- 	}
--	if (f2fs_is_mmap_file(inode) ||
-+	if (f2fs_is_mmap_file(inode) || atomic_read(&fi->writeback) ||
- 		(S_ISREG(inode->i_mode) && F2FS_HAS_BLOCKS(inode))) {
- 		f2fs_up_write(&F2FS_I(inode)->i_sem);
- 		return false;
 diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
-index 7bdf0da5ba69..8cc0b7f5c35d 100644
+index 6228a4827de3..584596e9008e 100644
 --- a/fs/f2fs/file.c
 +++ b/fs/f2fs/file.c
-@@ -2042,8 +2042,9 @@ static int f2fs_setflags_common(struct inode *inode, u32 iflags, u32 mask)
+@@ -1552,7 +1552,9 @@ static int f2fs_do_zero_range(struct dnode_of_data *dn, pgoff_t start,
+ 		f2fs_set_data_blkaddr(dn, NEW_ADDR);
+ 	}
  
- 			f2fs_down_write(&F2FS_I(inode)->i_sem);
- 			if (!f2fs_may_compress(inode) ||
--					(S_ISREG(inode->i_mode) &&
--					F2FS_HAS_BLOCKS(inode))) {
-+				atomic_read(&fi->writeback) ||
-+				(S_ISREG(inode->i_mode) &&
-+				F2FS_HAS_BLOCKS(inode))) {
- 				f2fs_up_write(&F2FS_I(inode)->i_sem);
- 				return -EINVAL;
- 			}
-diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
-index 0523e21fa951..30b57755ceef 100644
---- a/fs/f2fs/super.c
-+++ b/fs/f2fs/super.c
-@@ -1410,6 +1410,7 @@ static struct inode *f2fs_alloc_inode(struct super_block *sb)
- 	atomic_set(&fi->dirty_pages, 0);
- 	atomic_set(&fi->i_compr_blocks, 0);
- 	atomic_set(&fi->open_count, 0);
-+	atomic_set(&fi->writeback, 0);
- 	init_f2fs_rwsem(&fi->i_sem);
- 	spin_lock_init(&fi->i_size_lock);
- 	INIT_LIST_HEAD(&fi->dirty_list);
+-	f2fs_update_read_extent_cache_range(dn, start, 0, index - start);
++	if (index > start)
++		f2fs_update_read_extent_cache_range(dn, start, 0,
++							index - start);
+ 
+ 	return ret;
+ }
 -- 
 2.51.0
 
