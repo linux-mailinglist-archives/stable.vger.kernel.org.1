@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-204219-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204220-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A56D2CE9CEB
-	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 14:42:15 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58B69CE9D00
+	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 14:48:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 354203016CCA
-	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 13:42:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 17B553017F1A
+	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 13:48:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8840122258C;
-	Tue, 30 Dec 2025 13:42:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02FCD1C3C1F;
+	Tue, 30 Dec 2025 13:48:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aU1Sri4P"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h765cRJb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C519C23C4F4
-	for <stable@vger.kernel.org>; Tue, 30 Dec 2025 13:42:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7AFF4594A
+	for <stable@vger.kernel.org>; Tue, 30 Dec 2025 13:48:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767102130; cv=none; b=MhYXuc6E503TvRII5v+ai2gVsOfGyShW8T9+mVR5QclQDZzRDg6dLI+1RvKPsjAKrNlNN+IYVaiIzuQz7nxpHkVuBmXlETKK5VeZw1/RNDnAwG84UKyQ4j5mPl9DpN3FNkfSBa492XUFqasHWrqv/AukYgGZQhUX4j4+7F2AuAA=
+	t=1767102524; cv=none; b=TEUYvWN+ZzgL94m8rNYNhFACNnKGr9arJ8UgtJH2eFHHpz5UQtk82YSn10QgNF4dWSu1H5qbk9dHtRwKrZezBdzYCRShjCKmY9F+how43+TA566mhau3kvivxsz30YREv3fM1K9txPajat9cBuPLaOz9ALh8jArqh7ZRSh6SilI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767102130; c=relaxed/simple;
-	bh=PGbcrtxVEFaTUEg/sG4CZwz6iF2e/8hwjetHIw+qMh4=;
+	s=arc-20240116; t=1767102524; c=relaxed/simple;
+	bh=dH4w0loHnUpvQv1n9imvXJRxKFdQQO7nODi4ZvyHc9o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RbDfJxdxpwFtrqEmf5bXHh+drBsy1W5WsXGyspnkrBSL80jIC/ayuls721rTkPqC4TgB0nR8JH4/V0RwlTLIWFTc7mXwjDOxivasM/+4DbOXPUPKBvlY9h33aSWuQ/+nK8TZCkj31lpfJcZEv0vyLyj8+sWCOLgNw+XNYg1tzhI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aU1Sri4P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83381C116C6;
-	Tue, 30 Dec 2025 13:42:08 +0000 (UTC)
+	 MIME-Version; b=ciJIxh2R9LuxnYxButovY8Nmt1TwLzt1V2M+J56emIyDyUd/FvC5Kdu4cieNyk1dNO2ZutwVoUS9an4Rlr2l7i8N+FP20v6DTByUtdfENwf01gHtlca/zO41/oGn1HErLDoR3MjaOmZh0T9FqszeBbZ/Y3L3+75SgMyfBQ0P7zQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h765cRJb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5E88C4CEFB;
+	Tue, 30 Dec 2025 13:48:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767102129;
-	bh=PGbcrtxVEFaTUEg/sG4CZwz6iF2e/8hwjetHIw+qMh4=;
+	s=k20201202; t=1767102524;
+	bh=dH4w0loHnUpvQv1n9imvXJRxKFdQQO7nODi4ZvyHc9o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aU1Sri4Pm8JdSEfSZhCEpPBZV3XIwBgjubiqoZUSkwdltHJ95FmHnL1xkyk5RnIPN
-	 Rb+UPXnc1VTBtfyhW+e359MhzgN766NLYAPXCPaqVe2yN4fTTLLS2cpvrzN9e24gIp
-	 JnLE8IgiAdN5bWg7VXopGXIPM8wUB6CcCUP+9sp+S6tl+ZoDjYGt87NuTbGBCp9QAb
-	 TJIHG6QQuh9lsEm3yMfFTKZPrMENo795K6SRkMWLVJb1SyX047KiFFcu5GD41aVwmQ
-	 uy+07nI0HqTUTztgGLQCNGr36Gpn4cNeWpAjwwCvYIaLePPWFVo0KvFyKBRIrKTutR
-	 jS8yIX9/fr5Ig==
+	b=h765cRJby8Rbo2ct9DUXSMWY/WduII8i6C3eLKdjSihpmFXQPgutoNTOTmbrRV63H
+	 1jxVgF2AW3AlLQc56WxIx5u1osZTf2hlBuBRNoi7R9pqV0cJpoD2q50j4kIvyVNXTy
+	 UGU0PfcLoV8N6+Xk3bmCDmQrFTJGuhvjrvBiiYdx4bOxtsHF9FLxWmy8ABN5AfkBwl
+	 neelDxnPEhjb6dKUO/Pu8N+ux92MRGlcVOf4X+jfz/WNPlOt+XNnRtTCp0Lo8Ommen
+	 DYz5Y8FPevA60xWDwo2geokhyRbHZW5c8D/Gk2OcS8aSnXYUhGbqW4oqsrhoRooXWS
+	 qAs9mwydTOLiw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
 	Mat Martineau <martineau@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y] mptcp: pm: ignore unknown endpoint flags
-Date: Tue, 30 Dec 2025 08:42:06 -0500
-Message-ID: <20251230134206.2207988-1-sashal@kernel.org>
+Subject: [PATCH 6.1.y] mptcp: pm: ignore unknown endpoint flags
+Date: Tue, 30 Dec 2025 08:48:42 -0500
+Message-ID: <20251230134842.2212007-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025122922-cedar-reapply-f9d1@gregkh>
-References: <2025122922-cedar-reapply-f9d1@gregkh>
+In-Reply-To: <2025122923-underhand-chalice-083b@gregkh>
+References: <2025122923-underhand-chalice-083b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -97,7 +97,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  2 files changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/include/uapi/linux/mptcp.h b/include/uapi/linux/mptcp.h
-index 00d622121673..926d5de5fd21 100644
+index dacc7af2ea1e..dfb98963f761 100644
 --- a/include/uapi/linux/mptcp.h
 +++ b/include/uapi/linux/mptcp.h
 @@ -88,6 +88,7 @@ enum {
@@ -109,10 +109,10 @@ index 00d622121673..926d5de5fd21 100644
  enum {
  	MPTCP_PM_CMD_UNSPEC,
 diff --git a/net/mptcp/pm_netlink.c b/net/mptcp/pm_netlink.c
-index 8dbe826555d2..9f25cfd96f98 100644
+index 146d290322a2..cc58536bbf26 100644
 --- a/net/mptcp/pm_netlink.c
 +++ b/net/mptcp/pm_netlink.c
-@@ -1435,7 +1435,8 @@ int mptcp_pm_parse_entry(struct nlattr *attr, struct genl_info *info,
+@@ -1424,7 +1424,8 @@ int mptcp_pm_parse_entry(struct nlattr *attr, struct genl_info *info,
  	}
  
  	if (tb[MPTCP_PM_ADDR_ATTR_FLAGS])
