@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-204238-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204239-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 617BACEA1DC
-	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 16:58:06 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59BF6CEA1DF
+	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 16:58:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id CD6A53004E0B
-	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 15:58:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B46AF3020C5A
+	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 15:58:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9756B86277;
-	Tue, 30 Dec 2025 15:58:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E22F28505E;
+	Tue, 30 Dec 2025 15:58:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FPpvjQBc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qa0HBrUY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F87D2C15AA
-	for <stable@vger.kernel.org>; Tue, 30 Dec 2025 15:58:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F32E6231C91
+	for <stable@vger.kernel.org>; Tue, 30 Dec 2025 15:58:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767110284; cv=none; b=FKphm9eBWWWpqXr5hcA4r+xPbiWSFvnbpfTGXYIGu9IWr9T7RvDsIlm8z89aXVzqCnwPDkDYAyr/k397JqwgbbKdeSu2ScLidkkuR6xFY6yzpzT4m99AFffx00ac8Q4VV40Bs7S+UzBNCzY1WDbpB0S1spG2EaXDybcr9RJQLPI=
+	t=1767110317; cv=none; b=ibIzDD5zi78AuG+NBqfeBAhrlNhrPglgB2RfGcd/NqRF9hIdHx1wAPgUQm1l0Qw3WAeFC4JWUmf/6ix7qYAdUIVVyit6/usYnF0GxMkPjUcgQYV72fRbLVBn2n5YL+kWfsxuJehqiygl6krEOYEAg3fIRtQ+gvPJtxXchz19N6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767110284; c=relaxed/simple;
-	bh=DOpLZBV1hZ9PiZRtib3hMF8Db91sDhgS/uQAlGJOfjQ=;
+	s=arc-20240116; t=1767110317; c=relaxed/simple;
+	bh=ZLKBHiRi6HgYrjP12xVqhy2hazXvzrLBgY+Qxd7jFvk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mc/sBNDavAgBkY3WM/IOSBVMVD7BMy0EhDUJehdFhxzTCq8FyGtuZXMDpOiJF/ZC7jWyJhl+/SN5ZtIopFc5x6TDmOwIvpq3TqvLMBDOEILvUAhSbicvIz22aUM4gw0/RSlCgjKrVBuBjbfr3QRVt7GMd1xEfYGMgkyBA7yC1bM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FPpvjQBc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22389C4CEFB;
-	Tue, 30 Dec 2025 15:58:03 +0000 (UTC)
+	 MIME-Version; b=BgdW6SaF7+6yuZzxsqL8Tuc32FutAp3x5z5Z/eqbWIH700AW5tqv3jkxLg98ToQ86FiXqS9VEwEFRQrc8qa3yYtmf6ntlK7RR9sWoTlxE4EsTfOJ3P/YfqcFe4BnRgWC1KVNpXgHDW3UvGVtXUZWlLrgAD2Yfk041NT6Q8oVWCo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qa0HBrUY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CE19C4CEFB;
+	Tue, 30 Dec 2025 15:58:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767110283;
-	bh=DOpLZBV1hZ9PiZRtib3hMF8Db91sDhgS/uQAlGJOfjQ=;
+	s=k20201202; t=1767110316;
+	bh=ZLKBHiRi6HgYrjP12xVqhy2hazXvzrLBgY+Qxd7jFvk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FPpvjQBce8Gv3f5W7r14ZZhasqDU/abY07r0oSvU/ITsnVJE3ewE6pm4shBoEVRLw
-	 C/jn0DeXZmwkO2WEMJcI1VkljE/e5hK1gz17h2YMk+K4VtQOhEfs7cR4ZP9XwIYkaX
-	 sYGBkNWboYoW7rS8MX4uG5cMduQIVSMrWZ2iUdtC2LIBxvomBztayMaVaL4/lyX7Bs
-	 Sa6O0iNAQIPZ8WN9HnKqEIaHHL/fOJgqPQvr6ssbEyv7bXmkxyDE65bTOl34MkCusB
-	 z63CR4yNZoI4t0O0LDwS5kE+YbKFfGMV0+x0zIue4eYuucrw5UmM6oWpdjFdazkzJZ
-	 mQkniGIqNSZ3g==
+	b=qa0HBrUYMsyrp5wtQXzd/BlmDi8cXwYQCUO7mTerG46Lpfp3zgDbspPjn74TCbjhd
+	 051wUDQOowNxd58+ZYh242xEoCTvZVMrVPWqAHStAi5SwZ32mpq//EyGgITzbVhRN3
+	 kHqDa0BT021+hHvkSEu9DJSwYlvKpYHHz7oGv8RtlbmSg742xNryblVKdIyd0sTYGG
+	 G8qV7wCoX05Mb2d7qAzpgV2VnKZ+6BAz2XjLEox0a41JBGSlPqV7QdzNtddgEcnGio
+	 sPaui1PzTCA+rDy0UQMbG1NBVYSs33/6iMNI8/wyq4Aq9Ww8/9Mfk756riKHyH6Lt/
+	 t51+pRFtS7j6w==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Seunghwan Baek <sh8267.baek@samsung.com>,
-	Peter Wang <peter.wang@mediatek.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+Cc: Udipto Goswami <udipto.goswami@oss.qualcomm.com>,
+	stable <stable@kernel.org>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y] scsi: ufs: core: Add ufshcd_update_evt_hist() for UFS suspend error
-Date: Tue, 30 Dec 2025 10:58:01 -0500
-Message-ID: <20251230155801.2291044-1-sashal@kernel.org>
+Subject: [PATCH 5.10.y] usb: dwc3: keep susphy enabled during exit to avoid controller faults
+Date: Tue, 30 Dec 2025 10:58:34 -0500
+Message-ID: <20251230155834.2291619-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025122946-attic-proofread-96f2@gregkh>
-References: <2025122946-attic-proofread-96f2@gregkh>
+In-Reply-To: <2025122912-stuck-knickers-4454@gregkh>
+References: <2025122912-stuck-knickers-4454@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -59,49 +60,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Seunghwan Baek <sh8267.baek@samsung.com>
+From: Udipto Goswami <udipto.goswami@oss.qualcomm.com>
 
-[ Upstream commit c9f36f04a8a2725172cdf2b5e32363e4addcb14c ]
+[ Upstream commit e1003aa7ec9eccdde4c926bd64ef42816ad55f25 ]
 
-If UFS resume fails, the event history is updated in ufshcd_resume(), but
-there is no code anywhere to record UFS suspend. Therefore, add code to
-record UFS suspend error event history.
+On some platforms, switching USB roles from host to device can trigger
+controller faults due to premature PHY power-down. This occurs when the
+PHY is disabled too early during teardown, causing synchronization
+issues between the PHY and controller.
 
-Fixes: dd11376b9f1b ("scsi: ufs: Split the drivers/scsi/ufs directory")
-Cc: stable@vger.kernel.org
-Signed-off-by: Seunghwan Baek <sh8267.baek@samsung.com>
-Reviewed-by: Peter Wang <peter.wang@mediatek.com>
-Link: https://patch.msgid.link/20251210063854.1483899-2-sh8267.baek@samsung.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Keep susphy enabled during dwc3_host_exit() and dwc3_gadget_exit()
+ensures the PHY remains in a low-power state capable of handling
+required commands during role switch.
+
+Cc: stable <stable@kernel.org>
+Fixes: 6d735722063a ("usb: dwc3: core: Prevent phy suspend during init")
+Suggested-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Signed-off-by: Udipto Goswami <udipto.goswami@oss.qualcomm.com>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://patch.msgid.link/20251126054221.120638-1-udipto.goswami@oss.qualcomm.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 [ Adjust context ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/core/ufshcd.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/usb/dwc3/gadget.c | 2 +-
+ drivers/usb/dwc3/host.c   | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
-index 01a7c1720ce1..1bd1f999dab0 100644
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -10182,7 +10182,7 @@ static int ufshcd_suspend(struct ufs_hba *hba)
- 	ret = ufshcd_setup_clocks(hba, false);
- 	if (ret) {
- 		ufshcd_enable_irq(hba);
--		return ret;
-+		goto out;
- 	}
- 	if (ufshcd_is_clkgating_allowed(hba)) {
- 		hba->clk_gating.state = CLKS_OFF;
-@@ -10193,6 +10193,9 @@ static int ufshcd_suspend(struct ufs_hba *hba)
- 	ufshcd_vreg_set_lpm(hba);
- 	/* Put the host controller in low power mode if possible */
- 	ufshcd_hba_vreg_set_lpm(hba);
-+out:
-+	if (ret)
-+		ufshcd_update_evt_hist(hba, UFS_EVT_SUSPEND_ERR, (u32)ret);
- 	return ret;
- }
+diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
+index 7aa4a7a46233..5ea6d0c929db 100644
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -4109,7 +4109,7 @@ void dwc3_gadget_exit(struct dwc3 *dwc)
+ 	if (!dwc->gadget)
+ 		return;
  
+-	dwc3_enable_susphy(dwc, false);
++	dwc3_enable_susphy(dwc, true);
+ 	usb_del_gadget(dwc->gadget);
+ 	dwc3_gadget_free_endpoints(dwc);
+ 	usb_put_gadget(dwc->gadget);
+diff --git a/drivers/usb/dwc3/host.c b/drivers/usb/dwc3/host.c
+index 05718f6fa60d..9fa76abdaadc 100644
+--- a/drivers/usb/dwc3/host.c
++++ b/drivers/usb/dwc3/host.c
+@@ -155,7 +155,7 @@ int dwc3_host_init(struct dwc3 *dwc)
+ 
+ void dwc3_host_exit(struct dwc3 *dwc)
+ {
+-	dwc3_enable_susphy(dwc, false);
++	dwc3_enable_susphy(dwc, true);
+ 	platform_device_unregister(dwc->xhci);
+ 	dwc->xhci = NULL;
+ }
 -- 
 2.51.0
 
