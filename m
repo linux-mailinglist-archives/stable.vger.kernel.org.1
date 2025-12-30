@@ -1,303 +1,158 @@
-Return-Path: <stable+bounces-204298-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204299-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15362CEAC1E
-	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 23:04:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F680CEAED0
+	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 00:45:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 87FCB301C3D9
-	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 22:04:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E7D543013E8D
+	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 23:45:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F3AA288C81;
-	Tue, 30 Dec 2025 22:03:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2C05246781;
+	Tue, 30 Dec 2025 23:45:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uww8DXvZ"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="IM/oRkAC"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F365027A133
-	for <stable@vger.kernel.org>; Tue, 30 Dec 2025 22:03:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49EFB3A1E6E;
+	Tue, 30 Dec 2025 23:45:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767132239; cv=none; b=O73BkN+lJqwn3E6sC0rWY77oXDv3WDgpG2SF6TnIvDiQGNleY5sXT6S1MHlYyALMAR/oOueXpnN+yYToUSoWpiTRPPjKcGX7xhmMOn+mDimrvJ7ubCC3Il7l9KFhiQzDkTuS1Hqyjxf8QSzj2nk3fbKb/gViBhyF5gUAaqgL0CM=
+	t=1767138335; cv=none; b=qI3D+us9BiAuhqk+1ZgQ9QN7ktPAXFPSEVHrXRvhwUHzdOTD6KTSXXL4lX/yNoRfaO0D6aVVq0IqXYiACM+SmYrIS3s+RYFBVTl4Q/NiBvkG82eaEbQwZ99LJlnIthtThdgO42KmPePCweL6lNcBHm810AAGsN5yW8D9s8xIrTQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767132239; c=relaxed/simple;
-	bh=r8IfJEK0GWbdDumpGgvjob7Y28i8ip6XP/UwdyXglbs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jLEu9JH5WVxhxgk9VoyxTYAEidUPAR2DlZ0gJLJBtyfn+e9NTyCdH07e/G0pMTC3eKln2VSeFdR4WUK9+CBpR9sJWcGpParA3xLR5Bnd/5nutVX0FCGqZFiZRVTmwz5VwG4bwmT9c3wyV9nvDMZdrQ1UOkYWXVuxksq2/mMBz/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uww8DXvZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA988C4CEFB;
-	Tue, 30 Dec 2025 22:03:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767132238;
-	bh=r8IfJEK0GWbdDumpGgvjob7Y28i8ip6XP/UwdyXglbs=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uww8DXvZfrHgZVrnnmGi/10TOuh2DznQOHm91NCa5TV4tZM39Lb3yyEMhfgXB7FBr
-	 vu75HwyjNBkBLdZ7sbo3n5NXFv0i05XkB+m+OrsW+zA8bYgDkF/kSxOgbxvHYNKkyd
-	 RLRHe9SWkAx3UzFhS/L6KwyDZPM3bjZDcAGgwTloe9hn9Mwjuo2dR5Ld2XRzAogSCs
-	 ZbynHOVO/Fz/6pob1x+kCdL2x59nrNUG/bLJOsY4zUz6PncOg9hyvr7TgdCORKRQMg
-	 vxsjmlbO6jCbXj7InuFQEyWOTLgezk5agGT8zZguGJLNsbNGUCE2+PVNpX2uOgPshW
-	 Q7+X4ygbEbfOw==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Chao Yu <chao@kernel.org>,
-	stable@kernel.org,
-	Hong Yun <yhong@link.cuhk.edu.hk>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y] f2fs: use global inline_xattr_slab instead of per-sb slab cache
-Date: Tue, 30 Dec 2025 17:03:56 -0500
-Message-ID: <20251230220356.2525348-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025122924-placidly-rehire-4364@gregkh>
-References: <2025122924-placidly-rehire-4364@gregkh>
+	s=arc-20240116; t=1767138335; c=relaxed/simple;
+	bh=QMBUdlXDKkchPVAs7Ow4vcyLh72TJwzttwvyboiQR7g=;
+	h=Message-ID:Subject:From:To:Cc:In-Reply-To:References:Content-Type:
+	 Date:MIME-Version; b=VbCuV4iF/xi1qibNpU1BXKz4sUrTUBvVRDAhRFsmddcLjXX+5HRQRVVOmzlGEDYbmvsIqJhoE4pTb1KR1Ytl8yqNHYjJ4UbmVydqoomKpi8nYBAES+wNGTViS4ITygawgS9aHnVj7F0qPD502vzd6C1mQc697xSYURkEKrBg3h4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=IM/oRkAC; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5BUD7r7l032696;
+	Tue, 30 Dec 2025 23:45:07 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=y5d+/r
+	QgjKDFkAaZOQfs10C5BxM3Nrst9vpTgEn1Mjk=; b=IM/oRkACQrUOpid2O2ns/W
+	bhIAz86bSC5FS0jZYb7Fi3Ze8X3OdMGUsBHDXQ3aetaFmshYoe3AJdch7oT4J6yw
+	W67hos9KaUrqYie6ry6DoqZ5sFkvB5+5vVwbddjdGJ9DWQDswnRnKV8AmI9AliIx
+	GIt6bt3PC7LfvAZ4MbyuX4vsT2tG3R6GbxJoT3isjjNFWW47Ktx6JK1o7jXo5qKP
+	eQI2j18VVQukrXKjNe1ohRmGPiLiC/pbh5lINXrcRYaqZTlBCgD4O9nW33S8wd69
+	C7efJ4/R6UbarHJslwTS33ChHYpdCnKs7ZNQvohnfmfb8VZAfI5NFGfgn2YBR16A
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4bb46xhyuc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 30 Dec 2025 23:45:06 +0000 (GMT)
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5BUNj6q6006847;
+	Tue, 30 Dec 2025 23:45:06 GMT
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4bb46xhyu8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 30 Dec 2025 23:45:06 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5BUL4R5S003112;
+	Tue, 30 Dec 2025 23:45:05 GMT
+Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4bavg1uyx5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 30 Dec 2025 23:45:05 +0000
+Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com [10.241.53.103])
+	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5BUNj4Bq40829488
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 30 Dec 2025 23:45:04 GMT
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1A5035805A;
+	Tue, 30 Dec 2025 23:45:04 +0000 (GMT)
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 96EC558056;
+	Tue, 30 Dec 2025 23:45:02 +0000 (GMT)
+Received: from li-43857255-d5e6-4659-90f1-fc5cee4750ad.ibm.com (unknown [9.61.14.46])
+	by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 30 Dec 2025 23:45:02 +0000 (GMT)
+Message-ID: <a5fbf391731b04b5cea5aa2202f375986ea90991.camel@linux.ibm.com>
+Subject: Re: [PATCH v2 3/3] x86/kexec: Add a sanity check on previous
+ kernel's ima kexec buffer
+From: Mimi Zohar <zohar@linux.ibm.com>
+To: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Cc: akpm@linux-foundation.org, ardb@kernel.org, bp@alien8.de,
+        dave.hansen@linux.intel.com, graf@amazon.com,
+        guoweikang.kernel@gmail.com, henry.willard@oracle.com, hpa@zytor.com,
+        jbohac@suse.cz, joel.granados@kernel.org, linux-kernel@vger.kernel.org,
+        mingo@redhat.com, noodles@fb.com, paul.x.webb@oracle.com,
+        rppt@kernel.org, sohil.mehta@intel.com, sourabhjain@linux.ibm.com,
+        stable@vger.kernel.org, tglx@linutronix.de, x86@kernel.org,
+        yifei.l.liu@oracle.com
+In-Reply-To: <20251229081523.622515-4-harshit.m.mogalapalli@oracle.com>
+References: <20251229081523.622515-1-harshit.m.mogalapalli@oracle.com>
+	 <20251229081523.622515-4-harshit.m.mogalapalli@oracle.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 30 Dec 2025 18:45:02 -0500
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+User-Agent: Evolution 3.54.3 (3.54.3-2.fc41) 
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjMwMDIwOCBTYWx0ZWRfX3Y3/2ueBILU7
+ X5bcz9TWWhGrhn040fiERI62AM43V3yDBoqS/XAfUO5Cay5QLXUgdlVzA5VuMEuxLYs0aVYvKac
+ qTSYPWG6HiIV+dJxEqH4MMN7R9PiFRGViZwHIzLWS9CYsd0rPFuoH7UHHlh/MYeIjV8TqovsYKY
+ YqZTheYZy2CHOuMfkIPUKlF00WYPAvlOEAhDuSVviQL8cH6eoNfKlGgkH+MI59MyuyH6Gqd1HXv
+ xpbT5BnJ2SBl1MPF6HsLXcg7lmN8quQJsxYkqsKuz1C0/T7fz2FXV3Yg+R+5ix5a7P4gnP4ABt5
+ Qd/exaYNOYvTueBjAHt9V59adsxggnfWbacZxUoTVg7gwHpq2YU/U9pis6iMzpIbO+u5rf+B1D7
+ QPl5Dc41c8yJRmA09cGqslPawtBdOG14vPXUeOPvZ9GZNnkVO7BHzaP1QfnNHKJ0HBa37mSy6BF
+ dwNac+A+iD2Y3se+YcQ==
+X-Proofpoint-ORIG-GUID: Olu-nHAbwbWVLblu2emWCToZ1qd3NVE4
+X-Authority-Analysis: v=2.4 cv=L7AQguT8 c=1 sm=1 tr=0 ts=69546402 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=IkcTkHD0fZMA:10 a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=VwQbUJbxAAAA:8 a=yPCof4ZbAAAA:8 a=VnNF1IyMAAAA:8 a=NpcRbR0aspp2ts8fkesA:9
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: 3Dw_R9YRQN8ukdyEP66fsJHWxIpF-kgh
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-12-30_04,2025-12-30_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 phishscore=0 suspectscore=0 lowpriorityscore=0 spamscore=0
+ impostorscore=0 priorityscore=1501 malwarescore=0 clxscore=1015 bulkscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2512120000 definitions=main-2512300208
 
-From: Chao Yu <chao@kernel.org>
+On Mon, 2025-12-29 at 00:15 -0800, Harshit Mogalapalli wrote:
+> When the second-stage kernel is booted via kexec with a limiting command
+> line such as "mem=3D<size>", the physical range that contains the carried
+> over IMA measurement list may fall outside the truncated RAM leading to
+> a kernel panic.
+>=20
+>     BUG: unable to handle page fault for address: ffff97793ff47000
+>     RIP: ima_restore_measurement_list+0xdc/0x45a
+>     #PF: error_code(0x0000) =E2=80=93 not-present page
+>=20
+> Other architectures already validate the range with page_is_ram(), as
+> done in commit cbf9c4b9617b ("of: check previous kernel's
+> ima-kexec-buffer against memory bounds") do a similar check on x86.
+>=20
+> Without carrying the measurement list across kexec, the attestation
+> would fail.
+>=20
+> Cc: stable@vger.kernel.org
+> Fixes: b69a2afd5afc ("x86/kexec: Carry forward IMA measurement log on kex=
+ec")
+> Reported-by: Paul Webb <paul.x.webb@oracle.com>
+> Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+> ---
+> V1-> V2: Added a line about carrying measure list across kexec based on
+> suggestion from Mimi Zohar. Made use to the new generic helper
+> [Suggestion from Borislav]
 
-[ Upstream commit 1f27ef42bb0b7c0740c5616ec577ec188b8a1d05 ]
+Thanks, Harshit.
 
-As Hong Yun reported in mailing list:
-
-loop7: detected capacity change from 0 to 131072
-------------[ cut here ]------------
-kmem_cache of name 'f2fs_xattr_entry-7:7' already exists
-WARNING: CPU: 0 PID: 24426 at mm/slab_common.c:110 kmem_cache_sanity_check mm/slab_common.c:109 [inline]
-WARNING: CPU: 0 PID: 24426 at mm/slab_common.c:110 __kmem_cache_create_args+0xa6/0x320 mm/slab_common.c:307
-CPU: 0 UID: 0 PID: 24426 Comm: syz.7.1370 Not tainted 6.17.0-rc4 #1 PREEMPT(full)
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
-RIP: 0010:kmem_cache_sanity_check mm/slab_common.c:109 [inline]
-RIP: 0010:__kmem_cache_create_args+0xa6/0x320 mm/slab_common.c:307
-Call Trace:
- __kmem_cache_create include/linux/slab.h:353 [inline]
- f2fs_kmem_cache_create fs/f2fs/f2fs.h:2943 [inline]
- f2fs_init_xattr_caches+0xa5/0xe0 fs/f2fs/xattr.c:843
- f2fs_fill_super+0x1645/0x2620 fs/f2fs/super.c:4918
- get_tree_bdev_flags+0x1fb/0x260 fs/super.c:1692
- vfs_get_tree+0x43/0x140 fs/super.c:1815
- do_new_mount+0x201/0x550 fs/namespace.c:3808
- do_mount fs/namespace.c:4136 [inline]
- __do_sys_mount fs/namespace.c:4347 [inline]
- __se_sys_mount+0x298/0x2f0 fs/namespace.c:4324
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x8e/0x3a0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-The bug can be reproduced w/ below scripts:
-- mount /dev/vdb /mnt1
-- mount /dev/vdc /mnt2
-- umount /mnt1
-- mounnt /dev/vdb /mnt1
-
-The reason is if we created two slab caches, named f2fs_xattr_entry-7:3
-and f2fs_xattr_entry-7:7, and they have the same slab size. Actually,
-slab system will only create one slab cache core structure which has
-slab name of "f2fs_xattr_entry-7:3", and two slab caches share the same
-structure and cache address.
-
-So, if we destroy f2fs_xattr_entry-7:3 cache w/ cache address, it will
-decrease reference count of slab cache, rather than release slab cache
-entirely, since there is one more user has referenced the cache.
-
-Then, if we try to create slab cache w/ name "f2fs_xattr_entry-7:3" again,
-slab system will find that there is existed cache which has the same name
-and trigger the warning.
-
-Let's changes to use global inline_xattr_slab instead of per-sb slab cache
-for fixing.
-
-Fixes: a999150f4fe3 ("f2fs: use kmem_cache pool during inline xattr lookups")
-Cc: stable@kernel.org
-Reported-by: Hong Yun <yhong@link.cuhk.edu.hk>
-Tested-by: Hong Yun <yhong@link.cuhk.edu.hk>
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-[ No f2fs_kmem_cache_alloc() ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- fs/f2fs/f2fs.h  |  3 ---
- fs/f2fs/super.c | 15 +++++++--------
- fs/f2fs/xattr.c | 32 +++++++++++---------------------
- fs/f2fs/xattr.h | 10 ++++++----
- 4 files changed, 24 insertions(+), 36 deletions(-)
-
-diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
-index 622e8a816f7e..043c8ec84941 100644
---- a/fs/f2fs/f2fs.h
-+++ b/fs/f2fs/f2fs.h
-@@ -1573,9 +1573,6 @@ struct f2fs_sb_info {
- 
- 	struct workqueue_struct *post_read_wq;	/* post read workqueue */
- 
--	struct kmem_cache *inline_xattr_slab;	/* inline xattr entry */
--	unsigned int inline_xattr_slab_size;	/* default inline xattr slab size */
--
- #ifdef CONFIG_F2FS_FS_COMPRESSION
- 	struct kmem_cache *page_array_slab;	/* page array entry */
- 	unsigned int page_array_slab_size;	/* default page array slab size */
-diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
-index d7fd28a47701..d973d93d3e2c 100644
---- a/fs/f2fs/super.c
-+++ b/fs/f2fs/super.c
-@@ -1351,7 +1351,6 @@ static void f2fs_put_super(struct super_block *sb)
- 
- 	destroy_device_list(sbi);
- 	f2fs_destroy_page_array_cache(sbi);
--	f2fs_destroy_xattr_caches(sbi);
- 	mempool_destroy(sbi->write_io_dummy);
- #ifdef CONFIG_QUOTA
- 	for (i = 0; i < MAXQUOTAS; i++)
-@@ -3722,13 +3721,9 @@ static int f2fs_fill_super(struct super_block *sb, void *data, int silent)
- 		}
- 	}
- 
--	/* init per sbi slab cache */
--	err = f2fs_init_xattr_caches(sbi);
--	if (err)
--		goto free_io_dummy;
- 	err = f2fs_init_page_array_cache(sbi);
- 	if (err)
--		goto free_xattr_cache;
-+		goto free_io_dummy;
- 
- 	/* get an inode for meta space */
- 	sbi->meta_inode = f2fs_iget(sb, F2FS_META_INO(sbi));
-@@ -4017,8 +4012,6 @@ static int f2fs_fill_super(struct super_block *sb, void *data, int silent)
- 	sbi->meta_inode = NULL;
- free_page_array_cache:
- 	f2fs_destroy_page_array_cache(sbi);
--free_xattr_cache:
--	f2fs_destroy_xattr_caches(sbi);
- free_io_dummy:
- 	mempool_destroy(sbi->write_io_dummy);
- free_percpu:
-@@ -4170,7 +4163,12 @@ static int __init init_f2fs_fs(void)
- 	err = f2fs_init_compress_cache();
- 	if (err)
- 		goto free_compress_mempool;
-+	err = f2fs_init_xattr_cache();
-+	if (err)
-+		goto free_compress_cache;
- 	return 0;
-+free_compress_cache:
-+	f2fs_destroy_compress_cache();
- free_compress_mempool:
- 	f2fs_destroy_compress_mempool();
- free_bioset:
-@@ -4206,6 +4204,7 @@ static int __init init_f2fs_fs(void)
- 
- static void __exit exit_f2fs_fs(void)
- {
-+	f2fs_destroy_xattr_cache();
- 	f2fs_destroy_compress_cache();
- 	f2fs_destroy_compress_mempool();
- 	f2fs_destroy_bioset();
-diff --git a/fs/f2fs/xattr.c b/fs/f2fs/xattr.c
-index bd7099457018..ed475fd172af 100644
---- a/fs/f2fs/xattr.c
-+++ b/fs/f2fs/xattr.c
-@@ -23,11 +23,12 @@
- #include "xattr.h"
- #include "segment.h"
- 
-+static struct kmem_cache *inline_xattr_slab;
- static void *xattr_alloc(struct f2fs_sb_info *sbi, int size, bool *is_inline)
- {
--	if (likely(size == sbi->inline_xattr_slab_size)) {
-+	if (likely(size == DEFAULT_XATTR_SLAB_SIZE)) {
- 		*is_inline = true;
--		return kmem_cache_zalloc(sbi->inline_xattr_slab, GFP_NOFS);
-+		return kmem_cache_zalloc(inline_xattr_slab, GFP_NOFS);
- 	}
- 	*is_inline = false;
- 	return f2fs_kzalloc(sbi, size, GFP_NOFS);
-@@ -37,7 +38,7 @@ static void xattr_free(struct f2fs_sb_info *sbi, void *xattr_addr,
- 							bool is_inline)
- {
- 	if (is_inline)
--		kmem_cache_free(sbi->inline_xattr_slab, xattr_addr);
-+		kmem_cache_free(inline_xattr_slab, xattr_addr);
- 	else
- 		kfree(xattr_addr);
- }
-@@ -814,25 +815,14 @@ int f2fs_setxattr(struct inode *inode, int index, const char *name,
- 	return err;
- }
- 
--int f2fs_init_xattr_caches(struct f2fs_sb_info *sbi)
-+int __init f2fs_init_xattr_cache(void)
- {
--	dev_t dev = sbi->sb->s_bdev->bd_dev;
--	char slab_name[32];
--
--	sprintf(slab_name, "f2fs_xattr_entry-%u:%u", MAJOR(dev), MINOR(dev));
--
--	sbi->inline_xattr_slab_size = F2FS_OPTION(sbi).inline_xattr_size *
--					sizeof(__le32) + XATTR_PADDING_SIZE;
--
--	sbi->inline_xattr_slab = f2fs_kmem_cache_create(slab_name,
--					sbi->inline_xattr_slab_size);
--	if (!sbi->inline_xattr_slab)
--		return -ENOMEM;
--
--	return 0;
-+	inline_xattr_slab = f2fs_kmem_cache_create("f2fs_xattr_entry",
-+					DEFAULT_XATTR_SLAB_SIZE);
-+	return inline_xattr_slab ? 0 : -ENOMEM;
- }
- 
--void f2fs_destroy_xattr_caches(struct f2fs_sb_info *sbi)
-+void f2fs_destroy_xattr_cache(void)
- {
--	kmem_cache_destroy(sbi->inline_xattr_slab);
--}
-+	kmem_cache_destroy(inline_xattr_slab);
-+}
-\ No newline at end of file
-diff --git a/fs/f2fs/xattr.h b/fs/f2fs/xattr.h
-index 416d652774a3..cb8666be9b99 100644
---- a/fs/f2fs/xattr.h
-+++ b/fs/f2fs/xattr.h
-@@ -88,6 +88,8 @@ struct f2fs_xattr_entry {
- 			F2FS_TOTAL_EXTRA_ATTR_SIZE / sizeof(__le32) -	\
- 			DEF_INLINE_RESERVED_SIZE -			\
- 			MIN_INLINE_DENTRY_SIZE / sizeof(__le32))
-+#define DEFAULT_XATTR_SLAB_SIZE	(DEFAULT_INLINE_XATTR_ADDRS *		\
-+				sizeof(__le32) + XATTR_PADDING_SIZE)
- 
- /*
-  * On-disk structure of f2fs_xattr
-@@ -131,8 +133,8 @@ extern int f2fs_setxattr(struct inode *, int, const char *,
- extern int f2fs_getxattr(struct inode *, int, const char *, void *,
- 						size_t, struct page *);
- extern ssize_t f2fs_listxattr(struct dentry *, char *, size_t);
--extern int f2fs_init_xattr_caches(struct f2fs_sb_info *);
--extern void f2fs_destroy_xattr_caches(struct f2fs_sb_info *);
-+extern int __init f2fs_init_xattr_cache(void);
-+extern void f2fs_destroy_xattr_cache(void);
- #else
- 
- #define f2fs_xattr_handlers	NULL
-@@ -149,8 +151,8 @@ static inline int f2fs_getxattr(struct inode *inode, int index,
- {
- 	return -EOPNOTSUPP;
- }
--static inline int f2fs_init_xattr_caches(struct f2fs_sb_info *sbi) { return 0; }
--static inline void f2fs_destroy_xattr_caches(struct f2fs_sb_info *sbi) { }
-+static inline int __init f2fs_init_xattr_cache(void) { return 0; }
-+static inline void f2fs_destroy_xattr_cache(void) { }
- #endif
- 
- #ifdef CONFIG_F2FS_FS_SECURITY
--- 
-2.51.0
+Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
 
 
