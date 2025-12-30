@@ -1,129 +1,140 @@
-Return-Path: <stable+bounces-204226-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204227-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72B66CE9F32
-	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 15:40:08 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DE59CE9F4A
+	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 15:41:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 92791302355A
-	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 14:40:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8966530329E6
+	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 14:40:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68AB621D3CD;
-	Tue, 30 Dec 2025 14:40:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD99F2741AB;
+	Tue, 30 Dec 2025 14:40:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="bsHhJjbg"
+	dkim=pass (2048-bit key) header.d=cknow-tech.com header.i=@cknow-tech.com header.b="ON1iMg9B"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85F4F217F31
-	for <stable@vger.kernel.org>; Tue, 30 Dec 2025 14:40:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59C081DE4FB
+	for <stable@vger.kernel.org>; Tue, 30 Dec 2025 14:40:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767105603; cv=none; b=SJp+KR4c54wwDfjKkQJjRDI+/EyZiJ5YPyltaN8HQEEjJSb/KEtcPOM94jdrMjpSPB27AYRuW3khD0ZAHwv3FhaAm4lGK3W0Fs5TTDqJcdeqOYskZIfmjlv4vUWht/szhtORiFT674w2XZK1NY/SQBsnCBaJzHgsFLy50t9YxU8=
+	t=1767105646; cv=none; b=svD67dnRIE9NhpxLZ1G/RoySv/exm3FISB4oNOzvb6UnQXhZIScB+GhHlAIgrXDKc7gdcMDY7V7an5dq1mPFluuyPjrziQgtfUs8LHy/CeQu7I6jEceB8Azw70oUeaYHArpK5pyAbpZZVkrlA3KuyD+KuJ1/lmP+qWHcHsR1j8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767105603; c=relaxed/simple;
-	bh=s0rN/mzkBAPcsmVjyKPNIB5LMIJZ073UG2Q0zmQovXE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=H3Yq4qiF/cZ0wwJgZ6EN2/59cL0LRjnJi9Lbu8J4sarl/5PcfoY05oGCbL0aTfeNUpqlWY2RFSd+FWVGgiYPmk1eYyGDAsVLIjRiQHus0TuzhLq9To3qRlE5g8hT5IHwXRci1Hck9yFJrj5iqXho9u8bX6Q4vvBb17VX5W0iwDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=bsHhJjbg; arc=none smtp.client-ip=209.85.128.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4775ae77516so100251315e9.1
-        for <stable@vger.kernel.org>; Tue, 30 Dec 2025 06:40:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20230601; t=1767105599; x=1767710399; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=QBHQ6iT252IFB9IbPjXdUzgUocgqNSFN6oDTMtuDLng=;
-        b=bsHhJjbgmYlchp7OMOp7PuZ75U5lmRTJeTc7w3A1twK6XkCytJ8VZAawl1hdzkYuu+
-         4oKXC0n+OEmKsoVe6PaQTs4AgelWUjYQUYFhQyZjnrpMlUiPSp1XLCmu+3KwyzJgUlZh
-         5Oka58LJb4rVle4ZClxvD6ehtA1Vd3GWwIgcf6ZVrdgc9D0HOYN3X17+IsilGl1wI/UP
-         8XWPOXYQi5/KOVJwsTMpaolZyhueWtSqDn+KT/PMhI2mIGU0goqMwiHscSw8jjkZXq4s
-         r26YQCIpg03SESWCjJ6e5V+c0sPS+riDpwA7/7enRARjPFbucTUGOo4WN9A/EQwCgdyO
-         8kCg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767105599; x=1767710399;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=QBHQ6iT252IFB9IbPjXdUzgUocgqNSFN6oDTMtuDLng=;
-        b=uHH+Rs3/mwVG/7zyaspVN7zvGS/jNNBzNR/9legFwaBYkzvCon1q/7qKi71ffocimv
-         Tj9RJ1yrdQcwLxcbdzMW/6TlqIci9wynittzDW5h+nHqSoXNu6CjjKiWL6Ry0a9/9Koq
-         Efsd942qiqSkZ/22CO1oWcUxoa/4RHmzyaZ+jKycnNmCtzx0YudxsIjYlHlQ4tZ6q19O
-         uxuC9FV30tUnh7EmZgctzVxLgqYEs9UHOdCGTffrPcydGy5Qw/Z+F6B6E+KHSd+Y7lRO
-         YJ/f5rYjOqphDgI3TXM1DoqltFNO4tQNA19r+NkphwlQ7vAf4KKDhX4YBAf9TeCGYYDF
-         YcjA==
-X-Forwarded-Encrypted: i=1; AJvYcCVfVWgHRKuKCqTh5bRc6I1vMRffMcRBk7zPtZKLQvL9VylLFVhEa4wOZGVevBfnR9ouUXNnrjI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx5jtzlfxHxAxyw9zpfTl40MYIs52R+RKpcQ0YtNpZHgjV7a+nZ
-	Rw9nMoKD9PUuGTnm1tLwrcc5xUDwtH88zQZRoRuUXf5gvse1h2tmT7E=
-X-Gm-Gg: AY/fxX40rK/vs5nWiIE3kNsPPyoh8AZGBf68ga6xMAzh3g4QeBMfi1hIFJJrSuuzQG/
-	8pgRyeXQktVZJmh6e0UemPqTC6idfL2eO8NF7XSK1smHXarJXBHndr1wFyYhUQHxZqe+0cFYav+
-	KEaDX7e0XCCQyoXYL4QucSRq1UjZSm6UUHz+3oInbS4MLBme7RlqQwshRn9vrjsT6JESxWBnYgz
-	FndLHyVVVm+g98RKZdsfs64v8bLcvwh+LaNgJZnqGf0L9MllPoZ+5QXrOo9PnojPc+fNT/0BB0M
-	o6CDumLiHlcse2qEoJWWslmSJ4zTR1U87cx1ssahYybDMuf3/Apyjffrb53CwXc22CimccOvgnW
-	m4PYHOhbcUuMOHeiy4me1AsfjJEsbeDQhmh6nWxNI8dsdweGnhUZCgdIwECU5ttRPFVAuhXhSHP
-	dd7vEMcBZTseB5s46uG4rJUQmPieHVEgWMgBuR0l4nU3NvgSJoiSTRKc/4LXHEbuKr
-X-Google-Smtp-Source: AGHT+IH1o2gMOevdGKqUazqbPOJHWmg4LI47qP8OVKndiDKp4tRzX6T9r4aK8tE8IPSU9rjjDBQERw==
-X-Received: by 2002:a05:600c:348a:b0:477:95a0:fe95 with SMTP id 5b1f17b1804b1-47d195ab61fmr413121975e9.24.1767105598732;
-        Tue, 30 Dec 2025 06:39:58 -0800 (PST)
-Received: from [192.168.1.3] (p5b2ac5d3.dip0.t-ipconnect.de. [91.42.197.211])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47d193cbc0bsm613401235e9.11.2025.12.30.06.39.57
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 30 Dec 2025 06:39:58 -0800 (PST)
-Message-ID: <5577900f-31af-4a36-946a-fc6a29e8be84@googlemail.com>
-Date: Tue, 30 Dec 2025 15:39:57 +0100
+	s=arc-20240116; t=1767105646; c=relaxed/simple;
+	bh=IdtnV5Di0vox3pEoEtaNIt1U9telRL/FRWwLH7rRPBc=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=em7R8RnVFB40RUgDxXiqPCGL/WUaI2ME74fLezd6vLALT83ymzT61Ima233pQP7l0y2DnLJLeNK2CzfM29ZcM4YIY7N1sVFC22Jp7elxpFPcxUaCZZtVP0lRl6iervffhEbOZ54Gkz0mIFHaObYquyWdVwMQQMXW7RnZo0lPYug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cknow-tech.com; spf=pass smtp.mailfrom=cknow-tech.com; dkim=pass (2048-bit key) header.d=cknow-tech.com header.i=@cknow-tech.com header.b=ON1iMg9B; arc=none smtp.client-ip=91.218.175.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cknow-tech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cknow-tech.com
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH 6.18 000/430] 6.18.3-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- achill@achill.org, sr@sladewatkins.com
-References: <20251229160724.139406961@linuxfoundation.org>
-Content-Language: de-DE
-From: Peter Schneider <pschneider1968@googlemail.com>
-In-Reply-To: <20251229160724.139406961@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cknow-tech.com;
+	s=key1; t=1767105632;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ziEtXLcpFBCjfzgTqfbUWrGVwPN/l0EtRe61oQ0DM/A=;
+	b=ON1iMg9Bde60GDrSW9qBWkAlnQa98vY6cncy+4tqwyL/LWvtXCV6Bw//W/q2W6z30znFrd
+	iLuTO94uUBQBaKNtxIez5lr/Ds0XwLm/7R+JOFi7+isjI5Okbx5Zgo2C1jvXaLaFe0VfDT
+	PAPMCiMYW1GCCYtojD6Z5P8fBndBcSEA2jdDeRf5JbKGYoA7Cq2Zep3oNSzPYS3NTLoCIq
+	G+8tdWSPAexSdcS1D655pgtr+hbkstqh+mdZW4kX10J8EjfBhLPx/qsIpQ8wwi+bRcXdtX
+	Ale7LYAd9602sceNKzCqZJF4dmkzphU/xR7hAOxuDvlCT9BbnF0lQu4TBXI4+g==
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 30 Dec 2025 15:40:27 +0100
+Message-Id: <DFBMNYF0U5PK.24YOAUZFZ0ESB@cknow-tech.com>
+Cc: "Huacai Chen" <chenhuacai@kernel.org>, "Alan Stern"
+ <stern@rowland.harvard.edu>, <linux-usb@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>, "Shengwen Xiao"
+ <atzlinux@sina.com>, <linux-rockchip@lists.infradead.org>
+Subject: Re: [PATCH] USB: OHCI/UHCI: Add soft dependencies on ehci_hcd
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: "Diederik de Haas" <diederik@cknow-tech.com>
+To: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Huacai Chen"
+ <chenhuacai@loongson.cn>
+References: <20251230080014.3934590-1-chenhuacai@loongson.cn>
+ <2025123049-cadillac-straggler-d2fb@gregkh>
+In-Reply-To: <2025123049-cadillac-straggler-d2fb@gregkh>
+X-Migadu-Flow: FLOW_OUT
 
-Hi Greg,
+On Tue Dec 30, 2025 at 9:15 AM CET, Greg Kroah-Hartman wrote:
+> On Tue, Dec 30, 2025 at 04:00:14PM +0800, Huacai Chen wrote:
+>> Commit 9beeee6584b9aa4f ("USB: EHCI: log a warning if ehci-hcd is not
+>> loaded first") said that ehci-hcd should be loaded before ohci-hcd and
+>> uhci-hcd. However, commit 05c92da0c52494ca ("usb: ohci/uhci - add soft
+>> dependencies on ehci_pci") only makes ohci-pci/uhci-pci depend on ehci-
+>> pci, which is not enough and we may still see the warnings in boot log.
+>> So fix it by also making ohci-hcd/uhci-hcd depend on ehci-hcd.
+>>=20
+>> Cc: stable@vger.kernel.org
+>> Reported-by: Shengwen Xiao <atzlinux@sina.com>
+>> Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+>> ---
+>>  drivers/usb/host/ohci-hcd.c | 1 +
+>>  drivers/usb/host/uhci-hcd.c | 1 +
+>>  2 files changed, 2 insertions(+)
+>>=20
+>> diff --git a/drivers/usb/host/ohci-hcd.c b/drivers/usb/host/ohci-hcd.c
+>> index 9c7f3008646e..549c965b7fbe 100644
+>> --- a/drivers/usb/host/ohci-hcd.c
+>> +++ b/drivers/usb/host/ohci-hcd.c
+>> @@ -1355,4 +1355,5 @@ static void __exit ohci_hcd_mod_exit(void)
+>>  	clear_bit(USB_OHCI_LOADED, &usb_hcds_loaded);
+>>  }
+>>  module_exit(ohci_hcd_mod_exit);
+>> +MODULE_SOFTDEP("pre: ehci_hcd");
+>
+> Ick, no, this way lies madness.  I hate the "softdep" stuff, it's
+> usually a sign that something is wrong elsewhere.
+>
+> And don't add this _just_ to fix a warning message in a boot log, if you
+> don't like that message, then build the module into your kernel, right?
+>
+> And I really should just go revert 05c92da0c524 ("usb: ohci/uhci - add
+> soft dependencies on ehci_pci") as well, that feels wrong too.
 
-Am 29.12.2025 um 17:06 schrieb Greg Kroah-Hartman:
-> This is the start of the stable review cycle for the 6.18.3 release.
-> There are 430 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+FWIW, I've been seeing this warning on several of my Rockchip based
+devices as well. I thought I had already mentioned that on some ML, but
+couldn't find it on lore.k.o ... turns out I reported it on my 'own' ML:
+https://lists.sr.ht/~diederik/pine64-discuss/%3CDD65LB64HB7K.15ZYRTB98X8G2@=
+cknow.org%3E
+(and likely on #linux-rockchip IRC channel)
 
-Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg oddities or regressions found.
+Most of it is just my research notes, but the last post also had this:
 
-Tested-by: Peter Schneider <pschneider1968@googlemail.com>
+```
+I checked the last 20 boots on my devices to see that warning (or not).
+Device				Number of times that warning showed up
+Rock64 (rk3328)			16x
+RockPro64 (rk3399)		11x
+Quartz64 Model A (rk3566)	 7x
+Quartz64 Model B (rk3566)	14x
+PineTab2 (rk3566)		17x
+NanoPi R5S (rk3568)		13x
+Rock 5B (rk3588)		12x
+```
 
+While I generally don't like seeing warning messages, it often also
+resulted in USB2 ports not working. Maybe even every time, but I only
+notice it when I actually tried to use one of the USB2 ports.
 
-Happy holiday and a good new year 2026!
+The first post mentioned what I 'assume' to be the problem:
+```
+CONFIG_USB_XHCI_HCD=3Dm
+CONFIG_USB_EHCI_HCD=3Dm
+CONFIG_USB_OHCI_HCD=3Dm
+```
 
+So I guess USB_EHCI_HCD doesn't work with '=3Dm'.
 
-Beste Grüße,
-Peter Schneider
-
--- 
-Climb the mountain not to plant your flag, but to embrace the challenge,
-enjoy the air and behold the view. Climb it so you can see the world,
-not so the world can see you.                    -- David McCullough Jr.
-
-OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
-Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
+Cheers,
+  Diederik
 
