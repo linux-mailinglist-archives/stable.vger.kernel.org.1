@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-204193-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204194-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45FD3CE919E
-	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 09:57:00 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 560EECE91FC
+	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 10:03:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 338E73015D39
-	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 08:56:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AF9FA30386B3
+	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 09:01:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A88B2FF648;
-	Tue, 30 Dec 2025 08:56:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9BCA2652B0;
+	Tue, 30 Dec 2025 09:01:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="oDAsOCDL"
+	dkim=pass (1024-bit key) header.d=sina.com header.i=@sina.com header.b="Vburl/o7"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
+Received: from smtp153-165.sina.com.cn (smtp153-165.sina.com.cn [61.135.153.165])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDAE528466C;
-	Tue, 30 Dec 2025 08:56:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9C321EFF93
+	for <stable@vger.kernel.org>; Tue, 30 Dec 2025 09:01:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=61.135.153.165
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767085008; cv=none; b=olIMq6uaAt8FIR5lvyXnOhCKjg+Xbr7PM+2srHwSbj1u0yjwZwGEUyTWHeXt74djHoiS9+RLgbl60/6RuusgSpoZIPftBr1Ky8ep7W2ZSgzQp8P3CVJzhRgYQHFcE/5OZtD+rHVwaLG3SwO21fMeiY3GEIhgTJQfjLn+OsDbkJk=
+	t=1767085273; cv=none; b=tqZKkGvtE+su36zRlgKqiKsNZPy50wgq4XbUqX86VQlu0xxVYaoTFqbsW5QhR7zHlDCSHUJvh1RRc8N+Mff1i/ve29+4v6qjxdEK1qke8JXuCSaSnvp4vAMWDs0HsyMEmYIlxEWazHhWpAcA/NG/gFp8sbONwpceRQize+6wAFk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767085008; c=relaxed/simple;
-	bh=zDEfgUjfy6G17dl7+pTLUNKMZtuxBwChBzgupeiXQlg=;
+	s=arc-20240116; t=1767085273; c=relaxed/simple;
+	bh=9Ik39mu2v9hvn1lf/nr6ebiYCdN4FoREP04GtHxzg9M=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JpBQZRg8LkzoJRcq8o8qdPBxC7+I51v9OIdY5xchE1RtxEczIrYcSjHwe6u+bBodGbS3EPO7BNt4IfoFfPdCm/g6OnDOpuFqLrcnCAbTAO5T+lO9qVK4dpD+BPV59B2WC5sm237LQSHsyhKUKlMmIb1DCI3eQvYUHmxidS8pa64=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b=oDAsOCDL; arc=none smtp.client-ip=212.227.15.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1767084992; x=1767689792; i=deller@gmx.de;
-	bh=cW5OmwtMJpIpRqc79c7nIfX/ogYjvSL2dWh+zvXxtqk=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=oDAsOCDLgpE2LzHPY7eXv4sLLOV5OMt6JkpFVzwP+F/5GZWGRHA++rK9sDSQV5iX
-	 KTqjwZtv/2/wdpBn2gWgGskn8FD8Xsc4s5AmMYXq/hjtwfx2f1J4PbwuUOy8L1rSS
-	 1jX6T7J45ndiEC8+S86SAkNi6kDytP5upML7t2ogKArM1ZljniC9bzk4m0l5Tx9I/
-	 pjxcB67dOLlqIFn5fXjGxzEiT1jETzwkkz6T1lt0IJKki1o7GvPYNtBica2BgeBx+
-	 q98vYtV1N63ctrdB+n0vlwSKE7yAjrzEfRaNlPi58zvT2gljLKB7V64K4cVai/v9T
-	 de2Ezxlh3UtczPRYgw==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.55] ([109.250.51.253]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MxDkw-1vppQe3Bma-00v1oD; Tue, 30
- Dec 2025 09:56:32 +0100
-Message-ID: <6443ccc9-d6cd-45d5-9d6d-ee4589a8aa0f@gmx.de>
-Date: Tue, 30 Dec 2025 09:56:20 +0100
+	 In-Reply-To:Content-Type; b=p4CHz9jrjz9/Psej81nEoTFMxkoqf94tva8PVAcDmOTf4wgHqB9A55zw515F2AGSUVEK3j7NWJDCZlf8sP6ub7HSE4hAuyAFFpi8KZLzvkM739PgaGfdIPWNEf8ccHbfDR/1S6Eq3OLsXFnQ6P5VcxlBs8avzQJXwB3RRE1ua18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.com; spf=pass smtp.mailfrom=sina.com; dkim=pass (1024-bit key) header.d=sina.com header.i=@sina.com header.b=Vburl/o7; arc=none smtp.client-ip=61.135.153.165
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sina.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.com; s=201208; t=1767085264;
+	bh=+yloqipr5XRM3SgJts4WQG1jvkHWBhjWaiZ8/dial8I=;
+	h=Message-ID:Date:Subject:From;
+	b=Vburl/o7LLv85OtPBEOF0FmRhzIPWQcx8EPXoimrlaQ9r/8RtzLSMJV99u98IzloX
+	 6wMqYWeSghEwVWhLJdKvgMjscU5W401xuZZdWhkMNjHbuOtY7ioMa/32H19CJE5F/i
+	 bopJF+i9uZuuIPsPI6E7M36vWiHl7sImd4rtqlos=
+X-SMAIL-HELO: [192.168.2.143]
+Received: from unknown (HELO [192.168.2.143])([223.160.228.242])
+	by sina.com (10.54.253.32) with ESMTP
+	id 695394A4000065AD; Tue, 30 Dec 2025 17:00:24 +0800 (CST)
+X-Sender: atzlinux@sina.com
+X-Auth-ID: atzlinux@sina.com
+Authentication-Results: sina.com;
+	 spf=none smtp.mailfrom=atzlinux@sina.com;
+	 dkim=none header.i=none;
+	 dmarc=none action=none header.from=atzlinux@sina.com
+X-SMAIL-MID: 3547804456886
+X-SMAIL-UIID: 9A38D75C3FC94F998757FF6621AA3EB3-20251230-170024-1
+Message-ID: <511cc15a-1f1a-4dc8-bd63-157c59a179f7@sina.com>
+Date: Tue, 30 Dec 2025 17:00:19 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -56,270 +56,181 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] fbdev: Use device_create_with_groups() to fix sysfs
- groups registration race
-To: Hans de Goede <johannes.goede@oss.qualcomm.com>,
- Simona Vetter <simona@ffwll.ch>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>, dri-devel@lists.freedesktop.org,
- linux-fbdev@vger.kernel.org, stable@vger.kernel.org,
- Shixiong Ou <oushixiong@kylinos.cn>
-References: <20251221165740.15821-1-johannes.goede@oss.qualcomm.com>
+Subject: Re: [PATCH] USB: OHCI/UHCI: Add soft dependencies on ehci_hcd
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Huacai Chen <chenhuacai@loongson.cn>
+Cc: Huacai Chen <chenhuacai@kernel.org>,
+ Alan Stern <stern@rowland.harvard.edu>, linux-usb@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ debian-loongarch <debian-loongarch@lists.debian.org>
+References: <20251230080014.3934590-1-chenhuacai@loongson.cn>
+ <2025123049-cadillac-straggler-d2fb@gregkh>
 Content-Language: en-US
-From: Helge Deller <deller@gmx.de>
-Autocrypt: addr=deller@gmx.de; keydata=
- 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
-In-Reply-To: <20251221165740.15821-1-johannes.goede@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: =?UTF-8?B?eGlhbyBzaGVuZyB3ZW4o6IKW55ub5paHKQ==?= <atzlinux@sina.com>
+Autocrypt: addr=atzlinux@sina.com; keydata=
+ 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
+ oSclJ9Jocazn/UjtfqI16BsNwzAtg7LgIOWm
+Organization: https://www.atzlinux.com
+In-Reply-To: <2025123049-cadillac-straggler-d2fb@gregkh>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------40EW5O0W09VneiXUoyt0wRGa"
+
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------40EW5O0W09VneiXUoyt0wRGa
+Content-Type: multipart/mixed; boundary="------------0qvKTpUMyr8U9R8exa12WoYn";
+ protected-headers="v1"
+From: =?UTF-8?B?eGlhbyBzaGVuZyB3ZW4o6IKW55ub5paHKQ==?= <atzlinux@sina.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Huacai Chen <chenhuacai@loongson.cn>
+Cc: Huacai Chen <chenhuacai@kernel.org>,
+ Alan Stern <stern@rowland.harvard.edu>, linux-usb@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ debian-loongarch <debian-loongarch@lists.debian.org>
+Message-ID: <511cc15a-1f1a-4dc8-bd63-157c59a179f7@sina.com>
+Subject: Re: [PATCH] USB: OHCI/UHCI: Add soft dependencies on ehci_hcd
+References: <20251230080014.3934590-1-chenhuacai@loongson.cn>
+ <2025123049-cadillac-straggler-d2fb@gregkh>
+In-Reply-To: <2025123049-cadillac-straggler-d2fb@gregkh>
+
+--------------0qvKTpUMyr8U9R8exa12WoYn
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:e366OPoVodHnQuobdahgDY+mJYR4y4Mfk3iBSZAQBFuAB4gKfVD
- Xq1qaIIeDk1vAMsCWYGI+31UucDhSegBMUrj2MlXVvwXs+3/IIOiyQ4oIwbTz0X++Jw8ZMu
- RqPePjOnhS3F5UUNT0J9v7fTMGaJuRYVX40KLyU6xRyjLvqSnJRgDQgtU1dl8ot3T7rtZry
- rO4nWnvCxgMMAAX6vo7vQ==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:jRqcwu9OZiU=;9+DXFj+GRdopPdth6fmg9J8neAP
- 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
 
-On 12/21/25 17:57, Hans de Goede wrote:
-> The fbdev sysfs attributes are registered after sending the uevent for
-> the device creation, leaving a race window where e.g. udev rules may
-> not be able to access the sysfs attributes because the registration is
-> not done yet.
+Hi,
+
+=E5=9C=A8 2025/12/30 16:15, Greg Kroah-Hartman =E5=86=99=E9=81=93:
+> On Tue, Dec 30, 2025 at 04:00:14PM +0800, Huacai Chen wrote:
+>> Commit 9beeee6584b9aa4f ("USB: EHCI: log a warning if ehci-hcd is not
+>> loaded first") said that ehci-hcd should be loaded before ohci-hcd and=
+
+>> uhci-hcd. However, commit 05c92da0c52494ca ("usb: ohci/uhci - add soft=
+
+>> dependencies on ehci_pci") only makes ohci-pci/uhci-pci depend on ehci=
+-
+>> pci, which is not enough and we may still see the warnings in boot log=
+=2E
+>> So fix it by also making ohci-hcd/uhci-hcd depend on ehci-hcd.
+>>
+>> Cc: stable@vger.kernel.org
+>> Reported-by: Shengwen Xiao <atzlinux@sina.com>
+>> Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+>> ---
+>>  drivers/usb/host/ohci-hcd.c | 1 +
+>>  drivers/usb/host/uhci-hcd.c | 1 +
+>>  2 files changed, 2 insertions(+)
+>>
+>> diff --git a/drivers/usb/host/ohci-hcd.c b/drivers/usb/host/ohci-hcd.c=
+
+>> index 9c7f3008646e..549c965b7fbe 100644
+>> --- a/drivers/usb/host/ohci-hcd.c
+>> +++ b/drivers/usb/host/ohci-hcd.c
+>> @@ -1355,4 +1355,5 @@ static void __exit ohci_hcd_mod_exit(void)
+>>  	clear_bit(USB_OHCI_LOADED, &usb_hcds_loaded);
+>>  }
+>>  module_exit(ohci_hcd_mod_exit);
+>> +MODULE_SOFTDEP("pre: ehci_hcd");
 >=20
-> Fix this by switching to device_create_with_groups(). This also results =
-in
-> a nice cleanup. After switching to device_create_with_groups() all that
-> is left of fb_init_device() is setting the drvdata and that can be passe=
-d
-> to device_create[_with_groups]() too. After which fb_init_device() can
-> be completely removed.
+> Ick, no, this way lies madness.  I hate the "softdep" stuff, it's
+> usually a sign that something is wrong elsewhere.
 >=20
-> Dropping fb_init_device() + fb_cleanup_device() in turn allows removing
-> fb_info.class_flag as they were the only user of this field.
+> And don't add this _just_ to fix a warning message in a boot log, if yo=
+u
+> don't like that message, then build the module into your kernel, right?=
+
+In Debian kernel config, the USB driver module is config as module.
+
+I meet this warning info in my Loongarch machine 3A6000 on Debian:
+
+[    1.119467] Warning! ehci_hcd should always be loaded before uhci_hcd =
+and ohci_hcd, not after
+
+I hope this warning can fix in my Loongarch machine.
+
 >=20
-> Fixes: 5fc830d6aca1 ("fbdev: Register sysfs groups through device_add_gr=
-oup")
-> Cc: stable@vger.kernel.org
-> Cc: Shixiong Ou <oushixiong@kylinos.cn>
-> Signed-off-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
-
-applied to fbdev git tree.
-
-Thanks!
-Helge
-
-
-> ---
-> Note the fixes tag is technically wrong. This race has existed forever.
-> The commit I picked for the fixes tag is a dependency of this change not
-> the commit introducing the race. I don't believe that backporting this
-> back any further is useful which is why I went with this commit.
-> ---
->   drivers/video/fbdev/core/fbsysfs.c | 36 +++---------------------------
->   include/linux/fb.h                 |  1 -
->   2 files changed, 3 insertions(+), 34 deletions(-)
+> And I really should just go revert 05c92da0c524 ("usb: ohci/uhci - add
+> soft dependencies on ehci_pci") as well, that feels wrong too.
 >=20
-> diff --git a/drivers/video/fbdev/core/fbsysfs.c b/drivers/video/fbdev/co=
-re/fbsysfs.c
-> index b8344c40073b..baa2bae0fb5b 100644
-> --- a/drivers/video/fbdev/core/fbsysfs.c
-> +++ b/drivers/video/fbdev/core/fbsysfs.c
-> @@ -12,8 +12,6 @@
->  =20
->   #include "fb_internal.h"
->  =20
-> -#define FB_SYSFS_FLAG_ATTR 1
-> -
->   static int activate(struct fb_info *fb_info, struct fb_var_screeninfo =
-*var)
->   {
->   	int err;
-> @@ -451,33 +449,7 @@ static struct attribute *fb_device_attrs[] =3D {
->   	NULL,
->   };
->  =20
-> -static const struct attribute_group fb_device_attr_group =3D {
-> -	.attrs          =3D fb_device_attrs,
-> -};
-> -
-> -static int fb_init_device(struct fb_info *fb_info)
-> -{
-> -	int ret;
-> -
-> -	dev_set_drvdata(fb_info->dev, fb_info);
-> -
-> -	fb_info->class_flag |=3D FB_SYSFS_FLAG_ATTR;
-> -
-> -	ret =3D device_add_group(fb_info->dev, &fb_device_attr_group);
-> -	if (ret)
-> -		fb_info->class_flag &=3D ~FB_SYSFS_FLAG_ATTR;
-> -
-> -	return 0;
-> -}
-> -
-> -static void fb_cleanup_device(struct fb_info *fb_info)
-> -{
-> -	if (fb_info->class_flag & FB_SYSFS_FLAG_ATTR) {
-> -		device_remove_group(fb_info->dev, &fb_device_attr_group);
-> -
-> -		fb_info->class_flag &=3D ~FB_SYSFS_FLAG_ATTR;
-> -	}
-> -}
-> +ATTRIBUTE_GROUPS(fb_device);
->  =20
->   int fb_device_create(struct fb_info *fb_info)
->   {
-> @@ -485,14 +457,13 @@ int fb_device_create(struct fb_info *fb_info)
->   	dev_t devt =3D MKDEV(FB_MAJOR, node);
->   	int ret;
->  =20
-> -	fb_info->dev =3D device_create(fb_class, fb_info->device, devt, NULL, =
-"fb%d", node);
-> +	fb_info->dev =3D device_create_with_groups(fb_class, fb_info->device, =
-devt, fb_info,
-> +						 fb_device_groups, "fb%d", node);
->   	if (IS_ERR(fb_info->dev)) {
->   		/* Not fatal */
->   		ret =3D PTR_ERR(fb_info->dev);
->   		pr_warn("Unable to create device for framebuffer %d; error %d\n", no=
-de, ret);
->   		fb_info->dev =3D NULL;
-> -	} else {
-> -		fb_init_device(fb_info);
->   	}
->  =20
->   	return 0;
-> @@ -505,7 +476,6 @@ void fb_device_destroy(struct fb_info *fb_info)
->   	if (!fb_info->dev)
->   		return;
->  =20
-> -	fb_cleanup_device(fb_info);
->   	device_destroy(fb_class, devt);
->   	fb_info->dev =3D NULL;
->   }
-> diff --git a/include/linux/fb.h b/include/linux/fb.h
-> index 05cc251035da..c3302d513546 100644
-> --- a/include/linux/fb.h
-> +++ b/include/linux/fb.h
-> @@ -497,7 +497,6 @@ struct fb_info {
->   #if defined(CONFIG_FB_DEVICE)
->   	struct device *dev;		/* This is this fb device */
->   #endif
-> -	int class_flag;                    /* private sysfs flags */
->   #ifdef CONFIG_FB_TILEBLITTING
->   	struct fb_tile_ops *tileops;    /* Tile Blitting */
->   #endif
+> thanks,
+>=20
+> greg k-h
 
+Is there more better way to fix this Warning info?
+
+
+BTW: I'm not a kernel developer, just a Loongarch linux user.
+
+thanks,
+--=20
+=E8=82=96=E7=9B=9B=E6=96=87 xiao sheng wen -- Debian Developer(atzlinux)
+Debian QA page: https://qa.debian.org/developer.php?login=3Datzlinux%40de=
+bian.org
+GnuPG Public Key: 0x00186602339240CB
+
+
+--------------0qvKTpUMyr8U9R8exa12WoYn--
+
+--------------40EW5O0W09VneiXUoyt0wRGa
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+wsF5BAABCAAjFiEEvGv7H5NUQYeSuhtTJ2Egg8PSprAFAmlTlKQFAwAAAAAACgkQJ2Egg8PSprAO
+yw//cBvsQ/SkvCv1+bm9Ve6yNsUwNF+xvL2efKbs+3Pin/aiDpHUNeTjGZS7C/UWapiBHKMXfzTi
+6xeIJ4O/RcqFZFdHH1DpgwP87nTw8QF9wbBo+YsM2+/W1o07NT6nU+hYRLkgjrFIvU+SEQtm2fyS
+F6GQhZapfh503E9z7b1XR/oe+WT0yAQxCafGrl4Wbtudleu/c5U1bk4f3pLTRP7V00qwjvvv010f
+QhsgT5c0Orf+4U6is1eLKRDxf3I7ftqTBCurpiTSI5E9saR12No3tuADeRA8KsZuByQRdHSC0V9r
+BaOHy+wPCF7ja+JNA5ZxbYidmP32NVqSVlnRtbOLKC/znn0iuAE/VHihyuQ1jyZo9zBS7nFnUNCG
+bNf7utN4s6Hrh5tcfo4vE7XykByRbcQ11Ls8E2OkblFcUXNIEeXpMTziptHjUYOCQHW4t33QB3u2
+A6T/Rg7F+hsSgWasGZI0M/M5YrHHA31qduSsICEmsw0qTHeTQaMMJVUe8OqcAfSBF0CUb4ZcIw/i
+YR3R6TMZVzwXhPHMZTgQ2g5gTYKAYe7i8bCVi19tQfdvohJqYChWOeVLy5wFlpCTcv4xqvpkcU05
+QO85wYQiYZEEFG7AsMrDLKIzcxbFPkzvEcMcmZ8pIUbiOPrZXk3vAywIn3aE23DNE3fPdX9envoE
+AgI=
+=Ic5n
+-----END PGP SIGNATURE-----
+
+--------------40EW5O0W09VneiXUoyt0wRGa--
 
