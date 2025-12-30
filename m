@@ -1,119 +1,119 @@
-Return-Path: <stable+bounces-204231-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204230-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0252ECEA005
-	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 16:01:46 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E081CEA035
+	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 16:06:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AB444302C4FA
-	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 14:59:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4F3F5307DBC0
+	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 15:02:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68ED4325739;
-	Tue, 30 Dec 2025 14:59:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 948AD320A23;
+	Tue, 30 Dec 2025 14:54:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxtx.org header.i=@linuxtx.org header.b="D75aMIF0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JPubCYNG"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 393E4326928
-	for <stable@vger.kernel.org>; Tue, 30 Dec 2025 14:59:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55B2E31ED95
+	for <stable@vger.kernel.org>; Tue, 30 Dec 2025 14:54:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767106794; cv=none; b=VJHt2p4mo7uBA7emuEjPJ5CK9Pv6LvIkWlK/udJMhVe4VdJVP7q3vXVCtgg6uW2JO0dRRL37sVKKxum723mUIavzO+Q5Ob3YaSvasXvAZzDIigRh6sbsowXx8N5AaDp+s6QH3LGjK4xi+RNn5jipo71QE3Osz4DV7lTzPp83jms=
+	t=1767106465; cv=none; b=LivV0HKKrEbLyyRcJ7J6oQu15kh7+OM8rLfuC6fife/XDJxpD+oHmlo02YxZwEfaDPZgkozqkf8hYyTnCOeo/VM0LiBlmQhpQqdpQ1m37C+eXkePsSViNtnGdlu4quXdK/HA7Qbj6n0qU7aRLa84wE2jkJM/yTbZ5pu8InTRVDE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767106794; c=relaxed/simple;
-	bh=7sdKpaAy4sTaJN/M98wTjdHctQ8WEkEfKF9QXapr7GY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HVgx87NOvOdIyaepF5WRoonvFsZdSi+b3c3LOt5gcnjZAc6SuDLSKo93Z2DixUPkxhdWQ0XfbZeI995M+Q9g9LGX8FbMpnw4djJpiwSUZy3Fskd8pnHiK3p6zemLqZBcEbabDevWIkKY4D3hCZmvI72jbMOKfRFCiNlJg3STk24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fedoraproject.org; spf=pass smtp.mailfrom=linuxtx.org; dkim=pass (1024-bit key) header.d=linuxtx.org header.i=@linuxtx.org header.b=D75aMIF0; arc=none smtp.client-ip=209.85.216.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fedoraproject.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxtx.org
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-34c565c3673so5062744a91.0
-        for <stable@vger.kernel.org>; Tue, 30 Dec 2025 06:59:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxtx.org; s=google; t=1767106789; x=1767711589; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=uvCtBUBb7964OvygP/IWixIiCy3FZv5fu0b66ANzNSU=;
-        b=D75aMIF0yn8NrGiU9Ouokdkoh19befbqoGe2HssC8ePVMlOCNVVLiYdBBPT9SNM39B
-         tlCJSXH+V4jWnZaS7NHXQYsboeZHZ09au5KeZFvchoyT2o8XahxbcW/s5R1prI/8M37h
-         GITXImbzBXgrl4kDHXnRMLv6e0AqLEVOw2gdo=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767106789; x=1767711589;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=uvCtBUBb7964OvygP/IWixIiCy3FZv5fu0b66ANzNSU=;
-        b=F8ogLF0BtBM9UtizmhXX1SzL8h9EHfUEGeyiPuGw1xW4P7xiMMH6Pm29wAfAiEtqqj
-         3dyMkfD6ZuzPl/7XM5BBVm9m9DQOPbE39DIXBT6t0YXQ280Dn8VJNTC3Pp4ptg6ngzVh
-         Hc78onrQLtqhryePYM8m9m17afXnpt2laMafnk+Hv4iY5yoqEkLNhG7+7rlwQCzeuw7M
-         /jW8p1/d3m4XpwXqSCO3zuqWmCM0OsIs5fqmlcmTqDi3hTzZg1rMQZF+AIqUwXiTOwR3
-         WmEaw0vhHnoEH4pFFCXznJ4BQeDSRTBnk/wVUell+WmPtExAu+QdUgpjhG5u6O//1hnx
-         AuNQ==
-X-Gm-Message-State: AOJu0Yx1rrwrEGBXCN6XPB2Tbyz8ncma8nh2C/8aaS5aQjtB28GhpZFJ
-	HL5RE32FYDFaANaQFS/LyRgt+CfpCJ8MXFKtkL4ie99YFGzj19Qy5F6c3oWCMKOSFg==
-X-Gm-Gg: AY/fxX4uMp/Ls19ZyJLZz5FGmm1XVMeXsxCBPCtaRN/S/BYK+TbcbPU8ePJn4kxM43f
-	NrwjPSEKk1azDhiAKn7GqEYbeip8Aht5WSNvkrTP55/gI6xhOoSbSPs+u3Zxf8Cw32kEbfYkmWt
-	FOto4fOSf6t+L+Obv2L/g2MNucw+WcHfw/8mON+ojZmY7Kb03MVpB4lnhUj7dRa4DeoekOP1556
-	awf+0o104YvC51fGeXeFh3k+ifE8541FWBwlG5VND5OXTP2rMhAw/5OAOpvDTc6Q29O4skDNE6F
-	XiPAE70w7Ptcg46gSDI02YJUosOwpEIs+GldrTeYHbxZWNofxiUIBgE5Lo2pXTJqRmx9jtFzGlM
-	l7Vt2W2Zc6NZLBZIr4E77ejfup3/91S+GTrKEympBTR1RwIfj4ygTiISs9+6ntmjY8PvrX21wFV
-	87FdInibulTtrZEnO6UQg0o+pErw7uxw==
-X-Google-Smtp-Source: AGHT+IF0MxrMPuteJxQzw8e1Snaz1xJCkcZKhSP7y82QMdNPwYWZEXdirCP1n3Yf/5a2E8TlT5kmYw==
-X-Received: by 2002:a17:90b:4ccd:b0:32e:3592:581a with SMTP id 98e67ed59e1d1-34e90df6ab4mr30491683a91.17.1767106788770;
-        Tue, 30 Dec 2025 06:59:48 -0800 (PST)
-Received: from fedora64.linuxtx.org ([216.147.127.9])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-34e92227da0sm31003306a91.9.2025.12.30.06.59.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Dec 2025 06:59:48 -0800 (PST)
-Sender: Justin Forbes <jmforbes@linuxtx.org>
-Date: Tue, 30 Dec 2025 07:59:45 -0700
-From: Justin Forbes <jforbes@fedoraproject.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
-	hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
-	sr@sladewatkins.com
-Subject: Re: [PATCH 6.18 000/430] 6.18.3-rc1 review
-Message-ID: <aVPo4dGaSwUVuX0x@fedora64.linuxtx.org>
-References: <20251229160724.139406961@linuxfoundation.org>
+	s=arc-20240116; t=1767106465; c=relaxed/simple;
+	bh=H9TcChkGMtncXRM8dtVdz1/mCleKYJvc5lmjT3kTvbA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=MZzHOo5Sq2ZsONc7JiB3smRmTI/N1dkppqwcggsOJHdm051cb7mo35AEbbeErijpHqqWG8SEHG8UQv24XV6CVZaf0CaveCeuopJXmtJAQiHUw3wyyhKnw3EWc5pLHlDD5hlOUbo0U94bVUQerbXE2O/n5gbWWkR5XfzxtTE7xgM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JPubCYNG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2B24C4CEFB;
+	Tue, 30 Dec 2025 14:54:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767106464;
+	bh=H9TcChkGMtncXRM8dtVdz1/mCleKYJvc5lmjT3kTvbA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=JPubCYNGb4KjCgG4VArFQ4SoRdUcwQqMaZS70+1QfeLgIngfQbTDT5db1tOFnuQJJ
+	 1qFFGTsf6Mj3SRiCJoO//WNNcdUok5jKymtJCsyd/GeQtTUZdLZYTsOmO6WhmN/cQ7
+	 yx01kOxiA+uy6qWXuSnHs2eyCo3i1tdT+nH6FznkibHLiQ/2D/IxKtbjNns9cyaiAq
+	 SL/3FfWL9USbKUgqs2lC02WE/ScyfXqTB2vXOovnGUXB2nXzuNxzgi/E8HVc4Vj5tz
+	 CafPA1cYzaWA95WH0DFDdXd8gNwy4Piaz/abLII+xmsM+LULB/oQnb+21Myycm6/Su
+	 1Ru6gscoHq6vg==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Udipto Goswami <udipto.goswami@oss.qualcomm.com>,
+	stable <stable@kernel.org>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1.y] usb: dwc3: keep susphy enabled during exit to avoid controller faults
+Date: Tue, 30 Dec 2025 09:54:19 -0500
+Message-ID: <20251230145419.2259989-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025122911-secrecy-pedometer-eaa0@gregkh>
+References: <2025122911-secrecy-pedometer-eaa0@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251229160724.139406961@linuxfoundation.org>
+Content-Transfer-Encoding: 8bit
 
-On Mon, Dec 29, 2025 at 05:06:42PM +0100, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.18.3 release.
-> There are 430 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Wed, 31 Dec 2025 16:06:10 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.18.3-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.18.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+From: Udipto Goswami <udipto.goswami@oss.qualcomm.com>
 
-Tested rc1 against the Fedora build system (aarch64, ppc64le, s390x,
-x86_64), and boot tested x86_64. No regressions noted.
+[ Upstream commit e1003aa7ec9eccdde4c926bd64ef42816ad55f25 ]
 
-Tested-by: Justin M. Forbes <jforbes@fedoraproject.org>
+On some platforms, switching USB roles from host to device can trigger
+controller faults due to premature PHY power-down. This occurs when the
+PHY is disabled too early during teardown, causing synchronization
+issues between the PHY and controller.
+
+Keep susphy enabled during dwc3_host_exit() and dwc3_gadget_exit()
+ensures the PHY remains in a low-power state capable of handling
+required commands during role switch.
+
+Cc: stable <stable@kernel.org>
+Fixes: 6d735722063a ("usb: dwc3: core: Prevent phy suspend during init")
+Suggested-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Signed-off-by: Udipto Goswami <udipto.goswami@oss.qualcomm.com>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://patch.msgid.link/20251126054221.120638-1-udipto.goswami@oss.qualcomm.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[ Adjust context ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/usb/dwc3/gadget.c | 2 +-
+ drivers/usb/dwc3/host.c   | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
+index 4ccda324966e..42dca9a70f7d 100644
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -4646,7 +4646,7 @@ void dwc3_gadget_exit(struct dwc3 *dwc)
+ 	if (!dwc->gadget)
+ 		return;
+ 
+-	dwc3_enable_susphy(dwc, false);
++	dwc3_enable_susphy(dwc, true);
+ 	usb_del_gadget(dwc->gadget);
+ 	dwc3_gadget_free_endpoints(dwc);
+ 	usb_put_gadget(dwc->gadget);
+diff --git a/drivers/usb/dwc3/host.c b/drivers/usb/dwc3/host.c
+index c0dba453f1b8..5a5e51f6148b 100644
+--- a/drivers/usb/dwc3/host.c
++++ b/drivers/usb/dwc3/host.c
+@@ -162,7 +162,7 @@ int dwc3_host_init(struct dwc3 *dwc)
+ 
+ void dwc3_host_exit(struct dwc3 *dwc)
+ {
+-	dwc3_enable_susphy(dwc, false);
++	dwc3_enable_susphy(dwc, true);
+ 	platform_device_unregister(dwc->xhci);
+ 	dwc->xhci = NULL;
+ }
+-- 
+2.51.0
+
 
