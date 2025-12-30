@@ -1,128 +1,221 @@
-Return-Path: <stable+bounces-204223-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204224-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 695C2CE9E08
-	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 15:09:12 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B62ECE9EE4
+	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 15:28:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0FF4B302533D
-	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 14:07:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EE4DC301F243
+	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 14:28:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05CB0241665;
-	Tue, 30 Dec 2025 14:07:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C41E248867;
+	Tue, 30 Dec 2025 14:28:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Jb/Z+zqZ"
+	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="gquT33qw"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sg-1-100.ptr.blmpb.com (sg-1-100.ptr.blmpb.com [118.26.132.100])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA8711E8329
-	for <stable@vger.kernel.org>; Tue, 30 Dec 2025 14:07:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 504C21C84C0
+	for <stable@vger.kernel.org>; Tue, 30 Dec 2025 14:28:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=118.26.132.100
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767103626; cv=none; b=cAzT9RSgJ++pBQYiejph6W09IVQOj6d10Zvyawf4xWMW1FMWrbKqrZA4CXbq3JfEjTCWAel0N1XuTbkEaGnEtg0M/yZoouWp8PyiY+3e1rqHzaAFXiLZHrYEAMiVdCuiu4xCVS/bviS6vzORBZjLZCjqDw1HhdsH/pZEglzg2g0=
+	t=1767104899; cv=none; b=sTeFsuuazs77MwQ2cVVuiyzDmPN385tut7yoMk5wdqXAcgP3AA97JlScuax5pde4PiRpK1y8cppitnVE31wZlDJcb0qr20If9x0j11FHePEf77FvoApg3btPy79LWHrfLZZ5AQPM2VoInziSCYO+a00pJZHIpr42hjg/yMpF2uk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767103626; c=relaxed/simple;
-	bh=ikRbj7SK6FcnwniwTajjEGaE4JAzAIjQFy8gFyaBZPY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IrSFCzhjInK43ZrLIvQkX2SU7gzay2vYezy0e/NZGbIRVHnm+OhPB/ZyXkwlcJMhx4t/Q5PZSDiwLvseoS2jqFp6heD//eDxTkxCmgmSS9ySWUB7ymn8dhtoef2dgY+vhkwI3i7269qLJZwI2bKUmeixTmqAfOJi59/SMBE7PWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Jb/Z+zqZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 407A1C4CEFB;
-	Tue, 30 Dec 2025 14:07:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767103623;
-	bh=ikRbj7SK6FcnwniwTajjEGaE4JAzAIjQFy8gFyaBZPY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jb/Z+zqZ8ml8qY6PA34MUA49lUf1ZEhtB3SwOSzn/4myxjIojPhIIlC9+HVi4/CA0
-	 GHC9jm6WnJUlXXX9D8h0BGk1tv3pQJPCty7vqYnFBLy8VwpM9VsMG6Qrn6N+yOU56N
-	 qATmgR4zX92n8rj4V9GAHpyX1g8GQaTl0bKpKG9zr10JliPYAwmP148jzqgFqb8zfg
-	 4Rq8lkyz34vPLHm3gLtX2r4RCGbJtV0ljnSrCoM117xOpwE+1S4CWnnjvPREHDnFib
-	 AAM2NoDDqotFZMbicvXCc+Hev7sx5z/wOd49NubZDScLMBZakwjEqGr4ISOiiKsZb2
-	 UxJeYNOVXhIZQ==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Mat Martineau <martineau@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y] mptcp: pm: ignore unknown endpoint flags
-Date: Tue, 30 Dec 2025 09:07:01 -0500
-Message-ID: <20251230140701.2226659-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025122923-crunchy-grapple-39a2@gregkh>
-References: <2025122923-crunchy-grapple-39a2@gregkh>
+	s=arc-20240116; t=1767104899; c=relaxed/simple;
+	bh=nFpyggCAJPDq5oXUs3Bae+IdegNospRc1h8mMGujJYU=;
+	h=Message-Id:Mime-Version:Cc:Date:Subject:Content-Type:References:
+	 To:In-Reply-To:From; b=S6/fnnURlBltwuEAySSM6X6kdAs5g3KjHt3oShaeirqNh/RwxJqML/EO3ledzC+H4DV6Comp5RTGAmdAuFCg8OfYcFppzLIG8MjIkjlEDrQAxJLs/2iTeWJitfVv1lKzneQYXcIDXWX274PGM3pPnSONfA7BFzMWQku4r4JJpcs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=gquT33qw; arc=none smtp.client-ip=118.26.132.100
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=2212171451; d=bytedance.com; t=1767104877; h=from:subject:
+ mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
+ mime-version:in-reply-to:message-id;
+ bh=znWFlGmHmidmc0zgKcG15wJ0w7PYxFCIv3V2NH/gn1k=;
+ b=gquT33qwb8Ns83p2y1XG7NPONzRE9HnJxL4NEyBaggTERWz09ctzN27fRqDsgfpecvIMbf
+ H9k781JBC5JSojxiwujFwoFIm/qYoiuOynmGHkaQpwtt9utduBnf/Ni0hT69qb5uxn1yli
+ kyY+P/Qwu8I/dCAF80yYQHQUlIixAOpIQh1cv6xAe1Crr3b0U48I+kVVeFaNvsPoLpM3SR
+ Z6Lo3h0TloiW06qgPvJdItae3vK6DG3myX9nrFxEb64i05Ge5uxSC+7MSw6JlkR4+P1kd1
+ ecp2bQfqvQqj89gmPM4sccgwGgivC2oxZ6rkjjcJmDcXeXw4W8izW7ZOnDctvg==
+Message-Id: <20251230142736.1168-1-guojinhui.liam@bytedance.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.17.1
+Cc: <alexander.h.duyck@linux.intel.com>, <bhelgaas@google.com>, 
+	<bvanassche@acm.org>, <dan.j.williams@intel.com>, 
+	<gregkh@linuxfoundation.org>, <guojinhui.liam@bytedance.com>, 
+	<linux-kernel@vger.kernel.org>, <linux-pci@vger.kernel.org>, 
+	<stable@vger.kernel.org>
+Date: Tue, 30 Dec 2025 22:27:36 +0800
+X-Lms-Return-Path: <lba+26953e16b+3cc537+vger.kernel.org+guojinhui.liam@bytedance.com>
+Subject: Re: [PATCH] PCI: Avoid work_on_cpu() in async probe workers
+Content-Type: text/plain; charset=UTF-8
+References: <aVLDuUAHw0egvFfr@slm.duckdns.org>
+To: <tj@kernel.org>
+X-Original-From: Jinhui Guo <guojinhui.liam@bytedance.com>
+In-Reply-To: <aVLDuUAHw0egvFfr@slm.duckdns.org>
+From: "Jinhui Guo" <guojinhui.liam@bytedance.com>
+Content-Transfer-Encoding: quoted-printable
 
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+On Mon, Dec 29, 2025 at 08:08:57AM -1000, Tejun Heo wrote:
+> On Sat, Dec 27, 2025 at 07:33:26PM +0800, Jinhui Guo wrote:
+> > To fix the issue, pci_call_probe() must not call work_on_cpu() when it =
+is
+> > already running inside an unbounded asynchronous worker. Because a driv=
+er
+> > can be probed asynchronously either by probe_type or by the kernel comm=
+and
+> > line, we cannot rely on PROBE_PREFER_ASYNCHRONOUS alone. Instead, we te=
+st
+> > the PF_WQ_WORKER flag in current->flags; if it is set, pci_call_probe()=
+ is
+> > executing within an unbounded workqueue worker and should skip the extr=
+a
+> > work_on_cpu() call.
+>=20
+> Why not just use queue_work_on() on system_dfl_wq (or any other unbound
+> workqueue)? Those are soft-affine to cache domain but can overflow to oth=
+er
+> CPUs?
 
-[ Upstream commit 0ace3297a7301911e52d8195cb1006414897c859 ]
+Hi, tejun,
 
-Before this patch, the kernel was saving any flags set by the userspace,
-even unknown ones. This doesn't cause critical issues because the kernel
-is only looking at specific ones. But on the other hand, endpoints dumps
-could tell the userspace some recent flags seem to be supported on older
-kernel versions.
+Thank you for your time and helpful suggestions.
+I had considered replacing work_on_cpu() with queue_work_on(system_dfl_wq) =
++
+flush_work(), but that would be a refactor rather than a fix for the specif=
+ic
+problem we hit.
 
-Instead, ignore all unknown flags when parsing them. By doing that, the
-userspace can continue to set unsupported flags, but it has a way to
-verify what is supported by the kernel.
+Let me restate the issue:
 
-Note that it sounds better to continue accepting unsupported flags not
-to change the behaviour, but also that eases things on the userspace
-side by adding "optional" endpoint types only supported by newer kernel
-versions without having to deal with the different kernel versions.
+1. With PROBE_PREFER_ASYNCHRONOUS enabled, the driver core queues work on
+   async_wq to speed up driver probe.
+2. The PCI core then calls work_on_cpu() to tie the probe thread to the PCI
+   device=E2=80=99s NUMA node, but it always picks the same CPU for every d=
+evice on
+   that node, forcing the PCI probes to run serially.
 
-A note for the backports: there will be conflicts in mptcp.h on older
-versions not having the mentioned flags, the new line should still be
-added last, and the '5' needs to be adapted to have the same value as
-the last entry.
+Therefore I test current->flags & PF_WQ_WORKER to detect that we are alread=
+y
+inside an async_wq worker and skip the extra nested work queue.
 
-Fixes: 01cacb00b35c ("mptcp: add netlink-based PM")
-Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20251205-net-mptcp-misc-fixes-6-19-rc1-v1-1-9e4781a6c1b8@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ GENMASK(5, 0) => GENMASK(3, 0) + context ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- include/uapi/linux/mptcp.h | 1 +
- net/mptcp/pm_netlink.c     | 3 ++-
- 2 files changed, 3 insertions(+), 1 deletion(-)
+I agree with your point=E2=80=94using queue_work_on(system_dfl_wq) + flush_=
+work()
+would be cleaner and would let different vendors=E2=80=99 drivers probe in =
+parallel
+instead of fighting over the same CPU. I=E2=80=99ve prepared and tested ano=
+ther patch,
+but I=E2=80=99m still unsure it=E2=80=99s the better approach; any further =
+suggestions would
+be greatly appreciated.
 
-diff --git a/include/uapi/linux/mptcp.h b/include/uapi/linux/mptcp.h
-index 80c40194e297..f86b1475c87c 100644
---- a/include/uapi/linux/mptcp.h
-+++ b/include/uapi/linux/mptcp.h
-@@ -74,6 +74,7 @@ enum {
- #define MPTCP_PM_ADDR_FLAG_SUBFLOW			(1 << 1)
- #define MPTCP_PM_ADDR_FLAG_BACKUP			(1 << 2)
- #define MPTCP_PM_ADDR_FLAG_FULLMESH			(1 << 3)
-+#define MPTCP_PM_ADDR_FLAGS_MASK			GENMASK(3, 0)
- 
- enum {
- 	MPTCP_PM_CMD_UNSPEC,
-diff --git a/net/mptcp/pm_netlink.c b/net/mptcp/pm_netlink.c
-index 21ebb4cbd33b..e396adefea02 100644
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -1294,7 +1294,8 @@ static int mptcp_pm_parse_addr(struct nlattr *attr, struct genl_info *info,
- 		entry->addr.id = nla_get_u8(tb[MPTCP_PM_ADDR_ATTR_ID]);
- 
- 	if (tb[MPTCP_PM_ADDR_ATTR_FLAGS])
--		entry->flags = nla_get_u32(tb[MPTCP_PM_ADDR_ATTR_FLAGS]);
-+		entry->flags = nla_get_u32(tb[MPTCP_PM_ADDR_ATTR_FLAGS]) &
-+			       MPTCP_PM_ADDR_FLAGS_MASK;
- 
- 	if (tb[MPTCP_PM_ADDR_ATTR_PORT]) {
- 		if (!(entry->flags & MPTCP_PM_ADDR_FLAG_SIGNAL)) {
--- 
-2.51.0
+Test results for that patch:
+  nvme 0000:01:00.0: CPU: 2, COMM: kworker/u1025:3, probe cost: 34904955 ns
+  nvme 0000:02:00.0: CPU: 134, COMM: kworker/u1025:1, probe cost: 34774235 =
+ns
+  nvme 0000:03:00.0: CPU: 1, COMM: kworker/u1025:4, probe cost: 34573054 ns
 
+Key changes in the patch:
+
+1. Keep the current->flags & PF_WQ_WORKER test to avoid nested workers.
+2. Replace work_on_cpu() with queue_work_node(system_dfl_wq) + flush_work()
+   to enable parallel probing when PROBE_PREFER_ASYNCHRONOUS is disabled.
+3. Remove all cpumask operations.
+4. Drop cpu_hotplug_disable() since both cpumask manipulation and work_on_c=
+pu()
+   are gone.
+
+The patch is shown below.
+
+diff --git a/drivers/pci/pci-driver.c b/drivers/pci/pci-driver.c
+index 7c2d9d5962586..e66a67c48f28d 100644
+--- a/drivers/pci/pci-driver.c
++++ b/drivers/pci/pci-driver.c
+@@ -347,10 +347,24 @@ static bool pci_physfn_is_probed(struct pci_dev *dev)
+ #endif
+ }
+
++struct pci_probe_work {
++    struct work_struct work;
++    struct drv_dev_and_id ddi;
++    int result;
++};
++
++static void pci_probe_work_func(struct work_struct *work)
++{
++       struct pci_probe_work *pw =3D container_of(work, struct pci_probe_w=
+ork, work);
++
++       pw->result =3D local_pci_probe(&pw->ddi);
++}
++
+ static int pci_call_probe(struct pci_driver *drv, struct pci_dev *dev,
+                          const struct pci_device_id *id)
+ {
+        int error, node, cpu;
++       struct pci_probe_work pw;
+        struct drv_dev_and_id ddi =3D { drv, dev, id };
+
+        /*
+@@ -361,38 +375,25 @@ static int pci_call_probe(struct pci_driver *drv, str=
+uct pci_dev *dev,
+        node =3D dev_to_node(&dev->dev);
+        dev->is_probed =3D 1;
+
+-       cpu_hotplug_disable();
+-
+        /*
+         * Prevent nesting work_on_cpu() for the case where a Virtual Funct=
+ion
+         * device is probed from work_on_cpu() of the Physical device.
+         */
+        if (node < 0 || node >=3D MAX_NUMNODES || !node_online(node) ||
+-           pci_physfn_is_probed(dev)) {
+-               cpu =3D nr_cpu_ids;
+-       } else {
+-               cpumask_var_t wq_domain_mask;
+-
+-               if (!zalloc_cpumask_var(&wq_domain_mask, GFP_KERNEL)) {
+-                       error =3D -ENOMEM;
+-                       goto out;
+-               }
+-               cpumask_and(wq_domain_mask,
+-                           housekeeping_cpumask(HK_TYPE_WQ),
+-                           housekeeping_cpumask(HK_TYPE_DOMAIN));
+-
+-               cpu =3D cpumask_any_and(cpumask_of_node(node),
+-                                     wq_domain_mask);
+-               free_cpumask_var(wq_domain_mask);
++           pci_physfn_is_probed(dev) || (current->flags & PF_WQ_WORKER)) {
++               error =3D local_pci_probe(&ddi);
++               goto out;
+        }
+
+-       if (cpu < nr_cpu_ids)
+-               error =3D work_on_cpu(cpu, local_pci_probe, &ddi);
+-       else
+-               error =3D local_pci_probe(&ddi);
++       INIT_WORK_ONSTACK(&pw.work, pci_probe_work_func);
++       pw.ddi =3D ddi;
++       queue_work_node(node, system_dfl_wq, &pw.work);
++       flush_work(&pw.work);
++       error =3D pw.result;
++       destroy_work_on_stack(&pw.work);
++
+ out:
+        dev->is_probed =3D 0;
+-       cpu_hotplug_enable();
+        return error;
+ }
+
+
+Best Regards,
+Jinhui
 
