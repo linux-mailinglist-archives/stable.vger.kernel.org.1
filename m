@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-204287-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204288-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFBD9CEA95F
-	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 21:09:00 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F366CEA9B7
+	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 21:31:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4A4B73027D9E
-	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 20:08:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2BA883016DFB
+	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 20:31:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81C662FD7A7;
-	Tue, 30 Dec 2025 20:08:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47495165F1A;
+	Tue, 30 Dec 2025 20:31:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jKryCmDN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sK0vbsKz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 436C12FD1DC
-	for <stable@vger.kernel.org>; Tue, 30 Dec 2025 20:08:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05C7E1F95C
+	for <stable@vger.kernel.org>; Tue, 30 Dec 2025 20:31:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767125323; cv=none; b=gF1HFs7Sgk/IUtc72++2pV1lVkOAkcKrs/lgwrozFcEz7nXn4TR0T4gsERZgGfefkAN5k7R7BZrNJgXmVVnerhURstBpCMBzOLPX9kCASrg6wR3M0KGJk9hV2Yv3L3FNkq5zr5E0AeJh44PlWiQfdzbbMypXMKkvkyNDxJ0MBsY=
+	t=1767126696; cv=none; b=X4ckKIOxmA1hVzjHUK/ivGEWPbwE3mKv9D0hNp16GpGunRi1yOdrNs4Tdo3tdixhzaHJ1N4iLzXmSF4A9klA3Sg7VKNrAsl/9my1fjLZaoVynCp7MhDDzlFgwlt+QNZvf6piiSMbSP+fDwAfL+M2Oc4kv45X7uoHGaQ5rMdOMsA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767125323; c=relaxed/simple;
-	bh=SYjY10ncylGr/7pw/RY3s9/74rVc/owflH40wKXhL8Y=;
+	s=arc-20240116; t=1767126696; c=relaxed/simple;
+	bh=pdpsxcLXeM3oG/8WKZRlg79yJjaVwCG/ymvYAhF6r5Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iVqtAZzd3/YjSXfxZ36qq9Kqi9H1knuX7dDVY9dQbBPHRWROr5Lh9LFyR1A93kyTyRf7+BqAPndLwaLJlSvVfdNjmIaVabBxLyIy4cICSWCiXODjt0B5PspsYcpA1fa/HWNcbVywm3cqQvHovb4qPxg32OZm4Y9XI+krsRW/8w4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jKryCmDN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DE99C113D0;
-	Tue, 30 Dec 2025 20:08:42 +0000 (UTC)
+	 MIME-Version; b=tJZ7jHDtBXYSR1nRWgff/584tLym2P3bXt6AWUgSRoloLNzKvFEnApfvWUKeqdDx2Li0/siefXy+p7eus97ngbC5u8SVeufzApraRB/gkGxwEprOQ7/2NUnxfWmQy4ebASmJVgBc7cFKZn1ebzjVCD7itvs6Rr260P+akGfiuOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sK0vbsKz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D518BC4CEFB;
+	Tue, 30 Dec 2025 20:31:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767125323;
-	bh=SYjY10ncylGr/7pw/RY3s9/74rVc/owflH40wKXhL8Y=;
+	s=k20201202; t=1767126695;
+	bh=pdpsxcLXeM3oG/8WKZRlg79yJjaVwCG/ymvYAhF6r5Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jKryCmDNTLnAGfbw7sK8D1xgTOoN+ZD5uGBHBKlvoYOM2tieH5CNWxXIiApvJEC9x
-	 01xFrqfTcW1bg/F/DK+SV7mrdN1DBjddA9D1bKnZGl8cy+mOk156A54NOqmLjIwU5Y
-	 t+gOJ14fRWmpVtgbss/W7kK72TZyDHbxsB4v48QdH69zgW/Jvlt0bT4e5M0QlDX8xF
-	 361nIWviyox7Bz8rlHFyY5gwrL9R1o03NYKxgRmtnqUQftxW8eVDEAMVDE96YOrvzK
-	 R9CN5u0t5x1NiQECMfqnGxNiMfzjFZMxWtehTpTTRf5rNecDsWT3QHZS5UvI3u0yVL
-	 SnXZSEsrHN49A==
+	b=sK0vbsKznHus4dlZioXiMsuNsn2P81kgDWeq/BHqwsLbVTgzLszWGVnwCYre14GAZ
+	 iZRMUONH5NFV9fubH42FkNqgHuWtMJ7LqRRSaRg6gFK0mtCYrdevQR24M+ue5Hl5P7
+	 G9gw26eNVH7yVoGeVW6hAi7TDtwjHa+BrV5IAUbpY/uUMZEARVCRAWEMpf1IfeXP0O
+	 eKr3aBLZpF0ZD/Yv3p7TPtjsLY0HTECHOEJiDK+F4ddLfgagvvFoaKHb7reZzRz0Rg
+	 vbdIAwnqWyXs2BUICRWzGCtBV33W7JsT7VuZL5HDs7/ZjSR4X8I4yJFKGklZIlDBvs
+	 x1u59ky6C/FPA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Chao Yu <chao@kernel.org>,
 	stable@kernel.org,
 	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y] f2fs: fix to detect recoverable inode during dryrun of find_fsync_dnodes()
-Date: Tue, 30 Dec 2025 15:08:41 -0500
-Message-ID: <20251230200841.2453139-1-sashal@kernel.org>
+Subject: [PATCH 5.10.y] f2fs: fix to detect recoverable inode during dryrun of find_fsync_dnodes()
+Date: Tue, 30 Dec 2025 15:31:33 -0500
+Message-ID: <20251230203133.2457797-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025122953-length-breeding-7553@gregkh>
-References: <2025122953-length-breeding-7553@gregkh>
+In-Reply-To: <2025122953-federal-handclasp-1d09@gregkh>
+References: <2025122953-federal-handclasp-1d09@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -105,10 +105,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 6 insertions(+), 3 deletions(-)
 
 diff --git a/fs/f2fs/recovery.c b/fs/f2fs/recovery.c
-index f07ae58d266d..339239bb7f63 100644
+index cd56af93df42..320553b45ee9 100644
 --- a/fs/f2fs/recovery.c
 +++ b/fs/f2fs/recovery.c
-@@ -343,7 +343,7 @@ static int recover_inode(struct inode *inode, struct page *page)
+@@ -328,7 +328,7 @@ static int recover_inode(struct inode *inode, struct page *page)
  }
  
  static int find_fsync_dnodes(struct f2fs_sb_info *sbi, struct list_head *head,
@@ -117,7 +117,7 @@ index f07ae58d266d..339239bb7f63 100644
  {
  	struct curseg_info *curseg;
  	struct page *page = NULL;
-@@ -400,6 +400,8 @@ static int find_fsync_dnodes(struct f2fs_sb_info *sbi, struct list_head *head,
+@@ -385,6 +385,8 @@ static int find_fsync_dnodes(struct f2fs_sb_info *sbi, struct list_head *head,
  			if (IS_ERR(entry)) {
  				err = PTR_ERR(entry);
  				if (err == -ENOENT) {
@@ -126,7 +126,7 @@ index f07ae58d266d..339239bb7f63 100644
  					err = 0;
  					goto next;
  				}
-@@ -805,6 +807,7 @@ int f2fs_recover_fsync_data(struct f2fs_sb_info *sbi, bool check_only)
+@@ -789,6 +791,7 @@ int f2fs_recover_fsync_data(struct f2fs_sb_info *sbi, bool check_only)
  	unsigned long s_flags = sbi->sb->s_flags;
  	bool need_writecp = false;
  	bool fix_curseg_write_pointer = false;
@@ -134,8 +134,8 @@ index f07ae58d266d..339239bb7f63 100644
  #ifdef CONFIG_QUOTA
  	int quota_enabled;
  #endif
-@@ -829,8 +832,8 @@ int f2fs_recover_fsync_data(struct f2fs_sb_info *sbi, bool check_only)
- 	down_write(&sbi->cp_global_sem);
+@@ -813,8 +816,8 @@ int f2fs_recover_fsync_data(struct f2fs_sb_info *sbi, bool check_only)
+ 	mutex_lock(&sbi->cp_mutex);
  
  	/* step #1: find fsynced inode numbers */
 -	err = find_fsync_dnodes(sbi, &inode_list, check_only);
