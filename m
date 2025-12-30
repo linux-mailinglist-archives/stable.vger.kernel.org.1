@@ -1,82 +1,129 @@
-Return-Path: <stable+bounces-204198-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204199-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 507D6CE9914
-	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 12:47:06 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B4AECE991C
+	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 12:47:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6174F3016EC1
-	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 11:47:05 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 14D06300386E
+	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 11:47:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A58A2E22AA;
-	Tue, 30 Dec 2025 11:47:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40E97280317;
+	Tue, 30 Dec 2025 11:47:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V6zuIbsG"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="tHGs4XCk"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from omta038.useast.a.cloudfilter.net (omta038.useast.a.cloudfilter.net [44.202.169.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8105C8CE;
-	Tue, 30 Dec 2025 11:47:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAA3E286422
+	for <stable@vger.kernel.org>; Tue, 30 Dec 2025 11:47:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.202.169.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767095223; cv=none; b=XNIgyo3kB3qlC+hWsavmDr1TndIVZ1qF62UiF36l8cD3OAHsmj3ZCMJg7rDK5FQ62ya8k3jfzDLv8+t3pcINBs+j09fW57CvuFWYl0Ew6avzWSHqmLqcn+FL/hRryIATBjbrCuG+AN2CogJGBvicyKxFmRrq+z+sLiw5WVF2Vwk=
+	t=1767095242; cv=none; b=b/DwDRJ+L3TQWxr16Xsh5XDQxgkTkuW9POn0VmRz7buekRrC0NmLWbCJl3FdEnntrP2K5uBwZXcNZH/MLnWIaHBQ8CjDXW/7Rn3/wMOrdE6Nbl4lD+pqw4/YidL3d07Fbq1uMhvYxZRFKQ9CVudn1qQ8d0cDO5xaBBLTHXUcK54=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767095223; c=relaxed/simple;
-	bh=g/Osl+TvnXzyea68sqODUuVsxskQBDKjfIXWUabyoHA=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=u6V5U8D5/HlQ2UZH75UZogdtUJqHoqn+g4BN0BHvLUIORHA1SoBC5fEChIjal/6+f5UQGyEAsnNlt/CDkwzGiZuHCc4Fj2ixhuDjTWR0aRGhLYysdVKBV/kDRW69SPD9Kx1YmC7OY8yHaxjIVNvLHd2MP+phlaxsZ+nbD+aTPvA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V6zuIbsG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D441EC4CEFB;
-	Tue, 30 Dec 2025 11:47:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767095222;
-	bh=g/Osl+TvnXzyea68sqODUuVsxskQBDKjfIXWUabyoHA=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=V6zuIbsGGSsPrcZP488SURbiA6QnMdTfFr0RvTGn06Pz2XBq0M27BlcB/H8Njjsnr
-	 uLjxymkRuLk57pvwyTVZp3xYXumlfKZ/VD/wtnx7sECJde3+nXNoXLLWgL+Wq7pAwC
-	 /zAcDAzMM6Jv8I8E7+8jJ6RkjBYnaRIL9mMhzAO5ua4hyqDFAprMHg7ksDzV0cnlZ9
-	 wMro9I9QFkWgmqXTs4SbKVVu85HwUdI+oO0/uAgb//98BB69n2MwovLbVSuxqvWe4K
-	 1kkz+7F6AZwBTa0JwT7EM/XRSIq4vbaslepacvVWz11FmDawWyePqRGUFiIw0051iy
-	 CCSjSUcDCqSeQ==
-From: Leon Romanovsky <leon@kernel.org>
-To: Thomas Fourier <fourier.thomas@gmail.com>
-Cc: stable@vger.kernel.org, Selvin Xavier <selvin.xavier@broadcom.com>, 
- Kalesh AP <kalesh-anakkur.purayil@broadcom.com>, 
- Jason Gunthorpe <jgg@ziepe.ca>, Somnath Kotur <somnath.kotur@broadcom.com>, 
- Eddie Wai <eddie.wai@broadcom.com>, 
- Sriharsha Basavapatna <sriharsha.basavapatna@broadcom.com>, 
- linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20251230085121.8023-2-fourier.thomas@gmail.com>
-References: <20251230085121.8023-2-fourier.thomas@gmail.com>
-Subject: Re: [PATCH] RDMA/bnxt_re: fix dma_free_coherent() pointer
-Message-Id: <176709521920.596503.3669039368865843149.b4-ty@kernel.org>
-Date: Tue, 30 Dec 2025 06:46:59 -0500
+	s=arc-20240116; t=1767095242; c=relaxed/simple;
+	bh=ydYmR+4NH6imAHB/A+6sjTzkZ2/rUu9eXDzBb2mEwDs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=q3ac0H1PUSDjZ52wtv8uODLQGUhnYGC0IKKKT4crpV9lqUxEVnxWAQiKPxhs80+ixcMtrylCpHZKsD5mZ3RdtRXpgbsS0FKw69rWVx5qfswZ/z25C/m+SzvGZ0/vLRIKfaVtPOnFKUCDYrRCoNv7h22BmFZCqN94+kjCBOpk2NY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=tHGs4XCk; arc=none smtp.client-ip=44.202.169.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
+Received: from eig-obgw-5002b.ext.cloudfilter.net ([10.0.29.226])
+	by cmsmtp with ESMTPS
+	id aUpEv9MpJSkcfaYC1vUeRa; Tue, 30 Dec 2025 11:47:13 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+	by cmsmtp with ESMTPS
+	id aYC0vivosN3K1aYC1v9oSt; Tue, 30 Dec 2025 11:47:13 +0000
+X-Authority-Analysis: v=2.4 cv=UdRRSLSN c=1 sm=1 tr=0 ts=6953bbc1
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=IkcTkHD0fZMA:10 a=wP3pNCr1ah4A:10 a=7vwVE5O1G3EA:10 a=VwQbUJbxAAAA:8
+ a=HaFmDPmJAAAA:8 a=49j0FZ7RFL9ueZfULrUA:9 a=QEXdDO2ut3YA:10
+ a=nmWuMzfKamIsx3l42hEX:22 a=L5EjiQpGQaFGZdqT14z7:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=9nhuh6FM6ySeoKIcjOrZtP41M8RFPDrCNYAknK0hNy0=; b=tHGs4XCkRdyGjlX9RQ2w1eSi2a
+	RgoXMPyTwLkdz5HGReyQhu+KCv3bpgjhjXFtvMpSIUXEzuJW5SafW5I9Uldi3nfyglx6t4zU//YC6
+	ejlohvfF/W3YkQy6pkoYeBpFfYf7pwalon2iwGtC3AMzDAMbTCPOF9mmPMbSSrebteZ/+Ri3Tv8zQ
+	rkqDsXGSK41pfe6A3dbYTQeRgoktpKlR8cLkqNrKKoQHhNzsoHfjHU68Icbu4uMQIY3+jgznf8UD3
+	damuRv1VrA2KjM16N//k9Z6BuhfzMOyJoxnj0r4R69J4t5t1i2YmHnb2o3Si2rjCItOOsvNkmXk4Q
+	u0hzFT/Q==;
+Received: from c-73-92-56-26.hsd1.ca.comcast.net ([73.92.56.26]:38088 helo=[10.0.1.180])
+	by box5620.bluehost.com with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
+	(Exim 4.98.2)
+	(envelope-from <re@w6rz.net>)
+	id 1vaYC0-000000028hZ-1I4F;
+	Tue, 30 Dec 2025 04:47:12 -0700
+Message-ID: <8062d0ca-d042-4e77-8654-b15adb483600@w6rz.net>
+Date: Tue, 30 Dec 2025 03:47:10 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.18 000/430] 6.18.3-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ achill@achill.org, sr@sladewatkins.com
+References: <20251229160724.139406961@linuxfoundation.org>
+Content-Language: en-US
+From: Ron Economos <re@w6rz.net>
+In-Reply-To: <20251229160724.139406961@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev-a6db3
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 73.92.56.26
+X-Source-L: No
+X-Exim-ID: 1vaYC0-000000028hZ-1I4F
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-73-92-56-26.hsd1.ca.comcast.net ([10.0.1.180]) [73.92.56.26]:38088
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 19
+X-Org: HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfDhGpX4APGJUIILoP8/to3kZdvrFdfU2Amjz1DucpppRnVgFrqvfzObGXbkHVbuhmxEtmZiL5wyQ3AxU+lcQiDjdlpeWg0k1KJU9FJCW2i+GLhXnvFRR
+ gCvCU7IPqExWuKRNpLrzQGD5QD/WSQSe5S+0qUNVR6OOBhFzpOnfhBCfY7nVb+cVLMpplqHBUqOSmg==
 
+On 12/29/25 08:06, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.18.3 release.
+> There are 430 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Wed, 31 Dec 2025 16:06:10 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.18.3-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.18.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-On Tue, 30 Dec 2025 09:51:21 +0100, Thomas Fourier wrote:
-> The dma_alloc_coherent() allocates a dma-mapped buffer, pbl->pg_arr[i].
-> The dma_free_coherent() should pass the same buffer to
-> dma_free_coherent() and not page-aligned.
-> 
-> 
+Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
 
-Applied, thanks!
-
-[1/1] RDMA/bnxt_re: fix dma_free_coherent() pointer
-      https://git.kernel.org/rdma/rdma/c/fcd431a9627f27
-
-Best regards,
--- 
-Leon Romanovsky <leon@kernel.org>
+Tested-by: Ron Economos <re@w6rz.net>
 
 
