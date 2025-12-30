@@ -1,147 +1,132 @@
-Return-Path: <stable+bounces-204293-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204294-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 651A2CEAA17
-	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 21:42:42 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B5F3CEAB5E
+	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 22:23:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 59CC0300A379
-	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 20:42:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B30DE3028F52
+	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 21:22:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65C3F2F069D;
-	Tue, 30 Dec 2025 20:42:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8941F229B12;
+	Tue, 30 Dec 2025 21:22:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="I+2WKRGO"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="x2O1E5NX"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04AF42E2F0E;
-	Tue, 30 Dec 2025 20:42:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F226A1E3DDE
+	for <stable@vger.kernel.org>; Tue, 30 Dec 2025 21:22:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767127358; cv=none; b=cjBGdqybYJAgA1PhA4qF+iI94oUbKm26bo7aecc3W09xLZevMHoqGzOWAtm/OVHBWSf/sy6e1Efc1TwKwr6DNKrkAjyc4EWM08/uM2JeidS/uiQUCtZEZpocz5QOiUffwOhDXlO5+bJ5UZJ4TBt/CLpKVNBoxnWPYWXn/uAmZFc=
+	t=1767129756; cv=none; b=kqXomW6V6Yj/WveKe2XLfH0oJeemkCHlX7YxTjmYBusEF83StihbsPJY45JEEAz+1KFmxO2rPKRIti+LmaQRyTSYMrSD2gG3agAtKRh6RyJ7saAJimMeSamsbH5sk7adNUm5Y4pbJ7iwzcsNbGd+91km7l5JYeJijSLGas6S6SY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767127358; c=relaxed/simple;
-	bh=nzP4O0glxzvOQAeyOYg25mf8oHOV15Rc002VL2NGvns=;
-	h=Date:To:From:Subject:Message-Id; b=FJSiUFap+PrPPKoG4NI5xC0Uxcy78QX159cGkNIXnq0TVY0C+XM70ZEAq1zTyBXrpPTg3zeP+IYL1s46ktVmFHTGak7vchhm2PUn1/V940oXsXmKrWZTtwSUiV84iylkgQI7xkPnwtbTWeVvM22ADWTX9UvxVh974KqlrXGLeHY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=I+2WKRGO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8050C113D0;
-	Tue, 30 Dec 2025 20:42:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1767127357;
-	bh=nzP4O0glxzvOQAeyOYg25mf8oHOV15Rc002VL2NGvns=;
-	h=Date:To:From:Subject:From;
-	b=I+2WKRGOvB0T47eIYkAWFihpefCsjHfgVWMEMpAL3NW8cf+R8+kMIMEGD+QcUy94n
-	 WJ7aLYOIbmnig9ajLyRS4joeNvidkcYwbTYOUBS2MlbM6WLgeXBHKDYvvlETh3QTe9
-	 QIfIZvEC02qz90haKM8UEscMNgDBTZk6Nt+d3AFA=
-Date: Tue, 30 Dec 2025 12:42:37 -0800
-To: mm-commits@vger.kernel.org,zohar@linux.ibm.com,yifei.l.liu@oracle.com,tglx@linutronix.de,stable@vger.kernel.org,sourabhjain@linux.ibm.com,sohil.mehta@intel.com,rppt@kernel.org,paul.x.webb@oracle.com,noodles@fb.com,mingo@redhat.com,joel.granados@kernel.org,jbohac@suse.cz,hpa@zytor.com,henry.willard@oracle.com,guoweikang.kernel@gmail.com,graf@amazon.com,bp@alien8.de,ardb@kernel.org,harshit.m.mogalapalli@oracle.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + x86-kexec-add-a-sanity-check-on-previous-kernels-ima-kexec-buffer.patch added to mm-nonmm-unstable branch
-Message-Id: <20251230204237.A8050C113D0@smtp.kernel.org>
+	s=arc-20240116; t=1767129756; c=relaxed/simple;
+	bh=58nJL78mZb4L/r540FIIGmpaC9+0CK1OZCYFmquRRgI=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=gnoQ1x0kZ4mVIMjcrmw1crLEhsctV+jGf1UobnOUxNg1p5EFFmbMdw5+B4TAJKpt+PUrL9fWkZYIIOr6s91QSXDfZMiVwkHDMkuKlFqUZ20h9ZvaHCkCcEM5KgJjbfcgt3Ws87EUzwYWiNAIMnCC1eA8VbbJFZmguzmtIVl9OoI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ynaffit.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=x2O1E5NX; arc=none smtp.client-ip=209.85.215.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ynaffit.bounces.google.com
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-b62da7602a0so10386563a12.2
+        for <stable@vger.kernel.org>; Tue, 30 Dec 2025 13:22:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1767129754; x=1767734554; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=5fjrjqtIG0QKNagwrK1D4QB/QYPJKmvCpq/Rsho6vIE=;
+        b=x2O1E5NXYTZeWp3TyHxkgBFrZwHtBdN2gBAci3JrXExEplCu3uQUvuEcgXgERmsjuG
+         XaiaDggUPW7dv5vX1bmqv4Ku2y0QdTGe6h0ZDrt+j45OJZ2oP4PPqeBBd3ASlZyzgZZc
+         fdEAreNImsaxCGSLvCPyD50ALycysKgUKcz3Am25+8S4+Tr5q6wmje23vxYz3mkp1DYT
+         cC2+XukUXXQxj/5skv63Cw9sDMgcpDTlFg3CddXklBp/MKnUCMnJlYO/bADa3jyVC3xt
+         UD5l53oh5H86HzBpsEtBQ0PqNxSf+4p28IS/VnnbtxitiXt5+BkKLzv8TA0mYJwKi+dU
+         MROw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767129754; x=1767734554;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=5fjrjqtIG0QKNagwrK1D4QB/QYPJKmvCpq/Rsho6vIE=;
+        b=HrCOC4asz3wd5JT4Ziu5kBZEVoUfv+Mr8Io007uW16l1iOMt4HyU7IWaX+3I1XC8pf
+         WdU3ZmZGXXypW18YoBXOS2UyMbrUV0TmdBp7hD5mzb538BeFeHo+4JIVbH9KMfwzoRRC
+         l4PQh4LR85HVN68Wp9lyIK/hht0I8oGlyGS52OVng/e2wXmtmWs66XiGo5ELcJ+VOPS5
+         Oq8slIZ9+uOqWlpgJti7h76758tRCEHIlR7SmH0L9lyTw/jiJYJGNlgtMjN0tE4rTL0X
+         6NN/MlnpelOqgwrZfIFJjBnU0YPKBrv7PmWb5/06sy0fRdiL32xzja5an0Mck2rbqUk/
+         k3nA==
+X-Gm-Message-State: AOJu0Yw44ZHunyjfSxZ6oxlwdm99YZMvd0+A96g29CtPKtCUmufZU4eu
+	UXubr60jtE0aBygrZ8j4KgYHsj9FqTxY2tIjQozUCLLSdH6kmjoJq4/gsOlBW0MtVbECic7vxBx
+	LxAiPlllh1NuWmzSgskec7JEVu0chimtuP7gDno/y4csYS+meirwTM/XFX9cNK0ENOs30nxr5re
+	KiZUUTAnPf9FaU2k+vDzXtTGBZT1/zz7CSII/Y9W8NBg==
+X-Google-Smtp-Source: AGHT+IEGYlPL2lA3yZE2BJr8FDY5hZZaHFraBU2esJ2otmtbSZJsOry7w/7+OxDNE0gYz41t/G5o0K+mvzdR
+X-Received: from dlbvg4.prod.google.com ([2002:a05:7022:7f04:b0:121:778d:9d5f])
+ (user=ynaffit job=prod-delivery.src-stubby-dispatcher) by 2002:a05:7022:793:b0:11b:95fe:beed
+ with SMTP id a92af1059eb24-121722ebc89mr31751249c88.38.1767129754008; Tue, 30
+ Dec 2025 13:22:34 -0800 (PST)
+Date: Tue, 30 Dec 2025 13:22:16 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.52.0.351.gbe84eed79e-goog
+Message-ID: <20251230212215.1613954-2-ynaffit@google.com>
+Subject: [PATCH 5.10,5.15,6.1,6.6] leds: spi-byte: Initialize device node
+ before access
+From: Tiffany Yang <ynaffit@google.com>
+To: stable@vger.kernel.org
+Cc: pchelkin@ispras.ru, linux-kernel@vger.kernel.org, kernel-team@android.com, 
+	Pavel Machek <pavel@ucw.cz>, Lee Jones <lee@kernel.org>, 
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, linux-leds@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
+Commit 7f9ab862e05c ("leds: spi-byte: Call of_node_put() on error path")
+was merged in 6.11 and then backported to stable trees through 5.10. It
+relocates the line that initializes the variable 'child' to a later
+point in spi_byte_probe().
 
-The patch titled
-     Subject: x86/kexec: add a sanity check on previous kernel's ima kexec buffer
-has been added to the -mm mm-nonmm-unstable branch.  Its filename is
-     x86-kexec-add-a-sanity-check-on-previous-kernels-ima-kexec-buffer.patch
+Versions < 6.9 do not have commit ccc35ff2fd29 ("leds: spi-byte: Use
+devm_led_classdev_register_ext()"), which removes a line that reads a
+property from 'child' before its new initialization point. Consequently,
+spi_byte_probe() reads from an uninitialized device node in stable
+kernels 6.6-5.10.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/x86-kexec-add-a-sanity-check-on-previous-kernels-ima-kexec-buffer.patch
+Initialize 'child' before it is first accessed.
 
-This patch will later appear in the mm-nonmm-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+Fixes: 7f9ab862e05c ("leds: spi-byte: Call of_node_put() on error path")
+Signed-off-by: Tiffany Yang <ynaffit@google.com>
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via various
-branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there most days
-
-------------------------------------------------------
-From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Subject: x86/kexec: add a sanity check on previous kernel's ima kexec buffer
-Date: Mon, 29 Dec 2025 00:15:23 -0800
-
-When the second-stage kernel is booted via kexec with a limiting command
-line such as "mem=<size>", the physical range that contains the carried
-over IMA measurement list may fall outside the truncated RAM leading to a
-kernel panic.
-
-    BUG: unable to handle page fault for address: ffff97793ff47000
-    RIP: ima_restore_measurement_list+0xdc/0x45a
-    #PF: error_code(0x0000) – not-present page
-
-Other architectures already validate the range with page_is_ram(), as done
-in commit cbf9c4b9617b ("of: check previous kernel's ima-kexec-buffer
-against memory bounds") do a similar check on x86.
-
-Without carrying the measurement list across kexec, the attestation would
-fail.
-
-Link: https://lkml.kernel.org/r/20251229081523.622515-4-harshit.m.mogalapalli@oracle.com
-Fixes: b69a2afd5afc ("x86/kexec: Carry forward IMA measurement log on kexec")
-Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Reported-by: Paul Webb <paul.x.webb@oracle.com>
-Cc: Alexander Graf <graf@amazon.com>
-Cc: Ard Biesheuvel <ardb@kernel.org>
-Cc: Borislav Betkov <bp@alien8.de>
-Cc: guoweikang <guoweikang.kernel@gmail.com>
-Cc: Henry Willard <henry.willard@oracle.com>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jiri Bohac <jbohac@suse.cz>
-Cc: Joel Granados <joel.granados@kernel.org>
-Cc: Jonathan McDowell <noodles@fb.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Mimi Zohar <zohar@linux.ibm.com>
-Cc: Sohil Mehta <sohil.mehta@intel.com>
-Cc: Sourabh Jain <sourabhjain@linux.ibm.com>
-Cc: Thomas Gleinxer <tglx@linutronix.de>
-Cc: Yifei Liu <yifei.l.liu@oracle.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- arch/x86/kernel/setup.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+As an alternative to moving the initialization of 'child' up,
+Fedor Pchelkin proposed [1] backporting the change that removes the
+intermediate access.
 
---- a/arch/x86/kernel/setup.c~x86-kexec-add-a-sanity-check-on-previous-kernels-ima-kexec-buffer
-+++ a/arch/x86/kernel/setup.c
-@@ -439,9 +439,15 @@ int __init ima_free_kexec_buffer(void)
- 
- int __init ima_get_kexec_buffer(void **addr, size_t *size)
- {
-+	int ret;
-+
- 	if (!ima_kexec_buffer_size)
- 		return -ENOENT;
- 
-+	ret = ima_validate_range(ima_kexec_buffer_phys, ima_kexec_buffer_size);
-+	if (ret)
-+		return ret;
-+
- 	*addr = __va(ima_kexec_buffer_phys);
- 	*size = ima_kexec_buffer_size;
- 
-_
+[1] https://lore.kernel.org/stable/20241029204128.527033-1-pchelkin@ispras.ru/
+---
+ drivers/leds/leds-spi-byte.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Patches currently in -mm which might be from harshit.m.mogalapalli@oracle.com are
-
-ima-add-ima_validate_range-for-previous-kernel-ima-buffer.patch
-of-kexec-refactor-ima_get_kexec_buffer-to-use-ima_validate_range.patch
-x86-kexec-add-a-sanity-check-on-previous-kernels-ima-kexec-buffer.patch
+diff --git a/drivers/leds/leds-spi-byte.c b/drivers/leds/leds-spi-byte.c
+index afe9bff7c7c1..4520df1e2341 100644
+--- a/drivers/leds/leds-spi-byte.c
++++ b/drivers/leds/leds-spi-byte.c
+@@ -96,6 +96,7 @@ static int spi_byte_probe(struct spi_device *spi)
+ 	if (!led)
+ 		return -ENOMEM;
+ 
++	child = of_get_next_available_child(dev_of_node(dev), NULL);
+ 	of_property_read_string(child, "label", &name);
+ 	strscpy(led->name, name, sizeof(led->name));
+ 	led->spi = spi;
+@@ -106,7 +107,6 @@ static int spi_byte_probe(struct spi_device *spi)
+ 	led->ldev.max_brightness = led->cdef->max_value - led->cdef->off_value;
+ 	led->ldev.brightness_set_blocking = spi_byte_brightness_set_blocking;
+ 
+-	child = of_get_next_available_child(dev_of_node(dev), NULL);
+ 	state = of_get_property(child, "default-state", NULL);
+ 	if (state) {
+ 		if (!strcmp(state, "on")) {
+-- 
+2.52.0.351.gbe84eed79e-goog
 
 
