@@ -1,90 +1,98 @@
-Return-Path: <stable+bounces-204195-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204196-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14608CE9400
-	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 10:44:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 801A3CE9532
+	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 11:15:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2E0D43031A15
-	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 09:43:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9983B301BE8E
+	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 10:14:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 892E42D6401;
-	Tue, 30 Dec 2025 09:43:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F148B2D5416;
+	Tue, 30 Dec 2025 10:14:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uTPi7RvZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ggqtloqw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B3B82D4B5F;
-	Tue, 30 Dec 2025 09:43:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFDA72737F2;
+	Tue, 30 Dec 2025 10:14:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767087808; cv=none; b=ktDp6yLYmB18mHX0Jazn8awhmgHrwlwzzskJt/NTVH4/PAeQza+ePIXuXNmgAELZgeNzGCHBIecI4TyZ8eZEtw0UarJvdRdKiRnPZyoNsuqtyEVEbUopYRSeGFWkjWZgOfx8SfKXZacpbY/bLP114G/ByErNJGtZ4GcbhOTEAHU=
+	t=1767089656; cv=none; b=Ae7KM2lejjnIs43RGd1TGrcLzinJBQlpaQaAxVf2kwyI9T+wna41l+/99TXpFm/SXLQgfKJPaRFz8ZO4eQjHc4wu0bSbID/rZozhYVXrFjcyPUTjO4M0pNhxcFymMtx8VHIbctGYBaq4jG5e8gK4LiliB3LqQ+wDbKSkMUrc/Ts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767087808; c=relaxed/simple;
-	bh=UNG7VRzwGNT/5kt2XmvV4+QrA5R2nh64yF4pPmMly/w=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=Rt/j3CgutTfaa/d5e/7XLnUOOLb+USduLixBUVoZvvvoZSFRw1BTJWEw+uOPcySIm1JhWuzmcpZX0+lmr/Yua9ZI50I3HrnMjfXSsykvLW2DOp5rY6FDYOb6YvY/n4h2d29C9O76xaqrQarg1J4ksiCORZ+78m4HAhntOBu5iI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uTPi7RvZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF46AC4CEFB;
-	Tue, 30 Dec 2025 09:43:27 +0000 (UTC)
+	s=arc-20240116; t=1767089656; c=relaxed/simple;
+	bh=Caci6saiVAb+HvtzJHAbyeQq5WFsqlhsTwR5cy1cZ88=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GE3XvArxOChqDkNm7wGRZt+/ErqM1h4pk0lAJ2jY7DqZvItWYkMGiamrZZM8wXdranKvZvpmn2Uedx+gF7Utcbnj6/2jG+kjE1AZ1U/GnTEM/w7qODbxHstLjCnNIPdCfsS8p8da4L4gx0bdwvEnMyFDigfJYLbfbkzwa5LLZnI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ggqtloqw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09BC8C4CEFB;
+	Tue, 30 Dec 2025 10:14:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767087807;
-	bh=UNG7VRzwGNT/5kt2XmvV4+QrA5R2nh64yF4pPmMly/w=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=uTPi7RvZqjHyIy2DhWjPZXktTRdeO9vE+ZkrdujzvEHaHdKDqIREyTVs3YUW0nGxe
-	 lb27DL/JUBZVbfWK66nJUR2BK18zKWap/AKStCUUi9hWIoRmveUFtu+ZOe6j+wI6zM
-	 OycdGOGRXNQQEm+uT4S3PhDXs9oMM1M777qJ53KeeWcK/Jahih8LUHe8cJUteqc9q6
-	 vKaXCzYYR7gvySYU2OgPdrfO9J/Pympwzb1vMIzIN8r37q1avgzb5GzEcMMujiDcq/
-	 yGh/7Ag7Yf89ytkUXn9dMHtD32cpVfqLVCYwNUw74e3RJvLvE3AzORJAZ4nclDt7BD
-	 UhyQyQ7Dt8ecA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3B72E3808205;
-	Tue, 30 Dec 2025 09:40:11 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1767089656;
+	bh=Caci6saiVAb+HvtzJHAbyeQq5WFsqlhsTwR5cy1cZ88=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=GgqtloqwQpYOstMbM/OQEP/BH6DDA/vpcGRA5le0/zyfMKUxErS2rx1yGo9m/PxRC
+	 MUjrSLl5AqGmYMS4FxjzggbrNw7zSxcTDIK4HZvnKErHrIZ1GNaLGt93Z7tzR2V8VD
+	 53WLcwF4EFuqTmyUtuUhd3dXAnUzQ2lOfw+eLIdHuXj6UGLc2bMESE6DL0q0Jb5a0c
+	 KhCYEz+hiIqpvp+0/hqYH/RaN5cb85sC7LadNBBSyCSh7F+02VtIZGU5umhFb+GrCn
+	 TJD7i+76tJxndoz9XY5D1OMc/aLe6EVLqTd9AZsMa2NxXHgoR7rld44AQCvxTRbhWy
+	 nDG67YabVwpnw==
+Date: Tue, 30 Dec 2025 11:14:10 +0100
+From: Niklas Cassel <cassel@kernel.org>
+To: Bjorn Helgaas <helgaas@kernel.org>
+Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Shawn Lin <shawn.lin@rock-chips.com>,
+	FUKAUMI Naoki <naoki@radxa.com>,
+	Krishna chaitanya chundru <quic_krichai@quicinc.com>,
+	Damien Le Moal <dlemoal@kernel.org>, stable@vger.kernel.org,
+	linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-rockchip@lists.infradead.org,
+	Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>
+Subject: Re: [PATCH v2 1/6] Revert "PCI: dw-rockchip: Don't wait for link
+ since we can detect Link Up"
+Message-ID: <aVOl8mfKiYX51gRL@ryzen>
+References: <20251222064207.3246632-9-cassel@kernel.org>
+ <20251226223159.GA4143516@bhelgaas>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v2] net: usb: sr9700: fix incorrect command used to write
- single register
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <176708760977.3192123.10662503393096586640.git-patchwork-notify@kernel.org>
-Date: Tue, 30 Dec 2025 09:40:09 +0000
-References: <20251221082400.50688-1-enelsonmoore@gmail.com>
-In-Reply-To: <20251221082400.50688-1-enelsonmoore@gmail.com>
-To: Ethan Nelson-Moore <enelsonmoore@gmail.com>
-Cc: netdev@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251226223159.GA4143516@bhelgaas>
 
-Hello:
+Hello Bjorn,
 
-This patch was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
-
-On Sun, 21 Dec 2025 00:24:00 -0800 you wrote:
-> This fixes the device failing to initialize with "error reading MAC
-> address" for me, probably because the incorrect write of NCR_RST to
-> SR_NCR is not actually resetting the device.
+On Fri, Dec 26, 2025 at 04:31:59PM -0600, Bjorn Helgaas wrote:
+> > The long term plan is to migrate this driver to the pwrctrl framework,
+> > once it adds proper support for powering up and enumerating PCIe switches.
 > 
-> Fixes: c9b37458e95629b1d1171457afdcc1bf1eb7881d ("USB2NET : SR9700 : One chip USB 1.1 USB2NET SR9700Device Driver Support")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Ethan Nelson-Moore <enelsonmoore@gmail.com>
+> "Proper" is hiding some important details here.  pwrctrl already
+> supports powering up and enumerating switches.  I think this refers to
+> [1], where Mani says the plan is for pwrctrl to power up everything
+> before the initial bus scan so we can figure out how many buses are
+> needed.
 > 
-> [...]
+> [1] https://lore.kernel.org/linux-pci/fle74skju2rorxmfdvosmeyrx3g75rysuszov5ofvde2exj4ir@3kfjyfyhczmn/
 
-Here is the summary with links:
-  - [v2] net: usb: sr9700: fix incorrect command used to write single register
-    https://git.kernel.org/netdev/net/c/fa0b198be1c6
+Correct.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+This series has already been merged to the pci/controller/dwc branch
+(although for some reason this branch is not merged to pci/next yet),
+and I can see that Mani have rephrased the commit messages to be more
+specific and to avoid the word proper.
+
+Please tell me if there is some futher action needed from my part.
 
 
+Kind regards,
+Niklas
 
