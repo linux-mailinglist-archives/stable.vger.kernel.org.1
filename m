@@ -1,106 +1,134 @@
-Return-Path: <stable+bounces-204168-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204169-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1B25CE8838
-	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 03:02:06 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 833A7CE883B
+	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 03:04:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 961B2300D314
-	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 02:02:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 45165300F883
+	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 02:04:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3F8E26461F;
-	Tue, 30 Dec 2025 02:02:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=xry111.site header.i=@xry111.site header.b="idbedcP8"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DF47284B2E;
+	Tue, 30 Dec 2025 02:04:35 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from xry111.site (xry111.site [89.208.246.23])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB527749C
-	for <stable@vger.kernel.org>; Tue, 30 Dec 2025 02:02:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.208.246.23
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BCE01A294
+	for <stable@vger.kernel.org>; Tue, 30 Dec 2025 02:04:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767060124; cv=none; b=MrUieX4aIzSmrgPq7PmseRKgN1AfMdkW6I8zWTip8NrstUwk3mcQb4/YcBBt38xEgIQqQNfuXFXFOlPH38xwUnp0t0tXolBnFvIsNGcB7AnP5OVqlHAUQpXthluserurJal4mt6cNxgEiFh8zqDxhIf9lTUHTPGptTPa+1TnH0Q=
+	t=1767060275; cv=none; b=jvYZC89t43D8Q+S4sfFbB61IT6cotc02vwacUqGlKoSbm4aAy40/ZMPKBqqjYAL6n8RnlqGihZhqy88f35u47sSZ6i69TYw3GxhNPGnWHGdufPby6klZTwIl0bk5k1eI/jddSK4P2i4X/GXdWgpo1tArSLmd17701acgMmarou8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767060124; c=relaxed/simple;
-	bh=x0ptLv/xo2eYTXBcNwqAjRXfezVYsgO/Tae0AChoYZI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KIZX90/8Lq01B1vDUwb3XfQzfAhNPIy7zxWCyFsMmjUHMF5oAy5CJx+fFle4oOWflPDjSdvLG7x+6G0xzjnplyozM0doe161IlU9WD+DS83SnhgT7T2nKfiUYcDHAZwa3Y3CDrGPh/i+5Ukp8mGA04EYsZN3ILAnorh9GFLrn6E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xry111.site; spf=pass smtp.mailfrom=xry111.site; dkim=pass (1024-bit key) header.d=xry111.site header.i=@xry111.site header.b=idbedcP8; arc=none smtp.client-ip=89.208.246.23
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xry111.site
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xry111.site
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=xry111.site;
-	s=default; t=1767060115;
-	bh=0m1IMjzwqKz35rth5O0VJFAM4Qv19eMl9zFFmg6oaAc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=idbedcP8dpZC4dpr/ZJhiAmxmuXmMzjTRx8G5A8cquWYy26Tr0eNgDbynzNlsxEpJ
-	 V28NYsfbDb8L28LY2d3soCrPtLss4bAxfMQYNv3tsr3a/L9sbol/5XH03TRhkORhzq
-	 p2W4CJdgpsoTriqTPsO/jzSnbPD+OMchGOB2zgLo=
-Received: from stargazer (unknown [IPv6:2409:8a4c:e19:b211::b3c])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (secp384r1) server-digest SHA384)
-	(Client did not present a certificate)
-	(Authenticated sender: xry111@xry111.site)
-	by xry111.site (Postfix) with ESMTPSA id 7039E66599;
-	Mon, 29 Dec 2025 21:01:53 -0500 (EST)
-From: Xi Ruoyao <xry111@xry111.site>
-To: stable@vger.kernel.org
-Cc: Xi Ruoyao <xry111@xry111.site>,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: [PATCH 6.12.y] gpio: loongson: Switch 2K2000/3000 GPIO to BYTE_CTRL_MODE
-Date: Tue, 30 Dec 2025 10:01:04 +0800
-Message-ID: <20251230020103.72792-2-xry111@xry111.site>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <2025122958-statue-subtotal-2f1c@gregkh>
+	s=arc-20240116; t=1767060275; c=relaxed/simple;
+	bh=mqqB+iabzXBIubTSBXWabYQSguEmlH8yoyyKgVzH2og=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
+	 MIME-Version:Message-ID; b=q+pL5flFDJlWHbwXy/RuujMTCJoq0WkKqadGYgy1AtwGecoh+l1zLhseFC5rmzWFmqbvu5oLy5lUtBBvhUoSI/URkeZ67oFAohHDFRwtRmUpWa+zoaoaooGi4VtHKQEoxrNXe9Io6YmXXscJWfAOuKXQVrpMJtgcEcv/t2H52eQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [223.64.69.1])
+	by gateway (Coremail) with SMTP id _____8CxVvAsM1NpmkYEAA--.13970S3;
+	Tue, 30 Dec 2025 10:04:28 +0800 (CST)
+Received: from chenhuacai$loongson.cn ( [223.64.69.1] ) by
+ ajax-webmail-front1 (Coremail) ; Tue, 30 Dec 2025 10:04:19 +0800
+ (GMT+08:00)
+Date: Tue, 30 Dec 2025 10:04:19 +0800 (GMT+08:00)
+X-CM-HeaderCharset: UTF-8
+From: =?UTF-8?B?6ZmI5Y2O5omN?= <chenhuacai@loongson.cn>
+To: "Xi Ruoyao" <xry111@xry111.site>
+Cc: stable@vger.kernel.org,
+	"Bartosz Golaszewski" <bartosz.golaszewski@linaro.org>
+Subject: Re: [PATCH 6.12.y] gpio: loongson: Switch 2K2000/3000 GPIO to
+ BYTE_CTRL_MODE
+X-Priority: 3
+X-Mailer: Coremail Webmail Server Version 2024.3-cmXT6 build
+ 20250609(354f7833) Copyright (c) 2002-2025 www.mailtech.cn loongson
+In-Reply-To: <20251230020103.72792-2-xry111@xry111.site>
 References: <2025122958-statue-subtotal-2f1c@gregkh>
+ <20251230020103.72792-2-xry111@xry111.site>
+Content-Transfer-Encoding: base64
+X-CM-CTRLDATA: MM0AMmZvb3Rlcl90eHQ9MjE3NDo2MTg=
+Content-Type: text/plain; charset=UTF-8
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Message-ID: <7a5e07c2.36522.19b6cffc33e.Coremail.chenhuacai@loongson.cn>
+X-Coremail-Locale: zh_CN
+X-CM-TRANSID:qMiowJDxKOAjM1NptoMGAA--.2564W
+X-CM-SenderInfo: hfkh0x5xdftxo6or00hjvr0hdfq/1tbiAQEMBmlSGDUNCwABsb
+X-Coremail-Antispam: 1Uk129KBj93XoW7uFy5AF4kXrWDuw4kKF45Arc_yoW8KFWxpr
+	Z2gw1jkr13JF13Ca9rZ3W7Ca4S93s3ZrZrKFsrKr93Xryqvw1qqrWxAasYganxJry8CFyU
+	ZFn3KF1fJ3WUA3cCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUBFb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
+	Gr0_Gr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx1l5I
+	8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1Y6r17McIj6I8E87Iv67AK
+	xVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lFcxC0VAYjxAxZF
+	0Ew4CEw7xC0wACY4xI67k04243AVC20s07MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCj
+	c4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4
+	CE17CEb7AF67AKxVWUXVWUAwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1x
+	MIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF
+	4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JwCE64xv
+	F2IEb7IF0Fy7YxBIdaVFxhVjvjDU0xZFpf9x07j0BTOUUUUU=
 
-The manuals of 2K2000 says both BIT_CTRL_MODE and BYTE_CTRL_MODE are
-supported but the latter is recommended.  Also on 2K3000, per the ACPI
-DSDT the GPIO controller is compatible with 2K2000, but it fails to
-operate GPIOs 62 and 63 (and maybe others) using BIT_CTRL_MODE.
-Using BYTE_CTRL_MODE also makes those 2K3000 GPIOs work.
-
-Fixes: 3feb70a61740 ("gpio: loongson: add more gpio chip support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Xi Ruoyao <xry111@xry111.site>
-Reviewed-by: Huacai Chen <chenhuacai@loongson.cn>
-Link: https://lore.kernel.org/r/20251128075033.255821-1-xry111@xry111.site
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-(cherry picked from commit dae9750105cf93ac1e156ef91f4beeb53bd64777)
-[Removed inten_offset as 6.12 has no 2K2000/3000 GPIO interrupt support.]
-Signed-off-by: Xi Ruoyao <xry111@xry111.site>
----
- drivers/gpio/gpio-loongson-64bit.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/gpio/gpio-loongson-64bit.c b/drivers/gpio/gpio-loongson-64bit.c
-index 7f4d78fd800e..11915898a93d 100644
---- a/drivers/gpio/gpio-loongson-64bit.c
-+++ b/drivers/gpio/gpio-loongson-64bit.c
-@@ -228,10 +228,10 @@ static const struct loongson_gpio_chip_data loongson_gpio_ls2k2000_data0 = {
- 
- static const struct loongson_gpio_chip_data loongson_gpio_ls2k2000_data1 = {
- 	.label = "ls2k2000_gpio",
--	.mode = BIT_CTRL_MODE,
--	.conf_offset = 0x0,
--	.in_offset = 0x20,
--	.out_offset = 0x10,
-+	.mode = BYTE_CTRL_MODE,
-+	.conf_offset = 0x800,
-+	.in_offset = 0xa00,
-+	.out_offset = 0x900,
- };
- 
- static const struct loongson_gpio_chip_data loongson_gpio_ls2k2000_data2 = {
--- 
-2.52.0
+SGksIFJ1b3lhbywKCj4gLS0tLS3ljp/lp4vpgq7ku7YtLS0tLQo+IOWPkeS7tuS6ujogIlhpIFJ1
+b3lhbyIgPHhyeTExMUB4cnkxMTEuc2l0ZT4KPiDlj5HpgIHml7bpl7Q6MjAyNS0xMi0zMCAxMDow
+MTowNCAo5pif5pyf5LqMKQo+IOaUtuS7tuS6ujogc3RhYmxlQHZnZXIua2VybmVsLm9yZwo+IOaK
+hOmAgTogIlhpIFJ1b3lhbyIgPHhyeTExMUB4cnkxMTEuc2l0ZT4sICJIdWFjYWkgQ2hlbiIgPGNo
+ZW5odWFjYWlAbG9vbmdzb24uY24+LCAiQmFydG9zeiBHb2xhc3pld3NraSIgPGJhcnRvc3ouZ29s
+YXN6ZXdza2lAbGluYXJvLm9yZz4KPiDkuLvpopg6IFtQQVRDSCA2LjEyLnldIGdwaW86IGxvb25n
+c29uOiBTd2l0Y2ggMksyMDAwLzMwMDAgR1BJTyB0byBCWVRFX0NUUkxfTU9ERQo+IAo+IFRoZSBt
+YW51YWxzIG9mIDJLMjAwMCBzYXlzIGJvdGggQklUX0NUUkxfTU9ERSBhbmQgQllURV9DVFJMX01P
+REUgYXJlCj4gc3VwcG9ydGVkIGJ1dCB0aGUgbGF0dGVyIGlzIHJlY29tbWVuZGVkLiAgQWxzbyBv
+biAySzMwMDAsIHBlciB0aGUgQUNQSQo+IERTRFQgdGhlIEdQSU8gY29udHJvbGxlciBpcyBjb21w
+YXRpYmxlIHdpdGggMksyMDAwLCBidXQgaXQgZmFpbHMgdG8KPiBvcGVyYXRlIEdQSU9zIDYyIGFu
+ZCA2MyAoYW5kIG1heWJlIG90aGVycykgdXNpbmcgQklUX0NUUkxfTU9ERS4KPiBVc2luZyBCWVRF
+X0NUUkxfTU9ERSBhbHNvIG1ha2VzIHRob3NlIDJLMzAwMCBHUElPcyB3b3JrLgo+IAo+IEZpeGVz
+OiAzZmViNzBhNjE3NDAgKCJncGlvOiBsb29uZ3NvbjogYWRkIG1vcmUgZ3BpbyBjaGlwIHN1cHBv
+cnQiKQo+IENjOiBzdGFibGVAdmdlci5rZXJuZWwub3JnCj4gU2lnbmVkLW9mZi1ieTogWGkgUnVv
+eWFvIDx4cnkxMTFAeHJ5MTExLnNpdGU+Cj4gUmV2aWV3ZWQtYnk6IEh1YWNhaSBDaGVuIDxjaGVu
+aHVhY2FpQGxvb25nc29uLmNuPgo+IExpbms6IGh0dHBzOi8vbG9yZS5rZXJuZWwub3JnL3IvMjAy
+NTExMjgwNzUwMzMuMjU1ODIxLTEteHJ5MTExQHhyeTExMS5zaXRlCj4gU2lnbmVkLW9mZi1ieTog
+QmFydG9zeiBHb2xhc3pld3NraSA8YmFydG9zei5nb2xhc3pld3NraUBsaW5hcm8ub3JnPgo+IChj
+aGVycnkgcGlja2VkIGZyb20gY29tbWl0IGRhZTk3NTAxMDVjZjkzYWMxZTE1NmVmOTFmNGJlZWI1
+M2JkNjQ3NzcpCj4gW1JlbW92ZWQgaW50ZW5fb2Zmc2V0IGFzIDYuMTIgaGFzIG5vIDJLMjAwMC8z
+MDAwIEdQSU8gaW50ZXJydXB0IHN1cHBvcnQuXQpJIHByZWZlciB0byBiYWNrcG9ydCAiZ3Bpbzog
+bG9vbmdzb24tNjRiaXQ6IEV4dGVuZCBHUElPIGlycSBzdXBwb3J0IiBhcyBhIGRlcGVuZGVuY3ku
+CgpIdWFjYWkKCj4gU2lnbmVkLW9mZi1ieTogWGkgUnVveWFvIDx4cnkxMTFAeHJ5MTExLnNpdGU+
+Cj4gLS0tCj4gIGRyaXZlcnMvZ3Bpby9ncGlvLWxvb25nc29uLTY0Yml0LmMgfCA4ICsrKystLS0t
+Cj4gIDEgZmlsZSBjaGFuZ2VkLCA0IGluc2VydGlvbnMoKyksIDQgZGVsZXRpb25zKC0pCj4gCj4g
+ZGlmZiAtLWdpdCBhL2RyaXZlcnMvZ3Bpby9ncGlvLWxvb25nc29uLTY0Yml0LmMgYi9kcml2ZXJz
+L2dwaW8vZ3Bpby1sb29uZ3Nvbi02NGJpdC5jCj4gaW5kZXggN2Y0ZDc4ZmQ4MDBlLi4xMTkxNTg5
+OGE5M2QgMTAwNjQ0Cj4gLS0tIGEvZHJpdmVycy9ncGlvL2dwaW8tbG9vbmdzb24tNjRiaXQuYwo+
+ICsrKyBiL2RyaXZlcnMvZ3Bpby9ncGlvLWxvb25nc29uLTY0Yml0LmMKPiBAQCAtMjI4LDEwICsy
+MjgsMTAgQEAgc3RhdGljIGNvbnN0IHN0cnVjdCBsb29uZ3Nvbl9ncGlvX2NoaXBfZGF0YSBsb29u
+Z3Nvbl9ncGlvX2xzMmsyMDAwX2RhdGEwID0gewo+ICAKPiAgc3RhdGljIGNvbnN0IHN0cnVjdCBs
+b29uZ3Nvbl9ncGlvX2NoaXBfZGF0YSBsb29uZ3Nvbl9ncGlvX2xzMmsyMDAwX2RhdGExID0gewo+
+ICAJLmxhYmVsID0gImxzMmsyMDAwX2dwaW8iLAo+IC0JLm1vZGUgPSBCSVRfQ1RSTF9NT0RFLAo+
+IC0JLmNvbmZfb2Zmc2V0ID0gMHgwLAo+IC0JLmluX29mZnNldCA9IDB4MjAsCj4gLQkub3V0X29m
+ZnNldCA9IDB4MTAsCj4gKwkubW9kZSA9IEJZVEVfQ1RSTF9NT0RFLAo+ICsJLmNvbmZfb2Zmc2V0
+ID0gMHg4MDAsCj4gKwkuaW5fb2Zmc2V0ID0gMHhhMDAsCj4gKwkub3V0X29mZnNldCA9IDB4OTAw
+LAo+ICB9Owo+ICAKPiAgc3RhdGljIGNvbnN0IHN0cnVjdCBsb29uZ3Nvbl9ncGlvX2NoaXBfZGF0
+YSBsb29uZ3Nvbl9ncGlvX2xzMmsyMDAwX2RhdGEyID0gewo+IC0tIAo+IDIuNTIuMAoNCg0K5pys
+6YKu5Lu25Y+K5YW26ZmE5Lu25ZCr5pyJ6b6Z6Iqv5Lit56eR55qE5ZWG5Lia56eY5a+G5L+h5oGv
+77yM5LuF6ZmQ5LqO5Y+R6YCB57uZ5LiK6Z2i5Zyw5Z2A5Lit5YiX5Ye655qE5Liq5Lq65oiW576k
+57uE44CC56aB5q2i5Lu75L2V5YW25LuW5Lq65Lul5Lu75L2V5b2i5byP5L2/55So77yI5YyF5ous
+5L2G5LiN6ZmQ5LqO5YWo6YOo5oiW6YOo5YiG5Zyw5rOE6Zyy44CB5aSN5Yi25oiW5pWj5Y+R77yJ
+5pys6YKu5Lu25Y+K5YW26ZmE5Lu25Lit55qE5L+h5oGv44CC5aaC5p6c5oKo6ZSZ5pS25pys6YKu
+5Lu277yM6K+35oKo56uL5Y2z55S16K+d5oiW6YKu5Lu26YCa55+l5Y+R5Lu25Lq65bm25Yig6Zmk
+5pys6YKu5Lu244CCIA0KVGhpcyBlbWFpbCBhbmQgaXRzIGF0dGFjaG1lbnRzIGNvbnRhaW4gY29u
+ZmlkZW50aWFsIGluZm9ybWF0aW9uIGZyb20gTG9vbmdzb24gVGVjaG5vbG9neSAsIHdoaWNoIGlz
+IGludGVuZGVkIG9ubHkgZm9yIHRoZSBwZXJzb24gb3IgZW50aXR5IHdob3NlIGFkZHJlc3MgaXMg
+bGlzdGVkIGFib3ZlLiBBbnkgdXNlIG9mIHRoZSBpbmZvcm1hdGlvbiBjb250YWluZWQgaGVyZWlu
+IGluIGFueSB3YXkgKGluY2x1ZGluZywgYnV0IG5vdCBsaW1pdGVkIHRvLCB0b3RhbCBvciBwYXJ0
+aWFsIGRpc2Nsb3N1cmUsIHJlcHJvZHVjdGlvbiBvciBkaXNzZW1pbmF0aW9uKSBieSBwZXJzb25z
+IG90aGVyIHRoYW4gdGhlIGludGVuZGVkIHJlY2lwaWVudChzKSBpcyBwcm9oaWJpdGVkLiBJZiB5
+b3UgcmVjZWl2ZSB0aGlzIGVtYWlsIGluIGVycm9yLCBwbGVhc2Ugbm90aWZ5IHRoZSBzZW5kZXIg
+YnkgcGhvbmUgb3IgZW1haWwgaW1tZWRpYXRlbHkgYW5kIGRlbGV0ZSBpdC4gDQoNCg0K
 
 
