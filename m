@@ -1,98 +1,167 @@
-Return-Path: <stable+bounces-204271-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204272-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA3EDCEA780
-	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 19:27:58 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F8B1CEA798
+	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 19:32:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 87027301E930
-	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 18:27:57 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id F0BB13003FF4
+	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 18:32:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B12832C329;
-	Tue, 30 Dec 2025 18:27:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB2022741B5;
+	Tue, 30 Dec 2025 18:32:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jtutVDB5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PgD5kUPA"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F623231C91
-	for <stable@vger.kernel.org>; Tue, 30 Dec 2025 18:27:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A0711DD525
+	for <stable@vger.kernel.org>; Tue, 30 Dec 2025 18:32:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767119275; cv=none; b=pHfAP/tCbHBCtCAqVtV2eojqTZKK6NBr2a9xg71fDCiK3eDlniEmFHqizds2n1sI+0Sh4eLATsv4frWd1FbxjOjURm75hFo+gmaRDzewChlrB5QbBSo9p97u/6y7PF+bYl6lTlJ7n/rX864KrtwEe8rr2zVF8s3v+H/Fq7qUk6E=
+	t=1767119542; cv=none; b=pBXKVr2vRUQ1L/XZLsaPGXrJuBnjg3+gWK1wXp/J3CLIK5Sncnw4etCmfG8Q0otguu6ZclMbqUODEHt1RDs1ZkKhGKfaArru7YxeurYPQgZcOAKlveTfmvve6a7ORRGB1CoUbMwkHhrR7K4hY1MSc6+67HK0mWUbiYw0pYq3u2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767119275; c=relaxed/simple;
-	bh=dYRDkC/oKLOue3PjdGIWgKxlpFbsXkFHvM/FdYEFzmQ=;
-	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=APmoY7aDMYOqfGGX5kFwUatSD61LVFxrSc4rdQFvUraZE2KWdRZ+YmGaW+iIDQaPMRCuaRUxS6AK43iu2JFTYj8j7EDcHSVK8ZK08LEYbE70y+zGimLzmh5eaxJJmYJ4VnduCsedxy1zXwSafkwpd6rXlyBLu660SGmOVYlH/do=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jtutVDB5; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1767119273; x=1798655273;
-  h=message-id:date:mime-version:to:cc:from:subject:
-   content-transfer-encoding;
-  bh=dYRDkC/oKLOue3PjdGIWgKxlpFbsXkFHvM/FdYEFzmQ=;
-  b=jtutVDB5oE9mLW8Wo8J/ikcT+VqdiaNFAGFPnnMijkP1OQNuRwM/8ysh
-   qTUFu3b9EwxbAgVxIPAF0Dmou/xcH0E0FizQpILqzzzKJgI3WJIA9e8fA
-   wcRR5As9tLXamxPpyJCASteIOj4Q0ebLzHZ+gpxvOhEM9JCwrBme/PfBy
-   1HmajFn3NSlhPQm62M/NXxH0mcbIhmH3Puzpo0DgjDTxzTreYqxXl0HQq
-   cVmG1nqEa3OS4BbjDUN6m+a5vz9Aj+Km29WzzbL6671FJtYn3vkm3yd2M
-   ByALUBG13R3ZNRyOxjPWnQwks724oyb3tLBbrVvykvgrS1y672qhEOaPq
-   Q==;
-X-CSE-ConnectionGUID: ZWocGm0zQlaMKW2W3GxkGQ==
-X-CSE-MsgGUID: qAQgDKE3SsaA8q1OxRdUMQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11657"; a="80158678"
-X-IronPort-AV: E=Sophos;i="6.21,189,1763452800"; 
-   d="scan'208";a="80158678"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Dec 2025 10:27:53 -0800
-X-CSE-ConnectionGUID: o4HBOwgPQsy7eh6OEMr1TA==
-X-CSE-MsgGUID: wv9Eadp7S9WFLC/zobdKSg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,189,1763452800"; 
-   d="scan'208";a="202218558"
-Received: from soc-pf446t5c.clients.intel.com (HELO [10.24.81.126]) ([10.24.81.126])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Dec 2025 10:27:52 -0800
-Message-ID: <f83c0d52-b435-422e-b8ab-b6362bb4e51f@linux.intel.com>
-Date: Tue, 30 Dec 2025 10:27:52 -0800
+	s=arc-20240116; t=1767119542; c=relaxed/simple;
+	bh=l2BFBp56q5BUdh9FAxvh8/CRHN+/KtxEeEWJuqh1YqM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=MYIi7wxEfaJM+QR0ovK2IVz8emc/v+2kMeCIyYlTl9dttsTSYJZnQzN38zynDS185TLvvsezVFITdJAh6Owu5ucPqtGqOj3DCbvowrf+ENeDmOpwdCk0oDuZCbUckIqCBLaR98UPF5CMLx2QIXJ9MdJGiqeGCpISGhGBSV6C/Io=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PgD5kUPA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C33BC4CEFB;
+	Tue, 30 Dec 2025 18:32:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767119542;
+	bh=l2BFBp56q5BUdh9FAxvh8/CRHN+/KtxEeEWJuqh1YqM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=PgD5kUPACs1IVI10KhyoTfGXlhVOypz5Htxi8+S5Pg32IMPiCdrM1rvWU6kRKPA/N
+	 Inl3niKly7m0k1LpANuU0qPqv3CywDF9ls4LzUW8whPJsLgGKjum87b1AF6RCSMt6x
+	 eTBqZL6UbcBo9EjTZJJaoJ1RQfLrfj3vjc9TkybjIEeK9ijljEHfmXuDNJHQR4LR9W
+	 bjDnVspqrrmvI56fsKjpEuWnVlY1e0WHUkYPDwKk6AOeb/G5vW+U9wdnkP1cfVYbdA
+	 9SqxuIF8JspM+c5DOpBOyrdNXwl8lhkIgqO0iFyHCkFMT/RcuLWmR914KVB9aRtJtD
+	 K+MC8PBaPr6Fw==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Chao Yu <chao@kernel.org>,
+	stable@kernel.org,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12.y] f2fs: fix to detect recoverable inode during dryrun of find_fsync_dnodes()
+Date: Tue, 30 Dec 2025 13:32:19 -0500
+Message-ID: <20251230183219.2392969-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025122945-sasquatch-unexposed-d830@gregkh>
+References: <2025122945-sasquatch-unexposed-d830@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: stable@vger.kernel.org
-Cc: kaushlendra.kumar@intel.com
-From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Subject: [PATCH STABLE] powercap: intel_rapl: Add support for NOVALAKE
- processors
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-Hi Stable Maintainers,
+From: Chao Yu <chao@kernel.org>
 
-I would like to request the following patch be merged to the stable tree:
+[ Upstream commit 68d05693f8c031257a0822464366e1c2a239a512 ]
 
-Upstream commit: 58075aec92a8141fd7f42e1c36d1bc54552c015e
-Patch subject: powercap: intel_rapl: Add support for NOVALAKE processors
-Author: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
-Upstream link: https://lore.kernel.org/all/20251028101814.3482508-1-kaushlendra.kumar@intel.com/
+mkfs.f2fs -f /dev/vdd
+mount /dev/vdd /mnt/f2fs
+touch /mnt/f2fs/foo
+sync		# avoid CP_UMOUNT_FLAG in last f2fs_checkpoint.ckpt_flags
+touch /mnt/f2fs/bar
+f2fs_io fsync /mnt/f2fs/bar
+f2fs_io shutdown 2 /mnt/f2fs
+umount /mnt/f2fs
+blockdev --setro /dev/vdd
+mount /dev/vdd /mnt/f2fs
+mount: /mnt/f2fs: WARNING: source write-protected, mounted read-only.
 
-Reason for stable inclusion:
-It is required for Android 17 release which is based on v6.18 stable tree. You can find related
-discussion in https://android-review.googlesource.com/c/kernel/common/+/3895011. This patch
-should be applied to the following kernel versions: v6.18
+For the case if we create and fsync a new inode before sudden power-cut,
+without norecovery or disable_roll_forward mount option, the following
+mount will succeed w/o recovering last fsynced inode.
 
-This patch applies cleanly to v6.18 stable branch with no conflicts.
+The problem here is that we only check inode_list list after
+find_fsync_dnodes() in f2fs_recover_fsync_data() to find out whether
+there is recoverable data in the iamge, but there is a missed case, if
+last fsynced inode is not existing in last checkpoint, then, we will
+fail to get its inode due to nat of inode node is not existing in last
+checkpoint, so the inode won't be linked in inode_list.
 
-Please let me know if you need any additional information or if there are any concerns with this stable back-port request.
+Let's detect such case in dyrun mode to fix this issue.
 
+After this change, mount will fail as expected below:
+mount: /mnt/f2fs: cannot mount /dev/vdd read-only.
+       dmesg(1) may have more information after failed mount system call.
+demsg:
+F2FS-fs (vdd): Need to recover fsync data, but write access unavailable, please try mount w/ disable_roll_forward or norecovery
+
+Cc: stable@kernel.org
+Fixes: 6781eabba1bd ("f2fs: give -EINVAL for norecovery and rw mount")
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+[ folio => page ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ fs/f2fs/recovery.c | 20 ++++++++++++--------
+ 1 file changed, 12 insertions(+), 8 deletions(-)
+
+diff --git a/fs/f2fs/recovery.c b/fs/f2fs/recovery.c
+index e4d81b8705d1..bc105da3e746 100644
+--- a/fs/f2fs/recovery.c
++++ b/fs/f2fs/recovery.c
+@@ -398,7 +398,7 @@ static int sanity_check_node_chain(struct f2fs_sb_info *sbi, block_t blkaddr,
+ }
+ 
+ static int find_fsync_dnodes(struct f2fs_sb_info *sbi, struct list_head *head,
+-				bool check_only)
++				bool check_only, bool *new_inode)
+ {
+ 	struct curseg_info *curseg;
+ 	struct page *page = NULL;
+@@ -445,16 +445,19 @@ static int find_fsync_dnodes(struct f2fs_sb_info *sbi, struct list_head *head,
+ 				quota_inode = true;
+ 			}
+ 
+-			/*
+-			 * CP | dnode(F) | inode(DF)
+-			 * For this case, we should not give up now.
+-			 */
+ 			entry = add_fsync_inode(sbi, head, ino_of_node(page),
+ 								quota_inode);
+ 			if (IS_ERR(entry)) {
+ 				err = PTR_ERR(entry);
+-				if (err == -ENOENT)
++				/*
++				 * CP | dnode(F) | inode(DF)
++				 * For this case, we should not give up now.
++				 */
++				if (err == -ENOENT) {
++					if (check_only)
++						*new_inode = true;
+ 					goto next;
++				}
+ 				f2fs_put_page(page, 1);
+ 				break;
+ 			}
+@@ -852,6 +855,7 @@ int f2fs_recover_fsync_data(struct f2fs_sb_info *sbi, bool check_only)
+ 	int ret = 0;
+ 	unsigned long s_flags = sbi->sb->s_flags;
+ 	bool need_writecp = false;
++	bool new_inode = false;
+ 
+ 	if (is_sbi_flag_set(sbi, SBI_IS_WRITABLE))
+ 		f2fs_info(sbi, "recover fsync data on readonly fs");
+@@ -864,8 +868,8 @@ int f2fs_recover_fsync_data(struct f2fs_sb_info *sbi, bool check_only)
+ 	f2fs_down_write(&sbi->cp_global_sem);
+ 
+ 	/* step #1: find fsynced inode numbers */
+-	err = find_fsync_dnodes(sbi, &inode_list, check_only);
+-	if (err || list_empty(&inode_list))
++	err = find_fsync_dnodes(sbi, &inode_list, check_only, &new_inode);
++	if (err < 0 || (list_empty(&inode_list) && (!check_only || !new_inode)))
+ 		goto skip;
+ 
+ 	if (check_only) {
 -- 
-Sathyanarayanan Kuppuswamy
-Linux Kernel Developer
+2.51.0
 
 
