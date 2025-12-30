@@ -1,124 +1,142 @@
-Return-Path: <stable+bounces-204265-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204266-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8163CEA52A
-	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 18:35:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2148CCEA590
+	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 18:45:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A19EF301B80A
-	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 17:35:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AB626301F27E
+	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 17:45:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFD90260565;
-	Tue, 30 Dec 2025 17:35:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DLK5GLw/"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6918432B9A7;
+	Tue, 30 Dec 2025 17:45:00 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 707A5CA52
-	for <stable@vger.kernel.org>; Tue, 30 Dec 2025 17:35:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 718C02459D1;
+	Tue, 30 Dec 2025 17:44:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767116104; cv=none; b=rIo0Y4iwokePgfb4TkYwlOAf03WnwfQwDcnJeb7ym1wSaRJff8ua9oM6vYUfLkVvquqKlzBaiLNnOz6fy9exTqQ7KmmTW71yELcCJQ7O8XzV+WMMWBFIFhrUsDK8bYKYWdOrf+P9Z/uJA4ABfrP219P1K0E1nQGUc2eQIbbp0NU=
+	t=1767116700; cv=none; b=WCYn6y8jGUjZDL8aca38pWcRJS8GN5IWRMmiDsAAYSJgH6OjZKNLamg5ex3OqKfJX0PbRaIGHIPkSnz5Pg0atzGrlogwIDOEZkV8pIKc7qVdDQdBtCp0p6DaTgdnoBSiDHWk40leO4WdLIbQiax6REtbglRIT9jrs4zMLyowzlw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767116104; c=relaxed/simple;
-	bh=Ekdfz06Gdgqtna5t0uyNuNyytYkGUVM9b97KzOI+vsU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rWqtCWM/mZXxicSBXelpBUU0yIxbGo7+wFj8mrm6HaqNxIjAfuc4JS0/LtnSs56l6khxxglovs59DHAbZBHqtRqKzmzFXILluHIUuawNTII+i54gdQscdebRvgL0huGp/YwEGdG6s9O+YxDZJiOKVPdY9p4QCxIkgZewobv174o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DLK5GLw/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BF71C4CEFB;
-	Tue, 30 Dec 2025 17:35:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767116104;
-	bh=Ekdfz06Gdgqtna5t0uyNuNyytYkGUVM9b97KzOI+vsU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DLK5GLw/N0iVFvnMRkd75EDAUVGsmO53hX7S4ZAtGWDr1ur0EBXaClu8enKbisuNU
-	 RcPIwttbe9EVUh68ekjc9EURabRiNgYWxv6EvtICzKbhAd9ZNV7TACeKzOUiPzS30K
-	 avrmiKXosxYJoSrfp6q4uJI3MKYMGvAqYCPGl7tukC2isxon00w48wb0kLyRKr2dD2
-	 csh3T99zFzSgH7JYHPbtbhbQN9mMx9IpB8LFtxDZP/IZQiUCw113ns9NDT3QXJoFLV
-	 3MrFl04DodcIT/ij8nP+q/noAqNFaLiPRy567cJaL7TumI5OgA7GlOUc4dAdPyi4/n
-	 qkX6ywo26Axhg==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Chao Yu <chao@kernel.org>,
-	stable@kernel.org,
-	syzbot+24124df3170c3638b35f@syzkaller.appspotmail.com,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y] f2fs: fix to avoid updating zero-sized extent in extent cache
-Date: Tue, 30 Dec 2025 12:35:01 -0500
-Message-ID: <20251230173501.2352293-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025122900-cinnamon-repacking-8930@gregkh>
-References: <2025122900-cinnamon-repacking-8930@gregkh>
+	s=arc-20240116; t=1767116700; c=relaxed/simple;
+	bh=DeJWlGj1JZflue6+8vp2aWS/DeUnY4SfXD9zpP2wT54=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=dDTMwWMVG7bAR0QpKj8W83w+nhhrvI67EMd18/hOpxu8ZjDTEHIsXnAcXfM50QJ/ZL1SW5ygeyps+TTSs6Vfwfs+FdZA0UuzDw3e+R3EAxusjhCcET5rcYV0XN+HWImi8H14xlXy7yyh6XkKIXboRtr6QBKxODGt6Q1uS4r1i3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from smtpclient.apple (unknown [58.38.116.204])
+	by APP-03 (Coremail) with SMTP id rQCowAAHKeBqD1Rp4MmmAg--.62002S2;
+	Wed, 31 Dec 2025 01:44:11 +0800 (CST)
+Content-Type: text/plain;
+	charset=us-ascii
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.300.41.1.7\))
+Subject: Re: [PATCH] riscv: boot: Always make Image from vmlinux, not
+ vmlinux.unstripped
+From: Han Gao <gaohan@iscas.ac.cn>
+In-Reply-To: <20251230-riscv-vmlinux-not-unstripped-v1-1-15f49df880df@iscas.ac.cn>
+Date: Wed, 31 Dec 2025 01:44:00 +0800
+Cc: Han Gao <gaohan@iscas.ac.cn>,
+ Paul Walmsley <pjw@kernel.org>,
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ Albert Ou <aou@eecs.berkeley.edu>,
+ Alexandre Ghiti <alex@ghiti.fr>,
+ Nathan Chancellor <nathan@kernel.org>,
+ Alexey Gladkov <legion@kernel.org>,
+ Masahiro Yamada <masahiroy@kernel.org>,
+ Nicolas Schier <nsc@kernel.org>,
+ linux-riscv@lists.infradead.org,
+ linux-kernel@vger.kernel.org,
+ linux-kbuild@vger.kernel.org,
+ stable@vger.kernel.org
+Content-Transfer-Encoding: 7bit
+Message-Id: <15D6E841-BA8C-43D0-B08D-170DF475AB3B@iscas.ac.cn>
+References: <20251230-riscv-vmlinux-not-unstripped-v1-1-15f49df880df@iscas.ac.cn>
+To: Vivian Wang <wangruikang@iscas.ac.cn>
+X-Mailer: Apple Mail (2.3864.300.41.1.7)
+X-CM-TRANSID:rQCowAAHKeBqD1Rp4MmmAg--.62002S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7uFyUKF1kGF4fuFy8uF48JFb_yoW8ZF4rp3
+	yDuw1YkrWUJrWjgFy0yr429FW2qFn0g3yfZFy5KF1UtFWjqF1vqwnFg3yUWFyDGFnaga1U
+	Xr4fGas5Ca40y3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9214x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gr
+	1j6F4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv
+	7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r
+	1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02
+	628vn2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4
+	IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1r
+	MI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJV
+	WUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j
+	6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYx
+	BIdaVFxhVjvjDU0xZFpf9x0JUd-B_UUUUU=
+X-CM-SenderInfo: xjdrxt3q6l2u1dvotugofq/1tbiBg0MDGlT6Zg9CAAAs1
 
-From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit 7c37c79510329cd951a4dedf3f7bf7e2b18dccec ]
 
-As syzbot reported:
+> On Dec 30, 2025, at 21:39, Vivian Wang <wangruikang@iscas.ac.cn> wrote:
+> 
+> Since commit 4b47a3aefb29 ("kbuild: Restore pattern to avoid stripping
+> .rela.dyn from vmlinux") vmlinux has .rel*.dyn preserved. Therefore, use
+> vmlinux to produce Image, not vmlinux.unstripped.
+> 
+> Doing so fixes booting a RELOCATABLE=y Image with kexec. The problem is
+> caused by this chain of events:
+> 
+> - Since commit 3e86e4d74c04 ("kbuild: keep .modinfo section in
+>  vmlinux.unstripped"), vmlinux.unstripped gets a .modinfo section.
+> - The .modinfo section has SHF_ALLOC, so it ends up in Image, at the end
+>  of it.
+> - The Image header's image_size field does not expect to include
+>  .modinfo and does not account for it, since it should not be in Image.
+> - If .modinfo is large enough, the file size of Image ends up larger
+>  than image_size, which eventually leads to it failing
+>  sanity_check_segment_list().
+> 
+> Using vmlinux instead of vmlinux.unstripped means that the unexpected
+> .modinfo section is gone from Image, fixing the file size problem.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 3e86e4d74c04 ("kbuild: keep .modinfo section in vmlinux.unstripped")
+> Signed-off-by: Vivian Wang <wangruikang@iscas.ac.cn>
+> ---
+> arch/riscv/boot/Makefile | 4 ----
+> 1 file changed, 4 deletions(-)
+> 
+> diff --git a/arch/riscv/boot/Makefile b/arch/riscv/boot/Makefile
+> index bfc3d0b75b9b..5301adf5f3f5 100644
+> --- a/arch/riscv/boot/Makefile
+> +++ b/arch/riscv/boot/Makefile
+> @@ -31,11 +31,7 @@ $(obj)/xipImage: vmlinux FORCE
+> 
+> endif
+> 
+> -ifdef CONFIG_RELOCATABLE
+> -$(obj)/Image: vmlinux.unstripped FORCE
+> -else
+> $(obj)/Image: vmlinux FORCE
+> -endif
+> $(call if_changed,objcopy)
+> 
+> $(obj)/Image.gz: $(obj)/Image FORCE
+> 
+> ---
+> base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
+> change-id: 20251230-riscv-vmlinux-not-unstripped-30ec0c930fd2
+> 
+> Best regards,
+> -- 
+> Vivian "dramforever" Wang
 
-F2FS-fs (loop0): __update_extent_tree_range: extent len is zero, type: 0, extent [0, 0, 0], age [0, 0]
-------------[ cut here ]------------
-kernel BUG at fs/f2fs/extent_cache.c:678!
-Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
-CPU: 0 UID: 0 PID: 5336 Comm: syz.0.0 Not tainted syzkaller #0 PREEMPT(full)
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-RIP: 0010:__update_extent_tree_range+0x13bc/0x1500 fs/f2fs/extent_cache.c:678
-Call Trace:
- <TASK>
- f2fs_update_read_extent_cache_range+0x192/0x3e0 fs/f2fs/extent_cache.c:1085
- f2fs_do_zero_range fs/f2fs/file.c:1657 [inline]
- f2fs_zero_range+0x10c1/0x1580 fs/f2fs/file.c:1737
- f2fs_fallocate+0x583/0x990 fs/f2fs/file.c:2030
- vfs_fallocate+0x669/0x7e0 fs/open.c:342
- ioctl_preallocate fs/ioctl.c:289 [inline]
- file_ioctl+0x611/0x780 fs/ioctl.c:-1
- do_vfs_ioctl+0xb33/0x1430 fs/ioctl.c:576
- __do_sys_ioctl fs/ioctl.c:595 [inline]
- __se_sys_ioctl+0x82/0x170 fs/ioctl.c:583
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f07bc58eec9
+Tested-by: Han Gao <gaohan@iscas.ac.cn>
 
-In error path of f2fs_zero_range(), it may add a zero-sized extent
-into extent cache, it should be avoided.
-
-Fixes: 6e9619499f53 ("f2fs: support in batch fzero in dnode page")
-Cc: stable@kernel.org
-Reported-by: syzbot+24124df3170c3638b35f@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-f2fs-devel/68e5d698.050a0220.256323.0032.GAE@google.com
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- fs/f2fs/file.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
-index 81ebbc1d37a6..624368e3f89e 100644
---- a/fs/f2fs/file.c
-+++ b/fs/f2fs/file.c
-@@ -1458,7 +1458,8 @@ static int f2fs_do_zero_range(struct dnode_of_data *dn, pgoff_t start,
- 		f2fs_set_data_blkaddr(dn);
- 	}
- 
--	f2fs_update_extent_cache_range(dn, start, 0, index - start);
-+	if (index > start)
-+		f2fs_update_extent_cache_range(dn, start, 0, index - start);
- 
- 	return ret;
- }
--- 
-2.51.0
 
 
