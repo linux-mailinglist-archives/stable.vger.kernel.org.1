@@ -1,158 +1,142 @@
-Return-Path: <stable+bounces-204248-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204249-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8A11CEA294
-	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 17:23:12 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E29C6CEA2A3
+	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 17:24:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D6154301B4A7
-	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 16:22:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9590C30198E2
+	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 16:23:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7624630CDBF;
-	Tue, 30 Dec 2025 16:22:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F873320A0C;
+	Tue, 30 Dec 2025 16:23:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kh4ruALP"
+	dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b="qcZmRhKd"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3575921D3CA
-	for <stable@vger.kernel.org>; Tue, 30 Dec 2025 16:22:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E450C28727F
+	for <stable@vger.kernel.org>; Tue, 30 Dec 2025 16:23:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767111779; cv=none; b=PHSEj6Gui9fVx3FFaykqasFpXgdll94lTl81DbG7TqekXf2wCCce0HesES86oY090EPfBZGbvo+lKBGGjpjJmsTXr7OdY61BT2XQGuFhKn3j8uPApKUwMQp0G+0jfUcm7ZhQhF3F0JJJPREjchzRsGcqRPycyRzXwoj84+fZlEo=
+	t=1767111827; cv=none; b=aVlSDTWTI2Jib+3cBR46Lwu9L96fADh1iG2AUv45b0oKf95Uj8AtEnebUoQ+rQdbN7DRdsOZi4H2lKbTsL8TkuSo9S9de/k66olDWWe34/8UzQXS4ZVMUmXgFmw73stYsgaMHNCWN/+9dQCTJFxdNC9/mg4z9DQsvZwPANJUbIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767111779; c=relaxed/simple;
-	bh=GjFs4KVzuVgUIvrBWi+IAu3s9n/dDrml0tTB9qBnqBQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EBamsm1uu/82ejxM8rFfe5ozjFwhvE+KgWPuWTnOGCw1dyud3aiAX9TIWEY7FFAj7gyVxVZZP2ROplasCnfOrmply1ZaxZLoQL1EYt4azO8M4FYRQ5h86T5beooYr2FxgXoEC1FNAPlfX0CvyQL7Ddp5RlIwdzW2Osq+iVHjF3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kh4ruALP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41D2EC4CEFB;
-	Tue, 30 Dec 2025 16:22:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767111778;
-	bh=GjFs4KVzuVgUIvrBWi+IAu3s9n/dDrml0tTB9qBnqBQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kh4ruALPqg6V4/W+9KZKjOdrplbS3ClsIqH+GsAb11798BlgRS99G+OcI3eK5YaQJ
-	 u4hXKi45Rc27ZNmupyMb2W3If+r/wyt4e+CE/tSAbVnpyDek8vHwPfjRIUi/gPbxig
-	 rbw28xdryoy14yQBoYQhVwn/yLUYa9P0g9+DcVvMkC7xZisYMiX3j3dhEkNTB5MspF
-	 634G0LGn/L5Kfrh1Dg503f7d3rr660OzxL6qcPbXcL+MTnnq1IetmUvusVg+ab6ogk
-	 6sV8jvcn34j3ebmp5JXlDYaIvsJ9r44fnAi9Ed5+Y4jTfvIp4avfG1KLEO11bsyfWU
-	 cCklVSNZUHVgw==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Chao Yu <chao@kernel.org>,
-	stable@kernel.org,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y 4/4] f2fs: fix to propagate error from f2fs_enable_checkpoint()
-Date: Tue, 30 Dec 2025 11:22:54 -0500
-Message-ID: <20251230162254.2306864-4-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251230162254.2306864-1-sashal@kernel.org>
-References: <2025122946-opponent-boozy-7af8@gregkh>
- <20251230162254.2306864-1-sashal@kernel.org>
+	s=arc-20240116; t=1767111827; c=relaxed/simple;
+	bh=w/UY/Tqc8nv76sUPAN4wSJGcnbTSXqungYAUKKX2WLg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=O7P8ozsQy8Ylh7J8FuJd+rY3bnrIkBUt82iGCPxTpkUjjYFIlBAARH5mKTtFMb2J7SC+o0QFsVPcUjm5AzOGASQtwHNgi3M8++b5TbuIit5fpCi/ofi5NBJGAmRTr8UmgKWpsT5RYxdjLK7l9pB6HyQy30/Nu3IcHLO8x+aj3Cs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu; spf=fail smtp.mailfrom=g.harvard.edu; dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b=qcZmRhKd; arc=none smtp.client-ip=209.85.160.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=g.harvard.edu
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-4f8a6b37b2dso26453171cf.0
+        for <stable@vger.kernel.org>; Tue, 30 Dec 2025 08:23:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rowland.harvard.edu; s=google; t=1767111824; x=1767716624; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=L8ZJ6UdkcT8zvPOgleU/+NxmdakY1tW7lnTezQizIX0=;
+        b=qcZmRhKdZ6mnfAJjB1e0ClRECcA7OcrxH30DlVqadsh83930xdAo4wda2YMJtYfH1X
+         4jUM/eQKvSKSZ4AlEydCt4qDB0VWkNXWZxmYYUvGsTxzizY8lV9oEAvikFxd1O8aTgD8
+         o9mL/riB1+zt2pc5VkHbruH9s9g7DYm0ApDUdrIOMgb7cuoeHdaNdHR3fZxATb8ZnUBc
+         F2etNWkLXuUbLhxdNO3vGY2uRkazMaHlsgaudIfgAhiWvjJLVoAo0TfkuumHcQN2FeHa
+         orXVH/HFjEH4G0vSFEnlPBVJMMYHo4mg+1vcqX1qsGYXvYznxRXocnUYJT0kMsZ0i58D
+         MI9A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767111824; x=1767716624;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=L8ZJ6UdkcT8zvPOgleU/+NxmdakY1tW7lnTezQizIX0=;
+        b=VqkXKTkXjG0aBhrXWNCaIVHI+7h32dg8qfCqoORCkl7yhWNMji3Rx7dX2ONj/r/HLe
+         ANUeWpWVybKlNjirmD00Uz5rLvc7Bjh1KkexMP94vTuYRiDz/6Htp5zuw6GWTuwzt1ec
+         ZWIDpHQY6WK2kx3Hd0mJ2XIXCjNPD4BqkiiRoqosfmocedFeQ7ckzGyhfQqp6TbeV1YU
+         7h+jaJ7gUAMwmop8EBpKC13pn35cOBaM3GJWC00vBIWte61Sp5wIJltK3LNqLnYjcH6C
+         y3yCIfsZrCaLxLu+e6q0E++R9B9MLq7fJeDDc8Spb7pdZUsOAqzXG85RQWiPRJnktyJM
+         kyRg==
+X-Forwarded-Encrypted: i=1; AJvYcCVGpVhCFt3maIpiOryljMxcM3ZeVHe/vm50/piUJCqpWsNls9K9CsRVYEJR6wuUdMIoooAWcc0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwuJ4cHVpDoJyfwWEKTk5gzMe4UTw4K0gDT5WsGgvlP3J21EmUv
+	6le5dCv3lVjg8mS0lv2dzH40pkqe8FQshGbphgj/KYslZpnfyYCEOeGVBEY5L7X+bg==
+X-Gm-Gg: AY/fxX718p5OvSoViS7i8aQH1tmvg93HqGvVDvNLhfjOV694uG1XQNo6FxNUEqgyMH6
+	360k5+luFojS+lqwFEFHOL+jPzgtg+mI7IieIrVNaINhj0YsoIGwhOq/m3h4BWQXPUx3O8F9wLt
+	Ng1LDU0FRDgJYym5boLJ20JRzbJMaz9zp/S1xFyuzsDvz6ct7DSfzLUUqTut/Ozbv60VRH6sWRN
+	8t4TkOS4kwk7wXCcQY938sWoiU8jqFG7vlQIf/ghFs0JIY94ozIwXMzHcBpxV4mOzfAoWa8VoSn
+	Yt9ADgWE61Rkr7a+m0bnv8Bcvp/56bBpb26wli3+2hZd+v6JJxja9Yx7jV5NYFxt6t9svpCD7xI
+	2WQBfzydxNPVx7GxqUuTpOr2YwJFn2HK03NUpw/cq3yWZz1iRGghianHOLG6uhdWJlgh8HX3gFC
+	imFDHDugZhOlNV
+X-Google-Smtp-Source: AGHT+IE4eYTdSnAyo5iG9/+4AqV9PlulJB/GwNSBfqZUk9N3H2dXBeYrhPObuREn/1kzzFbfj+tGkg==
+X-Received: by 2002:a05:622a:1e92:b0:4f3:5827:c96d with SMTP id d75a77b69052e-4f4abd6e4a0mr583133491cf.46.1767111823755;
+        Tue, 30 Dec 2025 08:23:43 -0800 (PST)
+Received: from rowland.harvard.edu ([2601:19b:d03:1700::7e72])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4f4ac531081sm254829061cf.7.2025.12.30.08.23.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 30 Dec 2025 08:23:43 -0800 (PST)
+Date: Tue, 30 Dec 2025 11:23:40 -0500
+From: Alan Stern <stern@rowland.harvard.edu>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Huacai Chen <chenhuacai@loongson.cn>,
+	Huacai Chen <chenhuacai@kernel.org>, linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Shengwen Xiao <atzlinux@sina.com>
+Subject: Re: [PATCH] USB: OHCI/UHCI: Add soft dependencies on ehci_hcd
+Message-ID: <af0e1bc5-d08d-4b66-9a0b-4c39f17a043b@rowland.harvard.edu>
+References: <20251230080014.3934590-1-chenhuacai@loongson.cn>
+ <2025123049-cadillac-straggler-d2fb@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2025123049-cadillac-straggler-d2fb@gregkh>
 
-From: Chao Yu <chao@kernel.org>
+On Tue, Dec 30, 2025 at 09:15:36AM +0100, Greg Kroah-Hartman wrote:
+> On Tue, Dec 30, 2025 at 04:00:14PM +0800, Huacai Chen wrote:
+> > Commit 9beeee6584b9aa4f ("USB: EHCI: log a warning if ehci-hcd is not
+> > loaded first") said that ehci-hcd should be loaded before ohci-hcd and
+> > uhci-hcd. However, commit 05c92da0c52494ca ("usb: ohci/uhci - add soft
+> > dependencies on ehci_pci") only makes ohci-pci/uhci-pci depend on ehci-
+> > pci, which is not enough and we may still see the warnings in boot log.
+> > So fix it by also making ohci-hcd/uhci-hcd depend on ehci-hcd.
+> > 
+> > Cc: stable@vger.kernel.org
+> > Reported-by: Shengwen Xiao <atzlinux@sina.com>
+> > Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+> > ---
+> >  drivers/usb/host/ohci-hcd.c | 1 +
+> >  drivers/usb/host/uhci-hcd.c | 1 +
+> >  2 files changed, 2 insertions(+)
+> > 
+> > diff --git a/drivers/usb/host/ohci-hcd.c b/drivers/usb/host/ohci-hcd.c
+> > index 9c7f3008646e..549c965b7fbe 100644
+> > --- a/drivers/usb/host/ohci-hcd.c
+> > +++ b/drivers/usb/host/ohci-hcd.c
+> > @@ -1355,4 +1355,5 @@ static void __exit ohci_hcd_mod_exit(void)
+> >  	clear_bit(USB_OHCI_LOADED, &usb_hcds_loaded);
+> >  }
+> >  module_exit(ohci_hcd_mod_exit);
+> > +MODULE_SOFTDEP("pre: ehci_hcd");
+> 
+> Ick, no, this way lies madness.  I hate the "softdep" stuff, it's
+> usually a sign that something is wrong elsewhere.
+> 
+> And don't add this _just_ to fix a warning message in a boot log, if you
+> don't like that message, then build the module into your kernel, right?
+> 
+> And I really should just go revert 05c92da0c524 ("usb: ohci/uhci - add
+> soft dependencies on ehci_pci") as well, that feels wrong too.
 
-[ Upstream commit be112e7449a6e1b54aa9feac618825d154b3a5c7 ]
+This might also be a good time to revert 9beeee6584b9 ("USB: EHCI: log a 
+warning if ehci-hcd is not loaded first").  Firstly, because it doesn't 
+test the right condition; what matters is not whether ehci-hcd is loaded 
+before uhci-hcd and ohci-hcd, but whether ehci-pci is loaded before 
+uhci-pci and ohci-pci.
 
-In order to let userspace detect such error rather than suffering
-silent failure.
+And secondly, because if the warning hasn't convinced people to fix the 
+order of module loading after seventeen years, it's not likely to do so 
+in the future.
 
-Fixes: 4354994f097d ("f2fs: checkpoint disabling")
-Cc: stable@kernel.org
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- fs/f2fs/super.c | 26 ++++++++++++++++----------
- 1 file changed, 16 insertions(+), 10 deletions(-)
-
-diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
-index 04957c14b97c..8ec1a669d44d 100644
---- a/fs/f2fs/super.c
-+++ b/fs/f2fs/super.c
-@@ -2280,10 +2280,11 @@ static int f2fs_disable_checkpoint(struct f2fs_sb_info *sbi)
- 	return err;
- }
- 
--static void f2fs_enable_checkpoint(struct f2fs_sb_info *sbi)
-+static int f2fs_enable_checkpoint(struct f2fs_sb_info *sbi)
- {
- 	unsigned int nr_pages = get_pages(sbi, F2FS_DIRTY_DATA) / 16;
- 	long long start, writeback, end;
-+	int ret;
- 
- 	f2fs_info(sbi, "f2fs_enable_checkpoint() starts, meta: %lld, node: %lld, data: %lld",
- 					get_pages(sbi, F2FS_DIRTY_META),
-@@ -2317,7 +2318,9 @@ static void f2fs_enable_checkpoint(struct f2fs_sb_info *sbi)
- 	set_sbi_flag(sbi, SBI_IS_DIRTY);
- 	f2fs_up_write(&sbi->gc_lock);
- 
--	f2fs_sync_fs(sbi->sb, 1);
-+	ret = f2fs_sync_fs(sbi->sb, 1);
-+	if (ret)
-+		f2fs_err(sbi, "%s sync_fs failed, ret: %d", __func__, ret);
- 
- 	/* Let's ensure there's no pending checkpoint anymore */
- 	f2fs_flush_ckpt_thread(sbi);
-@@ -2327,6 +2330,7 @@ static void f2fs_enable_checkpoint(struct f2fs_sb_info *sbi)
- 	f2fs_info(sbi, "f2fs_enable_checkpoint() finishes, writeback:%llu, sync:%llu",
- 					ktime_ms_delta(writeback, start),
- 					ktime_ms_delta(end, writeback));
-+	return ret;
- }
- 
- static int f2fs_remount(struct super_block *sb, int *flags, char *data)
-@@ -2541,7 +2545,9 @@ static int f2fs_remount(struct super_block *sb, int *flags, char *data)
- 				goto restore_discard;
- 			need_enable_checkpoint = true;
- 		} else {
--			f2fs_enable_checkpoint(sbi);
-+			err = f2fs_enable_checkpoint(sbi);
-+			if (err)
-+				goto restore_discard;
- 			need_disable_checkpoint = true;
- 		}
- 	}
-@@ -2583,7 +2589,8 @@ static int f2fs_remount(struct super_block *sb, int *flags, char *data)
- 	return 0;
- restore_checkpoint:
- 	if (need_enable_checkpoint) {
--		f2fs_enable_checkpoint(sbi);
-+		if (f2fs_enable_checkpoint(sbi))
-+			f2fs_warn(sbi, "checkpoint has not been enabled");
- 	} else if (need_disable_checkpoint) {
- 		if (f2fs_disable_checkpoint(sbi))
- 			f2fs_warn(sbi, "checkpoint has not been disabled");
-@@ -4875,13 +4882,12 @@ static int f2fs_fill_super(struct super_block *sb, void *data, int silent)
- 	if (err)
- 		goto sync_free_meta;
- 
--	if (test_opt(sbi, DISABLE_CHECKPOINT)) {
-+	if (test_opt(sbi, DISABLE_CHECKPOINT))
- 		err = f2fs_disable_checkpoint(sbi);
--		if (err)
--			goto sync_free_meta;
--	} else if (is_set_ckpt_flags(sbi, CP_DISABLED_FLAG)) {
--		f2fs_enable_checkpoint(sbi);
--	}
-+	else if (is_set_ckpt_flags(sbi, CP_DISABLED_FLAG))
-+		err = f2fs_enable_checkpoint(sbi);
-+	if (err)
-+		goto sync_free_meta;
- 
- 	/*
- 	 * If filesystem is not mounted as read-only then
--- 
-2.51.0
-
+Alan Stern
 
