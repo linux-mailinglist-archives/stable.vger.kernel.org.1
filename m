@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-204242-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204243-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAC66CEA242
-	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 17:15:35 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAB4ECEA245
+	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 17:15:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8E39B3024881
-	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 16:15:32 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AC4FA300F725
+	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 16:15:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F43C316902;
-	Tue, 30 Dec 2025 16:15:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC1B81DE2C9;
+	Tue, 30 Dec 2025 16:15:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DJdf2tGA"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OdUfHW0o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 103283595B
-	for <stable@vger.kernel.org>; Tue, 30 Dec 2025 16:15:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B5DC2AEE4
+	for <stable@vger.kernel.org>; Tue, 30 Dec 2025 16:15:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767111331; cv=none; b=CJfQoZ6hVPnZL76eSPZgCK4JWNunFA48/9/Sa9I8lyCEI7cCaJzOxDDRXrr3pkN1yJSl6uvPCZG2MHzRRWYTRx/pRC5kv9lH1GhFHSivL1KaAny6Eu3UBjdrgTgZn/q3xFlE2GBkPFYDjd4HCjqggOYXt7kQFTOdcesipMTv/Tc=
+	t=1767111341; cv=none; b=LFCzl00y3vQfp+a3FsD0eIswKBPHLPl8vRErq2WtiYFTIXzKyTZfTBKOgGX9VdB2cIqNeorTB784JTLj/uCWuZAVNCXXBXAJV88DuDBtaucINIre28aXaJOLv2rOBjHC1ZG2Y3n8GUwQO8JqvuEDIuQ2MQTPdpvg5QRZlPMs/Co=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767111331; c=relaxed/simple;
-	bh=c5AwcJMRrsm5tONC83AOCbiWlp0qeKwq0oxJjmVaGlE=;
+	s=arc-20240116; t=1767111341; c=relaxed/simple;
+	bh=zR30jTL0Ttlfs9W1vcXCpXLDxGJAX1MefYe8ozke5U0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sMSSUgBm32ZZRp9XXzvuyohmykPxmOufhgtXsW+rUZzs+Y2ZbyFNy1wlRC4//8/7NMJ45ACteoss14ldBq8Z5sjgQe3n/gHPV46fYgprPe7NmotsUhQXqCBdcW+eWjnkbIRofgNDochrz7OZ2HqKpp7o7ML+REJCkXT+gDsEPaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DJdf2tGA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1D00C116C6;
-	Tue, 30 Dec 2025 16:15:29 +0000 (UTC)
+	 MIME-Version; b=tfxtLF80F40KZwUb9ph65Wcukg7/Z7HRcRrrTjQt840D5YrMJvKJK2BAoSiuhkCV27KOfpx9+l/PxemK1rUs8kYAzoGttYp/EJvOWj4tMmwuzB1g1/7cU5ejWruqfFbykQtc1+dfCeyoAJWbn4kgUkU6iAzcfrjz2VIaGWAQvEI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OdUfHW0o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0345C4CEFB;
+	Tue, 30 Dec 2025 16:15:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767111330;
-	bh=c5AwcJMRrsm5tONC83AOCbiWlp0qeKwq0oxJjmVaGlE=;
+	s=k20201202; t=1767111341;
+	bh=zR30jTL0Ttlfs9W1vcXCpXLDxGJAX1MefYe8ozke5U0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DJdf2tGApBTdOsFVBPuK0m1ktIIioDsxxma8PHiC7nGbx5tSvxIrJ3Riwsotjl+AN
-	 DlqFSdMExCulFhp97i6Q+kh9ga0OzlrFxf3HMWzMa2Ep0GbeBqOZLiGkbh6d7pdtwF
-	 8g7h+wJKHz3zzxysr3SPXLTqidb5Lfomb3iHqeKN53RgkXOsK9v6OHGf4V6Uj7wf+o
-	 qyXcO/Ie8OSMPioAlPQTqgE77jqprk+rfxcHYnRs92M8VNBidLHLmlTEOtiPDC2q77
-	 okx6DvH+41AZ8OsGiAYEIb+1cQQWdNfmbd4lIv14YyqlfA6QwJUrX27Ryans4SAiMz
-	 73mAOXEETtxVg==
+	b=OdUfHW0oJnxMfLXcdoTdD+6HHoKQcYDcAHuj45wfkTtawVEoG+QwLaHwPobh/6swp
+	 Hp7KAdZgeGBJ7l3X+o4TNoJPwO1yYNlcvXnha7bpF35V1zpSnFDo/KtV2JteToxNl4
+	 rOGjGMgYg1y6pEQjtv5TRfF1WNB6fnh6EW0ZSwh3oaLD7a9cxPksfB/fj7SJF/1MJV
+	 WmAm1fGdh9+WJqYk4vMwXmAsERDbAEDaYrysiXr2lRGF+8xHTTQeGi7WuVslkyboKh
+	 naskURYABPbwU8VbkaHV81IPduEDrrrYF9hfJpxqiwcpAOLy8vHJ3W7n7GbpYA5O/+
+	 baCLwA7hUASRQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Chao Yu <chao@kernel.org>,
-	stable@kernel.org,
-	"Bai, Shuangpeng" <sjb7183@psu.edu>,
 	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y 2/2] f2fs: fix to avoid updating compression context during writeback
-Date: Tue, 30 Dec 2025 11:15:27 -0500
-Message-ID: <20251230161527.2300909-2-sashal@kernel.org>
+Subject: [PATCH 6.6.y 1/2] f2fs: use f2fs_err_ratelimited() to avoid redundant logs
+Date: Tue, 30 Dec 2025 11:15:38 -0500
+Message-ID: <20251230161539.2301172-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251230161527.2300909-1-sashal@kernel.org>
-References: <2025122921-captivate-substance-994f@gregkh>
- <20251230161527.2300909-1-sashal@kernel.org>
+In-Reply-To: <2025122936-footless-sensitize-ae33@gregkh>
+References: <2025122936-footless-sensitize-ae33@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,166 +60,47 @@ Content-Transfer-Encoding: 8bit
 
 From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit 10b591e7fb7cdc8c1e53e9c000dc0ef7069aaa76 ]
+[ Upstream commit 0b8eb814e05885cde53c1d56ee012a029b8413e6 ]
 
-Bai, Shuangpeng <sjb7183@psu.edu> reported a bug as below:
+Use f2fs_err_ratelimited() to instead f2fs_err() in
+f2fs_record_stop_reason() and f2fs_record_errors() to
+avoid redundant logs.
 
-Oops: divide error: 0000 [#1] SMP KASAN PTI
-CPU: 0 UID: 0 PID: 11441 Comm: syz.0.46 Not tainted 6.17.0 #1 PREEMPT(full)
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
-RIP: 0010:f2fs_all_cluster_page_ready+0x106/0x550 fs/f2fs/compress.c:857
-Call Trace:
- <TASK>
- f2fs_write_cache_pages fs/f2fs/data.c:3078 [inline]
- __f2fs_write_data_pages fs/f2fs/data.c:3290 [inline]
- f2fs_write_data_pages+0x1c19/0x3600 fs/f2fs/data.c:3317
- do_writepages+0x38e/0x640 mm/page-writeback.c:2634
- filemap_fdatawrite_wbc mm/filemap.c:386 [inline]
- __filemap_fdatawrite_range mm/filemap.c:419 [inline]
- file_write_and_wait_range+0x2ba/0x3e0 mm/filemap.c:794
- f2fs_do_sync_file+0x6e6/0x1b00 fs/f2fs/file.c:294
- generic_write_sync include/linux/fs.h:3043 [inline]
- f2fs_file_write_iter+0x76e/0x2700 fs/f2fs/file.c:5259
- new_sync_write fs/read_write.c:593 [inline]
- vfs_write+0x7e9/0xe00 fs/read_write.c:686
- ksys_write+0x19d/0x2d0 fs/read_write.c:738
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xf7/0x470 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-The bug was triggered w/ below race condition:
-
-fsync				setattr			ioctl
-- f2fs_do_sync_file
- - file_write_and_wait_range
-  - f2fs_write_cache_pages
-  : inode is non-compressed
-  : cc.cluster_size =
-    F2FS_I(inode)->i_cluster_size = 0
-   - tag_pages_for_writeback
-				- f2fs_setattr
-				 - truncate_setsize
-				 - f2fs_truncate
-							- f2fs_fileattr_set
-							 - f2fs_setflags_common
-							  - set_compress_context
-							  : F2FS_I(inode)->i_cluster_size = 4
-							  : set_inode_flag(inode, FI_COMPRESSED_FILE)
-   - f2fs_compressed_file
-   : return true
-   - f2fs_all_cluster_page_ready
-   : "pgidx % cc->cluster_size" trigger dividing 0 issue
-
-Let's change as below to fix this issue:
-- introduce a new atomic type variable .writeback in structure f2fs_inode_info
-to track the number of threads which calling f2fs_write_cache_pages().
-- use .i_sem lock to protect .writeback update.
-- check .writeback before update compression context in f2fs_setflags_common()
-to avoid race w/ ->writepages.
-
-Fixes: 4c8ff7095bef ("f2fs: support data compression")
-Cc: stable@kernel.org
-Reported-by: Bai, Shuangpeng <sjb7183@psu.edu>
-Tested-by: Bai, Shuangpeng <sjb7183@psu.edu>
-Closes: https://lore.kernel.org/lkml/44D8F7B3-68AD-425F-9915-65D27591F93F@psu.edu
 Signed-off-by: Chao Yu <chao@kernel.org>
 Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Stable-dep-of: ca8b201f2854 ("f2fs: fix to avoid potential deadlock")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/data.c  | 17 +++++++++++++++++
- fs/f2fs/f2fs.h  |  3 ++-
- fs/f2fs/file.c  |  5 +++--
- fs/f2fs/super.c |  1 +
- 4 files changed, 23 insertions(+), 3 deletions(-)
+ fs/f2fs/super.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/fs/f2fs/data.c b/fs/f2fs/data.c
-index bbb29b602438..ea831671e3ad 100644
---- a/fs/f2fs/data.c
-+++ b/fs/f2fs/data.c
-@@ -3272,6 +3272,19 @@ static inline bool __should_serialize_io(struct inode *inode,
- 	return false;
- }
- 
-+static inline void account_writeback(struct inode *inode, bool inc)
-+{
-+	if (!f2fs_sb_has_compression(F2FS_I_SB(inode)))
-+		return;
-+
-+	f2fs_down_read(&F2FS_I(inode)->i_sem);
-+	if (inc)
-+		atomic_inc(&F2FS_I(inode)->writeback);
-+	else
-+		atomic_dec(&F2FS_I(inode)->writeback);
-+	f2fs_up_read(&F2FS_I(inode)->i_sem);
-+}
-+
- static int __f2fs_write_data_pages(struct address_space *mapping,
- 						struct writeback_control *wbc,
- 						enum iostat_type io_type)
-@@ -3321,10 +3334,14 @@ static int __f2fs_write_data_pages(struct address_space *mapping,
- 		locked = true;
- 	}
- 
-+	account_writeback(inode, true);
-+
- 	blk_start_plug(&plug);
- 	ret = f2fs_write_cache_pages(mapping, wbc, io_type);
- 	blk_finish_plug(&plug);
- 
-+	account_writeback(inode, false);
-+
- 	if (locked)
- 		mutex_unlock(&sbi->writepages);
- 
-diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
-index e190cfa63665..c1d202af2f7c 100644
---- a/fs/f2fs/f2fs.h
-+++ b/fs/f2fs/f2fs.h
-@@ -881,6 +881,7 @@ struct f2fs_inode_info {
- 	unsigned char i_compress_level;		/* compress level (lz4hc,zstd) */
- 	unsigned char i_compress_flag;		/* compress flag */
- 	unsigned int i_cluster_size;		/* cluster size */
-+	atomic_t writeback;			/* count # of writeback thread */
- 
- 	unsigned int atomic_write_cnt;
- 	loff_t original_i_size;		/* original i_size before atomic write */
-@@ -4538,7 +4539,7 @@ static inline bool f2fs_disable_compressed_file(struct inode *inode)
- 		f2fs_up_write(&fi->i_sem);
- 		return true;
- 	}
--	if (f2fs_is_mmap_file(inode) ||
-+	if (f2fs_is_mmap_file(inode) || atomic_read(&fi->writeback) ||
- 		(S_ISREG(inode->i_mode) && F2FS_HAS_BLOCKS(inode))) {
- 		f2fs_up_write(&fi->i_sem);
- 		return false;
-diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
-index e21915c72bc7..78a31750d18b 100644
---- a/fs/f2fs/file.c
-+++ b/fs/f2fs/file.c
-@@ -2068,8 +2068,9 @@ static int f2fs_setflags_common(struct inode *inode, u32 iflags, u32 mask)
- 
- 			f2fs_down_write(&fi->i_sem);
- 			if (!f2fs_may_compress(inode) ||
--					(S_ISREG(inode->i_mode) &&
--					F2FS_HAS_BLOCKS(inode))) {
-+				atomic_read(&fi->writeback) ||
-+				(S_ISREG(inode->i_mode) &&
-+				F2FS_HAS_BLOCKS(inode))) {
- 				f2fs_up_write(&fi->i_sem);
- 				return -EINVAL;
- 			}
 diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
-index 6fc2f88e544d..7d6e99d125c7 100644
+index b9913ab526fd..84e682c92b7d 100644
 --- a/fs/f2fs/super.c
 +++ b/fs/f2fs/super.c
-@@ -1426,6 +1426,7 @@ static struct inode *f2fs_alloc_inode(struct super_block *sb)
- 	atomic_set(&fi->dirty_pages, 0);
- 	atomic_set(&fi->i_compr_blocks, 0);
- 	atomic_set(&fi->open_count, 0);
-+	atomic_set(&fi->writeback, 0);
- 	init_f2fs_rwsem(&fi->i_sem);
- 	spin_lock_init(&fi->i_size_lock);
- 	INIT_LIST_HEAD(&fi->dirty_list);
+@@ -4053,7 +4053,9 @@ static void f2fs_record_stop_reason(struct f2fs_sb_info *sbi)
+ 
+ 	f2fs_up_write(&sbi->sb_lock);
+ 	if (err)
+-		f2fs_err(sbi, "f2fs_commit_super fails to record err:%d", err);
++		f2fs_err_ratelimited(sbi,
++			"f2fs_commit_super fails to record stop_reason, err:%d",
++			err);
+ }
+ 
+ void f2fs_save_errors(struct f2fs_sb_info *sbi, unsigned char flag)
+@@ -4096,8 +4098,9 @@ static void f2fs_record_errors(struct f2fs_sb_info *sbi, unsigned char error)
+ 
+ 	err = f2fs_commit_super(sbi, false);
+ 	if (err)
+-		f2fs_err(sbi, "f2fs_commit_super fails to record errors:%u, err:%d",
+-								error, err);
++		f2fs_err_ratelimited(sbi,
++			"f2fs_commit_super fails to record errors:%u, err:%d",
++			error, err);
+ out_unlock:
+ 	f2fs_up_write(&sbi->sb_lock);
+ }
 -- 
 2.51.0
 
