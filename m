@@ -1,110 +1,128 @@
-Return-Path: <stable+bounces-204215-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204216-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8F68CE9CB8
-	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 14:35:05 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12E12CE9CD6
+	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 14:40:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E4DCF3018955
-	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 13:35:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B102E3026BD1
+	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 13:39:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 187AA231836;
-	Tue, 30 Dec 2025 13:35:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vx+23ncV"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 776B623EAB7;
+	Tue, 30 Dec 2025 13:39:53 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD0A7AD5A
-	for <stable@vger.kernel.org>; Tue, 30 Dec 2025 13:35:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0364B223705;
+	Tue, 30 Dec 2025 13:39:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767101701; cv=none; b=DriD9ffbbMvpPu5CewVkQ1o1/YDMXy66sgThOpRZxvlSx1dNOJT7ukrNq4wk28EW7PS6XMvg66nEkbHc6fNJMPOdS5Dld1D85Q2fOl2+e3dWCxVdH7d0GZEsWpKmbt2mM1z5o8JR0a2/Waut0s8YFxA4etjPjb4BY+6Z1NcMrIo=
+	t=1767101993; cv=none; b=WaTAE2RWP2Is0BEfpLuAgS34Nd3whDuecy2ktuT0bl41DczlNZiolZ2Hh+c5/PfKvqrEKGxY+1Lka8hFlj3GjmWZDlwGAw0foQq+2n5uvA2SGp5+DQ08fECrAiAnhRE21hO8B51uKUs9dx3nP2fwbrZb2o4+GvdbgvOEKrgjaNI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767101701; c=relaxed/simple;
-	bh=7iYVTR0KhvixAODeEfVyxc/HgiB/m61jgLZhf9cSnjQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XQo+98ewBBmIIuKcgbMk2O+qdJhWoZaSoZfQMq9Qaq1H0ndMV+R7gfH8NjncL89CVUF0TeRxfRIsn79tG3MdkK7r/AMLSP9spqAStTDOpMpz2xLCB1Vg3V4owRvT3OB2I6i/8oUIsfL/Oga7V9oLdlcbEcBXie3WICq3AJEd64A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vx+23ncV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F854C116C6;
-	Tue, 30 Dec 2025 13:35:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767101701;
-	bh=7iYVTR0KhvixAODeEfVyxc/HgiB/m61jgLZhf9cSnjQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vx+23ncVxtm+OJ0UOn5DN3anzPmAni7sBY7bZKztKsSZgZf8C3Ufd6GSnscE7Zx7J
-	 VAg5X80o9BMjxrIjnL59bJzjk9bWLUSNUINNEmgwbEC4WdbXXAHIzskxUFgf+EAaKl
-	 C0PWeLMSM33RlWTc6UqkM+Y3ubenBDhjRy7aHU9nj5vLr0FVVT4UJ7W+r2X5JOzKEb
-	 z8CTaEUfTBNnyqjUD1o9ob6/EFkWm2K7VNbi8IlS+CthImt5toFrOiLyh3KIq+1Iug
-	 +gumVMNpds6BkEYqVdbtTi+VwcoQ8/EMS9QFuDntJTdtnbYCDz/tQO2pgZ+ykUhW7j
-	 yfJuOedvfW8GA==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Johan Hovold <johan@kernel.org>,
-	Ma Ke <make24@iscas.ac.cn>,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Vladimir Zapolskiy <vz@mleia.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y 2/2] usb: ohci-nxp: fix device leak on probe failure
-Date: Tue, 30 Dec 2025 08:34:58 -0500
-Message-ID: <20251230133458.2203341-2-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251230133458.2203341-1-sashal@kernel.org>
-References: <2025122927-swiftly-press-a51f@gregkh>
- <20251230133458.2203341-1-sashal@kernel.org>
+	s=arc-20240116; t=1767101993; c=relaxed/simple;
+	bh=0d/OanXMJ0pRPad1es/3QtK336I3Hcqs1dKIXrOzFYk=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=hVL12VA767k6sZvUtb8Y2A/1TsPonWfhatyCrcxuV99FCG6UwQIDcgFRdxuSaZmsRlKWhMW/0JOtO5dgjSllU4bZDuXReNFkJjdJ+wdFnKn2DJ/kIJet4Kjx4mFvDE2YKWqu9SpQXJue+vz9UF5ANYt00rfg603H9keOaymm0Gs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from [127.0.0.2] (unknown [114.241.82.59])
+	by APP-01 (Coremail) with SMTP id qwCowADnjWkN1lNpCqNgAg--.13684S2;
+	Tue, 30 Dec 2025 21:39:26 +0800 (CST)
+From: Vivian Wang <wangruikang@iscas.ac.cn>
+Date: Tue, 30 Dec 2025 21:39:17 +0800
+Subject: [PATCH] riscv: boot: Always make Image from vmlinux, not
+ vmlinux.unstripped
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251230-riscv-vmlinux-not-unstripped-v1-1-15f49df880df@iscas.ac.cn>
+X-B4-Tracking: v=1; b=H4sIAATWU2kC/yXNywqDMBCF4VeRWXdKEmlBX6Uo2GRsB2q0kwtC8
+ N0b6vI7i/8UCCRMAfqmgFDmwKuv0JcG7HvyL0J21WCUuWnTKhQONmNePuzTjn6NmHyIwttGDlt
+ FVtmuVbMzUBOb0Mz7P/8YTgt9U32J5wjPKRDadVk49k2+X3WHYvVYDhiO4wdoLjN0ngAAAA==
+X-Change-ID: 20251230-riscv-vmlinux-not-unstripped-30ec0c930fd2
+To: Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
+ Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, 
+ Nathan Chancellor <nathan@kernel.org>, Alexey Gladkov <legion@kernel.org>, 
+ Masahiro Yamada <masahiroy@kernel.org>, Nicolas Schier <nsc@kernel.org>
+Cc: Han Gao <gaohan@iscas.ac.cn>, linux-riscv@lists.infradead.org, 
+ linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org, 
+ stable@vger.kernel.org, Vivian Wang <wangruikang@iscas.ac.cn>
+X-Mailer: b4 0.14.3
+X-CM-TRANSID:qwCowADnjWkN1lNpCqNgAg--.13684S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7ZrWUAF1DGr4UJw1DWrWUXFb_yoW8Cr15p3
+	yUuw1YkrWUJrWj9F10y3y293y2qFn0g3y3ZFW8GF1DtrWjqF1vqwsIgayUWF9rGFs3Wa1D
+	Xr4fGF95Ca40y3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9014x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
+	6r4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
+	Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
+	I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
+	4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628v
+	n2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7x
+	kEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E
+	67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCw
+	CI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1x
+	MIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIda
+	VFxhVjvjDU0xZFpf9x0JUd-B_UUUUU=
+X-CM-SenderInfo: pzdqw2pxlnt03j6l2u1dvotugofq/
 
-From: Johan Hovold <johan@kernel.org>
+Since commit 4b47a3aefb29 ("kbuild: Restore pattern to avoid stripping
+.rela.dyn from vmlinux") vmlinux has .rel*.dyn preserved. Therefore, use
+vmlinux to produce Image, not vmlinux.unstripped.
 
-[ Upstream commit b4c61e542faf8c9131d69ecfc3ad6de96d1b2ab8 ]
+Doing so fixes booting a RELOCATABLE=y Image with kexec. The problem is
+caused by this chain of events:
 
-Make sure to drop the reference taken when looking up the PHY I2C device
-during probe on probe failure (e.g. probe deferral) and on driver
-unbind.
+- Since commit 3e86e4d74c04 ("kbuild: keep .modinfo section in
+  vmlinux.unstripped"), vmlinux.unstripped gets a .modinfo section.
+- The .modinfo section has SHF_ALLOC, so it ends up in Image, at the end
+  of it.
+- The Image header's image_size field does not expect to include
+  .modinfo and does not account for it, since it should not be in Image.
+- If .modinfo is large enough, the file size of Image ends up larger
+  than image_size, which eventually leads to it failing
+  sanity_check_segment_list().
 
-Fixes: 73108aa90cbf ("USB: ohci-nxp: Use isp1301 driver")
-Cc: stable@vger.kernel.org	# 3.5
-Reported-by: Ma Ke <make24@iscas.ac.cn>
-Link: https://lore.kernel.org/lkml/20251117013428.21840-1-make24@iscas.ac.cn/
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Acked-by: Alan Stern <stern@rowland.harvard.edu>
-Reviewed-by: Vladimir Zapolskiy <vz@mleia.com>
-Link: https://patch.msgid.link/20251218153519.19453-4-johan@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Using vmlinux instead of vmlinux.unstripped means that the unexpected
+.modinfo section is gone from Image, fixing the file size problem.
+
+Cc: stable@vger.kernel.org
+Fixes: 3e86e4d74c04 ("kbuild: keep .modinfo section in vmlinux.unstripped")
+Signed-off-by: Vivian Wang <wangruikang@iscas.ac.cn>
 ---
- drivers/usb/host/ohci-nxp.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/riscv/boot/Makefile | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/drivers/usb/host/ohci-nxp.c b/drivers/usb/host/ohci-nxp.c
-index f7f85fc9ce8f..a1555bce22d0 100644
---- a/drivers/usb/host/ohci-nxp.c
-+++ b/drivers/usb/host/ohci-nxp.c
-@@ -224,6 +224,7 @@ static int ohci_hcd_nxp_probe(struct platform_device *pdev)
- fail_resource:
- 	usb_put_hcd(hcd);
- fail_disable:
-+	put_device(&isp1301_i2c_client->dev);
- 	isp1301_i2c_client = NULL;
- 	return ret;
- }
-@@ -235,6 +236,7 @@ static int ohci_hcd_nxp_remove(struct platform_device *pdev)
- 	usb_remove_hcd(hcd);
- 	ohci_nxp_stop_hc();
- 	usb_put_hcd(hcd);
-+	put_device(&isp1301_i2c_client->dev);
- 	isp1301_i2c_client = NULL;
+diff --git a/arch/riscv/boot/Makefile b/arch/riscv/boot/Makefile
+index bfc3d0b75b9b..5301adf5f3f5 100644
+--- a/arch/riscv/boot/Makefile
++++ b/arch/riscv/boot/Makefile
+@@ -31,11 +31,7 @@ $(obj)/xipImage: vmlinux FORCE
  
- 	return 0;
+ endif
+ 
+-ifdef CONFIG_RELOCATABLE
+-$(obj)/Image: vmlinux.unstripped FORCE
+-else
+ $(obj)/Image: vmlinux FORCE
+-endif
+ 	$(call if_changed,objcopy)
+ 
+ $(obj)/Image.gz: $(obj)/Image FORCE
+
+---
+base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
+change-id: 20251230-riscv-vmlinux-not-unstripped-30ec0c930fd2
+
+Best regards,
 -- 
-2.51.0
+Vivian "dramforever" Wang
 
 
