@@ -1,55 +1,65 @@
-Return-Path: <stable+bounces-204281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204282-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23284CEA8D1
-	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 20:49:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2CD1CEA8D4
+	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 20:49:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 90C323017EE3
-	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 19:49:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B84B3301A1C2
+	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 19:49:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2F7623B62B;
-	Tue, 30 Dec 2025 19:49:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8095523B62B;
+	Tue, 30 Dec 2025 19:49:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SyoNNLy2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WPu7Ga0s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F80721ABAC
-	for <stable@vger.kernel.org>; Tue, 30 Dec 2025 19:49:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CE6621ABAC
+	for <stable@vger.kernel.org>; Tue, 30 Dec 2025 19:49:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767124147; cv=none; b=Rt+5ALa0k80bh4dOmpiad+gMwdhcrJhU4wQJQ9S/wiyuvw5mp/Qk/VBlNmuRx/URfU0mHlsjpauDktzmnW+/sMiUjxxdqZCRmdCCiOl8odEPQRLR73u3cWu+7Jk46BDN84f+AX6AuMEdNvgP9h9UPne+vGfcLRXh0pbcijQozWI=
+	t=1767124149; cv=none; b=JtE+4/thPpOa8mgagGtLaqjmne1p96TWkFrbUQbpNJhTN3HOqfEfahUah/bLME7I77kX4QyWgjXl7XEZkoS/KRAqi7fdvp/ulQ6BscULxPusQsfBJcszLxcHFNjywwgHylFN79oMOrnWi0sEp/Lk+o8NQsVNCKeCiCseTLe0fkY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767124147; c=relaxed/simple;
-	bh=/2g+gJSrGPntZWKnegvyX89eWH1g3E9bVanK0M3gYrQ=;
+	s=arc-20240116; t=1767124149; c=relaxed/simple;
+	bh=X6GLG+cCQGAq4xvzGcI19Y7IEpcgLVaqE0ahzaJTmJ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=D+fVhEX4IHX+JmOlY2bvgMR+aWAohCmp4K+HYcSTgz6Ukowrt8Ks20XuRpIsvHwsfgxcB8DdNGM8ZRKLKONwsXGnfCISpd+1SBc11xyRe0nO5mqV2UErCpaGy3LDDOzrxV8l2poI1YtfAtv/UpDWinthSUtaFGbYOl4ggQBOEPI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SyoNNLy2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6F1EC4CEFB;
-	Tue, 30 Dec 2025 19:49:06 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ibRlV60dZX0ncU71jRPE5yz6h2F/zkRsABRS8t9pVrI81d6x5zAFm0vOLTwxkuIxM+VbeTRGfA/AN1ht7oDKyHKM1yncTnr83tIqOijZoJE0dcxWhjWmUH05J2ibPc8OgUo25QHH9dwK3PoOAKw8LnY7T2lt1x4e3cugzytbOW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WPu7Ga0s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7578DC113D0;
+	Tue, 30 Dec 2025 19:49:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767124147;
-	bh=/2g+gJSrGPntZWKnegvyX89eWH1g3E9bVanK0M3gYrQ=;
+	s=k20201202; t=1767124148;
+	bh=X6GLG+cCQGAq4xvzGcI19Y7IEpcgLVaqE0ahzaJTmJ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SyoNNLy2xRMjet1kiHkoppJg1kGg3Tttpx8zSvXdMRuG6d+2qbcine1nTlWqIFkQn
-	 +YK9CSsB50bnQCyO5hDFY+JTcg04T2tWId927yOVJbuoG2FuI6kriX9/Lc7PHNZi0p
-	 SHDu25pOdu2itjw4XRUeDgFHDsvhOEg9Wi5B+qU1J16NPAn8DCpBB7zv2z8xP71dgX
-	 3DrI+3GGCjsZPEF+QLWLO2QttYprOdBEdmcnwhN+YYaQRlEG7AtXOxpdcIyxwuJpMx
-	 CnZwoejVWIUvncVDfrNsfpWDNorgtBIPQn3E2S6NJQpGfSxohn+QszneFhgZ+GxNxQ
-	 0W/IJCmBrh6hQ==
+	b=WPu7Ga0s33j1yKPxcIu3DbCQHREcSqeakebubkd3tCOTPemazXmsvyCue0L5WggzH
+	 ZMmKMQiGDoDmzzr3RnVbOReiNrNVBI0LCldQjiSTGSLNjq547KPeAuHJPfW7XQ8hZ5
+	 ua/wJq35TVvJRbzfyT879cCrnKq32p8bkrU+Nl5CuEu47Zhr9Q57WCCGvw9M9HSKWG
+	 bmAO8iBVE8p2+drL5ZPpBVTXIofBBGLtBeDRXsoJC7/7YMXNYiX+Et9el7BCjc8Py3
+	 E7pbwNLiMv5M72VSuWbiR5aLypX0GlS+iz7vhp4lPCkpz8lQKEvMVD6BDVG8KC3Jtm
+	 ibFUcQy33fPFw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+Cc: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
+	Karsten Keil <isdn@linux-pingi.de>,
+	David Lin <dtwlin@gmail.com>,
+	Johan Hovold <johan@kernel.org>,
+	Alex Elder <elder@kernel.org>,
+	Oliver Neukum <oneukum@suse.com>,
+	Marcel Holtmann <marcel@holtmann.org>,
+	Johan Hedberg <johan.hedberg@gmail.com>,
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y 1/3] serial: Make uart_remove_one_port() return void
-Date: Tue, 30 Dec 2025 14:49:02 -0500
-Message-ID: <20251230194904.2442970-1-sashal@kernel.org>
+Subject: [PATCH 6.1.y 2/3] tty: introduce and use tty_port_tty_vhangup() helper
+Date: Tue, 30 Dec 2025 14:49:03 -0500
+Message-ID: <20251230194904.2442970-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025122918-sagging-divisible-a4a4@gregkh>
+In-Reply-To: <20251230194904.2442970-1-sashal@kernel.org>
 References: <2025122918-sagging-divisible-a4a4@gregkh>
+ <20251230194904.2442970-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -59,262 +69,246 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>
 
-[ Upstream commit d5b3d02d0b107345f2a6ecb5b06f98356f5c97ab ]
+[ Upstream commit 2b5eac0f8c6e79bc152c8804f9f88d16717013ab ]
 
-The return value is only ever used as a return value for remove callbacks
-of platform drivers. This return value is ignored by the driver core.
-(The only effect is an error message, but uart_remove_one_port() already
-emitted one in this case.)
+This code (tty_get -> vhangup -> tty_put) is repeated on few places.
+Introduce a helper similar to tty_port_tty_hangup() (asynchronous) to
+handle even vhangup (synchronous).
 
-So the return value isn't used at all and uart_remove_one_port() can be
-changed to return void without any loss. Also this better matches the
-Linux device model as remove functions are not supposed to fail.
+And use it on those places.
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Link: https://lore.kernel.org/r/20230512173810.131447-3-u.kleine-koenig@pengutronix.de
+In fact, reuse the tty_port_tty_hangup()'s code and call tty_vhangup()
+depending on a new bool parameter.
+
+Signed-off-by: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>
+Cc: Karsten Keil <isdn@linux-pingi.de>
+Cc: David Lin <dtwlin@gmail.com>
+Cc: Johan Hovold <johan@kernel.org>
+Cc: Alex Elder <elder@kernel.org>
+Cc: Oliver Neukum <oneukum@suse.com>
+Cc: Marcel Holtmann <marcel@holtmann.org>
+Cc: Johan Hedberg <johan.hedberg@gmail.com>
+Cc: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Link: https://lore.kernel.org/r/20250611100319.186924-2-jirislaby@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Stable-dep-of: 74098cc06e75 ("xhci: dbgtty: fix device unregister: fixup")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/atmel_serial.c           |  5 ++---
- drivers/tty/serial/clps711x.c               |  4 +++-
- drivers/tty/serial/cpm_uart/cpm_uart_core.c |  5 ++++-
- drivers/tty/serial/imx.c                    |  4 +++-
- drivers/tty/serial/lantiq.c                 |  4 +++-
- drivers/tty/serial/serial_core.c            |  6 +-----
- drivers/tty/serial/st-asc.c                 |  4 +++-
- drivers/tty/serial/uartlite.c               | 12 ++++--------
- drivers/tty/serial/xilinx_uartps.c          |  5 ++---
- include/linux/serial_core.h                 |  2 +-
- 10 files changed, 26 insertions(+), 25 deletions(-)
+ drivers/isdn/capi/capi.c         |  8 +-------
+ drivers/staging/greybus/uart.c   |  7 +------
+ drivers/tty/serial/serial_core.c |  7 +------
+ drivers/tty/tty_port.c           | 12 ++++++++----
+ drivers/usb/class/cdc-acm.c      |  7 +------
+ drivers/usb/serial/usb-serial.c  |  7 +------
+ include/linux/tty_port.h         | 12 +++++++++++-
+ net/bluetooth/rfcomm/tty.c       |  7 +------
+ 8 files changed, 25 insertions(+), 42 deletions(-)
 
-diff --git a/drivers/tty/serial/atmel_serial.c b/drivers/tty/serial/atmel_serial.c
-index b3463cdd1d4b..e11f89355d17 100644
---- a/drivers/tty/serial/atmel_serial.c
-+++ b/drivers/tty/serial/atmel_serial.c
-@@ -3022,14 +3022,13 @@ static int atmel_serial_remove(struct platform_device *pdev)
+diff --git a/drivers/isdn/capi/capi.c b/drivers/isdn/capi/capi.c
+index 0f00be62438d..973092543eb7 100644
+--- a/drivers/isdn/capi/capi.c
++++ b/drivers/isdn/capi/capi.c
+@@ -304,15 +304,9 @@ static void capincci_alloc_minor(struct capidev *cdev, struct capincci *np)
+ static void capincci_free_minor(struct capincci *np)
  {
- 	struct uart_port *port = platform_get_drvdata(pdev);
- 	struct atmel_uart_port *atmel_port = to_atmel_uart_port(port);
--	int ret = 0;
+ 	struct capiminor *mp = np->minorp;
+-	struct tty_struct *tty;
  
- 	tasklet_kill(&atmel_port->tasklet_rx);
- 	tasklet_kill(&atmel_port->tasklet_tx);
- 
- 	device_init_wakeup(&pdev->dev, 0);
- 
--	ret = uart_remove_one_port(&atmel_uart, port);
-+	uart_remove_one_port(&atmel_uart, port);
- 
- 	kfree(atmel_port->rx_ring.buf);
- 
-@@ -3039,7 +3038,7 @@ static int atmel_serial_remove(struct platform_device *pdev)
- 
- 	pdev->dev.of_node = NULL;
- 
--	return ret;
-+	return 0;
+ 	if (mp) {
+-		tty = tty_port_tty_get(&mp->port);
+-		if (tty) {
+-			tty_vhangup(tty);
+-			tty_kref_put(tty);
+-		}
+-
++		tty_port_tty_vhangup(&mp->port);
+ 		capiminor_free(mp);
+ 	}
  }
- 
- static SIMPLE_DEV_PM_OPS(atmel_serial_pm_ops, atmel_serial_suspend,
-diff --git a/drivers/tty/serial/clps711x.c b/drivers/tty/serial/clps711x.c
-index 404b43a5ae33..6d5fab8840a3 100644
---- a/drivers/tty/serial/clps711x.c
-+++ b/drivers/tty/serial/clps711x.c
-@@ -515,7 +515,9 @@ static int uart_clps711x_remove(struct platform_device *pdev)
+diff --git a/drivers/staging/greybus/uart.c b/drivers/staging/greybus/uart.c
+index 90ff07f2cbf7..70505bcfb981 100644
+--- a/drivers/staging/greybus/uart.c
++++ b/drivers/staging/greybus/uart.c
+@@ -915,7 +915,6 @@ static void gb_uart_remove(struct gbphy_device *gbphy_dev)
  {
- 	struct clps711x_port *s = platform_get_drvdata(pdev);
+ 	struct gb_tty *gb_tty = gb_gbphy_get_data(gbphy_dev);
+ 	struct gb_connection *connection = gb_tty->connection;
+-	struct tty_struct *tty;
+ 	int ret;
  
--	return uart_remove_one_port(&clps711x_uart, &s->port);
-+	uart_remove_one_port(&clps711x_uart, &s->port);
-+
-+	return 0;
- }
+ 	ret = gbphy_runtime_get_sync(gbphy_dev);
+@@ -928,11 +927,7 @@ static void gb_uart_remove(struct gbphy_device *gbphy_dev)
+ 	wake_up_all(&gb_tty->wioctl);
+ 	mutex_unlock(&gb_tty->mutex);
  
- static const struct of_device_id __maybe_unused clps711x_uart_dt_ids[] = {
-diff --git a/drivers/tty/serial/cpm_uart/cpm_uart_core.c b/drivers/tty/serial/cpm_uart/cpm_uart_core.c
-index bb25691f5000..863c26a263ed 100644
---- a/drivers/tty/serial/cpm_uart/cpm_uart_core.c
-+++ b/drivers/tty/serial/cpm_uart/cpm_uart_core.c
-@@ -1428,7 +1428,10 @@ static int cpm_uart_probe(struct platform_device *ofdev)
- static int cpm_uart_remove(struct platform_device *ofdev)
- {
- 	struct uart_cpm_port *pinfo = platform_get_drvdata(ofdev);
--	return uart_remove_one_port(&cpm_reg, &pinfo->port);
-+
-+	uart_remove_one_port(&cpm_reg, &pinfo->port);
-+
-+	return 0;
- }
+-	tty = tty_port_tty_get(&gb_tty->port);
+-	if (tty) {
+-		tty_vhangup(tty);
+-		tty_kref_put(tty);
+-	}
++	tty_port_tty_vhangup(&gb_tty->port);
  
- static const struct of_device_id cpm_uart_match[] = {
-diff --git a/drivers/tty/serial/imx.c b/drivers/tty/serial/imx.c
-index e1d88a499554..47e59664dbde 100644
---- a/drivers/tty/serial/imx.c
-+++ b/drivers/tty/serial/imx.c
-@@ -2538,7 +2538,9 @@ static int imx_uart_remove(struct platform_device *pdev)
- {
- 	struct imx_port *sport = platform_get_drvdata(pdev);
- 
--	return uart_remove_one_port(&imx_uart_uart_driver, &sport->port);
-+	uart_remove_one_port(&imx_uart_uart_driver, &sport->port);
-+
-+	return 0;
- }
- 
- static void imx_uart_restore_context(struct imx_port *sport)
-diff --git a/drivers/tty/serial/lantiq.c b/drivers/tty/serial/lantiq.c
-index 112a2f5f6ac3..5a3e826d2909 100644
---- a/drivers/tty/serial/lantiq.c
-+++ b/drivers/tty/serial/lantiq.c
-@@ -918,7 +918,9 @@ static int lqasc_remove(struct platform_device *pdev)
- {
- 	struct uart_port *port = platform_get_drvdata(pdev);
- 
--	return uart_remove_one_port(&lqasc_reg, port);
-+	uart_remove_one_port(&lqasc_reg, port);
-+
-+	return 0;
- }
- 
- static const struct ltq_soc_data soc_data_lantiq = {
+ 	gb_connection_disable_rx(connection);
+ 	tty_unregister_device(gb_tty_driver, gb_tty->minor);
 diff --git a/drivers/tty/serial/serial_core.c b/drivers/tty/serial/serial_core.c
-index 19a53801ff9e..534720a646f4 100644
+index 534720a646f4..c215a240db7a 100644
 --- a/drivers/tty/serial/serial_core.c
 +++ b/drivers/tty/serial/serial_core.c
-@@ -3186,13 +3186,12 @@ EXPORT_SYMBOL(uart_add_one_port);
-  * This unhooks (and hangs up) the specified port structure from the core
-  * driver. No further calls will be made to the low-level code for this port.
-  */
--int uart_remove_one_port(struct uart_driver *drv, struct uart_port *uport)
-+void uart_remove_one_port(struct uart_driver *drv, struct uart_port *uport)
- {
+@@ -3191,7 +3191,6 @@ void uart_remove_one_port(struct uart_driver *drv, struct uart_port *uport)
  	struct uart_state *state = drv->state + uport->line;
  	struct tty_port *port = &state->port;
  	struct uart_port *uart_port;
- 	struct tty_struct *tty;
--	int ret = 0;
+-	struct tty_struct *tty;
  
  	mutex_lock(&port_mutex);
  
-@@ -3208,7 +3207,6 @@ int uart_remove_one_port(struct uart_driver *drv, struct uart_port *uport)
+@@ -3217,11 +3216,7 @@ void uart_remove_one_port(struct uart_driver *drv, struct uart_port *uport)
+ 	 */
+ 	tty_port_unregister_device(port, drv->tty_driver, uport->line);
  
- 	if (!uart_port) {
- 		mutex_unlock(&port->mutex);
--		ret = -EINVAL;
- 		goto out;
- 	}
- 	uport->flags |= UPF_DEAD;
-@@ -3251,8 +3249,6 @@ int uart_remove_one_port(struct uart_driver *drv, struct uart_port *uport)
- 	mutex_unlock(&port->mutex);
- out:
- 	mutex_unlock(&port_mutex);
--
--	return ret;
- }
- EXPORT_SYMBOL(uart_remove_one_port);
+-	tty = tty_port_tty_get(port);
+-	if (tty) {
+-		tty_vhangup(port->tty);
+-		tty_kref_put(tty);
+-	}
++	tty_port_tty_vhangup(port);
  
-diff --git a/drivers/tty/serial/st-asc.c b/drivers/tty/serial/st-asc.c
-index fcecea689a0d..806f12c2744b 100644
---- a/drivers/tty/serial/st-asc.c
-+++ b/drivers/tty/serial/st-asc.c
-@@ -834,7 +834,9 @@ static int asc_serial_remove(struct platform_device *pdev)
- {
- 	struct uart_port *port = platform_get_drvdata(pdev);
- 
--	return uart_remove_one_port(&asc_uart_driver, port);
-+	uart_remove_one_port(&asc_uart_driver, port);
-+
-+	return 0;
- }
- 
- #ifdef CONFIG_PM_SLEEP
-diff --git a/drivers/tty/serial/uartlite.c b/drivers/tty/serial/uartlite.c
-index a75677d5cbef..40db763eac9d 100644
---- a/drivers/tty/serial/uartlite.c
-+++ b/drivers/tty/serial/uartlite.c
-@@ -686,18 +686,15 @@ static int ulite_assign(struct device *dev, int id, phys_addr_t base, int irq,
-  *
-  * @dev: pointer to device structure
+ 	/*
+ 	 * If the port is used as a console, unregister it
+diff --git a/drivers/tty/tty_port.c b/drivers/tty/tty_port.c
+index dce08a6d7b5e..7e3eb4dffd32 100644
+--- a/drivers/tty/tty_port.c
++++ b/drivers/tty/tty_port.c
+@@ -416,15 +416,19 @@ EXPORT_SYMBOL(tty_port_hangup);
+  * @port: tty port
+  * @check_clocal: hang only ttys with %CLOCAL unset?
   */
--static int ulite_release(struct device *dev)
-+static void ulite_release(struct device *dev)
+-void tty_port_tty_hangup(struct tty_port *port, bool check_clocal)
++void __tty_port_tty_hangup(struct tty_port *port, bool check_clocal, bool async)
  {
- 	struct uart_port *port = dev_get_drvdata(dev);
--	int rc = 0;
+ 	struct tty_struct *tty = tty_port_tty_get(port);
  
- 	if (port) {
--		rc = uart_remove_one_port(&ulite_uart_driver, port);
-+		uart_remove_one_port(&ulite_uart_driver, port);
- 		dev_set_drvdata(dev, NULL);
- 		port->mapbase = 0;
- 	}
--
--	return rc;
+-	if (tty && (!check_clocal || !C_CLOCAL(tty)))
+-		tty_hangup(tty);
++	if (tty && (!check_clocal || !C_CLOCAL(tty))) {
++		if (async)
++			tty_hangup(tty);
++		else
++			tty_vhangup(tty);
++	}
+ 	tty_kref_put(tty);
  }
+-EXPORT_SYMBOL_GPL(tty_port_tty_hangup);
++EXPORT_SYMBOL_GPL(__tty_port_tty_hangup);
  
  /**
-@@ -891,14 +888,13 @@ static int ulite_remove(struct platform_device *pdev)
+  * tty_port_tty_wakeup - helper to wake up a tty
+diff --git a/drivers/usb/class/cdc-acm.c b/drivers/usb/class/cdc-acm.c
+index ca275933b67a..f8fb175f6c93 100644
+--- a/drivers/usb/class/cdc-acm.c
++++ b/drivers/usb/class/cdc-acm.c
+@@ -1548,7 +1548,6 @@ static int acm_probe(struct usb_interface *intf,
+ static void acm_disconnect(struct usb_interface *intf)
  {
- 	struct uart_port *port = dev_get_drvdata(&pdev->dev);
- 	struct uartlite_data *pdata = port->private_data;
--	int rc;
+ 	struct acm *acm = usb_get_intfdata(intf);
+-	struct tty_struct *tty;
+ 	int i;
  
- 	clk_disable_unprepare(pdata->clk);
--	rc = ulite_release(&pdev->dev);
-+	ulite_release(&pdev->dev);
- 	pm_runtime_disable(&pdev->dev);
- 	pm_runtime_set_suspended(&pdev->dev);
- 	pm_runtime_dont_use_autosuspend(&pdev->dev);
--	return rc;
-+	return 0;
+ 	/* sibling interface is already cleaning up */
+@@ -1575,11 +1574,7 @@ static void acm_disconnect(struct usb_interface *intf)
+ 	usb_set_intfdata(acm->data, NULL);
+ 	mutex_unlock(&acm->mutex);
+ 
+-	tty = tty_port_tty_get(&acm->port);
+-	if (tty) {
+-		tty_vhangup(tty);
+-		tty_kref_put(tty);
+-	}
++	tty_port_tty_vhangup(&acm->port);
+ 
+ 	cancel_delayed_work_sync(&acm->dwork);
+ 
+diff --git a/drivers/usb/serial/usb-serial.c b/drivers/usb/serial/usb-serial.c
+index 164521ee10c6..f2e6bb3d0ca4 100644
+--- a/drivers/usb/serial/usb-serial.c
++++ b/drivers/usb/serial/usb-serial.c
+@@ -1179,7 +1179,6 @@ static void usb_serial_disconnect(struct usb_interface *interface)
+ 	struct usb_serial *serial = usb_get_intfdata(interface);
+ 	struct device *dev = &interface->dev;
+ 	struct usb_serial_port *port;
+-	struct tty_struct *tty;
+ 
+ 	/* sibling interface is cleaning up */
+ 	if (!serial)
+@@ -1194,11 +1193,7 @@ static void usb_serial_disconnect(struct usb_interface *interface)
+ 
+ 	for (i = 0; i < serial->num_ports; ++i) {
+ 		port = serial->port[i];
+-		tty = tty_port_tty_get(&port->port);
+-		if (tty) {
+-			tty_vhangup(tty);
+-			tty_kref_put(tty);
+-		}
++		tty_port_tty_vhangup(&port->port);
+ 		usb_serial_port_poison_urbs(port);
+ 		wake_up_interruptible(&port->port.delta_msr_wait);
+ 		cancel_work_sync(&port->work);
+diff --git a/include/linux/tty_port.h b/include/linux/tty_port.h
+index fa3c3bdaa234..4ecd6fa9aacb 100644
+--- a/include/linux/tty_port.h
++++ b/include/linux/tty_port.h
+@@ -234,7 +234,7 @@ int tty_port_carrier_raised(struct tty_port *port);
+ void tty_port_raise_dtr_rts(struct tty_port *port);
+ void tty_port_lower_dtr_rts(struct tty_port *port);
+ void tty_port_hangup(struct tty_port *port);
+-void tty_port_tty_hangup(struct tty_port *port, bool check_clocal);
++void __tty_port_tty_hangup(struct tty_port *port, bool check_clocal, bool async);
+ void tty_port_tty_wakeup(struct tty_port *port);
+ int tty_port_block_til_ready(struct tty_port *port, struct tty_struct *tty,
+ 		struct file *filp);
+@@ -253,4 +253,14 @@ static inline int tty_port_users(struct tty_port *port)
+ 	return port->count + port->blocked_open;
  }
  
- /* work with hotplug and coldplug */
-diff --git a/drivers/tty/serial/xilinx_uartps.c b/drivers/tty/serial/xilinx_uartps.c
-index 29afcc6d9bb7..2f51f46e3bd8 100644
---- a/drivers/tty/serial/xilinx_uartps.c
-+++ b/drivers/tty/serial/xilinx_uartps.c
-@@ -1670,14 +1670,13 @@ static int cdns_uart_remove(struct platform_device *pdev)
- {
- 	struct uart_port *port = platform_get_drvdata(pdev);
- 	struct cdns_uart *cdns_uart_data = port->private_data;
--	int rc;
- 
- 	/* Remove the cdns_uart port from the serial core */
- #ifdef CONFIG_COMMON_CLK
- 	clk_notifier_unregister(cdns_uart_data->uartclk,
- 			&cdns_uart_data->clk_rate_change_nb);
++static inline void tty_port_tty_hangup(struct tty_port *port, bool check_clocal)
++{
++	__tty_port_tty_hangup(port, check_clocal, true);
++}
++
++static inline void tty_port_tty_vhangup(struct tty_port *port)
++{
++	__tty_port_tty_hangup(port, false, false);
++}
++
  #endif
--	rc = uart_remove_one_port(cdns_uart_data->cdns_uart_driver, port);
-+	uart_remove_one_port(cdns_uart_data->cdns_uart_driver, port);
- 	port->mapbase = 0;
- 	clk_disable_unprepare(cdns_uart_data->uartclk);
- 	clk_disable_unprepare(cdns_uart_data->pclk);
-@@ -1693,7 +1692,7 @@ static int cdns_uart_remove(struct platform_device *pdev)
+diff --git a/net/bluetooth/rfcomm/tty.c b/net/bluetooth/rfcomm/tty.c
+index 8009e0e93216..9bf23be5e7df 100644
+--- a/net/bluetooth/rfcomm/tty.c
++++ b/net/bluetooth/rfcomm/tty.c
+@@ -438,7 +438,6 @@ static int __rfcomm_release_dev(void __user *arg)
+ {
+ 	struct rfcomm_dev_req req;
+ 	struct rfcomm_dev *dev;
+-	struct tty_struct *tty;
  
- 	if (!--instances)
- 		uart_unregister_driver(cdns_uart_data->cdns_uart_driver);
--	return rc;
-+	return 0;
- }
+ 	if (copy_from_user(&req, arg, sizeof(req)))
+ 		return -EFAULT;
+@@ -464,11 +463,7 @@ static int __rfcomm_release_dev(void __user *arg)
+ 		rfcomm_dlc_close(dev->dlc, 0);
  
- static struct platform_driver cdns_uart_platform_driver = {
-diff --git a/include/linux/serial_core.h b/include/linux/serial_core.h
-index 5a83db0ac763..762cbf400ec6 100644
---- a/include/linux/serial_core.h
-+++ b/include/linux/serial_core.h
-@@ -847,7 +847,7 @@ void uart_console_write(struct uart_port *port, const char *s,
- int uart_register_driver(struct uart_driver *uart);
- void uart_unregister_driver(struct uart_driver *uart);
- int uart_add_one_port(struct uart_driver *reg, struct uart_port *port);
--int uart_remove_one_port(struct uart_driver *reg, struct uart_port *port);
-+void uart_remove_one_port(struct uart_driver *reg, struct uart_port *port);
- bool uart_match_port(const struct uart_port *port1,
- 		const struct uart_port *port2);
+ 	/* Shut down TTY synchronously before freeing rfcomm_dev */
+-	tty = tty_port_tty_get(&dev->port);
+-	if (tty) {
+-		tty_vhangup(tty);
+-		tty_kref_put(tty);
+-	}
++	tty_port_tty_vhangup(&dev->port);
  
+ 	if (!test_bit(RFCOMM_TTY_OWNED, &dev->status))
+ 		tty_port_put(&dev->port);
 -- 
 2.51.0
 
