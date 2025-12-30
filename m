@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-204166-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204167-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C71ACE87AB
-	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 02:26:38 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D388CE8808
+	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 02:45:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BA45A3010FE5
-	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 01:26:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EB3C83010CEA
+	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 01:45:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1754D2367A2;
-	Tue, 30 Dec 2025 01:26:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBA861E5718;
+	Tue, 30 Dec 2025 01:45:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fdhhZRMO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lrcAOMth"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB7BB1C4A24
-	for <stable@vger.kernel.org>; Tue, 30 Dec 2025 01:26:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69701139D0A;
+	Tue, 30 Dec 2025 01:45:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767057976; cv=none; b=FdQ4qLFZEgl8a7VptAqII11JKYQg9oAqcydE6lFpac7uNJhKhFTeYTNi30Z63cfrqrcQGHQE3XsavupAFJ03tVggEMk0FRhHuJV5BWSoOH/flw9rd0osJOC+Q+xrqyfCtGQqRWJ3RZ30XdgWzXjWFr6l38QKNbjOwidUy8di0qA=
+	t=1767059135; cv=none; b=LESANVMmpP8foA/0zVugKnjrS1hyvkM15xjmODQc969+ukCKBW0HHP9QamfQjfNXvExqUUu8T2TDtXcTe8rKvpwIfhDdzQAHlD+cXDQWaqz8d8h8/77CZ3o8u8p+nnMSO6dT3ZmRxbsplnX5pzRHC3AmuAPmv1twyT2YbaDR4zg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767057976; c=relaxed/simple;
-	bh=t9WZ/PCNlbtQdzauNE8oPBTv5i+Dis3yEXpYpdXD/os=;
+	s=arc-20240116; t=1767059135; c=relaxed/simple;
+	bh=dgbl44C0PU5sbee4M7wiZvZkqAumLV8IX2o+wM/DCN8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E70LNZcj7VdATWuSLKj6lv3wUGmHFEzdytskxTuCkbSX2j/DOguycu5ETiANRj3EBetJ6iluv3kq2vmVQwEyPpLbSvAZ3RhuO+woGWW0c4QaQtvvrLGc5Y72h/iLNxsSM5FAwrS/o+iwfr38hwdx5eOzGBO8RM/gcSW7TxVZgsg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fdhhZRMO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92D16C4CEF7;
-	Tue, 30 Dec 2025 01:26:15 +0000 (UTC)
+	 MIME-Version; b=II3Oe04srwh85naNimoe5TC2K06Fqedokn2PFCU8XBUs+Wf18oFDTz6vhG+HQFRSg4vNjY3wnFklCHMfaX8b55gcIzjX6d5jTC0D8r1hwY6BqysCZrDkIzZlh9NScdJYmHGWmsFtnbosGGbSRRCPUjaXbqFn39JwF+krIfLumwU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lrcAOMth; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B473C4CEF7;
+	Tue, 30 Dec 2025 01:45:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767057976;
-	bh=t9WZ/PCNlbtQdzauNE8oPBTv5i+Dis3yEXpYpdXD/os=;
+	s=k20201202; t=1767059135;
+	bh=dgbl44C0PU5sbee4M7wiZvZkqAumLV8IX2o+wM/DCN8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fdhhZRMO+2GkmOCecHkR+iMsfPgT6z55R5niMlgU5q8kFSbYaRxlrPsn5KNeAktV+
-	 tX1nF97gwrQhRYmOcbUGxM18IwTeE4t4jRu06IT7fZRuNI5GzFFRx78Rbhm15+H3lQ
-	 BQnQJTbeJgQd3c9aoqLeeKYenKRraStpeLEJ7WxLOzSkbX0wqX5I33XOIbOKyjJ+AD
-	 14e2sVGH4GHG5x0MJTmUDO4UAGRqjlREb4BB9QSI5yw/y/cUSB/Fvv9B9shuBPRsMG
-	 XauWGteOb7U32JNldG9+tt7ST7gnc1d2rvE5Ehr3nr36nHzMokF0x9zM90AIhKZUXd
-	 u33zw80Bkh5wg==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Fedor Pchelkin <pchelkin@ispras.ru>,
-	Baokun Li <libaokun1@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Ts'o <tytso@mit.edu>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y] ext4: fix string copying in parse_apply_sb_mount_options()
-Date: Mon, 29 Dec 2025 20:26:14 -0500
-Message-ID: <20251230012614.1920692-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025122959-unawake-devious-8898@gregkh>
-References: <2025122959-unawake-devious-8898@gregkh>
+	b=lrcAOMthTzj7jpQMvgeNsXg09EQIks9ddYp6VLMb7v28764q3kB0M7k/4LF/WZPd6
+	 KPBaMJ6CzRC4/I7hlEf/jRdyVWBc9ik1QqHSdaDAGKdDWIp6d2a5clKxV7odqaxP76
+	 8tYDT7lhKl5dseiT+eJA716/xHC+0ZyY9X9cxWoC30GPfHReTZ3DCwrN/iCd25rIwe
+	 Ym5JhTK2xDchiLk6ZR0GeuNY7NrJmZ8psLALIFhdr8HYfkJ0zUbBkUCmmi79l4nsJb
+	 q1l95a3dVM/p7IqMScvMUHP+hEi+CyovX4VZkNSEOn/wi49NN+Yc3lhscRh+x0M3rG
+	 9lyFO5XIOhYZw==
+From: SeongJae Park <sj@kernel.org>
+To: SeongJae Park <sj@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	"# 6 . 14 . x" <stable@vger.kernel.org>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	JaeJoon Jung <rgbi3307@gmail.com>
+Subject: Re: [PATCH] mm/damon/core: remove call_control in inactive contexts
+Date: Mon, 29 Dec 2025 17:45:30 -0800
+Message-ID: <20251230014532.47563-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20251228183105.289441-1-sj@kernel.org>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,82 +61,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+On Sun, 28 Dec 2025 10:31:01 -0800 SeongJae Park <sj@kernel.org> wrote:
 
-[ Upstream commit ee5a977b4e771cc181f39d504426dbd31ed701cc ]
+> If damon_call() is executed against a DAMON context that is not running,
+> the function returns error while keeping the damon_call_control object
+> linked to the context's call_controls list.  Let's suppose the object is
+> deallocated after the damon_call(), and yet another damon_call() is
+> executed against the same context.  The function tries to add the new
+> damon_call_control object to the call_controls list, which still has the
+> pointer to the previous damon_call_control object, which is deallocated.
+> As a result, use-after-free happens.
+> 
+> This can actually be triggered using the DAMON sysfs interface.  It is
+> not easily exploitable since it requires the sysfs write permission and
+> making a definitely weird file writes, though.  Please refer to the
+> report for more details about the issue reproduction steps.
+> 
+> Fix the issue by making damon_call() to cleanup the damon_call_control
+> object before returning the error.
+> 
+> Reported-by: JaeJoon Jung <rgbi3307@gmail.com>
+> Closes: https://lore.kernel.org/20251224094401.20384-1-rgbi3307@gmail.com
+> Fixes: 42b7491af14c ("mm/damon/core: introduce damon_call()")
+> Cc: <stable@vger.kernel.org> # 6.14.x
+> Signed-off-by: SeongJae Park <sj@kernel.org>
+> ---
+>  mm/damon/core.c | 31 ++++++++++++++++++++++++++++++-
+>  1 file changed, 30 insertions(+), 1 deletion(-)
+> 
+> diff --git a/mm/damon/core.c b/mm/damon/core.c
+> index 2d3e8006db50..65482a0ce20b 100644
+> --- a/mm/damon/core.c
+> +++ b/mm/damon/core.c
+> @@ -1442,6 +1442,35 @@ bool damon_is_running(struct damon_ctx *ctx)
+>  	return running;
+>  }
+>  
+> +/*
+> + * damon_call_handle_inactive_ctx() - handle DAMON call request that added to
+> + *				      an inactive context.
+> + * @ctx:	The inactive DAMON context.
+> + * @control:	Control variable of the call request.
+> + *
+> + * This function is called in a case that @control is added to @ctx but @ctx is
+> + * not running (inactive).  See if @ctx handled @control or not, and cleanup
+> + * @control if it was not handled.
+> + *
+> + * Returns 0 if @control was handled by @ctx, negative error code otherwise.
+> + */
+> +static int damon_call_handle_inactive_ctx(
+> +		struct damon_ctx *ctx, struct damon_call_control *control)
+> +{
+> +	struct damon_call_control *c;
+> +
+> +	mutex_lock(&ctx->call_controls_lock);
+> +	list_for_each_entry(c, &ctx->call_controls, list) {
+> +		if (c == control) {
+> +			list_del(&control->list);
+> +			mutex_unlock(&ctx->call_controls_lock);
+> +			return -EINVAL;
+> +		}
+> +	}
+> +	mutex_unlock(&ctx->call_controls_lock);
+> +	return 0;
+> +}
+> +
+>  /**
+>   * damon_call() - Invoke a given function on DAMON worker thread (kdamond).
+>   * @ctx:	DAMON context to call the function for.
+> @@ -1472,7 +1501,7 @@ int damon_call(struct damon_ctx *ctx, struct damon_call_control *control)
+>  	list_add_tail(&control->list, &ctx->call_controls);
+>  	mutex_unlock(&ctx->call_controls_lock);
+>  	if (!damon_is_running(ctx))
+> -		return -EINVAL;
+> +		return damon_call_handle_inactive_ctx(ctx, control);
+>  	if (control->repeat)
+>  		return 0;
+>  	wait_for_completion(&control->completion);
 
-strscpy_pad() can't be used to copy a non-NUL-term string into a NUL-term
-string of possibly bigger size.  Commit 0efc5990bca5 ("string.h: Introduce
-memtostr() and memtostr_pad()") provides additional information in that
-regard.  So if this happens, the following warning is observed:
+TL; DR: This patch introduces another UAF bug under a race condition.  I will
+send a new version of the fix that solves the another issue.  Andrew, could you
+please remove this from mm tree for now?
 
-strnlen: detected buffer overflow: 65 byte read of buffer size 64
-WARNING: CPU: 0 PID: 28655 at lib/string_helpers.c:1032 __fortify_report+0x96/0xc0 lib/string_helpers.c:1032
-Modules linked in:
-CPU: 0 UID: 0 PID: 28655 Comm: syz-executor.3 Not tainted 6.12.54-syzkaller-00144-g5f0270f1ba00 #0
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-RIP: 0010:__fortify_report+0x96/0xc0 lib/string_helpers.c:1032
-Call Trace:
- <TASK>
- __fortify_panic+0x1f/0x30 lib/string_helpers.c:1039
- strnlen include/linux/fortify-string.h:235 [inline]
- sized_strscpy include/linux/fortify-string.h:309 [inline]
- parse_apply_sb_mount_options fs/ext4/super.c:2504 [inline]
- __ext4_fill_super fs/ext4/super.c:5261 [inline]
- ext4_fill_super+0x3c35/0xad00 fs/ext4/super.c:5706
- get_tree_bdev_flags+0x387/0x620 fs/super.c:1636
- vfs_get_tree+0x93/0x380 fs/super.c:1814
- do_new_mount fs/namespace.c:3553 [inline]
- path_mount+0x6ae/0x1f70 fs/namespace.c:3880
- do_mount fs/namespace.c:3893 [inline]
- __do_sys_mount fs/namespace.c:4103 [inline]
- __se_sys_mount fs/namespace.c:4080 [inline]
- __x64_sys_mount+0x280/0x300 fs/namespace.c:4080
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0x64/0x140 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
+kdamond_fn() resets ->kdamond, which is read by damon_is_running(), and then
+make the final kdamond_call() for cancelling any remaining damon_call()
+requests.  Hence, if the above damon_is_running() was invoked between the
+->kdamond reset and the final kdamond_call() invocation,
+damon_call_handle_inactive_ctx() and the final kdamond_call() could
+concurrently run.
 
-Since userspace is expected to provide s_mount_opts field to be at most 63
-characters long with the ending byte being NUL-term, use a 64-byte buffer
-which matches the size of s_mount_opts, so that strscpy_pad() does its job
-properly.  Return with error if the user still managed to provide a
-non-NUL-term string here.
+kdamond_call() safely get a pointer to a damon_call_control object in
+ctx->call_controls, and then access it without a lock.  Only after that, it
+removes the object from the list while holding the lock.  The intermediate
+lock-less access is safe because kdamond_call() is the only code that removes
+items from ctx->call_controls.  But this patch makes it no more safe, because
+this patch is introducing another ctx->call_controls item removing code, namely
+damon_call_handle_inactive_ctx().
 
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+To see this in details, let's suppose kdamond_call() got the pointer, and
+released the call_controls_lock.  After that, damon_call_handle_inactive_ctx()
+shows the object is still in the ctx->call_controls, and removes it from the
+list.  The damon_call() caller further deallocates the object.  Then, continued
+execution of kdamond_call() accesses the already deallocated object.
 
-Fixes: 8ecb790ea8c3 ("ext4: avoid potential buffer over-read in parse_apply_sb_mount_options()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Reviewed-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Message-ID: <20251101160430.222297-1-pchelkin@ispras.ru>
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-[ goto failed_mount instead of return ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- fs/ext4/super.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+I will send a new version of this fix soon.
 
-diff --git a/fs/ext4/super.c b/fs/ext4/super.c
-index 453e746ba361..41e49fee35e5 100644
---- a/fs/ext4/super.c
-+++ b/fs/ext4/super.c
-@@ -4282,10 +4282,11 @@ static int ext4_fill_super(struct super_block *sb, void *data, int silent)
- 	}
- 
- 	if (sbi->s_es->s_mount_opts[0]) {
--		char s_mount_opts[65];
-+		char s_mount_opts[64];
- 
--		strscpy_pad(s_mount_opts, sbi->s_es->s_mount_opts,
--			    sizeof(s_mount_opts));
-+		if (strscpy_pad(s_mount_opts, sbi->s_es->s_mount_opts,
-+				sizeof(s_mount_opts)) < 0)
-+			goto failed_mount;
- 		if (!parse_options(s_mount_opts, sb, &journal_devnum,
- 				   &journal_ioprio, 0)) {
- 			ext4_msg(sb, KERN_WARNING,
--- 
-2.51.0
 
+Thanks,
+SJ
+
+[...]
 
