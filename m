@@ -1,58 +1,65 @@
-Return-Path: <stable+bounces-204175-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204176-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A33DCE895C
-	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 03:41:36 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91B78CE8980
+	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 03:48:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D66E8301A1A6
-	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 02:41:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9CABF3012DDF
+	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 02:48:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A070F2DC774;
-	Tue, 30 Dec 2025 02:41:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 261AC2DF3FD;
+	Tue, 30 Dec 2025 02:48:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VZg1G1wE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QnhY97VY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57E17222599;
-	Tue, 30 Dec 2025 02:41:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D82EA1494DB
+	for <stable@vger.kernel.org>; Tue, 30 Dec 2025 02:48:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767062492; cv=none; b=PFC/kRznGIMXlN7QgY2YQkN0WxJN7kaIdxQX9cCkMi3NsLaU6ZL+1gjfwvoeQlWEy+zTXbS0r8ys37Un7hiF4UkQfCw3Eg0+OvpYVdxZ2pATcG4720qRd2OtjNielIzHLheC8o7HrFwjqUb4WmY4otsNlvJj97OGtJYcnuISQXU=
+	t=1767062915; cv=none; b=J4NBr95yaZfd/xm4i6uIi1Xvv7wZ/8tUkypk1SUGp1QHl80i8GX+tylsL/09yXSCA4MX2EgPdoDm4pIuuprrcQ1s8oAiDL6XqreSH8uwZNbA/En3JAs4eKsrB9nkTKMq+rHH2km2jMQ3mKUOP6Z941EVUlw4psCL6WGcprMZm4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767062492; c=relaxed/simple;
-	bh=E7R2JNPP0Sm+zHEC5831SvjLWutIcdgzGdYdaqNbxA0=;
+	s=arc-20240116; t=1767062915; c=relaxed/simple;
+	bh=IP9IDv9N+bsPcVnvcAY+xC6eOKtwmUH+ae4059nTdoI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tfGEbL8OXnXvy5gXeeZhowwmXjAxMi5fEQxXZ0EGxBR+APaUFVl3V6XVeAEWRHlLqhPS5km2VKzspuOJ8H/3MYmtyRFwk1Oq3rzrG1pe087GwijclV70lwCHKxrXIKijXm6GphGpmA9AWVKPJ5DsqBnl3Ao3T1U0XZQv8FWjgRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VZg1G1wE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B264AC4CEF7;
-	Tue, 30 Dec 2025 02:41:31 +0000 (UTC)
+	 MIME-Version; b=L4TzGdrFvYpcGK8HCFL+xdLhlHBvQWXyX7P3+6Kl39aj2j594wCDiMKw2P32NbInPjJajjbqyTWZjoiHajEmvHvSAXSYllzozInigGbJpuru+YORuVJXdiQu1ZrG0dQp3sjPRAebeL/qqH4PB0Sz9aTFXMmxzyU437+mpQKxcyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QnhY97VY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04F8CC4CEF7;
+	Tue, 30 Dec 2025 02:48:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767062491;
-	bh=E7R2JNPP0Sm+zHEC5831SvjLWutIcdgzGdYdaqNbxA0=;
+	s=k20201202; t=1767062915;
+	bh=IP9IDv9N+bsPcVnvcAY+xC6eOKtwmUH+ae4059nTdoI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VZg1G1wEqOMDnaRYx1lMVafjCwInzBKXz9x5AHA/6WN8a275yIh/MWHlGzC+/HzaP
-	 QmTBKqR1TQS/seMWat8mfljG/YAQw1xKaiwVI0Rhc1DJot+/3GmP/g5tlY6yEPIEl1
-	 8H08P3ySMRGtLe48DU8gBZIy4XXLweRDsp42xmcerGQKNIydDyrPkC7vaAMIbU8v7s
-	 6KwMuLC39Soj4mjmqyr7Q0bcYkf4vPnkimWc/JCrpkKZcdeNwlBHk1nzflrk1Am5Gx
-	 LSnrsru6IBazzZOY8IGlQZeSRQc4ZJLL8YTiHbVnZbIUlg9a5IlXcNFav6hSddu//i
-	 4xXZ0eMHZP1iA==
-From: SeongJae Park <sj@kernel.org>
-To: SeongJae Park <sj@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	"# 6 . 14 . x" <stable@vger.kernel.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	JaeJoon Jung <rgbi3307@gmail.com>
-Subject: Re: [PATCH] mm/damon/core: remove call_control in inactive contexts
-Date: Mon, 29 Dec 2025 18:41:28 -0800
-Message-ID: <20251230024129.47591-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251230014532.47563-1-sj@kernel.org>
-References: 
+	b=QnhY97VYhdqwYa+pQxjg2H381KxzEJtDKjSqErM9aESMhswi0r1QNNmGinh+3MW72
+	 jfSBI/b04U4P88w1EAAZlBL9C0Wtu176MuwGNktdZQhmCDvo2eLmy05h2zlGtNgB+7
+	 KQXxBzhOe9n9jsdcDQaEGw6mBwCSi9FByZEAev9J5qZylzsH36Rg6V/5Akx/Xw5ziR
+	 hfLt9/LDbeJd3hzi14zNXngeewi9j1WbihCKuMgkCPed2fH6m7c6/9sn7BzmMa1JDv
+	 TpQPVyHRj/n0IW/gDhujZ3/WBmSN0i7O6YWh4qxNghxyPS/oFkRteGFgkZtrH0cP4T
+	 4ZLcSUCRVCBKQ==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Wei Yang <richard.weiyang@gmail.com>,
+	Zi Yan <ziy@nvidia.com>,
+	"David Hildenbrand (Red Hat)" <david@kernel.org>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Barry Song <baohua@kernel.org>,
+	Dev Jain <dev.jain@arm.com>,
+	Lance Yang <lance.yang@linux.dev>,
+	Liam Howlett <liam.howlett@oracle.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Nico Pache <npache@redhat.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18.y] mm/huge_memory: merge uniform_split_supported() and non_uniform_split_supported()
+Date: Mon, 29 Dec 2025 21:48:31 -0500
+Message-ID: <20251230024831.1972219-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025122925-victory-numeral-2346@gregkh>
+References: <2025122925-victory-numeral-2346@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,137 +68,188 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-On Mon, 29 Dec 2025 17:45:30 -0800 SeongJae Park <sj@kernel.org> wrote:
+From: Wei Yang <richard.weiyang@gmail.com>
 
-> On Sun, 28 Dec 2025 10:31:01 -0800 SeongJae Park <sj@kernel.org> wrote:
-> 
-> > If damon_call() is executed against a DAMON context that is not running,
-> > the function returns error while keeping the damon_call_control object
-> > linked to the context's call_controls list.  Let's suppose the object is
-> > deallocated after the damon_call(), and yet another damon_call() is
-> > executed against the same context.  The function tries to add the new
-> > damon_call_control object to the call_controls list, which still has the
-> > pointer to the previous damon_call_control object, which is deallocated.
-> > As a result, use-after-free happens.
-> > 
-> > This can actually be triggered using the DAMON sysfs interface.  It is
-> > not easily exploitable since it requires the sysfs write permission and
-> > making a definitely weird file writes, though.  Please refer to the
-> > report for more details about the issue reproduction steps.
-> > 
-> > Fix the issue by making damon_call() to cleanup the damon_call_control
-> > object before returning the error.
-> > 
-> > Reported-by: JaeJoon Jung <rgbi3307@gmail.com>
-> > Closes: https://lore.kernel.org/20251224094401.20384-1-rgbi3307@gmail.com
-> > Fixes: 42b7491af14c ("mm/damon/core: introduce damon_call()")
+[ Upstream commit 8a0e4bdddd1c998b894d879a1d22f1e745606215 ]
 
-The above Fixes: tag is wrong.  At the moment of the commit, only single
-damon_call() request was allowed.  Hence only a pointer instead of the linked
-list was used.  In the problematic scenario, repeated damon_call() would simply
-return -EBUSY.
+uniform_split_supported() and non_uniform_split_supported() share
+significantly similar logic.
 
-The correct Fixes: should be,
+The only functional difference is that uniform_split_supported() includes
+an additional check on the requested @new_order.
 
-Fixes: 004ded6bee11 ("mm/damon: accept parallel damon_call() requests")
-Cc: <stable@vger.kernel.org> # 6.17.x
+The reason for this check comes from the following two aspects:
 
-> > Cc: <stable@vger.kernel.org> # 6.14.x
-> > Signed-off-by: SeongJae Park <sj@kernel.org>
-> > ---
-> >  mm/damon/core.c | 31 ++++++++++++++++++++++++++++++-
-> >  1 file changed, 30 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/mm/damon/core.c b/mm/damon/core.c
-> > index 2d3e8006db50..65482a0ce20b 100644
-> > --- a/mm/damon/core.c
-> > +++ b/mm/damon/core.c
-> > @@ -1442,6 +1442,35 @@ bool damon_is_running(struct damon_ctx *ctx)
-> >  	return running;
-> >  }
-> >  
-> > +/*
-> > + * damon_call_handle_inactive_ctx() - handle DAMON call request that added to
-> > + *				      an inactive context.
-> > + * @ctx:	The inactive DAMON context.
-> > + * @control:	Control variable of the call request.
-> > + *
-> > + * This function is called in a case that @control is added to @ctx but @ctx is
-> > + * not running (inactive).  See if @ctx handled @control or not, and cleanup
-> > + * @control if it was not handled.
-> > + *
-> > + * Returns 0 if @control was handled by @ctx, negative error code otherwise.
-> > + */
-> > +static int damon_call_handle_inactive_ctx(
-> > +		struct damon_ctx *ctx, struct damon_call_control *control)
-> > +{
-> > +	struct damon_call_control *c;
-> > +
-> > +	mutex_lock(&ctx->call_controls_lock);
-> > +	list_for_each_entry(c, &ctx->call_controls, list) {
-> > +		if (c == control) {
-> > +			list_del(&control->list);
-> > +			mutex_unlock(&ctx->call_controls_lock);
-> > +			return -EINVAL;
-> > +		}
-> > +	}
-> > +	mutex_unlock(&ctx->call_controls_lock);
-> > +	return 0;
-> > +}
-> > +
-> >  /**
-> >   * damon_call() - Invoke a given function on DAMON worker thread (kdamond).
-> >   * @ctx:	DAMON context to call the function for.
-> > @@ -1472,7 +1501,7 @@ int damon_call(struct damon_ctx *ctx, struct damon_call_control *control)
-> >  	list_add_tail(&control->list, &ctx->call_controls);
-> >  	mutex_unlock(&ctx->call_controls_lock);
-> >  	if (!damon_is_running(ctx))
-> > -		return -EINVAL;
-> > +		return damon_call_handle_inactive_ctx(ctx, control);
-> >  	if (control->repeat)
-> >  		return 0;
-> >  	wait_for_completion(&control->completion);
-> 
-> TL; DR: This patch introduces another UAF bug under a race condition.  I will
-> send a new version of the fix that solves the another issue.  Andrew, could you
-> please remove this from mm tree for now?
-> 
-> kdamond_fn() resets ->kdamond, which is read by damon_is_running(), and then
-> make the final kdamond_call() for cancelling any remaining damon_call()
-> requests.  Hence, if the above damon_is_running() was invoked between the
-> ->kdamond reset and the final kdamond_call() invocation,
-> damon_call_handle_inactive_ctx() and the final kdamond_call() could
-> concurrently run.
-> 
-> kdamond_call() safely get a pointer to a damon_call_control object in
-> ctx->call_controls, and then access it without a lock.  Only after that, it
-> removes the object from the list while holding the lock.  The intermediate
-> lock-less access is safe because kdamond_call() is the only code that removes
-> items from ctx->call_controls.  But this patch makes it no more safe, because
-> this patch is introducing another ctx->call_controls item removing code, namely
-> damon_call_handle_inactive_ctx().
-> 
-> To see this in details, let's suppose kdamond_call() got the pointer, and
-> released the call_controls_lock.  After that, damon_call_handle_inactive_ctx()
-> shows the object is still in the ctx->call_controls, and removes it from the
-> list.  The damon_call() caller further deallocates the object.  Then, continued
-> execution of kdamond_call() accesses the already deallocated object.
-> 
-> I will send a new version of this fix soon.
+  * some file system or swap cache just supports order-0 folio
+  * the behavioral difference between uniform/non-uniform split
 
-So far, I got two fixup ideas.
+The behavioral difference between uniform split and non-uniform:
 
-The first one is keeping the current code as is, and additionally modifying
-kdamond_call() to protect all call_control object accesses under
-ctx->call_controls_lock protection.
+  * uniform split splits folio directly to @new_order
+  * non-uniform split creates after-split folios with orders from
+    folio_order(folio) - 1 to new_order.
 
-The second one is reverting this patch, and doing the DAMON running status
-check before adding the damon_call_control object, but releasing the
-kdamond_lock after the object insertion is done.
+This means for non-uniform split or !new_order split we should check the
+file system and swap cache respectively.
 
-I'm in favor of the second one at the moment, as it seems more simple.
+This commit unifies the logic and merge the two functions into a single
+combined helper, removing redundant code and simplifying the split
+support checking mechanism.
 
+Link: https://lkml.kernel.org/r/20251106034155.21398-3-richard.weiyang@gmail.com
+Fixes: c010d47f107f ("mm: thp: split huge page to any lower order pages")
+Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+Reviewed-by: Zi Yan <ziy@nvidia.com>
+Cc: Zi Yan <ziy@nvidia.com>
+Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Barry Song <baohua@kernel.org>
+Cc: Dev Jain <dev.jain@arm.com>
+Cc: Lance Yang <lance.yang@linux.dev>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Nico Pache <npache@redhat.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+[ split_type => uniform_split and replaced SPLIT_TYPE_NON_UNIFORM checks ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ include/linux/huge_mm.h |  8 ++---
+ mm/huge_memory.c        | 71 +++++++++++++++++------------------------
+ 2 files changed, 33 insertions(+), 46 deletions(-)
 
-Thanks,
-SJ
+diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
+index 71ac78b9f834..240cbc676480 100644
+--- a/include/linux/huge_mm.h
++++ b/include/linux/huge_mm.h
+@@ -369,10 +369,8 @@ int split_huge_page_to_list_to_order(struct page *page, struct list_head *list,
+ 		unsigned int new_order);
+ int min_order_for_split(struct folio *folio);
+ int split_folio_to_list(struct folio *folio, struct list_head *list);
+-bool uniform_split_supported(struct folio *folio, unsigned int new_order,
+-		bool warns);
+-bool non_uniform_split_supported(struct folio *folio, unsigned int new_order,
+-		bool warns);
++bool folio_split_supported(struct folio *folio, unsigned int new_order,
++		bool uniform_split, bool warns);
+ int folio_split(struct folio *folio, unsigned int new_order, struct page *page,
+ 		struct list_head *list);
+ /*
+@@ -392,7 +390,7 @@ int folio_split(struct folio *folio, unsigned int new_order, struct page *page,
+ static inline int try_folio_split_to_order(struct folio *folio,
+ 		struct page *page, unsigned int new_order)
+ {
+-	if (!non_uniform_split_supported(folio, new_order, /* warns= */ false))
++	if (!folio_split_supported(folio, new_order, false, /* warns= */ false))
+ 		return split_huge_page_to_list_to_order(&folio->page, NULL,
+ 				new_order);
+ 	return folio_split(folio, new_order, page, NULL);
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index 6cba1cb14b23..7a74198f05c6 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -3515,8 +3515,8 @@ static int __split_unmapped_folio(struct folio *folio, int new_order,
+ 	return ret;
+ }
+ 
+-bool non_uniform_split_supported(struct folio *folio, unsigned int new_order,
+-		bool warns)
++bool folio_split_supported(struct folio *folio, unsigned int new_order,
++		bool uniform_split, bool warns)
+ {
+ 	if (folio_test_anon(folio)) {
+ 		/* order-1 is not supported for anonymous THP. */
+@@ -3524,48 +3524,41 @@ bool non_uniform_split_supported(struct folio *folio, unsigned int new_order,
+ 				"Cannot split to order-1 folio");
+ 		if (new_order == 1)
+ 			return false;
+-	} else if (IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) &&
+-	    !mapping_large_folio_support(folio->mapping)) {
+-		/*
+-		 * No split if the file system does not support large folio.
+-		 * Note that we might still have THPs in such mappings due to
+-		 * CONFIG_READ_ONLY_THP_FOR_FS. But in that case, the mapping
+-		 * does not actually support large folios properly.
+-		 */
+-		VM_WARN_ONCE(warns,
+-			"Cannot split file folio to non-0 order");
+-		return false;
+-	}
+-
+-	/* Only swapping a whole PMD-mapped folio is supported */
+-	if (folio_test_swapcache(folio)) {
+-		VM_WARN_ONCE(warns,
+-			"Cannot split swapcache folio to non-0 order");
+-		return false;
+-	}
+-
+-	return true;
+-}
+-
+-/* See comments in non_uniform_split_supported() */
+-bool uniform_split_supported(struct folio *folio, unsigned int new_order,
+-		bool warns)
+-{
+-	if (folio_test_anon(folio)) {
+-		VM_WARN_ONCE(warns && new_order == 1,
+-				"Cannot split to order-1 folio");
+-		if (new_order == 1)
+-			return false;
+-	} else  if (new_order) {
++	} else if (!uniform_split || new_order) {
+ 		if (IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) &&
+ 		    !mapping_large_folio_support(folio->mapping)) {
++			/*
++			 * We can always split a folio down to a single page
++			 * (new_order == 0) uniformly.
++			 *
++			 * For any other scenario
++			 *   a) uniform split targeting a large folio
++			 *      (new_order > 0)
++			 *   b) any non-uniform split
++			 * we must confirm that the file system supports large
++			 * folios.
++			 *
++			 * Note that we might still have THPs in such
++			 * mappings, which is created from khugepaged when
++			 * CONFIG_READ_ONLY_THP_FOR_FS is enabled. But in that
++			 * case, the mapping does not actually support large
++			 * folios properly.
++			 */
+ 			VM_WARN_ONCE(warns,
+ 				"Cannot split file folio to non-0 order");
+ 			return false;
+ 		}
+ 	}
+ 
+-	if (new_order && folio_test_swapcache(folio)) {
++	/*
++	 * swapcache folio could only be split to order 0
++	 *
++	 * non-uniform split creates after-split folios with orders from
++	 * folio_order(folio) - 1 to new_order, making it not suitable for any
++	 * swapcache folio split. Only uniform split to order-0 can be used
++	 * here.
++	 */
++	if ((!uniform_split || new_order) && folio_test_swapcache(folio)) {
+ 		VM_WARN_ONCE(warns,
+ 			"Cannot split swapcache folio to non-0 order");
+ 		return false;
+@@ -3632,11 +3625,7 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
+ 	if (new_order >= folio_order(folio))
+ 		return -EINVAL;
+ 
+-	if (uniform_split && !uniform_split_supported(folio, new_order, true))
+-		return -EINVAL;
+-
+-	if (!uniform_split &&
+-	    !non_uniform_split_supported(folio, new_order, true))
++	if (!folio_split_supported(folio, new_order, uniform_split, /* warn = */ true))
+ 		return -EINVAL;
+ 
+ 	is_hzp = is_huge_zero_folio(folio);
+-- 
+2.51.0
+
 
