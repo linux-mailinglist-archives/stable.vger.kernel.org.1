@@ -1,252 +1,161 @@
-Return-Path: <stable+bounces-204188-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204189-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC61CCE8E35
-	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 08:25:22 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75110CE8EAF
+	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 08:46:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9E88F3011ED0
-	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 07:25:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 03AD9300EE6A
+	for <lists+stable@lfdr.de>; Tue, 30 Dec 2025 07:46:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3699D2FBDE6;
-	Tue, 30 Dec 2025 07:25:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C93B126FA77;
+	Tue, 30 Dec 2025 07:46:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="dNvwG/Av"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 181C023EAA4;
-	Tue, 30 Dec 2025 07:25:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from mout.web.de (mout.web.de [212.227.17.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CAC01BF33;
+	Tue, 30 Dec 2025 07:46:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767079520; cv=none; b=j8D7/GNams8diZVmlkjCirKftWQbQRuv5OBshM/HOJwncYiwsE93xtD7S8PupbdGWD1rG1c0PIv6geD+DDhvdPnxeWO6QuJV6G+KEskDnCoD2HxQUqzi9HP4wvgAd/DXfUKoDxbzgQMsm79ozVUs/sAy6lHBK94bgw+rn2pmrDo=
+	t=1767080812; cv=none; b=SLBI8O9DcASFPSUR66qSLnndWNpy6Y/S2iVizjF3CfNB0YtiS9fM560zEj477XPVePFyZP2RRk2Ui1moL4AKOCupaeM/J5xisq5P6Yq02uz0RjmnKru40IQxyeVY6kKDdHAHHRPR+axswqTY4Q4UAXyMrd1IFvFkk2KpiGIJ9jo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767079520; c=relaxed/simple;
-	bh=XiluMo7bYYEUYi/FWSGXWtMuflQyRKhcD0hlHHoSsDk=;
-	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=Z/4H1q1OadZ7ePmpQWVz1sqtUzImItk/l+oCZPYdWzC05/ZhnFeeDkBKXuJLEMCGi/Tf8B0OedzEIwQoI4kWv94bIhhHlLt3QL96ZM+2TarPb+StFWNoM5Cw074MPugJGe5ck4vFW1Yby3x9w+oUOCoqAb/AsUyz43aHX0X2zus=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [10.20.42.62])
-	by gateway (Coremail) with SMTP id _____8CxKMJZflNpG1UEAA--.13503S3;
-	Tue, 30 Dec 2025 15:25:13 +0800 (CST)
-Received: from [10.20.42.62] (unknown [10.20.42.62])
-	by front1 (Coremail) with SMTP id qMiowJBxSeBTflNpdZ8GAA--.17647S3;
-	Tue, 30 Dec 2025 15:25:10 +0800 (CST)
-Subject: Re: [PATCH V3 2/2] LoongArch: KVM: fix "unreliable stack" issue
-To: Xianglai Li <lixianglai@loongson.cn>, loongarch@lists.linux.dev,
- linux-kernel@vger.kernel.org, kvm@vger.kernel.org
-Cc: stable@vger.kernel.org, Huacai Chen <chenhuacai@kernel.org>,
- WANG Xuerui <kernel@xen0n.name>, Tianrui Zhao <zhaotianrui@loongson.cn>,
- Charlie Jenkins <charlie@rivosinc.com>, Thomas Gleixner
- <tglx@linutronix.de>, Tiezhu Yang <yangtiezhu@loongson.cn>
-References: <20251227012712.2921408-1-lixianglai@loongson.cn>
- <20251227012712.2921408-3-lixianglai@loongson.cn>
-From: Bibo Mao <maobibo@loongson.cn>
-Message-ID: <2ab951d8-f039-af36-bfe5-afc0f2c93a9a@loongson.cn>
-Date: Tue, 30 Dec 2025 15:22:36 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+	s=arc-20240116; t=1767080812; c=relaxed/simple;
+	bh=7jgWzOSd3c4/TI4eBNqPIV5ouPpTtq2Iny8ML4C/TR4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hD9TvaxwaKFzG49VYh2Bh2xxibxG1DcBrYoT8RQ8U3ctKbIYTjFGd3/lL27y3IjBFMzlIdH7daTMVnSEwhvmfxiSJxeI9WMxwKQ4aRJo1l68CnkU+57I9VHDSGb8QWdaNEflvyfjLqRtMNHkzHn4k5Uu5gFzJDUYJcEjrbI7hTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=dNvwG/Av; arc=none smtp.client-ip=212.227.17.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1767080797; x=1767685597; i=markus.elfring@web.de;
+	bh=7jgWzOSd3c4/TI4eBNqPIV5ouPpTtq2Iny8ML4C/TR4=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=dNvwG/Av/PSxsIAnMeZgLugq+dDR5yEbDmzm5qsWzYhlEQ9QAsad7BlabWPHUjQl
+	 SuQyD74SpSlt5EvazpQLSnwNzHB5636d7pjcCAXzlexemHohyu1WL15wvLyRiErom
+	 ydcmHTT0dsg4hhwg9v6IYh3HHfdUGX/ABbBNWt7JT58AKcoNFut4iejMvCQFlARsA
+	 Z2QdXel0pLWmMSx7EQka+r7grQtrkvZ+QwI2Y6VhVSnIi1Ytc0df7JkyNp0TZQRJD
+	 Sb9lF4MaFdp5U4/BBNU23FAXxt80JamNNcl4oGJ52vnumpxpGUE/Ls8TMfqg54D9f
+	 XG6GhXXZSprHFt5+Ag==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.29] ([94.31.93.0]) by smtp.web.de (mrweb105
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1MRW6Z-1vFPB21CLN-00VPZQ; Tue, 30
+ Dec 2025 08:46:37 +0100
+Message-ID: <57c723e9-d38a-47fe-9737-5b472916f3d2@web.de>
+Date: Tue, 30 Dec 2025 08:46:36 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20251227012712.2921408-3-lixianglai@loongson.cn>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJBxSeBTflNpdZ8GAA--.17647S3
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoWxtw4rJw1xKryDKw4UJr1kWFX_yoW7Cw1kpw
-	nxZFs8Ka1kG3s8Zw47Ja4DArZIqr4vgF1fWrsFyrWrAr1DWry5XF18tw4DZF97Kw48WFn5
-	XFy0grn5AaykJagCm3ZEXasCq-sJn29KB7ZKAUJUUUU7529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUB2b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
-	xVW8Jr0_Cr1UM2kKe7AKxVWUXVWUAwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07
-	AIYIkI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWU
-	AVWUtwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI4
-	8JMxk0xIA0c2IEe2xFo4CEbIxvr21l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_
-	Jr0_Gr1l4IxYO2xFxVAFwI0_Jrv_JF1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8Gjc
-	xK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0
-	cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8V
-	AvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVW8JVWxJwCI42IY6I8E87Iv6xkF7I0E
-	14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxU466zUUUUU
+User-Agent: Mozilla Thunderbird
+Subject: Re: [v2] gfs2: Fix use-after-free in gfs2_fill_super()
+To: Ryota Sakamoto <sakamo.ryota@gmail.com>,
+ =?UTF-8?Q?Andreas_Gr=C3=BCnbacher?= <agruenba@redhat.com>,
+ gfs2@lists.linux.dev
+Cc: linux-kernel@vger.kernel.org,
+ syzbot+4cb0d0336db6bc6930e9@syzkaller.appspotmail.com, stable@vger.kernel.org
+References: <20251230-fix-use-after-free-gfs2-v2-1-7b2760be547c@gmail.com>
+Content-Language: en-GB, de-DE
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <20251230-fix-use-after-free-gfs2-v2-1-7b2760be547c@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:zSzoFl0GZQnkgKMC6J+rRP2ltFJs7Q4YOT+5mtuPFgMAK1Pklrq
+ hA2lfnCQ0CW0OF7Z3wYbFNwmxCGyWFtHBU2IXjfNtd5PrjCq3bL5Z0jTOOFhYfZysojTbTw
+ Hnr5C4ZkGfoLVS7KVOtUrnONmiYFWx1wQfBCVLxC/zf5NYeiUf5a8k46vudKMMhroQRaHQ9
+ i9NnswrwteFi/fjSG8Frg==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:1rgeMLltv/Y=;Z+zASM1FDxPLWFjvhp0C2N/bWzH
+ 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
+ intiEI9CxlgUi6xSvstlIU3OSF/8aBNcNWnayf
 
+=E2=80=A6
+> Introduce fail_threads to handle stopping the threads if the threads wer=
+e
+> started.
 
+Is there a need to indicate a role for the mentioned identifier?
 
-On 2025/12/27 上午9:27, Xianglai Li wrote:
-> Insert the appropriate UNWIND macro definition into the kvm_exc_entry in
-> the assembly function to guide the generation of correct ORC table entries,
-> thereby solving the timeout problem of loading the livepatch-sample module
-> on a physical machine running multiple vcpus virtual machines.
-> 
-> While solving the above problems, we have gained an additional benefit,
-> that is, we can obtain more call stack information
-> 
-> Stack information that can be obtained before the problem is fixed:
-> [<0>] kvm_vcpu_block+0x88/0x120 [kvm]
-> [<0>] kvm_vcpu_halt+0x68/0x580 [kvm]
-> [<0>] kvm_emu_idle+0xd4/0xf0 [kvm]
-> [<0>] kvm_handle_gspr+0x7c/0x700 [kvm]
-> [<0>] kvm_handle_exit+0x160/0x270 [kvm]
-> [<0>] kvm_exc_entry+0x100/0x1e0
-> 
-> Stack information that can be obtained after the problem is fixed:
-> [<0>] kvm_vcpu_block+0x88/0x120 [kvm]
-> [<0>] kvm_vcpu_halt+0x68/0x580 [kvm]
-> [<0>] kvm_emu_idle+0xd4/0xf0 [kvm]
-> [<0>] kvm_handle_gspr+0x7c/0x700 [kvm]
-> [<0>] kvm_handle_exit+0x160/0x270 [kvm]
-> [<0>] kvm_exc_entry+0x104/0x1e4
-> [<0>] kvm_enter_guest+0x38/0x11c
-> [<0>] kvm_arch_vcpu_ioctl_run+0x26c/0x498 [kvm]
-> [<0>] kvm_vcpu_ioctl+0x200/0xcf8 [kvm]
-> [<0>] sys_ioctl+0x498/0xf00
-> [<0>] do_syscall+0x98/0x1d0
-> [<0>] handle_syscall+0xb8/0x158
-> 
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Xianglai Li <lixianglai@loongson.cn>
-> ---
-> Cc: Huacai Chen <chenhuacai@kernel.org>
-> Cc: WANG Xuerui <kernel@xen0n.name>
-> Cc: Tianrui Zhao <zhaotianrui@loongson.cn>
-> Cc: Bibo Mao <maobibo@loongson.cn>
-> Cc: Charlie Jenkins <charlie@rivosinc.com>
-> Cc: Xianglai Li <lixianglai@loongson.cn>
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Cc: Tiezhu Yang <yangtiezhu@loongson.cn>
-> 
->   arch/loongarch/kvm/switch.S | 28 +++++++++++++++++++---------
->   1 file changed, 19 insertions(+), 9 deletions(-)
-> 
-> diff --git a/arch/loongarch/kvm/switch.S b/arch/loongarch/kvm/switch.S
-> index 93845ce53651..a3ea9567dbe5 100644
-> --- a/arch/loongarch/kvm/switch.S
-> +++ b/arch/loongarch/kvm/switch.S
-> @@ -10,6 +10,7 @@
->   #include <asm/loongarch.h>
->   #include <asm/regdef.h>
->   #include <asm/unwind_hints.h>
-> +#include <linux/kvm_types.h>
->   
->   #define HGPR_OFFSET(x)		(PT_R0 + 8*x)
->   #define GGPR_OFFSET(x)		(KVM_ARCH_GGPR + 8*x)
-> @@ -110,9 +111,9 @@
->   	 * need to copy world switch code to DMW area.
->   	 */
->   	.text
-> +	.p2align PAGE_SHIFT
->   	.cfi_sections	.debug_frame
->   SYM_CODE_START(kvm_exc_entry)
-> -	.p2align PAGE_SHIFT
->   	UNWIND_HINT_UNDEFINED
->   	csrwr	a2,   KVM_TEMP_KS
->   	csrrd	a2,   KVM_VCPU_KS
-> @@ -170,6 +171,7 @@ SYM_CODE_START(kvm_exc_entry)
->   	/* restore per cpu register */
->   	ld.d	u0, a2, KVM_ARCH_HPERCPU
->   	addi.d	sp, sp, -PT_SIZE
-> +	UNWIND_HINT_REGS
->   
->   	/* Prepare handle exception */
->   	or	a0, s0, zero
-> @@ -200,7 +202,7 @@ ret_to_host:
->   	jr      ra
->   
->   SYM_CODE_END(kvm_exc_entry)
-> -EXPORT_SYMBOL(kvm_exc_entry)
-> +EXPORT_SYMBOL_FOR_KVM(kvm_exc_entry)
->   
->   /*
->    * int kvm_enter_guest(struct kvm_run *run, struct kvm_vcpu *vcpu)
-> @@ -215,6 +217,14 @@ SYM_FUNC_START(kvm_enter_guest)
->   	/* Save host GPRs */
->   	kvm_save_host_gpr a2
->   
-> +	/*
-> +	 * The csr_era member variable of the pt_regs structure is required
-> +	 * for unwinding orc to perform stack traceback, so we need to put
-> +	 * pc into csr_era member variable here.
-> +	 */
-> +	pcaddi	t0, 0
-> +	st.d	t0, a2, PT_ERA
-maybe PRMD need be set with fake pt_regs also, something like this:
-         ori     t0, zero, CSR_PRMD_PIE
-         st.d	t0, a2, PT_PRMD
+Do you propose to use another label here?
 
-Regards
-Bibo Mao
-> +
->   	addi.d	a2, a1, KVM_VCPU_ARCH
->   	st.d	sp, a2, KVM_ARCH_HSP
->   	st.d	tp, a2, KVM_ARCH_HTP
-> @@ -225,7 +235,7 @@ SYM_FUNC_START(kvm_enter_guest)
->   	csrwr	a1, KVM_VCPU_KS
->   	kvm_switch_to_guest
->   SYM_FUNC_END(kvm_enter_guest)
-> -EXPORT_SYMBOL(kvm_enter_guest)
-> +EXPORT_SYMBOL_FOR_KVM(kvm_enter_guest)
->   
->   SYM_FUNC_START(kvm_save_fpu)
->   	fpu_save_csr	a0 t1
-> @@ -233,7 +243,7 @@ SYM_FUNC_START(kvm_save_fpu)
->   	fpu_save_cc	a0 t1 t2
->   	jr              ra
->   SYM_FUNC_END(kvm_save_fpu)
-> -EXPORT_SYMBOL(kvm_save_fpu)
-> +EXPORT_SYMBOL_FOR_KVM(kvm_save_fpu)
->   
->   SYM_FUNC_START(kvm_restore_fpu)
->   	fpu_restore_double a0 t1
-> @@ -241,7 +251,7 @@ SYM_FUNC_START(kvm_restore_fpu)
->   	fpu_restore_cc	   a0 t1 t2
->   	jr                 ra
->   SYM_FUNC_END(kvm_restore_fpu)
-> -EXPORT_SYMBOL(kvm_restore_fpu)
-> +EXPORT_SYMBOL_FOR_KVM(kvm_restore_fpu)
->   
->   #ifdef CONFIG_CPU_HAS_LSX
->   SYM_FUNC_START(kvm_save_lsx)
-> @@ -250,7 +260,7 @@ SYM_FUNC_START(kvm_save_lsx)
->   	lsx_save_data   a0 t1
->   	jr              ra
->   SYM_FUNC_END(kvm_save_lsx)
-> -EXPORT_SYMBOL(kvm_save_lsx)
-> +EXPORT_SYMBOL_FOR_KVM(kvm_save_lsx)
->   
->   SYM_FUNC_START(kvm_restore_lsx)
->   	lsx_restore_data a0 t1
-> @@ -258,7 +268,7 @@ SYM_FUNC_START(kvm_restore_lsx)
->   	fpu_restore_csr  a0 t1 t2
->   	jr               ra
->   SYM_FUNC_END(kvm_restore_lsx)
-> -EXPORT_SYMBOL(kvm_restore_lsx)
-> +EXPORT_SYMBOL_FOR_KVM(kvm_restore_lsx)
->   #endif
->   
->   #ifdef CONFIG_CPU_HAS_LASX
-> @@ -268,7 +278,7 @@ SYM_FUNC_START(kvm_save_lasx)
->   	lasx_save_data  a0 t1
->   	jr              ra
->   SYM_FUNC_END(kvm_save_lasx)
-> -EXPORT_SYMBOL(kvm_save_lasx)
-> +EXPORT_SYMBOL_FOR_KVM(kvm_save_lasx)
->   
->   SYM_FUNC_START(kvm_restore_lasx)
->   	lasx_restore_data a0 t1
-> @@ -276,7 +286,7 @@ SYM_FUNC_START(kvm_restore_lasx)
->   	fpu_restore_csr   a0 t1 t2
->   	jr                ra
->   SYM_FUNC_END(kvm_restore_lasx)
-> -EXPORT_SYMBOL(kvm_restore_lasx)
-> +EXPORT_SYMBOL_FOR_KVM(kvm_restore_lasx)
->   #endif
->   
->   #ifdef CONFIG_CPU_HAS_LBT
-> 
-
+Regards,
+Markus
 
