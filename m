@@ -1,55 +1,87 @@
-Return-Path: <stable+bounces-204318-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204319-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03DD3CEB35C
-	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 04:55:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 09AD5CEB37A
+	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 05:06:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1ECEA300D4B0
-	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 03:55:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6E92530321FE
+	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 04:05:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7622030BF60;
-	Wed, 31 Dec 2025 03:55:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB10730F92A;
+	Wed, 31 Dec 2025 04:05:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eYxN8HAl"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eeFvztkq"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34B2A30BBB8
-	for <stable@vger.kernel.org>; Wed, 31 Dec 2025 03:55:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E99B830F80A
+	for <stable@vger.kernel.org>; Wed, 31 Dec 2025 04:05:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767153340; cv=none; b=ZYr2+ePZp1wDMvItL7lY52o9bPx76IMFBtBQhCGkJghj0rO/1Vy9g1O6ECOmmCGHHXE4QZqOaysO592SFNFb9VMGzifZ1aq5VefodSGuXDbQHfB61SBX8AwqQVZ+AIQ6+ng9gUqZfQjsyW726BM5h4PgKamV+HW7dYJnlITOf2Q=
+	t=1767153947; cv=none; b=u+5RoC5Vm59B5Y8yRH1W42Bs8RLPQwcp3zdqJ9dPHRYqszSEcDZJ0r+IxPSWY9q/jXegncWwj6SUOzgaSvt7D2v1vPQMaEZII4rIhvzoUlOkpM9ajK8HaEIKOuEKLbVTAFzvrjpD844yXOQjcDYBZtTXMrroK6kzC2hB3i8Y/oM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767153340; c=relaxed/simple;
-	bh=Ur3VWvGk+aOCEL7QSQ/hup5wPpGbhmOHJGJOPFvN0PQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=stACsyGY/DSKw275mocykFDsAZfGqQMSNaERlzkr1yMXzKXkcNZO71/jttrn/IC191JZW08vqb2a9kBluar3HMw9Jh53wPIwD7fXzK8w5BogvbVc7QHEkxII1Jl0mgTlNgSaVIjBQ9bk9zbAZMG1PiphtYxCDz4MDenEdVXYcj0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eYxN8HAl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33F6FC116B1;
-	Wed, 31 Dec 2025 03:55:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767153339;
-	bh=Ur3VWvGk+aOCEL7QSQ/hup5wPpGbhmOHJGJOPFvN0PQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eYxN8HAlgs2H4lhjqL4txQrivm2qaCepd2tOYA42FJB3YyV2N7Md06Sel7UFtAa/m
-	 cjCZpM6f2bQVRP7SRGUNNrmBNBb3cM0bbv3itefvAl9Noac11I4fRhAMiDcrYJrzlu
-	 ojrYkrJbPz8+9+rI3t8jcHGpN/ZWBB/clLDt/foXzMeXMZbdDI6pYdr+wu2Cokph8t
-	 Zod/oiuY64/rmCBjHILuXpB9nOxN9WA++sKnragdX/VjltWH+A+/8OpIn9zzlXJMGl
-	 sAL+PW+L11HS3no30Zcs751w0tZlNvAx/2wVVfL4NbhS2nJ0s3ve4aNKlEW5jEE9q5
-	 Iyi4hZZt1AV+g==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Chuck Lever <chuck.lever@oracle.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y] NFSD: Clear SECLABEL in the suppattr_exclcreat bitmap
-Date: Tue, 30 Dec 2025 22:55:37 -0500
-Message-ID: <20251231035537.2722284-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025122920-sequence-vixen-bb32@gregkh>
-References: <2025122920-sequence-vixen-bb32@gregkh>
+	s=arc-20240116; t=1767153947; c=relaxed/simple;
+	bh=eyTjdiZ37TXITwaXTn301I67o5O9HQL17aDOi0EXwfg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tO/8lVew7kl9eQhsvY0sBjpCGFGuq9/lrkdd28+RpoE4TMSxsriceDDw23V4XqZIFBfc5lTVyPPh+LG+dfLE/0kr7jI125XZv+cAwA9Vn3DceWSkePAtOICo4clVDBH7U885lNes1u5ewM0lkC777MYNQT/f58kaVyG/OVR3yXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eeFvztkq; arc=none smtp.client-ip=209.85.216.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-34c71f462d2so11022719a91.0
+        for <stable@vger.kernel.org>; Tue, 30 Dec 2025 20:05:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1767153945; x=1767758745; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=pkAsjBRWEEiZYWip+Ahck4hdZ1l64PIDTBXDn8AsGi8=;
+        b=eeFvztkq81L3QWaWrgIu4tkSHBK6hb+ZZ79VMV1zLNGOGP2CsDyN0EVfBFDEFKATIv
+         ITJhQXVd8+ng77APt1ftyolqOx6lO3i1Ujex9x2vrXL2V17rTTQS6fw+YmQcGzCRdzbj
+         ENwJbCdFNmkp2Z9C62ltg6pe6BkVOzkO+HGk+sIjlmFiCGFVPcUygBmx4PqHKQ+cWTuD
+         4rR6PIwxxhXMGB3c3vyRbdHjcWQHWgEPHBmHvXnTpGJuKslr/oJT9GYn0WutDYjPBVvu
+         5H8svpOahfD9FE6qpNJlj4Hwi1EppLSypgSJWGMafTDvwXTO4OBaaAmF3JmbGOlFCDUx
+         rAew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767153945; x=1767758745;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=pkAsjBRWEEiZYWip+Ahck4hdZ1l64PIDTBXDn8AsGi8=;
+        b=AQVYt5GiwwRjcyZ1rPyDVdKyITu4IraIGZazqGUKg/EHBOmnk8649SEPR+HuAmZT1Y
+         MxN6kof8P7BPRBfC59oJb9/h4f3nG9G474KVxMA110DyDFCfZKHHh3/b+nnU9Bt1v4Ck
+         4ht6ZIpx1t525P3i4BIopPlzJFh1ZF331ZF4VNgEzmk9VWNECleIEN1rwukW1bcPmIok
+         2D+a48xxo69gufyN1ISZbPemoplzI0hHhp30/fX2isqqUzi6/OzGPOHeMIerYJ4EoKEj
+         UUZoVj6+EdfMJRgt23nVx/tCNjA4zCWrECu+FqMMNYyAZJe1Ln1EUCIhtSvER9Tj3jKB
+         EIkw==
+X-Forwarded-Encrypted: i=1; AJvYcCVynXM1QBLCABshvld6QCI+uGFNMj/cNuE2RjDaXs4k++0HY/xZOoou5DkgbYluHHoJtSStghA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz9gLYdtE0gfmzlP874qJYmFixlzOWJJ2Ns3uQ72MX/8nq4BHxq
+	EAIEULxjLdevEUEcUp5f8k3jBlxqLcRO9TkeIS7PpDZHyPPIaYi08SA+
+X-Gm-Gg: AY/fxX7qeXON9/rS83T1QgWokUXEBWfEgLOyIOEbR2/oBWT70CVwToETQCb/Svh9o/m
+	jRM1vwD4KzAfIdwa7Y7xwakHjhPmZ2vsVpRe7AYzekmhithVPgDrOstEPa3CgwqekzmkrcrQiJo
+	czN7UqjEcgNze55K1z/c0S2sR23QucXn1DZKPCWCWYiA/RQ3+g+EENcrqQLHgzgzxDctlnCcFfJ
+	sqbIKXwm16qAv8Af4IGGscr9joZBCHzOvUBTbvLyKL4vxrrhVGzk696HK13xPG+1NXULi4v5fS2
+	HQMWfi/W/2n0BD1BK2sE27rBh9tYf9d6T6or+Rrc750bEQvfYV282mtz9i6vrQHRBLkrdbWcxyo
+	IDTDqe7VyKr7GOzANcpBiWSaLiXyWNxDYRZXRT7m+l8aDFhgAwj451XYvAhUdErggl6AhMWkDUK
+	wuCbkk6LoRgP0j
+X-Google-Smtp-Source: AGHT+IHmwVuVPd14CTWSWw20fJ8pJCHFwc60F8kZ7BvwaFuBaAN+ZziuMDF1m9md2lPkEAIcYEYwqA==
+X-Received: by 2002:a17:90b:1f92:b0:345:badf:f1b7 with SMTP id 98e67ed59e1d1-34e921cd4admr26688901a91.28.1767153945213;
+        Tue, 30 Dec 2025 20:05:45 -0800 (PST)
+Received: from celestia ([69.9.135.12])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-34e92228b64sm31319667a91.10.2025.12.30.20.05.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 30 Dec 2025 20:05:44 -0800 (PST)
+From: Sam Edwards <cfsworks@gmail.com>
+X-Google-Original-From: Sam Edwards <CFSworks@gmail.com>
+To: Xiubo Li <xiubli@redhat.com>,
+	Ilya Dryomov <idryomov@gmail.com>
+Cc: ceph-devel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Sam Edwards <CFSworks@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] libceph: Reset sparse-read on fault
+Date: Tue, 30 Dec 2025 20:05:06 -0800
+Message-ID: <20251231040506.7859-1-CFSworks@gmail.com>
+X-Mailer: git-send-email 2.51.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,57 +90,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Chuck Lever <chuck.lever@oracle.com>
+When a fault occurs, the connection is abandoned, reestablished, and any
+pending operations are retried. The OSD client tracks the progress of a
+sparse-read reply using a separate state machine, largely independent of
+the messenger's state.
 
-[ Upstream commit 27d17641cacfedd816789b75d342430f6b912bd2 ]
+If a connection is lost mid-payload or the sparse-read state machine
+returns an error, the sparse-read state is not reset. The OSD client
+will then interpret the beginning of a new reply as the continuation of
+the old one. If this makes the sparse-read machinery enter a failure
+state, it may never recover, producing loops like:
 
->From RFC 8881:
+  libceph:  [0] got 0 extents
+  libceph: data len 142248331 != extent len 0
+  libceph: osd0 (1)...:6801 socket error on read
+  libceph: data len 142248331 != extent len 0
+  libceph: osd0 (1)...:6801 socket error on read
 
-5.8.1.14. Attribute 75: suppattr_exclcreat
+Therefore, reset the sparse-read state in osd_fault(), ensuring retries
+start from a clean state.
 
-> The bit vector that would set all REQUIRED and RECOMMENDED
-> attributes that are supported by the EXCLUSIVE4_1 method of file
-> creation via the OPEN operation. The scope of this attribute
-> applies to all objects with a matching fsid.
-
-There's nothing in RFC 8881 that states that suppattr_exclcreat is
-or is not allowed to contain bits for attributes that are clear in
-the reported supported_attrs bitmask. But it doesn't make sense for
-an NFS server to indicate that it /doesn't/ implement an attribute,
-but then also indicate that clients /are/ allowed to set that
-attribute using OPEN(create) with EXCLUSIVE4_1.
-
-Ensure that the SECURITY_LABEL and ACL bits are not set in the
-suppattr_exclcreat bitmask when they are also not set in the
-supported_attrs bitmask.
-
-Fixes: 8c18f2052e75 ("nfsd41: SUPPATTR_EXCLCREAT attribute")
 Cc: stable@vger.kernel.org
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-[ Adjust context ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Sam Edwards <CFSworks@gmail.com>
 ---
- fs/nfsd/nfs4xdr.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ net/ceph/osd_client.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/nfsd/nfs4xdr.c b/fs/nfsd/nfs4xdr.c
-index 5073fa77cd76..8ef533b2dc35 100644
---- a/fs/nfsd/nfs4xdr.c
-+++ b/fs/nfsd/nfs4xdr.c
-@@ -3408,6 +3408,11 @@ nfsd4_encode_fattr(struct xdr_stream *xdr, struct svc_fh *fhp,
- 		u32 supp[3];
+diff --git a/net/ceph/osd_client.c b/net/ceph/osd_client.c
+index 3667319b949d..1a7be2f615dc 100644
+--- a/net/ceph/osd_client.c
++++ b/net/ceph/osd_client.c
+@@ -4281,6 +4281,9 @@ static void osd_fault(struct ceph_connection *con)
+ 		goto out_unlock;
+ 	}
  
- 		memcpy(supp, nfsd_suppattrs[minorversion], sizeof(supp));
-+		if (!IS_POSIXACL(d_inode(dentry)))
-+			supp[0] &= ~FATTR4_WORD0_ACL;
-+		if (!contextsupport)
-+			supp[2] &= ~FATTR4_WORD2_SECURITY_LABEL;
++	osd->o_sparse_op_idx = -1;
++	ceph_init_sparse_read(&osd->o_sparse_read);
 +
- 		supp[0] &= NFSD_SUPPATTR_EXCLCREAT_WORD0;
- 		supp[1] &= NFSD_SUPPATTR_EXCLCREAT_WORD1;
- 		supp[2] &= NFSD_SUPPATTR_EXCLCREAT_WORD2;
+ 	if (!reopen_osd(osd))
+ 		kick_osd_requests(osd);
+ 	maybe_request_map(osdc);
 -- 
-2.51.0
+2.51.2
 
 
