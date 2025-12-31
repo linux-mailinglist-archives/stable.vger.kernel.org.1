@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-204400-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204401-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23A81CECAC7
-	for <lists+stable@lfdr.de>; Thu, 01 Jan 2026 00:39:06 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5C47CECACD
+	for <lists+stable@lfdr.de>; Thu, 01 Jan 2026 00:40:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9C2E030102AF
-	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 23:39:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 98C00300FF91
+	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 23:40:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDEA930F81B;
-	Wed, 31 Dec 2025 23:39:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD41F309EE4;
+	Wed, 31 Dec 2025 23:40:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QTLTkxYv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R/hxC/R8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABF1328690
-	for <stable@vger.kernel.org>; Wed, 31 Dec 2025 23:39:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A34528690
+	for <stable@vger.kernel.org>; Wed, 31 Dec 2025 23:40:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767224342; cv=none; b=L8La74iC8B87QW2CssCDupWXzVrcu2xdxp+zJmUt/eAw77iPz7FpTZeGmhmDpLvbafO0Uoz8owYg4+lvcgkIFUGTAhIRk6FhntAC0MBbm5jIcKddLwbz6VHdN5S2+w2W7VyFIniJ3vA++zBsyVpSsUef5tiAyQPDo0UWYp3J0Uo=
+	t=1767224411; cv=none; b=iX14M350CF1CflcALXcMK4c5kC4gLcPrKsX6dzuuJFBErub3lIzkmLZkywaa8dq98KqXggpO9dcrTWYUeUXIibJaSLNy34W+QIjPrYRX3kjomDMOAyKJqKzPIZ6R2oow1MNev/s7M7rXlFBPXMKViE2z/AuRv05vnZgkDzPfG9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767224342; c=relaxed/simple;
-	bh=26iHS2EEIuIvrxpru/KzwbshmLMP2ftBhlMrpEmN0Ag=;
+	s=arc-20240116; t=1767224411; c=relaxed/simple;
+	bh=bTNK/NzpItlrn2L1s9RFuqABJGpnJ9zSGtLHcWNg2o0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JGZk99CBdBC/wqFywM/T973sVUSdmSHflQKG92j9CDi8lgU4EGrvA/Eap1ZGCyhIpIiBnAaG66TaMzvth0rKbB41fGgABZWROkOqdSrEl/EB/gEBYU3nrepW8URvKXBDX9u6gZXf4xvW5N0719fMDbIBFMZRl+NVI4cYhl+beGY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QTLTkxYv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96464C19422;
-	Wed, 31 Dec 2025 23:39:01 +0000 (UTC)
+	 MIME-Version; b=IQm+Bd3FuJd1cEtQ8VOMsmB0eNnRIo1+Qan/7XMZ7JAKE/yZJ9q7uFYx+fCHV0ESo2l2jBjBystrdxIF5EjNgA3hjptFxW9Wd5SFmjoS9ddFUioX/8PaG1WvixIxFNOGPKIO/iKgbiI5T6ImNkJRdPRBmRDsfXn6ORXUQ2SY1Lc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R/hxC/R8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4240BC113D0;
+	Wed, 31 Dec 2025 23:40:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767224342;
-	bh=26iHS2EEIuIvrxpru/KzwbshmLMP2ftBhlMrpEmN0Ag=;
+	s=k20201202; t=1767224411;
+	bh=bTNK/NzpItlrn2L1s9RFuqABJGpnJ9zSGtLHcWNg2o0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QTLTkxYv53+fs/0vCqXxEWN4ZK6xDiDdv2OswXbkuQV4W1c3Vt+rWHo/dNEpevypW
-	 2wXSFTi11Q5B1wTJBeCWr1siggRtWaKd3os5wwo0648yIUnbxH07pGCnP/DaZ4fnUl
-	 qXuNgZPTTnpoBbHCVW9j3LWeTKLO3ajrgD2ZmSjl6QC6zo2poVe0k3eX2A4gs8viKT
-	 sRTJWyOrtXMktGjRxXH9uO2l9qvR4FR27m9p5EKik8l39FO4ZSqXox0oMbydpiZbbs
-	 8DsCAuzXu/xIZ9V8u91ZREU8Va44TdkQamzuGP6s2JxJ2VXa9LWLE+zxhMZWw6TCFx
-	 61aRLdD/Ukr+A==
+	b=R/hxC/R8gFo6WBjfXnNM/TMJCurQT5Exh95/EWMzix+YXR6/TWTeYxUC/4fYzPq7N
+	 eR48L9M0Rpsm9KzoHAmqraubzuf2a9erELUr/twl517sR9R3XtORmmdOZ4L2fsNpml
+	 eAxegq9/n/PDYSBA2zuwv7q3oTyApm5Qk4MSep2N0R2ibMYyI248zanOmgtcOSC+j5
+	 brcm1l4q6Ecb5ipet3XpHNpzcj/lH1Km97EqnplqZm2f/uZiQgfZOgp34m6+T3WsT0
+	 vDnERHGnOSJJEwTf1Q/quZ9nUn61dpEc+rdIV50fajvyTwCQ2gwv/katuM061QTPEZ
+	 Gs16OWIrEcReg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Johan Hovold <johan@kernel.org>,
-	Yong Wu <yong.wu@mediatek.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Joerg Roedel <joerg.roedel@amd.com>,
+Cc: Damien Le Moal <dlemoal@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Hannes Reinecke <hare@suse.de>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y 2/2] iommu/mediatek: fix use-after-free on probe deferral
-Date: Wed, 31 Dec 2025 18:38:58 -0500
-Message-ID: <20251231233858.3696664-2-sashal@kernel.org>
+Subject: [PATCH 6.12.y] block: freeze queue when updating zone resources
+Date: Wed, 31 Dec 2025 18:40:07 -0500
+Message-ID: <20251231234008.3701023-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251231233858.3696664-1-sashal@kernel.org>
-References: <2025122941-reluctant-exhale-a49f@gregkh>
- <20251231233858.3696664-1-sashal@kernel.org>
+In-Reply-To: <2025122927-untapped-stimulate-e26d@gregkh>
+References: <2025122927-untapped-stimulate-e26d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,94 +63,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Johan Hovold <johan@kernel.org>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-[ Upstream commit de83d4617f9fe059623e97acf7e1e10d209625b5 ]
+[ Upstream commit bba4322e3f303b2d656e748be758320b567f046f ]
 
-The driver is dropping the references taken to the larb devices during
-probe after successful lookup as well as on errors. This can
-potentially lead to a use-after-free in case a larb device has not yet
-been bound to its driver so that the iommu driver probe defers.
+Modify disk_update_zone_resources() to freeze the device queue before
+updating the number of zones, zone capacity and other zone related
+resources. The locking order resulting from the call to
+queue_limits_commit_update_frozen() is preserved, that is, the queue
+limits lock is first taken by calling queue_limits_start_update() before
+freezing the queue, and the queue is unfrozen after executing
+queue_limits_commit_update(), which replaces the call to
+queue_limits_commit_update_frozen().
 
-Fix this by keeping the references as expected while the iommu driver is
-bound.
+This change ensures that there are no in-flights I/Os when the zone
+resources are updated due to a zone revalidation. In case of error when
+the limits are applied, directly call disk_free_zone_resources() from
+disk_update_zone_resources() while the disk queue is still frozen to
+avoid needing to freeze & unfreeze the queue again in
+blk_revalidate_disk_zones(), thus simplifying that function code a
+little.
 
-Fixes: 26593928564c ("iommu/mediatek: Add error path for loop of mm_dts_parse")
+Fixes: 0b83c86b444a ("block: Prevent potential deadlock in blk_revalidate_disk_zones()")
 Cc: stable@vger.kernel.org
-Cc: Yong Wu <yong.wu@mediatek.com>
-Acked-by: Robin Murphy <robin.murphy@arm.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: Yong Wu <yong.wu@mediatek.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+[ adapted blk_mq_freeze_queue/unfreeze_queue calls to single-argument void API ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/mtk_iommu.c | 25 ++++++++++++++++++-------
- 1 file changed, 18 insertions(+), 7 deletions(-)
+ block/blk-zoned.c | 39 +++++++++++++++++++++++----------------
+ 1 file changed, 23 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/iommu/mtk_iommu.c b/drivers/iommu/mtk_iommu.c
-index 773cbd63ed5c..6e8294985c1f 100644
---- a/drivers/iommu/mtk_iommu.c
-+++ b/drivers/iommu/mtk_iommu.c
-@@ -1132,16 +1132,19 @@ static int mtk_iommu_mm_dts_parse(struct device *dev, struct component_match **m
- 		}
+diff --git a/block/blk-zoned.c b/block/blk-zoned.c
+index f1160cc2cf85..858efd19d9a6 100644
+--- a/block/blk-zoned.c
++++ b/block/blk-zoned.c
+@@ -1510,6 +1510,11 @@ static int disk_update_zone_resources(struct gendisk *disk,
+ 	unsigned int nr_seq_zones, nr_conv_zones;
+ 	unsigned int pool_size;
+ 	struct queue_limits lim;
++	int ret = 0;
++
++	lim = queue_limits_start_update(q);
++
++	blk_mq_freeze_queue(q);
  
- 		component_match_add(dev, match, component_compare_dev, &plarbdev->dev);
--		platform_device_put(plarbdev);
- 	}
- 
--	if (!frst_avail_smicomm_node)
--		return -EINVAL;
-+	if (!frst_avail_smicomm_node) {
-+		ret = -EINVAL;
-+		goto err_larbdev_put;
-+	}
- 
- 	pcommdev = of_find_device_by_node(frst_avail_smicomm_node);
- 	of_node_put(frst_avail_smicomm_node);
--	if (!pcommdev)
+ 	disk->nr_zones = args->nr_zones;
+ 	disk->zone_capacity = args->zone_capacity;
+@@ -1519,11 +1524,10 @@ static int disk_update_zone_resources(struct gendisk *disk,
+ 	if (nr_conv_zones >= disk->nr_zones) {
+ 		pr_warn("%s: Invalid number of conventional zones %u / %u\n",
+ 			disk->disk_name, nr_conv_zones, disk->nr_zones);
 -		return -ENODEV;
-+	if (!pcommdev) {
 +		ret = -ENODEV;
-+		goto err_larbdev_put;
-+	}
- 	data->smicomm_dev = &pcommdev->dev;
- 
- 	link = device_link_add(data->smicomm_dev, dev,
-@@ -1149,7 +1152,8 @@ static int mtk_iommu_mm_dts_parse(struct device *dev, struct component_match **m
- 	platform_device_put(pcommdev);
- 	if (!link) {
- 		dev_err(dev, "Unable to link %s.\n", dev_name(data->smicomm_dev));
--		return -EINVAL;
-+		ret = -EINVAL;
-+		goto err_larbdev_put;
++		goto unfreeze;
  	}
- 	return 0;
  
-@@ -1320,8 +1324,12 @@ static int mtk_iommu_probe(struct platform_device *pdev)
- 	iommu_device_sysfs_remove(&data->iommu);
- out_list_del:
- 	list_del(&data->list);
--	if (MTK_IOMMU_IS_TYPE(data->plat_data, MTK_IOMMU_TYPE_MM))
-+	if (MTK_IOMMU_IS_TYPE(data->plat_data, MTK_IOMMU_TYPE_MM)) {
- 		device_link_remove(data->smicomm_dev, dev);
+-	lim = queue_limits_start_update(q);
+-
+ 	/*
+ 	 * Some devices can advertize zone resource limits that are larger than
+ 	 * the number of sequential zones of the zoned block device, e.g. a
+@@ -1560,7 +1564,15 @@ static int disk_update_zone_resources(struct gendisk *disk,
+ 	}
+ 
+ commit:
+-	return queue_limits_commit_update_frozen(q, &lim);
++	ret = queue_limits_commit_update(q, &lim);
 +
-+		for (i = 0; i < MTK_LARB_NR_MAX; i++)
-+			put_device(data->larb_imu[i].dev);
-+	}
- out_runtime_disable:
- 	pm_runtime_disable(dev);
++unfreeze:
++	if (ret)
++		disk_free_zone_resources(disk);
++
++	blk_mq_unfreeze_queue(q);
++
++	return ret;
+ }
+ 
+ static int blk_revalidate_conv_zone(struct blk_zone *zone, unsigned int idx,
+@@ -1781,19 +1793,14 @@ int blk_revalidate_disk_zones(struct gendisk *disk)
+ 		ret = -ENODEV;
+ 	}
+ 
+-	/*
+-	 * Set the new disk zone parameters only once the queue is frozen and
+-	 * all I/Os are completed.
+-	 */
+ 	if (ret > 0)
+-		ret = disk_update_zone_resources(disk, &args);
+-	else
+-		pr_warn("%s: failed to revalidate zones\n", disk->disk_name);
+-	if (ret) {
+-		blk_mq_freeze_queue(q);
+-		disk_free_zone_resources(disk);
+-		blk_mq_unfreeze_queue(q);
+-	}
++		return disk_update_zone_resources(disk, &args);
++
++	pr_warn("%s: failed to revalidate zones\n", disk->disk_name);
++
++	blk_mq_freeze_queue(q);
++	disk_free_zone_resources(disk);
++	blk_mq_unfreeze_queue(q);
+ 
  	return ret;
-@@ -1341,6 +1349,9 @@ static int mtk_iommu_remove(struct platform_device *pdev)
- 	if (MTK_IOMMU_IS_TYPE(data->plat_data, MTK_IOMMU_TYPE_MM)) {
- 		device_link_remove(data->smicomm_dev, &pdev->dev);
- 		component_master_del(&pdev->dev, &mtk_iommu_com_ops);
-+
-+		for (i = 0; i < MTK_LARB_NR_MAX; i++)
-+			put_device(data->larb_imu[i].dev);
- 	}
- 	pm_runtime_disable(&pdev->dev);
- 	for (i = 0; i < data->plat_data->banks_num; i++) {
+ }
 -- 
 2.51.0
 
