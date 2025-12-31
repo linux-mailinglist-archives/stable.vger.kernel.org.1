@@ -1,93 +1,65 @@
-Return-Path: <stable+bounces-204341-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204342-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84AF0CEBFCD
-	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 13:36:00 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EB38CEC006
+	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 13:44:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 00303300FD43
-	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 12:36:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 340403021E4B
+	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 12:44:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABB4E262FFC;
-	Wed, 31 Dec 2025 12:35:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=jannau.net header.i=@jannau.net header.b="Qa5CwtZm";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="mc5MjgTH"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A3813164B6;
+	Wed, 31 Dec 2025 12:44:28 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from fout-b2-smtp.messagingengine.com (fout-b2-smtp.messagingengine.com [202.12.124.145])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f50.google.com (mail-ot1-f50.google.com [209.85.210.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D826A189BB0;
-	Wed, 31 Dec 2025 12:35:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.145
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44939314D26
+	for <stable@vger.kernel.org>; Wed, 31 Dec 2025 12:44:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767184555; cv=none; b=Joa6q5kYxKy8261C/lBwV9cjpXw6RNuFHBYLcXYNyGv0+0UulctmN8tX7nEgFRpRwFY1DvupbJ4lPXjcjqCkz0T8MWYLPtXwVv6zMNMWoJ4jzJwDIWzKd/jPAA3razKbz/reqkdeijKeL2s1y6t8ozAwIufI8lr6rajpDSZeDJU=
+	t=1767185067; cv=none; b=rD/yCUeDm2fhxISVhOF6/+/c3HnFDctsAtGjkh6WQLvccsXC2ozyjIhb9yiwAxPWHQvst4FH2ckFVITalbcWv7Rmm5fQPDxxiDV5K3S58tcUSjaHPCeny1fsB9yJchuvpen3UzEknXXrUmdl/MX0pW0hbY9BGXUXB02UJRnbRfM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767184555; c=relaxed/simple;
-	bh=n6uWqlCqUnkkGqFubnmiCEnAuMileRggtN1Kaz1Lm/k=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=m0VzCEQKKo41202gKCVziArmdeRZtsEmt0rfkppKtgdIIc+DgZc5pZ6/SGQWKAiUAiWWqf3cGtYOBrmVFgdCo5hUVwfxYa/sP60ggJJK3Yvi4fAeePAyJ96LFLpW6kX7H2dDMdXVLhkg/wKaRhroZx2gWWv240eT0HPSFXMvBww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jannau.net; spf=pass smtp.mailfrom=jannau.net; dkim=pass (2048-bit key) header.d=jannau.net header.i=@jannau.net header.b=Qa5CwtZm; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=mc5MjgTH; arc=none smtp.client-ip=202.12.124.145
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jannau.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jannau.net
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfout.stl.internal (Postfix) with ESMTP id 06E581D0013D;
-	Wed, 31 Dec 2025 07:35:04 -0500 (EST)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-03.internal (MEProxy); Wed, 31 Dec 2025 07:35:04 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jannau.net; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:message-id:mime-version:reply-to
-	:subject:subject:to:to; s=fm3; t=1767184503; x=1767270903; bh=FS
-	Zm6MhpkLM0mSUX0eMusNlykEAcKztTN5uBVLJdy0w=; b=Qa5CwtZmTOLCOEEEND
-	5AimAkWhR7zNEJlJ/TmYOWgUULRue7+LBBKiQpDGAnILYopjlE81ueBS6ceI+Gra
-	y/KofGMd3vE7WACpej+3mtFl+u2N9bSW4Cr2biS6UnA8uJRNhZzNpg6fXba54Quv
-	F8f+7iXf/f7xgWPW1eG9mtzLEDeAR9Asm9QKsYI4GemxONuxVvm/GEZjjDhl9dCs
-	MU+qi5XjOw3qCj4+uqcqZU8Oprz1e/TIl9VRP9KV7ZaOJ8m+4hFC5uPEE0P/Jv9B
-	ZQJoSC5n4QTmEkvxHF74ihsqkPqxP1XIvdaD3ecV1oljkfEk7nt9eGB2/OU1f8Hs
-	I2MQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:message-id:mime-version:reply-to:subject
-	:subject:to:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm2; t=1767184503; x=1767270903; bh=FSZm6MhpkLM0mSUX0eMusNlykEAc
-	KztTN5uBVLJdy0w=; b=mc5MjgTH7fyRbu2MzuEFBaKCdw2dPPO2a/q7bjzB4+R+
-	apCJrna+X7q1lr/ZC9voTFOwKS4hh43Vwq35OkKqwwrKOQ0jhgeQkfOETMuGKkWH
-	i1QsAmoESMiQ5fVOEJ/cOt4ob01vA4W4SEGMHblH4lMhpogOKIPU43/wvpiNG57e
-	HAFR/9aBJeuoSwm3E0rUClYPXrf7AhhaeIrDVsBT3s03XWMTE/KBnH4Qy4A8aHS8
-	KwTRUk8BqJV9/pArh5R6mZQY/N0zWHQk2GDdNqLYiiLK+M5/OQVpYVzI8KL2MP8V
-	si0CNa3IRpONcZ3+VRO5XPDkuvbMxXBLW2Bp4JKvqg==
-X-ME-Sender: <xms:dxhVaVp7x6XXhphhhli_Dnc-I4PoBhTLu7Cb_4x_5zIaWAuOJy8ayQ>
-    <xme:dxhVaVA52O0DHjuipYRgb7mkTc4VmZC3EeB3f9ilT8WZBzK2UqrDjwBwx3-hHh0Xo
-    uNWoFYxq8j7lxbA8GV_1Ixl5WiUXdKxE74WCLBXH_uOWN_wF5tjzA>
-X-ME-Received: <xmr:dxhVaZi-UJdlH8vK76SFt6794v1ZjwdRYHDJ82sQWxC0RYG62KA-vo6iCd3HuXtdaggOVItobXLqCjcGPb2AavMsNY0HbwjtfDZ9Xg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdekvdelvdcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpefhfffugggtgffkvfevofesthejredtredtjeenucfhrhhomheplfgrnhhnvgcuifhr
-    uhhnrghuuceojhesjhgrnhhnrghurdhnvghtqeenucggtffrrghtthgvrhhnpeefheeltd
-    ehfeetjeefvdehteeutddtteelgeduueetjeevteeifeeuvdefffdvieenucffohhmrghi
-    nhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpe
-    hmrghilhhfrhhomhepjhesjhgrnhhnrghurdhnvghtpdhnsggprhgtphhtthhopeelpdhm
-    ohguvgepshhmthhpohhuthdprhgtphhtthhopehnvggrlhesghhomhhprgdruggvvhdprh
-    gtphhtthhopehsvhgvnheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepjhesjhgrnhhn
-    rghurdhnvghtpdhrtghpthhtohepshhtrggslhgvsehvghgvrhdrkhgvrhhnvghlrdhorh
-    hgpdhrtghpthhtoheplhhinhhugidqrghrmhdqkhgvrhhnvghlsehlihhsthhsrdhinhhf
-    rhgruggvrggurdhorhhgpdhrtghpthhtohepvhhkohhulheskhgvrhhnvghlrdhorhhgpd
-    hrtghpthhtohepughmrggvnhhgihhnvgesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgt
-    phhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprh
-    gtphhtthhopegrshgrhhhisehlihhsthhsrdhlihhnuhigrdguvghv
-X-ME-Proxy: <xmx:dxhVabYffhCS2EglTd1aG-fHV1C7Lrvfy5zZu0041sgxrCTPV8KsxA>
-    <xmx:dxhVaSkVayhi55PKeyHKdk5qpy-1tvKg56TnSEdgsJYvUIvHw9xGAQ>
-    <xmx:dxhVaZia4QMpfw8OtW4URSMEhpevcNtF03Kh0mrM15TG2nAV3tj51g>
-    <xmx:dxhVacToiw7nyZa8PtrlHQSqS3l-h6RRdinJINLgSmqvsC5aDGAjwg>
-    <xmx:dxhVaVkQZgPtTqHCBGSIui1Q417Mj0Ga695xxElXjXXKZxdSL9mgFGEA>
-Feedback-ID: i47b949f6:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 31 Dec 2025 07:35:03 -0500 (EST)
-From: Janne Grunau <j@jannau.net>
-Date: Wed, 31 Dec 2025 13:34:59 +0100
-Subject: [PATCH] dmaengine: apple-admac: Add "apple,t8103-admac" compatible
+	s=arc-20240116; t=1767185067; c=relaxed/simple;
+	bh=rtQ9YOzpTI1rtYAALDX3LhmxVAFBXeE/3oqvYKuAQ8c=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=BucXlnmXKuH4s6Gv9B0hCjDI/rpderU4XQyQLDx96PESZJJQ/8Q8TWFJbYX/NdzPQGhLDCXznSsF2SdwHlFZZEy3Yo2eDnsPc7aOING8dKST33l1BS8DFCRVqT+by7PA7kSU7tms39+JkTV8IEcHs5sM79bmc5MXZBmE9wPaEmI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ot1-f50.google.com with SMTP id 46e09a7af769-7c75b829eb6so6840485a34.1
+        for <stable@vger.kernel.org>; Wed, 31 Dec 2025 04:44:26 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767185065; x=1767789865;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=doIBT3kveDHefqqmJXIbpBpDJYXHZZ9gY6YG0CQ1W1s=;
+        b=isOhlsbGO91e7/W2tiVNH6lC1c7V5ny9kE0U2Zbr14KjW0/552BiQRc3+QPCZcwdGa
+         GlWzhMfnIyz04SwBD4LsjYPWkz/9YTVz5tVCy2VTAJW0+et/PUobPEPN8j3iOU5GuRv4
+         /AiYsQFRVEmE4JkI9IknGLqOjOAdVzNji6oUJqYVbBO/rkFAaWUqJT6l5fdM+1Jk1be8
+         TyDzBzM7CDzFm2uk9S/LwD0HuZKefDJkqJdEthKwH1BTP+Mx/eIDNxl4tOYJ3VMz9HFq
+         Ni5ynJ0OsSGaSSV83QzuIZEktANc5mTl1FDXhBo6VZXBwqJGfNwyfr7nHXW9JLO5eiSZ
+         oYTA==
+X-Forwarded-Encrypted: i=1; AJvYcCXaRxWgqlxShtYUiE2awsP/YJ4aNO4fWSiIzcTqst2FDLx81wnlh34jPIULtF7n+HFWEFpKDGY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzHZCy0xIoyVdzTrm6D05WH+kc6cjFYoTbUEtpTjFN4OVyMr398
+	ki8dky9yPzzoErNmQ1LwX/7fIeafcZLlGjiYWhy13QjkSI6AI+yQPSWW
+X-Gm-Gg: AY/fxX5wHEm730bORWLaQnp2fsPtHaCHxZ++tXJ3ONvS2B6gaR0rlIizhRKmISyLefd
+	tEqKPmdTfyZ41CXZLAFrnNEbX2T24bXhpZtfq1cUFWLyvpsU//H8qtrdx1YwbYGoKnh1pkXRlbX
+	02u82390y61mwd5mimQbarPOduu+7esFbfqnroIrJN0DtZoHTsEhkzWiOhuKNhL0QJmA/F84LIe
+	Fs4jPk4A0iDCFJR3OrNjUOLKkX7M29Zz5X9RNjLI0a1fmamhcI6B+9aA0zQkA9bXpf1MSklT/gw
+	j3NfNDlH3D9B3L2VJQK8UjgrF8zuCpcdspnKwwi3HQ2lmjj3TU0RqzIyQ2LlMUhKzwbrHKNCgjZ
+	MiyCB7PuO+CqRjTamqsvIKPkcg71F+qq49GGKKFJPQvMvsJJHGbReU829uHeV+i+VjPR4exuGhG
+	f9ojcvqlIDGw==
+X-Google-Smtp-Source: AGHT+IFVj7a9FUlEf5NH6KpIT/kaUw0oiLWglRHiOzK9tALgQw37NwF6rJUHBW5v0Oj+IkC3OkEsQw==
+X-Received: by 2002:a05:6830:3154:b0:7c1:12c5:334e with SMTP id 46e09a7af769-7cc66a023c7mr23119448a34.17.1767185065067;
+        Wed, 31 Dec 2025 04:44:25 -0800 (PST)
+Received: from localhost ([2a03:2880:10ff::])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7cc667d6b04sm24557658a34.16.2025.12.31.04.44.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 31 Dec 2025 04:44:24 -0800 (PST)
+From: Breno Leitao <leitao@debian.org>
+Date: Wed, 31 Dec 2025 04:44:05 -0800
+Subject: [PATCH] arm64/mm: Fix annotated branch unbootable kernel
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -96,71 +68,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251231-apple-admac-t8103-base-compat-v1-1-ec24a3708f76@jannau.net>
-X-B4-Tracking: v=1; b=H4sIAHIYVWkC/x3MwQqDMAwA0F+RnBcwKW5lvzJ2iG2mgamlFRHEf
- 7d4fJd3QNFsWuDdHJB1s2LLXEGPBsIo86BosRq45Y7YEUpKf0WJkwRcPbUOeymKYZmSrEievdd
- XfHLvoB4p68/2+/98z/MCEVjLTm8AAAA=
-X-Change-ID: 20251231-apple-admac-t8103-base-compat-18288e7d62b3
-To: Sven Peter <sven@kernel.org>, Neal Gompa <neal@gompa.dev>, 
- Vinod Koul <vkoul@kernel.org>
-Cc: asahi@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
- dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org, Janne Grunau <j@jannau.net>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1589; i=j@jannau.net;
- s=yk2025; h=from:subject:message-id;
- bh=n6uWqlCqUnkkGqFubnmiCEnAuMileRggtN1Kaz1Lm/k=;
- b=owGbwMvMwCW2UNrmdq9+ahrjabUkhsxQidKEl1IfGm5416vGrniUeNk08M3qXaHKz9/WdDvKL
- b+s1N3VUcrCIMbFICumyJKk/bKDYXWNYkztgzCYOaxMIEMYuDgFYCKdwowMb2sX/9uz1Syi7f+m
- 1etuxRg9dzgaYDlJl29Ra15bf8NlV4Z/2tPivLxku2fGeb6+zLWqcc71fG2hpEwto5X84bUzTsg
- xAAA=
-X-Developer-Key: i=j@jannau.net; a=openpgp;
- fpr=8B336A6BE4E5695E89B8532B81E806F586338419
+Message-Id: <20251231-annotated-v1-1-9db1c0d03062@debian.org>
+X-B4-Tracking: v=1; b=H4sIAJUaVWkC/yXMwQqEIBQF0F953HVCKhH4KzEL01e9FjaoxUD07
+ 0O1PJtzonAWLnB0IvMhRbYER7ohhMWnmZVEOIJpTaeN1cqntFVfOaq+i2wna0PsRzSEb+ZJfs8
+ 1fF6XfVw51DvAdf0Be9PcO20AAAA=
+X-Change-ID: 20251231-annotated-75de3f33cd7b
+To: Catalin Marinas <catalin.marinas@arm.com>, 
+ Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
+ Laura Abbott <labbott@redhat.com>
+Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ linux-trace-kernel@vger.kernel.org, Steven Rostedt <rostedt@goodmis.org>, 
+ Masami Hiramatsu <mhiramat@kernel.org>, puranjay@kernel.org, 
+ usamaarif642@gmail.com, kernel-team@meta.com, stable@vger.kernel.org, 
+ Breno Leitao <leitao@debian.org>
+X-Mailer: b4 0.15-dev-47773
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1769; i=leitao@debian.org;
+ h=from:subject:message-id; bh=rtQ9YOzpTI1rtYAALDX3LhmxVAFBXeE/3oqvYKuAQ8c=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBpVRqoMlyZ1wZ3Pzr1vXtCo85272KEY4xVGFmrE
+ b2oMh6CVkmJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaVUaqAAKCRA1o5Of/Hh3
+ bQZwEACnPfBsC/ChcFSyk6SAwxKoOvb1ERUF80rfaNxXBJiaA1VgbqM7C/wBw+YbXrQmhzVqY/e
+ zB/ndUjEg1Qw/f1EkWqLpRYykPjwyQ/nZsHL8RUh+lvvsu2vH83B4FgCIL991+rvhDFZW75ecWY
+ Wx27xdC7xpaYRNPR/lCGRyKw9GRdkZybGZhUqed7Tu0UwVGNJkdEonPSWzsyXQhxdAKqPkaTXwP
+ yI+5HdfEAuA8nCB56AYgRaMxUUmY+Gg0JtwVD5CS/lsrFAcsngfXp0I0h2TMFDOYF1Hlwo5ZZ/z
+ w8qA3nMwS0murcRCerIFfvy/jgPPx+OW9JE1WcwbAEDqZjXSQ/Po0ENzua7Nu8JciG9+Xf46Ikv
+ xH/PK9ICIZQsNLJszbbllCh6smeoREyPb7MLH7utDd9lbPy0K7ALIeJJJOM77UoSBmIX3yJlEl8
+ 8FLJGGRpDH2/y2YbFkzWthRAgG9qFm3dVwpY8HtXJsFRnxAb2lQW3w99ahtwb5b+WzXzGXSaks4
+ csHXIdZitAVmfvtZvoZc2hJ9fpfI2ggf5vrK2Z+gT7SN4VIA6agvZWESHTh3BpTcabZIWqPxwIl
+ 7GUbaPEl3NeaOpCjDiB438p2p4W5UwQstGYeLrTvFjKj8PLdWHg5liU52jhLlKSvVXXC2iAk+iL
+ +BJxQOoAcO2C7tA==
+X-Developer-Key: i=leitao@debian.org; a=openpgp;
+ fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
 
-After discussion with the devicetree maintainers we agreed to not extend
-lists with the generic compatible "apple,admac" anymore [1]. Use
-"apple,t8103-admac" as base compatible as it is the SoC the driver and
-bindings were written for.
+The arm64 kernel doesn't boot with annotated branches
+(PROFILE_ANNOTATED_BRANCHES) enabled and CONFIG_DEBUG_VIRTUAL together.
 
-[1]: https://lore.kernel.org/asahi/12ab93b7-1fc2-4ce0-926e-c8141cfe81bf@kernel.org/
+Bisecting it, I found that disabling branch profiling in arch/arm64/mm
+solved the problem. Narrowing down a bit further, I found that
+physaddr.c is the file that needs to have branch profiling disabled to
+get the machine to boot.
 
-Fixes: b127315d9a78 ("dmaengine: apple-admac: Add Apple ADMAC driver")
+I suspect that it might invoke some ftrace helper very early in the boot
+process and ftrace is still not enabled(!?).
+
+Disable branch profiling for physaddr.o to allow booting an arm64
+machine with CONFIG_PROFILE_ANNOTATED_BRANCHES and
+CONFIG_DEBUG_VIRTUAL together.
+
 Cc: stable@vger.kernel.org
-Reviewed-by: Neal Gompa <neal@gompa.dev>
-Signed-off-by: Janne Grunau <j@jannau.net>
+Fixes: ec6d06efb0bac ("arm64: Add support for CONFIG_DEBUG_VIRTUAL")
+Signed-off-by: Breno Leitao <leitao@debian.org>
 ---
-This is split off from the v1 series adding Apple M2 Pro/Max/Ultra
-device trees in
-https://lore.kernel.org/r/20250828-dt-apple-t6020-v1-0-507ba4c4b98e@jannau.net
-
-Changes compared to the patch in that series:
-- rebased onto v6.19-rc1
-- added "Fixes:" and "Cc: stable" tags for handling this as fix adding a
-  device id
-- added Neal's Reviewed-by:
+Another approach is to disable profiling on all arch/arm64 code, similarly to
+x86, where DISABLE_BRANCH_PROFILING is called for all arch/x86 code. See
+commit 2cbb20b008dba ("tracing: Disable branch profiling in noinstr
+code").
 ---
- drivers/dma/apple-admac.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/mm/Makefile | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/dma/apple-admac.c b/drivers/dma/apple-admac.c
-index bd49f03742912198804a02a22e38da2c21093761..04bbd774b3b444f928986c266c53becf286daeea 100644
---- a/drivers/dma/apple-admac.c
-+++ b/drivers/dma/apple-admac.c
-@@ -936,6 +936,7 @@ static void admac_remove(struct platform_device *pdev)
- }
+diff --git a/arch/arm64/mm/Makefile b/arch/arm64/mm/Makefile
+index c26489cf96cd..8bfe2451ea26 100644
+--- a/arch/arm64/mm/Makefile
++++ b/arch/arm64/mm/Makefile
+@@ -14,5 +14,10 @@ obj-$(CONFIG_ARM64_MTE)		+= mteswap.o
+ obj-$(CONFIG_ARM64_GCS)		+= gcs.o
+ KASAN_SANITIZE_physaddr.o	+= n
  
- static const struct of_device_id admac_of_match[] = {
-+	{ .compatible = "apple,t8103-admac", },
- 	{ .compatible = "apple,admac", },
- 	{ }
- };
++# Branch profiling isn't noinstr-safe
++ifdef CONFIG_TRACE_BRANCH_PROFILING
++CFLAGS_physaddr.o += -DDISABLE_BRANCH_PROFILING
++endif
++
+ obj-$(CONFIG_KASAN)		+= kasan_init.o
+ KASAN_SANITIZE_kasan_init.o	:= n
 
 ---
-base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
-change-id: 20251231-apple-admac-t8103-base-compat-18288e7d62b3
+base-commit: c8ebd433459bcbf068682b09544e830acd7ed222
+change-id: 20251231-annotated-75de3f33cd7b
 
 Best regards,
--- 
-Janne Grunau <j@jannau.net>
+--  
+Breno Leitao <leitao@debian.org>
 
 
