@@ -1,111 +1,113 @@
-Return-Path: <stable+bounces-204346-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204347-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6B89CEC097
-	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 14:46:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97211CEC0AF
+	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 14:50:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B77FD3007CA0
-	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 13:46:46 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9A4A03007CA6
+	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 13:50:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D589531691E;
-	Wed, 31 Dec 2025 13:46:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E616C30FC3D;
+	Wed, 31 Dec 2025 13:50:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NCnGyVC5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JtCzz3b2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96F2423185E
-	for <stable@vger.kernel.org>; Wed, 31 Dec 2025 13:46:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6A071C84D0
+	for <stable@vger.kernel.org>; Wed, 31 Dec 2025 13:50:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767188805; cv=none; b=s3uasPVR9UpThsdcoRenYq6DgckBEtGJXVAmvXDfpiRvVIA8rvsCVi04hWLhYhidh2TtVxmwtAbYW+9PtSzo90Qn4ijxOsrLGxFhRinB2NHwYLZTq9+wB3QewoodZKnYkBCFWo8jKtSkPCtjtjdN2IcSj1B0s1OfetXWzzlC3GM=
+	t=1767189010; cv=none; b=c7P2FZDI+NKsHjDPLGLInt4+WdHxkmo7cRkCXtybdAYE8ksWtA40Ptm9/llcmNY+LD6Yf6JlgtGb72/L2zX2epjoVVS+kxiHvSU1pn4V8om7Xu4QM1mT+5YtT5OtskzKGOg2Xa28/omrKHH39hnKVAkCq/p5CbNsoXS2VUXFtYM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767188805; c=relaxed/simple;
-	bh=F6UAQEVDOjWn3V1v8A7KHj3aosvOIwlHnPmPkbmgNW4=;
+	s=arc-20240116; t=1767189010; c=relaxed/simple;
+	bh=vKT2CT2k/JlnKp2cy2iWaGkG+w+SJOm5Mv768b7pjjQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BIi9zlL6uis6Uq/y9UjrUZtaE2T2nhowoOSGE8/GMRoeB4fMBeTbwLURnimJwD8XOHo2cGEre0dKgVbclL7BcKVyUMYNgvv4QJYzt3+BwJwHV407q2TIixrawok/Hi2KXrJ2mPkrtuTyEa2sVXR2R3jWz7Hj8EeyyIoPrMaHgKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NCnGyVC5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2BA3C113D0;
-	Wed, 31 Dec 2025 13:46:44 +0000 (UTC)
+	 MIME-Version; b=NCytwBr9OyKruPhMgmW735BQsoU1yufI/mlZeU1AAFduCFEf5Enb+v7HVMCA6eeSDEs2yxjO3hH2w4ZpplRsjRno3Xy/oZd0ONQRJzfdf6G/IUwfTgm745AraxGvytKYUsNWwq0tmLG0fUqdUed+d3U74mdJHfBBvFJmWTwuo9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JtCzz3b2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0653C113D0;
+	Wed, 31 Dec 2025 13:50:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767188805;
-	bh=F6UAQEVDOjWn3V1v8A7KHj3aosvOIwlHnPmPkbmgNW4=;
+	s=k20201202; t=1767189010;
+	bh=vKT2CT2k/JlnKp2cy2iWaGkG+w+SJOm5Mv768b7pjjQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NCnGyVC5tC3IGD5sgqr2eT8YVOGb1ALtY0SMMVMBlhu5GyudujpJprFwqZ2CmEjFh
-	 bqBIe5d/BjrQ6JAn+o3/1vkdmoQZkpYJnQ9S4BsIPELnLW6byWwSrqQ6BoynaeFIxM
-	 lpIWSr/D47k3o95TYftdQacwH0ROTD6pFVWJXbMGJov18AKN9hnSPzUKUSR5rQQIr2
-	 Cbye7awudj34lWkf7DRuTGjDnqhulj0fTKz8AqWWTGshcid9lpr41VP2blt3kTAoZe
-	 7E5hcOosVS2jDF50d1PsiTq13VcBka39w1l3mXMNV58zbcYqfOu+Xkk+jH+NjaeNHw
-	 g3+iS0gZpOkDw==
+	b=JtCzz3b2OJBetuQQmCCGiigDIvo9REpDQQ8vmr7TyW87eX9AFU1itq66XNxyddUFW
+	 C++elzFZ0UvRFC90Jckdzbrww07zJUNCdJtZl8n8wUbNAGnpqGl9/e8F3mScDQXGz8
+	 I/emE4HRgZqVLrFKfrD6uB4+Ay2Vpa78S6jdOURXJQekSkAq+/7GNOQA3XuMi1dgfz
+	 7aFtQR3kX+3bkosQrN16+ByWykBNxBcZjF4dQLfOW2efeaN9WsipwjF1BFabu6nVIg
+	 YCmp1BbAYCiPkW5vN69DMAbADnSjP12vohB8MIHWBmrcbhp9Eaz367YMxAZ01oLRXr
+	 NpXbFdrQwbq+w==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: =?UTF-8?q?Ren=C3=A9=20Rebe?= <rene@exactco.de>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Chuck Lever <chuck.lever@oracle.com>,
+	Jeff Layton <jlayton@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y] r8169: fix RTL8117 Wake-on-Lan in DASH mode
-Date: Wed, 31 Dec 2025 08:46:42 -0500
-Message-ID: <20251231134642.2899730-1-sashal@kernel.org>
+Subject: [PATCH 5.10.y] NFSD: Clear SECLABEL in the suppattr_exclcreat bitmap
+Date: Wed, 31 Dec 2025 08:50:07 -0500
+Message-ID: <20251231135007.2902697-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025122945-mold-ducktail-63db@gregkh>
-References: <2025122945-mold-ducktail-63db@gregkh>
+In-Reply-To: <2025122921-wanting-sixfold-db66@gregkh>
+References: <2025122921-wanting-sixfold-db66@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: René Rebe <rene@exactco.de>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit dd75c723ef566f7f009c047f47e0eee95fe348ab ]
+[ Upstream commit 27d17641cacfedd816789b75d342430f6b912bd2 ]
 
-Wake-on-Lan does currently not work for r8169 in DASH mode, e.g. the
-ASUS Pro WS X570-ACE with RTL8168fp/RTL8117.
+>From RFC 8881:
 
-Fix by not returning early in rtl_prepare_power_down when dash_enabled.
-While this fixes WoL, it still kills the OOB RTL8117 remote management
-BMC connection. Fix by not calling rtl8168_driver_stop if WoL is enabled.
+5.8.1.14. Attribute 75: suppattr_exclcreat
 
-Fixes: 065c27c184d6 ("r8169: phy power ops")
-Signed-off-by: René Rebe <rene@exactco.de>
+> The bit vector that would set all REQUIRED and RECOMMENDED
+> attributes that are supported by the EXCLUSIVE4_1 method of file
+> creation via the OPEN operation. The scope of this attribute
+> applies to all objects with a matching fsid.
+
+There's nothing in RFC 8881 that states that suppattr_exclcreat is
+or is not allowed to contain bits for attributes that are clear in
+the reported supported_attrs bitmask. But it doesn't make sense for
+an NFS server to indicate that it /doesn't/ implement an attribute,
+but then also indicate that clients /are/ allowed to set that
+attribute using OPEN(create) with EXCLUSIVE4_1.
+
+Ensure that the SECURITY_LABEL and ACL bits are not set in the
+suppattr_exclcreat bitmask when they are also not set in the
+supported_attrs bitmask.
+
+Fixes: 8c18f2052e75 ("nfsd41: SUPPATTR_EXCLCREAT attribute")
 Cc: stable@vger.kernel.org
-Reviewed-by: Heiner Kallweit <hkallweit1@gmail.com>
-Link: https://patch.msgid.link/20251202.194137.1647877804487085954.rene@exactco.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ adapted tp->dash_enabled check to tp->dash_type != RTL_DASH_NONE comparison ]
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+[ Adjust context ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/realtek/r8169_main.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ fs/nfsd/nfs4xdr.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
-index 6b5bf7d49296..d272e77999cf 100644
---- a/drivers/net/ethernet/realtek/r8169_main.c
-+++ b/drivers/net/ethernet/realtek/r8169_main.c
-@@ -2513,9 +2513,6 @@ static void rtl_wol_enable_rx(struct rtl8169_private *tp)
+diff --git a/fs/nfsd/nfs4xdr.c b/fs/nfsd/nfs4xdr.c
+index 57dc5493c860..4253778a9747 100644
+--- a/fs/nfsd/nfs4xdr.c
++++ b/fs/nfsd/nfs4xdr.c
+@@ -3408,6 +3408,11 @@ nfsd4_encode_fattr(struct xdr_stream *xdr, struct svc_fh *fhp,
+ 		u32 supp[3];
  
- static void rtl_prepare_power_down(struct rtl8169_private *tp)
- {
--	if (tp->dash_type != RTL_DASH_NONE)
--		return;
--
- 	if (tp->mac_version == RTL_GIGA_MAC_VER_32 ||
- 	    tp->mac_version == RTL_GIGA_MAC_VER_33)
- 		rtl_ephy_write(tp, 0x19, 0xff64);
-@@ -4763,7 +4760,7 @@ static void rtl8169_down(struct rtl8169_private *tp)
- 
- 	rtl_prepare_power_down(tp);
- 
--	if (tp->dash_type != RTL_DASH_NONE)
-+	if (tp->dash_type != RTL_DASH_NONE && !tp->saved_wolopts)
- 		rtl8168_driver_stop(tp);
- }
- 
+ 		memcpy(supp, nfsd_suppattrs[minorversion], sizeof(supp));
++		if (!IS_POSIXACL(d_inode(dentry)))
++			supp[0] &= ~FATTR4_WORD0_ACL;
++		if (!contextsupport)
++			supp[2] &= ~FATTR4_WORD2_SECURITY_LABEL;
++
+ 		supp[0] &= NFSD_SUPPATTR_EXCLCREAT_WORD0;
+ 		supp[1] &= NFSD_SUPPATTR_EXCLCREAT_WORD1;
+ 		supp[2] &= NFSD_SUPPATTR_EXCLCREAT_WORD2;
 -- 
 2.51.0
 
