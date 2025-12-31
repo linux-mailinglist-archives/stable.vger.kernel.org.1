@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-204380-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204381-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7CBCCEC79C
-	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 19:35:35 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32821CEC7BA
+	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 19:47:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E0C81300B2AE
-	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 18:35:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4EF17301896F
+	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 18:47:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 593C730596D;
-	Wed, 31 Dec 2025 18:35:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0B432F745E;
+	Wed, 31 Dec 2025 18:47:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="unPmd90X"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hAF6qo2g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 197143064A2
-	for <stable@vger.kernel.org>; Wed, 31 Dec 2025 18:35:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F3402BE64F
+	for <stable@vger.kernel.org>; Wed, 31 Dec 2025 18:47:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767206127; cv=none; b=KAek5hx831eTOfC4Xe0uTRYxEOfzTOv8RQ7w9sBEMFsMcnzSHEYU//pp6shPvTqxGOOwCKyEkTarfPFYyOOUfUmy8FVSTcc26DbRxbzgy77eKly61TOcLLD5+YUIZcROPNz4hE+k/kLfg2wjIvYObfFzGWxKFZM2GwWXVaHbkGA=
+	t=1767206850; cv=none; b=LGYhyaiprg3Om9HS77dX6iarRKAFtaVANxRnP1fnxqEDcIZfKY2gl6/ysKaPZiMyPkkxdaluE4QzGkvv8RAAYn96oAMvv9sFDHFSg0cEtm8FlogN+KrZsg3I12FNnmO1IhllSx8eb58eHvFGskL7QYGJtCX+eJvtCxKnOTgz/8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767206127; c=relaxed/simple;
-	bh=DV1WcPq6dazpvEWVb5QlcEHXNhZbHSMAx59yhMaTPnk=;
+	s=arc-20240116; t=1767206850; c=relaxed/simple;
+	bh=MiHRf5IzT0cW63QpjbaDH/6L98QCn7tQJVVQiKGKcHY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QBBZQ9UAoYrfEyQtP0HJTLgixBo/oE9k942cgTVRsMj5g1hXUH53irtOZWL/1ZOQ5ud9z0cIFgjq4DnsuPr24HLobYGo9OqV5KF81QJwKoMgiOj+Mr42wOoX2U2BiDdLa5ilxXz03Neuya4QJ77YuxdSpRvYLG8P2zJPm7PAhqk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=unPmd90X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F099C113D0;
-	Wed, 31 Dec 2025 18:35:26 +0000 (UTC)
+	 MIME-Version; b=tcyvmg0NmQ4TekA2RkUHm/HV72RGciu0O17WLrOVNUJnFKx8v8dO8eRRY6WD3WyJoVKeiGtQSqdfG9xPauXdn3fv8kug/a9Ih3kW2dXNBF4hMAKYesVn4NQGjs+vqZyLh/62Zrocl7enw1zYJGTpCzd8WuCnPKlFqv2R5+7dFlE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hAF6qo2g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82FA8C113D0;
+	Wed, 31 Dec 2025 18:47:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767206126;
-	bh=DV1WcPq6dazpvEWVb5QlcEHXNhZbHSMAx59yhMaTPnk=;
+	s=k20201202; t=1767206850;
+	bh=MiHRf5IzT0cW63QpjbaDH/6L98QCn7tQJVVQiKGKcHY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=unPmd90XmlyX2rPcuA6/XbfutrCcvA1Vp9ZKgO37DRihCpbBVvrTxiqUzoRtSf33D
-	 xdyubjEXDZ53j4tR8gpOrbss2hxOOU4j5RimwjR6wKwodeVdK6EpzklM2P8ttybXz/
-	 UILiedNnv2M01CbCEthJodLLaQoMDgENNgFr1rdtDWHpqi9FIsOxVlwXT9hna7mtq5
-	 tJGiit4F8AHKSkv4QEe8ZpPNxOyvJNTbtrFDMaLdcUXl/NjRizvL6DKe4Nkz3c4Lke
-	 Y0TbgaQ7hA4pdXzkfuXMiMnUbsoRyvm3OOTcCQXNFEX2BprFwERONBZhjUZzllqvUb
-	 MyqxC2Zuf990g==
+	b=hAF6qo2g9ceh+x+t4HkHe6nRdfz2G1+mP33PdTXxJOcIw+3a5OFgQ3Y3t2RG7C9cR
+	 IBYcYdBjTl7gHBUiioPuSDhl7JWOYPnwFD7FIvXDgqAEcGJuCiLLt7d1bwcRXIg16E
+	 SQcZm5cV/9QLjj+fF/fb9eYP1X1z51Nd4UpYcufzkygZHzVwXKqCX7OAoewhLAirZJ
+	 0xFiqD8/5inYeuiCD7V29ZhAwM3xezo6qBmmX4kZbesUw0Bqvfl+KZm6OWjAfelgE5
+	 PrUAHoVzKfU5VL7IM4c8HcCZSfGAqd2cUB0hxWrFR3yVtdFQ8bQpMDmFoBiT1c+wGg
+	 1knml0qGHF1kg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Shivani Agarwal <shivani.agarwal@broadcom.com>,
 	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y] crypto: af_alg - zero initialize memory allocated via sock_kmalloc
-Date: Wed, 31 Dec 2025 13:35:24 -0500
-Message-ID: <20251231183524.3368512-1-sashal@kernel.org>
+Subject: [PATCH 5.15.y] crypto: af_alg - zero initialize memory allocated via sock_kmalloc
+Date: Wed, 31 Dec 2025 13:47:27 -0500
+Message-ID: <20251231184727.3370622-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025122928-monotone-prodigy-ba4d@gregkh>
-References: <2025122928-monotone-prodigy-ba4d@gregkh>
+In-Reply-To: <2025122929-grid-certify-c610@gregkh>
+References: <2025122929-grid-certify-c610@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -107,10 +107,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  3 files changed, 4 insertions(+), 7 deletions(-)
 
 diff --git a/crypto/af_alg.c b/crypto/af_alg.c
-index 3e333be303fe..4b7a7d9e198e 100644
+index 24c273f53e90..658d5c3c88b7 100644
 --- a/crypto/af_alg.c
 +++ b/crypto/af_alg.c
-@@ -1108,14 +1108,13 @@ struct af_alg_async_req *af_alg_alloc_areq(struct sock *sk,
+@@ -1139,14 +1139,13 @@ struct af_alg_async_req *af_alg_alloc_areq(struct sock *sk,
  	if (unlikely(!areq))
  		return ERR_PTR(-ENOMEM);
  
@@ -128,10 +128,10 @@ index 3e333be303fe..4b7a7d9e198e 100644
  	return areq;
  }
 diff --git a/crypto/algif_hash.c b/crypto/algif_hash.c
-index 84f4e9c2b5d9..45a3ef64e6ab 100644
+index be21cfdc6dbc..a48fc7c24341 100644
 --- a/crypto/algif_hash.c
 +++ b/crypto/algif_hash.c
-@@ -424,9 +424,8 @@ static int hash_accept_parent_nokey(void *private, struct sock *sk)
+@@ -423,9 +423,8 @@ static int hash_accept_parent_nokey(void *private, struct sock *sk)
  	if (!ctx)
  		return -ENOMEM;
  
