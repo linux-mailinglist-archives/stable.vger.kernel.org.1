@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-204355-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204356-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81AF9CEC161
-	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 15:32:34 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09581CEC167
+	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 15:32:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1D2593011479
-	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 14:32:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 848E4300B91B
+	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 14:32:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8602269B01;
-	Wed, 31 Dec 2025 14:32:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 633FD24A07C;
+	Wed, 31 Dec 2025 14:32:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iGx5bO+v"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hDawS9ln"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66B8525F78F
-	for <stable@vger.kernel.org>; Wed, 31 Dec 2025 14:32:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 234651BD035
+	for <stable@vger.kernel.org>; Wed, 31 Dec 2025 14:32:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767191546; cv=none; b=haOpK01pJi7p5jaIUWQoQbTaZA2VJTWZSTxljxUg0ut828qp/OljD1ftvVaM9dF42et/61xTSfiGMaC2jV68sYxosUKlWMOtgCq2Q3zeWdIO38YO07E9x6eFQptvO3EW3udy9PmopPIkOinQ6hVDfbAOKzMlE0Yk0Hmf8+P1PEA=
+	t=1767191562; cv=none; b=Yz3cpz7xcGNGhHoM0CkB08C+Lbvb/NRIPA1VKoOycH60fZSR7DP/HeuP4/qw6gLsMHr6QCXnzpM8STtRIpwJGEUL/pYwbnSEs8SEYzAICpH2oHjsb1uC7vHraYPgQz6Bd1N5sit14IY52NjAjZKJyj8u2cNhaJB2Lu1zA5JVjEw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767191546; c=relaxed/simple;
-	bh=UsgsaU8GaEPwoiKlY0qyvGMtBK5bwT+yN0qh7h7NNhg=;
+	s=arc-20240116; t=1767191562; c=relaxed/simple;
+	bh=47k4pI7DudWhjglbwtuXzCTgq4ggW3Mph2I/9SLyezk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fWAHZlYK1N20wMtn1wAWuXhTgNdEPlTLPfxYf1WsTWJUeDO4DtzX6hE1H0LOJnX98U0HI8bdMdXmSlDAGy8DZvwqRxgW7NvIP6UvhZ1Nqp/nKXxAQB/1PG3906S1gVZgF1plr43VMl5tDzC8/vOabLMK4/UsqQg8MB4MM1OJF/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iGx5bO+v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2772C116B1;
-	Wed, 31 Dec 2025 14:32:25 +0000 (UTC)
+	 MIME-Version; b=ROQE+FOmo8Bc4tkPPwinifpUcIKYadjY6JyTm4zry+tN3oqxfkGYfu3WoVJal3Pu1QluBsE+anfwSEU64Fm8ieYS04C5nLumzEHvVBB2aOIQM89q4P4io0PaV6Wr1u5T3katmqtjSoUeCkkGLWuZF1z48ljgaJ9QbK5NTcnyj5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hDawS9ln; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CA54C113D0;
+	Wed, 31 Dec 2025 14:32:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767191546;
-	bh=UsgsaU8GaEPwoiKlY0qyvGMtBK5bwT+yN0qh7h7NNhg=;
+	s=k20201202; t=1767191562;
+	bh=47k4pI7DudWhjglbwtuXzCTgq4ggW3Mph2I/9SLyezk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iGx5bO+vKN6QWIDLZAHZDqdTfxIZ2TaRPePHpotj82lsrr7sQxGrYz9E1SdtAJgXW
-	 04KGPchIqVgFFgHqF6xoICiDQacfjVsDc9VAI/UbuyO1r0LYs7wHWci0VtMWTstmZ4
-	 MGM9GRqECj6J7KMZZUECqrubjocn8JMCWFVQgpcIU/HfX0dr+IZEYTE2Z9CqapAMrF
-	 29WDHEB1eF+zOZTYiU0aVZiu/q6BCOsPQ/mVPY5iBAIwAwDWYB8kQtBrHmc0Vx/hR3
-	 NDakjL+mI7SVQC04an6XJRF9kwfB+aOvC0Y9oqdPIqbOUKjPbADS+ug0QLROimrzrX
-	 bbD2B2gwRSXIg==
+	b=hDawS9lnz5ypb3kvo62jKhgX1mSJqosmoa/Ruo5+KXrFRvvMDph9sovWnacwpQees
+	 GJAdZaAoL4RuD4uHS/2QM/xOu1K+sdPrzenH7fKuImITSjoT76wkbcEyBv2p6TSOfp
+	 MrtyYFZyi1yvEBhDHNt2lSgh+Q94wmtxF61MGrs2ppO71/gzrhge8M+KrFbO3gXlkr
+	 EZT4Vba5Tg3scMcpcAo6ZWItMZNsHzqF1IbZURanN/75Y3HysDHKPGHnlBbiJazhS8
+	 r9cb56bj30Zed8iXsJz4ziQISd7crqkh4M4NARnu5EPSnBOQPt51sBQfuQ9Yy31zNQ
+	 EF8lB+sPEZHmQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Askar Safin <safinaskar@gmail.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
+Cc: Joshua Rogers <linux@joshua.hu>,
+	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y 7/7] gpiolib: acpi: Add quirk for Dell Precision 7780
-Date: Wed, 31 Dec 2025 09:32:18 -0500
-Message-ID: <20251231143218.3042757-7-sashal@kernel.org>
+Subject: [PATCH 6.1.y] SUNRPC: svcauth_gss: avoid NULL deref on zero length gss_token in gss_read_proxy_verf
+Date: Wed, 31 Dec 2025 09:32:39 -0500
+Message-ID: <20251231143239.3043585-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251231143218.3042757-1-sashal@kernel.org>
-References: <2025122946-rotunda-passenger-2915@gregkh>
- <20251231143218.3042757-1-sashal@kernel.org>
+In-Reply-To: <2025122940-ember-smilingly-3df0@gregkh>
+References: <2025122940-ember-smilingly-3df0@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,59 +58,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Askar Safin <safinaskar@gmail.com>
+From: Joshua Rogers <linux@joshua.hu>
 
-[ Upstream commit 2d967310c49ed93ac11cef408a55ddf15c3dd52e ]
+[ Upstream commit d4b69a6186b215d2dc1ebcab965ed88e8d41768d ]
 
-Dell Precision 7780 often wakes up on its own from suspend. Sometimes
-wake up happens immediately (i. e. within 7 seconds), sometimes it happens
-after, say, 30 minutes.
+A zero length gss_token results in pages == 0 and in_token->pages[0]
+is NULL. The code unconditionally evaluates
+page_address(in_token->pages[0]) for the initial memcpy, which can
+dereference NULL even when the copy length is 0. Guard the first
+memcpy so it only runs when length > 0.
 
-Fixes: 1796f808e4bb ("HID: i2c-hid: acpi: Stop setting wakeup_capable")
-Link: https://lore.kernel.org/linux-i2c/197ae95ffd8.dc819e60457077.7692120488609091556@zohomail.com/
+Fixes: 5866efa8cbfb ("SUNRPC: Fix svcauth_gss_proxy_init()")
 Cc: stable@vger.kernel.org
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Askar Safin <safinaskar@gmail.com>
-Link: https://lore.kernel.org/r/20251206180414.3183334-2-safinaskar@gmail.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Signed-off-by: Joshua Rogers <linux@joshua.hu>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+[ adapted xdr buffer pointer API to older argv iov_base/iov_len API ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpiolib-acpi-quirks.c | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ net/sunrpc/auth_gss/svcauth_gss.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpio/gpiolib-acpi-quirks.c b/drivers/gpio/gpiolib-acpi-quirks.c
-index bfb04e67c4bc..2c20bda54a6d 100644
---- a/drivers/gpio/gpiolib-acpi-quirks.c
-+++ b/drivers/gpio/gpiolib-acpi-quirks.c
-@@ -358,6 +358,28 @@ static const struct dmi_system_id gpiolib_acpi_quirks[] __initconst = {
- 			.ignore_wake = "ASCP1A00:00@8",
- 		},
- 	},
-+	{
-+		/*
-+		 * Spurious wakeups, likely from touchpad controller
-+		 * Dell Precision 7780
-+		 * Found in BIOS 1.24.1
-+		 *
-+		 * Found in touchpad firmware, installed by Dell Touchpad Firmware Update Utility version 1160.4196.9, A01
-+		 * ( Dell-Touchpad-Firmware-Update-Utility_VYGNN_WIN64_1160.4196.9_A00.EXE ),
-+		 * released on 11 Jul 2024
-+		 *
-+		 * https://lore.kernel.org/linux-i2c/197ae95ffd8.dc819e60457077.7692120488609091556@zohomail.com/
-+		 */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
-+			DMI_MATCH(DMI_PRODUCT_FAMILY, "Precision"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Precision 7780"),
-+			DMI_MATCH(DMI_BOARD_NAME, "0C6JVW"),
-+		},
-+		.driver_data = &(struct acpi_gpiolib_dmi_quirk) {
-+			.ignore_wake = "VEN_0488:00@355",
-+		},
-+	},
- 	{} /* Terminating entry */
- };
+diff --git a/net/sunrpc/auth_gss/svcauth_gss.c b/net/sunrpc/auth_gss/svcauth_gss.c
+index d0575747ff0e..df0b8b1cdfc4 100644
+--- a/net/sunrpc/auth_gss/svcauth_gss.c
++++ b/net/sunrpc/auth_gss/svcauth_gss.c
+@@ -1179,7 +1179,8 @@ static int gss_read_proxy_verf(struct svc_rqst *rqstp,
+ 	}
  
+ 	length = min_t(unsigned int, inlen, argv->iov_len);
+-	memcpy(page_address(in_token->pages[0]), argv->iov_base, length);
++	if (length)
++		memcpy(page_address(in_token->pages[0]), argv->iov_base, length);
+ 	inlen -= length;
+ 
+ 	to_offs = length;
 -- 
 2.51.0
 
