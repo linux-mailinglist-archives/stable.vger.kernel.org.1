@@ -1,190 +1,1309 @@
-Return-Path: <stable+bounces-204383-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204384-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CC46CEC846
-	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 21:02:36 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3303CEC88C
+	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 21:41:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D9DF43009946
-	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 20:02:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 895343005A91
+	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 20:41:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F7142046BA;
-	Wed, 31 Dec 2025 20:02:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25D0230CD99;
+	Wed, 31 Dec 2025 20:41:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="fRsKJJNh"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HET9oJJQ"
 X-Original-To: stable@vger.kernel.org
-Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012015.outbound.protection.outlook.com [52.101.43.15])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4C2A146D5A
-	for <stable@vger.kernel.org>; Wed, 31 Dec 2025 20:02:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.15
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767211353; cv=fail; b=WTIojCK3ZiRYE7oOiPw3fHQ0cTokQc2xzl+shUxkkxIcRsj3jWTWTQxhcZxxggY3wS4PLBgmOBFMeIrdjQLittFqPBfTPLdrWeTs+wed1T1nOFvFeQ2IlZ8jXv6mk7LouMfOUojb+9qPGGugUxXQslsVLTlr0XP60mih+R1ex0g=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767211353; c=relaxed/simple;
-	bh=Y8a8twVsFgUB6DBoEy9JuN5WTcAgM95qBTz101sg4JQ=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=qRQyvEYn8emyxPdkk6FHlAbLsSV01LCkcQOastL3iXfEILptFyskGDh5mVX8rm8h+BLTP3vp7ixlsaWMUiHWvwHfV7Cej4DxGzXvRzhK9cHpHAb6f5Q+IYGPd7heJ0ADmnNyB5d6dBRAumtaNFodLX3fj6DbwdqDFKs+DhWBrYU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=fRsKJJNh; arc=fail smtp.client-ip=52.101.43.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=s5MvYwBMpCLZtr7ngbfKy54eqUmgCDIctJqeyk0mMD8hhe3kZf8Ae2lWCP631GWe5kmwh1uhrNFPDkue7jUY7uvQBPN2gnXdlHCg7W3dpfBODXJ/veUv5wSL/LC9YPw2UdZk1o5unomei8ZGAp+7fe4iw0cQpOL1X++wMDO9WljwS2EFQDGPjuFMoUBxqbcHXHLrvn45QaQgsXK2OQUE6ZFbY3h+WZAw5kNq750Y3UrAeJjEJJ/cPeVaUwoDoFLEK0yJstqfi/R7sCQ2z9ZiTI9TTwupsbKNhYgkUcPm1FpFKb6Wbm+eJ4bouDuqUAjAqpAlze/GMvay3C6zxi0M0w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=EvT6ZmT3DZKyUCgI12FiCJ2j+CylnYaDb4mcyfx0ji8=;
- b=Zr+WeMzil1VOMq0lrjuLSfVNqIuaC9i0XVuST5HVvfH2eMbfFwtQWsFN9GMHznw87Sg6ckK2QP8RAF6E4EbLDshL/GJll70aDNdX0rcax561996E3PK1FjOdPmemANhyFD9mNW9+sppVsB/1dIDQsbq33ICEh4R7mIFz0t1D9WbO6v+Kv+/kTIVR7ggNdIeX5LhMV/FIacL3Bf8RoLGVvQxuwg/jpUbQtpHjPH5VpyH7ExVM0pIE1T6hXl9eiR3SuX6BgZnxnKnPoSqED3zDZbOGYuwEQNx7rQisA4S87wS7YnmPgQWhVxBvmZAgghop2diUFgoZOsyGxNH2l7Aq8g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=EvT6ZmT3DZKyUCgI12FiCJ2j+CylnYaDb4mcyfx0ji8=;
- b=fRsKJJNhPyv3gi6iE7TkBVXGV5zpKSKmPSr2wmQ4Ub2vAkNlkZuTiuZ+CO+OjoFCdIOvi1GAOx1t/RKbCgP9lWULZIzX8WcoSHWKXlxMDnqQnYBv/jA8kJJpUD6SaqZfkT1fI0OqN+cJ6QniUa51FqszLFno/8zsDmcKSuA2/2UzRKfAGtDSsfKoSYHrGwx8zJIQezPNEXfCl9R9UZ8QttuVy4lbtSyri0VpFkC8XtfTgu38WMg+dj4dk6PIBtRbxBIygVj13w/Vz6H1XclQlQ+n9CzZJ4wuVkq6qnqSlnSeVzjqnxw9oJ8MDD/pg5vBLs5fIurW5vUnuZv4OoZdWQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DM3PR12MB9416.namprd12.prod.outlook.com (2603:10b6:0:4b::8) by
- MN2PR12MB4360.namprd12.prod.outlook.com (2603:10b6:208:266::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9456.14; Wed, 31 Dec
- 2025 20:02:29 +0000
-Received: from DM3PR12MB9416.namprd12.prod.outlook.com
- ([fe80::8cdd:504c:7d2a:59c8]) by DM3PR12MB9416.namprd12.prod.outlook.com
- ([fe80::8cdd:504c:7d2a:59c8%7]) with mapi id 15.20.9478.004; Wed, 31 Dec 2025
- 20:02:29 +0000
-Message-ID: <7737ff62-163b-45eb-857f-c9eb00ea2914@nvidia.com>
-Date: Wed, 31 Dec 2025 12:02:20 -0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: ba1b40ed0e34bab597fd90d4c4e9f7397f878c8f for 6.18.y
-To: Danilo Krummrich <dakr@kernel.org>,
- Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Greg KH <gregkh@linuxfoundation.org>, Sasha Levin <sashal@kernel.org>,
- Alexandre Courbot <acourbot@nvidia.com>, stable@vger.kernel.org,
- Nouveau Dev <nouveau@lists.freedesktop.org>
-References: <CANiq72=ti75ex_M_ALcLiSMbfv6D=KA9+VejQhMm4hYERC=_dA@mail.gmail.com>
- <DFC0SMRNXSCF.VFRFCASVMX5F@kernel.org>
-Content-Language: en-US
-From: John Hubbard <jhubbard@nvidia.com>
-In-Reply-To: <DFC0SMRNXSCF.VFRFCASVMX5F@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SJ0PR03CA0095.namprd03.prod.outlook.com
- (2603:10b6:a03:333::10) To DM3PR12MB9416.namprd12.prod.outlook.com
- (2603:10b6:0:4b::8)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7B9830CD89
+	for <stable@vger.kernel.org>; Wed, 31 Dec 2025 20:41:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1767213699; cv=none; b=OKjPO25RaDf1l2RIV3eDSdCsTF6hSmcbkZddVqHHJUKcCbJIrnBD6w0ObrIIVizeePK3WpoCJ4tLe+2PxIxUsyM0oNsYctr33hGwOAs6ZXnkjvBE95ewN2xzR2eue8OqEdaalW++h1LL1DjR5IXKvBzPbYzkkV25yLSLPCFBi2k=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1767213699; c=relaxed/simple;
+	bh=JoZtZ3O0r3J/QtjQ9nEKypeCKUkdavR963Cn+VU/wv8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=i6R/VS0FGFCHs3PhOcN9URA8+anB4PFjyToF9gzaU3oz9LZXRW8PkA00wGCJc8SQhn6Q4eaGPvmhB8cj061zeTejE6+EnbavcaYwyA3OgzR4PF4vc3NPPoeS2p98hKFq+J7V+9y4yO240ahwaf0aEAXhwTthyIZVEp8vWklJ6Uc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HET9oJJQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABC2FC113D0;
+	Wed, 31 Dec 2025 20:41:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767213699;
+	bh=JoZtZ3O0r3J/QtjQ9nEKypeCKUkdavR963Cn+VU/wv8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=HET9oJJQONDaaEmrDQu9gI6qjndgQu7CZ7E3jo1kSKBUg6pJG1aPXgifkfgvTy8WV
+	 pH9PkIW+PpcazgxICTGas7IgcjshSbfXJaUF3iWuUExg4yvrVlOWrU6OjjHz0ltVtK
+	 +cuOspS5dsjynFfB+7ILFj/CkiQ1keccTZi4GvTat2jT73PYYSlGqhdlkAkV21pWf6
+	 XopBUAY4kvM2LS4X/SMv2b8bMWhg4SLdoXOFH8kfibWDiT8OyyrsXZZAqLvhqP6jN5
+	 J6AMtC8fdo17fah6NADF7ZPqEqVfb9gXe4dvQNx9gJ4Q/36D3Ir6Roxab/NeVA7tdD
+	 BLewK/7f2c2Qw==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Guenter Roeck <linux@roeck-us.net>,
+	Zihao Tang <tangzihao1@hisilicon.com>,
+	Jay Fang <f.fangjian@huawei.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10.y 1/2] hwmon: replace snprintf in show functions with sysfs_emit
+Date: Wed, 31 Dec 2025 15:41:35 -0500
+Message-ID: <20251231204136.3475586-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025122905-unstable-smuggling-c1a3@gregkh>
+References: <2025122905-unstable-smuggling-c1a3@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM3PR12MB9416:EE_|MN2PR12MB4360:EE_
-X-MS-Office365-Filtering-Correlation-Id: 04a7e768-1a6f-4303-454e-08de48a786ae
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?TTBrbGh0VUtabjNKN0RLWVRSOTNUczRrVlhRVmVhblhNVm4rVTgzSllXYmRX?=
- =?utf-8?B?UFVabmxSUXc0TTN5cHpiUlQ3N1FTZ0RRaWdwT0dUTUNBbVREdHkyTGcxSDRE?=
- =?utf-8?B?TlRkSnd0Ni90aWZPbXJPNmNKejBhdWJXRGVLYVlVcncxNTBONnp0YlJHZjFt?=
- =?utf-8?B?Slh1cC95SEtoZXlMT3M2aVIrd1JibFJ5UVJjUG1BekxBTStRU3JPbkRIZTZL?=
- =?utf-8?B?NmpQNHNYbnl4WVNwQUV4OFNEd1hKUHMrTHA2eUZLVm1HZHd1WW0xMkxkVWhv?=
- =?utf-8?B?OFBnbFNHMGYyNGZXOXFyYk1IUHVPM2NJZUVxQzBKalF0Zy9iVWtjTmtkWWtP?=
- =?utf-8?B?eWtwOVhURWdkTWJIdlRmTjJxZ1dZbDZybE1QQXlXNzBtK2d6cHhRRmg3bUFi?=
- =?utf-8?B?U3dnTGI2Qzh1c3pwbERrT3BHTG9iL2xPcC9ENnpOU1gyWk1CblpJSHRIcGgr?=
- =?utf-8?B?dlRjTVVMVTdBQzBqL2FNTHg3c3RLam8xaUlqRUpOSWw0ekNyTDZxVFlvN3Zv?=
- =?utf-8?B?UjNRNUFKcnpmN1dxMkk2Rlo5NURESGE4eFFreU9vTEY2U21uYUVLZXQ2WTVo?=
- =?utf-8?B?WXdybHRma0FHa1A2UHhCak8zUENqSlpWckYvYm8zcUo5UVJ3S2N6OGZub3R0?=
- =?utf-8?B?VWF3cU9NbENQbFgxTnkyTG1QeHlGMlJkeG44czQ1eFVjcEs4djMyMXQvWDRx?=
- =?utf-8?B?aVhkeUJLTUNSZWJYa3YreUNKbXc1TlAvNVA0YnU4S0U1RmlsTEdJRHVpL0Ni?=
- =?utf-8?B?QlEybDIyK1dYeGRpQWVESmcvRU5TMDgwdS82VVJlQVowWmFpb2h3cGFQbnIv?=
- =?utf-8?B?NkxHRWU2RVdwNXpZMURja1dxZG12SWQxaWp2eVh6ZU9qem11M0hMeFM0SHRu?=
- =?utf-8?B?dTh1a2FZcHNRbHBTemlpV050WFM4eWE4ZC9HQUs2am1VMDdmUDRkVVBDeXJQ?=
- =?utf-8?B?RWtBVnZHbXdsTkRrMCs3U01ESld0a2dja0crbVZBWU5rRnlrVng1U3BBc3V5?=
- =?utf-8?B?bVl1ME8rSWJqZE5xcmhLa0Q4UHo2MEM1OUxvSXh3Y3BVdHJicU5kM1FZYm1N?=
- =?utf-8?B?N1FBKzB3cHhkR2pycW45WWx1NDlyL0JBVXIxM0lrZm5MK0lFSm1Gc0ZNb0tv?=
- =?utf-8?B?SGw4Yy9vWldGWFFtRVdrM0Y2Q0NlenIvdDRsSnV6YW9qM3p2MUUzNGdYQ2Vv?=
- =?utf-8?B?dG5Mbk5KcFFZMWFCZEZib0ZKd3JMdGFuNG1UMTRKeThRL2dWTGFmL0RXOXF2?=
- =?utf-8?B?OS9YclJVU0dSTkk4K093OC9CR3JFSGV5bmFnZHY1N295S1BwRmFaNUFlbjhl?=
- =?utf-8?B?U1YrRDc5Q3dXVGdaNEpXY1ZGTitJOVI0QUVXcG9iNG5qMnFRMjArcDRFanhP?=
- =?utf-8?B?SnFoOG1TVVZTRlRUT3RRT21VbEU4a1N1WTZBRGU5R1VWVUtZMmxZd2szSlBI?=
- =?utf-8?B?REMwcVYyZHNOQjk0T1hFRjVBQUtKSlpzNm1OcUJVVExVR3lWbkJBRTNPRk9F?=
- =?utf-8?B?ZmdYUG5pakJVL0pJeDIwRFdaVHpZWjBKYWprcGRYU000UjVxbExFTTZTQU5R?=
- =?utf-8?B?VWplVG5STUo1OEUwU1UwSVpOZ29pYmN5b04xVkc3ZlU0L3JmZUtHOWRXbXBi?=
- =?utf-8?B?VlU3UTA2MytJQVRmKzRwVGJEQUl1Z2ZpaWV4YXAxcFEvaTJycXptUmlveUh5?=
- =?utf-8?B?bFN0aWRhMVczcWhNZDFXM3BxNFRsL3dzZDlqVXQ5UWV5aW42LzNqSm52Smx4?=
- =?utf-8?B?cE5xOE5rVzV2YTA5c090eWZ0VFA0K2puUmdIQmtpQWZvWUZlc3NCaHBiTUlu?=
- =?utf-8?B?T1JIZWZvZk5jcDc2OXVNQmJ2T0VMWkFSRzNBd0hTVnRTcjAvZjFRNXFVcU1z?=
- =?utf-8?B?Q2FKeldia3VRdXgwRVdiQ29HdHFaalAzVDlabGQxZVk5WlJTNWNpb2dEUUVH?=
- =?utf-8?Q?KNW4PtMmtVZHt20eCx33QZukZvHj43QR?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM3PR12MB9416.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?MU1RRHR4ZHpYaFdrMlpVbmNEL3A2UzFCZlZHeGxLUFE1M0g1ak90SWVLUTFj?=
- =?utf-8?B?ZHZWVkp6eFNEbUVXT2hqbDRwUlh5Q292NWlPQktKeXpBSzhNR2ppRUJ3WWpK?=
- =?utf-8?B?OFFWdDRmMjlpOTVKV1BxMTZYUUl4Z3FFS0ZGT1N3Z1VJOTh4MGhvL2xuVFZn?=
- =?utf-8?B?YWJ2ajhsNm41blh0anhpWlN2aGZhaDQwamhzbzYvMHBwK1hINTZzaEgyTDZs?=
- =?utf-8?B?MVFRZmFhN00wK0grTzFBRW5saU9OQmZNa3JHaGJxZ2dpMklIZm9ubklQa0Zy?=
- =?utf-8?B?UWNadlhUM2ptbStRWFRuN3F2bkM2ZG9ZdXBXbUxPcEd1bFNjcHZ5bVo1alVO?=
- =?utf-8?B?M01pT1B2MERMTmtGd0ExK3VvR0hrRjBBYXJTS0NoYzBFcitiZkt4UEZ2K0dB?=
- =?utf-8?B?ek5PMTZDNXB5OGhSWUZqWWh5Z000VVVkemNIcmlSWDZ0eW5naTdGTTMxNnps?=
- =?utf-8?B?SFY3clhSN3h5aStZYW81dysyaVhwU01OYmhyQ1k5djlENUpYTlVYOFFkd1lw?=
- =?utf-8?B?TGhQZ1gvS3ZySzk3dFdsQUE2clFtbDNSSEpwUEVraDNzZ3gycDRtSGFRUU5s?=
- =?utf-8?B?bUJTUGpsa08zZ2RoZkJMQnBwcml6VnFPRy9DdHJDcTFFZU9YaE1wZHNWSjZH?=
- =?utf-8?B?SExkUFZqbDdiUkRzdVlGeFlsRlErbWNPOE1ncStkK0swOEdPUDJzck5pa3VU?=
- =?utf-8?B?T29aQnJDMGhVUTBOZ2dnNXNDRklWdEQxejZVVlZzQklJci9FRGRrTGpGY09P?=
- =?utf-8?B?R3U3aU4zbjhiQ0R2TS9vVHl2YWtMajc3K3RSSmxtV0VqRU1vTGlXa0FzRGlL?=
- =?utf-8?B?NFMySzhsOHZFWlJjUUdZeFhiNGVuQzRCZTNNT1FzQk1wZkdveUFqWG9WSHpZ?=
- =?utf-8?B?Z3dGUDFQNUh2dU9nbkJKK1NvU1FNT1kzWVBOTW1JQVUycVdUWU1sWFpYYWJP?=
- =?utf-8?B?cjcrSUVGNnVUa3pvbnJsaFlabWV0dWtCeWtJb1AxazBDWGh4YWk1SDlyNjd3?=
- =?utf-8?B?UFhIeHBJdXNIQmVDODJ1SnhvK0ptWjFPRGViRlNSQ2VpeHE3akdQc0xROUY2?=
- =?utf-8?B?OTdpTzkyZ0ZYM3BENzY5dnJqYjdaSUZiSzc5aGpXZXlPY1RwYVJreHZxRVVi?=
- =?utf-8?B?S0c3emJZQUJzdG5ESkFBRDVTNmFacjJqMVc4TEVoSFJHVTBHUmhrbENucUFh?=
- =?utf-8?B?VGNPS3ZWWFdFeStiSDZQRXlDWDFSS0FUTVFaRkVsN3VldkUyYm5Hdk5Odm9h?=
- =?utf-8?B?MjRNTDBDZHhOaWM1ZitKbUJyenBKL1F6SUdTak1ja2F6bmt4WFhwQkN2QjB0?=
- =?utf-8?B?RCsxS2cxVjNJNkROVmJvTzNwbng2K01SbWc3UG1KZ2pjVlUwbTFNZXlocWkx?=
- =?utf-8?B?VnZNRGFHQmtLblhjcFAwVnE1dlg2emRCRng4VHRPNEUyaGxFVWE1L0ZLUnhs?=
- =?utf-8?B?V0lhd05lVUQ5eHlQMm54UGZaeFlFR2w0UjI1QkFncWY0anpiOVRoV2w5UHFK?=
- =?utf-8?B?aHB0azA0U2pkTmYxSmg4NEpIdkpYbURZTUFGMHFDcTlpMy80UXNEZkNXbHVV?=
- =?utf-8?B?YXREQmY3a213cGVDNzhpb20wK3M1VHo0cHE3OTdzMlc3aHdkNlF0c2tzRnIx?=
- =?utf-8?B?ME5sai9LQnBYcmt6SHdYUm5ZQ0hYNmpDQi9XbHBlM2R5S0hWdDNqNjJQdVc5?=
- =?utf-8?B?SzRPWHNqWGcxRmREamFld2ZNNmFQSnM4RCtBQmdTOEhrZzU5bytQcjdDZFB3?=
- =?utf-8?B?L2J5cUxic3gxVFhlOUV3ZHdCczVoMFJVMGMzNldCZmZGalVZT2RzNzBkU1dG?=
- =?utf-8?B?Nk5oMFdsUTh6bXdnWnh4SEJhTld0UHdlMkR5Yk84QXI1S1FXRkRPeGNDRllu?=
- =?utf-8?B?MGYxQ05acnBhaFZMNXdIb2o0dEhRcUJESk5Kd3M2NmF4TnN0aFkxTmpSWm51?=
- =?utf-8?B?c042RHV0cTVqSGpvbjZzSDhZdThBRXJiNUthL1MzVHFaL0NZZHJNeFM4RTZD?=
- =?utf-8?B?dDdVZENOQkNjQlB3eU9sNkZXeDRiWkt4d0tEb3dZVzMyMUlLRUpsQUtvQ3l6?=
- =?utf-8?B?U2tCcUNNcDF5Q2JiY2ZaTndsa3EzMXJVUUMzVjJ6Nmh1MkRqSFZsTFhyd0Qy?=
- =?utf-8?B?OC9Yckd2a3E0QUMxbWFYQkphVTdJL2hvc1hNY0tQcDRoTyswSjJEaVl1Zm1L?=
- =?utf-8?B?Q2I1SEtheHJ3bENLM0NkdlBZRHovcTN3TE9tVWpnS3VkRnhySHlLUDBJQzBS?=
- =?utf-8?B?L3BYSE5JQkxkeitEaHhiVmJZTUxVeVRkSXNHaWNoZm9neHk0eFY2bWpDYWRH?=
- =?utf-8?B?WnNweHZralVETTVNSjZvRzRUUk1teE55ZUk1WW1RbTc1aTRSdnJZQT09?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 04a7e768-1a6f-4303-454e-08de48a786ae
-X-MS-Exchange-CrossTenant-AuthSource: DM3PR12MB9416.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Dec 2025 20:02:29.1732
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: qTOF4ZJlLGpm8xnUhtT34DhKZA3/sjZ5rTX4YFhONh5I71dV6KhD8QvzRz/9xVe2X0x44t4BxhM++u7bX2KUHw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4360
+Content-Transfer-Encoding: 8bit
 
-On 12/30/25 5:44 PM, Danilo Krummrich wrote:
-> On Wed Dec 31, 2025 at 1:57 AM CET, Miguel Ojeda wrote:
->> Cc'ing Danilo and Alexandre so that they can confirm they agree.
-> 
-> Good catch! Greg, Sasha: Please consider this commit for stable.
+From: Guenter Roeck <linux@roeck-us.net>
 
-Alex is away, but I also agree with this.
+[ Upstream commit 1f4d4af4d7a1c794a4f003f75fcfd38fafb5dff3 ]
 
-thanks,
+coccicheck complains about the use of snprintf() in sysfs
+show functions.
+
+drivers/hwmon/ina3221.c:701:8-16: WARNING: use scnprintf or sprintf
+
+This results in a large number of patch submissions. Fix it all in
+one go using the following coccinelle rules. Use sysfs_emit instead
+of scnprintf or sprintf since that makes more sense.
+
+@depends on patch@
+identifier show, dev, attr, buf;
+@@
+
+ssize_t show(struct device *dev, struct device_attribute *attr, char *buf)
+{
+	<...
+  return
+-		snprintf(buf, \( PAGE_SIZE \| PAGE_SIZE - 1 \),
++		sysfs_emit(buf,
+		...);
+	...>
+}
+
+@depends on patch@
+identifier show, dev, attr, buf, rc;
+@@
+
+ssize_t show(struct device *dev, struct device_attribute *attr, char *buf)
+{
+	<...
+  rc =
+-		snprintf(buf, \( PAGE_SIZE \| PAGE_SIZE - 1 \),
++		sysfs_emit(buf,
+		...);
+	...>
+}
+
+While at it, remove unnecessary braces and as well as unnecessary
+else after return statements to address checkpatch warnings in the
+resulting patch.
+
+Cc: Zihao Tang <tangzihao1@hisilicon.com>
+Cc: Jay Fang <f.fangjian@huawei.com>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Stable-dep-of: b8d5acdcf525 ("hwmon: (max16065) Use local variable to avoid TOCTOU")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/hwmon/applesmc.c           | 34 +++++++--------
+ drivers/hwmon/ina209.c             |  6 +--
+ drivers/hwmon/ina2xx.c             |  2 +-
+ drivers/hwmon/ina3221.c            |  2 +-
+ drivers/hwmon/lineage-pem.c        |  8 ++--
+ drivers/hwmon/ltc2945.c            |  4 +-
+ drivers/hwmon/ltc2990.c            |  2 +-
+ drivers/hwmon/ltc4151.c            |  2 +-
+ drivers/hwmon/ltc4215.c            |  8 ++--
+ drivers/hwmon/ltc4222.c            |  4 +-
+ drivers/hwmon/ltc4260.c            |  4 +-
+ drivers/hwmon/ltc4261.c            |  4 +-
+ drivers/hwmon/max16065.c           | 14 +++---
+ drivers/hwmon/occ/common.c         | 69 +++++++++++++++---------------
+ drivers/hwmon/occ/sysfs.c          |  4 +-
+ drivers/hwmon/pmbus/inspur-ipsps.c | 28 ++++++------
+ drivers/hwmon/pmbus/pmbus_core.c   |  8 ++--
+ drivers/hwmon/s3c-hwmon.c          |  4 +-
+ drivers/hwmon/sch5627.c            | 24 +++++------
+ drivers/hwmon/sch5636.c            | 20 ++++-----
+ drivers/hwmon/smm665.c             |  4 +-
+ drivers/hwmon/stts751.c            | 20 ++++-----
+ drivers/hwmon/vexpress-hwmon.c     | 12 +++---
+ drivers/hwmon/xgene-hwmon.c        | 14 +++---
+ 24 files changed, 151 insertions(+), 150 deletions(-)
+
+diff --git a/drivers/hwmon/applesmc.c b/drivers/hwmon/applesmc.c
+index 79b498f816fe..ceeb3f891608 100644
+--- a/drivers/hwmon/applesmc.c
++++ b/drivers/hwmon/applesmc.c
+@@ -741,7 +741,7 @@ static void applesmc_idev_poll(struct input_dev *idev)
+ static ssize_t applesmc_name_show(struct device *dev,
+ 				   struct device_attribute *attr, char *buf)
+ {
+-	return snprintf(buf, PAGE_SIZE, "applesmc\n");
++	return sysfs_emit(buf, "applesmc\n");
+ }
+ 
+ static ssize_t applesmc_position_show(struct device *dev,
+@@ -763,8 +763,8 @@ static ssize_t applesmc_position_show(struct device *dev,
+ out:
+ 	if (ret)
+ 		return ret;
+-	else
+-		return snprintf(buf, PAGE_SIZE, "(%d,%d,%d)\n", x, y, z);
++
++	return sysfs_emit(buf, "(%d,%d,%d)\n", x, y, z);
+ }
+ 
+ static ssize_t applesmc_light_show(struct device *dev,
+@@ -804,8 +804,8 @@ static ssize_t applesmc_light_show(struct device *dev,
+ out:
+ 	if (ret)
+ 		return ret;
+-	else
+-		return snprintf(sysfsbuf, PAGE_SIZE, "(%d,%d)\n", left, right);
++
++	return sysfs_emit(sysfsbuf, "(%d,%d)\n", left, right);
+ }
+ 
+ /* Displays sensor key as label */
+@@ -814,7 +814,7 @@ static ssize_t applesmc_show_sensor_label(struct device *dev,
+ {
+ 	const char *key = smcreg.index[to_index(devattr)];
+ 
+-	return snprintf(sysfsbuf, PAGE_SIZE, "%s\n", key);
++	return sysfs_emit(sysfsbuf, "%s\n", key);
+ }
+ 
+ /* Displays degree Celsius * 1000 */
+@@ -832,7 +832,7 @@ static ssize_t applesmc_show_temperature(struct device *dev,
+ 
+ 	temp = 250 * (value >> 6);
+ 
+-	return snprintf(sysfsbuf, PAGE_SIZE, "%d\n", temp);
++	return sysfs_emit(sysfsbuf, "%d\n", temp);
+ }
+ 
+ static ssize_t applesmc_show_fan_speed(struct device *dev,
+@@ -851,7 +851,7 @@ static ssize_t applesmc_show_fan_speed(struct device *dev,
+ 		return ret;
+ 
+ 	speed = ((buffer[0] << 8 | buffer[1]) >> 2);
+-	return snprintf(sysfsbuf, PAGE_SIZE, "%u\n", speed);
++	return sysfs_emit(sysfsbuf, "%u\n", speed);
+ }
+ 
+ static ssize_t applesmc_store_fan_speed(struct device *dev,
+@@ -891,7 +891,7 @@ static ssize_t applesmc_show_fan_manual(struct device *dev,
+ 		return ret;
+ 
+ 	manual = ((buffer[0] << 8 | buffer[1]) >> to_index(attr)) & 0x01;
+-	return snprintf(sysfsbuf, PAGE_SIZE, "%d\n", manual);
++	return sysfs_emit(sysfsbuf, "%d\n", manual);
+ }
+ 
+ static ssize_t applesmc_store_fan_manual(struct device *dev,
+@@ -943,14 +943,14 @@ static ssize_t applesmc_show_fan_position(struct device *dev,
+ 
+ 	if (ret)
+ 		return ret;
+-	else
+-		return snprintf(sysfsbuf, PAGE_SIZE, "%s\n", buffer+4);
++
++	return sysfs_emit(sysfsbuf, "%s\n", buffer + 4);
+ }
+ 
+ static ssize_t applesmc_calibrate_show(struct device *dev,
+ 				struct device_attribute *attr, char *sysfsbuf)
+ {
+-	return snprintf(sysfsbuf, PAGE_SIZE, "(%d,%d)\n", rest_x, rest_y);
++	return sysfs_emit(sysfsbuf, "(%d,%d)\n", rest_x, rest_y);
+ }
+ 
+ static ssize_t applesmc_calibrate_store(struct device *dev,
+@@ -992,7 +992,7 @@ static ssize_t applesmc_key_count_show(struct device *dev,
+ 
+ 	count = ((u32)buffer[0]<<24) + ((u32)buffer[1]<<16) +
+ 						((u32)buffer[2]<<8) + buffer[3];
+-	return snprintf(sysfsbuf, PAGE_SIZE, "%d\n", count);
++	return sysfs_emit(sysfsbuf, "%d\n", count);
+ }
+ 
+ static ssize_t applesmc_key_at_index_read_show(struct device *dev,
+@@ -1020,7 +1020,7 @@ static ssize_t applesmc_key_at_index_data_length_show(struct device *dev,
+ 	if (IS_ERR(entry))
+ 		return PTR_ERR(entry);
+ 
+-	return snprintf(sysfsbuf, PAGE_SIZE, "%d\n", entry->len);
++	return sysfs_emit(sysfsbuf, "%d\n", entry->len);
+ }
+ 
+ static ssize_t applesmc_key_at_index_type_show(struct device *dev,
+@@ -1032,7 +1032,7 @@ static ssize_t applesmc_key_at_index_type_show(struct device *dev,
+ 	if (IS_ERR(entry))
+ 		return PTR_ERR(entry);
+ 
+-	return snprintf(sysfsbuf, PAGE_SIZE, "%s\n", entry->type);
++	return sysfs_emit(sysfsbuf, "%s\n", entry->type);
+ }
+ 
+ static ssize_t applesmc_key_at_index_name_show(struct device *dev,
+@@ -1044,13 +1044,13 @@ static ssize_t applesmc_key_at_index_name_show(struct device *dev,
+ 	if (IS_ERR(entry))
+ 		return PTR_ERR(entry);
+ 
+-	return snprintf(sysfsbuf, PAGE_SIZE, "%s\n", entry->key);
++	return sysfs_emit(sysfsbuf, "%s\n", entry->key);
+ }
+ 
+ static ssize_t applesmc_key_at_index_show(struct device *dev,
+ 				struct device_attribute *attr, char *sysfsbuf)
+ {
+-	return snprintf(sysfsbuf, PAGE_SIZE, "%d\n", key_at_index);
++	return sysfs_emit(sysfsbuf, "%d\n", key_at_index);
+ }
+ 
+ static ssize_t applesmc_key_at_index_store(struct device *dev,
+diff --git a/drivers/hwmon/ina209.c b/drivers/hwmon/ina209.c
+index f4c7b5f76359..fc3007c3e85c 100644
+--- a/drivers/hwmon/ina209.c
++++ b/drivers/hwmon/ina209.c
+@@ -259,7 +259,7 @@ static ssize_t ina209_interval_show(struct device *dev,
+ {
+ 	struct ina209_data *data = dev_get_drvdata(dev);
+ 
+-	return snprintf(buf, PAGE_SIZE, "%d\n", data->update_interval);
++	return sysfs_emit(buf, "%d\n", data->update_interval);
+ }
+ 
+ /*
+@@ -343,7 +343,7 @@ static ssize_t ina209_value_show(struct device *dev,
+ 		return PTR_ERR(data);
+ 
+ 	val = ina209_from_reg(attr->index, data->regs[attr->index]);
+-	return snprintf(buf, PAGE_SIZE, "%ld\n", val);
++	return sysfs_emit(buf, "%ld\n", val);
+ }
+ 
+ static ssize_t ina209_alarm_show(struct device *dev,
+@@ -363,7 +363,7 @@ static ssize_t ina209_alarm_show(struct device *dev,
+ 	 * All alarms are in the INA209_STATUS register. To avoid a long
+ 	 * switch statement, the mask is passed in attr->index
+ 	 */
+-	return snprintf(buf, PAGE_SIZE, "%u\n", !!(status & mask));
++	return sysfs_emit(buf, "%u\n", !!(status & mask));
+ }
+ 
+ /* Shunt voltage, history, limits, alarms */
+diff --git a/drivers/hwmon/ina2xx.c b/drivers/hwmon/ina2xx.c
+index ca97f9e931bc..84a03cfe1fed 100644
+--- a/drivers/hwmon/ina2xx.c
++++ b/drivers/hwmon/ina2xx.c
+@@ -386,7 +386,7 @@ static ssize_t ina226_alert_show(struct device *dev,
+ 		val = ina226_reg_to_alert(data, attr->index, regval);
+ 	}
+ 
+-	ret = snprintf(buf, PAGE_SIZE, "%d\n", val);
++	ret = sysfs_emit(buf, "%d\n", val);
+ abort:
+ 	mutex_unlock(&data->config_lock);
+ 	return ret;
+diff --git a/drivers/hwmon/ina3221.c b/drivers/hwmon/ina3221.c
+index 836e7579e166..7e6720b0157f 100644
+--- a/drivers/hwmon/ina3221.c
++++ b/drivers/hwmon/ina3221.c
+@@ -698,7 +698,7 @@ static ssize_t ina3221_shunt_show(struct device *dev,
+ 	unsigned int channel = sd_attr->index;
+ 	struct ina3221_input *input = &ina->inputs[channel];
+ 
+-	return snprintf(buf, PAGE_SIZE, "%d\n", input->shunt_resistor);
++	return sysfs_emit(buf, "%d\n", input->shunt_resistor);
+ }
+ 
+ static ssize_t ina3221_shunt_store(struct device *dev,
+diff --git a/drivers/hwmon/lineage-pem.c b/drivers/hwmon/lineage-pem.c
+index c83eb2fd80eb..1109fffa76fb 100644
+--- a/drivers/hwmon/lineage-pem.c
++++ b/drivers/hwmon/lineage-pem.c
+@@ -280,7 +280,7 @@ static ssize_t pem_bool_show(struct device *dev, struct device_attribute *da,
+ 		return PTR_ERR(data);
+ 
+ 	status = data->data_string[attr->nr] & attr->index;
+-	return snprintf(buf, PAGE_SIZE, "%d\n", !!status);
++	return sysfs_emit(buf, "%d\n", !!status);
+ }
+ 
+ static ssize_t pem_data_show(struct device *dev, struct device_attribute *da,
+@@ -296,7 +296,7 @@ static ssize_t pem_data_show(struct device *dev, struct device_attribute *da,
+ 	value = pem_get_data(data->data_string, sizeof(data->data_string),
+ 			     attr->index);
+ 
+-	return snprintf(buf, PAGE_SIZE, "%ld\n", value);
++	return sysfs_emit(buf, "%ld\n", value);
+ }
+ 
+ static ssize_t pem_input_show(struct device *dev, struct device_attribute *da,
+@@ -312,7 +312,7 @@ static ssize_t pem_input_show(struct device *dev, struct device_attribute *da,
+ 	value = pem_get_input(data->input_string, sizeof(data->input_string),
+ 			      attr->index);
+ 
+-	return snprintf(buf, PAGE_SIZE, "%ld\n", value);
++	return sysfs_emit(buf, "%ld\n", value);
+ }
+ 
+ static ssize_t pem_fan_show(struct device *dev, struct device_attribute *da,
+@@ -328,7 +328,7 @@ static ssize_t pem_fan_show(struct device *dev, struct device_attribute *da,
+ 	value = pem_get_fan(data->fan_speed, sizeof(data->fan_speed),
+ 			    attr->index);
+ 
+-	return snprintf(buf, PAGE_SIZE, "%ld\n", value);
++	return sysfs_emit(buf, "%ld\n", value);
+ }
+ 
+ /* Voltages */
+diff --git a/drivers/hwmon/ltc2945.c b/drivers/hwmon/ltc2945.c
+index 65d792f18425..c06ab7317431 100644
+--- a/drivers/hwmon/ltc2945.c
++++ b/drivers/hwmon/ltc2945.c
+@@ -226,7 +226,7 @@ static ssize_t ltc2945_value_show(struct device *dev,
+ 	value = ltc2945_reg_to_val(dev, attr->index);
+ 	if (value < 0)
+ 		return value;
+-	return snprintf(buf, PAGE_SIZE, "%lld\n", value);
++	return sysfs_emit(buf, "%lld\n", value);
+ }
+ 
+ static ssize_t ltc2945_value_store(struct device *dev,
+@@ -335,7 +335,7 @@ static ssize_t ltc2945_bool_show(struct device *dev,
+ 	if (fault)		/* Clear reported faults in chip register */
+ 		regmap_update_bits(regmap, LTC2945_FAULT, attr->index, 0);
+ 
+-	return snprintf(buf, PAGE_SIZE, "%d\n", !!fault);
++	return sysfs_emit(buf, "%d\n", !!fault);
+ }
+ 
+ /* Input voltages */
+diff --git a/drivers/hwmon/ltc2990.c b/drivers/hwmon/ltc2990.c
+index 78b191b26bb2..c126fc3e3449 100644
+--- a/drivers/hwmon/ltc2990.c
++++ b/drivers/hwmon/ltc2990.c
+@@ -147,7 +147,7 @@ static ssize_t ltc2990_value_show(struct device *dev,
+ 	if (unlikely(ret < 0))
+ 		return ret;
+ 
+-	return snprintf(buf, PAGE_SIZE, "%d\n", value);
++	return sysfs_emit(buf, "%d\n", value);
+ }
+ 
+ static umode_t ltc2990_attrs_visible(struct kobject *kobj,
+diff --git a/drivers/hwmon/ltc4151.c b/drivers/hwmon/ltc4151.c
+index 321f54e237bd..13b85367a21f 100644
+--- a/drivers/hwmon/ltc4151.c
++++ b/drivers/hwmon/ltc4151.c
+@@ -128,7 +128,7 @@ static ssize_t ltc4151_value_show(struct device *dev,
+ 		return PTR_ERR(data);
+ 
+ 	value = ltc4151_get_value(data, attr->index);
+-	return snprintf(buf, PAGE_SIZE, "%d\n", value);
++	return sysfs_emit(buf, "%d\n", value);
+ }
+ 
+ /*
+diff --git a/drivers/hwmon/ltc4215.c b/drivers/hwmon/ltc4215.c
+index 7cef3cb2962b..1d18c212054f 100644
+--- a/drivers/hwmon/ltc4215.c
++++ b/drivers/hwmon/ltc4215.c
+@@ -139,7 +139,7 @@ static ssize_t ltc4215_voltage_show(struct device *dev,
+ 	struct sensor_device_attribute *attr = to_sensor_dev_attr(da);
+ 	const int voltage = ltc4215_get_voltage(dev, attr->index);
+ 
+-	return snprintf(buf, PAGE_SIZE, "%d\n", voltage);
++	return sysfs_emit(buf, "%d\n", voltage);
+ }
+ 
+ static ssize_t ltc4215_current_show(struct device *dev,
+@@ -147,7 +147,7 @@ static ssize_t ltc4215_current_show(struct device *dev,
+ {
+ 	const unsigned int curr = ltc4215_get_current(dev);
+ 
+-	return snprintf(buf, PAGE_SIZE, "%u\n", curr);
++	return sysfs_emit(buf, "%u\n", curr);
+ }
+ 
+ static ssize_t ltc4215_power_show(struct device *dev,
+@@ -159,7 +159,7 @@ static ssize_t ltc4215_power_show(struct device *dev,
+ 	/* current in mA * voltage in mV == power in uW */
+ 	const unsigned int power = abs(output_voltage * curr);
+ 
+-	return snprintf(buf, PAGE_SIZE, "%u\n", power);
++	return sysfs_emit(buf, "%u\n", power);
+ }
+ 
+ static ssize_t ltc4215_alarm_show(struct device *dev,
+@@ -170,7 +170,7 @@ static ssize_t ltc4215_alarm_show(struct device *dev,
+ 	const u8 reg = data->regs[LTC4215_STATUS];
+ 	const u32 mask = attr->index;
+ 
+-	return snprintf(buf, PAGE_SIZE, "%u\n", !!(reg & mask));
++	return sysfs_emit(buf, "%u\n", !!(reg & mask));
+ }
+ 
+ /*
+diff --git a/drivers/hwmon/ltc4222.c b/drivers/hwmon/ltc4222.c
+index 3efce6d1cb88..d2027ca5c925 100644
+--- a/drivers/hwmon/ltc4222.c
++++ b/drivers/hwmon/ltc4222.c
+@@ -94,7 +94,7 @@ static ssize_t ltc4222_value_show(struct device *dev,
+ 	value = ltc4222_get_value(dev, attr->index);
+ 	if (value < 0)
+ 		return value;
+-	return snprintf(buf, PAGE_SIZE, "%d\n", value);
++	return sysfs_emit(buf, "%d\n", value);
+ }
+ 
+ static ssize_t ltc4222_bool_show(struct device *dev,
+@@ -112,7 +112,7 @@ static ssize_t ltc4222_bool_show(struct device *dev,
+ 	if (fault)		/* Clear reported faults in chip register */
+ 		regmap_update_bits(regmap, attr->nr, attr->index, 0);
+ 
+-	return snprintf(buf, PAGE_SIZE, "%d\n", !!fault);
++	return sysfs_emit(buf, "%d\n", !!fault);
+ }
+ 
+ /* Voltages */
+diff --git a/drivers/hwmon/ltc4260.c b/drivers/hwmon/ltc4260.c
+index d0beb43abf3f..75e89cec381e 100644
+--- a/drivers/hwmon/ltc4260.c
++++ b/drivers/hwmon/ltc4260.c
+@@ -79,7 +79,7 @@ static ssize_t ltc4260_value_show(struct device *dev,
+ 	value = ltc4260_get_value(dev, attr->index);
+ 	if (value < 0)
+ 		return value;
+-	return snprintf(buf, PAGE_SIZE, "%d\n", value);
++	return sysfs_emit(buf, "%d\n", value);
+ }
+ 
+ static ssize_t ltc4260_bool_show(struct device *dev,
+@@ -98,7 +98,7 @@ static ssize_t ltc4260_bool_show(struct device *dev,
+ 	if (fault)		/* Clear reported faults in chip register */
+ 		regmap_update_bits(regmap, LTC4260_FAULT, attr->index, 0);
+ 
+-	return snprintf(buf, PAGE_SIZE, "%d\n", !!fault);
++	return sysfs_emit(buf, "%d\n", !!fault);
+ }
+ 
+ /* Voltages */
+diff --git a/drivers/hwmon/ltc4261.c b/drivers/hwmon/ltc4261.c
+index 1dab84b52df5..b81e9c3d297b 100644
+--- a/drivers/hwmon/ltc4261.c
++++ b/drivers/hwmon/ltc4261.c
+@@ -130,7 +130,7 @@ static ssize_t ltc4261_value_show(struct device *dev,
+ 		return PTR_ERR(data);
+ 
+ 	value = ltc4261_get_value(data, attr->index);
+-	return snprintf(buf, PAGE_SIZE, "%d\n", value);
++	return sysfs_emit(buf, "%d\n", value);
+ }
+ 
+ static ssize_t ltc4261_bool_show(struct device *dev,
+@@ -147,7 +147,7 @@ static ssize_t ltc4261_bool_show(struct device *dev,
+ 	if (fault)		/* Clear reported faults in chip register */
+ 		i2c_smbus_write_byte_data(data->client, LTC4261_FAULT, ~fault);
+ 
+-	return snprintf(buf, PAGE_SIZE, "%d\n", fault ? 1 : 0);
++	return sysfs_emit(buf, "%d\n", fault ? 1 : 0);
+ }
+ 
+ /*
+diff --git a/drivers/hwmon/max16065.c b/drivers/hwmon/max16065.c
+index b4c519e52fff..66d92f705136 100644
+--- a/drivers/hwmon/max16065.c
++++ b/drivers/hwmon/max16065.c
+@@ -195,7 +195,7 @@ static ssize_t max16065_alarm_show(struct device *dev,
+ 		i2c_smbus_write_byte_data(data->client,
+ 					  MAX16065_FAULT(attr2->nr), val);
+ 
+-	return snprintf(buf, PAGE_SIZE, "%d\n", !!val);
++	return sysfs_emit(buf, "%d\n", !!val);
+ }
+ 
+ static ssize_t max16065_input_show(struct device *dev,
+@@ -208,8 +208,8 @@ static ssize_t max16065_input_show(struct device *dev,
+ 	if (unlikely(adc < 0))
+ 		return adc;
+ 
+-	return snprintf(buf, PAGE_SIZE, "%d\n",
+-			ADC_TO_MV(adc, data->range[attr->index]));
++	return sysfs_emit(buf, "%d\n",
++			  ADC_TO_MV(adc, data->range[attr->index]));
+ }
+ 
+ static ssize_t max16065_current_show(struct device *dev,
+@@ -220,8 +220,8 @@ static ssize_t max16065_current_show(struct device *dev,
+ 	if (unlikely(data->curr_sense < 0))
+ 		return data->curr_sense;
+ 
+-	return snprintf(buf, PAGE_SIZE, "%d\n",
+-			ADC_TO_CURR(data->curr_sense, data->curr_gain));
++	return sysfs_emit(buf, "%d\n",
++			  ADC_TO_CURR(data->curr_sense, data->curr_gain));
+ }
+ 
+ static ssize_t max16065_limit_store(struct device *dev,
+@@ -257,8 +257,8 @@ static ssize_t max16065_limit_show(struct device *dev,
+ 	struct sensor_device_attribute_2 *attr2 = to_sensor_dev_attr_2(da);
+ 	struct max16065_data *data = dev_get_drvdata(dev);
+ 
+-	return snprintf(buf, PAGE_SIZE, "%d\n",
+-			data->limit[attr2->nr][attr2->index]);
++	return sysfs_emit(buf, "%d\n",
++			  data->limit[attr2->nr][attr2->index]);
+ }
+ 
+ /* Construct a sensor_device_attribute structure for each register */
+diff --git a/drivers/hwmon/occ/common.c b/drivers/hwmon/occ/common.c
+index 18f1b57431ff..479ea4ce451a 100644
+--- a/drivers/hwmon/occ/common.c
++++ b/drivers/hwmon/occ/common.c
+@@ -261,7 +261,7 @@ static ssize_t occ_show_temp_1(struct device *dev,
+ 		return -EINVAL;
+ 	}
+ 
+-	return snprintf(buf, PAGE_SIZE - 1, "%u\n", val);
++	return sysfs_emit(buf, "%u\n", val);
+ }
+ 
+ static ssize_t occ_show_temp_2(struct device *dev,
+@@ -312,7 +312,7 @@ static ssize_t occ_show_temp_2(struct device *dev,
+ 		return -EINVAL;
+ 	}
+ 
+-	return snprintf(buf, PAGE_SIZE - 1, "%u\n", val);
++	return sysfs_emit(buf, "%u\n", val);
+ }
+ 
+ static ssize_t occ_show_temp_10(struct device *dev,
+@@ -359,7 +359,7 @@ static ssize_t occ_show_temp_10(struct device *dev,
+ 		return -EINVAL;
+ 	}
+ 
+-	return snprintf(buf, PAGE_SIZE - 1, "%u\n", val);
++	return sysfs_emit(buf, "%u\n", val);
+ }
+ 
+ static ssize_t occ_show_freq_1(struct device *dev,
+@@ -389,7 +389,7 @@ static ssize_t occ_show_freq_1(struct device *dev,
+ 		return -EINVAL;
+ 	}
+ 
+-	return snprintf(buf, PAGE_SIZE - 1, "%u\n", val);
++	return sysfs_emit(buf, "%u\n", val);
+ }
+ 
+ static ssize_t occ_show_freq_2(struct device *dev,
+@@ -419,7 +419,7 @@ static ssize_t occ_show_freq_2(struct device *dev,
+ 		return -EINVAL;
+ 	}
+ 
+-	return snprintf(buf, PAGE_SIZE - 1, "%u\n", val);
++	return sysfs_emit(buf, "%u\n", val);
+ }
+ 
+ static ssize_t occ_show_power_1(struct device *dev,
+@@ -458,7 +458,7 @@ static ssize_t occ_show_power_1(struct device *dev,
+ 		return -EINVAL;
+ 	}
+ 
+-	return snprintf(buf, PAGE_SIZE - 1, "%llu\n", val);
++	return sysfs_emit(buf, "%llu\n", val);
+ }
+ 
+ static u64 occ_get_powr_avg(u64 accum, u32 samples)
+@@ -485,9 +485,9 @@ static ssize_t occ_show_power_2(struct device *dev,
+ 
+ 	switch (sattr->nr) {
+ 	case 0:
+-		return snprintf(buf, PAGE_SIZE - 1, "%u_%u_%u\n",
+-				get_unaligned_be32(&power->sensor_id),
+-				power->function_id, power->apss_channel);
++		return sysfs_emit(buf, "%u_%u_%u\n",
++				  get_unaligned_be32(&power->sensor_id),
++				  power->function_id, power->apss_channel);
+ 	case 1:
+ 		val = occ_get_powr_avg(get_unaligned_be64(&power->accumulator),
+ 				       get_unaligned_be32(&power->update_tag));
+@@ -503,7 +503,7 @@ static ssize_t occ_show_power_2(struct device *dev,
+ 		return -EINVAL;
+ 	}
+ 
+-	return snprintf(buf, PAGE_SIZE - 1, "%llu\n", val);
++	return sysfs_emit(buf, "%llu\n", val);
+ }
+ 
+ static ssize_t occ_show_power_a0(struct device *dev,
+@@ -524,8 +524,8 @@ static ssize_t occ_show_power_a0(struct device *dev,
+ 
+ 	switch (sattr->nr) {
+ 	case 0:
+-		return snprintf(buf, PAGE_SIZE - 1, "%u_system\n",
+-				get_unaligned_be32(&power->sensor_id));
++		return sysfs_emit(buf, "%u_system\n",
++				  get_unaligned_be32(&power->sensor_id));
+ 	case 1:
+ 		val = occ_get_powr_avg(get_unaligned_be64(&power->system.accumulator),
+ 				       get_unaligned_be32(&power->system.update_tag));
+@@ -538,8 +538,8 @@ static ssize_t occ_show_power_a0(struct device *dev,
+ 		val = get_unaligned_be16(&power->system.value) * 1000000ULL;
+ 		break;
+ 	case 4:
+-		return snprintf(buf, PAGE_SIZE - 1, "%u_proc\n",
+-				get_unaligned_be32(&power->sensor_id));
++		return sysfs_emit(buf, "%u_proc\n",
++				  get_unaligned_be32(&power->sensor_id));
+ 	case 5:
+ 		val = occ_get_powr_avg(get_unaligned_be64(&power->proc.accumulator),
+ 				       get_unaligned_be32(&power->proc.update_tag));
+@@ -552,8 +552,8 @@ static ssize_t occ_show_power_a0(struct device *dev,
+ 		val = get_unaligned_be16(&power->proc.value) * 1000000ULL;
+ 		break;
+ 	case 8:
+-		return snprintf(buf, PAGE_SIZE - 1, "%u_vdd\n",
+-				get_unaligned_be32(&power->sensor_id));
++		return sysfs_emit(buf, "%u_vdd\n",
++				  get_unaligned_be32(&power->sensor_id));
+ 	case 9:
+ 		val = occ_get_powr_avg(get_unaligned_be64(&power->vdd.accumulator),
+ 				       get_unaligned_be32(&power->vdd.update_tag));
+@@ -566,8 +566,8 @@ static ssize_t occ_show_power_a0(struct device *dev,
+ 		val = get_unaligned_be16(&power->vdd.value) * 1000000ULL;
+ 		break;
+ 	case 12:
+-		return snprintf(buf, PAGE_SIZE - 1, "%u_vdn\n",
+-				get_unaligned_be32(&power->sensor_id));
++		return sysfs_emit(buf, "%u_vdn\n",
++				  get_unaligned_be32(&power->sensor_id));
+ 	case 13:
+ 		val = occ_get_powr_avg(get_unaligned_be64(&power->vdn.accumulator),
+ 				       get_unaligned_be32(&power->vdn.update_tag));
+@@ -583,7 +583,7 @@ static ssize_t occ_show_power_a0(struct device *dev,
+ 		return -EINVAL;
+ 	}
+ 
+-	return snprintf(buf, PAGE_SIZE - 1, "%llu\n", val);
++	return sysfs_emit(buf, "%llu\n", val);
+ }
+ 
+ static ssize_t occ_show_caps_1_2(struct device *dev,
+@@ -604,7 +604,7 @@ static ssize_t occ_show_caps_1_2(struct device *dev,
+ 
+ 	switch (sattr->nr) {
+ 	case 0:
+-		return snprintf(buf, PAGE_SIZE - 1, "system\n");
++		return sysfs_emit(buf, "system\n");
+ 	case 1:
+ 		val = get_unaligned_be16(&caps->cap) * 1000000ULL;
+ 		break;
+@@ -633,7 +633,7 @@ static ssize_t occ_show_caps_1_2(struct device *dev,
+ 		return -EINVAL;
+ 	}
+ 
+-	return snprintf(buf, PAGE_SIZE - 1, "%llu\n", val);
++	return sysfs_emit(buf, "%llu\n", val);
+ }
+ 
+ static ssize_t occ_show_caps_3(struct device *dev,
+@@ -654,7 +654,7 @@ static ssize_t occ_show_caps_3(struct device *dev,
+ 
+ 	switch (sattr->nr) {
+ 	case 0:
+-		return snprintf(buf, PAGE_SIZE - 1, "system\n");
++		return sysfs_emit(buf, "system\n");
+ 	case 1:
+ 		val = get_unaligned_be16(&caps->cap) * 1000000ULL;
+ 		break;
+@@ -683,7 +683,7 @@ static ssize_t occ_show_caps_3(struct device *dev,
+ 		return -EINVAL;
+ 	}
+ 
+-	return snprintf(buf, PAGE_SIZE - 1, "%llu\n", val);
++	return sysfs_emit(buf, "%llu\n", val);
+ }
+ 
+ static ssize_t occ_store_caps_user(struct device *dev,
+@@ -726,21 +726,22 @@ static ssize_t occ_show_extended(struct device *dev,
+ 
+ 	switch (sattr->nr) {
+ 	case 0:
+-		if (extn->flags & EXTN_FLAG_SENSOR_ID)
+-			rc = snprintf(buf, PAGE_SIZE - 1, "%u",
+-				      get_unaligned_be32(&extn->sensor_id));
+-		else
+-			rc = snprintf(buf, PAGE_SIZE - 1, "%02x%02x%02x%02x\n",
+-				      extn->name[0], extn->name[1],
+-				      extn->name[2], extn->name[3]);
++		if (extn->flags & EXTN_FLAG_SENSOR_ID) {
++			rc = sysfs_emit(buf, "%u",
++					get_unaligned_be32(&extn->sensor_id));
++		} else {
++			rc = sysfs_emit(buf, "%02x%02x%02x%02x\n",
++					extn->name[0], extn->name[1],
++					extn->name[2], extn->name[3]);
++		}
+ 		break;
+ 	case 1:
+-		rc = snprintf(buf, PAGE_SIZE - 1, "%02x\n", extn->flags);
++		rc = sysfs_emit(buf, "%02x\n", extn->flags);
+ 		break;
+ 	case 2:
+-		rc = snprintf(buf, PAGE_SIZE - 1, "%02x%02x%02x%02x%02x%02x\n",
+-			      extn->data[0], extn->data[1], extn->data[2],
+-			      extn->data[3], extn->data[4], extn->data[5]);
++		rc = sysfs_emit(buf, "%02x%02x%02x%02x%02x%02x\n",
++				extn->data[0], extn->data[1], extn->data[2],
++				extn->data[3], extn->data[4], extn->data[5]);
+ 		break;
+ 	default:
+ 		return -EINVAL;
+diff --git a/drivers/hwmon/occ/sysfs.c b/drivers/hwmon/occ/sysfs.c
+index c73be0747e66..03b16abef67f 100644
+--- a/drivers/hwmon/occ/sysfs.c
++++ b/drivers/hwmon/occ/sysfs.c
+@@ -67,7 +67,7 @@ static ssize_t occ_sysfs_show(struct device *dev,
+ 		return -EINVAL;
+ 	}
+ 
+-	return snprintf(buf, PAGE_SIZE - 1, "%d\n", val);
++	return sysfs_emit(buf, "%d\n", val);
+ }
+ 
+ static ssize_t occ_error_show(struct device *dev,
+@@ -77,7 +77,7 @@ static ssize_t occ_error_show(struct device *dev,
+ 
+ 	occ_update_response(occ);
+ 
+-	return snprintf(buf, PAGE_SIZE - 1, "%d\n", occ->error);
++	return sysfs_emit(buf, "%d\n", occ->error);
+ }
+ 
+ static SENSOR_DEVICE_ATTR(occ_master, 0444, occ_sysfs_show, NULL, 0);
+diff --git a/drivers/hwmon/pmbus/inspur-ipsps.c b/drivers/hwmon/pmbus/inspur-ipsps.c
+index be493182174d..b166d9c1b47e 100644
+--- a/drivers/hwmon/pmbus/inspur-ipsps.c
++++ b/drivers/hwmon/pmbus/inspur-ipsps.c
+@@ -70,7 +70,7 @@ static ssize_t ipsps_string_show(struct device *dev,
+ 	p = memscan(data, '#', rc);
+ 	*p = '\0';
+ 
+-	return snprintf(buf, PAGE_SIZE, "%s\n", data);
++	return sysfs_emit(buf, "%s\n", data);
+ }
+ 
+ static ssize_t ipsps_fw_version_show(struct device *dev,
+@@ -91,9 +91,9 @@ static ssize_t ipsps_fw_version_show(struct device *dev,
+ 	if (rc != 6)
+ 		return -EPROTO;
+ 
+-	return snprintf(buf, PAGE_SIZE, "%u.%02u%u-%u.%02u\n",
+-			data[1], data[2]/* < 100 */, data[3]/*< 10*/,
+-			data[4], data[5]/* < 100 */);
++	return sysfs_emit(buf, "%u.%02u%u-%u.%02u\n",
++			  data[1], data[2]/* < 100 */, data[3]/*< 10*/,
++			  data[4], data[5]/* < 100 */);
+ }
+ 
+ static ssize_t ipsps_mode_show(struct device *dev,
+@@ -111,19 +111,19 @@ static ssize_t ipsps_mode_show(struct device *dev,
+ 
+ 	switch (rc) {
+ 	case MODE_ACTIVE:
+-		return snprintf(buf, PAGE_SIZE, "[%s] %s %s\n",
+-				MODE_ACTIVE_STRING,
+-				MODE_STANDBY_STRING, MODE_REDUNDANCY_STRING);
++		return sysfs_emit(buf, "[%s] %s %s\n",
++				  MODE_ACTIVE_STRING,
++				  MODE_STANDBY_STRING, MODE_REDUNDANCY_STRING);
+ 	case MODE_STANDBY:
+-		return snprintf(buf, PAGE_SIZE, "%s [%s] %s\n",
+-				MODE_ACTIVE_STRING,
+-				MODE_STANDBY_STRING, MODE_REDUNDANCY_STRING);
++		return sysfs_emit(buf, "%s [%s] %s\n",
++				  MODE_ACTIVE_STRING,
++				  MODE_STANDBY_STRING, MODE_REDUNDANCY_STRING);
+ 	case MODE_REDUNDANCY:
+-		return snprintf(buf, PAGE_SIZE, "%s %s [%s]\n",
+-				MODE_ACTIVE_STRING,
+-				MODE_STANDBY_STRING, MODE_REDUNDANCY_STRING);
++		return sysfs_emit(buf, "%s %s [%s]\n",
++				  MODE_ACTIVE_STRING,
++				  MODE_STANDBY_STRING, MODE_REDUNDANCY_STRING);
+ 	default:
+-		return snprintf(buf, PAGE_SIZE, "unspecified\n");
++		return sysfs_emit(buf, "unspecified\n");
+ 	}
+ }
+ 
+diff --git a/drivers/hwmon/pmbus/pmbus_core.c b/drivers/hwmon/pmbus/pmbus_core.c
+index b795c90a46d9..e90ab980b836 100644
+--- a/drivers/hwmon/pmbus/pmbus_core.c
++++ b/drivers/hwmon/pmbus/pmbus_core.c
+@@ -962,7 +962,7 @@ static ssize_t pmbus_show_boolean(struct device *dev,
+ 	val = pmbus_get_boolean(client, boolean, attr->index);
+ 	if (val < 0)
+ 		return val;
+-	return snprintf(buf, PAGE_SIZE, "%d\n", val);
++	return sysfs_emit(buf, "%d\n", val);
+ }
+ 
+ static ssize_t pmbus_show_sensor(struct device *dev,
+@@ -978,7 +978,7 @@ static ssize_t pmbus_show_sensor(struct device *dev,
+ 	if (sensor->data < 0)
+ 		ret = sensor->data;
+ 	else
+-		ret = snprintf(buf, PAGE_SIZE, "%lld\n", pmbus_reg2data(data, sensor));
++		ret = sysfs_emit(buf, "%lld\n", pmbus_reg2data(data, sensor));
+ 	mutex_unlock(&data->update_lock);
+ 	return ret;
+ }
+@@ -1014,7 +1014,7 @@ static ssize_t pmbus_show_label(struct device *dev,
+ {
+ 	struct pmbus_label *label = to_pmbus_label(da);
+ 
+-	return snprintf(buf, PAGE_SIZE, "%s\n", label->label);
++	return sysfs_emit(buf, "%s\n", label->label);
+ }
+ 
+ static int pmbus_add_attribute(struct pmbus_data *data, struct attribute *attr)
+@@ -2054,7 +2054,7 @@ static ssize_t pmbus_show_samples(struct device *dev,
+ 	if (val < 0)
+ 		return val;
+ 
+-	return snprintf(buf, PAGE_SIZE, "%d\n", val);
++	return sysfs_emit(buf, "%d\n", val);
+ }
+ 
+ static ssize_t pmbus_set_samples(struct device *dev,
+diff --git a/drivers/hwmon/s3c-hwmon.c b/drivers/hwmon/s3c-hwmon.c
+index f2703c5460d0..70ae665db477 100644
+--- a/drivers/hwmon/s3c-hwmon.c
++++ b/drivers/hwmon/s3c-hwmon.c
+@@ -166,7 +166,7 @@ static ssize_t s3c_hwmon_ch_show(struct device *dev,
+ 	ret *= cfg->mult;
+ 	ret = DIV_ROUND_CLOSEST(ret, cfg->div);
+ 
+-	return snprintf(buf, PAGE_SIZE, "%d\n", ret);
++	return sysfs_emit(buf, "%d\n", ret);
+ }
+ 
+ /**
+@@ -187,7 +187,7 @@ static ssize_t s3c_hwmon_label_show(struct device *dev,
+ 
+ 	cfg = pdata->in[sen_attr->index];
+ 
+-	return snprintf(buf, PAGE_SIZE, "%s\n", cfg->name);
++	return sysfs_emit(buf, "%s\n", cfg->name);
+ }
+ 
+ /**
+diff --git a/drivers/hwmon/sch5627.c b/drivers/hwmon/sch5627.c
+index 039644263101..a7e0d7bcf923 100644
+--- a/drivers/hwmon/sch5627.c
++++ b/drivers/hwmon/sch5627.c
+@@ -195,7 +195,7 @@ static int reg_to_rpm(u16 reg)
+ static ssize_t name_show(struct device *dev, struct device_attribute *devattr,
+ 	char *buf)
+ {
+-	return snprintf(buf, PAGE_SIZE, "%s\n", DEVNAME);
++	return sysfs_emit(buf, "%s\n", DEVNAME);
+ }
+ 
+ static ssize_t temp_show(struct device *dev, struct device_attribute *devattr,
+@@ -209,7 +209,7 @@ static ssize_t temp_show(struct device *dev, struct device_attribute *devattr,
+ 		return PTR_ERR(data);
+ 
+ 	val = reg_to_temp(data->temp[attr->index]);
+-	return snprintf(buf, PAGE_SIZE, "%d\n", val);
++	return sysfs_emit(buf, "%d\n", val);
+ }
+ 
+ static ssize_t temp_fault_show(struct device *dev,
+@@ -221,7 +221,7 @@ static ssize_t temp_fault_show(struct device *dev,
+ 	if (IS_ERR(data))
+ 		return PTR_ERR(data);
+ 
+-	return snprintf(buf, PAGE_SIZE, "%d\n", data->temp[attr->index] == 0);
++	return sysfs_emit(buf, "%d\n", data->temp[attr->index] == 0);
+ }
+ 
+ static ssize_t temp_max_show(struct device *dev,
+@@ -232,7 +232,7 @@ static ssize_t temp_max_show(struct device *dev,
+ 	int val;
+ 
+ 	val = reg_to_temp_limit(data->temp_max[attr->index]);
+-	return snprintf(buf, PAGE_SIZE, "%d\n", val);
++	return sysfs_emit(buf, "%d\n", val);
+ }
+ 
+ static ssize_t temp_crit_show(struct device *dev,
+@@ -243,7 +243,7 @@ static ssize_t temp_crit_show(struct device *dev,
+ 	int val;
+ 
+ 	val = reg_to_temp_limit(data->temp_crit[attr->index]);
+-	return snprintf(buf, PAGE_SIZE, "%d\n", val);
++	return sysfs_emit(buf, "%d\n", val);
+ }
+ 
+ static ssize_t fan_show(struct device *dev, struct device_attribute *devattr,
+@@ -260,7 +260,7 @@ static ssize_t fan_show(struct device *dev, struct device_attribute *devattr,
+ 	if (val < 0)
+ 		return val;
+ 
+-	return snprintf(buf, PAGE_SIZE, "%d\n", val);
++	return sysfs_emit(buf, "%d\n", val);
+ }
+ 
+ static ssize_t fan_fault_show(struct device *dev,
+@@ -272,8 +272,8 @@ static ssize_t fan_fault_show(struct device *dev,
+ 	if (IS_ERR(data))
+ 		return PTR_ERR(data);
+ 
+-	return snprintf(buf, PAGE_SIZE, "%d\n",
+-			data->fan[attr->index] == 0xffff);
++	return sysfs_emit(buf, "%d\n",
++			  data->fan[attr->index] == 0xffff);
+ }
+ 
+ static ssize_t fan_min_show(struct device *dev,
+@@ -285,7 +285,7 @@ static ssize_t fan_min_show(struct device *dev,
+ 	if (val < 0)
+ 		return val;
+ 
+-	return snprintf(buf, PAGE_SIZE, "%d\n", val);
++	return sysfs_emit(buf, "%d\n", val);
+ }
+ 
+ static ssize_t in_show(struct device *dev, struct device_attribute *devattr,
+@@ -301,7 +301,7 @@ static ssize_t in_show(struct device *dev, struct device_attribute *devattr,
+ 	val = DIV_ROUND_CLOSEST(
+ 		data->in[attr->index] * SCH5627_REG_IN_FACTOR[attr->index],
+ 		10000);
+-	return snprintf(buf, PAGE_SIZE, "%d\n", val);
++	return sysfs_emit(buf, "%d\n", val);
+ }
+ 
+ static ssize_t in_label_show(struct device *dev,
+@@ -309,8 +309,8 @@ static ssize_t in_label_show(struct device *dev,
+ {
+ 	struct sensor_device_attribute *attr = to_sensor_dev_attr(devattr);
+ 
+-	return snprintf(buf, PAGE_SIZE, "%s\n",
+-			SCH5627_IN_LABELS[attr->index]);
++	return sysfs_emit(buf, "%s\n",
++			  SCH5627_IN_LABELS[attr->index]);
+ }
+ 
+ static DEVICE_ATTR_RO(name);
+diff --git a/drivers/hwmon/sch5636.c b/drivers/hwmon/sch5636.c
+index 200bb2bfc986..5683a38740f6 100644
+--- a/drivers/hwmon/sch5636.c
++++ b/drivers/hwmon/sch5636.c
+@@ -160,7 +160,7 @@ static int reg_to_rpm(u16 reg)
+ static ssize_t name_show(struct device *dev, struct device_attribute *devattr,
+ 			 char *buf)
+ {
+-	return snprintf(buf, PAGE_SIZE, "%s\n", DEVNAME);
++	return sysfs_emit(buf, "%s\n", DEVNAME);
+ }
+ 
+ static ssize_t in_value_show(struct device *dev,
+@@ -176,7 +176,7 @@ static ssize_t in_value_show(struct device *dev,
+ 	val = DIV_ROUND_CLOSEST(
+ 		data->in[attr->index] * SCH5636_REG_IN_FACTORS[attr->index],
+ 		255);
+-	return snprintf(buf, PAGE_SIZE, "%d\n", val);
++	return sysfs_emit(buf, "%d\n", val);
+ }
+ 
+ static ssize_t in_label_show(struct device *dev,
+@@ -184,8 +184,8 @@ static ssize_t in_label_show(struct device *dev,
+ {
+ 	struct sensor_device_attribute *attr = to_sensor_dev_attr(devattr);
+ 
+-	return snprintf(buf, PAGE_SIZE, "%s\n",
+-			SCH5636_IN_LABELS[attr->index]);
++	return sysfs_emit(buf, "%s\n",
++			  SCH5636_IN_LABELS[attr->index]);
+ }
+ 
+ static ssize_t temp_value_show(struct device *dev,
+@@ -199,7 +199,7 @@ static ssize_t temp_value_show(struct device *dev,
+ 		return PTR_ERR(data);
+ 
+ 	val = (data->temp_val[attr->index] - 64) * 1000;
+-	return snprintf(buf, PAGE_SIZE, "%d\n", val);
++	return sysfs_emit(buf, "%d\n", val);
+ }
+ 
+ static ssize_t temp_fault_show(struct device *dev,
+@@ -213,7 +213,7 @@ static ssize_t temp_fault_show(struct device *dev,
+ 		return PTR_ERR(data);
+ 
+ 	val = (data->temp_ctrl[attr->index] & SCH5636_TEMP_WORKING) ? 0 : 1;
+-	return snprintf(buf, PAGE_SIZE, "%d\n", val);
++	return sysfs_emit(buf, "%d\n", val);
+ }
+ 
+ static ssize_t temp_alarm_show(struct device *dev,
+@@ -227,7 +227,7 @@ static ssize_t temp_alarm_show(struct device *dev,
+ 		return PTR_ERR(data);
+ 
+ 	val = (data->temp_ctrl[attr->index] & SCH5636_TEMP_ALARM) ? 1 : 0;
+-	return snprintf(buf, PAGE_SIZE, "%d\n", val);
++	return sysfs_emit(buf, "%d\n", val);
+ }
+ 
+ static ssize_t fan_value_show(struct device *dev,
+@@ -244,7 +244,7 @@ static ssize_t fan_value_show(struct device *dev,
+ 	if (val < 0)
+ 		return val;
+ 
+-	return snprintf(buf, PAGE_SIZE, "%d\n", val);
++	return sysfs_emit(buf, "%d\n", val);
+ }
+ 
+ static ssize_t fan_fault_show(struct device *dev,
+@@ -258,7 +258,7 @@ static ssize_t fan_fault_show(struct device *dev,
+ 		return PTR_ERR(data);
+ 
+ 	val = (data->fan_ctrl[attr->index] & SCH5636_FAN_NOT_PRESENT) ? 1 : 0;
+-	return snprintf(buf, PAGE_SIZE, "%d\n", val);
++	return sysfs_emit(buf, "%d\n", val);
+ }
+ 
+ static ssize_t fan_alarm_show(struct device *dev,
+@@ -272,7 +272,7 @@ static ssize_t fan_alarm_show(struct device *dev,
+ 		return PTR_ERR(data);
+ 
+ 	val = (data->fan_ctrl[attr->index] & SCH5636_FAN_ALARM) ? 1 : 0;
+-	return snprintf(buf, PAGE_SIZE, "%d\n", val);
++	return sysfs_emit(buf, "%d\n", val);
+ }
+ 
+ static struct sensor_device_attribute sch5636_attr[] = {
+diff --git a/drivers/hwmon/smm665.c b/drivers/hwmon/smm665.c
+index b6cbe9810a1b..62906d9c4b86 100644
+--- a/drivers/hwmon/smm665.c
++++ b/drivers/hwmon/smm665.c
+@@ -351,7 +351,7 @@ static ssize_t smm665_show_crit_alarm(struct device *dev,
+ 	if (data->faults & (1 << attr->index))
+ 		val = 1;
+ 
+-	return snprintf(buf, PAGE_SIZE, "%d\n", val);
++	return sysfs_emit(buf, "%d\n", val);
+ }
+ 
+ static ssize_t smm665_show_input(struct device *dev,
+@@ -366,7 +366,7 @@ static ssize_t smm665_show_input(struct device *dev,
+ 		return PTR_ERR(data);
+ 
+ 	val = smm665_convert(data->adc[adc], adc);
+-	return snprintf(buf, PAGE_SIZE, "%d\n", val);
++	return sysfs_emit(buf, "%d\n", val);
+ }
+ 
+ #define SMM665_SHOW(what) \
+diff --git a/drivers/hwmon/stts751.c b/drivers/hwmon/stts751.c
+index 6928be6dbe4e..0ed28408aa07 100644
+--- a/drivers/hwmon/stts751.c
++++ b/drivers/hwmon/stts751.c
+@@ -387,7 +387,7 @@ static ssize_t max_alarm_show(struct device *dev,
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	return snprintf(buf, PAGE_SIZE, "%d\n", priv->max_alert);
++	return sysfs_emit(buf, "%d\n", priv->max_alert);
+ }
+ 
+ static ssize_t min_alarm_show(struct device *dev,
+@@ -404,7 +404,7 @@ static ssize_t min_alarm_show(struct device *dev,
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	return snprintf(buf, PAGE_SIZE, "%d\n", priv->min_alert);
++	return sysfs_emit(buf, "%d\n", priv->min_alert);
+ }
+ 
+ static ssize_t input_show(struct device *dev, struct device_attribute *attr,
+@@ -419,7 +419,7 @@ static ssize_t input_show(struct device *dev, struct device_attribute *attr,
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	return snprintf(buf, PAGE_SIZE, "%d\n", priv->temp);
++	return sysfs_emit(buf, "%d\n", priv->temp);
+ }
+ 
+ static ssize_t therm_show(struct device *dev, struct device_attribute *attr,
+@@ -427,7 +427,7 @@ static ssize_t therm_show(struct device *dev, struct device_attribute *attr,
+ {
+ 	struct stts751_priv *priv = dev_get_drvdata(dev);
+ 
+-	return snprintf(buf, PAGE_SIZE, "%d\n", priv->therm);
++	return sysfs_emit(buf, "%d\n", priv->therm);
+ }
+ 
+ static ssize_t therm_store(struct device *dev, struct device_attribute *attr,
+@@ -469,7 +469,7 @@ static ssize_t hyst_show(struct device *dev, struct device_attribute *attr,
+ {
+ 	struct stts751_priv *priv = dev_get_drvdata(dev);
+ 
+-	return snprintf(buf, PAGE_SIZE, "%d\n", priv->hyst);
++	return sysfs_emit(buf, "%d\n", priv->hyst);
+ }
+ 
+ static ssize_t hyst_store(struct device *dev, struct device_attribute *attr,
+@@ -509,7 +509,7 @@ static ssize_t therm_trip_show(struct device *dev,
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	return snprintf(buf, PAGE_SIZE, "%d\n", priv->therm_trip);
++	return sysfs_emit(buf, "%d\n", priv->therm_trip);
+ }
+ 
+ static ssize_t max_show(struct device *dev, struct device_attribute *attr,
+@@ -517,7 +517,7 @@ static ssize_t max_show(struct device *dev, struct device_attribute *attr,
+ {
+ 	struct stts751_priv *priv = dev_get_drvdata(dev);
+ 
+-	return snprintf(buf, PAGE_SIZE, "%d\n", priv->event_max);
++	return sysfs_emit(buf, "%d\n", priv->event_max);
+ }
+ 
+ static ssize_t max_store(struct device *dev, struct device_attribute *attr,
+@@ -551,7 +551,7 @@ static ssize_t min_show(struct device *dev, struct device_attribute *attr,
+ {
+ 	struct stts751_priv *priv = dev_get_drvdata(dev);
+ 
+-	return snprintf(buf, PAGE_SIZE, "%d\n", priv->event_min);
++	return sysfs_emit(buf, "%d\n", priv->event_min);
+ }
+ 
+ static ssize_t min_store(struct device *dev, struct device_attribute *attr,
+@@ -585,8 +585,8 @@ static ssize_t interval_show(struct device *dev,
+ {
+ 	struct stts751_priv *priv = dev_get_drvdata(dev);
+ 
+-	return snprintf(buf, PAGE_SIZE, "%d\n",
+-			stts751_intervals[priv->interval]);
++	return sysfs_emit(buf, "%d\n",
++			  stts751_intervals[priv->interval]);
+ }
+ 
+ static ssize_t interval_store(struct device *dev,
+diff --git a/drivers/hwmon/vexpress-hwmon.c b/drivers/hwmon/vexpress-hwmon.c
+index e7109657129a..44d798be3d59 100644
+--- a/drivers/hwmon/vexpress-hwmon.c
++++ b/drivers/hwmon/vexpress-hwmon.c
+@@ -27,7 +27,7 @@ static ssize_t vexpress_hwmon_label_show(struct device *dev,
+ {
+ 	const char *label = of_get_property(dev->of_node, "label", NULL);
+ 
+-	return snprintf(buffer, PAGE_SIZE, "%s\n", label);
++	return sysfs_emit(buffer, "%s\n", label);
+ }
+ 
+ static ssize_t vexpress_hwmon_u32_show(struct device *dev,
+@@ -41,8 +41,8 @@ static ssize_t vexpress_hwmon_u32_show(struct device *dev,
+ 	if (err)
+ 		return err;
+ 
+-	return snprintf(buffer, PAGE_SIZE, "%u\n", value /
+-			to_sensor_dev_attr(dev_attr)->index);
++	return sysfs_emit(buffer, "%u\n", value /
++			  to_sensor_dev_attr(dev_attr)->index);
+ }
+ 
+ static ssize_t vexpress_hwmon_u64_show(struct device *dev,
+@@ -60,9 +60,9 @@ static ssize_t vexpress_hwmon_u64_show(struct device *dev,
+ 	if (err)
+ 		return err;
+ 
+-	return snprintf(buffer, PAGE_SIZE, "%llu\n",
+-			div_u64(((u64)value_hi << 32) | value_lo,
+-			to_sensor_dev_attr(dev_attr)->index));
++	return sysfs_emit(buffer, "%llu\n",
++			  div_u64(((u64)value_hi << 32) | value_lo,
++				  to_sensor_dev_attr(dev_attr)->index));
+ }
+ 
+ static umode_t vexpress_hwmon_attr_is_visible(struct kobject *kobj,
+diff --git a/drivers/hwmon/xgene-hwmon.c b/drivers/hwmon/xgene-hwmon.c
+index 15889bcc8587..29457877dd46 100644
+--- a/drivers/hwmon/xgene-hwmon.c
++++ b/drivers/hwmon/xgene-hwmon.c
+@@ -329,14 +329,14 @@ static ssize_t temp1_input_show(struct device *dev,
+ 
+ 	temp = sign_extend32(val, TEMP_NEGATIVE_BIT);
+ 
+-	return snprintf(buf, PAGE_SIZE, "%d\n", CELSIUS_TO_mCELSIUS(temp));
++	return sysfs_emit(buf, "%d\n", CELSIUS_TO_mCELSIUS(temp));
+ }
+ 
+ static ssize_t temp1_label_show(struct device *dev,
+ 				struct device_attribute *attr,
+ 				char *buf)
+ {
+-	return snprintf(buf, PAGE_SIZE, "SoC Temperature\n");
++	return sysfs_emit(buf, "SoC Temperature\n");
+ }
+ 
+ static ssize_t temp1_critical_alarm_show(struct device *dev,
+@@ -345,21 +345,21 @@ static ssize_t temp1_critical_alarm_show(struct device *dev,
+ {
+ 	struct xgene_hwmon_dev *ctx = dev_get_drvdata(dev);
+ 
+-	return snprintf(buf, PAGE_SIZE, "%d\n", ctx->temp_critical_alarm);
++	return sysfs_emit(buf, "%d\n", ctx->temp_critical_alarm);
+ }
+ 
+ static ssize_t power1_label_show(struct device *dev,
+ 				 struct device_attribute *attr,
+ 				 char *buf)
+ {
+-	return snprintf(buf, PAGE_SIZE, "CPU power\n");
++	return sysfs_emit(buf, "CPU power\n");
+ }
+ 
+ static ssize_t power2_label_show(struct device *dev,
+ 				 struct device_attribute *attr,
+ 				 char *buf)
+ {
+-	return snprintf(buf, PAGE_SIZE, "IO power\n");
++	return sysfs_emit(buf, "IO power\n");
+ }
+ 
+ static ssize_t power1_input_show(struct device *dev,
+@@ -374,7 +374,7 @@ static ssize_t power1_input_show(struct device *dev,
+ 	if (rc < 0)
+ 		return rc;
+ 
+-	return snprintf(buf, PAGE_SIZE, "%u\n", mWATT_TO_uWATT(val));
++	return sysfs_emit(buf, "%u\n", mWATT_TO_uWATT(val));
+ }
+ 
+ static ssize_t power2_input_show(struct device *dev,
+@@ -389,7 +389,7 @@ static ssize_t power2_input_show(struct device *dev,
+ 	if (rc < 0)
+ 		return rc;
+ 
+-	return snprintf(buf, PAGE_SIZE, "%u\n", mWATT_TO_uWATT(val));
++	return sysfs_emit(buf, "%u\n", mWATT_TO_uWATT(val));
+ }
+ 
+ static DEVICE_ATTR_RO(temp1_label);
 -- 
-John Hubbard
+2.51.0
 
 
