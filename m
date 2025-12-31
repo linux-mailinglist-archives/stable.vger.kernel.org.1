@@ -1,170 +1,190 @@
-Return-Path: <stable+bounces-204382-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204383-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E895FCEC840
-	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 21:00:26 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CC46CEC846
+	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 21:02:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 70CE030155E3
-	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 20:00:24 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D9DF43009946
+	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 20:02:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B26E51A9FAA;
-	Wed, 31 Dec 2025 20:00:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F7142046BA;
+	Wed, 31 Dec 2025 20:02:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="XHqRbTnV"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="fRsKJJNh"
 X-Original-To: stable@vger.kernel.org
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012015.outbound.protection.outlook.com [52.101.43.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B85622301;
-	Wed, 31 Dec 2025 20:00:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.129.48
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767211222; cv=none; b=nh2/+hFX+oPYTKcr78hfoWf+BDF9eAFtP+1yHOUMu481Nzh709I2XVbCHnzcl6xQD4H2mqPN+38+ejKdPFi6pAqTFWuuVJTzuwcMRFUG6oU8T8vI3kqX61HUkZ516IQVcUypp3nOpSYvVO/Jwp7HdAVRd8lzy8YTcPkK06K30D4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767211222; c=relaxed/simple;
-	bh=t+6l7so7sibkki5dM8g/m2/ZIV75V3ajEdxPmz2NrFE=;
-	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=H7FiNhmbQXi1hM8CshFaCECQFIs9fGaJo8bbrs6Givr4ac6b7CFS2A2C5k/wXXuj3Sg9Ne8dz9Wz10R+B29rWBcT/fv6uq2yGkhPIe+wW7IXBsQBlLXZClKHInFhNDfb3E5IMM4nGOEGOFVi0wEgoO2v37xhFAq2TjQn3lvKPEk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=XHqRbTnV; arc=none smtp.client-ip=148.163.129.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mail3.candelatech.com (mail.candelatech.com [208.74.158.173])
-	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id E96DC340070;
-	Wed, 31 Dec 2025 20:00:10 +0000 (UTC)
-Received: from [192.168.101.118] (firewall.candelatech.com [50.251.239.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by mail3.candelatech.com (Postfix) with ESMTPSA id 2CC9213C2B0;
-	Wed, 31 Dec 2025 12:00:08 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 2CC9213C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-	s=default; t=1767211208;
-	bh=t+6l7so7sibkki5dM8g/m2/ZIV75V3ajEdxPmz2NrFE=;
-	h=Date:To:Cc:From:Subject:From;
-	b=XHqRbTnV0EjHUsEkIQhyLeEU7d88WPxOBHDIoWMjPNLONIVVejz0/6lcjZ8M31knB
-	 e07fuoFVJ1YDE0Neh+jXsb6SwbR7bBoxqUfgQiszOkEqaFz0qm6Q1gQToGEx81odLY
-	 uQttlnd4Nn+Rgk0H22982flKUP38y4ucjVMT/8Cc=
-Message-ID: <38b9cad8-1c17-4d89-9f17-44f89fb66ab8@candelatech.com>
-Date: Wed, 31 Dec 2025 12:00:07 -0800
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4C2A146D5A
+	for <stable@vger.kernel.org>; Wed, 31 Dec 2025 20:02:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.15
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1767211353; cv=fail; b=WTIojCK3ZiRYE7oOiPw3fHQ0cTokQc2xzl+shUxkkxIcRsj3jWTWTQxhcZxxggY3wS4PLBgmOBFMeIrdjQLittFqPBfTPLdrWeTs+wed1T1nOFvFeQ2IlZ8jXv6mk7LouMfOUojb+9qPGGugUxXQslsVLTlr0XP60mih+R1ex0g=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1767211353; c=relaxed/simple;
+	bh=Y8a8twVsFgUB6DBoEy9JuN5WTcAgM95qBTz101sg4JQ=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=qRQyvEYn8emyxPdkk6FHlAbLsSV01LCkcQOastL3iXfEILptFyskGDh5mVX8rm8h+BLTP3vp7ixlsaWMUiHWvwHfV7Cej4DxGzXvRzhK9cHpHAb6f5Q+IYGPd7heJ0ADmnNyB5d6dBRAumtaNFodLX3fj6DbwdqDFKs+DhWBrYU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=fRsKJJNh; arc=fail smtp.client-ip=52.101.43.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=s5MvYwBMpCLZtr7ngbfKy54eqUmgCDIctJqeyk0mMD8hhe3kZf8Ae2lWCP631GWe5kmwh1uhrNFPDkue7jUY7uvQBPN2gnXdlHCg7W3dpfBODXJ/veUv5wSL/LC9YPw2UdZk1o5unomei8ZGAp+7fe4iw0cQpOL1X++wMDO9WljwS2EFQDGPjuFMoUBxqbcHXHLrvn45QaQgsXK2OQUE6ZFbY3h+WZAw5kNq750Y3UrAeJjEJJ/cPeVaUwoDoFLEK0yJstqfi/R7sCQ2z9ZiTI9TTwupsbKNhYgkUcPm1FpFKb6Wbm+eJ4bouDuqUAjAqpAlze/GMvay3C6zxi0M0w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=EvT6ZmT3DZKyUCgI12FiCJ2j+CylnYaDb4mcyfx0ji8=;
+ b=Zr+WeMzil1VOMq0lrjuLSfVNqIuaC9i0XVuST5HVvfH2eMbfFwtQWsFN9GMHznw87Sg6ckK2QP8RAF6E4EbLDshL/GJll70aDNdX0rcax561996E3PK1FjOdPmemANhyFD9mNW9+sppVsB/1dIDQsbq33ICEh4R7mIFz0t1D9WbO6v+Kv+/kTIVR7ggNdIeX5LhMV/FIacL3Bf8RoLGVvQxuwg/jpUbQtpHjPH5VpyH7ExVM0pIE1T6hXl9eiR3SuX6BgZnxnKnPoSqED3zDZbOGYuwEQNx7rQisA4S87wS7YnmPgQWhVxBvmZAgghop2diUFgoZOsyGxNH2l7Aq8g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=EvT6ZmT3DZKyUCgI12FiCJ2j+CylnYaDb4mcyfx0ji8=;
+ b=fRsKJJNhPyv3gi6iE7TkBVXGV5zpKSKmPSr2wmQ4Ub2vAkNlkZuTiuZ+CO+OjoFCdIOvi1GAOx1t/RKbCgP9lWULZIzX8WcoSHWKXlxMDnqQnYBv/jA8kJJpUD6SaqZfkT1fI0OqN+cJ6QniUa51FqszLFno/8zsDmcKSuA2/2UzRKfAGtDSsfKoSYHrGwx8zJIQezPNEXfCl9R9UZ8QttuVy4lbtSyri0VpFkC8XtfTgu38WMg+dj4dk6PIBtRbxBIygVj13w/Vz6H1XclQlQ+n9CzZJ4wuVkq6qnqSlnSeVzjqnxw9oJ8MDD/pg5vBLs5fIurW5vUnuZv4OoZdWQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DM3PR12MB9416.namprd12.prod.outlook.com (2603:10b6:0:4b::8) by
+ MN2PR12MB4360.namprd12.prod.outlook.com (2603:10b6:208:266::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9456.14; Wed, 31 Dec
+ 2025 20:02:29 +0000
+Received: from DM3PR12MB9416.namprd12.prod.outlook.com
+ ([fe80::8cdd:504c:7d2a:59c8]) by DM3PR12MB9416.namprd12.prod.outlook.com
+ ([fe80::8cdd:504c:7d2a:59c8%7]) with mapi id 15.20.9478.004; Wed, 31 Dec 2025
+ 20:02:29 +0000
+Message-ID: <7737ff62-163b-45eb-857f-c9eb00ea2914@nvidia.com>
+Date: Wed, 31 Dec 2025 12:02:20 -0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: ba1b40ed0e34bab597fd90d4c4e9f7397f878c8f for 6.18.y
+To: Danilo Krummrich <dakr@kernel.org>,
+ Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Greg KH <gregkh@linuxfoundation.org>, Sasha Levin <sashal@kernel.org>,
+ Alexandre Courbot <acourbot@nvidia.com>, stable@vger.kernel.org,
+ Nouveau Dev <nouveau@lists.freedesktop.org>
+References: <CANiq72=ti75ex_M_ALcLiSMbfv6D=KA9+VejQhMm4hYERC=_dA@mail.gmail.com>
+ <DFC0SMRNXSCF.VFRFCASVMX5F@kernel.org>
+Content-Language: en-US
+From: John Hubbard <jhubbard@nvidia.com>
+In-Reply-To: <DFC0SMRNXSCF.VFRFCASVMX5F@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SJ0PR03CA0095.namprd03.prod.outlook.com
+ (2603:10b6:a03:333::10) To DM3PR12MB9416.namprd12.prod.outlook.com
+ (2603:10b6:0:4b::8)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: stable@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-wireless@vger.kernel.org
-Cc: gregkh@linuxfoundation.org, sashal@kernel.org, jjohnson@kernel.org
-From: "Dylan E." <dylan.eskew@candelatech.com>
-Subject: [BUG 6.18.2] Null Pointer Exception in Fair Scheduler
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-MDID: 1767211212-wYfDzLNO-fRu
-X-PPE-STACK: {"stack":"us5"}
-X-MDID-O:
- us5;ut7;1767211212;wYfDzLNO-fRu;<dylan.eskew@candelatech.com>;6d78aa1bc4c2468e9f5ce884163e871b
-X-PPE-TRUSTED: V=1;DIR=OUT;
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM3PR12MB9416:EE_|MN2PR12MB4360:EE_
+X-MS-Office365-Filtering-Correlation-Id: 04a7e768-1a6f-4303-454e-08de48a786ae
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?TTBrbGh0VUtabjNKN0RLWVRSOTNUczRrVlhRVmVhblhNVm4rVTgzSllXYmRX?=
+ =?utf-8?B?UFVabmxSUXc0TTN5cHpiUlQ3N1FTZ0RRaWdwT0dUTUNBbVREdHkyTGcxSDRE?=
+ =?utf-8?B?TlRkSnd0Ni90aWZPbXJPNmNKejBhdWJXRGVLYVlVcncxNTBONnp0YlJHZjFt?=
+ =?utf-8?B?Slh1cC95SEtoZXlMT3M2aVIrd1JibFJ5UVJjUG1BekxBTStRU3JPbkRIZTZL?=
+ =?utf-8?B?NmpQNHNYbnl4WVNwQUV4OFNEd1hKUHMrTHA2eUZLVm1HZHd1WW0xMkxkVWhv?=
+ =?utf-8?B?OFBnbFNHMGYyNGZXOXFyYk1IUHVPM2NJZUVxQzBKalF0Zy9iVWtjTmtkWWtP?=
+ =?utf-8?B?eWtwOVhURWdkTWJIdlRmTjJxZ1dZbDZybE1QQXlXNzBtK2d6cHhRRmg3bUFi?=
+ =?utf-8?B?U3dnTGI2Qzh1c3pwbERrT3BHTG9iL2xPcC9ENnpOU1gyWk1CblpJSHRIcGgr?=
+ =?utf-8?B?dlRjTVVMVTdBQzBqL2FNTHg3c3RLam8xaUlqRUpOSWw0ekNyTDZxVFlvN3Zv?=
+ =?utf-8?B?UjNRNUFKcnpmN1dxMkk2Rlo5NURESGE4eFFreU9vTEY2U21uYUVLZXQ2WTVo?=
+ =?utf-8?B?WXdybHRma0FHa1A2UHhCak8zUENqSlpWckYvYm8zcUo5UVJ3S2N6OGZub3R0?=
+ =?utf-8?B?VWF3cU9NbENQbFgxTnkyTG1QeHlGMlJkeG44czQ1eFVjcEs4djMyMXQvWDRx?=
+ =?utf-8?B?aVhkeUJLTUNSZWJYa3YreUNKbXc1TlAvNVA0YnU4S0U1RmlsTEdJRHVpL0Ni?=
+ =?utf-8?B?QlEybDIyK1dYeGRpQWVESmcvRU5TMDgwdS82VVJlQVowWmFpb2h3cGFQbnIv?=
+ =?utf-8?B?NkxHRWU2RVdwNXpZMURja1dxZG12SWQxaWp2eVh6ZU9qem11M0hMeFM0SHRu?=
+ =?utf-8?B?dTh1a2FZcHNRbHBTemlpV050WFM4eWE4ZC9HQUs2am1VMDdmUDRkVVBDeXJQ?=
+ =?utf-8?B?RWtBVnZHbXdsTkRrMCs3U01ESld0a2dja0crbVZBWU5rRnlrVng1U3BBc3V5?=
+ =?utf-8?B?bVl1ME8rSWJqZE5xcmhLa0Q4UHo2MEM1OUxvSXh3Y3BVdHJicU5kM1FZYm1N?=
+ =?utf-8?B?N1FBKzB3cHhkR2pycW45WWx1NDlyL0JBVXIxM0lrZm5MK0lFSm1Gc0ZNb0tv?=
+ =?utf-8?B?SGw4Yy9vWldGWFFtRVdrM0Y2Q0NlenIvdDRsSnV6YW9qM3p2MUUzNGdYQ2Vv?=
+ =?utf-8?B?dG5Mbk5KcFFZMWFCZEZib0ZKd3JMdGFuNG1UMTRKeThRL2dWTGFmL0RXOXF2?=
+ =?utf-8?B?OS9YclJVU0dSTkk4K093OC9CR3JFSGV5bmFnZHY1N295S1BwRmFaNUFlbjhl?=
+ =?utf-8?B?U1YrRDc5Q3dXVGdaNEpXY1ZGTitJOVI0QUVXcG9iNG5qMnFRMjArcDRFanhP?=
+ =?utf-8?B?SnFoOG1TVVZTRlRUT3RRT21VbEU4a1N1WTZBRGU5R1VWVUtZMmxZd2szSlBI?=
+ =?utf-8?B?REMwcVYyZHNOQjk0T1hFRjVBQUtKSlpzNm1OcUJVVExVR3lWbkJBRTNPRk9F?=
+ =?utf-8?B?ZmdYUG5pakJVL0pJeDIwRFdaVHpZWjBKYWprcGRYU000UjVxbExFTTZTQU5R?=
+ =?utf-8?B?VWplVG5STUo1OEUwU1UwSVpOZ29pYmN5b04xVkc3ZlU0L3JmZUtHOWRXbXBi?=
+ =?utf-8?B?VlU3UTA2MytJQVRmKzRwVGJEQUl1Z2ZpaWV4YXAxcFEvaTJycXptUmlveUh5?=
+ =?utf-8?B?bFN0aWRhMVczcWhNZDFXM3BxNFRsL3dzZDlqVXQ5UWV5aW42LzNqSm52Smx4?=
+ =?utf-8?B?cE5xOE5rVzV2YTA5c090eWZ0VFA0K2puUmdIQmtpQWZvWUZlc3NCaHBiTUlu?=
+ =?utf-8?B?T1JIZWZvZk5jcDc2OXVNQmJ2T0VMWkFSRzNBd0hTVnRTcjAvZjFRNXFVcU1z?=
+ =?utf-8?B?Q2FKeldia3VRdXgwRVdiQ29HdHFaalAzVDlabGQxZVk5WlJTNWNpb2dEUUVH?=
+ =?utf-8?Q?KNW4PtMmtVZHt20eCx33QZukZvHj43QR?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM3PR12MB9416.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?MU1RRHR4ZHpYaFdrMlpVbmNEL3A2UzFCZlZHeGxLUFE1M0g1ak90SWVLUTFj?=
+ =?utf-8?B?ZHZWVkp6eFNEbUVXT2hqbDRwUlh5Q292NWlPQktKeXpBSzhNR2ppRUJ3WWpK?=
+ =?utf-8?B?OFFWdDRmMjlpOTVKV1BxMTZYUUl4Z3FFS0ZGT1N3Z1VJOTh4MGhvL2xuVFZn?=
+ =?utf-8?B?YWJ2ajhsNm41blh0anhpWlN2aGZhaDQwamhzbzYvMHBwK1hINTZzaEgyTDZs?=
+ =?utf-8?B?MVFRZmFhN00wK0grTzFBRW5saU9OQmZNa3JHaGJxZ2dpMklIZm9ubklQa0Zy?=
+ =?utf-8?B?UWNadlhUM2ptbStRWFRuN3F2bkM2ZG9ZdXBXbUxPcEd1bFNjcHZ5bVo1alVO?=
+ =?utf-8?B?M01pT1B2MERMTmtGd0ExK3VvR0hrRjBBYXJTS0NoYzBFcitiZkt4UEZ2K0dB?=
+ =?utf-8?B?ek5PMTZDNXB5OGhSWUZqWWh5Z000VVVkemNIcmlSWDZ0eW5naTdGTTMxNnps?=
+ =?utf-8?B?SFY3clhSN3h5aStZYW81dysyaVhwU01OYmhyQ1k5djlENUpYTlVYOFFkd1lw?=
+ =?utf-8?B?TGhQZ1gvS3ZySzk3dFdsQUE2clFtbDNSSEpwUEVraDNzZ3gycDRtSGFRUU5s?=
+ =?utf-8?B?bUJTUGpsa08zZ2RoZkJMQnBwcml6VnFPRy9DdHJDcTFFZU9YaE1wZHNWSjZH?=
+ =?utf-8?B?SExkUFZqbDdiUkRzdVlGeFlsRlErbWNPOE1ncStkK0swOEdPUDJzck5pa3VU?=
+ =?utf-8?B?T29aQnJDMGhVUTBOZ2dnNXNDRklWdEQxejZVVlZzQklJci9FRGRrTGpGY09P?=
+ =?utf-8?B?R3U3aU4zbjhiQ0R2TS9vVHl2YWtMajc3K3RSSmxtV0VqRU1vTGlXa0FzRGlL?=
+ =?utf-8?B?NFMySzhsOHZFWlJjUUdZeFhiNGVuQzRCZTNNT1FzQk1wZkdveUFqWG9WSHpZ?=
+ =?utf-8?B?Z3dGUDFQNUh2dU9nbkJKK1NvU1FNT1kzWVBOTW1JQVUycVdUWU1sWFpYYWJP?=
+ =?utf-8?B?cjcrSUVGNnVUa3pvbnJsaFlabWV0dWtCeWtJb1AxazBDWGh4YWk1SDlyNjd3?=
+ =?utf-8?B?UFhIeHBJdXNIQmVDODJ1SnhvK0ptWjFPRGViRlNSQ2VpeHE3akdQc0xROUY2?=
+ =?utf-8?B?OTdpTzkyZ0ZYM3BENzY5dnJqYjdaSUZiSzc5aGpXZXlPY1RwYVJreHZxRVVi?=
+ =?utf-8?B?S0c3emJZQUJzdG5ESkFBRDVTNmFacjJqMVc4TEVoSFJHVTBHUmhrbENucUFh?=
+ =?utf-8?B?VGNPS3ZWWFdFeStiSDZQRXlDWDFSS0FUTVFaRkVsN3VldkUyYm5Hdk5Odm9h?=
+ =?utf-8?B?MjRNTDBDZHhOaWM1ZitKbUJyenBKL1F6SUdTak1ja2F6bmt4WFhwQkN2QjB0?=
+ =?utf-8?B?RCsxS2cxVjNJNkROVmJvTzNwbng2K01SbWc3UG1KZ2pjVlUwbTFNZXlocWkx?=
+ =?utf-8?B?VnZNRGFHQmtLblhjcFAwVnE1dlg2emRCRng4VHRPNEUyaGxFVWE1L0ZLUnhs?=
+ =?utf-8?B?V0lhd05lVUQ5eHlQMm54UGZaeFlFR2w0UjI1QkFncWY0anpiOVRoV2w5UHFK?=
+ =?utf-8?B?aHB0azA0U2pkTmYxSmg4NEpIdkpYbURZTUFGMHFDcTlpMy80UXNEZkNXbHVV?=
+ =?utf-8?B?YXREQmY3a213cGVDNzhpb20wK3M1VHo0cHE3OTdzMlc3aHdkNlF0c2tzRnIx?=
+ =?utf-8?B?ME5sai9LQnBYcmt6SHdYUm5ZQ0hYNmpDQi9XbHBlM2R5S0hWdDNqNjJQdVc5?=
+ =?utf-8?B?SzRPWHNqWGcxRmREamFld2ZNNmFQSnM4RCtBQmdTOEhrZzU5bytQcjdDZFB3?=
+ =?utf-8?B?L2J5cUxic3gxVFhlOUV3ZHdCczVoMFJVMGMzNldCZmZGalVZT2RzNzBkU1dG?=
+ =?utf-8?B?Nk5oMFdsUTh6bXdnWnh4SEJhTld0UHdlMkR5Yk84QXI1S1FXRkRPeGNDRllu?=
+ =?utf-8?B?MGYxQ05acnBhaFZMNXdIb2o0dEhRcUJESk5Kd3M2NmF4TnN0aFkxTmpSWm51?=
+ =?utf-8?B?c042RHV0cTVqSGpvbjZzSDhZdThBRXJiNUthL1MzVHFaL0NZZHJNeFM4RTZD?=
+ =?utf-8?B?dDdVZENOQkNjQlB3eU9sNkZXeDRiWkt4d0tEb3dZVzMyMUlLRUpsQUtvQ3l6?=
+ =?utf-8?B?U2tCcUNNcDF5Q2JiY2ZaTndsa3EzMXJVUUMzVjJ6Nmh1MkRqSFZsTFhyd0Qy?=
+ =?utf-8?B?OC9Yckd2a3E0QUMxbWFYQkphVTdJL2hvc1hNY0tQcDRoTyswSjJEaVl1Zm1L?=
+ =?utf-8?B?Q2I1SEtheHJ3bENLM0NkdlBZRHovcTN3TE9tVWpnS3VkRnhySHlLUDBJQzBS?=
+ =?utf-8?B?L3BYSE5JQkxkeitEaHhiVmJZTUxVeVRkSXNHaWNoZm9neHk0eFY2bWpDYWRH?=
+ =?utf-8?B?WnNweHZralVETTVNSjZvRzRUUk1teE55ZUk1WW1RbTc1aTRSdnJZQT09?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 04a7e768-1a6f-4303-454e-08de48a786ae
+X-MS-Exchange-CrossTenant-AuthSource: DM3PR12MB9416.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Dec 2025 20:02:29.1732
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: qTOF4ZJlLGpm8xnUhtT34DhKZA3/sjZ5rTX4YFhONh5I71dV6KhD8QvzRz/9xVe2X0x44t4BxhM++u7bX2KUHw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4360
 
-Hello,
+On 12/30/25 5:44 PM, Danilo Krummrich wrote:
+> On Wed Dec 31, 2025 at 1:57 AM CET, Miguel Ojeda wrote:
+>> Cc'ing Danilo and Alexandre so that they can confirm they agree.
+> 
+> Good catch! Greg, Sasha: Please consider this commit for stable.
 
-When booting into the v6.18.2 tagged kernel from linux-stable, I get the 
-following
-stack trace while booting into the system every 1 in 5 boots or so, 
-usually during
-fsck or early systemd service initialization:
+Alex is away, but I also agree with this.
 
----
-BUG: kernel NULL pointer dereference, address: 0000000000000051
-#PF: supervisor read access in kernel mode
-#PF: error_code(0x0000) - not-present page
-PGD 0 P4D 0
-Oops: Oops: 0000 [#1] SMP
-CPU: 0 UID: 0 PID: 15 Comm: rcu_preempt Not tainted 6.18.2 #2 PREEMPT(full)
-Hardware name:  /SKYBAY, BIOS 5.12 06/27/2017
-RIP: 0010:pick_task_fair+0x57/0x160
-Code: 66 90 66 90 48 8b 5d 50 48 85 db 74 10 48 8b 73 70 48 89 ef e8 3a 
-74 ff ff 85 c0 75 71 be 01 00 00 00 48 89 ef e8 29 a5 ff ff <80> 78 51 
-00 48 89 c3 0f 85 80 00 00 00 48 85 c0 0f 84 87 00 00 00
-RSP: 0000:ffffc900000d3cf8 EFLAGS: 00010086
-RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000800
-RDX: fffffc02295d3c00 RSI: 0000000000000800 RDI: 0000000002edc4f2
-RBP: ffff888108f13000 R08: 0000000000000400 R09: 0000000000000002
-R10: 0000000000000260 R11: ffff888108b74200 R12: ffff888265c2cd00
-R13: 0000000000000000 R14: ffff888265c2cd80 R15: ffffffff827c6fa0
-FS:  0000000000000000(0000) GS:ffff8882e2724000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000000000051 CR3: 00000001110a5003 CR4: 00000000003706f0
-Call Trace:
-  <TASK>
-  pick_next_task_fair+0x1d/0x3d0
-  __schedule+0x1ee/0x10c0
-  ? lock_timer_base+0x6d/0x90
-  ? rcu_gp_cleanup+0x560/0x560
-  schedule+0x23/0xc0
-  schedule_timeout+0x6e/0xe0
-  ? hrtimers_cpu_dying+0x1b0/0x1b0
-  rcu_gp_fqs_loop+0xfb/0x510
-  rcu_gp_kthread+0xcd/0x160
-  kthread+0xf5/0x1e0
-  ? kthreads_online_cpu+0x100/0x100
-  ? kthreads_online_cpu+0x100/0x100
-  ret_from_fork+0x114/0x140
-  ? kthreads_online_cpu+0x100/0x100
-  ret_from_fork_asm+0x11/0x20
-  </TASK>
-Modules linked in: i915 drm_buddy intel_gtt drm_client_lib 
-drm_display_helper drm_kms_helper igb cec dca rc_core i2c_algo_bit ttm 
-agpgart e1000e serio_raw hwmon drm mei_wdt i2c_core intel_oc_wdt video wmi
-CR2: 0000000000000051
----[ end trace 0000000000000000 ]---
-RIP: 0010:pick_task_fair+0x57/0x160
-Code: 66 90 66 90 48 8b 5d 50 48 85 db 74 10 48 8b 73 70 48 89 ef e8 3a 
-74 ff ff 85 c0 75 71 be 01 00 00 00 48 89 ef e8 29 a5 ff ff <80> 78 51 
-00 48 89 c3 0f 85 80 00 00 00 48 85 c0 0f 84 87 00 00 00
-RSP: 0000:ffffc900000d3cf8 EFLAGS: 00010086
-RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000800
-RDX: fffffc02295d3c00 RSI: 0000000000000800 RDI: 0000000002edc4f2
-RBP: ffff888108f13000 R08: 0000000000000400 R09: 0000000000000002
-R10: 0000000000000260 R11: ffff888108b74200 R12: ffff888265c2cd00
-R13: 0000000000000000 R14: ffff888265c2cd80 R15: ffffffff827c6fa0
-FS:  0000000000000000(0000) GS:ffff8882e2724000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000000000051 CR3: 00000001110a5003 CR4: 00000000003706f0
-Kernel panic - not syncing: Fatal exception
-Shutting down cpus with NMI
-Kernel Offset: disabled
-Rebooting in 30 seconds..
----
-
-I can't seem to reproduce this issue with the v6.18.1 tagged 
-linux-stable build, and
-after bisecting between v6.18.1 and v6.18.2, I land on this commit 
-(which is clearly
-not the problem):
-
-d911fa97dab3ba026a8b96bb7f833d007b7fc4e1 | wifi: ath12k: fix VHT MCS 
-assignment
-
-I don't have any ath12k radios in my system, but I do have 1 ath9k and 2 
-ath10k
-radios. A little up the tree I see this patch which *could* be related, 
-but I lack
-the knowledge to know:
-
-b1497ea246396962156b63d5c568a16d6e32de0b | wifi: ath10k: move recovery 
-check logic into a new work
-
-Let me know if there's any more info that's needed or additional steps I 
-can take to
-further diagnose the bug.
-
-Hardware Info:
-- 1x Ath9k, 2x Ath10k, 1x MT7916
-- Intel Core i5-6500TE
-
--- Dylan
+thanks,
+-- 
+John Hubbard
 
 
