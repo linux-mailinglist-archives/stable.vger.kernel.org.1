@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-204361-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204362-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA11ECEC211
-	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 16:01:04 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A65D9CEC232
+	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 16:05:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CAF283006464
-	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 15:01:03 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 4559330036C4
+	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 15:05:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CA4B4315A;
-	Wed, 31 Dec 2025 15:01:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00F7425C804;
+	Wed, 31 Dec 2025 15:05:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U+RoWO3R"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XAqe7xJd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C04F43A1E7E
-	for <stable@vger.kernel.org>; Wed, 31 Dec 2025 15:01:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B289019644B
+	for <stable@vger.kernel.org>; Wed, 31 Dec 2025 15:05:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767193262; cv=none; b=fsHhT6f5glB/Lfx/v2MZ6+uFzSLvoyw63Sdr0uhh7+OWDchxY1YCd5groWK2ate7jRr+jzOUPyYKCpz0smhMlrpLCk2XqoeyCATSEzZa0TFzdmg6Fp0kjQqqdmlpmtO16WnTyyZWmDuqBSU4LrodazX4RuHaZfwfFZW4gk9e1nM=
+	t=1767193537; cv=none; b=fyb5AEQOOem7yAz8qst8LW6nUZOu2dAqilcek/oH+xhKqjpUKQ6U8u4IYrKc/ZTqx3W182EvRDHNsi+ZAd0+3AtC0IrHes0PeYHJ/iJWJvH2FfZQAO2ujiD5mthembpXClhnbjqQBbnUrrCmwnp1U3mXNy8nzu0erIWyzawHGIE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767193262; c=relaxed/simple;
-	bh=xEgLX8f11gMMx6UZCXhDc8sTgwR861ngstiLqaZvMaA=;
+	s=arc-20240116; t=1767193537; c=relaxed/simple;
+	bh=eNgOf7sE58Cvoj+b4Ceet2/MLl7RxTyfPAiBht43HrM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eL7yIMxoByBXjyFOKCmK4xqy/uc0mJwfErVwIKcd40oydVZnLz85wd8Emw3fJk9KH40StVYhfGJYrOUy72zSgcv2E6ij7uNMO6QsvykRghqyXmE3jjNtD1uRlr4tKHlVNYYIhYkLnH0DdUCnxQCxhw8UGQrdIXis9B1lL/OCDO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U+RoWO3R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE3D3C113D0;
-	Wed, 31 Dec 2025 15:01:01 +0000 (UTC)
+	 MIME-Version; b=G1oCLa6bSJYRJBegUoSAqydyS/qhvRp5m9ai2HUBP4uel8U4f9iZjO2hqqfu2W/Dbm2b9ee9+iAKCz46PimTNpge8R7QxCqWZnsDuHfeAzwtfvVM7O/TXiTONZ7vBAfzbGZwwxlejEEnu0iaJaDgXhmNvN5t+r9KT5C76TjFYF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XAqe7xJd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AED36C113D0;
+	Wed, 31 Dec 2025 15:05:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767193262;
-	bh=xEgLX8f11gMMx6UZCXhDc8sTgwR861ngstiLqaZvMaA=;
+	s=k20201202; t=1767193537;
+	bh=eNgOf7sE58Cvoj+b4Ceet2/MLl7RxTyfPAiBht43HrM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U+RoWO3RKrEHg5fIqWnr+e6Yq+rBGsGF43xvUyLGldm4e8+ho6V2cg+F5cNEdaZcb
-	 Y1/J8y6L0FhqTx4a+6vePFivYnfO+cWcj0iH6bQdEil7SEkwFTaerYnXrYP+R5GyZs
-	 13DjnDxz/MgP3i9LEIDzBgmNa9673Tk5u0rDFKvxquF5vQXONRi/rf67PcoYeIuahR
-	 wyKSwtrlaxaTdu0bKUDoNSSx1hKNAnXk6aO157neU64PI8lXN9kUUPIfJToQS78KTT
-	 cweYYUf9gko7rZ4KWJUMBmagokciw1EPyM1ex0+mFwWDHn+MuwMgWS+PWKtKu53cbV
-	 0TZ1k3Bspmsig==
+	b=XAqe7xJdujEZie8aLCFW3x+/HOF51wm9bCRRiULddi4gCSi3Y9YCiCDT7Rs4J+0lr
+	 pZM6WITgUPrNeQrqYlAk8QMPbbuZ5vaSfGkj+f1MVRHmc4GgL0ed+yj4ceU9//qDuq
+	 FDfS1KKQVm5UxpXp3pBrC6zqEVCAR2IoOv0ziS848HHzJYhAElmsTa9vXgcV1xBAQ5
+	 In5VazINtMSPneGB8UEW5LATrebtGDLLgCjdMq0yeQmRF8ughNlHy0C4mhWcP5opQO
+	 0jgAeYLCtLFnwWwEpsqeIQlecldkArauG6HZOIsMSDQpQbT5858FEx/ov2Djd7JyeA
+	 WDwBHLpLoi1GQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Askar Safin <safinaskar@gmail.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
+Cc: Dongli Zhang <dongli.zhang@oracle.com>,
+	Chao Gao <chao.gao@intel.com>,
+	Sean Christopherson <seanjc@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y] gpiolib: acpi: Add quirk for Dell Precision 7780
-Date: Wed, 31 Dec 2025 10:00:59 -0500
-Message-ID: <20251231150059.3101892-1-sashal@kernel.org>
+Subject: [PATCH 6.6.y] KVM: nVMX: Immediately refresh APICv controls as needed on nested VM-Exit
+Date: Wed, 31 Dec 2025 10:05:34 -0500
+Message-ID: <20251231150534.3104156-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025122946-phonebook-gusty-03ac@gregkh>
-References: <2025122946-phonebook-gusty-03ac@gregkh>
+In-Reply-To: <2025122917-cadet-worrier-23c0@gregkh>
+References: <2025122917-cadet-worrier-23c0@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -59,60 +59,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Askar Safin <safinaskar@gmail.com>
+From: Dongli Zhang <dongli.zhang@oracle.com>
 
-[ Upstream commit 2d967310c49ed93ac11cef408a55ddf15c3dd52e ]
+[ Upstream commit 29763138830916f46daaa50e83e7f4f907a3236b ]
 
-Dell Precision 7780 often wakes up on its own from suspend. Sometimes
-wake up happens immediately (i. e. within 7 seconds), sometimes it happens
-after, say, 30 minutes.
+If an APICv status updated was pended while L2 was active, immediately
+refresh vmcs01's controls instead of pending KVM_REQ_APICV_UPDATE as
+kvm_vcpu_update_apicv() only calls into vendor code if a change is
+necessary.
 
-Fixes: 1796f808e4bb ("HID: i2c-hid: acpi: Stop setting wakeup_capable")
-Link: https://lore.kernel.org/linux-i2c/197ae95ffd8.dc819e60457077.7692120488609091556@zohomail.com/
+E.g. if APICv is inhibited, and then activated while L2 is running:
+
+  kvm_vcpu_update_apicv()
+  |
+  -> __kvm_vcpu_update_apicv()
+     |
+     -> apic->apicv_active = true
+      |
+      -> vmx_refresh_apicv_exec_ctrl()
+         |
+         -> vmx->nested.update_vmcs01_apicv_status = true
+          |
+          -> return
+
+Then L2 exits to L1:
+
+  __nested_vmx_vmexit()
+  |
+  -> kvm_make_request(KVM_REQ_APICV_UPDATE)
+
+  vcpu_enter_guest(): KVM_REQ_APICV_UPDATE
+  -> kvm_vcpu_update_apicv()
+     |
+     -> __kvm_vcpu_update_apicv()
+        |
+        -> return // because if (apic->apicv_active == activate)
+
+Reported-by: Chao Gao <chao.gao@intel.com>
+Closes: https://lore.kernel.org/all/aQ2jmnN8wUYVEawF@intel.com
+Fixes: 7c69661e225c ("KVM: nVMX: Defer APICv updates while L2 is active until L1 is active")
 Cc: stable@vger.kernel.org
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Askar Safin <safinaskar@gmail.com>
-Link: https://lore.kernel.org/r/20251206180414.3183334-2-safinaskar@gmail.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-[ adapted quirk entry location from gpiolib-acpi-quirks.c to gpiolib-acpi.c ]
+Signed-off-by: Dongli Zhang <dongli.zhang@oracle.com>
+[sean: write changelog]
+Link: https://patch.msgid.link/20251205231913.441872-3-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+[ exported vmx_refresh_apicv_exec_ctrl() and added declaration in vmx.h ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpiolib-acpi.c | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ arch/x86/kvm/vmx/nested.c | 2 +-
+ arch/x86/kvm/vmx/vmx.c    | 2 +-
+ arch/x86/kvm/vmx/vmx.h    | 1 +
+ 3 files changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpio/gpiolib-acpi.c b/drivers/gpio/gpiolib-acpi.c
-index 8ddd5e8341a0..86de8740c0d4 100644
---- a/drivers/gpio/gpiolib-acpi.c
-+++ b/drivers/gpio/gpiolib-acpi.c
-@@ -1720,6 +1720,28 @@ static const struct dmi_system_id gpiolib_acpi_quirks[] __initconst = {
- 			.ignore_interrupt = "AMDI0030:00@11",
- 		},
- 	},
-+	{
-+		/*
-+		 * Spurious wakeups, likely from touchpad controller
-+		 * Dell Precision 7780
-+		 * Found in BIOS 1.24.1
-+		 *
-+		 * Found in touchpad firmware, installed by Dell Touchpad Firmware Update Utility version 1160.4196.9, A01
-+		 * ( Dell-Touchpad-Firmware-Update-Utility_VYGNN_WIN64_1160.4196.9_A00.EXE ),
-+		 * released on 11 Jul 2024
-+		 *
-+		 * https://lore.kernel.org/linux-i2c/197ae95ffd8.dc819e60457077.7692120488609091556@zohomail.com/
-+		 */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
-+			DMI_MATCH(DMI_PRODUCT_FAMILY, "Precision"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Precision 7780"),
-+			DMI_MATCH(DMI_BOARD_NAME, "0C6JVW"),
-+		},
-+		.driver_data = &(struct acpi_gpiolib_dmi_quirk) {
-+			.ignore_wake = "VEN_0488:00@355",
-+		},
-+	},
- 	{} /* Terminating entry */
- };
+diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
+index d2fa192d7ce7..fb274bae41e2 100644
+--- a/arch/x86/kvm/vmx/nested.c
++++ b/arch/x86/kvm/vmx/nested.c
+@@ -4908,7 +4908,7 @@ void nested_vmx_vmexit(struct kvm_vcpu *vcpu, u32 vm_exit_reason,
  
+ 	if (vmx->nested.update_vmcs01_apicv_status) {
+ 		vmx->nested.update_vmcs01_apicv_status = false;
+-		kvm_make_request(KVM_REQ_APICV_UPDATE, vcpu);
++		vmx_refresh_apicv_exec_ctrl(vcpu);
+ 	}
+ 
+ 	if (vmx->nested.update_vmcs01_hwapic_isr) {
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index 9b1f22bcb716..4dd3f64a1a8c 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -4451,7 +4451,7 @@ static u32 vmx_vmexit_ctrl(void)
+ 		~(VM_EXIT_LOAD_IA32_PERF_GLOBAL_CTRL | VM_EXIT_LOAD_IA32_EFER);
+ }
+ 
+-static void vmx_refresh_apicv_exec_ctrl(struct kvm_vcpu *vcpu)
++void vmx_refresh_apicv_exec_ctrl(struct kvm_vcpu *vcpu)
+ {
+ 	struct vcpu_vmx *vmx = to_vmx(vcpu);
+ 
+diff --git a/arch/x86/kvm/vmx/vmx.h b/arch/x86/kvm/vmx/vmx.h
+index 5d73d3e570d7..ed611a9ccbc2 100644
+--- a/arch/x86/kvm/vmx/vmx.h
++++ b/arch/x86/kvm/vmx/vmx.h
+@@ -395,6 +395,7 @@ void __vmx_set_segment(struct kvm_vcpu *vcpu, struct kvm_segment *var, int seg);
+ u64 construct_eptp(struct kvm_vcpu *vcpu, hpa_t root_hpa, int root_level);
+ 
+ bool vmx_guest_inject_ac(struct kvm_vcpu *vcpu);
++void vmx_refresh_apicv_exec_ctrl(struct kvm_vcpu *vcpu);
+ void vmx_update_exception_bitmap(struct kvm_vcpu *vcpu);
+ bool vmx_nmi_blocked(struct kvm_vcpu *vcpu);
+ bool __vmx_interrupt_blocked(struct kvm_vcpu *vcpu);
 -- 
 2.51.0
 
