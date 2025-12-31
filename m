@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-204314-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204315-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3222CCEB2DE
-	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 04:16:32 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFB4BCEB2E2
+	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 04:17:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D70C9300B6A0
-	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 03:16:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 80A223008894
+	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 03:17:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C032816EB42;
-	Wed, 31 Dec 2025 03:16:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4996916EB42;
+	Wed, 31 Dec 2025 03:17:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LmShELjO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hu6FxblG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FAA03C0C
-	for <stable@vger.kernel.org>; Wed, 31 Dec 2025 03:16:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 078183C0C
+	for <stable@vger.kernel.org>; Wed, 31 Dec 2025 03:17:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767150989; cv=none; b=Df4mmmcqDU9+5H6oXBGpA2I3M7pXbMiz+Rwoz+9oKh6eZKa248C0+g6+zSjnf8cpa8ORf25Hpgd4A1nBXynisRxNPTsDpWJtnBpEOZAA3t2Qeze4iAvzAMHAjRqZXPdpMH9FVGSfmcJOfxNmvxABXuiOInM00qWjns/xQ3/blP8=
+	t=1767151041; cv=none; b=GJZfqvHWMFDPkl6qiyoIMK2Yh9hfdZvYKzIb86FPvT9CNHJmjO54WAcBHsuUhvSI2mvBGX3Gfp6ux5UXkkKTteS4BKOY6EHwG1NdTX8IuMFuBkar76flYymGYWWM6yUzFgOW2q/2OTVUWipyPMNum1m4IAIRX6u+9aUAsi6F9WQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767150989; c=relaxed/simple;
-	bh=7kDNKQPUNZQk5kzyd20Wh5NBbUzK12UE/BY9Lur5iPI=;
+	s=arc-20240116; t=1767151041; c=relaxed/simple;
+	bh=Ixt0zNucFcSgeEKI/HbVK3RWfE46kob6XFN+kZPkgEo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OBXRmHE1Tt6bPy1UAgP4JSeJ/P/xghWuzMX/EzA0ZLH4rarR+PRV60uGP0Jk7DGYAStq5fqv60Gp/8vfnpjzB0jP+IHCksCQjFedsbbpxsvPjvmwnYQAZ+VKKIK8CS6iVf23sjW/bUztmA2P4fB6G78wtt1mG2qZnfxB94W9M08=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LmShELjO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67EF8C116B1;
-	Wed, 31 Dec 2025 03:16:28 +0000 (UTC)
+	 MIME-Version; b=Bfy+ilpJlzax5dxcxI5ovy/NQDigSZoQCOvloR6V4UsH1lY7wC1Trupvay3vsWFQPEkeLQrzODT9FprgZ6bZkayvdkNSdKGviQy23Z8BACmSVns9byg8UW0CFc2JAWk/ak/UjRXv3U2EKdP0YhA7xjFV8rjrRRVvsTzHDQ3ghCI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hu6FxblG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F22FC116B1;
+	Wed, 31 Dec 2025 03:17:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767150989;
-	bh=7kDNKQPUNZQk5kzyd20Wh5NBbUzK12UE/BY9Lur5iPI=;
+	s=k20201202; t=1767151040;
+	bh=Ixt0zNucFcSgeEKI/HbVK3RWfE46kob6XFN+kZPkgEo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LmShELjOVdfvNvBBEFEcvz9IDGkl0s4AqM3FiO0OCbxrLY+egXN94TTVc9yGHE45F
-	 YGCGpNGfwnulCU262e1aNO7/9K/ZparJbKK9EIAOTeUIpRdofpHCTJRSNeJP+oppLP
-	 wZ+1qO9783oi02L/ClexSoNO2Utlslrv/wBFJB5KTxrsW6k3SAEceKxiPuBVSM6QX4
-	 VJ7X/Z5Z5qDw1X//F1zlFsnlK0J5rz2rfl0Zh8nXqRiPc6nGI23BxU5/GJf4dQtbWD
-	 USXBZ+69AbupQx6uy/IJ7QNklrd3FgTVCgRcShFmW3pCsS7elclmfzOmJAwCc5Qbrs
-	 TZSuwC1i65j8w==
+	b=hu6FxblGfpFXtk0McP1gQBQrHs7BoQbJEkwKnxaCO2/HUneh13oFLAoeiTfmrOIEj
+	 VliomldFbsC05g2hVAs5JQv+VCJ15Y0BujaoEYOWDm2k00SeyjYvLqJv6mPXJgUyw7
+	 bCVR8nDWh0FtHSACScpAU/q9xVkZLD+ZBQKjJcTIjNp4pVUKTC8+9BitTxeFJpFf8d
+	 xlbE70tzSo4mhPYi9RqfNFy6Z9Yu2Xvs5OQviguVkX/vPBGOdS3vVhMYOkTsWcJIr7
+	 RcZHya4UMQCt9+rQExNM0ru2KVxnjndl5C65ic4gpja8C0k9SIcH07KIq/YWfLxaIf
+	 +01TNs/fk0M+Q==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Claudio Imbrenda <imbrenda@linux.ibm.com>,
-	Marc Hartmayer <mhartmay@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
+Cc: Dongli Zhang <dongli.zhang@oracle.com>,
+	Chao Gao <chao.gao@intel.com>,
+	Sean Christopherson <seanjc@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18.y] KVM: s390: Fix gmap_helper_zap_one_page() again
-Date: Tue, 30 Dec 2025 22:16:26 -0500
-Message-ID: <20251231031626.2684565-1-sashal@kernel.org>
+Subject: [PATCH 5.15.y] KVM: nVMX: Immediately refresh APICv controls as needed on nested VM-Exit
+Date: Tue, 30 Dec 2025 22:17:17 -0500
+Message-ID: <20251231031717.2685182-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025122907-grant-reformist-a323@gregkh>
-References: <2025122907-grant-reformist-a323@gregkh>
+In-Reply-To: <2025122927-delegate-composed-5765@gregkh>
+References: <2025122927-delegate-composed-5765@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,56 +59,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Claudio Imbrenda <imbrenda@linux.ibm.com>
+From: Dongli Zhang <dongli.zhang@oracle.com>
 
-[ Upstream commit 2f393c228cc519ddf19b8c6c05bf15723241aa96 ]
+[ Upstream commit 29763138830916f46daaa50e83e7f4f907a3236b ]
 
-A few checks were missing in gmap_helper_zap_one_page(), which can lead
-to memory corruption in the guest under specific circumstances.
+If an APICv status updated was pended while L2 was active, immediately
+refresh vmcs01's controls instead of pending KVM_REQ_APICV_UPDATE as
+kvm_vcpu_update_apicv() only calls into vendor code if a change is
+necessary.
 
-Add the missing checks.
+E.g. if APICv is inhibited, and then activated while L2 is running:
 
-Fixes: 5deafa27d9ae ("KVM: s390: Fix to clear PTE when discarding a swapped page")
+  kvm_vcpu_update_apicv()
+  |
+  -> __kvm_vcpu_update_apicv()
+     |
+     -> apic->apicv_active = true
+      |
+      -> vmx_refresh_apicv_exec_ctrl()
+         |
+         -> vmx->nested.update_vmcs01_apicv_status = true
+          |
+          -> return
+
+Then L2 exits to L1:
+
+  __nested_vmx_vmexit()
+  |
+  -> kvm_make_request(KVM_REQ_APICV_UPDATE)
+
+  vcpu_enter_guest(): KVM_REQ_APICV_UPDATE
+  -> kvm_vcpu_update_apicv()
+     |
+     -> __kvm_vcpu_update_apicv()
+        |
+        -> return // because if (apic->apicv_active == activate)
+
+Reported-by: Chao Gao <chao.gao@intel.com>
+Closes: https://lore.kernel.org/all/aQ2jmnN8wUYVEawF@intel.com
+Fixes: 7c69661e225c ("KVM: nVMX: Defer APICv updates while L2 is active until L1 is active")
 Cc: stable@vger.kernel.org
-Reported-by: Marc Hartmayer <mhartmay@linux.ibm.com>
-Tested-by: Marc Hartmayer <mhartmay@linux.ibm.com>
-Acked-by: Christian Borntraeger <borntraeger@linux.ibm.com>
-Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-[ adapted ptep_zap_softleaf_entry() and softleaf_from_pte() calls to ptep_zap_swap_entry() and pte_to_swp_entry() ]
+Signed-off-by: Dongli Zhang <dongli.zhang@oracle.com>
+[sean: write changelog]
+Link: https://patch.msgid.link/20251205231913.441872-3-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+[ exported vmx_refresh_apicv_exec_ctrl() and added declaration in vmx.h ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/mm/gmap_helpers.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ arch/x86/kvm/vmx/nested.c | 2 +-
+ arch/x86/kvm/vmx/vmx.c    | 2 +-
+ arch/x86/kvm/vmx/vmx.h    | 1 +
+ 3 files changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/arch/s390/mm/gmap_helpers.c b/arch/s390/mm/gmap_helpers.c
-index d4c3c36855e2..38a2d82cd88a 100644
---- a/arch/s390/mm/gmap_helpers.c
-+++ b/arch/s390/mm/gmap_helpers.c
-@@ -47,6 +47,7 @@ static void ptep_zap_swap_entry(struct mm_struct *mm, swp_entry_t entry)
- void gmap_helper_zap_one_page(struct mm_struct *mm, unsigned long vmaddr)
+diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
+index e28f52f525e0..70b55267ea71 100644
+--- a/arch/x86/kvm/vmx/nested.c
++++ b/arch/x86/kvm/vmx/nested.c
+@@ -4684,7 +4684,7 @@ void nested_vmx_vmexit(struct kvm_vcpu *vcpu, u32 vm_exit_reason,
+ 
+ 	if (vmx->nested.update_vmcs01_apicv_status) {
+ 		vmx->nested.update_vmcs01_apicv_status = false;
+-		kvm_make_request(KVM_REQ_APICV_UPDATE, vcpu);
++		vmx_refresh_apicv_exec_ctrl(vcpu);
+ 	}
+ 
+ 	if ((vm_exit_reason != -1) &&
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index ab3098ea4ebd..cc8e4bc596ff 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -4217,7 +4217,7 @@ static u32 vmx_vmexit_ctrl(void)
+ 		~(VM_EXIT_LOAD_IA32_PERF_GLOBAL_CTRL | VM_EXIT_LOAD_IA32_EFER);
+ }
+ 
+-static void vmx_refresh_apicv_exec_ctrl(struct kvm_vcpu *vcpu)
++void vmx_refresh_apicv_exec_ctrl(struct kvm_vcpu *vcpu)
  {
- 	struct vm_area_struct *vma;
-+	unsigned long pgstev;
- 	spinlock_t *ptl;
- 	pgste_t pgste;
- 	pte_t *ptep;
-@@ -65,9 +66,13 @@ void gmap_helper_zap_one_page(struct mm_struct *mm, unsigned long vmaddr)
- 	if (pte_swap(*ptep)) {
- 		preempt_disable();
- 		pgste = pgste_get_lock(ptep);
-+		pgstev = pgste_val(pgste);
+ 	struct vcpu_vmx *vmx = to_vmx(vcpu);
  
--		ptep_zap_swap_entry(mm, pte_to_swp_entry(*ptep));
--		pte_clear(mm, vmaddr, ptep);
-+		if ((pgstev & _PGSTE_GPS_USAGE_MASK) == _PGSTE_GPS_USAGE_UNUSED ||
-+		    (pgstev & _PGSTE_GPS_ZERO)) {
-+			ptep_zap_swap_entry(mm, pte_to_swp_entry(*ptep));
-+			pte_clear(mm, vmaddr, ptep);
-+		}
+diff --git a/arch/x86/kvm/vmx/vmx.h b/arch/x86/kvm/vmx/vmx.h
+index a1792d96618a..9842f6833929 100644
+--- a/arch/x86/kvm/vmx/vmx.h
++++ b/arch/x86/kvm/vmx/vmx.h
+@@ -386,6 +386,7 @@ void __vmx_set_segment(struct kvm_vcpu *vcpu, struct kvm_segment *var, int seg);
+ u64 construct_eptp(struct kvm_vcpu *vcpu, hpa_t root_hpa, int root_level);
  
- 		pgste_set_unlock(ptep, pgste);
- 		preempt_enable();
+ bool vmx_guest_inject_ac(struct kvm_vcpu *vcpu);
++void vmx_refresh_apicv_exec_ctrl(struct kvm_vcpu *vcpu);
+ void vmx_update_exception_bitmap(struct kvm_vcpu *vcpu);
+ bool vmx_nmi_blocked(struct kvm_vcpu *vcpu);
+ bool __vmx_interrupt_blocked(struct kvm_vcpu *vcpu);
 -- 
 2.51.0
 
