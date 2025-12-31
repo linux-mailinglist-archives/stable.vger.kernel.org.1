@@ -1,305 +1,332 @@
-Return-Path: <stable+bounces-204367-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204368-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8871CEC360
-	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 17:01:23 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2440FCEC378
+	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 17:12:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7B75B300C6E2
-	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 16:01:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9F5883002FE1
+	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 16:11:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75D96217F31;
-	Wed, 31 Dec 2025 16:01:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCAAC2737F6;
+	Wed, 31 Dec 2025 16:11:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="UL2jx5o0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bBBzXrSG"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f226.google.com (mail-pl1-f226.google.com [209.85.214.226])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9BA91B0F19
-	for <stable@vger.kernel.org>; Wed, 31 Dec 2025 16:01:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.226
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CE6625DB12
+	for <stable@vger.kernel.org>; Wed, 31 Dec 2025 16:11:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767196875; cv=none; b=frNz4koQ9OMfeJGeX6SuqqrHFDUZ3f1XRVkRDl/AOndmvRcv1fvTwwjmEWYO4ujKzvM10UF6ufmYoKN0JI5q7ipVKCn6+RhGmpRSWfgK4Rn5pRpV3JjyVkQBn7ONIiiuH75Tdr8Ve1OiYoU2LbmQn06f/hqRLDzkHRt4sbaNrSs=
+	t=1767197518; cv=none; b=NaB7D3eybX7Z3r24y+kTvGeY8GgXJj+EzvKGKzFzXDORP6dsBdeVNUURn38k5XOv0RhtiShJWcY/v60DxWADJPlcP8IUm/gIUj/XnSvM23ZnaKpS5Mvy8GOd1+eGfnKri48qZh8CVLzgMAJ0wbrJQv56FAL740n3YRnAz9bbMh4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767196875; c=relaxed/simple;
-	bh=Tz0akB7zNAb0PCPVIrDJZ1hN6RATQyizPnDXEW1CxOs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Xbgc3qza7JRwyBylZogKvq9mzqJqwGJZejOo+F6xGw238wmHJn9ITR/3GZ4VOp4xDZzyY2q2KHqUUg51Y9sowgcrGK/eC7c5c52XRGKGHjFqKl4xRpVZNn0w9q833fzHR8CajvBb9rb/rnnohHrLSMRqklfj04t1YVk+hPE71Dg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=UL2jx5o0; arc=none smtp.client-ip=209.85.214.226
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-pl1-f226.google.com with SMTP id d9443c01a7336-2a1388cdac3so101124715ad.0
-        for <stable@vger.kernel.org>; Wed, 31 Dec 2025 08:01:13 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767196873; x=1767801673;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Kxfw85Cwm4oyhD774x0PGA8LRbhpSJan2F10V2TOmfE=;
-        b=dva3DI9gmmDLpqoZrDikOen6yZmxypPmpAGZs6xz/DEPRI4ROTIIbnB+3LLp/rQPy7
-         qWRfh5Wm6sESdGbc+Ba6l2XMTH8w+eisRoH1ccA1kkTkC0Qb++iqlLUC491nD6dP+Ueb
-         417qwW4EaImKcc9CNkdyIxp9UbBPm8PHSSPmlnQxaof5hZPVuyfoInYi3Naa7i1FDsuk
-         eQFXV/0HElosOB2s5zA3GT9p5h9MBBerXK+WaixPEdLAnAQqPXUgL8Hc8U2wx/An7zjj
-         MLcCZVIkOfGrnhUF5s1KvhAuLjyVxcsRSWpdKNlzhUNLmm/uOUX+Xi1zOkXDnvDX2mM9
-         Xbtw==
-X-Forwarded-Encrypted: i=1; AJvYcCUCuETfaLUxD0Ia2/ZyzFby0a7laFE/og17PA33S31/16ogKG+vYjPUUAjMvEr+OdJmbYyQjGc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzbcpEoUqn6YTB9DadHRLdW2gDrtIhdacs1YIJWtd3mAMW8gi8P
-	fdQmaTtwebozPFYMnHpwiGWnFYvl4SUmmm4w9mLsRinM5GfRmIbJxZxu3okAdbfhKYGIJ7qhjKV
-	ztElC5aVMdrxMRSNe0nTbjNmFK/pyqQ3w50TDHkAj2ME4DQQ8Nk+lyX8dXm9Ces933yK0WRUdTI
-	79ntUGcl8ZdxXe+2YiCJtq/Z14zFvi8wboMsZKPh0zmWI7bKVHawscdQd7fGM62OqrYK1mDvauO
-	0TvX7manEw=
-X-Gm-Gg: AY/fxX5ZFwyubCCp/oEtIwqOD4p2US8Yay2lPp0BQrle66UlKFpVc0eVLPefToGSfqD
-	P2jqJgpX7JtpuKv2Vlo0s1TaUGS95MSRFMHMWT2zplHDuR2KL54ByVT7dOS2F116X/LHq7aasbG
-	vkXEGQKf0dgS82LJOUf2RbvBLB9ht88Ol8j6R2mS06s2HKB1d9XT3wl3YG7YyM6LPOQlLLG+OaO
-	dqMbYePdS/1OnfaAgWNhFQ1uCtn4BSClx1gL9VqgKMt/tFa6Dyqu1lmshLDmawaPOAr+n9udQ2k
-	/oBJIBvpBqdhFm4//5rDdgNwNdYv2gWUWQ40XrPi1Es+GdPTfYahiQaBNjRXJ9RoPtt+eUq/fYs
-	R7Y8VfSBPi2yxA4nc8vERZcuNgc4o4Yp1SVHwEN9pZetsNCjoz/BrCopj3u3MOIVGAGC0Cc7+XD
-	5/S/HO/6PK9n2rH9PPdR75veuoM9fy27g2wqwKjQu2SJ+d83I=
-X-Google-Smtp-Source: AGHT+IG5V48ek2EVokzjqqqqTvSLSp3ERd8nSuEUAJ65+m4VabndOn+jtAv3GWUj4IhlPm5iTcBPi8OsNv5t
-X-Received: by 2002:a17:903:2a8e:b0:290:ac36:2ed6 with SMTP id d9443c01a7336-2a2f2426c79mr368320225ad.14.1767196872764;
-        Wed, 31 Dec 2025 08:01:12 -0800 (PST)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-117.dlp.protect.broadcom.com. [144.49.247.117])
-        by smtp-relay.gmail.com with ESMTPS id d9443c01a7336-2a2f3c7ffdbsm40430175ad.19.2025.12.31.08.01.12
-        for <stable@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 31 Dec 2025 08:01:12 -0800 (PST)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-34c5d203988so23006351a91.3
-        for <stable@vger.kernel.org>; Wed, 31 Dec 2025 08:01:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1767196871; x=1767801671; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=Kxfw85Cwm4oyhD774x0PGA8LRbhpSJan2F10V2TOmfE=;
-        b=UL2jx5o0Dtbz61qXI2GQkyLziyzuHMdVzhw8gOdGFkQpZ+7+jrNivoyb233jbGuKjr
-         FgqoiT4bsx3RliLM6SOWkqZsiRJQHPsZvlTNP76pdzYBmNq13e7InLS6v9Abxf63HKgK
-         fmD1Cz8v3MgyOh85VuLU3mTz2WDrzCpXgUJUo=
-X-Forwarded-Encrypted: i=1; AJvYcCXaJbdUmjU8U53Kn2ZxJ379vEVo+5xoewtQIOTD8q5OfIUykmjjKn+2c7JqN0y7/KSc8SPEE+Q=@vger.kernel.org
-X-Received: by 2002:a17:90b:2251:b0:340:ad5e:cb with SMTP id 98e67ed59e1d1-34e9212f362mr31347245a91.8.1767196870292;
-        Wed, 31 Dec 2025 08:01:10 -0800 (PST)
-X-Received: by 2002:a17:90b:2251:b0:340:ad5e:cb with SMTP id
- 98e67ed59e1d1-34e9212f362mr31347171a91.8.1767196869587; Wed, 31 Dec 2025
- 08:01:09 -0800 (PST)
+	s=arc-20240116; t=1767197518; c=relaxed/simple;
+	bh=XN0+wb+b8mvikYOzonD8bCqbq93yvHO70brZXzvHZAo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=pg5Wp2F2c5gEiUWuQy8BSPEM46j+ariDTTyMEvzrqne6gT9RhFs+QqNXlm//3AFKtr146LDKpQtPcSpIyuq3J2+BC1WbLOfSWoQynG8BoH7PIcbZmSTnjegSKNqI8848r/PjYeiMstjT9xFMyh3ujnwSYqD1WdJAK8fbfHlzqTs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bBBzXrSG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74E03C113D0;
+	Wed, 31 Dec 2025 16:11:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767197518;
+	bh=XN0+wb+b8mvikYOzonD8bCqbq93yvHO70brZXzvHZAo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=bBBzXrSGgHiQFJPwVBqGfIn3wYpDf+F93wSdXKVOxq0eMwr13Ea2acG6N0s97Z3n9
+	 VFRNYo1n26FGNzcRSCHIDiwxgU+zn+tR9/UebrMp97YvYXXQOKC43va5r++w2Jg+Db
+	 Ix951+vGG1Ejscn/Af81d6wZaMcnRLlfvRZp/ni9OUujOeKVgENRnLF8KrVpuHP1gr
+	 0NWpB5WsWM5/l3N4ZetMj/XdRDbVg84dS0TYB6jGPq14f5nRg53+TnnMW0vFEn/kpl
+	 Dc/RTf2b7+oOl/VQZfI4JjzRX1vZ6OE4GqY9nBmdiDp8cQBF4v23rx3aemI96Tu+0/
+	 12VUs7EMuu8cQ==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Filipe Manana <fdmanana@suse.com>,
+	Vyacheslav Kovalevsky <slva.kovalevskiy.2014@gmail.com>,
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1.y] btrfs: don't log conflicting inode if it's a dir moved in the current transaction
+Date: Wed, 31 Dec 2025 11:11:55 -0500
+Message-ID: <20251231161155.3221875-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025122955-unguided-tinsmith-5d03@gregkh>
+References: <2025122955-unguided-tinsmith-5d03@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251231-bnxt-v1-1-8f9cde6698b4@debian.org>
-In-Reply-To: <20251231-bnxt-v1-1-8f9cde6698b4@debian.org>
-From: Pavan Chebbi <pavan.chebbi@broadcom.com>
-Date: Wed, 31 Dec 2025 21:30:57 +0530
-X-Gm-Features: AQt7F2qBxre4gEx9lPoKL50XL6gs5aq-TJTnGLJtW2nYJSF0T9B6CCzo6Tdrpo4
-Message-ID: <CALs4sv2qQuL0trq3ZB6SczPK5BmFMF6p2Ki-3q+4Xqc_qzauoQ@mail.gmail.com>
-Subject: Re: [PATCH net] bnxt_en: Fix NULL pointer crash in bnxt_ptp_enable
- during error cleanup
-To: Breno Leitao <leitao@debian.org>
-Cc: Michael Chan <michael.chan@broadcom.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Richard Cochran <richardcochran@gmail.com>, 
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>, Vadim Fedorenko <vadim.fedorenko@linux.dev>, 
-	Vladimir Oltean <vladimir.oltean@nxp.com>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, kernel-team@meta.com, stable@vger.kernel.org
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-	boundary="000000000000c45c830647419500"
+Content-Transfer-Encoding: 8bit
 
---000000000000c45c830647419500
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+From: Filipe Manana <fdmanana@suse.com>
 
-On Wed, Dec 31, 2025 at 6:35=E2=80=AFPM Breno Leitao <leitao@debian.org> wr=
-ote:
->
-> When bnxt_init_one() fails during initialization (e.g.,
-> bnxt_init_int_mode returns -ENODEV), the error path calls
-> bnxt_free_hwrm_resources() which destroys the DMA pool and sets
-> bp->hwrm_dma_pool to NULL. Subsequently, bnxt_ptp_clear() is called,
-> which invokes ptp_clock_unregister().
->
-> Since commit a60fc3294a37 ("ptp: rework ptp_clock_unregister() to
-> disable events"), ptp_clock_unregister() now calls
-> ptp_disable_all_events(), which in turn invokes the driver's .enable()
-> callback (bnxt_ptp_enable()) to disable PTP events before completing the
-> unregistration.
->
-> bnxt_ptp_enable() attempts to send HWRM commands via bnxt_ptp_cfg_pin()
-> and bnxt_ptp_cfg_event(), both of which call hwrm_req_init(). This
-> function tries to allocate from bp->hwrm_dma_pool, causing a NULL
-> pointer dereference:
->
->   bnxt_en 0000:01:00.0 (unnamed net_device) (uninitialized): bnxt_init_in=
-t_mode err: ffffffed
->   KASAN: null-ptr-deref in range [0x0000000000000028-0x000000000000002f]
->   Call Trace:
->    __hwrm_req_init (drivers/net/ethernet/broadcom/bnxt/bnxt_hwrm.c:72)
->    bnxt_ptp_enable (drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c:323 dri=
-vers/net/ethernet/broadcom/bnxt/bnxt_ptp.c:517)
->    ptp_disable_all_events (drivers/ptp/ptp_chardev.c:66)
->    ptp_clock_unregister (drivers/ptp/ptp_clock.c:518)
->    bnxt_ptp_clear (drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c:1134)
->    bnxt_init_one (drivers/net/ethernet/broadcom/bnxt/bnxt.c:16889)
->
-> Lines are against commit f8f9c1f4d0c7 ("Linux 6.19-rc3")
->
-> Fix this by checking if bp->hwrm_dma_pool is NULL at the start of
-> bnxt_ptp_enable(). During error/cleanup paths when HWRM resources have
-> been freed, return success without attempting to send commands since the
-> hardware is being torn down anyway.
->
-> During normal operation, the DMA pool is always valid so PTP
-> functionality is unaffected.
->
-> Signed-off-by: Breno Leitao <leitao@debian.org>
-> Fixes: a60fc3294a37 ("ptp: rework ptp_clock_unregister() to disable event=
-s")
-> Cc: stable@vger.kernel.org
-> ---
->  drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c | 7 +++++++
->  1 file changed, 7 insertions(+)
->
-> diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c b/drivers/net/=
-ethernet/broadcom/bnxt/bnxt_ptp.c
-> index a8a74f07bb54..a749bbfa398e 100644
-> --- a/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c
-> +++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c
-> @@ -482,6 +482,13 @@ static int bnxt_ptp_enable(struct ptp_clock_info *pt=
-p_info,
->         int pin_id;
->         int rc;
->
-> +       /* Return success if HWRM resources are not available.
-> +        * This can happen during error/cleanup paths when DMA pool has b=
-een
-> +        * freed.
-> +        */
-> +       if (!bp->hwrm_dma_pool)
+[ Upstream commit 266273eaf4d99475f1ae57f687b3e42bc71ec6f0 ]
 
-Thanks for the fix. While it's valid, just that to me, this check here
-looks a bit odd.
-Why not call bnxt_ptp_clear() before bnxt_free_hwrm_resources() in the
-unwind path?
+We can't log a conflicting inode if it's a directory and it was moved
+from one parent directory to another parent directory in the current
+transaction, as this can result an attempt to have a directory with
+two hard links during log replay, one for the old parent directory and
+another for the new parent directory.
 
-> +               return 0;
-> +
->         switch (rq->type) {
->         case PTP_CLK_REQ_EXTTS:
->                 /* Configure an External PPS IN */
->
-> ---
-> base-commit: 80380f6ce46f38a0d1200caade2f03de4b6c1d27
-> change-id: 20251231-bnxt-c54d317d8bfe
->
-> Best regards,
-> --
-> Breno Leitao <leitao@debian.org>
->
+The following scenario triggers that issue:
 
---000000000000c45c830647419500
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
+1) We have directories "dir1" and "dir2" created in a past transaction.
+   Directory "dir1" has inode A as its parent directory;
 
-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
-/HTPxpDrr4vzZL0yoc9XefyCbdiwfyFl99oBekp+1ZxXc5bZsVhRPVyEWFtCys66nqu5cU2GPT3a
-ySQEHOtIKyGGgzMVvitOzO2suQkoMvu/swsftfgCY/PObdlBZhv0BD97+WwR6CQJh/YEuDDEHYCy
-NDeiVtF3/jwT04bHB7lR9n+AiCSLr9wlgBHGdBFIOmT/XMX3K8fuMMGLq9PpGQEMvYa9QTkE9+zc
-MddiNNh1xtCTG0+kC7KIttdXTnffisXKsX44B8ECAwEAAaOCAd0wggHZMA4GA1UdDwEB/wQEAwIF
-oDAMBgNVHRMBAf8EAjAAMIGTBggrBgEFBQcBAQSBhjCBgzBGBggrBgEFBQcwAoY6aHR0cDovL3Nl
-Y3VyZS5nbG9iYWxzaWduLmNvbS9jYWNlcnQvZ3NnY2NyNnNtaW1lY2EyMDIzLmNydDA5BggrBgEF
-BQcwAYYtaHR0cDovL29jc3AuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyNnNtaW1lY2EyMDIzMGUGA1Ud
-IAReMFwwCQYHZ4EMAQUDAzALBgkrBgEEAaAyASgwQgYKKwYBBAGgMgoDAjA0MDIGCCsGAQUFBwIB
-FiZodHRwczovL3d3dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzBBBgNVHR8EOjA4MDagNKAy
-hjBodHRwOi8vY3JsLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjZzbWltZWNhMjAyMy5jcmwwJAYDVR0R
-BB0wG4EZcGF2YW4uY2hlYmJpQGJyb2FkY29tLmNvbTATBgNVHSUEDDAKBggrBgEFBQcDBDAfBgNV
-HSMEGDAWgBQAKTaeXHq6D68tUC3boCOFGLCgkjAdBgNVHQ4EFgQUxJ6fps/yOGneJRYDWUKPuLPk
-miYwDQYJKoZIhvcNAQELBQADggIBAI2j2qBMKYV8SLK1ysjOOS54Lpm3geezjBYrWor/BAKGP7kT
-QN61VWg3QlZqiX21KLNeBWzJH7r+zWiS8ykHApTnBlTjfNGF8ihZz7GkpBTa3xDW5rT/oLfyVQ5k
-Wr2OZ268FfZPyAgHYnrfhmojupPS4c7bT9fQyep3P0sAm6TQxmhLDh/HcsloIn7w1QywGRyesbRw
-CFkRbTnhhTS9Tz3pYs5kHbphHY5oF3HNdKgFPrfpF9ei6dL4LlwvQgNlRB6PhdUBL80CJ0UlY2Oz
-jIAKPusiSluFH+NvwqsI8VuId34ug+B5VOM2dWXR/jY0as0Va5Fpjpn1G+jG2pzr1FQu2OHR5GAh
-6Uw50Yh3H77mYK67fCzQVcHrl0qdOLSZVsz/T3qjRGjAZlIDyFRjewxLNunJl/TGtu1jk1ij7Uzh
-PtF4nfZaVnWJowp/gE+Hr21BXA1nj+wBINHA0eufDHd/Y0/MLK+++i3gPTermGBIfadXUj8NGCGe
-eIj4fd2b29HwMCvfX78QR4JQM9dkDoD1ZFClV17bxRPtxhwEU8DzzcGlLfKJhj8IxkLoww9hqNul
-Md+LwA5kUTLPBBl9irP7Rn3jfftdK1MgrNyomyZUZSI1pisbv0Zn/ru3KD3QZLE17esvHAqCfXAZ
-a2vE+o+ZbomB5XkihtQpb/DYrfjAMYICVzCCAlMCAQEwYjBSMQswCQYDVQQGEwJCRTEZMBcGA1UE
-ChMQR2xvYmFsU2lnbiBudi1zYTEoMCYGA1UEAxMfR2xvYmFsU2lnbiBHQ0MgUjYgU01JTUUgQ0Eg
-MjAyMwIMClwVCDIzIfrgd31IMA0GCWCGSAFlAwQCAQUAoIHHMC8GCSqGSIb3DQEJBDEiBCAg1up4
-mHRndmcHxBrnE/tmOpkSJTeYq0ao2c2XXUG3WDAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwG
-CSqGSIb3DQEJBTEPFw0yNTEyMzExNjAxMTFaMFwGCSqGSIb3DQEJDzFPME0wCwYJYIZIAWUDBAEq
-MAsGCWCGSAFlAwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEHMAsGCWCG
-SAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQAYR4SS18tc1WZyR8mAKg1g5EkJo/oUDV2qyKrY97vA
-LbW8HJoXRAylD+CrORoezQwBw4BFS3W61mJKOxiPEgB+H3AXsc5s5ksZ7KUFImw/hjBv+cjKld+h
-i9K5a61cLLhaSH0iuz+ib/4ksv8k8avPqVYdNAktRYMsQLaF8rRmbf+tUIEErlmkywq+vwRJfBDF
-TfdUsj/HN9b8g4bMP4HxmCdclMQhahYc6H2glROwIhqQxFRdJT/68xQzY6w34nbYPDg70WPK2vJx
-qNpsO2saUhJJfRvkh9Vhdc8lOmZ3lly4Xa9KmXSxBECit/bw7SHR89tT5JSJvctPYzzSnKq9
---000000000000c45c830647419500--
+2) We move "dir1" to some other directory;
+
+3) We create a file with the name "dir1" in directory inode A;
+
+4) We fsync the new file. This results in logging the inode of the new file
+   and the inode for the directory "dir1" that was previously moved in the
+   current transaction. So the log tree has the INODE_REF item for the
+   new location of "dir1";
+
+5) We move the new file to some other directory. This results in updating
+   the log tree to included the new INODE_REF for the new location of the
+   file and removes the INODE_REF for the old location. This happens
+   during the rename when we call btrfs_log_new_name();
+
+6) We fsync the file, and that persists the log tree changes done in the
+   previous step (btrfs_log_new_name() only updates the log tree in
+   memory);
+
+7) We have a power failure;
+
+8) Next time the fs is mounted, log replay happens and when processing
+   the inode for directory "dir1" we find a new INODE_REF and add that
+   link, but we don't remove the old link of the inode since we have
+   not logged the old parent directory of the directory inode "dir1".
+
+As a result after log replay finishes when we trigger writeback of the
+subvolume tree's extent buffers, the tree check will detect that we have
+a directory a hard link count of 2 and we get a mount failure.
+The errors and stack traces reported in dmesg/syslog are like this:
+
+   [ 3845.729764] BTRFS info (device dm-0): start tree-log replay
+   [ 3845.730304] page: refcount:3 mapcount:0 mapping:000000005c8a3027 index:0x1d00 pfn:0x11510c
+   [ 3845.731236] memcg:ffff9264c02f4e00
+   [ 3845.731751] aops:btree_aops [btrfs] ino:1
+   [ 3845.732300] flags: 0x17fffc00000400a(uptodate|private|writeback|node=0|zone=2|lastcpupid=0x1ffff)
+   [ 3845.733346] raw: 017fffc00000400a 0000000000000000 dead000000000122 ffff9264d978aea8
+   [ 3845.734265] raw: 0000000000001d00 ffff92650e6d4738 00000003ffffffff ffff9264c02f4e00
+   [ 3845.735305] page dumped because: eb page dump
+   [ 3845.735981] BTRFS critical (device dm-0): corrupt leaf: root=5 block=30408704 slot=6 ino=257, invalid nlink: has 2 expect no more than 1 for dir
+   [ 3845.737786] BTRFS info (device dm-0): leaf 30408704 gen 10 total ptrs 17 free space 14881 owner 5
+   [ 3845.737789] BTRFS info (device dm-0): refs 4 lock_owner 0 current 30701
+   [ 3845.737792] 	item 0 key (256 INODE_ITEM 0) itemoff 16123 itemsize 160
+   [ 3845.737794] 		inode generation 3 transid 9 size 16 nbytes 16384
+   [ 3845.737795] 		block group 0 mode 40755 links 1 uid 0 gid 0
+   [ 3845.737797] 		rdev 0 sequence 2 flags 0x0
+   [ 3845.737798] 		atime 1764259517.0
+   [ 3845.737800] 		ctime 1764259517.572889464
+   [ 3845.737801] 		mtime 1764259517.572889464
+   [ 3845.737802] 		otime 1764259517.0
+   [ 3845.737803] 	item 1 key (256 INODE_REF 256) itemoff 16111 itemsize 12
+   [ 3845.737805] 		index 0 name_len 2
+   [ 3845.737807] 	item 2 key (256 DIR_ITEM 2363071922) itemoff 16077 itemsize 34
+   [ 3845.737808] 		location key (257 1 0) type 2
+   [ 3845.737810] 		transid 9 data_len 0 name_len 4
+   [ 3845.737811] 	item 3 key (256 DIR_ITEM 2676584006) itemoff 16043 itemsize 34
+   [ 3845.737813] 		location key (258 1 0) type 2
+   [ 3845.737814] 		transid 9 data_len 0 name_len 4
+   [ 3845.737815] 	item 4 key (256 DIR_INDEX 2) itemoff 16009 itemsize 34
+   [ 3845.737816] 		location key (257 1 0) type 2
+   [ 3845.737818] 		transid 9 data_len 0 name_len 4
+   [ 3845.737819] 	item 5 key (256 DIR_INDEX 3) itemoff 15975 itemsize 34
+   [ 3845.737820] 		location key (258 1 0) type 2
+   [ 3845.737821] 		transid 9 data_len 0 name_len 4
+   [ 3845.737822] 	item 6 key (257 INODE_ITEM 0) itemoff 15815 itemsize 160
+   [ 3845.737824] 		inode generation 9 transid 10 size 6 nbytes 0
+   [ 3845.737825] 		block group 0 mode 40755 links 2 uid 0 gid 0
+   [ 3845.737826] 		rdev 0 sequence 1 flags 0x0
+   [ 3845.737827] 		atime 1764259517.572889464
+   [ 3845.737828] 		ctime 1764259517.572889464
+   [ 3845.737830] 		mtime 1764259517.572889464
+   [ 3845.737831] 		otime 1764259517.572889464
+   [ 3845.737832] 	item 7 key (257 INODE_REF 256) itemoff 15801 itemsize 14
+   [ 3845.737833] 		index 2 name_len 4
+   [ 3845.737834] 	item 8 key (257 INODE_REF 258) itemoff 15787 itemsize 14
+   [ 3845.737836] 		index 2 name_len 4
+   [ 3845.737837] 	item 9 key (257 DIR_ITEM 2507850652) itemoff 15754 itemsize 33
+   [ 3845.737838] 		location key (259 1 0) type 1
+   [ 3845.737839] 		transid 10 data_len 0 name_len 3
+   [ 3845.737840] 	item 10 key (257 DIR_INDEX 2) itemoff 15721 itemsize 33
+   [ 3845.737842] 		location key (259 1 0) type 1
+   [ 3845.737843] 		transid 10 data_len 0 name_len 3
+   [ 3845.737844] 	item 11 key (258 INODE_ITEM 0) itemoff 15561 itemsize 160
+   [ 3845.737846] 		inode generation 9 transid 10 size 8 nbytes 0
+   [ 3845.737847] 		block group 0 mode 40755 links 1 uid 0 gid 0
+   [ 3845.737848] 		rdev 0 sequence 1 flags 0x0
+   [ 3845.737849] 		atime 1764259517.572889464
+   [ 3845.737850] 		ctime 1764259517.572889464
+   [ 3845.737851] 		mtime 1764259517.572889464
+   [ 3845.737852] 		otime 1764259517.572889464
+   [ 3845.737853] 	item 12 key (258 INODE_REF 256) itemoff 15547 itemsize 14
+   [ 3845.737855] 		index 3 name_len 4
+   [ 3845.737856] 	item 13 key (258 DIR_ITEM 1843588421) itemoff 15513 itemsize 34
+   [ 3845.737857] 		location key (257 1 0) type 2
+   [ 3845.737858] 		transid 10 data_len 0 name_len 4
+   [ 3845.737860] 	item 14 key (258 DIR_INDEX 2) itemoff 15479 itemsize 34
+   [ 3845.737861] 		location key (257 1 0) type 2
+   [ 3845.737862] 		transid 10 data_len 0 name_len 4
+   [ 3845.737863] 	item 15 key (259 INODE_ITEM 0) itemoff 15319 itemsize 160
+   [ 3845.737865] 		inode generation 10 transid 10 size 0 nbytes 0
+   [ 3845.737866] 		block group 0 mode 100600 links 1 uid 0 gid 0
+   [ 3845.737867] 		rdev 0 sequence 2 flags 0x0
+   [ 3845.737868] 		atime 1764259517.580874966
+   [ 3845.737869] 		ctime 1764259517.586121869
+   [ 3845.737870] 		mtime 1764259517.580874966
+   [ 3845.737872] 		otime 1764259517.580874966
+   [ 3845.737873] 	item 16 key (259 INODE_REF 257) itemoff 15306 itemsize 13
+   [ 3845.737874] 		index 2 name_len 3
+   [ 3845.737875] BTRFS error (device dm-0): block=30408704 write time tree block corruption detected
+   [ 3845.739448] ------------[ cut here ]------------
+   [ 3845.740092] WARNING: CPU: 5 PID: 30701 at fs/btrfs/disk-io.c:335 btree_csum_one_bio+0x25a/0x270 [btrfs]
+   [ 3845.741439] Modules linked in: btrfs dm_flakey crc32c_cryptoapi (...)
+   [ 3845.750626] CPU: 5 UID: 0 PID: 30701 Comm: mount Tainted: G        W           6.18.0-rc6-btrfs-next-218+ #1 PREEMPT(full)
+   [ 3845.752414] Tainted: [W]=WARN
+   [ 3845.752828] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.2-0-gea1b7a073390-prebuilt.qemu.org 04/01/2014
+   [ 3845.754499] RIP: 0010:btree_csum_one_bio+0x25a/0x270 [btrfs]
+   [ 3845.755460] Code: 31 f6 48 89 (...)
+   [ 3845.758685] RSP: 0018:ffffa8d9c5677678 EFLAGS: 00010246
+   [ 3845.759450] RAX: 0000000000000000 RBX: ffff92650e6d4738 RCX: 0000000000000000
+   [ 3845.760309] RDX: 0000000000000000 RSI: ffffffff9aab45b9 RDI: ffff9264c4748000
+   [ 3845.761239] RBP: ffff9264d4324000 R08: 0000000000000000 R09: ffffa8d9c5677468
+   [ 3845.762607] R10: ffff926bdc1fffa8 R11: 0000000000000003 R12: ffffa8d9c5677680
+   [ 3845.764099] R13: 0000000000004000 R14: ffff9264dd624000 R15: ffff9264d978aba8
+   [ 3845.765094] FS:  00007f751fa5a840(0000) GS:ffff926c42a82000(0000) knlGS:0000000000000000
+   [ 3845.766226] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+   [ 3845.766970] CR2: 0000558df1815380 CR3: 000000010ed88003 CR4: 0000000000370ef0
+   [ 3845.768009] Call Trace:
+   [ 3845.768392]  <TASK>
+   [ 3845.768714]  btrfs_submit_bbio+0x6ee/0x7f0 [btrfs]
+   [ 3845.769640]  ? write_one_eb+0x28e/0x340 [btrfs]
+   [ 3845.770588]  btree_write_cache_pages+0x2f0/0x550 [btrfs]
+   [ 3845.771286]  ? alloc_extent_state+0x19/0x100 [btrfs]
+   [ 3845.771967]  ? merge_next_state+0x1a/0x90 [btrfs]
+   [ 3845.772586]  ? set_extent_bit+0x233/0x8b0 [btrfs]
+   [ 3845.773198]  ? xas_load+0x9/0xc0
+   [ 3845.773589]  ? xas_find+0x14d/0x1a0
+   [ 3845.773969]  do_writepages+0xc6/0x160
+   [ 3845.774367]  filemap_fdatawrite_wbc+0x48/0x60
+   [ 3845.775003]  __filemap_fdatawrite_range+0x5b/0x80
+   [ 3845.775902]  btrfs_write_marked_extents+0x61/0x170 [btrfs]
+   [ 3845.776707]  btrfs_write_and_wait_transaction+0x4e/0xc0 [btrfs]
+   [ 3845.777379]  ? _raw_spin_unlock_irqrestore+0x23/0x40
+   [ 3845.777923]  btrfs_commit_transaction+0x5ea/0xd20 [btrfs]
+   [ 3845.778551]  ? _raw_spin_unlock+0x15/0x30
+   [ 3845.778986]  ? release_extent_buffer+0x34/0x160 [btrfs]
+   [ 3845.779659]  btrfs_recover_log_trees+0x7a3/0x7c0 [btrfs]
+   [ 3845.780416]  ? __pfx_replay_one_buffer+0x10/0x10 [btrfs]
+   [ 3845.781499]  open_ctree+0x10bb/0x15f0 [btrfs]
+   [ 3845.782194]  btrfs_get_tree.cold+0xb/0x16c [btrfs]
+   [ 3845.782764]  ? fscontext_read+0x15c/0x180
+   [ 3845.783202]  ? rw_verify_area+0x50/0x180
+   [ 3845.783667]  vfs_get_tree+0x25/0xd0
+   [ 3845.784047]  vfs_cmd_create+0x59/0xe0
+   [ 3845.784458]  __do_sys_fsconfig+0x4f6/0x6b0
+   [ 3845.784914]  do_syscall_64+0x50/0x1220
+   [ 3845.785340]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+   [ 3845.785980] RIP: 0033:0x7f751fc7f4aa
+   [ 3845.786759] Code: 73 01 c3 48 (...)
+   [ 3845.789951] RSP: 002b:00007ffcdba45dc8 EFLAGS: 00000246 ORIG_RAX: 00000000000001af
+   [ 3845.791402] RAX: ffffffffffffffda RBX: 000055ccc8291c20 RCX: 00007f751fc7f4aa
+   [ 3845.792688] RDX: 0000000000000000 RSI: 0000000000000006 RDI: 0000000000000003
+   [ 3845.794308] RBP: 000055ccc8292120 R08: 0000000000000000 R09: 0000000000000000
+   [ 3845.795829] R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+   [ 3845.797183] R13: 00007f751fe11580 R14: 00007f751fe1326c R15: 00007f751fdf8a23
+   [ 3845.798633]  </TASK>
+   [ 3845.799067] ---[ end trace 0000000000000000 ]---
+   [ 3845.800215] BTRFS: error (device dm-0) in btrfs_commit_transaction:2553: errno=-5 IO failure (Error while writing out transaction)
+   [ 3845.801860] BTRFS warning (device dm-0 state E): Skipping commit of aborted transaction.
+   [ 3845.802815] BTRFS error (device dm-0 state EA): Transaction aborted (error -5)
+   [ 3845.803728] BTRFS: error (device dm-0 state EA) in cleanup_transaction:2036: errno=-5 IO failure
+   [ 3845.805374] BTRFS: error (device dm-0 state EA) in btrfs_replay_log:2083: errno=-5 IO failure (Failed to recover log tree)
+   [ 3845.807919] BTRFS error (device dm-0 state EA): open_ctree failed: -5
+
+Fix this by never logging a conflicting inode that is a directory and was
+moved in the current transaction (its last_unlink_trans equals the current
+transaction) and instead fallback to a transaction commit.
+
+A test case for fstests will follow soon.
+
+Reported-by: Vyacheslav Kovalevsky <slva.kovalevskiy.2014@gmail.com>
+Link: https://lore.kernel.org/linux-btrfs/7bbc9419-5c56-450a-b5a0-efeae7457113@gmail.com/
+CC: stable@vger.kernel.org # 6.1+
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+[ wrapped inode parameter with BTRFS_I() ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ fs/btrfs/tree-log.c | 38 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 38 insertions(+)
+
+diff --git a/fs/btrfs/tree-log.c b/fs/btrfs/tree-log.c
+index 11a7408ebc26..a6facc00341c 100644
+--- a/fs/btrfs/tree-log.c
++++ b/fs/btrfs/tree-log.c
+@@ -5646,6 +5646,33 @@ static int conflicting_inode_is_dir(struct btrfs_root *root, u64 ino,
+ 	return ret;
+ }
+ 
++static bool can_log_conflicting_inode(const struct btrfs_trans_handle *trans,
++				      const struct btrfs_inode *inode)
++{
++	if (!S_ISDIR(inode->vfs_inode.i_mode))
++		return true;
++
++	if (inode->last_unlink_trans < trans->transid)
++		return true;
++
++	/*
++	 * If this is a directory and its unlink_trans is not from a past
++	 * transaction then we must fallback to a transaction commit in order
++	 * to avoid getting a directory with 2 hard links after log replay.
++	 *
++	 * This happens if a directory A is renamed, moved from one parent
++	 * directory to another one, a new file is created in the old parent
++	 * directory with the old name of our directory A, the new file is
++	 * fsynced, then we moved the new file to some other parent directory
++	 * and fsync again the new file. This results in a log tree where we
++	 * logged that directory A existed, with the INODE_REF item for the
++	 * new location but without having logged its old parent inode, so
++	 * that on log replay we add a new link for the new location but the
++	 * old link remains, resulting in a link count of 2.
++	 */
++	return false;
++}
++
+ static int add_conflicting_inode(struct btrfs_trans_handle *trans,
+ 				 struct btrfs_root *root,
+ 				 struct btrfs_path *path,
+@@ -5751,6 +5778,11 @@ static int add_conflicting_inode(struct btrfs_trans_handle *trans,
+ 		return 0;
+ 	}
+ 
++	if (!can_log_conflicting_inode(trans, BTRFS_I(inode))) {
++		btrfs_add_delayed_iput(inode);
++		return BTRFS_LOG_FORCE_COMMIT;
++	}
++
+ 	btrfs_add_delayed_iput(inode);
+ 
+ 	ino_elem = kmalloc(sizeof(*ino_elem), GFP_NOFS);
+@@ -5816,6 +5848,12 @@ static int log_conflicting_inodes(struct btrfs_trans_handle *trans,
+ 				break;
+ 			}
+ 
++			if (!can_log_conflicting_inode(trans, BTRFS_I(inode))) {
++				btrfs_add_delayed_iput(inode);
++				ret = BTRFS_LOG_FORCE_COMMIT;
++				break;
++			}
++
+ 			/*
+ 			 * Always log the directory, we cannot make this
+ 			 * conditional on need_log_inode() because the directory
+-- 
+2.51.0
+
 
