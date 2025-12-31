@@ -1,94 +1,77 @@
-Return-Path: <stable+bounces-204301-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204302-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01A37CEAF4B
-	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 01:16:44 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66946CEAF79
+	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 01:31:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 003B8300FA0E
-	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 00:16:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A7B7D301E1B1
+	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 00:31:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA30E5FDA7;
-	Wed, 31 Dec 2025 00:16:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 258911A262A;
+	Wed, 31 Dec 2025 00:31:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nHB3jVKB"
 X-Original-To: stable@vger.kernel.org
-Received: from out28-57.mail.aliyun.com (out28-57.mail.aliyun.com [115.124.28.57])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5A431DFF7
-	for <stable@vger.kernel.org>; Wed, 31 Dec 2025 00:16:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.57
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDAB3131E49;
+	Wed, 31 Dec 2025 00:31:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767140201; cv=none; b=NIaDyPjDa1NQoOTR2DcRMf9UiJlus8vaK0i88TbShqIlfO+xnM6KY0yFDl76P3IjVkRswL88lEB6EtZ4ThCuPh450fcfJU/OeY6cM2FQpJRBB05inzX55qpqUJBcInUaNXd+saR/s/KXkDZGb6AYXuvAtApBYZsBPrUV7AfGKFA=
+	t=1767141061; cv=none; b=GWcHRnIHWbOhBpTo02yQ1i/BLXqXEqm6i3cSw6dv6FEdvN/J62XIaKAjyIiHFYvwkXmN7KlJo/GQG1RSLZzSTv41FDsiuNMCVcz3crWr/AFM0DR2N+yNGdQL0gPyj9HgBX2NErYR6xfluIdzWhgBKTMzaU3/4PBfUKibFxubDAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767140201; c=relaxed/simple;
-	bh=cGPiFRsGnGe6pQMZmqA+UFqZ8dPYV+Iz+mw3RT6qpqc=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:Message-Id:
-	 MIME-Version:Content-Type; b=QWHdcPdS0MTXDzHEj3jxowrE/B+10KBEgsCsEksfQdwOSNA7vP4HnTOJhM2UaSJraFx6uAqC1FWe99Hikh+CbTDpTXuc/xOiIu2tJ0lP+CptphfRmvnc5ki/7UMVUN5TuMIuHUQJS2MGPijV7PgxeVhCHZkDAOxo/t23TYX8bnw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=e16-tech.com; spf=pass smtp.mailfrom=e16-tech.com; arc=none smtp.client-ip=115.124.28.57
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=e16-tech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=e16-tech.com
-Received: from 192.168.2.112(mailfrom:wangyugui@e16-tech.com fp:SMTPD_---.fwkMib8_1767138342 cluster:ay29)
-          by smtp.aliyun-inc.com;
-          Wed, 31 Dec 2025 07:45:43 +0800
-Date: Wed, 31 Dec 2025 07:45:44 +0800
-From: Wang Yugui <wangyugui@e16-tech.com>
-To: Holger Hoffst?tte <holger@applied-asynchrony.com>
-Subject: Re: Please add 127b90315ca0 ("sched/proxy: Yield the donor task") to 6.12.y / 6.18.y
-Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>,
- Greg KH <gregkh@linuxfoundation.org>,
- Sasha Levin <sashal@kernel.org>,
- Fernand Sieber <sieberf@amazon.com>
-In-Reply-To: <04b82346-c38a-08e2-49d5-d64981eb7dae@applied-asynchrony.com>
-References: <04b82346-c38a-08e2-49d5-d64981eb7dae@applied-asynchrony.com>
-Message-Id: <20251231074543.64FC.409509F4@e16-tech.com>
+	s=arc-20240116; t=1767141061; c=relaxed/simple;
+	bh=8DsH0rZ65Z/UvLa0nkE/G0G86Zhg6WQwFd0CWhDEEr4=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=DkoJnCfeVHb4PeSOf0/0PWdP99J6F83f2X2z4ajTbUHgz+1oboERhyDOiNP0K3XKhGRFZpx8ZRCzGfu9Nu37q/sYIVRTXWuMcttpmVKIMpLkWrtTyiUXJu5Ck+xVK1brdIl/MAokutPZzrKvwR4eKnhvQvQ7HY4W5/0WVT7Dbuw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nHB3jVKB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83EE7C4CEFB;
+	Wed, 31 Dec 2025 00:31:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767141061;
+	bh=8DsH0rZ65Z/UvLa0nkE/G0G86Zhg6WQwFd0CWhDEEr4=;
+	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
+	b=nHB3jVKBI/qdutZRMky1723rGYNqEZBnM9repl3u0BSnOdTSfw21E1nRpx3Fwxyah
+	 2UulhTlgxx+zDZUXEKwa91QXux23JUAcTUd+8QCwXxIK6TWm+hXXyXmIdvZkmmy+E6
+	 UCzGzuvQBIuhgMGnnfAyF6amxPCGLV37giEORUbcd5Ry45qOX9Ddjy9pmgGjLV01DW
+	 u+7sAxTrgRftwmoBug48O2o4VA4etzCOyMQnoxnAlzf79/LkSr22s9h0V2z0qwW+1g
+	 uJ6yhNwWi7zRbnnCMT5qhBN4qElD0YUVNKg7Vey5S+AyNe5vvWHJp0YMgqTinR15JU
+	 PneD5jgKIfZog==
+Date: Tue, 30 Dec 2025 17:30:57 -0700 (MST)
+From: Paul Walmsley <pjw@kernel.org>
+To: Vivian Wang <wangruikang@iscas.ac.cn>
+cc: Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
+    Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, 
+    Nathan Chancellor <nathan@kernel.org>, Alexey Gladkov <legion@kernel.org>, 
+    Masahiro Yamada <masahiroy@kernel.org>, Nicolas Schier <nsc@kernel.org>, 
+    Han Gao <gaohan@iscas.ac.cn>, linux-riscv@lists.infradead.org, 
+    linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org, 
+    stable@vger.kernel.org
+Subject: Re: [PATCH] riscv: boot: Always make Image from vmlinux, not
+ vmlinux.unstripped
+In-Reply-To: <20251230-riscv-vmlinux-not-unstripped-v1-1-15f49df880df@iscas.ac.cn>
+Message-ID: <28f873a5-6e9e-f2d3-9eb3-587745705eca@kernel.org>
+References: <20251230-riscv-vmlinux-not-unstripped-v1-1-15f49df880df@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="GB2312"
-Content-Transfer-Encoding: 8bit
-X-Mailer: Becky! ver. 2.82.01 [en]
+Content-Type: text/plain; charset=US-ASCII
 
-Hi,
+On Tue, 30 Dec 2025, Vivian Wang wrote:
 
-> Hi -
+> Since commit 4b47a3aefb29 ("kbuild: Restore pattern to avoid stripping
+> .rela.dyn from vmlinux") vmlinux has .rel*.dyn preserved. Therefore, use
+> vmlinux to produce Image, not vmlinux.unstripped.
 > 
-> a Gentoo user recently found that 6.18.2 started to reproducuibly
-> crash when building their go toolchain [1].
-> 
-> Apparently the addition of "sched/fair: Forfeit vruntime on yield"
-> (mainline 79104becf42b) can result in the infamous NULL returned from
-> pick_eevdf(), which is not supposed to happen.
-> 
-> It turned out that the mentioned commit triggered a bug related
-> to the recently added proxy execution feature, which was already
-> fixed in mainline by "sched/proxy: Yield the donor task"
-> (127b90315ca0), though not marked for stable.
-> 
-> Applying this to 6.18.2/.3-rc1 (and probably 6.12 as well)
-> has reproducibly fixed the problem. A possible reason the crash
-> was triggered by the Go runtime could be its specific use of yield(),
-> though that's just speculation on my part.
-> 
-> So please add 127b90315ca0 ("sched/proxy: Yield the donor task")
-> to 6.18.y/6.12.y. I know we're already in 6.18.3-rc1, but the
-> crasher seems reproducible.
+> Doing so fixes booting a RELOCATABLE=y Image with kexec. 
 
-Failed to apply 127b90315ca0 ("sched/proxy: Yield the donor task")
-to 6.12.y, because  the 'donor task¡® is a feature of 6.13.
-
-commit af0c8b2bf67b25756f27644936e74fd9a6273bd2
-Author: Peter Zijlstra <peterz@infradead.org>
-Date:   Wed Oct 9 16:53:40 2024 -0700
-
-    sched: Split scheduler and execution contexts
-
-Best Regards
-Wang Yugui (wangyugui@e16-tech.com)
-2025/12/31
+Thanks, queued for v6.19-rc.
 
 
-
+- Paul
 
