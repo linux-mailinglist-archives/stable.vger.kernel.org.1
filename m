@@ -1,163 +1,122 @@
-Return-Path: <stable+bounces-204325-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204327-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5899BCEB543
-	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 07:16:44 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E4BFCEB779
+	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 08:47:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4296E300C758
-	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 06:16:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D548C30053D8
+	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 07:46:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1216931065A;
-	Wed, 31 Dec 2025 06:16:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D08F32FCC0E;
+	Wed, 31 Dec 2025 07:46:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="bPVqz0D9"
+	dkim=pass (2048-bit key) header.d=cloudlinux.com header.i=@cloudlinux.com header.b="RhQSeVNl"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 468B12D3228;
-	Wed, 31 Dec 2025 06:16:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 114B52AE70
+	for <stable@vger.kernel.org>; Wed, 31 Dec 2025 07:46:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767161799; cv=none; b=Q9DQYPeN/rBMk6qJ+0Zh9W+Y9ukDyZ/JBGmez0ju4t7WTBkM+UZ0Tq34sc1HGy9MB9p9jhV5/etsZz9Bg6nq6yTzUV4qFGSObFTJTse5Prkz79Xxa+tNFy3Hxyx+KgRzT59vNdj9SmzWREHh+Jc+0LPQy294j340nv6+dxiPJy0=
+	t=1767167206; cv=none; b=GzcEPCj+iyF4GAlyWn4Ez5tOlYKlWVFROs/KP1KCcj5U+L1rQuzluXjidbE2XyPEvJFr4G/2IqOaudY8jVmGvcy/FZJmZOvvT30SsF4ne06gZoDjA5+Uf2gApIOyPHh0/ucnay3e8V/KDBbxjUZApu4Sw9LbwoTpgTAezOMsUoo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767161799; c=relaxed/simple;
-	bh=2Jt9GsjsSGPC0WcZcDrsd7TH7UQiaJBHb8A2yfsQ+eI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Md2CZc5za3SiLYK8dSw1gmxteez4kKyB1LgEg6CMwHKBt8+wiB3p2XliPmey98XFouH/KXNQShPxkXHdejTH8foF8Od9DnSAM80SUQwg4Ap3OjgB79V6FJG+J8AV2RNHADsUabZeG+xpWMCydy+oeX5+w7gly9/fQgP2kb8k6wI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=bPVqz0D9; arc=none smtp.client-ip=205.220.177.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5BV0HOAp1075540;
-	Wed, 31 Dec 2025 06:16:23 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	corp-2025-04-25; bh=it3f+hcoxO8E8SSBho9WFDyAJ6zTtQDOoPTTP8A0hcE=; b=
-	bPVqz0D9vl5R8PFfLm8+fG45iem2Uyj1nDIXLxXqY044nMCTifhwZzNL8opgUVfi
-	y6DdLbJVHzNCWoUvxJh9oO5TLKatgU9kmTB0emtxvrswjwQ3yOQHWFNj/qPzRdUk
-	MyvjK6BMzOZoNNEQvt0V60LGcjpzg69v4fn9GFPdA2VFtrMCTk7m0w93PiU3TvU7
-	NATdqbfp8Wdkr/j0N4UI9b4zjkFYaGyzt7YlvE9SqyIGoFvFdhvTKYN4LbiuqUt2
-	fdAcOLbCNEsE121Niu6YGUfUCkrFxgKGh7C0FrLvfolul59APYxJRI1wbnGhCNzh
-	3Xft+22gETgM2fTOWDu54A==
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4ba5va3cn5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 31 Dec 2025 06:16:23 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 5BV2tW97014684;
-	Wed, 31 Dec 2025 06:16:22 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4ba5w8c7tj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 31 Dec 2025 06:16:22 +0000
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 5BV6GE8c009609;
-	Wed, 31 Dec 2025 06:16:21 GMT
-Received: from ca-dev112.us.oracle.com (ca-dev112.us.oracle.com [10.129.136.47])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 4ba5w8c7mt-4;
-	Wed, 31 Dec 2025 06:16:21 +0000
-From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-To: zohar@linux.ibm.com, akpm@linux-foundation.org
-Cc: ardb@kernel.org, bp@alien8.de, dave.hansen@linux.intel.com,
-        graf@amazon.com, guoweikang.kernel@gmail.com,
-        harshit.m.mogalapalli@oracle.com, henry.willard@oracle.com,
-        hpa@zytor.com, jbohac@suse.cz, joel.granados@kernel.org,
-        linux-kernel@vger.kernel.org, mingo@redhat.com, noodles@fb.com,
-        paul.x.webb@oracle.com, rppt@kernel.org, sohil.mehta@intel.com,
-        sourabhjain@linux.ibm.com, stable@vger.kernel.org, tglx@linutronix.de,
-        x86@kernel.org, yifei.l.liu@oracle.com
-Subject: [PATCH v3 3/3] x86/kexec: Add a sanity check on previous kernel's ima kexec buffer
-Date: Tue, 30 Dec 2025 22:16:09 -0800
-Message-ID: <20251231061609.907170-4-harshit.m.mogalapalli@oracle.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20251231061609.907170-1-harshit.m.mogalapalli@oracle.com>
-References: <20251231061609.907170-1-harshit.m.mogalapalli@oracle.com>
+	s=arc-20240116; t=1767167206; c=relaxed/simple;
+	bh=S+QErFLPAsEmZdXL2ZR61ZlxoWFp4vGhaMp4rKO0qdw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XxNPm1XEMcKbM+UA7m2C/69laZbtvsGbPnMpNKsnZ8MzeJTcs8TA1BKKogBEzAGAhjg08i92goO1p9PZC8aRGfHiwHBCoTD0mGhNSIK5rUue5bZnmyh+uv4RvTNIlbKWnOcbNptnKoirmBeU+ta9quMPnQHL4p6cHRRpxhDQGvU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cloudlinux.com; spf=pass smtp.mailfrom=cloudlinux.com; dkim=pass (2048-bit key) header.d=cloudlinux.com header.i=@cloudlinux.com header.b=RhQSeVNl; arc=none smtp.client-ip=209.85.221.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cloudlinux.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudlinux.com
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-42fb0fc5aa4so8223230f8f.1
+        for <stable@vger.kernel.org>; Tue, 30 Dec 2025 23:46:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cloudlinux.com; s=google; t=1767167202; x=1767772002; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=rcK5OWb8lQWwyYY1U8hmUdtzkD50MwR2w8DVGyTAGVA=;
+        b=RhQSeVNlJSug8r8qSJVYFzGN9ytpFGmyyN147pxUPNV3fm/S+QxmzQvF194YqIEXep
+         janSo3sZB+/4Qh09Vd8rO6CBrcO3yh8aSr8On7NdH750U+EChQPmhYO29/0D9sPHxHDu
+         cq0dtVwaokMaRL+krmoT3hykBaB0bOTOFLfy789nKkquTtVqLgbaiXk1zTeCBVKjmKX4
+         E8oJ4eFQK0SF8C7T7+ewChaYNLRjPc/n3JPML15IGLUq4ERy/EzAB+LvuNPeGXXtokBu
+         oweQlPlfb0/yKaBNvJ4F5wUCOqIcHemAShOSLtY79nbvJtFz6WC8UvNDd5x0s5zWSuwz
+         F5zw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767167202; x=1767772002;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=rcK5OWb8lQWwyYY1U8hmUdtzkD50MwR2w8DVGyTAGVA=;
+        b=fPcWD7JevQyYVwNecXvIyvkhX0VNjmKVxx8fhA4pn2+N1ZolNi1exQoHacvp80IPgm
+         divLMDqn+lkfGlA/o+nVP5g2O+D1gatQdPIRyhir2Ve0zrzE+IRO7XH8J589ZZTUDbby
+         M+PKeJHfuScaz/amKA6tJQw+n5PVqngdVY5pXX6J3T69ZtvjFd0sUJTf0VYeKHJp7eDY
+         M0ELvDHmoAhAlmmGRHUmBWG52a2FRrCCDIDtVpDLVHtvz1HMSKjJepz9+wDOQDCXi890
+         1jAgRGvSEF8j9bXtV2zB5myEurIcRO3+KAoDqwj/xWgjaAuqX4vfyl1R7C36P7luWbh9
+         KVzw==
+X-Forwarded-Encrypted: i=1; AJvYcCXLorlAqK8DzC6aTahkCl+hYdZXSWj7JC61YNhthNKYfhOT3J+q4V5ThnpdZb9g+G3VsAXK4o4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzS2RZZNub1oKW1fxwFg8m/RhqZJa55HWaXlhH3YIrVW/GIPGHW
+	CKOqU1fwSb+4JXhvXWIvwaOCqRFX8vaaswBZjFrmOshrf4zgIUU9J4oQ8Rg7zQVqyVrCLuRVhNH
+	nTzRYDcg=
+X-Gm-Gg: AY/fxX57BN1xfCpdsB3ig8zwxuOdu1I/b2sCYn0f5kZIEfY2opfPlTzfboJXS6HiXSu
+	HmJIV7crQab8efZ20PTBYHW5zycHfwAl3YWPXW+GUDKCf86miYAQdzJH+CqEeP1a4u2iOeUsb/3
+	bKBwcGW+DXcbw2Lp2Ajv+P/V8o397X7HX/maH1+S2Z1R+X5u5xxDaKQQ5OS74GjzqPtrpNiZ/yY
+	J3/FKXjDhVnVmwFmX2qJesaAhOytDPI0fVR3V10akO2zh6Ss3T2tGnUkGbyMBh94ghFh8TUZ/au
+	peqAOZ/jVDE8wh5TNaPequZiCbWUg6UNIIiUF7Mm64gkAwPll1R1pig1SKfSHVUAFGAwcJNRStI
+	cKJTDCrZV3W3o1k0X30iMC8Iru3rfJP2zlUS3n6RBhSxa5m/vcibjX+RV+BEpMWU4nNk13ZfCyy
+	5C4uW+aVCs83pDXXZS23CbWBCNjOBqXEs=
+X-Google-Smtp-Source: AGHT+IHgPCTbrZ8SuyzVrzffH6KxGgE30rE6DKiN8ff7CAf5R8oHwTDdgYTozgvOKrd776lNlz+n6g==
+X-Received: by 2002:a05:6000:2c06:b0:431:864:d48f with SMTP id ffacd0b85a97d-4324e4d5029mr46915304f8f.27.1767167202241;
+        Tue, 30 Dec 2025 23:46:42 -0800 (PST)
+Received: from fedora.cloudlinux.com ([94.204.137.252])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4324ea1b36fsm72315953f8f.5.2025.12.30.23.46.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 30 Dec 2025 23:46:41 -0800 (PST)
+From: Pavel Butsykin <pbutsykin@cloudlinux.com>
+To: hannes@cmpxchg.org,
+	yosry.ahmed@linux.dev,
+	nphamcs@gmail.com
+Cc: chengming.zhou@linux.dev,
+	akpm@linux-foundation.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH] mm/zswap: fix error pointer free in zswap_cpu_comp_prepare()
+Date: Wed, 31 Dec 2025 11:46:38 +0400
+Message-ID: <20251231074638.2564302-1-pbutsykin@cloudlinux.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-12-31_01,2025-12-31_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 mlxlogscore=999 mlxscore=0
- spamscore=0 malwarescore=0 bulkscore=0 suspectscore=0 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2512120000
- definitions=main-2512310052
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjMxMDA1MiBTYWx0ZWRfXwSmACOuqGClY
- 59+IeJ26iBmw7YWE05wx1Vy2eh2T6l50b/u/yEDHAlSdekoI4PHoE2FMqV208pwoLr/6mjCjrqF
- 0srpLOU+bOk4Fs8mfPp/Iu1i0I+WoSOv0uWWfQqnkuYaRciDv4OJTwMUlQe5xN6qlq1/vGb/1tU
- 3UmQXAyUYoKnqFjyjbicV+JuDTAUxH8suwRMCs1g4cWDUo9U/jThRZCwrzGlYlLF5cRaEh1IWj7
- nMwAEMtrZzSJHNmMJk9YDJ3x7nTXry732yRmYS2vG+z2oPSylnu0cqonK8w1ri0DwXxGGryelcT
- Wpm27k46zQui4WuJUia4x7Q4iXwEjgX+gKH0w5kHJPiaXh/wV4A3REGmPe8xyBjdCa06Y77mIew
- h7e8ymSHAXyyqh3Dywc97JoQ0WRpMmdYe/AepiLT8v5Rre2YdIH52tqBXKd0HSkmNJ0cgTOecDv
- eZsf1IvvvRbmH7EdFvA==
-X-Authority-Analysis: v=2.4 cv=NMvYOk6g c=1 sm=1 tr=0 ts=6954bfb7 b=1 cx=c_pps
- a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17
- a=IkcTkHD0fZMA:10 a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VwQbUJbxAAAA:8 a=yPCof4ZbAAAA:8 a=VnNF1IyMAAAA:8 a=nkYO0nU_c48bT3HRU-QA:9
- a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: FS6XxfocCnB06pXnCy2v5_fDAFVUa4iq
-X-Proofpoint-ORIG-GUID: FS6XxfocCnB06pXnCy2v5_fDAFVUa4iq
 
-When the second-stage kernel is booted via kexec with a limiting command
-line such as "mem=<size>", the physical range that contains the carried
-over IMA measurement list may fall outside the truncated RAM leading to
-a kernel panic.
+crypto_alloc_acomp_node() may return ERR_PTR(), but the fail path checks
+only for NULL and can pass an error pointer to crypto_free_acomp().
+Use IS_ERR_OR_NULL() to only free valid acomp instances.
 
-    BUG: unable to handle page fault for address: ffff97793ff47000
-    RIP: ima_restore_measurement_list+0xdc/0x45a
-    #PF: error_code(0x0000) – not-present page
-
-Other architectures already validate the range with page_is_ram(), as
-done in commit cbf9c4b9617b ("of: check previous kernel's
-ima-kexec-buffer against memory bounds") do a similar check on x86.
-
-Without carrying the measurement list across kexec, the attestation
-would fail.
-
+Fixes: 779b9955f643 ("mm: zswap: move allocations during CPU init outside the lock")
 Cc: stable@vger.kernel.org
-Fixes: b69a2afd5afc ("x86/kexec: Carry forward IMA measurement log on kexec")
-Reported-by: Paul Webb <paul.x.webb@oracle.com>
-Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
-Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Signed-off-by: Pavel Butsykin <pbutsykin@cloudlinux.com>
 ---
-V1-> V2: Added a line about carrying measure list across kexec based on
-suggestion from Mimi Zohar. Made use to the new generic helper
-[Suggestion from Borislav]
+ mm/zswap.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-V2-> V3: Add RB from Mimi Zohar.
----
- arch/x86/kernel/setup.c | 6 ++++++
- 1 file changed, 6 insertions(+)
-
-diff --git a/arch/x86/kernel/setup.c b/arch/x86/kernel/setup.c
-index 1b2edd07a3e1..383d4a4784f5 100644
---- a/arch/x86/kernel/setup.c
-+++ b/arch/x86/kernel/setup.c
-@@ -439,9 +439,15 @@ int __init ima_free_kexec_buffer(void)
+diff --git a/mm/zswap.c b/mm/zswap.c
+index 5d0f8b13a958..ac9b7a60736b 100644
+--- a/mm/zswap.c
++++ b/mm/zswap.c
+@@ -787,7 +787,7 @@ static int zswap_cpu_comp_prepare(unsigned int cpu, struct hlist_node *node)
+ 	return 0;
  
- int __init ima_get_kexec_buffer(void **addr, size_t *size)
- {
-+	int ret;
-+
- 	if (!ima_kexec_buffer_size)
- 		return -ENOENT;
- 
-+	ret = ima_validate_range(ima_kexec_buffer_phys, ima_kexec_buffer_size);
-+	if (ret)
-+		return ret;
-+
- 	*addr = __va(ima_kexec_buffer_phys);
- 	*size = ima_kexec_buffer_size;
- 
+ fail:
+-	if (acomp)
++	if (!IS_ERR_OR_NULL(acomp))
+ 		crypto_free_acomp(acomp);
+ 	kfree(buffer);
+ 	return ret;
 -- 
-2.50.1
+2.52.0
 
 
