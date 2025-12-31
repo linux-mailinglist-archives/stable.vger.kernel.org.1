@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-204362-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204363-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A65D9CEC232
-	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 16:05:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23FB7CEC26D
+	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 16:12:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 4559330036C4
-	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 15:05:39 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 59792300485A
+	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 15:11:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00F7425C804;
-	Wed, 31 Dec 2025 15:05:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C53D3285CB3;
+	Wed, 31 Dec 2025 15:11:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XAqe7xJd"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TbMZXJmD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B289019644B
-	for <stable@vger.kernel.org>; Wed, 31 Dec 2025 15:05:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8188C27465C
+	for <stable@vger.kernel.org>; Wed, 31 Dec 2025 15:11:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767193537; cv=none; b=fyb5AEQOOem7yAz8qst8LW6nUZOu2dAqilcek/oH+xhKqjpUKQ6U8u4IYrKc/ZTqx3W182EvRDHNsi+ZAd0+3AtC0IrHes0PeYHJ/iJWJvH2FfZQAO2ujiD5mthembpXClhnbjqQBbnUrrCmwnp1U3mXNy8nzu0erIWyzawHGIE=
+	t=1767193916; cv=none; b=P6sbW80vZo767YoqyZ2c46jrVfIFdNWSkllYSoTBSm3uQcSeOhU01gN1Vf+0+hTedue1l3N8J9dDD7z8juXtXXSDlx1fLWk3uutIRv/XaHAzD77mcRlhEFV7uDTRGncHK7Zg63bOj4Xgo17ufQahMZwoEikdlkvFfM/YXYlSXKI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767193537; c=relaxed/simple;
-	bh=eNgOf7sE58Cvoj+b4Ceet2/MLl7RxTyfPAiBht43HrM=;
+	s=arc-20240116; t=1767193916; c=relaxed/simple;
+	bh=KUyO3/Dx2b1WTQLSnIwDw0B373hmWcExHQ8xJmFOkng=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G1oCLa6bSJYRJBegUoSAqydyS/qhvRp5m9ai2HUBP4uel8U4f9iZjO2hqqfu2W/Dbm2b9ee9+iAKCz46PimTNpge8R7QxCqWZnsDuHfeAzwtfvVM7O/TXiTONZ7vBAfzbGZwwxlejEEnu0iaJaDgXhmNvN5t+r9KT5C76TjFYF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XAqe7xJd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AED36C113D0;
-	Wed, 31 Dec 2025 15:05:36 +0000 (UTC)
+	 MIME-Version; b=TgPtauKgg4e7Y8/BnfReB0PWu98rjyPV+6HfjJTFJJo6uuNo6f6QdCkSaVbDg1d8pzkrfPtfTxigqU3szKjpks2SHMUEOCJ4Aw5agJ353IoKIuWBCwloLW/Q+LPKUZHurQ9f4y4NpnvykASOimBjB+JaMfrViYC0tiKp8lF2vsU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TbMZXJmD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10A15C113D0;
+	Wed, 31 Dec 2025 15:11:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767193537;
-	bh=eNgOf7sE58Cvoj+b4Ceet2/MLl7RxTyfPAiBht43HrM=;
+	s=k20201202; t=1767193915;
+	bh=KUyO3/Dx2b1WTQLSnIwDw0B373hmWcExHQ8xJmFOkng=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XAqe7xJdujEZie8aLCFW3x+/HOF51wm9bCRRiULddi4gCSi3Y9YCiCDT7Rs4J+0lr
-	 pZM6WITgUPrNeQrqYlAk8QMPbbuZ5vaSfGkj+f1MVRHmc4GgL0ed+yj4ceU9//qDuq
-	 FDfS1KKQVm5UxpXp3pBrC6zqEVCAR2IoOv0ziS848HHzJYhAElmsTa9vXgcV1xBAQ5
-	 In5VazINtMSPneGB8UEW5LATrebtGDLLgCjdMq0yeQmRF8ughNlHy0C4mhWcP5opQO
-	 0jgAeYLCtLFnwWwEpsqeIQlecldkArauG6HZOIsMSDQpQbT5858FEx/ov2Djd7JyeA
-	 WDwBHLpLoi1GQ==
+	b=TbMZXJmDVfXTOs8HHc+tBZCPjo0T6L7lJMLrs9v7h9h/l0wQ0/LcOTngwCqQNq1Mz
+	 Y1Y1wACL44zCHEMq2n3kR9tZl88uE1kobrDzpu5sKhuW5HKrAVOynre67efztnMAe3
+	 XjQu150RBJQ/+Zj555N1tq6aCzsT1Yc3VXBw0LZddW+Ygg/YwYbJgLI/H/Qxf0SNBz
+	 uZdEvNBsEx2ovzQb+NB91TNYi8S38ZZ1BDqX4zFFPise5oFzta3QSCd52K4BuyHYfp
+	 SIxQdmEzGLmpkPYfP8F78GqYjO86FcppUDrGtOfWtMFg7kswVQ2cCYBKykVh3rcCA1
+	 q0nbC5HXWskrA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Dongli Zhang <dongli.zhang@oracle.com>,
 	Chao Gao <chao.gao@intel.com>,
 	Sean Christopherson <seanjc@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y] KVM: nVMX: Immediately refresh APICv controls as needed on nested VM-Exit
-Date: Wed, 31 Dec 2025 10:05:34 -0500
-Message-ID: <20251231150534.3104156-1-sashal@kernel.org>
+Subject: [PATCH 6.1.y] KVM: nVMX: Immediately refresh APICv controls as needed on nested VM-Exit
+Date: Wed, 31 Dec 2025 10:11:53 -0500
+Message-ID: <20251231151153.3146021-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025122917-cadet-worrier-23c0@gregkh>
-References: <2025122917-cadet-worrier-23c0@gregkh>
+In-Reply-To: <2025122926-gigabyte-rectangle-0c68@gregkh>
+References: <2025122926-gigabyte-rectangle-0c68@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -112,10 +112,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  3 files changed, 3 insertions(+), 2 deletions(-)
 
 diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
-index d2fa192d7ce7..fb274bae41e2 100644
+index 2c3cf4351c4c..bdc462944cb0 100644
 --- a/arch/x86/kvm/vmx/nested.c
 +++ b/arch/x86/kvm/vmx/nested.c
-@@ -4908,7 +4908,7 @@ void nested_vmx_vmexit(struct kvm_vcpu *vcpu, u32 vm_exit_reason,
+@@ -4847,7 +4847,7 @@ void nested_vmx_vmexit(struct kvm_vcpu *vcpu, u32 vm_exit_reason,
  
  	if (vmx->nested.update_vmcs01_apicv_status) {
  		vmx->nested.update_vmcs01_apicv_status = false;
@@ -125,10 +125,10 @@ index d2fa192d7ce7..fb274bae41e2 100644
  
  	if (vmx->nested.update_vmcs01_hwapic_isr) {
 diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index 9b1f22bcb716..4dd3f64a1a8c 100644
+index 22e4c9bbbcb4..ebdc86030a7a 100644
 --- a/arch/x86/kvm/vmx/vmx.c
 +++ b/arch/x86/kvm/vmx/vmx.c
-@@ -4451,7 +4451,7 @@ static u32 vmx_vmexit_ctrl(void)
+@@ -4387,7 +4387,7 @@ static u32 vmx_vmexit_ctrl(void)
  		~(VM_EXIT_LOAD_IA32_PERF_GLOBAL_CTRL | VM_EXIT_LOAD_IA32_EFER);
  }
  
@@ -138,10 +138,10 @@ index 9b1f22bcb716..4dd3f64a1a8c 100644
  	struct vcpu_vmx *vmx = to_vmx(vcpu);
  
 diff --git a/arch/x86/kvm/vmx/vmx.h b/arch/x86/kvm/vmx/vmx.h
-index 5d73d3e570d7..ed611a9ccbc2 100644
+index dc6f06326648..59c304dd51e6 100644
 --- a/arch/x86/kvm/vmx/vmx.h
 +++ b/arch/x86/kvm/vmx/vmx.h
-@@ -395,6 +395,7 @@ void __vmx_set_segment(struct kvm_vcpu *vcpu, struct kvm_segment *var, int seg);
+@@ -408,6 +408,7 @@ void __vmx_set_segment(struct kvm_vcpu *vcpu, struct kvm_segment *var, int seg);
  u64 construct_eptp(struct kvm_vcpu *vcpu, hpa_t root_hpa, int root_level);
  
  bool vmx_guest_inject_ac(struct kvm_vcpu *vcpu);
