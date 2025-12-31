@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-204317-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204318-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83BC5CEB350
-	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 04:46:13 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03DD3CEB35C
+	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 04:55:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 85BE73009F32
-	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 03:46:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1ECEA300D4B0
+	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 03:55:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D2D02FE592;
-	Wed, 31 Dec 2025 03:46:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7622030BF60;
+	Wed, 31 Dec 2025 03:55:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y+iRhVA2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eYxN8HAl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E0C42FF154
-	for <stable@vger.kernel.org>; Wed, 31 Dec 2025 03:46:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34B2A30BBB8
+	for <stable@vger.kernel.org>; Wed, 31 Dec 2025 03:55:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767152770; cv=none; b=ae5ZWe/ZaEy7TnBziIB2WQuwlH3lxBKAnXNANbz04qYEtlhFCI4EhH5OygsFCgrqAwiSYM36ZEL1ltyF4OU+YjwEmIwHEZg6QJp/NnGsYznhVH+ZVTH+6E77qRwDYkxgYXWuzV0FCe9EbNFLXmmfILZCMA9DiqIz35FHU6BG3YE=
+	t=1767153340; cv=none; b=ZYr2+ePZp1wDMvItL7lY52o9bPx76IMFBtBQhCGkJghj0rO/1Vy9g1O6ECOmmCGHHXE4QZqOaysO592SFNFb9VMGzifZ1aq5VefodSGuXDbQHfB61SBX8AwqQVZ+AIQ6+ng9gUqZfQjsyW726BM5h4PgKamV+HW7dYJnlITOf2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767152770; c=relaxed/simple;
-	bh=UAL4Nik3YhcQg9fUjywZJ/a6biQZdUu6xgSfEK91uUM=;
+	s=arc-20240116; t=1767153340; c=relaxed/simple;
+	bh=Ur3VWvGk+aOCEL7QSQ/hup5wPpGbhmOHJGJOPFvN0PQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IWNY1bJefbo/DLzTnB1LsVbaojv1gL/Vu53GtVi/HXKZosFAjp2/NuYGo0YYlzK4KjySZc9QRtgu1kmTx0jnfxS6qP2rZERRZlFbaDRMLH0n76BxBvfW8fTc4D+d+2+A+gQkAuokpv8hH6bYxVK5jyU17u+npeQ7TtDTlBPKNyg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y+iRhVA2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74272C116B1;
-	Wed, 31 Dec 2025 03:46:09 +0000 (UTC)
+	 MIME-Version; b=stACsyGY/DSKw275mocykFDsAZfGqQMSNaERlzkr1yMXzKXkcNZO71/jttrn/IC191JZW08vqb2a9kBluar3HMw9Jh53wPIwD7fXzK8w5BogvbVc7QHEkxII1Jl0mgTlNgSaVIjBQ9bk9zbAZMG1PiphtYxCDz4MDenEdVXYcj0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eYxN8HAl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33F6FC116B1;
+	Wed, 31 Dec 2025 03:55:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767152770;
-	bh=UAL4Nik3YhcQg9fUjywZJ/a6biQZdUu6xgSfEK91uUM=;
+	s=k20201202; t=1767153339;
+	bh=Ur3VWvGk+aOCEL7QSQ/hup5wPpGbhmOHJGJOPFvN0PQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y+iRhVA21MiGKxyC78FpzAFP0EsmpEU5GlhpQkhT0l25mwnddhGo0O2OF4SMp5Xu8
-	 vYWlceJm1MHMXzTFeGYVnTux2b6YgCyS1mbKKA05cqEHB5T0v9bVEx7NLdu6O5bKtD
-	 9HcyMiWza8KujbmcBti/uN70QW/vRazlkGEHF1pa3XdpGdVeaFLkWPpMCkmbqtodNV
-	 /6itHovvMHe49mBsjda3xMajQ6mLcODia1cSLOSeY3tdkxubEcPgQ+FpOoA70WzJ8Z
-	 c4qQ8hMCev0DMbG3FVOGM3aJWdtUGK5UtH9B3jw13iZGf7D3hdCk7XdKJH13hEofDw
-	 MToRFLZaOmxcQ==
+	b=eYxN8HAlgs2H4lhjqL4txQrivm2qaCepd2tOYA42FJB3YyV2N7Md06Sel7UFtAa/m
+	 cjCZpM6f2bQVRP7SRGUNNrmBNBb3cM0bbv3itefvAl9Noac11I4fRhAMiDcrYJrzlu
+	 ojrYkrJbPz8+9+rI3t8jcHGpN/ZWBB/clLDt/foXzMeXMZbdDI6pYdr+wu2Cokph8t
+	 Zod/oiuY64/rmCBjHILuXpB9nOxN9WA++sKnragdX/VjltWH+A+/8OpIn9zzlXJMGl
+	 sAL+PW+L11HS3no30Zcs751w0tZlNvAx/2wVVfL4NbhS2nJ0s3ve4aNKlEW5jEE9q5
+	 Iyi4hZZt1AV+g==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Chuck Lever <chuck.lever@oracle.com>,
 	Jeff Layton <jlayton@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y] NFSD: Clear SECLABEL in the suppattr_exclcreat bitmap
-Date: Tue, 30 Dec 2025 22:46:07 -0500
-Message-ID: <20251231034607.2717171-1-sashal@kernel.org>
+Subject: [PATCH 6.1.y] NFSD: Clear SECLABEL in the suppattr_exclcreat bitmap
+Date: Tue, 30 Dec 2025 22:55:37 -0500
+Message-ID: <20251231035537.2722284-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025122919-carried-livestock-9465@gregkh>
-References: <2025122919-carried-livestock-9465@gregkh>
+In-Reply-To: <2025122920-sequence-vixen-bb32@gregkh>
+References: <2025122920-sequence-vixen-bb32@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -93,10 +93,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 5 insertions(+)
 
 diff --git a/fs/nfsd/nfs4xdr.c b/fs/nfsd/nfs4xdr.c
-index 3eff780fd8da..15189e683e83 100644
+index 5073fa77cd76..8ef533b2dc35 100644
 --- a/fs/nfsd/nfs4xdr.c
 +++ b/fs/nfsd/nfs4xdr.c
-@@ -3419,6 +3419,11 @@ nfsd4_encode_fattr(struct xdr_stream *xdr, struct svc_fh *fhp,
+@@ -3408,6 +3408,11 @@ nfsd4_encode_fattr(struct xdr_stream *xdr, struct svc_fh *fhp,
  		u32 supp[3];
  
  		memcpy(supp, nfsd_suppattrs[minorversion], sizeof(supp));
