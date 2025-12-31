@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-204354-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204355-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3920CEC164
-	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 15:32:42 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81AF9CEC161
+	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 15:32:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 034CA300942C
-	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 14:32:26 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1D2593011479
+	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 14:32:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D38CF2580F2;
-	Wed, 31 Dec 2025 14:32:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8602269B01;
+	Wed, 31 Dec 2025 14:32:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YinHmWxO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iGx5bO+v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 933D61C4A24
-	for <stable@vger.kernel.org>; Wed, 31 Dec 2025 14:32:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66B8525F78F
+	for <stable@vger.kernel.org>; Wed, 31 Dec 2025 14:32:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767191545; cv=none; b=mErkQluUQqqFfIjXjMQ0BoALe6Yr5O4E6J3W/zhRZhDhzdhvyo03iVdxHs+YyCrC9KmqKb7nsmZ74wFj0oEq7xIHjvqYYgTfw4hvysVCffnjO1eQ89JKN6X8Iloyrl4Q56W8ZUPs9dqLIUfrKZBFjUfVzCNlw7aY6CwUr1gL/LM=
+	t=1767191546; cv=none; b=haOpK01pJi7p5jaIUWQoQbTaZA2VJTWZSTxljxUg0ut828qp/OljD1ftvVaM9dF42et/61xTSfiGMaC2jV68sYxosUKlWMOtgCq2Q3zeWdIO38YO07E9x6eFQptvO3EW3udy9PmopPIkOinQ6hVDfbAOKzMlE0Yk0Hmf8+P1PEA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767191545; c=relaxed/simple;
-	bh=ZYW3OWHBct9Tyo6H49B0tZ3H5uBrB4hQxdIUkQnjy6w=;
+	s=arc-20240116; t=1767191546; c=relaxed/simple;
+	bh=UsgsaU8GaEPwoiKlY0qyvGMtBK5bwT+yN0qh7h7NNhg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WUqzp1edA2dM5HDfv/FXRLXLIilWd0aom8Wv5xAXw7peemAjmOSxwnAxTwkxSofxwq+q4b81vK6re815G/a4lxs5av2vhhUj/m75FDwV4FpGFcQKMLJatIkRsAi2F4bUKrC6wmB42zyJV7Fjgk/ypXOpXxQ8lJ40hmMS59Lo4EU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YinHmWxO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6817C113D0;
-	Wed, 31 Dec 2025 14:32:24 +0000 (UTC)
+	 MIME-Version; b=fWAHZlYK1N20wMtn1wAWuXhTgNdEPlTLPfxYf1WsTWJUeDO4DtzX6hE1H0LOJnX98U0HI8bdMdXmSlDAGy8DZvwqRxgW7NvIP6UvhZ1Nqp/nKXxAQB/1PG3906S1gVZgF1plr43VMl5tDzC8/vOabLMK4/UsqQg8MB4MM1OJF/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iGx5bO+v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2772C116B1;
+	Wed, 31 Dec 2025 14:32:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767191545;
-	bh=ZYW3OWHBct9Tyo6H49B0tZ3H5uBrB4hQxdIUkQnjy6w=;
+	s=k20201202; t=1767191546;
+	bh=UsgsaU8GaEPwoiKlY0qyvGMtBK5bwT+yN0qh7h7NNhg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YinHmWxOZyILYE4X6nLMx1uIJS4IV2gROQcsxf7sNAYELeSfn9muOEglq/Zlk4Wue
-	 mO5g3xDFT/jhqigoDHrl2JdMpVVX8RoVodB+Ix8Mt8kYACjwiv7ofMcGr3HUagYAnn
-	 xswyS1F6GiTBzbrjEgMk9dYxmR24sgPiRswdtHXUHsFphRjB5m1Mywlq5jEofm1dwX
-	 yc1i+mMdFNYXCm9xqVbpg3sKULc7LDkUY3BsYq9xBXqin/vQAUXv691bFrnBllrtrV
-	 U4vZiF24XYKe1ioWVe5g+NEY5WOFpzT4c0aKN14BKnhS1VUNNRRfTB/O6/Llbw+CS8
-	 g3fuYSq/6f2lA==
+	b=iGx5bO+vKN6QWIDLZAHZDqdTfxIZ2TaRPePHpotj82lsrr7sQxGrYz9E1SdtAJgXW
+	 04KGPchIqVgFFgHqF6xoICiDQacfjVsDc9VAI/UbuyO1r0LYs7wHWci0VtMWTstmZ4
+	 MGM9GRqECj6J7KMZZUECqrubjocn8JMCWFVQgpcIU/HfX0dr+IZEYTE2Z9CqapAMrF
+	 29WDHEB1eF+zOZTYiU0aVZiu/q6BCOsPQ/mVPY5iBAIwAwDWYB8kQtBrHmc0Vx/hR3
+	 NDakjL+mI7SVQC04an6XJRF9kwfB+aOvC0Y9oqdPIqbOUKjPbADS+ug0QLROimrzrX
+	 bbD2B2gwRSXIg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: "Mario Limonciello (AMD)" <superm1@kernel.org>,
-	Amit Chaudhari <amitchaudhari@mac.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
+Cc: Askar Safin <safinaskar@gmail.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y 6/7] gpiolib: acpi: Add quirk for ASUS ProArt PX13
-Date: Wed, 31 Dec 2025 09:32:17 -0500
-Message-ID: <20251231143218.3042757-6-sashal@kernel.org>
+Subject: [PATCH 6.12.y 7/7] gpiolib: acpi: Add quirk for Dell Precision 7780
+Date: Wed, 31 Dec 2025 09:32:18 -0500
+Message-ID: <20251231143218.3042757-7-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251231143218.3042757-1-sashal@kernel.org>
 References: <2025122946-rotunda-passenger-2915@gregkh>
@@ -61,49 +60,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: "Mario Limonciello (AMD)" <superm1@kernel.org>
+From: Askar Safin <safinaskar@gmail.com>
 
-[ Upstream commit 23800ad1265f10c2bc6f42154ce4d20e59f2900e ]
+[ Upstream commit 2d967310c49ed93ac11cef408a55ddf15c3dd52e ]
 
-The ASUS ProArt PX13 has a spurious wakeup event from the touchpad
-a few moments after entering hardware sleep.  This can be avoided
-by preventing the touchpad from being a wake source.
+Dell Precision 7780 often wakes up on its own from suspend. Sometimes
+wake up happens immediately (i. e. within 7 seconds), sometimes it happens
+after, say, 30 minutes.
 
-Add to the wakeup ignore list.
-
-Reported-by: Amit Chaudhari <amitchaudhari@mac.com>
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4482
-Tested-by: Amit Chaudhari <amitchaudhari@mac.com>
-Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
-Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Link: https://lore.kernel.org/20250814183430.3887973-1-superm1@kernel.org
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Stable-dep-of: 2d967310c49e ("gpiolib: acpi: Add quirk for Dell Precision 7780")
+Fixes: 1796f808e4bb ("HID: i2c-hid: acpi: Stop setting wakeup_capable")
+Link: https://lore.kernel.org/linux-i2c/197ae95ffd8.dc819e60457077.7692120488609091556@zohomail.com/
+Cc: stable@vger.kernel.org
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Askar Safin <safinaskar@gmail.com>
+Link: https://lore.kernel.org/r/20251206180414.3183334-2-safinaskar@gmail.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpiolib-acpi-quirks.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ drivers/gpio/gpiolib-acpi-quirks.c | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
 diff --git a/drivers/gpio/gpiolib-acpi-quirks.c b/drivers/gpio/gpiolib-acpi-quirks.c
-index c13545dce349..bfb04e67c4bc 100644
+index bfb04e67c4bc..2c20bda54a6d 100644
 --- a/drivers/gpio/gpiolib-acpi-quirks.c
 +++ b/drivers/gpio/gpiolib-acpi-quirks.c
-@@ -344,6 +344,20 @@ static const struct dmi_system_id gpiolib_acpi_quirks[] __initconst = {
- 			.ignore_interrupt = "AMDI0030:00@8",
+@@ -358,6 +358,28 @@ static const struct dmi_system_id gpiolib_acpi_quirks[] __initconst = {
+ 			.ignore_wake = "ASCP1A00:00@8",
  		},
  	},
 +	{
 +		/*
-+		 * Spurious wakeups from TP_ATTN# pin
-+		 * Found in BIOS 5.35
-+		 * https://gitlab.freedesktop.org/drm/amd/-/issues/4482
++		 * Spurious wakeups, likely from touchpad controller
++		 * Dell Precision 7780
++		 * Found in BIOS 1.24.1
++		 *
++		 * Found in touchpad firmware, installed by Dell Touchpad Firmware Update Utility version 1160.4196.9, A01
++		 * ( Dell-Touchpad-Firmware-Update-Utility_VYGNN_WIN64_1160.4196.9_A00.EXE ),
++		 * released on 11 Jul 2024
++		 *
++		 * https://lore.kernel.org/linux-i2c/197ae95ffd8.dc819e60457077.7692120488609091556@zohomail.com/
 +		 */
 +		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-+			DMI_MATCH(DMI_PRODUCT_FAMILY, "ProArt PX13"),
++			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
++			DMI_MATCH(DMI_PRODUCT_FAMILY, "Precision"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "Precision 7780"),
++			DMI_MATCH(DMI_BOARD_NAME, "0C6JVW"),
 +		},
 +		.driver_data = &(struct acpi_gpiolib_dmi_quirk) {
-+			.ignore_wake = "ASCP1A00:00@8",
++			.ignore_wake = "VEN_0488:00@355",
 +		},
 +	},
  	{} /* Terminating entry */
