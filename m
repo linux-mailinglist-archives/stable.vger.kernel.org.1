@@ -1,178 +1,145 @@
-Return-Path: <stable+bounces-204335-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204336-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D884CEBD30
-	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 11:56:01 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5738CEBE13
+	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 12:55:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 86B5A3026A8E
-	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 10:55:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B3B54301B2E3
+	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 11:55:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA9FB318152;
-	Wed, 31 Dec 2025 10:55:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C622B31A54A;
+	Wed, 31 Dec 2025 11:55:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="l9LalVlH";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="HfFUiTcz"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bRaix12B"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 300FF314A74
-	for <stable@vger.kernel.org>; Wed, 31 Dec 2025 10:55:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BD1A313278
+	for <stable@vger.kernel.org>; Wed, 31 Dec 2025 11:55:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767178556; cv=none; b=R9ZuIeWQwtqZHphv2+fSZ02h0rLyPFWLX5ceM1u47Yhn4nQ/EB7GuONLmUJQ57Enzrus+BIyPBvIIweOdCBa2eWDwE0xgtdlAgahtmcgc0Qhl2nhlyMu+VCnEGGEhf2Jyhh2Rm9OJnsuwgU+fSboFlVlXCkrJn614O4SREddCo8=
+	t=1767182125; cv=none; b=U3C9zIzaCT7zQg6yGMxnFuceyIBd3XZy8eB15CbYFp1BT7+VBw6KWaxONuTBXWBOcXm3iANbi5Si8SqS9Tjq+FLc3pfmL/7KaGK6OING3NQoPJoouqUCgtJwsxBwxVqFGHBCpJOkeLP/o8XVqDToffFoMYPGNt7gPOMoRfYgxyQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767178556; c=relaxed/simple;
-	bh=HaoGokyMCKS6sYN1xubOMqBe4hgsaEX+B8nRrEYfBZI=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=VQjbROmnTmpF/CcbD7Bbc4r1pRnxoJjH0lcv8qe/V0nlJxC1O1i97eULEudc0A1caQEEbnAXEh83XKSGwlMUXsbl0cNgr9AbV90lS4ZyFeKgzf3olptW3sPoBLk4ICZqPYm0cBDx9yPNQdFGal0wJAkr3vndGEdK0pgm7yeCnJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=l9LalVlH; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=HfFUiTcz; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5BV5Ct882017232
-	for <stable@vger.kernel.org>; Wed, 31 Dec 2025 10:55:54 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	O+f7Mi5vx+QI3KHSGUaTpC6QdSIVzAVg+5x+XC0DFt4=; b=l9LalVlHnMCVESuA
-	ktNoLFmYgR+yMVeRPmZ1JFaUS088FgaON98gaUXZiHac/q7y5EeYEAVhiSnb1ZAs
-	bYT+nenGTAW/98+5957nIK3Pr9Yc487SIjLLFsPE3gnkNCbWbIo3ZBBxFrTCoTdK
-	khuLOhMy8IAWzxCWzztVs4hz4Kcl5cvgc8fD+mE0Mfp4uZWixQ1IaVnRZ1KWAq41
-	edQTCHKA1PUAvPJLc6h0JiA83UANl8JKbLs7O3Uf0ZpoojkDqxfTTdBzgaYir3SN
-	77Kp5o6ebyhoMAclhFdxW9LbhvNNHHTcT7l7pkeRIVAhRR6276p8C4+OyjObaxgD
-	SQHIsA==
-Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4bcv4agqe4-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Wed, 31 Dec 2025 10:55:54 +0000 (GMT)
-Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-7b9208e1976so19778486b3a.1
-        for <stable@vger.kernel.org>; Wed, 31 Dec 2025 02:55:54 -0800 (PST)
+	s=arc-20240116; t=1767182125; c=relaxed/simple;
+	bh=N3R0iLPZCN8oy/x63B5VdEnB5ZvOWFcuCSuFzDxjd5E=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Nl55CI02t3yjVkiB90n1TD6zg6aGN/xvVZ4i1/7kT1dg9WhX/P/VVQPIHsqxga7o8LRC6Fd6XPp8Z80GasQnYQeduKuAijuRJRg10Oi//zbVocn7BIYwN+hjduUvETHn/+LiJfZeURWWImLaZHgl0mA8fVBd24m4JFzBM5RLPgo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bRaix12B; arc=none smtp.client-ip=209.85.160.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-4f34c5f2f98so119525301cf.1
+        for <stable@vger.kernel.org>; Wed, 31 Dec 2025 03:55:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1767178554; x=1767783354; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1767182122; x=1767786922; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=O+f7Mi5vx+QI3KHSGUaTpC6QdSIVzAVg+5x+XC0DFt4=;
-        b=HfFUiTczOU7GZCcdWbWDLmb/x3DuX+wplIuleNmadADf2e84kdJGpRPnO7XShR1VKS
-         pXqlsl2eQVjE4f6YPvIdDJvARxY/1S6cWQa3aau+XLDKEnxxw0vj9zOtajM4GrONdiJQ
-         Pr0/YkSJvEtRbVXkcI6z5twBe04IDjuxeHtBrSz9i4JP1ZY2SITJrI8nWf4MZ3hBUJYg
-         Y1bzY6Mm0b35QQWoON7aYQdwrxDZ1FjOPss/l8eUR2edwFAuU5Esuv6LzXOeQGasm7Nv
-         zd2eHs+IBzk2pVXziuulWxqUAMSxZFq1ydz20ym+Rs78Zr6yv5Wq7IjLaBc1iEmH034P
-         5Mtg==
+        bh=swz2J2a/Uvz7GnbU1XB2xGVGkNfU6LCVp1sNpOikUcs=;
+        b=bRaix12BrNZSAZVR0kSXiFJ9nhcqHvSKzSyaErQ0Ip30h017XxL4XZdL0lohZzqaVc
+         jB4L3qOr7pGSMANIZw/gTu0hBUKymNn35Hk2xvJIzuxwjrfcch7XKSvTfUYDtNelyZTA
+         tJuOW411CZlugA3ySN98xJ+GJaT0925TP4OUIe6PfTkFSp463Ph1U06Cm8e4Di7xdD9y
+         vpU3GShCCgASmdjKVw5Ql/hiJq7gwsCsKevqNhx/0tBG7qmDUnBM43sS8zkPi3/SCD0D
+         sjBuhkrxDFdtnnlTzdxY+WLNNWM2NhLx/b1mutdde/vBbmvo55L7sMJA7+JpMLFaBx4n
+         hwAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767178554; x=1767783354;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:x-gm-gg:x-gm-message-state:from
+        d=1e100.net; s=20230601; t=1767182122; x=1767786922;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=O+f7Mi5vx+QI3KHSGUaTpC6QdSIVzAVg+5x+XC0DFt4=;
-        b=JL5KX4qdGUdlJlhpo5sq0IZEvb6i8YXBoYIEkiX25E8ejZhut6JVW3nfgtHBIqE0lY
-         Yfsc1Svaq1L3fHGOF5sEgF46YVm2UIkuWJ5PPPjwpaUW1bZb7SfcNH8G3ksIpGV+eIy0
-         fHb8ZzaUzUDYw/s4hRDikRhaDoT4GI1HzcnPDkWGNFbkOb2dBoHCfGTfeo18lCfd/xvd
-         /+fw67FDpDH1cgH+lE2/ueknWxE5jh8fXt6bEufc85lypRduUDjroh68VjLDuS7iX8kF
-         c8piC7YMGxDpIs44taSpJQOPoPM0Qr+CUm8ivqvh+SW0jgIG9j2DU1K9iv9spxecw1Tu
-         W/Hw==
-X-Forwarded-Encrypted: i=1; AJvYcCVluVKq0eJ36BdENRCmPeyg9BVxl+LFedHzwG2TaXJ16maDpTyQsk6zic/tqTR36W1WI+3gfEc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy8h5UxbbUte0ULxrsw1uuk4zHX3L86MzObDXuJ00riXNpVDe8Y
-	5Zizdu3aIOByJ2xRRjMwXVnIogwVqD/ymYAdegCySGTVemMpmxYFO8K2oDPugEmUyI+3QMq8L4L
-	l3K2nLWqBTPvLRBt8a/+8ZA/jKjvZk0GAdMhT2iXpHtywG4dZ0MTlcFgQu1Y=
-X-Gm-Gg: AY/fxX50mAVnyCNPwik50i74rfN4D/A8IEKQ2eeO8rbX61iEOgyzRmOQGKgFRoEKlBa
-	/Vqe8rJzKj4Sda2H2oVyyjMGiA4pC4+Eg9fqTddSej4mE27E3VMij5hth7W+maGCY27oHYSt3rG
-	xb9COsDk2H48z080jGaJt6GdC29E2fQ4Ai2uPUxnCvpoNRfIQ86WVRhZxnVrIpleBT6ektx3wwT
-	pOHPaPP57Y4R96s1eZamVc9aEMdZy5VCqHc6+KiLav7TJrXljGHAHjwDzvLYUcKeDg3RH0W71VN
-	9ShonLALHoBKgME4lSkks8wsqeI6InmUfXm4jccKbDOJNmYZFlJXkTnv0rk5kTc5GeO57lbmzBF
-	NIsXfs0r62KyLDz93epDu/HkAb4dU6iIWrEIvKw==
-X-Received: by 2002:a05:6a00:348a:b0:7e1:730a:613b with SMTP id d2e1a72fcca58-7ff64ec6724mr32190521b3a.31.1767178553538;
-        Wed, 31 Dec 2025 02:55:53 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGioiLvW2U0joeR5pbtZjSEPSozpQwlq9uIpJCK2UPjGGzU6NNfRTPRLdM9fVlDl9M9HcekTA==
-X-Received: by 2002:a05:6a00:348a:b0:7e1:730a:613b with SMTP id d2e1a72fcca58-7ff64ec6724mr32190489b3a.31.1767178553048;
-        Wed, 31 Dec 2025 02:55:53 -0800 (PST)
-Received: from [192.168.1.102] ([120.60.65.32])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7ff7e48cea1sm35616794b3a.45.2025.12.31.02.55.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 31 Dec 2025 02:55:52 -0800 (PST)
-From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
-To: Jeff Hugo <jeff.hugo@oss.qualcomm.com>,
-        Carl Vanderlip <carl.vanderlip@oss.qualcomm.com>,
-        Oded Gabbay <ogabbay@kernel.org>,
-        Manivannan Sadhasivam <mani@kernel.org>,
-        Jeff Johnson <jjohnson@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Loic Poulain <loic.poulain@oss.qualcomm.com>,
-        Maxim Kochetkov <fido_max@inbox.ru>,
-        Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
-Cc: linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-kernel@vger.kernel.org, mhi@lists.linux.dev,
-        linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
-        ath12k@lists.infradead.org, netdev@vger.kernel.org,
-        Bjorn Andersson <andersson@kernel.org>,
-        Johan Hovold <johan@kernel.org>, Chris Lew <quic_clew@quicinc.com>,
-        stable@vger.kernel.org
-In-Reply-To: <20251218-qrtr-fix-v2-0-c7499bfcfbe0@oss.qualcomm.com>
-References: <20251218-qrtr-fix-v2-0-c7499bfcfbe0@oss.qualcomm.com>
-Subject: Re: [PATCH v2 0/2] net: qrtr: Drop the MHI 'auto_queue' feature
-Message-Id: <176717854647.8976.2100798756796791971.b4-ty@oss.qualcomm.com>
-Date: Wed, 31 Dec 2025 16:25:46 +0530
+        bh=swz2J2a/Uvz7GnbU1XB2xGVGkNfU6LCVp1sNpOikUcs=;
+        b=V/VCnwvzh8Cc62mL8dR2/w7MljJ3gleXyRDkx+ZgMhD8JblgAUMVOl0uSCgNve4NuU
+         qYv5Az850XkhaedTxYRic++fJ48ClGGLSLXUR5omMv4XDZ/KZ61+RuZadFmUKWVwOr/U
+         HaTWNTiq4TyZFXjm0sfnaD4lKGt/Ko3BcVLKtN0ExZi87pVCIrHRbT8LTWBUoV7XJvoL
+         +aEdZkRQPubOqfaUIaF63ceQ8O7Cbfh/P7wCL81w7ZyfQXevBf744dj3jiqz9wFQ3bkD
+         Oz62w81N5BCVVQlZyHok3VvYs/AmdOfvr1J32HB27Cx5y7rGc9vRvgICY+M/cilSogCC
+         YV1Q==
+X-Gm-Message-State: AOJu0YxFVCKYBKc8JHyHgjd3DzAozn+zUoqmTMbhP0SiVxYJM5/xywxw
+	7PM5V2DRDVfHULmdcp9B2MGVStFfKcBThYUGNitiqEkilq3CEDw8a5Cn2Vuz3YSJkc8ixsb5cwQ
+	erZkSAaC13pUDea92zLTGJ+U9exPCgRminQ==
+X-Gm-Gg: AY/fxX7yRcaE9bi6zotNpL6TMmCr49V3AHdXzWF/3pSfr0cCdF7jhf/lOhSV0SlgxMf
+	+m89JTxUGZLDsJ/ZNzuWyuSps1AFwxZapDG7A7ihHEyFutK5b+YF2hWPHDP0bSVf0ymPbVabr10
+	HSESmpn5CXwZ6AT9IDyLAhiPoshfvxjv3Oqu6lGns/OQi6/KR7bddIU7CI5Z51Zd+xIKF9tzy8+
+	J9iWGFX+OokDaAdufDH4SM4wadZCv/UrU3Gcw7Cagu1KN+YHCSS8YpNT2V7KPIBQY5yXvA=
+X-Google-Smtp-Source: AGHT+IFSuOTcv/Uh/apazb+bOJuHLdM9Q6TSJGWkd1oEWKleP+mW23X2bKU7OmiDGmvR/RzBi9zk+nAmClTjQmrHgOY=
+X-Received: by 2002:a05:622a:4017:b0:4ec:f697:2c00 with SMTP id
+ d75a77b69052e-4f4abd8cb3cmr518033781cf.42.1767182122009; Wed, 31 Dec 2025
+ 03:55:22 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.3
-X-Proofpoint-ORIG-GUID: 7iUJBfgeBiiZORk76dN7zMXe_vzuNjUH
-X-Authority-Analysis: v=2.4 cv=Ps6ergM3 c=1 sm=1 tr=0 ts=6955013a cx=c_pps
- a=m5Vt/hrsBiPMCU0y4gIsQw==:117 a=+SK5D59PVgoENw9OlSzWFQ==:17
- a=IkcTkHD0fZMA:10 a=wP3pNCr1ah4A:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=EUspDBNiAAAA:8 a=d1LwL24QG6zMnwvM45oA:9
- a=QEXdDO2ut3YA:10 a=IoOABgeZipijB_acs4fv:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjMxMDA5NiBTYWx0ZWRfX1SWuCk7vjW+0
- oV3ZHX1TU+ujpBvP1HLxVIuYEUtJDNkOUc/PNuNqQ+A6HfK/qN6fUEvqYrcHu8hqGjDDiXn3HlH
- Y3c/oszxkCqm6QvlUZPlWvzYy1s96iBDlY9V9DNpFFNfTxOXKEPxTw5RyCIsRvDY6cZkBhI3APr
- R52XWmy40kvED8rSQNuBf0WZAY8Bwia57bVz0SXs9STuYgqX/NJZl5DfTudMeb29WrUCAkzDRKK
- m0x4JRR/IXyP6RJVVDGSnO7mIJUmxQwU+cDxQZtpq+WfPfQ7hxZG7hvJbknKNc6qeqK8Bn3PENi
- 0X+Za6TNnz80PaFBKEV6gz8AO+jGl1TYG7houa/A6w3pLCP0z7kdp4w2lHtsLjbigcbpP9esLeE
- 2UV4LWRTfyXxUqa2JEDPXq3JHr073p10dgUF9BVMsLtETeFcubARh/R5z3Jj9cHBNTvV/cEj0V/
- 8gsFD407apvQamqupzQ==
-X-Proofpoint-GUID: 7iUJBfgeBiiZORk76dN7zMXe_vzuNjUH
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-12-31_03,2025-12-31_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 phishscore=0 spamscore=0 impostorscore=0 malwarescore=0
- adultscore=0 lowpriorityscore=0 priorityscore=1501 bulkscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2512120000 definitions=main-2512310096
+References: <20251229160724.139406961@linuxfoundation.org> <20251229160726.283681845@linuxfoundation.org>
+In-Reply-To: <20251229160726.283681845@linuxfoundation.org>
+From: Stephen Zhang <starzhangzsd@gmail.com>
+Date: Wed, 31 Dec 2025 19:54:45 +0800
+X-Gm-Features: AQt7F2q870pijWoytKiNxUv66GsO0vxRiMRdawQxP41fpdIBzi8BjzcfnQb7-Xc
+Message-ID: <CANubcdVnWRkJ8x7zLGKih+uY0D0cE8jGmF_dx7+iDb5sgBWtQg@mail.gmail.com>
+Subject: Re: [PATCH 6.18 052/430] gfs2: Fix use of bio_chain
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	Andreas Gruenbacher <agruenba@redhat.com>, Sasha Levin <sashal@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+Greg Kroah-Hartman <gregkh@linuxfoundation.org> =E4=BA=8E2025=E5=B9=B412=E6=
+=9C=8830=E6=97=A5=E5=91=A8=E4=BA=8C 00:16=E5=86=99=E9=81=93=EF=BC=9A
+>
+> 6.18-stable review patch.  If anyone has any objections, please let me kn=
+ow.
+>
+> ------------------
+>
+> From: Andreas Gruenbacher <agruenba@redhat.com>
+>
+> [ Upstream commit 8a157e0a0aa5143b5d94201508c0ca1bb8cfb941 ]
+>
+> In gfs2_chain_bio(), the call to bio_chain() has its arguments swapped.
+> The result is leaked bios and incorrect synchronization (only the last
+> bio will actually be waited for).  This code is only used during mount
+> and filesystem thaw, so the bug normally won't be noticeable.
+>
+> Reported-by: Stephen Zhang <starzhangzsd@gmail.com>
+> Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+>  fs/gfs2/lops.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/fs/gfs2/lops.c b/fs/gfs2/lops.c
+> index 9c8c305a75c46..914d03f6c4e82 100644
+> --- a/fs/gfs2/lops.c
+> +++ b/fs/gfs2/lops.c
+> @@ -487,7 +487,7 @@ static struct bio *gfs2_chain_bio(struct bio *prev, u=
+nsigned int nr_iovecs)
+>         new =3D bio_alloc(prev->bi_bdev, nr_iovecs, prev->bi_opf, GFP_NOI=
+O);
+>         bio_clone_blkg_association(new, prev);
+>         new->bi_iter.bi_sector =3D bio_end_sector(prev);
+> -       bio_chain(new, prev);
+> +       bio_chain(prev, new);
+>         submit_bio(prev);
+>         return new;
+>  }
+> --
 
-On Thu, 18 Dec 2025 22:21:43 +0530, Manivannan Sadhasivam wrote:
-> This series intends to fix the race between the MHI stack and the MHI client
-> drivers due to the MHI 'auto_queue' feature. As it turns out often, the best
-> way to fix an issue in a feature is to drop the feature itself and this series
-> does exactly that.
-> 
-> There is no real benefit in having the 'auto_queue' feature in the MHI stack,
-> other than saving a few lines of code in the client drivers. Since the QRTR is
-> the only client driver which makes use of this feature, this series reworks the
-> QRTR driver to manage the buffer on its own.
-> 
-> [...]
+Hi Greg,
 
-Applied, thanks!
+I believe this patch should be excluded from the stable series. Please
+refer to the discussion in the linked thread, which clarifies the reasoning=
+:
 
-[1/2] net: qrtr: Drop the MHI auto_queue feature for IPCR DL channels
-      commit: 51731792a25cb312ca94cdccfa139eb46de1b2ef
-[2/2] bus: mhi: host: Drop the auto_queue support
-      commit: 4a9ba211d0264131dcfca0cbc10bff5ff277ff0a
+https://lore.kernel.org/gfs2/tencent_B55495E8E88EEE66CC2C7A1E6FBC2FC16C0A@q=
+q.com/T/#mad18b8492e01daa939c7d958200802c9603b6c73
 
-Best regards,
--- 
-Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+Thanks,
+Shida
 
+> 2.51.0
+>
+>
+>
 
