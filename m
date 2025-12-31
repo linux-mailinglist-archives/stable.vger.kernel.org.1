@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-204316-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204317-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06BDFCEB2E8
-	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 04:19:10 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83BC5CEB350
+	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 04:46:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C8ECB300889B
-	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 03:19:08 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 85BE73009F32
+	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 03:46:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 077BF23185E;
-	Wed, 31 Dec 2025 03:19:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D2D02FE592;
+	Wed, 31 Dec 2025 03:46:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K2NpN/Po"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y+iRhVA2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8D863A1E82
-	for <stable@vger.kernel.org>; Wed, 31 Dec 2025 03:19:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E0C42FF154
+	for <stable@vger.kernel.org>; Wed, 31 Dec 2025 03:46:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767151147; cv=none; b=V/+S7k20F92eDrlqvVnBu5NS76FXIk6F9Jc0Uf692b2NLxhFhkMO2hg0jvfCyGsgxy80hLW9tHzJNP5tmWFhrlBmfXUj9qprSffS5f0mlAzgvpgoJG0sinzEfsbwFWGKWWq014RfDcMsP4AH4XN1GGhRUpNj3+LEEh/Uz3z/2VY=
+	t=1767152770; cv=none; b=ae5ZWe/ZaEy7TnBziIB2WQuwlH3lxBKAnXNANbz04qYEtlhFCI4EhH5OygsFCgrqAwiSYM36ZEL1ltyF4OU+YjwEmIwHEZg6QJp/NnGsYznhVH+ZVTH+6E77qRwDYkxgYXWuzV0FCe9EbNFLXmmfILZCMA9DiqIz35FHU6BG3YE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767151147; c=relaxed/simple;
-	bh=/gF/wZ6KE2XyecJ048PIcWoKCWWvxq4dDHgU9AEk7UE=;
+	s=arc-20240116; t=1767152770; c=relaxed/simple;
+	bh=UAL4Nik3YhcQg9fUjywZJ/a6biQZdUu6xgSfEK91uUM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qlIEOBxfi8bMo3Ayu752Ad6FRz2YCmBp+xYSVCa9q8DtEF7DFKSifjruuMRk8cRLB2e0Wn47cZG26Vgni/tFSZoTZhHSpTM5ouLGa7KzMEQZyz9h4Ls7PP3g1l5hXKHeygZO0/dlYhyrYvFK2VEM5lLoa00W+p5VO5DcVirwZ6s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K2NpN/Po; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87825C116B1;
-	Wed, 31 Dec 2025 03:19:06 +0000 (UTC)
+	 MIME-Version; b=IWNY1bJefbo/DLzTnB1LsVbaojv1gL/Vu53GtVi/HXKZosFAjp2/NuYGo0YYlzK4KjySZc9QRtgu1kmTx0jnfxS6qP2rZERRZlFbaDRMLH0n76BxBvfW8fTc4D+d+2+A+gQkAuokpv8hH6bYxVK5jyU17u+npeQ7TtDTlBPKNyg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y+iRhVA2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74272C116B1;
+	Wed, 31 Dec 2025 03:46:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767151147;
-	bh=/gF/wZ6KE2XyecJ048PIcWoKCWWvxq4dDHgU9AEk7UE=;
+	s=k20201202; t=1767152770;
+	bh=UAL4Nik3YhcQg9fUjywZJ/a6biQZdUu6xgSfEK91uUM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K2NpN/PoCgdwxKwX4gm2O/tRYOmol1pJOcLj+3YT1JFKPye592HmhCXRtYldl0caV
-	 JSkS6L7KeZm0pawP0HKotCXyZtIwA+EJEPN1coJYKGZFRL3kNvIiSjOWLA36O6Dj/C
-	 HoSkqhdXg+KJn/M68iPXWZF/XRrB9LSVahGVHViCvpE1aDuQox63ZP4dk0dwMZtKJ6
-	 XQf++eqQ/95VHtWlTVSuEFvk2Jq9CoYWhLvy9tUKI6lmnCirgLZybjxlp89UA5zE1h
-	 IlREmbaDYJwLMs+FQ7U7ntwbQ2XNMwhmvDFAu2nV7rmuno0BZ7O7EdyM4qcEQtTUbG
-	 dpHwBcMqcbnFw==
+	b=Y+iRhVA21MiGKxyC78FpzAFP0EsmpEU5GlhpQkhT0l25mwnddhGo0O2OF4SMp5Xu8
+	 vYWlceJm1MHMXzTFeGYVnTux2b6YgCyS1mbKKA05cqEHB5T0v9bVEx7NLdu6O5bKtD
+	 9HcyMiWza8KujbmcBti/uN70QW/vRazlkGEHF1pa3XdpGdVeaFLkWPpMCkmbqtodNV
+	 /6itHovvMHe49mBsjda3xMajQ6mLcODia1cSLOSeY3tdkxubEcPgQ+FpOoA70WzJ8Z
+	 c4qQ8hMCev0DMbG3FVOGM3aJWdtUGK5UtH9B3jw13iZGf7D3hdCk7XdKJH13hEofDw
+	 MToRFLZaOmxcQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
-	Christoph Hellwig <hch@lst.de>,
-	Carlos Maiolino <cmaiolino@redhat.com>,
-	Carlos Maiolino <cem@kernel.org>,
+Cc: Chuck Lever <chuck.lever@oracle.com>,
+	Jeff Layton <jlayton@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y] xfs: fix a memory leak in xfs_buf_item_init()
-Date: Tue, 30 Dec 2025 22:19:04 -0500
-Message-ID: <20251231031904.2685998-1-sashal@kernel.org>
+Subject: [PATCH 6.6.y] NFSD: Clear SECLABEL in the suppattr_exclcreat bitmap
+Date: Tue, 30 Dec 2025 22:46:07 -0500
+Message-ID: <20251231034607.2717171-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025122919-catty-unrated-e504@gregkh>
-References: <2025122919-catty-unrated-e504@gregkh>
+In-Reply-To: <2025122919-carried-livestock-9465@gregkh>
+References: <2025122919-carried-livestock-9465@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,37 +58,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit fc40459de82543b565ebc839dca8f7987f16f62e ]
+[ Upstream commit 27d17641cacfedd816789b75d342430f6b912bd2 ]
 
-xfs_buf_item_get_format() may allocate memory for bip->bli_formats,
-free the memory in the error path.
+>From RFC 8881:
 
-Fixes: c3d5f0c2fb85 ("xfs: complain if anyone tries to create a too-large buffer log item")
+5.8.1.14. Attribute 75: suppattr_exclcreat
+
+> The bit vector that would set all REQUIRED and RECOMMENDED
+> attributes that are supported by the EXCLUSIVE4_1 method of file
+> creation via the OPEN operation. The scope of this attribute
+> applies to all objects with a matching fsid.
+
+There's nothing in RFC 8881 that states that suppattr_exclcreat is
+or is not allowed to contain bits for attributes that are clear in
+the reported supported_attrs bitmask. But it doesn't make sense for
+an NFS server to indicate that it /doesn't/ implement an attribute,
+but then also indicate that clients /are/ allowed to set that
+attribute using OPEN(create) with EXCLUSIVE4_1.
+
+Ensure that the SECURITY_LABEL and ACL bits are not set in the
+suppattr_exclcreat bitmask when they are also not set in the
+supported_attrs bitmask.
+
+Fixes: 8c18f2052e75 ("nfsd41: SUPPATTR_EXCLCREAT attribute")
 Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Carlos Maiolino <cmaiolino@redhat.com>
-Signed-off-by: Carlos Maiolino <cem@kernel.org>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 [ Adjust context ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/xfs_buf_item.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/nfsd/nfs4xdr.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/fs/xfs/xfs_buf_item.c b/fs/xfs/xfs_buf_item.c
-index a3d5ecccfc2c..deb69740d492 100644
---- a/fs/xfs/xfs_buf_item.c
-+++ b/fs/xfs/xfs_buf_item.c
-@@ -744,6 +744,7 @@ xfs_buf_item_init(
- 		map_size = DIV_ROUND_UP(chunks, NBWORD);
+diff --git a/fs/nfsd/nfs4xdr.c b/fs/nfsd/nfs4xdr.c
+index 3eff780fd8da..15189e683e83 100644
+--- a/fs/nfsd/nfs4xdr.c
++++ b/fs/nfsd/nfs4xdr.c
+@@ -3419,6 +3419,11 @@ nfsd4_encode_fattr(struct xdr_stream *xdr, struct svc_fh *fhp,
+ 		u32 supp[3];
  
- 		if (map_size > XFS_BLF_DATAMAP_SIZE) {
-+			xfs_buf_item_free_format(bip);
- 			kmem_cache_free(xfs_buf_item_zone, bip);
- 			xfs_err(mp,
- 	"buffer item dirty bitmap (%u uints) too small to reflect %u bytes!",
+ 		memcpy(supp, nfsd_suppattrs[minorversion], sizeof(supp));
++		if (!IS_POSIXACL(d_inode(dentry)))
++			supp[0] &= ~FATTR4_WORD0_ACL;
++		if (!contextsupport)
++			supp[2] &= ~FATTR4_WORD2_SECURITY_LABEL;
++
+ 		supp[0] &= NFSD_SUPPATTR_EXCLCREAT_WORD0;
+ 		supp[1] &= NFSD_SUPPATTR_EXCLCREAT_WORD1;
+ 		supp[2] &= NFSD_SUPPATTR_EXCLCREAT_WORD2;
 -- 
 2.51.0
 
