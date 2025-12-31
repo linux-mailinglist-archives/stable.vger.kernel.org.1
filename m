@@ -1,122 +1,184 @@
-Return-Path: <stable+bounces-204327-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204328-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E4BFCEB779
-	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 08:47:06 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 081ABCEB7A3
+	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 08:52:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D548C30053D8
-	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 07:46:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0723E30469BF
+	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 07:51:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D08F32FCC0E;
-	Wed, 31 Dec 2025 07:46:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B07A73112BA;
+	Wed, 31 Dec 2025 07:51:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cloudlinux.com header.i=@cloudlinux.com header.b="RhQSeVNl"
+	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="i0cDoN0J"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+Received: from sg-1-102.ptr.blmpb.com (sg-1-102.ptr.blmpb.com [118.26.132.102])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 114B52AE70
-	for <stable@vger.kernel.org>; Wed, 31 Dec 2025 07:46:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F22953126CD
+	for <stable@vger.kernel.org>; Wed, 31 Dec 2025 07:51:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=118.26.132.102
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767167206; cv=none; b=GzcEPCj+iyF4GAlyWn4Ez5tOlYKlWVFROs/KP1KCcj5U+L1rQuzluXjidbE2XyPEvJFr4G/2IqOaudY8jVmGvcy/FZJmZOvvT30SsF4ne06gZoDjA5+Uf2gApIOyPHh0/ucnay3e8V/KDBbxjUZApu4Sw9LbwoTpgTAezOMsUoo=
+	t=1767167502; cv=none; b=uTvn+U8YqlNVzkvgxEYTpgY/qIfjSgZewIIF9EsPyGRCxQqNGD4NY0+dmHbrBB6OL1x8tQzm/vMjUqx3i6IsNrq1UJenT4EmP7P7cvG9GGsDX72IfAueexBOSlEh9oW+DfaP6mbigryqKXfI6xRCLBFlBanLsHWOBCdqITOKRQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767167206; c=relaxed/simple;
-	bh=S+QErFLPAsEmZdXL2ZR61ZlxoWFp4vGhaMp4rKO0qdw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XxNPm1XEMcKbM+UA7m2C/69laZbtvsGbPnMpNKsnZ8MzeJTcs8TA1BKKogBEzAGAhjg08i92goO1p9PZC8aRGfHiwHBCoTD0mGhNSIK5rUue5bZnmyh+uv4RvTNIlbKWnOcbNptnKoirmBeU+ta9quMPnQHL4p6cHRRpxhDQGvU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cloudlinux.com; spf=pass smtp.mailfrom=cloudlinux.com; dkim=pass (2048-bit key) header.d=cloudlinux.com header.i=@cloudlinux.com header.b=RhQSeVNl; arc=none smtp.client-ip=209.85.221.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cloudlinux.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudlinux.com
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-42fb0fc5aa4so8223230f8f.1
-        for <stable@vger.kernel.org>; Tue, 30 Dec 2025 23:46:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudlinux.com; s=google; t=1767167202; x=1767772002; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=rcK5OWb8lQWwyYY1U8hmUdtzkD50MwR2w8DVGyTAGVA=;
-        b=RhQSeVNlJSug8r8qSJVYFzGN9ytpFGmyyN147pxUPNV3fm/S+QxmzQvF194YqIEXep
-         janSo3sZB+/4Qh09Vd8rO6CBrcO3yh8aSr8On7NdH750U+EChQPmhYO29/0D9sPHxHDu
-         cq0dtVwaokMaRL+krmoT3hykBaB0bOTOFLfy789nKkquTtVqLgbaiXk1zTeCBVKjmKX4
-         E8oJ4eFQK0SF8C7T7+ewChaYNLRjPc/n3JPML15IGLUq4ERy/EzAB+LvuNPeGXXtokBu
-         oweQlPlfb0/yKaBNvJ4F5wUCOqIcHemAShOSLtY79nbvJtFz6WC8UvNDd5x0s5zWSuwz
-         F5zw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767167202; x=1767772002;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rcK5OWb8lQWwyYY1U8hmUdtzkD50MwR2w8DVGyTAGVA=;
-        b=fPcWD7JevQyYVwNecXvIyvkhX0VNjmKVxx8fhA4pn2+N1ZolNi1exQoHacvp80IPgm
-         divLMDqn+lkfGlA/o+nVP5g2O+D1gatQdPIRyhir2Ve0zrzE+IRO7XH8J589ZZTUDbby
-         M+PKeJHfuScaz/amKA6tJQw+n5PVqngdVY5pXX6J3T69ZtvjFd0sUJTf0VYeKHJp7eDY
-         M0ELvDHmoAhAlmmGRHUmBWG52a2FRrCCDIDtVpDLVHtvz1HMSKjJepz9+wDOQDCXi890
-         1jAgRGvSEF8j9bXtV2zB5myEurIcRO3+KAoDqwj/xWgjaAuqX4vfyl1R7C36P7luWbh9
-         KVzw==
-X-Forwarded-Encrypted: i=1; AJvYcCXLorlAqK8DzC6aTahkCl+hYdZXSWj7JC61YNhthNKYfhOT3J+q4V5ThnpdZb9g+G3VsAXK4o4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzS2RZZNub1oKW1fxwFg8m/RhqZJa55HWaXlhH3YIrVW/GIPGHW
-	CKOqU1fwSb+4JXhvXWIvwaOCqRFX8vaaswBZjFrmOshrf4zgIUU9J4oQ8Rg7zQVqyVrCLuRVhNH
-	nTzRYDcg=
-X-Gm-Gg: AY/fxX57BN1xfCpdsB3ig8zwxuOdu1I/b2sCYn0f5kZIEfY2opfPlTzfboJXS6HiXSu
-	HmJIV7crQab8efZ20PTBYHW5zycHfwAl3YWPXW+GUDKCf86miYAQdzJH+CqEeP1a4u2iOeUsb/3
-	bKBwcGW+DXcbw2Lp2Ajv+P/V8o397X7HX/maH1+S2Z1R+X5u5xxDaKQQ5OS74GjzqPtrpNiZ/yY
-	J3/FKXjDhVnVmwFmX2qJesaAhOytDPI0fVR3V10akO2zh6Ss3T2tGnUkGbyMBh94ghFh8TUZ/au
-	peqAOZ/jVDE8wh5TNaPequZiCbWUg6UNIIiUF7Mm64gkAwPll1R1pig1SKfSHVUAFGAwcJNRStI
-	cKJTDCrZV3W3o1k0X30iMC8Iru3rfJP2zlUS3n6RBhSxa5m/vcibjX+RV+BEpMWU4nNk13ZfCyy
-	5C4uW+aVCs83pDXXZS23CbWBCNjOBqXEs=
-X-Google-Smtp-Source: AGHT+IHgPCTbrZ8SuyzVrzffH6KxGgE30rE6DKiN8ff7CAf5R8oHwTDdgYTozgvOKrd776lNlz+n6g==
-X-Received: by 2002:a05:6000:2c06:b0:431:864:d48f with SMTP id ffacd0b85a97d-4324e4d5029mr46915304f8f.27.1767167202241;
-        Tue, 30 Dec 2025 23:46:42 -0800 (PST)
-Received: from fedora.cloudlinux.com ([94.204.137.252])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4324ea1b36fsm72315953f8f.5.2025.12.30.23.46.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Dec 2025 23:46:41 -0800 (PST)
-From: Pavel Butsykin <pbutsykin@cloudlinux.com>
-To: hannes@cmpxchg.org,
-	yosry.ahmed@linux.dev,
-	nphamcs@gmail.com
-Cc: chengming.zhou@linux.dev,
-	akpm@linux-foundation.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH] mm/zswap: fix error pointer free in zswap_cpu_comp_prepare()
-Date: Wed, 31 Dec 2025 11:46:38 +0400
-Message-ID: <20251231074638.2564302-1-pbutsykin@cloudlinux.com>
-X-Mailer: git-send-email 2.52.0
+	s=arc-20240116; t=1767167502; c=relaxed/simple;
+	bh=5OhfQh94QrWrHPOEwimZhgVrzHBQO14VZlluCJQpk+4=;
+	h=From:Date:Message-Id:In-Reply-To:Mime-Version:Content-Type:
+	 References:To:Cc:Subject; b=sCnfBmUGa/lzNPOEJS17pI2frXfw1fYi2gr8lc3neaFx9Tq6uXDz0M7GlUMxdvOvxxrWs7jSPKjRlP2b6eGg+fDfsPll7nvHJ6p9PovSyjFcTVwfwSDbFxBr9aKYP8hPVGSWBpebMbhcIUzgapx4QDECFD3Bz9u94k6oGl/dA38=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=i0cDoN0J; arc=none smtp.client-ip=118.26.132.102
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=2212171451; d=bytedance.com; t=1767167487; h=from:subject:
+ mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
+ mime-version:in-reply-to:message-id;
+ bh=XcspS1IKS8vFQcHe5Ltr51i0quFjOWyZrLSyAxS3hJs=;
+ b=i0cDoN0JL1Il/Q6XcMWZJ/1iUhsiErysdUDkBYRBmsfimjNPu9lGK4+lxtdsagloG7Ajj2
+ jcLhLDxEjiaHbc69zCissWCZ6OZRRfjV1VENQsI2XYQcGw7rYJrMwXkVebNBmSc6NY9KJy
+ 9ggvuTXneTCt1rOOMcjXITnV1fwZS1JedbvLW45qtRNao14M+NMxaHZqgaAUi1N4rRCA6o
+ baU/Lh2WYzRYc9Q0tQdB2jWtm+e3Oo4s1EYqKTI8cyDEknQNNMggI2nmtBb09z9vJ9ro7T
+ 0okEXhPD5z0ta6+40W0qUFFBVl36p0rGvMW8syO3eLJTerj6k9a9CLvC1Kigow==
+From: "Jinhui Guo" <guojinhui.liam@bytedance.com>
+Date: Wed, 31 Dec 2025 15:51:05 +0800
+Message-Id: <20251231075105.1368-1-guojinhui.liam@bytedance.com>
+In-Reply-To: <20251230215241.GA130710@bhelgaas>
+X-Lms-Return-Path: <lba+26954d5fd+fdc0ff+vger.kernel.org+guojinhui.liam@bytedance.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+X-Mailer: git-send-email 2.17.1
+X-Original-From: Jinhui Guo <guojinhui.liam@bytedance.com>
+References: <20251230215241.GA130710@bhelgaas>
+To: <helgaas@kernel.org>
+Cc: <alexander.h.duyck@linux.intel.com>, <bhelgaas@google.com>, 
+	<bvanassche@acm.org>, <dan.j.williams@intel.com>, 
+	<gregkh@linuxfoundation.org>, <guojinhui.liam@bytedance.com>, 
+	<linux-kernel@vger.kernel.org>, <linux-pci@vger.kernel.org>, 
+	<stable@vger.kernel.org>, <tj@kernel.org>
+Subject: Re: [PATCH] PCI: Avoid work_on_cpu() in async probe workers
 
-crypto_alloc_acomp_node() may return ERR_PTR(), but the fail path checks
-only for NULL and can pass an error pointer to crypto_free_acomp().
-Use IS_ERR_OR_NULL() to only free valid acomp instances.
+On Tue, Dec 30, 2025 at 03:52:41PM -0600, Bjorn Helgaas wrote:
+> On Tue, Dec 30, 2025 at 10:27:36PM +0800, Jinhui Guo wrote:
+> > On Mon, Dec 29, 2025 at 08:08:57AM -1000, Tejun Heo wrote:
+> > > On Sat, Dec 27, 2025 at 07:33:26PM +0800, Jinhui Guo wrote:
+> > > > To fix the issue, pci_call_probe() must not call work_on_cpu() when=
+ it is
+> > > > already running inside an unbounded asynchronous worker. Because a =
+driver
+> > > > can be probed asynchronously either by probe_type or by the kernel =
+command
+> > > > line, we cannot rely on PROBE_PREFER_ASYNCHRONOUS alone. Instead, w=
+e test
+> > > > the PF_WQ_WORKER flag in current->flags; if it is set, pci_call_pro=
+be() is
+> > > > executing within an unbounded workqueue worker and should skip the =
+extra
+> > > > work_on_cpu() call.
+> > >=20
+> > > Why not just use queue_work_on() on system_dfl_wq (or any other unbou=
+nd
+> > > workqueue)? Those are soft-affine to cache domain but can overflow to=
+ other
+> > > CPUs?
+> >=20
+> > Hi, tejun,
+> >=20
+> > Thank you for your time and helpful suggestions.
+> > I had considered replacing work_on_cpu() with queue_work_on(system_dfl_=
+wq) +
+> > flush_work(), but that would be a refactor rather than a fix for the sp=
+ecific
+> > problem we hit.
+> >=20
+> > Let me restate the issue:
+> >=20
+> > 1. With PROBE_PREFER_ASYNCHRONOUS enabled, the driver core queues work =
+on
+> >    async_wq to speed up driver probe.
+> > 2. The PCI core then calls work_on_cpu() to tie the probe thread to the=
+ PCI
+> >    device=E2=80=99s NUMA node, but it always picks the same CPU for eve=
+ry device on
+> >    that node, forcing the PCI probes to run serially.
+> >=20
+> > Therefore I test current->flags & PF_WQ_WORKER to detect that we are al=
+ready
+> > inside an async_wq worker and skip the extra nested work queue.
+> >=20
+> > I agree with your point=E2=80=94using queue_work_on(system_dfl_wq) + fl=
+ush_work()
+> > would be cleaner and would let different vendors=E2=80=99 drivers probe=
+ in parallel
+> > instead of fighting over the same CPU. I=E2=80=99ve prepared and tested=
+ another patch,
+> > but I=E2=80=99m still unsure it=E2=80=99s the better approach; any furt=
+her suggestions would
+> > be greatly appreciated.
+> >=20
+> > Test results for that patch:
+> >   nvme 0000:01:00.0: CPU: 2, COMM: kworker/u1025:3, probe cost: 3490495=
+5 ns
+> >   nvme 0000:02:00.0: CPU: 134, COMM: kworker/u1025:1, probe cost: 34774=
+235 ns
+> >   nvme 0000:03:00.0: CPU: 1, COMM: kworker/u1025:4, probe cost: 3457305=
+4 ns
+> >=20
+> > Key changes in the patch:
+> >=20
+> > 1. Keep the current->flags & PF_WQ_WORKER test to avoid nested workers.
+> > 2. Replace work_on_cpu() with queue_work_node(system_dfl_wq) + flush_wo=
+rk()
+> >    to enable parallel probing when PROBE_PREFER_ASYNCHRONOUS is disable=
+d.
+> > 3. Remove all cpumask operations.
+> > 4. Drop cpu_hotplug_disable() since both cpumask manipulation and work_=
+on_cpu()
+> >    are gone.
+> >=20
+> > The patch is shown below.
+>=20
+> I love this patch because it makes pci_call_probe() so much simpler.
+>=20
+> I *would* like a short higher-level description of the issue that
+> doesn't assume so much workqueue background.
+>=20
+> I'm not an expert, but IIUC __driver_attach() schedules async workers
+> so driver probes can run in parallel, but the problem is that the
+> workers for devices on node X are currently serialized because they
+> all bind to the same CPU on that node.
+>=20
+> Naive questions: It looks like async_schedule_dev() already schedules
+> an async worker on the device node, so why does pci_call_probe() need
+> to use queue_work_node() again?
+>=20
+> pci_call_probe() dates to 2005 (d42c69972b85 ("[PATCH] PCI: Run PCI
+> driver initialization on local node")), but the async_schedule_dev()
+> looks like it was only added in 2019 (c37e20eaf4b2 ("driver core:
+> Attach devices on CPU local to device node")).  Maybe the
+> pci_call_probe() node awareness is no longer necessary?
 
-Fixes: 779b9955f643 ("mm: zswap: move allocations during CPU init outside the lock")
-Cc: stable@vger.kernel.org
-Signed-off-by: Pavel Butsykin <pbutsykin@cloudlinux.com>
----
- mm/zswap.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Hi, Bjorn
 
-diff --git a/mm/zswap.c b/mm/zswap.c
-index 5d0f8b13a958..ac9b7a60736b 100644
---- a/mm/zswap.c
-+++ b/mm/zswap.c
-@@ -787,7 +787,7 @@ static int zswap_cpu_comp_prepare(unsigned int cpu, struct hlist_node *node)
- 	return 0;
- 
- fail:
--	if (acomp)
-+	if (!IS_ERR_OR_NULL(acomp))
- 		crypto_free_acomp(acomp);
- 	kfree(buffer);
- 	return ret;
--- 
-2.52.0
+Thank you for your time and kind reply.
 
+As I see it, two scenarios should be borne in mind:
+
+1. Driver allowed to probe asynchronously
+   The driver core schedules async workers via async_schedule_dev(),
+   so pci_call_probe() needs no extra queue_work_node().
+
+2. Driver not allowed to probe asynchronously
+   The driver core (__driver_attach() or __device_attach()) calls
+   pci_call_probe() directly, without any async worker from
+   async_schedule_dev(). NUMA-node awareness in pci_call_probe()
+   is therefore still required.
+
+Best Regards,
+Jinhui
 
