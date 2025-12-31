@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-204313-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204314-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16CD2CEB2DB
-	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 04:15:59 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3222CCEB2DE
+	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 04:16:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 838CB301118C
-	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 03:15:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D70C9300B6A0
+	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 03:16:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB21C2765FF;
-	Wed, 31 Dec 2025 03:15:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C032816EB42;
+	Wed, 31 Dec 2025 03:16:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oo0ai1PH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LmShELjO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B731248F68
-	for <stable@vger.kernel.org>; Wed, 31 Dec 2025 03:15:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FAA03C0C
+	for <stable@vger.kernel.org>; Wed, 31 Dec 2025 03:16:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767150948; cv=none; b=ikk8Ltp382+vDUFM066xAJg5VQAW3yR0/qIa58bZ+j040Q6eDpIWA7OqBV1YYy69noSt01XMtAQ/op/PlYsEhAY+BWN6gVOHv5U7hMZm1mQ+i/8/VnhJu9wOyqF5rlYVn0rTmDR+JjvrrLnCH//bAT/+bb7RpjZHPLnWyJDGBp0=
+	t=1767150989; cv=none; b=Df4mmmcqDU9+5H6oXBGpA2I3M7pXbMiz+Rwoz+9oKh6eZKa248C0+g6+zSjnf8cpa8ORf25Hpgd4A1nBXynisRxNPTsDpWJtnBpEOZAA3t2Qeze4iAvzAMHAjRqZXPdpMH9FVGSfmcJOfxNmvxABXuiOInM00qWjns/xQ3/blP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767150948; c=relaxed/simple;
-	bh=MXIlScc6wOCyIiO0FfwdxHw0SFx+TySdl0CiOVbPEgM=;
+	s=arc-20240116; t=1767150989; c=relaxed/simple;
+	bh=7kDNKQPUNZQk5kzyd20Wh5NBbUzK12UE/BY9Lur5iPI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UGNm3Xzp5nxPjTsHp4x18sHafIzweOHcAXF9NJOIrgQES/e++gsL/vXc1KAJ/J/N/v90PndpKy0RyVeshcHmNvw0QLBFduNa/noVABDwioJqYljFmUNjPZKKxSJe6A6uUx7bvmPDpADEGCijCyGbwHB3D32oxxYmTayQXIg88ig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oo0ai1PH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46BE3C16AAE;
-	Wed, 31 Dec 2025 03:15:46 +0000 (UTC)
+	 MIME-Version; b=OBXRmHE1Tt6bPy1UAgP4JSeJ/P/xghWuzMX/EzA0ZLH4rarR+PRV60uGP0Jk7DGYAStq5fqv60Gp/8vfnpjzB0jP+IHCksCQjFedsbbpxsvPjvmwnYQAZ+VKKIK8CS6iVf23sjW/bUztmA2P4fB6G78wtt1mG2qZnfxB94W9M08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LmShELjO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67EF8C116B1;
+	Wed, 31 Dec 2025 03:16:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767150947;
-	bh=MXIlScc6wOCyIiO0FfwdxHw0SFx+TySdl0CiOVbPEgM=;
+	s=k20201202; t=1767150989;
+	bh=7kDNKQPUNZQk5kzyd20Wh5NBbUzK12UE/BY9Lur5iPI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oo0ai1PHE9+ADu3Y/TBVDIMSp7wXj5BvP6WNEjIhOohnyjZV1WdfDbsHIeuHvKDQx
-	 FcwgxMiySBoTtTyDIlMSDduDSzKjinIStKM/4UJ/8D4pTj3gKxtpCNruy7PWCf9kUS
-	 r1s+OZ5cMQiOaVdBIuA7+JTbb0QFtkRH5JINUrxskSokYAJJNlV9wgJhovRcj7lvxB
-	 iU55mPsUo4YrW+mhzb66NQZyKO8I2JGMTC8CqPMU45sIWcuqYH0Q0PUQgkkcfsCAag
-	 mq3DDPqPLF3QMSJonQXQjsgCCJMrYXlKHFzbBp8y9//wHUc7WnNMr2Zu65Y/PtJAFr
-	 M3ep7TDovj/aw==
+	b=LmShELjOVdfvNvBBEFEcvz9IDGkl0s4AqM3FiO0OCbxrLY+egXN94TTVc9yGHE45F
+	 YGCGpNGfwnulCU262e1aNO7/9K/ZparJbKK9EIAOTeUIpRdofpHCTJRSNeJP+oppLP
+	 wZ+1qO9783oi02L/ClexSoNO2Utlslrv/wBFJB5KTxrsW6k3SAEceKxiPuBVSM6QX4
+	 VJ7X/Z5Z5qDw1X//F1zlFsnlK0J5rz2rfl0Zh8nXqRiPc6nGI23BxU5/GJf4dQtbWD
+	 USXBZ+69AbupQx6uy/IJ7QNklrd3FgTVCgRcShFmW3pCsS7elclmfzOmJAwCc5Qbrs
+	 TZSuwC1i65j8w==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
-	Christoph Hellwig <hch@lst.de>,
-	Carlos Maiolino <cmaiolino@redhat.com>,
-	Carlos Maiolino <cem@kernel.org>,
+Cc: Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	Marc Hartmayer <mhartmay@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y] xfs: fix a memory leak in xfs_buf_item_init()
-Date: Tue, 30 Dec 2025 22:15:44 -0500
-Message-ID: <20251231031544.2684088-1-sashal@kernel.org>
+Subject: [PATCH 6.18.y] KVM: s390: Fix gmap_helper_zap_one_page() again
+Date: Tue, 30 Dec 2025 22:16:26 -0500
+Message-ID: <20251231031626.2684565-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025122919-balancing-colony-41ee@gregkh>
-References: <2025122919-balancing-colony-41ee@gregkh>
+In-Reply-To: <2025122907-grant-reformist-a323@gregkh>
+References: <2025122907-grant-reformist-a323@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,37 +60,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+From: Claudio Imbrenda <imbrenda@linux.ibm.com>
 
-[ Upstream commit fc40459de82543b565ebc839dca8f7987f16f62e ]
+[ Upstream commit 2f393c228cc519ddf19b8c6c05bf15723241aa96 ]
 
-xfs_buf_item_get_format() may allocate memory for bip->bli_formats,
-free the memory in the error path.
+A few checks were missing in gmap_helper_zap_one_page(), which can lead
+to memory corruption in the guest under specific circumstances.
 
-Fixes: c3d5f0c2fb85 ("xfs: complain if anyone tries to create a too-large buffer log item")
+Add the missing checks.
+
+Fixes: 5deafa27d9ae ("KVM: s390: Fix to clear PTE when discarding a swapped page")
 Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Carlos Maiolino <cmaiolino@redhat.com>
-Signed-off-by: Carlos Maiolino <cem@kernel.org>
-[ Adjust context ]
+Reported-by: Marc Hartmayer <mhartmay@linux.ibm.com>
+Tested-by: Marc Hartmayer <mhartmay@linux.ibm.com>
+Acked-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+[ adapted ptep_zap_softleaf_entry() and softleaf_from_pte() calls to ptep_zap_swap_entry() and pte_to_swp_entry() ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/xfs_buf_item.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/s390/mm/gmap_helpers.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/fs/xfs/xfs_buf_item.c b/fs/xfs/xfs_buf_item.c
-index b1ab100c09e1..9f8225ed234e 100644
---- a/fs/xfs/xfs_buf_item.c
-+++ b/fs/xfs/xfs_buf_item.c
-@@ -825,6 +825,7 @@ xfs_buf_item_init(
- 		map_size = DIV_ROUND_UP(chunks, NBWORD);
+diff --git a/arch/s390/mm/gmap_helpers.c b/arch/s390/mm/gmap_helpers.c
+index d4c3c36855e2..38a2d82cd88a 100644
+--- a/arch/s390/mm/gmap_helpers.c
++++ b/arch/s390/mm/gmap_helpers.c
+@@ -47,6 +47,7 @@ static void ptep_zap_swap_entry(struct mm_struct *mm, swp_entry_t entry)
+ void gmap_helper_zap_one_page(struct mm_struct *mm, unsigned long vmaddr)
+ {
+ 	struct vm_area_struct *vma;
++	unsigned long pgstev;
+ 	spinlock_t *ptl;
+ 	pgste_t pgste;
+ 	pte_t *ptep;
+@@ -65,9 +66,13 @@ void gmap_helper_zap_one_page(struct mm_struct *mm, unsigned long vmaddr)
+ 	if (pte_swap(*ptep)) {
+ 		preempt_disable();
+ 		pgste = pgste_get_lock(ptep);
++		pgstev = pgste_val(pgste);
  
- 		if (map_size > XFS_BLF_DATAMAP_SIZE) {
-+			xfs_buf_item_free_format(bip);
- 			kmem_cache_free(xfs_buf_item_zone, bip);
- 			xfs_err(mp,
- 	"buffer item dirty bitmap (%u uints) too small to reflect %u bytes!",
+-		ptep_zap_swap_entry(mm, pte_to_swp_entry(*ptep));
+-		pte_clear(mm, vmaddr, ptep);
++		if ((pgstev & _PGSTE_GPS_USAGE_MASK) == _PGSTE_GPS_USAGE_UNUSED ||
++		    (pgstev & _PGSTE_GPS_ZERO)) {
++			ptep_zap_swap_entry(mm, pte_to_swp_entry(*ptep));
++			pte_clear(mm, vmaddr, ptep);
++		}
+ 
+ 		pgste_set_unlock(ptep, pgste);
+ 		preempt_enable();
 -- 
 2.51.0
 
