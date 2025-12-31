@@ -1,120 +1,106 @@
-Return-Path: <stable+bounces-204304-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204305-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CAEECEAF97
-	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 01:57:26 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37FAFCEAFA7
+	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 02:09:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C787030198AE
-	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 00:57:24 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7706C301986E
+	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 01:09:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C7991C2324;
-	Wed, 31 Dec 2025 00:57:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D68D192D8A;
+	Wed, 31 Dec 2025 01:09:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fOrXnYWu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dCD9s4LG"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 160821A294
-	for <stable@vger.kernel.org>; Wed, 31 Dec 2025 00:57:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E11E141754;
+	Wed, 31 Dec 2025 01:09:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767142643; cv=none; b=iHExy6I9wneLPVCPnznb4e7n85tMBvyoI1aTvApeHg0XeDQHyk/+mRAnncG/Gd7+N3j2y78hSbK81BvYxGOx2YAYatnI+O+xNuJpopJ+kRcqMPyOdQJbLkxXFpBbOi0HeH1nD5mL4L35BrIw/8mq/JaEqFxmEc1nCb2wSQsu3zw=
+	t=1767143394; cv=none; b=dOFMB2/dggG/cZVj9hh7o/V4qCnko2HyyV52zw5qKT7EXqqHSbPEuZVBeR99ncXJAmXp33UiUM7xGHLqD3QM4l3yr44wRr28A8PY5SNvWnauFocWtFiJZKjIxFEaSulXw6ypq+MeVFLYgQRnSZ8u65A99eApuKNRZc1AqMXjt3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767142643; c=relaxed/simple;
-	bh=XZube64hD6IXaptRdl7zcakx49qq6aNUlZ/PPN4/Z20=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=tjGiAJTIS83discPG5z6jblnLzjvsev2c3OXncIVRPGpFFJP9031lILztsKJX2X+n2oxeUybemZAoUk7MrN9dtunSp+X2azuzx9HduA1qEelGjffdw+cI9a7T3WZmW3a08Wrh4zhuTriF2srGu5rl9e2wNVMAyhigV0vkYhCTjk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fOrXnYWu; arc=none smtp.client-ip=209.85.215.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-bdd38966c74so291673a12.1
-        for <stable@vger.kernel.org>; Tue, 30 Dec 2025 16:57:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767142641; x=1767747441; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=y3E1JXxIVHpMJqtMAwCll57AM31/TkT0PGW+VAaoHfw=;
-        b=fOrXnYWumJxchBWM/c85Tw/xBP2xvaN9zW/GcU3S3dEDoO9KTb8TZmaEW+62h0uaA/
-         DH6EwxaMnQUBYraqHGG9dxucFqSCRmh5xdwTx0xJd0XgpijJ9v7FUjc5DTPPfetCL2kQ
-         xQpQvSNV6L9AO4w4+OFcvRXf0eTaWFb1uGDmiDpX562x0XFEOQAdFbl1Qnc7n0WQdTgk
-         sEzIXa5GXgpDCRm21WnoR2zmdHbb0JZms5JlFJd88DtpgWoZQrWAMpoc6ft7aq8VOT7s
-         aE7FGZcOKJGOJX+9exFCSp87zVAeZOry+ybGzx38dTSaWz4HVI3CK4rWIj9gTecC8J69
-         8giw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767142641; x=1767747441;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=y3E1JXxIVHpMJqtMAwCll57AM31/TkT0PGW+VAaoHfw=;
-        b=qxRBjPoChCjAO52sRm4iN0endfi8kzCIvTlKhQJYv4W7Vn0q5BJ0D0sheNzQJt7vQB
-         SehB7rAns5EfxgZMxip/OscTDSKpk4DLevfuBPhLcX0eOXsnVL/CNs2nG9Cqwba1vesC
-         lwkeI2ZwYXUu0YyYxZGVmK3H8/hw7+lRlKVgoiL7CudJu9/Jjtm9Ippmrm6gtGVYeUYr
-         g0JfbKO8Bw8dhuWZvNEksHO+6oXj1M3ltWP5ujLTVRUj9D9MgArqoCRdI/5q53to4LEX
-         1wEDfKkb6QagLKSxH868eeNMLdvvMfRrXjUbogL4Nn63iw3W3Z2Y0HA4Yl2x7HG+urmv
-         2XTA==
-X-Forwarded-Encrypted: i=1; AJvYcCXgAPks47nQP3+uo2xUw3oYO5m4kvfihGCH9xCZtAG4anuz/RvVn+rP0+R6Yxx8yqqljVOt/n8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyri/Ztw7v85U/6AM+v9Mz9pxak7J7LpAfbIJiF45meam2TfW4x
-	ReBPO5kxnzlJ8Kqi9Y0mfrChugmaz/8IpKj6w8cd6xgEniZJO9C6Ydcj5EyKl8RdfuTM5ZpnM3T
-	jBEPOON5UtueyJJ0UoLCuL38Nvsrbl2s=
-X-Gm-Gg: AY/fxX7DamcT01GchSuGqfHOnVapi+3Si+PFCdZ5ROfduDAJdSuncmo6Y+rfPLi71BC
-	W9d35PtbrbuCJpSAliVPEOpVS6vsdKp31RvKomGReUaJJC0fZbaiiVxXsadSUn6lp27DnqWmXPD
-	C3zjmb8fHlhyFWxut1dkNTNlF2otDUgZkaHAULxf8K4mgBgI2hbAllHMaVbufmU+IOhUwushOz4
-	JWrno0byBys+sjhU7wlv4/rTutESBpFLq4aoPBBG4ripu46wcc60Opbj91j2KxYKyToZ6PNOQyB
-	lF7bNyVDryqSC5KPGJFAndAFCDb8OXaWU5AiHKuElsFK7BK5ZA06gqz7720/CdxtDZ5dZoa0J5o
-	u8y7DzzRyWvqK
-X-Google-Smtp-Source: AGHT+IE0QZde+Epe2+buYwi8bUzRbiw6UopT760KaBQNT/yzhT5tCfljAa1efVVvg16bHzl1CBMsIOBMC+pNmmJp4w4=
-X-Received: by 2002:a05:7300:4f9b:b0:2ac:2b5b:a567 with SMTP id
- 5a478bee46e88-2b05ec47be3mr12709409eec.6.1767142641302; Tue, 30 Dec 2025
- 16:57:21 -0800 (PST)
+	s=arc-20240116; t=1767143394; c=relaxed/simple;
+	bh=2D20Csq8Kq0j5ry5UL1P9kR7YyPe+ntTwWzaRC/s9VU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=XOPzS1vJRLX6rpANUO8NoGZfpMz5/3a0KYCoaFcrSQu6QzTDXykC7VyNcohNk/vdrM8UR76+XYQolFolfxekUGgxIsQKxGcXDaD5Qs18GJTNPl0jMFxMBVaxLnvoh2obia453dfkMiceAbvRHs7qnJIuwyKrb23FO2JySjvm5jU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dCD9s4LG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCD74C116C6;
+	Wed, 31 Dec 2025 01:09:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767143393;
+	bh=2D20Csq8Kq0j5ry5UL1P9kR7YyPe+ntTwWzaRC/s9VU=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=dCD9s4LGUfk3vzYIwxoU2xzkZ2F7sJyLR195WQe9hAPqgjf8n36u5dPeYKuCMG6Cq
+	 zEODkY0/3HUZd4T+zIzM27lDtIDE9QkGaaPKL3R/QnbapYzSYF6NPPqyedZLiKM/+M
+	 1FNbW1RcgvBzRzPhMZmO9CF8A2sExHezTEWgSG8qWzOZrpj0OXHuH6t68S3PYIVxDl
+	 Cz0U2tiIwrIdkQ+jo2HK9cloUaY6etmvExshq5Zo0flhXWgP+E/slrK0IGRnP5k0+o
+	 usJ4I+LGXhj+K2gBDaakmCFwn2yanP3pvECl3JpGfxgJ2tKGqnB+I6u7zkr8N6fTjI
+	 +IJoAIineeYwQ==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: gregkh@linuxfoundation.org
+Cc: achill@achill.org,
+	akpm@linux-foundation.org,
+	broonie@kernel.org,
+	conor@kernel.org,
+	f.fainelli@gmail.com,
+	hargar@microsoft.com,
+	jonathanh@nvidia.com,
+	linux-kernel@vger.kernel.org,
+	linux@roeck-us.net,
+	lkft-triage@lists.linaro.org,
+	patches@kernelci.org,
+	patches@lists.linux.dev,
+	pavel@denx.de,
+	rwarsow@gmx.de,
+	shuah@kernel.org,
+	sr@sladewatkins.com,
+	stable@vger.kernel.org,
+	sudipm.mukherjee@gmail.com,
+	torvalds@linux-foundation.org,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: Re: [PATCH 6.18 000/430] 6.18.3-rc1 review
+Date: Wed, 31 Dec 2025 02:09:32 +0100
+Message-ID: <20251231010932.91680-1-ojeda@kernel.org>
+In-Reply-To: <20251229160724.139406961@linuxfoundation.org>
+References: <20251229160724.139406961@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 31 Dec 2025 01:57:09 +0100
-X-Gm-Features: AQt7F2rXDZiOi0tvyImtpIeqTNnWRIevRIzoxoKtqPaxAjroJ-SuGGV60E857XE
-Message-ID: <CANiq72=ti75ex_M_ALcLiSMbfv6D=KA9+VejQhMm4hYERC=_dA@mail.gmail.com>
-Subject: ba1b40ed0e34bab597fd90d4c4e9f7397f878c8f for 6.18.y
-To: Greg KH <gregkh@linuxfoundation.org>, Sasha Levin <sashal@kernel.org>
-Cc: Danilo Krummrich <dakr@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, stable@vger.kernel.org, 
-	Nouveau Dev <nouveau@lists.freedesktop.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-Hi Greg, Sasha,
+On Mon, 29 Dec 2025 17:06:42 +0100 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.18.3 release.
+> There are 430 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Wed, 31 Dec 2025 16:06:10 +0000.
+> Anything received after that time might be too late.
 
-Please consider commit ba1b40ed0e34 ("drm: nova: depend on
-CONFIG_64BIT") for 6.18.y. It should cherry-pick cleanly.
+Boot-tested under QEMU for Rust x86_64, arm64 and riscv64; built-tested
+for arm and loongarch64:
 
-Without this commit, one can create a config where `CONFIG_DRM_NOVA`
-selects `CONFIG_NOVA_CORE` without satisfying its `CONFIG_64BIT`
-dependency.
+Tested-by: Miguel Ojeda <ojeda@kernel.org>
 
-In turn, this means arm32 builds can fail -- Kconfig warns:
+For arm32, it is possible to get build errors if one tries to build Nova
+so I sent a backport request for consideration:
 
-    WARNING: unmet direct dependencies detected for NOVA_CORE
-      Depends on [n]: HAS_IOMEM [=y] && 64BIT && PCI [=y] && RUST [=y]
-&& RUST_FW_LOADER_ABSTRACTIONS [=y]
-      Selected by [y]:
-      - DRM_NOVA [=y] && HAS_IOMEM [=y] && DRM [=y]=y [=y] && PCI [=y]
-&& RUST [=y]
+    https://lore.kernel.org/stable/CANiq72=ti75ex_M_ALcLiSMbfv6D=KA9+VejQhMm4hYERC=_dA@mail.gmail.com/
 
-And then the build fails with (among others, see the related commit
-5c5a41a75452 ("gpu: nova-core: depend on CONFIG_64BIT") for more):
+(And for completeness/future reference: for UML, which I build-test as
+well but so far do not report here, there are a few `rustdoc` issues
+which will get resolved with:
 
-     error[E0308]: mismatched types
-      --> drivers/gpu/nova-core/fb.rs:50:59
-       |
-    50 |         hal::fb_hal(chipset).write_sysmem_flush_page(bar,
-page.dma_handle())?;
-       |                              -----------------------
-^^^^^^^^^^^^^^^^^ expected `u64`, found `u32`
-       |                              |
-       |                              arguments to this method are incorrect
-       |
+    https://lore.kernel.org/rust-for-linux/CANiq72nScSLkB0ix6Rw=SfpqDirx_GgcCzgHLucKd0d=s5aZ0w@mail.gmail.com/
 
-Cc'ing Danilo and Alexandre so that they can confirm they agree.
+)
 
 Thanks!
 
