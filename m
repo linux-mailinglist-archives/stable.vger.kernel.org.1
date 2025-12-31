@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-204397-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204398-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9530CECA3C
-	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 23:44:28 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 374D4CECA3F
+	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 23:44:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B62073007687
-	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 22:44:27 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 22AF03006446
+	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 22:44:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C070A30AAD0;
-	Wed, 31 Dec 2025 22:44:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA74A30AAD0;
+	Wed, 31 Dec 2025 22:44:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ExW7TUFD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qBvv9+Y3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81A7E1A239A
-	for <stable@vger.kernel.org>; Wed, 31 Dec 2025 22:44:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61BBA1A239A
+	for <stable@vger.kernel.org>; Wed, 31 Dec 2025 22:44:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767221066; cv=none; b=lXe9NkWVo0jFwO5xYK8Upo0qcFsuEt+Rxkm547+4Krs+hHHlIdHudMlVjVN5d6JE6EEshebAsr6WCthcxe+HLEcomQnvZszniLb6UuYhSjjF+Lzl1UwBU4D4BwIQa5/MTRQF88t1Utv6vyweFQz3Sjg1Iqo0bFPrf2CSAYBRZwI=
+	t=1767221070; cv=none; b=nMGL/g23ipPMkZ2mR4skZ81C6lmSpNfC9b2y4i1aKk6mFVjPwSatRmCF4eVvVm7hszVZHxczSiiIsT/qT2Td/uwhRQ7+Pf2DT6GnR9YPH+I1vS+nIqRGH2ZNiphyUIqrrHm1fRwDsgkVbqbO1s7bU9duOHjrkcr9qgau7H1oz8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767221066; c=relaxed/simple;
-	bh=0j5x1dlzfQTwh4fDE3TsPzSfQ4FuEK+wMJl+aOxqDXI=;
+	s=arc-20240116; t=1767221070; c=relaxed/simple;
+	bh=aPihWfI2QBRrp0PgkgrpRLE0bUx33oXFWsvZ7w67vlY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t+j4ETqsCZ8/cJAwzqBdc158yFFmsIxX199NJkzyb7T9iR4L8CRaHtCiKXeDNlBR2Sw2XfFF3RJchH6scuKuctcfV+tTrA64tlCK/zAdUJj0hTjtJYFyGS+Lcj23dWlpxk/qBOVh4egBDxCYwfJfyMmNoTy9AyvYKU5LpsQ+u4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ExW7TUFD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB5B6C113D0;
-	Wed, 31 Dec 2025 22:44:25 +0000 (UTC)
+	 MIME-Version; b=XNTim1O0hVvEnJzXk1kPBnNGUS379EllR42q/InVzPhuLuLO74lmFu74KpmZA5C+NK+Tqg4SuOFk9ZLKJnBZz/UtrTlMITxS8i2d9qrjrh1Fl19k+xveQr3w4DvPCs/mdm0/g3CzjSvxSPG40doaCfGgYM75PxZ1iFWR9hm1GH0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qBvv9+Y3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79B98C113D0;
+	Wed, 31 Dec 2025 22:44:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767221066;
-	bh=0j5x1dlzfQTwh4fDE3TsPzSfQ4FuEK+wMJl+aOxqDXI=;
+	s=k20201202; t=1767221070;
+	bh=aPihWfI2QBRrp0PgkgrpRLE0bUx33oXFWsvZ7w67vlY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ExW7TUFDBiX/V7eUe8eautpIPMtmSn5HQTSmAHqgslDNhG85+DRxoH3e4bASeB7wG
-	 0d/xfd/pNZ43P97eH/WvtzSJO6pKZ6o8G1BX/plwpvC6SKu15DTOcV2nLAG0ZCeOH3
-	 oOoTWecKAoqjQb1+78Yx9EjO4p4F9Nujyfsk9cZ4P0qh62zPmG7rpZnC8po7OAkpqn
-	 TBiahyCTw3NBmbzLoLA7dIVFJwLFELCrGNpy7sAcf1jfkZL1mEDikf9PA2OcdGoTyy
-	 4uioFojPIROkfO2Ev+DiFhkUrv51Bl0HX7oE+qieE/wmDFmZcj5bJgw4J8bn1dpSKv
-	 Lailrz7ukOxyw==
+	b=qBvv9+Y3Z+oGArM3aMScV5fyAw6TE6AYUDCeuFPf0vJr18S7XWXsuHe4q+dzxdYB7
+	 lk7Cp1W8enc1iF/4zlIpo2Mq4q3+A5DeiouIFItAEEplbyw78kYxP69689pnu1HnQh
+	 Z93A6qsXlUzdZqwUQbRJLxeHQq3yxWlgH/ftKqWrYv3+mG+YSIYMz84TbtURoRUCfJ
+	 72fc2J2EJcuQ8ojb4gwt+pIKaJaFy3e4wyoXNgTgBFKZMHJDE4nZYGOSF0Hfdv6RtY
+	 lJP7VfUQvbL07kCGaJmckHnxbxFY0mFAXmeYB3cgps+SEdeN0nHD+SEtjTGnElou0J
+	 02dtRRAbHUC+g==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Joshua Rogers <linux@joshua.hu>,
-	Chuck Lever <chuck.lever@oracle.com>,
+Cc: Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y] svcrdma: bound check rq_pages index in inline path
-Date: Wed, 31 Dec 2025 17:44:24 -0500
-Message-ID: <20251231224424.3631279-1-sashal@kernel.org>
+Subject: [PATCH 5.15.y] ARM: dts: microchip: sama7g5: fix uart fifo size to 32
+Date: Wed, 31 Dec 2025 17:44:27 -0500
+Message-ID: <20251231224427.3631376-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025122934-smartness-abrasive-06be@gregkh>
-References: <2025122934-smartness-abrasive-06be@gregkh>
+In-Reply-To: <2025122900-ripple-expert-4378@gregkh>
+References: <2025122900-ripple-expert-4378@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,38 +58,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Joshua Rogers <linux@joshua.hu>
+From: Nicolas Ferre <nicolas.ferre@microchip.com>
 
-[ Upstream commit d1bea0ce35b6095544ee82bb54156fc62c067e58 ]
+[ Upstream commit 5654889a94b0de5ad6ceae3793e7f5e0b61b50b6 ]
 
-svc_rdma_copy_inline_range indexed rqstp->rq_pages[rc_curpage] without
-verifying rc_curpage stays within the allocated page array. Add guards
-before the first use and after advancing to a new page.
+On some flexcom nodes related to uart, the fifo sizes were wrong: fix
+them to 32 data.
 
-Fixes: d7cc73972661 ("svcrdma: support multiple Read chunks per RPC")
-Cc: stable@vger.kernel.org
-Signed-off-by: Joshua Rogers <linux@joshua.hu>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-[ adapted rc_curpage and rq_maxpages fields to ri_pageno and RPCSVC_MAXPAGES constant ]
+Fixes: 7540629e2fc7 ("ARM: dts: at91: add sama7g5 SoC DT and sama7g5-ek")
+Cc: stable@vger.kernel.org # 5.15+
+Signed-off-by: Nicolas Ferre <nicolas.ferre@microchip.com>
+Link: https://lore.kernel.org/r/20251114103313.20220-2-nicolas.ferre@microchip.com
+Signed-off-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sunrpc/xprtrdma/svc_rdma_rw.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/arm/boot/dts/sama7g5.dtsi | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/sunrpc/xprtrdma/svc_rdma_rw.c b/net/sunrpc/xprtrdma/svc_rdma_rw.c
-index 50bf62f85166..bfa137ad7710 100644
---- a/net/sunrpc/xprtrdma/svc_rdma_rw.c
-+++ b/net/sunrpc/xprtrdma/svc_rdma_rw.c
-@@ -789,6 +789,9 @@ static int svc_rdma_copy_inline_range(struct svc_rdma_read_info *info,
- 	for (page_no = 0; page_no < numpages; page_no++) {
- 		unsigned int page_len;
- 
-+		if (info->ri_pageno >= RPCSVC_MAXPAGES)
-+			return -EINVAL;
-+
- 		page_len = min_t(unsigned int, remaining,
- 				 PAGE_SIZE - info->ri_pageoff);
- 
+diff --git a/arch/arm/boot/dts/sama7g5.dtsi b/arch/arm/boot/dts/sama7g5.dtsi
+index a63a8e768654..eaf52c455653 100644
+--- a/arch/arm/boot/dts/sama7g5.dtsi
++++ b/arch/arm/boot/dts/sama7g5.dtsi
+@@ -375,7 +375,7 @@ uart4: serial@200 {
+ 				dma-names = "tx", "rx";
+ 				atmel,use-dma-rx;
+ 				atmel,use-dma-tx;
+-				atmel,fifo-size = <16>;
++				atmel,fifo-size = <32>;
+ 				status = "disabled";
+ 			};
+ 		};
+@@ -400,7 +400,7 @@ uart7: serial@200 {
+ 				dma-names = "tx", "rx";
+ 				atmel,use-dma-rx;
+ 				atmel,use-dma-tx;
+-				atmel,fifo-size = <16>;
++				atmel,fifo-size = <32>;
+ 				status = "disabled";
+ 			};
+ 		};
 -- 
 2.51.0
 
