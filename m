@@ -1,120 +1,163 @@
-Return-Path: <stable+bounces-204379-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204380-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53267CEC723
-	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 19:11:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D7CBCCEC79C
+	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 19:35:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5A045306440D
-	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 18:10:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E0C81300B2AE
+	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 18:35:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EF3D2F6915;
-	Wed, 31 Dec 2025 18:10:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 593C730596D;
+	Wed, 31 Dec 2025 18:35:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b="lZujc4EP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="unPmd90X"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D245A2BFC60
-	for <stable@vger.kernel.org>; Wed, 31 Dec 2025 18:10:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 197143064A2
+	for <stable@vger.kernel.org>; Wed, 31 Dec 2025 18:35:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767204604; cv=none; b=No5bjHm2psAB8sdJw9ryhVxEbUXTwXypmiWUDN3mFWR8twiWeM0QyzQLocds3hgrhKAFujQy9OFp6LVWF5Eilvm19yBTYQ5LJNvudDZrybm8mvqpYPGUXN0gVOOOsc7Q/xs+d3lF/vQeNbrL1P4ST6vQc0LF9Wk9LSa8GjLzxD0=
+	t=1767206127; cv=none; b=KAek5hx831eTOfC4Xe0uTRYxEOfzTOv8RQ7w9sBEMFsMcnzSHEYU//pp6shPvTqxGOOwCKyEkTarfPFYyOOUfUmy8FVSTcc26DbRxbzgy77eKly61TOcLLD5+YUIZcROPNz4hE+k/kLfg2wjIvYObfFzGWxKFZM2GwWXVaHbkGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767204604; c=relaxed/simple;
-	bh=1S4heQqgL6iskJZpSajboNbpOfNgZqnM5Beqt1UIIZc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hY247clyQtDWCG6hSmK7z/Iaxzcq2bL409ThvH+IzE77S40nG+dACgjhpq/l8Kqjm2I4eLh3vWyzQ9ar/TK8TfLQUe2VggOD1dHFEu8Bzg9vfUAt5ksxW36ZOFiSDG1eDMoA9QbieLHTMGoxetBkZ7PDIc6htG1UOMeNJeGQqJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu; spf=fail smtp.mailfrom=g.harvard.edu; dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b=lZujc4EP; arc=none smtp.client-ip=209.85.160.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=g.harvard.edu
-Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-4f1b1948ffaso74454001cf.2
-        for <stable@vger.kernel.org>; Wed, 31 Dec 2025 10:10:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rowland.harvard.edu; s=google; t=1767204602; x=1767809402; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ler8qDCPRGHJreOe8sxM5+nTcHTkypYD5vwOvTuWhHo=;
-        b=lZujc4EPs23Tjrl+rtudipfoGo2T/apwQ4lcrg31ox/ho4O0VvkEJlunQsdkJVJBOy
-         JLAzEjNei+nCKhpBYqeW9zPvJ3y+AHHeJ98Fg8HO+GUNSBN5SeJOQo46x/HfIIIHKJHR
-         5MYqoia5YYtSRgVfJLeKzUIEYE+BICFwHdJvutHSaiESot2sc0nR08auqxIQYbKbQfWr
-         eJr/yKFSeN5h1nELgHYyci1sZVdOVyOXaerq7OCLkYiNgOHAwaJC4BTEnS+HkAOcS/LG
-         b6E67YYr0AUtI3z2GWt4maLN3FPYoE/2osGVRMbKnI/I05NJuYuz3acxpLjEuDAB/Mzi
-         UQZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767204602; x=1767809402;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Ler8qDCPRGHJreOe8sxM5+nTcHTkypYD5vwOvTuWhHo=;
-        b=JX0yF6weaaB2mBGY9FRBjDuT/de2+N/cx9/EU1kOwCxMZXIAA1H5dRCIqZ3XyiDvsy
-         7J1dgVaRiLCxByBvRMBSzQeodk3dOGAaSuyE2HZm+IpP23NDEK91pKDgeWwB4zySxAgc
-         wMN/W7yyViB5BqF+1wWpbATljgo5X2H4k2iSwUqCgqio/tOmXXeLVTgbc//XuJIKzBLF
-         IQDsNaPHIrH0Igsx9dua/4/lZlIDSxSpaVLjpBb3emtdgR3nVXEerM0AW7VfBjvEGHBn
-         Z0+9a6TBYx2ulwReYtSgI0BvGmFm+TsjNEDAVoQG8+upYtdjkhpmCmUwkEggT8UEVzU5
-         bLDA==
-X-Forwarded-Encrypted: i=1; AJvYcCW5c5TeT66AnVhwpHhX6vY4KqxlyKTdKbLS5kljv+MA+zkbNXk0o9WjJGnYUafNf6x61JkRlQk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwFXvht6RiQ05v1ZrYQfTxLE0KQB2zJda4m6B0Yk2MKQHplNWme
-	Brhh8iOX5RCo8phDbiwGozLEKS1+ViV3mePGRkqNawELOcbN0FJqjaVmyANGC7S8BA==
-X-Gm-Gg: AY/fxX5QxNyq0zUES5AZpQArI5bGn8LlqGfbxx8BQPSCJYFNrScZSmE+FFJaDYC5XfB
-	YAfPlLAUrm2nUjquv1OgVnLji4WsbpubXOm9WHnbdB4Z/ug081BZCPRw4XYPTstRVRWTSJd5Ttv
-	i9KQqcC/RHEiUuhwzX6Y/e6qEhtELVUFaPJoqETzuqYHBG6/+HSyi36HbyDI7MPzIZZJuGJKLns
-	AWkKpphukMsvYHvqg7/Q8J/tuOohyHfaadxSq78sWTd2KTwwD6+BQ/YKyZRlAd8y76jSXa+lHH7
-	x3mDkpPA1DyABzZSIvnMtAyo5IhiHk3Y66yL1VYHJYhDDOKEoOGYh27EcaR5OwiYgJfETUhQIGd
-	EnFwfjHGAmo8cUgkJ+uFeuw2+a9SO0h3ahySlvZkCZACIVF5cQaGD54Xyp5QmhOhvOYLPQZ89L+
-	e6UJGgaElhhXon
-X-Google-Smtp-Source: AGHT+IEruzdijXHePGAvKPLGhZbAiM2zIbDD/ICikBW9QEM/BXuzXL6NghqlUqJFyVh2UeSk0b8zwA==
-X-Received: by 2002:ac8:5c81:0:b0:4ed:e5c1:797 with SMTP id d75a77b69052e-4f4abcc3eedmr535573051cf.23.1767204601682;
-        Wed, 31 Dec 2025 10:10:01 -0800 (PST)
-Received: from rowland.harvard.edu ([2601:19b:d03:1700::7e72])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4f4ac532d08sm261378751cf.6.2025.12.31.10.10.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 31 Dec 2025 10:10:01 -0800 (PST)
-Date: Wed, 31 Dec 2025 13:09:58 -0500
-From: Alan Stern <stern@rowland.harvard.edu>
-To: Diederik de Haas <diederik@cknow-tech.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	Huacai Chen <chenhuacai@kernel.org>, linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Shengwen Xiao <atzlinux@sina.com>,
-	linux-rockchip@lists.infradead.org
-Subject: Re: [PATCH] USB: OHCI/UHCI: Add soft dependencies on ehci_hcd
-Message-ID: <1a2aa1e7-7201-47a1-b64c-2a60426caded@rowland.harvard.edu>
-References: <20251230080014.3934590-1-chenhuacai@loongson.cn>
- <2025123049-cadillac-straggler-d2fb@gregkh>
- <DFBMNYF0U5PK.24YOAUZFZ0ESB@cknow-tech.com>
- <73d472ea-e660-474c-b319-b0e8758406c0@rowland.harvard.edu>
- <DFCKZ1I7C83G.1DUX9IT96CYZ3@cknow-tech.com>
+	s=arc-20240116; t=1767206127; c=relaxed/simple;
+	bh=DV1WcPq6dazpvEWVb5QlcEHXNhZbHSMAx59yhMaTPnk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=QBBZQ9UAoYrfEyQtP0HJTLgixBo/oE9k942cgTVRsMj5g1hXUH53irtOZWL/1ZOQ5ud9z0cIFgjq4DnsuPr24HLobYGo9OqV5KF81QJwKoMgiOj+Mr42wOoX2U2BiDdLa5ilxXz03Neuya4QJ77YuxdSpRvYLG8P2zJPm7PAhqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=unPmd90X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F099C113D0;
+	Wed, 31 Dec 2025 18:35:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767206126;
+	bh=DV1WcPq6dazpvEWVb5QlcEHXNhZbHSMAx59yhMaTPnk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=unPmd90XmlyX2rPcuA6/XbfutrCcvA1Vp9ZKgO37DRihCpbBVvrTxiqUzoRtSf33D
+	 xdyubjEXDZ53j4tR8gpOrbss2hxOOU4j5RimwjR6wKwodeVdK6EpzklM2P8ttybXz/
+	 UILiedNnv2M01CbCEthJodLLaQoMDgENNgFr1rdtDWHpqi9FIsOxVlwXT9hna7mtq5
+	 tJGiit4F8AHKSkv4QEe8ZpPNxOyvJNTbtrFDMaLdcUXl/NjRizvL6DKe4Nkz3c4Lke
+	 Y0TbgaQ7hA4pdXzkfuXMiMnUbsoRyvm3OOTcCQXNFEX2BprFwERONBZhjUZzllqvUb
+	 MyqxC2Zuf990g==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Shivani Agarwal <shivani.agarwal@broadcom.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1.y] crypto: af_alg - zero initialize memory allocated via sock_kmalloc
+Date: Wed, 31 Dec 2025 13:35:24 -0500
+Message-ID: <20251231183524.3368512-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025122928-monotone-prodigy-ba4d@gregkh>
+References: <2025122928-monotone-prodigy-ba4d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DFCKZ1I7C83G.1DUX9IT96CYZ3@cknow-tech.com>
+Content-Transfer-Encoding: 8bit
 
-On Wed, Dec 31, 2025 at 06:33:34PM +0100, Diederik de Haas wrote:
-> One of the issue is that I don't (fully) understand how this (should)
-> work. F.e. I wondered about all the PCI 'references' in your explanation
-> (thanks for that :-)).
-> 
-> I (also) wondered why the number on Quartz64-A was lower, but that
-> actually has a PCIe slot ... with a USB3 controller card in it.
-> 
-> If I do ``lsmod | grep pci`` on my PineTab2, I get zero hits, but I do
-> get hits when doing it on my Q64-A.
-> 
-> On my Rock 5B, I get 1 hit, "phy_rockchip_snps_pcie3", but that has a
-> NVMe drive connected to it. And I have a (working) keyboard connected
-> via a USB2 port. And/while I do have the warning ...
+From: Shivani Agarwal <shivani.agarwal@broadcom.com>
 
-I can't say anything specific about your systems without a lot more 
-information.  However, I suspect that any problems you are running into 
-are not related to that warning.
+[ Upstream commit 6f6e309328d53a10c0fe1f77dec2db73373179b6 ]
 
-Alan Stern
+Several crypto user API contexts and requests allocated with
+sock_kmalloc() were left uninitialized, relying on callers to
+set fields explicitly. This resulted in the use of uninitialized
+data in certain error paths or when new fields are added in the
+future.
+
+The ACVP patches also contain two user-space interface files:
+algif_kpp.c and algif_akcipher.c. These too rely on proper
+initialization of their context structures.
+
+A particular issue has been observed with the newly added
+'inflight' variable introduced in af_alg_ctx by commit:
+
+  67b164a871af ("crypto: af_alg - Disallow multiple in-flight AIO requests")
+
+Because the context is not memset to zero after allocation,
+the inflight variable has contained garbage values. As a result,
+af_alg_alloc_areq() has incorrectly returned -EBUSY randomly when
+the garbage value was interpreted as true:
+
+  https://github.com/gregkh/linux/blame/master/crypto/af_alg.c#L1209
+
+The check directly tests ctx->inflight without explicitly
+comparing against true/false. Since inflight is only ever set to
+true or false later, an uninitialized value has triggered
+-EBUSY failures. Zero-initializing memory allocated with
+sock_kmalloc() ensures inflight and other fields start in a known
+state, removing random issues caused by uninitialized data.
+
+Fixes: fe869cdb89c9 ("crypto: algif_hash - User-space interface for hash operations")
+Fixes: 5afdfd22e6ba ("crypto: algif_rng - add random number generator support")
+Fixes: 2d97591ef43d ("crypto: af_alg - consolidation of duplicate code")
+Fixes: 67b164a871af ("crypto: af_alg - Disallow multiple in-flight AIO requests")
+Cc: stable@vger.kernel.org
+Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+[ Adjust context ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ crypto/af_alg.c     | 5 ++---
+ crypto/algif_hash.c | 3 +--
+ crypto/algif_rng.c  | 3 +--
+ 3 files changed, 4 insertions(+), 7 deletions(-)
+
+diff --git a/crypto/af_alg.c b/crypto/af_alg.c
+index 3e333be303fe..4b7a7d9e198e 100644
+--- a/crypto/af_alg.c
++++ b/crypto/af_alg.c
+@@ -1108,14 +1108,13 @@ struct af_alg_async_req *af_alg_alloc_areq(struct sock *sk,
+ 	if (unlikely(!areq))
+ 		return ERR_PTR(-ENOMEM);
+ 
++	memset(areq, 0, areqlen);
++
+ 	ctx->inflight = true;
+ 
+ 	areq->areqlen = areqlen;
+ 	areq->sk = sk;
+-	areq->last_rsgl = NULL;
+ 	INIT_LIST_HEAD(&areq->rsgl_list);
+-	areq->tsgl = NULL;
+-	areq->tsgl_entries = 0;
+ 
+ 	return areq;
+ }
+diff --git a/crypto/algif_hash.c b/crypto/algif_hash.c
+index 84f4e9c2b5d9..45a3ef64e6ab 100644
+--- a/crypto/algif_hash.c
++++ b/crypto/algif_hash.c
+@@ -424,9 +424,8 @@ static int hash_accept_parent_nokey(void *private, struct sock *sk)
+ 	if (!ctx)
+ 		return -ENOMEM;
+ 
+-	ctx->result = NULL;
++	memset(ctx, 0, len);
+ 	ctx->len = len;
+-	ctx->more = false;
+ 	crypto_init_wait(&ctx->wait);
+ 
+ 	ask->private = ctx;
+diff --git a/crypto/algif_rng.c b/crypto/algif_rng.c
+index 407408c43730..38a8f20a02e2 100644
+--- a/crypto/algif_rng.c
++++ b/crypto/algif_rng.c
+@@ -250,9 +250,8 @@ static int rng_accept_parent(void *private, struct sock *sk)
+ 	if (!ctx)
+ 		return -ENOMEM;
+ 
++	memset(ctx, 0, len);
+ 	ctx->len = len;
+-	ctx->addtl = NULL;
+-	ctx->addtl_len = 0;
+ 
+ 	/*
+ 	 * No seeding done at that point -- if multiple accepts are
+-- 
+2.51.0
+
 
