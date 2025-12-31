@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-204353-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204354-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54D42CEC155
-	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 15:32:26 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3920CEC164
+	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 15:32:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 944823005AA3
-	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 14:32:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 034CA300942C
+	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 14:32:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3695525F78F;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D38CF2580F2;
 	Wed, 31 Dec 2025 14:32:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZqpcY/6c"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YinHmWxO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA0F61BD035
-	for <stable@vger.kernel.org>; Wed, 31 Dec 2025 14:32:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 933D61C4A24
+	for <stable@vger.kernel.org>; Wed, 31 Dec 2025 14:32:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767191545; cv=none; b=oIp07DpXjpCtcCAXx2TjHwF2A7OL4vxSDmbio2kVYkrV16BM+MARnit0DJLoqn+ul2gaYDcPZYQaBpNLcurPK7w3TLlB9t/NvsAQXx94MF5v0LLcNpqSE8VpR8SnhmGB9Epv1mHqypuNDtJ2ZuWUgKzhrfrvvLpnz5j8RAfXq/8=
+	t=1767191545; cv=none; b=mErkQluUQqqFfIjXjMQ0BoALe6Yr5O4E6J3W/zhRZhDhzdhvyo03iVdxHs+YyCrC9KmqKb7nsmZ74wFj0oEq7xIHjvqYYgTfw4hvysVCffnjO1eQ89JKN6X8Iloyrl4Q56W8ZUPs9dqLIUfrKZBFjUfVzCNlw7aY6CwUr1gL/LM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1767191545; c=relaxed/simple;
-	bh=sYeg7jw2fMl6BeSley3INr0POxjO0lybPnFV6DcKDu8=;
+	bh=ZYW3OWHBct9Tyo6H49B0tZ3H5uBrB4hQxdIUkQnjy6w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ci/CFP8tvXo/iWzAAA1kHvz0pNge64tAhlufKxPOol5quEwxJbfyix0bJAUNYhckSSGciFsWiIlzrcfQm4CvlUaJ4p5s1RnzEDcqRcEdRRGrCfwidjV4oW1O1uVDhRF8jRYgt1i8H+suHd2zqqRwHXbLAJYsXZQMn6ByoMxVcac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZqpcY/6c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2676C19421;
-	Wed, 31 Dec 2025 14:32:23 +0000 (UTC)
+	 MIME-Version; b=WUqzp1edA2dM5HDfv/FXRLXLIilWd0aom8Wv5xAXw7peemAjmOSxwnAxTwkxSofxwq+q4b81vK6re815G/a4lxs5av2vhhUj/m75FDwV4FpGFcQKMLJatIkRsAi2F4bUKrC6wmB42zyJV7Fjgk/ypXOpXxQ8lJ40hmMS59Lo4EU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YinHmWxO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6817C113D0;
+	Wed, 31 Dec 2025 14:32:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767191544;
-	bh=sYeg7jw2fMl6BeSley3INr0POxjO0lybPnFV6DcKDu8=;
+	s=k20201202; t=1767191545;
+	bh=ZYW3OWHBct9Tyo6H49B0tZ3H5uBrB4hQxdIUkQnjy6w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZqpcY/6cRjmhxjoFmbs94tekfMm9eqhLcQZgW4k3LCMZVIEtV3Ze58ChUk8glOr8R
-	 zvnBoqCBzfr8GyGtNkXensYR6v9jufbVjUzhKriEnG1qpSt/6Xt4QXbLDWvNb044TV
-	 PlnIwQGmQJCfLU8ezh339OK32mDOpnNatUZSuUqzq3rnOZDWlFc0IwX5IPQjB0VHHp
-	 LrA8nK23zwoCCvfe7WOJ4uxWDxcI5qJyYXIaek2Io6kWmNtOGSrE3ya0+b8pfg15fP
-	 FmSZvXC36UYBZKzeUs1GUTwl1Erg9+UeQYM7OjRFsmkJq1TJI+xXfz4quNDZkNocBL
-	 3iqtaVY3l1fWQ==
+	b=YinHmWxOZyILYE4X6nLMx1uIJS4IV2gROQcsxf7sNAYELeSfn9muOEglq/Zlk4Wue
+	 mO5g3xDFT/jhqigoDHrl2JdMpVVX8RoVodB+Ix8Mt8kYACjwiv7ofMcGr3HUagYAnn
+	 xswyS1F6GiTBzbrjEgMk9dYxmR24sgPiRswdtHXUHsFphRjB5m1Mywlq5jEofm1dwX
+	 yc1i+mMdFNYXCm9xqVbpg3sKULc7LDkUY3BsYq9xBXqin/vQAUXv691bFrnBllrtrV
+	 U4vZiF24XYKe1ioWVe5g+NEY5WOFpzT4c0aKN14BKnhS1VUNNRRfTB/O6/Llbw+CS8
+	 g3fuYSq/6f2lA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Mario Limonciello <mario.limonciello@amd.com>,
-	Mika Westerberg <westeri@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+Cc: "Mario Limonciello (AMD)" <superm1@kernel.org>,
+	Amit Chaudhari <amitchaudhari@mac.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y 5/7] gpiolib: acpi: Add a quirk for Acer Nitro V15
-Date: Wed, 31 Dec 2025 09:32:16 -0500
-Message-ID: <20251231143218.3042757-5-sashal@kernel.org>
+Subject: [PATCH 6.12.y 6/7] gpiolib: acpi: Add quirk for ASUS ProArt PX13
+Date: Wed, 31 Dec 2025 09:32:17 -0500
+Message-ID: <20251231143218.3042757-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251231143218.3042757-1-sashal@kernel.org>
 References: <2025122946-rotunda-passenger-2915@gregkh>
@@ -60,49 +61,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: "Mario Limonciello (AMD)" <superm1@kernel.org>
 
-[ Upstream commit 9ab29ed505557bd106e292184fa4917955eb8e6e ]
+[ Upstream commit 23800ad1265f10c2bc6f42154ce4d20e59f2900e ]
 
-It is reported that on Acer Nitro V15 suspend only works properly if the
-keyboard backlight is turned off. In looking through the issue Acer Nitro
-V15 has a GPIO (#8) specified in _AEI but it has no matching notify device
-in _EVT. The values for GPIO #8 change as keyboard backlight is turned on
-and off.
+The ASUS ProArt PX13 has a spurious wakeup event from the touchpad
+a few moments after entering hardware sleep.  This can be avoided
+by preventing the touchpad from being a wake source.
 
-This makes it seem that GPIO #8 is actually supposed to be solely for
-keyboard backlight.  Turning off the interrupt for this GPIO fixes the issue.
-Add a quirk that does just that.
+Add to the wakeup ignore list.
 
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4169
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Acked-by: Mika Westerberg <westeri@kernel.org>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reported-by: Amit Chaudhari <amitchaudhari@mac.com>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4482
+Tested-by: Amit Chaudhari <amitchaudhari@mac.com>
+Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Link: https://lore.kernel.org/20250814183430.3887973-1-superm1@kernel.org
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Stable-dep-of: 2d967310c49e ("gpiolib: acpi: Add quirk for Dell Precision 7780")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpiolib-acpi-quirks.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ drivers/gpio/gpiolib-acpi-quirks.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
 diff --git a/drivers/gpio/gpiolib-acpi-quirks.c b/drivers/gpio/gpiolib-acpi-quirks.c
-index 219667315b2c..c13545dce349 100644
+index c13545dce349..bfb04e67c4bc 100644
 --- a/drivers/gpio/gpiolib-acpi-quirks.c
 +++ b/drivers/gpio/gpiolib-acpi-quirks.c
-@@ -331,6 +331,19 @@ static const struct dmi_system_id gpiolib_acpi_quirks[] __initconst = {
- 			.ignore_interrupt = "AMDI0030:00@11",
+@@ -344,6 +344,20 @@ static const struct dmi_system_id gpiolib_acpi_quirks[] __initconst = {
+ 			.ignore_interrupt = "AMDI0030:00@8",
  		},
  	},
 +	{
 +		/*
-+		 * Wakeup only works when keyboard backlight is turned off
-+		 * https://gitlab.freedesktop.org/drm/amd/-/issues/4169
++		 * Spurious wakeups from TP_ATTN# pin
++		 * Found in BIOS 5.35
++		 * https://gitlab.freedesktop.org/drm/amd/-/issues/4482
 +		 */
 +		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
-+			DMI_MATCH(DMI_PRODUCT_FAMILY, "Acer Nitro V 15"),
++			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
++			DMI_MATCH(DMI_PRODUCT_FAMILY, "ProArt PX13"),
 +		},
 +		.driver_data = &(struct acpi_gpiolib_dmi_quirk) {
-+			.ignore_interrupt = "AMDI0030:00@8",
++			.ignore_wake = "ASCP1A00:00@8",
 +		},
 +	},
  	{} /* Terminating entry */
