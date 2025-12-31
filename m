@@ -1,163 +1,96 @@
-Return-Path: <stable+bounces-204386-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204387-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00C0BCEC892
-	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 21:41:46 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59408CEC8C6
+	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 22:00:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CB551300AC4D
-	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 20:41:43 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 03A55300118F
+	for <lists+stable@lfdr.de>; Wed, 31 Dec 2025 21:00:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4029D30CDA9;
-	Wed, 31 Dec 2025 20:41:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ushr2eAG"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 286ED2E228D;
+	Wed, 31 Dec 2025 21:00:04 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.itouring.de (mail.itouring.de [85.10.202.141])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00E7A30CD89
-	for <stable@vger.kernel.org>; Wed, 31 Dec 2025 20:41:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E428A1C7012;
+	Wed, 31 Dec 2025 20:59:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.10.202.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767213703; cv=none; b=fzJAjMTGOz7lX+4bET5mIkvxbHeOOFuKU/yvEwB3OoqqVxgIRlZ5NutmA9tj+L284xmeJVElCazQLRH+HucT1mN6LOHD70qq8cyKfeOR7z+JFeyuKNEEdcy7qIb0Kwt9EwyO2xnNuzUDXfxPAHN4j/YaazYnorF98S3aGl5Foc4=
+	t=1767214804; cv=none; b=m3kX6/KQSXSrY2klIeJYsp4Ur1C2NmhjvIXn1RmfnmWMmusqFMhfGpGRPoEWg/OUrzQ8NkqTnDQiAcKzOi3gYu/EMgWwoCMSw29R5aGDWjm3tqpTF99dy4VqfzFVnNW6MJdAWb3UWLYotX5EBIjYWGXTxSb3mE0968h1w6sO0w4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767213703; c=relaxed/simple;
-	bh=3VrN/qXrvLpIhsqXnqK0UlrbXeIPgz5NDB5Q6H/FMQU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lsN6KLulFMClOk/wY/nb1juEWlc+y3+Lr04soNF1mjPhWD1UeHAivxixhCh9ED194KMPdS6YqpQC5DIYq8YlLRBzVdLfiTTUHIjBlqSABjZQMda3J8/v89A0BTA9Ue4xb4C5561jEZBPyGeZMIObheSf1vFOHQ+BKVMrQirR2i0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ushr2eAG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 235C1C113D0;
-	Wed, 31 Dec 2025 20:41:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767213702;
-	bh=3VrN/qXrvLpIhsqXnqK0UlrbXeIPgz5NDB5Q6H/FMQU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ushr2eAG2Iynjzi/+AzScZf6jLJyK3elXxcMcv/78V3Hqijj0j4zfiZpC3ur62kQv
-	 PCG43SicH4e8cjCYuxq5bWNm3Pm5gOBy9vQP4cBGhQxPgxQ6Vghn3Tn4ATqyasZnZZ
-	 UKi/W3j+xcol7AK/AWe/Wnfj6xw3F6iLb70E53QpcfZSh+yLN3ssqJKxNq2c8M2Z/s
-	 RnvgFKkK+311RrDXZLglhJlF+KCgkZXbv8UqV++xy3a6p+nX2e4fXFYjdPOadbK2QO
-	 uSk+ijOw2ijVq9EoAIpc1HZdi9DICMlCLFudXr39rQQJWRXiaJEX6960pyKUA3sD3k
-	 q2OdukvV0/3fg==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Shivani Agarwal <shivani.agarwal@broadcom.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y] crypto: af_alg - zero initialize memory allocated via sock_kmalloc
-Date: Wed, 31 Dec 2025 15:41:40 -0500
-Message-ID: <20251231204140.3475630-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025122930-sinner-squad-c6cd@gregkh>
-References: <2025122930-sinner-squad-c6cd@gregkh>
+	s=arc-20240116; t=1767214804; c=relaxed/simple;
+	bh=05il5/H64ucfD4ZVvaPxo+1OEQH5VOUt/8ASoK+VH5c=;
+	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=QT6SxLX4cr3pv8m27I1C9F7H8xFX756tgjS3QSLT9gjSdEXgRVGiSLQGnJnVACOSYv1lfL1YEndZlvK7Mdm8+DHn7LpCHFIKRze6DFOVj6PIlmds+7eM6r1BoaoSQKFrQlv9gecY0QR8/6HapGqmZKlAkj3t+x3xxpTC5C/oS+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=applied-asynchrony.com; spf=pass smtp.mailfrom=applied-asynchrony.com; arc=none smtp.client-ip=85.10.202.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=applied-asynchrony.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=applied-asynchrony.com
+Received: from tux.applied-asynchrony.com (p5b07ecd7.dip0.t-ipconnect.de [91.7.236.215])
+	by mail.itouring.de (Postfix) with ESMTPSA id 2407FD20158;
+	Wed, 31 Dec 2025 21:59:52 +0100 (CET)
+Received: from [192.168.100.221] (hho.applied-asynchrony.com [192.168.100.221])
+	by tux.applied-asynchrony.com (Postfix) with ESMTP id B7C366016E288;
+	Wed, 31 Dec 2025 21:59:51 +0100 (CET)
+Subject: Re: [BUG 6.18.2] Null Pointer Exception in Fair Scheduler
+To: "Dylan E." <dylan.eskew@candelatech.com>, stable@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org
+Cc: gregkh@linuxfoundation.org, sashal@kernel.org, jjohnson@kernel.org
+References: <38b9cad8-1c17-4d89-9f17-44f89fb66ab8@candelatech.com>
+From: =?UTF-8?Q?Holger_Hoffst=c3=a4tte?= <holger@applied-asynchrony.com>
+Organization: Applied Asynchrony, Inc.
+Message-ID: <39762dfb-d8bd-f1ab-b2f5-a44fa8139911@applied-asynchrony.com>
+Date: Wed, 31 Dec 2025 21:59:51 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+In-Reply-To: <38b9cad8-1c17-4d89-9f17-44f89fb66ab8@candelatech.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
 
-From: Shivani Agarwal <shivani.agarwal@broadcom.com>
+On 2025-12-31 21:00, Dylan E. wrote:
+> Hello,
+> 
+> When booting into the v6.18.2 tagged kernel from linux-stable, I get the following
+> stack trace while booting into the system every 1 in 5 boots or so, usually during
+> fsck or early systemd service initialization:
+> 
+> ---
+> BUG: kernel NULL pointer dereference, address: 0000000000000051
+> #PF: supervisor read access in kernel mode
+> #PF: error_code(0x0000) - not-present page
+> PGD 0 P4D 0
+> Oops: Oops: 0000 [#1] SMP
+> CPU: 0 UID: 0 PID: 15 Comm: rcu_preempt Not tainted 6.18.2 #2 PREEMPT(full)
+> Hardware name:  /SKYBAY, BIOS 5.12 06/27/2017
+> RIP: 0010:pick_task_fair+0x57/0x160
+> Code: 66 90 66 90 48 8b 5d 50 48 85 db 74 10 48 8b 73 70 48 89 ef e8 3a 74 ff ff 85 c0 75 71 be 01 00 00 00 48 89 ef e8 29 a5 ff ff <80> 78 51 00 48 89 c3 0f 85 80 00 00 00 48 85 c0 0f 84 87 00 00 00
+> RSP: 0000:ffffc900000d3cf8 EFLAGS: 00010086
+> RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000800
+> RDX: fffffc02295d3c00 RSI: 0000000000000800 RDI: 0000000002edc4f2
+> RBP: ffff888108f13000 R08: 0000000000000400 R09: 0000000000000002
+> R10: 0000000000000260 R11: ffff888108b74200 R12: ffff888265c2cd00
+> R13: 0000000000000000 R14: ffff888265c2cd80 R15: ffffffff827c6fa0
+> FS:  0000000000000000(0000) GS:ffff8882e2724000(0000) knlGS:0000000000000000
+> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> CR2: 0000000000000051 CR3: 00000001110a5003 CR4: 00000000003706f0
+> Call Trace:
+>   <TASK>
+>   pick_next_task_fair+0x1d/0x3d0
+>   __schedule+0x1ee/0x10c0
 
-[ Upstream commit 6f6e309328d53a10c0fe1f77dec2db73373179b6 ]
+Welcome to the club :) I already reported it and requested a fix in:
+https://lore.kernel.org/stable/04b82346-c38a-08e2-49d5-d64981eb7dae@applied-asynchrony.com/
 
-Several crypto user API contexts and requests allocated with
-sock_kmalloc() were left uninitialized, relying on callers to
-set fields explicitly. This resulted in the use of uninitialized
-data in certain error paths or when new fields are added in the
-future.
+You can apply the patch from:
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=127b90315ca07ccad2618db7ba950a63e3b32d22
+which should fix it.
 
-The ACVP patches also contain two user-space interface files:
-algif_kpp.c and algif_akcipher.c. These too rely on proper
-initialization of their context structures.
-
-A particular issue has been observed with the newly added
-'inflight' variable introduced in af_alg_ctx by commit:
-
-  67b164a871af ("crypto: af_alg - Disallow multiple in-flight AIO requests")
-
-Because the context is not memset to zero after allocation,
-the inflight variable has contained garbage values. As a result,
-af_alg_alloc_areq() has incorrectly returned -EBUSY randomly when
-the garbage value was interpreted as true:
-
-  https://github.com/gregkh/linux/blame/master/crypto/af_alg.c#L1209
-
-The check directly tests ctx->inflight without explicitly
-comparing against true/false. Since inflight is only ever set to
-true or false later, an uninitialized value has triggered
--EBUSY failures. Zero-initializing memory allocated with
-sock_kmalloc() ensures inflight and other fields start in a known
-state, removing random issues caused by uninitialized data.
-
-Fixes: fe869cdb89c9 ("crypto: algif_hash - User-space interface for hash operations")
-Fixes: 5afdfd22e6ba ("crypto: algif_rng - add random number generator support")
-Fixes: 2d97591ef43d ("crypto: af_alg - consolidation of duplicate code")
-Fixes: 67b164a871af ("crypto: af_alg - Disallow multiple in-flight AIO requests")
-Cc: stable@vger.kernel.org
-Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-[ Adjust context ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- crypto/af_alg.c     | 5 ++---
- crypto/algif_hash.c | 3 +--
- crypto/algif_rng.c  | 3 +--
- 3 files changed, 4 insertions(+), 7 deletions(-)
-
-diff --git a/crypto/af_alg.c b/crypto/af_alg.c
-index 25cf2fa3dde7..3d622904f4c3 100644
---- a/crypto/af_alg.c
-+++ b/crypto/af_alg.c
-@@ -1127,14 +1127,13 @@ struct af_alg_async_req *af_alg_alloc_areq(struct sock *sk,
- 	if (unlikely(!areq))
- 		return ERR_PTR(-ENOMEM);
- 
-+	memset(areq, 0, areqlen);
-+
- 	ctx->inflight = true;
- 
- 	areq->areqlen = areqlen;
- 	areq->sk = sk;
--	areq->last_rsgl = NULL;
- 	INIT_LIST_HEAD(&areq->rsgl_list);
--	areq->tsgl = NULL;
--	areq->tsgl_entries = 0;
- 
- 	return areq;
- }
-diff --git a/crypto/algif_hash.c b/crypto/algif_hash.c
-index be21cfdc6dbc..a48fc7c24341 100644
---- a/crypto/algif_hash.c
-+++ b/crypto/algif_hash.c
-@@ -423,9 +423,8 @@ static int hash_accept_parent_nokey(void *private, struct sock *sk)
- 	if (!ctx)
- 		return -ENOMEM;
- 
--	ctx->result = NULL;
-+	memset(ctx, 0, len);
- 	ctx->len = len;
--	ctx->more = false;
- 	crypto_init_wait(&ctx->wait);
- 
- 	ask->private = ctx;
-diff --git a/crypto/algif_rng.c b/crypto/algif_rng.c
-index 407408c43730..38a8f20a02e2 100644
---- a/crypto/algif_rng.c
-+++ b/crypto/algif_rng.c
-@@ -250,9 +250,8 @@ static int rng_accept_parent(void *private, struct sock *sk)
- 	if (!ctx)
- 		return -ENOMEM;
- 
-+	memset(ctx, 0, len);
- 	ctx->len = len;
--	ctx->addtl = NULL;
--	ctx->addtl_len = 0;
- 
- 	/*
- 	 * No seeding done at that point -- if multiple accepts are
--- 
-2.51.0
-
+cheers
+Holger
 
