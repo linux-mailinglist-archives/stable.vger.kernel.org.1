@@ -1,290 +1,154 @@
-Return-Path: <stable+bounces-204409-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204410-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B68ECECC64
-	for <lists+stable@lfdr.de>; Thu, 01 Jan 2026 03:58:42 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F942CECDE2
+	for <lists+stable@lfdr.de>; Thu, 01 Jan 2026 09:27:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 33384300252F
-	for <lists+stable@lfdr.de>; Thu,  1 Jan 2026 02:58:38 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 6D0033002870
+	for <lists+stable@lfdr.de>; Thu,  1 Jan 2026 08:27:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43CD9257827;
-	Thu,  1 Jan 2026 02:58:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 016132222BF;
+	Thu,  1 Jan 2026 08:27:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bYEcsTYY"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O3llcKuI"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
+Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54B4A24E4AF
-	for <stable@vger.kernel.org>; Thu,  1 Jan 2026 02:58:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F4C317A303
+	for <stable@vger.kernel.org>; Thu,  1 Jan 2026 08:27:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767236316; cv=none; b=OfMi/QTIOitTa/GvKIQRfyRhOFPytrws9R5umknXHdK8qEQeKg9yYLyBbQMI8apbPJT7ySklawYzZTiYZGLmQJLjBc5KqagOejlavo2Hg9MihgVm8sj07CZwYF5DCnNeEhD7Scevbj87cLkktBjjNI/Keoj5wptCZK8rx5rEQw8=
+	t=1767256041; cv=none; b=qQfWeKNlJ98wtq+0HJ315xprw+zryjBFzNFXEUcqZQEd8qtlh2V2Wu4FJPd9yoxoj7gw15BRkSNua7cURRftvowffHM0hSVONstooSeeHNoYZAxCD2nbbqaQvvuibCbcQBcgzKy/irSPBZAijYxruCHJ5qL+KMQkPac7CSGVn0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767236316; c=relaxed/simple;
-	bh=m75hsT8RWIPq7UtpZnmnezUHE9721/YA2vWe47dXprc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=elxMilyCuuXIbo00Ds7MTU8v14w+A3vKpa600UtvT5eTM6qEOouKtdp7im/I9HaeikIVefALBSCmOjuYV6iJgJUEb56a+8HV9tMNmvYeJFxYW2k8YlnWCUOO/VAx34xB19GOsbzbYDVD7Fq3FLqaSrQ75RB9oPs91jf+Xv8YvxA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bYEcsTYY; arc=none smtp.client-ip=209.85.128.178
+	s=arc-20240116; t=1767256041; c=relaxed/simple;
+	bh=g1mMzgD2REYJsThm5iAh62mc8uScUvCP1p2CjKOd77g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sjJRbObvXdAJpW2j54snnVX93nyWUUKr450W6ScZRuRaIKo+Kt5hYpx9MRn0++hsBiZBvNyOxzjupmCh+Qw77mM1ZhMFC+VsRwFpH9bwicqtwA2xODj6Y17HBLk0CrAeDI1BpZz/EUO2POcizpXEFDz17qHmOBdETMuwRhFHd04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=O3llcKuI; arc=none smtp.client-ip=209.85.210.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-78d6a3c3b77so117849567b3.0
-        for <stable@vger.kernel.org>; Wed, 31 Dec 2025 18:58:33 -0800 (PST)
+Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-7b9c17dd591so9639589b3a.3
+        for <stable@vger.kernel.org>; Thu, 01 Jan 2026 00:27:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767236313; x=1767841113; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=k9qPVyC1carZwgVVH75m9TaECbDsPsKfFm26AaARR8o=;
-        b=bYEcsTYYlQb0WIc6ou1eMQws+SXz3MKbYNFjjbeQD/x/4EXQb2xcpeuKAkuDRX84XN
-         7S4hgYxEhs4eeNDhFSvj2CQXuJENTeyQvQvLXyZfiCOQx/l4nWTR5tOrEOLFDfjzJkVz
-         929Rd7mGpnvv2WIEy9NlIrJd/34rnqLL0Lf7Ujf3GAqlThN5hcPTfgXvMhjn4EENJqR8
-         2IxNpBdtAkEjh5CG+qaapemgUg4Z4sUbRGF1SEqBErwAEcnxIidbnC+CFemqGqeVZFOo
-         3fv9AL/x9UsbugDIRjO5xqsFpd624CtgMwT+6dM1JZpTRLQnRkrcG8qKZnjqI98cMAUj
-         jrsw==
+        d=gmail.com; s=20230601; t=1767256040; x=1767860840; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=grqBbaE6YnOptD2H7gCSdhIM6A7QBPysLgSlWzZLLhY=;
+        b=O3llcKuIlO6pwBCQR7JhpoSws6bzbbdDwMeuhPDpT/WeHwZ+yUhI3zdpndQvaPgP6u
+         MAvFGThj7ftw8nZ9rSCAHP/zo8ZBpW0auIilbJNd2JRoBDqh0OEi0v496E+7Fn33nuHw
+         BUzDxHwcurxcIyVdCPx6/SO7A5XHMDS4Y/ipJcdGWy3lSyjV7h+Mz9LcXRU2+7TzPT2/
+         XNdwlMdxantQbaqAZZF8JGzJ2hzpOJGTmkm9GwJ9evKeOGNSba+gQqhQouNLiwRkUw0w
+         2V2o1K8kxlDAfOQDIqwbiHLXzLrfpJzlaUoqI0ybuCyJ4rxv8wQ7JdtN9TYG18eTn1QY
+         xQTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767236313; x=1767841113;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=k9qPVyC1carZwgVVH75m9TaECbDsPsKfFm26AaARR8o=;
-        b=eO+Ix0Q7qg2fAZMIl1KnPb/gluIfVT5IMT2MyyHmWEwZ59/EidIOZBmMrlHPCU+wt+
-         aTpAvskK45NIhp0Ltr8jDzH1g50ikb9H7jyfAyD35lqjdf66yOuqhBp9ufFaYPIum+ck
-         4KslDsVqV4Mp2hLSxNMj3rYcO4lhxbYDFAym72GYjEoD6HF9OsYceTe+ya09TNhjFEMo
-         4E+uBK5VLFdHSpat1Af62FVKK7N0Tx4W9rkANQhVjalPbxDANJzJyUhsVTa9OaJ74EWf
-         l0UziR2IqZvB3Sh7HYNybE8wwRDTvV9MQRVdpCi7qi7Rb9YzaX9w59IsGNVho9Icp1fC
-         tdng==
-X-Forwarded-Encrypted: i=1; AJvYcCV+Nk1H/9SdANeTU37TxvjBMHOBHo5eN+7iCW0aE6E4WCOPaj/mdRm8HQ3aRc1NNAkbHFskDXw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwWFiSg+ngJoQPRuV12ukP9cVjuzw5/04/XqUUHZADn2aeOhe6F
-	tJ6/1h2RFysBmC/qqx34ouwWGxF4xyFfx1kw7qi1PVxWgUbZjXLUcyznXRG807bbrjpuZ3jpB24
-	AryecKKj1y0ztkYhwXaBWcr4ai8hjWLs=
-X-Gm-Gg: AY/fxX6hz5pVS3XamjhM0+q/lTnfZmYqPzT7kJVB+6+TDcf8B5d8+K6+ClhLbZMQ/7U
-	xMRT3JWKcO+tUT+LWt238rBTDnnnYW2VyWBrPxxw5vfbspAasaHyvnM2rWuZNaNUxz9s1RlXaia
-	fhlT8ISEOODA/vpXcMQ2MCZKiPdL3ynHCJG+Ozz6rWyLuQiymrZ3G95VRFpkpjELCBfvd8KHWZw
-	yw5oJnw7dpAWy82kZgA94GOUSQIttfAj5JJcqJghTQ0qVcRBcxI63Xft/GqFGBG0R0GRv/T
-X-Google-Smtp-Source: AGHT+IEykEkaPCHD0X0I6L0ptnL+oTDQcPJEkuriAyEDUp0ZrlA4011Fv2iFVPiLKJUYRQYPeI0lIJC47Kv+zgF/GSs=
-X-Received: by 2002:a53:d009:0:b0:63f:b2b3:8c2d with SMTP id
- 956f58d0204a3-64663252770mr33509496d50.17.1767236313054; Wed, 31 Dec 2025
- 18:58:33 -0800 (PST)
+        d=1e100.net; s=20230601; t=1767256040; x=1767860840;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=grqBbaE6YnOptD2H7gCSdhIM6A7QBPysLgSlWzZLLhY=;
+        b=mMBvI7fi9NRiRwDfmNozOJin1+lFzAJpgD3X2KKo4lZ1M5nahpjPyHp1citv1fBvnA
+         8On6rVxqi5uIyTP80W9NiEbkr68cyMJRrPCJIENwiTrnT1N4h+eSei57XM6KjaX3Xkec
+         x2KKzSwjyjmHGzrdgKM1t1OAxq2rAhZrKuFnDO3Ethwhr0QFrYhpnhaqlqgUIGfp8pT9
+         jABEUpuVcSFUOYK2MHRSMJtcBlePNyIBlmJaWO0dHtB/i8YCPdEpV0ufjKX8GeuYkRk5
+         TEin90WBkYS4VTq9mHPtnDNZqL0YNChdjPFeA9/6i91nApG22+eC1E76pBqT9Ps0kZZc
+         d5gg==
+X-Forwarded-Encrypted: i=1; AJvYcCUV/Nb4+SeuX2QYsF31xTN3cbXrYluAVhhitDqnCQk1BhDY/6TeinJYMiTbeIFacETjO+wo+l4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwOxCaFrSZU89744Em9J4+D4Fzbu9sS2E5O8l/d54D0uQu3vdL7
+	7AXI36T0r67t+igOpUuB+CcZCT8G5kk6v4OHSPl+acqflstoZ7FJxuiG
+X-Gm-Gg: AY/fxX7AC2P2JZxrLgSSmGckIWp2cARt1k/eGyCNBHvutv6SyDLbfX82RUwNQ3KxNes
+	EzOkoSJDQ3LEdUzChyqphLF2/sGPVWHsI+LzOtBKp78+KEzhCFuNJBRrc4TlfgOf8Jq3RckTeub
+	CRu8O+hvY5YFLsAlnjgQRVbMvERSHRUnKSWuFsc9D/1XkOGYrF1Kk29XcW372RFZcftglhVrCeH
+	YVLf3H+MVUu+vuR2Vx+Ao368F0IVjNqjuxdsDXoc2ygyCMYPWYPdYjIQvD85Xkd+buuDHg7BVNs
+	CZ/M+HR0YcMQYxpH3raK28lwKFv9+Mk/e3KH97bSSRVS72kwfpz/qDoicNq8UWvyXKaSGmQuDTW
+	53SNvXfUMugjLn5OTlpZGbmaPbJnenTbCOzDhFzvhmWLIIAb8/Ut1znJmVqAKOA4MqwxXwLNqES
+	7bd/urr1lUar3Hos4HQ9JuYnk=
+X-Google-Smtp-Source: AGHT+IHhkA3a5smj1iEMSa2b7GI5Q9tU3FN8KidSwq7FxEo8bwOhmjGkB12B1a/5qh/4kK54JlHQYQ==
+X-Received: by 2002:a05:6a21:32a7:b0:35f:68d:4314 with SMTP id adf61e73a8af0-376a7afae04mr34883862637.24.1767256039592;
+        Thu, 01 Jan 2026 00:27:19 -0800 (PST)
+Received: from google.com ([2402:7500:499:de94:df89:9172:9a1d:16f])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c1e7ca0baf3sm33118003a12.34.2026.01.01.00.27.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 01 Jan 2026 00:27:18 -0800 (PST)
+Date: Thu, 1 Jan 2026 16:27:13 +0800
+From: Kuan-Wei Chiu <visitorckw@gmail.com>
+To: Lucas Wei <lucaswei@google.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+	sjadavani@google.com, kernel test robot <lkp@intel.com>,
+	stable@vger.kernel.org, kernel-team@android.com,
+	linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, visitorckw@google.com,
+	marscheng@google.com
+Subject: Re: [PATCH v2] arm64: errata: Workaround for SI L1 downstream
+ coherency issue
+Message-ID: <aVYv4bf8BVW8b-Sf@google.com>
+References: <20251229033621.996546-1-lucaswei@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAHOvCC4_unsc9u4kEDBTNxfS3rsiQi5QBTaiu3fGDcGrdryyBA@mail.gmail.com>
- <20260101014107.87821-1-sj@kernel.org>
-In-Reply-To: <20260101014107.87821-1-sj@kernel.org>
-From: JaeJoon Jung <rgbi3307@gmail.com>
-Date: Thu, 1 Jan 2026 11:58:21 +0900
-X-Gm-Features: AQt7F2qk60Y9SeYysM-zJgRnvUfmjuZOg6-DbWG6PFvxlPWAHpnRRFpuE3nJJkI
-Message-ID: <CAHOvCC6UEaWx=Jj+x3Mfo5HAGL+6yAnEvJCrkiLe0M2cL+3wsQ@mail.gmail.com>
-Subject: Re: [PATCH] mm/damon/core: remove call_control in inactive contexts
-To: SeongJae Park <sj@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, "# 6 . 14 . x" <stable@vger.kernel.org>, 
-	damon@lists.linux.dev, linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251229033621.996546-1-lucaswei@google.com>
 
-On Thu, 1 Jan 2026 at 10:41, SeongJae Park <sj@kernel.org> wrote:
->
-> On Thu, 1 Jan 2026 09:55:56 +0900 JaeJoon Jung <rgbi3307@gmail.com> wrote:
->
-> > On Thu, 1 Jan 2026 at 00:26, SeongJae Park <sj@kernel.org> wrote:
-> > >
-> > > On Wed, 31 Dec 2025 14:27:54 +0900 JaeJoon Jung <rgbi3307@gmail.com> wrote:
-> > >
-> > > > On Wed, 31 Dec 2025 at 10:25, SeongJae Park <sj@kernel.org> wrote:
-> > > > >
-> > > > > On Mon, 29 Dec 2025 19:45:14 -0800 SeongJae Park <sj@kernel.org> wrote:
-> > > > >
-> > > > > > On Mon, 29 Dec 2025 18:41:28 -0800 SeongJae Park <sj@kernel.org> wrote:
-> > > > > >
-> > > > > > > On Mon, 29 Dec 2025 17:45:30 -0800 SeongJae Park <sj@kernel.org> wrote:
-> > > > > > >
-> > > > > > > > On Sun, 28 Dec 2025 10:31:01 -0800 SeongJae Park <sj@kernel.org> wrote:
-> > > > > > > >
-> > > > > > [...]
-> > > > > > > > I will send a new version of this fix soon.
-> > > > > > >
-> > > > > > > So far, I got two fixup ideas.
-> > > > > > >
-> > > > > > > The first one is keeping the current code as is, and additionally modifying
-> > > > > > > kdamond_call() to protect all call_control object accesses under
-> > > > > > > ctx->call_controls_lock protection.
-> > > > > > >
-> > > > > > > The second one is reverting this patch, and doing the DAMON running status
-> > > > > > > check before adding the damon_call_control object, but releasing the
-> > > > > > > kdamond_lock after the object insertion is done.
-> > > > > > >
-> > > > > > > I'm in favor of the second one at the moment, as it seems more simple.
-> > > > > >
-> > > > > > I don't really like both approaches because those implicitly add locking rules.
-> > > > > > If the first approach is taken, damon_call() callers should aware they should
-> > > > > > not register callback functions that can hold call_controls_lock.  If the
-> > > > > > second approach is taken, we should avoid holding kdamond_lock while holding
-> > > > > > damon_call_control lock.  The second implicit rule seems easier to keep to me,
-> > > > > > but I want to avoid that if possible.
-> > > > > >
-> > > > > > The third idea I just got is, keeping this patch as is, and moving the final
-> > > > > > kdamond_call() invocation to be made _before_ the ctx->kdamond reset.  That
-> > > > > > removes the race condition between the final kdamond_call() and
-> > > > > > damon_call_handle_inactive_ctx(), without introducing new locking rules.
-> > > > >
-> > > > > I just posted the v2 [1] with the third idea.
-> > > > >
-> > > > > [1] https://lore.kernel.org/20251231012315.75835-1-sj@kernel.org
-> > > >
-> > > > I generally agree with what you've said so far.  However, it's inefficient
-> > > > to continue executing damon_call_handle_inactive_ctx() while kdamond is
-> > > > "off".  There's no need to add a new damon_call_handle_inactive_ctx()
-> > > > function.
-> > >
-> > > As I mentioned before on other threads with you, we care not only efficiency
-> > > but also maintainability of the code.  The inefficiency you are saying about
-> > > happens only in corner cases because damon_call() is not usually called while
-> > > kdamond is off.  So the gain of making this efficient is not that big.
-> >
-> > The overhead isn't that high, but I think it's better to keep things
-> > simple.
-> > I think it's better to use list_add_tail() when kdamond is "on".
-> >
-> > >
-> > > Meanwhile, to avoid this, as I mentioned on the previous reply to the first and
-> > > the second idea of the fix, we need to add locking rule, which makes the code
-> > > bit difficult to maintain.
-> >
-> > I think it's better to solve it with the existing kdamond_call(ctx,
-> > cancel=true) rather than adding the damon_call_handle_inactive_ctx().
->
-> On my previous reply, I was saying I think your suggested approach is not
-> making it simple but only more complicated in the next paragraph.  And I was
-> again further explaining why I think so.  More specifically, the added locking
-> rule, that I previously explained with the third fix idea.
->
-> Your above reply is saying it is "better", without any reason.  It even not
-> addressing my concern that I explained more than once.  As a result, I again
-> fail at finding why you keep repeating the argument.
->
-> So, let me again ask you.  Please explain.
+Hi Lucas,
 
-I've already answered your question.
-Please understand my lack of expressiveness.
+On Mon, Dec 29, 2025 at 03:36:19AM +0000, Lucas Wei wrote:
+> When software issues a Cache Maintenance Operation (CMO) targeting a
+> dirty cache line, the CPU and DSU cluster may optimize the operation by
+> combining the CopyBack Write and CMO into a single combined CopyBack
+> Write plus CMO transaction presented to the interconnect (MCN).
+> For these combined transactions, the MCN splits the operation into two
+> separate transactions, one Write and one CMO, and then propagates the
+> write and optionally the CMO to the downstream memory system or external
+> Point of Serialization (PoS).
+> However, the MCN may return an early CompCMO response to the DSU cluster
+> before the corresponding Write and CMO transactions have completed at
+> the external PoS or downstream memory. As a result, stale data may be
+> observed by external observers that are directly connected to the
+> external PoS or downstream memory.
+> 
+> This erratum affects any system topology in which the following
+> conditions apply:
+>  - The Point of Serialization (PoS) is located downstream of the
+>    interconnect.
+>  - A downstream observer accesses memory directly, bypassing the
+>    interconnect.
+> 
+> Conditions:
+> This erratum occurs only when all of the following conditions are met:
+>  1. Software executes a data cache maintenance operation, specifically,
+>     a clean or invalidate by virtual address (DC CVAC, DC CIVAC, or DC
+>     IVAC), that hits on unique dirty data in the CPU or DSU cache. This
+>     results in a combined CopyBack and CMO being issued to the
+>     interconnect.
+>  2. The interconnect splits the combined transaction into separate Write
+>     and CMO transactions and returns an early completion response to the
+>     CPU or DSU before the write has completed at the downstream memory
+>     or PoS.
+>  3. A downstream observer accesses the affected memory address after the
+>     early completion response is issued but before the actual memory
+>     write has completed. This allows the observer to read stale data
+>     that has not yet been updated at the PoS or downstream memory.
+> 
+> The implementation of workaround put a second loop of CMOs at the same
+> virtual address whose operation meet erratum conditions to wait until
+> cache data be cleaned to PoC.. This way of implementation mitigates
+> performance panalty compared to purly duplicate orignial CMO.
+> 
+> Reported-by: kernel test robot <lkp@intel.com>
 
->
-> >
-> > >
-> > > I therefore think the v2 is a good tradeoff.
-> > >
-> > > > As shown below, it's better to call list_add only when kdamond
-> > > > is "on" (true), and then use the existing code to end with
-> > > > kdamond_call(ctx, true) when kdamond is "off."
-> > > >
-> > > > +static void kdamond_call(struct damon_ctx *ctx, bool cancel);
-> > > > +
-> > > >  /**
-> > > >   * damon_call() - Invoke a given function on DAMON worker thread (kdamond).
-> > > >   * @ctx:       DAMON context to call the function for.
-> > > > @@ -1496,14 +1475,17 @@ int damon_call(struct damon_ctx *ctx, struct
-> > > > damon_call_control *control)
-> > > >         control->canceled = false;
-> > > >         INIT_LIST_HEAD(&control->list);
-> > > >
-> > > > -       if (damon_is_running(ctx)) {
-> > > > -               mutex_lock(&ctx->call_controls_lock);
-> > > > +       mutex_lock(&ctx->call_controls_lock);
-> > > > +       if (ctx->kdamond) {
-> > >
-> > > This is wrong.  You shouldn't access ctx->kdamond without holding
-> > > ctx->kdamond_lock.  Please read the comment about kdamond_lock field on damon.h
-> > > file.
-> >
-> > That's right, I misjudged.
-> > I've reorganized the code below.
->
-> Your reply is not explaining how the reorganized code is solving it.  Let me
-> ask you again.  Please explain.
+I assume the Reported-by tag was added due to the sparse warning in v1?
+Since this patch fixes a hardware erratum rather than an issue reported
+by the robot, I don't think we need this tag here.
 
-I will explain this in the code I have summarized below.
+Generally, we don't add Reported-by for fixing robot warnings across
+patch versions.
 
->
-> >
-> > >
-> > > >                 list_add_tail(&control->list, &ctx->call_controls);
-> > > > -               mutex_unlock(&ctx->call_controls_lock);
-> > > >         } else {
-> > > > -               /* return damon_call_handle_inactive_ctx(ctx, control); */
-> > > > +               mutex_unlock(&ctx->call_controls_lock);
-> > > > +               if (!list_empty_careful(&ctx->call_controls))
-> > > > +                       kdamond_call(ctx, true);
-> > > >                 return -EINVAL;
-> > > >         }
-> > > > +       mutex_unlock(&ctx->call_controls_lock);
-> > > > +
-> > > >         if (control->repeat)
-> > > >                 return 0;
-> > > >         wait_for_completion(&control->completion);
-> > >
-> >
-> > +static void kdamond_call(struct damon_ctx *ctx, bool cancel);
-> > +
-> >  /**
-> >   * damon_call() - Invoke a given function on DAMON worker thread (kdamond).
-> >   * @ctx:       DAMON context to call the function for.
-> > @@ -1457,11 +1459,15 @@ int damon_call(struct damon_ctx *ctx, struct
-> > damon_call_control *control)
-> >         control->canceled = false;
-> >         INIT_LIST_HEAD(&control->list);
-> >
-> > -       mutex_lock(&ctx->call_controls_lock);
-> > -       list_add_tail(&control->list, &ctx->call_controls);
-> > -       mutex_unlock(&ctx->call_controls_lock);
-> > -       if (!damon_is_running(ctx))
-> > +       if (damon_is_running(ctx)) {
-> > +               mutex_lock(&ctx->call_controls_lock);
-> > +               list_add_tail(&control->list, &ctx->call_controls);
-> > +               mutex_unlock(&ctx->call_controls_lock);
-> > +       } else {
-> > +               if (!list_empty_careful(&ctx->call_controls))
-> > +                       kdamond_call(ctx, true);
-> >                 return -EINVAL;
-> > +       }
-> >         if (control->repeat)
-> >                 return 0;
-> >         wait_for_completion(&control->completion);
->
-> I think my previous concern that raised to your two previous approach [1,2] is
-> again samely applied to the above diff.  And now you are suggesting a similar
-> approach here.  Please explain and answer all questions before you move on, or
-> explain why your new apprach is different from your previous one and how it
-> addresses raised concerns..
-
-The code above applies mutex and the locking method is the same.
-The difference is that control->list does list_add_tail() in the "on" state in
-damon_is_running(ctx).
-Another difference is that when damon_is_running(ctx) is false("off"),
-the existing call_controls list is cleared with kdamond_call(ctx, cancel=true).
-
-Regarding spin_lock,
-I'm sure you're familiar with spin_lock, It can apply like this:
-
-spin_lock(&ctx->call_controls_lock);
-list_add_tail(&control->list, &ctx->call_controls);
-spin_unlock(&ctx->call_controls_lock);
-
-I have expressed my opinion sufficiently,
-and I believe you will make a better judgment than I.
-
-Thanks,
-JaeJoon
-
->
-> [1] https://lore.kernel.org/20251225194959.937-1-sj@kernel.org
-> [2] https://lore.kernel.org/20251226184111.254674-1-sj@kernel.org
-> [3] https://lore.kernel.org/20251229151440.78818-1-sj@kernel.org
->
->
-> Thanks,
-> SJ
->
-> [...]
+Regards,
+Kuan-Wei
 
