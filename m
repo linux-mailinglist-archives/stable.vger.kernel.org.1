@@ -1,99 +1,178 @@
-Return-Path: <stable+bounces-204414-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204415-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66037CECF86
-	for <lists+stable@lfdr.de>; Thu, 01 Jan 2026 12:09:44 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94527CED104
+	for <lists+stable@lfdr.de>; Thu, 01 Jan 2026 15:13:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6EABE3036EB7
-	for <lists+stable@lfdr.de>; Thu,  1 Jan 2026 11:08:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 45A153006F43
+	for <lists+stable@lfdr.de>; Thu,  1 Jan 2026 14:13:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14A472C2360;
-	Thu,  1 Jan 2026 11:08:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBAB820C463;
+	Thu,  1 Jan 2026 14:13:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rykbwn84"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DaugLIqR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B67B82C17A1;
-	Thu,  1 Jan 2026 11:08:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A942042AA9
+	for <stable@vger.kernel.org>; Thu,  1 Jan 2026 14:13:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767265710; cv=none; b=KlNqrAuWayJdluC8/MGe0Z7urgmOh8l8gtnA9rt2B1PUxs9O8aQI7SVUA+dnIbbekFk58ZH0uPs3EHp+iVzAWpZQL+nCYU/FXr482jhq+oQwULfp8nhvZ1GuV9QE4vWo24kDI5WX1EyVU+7AuWTPwNSirV7+nx+POURGgtHvC0Y=
+	t=1767276824; cv=none; b=G2lTB/FweNEK6JItC20GZYFnqBFoOJK34acID2pLvYvLPKjf6ppJ1Jh+s+ES5MvXmj2sAu5Rauj6MXKRJHeYYK5TU1CI2H45dijD8vetE8/6yMaZhtt1MxYKGb9uqiPb/RJvdwnhBGF/YgU5lEu9tfmOzkpQNnKpIqlKR87zSTU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767265710; c=relaxed/simple;
-	bh=AwUWD4Rn8NzTv29fdPoapfUgAdsV501ocTuKY/9obFU=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=GrqhwrSxtD97nm19Wpgq/6NCyjQUsEb5mWHzeMdiwqpNee87clDqYpcgtAOH87ftQ7Sjdg22jArysn5G7eLhtzG2vSNTrVuWXrGaze69H/qXgv6OYRTMIKIlTGrmzRk4f1Lv2bY6YDsbCadRiQHrpNs/Nj2H6AdCROJg9TXzzdk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rykbwn84; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78621C116B1;
-	Thu,  1 Jan 2026 11:08:25 +0000 (UTC)
+	s=arc-20240116; t=1767276824; c=relaxed/simple;
+	bh=91qTqrr/r1se45MzTb1EWbg/sH83XxU52s1nfxN/vLY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=arB4qcozUnkUqxg0hwKdM2vYemOJqpHh1BEwlztzRNAjpaZuzUiDPq5eImCJ6wpYXRVEonHBIMz3O5c2glzMz2uGX3+Leceb8/EKUmaU00XcWk4WDZoYDBDSPCUNG7/mDDTt0jGU9Ftpx7Q7wQABL35RY8FWThdhETKYrAunF/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DaugLIqR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B2A8C4CEF7;
+	Thu,  1 Jan 2026 14:13:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767265710;
-	bh=AwUWD4Rn8NzTv29fdPoapfUgAdsV501ocTuKY/9obFU=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=Rykbwn84k6Tb2fb8RKaRl1g52xEoLiN3nlg+0JzHYqdvwTOum/kdBo5ehe6S2ZAY6
-	 icof7B3X+4hRD3cXU0EqgunxX0DCw1T999Rg9w+BJjJCd3UqzKYuKoKcjZQoxE155S
-	 mueuKh5Fsmpkz6vLxGRLpaNhW2AlFdmS9DJ+vYlIHvl2C69afLXO+f1gGiuCSngn6Q
-	 XqIWEnEKPj0RJa349Xipr+wtLA0KmfGiP+8lm37bd4rmhx1PYs6iAujSc8DwAFBblW
-	 Huozxo3c/R3AdPkfN5pGeSesUH2ZRHYlBB4eByMcFYRE1BCwlEbj9MCWe/QwHnfE17
-	 kV0WDaaABcUdQ==
-From: Vinod Koul <vkoul@kernel.org>
-To: Kishon Vijay Abraham I <kishon@kernel.org>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
- Dmitry Baryshkov <lumag@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
- Sibi Sankar <sibi.sankar@oss.qualcomm.com>, 
- Rajendra Nayak <quic_rjendra@quicinc.com>, 
- Abel Vesa <abel.vesa@oss.qualcomm.com>
-Cc: Neil Armstrong <neil.armstrong@linaro.org>, 
- linux-arm-msm@vger.kernel.org, linux-phy@lists.infradead.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Krzysztof Kozlowski <krzk@kernel.org>, 
- Krzysztof Kozlowski <krzk@kernel.org>, Abel Vesa <abelvesa@kernel.org>, 
- stable@vger.kernel.org, 
- Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-In-Reply-To: <20251224-phy-qcom-edp-add-missing-refclk-v5-0-3f45d349b5ac@oss.qualcomm.com>
-References: <20251224-phy-qcom-edp-add-missing-refclk-v5-0-3f45d349b5ac@oss.qualcomm.com>
-Subject: Re: (subset) [PATCH RESEND v5 0/3] phy: qcom: edp: Add missing ref
- clock to x1e80100
-Message-Id: <176726570512.201416.549500083715461409.b4-ty@kernel.org>
-Date: Thu, 01 Jan 2026 16:38:25 +0530
+	s=k20201202; t=1767276824;
+	bh=91qTqrr/r1se45MzTb1EWbg/sH83XxU52s1nfxN/vLY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=DaugLIqRqOt7JJOTCySziGVgH0xYbbRHtaf2Z2GBbZX6PwILdimiIOYg4Ks/kR2FK
+	 D7h6KqZABmv/QDgU83JSQMj9q+uykYYqsTs/DSvw705KgBYKYWimOeMWUqUT4Umk9e
+	 CJZa/Fp6/XKqutf8h2l+KIFXDWD6CsWE+tXyQS5mq6keHZVrzuL/rfqulAEIXubf50
+	 sKLUZoCT8MRA69LJmyAEmLZVTStCsNclBFBKlMiDUtK8sWGd0W3prfV6IhDXgscYm9
+	 vsyffxefYO1hQOZKj2C3BEvdJDs9tnW8AbdOkMpa0nWIyNqgFkUfNvNyVpAheh+wqR
+	 UELdR1gIIAJ2g==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Joanne Koong <joannelkoong@gmail.com>,
+	Omar Sandoval <osandov@fb.com>,
+	Miklos Szeredi <mszeredi@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6.y] fuse: fix readahead reclaim deadlock
+Date: Thu,  1 Jan 2026 09:13:41 -0500
+Message-ID: <20260101141342.4003826-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025122913-nucleus-deny-f4d4@gregkh>
+References: <2025122913-nucleus-deny-f4d4@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.13.0
+Content-Transfer-Encoding: 8bit
 
+From: Joanne Koong <joannelkoong@gmail.com>
 
-On Wed, 24 Dec 2025 12:53:26 +0200, Abel Vesa wrote:
-> According to documentation, the DP PHY on x1e80100 has another clock
-> called ref.
-> 
-> The current X Elite devices supported upstream work fine without this
-> clock, because the boot firmware leaves this clock enabled. But we should
-> not rely on that. Also, when it comes to power management, this clock
-> needs to be also disabled on suspend. So even though this change breaks
-> the ABI, it is needed in order to make we disable this clock on runtime
-> PM, when that is going to be enabled in the driver.
-> 
-> [...]
+[ Upstream commit bd5603eaae0aabf527bfb3ce1bb07e979ce5bd50 ]
 
-Applied, thanks!
+Commit e26ee4efbc79 ("fuse: allocate ff->release_args only if release is
+needed") skips allocating ff->release_args if the server does not
+implement open. However in doing so, fuse_prepare_release() now skips
+grabbing the reference on the inode, which makes it possible for an
+inode to be evicted from the dcache while there are inflight readahead
+requests. This causes a deadlock if the server triggers reclaim while
+servicing the readahead request and reclaim attempts to evict the inode
+of the file being read ahead. Since the folio is locked during
+readahead, when reclaim evicts the fuse inode and fuse_evict_inode()
+attempts to remove all folios associated with the inode from the page
+cache (truncate_inode_pages_range()), reclaim will block forever waiting
+for the lock since readahead cannot relinquish the lock because it is
+itself blocked in reclaim:
 
-[1/3] dt-bindings: phy: qcom-edp: Add missing clock for X Elite
-      commit: 6b99eeacf6abb1ff2d6463c84e490343f39cf11a
-[2/3] phy: qcom: edp: Make the number of clocks flexible
-      commit: 7d51b709262c5aa31d2b9cd31444112c1b2dae03
+>>> stack_trace(1504735)
+ folio_wait_bit_common (mm/filemap.c:1308:4)
+ folio_lock (./include/linux/pagemap.h:1052:3)
+ truncate_inode_pages_range (mm/truncate.c:336:10)
+ fuse_evict_inode (fs/fuse/inode.c:161:2)
+ evict (fs/inode.c:704:3)
+ dentry_unlink_inode (fs/dcache.c:412:3)
+ __dentry_kill (fs/dcache.c:615:3)
+ shrink_kill (fs/dcache.c:1060:12)
+ shrink_dentry_list (fs/dcache.c:1087:3)
+ prune_dcache_sb (fs/dcache.c:1168:2)
+ super_cache_scan (fs/super.c:221:10)
+ do_shrink_slab (mm/shrinker.c:435:9)
+ shrink_slab (mm/shrinker.c:626:10)
+ shrink_node (mm/vmscan.c:5951:2)
+ shrink_zones (mm/vmscan.c:6195:3)
+ do_try_to_free_pages (mm/vmscan.c:6257:3)
+ do_swap_page (mm/memory.c:4136:11)
+ handle_pte_fault (mm/memory.c:5562:10)
+ handle_mm_fault (mm/memory.c:5870:9)
+ do_user_addr_fault (arch/x86/mm/fault.c:1338:10)
+ handle_page_fault (arch/x86/mm/fault.c:1481:3)
+ exc_page_fault (arch/x86/mm/fault.c:1539:2)
+ asm_exc_page_fault+0x22/0x27
 
-Best regards,
+Fix this deadlock by allocating ff->release_args and grabbing the
+reference on the inode when preparing the file for release even if the
+server does not implement open. The inode reference will be dropped when
+the last reference on the fuse file is dropped (see fuse_file_put() ->
+fuse_release_end()).
+
+Fixes: e26ee4efbc79 ("fuse: allocate ff->release_args only if release is needed")
+Cc: stable@vger.kernel.org
+Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
+Reported-by: Omar Sandoval <osandov@fb.com>
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ fs/fuse/file.c | 26 +++++++++++++++++++-------
+ 1 file changed, 19 insertions(+), 7 deletions(-)
+
+diff --git a/fs/fuse/file.c b/fs/fuse/file.c
+index 2055af1ffaf3..2b7adc83b64e 100644
+--- a/fs/fuse/file.c
++++ b/fs/fuse/file.c
+@@ -113,7 +113,9 @@ static void fuse_file_put(struct fuse_file *ff, bool sync)
+ 		struct fuse_args *args = (ra ? &ra->args : NULL);
+ 
+ 		if (!args) {
+-			/* Do nothing when server does not implement 'open' */
++			/* Do nothing when server does not implement 'opendir' */
++		} else if (args->opcode == FUSE_RELEASE && ff->fm->fc->no_open) {
++			fuse_release_end(ff->fm, args, 0);
+ 		} else if (sync) {
+ 			fuse_simple_request(ff->fm, args);
+ 			fuse_release_end(ff->fm, args, 0);
+@@ -134,8 +136,17 @@ struct fuse_file *fuse_file_open(struct fuse_mount *fm, u64 nodeid,
+ 	struct fuse_file *ff;
+ 	int opcode = isdir ? FUSE_OPENDIR : FUSE_OPEN;
+ 	bool open = isdir ? !fc->no_opendir : !fc->no_open;
++	bool release = !isdir || open;
+ 
+-	ff = fuse_file_alloc(fm, open);
++	/*
++	 * ff->args->release_args still needs to be allocated (so we can hold an
++	 * inode reference while there are pending inflight file operations when
++	 * ->release() is called, see fuse_prepare_release()) even if
++	 * fc->no_open is set else it becomes possible for reclaim to deadlock
++	 * if while servicing the readahead request the server triggers reclaim
++	 * and reclaim evicts the inode of the file being read ahead.
++	 */
++	ff = fuse_file_alloc(fm, release);
+ 	if (!ff)
+ 		return ERR_PTR(-ENOMEM);
+ 
+@@ -154,13 +165,14 @@ struct fuse_file *fuse_file_open(struct fuse_mount *fm, u64 nodeid,
+ 			fuse_file_free(ff);
+ 			return ERR_PTR(err);
+ 		} else {
+-			/* No release needed */
+-			kfree(ff->release_args);
+-			ff->release_args = NULL;
+-			if (isdir)
++			if (isdir) {
++				/* No release needed */
++				kfree(ff->release_args);
++				ff->release_args = NULL;
+ 				fc->no_opendir = 1;
+-			else
++			} else {
+ 				fc->no_open = 1;
++			}
+ 		}
+ 	}
+ 
 -- 
-~Vinod
-
+2.51.0
 
 
