@@ -1,193 +1,276 @@
-Return-Path: <stable+bounces-204420-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204421-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C6B3CED449
-	for <lists+stable@lfdr.de>; Thu, 01 Jan 2026 19:53:19 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2104DCED45B
+	for <lists+stable@lfdr.de>; Thu, 01 Jan 2026 19:55:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 84445300760E
-	for <lists+stable@lfdr.de>; Thu,  1 Jan 2026 18:53:16 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 3E8933000900
+	for <lists+stable@lfdr.de>; Thu,  1 Jan 2026 18:55:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D62AD21B9C1;
-	Thu,  1 Jan 2026 18:53:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 964AE23ABA0;
+	Thu,  1 Jan 2026 18:55:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="E4JOakQb";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="fyR7APuz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UMAf3OkZ"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA690184
-	for <stable@vger.kernel.org>; Thu,  1 Jan 2026 18:53:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44617212554;
+	Thu,  1 Jan 2026 18:55:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767293593; cv=none; b=qEfvLrRFaIO28Yl/ToHsfEcK5Z2FuQXndxShrIGInHW5eOafz56jN24iR/KnyqMavIFB1O3yYzinMSMK9S0zlIQCb00K1HYvKehrlktwTpxUtv1aMNI+1Io4kJlhu8jnssDMhZu6L4Xo21j26dmqmyCBiCKBwa1VKiyvYMbpx00=
+	t=1767293710; cv=none; b=LYq5FGBH9wfD+grctPrELmAIVi+TvsJoqKxHBoQWETjk9D0WyqehshnZLjubEOHS84BLGn96sifCDq+4sAjPM3JMMHhq/oxHZteup8beH5rZ45cwewQeyxeQot3qlJR2/AG7C8/mn6mK2la3ccCQkwVhXV4LT6u8cqD6jI6vZeY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767293593; c=relaxed/simple;
-	bh=o2JI36SbLL1QX+AoiSt/Ze/Gyqi1QoSKvIbZmPR4/5k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OQCYSEO/8af5Hb281NKNKEc5TDY9rEwTqJfGZA+BkCzZLeJA9ammjcrVXlQ3jKhm1lKrOLTjyOZbGDYNfQs4N/cFpP3+qjb0D0Z9kCKanUe+56uYJKrEEjSS5MrxrVGbOi78qS0D7HV1T5HYvuSnzPTydfi6WVo3TQBtRXT1wr8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=E4JOakQb; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=fyR7APuz; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 601AY0lZ1613330
-	for <stable@vger.kernel.org>; Thu, 1 Jan 2026 18:53:10 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=ik6hlVXeTmBKrAB0aF6mx5+u
-	5ON4Nq+bNmY4Sp4BCBg=; b=E4JOakQbeHUd6cX0TJKs3SQDrGS3pN2GXE+/B77s
-	INRK2xConOMgsCZKtMw8/fZXSNHbErDJWHW4Kbo60eBISTJCQ9lIDk28sOEZTRDy
-	XVzeWLOybrD5nIZ4g2HAnzlujiKgLff4gMQgcQ6w56CooqFQXgPybL7gxO8s1m1h
-	1VO/+c37m4ObAWcnTpVT/gg9QgA611Lr4ebrGOxbU3MdR+NLv5Ve2mkXK5OCjB+2
-	W3d3/b8NaEx7oRJzXPxramL2NbhUk/m2bJ0vEAMTCHM3UF6gjX/SaQC5qCVPLjjR
-	k2juBGo8D3SaarlLyE6ASbPvMHRwcBjhUHoCA5US8AI4pQ==
-Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com [209.85.160.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4bd3v8ta0b-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Thu, 01 Jan 2026 18:53:10 +0000 (GMT)
-Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-4ed6ff3de05so322030911cf.3
-        for <stable@vger.kernel.org>; Thu, 01 Jan 2026 10:53:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1767293590; x=1767898390; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ik6hlVXeTmBKrAB0aF6mx5+u5ON4Nq+bNmY4Sp4BCBg=;
-        b=fyR7APuz8BImezbf15bqpUARVdmhTHJMmBmO11+cmAkQTcEBlnU/A5i1ZybOkwEUK3
-         x2CRi2QMJ+bSt6hGZAagGUyb/6cT8pXSypCPYaeAVQvaHLulC6odKy0edr8ahr8yB675
-         jjpBReIsK9NCfqCuCR+k3XqLHlS0hGFjroLGN09fkXXqiLxnwROwQiJV+RkVNOhhuvuO
-         2iLKATnulYBVJI1YSRBKX+/cenV+pElKoffxi/7rJ+ewMYC/X/CcOA/H2QsqnQCuWgBQ
-         hn7hrhcunGSvWI/6u/1pZn71tjNHK128c/wOTGAZ2EYpE/SdECUNRwjnGmMkUGYFSkQT
-         vMjA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767293590; x=1767898390;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ik6hlVXeTmBKrAB0aF6mx5+u5ON4Nq+bNmY4Sp4BCBg=;
-        b=SHa2nAFHpjVWaTrRE7yQNwmKAGhYaxXC13K2BM8XHnYzWzR4zTKOJfWhrSFj0Mmqg+
-         T/EvAq7nU8a7gSOQJp1nyJd0L6AElfZt2YIZ3DoedWXSzVFNxsRMTbOjZU1Z+cR9j+/e
-         v2c1YT75l1MGtBXQ3Umhqfuu3yLJWzapgnttQ60+UOX2icjOTsDUwEOdYVxA4URFYrLo
-         omGu/pbHYGPogfF33YWb5YF6tVKgxFrNDiry5JA7MEcrjiPIs8/5SR09olenigbN+2cC
-         KfhTiO39CAgrqW8GuWl11Ye15wk/bQWYtmskqXuXLSs4Yl+iiKxOaS4ECMFgu+h2jGRW
-         DJdQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX4YpcFZb2YHxdm4EaRVy5DFoW5iBTNiFmtlR2yDSRQypp9TPFUssxdnn1I8EGG7S932iZwuds=@vger.kernel.org
-X-Gm-Message-State: AOJu0YytebO5QLsHLxsqbKyteWInSM6NzRxSCHUja7zmfQhYISOKn53M
-	he53JG6Aba+Q3H8erLMOOYezzKMlbpBvvd/WHDatDdCWAkq8dc8ND3qSWD+I/ZMtH909f5j0URZ
-	e+05oaQ7s+U+CIv/v880CCb+lEBOfvJUY9Nihtn3H6T0QGng51OGcy6/HpcE=
-X-Gm-Gg: AY/fxX6t+84dLoGZciRhlEusvifvMFqoUnIuHU6ygPfT1pCKgIRALZiFFcv5LvjFFmE
-	2QeiNp4sXesDnQYjTt4SkOkvQcXHnffJeTbUf2j5nrfQicEbL5wXpPjMYTlWFaj0hyv6dE5P1aa
-	CWoUX+S5SBlKwyg4QfCuk/+GIxePuDtCMj5RLLVrXfEOWzY5H3Ba+wkczyFrxUME+l3Gqlyn3n1
-	vYW7fIF6RISxKcaJRcwxfPBCKhs14F3PfR4yvijxkGNHXOsdljouNDxPBDoOlPZ77jigfNlipnU
-	douvpgcGIqcQ22PjC+gWNGwZsIRXBZoWthTNLxmmw59FnzLIBetHmu889Ao6jcWMpK3jjA+CJpG
-	FsTTwnfFjdoz0381TBp66
-X-Received: by 2002:a05:622a:1f06:b0:4f1:e0c7:7892 with SMTP id d75a77b69052e-4f4abceebbcmr599601141cf.21.1767293589940;
-        Thu, 01 Jan 2026 10:53:09 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFqWg0OwJN7WPv/Z6zzoCKj3pxTkw7ICxhLJa4qdOrQj71LJo+OUfAsFJ3QIwlHL9BMYoFVPw==
-X-Received: by 2002:a05:622a:1f06:b0:4f1:e0c7:7892 with SMTP id d75a77b69052e-4f4abceebbcmr599600801cf.21.1767293589362;
-        Thu, 01 Jan 2026 10:53:09 -0800 (PST)
-Received: from oss.qualcomm.com ([86.121.7.10])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b836b9b08c2sm1537526166b.58.2026.01.01.10.53.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 01 Jan 2026 10:53:08 -0800 (PST)
-Date: Thu, 1 Jan 2026 20:53:06 +0200
-From: Abel Vesa <abel.vesa@oss.qualcomm.com>
-To: manivannan.sadhasivam@oss.qualcomm.com
-Cc: Jeff Hugo <jeff.hugo@oss.qualcomm.com>,
-        Carl Vanderlip <carl.vanderlip@oss.qualcomm.com>,
-        Oded Gabbay <ogabbay@kernel.org>,
-        Manivannan Sadhasivam <mani@kernel.org>,
-        Jeff Johnson <jjohnson@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Loic Poulain <loic.poulain@oss.qualcomm.com>,
-        Maxim Kochetkov <fido_max@inbox.ru>, linux-arm-msm@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-        mhi@lists.linux.dev, linux-wireless@vger.kernel.org,
-        ath11k@lists.infradead.org, ath12k@lists.infradead.org,
-        netdev@vger.kernel.org, Bjorn Andersson <andersson@kernel.org>,
-        Johan Hovold <johan@kernel.org>, Chris Lew <quic_clew@quicinc.com>,
-        stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] net: qrtr: Drop the MHI auto_queue feature for
- IPCR DL channels
-Message-ID: <bah766ajefvfoiqgbgjwwlbbr4ech4yupo2wjogejxcd5tmq4p@q5powzzdfbbf>
-References: <20251218-qrtr-fix-v2-0-c7499bfcfbe0@oss.qualcomm.com>
- <20251218-qrtr-fix-v2-1-c7499bfcfbe0@oss.qualcomm.com>
+	s=arc-20240116; t=1767293710; c=relaxed/simple;
+	bh=di9RKFHA3WeLyoVzrPsOzx/4yiXAPIxza2ATvMON+0Q=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=WSWjMk/BkNHw8JoTqFPo5owSsV+UaQ9ByJ41mO8yA7TirpPSXjFmtlYteFFO9wAiTf9w7fD78ui7yQdf/R38YK2Wl1Yk6Y9AmNJiMunKo8+rKbVnUm1tfBw2lo+dCaDwqfnjfvSZINAm1XwunJ8H46PSn9r/qSP+hTByE4XzwVc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UMAf3OkZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BE9FC4CEF7;
+	Thu,  1 Jan 2026 18:55:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767293709;
+	bh=di9RKFHA3WeLyoVzrPsOzx/4yiXAPIxza2ATvMON+0Q=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=UMAf3OkZ/Gq08AKEI4W1OtZKf3FXlo2uhnIUxSvROTDc76swIKFNGDnvzWftZgiSf
+	 ZdlXM9DQAOfyehWVXyQA45wjtDqLytkx1Lj+N7XPjbhy+i3oyZrKYXXPLLtFz6pzOo
+	 fTBJuoNgVwON+l2pfUqDML6oCRQNwwdMnmziYECy/wkFIuKIKjE9THSmcDb9S4JnoY
+	 K6cEXN4EOTUx2cHQUjeS5Q3qNkPpRSc+T1xcVqScUR8tG7Hy28VcREsaqm67qRB3F4
+	 V3gZWNlk0kuAY5ISWRxkquElwEy6zgQMzJn63UjiDWbmmG5CcSZ345WH+4T2AYgoNK
+	 VAmK/A+2xZl6g==
+Received: from lfbn-nan-1-2237-32.w92-139.abo.wanadoo.fr ([92.139.188.32] helo=lobster-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1vbNpC-0000000GMmY-3UcR;
+	Thu, 01 Jan 2026 18:55:07 +0000
+Date: Thu, 01 Jan 2026 18:55:05 +0000
+Message-ID: <87o6ndduye.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Lucas Wei <lucaswei@google.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	sjadavani@google.com,
+	kernel test robot <lkp@intel.com>,
+	stable@vger.kernel.org,
+	kernel-team@android.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] arm64: errata: Workaround for SI L1 downstream coherency issue
+In-Reply-To: <20251229033621.996546-1-lucaswei@google.com>
+References: <20251229033621.996546-1-lucaswei@google.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251218-qrtr-fix-v2-1-c7499bfcfbe0@oss.qualcomm.com>
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTAxMDE3MSBTYWx0ZWRfX7bXQQSQSKn3V
- hllq0XLaYO2yQx7iIEOwb5dqixLGBBZ1+wbd/5yBcD1YNdTsisuN+IiD3TkuXjEXDYBA9r4YOlF
- cTmq6+PZogP2N+5/fUgnPr5TXCbgWaedAOBRfoYCpgB4xWwTHJlJyXGgW1pn/6tNq9/Jm2q3Maa
- SHyKyg5mEI8ef7FHt7CZCuhL95KgSXNFWYFnFCiZQe7jDzYGY5jWiPdQ9XUX8L7UDVbqE8XGMo4
- nUba751KoU1Cotbw8G8cCZcbCCE+4NZuifKl3VYhpo5zB9zPe04yXVccGaLZKVIcQf12j+XeEqj
- B/9AoMN0rNDiH4/sVFA9dowtpQmFmJIgC1HkvIj21kHH8RkcrxyEtuEPj6+RNvUAgEmpjfN5XXf
- WEHF6vvuWrmwo90lZ/UwnrGJiddTF8rqOrxpY6UWhxC72OahK3k5FBN+ix/HFY7hbUMSytCF8K6
- Qyyplt1JONlKJS/qVVg==
-X-Authority-Analysis: v=2.4 cv=JdOxbEKV c=1 sm=1 tr=0 ts=6956c296 cx=c_pps
- a=EVbN6Ke/fEF3bsl7X48z0g==:117 a=hZ5Vz02otkLiOpJ15TJmsQ==:17
- a=kj9zAlcOel0A:10 a=vUbySO9Y5rIA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=zitRP-D0AAAA:8 a=EUspDBNiAAAA:8
- a=COk6AnOGAAAA:8 a=isMaZ9OHK7bkWVW8W2QA:9 a=CjuIK1q_8ugA:10
- a=a_PwQJl-kcHnX1M80qC6:22 a=xwnAI6pc5liRhupp6brZ:22 a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-GUID: EhdWL0Rk24OUsEPOrl_VUGn-X0zk3-C8
-X-Proofpoint-ORIG-GUID: EhdWL0Rk24OUsEPOrl_VUGn-X0zk3-C8
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2026-01-01_07,2025-12-31_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 spamscore=0 malwarescore=0 lowpriorityscore=0
- priorityscore=1501 bulkscore=0 adultscore=0 phishscore=0 clxscore=1015
- impostorscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2512120000
- definitions=main-2601010171
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 92.139.188.32
+X-SA-Exim-Rcpt-To: lucaswei@google.com, catalin.marinas@arm.com, will@kernel.org, corbet@lwn.net, sjadavani@google.com, lkp@intel.com, stable@vger.kernel.org, kernel-team@android.com, linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On 25-12-18 22:21:44, Manivannan Sadhasivam via B4 Relay wrote:
-> From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+On Mon, 29 Dec 2025 03:36:19 +0000,
+Lucas Wei <lucaswei@google.com> wrote:
 > 
-> MHI stack offers the 'auto_queue' feature, which allows the MHI stack to
-> auto queue the buffers for the RX path (DL channel). Though this feature
-> simplifies the client driver design, it introduces race between the client
-> drivers and the MHI stack. For instance, with auto_queue, the 'dl_callback'
-> for the DL channel may get called before the client driver is fully probed.
-> This means, by the time the dl_callback gets called, the client driver's
-> structures might not be initialized, leading to NULL ptr dereference.
+> When software issues a Cache Maintenance Operation (CMO) targeting a
+> dirty cache line, the CPU and DSU cluster may optimize the operation by
+> combining the CopyBack Write and CMO into a single combined CopyBack
+> Write plus CMO transaction presented to the interconnect (MCN).
+> For these combined transactions, the MCN splits the operation into two
+> separate transactions, one Write and one CMO, and then propagates the
+> write and optionally the CMO to the downstream memory system or external
+> Point of Serialization (PoS).
+> However, the MCN may return an early CompCMO response to the DSU cluster
+> before the corresponding Write and CMO transactions have completed at
+> the external PoS or downstream memory. As a result, stale data may be
+> observed by external observers that are directly connected to the
+> external PoS or downstream memory.
 > 
-> Currently, the drivers have to workaround this issue by initializing the
-> internal structures before calling mhi_prepare_for_transfer_autoqueue().
-> But even so, there is a chance that the client driver's internal code path
-> may call the MHI queue APIs before mhi_prepare_for_transfer_autoqueue() is
-> called, leading to similar NULL ptr dereference. This issue has been
-> reported on the Qcom X1E80100 CRD machines affecting boot.
+> This erratum affects any system topology in which the following
+> conditions apply:
+>  - The Point of Serialization (PoS) is located downstream of the
+>    interconnect.
+>  - A downstream observer accesses memory directly, bypassing the
+>    interconnect.
 > 
-> So to properly fix all these races, drop the MHI 'auto_queue' feature
-> altogether and let the client driver (QRTR) manage the RX buffers manually.
-> In the QRTR driver, queue the RX buffers based on the ring length during
-> probe and recycle the buffers in 'dl_callback' once they are consumed. This
-> also warrants removing the setting of 'auto_queue' flag from controller
-> drivers.
+> Conditions:
+> This erratum occurs only when all of the following conditions are met:
+>  1. Software executes a data cache maintenance operation, specifically,
+>     a clean or invalidate by virtual address (DC CVAC, DC CIVAC, or DC
+>     IVAC), that hits on unique dirty data in the CPU or DSU cache. This
+>     results in a combined CopyBack and CMO being issued to the
+>     interconnect.
+>  2. The interconnect splits the combined transaction into separate Write
+>     and CMO transactions and returns an early completion response to the
+>     CPU or DSU before the write has completed at the downstream memory
+>     or PoS.
+>  3. A downstream observer accesses the affected memory address after the
+>     early completion response is issued but before the actual memory
+>     write has completed. This allows the observer to read stale data
+>     that has not yet been updated at the PoS or downstream memory.
 > 
-> Currently, this 'auto_queue' feature is only enabled for IPCR DL channel.
-> So only the QRTR client driver requires the modification.
-> 
-> Fixes: 227fee5fc99e ("bus: mhi: core: Add an API for auto queueing buffers for DL channel")
-> Fixes: 68a838b84eff ("net: qrtr: start MHI channel after endpoit creation")
-> Reported-by: Johan Hovold <johan@kernel.org>
-> Closes: https://lore.kernel.org/linux-arm-msm/ZyTtVdkCCES0lkl4@hovoldconsulting.com
-> Suggested-by: Chris Lew <quic_clew@quicinc.com>
-> Acked-by: Jeff Johnson <jjohnson@kernel.org> # drivers/net/wireless/ath/...
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+> The implementation of workaround put a second loop of CMOs at the same
+> virtual address whose operation meet erratum conditions to wait until
+> cache data be cleaned to PoC.. This way of implementation mitigates
+> performance panalty compared to purly duplicate orignial CMO.
 
-Tested on Dell XPS13 9345, so:
+penalty, purely, original.
 
-Tested-by: Abel Vesa <abel.vesa@oss.qualcomm.com>
+How does one identify the "erratum conditions"?
+
+> 
+> Reported-by: kernel test robot <lkp@intel.com>
+
+Well, no.
+
+> Cc: stable@vger.kernel.org # 6.12.x
+> Signed-off-by: Lucas Wei <lucaswei@google.com>
+> ---
+> 
+> Changes in v2:
+> 
+>  1. Fixed warning from kernel test robot by changing
+>     arm_si_l1_workaround_4311569 to static 
+>     [Reported-by: kernel test robot <lkp@intel.com>]
+> 
+> ---
+>  Documentation/arch/arm64/silicon-errata.rst |  3 ++
+>  arch/arm64/Kconfig                          | 19 +++++++++++++
+>  arch/arm64/include/asm/assembler.h          | 10 +++++++
+>  arch/arm64/kernel/cpu_errata.c              | 31 +++++++++++++++++++++
+>  arch/arm64/mm/cache.S                       | 13 ++++++++-
+>  arch/arm64/tools/cpucaps                    |  1 +
+>  6 files changed, 76 insertions(+), 1 deletion(-)
+> 
+> diff --git a/Documentation/arch/arm64/silicon-errata.rst b/Documentation/arch/arm64/silicon-errata.rst
+> index a7ec57060f64..98efdf528719 100644
+> --- a/Documentation/arch/arm64/silicon-errata.rst
+> +++ b/Documentation/arch/arm64/silicon-errata.rst
+> @@ -213,6 +213,9 @@ stable kernels.
+>  | ARM            | GIC-700         | #2941627        | ARM64_ERRATUM_2941627       |
+>  +----------------+-----------------+-----------------+-----------------------------+
+>  +----------------+-----------------+-----------------+-----------------------------+
+> +| ARM            | SI L1           | #4311569        | ARM64_ERRATUM_4311569       |
+> ++----------------+-----------------+-----------------+-----------------------------+
+
+Keep ARM within a single section (no double line -- there's already a
+pointless extra one before 2941627).
+
+> ++----------------+-----------------+-----------------+-----------------------------+
+>  | Broadcom       | Brahma-B53      | N/A             | ARM64_ERRATUM_845719        |
+>  +----------------+-----------------+-----------------+-----------------------------+
+>  | Broadcom       | Brahma-B53      | N/A             | ARM64_ERRATUM_843419        |
+> diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+> index 65db12f66b8f..a834d30859cc 100644
+> --- a/arch/arm64/Kconfig
+> +++ b/arch/arm64/Kconfig
+> @@ -1153,6 +1153,25 @@ config ARM64_ERRATUM_3194386
+>  
+>  	  If unsure, say Y.
+>  
+> +config ARM64_ERRATUM_4311569
+> +	bool "SI L1: 4311569: workaround for premature CMO completion erratum"
+> +	default y
+> +	help
+> +	  This option adds the workaround for ARM SI L1 erratum 4311569.
+> +
+> +	  The erratum of SI L1 can cause an early response to a combined write
+> +	  and cache maintenance operation (WR+CMO) before the operation is fully
+> +	  completed to the Point of Serialization (POS).
+> +	  This can result in a non-I/O coherent agent observing stale data,
+> +	  potentially leading to system instability or incorrect behavior.
+> +
+> +	  Enabling this option implements a software workaround by inserting a
+> +	  second loop of Cache Maintenance Operation (CMO) immediately following the
+> +	  end of function to do CMOs. This ensures that the data is correctly serialized
+> +	  before the buffer is handed off to a non-coherent agent.
+> +
+> +	  If unsure, say Y.
+> +
+>  config CAVIUM_ERRATUM_22375
+>  	bool "Cavium erratum 22375, 24313"
+>  	default y
+> diff --git a/arch/arm64/include/asm/assembler.h b/arch/arm64/include/asm/assembler.h
+> index f0ca7196f6fa..d3d46e5f7188 100644
+> --- a/arch/arm64/include/asm/assembler.h
+> +++ b/arch/arm64/include/asm/assembler.h
+> @@ -381,6 +381,9 @@ alternative_endif
+>  	.macro dcache_by_myline_op op, domain, start, end, linesz, tmp, fixup
+>  	sub	\tmp, \linesz, #1
+>  	bic	\start, \start, \tmp
+> +alternative_if ARM64_WORKAROUND_4311569
+> +	mov	\tmp, \start
+> +alternative_else_nop_endif
+>  .Ldcache_op\@:
+>  	.ifc	\op, cvau
+>  	__dcache_op_workaround_clean_cache \op, \start
+> @@ -402,6 +405,13 @@ alternative_endif
+>  	add	\start, \start, \linesz
+>  	cmp	\start, \end
+>  	b.lo	.Ldcache_op\@
+> +alternative_if ARM64_WORKAROUND_4311569
+> +	.ifnc	\op, cvau
+> +	mov	\start, \tmp
+> +	mov	\tmp, xzr
+> +	cbnz	\start, .Ldcache_op\@
+> +	.endif
+> +alternative_else_nop_endif
+>  	dsb	\domain
+>  
+>  	_cond_uaccess_extable .Ldcache_op\@, \fixup
+> diff --git a/arch/arm64/kernel/cpu_errata.c b/arch/arm64/kernel/cpu_errata.c
+> index 8cb3b575a031..5c0ab6bfd44a 100644
+> --- a/arch/arm64/kernel/cpu_errata.c
+> +++ b/arch/arm64/kernel/cpu_errata.c
+> @@ -141,6 +141,30 @@ has_mismatched_cache_type(const struct arm64_cpu_capabilities *entry,
+>  	return (ctr_real != sys) && (ctr_raw != sys);
+>  }
+>  
+> +#ifdef CONFIG_ARM64_ERRATUM_4311569
+> +static DEFINE_STATIC_KEY_FALSE(arm_si_l1_workaround_4311569);
+> +static int __init early_arm_si_l1_workaround_4311569_cfg(char *arg)
+> +{
+> +	static_branch_enable(&arm_si_l1_workaround_4311569);
+> +	pr_info("Enabling cache maintenance workaround for ARM SI-L1 erratum 4311569\n");
+> +
+> +	return 0;
+> +}
+> +early_param("arm_si_l1_workaround_4311569", early_arm_si_l1_workaround_4311569_cfg);
+> +
+> +/*
+> + * We have some earlier use cases to call cache maintenance operation functions, for example,
+> + * dcache_inval_poc() and dcache_clean_poc() in head.S, before making decision to turn on this
+> + * workaround. Since the scope of this workaround is limited to non-coherent DMA agents, its
+> + * safe to have the workaround off by default.
+> + */
+> +static bool
+> +need_arm_si_l1_workaround_4311569(const struct arm64_cpu_capabilities *entry, int scope)
+> +{
+> +	return static_branch_unlikely(&arm_si_l1_workaround_4311569);
+> +}
+> +#endif
+
+But this isn't a detection mechanism. That's relying on the user
+knowing they are dealing with broken hardware. How do they find out?
+You don't even call out what platform is actually affected...
+
+The other elephant in the room is virtualisation: how does a guest
+performing CMOs deals with this? How does it discover the that the
+host is broken? I also don't see any attempt to make KVM handle the
+erratum on behalf of the guest...
+
+Thanks,
+
+	M.
+
+-- 
+Jazz isn't dead. It just smells funny.
 
