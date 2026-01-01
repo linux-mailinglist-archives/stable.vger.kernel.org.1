@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-204417-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204418-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26B67CED19D
-	for <lists+stable@lfdr.de>; Thu, 01 Jan 2026 16:20:17 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53DCDCED23B
+	for <lists+stable@lfdr.de>; Thu, 01 Jan 2026 16:57:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2029330047BB
-	for <lists+stable@lfdr.de>; Thu,  1 Jan 2026 15:20:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 93E9B30054A5
+	for <lists+stable@lfdr.de>; Thu,  1 Jan 2026 15:57:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E0002DCC08;
-	Thu,  1 Jan 2026 15:20:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F5572DCBF4;
+	Thu,  1 Jan 2026 15:57:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nQdZMnzW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OeZ3tWvM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E247B2DCBF7
-	for <stable@vger.kernel.org>; Thu,  1 Jan 2026 15:20:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F49423D7F4
+	for <stable@vger.kernel.org>; Thu,  1 Jan 2026 15:57:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767280815; cv=none; b=Xz194b2/r1ovvCncw1NCB9hxZBUXQns9fYfEsTegtHiDVggodDx2U+ql/bTFRdZ080JIqWqJPqF6q5VrteEFDGDxFqD3X1FaZqv4vgmROD/wOs4YrsgqakVaeNEt3x2NqPZLQutqDRMMNuiInDQt0p2qv6Hn5D45BppojXYlyJM=
+	t=1767283054; cv=none; b=gGGvGVDyfohQZR5oXtQIR6NeS+CutFkaLqye2aiUG4IonjMFwd8kBuQfzOcFB+NAs4A/5Tx6y2GTplwgJkgA5TEKGeGlDL/NIiD4RKjENUACgBEZ7eCahkQefsdhDnNznbVk2HsjoEgUqU4aNAo3+2w9XKlcCtQGzJrndDxmpaE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767280815; c=relaxed/simple;
-	bh=gkMIkVc9+c/ONeAzhOoosNbsDyOrjsGq7ZBOpaUZkxc=;
+	s=arc-20240116; t=1767283054; c=relaxed/simple;
+	bh=b+iWAGB0NgueSrAVPYVLe3urJoZBY8pvAglyDAK9hDg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UuW0QnQq3W4+9Crai/qxT+RksGShe2SjLgz02gJuYib8spZmWJF9256RHjR3u0TFUfYvO0v0DWsE39SKhdkEhaUgi00XomHslPK42orqpmYOJQrXUvXnTK13OtdSsJjSo2TnbOr6NmoIPozjCJXmVOVmpOp6m63W54SEHmkGwog=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nQdZMnzW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9786C4CEF7;
-	Thu,  1 Jan 2026 15:20:13 +0000 (UTC)
+	 MIME-Version; b=RZaDjTElPTlK4QpuHRmbEwe+ORtU+Hz8KCZZ1N1UkxExfi6HwjQ0+DI1O2cLUGRtcVncpo4mOTNpatsje2SIJKpyPl4gGzHflCZeY3Q8m7BCdrM4EIcwlgd1Wx/YLBntwaBPys0OmUQL8OmB8l07p7pkYJ8cnmd36QwX/Awls9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OeZ3tWvM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36B1EC4CEF7;
+	Thu,  1 Jan 2026 15:57:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767280814;
-	bh=gkMIkVc9+c/ONeAzhOoosNbsDyOrjsGq7ZBOpaUZkxc=;
+	s=k20201202; t=1767283053;
+	bh=b+iWAGB0NgueSrAVPYVLe3urJoZBY8pvAglyDAK9hDg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nQdZMnzWeXadpU9SffQalzVCg/opXQ9pkQId62oiO8j2wvWsakg1REJwdxcTw/T7H
-	 LDSXmspIqrCBTpCdUZn2Yoc78kHIs8PnZkYQ5Q8nIzVoL2JyXGSsS8YIHfZg6UP93N
-	 5I41K3z8l8sjqsAwPFF2o7p7CyNN/6FonVsHFbQbmleTnH3cdiLYr2/Aaby4069B5t
-	 IshtfNjvwPJGBXuByy55Agjlota9pNNxCA/BqG2HmjSlaIgD0KVfQapQjOxJG2Vufb
-	 JQBqHZ/01XVY6cBQmgxn/zs7QYlj99+BsBya9ZgFMAqf6ujrcJ+GHgXPHGnC1Pm/IR
-	 78qjRRmFN1IWA==
+	b=OeZ3tWvMpUGkEbkwRr7HFO4GNBeKDYmDpVz3nFfER35XtLWZQFBSiQzeQdYCwkdzk
+	 6LvbJ1S1eRti9Ugi11VcJHocpvYO8Gh32zSD257Rf/iESqgu7SxdI44Pg1Amn9HDbx
+	 uc+y2AfkjhPxlqSn+qPp6Wwejbmf1K0yJD1I8cm+VMjnvcYxNTrxAZ2gVdQVZliLob
+	 f5i0zCp6X1meTRSZvvZNqiMWBJeOsWkouZGdbj5ITzVos5jKjKACM/mm+eg0qrr2sK
+	 8VCYQryRTPJVywFC4nBInxM7nb1FgacaNAipELMLVFhWTZnL/8nO7qU+VVPvMNfuJ+
+	 v3iTMtRt03GzA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Joanne Koong <joannelkoong@gmail.com>,
 	Omar Sandoval <osandov@fb.com>,
 	Miklos Szeredi <mszeredi@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y] fuse: fix readahead reclaim deadlock
-Date: Thu,  1 Jan 2026 10:20:12 -0500
-Message-ID: <20260101152012.4110447-1-sashal@kernel.org>
+Subject: [PATCH 5.15.y] fuse: fix readahead reclaim deadlock
+Date: Thu,  1 Jan 2026 10:57:31 -0500
+Message-ID: <20260101155731.4129270-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025122914-hundredth-munchkin-531c@gregkh>
-References: <2025122914-hundredth-munchkin-531c@gregkh>
+In-Reply-To: <2025122915-discover-sediment-3371@gregkh>
+References: <2025122915-discover-sediment-3371@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -119,7 +119,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 19 insertions(+), 7 deletions(-)
 
 diff --git a/fs/fuse/file.c b/fs/fuse/file.c
-index dd1864c95d07..12c77089d0b4 100644
+index ebe49bf1155a..8e10d89f2507 100644
 --- a/fs/fuse/file.c
 +++ b/fs/fuse/file.c
 @@ -112,7 +112,9 @@ static void fuse_file_put(struct fuse_file *ff, bool sync)
