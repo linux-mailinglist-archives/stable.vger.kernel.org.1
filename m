@@ -1,178 +1,151 @@
-Return-Path: <stable+bounces-204415-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204416-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94527CED104
-	for <lists+stable@lfdr.de>; Thu, 01 Jan 2026 15:13:48 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23F99CED138
+	for <lists+stable@lfdr.de>; Thu, 01 Jan 2026 15:41:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 45A153006F43
-	for <lists+stable@lfdr.de>; Thu,  1 Jan 2026 14:13:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7C261300796C
+	for <lists+stable@lfdr.de>; Thu,  1 Jan 2026 14:41:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBAB820C463;
-	Thu,  1 Jan 2026 14:13:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42AD6283FEA;
+	Thu,  1 Jan 2026 14:41:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DaugLIqR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Bi3veagk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A942042AA9
-	for <stable@vger.kernel.org>; Thu,  1 Jan 2026 14:13:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3DF822B8BD
+	for <stable@vger.kernel.org>; Thu,  1 Jan 2026 14:41:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767276824; cv=none; b=G2lTB/FweNEK6JItC20GZYFnqBFoOJK34acID2pLvYvLPKjf6ppJ1Jh+s+ES5MvXmj2sAu5Rauj6MXKRJHeYYK5TU1CI2H45dijD8vetE8/6yMaZhtt1MxYKGb9uqiPb/RJvdwnhBGF/YgU5lEu9tfmOzkpQNnKpIqlKR87zSTU=
+	t=1767278505; cv=none; b=Wdd8BR14CeiOfpkmkNFn9m3Iazw0AcTVFE47MIWdILx/c6uCW/Vv8DXV5jFxYJl9+pQ/5PJwXDZopLChv9iIXOpcQft5mtlX4p/CzkL37Z+NFJyaASmQ6CEkDIhaMpRdCL2NpA/yeO+Ia+9IWwvI6xVmfYndLijpQINH0Xy5pIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767276824; c=relaxed/simple;
-	bh=91qTqrr/r1se45MzTb1EWbg/sH83XxU52s1nfxN/vLY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=arB4qcozUnkUqxg0hwKdM2vYemOJqpHh1BEwlztzRNAjpaZuzUiDPq5eImCJ6wpYXRVEonHBIMz3O5c2glzMz2uGX3+Leceb8/EKUmaU00XcWk4WDZoYDBDSPCUNG7/mDDTt0jGU9Ftpx7Q7wQABL35RY8FWThdhETKYrAunF/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DaugLIqR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B2A8C4CEF7;
-	Thu,  1 Jan 2026 14:13:43 +0000 (UTC)
+	s=arc-20240116; t=1767278505; c=relaxed/simple;
+	bh=dJEQV2YGvv7o/ctQTZAUhmFExWO2Fr9+sv8KayEHBaQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=rqjDGCnUkTtc80Bs1l/tw9JUFNO3nAcmri0uioK5NjyhPusHL0F9/zkw5lENezWA6nS6gm6W45MRDsD5h7xBZJ1Zulm36u0M8qLApyaXOQ1odKvz3rBtIWacOsRcmaoASn0+elPbluq+i9uawmBG1I0myMpMx1fHhmfxeWFJlX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Bi3veagk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6165C19422
+	for <stable@vger.kernel.org>; Thu,  1 Jan 2026 14:41:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767276824;
-	bh=91qTqrr/r1se45MzTb1EWbg/sH83XxU52s1nfxN/vLY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DaugLIqRqOt7JJOTCySziGVgH0xYbbRHtaf2Z2GBbZX6PwILdimiIOYg4Ks/kR2FK
-	 D7h6KqZABmv/QDgU83JSQMj9q+uykYYqsTs/DSvw705KgBYKYWimOeMWUqUT4Umk9e
-	 CJZa/Fp6/XKqutf8h2l+KIFXDWD6CsWE+tXyQS5mq6keHZVrzuL/rfqulAEIXubf50
-	 sKLUZoCT8MRA69LJmyAEmLZVTStCsNclBFBKlMiDUtK8sWGd0W3prfV6IhDXgscYm9
-	 vsyffxefYO1hQOZKj2C3BEvdJDs9tnW8AbdOkMpa0nWIyNqgFkUfNvNyVpAheh+wqR
-	 UELdR1gIIAJ2g==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Joanne Koong <joannelkoong@gmail.com>,
-	Omar Sandoval <osandov@fb.com>,
-	Miklos Szeredi <mszeredi@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y] fuse: fix readahead reclaim deadlock
-Date: Thu,  1 Jan 2026 09:13:41 -0500
-Message-ID: <20260101141342.4003826-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025122913-nucleus-deny-f4d4@gregkh>
-References: <2025122913-nucleus-deny-f4d4@gregkh>
+	s=k20201202; t=1767278504;
+	bh=dJEQV2YGvv7o/ctQTZAUhmFExWO2Fr9+sv8KayEHBaQ=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=Bi3veagkba+vEwkFYt8jC4pPx5Coog9PqRmTsdT5VS+IHdWMJdDcyMogY7mXuWW2U
+	 RhcnHcVU0hTQFK3wlMmoRYoZhy24IVa3FomfBdCWWG0ay0vqG5YCUqSi246VNqswN6
+	 atKsxWJY3BdcJGdnQC4BVSbfPmzsf9MyKF46S4cRIKWDtDjoDytZmsTp8eW7/u+tc3
+	 DrC5HsJHqAUNnvOMxdlhLtDactKmqfwMbHRHU0fmcUqboZIqWTrXq98k/Utbq6kQb+
+	 qwcLhIvdjnZcm1xVM3xIRWChyN5cwU6isHFBf1vEzakrACHko0aTvGMxme1/9brDGH
+	 tTTJ6rjUMmvaw==
+Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-79045634f45so25228567b3.1
+        for <stable@vger.kernel.org>; Thu, 01 Jan 2026 06:41:44 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCXRFeX2PeeusZeg1XNxV8hsi0JnxRRcswR9jVmzTWTMGRltVB/0kEOZ80hqhkXbqpN9vT1PBE0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxnz7n+W8XHhpno66d64yuVGRDNlY2budk1aVTdZD6jHy/wfeXH
+	4/3ZEjLroiPdPDrl5gx8ZivtRWSbSnycll0sUNYBd2rjAol34AKPUWdLv4IT6+Hyhjhkt7LIF2I
+	Updy5d3NIaKsC33TV9XQGrFlt7GQqmG0=
+X-Google-Smtp-Source: AGHT+IHmrwEoOP6u+/a0w8PIwhMHQNADeKorFQgWLDEJntlKU7Pe3tGtvIAQIMxX5+0aSLYhi+EzKxwMOpkkjBdnd5Y=
+X-Received: by 2002:a05:690e:1a08:b0:644:5bba:e497 with SMTP id
+ 956f58d0204a3-6466a871e61mr24599564d50.38.1767278503985; Thu, 01 Jan 2026
+ 06:41:43 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20251126122219.25729-1-brgl@bgdev.pl>
+In-Reply-To: <20251126122219.25729-1-brgl@bgdev.pl>
+From: Linus Walleij <linusw@kernel.org>
+Date: Thu, 1 Jan 2026 15:41:33 +0100
+X-Gmail-Original-Message-ID: <CAD++jLmr6jozEfBnui58jU=-vofTjCf5G6o+atF3G7mwe1HsXw@mail.gmail.com>
+X-Gm-Features: AQt7F2ptEuUwF414E-nCJp2fFYY_udn9zodnxa6ml7MlAAMHSl34dMZA5xCA0DQ
+Message-ID: <CAD++jLmr6jozEfBnui58jU=-vofTjCf5G6o+atF3G7mwe1HsXw@mail.gmail.com>
+Subject: Re: [PATCH] pinctrl: qcom: lpass-lpi: mark the GPIO controller as sleeping
+To: Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: Bjorn Andersson <andersson@kernel.org>, Linus Walleij <linus.walleij@linaro.org>, 
+	Srinivas Kandagatla <srini@kernel.org>, linux-arm-msm@vger.kernel.org, 
+	linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, stable@vger.kernel.org, 
+	Val Packett <val@packett.cool>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Joanne Koong <joannelkoong@gmail.com>
+On Wed, Nov 26, 2025 at 1:22=E2=80=AFPM Bartosz Golaszewski <brgl@bgdev.pl>=
+ wrote:
 
-[ Upstream commit bd5603eaae0aabf527bfb3ce1bb07e979ce5bd50 ]
+> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+>
+> The gpio_chip settings in this driver say the controller can't sleep
+> but it actually uses a mutex for synchronization. This triggers the
+> following BUG():
+>
+> [    9.233659] BUG: sleeping function called from invalid context at kern=
+el/locking/mutex.c:281
+> [    9.233665] in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 554=
+, name: (udev-worker)
+> [    9.233669] preempt_count: 1, expected: 0
+> [    9.233673] RCU nest depth: 0, expected: 0
+> [    9.233688] Tainted: [W]=3DWARN
+> [    9.233690] Hardware name: Dell Inc. Latitude 7455/0FK7MX, BIOS 2.10.1=
+ 05/20/2025
+> [    9.233694] Call trace:
+> [    9.233696]  show_stack+0x24/0x38 (C)
+> [    9.233709]  dump_stack_lvl+0x40/0x88
+> [    9.233716]  dump_stack+0x18/0x24
+> [    9.233722]  __might_resched+0x148/0x160
+> [    9.233731]  __might_sleep+0x38/0x98
+> [    9.233736]  mutex_lock+0x30/0xd8
+> [    9.233749]  lpi_config_set+0x2e8/0x3c8 [pinctrl_lpass_lpi]
+> [    9.233757]  lpi_gpio_direction_output+0x58/0x90 [pinctrl_lpass_lpi]
+> [    9.233761]  gpiod_direction_output_raw_commit+0x110/0x428
+> [    9.233772]  gpiod_direction_output_nonotify+0x234/0x358
+> [    9.233779]  gpiod_direction_output+0x38/0xd0
+> [    9.233786]  gpio_shared_proxy_direction_output+0xb8/0x2a8 [gpio_share=
+d_proxy]
+> [    9.233792]  gpiod_direction_output_raw_commit+0x110/0x428
+> [    9.233799]  gpiod_direction_output_nonotify+0x234/0x358
+> [    9.233806]  gpiod_configure_flags+0x2c0/0x580
+> [    9.233812]  gpiod_find_and_request+0x358/0x4f8
+> [    9.233819]  gpiod_get_index+0x7c/0x98
+> [    9.233826]  devm_gpiod_get+0x34/0xb0
+> [    9.233829]  reset_gpio_probe+0x58/0x128 [reset_gpio]
+> [    9.233836]  auxiliary_bus_probe+0xb0/0xf0
+> [    9.233845]  really_probe+0x14c/0x450
+> [    9.233853]  __driver_probe_device+0xb0/0x188
+> [    9.233858]  driver_probe_device+0x4c/0x250
+> [    9.233863]  __driver_attach+0xf8/0x2a0
+> [    9.233868]  bus_for_each_dev+0xf8/0x158
+> [    9.233872]  driver_attach+0x30/0x48
+> [    9.233876]  bus_add_driver+0x158/0x2b8
+> [    9.233880]  driver_register+0x74/0x118
+> [    9.233886]  __auxiliary_driver_register+0x94/0xe8
+> [    9.233893]  init_module+0x34/0xfd0 [reset_gpio]
+> [    9.233898]  do_one_initcall+0xec/0x300
+> [    9.233903]  do_init_module+0x64/0x260
+> [    9.233910]  load_module+0x16c4/0x1900
+> [    9.233915]  __arm64_sys_finit_module+0x24c/0x378
+> [    9.233919]  invoke_syscall+0x4c/0xe8
+> [    9.233925]  el0_svc_common+0x8c/0xf0
+> [    9.233929]  do_el0_svc+0x28/0x40
+> [    9.233934]  el0_svc+0x38/0x100
+> [    9.233938]  el0t_64_sync_handler+0x84/0x130
+> [    9.233943]  el0t_64_sync+0x17c/0x180
+>
+> Mark the controller as sleeping.
+>
+> Fixes: 6e261d1090d6 ("pinctrl: qcom: Add sm8250 lpass lpi pinctrl driver"=
+)
+> Cc: stable@vger.kernel.org
+> Reported-by: Val Packett <val@packett.cool>
+> Closes: https://lore.kernel.org/all/98c0f185-b0e0-49ea-896c-f3972dd011ca@=
+packett.cool/
+> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-Commit e26ee4efbc79 ("fuse: allocate ff->release_args only if release is
-needed") skips allocating ff->release_args if the server does not
-implement open. However in doing so, fuse_prepare_release() now skips
-grabbing the reference on the inode, which makes it possible for an
-inode to be evicted from the dcache while there are inflight readahead
-requests. This causes a deadlock if the server triggers reclaim while
-servicing the readahead request and reclaim attempts to evict the inode
-of the file being read ahead. Since the folio is locked during
-readahead, when reclaim evicts the fuse inode and fuse_evict_inode()
-attempts to remove all folios associated with the inode from the page
-cache (truncate_inode_pages_range()), reclaim will block forever waiting
-for the lock since readahead cannot relinquish the lock because it is
-itself blocked in reclaim:
+Patch applied for fixes, sorry for missing this. Probably due to mail
+address switchover.
 
->>> stack_trace(1504735)
- folio_wait_bit_common (mm/filemap.c:1308:4)
- folio_lock (./include/linux/pagemap.h:1052:3)
- truncate_inode_pages_range (mm/truncate.c:336:10)
- fuse_evict_inode (fs/fuse/inode.c:161:2)
- evict (fs/inode.c:704:3)
- dentry_unlink_inode (fs/dcache.c:412:3)
- __dentry_kill (fs/dcache.c:615:3)
- shrink_kill (fs/dcache.c:1060:12)
- shrink_dentry_list (fs/dcache.c:1087:3)
- prune_dcache_sb (fs/dcache.c:1168:2)
- super_cache_scan (fs/super.c:221:10)
- do_shrink_slab (mm/shrinker.c:435:9)
- shrink_slab (mm/shrinker.c:626:10)
- shrink_node (mm/vmscan.c:5951:2)
- shrink_zones (mm/vmscan.c:6195:3)
- do_try_to_free_pages (mm/vmscan.c:6257:3)
- do_swap_page (mm/memory.c:4136:11)
- handle_pte_fault (mm/memory.c:5562:10)
- handle_mm_fault (mm/memory.c:5870:9)
- do_user_addr_fault (arch/x86/mm/fault.c:1338:10)
- handle_page_fault (arch/x86/mm/fault.c:1481:3)
- exc_page_fault (arch/x86/mm/fault.c:1539:2)
- asm_exc_page_fault+0x22/0x27
-
-Fix this deadlock by allocating ff->release_args and grabbing the
-reference on the inode when preparing the file for release even if the
-server does not implement open. The inode reference will be dropped when
-the last reference on the fuse file is dropped (see fuse_file_put() ->
-fuse_release_end()).
-
-Fixes: e26ee4efbc79 ("fuse: allocate ff->release_args only if release is needed")
-Cc: stable@vger.kernel.org
-Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
-Reported-by: Omar Sandoval <osandov@fb.com>
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- fs/fuse/file.c | 26 +++++++++++++++++++-------
- 1 file changed, 19 insertions(+), 7 deletions(-)
-
-diff --git a/fs/fuse/file.c b/fs/fuse/file.c
-index 2055af1ffaf3..2b7adc83b64e 100644
---- a/fs/fuse/file.c
-+++ b/fs/fuse/file.c
-@@ -113,7 +113,9 @@ static void fuse_file_put(struct fuse_file *ff, bool sync)
- 		struct fuse_args *args = (ra ? &ra->args : NULL);
- 
- 		if (!args) {
--			/* Do nothing when server does not implement 'open' */
-+			/* Do nothing when server does not implement 'opendir' */
-+		} else if (args->opcode == FUSE_RELEASE && ff->fm->fc->no_open) {
-+			fuse_release_end(ff->fm, args, 0);
- 		} else if (sync) {
- 			fuse_simple_request(ff->fm, args);
- 			fuse_release_end(ff->fm, args, 0);
-@@ -134,8 +136,17 @@ struct fuse_file *fuse_file_open(struct fuse_mount *fm, u64 nodeid,
- 	struct fuse_file *ff;
- 	int opcode = isdir ? FUSE_OPENDIR : FUSE_OPEN;
- 	bool open = isdir ? !fc->no_opendir : !fc->no_open;
-+	bool release = !isdir || open;
- 
--	ff = fuse_file_alloc(fm, open);
-+	/*
-+	 * ff->args->release_args still needs to be allocated (so we can hold an
-+	 * inode reference while there are pending inflight file operations when
-+	 * ->release() is called, see fuse_prepare_release()) even if
-+	 * fc->no_open is set else it becomes possible for reclaim to deadlock
-+	 * if while servicing the readahead request the server triggers reclaim
-+	 * and reclaim evicts the inode of the file being read ahead.
-+	 */
-+	ff = fuse_file_alloc(fm, release);
- 	if (!ff)
- 		return ERR_PTR(-ENOMEM);
- 
-@@ -154,13 +165,14 @@ struct fuse_file *fuse_file_open(struct fuse_mount *fm, u64 nodeid,
- 			fuse_file_free(ff);
- 			return ERR_PTR(err);
- 		} else {
--			/* No release needed */
--			kfree(ff->release_args);
--			ff->release_args = NULL;
--			if (isdir)
-+			if (isdir) {
-+				/* No release needed */
-+				kfree(ff->release_args);
-+				ff->release_args = NULL;
- 				fc->no_opendir = 1;
--			else
-+			} else {
- 				fc->no_open = 1;
-+			}
- 		}
- 	}
- 
--- 
-2.51.0
-
+Yours,
+Linus Walleij
 
