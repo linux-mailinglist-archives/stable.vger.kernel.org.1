@@ -1,166 +1,124 @@
-Return-Path: <stable+bounces-204483-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204484-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08A8ACEED54
-	for <lists+stable@lfdr.de>; Fri, 02 Jan 2026 16:14:05 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AA89CEED85
+	for <lists+stable@lfdr.de>; Fri, 02 Jan 2026 16:19:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 11A0C300E023
-	for <lists+stable@lfdr.de>; Fri,  2 Jan 2026 15:13:59 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A1F7330010D1
+	for <lists+stable@lfdr.de>; Fri,  2 Jan 2026 15:19:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E242254B18;
-	Fri,  2 Jan 2026 15:13:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6C4925D1E9;
+	Fri,  2 Jan 2026 15:19:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b="tBPW7OO/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J5dYrabS"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11497247295
-	for <stable@vger.kernel.org>; Fri,  2 Jan 2026 15:13:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55C1F25B31D
+	for <stable@vger.kernel.org>; Fri,  2 Jan 2026 15:19:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767366836; cv=none; b=hp8igtmV8LWpmfyvg8k3+P/0MQ5mlC7tIEQYgMLq/NbzzJ0Ee047qdrmXf6Ov+7U9LBSWdmVR4C9pz59FmkyjpLyOApH3HBOP2kJI7zr0YLuq3Ui6VtE5UOlXcbLpWbnAiKdeZkiO+adX3WSKzeO6AmHrGbalePTRFGeTjXmC5s=
+	t=1767367176; cv=none; b=jzFu5M9xm1rHiZxgJSAYvjOkR+TxOkim3UC1lfauMToOUm2CJg4eY22IofzVd4V4TJ6oxiPRaO88JDt5fVR3fvttdcOUx48LnTAn+yssEbMRKAzX9jxR9Mp7mvbMO/SLweIEwk1dnIlAmdOqlrmonOOOKkLTRSM0LhPyQ1Glewk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767366836; c=relaxed/simple;
-	bh=k3VtBBb6OF0Z2Ui69RBGkK+33zvq/U0BpsN4SQmZ6oY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DQ13ZEtZ3d7H19Xj4YvNtF/7QB3JTvOxXbC9Txk77H2zCcZcoVAeXH9Upn3WWpaFJPNVZKlI5O/KX5lr3aTPttciEpkSGA13VCnKot7SYOam/HhclJWAs65dHIMzvK0kC+1cUS8J/mQEL2rFew3XT1WSlBBVDdfPVUw/oVaQDvk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu; spf=fail smtp.mailfrom=g.harvard.edu; dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b=tBPW7OO/; arc=none smtp.client-ip=209.85.160.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=g.harvard.edu
-Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-4eda057f3c0so139272131cf.2
-        for <stable@vger.kernel.org>; Fri, 02 Jan 2026 07:13:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rowland.harvard.edu; s=google; t=1767366834; x=1767971634; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=MKRrOSohpgOIyc76MbizVc926qdGseLbYCMIQ6kB9to=;
-        b=tBPW7OO/bc42kWHJhavcU/LTORiIJrqGeC1NM3JI2AUXuFVVvglmZAD6fZcze7p/Bb
-         ODPTGkWFHcNaWNK41lzSPOhFkvmVdghcJDWBfT2E+V7ffJtljwG9UaSiG2HXoQUYv07t
-         xn6bb1Js73QnQIHaAZVJb5aKdH/qmONbV+RAA0ziQQLeMgrDfCBW7efJspr9gBVhTfKi
-         jphFJYxIUWlaC6zVPpliV38Vu33opzE9OqM5dxIB/egD9PzMQNUDJUbFoOJEqSTGNbTn
-         P8NZs61EGpGwKM7fcxhjexd5T0MyKBsI2FRUWIlhW6tZDNuh0xjfo1ShRW1v6QD4bzrP
-         9Kzg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767366834; x=1767971634;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=MKRrOSohpgOIyc76MbizVc926qdGseLbYCMIQ6kB9to=;
-        b=hmhGX2s+OP5hMiKmBJcp/Tqq4kM12wuk9u66Uh3mEbpaPBo5SB13JY7YoX6Uv20ahI
-         GV5pmI53Lzo8pF9XzD36GmFRe41w4pi138JUZbVlXgDGQMPaO7vibQGIDXfKtSfYQm9T
-         wp2dBXtNx3CRTCdVJBufoeIS8bBAvNXCGWHRO7V8kCicrUiOFS4WDlB+9KFYlVjyaO0P
-         9FUGgoO+JzapLGNhsG8rlkKxTkIYXzSpw+XuYUB0kJqLJ6i9phHmsHF39mTHZ4z2W4rw
-         2KW7VNxqhY9T8YsKokBTBe6sM/nGYy0q9ZNEKr/qSxhmci9Wdv92wU9LZKz60V+wAUv0
-         CZVQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXpCAM/y55LTG89GgTs4ZuFXSmLrewyWLT5OGyXZOni9tWIDu7iQws2Ny9+WmDuHVdRek1ZLE4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxUrl433euU75WcInguCbbMMYdfEJ9KwnNaPXHtkVulSMj2A+dy
-	wGeqkJZEDUsl2ZtYZ0ky1p7EOyV0LaHUTLfXbyNhh9CrPFhGTwneiiNRzxkhk0dcVg==
-X-Gm-Gg: AY/fxX5gw6b0OVw2D/LCVRXt3pog6H+pwnNPL5p/5K4tTBida9Kp9f0DjCamRCEVmsF
-	+FWb4e9olVpaYdRbqCkE8ADMfTLrNrPeP73Ihuyp0rab85oisB4iVgj7C6RxA6LIaFE4ME/Ax/1
-	uejsgJJVNE13KnDdzjs282g7m2kzisXsyf4Ehp7E9LC/+5z42XWsHPSST2HQT7+40/EMViONU9d
-	NfnnCzSbfHBIjhop2VP4wghQ/sCYDO/qu0j32o+et0mTZ8UfqNKPb+mkGCJ1EnNqdOrDpP5OVFh
-	a803REq66Wgcn8hojR3u4BUqdoIiv11x4WTGcL3U/xSocvnJ7zmqwLGQLnnyvG1dDy40I7aGT8w
-	btTpaMVGXkE3VrV8pbtZM3Qd2BYgHz1LKRki4ZpKtGtlMNZBinWPzoBQ3Kaigq5g5mXoz34wk5G
-	2OV82GnmGphMEW
-X-Google-Smtp-Source: AGHT+IFiJdnVXmubr0ZXgWZIp6IV1ka1R38pWa45OLmGF5b/Jmt6hv2wey1K3GFnP+DN0+NjKJzq2A==
-X-Received: by 2002:ac8:5dce:0:b0:4ee:17b0:6261 with SMTP id d75a77b69052e-4f4abcf1559mr651560161cf.29.1767366833772;
-        Fri, 02 Jan 2026 07:13:53 -0800 (PST)
-Received: from rowland.harvard.edu ([2601:19b:d03:1700::16e7])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4f4ac62fa56sm316864931cf.17.2026.01.02.07.13.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 02 Jan 2026 07:13:53 -0800 (PST)
-Date: Fri, 2 Jan 2026 10:13:50 -0500
-From: Alan Stern <stern@rowland.harvard.edu>
-To: Huacai Chen <chenhuacai@kernel.org>
-Cc: Diederik de Haas <diederik@cknow-tech.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Huacai Chen <chenhuacai@loongson.cn>, linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Shengwen Xiao <atzlinux@sina.com>,
-	linux-rockchip@lists.infradead.org
-Subject: Re: [PATCH] USB: OHCI/UHCI: Add soft dependencies on ehci_hcd
-Message-ID: <34c7edd0-3c0c-4a57-b0ea-71e4cba2ef26@rowland.harvard.edu>
-References: <20251230080014.3934590-1-chenhuacai@loongson.cn>
- <2025123049-cadillac-straggler-d2fb@gregkh>
- <DFBMNYF0U5PK.24YOAUZFZ0ESB@cknow-tech.com>
- <73d472ea-e660-474c-b319-b0e8758406c0@rowland.harvard.edu>
- <CAAhV-H6drj1df3Y4_Z67t4TzJ5n6YiexsEHKTPvi1caNvw5H9A@mail.gmail.com>
- <0c85d288-405f-4aaf-944e-b1d452d0f275@rowland.harvard.edu>
- <CAAhV-H5GdkMg-uzMpDQPGLs+gWNAy6ZOH33VoLqnNyWbRenNDw@mail.gmail.com>
+	s=arc-20240116; t=1767367176; c=relaxed/simple;
+	bh=dxPUpFrRnY+gzV+DKENswezMf6LvtnRaiflLkua/dRI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=dVNl4v0iZupJFM533dNzdIp55e5H3blNMIb2bhpBNsymHaDMWRPkqF00vya4cTq0Z5727jXb2wGZpt9jb481J+Lihtt1z3lTUN5rV1Y6UbpSWdxCX+glH3qHOHM187S8GO/PkOvDYN77WwRTAd6QzDvuryYy47k/rit1jS9iN/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J5dYrabS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6CF0C116B1;
+	Fri,  2 Jan 2026 15:19:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767367176;
+	bh=dxPUpFrRnY+gzV+DKENswezMf6LvtnRaiflLkua/dRI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=J5dYrabS9VN8FDYAp6zeSVmX7N3NklcLR/lG++Uv8RGlcdrtssLaP3Ul0Vp8dFIb4
+	 gZ9t4CscW+umezie9iaJ2Cgyq0YIKNeCuwy6goWvx8sduhJRDD40oHetmG10bNLHG8
+	 ZK/LrlD2mhqgTepL3be/XzyOEzYtMSdLXm8V868VPFQqJHBJrmC0TIzjhUC+hioBxw
+	 aPs9s+6s4Np8n4vPDdVIqtn+ML8pM77cJJpDh0T18G8afI10ELz7jcZ3TaAGKkgHpa
+	 xHrIazQrLHpStHi8Y4O/5R4G+Jg6o2dSJh7503uwtUeWQ8Swhgwux6cIrXJX4ixGVz
+	 MxWHJqeig35Bw==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Fernand Sieber <sieberf@amazon.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6.y 1/3] sched/fair: Forfeit vruntime on yield
+Date: Fri,  2 Jan 2026 10:19:29 -0500
+Message-ID: <20260102151931.300967-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025122903-sterile-from-4520@gregkh>
+References: <2025122903-sterile-from-4520@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAAhV-H5GdkMg-uzMpDQPGLs+gWNAy6ZOH33VoLqnNyWbRenNDw@mail.gmail.com>
 
-On Fri, Jan 02, 2026 at 10:36:35AM +0800, Huacai Chen wrote:
-> On Wed, Dec 31, 2025 at 11:21 PM Alan Stern <stern@rowland.harvard.edu> wrote:
-> >
-> > On Wed, Dec 31, 2025 at 05:38:05PM +0800, Huacai Chen wrote:
-> > > From your long explanation I think the order is still important. "New
-> > > connection" may be harmless for USB keyboard/mouse, but really
-> > > unacceptable for USB storage.
-> > >
-> > > If we revert 05c92da0c524 and 9beeee6584b9, the real problem doesn't
-> > > disappear. Then we go back to pre-2008 to rely on distributions
-> > > providing a correct modprobe.conf?
-> >
-> > The warning message in 9beeee6584b9 was written a long time ago; back
-> > then I didn't realize that the real dependency was between the -pci
-> > drivers rather than the -hcd ones (and I wasn't aware of softdeps).  The
-> > soft dependency in 05c92da0c524 is between the -pci drivers, so it is
-> > correct.
-> >
-> > To put it another way, on PCI-based systems it is not a problem if the
-> > modules are loaded in this order: uhci-hcd, ohci-hcd, ehci-hcd,
-> > ehci-pci, ohci-pci, uhci-pci.  Even though the warning message would be
-> > logged, the message would be wrong.
-> Correct me if I'm wrong.
-> 
-> I found XHCI is compatible with USB1.0/2.0 devices,
+From: Fernand Sieber <sieberf@amazon.com>
 
-Yes.
+[ Upstream commit 79104becf42baeeb4a3f2b106f954b9fc7c10a3c ]
 
->  but EHCI isn't
-> compatible with USB1.0. Instead, EHCI usually has an OHCI together,
-> this is not only in the PCI case.
+If a task yields, the scheduler may decide to pick it again. The task in
+turn may decide to yield immediately or shortly after, leading to a tight
+loop of yields.
 
-It's more complicated than that.
+If there's another runnable task as this point, the deadline will be
+increased by the slice at each loop. This can cause the deadline to runaway
+pretty quickly, and subsequent elevated run delays later on as the task
+doesn't get picked again. The reason the scheduler can pick the same task
+again and again despite its deadline increasing is because it may be the
+only eligible task at that point.
 
-For quite a long time now, most systems using EHCI have not included a 
-companion OHCI or UHCI controller.  Instead they include a built-in 
-USB-2.0 hub; the hub is wired directly into the EHCI controller and the 
-external ports are connected to the hub.  USB-2.0 hubs include 
-transaction translators that relay packets between high-speed and low- 
-or full-speed connections, so they can talk to both USB-1 and USB-2 
-devices.  Hence no companion controller is needed.
+Fix this by making the task forfeiting its remaining vruntime and pushing
+the deadline one slice ahead. This implements yield behavior more
+authentically.
 
-I don't remember when Intel starting selling chipsets like this, but it 
-was probably around 2000 or earlier.  (Some non-Intel-based systems 
-included a transaction translator directly in the root hub, so they 
-didn't even need to have an additional USB-2.0 hub.)
+We limit the forfeiting to eligible tasks. This is because core scheduling
+prefers running ineligible tasks rather than force idling. As such, without
+the condition, we can end up on a yield loop which makes the vruntime
+increase rapidly, leading to anomalous run delays later down the line.
 
-Before that, systems did include companion controllers along with an 
-EHCI controller.  I don't know of any non-PCI systems that did this, but 
-of course some may exist.  However, the EHCI-1.0 specification says this 
-in section 4.2 "Port Routing and Control" (p. 54):
+Fixes: 147f3efaa24182 ("sched/fair: Implement an EEVDF-like scheduling  policy")
+Signed-off-by: Fernand Sieber <sieberf@amazon.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20250401123622.584018-1-sieberf@amazon.com
+Link: https://lore.kernel.org/r/20250911095113.203439-1-sieberf@amazon.com
+Link: https://lore.kernel.org/r/20250916140228.452231-1-sieberf@amazon.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ kernel/sched/fair.c | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
-	The USB 2.0 host controller must be implemented as a 
-	multi-function PCI device if the implementation
-	includes companion controllers.
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 7f23b866c3d4..cf3a51f323e3 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -8614,7 +8614,19 @@ static void yield_task_fair(struct rq *rq)
+ 	 */
+ 	rq_clock_skip_update(rq);
+ 
+-	se->deadline += calc_delta_fair(se->slice, se);
++	/*
++	 * Forfeit the remaining vruntime, only if the entity is eligible. This
++	 * condition is necessary because in core scheduling we prefer to run
++	 * ineligible tasks rather than force idling. If this happens we may
++	 * end up in a loop where the core scheduler picks the yielding task,
++	 * which yields immediately again; without the condition the vruntime
++	 * ends up quickly running away.
++	 */
++	if (entity_eligible(cfs_rq, se)) {
++		se->vruntime = se->deadline;
++		se->deadline += calc_delta_fair(se->slice, se);
++		update_min_vruntime(cfs_rq);
++	}
+ }
+ 
+ static bool yield_to_task_fair(struct rq *rq, struct task_struct *p)
+-- 
+2.51.0
 
-> So I guess OHCI/UHCI have an EHCI dependency in order to avoid "new
-> connection", not only in the PCI case.
-
-Do you know of any non-PCI systems that do this?
-
-Alan Stern
 
