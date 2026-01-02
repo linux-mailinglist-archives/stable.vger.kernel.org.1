@@ -1,181 +1,196 @@
-Return-Path: <stable+bounces-204489-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204490-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7F2ACEEE66
-	for <lists+stable@lfdr.de>; Fri, 02 Jan 2026 16:43:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A539ACEEEE6
+	for <lists+stable@lfdr.de>; Fri, 02 Jan 2026 16:58:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DCA543011F88
-	for <lists+stable@lfdr.de>; Fri,  2 Jan 2026 15:43:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 87E6430380C6
+	for <lists+stable@lfdr.de>; Fri,  2 Jan 2026 15:56:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D58E627E7DA;
-	Fri,  2 Jan 2026 15:43:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5109124A049;
+	Fri,  2 Jan 2026 15:56:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="DhXt/xB3"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="C5McFdDz"
 X-Original-To: stable@vger.kernel.org
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f65.google.com (mail-ej1-f65.google.com [209.85.218.65])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E42E227D786;
-	Fri,  2 Jan 2026 15:43:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7573E248176
+	for <stable@vger.kernel.org>; Fri,  2 Jan 2026 15:56:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767368612; cv=none; b=EEvRnZcGRwdSQMHdsssn11CwaJIM/IS9WXKTl488nBR9qZIUQ36GtiypU2uzsbr67Ew8SJUcLy6dZQuBh0wIhmR3ncPlZf9fzWMcp/jZjfsn8iLexbCc9I8umyOmOdjeR3AItmLH/HcEun4u0qXCkAnO6np8aIFUs/O+xpYRuAU=
+	t=1767369363; cv=none; b=D+ze1QenloaORPwUQMtQNFVxfJFiXRQ5xEdLlRY2zq1YP1E+yfWdnanvI4jhTviiJzO52aCHbd5900ymroh3S7VBeJroEeLp3KbykErQZ4U/Tt4SU5HclfZaAhiJFkriID7GaFhrWqSqjpeta3L1n09WGsYrIcFmlSVyL7NS/LQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767368612; c=relaxed/simple;
-	bh=LUAbwzwebUPLNRmd7O1YDQA4ve1R2wFu1VV/nEiRio8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jOt0ghfKWQNSlshrIpM8Tpp1PIwoTIVNwJVFtaCdv9Y5ZsFOwAhX5UScAV4Xnf+4x1h3HEBarG1BQDI/ag0u5kVeSAlhOTQJt84msBLgPnG8rx9bZpMODn/MSnNMpGH1eKLXH99sqffMnErRoe5vv0oppZLLCM8IqynTTOYe87w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=none smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=DhXt/xB3; arc=none smtp.client-ip=82.195.75.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=debian.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
-	Reply-To:Content-ID:Content-Description;
-	bh=0t9mnhJSHOECX4KKppwdSKbhkFJo/W7qfjc5l3Ril5k=; b=DhXt/xB3ETIg6Y6xEBN2I1ztJz
-	11XWIjk3f5y5f8cw7qR99jIPofQo39yuaWKZLN8GFgrMIETGLuzkhf8M01TUfLu/kErSuHiQ2im3P
-	y4eGcFnKm+ANnnoDxN4UqJvlPtZWqqaB5HiOPW3+VAWC0K6o9jY4ICV9H/EEwmkj4cZkfRhljQkNI
-	zDTG+FGN8MxXK6OrIm415D3w9HhvtYGyKjS1tK9hQjSSNKHvI3fX2v0PQ3oWLQsfBlEm5cPSgp7mL
-	WNIuBEhnzliwDJTbPJFKJ2C6DFD4anTA2WWI5wT38kaxBhwGKOjN3DGieNkb2/K4rQWamstuxNLG8
-	EDO6DU1Q==;
-Received: from authenticated user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.94.2)
-	(envelope-from <leitao@debian.org>)
-	id 1vbhJ2-00EYVY-87; Fri, 02 Jan 2026 15:43:12 +0000
-Date: Fri, 2 Jan 2026 07:43:07 -0800
-From: Breno Leitao <leitao@debian.org>
-To: Pavan Chebbi <pavan.chebbi@broadcom.com>
-Cc: Michael Chan <michael.chan@broadcom.com>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Richard Cochran <richardcochran@gmail.com>, 
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>, Vadim Fedorenko <vadim.fedorenko@linux.dev>, 
-	Vladimir Oltean <vladimir.oltean@nxp.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	kernel-team@meta.com, stable@vger.kernel.org
-Subject: Re: [PATCH net] bnxt_en: Fix NULL pointer crash in bnxt_ptp_enable
- during error cleanup
-Message-ID: <nejlqwxc4ekfhmpodjm63cfob4o5uf2z7qukk3daofykegnwvs@sksxy4lmxrnd>
-References: <20251231-bnxt-v1-1-8f9cde6698b4@debian.org>
- <CALs4sv2qQuL0trq3ZB6SczPK5BmFMF6p2Ki-3q+4Xqc_qzauoQ@mail.gmail.com>
+	s=arc-20240116; t=1767369363; c=relaxed/simple;
+	bh=5HQ+qZEOvKLSM3M1aXgu2zDptwhry+oiv8fhyVpjSLk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=skiGFCOwdBUOUXOT7ryovds99SBlw2F9naeXiPU7j5PZJ7Ca7FT68BVrUPUfNx+UUhwsYEf9PNoWJp3uRxgqOQadjjq9qONQnoiFKEatUaL7YJdKmIfmVsBaerEJ2BHNkIJRJaBIm5p+WX2oK4f5ipYuExlBoob8WGvCrPTTsQg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=C5McFdDz; arc=none smtp.client-ip=209.85.218.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f65.google.com with SMTP id a640c23a62f3a-b8018eba13cso1907069366b.1
+        for <stable@vger.kernel.org>; Fri, 02 Jan 2026 07:56:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1767369360; x=1767974160; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=U/E4Pkle8R/umjjml+ar6gI8frpDcsvylCBgQE9LDis=;
+        b=C5McFdDzH1QRc9net2dJDd2GnGdwp5kNatArENygxajziGnTXx/1z8H1MH1xXQGDep
+         YetuVJb48+yVxlk5zne34ThOWcSZ7TFD0j9p1scm6QvoSaIiLGOMOaLsicb8xZNm+Y/C
+         7JkU9hVPVqcJXE8MOdxjHJ6V8sbR2SUqMzCf8/VGUYxyMfpDVQPe+cMFW2TnfLBoU/E5
+         zh7ChJWDJGRNO/Mf+OH6SazUijiHkBXTE64XkbMDG+rrnWn/yHOvDpQRMRFem1b8W6Pq
+         thC2E/uNt4tFjlFuyRu8rolwQZ0t61t/1iWGdkoLInDxnqSAzu1/MEfEc3qCYunCzui1
+         PCBg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767369360; x=1767974160;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=U/E4Pkle8R/umjjml+ar6gI8frpDcsvylCBgQE9LDis=;
+        b=JymAuc5FC9D1c0R1E8XFbq+cmbGfW3zmsfxMdExt6kSFSBNfHAdX1Ou11Yk3cnmyHD
+         kFmSKa9yN9EcrF55yzxUUadMenqWlR40Mj00Pjftp9QAO4/BMUy0FoeTq4eiRior1YEf
+         UcmPLxop4rZBxrADlzu9QBlPxhKVReDUgLSK/l+5YxG4OagTo4ownjSKfNSrhZ4cX5vl
+         9xWPKmByNuwYL0aOiMlRPA/L4ezCn1xJRsz8Ze1NplVsRk+Tbuv1fMiFJuGcejsg9xg9
+         XP5oPvxFBYpFSrm7szD13PD+nKYaU/QeLM4+K0ihqAaWH5nRIEVntRstE3Jzg/iLy4px
+         sTiA==
+X-Forwarded-Encrypted: i=1; AJvYcCWbePvlLrpMMIJ0G71YqdGGUMBbcNnjhAzL2m4q1uQ1vFl1m7PSAqZ0X8rVsFee1i4yZXqRuSg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwfQxRZf8yConsk0nmMdaa51UhBmtYE5sPEveZ/jfKbMR56gfv8
+	57gfFgwHq/kzFFse7Fk1vSOin+Qlri3LMgMXn0G7RIUWpCpyArZYfIZE
+X-Gm-Gg: AY/fxX46Cbb/P/toIEYCFz/eDxSexutPOdTPuMMyb7jOka46/a48vE+vGyPpoKh14N3
+	QnG29F1k+XgCwW5agK8rqFA+wgzabPXEUhawuMWdIAP9a0xvZbCcOb78Lng8jrfI/unb83iiIXR
+	Hd3hX3uKXEDQDs8vYhssuETFGAcwErCgTinIbvjNf9yUlqUnVWRNiW1NvqHsjmnt3R/TNzI3yoN
+	UuQZDE49FxO+rd+9IxE2vM5r0kONFaQFOv5LUapDEy50myEveHtHhLgZQFVk1DvBvT4tovX7uhv
+	8bTSOeUJIvRglnvD2sfJtiJq7PfceQrsA7smv2W1yDx2ZLY/+KVItRRdhR+6cVCmTc9MIPSr7B9
+	ZxV/HfXQu8odaxIZhWy5SAkFrs03WejXHsBaIqajrfKJhjTqrgmfVwiYx9ljLjcsckKn6nZ7/Wv
+	mWgO7PgrjcNWGm2UhQ0ASQB+MsBw==
+X-Google-Smtp-Source: AGHT+IEPvWgGFyPCVd7ePOa1jj1CQs953xedwLMhJbDS9KL168vNCZqWkuywUIt3CMvJc+d0CdFOTg==
+X-Received: by 2002:a17:907:9303:b0:b83:1340:1a2c with SMTP id a640c23a62f3a-b8313401b75mr2268205166b.64.1767369359470;
+        Fri, 02 Jan 2026 07:55:59 -0800 (PST)
+Received: from osama.. ([2a02:908:1b4:dac0:ac54:a680:a017:734f])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b8037f089fesm4611961066b.46.2026.01.02.07.55.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 02 Jan 2026 07:55:58 -0800 (PST)
+From: Osama Abdelkader <osama.abdelkader@gmail.com>
+To: luca.ceresoli@bootlin.com,
+	Andy Yan <andy.yan@rock-chips.com>
+Cc: Osama Abdelkader <osama.abdelkader@gmail.com>,
+	stable@vger.kernel.org,
+	Andrzej Hajda <andrzej.hajda@intel.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Robert Foss <rfoss@kernel.org>,
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+	Jonas Karlman <jonas@kwiboo.se>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v3] drm/bridge: synopsys: dw-dp: fix error paths of dw_dp_bind
+Date: Fri,  2 Jan 2026 16:55:52 +0100
+Message-ID: <20260102155553.13243-1-osama.abdelkader@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CALs4sv2qQuL0trq3ZB6SczPK5BmFMF6p2Ki-3q+4Xqc_qzauoQ@mail.gmail.com>
-X-Debian-User: leitao
 
-Hello Pavan,
+Fix several issues in dw_dp_bind() error handling:
 
-On Wed, Dec 31, 2025 at 09:30:57PM +0530, Pavan Chebbi wrote:
-> On Wed, Dec 31, 2025 at 6:35 PM Breno Leitao <leitao@debian.org> wrote:
-> > Fix this by checking if bp->hwrm_dma_pool is NULL at the start of
-> > bnxt_ptp_enable(). During error/cleanup paths when HWRM resources have
-> > been freed, return success without attempting to send commands since the
-> > hardware is being torn down anyway.
-> >
-> > During normal operation, the DMA pool is always valid so PTP
-> > functionality is unaffected.
-> >
-> > Signed-off-by: Breno Leitao <leitao@debian.org>
-> > Fixes: a60fc3294a37 ("ptp: rework ptp_clock_unregister() to disable events")
-> > Cc: stable@vger.kernel.org
-> > ---
-> >  drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c | 7 +++++++
-> >  1 file changed, 7 insertions(+)
-> >
-> > diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c
-> > index a8a74f07bb54..a749bbfa398e 100644
-> > --- a/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c
-> > +++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c
-> > @@ -482,6 +482,13 @@ static int bnxt_ptp_enable(struct ptp_clock_info *ptp_info,
-> >         int pin_id;
-> >         int rc;
-> >
-> > +       /* Return success if HWRM resources are not available.
-> > +        * This can happen during error/cleanup paths when DMA pool has been
-> > +        * freed.
-> > +        */
-> > +       if (!bp->hwrm_dma_pool)
-> 
-> Thanks for the fix. While it's valid, just that to me, this check here
-> looks a bit odd.
-> Why not call bnxt_ptp_clear() before bnxt_free_hwrm_resources() in the
-> unwind path?
+1. Missing return after drm_bridge_attach() failure - the function
+   continued execution instead of returning an error.
 
-I thought about it, but, I didn't understand all the implication of
-changing the unwind order. 
+2. Resource leak: drm_dp_aux_register() is not a devm function, so
+   drm_dp_aux_unregister() must be called on all error paths after
+   aux registration succeeds. This affects errors from:
+   - drm_bridge_attach()
+   - phy_init()
+   - devm_add_action_or_reset()
+   - platform_get_irq()
+   - devm_request_threaded_irq()
 
-Anyway, I've have tested the current patch and it worked fine. Do you
-think we should move kfree(bp->ptp_cfg) closer to bnxt_ptp_clear()?
+3. Bug fix: platform_get_irq() returns the IRQ number or a negative
+   error code, but the error path was returning ERR_PTR(ret) instead
+   of ERR_PTR(dp->irq).
 
-Thanks for the review,
---breno
+Use a goto label for cleanup to ensure consistent error handling.
 
+Fixes: 86eecc3a9c2e ("drm/bridge: synopsys: Add DW DPTX Controller support library")
+Cc: stable@vger.kernel.org
 
-commit d07c08889f75966d6829b93304de5030cf4e66aa
-Author: Breno Leitao <leitao@debian.org>
-Date:   Wed Dec 31 04:00:57 2025 -0800
+Signed-off-by: Osama Abdelkader <osama.abdelkader@gmail.com>
+---
+v3:
+- Add resource leak fixes for all error paths after drm_dp_aux_register()
+- Fix platform_get_irq() error handling bug
+- Use goto pattern for cleanup as suggested by reviewer
 
-    bnxt_en: Fix NULL pointer crash in bnxt_ptp_enable during error cleanup
-    
-    When bnxt_init_one() fails during initialization (e.g.,
-    bnxt_init_int_mode returns -ENODEV), the error path calls
-    bnxt_free_hwrm_resources() which destroys the DMA pool and sets
-    bp->hwrm_dma_pool to NULL. Subsequently, bnxt_ptp_clear() is called,
-    which invokes ptp_clock_unregister().
-    
-    Since commit a60fc3294a37 ("ptp: rework ptp_clock_unregister() to
-    disable events"), ptp_clock_unregister() now calls
-    ptp_disable_all_events(), which in turn invokes the driver's .enable()
-    callback (bnxt_ptp_enable()) to disable PTP events before completing the
-    unregistration.
-    
-    bnxt_ptp_enable() attempts to send HWRM commands via bnxt_ptp_cfg_pin()
-    and bnxt_ptp_cfg_event(), both of which call hwrm_req_init(). This
-    function tries to allocate from bp->hwrm_dma_pool, causing a NULL
-    pointer dereference:
-    
-      bnxt_en 0000:01:00.0 (unnamed net_device) (uninitialized): bnxt_init_int_mode err: ffffffed
-      KASAN: null-ptr-deref in range [0x0000000000000028-0x000000000000002f]
-      Call Trace:
-       __hwrm_req_init (drivers/net/ethernet/broadcom/bnxt/bnxt_hwrm.c:72)
-       bnxt_ptp_enable (drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c:323 drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c:517)
-       ptp_disable_all_events (drivers/ptp/ptp_chardev.c:66)
-       ptp_clock_unregister (drivers/ptp/ptp_clock.c:518)
-       bnxt_ptp_clear (drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c:1134)
-       bnxt_init_one (drivers/net/ethernet/broadcom/bnxt/bnxt.c:16889)
-    
-    Lines are against commit f8f9c1f4d0c7 ("Linux 6.19-rc3")
-    
-    Fix this by clearing and unregistering ptp (bnxt_ptp_clear()) before
-    freeing HWRM resources.
-    
-    Suggested-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
-    Signed-off-by: Breno Leitao <leitao@debian.org>
-    Fixes: a60fc3294a37 ("ptp: rework ptp_clock_unregister() to disable events")
-    Cc: stable@vger.kernel.org
+v2:
+- use concise error message
+- add Fixes and Cc tags
+---
+ drivers/gpu/drm/bridge/synopsys/dw-dp.c | 20 ++++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index d17d0ea89c36..68fc9977b375 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -16882,10 +16882,10 @@ static int bnxt_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
+diff --git a/drivers/gpu/drm/bridge/synopsys/dw-dp.c b/drivers/gpu/drm/bridge/synopsys/dw-dp.c
+index 82aaf74e1bc0..432342452484 100644
+--- a/drivers/gpu/drm/bridge/synopsys/dw-dp.c
++++ b/drivers/gpu/drm/bridge/synopsys/dw-dp.c
+@@ -2062,33 +2062,41 @@ struct dw_dp *dw_dp_bind(struct device *dev, struct drm_encoder *encoder,
+ 	}
  
- init_err_pci_clean:
- 	bnxt_hwrm_func_drv_unrgtr(bp);
-+	bnxt_ptp_clear(bp);
- 	bnxt_free_hwrm_resources(bp);
- 	bnxt_hwmon_uninit(bp);
- 	bnxt_ethtool_free(bp);
--	bnxt_ptp_clear(bp);
- 	kfree(bp->ptp_cfg);
- 	bp->ptp_cfg = NULL;
- 	kfree(bp->fw_health);
+ 	ret = drm_bridge_attach(encoder, bridge, NULL, DRM_BRIDGE_ATTACH_NO_CONNECTOR);
+-	if (ret)
++	if (ret) {
+ 		dev_err_probe(dev, ret, "Failed to attach bridge\n");
++		goto unregister_aux;
++	}
+ 
+ 	dw_dp_init_hw(dp);
+ 
+ 	ret = phy_init(dp->phy);
+ 	if (ret) {
+ 		dev_err_probe(dev, ret, "phy init failed\n");
+-		return ERR_PTR(ret);
++		goto unregister_aux;
+ 	}
+ 
+ 	ret = devm_add_action_or_reset(dev, dw_dp_phy_exit, dp);
+ 	if (ret)
+-		return ERR_PTR(ret);
++		goto unregister_aux;
+ 
+ 	dp->irq = platform_get_irq(pdev, 0);
+-	if (dp->irq < 0)
+-		return ERR_PTR(ret);
++	if (dp->irq < 0) {
++		ret = dp->irq;
++		goto unregister_aux;
++	}
+ 
+ 	ret = devm_request_threaded_irq(dev, dp->irq, NULL, dw_dp_irq,
+ 					IRQF_ONESHOT, dev_name(dev), dp);
+ 	if (ret) {
+ 		dev_err_probe(dev, ret, "failed to request irq\n");
+-		return ERR_PTR(ret);
++		goto unregister_aux;
+ 	}
+ 
+ 	return dp;
++
++unregister_aux:
++	drm_dp_aux_unregister(&dp->aux);
++	return ERR_PTR(ret);
+ }
+ EXPORT_SYMBOL_GPL(dw_dp_bind);
+ 
+-- 
+2.43.0
+
 
