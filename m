@@ -1,230 +1,270 @@
-Return-Path: <stable+bounces-204425-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204426-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6329CED9CC
-	for <lists+stable@lfdr.de>; Fri, 02 Jan 2026 03:45:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93CB8CEDA5E
+	for <lists+stable@lfdr.de>; Fri, 02 Jan 2026 05:25:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A86123007FDB
-	for <lists+stable@lfdr.de>; Fri,  2 Jan 2026 02:45:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5AC953005BAD
+	for <lists+stable@lfdr.de>; Fri,  2 Jan 2026 04:25:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1A8030C35D;
-	Fri,  2 Jan 2026 02:45:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jwEItP1d"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99FD02C08BB;
+	Fri,  2 Jan 2026 04:25:04 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-44.mimecast.com (us-smtp-delivery-44.mimecast.com [207.211.30.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C0A130C603
-	for <stable@vger.kernel.org>; Fri,  2 Jan 2026 02:45:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5153D1E0DE8
+	for <stable@vger.kernel.org>; Fri,  2 Jan 2026 04:25:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.211.30.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767321923; cv=none; b=Kny1EGZNlHkvXCRISb0qAb6D5JnWtxKplKgRZgk6W8IrcsQPk8zFlVVwpcK4QWWiw9EyNHM5zLybAxqaFsQ2qLbHNfFcIhUmaNZMIPKezAk1j7evPeGmXudoMJAB7YTNqxZqaGRx2QyyNdk4+K9mHKbuSmMDBFEcrxPtVMcqaco=
+	t=1767327904; cv=none; b=IgtVo+ZaN5b2bqLWNA+pF3BpppODatoLX7m6CsJ5I7vTIhnPUatk8kmK3fxysysZmz46K9JT4+EnvcpwmMA2lnVEJCa4NrQZj+/sxnwXnStaEkJd9QcNvMjc+0q4uFhvJbF0QVF3Cn7XDU4IbXNhT8W+iWf9hA+yPLU+M74MrHI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767321923; c=relaxed/simple;
-	bh=MQsINCOU1hyGJCnl89I5bDH48JGnzEjL1Z1ei4uN1Xo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cq39toCKgvblegRErEWqVL5P4YmLP/1n+InYLbhiaEa22/VGxmT/Xvaf3dv1HY/IekPmlrEg/jUFLxpZBPNtm6n5KUN2AtrHEA4HmQUqjdblp3ysAqaBsL/axVxX5V8wi/ti41u/d6WB0+W8Q5qYrCMMUEaIdxgcLsbPYbZT91I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jwEItP1d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66037C4CEF7;
-	Fri,  2 Jan 2026 02:45:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767321921;
-	bh=MQsINCOU1hyGJCnl89I5bDH48JGnzEjL1Z1ei4uN1Xo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jwEItP1dxz5oKQ7XMk9Taq3/D6PxPuKqjQnsdbYi62Zc7N5BZ7gcIQQaaKK8d9LjX
-	 0YYnmmeYld+VC/7nCDx57k/v+IBoukj0p5/v70wRJDdb5fb6jVkiXud36yoAxXxuuj
-	 vgpMVAkjj3daygXB7dNsFcpfRtNHyAmtkTLtvDCmgPMmXFDTEjlDd+tD/BNzVGh+t+
-	 rz9Ddq1q3ElZXDsvxPaTmaLJyiCxyhG4MzKOlwBc6rhkEiHtvwAJMJsbsIvksFGugm
-	 uo+MyiwF6XgUiUTyUja6P0CtNm+mVUo7CMVubMrX9ene5y204c7E5W93cRhSg++0Kx
-	 y1A9d2mxPOSXA==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Jarkko Sakkinen <jarkko@kernel.org>,
-	Jonathan McDowell <noodles@meta.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y] tpm2-sessions: Fix tpm2_read_public range checks
-Date: Thu,  1 Jan 2026 21:45:19 -0500
-Message-ID: <20260102024519.115144-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2025122907-stream-lasso-ba6e@gregkh>
-References: <2025122907-stream-lasso-ba6e@gregkh>
+	s=arc-20240116; t=1767327904; c=relaxed/simple;
+	bh=83D3DIvsE/h/HGjiqWl0GId/ezfqRdpZP1NM8vjF7mw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:content-type; b=XNXN/FLK09G1f63xWnX/VxQexNOEGATMfLFLs0dr+3EPNa3Mz5FpBJVtg8aMCZcCuJDLMhLiwRuRHYiBSzmPfYr7W/ZFnnIFLvsoPg1h45Rwq58hRnRtDOargdNPAV1UC0erMOWgW64XJLqF96pLjTXnmkdTNuCSo/4+leaYbCs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com; spf=fail smtp.mailfrom=gmail.com; arc=none smtp.client-ip=207.211.30.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=gmail.com
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-658-t0e2-MrSNGG4v6B8OmBF6w-1; Thu,
+ 01 Jan 2026 23:18:40 -0500
+X-MC-Unique: t0e2-MrSNGG4v6B8OmBF6w-1
+X-Mimecast-MFC-AGG-ID: t0e2-MrSNGG4v6B8OmBF6w_1767327519
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1938619560B2;
+	Fri,  2 Jan 2026 04:18:39 +0000 (UTC)
+Received: from dreadlord.taild9177d.ts.net (unknown [10.67.32.60])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 1215A1956056;
+	Fri,  2 Jan 2026 04:18:33 +0000 (UTC)
+From: Dave Airlie <airlied@gmail.com>
+To: dri-devel@lists.freedesktop.org
+Cc: nouveau@lists.freedesktop.org,
+	Dave Airlie <airlied@redhat.com>,
+	stable@vger.kernel.org,
+	Lyude Paul <lyude@redhat.com>,
+	Timur Tabi <ttabi@nvidia.com>
+Subject: [PATCH] nouveau: don't attempt fwsec on sb on newer platforms.
+Date: Fri,  2 Jan 2026 14:18:29 +1000
+Message-ID: <20260102041829.2748009-1-airlied@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: EAQrBul30RNLVN5-73rU_Wh8EgPjWs3l740vRNaCKjY_1767327519
+X-Mimecast-Originator: gmail.com
+Content-Transfer-Encoding: quoted-printable
+content-type: text/plain; charset=WINDOWS-1252; x-default=true
 
-From: Jarkko Sakkinen <jarkko@kernel.org>
+From: Dave Airlie <airlied@redhat.com>
 
-[ Upstream commit bda1cbf73c6e241267c286427f2ed52b5735d872 ]
+The changes to always loads fwsec sb causes problems on newer GPUs
+which don't use this path.
 
-tpm2_read_public() has some rudimentary range checks but the function does
-not ensure that the response buffer has enough bytes for the full TPMT_HA
-payload.
+Add hooks and pass through the device specific layers.
 
-Re-implement the function with necessary checks and validation, and return
-name and name size for all handle types back to the caller.
-
-Cc: stable@vger.kernel.org # v6.10+
-Fixes: d0a25bb961e6 ("tpm: Add HMAC session name/handle append")
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-Reviewed-by: Jonathan McDowell <noodles@meta.com>
-[ different semantics around u8 name_size() ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: da67179e5538 ("drm/nouveau/gsp: Allocate fwsec-sb at boot")
+Cc: <stable@vger.kernel.org> # v6.16+
+Cc: Lyude Paul <lyude@redhat.com>
+Cc: Timur Tabi <ttabi@nvidia.com>
+Signed-off-by: Dave Airlie <airlied@redhat.com>
 ---
- drivers/char/tpm/tpm2-cmd.c      |  3 ++
- drivers/char/tpm/tpm2-sessions.c | 85 ++++++++++++++++++++------------
- 2 files changed, 56 insertions(+), 32 deletions(-)
+ .../gpu/drm/nouveau/nvkm/subdev/gsp/ad102.c   |  3 +++
+ .../gpu/drm/nouveau/nvkm/subdev/gsp/fwsec.c   | 12 +++-------
+ .../gpu/drm/nouveau/nvkm/subdev/gsp/ga100.c   |  3 +++
+ .../gpu/drm/nouveau/nvkm/subdev/gsp/ga102.c   |  3 +++
+ .../gpu/drm/nouveau/nvkm/subdev/gsp/priv.h    | 23 +++++++++++++++++--
+ .../gpu/drm/nouveau/nvkm/subdev/gsp/tu102.c   | 15 ++++++++++++
+ .../gpu/drm/nouveau/nvkm/subdev/gsp/tu116.c   |  3 +++
+ 7 files changed, 51 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/char/tpm/tpm2-cmd.c b/drivers/char/tpm/tpm2-cmd.c
-index dfdcbd009720..5c525987ff65 100644
---- a/drivers/char/tpm/tpm2-cmd.c
-+++ b/drivers/char/tpm/tpm2-cmd.c
-@@ -11,8 +11,11 @@
-  * used by the kernel internally.
-  */
- 
-+#include "linux/dev_printk.h"
-+#include "linux/tpm.h"
- #include "tpm.h"
- #include <crypto/hash_info.h>
-+#include <linux/unaligned.h>
- 
- static bool disable_pcr_integrity;
- module_param(disable_pcr_integrity, bool, 0444);
-diff --git a/drivers/char/tpm/tpm2-sessions.c b/drivers/char/tpm/tpm2-sessions.c
-index cf0b83154044..a10db4a4aced 100644
---- a/drivers/char/tpm/tpm2-sessions.c
-+++ b/drivers/char/tpm/tpm2-sessions.c
-@@ -156,47 +156,60 @@ static u8 name_size(const u8 *name)
- 	return size_map[alg] + 2;
+diff --git a/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/ad102.c b/drivers/gpu/=
+drm/nouveau/nvkm/subdev/gsp/ad102.c
+index 35d1fcef520bf..b3e994386334d 100644
+--- a/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/ad102.c
++++ b/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/ad102.c
+@@ -29,6 +29,9 @@ ad102_gsp =3D {
+ =09.sig_section =3D ".fwsignature_ad10x",
+=20
+ =09.booter.ctor =3D ga102_gsp_booter_ctor,
++=09
++=09.fwsec_sb.ctor =3D tu102_gsp_fwsec_sb_ctor,
++=09.fwsec_sb.dtor =3D tu102_gsp_fwsec_sb_dtor,
+=20
+ =09.dtor =3D r535_gsp_dtor,
+ =09.oneinit =3D tu102_gsp_oneinit,
+diff --git a/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/fwsec.c b/drivers/gpu/=
+drm/nouveau/nvkm/subdev/gsp/fwsec.c
+index 5037602466604..8d4f40a443ce4 100644
+--- a/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/fwsec.c
++++ b/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/fwsec.c
+@@ -337,16 +337,10 @@ nvkm_gsp_fwsec_sb(struct nvkm_gsp *gsp)
  }
- 
--static int tpm2_parse_read_public(char *name, struct tpm_buf *buf)
-+static int tpm2_read_public(struct tpm_chip *chip, u32 handle, void *name)
+=20
+ int
+-nvkm_gsp_fwsec_sb_ctor(struct nvkm_gsp *gsp)
++nvkm_gsp_fwsec_sb_init(struct nvkm_gsp *gsp)
  {
--	struct tpm_header *head = (struct tpm_header *)buf->data;
-+	u32 mso = tpm2_handle_mso(handle);
- 	off_t offset = TPM_HEADER_SIZE;
--	u32 tot_len = be32_to_cpu(head->length);
--	u32 val;
--
--	/* we're starting after the header so adjust the length */
--	tot_len -= TPM_HEADER_SIZE;
--
--	/* skip public */
--	val = tpm_buf_read_u16(buf, &offset);
--	if (val > tot_len)
--		return -EINVAL;
--	offset += val;
--	/* name */
--	val = tpm_buf_read_u16(buf, &offset);
--	if (val != name_size(&buf->data[offset]))
--		return -EINVAL;
--	memcpy(name, &buf->data[offset], val);
--	/* forget the rest */
--	return 0;
+-=09return nvkm_gsp_fwsec_init(gsp, &gsp->fws.falcon.sb, "fwsec-sb",
+-=09=09=09=09   NVFW_FALCON_APPIF_DMEMMAPPER_CMD_SB);
 -}
 -
--static int tpm2_read_public(struct tpm_chip *chip, u32 handle, char *name)
+-void
+-nvkm_gsp_fwsec_sb_dtor(struct nvkm_gsp *gsp)
 -{
--	struct tpm_buf buf;
- 	int rc;
-+	u8 name_size_alg;
-+	struct tpm_buf buf;
-+
-+	if (mso != TPM2_MSO_PERSISTENT && mso != TPM2_MSO_VOLATILE &&
-+	    mso != TPM2_MSO_NVRAM) {
-+		memcpy(name, &handle, sizeof(u32));
-+		return sizeof(u32);
-+	}
- 
- 	rc = tpm_buf_init(&buf, TPM2_ST_NO_SESSIONS, TPM2_CC_READ_PUBLIC);
- 	if (rc)
- 		return rc;
- 
- 	tpm_buf_append_u32(&buf, handle);
--	rc = tpm_transmit_cmd(chip, &buf, 0, "read public");
--	if (rc == TPM2_RC_SUCCESS)
--		rc = tpm2_parse_read_public(name, &buf);
- 
--	tpm_buf_destroy(&buf);
-+	rc = tpm_transmit_cmd(chip, &buf, 0, "TPM2_ReadPublic");
-+	if (rc) {
-+		tpm_buf_destroy(&buf);
-+		return tpm_ret_to_err(rc);
-+	}
- 
--	return rc;
-+	/* Skip TPMT_PUBLIC: */
-+	offset += tpm_buf_read_u16(&buf, &offset);
-+
-+	/*
-+	 * Ensure space for the length field of TPM2B_NAME and hashAlg field of
-+	 * TPMT_HA (the extra four bytes).
-+	 */
-+	if (offset + 4 > tpm_buf_length(&buf)) {
-+		tpm_buf_destroy(&buf);
-+		return -EIO;
-+	}
-+
-+	rc = tpm_buf_read_u16(&buf, &offset);
-+	name_size_alg = name_size(&buf.data[offset]);
-+
-+	if (rc != name_size_alg) {
-+		tpm_buf_destroy(&buf);
-+		return -EIO;
-+	}
-+
-+	if (offset + rc > tpm_buf_length(&buf)) {
-+		tpm_buf_destroy(&buf);
-+		return -EIO;
-+	}
-+
-+	memcpy(name, &buf.data[offset], rc);
-+	tpm_buf_destroy(&buf);
-+	return name_size_alg;
+-=09nvkm_falcon_fw_dtor(&gsp->fws.falcon.sb);
++       return nvkm_gsp_fwsec_init(gsp, &gsp->fws.falcon.sb, "fwsec-sb",
++                                  NVFW_FALCON_APPIF_DMEMMAPPER_CMD_SB);
  }
- #endif /* CONFIG_TCG_TPM2_HMAC */
- 
-@@ -229,6 +242,7 @@ void tpm_buf_append_name(struct tpm_chip *chip, struct tpm_buf *buf,
- 	enum tpm2_mso_type mso = tpm2_handle_mso(handle);
- 	struct tpm2_auth *auth;
- 	int slot;
-+	int ret;
- #endif
- 
- 	if (!tpm2_chip_auth(chip)) {
-@@ -251,8 +265,11 @@ void tpm_buf_append_name(struct tpm_chip *chip, struct tpm_buf *buf,
- 	if (mso == TPM2_MSO_PERSISTENT ||
- 	    mso == TPM2_MSO_VOLATILE ||
- 	    mso == TPM2_MSO_NVRAM) {
--		if (!name)
--			tpm2_read_public(chip, handle, auth->name[slot]);
-+		if (!name) {
-+			ret = tpm2_read_public(chip, handle, auth->name[slot]);
-+			if (ret < 0)
-+				goto err;
-+		}
- 	} else {
- 		if (name)
- 			dev_err(&chip->dev, "TPM: Handle does not require name but one is specified\n");
-@@ -261,6 +278,10 @@ void tpm_buf_append_name(struct tpm_chip *chip, struct tpm_buf *buf,
- 	auth->name_h[slot] = handle;
- 	if (name)
- 		memcpy(auth->name[slot], name, name_size(name));
-+	return;
+=20
+ int
+diff --git a/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/ga100.c b/drivers/gpu/=
+drm/nouveau/nvkm/subdev/gsp/ga100.c
+index d201e8697226b..27a13aeccd3cb 100644
+--- a/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/ga100.c
++++ b/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/ga100.c
+@@ -47,6 +47,9 @@ ga100_gsp =3D {
+=20
+ =09.booter.ctor =3D tu102_gsp_booter_ctor,
+=20
++=09.fwsec_sb.ctor =3D tu102_gsp_fwsec_sb_ctor,
++=09.fwsec_sb.dtor =3D tu102_gsp_fwsec_sb_dtor,
 +
-+err:
-+	tpm2_end_auth_session(chip);
+ =09.dtor =3D r535_gsp_dtor,
+ =09.oneinit =3D tu102_gsp_oneinit,
+ =09.init =3D tu102_gsp_init,
+diff --git a/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/ga102.c b/drivers/gpu/=
+drm/nouveau/nvkm/subdev/gsp/ga102.c
+index 917f7e2f6c466..a59fb74ef6315 100644
+--- a/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/ga102.c
++++ b/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/ga102.c
+@@ -158,6 +158,9 @@ ga102_gsp_r535 =3D {
+=20
+ =09.booter.ctor =3D ga102_gsp_booter_ctor,
+=20
++=09.fwsec_sb.ctor =3D tu102_gsp_fwsec_sb_ctor,
++=09.fwsec_sb.dtor =3D tu102_gsp_fwsec_sb_dtor,
++=09
+ =09.dtor =3D r535_gsp_dtor,
+ =09.oneinit =3D tu102_gsp_oneinit,
+ =09.init =3D tu102_gsp_init,
+diff --git a/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/priv.h b/drivers/gpu/d=
+rm/nouveau/nvkm/subdev/gsp/priv.h
+index 86bdd203bc107..9dd66a2e38017 100644
+--- a/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/priv.h
++++ b/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/priv.h
+@@ -7,9 +7,8 @@ enum nvkm_acr_lsf_id;
+=20
+ int nvkm_gsp_fwsec_frts(struct nvkm_gsp *);
+=20
+-int nvkm_gsp_fwsec_sb_ctor(struct nvkm_gsp *);
+ int nvkm_gsp_fwsec_sb(struct nvkm_gsp *);
+-void nvkm_gsp_fwsec_sb_dtor(struct nvkm_gsp *);
++int nvkm_gsp_fwsec_sb_init(struct nvkm_gsp *gsp);
+=20
+ struct nvkm_gsp_fwif {
+ =09int version;
+@@ -52,6 +51,11 @@ struct nvkm_gsp_func {
+ =09=09=09    struct nvkm_falcon *, struct nvkm_falcon_fw *);
+ =09} booter;
+=20
++=09struct {
++=09=09int (*ctor)(struct nvkm_gsp *);
++=09=09void (*dtor)(struct nvkm_gsp *);
++=09} fwsec_sb;
++
+ =09void (*dtor)(struct nvkm_gsp *);
+ =09int (*oneinit)(struct nvkm_gsp *);
+ =09int (*init)(struct nvkm_gsp *);
+@@ -67,6 +71,8 @@ extern const struct nvkm_falcon_func tu102_gsp_flcn;
+ extern const struct nvkm_falcon_fw_func tu102_gsp_fwsec;
+ int tu102_gsp_booter_ctor(struct nvkm_gsp *, const char *, const struct fi=
+rmware *,
+ =09=09=09  struct nvkm_falcon *, struct nvkm_falcon_fw *);
++int tu102_gsp_fwsec_sb_ctor(struct nvkm_gsp *);
++void tu102_gsp_fwsec_sb_dtor(struct nvkm_gsp *);
+ int tu102_gsp_oneinit(struct nvkm_gsp *);
+ int tu102_gsp_init(struct nvkm_gsp *);
+ int tu102_gsp_fini(struct nvkm_gsp *, bool suspend);
+@@ -91,5 +97,18 @@ int r535_gsp_fini(struct nvkm_gsp *, bool suspend);
+ int nvkm_gsp_new_(const struct nvkm_gsp_fwif *, struct nvkm_device *, enum=
+ nvkm_subdev_type, int,
+ =09=09  struct nvkm_gsp **);
+=20
++static inline int nvkm_gsp_fwsec_sb_ctor(struct nvkm_gsp *gsp)
++{
++=09if (gsp->func->fwsec_sb.ctor)
++=09=09return gsp->func->fwsec_sb.ctor(gsp);
++=09return 0;
++}
++
++static inline void nvkm_gsp_fwsec_sb_dtor(struct nvkm_gsp *gsp)
++{
++=09if (gsp->func->fwsec_sb.dtor)
++=09=09gsp->func->fwsec_sb.dtor(gsp);
++}
++
+ extern const struct nvkm_gsp_func gv100_gsp;
  #endif
- }
- EXPORT_SYMBOL_GPL(tpm_buf_append_name);
--- 
-2.51.0
+diff --git a/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/tu102.c b/drivers/gpu/=
+drm/nouveau/nvkm/subdev/gsp/tu102.c
+index 81e56da0474a1..04b642a1f7305 100644
+--- a/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/tu102.c
++++ b/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/tu102.c
+@@ -30,6 +30,18 @@
+ #include <nvfw/fw.h>
+ #include <nvfw/hs.h>
+=20
++int
++tu102_gsp_fwsec_sb_ctor(struct nvkm_gsp *gsp)
++{
++=09return nvkm_gsp_fwsec_sb_init(gsp);
++}
++
++void
++tu102_gsp_fwsec_sb_dtor(struct nvkm_gsp *gsp)
++{
++=09nvkm_falcon_fw_dtor(&gsp->fws.falcon.sb);
++}
++
+ static int
+ tu102_gsp_booter_unload(struct nvkm_gsp *gsp, u32 mbox0, u32 mbox1)
+ {
+@@ -370,6 +382,9 @@ tu102_gsp =3D {
+=20
+ =09.booter.ctor =3D tu102_gsp_booter_ctor,
+=20
++=09.fwsec_sb.ctor =3D tu102_gsp_fwsec_sb_ctor,
++=09.fwsec_sb.dtor =3D tu102_gsp_fwsec_sb_dtor,
++
+ =09.dtor =3D r535_gsp_dtor,
+ =09.oneinit =3D tu102_gsp_oneinit,
+ =09.init =3D tu102_gsp_init,
+diff --git a/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/tu116.c b/drivers/gpu/=
+drm/nouveau/nvkm/subdev/gsp/tu116.c
+index 97eb046c25d07..58cf258424218 100644
+--- a/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/tu116.c
++++ b/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/tu116.c
+@@ -30,6 +30,9 @@ tu116_gsp =3D {
+=20
+ =09.booter.ctor =3D tu102_gsp_booter_ctor,
+=20
++=09.fwsec_sb.ctor =3D tu102_gsp_fwsec_sb_ctor,
++=09.fwsec_sb.dtor =3D tu102_gsp_fwsec_sb_dtor,
++
+ =09.dtor =3D r535_gsp_dtor,
+ =09.oneinit =3D tu102_gsp_oneinit,
+ =09.init =3D tu102_gsp_init,
+--=20
+2.52.0
 
 
