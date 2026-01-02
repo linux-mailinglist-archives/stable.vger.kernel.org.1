@@ -1,102 +1,233 @@
-Return-Path: <stable+bounces-204474-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204475-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id E102BCEE8D0
-	for <lists+stable@lfdr.de>; Fri, 02 Jan 2026 13:37:30 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 290F0CEEA66
+	for <lists+stable@lfdr.de>; Fri, 02 Jan 2026 14:12:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7C3F73000B73
-	for <lists+stable@lfdr.de>; Fri,  2 Jan 2026 12:37:27 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id CF0383002B9A
+	for <lists+stable@lfdr.de>; Fri,  2 Jan 2026 13:12:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D37A130F7E8;
-	Fri,  2 Jan 2026 12:37:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hKzT0HvV"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1776A2F49EC;
+	Fri,  2 Jan 2026 13:12:15 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B49722D47F3;
-	Fri,  2 Jan 2026 12:37:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7545F30DD3C;
+	Fri,  2 Jan 2026 13:12:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767357445; cv=none; b=HbT0cL4CAn2FBWJ3+W9aMAKAiSrSsuktyaJlTjZLvP7vMwY4Bv3zsEWXTsfkxKsLUYzGwGodVumuOrrJSt+p7Fvo5HES2ICurJ1MQymDwSxVaZlgNnnG6Urc2jxz6yedTYfAaNc7nLe6ZfUVTYfqFmSL44SA7WE5SiEAPghDb24=
+	t=1767359534; cv=none; b=Wsj8Va3xuHKgRhpoVA1E4kMBzeTtJFn7pKJh08aiVfJDoNrGUoCniG2pUQCj0irwddnfzETnJI2wME4VYNJuF+4XgDBTjIQ7uhvV+gk4RaMyx/jz2O1Onth3gFAJHkaaj0/9CNbyp2oXWKP43xAiPYosSrmXs70fwJ1YBYS5KUE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767357445; c=relaxed/simple;
-	bh=7Rk0yeVXcV1S1WfT0PPaT2pcKMSwxTqqqT++2T5PXhA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Qtff4vhuKZ1fy0+FHeBDs2V25ywdJhSowT1a4piPho3O8CrEyKdV5xeHcRxsT7jhNTuasTPmHJ3HKpJ1Ospcxi90x/4+VGIqguEH+Qa27bwAzwGuFsXplrRTrap2nGHSiN4CYjxzOPwtJaDYl2+8kRT59NjRf6z4QLKaGdT7lbU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hKzT0HvV; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1767357444; x=1798893444;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=7Rk0yeVXcV1S1WfT0PPaT2pcKMSwxTqqqT++2T5PXhA=;
-  b=hKzT0HvVaIoPmD1rUrEbbHbW9+rG1bXKiRUU6HHaHIqTRIXxkFjxKHvG
-   yOaaoTf/VcfclZsqFflwq2ie/YsYwS9jVuQs3pMC13HuNNm6GNyVXnP7V
-   dAndVScI1ORuRL8VmTHTSkWvq66FdX22mZlPVZkN0Ash3n60PlGT/iMg2
-   vFLXk+qQwFwI983Zph1JdoW0uh+dCPqRwZM6xhygzPPka/U49JdT06Tsm
-   NKYwJroVBKu8bnUwHS1d6cJx8ctsrYfnTPQLMu8cukbwaLuTvfpIaCXOC
-   HKA+EKp1kdyguEOdUmflJrxaKqVUVvsOmhvZQCwJPQh0K1n/TDW09oW3w
-   g==;
-X-CSE-ConnectionGUID: g2ctpb2CRl+2vI2SGpJ7Rw==
-X-CSE-MsgGUID: h2xQuTDQSq+zxSzxlu0Naw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11658"; a="68758386"
-X-IronPort-AV: E=Sophos;i="6.21,197,1763452800"; 
-   d="scan'208";a="68758386"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jan 2026 04:37:24 -0800
-X-CSE-ConnectionGUID: ibxrsjkoTB+2crjlJ5E5Cg==
-X-CSE-MsgGUID: Pw1RGovFQ9qkEvrgvpBPpQ==
-X-ExtLoop1: 1
-Received: from ncintean-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.46])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jan 2026 04:37:21 -0800
-Date: Fri, 2 Jan 2026 14:37:19 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Tiffany Yang <ynaffit@google.com>
-Cc: stable@vger.kernel.org, pchelkin@ispras.ru,
-	linux-kernel@vger.kernel.org, kernel-team@android.com,
-	Pavel Machek <pavel@ucw.cz>, Lee Jones <lee@kernel.org>,
-	linux-leds@vger.kernel.org
-Subject: Re: [PATCH 5.10,5.15,6.1,6.6 RESEND] leds: spi-byte: Initialize
- device node before access
-Message-ID: <aVe7_7Jf_FWkBhqH@smile.fi.intel.com>
-References: <20251231004510.1732543-2-ynaffit@google.com>
+	s=arc-20240116; t=1767359534; c=relaxed/simple;
+	bh=Ud34Q0m1lb9s4u66vIgGHM0b8tz+k6cp6HhfJjMpO7k=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=P3r9kBWNNzghxpsM0GzQqIWIZODgE0PYUK5QocTox0XOqDLpMXei/FfOqwOaIXFjihGiYzODV+vOv91qh+yR+EuMopdepeE5zHSXuuD7wn//loz4NYM4OBiQcP+eQqJtuuhEHQLZW5XiLBj7OPHbWO1yCghtK+eTK4sxkBuiZWg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 02EE61424;
+	Fri,  2 Jan 2026 05:12:05 -0800 (PST)
+Received: from e125769.cambridge.arm.com (e125769.cambridge.arm.com [10.1.196.27])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 540443F5A1;
+	Fri,  2 Jan 2026 05:12:08 -0800 (PST)
+From: Ryan Roberts <ryan.roberts@arm.com>
+To: Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Paul Walmsley <pjw@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Kees Cook <kees@kernel.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Mark Rutland <mark.rutland@arm.com>,
+	"Jason A. Donenfeld" <Jason@zx2c4.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Jeremy Linton <jeremy.linton@arm.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	loongarch@lists.linux.dev,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-riscv@lists.infradead.org,
+	linux-s390@vger.kernel.org,
+	linux-hardening@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH v3 1/3] randomize_kstack: Maintain kstack_offset per task
+Date: Fri,  2 Jan 2026 13:11:52 +0000
+Message-ID: <20260102131156.3265118-2-ryan.roberts@arm.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260102131156.3265118-1-ryan.roberts@arm.com>
+References: <20260102131156.3265118-1-ryan.roberts@arm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251231004510.1732543-2-ynaffit@google.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+Content-Transfer-Encoding: 8bit
 
-On Tue, Dec 30, 2025 at 04:45:11PM -0800, Tiffany Yang wrote:
-> Commit 7f9ab862e05c ("leds: spi-byte: Call of_node_put() on error path")
-> was merged in 6.11 and then backported to stable trees through 5.10. It
-> relocates the line that initializes the variable 'child' to a later
-> point in spi_byte_probe().
-> 
-> Versions < 6.9 do not have commit ccc35ff2fd29 ("leds: spi-byte: Use
-> devm_led_classdev_register_ext()"), which removes a line that reads a
-> property from 'child' before its new initialization point. Consequently,
-> spi_byte_probe() reads from an uninitialized device node in stable
-> kernels 6.6-5.10.
+kstack_offset was previously maintained per-cpu, but this caused a
+couple of issues. So let's instead make it per-task.
 
-I'm wondering if in long term the easier maintenance will be with that patch
-also being backported rather than this being applied.
+Issue 1: add_random_kstack_offset() and choose_random_kstack_offset()
+expected and required to be called with interrupts and preemption
+disabled so that it could manipulate per-cpu state. But arm64, loongarch
+and risc-v are calling them with interrupts and preemption enabled. I
+don't _think_ this causes any functional issues, but it's certainly
+unexpected and could lead to manipulating the wrong cpu's state, which
+could cause a minor performance degradation due to bouncing the cache
+lines. By maintaining the state per-task those functions can safely be
+called in preemptible context.
 
-> Initialize 'child' before it is first accessed.
+Issue 2: add_random_kstack_offset() is called before executing the
+syscall and expands the stack using a previously chosen rnadom offset.
+choose_random_kstack_offset() is called after executing the syscall and
+chooses and stores a new random offset for the next syscall. With
+per-cpu storage for this offset, an attacker could force cpu migration
+during the execution of the syscall and prevent the offset from being
+updated for the original cpu such that it is predictable for the next
+syscall on that cpu. By maintaining the state per-task, this problem
+goes away because the per-task random offset is updated after the
+syscall regardless of which cpu it is executing on.
 
+Fixes: 39218ff4c625 ("stack: Optionally randomize kernel stack offset each syscall")
+Closes: https://lore.kernel.org/all/dd8c37bc-795f-4c7a-9086-69e584d8ab24@arm.com/
+Cc: stable@vger.kernel.org
+Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+---
+ include/linux/randomize_kstack.h | 26 +++++++++++++++-----------
+ include/linux/sched.h            |  4 ++++
+ init/main.c                      |  1 -
+ kernel/fork.c                    |  2 ++
+ 4 files changed, 21 insertions(+), 12 deletions(-)
+
+diff --git a/include/linux/randomize_kstack.h b/include/linux/randomize_kstack.h
+index 1d982dbdd0d0..5d3916ca747c 100644
+--- a/include/linux/randomize_kstack.h
++++ b/include/linux/randomize_kstack.h
+@@ -9,7 +9,6 @@
+ 
+ DECLARE_STATIC_KEY_MAYBE(CONFIG_RANDOMIZE_KSTACK_OFFSET_DEFAULT,
+ 			 randomize_kstack_offset);
+-DECLARE_PER_CPU(u32, kstack_offset);
+ 
+ /*
+  * Do not use this anywhere else in the kernel. This is used here because
+@@ -50,15 +49,14 @@ DECLARE_PER_CPU(u32, kstack_offset);
+  * add_random_kstack_offset - Increase stack utilization by previously
+  *			      chosen random offset
+  *
+- * This should be used in the syscall entry path when interrupts and
+- * preempt are disabled, and after user registers have been stored to
+- * the stack. For testing the resulting entropy, please see:
+- * tools/testing/selftests/lkdtm/stack-entropy.sh
++ * This should be used in the syscall entry path after user registers have been
++ * stored to the stack. Preemption may be enabled. For testing the resulting
++ * entropy, please see: tools/testing/selftests/lkdtm/stack-entropy.sh
+  */
+ #define add_random_kstack_offset() do {					\
+ 	if (static_branch_maybe(CONFIG_RANDOMIZE_KSTACK_OFFSET_DEFAULT,	\
+ 				&randomize_kstack_offset)) {		\
+-		u32 offset = raw_cpu_read(kstack_offset);		\
++		u32 offset = current->kstack_offset;			\
+ 		u8 *ptr = __kstack_alloca(KSTACK_OFFSET_MAX(offset));	\
+ 		/* Keep allocation even after "ptr" loses scope. */	\
+ 		asm volatile("" :: "r"(ptr) : "memory");		\
+@@ -69,9 +67,9 @@ DECLARE_PER_CPU(u32, kstack_offset);
+  * choose_random_kstack_offset - Choose the random offset for the next
+  *				 add_random_kstack_offset()
+  *
+- * This should only be used during syscall exit when interrupts and
+- * preempt are disabled. This position in the syscall flow is done to
+- * frustrate attacks from userspace attempting to learn the next offset:
++ * This should only be used during syscall exit. Preemption may be enabled. This
++ * position in the syscall flow is done to frustrate attacks from userspace
++ * attempting to learn the next offset:
+  * - Maximize the timing uncertainty visible from userspace: if the
+  *   offset is chosen at syscall entry, userspace has much more control
+  *   over the timing between choosing offsets. "How long will we be in
+@@ -85,14 +83,20 @@ DECLARE_PER_CPU(u32, kstack_offset);
+ #define choose_random_kstack_offset(rand) do {				\
+ 	if (static_branch_maybe(CONFIG_RANDOMIZE_KSTACK_OFFSET_DEFAULT,	\
+ 				&randomize_kstack_offset)) {		\
+-		u32 offset = raw_cpu_read(kstack_offset);		\
++		u32 offset = current->kstack_offset;			\
+ 		offset = ror32(offset, 5) ^ (rand);			\
+-		raw_cpu_write(kstack_offset, offset);			\
++		current->kstack_offset = offset;			\
+ 	}								\
+ } while (0)
++
++static inline void random_kstack_task_init(struct task_struct *tsk)
++{
++	tsk->kstack_offset = 0;
++}
+ #else /* CONFIG_RANDOMIZE_KSTACK_OFFSET */
+ #define add_random_kstack_offset()		do { } while (0)
+ #define choose_random_kstack_offset(rand)	do { } while (0)
++#define random_kstack_task_init(tsk)		do { } while (0)
+ #endif /* CONFIG_RANDOMIZE_KSTACK_OFFSET */
+ 
+ #endif
+diff --git a/include/linux/sched.h b/include/linux/sched.h
+index d395f2810fac..9e0080ed1484 100644
+--- a/include/linux/sched.h
++++ b/include/linux/sched.h
+@@ -1591,6 +1591,10 @@ struct task_struct {
+ 	unsigned long			prev_lowest_stack;
+ #endif
+ 
++#ifdef CONFIG_RANDOMIZE_KSTACK_OFFSET
++	u32				kstack_offset;
++#endif
++
+ #ifdef CONFIG_X86_MCE
+ 	void __user			*mce_vaddr;
+ 	__u64				mce_kflags;
+diff --git a/init/main.c b/init/main.c
+index b84818ad9685..27fcbbde933e 100644
+--- a/init/main.c
++++ b/init/main.c
+@@ -830,7 +830,6 @@ static inline void initcall_debug_enable(void)
+ #ifdef CONFIG_RANDOMIZE_KSTACK_OFFSET
+ DEFINE_STATIC_KEY_MAYBE_RO(CONFIG_RANDOMIZE_KSTACK_OFFSET_DEFAULT,
+ 			   randomize_kstack_offset);
+-DEFINE_PER_CPU(u32, kstack_offset);
+ 
+ static int __init early_randomize_kstack_offset(char *buf)
+ {
+diff --git a/kernel/fork.c b/kernel/fork.c
+index b1f3915d5f8e..b061e1edbc43 100644
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -95,6 +95,7 @@
+ #include <linux/thread_info.h>
+ #include <linux/kstack_erase.h>
+ #include <linux/kasan.h>
++#include <linux/randomize_kstack.h>
+ #include <linux/scs.h>
+ #include <linux/io_uring.h>
+ #include <linux/bpf.h>
+@@ -2231,6 +2232,7 @@ __latent_entropy struct task_struct *copy_process(
+ 	if (retval)
+ 		goto bad_fork_cleanup_io;
+ 
++	random_kstack_task_init(p);
+ 	stackleak_task_init(p);
+ 
+ 	if (pid != &init_struct_pid) {
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.43.0
 
 
