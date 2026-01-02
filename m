@@ -1,119 +1,107 @@
-Return-Path: <stable+bounces-204434-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204435-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FD1BCEDFB6
-	for <lists+stable@lfdr.de>; Fri, 02 Jan 2026 08:27:58 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B660BCEE04A
+	for <lists+stable@lfdr.de>; Fri, 02 Jan 2026 09:40:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2C09430057C1
-	for <lists+stable@lfdr.de>; Fri,  2 Jan 2026 07:27:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F29ED300760D
+	for <lists+stable@lfdr.de>; Fri,  2 Jan 2026 08:40:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4868225EFB6;
-	Fri,  2 Jan 2026 07:27:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B87842D5A13;
+	Fri,  2 Jan 2026 08:40:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AchbGgCU"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eIfjUH43"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
+Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FE447260F
-	for <stable@vger.kernel.org>; Fri,  2 Jan 2026 07:27:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F3F42D2384
+	for <stable@vger.kernel.org>; Fri,  2 Jan 2026 08:40:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767338875; cv=none; b=DAhrCNSPAudyku6r4/JfM8LsIZZBFkrZFeKVJZpkOzDZHDChZ3r5vwqPb2aVTTSlaiF/V6Y44TzIyMOoeFHuqq2rrBOC9o/zZ8XZBjPJJYo52MLhg/TSdlTc4UnaLICt5nUDNM4R2ZNFfEhuiLUW/HUnLIOJt1r8CBhZMyjmqhg=
+	t=1767343216; cv=none; b=qgMPxtr56Jgm9bYCbpy4cIA9UfONU7Ew7p5PUI8Nc0qZZnmcUh7F2iALnqLU7LDuXr/n5uROv88mxjmcgdj8Zq4sMuyPPWt6sSLAVYpAwCWsIoS46Y1g6e2xFXHQMxXDKle5QdSbEByQdR/YkIJLRK4EqH6DliVkvBBeabTGlWI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767338875; c=relaxed/simple;
-	bh=nWdrJ9x9+1pmJj5i0TJoMUz65FPiWuu4anBUglynj5w=;
-	h=Message-ID:Date:MIME-Version:To:From:Subject:Content-Type; b=U5OIy+8QVWcLBb55btY3JOIpWbVyct5pjPx4akmalfw5HMN5yTJ2VZEEYavxBP9BrK2Qwakz2kFIUv8nr71al7EKsfc/sto6wQUdYP8DbpYsyw6gcUWUhEa3TFjkjtfvoaUwy9XJMwEnNP9aPTedthRIxGPbz0hrBQ5i/hidM/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AchbGgCU; arc=none smtp.client-ip=209.85.222.169
+	s=arc-20240116; t=1767343216; c=relaxed/simple;
+	bh=olNTr7I4hkgrpvZVCoLMbgXt9KH+lEPgDgfgKBefTsw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=gae6kQEV3cbMm9aGmykYambo9hSXYwz2cOfxXj8rxmeItn1YksUZrkd141H3hz/Qt0fGYnzjwl2DLUdxZkz57gM3D1MpOoAQvT2l5YshDu7a9/OrTyOpM7mVrKSB8KOia/9ygFI0xFvSVeHusb7OBqeXb8DRO9P63JuUAqedg24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eIfjUH43; arc=none smtp.client-ip=209.85.219.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-8b2d56eaaceso1438523785a.0
-        for <stable@vger.kernel.org>; Thu, 01 Jan 2026 23:27:53 -0800 (PST)
+Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-88888c41a13so157710196d6.3
+        for <stable@vger.kernel.org>; Fri, 02 Jan 2026 00:40:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767338872; x=1767943672; darn=vger.kernel.org;
-        h=content-transfer-encoding:subject:from:to:content-language
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1767343214; x=1767948014; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=MqSs/jd1cEUVMCPH0we8Tw+1mohvsxzNqFEEho5hTfc=;
-        b=AchbGgCUd1C1LMPNzGxscCGSuFPWVf9lGp8lF+bWVMYm7v1dstfyW7ftwyvaxpS+LW
-         KQYGJ8ne7JuPAtk8Jfq/3oUvjThm+3417eOLWjpTAcJNN7MdOQBM8E1xweqRvyZhanhl
-         3YQKT2ZGiI1qMRUkBQ449M8qeCqTwZf1gyux24LQLgw3nhlYJyLelJEwnF2vV/FD6XRZ
-         zxo3FMrSBmJOVMa7NFqoJjSDKCIajRRt9wYXbbUf4Bwy2EipAqIsxFMSrCRgJQDICJK2
-         UldqCxJP8RhC7CSSiDL1+EGDxIvLM2amVqIyyYC3nyVaLq4fnn4wtbTXIX6hetv7QZ+A
-         uLcw==
+        bh=olNTr7I4hkgrpvZVCoLMbgXt9KH+lEPgDgfgKBefTsw=;
+        b=eIfjUH43UZWmeetrzLeeDlWzwhqErq0g+HS07qrkg4Szuj5G8dZpD2Ci1nSQA5+Ozi
+         jDTbcv5JkGX+wzUjsBZakJ1A9AOBWNqCCQE+9VTjXwzqb/soX1P6taU3UGgwNKXl/W5d
+         yfUXtCiXXNbc6xcHnI++ZFMFQnsOrqnmF8Z20z5rraLxA43Xe2Zx5u5TY7bPNYfV7a88
+         WMBwAzqh5MDMeVFPv93Wwd/CG1C3p6bd6NBUrxoLiHSaFOJDCcK6cIzIqr3sofytjZYi
+         J5Dsm9+s+l74ucRiTR18Dl6W+erXLutAL2syCVn69FiyZBOqk8z12GKlmcytt8XYa4wf
+         qIKw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767338872; x=1767943672;
-        h=content-transfer-encoding:subject:from:to:content-language
-         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=MqSs/jd1cEUVMCPH0we8Tw+1mohvsxzNqFEEho5hTfc=;
-        b=V+aO7N+9zbjkF5wIXnJHHUyjkMVUFPeka5Tb/SXrO7/O9LUHbCQqjc8ETEgYjp1KpL
-         rc05/YD5tvx6gaXVVf4WKHra3lpifr9WWRYzlmeoqEtizTYDEBeJEfVwQCgCSookG5wL
-         BxYlP7wF4PirtOf4YlJXu2UnS/VA6DqpQFtJGKtxBQ06QgD9srn7dkI3BOXZuPBn9yFg
-         wcmEid5G+w5RNvh0oGmCLmtq21jCpluzvS7g5aEQcXo9NZoSZkvsoo2K+S35tJgxCt9+
-         M1Xjloq4B2CYds3lOOAznh2fqu7aN7FS76XuqKspEfy9yHAKQrhPIB6E6pa2KODXeH3N
-         Woqw==
-X-Gm-Message-State: AOJu0Yz+6+YrOrU/i73GH7072wrwUhQftJuURJPKM3WBVtI+3WKkZrsN
-	Vdqa2CDScpPIusNXY5zQn0OCYxTPJa011fjKoED0oFCDob5eFFfxJhi1gF88K+Up
-X-Gm-Gg: AY/fxX70w5gMXZ1U6SYF58NheMZNmuefKhu7X+B40soJu2AvARHppi5dxRGawqnkmzQ
-	djSZFl1u2JR/dkO07nvRyYCPJtGq1hKCJgGP4JCTlbIZwIHUyXO6JX9Z3iPGC84+tbv6j5xEQ6y
-	utvaz5kyvgsnB64wu883s5uRzN2VKc+A/BI/7AYxnXTwJuO4nuiQqH6wSvEh7IIGljRZ8G97j4v
-	2C4SSOGxM+dJpPG1NFWBVlgW8S8FyMSJFjuNLvxvfW9b9lADJOqAOsAMiH6y5rd0OuK+0MXZ+oD
-	E9VsIcVoMhplKHPa5LzmG4AAN7PmTyLgQaKODvlbDn2f4xnajKumIwn106TCXqfVPjDg6qvj0JF
-	ktNaBm500Q+rAMTcLf7Z/dJdGcU9BqWJXXO2B9rphkxBDjTTrNfd9NCuCOwdSLswe7WcLH//yMk
-	VMfo1Anw+ipgjOwzIXdUgdOCJ4zYhQBVWmGPfOePQiz9lCT45hfTZ/ck2WB5Jh/6uGyKoG73KRW
-	MHM
-X-Google-Smtp-Source: AGHT+IHrVp0axZrli01xQ2cOQywyrWngcl0eVGklp+Yg0XqYodHrfKi1bILZacENY5jHVll+mLzhKg==
-X-Received: by 2002:a05:620a:701a:b0:8b2:d2c9:f73 with SMTP id af79cd13be357-8c08faa4eb2mr5629385685a.41.1767338872285;
-        Thu, 01 Jan 2026 23:27:52 -0800 (PST)
-Received: from ?IPV6:2604:6400:443f:f201:4e5a:1810:92f:b504? ([2604:6400:443f:f201:4e5a:1810:92f:b504])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8c096a8c758sm3162316885a.24.2026.01.01.23.27.51
-        for <stable@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 01 Jan 2026 23:27:51 -0800 (PST)
-Message-ID: <3bb3d050-03ba-4d72-bb29-da1b6a9b6fc1@gmail.com>
-Date: Fri, 2 Jan 2026 02:27:50 -0500
+        d=1e100.net; s=20230601; t=1767343214; x=1767948014;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=olNTr7I4hkgrpvZVCoLMbgXt9KH+lEPgDgfgKBefTsw=;
+        b=E2vDBfBcTPBlIzsj2q6iSgAurzqyHVOztBlYFJ6Nd38r74qn9u6qQSg1M6kSBeKY1I
+         fDV+q1yWr+FdikICXV/GFVADKFiOlQotlA2u13xvHciMahKHVvKye/Lgc9/ydzmqQ+Ws
+         fFN5/QuDrwFiPMRCow7wje5x2lnv1i+oqlROdiud4FqN6+Zl0zcXlImQAK2Vk40FFmF3
+         9W9RnbwC+6X/QxNy8XQFoe2rlGjz5Fu8NmHwvEca0Jx3wSYuUjCx36nLnkgDF/JBps+p
+         5LmkobEQzVhCDXXd2M7F3Xxv4Xkp/YF8TJkIni1bStCbiyikITL7irL39ZoWqJFsDxsZ
+         IphA==
+X-Forwarded-Encrypted: i=1; AJvYcCVy8qAJBL6vVI4UkQ7OnQXz6V4owzSs7UJM9krgDJ2DekgI0BsVHLSA4yFgVdtEmGsGRW81zkg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzSukNbTKYZ7zTC895S5qPqDXCuAMM6noyT4CGDtSFzZ3fOh1Ac
+	pkvn1VRFX1kD/QgFNmiCEO90CNR9e5HhNhqs1SlLQlWMSf+FJI03Wj1cjUTwqPKazX+ojugPqBd
+	3wOSJVl0dRamdZVkpJEoAL/bqJiY/LvY=
+X-Gm-Gg: AY/fxX6Zac5H7H4F5pEBl1GfH5ZRZ1MUFR0hDaLbTaZKFtwWxc0FeECc2QxnGtR+268
+	CMzFNdVYmhL4VRiYQp08tGWwXpQYDZMKFCb1f6xc7NHzf4zxcbxpSZpKYI9VC8GcCfu3Mn3P5CD
+	JxXWBiSzHNoSN6ZrDsi4CYVCEvKaGTlg1hr85bDPX1Oni5xGlZ6gOkiqH10zlZwIGljNVPc8Loo
+	9NjAtCL6g0sOwdyto2h5cyDhvbRy2veXoqRCZvbVb6D/oQEz8oql2kwmS8cbD8K6nOeJOk=
+X-Google-Smtp-Source: AGHT+IGC6CuYzGpscftFjWf5+gmMzki6w7/Iy7X2Zql16cmak2tCVDp7at2bcPo1WOtb39jHX+LdpWUm1mnZBbUac4Q=
+X-Received: by 2002:a05:6214:23c6:b0:88a:261f:6af4 with SMTP id
+ 6a1803df08f44-88d8404df6amr636211446d6.58.1767343213797; Fri, 02 Jan 2026
+ 00:40:13 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: stable@vger.kernel.org
-From: Jacob Highgate <jacob.highgate@gmail.com>
-Subject: Request to backport a fix for boot issues with Southern Island GPUs
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <20251230-fix-use-after-free-gfs2-v2-1-7b2760be547c@gmail.com> <57c723e9-d38a-47fe-9737-5b472916f3d2@web.de>
+In-Reply-To: <57c723e9-d38a-47fe-9737-5b472916f3d2@web.de>
+From: Ryota Sakamoto <sakamo.ryota@gmail.com>
+Date: Fri, 2 Jan 2026 17:40:02 +0900
+X-Gm-Features: AQt7F2r0MrGfokVOhyqLOTiI52EVobi3HtPfSH9ESALiCshy7ly_MguWuQFVcmY
+Message-ID: <CAHMDPKUZgJ80k+u_e45FGSPz5N4sjBfX0AtWu3Oqr79wMSx3MA@mail.gmail.com>
+Subject: Re: [v2] gfs2: Fix use-after-free in gfs2_fill_super()
+To: Markus Elfring <Markus.Elfring@web.de>
+Cc: =?UTF-8?Q?Andreas_Gr=C3=BCnbacher?= <agruenba@redhat.com>, 
+	gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	syzbot+4cb0d0336db6bc6930e9@syzkaller.appspotmail.com, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hello,
+On Tue, Dec 30, 2025 at 4:46=E2=80=AFPM Markus Elfring <Markus.Elfring@web.=
+de> wrote:
+> Is there a need to indicate a role for the mentioned identifier?
 
-I would like to see the patch linked below backported to the 6.18 kernel.
+Yes, "fail_threads" is a goto label. And including "label" in the message
+explicitly is precise.
 
-Currently, on the 6.18 kernel, systems using Southern Island GCN GPUs 
-are unable to boot using the amdgpu driver and they are shown an oops 
-message.
+> Do you propose to use another label here?
 
-Linked issues:
+Yes, I am proposing a new label "fail_threads".
+I chose this name to maintain consistency with the existing error labels
+in this function (e.g., fail_per_node, fail_inodes).
 
-https://gitlab.freedesktop.org/drm/amd/-/issues/4744
+If a v3 is required for other reasons, I will update the commit message
+to include "label".
 
-https://gitlab.freedesktop.org/drm/amd/-/issues/4754
-
-https://bugzilla.redhat.com/show_bug.cgi?id=2422040
-
-
-This commit will fix it:
-
-Subject - drm/amdgpu: don't attach the tlb fence for SI
-
-Commit ID - eb296c09805ee37dd4ea520a7fb3ec157c31090f
-
-https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c?id=eb296c09805ee37dd4ea520a7fb3ec157c31090f
-
-
-Thank you
-
+Regards,
 
