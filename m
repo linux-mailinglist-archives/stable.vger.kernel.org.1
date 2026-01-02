@@ -1,56 +1,104 @@
-Return-Path: <stable+bounces-204486-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204487-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76C6DCEED88
-	for <lists+stable@lfdr.de>; Fri, 02 Jan 2026 16:19:43 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BA6FCEED91
+	for <lists+stable@lfdr.de>; Fri, 02 Jan 2026 16:20:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2AFBD300F892
-	for <lists+stable@lfdr.de>; Fri,  2 Jan 2026 15:19:39 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7107A30019F9
+	for <lists+stable@lfdr.de>; Fri,  2 Jan 2026 15:20:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56A3D25B31D;
-	Fri,  2 Jan 2026 15:19:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9BA9261B98;
+	Fri,  2 Jan 2026 15:20:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="r/OQjaQv"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nHgspHF9"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13E3F21B918
-	for <stable@vger.kernel.org>; Fri,  2 Jan 2026 15:19:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB7D625A33A
+	for <stable@vger.kernel.org>; Fri,  2 Jan 2026 15:20:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767367178; cv=none; b=eUFDssq/P7YkVrjSQdjN00IiC2bKXLJrAsJS9yRb9oSkCZzq44g88U3LqzvjwXphxEZkl1xJjvLzhflwlm0+Wt7ZPYUL9GAaEoJ8R/UgofnVrN5Ll/F44AAXpRSQGBo78O4AOL+6YOdLQSSzdA8ZCS/EAFeGpZOgdTFeRqD5hkw=
+	t=1767367250; cv=none; b=s6t5HtR0yES9ZtcPvJYqeVFyhgdFV4LllLgGB1TADxA0VcavX0uXV6R0kxdrDxLCDmjAPjnDfOO9Sneywy4BdBLajTfRIWW+v+F4++SW0y8UBo0Xr5xq/+ZBN7UuwfRRpYRG4KM/Z8yoJ7FeBPf8Pt8HGmMbSCdB2rqFDvnwmcs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767367178; c=relaxed/simple;
-	bh=S07BKUDT7yHJzwHUhYf0wvnVRq15Es2OUqgauboJHdQ=;
+	s=arc-20240116; t=1767367250; c=relaxed/simple;
+	bh=AVmbCTua2itYQSdqi67Rg2DvQJpSs9Fw5lo+ym0KgKI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QYmP2KGMNB+KECHz3kAfj+Z1mwYl6SszKl3lQ4SmqLb/EvIgtLJ1OpKLBmCdttI2SMuJmuaVWaq9PnBQ74l9TxqbZV9jD3dw65l1+K8XWgcIjONyWeWk/DBImnu3DnR2EX+TvKZX0UMd5X3ihwbCJmJh8nFzZsBHRfsGk90U2qg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=r/OQjaQv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C63BC19423;
-	Fri,  2 Jan 2026 15:19:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767367177;
-	bh=S07BKUDT7yHJzwHUhYf0wvnVRq15Es2OUqgauboJHdQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r/OQjaQvfB+vWGMKnJaCTSVXF65t2gEFHL3zC/ATsVmTfIcHu6qAhiK2uoFkSgUmR
-	 /eNehzpgdMene2fWyiHBueAh/hvUroie8RjL4gX+butgDgSeY1kHhdr246MTmF/uFg
-	 JAzXvaD/44yIXJ3qiuTYQejCSK/oc3YZCIDwYkrGjNsJ1NwN23Gl1xHp6ofB+nwyhg
-	 /Ci/KMQut2BPscHh2yZR3RQk1lf96IDT34rpTngu+/SQtcTp4ZuZQilaSYeLP+tFPv
-	 YLo5IWLd1coFy+LBnFfw4PMaZs8lfxWreWldMNso8fOb37fkcpnl9wFmy+OuTbkaeq
-	 AGvNtcSjh5AvQ==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Peter Zijlstra <peterz@infradead.org>,
-	Zicheng Qu <quzicheng@huawei.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y 3/3] sched/eevdf: Fix min_vruntime vs avg_vruntime
-Date: Fri,  2 Jan 2026 10:19:31 -0500
-Message-ID: <20260102151931.300967-3-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260102151931.300967-1-sashal@kernel.org>
-References: <2025122903-sterile-from-4520@gregkh>
- <20260102151931.300967-1-sashal@kernel.org>
+	 MIME-Version; b=WkNprmWRDbs1LWoDrtvmFhBYYvTB9eZZ9XYbpwfwZdVr9q3J9WlaBBEYrzX++XX6JeeuQxch0Z2kdSLVzXmVYKeOyJEEjUSAAvEFIJ1E8A4hFRWm49TyBWsfLBKun+CQStg9MQW0v5NjITUJU2A5KxQZG+oX0p6o3ErJ2D0jKZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nHgspHF9; arc=none smtp.client-ip=209.85.210.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-7bc248dc16aso9694812b3a.0
+        for <stable@vger.kernel.org>; Fri, 02 Jan 2026 07:20:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1767367248; x=1767972048; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=viiMT0mJ8A1eQE5ko81RyEvaps1qhf8umuQOghYhhoM=;
+        b=nHgspHF9T7yoCA4K1d8XVNuDBmDhdYM8YBktwCnxbjG95MFCE3M6fF3bHqEqvr/Ua9
+         QQ5wnuUPwC9xSFF3hAfdVB71LSCEnGXQSCIeHtjW9qq1M122ZlRICcp9TthWlVeBzYou
+         uHyf8/0lVgs0XbekgewKVfWyosQ8hzxllxkDRNBlUbUVSTyND+GC2rO91Pc+8xQCFSq0
+         X3qIAVgYFXSHbbKqJECsa6xVx1/LZadsYdPq8cDDSUVmRgk4GnSERuvYADTbTngFyxso
+         a33gsqa/fbN7DfuehjP01pSRcofhDcjH3FRidSRUKe4URcj/rVRBq0DnjxUWPs5OvqwF
+         pmWQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767367248; x=1767972048;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=viiMT0mJ8A1eQE5ko81RyEvaps1qhf8umuQOghYhhoM=;
+        b=MZyLbWMeF9TZIAZ8/zy5AM2JuNEBb5NVaDi26qsQzTOGRyTcUmXExIRjuTX0dX/Iku
+         931gAy71cSYxjnwWcro25jQcPwXj/WQTyFnIDKkKmAP/IEBeoGEGdbckLTQcJ4S9iHiO
+         f+WVrPsXUNc+4YvSk8RJpBMHvo2ZM/+HPrd6d/tsX91l9ILpmIenOsnV12t/CLFNV6i1
+         m+e7qQmu1U++7I2BW8BEDyqT/t4XCyGUcN6BAnGIGYWT7VnUhovSKI4ZScENtefZT8TO
+         1nUJa+dTCthjWu95g83Cev4SEUcmvqOvJXCPoDnx8iQNTUJY2XL8fNrvGn5HzpyMtlUY
+         1EyA==
+X-Forwarded-Encrypted: i=1; AJvYcCWQ9kkGmCQv+tLe7wQCGJJlcIa4zPSVyb9c+0P5qPGQpvPu7Pieq5TbORVcE1xkTls+R9HHVnc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwDU5Wec7LGFyPww0bBnqBgXYFwC3yQbm/tqALM0p/9d/axLdPC
+	9LWb52X0DeFHPdk4znKbbbIwkxUFQEuE0E2tXSHTx9Sz3vMFNYcpw9Mi
+X-Gm-Gg: AY/fxX7vh+7kC2i0vZLElVS/ETOtx/Be2pn/sQBbEg03yjNc5yU7dcNpAbul1uoor7r
+	jqnhuDCr4n+2s59rA0TClG80GrhRGgAp6+rs07utOPM6yJL9Pfls43dAItUsVrdWDbYpQNcDrPG
+	zvP77LkVDxy2XJTn0VXNiOUBaVaek7F42Yb407HP2cO2CPvR5kAUtdNpFJbWWreHlbhGYHYCHwo
+	lRpqow49wK07c/uIx5889zub8QiHLnq9t4oA2BYae5fvMKN9z7hPHFOYsuPEn5dYX6RuN7FgtxK
+	M0srQj8qcwz1iogWlrKc0tjOcQve9FGp8QS3BlFUjB4UTJ5Ze3JURALR7grZA/+xycRxswzSOb7
+	LRG86tUg6x+Ffe3aRRfxQCPqnAyT0glXsfIqRQN/ECpyN2bTfDoqkm3NilUzGbW5lSBvoeq2Wli
+	Z3470QvU98HiFYYwl8cTH3e4j6NhPO2lN4bA==
+X-Google-Smtp-Source: AGHT+IGW/oGz/NZjf+BGO8R4q9EUzB2Mdtq7Z2nuodi9vs6ehE50GZWiOZQO50TBdIV5gsvGFMRUSA==
+X-Received: by 2002:a05:6a21:99a4:b0:342:9cb7:649d with SMTP id adf61e73a8af0-376a7cec847mr41356285637.26.1767367248120;
+        Fri, 02 Jan 2026 07:20:48 -0800 (PST)
+Received: from minh.192.168.1.1 ([2001:ee0:4f4c:210:a612:725:7af0:96ca])
+        by smtp.googlemail.com with ESMTPSA id 41be03b00d2f7-c1e7c146aabsm35041268a12.25.2026.01.02.07.20.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 02 Jan 2026 07:20:47 -0800 (PST)
+From: Bui Quang Minh <minhquangbui99@gmail.com>
+To: netdev@vger.kernel.org
+Cc: "Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	virtualization@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	bpf@vger.kernel.org,
+	Bui Quang Minh <minhquangbui99@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH net v2 1/3] virtio-net: don't schedule delayed refill worker
+Date: Fri,  2 Jan 2026 22:20:21 +0700
+Message-ID: <20260102152023.10773-2-minhquangbui99@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260102152023.10773-1-minhquangbui99@gmail.com>
+References: <20260102152023.10773-1-minhquangbui99@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -59,387 +107,149 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Peter Zijlstra <peterz@infradead.org>
+When we fail to refill the receive buffers, we schedule a delayed worker
+to retry later. However, this worker creates some concurrency issues
+such as races and deadlocks. To simplify the logic and avoid further
+problems, we will instead retry refilling in the next NAPI poll.
 
-[ Upstream commit 79f3f9bedd149ea438aaeb0fb6a083637affe205 ]
-
-Basically, from the constraint that the sum of lag is zero, you can
-infer that the 0-lag point is the weighted average of the individual
-vruntime, which is what we're trying to compute:
-
-        \Sum w_i * v_i
-  avg = --------------
-           \Sum w_i
-
-Now, since vruntime takes the whole u64 (worse, it wraps), this
-multiplication term in the numerator is not something we can compute;
-instead we do the min_vruntime (v0 henceforth) thing like:
-
-  v_i = (v_i - v0) + v0
-
-This does two things:
- - it keeps the key: (v_i - v0) 'small';
- - it creates a relative 0-point in the modular space.
-
-If you do that subtitution and work it all out, you end up with:
-
-        \Sum w_i * (v_i - v0)
-  avg = --------------------- + v0
-              \Sum w_i
-
-Since you cannot very well track a ratio like that (and not suffer
-terrible numerical problems) we simpy track the numerator and
-denominator individually and only perform the division when strictly
-needed.
-
-Notably, the numerator lives in cfs_rq->avg_vruntime and the denominator
-lives in cfs_rq->avg_load.
-
-The one extra 'funny' is that these numbers track the entities in the
-tree, and current is typically outside of the tree, so avg_vruntime()
-adds current when needed before doing the division.
-
-(vruntime_eligible() elides the division by cross-wise multiplication)
-
-Anyway, as mentioned above, we currently use the CFS era min_vruntime
-for this purpose. However, this thing can only move forward, while the
-above avg can in fact move backward (when a non-eligible task leaves,
-the average becomes smaller), this can cause trouble when through
-happenstance (or construction) these values drift far enough apart to
-wreck the game.
-
-Replace cfs_rq::min_vruntime with cfs_rq::zero_vruntime which is kept
-near/at avg_vruntime, following its motion.
-
-The down-side is that this requires computing the avg more often.
-
-Fixes: 147f3efaa241 ("sched/fair: Implement an EEVDF-like scheduling policy")
-Reported-by: Zicheng Qu <quzicheng@huawei.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://patch.msgid.link/20251106111741.GC4068168@noisy.programming.kicks-ass.net
+Fixes: 4bc12818b363 ("virtio-net: disable delayed refill when pausing rx")
+Reported-by: Paolo Abeni <pabeni@redhat.com>
+Closes: https://netdev-ctrl.bots.linux.dev/logs/vmksft/drv-hw-dbg/results/400961/3-xdp-py/stderr
 Cc: stable@vger.kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Suggested-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
 ---
- kernel/sched/debug.c |   8 +--
- kernel/sched/fair.c  | 114 +++++++++----------------------------------
- kernel/sched/sched.h |   6 +--
- 3 files changed, 31 insertions(+), 97 deletions(-)
+ drivers/net/virtio_net.c | 55 ++++++++++++++++++++++------------------
+ 1 file changed, 30 insertions(+), 25 deletions(-)
 
-diff --git a/kernel/sched/debug.c b/kernel/sched/debug.c
-index 115e266db76b..e44bf608cee7 100644
---- a/kernel/sched/debug.c
-+++ b/kernel/sched/debug.c
-@@ -628,7 +628,7 @@ static void print_rq(struct seq_file *m, struct rq *rq, int rq_cpu)
- 
- void print_cfs_rq(struct seq_file *m, int cpu, struct cfs_rq *cfs_rq)
- {
--	s64 left_vruntime = -1, min_vruntime, right_vruntime = -1, spread;
-+	s64 left_vruntime = -1, zero_vruntime, right_vruntime = -1, spread;
- 	struct sched_entity *last, *first;
- 	struct rq *rq = cpu_rq(cpu);
- 	unsigned long flags;
-@@ -650,13 +650,13 @@ void print_cfs_rq(struct seq_file *m, int cpu, struct cfs_rq *cfs_rq)
- 	last = __pick_last_entity(cfs_rq);
- 	if (last)
- 		right_vruntime = last->vruntime;
--	min_vruntime = cfs_rq->min_vruntime;
-+	zero_vruntime = cfs_rq->zero_vruntime;
- 	raw_spin_rq_unlock_irqrestore(rq, flags);
- 
- 	SEQ_printf(m, "  .%-30s: %Ld.%06ld\n", "left_vruntime",
- 			SPLIT_NS(left_vruntime));
--	SEQ_printf(m, "  .%-30s: %Ld.%06ld\n", "min_vruntime",
--			SPLIT_NS(min_vruntime));
-+	SEQ_printf(m, "  .%-30s: %Ld.%06ld\n", "zero_vruntime",
-+			SPLIT_NS(zero_vruntime));
- 	SEQ_printf(m, "  .%-30s: %Ld.%06ld\n", "avg_vruntime",
- 			SPLIT_NS(avg_vruntime(cfs_rq)));
- 	SEQ_printf(m, "  .%-30s: %Ld.%06ld\n", "right_vruntime",
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index e020bcf8b007..46de719b669d 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -571,7 +571,7 @@ static inline bool entity_before(const struct sched_entity *a,
- 
- static inline s64 entity_key(struct cfs_rq *cfs_rq, struct sched_entity *se)
- {
--	return (s64)(se->vruntime - cfs_rq->min_vruntime);
-+	return (s64)(se->vruntime - cfs_rq->zero_vruntime);
+diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+index 1bb3aeca66c6..ac514c9383ae 100644
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -3035,7 +3035,7 @@ static int virtnet_receive_packets(struct virtnet_info *vi,
  }
  
- #define __node_2_se(node) \
-@@ -623,13 +623,13 @@ static inline s64 entity_key(struct cfs_rq *cfs_rq, struct sched_entity *se)
-  *
-  * Which we track using:
-  *
-- *                    v0 := cfs_rq->min_vruntime
-+ *                    v0 := cfs_rq->zero_vruntime
-  * \Sum (v_i - v0) * w_i := cfs_rq->avg_vruntime
-  *              \Sum w_i := cfs_rq->avg_load
-  *
-- * Since min_vruntime is a monotonic increasing variable that closely tracks
-- * the per-task service, these deltas: (v_i - v), will be in the order of the
-- * maximal (virtual) lag induced in the system due to quantisation.
-+ * Since zero_vruntime closely tracks the per-task service, these
-+ * deltas: (v_i - v), will be in the order of the maximal (virtual) lag
-+ * induced in the system due to quantisation.
-  *
-  * Also, we use scale_load_down() to reduce the size.
-  *
-@@ -688,7 +688,7 @@ u64 avg_vruntime(struct cfs_rq *cfs_rq)
- 		avg = div_s64(avg, load);
+ static int virtnet_receive(struct receive_queue *rq, int budget,
+-			   unsigned int *xdp_xmit)
++			   unsigned int *xdp_xmit, bool *retry_refill)
+ {
+ 	struct virtnet_info *vi = rq->vq->vdev->priv;
+ 	struct virtnet_rq_stats stats = {};
+@@ -3047,12 +3047,8 @@ static int virtnet_receive(struct receive_queue *rq, int budget,
+ 		packets = virtnet_receive_packets(vi, rq, budget, xdp_xmit, &stats);
+ 
+ 	if (rq->vq->num_free > min((unsigned int)budget, virtqueue_get_vring_size(rq->vq)) / 2) {
+-		if (!try_fill_recv(vi, rq, GFP_ATOMIC)) {
+-			spin_lock(&vi->refill_lock);
+-			if (vi->refill_enabled)
+-				schedule_delayed_work(&vi->refill, 0);
+-			spin_unlock(&vi->refill_lock);
+-		}
++		if (!try_fill_recv(vi, rq, GFP_ATOMIC))
++			*retry_refill = true;
  	}
  
--	return cfs_rq->min_vruntime + avg;
-+	return cfs_rq->zero_vruntime + avg;
- }
+ 	u64_stats_set(&stats.packets, packets);
+@@ -3129,18 +3125,18 @@ static int virtnet_poll(struct napi_struct *napi, int budget)
+ 	struct send_queue *sq;
+ 	unsigned int received;
+ 	unsigned int xdp_xmit = 0;
+-	bool napi_complete;
++	bool napi_complete, retry_refill = false;
  
- /*
-@@ -757,44 +757,14 @@ int entity_eligible(struct cfs_rq *cfs_rq, struct sched_entity *se)
- 	return avg >= entity_key(cfs_rq, se) * load;
- }
+ 	virtnet_poll_cleantx(rq, budget);
  
--static u64 __update_min_vruntime(struct cfs_rq *cfs_rq, u64 vruntime)
-+static void update_zero_vruntime(struct cfs_rq *cfs_rq)
- {
--	u64 min_vruntime = cfs_rq->min_vruntime;
--	/*
--	 * open coded max_vruntime() to allow updating avg_vruntime
--	 */
--	s64 delta = (s64)(vruntime - min_vruntime);
--	if (delta > 0) {
--		avg_vruntime_update(cfs_rq, delta);
--		min_vruntime = vruntime;
--	}
--	return min_vruntime;
--}
-+	u64 vruntime = avg_vruntime(cfs_rq);
-+	s64 delta = (s64)(vruntime - cfs_rq->zero_vruntime);
+-	received = virtnet_receive(rq, budget, &xdp_xmit);
++	received = virtnet_receive(rq, budget, &xdp_xmit, &retry_refill);
+ 	rq->packets_in_napi += received;
  
--static void update_min_vruntime(struct cfs_rq *cfs_rq)
--{
--	struct sched_entity *se = __pick_first_entity(cfs_rq);
--	struct sched_entity *curr = cfs_rq->curr;
--
--	u64 vruntime = cfs_rq->min_vruntime;
--
--	if (curr) {
--		if (curr->on_rq)
--			vruntime = curr->vruntime;
--		else
--			curr = NULL;
--	}
--
--	if (se) {
--		if (!curr)
--			vruntime = se->vruntime;
--		else
--			vruntime = min_vruntime(vruntime, se->vruntime);
--	}
-+	avg_vruntime_update(cfs_rq, delta);
+ 	if (xdp_xmit & VIRTIO_XDP_REDIR)
+ 		xdp_do_flush();
  
--	/* ensure we never gain time by being placed backwards. */
--	u64_u32_store(cfs_rq->min_vruntime,
--		      __update_min_vruntime(cfs_rq, vruntime));
-+	cfs_rq->zero_vruntime = vruntime;
- }
- 
- static inline bool __entity_less(struct rb_node *a, const struct rb_node *b)
-@@ -837,6 +807,7 @@ RB_DECLARE_CALLBACKS(static, min_deadline_cb, struct sched_entity,
- static void __enqueue_entity(struct cfs_rq *cfs_rq, struct sched_entity *se)
- {
- 	avg_vruntime_add(cfs_rq, se);
-+	update_zero_vruntime(cfs_rq);
- 	se->min_deadline = se->deadline;
- 	rb_add_augmented_cached(&se->run_node, &cfs_rq->tasks_timeline,
- 				__entity_less, &min_deadline_cb);
-@@ -847,6 +818,7 @@ static void __dequeue_entity(struct cfs_rq *cfs_rq, struct sched_entity *se)
- 	rb_erase_augmented_cached(&se->run_node, &cfs_rq->tasks_timeline,
- 				  &min_deadline_cb);
- 	avg_vruntime_sub(cfs_rq, se);
-+	update_zero_vruntime(cfs_rq);
- }
- 
- struct sched_entity *__pick_first_entity(struct cfs_rq *cfs_rq)
-@@ -1212,7 +1184,6 @@ static void update_curr(struct cfs_rq *cfs_rq)
- 
- 	curr->vruntime += calc_delta_fair(delta_exec, curr);
- 	update_deadline(cfs_rq, curr);
--	update_min_vruntime(cfs_rq);
- 
- 	if (entity_is_task(curr))
- 		update_curr_task(task_of(curr), delta_exec);
-@@ -3889,15 +3860,6 @@ static void reweight_entity(struct cfs_rq *cfs_rq, struct sched_entity *se,
- 		update_load_add(&cfs_rq->load, se->load.weight);
- 		if (!curr)
- 			__enqueue_entity(cfs_rq, se);
--
--		/*
--		 * The entity's vruntime has been adjusted, so let's check
--		 * whether the rq-wide min_vruntime needs updated too. Since
--		 * the calculations above require stable min_vruntime rather
--		 * than up-to-date one, we do the update at the end of the
--		 * reweight process.
--		 */
--		update_min_vruntime(cfs_rq);
+ 	/* Out of packets? */
+-	if (received < budget) {
++	if (received < budget && !retry_refill) {
+ 		napi_complete = virtqueue_napi_complete(napi, rq->vq, received);
+ 		/* Intentionally not taking dim_lock here. This may result in a
+ 		 * spurious net_dim call. But if that happens virtnet_rx_dim_work
+@@ -3160,7 +3156,7 @@ static int virtnet_poll(struct napi_struct *napi, int budget)
+ 		virtnet_xdp_put_sq(vi, sq);
  	}
+ 
+-	return received;
++	return retry_refill ? budget : received;
  }
  
-@@ -5422,15 +5384,6 @@ dequeue_entity(struct cfs_rq *cfs_rq, struct sched_entity *se, int flags)
+ static void virtnet_disable_queue_pair(struct virtnet_info *vi, int qp_index)
+@@ -3230,9 +3226,11 @@ static int virtnet_open(struct net_device *dev)
  
- 	update_cfs_group(se);
+ 	for (i = 0; i < vi->max_queue_pairs; i++) {
+ 		if (i < vi->curr_queue_pairs)
+-			/* Make sure we have some buffers: if oom use wq. */
+-			if (!try_fill_recv(vi, &vi->rq[i], GFP_KERNEL))
+-				schedule_delayed_work(&vi->refill, 0);
++			/* If this fails, we will retry later in
++			 * NAPI poll, which is scheduled in the below
++			 * virtnet_enable_queue_pair
++			 */
++			try_fill_recv(vi, &vi->rq[i], GFP_KERNEL);
  
--	/*
--	 * Now advance min_vruntime if @se was the entity holding it back,
--	 * except when: DEQUEUE_SAVE && !DEQUEUE_MOVE, in this case we'll be
--	 * put back on, and if we advance min_vruntime, we'll be placed back
--	 * further than we started -- ie. we'll be penalized.
--	 */
--	if ((flags & (DEQUEUE_SAVE | DEQUEUE_MOVE)) != DEQUEUE_SAVE)
--		update_min_vruntime(cfs_rq);
--
- 	if (cfs_rq->nr_running == 0)
- 		update_idle_cfs_rq_clock_pelt(cfs_rq);
- }
-@@ -8625,7 +8578,6 @@ static void yield_task_fair(struct rq *rq)
- 	if (entity_eligible(cfs_rq, se)) {
- 		se->vruntime = se->deadline;
- 		se->deadline += calc_delta_fair(se->slice, se);
--		update_min_vruntime(cfs_rq);
- 	}
- }
- 
-@@ -12630,23 +12582,6 @@ static inline void task_tick_core(struct rq *rq, struct task_struct *curr)
-  * Which shows that S and s_i transform alike (which makes perfect sense
-  * given that S is basically the (weighted) average of s_i).
-  *
-- * Then:
-- *
-- *   x -> s_min := min{s_i}                                   (8)
-- *
-- * to obtain:
-- *
-- *               \Sum_i w_i (s_i - s_min)
-- *   S = s_min + ------------------------                     (9)
-- *                     \Sum_i w_i
-- *
-- * Which already looks familiar, and is the basis for our current
-- * approximation:
-- *
-- *   S ~= s_min                                              (10)
-- *
-- * Now, obviously, (10) is absolute crap :-), but it sorta works.
-- *
-  * So the thing to remember is that the above is strictly UP. It is
-  * possible to generalize to multiple runqueues -- however it gets really
-  * yuck when you have to add affinity support, as illustrated by our very
-@@ -12668,23 +12603,23 @@ static inline void task_tick_core(struct rq *rq, struct task_struct *curr)
-  * Let, for our runqueue 'k':
-  *
-  *   T_k = \Sum_i w_i s_i
-- *   W_k = \Sum_i w_i      ; for all i of k                  (11)
-+ *   W_k = \Sum_i w_i      ; for all i of k                  (8)
-  *
-  * Then we can write (6) like:
-  *
-  *         T_k
-- *   S_k = ---                                               (12)
-+ *   S_k = ---                                               (9)
-  *         W_k
-  *
-  * From which immediately follows that:
-  *
-  *           T_k + T_l
-- *   S_k+l = ---------                                       (13)
-+ *   S_k+l = ---------                                       (10)
-  *           W_k + W_l
-  *
-  * On which we can define a combined lag:
-  *
-- *   lag_k+l(i) := S_k+l - s_i                               (14)
-+ *   lag_k+l(i) := S_k+l - s_i                               (11)
-  *
-  * And that gives us the tools to compare tasks across a combined runqueue.
-  *
-@@ -12695,7 +12630,7 @@ static inline void task_tick_core(struct rq *rq, struct task_struct *curr)
-  *     using (7); this only requires storing single 'time'-stamps.
-  *
-  *  b) when comparing tasks between 2 runqueues of which one is forced-idle,
-- *     compare the combined lag, per (14).
-+ *     compare the combined lag, per (11).
-  *
-  * Now, of course cgroups (I so hate them) make this more interesting in
-  * that a) seems to suggest we need to iterate all cgroup on a CPU at such
-@@ -12743,12 +12678,11 @@ static inline void task_tick_core(struct rq *rq, struct task_struct *curr)
-  * every tick. This limits the observed divergence due to the work
-  * conservancy.
-  *
-- * On top of that, we can improve upon things by moving away from our
-- * horrible (10) hack and moving to (9) and employing (13) here.
-+ * On top of that, we can improve upon things by employing (10) here.
-  */
- 
- /*
-- * se_fi_update - Update the cfs_rq->min_vruntime_fi in a CFS hierarchy if needed.
-+ * se_fi_update - Update the cfs_rq->zero_vruntime_fi in a CFS hierarchy if needed.
-  */
- static void se_fi_update(const struct sched_entity *se, unsigned int fi_seq,
- 			 bool forceidle)
-@@ -12762,7 +12696,7 @@ static void se_fi_update(const struct sched_entity *se, unsigned int fi_seq,
- 			cfs_rq->forceidle_seq = fi_seq;
- 		}
- 
--		cfs_rq->min_vruntime_fi = cfs_rq->min_vruntime;
-+		cfs_rq->zero_vruntime_fi = cfs_rq->zero_vruntime;
- 	}
- }
- 
-@@ -12815,11 +12749,11 @@ bool cfs_prio_less(const struct task_struct *a, const struct task_struct *b,
- 
- 	/*
- 	 * Find delta after normalizing se's vruntime with its cfs_rq's
--	 * min_vruntime_fi, which would have been updated in prior calls
-+	 * zero_vruntime_fi, which would have been updated in prior calls
- 	 * to se_fi_update().
- 	 */
- 	delta = (s64)(sea->vruntime - seb->vruntime) +
--		(s64)(cfs_rqb->min_vruntime_fi - cfs_rqa->min_vruntime_fi);
-+		(s64)(cfs_rqb->zero_vruntime_fi - cfs_rqa->zero_vruntime_fi);
- 
- 	return delta > 0;
- }
-@@ -13048,7 +12982,7 @@ static void set_next_task_fair(struct rq *rq, struct task_struct *p, bool first)
- void init_cfs_rq(struct cfs_rq *cfs_rq)
+ 		err = virtnet_enable_queue_pair(vi, i);
+ 		if (err < 0)
+@@ -3473,15 +3471,15 @@ static void __virtnet_rx_resume(struct virtnet_info *vi,
+ 				bool refill)
  {
- 	cfs_rq->tasks_timeline = RB_ROOT_CACHED;
--	u64_u32_store(cfs_rq->min_vruntime, (u64)(-(1LL << 20)));
-+	u64_u32_store(cfs_rq->zero_vruntime, (u64)(-(1LL << 20)));
- #ifdef CONFIG_SMP
- 	raw_spin_lock_init(&cfs_rq->removed.lock);
- #endif
-diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
-index 64634314a89c..a1c6ccf7249d 100644
---- a/kernel/sched/sched.h
-+++ b/kernel/sched/sched.h
-@@ -554,14 +554,14 @@ struct cfs_rq {
- 	u64			avg_load;
+ 	bool running = netif_running(vi->dev);
+-	bool schedule_refill = false;
  
- 	u64			exec_clock;
--	u64			min_vruntime;
-+	u64			zero_vruntime;
- #ifdef CONFIG_SCHED_CORE
- 	unsigned int		forceidle_seq;
--	u64			min_vruntime_fi;
-+	u64			zero_vruntime_fi;
- #endif
+-	if (refill && !try_fill_recv(vi, rq, GFP_KERNEL))
+-		schedule_refill = true;
++	if (refill)
++		/* If this fails, we will retry later in NAPI poll, which is
++		 * scheduled in the below virtnet_napi_enable
++		 */
++		try_fill_recv(vi, rq, GFP_KERNEL);
++
+ 	if (running)
+ 		virtnet_napi_enable(rq);
+-
+-	if (schedule_refill)
+-		schedule_delayed_work(&vi->refill, 0);
+ }
  
- #ifndef CONFIG_64BIT
--	u64			min_vruntime_copy;
-+	u64			zero_vruntime_copy;
- #endif
+ static void virtnet_rx_resume_all(struct virtnet_info *vi)
+@@ -3777,6 +3775,7 @@ static int virtnet_set_queues(struct virtnet_info *vi, u16 queue_pairs)
+ 	struct virtio_net_rss_config_trailer old_rss_trailer;
+ 	struct net_device *dev = vi->dev;
+ 	struct scatterlist sg;
++	int i;
  
- 	struct rb_root_cached	tasks_timeline;
+ 	if (!vi->has_cvq || !virtio_has_feature(vi->vdev, VIRTIO_NET_F_MQ))
+ 		return 0;
+@@ -3829,11 +3828,17 @@ static int virtnet_set_queues(struct virtnet_info *vi, u16 queue_pairs)
+ 	}
+ succ:
+ 	vi->curr_queue_pairs = queue_pairs;
+-	/* virtnet_open() will refill when device is going to up. */
+-	spin_lock_bh(&vi->refill_lock);
+-	if (dev->flags & IFF_UP && vi->refill_enabled)
+-		schedule_delayed_work(&vi->refill, 0);
+-	spin_unlock_bh(&vi->refill_lock);
++	if (dev->flags & IFF_UP) {
++		/* Let the NAPI poll refill the receive buffer for us. We can't
++		 * safely call try_fill_recv() here because the NAPI might be
++		 * enabled already.
++		 */
++		local_bh_disable();
++		for (i = 0; i < vi->curr_queue_pairs; i++)
++			virtqueue_napi_schedule(&vi->rq[i].napi, vi->rq[i].vq);
++
++		local_bh_enable();
++	}
+ 
+ 	return 0;
+ }
 -- 
-2.51.0
+2.43.0
 
 
