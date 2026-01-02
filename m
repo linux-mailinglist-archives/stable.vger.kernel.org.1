@@ -1,276 +1,137 @@
-Return-Path: <stable+bounces-204421-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204422-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2104DCED45B
-	for <lists+stable@lfdr.de>; Thu, 01 Jan 2026 19:55:15 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7C73CED99D
+	for <lists+stable@lfdr.de>; Fri, 02 Jan 2026 03:01:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 3E8933000900
-	for <lists+stable@lfdr.de>; Thu,  1 Jan 2026 18:55:12 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 8B5D030006E5
+	for <lists+stable@lfdr.de>; Fri,  2 Jan 2026 02:01:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 964AE23ABA0;
-	Thu,  1 Jan 2026 18:55:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5A971386DA;
+	Fri,  2 Jan 2026 02:01:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UMAf3OkZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KUD7f56u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44617212554;
-	Thu,  1 Jan 2026 18:55:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 935BC1C28E
+	for <stable@vger.kernel.org>; Fri,  2 Jan 2026 02:01:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767293710; cv=none; b=LYq5FGBH9wfD+grctPrELmAIVi+TvsJoqKxHBoQWETjk9D0WyqehshnZLjubEOHS84BLGn96sifCDq+4sAjPM3JMMHhq/oxHZteup8beH5rZ45cwewQeyxeQot3qlJR2/AG7C8/mn6mK2la3ccCQkwVhXV4LT6u8cqD6jI6vZeY=
+	t=1767319280; cv=none; b=jwIhOidVY2u1dWQQkInb2yLm4b2wh03eiJ145cYfcN50QupXrXfixu0X0nUWFgJ/ml2mh0Yp/ncf2Ltp5jN8JMC4lohfoLipPuCzOJxnCPSkqDnRPLpc8R/EZYeHj1BznPraK+ZAgMeqqQFouJPTGWm036SU8SJ+kbIE3F4dCm0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767293710; c=relaxed/simple;
-	bh=di9RKFHA3WeLyoVzrPsOzx/4yiXAPIxza2ATvMON+0Q=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WSWjMk/BkNHw8JoTqFPo5owSsV+UaQ9ByJ41mO8yA7TirpPSXjFmtlYteFFO9wAiTf9w7fD78ui7yQdf/R38YK2Wl1Yk6Y9AmNJiMunKo8+rKbVnUm1tfBw2lo+dCaDwqfnjfvSZINAm1XwunJ8H46PSn9r/qSP+hTByE4XzwVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UMAf3OkZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BE9FC4CEF7;
-	Thu,  1 Jan 2026 18:55:09 +0000 (UTC)
+	s=arc-20240116; t=1767319280; c=relaxed/simple;
+	bh=ups99G3WUf6rANZTJo7q9lPmu8QRAGdWlehtfWE2YuE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=bUCnWu3bjWV5TAP5R8HqFBiOSaL9xMfABhpHjpkJSVFkwqm9cSqDCYLcJvHGYLY24KW2wdtkC1e+P9+6AFFQrLtk82cBW4urBdcbKe/W+P4dKr4MJRPPcv3EUmWFDrETkHUoEHx7NFORqAAympCTvwwxORFSe1s65AsfTwhHbbM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KUD7f56u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76A40C4CEF7;
+	Fri,  2 Jan 2026 02:01:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767293709;
-	bh=di9RKFHA3WeLyoVzrPsOzx/4yiXAPIxza2ATvMON+0Q=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=UMAf3OkZ/Gq08AKEI4W1OtZKf3FXlo2uhnIUxSvROTDc76swIKFNGDnvzWftZgiSf
-	 ZdlXM9DQAOfyehWVXyQA45wjtDqLytkx1Lj+N7XPjbhy+i3oyZrKYXXPLLtFz6pzOo
-	 fTBJuoNgVwON+l2pfUqDML6oCRQNwwdMnmziYECy/wkFIuKIKjE9THSmcDb9S4JnoY
-	 K6cEXN4EOTUx2cHQUjeS5Q3qNkPpRSc+T1xcVqScUR8tG7Hy28VcREsaqm67qRB3F4
-	 V3gZWNlk0kuAY5ISWRxkquElwEy6zgQMzJn63UjiDWbmmG5CcSZ345WH+4T2AYgoNK
-	 VAmK/A+2xZl6g==
-Received: from lfbn-nan-1-2237-32.w92-139.abo.wanadoo.fr ([92.139.188.32] helo=lobster-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1vbNpC-0000000GMmY-3UcR;
-	Thu, 01 Jan 2026 18:55:07 +0000
-Date: Thu, 01 Jan 2026 18:55:05 +0000
-Message-ID: <87o6ndduye.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Lucas Wei <lucaswei@google.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	sjadavani@google.com,
-	kernel test robot <lkp@intel.com>,
-	stable@vger.kernel.org,
-	kernel-team@android.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] arm64: errata: Workaround for SI L1 downstream coherency issue
-In-Reply-To: <20251229033621.996546-1-lucaswei@google.com>
-References: <20251229033621.996546-1-lucaswei@google.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	s=k20201202; t=1767319280;
+	bh=ups99G3WUf6rANZTJo7q9lPmu8QRAGdWlehtfWE2YuE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=KUD7f56ubCFMPDg4kMD/cyuSJrLLJ+NU5RB755hof1pukXi4uS2KxhnrzfHep1GlI
+	 qntQl4OQHbjrfnxZyqTdWHYRLQphio+ZrqTkRzZozyh0zJEwiYN9qUGgwCRpBJ9yWD
+	 hs6+fJperDCIR24OXCoupMWCNru5OZGBkHF3JVBFBSlg/Q3dGvqHMCalBEDGylB/VF
+	 i6Llj1fcCioCsvYVf8o8O+h3rm1gukpBGJmJExhrYNqoK9SgZPtlQMX3gL8mmvC7gS
+	 GKQ+lgkYxfpfQKS7TAmmmoIJg9oj8UcgsnJXWK4Ke/9t2KdIqWZ0LdjQAynauzGrl4
+	 VFrDHbfxg93qg==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Tejun Heo <tj@kernel.org>,
+	Andrea Righi <arighi@nvidia.com>,
+	Emil Tsalapatis <emil@etsalapatis.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12.y 1/2] sched_ext: Factor out local_dsq_post_enq() from dispatch_enqueue()
+Date: Thu,  1 Jan 2026 21:01:16 -0500
+Message-ID: <20260102020117.100465-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025122951-giggle-reveler-2e6b@gregkh>
+References: <2025122951-giggle-reveler-2e6b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 92.139.188.32
-X-SA-Exim-Rcpt-To: lucaswei@google.com, catalin.marinas@arm.com, will@kernel.org, corbet@lwn.net, sjadavani@google.com, lkp@intel.com, stable@vger.kernel.org, kernel-team@android.com, linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Mon, 29 Dec 2025 03:36:19 +0000,
-Lucas Wei <lucaswei@google.com> wrote:
-> 
-> When software issues a Cache Maintenance Operation (CMO) targeting a
-> dirty cache line, the CPU and DSU cluster may optimize the operation by
-> combining the CopyBack Write and CMO into a single combined CopyBack
-> Write plus CMO transaction presented to the interconnect (MCN).
-> For these combined transactions, the MCN splits the operation into two
-> separate transactions, one Write and one CMO, and then propagates the
-> write and optionally the CMO to the downstream memory system or external
-> Point of Serialization (PoS).
-> However, the MCN may return an early CompCMO response to the DSU cluster
-> before the corresponding Write and CMO transactions have completed at
-> the external PoS or downstream memory. As a result, stale data may be
-> observed by external observers that are directly connected to the
-> external PoS or downstream memory.
-> 
-> This erratum affects any system topology in which the following
-> conditions apply:
->  - The Point of Serialization (PoS) is located downstream of the
->    interconnect.
->  - A downstream observer accesses memory directly, bypassing the
->    interconnect.
-> 
-> Conditions:
-> This erratum occurs only when all of the following conditions are met:
->  1. Software executes a data cache maintenance operation, specifically,
->     a clean or invalidate by virtual address (DC CVAC, DC CIVAC, or DC
->     IVAC), that hits on unique dirty data in the CPU or DSU cache. This
->     results in a combined CopyBack and CMO being issued to the
->     interconnect.
->  2. The interconnect splits the combined transaction into separate Write
->     and CMO transactions and returns an early completion response to the
->     CPU or DSU before the write has completed at the downstream memory
->     or PoS.
->  3. A downstream observer accesses the affected memory address after the
->     early completion response is issued but before the actual memory
->     write has completed. This allows the observer to read stale data
->     that has not yet been updated at the PoS or downstream memory.
-> 
-> The implementation of workaround put a second loop of CMOs at the same
-> virtual address whose operation meet erratum conditions to wait until
-> cache data be cleaned to PoC.. This way of implementation mitigates
-> performance panalty compared to purly duplicate orignial CMO.
+From: Tejun Heo <tj@kernel.org>
 
-penalty, purely, original.
+[ Upstream commit 530b6637c79e728d58f1d9b66bd4acf4b735b86d ]
 
-How does one identify the "erratum conditions"?
+Factor out local_dsq_post_enq() which performs post-enqueue handling for
+local DSQs - triggering resched_curr() if SCX_ENQ_PREEMPT is specified or if
+the current CPU is idle. No functional change.
 
-> 
-> Reported-by: kernel test robot <lkp@intel.com>
+This will be used by the next patch to fix move_local_task_to_local_dsq().
 
-Well, no.
+Cc: stable@vger.kernel.org # v6.12+
+Reviewed-by: Andrea Righi <arighi@nvidia.com>
+Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ kernel/sched/ext.c | 34 +++++++++++++++++++---------------
+ 1 file changed, 19 insertions(+), 15 deletions(-)
 
-> Cc: stable@vger.kernel.org # 6.12.x
-> Signed-off-by: Lucas Wei <lucaswei@google.com>
-> ---
-> 
-> Changes in v2:
-> 
->  1. Fixed warning from kernel test robot by changing
->     arm_si_l1_workaround_4311569 to static 
->     [Reported-by: kernel test robot <lkp@intel.com>]
-> 
-> ---
->  Documentation/arch/arm64/silicon-errata.rst |  3 ++
->  arch/arm64/Kconfig                          | 19 +++++++++++++
->  arch/arm64/include/asm/assembler.h          | 10 +++++++
->  arch/arm64/kernel/cpu_errata.c              | 31 +++++++++++++++++++++
->  arch/arm64/mm/cache.S                       | 13 ++++++++-
->  arch/arm64/tools/cpucaps                    |  1 +
->  6 files changed, 76 insertions(+), 1 deletion(-)
-> 
-> diff --git a/Documentation/arch/arm64/silicon-errata.rst b/Documentation/arch/arm64/silicon-errata.rst
-> index a7ec57060f64..98efdf528719 100644
-> --- a/Documentation/arch/arm64/silicon-errata.rst
-> +++ b/Documentation/arch/arm64/silicon-errata.rst
-> @@ -213,6 +213,9 @@ stable kernels.
->  | ARM            | GIC-700         | #2941627        | ARM64_ERRATUM_2941627       |
->  +----------------+-----------------+-----------------+-----------------------------+
->  +----------------+-----------------+-----------------+-----------------------------+
-> +| ARM            | SI L1           | #4311569        | ARM64_ERRATUM_4311569       |
-> ++----------------+-----------------+-----------------+-----------------------------+
-
-Keep ARM within a single section (no double line -- there's already a
-pointless extra one before 2941627).
-
-> ++----------------+-----------------+-----------------+-----------------------------+
->  | Broadcom       | Brahma-B53      | N/A             | ARM64_ERRATUM_845719        |
->  +----------------+-----------------+-----------------+-----------------------------+
->  | Broadcom       | Brahma-B53      | N/A             | ARM64_ERRATUM_843419        |
-> diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-> index 65db12f66b8f..a834d30859cc 100644
-> --- a/arch/arm64/Kconfig
-> +++ b/arch/arm64/Kconfig
-> @@ -1153,6 +1153,25 @@ config ARM64_ERRATUM_3194386
->  
->  	  If unsure, say Y.
->  
-> +config ARM64_ERRATUM_4311569
-> +	bool "SI L1: 4311569: workaround for premature CMO completion erratum"
-> +	default y
-> +	help
-> +	  This option adds the workaround for ARM SI L1 erratum 4311569.
-> +
-> +	  The erratum of SI L1 can cause an early response to a combined write
-> +	  and cache maintenance operation (WR+CMO) before the operation is fully
-> +	  completed to the Point of Serialization (POS).
-> +	  This can result in a non-I/O coherent agent observing stale data,
-> +	  potentially leading to system instability or incorrect behavior.
-> +
-> +	  Enabling this option implements a software workaround by inserting a
-> +	  second loop of Cache Maintenance Operation (CMO) immediately following the
-> +	  end of function to do CMOs. This ensures that the data is correctly serialized
-> +	  before the buffer is handed off to a non-coherent agent.
-> +
-> +	  If unsure, say Y.
-> +
->  config CAVIUM_ERRATUM_22375
->  	bool "Cavium erratum 22375, 24313"
->  	default y
-> diff --git a/arch/arm64/include/asm/assembler.h b/arch/arm64/include/asm/assembler.h
-> index f0ca7196f6fa..d3d46e5f7188 100644
-> --- a/arch/arm64/include/asm/assembler.h
-> +++ b/arch/arm64/include/asm/assembler.h
-> @@ -381,6 +381,9 @@ alternative_endif
->  	.macro dcache_by_myline_op op, domain, start, end, linesz, tmp, fixup
->  	sub	\tmp, \linesz, #1
->  	bic	\start, \start, \tmp
-> +alternative_if ARM64_WORKAROUND_4311569
-> +	mov	\tmp, \start
-> +alternative_else_nop_endif
->  .Ldcache_op\@:
->  	.ifc	\op, cvau
->  	__dcache_op_workaround_clean_cache \op, \start
-> @@ -402,6 +405,13 @@ alternative_endif
->  	add	\start, \start, \linesz
->  	cmp	\start, \end
->  	b.lo	.Ldcache_op\@
-> +alternative_if ARM64_WORKAROUND_4311569
-> +	.ifnc	\op, cvau
-> +	mov	\start, \tmp
-> +	mov	\tmp, xzr
-> +	cbnz	\start, .Ldcache_op\@
-> +	.endif
-> +alternative_else_nop_endif
->  	dsb	\domain
->  
->  	_cond_uaccess_extable .Ldcache_op\@, \fixup
-> diff --git a/arch/arm64/kernel/cpu_errata.c b/arch/arm64/kernel/cpu_errata.c
-> index 8cb3b575a031..5c0ab6bfd44a 100644
-> --- a/arch/arm64/kernel/cpu_errata.c
-> +++ b/arch/arm64/kernel/cpu_errata.c
-> @@ -141,6 +141,30 @@ has_mismatched_cache_type(const struct arm64_cpu_capabilities *entry,
->  	return (ctr_real != sys) && (ctr_raw != sys);
->  }
->  
-> +#ifdef CONFIG_ARM64_ERRATUM_4311569
-> +static DEFINE_STATIC_KEY_FALSE(arm_si_l1_workaround_4311569);
-> +static int __init early_arm_si_l1_workaround_4311569_cfg(char *arg)
-> +{
-> +	static_branch_enable(&arm_si_l1_workaround_4311569);
-> +	pr_info("Enabling cache maintenance workaround for ARM SI-L1 erratum 4311569\n");
-> +
-> +	return 0;
-> +}
-> +early_param("arm_si_l1_workaround_4311569", early_arm_si_l1_workaround_4311569_cfg);
-> +
-> +/*
-> + * We have some earlier use cases to call cache maintenance operation functions, for example,
-> + * dcache_inval_poc() and dcache_clean_poc() in head.S, before making decision to turn on this
-> + * workaround. Since the scope of this workaround is limited to non-coherent DMA agents, its
-> + * safe to have the workaround off by default.
-> + */
-> +static bool
-> +need_arm_si_l1_workaround_4311569(const struct arm64_cpu_capabilities *entry, int scope)
-> +{
-> +	return static_branch_unlikely(&arm_si_l1_workaround_4311569);
-> +}
-> +#endif
-
-But this isn't a detection mechanism. That's relying on the user
-knowing they are dealing with broken hardware. How do they find out?
-You don't even call out what platform is actually affected...
-
-The other elephant in the room is virtualisation: how does a guest
-performing CMOs deals with this? How does it discover the that the
-host is broken? I also don't see any attempt to make KVM handle the
-erratum on behalf of the guest...
-
-Thanks,
-
-	M.
-
+diff --git a/kernel/sched/ext.c b/kernel/sched/ext.c
+index ad1d438b3085..54e194d08d92 100644
+--- a/kernel/sched/ext.c
++++ b/kernel/sched/ext.c
+@@ -1668,6 +1668,22 @@ static void dsq_mod_nr(struct scx_dispatch_q *dsq, s32 delta)
+ 	WRITE_ONCE(dsq->nr, dsq->nr + delta);
+ }
+ 
++static void local_dsq_post_enq(struct scx_dispatch_q *dsq, struct task_struct *p,
++			       u64 enq_flags)
++{
++	struct rq *rq = container_of(dsq, struct rq, scx.local_dsq);
++	bool preempt = false;
++
++	if ((enq_flags & SCX_ENQ_PREEMPT) && p != rq->curr &&
++	    rq->curr->sched_class == &ext_sched_class) {
++		rq->curr->scx.slice = 0;
++		preempt = true;
++	}
++
++	if (preempt || sched_class_above(&ext_sched_class, rq->curr->sched_class))
++		resched_curr(rq);
++}
++
+ static void dispatch_enqueue(struct scx_dispatch_q *dsq, struct task_struct *p,
+ 			     u64 enq_flags)
+ {
+@@ -1765,22 +1781,10 @@ static void dispatch_enqueue(struct scx_dispatch_q *dsq, struct task_struct *p,
+ 	if (enq_flags & SCX_ENQ_CLEAR_OPSS)
+ 		atomic_long_set_release(&p->scx.ops_state, SCX_OPSS_NONE);
+ 
+-	if (is_local) {
+-		struct rq *rq = container_of(dsq, struct rq, scx.local_dsq);
+-		bool preempt = false;
+-
+-		if ((enq_flags & SCX_ENQ_PREEMPT) && p != rq->curr &&
+-		    rq->curr->sched_class == &ext_sched_class) {
+-			rq->curr->scx.slice = 0;
+-			preempt = true;
+-		}
+-
+-		if (preempt || sched_class_above(&ext_sched_class,
+-						 rq->curr->sched_class))
+-			resched_curr(rq);
+-	} else {
++	if (is_local)
++		local_dsq_post_enq(dsq, p, enq_flags);
++	else
+ 		raw_spin_unlock(&dsq->lock);
+-	}
+ }
+ 
+ static void task_unlink_from_dsq(struct task_struct *p,
 -- 
-Jazz isn't dead. It just smells funny.
+2.51.0
+
 
