@@ -1,116 +1,129 @@
-Return-Path: <stable+bounces-204441-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204442-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87725CEE0AB
-	for <lists+stable@lfdr.de>; Fri, 02 Jan 2026 10:08:14 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32F2CCEE0DC
+	for <lists+stable@lfdr.de>; Fri, 02 Jan 2026 10:25:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 33B51300D65B
-	for <lists+stable@lfdr.de>; Fri,  2 Jan 2026 09:07:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 75AB63007600
+	for <lists+stable@lfdr.de>; Fri,  2 Jan 2026 09:25:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA0952D738A;
-	Fri,  2 Jan 2026 09:07:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 482412D6E6F;
+	Fri,  2 Jan 2026 09:24:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="tkH6fcW5"
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="aDSBt+A7";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="HgncAOTv"
 X-Original-To: stable@vger.kernel.org
-Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
+Received: from fhigh-a5-smtp.messagingengine.com (fhigh-a5-smtp.messagingengine.com [103.168.172.156])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCCA82BE64F
-	for <stable@vger.kernel.org>; Fri,  2 Jan 2026 09:07:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E95AC1F7580;
+	Fri,  2 Jan 2026 09:24:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.156
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767344859; cv=none; b=YSvtOgNQnWqWVw85ZREokBgYMDUZHl0KwB1hD76USrSRz/DDi0L/ojM8Z7VzbcmY5TJsQDCzxjrkJVACYSNj6UzJaOctvaaZV0jtoCbAbYOUYkSexe0wty6wLAvUILRObsWa/F/QFmMP5MN0VSOU5cqMdrfIkOjNLH6AkfhbIwo=
+	t=1767345899; cv=none; b=TkkTLpRWXQjSAaw6Ck9BzNxDM/mF4nPEQT8z/KABfnEbTTDgm+JHwY8aXG+rTBMUX/oXe4vi5F06v/deqzt8b33q4zUTGhcb0hVaZmae9PuvZsLk3Jw6+QZKfnzF7t7jRyqDFlQIA4F71V+rFPE0DD/ONp0KiGFNAZILc/UVN9c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767344859; c=relaxed/simple;
-	bh=nIQNvWEwyYl2hWK3GcNjeOvmr0mJVipk9z6LCDGpUBU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YXx6plyRaGEqm2ptcvVodN2beoLKX5RbjiOeiOv/XFsDAdGF3psm3Aqz2csTfPlA4IrQP/DBD76YaQFcsjEArKU0RUcof1Dy0ly1MqRXMd1+c7ySnFmrT4Rf6+80cpljs/7McZqfav6wQWnTHIVMCzGkM7fLZPw0jqNM/9lqJ+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=tkH6fcW5; arc=none smtp.client-ip=91.218.175.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1767344855;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TMj5TrrlMif37vw/D7M5rWgGjiFm22plFTpEXR8IQhw=;
-	b=tkH6fcW5Xme0JrpKnovfVILgVmIT/exsoT9krDEwZCaYTEfp5m8azT+mMHma4vlzCz1iFY
-	cOB+OHZeSj0jLCfg5RWmL+12JF3xWevk4pw5e+255psmFDuH2oOTn3reLrAatJnG6TAc6Z
-	hOu/apt0s2SXMySPxQPd4R5tLFTmQtY=
-From: Leon Hwang <leon.hwang@linux.dev>
-To: stable@vger.kernel.org,
-	greg@kroah.com
-Cc: Andrii Nakryiko <andrii@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	x86@kernel.org,
-	"H . Peter Anvin" <hpa@zytor.com>,
-	linux-perf-users@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Leon Hwang <leon.hwang@linux.dev>,
-	Ingo Molnar <mingo@kernel.org>,
-	Sandipan Das <sandipan.das@amd.com>
-Subject: [PATCH 6.6.y 4/4] perf/x86/amd: Don't reject non-sampling events with configured LBR
-Date: Fri,  2 Jan 2026 17:03:20 +0800
-Message-ID: <20260102090320.32843-5-leon.hwang@linux.dev>
-In-Reply-To: <20260102090320.32843-1-leon.hwang@linux.dev>
-References: <20260102090320.32843-1-leon.hwang@linux.dev>
+	s=arc-20240116; t=1767345899; c=relaxed/simple;
+	bh=xboeX7iqp3yKPiHunSosJbagSL4sCsNu5Hh7gtei0fw=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=s+mpJZ5mQYqaxii5ZUqXy3K9zVeDeitIZ9S6nNtzQy86IErfbpCMUXV9lqeeU/iX/1f7aqrm1RffPwgQYVCV3aaTKqoQFubceLSC8H6U53zF5uFNBJ1LjyneCBvaLHdZxuGzKtScep5l7mLNcW+L2nPK7UnhPmsnzUvdkxQqPJo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=aDSBt+A7; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=HgncAOTv; arc=none smtp.client-ip=103.168.172.156
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id EA5F614000AD;
+	Fri,  2 Jan 2026 04:24:54 -0500 (EST)
+Received: from phl-imap-02 ([10.202.2.81])
+  by phl-compute-04.internal (MEProxy); Fri, 02 Jan 2026 04:24:54 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1767345894;
+	 x=1767432294; bh=xboeX7iqp3yKPiHunSosJbagSL4sCsNu5Hh7gtei0fw=; b=
+	aDSBt+A79WKXvc4f0lRnxJqT6zEOJQGqJKzz3e0zmZJkSJ+I98bstXT497fL+tFB
+	64XDyFgpEIVa8NioYlhI0HrziMsCSN0iU+XXmsn0KAPjGsTsVCt2Dcg3r31poSVc
+	W5XnidRgQUtXRZygFuv+TWGQqtFbnYWrrWCs3b9x2Be0+sJLM4w+w8iA1iBuZEdf
+	+8EiLJf34Tc7PHog57vADOP8pL+HoRmCkKZ8ikR8NuW/hL4OC5gN+kCYdEn/2NJS
+	S/u5ahvNqCPn/ne3n9p3RfSGFCv4L3HnVMI1//ygbE7YCKZFZ1mjcP9Orw66q9MZ
+	zkq4O2KDvRG470mIqZNxfw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1767345894; x=
+	1767432294; bh=xboeX7iqp3yKPiHunSosJbagSL4sCsNu5Hh7gtei0fw=; b=H
+	gncAOTv5hXasZnfO+DefsoIKG6IcQscodgz1nK3zYRriD4dbYPJUW9OMXhU1MCDo
+	ev/NmqZrrb/w7grftiyv2y4H/3cK5kX4RY6NXblDcg8uZtuYjq5DGkC/gzQor3ee
+	Gt79KRxlj3XdVtxadlFGLH8WHdsrtBScfBP6FGVZ8D5eUf/xVvadrka7RVZNDQr4
+	wVUN1JCjseOCXF1MfpQgr9EtYXsjHdGDaR054RIJfG3BuamBU74W0zrVnS4Bus4n
+	eyXYjfF1ZKfkwAaRpbG5A/OF0I31M8oxaE8fVjS0LAmENKOJQ20PQTTLxAcPWHwl
+	Z+Mc/XjDX2VkLjITzVJIA==
+X-ME-Sender: <xms:5Y5XaYihxTgTDU1PZ-z290UhDEZaTS5s2suS9_yef3GyND0SJtVilQ>
+    <xme:5Y5Xab3KNHDn0jKFStcNpwGM4MaHDVjJ-5rVatUc-KGgVgkbrir8d9rx6DpU6uu4k
+    Ls1pkf0Ug0-u35alpN3Lqs6-LPgYnPkGiJxudhJuPJmCJZkGQpBscw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdekkeeftdcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecunecujfgurhepofggfffhvfevkfgjfhfutgfgsehtqhertd
+    ertdejnecuhfhrohhmpedftehrnhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhn
+    uggsrdguvgeqnecuggftrfgrthhtvghrnhepvdfhvdekueduveffffetgfdvveefvdelhe
+    dvvdegjedvfeehtdeggeevheefleejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghr
+    rghmpehmrghilhhfrhhomheprghrnhgusegrrhhnuggsrdguvgdpnhgspghrtghpthhtoh
+    epkedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheplhhinhhugiesrghrmhhlihhn
+    uhigrdhorhhgrdhukhdprhgtphhtthhopehrmhhkodhkvghrnhgvlhesrghrmhhlihhnuh
+    igrdhorhhgrdhukhdprhgtphhtthhopeifihhllhihsehinhhfrhgruggvrggurdhorhhg
+    pdhrtghpthhtohepthhhohhmrghsrdifvghishhsshgthhhuhheslhhinhhuthhrohhnih
+    igrdguvgdprhgtphhtthhopegrkhhpmheslhhinhhugidqfhhouhhnuggrthhiohhnrdho
+    rhhgpdhrtghpthhtoheplhhinhhugidqrghrmhdqkhgvrhhnvghlsehlihhsthhsrdhinh
+    hfrhgruggvrggurdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgv
+    rhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshhtrggslhgvsehvghgvrhdrkhgvrh
+    hnvghlrdhorhhg
+X-ME-Proxy: <xmx:5Y5XaRzIjTbUNLrxGr0sqwE_YbxvX-6eNffzwqOge8lpG-o2ae4jTQ>
+    <xmx:5Y5XaRsSmW-Q-K1mA_xlGV_8lFLPpH2Iwio-p9VGk-n03dH_YACR0w>
+    <xmx:5Y5XacDzW-6O6VxqoF5s4oMP8TDbdqXmRiRW-vjIMMRDuU49G0B1Iw>
+    <xmx:5Y5XabEv8cZh6nZOD0UjfmY1X4grWK9bHRazqxmFbV3UnwBikPb-WQ>
+    <xmx:5o5XacrIRGAev8YYYemAQzEnmYkiOpUc9zw5f3ALgJqjIDJ-NP0kA6ex>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id C5156700065; Fri,  2 Jan 2026 04:24:53 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+X-ThreadId: AtSnlUpPuEWk
+Date: Fri, 02 Jan 2026 10:24:33 +0100
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+ "Russell King" <linux@armlinux.org.uk>,
+ "Andrew Morton" <akpm@linux-foundation.org>,
+ "Matthew Wilcox" <willy@infradead.org>
+Cc: "Russell King" <rmk+kernel@armlinux.org.uk>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Message-Id: <bfd7776e-574a-4828-99a2-f70a3b9015e6@app.fastmail.com>
+In-Reply-To: <20260102-armeb-memset64-v1-1-9aa15fb8e820@linutronix.de>
+References: <20260102-armeb-memset64-v1-1-9aa15fb8e820@linutronix.de>
+Subject: Re: [PATCH] ARM: fix memset64() on big-endian
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-[ Upstream commit 9794563d4d053b1b46a0cc91901f0a11d8678c19 ]
+On Fri, Jan 2, 2026, at 08:15, Thomas Wei=C3=9Fschuh wrote:
+> On big-endian systems the 32-bit low and high halves need to be swappe=
+d,
+> for the underlying assembly implemenation to work correctly.
+>
+> Fixes: fd1d362600e2 ("ARM: implement memset32 & memset64")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Thomas Wei=C3=9Fschuh <thomas.weissschuh@linutronix.de>
+> ---
+> Found by the string_test_memset64 KUnit test.
 
-Now that it's possible to capture LBR on AMD CPU from BPF at arbitrary
-point, there is no reason to artificially limit this feature to just
-sampling events. So corresponding check is removed. AFAIU, there is no
-correctness implications of doing this (and it was possible to bypass
-this check by just setting perf_event's sample_period to 1 anyways, so
-it doesn't guard all that much).
+Good catch! I guess that likely means you are the first one to
+run kunit test on armbe since the tests got added. Did you find
+any other differences between BE and LE kernels running kunit?
 
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Sandipan Das <sandipan.das@amd.com>
-Link: https://lore.kernel.org/r/20240402022118.1046049-5-andrii@kernel.org
-Signed-off-by: Leon Hwang <leon.hwang@linux.dev>
----
- arch/x86/events/amd/lbr.c | 4 ----
- 1 file changed, 4 deletions(-)
-
-diff --git a/arch/x86/events/amd/lbr.c b/arch/x86/events/amd/lbr.c
-index 33d0a45c0cd3..19c7b76e21bc 100644
---- a/arch/x86/events/amd/lbr.c
-+++ b/arch/x86/events/amd/lbr.c
-@@ -310,10 +310,6 @@ int amd_pmu_lbr_hw_config(struct perf_event *event)
- {
- 	int ret = 0;
- 
--	/* LBR is not recommended in counting mode */
--	if (!is_sampling_event(event))
--		return -EINVAL;
--
- 	ret = amd_pmu_lbr_setup_filter(event);
- 	if (!ret)
- 		event->attach_state |= PERF_ATTACH_SCHED_CB;
--- 
-2.52.0
-
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>
 
