@@ -1,255 +1,83 @@
-Return-Path: <stable+bounces-204487-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204488-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BA6FCEED91
-	for <lists+stable@lfdr.de>; Fri, 02 Jan 2026 16:20:53 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54235CEEDD0
+	for <lists+stable@lfdr.de>; Fri, 02 Jan 2026 16:24:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7107A30019F9
-	for <lists+stable@lfdr.de>; Fri,  2 Jan 2026 15:20:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 229EC301EC66
+	for <lists+stable@lfdr.de>; Fri,  2 Jan 2026 15:22:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9BA9261B98;
-	Fri,  2 Jan 2026 15:20:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31C3C2673AA;
+	Fri,  2 Jan 2026 15:22:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nHgspHF9"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="aWVJdlHC"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB7D625A33A
-	for <stable@vger.kernel.org>; Fri,  2 Jan 2026 15:20:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 091B222F772;
+	Fri,  2 Jan 2026 15:22:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767367250; cv=none; b=s6t5HtR0yES9ZtcPvJYqeVFyhgdFV4LllLgGB1TADxA0VcavX0uXV6R0kxdrDxLCDmjAPjnDfOO9Sneywy4BdBLajTfRIWW+v+F4++SW0y8UBo0Xr5xq/+ZBN7UuwfRRpYRG4KM/Z8yoJ7FeBPf8Pt8HGmMbSCdB2rqFDvnwmcs=
+	t=1767367349; cv=none; b=RHxhp7eEwH9vykZTb+eLEWbdzyxKXhRzMoRCQ1r2gWL8xUPw7OGWZ3NUeSh15wv7J6RzBgcwEavAEwpdAbdBo7IfZAxv15kaPQjg7zcdB/xJXGakPLHUjg6sfO0uAR5tCIeJJ3JbELlLSt8oxA0sZBzFOwjLr9pqwqvZVBPrhDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767367250; c=relaxed/simple;
-	bh=AVmbCTua2itYQSdqi67Rg2DvQJpSs9Fw5lo+ym0KgKI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WkNprmWRDbs1LWoDrtvmFhBYYvTB9eZZ9XYbpwfwZdVr9q3J9WlaBBEYrzX++XX6JeeuQxch0Z2kdSLVzXmVYKeOyJEEjUSAAvEFIJ1E8A4hFRWm49TyBWsfLBKun+CQStg9MQW0v5NjITUJU2A5KxQZG+oX0p6o3ErJ2D0jKZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nHgspHF9; arc=none smtp.client-ip=209.85.210.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-7bc248dc16aso9694812b3a.0
-        for <stable@vger.kernel.org>; Fri, 02 Jan 2026 07:20:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767367248; x=1767972048; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=viiMT0mJ8A1eQE5ko81RyEvaps1qhf8umuQOghYhhoM=;
-        b=nHgspHF9T7yoCA4K1d8XVNuDBmDhdYM8YBktwCnxbjG95MFCE3M6fF3bHqEqvr/Ua9
-         QQ5wnuUPwC9xSFF3hAfdVB71LSCEnGXQSCIeHtjW9qq1M122ZlRICcp9TthWlVeBzYou
-         uHyf8/0lVgs0XbekgewKVfWyosQ8hzxllxkDRNBlUbUVSTyND+GC2rO91Pc+8xQCFSq0
-         X3qIAVgYFXSHbbKqJECsa6xVx1/LZadsYdPq8cDDSUVmRgk4GnSERuvYADTbTngFyxso
-         a33gsqa/fbN7DfuehjP01pSRcofhDcjH3FRidSRUKe4URcj/rVRBq0DnjxUWPs5OvqwF
-         pmWQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767367248; x=1767972048;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=viiMT0mJ8A1eQE5ko81RyEvaps1qhf8umuQOghYhhoM=;
-        b=MZyLbWMeF9TZIAZ8/zy5AM2JuNEBb5NVaDi26qsQzTOGRyTcUmXExIRjuTX0dX/Iku
-         931gAy71cSYxjnwWcro25jQcPwXj/WQTyFnIDKkKmAP/IEBeoGEGdbckLTQcJ4S9iHiO
-         f+WVrPsXUNc+4YvSk8RJpBMHvo2ZM/+HPrd6d/tsX91l9ILpmIenOsnV12t/CLFNV6i1
-         m+e7qQmu1U++7I2BW8BEDyqT/t4XCyGUcN6BAnGIGYWT7VnUhovSKI4ZScENtefZT8TO
-         1nUJa+dTCthjWu95g83Cev4SEUcmvqOvJXCPoDnx8iQNTUJY2XL8fNrvGn5HzpyMtlUY
-         1EyA==
-X-Forwarded-Encrypted: i=1; AJvYcCWQ9kkGmCQv+tLe7wQCGJJlcIa4zPSVyb9c+0P5qPGQpvPu7Pieq5TbORVcE1xkTls+R9HHVnc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwDU5Wec7LGFyPww0bBnqBgXYFwC3yQbm/tqALM0p/9d/axLdPC
-	9LWb52X0DeFHPdk4znKbbbIwkxUFQEuE0E2tXSHTx9Sz3vMFNYcpw9Mi
-X-Gm-Gg: AY/fxX7vh+7kC2i0vZLElVS/ETOtx/Be2pn/sQBbEg03yjNc5yU7dcNpAbul1uoor7r
-	jqnhuDCr4n+2s59rA0TClG80GrhRGgAp6+rs07utOPM6yJL9Pfls43dAItUsVrdWDbYpQNcDrPG
-	zvP77LkVDxy2XJTn0VXNiOUBaVaek7F42Yb407HP2cO2CPvR5kAUtdNpFJbWWreHlbhGYHYCHwo
-	lRpqow49wK07c/uIx5889zub8QiHLnq9t4oA2BYae5fvMKN9z7hPHFOYsuPEn5dYX6RuN7FgtxK
-	M0srQj8qcwz1iogWlrKc0tjOcQve9FGp8QS3BlFUjB4UTJ5Ze3JURALR7grZA/+xycRxswzSOb7
-	LRG86tUg6x+Ffe3aRRfxQCPqnAyT0glXsfIqRQN/ECpyN2bTfDoqkm3NilUzGbW5lSBvoeq2Wli
-	Z3470QvU98HiFYYwl8cTH3e4j6NhPO2lN4bA==
-X-Google-Smtp-Source: AGHT+IGW/oGz/NZjf+BGO8R4q9EUzB2Mdtq7Z2nuodi9vs6ehE50GZWiOZQO50TBdIV5gsvGFMRUSA==
-X-Received: by 2002:a05:6a21:99a4:b0:342:9cb7:649d with SMTP id adf61e73a8af0-376a7cec847mr41356285637.26.1767367248120;
-        Fri, 02 Jan 2026 07:20:48 -0800 (PST)
-Received: from minh.192.168.1.1 ([2001:ee0:4f4c:210:a612:725:7af0:96ca])
-        by smtp.googlemail.com with ESMTPSA id 41be03b00d2f7-c1e7c146aabsm35041268a12.25.2026.01.02.07.20.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 02 Jan 2026 07:20:47 -0800 (PST)
-From: Bui Quang Minh <minhquangbui99@gmail.com>
-To: netdev@vger.kernel.org
-Cc: "Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	virtualization@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	bpf@vger.kernel.org,
-	Bui Quang Minh <minhquangbui99@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH net v2 1/3] virtio-net: don't schedule delayed refill worker
-Date: Fri,  2 Jan 2026 22:20:21 +0700
-Message-ID: <20260102152023.10773-2-minhquangbui99@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260102152023.10773-1-minhquangbui99@gmail.com>
-References: <20260102152023.10773-1-minhquangbui99@gmail.com>
+	s=arc-20240116; t=1767367349; c=relaxed/simple;
+	bh=ex4F+6drm7YP9wB2pd5PXYYgeLj3LuztRrHWDc4/1gE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XOSzrHG+PDFsDR4YXetEc/ttdJQeZ0MZ9Bl/Ryq1AR+MnbPZ8EnAfts9/t30eAlMU6RAluKQ8yY1XneNcpKgSkv4eofY8c41yFSrxn7MN+xnOj/3TMRBNQTTbXn1FNZaUFzHOgjD9iEfcmJ2yddpuLybV53zDEEf1Wt5+uSoqQQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=aWVJdlHC; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+	Sender:Reply-To:Content-ID:Content-Description;
+	bh=Mfp0vOpU/C0y9oWZefdEhz0M9QMslqJoP/j34iw2EJc=; b=aWVJdlHC5dLL0Orukc+rZLMyXb
+	wOoBw7oxhxZDILMWSN0N9Cw088qKKM3wBoDdGXPjRy537XJlLV0nMa8SBYB3vtGWiZHcWDdL+lx9p
+	s47NzV1YbwPcnEUXW1Me4hpp3Fr/P35kgFBf+o0iSAN7T79Z0gt0dHjTqKCwdZ2bRYCHhTmfPyby0
+	SL77zSmY2CGgLRjeIfWp/4pjPZ4HfV/ovYCZ4SLNEKaglry8EK9yP9OY63aFvZeulItXe7QgnA6Mj
+	Rr0Qjkh4B4rcrLSIp+mgXkVwDFvob1Baft90Or1EDxR7ASDVcPIX3PbgVqvubwxGn4sscUjFenNrz
+	ULJtY4Og==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vbgyq-00000006eoL-49Ea;
+	Fri, 02 Jan 2026 15:22:21 +0000
+Date: Fri, 2 Jan 2026 15:22:20 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: Thomas =?iso-8859-1?Q?Wei=DFschuh?= <thomas.weissschuh@linutronix.de>
+Cc: Russell King <linux@armlinux.org.uk>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Russell King <rmk+kernel@armlinux.org.uk>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Arnd Bergmann <arnd@arndb.de>, stable@vger.kernel.org
+Subject: Re: [PATCH] ARM: fix memset64() on big-endian
+Message-ID: <aVfirJvsYt0-jDRD@casper.infradead.org>
+References: <20260102-armeb-memset64-v1-1-9aa15fb8e820@linutronix.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260102-armeb-memset64-v1-1-9aa15fb8e820@linutronix.de>
 
-When we fail to refill the receive buffers, we schedule a delayed worker
-to retry later. However, this worker creates some concurrency issues
-such as races and deadlocks. To simplify the logic and avoid further
-problems, we will instead retry refilling in the next NAPI poll.
+On Fri, Jan 02, 2026 at 08:15:46AM +0100, Thomas Weiﬂschuh wrote:
+> On big-endian systems the 32-bit low and high halves need to be swapped,
+> for the underlying assembly implemenation to work correctly.
 
-Fixes: 4bc12818b363 ("virtio-net: disable delayed refill when pausing rx")
-Reported-by: Paolo Abeni <pabeni@redhat.com>
-Closes: https://netdev-ctrl.bots.linux.dev/logs/vmksft/drv-hw-dbg/results/400961/3-xdp-py/stderr
-Cc: stable@vger.kernel.org
-Suggested-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
----
- drivers/net/virtio_net.c | 55 ++++++++++++++++++++++------------------
- 1 file changed, 30 insertions(+), 25 deletions(-)
+Heh.  In my heart, ARM will always be a litte-endian architecture.
+I'm not really surprised this bug took, er, 8 years to show up; big-endian
+arm is rare enough and memset64() isn't much used on 32-bit systems.
+And it turns out that many of the users pass a constant 0 as the value,
+which was kind of not the point, but it seems to be an easier API to
+use than memset, so whatever ;-)
 
-diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-index 1bb3aeca66c6..ac514c9383ae 100644
---- a/drivers/net/virtio_net.c
-+++ b/drivers/net/virtio_net.c
-@@ -3035,7 +3035,7 @@ static int virtnet_receive_packets(struct virtnet_info *vi,
- }
- 
- static int virtnet_receive(struct receive_queue *rq, int budget,
--			   unsigned int *xdp_xmit)
-+			   unsigned int *xdp_xmit, bool *retry_refill)
- {
- 	struct virtnet_info *vi = rq->vq->vdev->priv;
- 	struct virtnet_rq_stats stats = {};
-@@ -3047,12 +3047,8 @@ static int virtnet_receive(struct receive_queue *rq, int budget,
- 		packets = virtnet_receive_packets(vi, rq, budget, xdp_xmit, &stats);
- 
- 	if (rq->vq->num_free > min((unsigned int)budget, virtqueue_get_vring_size(rq->vq)) / 2) {
--		if (!try_fill_recv(vi, rq, GFP_ATOMIC)) {
--			spin_lock(&vi->refill_lock);
--			if (vi->refill_enabled)
--				schedule_delayed_work(&vi->refill, 0);
--			spin_unlock(&vi->refill_lock);
--		}
-+		if (!try_fill_recv(vi, rq, GFP_ATOMIC))
-+			*retry_refill = true;
- 	}
- 
- 	u64_stats_set(&stats.packets, packets);
-@@ -3129,18 +3125,18 @@ static int virtnet_poll(struct napi_struct *napi, int budget)
- 	struct send_queue *sq;
- 	unsigned int received;
- 	unsigned int xdp_xmit = 0;
--	bool napi_complete;
-+	bool napi_complete, retry_refill = false;
- 
- 	virtnet_poll_cleantx(rq, budget);
- 
--	received = virtnet_receive(rq, budget, &xdp_xmit);
-+	received = virtnet_receive(rq, budget, &xdp_xmit, &retry_refill);
- 	rq->packets_in_napi += received;
- 
- 	if (xdp_xmit & VIRTIO_XDP_REDIR)
- 		xdp_do_flush();
- 
- 	/* Out of packets? */
--	if (received < budget) {
-+	if (received < budget && !retry_refill) {
- 		napi_complete = virtqueue_napi_complete(napi, rq->vq, received);
- 		/* Intentionally not taking dim_lock here. This may result in a
- 		 * spurious net_dim call. But if that happens virtnet_rx_dim_work
-@@ -3160,7 +3156,7 @@ static int virtnet_poll(struct napi_struct *napi, int budget)
- 		virtnet_xdp_put_sq(vi, sq);
- 	}
- 
--	return received;
-+	return retry_refill ? budget : received;
- }
- 
- static void virtnet_disable_queue_pair(struct virtnet_info *vi, int qp_index)
-@@ -3230,9 +3226,11 @@ static int virtnet_open(struct net_device *dev)
- 
- 	for (i = 0; i < vi->max_queue_pairs; i++) {
- 		if (i < vi->curr_queue_pairs)
--			/* Make sure we have some buffers: if oom use wq. */
--			if (!try_fill_recv(vi, &vi->rq[i], GFP_KERNEL))
--				schedule_delayed_work(&vi->refill, 0);
-+			/* If this fails, we will retry later in
-+			 * NAPI poll, which is scheduled in the below
-+			 * virtnet_enable_queue_pair
-+			 */
-+			try_fill_recv(vi, &vi->rq[i], GFP_KERNEL);
- 
- 		err = virtnet_enable_queue_pair(vi, i);
- 		if (err < 0)
-@@ -3473,15 +3471,15 @@ static void __virtnet_rx_resume(struct virtnet_info *vi,
- 				bool refill)
- {
- 	bool running = netif_running(vi->dev);
--	bool schedule_refill = false;
- 
--	if (refill && !try_fill_recv(vi, rq, GFP_KERNEL))
--		schedule_refill = true;
-+	if (refill)
-+		/* If this fails, we will retry later in NAPI poll, which is
-+		 * scheduled in the below virtnet_napi_enable
-+		 */
-+		try_fill_recv(vi, rq, GFP_KERNEL);
-+
- 	if (running)
- 		virtnet_napi_enable(rq);
--
--	if (schedule_refill)
--		schedule_delayed_work(&vi->refill, 0);
- }
- 
- static void virtnet_rx_resume_all(struct virtnet_info *vi)
-@@ -3777,6 +3775,7 @@ static int virtnet_set_queues(struct virtnet_info *vi, u16 queue_pairs)
- 	struct virtio_net_rss_config_trailer old_rss_trailer;
- 	struct net_device *dev = vi->dev;
- 	struct scatterlist sg;
-+	int i;
- 
- 	if (!vi->has_cvq || !virtio_has_feature(vi->vdev, VIRTIO_NET_F_MQ))
- 		return 0;
-@@ -3829,11 +3828,17 @@ static int virtnet_set_queues(struct virtnet_info *vi, u16 queue_pairs)
- 	}
- succ:
- 	vi->curr_queue_pairs = queue_pairs;
--	/* virtnet_open() will refill when device is going to up. */
--	spin_lock_bh(&vi->refill_lock);
--	if (dev->flags & IFF_UP && vi->refill_enabled)
--		schedule_delayed_work(&vi->refill, 0);
--	spin_unlock_bh(&vi->refill_lock);
-+	if (dev->flags & IFF_UP) {
-+		/* Let the NAPI poll refill the receive buffer for us. We can't
-+		 * safely call try_fill_recv() here because the NAPI might be
-+		 * enabled already.
-+		 */
-+		local_bh_disable();
-+		for (i = 0; i < vi->curr_queue_pairs; i++)
-+			virtqueue_napi_schedule(&vi->rq[i].napi, vi->rq[i].vq);
-+
-+		local_bh_enable();
-+	}
- 
- 	return 0;
- }
--- 
-2.43.0
+> Fixes: fd1d362600e2 ("ARM: implement memset32 & memset64")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Thomas Weiﬂschuh <thomas.weissschuh@linutronix.de>
 
+Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
 
