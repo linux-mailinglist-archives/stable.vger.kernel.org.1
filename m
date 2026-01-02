@@ -1,65 +1,69 @@
-Return-Path: <stable+bounces-204503-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204504-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54336CEF49C
-	for <lists+stable@lfdr.de>; Fri, 02 Jan 2026 21:15:06 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48426CEF4A9
+	for <lists+stable@lfdr.de>; Fri, 02 Jan 2026 21:18:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 362B530060C0
-	for <lists+stable@lfdr.de>; Fri,  2 Jan 2026 20:15:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A23D5301E18B
+	for <lists+stable@lfdr.de>; Fri,  2 Jan 2026 20:17:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 075E22FD660;
-	Fri,  2 Jan 2026 20:15:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84CCF2C2343;
+	Fri,  2 Jan 2026 20:17:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=laveeshbansal.com header.i=laveeshb@laveeshbansal.com header.b="NChexIU1"
+	dkim=pass (1024-bit key) header.d=laveeshbansal.com header.i=laveeshb@laveeshbansal.com header.b="Njjt1WuU"
 X-Original-To: stable@vger.kernel.org
 Received: from sender4-op-o15.zoho.com (sender4-op-o15.zoho.com [136.143.188.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B216726F2AD
-	for <stable@vger.kernel.org>; Fri,  2 Jan 2026 20:14:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A79ED450F2;
+	Fri,  2 Jan 2026 20:17:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.15
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767384901; cv=pass; b=owGHmQRxDo7WBEUu0/qflFLQPK9dm5QfwCTy2mJkElWY9i7r1i/zX2ek/zong+UjacTDT4H8VSFEO7b2DThWJcVAuQgA5UEt9VsWka9dR2VfYebc3DOkeelnunYOO03vDxTfq4JvnEZUNfSbyO/DVmkERn/Jz78Cg2UUDM/m2Qk=
+	t=1767385056; cv=pass; b=tKdTWVl7yVfENaklYCdBqfHdOJsNlUwHlT0BHie50lCuCKnHbI65TLhnOJSOfBC4D2wNAMpa1+Hml8W1szuWFX1c50N4izop0Cqfj8RVuPnoBBVclXuyW4xEY1Mk4KWIqOMvVOeLN1x23w1CsenQ9uJExSZcPNESUJGx8LaFLl4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767384901; c=relaxed/simple;
+	s=arc-20240116; t=1767385056; c=relaxed/simple;
 	bh=kxh0OrnRnqoUaYvpC7u7+R0INUU2hfe0RK/RgiwN1IY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XwgMi8SO8VqR6oRJHO6hkjXBgRAnyAqkZ5ot8UOSP6VeI082gOQB2VzZZ63uH49brPc5qZ/yJ+WExwgQd8aBQrPnP0L/QiOZHNv46KgCZRaYjSAr8/03JHnDTwXcGrDk/eY5BZLP8KHSAL0kdGbY/NCaunM4BiNo+eV779U20BQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=laveeshbansal.com; spf=pass smtp.mailfrom=laveeshbansal.com; dkim=pass (1024-bit key) header.d=laveeshbansal.com header.i=laveeshb@laveeshbansal.com header.b=NChexIU1; arc=pass smtp.client-ip=136.143.188.15
+	 MIME-Version; b=My7+6Aweh122yVCP9ZRha9esvPpnkdsM2OAk10mb8mkXlgXw379AJjmPoGeneRetewvz8lOlLml+xV+jFSnv0pweCpHT62jzlZSVXTYZOkWNkq1qXsS7LNQyOMEs0SQ+wjmpvuVxvBs0dYbpRK1fvJYHkw3j68ae7qSaPt3aP/s=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=laveeshbansal.com; spf=pass smtp.mailfrom=laveeshbansal.com; dkim=pass (1024-bit key) header.d=laveeshbansal.com header.i=laveeshb@laveeshbansal.com header.b=Njjt1WuU; arc=pass smtp.client-ip=136.143.188.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=laveeshbansal.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=laveeshbansal.com
-ARC-Seal: i=1; a=rsa-sha256; t=1767384894; cv=none; 
+ARC-Seal: i=1; a=rsa-sha256; t=1767385024; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=BXwZdJS7HfiG6WwZkk9rivi06dqJId/j3AvvM3aYRniH75GAwApxQvDxf2sQLfi/vXFmc5qxXjAPJ2i0MZn41BAQ6zmo5aARJ016a+Ddg0AxSaBHFe2ICy1HC+tqWZ5UsLZ8539pmgZeUaagU+/qpWBwjMN5pcLl9VOnak6QzAU=
+	b=QboYqUHjyHEodyFeOSGyC+3Lq8CHcaIDexOaGq3iVABHmzPBYK83Cm/7eaBIvgp2zGHXiJtQR+FFuvGa6u89KR6fFhwkKoPOceJ3zTib4SrhRl3nxEww1qGIY2ryt8cdSFtsLx+2m7DE2e9qVt4Lko/BPYvxhRJoMOGL4+3vI5c=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1767384894; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	t=1767385024; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
 	bh=mF5dJbmMYGWxTl3OhQSnSrdKT7f5/kxVszfkuAjPvvo=; 
-	b=ILOZkYCHZLfMUrLx2NXX5+5eDaw8AgzX7L45lvhpzjvudqL5XA+QghIRSZC6KXQEoK+ey7LLYH1p2csc/3z1UEOngRcP2vFFUkmdzhTOq3WykmJzpbxuviWGrZIJLRPx6oIGssgI0/iXRquOfqVVuAuMA2g7vQ51M6SEGxg2/ZQ=
+	b=eW5sMfe0NsdvdMEOQ+PNAAYlKFFIOm2+XWMqs3ZT2SEkhP1xXZbMo8Ghe1cWfvbt1kJiBKXyoVIifPlqYWl9KpmvpcSeMaFpLdyIE8RI+qcJPMrZC2NnlEj8c+o4++LOi3c39m5lU4PbVaD1p1ckDK13/yHced4X6HaIf3HDLn4=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=laveeshbansal.com;
 	spf=pass  smtp.mailfrom=laveeshb@laveeshbansal.com;
 	dmarc=pass header.from=<laveeshb@laveeshbansal.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1767384894;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1767385024;
 	s=zoho; d=laveeshbansal.com; i=laveeshb@laveeshbansal.com;
 	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
 	bh=mF5dJbmMYGWxTl3OhQSnSrdKT7f5/kxVszfkuAjPvvo=;
-	b=NChexIU1/gO7kCGZwR9s8eUsnt3GIVAghmEfRHApPm8Xq6pUh3r5eWn1c6dLddeG
-	dux67vyCST9rYJn4fINTaGXEIzpVINNZNiN/G+RJA7540QH8RFbYEfKq0BHTFG5RN0J
-	7X3zImwFyijWxByyrp79oY0xsdReQn+wRY/8MIzs=
-Received: by mx.zohomail.com with SMTPS id 1767384892649976.2507573532686;
-	Fri, 2 Jan 2026 12:14:52 -0800 (PST)
+	b=Njjt1WuUcJhUajocBRAVEopmd2tD4KJfMl7MVxeLIkPaVrEJv/A00Hm0Q5YN+tOS
+	Qe+RnFDV/oRoIX+gKj8B0tD2mKUSqyRCnwC7sJeq/Min9dVio2iYuYxbo8BaJoqi7SL
+	xd9a6faeTmWEoEA3sDsMg9tKz2zTFE8KDocVc/oI=
+Received: by mx.zohomail.com with SMTPS id 1767385022473845.864596684939;
+	Fri, 2 Jan 2026 12:17:02 -0800 (PST)
 From: Laveesh Bansal <laveeshb@laveeshbansal.com>
-To: laveeshbansal@gmail.com,
-	laveeshb@microsoft.com
-Cc: Laveesh Bansal <laveeshb@laveeshbansal.com>,
+To: viro@zeniv.linux.org.uk,
+	brauner@kernel.org
+Cc: jack@suse.cz,
+	tytso@mit.edu,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Laveesh Bansal <laveeshb@laveeshbansal.com>,
 	stable@vger.kernel.org
 Subject: [PATCH 1/2] writeback: fix 100% CPU usage when dirtytime_expire_interval is 0
-Date: Fri,  2 Jan 2026 20:14:45 +0000
-Message-ID: <20260102201446.305003-2-laveeshb@laveeshbansal.com>
+Date: Fri,  2 Jan 2026 20:16:56 +0000
+Message-ID: <20260102201657.305094-2-laveeshb@laveeshbansal.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260102201446.305003-1-laveeshb@laveeshbansal.com>
-References: <20260102201446.305003-1-laveeshb@laveeshbansal.com>
+In-Reply-To: <20260102201657.305094-1-laveeshb@laveeshbansal.com>
+References: <20260102201657.305094-1-laveeshb@laveeshbansal.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
