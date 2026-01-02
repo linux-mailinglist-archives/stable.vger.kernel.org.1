@@ -1,107 +1,114 @@
-Return-Path: <stable+bounces-204435-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204436-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B660BCEE04A
-	for <lists+stable@lfdr.de>; Fri, 02 Jan 2026 09:40:21 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99CE7CEE07B
+	for <lists+stable@lfdr.de>; Fri, 02 Jan 2026 10:00:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F29ED300760D
-	for <lists+stable@lfdr.de>; Fri,  2 Jan 2026 08:40:17 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 313F030006D9
+	for <lists+stable@lfdr.de>; Fri,  2 Jan 2026 09:00:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B87842D5A13;
-	Fri,  2 Jan 2026 08:40:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E77B52D7395;
+	Fri,  2 Jan 2026 09:00:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eIfjUH43"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TOrRUyha"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F3F42D2384
-	for <stable@vger.kernel.org>; Fri,  2 Jan 2026 08:40:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2FA5275114
+	for <stable@vger.kernel.org>; Fri,  2 Jan 2026 09:00:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767343216; cv=none; b=qgMPxtr56Jgm9bYCbpy4cIA9UfONU7Ew7p5PUI8Nc0qZZnmcUh7F2iALnqLU7LDuXr/n5uROv88mxjmcgdj8Zq4sMuyPPWt6sSLAVYpAwCWsIoS46Y1g6e2xFXHQMxXDKle5QdSbEByQdR/YkIJLRK4EqH6DliVkvBBeabTGlWI=
+	t=1767344406; cv=none; b=m2nm/B0RNhkmmVtIIKL99SJlBAe+DIb2yuHvcYT1hAHlA2TDmC4MQKCAtis9fQGl/0YChexNbUItKC/4YQyWPj6um09V63wYOtz4HQPx01fn8f1JsZIt/aZtD+Fc4jfCfPVwmR3Sd7kjQAxpYwGmFKra07x5weAg9qTZfdx0Ld8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767343216; c=relaxed/simple;
-	bh=olNTr7I4hkgrpvZVCoLMbgXt9KH+lEPgDgfgKBefTsw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gae6kQEV3cbMm9aGmykYambo9hSXYwz2cOfxXj8rxmeItn1YksUZrkd141H3hz/Qt0fGYnzjwl2DLUdxZkz57gM3D1MpOoAQvT2l5YshDu7a9/OrTyOpM7mVrKSB8KOia/9ygFI0xFvSVeHusb7OBqeXb8DRO9P63JuUAqedg24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eIfjUH43; arc=none smtp.client-ip=209.85.219.54
+	s=arc-20240116; t=1767344406; c=relaxed/simple;
+	bh=jpX1sp0dOUe0Y9PDZWnl5fMODDLa7M96yRYKLj7AUJ0=;
+	h=Message-ID:Date:MIME-Version:Subject:Cc:References:From:
+	 In-Reply-To:Content-Type; b=d6zGP776tfBxlWU0rJfcqQqWlRBa+JF4i2Upncop2kEU8QH56qkGsynFw/pYHtsBHkVvWUuk42qPWSAQ6aiTuF0FWPMYXap08ww9oPqIzR2Z2B6T1Cg5tE5hVOIJMRpEtuLfs1+DExnaOBobc+Kk+zPqkJKa7cJS5/H3bpLM2GM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TOrRUyha; arc=none smtp.client-ip=209.85.221.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-88888c41a13so157710196d6.3
-        for <stable@vger.kernel.org>; Fri, 02 Jan 2026 00:40:14 -0800 (PST)
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-42fbc305914so7852204f8f.0
+        for <stable@vger.kernel.org>; Fri, 02 Jan 2026 01:00:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767343214; x=1767948014; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=olNTr7I4hkgrpvZVCoLMbgXt9KH+lEPgDgfgKBefTsw=;
-        b=eIfjUH43UZWmeetrzLeeDlWzwhqErq0g+HS07qrkg4Szuj5G8dZpD2Ci1nSQA5+Ozi
-         jDTbcv5JkGX+wzUjsBZakJ1A9AOBWNqCCQE+9VTjXwzqb/soX1P6taU3UGgwNKXl/W5d
-         yfUXtCiXXNbc6xcHnI++ZFMFQnsOrqnmF8Z20z5rraLxA43Xe2Zx5u5TY7bPNYfV7a88
-         WMBwAzqh5MDMeVFPv93Wwd/CG1C3p6bd6NBUrxoLiHSaFOJDCcK6cIzIqr3sofytjZYi
-         J5Dsm9+s+l74ucRiTR18Dl6W+erXLutAL2syCVn69FiyZBOqk8z12GKlmcytt8XYa4wf
-         qIKw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767343214; x=1767948014;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+        d=gmail.com; s=20230601; t=1767344403; x=1767949203; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:subject:user-agent:mime-version:date:message-id:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=olNTr7I4hkgrpvZVCoLMbgXt9KH+lEPgDgfgKBefTsw=;
-        b=E2vDBfBcTPBlIzsj2q6iSgAurzqyHVOztBlYFJ6Nd38r74qn9u6qQSg1M6kSBeKY1I
-         fDV+q1yWr+FdikICXV/GFVADKFiOlQotlA2u13xvHciMahKHVvKye/Lgc9/ydzmqQ+Ws
-         fFN5/QuDrwFiPMRCow7wje5x2lnv1i+oqlROdiud4FqN6+Zl0zcXlImQAK2Vk40FFmF3
-         9W9RnbwC+6X/QxNy8XQFoe2rlGjz5Fu8NmHwvEca0Jx3wSYuUjCx36nLnkgDF/JBps+p
-         5LmkobEQzVhCDXXd2M7F3Xxv4Xkp/YF8TJkIni1bStCbiyikITL7irL39ZoWqJFsDxsZ
-         IphA==
-X-Forwarded-Encrypted: i=1; AJvYcCVy8qAJBL6vVI4UkQ7OnQXz6V4owzSs7UJM9krgDJ2DekgI0BsVHLSA4yFgVdtEmGsGRW81zkg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzSukNbTKYZ7zTC895S5qPqDXCuAMM6noyT4CGDtSFzZ3fOh1Ac
-	pkvn1VRFX1kD/QgFNmiCEO90CNR9e5HhNhqs1SlLQlWMSf+FJI03Wj1cjUTwqPKazX+ojugPqBd
-	3wOSJVl0dRamdZVkpJEoAL/bqJiY/LvY=
-X-Gm-Gg: AY/fxX6Zac5H7H4F5pEBl1GfH5ZRZ1MUFR0hDaLbTaZKFtwWxc0FeECc2QxnGtR+268
-	CMzFNdVYmhL4VRiYQp08tGWwXpQYDZMKFCb1f6xc7NHzf4zxcbxpSZpKYI9VC8GcCfu3Mn3P5CD
-	JxXWBiSzHNoSN6ZrDsi4CYVCEvKaGTlg1hr85bDPX1Oni5xGlZ6gOkiqH10zlZwIGljNVPc8Loo
-	9NjAtCL6g0sOwdyto2h5cyDhvbRy2veXoqRCZvbVb6D/oQEz8oql2kwmS8cbD8K6nOeJOk=
-X-Google-Smtp-Source: AGHT+IGC6CuYzGpscftFjWf5+gmMzki6w7/Iy7X2Zql16cmak2tCVDp7at2bcPo1WOtb39jHX+LdpWUm1mnZBbUac4Q=
-X-Received: by 2002:a05:6214:23c6:b0:88a:261f:6af4 with SMTP id
- 6a1803df08f44-88d8404df6amr636211446d6.58.1767343213797; Fri, 02 Jan 2026
- 00:40:13 -0800 (PST)
+        bh=AMvYo00UHPTgnAzKbA48lPT0mfLyfutmcEEcrwo8pvw=;
+        b=TOrRUyhaDfdynO9QW6OH7eEERyrMpQbSdIBH4upEJgs+iGInpjoy7QZ33P/Qs3g26V
+         NoglI3R1WobdHcVUMpnF3lENFcSYjmTclMwqxk2hh1MMTWmr7LFnsfhqsLTAjOeyh2uZ
+         w72xDVwKxQicztdNEowTKqqbdGpeLRoIXe7p11dXLzqeqGNtTitXh9dBdBfELRUeKnd0
+         pdQXNZtQNBYWJsAex5SNaqdLL6hRIT5ZJw6m8wr8PxyjPaGHyxSErvpYeYu3EZYTMD9g
+         pkEk3Xtyv4kbfHOt91hRE5w0ANgHsSdxH8Pooto0905P2muoW8Th0AnvfpkXNS+ZxbRd
+         degQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767344403; x=1767949203;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=AMvYo00UHPTgnAzKbA48lPT0mfLyfutmcEEcrwo8pvw=;
+        b=f+4xA465uZL6jXJRLnHzARVOS0jZScg0ITN7UGFa5zVpqwjT97DSY3OJGM/vfk+gSd
+         3N6XXbZDMEWOfeBrz9EXO3eIfpzWYl0jIwY+93dP+LFPRH1GwAfrEYgMtLJGYPtYIbXx
+         E73/TJNODulrimFWAh3/MxIP80cz+Y1DPiWTeG++JDsIlszGy7LSNSv3HdyhWpWHZL8P
+         BrRg+YOjTfl1PRPzFKLZGcboIOe5GgIxue/C/qZHWudko8zikN73FQW0Q8Ons79L0Fx4
+         fTI3rkVOi9zKwu5iKLeUxTx3bytiCv+AMHoXZtSArMSbYo+SjCFgbt65eboIj7Vvu99v
+         lOEA==
+X-Gm-Message-State: AOJu0YzFRsYAdQCsGEWyr4+FmWEHIIwO5UTZaxhsmlx4tFxcpF2B+itD
+	EDUkwup9IDxIEDAgdFF0zpkcyNMAc/nb5objzEx+0FnJH1uaqjDSBVeO0Jr5Sh5s
+X-Gm-Gg: AY/fxX4Zue0PJIEjisMYsxs7viic9lj+seigcwPxMNib4McLhVqn/WpCLd5U2MJEnTq
+	uYthAAi4XnTij9hCyagKdhLtzhiDb9H5OH86AQbudFedX9l+sh8G9AGIcD62qF7UsNK3DwoRcrE
+	wyzoh4+FnTnAZxNrAwvmY5YUGNVdiRiOUW6u0PH8EwvJZ3KyWL6EAjGZ+Hk329Ivq97XFwMzJKD
+	97ryl3fHF8VRT8Ik5bIHspfUnH0zetiDDC7PRxYlW8BiEDfNCDsx126I1wxlnWPCFoMpjQiRkAr
+	FUbpiQXLzHwfvbyRGvhwyl/HGQsY8+H+r8rPl1L6R8OAY/Td+O7RzXOvBjfKXfaHDQnjzfGdmoS
+	/c2tRxLni0dN4NDscOVXr7KjvSvCsBFQjnJPDUlATwCDipNonzkfx/UQicgLxt7u5ea6seCwx4c
+	NLdU+xvj0PCwy+T2xBKTDJ9hJ1BulIpY/jKc/gXEH/K1WXGyEtyKXCAriplV1aFM5nx8sJCQ==
+X-Google-Smtp-Source: AGHT+IFTWPOIT/yjWti0PrTTT7JQpcKUR8XSKOIUnSkFqae1S2Q7ZJRE3ZPnrb4N3vFrIUnMwsnFpg==
+X-Received: by 2002:a05:6000:608:b0:432:86dd:f449 with SMTP id ffacd0b85a97d-43286ddf5damr21312793f8f.0.1767344402931;
+        Fri, 02 Jan 2026 01:00:02 -0800 (PST)
+Received: from [192.168.10.194] (net-188-216-175-96.cust.vodafonedsl.it. [188.216.175.96])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-432613f7e6esm74140714f8f.21.2026.01.02.01.00.02
+        for <stable@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 02 Jan 2026 01:00:02 -0800 (PST)
+Message-ID: <dcbabdc0-be40-40f0-a128-7f7e10363d1c@gmail.com>
+Date: Fri, 2 Jan 2026 10:00:01 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251230-fix-use-after-free-gfs2-v2-1-7b2760be547c@gmail.com> <57c723e9-d38a-47fe-9737-5b472916f3d2@web.de>
-In-Reply-To: <57c723e9-d38a-47fe-9737-5b472916f3d2@web.de>
-From: Ryota Sakamoto <sakamo.ryota@gmail.com>
-Date: Fri, 2 Jan 2026 17:40:02 +0900
-X-Gm-Features: AQt7F2r0MrGfokVOhyqLOTiI52EVobi3HtPfSH9ESALiCshy7ly_MguWuQFVcmY
-Message-ID: <CAHMDPKUZgJ80k+u_e45FGSPz5N4sjBfX0AtWu3Oqr79wMSx3MA@mail.gmail.com>
-Subject: Re: [v2] gfs2: Fix use-after-free in gfs2_fill_super()
-To: Markus Elfring <Markus.Elfring@web.de>
-Cc: =?UTF-8?Q?Andreas_Gr=C3=BCnbacher?= <agruenba@redhat.com>, 
-	gfs2@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	syzbot+4cb0d0336db6bc6930e9@syzkaller.appspotmail.com, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: Sd card race on resume with filesystem errors (possible data
+ loss?)
+Cc: stable@vger.kernel.org
+References: <547b67dc-0b01-41f7-92a8-ab4371195f40@gmail.com>
+ <2026010216-replay-polar-18b5@gregkh>
+From: Sergio Callegari <sergio.callegari@gmail.com>
+Content-Language: en-US, it-IT
+In-Reply-To: <2026010216-replay-polar-18b5@gregkh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, Dec 30, 2025 at 4:46=E2=80=AFPM Markus Elfring <Markus.Elfring@web.=
-de> wrote:
-> Is there a need to indicate a role for the mentioned identifier?
+I misinterpreted the instructions, sorry for the noise, then!
 
-Yes, "fail_threads" is a goto label. And including "label" in the message
-explicitly is precise.
+Sergio
 
-> Do you propose to use another label here?
+On 02/01/2026 07:52, Greg KH wrote:
+> On Wed, Dec 31, 2025 at 06:21:32PM +0100, Sergio Callegari wrote:
+>> Hi and happy new year!
+>>
+>> I would like to report a problem that I am encountering with the sdcard
+>> storage.
+> 
+> Great, but I would recommend contacting the storage developers, they are
+> not here on just the stable list.
+> 
+> thanks,
+> 
+> greg k-h
 
-Yes, I am proposing a new label "fail_threads".
-I chose this name to maintain consistency with the existing error labels
-in this function (e.g., fail_per_node, fail_inodes).
-
-If a v3 is required for other reasons, I will update the commit message
-to include "label".
-
-Regards,
 
