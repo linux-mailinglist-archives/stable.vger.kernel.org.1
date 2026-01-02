@@ -1,51 +1,52 @@
-Return-Path: <stable+bounces-204485-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204486-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B734CEED82
-	for <lists+stable@lfdr.de>; Fri, 02 Jan 2026 16:19:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 76C6DCEED88
+	for <lists+stable@lfdr.de>; Fri, 02 Jan 2026 16:19:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 91787300E78C
-	for <lists+stable@lfdr.de>; Fri,  2 Jan 2026 15:19:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2AFBD300F892
+	for <lists+stable@lfdr.de>; Fri,  2 Jan 2026 15:19:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97B6925F7A5;
-	Fri,  2 Jan 2026 15:19:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56A3D25B31D;
+	Fri,  2 Jan 2026 15:19:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fmIgLZGE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="r/OQjaQv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 579D625B31D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13E3F21B918
 	for <stable@vger.kernel.org>; Fri,  2 Jan 2026 15:19:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767367177; cv=none; b=Z4QtzIxCRHv1ionwywZtS4Rk06Zf3y58QYWsnYgOJ9CzHlDAwMB66OIv3OarNFA+DTOI1g9/LRuOXy+wc4w6q8/4qKy1MHUltmy6ieyq9L3MyV1f2YyfxWy91zRp5+to9101cno1od9FIW/p6DCBxwo6jPjI0AfTW9I/Trf2yN0=
+	t=1767367178; cv=none; b=eUFDssq/P7YkVrjSQdjN00IiC2bKXLJrAsJS9yRb9oSkCZzq44g88U3LqzvjwXphxEZkl1xJjvLzhflwlm0+Wt7ZPYUL9GAaEoJ8R/UgofnVrN5Ll/F44AAXpRSQGBo78O4AOL+6YOdLQSSzdA8ZCS/EAFeGpZOgdTFeRqD5hkw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767367177; c=relaxed/simple;
-	bh=UEMe/Repnd3Xt4dO6KCwWABVFtzYgO95T/vNVSXKQnk=;
+	s=arc-20240116; t=1767367178; c=relaxed/simple;
+	bh=S07BKUDT7yHJzwHUhYf0wvnVRq15Es2OUqgauboJHdQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LgRj6C+xGixnRDIxD/jMEo9vwOkAZIn8+rQx/4V2Ox/OeqoL8gJ+rJHIi9WfaLIZ5rV03X+duLe407ti2NXLS8fA8D1iyPN4ky0uyBo0S2n0CIKP6dl4FQKsXNlpsqGV/SuhyZOsjFr3IbfC2dmpqC4hxnhgbnOW7B62d8xK3hk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fmIgLZGE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 787E7C116D0;
-	Fri,  2 Jan 2026 15:19:36 +0000 (UTC)
+	 MIME-Version; b=QYmP2KGMNB+KECHz3kAfj+Z1mwYl6SszKl3lQ4SmqLb/EvIgtLJ1OpKLBmCdttI2SMuJmuaVWaq9PnBQ74l9TxqbZV9jD3dw65l1+K8XWgcIjONyWeWk/DBImnu3DnR2EX+TvKZX0UMd5X3ihwbCJmJh8nFzZsBHRfsGk90U2qg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=r/OQjaQv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C63BC19423;
+	Fri,  2 Jan 2026 15:19:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767367176;
-	bh=UEMe/Repnd3Xt4dO6KCwWABVFtzYgO95T/vNVSXKQnk=;
+	s=k20201202; t=1767367177;
+	bh=S07BKUDT7yHJzwHUhYf0wvnVRq15Es2OUqgauboJHdQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fmIgLZGEp/mGihT/GbIbIBu9nnanMS0g1EIK2L3hE2s1vnjEEw9a5ie0r0nnWUX0h
-	 sQbgTv9/51dR64lO28uZy+rZaCiNr53XQDAH/y3FXVyl8vZ+BGPoIbNb8mW+KpM6wt
-	 u4Md3oGcu1AgHwYY+eYpI5dnka6oKcjKik3MC3KZBlt0rO3o0bSx1HlbUcPq6O+Vu5
-	 P4O5dhhqVExHFpSTRWgKaBNnRgNWEdEs6eVHy3L4D/QmSR53uzY4EmBGZ1T9UYicAg
-	 H1zubNlJGuDHCnfVcXhLL5qU+OyyQGoXlCJ7WBiMp0rVwVAfNH7Ib4VOsdFWusBy6j
-	 v96LecORt86VA==
+	b=r/OQjaQvfB+vWGMKnJaCTSVXF65t2gEFHL3zC/ATsVmTfIcHu6qAhiK2uoFkSgUmR
+	 /eNehzpgdMene2fWyiHBueAh/hvUroie8RjL4gX+butgDgSeY1kHhdr246MTmF/uFg
+	 JAzXvaD/44yIXJ3qiuTYQejCSK/oc3YZCIDwYkrGjNsJ1NwN23Gl1xHp6ofB+nwyhg
+	 /Ci/KMQut2BPscHh2yZR3RQk1lf96IDT34rpTngu+/SQtcTp4ZuZQilaSYeLP+tFPv
+	 YLo5IWLd1coFy+LBnFfw4PMaZs8lfxWreWldMNso8fOb37fkcpnl9wFmy+OuTbkaeq
+	 AGvNtcSjh5AvQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Peter Zijlstra <peterz@infradead.org>,
+	Zicheng Qu <quzicheng@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y 2/3] sched/core: Add comment explaining force-idle vruntime snapshots
-Date: Fri,  2 Jan 2026 10:19:30 -0500
-Message-ID: <20260102151931.300967-2-sashal@kernel.org>
+Subject: [PATCH 6.6.y 3/3] sched/eevdf: Fix min_vruntime vs avg_vruntime
+Date: Fri,  2 Jan 2026 10:19:31 -0500
+Message-ID: <20260102151931.300967-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260102151931.300967-1-sashal@kernel.org>
 References: <2025122903-sterile-from-4520@gregkh>
@@ -60,214 +61,384 @@ Content-Transfer-Encoding: 8bit
 
 From: Peter Zijlstra <peterz@infradead.org>
 
-[ Upstream commit 9359d9785d85bb53f1ff1738a59aeeec4b878906 ]
+[ Upstream commit 79f3f9bedd149ea438aaeb0fb6a083637affe205 ]
 
-I always end up having to re-read these emails every time I look at
-this code. And a future patch is going to change this story a little.
-This means it is past time to stick them in a comment so it can be
-modified and stay current.
+Basically, from the constraint that the sum of lag is zero, you can
+infer that the 0-lag point is the weighted average of the individual
+vruntime, which is what we're trying to compute:
 
+        \Sum w_i * v_i
+  avg = --------------
+           \Sum w_i
+
+Now, since vruntime takes the whole u64 (worse, it wraps), this
+multiplication term in the numerator is not something we can compute;
+instead we do the min_vruntime (v0 henceforth) thing like:
+
+  v_i = (v_i - v0) + v0
+
+This does two things:
+ - it keeps the key: (v_i - v0) 'small';
+ - it creates a relative 0-point in the modular space.
+
+If you do that subtitution and work it all out, you end up with:
+
+        \Sum w_i * (v_i - v0)
+  avg = --------------------- + v0
+              \Sum w_i
+
+Since you cannot very well track a ratio like that (and not suffer
+terrible numerical problems) we simpy track the numerator and
+denominator individually and only perform the division when strictly
+needed.
+
+Notably, the numerator lives in cfs_rq->avg_vruntime and the denominator
+lives in cfs_rq->avg_load.
+
+The one extra 'funny' is that these numbers track the entities in the
+tree, and current is typically outside of the tree, so avg_vruntime()
+adds current when needed before doing the division.
+
+(vruntime_eligible() elides the division by cross-wise multiplication)
+
+Anyway, as mentioned above, we currently use the CFS era min_vruntime
+for this purpose. However, this thing can only move forward, while the
+above avg can in fact move backward (when a non-eligible task leaves,
+the average becomes smaller), this can cause trouble when through
+happenstance (or construction) these values drift far enough apart to
+wreck the game.
+
+Replace cfs_rq::min_vruntime with cfs_rq::zero_vruntime which is kept
+near/at avg_vruntime, following its motion.
+
+The down-side is that this requires computing the avg more often.
+
+Fixes: 147f3efaa241 ("sched/fair: Implement an EEVDF-like scheduling policy")
+Reported-by: Zicheng Qu <quzicheng@huawei.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20200506143506.GH5298@hirez.programming.kicks-ass.net
-Link: https://lkml.kernel.org/r/20200515103844.GG2978@hirez.programming.kicks-ass.net
-Link: https://patch.msgid.link/20251106111603.GB4068168@noisy.programming.kicks-ass.net
+Link: https://patch.msgid.link/20251106111741.GC4068168@noisy.programming.kicks-ass.net
+Cc: stable@vger.kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/fair.c | 181 ++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 181 insertions(+)
+ kernel/sched/debug.c |   8 +--
+ kernel/sched/fair.c  | 114 +++++++++----------------------------------
+ kernel/sched/sched.h |   6 +--
+ 3 files changed, 31 insertions(+), 97 deletions(-)
 
+diff --git a/kernel/sched/debug.c b/kernel/sched/debug.c
+index 115e266db76b..e44bf608cee7 100644
+--- a/kernel/sched/debug.c
++++ b/kernel/sched/debug.c
+@@ -628,7 +628,7 @@ static void print_rq(struct seq_file *m, struct rq *rq, int rq_cpu)
+ 
+ void print_cfs_rq(struct seq_file *m, int cpu, struct cfs_rq *cfs_rq)
+ {
+-	s64 left_vruntime = -1, min_vruntime, right_vruntime = -1, spread;
++	s64 left_vruntime = -1, zero_vruntime, right_vruntime = -1, spread;
+ 	struct sched_entity *last, *first;
+ 	struct rq *rq = cpu_rq(cpu);
+ 	unsigned long flags;
+@@ -650,13 +650,13 @@ void print_cfs_rq(struct seq_file *m, int cpu, struct cfs_rq *cfs_rq)
+ 	last = __pick_last_entity(cfs_rq);
+ 	if (last)
+ 		right_vruntime = last->vruntime;
+-	min_vruntime = cfs_rq->min_vruntime;
++	zero_vruntime = cfs_rq->zero_vruntime;
+ 	raw_spin_rq_unlock_irqrestore(rq, flags);
+ 
+ 	SEQ_printf(m, "  .%-30s: %Ld.%06ld\n", "left_vruntime",
+ 			SPLIT_NS(left_vruntime));
+-	SEQ_printf(m, "  .%-30s: %Ld.%06ld\n", "min_vruntime",
+-			SPLIT_NS(min_vruntime));
++	SEQ_printf(m, "  .%-30s: %Ld.%06ld\n", "zero_vruntime",
++			SPLIT_NS(zero_vruntime));
+ 	SEQ_printf(m, "  .%-30s: %Ld.%06ld\n", "avg_vruntime",
+ 			SPLIT_NS(avg_vruntime(cfs_rq)));
+ 	SEQ_printf(m, "  .%-30s: %Ld.%06ld\n", "right_vruntime",
 diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index cf3a51f323e3..e020bcf8b007 100644
+index e020bcf8b007..46de719b669d 100644
 --- a/kernel/sched/fair.c
 +++ b/kernel/sched/fair.c
-@@ -12566,6 +12566,187 @@ static inline void task_tick_core(struct rq *rq, struct task_struct *curr)
- 		resched_curr(rq);
+@@ -571,7 +571,7 @@ static inline bool entity_before(const struct sched_entity *a,
+ 
+ static inline s64 entity_key(struct cfs_rq *cfs_rq, struct sched_entity *se)
+ {
+-	return (s64)(se->vruntime - cfs_rq->min_vruntime);
++	return (s64)(se->vruntime - cfs_rq->zero_vruntime);
  }
  
-+/*
-+ * Consider any infeasible weight scenario. Take for instance two tasks,
-+ * each bound to their respective sibling, one with weight 1 and one with
-+ * weight 2. Then the lower weight task will run ahead of the higher weight
-+ * task without bound.
-+ *
-+ * This utterly destroys the concept of a shared time base.
-+ *
-+ * Remember; all this is about a proportionally fair scheduling, where each
-+ * tasks receives:
-+ *
-+ *              w_i
-+ *   dt_i = ---------- dt                                     (1)
-+ *          \Sum_j w_j
-+ *
-+ * which we do by tracking a virtual time, s_i:
-+ *
-+ *          1
-+ *   s_i = --- d[t]_i                                         (2)
-+ *         w_i
-+ *
-+ * Where d[t] is a delta of discrete time, while dt is an infinitesimal.
-+ * The immediate corollary is that the ideal schedule S, where (2) to use
-+ * an infinitesimal delta, is:
-+ *
-+ *           1
-+ *   S = ---------- dt                                        (3)
-+ *       \Sum_i w_i
-+ *
-+ * From which we can define the lag, or deviation from the ideal, as:
-+ *
-+ *   lag(i) = S - s_i                                         (4)
-+ *
-+ * And since the one and only purpose is to approximate S, we get that:
-+ *
-+ *   \Sum_i w_i lag(i) := 0                                   (5)
-+ *
-+ * If this were not so, we no longer converge to S, and we can no longer
-+ * claim our scheduler has any of the properties we derive from S. This is
-+ * exactly what you did above, you broke it!
-+ *
-+ *
-+ * Let's continue for a while though; to see if there is anything useful to
-+ * be learned. We can combine (1)-(3) or (4)-(5) and express S in s_i:
-+ *
-+ *       \Sum_i w_i s_i
-+ *   S = --------------                                       (6)
-+ *         \Sum_i w_i
-+ *
-+ * Which gives us a way to compute S, given our s_i. Now, if you've read
-+ * our code, you know that we do not in fact do this, the reason for this
-+ * is two-fold. Firstly, computing S in that way requires a 64bit division
-+ * for every time we'd use it (see 12), and secondly, this only describes
-+ * the steady-state, it doesn't handle dynamics.
-+ *
-+ * Anyway, in (6):  s_i -> x + (s_i - x), to get:
-+ *
-+ *           \Sum_i w_i (s_i - x)
-+ *   S - x = --------------------                             (7)
-+ *              \Sum_i w_i
-+ *
-+ * Which shows that S and s_i transform alike (which makes perfect sense
-+ * given that S is basically the (weighted) average of s_i).
-+ *
-+ * Then:
-+ *
-+ *   x -> s_min := min{s_i}                                   (8)
-+ *
-+ * to obtain:
-+ *
-+ *               \Sum_i w_i (s_i - s_min)
-+ *   S = s_min + ------------------------                     (9)
-+ *                     \Sum_i w_i
-+ *
-+ * Which already looks familiar, and is the basis for our current
-+ * approximation:
-+ *
-+ *   S ~= s_min                                              (10)
-+ *
-+ * Now, obviously, (10) is absolute crap :-), but it sorta works.
-+ *
-+ * So the thing to remember is that the above is strictly UP. It is
-+ * possible to generalize to multiple runqueues -- however it gets really
-+ * yuck when you have to add affinity support, as illustrated by our very
-+ * first counter-example.
-+ *
-+ * Luckily I think we can avoid needing a full multi-queue variant for
-+ * core-scheduling (or load-balancing). The crucial observation is that we
-+ * only actually need this comparison in the presence of forced-idle; only
-+ * then do we need to tell if the stalled rq has higher priority over the
-+ * other.
-+ *
-+ * [XXX assumes SMT2; better consider the more general case, I suspect
-+ * it'll work out because our comparison is always between 2 rqs and the
-+ * answer is only interesting if one of them is forced-idle]
-+ *
-+ * And (under assumption of SMT2) when there is forced-idle, there is only
-+ * a single queue, so everything works like normal.
-+ *
-+ * Let, for our runqueue 'k':
-+ *
-+ *   T_k = \Sum_i w_i s_i
-+ *   W_k = \Sum_i w_i      ; for all i of k                  (11)
-+ *
-+ * Then we can write (6) like:
-+ *
-+ *         T_k
-+ *   S_k = ---                                               (12)
-+ *         W_k
-+ *
-+ * From which immediately follows that:
-+ *
-+ *           T_k + T_l
-+ *   S_k+l = ---------                                       (13)
-+ *           W_k + W_l
-+ *
-+ * On which we can define a combined lag:
-+ *
-+ *   lag_k+l(i) := S_k+l - s_i                               (14)
-+ *
-+ * And that gives us the tools to compare tasks across a combined runqueue.
-+ *
-+ *
-+ * Combined this gives the following:
-+ *
-+ *  a) when a runqueue enters force-idle, sync it against it's sibling rq(s)
-+ *     using (7); this only requires storing single 'time'-stamps.
-+ *
-+ *  b) when comparing tasks between 2 runqueues of which one is forced-idle,
-+ *     compare the combined lag, per (14).
-+ *
-+ * Now, of course cgroups (I so hate them) make this more interesting in
-+ * that a) seems to suggest we need to iterate all cgroup on a CPU at such
-+ * boundaries, but I think we can avoid that. The force-idle is for the
-+ * whole CPU, all it's rqs. So we can mark it in the root and lazily
-+ * propagate downward on demand.
-+ */
-+
-+/*
-+ * So this sync is basically a relative reset of S to 0.
-+ *
-+ * So with 2 queues, when one goes idle, we drop them both to 0 and one
-+ * then increases due to not being idle, and the idle one builds up lag to
-+ * get re-elected. So far so simple, right?
-+ *
-+ * When there's 3, we can have the situation where 2 run and one is idle,
-+ * we sync to 0 and let the idle one build up lag to get re-election. Now
-+ * suppose another one also drops idle. At this point dropping all to 0
-+ * again would destroy the built-up lag from the queue that was already
-+ * idle, not good.
-+ *
-+ * So instead of syncing everything, we can:
-+ *
-+ *   less := !((s64)(s_a - s_b) <= 0)
-+ *
-+ *   (v_a - S_a) - (v_b - S_b) == v_a - v_b - S_a + S_b
-+ *                             == v_a - (v_b - S_a + S_b)
-+ *
-+ * IOW, we can recast the (lag) comparison to a one-sided difference.
-+ * So if then, instead of syncing the whole queue, sync the idle queue
-+ * against the active queue with S_a + S_b at the point where we sync.
-+ *
-+ * (XXX consider the implication of living in a cyclic group: N / 2^n N)
-+ *
-+ * This gives us means of syncing single queues against the active queue,
-+ * and for already idle queues to preserve their build-up lag.
-+ *
-+ * Of course, then we get the situation where there's 2 active and one
-+ * going idle, who do we pick to sync against? Theory would have us sync
-+ * against the combined S, but as we've already demonstrated, there is no
-+ * such thing in infeasible weight scenarios.
-+ *
-+ * One thing I've considered; and this is where that core_active rudiment
-+ * came from, is having active queues sync up between themselves after
-+ * every tick. This limits the observed divergence due to the work
-+ * conservancy.
-+ *
-+ * On top of that, we can improve upon things by moving away from our
-+ * horrible (10) hack and moving to (9) and employing (13) here.
-+ */
-+
+ #define __node_2_se(node) \
+@@ -623,13 +623,13 @@ static inline s64 entity_key(struct cfs_rq *cfs_rq, struct sched_entity *se)
+  *
+  * Which we track using:
+  *
+- *                    v0 := cfs_rq->min_vruntime
++ *                    v0 := cfs_rq->zero_vruntime
+  * \Sum (v_i - v0) * w_i := cfs_rq->avg_vruntime
+  *              \Sum w_i := cfs_rq->avg_load
+  *
+- * Since min_vruntime is a monotonic increasing variable that closely tracks
+- * the per-task service, these deltas: (v_i - v), will be in the order of the
+- * maximal (virtual) lag induced in the system due to quantisation.
++ * Since zero_vruntime closely tracks the per-task service, these
++ * deltas: (v_i - v), will be in the order of the maximal (virtual) lag
++ * induced in the system due to quantisation.
+  *
+  * Also, we use scale_load_down() to reduce the size.
+  *
+@@ -688,7 +688,7 @@ u64 avg_vruntime(struct cfs_rq *cfs_rq)
+ 		avg = div_s64(avg, load);
+ 	}
+ 
+-	return cfs_rq->min_vruntime + avg;
++	return cfs_rq->zero_vruntime + avg;
+ }
+ 
  /*
-  * se_fi_update - Update the cfs_rq->min_vruntime_fi in a CFS hierarchy if needed.
+@@ -757,44 +757,14 @@ int entity_eligible(struct cfs_rq *cfs_rq, struct sched_entity *se)
+ 	return avg >= entity_key(cfs_rq, se) * load;
+ }
+ 
+-static u64 __update_min_vruntime(struct cfs_rq *cfs_rq, u64 vruntime)
++static void update_zero_vruntime(struct cfs_rq *cfs_rq)
+ {
+-	u64 min_vruntime = cfs_rq->min_vruntime;
+-	/*
+-	 * open coded max_vruntime() to allow updating avg_vruntime
+-	 */
+-	s64 delta = (s64)(vruntime - min_vruntime);
+-	if (delta > 0) {
+-		avg_vruntime_update(cfs_rq, delta);
+-		min_vruntime = vruntime;
+-	}
+-	return min_vruntime;
+-}
++	u64 vruntime = avg_vruntime(cfs_rq);
++	s64 delta = (s64)(vruntime - cfs_rq->zero_vruntime);
+ 
+-static void update_min_vruntime(struct cfs_rq *cfs_rq)
+-{
+-	struct sched_entity *se = __pick_first_entity(cfs_rq);
+-	struct sched_entity *curr = cfs_rq->curr;
+-
+-	u64 vruntime = cfs_rq->min_vruntime;
+-
+-	if (curr) {
+-		if (curr->on_rq)
+-			vruntime = curr->vruntime;
+-		else
+-			curr = NULL;
+-	}
+-
+-	if (se) {
+-		if (!curr)
+-			vruntime = se->vruntime;
+-		else
+-			vruntime = min_vruntime(vruntime, se->vruntime);
+-	}
++	avg_vruntime_update(cfs_rq, delta);
+ 
+-	/* ensure we never gain time by being placed backwards. */
+-	u64_u32_store(cfs_rq->min_vruntime,
+-		      __update_min_vruntime(cfs_rq, vruntime));
++	cfs_rq->zero_vruntime = vruntime;
+ }
+ 
+ static inline bool __entity_less(struct rb_node *a, const struct rb_node *b)
+@@ -837,6 +807,7 @@ RB_DECLARE_CALLBACKS(static, min_deadline_cb, struct sched_entity,
+ static void __enqueue_entity(struct cfs_rq *cfs_rq, struct sched_entity *se)
+ {
+ 	avg_vruntime_add(cfs_rq, se);
++	update_zero_vruntime(cfs_rq);
+ 	se->min_deadline = se->deadline;
+ 	rb_add_augmented_cached(&se->run_node, &cfs_rq->tasks_timeline,
+ 				__entity_less, &min_deadline_cb);
+@@ -847,6 +818,7 @@ static void __dequeue_entity(struct cfs_rq *cfs_rq, struct sched_entity *se)
+ 	rb_erase_augmented_cached(&se->run_node, &cfs_rq->tasks_timeline,
+ 				  &min_deadline_cb);
+ 	avg_vruntime_sub(cfs_rq, se);
++	update_zero_vruntime(cfs_rq);
+ }
+ 
+ struct sched_entity *__pick_first_entity(struct cfs_rq *cfs_rq)
+@@ -1212,7 +1184,6 @@ static void update_curr(struct cfs_rq *cfs_rq)
+ 
+ 	curr->vruntime += calc_delta_fair(delta_exec, curr);
+ 	update_deadline(cfs_rq, curr);
+-	update_min_vruntime(cfs_rq);
+ 
+ 	if (entity_is_task(curr))
+ 		update_curr_task(task_of(curr), delta_exec);
+@@ -3889,15 +3860,6 @@ static void reweight_entity(struct cfs_rq *cfs_rq, struct sched_entity *se,
+ 		update_load_add(&cfs_rq->load, se->load.weight);
+ 		if (!curr)
+ 			__enqueue_entity(cfs_rq, se);
+-
+-		/*
+-		 * The entity's vruntime has been adjusted, so let's check
+-		 * whether the rq-wide min_vruntime needs updated too. Since
+-		 * the calculations above require stable min_vruntime rather
+-		 * than up-to-date one, we do the update at the end of the
+-		 * reweight process.
+-		 */
+-		update_min_vruntime(cfs_rq);
+ 	}
+ }
+ 
+@@ -5422,15 +5384,6 @@ dequeue_entity(struct cfs_rq *cfs_rq, struct sched_entity *se, int flags)
+ 
+ 	update_cfs_group(se);
+ 
+-	/*
+-	 * Now advance min_vruntime if @se was the entity holding it back,
+-	 * except when: DEQUEUE_SAVE && !DEQUEUE_MOVE, in this case we'll be
+-	 * put back on, and if we advance min_vruntime, we'll be placed back
+-	 * further than we started -- ie. we'll be penalized.
+-	 */
+-	if ((flags & (DEQUEUE_SAVE | DEQUEUE_MOVE)) != DEQUEUE_SAVE)
+-		update_min_vruntime(cfs_rq);
+-
+ 	if (cfs_rq->nr_running == 0)
+ 		update_idle_cfs_rq_clock_pelt(cfs_rq);
+ }
+@@ -8625,7 +8578,6 @@ static void yield_task_fair(struct rq *rq)
+ 	if (entity_eligible(cfs_rq, se)) {
+ 		se->vruntime = se->deadline;
+ 		se->deadline += calc_delta_fair(se->slice, se);
+-		update_min_vruntime(cfs_rq);
+ 	}
+ }
+ 
+@@ -12630,23 +12582,6 @@ static inline void task_tick_core(struct rq *rq, struct task_struct *curr)
+  * Which shows that S and s_i transform alike (which makes perfect sense
+  * given that S is basically the (weighted) average of s_i).
+  *
+- * Then:
+- *
+- *   x -> s_min := min{s_i}                                   (8)
+- *
+- * to obtain:
+- *
+- *               \Sum_i w_i (s_i - s_min)
+- *   S = s_min + ------------------------                     (9)
+- *                     \Sum_i w_i
+- *
+- * Which already looks familiar, and is the basis for our current
+- * approximation:
+- *
+- *   S ~= s_min                                              (10)
+- *
+- * Now, obviously, (10) is absolute crap :-), but it sorta works.
+- *
+  * So the thing to remember is that the above is strictly UP. It is
+  * possible to generalize to multiple runqueues -- however it gets really
+  * yuck when you have to add affinity support, as illustrated by our very
+@@ -12668,23 +12603,23 @@ static inline void task_tick_core(struct rq *rq, struct task_struct *curr)
+  * Let, for our runqueue 'k':
+  *
+  *   T_k = \Sum_i w_i s_i
+- *   W_k = \Sum_i w_i      ; for all i of k                  (11)
++ *   W_k = \Sum_i w_i      ; for all i of k                  (8)
+  *
+  * Then we can write (6) like:
+  *
+  *         T_k
+- *   S_k = ---                                               (12)
++ *   S_k = ---                                               (9)
+  *         W_k
+  *
+  * From which immediately follows that:
+  *
+  *           T_k + T_l
+- *   S_k+l = ---------                                       (13)
++ *   S_k+l = ---------                                       (10)
+  *           W_k + W_l
+  *
+  * On which we can define a combined lag:
+  *
+- *   lag_k+l(i) := S_k+l - s_i                               (14)
++ *   lag_k+l(i) := S_k+l - s_i                               (11)
+  *
+  * And that gives us the tools to compare tasks across a combined runqueue.
+  *
+@@ -12695,7 +12630,7 @@ static inline void task_tick_core(struct rq *rq, struct task_struct *curr)
+  *     using (7); this only requires storing single 'time'-stamps.
+  *
+  *  b) when comparing tasks between 2 runqueues of which one is forced-idle,
+- *     compare the combined lag, per (14).
++ *     compare the combined lag, per (11).
+  *
+  * Now, of course cgroups (I so hate them) make this more interesting in
+  * that a) seems to suggest we need to iterate all cgroup on a CPU at such
+@@ -12743,12 +12678,11 @@ static inline void task_tick_core(struct rq *rq, struct task_struct *curr)
+  * every tick. This limits the observed divergence due to the work
+  * conservancy.
+  *
+- * On top of that, we can improve upon things by moving away from our
+- * horrible (10) hack and moving to (9) and employing (13) here.
++ * On top of that, we can improve upon things by employing (10) here.
   */
+ 
+ /*
+- * se_fi_update - Update the cfs_rq->min_vruntime_fi in a CFS hierarchy if needed.
++ * se_fi_update - Update the cfs_rq->zero_vruntime_fi in a CFS hierarchy if needed.
+  */
+ static void se_fi_update(const struct sched_entity *se, unsigned int fi_seq,
+ 			 bool forceidle)
+@@ -12762,7 +12696,7 @@ static void se_fi_update(const struct sched_entity *se, unsigned int fi_seq,
+ 			cfs_rq->forceidle_seq = fi_seq;
+ 		}
+ 
+-		cfs_rq->min_vruntime_fi = cfs_rq->min_vruntime;
++		cfs_rq->zero_vruntime_fi = cfs_rq->zero_vruntime;
+ 	}
+ }
+ 
+@@ -12815,11 +12749,11 @@ bool cfs_prio_less(const struct task_struct *a, const struct task_struct *b,
+ 
+ 	/*
+ 	 * Find delta after normalizing se's vruntime with its cfs_rq's
+-	 * min_vruntime_fi, which would have been updated in prior calls
++	 * zero_vruntime_fi, which would have been updated in prior calls
+ 	 * to se_fi_update().
+ 	 */
+ 	delta = (s64)(sea->vruntime - seb->vruntime) +
+-		(s64)(cfs_rqb->min_vruntime_fi - cfs_rqa->min_vruntime_fi);
++		(s64)(cfs_rqb->zero_vruntime_fi - cfs_rqa->zero_vruntime_fi);
+ 
+ 	return delta > 0;
+ }
+@@ -13048,7 +12982,7 @@ static void set_next_task_fair(struct rq *rq, struct task_struct *p, bool first)
+ void init_cfs_rq(struct cfs_rq *cfs_rq)
+ {
+ 	cfs_rq->tasks_timeline = RB_ROOT_CACHED;
+-	u64_u32_store(cfs_rq->min_vruntime, (u64)(-(1LL << 20)));
++	u64_u32_store(cfs_rq->zero_vruntime, (u64)(-(1LL << 20)));
+ #ifdef CONFIG_SMP
+ 	raw_spin_lock_init(&cfs_rq->removed.lock);
+ #endif
+diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
+index 64634314a89c..a1c6ccf7249d 100644
+--- a/kernel/sched/sched.h
++++ b/kernel/sched/sched.h
+@@ -554,14 +554,14 @@ struct cfs_rq {
+ 	u64			avg_load;
+ 
+ 	u64			exec_clock;
+-	u64			min_vruntime;
++	u64			zero_vruntime;
+ #ifdef CONFIG_SCHED_CORE
+ 	unsigned int		forceidle_seq;
+-	u64			min_vruntime_fi;
++	u64			zero_vruntime_fi;
+ #endif
+ 
+ #ifndef CONFIG_64BIT
+-	u64			min_vruntime_copy;
++	u64			zero_vruntime_copy;
+ #endif
+ 
+ 	struct rb_root_cached	tasks_timeline;
 -- 
 2.51.0
 
