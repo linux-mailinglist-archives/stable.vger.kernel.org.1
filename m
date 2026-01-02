@@ -1,103 +1,138 @@
-Return-Path: <stable+bounces-204472-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204473-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2844CEE87F
-	for <lists+stable@lfdr.de>; Fri, 02 Jan 2026 13:28:44 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DCADCEE88B
+	for <lists+stable@lfdr.de>; Fri, 02 Jan 2026 13:29:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B81EF30274DE
-	for <lists+stable@lfdr.de>; Fri,  2 Jan 2026 12:24:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 72CD13017F19
+	for <lists+stable@lfdr.de>; Fri,  2 Jan 2026 12:26:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5845930F55A;
-	Fri,  2 Jan 2026 12:24:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A6AB30FC1C;
+	Fri,  2 Jan 2026 12:26:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="caXCaFDb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F/7uHcgk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15E612571D7
-	for <stable@vger.kernel.org>; Fri,  2 Jan 2026 12:24:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BED0186284;
+	Fri,  2 Jan 2026 12:26:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767356672; cv=none; b=CVsgDH445KIO3fCZlWjQ4QdINmPBuII7phFPBO56rTpw4U1EEv+7/mg29LCwTvBh80MRJOmXaqmi0lXKvkfIIiBADKHSa8TdGlxS4G4rcelH16jeZv25is1zDjJJa9EWnfbdYXFOTWfNWFuki/SJkUnrrwNo9iOJmKKJc7atujQ=
+	t=1767356765; cv=none; b=KTpHPlAsN0ukWN/g90lFl27LHjOrN3ruxK4lHdez7XetSnU17wGzfOfMzueMLEmt2d9WKKs2Ii7IUpTVHbcHPkXYY0vazbyoCijFnjuJhYetp6QXeOI6WwlDXWcLA0DBSHVqFSFrkp2yP8oahAXbUENJAaRa5ZSs7eo8JyRtAW4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767356672; c=relaxed/simple;
-	bh=drxGlulLiVHGCK3RMD8I6+ltWQy9V3l/2e+ULnsuM+k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=r0zOf1QhvziWhjUw8LCZZWNPf6TTaJo52QfdFt1O9ZCBWd+cos2AQYjR434fFlwI4Ydm3+R7VjCAEtIs9uLGB+buFXzrXYJcRVx2wBefuMBTg51OCbYQmhNtMKPHUv4tEBFzf9VexBo6wkUM8KdYJ2qnZVNqE7S50rMiSKLR5SM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=caXCaFDb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4AB9C116B1;
-	Fri,  2 Jan 2026 12:24:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767356671;
-	bh=drxGlulLiVHGCK3RMD8I6+ltWQy9V3l/2e+ULnsuM+k=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=caXCaFDbPHhIdB0mpfBT8fwsg8+/yY4GzxzXCUUUE0Ay5AOOygGCPbX16m9bZ2EGz
-	 BQd2Q2/AmqSc/x3CaGTw6BMiHZIWqo2NF9rL8pWiBZXOseeKteQsl/ymlMcEUBDYtS
-	 alYy3VUh/mG+hfptTo+6JFk5xv2LwKqOy78h6XOo=
-Date: Fri, 2 Jan 2026 13:24:28 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Wei Yang <richard.weiyang@gmail.com>
-Cc: akpm@linux-foundation.org, baohua@kernel.org,
-	baolin.wang@linux.alibaba.com, david@kernel.org, dev.jain@arm.com,
-	lance.yang@linux.dev, liam.howlett@oracle.com,
-	lorenzo.stoakes@oracle.com, npache@redhat.com, ryan.roberts@arm.com,
-	stable@vger.kernel.org, ziy@nvidia.com
-Subject: Re: FAILED: patch "[PATCH] mm/huge_memory: merge
- uniform_split_supported() and" failed to apply to 6.18-stable tree
-Message-ID: <2026010206-footprint-impure-82b8@gregkh>
-References: <2025122925-victory-numeral-2346@gregkh>
- <20251230031135.efpejaosso23ekke@master>
+	s=arc-20240116; t=1767356765; c=relaxed/simple;
+	bh=eK7OmiMWtyRAHOYeVa+XIgCvk3SrCsFRqD3ejKIrvAM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=bB6zUPzOKYMieLCjtIxminYfmz2anSXqDnfmcmyDo58Z9jYVlSZMXGt4CfhPqsQFdyWIEdJ+x9Q7e3dp9BOXbHJBE8NlA8pR6g7lUjh1IJ9VNrjpWw3hOzkNXURBr0gvVsJhY+5Qb2t+lCpV9ln3j6VVi8bIwKDNOfhP1nXQyf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F/7uHcgk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1ECEC116B1;
+	Fri,  2 Jan 2026 12:26:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767356764;
+	bh=eK7OmiMWtyRAHOYeVa+XIgCvk3SrCsFRqD3ejKIrvAM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=F/7uHcgktGHNXJlP3OKzBFXaBEA+thf0PwMDklpX05UsYr8Q1E1tvAvDH8mWgdflw
+	 bySaijj+nk+TKMchiaEpCzDRb0AXFlt8V6tKEZVlsaf+iKbyt3Kkdq6gqWhtce4F7s
+	 bOi9ALyXdsM+8uJI+UPKBCqSsgnto91+xZAczmtgvl3d4nrIH5Rw47sX8I5UrqIru0
+	 M5tqcfy5RGbh4KYy1+d9f5TR7r6kr8QX6qSErNWzFWYrMJD9woGh9XkINUJ5UIdpag
+	 6oZsR+cRd3scodbX2DltFpWBRGm7Bp7AJ+e7dtudEKgBL+BmdDtLgeiuNCFHW+ktAD
+	 CimNLQ3+J2pBQ==
+Message-ID: <a11d661e-15a0-4d9b-a171-6bc1d31a16d9@kernel.org>
+Date: Fri, 2 Jan 2026 13:26:01 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251230031135.efpejaosso23ekke@master>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/4] ASoC: codecs: wsa884x: fix codec initialisation
+To: Johan Hovold <johan@kernel.org>
+Cc: Srinivas Kandagatla <srini@kernel.org>, Mark Brown <broonie@kernel.org>,
+ Liam Girdwood <lgirdwood@gmail.com>, linux-sound@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20260102111413.9605-1-johan@kernel.org>
+ <20260102111413.9605-4-johan@kernel.org>
+ <18f646c0-00f3-4460-842d-cf8811dddecf@kernel.org>
+ <aVevbmfwoHCqrnQF@hovoldconsulting.com>
+ <9c68b403-f11b-4395-a564-8172e7db5390@kernel.org>
+ <aVe3VgrKi7WsqrYA@hovoldconsulting.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <aVe3VgrKi7WsqrYA@hovoldconsulting.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Dec 30, 2025 at 03:11:35AM +0000, Wei Yang wrote:
-> On Mon, Dec 29, 2025 at 01:33:25PM +0100, gregkh@linuxfoundation.org wrote:
-> >
-> >The patch below does not apply to the 6.18-stable tree.
-> >If someone wants it applied there, or to any other stable or longterm
-> >tree, then please email the backport, including the original git commit
-> >id to <stable@vger.kernel.org>.
-> >
-> >To reproduce the conflict and resubmit, you may use the following commands:
-> >
-> >git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.18.y
-> >git checkout FETCH_HEAD
-> >git cherry-pick -x 8a0e4bdddd1c998b894d879a1d22f1e745606215
-> ># <resolve conflicts, build, test, etc.>
-> >git commit -s
-> >git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025122925-victory-numeral-2346@gregkh' --subject-prefix 'PATCH 6.18.y' HEAD^..
-> >
-> >Possible dependencies:
-> >
-> >
+On 02/01/2026 13:17, Johan Hovold wrote:
+>>> 	...
+>>>
+>>> 	wsa884x_init(wsa884x);
+>>>
+>>> so if you set hw_init to true then init is never called when status is
+>>> changed to ATTACHED.
+>>
+>> Uh, indeed, so this was supposed to be !wsa884x->hw_init... or indeed
+>> your meaning. This also means that this was never passing above if() and
+>> the init() was never called.
+>>
+>> regcache was probably synced via runtime PM, so at least that part worked.
+>>
+>> Did you test this driver on actual device how it affects the behavior?
 > 
-> Hi, Greg
+> No, I don't have a device that uses this codec anymore.
 > 
-> This one is not a fix to some bug.
-> 
-> We found a real bug during the mail discussion, which is 
-> 
->     commit cff47b9e39a6abf03dde5f4f156f841b0c54bba0
->     Author: Wei Yang <richard.weiyang@gmail.com>
->     Date:   Wed Nov 19 23:53:02 2025 +0000
->     
->         mm/huge_memory: fix NULL pointer deference when splitting folio
-> 
-> It looks has been back ported to 6.18.y and 6.12.y.
+> If you could give it a spin that would be great. It seems we have been
+> depending on reset values or an UNATTACHED => ATTACHED transition so
+> far.
 
-I do not understand, should this not be applied?  Or should it be
-applied?
+I can test it, maybe after the weekend.
 
-confused,
-
-greg k-h
+Best regards,
+Krzysztof
 
