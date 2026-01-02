@@ -1,83 +1,62 @@
-Return-Path: <stable+bounces-204465-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204466-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89C15CEE768
-	for <lists+stable@lfdr.de>; Fri, 02 Jan 2026 13:11:58 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DF41CEE7B7
+	for <lists+stable@lfdr.de>; Fri, 02 Jan 2026 13:18:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CECB63019BD5
-	for <lists+stable@lfdr.de>; Fri,  2 Jan 2026 12:10:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 91E033012BE5
+	for <lists+stable@lfdr.de>; Fri,  2 Jan 2026 12:17:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA3FF30EF92;
-	Fri,  2 Jan 2026 12:10:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCC1D274FDB;
+	Fri,  2 Jan 2026 12:17:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=konsulko.com header.i=@konsulko.com header.b="aWse4Gb6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tpyDFbF3"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD3C62F0C62
-	for <stable@vger.kernel.org>; Fri,  2 Jan 2026 12:10:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 927A4184;
+	Fri,  2 Jan 2026 12:17:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767355819; cv=none; b=nOxmhV519mtyKpc4zDNLRrHXaCAAddNVOIzmCgw4C2urM+Vi4efO/eobyCB18m6cLiMLgkWEk+5SuHhAi9WNhX+bKlga0US1mz9ILgI5ydJFz4b5k4CN9xUVAmGHUfvgdEtmJ8Fv8V72fDFvn14yVud4q73hKTK4QcuBcMOml/0=
+	t=1767356259; cv=none; b=X75Q14ux1LUaUKMg53QxP93kp/+5Cxe7eq/VeKb1HATXyA53ksYArCaZktjgbPKAYb8Xed7sYoz3I/HND+lkd4oKU40YGQo0IYJftL6NvbpibTq4R5NiHBUIApU1MA//BkImBIg1OYxR7NMRjDKHhZmI774QjD6MW9P+ZPqgW2o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767355819; c=relaxed/simple;
-	bh=D3hz3RlW/hBNIlTvBIru3FX1ozhyNkbv1Ma+Wj+so4g=;
+	s=arc-20240116; t=1767356259; c=relaxed/simple;
+	bh=TSlD5GTOB3iJ+iDN2gxB4z6rcomIZnSlCO8Hm5Htk1U=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jsmH3WjOkplfywXwiUrwDlMphmwpjSJyeaI73OynEpyiniIOUykXhnWLebjrZtG4TGNtV9ew+dki9QjiZpV9LOPbyXP8U4suuiNEVl8bRZ1hQaE5/3foUKRpPLkwQJZIXhOLzN8wawZ8JEHgyq6AIQbFdUFNA/bbiJBJ/IfG1aw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=konsulko.com; spf=pass smtp.mailfrom=konsulko.com; dkim=pass (1024-bit key) header.d=konsulko.com header.i=@konsulko.com header.b=aWse4Gb6; arc=none smtp.client-ip=209.85.208.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=konsulko.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=konsulko.com
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-64b83949fdaso16504193a12.2
-        for <stable@vger.kernel.org>; Fri, 02 Jan 2026 04:10:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=konsulko.com; s=google; t=1767355816; x=1767960616; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=hyAExea92lRqN3+lMIDtFuHcTalaR06svoPNW5R6G2A=;
-        b=aWse4Gb6yUVDw1uaPq638k1G8c9WxMtcmi7eBIHQHCyjhM/XOq2LMG9IL+VRjFl+ae
-         4i0Pu35cf3599DnqB1xlUUA14fr7I+vyIfgUtar2OyCGJPzUNMldlIOh3FhfDg8VlKGZ
-         YVt+oslBEQ5uHl3chDH2E95RBg4BDv4BOJeU8=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767355816; x=1767960616;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=hyAExea92lRqN3+lMIDtFuHcTalaR06svoPNW5R6G2A=;
-        b=sJKgRK4keSzEi2Nogen0NWaezW+W4flSG7blXI70k/qe3fv93QV/2f4p93bHBymeK5
-         B6Q+ftJKNYlPd0k0FirUTaHQUOpbL1IpxSnrIgxSvDK+csVWX6T8fAtzaO2hLC8dThuf
-         VXe6sc4caq1HpxlPOBa/eeoEuf+4w3UHHqBPUqSq/EnqzUfvoUhIdBM1OODYJc9S/axQ
-         YDSpE+ASk0S7xvwCfdlUhrrKRzQMh/z3UZOKTGvMfw2J2gXqOV0ZYdqr1ymqkKrx91VF
-         13q+4z5mYtU6uJXVx0mMR4dxlChOrjvRh5D+ScDJo3ok9s8Vn5gSANniN+cg0XOtebQP
-         j56A==
-X-Forwarded-Encrypted: i=1; AJvYcCV6/kmW9P1wT+VKbXL7s6Y1lTIF0itztQ8V8Y9fbEEb3O2P9UgWVKaLoa6edLA2dTHJTzzrD3I=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxxCcNQWyIwfzo2c0+s1+MJcl3RMu3C629bXvOFx+8PtGv+KPbp
-	JspUGSRCvd8+cQRVXXAv0zUjHeASCoAL2SW05eNlZuKEsiFXTjxzOCjKEUCtbzBI3Gc=
-X-Gm-Gg: AY/fxX6IPZL7qYXIKHpwfFa5uNmGICQAolS3FwfLeOHOC5kLqEZAaRufNVz5JG20L1E
-	kD0VFvc68OJHVHUMqtZWhXfdhfAtOGbRCXKdfG6Dd1Aot2AxNSCeNpc/REqBCEjqrdB5g2qObfJ
-	wgHh16GJC7GUibWV7AhrdMpOrJkLwFnQaaBObLoTscTu4WqiZw7EhByb3nmnDH6OKAF8x4qxxSp
-	DFkoDdVCjK531YBKnS+sZBwFzwY5e5gzLCQu/NUh0Uxe6SrK6wU2yB+Bq6jpQ0+kb9JNlze1KPX
-	pbuBzQvxTRdRHewhHS+q0gB2pTTbAg1UEA4k8Mof9Kaiw6KIvrYI7GOsjhGd82NnyaOPpa3L5Ac
-	Kfw7NnPp6QCePIjYSL3pQQLXZ/iggmKwMTW5MzU/dBQqC7/JekN5vk0RCKhwpMiLV03qRKVbl9q
-	/M/Rj3F/cNIMAncWX1+Q==
-X-Google-Smtp-Source: AGHT+IG8H78AqDGUvKh1cti5vZlXZa2v48LQQN927UiarpjJoTYvBWuOyOqu0OgFvo9qewXcWc563Q==
-X-Received: by 2002:a05:6402:2787:b0:64d:1f6b:f594 with SMTP id 4fb4d7f45d1cf-64d1f6bf77cmr39880832a12.15.1767355816208;
-        Fri, 02 Jan 2026 04:10:16 -0800 (PST)
-Received: from carbon.k.g ([85.187.61.220])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-64b91494ce2sm43342738a12.17.2026.01.02.04.10.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 02 Jan 2026 04:10:14 -0800 (PST)
-Date: Fri, 2 Jan 2026 14:10:11 +0200
-From: Petko Manolov <petko.manolov@konsulko.com>
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, kuba@kernel.org,
+	 Content-Type:Content-Disposition:In-Reply-To; b=qF7BfB1WS8RKKcRKbkhEQXLRbWCZjIzwHMEwC36H+UmsWILT2en2NBLyAw3yeU8HSefzYl15LW40iPsePiMHr3L/dnghynSMjaTYQ3QwdBnboUBhKJvxN+7w0LLqrU3zrREcd7X1yAgsz+/FqD8pWKmrlXokS+yK5+O341kxWOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tpyDFbF3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FD89C116B1;
+	Fri,  2 Jan 2026 12:17:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767356259;
+	bh=TSlD5GTOB3iJ+iDN2gxB4z6rcomIZnSlCO8Hm5Htk1U=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=tpyDFbF3I1Km3wHCd6mnBWp6X1Hxob4N0UHlKYEf2clD/QD7OYcPOL3oCk7y01SCc
+	 oaRe7W7P0lgxE6cPIXhKTx/hj0Fcn8tJbD00QBSUC7QxyPmJbZd4DjIA4MnVbtyiFg
+	 KhQyjLm9HS9dUUeuFKkJHvf+RibtBv3sVXRoA+X4Jz3aKK2kk2VJ7Udl5Dh4SPtJeW
+	 ax1nWAUKo7AMaP82QHTGN17l6uPj6Ln+wIyGUwMqpnEoEM7fby6qVjrfNL3hPdID4g
+	 /ShPq1Qi4Om+qp3spHn1ah+fl4ljvqx/M4Gdw4DFt+uPyEHwDzRq2tIO7tMKqXhKVS
+	 6Z8Zlt8Yh9wiA==
+Received: from johan by xi.lan with local (Exim 4.98.2)
+	(envelope-from <johan@kernel.org>)
+	id 1vbe5u-000000004t4-0wM7;
+	Fri, 02 Jan 2026 13:17:26 +0100
+Date: Fri, 2 Jan 2026 13:17:26 +0100
+From: Johan Hovold <johan@kernel.org>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Srinivas Kandagatla <srini@kernel.org>, Mark Brown <broonie@kernel.org>,
+	Liam Girdwood <lgirdwood@gmail.com>, linux-sound@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: Re: [PATCH] net: usb: pegasus: fix memory leak on usb_submit_urb()
- failure
-Message-ID: <20260102121011.GA25015@carbon.k.g>
-References: <20251216184113.197439-1-petko.manolov@konsulko.com>
- <b3d2a2fa-35cb-48ad-ad2e-de997e9b2395@redhat.com>
+Subject: Re: [PATCH 3/4] ASoC: codecs: wsa884x: fix codec initialisation
+Message-ID: <aVe3VgrKi7WsqrYA@hovoldconsulting.com>
+References: <20260102111413.9605-1-johan@kernel.org>
+ <20260102111413.9605-4-johan@kernel.org>
+ <18f646c0-00f3-4460-842d-cf8811dddecf@kernel.org>
+ <aVevbmfwoHCqrnQF@hovoldconsulting.com>
+ <9c68b403-f11b-4395-a564-8172e7db5390@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -86,28 +65,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <b3d2a2fa-35cb-48ad-ad2e-de997e9b2395@redhat.com>
+In-Reply-To: <9c68b403-f11b-4395-a564-8172e7db5390@kernel.org>
 
-On 25-12-23 12:44:53, Paolo Abeni wrote:
-> On 12/16/25 7:41 PM, Petko Manolov wrote:
-> > In update_eth_regs_async() neither the URB nor the request structure are being
-> > freed if usb_submit_urb() fails.  The patch fixes this long lurking bug in the
-> > error path.
+On Fri, Jan 02, 2026 at 12:50:45PM +0100, Krzysztof Kozlowski wrote:
+> On 02/01/2026 12:43, Johan Hovold wrote:
+> > On Fri, Jan 02, 2026 at 12:31:21PM +0100, Krzysztof Kozlowski wrote:
+> >> On 02/01/2026 12:14, Johan Hovold wrote:
+> >>> The soundwire update_status() callback may be called multiple times with
+> >>> the same ATTACHED status but initialisation should only be done when
+> >>> transitioning from UNATTACHED to ATTACHED.
+> >>>
+> >>> Fix the inverted hw_init flag which was set to false instead of true
+> >>> after initialisation which defeats its purpose and may result in
+> >>> repeated unnecessary initialisation.
+
+> > No, update_status() has:
 > > 
-> > Signed-off-by: Petko Manolov <petko.manolov@konsulko.com>
+> > 	if (wsa884x->hw_init || status != SDW_SLAVE_ATTACHED)
+> > 		return 0;
+> > 
+> > 	...
+> > 
+> > 	wsa884x_init(wsa884x);
+> > 
+> > so if you set hw_init to true then init is never called when status is
+> > changed to ATTACHED.
 > 
-> Please:
-> - include the targed tree in the subj prefix ('net' in this case)
-> - include a suitable Fixes tag
+> Uh, indeed, so this was supposed to be !wsa884x->hw_init... or indeed
+> your meaning. This also means that this was never passing above if() and
+> the init() was never called.
+> 
+> regcache was probably synced via runtime PM, so at least that part worked.
+> 
+> Did you test this driver on actual device how it affects the behavior?
 
-Sure, will do.  However, my v2 patch makes use of __free() cleanup
-functionality, which in turn only applies back to v6.6 stable kernels.
+No, I don't have a device that uses this codec anymore.
 
-I guess i shall make another version of the patch that is suitable only for v5.4
-to v6.1 stable releases, right?  How shall i format the patch so that it targets
-only these old versions?
+If you could give it a spin that would be great. It seems we have been
+depending on reset values or an UNATTACHED => ATTACHED transition so
+far.
 
-
-cheers,
-Petko
+Johan
 
