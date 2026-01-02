@@ -1,102 +1,74 @@
-Return-Path: <stable+bounces-204470-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204471-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3591CEE86A
-	for <lists+stable@lfdr.de>; Fri, 02 Jan 2026 13:27:27 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 453CECEE834
+	for <lists+stable@lfdr.de>; Fri, 02 Jan 2026 13:23:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D93CF3034A1D
-	for <lists+stable@lfdr.de>; Fri,  2 Jan 2026 12:23:08 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id CCC2930019F5
+	for <lists+stable@lfdr.de>; Fri,  2 Jan 2026 12:23:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B490530F938;
-	Fri,  2 Jan 2026 12:23:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E289A2E1743;
+	Fri,  2 Jan 2026 12:23:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pZMQqm9/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cjHg8CuF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63F4527466A;
-	Fri,  2 Jan 2026 12:23:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1F7F2571D7
+	for <stable@vger.kernel.org>; Fri,  2 Jan 2026 12:23:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767356587; cv=none; b=ktb1Z5rFBw/2sXAJIIKR36qzRiwq3OsaGwtJiGzEWJqeuk/NucmGeoP6W9wXVR0TOcwZnbMb90Kn8McviqHlQGI/zQuyXsEqvjQKfwhAqeGoFlT+8TW/iddmazq9zhbLVm73iAIorLElFxYpZIZvh3XP7XePnckOuHD3gERAMik=
+	t=1767356624; cv=none; b=VS3eH9UHnh4yFnN6qoshepo3alkAs8+EmVcPx8pt7IQMTNBucUGCjfSozhyu/4m3i6NfDTGgJwXhgbGMtJqwBbguGT3mH4jrV6/m70LN8TqD3K79+MFq/CyFbSKL3IyBnVqpal2Ov/ka7GJPgs81g5e1te3WvfgXpkH8s11tCdw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767356587; c=relaxed/simple;
-	bh=pmqqJuh5Y5fXLBjeFNN71/uuNBNHJNd2F8ECVpYK/pU=;
+	s=arc-20240116; t=1767356624; c=relaxed/simple;
+	bh=Il6vtJBmZFcHo7j9Qa1hq4r7IH6E3gpG1ZauhomDTgo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Pc+msuQlUv9qw4oYkquCB4nrkS0CceCU5bKy5liugEAz2A7yFB94i8DpXCh+kFzsHFOEcdmuVNWwE/cTnureiozUB72SJj7TpfTQ6CRsWXa8tbppn7ILGjx+eXPvfHSOV8+8lukUwQVATn20/U/L8AYt7m2TSwxv9G4J0zjRSgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pZMQqm9/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76E61C116B1;
-	Fri,  2 Jan 2026 12:23:03 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=OwrdwDHLLQ2qpbyREEyPHkoV2vgr1nvJBlQN3nkrQLaNJI2t9DefPC6mBzNfcwdjnTrpcls4FpwNj/Ex3+76clO98W2qUYGWWHVqJ4QaRiTogNUKRxu6U74ILipVw/e+8sSvqWTXZz78Y+nUVWTLi1+28kyB+cKKD3kfJdGHzMU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cjHg8CuF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9F45C116B1;
+	Fri,  2 Jan 2026 12:23:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767356583;
-	bh=pmqqJuh5Y5fXLBjeFNN71/uuNBNHJNd2F8ECVpYK/pU=;
+	s=korg; t=1767356624;
+	bh=Il6vtJBmZFcHo7j9Qa1hq4r7IH6E3gpG1ZauhomDTgo=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=pZMQqm9/6EZKu7919ODWJie7df9BcS1vDKtpu2tfmAfBzc351z35swqkErysN8+pt
-	 TpwGLs4Xxk86JHVHGPnBiAsrA1/EvoNhAX/TR/burBzUV9UrLW+eUTmresyUfkHFcT
-	 EFpGsGJ2PVbhLPhdMMCnwYfN1PK40N8UUZGqt6lc=
-Date: Fri, 2 Jan 2026 13:23:01 +0100
+	b=cjHg8CuFlrT/SwApaoVVvj4huM2y1EcH6SExr8Qyuns7xlWi5KZm2npIRQOBYhAHA
+	 yMxuxhOfYKALFyTxnUM3sasXBSSQ0F+GyFZsb7Kuz1Jyt68FpQOtksFq2aKsRyfOIM
+	 Rwh9J1CwNzwv/7QURXQokJ+QEVIx6h2wpKfmCMFM=
+Date: Fri, 2 Jan 2026 13:23:41 +0100
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Holger =?iso-8859-1?Q?Hoffst=E4tte?= <holger@applied-asynchrony.com>
-Cc: "Dylan E." <dylan.eskew@candelatech.com>, stable@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-	sashal@kernel.org, jjohnson@kernel.org
-Subject: Re: [BUG 6.18.2] Null Pointer Exception in Fair Scheduler
-Message-ID: <2026010252-pushchair-cornmeal-5c82@gregkh>
-References: <38b9cad8-1c17-4d89-9f17-44f89fb66ab8@candelatech.com>
- <39762dfb-d8bd-f1ab-b2f5-a44fa8139911@applied-asynchrony.com>
+To: John Hubbard <jhubbard@nvidia.com>
+Cc: Danilo Krummrich <dakr@kernel.org>,
+	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>, stable@vger.kernel.org,
+	Nouveau Dev <nouveau@lists.freedesktop.org>
+Subject: Re: ba1b40ed0e34bab597fd90d4c4e9f7397f878c8f for 6.18.y
+Message-ID: <2026010235-spied-quote-cb42@gregkh>
+References: <CANiq72=ti75ex_M_ALcLiSMbfv6D=KA9+VejQhMm4hYERC=_dA@mail.gmail.com>
+ <DFC0SMRNXSCF.VFRFCASVMX5F@kernel.org>
+ <7737ff62-163b-45eb-857f-c9eb00ea2914@nvidia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <39762dfb-d8bd-f1ab-b2f5-a44fa8139911@applied-asynchrony.com>
+In-Reply-To: <7737ff62-163b-45eb-857f-c9eb00ea2914@nvidia.com>
 
-On Wed, Dec 31, 2025 at 09:59:51PM +0100, Holger Hoffstätte wrote:
-> On 2025-12-31 21:00, Dylan E. wrote:
-> > Hello,
+On Wed, Dec 31, 2025 at 12:02:20PM -0800, John Hubbard wrote:
+> On 12/30/25 5:44 PM, Danilo Krummrich wrote:
+> > On Wed Dec 31, 2025 at 1:57 AM CET, Miguel Ojeda wrote:
+> >> Cc'ing Danilo and Alexandre so that they can confirm they agree.
 > > 
-> > When booting into the v6.18.2 tagged kernel from linux-stable, I get the following
-> > stack trace while booting into the system every 1 in 5 boots or so, usually during
-> > fsck or early systemd service initialization:
-> > 
-> > ---
-> > BUG: kernel NULL pointer dereference, address: 0000000000000051
-> > #PF: supervisor read access in kernel mode
-> > #PF: error_code(0x0000) - not-present page
-> > PGD 0 P4D 0
-> > Oops: Oops: 0000 [#1] SMP
-> > CPU: 0 UID: 0 PID: 15 Comm: rcu_preempt Not tainted 6.18.2 #2 PREEMPT(full)
-> > Hardware name:  /SKYBAY, BIOS 5.12 06/27/2017
-> > RIP: 0010:pick_task_fair+0x57/0x160
-> > Code: 66 90 66 90 48 8b 5d 50 48 85 db 74 10 48 8b 73 70 48 89 ef e8 3a 74 ff ff 85 c0 75 71 be 01 00 00 00 48 89 ef e8 29 a5 ff ff <80> 78 51 00 48 89 c3 0f 85 80 00 00 00 48 85 c0 0f 84 87 00 00 00
-> > RSP: 0000:ffffc900000d3cf8 EFLAGS: 00010086
-> > RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000800
-> > RDX: fffffc02295d3c00 RSI: 0000000000000800 RDI: 0000000002edc4f2
-> > RBP: ffff888108f13000 R08: 0000000000000400 R09: 0000000000000002
-> > R10: 0000000000000260 R11: ffff888108b74200 R12: ffff888265c2cd00
-> > R13: 0000000000000000 R14: ffff888265c2cd80 R15: ffffffff827c6fa0
-> > FS:  0000000000000000(0000) GS:ffff8882e2724000(0000) knlGS:0000000000000000
-> > CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> > CR2: 0000000000000051 CR3: 00000001110a5003 CR4: 00000000003706f0
-> > Call Trace:
-> >   <TASK>
-> >   pick_next_task_fair+0x1d/0x3d0
-> >   __schedule+0x1ee/0x10c0
+> > Good catch! Greg, Sasha: Please consider this commit for stable.
 > 
-> Welcome to the club :) I already reported it and requested a fix in:
-> https://lore.kernel.org/stable/04b82346-c38a-08e2-49d5-d64981eb7dae@applied-asynchrony.com/
-> 
-> You can apply the patch from:
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=127b90315ca07ccad2618db7ba950a63e3b32d22
-> which should fix it.
+> Alex is away, but I also agree with this.
 
-Will be in the next 6.18.y release, thanks.
+Now queued up, thanks.
 
 greg k-h
 
