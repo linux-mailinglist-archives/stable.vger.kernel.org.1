@@ -1,123 +1,123 @@
-Return-Path: <stable+bounces-204423-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204424-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCD06CED9A0
-	for <lists+stable@lfdr.de>; Fri, 02 Jan 2026 03:01:25 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 036E3CED9BA
+	for <lists+stable@lfdr.de>; Fri, 02 Jan 2026 03:36:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9DAF23006A51
-	for <lists+stable@lfdr.de>; Fri,  2 Jan 2026 02:01:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C2D2A3007FF4
+	for <lists+stable@lfdr.de>; Fri,  2 Jan 2026 02:36:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8437175D53;
-	Fri,  2 Jan 2026 02:01:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FCC230BF64;
+	Fri,  2 Jan 2026 02:36:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tMDj0PA8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GovNAfec"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D0A11C28E
-	for <stable@vger.kernel.org>; Fri,  2 Jan 2026 02:01:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A8E2C8CE
+	for <stable@vger.kernel.org>; Fri,  2 Jan 2026 02:36:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767319281; cv=none; b=VaQTqm42O55lYMfWQ4Pk7+Mcxu3p84KjxONplxsJsfVLunAkSXVEwOVX3HpKC5AQ23tcnjHcrmDza/Bk2x4BXGDzbRmY9djVpjJCFI83g8wovipimX+NjRsKJbh7IFCvvkKXKRFkWketK6DRpLuH1Nq1XOv3JlV1Q8IxdsJNmLs=
+	t=1767321378; cv=none; b=k3Njdyrlr6cnBDIqdB13jaItZQU5YlJriCTPoNTkESHSgC42BsPHMLzU3O44WA9hPqY5N93fXgjXfydAWHR+7ntqp8xzC8iutjludbYgD9CW5guqSXrtCJKahPAw7QCuajH4YAgoAsIkKvU8hfoiqGz9z6yjTxHzVBeh7rBzXA4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767319281; c=relaxed/simple;
-	bh=61QqOZGZdpvVc4Pp2qf5aXO66MtvW/7sCwSwi94HSgs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QMhHRYqSLbNxlDNkA9evLAzf7wlhVWagF5eK7r4GP8akmQsv/ZiqIlWILqwZZpjnE2PsjvmhCrTYYWAzeuYf8nfsWYK903SbyUucXYtjzArc8JWK5aMaqceT+9sZK4py9eHRyAJdoEGnvC1E0X25m6yakVy0Nc0WTj6aKITzhkw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tMDj0PA8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F63FC19421;
-	Fri,  2 Jan 2026 02:01:20 +0000 (UTC)
+	s=arc-20240116; t=1767321378; c=relaxed/simple;
+	bh=DfTjVyPkPlF8+h71Wfnen1ji8bK+saUfxXxq5W1MIko=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ECebx+fIiT2Y77wPSBT+FWjJv4Eupczn9J+Tj2BL9v2Ee2HypV4J16CjmLTMonao/pFj/khuhkoOjepQsfRLg05TFKdCIUHO/zutKLOdvux9aapoFODTx9beQaXma+k+YDs+N92t58UCulcGP4PVNw85aEhM7OgKTP0bGRF0ILo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GovNAfec; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC7FFC19421
+	for <stable@vger.kernel.org>; Fri,  2 Jan 2026 02:36:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767319280;
-	bh=61QqOZGZdpvVc4Pp2qf5aXO66MtvW/7sCwSwi94HSgs=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tMDj0PA8hdP2wdjJVr6mo5DAtXa4T9AOMSBuz8oyQgSHzloiIi/fse3QFrd2EaIbY
-	 5Sf7/W50K011VUOqcn+JcGZY91QiqvyIeJmgNCSF8FY5gQo5WnHRw+ozPK59oqxHuU
-	 cAERCS1HlZeK4fkxW7BRRQDn4no86mkEW2yp/9d4BDN2020WG4gNGsbm7S8d//XKNe
-	 PzmU+XKzq+xO4rIg1F71mhJRwkgBsCzOcws9zE4Ef0z8fAqJ6YJqVSBFfNUcowJS4J
-	 s96/Q5R+WdZdju+lwez9G09hKTBBObbrCdZwuFxDU6Zhzggf+uTtBz1cPtmcTQI80S
-	 iQ1x2Ebn+M7pA==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Tejun Heo <tj@kernel.org>,
-	Andrea Righi <arighi@nvidia.com>,
-	Emil Tsalapatis <emil@etsalapatis.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y 2/2] sched_ext: Fix missing post-enqueue handling in move_local_task_to_local_dsq()
-Date: Thu,  1 Jan 2026 21:01:17 -0500
-Message-ID: <20260102020117.100465-2-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260102020117.100465-1-sashal@kernel.org>
-References: <2025122951-giggle-reveler-2e6b@gregkh>
- <20260102020117.100465-1-sashal@kernel.org>
+	s=k20201202; t=1767321377;
+	bh=DfTjVyPkPlF8+h71Wfnen1ji8bK+saUfxXxq5W1MIko=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=GovNAfecOxI43sV18xi+N015VWAmkYS4XkX9qcDsgDKXL1DIKVAYAidMXQo8/jlLt
+	 V8jOjXCVgaahM6OYFgUylIhx8iFw6vXaCLnvocLkPF07BEfhnyCy1n7C1R2V9qLbVR
+	 UorviAGpXtA3usXsb+QzjIezu/sDKqbDo888si2l/nDieGJIjqgJudf8OUxNz5wKug
+	 fRturtOU96hX7lCc1yojrq5kgWqmsi0sKa0BRu5oLLWnDGWIbtIcb/NlYCm/xV9WMd
+	 vZ6VLj39UKd9UenSIhFfQWdJmRyHCck7Gi8ujhkDH4ZOjakZEKtacXyytWZN1vmnnR
+	 P/QQDNJZySuTA==
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-b7cee045187so2103961966b.0
+        for <stable@vger.kernel.org>; Thu, 01 Jan 2026 18:36:17 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVwrYflljtxqcLVFXqvcZ6av7VSK3KY22CmDVkCx/yzo+ANElgo09E9+qWdRriIfop2JNsj57Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyuj0GrKl78HEFijnIbhDmk6tEqkygGEfsGLmZmjIycAFKs3KR7
+	11w+8hlQ1AvfOdHyljGBVJ3XUw9wa2RSZ1d16FlwnPa7osz3wOcq5/J/OwCNYRTh9POUpSLu7Ae
+	XOPBUQoKNl2PVRxRLaL211bsMK4F2mBg=
+X-Google-Smtp-Source: AGHT+IFvKRFGjALVjIE2PdpGqIP4K3Bkyd218s2vwyTLJhdPENKNqcsiJiYAt6huCBwIaiwZWWGOlSPSep8xsABXsuA=
+X-Received: by 2002:a17:907:1b26:b0:b72:84bd:88f3 with SMTP id
+ a640c23a62f3a-b803563ee36mr4353637166b.11.1767321376278; Thu, 01 Jan 2026
+ 18:36:16 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20251230080014.3934590-1-chenhuacai@loongson.cn>
+ <2025123049-cadillac-straggler-d2fb@gregkh> <DFBMNYF0U5PK.24YOAUZFZ0ESB@cknow-tech.com>
+ <73d472ea-e660-474c-b319-b0e8758406c0@rowland.harvard.edu>
+ <CAAhV-H6drj1df3Y4_Z67t4TzJ5n6YiexsEHKTPvi1caNvw5H9A@mail.gmail.com> <0c85d288-405f-4aaf-944e-b1d452d0f275@rowland.harvard.edu>
+In-Reply-To: <0c85d288-405f-4aaf-944e-b1d452d0f275@rowland.harvard.edu>
+From: Huacai Chen <chenhuacai@kernel.org>
+Date: Fri, 2 Jan 2026 10:36:35 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H5GdkMg-uzMpDQPGLs+gWNAy6ZOH33VoLqnNyWbRenNDw@mail.gmail.com>
+X-Gm-Features: AQt7F2pBMy6uQYiqfN3YBOwxky2OlMF5LBaK2LjXdA8kqKgx4D1i2BPaBPZfYkU
+Message-ID: <CAAhV-H5GdkMg-uzMpDQPGLs+gWNAy6ZOH33VoLqnNyWbRenNDw@mail.gmail.com>
+Subject: Re: [PATCH] USB: OHCI/UHCI: Add soft dependencies on ehci_hcd
+To: Alan Stern <stern@rowland.harvard.edu>
+Cc: Diederik de Haas <diederik@cknow-tech.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Huacai Chen <chenhuacai@loongson.cn>, 
+	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org, Shengwen Xiao <atzlinux@sina.com>, 
+	linux-rockchip@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Tejun Heo <tj@kernel.org>
+On Wed, Dec 31, 2025 at 11:21=E2=80=AFPM Alan Stern <stern@rowland.harvard.=
+edu> wrote:
+>
+> On Wed, Dec 31, 2025 at 05:38:05PM +0800, Huacai Chen wrote:
+> > From your long explanation I think the order is still important. "New
+> > connection" may be harmless for USB keyboard/mouse, but really
+> > unacceptable for USB storage.
+> >
+> > If we revert 05c92da0c524 and 9beeee6584b9, the real problem doesn't
+> > disappear. Then we go back to pre-2008 to rely on distributions
+> > providing a correct modprobe.conf?
+>
+> The warning message in 9beeee6584b9 was written a long time ago; back
+> then I didn't realize that the real dependency was between the -pci
+> drivers rather than the -hcd ones (and I wasn't aware of softdeps).  The
+> soft dependency in 05c92da0c524 is between the -pci drivers, so it is
+> correct.
+>
+> To put it another way, on PCI-based systems it is not a problem if the
+> modules are loaded in this order: uhci-hcd, ohci-hcd, ehci-hcd,
+> ehci-pci, ohci-pci, uhci-pci.  Even though the warning message would be
+> logged, the message would be wrong.
+Correct me if I'm wrong.
 
-[ Upstream commit f5e1e5ec204da11fa87fdf006d451d80ce06e118 ]
+I found XHCI is compatible with USB1.0/2.0 devices, but EHCI isn't
+compatible with USB1.0. Instead, EHCI usually has an OHCI together,
+this is not only in the PCI case.
 
-move_local_task_to_local_dsq() is used when moving a task from a non-local
-DSQ to a local DSQ on the same CPU. It directly manipulates the local DSQ
-without going through dispatch_enqueue() and was missing the post-enqueue
-handling that triggers preemption when SCX_ENQ_PREEMPT is set or the idle
-task is running.
+So I guess OHCI/UHCI have an EHCI dependency in order to avoid "new
+connection", not only in the PCI case.
 
-The function is used by move_task_between_dsqs() which backs
-scx_bpf_dsq_move() and may be called while the CPU is busy.
 
-Add local_dsq_post_enq() call to move_local_task_to_local_dsq(). As the
-dispatch path doesn't need post-enqueue handling, add SCX_RQ_IN_BALANCE
-early exit to keep consume_dispatch_q() behavior unchanged and avoid
-triggering unnecessary resched when scx_bpf_dsq_move() is used from the
-dispatch path.
+Huacai
 
-Fixes: 4c30f5ce4f7a ("sched_ext: Implement scx_bpf_dispatch[_vtime]_from_dsq()")
-Cc: stable@vger.kernel.org # v6.12+
-Reviewed-by: Andrea Righi <arighi@nvidia.com>
-Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- kernel/sched/ext.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
-
-diff --git a/kernel/sched/ext.c b/kernel/sched/ext.c
-index 54e194d08d92..a7a6478fe4b8 100644
---- a/kernel/sched/ext.c
-+++ b/kernel/sched/ext.c
-@@ -1674,6 +1674,14 @@ static void local_dsq_post_enq(struct scx_dispatch_q *dsq, struct task_struct *p
- 	struct rq *rq = container_of(dsq, struct rq, scx.local_dsq);
- 	bool preempt = false;
- 
-+	/*
-+	 * If @rq is in balance, the CPU is already vacant and looking for the
-+	 * next task to run. No need to preempt or trigger resched after moving
-+	 * @p into its local DSQ.
-+	 */
-+	if (rq->scx.flags & SCX_RQ_IN_BALANCE)
-+		return;
-+
- 	if ((enq_flags & SCX_ENQ_PREEMPT) && p != rq->curr &&
- 	    rq->curr->sched_class == &ext_sched_class) {
- 		rq->curr->scx.slice = 0;
-@@ -2251,6 +2259,8 @@ static void move_local_task_to_local_dsq(struct task_struct *p, u64 enq_flags,
- 
- 	dsq_mod_nr(dst_dsq, 1);
- 	p->scx.dsq = dst_dsq;
-+
-+	local_dsq_post_enq(dst_dsq, p, enq_flags);
- }
- 
- #ifdef CONFIG_SMP
--- 
-2.51.0
-
+>
+> On the whole, I think the best approach is to revert 9beeee6584b9's
+> warning message while keeping 05c92da0c524's softdeps.  Greg might not
+> approve of soft dependencies between modules in general, but in this
+> case I believe it is appropriate.
+>
+> And so your patch really is not needed, as far as I can tell.  While it
+> might in theory help some peculiar platform-dependent scenario, I'm
+> not aware of any platforms like that.
+>
+> Alan Stern
 
