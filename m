@@ -1,123 +1,230 @@
-Return-Path: <stable+bounces-204424-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204425-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 036E3CED9BA
-	for <lists+stable@lfdr.de>; Fri, 02 Jan 2026 03:36:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C6329CED9CC
+	for <lists+stable@lfdr.de>; Fri, 02 Jan 2026 03:45:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C2D2A3007FF4
-	for <lists+stable@lfdr.de>; Fri,  2 Jan 2026 02:36:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A86123007FDB
+	for <lists+stable@lfdr.de>; Fri,  2 Jan 2026 02:45:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FCC230BF64;
-	Fri,  2 Jan 2026 02:36:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1A8030C35D;
+	Fri,  2 Jan 2026 02:45:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GovNAfec"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jwEItP1d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A8E2C8CE
-	for <stable@vger.kernel.org>; Fri,  2 Jan 2026 02:36:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C0A130C603
+	for <stable@vger.kernel.org>; Fri,  2 Jan 2026 02:45:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767321378; cv=none; b=k3Njdyrlr6cnBDIqdB13jaItZQU5YlJriCTPoNTkESHSgC42BsPHMLzU3O44WA9hPqY5N93fXgjXfydAWHR+7ntqp8xzC8iutjludbYgD9CW5guqSXrtCJKahPAw7QCuajH4YAgoAsIkKvU8hfoiqGz9z6yjTxHzVBeh7rBzXA4=
+	t=1767321923; cv=none; b=Kny1EGZNlHkvXCRISb0qAb6D5JnWtxKplKgRZgk6W8IrcsQPk8zFlVVwpcK4QWWiw9EyNHM5zLybAxqaFsQ2qLbHNfFcIhUmaNZMIPKezAk1j7evPeGmXudoMJAB7YTNqxZqaGRx2QyyNdk4+K9mHKbuSmMDBFEcrxPtVMcqaco=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767321378; c=relaxed/simple;
-	bh=DfTjVyPkPlF8+h71Wfnen1ji8bK+saUfxXxq5W1MIko=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ECebx+fIiT2Y77wPSBT+FWjJv4Eupczn9J+Tj2BL9v2Ee2HypV4J16CjmLTMonao/pFj/khuhkoOjepQsfRLg05TFKdCIUHO/zutKLOdvux9aapoFODTx9beQaXma+k+YDs+N92t58UCulcGP4PVNw85aEhM7OgKTP0bGRF0ILo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GovNAfec; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC7FFC19421
-	for <stable@vger.kernel.org>; Fri,  2 Jan 2026 02:36:17 +0000 (UTC)
+	s=arc-20240116; t=1767321923; c=relaxed/simple;
+	bh=MQsINCOU1hyGJCnl89I5bDH48JGnzEjL1Z1ei4uN1Xo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Cq39toCKgvblegRErEWqVL5P4YmLP/1n+InYLbhiaEa22/VGxmT/Xvaf3dv1HY/IekPmlrEg/jUFLxpZBPNtm6n5KUN2AtrHEA4HmQUqjdblp3ysAqaBsL/axVxX5V8wi/ti41u/d6WB0+W8Q5qYrCMMUEaIdxgcLsbPYbZT91I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jwEItP1d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66037C4CEF7;
+	Fri,  2 Jan 2026 02:45:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767321377;
-	bh=DfTjVyPkPlF8+h71Wfnen1ji8bK+saUfxXxq5W1MIko=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=GovNAfecOxI43sV18xi+N015VWAmkYS4XkX9qcDsgDKXL1DIKVAYAidMXQo8/jlLt
-	 V8jOjXCVgaahM6OYFgUylIhx8iFw6vXaCLnvocLkPF07BEfhnyCy1n7C1R2V9qLbVR
-	 UorviAGpXtA3usXsb+QzjIezu/sDKqbDo888si2l/nDieGJIjqgJudf8OUxNz5wKug
-	 fRturtOU96hX7lCc1yojrq5kgWqmsi0sKa0BRu5oLLWnDGWIbtIcb/NlYCm/xV9WMd
-	 vZ6VLj39UKd9UenSIhFfQWdJmRyHCck7Gi8ujhkDH4ZOjakZEKtacXyytWZN1vmnnR
-	 P/QQDNJZySuTA==
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-b7cee045187so2103961966b.0
-        for <stable@vger.kernel.org>; Thu, 01 Jan 2026 18:36:17 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVwrYflljtxqcLVFXqvcZ6av7VSK3KY22CmDVkCx/yzo+ANElgo09E9+qWdRriIfop2JNsj57Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyuj0GrKl78HEFijnIbhDmk6tEqkygGEfsGLmZmjIycAFKs3KR7
-	11w+8hlQ1AvfOdHyljGBVJ3XUw9wa2RSZ1d16FlwnPa7osz3wOcq5/J/OwCNYRTh9POUpSLu7Ae
-	XOPBUQoKNl2PVRxRLaL211bsMK4F2mBg=
-X-Google-Smtp-Source: AGHT+IFvKRFGjALVjIE2PdpGqIP4K3Bkyd218s2vwyTLJhdPENKNqcsiJiYAt6huCBwIaiwZWWGOlSPSep8xsABXsuA=
-X-Received: by 2002:a17:907:1b26:b0:b72:84bd:88f3 with SMTP id
- a640c23a62f3a-b803563ee36mr4353637166b.11.1767321376278; Thu, 01 Jan 2026
- 18:36:16 -0800 (PST)
+	s=k20201202; t=1767321921;
+	bh=MQsINCOU1hyGJCnl89I5bDH48JGnzEjL1Z1ei4uN1Xo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=jwEItP1dxz5oKQ7XMk9Taq3/D6PxPuKqjQnsdbYi62Zc7N5BZ7gcIQQaaKK8d9LjX
+	 0YYnmmeYld+VC/7nCDx57k/v+IBoukj0p5/v70wRJDdb5fb6jVkiXud36yoAxXxuuj
+	 vgpMVAkjj3daygXB7dNsFcpfRtNHyAmtkTLtvDCmgPMmXFDTEjlDd+tD/BNzVGh+t+
+	 rz9Ddq1q3ElZXDsvxPaTmaLJyiCxyhG4MzKOlwBc6rhkEiHtvwAJMJsbsIvksFGugm
+	 uo+MyiwF6XgUiUTyUja6P0CtNm+mVUo7CMVubMrX9ene5y204c7E5W93cRhSg++0Kx
+	 y1A9d2mxPOSXA==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Jarkko Sakkinen <jarkko@kernel.org>,
+	Jonathan McDowell <noodles@meta.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12.y] tpm2-sessions: Fix tpm2_read_public range checks
+Date: Thu,  1 Jan 2026 21:45:19 -0500
+Message-ID: <20260102024519.115144-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2025122907-stream-lasso-ba6e@gregkh>
+References: <2025122907-stream-lasso-ba6e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251230080014.3934590-1-chenhuacai@loongson.cn>
- <2025123049-cadillac-straggler-d2fb@gregkh> <DFBMNYF0U5PK.24YOAUZFZ0ESB@cknow-tech.com>
- <73d472ea-e660-474c-b319-b0e8758406c0@rowland.harvard.edu>
- <CAAhV-H6drj1df3Y4_Z67t4TzJ5n6YiexsEHKTPvi1caNvw5H9A@mail.gmail.com> <0c85d288-405f-4aaf-944e-b1d452d0f275@rowland.harvard.edu>
-In-Reply-To: <0c85d288-405f-4aaf-944e-b1d452d0f275@rowland.harvard.edu>
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Fri, 2 Jan 2026 10:36:35 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H5GdkMg-uzMpDQPGLs+gWNAy6ZOH33VoLqnNyWbRenNDw@mail.gmail.com>
-X-Gm-Features: AQt7F2pBMy6uQYiqfN3YBOwxky2OlMF5LBaK2LjXdA8kqKgx4D1i2BPaBPZfYkU
-Message-ID: <CAAhV-H5GdkMg-uzMpDQPGLs+gWNAy6ZOH33VoLqnNyWbRenNDw@mail.gmail.com>
-Subject: Re: [PATCH] USB: OHCI/UHCI: Add soft dependencies on ehci_hcd
-To: Alan Stern <stern@rowland.harvard.edu>
-Cc: Diederik de Haas <diederik@cknow-tech.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Huacai Chen <chenhuacai@loongson.cn>, 
-	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org, Shengwen Xiao <atzlinux@sina.com>, 
-	linux-rockchip@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Wed, Dec 31, 2025 at 11:21=E2=80=AFPM Alan Stern <stern@rowland.harvard.=
-edu> wrote:
->
-> On Wed, Dec 31, 2025 at 05:38:05PM +0800, Huacai Chen wrote:
-> > From your long explanation I think the order is still important. "New
-> > connection" may be harmless for USB keyboard/mouse, but really
-> > unacceptable for USB storage.
-> >
-> > If we revert 05c92da0c524 and 9beeee6584b9, the real problem doesn't
-> > disappear. Then we go back to pre-2008 to rely on distributions
-> > providing a correct modprobe.conf?
->
-> The warning message in 9beeee6584b9 was written a long time ago; back
-> then I didn't realize that the real dependency was between the -pci
-> drivers rather than the -hcd ones (and I wasn't aware of softdeps).  The
-> soft dependency in 05c92da0c524 is between the -pci drivers, so it is
-> correct.
->
-> To put it another way, on PCI-based systems it is not a problem if the
-> modules are loaded in this order: uhci-hcd, ohci-hcd, ehci-hcd,
-> ehci-pci, ohci-pci, uhci-pci.  Even though the warning message would be
-> logged, the message would be wrong.
-Correct me if I'm wrong.
+From: Jarkko Sakkinen <jarkko@kernel.org>
 
-I found XHCI is compatible with USB1.0/2.0 devices, but EHCI isn't
-compatible with USB1.0. Instead, EHCI usually has an OHCI together,
-this is not only in the PCI case.
+[ Upstream commit bda1cbf73c6e241267c286427f2ed52b5735d872 ]
 
-So I guess OHCI/UHCI have an EHCI dependency in order to avoid "new
-connection", not only in the PCI case.
+tpm2_read_public() has some rudimentary range checks but the function does
+not ensure that the response buffer has enough bytes for the full TPMT_HA
+payload.
 
+Re-implement the function with necessary checks and validation, and return
+name and name size for all handle types back to the caller.
 
-Huacai
+Cc: stable@vger.kernel.org # v6.10+
+Fixes: d0a25bb961e6 ("tpm: Add HMAC session name/handle append")
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Reviewed-by: Jonathan McDowell <noodles@meta.com>
+[ different semantics around u8 name_size() ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/char/tpm/tpm2-cmd.c      |  3 ++
+ drivers/char/tpm/tpm2-sessions.c | 85 ++++++++++++++++++++------------
+ 2 files changed, 56 insertions(+), 32 deletions(-)
 
->
-> On the whole, I think the best approach is to revert 9beeee6584b9's
-> warning message while keeping 05c92da0c524's softdeps.  Greg might not
-> approve of soft dependencies between modules in general, but in this
-> case I believe it is appropriate.
->
-> And so your patch really is not needed, as far as I can tell.  While it
-> might in theory help some peculiar platform-dependent scenario, I'm
-> not aware of any platforms like that.
->
-> Alan Stern
+diff --git a/drivers/char/tpm/tpm2-cmd.c b/drivers/char/tpm/tpm2-cmd.c
+index dfdcbd009720..5c525987ff65 100644
+--- a/drivers/char/tpm/tpm2-cmd.c
++++ b/drivers/char/tpm/tpm2-cmd.c
+@@ -11,8 +11,11 @@
+  * used by the kernel internally.
+  */
+ 
++#include "linux/dev_printk.h"
++#include "linux/tpm.h"
+ #include "tpm.h"
+ #include <crypto/hash_info.h>
++#include <linux/unaligned.h>
+ 
+ static bool disable_pcr_integrity;
+ module_param(disable_pcr_integrity, bool, 0444);
+diff --git a/drivers/char/tpm/tpm2-sessions.c b/drivers/char/tpm/tpm2-sessions.c
+index cf0b83154044..a10db4a4aced 100644
+--- a/drivers/char/tpm/tpm2-sessions.c
++++ b/drivers/char/tpm/tpm2-sessions.c
+@@ -156,47 +156,60 @@ static u8 name_size(const u8 *name)
+ 	return size_map[alg] + 2;
+ }
+ 
+-static int tpm2_parse_read_public(char *name, struct tpm_buf *buf)
++static int tpm2_read_public(struct tpm_chip *chip, u32 handle, void *name)
+ {
+-	struct tpm_header *head = (struct tpm_header *)buf->data;
++	u32 mso = tpm2_handle_mso(handle);
+ 	off_t offset = TPM_HEADER_SIZE;
+-	u32 tot_len = be32_to_cpu(head->length);
+-	u32 val;
+-
+-	/* we're starting after the header so adjust the length */
+-	tot_len -= TPM_HEADER_SIZE;
+-
+-	/* skip public */
+-	val = tpm_buf_read_u16(buf, &offset);
+-	if (val > tot_len)
+-		return -EINVAL;
+-	offset += val;
+-	/* name */
+-	val = tpm_buf_read_u16(buf, &offset);
+-	if (val != name_size(&buf->data[offset]))
+-		return -EINVAL;
+-	memcpy(name, &buf->data[offset], val);
+-	/* forget the rest */
+-	return 0;
+-}
+-
+-static int tpm2_read_public(struct tpm_chip *chip, u32 handle, char *name)
+-{
+-	struct tpm_buf buf;
+ 	int rc;
++	u8 name_size_alg;
++	struct tpm_buf buf;
++
++	if (mso != TPM2_MSO_PERSISTENT && mso != TPM2_MSO_VOLATILE &&
++	    mso != TPM2_MSO_NVRAM) {
++		memcpy(name, &handle, sizeof(u32));
++		return sizeof(u32);
++	}
+ 
+ 	rc = tpm_buf_init(&buf, TPM2_ST_NO_SESSIONS, TPM2_CC_READ_PUBLIC);
+ 	if (rc)
+ 		return rc;
+ 
+ 	tpm_buf_append_u32(&buf, handle);
+-	rc = tpm_transmit_cmd(chip, &buf, 0, "read public");
+-	if (rc == TPM2_RC_SUCCESS)
+-		rc = tpm2_parse_read_public(name, &buf);
+ 
+-	tpm_buf_destroy(&buf);
++	rc = tpm_transmit_cmd(chip, &buf, 0, "TPM2_ReadPublic");
++	if (rc) {
++		tpm_buf_destroy(&buf);
++		return tpm_ret_to_err(rc);
++	}
+ 
+-	return rc;
++	/* Skip TPMT_PUBLIC: */
++	offset += tpm_buf_read_u16(&buf, &offset);
++
++	/*
++	 * Ensure space for the length field of TPM2B_NAME and hashAlg field of
++	 * TPMT_HA (the extra four bytes).
++	 */
++	if (offset + 4 > tpm_buf_length(&buf)) {
++		tpm_buf_destroy(&buf);
++		return -EIO;
++	}
++
++	rc = tpm_buf_read_u16(&buf, &offset);
++	name_size_alg = name_size(&buf.data[offset]);
++
++	if (rc != name_size_alg) {
++		tpm_buf_destroy(&buf);
++		return -EIO;
++	}
++
++	if (offset + rc > tpm_buf_length(&buf)) {
++		tpm_buf_destroy(&buf);
++		return -EIO;
++	}
++
++	memcpy(name, &buf.data[offset], rc);
++	tpm_buf_destroy(&buf);
++	return name_size_alg;
+ }
+ #endif /* CONFIG_TCG_TPM2_HMAC */
+ 
+@@ -229,6 +242,7 @@ void tpm_buf_append_name(struct tpm_chip *chip, struct tpm_buf *buf,
+ 	enum tpm2_mso_type mso = tpm2_handle_mso(handle);
+ 	struct tpm2_auth *auth;
+ 	int slot;
++	int ret;
+ #endif
+ 
+ 	if (!tpm2_chip_auth(chip)) {
+@@ -251,8 +265,11 @@ void tpm_buf_append_name(struct tpm_chip *chip, struct tpm_buf *buf,
+ 	if (mso == TPM2_MSO_PERSISTENT ||
+ 	    mso == TPM2_MSO_VOLATILE ||
+ 	    mso == TPM2_MSO_NVRAM) {
+-		if (!name)
+-			tpm2_read_public(chip, handle, auth->name[slot]);
++		if (!name) {
++			ret = tpm2_read_public(chip, handle, auth->name[slot]);
++			if (ret < 0)
++				goto err;
++		}
+ 	} else {
+ 		if (name)
+ 			dev_err(&chip->dev, "TPM: Handle does not require name but one is specified\n");
+@@ -261,6 +278,10 @@ void tpm_buf_append_name(struct tpm_chip *chip, struct tpm_buf *buf,
+ 	auth->name_h[slot] = handle;
+ 	if (name)
+ 		memcpy(auth->name[slot], name, name_size(name));
++	return;
++
++err:
++	tpm2_end_auth_session(chip);
+ #endif
+ }
+ EXPORT_SYMBOL_GPL(tpm_buf_append_name);
+-- 
+2.51.0
+
 
