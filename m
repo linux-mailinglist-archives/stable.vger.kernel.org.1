@@ -1,114 +1,96 @@
-Return-Path: <stable+bounces-204436-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204437-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99CE7CEE07B
-	for <lists+stable@lfdr.de>; Fri, 02 Jan 2026 10:00:11 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6C2ACEE093
+	for <lists+stable@lfdr.de>; Fri, 02 Jan 2026 10:07:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 313F030006D9
-	for <lists+stable@lfdr.de>; Fri,  2 Jan 2026 09:00:08 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 91DE83005AA4
+	for <lists+stable@lfdr.de>; Fri,  2 Jan 2026 09:07:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E77B52D7395;
-	Fri,  2 Jan 2026 09:00:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE2EB22A1D4;
+	Fri,  2 Jan 2026 09:07:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TOrRUyha"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="V1mdgcKO"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2FA5275114
-	for <stable@vger.kernel.org>; Fri,  2 Jan 2026 09:00:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2A551397
+	for <stable@vger.kernel.org>; Fri,  2 Jan 2026 09:07:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.183
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767344406; cv=none; b=m2nm/B0RNhkmmVtIIKL99SJlBAe+DIb2yuHvcYT1hAHlA2TDmC4MQKCAtis9fQGl/0YChexNbUItKC/4YQyWPj6um09V63wYOtz4HQPx01fn8f1JsZIt/aZtD+Fc4jfCfPVwmR3Sd7kjQAxpYwGmFKra07x5weAg9qTZfdx0Ld8=
+	t=1767344835; cv=none; b=DkLTI3Q+18RFAPOjqiGEius/WBbeaofWMh8xo7PGl4A4S3raR5IbqnRcvFSnns1ydaTRVrMcpKOtuZU1IPTxp7xETlkGeY9fSqXHT6IpaXDUtw16DPzzYcbnqtUgOmAVjIr+emVS0QGAHLxAoN5+I9uImsaBhNtVuMZH3ew/OKI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767344406; c=relaxed/simple;
-	bh=jpX1sp0dOUe0Y9PDZWnl5fMODDLa7M96yRYKLj7AUJ0=;
-	h=Message-ID:Date:MIME-Version:Subject:Cc:References:From:
-	 In-Reply-To:Content-Type; b=d6zGP776tfBxlWU0rJfcqQqWlRBa+JF4i2Upncop2kEU8QH56qkGsynFw/pYHtsBHkVvWUuk42qPWSAQ6aiTuF0FWPMYXap08ww9oPqIzR2Z2B6T1Cg5tE5hVOIJMRpEtuLfs1+DExnaOBobc+Kk+zPqkJKa7cJS5/H3bpLM2GM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TOrRUyha; arc=none smtp.client-ip=209.85.221.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-42fbc305914so7852204f8f.0
-        for <stable@vger.kernel.org>; Fri, 02 Jan 2026 01:00:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767344403; x=1767949203; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:subject:user-agent:mime-version:date:message-id:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=AMvYo00UHPTgnAzKbA48lPT0mfLyfutmcEEcrwo8pvw=;
-        b=TOrRUyhaDfdynO9QW6OH7eEERyrMpQbSdIBH4upEJgs+iGInpjoy7QZ33P/Qs3g26V
-         NoglI3R1WobdHcVUMpnF3lENFcSYjmTclMwqxk2hh1MMTWmr7LFnsfhqsLTAjOeyh2uZ
-         w72xDVwKxQicztdNEowTKqqbdGpeLRoIXe7p11dXLzqeqGNtTitXh9dBdBfELRUeKnd0
-         pdQXNZtQNBYWJsAex5SNaqdLL6hRIT5ZJw6m8wr8PxyjPaGHyxSErvpYeYu3EZYTMD9g
-         pkEk3Xtyv4kbfHOt91hRE5w0ANgHsSdxH8Pooto0905P2muoW8Th0AnvfpkXNS+ZxbRd
-         degQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767344403; x=1767949203;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=AMvYo00UHPTgnAzKbA48lPT0mfLyfutmcEEcrwo8pvw=;
-        b=f+4xA465uZL6jXJRLnHzARVOS0jZScg0ITN7UGFa5zVpqwjT97DSY3OJGM/vfk+gSd
-         3N6XXbZDMEWOfeBrz9EXO3eIfpzWYl0jIwY+93dP+LFPRH1GwAfrEYgMtLJGYPtYIbXx
-         E73/TJNODulrimFWAh3/MxIP80cz+Y1DPiWTeG++JDsIlszGy7LSNSv3HdyhWpWHZL8P
-         BrRg+YOjTfl1PRPzFKLZGcboIOe5GgIxue/C/qZHWudko8zikN73FQW0Q8Ons79L0Fx4
-         fTI3rkVOi9zKwu5iKLeUxTx3bytiCv+AMHoXZtSArMSbYo+SjCFgbt65eboIj7Vvu99v
-         lOEA==
-X-Gm-Message-State: AOJu0YzFRsYAdQCsGEWyr4+FmWEHIIwO5UTZaxhsmlx4tFxcpF2B+itD
-	EDUkwup9IDxIEDAgdFF0zpkcyNMAc/nb5objzEx+0FnJH1uaqjDSBVeO0Jr5Sh5s
-X-Gm-Gg: AY/fxX4Zue0PJIEjisMYsxs7viic9lj+seigcwPxMNib4McLhVqn/WpCLd5U2MJEnTq
-	uYthAAi4XnTij9hCyagKdhLtzhiDb9H5OH86AQbudFedX9l+sh8G9AGIcD62qF7UsNK3DwoRcrE
-	wyzoh4+FnTnAZxNrAwvmY5YUGNVdiRiOUW6u0PH8EwvJZ3KyWL6EAjGZ+Hk329Ivq97XFwMzJKD
-	97ryl3fHF8VRT8Ik5bIHspfUnH0zetiDDC7PRxYlW8BiEDfNCDsx126I1wxlnWPCFoMpjQiRkAr
-	FUbpiQXLzHwfvbyRGvhwyl/HGQsY8+H+r8rPl1L6R8OAY/Td+O7RzXOvBjfKXfaHDQnjzfGdmoS
-	/c2tRxLni0dN4NDscOVXr7KjvSvCsBFQjnJPDUlATwCDipNonzkfx/UQicgLxt7u5ea6seCwx4c
-	NLdU+xvj0PCwy+T2xBKTDJ9hJ1BulIpY/jKc/gXEH/K1WXGyEtyKXCAriplV1aFM5nx8sJCQ==
-X-Google-Smtp-Source: AGHT+IFTWPOIT/yjWti0PrTTT7JQpcKUR8XSKOIUnSkFqae1S2Q7ZJRE3ZPnrb4N3vFrIUnMwsnFpg==
-X-Received: by 2002:a05:6000:608:b0:432:86dd:f449 with SMTP id ffacd0b85a97d-43286ddf5damr21312793f8f.0.1767344402931;
-        Fri, 02 Jan 2026 01:00:02 -0800 (PST)
-Received: from [192.168.10.194] (net-188-216-175-96.cust.vodafonedsl.it. [188.216.175.96])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-432613f7e6esm74140714f8f.21.2026.01.02.01.00.02
-        for <stable@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 02 Jan 2026 01:00:02 -0800 (PST)
-Message-ID: <dcbabdc0-be40-40f0-a128-7f7e10363d1c@gmail.com>
-Date: Fri, 2 Jan 2026 10:00:01 +0100
+	s=arc-20240116; t=1767344835; c=relaxed/simple;
+	bh=3YFkyRm4e/2hKfRESSPrjfJBhMg1YY/FedeOgq6/O1E=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Zl4PNGJ0h7WUFOweCldVPRplVN6u3krQHHtraL0eZcNw1WnwzEw4dPeLDE5zyrGgWTJwp8BByx1HOtUOLTgxXUZkE1GBHW72En/tgb7YzvDc8Ij8HNjdRGuoFKeuUZ7cRb/3hYhb10R+hai2pRGCYoOMmcr1PJJlPc8W2bEXeLg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=V1mdgcKO; arc=none smtp.client-ip=91.218.175.183
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1767344827;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=j5ppCpfzQuNT9JlCYGq+KGDP27/4hX4fKaPbHWsJWDg=;
+	b=V1mdgcKOPBIKxi8Yc/dO1m9SnegQJ2XaPOLwPGmaiyS7M2t/2DEKKVsMZ95zmnMcSPbRub
+	wIsagmBUwiSACeA3mKZtNqFioOuRPIceU6Zr/otHLoT+mRuIveV0gA4CmLa/IHVHWHyq8O
+	+LcANumo1nAqR6h81IpiqHsUwEx2Zkc=
+From: Leon Hwang <leon.hwang@linux.dev>
+To: stable@vger.kernel.org,
+	greg@kroah.com
+Cc: Andrii Nakryiko <andrii@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Ian Rogers <irogers@google.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	x86@kernel.org,
+	"H . Peter Anvin" <hpa@zytor.com>,
+	linux-perf-users@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Leon Hwang <leon.hwang@linux.dev>
+Subject: [PATCH 6.6.y 0/4] perf/x86/amd: add LBR capture support outside of hardware events
+Date: Fri,  2 Jan 2026 17:03:16 +0800
+Message-ID: <20260102090320.32843-1-leon.hwang@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Sd card race on resume with filesystem errors (possible data
- loss?)
-Cc: stable@vger.kernel.org
-References: <547b67dc-0b01-41f7-92a8-ab4371195f40@gmail.com>
- <2026010216-replay-polar-18b5@gregkh>
-From: Sergio Callegari <sergio.callegari@gmail.com>
-Content-Language: en-US, it-IT
-In-Reply-To: <2026010216-replay-polar-18b5@gregkh>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-I misinterpreted the instructions, sorry for the noise, then!
+Hi all,
 
-Sergio
+This backport wires up AMD perfmon v2 so BPF and other software clients
+can snapshot LBR stacks on demand, similar to the Intel support
+upstream. The series keeps the LBR-freeze path branchless, adds the
+perf_snapshot_branch_stack callback for AMD, and drops the
+sampling-only restriction now that snapshots can be taken from software
+contexts.
 
-On 02/01/2026 07:52, Greg KH wrote:
-> On Wed, Dec 31, 2025 at 06:21:32PM +0100, Sergio Callegari wrote:
->> Hi and happy new year!
->>
->> I would like to report a problem that I am encountering with the sdcard
->> storage.
-> 
-> Great, but I would recommend contacting the storage developers, they are
-> not here on just the stable list.
-> 
-> thanks,
-> 
-> greg k-h
+Leon Hwang (4):
+  perf/x86/amd: Ensure amd_pmu_core_disable_all() is always inlined
+  perf/x86/amd: Avoid taking branches before disabling LBR
+  perf/x86/amd: Support capturing LBR from software events
+  perf/x86/amd: Don't reject non-sampling events with configured LBR
 
+ arch/x86/events/amd/core.c   | 37 +++++++++++++++++++++++++++++++++++-
+ arch/x86/events/amd/lbr.c    | 13 +------------
+ arch/x86/events/perf_event.h | 13 +++++++++++++
+ 3 files changed, 50 insertions(+), 13 deletions(-)
+
+--
+2.52.0
 
