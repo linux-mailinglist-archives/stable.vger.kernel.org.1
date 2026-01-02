@@ -1,143 +1,161 @@
-Return-Path: <stable+bounces-204504-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204505-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48426CEF4A9
-	for <lists+stable@lfdr.de>; Fri, 02 Jan 2026 21:18:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 53D8DCEF4BB
+	for <lists+stable@lfdr.de>; Fri, 02 Jan 2026 21:19:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A23D5301E18B
-	for <lists+stable@lfdr.de>; Fri,  2 Jan 2026 20:17:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F290B3019898
+	for <lists+stable@lfdr.de>; Fri,  2 Jan 2026 20:18:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84CCF2C2343;
-	Fri,  2 Jan 2026 20:17:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAABD2C2343;
+	Fri,  2 Jan 2026 20:18:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=laveeshbansal.com header.i=laveeshb@laveeshbansal.com header.b="Njjt1WuU"
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="aPqhpcYz"
 X-Original-To: stable@vger.kernel.org
-Received: from sender4-op-o15.zoho.com (sender4-op-o15.zoho.com [136.143.188.15])
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A79ED450F2;
-	Fri,  2 Jan 2026 20:17:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.15
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767385056; cv=pass; b=tKdTWVl7yVfENaklYCdBqfHdOJsNlUwHlT0BHie50lCuCKnHbI65TLhnOJSOfBC4D2wNAMpa1+Hml8W1szuWFX1c50N4izop0Cqfj8RVuPnoBBVclXuyW4xEY1Mk4KWIqOMvVOeLN1x23w1CsenQ9uJExSZcPNESUJGx8LaFLl4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767385056; c=relaxed/simple;
-	bh=kxh0OrnRnqoUaYvpC7u7+R0INUU2hfe0RK/RgiwN1IY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=My7+6Aweh122yVCP9ZRha9esvPpnkdsM2OAk10mb8mkXlgXw379AJjmPoGeneRetewvz8lOlLml+xV+jFSnv0pweCpHT62jzlZSVXTYZOkWNkq1qXsS7LNQyOMEs0SQ+wjmpvuVxvBs0dYbpRK1fvJYHkw3j68ae7qSaPt3aP/s=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=laveeshbansal.com; spf=pass smtp.mailfrom=laveeshbansal.com; dkim=pass (1024-bit key) header.d=laveeshbansal.com header.i=laveeshb@laveeshbansal.com header.b=Njjt1WuU; arc=pass smtp.client-ip=136.143.188.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=laveeshbansal.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=laveeshbansal.com
-ARC-Seal: i=1; a=rsa-sha256; t=1767385024; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=QboYqUHjyHEodyFeOSGyC+3Lq8CHcaIDexOaGq3iVABHmzPBYK83Cm/7eaBIvgp2zGHXiJtQR+FFuvGa6u89KR6fFhwkKoPOceJ3zTib4SrhRl3nxEww1qGIY2ryt8cdSFtsLx+2m7DE2e9qVt4Lko/BPYvxhRJoMOGL4+3vI5c=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1767385024; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=mF5dJbmMYGWxTl3OhQSnSrdKT7f5/kxVszfkuAjPvvo=; 
-	b=eW5sMfe0NsdvdMEOQ+PNAAYlKFFIOm2+XWMqs3ZT2SEkhP1xXZbMo8Ghe1cWfvbt1kJiBKXyoVIifPlqYWl9KpmvpcSeMaFpLdyIE8RI+qcJPMrZC2NnlEj8c+o4++LOi3c39m5lU4PbVaD1p1ckDK13/yHced4X6HaIf3HDLn4=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=laveeshbansal.com;
-	spf=pass  smtp.mailfrom=laveeshb@laveeshbansal.com;
-	dmarc=pass header.from=<laveeshb@laveeshbansal.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1767385024;
-	s=zoho; d=laveeshbansal.com; i=laveeshb@laveeshbansal.com;
-	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=mF5dJbmMYGWxTl3OhQSnSrdKT7f5/kxVszfkuAjPvvo=;
-	b=Njjt1WuUcJhUajocBRAVEopmd2tD4KJfMl7MVxeLIkPaVrEJv/A00Hm0Q5YN+tOS
-	Qe+RnFDV/oRoIX+gKj8B0tD2mKUSqyRCnwC7sJeq/Min9dVio2iYuYxbo8BaJoqi7SL
-	xd9a6faeTmWEoEA3sDsMg9tKz2zTFE8KDocVc/oI=
-Received: by mx.zohomail.com with SMTPS id 1767385022473845.864596684939;
-	Fri, 2 Jan 2026 12:17:02 -0800 (PST)
-From: Laveesh Bansal <laveeshb@laveeshbansal.com>
-To: viro@zeniv.linux.org.uk,
-	brauner@kernel.org
-Cc: jack@suse.cz,
-	tytso@mit.edu,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Laveesh Bansal <laveeshb@laveeshbansal.com>,
-	stable@vger.kernel.org
-Subject: [PATCH 1/2] writeback: fix 100% CPU usage when dirtytime_expire_interval is 0
-Date: Fri,  2 Jan 2026 20:16:56 +0000
-Message-ID: <20260102201657.305094-2-laveeshb@laveeshbansal.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260102201657.305094-1-laveeshb@laveeshbansal.com>
-References: <20260102201657.305094-1-laveeshb@laveeshbansal.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E62732459C6;
+	Fri,  2 Jan 2026 20:18:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1767385134; cv=none; b=fyojiCqx/JlEaqdntEf3+/BPIp/4qBVyFku9VptlsWxyz8diqSZtB+pWobUunWqu6jlmenlsygzYc5o447uEtwc3iP6iK7YmmbLk9QUtdYH6gHVzNV0DRj9Dvl5VEKK9s5g7mjaHWunSeBAcqhalz7NzyzI8UrlPbQe30d2wAOU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1767385134; c=relaxed/simple;
+	bh=+agCO8qgZzoCTvxk+09fXoc+5YuFE6U+k7GKWMlCFsk=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=UFe3SDlKHL3fYdV6/du3APPYJ4hGW0rUjAkjtvJWsTStUr/9vUgcGvkdj9MlgbAU+vU1SzaTC/sXGOvTMb6kSWGCdBT0eqg+NTvQsQCWAXEp1kSG2HHVbgXClk3yLpm8lXNkXak8G7tSGdHkaT+4RQiLQ9/gGQnaH9wMFkk6XIc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=none smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=aPqhpcYz; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=debian.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:MIME-Version:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=QRmCVPeP+RIEBMuUcBbI7kHMTrc6nq0oB8Cnpy0O4B8=; b=aPqhpcYzztDJKxwcg3YQlMqpo6
+	vK9a2edoBrl7cVNq8xCxQkas8x+azHFteFeqnv8pxJdPq1UlhCVebzsuJzFRlqz+nH86g1OHUG/Ay
+	zMVVkrxdtwb6oDve6WocaiPqEXqQPudX1mzkViAaCyMAmUpBqQj0RdYZtPqiZtU7QmGmDLDiU++cL
+	OG3eZ7eRi8zPjXhNymG9887x9uhU4z3XJJ165S7vY4VdwhE4eJBkYAYXGnMIt4erdk/KcAwbsxEZF
+	w4KteSo5qRGYgWow1eqzJ7n2HcFhSo2VVlxkqeTB5SRTJmvsWQQPgN+YHmP3LBlqXwNJMcK3tUbL/
+	gaxHsCfw==;
+Received: from authenticated user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.94.2)
+	(envelope-from <benh@debian.org>)
+	id 1vblbU-00Eir4-JI; Fri, 02 Jan 2026 20:18:32 +0000
+Message-ID: <27c249d80c346a258cfbf32f1d131ad4fe64e77c.camel@debian.org>
+Subject: Re: [regression 5.10.y] Libvirt can no longer delete macvtap
+ devices after backport of a6cec0bcd342 ("net: rtnetlink: add bulk delete
+ support flag") to 5.10.y series (Debian 11)
+From: Ben Hutchings <benh@debian.org>
+To: Thorsten Leemhuis <regressions@leemhuis.info>, Roland Schwarzkopf	
+ <rschwarzkopf@mathematik.uni-marburg.de>, Nikolay Aleksandrov	
+ <razor@blackwall.org>, David Ahern <dsahern@kernel.org>, "David S. Miller"	
+ <davem@davemloft.net>, Sasha Levin <sashal@kernel.org>, 
+	debian-kernel@lists.debian.org, Eric Dumazet <edumazet@google.com>, Jakub
+ Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+ <horms@kernel.org>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org, regressions@lists.linux.dev, 1124549@bugs.debian.org
+Date: Fri, 02 Jan 2026 21:18:26 +0100
+In-Reply-To: <d4b4a22e-c0cb-4e1f-8125-11e7a4f44562@leemhuis.info>
+References: <0b06eb09-b1a9-41f9-8655-67397be72b22@mathematik.uni-marburg.de>
+	 <aUMEVm1vb7bdhlcK@eldamar.lan>
+	 <e8bcfe99-5522-4430-9826-ed013f529403@mathematik.uni-marburg.de>
+	 <176608738558.457059.16166844651150713799@eldamar.lan>
+	 <d4b4a22e-c0cb-4e1f-8125-11e7a4f44562@leemhuis.info>
+Organization: Debian
+Content-Type: multipart/signed; micalg="pgp-sha512";
+	protocol="application/pgp-signature"; boundary="=-OII6/htffjAg1Djg2KhL"
+User-Agent: Evolution 3.56.2-7 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-ZohoMailClient: External
+X-Debian-User: benh
 
-When vm.dirtytime_expire_seconds is set to 0, wakeup_dirtytime_writeback()
-schedules delayed work with a delay of 0, causing immediate execution.
-The function then reschedules itself with 0 delay again, creating an
-infinite busy loop that causes 100% kworker CPU usage.
 
-Fix by:
-- Only scheduling delayed work in wakeup_dirtytime_writeback() when
-  dirtytime_expire_interval is non-zero
-- Cancelling the delayed work in dirtytime_interval_handler() when
-  the interval is set to 0
-- Adding a guard in start_dirtytime_writeback() for defensive coding
+--=-OII6/htffjAg1Djg2KhL
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Tested by booting kernel in QEMU with virtme-ng:
-- Before fix: kworker CPU spikes to ~73%
-- After fix: CPU remains at normal levels
-- Setting interval back to non-zero correctly resumes writeback
+Hi all,
 
-Fixes: a2f4870697a5 ("fs: make sure the timestamps for lazytime inodes eventually get written")
-Cc: stable@vger.kernel.org
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220227
-Signed-off-by: Laveesh Bansal <laveeshb@laveeshbansal.com>
----
- fs/fs-writeback.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+On Fri, 2025-12-19 at 10:19 +0100, Thorsten Leemhuis wrote:
+> On 12/18/25 20:50, Salvatore Bonaccorso wrote:
+> >=20
+> > Is there soemthing missing?
+> >=20
+> > Roland I think it would be helpful if you can test as well more recent
+> > stable series versions to confirm if the issue is present there as
+> > well or not, which might indicate a 5.10.y specific backporting
+> > problem.
+>=20
+> FWIW, it (as usual) would be very important to know if this happens with
+> mainline as well, as that determines if it's a general problem or a
+> backporting problem
+[...]
 
-diff --git a/fs/fs-writeback.c b/fs/fs-writeback.c
-index 6800886c4d10..cd21c74cd0e5 100644
---- a/fs/fs-writeback.c
-+++ b/fs/fs-writeback.c
-@@ -2492,7 +2492,8 @@ static void wakeup_dirtytime_writeback(struct work_struct *w)
- 				wb_wakeup(wb);
- 	}
- 	rcu_read_unlock();
--	schedule_delayed_work(&dirtytime_work, dirtytime_expire_interval * HZ);
-+	if (dirtytime_expire_interval)
-+		schedule_delayed_work(&dirtytime_work, dirtytime_expire_interval * HZ);
- }
- 
- static int dirtytime_interval_handler(const struct ctl_table *table, int write,
-@@ -2501,8 +2502,12 @@ static int dirtytime_interval_handler(const struct ctl_table *table, int write,
- 	int ret;
- 
- 	ret = proc_dointvec_minmax(table, write, buffer, lenp, ppos);
--	if (ret == 0 && write)
--		mod_delayed_work(system_percpu_wq, &dirtytime_work, 0);
-+	if (ret == 0 && write) {
-+		if (dirtytime_expire_interval)
-+			mod_delayed_work(system_percpu_wq, &dirtytime_work, 0);
-+		else
-+			cancel_delayed_work_sync(&dirtytime_work);
-+	}
- 	return ret;
- }
- 
-@@ -2519,7 +2524,8 @@ static const struct ctl_table vm_fs_writeback_table[] = {
- 
- static int __init start_dirtytime_writeback(void)
- {
--	schedule_delayed_work(&dirtytime_work, dirtytime_expire_interval * HZ);
-+	if (dirtytime_expire_interval)
-+		schedule_delayed_work(&dirtytime_work, dirtytime_expire_interval * HZ);
- 	register_sysctl_init("vm", vm_fs_writeback_table);
- 	return 0;
- }
--- 
-2.43.0
+The bug is this:
 
+- libvirtd wrongly used to use NLM_F_CREATE (0x400) and NLM_F_EXCL
+  (0x200) flags on an RTM_DELLINK operation.  These flags are only
+  semantically valid for NEW-type operations.
+
+- rtnetlink is rather lax about checking the flags on operations, so
+  these unsupported flags had no effect.
+
+- rtnetlink can now support NLM_F_BULK (0x200) on some DEL-type
+  operations.  If the flag is used but is not valid for the specific
+  operation then the operation now fails with EOPNOTSUPP.  Since
+  NLM_F_EXCL =3D=3D NLM_F_BULK and RTM_DELLINK does not support bulk
+  operations, libvirtd now hits this error case.
+
+I have not tested with mainline, but in principle the same issue should
+occur with any other kernel version that has commit=C2=A0a6cec0bcd342 "net:
+rtnetlink: add bulk delete support flag" together with an older version
+of libvirt.
+
+This was fixed in libvirt commit 1334002340b, which appears to have gone
+into version 7.1.0, but Debian 11 "bullseye" has 7.0.0.
+
+We can certainly fix the libvirt side of this in Debian, but this also
+sounds like a case where the kernel should work around known buggy user-
+space.  On the other hand, this has been upstream for over 3 years so
+maybe it doesn't make sense now.
+
+Please let me know whether I (or anyone) should try to implement a
+workaround for this in the kernel.
+
+Ben.
+
+--=20
+Ben Hutchings - Debian developer, member of kernel, installer and LTS
+teams
+
+--=-OII6/htffjAg1Djg2KhL
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEErCspvTSmr92z9o8157/I7JWGEQkFAmlYKBIACgkQ57/I7JWG
+EQnD0A//T7s2mc8lgDzrecnjiCAaxAAnYMYUy/UhgiuFea9wFuXqo76ucc0paWs7
+YmvABwnDSiyl9lq4WfN5CGTmai+arF4PMLQLlmRXslato+22hVK/731P62DfzW+6
+Mx5pPyDGaVAkFQHe/hOku64F9/NHbC3ZptPXVoxLeQDTTkTPP+y7G7mxZJUp/KOu
+YsnMQdDvnqiZsjSyEddi+HDast2K7bxm+iDZ8qJm8crzYux4kXeRo1b+Pug72f1k
+XErFYPSw8DtQw1OOdxRtP2id4dMhLaXzkde8VFky6jowAFLk3dwV0YwsYm9OAkEQ
+8pdQ+7C/JTKznJFeJQjVz5P9TDevqDK+v4PkGPia+KSQN1rcxVRHX9h7Ci5ongk3
+l3gTy4U8nz4Mw+ap0qWAmgidfkqcL2Kp/GY0ck8uPXUjtPYWE288KOtMK/z+R8vk
+B7KcU4YmIvqxEAVMPARatHO4ElUhdzNhj0+vRlr00zHumWZb+Cu6Sk5QC9aTCUVJ
+gNi/tveeZwcbKWpnyaUr7CdLwgLVXhi7k6KDw+UCMWYrOqMiLsjgFa9QMHqK9bKG
+FETqDyYvkGnU0Yb4itsE5hTkh9pqNTp3nkIxn0YI7RUF8kYEstV4DW3jjMVjIMad
+PLiW1gtAOxADHaHuFlqcpbCI1SRsS56ID5r0dgZPjaNoUmbJVR0=
+=AH7O
+-----END PGP SIGNATURE-----
+
+--=-OII6/htffjAg1Djg2KhL--
 
