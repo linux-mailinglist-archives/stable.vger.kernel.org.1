@@ -1,138 +1,102 @@
-Return-Path: <stable+bounces-204473-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204474-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DCADCEE88B
-	for <lists+stable@lfdr.de>; Fri, 02 Jan 2026 13:29:17 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id E102BCEE8D0
+	for <lists+stable@lfdr.de>; Fri, 02 Jan 2026 13:37:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 72CD13017F19
-	for <lists+stable@lfdr.de>; Fri,  2 Jan 2026 12:26:07 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7C3F73000B73
+	for <lists+stable@lfdr.de>; Fri,  2 Jan 2026 12:37:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A6AB30FC1C;
-	Fri,  2 Jan 2026 12:26:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D37A130F7E8;
+	Fri,  2 Jan 2026 12:37:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F/7uHcgk"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hKzT0HvV"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BED0186284;
-	Fri,  2 Jan 2026 12:26:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B49722D47F3;
+	Fri,  2 Jan 2026 12:37:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767356765; cv=none; b=KTpHPlAsN0ukWN/g90lFl27LHjOrN3ruxK4lHdez7XetSnU17wGzfOfMzueMLEmt2d9WKKs2Ii7IUpTVHbcHPkXYY0vazbyoCijFnjuJhYetp6QXeOI6WwlDXWcLA0DBSHVqFSFrkp2yP8oahAXbUENJAaRa5ZSs7eo8JyRtAW4=
+	t=1767357445; cv=none; b=HbT0cL4CAn2FBWJ3+W9aMAKAiSrSsuktyaJlTjZLvP7vMwY4Bv3zsEWXTsfkxKsLUYzGwGodVumuOrrJSt+p7Fvo5HES2ICurJ1MQymDwSxVaZlgNnnG6Urc2jxz6yedTYfAaNc7nLe6ZfUVTYfqFmSL44SA7WE5SiEAPghDb24=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767356765; c=relaxed/simple;
-	bh=eK7OmiMWtyRAHOYeVa+XIgCvk3SrCsFRqD3ejKIrvAM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bB6zUPzOKYMieLCjtIxminYfmz2anSXqDnfmcmyDo58Z9jYVlSZMXGt4CfhPqsQFdyWIEdJ+x9Q7e3dp9BOXbHJBE8NlA8pR6g7lUjh1IJ9VNrjpWw3hOzkNXURBr0gvVsJhY+5Qb2t+lCpV9ln3j6VVi8bIwKDNOfhP1nXQyf0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F/7uHcgk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1ECEC116B1;
-	Fri,  2 Jan 2026 12:26:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767356764;
-	bh=eK7OmiMWtyRAHOYeVa+XIgCvk3SrCsFRqD3ejKIrvAM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=F/7uHcgktGHNXJlP3OKzBFXaBEA+thf0PwMDklpX05UsYr8Q1E1tvAvDH8mWgdflw
-	 bySaijj+nk+TKMchiaEpCzDRb0AXFlt8V6tKEZVlsaf+iKbyt3Kkdq6gqWhtce4F7s
-	 bOi9ALyXdsM+8uJI+UPKBCqSsgnto91+xZAczmtgvl3d4nrIH5Rw47sX8I5UrqIru0
-	 M5tqcfy5RGbh4KYy1+d9f5TR7r6kr8QX6qSErNWzFWYrMJD9woGh9XkINUJ5UIdpag
-	 6oZsR+cRd3scodbX2DltFpWBRGm7Bp7AJ+e7dtudEKgBL+BmdDtLgeiuNCFHW+ktAD
-	 CimNLQ3+J2pBQ==
-Message-ID: <a11d661e-15a0-4d9b-a171-6bc1d31a16d9@kernel.org>
-Date: Fri, 2 Jan 2026 13:26:01 +0100
+	s=arc-20240116; t=1767357445; c=relaxed/simple;
+	bh=7Rk0yeVXcV1S1WfT0PPaT2pcKMSwxTqqqT++2T5PXhA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Qtff4vhuKZ1fy0+FHeBDs2V25ywdJhSowT1a4piPho3O8CrEyKdV5xeHcRxsT7jhNTuasTPmHJ3HKpJ1Ospcxi90x/4+VGIqguEH+Qa27bwAzwGuFsXplrRTrap2nGHSiN4CYjxzOPwtJaDYl2+8kRT59NjRf6z4QLKaGdT7lbU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hKzT0HvV; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1767357444; x=1798893444;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=7Rk0yeVXcV1S1WfT0PPaT2pcKMSwxTqqqT++2T5PXhA=;
+  b=hKzT0HvVaIoPmD1rUrEbbHbW9+rG1bXKiRUU6HHaHIqTRIXxkFjxKHvG
+   yOaaoTf/VcfclZsqFflwq2ie/YsYwS9jVuQs3pMC13HuNNm6GNyVXnP7V
+   dAndVScI1ORuRL8VmTHTSkWvq66FdX22mZlPVZkN0Ash3n60PlGT/iMg2
+   vFLXk+qQwFwI983Zph1JdoW0uh+dCPqRwZM6xhygzPPka/U49JdT06Tsm
+   NKYwJroVBKu8bnUwHS1d6cJx8ctsrYfnTPQLMu8cukbwaLuTvfpIaCXOC
+   HKA+EKp1kdyguEOdUmflJrxaKqVUVvsOmhvZQCwJPQh0K1n/TDW09oW3w
+   g==;
+X-CSE-ConnectionGUID: g2ctpb2CRl+2vI2SGpJ7Rw==
+X-CSE-MsgGUID: h2xQuTDQSq+zxSzxlu0Naw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11658"; a="68758386"
+X-IronPort-AV: E=Sophos;i="6.21,197,1763452800"; 
+   d="scan'208";a="68758386"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jan 2026 04:37:24 -0800
+X-CSE-ConnectionGUID: ibxrsjkoTB+2crjlJ5E5Cg==
+X-CSE-MsgGUID: Pw1RGovFQ9qkEvrgvpBPpQ==
+X-ExtLoop1: 1
+Received: from ncintean-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.46])
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jan 2026 04:37:21 -0800
+Date: Fri, 2 Jan 2026 14:37:19 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Tiffany Yang <ynaffit@google.com>
+Cc: stable@vger.kernel.org, pchelkin@ispras.ru,
+	linux-kernel@vger.kernel.org, kernel-team@android.com,
+	Pavel Machek <pavel@ucw.cz>, Lee Jones <lee@kernel.org>,
+	linux-leds@vger.kernel.org
+Subject: Re: [PATCH 5.10,5.15,6.1,6.6 RESEND] leds: spi-byte: Initialize
+ device node before access
+Message-ID: <aVe7_7Jf_FWkBhqH@smile.fi.intel.com>
+References: <20251231004510.1732543-2-ynaffit@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/4] ASoC: codecs: wsa884x: fix codec initialisation
-To: Johan Hovold <johan@kernel.org>
-Cc: Srinivas Kandagatla <srini@kernel.org>, Mark Brown <broonie@kernel.org>,
- Liam Girdwood <lgirdwood@gmail.com>, linux-sound@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20260102111413.9605-1-johan@kernel.org>
- <20260102111413.9605-4-johan@kernel.org>
- <18f646c0-00f3-4460-842d-cf8811dddecf@kernel.org>
- <aVevbmfwoHCqrnQF@hovoldconsulting.com>
- <9c68b403-f11b-4395-a564-8172e7db5390@kernel.org>
- <aVe3VgrKi7WsqrYA@hovoldconsulting.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <aVe3VgrKi7WsqrYA@hovoldconsulting.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251231004510.1732543-2-ynaffit@google.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On 02/01/2026 13:17, Johan Hovold wrote:
->>> 	...
->>>
->>> 	wsa884x_init(wsa884x);
->>>
->>> so if you set hw_init to true then init is never called when status is
->>> changed to ATTACHED.
->>
->> Uh, indeed, so this was supposed to be !wsa884x->hw_init... or indeed
->> your meaning. This also means that this was never passing above if() and
->> the init() was never called.
->>
->> regcache was probably synced via runtime PM, so at least that part worked.
->>
->> Did you test this driver on actual device how it affects the behavior?
+On Tue, Dec 30, 2025 at 04:45:11PM -0800, Tiffany Yang wrote:
+> Commit 7f9ab862e05c ("leds: spi-byte: Call of_node_put() on error path")
+> was merged in 6.11 and then backported to stable trees through 5.10. It
+> relocates the line that initializes the variable 'child' to a later
+> point in spi_byte_probe().
 > 
-> No, I don't have a device that uses this codec anymore.
-> 
-> If you could give it a spin that would be great. It seems we have been
-> depending on reset values or an UNATTACHED => ATTACHED transition so
-> far.
+> Versions < 6.9 do not have commit ccc35ff2fd29 ("leds: spi-byte: Use
+> devm_led_classdev_register_ext()"), which removes a line that reads a
+> property from 'child' before its new initialization point. Consequently,
+> spi_byte_probe() reads from an uninitialized device node in stable
+> kernels 6.6-5.10.
 
-I can test it, maybe after the weekend.
+I'm wondering if in long term the easier maintenance will be with that patch
+also being backported rather than this being applied.
 
-Best regards,
-Krzysztof
+> Initialize 'child' before it is first accessed.
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
 
