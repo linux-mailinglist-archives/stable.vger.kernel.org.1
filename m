@@ -1,205 +1,218 @@
-Return-Path: <stable+bounces-204498-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204499-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E6ADCEF157
-	for <lists+stable@lfdr.de>; Fri, 02 Jan 2026 18:42:51 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C04CCEF32F
+	for <lists+stable@lfdr.de>; Fri, 02 Jan 2026 19:41:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C8E70300ACD0
-	for <lists+stable@lfdr.de>; Fri,  2 Jan 2026 17:42:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A9B3B301CEBE
+	for <lists+stable@lfdr.de>; Fri,  2 Jan 2026 18:41:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0A932ECE97;
-	Fri,  2 Jan 2026 17:42:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC8CB314D26;
+	Fri,  2 Jan 2026 18:41:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iAnNrqvp"
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="XEm80rH/"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
+Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23B662E9EAE
-	for <stable@vger.kernel.org>; Fri,  2 Jan 2026 17:42:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC052286D7C
+	for <stable@vger.kernel.org>; Fri,  2 Jan 2026 18:41:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767375768; cv=none; b=t/iz4SkuFFFogJcxaKtR2ImHzyYMwnhIMjX/IY9ezX6Lcur+9kSDH7mq7K4Rdt/Rosa1tmWwPDTBemgxSv+5mrf8m06u3LjpCeWLaekO9BrseiTuyHG0SsPFRTck2FPOBsrjuFxXp86tfM0fz9QX/m04Dttb9EzHDnl9lSA2O70=
+	t=1767379279; cv=none; b=q7XNWW8Jiu3+N+f60avd0tu+oPtC60/tZkcm9Z957WRMFxLgA7nzk2JzlRpJm84VVWrdixLISM4akxNOvpspIMILiJ6Kc3+70mIX1nOiuV8dyIQdL+ocaR0rVBcH7N579/fobeUNbIkwReAygbUljgTTQK+CxQ/6sDackzTJ9xM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767375768; c=relaxed/simple;
-	bh=rsxFLkkh44pkPJZT73BcC9nhTJZbYI3ToU2uQHHHqJg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LPtLawCEdhCqBZLkueaCsWgXTBSKru8yK3ugkiLAncwzXFTWItgPNCwg1VST1erXsFoAtaCCDriNuAyspCKdIhhs3a5g0ZkpCYpftEG460MByVrB80HZOnpVJia+axT1j9LYLlc+B5xsRnzhwqNMJPOElkEP2qwR5LPuc1hgnUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iAnNrqvp; arc=none smtp.client-ip=209.85.160.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-4ee19b1fe5dso141775951cf.0
-        for <stable@vger.kernel.org>; Fri, 02 Jan 2026 09:42:46 -0800 (PST)
+	s=arc-20240116; t=1767379279; c=relaxed/simple;
+	bh=bXmVqZi5/XxGwHoRNC2qo8trHPL/JUWYt6dxPjrbbI4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=C959q4kNItx0ZEPFKxl2gLc0x1SdHfwzXWpl2MuTJI1tFAkR+a1ToTNgqUNfQyZj8ZrcTNt/FGoulS6kc67QDQjjOAZGH3aKQDNsCMCFk0rTdVX3JKdQbxavcHUXSPAxvq/rFo2kIZLb3uywSeXyP7TcBqHQ/uhleff6CaFBzVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=XEm80rH/; arc=none smtp.client-ip=209.85.222.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-8b2f0f9e4cbso15343985a.0
+        for <stable@vger.kernel.org>; Fri, 02 Jan 2026 10:41:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767375766; x=1767980566; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/0X43tzsEjAIkMG5nHwHs/LKFKaM5iOATeWa21x7UkM=;
-        b=iAnNrqvpRMUnHZHf8F68+vd7F7uSJvJykVdk8Rw+1ad+T/8xiXcuhBTny1pNACBKUm
-         +DsTWWCbvHcxJNeq4QRKMQWEgYThnHjyl4hti3s2EGZbS3DHCcPWJ7un4gF0QQ3w4nyl
-         pK0KXwGyipoCPq3gHmOKUSDnZmhNqPiMZ9V4YZMwEU4UnYQZ6756VaJu0LO7L42KUl45
-         rGW/uH667QnLgc0MIXEPN1KSv6F2MXOXZja/nHoPbXf2Xe5vBQpJ76Zq4sWtXkQgEQt+
-         Izi6Y8eiykPw3T3Y0MvG/M1naR9ACFt7516C3Vpjj8dqDAjOmz0w8qPN/5d/Y6R4lTrE
-         bRKA==
+        d=ziepe.ca; s=google; t=1767379275; x=1767984075; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZbKNq3OzvNgOXwfOYEfmEuaPS05vXN54NlE6TZcUdp4=;
+        b=XEm80rH/f7ajg/ABVoHYzDA8sIgm6xlGcxnhG2f0hdkom1SGb0cE0nkVasqgIe0B0+
+         BIFw9IbtoYI6qODNUx3EfM0fhXr39MO9/j+p09Jey7uVqee2lZm2Ubc9BsNs6z06BcPf
+         RsKl3Rv9um4zoMQD111N6s71gm+duh4XTb1d/oupq1ClwBFjU+7CE82qHQDIv5nqIWYq
+         OW8SR16+NPp5T0+3JfccAS/MQAiY6jHaqYOK3icGgbwILEjjmfHFNJKxd4NAa6ldsvrK
+         Z7DMTGGohcmCMXp8wbb2PyX9BRqPoDSZMPGgUkTL7Nv7hrJfAd6ddoKbSxe2l9kxLCYR
+         xXyA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767375766; x=1767980566;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=/0X43tzsEjAIkMG5nHwHs/LKFKaM5iOATeWa21x7UkM=;
-        b=XyoXJ/HVJGQksLsXCArbu5RaIo2hpSiFnZ6v2aAPEN3cmyP5/EZ9Kdj10CN1QMT7qg
-         3ymv+EL+Vejgo5qvXPHFLmTUBTIFomfIl/yzN3OhTFQpd3Nicd2ZrTNfilcsDBaNhnwm
-         +jr8HGApZavSejbjMhDU/zstiij5tJGoCf+Jc5xzXQM+OjOcc9ShG31P2wl92JzadOYS
-         q7sXEeOUCCNTrRb2uqKSVkqJRMTmibDm+/mFtBMYtmj9HeW0LkT3ByCjyXGy2FcZiISo
-         9yEnZ5BL1B54jKdH53eL8QBb4mEN007/rPhs4YzkQSHCoNETztomclcWml5/StGImWf1
-         fOIQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUigd99N0dK4/6nAi1hrtsslwvPgK/nj0KfQax+B7jiwanyrEaFXlOREBPpE2NpiU3kcvmx0W4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz6hQ41BLifTl15Gc/dyYYoCbwUp08e5ok2y3fxeDCpSLLWOr0p
-	jt0p8gRYIAb2pkYv5ziyKZNLdx3mZ8Ocvk9n8VI4bM6XLOR1VXUKzI+fAXxVlBk2vhzwMrXT/9b
-	l+1EN+gjSL5L+5+CLWTDycy310l0O15E=
-X-Gm-Gg: AY/fxX7eyCF9+j9dPAm1R7N3/V8J6+Y9o05FtUY6dyt66x60Ou54391+TSy+5wvhOVs
-	WL45JjGkWveDSNUmaVYGpBsc8Iq2lfco9QWrX35s8iHZ02A3tXBlOoPhX7GVWy8xka4KYr7kwMC
-	xMgaoHZ6qoMYwRZeIGREHV1OX9M32Ul86SZjy5cwsL/caQ6HVPhB6SmRjoB6jT1yrvyGlDdrpIa
-	ZpTn5gSP/3EV3cgloNX53osHii+T+y1/I5qWEUUng5PVMwtFrLBOpGwPA8nsBIFvfSKYw==
-X-Google-Smtp-Source: AGHT+IHTCGFABNwPrRSP04C0uqspZoW3b8+qyuNDvY7nmDU36AGNpQ6R94yX7G4K3JG83u9w3TG9d+djwu3dA02k8LU=
-X-Received: by 2002:a05:622a:1c0b:b0:4e7:2dac:95b7 with SMTP id
- d75a77b69052e-4f4abd2b668mr721175471cf.37.1767375766098; Fri, 02 Jan 2026
- 09:42:46 -0800 (PST)
+        d=1e100.net; s=20230601; t=1767379275; x=1767984075;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ZbKNq3OzvNgOXwfOYEfmEuaPS05vXN54NlE6TZcUdp4=;
+        b=uR95birBC4V5WORP7FrTE+bSvpeqtL3hvCzobPniLxEjN8lcfAtYgt3YW5xl1pRr8V
+         TKmGA1bQoTkKeam7LIed/sNkyLPTO4g/9ghvh/1HU5u8c8c52DvsNXD3G5zJSfRWUUuk
+         eX4KxLZeapu0SguRvY2eh6vvXdWFNebSRelBSw9/x8ar6aiXAsRjKUNVJVvk1nKL5S6H
+         n/pR1sdSuJDJXNKjyVhs07HujIGALg3sLDZQhXI+cIAauCHUsxe3SDdvWvKE7trKd6pi
+         nUU6MwcH3Pun0fYC7Nx9EXafWTgvmahnz9YNsYrBsyQb5/DzV90xzISnqgfkc85JuHBQ
+         pToQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUkG1l75ZR+Rz6xMUousCt74kRas52248kpKIjgCJwyaBPGzVSqYg+E6cwmoq7+6Ebh9wdPGB4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxmWmPSZok42u6IRoTUgCXJM6KxtpbEHTtTI0zy7SGGFrpNrgmF
+	d8XleTdL2ecnqe2t/R++91J1bnPYPv7aBFiyxvFoq9vgUXbj/54+2sA6b6iLEgBimbs=
+X-Gm-Gg: AY/fxX4X0lhigePEGlbxMRCX6Gs1F/iZULIFpuO+RXgVpYfijXDUoWqxRfEFuv8cDtY
+	8o2oh7jBl9qAt1bLyEerKzLhs0PojmsrHiXbh9GwgGli0dgZjKZluTRTsGHTgyj+exJEXK4Lf4t
+	P9aqaEGh37rPdfFNdXrbCt1l5wCa4ChWD7ufIHI2oDRo5hJhTkVzDCfd13cfYoko8skpAm9BpRX
+	VJa6zY7g6a+eH5ShBV5kTyurKkCwDSrkXZcFLBGQLBH3QDxvMQRKVjeKsDhPg29T2KiG4lzrrfS
+	YjeUs7vAMcBmCrBY0vFBJizZVfpYLAU+6fp15GklxQzfAOepjGXOUYLjjhWDSK8wO0jzU4ZUWBp
+	oN81TUzxflGe0WrE3zaYgKRByS7b9kRz2ykOIgBnbUbdscKtwdnmueaeOszhVDiztSo5dugJOdq
+	OHedFAcndB7bOQ/HnKCkcLPbOZ1Cr2IiydaEFhgjnOUGtGcsZu4QEUXrprLr1Bh3GiTK4=
+X-Google-Smtp-Source: AGHT+IFf1uKGIwRHqgDuPoJHVm8is9Z+z+ElqpNBRFLqGHyGLWLw+ECPqzKaTxkx0tZNT3guYluMgA==
+X-Received: by 2002:a05:620a:7111:b0:8a3:90cb:9224 with SMTP id af79cd13be357-8c3568a0131mr102879985a.2.1767379274814;
+        Fri, 02 Jan 2026 10:41:14 -0800 (PST)
+Received: from ziepe.ca (hlfxns017vw-142-162-112-119.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.162.112.119])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8c09678afa6sm3293504685a.2.2026.01.02.10.41.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 02 Jan 2026 10:41:14 -0800 (PST)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1vbk5J-00000000neJ-2b6O;
+	Fri, 02 Jan 2026 14:41:13 -0400
+Date: Fri, 2 Jan 2026 14:41:13 -0400
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Dawei Li <dawei.li@linux.dev>
+Cc: will@kernel.org, robin.murphy@arm.com, joro@8bytes.org,
+	linux-arm-kernel@lists.infradead.org, iommu@lists.linux.dev,
+	linux-kernel@vger.kernel.org, set_pte_at@outlook.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] iommu/arm-smmu-v3: Maintain valid access attributes for
+ non-coherent SMMU
+Message-ID: <20260102184113.GA125261@ziepe.ca>
+References: <20251229002354.162872-1-dawei.li@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251215030043.1431306-1-joannelkoong@gmail.com> <20251215030043.1431306-2-joannelkoong@gmail.com>
-In-Reply-To: <20251215030043.1431306-2-joannelkoong@gmail.com>
-From: Joanne Koong <joannelkoong@gmail.com>
-Date: Fri, 2 Jan 2026 09:42:34 -0800
-X-Gm-Features: AQt7F2ohaHF2UIzgTLkq0qp5Sg4UKfGxsYKPSUC_Kd08WY71gAokum3IjvOCHyE
-Message-ID: <CAJnrk1ajqa4+GNgXNNyZ4sfpsyr3fcO15FH2CiTipyeMoVyT1g@mail.gmail.com>
-Subject: Re: [PATCH v2 1/1] fs/writeback: skip AS_NO_DATA_INTEGRITY mappings
- in wait_sb_inodes()
-To: akpm@linux-foundation.org
-Cc: david@redhat.com, miklos@szeredi.hu, linux-mm@kvack.org, 
-	athul.krishna.kr@protonmail.com, j.neuschaefer@gmx.net, carnil@debian.org, 
-	linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251229002354.162872-1-dawei.li@linux.dev>
 
-On Sun, Dec 14, 2025 at 7:05=E2=80=AFPM Joanne Koong <joannelkoong@gmail.co=
-m> wrote:
->
-> Skip waiting on writeback for inodes that belong to mappings that do not
-> have data integrity guarantees (denoted by the AS_NO_DATA_INTEGRITY
-> mapping flag).
->
-> This restores fuse back to prior behavior where syncs are no-ops. This
-> is needed because otherwise, if a system is running a faulty fuse
-> server that does not reply to issued write requests, this will cause
-> wait_sb_inodes() to wait forever.
->
-> Fixes: 0c58a97f919c ("fuse: remove tmp folio for writebacks and internal =
-rb tree")
-> Reported-by: Athul Krishna <athul.krishna.kr@protonmail.com>
-> Reported-by: J. Neusch=C3=A4fer <j.neuschaefer@gmx.net>
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
+On Mon, Dec 29, 2025 at 08:23:54AM +0800, Dawei Li wrote:
+> According to SMMUv3 architecture specification, IO-coherent access for
+> SMMU is supported for:
+> - Translation table walks.
+> - Fetches of L1STD, STE, L1CD and CD.
+> - Command queue, Event queue and PRI queue access.
+> - GERROR, CMD_SYNC, Event queue and PRI queue MSIs, if supported
 
-Hi Andrew,
+I was recently looking at this too..  IMHO this is not really a clean
+description of what this patch is doing.
 
-This patch fixes a user regression that's been reported a few times
-upstream [1][2]. Bernd (who works on fuse) has given his Reviewed-by
-for the changes and J. has verified that it fixes the issues he saw.
-Is there anything else needed to move this patch forward?
+I would write this description as:
 
-Thanks,
-Joanne
+When the SMMU does a DMA for itself it can set various memory access
+attributes which control how the interconnect should execute the
+DMA. Linux uses these to differentiate DMA that must snoop the cache
+and DMA that must bypass it because Linux has allocated non-coherent
+on the CPU.
 
-[1] https://lore.kernel.org/regressions/mwBOip3XK77dn-UJtlk-uQ1N6i3nwsKticZ=
-yQdPYzQcsk0dsjXl4oOAh-Neoxv-0TlpKnt_FEJwx8ses5VJglGLJUW-bIG8KWchtoDwCnnA=3D=
-@protonmail.com/
-[2] https://lore.kernel.org/linux-fsdevel/aT7JRqhUvZvfUQlV@eldamar.lan/
+In Table "13.8 Attributes for SMMU-originated accesses" each of the
+different types of DMA is categorized and the specific bits
+controlling the memory attribute for the fetch are identified.
 
+Make this consisent globally. If Linux has cache flushed the buffer,
+or allocated a DMA incoherenet buffer, then it should set the
+non-caching memory attribute so the DMA matches.
 
+This is important for some of the allocations where Linux is currently
+allocating DMA coherent memory, meaning nothing has made the CPU cache
+coherent and doing any coherent access to that memory may result in
+cache inconsistencies.
 
+This may solve problems in systems where the SMMU driver thinks the
+SMMU is non-coherent, but in fact, the SMMU and the interconnect
+selectively supports coherence and setting the wrong memory attributes
+will cause non-working cached access.
 
-> ---
->  fs/fs-writeback.c       |  3 ++-
->  fs/fuse/file.c          |  4 +++-
->  include/linux/pagemap.h | 11 +++++++++++
->  3 files changed, 16 insertions(+), 2 deletions(-)
->
-> diff --git a/fs/fs-writeback.c b/fs/fs-writeback.c
-> index 6800886c4d10..ab2e279ed3c2 100644
-> --- a/fs/fs-writeback.c
-> +++ b/fs/fs-writeback.c
-> @@ -2751,7 +2751,8 @@ static void wait_sb_inodes(struct super_block *sb)
->                  * do not have the mapping lock. Skip it here, wb complet=
-ion
->                  * will remove it.
->                  */
-> -               if (!mapping_tagged(mapping, PAGECACHE_TAG_WRITEBACK))
-> +               if (!mapping_tagged(mapping, PAGECACHE_TAG_WRITEBACK) ||
-> +                   mapping_no_data_integrity(mapping))
->                         continue;
->
->                 spin_unlock_irq(&sb->s_inode_wblist_lock);
-> diff --git a/fs/fuse/file.c b/fs/fuse/file.c
-> index 01bc894e9c2b..3b2a171e652f 100644
-> --- a/fs/fuse/file.c
-> +++ b/fs/fuse/file.c
-> @@ -3200,8 +3200,10 @@ void fuse_init_file_inode(struct inode *inode, uns=
-igned int flags)
->
->         inode->i_fop =3D &fuse_file_operations;
->         inode->i_data.a_ops =3D &fuse_file_aops;
-> -       if (fc->writeback_cache)
-> +       if (fc->writeback_cache) {
->                 mapping_set_writeback_may_deadlock_on_reclaim(&inode->i_d=
-ata);
-> +               mapping_set_no_data_integrity(&inode->i_data);
-> +       }
->
->         INIT_LIST_HEAD(&fi->write_files);
->         INIT_LIST_HEAD(&fi->queued_writes);
-> diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
-> index 31a848485ad9..ec442af3f886 100644
-> --- a/include/linux/pagemap.h
-> +++ b/include/linux/pagemap.h
-> @@ -210,6 +210,7 @@ enum mapping_flags {
->         AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM =3D 9,
->         AS_KERNEL_FILE =3D 10,    /* mapping for a fake kernel file that =
-shouldn't
->                                    account usage to user cgroups */
-> +       AS_NO_DATA_INTEGRITY =3D 11, /* no data integrity guarantees */
->         /* Bits 16-25 are used for FOLIO_ORDER */
->         AS_FOLIO_ORDER_BITS =3D 5,
->         AS_FOLIO_ORDER_MIN =3D 16,
-> @@ -345,6 +346,16 @@ static inline bool mapping_writeback_may_deadlock_on=
-_reclaim(const struct addres
->         return test_bit(AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM, &mapping->f=
-lags);
->  }
->
-> +static inline void mapping_set_no_data_integrity(struct address_space *m=
-apping)
+[and then if you have a specific SOC that shows an issue please
+describe the HW]
+
+> +static __always_inline bool smmu_coherent(struct arm_smmu_device *smmu)
 > +{
-> +       set_bit(AS_NO_DATA_INTEGRITY, &mapping->flags);
+> +	return !!(smmu->features & ARM_SMMU_FEAT_COHERENCY);
 > +}
 > +
-> +static inline bool mapping_no_data_integrity(const struct address_space =
-*mapping)
-> +{
-> +       return test_bit(AS_NO_DATA_INTEGRITY, &mapping->flags);
-> +}
-> +
->  static inline gfp_t mapping_gfp_mask(const struct address_space *mapping=
-)
+>  /* High-level queue accessors */
+> -static int arm_smmu_cmdq_build_cmd(u64 *cmd, struct arm_smmu_cmdq_ent *ent)
+> +static int arm_smmu_cmdq_build_cmd(u64 *cmd, struct arm_smmu_cmdq_ent *ent,
+> +				   struct arm_smmu_device *smmu)
 >  {
->         return mapping->gfp_mask;
-> --
-> 2.47.3
->
+>  	memset(cmd, 0, 1 << CMDQ_ENT_SZ_SHIFT);
+>  	cmd[0] |= FIELD_PREP(CMDQ_0_OP, ent->opcode);
+> @@ -358,8 +364,13 @@ static int arm_smmu_cmdq_build_cmd(u64 *cmd, struct arm_smmu_cmdq_ent *ent)
+>  		} else {
+>  			cmd[0] |= FIELD_PREP(CMDQ_SYNC_0_CS, CMDQ_SYNC_0_CS_SEV);
+>  		}
+> -		cmd[0] |= FIELD_PREP(CMDQ_SYNC_0_MSH, ARM_SMMU_SH_ISH);
+> -		cmd[0] |= FIELD_PREP(CMDQ_SYNC_0_MSIATTR, ARM_SMMU_MEMATTR_OIWB);
+> +		if (smmu_coherent(smmu)) {
+> +			cmd[0] |= FIELD_PREP(CMDQ_SYNC_0_MSH, ARM_SMMU_SH_ISH);
+> +			cmd[0] |= FIELD_PREP(CMDQ_SYNC_0_MSIATTR, ARM_SMMU_MEMATTR_OIWB);
+> +		} else {
+> +			cmd[0] |= FIELD_PREP(CMDQ_SYNC_0_MSH, ARM_SMMU_SH_OSH);
+> +			cmd[0] |= FIELD_PREP(CMDQ_SYNC_0_MSIATTR, ARM_SMMU_MEMATTR_OINC);
+> +		}
+
+And then please go through your patch and add comments actually
+explaining what the DMA is and what memory is being reached by it -
+since it is not always very clear from the ARM mnemonics
+
+For instance, this is:
+ /* DMA for "CMDQ MSI" which targets q->base_dma allocated by arm_smmu_init_one_queue() */
+
+> @@ -1612,11 +1624,18 @@ void arm_smmu_make_cdtable_ste(struct arm_smmu_ste *target,
+>  		(cd_table->cdtab_dma & STRTAB_STE_0_S1CTXPTR_MASK) |
+>  		FIELD_PREP(STRTAB_STE_0_S1CDMAX, cd_table->s1cdmax));
+>  
+> +	if (smmu_coherent(smmu)) {
+> +		val = FIELD_PREP(STRTAB_STE_1_S1CIR, STRTAB_STE_1_S1C_CACHE_WBRA) |
+> +		      FIELD_PREP(STRTAB_STE_1_S1COR, STRTAB_STE_1_S1C_CACHE_WBRA) |
+> +		      FIELD_PREP(STRTAB_STE_1_S1CSH, ARM_SMMU_SH_ISH);
+> +	} else {
+> +		val = FIELD_PREP(STRTAB_STE_1_S1CIR, STRTAB_STE_1_S1C_CACHE_NC) |
+> +		      FIELD_PREP(STRTAB_STE_1_S1COR, STRTAB_STE_1_S1C_CACHE_NC) |
+> +		      FIELD_PREP(STRTAB_STE_1_S1CSH, ARM_SMMU_SH_OSH);
+> +	}
+
+This one is "CD fetch" allocated by arm_smmu_alloc_cd_ptr()
+
+etc
+
+And note that the above will need this hunk too:
+
++++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-iommufd.c
+@@ -432,6 +432,14 @@ size_t arm_smmu_get_viommu_size(struct device *dev,
+            !(smmu->features & ARM_SMMU_FEAT_S2FWB))
+                return 0;
+ 
++       /*
++        * When running non-coherent we can't suppot S2FWB since it will also
++        * force a coherent CD fetch, aside from the question of what
++        * S2FWB/CANWBS even does with non-coherent SMMUs.
++        */
++       if (!smmu_coherent(smmu))
++               return 0;
+
+> @@ -3746,7 +3765,7 @@ int arm_smmu_init_one_queue(struct arm_smmu_device *smmu,
+>  	q->cons_reg	= page + cons_off;
+>  	q->ent_dwords	= dwords;
+>  
+> -	q->q_base  = Q_BASE_RWA;
+> +	q->q_base  = smmu_coherent(smmu) ? Q_BASE_RWA : 0;
+
+CMDQ fetch, though do we even need to manage RWA? Isn't it ignored if
+IC/OC/SH are set to their non-cachable values?
+
+etc..
+
+Jason
 
