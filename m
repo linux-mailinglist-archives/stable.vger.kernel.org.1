@@ -1,164 +1,354 @@
-Return-Path: <stable+bounces-204528-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204529-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 271DFCEFBC7
-	for <lists+stable@lfdr.de>; Sat, 03 Jan 2026 07:26:43 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8A09CEFBF8
+	for <lists+stable@lfdr.de>; Sat, 03 Jan 2026 08:13:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 02FF3300949A
-	for <lists+stable@lfdr.de>; Sat,  3 Jan 2026 06:26:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 51E1C300D485
+	for <lists+stable@lfdr.de>; Sat,  3 Jan 2026 07:13:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFB9F27467F;
-	Sat,  3 Jan 2026 06:26:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A08D1F4631;
+	Sat,  3 Jan 2026 07:13:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RUO1JMnh"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Hy6SLf2R"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E73D5270EDF
-	for <stable@vger.kernel.org>; Sat,  3 Jan 2026 06:26:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D0281E531;
+	Sat,  3 Jan 2026 07:12:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767421600; cv=none; b=p4vWn8RY+6bKwzk6JKHi9iaGFV549wrj5io/cQ28go2xMAsRbSKqQdajQ0W2ViTkQ6rFWxuVZpUQ+Vfisvfbal+FpthrO9J7Ig99iWRyZ22zCVtiD2t/p0F2+oc3HZ4ptQz4wDcOIvwN6VCVHjStwl7b5O7RGa1NI+9BfZYC/VA=
+	t=1767424380; cv=none; b=oBQ/ALN49e6r0aQOKXnS1qW+NOuwgzxyNGSe0LEw8CkOvaJFePXdFvymcaEfgkq/1lZQloc5mwuZF8/HuuBu1j3zxBOMBvYZyaSlmhDnhE9t1WGZtA+LPb6S62VL1F+TM7t9N1RRlmgMbWTm7SGDF8RhLRGiZALpYCSm8xwU/cA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767421600; c=relaxed/simple;
-	bh=QD4XyFbtYqO8OoXqrboWLQysmvPoH2D2aMqalSm0Juk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cJNGuftn8y4mUtbKuCAd3uItASUusOn/NCnmszrJ+qLIGg0nhXbK9mKGaSNhMo7cCugHGW9Ikqef9lJl8ThEmSbiv1MEZTg96BRJP/AAQGRSji2ilxaNEkxlvtfvXXoZX4RFoFhIPECTylUo5ffMn/gDRx4MaCA5ZdRlKWmA0vg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RUO1JMnh; arc=none smtp.client-ip=209.85.222.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-8b2d56eaaceso1518491885a.0
-        for <stable@vger.kernel.org>; Fri, 02 Jan 2026 22:26:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767421598; x=1768026398; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GzTUqaBjKErhA8u/T2FQL1WG9Tm1uXsr+21laEF71/k=;
-        b=RUO1JMnhEkU+cacR3qm2FjPkQjabxqwdMmGJJxGRUxv/R7Tds/eQULoeQ66duDNPLQ
-         U6mGlWXcN5ntzThXt6gWAUtEgkkq5IBJNoIa1TfPLZk82a0XXG5xq1F6qRzeowCwqHxN
-         B4YsilH9wGFYJAHDzx67Mkn3ZPbVKSfI5PbRq5WqtVDC6XWl6Nr2rc9TmFYrMoLMxsME
-         ZCrhWpwx0k6X81pJxHSIc4Hzml4L3ofW8D/uBhELD6RTdnFD17pZlTHGMBEIMkOYvDEl
-         5KWJW5edqjd1pJMMIhOfyT53KZ9wfxSiWTdmCLthjqvoOVKM7CHKIXBAuBpbXSvowVGI
-         YJ2A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767421598; x=1768026398;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=GzTUqaBjKErhA8u/T2FQL1WG9Tm1uXsr+21laEF71/k=;
-        b=fklhkJ1jK1VWNdrNVzg9xZVKe2qcxNlZrV722ZbDVlvn0DemDNN/VQQrwnkFI20812
-         OtUaTekupwA2mDOEbgCsB8uoOULaDx9QArMzccCQ/a2sAOBvvREi1JzmZC5/SpMLMhYl
-         gOouo2Ix/4fSf+lABGCz7NVngCUZqIVgUkFZa6LdpxiEor5j15ZEdV2vq3czYuF3GwbE
-         1R6nf8gLg5VRo28eADyxEwY01BGssjvdYFpcniawHx64jKEsrUQdPnf6EEBrvnkxXcr6
-         tjD9SrPjG3zR28z6BblDTny/ggHLMXXqmRNqzU7hq6KPyvFHJqV0l5WEYi4CPpnK4yeB
-         m4Ig==
-X-Gm-Message-State: AOJu0Yyyznljf9RTAJdzrSn9xxBlb6yTO7KLmym+xSlg9/7PJRIDGbAY
-	/Q/CgHBGfvCEO1QqahB+NUuLXsVwqu+PtxAT2ZxsC7BgkYKdH19Zs9VU9hABvI3gsZS/hgb0LeV
-	ciE5w6djYLKZe8whEGHLDVdRXPFf8QFX9VPQl
-X-Gm-Gg: AY/fxX4wKCo9ZmMKEO4dEcFPbvus0Xm6/8lVwu8GBpcdlCVpzv78uhAKPqHXMGcnTZ6
-	FMqEq0MyuqncX4R0Wy+0xYsYC3I6ZIeS7tO6B1F4wnAlqW2zDxNtoiPT7oRvREMUVkum+2XeKbe
-	Qh8c8HbT3JpezhAsAt8dzNUEHP0qlGyBmWhD/Ti6Vm8mbx1GBMvr/QybMapOm+1wfI6QOuFTsiD
-	lu6N5pb5fEdy3h/AXfb/jO+fUPEvgTXNXLs1dnGcD910rg4vTRVtm37ahuUEjAFP1rHLVHffq4e
-	JcBJQQ==
-X-Google-Smtp-Source: AGHT+IFaFIehM2CiM0gmEG+Na4SL0ej+sq5nHRE9bjtces3Vvr/kIlKB517060xRFmaeovwiWR7P9Cdthu4SqyN5SNo=
-X-Received: by 2002:ac8:6711:0:b0:4f1:b93d:fb5a with SMTP id
- d75a77b69052e-4f4b43de5dbmr429908471cf.7.1767421597647; Fri, 02 Jan 2026
- 22:26:37 -0800 (PST)
+	s=arc-20240116; t=1767424380; c=relaxed/simple;
+	bh=wJBLt6DVmzRrjjd82HM+fxjEWhRWKPO6j09EgKZGlR0=;
+	h=Date:To:From:Subject:Message-Id; b=azVQCsgoOmNnNJPtmSciG1viOcaq/M0XddLNWVRLFknQZy52PN3YNJ5SAeq3NeooAuaNUFt0xc/OkPvVZQGJ49uLxDkQabvarBBgxfCV1ITvD4/12CQ0qhnbaxNhj1q2IdpKCECKY2Wuz9IhKft3sBxC+WtZ6sQJpbzjAv5vR0M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Hy6SLf2R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B7A0C113D0;
+	Sat,  3 Jan 2026 07:12:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1767424379;
+	bh=wJBLt6DVmzRrjjd82HM+fxjEWhRWKPO6j09EgKZGlR0=;
+	h=Date:To:From:Subject:From;
+	b=Hy6SLf2RLa3/hftV6eN2rvoMD8PzYJTYN2WwIGH3eE/SXQ+C1Zyq/Vcb6r8D8veye
+	 zfac2B2KG6CcE8zpghF4+e5m7ewbUzyc76BxFzk+wR+JjJHk1JfYJaw3Xt8vWdjoWY
+	 JZ7Y5NI/TJ1G+z0AeeKDTNbV0PTdhxnfj+ur5Hzg=
+Date: Fri, 02 Jan 2026 23:12:58 -0800
+To: mm-commits@vger.kernel.org,yeoreum.yun@arm.com,vbabka@suse.cz,stable@vger.kernel.org,riel@surriel.com,pfalcato@suse.de,liam.howlett@oracle.com,jannh@google.com,david@kernel.org,aha310510@gmail.com,lorenzo.stoakes@oracle.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-vma-fix-anon_vma-uaf-on-mremap-faulted-unfaulted-merge.patch added to mm-hotfixes-unstable branch
+Message-Id: <20260103071259.8B7A0C113D0@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20251229160724.139406961@linuxfoundation.org> <20251229160726.283681845@linuxfoundation.org>
- <CANubcdVnWRkJ8x7zLGKih+uY0D0cE8jGmF_dx7+iDb5sgBWtQg@mail.gmail.com> <2026010240-certify-refined-7c02@gregkh>
-In-Reply-To: <2026010240-certify-refined-7c02@gregkh>
-From: Stephen Zhang <starzhangzsd@gmail.com>
-Date: Sat, 3 Jan 2026 14:26:01 +0800
-X-Gm-Features: AQt7F2p8hjCipjPSAJOhW80ofQZTg3x6YsPGRswI1qiJ6xQA2TC8ouImzh3I8jY
-Message-ID: <CANubcdW2z9AEdML4sV9XEXFeDUUzbt20istLuZ9s=zUoPvjDLQ@mail.gmail.com>
-Subject: Re: [PATCH 6.18 052/430] gfs2: Fix use of bio_chain
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	Andreas Gruenbacher <agruenba@redhat.com>, Sasha Levin <sashal@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Greg Kroah-Hartman <gregkh@linuxfoundation.org> =E4=BA=8E2026=E5=B9=B41=E6=
-=9C=882=E6=97=A5=E5=91=A8=E4=BA=94 14:49=E5=86=99=E9=81=93=EF=BC=9A
->
-> On Wed, Dec 31, 2025 at 07:54:45PM +0800, Stephen Zhang wrote:
-> > Greg Kroah-Hartman <gregkh@linuxfoundation.org> =E4=BA=8E2025=E5=B9=B41=
-2=E6=9C=8830=E6=97=A5=E5=91=A8=E4=BA=8C 00:16=E5=86=99=E9=81=93=EF=BC=9A
-> > >
-> > > 6.18-stable review patch.  If anyone has any objections, please let m=
-e know.
-> > >
-> > > ------------------
-> > >
-> > > From: Andreas Gruenbacher <agruenba@redhat.com>
-> > >
-> > > [ Upstream commit 8a157e0a0aa5143b5d94201508c0ca1bb8cfb941 ]
-> > >
-> > > In gfs2_chain_bio(), the call to bio_chain() has its arguments swappe=
-d.
-> > > The result is leaked bios and incorrect synchronization (only the las=
-t
-> > > bio will actually be waited for).  This code is only used during moun=
-t
-> > > and filesystem thaw, so the bug normally won't be noticeable.
-> > >
-> > > Reported-by: Stephen Zhang <starzhangzsd@gmail.com>
-> > > Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
-> > > Signed-off-by: Sasha Levin <sashal@kernel.org>
-> > > ---
-> > >  fs/gfs2/lops.c | 2 +-
-> > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > >
-> > > diff --git a/fs/gfs2/lops.c b/fs/gfs2/lops.c
-> > > index 9c8c305a75c46..914d03f6c4e82 100644
-> > > --- a/fs/gfs2/lops.c
-> > > +++ b/fs/gfs2/lops.c
-> > > @@ -487,7 +487,7 @@ static struct bio *gfs2_chain_bio(struct bio *pre=
-v, unsigned int nr_iovecs)
-> > >         new =3D bio_alloc(prev->bi_bdev, nr_iovecs, prev->bi_opf, GFP=
-_NOIO);
-> > >         bio_clone_blkg_association(new, prev);
-> > >         new->bi_iter.bi_sector =3D bio_end_sector(prev);
-> > > -       bio_chain(new, prev);
-> > > +       bio_chain(prev, new);
-> > >         submit_bio(prev);
-> > >         return new;
-> > >  }
-> > > --
-> >
-> > Hi Greg,
-> >
-> > I believe this patch should be excluded from the stable series. Please
-> > refer to the discussion in the linked thread, which clarifies the reaso=
-ning:
-> >
-> > https://lore.kernel.org/gfs2/tencent_B55495E8E88EEE66CC2C7A1E6FBC2FC16C=
-0A@qq.com/T/#mad18b8492e01daa939c7d958200802c9603b6c73
->
-> What exactly is the reasoning?  Why not just take these submitted
-> patches when they hit Linus's tree as well?
->
 
-My understanding is that this patch didn't actually fix anything and
-instead introduced a new bug by mistake. Since it was merged, a
-second patch had to be submitted to revert/correct the original "fix."
+The patch titled
+     Subject: mm/vma: fix anon_vma UAF on mremap() faulted, unfaulted merge
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-vma-fix-anon_vma-uaf-on-mremap-faulted-unfaulted-merge.patch
 
-Therefore, for the stable series, the appropriate action is to simply
-drop this incorrect fix.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-vma-fix-anon_vma-uaf-on-mremap-faulted-unfaulted-merge.patch
 
-Thanks,
-Shida
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-> thanks,
->
-> greg k-h
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via various
+branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there most days
+
+------------------------------------------------------
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Subject: mm/vma: fix anon_vma UAF on mremap() faulted, unfaulted merge
+Date: Fri, 2 Jan 2026 20:55:20 +0000
+
+Commit 879bca0a2c4f ("mm/vma: fix incorrectly disallowed anonymous VMA
+merges") introduced the ability to merge previously unavailable VMA merge
+scenarios.
+
+The key piece of logic introduced was the ability to merge a faulted VMA
+immediately next to an unfaulted VMA, which relies upon dup_anon_vma() to
+correctly handle anon_vma state.
+
+In the case of the merge of an existing VMA (that is changing properties
+of a VMA and then merging if those properties are shared by adjacent
+VMAs), dup_anon_vma() is invoked correctly.
+
+However in the case of the merge of a new VMA, a corner case peculiar to
+mremap() was missed.
+
+The issue is that vma_expand() only performs dup_anon_vma() if the target
+(the VMA that will ultimately become the merged VMA): is not the next VMA,
+i.e.  the one that appears after the range in which the new VMA is to be
+established.
+
+A key insight here is that in all other cases other than mremap(), a new
+VMA merge either expands an existing VMA, meaning that the target VMA will
+be that VMA, or would have anon_vma be NULL.
+
+Specifically:
+
+* __mmap_region() - no anon_vma in place, initial mapping.
+* do_brk_flags() - expanding an existing VMA.
+* vma_merge_extend() - expanding an existing VMA.
+* relocate_vma_down() - no anon_vma in place, initial mapping.
+
+In addition, we are in the unique situation of needing to duplicate
+anon_vma state from a VMA that is neither the previous or next VMA being
+merged with.
+
+To account for this, introduce a new field in struct vma_merge_struct
+specifically for the mremap() case, and update vma_expand() to explicitly
+check for this case and invoke dup_anon_vma() to ensure anon_vma state is
+correctly propagated.
+
+This issue can be observed most directly by invoked mremap() to move
+around a VMA and cause this kind of merge with the MREMAP_DONTUNMAP flag
+specified.
+
+This will result in unlink_anon_vmas() being called after failing to
+duplicate anon_vma state to the target VMA, which results in the anon_vma
+itself being freed with folios still possessing dangling pointers to the
+anon_vma and thus a use-after-free bug.
+
+This bug was discovered via a syzbot report, which this patch resolves.
+
+The following program reproduces the issue (and is fixed by this patch):
+
+#define _GNU_SOURCE
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/mman.h>
+
+#define RESERVED_PGS	(100)
+#define VMA_A_PGS	(10)
+#define VMA_B_PGS	(10)
+#define NUM_ITERS	(1000)
+
+static void trigger_bug(void)
+{
+	unsigned long page_size = sysconf(_SC_PAGE_SIZE);
+	char *reserved, *ptr_a, *ptr_b;
+
+	/*
+	 * The goal here is to achieve:
+	 *
+	 * mremap() with MREMAP_DONTUNMAP such that A and B merge:
+	 *
+	 *      |-------------------------|
+	 *      |                         |
+	 *      |    |-----------|   |---------|
+	 *      v    | unfaulted |   | faulted |
+	 *           |-----------|   |---------|
+	 *                 B              A
+	 *
+	 * Then unmap VMA A to trigger the bug.
+	 */
+
+	/* Reserve a region of memory to operate in. */
+	reserved = mmap(NULL, RESERVED_PGS * page_size, PROT_NONE,
+			MAP_PRIVATE | MAP_ANON, -1, 0);
+	if (reserved == MAP_FAILED) {
+		perror("mmap reserved");
+		exit(EXIT_FAILURE);
+	}
+
+	/* Map VMA A into place. */
+	ptr_a = mmap(&reserved[page_size], VMA_A_PGS * page_size,
+		     PROT_READ | PROT_WRITE,
+		     MAP_PRIVATE | MAP_ANON | MAP_FIXED, -1, 0);
+	if (ptr_a == MAP_FAILED) {
+		perror("mmap VMA A");
+		exit(EXIT_FAILURE);
+	}
+	/* Fault it in. */
+	ptr_a[0] = 'x';
+
+	/*
+	 * Now move it out of the way so we can place VMA B in position,
+	 * unfaulted.
+	 */
+	ptr_a = mremap(ptr_a, VMA_A_PGS * page_size, VMA_A_PGS * page_size,
+		       MREMAP_FIXED | MREMAP_MAYMOVE, &reserved[50 * page_size]);
+	if (ptr_a == MAP_FAILED) {
+		perror("mremap VMA A out of the way");
+		exit(EXIT_FAILURE);
+	}
+
+	/* Map VMA B into place. */
+	ptr_b = mmap(&reserved[page_size + VMA_A_PGS * page_size],
+		     VMA_B_PGS * page_size, PROT_READ | PROT_WRITE,
+		     MAP_PRIVATE | MAP_ANON | MAP_FIXED, -1, 0);
+	if (ptr_b == MAP_FAILED) {
+		perror("mmap VMA B");
+		exit(EXIT_FAILURE);
+	}
+
+	/* Now move VMA A into position w/MREMAP_DONTUNMAP + free anon_vma. */
+	ptr_a = mremap(ptr_a, VMA_A_PGS * page_size, VMA_A_PGS * page_size,
+		       MREMAP_FIXED | MREMAP_MAYMOVE | MREMAP_DONTUNMAP,
+		       &reserved[page_size]);
+	if (ptr_a == MAP_FAILED) {
+		perror("mremap VMA A with MREMAP_DONTUNMAP");
+		exit(EXIT_FAILURE);
+	}
+
+	/* Finally, unmap VMA A which should trigger the bug. */
+	munmap(ptr_a, VMA_A_PGS * page_size);
+
+	/* Cleanup in case bug didn't trigger sufficiently visibly... */
+	munmap(reserved, RESERVED_PGS * page_size);
+}
+
+int main(void)
+{
+	int i;
+
+	for (i = 0; i < NUM_ITERS; i++)
+		trigger_bug();
+
+	return EXIT_SUCCESS;
+}
+
+Link: https://lkml.kernel.org/r/20260102205520.986725-1-lorenzo.stoakes@oracle.com
+Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Fixes: 879bca0a2c4f ("mm/vma: fix incorrectly disallowed anonymous VMA merges")
+Reported-by: syzbot+b165fc2e11771c66d8ba@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/694a2745.050a0220.19928e.0017.GAE@google.com/
+Cc: David Hildenbrand (Red Hat) <david@kernel.org>
+Cc: Jann Horn <jannh@google.com>
+Cc: Jeongjun Park <aha310510@gmail.com>
+Cc: levi.yun <yeoreum.yun@arm.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Rik van Riel <riel@surriel.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Pedro Falcato <pfalcato@suse.de>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/vma.c |   58 ++++++++++++++++++++++++++++++++++++++++-------------
+ mm/vma.h |    3 ++
+ 2 files changed, 47 insertions(+), 14 deletions(-)
+
+--- a/mm/vma.c~mm-vma-fix-anon_vma-uaf-on-mremap-faulted-unfaulted-merge
++++ a/mm/vma.c
+@@ -1130,26 +1130,50 @@ int vma_expand(struct vma_merge_struct *
+ 	mmap_assert_write_locked(vmg->mm);
+ 
+ 	vma_start_write(target);
+-	if (next && (target != next) && (vmg->end == next->vm_end)) {
++	if (next && vmg->end == next->vm_end) {
++		struct vm_area_struct *copied_from = vmg->copied_from;
+ 		int ret;
+ 
+-		sticky_flags |= next->vm_flags & VM_STICKY;
+-		remove_next = true;
+-		/* This should already have been checked by this point. */
+-		VM_WARN_ON_VMG(!can_merge_remove_vma(next), vmg);
+-		vma_start_write(next);
+-		/*
+-		 * In this case we don't report OOM, so vmg->give_up_on_mm is
+-		 * safe.
+-		 */
+-		ret = dup_anon_vma(target, next, &anon_dup);
+-		if (ret)
+-			return ret;
++		if (target != next) {
++			sticky_flags |= next->vm_flags & VM_STICKY;
++			remove_next = true;
++			/* This should already have been checked by this point. */
++			VM_WARN_ON_VMG(!can_merge_remove_vma(next), vmg);
++			vma_start_write(next);
++			/*
++			 * In this case we don't report OOM, so vmg->give_up_on_mm is
++			 * safe.
++			 */
++			ret = dup_anon_vma(target, next, &anon_dup);
++			if (ret)
++				return ret;
++		} else if (copied_from) {
++			vma_start_write(next);
++
++			/*
++			 * We are copying from a VMA (i.e. mremap()'ing) to
++			 * next, and thus must ensure that either anon_vma's are
++			 * already compatible (in which case this call is a nop)
++			 * or all anon_vma state is propagated to next
++			 */
++			ret = dup_anon_vma(next, copied_from, &anon_dup);
++			if (ret)
++				return ret;
++		} else {
++			/* In no other case may the anon_vma differ. */
++			VM_WARN_ON_VMG(target->anon_vma != next->anon_vma, vmg);
++		}
+ 	}
+ 
+ 	/* Not merging but overwriting any part of next is not handled. */
+ 	VM_WARN_ON_VMG(next && !remove_next &&
+ 		       next != target && vmg->end > next->vm_start, vmg);
++	/*
++	 * We should only see a copy with next as the target on a new merge
++	 * which sets the end to the next of next.
++	 */
++	VM_WARN_ON_VMG(target == next && vmg->copied_from &&
++		       vmg->end != next->vm_end, vmg);
+ 	/* Only handles expanding */
+ 	VM_WARN_ON_VMG(target->vm_start < vmg->start ||
+ 		       target->vm_end > vmg->end, vmg);
+@@ -1808,6 +1832,13 @@ struct vm_area_struct *copy_vma(struct v
+ 	VMG_VMA_STATE(vmg, &vmi, NULL, vma, addr, addr + len);
+ 
+ 	/*
++	 * VMG_VMA_STATE() installs vma in middle, but this is a new VMA, inform
++	 * merging logic correctly.
++	 */
++	vmg.copied_from = vma;
++	vmg.middle = NULL;
++
++	/*
+ 	 * If anonymous vma has not yet been faulted, update new pgoff
+ 	 * to match new location, to increase its chance of merging.
+ 	 */
+@@ -1828,7 +1859,6 @@ struct vm_area_struct *copy_vma(struct v
+ 	if (new_vma && new_vma->vm_start < addr + len)
+ 		return NULL;	/* should never get here */
+ 
+-	vmg.middle = NULL; /* New VMA range. */
+ 	vmg.pgoff = pgoff;
+ 	vmg.next = vma_iter_next_rewind(&vmi, NULL);
+ 	new_vma = vma_merge_new_range(&vmg);
+--- a/mm/vma.h~mm-vma-fix-anon_vma-uaf-on-mremap-faulted-unfaulted-merge
++++ a/mm/vma.h
+@@ -106,6 +106,9 @@ struct vma_merge_struct {
+ 	struct anon_vma_name *anon_name;
+ 	enum vma_merge_state state;
+ 
++	/* If we are copying a VMA, which VMA are we copying from? */
++	struct vm_area_struct *copied_from;
++
+ 	/* Flags which callers can use to modify merge behaviour: */
+ 
+ 	/*
+_
+
+Patches currently in -mm which might be from lorenzo.stoakes@oracle.com are
+
+mm-vma-fix-anon_vma-uaf-on-mremap-faulted-unfaulted-merge.patch
+
 
