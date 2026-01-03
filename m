@@ -1,137 +1,100 @@
-Return-Path: <stable+bounces-204539-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204540-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D5B7CF039A
-	for <lists+stable@lfdr.de>; Sat, 03 Jan 2026 18:48:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5461CF03D3
+	for <lists+stable@lfdr.de>; Sat, 03 Jan 2026 19:03:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F31153011FBE
-	for <lists+stable@lfdr.de>; Sat,  3 Jan 2026 17:48:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1D2B23018D59
+	for <lists+stable@lfdr.de>; Sat,  3 Jan 2026 18:03:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13B8D1B4F2C;
-	Sat,  3 Jan 2026 17:48:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 152841E0DCB;
+	Sat,  3 Jan 2026 18:03:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shenghaoyang.info header.i=@shenghaoyang.info header.b="eYmGe+SW"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="CBuBU4gQ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50688194A6C
-	for <stable@vger.kernel.org>; Sat,  3 Jan 2026 17:48:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBB21A41;
+	Sat,  3 Jan 2026 18:03:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767462484; cv=none; b=q6IFWPU9ZLrGIJgPiisMkFm2t0+4hLlIbu1htc+4QLPKsybOE3CQMym7Fso7CKD2S7C0AF6SLOSvOU0cWKkTblsTqi2eHIIARM2xGPGRsuuBvHlS5yzkj60zU7el/vw5euTdk7VBAEEcmRjMde9uMhhTGLBK9eXnk6kqHpuu0LQ=
+	t=1767463391; cv=none; b=ISxTig3hu9ob2aRiRW748JXNT93fqn7oas52BurZL7zk+t/T6jdGD0GLi/UfW4OxsvSVl7NAwCpUMROQeA0vVyRBJsGuBe1DZ6N56cWu5w7f+OH8hkNh/NEO51+NXqYYQvCNf32MU+2xErrGHixCS02Qb/aKc2rX4eEBY0OYZwU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767462484; c=relaxed/simple;
-	bh=8se+KRcuA9rp2d9sYOZlzeTgI+u8Yrj9KucoX0STkjw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=P4YkCZfyrQ/o7/Nle1IqOt6h9MstuahGLep4pFGhVDykFSEdoP2AUcWtdLzl3HGdwYRhOl5DmO8ytkkWsidOS7tg/i5rw5Oa8Yo0PqqEjxul59C01APxeHJRF7Sgh+EiPaexsuP5OWmLaKI5AmXm0cC7mniznS3Qb+beRh3FzIg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=shenghaoyang.info; spf=pass smtp.mailfrom=shenghaoyang.info; dkim=pass (2048-bit key) header.d=shenghaoyang.info header.i=@shenghaoyang.info header.b=eYmGe+SW; arc=none smtp.client-ip=209.85.215.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=shenghaoyang.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shenghaoyang.info
-Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-c03ea3b9603so497837a12.2
-        for <stable@vger.kernel.org>; Sat, 03 Jan 2026 09:48:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=shenghaoyang.info; s=google; t=1767462482; x=1768067282; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:mime-version:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=CMMVHBbwwK7jtZ0OYDpGeyStVGVJxGzS7aRRfo4f/fk=;
-        b=eYmGe+SWMA/X+P6eVV+0KQ+9VUIhO13Kiu87eK93p8HN/+7PnJQfJqxcDYln+0cREK
-         0SOU9AGym9iT4J1sMsh1llOBmTodDwsOwxV0uC7FnoD6CBeSddjdtP6HQ2v4xvygFkh/
-         TuReOFWBIyvEYsKMS8sHcz8nlJ9PFeyd3YZAi4LTo3+6ssq3U2+GO1FOgZ9/fQlzKdlQ
-         sv1KonI+HPDmDv660awXsqFRFB/u/QwOE7+iZzriP6RNXb2yLJfOjKtxO75iyX5DqpyM
-         xZutwCx11f9AcY3qiLl6OC/k0+w/RewHXB05vTh25gShtD5oKIO9XMKZxjtFrEkv5Zle
-         lCaA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767462482; x=1768067282;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:mime-version:date:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=CMMVHBbwwK7jtZ0OYDpGeyStVGVJxGzS7aRRfo4f/fk=;
-        b=WAs+hV1y4OojeaqLEfiH4wLIHwtjhfE9kLvyVH/wiqrqer0jSWd8GgoIK0xj5EwQvs
-         mkmdGGCee7K/R7yel0R5m1kEWUeRh50eMJrAV3+Ay+5Fu68uMYJ5KY1phLgt4s33iXJ3
-         ttvhEkLYgoVyXPGlhXLaLXUOO4+DOl1DPoV0L4FqjQ/zGEPFW36OTF7qfpdtEZiO4UcV
-         hi321D+Y+30s+dUXwXQnTFACFaQjSX4d4ypI7GJzghjynkKkDygc0JsllqU6HpXWJ9jK
-         AbeJJdc8RMu41z21mMwKeL5OuNhN5cAPiWdPwj//fpyIfvxmodFOCtySLv9pKFanyKrX
-         DPUw==
-X-Forwarded-Encrypted: i=1; AJvYcCXuS7pA+dIBH7offDsqDBkJ+ZfJ2mVffslUYwNXFgF7+x+69G9O7cb1q0U6G8+amg2cl+vA880=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxOkrZF0Lkw83jm/jET34qKfxFSuf45WcxVS83p3Nxv5VdL0ijY
-	22JOSr8xql9n/5TtO4jHVT7cdc0DYB3zUU3e01zn08Ab4Uxm3npII+OpIwfReMqQEqw=
-X-Gm-Gg: AY/fxX4JtL+9VdEOI4lLEiouhuH6cNIuIbtFyogDxmY2ZSwJrm1kGEmw1F/gMZg/pcy
-	Ut/oDU1KLBuMt2/0vvkvkv90kIfOz2XaglpT/o0nSOHuVfJimaa8lxnQMltOKhKigQut0w1cUiT
-	SXVzud958McZh3pYHXOX/PlwQF5f0NbBDokWvf5NAq/BX0qxA35WIRkfdUFw9HkZXN9pBakq+Db
-	unrWkI7coGsFnlz+wNuR393v/5N3WV2cQbz6YaQ6srJ1XlQ/jMf9PK8CuazhegNX0o/QQKUZOOa
-	Hs2bNfEyMIGtCKjOwRWAuYiMGBHDiEAs4NGfu14NP0zslqmQLydJGFCFIKGjfYDj9tNSQyKUakm
-	5R+PHQxrBGSXJBskjeG0XJRIyRpG7dJDojKEiVPZKo/pf2MwTX0nL07pbB7v7wBA/1xmsSMdmCh
-	CJw4XJXBSxTW8c
-X-Google-Smtp-Source: AGHT+IHSCX2Wf+wBy6KWMv8C+2VIUsJiFOtnLlLt7RcY6gOr5exQicuGvvlAxBa6mQbcQUrCVjmqHA==
-X-Received: by 2002:a05:6a00:17a1:b0:7b8:bab9:5796 with SMTP id d2e1a72fcca58-7ff66f5fe22mr30484716b3a.3.1767462482601;
-        Sat, 03 Jan 2026 09:48:02 -0800 (PST)
-Received: from [10.0.0.178] ([132.147.84.99])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7ff7e88cdaesm43266253b3a.63.2026.01.03.09.48.00
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 03 Jan 2026 09:48:02 -0800 (PST)
-Message-ID: <938b5e8e-b849-4d12-8ee2-98312094fc1e@shenghaoyang.info>
-Date: Sun, 4 Jan 2026 01:47:58 +0800
+	s=arc-20240116; t=1767463391; c=relaxed/simple;
+	bh=wjDin5AVThhZYNUvty8R27rS+ed9u1J/ub9S0aOSht8=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=Q8jYTd4MzhIZrJGBz42BVlth4p6fMkXi6t8MyHVmTadpv3gzdn2jaJ+MLOWJhVNrhWXJx3Z47zkfNmSHf82w/jPZfS6nsGE6OoWY7YhWa9JqRSKEcST6yFYTYzQ7rDopAIA5HQRNXGhfgzpvTM1d+8AiqJHU73ZVgJ1+qq12lw8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=CBuBU4gQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3E50C113D0;
+	Sat,  3 Jan 2026 18:03:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1767463391;
+	bh=wjDin5AVThhZYNUvty8R27rS+ed9u1J/ub9S0aOSht8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=CBuBU4gQ4AkZBrbUoPRDpNX7SRB7Jc7wspQPnrfo/ldXBoOBchIV8+zxKvHz6Ut6P
+	 ec1XLPh2xj3CcWAkOZRDjJh0FDRR1pxWLJR7GUu2bA/k4V4kLq6phPh3HeBnn+9sIY
+	 AuOljrHMMdIRPejyf0VkLJs8P40rfOcNbC5SEDIA=
+Date: Sat, 3 Jan 2026 10:03:10 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Joanne Koong <joannelkoong@gmail.com>
+Cc: david@redhat.com, miklos@szeredi.hu, linux-mm@kvack.org,
+ athul.krishna.kr@protonmail.com, j.neuschaefer@gmx.net, carnil@debian.org,
+ linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/1] fs/writeback: skip AS_NO_DATA_INTEGRITY mappings
+ in wait_sb_inodes()
+Message-Id: <20260103100310.7181968cda53b14def0455b3@linux-foundation.org>
+In-Reply-To: <20251215030043.1431306-2-joannelkoong@gmail.com>
+References: <20251215030043.1431306-1-joannelkoong@gmail.com>
+	<20251215030043.1431306-2-joannelkoong@gmail.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Subject: Re: [PATCH] drm/gud: fix NULL fb and crtc dereferences on USB
- disconnect
-To: Ruben Wauters <rubenru09@aol.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
-Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20251231055039.44266-1-me@shenghaoyang.info>
- <28c39f1979452b24ddde4de97e60ca721334eb49.camel@aol.com>
-Content-Language: en-US
-From: Shenghao Yang <me@shenghaoyang.info>
-In-Reply-To: <28c39f1979452b24ddde4de97e60ca721334eb49.camel@aol.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
 
-Hi Ruben,
+On Sun, 14 Dec 2025 19:00:43 -0800 Joanne Koong <joannelkoong@gmail.com> wr=
+ote:
 
-On 4/1/26 01:23, Ruben Wauters wrote:
+> Skip waiting on writeback for inodes that belong to mappings that do not
+> have data integrity guarantees (denoted by the AS_NO_DATA_INTEGRITY
+> mapping flag).
+>=20
+> This restores fuse back to prior behavior where syncs are no-ops. This
+> is needed because otherwise, if a system is running a faulty fuse
+> server that does not reply to issued write requests, this will cause
+> wait_sb_inodes() to wait forever.
+>=20
+> Fixes: 0c58a97f919c ("fuse: remove tmp folio for writebacks and internal =
+rb tree")
+> Reported-by: Athul Krishna <athul.krishna.kr@protonmail.com>
+> Reported-by: J. Neusch=E4fer <j.neuschaefer@gmx.net>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
+>
+> ..
+>
+> --- a/fs/fs-writeback.c
+> +++ b/fs/fs-writeback.c
+> @@ -2751,7 +2751,8 @@ static void wait_sb_inodes(struct super_block *sb)
+>  		 * do not have the mapping lock. Skip it here, wb completion
+>  		 * will remove it.
+>  		 */
+> -		if (!mapping_tagged(mapping, PAGECACHE_TAG_WRITEBACK))
+> +		if (!mapping_tagged(mapping, PAGECACHE_TAG_WRITEBACK) ||
+> +		    mapping_no_data_integrity(mapping))
+>  			continue;
 
-> With the elimination of these two WARN_ON_ONCEs, it's possible that
-> crtc_state may not be assigned below, and therefore may be read/passed
-> to functions when it is NULL (e.g. line 488). Either protection for a
-> null crtc_state should be added to the rest of the function, or the
-> function shouldn't continue if crtc is NULL.
-> 
-> Ruben
->> -	crtc_state = drm_atomic_get_new_crtc_state(state, crtc);
->> -
->> -	mode = &crtc_state->mode;
->> +	if (crtc)
->> +		crtc_state = drm_atomic_get_new_crtc_state(state, crtc);
->>  
->>  	ret = drm_atomic_helper_check_plane_state(new_plane_state, crtc_state,
->>  						  DRM_PLANE_NO_SCALING,
->> @@ -492,6 +485,9 @@ int gud_plane_atomic_check(struct drm_plane *plane,
->>  	if (old_plane_state->rotation != new_plane_state->rotation)
->>  		crtc_state->mode_changed = true;
->>  
->> +	mode = &crtc_state->mode;
->> +	format = fb->format;
+It's not obvious why a no-data-integrity mapping would want to skip
+writeback - what do these things have to do with each other?
 
-Yup - in this case I'm relying on drm_atomic_helper_check_plane_state()
-bailing out early after seeing that fb is NULL (since a NULL crtc should
-imply no fb) and setting plane_state->visible to false.
+So can we please have a v2 which has a comment here explaining this to the
+reader?
 
-That would cause an early return in gud_plane_atomic_check() without
-dereferencing crtc_state.
 
-Would a more explicit check be preferred?
-
-Thanks,
-
-Shenghao
 
