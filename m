@@ -1,136 +1,93 @@
-Return-Path: <stable+bounces-204545-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204546-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFBECCF0500
-	for <lists+stable@lfdr.de>; Sat, 03 Jan 2026 20:27:26 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AFE8CF0512
+	for <lists+stable@lfdr.de>; Sat, 03 Jan 2026 20:39:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2BFBC301074C
-	for <lists+stable@lfdr.de>; Sat,  3 Jan 2026 19:27:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DD605300C0EB
+	for <lists+stable@lfdr.de>; Sat,  3 Jan 2026 19:39:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E987B30EF92;
-	Sat,  3 Jan 2026 19:27:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AF992417C3;
+	Sat,  3 Jan 2026 19:39:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="oME+GmLI";
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="T1NWBlSg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RcoZjHy7"
 X-Original-To: stable@vger.kernel.org
-Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88D2C30F52C;
-	Sat,  3 Jan 2026 19:27:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.151
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D41DB1F4613;
+	Sat,  3 Jan 2026 19:39:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767468442; cv=none; b=AUo1YnsYEc7hNMwLPUlfWc4t4lpnJ+RWwAusFY97qtSE0XhpxXp0bvqIgKo8osuO3DNJ27Q1AD7WfpmVAFv2NqMdZHpPeOrdN1b1+oXc07/ypNxvZC/HdxaGnShRwRSiMUOUSsfkc4H7y5+YPUOxs+AVyfBFiZxlxSXZboNKXLc=
+	t=1767469151; cv=none; b=WhfpGx0C/1CbaGbdIAokAL6P13rhqFWnNM8EbmmgyrAN2jO2xDz4QOtJmxMRSiGvUvETCgrDnQ01Hf0JdX8rl6sRio2K6W8sBx1Km4dEsYGxLBN4KI3OJkGUvtZVyrPjvr3QrbMhcnwYT5/hsli8N2mwD3dxna08DOgBI08CWrI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767468442; c=relaxed/simple;
-	bh=HxRKqEAndG8eUy7qJ6aV4TL1TyE7WQTzcUk4tzZlb2Q=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=h+AcrnrktNTn23SrT/yDk4wdFMj43RjrMmZJ3AXSeGrFO/dAu7iv4XL6azlp1oPMax8nNFojTqGWtEK+zDEvjqn14bDtEoWCv1sekkmrCJQ/OpC/zjUI19CCd2S5aSqx7qELnpEz7Fp/Kgt3vhcHuQA1B2kukhJ4nyGVIKak/K4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=oME+GmLI; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=T1NWBlSg; arc=none smtp.client-ip=80.241.56.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
-Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:b231:465::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4dk9Yf1440z9sv3;
-	Sat,  3 Jan 2026 20:27:18 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1767468438;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2XP6qw4a7+uuVk2H+Mf5Ib+nVhrZP+yHz8tm4VwbuXM=;
-	b=oME+GmLIvYIV4xX9ApUXWFvxXXtrMqR7OJa0qexmleEQFn9kZhFFxDhsEh7Fx9GwC4mk3f
-	97+VR8fXV3aEfOZxqQ0iCe8dJI3Od1jdGsiEiPEj3FVGB3OT9tmHm113A67f9PJ8xajGTQ
-	lQVOQCDJ+hMdmuhi0eTV/fyUArky7L5OcBhcfdwQQPZZHF2u5/Qd0SMOpduRmEi/YOnHTf
-	Cnvp929qbvbP5ySEG/a8aGcxjPU7ZyaLV54KQHsZwkFevkfqEd26qedSSPRrjuGgXgZV6q
-	BmSmvxkR3mtQlVCjuGcl/u5rbilyBzzF2gPuGC7YsEGGa4QbJe7I6Tzp8TzXcg==
-Authentication-Results: outgoing_mbo_mout;
-	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=T1NWBlSg;
-	spf=pass (outgoing_mbo_mout: domain of marek.vasut@mailbox.org designates 2001:67c:2050:b231:465::1 as permitted sender) smtp.mailfrom=marek.vasut@mailbox.org
-Message-ID: <e92e22a5-5cb3-442d-9a91-8d66a247ba9a@mailbox.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1767468436;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2XP6qw4a7+uuVk2H+Mf5Ib+nVhrZP+yHz8tm4VwbuXM=;
-	b=T1NWBlSguX37B1M/jTmqq65T34vovB6Jjht0+e0NlD6hiMLfFGrjvuEOIdlLBWPbg8phtm
-	okA3CYE+z4oUi8p4B/j1+ZlEAXxJlO7sThHBfzM6nwyLW0As+MoPzF12Vx23aymIUCRank
-	Mb0517UUXQQ1vnMtdyYjbGsoq7M43nTMW3XRLQjPhifl/fOR+MXJ/f6N8qwhqwdsBK1Z5B
-	BY7IbVip7Nsy7tluxaJh2juldnyd9sL1JKLvlv2mLROOKQyOZ6DsOmejYYm7a6acwxW1u8
-	AbASBJYEa1tAO3y+ZXYXlDLs1nmgN48hFSrWbX2dptWPgZTf1Y/HySspRHY1pQ==
-Date: Sat, 3 Jan 2026 20:27:06 +0100
+	s=arc-20240116; t=1767469151; c=relaxed/simple;
+	bh=xcffhuTpnXAK+nat1ZqFZ3PRCDPg6SoMveYDJvIECvs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=QGTMkTHRMN6qqearvL8CGxL8A4yvxz3UwMRsAUEUH+HC4kfqACtaeuNnMJqKf0gg8jdkk8fQLYp/wht39bZNdLFLMi4pw2MHlZ7KdmuR77kcO3DYUa2LxtZzfOkN1PD11X3ERij19AltVxD005zGykRCdV+HXO+vQgSSvTcNYGQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RcoZjHy7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4808C113D0;
+	Sat,  3 Jan 2026 19:39:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767469150;
+	bh=xcffhuTpnXAK+nat1ZqFZ3PRCDPg6SoMveYDJvIECvs=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=RcoZjHy7uAoNlyz/Hc2KmEh5JvYp1bzoZBWlKDldM4jFh3jSzWmrykN6Oq9/JO/la
+	 QFtBgGkOIKwz7lwdv4/0i/0HeCVvnzaLBn7Qu7bq3KmEn+qX/mf7FIcFiATB8JpGqc
+	 g1+WVS6E6pgk8gfw1yk6u8lqZ1TO3Ej5jz1yaTkx3XbeL6lLGh1Cyp7p8xp17Ziybd
+	 8W8iNLaNxIr/RW6zg0j7FLFazI+UTesLMnaMIDNiO3u4NnjrS3b//+2mgSnQj5TtPX
+	 kcbfWVTx5A4Wde1vuzRpKSrwE/34hQZKE0lW0CWxU3EqQ/rr9CdagRfSl7nHtjpwsS
+	 JQKnfu6cN19BA==
+From: Chuck Lever <cel@kernel.org>
+To: <stable@vger.kernel.org>
+Cc: <linux-nfs@vger.kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.6.y 0/4] NFSD: NFSv4 file creation neglects setting ACL
+Date: Sat,  3 Jan 2026 14:38:50 -0500
+Message-ID: <20260103193854.2954342-1-cel@kernel.org>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: 2025122941-civic-revered-b250@gregkh
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH 0/4] drm: Revert and fix enable/disable sequence
-To: Linus Walleij <linusw@kernel.org>,
- Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Andrzej Hajda <andrzej.hajda@intel.com>,
- Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>,
- Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
- Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>,
- Dmitry Baryshkov <lumag@kernel.org>, Chun-Kuang Hu
- <chunkuang.hu@kernel.org>, Philipp Zabel <p.zabel@pengutronix.de>,
- Matthias Brugger <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Jyri Sarha <jyri.sarha@iki.fi>, dri-devel@lists.freedesktop.org,
- linux-kernel@vger.kernel.org, linux-mediatek@lists.infradead.org,
- linux-arm-kernel@lists.infradead.org,
- Marek Szyprowski <m.szyprowski@samsung.com>,
- Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>,
- Aradhya Bhatia <aradhya.bhatia@linux.dev>,
- Chaoyi Chen <chaoyi.chen@rock-chips.com>, Vicente Bergas
- <vicencb@gmail.com>, Marek Vasut <marek.vasut+renesas@mailbox.org>,
- stable@vger.kernel.org
-References: <20251205-drm-seq-fix-v1-0-fda68fa1b3de@ideasonboard.com>
- <3b13c7a2-f7e6-49fd-b3bb-3e0a1fe9acf3@ideasonboard.com>
- <CAD++jLk8-0Rkh16T+R1dh6=e_f9U1i=AKOk1Y8dLGV4bxzRtFg@mail.gmail.com>
- <817b2358-0920-4b7a-abb1-133103d0f9fe@ideasonboard.com>
- <CAD++jLm_0xweD4tRJ8ZfwmcOe2BBGCsUuL1UWUiNM+Gpbq3Zuw@mail.gmail.com>
- <6be8aaf6-b01d-4444-9850-967f8e316896@ideasonboard.com>
- <CAD++jLkWH8xxT+bTXseuJv+pXeEGy7qqE7Z1Mid2CwRg8O5D7A@mail.gmail.com>
-Content-Language: en-US
-From: Marek Vasut <marek.vasut@mailbox.org>
-In-Reply-To: <CAD++jLkWH8xxT+bTXseuJv+pXeEGy7qqE7Z1Mid2CwRg8O5D7A@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-MBO-RS-META: 77nc8ht34szpzk9sqmo8ndpt41mmhnkh
-X-MBO-RS-ID: 65adf9a1f053822655f
-X-Rspamd-Queue-Id: 4dk9Yf1440z9sv3
 
-On 1/3/26 8:12 PM, Linus Walleij wrote:
-> On Tue, Dec 23, 2025 at 12:48 PM Tomi Valkeinen
-> <tomi.valkeinen@ideasonboard.com> wrote:
->> On 23/12/2025 01:18, Linus Walleij wrote:
->>> On Sun, Dec 14, 2025 at 1:42 PM Tomi Valkeinen
->>> <tomi.valkeinen@ideasonboard.com> wrote:
->>>
->>>>>> Should we merge this series as a fix for 6.18 rcs?
->>>>>
->>>>> Too late now, so let's merge it as a fix for v6.19 rcs!
->>>>
->>>> Ah, right. Indeed, I meant v6.19 rcs.
->>>
->>> Are you applying it or should I?
->>> Not sure if you want some special timing, like outside of
->>> holidays.
->>
->> Oh. No, I'm not a DRM maintainer, so I was waiting for someone to merge
->> this. From my point of view it's ready for merging.
-> 
-> Aha OK, I applied and pushed it now. I added the same Fixes: tag as on
-> patch 1/4 to all 4 patches in the process.
-Thank you !
+From: Chuck Lever <chuck.lever@oracle.com>
+
+I received an automated report that patch "NFSD: NFSv4 file creation
+neglects setting ACL" failed to apply to the 6.6-stable tree. This
+series is my attempt to address that failure.
+
+- First, applied several pre-requisite patches
+- LLM agent review for possible regressions reported no issues
+- CI testing reported no regressions
+
+Chuck Lever (4):
+  nfsd: convert to new timestamp accessors
+  nfsd: Fix NFSv3 atomicity bugs in nfsd_setattr()
+  nfsd: set security label during create operations
+  NFSD: NFSv4 file creation neglects setting ACL
+
+ fs/nfsd/nfs3proc.c  | 10 ++++++----
+ fs/nfsd/nfs3xdr.c   |  5 +----
+ fs/nfsd/nfs4proc.c  | 11 +++++------
+ fs/nfsd/nfs4state.c |  2 +-
+ fs/nfsd/nfsctl.c    |  2 +-
+ fs/nfsd/nfsproc.c   |  6 +++---
+ fs/nfsd/vfs.c       | 22 ++++++++++++++--------
+ fs/nfsd/vfs.h       | 11 ++++++++++-
+ fs/nfsd/xdr3.h      |  2 +-
+ 9 files changed, 42 insertions(+), 29 deletions(-)
+
+-- 
+2.52.0
+
 
