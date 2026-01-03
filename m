@@ -1,296 +1,161 @@
-Return-Path: <stable+bounces-204524-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204525-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5A0ACEFA1E
-	for <lists+stable@lfdr.de>; Sat, 03 Jan 2026 03:06:39 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04272CEFA4E
+	for <lists+stable@lfdr.de>; Sat, 03 Jan 2026 04:16:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 88C8C3013EE0
-	for <lists+stable@lfdr.de>; Sat,  3 Jan 2026 02:06:37 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 30A1F30076A5
+	for <lists+stable@lfdr.de>; Sat,  3 Jan 2026 03:16:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07E4123817F;
-	Sat,  3 Jan 2026 02:06:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 866B81DD9AC;
+	Sat,  3 Jan 2026 03:16:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BFYu6hHZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hEAfEe3L"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36FCC194AD7
-	for <stable@vger.kernel.org>; Sat,  3 Jan 2026 02:06:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41B00AD5A
+	for <stable@vger.kernel.org>; Sat,  3 Jan 2026 03:16:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767405995; cv=none; b=D9n2/9xIaArdKJ/EHDpy+afZN8LX8zkaRqOtfnYFiXSINwqSBtdxQyE2cfUNXeTUH3QBtSoNPNQKFFiRbLkHMYPEX8X36gt2txq9b7z5r7d9jt5Grw5s+HrLBr0I2RPkWGrra8//easV0nMDFQY2IAJ/Jl7UxZdDOMhB5eY+8q8=
+	t=1767410201; cv=none; b=kQ8F9A7wzxKAviXBfWT/mMGCO8DcuOjXrS/z3UZUrPFFeDwpB5aRGI+D8eTt5DV8KJ2wsd0nfU6M0ohbOD59HpGDEkBpIPed3B6m8iKA20DucxB1CcizFA6/tOeCJF6ZpgPEJmtP8bpWGFpNRf0e04OC5ETBoNY79aheYi5RHnE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767405995; c=relaxed/simple;
-	bh=urWlwVbmf3jBnpI/3br+AadsN4GY8eeK8FAP238jK8A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OsHljOeC5fzqLNusL+gtW5SwJZ13MfZ5WpgV9C8MpTY5arbKWo2r+SvyUcXG3kWcspNItNU0zw+Lbt9fy8RGVZ+i/NRDiSlfqpBGYX4fxVdVCrdEVdE9nO+3pjxVQFbqmigdb/TUf2tRIrM+gjjwc8vHeifcc9+1MLNV5YUsNDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BFYu6hHZ; arc=none smtp.client-ip=209.85.210.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-7b89c1ce9easo13950907b3a.2
-        for <stable@vger.kernel.org>; Fri, 02 Jan 2026 18:06:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767405993; x=1768010793; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=u98Ejy5F6sM6nEig+XIVD6Gd2byjYxaBEGZOVR7QkbE=;
-        b=BFYu6hHZJ2k5BkK1Aem3KJRBUdVsyE+tZItUqu8jdyHhA7dAtmfVi1JpV8goVDPdih
-         TyxcIkwrcbR7vmBPH9CksFvGVpMRoTS2G5A7UGSNuRSoSfFf5uf0q+mHVwXxnnSBLZ3e
-         wW8uHrj2pVfgKhuCL6Edh7R6EODFvHQOaj7QJgDKW+Vb7BoA0cRRid9ZrsjV3W7DmA/v
-         Po2LfB8V3LarSfOQvMjnHSBdhoYGggCJViXF/Dc7C1Ji4TDfgi65/ZECRxLa3o8RLuFk
-         SbKB+5GnOcp/OgzdL2aRmLXRtjGOheV4k/ncaDpDICfZ85M5eUCt7NcI8+ODBLjtUMnl
-         j4TA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767405993; x=1768010793;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=u98Ejy5F6sM6nEig+XIVD6Gd2byjYxaBEGZOVR7QkbE=;
-        b=mYdAghK5Q3XLWf7SfnCWbBuzXXCtVY/mcP8e7+4naQ3kAPuUwKEjFXJkQnUhifQnxJ
-         ktacFflUasldFYFQFOevp2YNCLEx/qPqHIr4427h26qEBosxqdhnunXJBfzQL7AVdtY3
-         +BrQbjFaDFHFZpjRNs53pKi2oKrj4KEpbfJ8W4Y2AY4zKWThnRWzvojlAIC9oNN7HFZ8
-         ZMbM8MhZixugKmNvce1JQzX8DzMwxbV392m0FYRDB+ZrSHD1BBxPtYO0nIkARgy/IKl1
-         kEDRKzZWNJ5U2Bbx3ao78JHPbJLdi5HynyDfuEeHcbIGSF4/L4upAckEWz0BTb5ygy/w
-         zkTw==
-X-Forwarded-Encrypted: i=1; AJvYcCXKqWnC6j8+f/SbqfrbNJAskaKfjC2uW7h0rE6weA+TEP3bQZZKd+LEtwRmtLqKItpAM9b3/Ns=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzRGot3EIJT+VucdctE4HFnRY/2TKhQfM+eX9M8IUWlOhZLQuNt
-	yQ4gKqY5+BOD/4YtqaNPICi5fPsmu8i1Cnizl1scVGuG9o/uno71unuL
-X-Gm-Gg: AY/fxX7MRM9IbAp70v6iQ6ITiXh5rZmsUOh8HaGnOfofCzNl3ceOXuqYKk1v3URXutI
-	Cf2kJMgcXBcBKA+MW7Quw2JN7ICi5+n1rX0MJZNJjvpdwuYKJTR2WQJxCa5QoIkiBrqFBjjhNfJ
-	sfeFznGH36a4n5Lq5Z1UbFRETmtEDXu4gYef//za1F5kDGoCMKYh/AB0CkpfsjYQhNvK7soJRi8
-	uEnpM/v2HMxL+Np7UY/9rIlMkMR7s7skd0m275shpjMvjWyw5TLirFGZkj9rnkscXnjvxBVOTut
-	4iNNRsWatc7Ua+kDjrn3NxbWg1z5GYvjMqfiO9oK3iiCIcEw3fxQqmaRqy9WSFyRskOdpjybBA6
-	0+Vqy5LbwZFF2j1NmCjpqaNmR0SN+LL7as+uCav6wrcYx7SJ4HYeZ0yUeWF+bcBePTky85F8+5X
-	6IrtMWabjjOlUhAUVF
-X-Google-Smtp-Source: AGHT+IFQD2Ixfdo5AFYDYl0lfZW8rE9uL5oEeM2htF0PJak32clFPKHOb87Sk3lWDkCVUk7STs1L6A==
-X-Received: by 2002:a05:7022:3a0d:b0:11a:51f9:daf with SMTP id a92af1059eb24-121722ac41amr38377366c88.14.1767405993236;
-        Fri, 02 Jan 2026 18:06:33 -0800 (PST)
-Received: from localhost ([2409:8a1e:693f:670:11b4:8a1f:ed42:55de])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1217254d369sm158457706c88.16.2026.01.02.18.06.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 02 Jan 2026 18:06:32 -0800 (PST)
-Date: Sat, 3 Jan 2026 10:06:27 +0800
-From: Yao Yuan <yaoyuan0329os@gmail.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, seanjc@google.com, 
-	x86@kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 1/4] x86/fpu: Clear XSTATE_BV[i] in save state whenever
- XFD[i]=1
-Message-ID: <aig6cfdj7vxmm5yt6lvfsyqwlnavrcl2n4z3gzomqydce5suxm@ydomfhhmwd7y>
-References: <20260101090516.316883-1-pbonzini@redhat.com>
- <20260101090516.316883-2-pbonzini@redhat.com>
+	s=arc-20240116; t=1767410201; c=relaxed/simple;
+	bh=m9xIBj3yL9LawKUkeqOxIMHhpeBMxBfDFT4hgdvqNxI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=P/SYcIKLQNnDK4G6Yl7+VJveI/BjskshI6tW4CzjNgTHJ92szY8ndV+caumyQqnheOSv0ae3u5fjSnl93JSO2+dZziOWaW67BxuLsvW0wQpkq7jQWhszOfg/5337iMwLBKGsjFyfwUn17C8QfRKo+dhCpydTDrUhyNlA1NZ/Ero=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hEAfEe3L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E816AC19424
+	for <stable@vger.kernel.org>; Sat,  3 Jan 2026 03:16:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767410200;
+	bh=m9xIBj3yL9LawKUkeqOxIMHhpeBMxBfDFT4hgdvqNxI=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=hEAfEe3Lme0NNGrJTeE6cc8HOq7gx3X/6ZnV7zwGPsAcHzxSu0eF1kvyJeSkWT8nk
+	 b+9npTewLTl9oMrhQsLV/UoaC4GQNbTTI8zCWGnsf4EeO9bWoCemfc0UUhgobW0Pr4
+	 kEwiKJHpXavsF0SxNfy1QP/wpnn1JxPHRhWIo+cId4lEyQpX7MQ8vnWWnStQgi0x3C
+	 NXc+SK8m91C4kWYLIMqx0mUGNNMcInJdCyF/ZeDNdfNiiheGCBpjgx69XhvK+w/XJ+
+	 TrFcuqR63iLiznhmTZK+hPAgeUupWd6LSKH/ItDy0bN3MYy1RgDbjLP3ZGJErZFiWk
+	 oVKBVWw8c8iCA==
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-64b9230f564so15098439a12.1
+        for <stable@vger.kernel.org>; Fri, 02 Jan 2026 19:16:40 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWZoKjBgICRA+q7tk7TD0UqPIRucYj+Ed7MsJl9awpbinai+CSNfW9NTNBHy/WHlhvNtXPtsT4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwLvACr58/uzSmWHy9EDxAzA6HlzCq8GvkMS9Z69fgvJAUKzNoc
+	AByfM9aMsmNyo4txeqEZ5YqauaqUmKe5A8yLwVhgcR28ya+9LAVOoBHULWvfpXBGau2+My5mzWd
+	Y3GgmRot4ggHGVQ11ColHZMRnv/jEp84=
+X-Google-Smtp-Source: AGHT+IENwkbY5Krujo1vI/+oQgXYSVTGsEftmHp5TsgQioVkf+KFrHnaVJGa5DrZDz3gGsdbfK08WhOdN1Wgf21PUHg=
+X-Received: by 2002:a17:906:c146:b0:b73:99f7:8134 with SMTP id
+ a640c23a62f3a-b8037180224mr4120664866b.45.1767410199407; Fri, 02 Jan 2026
+ 19:16:39 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260101090516.316883-2-pbonzini@redhat.com>
+References: <20251230080014.3934590-1-chenhuacai@loongson.cn>
+ <2025123049-cadillac-straggler-d2fb@gregkh> <DFBMNYF0U5PK.24YOAUZFZ0ESB@cknow-tech.com>
+ <73d472ea-e660-474c-b319-b0e8758406c0@rowland.harvard.edu>
+ <CAAhV-H6drj1df3Y4_Z67t4TzJ5n6YiexsEHKTPvi1caNvw5H9A@mail.gmail.com>
+ <0c85d288-405f-4aaf-944e-b1d452d0f275@rowland.harvard.edu>
+ <CAAhV-H5GdkMg-uzMpDQPGLs+gWNAy6ZOH33VoLqnNyWbRenNDw@mail.gmail.com> <34c7edd0-3c0c-4a57-b0ea-71e4cba2ef26@rowland.harvard.edu>
+In-Reply-To: <34c7edd0-3c0c-4a57-b0ea-71e4cba2ef26@rowland.harvard.edu>
+From: Huacai Chen <chenhuacai@kernel.org>
+Date: Sat, 3 Jan 2026 11:16:59 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H7j=cD9dkaB5bWxNdPtoVR4NUFvFs=n46TaNte1zGqoOA@mail.gmail.com>
+X-Gm-Features: AQt7F2p7PUWpUJu1gk3NQjtCnUFNalt9DTy3BonfJ8TJwT21wFS49ZipknARuPk
+Message-ID: <CAAhV-H7j=cD9dkaB5bWxNdPtoVR4NUFvFs=n46TaNte1zGqoOA@mail.gmail.com>
+Subject: Re: [PATCH] USB: OHCI/UHCI: Add soft dependencies on ehci_hcd
+To: Alan Stern <stern@rowland.harvard.edu>
+Cc: Diederik de Haas <diederik@cknow-tech.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Huacai Chen <chenhuacai@loongson.cn>, 
+	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org, Shengwen Xiao <atzlinux@sina.com>, 
+	linux-rockchip@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jan 01, 2026 at 10:05:13AM +0100, Paolo Bonzini wrote:
-> From: Sean Christopherson <seanjc@google.com>
+On Fri, Jan 2, 2026 at 11:13=E2=80=AFPM Alan Stern <stern@rowland.harvard.e=
+du> wrote:
 >
-> When loading guest XSAVE state via KVM_SET_XSAVE, and when updating XFD in
-> response to a guest WRMSR, clear XFD-disabled features in the saved (or to
-> be restored) XSTATE_BV to ensure KVM doesn't attempt to load state for
-> features that are disabled via the guest's XFD.  Because the kernel
-> executes XRSTOR with the guest's XFD, saving XSTATE_BV[i]=1 with XFD[i]=1
-> will cause XRSTOR to #NM and panic the kernel.
+> On Fri, Jan 02, 2026 at 10:36:35AM +0800, Huacai Chen wrote:
+> > On Wed, Dec 31, 2025 at 11:21=E2=80=AFPM Alan Stern <stern@rowland.harv=
+ard.edu> wrote:
+> > >
+> > > On Wed, Dec 31, 2025 at 05:38:05PM +0800, Huacai Chen wrote:
+> > > > From your long explanation I think the order is still important. "N=
+ew
+> > > > connection" may be harmless for USB keyboard/mouse, but really
+> > > > unacceptable for USB storage.
+> > > >
+> > > > If we revert 05c92da0c524 and 9beeee6584b9, the real problem doesn'=
+t
+> > > > disappear. Then we go back to pre-2008 to rely on distributions
+> > > > providing a correct modprobe.conf?
+> > >
+> > > The warning message in 9beeee6584b9 was written a long time ago; back
+> > > then I didn't realize that the real dependency was between the -pci
+> > > drivers rather than the -hcd ones (and I wasn't aware of softdeps).  =
+The
+> > > soft dependency in 05c92da0c524 is between the -pci drivers, so it is
+> > > correct.
+> > >
+> > > To put it another way, on PCI-based systems it is not a problem if th=
+e
+> > > modules are loaded in this order: uhci-hcd, ohci-hcd, ehci-hcd,
+> > > ehci-pci, ohci-pci, uhci-pci.  Even though the warning message would =
+be
+> > > logged, the message would be wrong.
+> > Correct me if I'm wrong.
+> >
+> > I found XHCI is compatible with USB1.0/2.0 devices,
 >
-> E.g. if fpu_update_guest_xfd() sets XFD without clearing XSTATE_BV:
+> Yes.
 >
->   ------------[ cut here ]------------
->   WARNING: arch/x86/kernel/traps.c:1524 at exc_device_not_available+0x101/0x110, CPU#29: amx_test/848
->   Modules linked in: kvm_intel kvm irqbypass
->   CPU: 29 UID: 1000 PID: 848 Comm: amx_test Not tainted 6.19.0-rc2-ffa07f7fd437-x86_amx_nm_xfd_non_init-vm #171 NONE
->   Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 0.0.0 02/06/2015
->   RIP: 0010:exc_device_not_available+0x101/0x110
->   Call Trace:
->    <TASK>
->    asm_exc_device_not_available+0x1a/0x20
->   RIP: 0010:restore_fpregs_from_fpstate+0x36/0x90
->    switch_fpu_return+0x4a/0xb0
->    kvm_arch_vcpu_ioctl_run+0x1245/0x1e40 [kvm]
->    kvm_vcpu_ioctl+0x2c3/0x8f0 [kvm]
->    __x64_sys_ioctl+0x8f/0xd0
->    do_syscall_64+0x62/0x940
->    entry_SYSCALL_64_after_hwframe+0x4b/0x53
->    </TASK>
->   ---[ end trace 0000000000000000 ]---
+> >  but EHCI isn't
+> > compatible with USB1.0. Instead, EHCI usually has an OHCI together,
+> > this is not only in the PCI case.
 >
-> This can happen if the guest executes WRMSR(MSR_IA32_XFD) to set XFD[18] = 1,
-> and a host IRQ triggers kernel_fpu_begin() prior to the vmexit handler's
-> call to fpu_update_guest_xfd().
+> It's more complicated than that.
 >
-> and if userspace stuffs XSTATE_BV[i]=1 via KVM_SET_XSAVE:
+> For quite a long time now, most systems using EHCI have not included a
+> companion OHCI or UHCI controller.  Instead they include a built-in
+> USB-2.0 hub; the hub is wired directly into the EHCI controller and the
+> external ports are connected to the hub.  USB-2.0 hubs include
+> transaction translators that relay packets between high-speed and low-
+> or full-speed connections, so they can talk to both USB-1 and USB-2
+> devices.  Hence no companion controller is needed.
 >
->   ------------[ cut here ]------------
->   WARNING: arch/x86/kernel/traps.c:1524 at exc_device_not_available+0x101/0x110, CPU#14: amx_test/867
->   Modules linked in: kvm_intel kvm irqbypass
->   CPU: 14 UID: 1000 PID: 867 Comm: amx_test Not tainted 6.19.0-rc2-2dace9faccd6-x86_amx_nm_xfd_non_init-vm #168 NONE
->   Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 0.0.0 02/06/2015
->   RIP: 0010:exc_device_not_available+0x101/0x110
->   Call Trace:
->    <TASK>
->    asm_exc_device_not_available+0x1a/0x20
->   RIP: 0010:restore_fpregs_from_fpstate+0x36/0x90
->    fpu_swap_kvm_fpstate+0x6b/0x120
->    kvm_load_guest_fpu+0x30/0x80 [kvm]
->    kvm_arch_vcpu_ioctl_run+0x85/0x1e40 [kvm]
->    kvm_vcpu_ioctl+0x2c3/0x8f0 [kvm]
->    __x64_sys_ioctl+0x8f/0xd0
->    do_syscall_64+0x62/0x940
->    entry_SYSCALL_64_after_hwframe+0x4b/0x53
->    </TASK>
->   ---[ end trace 0000000000000000 ]---
+> I don't remember when Intel starting selling chipsets like this, but it
+> was probably around 2000 or earlier.  (Some non-Intel-based systems
+> included a transaction translator directly in the root hub, so they
+> didn't even need to have an additional USB-2.0 hub.)
 >
-> The new behavior is consistent with the AMX architecture.  Per Intel's SDM,
-> XSAVE saves XSTATE_BV as '0' for components that are disabled via XFD
-> (and non-compacted XSAVE saves the initial configuration of the state
-> component):
+> Before that, systems did include companion controllers along with an
+> EHCI controller.  I don't know of any non-PCI systems that did this, but
+> of course some may exist.  However, the EHCI-1.0 specification says this
+> in section 4.2 "Port Routing and Control" (p. 54):
 >
->   If XSAVE, XSAVEC, XSAVEOPT, or XSAVES is saving the state component i,
->   the instruction does not generate #NM when XCR0[i] = IA32_XFD[i] = 1;
->   instead, it operates as if XINUSE[i] = 0 (and the state component was
->   in its initial state): it saves bit i of XSTATE_BV field of the XSAVE
->   header as 0; in addition, XSAVE saves the initial configuration of the
->   state component (the other instructions do not save state component i).
+>         The USB 2.0 host controller must be implemented as a
+>         multi-function PCI device if the implementation
+>         includes companion controllers.
 >
-> Alternatively, KVM could always do XRSTOR with XFD=0, e.g. by using
-> a constant XFD based on the set of enabled features when XSAVEing for
-> a struct fpu_guest.  However, having XSTATE_BV[i]=1 for XFD-disabled
-> features can only happen in the above interrupt case, or in similar
-> scenarios involving preemption on preemptible kernels, because
-> fpu_swap_kvm_fpstate()'s call to save_fpregs_to_fpstate() saves the
-> outgoing FPU state with the current XFD; and that is (on all but the
-> first WRMSR to XFD) the guest XFD.
->
-> Therefore, XFD can only go out of sync with XSTATE_BV in the above
-> interrupt case, or in similar scenarios involving preemption on
-> preemptible kernels, and it we can consider it (de facto) part of KVM
-> ABI that KVM_GET_XSAVE returns XSTATE_BV[i]=0 for XFD-disabled features.
->
-> Reported-by: Paolo Bonzini <pbonzini@redhat.com>
-> Cc: stable@vger.kernel.org
-> Fixes: 820a6ee944e7 ("kvm: x86: Add emulation for IA32_XFD", 2022-01-14)
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> [Move clearing of XSTATE_BV from fpu_copy_uabi_to_guest_fpstate
->  to kvm_vcpu_ioctl_x86_set_xsave. - Paolo]
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->  arch/x86/kernel/fpu/core.c | 32 +++++++++++++++++++++++++++++---
->  arch/x86/kvm/x86.c         |  9 +++++++++
->  2 files changed, 38 insertions(+), 3 deletions(-)
->
-> diff --git a/arch/x86/kernel/fpu/core.c b/arch/x86/kernel/fpu/core.c
-> index da233f20ae6f..166c380b0161 100644
-> --- a/arch/x86/kernel/fpu/core.c
-> +++ b/arch/x86/kernel/fpu/core.c
-> @@ -319,10 +319,29 @@ EXPORT_SYMBOL_FOR_KVM(fpu_enable_guest_xfd_features);
->  #ifdef CONFIG_X86_64
->  void fpu_update_guest_xfd(struct fpu_guest *guest_fpu, u64 xfd)
->  {
-> +	struct fpstate *fpstate = guest_fpu->fpstate;
-> +
->  	fpregs_lock();
-> -	guest_fpu->fpstate->xfd = xfd;
-> -	if (guest_fpu->fpstate->in_use)
-> -		xfd_update_state(guest_fpu->fpstate);
-> +
-> +	/*
-> +	 * KVM's guest ABI is that setting XFD[i]=1 *can* immediately revert
-> +	 * the save state to initialized.  Likewise, KVM_GET_XSAVE does the
-> +	 * same as XSAVE and returns XSTATE_BV[i]=0 whenever XFD[i]=1.
-> +	 *
-> +	 * If the guest's FPU state is in hardware, just update XFD: the XSAVE
-> +	 * in fpu_swap_kvm_fpstate will clear XSTATE_BV[i] whenever XFD[i]=1.
-> +	 *
-> +	 * If however the guest's FPU state is NOT resident in hardware, clear
-> +	 * disabled components in XSTATE_BV now, or a subsequent XRSTOR will
-> +	 * attempt to load disabled components and generate #NM _in the host_.
-> +	 */
+Thank you for your explanation, so it means there are two methods: The
+old one is EHCI with a companion OHCI; the new one is EHCI with a
+USB-2.0 hub. Right?
 
-Hi Sean and Paolo,
-
-> +	if (xfd && test_thread_flag(TIF_NEED_FPU_LOAD))
-> +		fpstate->regs.xsave.header.xfeatures &= ~xfd;
-> +
-> +	fpstate->xfd = xfd;
-> +	if (fpstate->in_use)
-> +		xfd_update_state(fpstate);
-
-I see a *small* window that the Host IRQ can happen just
-after above TIF_NEED_FPU_LOAD checking, which could set
-TIF_NEED_FPU_LOAD but w/o clear the xfd from
-fpstate->regs.xsave.header.xfeatures.
-
-But there's WARN in in kernel_fpu_begin_mask():
-
-	WARN_ON_FPU(!irq_fpu_usable());
-
-irq_fpu_usable()
-{
-	...
-	/*
-	 * In hard interrupt context it's safe when soft interrupts
-	 * are enabled, which means the interrupt did not hit in
-	 * a fpregs_lock()'ed critical region.
-	 */
-	return !softirq_count();
-}
-
-Looks we are relying on this to catch the above *small* window
-yet, we're in fpregs_lock() region yet.
-
-Is this correct understanding ?
-
-> +
->  	fpregs_unlock();
->  }
->  EXPORT_SYMBOL_FOR_KVM(fpu_update_guest_xfd);
-> @@ -430,6 +449,13 @@ int fpu_copy_uabi_to_guest_fpstate(struct fpu_guest *gfpu, const void *buf,
->  	if (ustate->xsave.header.xfeatures & ~xcr0)
->  		return -EINVAL;
+> > So I guess OHCI/UHCI have an EHCI dependency in order to avoid "new
+> > connection", not only in the PCI case.
 >
-> +	/*
-> +	 * Disabled features must be in their initial state, otherwise XRSTOR
-> +	 * causes an exception.
-> +	 */
-> +	if (WARN_ON_ONCE(ustate->xsave.header.xfeatures & kstate->xfd))
-> +		return -EINVAL;
-> +
->  	/*
->  	 * Nullify @vpkru to preserve its current value if PKRU's bit isn't set
->  	 * in the header.  KVM's odd ABI is to leave PKRU untouched in this
-> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-> index ff8812f3a129..c0416f53b5f5 100644
-> --- a/arch/x86/kvm/x86.c
-> +++ b/arch/x86/kvm/x86.c
-> @@ -5807,9 +5807,18 @@ static int kvm_vcpu_ioctl_x86_get_xsave(struct kvm_vcpu *vcpu,
->  static int kvm_vcpu_ioctl_x86_set_xsave(struct kvm_vcpu *vcpu,
->  					struct kvm_xsave *guest_xsave)
->  {
-> +	union fpregs_state *xstate = (union fpregs_state *)guest_xsave->region;
-> +
->  	if (fpstate_is_confidential(&vcpu->arch.guest_fpu))
->  		return vcpu->kvm->arch.has_protected_state ? -EINVAL : 0;
+> Do you know of any non-PCI systems that do this?
+Unfortunately, in 2026 there are really "EHCI with a companion OHCI"
+for non-PCI systems, please see
+arch/loongarch/boot/dts/loongson-2k0500.dtsi.
+
+Huacai
+
 >
-> +	/*
-> +	 * Do not reject non-initialized disabled features for backwards
-> +	 * compatibility, but clear XSTATE_BV[i] whenever XFD[i]=1.
-> +	 * Otherwise, XRSTOR would cause a #NM.
-> +	 */
-> +	xstate->xsave.header.xfeatures &= ~vcpu->arch.guest_fpu.fpstate->xfd;
-> +
->  	return fpu_copy_uabi_to_guest_fpstate(&vcpu->arch.guest_fpu,
->  					      guest_xsave->region,
->  					      kvm_caps.supported_xcr0,
-> --
-> 2.52.0
->
->
+> Alan Stern
 
