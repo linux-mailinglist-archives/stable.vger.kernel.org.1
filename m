@@ -1,124 +1,147 @@
-Return-Path: <stable+bounces-204532-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204533-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90D22CEFCD8
-	for <lists+stable@lfdr.de>; Sat, 03 Jan 2026 09:36:20 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0AF5CF02D9
+	for <lists+stable@lfdr.de>; Sat, 03 Jan 2026 17:41:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5B38D300F9F8
-	for <lists+stable@lfdr.de>; Sat,  3 Jan 2026 08:36:19 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5ECA730164EE
+	for <lists+stable@lfdr.de>; Sat,  3 Jan 2026 16:41:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96F9929B22F;
-	Sat,  3 Jan 2026 08:36:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A5A830DD00;
+	Sat,  3 Jan 2026 16:41:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="L1HD2Tv4"
+	dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b="iPkij/DA"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f194.google.com (mail-pl1-f194.google.com [209.85.214.194])
+Received: from mail-qv1-f45.google.com (mail-qv1-f45.google.com [209.85.219.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F07E124E4D4
-	for <stable@vger.kernel.org>; Sat,  3 Jan 2026 08:36:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.194
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55CC529E10B
+	for <stable@vger.kernel.org>; Sat,  3 Jan 2026 16:41:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767429378; cv=none; b=kfW02ml1FHyTIaM/bXphfAiDDGV4ARZ9np8v4mslmhXhpJEVFhAHuXoqO9Usa/Lau5GDQxRQEWeC6jg1baX5xlCJwkEYJo7I9GUfWk3PiYw33TePe6Vk/2XG5R1ga8RH3naAt3R2cEzXYuRznm0/ne8cLsaxnDh/5qJetAItyI8=
+	t=1767458499; cv=none; b=pE9Iag5mI+kzDg2IfrzrcSQHOIn/BH4EqpwMDZAglouB9PRtxKZoSSSP0g/sl+MYTHJb9gY5dSpDSh9ZpgI/o9DOBRawlJu5UHIY312mRm0dzDqJtsH2wqRMJ4BhdKjpxNNeFWWiPwaTelnI3tvidqHarf2OUoVnThaN8YFloSs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767429378; c=relaxed/simple;
-	bh=NpM6N3dB6LYTm/Ib/IXLfe1vFqAJ1cYJOFeYExidG2g=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mj19CZekC5cLoXG0w5Z04DUeAeaQ0OUVbYTvpjzgxuV2qk8zc1K22mr8OvD6Ie3TUZNNfXt6BvG6b+gbY7+JIFPnfK7kBZxqxjEabSgs8q9PQtEaKzAGNcb2XePG4Sje5oO0J4JiEsq+Y3cyj7YIla8m/NV6LIGl6Hxwine5O/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=L1HD2Tv4; arc=none smtp.client-ip=209.85.214.194
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f194.google.com with SMTP id d9443c01a7336-2a12ed4d205so110947145ad.0
-        for <stable@vger.kernel.org>; Sat, 03 Jan 2026 00:36:16 -0800 (PST)
+	s=arc-20240116; t=1767458499; c=relaxed/simple;
+	bh=MNDpUbbrDc9i5przFZIHdq/ew9ELSlPejImCcCxQxKI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jXlnNygiBm36Nx7EKI4O8Nj5XHMHpv418jOmnDFgLBqf7dz2X8l24QG/JoKozY7sspo9LBhhZvb9utrQLrmsW9mAGIuG4Wpx7X3BMec1EsJ6sAKzvIMn5mhS7CVZn0FKcqldN/Ld0oDEi/iVX24RiBDIPnuYNHyfnLFmkPHDgvc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu; spf=fail smtp.mailfrom=g.harvard.edu; dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b=iPkij/DA; arc=none smtp.client-ip=209.85.219.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=g.harvard.edu
+Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-88a3bba9fd4so148046016d6.2
+        for <stable@vger.kernel.org>; Sat, 03 Jan 2026 08:41:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767429376; x=1768034176; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=9qhIF6Cy3ZRyASZaEaq3YB/3km+X/4fWw4hEpneLsPY=;
-        b=L1HD2Tv4zQMD8dsSyd7sMawC4Vg20TjfZ3UyXuU2hGovINrMHE19PwPGIz++j/iOoB
-         N/hxjcIypwwHxjE2W//o8gkzly5iwDQIcDVF10MyU8kEgWgg/FIJqRs0rrz/pR8f0a2B
-         oqkwfRkdAWyvr0xoD3brEqrRTT7pKyQzAvVPP/PMo4rzA9um1t7GvjcdcbzxxAe1Ulhk
-         IGwcjseYm8Y6vr0iPdObexx9VoMoZir9/Ux7pp5cFF+Wq67DSQqMzcgk7H92Ee5jbeSI
-         kQLr5AZRkXKDEBSzOYZ6CgIklCqFX4whrEM/PPOQcjFMQ7LwQDIrQtrhB2d2qT5H2pNA
-         Kv9A==
+        d=rowland.harvard.edu; s=google; t=1767458496; x=1768063296; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=mlKFI5VRK7mDczHswg21LQqMhaeoNo0R7gM8QnlAtPU=;
+        b=iPkij/DAkjunBx3KKjmAfc9SQzZuE9kR5IAXdnXmoQoSMhXaBCCWBqUHFv3qRrk08M
+         JjPII1/rXS+MvelGmf5016OkV4r+Whw6WvhO03w9su4XekOwJYLGsD5l0zI1CMroN3qI
+         Szu9ZgR3KSG9Uko2o56vKLbjvByYU6/88H6knMdxkiAPsP7awyCRp0ORrnbHcoi6EQJ/
+         nHqkKkJHx0C3aR65gR25O4QGucvW+pMHJmI6o+2Wv2wLdyAyoOlrwS1SbDoElIa60BeF
+         oeVZntHFlaJ/dAxTL7iaQ9uMmzY1WDACOFShcLrnzqYG5HlSk0RSyUdEPUVgZ8pbBfbq
+         rG1w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767429376; x=1768034176;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9qhIF6Cy3ZRyASZaEaq3YB/3km+X/4fWw4hEpneLsPY=;
-        b=F95853lFlCzdLKc43QEhIOcN1Jf0kKxs/mdpAKLRkggA5odf8YCHFnCC8XWlkicUZo
-         K0O5XS9beWIeS7s8aMkaX5ObuQQd1jCbitnNavm8n5tLYEjrUD+6LcYX8PILB5JA61H0
-         iS9eRUrXBarkNE71pQ+6WFbBosyJYDdPwdZkreeh+FXvEBkqBlbOu/tEbmRZwarvQuoy
-         pM02pAUPBUcn9C4BvAQ9c1fGHj17ixrCQ0COeHL7P/Oz276Rf+SqCYBe93wusqyI5Vbz
-         nsRLeMXD+YBqmHB3otLqqfY7+gmxSk+6wX2fbUjCTRazU/5jAkPdmpEeE+WeNlL2bG3j
-         DisA==
-X-Forwarded-Encrypted: i=1; AJvYcCVJU1LTtv5P0VyOjlv2pOyEfawFgcYfdSc8vQCGWUmhnaOvIvYCGQDCk9u63HGnv49gIaoWTO0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz5gFwNzwgUkurEb/VGMNXfhn3v1KxcoOq4I4sQd7B44pldHX/4
-	0+My8jG9OhfK5UvKPVTdG41gfi3Q+NB8l7VBJXt9obmq0b7EGIov1OSM
-X-Gm-Gg: AY/fxX5cbcNvXy4DLoPBgmVCS10GyPGNqgHTC29kStaJqQboPfkpaTY5YDmu3BJGc3K
-	Gk7W6rjXm86lSA5NXMcKIWoJr3Kw9Jfnq/NyQkUhq4GgqlI3AQC5Rq4jFQLKkWwtE2mEFQYf3AH
-	Qu39yKYxVsUSeIyc5wUhtyQAb6wz1e/yTyV2z1TngT6+pctjTbn4sAQjmclp+Cjabb7HMLyPlqc
-	Pqa+rRqHd1qOA/uPJ18r3vPJnBYCcRZ/cj/zCbBEpNqtLmrIZvVyVd0poeT26ettflg8n8j0bLU
-	aRS8K9YXF+F89BGFK0yYfddc4Stg0HzKJYPWLm04ITQrJeN0ABodihVriMdaoafUlTy0pLND4RU
-	IPBD+6G5E+iuLufms/PXvzJxaWgHuEIfd6DpC25sSdt2lQ8CLR/OUEuxazNr3WLj8PB+Y6E/lrw
-	GWfyqwyXvqPC8=
-X-Google-Smtp-Source: AGHT+IGmEq6m23Z77xulKx/k1G/qMf9pwiQxKB+COGw8frzJpc5oE9+668CB3ihoaz0ETIdQnmiI0g==
-X-Received: by 2002:a17:903:1105:b0:2a0:f83d:c321 with SMTP id d9443c01a7336-2a2f23289cemr418868565ad.23.1767429376187;
-        Sat, 03 Jan 2026 00:36:16 -0800 (PST)
-Received: from ymm.. ([120.192.15.12])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a2f3d4cbe5sm401796705ad.60.2026.01.03.00.36.13
+        d=1e100.net; s=20230601; t=1767458496; x=1768063296;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=mlKFI5VRK7mDczHswg21LQqMhaeoNo0R7gM8QnlAtPU=;
+        b=T4eUsgyRM6+vIbShvLQy4Tej0FGzkVmR6hXu/lUyD6OV1YNnogpD3dmDDyBk9lCkpA
+         b3Faa1Yo/2XF0+1UfyjdNO0owr2ydtIM31GO6GDfeBTZrQyvjwUmrSXSYcLEY/2msgUK
+         tsdT/ukP5fWeMJbWlX0WBclZu1Ib6GyeOWZJOi9K52cuekWuGgnbVKJwu9HWO7ajWT3+
+         +SS5DMur87DABFalwpZlEd1Dt/FCs3M4r3+qlpz2nWmBJXLZQ0J1M2nENnEqjDf9F8zd
+         rkR4h+mlhF5l4J/fr2N2tYmqnx23aoYqK0eIBWTgpOr+efOUgGFtIll2wO2M7RYqmfdZ
+         sauQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVPONGiWVxI667GW8fQNXZxCSkaK4RLhRPdr8ZdbshmN7Koxl99Lxwf3hIJV2iCrWn6oR1gA2I=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzUgzNXQJ8FQ0zreRvoI6HkKbBfQfpEgXNWEe9PJImhhps9LxOm
+	eRs4C9NnKPevrQYPIr+znzJgN9ZArw4fUVavrfwEDzK78kxqOhjtN/pCZummp036cQ==
+X-Gm-Gg: AY/fxX4DSBQrCB7K16xgPABzs8kQ/phcGEEjgotMnJ2NJiXAhpf1B5w/4R8KojCY/Ak
+	RFGIR5gapKJGM30PWGciEzFQJnC4KCNYcLYsE8ZrtOefinDXwfrwHu+1snCLGeO2IfkjkoKsbAj
+	yoa03p8tAIg7qmwFkoC/n18Xx4iiwDeoWaWl6mhvtX+y/FzHcYnjCjwcgmpsMlMxbcaIrkF6VPA
+	9T6t5k59/ObeYAyy0jtyTyMgUDDDE0KH7Rp7cMPUwhccl26fjojPTVWuGrsz6K1EiLd2rblQNu9
+	L/o9LyV03mlQyDvBT8tQPpkpxh1zXKSKaagMDHCNZ4yxn1P7f+fuvlDbQtBoIyUIxSngkWpzqcn
+	kC3dD1m+awqp2S11Y0pLyG2FgMA7/2psfwmaEwr6aU+fUfoPdx+WCDKyPAyZ04WWXee1yRw0+Uw
+	sWUHrCajj+lP9c
+X-Google-Smtp-Source: AGHT+IFEZA7vyZ0ao1b1ph7zvhvjOx5pO8dLWGenWSlCMl0fhScK2fp2NqonAO6GMTVcN0krOHmCfA==
+X-Received: by 2002:a0c:fbc4:0:b0:797:1a0d:cdd3 with SMTP id 6a1803df08f44-88d82526111mr480719386d6.19.1767458496232;
+        Sat, 03 Jan 2026 08:41:36 -0800 (PST)
+Received: from rowland.harvard.edu ([2601:19b:d03:1700::16e7])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-88d9aa363e3sm318143286d6.57.2026.01.03.08.41.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 03 Jan 2026 00:36:15 -0800 (PST)
-From: Aaron Yang <qxy238@gmail.com>
-X-Google-Original-From: Aaron Yang <aaronyang238@qq.com>
-To: qxy238@gmail.com
-Cc: Hengqi Chen <hengqi.chen@gmail.com>,
-	stable@vger.kernel.org,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH v2] LoongArch: BPF: Zero-extend bpf_tail_call() index
-Date: Sat,  3 Jan 2026 16:36:08 +0800
-Message-ID: <20260103083608.10914-1-aaronyang238@qq.com>
-X-Mailer: git-send-email 2.43.0
+        Sat, 03 Jan 2026 08:41:35 -0800 (PST)
+Date: Sat, 3 Jan 2026 11:41:32 -0500
+From: Alan Stern <stern@rowland.harvard.edu>
+To: Huacai Chen <chenhuacai@kernel.org>
+Cc: Diederik de Haas <diederik@cknow-tech.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Huacai Chen <chenhuacai@loongson.cn>, linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Shengwen Xiao <atzlinux@sina.com>,
+	linux-rockchip@lists.infradead.org
+Subject: Re: [PATCH] USB: OHCI/UHCI: Add soft dependencies on ehci_hcd
+Message-ID: <561129d8-67ff-406c-afe8-73430484bd96@rowland.harvard.edu>
+References: <2025123049-cadillac-straggler-d2fb@gregkh>
+ <DFBMNYF0U5PK.24YOAUZFZ0ESB@cknow-tech.com>
+ <73d472ea-e660-474c-b319-b0e8758406c0@rowland.harvard.edu>
+ <CAAhV-H6drj1df3Y4_Z67t4TzJ5n6YiexsEHKTPvi1caNvw5H9A@mail.gmail.com>
+ <0c85d288-405f-4aaf-944e-b1d452d0f275@rowland.harvard.edu>
+ <CAAhV-H5GdkMg-uzMpDQPGLs+gWNAy6ZOH33VoLqnNyWbRenNDw@mail.gmail.com>
+ <34c7edd0-3c0c-4a57-b0ea-71e4cba2ef26@rowland.harvard.edu>
+ <CAAhV-H7j=cD9dkaB5bWxNdPtoVR4NUFvFs=n46TaNte1zGqoOA@mail.gmail.com>
+ <98e36c6f-f0ee-40d2-be7f-d2ad9f36de07@rowland.harvard.edu>
+ <CAAhV-H601B96D9rFrnARho4Lr9A+ah7Cx7eKiPr=epbG17ODHQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAAhV-H601B96D9rFrnARho4Lr9A+ah7Cx7eKiPr=epbG17ODHQ@mail.gmail.com>
 
-From: Hengqi Chen <hengqi.chen@gmail.com>
+On Sat, Jan 03, 2026 at 11:57:47AM +0800, Huacai Chen wrote:
+> On Sat, Jan 3, 2026 at 11:33 AM Alan Stern <stern@rowland.harvard.edu> wrote:
+> > Since these systems don't use PCI, the question I raised earlier still
+> > needs to be answered: How do they route connections between the ports
+> > and the two controllers?
+> >
+> > There may be some exceptions, but for the most part, the code in
+> > ehci-hcd was written assuming that only PCI-based controllers will have
+> > companions.  If you want to make an exception for loongson-2k0500, you
+> > will need to figure out how to get it to work.
+> Loongson-2K0500 use EHCI/OHCI with platform bus, while
+> Loongson-2K1000/2000 use EHCI/OHCI with PCI bus. They use the same USB
+> IP cores, so the route connections are probably the same.
 
-The bpf_tail_call() index should be treated as a u32 value. Let's
-zero-extend it to avoid calling wrong BPF progs. See similar fixes
-for x86 [1]) and arm64 ([2]) for more details.
+With PCI we know exactly which companion controller each port is 
+connected to.  Is that true in your situation?
 
-  [1]: https://github.com/torvalds/linux/commit/90caccdd8cc0215705f18b92771b449b01e2474a
-  [2]: https://github.com/torvalds/linux/commit/16338a9b3ac30740d49f5dfed81bac0ffa53b9c7
+Or do you have only one companion controller?
 
-Cc: stable@vger.kernel.org
-Fixes: 5dc615520c4d ("LoongArch: Add BPF JIT support")
-Signed-off-by: Hengqi Chen <hengqi.chen@gmail.com>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
----
- arch/loongarch/net/bpf_jit.c | 2 ++
- 1 file changed, 2 insertions(+)
+For that matter, how many USB ports do these systems have?  Are some of 
+them USB-1 only or USB-2 only?
 
-diff --git a/arch/loongarch/net/bpf_jit.c b/arch/loongarch/net/bpf_jit.c
-index 5352d0c30fb2..766ded335fd8 100644
---- a/arch/loongarch/net/bpf_jit.c
-+++ b/arch/loongarch/net/bpf_jit.c
-@@ -280,6 +280,8 @@ static int emit_bpf_tail_call(struct jit_ctx *ctx, int insn)
- 	 *	 goto out;
- 	 */
- 	tc_ninsn = insn ? ctx->offset[insn+1] - ctx->offset[insn] : ctx->offset[0];
-+	emit_zext_32(ctx, a2, true);
-+
- 	off = offsetof(struct bpf_array, map.max_entries);
- 	emit_insn(ctx, ldwu, t1, a1, off);
- 	/* bgeu $a2, $t1, jmp_offset */
--- 
-2.43.0
+> > Have you tested any of those systems to see how they behave if a USB-1
+> > device is already plugged in and running when the ehci-hcd driver gets
+> > loaded?
 
+You did not answer this question.
+
+There are other issues involving companion controllers, connected with 
+hibernation.  You should take a look at commit 6d19c009cc78 ("USB: 
+implement non-tree resume ordering constraints for PCI host 
+controllers"), which was later modified by commit 05768918b9a1 ("USB: 
+improve port transitions when EHCI starts up") and a few others.
+
+Also, read through the current code in hcd-pci.c (for_each_companion(), 
+ehci_pre_add(), ehci_post_add(), non_ehci_add(), ehci_remove(), and 
+ehci_wait_for_companions()).  Your non-PCI system will need to implement 
+some sort of equivalent to all these things.
+
+Alan Stern
 
