@@ -1,147 +1,280 @@
-Return-Path: <stable+bounces-204533-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204534-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0AF5CF02D9
-	for <lists+stable@lfdr.de>; Sat, 03 Jan 2026 17:41:42 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77616CF0301
+	for <lists+stable@lfdr.de>; Sat, 03 Jan 2026 17:58:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5ECA730164EE
-	for <lists+stable@lfdr.de>; Sat,  3 Jan 2026 16:41:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8AD36301585A
+	for <lists+stable@lfdr.de>; Sat,  3 Jan 2026 16:58:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A5A830DD00;
-	Sat,  3 Jan 2026 16:41:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4581F30BB96;
+	Sat,  3 Jan 2026 16:58:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b="iPkij/DA"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="OykGUCxX";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="sTmvxn9h"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f45.google.com (mail-qv1-f45.google.com [209.85.219.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55CC529E10B
-	for <stable@vger.kernel.org>; Sat,  3 Jan 2026 16:41:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59A7330BB88
+	for <stable@vger.kernel.org>; Sat,  3 Jan 2026 16:58:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767458499; cv=none; b=pE9Iag5mI+kzDg2IfrzrcSQHOIn/BH4EqpwMDZAglouB9PRtxKZoSSSP0g/sl+MYTHJb9gY5dSpDSh9ZpgI/o9DOBRawlJu5UHIY312mRm0dzDqJtsH2wqRMJ4BhdKjpxNNeFWWiPwaTelnI3tvidqHarf2OUoVnThaN8YFloSs=
+	t=1767459487; cv=none; b=SBLoZXrVyx7MSoBWJqCXMEZBGSc1GDOZVULCLb+wa3WH4UvRwswSPtmKxM/cWvrhpuo7pXR8PqSF/qjTpM9JtTPPQcBXgQsjumNkUXfcNNAaOZQ37yXED0Uh6xp5gwSkZcCaKijgeOfduPVnl5b/hgUQhB8c/WIgCM478TQiaKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767458499; c=relaxed/simple;
-	bh=MNDpUbbrDc9i5przFZIHdq/ew9ELSlPejImCcCxQxKI=;
+	s=arc-20240116; t=1767459487; c=relaxed/simple;
+	bh=m7kFC8NLRqMykIfn43teN/tTE91nR1HuG4dJPWsxS3M=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jXlnNygiBm36Nx7EKI4O8Nj5XHMHpv418jOmnDFgLBqf7dz2X8l24QG/JoKozY7sspo9LBhhZvb9utrQLrmsW9mAGIuG4Wpx7X3BMec1EsJ6sAKzvIMn5mhS7CVZn0FKcqldN/Ld0oDEi/iVX24RiBDIPnuYNHyfnLFmkPHDgvc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu; spf=fail smtp.mailfrom=g.harvard.edu; dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b=iPkij/DA; arc=none smtp.client-ip=209.85.219.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=g.harvard.edu
-Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-88a3bba9fd4so148046016d6.2
-        for <stable@vger.kernel.org>; Sat, 03 Jan 2026 08:41:37 -0800 (PST)
+	 Content-Type:Content-Disposition:In-Reply-To; b=tGcvYxCcr0Dh1qWxJrC4sob8dcJtTMrpMtSpN+7DHGrn4E668bxDzZLVSlCyCUW95YvWs27DOdDeTma+vZPckBkI7zedzqWt9yHNpK74/FJCh5HlJyikOYp4tOL7fQ9NashE9mW5DM1X/lSwwmbvUru31JM//Z6ydD7GG9UiAI8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=OykGUCxX; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=sTmvxn9h; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1767459478;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+wZkUF3NRhUPtxghhUm6LslapHbc+LfpmZjiNA6s+nU=;
+	b=OykGUCxXDHD1EUhg7mOZM3QOhwdWsyobQzlBaENoIpRFZkJ2LCkYAMND3UJVu6SE33oWEU
+	XYPjEzTvF5cmTk3q8b57ySYOfVKwcDTAadSWSgMGewwOFjj8HdfdnfASIr5eWr9LtPtRT2
+	77+8OK/zISV1u6fDVCDnL95mXcf2Dy4=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-686-GKzUrVfxP2-48F8zT1L3cw-1; Sat, 03 Jan 2026 11:57:49 -0500
+X-MC-Unique: GKzUrVfxP2-48F8zT1L3cw-1
+X-Mimecast-MFC-AGG-ID: GKzUrVfxP2-48F8zT1L3cw_1767459464
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-47d5bd981c8so29147725e9.0
+        for <stable@vger.kernel.org>; Sat, 03 Jan 2026 08:57:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rowland.harvard.edu; s=google; t=1767458496; x=1768063296; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=mlKFI5VRK7mDczHswg21LQqMhaeoNo0R7gM8QnlAtPU=;
-        b=iPkij/DAkjunBx3KKjmAfc9SQzZuE9kR5IAXdnXmoQoSMhXaBCCWBqUHFv3qRrk08M
-         JjPII1/rXS+MvelGmf5016OkV4r+Whw6WvhO03w9su4XekOwJYLGsD5l0zI1CMroN3qI
-         Szu9ZgR3KSG9Uko2o56vKLbjvByYU6/88H6knMdxkiAPsP7awyCRp0ORrnbHcoi6EQJ/
-         nHqkKkJHx0C3aR65gR25O4QGucvW+pMHJmI6o+2Wv2wLdyAyoOlrwS1SbDoElIa60BeF
-         oeVZntHFlaJ/dAxTL7iaQ9uMmzY1WDACOFShcLrnzqYG5HlSk0RSyUdEPUVgZ8pbBfbq
-         rG1w==
+        d=redhat.com; s=google; t=1767459464; x=1768064264; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=+wZkUF3NRhUPtxghhUm6LslapHbc+LfpmZjiNA6s+nU=;
+        b=sTmvxn9hRs3v8FlGVYo4XHal9FCHx2qlKjcIIYxw4YUcjWG8fhhozamd+NnvpxkScP
+         fCCiCzR2LW4ht/jOMzXxIyeUAngVL4DbnU0+y7m4hkZpd++RZ4N4KeIIUkrQbMvFHZVu
+         5lEiC1EwuuT6nDEP+af3llr2bN5MPR2z5rvwYA0IzalRs73NI8P8VigOQfLPKJSMwZfu
+         NQ1T+m9zKeILrmsFQ2b8sTg64uP/1gxnZj2mVBktRsu2yLvOPuJ+3rEmu5pqRSCihwZ/
+         QfQfBTL3Qx8RgWkqGiOxVCASOYrib2VptnTJbDt+7XcKPmKKFiC+ED73TRWtiNUMgpjT
+         sLaw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767458496; x=1768063296;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=mlKFI5VRK7mDczHswg21LQqMhaeoNo0R7gM8QnlAtPU=;
-        b=T4eUsgyRM6+vIbShvLQy4Tej0FGzkVmR6hXu/lUyD6OV1YNnogpD3dmDDyBk9lCkpA
-         b3Faa1Yo/2XF0+1UfyjdNO0owr2ydtIM31GO6GDfeBTZrQyvjwUmrSXSYcLEY/2msgUK
-         tsdT/ukP5fWeMJbWlX0WBclZu1Ib6GyeOWZJOi9K52cuekWuGgnbVKJwu9HWO7ajWT3+
-         +SS5DMur87DABFalwpZlEd1Dt/FCs3M4r3+qlpz2nWmBJXLZQ0J1M2nENnEqjDf9F8zd
-         rkR4h+mlhF5l4J/fr2N2tYmqnx23aoYqK0eIBWTgpOr+efOUgGFtIll2wO2M7RYqmfdZ
-         sauQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVPONGiWVxI667GW8fQNXZxCSkaK4RLhRPdr8ZdbshmN7Koxl99Lxwf3hIJV2iCrWn6oR1gA2I=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzUgzNXQJ8FQ0zreRvoI6HkKbBfQfpEgXNWEe9PJImhhps9LxOm
-	eRs4C9NnKPevrQYPIr+znzJgN9ZArw4fUVavrfwEDzK78kxqOhjtN/pCZummp036cQ==
-X-Gm-Gg: AY/fxX4DSBQrCB7K16xgPABzs8kQ/phcGEEjgotMnJ2NJiXAhpf1B5w/4R8KojCY/Ak
-	RFGIR5gapKJGM30PWGciEzFQJnC4KCNYcLYsE8ZrtOefinDXwfrwHu+1snCLGeO2IfkjkoKsbAj
-	yoa03p8tAIg7qmwFkoC/n18Xx4iiwDeoWaWl6mhvtX+y/FzHcYnjCjwcgmpsMlMxbcaIrkF6VPA
-	9T6t5k59/ObeYAyy0jtyTyMgUDDDE0KH7Rp7cMPUwhccl26fjojPTVWuGrsz6K1EiLd2rblQNu9
-	L/o9LyV03mlQyDvBT8tQPpkpxh1zXKSKaagMDHCNZ4yxn1P7f+fuvlDbQtBoIyUIxSngkWpzqcn
-	kC3dD1m+awqp2S11Y0pLyG2FgMA7/2psfwmaEwr6aU+fUfoPdx+WCDKyPAyZ04WWXee1yRw0+Uw
-	sWUHrCajj+lP9c
-X-Google-Smtp-Source: AGHT+IFEZA7vyZ0ao1b1ph7zvhvjOx5pO8dLWGenWSlCMl0fhScK2fp2NqonAO6GMTVcN0krOHmCfA==
-X-Received: by 2002:a0c:fbc4:0:b0:797:1a0d:cdd3 with SMTP id 6a1803df08f44-88d82526111mr480719386d6.19.1767458496232;
-        Sat, 03 Jan 2026 08:41:36 -0800 (PST)
-Received: from rowland.harvard.edu ([2601:19b:d03:1700::16e7])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-88d9aa363e3sm318143286d6.57.2026.01.03.08.41.34
+        d=1e100.net; s=20230601; t=1767459464; x=1768064264;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=+wZkUF3NRhUPtxghhUm6LslapHbc+LfpmZjiNA6s+nU=;
+        b=hZmxF7qmepFFFvdtlCQp9rWtp71wowfiqpbeUbg8QB9rUHSgB7nk81gWKTFiNOTNdS
+         IMywZOHYLND0qqx0qIBwc6dby/WTB/gAP2f1ZKFSAmcXwFOTN5BswwysbmUsMeuC4Zlq
+         9LwgjLq2COAmHyMnC5y+MjWs+Cr90nXI+wfqh+MXXbXHvbPejKRvUv+S3/ZAKINsHgzC
+         of1VYwTHMButnLrlJOgxUWA7oY0yVYtIxp9uo+of9h88MXzWjTjgBYu8tKFjF8v0gpbl
+         FqzRvGLEwfwqMNzDvsCFzaxuxm3i68AZnjgwOB6hHEiKO++VX0iPAa4SMvmyzzpKH+Gw
+         6cpA==
+X-Forwarded-Encrypted: i=1; AJvYcCXOvTiyQmypgIksZy+YzM+fXCWS910l8twSc6l5I0J74Uqha8sA603FsX5O+y2j+ugaoAUJKUc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzMEDIFuMeK4WAXoqmRgKFeVKurDZjFnqeYGvptxCPcn4mJhRcl
+	fpbev/UNRw/4pjmtJyMnrboF4nI6Ekg56pRcRy+LQ5LlBAmlQ/SupKciesPCXXfNDgQgZf+bk+F
+	bgPLxE+CXNmEHkfKWC7NsAqOOHpRbtXbwtepnd/jlwiN4AkSSu0hCh4f6Uw==
+X-Gm-Gg: AY/fxX7IYc/Jd3oZtCZPucIkptNlj7yl10AaksQga7DsplaU/BtDUPdDEbzFEqiVgxG
+	SU4UEeyp4ZQAu1+J9Qtk16L31VmFtOgCyfjNPW0znXersw5ymfOy0Lj1+zXQIcpJUUBDVPO3tKx
+	6Ax4g+hBuTHrY5WNECSXrr3/pArFcPtbPS260uwVF+DqLtbfe/GZgLoE0OzBxDgjiE6NrrK7Ndg
+	eJIiuvYudXVpjLjF+V9+yBxBvIxNosvMfua2jzSXSfFI7B6+mSv7PrPhv68o0QwJnbBtJBbGRBU
+	O3bJgsNQtsPZ1co9tGQd5l9YzeZNyvcDf6JGJwnS035g4Dx7Fa8jIxgdEZHO57EjmIJzvE9YIeY
+	Wew8=
+X-Received: by 2002:a05:600c:818f:b0:477:7b16:5f77 with SMTP id 5b1f17b1804b1-47d19538725mr584363145e9.3.1767459464021;
+        Sat, 03 Jan 2026 08:57:44 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHusWZ//FZ52Om4ta3xZ2SqfyTWAAUvd8rHgZYV++2oDeDeRRcln+Ih/5srZxMz/V4FtoawtQ==
+X-Received: by 2002:a05:600c:818f:b0:477:7b16:5f77 with SMTP id 5b1f17b1804b1-47d19538725mr584362855e9.3.1767459463570;
+        Sat, 03 Jan 2026 08:57:43 -0800 (PST)
+Received: from redhat.com ([147.235.217.121])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4324eab2a94sm90750023f8f.43.2026.01.03.08.57.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 03 Jan 2026 08:41:35 -0800 (PST)
-Date: Sat, 3 Jan 2026 11:41:32 -0500
-From: Alan Stern <stern@rowland.harvard.edu>
-To: Huacai Chen <chenhuacai@kernel.org>
-Cc: Diederik de Haas <diederik@cknow-tech.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Huacai Chen <chenhuacai@loongson.cn>, linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Shengwen Xiao <atzlinux@sina.com>,
-	linux-rockchip@lists.infradead.org
-Subject: Re: [PATCH] USB: OHCI/UHCI: Add soft dependencies on ehci_hcd
-Message-ID: <561129d8-67ff-406c-afe8-73430484bd96@rowland.harvard.edu>
-References: <2025123049-cadillac-straggler-d2fb@gregkh>
- <DFBMNYF0U5PK.24YOAUZFZ0ESB@cknow-tech.com>
- <73d472ea-e660-474c-b319-b0e8758406c0@rowland.harvard.edu>
- <CAAhV-H6drj1df3Y4_Z67t4TzJ5n6YiexsEHKTPvi1caNvw5H9A@mail.gmail.com>
- <0c85d288-405f-4aaf-944e-b1d452d0f275@rowland.harvard.edu>
- <CAAhV-H5GdkMg-uzMpDQPGLs+gWNAy6ZOH33VoLqnNyWbRenNDw@mail.gmail.com>
- <34c7edd0-3c0c-4a57-b0ea-71e4cba2ef26@rowland.harvard.edu>
- <CAAhV-H7j=cD9dkaB5bWxNdPtoVR4NUFvFs=n46TaNte1zGqoOA@mail.gmail.com>
- <98e36c6f-f0ee-40d2-be7f-d2ad9f36de07@rowland.harvard.edu>
- <CAAhV-H601B96D9rFrnARho4Lr9A+ah7Cx7eKiPr=epbG17ODHQ@mail.gmail.com>
+        Sat, 03 Jan 2026 08:57:42 -0800 (PST)
+Date: Sat, 3 Jan 2026 11:57:37 -0500
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Bui Quang Minh <minhquangbui99@gmail.com>
+Cc: netdev@vger.kernel.org, Jason Wang <jasowang@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	virtualization@lists.linux.dev, linux-kernel@vger.kernel.org,
+	bpf@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH net v2 1/3] virtio-net: don't schedule delayed refill
+ worker
+Message-ID: <20260103115424-mutt-send-email-mst@kernel.org>
+References: <20260102152023.10773-1-minhquangbui99@gmail.com>
+ <20260102152023.10773-2-minhquangbui99@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAAhV-H601B96D9rFrnARho4Lr9A+ah7Cx7eKiPr=epbG17ODHQ@mail.gmail.com>
+In-Reply-To: <20260102152023.10773-2-minhquangbui99@gmail.com>
 
-On Sat, Jan 03, 2026 at 11:57:47AM +0800, Huacai Chen wrote:
-> On Sat, Jan 3, 2026 at 11:33 AM Alan Stern <stern@rowland.harvard.edu> wrote:
-> > Since these systems don't use PCI, the question I raised earlier still
-> > needs to be answered: How do they route connections between the ports
-> > and the two controllers?
-> >
-> > There may be some exceptions, but for the most part, the code in
-> > ehci-hcd was written assuming that only PCI-based controllers will have
-> > companions.  If you want to make an exception for loongson-2k0500, you
-> > will need to figure out how to get it to work.
-> Loongson-2K0500 use EHCI/OHCI with platform bus, while
-> Loongson-2K1000/2000 use EHCI/OHCI with PCI bus. They use the same USB
-> IP cores, so the route connections are probably the same.
+On Fri, Jan 02, 2026 at 10:20:21PM +0700, Bui Quang Minh wrote:
+> When we fail to refill the receive buffers, we schedule a delayed worker
+> to retry later. However, this worker creates some concurrency issues
+> such as races and deadlocks. To simplify the logic and avoid further
+> problems, we will instead retry refilling in the next NAPI poll.
+> 
+> Fixes: 4bc12818b363 ("virtio-net: disable delayed refill when pausing rx")
+> Reported-by: Paolo Abeni <pabeni@redhat.com>
+> Closes: https://netdev-ctrl.bots.linux.dev/logs/vmksft/drv-hw-dbg/results/400961/3-xdp-py/stderr
+> Cc: stable@vger.kernel.org
+> Suggested-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+> Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
+> ---
+>  drivers/net/virtio_net.c | 55 ++++++++++++++++++++++------------------
+>  1 file changed, 30 insertions(+), 25 deletions(-)
+> 
+> diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+> index 1bb3aeca66c6..ac514c9383ae 100644
+> --- a/drivers/net/virtio_net.c
+> +++ b/drivers/net/virtio_net.c
+> @@ -3035,7 +3035,7 @@ static int virtnet_receive_packets(struct virtnet_info *vi,
+>  }
+>  
+>  static int virtnet_receive(struct receive_queue *rq, int budget,
+> -			   unsigned int *xdp_xmit)
+> +			   unsigned int *xdp_xmit, bool *retry_refill)
+>  {
+>  	struct virtnet_info *vi = rq->vq->vdev->priv;
+>  	struct virtnet_rq_stats stats = {};
+> @@ -3047,12 +3047,8 @@ static int virtnet_receive(struct receive_queue *rq, int budget,
+>  		packets = virtnet_receive_packets(vi, rq, budget, xdp_xmit, &stats);
+>  
+>  	if (rq->vq->num_free > min((unsigned int)budget, virtqueue_get_vring_size(rq->vq)) / 2) {
+> -		if (!try_fill_recv(vi, rq, GFP_ATOMIC)) {
+> -			spin_lock(&vi->refill_lock);
+> -			if (vi->refill_enabled)
+> -				schedule_delayed_work(&vi->refill, 0);
+> -			spin_unlock(&vi->refill_lock);
+> -		}
+> +		if (!try_fill_recv(vi, rq, GFP_ATOMIC))
+> +			*retry_refill = true;
+>  	}
+>  
+>  	u64_stats_set(&stats.packets, packets);
+> @@ -3129,18 +3125,18 @@ static int virtnet_poll(struct napi_struct *napi, int budget)
+>  	struct send_queue *sq;
+>  	unsigned int received;
+>  	unsigned int xdp_xmit = 0;
+> -	bool napi_complete;
+> +	bool napi_complete, retry_refill = false;
+>  
+>  	virtnet_poll_cleantx(rq, budget);
+>  
+> -	received = virtnet_receive(rq, budget, &xdp_xmit);
+> +	received = virtnet_receive(rq, budget, &xdp_xmit, &retry_refill);
+>  	rq->packets_in_napi += received;
+>  
+>  	if (xdp_xmit & VIRTIO_XDP_REDIR)
+>  		xdp_do_flush();
+>  
+>  	/* Out of packets? */
+> -	if (received < budget) {
+> +	if (received < budget && !retry_refill) {
+>  		napi_complete = virtqueue_napi_complete(napi, rq->vq, received);
+>  		/* Intentionally not taking dim_lock here. This may result in a
+>  		 * spurious net_dim call. But if that happens virtnet_rx_dim_work
+> @@ -3160,7 +3156,7 @@ static int virtnet_poll(struct napi_struct *napi, int budget)
+>  		virtnet_xdp_put_sq(vi, sq);
+>  	}
+>  
+> -	return received;
+> +	return retry_refill ? budget : received;
+>  }
+>  
+>  static void virtnet_disable_queue_pair(struct virtnet_info *vi, int qp_index)
+> @@ -3230,9 +3226,11 @@ static int virtnet_open(struct net_device *dev)
+>  
+>  	for (i = 0; i < vi->max_queue_pairs; i++) {
+>  		if (i < vi->curr_queue_pairs)
+> -			/* Make sure we have some buffers: if oom use wq. */
+> -			if (!try_fill_recv(vi, &vi->rq[i], GFP_KERNEL))
+> -				schedule_delayed_work(&vi->refill, 0);
+> +			/* If this fails, we will retry later in
+> +			 * NAPI poll, which is scheduled in the below
+> +			 * virtnet_enable_queue_pair
 
-With PCI we know exactly which companion controller each port is 
-connected to.  Is that true in your situation?
+hmm do we even need this, then?
 
-Or do you have only one companion controller?
+> +			 */
+> +			try_fill_recv(vi, &vi->rq[i], GFP_KERNEL);
+>  
+>  		err = virtnet_enable_queue_pair(vi, i);
+>  		if (err < 0)
+> @@ -3473,15 +3471,15 @@ static void __virtnet_rx_resume(struct virtnet_info *vi,
+>  				bool refill)
+>  {
+>  	bool running = netif_running(vi->dev);
+> -	bool schedule_refill = false;
+>  
+> -	if (refill && !try_fill_recv(vi, rq, GFP_KERNEL))
+> -		schedule_refill = true;
+> +	if (refill)
+> +		/* If this fails, we will retry later in NAPI poll, which is
+> +		 * scheduled in the below virtnet_napi_enable
+> +		 */
+> +		try_fill_recv(vi, rq, GFP_KERNEL);
 
-For that matter, how many USB ports do these systems have?  Are some of 
-them USB-1 only or USB-2 only?
 
-> > Have you tested any of those systems to see how they behave if a USB-1
-> > device is already plugged in and running when the ehci-hcd driver gets
-> > loaded?
+hmm do we even need this, then?
 
-You did not answer this question.
+> +
+>  	if (running)
+>  		virtnet_napi_enable(rq);
+> -
+> -	if (schedule_refill)
+> -		schedule_delayed_work(&vi->refill, 0);
+>  }
+>  
+>  static void virtnet_rx_resume_all(struct virtnet_info *vi)
+> @@ -3777,6 +3775,7 @@ static int virtnet_set_queues(struct virtnet_info *vi, u16 queue_pairs)
+>  	struct virtio_net_rss_config_trailer old_rss_trailer;
+>  	struct net_device *dev = vi->dev;
+>  	struct scatterlist sg;
+> +	int i;
+>  
+>  	if (!vi->has_cvq || !virtio_has_feature(vi->vdev, VIRTIO_NET_F_MQ))
+>  		return 0;
+> @@ -3829,11 +3828,17 @@ static int virtnet_set_queues(struct virtnet_info *vi, u16 queue_pairs)
+>  	}
+>  succ:
+>  	vi->curr_queue_pairs = queue_pairs;
+> -	/* virtnet_open() will refill when device is going to up. */
+> -	spin_lock_bh(&vi->refill_lock);
+> -	if (dev->flags & IFF_UP && vi->refill_enabled)
+> -		schedule_delayed_work(&vi->refill, 0);
+> -	spin_unlock_bh(&vi->refill_lock);
+> +	if (dev->flags & IFF_UP) {
+> +		/* Let the NAPI poll refill the receive buffer for us. We can't
+> +		 * safely call try_fill_recv() here because the NAPI might be
+> +		 * enabled already.
+> +		 */
 
-There are other issues involving companion controllers, connected with 
-hibernation.  You should take a look at commit 6d19c009cc78 ("USB: 
-implement non-tree resume ordering constraints for PCI host 
-controllers"), which was later modified by commit 05768918b9a1 ("USB: 
-improve port transitions when EHCI starts up") and a few others.
+I'd drop this comment, it does not clarify much.
 
-Also, read through the current code in hcd-pci.c (for_each_companion(), 
-ehci_pre_add(), ehci_post_add(), non_ehci_add(), ehci_remove(), and 
-ehci_wait_for_companions()).  Your non-PCI system will need to implement 
-some sort of equivalent to all these things.
+> +		local_bh_disable();
+> +		for (i = 0; i < vi->curr_queue_pairs; i++)
+> +			virtqueue_napi_schedule(&vi->rq[i].napi, vi->rq[i].vq);
+> +
+> +		local_bh_enable();
+> +	}
+>  
+>  	return 0;
+>  }
+> -- 
+> 2.43.0
 
-Alan Stern
 
