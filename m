@@ -1,145 +1,286 @@
-Return-Path: <stable+bounces-204536-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204538-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFDEFCF035B
-	for <lists+stable@lfdr.de>; Sat, 03 Jan 2026 18:25:39 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 298E6CF0376
+	for <lists+stable@lfdr.de>; Sat, 03 Jan 2026 18:35:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C91C230142FF
-	for <lists+stable@lfdr.de>; Sat,  3 Jan 2026 17:25:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E2F243017F06
+	for <lists+stable@lfdr.de>; Sat,  3 Jan 2026 17:35:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA39025A642;
-	Sat,  3 Jan 2026 17:25:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95D862638BC;
+	Sat,  3 Jan 2026 17:35:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="SisapzQ8"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZPGs9L6G";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="H+MwUs7C"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73B7024728E;
-	Sat,  3 Jan 2026 17:25:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5231D217733
+	for <stable@vger.kernel.org>; Sat,  3 Jan 2026 17:35:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767461136; cv=none; b=nZYi6fiFHiH0dUyodSOe5XQ+D+D2SrCxTdwOtg+Z6FLxXCc/ymr27zPihMYVeP8YkEMfNucTBCQtkhnc1LMSEJMlVfuktpHRMV3TeOSGt6FWug/vUMFg1dPaKwuAkD1Ya8rCObGz/KDy/PyLeJ0fb0tOFU0j+LoUq4LmVZToQPM=
+	t=1767461705; cv=none; b=ckVSAtb7Dv14IltRuOTE8yNwrrX8y6ee/DQriJGyXt7f/ddBjaBRpNgA2yNVmhQem8Ma2ncpTPgMRvqDSQ/iVmyPVQn+7JTF+1IHoMP7Q/2QKTs1MQ9QJLjcolHFe/CDO+NBv2Xb5RXoSiE0GtEzJ73CxQ6TUk9OMa70MAFQu6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767461136; c=relaxed/simple;
-	bh=6WZ0AOXtP02BpTrVImKKq/I9TOcXb2K0dpB3xUXTtm0=;
-	h=Date:To:From:Subject:Message-Id; b=DzHRZ9ZnWdtYsPJJUSA2e0hO99zLvGS7EKJ1llkIukxXsiXEOLcPt9py4U89wpYxlOlv0IJ6U8KDDvpSV3d2EJ/dwFalTUmA56mCgInT7xqa6I6HL7oHWT/2Gk1Gs+jWV4iab1VBt4UT0JAi8vZQhcjPtt9GJkcRLm6QCEmfToo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=SisapzQ8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBF29C113D0;
-	Sat,  3 Jan 2026 17:25:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1767461136;
-	bh=6WZ0AOXtP02BpTrVImKKq/I9TOcXb2K0dpB3xUXTtm0=;
-	h=Date:To:From:Subject:From;
-	b=SisapzQ8GQwwWNjyAf47iWmdZAvU0kDz7J6PdxWZnAw9pXYHYxSyXVMUpGfyFFjJp
-	 1ysHWFwJqpkrpAIv6j6MtxWVau5sTIdDqgvrXl7ENK7OTAhWmP4MYaIZzZWpFoHw/7
-	 vex5IOFH5VCriBXKX74DHX0NXuht5hzFEwZ/kvXk=
-Date: Sat, 03 Jan 2026 09:25:35 -0800
-To: mm-commits@vger.kernel.org,will@kernel.org,stable@vger.kernel.org,mark.rutland@arm.com,leitao@debian.org,coxu@redhat.com,catalin.marinas@arm.com,yeoreum.yun@arm.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + arm64-kernel-initialize-missing-kexec_buf-random-field.patch added to mm-hotfixes-unstable branch
-Message-Id: <20260103172535.DBF29C113D0@smtp.kernel.org>
+	s=arc-20240116; t=1767461705; c=relaxed/simple;
+	bh=Y13wLH4ceaDvl1ihvg/aw+w3hrnNabyh10rQhk12QDQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=No0p77ZD51zieWDBWtB2mKSj0VvqqWWkwcH79jPkESVDGMqcHk19LopTliKE8hgPOFaHyA/HAFAXk9Haryu+jtXeibg9lmBGzE/NjRdEg6rx+v85oC3IvJHrFMg9rjf7AvRUJTvf81Ntz2eIlfe0BwrpNfleb/e/+pKKdbUW8Fs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZPGs9L6G; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=H+MwUs7C; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1767461702;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=EEdIP9jALOvvc8ZF0tY5F3t+W442S2Znt+VKHwRg1LI=;
+	b=ZPGs9L6GLa9jJ1MMUti3AoBPzEoM94zVCqvuZkAO9FyPUYV3/Fdfg/0B82sxkSYMhNib5t
+	63Ux49vfm0tmfZAFPXvzt/O8g3ovP2W6aBuOOqXSUeNlotvPfVXQVcpnaBaZUCQs24ylz+
+	5ulTTrA1Sm8WNH8AoSKhblF6n2f2Wbo=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-204-J-XiH6fEPr-w7-FPF8ou3w-1; Sat, 03 Jan 2026 12:35:01 -0500
+X-MC-Unique: J-XiH6fEPr-w7-FPF8ou3w-1
+X-Mimecast-MFC-AGG-ID: J-XiH6fEPr-w7-FPF8ou3w_1767461700
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-4310062d97bso7270670f8f.0
+        for <stable@vger.kernel.org>; Sat, 03 Jan 2026 09:35:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1767461700; x=1768066500; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=EEdIP9jALOvvc8ZF0tY5F3t+W442S2Znt+VKHwRg1LI=;
+        b=H+MwUs7C/KZVQL/QwHAOOXdE/JbjGUeXL2s47lESWGBrX9/g6/3nqejdF+q2gTQLZB
+         ooD+YdYH2Pd/3k45rsJpwk715B2n2fli1W7BQXvS6gJLvIsNyFK1VpMWpgbKKM54Q1L5
+         xEiB1Jzb07bRJFHZwh4Ka4jG6BhXFTeDvTWdytt71gmr1UEZohqyoOg4wgn9A1DC9r3K
+         K+BBYpsdi6V8ChrcuacLKJTnrSDzx/oItNbWDlvAgYELugIhCLBPVMV5iNnCsBpihyHT
+         LfTJBqDbaIW3PwynD6uQZZ7moN89MYeIi4ZIBFd2WWWOTLl2c8U+WYjETm/wTP4hK98z
+         WGFQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767461700; x=1768066500;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=EEdIP9jALOvvc8ZF0tY5F3t+W442S2Znt+VKHwRg1LI=;
+        b=cQMetmf9WrBbVbW8fNfZoJ4LAeCIISLRPNOovv//k88iu8XMzHsN2rfnBeI/lngQSA
+         gKEV4DVt5Hu1kj/+O+7vApPSEwURtNfzkTqyljgFPCI3Gt1dK/G6F0+hCEm+fQryyXFP
+         p1oEOaMtGz8+1YIscF6kUDfoCZRK7f/G47qC9le9NWndK1qvwWCZFteg/VzKNAe5UWn0
+         zJ+hLEsbTJI9d0Oygi9ums+S3pRRFnVDpzvU3AySpfnHRbnd2RoMpxjct5/wPvSBAM/W
+         g3HJOyU+GHVekqKXUSiiCC39+fnFxSJNUU276fWQdPPevBpAxsLVsiCEO+KQrEQ0z2wN
+         JpnA==
+X-Forwarded-Encrypted: i=1; AJvYcCUNowgTfEvi+Lkh/rTQuYXtxOHq8RRAiaoZL+JSoiUTXOIonJ3I9gNN7hVl68dKgAcJBbexnrY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzPREP93FQhvJBVvxUe8MCLVwqa7JinoIr+Z/0U8btojnwM4N8b
+	8NOUsBxIUikl79+Bd+9IdwwtPxgj5QuRDnQ839F3O12As4at//QYqYbFEK9QhJyI4oQ3vmejo8m
+	LFBeZwJEnArTXhCnMSeZZv5pE5G29hgDzQQllXOqVyHrfkbtI3VKLyhdkHA==
+X-Gm-Gg: AY/fxX46RsPdu5+o4wWu+M5SL28/0/lDh32ft7yiAvL8dMUwqLe6sKb4hRBrsx7adzR
+	7/sjqPPmuRG1QDWWv8Xqa946G4ohoNEOjyWNWEDnwhO4bSrk+st2ZBi2WBsvCW7ZbujFIhPiVQm
+	Zvn3qNBkefI8A0blkmKCTik9L7vq9pidIuSLOhj7CrvLVEmusNLRGcwY0Uks5a5qsaoIjTLgTGW
+	SnEwsaYIawgcnAKk7edmPxqFdEDrcmPoNRBKrANuqeASEnFOPrLICv1TiF8DgdfTLmWYa+MY0EG
+	4qwHPedBXQywxU4/Pk8h9pNpMt5b10dXMm8pXwAZd0p1pUNu0JQIT42mkBUvqt95A0iH2bROZ7K
+	9klg=
+X-Received: by 2002:a05:600c:1d1d:b0:47a:94fc:d057 with SMTP id 5b1f17b1804b1-47d19538d98mr456349105e9.2.1767461699852;
+        Sat, 03 Jan 2026 09:34:59 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGsvgbzF9KuB+7M5SVS6+TnF2qNTINOjinMqCh3ayX5afcmIoMa8eQxNaipc5DNoNmcMJrY9A==
+X-Received: by 2002:a05:600c:1d1d:b0:47a:94fc:d057 with SMTP id 5b1f17b1804b1-47d19538d98mr456348655e9.2.1767461699245;
+        Sat, 03 Jan 2026 09:34:59 -0800 (PST)
+Received: from redhat.com ([147.235.217.121])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47d6d33eefesm46522085e9.12.2026.01.03.09.34.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 03 Jan 2026 09:34:58 -0800 (PST)
+Date: Sat, 3 Jan 2026 12:34:54 -0500
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Bui Quang Minh <minhquangbui99@gmail.com>
+Cc: netdev@vger.kernel.org, Jason Wang <jasowang@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	virtualization@lists.linux.dev, linux-kernel@vger.kernel.org,
+	bpf@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH net v2 1/3] virtio-net: don't schedule delayed refill
+ worker
+Message-ID: <20260103123411-mutt-send-email-mst@kernel.org>
+References: <20260102152023.10773-1-minhquangbui99@gmail.com>
+ <20260102152023.10773-2-minhquangbui99@gmail.com>
+ <20260103115424-mutt-send-email-mst@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260103115424-mutt-send-email-mst@kernel.org>
+
+On Sat, Jan 03, 2026 at 11:57:43AM -0500, Michael S. Tsirkin wrote:
+> On Fri, Jan 02, 2026 at 10:20:21PM +0700, Bui Quang Minh wrote:
+> > When we fail to refill the receive buffers, we schedule a delayed worker
+> > to retry later. However, this worker creates some concurrency issues
+> > such as races and deadlocks. To simplify the logic and avoid further
+> > problems, we will instead retry refilling in the next NAPI poll.
+> > 
+> > Fixes: 4bc12818b363 ("virtio-net: disable delayed refill when pausing rx")
+> > Reported-by: Paolo Abeni <pabeni@redhat.com>
+> > Closes: https://netdev-ctrl.bots.linux.dev/logs/vmksft/drv-hw-dbg/results/400961/3-xdp-py/stderr
+> > Cc: stable@vger.kernel.org
+> > Suggested-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+> > Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
+> > ---
+> >  drivers/net/virtio_net.c | 55 ++++++++++++++++++++++------------------
+> >  1 file changed, 30 insertions(+), 25 deletions(-)
+> > 
+> > diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+> > index 1bb3aeca66c6..ac514c9383ae 100644
+> > --- a/drivers/net/virtio_net.c
+> > +++ b/drivers/net/virtio_net.c
+> > @@ -3035,7 +3035,7 @@ static int virtnet_receive_packets(struct virtnet_info *vi,
+> >  }
+> >  
+> >  static int virtnet_receive(struct receive_queue *rq, int budget,
+> > -			   unsigned int *xdp_xmit)
+> > +			   unsigned int *xdp_xmit, bool *retry_refill)
+> >  {
+> >  	struct virtnet_info *vi = rq->vq->vdev->priv;
+> >  	struct virtnet_rq_stats stats = {};
+> > @@ -3047,12 +3047,8 @@ static int virtnet_receive(struct receive_queue *rq, int budget,
+> >  		packets = virtnet_receive_packets(vi, rq, budget, xdp_xmit, &stats);
+> >  
+> >  	if (rq->vq->num_free > min((unsigned int)budget, virtqueue_get_vring_size(rq->vq)) / 2) {
+> > -		if (!try_fill_recv(vi, rq, GFP_ATOMIC)) {
+> > -			spin_lock(&vi->refill_lock);
+> > -			if (vi->refill_enabled)
+> > -				schedule_delayed_work(&vi->refill, 0);
+> > -			spin_unlock(&vi->refill_lock);
+> > -		}
+> > +		if (!try_fill_recv(vi, rq, GFP_ATOMIC))
+> > +			*retry_refill = true;
+> >  	}
+> >  
+> >  	u64_stats_set(&stats.packets, packets);
+> > @@ -3129,18 +3125,18 @@ static int virtnet_poll(struct napi_struct *napi, int budget)
+> >  	struct send_queue *sq;
+> >  	unsigned int received;
+> >  	unsigned int xdp_xmit = 0;
+> > -	bool napi_complete;
+> > +	bool napi_complete, retry_refill = false;
+> >  
+> >  	virtnet_poll_cleantx(rq, budget);
+> >  
+> > -	received = virtnet_receive(rq, budget, &xdp_xmit);
+> > +	received = virtnet_receive(rq, budget, &xdp_xmit, &retry_refill);
+> >  	rq->packets_in_napi += received;
+> >  
+> >  	if (xdp_xmit & VIRTIO_XDP_REDIR)
+> >  		xdp_do_flush();
+> >  
+> >  	/* Out of packets? */
+> > -	if (received < budget) {
+> > +	if (received < budget && !retry_refill) {
+> >  		napi_complete = virtqueue_napi_complete(napi, rq->vq, received);
+> >  		/* Intentionally not taking dim_lock here. This may result in a
+> >  		 * spurious net_dim call. But if that happens virtnet_rx_dim_work
+> > @@ -3160,7 +3156,7 @@ static int virtnet_poll(struct napi_struct *napi, int budget)
+> >  		virtnet_xdp_put_sq(vi, sq);
+> >  	}
+> >  
+> > -	return received;
+> > +	return retry_refill ? budget : received;
+> >  }
+> >  
+> >  static void virtnet_disable_queue_pair(struct virtnet_info *vi, int qp_index)
+> > @@ -3230,9 +3226,11 @@ static int virtnet_open(struct net_device *dev)
+> >  
+> >  	for (i = 0; i < vi->max_queue_pairs; i++) {
+> >  		if (i < vi->curr_queue_pairs)
+> > -			/* Make sure we have some buffers: if oom use wq. */
+> > -			if (!try_fill_recv(vi, &vi->rq[i], GFP_KERNEL))
+> > -				schedule_delayed_work(&vi->refill, 0);
+> > +			/* If this fails, we will retry later in
+> > +			 * NAPI poll, which is scheduled in the below
+> > +			 * virtnet_enable_queue_pair
+> 
+> hmm do we even need this, then?
 
 
-The patch titled
-     Subject: arm64: kernel: initialize missing kexec_buf->random field
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     arm64-kernel-initialize-missing-kexec_buf-random-field.patch
+Oh this one is GFP_KERNEL. So it makes it more likely the ring will
+be filled.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/arm64-kernel-initialize-missing-kexec_buf-random-field.patch
-
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via various
-branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there most days
-
-------------------------------------------------------
-From: Yeoreum Yun <yeoreum.yun@arm.com>
-Subject: arm64: kernel: initialize missing kexec_buf->random field
-Date: Mon, 1 Dec 2025 10:51:18 +0000
-
-Commit bf454ec31add ("kexec_file: allow to place kexec_buf randomly")
-introduced the kexec_buf->random field to enable random placement of
-kexec_buf.
-
-However, this field was never properly initialized for kexec images that
-do not need to be placed randomly, leading to the following UBSAN warning:
-
-[  +0.364528] ------------[ cut here ]------------
-[  +0.000019] UBSAN: invalid-load in ./include/linux/kexec.h:210:12
-[  +0.000131] load of value 2 is not a valid value for type 'bool' (aka '_Bool')
-[  +0.000003] CPU: 4 UID: 0 PID: 927 Comm: kexec Not tainted 6.18.0-rc7+ #3 PREEMPT(full)
-[  +0.000002] Hardware name: QEMU QEMU Virtual Machine, BIOS 0.0.0 02/06/2015
-[  +0.000000] Call trace:
-[  +0.000001]  show_stack+0x24/0x40 (C)
-[  +0.000006]  __dump_stack+0x28/0x48
-[  +0.000002]  dump_stack_lvl+0x7c/0xb0
-[  +0.000002]  dump_stack+0x18/0x34
-[  +0.000001]  ubsan_epilogue+0x10/0x50
-[  +0.000002]  __ubsan_handle_load_invalid_value+0xc8/0xd0
-[  +0.000003]  locate_mem_hole_callback+0x28c/0x2a0
-[  +0.000003]  kexec_locate_mem_hole+0xf4/0x2f0
-[  +0.000001]  kexec_add_buffer+0xa8/0x178
-[  +0.000002]  image_load+0xf0/0x258
-[  +0.000001]  __arm64_sys_kexec_file_load+0x510/0x718
-[  +0.000002]  invoke_syscall+0x68/0xe8
-[  +0.000001]  el0_svc_common+0xb0/0xf8
-[  +0.000002]  do_el0_svc+0x28/0x48
-[  +0.000001]  el0_svc+0x40/0xe8
-[  +0.000002]  el0t_64_sync_handler+0x84/0x140
-[  +0.000002]  el0t_64_sync+0x1bc/0x1c0
-
-To address this, initialise kexec_buf->random field properly.
-
-Link: https://lkml.kernel.org/r/20251201105118.2786335-1-yeoreum.yun@arm.com
-Fixes: bf454ec31add ("kexec_file: allow to place kexec_buf randomly")
-Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
-Suggested-by: Breno Leitao <leitao@debian.org>
-Reviewed-by: Breno Leitao <leitao@debian.org>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Coiby Xu <coxu@redhat.com>
-Cc: levi.yun <yeoreum.yun@arm.com>
-Cc: Marc Rutland <mark.rutland@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- arch/arm64/kernel/kexec_image.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
---- a/arch/arm64/kernel/kexec_image.c~arm64-kernel-initialize-missing-kexec_buf-random-field
-+++ a/arch/arm64/kernel/kexec_image.c
-@@ -41,7 +41,7 @@ static void *image_load(struct kimage *i
- 	struct arm64_image_header *h;
- 	u64 flags, value;
- 	bool be_image, be_kernel;
--	struct kexec_buf kbuf;
-+	struct kexec_buf kbuf = {};
- 	unsigned long text_offset, kernel_segment_number;
- 	struct kexec_segment *kernel_segment;
- 	int ret;
-_
-
-Patches currently in -mm which might be from yeoreum.yun@arm.com are
-
-arm64-kernel-initialize-missing-kexec_buf-random-field.patch
+> > +			 */
+> > +			try_fill_recv(vi, &vi->rq[i], GFP_KERNEL);
+> >  
+> >  		err = virtnet_enable_queue_pair(vi, i);
+> >  		if (err < 0)
+> > @@ -3473,15 +3471,15 @@ static void __virtnet_rx_resume(struct virtnet_info *vi,
+> >  				bool refill)
+> >  {
+> >  	bool running = netif_running(vi->dev);
+> > -	bool schedule_refill = false;
+> >  
+> > -	if (refill && !try_fill_recv(vi, rq, GFP_KERNEL))
+> > -		schedule_refill = true;
+> > +	if (refill)
+> > +		/* If this fails, we will retry later in NAPI poll, which is
+> > +		 * scheduled in the below virtnet_napi_enable
+> > +		 */
+> > +		try_fill_recv(vi, rq, GFP_KERNEL);
+> 
+> 
+> hmm do we even need this, then?
+> 
+> > +
+> >  	if (running)
+> >  		virtnet_napi_enable(rq);
+> > -
+> > -	if (schedule_refill)
+> > -		schedule_delayed_work(&vi->refill, 0);
+> >  }
+> >  
+> >  static void virtnet_rx_resume_all(struct virtnet_info *vi)
+> > @@ -3777,6 +3775,7 @@ static int virtnet_set_queues(struct virtnet_info *vi, u16 queue_pairs)
+> >  	struct virtio_net_rss_config_trailer old_rss_trailer;
+> >  	struct net_device *dev = vi->dev;
+> >  	struct scatterlist sg;
+> > +	int i;
+> >  
+> >  	if (!vi->has_cvq || !virtio_has_feature(vi->vdev, VIRTIO_NET_F_MQ))
+> >  		return 0;
+> > @@ -3829,11 +3828,17 @@ static int virtnet_set_queues(struct virtnet_info *vi, u16 queue_pairs)
+> >  	}
+> >  succ:
+> >  	vi->curr_queue_pairs = queue_pairs;
+> > -	/* virtnet_open() will refill when device is going to up. */
+> > -	spin_lock_bh(&vi->refill_lock);
+> > -	if (dev->flags & IFF_UP && vi->refill_enabled)
+> > -		schedule_delayed_work(&vi->refill, 0);
+> > -	spin_unlock_bh(&vi->refill_lock);
+> > +	if (dev->flags & IFF_UP) {
+> > +		/* Let the NAPI poll refill the receive buffer for us. We can't
+> > +		 * safely call try_fill_recv() here because the NAPI might be
+> > +		 * enabled already.
+> > +		 */
+> 
+> I'd drop this comment, it does not clarify much.
+> 
+> > +		local_bh_disable();
+> > +		for (i = 0; i < vi->curr_queue_pairs; i++)
+> > +			virtqueue_napi_schedule(&vi->rq[i].napi, vi->rq[i].vq);
+> > +
+> > +		local_bh_enable();
+> > +	}
+> >  
+> >  	return 0;
+> >  }
+> > -- 
+> > 2.43.0
 
 
