@@ -1,110 +1,124 @@
-Return-Path: <stable+bounces-204530-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204531-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E58E9CEFC98
-	for <lists+stable@lfdr.de>; Sat, 03 Jan 2026 09:02:21 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EA3DCEFCD5
+	for <lists+stable@lfdr.de>; Sat, 03 Jan 2026 09:35:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 898AB301226D
-	for <lists+stable@lfdr.de>; Sat,  3 Jan 2026 08:02:18 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B2C92300B027
+	for <lists+stable@lfdr.de>; Sat,  3 Jan 2026 08:35:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C34232F361F;
-	Sat,  3 Jan 2026 08:02:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF1C829B22F;
+	Sat,  3 Jan 2026 08:35:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=m3y3r.de header.i=@m3y3r.de header.b="uAzIEIBm"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Stgl7CTp"
 X-Original-To: stable@vger.kernel.org
-Received: from www17.your-server.de (www17.your-server.de [213.133.104.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f193.google.com (mail-pf1-f193.google.com [209.85.210.193])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 795E32F28FC
-	for <stable@vger.kernel.org>; Sat,  3 Jan 2026 08:02:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.133.104.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59D8229A312
+	for <stable@vger.kernel.org>; Sat,  3 Jan 2026 08:35:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.193
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767427337; cv=none; b=d3X/aYJgiXLU2sLD6nSGJKWt05SwJv+zT74WEby2U2I94EKeeMw1FdAmAMGDUOZX0GxuT9S0sls8t+4KKxwhaZbSYVSvmCUWWR8t/8r6RwxR4bq2LKYUmekqteVwxQMFcJiL6vFyDGJHPmkH/c8dUnc+9EGBx83l90WPfcGeaB0=
+	t=1767429306; cv=none; b=Ozx6lL3EqIuAYRImGWM3LfIACANgm8TLw48nzdTWQDghtts/goG3hpqAX9iaXJ2xyoBlwJ2eY6e2JLPkxN2nD7dSGcsciDidD5v2aihpr7W/ChIYWXG382am3rw7R3ymSLOCE4p7v4yJfAURvzCRBmnP3UcaCjjhVjZje2q2+QI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767427337; c=relaxed/simple;
-	bh=tiu8jFw2u7XpQk80KCe9pVqkkvn1SwQUPbqNCk5N7Gw=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=AgVAWjstriTpKB24lTCnGWU1LPPoeovylo8T4VPT2CkFP4uUMAYvSubHbW0HCAELZP+UvhdFk0jL2db11qgsEcc9MM8rIn8MKdUjWF3VtD36NpdUuXvW5KqJkAWwwpRVGHz2sVIMAXZb5sozeGmCk25gTYkSoFP8ccT0a7daA2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=m3y3r.de; spf=pass smtp.mailfrom=m3y3r.de; dkim=pass (2048-bit key) header.d=m3y3r.de header.i=@m3y3r.de header.b=uAzIEIBm; arc=none smtp.client-ip=213.133.104.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=m3y3r.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=m3y3r.de
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=m3y3r.de;
-	s=default2402; h=Content-Transfer-Encoding:Content-Type:MIME-Version:
-	Message-ID:References:In-Reply-To:Subject:CC:To:From:Date:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=tiu8jFw2u7XpQk80KCe9pVqkkvn1SwQUPbqNCk5N7Gw=; b=uAzIEIBmbNHnJVzRqguT6+ZVfm
-	pemZ1kHTfMQ0f0v0rG/C+KUP3ef+w89eARPh2F/Q0F1n0BfK2KjAI8ouG/qi4jMl0Z8eQHj+ZyuSh
-	s2zOw+FVwhyvy4+3IsgQEUpIHbrs/9gDiJg6+/5jKeO71YdDCGJh9aD4M1gG3/0DcZBKZSIMKiD0F
-	DLMw4QMwtmM9eI3e/Bd2OpF6b6oHXeE+OMDIZ1OEkY/kdjmaHH+CGu1TPKy1toRVRulDJNFp3NwZG
-	wDiOe8/s0P/ynFGxTPKnRvg19ITXPw1AMvM74KQ+CEjBJLGVODl+zgzEMEPfqMMHrBvkLV1p0MtSi
-	SZY9Tkrg==;
-Received: from sslproxy05.your-server.de ([78.46.172.2])
-	by www17.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <thomas@m3y3r.de>)
-	id 1vbwaK-000K3O-25;
-	Sat, 03 Jan 2026 09:02:05 +0100
-Received: from localhost ([127.0.0.1])
-	by sslproxy05.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <thomas@m3y3r.de>)
-	id 1vbwaK-000LHH-12;
-	Sat, 03 Jan 2026 09:02:04 +0100
-Date: Sat, 03 Jan 2026 09:02:02 +0100
-From: Thomas Meyer <thomas@m3y3r.de>
-To: stable@vger.kernel.org
-CC: johannes@sipsolutions.net
-Subject: Re: 6.18.2 iwlwifi broken, API version 4294967294
-User-Agent: K-9 Mail for Android
-In-Reply-To: <0b3219c015de2623ebd5e18d927a995e97095bfa.camel@sipsolutions.net>
-References: <72464EF2-D744-4151-AB30-96C1EA41B482@m3y3r.de> (sfid-20251230_233158_225745_362CA8B5) <0b3219c015de2623ebd5e18d927a995e97095bfa.camel@sipsolutions.net>
-Message-ID: <582EA36B-91F1-4A36-B524-5F4F26208F21@m3y3r.de>
+	s=arc-20240116; t=1767429306; c=relaxed/simple;
+	bh=NpM6N3dB6LYTm/Ib/IXLfe1vFqAJ1cYJOFeYExidG2g=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PcSpzVJpfBKyFGuGndDl0VdIoLzgzGCvxo2htri5Nq+gbGjP9fhdJNauu01eUKIxidCFVTRazlRaWOuJ96tIG6AFHReWQIKiVphmMMXcFQG1p9pn8Gm9yn2Xb9XHeZQumr808QF9MzenEfEGhrRdFgcWGyF3IYrwpNi2n33Ttso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Stgl7CTp; arc=none smtp.client-ip=209.85.210.193
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f193.google.com with SMTP id d2e1a72fcca58-7b8eff36e3bso19838656b3a.2
+        for <stable@vger.kernel.org>; Sat, 03 Jan 2026 00:35:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1767429303; x=1768034103; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=9qhIF6Cy3ZRyASZaEaq3YB/3km+X/4fWw4hEpneLsPY=;
+        b=Stgl7CTpGES3EMcbHyREnxCKIJKq+kuC5q5BVIwmvwPJuJpOB8CooUiVEuNxZD3uYP
+         6pt4LFjcYbAt3ctGcbxaUNFqewU4o4C7agrhQvStKoNSlGrJOR76EFW3xaCN1eM17muW
+         Hk2erGA3Q5sKjYIs++tmZ4PaqG4bC4ZlAyNzIh4n9Vs+cWu5idni2r4Vv3TQ3r5ZTutl
+         OBiDG6+ClviUzdbaXuHUBFDinOsW8H4in7soFwqhRPEQbEXrZv+6Mp2LgF6BWicArLyT
+         MyFobNSIF9D1lAWVYVgA4yrDr5j6e9k0WU4iMc8q6sgo68pT1BZAd1cEL2wj02BQ8+Rp
+         CtmA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767429303; x=1768034103;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9qhIF6Cy3ZRyASZaEaq3YB/3km+X/4fWw4hEpneLsPY=;
+        b=JNwav8fDYX/0vt8OTPodm3EwAFoP+RB1U45GbM3UIrMey6jRZPGU32HLacniMa0z2q
+         7khcS9iQOcyviagtN8JzoJB9ykg06CrjE/GsgUg4ynWI8Exsv2Q8iuG8NOHMj9wJx6NX
+         qjGTgePeYHzDsoE9EyIV+qebDkI4k5mL3KkxfzZ4L6WP4YZCzgTd1r6w5CixTJG2h2BZ
+         49gPDU5A6zIf0QDm2EjLsIx96I5tw8h6TMDxE41doqjt85MD/tqRfgAqk+2Xp3JflYW1
+         wV8FQP6bOOwirNVeeARzfDZPx5GTMhiDkF9JP25n2B7etr1MDaO8yV0Y9cKjSb0x91Va
+         96Sw==
+X-Forwarded-Encrypted: i=1; AJvYcCXOvNdDR1Mm5RfZWBtK2tVDKHTIEdk4FxYT8ZaeZtzm7RWn7QMvcA34KtizN7BlKtTMzbw3fq4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw5b15G20VXTpIA+tb/H3SMJo5JFubzmLfeK4++ESGn1Abb20YM
+	KUF+bapr7/hw8lIVPVX2ZSowVukw/6xHgwzERIWHfRduyfcqDp7nRFwFDKt/Srhf1d+QQBhO
+X-Gm-Gg: AY/fxX4k50KM0lF7VvMqPXtb7jV1353BhZjBQG3K9VBU6ex6IGeH5HMcYD/jdS6eYn3
+	bGAy+6JQlzcTFWDEsrvsDrClcOodVh5Jij7jzzSP0Ixk9+e0OiYbxD5+hk3+cbmFN5/XWq76Pgr
+	adl7v4rnuqt1/gidQYOtds/H6NAZO9Hs8CLRvuKIemG3QmCNZolyHVKom25h7h2Rs71phTbEZs+
+	7EbnR16P/F2kbX40n7MGOxz7o0sM7JK0iNOxAg+/GKNFrPzF0VJYow4C0/KkKcFj2q85Lbnmu77
+	KGeomhkBkW4DOh4r3MP1oKgUwkgc93eIbVBZX+zTm5yQu9yXhf6j4IGcS4bDkRXzC9Kv7d/nS+2
+	2wYvMEol7AJBlQoMyvSEisVlm3FoodheHKfkGOPvqhUuM3fEjRY6wNfySE6gbiYmYNJL0GjwSUA
+	m5Xrk+3ExS7t4=
+X-Google-Smtp-Source: AGHT+IHUtqtty/VtHSgmc026MF4CaRztjM1XP8TFk789rI3KF6DtSazGuOKQZfS8bwFmggSzp+M8tA==
+X-Received: by 2002:a05:6a20:7d9f:b0:359:c3:c2ec with SMTP id adf61e73a8af0-376a92c71d6mr44602946637.35.1767429303426;
+        Sat, 03 Jan 2026 00:35:03 -0800 (PST)
+Received: from ymm.. ([120.192.15.12])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c1e7961e045sm36366670a12.1.2026.01.03.00.35.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 03 Jan 2026 00:35:03 -0800 (PST)
+From: Aaron Yang <qxy238@gmail.com>
+X-Google-Original-From: Aaron Yang <aaronyang238@qq.com>
+To: qxy238@gmail.com
+Cc: Hengqi Chen <hengqi.chen@gmail.com>,
+	stable@vger.kernel.org,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH v1] LoongArch: BPF: Zero-extend bpf_tail_call() index
+Date: Sat,  3 Jan 2026 16:34:54 +0800
+Message-ID: <20260103083454.10350-1-aaronyang238@qq.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Virus-Scanned: Clear (ClamAV 1.0.9/27869/Sat Jan  3 08:25:47 2026)
+Content-Transfer-Encoding: 8bit
 
-Hi,
+From: Hengqi Chen <hengqi.chen@gmail.com>
 
-Can this fix please go into 6=2E18 stable tree?
+The bpf_tail_call() index should be treated as a u32 value. Let's
+zero-extend it to avoid calling wrong BPF progs. See similar fixes
+for x86 [1]) and arm64 ([2]) for more details.
 
-https://git=2Ekernel=2Eorg/pub/scm/linux/kernel/git/torvalds/linux=2Egit/c=
-ommit/?id=3Dca5898222914f399797cea1aeb0ce77109ca2e62
+  [1]: https://github.com/torvalds/linux/commit/90caccdd8cc0215705f18b92771b449b01e2474a
+  [2]: https://github.com/torvalds/linux/commit/16338a9b3ac30740d49f5dfed81bac0ffa53b9c7
 
-Mfg
-Thomas
+Cc: stable@vger.kernel.org
+Fixes: 5dc615520c4d ("LoongArch: Add BPF JIT support")
+Signed-off-by: Hengqi Chen <hengqi.chen@gmail.com>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+---
+ arch/loongarch/net/bpf_jit.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
+diff --git a/arch/loongarch/net/bpf_jit.c b/arch/loongarch/net/bpf_jit.c
+index 5352d0c30fb2..766ded335fd8 100644
+--- a/arch/loongarch/net/bpf_jit.c
++++ b/arch/loongarch/net/bpf_jit.c
+@@ -280,6 +280,8 @@ static int emit_bpf_tail_call(struct jit_ctx *ctx, int insn)
+ 	 *	 goto out;
+ 	 */
+ 	tc_ninsn = insn ? ctx->offset[insn+1] - ctx->offset[insn] : ctx->offset[0];
++	emit_zext_32(ctx, a2, true);
++
+ 	off = offsetof(struct bpf_array, map.max_entries);
+ 	emit_insn(ctx, ldwu, t1, a1, off);
+ 	/* bgeu $a2, $t1, jmp_offset */
+-- 
+2.43.0
 
-Am 31=2E Dezember 2025 09:15:08 MEZ schrieb Johannes Berg <johannes@sipsol=
-utions=2Enet>:
->On Tue, 2025-12-30 at 23:31 +0100, Thomas Meyer wrote:
->> Hi,
->>=20
->> This patch broke my laptop's wifi:
->>=20
->> https://git=2Ekernel=2Eorg/pub/scm/linux/kernel/git/torvalds/linux=2Egi=
-t/commit/drivers/net/wireless/intel/iwlwifi/iwl-drv=2Ec?h=3Dv6=2E18&id=3D5f=
-708cccde9d1ea61bb50574d361d1c80fc1a248
->>=20
->> The API min Version is shown as:
->> Driver supports FW core 4294967294=2E=2E2, firmware is 2=2E
->>=20
->> Looks like some integer overflow for my old hardware=2E
->>=20
->> Reverting the patch makes the driver work again=2E
->
->There should be fix on the way:
->
->https://git=2Ekernel=2Eorg/pub/scm/linux/kernel/git/torvalds/linux=2Egit/=
-commit/?id=3Dca5898222914f399797cea1aeb0ce77109ca2e62
->
->johannes
 
