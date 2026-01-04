@@ -1,81 +1,118 @@
-Return-Path: <stable+bounces-204575-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204576-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C706CF12E6
-	for <lists+stable@lfdr.de>; Sun, 04 Jan 2026 19:13:30 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE025CF1317
+	for <lists+stable@lfdr.de>; Sun, 04 Jan 2026 19:30:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4BD7E300D141
-	for <lists+stable@lfdr.de>; Sun,  4 Jan 2026 18:13:27 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 28EEC30056CE
+	for <lists+stable@lfdr.de>; Sun,  4 Jan 2026 18:30:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECB86256C8B;
-	Sun,  4 Jan 2026 18:13:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0E072D8782;
+	Sun,  4 Jan 2026 18:30:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rVGjuvKX"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dEuqlHrv"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A291D3A1E70;
-	Sun,  4 Jan 2026 18:13:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5153521B196
+	for <stable@vger.kernel.org>; Sun,  4 Jan 2026 18:30:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767550405; cv=none; b=lwgeVOCIZyRy1KrMA0a9Ghe5ROsnoFOStBM1+pCNgV/U1mYZ+kBqpTv8Gsv5bskuQXqLHE7toZ/9zbzsemg0Np9Z1KgqpGExSxSrn1H84FBmDsCa+5KaMuAKiFsy+bk4s6Qm4X5zAl4jA/wTPqDEO0XixCAuiFyeU4hp93gM2Wo=
+	t=1767551437; cv=none; b=DBO4Cdrp/zwY/wy+FQouwg21wFkAoEzbFIqPc8pr7CMxsddIkRLH3umX6J9VvhQ83v3QXQg8v9GQSdAYMPT6lNZCrXa2ug5k8x4RmOfGigjQdworP9oY39APfpq77aX+8sJRA89RSn825xfE4DzOOFwuYB7YRPvooL2PivVPx34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767550405; c=relaxed/simple;
-	bh=7aLUiot2SfuGwMnLVofiZQScB17Z0NLov7dmrjYkKj8=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PPJtZAzu1GTqwsVw6+v66GBYcy2uGwgEln1OMDXYIOrmUzyNn0Z1rKwzyCy+WrdtR8t74QDg5vKmoL6iv3HgVSDhgC8SHNXDv3ZgEUc39Z650DBKYmUr372dmWf7JgP7YethCRTZdq5SWduGStldyNTR39JlR3ZUXo9AdGnqfMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rVGjuvKX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99084C4CEF7;
-	Sun,  4 Jan 2026 18:13:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767550405;
-	bh=7aLUiot2SfuGwMnLVofiZQScB17Z0NLov7dmrjYkKj8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=rVGjuvKXaV8PbensfG4lQRQXlB5xjTFbHGDiPC0QvCI2etwW4y4iVjH0cwivp33HT
-	 LyViESXin1u4ySEGbeDZV3xfg8fa3MsBo4KYTqsl3ey8EU++1BNvQXdfeF+ly47iuV
-	 FBawWKsh8xXg+z14cclTGltbwu61GI0t9HYIvkkvcr2TdXLDIp6Ccabsj2Dj/l1ngW
-	 qxs8ajFB1AulpmllylfPzTxkScysFZX4TDvGc4tPprXhUbdLZ8dN1D3I8y2b0JyKmA
-	 typfIFdaOBVHdF4nche0c01OX6+MhmR9DaaNiys/sLa2L3FQIduj4q9+vrP4JL5NuH
-	 EgzVdJvF5nt1g==
-Date: Sun, 4 Jan 2026 10:13:23 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Michael Thalmeier <michael.thalmeier@hale.at>
-Cc: Deepak Sharma <deepak.sharma.472935@gmail.com>, Krzysztof Kozlowski
- <krzk@kernel.org>, Vadim Fedorenko <vadim.fedorenko@linux.dev>, Simon
- Horman <horms@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org, Michael Thalmeier
- <michael@thalmeier.at>, stable@vger.kernel.org
-Subject: Re: [PATCH net v4] net: nfc: nci: Fix parameter validation for
- packet data
-Message-ID: <20260104101323.1ac8b478@kernel.org>
-In-Reply-To: <20251223072552.297922-1-michael.thalmeier@hale.at>
-References: <20251223072552.297922-1-michael.thalmeier@hale.at>
+	s=arc-20240116; t=1767551437; c=relaxed/simple;
+	bh=2FMf9qZWkndgIdfX4lTJCzcI5l8G0uyat9bQRXb33QE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=o15bBCoY/jAhKOdXcQU4ttcTC/8mLrPM1n2LKnB+MTlyY/H3zg81h6PcqgY1rJkS+UysyQ57fx0YGheV9dVbZmUAHt3e0vk6Wn1gKGK17u7cAwBRW2RyUrK8g0GgQRw+mfNvMhWErs/Kk68IIjW05lYgnHagSng0FWxMK+4/oNI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dEuqlHrv; arc=none smtp.client-ip=209.85.216.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-34eeffdb197so1241823a91.1
+        for <stable@vger.kernel.org>; Sun, 04 Jan 2026 10:30:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1767551435; x=1768156235; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2FMf9qZWkndgIdfX4lTJCzcI5l8G0uyat9bQRXb33QE=;
+        b=dEuqlHrv9XK4/Gsrv5670oGsNlMPeqeT+5l5lNDFwG0f7TZw/NyZ7MBqF6uRt/7MRt
+         +ovD3OKGSU50Pk7mV/7LGII4zAkbRlJ/49Pg+Xo1iwtHyY5M/ya0D6mEd9GLCYJdGkAI
+         q0kAS4S8EZoCboReGac0uRZCwHWL0NbhB43EX5UcZCexGD6IcIygn7lYvnVCxnWQKItB
+         sNNPD5+D0A5pq2L9+JkaUp+eSWvBA8h2FF724lATjpLyPAiJyaiqcsyccTiEfior1Vmi
+         h/1ICqEUnoNm3Z74AyRG07Z+v4imw+SxF9J3effMrLaDJUo+ptxfzfSVXPwUsPRVBuuO
+         2EIg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767551435; x=1768156235;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=2FMf9qZWkndgIdfX4lTJCzcI5l8G0uyat9bQRXb33QE=;
+        b=vb8mlwQQUVuTTtJgKI4AIW8NnK4e2udgg2V+knxZd8QtXUxLfCaJCs3lbNPY08NORw
+         y7uBMU6e9f74NS2m8Udx7RnI114JMIKXg37AaEPDjd4FP8R5qqlnYnq8OCLN4RtbqwBa
+         PFOxzWVZnflGJAYdnl+DQlJNZWVYo+5axiUZ8GeQ78mdE5S8GhwgnHX5vPvlmOuV/Gxe
+         0LcR62pYlBvhDt2WJY606gsfZi70AR3ioTAXL6pf96NXvMSM+/EvHvxoNPmKDWoyrOGW
+         z3ihIK5ggByWv423yhA8SVDVovUJZ3q0zG+GPPQA0sztARQUBw0Ceq9JQL+/erAvB1TM
+         ZjwA==
+X-Forwarded-Encrypted: i=1; AJvYcCXboDVop/2YRVJbzA7AoLIOQmBmr7pDP5MmhkBlo+zncup+i46QzbFvc14VL1StF2dggpHFC8A=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzg3WHB3v+QGINDaD1wB6ajpl0GqkukifeWW8+jZow/rAvKb37Q
+	zRBemJV1Wua5mgS5/251WcWci+k86R/vR1Ci6xiKDCOJQx+vYHrQ/E/3wxQ/ywNNvXmGKbPknEa
+	FMaSU2bFbZHQ1eVz2MCtNdBE6WfQEuNk=
+X-Gm-Gg: AY/fxX7cb1g00YyCjgTvsBHN9xzbcEnhZWCWIrnQhtSpIAZn+IdnhcDX68KyNkQnfgJ
+	oy4bgJrFWbj4J/191WcemUxbQPaBvDFSIdt+56da0qGAy+FfeMROvaYgVUnXapiBX3aeHY/O4XL
+	mpbmVs/EyR659RFXXLUsStuHpcV0Zmre+fNuzGarrpbI6RQnRI8Qm56+kuH0fEyl1DJHFxwGs83
+	lzQo2Nth4xYvRBbVVK1BcmX7GZ3LwMTNNPcyip7rZwe8McN1rzLyN4TgyEr7hnfjCRoR7PnFPCX
+	nzk92EmNWapeswu2xvSwdB+fwDGADDUCTlMEXmx+gBcJR2UGgLmCUbzwfpCZz+Wh3lt7vGezDOd
+	ezWabtQniHNej
+X-Google-Smtp-Source: AGHT+IEN2ZV3PmHk0U2hOsgfRRLfJgqnWA5WvTpO/3j7uswcdn3JtlcK4tmqCIPkoBBSPuwlNN0Yrlooa7Bsvz6TIxA=
+X-Received: by 2002:a05:7300:478d:b0:2ae:5e96:9d1b with SMTP id
+ 5a478bee46e88-2b05ec30b31mr23553167eec.5.1767551435363; Sun, 04 Jan 2026
+ 10:30:35 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <20260103143119.96095-1-mt@markoturk.info> <20260103143119.96095-2-mt@markoturk.info>
+ <DFF23OTZRIDS.2PZIV7D8AHWFA@kernel.org> <84cc5699-f9ab-42b3-a1ea-15bf9bd80d19@gmail.com>
+ <aVmHGBop5OPlVVBa@vps.markoturk.info> <CANiq72=t-U8JTH2JZxkQaW7sbYXjWLpkYkuMd_CuzLoJLbEvgQ@mail.gmail.com>
+ <DFFV41VPS2MU.3LHXU4UKITD0U@kernel.org>
+In-Reply-To: <DFFV41VPS2MU.3LHXU4UKITD0U@kernel.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sun, 4 Jan 2026 19:30:22 +0100
+X-Gm-Features: AQt7F2okothj0EUO08sp-m1M34yUfQk5IAvASw86NPhWXjzTsfL5KrZGM1vaSm8
+Message-ID: <CANiq72=fFZpWJ9BvHEBqi4chZO3rFo8+-F9=myW1f_JzJ0PNrg@mail.gmail.com>
+Subject: Re: [PATCH 2/2] rust: pci: fix typo in Bar struct's comment
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: gregkh@linuxfoundation.org, sashal@kernel.org, 
+	Marko Turk <mt@markoturk.info>, Dirk Behme <dirk.behme@gmail.com>, dirk.behme@de.bosch.com, 
+	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, 23 Dec 2025 08:25:52 +0100 Michael Thalmeier wrote:
-> diff --git a/net/nfc/nci/ntf.c b/net/nfc/nci/ntf.c
-> index 418b84e2b260..a5cafcd10cc3 100644
-> --- a/net/nfc/nci/ntf.c
-> +++ b/net/nfc/nci/ntf.c
+On Sun, Jan 4, 2026 at 3:08=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> w=
+rote:
+>
+> In general I prefer to only add a Fixes: tag for the commit that introduc=
+ed the
+> issue.
 
-> @@ -380,6 +384,10 @@ static int nci_rf_discover_ntf_packet(struct nci_dev *ndev,
->  	pr_debug("rf_tech_specific_params_len %d\n",
->  		 ntf.rf_tech_specific_params_len);
->  
-> +	if (skb->len < (data - skb->data) +
-> +			ntf.rf_tech_specific_params_len + sizeof(ntf.ntf_type))
-> +		return -EINVAL;
+If their scripts track moves well, then it is great to avoid it, but I
+am not sure how well that works or not or in which cases, i.e. it
+could look like two different commits introduced the issue and thus
+one backport could be missed. Not sure.
 
-Are we validating ntf.rf_tech_specific_params_len against the
-extraction logic in nci_extract_rf_params_nfca_passive_poll()
-and friends?
+> Again, I could also remember this wrongly, but I think I just recently re=
+viewed
+> such a commit from Sasha. :)
+
+Hmm... I also had a few cases where Sasha autoapplied, but in most
+cases, I had to provide custom patches when they didn't apply cleanly,
+even trivial ones.
+
+Cheers,
+Miguel
 
