@@ -1,100 +1,124 @@
-Return-Path: <stable+bounces-204571-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204572-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A655CF129C
-	for <lists+stable@lfdr.de>; Sun, 04 Jan 2026 18:28:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 153AECF12C9
+	for <lists+stable@lfdr.de>; Sun, 04 Jan 2026 18:59:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F3B2F300A367
-	for <lists+stable@lfdr.de>; Sun,  4 Jan 2026 17:28:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 58283300C0DE
+	for <lists+stable@lfdr.de>; Sun,  4 Jan 2026 17:59:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A8A527FD4A;
-	Sun,  4 Jan 2026 17:28:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AE302D47E8;
+	Sun,  4 Jan 2026 17:59:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mvista.com header.i=@mvista.com header.b="QyAZEGc+"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="x0dEkahT"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97DEF281532
-	for <stable@vger.kernel.org>; Sun,  4 Jan 2026 17:28:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 078AB3A1E70;
+	Sun,  4 Jan 2026 17:59:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767547685; cv=none; b=QBw06B90lxY9DLQj3EaZ3CG0UfXA/QTtFq0WKUbnBAx24GwxBrcpHTy9v0YBZvOVuLeSzC9BIacP/Y/DXcT4plwqhYaOaOgH8hqsgJEqKSvdxXS3TEM8ET1KDGMCVFoTZgFmTMPsCUXhNmkBbIaDrPgYjXZZAYzr8FuQAaqbpzo=
+	t=1767549548; cv=none; b=UYnme/USBsr+YwuKJ5k/GQ0xKkW7+DnGpircCAxxR/bJvMwzzbTvbBNpJFkMdGC/n6q2JutIyhP+oi2EPtuPKRJNgQpBrMpPwyea6bI3Q1ZH1S6B9QFXXERa1HBZyQH0QT2B3rZD2xxmUwlRxchAFNLzwzGkGlB8qM0In6Dt/QI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767547685; c=relaxed/simple;
-	bh=6ZcchofEi36ThVNQ9UrQ1o1oKgDERRqmMyNsvSuL+vk=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=mDbwatG6wi2jOb71fkOsBJSzxoJRnvO9+mfPSH0JcvR5VhNcAQa3fZul3CO10rfBchjGTsaMjAmEOA48In5yJqycnWVb0fkixba3TTc9DTUdB6kuHHuAvz6ifqPajOyNPdEQ2OUdIz428mdzhT3CaXjS/+zQZ1hlNEgYadUBZdI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mvista.com; spf=pass smtp.mailfrom=mvista.com; dkim=pass (1024-bit key) header.d=mvista.com header.i=@mvista.com header.b=QyAZEGc+; arc=none smtp.client-ip=209.85.214.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mvista.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mvista.com
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-29f2d829667so26895505ad.0
-        for <stable@vger.kernel.org>; Sun, 04 Jan 2026 09:28:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mvista.com; s=google; t=1767547684; x=1768152484; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6ZcchofEi36ThVNQ9UrQ1o1oKgDERRqmMyNsvSuL+vk=;
-        b=QyAZEGc+vQOoeqniX2XLgfUQbKXXQa+1dFFtQBLG5jCuHKfN4UKvm3Y5WpUd/Xkzt6
-         CrbNxs8HU4ynTy/FZ4+apTsJ2qyMCbCnhzh2q00NeBttLBC1D6OnHRwVNDUzyjljusOu
-         1ZkS47NfJAOlLcWmQUGg1QNsLAQsdQyZBo2DE=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767547684; x=1768152484;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=6ZcchofEi36ThVNQ9UrQ1o1oKgDERRqmMyNsvSuL+vk=;
-        b=PYWHBycPtsno3tyBYA7ig7UzOxPYSg1IsDkrWc4Dd3+Hc9dPUz2EBM9VvsiFnoiP3K
-         ZkFITBNqXndu6GHBJUajeBxQ12QxSvUY41C+h1eoQwb8niRBX8+ZwClsvloIUZG9aWc0
-         3cKBVES60fOYf+Y0jh70vABD08H0Y8eMD/QAz7CBpiAzD2gVaolXP0AUunm5Ep6lXtOm
-         i8C2hlPmMiRceFG9ZpEXA1PTeDLwIo8lUHtQH47ce1jM5iRCUCC2rf65y+fbWUJBUgdj
-         J+GwZOjJCVVNFjmlmW0KM9f8RqEVAQ2GYJix6fFi5MogyRCpjxM/anKRJY62Ge0X28l3
-         xZrw==
-X-Forwarded-Encrypted: i=1; AJvYcCXal+IzTUuHniVyGYuaikxhH0x61Tn4qmKV5a5SMLzKL2Sh1t7KlCAMjSOwI98T/sFvRkTOba8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxgKX+D5sIJwrxjmk7PlNNYcTDM6ne6bQOQkJEe1zDn7gYCnmXo
-	Uex7IBxA1iVfdrn24QOlVa0tKefr6c9m2FQeUK21yjYlKG0mJ2cLyRv3fQJUDfUxXhddfbk7DhO
-	lAMlk
-X-Gm-Gg: AY/fxX7k1vViy9XU2iy2O1Rum5brusS9Nj1CQXjHtjw1XYu1ogDiaXFBZNaguU1Jlrm
-	WETaY1MU12PR188DSDH2fcHPGC8XA+vnG+u3k1tUW0VWB4EXoULA8VC3/74QenPfwVmivxa65e2
-	P/ZA/kydRb5JyQsuChqGR4HJ7wisKocQ3MXBnCL48cSztOP4N/glEFpJFgfT+wq6rAC9PZzdyAQ
-	Ce3RYWyW/gM/2uZO7orVpotgKeyE309Eveq+Fx8eKoAG5pQ73F/tDZUEB7OEDyyVVhSzxUtfWAy
-	k9kYi5mJreyYeSZXWlVSYfI8IlZ/k06TGf8UfRL2iJme+F9kzF6t4lD3YQMmMjHBzVGngv9yYhQ
-	kUN7KrOyX76lQzn8GtFSog3Wm/Kwb0T6VEBa4DZQUHhth3FN3aUUj8n0iol356EBOMYC3h4J51g
-	cft+WBflB65RpsJuxjb0ArDg==
-X-Google-Smtp-Source: AGHT+IHl4Qeq6HwnHxtUaqW3lTf/RsDSALJ3wkpesclzkqfWQ2AOQqIxOJaZsF2WFTVAX/CKCSP8bw==
-X-Received: by 2002:a17:90b:4d8e:b0:343:e480:49f1 with SMTP id 98e67ed59e1d1-34e921c4431mr31241161a91.5.1767547683907;
-        Sun, 04 Jan 2026 09:28:03 -0800 (PST)
-Received: from MVIN00229.mvista.com ([182.74.28.237])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c1e7c7263a3sm39368371a12.32.2026.01.04.09.28.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 04 Jan 2026 09:28:03 -0800 (PST)
-From: skulkarni@mvista.com
-To: gregkh@linuxfoundation.org,
-	sashal@kernel.org,
-	stable@vger.kernel.org
-Cc: syoshida@redhat.com,
-	syzkaller@googlegroups.com,
-	pabeni@redhat.com
-Subject: [PATCH 5.15.y 5.10.y] ipv4: Fix uninit-value access in __ip_make_skb()
-Date: Sun,  4 Jan 2026 22:57:34 +0530
-Message-Id: <20260104172733.1913006-1-skulkarni@mvista.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20251225155236.1881304-1-skulkarni@mvista.com>
-References: <20251225155236.1881304-1-skulkarni@mvista.com>
+	s=arc-20240116; t=1767549548; c=relaxed/simple;
+	bh=0OZPDaxVwdoSeACdoaN1quQhyId1qv1e8mlXVzC1RvQ=;
+	h=Date:To:From:Subject:Message-Id; b=exnLOZ+ptQvGfZ6rOU2J1CGBGljadCfIJYW7VPPwPA3ipOTei6pVhEuKZgO+1qK3m/fYuz+N//KCRmGL44DCTWRd1MWJM+vdSeBT4JLhFVcS4phfO4plvxzqRCl3iMLJVhvBohAKw2fCONTa7SB8tjaXfsEjDrg+WPtong9KdtE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=x0dEkahT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAFE4C19421;
+	Sun,  4 Jan 2026 17:59:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1767549545;
+	bh=0OZPDaxVwdoSeACdoaN1quQhyId1qv1e8mlXVzC1RvQ=;
+	h=Date:To:From:Subject:From;
+	b=x0dEkahT6hgSAyvVNETPNm1CXwE2zG7nFdZ/H3FuU9Xmio+uMV513Z7/eNbbNNkVc
+	 beUaaVyGKoIDYbFVBw61cXaVrH4k0UDSrKWwsYuIBIACrzXuPoYFRWTY2p8nUiQcp4
+	 kjxCwWf7oPElyA1DJ9quYtKRqvrHAOlDIT+I9b0M=
+Date: Sun, 04 Jan 2026 09:59:05 -0800
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,glider@google.com,elver@google.com,dvyukov@google.com,ryan.roberts@arm.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-kmsan-fix-poisoning-of-high-order-non-compound-pages.patch added to mm-hotfixes-unstable branch
+Message-Id: <20260104175905.AAFE4C19421@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-Hi Greg, Sasha,
 
-Can you please consider this patch for the 5.10.y and 5.15.y stable kernel trees, if there are no problems detected with the patch.
+The patch titled
+     Subject: mm: kmsan: fix poisoning of high-order non-compound pages
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-kmsan-fix-poisoning-of-high-order-non-compound-pages.patch
 
-Thanks,
-Shubham
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-kmsan-fix-poisoning-of-high-order-non-compound-pages.patch
+
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via various
+branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there most days
+
+------------------------------------------------------
+From: Ryan Roberts <ryan.roberts@arm.com>
+Subject: mm: kmsan: fix poisoning of high-order non-compound pages
+Date: Sun, 4 Jan 2026 13:43:47 +0000
+
+kmsan_free_page() is called by the page allocator's free_pages_prepare()
+during page freeing.  Its job is to poison all the memory covered by the
+page.  It can be called with an order-0 page, a compound high-order page
+or a non-compound high-order page.  But page_size() only works for order-0
+and compound pages.  For a non-compound high-order page it will
+incorrectly return PAGE_SIZE.
+
+The implication is that the tail pages of a high-order non-compound page
+do not get poisoned at free, so any invalid access while they are free
+could go unnoticed.  It looks like the pages will be poisoned again at
+allocation time, so that would bookend the window.
+
+Fix this by using the order parameter to calculate the size.
+
+Link: https://lkml.kernel.org/r/20260104134348.3544298-1-ryan.roberts@arm.com
+Fixes: b073d7f8aee4 ("mm: kmsan: maintain KMSAN metadata for page operations")
+Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Alexander Potapenko <glider@google.com>
+Cc: Dmitriy Vyukov <dvyukov@google.com>
+Cc: Dmitry Vyukov <dvyukov@google.com>
+Cc: Marco Elver <elver@google.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/kmsan/shadow.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+--- a/mm/kmsan/shadow.c~mm-kmsan-fix-poisoning-of-high-order-non-compound-pages
++++ a/mm/kmsan/shadow.c
+@@ -207,7 +207,7 @@ void kmsan_free_page(struct page *page,
+ 	if (!kmsan_enabled || kmsan_in_runtime())
+ 		return;
+ 	kmsan_enter_runtime();
+-	kmsan_internal_poison_memory(page_address(page), page_size(page),
++	kmsan_internal_poison_memory(page_address(page), PAGE_SIZE << order,
+ 				     GFP_KERNEL & ~(__GFP_RECLAIM),
+ 				     KMSAN_POISON_CHECK | KMSAN_POISON_FREE);
+ 	kmsan_leave_runtime();
+_
+
+Patches currently in -mm which might be from ryan.roberts@arm.com are
+
+mm-kmsan-fix-poisoning-of-high-order-non-compound-pages.patch
+
 
