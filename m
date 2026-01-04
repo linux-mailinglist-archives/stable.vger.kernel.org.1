@@ -1,143 +1,99 @@
-Return-Path: <stable+bounces-204555-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204556-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D96E0CF0AF9
-	for <lists+stable@lfdr.de>; Sun, 04 Jan 2026 08:06:17 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEB62CF0B97
+	for <lists+stable@lfdr.de>; Sun, 04 Jan 2026 08:40:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3B51F3007E6F
-	for <lists+stable@lfdr.de>; Sun,  4 Jan 2026 07:06:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BFAC3300ACD4
+	for <lists+stable@lfdr.de>; Sun,  4 Jan 2026 07:40:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EE492E8B87;
-	Sun,  4 Jan 2026 07:06:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A2842F6164;
+	Sun,  4 Jan 2026 07:40:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="UbrFyJTu"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 292081E3DED;
-	Sun,  4 Jan 2026 07:06:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 935512C0F83;
+	Sun,  4 Jan 2026 07:40:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767510374; cv=none; b=Hp++zUIbB9Rh+77CqOINMFyGYpbPiZxo5VwQpmkV48OhlmFBYfZlitysRm/KTDqCDDTcsW5WOXgn7WWM/qavb/y/c6BHmVYjyXuFdj/oo/K+0A6epU3WT1Ab/VphbIx348fibDgRgYlW6MfQjUVq56paYvMZK6WjwmlgZdbaito=
+	t=1767512424; cv=none; b=sdrNyEChyiCu53bw0iA3AUNuBCDmOwG0Pae+rBRLSQLVsHZVTZ8xAI9mIn40sXJQ2e71477UAZRvY+n7KNvHa35UqrAYlQsxWoOii41+U8uXVUStNRaiFW4T22sND3wiDXac89kbYQzaiL74q0ntPCpaTUDu4gUvIlXw67dA9i0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767510374; c=relaxed/simple;
-	bh=U/drjaec94vByEJRrQZRJ0ugpd1FPnND4TRh+yCdSL8=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=qW17ivurE02h+iftac03SkCov5Wg77XoKzZpEroBQO/aW0MZPwEtCHsAk6ZPMS1u82qljbm8DIY1Gagb7kpvSlOZPqA+lLeLkGyLTp0j6wCDaDdMheTHHznBvMfvX0FtJTp+WlkQbjuuo0+FkLt0rbZK/NGZ/eH+v0WklAtuBN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from edelgard.fodlan.icenowy.me (unknown [112.94.103.158])
-	by APP-03 (Coremail) with SMTP id rQCowADX4chVEVppyh5TAw--.52S2;
-	Sun, 04 Jan 2026 15:05:58 +0800 (CST)
-Message-ID: <1ad2f826e1537884dfac40287cfee286b2ef63fb.camel@iscas.ac.cn>
-Subject: Re: [PATCH] MIPS: Loongson64: dts: fix phy-related definition of
- LS7A GMAC
-From: Icenowy Zheng <zhengxingda@iscas.ac.cn>
-To: Jiaxun Yang <jiaxun.yang@flygoat.com>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Huacai Chen <chenhuacai@kernel.org>
-Cc: devicetree@vger.kernel.org, "linux-mips@vger.kernel.org"
-	 <linux-mips@vger.kernel.org>, linux-kernel@vger.kernel.org, 
-	"stable@vger.kernel.org"
-	 <stable@vger.kernel.org>
-Date: Sun, 04 Jan 2026 15:05:57 +0800
-In-Reply-To: <d1a0e0ca-22d3-4d58-beb1-88eae19c9a2e@app.fastmail.com>
-References: <20260102155243.3639731-1-zhengxingda@iscas.ac.cn>
-	 <d1a0e0ca-22d3-4d58-beb1-88eae19c9a2e@app.fastmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
-User-Agent: Evolution 3.44.4 
+	s=arc-20240116; t=1767512424; c=relaxed/simple;
+	bh=W/Uqtqxww2ieH9bt4FpJO15jbtWTBOrjQZe/Cyin8r8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sKs1K0kbZbFVrcZQT3Nm3hZy48yErM3BsG3LermM1uvuiAFApTE8UxXd0i77FxPdezN/i7VmcxyOyhCn3rt4bgIDGRPOtGQTQMeRoIyjANrwR2X6QyqyJSAYMqXy5iY2V44yE7u1UY8sq2Tdg6Fjo0nnPr8UbPdsPhGpDNZBCYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=UbrFyJTu; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 44F1840E01A9;
+	Sun,  4 Jan 2026 07:40:19 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id ELooDslI3c7d; Sun,  4 Jan 2026 07:40:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1767512412; bh=C2DOlp/Dd2QWf5LJvYulLRzQu+CXNN3VLRfzi0tEByg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=UbrFyJTu6eYjAkGdDz8F9QRPL5Po/8kglGKfg6MkxOqxd1CZUZF+itakEmqjEnI0b
+	 9bMjh7vZSlRDnc/VvsbIIEUGN3nZ9/abIv8lFeBSK7x1ThgBphhO7s8bylfeguqtBy
+	 Cgu1ako6B3AkS1MmLsKpsHyeksu9DJFro6sLN0t2I2RBvjoPK4hkTurEnLV0qlhD2l
+	 V/Ddb5d31rBUdbluq6Z6Oq184IyQEk4YwnJaWWqsagPee+ELxYXUyDKlrRK4IYy954
+	 7/Sq1YLTHlxiCHXp2avAVnG8V7PFbBYZjLmgPZ65ILp8dBxWgPVYS/mbvAodFCmWCi
+	 /ahFAAzYJvAoSLLX2EuPFh1ROZfuUR5ND4rb9GB6rB4RkHpZdC6L7S9pe0xXHzhthS
+	 xEyy1ooBlbpGNmWl9c56uu4yHGjhE5mvrh3VMlZZ2K8XLzSaKi3V8/K3eBrmgqxX8k
+	 8pI8uHp2k+XiGYar1dyUwk1wcNY8ydn33j6gmpoZTVAILojTg/dZzn8uWy8PUbQyCA
+	 NX4Jp95oOA904oNUXvdxBhzXX5sBQDAVvJUXSVJhd5SXHcmYJvoOfrLS+3t6igWCn0
+	 M091OANJXTgY/dj7q4iOW4StJLPJoO0c1Xek6jVdBZDWPuIcteeygDUVmdLmH84RNt
+	 dFRQduG0oboiaaWygVy4Ya7E=
+Received: from zn.tnic (pd953023b.dip0.t-ipconnect.de [217.83.2.59])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id D4F9C40E0194;
+	Sun,  4 Jan 2026 07:40:03 +0000 (UTC)
+Date: Sun, 4 Jan 2026 08:39:56 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+Cc: tony.luck@intel.com, dougthompson@xmission.com,
+	akpm@linux-foundation.org, juhlenko@akamai.com,
+	linux-edac@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] edac: fix a resource leak in i3200_probe1()
+Message-ID: <20260104073956.GCaVoZTKvmnBN4jnqr@fat_crate.local>
+References: <20251223123202.1492038-1-lihaoxiang@isrc.iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-CM-TRANSID:rQCowADX4chVEVppyh5TAw--.52S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxCryfCr4xZryUJF1fKr1UGFg_yoWrGw4xpr
-	18Jr1UJryUJr18Jr1UJr1UJryUJr1UJw1UJr1UJF1UJr1UXr1jqr1UXr1jgr1UJr48Jr1U
-	Xr1Utr1UZr1UJrUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUPlb7Iv0xC_Kw4lb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I2
-	0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rw
-	A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xII
-	jxv20xvEc7CjxVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4
-	A2jsIEc7CjxVAFwI0_GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IE
-	w4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE14v26r1j6r4UMc
-	vjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwACY4xI67k04243AVAKzVAKj4xxM4xv
-	F2IEb7IF0Fy26I8I3I1lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GF
-	yl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWU
-	JVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7V
-	AKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42
-	IY6I8E87Iv6xkF7I0E14v26r4j6r4UJwCE64xvF2IEb7IF0Fy7YxBIdaVFxhVjvjDU0xZF
-	pf9x07bnVb9UUUUU=
-X-CM-SenderInfo: x2kh0wp0lqwv3d6l2u1dvotugofq/
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20251223123202.1492038-1-lihaoxiang@isrc.iscas.ac.cn>
 
-5ZyoIDIwMjYtMDEtMDLmmJ/mnJ/kupTnmoQgMjI6MzYgKzAwMDDvvIxKaWF4dW4gWWFuZ+WGmemB
-k++8mgo+IAo+IAo+IE9uIEZyaSwgMiBKYW4gMjAyNiwgYXQgMzo1MiBQTSwgSWNlbm93eSBaaGVu
-ZyB3cm90ZToKPiA+IEN1cnJlbnRseSB0aGUgTFM3QSBHTUFDIGRldmljZSB0cmVlIG5vZGUgbGFj
-a3MgYSBwcm9wZXIgcGh5LWhhbmRsZQo+ID4gcHJvcGVydHkgcG9pbnRpbmcgdG8gdGhlIFBIWSBu
-b2RlLgo+ID4gCj4gPiBJbiBhZGRpdGlvbiwgdGhlIHBoeS1tb2RlIHByb3BlcnR5IHNwZWNpZmll
-cyAicmdtaWkiIHdpdGhvdXQgYW55Cj4gPiBpbnRlcm5hbCBkZWxheSBpbmZvcm1hdGlvbiwgd2hp
-Y2ggbWVhbnMgdGhlIGJvYXJkIHRyYWNlIG5lZWRzIHRvCj4gPiBhZGQgMm5zCj4gPiBkZWxheSB0
-byB0aGUgUkdNSUkgZGF0YSBsaW5lczsgYnV0IHRoYXQgaXNuJ3Qga25vd24gdG8gaGFwcGVuIG9u
-Cj4gPiBhbnkKPiA+IExvb25nc29uIGJvYXJkLiBUaGUgQUNQSS1iYXNlZCBpbml0aWFsaXphdGlv
-biBjb2RlcGF0aCwgd2hpY2ggaXMKPiA+IHVzZWQgb24KPiA+IExvb25nQXJjaC1iYXNlZCAzQTUw
-MDAgKyA3QTEwMDAgaGFyZHdhcmVzLCBzcGVjaWZpZXMgInJnbWlpLWlkIiBwaHkKPiA+IG1vZGUs
-IHdoaWNoIHNob3VsZCBiZSB0aGUgb25lIHdlIGFyZSB1c2luZy4KPiA+IAo+ID4gQWRkIHRoZSBs
-YWNraW5nIHBoeS1oYW5kbGUgcHJvcGVydHkgYW5kIHNldCBwcm9wZXIgcGh5LW1vZGUuCj4gPiAK
-PiA+IFRlc3RlZCBvbiBhIExTM0E0MDAwXzdBMTAwMF9OVUNfQk9BUkRfVjIuMSBib2FyZCB3aXRo
-IFlUODUyMVMgUEhZLgo+ID4gCj4gPiBTaWduZWQtb2ZmLWJ5OiBJY2Vub3d5IFpoZW5nIDx6aGVu
-Z3hpbmdkYUBpc2Nhcy5hYy5jbj4KPiAKPiBHb29kIGNhdGNoISBUaGlzIHdpdGggZmluZSB3aXRo
-IHJlYWx0ZWsgcGh5IGNoaXBzIGJ1dCBZVDg1MjFTIHNlZW1zCj4gdG8gYmUgcGlja3kuCgpJIHRo
-aW5rIHRoZXkgbWlnaHQgbm90IHdvcmsgd2l0aCBSZWFsdGVrIFBIWXMgbm93IGVpdGhlciwgY29u
-c2lkZXJpbmcKZGVsYXkgb3ZlcnJpZGUgY29kZSBmb3IgUlRMODIxMUUvRiBlbnRlcmVkIG1haW5s
-aW5lIFJlYWx0ZWsgUEhZIGRyaXZlci4KKFByZXZpb3VzbHkgaXQganVzdCBpZ25vcmVzIHRoZSBw
-aHktbW9kZSBpbnRlcm5hbCBkZWxheSBpbmZvcm1hdGlvbiBhbmQKcmVseSBvbiB3aGF0IGl0cyBz
-dHJhcCBwaW4gZGVmaW5lcykKCj4gCj4gUmV2aWV3ZWQtYnk6IEppYXh1biBZYW5nIDxqaWF4dW4u
-eWFuZ0BmbHlnb2F0LmNvbT4KPiAKPiBBbHNvIG1heWJlOgo+IAo+IENjOiBzdGFibGVAdmdlci5r
-ZXJuZWwub3JnCj4gCj4gR2l2ZW4gdGhvc2UgYm9hcmRzIHJlbHkgb24gYnVpbHQtaW4gRFQuCj4g
-Cj4gVGhhbmtzCj4gCj4gPiAtLS0KPiA+IMKgYXJjaC9taXBzL2Jvb3QvZHRzL2xvb25nc29uL2xz
-N2EtcGNoLmR0c2kgfCA2ICsrKystLQo+ID4gwqAxIGZpbGUgY2hhbmdlZCwgNCBpbnNlcnRpb25z
-KCspLCAyIGRlbGV0aW9ucygtKQo+ID4gCj4gPiBkaWZmIC0tZ2l0IGEvYXJjaC9taXBzL2Jvb3Qv
-ZHRzL2xvb25nc29uL2xzN2EtcGNoLmR0c2kgCj4gPiBiL2FyY2gvbWlwcy9ib290L2R0cy9sb29u
-Z3Nvbi9sczdhLXBjaC5kdHNpCj4gPiBpbmRleCBlZTcxMDQ1ODgzZTdlLi42ZGVlODU5MDlmNWE2
-IDEwMDY0NAo+ID4gLS0tIGEvYXJjaC9taXBzL2Jvb3QvZHRzL2xvb25nc29uL2xzN2EtcGNoLmR0
-c2kKPiA+ICsrKyBiL2FyY2gvbWlwcy9ib290L2R0cy9sb29uZ3Nvbi9sczdhLXBjaC5kdHNpCj4g
-PiBAQCAtMTk5LDcgKzE5OSw4IEBAIGdtYWNAMywwIHsKPiA+IMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqAgPDEzCj4gPiBJUlFfVFlQRV9MRVZFTF9ISUdIPjsKPiA+IMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpbnRl
-cnJ1cHQtbmFtZXMgPSAibWFjaXJxIiwKPiA+ICJldGhfbHBpIjsKPiA+IMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpbnRlcnJ1
-cHQtcGFyZW50ID0gPCZwaWM+Owo+ID4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgcGh5LW1vZGUgPSAicmdtaWkiOwo+ID4gK8Kg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgcGh5LW1vZGUgPSAicmdtaWktaWQiOwo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgcGh5LWhhbmRsZSA9IDwmcGh5MD47
-Cj4gPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgbWRpbyB7Cj4gPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCNhZGRyZXNzLWNl
-bGxzID0gPDE+Owo+ID4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAjc2l6ZS1jZWxscyA9IDwwPjsK
-PiA+IEBAIC0yMjIsNyArMjIzLDggQEAgZ21hY0AzLDEgewo+ID4gwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoCA8MTUKPiA+IElSUV9UWVBFX0xFVkVMX0hJR0g+Owo+ID4gwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlu
-dGVycnVwdC1uYW1lcyA9ICJtYWNpcnEiLAo+ID4gImV0aF9scGkiOwo+ID4gwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGludGVy
-cnVwdC1wYXJlbnQgPSA8JnBpYz47Cj4gPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBwaHktbW9kZSA9ICJyZ21paSI7Cj4gPiAr
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqBwaHktbW9kZSA9ICJyZ21paS1pZCI7Cj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBwaHktaGFuZGxlID0gPCZwaHkx
-PjsKPiA+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqBtZGlvIHsKPiA+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgI2FkZHJlc3Mt
-Y2VsbHMgPSA8MT47Cj4gPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCNzaXplLWNlbGxzID0gPDA+
-Owo+ID4gLS0gCj4gPiAyLjUyLjAKPiAKCg==
+On Tue, Dec 23, 2025 at 08:32:02PM +0800, Haoxiang Li wrote:
+> If edac_mc_alloc() fails, also unmap the window.
+> Add a goto to do so.
+> 
+> Found by code review and compiled on ubuntu 20.04
+> 
+> Fixes: dd8ef1db87a4 ("edac: i3200 memory controller driver")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+> ---
+>  drivers/edac/i3200_edac.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
 
+Both applied, thanks.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
 
