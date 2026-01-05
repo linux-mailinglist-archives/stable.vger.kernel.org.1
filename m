@@ -1,93 +1,95 @@
-Return-Path: <stable+bounces-204950-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204951-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1810BCF5EB7
-	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 23:59:23 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86DE6CF5EEC
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 00:04:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0810B3039299
-	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 22:59:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 21F48302F6B0
+	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 23:03:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CE903126B8;
-	Mon,  5 Jan 2026 22:59:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDA1F310636;
+	Mon,  5 Jan 2026 23:03:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KqZDpgzz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LDEuDAkw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BAA3311942;
-	Mon,  5 Jan 2026 22:59:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 951CC3A1E6D;
+	Mon,  5 Jan 2026 23:03:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767653949; cv=none; b=VgvyFpJaNxk1xnigW/7Qn9FVT8JyIAlLwszJ+gZSSSJ+FAXOQqDia97RI432qgNZ9Wi921sw/yu84U4jczVM3wEqTmnVCDCc4IQjXDd5agEXE7Nm2apCu8gzxD93MZV/e/0ZQluEw8yCHhp11V4DpATOz2Run5HqadNuq98auow=
+	t=1767654208; cv=none; b=qF11ITASeM8BfdLCbZ7wgnlLckk5dlY9aVMTOqpVs1iYaUUHlGgzcoMNibw66OO1px0dhsFvP604Bjz06H+QcUDHvq1jcly338MoZ/Gqekfxcyh1aShGkIKXnDfMA3bN+CGStiBcRjP91q9A8Hb5QU+3QvFJmPZUuUXjVnyhhpU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767653949; c=relaxed/simple;
-	bh=mjbsh5qTsWiK+bL9N+lcIzG0oeu7SbZwJAqsk6DZtZ4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=t9mgkx6BYsHq/NrEPJ57ERFeZyaDGB8/KKFnc3UV/Mmh6tQDm/v1TP8wbHG2QPlKhU91xl7iFZNpth/7fZpTyul/AmtSpCUKerkKEusEEgMnyuqphb3xZ2Qb3TB1spHM3XcugN7k6mTRjcKm8Vo1DI0k6xQ0QqIa6htdLhbi+x4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KqZDpgzz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35C25C19422;
-	Mon,  5 Jan 2026 22:59:06 +0000 (UTC)
+	s=arc-20240116; t=1767654208; c=relaxed/simple;
+	bh=xMpoAjOMiDQD0DfTNUYeG05v1tNz9/4y1VvJcgXMxf4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tDnAD9Y4YjkN5wE3QZT+VX7G5pxl60/TjdSctnuz4yXoft1ToHYJ4ScXRSMpTHbgrEc6rprJTo2nDWZaMPqHOZNjyG2IVa+wIsSWQ4a2lMtiQjCjgQwMvqf3uy1oXx4JmMmB8wJfGfjq1X9R3o+EKuKLg08YCuLKXSBuDxYUQeo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LDEuDAkw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CA0BC116D0;
+	Mon,  5 Jan 2026 23:03:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767653948;
-	bh=mjbsh5qTsWiK+bL9N+lcIzG0oeu7SbZwJAqsk6DZtZ4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KqZDpgzzTWS+c/2QXiq/v/J7NmbO7ILss8exfk3eSj8L2zYvix7/ZDY6YEIknZLWe
-	 FpRw1hjFCwKszZ9aNsXLyG9S3+EybZNzMCez1zXD/ipLfJj4axjzgEzaQ2vE9RHy2d
-	 oNPNn72qyclj0t+0DddSe/43RKPLNjlVWd7WW53s0tygrpoOLp2uHbe9dly/4BOba0
-	 pM9bOKBfSEk8vWSvwLzWwmeldPsN4pYBtXmmkENKiprTz6PI8eb0OPwrl5i5tmTZZp
-	 K6ViYlHOkbkdajt65tSVHcRnqUDNp9q+RQ03aBTp/a+KaCXzlNOerzXR/iFypoPjtW
-	 NnYRTs3WEDW5Q==
-From: Will Deacon <will@kernel.org>
-To: akpm@linux-foundation.org,
-	pjw@kernel.org,
-	leitao@debian.org,
-	catalin.marinas@arm.com,
-	mark.rutland@arm.com,
-	coxu@redhat.com,
-	Yeoreum Yun <yeoreum.yun@arm.com>
-Cc: kernel-team@android.com,
-	Will Deacon <will@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2] arm64: kernel: initialize missing kexec_buf->random field
-Date: Mon,  5 Jan 2026 22:58:29 +0000
-Message-ID: <176764846370.1457992.3931677360070887996.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251201105118.2786335-1-yeoreum.yun@arm.com>
-References: <20251201105118.2786335-1-yeoreum.yun@arm.com>
+	s=k20201202; t=1767654208;
+	bh=xMpoAjOMiDQD0DfTNUYeG05v1tNz9/4y1VvJcgXMxf4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=LDEuDAkwdNtHJo0bsAkb1kq//l7nlma7NpMmPFsPAvSuQr2+ULCqLQKhf6dBKpzHy
+	 qt3BAnz9ZUNuGkz4c5FlVYPxJKMT7bsZEHfy6gaB1DH1Nuv6fTkBM2/g0J/qvYwGUR
+	 jqhNR/zr9MUmPMuHZmYOtCCF5uZtYoULCRIDWl0o9z99KakGyyWrZOreeVFFcenCfR
+	 tYFmtTNdgqVNT4M5NpvXf1JYItFIgCfOUtCdW4w6Sq5BpDLN08SGNUOyHlzPAOLxK0
+	 ikRMDFWE0OrutVVaRtblgciEUEg7c/M48AVNclFVP7TYnBEJoMds1IKvYetKwWxayC
+	 Yab4rcXbjF7fQ==
+Date: Mon, 5 Jan 2026 16:03:22 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Siddhesh Poyarekar <siddhesh@gotplt.org>,
+	Nicolas Schier <nsc@kernel.org>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	rust-for-linux@vger.kernel.org, Kees Cook <kees@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	stable@vger.kernel.org,
+	Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
+	clang-built-linux <llvm@lists.linux.dev>
+Subject: Re: [PATCH v2] rust: Add -fdiagnostics-show-context to
+ bindgen_skip_c_flags
+Message-ID: <20260105230322.GA1276749@ax162>
+References: <20251217150010.665153-1-siddhesh@gotplt.org>
+ <20251217224050.1186896-1-siddhesh@gotplt.org>
+ <CANiq72n0BtCxAsXOaNnSMWC-aW2bNTPzN=4VGb+ic8YA6jhsAw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANiq72n0BtCxAsXOaNnSMWC-aW2bNTPzN=4VGb+ic8YA6jhsAw@mail.gmail.com>
 
-On Mon, 01 Dec 2025 10:51:18 +0000, Yeoreum Yun wrote:
-> Commit bf454ec31add ("kexec_file: allow to place kexec_buf randomly")
-> introduced the kexec_buf->random field to enable random placement of
-> kexec_buf.
+On Sun, Jan 04, 2026 at 09:53:25PM +0100, Miguel Ojeda wrote:
+> On Wed, Dec 17, 2025 at 11:41 PM Siddhesh Poyarekar <siddhesh@gotplt.org> wrote:
+> >
+> > but clang does not have this option, so avoid passing it to bindgen.
 > 
-> However, this field was never properly initialized for kexec images
-> that do not need to be placed randomly, leading to the following UBSAN
-> warning:
+> This looks indeed correct, although it is not yet in a released GCC
+> (testing quickly in Compiler Explorer, GCC 15.2 doesn't have it, but
+> GCC trunk has).
 > 
-> [...]
+> I will apply it -- Cc'ing ClangBuiltLinux and Kbuild so that they are aware.
 
-Applied to arm64 (for-next/misc), thanks!
+Right, this does look correct, as this option is specific to GCC for the
+purpose of exposing more information from GCC internals to the user for
+understanding diagnostics better.
 
-[1/1] arm64: kernel: initialize missing kexec_buf->random field
-      https://git.kernel.org/arm64/c/15dd20dda979
+I will say if this makes 6.19, the stable tag is not necessary since
+7454048db27d6 landed in 6.19-rc1 and I would not expect it to get
+backported (but even if it did via AUTOSEL or something, the Fixes tag
+should ensure it gets included).
 
 Cheers,
--- 
-Will
-
-https://fixes.arm64.dev
-https://next.arm64.dev
-https://will.arm64.dev
+Nathan
 
