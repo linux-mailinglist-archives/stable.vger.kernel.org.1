@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-204754-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204755-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57355CF3909
-	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 13:39:37 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F09A7CF390C
+	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 13:39:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C28D730081AA
-	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 12:39:36 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0B12C3004611
+	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 12:39:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1879F30EF6F;
-	Mon,  5 Jan 2026 12:39:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CC6C22D7A1;
+	Mon,  5 Jan 2026 12:39:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IaXBtd0Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xIt5wLgu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B27B02D9EFC
-	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 12:39:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B96E22B5A5
+	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 12:39:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767616775; cv=none; b=beXZp62rLG826KTT62hMfHYm3A9MzV+8aPYAQ/e2Dts9mcdlZil/PyUwkJ8+8U/SGPPVc8yxM6iYDyj2GfHLlKTlhBJLWQdrey3EDApzQH4ZFEjSsNCmS+YqeEI/qMmi0DkH6QHD7rvTcs1EaOtRWtJRxRCGu0FnRxF85XL4xDM=
+	t=1767616779; cv=none; b=KXliXkgMCOHQNxrbsoKIYHEZnSNsy7qcvaFlOHDeGN7o7swyDsodWC83WQE5+1MndUYY4t3ZKtia51tLa80rA5MsB8HSS+1Ox4FFDpp/lIMVUxF0idttKetmpq1HMdt1WU8rtmn149rKY9/7HFIpi0UKJ2FO8p+954ewnD7vZkk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767616775; c=relaxed/simple;
-	bh=v2f2utIbp9qHu6YjQl9ZvE7doScHbANbdwdHyMvyNKM=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=KwuHrw4ZU9TzEjvnG1OD3hQWtTiuxS7JENdmOD+n3GQTXO8F56+GsMDez4dOc3PCFbHgLgjxtw0+FT2TLyxMvqB68oyw6P1qbr5aVtbFc8GX7Ez4IBzqBo42iTLJ8vH0Sqya48+dmgjwf9xuv5O+LRmvKp3b4FlYMiHFhwTrDas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IaXBtd0Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B42CBC116D0;
-	Mon,  5 Jan 2026 12:39:34 +0000 (UTC)
+	s=arc-20240116; t=1767616779; c=relaxed/simple;
+	bh=TaRK0ZyPKpYlBuz/IFVeEEfH6mqIDDimbb03Rf2tVfk=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=t9smz6P7wuDKAvw8i9Dr3uKtgszh66xMK538Hd2Y7gyav12uNFO19ziiwjLvGfMYWjTAngaa23bnoWw1m+7NIEizTB84Vr341DdspkkQzMChDZIkx6wiZkKfXWmNV+53IUY4D7XvHx5TuIql+FvZM4w1bGsKatx0Cxhgzu6af1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xIt5wLgu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20661C116D0;
+	Mon,  5 Jan 2026 12:39:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767616775;
-	bh=v2f2utIbp9qHu6YjQl9ZvE7doScHbANbdwdHyMvyNKM=;
+	s=korg; t=1767616778;
+	bh=TaRK0ZyPKpYlBuz/IFVeEEfH6mqIDDimbb03Rf2tVfk=;
 	h=Subject:To:Cc:From:Date:From;
-	b=IaXBtd0QoF3CCpz22kSo/IMXVJVS27NwTs3wegUMVVvLZuSNVYOIl8h7LISVvS8AG
-	 ZxHf/nSLygD4aW4PpEEiE+KAG0fh8PQb9IPhGmVC/gJTjNduVKKeSYopKxs8Pu+EM6
-	 YV+YKiF3ar0wcGzitnHr0tGkcrCsHqc49et+9Acs=
-Subject: FAILED: patch "[PATCH] wifi: mac80211: Discard Beacon frames to non-broadcast" failed to apply to 5.15-stable tree
+	b=xIt5wLgu3h+wNjq5IkuI0gstIQre2lpYmJVCxyxfwER+tQyonJAQpQ7S/Cj9gv0rq
+	 jmyY07GKzH+84pheoucaGYywRSJzaq53XbMMS7mbFuXIXlAMJSTH289xCUPuDA9ddr
+	 e3x2HmnjTOxOo4Oa9/B60n286k3TR9uwCVWnzZPs=
+Subject: FAILED: patch "[PATCH] wifi: mac80211: Discard Beacon frames to non-broadcast" failed to apply to 5.10-stable tree
 To: jouni.malinen@oss.qualcomm.com,johannes.berg@intel.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 05 Jan 2026 13:39:23 +0100
-Message-ID: <2026010523-fifty-navigator-ec96@gregkh>
+Date: Mon, 05 Jan 2026 13:39:24 +0100
+Message-ID: <2026010524-editor-spinner-7ecb@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -51,19 +51,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x 193d18f60588e95d62e0f82b6a53893e5f2f19f8
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026010523-fifty-navigator-ec96@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026010524-editor-spinner-7ecb@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
