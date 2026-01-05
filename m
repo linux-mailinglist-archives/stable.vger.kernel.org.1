@@ -1,157 +1,322 @@
-Return-Path: <stable+bounces-204869-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204870-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76C12CF5079
-	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 18:41:42 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45B37CF507C
+	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 18:41:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A1A7A30321E4
-	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 17:34:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D01373047911
+	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 17:34:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1470B32BF42;
-	Mon,  5 Jan 2026 17:34:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D2B6337B8C;
+	Mon,  5 Jan 2026 17:34:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ILNpMCE7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ANOqIV/h"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7055B1FE45D
-	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 17:33:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D10A7320A2C
+	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 17:34:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767634440; cv=none; b=Ud5nUtbg9BMIU8tBcRPYwmd830pqKn8ZRX82Mb5+28k5VMkINv1dgi3X+dTTrDBggKwUNj73Kh/eE+dtZ4URIActLm88XKlw5EyY4Em/Jg5q9woWnHWR5ZEdBn80gzgf5ARtf2v8HhMsyhUBLl19X2cuboQ9Z1csm9FpB5+szB4=
+	t=1767634464; cv=none; b=cIdEBxawJW7Cpv1h70nzPBZv1I+o0eEUSmpaUpFr+o5ZgbCc0p7x1woafI2Sb87HXiQC3wzzaL8U2mTi70E+WKD1mNOy1xEDHaMIUS6bz2F4zgc6SIou339V2Hrmhz4fCAKpiGEVQkzAn58W4oBG6d3X5CzpOn4YYkhlGiLtVNU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767634440; c=relaxed/simple;
-	bh=FI/y3k70MGEsrWBmOco0n5n5y8bTb8Z/9pdkQyecoUw=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=S+173KYtHWhvQEtsTuMDUSfKfXKYD1z5d29Ox7wlFnDpAyKLgJ43+ijHoI2b+1qXsBIFZOC5va8OPU77Jrm7W4GhHnAdssriPZz0ile7T9aZE2u/jPpgnkCATipJ+bzltgCv/UTbEba9AICQPMLWXukCpbUCrldJgmz1ykcpby0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--nktgrg.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ILNpMCE7; arc=none smtp.client-ip=209.85.216.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--nktgrg.bounces.google.com
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-34c213419f5so174934a91.2
-        for <stable@vger.kernel.org>; Mon, 05 Jan 2026 09:33:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1767634439; x=1768239239; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=IMKJH4+cAbmF7zR34yBcAd2WgEHbDH4oxuDfD1twveE=;
-        b=ILNpMCE7S3fvcUcwHqj8YBIVNilyUMnLER/Vbo+CtmTyOxqZ2HZgVqWDBexXIRqDtl
-         g2Dt/0wcIDIlw/HvlramDnQKuzqMhAZU7mUy4cuOzIDCha20g6wEwzaKowYkxNiL1Kdq
-         QdLNPLGHhdGmYBBLUnrGVxP6Srtk/xwZyY4jU8Km3P8ykww6PYw3EudtwGebtBDbtvfJ
-         0zGPIcYnvgU246aMTNtBlPfg1rP6PEaQ00g/ZP4RKXJ4+I0czf3u30jvbe9ZVv3N8qqn
-         wR62Sjpa6kKE8UxTUp+yPfx2Rt0MEmGfukFVbP2ZSp+Zz0JjOG+eeYhinHvvuhn+DmXw
-         VZNg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767634439; x=1768239239;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=IMKJH4+cAbmF7zR34yBcAd2WgEHbDH4oxuDfD1twveE=;
-        b=Eot2Fwn6Fq7BSEuQ9V+AmoK9Br5SSfAR8i90nIGxm4b5KafeaRUeSMZk47rfrVeODQ
-         1xKI7hG75qHAKH8C+2Gr5WyvLHnhuScJI6N4ZuAIaJfdljDZNOx/eOtvf8VQswzPdOgT
-         zR7CgjnH1qAqLLkODen5jVIgmbwRqqgR2chcaLurLe1EAx16DxTTKNDoB5xQmJdAVwPg
-         jKgfOMlUcubi176owgTDaChjCe13PKhJyZE2stFa9FO1pDHiK9ZPK17iZ86LYRudqi+1
-         NTQhKLL4OXvebOTzu3R8xAzMaiLHZmRG+O2a48571atCRduY1rVwiDlj0F4dju5QWvSX
-         oDKA==
-X-Gm-Message-State: AOJu0Yykv0zU2zxC+G5ZyrNoCGKOZBYlNhOzQ2gnMdJEO16jtrmxNvDV
-	xU/sFQsQmcM6Vx6XMr9gbRSHOXpIWjVgFN+mUy+hQryc7MEIVlJwzj/9cETLTxaQJCVbKDb8GTq
-	foCuqWVtkwWHTo2srYxpId04HbAW3pwC+G9YovBAhNLQzzceAWwhAQBr8lngHHR87pRD5n6vEuf
-	Gm6DS6J4lbW2v9wle3pvfBGsyHl4Rv5qV50Yex
-X-Google-Smtp-Source: AGHT+IEZXN8L9YVjHhkLypoRKfnVHlDnIiIGr0zmf5DOsS35ZB7lQ9cER4vb0gEIHtR3rfULdNVYtJaQGVg=
-X-Received: from dlbvv19.prod.google.com ([2002:a05:7022:5f13:b0:11d:cf4c:62ab])
- (user=nktgrg job=prod-delivery.src-stubby-dispatcher) by 2002:a05:7022:629d:b0:119:e56b:98bf
- with SMTP id a92af1059eb24-121f18f09c4mr70065c88.38.1767634438441; Mon, 05
- Jan 2026 09:33:58 -0800 (PST)
-Date: Mon,  5 Jan 2026 17:32:54 +0000
-In-Reply-To: <2026010559-clock-gore-94e2@gregkh>
+	s=arc-20240116; t=1767634464; c=relaxed/simple;
+	bh=tzJjOuk8+y9A+NwikQdvSYbtuZrD6PGFbmXXZcZYerg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=g7txJoswGecQ+IesbHKIdD/h9hvW8Z5X4z+MbMDO9LLbzmwdBtsOeReHSALoBytzT5B9bnspuYo/fseq6A3knpIx0RuasCPHSwDiM8p6XULI1M+0XSFcKc/i+goPI+p/1Z8pDxwZrbnPDArr7haLpe9p/rv78Yqg+ohmKHXkQEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ANOqIV/h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 994FEC19421;
+	Mon,  5 Jan 2026 17:34:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767634464;
+	bh=tzJjOuk8+y9A+NwikQdvSYbtuZrD6PGFbmXXZcZYerg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=ANOqIV/hTqL1pgv2AV1csH9TLQ8ukFhja3DaZ0qhvvAEE6u9CGiaF2umKvJOYm7rh
+	 Uj2JrUkWqU3zqUQGmfQ80iD4ua3RcSZE19CoLunVBt49KuwXJJtm/KCDZurQX05SGe
+	 tJRX6Yb8EQWWeVKVVl0C2HwYvMJy8p9pCadThGsyZLFdzqlqUSKq7M03SK/Mhy+xxq
+	 oXHSBZffvPrNbFW+Qg6ajkQoa9U2K1i9t55ZN98yvn6kWqC7u+8uwW9RIvbnOXGkUq
+	 0PRKbRjQRDpiom0Z7q1+X+zjy/BIQT+N6vArbw+9vya93/MI7/rWmCDwGPSq43QnOM
+	 Ti6W6FNXy3zEg==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Stanimir Varbanov <svarbanov@suse.de>,
+	Florian Fainelil <florian.fainelli@broadcom.com>,
+	Jim Quinlan <james.quinlan@broadcom.com>,
+	"Ivan T. Ivanov" <iivanov@suse.de>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12.y 1/3] PCI: brcmstb: Reuse pcie_cfg_data structure
+Date: Mon,  5 Jan 2026 12:34:18 -0500
+Message-ID: <20260105173420.2692565-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2026010519-syndrome-eccentric-90f2@gregkh>
+References: <2026010519-syndrome-eccentric-90f2@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <2026010559-clock-gore-94e2@gregkh>
-X-Mailer: git-send-email 2.52.0.351.gbe84eed79e-goog
-Message-ID: <20260105173254.1676720-1-nktgrg@google.com>
-Subject: [PATCH 6.12.y] gve: defer interrupt enabling until NAPI registration
-From: Ankit Garg <nktgrg@google.com>
-To: stable@vger.kernel.org
-Cc: Ankit Garg <nktgrg@google.com>, Jordan Rhee <jordanrhee@google.com>, 
-	Joshua Washington <joshwash@google.com>, Harshitha Ramamurthy <hramamurthy@google.com>, 
-	Paolo Abeni <pabeni@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Currently, interrupts are automatically enabled immediately upon
-request. This allows interrupt to fire before the associated NAPI
-context is fully initialized and cause failures like below:
+From: Stanimir Varbanov <svarbanov@suse.de>
 
-[    0.946369] Call Trace:
-[    0.946369]  <IRQ>
-[    0.946369]  __napi_poll+0x2a/0x1e0
-[    0.946369]  net_rx_action+0x2f9/0x3f0
-[    0.946369]  handle_softirqs+0xd6/0x2c0
-[    0.946369]  ? handle_edge_irq+0xc1/0x1b0
-[    0.946369]  __irq_exit_rcu+0xc3/0xe0
-[    0.946369]  common_interrupt+0x81/0xa0
-[    0.946369]  </IRQ>
-[    0.946369]  <TASK>
-[    0.946369]  asm_common_interrupt+0x22/0x40
-[    0.946369] RIP: 0010:pv_native_safe_halt+0xb/0x10
+[ Upstream commit 10dbedad3c8188ce8b68559d43b7aaee7dafba25 ]
 
-Use the `IRQF_NO_AUTOEN` flag when requesting interrupts to prevent auto
-enablement and explicitly enable the interrupt in NAPI initialization
-path (and disable it during NAPI teardown).
+Instead of copying fields from the pcie_cfg_data structure to
+brcm_pcie, reference it directly.
 
-This ensures that interrupt lifecycle is strictly coupled with
-readiness of NAPI context.
-
-Cc: stable@vger.kernel.org
-Fixes: 1dfc2e46117e ("gve: Refactor napi add and remove functions")
-Signed-off-by: Ankit Garg <nktgrg@google.com>
-Reviewed-by: Jordan Rhee <jordanrhee@google.com>
-Reviewed-by: Joshua Washington <joshwash@google.com>
-Signed-off-by: Harshitha Ramamurthy <hramamurthy@google.com>
-Link: https://patch.msgid.link/20251219102945.2193617-1-hramamurthy@google.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-
-(cherry picked from commit 3d970eda003441f66551a91fda16478ac0711617)
+Signed-off-by: Stanimir Varbanov <svarbanov@suse.de>
+Reviewed-by: Florian Fainelil <florian.fainelli@broadcom.com>
+Reviewed-by: Jim Quinlan <james.quinlan@broadcom.com>
+Tested-by: Ivan T. Ivanov <iivanov@suse.de>
+Link: https://lore.kernel.org/r/20250224083559.47645-6-svarbanov@suse.de
+[kwilczynski: commit log]
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Stable-dep-of: 9583f9d22991 ("PCI: brcmstb: Fix disabling L0s capability")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/google/gve/gve_main.c  | 2 +-
- drivers/net/ethernet/google/gve/gve_utils.c | 2 ++
- 2 files changed, 3 insertions(+), 1 deletion(-)
+ drivers/pci/controller/pcie-brcmstb.c | 72 ++++++++++++---------------
+ 1 file changed, 32 insertions(+), 40 deletions(-)
 
-diff --git a/drivers/net/ethernet/google/gve/gve_main.c b/drivers/net/ethernet/google/gve/gve_main.c
-index 497a19ca198d..43d0c40de5fc 100644
---- a/drivers/net/ethernet/google/gve/gve_main.c
-+++ b/drivers/net/ethernet/google/gve/gve_main.c
-@@ -500,7 +500,7 @@ static int gve_alloc_notify_blocks(struct gve_priv *priv)
- 		block->priv = priv;
- 		err = request_irq(priv->msix_vectors[msix_idx].vector,
- 				  gve_is_gqi(priv) ? gve_intr : gve_intr_dqo,
--				  0, block->name, block);
-+				  IRQF_NO_AUTOEN, block->name, block);
- 		if (err) {
- 			dev_err(&priv->pdev->dev,
- 				"Failed to receive msix vector %d\n", i);
-diff --git a/drivers/net/ethernet/google/gve/gve_utils.c b/drivers/net/ethernet/google/gve/gve_utils.c
-index 2349750075a5..90805ab65f92 100644
---- a/drivers/net/ethernet/google/gve/gve_utils.c
-+++ b/drivers/net/ethernet/google/gve/gve_utils.c
-@@ -111,11 +111,13 @@ void gve_add_napi(struct gve_priv *priv, int ntfy_idx,
- 	struct gve_notify_block *block = &priv->ntfy_blocks[ntfy_idx];
+diff --git a/drivers/pci/controller/pcie-brcmstb.c b/drivers/pci/controller/pcie-brcmstb.c
+index 81f085cebf62..62e1d661ee0b 100644
+--- a/drivers/pci/controller/pcie-brcmstb.c
++++ b/drivers/pci/controller/pcie-brcmstb.c
+@@ -191,11 +191,11 @@
+ #define SSC_STATUS_PLL_LOCK_MASK	0x800
+ #define PCIE_BRCM_MAX_MEMC		3
  
- 	netif_napi_add(priv->dev, &block->napi, gve_poll);
-+	enable_irq(block->irq);
- }
+-#define IDX_ADDR(pcie)			((pcie)->reg_offsets[EXT_CFG_INDEX])
+-#define DATA_ADDR(pcie)			((pcie)->reg_offsets[EXT_CFG_DATA])
+-#define PCIE_RGR1_SW_INIT_1(pcie)	((pcie)->reg_offsets[RGR1_SW_INIT_1])
+-#define HARD_DEBUG(pcie)		((pcie)->reg_offsets[PCIE_HARD_DEBUG])
+-#define INTR2_CPU_BASE(pcie)		((pcie)->reg_offsets[PCIE_INTR2_CPU_BASE])
++#define IDX_ADDR(pcie)			((pcie)->cfg->offsets[EXT_CFG_INDEX])
++#define DATA_ADDR(pcie)			((pcie)->cfg->offsets[EXT_CFG_DATA])
++#define PCIE_RGR1_SW_INIT_1(pcie)	((pcie)->cfg->offsets[RGR1_SW_INIT_1])
++#define HARD_DEBUG(pcie)		((pcie)->cfg->offsets[PCIE_HARD_DEBUG])
++#define INTR2_CPU_BASE(pcie)		((pcie)->cfg->offsets[PCIE_INTR2_CPU_BASE])
  
- void gve_remove_napi(struct gve_priv *priv, int ntfy_idx)
+ /* Rescal registers */
+ #define PCIE_DVT_PMU_PCIE_PHY_CTRL				0xc700
+@@ -276,8 +276,6 @@ struct brcm_pcie {
+ 	int			gen;
+ 	u64			msi_target_addr;
+ 	struct brcm_msi		*msi;
+-	const int		*reg_offsets;
+-	enum pcie_soc_base	soc_base;
+ 	struct reset_control	*rescal;
+ 	struct reset_control	*perst_reset;
+ 	struct reset_control	*bridge_reset;
+@@ -285,17 +283,14 @@ struct brcm_pcie {
+ 	int			num_memc;
+ 	u64			memc_size[PCIE_BRCM_MAX_MEMC];
+ 	u32			hw_rev;
+-	int			(*perst_set)(struct brcm_pcie *pcie, u32 val);
+-	int			(*bridge_sw_init_set)(struct brcm_pcie *pcie, u32 val);
+ 	struct subdev_regulators *sr;
+ 	bool			ep_wakeup_capable;
+-	bool			has_phy;
+-	u8			num_inbound_wins;
++	const struct pcie_cfg_data	*cfg;
+ };
+ 
+ static inline bool is_bmips(const struct brcm_pcie *pcie)
  {
- 	struct gve_notify_block *block = &priv->ntfy_blocks[ntfy_idx];
- 
-+	disable_irq(block->irq);
- 	netif_napi_del(&block->napi);
+-	return pcie->soc_base == BCM7435 || pcie->soc_base == BCM7425;
++	return pcie->cfg->soc_base == BCM7435 || pcie->cfg->soc_base == BCM7425;
  }
+ 
+ /*
+@@ -855,7 +850,7 @@ static int brcm_pcie_get_inbound_wins(struct brcm_pcie *pcie,
+ 	 * security considerations, and is not implemented in our modern
+ 	 * SoCs.
+ 	 */
+-	if (pcie->soc_base != BCM7712)
++	if (pcie->cfg->soc_base != BCM7712)
+ 		add_inbound_win(b++, &n, 0, 0, 0);
+ 
+ 	resource_list_for_each_entry(entry, &bridge->dma_ranges) {
+@@ -872,10 +867,10 @@ static int brcm_pcie_get_inbound_wins(struct brcm_pcie *pcie,
+ 		 * That being said, each BARs size must still be a power of
+ 		 * two.
+ 		 */
+-		if (pcie->soc_base == BCM7712)
++		if (pcie->cfg->soc_base == BCM7712)
+ 			add_inbound_win(b++, &n, size, cpu_start, pcie_start);
+ 
+-		if (n > pcie->num_inbound_wins)
++		if (n > pcie->cfg->num_inbound_wins)
+ 			break;
+ 	}
+ 
+@@ -889,7 +884,7 @@ static int brcm_pcie_get_inbound_wins(struct brcm_pcie *pcie,
+ 	 * that enables multiple memory controllers.  As such, it can return
+ 	 * now w/o doing special configuration.
+ 	 */
+-	if (pcie->soc_base == BCM7712)
++	if (pcie->cfg->soc_base == BCM7712)
+ 		return n;
+ 
+ 	ret = of_property_read_variable_u64_array(pcie->np, "brcm,scb-sizes", pcie->memc_size, 1,
+@@ -1012,7 +1007,7 @@ static void set_inbound_win_registers(struct brcm_pcie *pcie,
+ 		 * 7712:
+ 		 *     All of their BARs need to be set.
+ 		 */
+-		if (pcie->soc_base == BCM7712) {
++		if (pcie->cfg->soc_base == BCM7712) {
+ 			/* BUS remap register settings */
+ 			reg_offset = brcm_ubus_reg_offset(i);
+ 			tmp = lower_32_bits(cpu_addr) & ~0xfff;
+@@ -1036,15 +1031,15 @@ static int brcm_pcie_setup(struct brcm_pcie *pcie)
+ 	int memc, ret;
+ 
+ 	/* Reset the bridge */
+-	ret = pcie->bridge_sw_init_set(pcie, 1);
++	ret = pcie->cfg->bridge_sw_init_set(pcie, 1);
+ 	if (ret)
+ 		return ret;
+ 
+ 	/* Ensure that PERST# is asserted; some bootloaders may deassert it. */
+-	if (pcie->soc_base == BCM2711) {
+-		ret = pcie->perst_set(pcie, 1);
++	if (pcie->cfg->soc_base == BCM2711) {
++		ret = pcie->cfg->perst_set(pcie, 1);
+ 		if (ret) {
+-			pcie->bridge_sw_init_set(pcie, 0);
++			pcie->cfg->bridge_sw_init_set(pcie, 0);
+ 			return ret;
+ 		}
+ 	}
+@@ -1052,7 +1047,7 @@ static int brcm_pcie_setup(struct brcm_pcie *pcie)
+ 	usleep_range(100, 200);
+ 
+ 	/* Take the bridge out of reset */
+-	ret = pcie->bridge_sw_init_set(pcie, 0);
++	ret = pcie->cfg->bridge_sw_init_set(pcie, 0);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -1072,9 +1067,9 @@ static int brcm_pcie_setup(struct brcm_pcie *pcie)
+ 	 */
+ 	if (is_bmips(pcie))
+ 		burst = 0x1; /* 256 bytes */
+-	else if (pcie->soc_base == BCM2711)
++	else if (pcie->cfg->soc_base == BCM2711)
+ 		burst = 0x0; /* 128 bytes */
+-	else if (pcie->soc_base == BCM7278)
++	else if (pcie->cfg->soc_base == BCM7278)
+ 		burst = 0x3; /* 512 bytes */
+ 	else
+ 		burst = 0x2; /* 512 bytes */
+@@ -1199,7 +1194,7 @@ static void brcm_extend_rbus_timeout(struct brcm_pcie *pcie)
+ 	u32 timeout_us = 4000000; /* 4 seconds, our setting for L1SS */
+ 
+ 	/* 7712 does not have this (RGR1) timer */
+-	if (pcie->soc_base == BCM7712)
++	if (pcie->cfg->soc_base == BCM7712)
+ 		return;
+ 
+ 	/* Each unit in timeout register is 1/216,000,000 seconds */
+@@ -1281,7 +1276,7 @@ static int brcm_pcie_start_link(struct brcm_pcie *pcie)
+ 		brcm_pcie_set_gen(pcie, pcie->gen);
+ 
+ 	/* Unassert the fundamental reset */
+-	ret = pcie->perst_set(pcie, 0);
++	ret = pcie->cfg->perst_set(pcie, 0);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -1465,12 +1460,12 @@ static int brcm_phy_cntl(struct brcm_pcie *pcie, const int start)
+ 
+ static inline int brcm_phy_start(struct brcm_pcie *pcie)
+ {
+-	return pcie->has_phy ? brcm_phy_cntl(pcie, 1) : 0;
++	return pcie->cfg->has_phy ? brcm_phy_cntl(pcie, 1) : 0;
+ }
+ 
+ static inline int brcm_phy_stop(struct brcm_pcie *pcie)
+ {
+-	return pcie->has_phy ? brcm_phy_cntl(pcie, 0) : 0;
++	return pcie->cfg->has_phy ? brcm_phy_cntl(pcie, 0) : 0;
+ }
+ 
+ static int brcm_pcie_turn_off(struct brcm_pcie *pcie)
+@@ -1481,7 +1476,7 @@ static int brcm_pcie_turn_off(struct brcm_pcie *pcie)
+ 	if (brcm_pcie_link_up(pcie))
+ 		brcm_pcie_enter_l23(pcie);
+ 	/* Assert fundamental reset */
+-	ret = pcie->perst_set(pcie, 1);
++	ret = pcie->cfg->perst_set(pcie, 1);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -1496,7 +1491,7 @@ static int brcm_pcie_turn_off(struct brcm_pcie *pcie)
+ 	writel(tmp, base + HARD_DEBUG(pcie));
+ 
+ 	/* Shutdown PCIe bridge */
+-	ret = pcie->bridge_sw_init_set(pcie, 1);
++	ret = pcie->cfg->bridge_sw_init_set(pcie, 1);
+ 
+ 	return ret;
+ }
+@@ -1584,7 +1579,7 @@ static int brcm_pcie_resume_noirq(struct device *dev)
+ 		goto err_reset;
+ 
+ 	/* Take bridge out of reset so we can access the SERDES reg */
+-	pcie->bridge_sw_init_set(pcie, 0);
++	pcie->cfg->bridge_sw_init_set(pcie, 0);
+ 
+ 	/* SERDES_IDDQ = 0 */
+ 	tmp = readl(base + HARD_DEBUG(pcie));
+@@ -1805,12 +1800,7 @@ static int brcm_pcie_probe(struct platform_device *pdev)
+ 	pcie = pci_host_bridge_priv(bridge);
+ 	pcie->dev = &pdev->dev;
+ 	pcie->np = np;
+-	pcie->reg_offsets = data->offsets;
+-	pcie->soc_base = data->soc_base;
+-	pcie->perst_set = data->perst_set;
+-	pcie->bridge_sw_init_set = data->bridge_sw_init_set;
+-	pcie->has_phy = data->has_phy;
+-	pcie->num_inbound_wins = data->num_inbound_wins;
++	pcie->cfg = data;
+ 
+ 	pcie->base = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(pcie->base))
+@@ -1845,7 +1835,7 @@ static int brcm_pcie_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		return dev_err_probe(&pdev->dev, ret, "could not enable clock\n");
+ 
+-	pcie->bridge_sw_init_set(pcie, 0);
++	pcie->cfg->bridge_sw_init_set(pcie, 0);
+ 
+ 	if (pcie->swinit_reset) {
+ 		ret = reset_control_assert(pcie->swinit_reset);
+@@ -1884,7 +1874,8 @@ static int brcm_pcie_probe(struct platform_device *pdev)
+ 		goto fail;
+ 
+ 	pcie->hw_rev = readl(pcie->base + PCIE_MISC_REVISION);
+-	if (pcie->soc_base == BCM4908 && pcie->hw_rev >= BRCM_PCIE_HW_REV_3_20) {
++	if (pcie->cfg->soc_base == BCM4908 &&
++	    pcie->hw_rev >= BRCM_PCIE_HW_REV_3_20) {
+ 		dev_err(pcie->dev, "hardware revision with unsupported PERST# setup\n");
+ 		ret = -ENODEV;
+ 		goto fail;
+@@ -1904,7 +1895,8 @@ static int brcm_pcie_probe(struct platform_device *pdev)
+ 		}
+ 	}
+ 
+-	bridge->ops = pcie->soc_base == BCM7425 ? &brcm7425_pcie_ops : &brcm_pcie_ops;
++	bridge->ops = pcie->cfg->soc_base == BCM7425 ?
++				&brcm7425_pcie_ops : &brcm_pcie_ops;
+ 	bridge->sysdata = pcie;
+ 
+ 	platform_set_drvdata(pdev, pcie);
 -- 
-2.52.0.351.gbe84eed79e-goog
+2.51.0
 
 
