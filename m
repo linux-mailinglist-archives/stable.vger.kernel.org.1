@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-204757-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204760-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1359CF3975
-	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 13:44:18 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA139CF3A17
+	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 13:56:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 23C04301E933
-	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 12:40:30 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 2CDA130081BE
+	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 12:56:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D8613314DB;
-	Mon,  5 Jan 2026 12:40:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEA6C348452;
+	Mon,  5 Jan 2026 12:47:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J4S4vZsI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f4+udDbH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CF56331201
-	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 12:40:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C46034845E
+	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 12:47:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767616828; cv=none; b=QxmNHeGwRQ+7cj0D5VgtIvw2ivurRlvXKsNBhG+lgVrOVzATisCt6j9aCrFCgqFmGSQ6MPGz+j6uxNJCk6efp/gvHeS7pgGLjRRnG92A29p9LtIVY0ff0uk5ZHd9Qag7febHdVm9TuJCWWpgvuxsIhaVg4q/FenrDPMUAI7VIrE=
+	t=1767617256; cv=none; b=W0N/WUgvN+2PUk1k+qINIPAGYaBmFhSvessTe4qFxGZHvtCb7wtyYHr68YOvmMmpOzlP7KKbZtysS/5SM2JSAHP8tFpaEIpaTkH7QjZwJhAR6o/jtgvHxNa6nzYQgFP4uguTyrri0Sq1DeBK01UYgaQQ1SZmEF79GLCChyyJ4Ys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767616828; c=relaxed/simple;
-	bh=q3a5eUUQMe5H/xLtoR1/XYscaVEPjcNYvLKFb7M06yI=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=rR7UvNYPbJZpx9OFYga4oplgGP7Lim+N3YUM0Nvappd9FrWvd97MALxFPDO9VM6OeTi9zs0u2SS5v0VLI0mUYegVrtQZAu+8PITXQhW9KK3WJQLfisxY/VkgvIS6Cc+e8RMFyCf9dhnEzm8IRVf5mDS2uxZ2Ac1f46oWq/rlIac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J4S4vZsI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F604C116D0;
-	Mon,  5 Jan 2026 12:40:27 +0000 (UTC)
+	s=arc-20240116; t=1767617256; c=relaxed/simple;
+	bh=ySDDuWEB3/FI13IRm6z2Jd3OoprR2kDPvdIiKOISBD0=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=WOHCWHBRW2Vx3yMEZEdijSBD2rTjgC6+Eac9iPlOx0KftlCP1rAI4O2IJkzSJ9/b0iRAKcK56HZj6ec5zvk1sViRllvPr0QS3adqScgWyn5+NX9vzRiRQRb9aGhx1onI6cJ7o1jiF9yxYf5w8EjrtMdEZVZKVPR1KgVHswbGqLs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f4+udDbH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B14D0C116D0;
+	Mon,  5 Jan 2026 12:47:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767616828;
-	bh=q3a5eUUQMe5H/xLtoR1/XYscaVEPjcNYvLKFb7M06yI=;
+	s=korg; t=1767617256;
+	bh=ySDDuWEB3/FI13IRm6z2Jd3OoprR2kDPvdIiKOISBD0=;
 	h=Subject:To:Cc:From:Date:From;
-	b=J4S4vZsIieG5LE88BBg3tP/CYCR02wo0KCTrUolm0jIm1lQZZtPypZ54mYcF+Jufg
-	 k7KiB2DgM7Yk6UrNC1mek0VT1Z5NVOc9plTM5GaF6wUeARAcgPFtVUOwO0i7zJHQdD
-	 uzJsE2jW6gkQ2FSWRHvdskKmab24Qnc/NeUCINew=
-Subject: FAILED: patch "[PATCH] wifi: mac80211: Discard Beacon frames to non-broadcast" failed to apply to 6.6-stable tree
-To: jouni.malinen@oss.qualcomm.com,johannes.berg@intel.com
+	b=f4+udDbHAv/eanygNrFDZTkbLx1E3DSNTX0yB+PdH3GTQYuwimrbZRYJKbzYt+fiY
+	 HLp2jSoQoZEwrsfpedZvYcCynV+61HRORHskKlT54pJkoZWxQrWj1OaieMYPWXOztk
+	 C9Kvq2UmPwPkUe9LxkzeP3wcZuZ0l2iURO2dzSUE=
+Subject: FAILED: patch "[PATCH] kasan: unpoison vms[area] addresses with a common tag" failed to apply to 6.1-stable tree
+To: maciej.wieczor-retman@intel.com,akpm@linux-foundation.org,andreyknvl@gmail.com,dakr@kernel.org,dvyukov@google.com,elver@google.com,glider@google.com,jiayuan.chen@linux.dev,kees@kernel.org,ryabinin.a.a@gmail.com,stable@vger.kernel.org,urezki@gmail.com,vincenzo.frascino@arm.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 05 Jan 2026 13:40:16 +0100
-Message-ID: <2026010516-playmate-shorthand-2e97@gregkh>
+Date: Mon, 05 Jan 2026 13:47:32 +0100
+Message-ID: <2026010532-stained-crumpet-3d80@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -51,19 +51,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x 193d18f60588e95d62e0f82b6a53893e5f2f19f8
+git cherry-pick -x 6a0e5b333842cf65d6f4e4f0a2a4386504802515
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026010516-playmate-shorthand-2e97@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026010532-stained-crumpet-3d80@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -75,57 +75,84 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 193d18f60588e95d62e0f82b6a53893e5f2f19f8 Mon Sep 17 00:00:00 2001
-From: Jouni Malinen <jouni.malinen@oss.qualcomm.com>
-Date: Mon, 15 Dec 2025 17:11:34 +0200
-Subject: [PATCH] wifi: mac80211: Discard Beacon frames to non-broadcast
- address
+From 6a0e5b333842cf65d6f4e4f0a2a4386504802515 Mon Sep 17 00:00:00 2001
+From: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
+Date: Thu, 4 Dec 2025 19:00:11 +0000
+Subject: [PATCH] kasan: unpoison vms[area] addresses with a common tag
 
-Beacon frames are required to be sent to the broadcast address, see IEEE
-Std 802.11-2020, 11.1.3.1 ("The Address 1 field of the Beacon .. frame
-shall be set to the broadcast address"). A unicast Beacon frame might be
-used as a targeted attack to get one of the associated STAs to do
-something (e.g., using CSA to move it to another channel). As such, it
-is better have strict filtering for this on the received side and
-discard all Beacon frames that are sent to an unexpected address.
+A KASAN tag mismatch, possibly causing a kernel panic, can be observed on
+systems with a tag-based KASAN enabled and with multiple NUMA nodes.  It
+was reported on arm64 and reproduced on x86.  It can be explained in the
+following points:
 
-This is even more important for cases where beacon protection is used.
-The current implementation in mac80211 is correctly discarding unicast
-Beacon frames if the Protected Frame bit in the Frame Control field is
-set to 0. However, if that bit is set to 1, the logic used for checking
-for configured BIGTK(s) does not actually work. If the driver does not
-have logic for dropping unicast Beacon frames with Protected Frame bit
-1, these frames would be accepted in mac80211 processing as valid Beacon
-frames even though they are not protected. This would allow beacon
-protection to be bypassed. While the logic for checking beacon
-protection could be extended to cover this corner case, a more generic
-check for discard all Beacon frames based on A1=unicast address covers
-this without needing additional changes.
+1. There can be more than one virtual memory chunk.
+2. Chunk's base address has a tag.
+3. The base address points at the first chunk and thus inherits
+   the tag of the first chunk.
+4. The subsequent chunks will be accessed with the tag from the
+   first chunk.
+5. Thus, the subsequent chunks need to have their tag set to
+   match that of the first chunk.
 
-Address all these issues by dropping received Beacon frames if they are
-sent to a non-broadcast address.
+Use the new vmalloc flag that disables random tag assignment in
+__kasan_unpoison_vmalloc() - pass the same random tag to all the
+vm_structs by tagging the pointers before they go inside
+__kasan_unpoison_vmalloc().  Assigning a common tag resolves the pcpu
+chunk address mismatch.
 
-Cc: stable@vger.kernel.org
-Fixes: af2d14b01c32 ("mac80211: Beacon protection using the new BIGTK (STA)")
-Signed-off-by: Jouni Malinen <jouni.malinen@oss.qualcomm.com>
-Link: https://patch.msgid.link/20251215151134.104501-1-jouni.malinen@oss.qualcomm.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+[akpm@linux-foundation.org: use WARN_ON_ONCE(), per Andrey]
+  Link: https://lkml.kernel.org/r/CA+fCnZeuGdKSEm11oGT6FS71_vGq1vjq-xY36kxVdFvwmag2ZQ@mail.gmail.com
+[maciej.wieczor-retman@intel.com: remove unneeded pr_warn()]
+  Link: https://lkml.kernel.org/r/919897daaaa3c982a27762a2ee038769ad033991.1764945396.git.m.wieczorretman@pm.me
+Link: https://lkml.kernel.org/r/873821114a9f722ffb5d6702b94782e902883fdf.1764874575.git.m.wieczorretman@pm.me
+Fixes: 1d96320f8d53 ("kasan, vmalloc: add vmalloc tagging for SW_TAGS")
+Signed-off-by: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
+Reviewed-by: Andrey Konovalov <andreyknvl@gmail.com>
+Cc: Alexander Potapenko <glider@google.com>
+Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Cc: Danilo Krummrich <dakr@kernel.org>
+Cc: Dmitriy Vyukov <dvyukov@google.com>
+Cc: Jiayuan Chen <jiayuan.chen@linux.dev>
+Cc: Kees Cook <kees@kernel.org>
+Cc: Marco Elver <elver@google.com>
+Cc: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
+Cc: Vincenzo Frascino <vincenzo.frascino@arm.com>
+Cc: <stable@vger.kernel.org>	[6.1+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 
-diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
-index 6a1899512d07..e0ccd9749853 100644
---- a/net/mac80211/rx.c
-+++ b/net/mac80211/rx.c
-@@ -3511,6 +3511,11 @@ ieee80211_rx_h_mgmt_check(struct ieee80211_rx_data *rx)
- 	    rx->skb->len < IEEE80211_MIN_ACTION_SIZE)
- 		return RX_DROP_U_RUNT_ACTION;
+diff --git a/mm/kasan/common.c b/mm/kasan/common.c
+index b2b40c59ce18..ed489a14dddf 100644
+--- a/mm/kasan/common.c
++++ b/mm/kasan/common.c
+@@ -584,11 +584,26 @@ void __kasan_unpoison_vmap_areas(struct vm_struct **vms, int nr_vms,
+ 	unsigned long size;
+ 	void *addr;
+ 	int area;
++	u8 tag;
  
-+	/* Drop non-broadcast Beacon frames */
-+	if (ieee80211_is_beacon(mgmt->frame_control) &&
-+	    !is_broadcast_ether_addr(mgmt->da))
-+		return RX_DROP;
+-	for (area = 0 ; area < nr_vms ; area++) {
++	/*
++	 * If KASAN_VMALLOC_KEEP_TAG was set at this point, all vms[] pointers
++	 * would be unpoisoned with the KASAN_TAG_KERNEL which would disable
++	 * KASAN checks down the line.
++	 */
++	if (WARN_ON_ONCE(flags & KASAN_VMALLOC_KEEP_TAG))
++		return;
 +
- 	if (rx->sdata->vif.type == NL80211_IFTYPE_AP &&
- 	    ieee80211_is_beacon(mgmt->frame_control) &&
- 	    !(rx->flags & IEEE80211_RX_BEACON_REPORTED)) {
++	size = vms[0]->size;
++	addr = vms[0]->addr;
++	vms[0]->addr = __kasan_unpoison_vmalloc(addr, size, flags);
++	tag = get_tag(vms[0]->addr);
++
++	for (area = 1 ; area < nr_vms ; area++) {
+ 		size = vms[area]->size;
+-		addr = vms[area]->addr;
+-		vms[area]->addr = __kasan_unpoison_vmalloc(addr, size, flags);
++		addr = set_tag(vms[area]->addr, tag);
++		vms[area]->addr =
++			__kasan_unpoison_vmalloc(addr, size, flags | KASAN_VMALLOC_KEEP_TAG);
+ 	}
+ }
+ #endif
 
 
