@@ -1,313 +1,224 @@
-Return-Path: <stable+bounces-204636-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204637-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42A9ECF30AD
-	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 11:48:02 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8C27CF3101
+	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 11:52:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D92B93053BE6
-	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 10:46:40 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9AEF83014127
+	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 10:51:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B65F319601;
-	Mon,  5 Jan 2026 10:41:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01B03330322;
+	Mon,  5 Jan 2026 10:44:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hMUO9NGd"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fPgltwW4"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD789316918
-	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 10:41:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E445932FA12
+	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 10:44:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767609680; cv=none; b=EEzfkxgjf+/KjWFuh17QRcBdEBxmLOIyxoYfgh/d6NOfSHXXje42camUvMtl/gurFhtzho/KkvpQPqfNqnJgiemHZ8LklKWBGqEPmarTWBWfSXa2Yaa9C/fFN5Fcqo8D2TlZ+u0N43jLU2OjimTOW1m43MZ0ez0LY7NlmFaH768=
+	t=1767609858; cv=none; b=SFUiX8nCka0wnhh67mvdWBDmTDTuZgJOjLgWkufqfiRb86CXSlLQDNBLUANBvxICKu3vrLGm9fpWaldJJY+bv/pTYrVb4eQNTfVyLAT+C0NGmGbeCzsEwOwpUxm5NC08iGUoHs5Ak8LhCojBDrXz7F1Uwi1A0TrVVlNAGLoWQGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767609680; c=relaxed/simple;
-	bh=tVZk3lj+Mf4Zd4koAbIW6ssi45a9JWpCUNgORoV8MZU=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=pFMMfSR4K4oPghWBYuE4t6IaaTHZ2xMAk5i7CWkFPNq0LFdG3QLctHvMb2plQFT3pn+4uripo3SEITbv8+Z8+eWpZPnxx3Vq+slSnfXIRIj01Knrrl5AA7Zgezon7ucpcKWOBZhQKRR6Lvgf8n8zdZwELMHIv21uCYzL0ZkP0kA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hMUO9NGd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6E4FC116D0;
-	Mon,  5 Jan 2026 10:41:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767609679;
-	bh=tVZk3lj+Mf4Zd4koAbIW6ssi45a9JWpCUNgORoV8MZU=;
-	h=Subject:To:Cc:From:Date:From;
-	b=hMUO9NGdl2VBASP5LxKhjG29B40IJD3gqI3hf8tqAenyN+uHgNAuRMhqsTwg69Owy
-	 qMA2D9GrJnDuTDEc/9zPK1fN6MPhUo0LV+EjAaIp+qf3WNV7w/RVb7zYtfOjLUU9Nz
-	 tzyqW1NkJ+del+J+Pejl5xPKHAd5FniqIYYy/HsI=
-Subject: FAILED: patch "[PATCH] media: verisilicon: Fix CPU stalls on G2 bus error" failed to apply to 6.1-stable tree
-To: nicolas.dufresne@collabora.com,benjamin.gaignard@collabora.com,hverkuil+cisco@kernel.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 05 Jan 2026 11:41:08 +0100
-Message-ID: <2026010508-pending-boondocks-df47@gregkh>
+	s=arc-20240116; t=1767609858; c=relaxed/simple;
+	bh=1QO3DLk2yhnxowskNNFKMDzfjU/42K8tKMfyiZUya8Q=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=a86jSZbTgoQ6cz5nFjepaPqYHx9fTi2oAxoZP53diF+qnEUf8Nz+zZ0uVuXHQWv0CeWepV2GUGoQJpgK9R7ndh4FeHRkFS8PnJUOO4rFPEdMvccfYJKtRy13CKp8eIFLZ1+5qfcwrxpQ/x1g1O4oZBGEe2ySdizrmMXyLGLcKak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fPgltwW4; arc=none smtp.client-ip=209.85.221.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-430fcb6b2ebso8461948f8f.2
+        for <stable@vger.kernel.org>; Mon, 05 Jan 2026 02:44:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1767609855; x=1768214655; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=iB7YE0l+vq3WW+DIqr0TlHXqLvKI5geObaEQMVL3pYo=;
+        b=fPgltwW4iCduJR3FWFeUUZpJ+s00mFsCgGgyd+LfAHDNL8FmTJduhW7/NSpR4bU1Y7
+         x6pwveZHRtSwmlR0Vvrnmg4Ed3nqJET7hOVhioJsDCtJPClOdbfmaCfdShrYH8Hna+HD
+         nqhKikKXdD/F3UwUWROtG16pQuZaeuiKbCdSc1LD1OKdP0fC7YRrclONAGB/ahLU1Bz/
+         mi2aRa2edyzYC7HDn0y2Ng4kax95T1jbGG8SCcrVr6VBBa4PbkMfDsyCTojQujcO5VR8
+         YW6BdJApQiFOuDZXPHVdo7F1H1UxOFHx8NsBs0vc0SSVoSI5kdHp76ytkmhE17hCzmLx
+         BcEw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767609855; x=1768214655;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=iB7YE0l+vq3WW+DIqr0TlHXqLvKI5geObaEQMVL3pYo=;
+        b=FJgwQbspD5GzzrsYsy5FLTZwloo0KTcSfkJxAkJVTJ9c6NlD40/8ofZVrGw/6NBEIt
+         cv4g8r9/RGgekS54dN7eX4XruGQvBjVGegaM8P4D0azhbUZnUK3DPaXpzyYF5x17lZlH
+         lxKIUaa75eCU8b48PNgeEC2HOEI6M2ZTETlIHcDsOYM1FYdLePTiuvV552bDllVoJq9s
+         IWbVIfyLwQCaoiMWZTRx2d4FpTdoBQOMTzfQ1j/ZvGwr91J/tpGTxseOVkX7OOClef0U
+         ZSuxkAptnbrIj+RM/Xp2B/yC+wWnHftsBnh5xjNgvzTtFTamfqz0NipU6qPCxgtnPoH6
+         rszA==
+X-Forwarded-Encrypted: i=1; AJvYcCXc6VqC7MhHDafE89zH212RpRtewWwSCY6GZXSHgpd35hcsZDs38rhWgOkrO8nrHZEzHTyK8Dk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyZTlAwnjUVrr5twjKwWg2nbmuvuhIhjn4NCBvoiUOokS0mTc2i
+	4oSp9AqKZ+4QAKPaP6KU4jESENxDPEdjmNOQBGFYAYxopkMOJ/zgjN4+wFUZJrgBAgaEuDUCKCv
+	9Zeig6yFhzgVwuVxwPA==
+X-Google-Smtp-Source: AGHT+IGQ34WZFKVilT6HOUlgUQJo4didZl8RM/l4vnBrj2WM6URpfu7K3BIidVdMwnPvK5FgGd8Acedl+UGGZKU=
+X-Received: from wrbck15.prod.google.com ([2002:a5d:5e8f:0:b0:42f:bb38:35d1])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6000:609:b0:431:342:ad41 with SMTP id ffacd0b85a97d-4324e6fa1a7mr65299971f8f.61.1767609855242;
+ Mon, 05 Jan 2026 02:44:15 -0800 (PST)
+Date: Mon, 05 Jan 2026 10:44:06 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAPWVW2kC/32NQQqDMBBFryKz7pQkEkO76j2KC2PGZMAmkoi0i
+ Hdv6gG6fA/++zsUykwF7s0OmTYunGIFdWlgDEP0hOwqgxJKSyVatLympeDE0WGgeaGMSpOT1g5
+ khIA6XDJN/D6jz75y4LKm/Dk/Nvmzf3ObRIla3lpHVhvTdQ+fkp/pOqYX9MdxfAFq2A2QtQAAA A==
+X-Change-Id: 20251203-bitops-find-helper-25ed1bbae700
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4818; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=1QO3DLk2yhnxowskNNFKMDzfjU/42K8tKMfyiZUya8Q=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpW5X480DtzvVuRhPhMmNpQuoBcHD6YBnm8rwY9
+ 3CueU5yKtmJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaVuV+AAKCRAEWL7uWMY5
+ RkIzEACet0+jmd3Fl7BK5lRdHUdojAeqaBxBt6BMkPlNfqaCrPurZiMy/2V/U6SCifYE4SKRXej
+ UrP4wVCTZTWPjSedUUiJBdzVYMRpjoe+phjyjA1Hx0ovJ19aIm5ON0Vr8ImLOlMb2PgQSVC0EfB
+ rozcRQquqabh9wC8r2WaI+iCc5LGHd3inCeh/+7QuXxODJNPFwwQlIUA/qhh5DHB8s8u2aCklNC
+ gQsUaeds3Wim6XzAejMAu+oWeu1hktOJuKQLUJk20C3pJl1eFKqR2yyQVL5BP/2a0R9jQVVHvNt
+ Ybf3jCOTNtM3FZXEa7bRYQ/wXE5caHxek3cBYCt5Mt5Tow7WCVJQUhhkFYREyIwsZfn/f4oIT7/
+ uXfRrNZROsKKcBXXwuNvMh5w1ko7JRmlJloZTbY9p+lCYaYPJ/Otn1QaEPbDTuV1r86oiI41Hde
+ BtL++DuSh3d/1T+OjOLxldLean7QdU1dMFqTZ/+hd9oZdBGsJiggBeXQGeV2+G3ZpN8qIiZqOP/
+ brBnnD+1fcbUFRIuWkqkFf2BMIUp+ZeW87ak4c+Sqpr0kozAfVSAa/XVBHem/qrmVn2iUtkLoRw
+ sOAQnP8Ktu6LxruX8IUiDGti9Gze6oQTYjG5DlIeCZMg2aoMdnwygeMVJhehf/fxu04H3qhxuSE JlK5Z1tfvRcksCw==
+X-Mailer: b4 0.14.2
+Message-ID: <20260105-bitops-find-helper-v2-1-ae70b4fc9ecc@google.com>
+Subject: [PATCH v2] rust: bitops: fix missing _find_* functions on 32-bit ARM
+From: Alice Ryhl <aliceryhl@google.com>
+To: Yury Norov <yury.norov@gmail.com>, Burak Emir <bqe@google.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
 
+On 32-bit ARM, you may encounter linker errors such as this one:
 
-The patch below does not apply to the 6.1-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+	ld.lld: error: undefined symbol: _find_next_zero_bit
+	>>> referenced by rust_binder_main.43196037ba7bcee1-cgu.0
+	>>>               drivers/android/binder/rust_binder_main.o:(<rust_binder_main::process::Process>::insert_or_update_handle) in archive vmlinux.a
+	>>> referenced by rust_binder_main.43196037ba7bcee1-cgu.0
+	>>>               drivers/android/binder/rust_binder_main.o:(<rust_binder_main::process::Process>::insert_or_update_handle) in archive vmlinux.a
 
-To reproduce the conflict and resubmit, you may use the following commands:
+This error occurs because even though the functions are declared by
+include/linux/find.h, the definition is #ifdef'd out on 32-bit ARM. This
+is because arch/arm/include/asm/bitops.h contains:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
-git checkout FETCH_HEAD
-git cherry-pick -x 19c286b755072a22a063052f530a6b1fac8a1f63
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026010508-pending-boondocks-df47@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+	#define find_first_zero_bit(p,sz)	_find_first_zero_bit_le(p,sz)
+	#define find_next_zero_bit(p,sz,off)	_find_next_zero_bit_le(p,sz,off)
+	#define find_first_bit(p,sz)		_find_first_bit_le(p,sz)
+	#define find_next_bit(p,sz,off)		_find_next_bit_le(p,sz,off)
 
-Possible dependencies:
+And the underscore-prefixed function is conditional on #ifndef of the
+non-underscore-prefixed name, but the declaration in find.h is *not*
+conditional on that #ifndef.
 
+To fix the linker error, we ensure that the symbols in question exist
+when compiling Rust code. We do this by definining them in rust/helpers/
+whenever the normal definition is #ifndef'd out.
 
+Note that these helpers are somewhat unusual in that they do not have
+the rust_helper_ prefix that most helpers have. Adding the rust_helper_
+prefix does not compile, as 'bindings::_find_next_zero_bit()' will
+result in a call to a symbol called _find_next_zero_bit as defined by
+include/linux/find.h rather than a symbol with the rust_helper_ prefix.
+This is because when a symbol is present in both include/ and
+rust/helpers/, the one from include/ wins under the assumption that the
+current configuration is one where that helper is unnecessary. This
+heuristic fails for _find_next_zero_bit() because the header file always
+declares it even if the symbol does not exist.
 
-thanks,
+The functions still use the __rust_helper annotation. This lets the
+wrapper function be inlined into Rust code even if full kernel LTO is
+not used once the patch series for that feature lands.
 
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 19c286b755072a22a063052f530a6b1fac8a1f63 Mon Sep 17 00:00:00 2001
-From: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Date: Mon, 22 Sep 2025 14:43:38 -0400
-Subject: [PATCH] media: verisilicon: Fix CPU stalls on G2 bus error
-
-In some seek stress tests, we are getting IRQ from the G2 decoder where
-the dec_bus_int and the dec_e bits are high, meaning the decoder is
-still running despite the error.
-
-Fix this by reworking the IRQ handler to only finish the job once we
-have reached completion and move the software reset to when our software
-watchdog triggers.
-
-This way, we let the hardware continue on errors when it did not self
-reset and in worse case scenario the hardware timeout will
-automatically stop it. The actual error will be fixed in a follow up
-patch.
-
-Fixes: 3385c514ecc5a ("media: hantro: Convert imx8m_vpu_g2_irq to helper")
 Cc: stable@vger.kernel.org
-Reviewed-by: Benjamin Gaignard <benjamin.gaignard@collabora.com>
-Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Fixes: 6cf93a9ed39e ("rust: add bindings for bitops.h")
+Reported-by: Andreas Hindborg <a.hindborg@kernel.org>
+Closes: https://rust-for-linux.zulipchat.com/#narrow/channel/x/topic/x/near/561677301
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+Changes in v2:
+- Remove rust_helper_ prefix from helpers.
+- Improve commit message.
+- The set of functions for which a helper is added is changed so that it
+  matches arch/arm/include/asm/bitops.h
+- Link to v1: https://lore.kernel.org/r/20251203-bitops-find-helper-v1-1-5193deb57766@google.com
+---
+ rust/helpers/bitops.c | 42 ++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 42 insertions(+)
 
-diff --git a/drivers/media/platform/verisilicon/hantro_g2.c b/drivers/media/platform/verisilicon/hantro_g2.c
-index aae0b562fabb..318673b66da8 100644
---- a/drivers/media/platform/verisilicon/hantro_g2.c
-+++ b/drivers/media/platform/verisilicon/hantro_g2.c
-@@ -5,43 +5,93 @@
-  * Copyright (C) 2021 Collabora Ltd, Andrzej Pietrasiewicz <andrzej.p@collabora.com>
-  */
+diff --git a/rust/helpers/bitops.c b/rust/helpers/bitops.c
+index 5d0861d29d3f0d705a014ae4601685828405f33b..e79ef9e6d98f969e2a0a2a6f62d9fcec3ef0fd72 100644
+--- a/rust/helpers/bitops.c
++++ b/rust/helpers/bitops.c
+@@ -1,6 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0
  
-+#include <linux/delay.h>
- #include "hantro_hw.h"
- #include "hantro_g2_regs.h"
+ #include <linux/bitops.h>
++#include <linux/find.h>
  
- #define G2_ALIGN	16
- 
--void hantro_g2_check_idle(struct hantro_dev *vpu)
-+static bool hantro_g2_active(struct hantro_ctx *ctx)
+ void rust_helper___set_bit(unsigned long nr, unsigned long *addr)
  {
--	int i;
-+	struct hantro_dev *vpu = ctx->dev;
-+	u32 status;
- 
--	for (i = 0; i < 3; i++) {
--		u32 status;
-+	status = vdpu_read(vpu, G2_REG_INTERRUPT);
- 
--		/* Make sure the VPU is idle */
--		status = vdpu_read(vpu, G2_REG_INTERRUPT);
--		if (status & G2_REG_INTERRUPT_DEC_E) {
--			dev_warn(vpu->dev, "device still running, aborting");
--			status |= G2_REG_INTERRUPT_DEC_ABORT_E | G2_REG_INTERRUPT_DEC_IRQ_DIS;
--			vdpu_write(vpu, status, G2_REG_INTERRUPT);
--		}
-+	return (status & G2_REG_INTERRUPT_DEC_E);
-+}
+@@ -21,3 +22,44 @@ void rust_helper_clear_bit(unsigned long nr, volatile unsigned long *addr)
+ {
+ 	clear_bit(nr, addr);
+ }
 +
-+/**
-+ * hantro_g2_reset:
-+ * @ctx: the hantro context
++/*
++ * The rust_helper_ prefix is intentionally omitted below so that the
++ * declarations in include/linux/find.h are compatible with these helpers.
 + *
-+ * Emulates a reset using Hantro abort function. Failing this procedure would
-+ * results in programming a running IP which leads to CPU hang.
-+ *
-+ * Using a hard reset procedure instead is prefferred.
++ * Note that the below #ifdefs mean that the helper is only created if C does
++ * not provide a definition.
 + */
-+void hantro_g2_reset(struct hantro_ctx *ctx)
++#ifdef find_first_zero_bit
++__rust_helper
++unsigned long _find_first_zero_bit(const unsigned long *p, unsigned long size)
 +{
-+	struct hantro_dev *vpu = ctx->dev;
-+	u32 status;
++	return find_first_zero_bit(p, size);
++}
++#endif /* find_first_zero_bit */
 +
-+	status = vdpu_read(vpu, G2_REG_INTERRUPT);
-+	if (status & G2_REG_INTERRUPT_DEC_E) {
-+		dev_warn_ratelimited(vpu->dev, "device still running, aborting");
-+		status |= G2_REG_INTERRUPT_DEC_ABORT_E | G2_REG_INTERRUPT_DEC_IRQ_DIS;
-+		vdpu_write(vpu, status, G2_REG_INTERRUPT);
++#ifdef find_next_zero_bit
++__rust_helper
++unsigned long _find_next_zero_bit(const unsigned long *addr,
++				  unsigned long size, unsigned long offset)
++{
++	return find_next_zero_bit(addr, size, offset);
++}
++#endif /* find_next_zero_bit */
 +
-+		do {
-+			mdelay(1);
-+		} while (hantro_g2_active(ctx));
- 	}
- }
- 
- irqreturn_t hantro_g2_irq(int irq, void *dev_id)
- {
- 	struct hantro_dev *vpu = dev_id;
--	enum vb2_buffer_state state;
- 	u32 status;
- 
- 	status = vdpu_read(vpu, G2_REG_INTERRUPT);
--	state = (status & G2_REG_INTERRUPT_DEC_RDY_INT) ?
--		 VB2_BUF_STATE_DONE : VB2_BUF_STATE_ERROR;
- 
--	vdpu_write(vpu, 0, G2_REG_INTERRUPT);
--	vdpu_write(vpu, G2_REG_CONFIG_DEC_CLK_GATE_E, G2_REG_CONFIG);
-+	if (!(status & G2_REG_INTERRUPT_DEC_IRQ))
-+		return IRQ_NONE;
- 
--	hantro_irq_done(vpu, state);
-+	hantro_reg_write(vpu, &g2_dec_irq, 0);
-+	hantro_reg_write(vpu, &g2_dec_int_stat, 0);
-+	hantro_reg_write(vpu, &g2_clk_gate_e, 1);
- 
-+	if (status & G2_REG_INTERRUPT_DEC_RDY_INT) {
-+		hantro_irq_done(vpu, VB2_BUF_STATE_DONE);
-+		return IRQ_HANDLED;
-+	}
++#ifdef find_first_bit
++__rust_helper
++unsigned long _find_first_bit(const unsigned long *addr, unsigned long size)
++{
++	return find_first_bit(addr, size);
++}
++#endif /* find_first_bit */
 +
-+	if (status & G2_REG_INTERRUPT_DEC_ABORT_INT) {
-+		/* disabled on abort, though lets be safe and handle it */
-+		dev_warn_ratelimited(vpu->dev, "decode operation aborted.");
-+		return IRQ_HANDLED;
-+	}
-+
-+	if (status & G2_REG_INTERRUPT_DEC_LAST_SLICE_INT)
-+		dev_warn_ratelimited(vpu->dev, "not all macroblocks were decoded.");
-+
-+	if (status & G2_REG_INTERRUPT_DEC_BUS_INT)
-+		dev_warn_ratelimited(vpu->dev, "bus error detected.");
-+
-+	if (status & G2_REG_INTERRUPT_DEC_ERROR_INT)
-+		dev_warn_ratelimited(vpu->dev, "decode error detected.");
-+
-+	if (status & G2_REG_INTERRUPT_DEC_TIMEOUT)
-+		dev_warn_ratelimited(vpu->dev, "frame decode timed out.");
-+
-+	/**
-+	 * If the decoding haven't stopped, let it continue. The hardware timeout
-+	 * will trigger if it is trully stuck.
-+	 */
-+	if (status & G2_REG_INTERRUPT_DEC_E)
-+		return IRQ_HANDLED;
-+
-+	hantro_irq_done(vpu, VB2_BUF_STATE_ERROR);
- 	return IRQ_HANDLED;
- }
- 
-diff --git a/drivers/media/platform/verisilicon/hantro_g2_hevc_dec.c b/drivers/media/platform/verisilicon/hantro_g2_hevc_dec.c
-index 0e212198dd65..f066636e56f9 100644
---- a/drivers/media/platform/verisilicon/hantro_g2_hevc_dec.c
-+++ b/drivers/media/platform/verisilicon/hantro_g2_hevc_dec.c
-@@ -582,8 +582,6 @@ int hantro_g2_hevc_dec_run(struct hantro_ctx *ctx)
- 	struct hantro_dev *vpu = ctx->dev;
- 	int ret;
- 
--	hantro_g2_check_idle(vpu);
--
- 	/* Prepare HEVC decoder context. */
- 	ret = hantro_hevc_dec_prepare_run(ctx);
- 	if (ret)
-diff --git a/drivers/media/platform/verisilicon/hantro_g2_regs.h b/drivers/media/platform/verisilicon/hantro_g2_regs.h
-index b943b1816db7..c614951121c7 100644
---- a/drivers/media/platform/verisilicon/hantro_g2_regs.h
-+++ b/drivers/media/platform/verisilicon/hantro_g2_regs.h
-@@ -22,7 +22,14 @@
- #define G2_REG_VERSION			G2_SWREG(0)
- 
- #define G2_REG_INTERRUPT		G2_SWREG(1)
-+#define G2_REG_INTERRUPT_DEC_LAST_SLICE_INT	BIT(19)
-+#define G2_REG_INTERRUPT_DEC_TIMEOUT	BIT(18)
-+#define G2_REG_INTERRUPT_DEC_ERROR_INT	BIT(16)
-+#define G2_REG_INTERRUPT_DEC_BUF_INT	BIT(14)
-+#define G2_REG_INTERRUPT_DEC_BUS_INT	BIT(13)
- #define G2_REG_INTERRUPT_DEC_RDY_INT	BIT(12)
-+#define G2_REG_INTERRUPT_DEC_ABORT_INT	BIT(11)
-+#define G2_REG_INTERRUPT_DEC_IRQ	BIT(8)
- #define G2_REG_INTERRUPT_DEC_ABORT_E	BIT(5)
- #define G2_REG_INTERRUPT_DEC_IRQ_DIS	BIT(4)
- #define G2_REG_INTERRUPT_DEC_E		BIT(0)
-@@ -35,6 +42,9 @@
- #define BUS_WIDTH_128			2
- #define BUS_WIDTH_256			3
- 
-+#define g2_dec_int_stat		G2_DEC_REG(1, 11, 0xf)
-+#define g2_dec_irq		G2_DEC_REG(1, 8, 0x1)
-+
- #define g2_strm_swap		G2_DEC_REG(2, 28, 0xf)
- #define g2_strm_swap_old	G2_DEC_REG(2, 27, 0x1f)
- #define g2_pic_swap		G2_DEC_REG(2, 22, 0x1f)
-@@ -225,6 +235,9 @@
- #define vp9_filt_level_seg5	G2_DEC_REG(19,  8, 0x3f)
- #define vp9_quant_seg5		G2_DEC_REG(19,  0, 0xff)
- 
-+#define g2_timemout_override_e	G2_DEC_REG(45, 31, 0x1)
-+#define g2_timemout_cycles	G2_DEC_REG(45, 0, 0x7fffffff)
-+
- #define hevc_cur_poc_00		G2_DEC_REG(46, 24, 0xff)
- #define hevc_cur_poc_01		G2_DEC_REG(46, 16, 0xff)
- #define hevc_cur_poc_02		G2_DEC_REG(46, 8,  0xff)
-diff --git a/drivers/media/platform/verisilicon/hantro_g2_vp9_dec.c b/drivers/media/platform/verisilicon/hantro_g2_vp9_dec.c
-index 82a478ac645e..56c79e339030 100644
---- a/drivers/media/platform/verisilicon/hantro_g2_vp9_dec.c
-+++ b/drivers/media/platform/verisilicon/hantro_g2_vp9_dec.c
-@@ -893,8 +893,6 @@ int hantro_g2_vp9_dec_run(struct hantro_ctx *ctx)
- 	struct vb2_v4l2_buffer *dst;
- 	int ret;
- 
--	hantro_g2_check_idle(ctx->dev);
--
- 	ret = start_prepare_run(ctx, &decode_params);
- 	if (ret) {
- 		hantro_end_prepare_run(ctx);
-diff --git a/drivers/media/platform/verisilicon/hantro_hw.h b/drivers/media/platform/verisilicon/hantro_hw.h
-index c9b6556f8b2b..5f2011529f02 100644
---- a/drivers/media/platform/verisilicon/hantro_hw.h
-+++ b/drivers/media/platform/verisilicon/hantro_hw.h
-@@ -583,6 +583,7 @@ void hantro_g2_vp9_dec_done(struct hantro_ctx *ctx);
- int hantro_vp9_dec_init(struct hantro_ctx *ctx);
- void hantro_vp9_dec_exit(struct hantro_ctx *ctx);
- void hantro_g2_check_idle(struct hantro_dev *vpu);
-+void hantro_g2_reset(struct hantro_ctx *ctx);
- irqreturn_t hantro_g2_irq(int irq, void *dev_id);
- 
- #endif /* HANTRO_HW_H_ */
-diff --git a/drivers/media/platform/verisilicon/imx8m_vpu_hw.c b/drivers/media/platform/verisilicon/imx8m_vpu_hw.c
-index f9f276385c11..5be0e2e76882 100644
---- a/drivers/media/platform/verisilicon/imx8m_vpu_hw.c
-+++ b/drivers/media/platform/verisilicon/imx8m_vpu_hw.c
-@@ -294,11 +294,13 @@ static const struct hantro_codec_ops imx8mq_vpu_g1_codec_ops[] = {
- static const struct hantro_codec_ops imx8mq_vpu_g2_codec_ops[] = {
- 	[HANTRO_MODE_HEVC_DEC] = {
- 		.run = hantro_g2_hevc_dec_run,
-+		.reset = hantro_g2_reset,
- 		.init = hantro_hevc_dec_init,
- 		.exit = hantro_hevc_dec_exit,
- 	},
- 	[HANTRO_MODE_VP9_DEC] = {
- 		.run = hantro_g2_vp9_dec_run,
-+		.reset = hantro_g2_reset,
- 		.done = hantro_g2_vp9_dec_done,
- 		.init = hantro_vp9_dec_init,
- 		.exit = hantro_vp9_dec_exit,
++#ifdef find_next_bit
++__rust_helper
++unsigned long _find_next_bit(const unsigned long *addr, unsigned long size,
++			     unsigned long offset)
++{
++	return find_next_bit(addr, size, offset);
++}
++#endif /* find_next_bit */
+
+---
+base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
+change-id: 20251203-bitops-find-helper-25ed1bbae700
+
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
 
 
