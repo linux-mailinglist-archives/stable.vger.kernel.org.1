@@ -1,44 +1,44 @@
-Return-Path: <stable+bounces-204905-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204906-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 797CACF5690
-	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 20:42:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E6098CF56D8
+	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 20:50:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 73F763060A4B
-	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 19:41:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BDF6C30754DC
+	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 19:47:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60850325716;
-	Mon,  5 Jan 2026 19:41:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23D09299A8A;
+	Mon,  5 Jan 2026 19:47:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZaRfDMZu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Uqgz4xS0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D2263203B6
-	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 19:41:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D88DD2874E4
+	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 19:47:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767642108; cv=none; b=SOVi9D51jws4w5AYvMGNdUokDRZy5zBjzDEnJiWTSbEkazwkKapipNIzcmdU56jVFXUumHR/Zk+O2tZxzO/5l3vUlYoQZuFGoNS4tdjwEi7/4vA/40KKxHoTOWJyPscMRPzmAGtNASZMwx4Gm3fJyX69RVueW+qh1IZfa3Wvq/w=
+	t=1767642437; cv=none; b=kbBc1FmuRTwG95/pBB27nzQiz1c66I8mK5O8B3qD7IoFtqa9NG7bGaqajjE41SBq7uGgxME5iy8GooFxqF8uAw5TfBxY5WDf99ZzVBjSE4bx4WxwFwdFvKTkpCWnGThUfaC8PmFoghNQBMi88W+6+cK5hQ3dtAyEfM8fAL56ruI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767642108; c=relaxed/simple;
-	bh=OcrVC4QDxojxCWxg+hAm5xVgmAGSUjbjAO0qxalryAo=;
+	s=arc-20240116; t=1767642437; c=relaxed/simple;
+	bh=HAE1g7qj5qSEww/tQThpjbVLOOXjVAgBdMtDhylBNVQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=swDkujlDkNr7L4tdf/AsIQT1bSaZZjmok1kSuzTgz+7YSb8dr3iGDk4VDtnR7k7Kc2Qz5KLpUbw1iejmgZwmKh3P2K2zd2MP57rZmte6oYRNvfzC48UuTRrX8cvGYYcaKRVK9/R63UvarK01xtluOgmBj5Y+mA/qadsfWkubwQo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZaRfDMZu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D88F7C116D0;
-	Mon,  5 Jan 2026 19:41:46 +0000 (UTC)
+	 MIME-Version; b=LqhAv7ucStfAsEZdO73M1mFTVRqT5U+JEmGB8rNOO50/46hX3fNn26kk80zFRb2Ed8N78JvUBtucOiEVYZ61zWoVx8Y5Uop1hmkp93S2HUI0v6wijy/R69iL5cmaFBxPgGk0V55GvaBIBjT45J09Y6ZY5FUe3QhA6yG5W5KFHSA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Uqgz4xS0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD65DC116D0;
+	Mon,  5 Jan 2026 19:47:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767642107;
-	bh=OcrVC4QDxojxCWxg+hAm5xVgmAGSUjbjAO0qxalryAo=;
+	s=k20201202; t=1767642437;
+	bh=HAE1g7qj5qSEww/tQThpjbVLOOXjVAgBdMtDhylBNVQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZaRfDMZuMqLK3eUCxPb2koeLSnBDYgetuAgrOBUc6+MYgqFf2ONWnzvv6baw6Y94n
-	 4k8CjZJ4+xs88K2Mht52VFHNLJwGNXfdFaf+Oe6D/qEHAHf+5yhg+X7EbzqI2zY49x
-	 l1Q/LmhXThIv/0COmtMmaD3uUJvKsqSKP0wR06Q1iy73aY+mwThEKgMXIKLgybVeUQ
-	 Rg8WC3T6epajb5/jhGf0BURCTg6tQsmxbKmfwOR4Q706OOu84897dCw3zDIshI1T0z
-	 vfGK+IA7UDtXd+YKV4hGR4aAg05IvfTQkx6zFB8L3S/CZk+X8mDYUbM4XvXwLQp/w8
-	 1uE7htb1mnqyw==
+	b=Uqgz4xS0ZBajxXwPzKqlIkVlvfpaX8yskDBpJnE8L8mI1sONqCEb2KqTr5YYQ+U8I
+	 0mqIVYaty96uU42vnMVLZ8BnZUglw6gMl581FC2lzKe18WtkY1tYLAQpFHIwAGcHOu
+	 NsWszJ93M09AfCY3aCD3W2RktbfQ1DXUeHWABNGUoKCmLjNWeMmMd6BhvluytFWE5j
+	 4j7JLXvopQCGvcuHXThkpgRSH8oVP+VEUEU0pQX0y7NSS/B4n+nj7VQcVyhn+kyH8B
+	 iJ3FYxBI7RC5F0GiKUWES9NKTezLbTiOlbzVD2iM5es8pOJTiBjTved6/zlLfwOd6r
+	 +vw28afcOoNjA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Jim Quinlan <james.quinlan@broadcom.com>,
@@ -46,12 +46,12 @@ Cc: Jim Quinlan <james.quinlan@broadcom.com>,
 	Manivannan Sadhasivam <mani@kernel.org>,
 	Florian Fainelli <florian.fainelli@broadcom.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y] PCI: brcmstb: Fix disabling L0s capability
-Date: Mon,  5 Jan 2026 14:41:45 -0500
-Message-ID: <20260105194145.2748502-1-sashal@kernel.org>
+Subject: [PATCH 5.10.y] PCI: brcmstb: Fix disabling L0s capability
+Date: Mon,  5 Jan 2026 14:47:15 -0500
+Message-ID: <20260105194715.2753386-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026010521-confetti-french-f994@gregkh>
-References: <2026010521-confetti-french-f994@gregkh>
+In-Reply-To: <2026010522-salami-progeny-1e6e@gregkh>
+References: <2026010522-salami-progeny-1e6e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -97,10 +97,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 3 insertions(+), 7 deletions(-)
 
 diff --git a/drivers/pci/controller/pcie-brcmstb.c b/drivers/pci/controller/pcie-brcmstb.c
-index e984b57dd0d8..9b0a5439259b 100644
+index 85be07e8b418..a5454b39672f 100644
 --- a/drivers/pci/controller/pcie-brcmstb.c
 +++ b/drivers/pci/controller/pcie-brcmstb.c
-@@ -44,7 +44,6 @@
+@@ -43,7 +43,6 @@
  #define  PCIE_RC_CFG_PRIV1_ID_VAL3_CLASS_CODE_MASK	0xffffff
  
  #define PCIE_RC_CFG_PRIV1_LINK_CAPABILITY			0x04dc
@@ -108,7 +108,7 @@ index e984b57dd0d8..9b0a5439259b 100644
  
  #define PCIE_RC_DL_MDIO_ADDR				0x1100
  #define PCIE_RC_DL_MDIO_WR_DATA				0x1104
-@@ -873,7 +872,7 @@ static int brcm_pcie_setup(struct brcm_pcie *pcie)
+@@ -865,7 +864,7 @@ static int brcm_pcie_setup(struct brcm_pcie *pcie)
  	int num_out_wins = 0;
  	u16 nlw, cls, lnksta;
  	int i, ret, memc;
@@ -117,7 +117,7 @@ index e984b57dd0d8..9b0a5439259b 100644
  
  	/* Reset the bridge */
  	pcie->bridge_sw_init_set(pcie, 1);
-@@ -995,12 +994,9 @@ static int brcm_pcie_setup(struct brcm_pcie *pcie)
+@@ -987,12 +986,9 @@ static int brcm_pcie_setup(struct brcm_pcie *pcie)
  	}
  
  	/* Don't advertise L0s capability if 'aspm-no-l0s' */
