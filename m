@@ -1,223 +1,124 @@
-Return-Path: <stable+bounces-204633-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204634-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D2BFCF30A4
-	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 11:46:54 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90BB5CF308F
+	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 11:43:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id AC0443015127
-	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 10:46:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0D14830F3C24
+	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 10:40:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78CBB3161B8;
-	Mon,  5 Jan 2026 10:39:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 331E6316918;
+	Mon,  5 Jan 2026 10:40:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l/QkPu6R"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TPBahxkD"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34F1B3161A8
-	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 10:39:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C7253168EB
+	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 10:40:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767609563; cv=none; b=IhSlpD31eDKB70ee7ZPfbHUrXVWdK1bncR99bsVt0wGXdK9WdUHYsQ3KszjaFp7T8+W5mqudB0U7+SS0kg4iDTMoNVS7il3LWd3UBtOlx8AoF4+9DiorF2QRZSwAUSTUyDoZA1wI/p7RbCGvHvVa4h78OMmuVUzaDf3075DbJpY=
+	t=1767609605; cv=none; b=QN7L+5fTCCiyMLPgdQNqMIdjZ0dRCBpNS/H4Jq5NbgDA/DBQwJN42bb/K8coyuUQhtDEVOqh0aoP2WC7KjyKtfk//tPHqphBOvcl0mgRRISAM/0RM2SQYY5fxaH+tB/Z99useYgFLOdLBqHck39jxUDiFe3v5vx03NKpsxQUHM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767609563; c=relaxed/simple;
-	bh=EY/8lI7RGL8R7aliV+hq3GetxYDxAgmXxLaQOWybN0g=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=KJKQEm94fC/emsztCsee2foLhnBBdvtFRBkamYmEW8o1lq5m2alGWrfq/bDJyZ9ion98Xic3bDlPg3RNIHxkBlMGChSOIKbVxi5s47c/G0uPELv1YewLYB0Dd6Vdx5EzVu/bzjIEce3762DC2xnDxnjUf+OScG2zpIc6Vt1kMrE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l/QkPu6R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 621C6C19421;
-	Mon,  5 Jan 2026 10:39:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767609563;
-	bh=EY/8lI7RGL8R7aliV+hq3GetxYDxAgmXxLaQOWybN0g=;
-	h=Subject:To:Cc:From:Date:From;
-	b=l/QkPu6R0Y1Dr81YkVNwilHzjzChAG4hjm5+p9B96f4Vf2WdkWEhCuXDm4GBbTiwc
-	 agWNhnLYy4DvRVVms8criN+08/AeVkGd0/00T6chfLwKUuNG9smod2aRe4BUPn6MNt
-	 7Ad96aZwgcpYMIQ2hVTdn+LOMSlR2bVHwyhhcTWk=
-Subject: FAILED: patch "[PATCH] leds: leds-lp50xx: Enable chip before any communication" failed to apply to 5.10-stable tree
-To: christian.hitz@bbv.ch,lee@kernel.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 05 Jan 2026 11:39:19 +0100
-Message-ID: <2026010519-botanical-suds-31fa@gregkh>
+	s=arc-20240116; t=1767609605; c=relaxed/simple;
+	bh=ilQVyanHgKsLWkZPGkjqH6wvmpNb1DelmMugaEdB5jM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=iPOPfccDctvIybNlM1nO0XCQZfcwh1uKBVHn5YIwvTe0OhznYJ7bj9/UHJ9vz2n4qaP6wX/kc6KLAvSYysWuxlLpy48lO3ZwLOEDrcXbYeTqT1s4UzFpNW4kY9/C73ObPTnhXGRJ+l3PgG0zAl5oeC6SXVG8w0J3EsRw3A84ekI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TPBahxkD; arc=none smtp.client-ip=209.85.214.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2a08ced9a36so30573465ad.2
+        for <stable@vger.kernel.org>; Mon, 05 Jan 2026 02:40:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1767609602; x=1768214402; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ilQVyanHgKsLWkZPGkjqH6wvmpNb1DelmMugaEdB5jM=;
+        b=TPBahxkDEzxpIldCY4B48Wn0U0NjzwIRbzpxV8VdgtEolAf7SDrhIa1TmNAYW6ytEL
+         MdFu0LTgkLyGgbi9UQIBVVUlnV/QfSD3GICWA6Hkpa8AjmWhr71O2TwGAQv2eDhDebYd
+         p4iITY36D8esuBSU02dRVLHpvlWikGcDejkfpANOUxejXnfB/V2oDJfYG2gUOP28/0ZU
+         9YhmIRHHsi0oW64Q958RraaJxBx8v1ufnPCHwaMWExcDEnZ+6KDCNggCFzma5s4abq5y
+         2+mRBT1JLftMEa6C/V1oLDRgIwMOVNlIh+2J7DcMKlW7AdJbnC5KghBWwo6fBJ4a9mkh
+         a+7Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767609602; x=1768214402;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=ilQVyanHgKsLWkZPGkjqH6wvmpNb1DelmMugaEdB5jM=;
+        b=jIeUM1o2r7MJzshEm7AI+WSm0Y3CWsRoc859VNX89xk/z07Y+hqVs+8mEMSyuDXG9E
+         Eon51zB6b+icuhfp/Qdf1wVB+UtvBXQuUaM2S8snebUPDRsVNphQc+UtmLGzAo+4bL1T
+         RLhoIn9EKKbkaGj7Q92I0GjTczkr+mUdxlw1idY+fAWriZsNLzUTceY84clFqPw4Bp+A
+         aj4+LNCEFPtk3FnaNJw68bZktsoVaO9+OA4fta8wj+XZmubYJUixaHP/MBKg9C7q+kcq
+         ez6yoK1WxLzvX0dKwO++ZpccPiC4NFMj8vDk0tuRAv6V7sSlKM09kf8sYtPK7I3AcQUc
+         yG4g==
+X-Forwarded-Encrypted: i=1; AJvYcCVby998GITunFQVIMrNCB77eirnlcmc/myidhiwGGpM09oIAGrn/cC9Pp1nzhmfHXJz21UbdnI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzxoysTGsx2h1U9xt2zPtJdVmvQuRgXmYmuy29hNPmvGEh/104o
+	ZKcVE8U7+7/pWQqWZe9EHHBZK9SvIZXa7yWEClbJfCAeLl3kAR3steTWXefN3547HeCWyRcunbe
+	yJ6x6WclHyMCnfrc2uLMlkcoXt03/4jw=
+X-Gm-Gg: AY/fxX5Iw18jDAMCli/z2yEQLieUMc7C/i0PHJVPYz22pX4iy30O7iwUv4HsNqk1E6/
+	ojYvrzDondheBAwgGD59wB4h+POd867R46y4OQZFaVkQFuXohLgxUrX1bcIbTo8WdAR5Ob/E2nd
+	uaidhizQcUozrLIjDL5kHCfOpDA+Xqr6klcXBkzYayxzB1nhj9dFFDQx9NUQ5kbMsvUwg8Gz5De
+	Y9nZyTszIJGtTLhwBHzsfFjV4LJ/aQ4jpvE97dixhE5pTT7EbCwIU8lQG4GWUjPdO4Cyv9ER3nm
+	Ub7snzgx0MpGeX0Z/daOmQ3c7mWM3yWjqEhO1rKT4LUa5xIvHlSTkTmSU6wpzivsAB+aapZF7tO
+	YKuAerNNe/qrm
+X-Google-Smtp-Source: AGHT+IFW2rQaG24jjJapMA2YCS5ndIcCTUrcLoVwM07bEOEYf1H++r47YjXTIrY1jYLwOX3qoKgMykSxPiszDmOKty4=
+X-Received: by 2002:a05:7300:80cc:b0:2ae:5dd5:c178 with SMTP id
+ 5a478bee46e88-2b05eb787b8mr24225253eec.2.1767609602464; Mon, 05 Jan 2026
+ 02:40:02 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20260103143119.96095-1-mt@markoturk.info> <20260103143119.96095-2-mt@markoturk.info>
+ <DFF23OTZRIDS.2PZIV7D8AHWFA@kernel.org> <84cc5699-f9ab-42b3-a1ea-15bf9bd80d19@gmail.com>
+ <aVmHGBop5OPlVVBa@vps.markoturk.info> <CANiq72=t-U8JTH2JZxkQaW7sbYXjWLpkYkuMd_CuzLoJLbEvgQ@mail.gmail.com>
+ <DFFV41VPS2MU.3LHXU4UKITD0U@kernel.org> <CANiq72=fFZpWJ9BvHEBqi4chZO3rFo8+-F9=myW1f_JzJ0PNrg@mail.gmail.com>
+ <2026010520-quickness-humble-70db@gregkh>
+In-Reply-To: <2026010520-quickness-humble-70db@gregkh>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 5 Jan 2026 11:39:50 +0100
+X-Gm-Features: AQt7F2oJSnCa_SxWh-jZOT4jqarKH-djdmAAEP18_oI9iQTalSPqljHbD4ecNRg
+Message-ID: <CANiq72nrPiTmuFStm5fmOZZM8e_4TGHFyC_77+cSqPp8yC8nUQ@mail.gmail.com>
+Subject: Re: [PATCH 2/2] rust: pci: fix typo in Bar struct's comment
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: Danilo Krummrich <dakr@kernel.org>, sashal@kernel.org, Marko Turk <mt@markoturk.info>, 
+	Dirk Behme <dirk.behme@gmail.com>, dirk.behme@de.bosch.com, linux-pci@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Mon, Jan 5, 2026 at 7:25=E2=80=AFAM Greg KH <gregkh@linuxfoundation.org>=
+ wrote:
+>
+> It all depends, sometimes we can handle file moves easily, sometimes we
+> can not.
+>
+> But really, why is a comment typo being needed in stable kernels?
 
-The patch below does not apply to the 5.10-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+It isn't (well, it is not just a comment since it does end up in the
+rendered docs, so it is a bit more "visible" than in a comment, and I
+imagine some projects reasonably treat them as a fix, but still, it is
+just a typo).
 
-To reproduce the conflict and resubmit, you may use the following commands:
+We discussed this years ago when I noticed a typo being picked up by
+stable since I wondered why. On my side, I am happy either way -- what
+I currently do is explicitly tag the ones that appear in docs. That
+way you can decide on your side.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
-git checkout FETCH_HEAD
-git cherry-pick -x 434959618c47efe9e5f2e20f4a850caac4f6b823
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026010519-botanical-suds-31fa@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+For the others (the ones in comments), I think it is not really worth
+it to even figure out a Fixes: tag etc.
 
-Possible dependencies:
+Of course, this is for trivial typos -- for something that e.g.
+completely changes the requirements of a `# Safety` precondition the
+story is different.
 
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 434959618c47efe9e5f2e20f4a850caac4f6b823 Mon Sep 17 00:00:00 2001
-From: Christian Hitz <christian.hitz@bbv.ch>
-Date: Tue, 28 Oct 2025 16:51:40 +0100
-Subject: [PATCH] leds: leds-lp50xx: Enable chip before any communication
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-
-If a GPIO is used to control the chip's enable pin, it needs to be pulled
-high before any i2c communication is attempted.
-
-Currently, the enable GPIO handling is not correct.
-
-Assume the enable GPIO is low when the probe function is entered. In this
-case the device is in SHUTDOWN mode and does not react to i2c commands.
-
-During probe the following sequence happens:
- 1. The call to lp50xx_reset() on line 548 has no effect as i2c is not
-    possible yet.
- 2. Then - on line 552 - lp50xx_enable_disable() is called. As
-    "priv->enable_gpio“ has not yet been initialized, setting the GPIO has
-    no effect. Also the i2c enable command is not executed as the device
-    is still in SHUTDOWN.
- 3. On line 556 the call to lp50xx_probe_dt() finally parses the rest of
-    the DT and the configured priv->enable_gpio is set up.
-
-As a result the device is still in SHUTDOWN mode and not ready for
-operation.
-
-Split lp50xx_enable_disable() into distinct enable and disable functions
-to enforce correct ordering between enable_gpio manipulations and i2c
-commands.
-Read enable_gpio configuration from DT before attempting to manipulate
-enable_gpio.
-Add delays to observe correct wait timing after manipulating enable_gpio
-and before any i2c communication.
-
-Cc: stable@vger.kernel.org
-Fixes: 242b81170fb8 ("leds: lp50xx: Add the LP50XX family of the RGB LED driver")
-Signed-off-by: Christian Hitz <christian.hitz@bbv.ch>
-Link: https://patch.msgid.link/20251028155141.1603193-1-christian@klarinett.li
-Signed-off-by: Lee Jones <lee@kernel.org>
-
-diff --git a/drivers/leds/leds-lp50xx.c b/drivers/leds/leds-lp50xx.c
-index 3a0316be96ed..e2a9c8592953 100644
---- a/drivers/leds/leds-lp50xx.c
-+++ b/drivers/leds/leds-lp50xx.c
-@@ -50,6 +50,12 @@
- 
- #define LP50XX_SW_RESET		0xff
- #define LP50XX_CHIP_EN		BIT(6)
-+#define LP50XX_CHIP_DISABLE	0x00
-+#define LP50XX_START_TIME_US	500
-+#define LP50XX_RESET_TIME_US	3
-+
-+#define LP50XX_EN_GPIO_LOW	0
-+#define LP50XX_EN_GPIO_HIGH	1
- 
- /* There are 3 LED outputs per bank */
- #define LP50XX_LEDS_PER_MODULE	3
-@@ -369,19 +375,42 @@ static int lp50xx_reset(struct lp50xx *priv)
- 	return regmap_write(priv->regmap, priv->chip_info->reset_reg, LP50XX_SW_RESET);
- }
- 
--static int lp50xx_enable_disable(struct lp50xx *priv, int enable_disable)
-+static int lp50xx_enable(struct lp50xx *priv)
- {
- 	int ret;
- 
--	ret = gpiod_direction_output(priv->enable_gpio, enable_disable);
-+	if (priv->enable_gpio) {
-+		ret = gpiod_direction_output(priv->enable_gpio, LP50XX_EN_GPIO_HIGH);
-+		if (ret)
-+			return ret;
-+
-+		udelay(LP50XX_START_TIME_US);
-+	}
-+
-+	ret = lp50xx_reset(priv);
- 	if (ret)
- 		return ret;
- 
--	if (enable_disable)
--		return regmap_write(priv->regmap, LP50XX_DEV_CFG0, LP50XX_CHIP_EN);
--	else
--		return regmap_write(priv->regmap, LP50XX_DEV_CFG0, 0);
-+	return regmap_write(priv->regmap, LP50XX_DEV_CFG0, LP50XX_CHIP_EN);
-+}
- 
-+static int lp50xx_disable(struct lp50xx *priv)
-+{
-+	int ret;
-+
-+	ret = regmap_write(priv->regmap, LP50XX_DEV_CFG0, LP50XX_CHIP_DISABLE);
-+	if (ret)
-+		return ret;
-+
-+	if (priv->enable_gpio) {
-+		ret = gpiod_direction_output(priv->enable_gpio, LP50XX_EN_GPIO_LOW);
-+		if (ret)
-+			return ret;
-+
-+		udelay(LP50XX_RESET_TIME_US);
-+	}
-+
-+	return 0;
- }
- 
- static int lp50xx_probe_leds(struct fwnode_handle *child, struct lp50xx *priv,
-@@ -445,6 +474,10 @@ static int lp50xx_probe_dt(struct lp50xx *priv)
- 		return dev_err_probe(priv->dev, PTR_ERR(priv->enable_gpio),
- 				     "Failed to get enable GPIO\n");
- 
-+	ret = lp50xx_enable(priv);
-+	if (ret)
-+		return ret;
-+
- 	priv->regulator = devm_regulator_get(priv->dev, "vled");
- 	if (IS_ERR(priv->regulator))
- 		priv->regulator = NULL;
-@@ -545,14 +578,6 @@ static int lp50xx_probe(struct i2c_client *client)
- 		return ret;
- 	}
- 
--	ret = lp50xx_reset(led);
--	if (ret)
--		return ret;
--
--	ret = lp50xx_enable_disable(led, 1);
--	if (ret)
--		return ret;
--
- 	return lp50xx_probe_dt(led);
- }
- 
-@@ -561,7 +586,7 @@ static void lp50xx_remove(struct i2c_client *client)
- 	struct lp50xx *led = i2c_get_clientdata(client);
- 	int ret;
- 
--	ret = lp50xx_enable_disable(led, 0);
-+	ret = lp50xx_disable(led);
- 	if (ret)
- 		dev_err(led->dev, "Failed to disable chip\n");
- 
-
+Cheers,
+Miguel
 
