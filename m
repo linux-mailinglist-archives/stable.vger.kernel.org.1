@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-204743-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204744-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51B21CF3626
-	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 12:57:39 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEC3FCF3631
+	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 12:58:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 0250B3007920
-	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 11:56:56 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E072B30275B1
+	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 11:57:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E22C336ED5;
-	Mon,  5 Jan 2026 11:50:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 723A9337BB5;
+	Mon,  5 Jan 2026 11:50:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y3fAzN/4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v7YGDSP+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 180C5336EC9
-	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 11:50:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32003337BB3
+	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 11:50:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767613830; cv=none; b=WJm+kfws9lvAZZPXXXlq4hPk8ASlElpv8A85dFs+jSZwXXyCwI/tO64dm6GMIyD3VcjXYPPYLrg+q0LXt0SafwbxNOlp0zl2TWu8kcebKFTXeuusLpBdG+O1ePSkArhDvUJONwLmsLmXO55j1FNk2TBeXivi8ypUAZ/5Pc2qMKA=
+	t=1767613847; cv=none; b=crx4M4+ib3tXjxAIAAszsgN9n9M/hKNbmLP7O9etN+90rve8hHmIPRWDMkoASu8Qb3RppzEDfnQ2U79djzm5KqFLaXuTrDI9OSLvOjIhaS8Sge0iYnqE8l36s6Bi1iN+qm+rH1pJvABIRZ26mAihJ8dfrx6rBlrXumvBR0HqPWs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767613830; c=relaxed/simple;
-	bh=NT+coMGb2EhzFls32iKuUlipd8rSys1Wn3WqSXQHQaY=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=aadaHene+eQPLupf7a2n0C1L7jEH8zXt0rsgkIJA3DSkI/URuCmBKbw0i1tm309E9YC0bDZsVx2PauJi+0dMzdcmSc1grklLpZl/vFffnk2rNsRN099hogg4MXrn5p7vhZk1xRfGTybIQYlp4ak9pXI1HnrwmtAb0pWknCQEOtI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y3fAzN/4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 729F2C116D0;
-	Mon,  5 Jan 2026 11:50:29 +0000 (UTC)
+	s=arc-20240116; t=1767613847; c=relaxed/simple;
+	bh=E5/Dg3K+lVatMQDdBrzBj9l7JQueDwumWpMouE9DjB4=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=k0JPhmku5alnu+9LJvUY7HrlequVViUMDe9RR5M373uvmVxtY8UgTWL3DUPBjKuL1ieF/6xwffdwYeoXERFHEAq746sLsjfJMDA2buZIB6b4Vp6IcFpLBDGc+Ye6Vgu7oL9xd4rv1nC0vPdI+Q0JDMH68X/YXeqA1dy22U0b56Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v7YGDSP+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4832C116D0;
+	Mon,  5 Jan 2026 11:50:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767613829;
-	bh=NT+coMGb2EhzFls32iKuUlipd8rSys1Wn3WqSXQHQaY=;
+	s=korg; t=1767613847;
+	bh=E5/Dg3K+lVatMQDdBrzBj9l7JQueDwumWpMouE9DjB4=;
 	h=Subject:To:Cc:From:Date:From;
-	b=Y3fAzN/4lLy6chHX3Q3D+eDWNH6YZJId1WWxx5y1bIcN2BMo9Lci0A/33aX8FAMb+
-	 G6BWd4NnagnDFF4HMDMz58o93SVkwwu0sCrYbCHzwOxXdgF2GvxenqAl1DbWh7CoOn
-	 odbBfdUix7ZFUGPPhpYlPW403DR3EuXkg5ITznPU=
-Subject: FAILED: patch "[PATCH] mm/page_alloc: change all pageblocks migrate type on" failed to apply to 6.12-stable tree
-To: agordeev@linux.ibm.com,akpm@linux-foundation.org,hannes@cmpxchg.org,mhartmay@linux.ibm.com,richard.weiyang@gmail.com,stable@vger.kernel.org,vbabka@suse.cz
+	b=v7YGDSP+iqrvZnFTwYrG2lNSr9vLUiQUtO19eVYMSGAcMd2vJEB1iew01K4a4MbUc
+	 qYpW9f3C0b/UQO/rwjYt+af5B8mPHwQPDNqyoZRJTsPmctrMnglrm9fV3v2Z9n3It2
+	 SEk0u+PxeY1bpP6+3XqcYrnphA8UPycpWqtAZ07M=
+Subject: FAILED: patch "[PATCH] mm: consider non-anon swap cache folios in" failed to apply to 6.12-stable tree
+To: bijan311@gmail.com,akpm@linux-foundation.org,baolin.wang@linux.alibaba.com,david@kernel.org,liam.howlett@oracle.com,lorenzo.stoakes@oracle.com,mhocko@suse.com,rppt@kernel.org,ryncsn@gmail.com,shivankg@amd.com,stable@vger.kernel.org,surenb@google.com,vbabka@suse.cz,ziy@nvidia.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 05 Jan 2026 12:50:26 +0100
-Message-ID: <2026010526-crux-caddy-a1e3@gregkh>
+Date: Mon, 05 Jan 2026 12:50:44 +0100
+Message-ID: <2026010544-pavestone-gloating-a829@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,10 +60,10 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x 7838a4eb8a1d23160bd3f588ea7f2b8f7c00c55b
+git cherry-pick -x f183663901f21fe0fba8bd31ae894bc529709ee0
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026010526-crux-caddy-a1e3@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026010544-pavestone-gloating-a829@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
@@ -75,189 +75,116 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 7838a4eb8a1d23160bd3f588ea7f2b8f7c00c55b Mon Sep 17 00:00:00 2001
-From: Alexander Gordeev <agordeev@linux.ibm.com>
-Date: Fri, 12 Dec 2025 16:14:57 +0100
-Subject: [PATCH] mm/page_alloc: change all pageblocks migrate type on
- coalescing
+From f183663901f21fe0fba8bd31ae894bc529709ee0 Mon Sep 17 00:00:00 2001
+From: Bijan Tabatabai <bijan311@gmail.com>
+Date: Tue, 16 Dec 2025 14:07:27 -0600
+Subject: [PATCH] mm: consider non-anon swap cache folios in
+ folio_expected_ref_count()
 
-When a page is freed it coalesces with a buddy into a higher order page
-while possible.  When the buddy page migrate type differs, it is expected
-to be updated to match the one of the page being freed.
+Currently, folio_expected_ref_count() only adds references for the swap
+cache if the folio is anonymous.  However, according to the comment above
+the definition of PG_swapcache in enum pageflags, shmem folios can also
+have PG_swapcache set.  This patch makes sure references for the swap
+cache are added if folio_test_swapcache(folio) is true.
 
-However, only the first pageblock of the buddy page is updated, while the
-rest of the pageblocks are left unchanged.
+This issue was found when trying to hot-unplug memory in a QEMU/KVM
+virtual machine.  When initiating hot-unplug when most of the guest memory
+is allocated, hot-unplug hangs partway through removal due to migration
+failures.  The following message would be printed several times, and would
+be printed again about every five seconds:
 
-That causes warnings in later expand() and other code paths (like below),
-since an inconsistency between migration type of the list containing the
-page and the page-owned pageblocks migration types is introduced.
+[   49.641309] migrating pfn b12f25 failed ret:7
+[   49.641310] page: refcount:2 mapcount:0 mapping:0000000033bd8fe2 index:0x7f404d925 pfn:0xb12f25
+[   49.641311] aops:swap_aops
+[   49.641313] flags: 0x300000000030508(uptodate|active|owner_priv_1|reclaim|swapbacked|node=0|zone=3)
+[   49.641314] raw: 0300000000030508 ffffed312c4bc908 ffffed312c4bc9c8 0000000000000000
+[   49.641315] raw: 00000007f404d925 00000000000c823b 00000002ffffffff 0000000000000000
+[   49.641315] page dumped because: migration failure
 
-[  308.986589] ------------[ cut here ]------------
-[  308.987227] page type is 0, passed migratetype is 1 (nr=256)
-[  308.987275] WARNING: CPU: 1 PID: 5224 at mm/page_alloc.c:812 expand+0x23c/0x270
-[  308.987293] Modules linked in: algif_hash(E) af_alg(E) nft_fib_inet(E) nft_fib_ipv4(E) nft_fib_ipv6(E) nft_fib(E) nft_reject_inet(E) nf_reject_ipv4(E) nf_reject_ipv6(E) nft_reject(E) nft_ct(E) nft_chain_nat(E) nf_nat(E) nf_conntrack(E) nf_defrag_ipv6(E) nf_defrag_ipv4(E) nf_tables(E) s390_trng(E) vfio_ccw(E) mdev(E) vfio_iommu_type1(E) vfio(E) sch_fq_codel(E) drm(E) i2c_core(E) drm_panel_orientation_quirks(E) loop(E) nfnetlink(E) vsock_loopback(E) vmw_vsock_virtio_transport_common(E) vsock(E) ctcm(E) fsm(E) diag288_wdt(E) watchdog(E) zfcp(E) scsi_transport_fc(E) ghash_s390(E) prng(E) aes_s390(E) des_generic(E) des_s390(E) libdes(E) sha3_512_s390(E) sha3_256_s390(E) sha_common(E) paes_s390(E) crypto_engine(E) pkey_cca(E) pkey_ep11(E) zcrypt(E) rng_core(E) pkey_pckmo(E) pkey(E) autofs4(E)
-[  308.987439] Unloaded tainted modules: hmac_s390(E):2
-[  308.987650] CPU: 1 UID: 0 PID: 5224 Comm: mempig_verify Kdump: loaded Tainted: G            E       6.18.0-gcc-bpf-debug #431 PREEMPT
-[  308.987657] Tainted: [E]=UNSIGNED_MODULE
-[  308.987661] Hardware name: IBM 3906 M04 704 (z/VM 7.3.0)
-[  308.987666] Krnl PSW : 0404f00180000000 00000349976fa600 (expand+0x240/0x270)
-[  308.987676]            R:0 T:1 IO:0 EX:0 Key:0 M:1 W:0 P:0 AS:3 CC:3 PM:0 RI:0 EA:3
-[  308.987682] Krnl GPRS: 0000034980000004 0000000000000005 0000000000000030 000003499a0e6d88
-[  308.987688]            0000000000000005 0000034980000005 000002be803ac000 0000023efe6c8300
-[  308.987692]            0000000000000008 0000034998d57290 000002be00000100 0000023e00000008
-[  308.987696]            0000000000000000 0000000000000000 00000349976fa5fc 000002c99b1eb6f0
-[  308.987708] Krnl Code: 00000349976fa5f0: c020008a02f2	larl	%r2,000003499883abd4
-                          00000349976fa5f6: c0e5ffe3f4b5	brasl	%r14,0000034997378f60
-                         #00000349976fa5fc: af000000		mc	0,0
-                         >00000349976fa600: a7f4ff4c		brc	15,00000349976fa498
-                          00000349976fa604: b9040026		lgr	%r2,%r6
-                          00000349976fa608: c0300088317f	larl	%r3,0000034998800906
-                          00000349976fa60e: c0e5fffdb6e1	brasl	%r14,00000349976b13d0
-                          00000349976fa614: af000000		mc	0,0
-[  308.987734] Call Trace:
-[  308.987738]  [<00000349976fa600>] expand+0x240/0x270
-[  308.987744] ([<00000349976fa5fc>] expand+0x23c/0x270)
-[  308.987749]  [<00000349976ff95e>] rmqueue_bulk+0x71e/0x940
-[  308.987754]  [<00000349976ffd7e>] __rmqueue_pcplist+0x1fe/0x2a0
-[  308.987759]  [<0000034997700966>] rmqueue.isra.0+0xb46/0xf40
-[  308.987763]  [<0000034997703ec8>] get_page_from_freelist+0x198/0x8d0
-[  308.987768]  [<0000034997706fa8>] __alloc_frozen_pages_noprof+0x198/0x400
-[  308.987774]  [<00000349977536f8>] alloc_pages_mpol+0xb8/0x220
-[  308.987781]  [<0000034997753bf6>] folio_alloc_mpol_noprof+0x26/0xc0
-[  308.987786]  [<0000034997753e4c>] vma_alloc_folio_noprof+0x6c/0xa0
-[  308.987791]  [<0000034997775b22>] vma_alloc_anon_folio_pmd+0x42/0x240
-[  308.987799]  [<000003499777bfea>] __do_huge_pmd_anonymous_page+0x3a/0x210
-[  308.987804]  [<00000349976cb08e>] __handle_mm_fault+0x4de/0x500
-[  308.987809]  [<00000349976cb14c>] handle_mm_fault+0x9c/0x3a0
-[  308.987813]  [<000003499734d70e>] do_exception+0x1de/0x540
-[  308.987822]  [<0000034998387390>] __do_pgm_check+0x130/0x220
-[  308.987830]  [<000003499839a934>] pgm_check_handler+0x114/0x160
-[  308.987838] 3 locks held by mempig_verify/5224:
-[  308.987842]  #0: 0000023ea44c1e08 (vm_lock){++++}-{0:0}, at: lock_vma_under_rcu+0xb2/0x2a0
-[  308.987859]  #1: 0000023ee4d41b18 (&pcp->lock){+.+.}-{2:2}, at: rmqueue.isra.0+0xad6/0xf40
-[  308.987871]  #2: 0000023efe6c8998 (&zone->lock){..-.}-{2:2}, at: rmqueue_bulk+0x5a/0x940
-[  308.987886] Last Breaking-Event-Address:
-[  308.987890]  [<0000034997379096>] __warn_printk+0x136/0x140
-[  308.987897] irq event stamp: 52330356
-[  308.987901] hardirqs last  enabled at (52330355): [<000003499838742e>] __do_pgm_check+0x1ce/0x220
-[  308.987907] hardirqs last disabled at (52330356): [<000003499839932e>] _raw_spin_lock_irqsave+0x9e/0xe0
-[  308.987913] softirqs last  enabled at (52329882): [<0000034997383786>] handle_softirqs+0x2c6/0x530
-[  308.987922] softirqs last disabled at (52329859): [<0000034997382f86>] __irq_exit_rcu+0x126/0x140
-[  308.987929] ---[ end trace 0000000000000000 ]---
-[  308.987936] ------------[ cut here ]------------
-[  308.987940] page type is 0, passed migratetype is 1 (nr=256)
-[  308.987951] WARNING: CPU: 1 PID: 5224 at mm/page_alloc.c:860 __del_page_from_free_list+0x1be/0x1e0
-[  308.987960] Modules linked in: algif_hash(E) af_alg(E) nft_fib_inet(E) nft_fib_ipv4(E) nft_fib_ipv6(E) nft_fib(E) nft_reject_inet(E) nf_reject_ipv4(E) nf_reject_ipv6(E) nft_reject(E) nft_ct(E) nft_chain_nat(E) nf_nat(E) nf_conntrack(E) nf_defrag_ipv6(E) nf_defrag_ipv4(E) nf_tables(E) s390_trng(E) vfio_ccw(E) mdev(E) vfio_iommu_type1(E) vfio(E) sch_fq_codel(E) drm(E) i2c_core(E) drm_panel_orientation_quirks(E) loop(E) nfnetlink(E) vsock_loopback(E) vmw_vsock_virtio_transport_common(E) vsock(E) ctcm(E) fsm(E) diag288_wdt(E) watchdog(E) zfcp(E) scsi_transport_fc(E) ghash_s390(E) prng(E) aes_s390(E) des_generic(E) des_s390(E) libdes(E) sha3_512_s390(E) sha3_256_s390(E) sha_common(E) paes_s390(E) crypto_engine(E) pkey_cca(E) pkey_ep11(E) zcrypt(E) rng_core(E) pkey_pckmo(E) pkey(E) autofs4(E)
-[  308.988070] Unloaded tainted modules: hmac_s390(E):2
-[  308.988087] CPU: 1 UID: 0 PID: 5224 Comm: mempig_verify Kdump: loaded Tainted: G        W   E       6.18.0-gcc-bpf-debug #431 PREEMPT
-[  308.988095] Tainted: [W]=WARN, [E]=UNSIGNED_MODULE
-[  308.988100] Hardware name: IBM 3906 M04 704 (z/VM 7.3.0)
-[  308.988105] Krnl PSW : 0404f00180000000 00000349976f9e32 (__del_page_from_free_list+0x1c2/0x1e0)
-[  308.988118]            R:0 T:1 IO:0 EX:0 Key:0 M:1 W:0 P:0 AS:3 CC:3 PM:0 RI:0 EA:3
-[  308.988127] Krnl GPRS: 0000034980000004 0000000000000005 0000000000000030 000003499a0e6d88
-[  308.988133]            0000000000000005 0000034980000005 0000034998d57290 0000023efe6c8300
-[  308.988139]            0000000000000001 0000000000000008 000002be00000100 000002be803ac000
-[  308.988144]            0000000000000000 0000000000000001 00000349976f9e2e 000002c99b1eb728
-[  308.988153] Krnl Code: 00000349976f9e22: c020008a06d9	larl	%r2,000003499883abd4
-                          00000349976f9e28: c0e5ffe3f89c	brasl	%r14,0000034997378f60
-                         #00000349976f9e2e: af000000		mc	0,0
-                         >00000349976f9e32: a7f4ff4e		brc	15,00000349976f9cce
-                          00000349976f9e36: b904002b		lgr	%r2,%r11
-                          00000349976f9e3a: c030008a06e7	larl	%r3,000003499883ac08
-                          00000349976f9e40: c0e5fffdbac8	brasl	%r14,00000349976b13d0
-                          00000349976f9e46: af000000		mc	0,0
-[  308.988184] Call Trace:
-[  308.988188]  [<00000349976f9e32>] __del_page_from_free_list+0x1c2/0x1e0
-[  308.988195] ([<00000349976f9e2e>] __del_page_from_free_list+0x1be/0x1e0)
-[  308.988202]  [<00000349976ff946>] rmqueue_bulk+0x706/0x940
-[  308.988208]  [<00000349976ffd7e>] __rmqueue_pcplist+0x1fe/0x2a0
-[  308.988214]  [<0000034997700966>] rmqueue.isra.0+0xb46/0xf40
-[  308.988221]  [<0000034997703ec8>] get_page_from_freelist+0x198/0x8d0
-[  308.988227]  [<0000034997706fa8>] __alloc_frozen_pages_noprof+0x198/0x400
-[  308.988233]  [<00000349977536f8>] alloc_pages_mpol+0xb8/0x220
-[  308.988240]  [<0000034997753bf6>] folio_alloc_mpol_noprof+0x26/0xc0
-[  308.988247]  [<0000034997753e4c>] vma_alloc_folio_noprof+0x6c/0xa0
-[  308.988253]  [<0000034997775b22>] vma_alloc_anon_folio_pmd+0x42/0x240
-[  308.988260]  [<000003499777bfea>] __do_huge_pmd_anonymous_page+0x3a/0x210
-[  308.988267]  [<00000349976cb08e>] __handle_mm_fault+0x4de/0x500
-[  308.988273]  [<00000349976cb14c>] handle_mm_fault+0x9c/0x3a0
-[  308.988279]  [<000003499734d70e>] do_exception+0x1de/0x540
-[  308.988286]  [<0000034998387390>] __do_pgm_check+0x130/0x220
-[  308.988293]  [<000003499839a934>] pgm_check_handler+0x114/0x160
-[  308.988300] 3 locks held by mempig_verify/5224:
-[  308.988305]  #0: 0000023ea44c1e08 (vm_lock){++++}-{0:0}, at: lock_vma_under_rcu+0xb2/0x2a0
-[  308.988322]  #1: 0000023ee4d41b18 (&pcp->lock){+.+.}-{2:2}, at: rmqueue.isra.0+0xad6/0xf40
-[  308.988334]  #2: 0000023efe6c8998 (&zone->lock){..-.}-{2:2}, at: rmqueue_bulk+0x5a/0x940
-[  308.988346] Last Breaking-Event-Address:
-[  308.988350]  [<0000034997379096>] __warn_printk+0x136/0x140
-[  308.988356] irq event stamp: 52330356
-[  308.988360] hardirqs last  enabled at (52330355): [<000003499838742e>] __do_pgm_check+0x1ce/0x220
-[  308.988366] hardirqs last disabled at (52330356): [<000003499839932e>] _raw_spin_lock_irqsave+0x9e/0xe0
-[  308.988373] softirqs last  enabled at (52329882): [<0000034997383786>] handle_softirqs+0x2c6/0x530
-[  308.988380] softirqs last disabled at (52329859): [<0000034997382f86>] __irq_exit_rcu+0x126/0x140
-[  308.988388] ---[ end trace 0000000000000000 ]---
+When debugging this, I found that these migration failures were due to
+__migrate_folio() returning -EAGAIN for a small set of folios because the
+expected reference count it calculates via folio_expected_ref_count() is
+one less than the actual reference count of the folios.  Furthermore, all
+of the affected folios were not anonymous, but had the PG_swapcache flag
+set, inspiring this patch.  After applying this patch, the memory
+hot-unplug behaves as expected.
 
-Link: https://lkml.kernel.org/r/20251215081002.3353900A9c-agordeev@linux.ibm.com
-Link: https://lkml.kernel.org/r/20251212151457.3898073Add-agordeev@linux.ibm.com
-Fixes: e6cf9e1c4cde ("mm: page_alloc: fix up block types when merging compatible blocks")
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Reported-by: Marc Hartmayer <mhartmay@linux.ibm.com>
-Closes: https://lore.kernel.org/linux-mm/87wmalyktd.fsf@linux.ibm.com/
-Acked-by: Vlastimil Babka <vbabka@suse.cz>
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
-Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
-Cc: Marc Hartmayer <mhartmay@linux.ibm.com>
+I tested this on a machine running Ubuntu 24.04 with kernel version
+6.8.0-90-generic and 64GB of memory.  The guest VM is managed by libvirt
+and runs Ubuntu 24.04 with kernel version 6.18 (though the head of the
+mm-unstable branch as a Dec 16, 2025 was also tested and behaves the same)
+and 48GB of memory.  The libvirt XML definition for the VM can be found at
+[1].  CONFIG_MHP_DEFAULT_ONLINE_TYPE_ONLINE_MOVABLE is set in the guest
+kernel so the hot-pluggable memory is automatically onlined.
+
+Below are the steps to reproduce this behavior:
+
+1) Define and start and virtual machine
+  host$ virsh -c qemu:///system define ./test_vm.xml # test_vm.xml from [1]
+  host$ virsh -c qemu:///system start test_vm
+
+2) Setup swap in the guest
+  guest$ sudo fallocate -l 32G /swapfile
+  guest$ sudo chmod 0600 /swapfile
+  guest$ sudo mkswap /swapfile
+  guest$ sudo swapon /swapfile
+
+3) Use alloc_data [2] to allocate most of the remaining guest memory
+  guest$ ./alloc_data 45
+
+4) In a separate guest terminal, monitor the amount of used memory
+  guest$ watch -n1 free -h
+
+5) When alloc_data has finished allocating, initiate the memory
+hot-unplug using the provided xml file [3]
+  host$ virsh -c qemu:///system detach-device test_vm ./remove.xml --live
+
+After initiating the memory hot-unplug, you should see the amount of
+available memory in the guest decrease, and the amount of used swap data
+increase.  If everything works as expected, when all of the memory is
+unplugged, there should be around 8.5-9GB of data in swap.  If the
+unplugging is unsuccessful, the amount of used swap data will settle below
+that.  If that happens, you should be able to see log messages in dmesg
+similar to the one posted above.
+
+Link: https://lkml.kernel.org/r/20251216200727.2360228-1-bijan311@gmail.com
+Link: https://github.com/BijanT/linux_patch_files/blob/main/test_vm.xml [1]
+Link: https://github.com/BijanT/linux_patch_files/blob/main/alloc_data.c [2]
+Link: https://github.com/BijanT/linux_patch_files/blob/main/remove.xml [3]
+Fixes: 86ebd50224c0 ("mm: add folio_expected_ref_count() for reference count calculation")
+Signed-off-by: Bijan Tabatabai <bijan311@gmail.com>
+Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
+Acked-by: Zi Yan <ziy@nvidia.com>
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Shivank Garg <shivankg@amd.com>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Kairui Song <ryncsn@gmail.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 822e05f1a964..f6586f165b89 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -914,6 +914,17 @@ buddy_merge_likely(unsigned long pfn, unsigned long buddy_pfn,
- 			NULL) != NULL;
- }
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 15076261d0c2..6f959d8ca4b4 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -2459,10 +2459,10 @@ static inline int folio_expected_ref_count(const struct folio *folio)
+ 	if (WARN_ON_ONCE(page_has_type(&folio->page) && !folio_test_hugetlb(folio)))
+ 		return 0;
  
-+static void change_pageblock_range(struct page *pageblock_page,
-+				   int start_order, int migratetype)
-+{
-+	int nr_pageblocks = 1 << (start_order - pageblock_order);
+-	if (folio_test_anon(folio)) {
+-		/* One reference per page from the swapcache. */
+-		ref_count += folio_test_swapcache(folio) << order;
+-	} else {
++	/* One reference per page from the swapcache. */
++	ref_count += folio_test_swapcache(folio) << order;
 +
-+	while (nr_pageblocks--) {
-+		set_pageblock_migratetype(pageblock_page, migratetype);
-+		pageblock_page += pageblock_nr_pages;
-+	}
-+}
-+
- /*
-  * Freeing function for a buddy system allocator.
-  *
-@@ -1000,7 +1011,7 @@ static inline void __free_one_page(struct page *page,
- 			 * expand() down the line puts the sub-blocks
- 			 * on the right freelists.
- 			 */
--			set_pageblock_migratetype(buddy, migratetype);
-+			change_pageblock_range(buddy, order, migratetype);
- 		}
- 
- 		combined_pfn = buddy_pfn & pfn;
-@@ -2147,17 +2158,6 @@ bool pageblock_unisolate_and_move_free_pages(struct zone *zone, struct page *pag
- 
- #endif /* CONFIG_MEMORY_ISOLATION */
- 
--static void change_pageblock_range(struct page *pageblock_page,
--					int start_order, int migratetype)
--{
--	int nr_pageblocks = 1 << (start_order - pageblock_order);
--
--	while (nr_pageblocks--) {
--		set_pageblock_migratetype(pageblock_page, migratetype);
--		pageblock_page += pageblock_nr_pages;
--	}
--}
--
- static inline bool boost_watermark(struct zone *zone)
- {
- 	unsigned long max_boost;
++	if (!folio_test_anon(folio)) {
+ 		/* One reference per page from the pagecache. */
+ 		ref_count += !!folio->mapping << order;
+ 		/* One reference from PG_private. */
 
 
