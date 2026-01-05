@@ -1,131 +1,232 @@
-Return-Path: <stable+bounces-204860-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204861-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id F318FCF4E75
-	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 18:07:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F61ACF4EBA
+	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 18:11:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F21993124965
-	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 16:50:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2F47D311F8F4
+	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 17:03:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C14E133ADB7;
-	Mon,  5 Jan 2026 16:49:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E5722877D4;
+	Mon,  5 Jan 2026 17:03:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="DVq+T/ao"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OAjryMcf"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C336337B8B
-	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 16:49:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4308C3064B2
+	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 17:03:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767631757; cv=none; b=dHSLYroWVBKIoIlB8oCXoICqYRqFj/T7v5/y4m2udou+tH+6rblq5MAeR4n/amrLSg3VDasSRgGgzRzLFiLrqQzlDYO1ydheLScRHLLdL1gpCfUXZXyfnajdebMP5rE+2o+ZVYorQXOpoCPSm+njs4CPsVABlrOtE8PBFumCK8g=
+	t=1767632612; cv=none; b=quA9YMB3N5KxeqF5y3kO1LCGWpw96ec0Vnv0HTtEsqlasHpTbVDbCU8LCYW4BOxQciNe5/V1zzxlKomTsbqohgnq1zeOM0zQBKrpAZMnV2y078uD9pVCG+6LINi5RUw5mb0xiG+yyqCTI/uy0hrTfW3NQnmm+299T6GfhAgRsJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767631757; c=relaxed/simple;
-	bh=OpE212T/F9BXcXkqoV8tRgvykPW9UH3BnbLCVGJJS38=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=WQY4wLVilkhf/viNd40OP4C3lEa1lXjZGqTSI+/6nnqNQby4XIx0kBCR9z3a2KecSHF3uJg9tCuMp/ZsDjJsC8spl0HLX65y64lStQKSRW5hG1yd6+nbnh4sE/gpafSdHlRR+lGros4myTo7DJnBgrbFicO1LtORqdOdcn4tGys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=DVq+T/ao; arc=none smtp.client-ip=209.85.214.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2a110548cdeso1176565ad.0
-        for <stable@vger.kernel.org>; Mon, 05 Jan 2026 08:49:13 -0800 (PST)
+	s=arc-20240116; t=1767632612; c=relaxed/simple;
+	bh=N14dZVc9vTLW0oh1eKAbE1UDroXlvYied7zrMk/D+UY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QB3XLLzR2Dn/JFob8PZulHkc3+FW0KQWBcSw7YdUNzb4l6asodh+X4vN/030nblG8zVSF1KaBjrjOIs8Mzc/o0ZctFD1tSSSY/oub2QGcrJl9SJH3Nyd5nq+ruaR7dJwOMSNhWT/kDiGO5/S2jlTUAe339JOfzHZB6fwwtlB/0I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OAjryMcf; arc=none smtp.client-ip=209.85.128.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-78fdb90b670so1712347b3.2
+        for <stable@vger.kernel.org>; Mon, 05 Jan 2026 09:03:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20230601; t=1767631752; x=1768236552; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1p5G3xJb8go3voJ/ska7MmknNqjaKO20ee89C7s96SI=;
-        b=DVq+T/aogTwlSdL7kfYlA8KAh+bRlYW8BnFj2yi2KWBTyHSrh2gXj0EcxueVFa+rwo
-         9P2Q4I7ZNaRZKtEOOVr6WJzlEOPF75gQD+0HOvvVbTrqeLKXd8HmWZJBcYoeHDy4/mcD
-         ReS+RmaYBBUZHd43YtUUP1qiuXB0ec5ZfRpw8C1MgK6blFNhbiPRQx1ZPdiXzZXS8pXR
-         /UELTIhBEGjUxdejk5XmJ8nkd1zFE61+KXIXtUBlAt28r2KcERhzO82T4FdYoo0BObJg
-         SZw/bMia81j15V0nCOGTLYOyLd5TR1SIrtWnDBcj9lz2h+noNmrr+V2SsR6F99gr6PbY
-         sGeA==
+        d=gmail.com; s=20230601; t=1767632608; x=1768237408; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=rVdUSzzxHV8dZysVvdcW5SugnSBaNdFEMUgp6qzC8gU=;
+        b=OAjryMcfOaoPOdTTIjcBidpPNScC681+Y/D6ehtb7EGbqOfJ0lRNcHXln4KtE+gZXi
+         Hq0tK43fVTIHrevWf8JFs1g8hzVjVzNO1jDO6MQydhOs8uOl+oTCbdzaYAPS09Jq9vRU
+         hh1KKYGI/MF3lTLSusyFthQhbPuGHa5t077JC+EQ/j8lVwcIbGatiAykPvTD8731nHJ7
+         gLrSzww+hqv166I2ilnwWYj1b1mwWnPvNLW+mIAs1dKxRYqmtkjfJMRyFA3OaZO+HTfL
+         USG2TS8/DWvhKfR16UuwZY9t8B4pu/8pWvFM7SjL9LCeuHqTB8mk6A1ekFUD8JjxuifC
+         PSdw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767631752; x=1768236552;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=1p5G3xJb8go3voJ/ska7MmknNqjaKO20ee89C7s96SI=;
-        b=LYo6t/ZF+srUXAqc1wGSjcAh6GsJaccDv2OHVIevA729Cke5/tIMX/zNnizov9iY7Y
-         cUSxWsn8I6g8STcJC7E55ouLJAoIVGv6S2/vd9RkZpahZPIJ9iD9Yti4y5rNCGlYuo4b
-         gteFUI1WCUxMQTQywMCHe8NE/ZRq/tZJ2NzSZ1nTMJdigQsclRgLLxHlG08kbGZ8XI2/
-         ExWxJ+sLh1q5mkScKhFVJs/QRfCvYEKKiDUpc85rDu7Gxbe1++HselKdr7yvR0xZO3TC
-         2mk2d6VllNj/iS6blA2EAo4wT4/UcdacSCiHQjq79e5ipfbyOEAjY7SGzXDkWOF93WQ3
-         Qijw==
-X-Forwarded-Encrypted: i=1; AJvYcCUm+Vb6UaL8VqIUVA0IAWyRAs89zYOStg55eOOLUqk3Xmbl3FyIiECJzDsM0o+o8utJpcETP10=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwN6+qo5+sGM0U3owQHdfanziHapUyGpdT8EIOiMcTBzofnNS1U
-	iNYbjtLAvFQmvX/YquIGbzHkZZwwYZwpoXKn26Wpv6owd+P9+1d6z2oEdSv9jV5qywbpQjZqpbG
-	EUb2KrPF+R4GCNbudK/OzWOm/QAgzBMg=
-X-Gm-Gg: AY/fxX6A8j2z0znU36l5nXH5mGkvatO0Ab84ub0csZbPFbqO1DaXeOdMBnqLy3jCZ3X
-	PHxPpldsTal7hRpClzvESUIRQZ89gXMvMpQENqHCpdoieH7xaWmbtR7Y7SvvkvByLVJ457X0now
-	9nkF3ytlPvvN7FzQK9rEvbqV+BLMWQu24hrBLk6j/1h6bd+Y78h/k6aJ5SEAtBCtR8nm/wev6Wg
-	iumXHRNcshOZ5n7HbHoL7iTw0wVm/b/ko6ZcVwz54tMbMDMXOsQtzyG63EDi1ZwtdLl71H8NBFS
-	Y8Rlb8aiVaeW7iQBWjwWHhtPd0ZX
-X-Google-Smtp-Source: AGHT+IGDtOegmT/WubwoP9uhYGjEyI36HrbbD+HDLKKzlp50hnIAwbFpuvZJAMWfwWQ5Fu7mo4QOpgsR9wCZJW3kUe4=
-X-Received: by 2002:a17:903:28f:b0:29f:5f5:fa91 with SMTP id
- d9443c01a7336-2a3e2cb39ffmr2973425ad.27.1767631752099; Mon, 05 Jan 2026
- 08:49:12 -0800 (PST)
+        d=1e100.net; s=20230601; t=1767632608; x=1768237408;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=rVdUSzzxHV8dZysVvdcW5SugnSBaNdFEMUgp6qzC8gU=;
+        b=uYYcKl3tGIzgEp600V0Qsi5jVQeFewh0Kb5Ob45MZxzUHyU73I0uFcqK/jV1wwyYhz
+         9Zzl4LMtrPq+VKf5AeI7pLcLSN1QCUbzeeRGzHRJLxcJhJPNpneaob07PxGrfL77Bbs0
+         VNmLdP8KFY31ZjDIeSE22clhBQuWYyIqSVnxcCzU+IUxWHzTD5jNZl/F8yV/P1Elt+rs
+         YeiW/vciMz2LwdmfZQjQvZnK9koCnXw0TD4KKvuMo9cNzC0VaPyrlyKVAJgdAkPuRC6m
+         GRdjmHtrwIbCPM+wDGJOdr7FBvKITSBJynk1UF1mvs7b/xWjxJMMajPcpiTkhF3ROwuz
+         LP+w==
+X-Forwarded-Encrypted: i=1; AJvYcCW1Gq4EyafEfKEWUZYZEp1NRLJcNuxz2GuIC+vOirk3Y+SrowAf4I7citWJGnX4mR/xOTOyeqw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzlF9jzHJoGYuFe0iHQ5kopPfKulo5K9/ZP34JK2Ujsb57CjTWl
+	7uN4XvORCNqUSXytMo32b3BDXIKcRMZzykFi/PXGM6i1e33a2p6WF6Mg
+X-Gm-Gg: AY/fxX6T/F2PCTmwTsJ5gy4B2Fimk5whTcDUF9n3pJZscw1Zaom0ek78FSjG+hWNQcu
+	pctF/bodoq5nL1YmLXG6PCtQ7u2W9wCI3zHT9Ht2Y/6Q6omZAplgQ/kDbrvInT5xOgLXKZqwqsg
+	frzi3NieW3AJab37PV+o2zWvW/tjH7fIliCzTDHSgekf/ZyVh9hm0HOjK9g8Tl0rsHToxYaJHgA
+	x6AB3NMERrRG5aWpGmaueTIp3IRLVwioxzZRtz4e2piVAzzW+KUx/gjhgPQBzSlFvjr5sslPZUO
+	V2RJD5/okkQkx44mfi3NKxGVJ0lQRURGlsivvv1cUBoFnaIOJ6esUJQrPXC8qSE5/P2JpFT6jbC
+	mMjbstugT1cAtBVYvjRafqhAiR+7tXJYBLHOoPgF+g2pd22I2/gDuFxxD+5w/naxSvOK7CNAUiv
+	0BQH/spaE=
+X-Google-Smtp-Source: AGHT+IFwZusyd0qviV3+UDmgZyv+kp9rf3jSujTbP0tJ/F8xB6jJMvw66Eng5dzCVjwg6hrobpRNAw==
+X-Received: by 2002:a05:690c:3746:b0:787:f793:b573 with SMTP id 00721157ae682-790a8a87dc8mr2403767b3.29.1767632608366;
+        Mon, 05 Jan 2026 09:03:28 -0800 (PST)
+Received: from localhost ([2601:346:0:79bd:830c:9f83:df41:3e7d])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-790a88ed5e6sm765547b3.55.2026.01.05.09.03.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 05 Jan 2026 09:03:28 -0800 (PST)
+Date: Mon, 5 Jan 2026 12:03:27 -0500
+From: Yury Norov <yury.norov@gmail.com>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Burak Emir <bqe@google.com>, Andreas Hindborg <a.hindborg@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2] rust: bitops: fix missing _find_* functions on 32-bit
+ ARM
+Message-ID: <aVvu3zF2rYKR3XC0@yury>
+References: <20260105-bitops-find-helper-v2-1-ae70b4fc9ecc@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251103221930.1831376-1-helgaas@kernel.org> <176603796183.17581.9416209133990924154.b4-ty@kernel.org>
-In-Reply-To: <176603796183.17581.9416209133990924154.b4-ty@kernel.org>
-From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Date: Mon, 5 Jan 2026 17:49:00 +0100
-X-Gm-Features: AQt7F2rVWmf5Npt8HCJJTiZdHZlTavXt7hjPiasOfQo5l2lbIUvVpU46LHb_LE8
-Message-ID: <CAFBinCAPpiq=M00ZQXAB4Pu2Myjo8gpXC7DByKkGN6Z_Ahqafg@mail.gmail.com>
-Subject: Re: [PATCH] PCI: meson: Remove meson_pcie_link_up() timeout, message,
- speed check
-To: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
-Cc: Yue Wang <yue.wang@amlogic.com>, Neil Armstrong <neil.armstrong@linaro.org>, 
-	Kevin Hilman <khilman@baylibre.com>, Bjorn Helgaas <helgaas@kernel.org>, 
-	Jerome Brunet <jbrunet@baylibre.com>, Linnaea Lavia <linnaea-von-lavia@live.com>, 
-	FUKAUMI Naoki <naoki@radxa.com>, 
-	Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>, linux-amlogic@lists.infradead.org, 
-	linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>, stable@vger.kernel.org, 
-	Ricardo Pardini <ricardo@pardini.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260105-bitops-find-helper-v2-1-ae70b4fc9ecc@google.com>
 
-Hi Mani,
+On Mon, Jan 05, 2026 at 10:44:06AM +0000, Alice Ryhl wrote:
+> atus: O
+> Content-Length: 4697
+> Lines: 121
+> 
+> On 32-bit ARM, you may encounter linker errors such as this one:
+> 
+> 	ld.lld: error: undefined symbol: _find_next_zero_bit
+> 	>>> referenced by rust_binder_main.43196037ba7bcee1-cgu.0
+> 	>>>               drivers/android/binder/rust_binder_main.o:(<rust_binder_main::process::Process>::insert_or_update_handle) in archive vmlinux.a
+> 	>>> referenced by rust_binder_main.43196037ba7bcee1-cgu.0
+> 	>>>               drivers/android/binder/rust_binder_main.o:(<rust_binder_main::process::Process>::insert_or_update_handle) in archive vmlinux.a
+> 
+> This error occurs because even though the functions are declared by
+> include/linux/find.h, the definition is #ifdef'd out on 32-bit ARM. This
+> is because arch/arm/include/asm/bitops.h contains:
+> 
+> 	#define find_first_zero_bit(p,sz)	_find_first_zero_bit_le(p,sz)
+> 	#define find_next_zero_bit(p,sz,off)	_find_next_zero_bit_le(p,sz,off)
+> 	#define find_first_bit(p,sz)		_find_first_bit_le(p,sz)
+> 	#define find_next_bit(p,sz,off)		_find_next_bit_le(p,sz,off)
+> 
+> And the underscore-prefixed function is conditional on #ifndef of the
+> non-underscore-prefixed name, but the declaration in find.h is *not*
+> conditional on that #ifndef.
+> 
+> To fix the linker error, we ensure that the symbols in question exist
+> when compiling Rust code. We do this by definining them in rust/helpers/
+> whenever the normal definition is #ifndef'd out.
+> 
+> Note that these helpers are somewhat unusual in that they do not have
+> the rust_helper_ prefix that most helpers have. Adding the rust_helper_
+> prefix does not compile, as 'bindings::_find_next_zero_bit()' will
+> result in a call to a symbol called _find_next_zero_bit as defined by
+> include/linux/find.h rather than a symbol with the rust_helper_ prefix.
+> This is because when a symbol is present in both include/ and
+> rust/helpers/, the one from include/ wins under the assumption that the
+> current configuration is one where that helper is unnecessary. This
+> heuristic fails for _find_next_zero_bit() because the header file always
+> declares it even if the symbol does not exist.
+> 
+> The functions still use the __rust_helper annotation. This lets the
+> wrapper function be inlined into Rust code even if full kernel LTO is
+> not used once the patch series for that feature lands.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 6cf93a9ed39e ("rust: add bindings for bitops.h")
+> Reported-by: Andreas Hindborg <a.hindborg@kernel.org>
+> Closes: https://rust-for-linux.zulipchat.com/#narrow/channel/x/topic/x/near/561677301
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 
-On Thu, Dec 18, 2025 at 7:06=E2=80=AFAM Manivannan Sadhasivam
-<manivannan.sadhasivam@oss.qualcomm.com> wrote:
->
->
-> On Mon, 03 Nov 2025 16:19:26 -0600, Bjorn Helgaas wrote:
-> > Previously meson_pcie_link_up() only returned true if the link was in t=
-he
-> > L0 state.  This was incorrect because hardware autonomously manages
-> > transitions between L0, L0s, and L1 while both components on the link s=
-tay
-> > in D0.  Those states should all be treated as "link is active".
-> >
-> > Returning false when the device was in L0s or L1 broke config accesses
-> > because dw_pcie_other_conf_map_bus() fails if the link is down, which
-> > caused errors like this:
-> >
-> > [...]
->
-> Applied, thanks!
->
-> [1/1] PCI: meson: Remove meson_pcie_link_up() timeout, message, speed che=
-ck
->       commit: 11647fc772e977c981259a63c4a2b7e2c312ea22
-My understanding is that this is queued for -next.
-Ricardo (Cc'ed) reported that this patch fixes PCI link up on his Odroid-HC=
-4.
-Is there a chance to get this patch into -fixes, so it can be pulled
-by Linus for one of the next -rc?
+Which means, you're running active testing, which in turn means that
+Rust is in a good shape indeed. Thanks to you and Andreas for the work.
 
+Before I merge it, can you also test m68k build? Arm and m68k are the
+only arches implementing custom API there.
 
-Best regards,
-Martin
+Thanks,
+Yury
+
+> ---
+> Changes in v2:
+> - Remove rust_helper_ prefix from helpers.
+> - Improve commit message.
+> - The set of functions for which a helper is added is changed so that it
+>   matches arch/arm/include/asm/bitops.h
+> - Link to v1: https://lore.kernel.org/r/20251203-bitops-find-helper-v1-1-5193deb57766@google.com
+> ---
+>  rust/helpers/bitops.c | 42 ++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 42 insertions(+)
+> 
+> diff --git a/rust/helpers/bitops.c b/rust/helpers/bitops.c
+> index 5d0861d29d3f0d705a014ae4601685828405f33b..e79ef9e6d98f969e2a0a2a6f62d9fcec3ef0fd72 100644
+> --- a/rust/helpers/bitops.c
+> +++ b/rust/helpers/bitops.c
+> @@ -1,6 +1,7 @@
+>  // SPDX-License-Identifier: GPL-2.0
+>  
+>  #include <linux/bitops.h>
+> +#include <linux/find.h>
+>  
+>  void rust_helper___set_bit(unsigned long nr, unsigned long *addr)
+>  {
+> @@ -21,3 +22,44 @@ void rust_helper_clear_bit(unsigned long nr, volatile unsigned long *addr)
+>  {
+>  	clear_bit(nr, addr);
+>  }
+> +
+> +/*
+> + * The rust_helper_ prefix is intentionally omitted below so that the
+> + * declarations in include/linux/find.h are compatible with these helpers.
+> + *
+> + * Note that the below #ifdefs mean that the helper is only created if C does
+> + * not provide a definition.
+> + */
+> +#ifdef find_first_zero_bit
+> +__rust_helper
+> +unsigned long _find_first_zero_bit(const unsigned long *p, unsigned long size)
+> +{
+> +	return find_first_zero_bit(p, size);
+> +}
+> +#endif /* find_first_zero_bit */
+> +
+> +#ifdef find_next_zero_bit
+> +__rust_helper
+> +unsigned long _find_next_zero_bit(const unsigned long *addr,
+> +				  unsigned long size, unsigned long offset)
+> +{
+> +	return find_next_zero_bit(addr, size, offset);
+> +}
+> +#endif /* find_next_zero_bit */
+> +
+> +#ifdef find_first_bit
+> +__rust_helper
+> +unsigned long _find_first_bit(const unsigned long *addr, unsigned long size)
+> +{
+> +	return find_first_bit(addr, size);
+> +}
+> +#endif /* find_first_bit */
+> +
+> +#ifdef find_next_bit
+> +__rust_helper
+> +unsigned long _find_next_bit(const unsigned long *addr, unsigned long size,
+> +			     unsigned long offset)
+> +{
+> +	return find_next_bit(addr, size, offset);
+> +}
+> +#endif /* find_next_bit */
+> 
+> ---
+> base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
+> change-id: 20251203-bitops-find-helper-25ed1bbae700
+> 
+> Best regard
 
