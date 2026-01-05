@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-204788-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204789-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3CA0CF3CF5
-	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 14:31:10 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8BF5CF3C89
+	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 14:26:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 73848304A5A7
-	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 13:25:36 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D721630164E3
+	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 13:26:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 808B133EAE6;
-	Mon,  5 Jan 2026 13:25:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34AD32609FD;
+	Mon,  5 Jan 2026 13:26:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mZE/Swyh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iRgEHkrv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B80E933E371
-	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 13:25:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E61442356A4
+	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 13:26:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767619515; cv=none; b=aXLqWbDseUAgS1bTVunK5MZmjRz5eknOLIj/je4eXCrt2Jt30W0zSRbxkIi5l3FdUt9TQ720RwiDZmFetyW7x+lGCi0Rt2pdtRSui3b8qhtDQ92uuaSytWx+6/qQTnn2HpnW/jMZXF513XQ87pU6bMPrwjmPdivaLTRAidI9w5A=
+	t=1767619593; cv=none; b=a0cbmJ4NvNGhUh+hGe8VtFFyErj66RmBNomX9Y3NOa1kmihDiGCSsgx4eW7Zq5cennFmiP2Lu0bwGMN1GuqtO7Wjyh2YcUTesLoWFuStsA6tKNLYKrTwZMmUAeYpSm2PV7jwfvIuW/6d6EFSPVGFbFiym0yyW0azvGB7IueqcWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767619515; c=relaxed/simple;
-	bh=x0LpMNLxfvlniISr16yJReo6CYXmzookp0IX5AyjnDk=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=qJyrCtwtnDPf9N5SgZs9CSO7v9gAi8NRsb9CwKCOKa1Vru0ZzjDF+E+MdEzO/IJPFwjg5T8RZjog7hdC1vzll6V5qa2d7/ocuR70CpGiC7Q6v3RoCQmT0qLQzFIouJNliAXw1X5lBzbSOLkSmhDBWJFF0B4meabmUosC9YkDs0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mZE/Swyh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7A6BC116D0;
-	Mon,  5 Jan 2026 13:25:14 +0000 (UTC)
+	s=arc-20240116; t=1767619593; c=relaxed/simple;
+	bh=n6saxIlM5ycs7p4IHZ3K0bgbfMGj4otw1G4Yz+k0VcE=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ueeJLTjZ/pCe6M9FMIVtn6uEOi9PT9XBD8GEv+DjuglM1ZGBW2o9+K4zp6qhy4GI4uXlu2kedQbENhEqLJ25B/+3uLmVAfR294W60yF0RsPvflF3HBY3mTmOFMGTD40BK7iIEMXqqn9ji3OaEt6jkl0PEXq0WphOr2atvEFg4Iw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iRgEHkrv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C76FC116D0;
+	Mon,  5 Jan 2026 13:26:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767619515;
-	bh=x0LpMNLxfvlniISr16yJReo6CYXmzookp0IX5AyjnDk=;
+	s=korg; t=1767619592;
+	bh=n6saxIlM5ycs7p4IHZ3K0bgbfMGj4otw1G4Yz+k0VcE=;
 	h=Subject:To:Cc:From:Date:From;
-	b=mZE/SwyhexZxXf0SKC6zvj9lD4mFmv8Xsu62MBeSbC3q2MnG+vZIxaBoXF4GvJbcG
-	 QxwjlsdZD2L9cV+U9KQoFUs7kUUtFTYOf9u4Fkmu1asqohsfX5QdphMH1S8L1MQOVS
-	 XmciQJFcYSFmqLNyoLvcVviJirAER7w9EsQ9ej4w=
-Subject: FAILED: patch "[PATCH] drm/mediatek: mtk_hdmi: Fix probe device leaks" failed to apply to 5.10-stable tree
-To: johan@kernel.org,angelogioacchino.delregno@collabora.com,chunkuang.hu@kernel.org,jie.qiu@mediatek.com
+	b=iRgEHkrv47+G3qp+vsKZ/+L3cRY/i1XQvyq/dXJGbfsx45fW4Cnu6YPRNjauphw8i
+	 jFikDExkwybunVJ/w6ZtYTXB1u8VaP2w0FE8EKPa+T8TUHWQXOY6vQQE43iOOCY4Ik
+	 XnYnd8QZiSjwTxvzS2Rlbkow5uwlA6Qw6NWZq6Mw=
+Subject: FAILED: patch "[PATCH] drm/tilcdc: Fix removal actions in case of failed probe" failed to apply to 6.12-stable tree
+To: kory.maincent@bootlin.com,dianders@chromium.org,luca.ceresoli@bootlin.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 05 Jan 2026 14:24:55 +0100
-Message-ID: <2026010555-handshake-lego-283e@gregkh>
+Date: Mon, 05 Jan 2026 14:26:29 +0100
+Message-ID: <2026010529-certainty-unguided-7d41@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -51,19 +51,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.12-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x 9545bae5c8acd5a47af7add606718d94578bd838
+git cherry-pick -x a585c7ef9cabda58088916baedc6573e9a5cd2a7
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026010555-handshake-lego-283e@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026010529-certainty-unguided-7d41@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
@@ -75,62 +75,211 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 9545bae5c8acd5a47af7add606718d94578bd838 Mon Sep 17 00:00:00 2001
-From: Johan Hovold <johan@kernel.org>
-Date: Tue, 23 Sep 2025 17:23:39 +0200
-Subject: [PATCH] drm/mediatek: mtk_hdmi: Fix probe device leaks
+From a585c7ef9cabda58088916baedc6573e9a5cd2a7 Mon Sep 17 00:00:00 2001
+From: "Kory Maincent (TI.com)" <kory.maincent@bootlin.com>
+Date: Tue, 25 Nov 2025 10:05:44 +0100
+Subject: [PATCH] drm/tilcdc: Fix removal actions in case of failed probe
 
-Make sure to drop the references to the DDC adapter and CEC device
-taken during probe on probe failure (e.g. probe deferral) and on driver
-unbind.
+The drm_kms_helper_poll_fini() and drm_atomic_helper_shutdown() helpers
+should only be called when the device has been successfully registered.
+Currently, these functions are called unconditionally in tilcdc_fini(),
+which causes warnings during probe deferral scenarios.
 
-Fixes: 8f83f26891e1 ("drm/mediatek: Add HDMI support")
-Cc: stable@vger.kernel.org	# 4.8
-Cc: Jie Qiu <jie.qiu@mediatek.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://patchwork.kernel.org/project/dri-devel/patch/20250923152340.18234-5-johan@kernel.org/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+[    7.972317] WARNING: CPU: 0 PID: 23 at drivers/gpu/drm/drm_atomic_state_helper.c:175 drm_atomic_helper_crtc_duplicate_state+0x60/0x68
+...
+[    8.005820]  drm_atomic_helper_crtc_duplicate_state from drm_atomic_get_crtc_state+0x68/0x108
+[    8.005858]  drm_atomic_get_crtc_state from drm_atomic_helper_disable_all+0x90/0x1c8
+[    8.005885]  drm_atomic_helper_disable_all from drm_atomic_helper_shutdown+0x90/0x144
+[    8.005911]  drm_atomic_helper_shutdown from tilcdc_fini+0x68/0xf8 [tilcdc]
+[    8.005957]  tilcdc_fini [tilcdc] from tilcdc_pdev_probe+0xb0/0x6d4 [tilcdc]
 
-diff --git a/drivers/gpu/drm/mediatek/mtk_hdmi.c b/drivers/gpu/drm/mediatek/mtk_hdmi.c
-index b766dd5e6c8d..306e2c907311 100644
---- a/drivers/gpu/drm/mediatek/mtk_hdmi.c
-+++ b/drivers/gpu/drm/mediatek/mtk_hdmi.c
-@@ -1345,6 +1345,13 @@ static const struct drm_bridge_funcs mtk_hdmi_bridge_funcs = {
- 	.edid_read = mtk_hdmi_bridge_edid_read,
- };
+Fix this by rewriting the failed probe cleanup path using the standard
+goto error handling pattern, which ensures that cleanup functions are
+only called on successfully initialized resources. Additionally, remove
+the now-unnecessary is_registered flag.
+
+Cc: stable@vger.kernel.org
+Fixes: 3c4babae3c4a ("drm: Call drm_atomic_helper_shutdown() at shutdown/remove time for misc drivers")
+Signed-off-by: Kory Maincent (TI.com) <kory.maincent@bootlin.com>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Link: https://patch.msgid.link/20251125090546.137193-1-kory.maincent@bootlin.com
+
+diff --git a/drivers/gpu/drm/tilcdc/tilcdc_crtc.c b/drivers/gpu/drm/tilcdc/tilcdc_crtc.c
+index b5f60b2b2d0e..41802c9bd147 100644
+--- a/drivers/gpu/drm/tilcdc/tilcdc_crtc.c
++++ b/drivers/gpu/drm/tilcdc/tilcdc_crtc.c
+@@ -586,7 +586,7 @@ static void tilcdc_crtc_recover_work(struct work_struct *work)
+ 	drm_modeset_unlock(&crtc->mutex);
+ }
  
-+static void mtk_hdmi_put_device(void *_dev)
-+{
-+	struct device *dev = _dev;
-+
-+	put_device(dev);
-+}
-+
- static int mtk_hdmi_get_cec_dev(struct mtk_hdmi *hdmi, struct device *dev, struct device_node *np)
+-static void tilcdc_crtc_destroy(struct drm_crtc *crtc)
++void tilcdc_crtc_destroy(struct drm_crtc *crtc)
  {
- 	struct platform_device *cec_pdev;
-@@ -1369,6 +1376,10 @@ static int mtk_hdmi_get_cec_dev(struct mtk_hdmi *hdmi, struct device *dev, struc
+ 	struct tilcdc_drm_private *priv = crtc->dev->dev_private;
+ 
+diff --git a/drivers/gpu/drm/tilcdc/tilcdc_drv.c b/drivers/gpu/drm/tilcdc/tilcdc_drv.c
+index 7caec4d38ddf..3dcbec312bac 100644
+--- a/drivers/gpu/drm/tilcdc/tilcdc_drv.c
++++ b/drivers/gpu/drm/tilcdc/tilcdc_drv.c
+@@ -172,8 +172,7 @@ static void tilcdc_fini(struct drm_device *dev)
+ 	if (priv->crtc)
+ 		tilcdc_crtc_shutdown(priv->crtc);
+ 
+-	if (priv->is_registered)
+-		drm_dev_unregister(dev);
++	drm_dev_unregister(dev);
+ 
+ 	drm_kms_helper_poll_fini(dev);
+ 	drm_atomic_helper_shutdown(dev);
+@@ -220,21 +219,21 @@ static int tilcdc_init(const struct drm_driver *ddrv, struct device *dev)
+ 	priv->wq = alloc_ordered_workqueue("tilcdc", 0);
+ 	if (!priv->wq) {
+ 		ret = -ENOMEM;
+-		goto init_failed;
++		goto put_drm;
  	}
- 	of_node_put(cec_np);
  
-+	ret = devm_add_action_or_reset(dev, mtk_hdmi_put_device, &cec_pdev->dev);
-+	if (ret)
-+		return ret;
-+
- 	/*
- 	 * The mediatek,syscon-hdmi property contains a phandle link to the
- 	 * MMSYS_CONFIG device and the register offset of the HDMI_SYS_CFG
-@@ -1423,6 +1434,10 @@ static int mtk_hdmi_dt_parse_pdata(struct mtk_hdmi *hdmi,
- 	if (!hdmi->ddc_adpt)
- 		return dev_err_probe(dev, -EINVAL, "Failed to get ddc i2c adapter by node\n");
+ 	priv->mmio = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(priv->mmio)) {
+ 		dev_err(dev, "failed to request / ioremap\n");
+ 		ret = PTR_ERR(priv->mmio);
+-		goto init_failed;
++		goto free_wq;
+ 	}
  
-+	ret = devm_add_action_or_reset(dev, mtk_hdmi_put_device, &hdmi->ddc_adpt->dev);
-+	if (ret)
-+		return ret;
-+
- 	ret = mtk_hdmi_get_cec_dev(hdmi, dev, np);
+ 	priv->clk = clk_get(dev, "fck");
+ 	if (IS_ERR(priv->clk)) {
+ 		dev_err(dev, "failed to get functional clock\n");
+ 		ret = -ENODEV;
+-		goto init_failed;
++		goto free_wq;
+ 	}
+ 
+ 	pm_runtime_enable(dev);
+@@ -313,7 +312,7 @@ static int tilcdc_init(const struct drm_driver *ddrv, struct device *dev)
+ 	ret = tilcdc_crtc_create(ddev);
+ 	if (ret < 0) {
+ 		dev_err(dev, "failed to create crtc\n");
+-		goto init_failed;
++		goto disable_pm;
+ 	}
+ 	modeset_init(ddev);
+ 
+@@ -324,46 +323,46 @@ static int tilcdc_init(const struct drm_driver *ddrv, struct device *dev)
+ 	if (ret) {
+ 		dev_err(dev, "failed to register cpufreq notifier\n");
+ 		priv->freq_transition.notifier_call = NULL;
+-		goto init_failed;
++		goto destroy_crtc;
+ 	}
+ #endif
+ 
+ 	if (priv->is_componentized) {
+ 		ret = component_bind_all(dev, ddev);
+ 		if (ret < 0)
+-			goto init_failed;
++			goto unregister_cpufreq_notif;
+ 
+ 		ret = tilcdc_add_component_encoder(ddev);
+ 		if (ret < 0)
+-			goto init_failed;
++			goto unbind_component;
+ 	} else {
+ 		ret = tilcdc_attach_external_device(ddev);
+ 		if (ret)
+-			goto init_failed;
++			goto unregister_cpufreq_notif;
+ 	}
+ 
+ 	if (!priv->external_connector &&
+ 	    ((priv->num_encoders == 0) || (priv->num_connectors == 0))) {
+ 		dev_err(dev, "no encoders/connectors found\n");
+ 		ret = -EPROBE_DEFER;
+-		goto init_failed;
++		goto unbind_component;
+ 	}
+ 
+ 	ret = drm_vblank_init(ddev, 1);
+ 	if (ret < 0) {
+ 		dev_err(dev, "failed to initialize vblank\n");
+-		goto init_failed;
++		goto unbind_component;
+ 	}
+ 
+ 	ret = platform_get_irq(pdev, 0);
+ 	if (ret < 0)
+-		goto init_failed;
++		goto unbind_component;
+ 	priv->irq = ret;
+ 
+ 	ret = tilcdc_irq_install(ddev, priv->irq);
+ 	if (ret < 0) {
+ 		dev_err(dev, "failed to install IRQ handler\n");
+-		goto init_failed;
++		goto unbind_component;
+ 	}
+ 
+ 	drm_mode_config_reset(ddev);
+@@ -372,16 +371,34 @@ static int tilcdc_init(const struct drm_driver *ddrv, struct device *dev)
+ 
+ 	ret = drm_dev_register(ddev, 0);
  	if (ret)
- 		return ret;
+-		goto init_failed;
+-	priv->is_registered = true;
++		goto stop_poll;
+ 
+ 	drm_client_setup_with_color_mode(ddev, bpp);
+ 
+ 	return 0;
+ 
+-init_failed:
+-	tilcdc_fini(ddev);
++stop_poll:
++	drm_kms_helper_poll_fini(ddev);
++	tilcdc_irq_uninstall(ddev);
++unbind_component:
++	if (priv->is_componentized)
++		component_unbind_all(dev, ddev);
++unregister_cpufreq_notif:
++#ifdef CONFIG_CPU_FREQ
++	cpufreq_unregister_notifier(&priv->freq_transition,
++				    CPUFREQ_TRANSITION_NOTIFIER);
++destroy_crtc:
++#endif
++	tilcdc_crtc_destroy(priv->crtc);
++disable_pm:
++	pm_runtime_disable(dev);
++	clk_put(priv->clk);
++free_wq:
++	destroy_workqueue(priv->wq);
++put_drm:
+ 	platform_set_drvdata(pdev, NULL);
++	ddev->dev_private = NULL;
++	drm_dev_put(ddev);
+ 
+ 	return ret;
+ }
+diff --git a/drivers/gpu/drm/tilcdc/tilcdc_drv.h b/drivers/gpu/drm/tilcdc/tilcdc_drv.h
+index b818448c83f6..58b276f82a66 100644
+--- a/drivers/gpu/drm/tilcdc/tilcdc_drv.h
++++ b/drivers/gpu/drm/tilcdc/tilcdc_drv.h
+@@ -82,7 +82,6 @@ struct tilcdc_drm_private {
+ 	struct drm_encoder *external_encoder;
+ 	struct drm_connector *external_connector;
+ 
+-	bool is_registered;
+ 	bool is_componentized;
+ 	bool irq_enabled;
+ };
+@@ -164,6 +163,7 @@ void tilcdc_crtc_set_panel_info(struct drm_crtc *crtc,
+ void tilcdc_crtc_set_simulate_vesa_sync(struct drm_crtc *crtc,
+ 					bool simulate_vesa_sync);
+ void tilcdc_crtc_shutdown(struct drm_crtc *crtc);
++void tilcdc_crtc_destroy(struct drm_crtc *crtc);
+ int tilcdc_crtc_update_fb(struct drm_crtc *crtc,
+ 		struct drm_framebuffer *fb,
+ 		struct drm_pending_vblank_event *event);
 
 
