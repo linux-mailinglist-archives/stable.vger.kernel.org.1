@@ -1,340 +1,337 @@
-Return-Path: <stable+bounces-204835-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204836-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72BC5CF4589
-	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 16:17:13 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65F1DCF46C2
+	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 16:33:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4202B30AAD39
-	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 15:11:08 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5630030203A1
+	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 15:29:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8EAD2417C3;
-	Mon,  5 Jan 2026 15:11:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D96402DC320;
+	Mon,  5 Jan 2026 15:29:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cY/7RHPq"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="XmNsEvpX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69AE63A1E6D
-	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 15:11:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E8FD2C0284;
+	Mon,  5 Jan 2026 15:29:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767625865; cv=none; b=rqQH53C6oEHtCKfalhpZXhXzQRgMU/vn/2emZ/tRc3qkkraHZk3l68DOjeJH+52NByIQati+rHzDPn6TfXK/Bi5CFBSSTlNwM34bN4XlzWRnHRhXzr8ev8giV04BF8tOjcK71jQlmKDgzQ4e3+MA/eDtyxh9EmPIazOqmW7pVzw=
+	t=1767626972; cv=none; b=ApCgafdKcw9mmTH6JdwqdhmirbDtViI+n9fmSyVk4wkuKJZhB9IFW1S+FZ+52VQkK0r1Se0slzNr2IkhewIdg19EF7WxcE4xUUNT73iVFKPzUlD/D23R6BwXgsEduG7wK8VUjLUkpwv5jXKx3k+Kh5uhcV/uzdiK5mg7VYQJpmA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767625865; c=relaxed/simple;
-	bh=Q5fHDRmoPgUs5dmwzU4t6qK7nn5NMtMfNQr8IycEM8M=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rQY17RgpLd8QZRTzbFyNBS/mPmUDqauj+IB05EgfxZhnHnIOx1Xtm7T1dh2kF39aqFDNzNO9R1NcdEZdnaR7KvKvuFb9vFmU4VY80338WJMgfA2k7NO5z73giPyNR1G7Z6PP76FdhrkcIBdldBTHJ+DKez1bq8zt+M+ZlQqthGE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cY/7RHPq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E74B5C116D0;
-	Mon,  5 Jan 2026 15:11:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767625864;
-	bh=Q5fHDRmoPgUs5dmwzU4t6qK7nn5NMtMfNQr8IycEM8M=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cY/7RHPqwPEUtJVsA6GhPi+NCEVQv/670BhF9MJPZqh3+n2SZFhCxMEHs3Kngq3EZ
-	 +HB6QHhTMD3nH5xSCf/9aHRJ0PUIBt+Z7h4LSEBrZffIi6FhmKCPc1yko5jDopsX9T
-	 b/geusMVgb803QU7HCEUevAHBed8gWaQlWclFFlRIbgO8kS8FjJ1LWrhs/ExVljcKj
-	 A2ZNLzBH6+3b4098E28crfMi1dfjqxsqJ9WWVAUPy/JPRVfPhPcFWEmR2KanSV9QH5
-	 D25WUygnWGtqPRdpf7gmu775VXkfI/NQrN6B606RRVMKgA0kCVmO9WMwd4X18qaLRU
-	 6LtU2vISXsqwQ==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Damien Le Moal <dlemoal@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Hannes Reinecke <hare@suse.de>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y] block: handle zone management operations completions
-Date: Mon,  5 Jan 2026 10:11:02 -0500
-Message-ID: <20260105151102.2626035-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026010502-speak-resubmit-7be4@gregkh>
-References: <2026010502-speak-resubmit-7be4@gregkh>
+	s=arc-20240116; t=1767626972; c=relaxed/simple;
+	bh=4bZVFOscflBe/dlCrxkpfAlehbJTcoL4YWIjcntTNjo=;
+	h=Date:To:From:Subject:Message-Id; b=c3EZs6SGwHiCWSm9XhYHL+OD70HOPdjOgcOVbe6TKqToGrX52RtFyi5wf+cMzCbq+3HGBInEoi6A9TpCy58s8qGOcvBh5PJUzT5Fmi/s1hfovY/8Oju/CxseOPm2Ppai+kivMVsEV1hpSWuImCjNJNGL+ECZ/r7cXYjur5he88o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=XmNsEvpX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89565C116D0;
+	Mon,  5 Jan 2026 15:29:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1767626971;
+	bh=4bZVFOscflBe/dlCrxkpfAlehbJTcoL4YWIjcntTNjo=;
+	h=Date:To:From:Subject:From;
+	b=XmNsEvpXNMmIJokkSfPtULX3aLBdZ6mQLm6wTsLKB6TLe9t6eDvA2IriHicJntYYB
+	 BkCif+Uf7C2GjibyQ+WjdCOcsjmjOb+2KCp/CVDbCBzT0Mv66pMf5tIicSqLqXKJQ4
+	 swdfTh16WeQvT+zRYIB++TEp9ZQrW+7nx4KqCAHw=
+Date: Mon, 05 Jan 2026 07:29:30 -0800
+To: mm-commits@vger.kernel.org,yeoreum.yun@arm.com,vbabka@suse.cz,stable@vger.kernel.org,riel@surriel.com,pfalcato@suse.de,liam.howlett@oracle.com,jannh@google.com,david@kernel.org,aha310510@gmail.com,lorenzo.stoakes@oracle.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [to-be-updated] mm-vma-fix-anon_vma-uaf-on-mremap-faulted-unfaulted-merge.patch removed from -mm tree
+Message-Id: <20260105152931.89565C116D0@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-From: Damien Le Moal <dlemoal@kernel.org>
 
-[ Upstream commit efae226c2ef19528ffd81d29ba0eecf1b0896ca2 ]
+The quilt patch titled
+     Subject: mm/vma: fix anon_vma UAF on mremap() faulted, unfaulted merge
+has been removed from the -mm tree.  Its filename was
+     mm-vma-fix-anon_vma-uaf-on-mremap-faulted-unfaulted-merge.patch
 
-The functions blk_zone_wplug_handle_reset_or_finish() and
-blk_zone_wplug_handle_reset_all() both modify the zone write pointer
-offset of zone write plugs that are the target of a reset, reset all or
-finish zone management operation. However, these functions do this
-modification before the BIO is executed. So if the zone operation fails,
-the modified zone write pointer offsets become invalid.
+This patch was dropped because an updated version will be issued
 
-Avoid this by modifying the zone write pointer offset of a zone write
-plug that is the target of a zone management operation when the
-operation completes. To do so, modify blk_zone_bio_endio() to call the
-new function blk_zone_mgmt_bio_endio() which in turn calls the functions
-blk_zone_reset_all_bio_endio(), blk_zone_reset_bio_endio() or
-blk_zone_finish_bio_endio() depending on the operation of the completed
-BIO, to modify a zone write plug write pointer offset accordingly.
-These functions are called only if the BIO execution was successful.
+------------------------------------------------------
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Subject: mm/vma: fix anon_vma UAF on mremap() faulted, unfaulted merge
+Date: Fri, 2 Jan 2026 20:55:20 +0000
 
-Fixes: dd291d77cc90 ("block: Introduce zone write plugging")
-Cc: stable@vger.kernel.org
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-[ adapted bdev_zone_is_seq() check to disk_zone_is_conv() ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Commit 879bca0a2c4f ("mm/vma: fix incorrectly disallowed anonymous VMA
+merges") introduced the ability to merge previously unavailable VMA merge
+scenarios.
+
+The key piece of logic introduced was the ability to merge a faulted VMA
+immediately next to an unfaulted VMA, which relies upon dup_anon_vma() to
+correctly handle anon_vma state.
+
+In the case of the merge of an existing VMA (that is changing properties
+of a VMA and then merging if those properties are shared by adjacent
+VMAs), dup_anon_vma() is invoked correctly.
+
+However in the case of the merge of a new VMA, a corner case peculiar to
+mremap() was missed.
+
+The issue is that vma_expand() only performs dup_anon_vma() if the target
+(the VMA that will ultimately become the merged VMA): is not the next VMA,
+i.e.  the one that appears after the range in which the new VMA is to be
+established.
+
+A key insight here is that in all other cases other than mremap(), a new
+VMA merge either expands an existing VMA, meaning that the target VMA will
+be that VMA, or would have anon_vma be NULL.
+
+Specifically:
+
+* __mmap_region() - no anon_vma in place, initial mapping.
+* do_brk_flags() - expanding an existing VMA.
+* vma_merge_extend() - expanding an existing VMA.
+* relocate_vma_down() - no anon_vma in place, initial mapping.
+
+In addition, we are in the unique situation of needing to duplicate
+anon_vma state from a VMA that is neither the previous or next VMA being
+merged with.
+
+To account for this, introduce a new field in struct vma_merge_struct
+specifically for the mremap() case, and update vma_expand() to explicitly
+check for this case and invoke dup_anon_vma() to ensure anon_vma state is
+correctly propagated.
+
+This issue can be observed most directly by invoked mremap() to move
+around a VMA and cause this kind of merge with the MREMAP_DONTUNMAP flag
+specified.
+
+This will result in unlink_anon_vmas() being called after failing to
+duplicate anon_vma state to the target VMA, which results in the anon_vma
+itself being freed with folios still possessing dangling pointers to the
+anon_vma and thus a use-after-free bug.
+
+This bug was discovered via a syzbot report, which this patch resolves.
+
+The following program reproduces the issue (and is fixed by this patch):
+
+#define _GNU_SOURCE
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/mman.h>
+
+#define RESERVED_PGS	(100)
+#define VMA_A_PGS	(10)
+#define VMA_B_PGS	(10)
+#define NUM_ITERS	(1000)
+
+static void trigger_bug(void)
+{
+	unsigned long page_size = sysconf(_SC_PAGE_SIZE);
+	char *reserved, *ptr_a, *ptr_b;
+
+	/*
+	 * The goal here is to achieve:
+	 *
+	 * mremap() with MREMAP_DONTUNMAP such that A and B merge:
+	 *
+	 *      |-------------------------|
+	 *      |                         |
+	 *      |    |-----------|   |---------|
+	 *      v    | unfaulted |   | faulted |
+	 *           |-----------|   |---------|
+	 *                 B              A
+	 *
+	 * Then unmap VMA A to trigger the bug.
+	 */
+
+	/* Reserve a region of memory to operate in. */
+	reserved = mmap(NULL, RESERVED_PGS * page_size, PROT_NONE,
+			MAP_PRIVATE | MAP_ANON, -1, 0);
+	if (reserved == MAP_FAILED) {
+		perror("mmap reserved");
+		exit(EXIT_FAILURE);
+	}
+
+	/* Map VMA A into place. */
+	ptr_a = mmap(&reserved[page_size], VMA_A_PGS * page_size,
+		     PROT_READ | PROT_WRITE,
+		     MAP_PRIVATE | MAP_ANON | MAP_FIXED, -1, 0);
+	if (ptr_a == MAP_FAILED) {
+		perror("mmap VMA A");
+		exit(EXIT_FAILURE);
+	}
+	/* Fault it in. */
+	ptr_a[0] = 'x';
+
+	/*
+	 * Now move it out of the way so we can place VMA B in position,
+	 * unfaulted.
+	 */
+	ptr_a = mremap(ptr_a, VMA_A_PGS * page_size, VMA_A_PGS * page_size,
+		       MREMAP_FIXED | MREMAP_MAYMOVE, &reserved[50 * page_size]);
+	if (ptr_a == MAP_FAILED) {
+		perror("mremap VMA A out of the way");
+		exit(EXIT_FAILURE);
+	}
+
+	/* Map VMA B into place. */
+	ptr_b = mmap(&reserved[page_size + VMA_A_PGS * page_size],
+		     VMA_B_PGS * page_size, PROT_READ | PROT_WRITE,
+		     MAP_PRIVATE | MAP_ANON | MAP_FIXED, -1, 0);
+	if (ptr_b == MAP_FAILED) {
+		perror("mmap VMA B");
+		exit(EXIT_FAILURE);
+	}
+
+	/* Now move VMA A into position w/MREMAP_DONTUNMAP + free anon_vma. */
+	ptr_a = mremap(ptr_a, VMA_A_PGS * page_size, VMA_A_PGS * page_size,
+		       MREMAP_FIXED | MREMAP_MAYMOVE | MREMAP_DONTUNMAP,
+		       &reserved[page_size]);
+	if (ptr_a == MAP_FAILED) {
+		perror("mremap VMA A with MREMAP_DONTUNMAP");
+		exit(EXIT_FAILURE);
+	}
+
+	/* Finally, unmap VMA A which should trigger the bug. */
+	munmap(ptr_a, VMA_A_PGS * page_size);
+
+	/* Cleanup in case bug didn't trigger sufficiently visibly... */
+	munmap(reserved, RESERVED_PGS * page_size);
+}
+
+int main(void)
+{
+	int i;
+
+	for (i = 0; i < NUM_ITERS; i++)
+		trigger_bug();
+
+	return EXIT_SUCCESS;
+}
+
+Link: https://lkml.kernel.org/r/20260102205520.986725-1-lorenzo.stoakes@oracle.com
+Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Fixes: 879bca0a2c4f ("mm/vma: fix incorrectly disallowed anonymous VMA merges")
+Reported-by: syzbot+b165fc2e11771c66d8ba@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/694a2745.050a0220.19928e.0017.GAE@google.com/
+Cc: David Hildenbrand (Red Hat) <david@kernel.org>
+Cc: Jann Horn <jannh@google.com>
+Cc: Jeongjun Park <aha310510@gmail.com>
+Cc: levi.yun <yeoreum.yun@arm.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Rik van Riel <riel@surriel.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Pedro Falcato <pfalcato@suse.de>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- block/blk-zoned.c | 141 ++++++++++++++++++++++++++++++----------------
- block/blk.h       |  14 +++++
- 2 files changed, 106 insertions(+), 49 deletions(-)
 
-diff --git a/block/blk-zoned.c b/block/blk-zoned.c
-index f1160cc2cf85..8aefc267837f 100644
---- a/block/blk-zoned.c
-+++ b/block/blk-zoned.c
-@@ -73,6 +73,11 @@ struct blk_zone_wplug {
- 	struct gendisk		*disk;
- };
+ mm/vma.c |   58 ++++++++++++++++++++++++++++++++++++++++-------------
+ mm/vma.h |    3 ++
+ 2 files changed, 47 insertions(+), 14 deletions(-)
+
+--- a/mm/vma.c~mm-vma-fix-anon_vma-uaf-on-mremap-faulted-unfaulted-merge
++++ a/mm/vma.c
+@@ -1130,26 +1130,50 @@ int vma_expand(struct vma_merge_struct *
+ 	mmap_assert_write_locked(vmg->mm);
  
-+static inline unsigned int disk_zone_wplugs_hash_size(struct gendisk *disk)
-+{
-+	return 1U << disk->zone_wplugs_hash_bits;
-+}
+ 	vma_start_write(target);
+-	if (next && (target != next) && (vmg->end == next->vm_end)) {
++	if (next && vmg->end == next->vm_end) {
++		struct vm_area_struct *copied_from = vmg->copied_from;
+ 		int ret;
+ 
+-		sticky_flags |= next->vm_flags & VM_STICKY;
+-		remove_next = true;
+-		/* This should already have been checked by this point. */
+-		VM_WARN_ON_VMG(!can_merge_remove_vma(next), vmg);
+-		vma_start_write(next);
+-		/*
+-		 * In this case we don't report OOM, so vmg->give_up_on_mm is
+-		 * safe.
+-		 */
+-		ret = dup_anon_vma(target, next, &anon_dup);
+-		if (ret)
+-			return ret;
++		if (target != next) {
++			sticky_flags |= next->vm_flags & VM_STICKY;
++			remove_next = true;
++			/* This should already have been checked by this point. */
++			VM_WARN_ON_VMG(!can_merge_remove_vma(next), vmg);
++			vma_start_write(next);
++			/*
++			 * In this case we don't report OOM, so vmg->give_up_on_mm is
++			 * safe.
++			 */
++			ret = dup_anon_vma(target, next, &anon_dup);
++			if (ret)
++				return ret;
++		} else if (copied_from) {
++			vma_start_write(next);
 +
- /*
-  * Zone write plug flags bits:
-  *  - BLK_ZONE_WPLUG_PLUGGED: Indicates that the zone write plug is plugged,
-@@ -708,71 +713,91 @@ static int disk_zone_sync_wp_offset(struct gendisk *disk, sector_t sector)
- 					disk_report_zones_cb, &args);
- }
++			/*
++			 * We are copying from a VMA (i.e. mremap()'ing) to
++			 * next, and thus must ensure that either anon_vma's are
++			 * already compatible (in which case this call is a nop)
++			 * or all anon_vma state is propagated to next
++			 */
++			ret = dup_anon_vma(next, copied_from, &anon_dup);
++			if (ret)
++				return ret;
++		} else {
++			/* In no other case may the anon_vma differ. */
++			VM_WARN_ON_VMG(target->anon_vma != next->anon_vma, vmg);
++		}
+ 	}
  
--static bool blk_zone_wplug_handle_reset_or_finish(struct bio *bio,
--						  unsigned int wp_offset)
-+static void blk_zone_reset_bio_endio(struct bio *bio)
- {
- 	struct gendisk *disk = bio->bi_bdev->bd_disk;
--	sector_t sector = bio->bi_iter.bi_sector;
- 	struct blk_zone_wplug *zwplug;
--	unsigned long flags;
--
--	/* Conventional zones cannot be reset nor finished. */
--	if (disk_zone_is_conv(disk, sector)) {
--		bio_io_error(bio);
--		return true;
--	}
+ 	/* Not merging but overwriting any part of next is not handled. */
+ 	VM_WARN_ON_VMG(next && !remove_next &&
+ 		       next != target && vmg->end > next->vm_start, vmg);
++	/*
++	 * We should only see a copy with next as the target on a new merge
++	 * which sets the end to the next of next.
++	 */
++	VM_WARN_ON_VMG(target == next && vmg->copied_from &&
++		       vmg->end != next->vm_end, vmg);
+ 	/* Only handles expanding */
+ 	VM_WARN_ON_VMG(target->vm_start < vmg->start ||
+ 		       target->vm_end > vmg->end, vmg);
+@@ -1808,6 +1832,13 @@ struct vm_area_struct *copy_vma(struct v
+ 	VMG_VMA_STATE(vmg, &vmi, NULL, vma, addr, addr + len);
  
  	/*
--	 * No-wait reset or finish BIOs do not make much sense as the callers
--	 * issue these as blocking operations in most cases. To avoid issues
--	 * the BIO execution potentially failing with BLK_STS_AGAIN, warn about
--	 * REQ_NOWAIT being set and ignore that flag.
--	 */
--	if (WARN_ON_ONCE(bio->bi_opf & REQ_NOWAIT))
--		bio->bi_opf &= ~REQ_NOWAIT;
--
--	/*
--	 * If we have a zone write plug, set its write pointer offset to 0
--	 * (reset case) or to the zone size (finish case). This will abort all
--	 * BIOs plugged for the target zone. It is fine as resetting or
--	 * finishing zones while writes are still in-flight will result in the
-+	 * If we have a zone write plug, set its write pointer offset to 0.
-+	 * This will abort all BIOs plugged for the target zone. It is fine as
-+	 * resetting zones while writes are still in-flight will result in the
- 	 * writes failing anyway.
++	 * VMG_VMA_STATE() installs vma in middle, but this is a new VMA, inform
++	 * merging logic correctly.
++	 */
++	vmg.copied_from = vma;
++	vmg.middle = NULL;
++
++	/*
+ 	 * If anonymous vma has not yet been faulted, update new pgoff
+ 	 * to match new location, to increase its chance of merging.
  	 */
--	zwplug = disk_get_zone_wplug(disk, sector);
-+	zwplug = disk_get_zone_wplug(disk, bio->bi_iter.bi_sector);
- 	if (zwplug) {
-+		unsigned long flags;
-+
- 		spin_lock_irqsave(&zwplug->lock, flags);
--		disk_zone_wplug_set_wp_offset(disk, zwplug, wp_offset);
-+		disk_zone_wplug_set_wp_offset(disk, zwplug, 0);
- 		spin_unlock_irqrestore(&zwplug->lock, flags);
- 		disk_put_zone_wplug(zwplug);
- 	}
--
--	return false;
- }
+@@ -1828,7 +1859,6 @@ struct vm_area_struct *copy_vma(struct v
+ 	if (new_vma && new_vma->vm_start < addr + len)
+ 		return NULL;	/* should never get here */
  
--static bool blk_zone_wplug_handle_reset_all(struct bio *bio)
-+static void blk_zone_reset_all_bio_endio(struct bio *bio)
- {
- 	struct gendisk *disk = bio->bi_bdev->bd_disk;
- 	struct blk_zone_wplug *zwplug;
- 	unsigned long flags;
--	sector_t sector;
-+	unsigned int i;
+-	vmg.middle = NULL; /* New VMA range. */
+ 	vmg.pgoff = pgoff;
+ 	vmg.next = vma_iter_next_rewind(&vmi, NULL);
+ 	new_vma = vma_merge_new_range(&vmg);
+--- a/mm/vma.h~mm-vma-fix-anon_vma-uaf-on-mremap-faulted-unfaulted-merge
++++ a/mm/vma.h
+@@ -106,6 +106,9 @@ struct vma_merge_struct {
+ 	struct anon_vma_name *anon_name;
+ 	enum vma_merge_state state;
  
--	/*
--	 * Set the write pointer offset of all zone write plugs to 0. This will
--	 * abort all plugged BIOs. It is fine as resetting zones while writes
--	 * are still in-flight will result in the writes failing anyway.
--	 */
--	for (sector = 0; sector < get_capacity(disk);
--	     sector += disk->queue->limits.chunk_sectors) {
--		zwplug = disk_get_zone_wplug(disk, sector);
--		if (zwplug) {
-+	/* Update the condition of all zone write plugs. */
-+	rcu_read_lock();
-+	for (i = 0; i < disk_zone_wplugs_hash_size(disk); i++) {
-+		hlist_for_each_entry_rcu(zwplug, &disk->zone_wplugs_hash[i],
-+					 node) {
- 			spin_lock_irqsave(&zwplug->lock, flags);
- 			disk_zone_wplug_set_wp_offset(disk, zwplug, 0);
- 			spin_unlock_irqrestore(&zwplug->lock, flags);
--			disk_put_zone_wplug(zwplug);
- 		}
- 	}
-+	rcu_read_unlock();
-+}
++	/* If we are copying a VMA, which VMA are we copying from? */
++	struct vm_area_struct *copied_from;
++
+ 	/* Flags which callers can use to modify merge behaviour: */
  
--	return false;
-+static void blk_zone_finish_bio_endio(struct bio *bio)
-+{
-+	struct block_device *bdev = bio->bi_bdev;
-+	struct gendisk *disk = bdev->bd_disk;
-+	struct blk_zone_wplug *zwplug;
-+
-+	/*
-+	 * If we have a zone write plug, set its write pointer offset to the
-+	 * zone size. This will abort all BIOs plugged for the target zone. It
-+	 * is fine as resetting zones while writes are still in-flight will
-+	 * result in the writes failing anyway.
-+	 */
-+	zwplug = disk_get_zone_wplug(disk, bio->bi_iter.bi_sector);
-+	if (zwplug) {
-+		unsigned long flags;
-+
-+		spin_lock_irqsave(&zwplug->lock, flags);
-+		disk_zone_wplug_set_wp_offset(disk, zwplug,
-+					      bdev_zone_sectors(bdev));
-+		spin_unlock_irqrestore(&zwplug->lock, flags);
-+		disk_put_zone_wplug(zwplug);
-+	}
-+}
-+
-+void blk_zone_mgmt_bio_endio(struct bio *bio)
-+{
-+	/* If the BIO failed, we have nothing to do. */
-+	if (bio->bi_status != BLK_STS_OK)
-+		return;
-+
-+	switch (bio_op(bio)) {
-+	case REQ_OP_ZONE_RESET:
-+		blk_zone_reset_bio_endio(bio);
-+		return;
-+	case REQ_OP_ZONE_RESET_ALL:
-+		blk_zone_reset_all_bio_endio(bio);
-+		return;
-+	case REQ_OP_ZONE_FINISH:
-+		blk_zone_finish_bio_endio(bio);
-+		return;
-+	default:
-+		return;
-+	}
- }
- 
- static void disk_zone_wplug_schedule_bio_work(struct gendisk *disk,
-@@ -1115,6 +1140,32 @@ static void blk_zone_wplug_handle_native_zone_append(struct bio *bio)
- 	disk_put_zone_wplug(zwplug);
- }
- 
-+static bool blk_zone_wplug_handle_zone_mgmt(struct bio *bio)
-+{
-+	struct gendisk *disk = bio->bi_bdev->bd_disk;
-+
-+	if (bio_op(bio) != REQ_OP_ZONE_RESET_ALL &&
-+	    disk_zone_is_conv(disk, bio->bi_iter.bi_sector)) {
-+		/*
-+		 * Zone reset and zone finish operations do not apply to
-+		 * conventional zones.
-+		 */
-+		bio_io_error(bio);
-+		return true;
-+	}
-+
-+	/*
-+	 * No-wait zone management BIOs do not make much sense as the callers
-+	 * issue these as blocking operations in most cases. To avoid issues
-+	 * with the BIO execution potentially failing with BLK_STS_AGAIN, warn
-+	 * about REQ_NOWAIT being set and ignore that flag.
-+	 */
-+	if (WARN_ON_ONCE(bio->bi_opf & REQ_NOWAIT))
-+		bio->bi_opf &= ~REQ_NOWAIT;
-+
-+	return false;
-+}
-+
- /**
-  * blk_zone_plug_bio - Handle a zone write BIO with zone write plugging
-  * @bio: The BIO being submitted
-@@ -1162,12 +1213,9 @@ bool blk_zone_plug_bio(struct bio *bio, unsigned int nr_segs)
- 	case REQ_OP_WRITE_ZEROES:
- 		return blk_zone_wplug_handle_write(bio, nr_segs);
- 	case REQ_OP_ZONE_RESET:
--		return blk_zone_wplug_handle_reset_or_finish(bio, 0);
- 	case REQ_OP_ZONE_FINISH:
--		return blk_zone_wplug_handle_reset_or_finish(bio,
--						bdev_zone_sectors(bdev));
- 	case REQ_OP_ZONE_RESET_ALL:
--		return blk_zone_wplug_handle_reset_all(bio);
-+		return blk_zone_wplug_handle_zone_mgmt(bio);
- 	default:
- 		return false;
- 	}
-@@ -1324,11 +1372,6 @@ static void blk_zone_wplug_bio_work(struct work_struct *work)
- 	disk_put_zone_wplug(zwplug);
- }
- 
--static inline unsigned int disk_zone_wplugs_hash_size(struct gendisk *disk)
--{
--	return 1U << disk->zone_wplugs_hash_bits;
--}
--
- void disk_init_zone_resources(struct gendisk *disk)
- {
- 	spin_lock_init(&disk->zone_wplugs_lock);
-diff --git a/block/blk.h b/block/blk.h
-index e91012247ff2..63c92db0a507 100644
---- a/block/blk.h
-+++ b/block/blk.h
-@@ -486,9 +486,23 @@ static inline void blk_zone_update_request_bio(struct request *rq,
- 	    bio_flagged(bio, BIO_EMULATES_ZONE_APPEND))
- 		bio->bi_iter.bi_sector = rq->__sector;
- }
-+void blk_zone_mgmt_bio_endio(struct bio *bio);
- void blk_zone_write_plug_bio_endio(struct bio *bio);
- static inline void blk_zone_bio_endio(struct bio *bio)
- {
-+	/*
-+	 * Zone management BIOs may impact zone write plugs (e.g. a zone reset
-+	 * changes a zone write plug zone write pointer offset), but these
-+	 * operation do not go through zone write plugging as they may operate
-+	 * on zones that do not have a zone write
-+	 * plug. blk_zone_mgmt_bio_endio() handles the potential changes to zone
-+	 * write plugs that are present.
-+	 */
-+	if (op_is_zone_mgmt(bio_op(bio))) {
-+		blk_zone_mgmt_bio_endio(bio);
-+		return;
-+	}
-+
  	/*
- 	 * For write BIOs to zoned devices, signal the completion of the BIO so
- 	 * that the next write BIO can be submitted by zone write plugging.
--- 
-2.51.0
+_
+
+Patches currently in -mm which might be from lorenzo.stoakes@oracle.com are
+
 
 
