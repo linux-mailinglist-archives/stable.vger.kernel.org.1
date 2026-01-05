@@ -1,51 +1,80 @@
-Return-Path: <stable+bounces-204759-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204750-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AC2ECF3EE4
-	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 14:50:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B97D3CF3B89
+	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 14:09:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F053D315E734
-	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 13:44:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0D427305D9B6
+	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 13:01:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C4FA346ADD;
-	Mon,  5 Jan 2026 12:46:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C5D433AD90;
+	Mon,  5 Jan 2026 12:31:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="PLzJYIml"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="Bc2M7VaH"
 X-Original-To: stable@vger.kernel.org
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45DD6346A02;
-	Mon,  5 Jan 2026 12:46:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE2813376A7
+	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 12:31:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767617219; cv=none; b=LRvDduoK+8QdjpIBLiJt9w0x3JgVlD3rWg2A6EVdJYa5Bs+XTxsNamQ3vGKFyG67ahSfgH6G/Ji2SRJwf1bp88aUtT6UGiJKVJcm7tIiEm5kbi9VG1KVSkt7zqhSoVgPJdzWRqOATY5J7OUqrKW0CnqQmGaDQ1UeefV4I0fcxyQ=
+	t=1767616301; cv=none; b=ZfLFF/Pc0d27RSit71NTI4sEIp8CdKgFRh2qJ/Fy5lEheU3KOj0MfKLjUl+wyZ55oRF3Ix1MveuE9F4qNVhn4prYKL9gFWOzEtQvPH+VAjXv4eg87BacfBzVeQSTcbxKNu2JOTQzcjLkjQRmjRcbuZ0o8QjbnGW12K5iTfQxly0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767617219; c=relaxed/simple;
-	bh=321yEr8YVsmjW3bML0bGo3Vdw9hbGBArRwRU7u8cNo4=;
+	s=arc-20240116; t=1767616301; c=relaxed/simple;
+	bh=rGEEZ95V6+M/i1YF/1tZgxeKtoKHGflfCQr5UDqK1Uo=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tE5H+5z7aLZHZ2jVlbgOaXwiHjFRbCu5NlvtmsCy47DrdbgdNVqv/31VRVoSmg9w87h2gIONFavsCAvHxtjG3jLK28i+BVuvefH/cd9cLl8QMAlB97c0Eyt6IoW5xMy1EBRVwSVPRWyE1qWOQlJqdqCqpzYNxSaUIJvkm7r9BXM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=PLzJYIml; arc=none smtp.client-ip=80.237.130.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:In-Reply-To:
-	References; bh=Dvm+kvJHyY1KKCJtfQp8EPX7C/3KH3OKeCdRxBCMWeY=; t=1767617217;
-	x=1768049217; b=PLzJYImlfCTEI7mQXQ7prJGSMDoN8oXs1p+C9EDUvpXeMC3VmPdent9PtEwwZ
-	MQ75cDikmkQ2l0V1ykYP67PlQQ8/P7h694uhBfPPwF3RXz2rnr/zE3vLa7xhrWnaatNbSaXJs7CHc
-	ysdF8WU6f9694OvVFm7Rj9WmhR/Kz/gi2dpQHTL2lvc8CMw1+0PzNg56wrnTLVi8EWg1J3EMMRTE9
-	CrDLSA5l1i+k7j10w+kny5yplPt7x/BazTGVygX1N2xIucT5RuGXfwqdj7X1Ob2Z9kbMC5MnFM1+c
-	hHGPxQB8S3/Z+uRQcbVTde3pKwfXvpozoYWH6lLyElxZOHC6Vw==;
-Received: from [2a02:8108:8984:1d00:a0cf:1912:4be:477f]; authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128)
-	id 1vcjjg-001TXb-2m;
-	Mon, 05 Jan 2026 13:31:00 +0100
-Message-ID: <6498cffd-5bf9-490a-910d-f64ab9b7f330@leemhuis.info>
-Date: Mon, 5 Jan 2026 13:30:59 +0100
+	 In-Reply-To:Content-Type; b=kcXWXw+vg4wlRAH9azgfqEuqLH0b/8ovbNyOYnKfva6j+cLTpncsxl21g/orKRV2f4XdOoATwTbTBt904/heVwfleAbZiVsbET4DiD2PMq7L2vXfkesRpdCsfOTI5SCrqkNM+s36qZFpmG3OBWHCpooqu3oGHs+hruSOg2hRTYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=Bc2M7VaH; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4779adb38d3so91825905e9.2
+        for <stable@vger.kernel.org>; Mon, 05 Jan 2026 04:31:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1767616296; x=1768221096; darn=vger.kernel.org;
+        h=in-reply-to:autocrypt:from:content-language:references:cc:to
+         :subject:user-agent:mime-version:date:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=rGEEZ95V6+M/i1YF/1tZgxeKtoKHGflfCQr5UDqK1Uo=;
+        b=Bc2M7VaHTeMf8wEQqn0C6EIevjCLKvAWWF2Y3TdYWfVtO+du3fUBFLs85l3a6cPojM
+         et+IETR7XJ2Y/X2PYXHVp6SzFIV3VWGXpDYwcLLo+pBtzbMjOaGWI4Ffqqo+l67/3Xq7
+         Q4x+cKNrZZlxfGOxEpWsK0dQEP6RbjgYGMqdBmLXM5kmInofmLuIxylfqeWybUlqL7pg
+         yWEOU3q5j40hzETvf1YBRgnGbC5NdOZS3rlo0/XOauKU4RF8Q9YT9hUeUKkz5c1omfMS
+         7NY1RAYCWa1qYyryKbXTuwBed6/7UNyH50F9oFCikU7TnJtY+wZXFMSKoqzvuFZIkhps
+         hCAA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767616296; x=1768221096;
+        h=in-reply-to:autocrypt:from:content-language:references:cc:to
+         :subject:user-agent:mime-version:date:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=rGEEZ95V6+M/i1YF/1tZgxeKtoKHGflfCQr5UDqK1Uo=;
+        b=RTmTRb+oACswzyklVT6YOPGJeyfvCStQhNknbJc9eNPT3LQy6sdh28IdSYqPOT/6ua
+         8XOPrhB6gN4vaaIjLPYwwL7wOe2/MLcbvrb8Ll9//32CKXzvlnr7NjekL+DaxeUlfgRo
+         2E3BRfCR53aOZWXk/k+5gr/T/X0YZ1SuPgsjHF3HNREJthwrGHIPN+IpidhpIjPQCfPq
+         2V2o3IYmKdiI1uuFVNVDP6pohpqbOFPYXbPF62+ZaQdxBvg1UW2v5Rw6w84VC6kkIJUu
+         r8s9iXd2CYIEGGWOTBbuDAM2fYuSKhCT3RImbhoem5QH+O7l8CTvW5cS36KOQYoeTSwB
+         o3Ng==
+X-Forwarded-Encrypted: i=1; AJvYcCWdje1RLBvA98hOFHQZGIMQu0LApAQ/IjCk6PjRA4olfsQzobNGv0Jd8oL6kRF0mglc3ohUr04=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzQQaGkRSP9cm3woO7NusKPEzHyBPFfgxmmHVC/dGw+ismEbZfA
+	lDpo9hT6Tam0U+3vufkE7y4jWbQti7azpFyzjvHOlfggkeO7kxhT7aqNBwMpqk3AhDc=
+X-Gm-Gg: AY/fxX4YIhNvpAgRuJglHOuup6F/2ZMlbmOUxEcvAiIgRkc1E9oa0JNtNyCftnZFJyW
+	Xx9ULtoIV8jlMbIEykzpJhCEYnl5dOH22+g5FeQXwwjwip28zzLn6J4GUdnM96c313XfNvCwyoZ
+	WdaYqcevQwtwloItxiyx5N2RDdEfDn98dHqDqy6ADpgCPLa6fvU9C5Vlx9YZQxe071Sa4AxsQz2
+	wx0KwPW8icDrh9UCexhPcgfqOCHTAAwH9h0ilDU5neF5p/2Zr3zpis0tQztScwouBiEduOXIJHl
+	1VN+rRT8E8lCSrKoCo3IGob5ez1Ydh/C3stQi/w0raIRN0QFrmE7pOc/sIBEyS7qvq3B4sZAh6c
+	vkdZTrMBmnLVdXRedp7F3BEqF15E59bFVKVo4rKJk4P+yoo+4SPmwoPrcbpMY+ndgEfOk/oNYpY
+	qfO7oz+tnsV5UdKMN0qLb/uoXK8l1iHLWO//6eDjexUXRlmYqOixoTrBmUMcb4GGH5qzI7T8vuV
+	jXt8F0QL2cnuGfdU4SGr+hBD2t1X/NXuqdykQk=
+X-Google-Smtp-Source: AGHT+IHJDiGO8drg4ZYGBJATctq186ma6rRJXaQSAy6VxKSZoMpGLRpPMYzlryZa8WpSL6qb/H592g==
+X-Received: by 2002:a05:600c:4447:b0:477:9a28:b0a4 with SMTP id 5b1f17b1804b1-47d194c6a2fmr565280845e9.0.1767616295958;
+        Mon, 05 Jan 2026 04:31:35 -0800 (PST)
+Received: from ?IPV6:2003:e5:8704:4800:66fd:131f:60bd:bc29? (p200300e58704480066fd131f60bdbc29.dip0.t-ipconnect.de. [2003:e5:8704:4800:66fd:131f:60bd:bc29])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47d6d1451f8sm154396385e9.5.2026.01.05.04.31.35
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 05 Jan 2026 04:31:35 -0800 (PST)
+Message-ID: <2cd0de6b-ebae-4542-ad84-a17ed9216d6b@suse.com>
+Date: Mon, 5 Jan 2026 13:31:34 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,97 +82,161 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [regression 5.10.y] Libvirt can no longer delete macvtap devices
- after backport of a6cec0bcd342 ("net: rtnetlink: add bulk delete support
- flag") to 5.10.y series (Debian 11)
-To: Ben Hutchings <benh@debian.org>,
- Roland Schwarzkopf <rschwarzkopf@mathematik.uni-marburg.de>,
- Nikolay Aleksandrov <razor@blackwall.org>, David Ahern <dsahern@kernel.org>,
- "David S. Miller" <davem@davemloft.net>, Sasha Levin <sashal@kernel.org>,
- debian-kernel@lists.debian.org, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, Greg KH <gregkh@linuxfoundation.org>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, regressions@lists.linux.dev, 1124549@bugs.debian.org
-References: <0b06eb09-b1a9-41f9-8655-67397be72b22@mathematik.uni-marburg.de>
- <aUMEVm1vb7bdhlcK@eldamar.lan>
- <e8bcfe99-5522-4430-9826-ed013f529403@mathematik.uni-marburg.de>
- <176608738558.457059.16166844651150713799@eldamar.lan>
- <d4b4a22e-c0cb-4e1f-8125-11e7a4f44562@leemhuis.info>
- <27c249d80c346a258cfbf32f1d131ad4fe64e77c.camel@debian.org>
-From: Thorsten Leemhuis <regressions@leemhuis.info>
-Content-Language: de-DE, en-US
-In-Reply-To: <27c249d80c346a258cfbf32f1d131ad4fe64e77c.camel@debian.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1767617217;2151dd91;
-X-HE-SMSGID: 1vcjjg-001TXb-2m
+Subject: Re: [PATCH] xen/scsiback: fix potential memory leak in
+ scsiback_remove()
+To: Abdun Nihaal <nihaal@cse.iitm.ac.in>
+Cc: sstabellini@kernel.org, oleksandr_tyshchenko@epam.com,
+ linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20251223063012.119035-1-nihaal@cse.iitm.ac.in>
+Content-Language: en-US
+From: =?UTF-8?B?SsO8cmdlbiBHcm/Dnw==?= <jgross@suse.com>
+Autocrypt: addr=jgross@suse.com; keydata=
+ xsBNBFOMcBYBCACgGjqjoGvbEouQZw/ToiBg9W98AlM2QHV+iNHsEs7kxWhKMjrioyspZKOB
+ ycWxw3ie3j9uvg9EOB3aN4xiTv4qbnGiTr3oJhkB1gsb6ToJQZ8uxGq2kaV2KL9650I1SJve
+ dYm8Of8Zd621lSmoKOwlNClALZNew72NjJLEzTalU1OdT7/i1TXkH09XSSI8mEQ/ouNcMvIJ
+ NwQpd369y9bfIhWUiVXEK7MlRgUG6MvIj6Y3Am/BBLUVbDa4+gmzDC9ezlZkTZG2t14zWPvx
+ XP3FAp2pkW0xqG7/377qptDmrk42GlSKN4z76ELnLxussxc7I2hx18NUcbP8+uty4bMxABEB
+ AAHNH0p1ZXJnZW4gR3Jvc3MgPGpncm9zc0BzdXNlLmNvbT7CwHkEEwECACMFAlOMcK8CGwMH
+ CwkIBwMCAQYVCAIJCgsEFgIDAQIeAQIXgAAKCRCw3p3WKL8TL8eZB/9G0juS/kDY9LhEXseh
+ mE9U+iA1VsLhgDqVbsOtZ/S14LRFHczNd/Lqkn7souCSoyWsBs3/wO+OjPvxf7m+Ef+sMtr0
+ G5lCWEWa9wa0IXx5HRPW/ScL+e4AVUbL7rurYMfwCzco+7TfjhMEOkC+va5gzi1KrErgNRHH
+ kg3PhlnRY0Udyqx++UYkAsN4TQuEhNN32MvN0Np3WlBJOgKcuXpIElmMM5f1BBzJSKBkW0Jc
+ Wy3h2Wy912vHKpPV/Xv7ZwVJ27v7KcuZcErtptDevAljxJtE7aJG6WiBzm+v9EswyWxwMCIO
+ RoVBYuiocc51872tRGywc03xaQydB+9R7BHPzsBNBFOMcBYBCADLMfoA44MwGOB9YT1V4KCy
+ vAfd7E0BTfaAurbG+Olacciz3yd09QOmejFZC6AnoykydyvTFLAWYcSCdISMr88COmmCbJzn
+ sHAogjexXiif6ANUUlHpjxlHCCcELmZUzomNDnEOTxZFeWMTFF9Rf2k2F0Tl4E5kmsNGgtSa
+ aMO0rNZoOEiD/7UfPP3dfh8JCQ1VtUUsQtT1sxos8Eb/HmriJhnaTZ7Hp3jtgTVkV0ybpgFg
+ w6WMaRkrBh17mV0z2ajjmabB7SJxcouSkR0hcpNl4oM74d2/VqoW4BxxxOD1FcNCObCELfIS
+ auZx+XT6s+CE7Qi/c44ibBMR7hyjdzWbABEBAAHCwF8EGAECAAkFAlOMcBYCGwwACgkQsN6d
+ 1ii/Ey9D+Af/WFr3q+bg/8v5tCknCtn92d5lyYTBNt7xgWzDZX8G6/pngzKyWfedArllp0Pn
+ fgIXtMNV+3t8Li1Tg843EXkP7+2+CQ98MB8XvvPLYAfW8nNDV85TyVgWlldNcgdv7nn1Sq8g
+ HwB2BHdIAkYce3hEoDQXt/mKlgEGsLpzJcnLKimtPXQQy9TxUaLBe9PInPd+Ohix0XOlY+Uk
+ QFEx50Ki3rSDl2Zt2tnkNYKUCvTJq7jvOlaPd6d/W0tZqpyy7KVay+K4aMobDsodB3dvEAs6
+ ScCnh03dDAFgIq5nsB11j3KPKdVoPlfucX2c7kGNH+LUMbzqV6beIENfNexkOfxHfw==
+In-Reply-To: <20251223063012.119035-1-nihaal@cse.iitm.ac.in>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------BS4zf6rh8bgUAo5jqfw7uNk3"
 
-@stable team and/or @net maintainers: this imho needs a judgement call
-from your side. See below for details.
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------BS4zf6rh8bgUAo5jqfw7uNk3
+Content-Type: multipart/mixed; boundary="------------H7JcU5Hbi0Kcr1SADMo0ZUXx";
+ protected-headers="v1"
+From: =?UTF-8?B?SsO8cmdlbiBHcm/Dnw==?= <jgross@suse.com>
+To: Abdun Nihaal <nihaal@cse.iitm.ac.in>
+Cc: sstabellini@kernel.org, oleksandr_tyshchenko@epam.com,
+ linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Message-ID: <2cd0de6b-ebae-4542-ad84-a17ed9216d6b@suse.com>
+Subject: Re: [PATCH] xen/scsiback: fix potential memory leak in
+ scsiback_remove()
+References: <20251223063012.119035-1-nihaal@cse.iitm.ac.in>
+In-Reply-To: <20251223063012.119035-1-nihaal@cse.iitm.ac.in>
 
-On 1/2/26 21:18, Ben Hutchings wrote:
-> On Fri, 2025-12-19 at 10:19 +0100, Thorsten Leemhuis wrote:
->> On 12/18/25 20:50, Salvatore Bonaccorso wrote:
->>>
->>> Is there soemthing missing?
->>>
->>> Roland I think it would be helpful if you can test as well more recent
->>> stable series versions to confirm if the issue is present there as
->>> well or not, which might indicate a 5.10.y specific backporting
->>> problem.
->>
->> FWIW, it (as usual) would be very important to know if this happens with
->> mainline as well, as that determines if it's a general problem or a
->> backporting problem
-> [...]
-> 
-> The bug is this:
-> 
-> - libvirtd wrongly used to use NLM_F_CREATE (0x400) and NLM_F_EXCL
->   (0x200) flags on an RTM_DELLINK operation.  These flags are only
->   semantically valid for NEW-type operations.
-> 
-> - rtnetlink is rather lax about checking the flags on operations, so
->   these unsupported flags had no effect.
-> 
-> - rtnetlink can now support NLM_F_BULK (0x200) on some DEL-type
->   operations.  If the flag is used but is not valid for the specific
->   operation then the operation now fails with EOPNOTSUPP.  Since
->   NLM_F_EXCL == NLM_F_BULK and RTM_DELLINK does not support bulk
->   operations, libvirtd now hits this error case.
-> 
-> I have not tested with mainline, but in principle the same issue should
-> occur with any other kernel version that has commit a6cec0bcd342 "net:
-> rtnetlink: add bulk delete support flag"
+--------------H7JcU5Hbi0Kcr1SADMo0ZUXx
+Content-Type: multipart/mixed; boundary="------------l5ApHduutsz64gc659VBCGlV"
 
-FWIW, merged for v5.19-rc1 and backported to v5.10.246 as 1550f3673972c5
-End of October 2025 in parallel with 5b22f62724a0a0 ("net: rtnetlink:
-fix module reference count leak issue in rtnetlink_rcv_msg") [v6.0-rc2],
-which is a fix for the former.
+--------------l5ApHduutsz64gc659VBCGlV
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
 
-> together with an older version of libvirt.
-> 
-> This was fixed in libvirt commit 1334002340b, which appears to have gone
-> into version 7.1.0,
+T24gMjMuMTIuMjUgMDc6MzAsIEFiZHVuIE5paGFhbCB3cm90ZToNCj4gTWVtb3J5IGFsbG9j
+YXRlZCBmb3Igc3RydWN0IHZzY3NpYmxrX2luZm8gaW4gc2NzaWJhY2tfcHJvYmUoKSBpcyBu
+b3QNCj4gZnJlZWQgaW4gc2NzaWJhY2tfcmVtb3ZlKCkgbGVhZGluZyB0byBwb3RlbnRpYWwg
+bWVtb3J5IGxlYWtzIG9uIHJlbW92ZSwNCj4gYXMgd2VsbCBhcyBpbiB0aGUgc2NzaWJhY2tf
+cHJvYmUoKSBlcnJvciBwYXRocy4gRml4IHRoYXQgYnkgZnJlZWluZyBpdA0KPiBpbiBzY3Np
+YmFja19yZW1vdmUoKS4NCj4gDQo+IENjOiBzdGFibGVAdmdlci5rZXJuZWwub3JnDQo+IEZp
+eGVzOiBkOWQ2NjBmNmU1NjIgKCJ4ZW4tc2NzaWJhY2s6IEFkZCBYZW4gUFYgU0NTSSBiYWNr
+ZW5kIGRyaXZlciIpDQo+IFNpZ25lZC1vZmYtYnk6IEFiZHVuIE5paGFhbCA8bmloYWFsQGNz
+ZS5paXRtLmFjLmluPg0KDQpSZXZpZXdlZC1ieTogSnVlcmdlbiBHcm9zcyA8amdyb3NzQHN1
+c2UuY29tPg0KDQoNCkp1ZXJnZW4NCg==
+--------------l5ApHduutsz64gc659VBCGlV
+Content-Type: application/pgp-keys; name="OpenPGP_0xB0DE9DD628BF132F.asc"
+Content-Disposition: attachment; filename="OpenPGP_0xB0DE9DD628BF132F.asc"
+Content-Description: OpenPGP public key
+Content-Transfer-Encoding: quoted-printable
 
-Could not find that commit when looking briefly, but that version was
-released 2021-03-01.
+-----BEGIN PGP PUBLIC KEY BLOCK-----
 
-> but Debian 11 "bullseye" has 7.0.0.
-> 
-> We can certainly fix the libvirt side of this in Debian, but this also
-> sounds like a case where the kernel should work around known buggy user-
-> space.  On the other hand, this has been upstream for over 3 years so
-> maybe it doesn't make sense now.
+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
+kt+z4drzFUyEjLM1vVvIMjkUoJs=3D
+=3DeeAB
+-----END PGP PUBLIC KEY BLOCK-----
 
-Yeah, I tend to the latter as well (the @net maintainers can speak up if
-the disagree). But we have one more middle-ground option here maybe the
-@stable team could do: revert the backports of 1550f3673972c5 and
-5b22f62724a0a0 from 5.10.y, unless they are strongly needed there.
+--------------l5ApHduutsz64gc659VBCGlV--
 
-> Please let me know whether I (or anyone) should try to implement a
-> workaround for this in the kernel.
+--------------H7JcU5Hbi0Kcr1SADMo0ZUXx--
 
-Ciao, Thorsten
+--------------BS4zf6rh8bgUAo5jqfw7uNk3
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+wsB5BAABCAAjFiEEhRJncuj2BJSl0Jf3sN6d1ii/Ey8FAmlbrycFAwAAAAAACgkQsN6d1ii/Ey9H
+DAgAhGPjvJZwV2cHYpUA7DWYbrEKPyZEXbXSobLe/5xeNkImsRKuAYOknAvdjKIS2SnjtIlTEDzh
+ecl75SWRWKXWOQLa6Gy5QsUnS7urIsfrlfWo1kW1QGqR3xvwF6JBVeBwZeQBCvu7C8sj+yWaA717
+ROCffzJ34eGVcZzDEiqrSEyqa4YF19m+cecLr25LXeGgT/8MK48JdilsG+zO8u7HbVfHurcXc4ci
+lQ92gBM90GWxWOkAjKEAjp/RfYVYj+lFsnLw037dWKU9YhnrItnIASiD2DuPc3WM5F27KttqNZUQ
+PzDwgd8FjoXeXh3HWg9pMJt1q5WFR/qxDlZyr5xr3g==
+=3fbZ
+-----END PGP SIGNATURE-----
+
+--------------BS4zf6rh8bgUAo5jqfw7uNk3--
 
