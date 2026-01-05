@@ -1,153 +1,87 @@
-Return-Path: <stable+bounces-204804-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204805-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86419CF40BB
-	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 15:10:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A6C68CF40F4
+	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 15:14:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 87EAB3027A41
-	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 14:06:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0EEE93043787
+	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 14:08:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 142B4261B8C;
-	Mon,  5 Jan 2026 14:06:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 198EE2773E9;
+	Mon,  5 Jan 2026 14:07:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y3LERSk/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FJHgwgvh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C84A652F88
-	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 14:06:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC85E253958;
+	Mon,  5 Jan 2026 14:07:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767621976; cv=none; b=FRpeeY+ReVTiP7PAgmasyD8HsrXD6yEnzGBdjF0iKX8RDS9js/ZsyxBPy4SJu1xI7vNR2nTMQMf7JA7OPIutBAJu4ZXdk8Tra+sSQML1X+3i7iqVzJW1D9v98XNJqBt8cnURmENGVAAa3HZPYDtwm0kD7cRrRMZUOx9EJPitjuQ=
+	t=1767622074; cv=none; b=HbglbuRzCS4qo4GTWdLO9Zd4+5tNYn/X0GnXLdNDbFslC93MfBVLjwIjnTGO+G7IuKuVyKWXXql4os/FYD+SSMXBq5yydNIf5WIcKcLI1ZA7TuJszhKzJkFARwY+WCz4sZp7LtDsuDdANW6Std+zqhJ4SQbUONyGkSJy/L+0AT8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767621976; c=relaxed/simple;
-	bh=xJOzuTIDhb3ygQMz8WU+0FFNxToIYJ1BxatmXhMwAk4=;
+	s=arc-20240116; t=1767622074; c=relaxed/simple;
+	bh=GpKZPqhT5/+YBjYIM0sYLQQ0FLF5mv7OOif+SNAqvJY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W996xpdM5/fv5p0hsDOLDBO7AxAqj/f3kyhBphuR3x3or0jcW5b+rEomy/tS5MOJDANHrQ7+eUxfq0wkCSzQiBPKc/7nLNHcQofzNRhNsbjqPupCs85UBhQjZgaY6qQgzm7iMaKeruiuWXULrBXWKkhz5hroErf0QiI5WM7nrDQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y3LERSk/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6721C16AAE;
-	Mon,  5 Jan 2026 14:06:15 +0000 (UTC)
+	 MIME-Version:Content-Type; b=lVcQKyM8fuST2dSPcdJ4akCzfpifPG3YqswkhgoxOpZ1csW1x1OMkTK4pocboeqrXEbiRawLMFv3JmdMlFp5KNAMOW7bJpB9C4G6WzuL4GpV/tDoXo43UckdgKt+wEgTp1lijE9rMBGentjscJY2mR/MQbL3ZntsWqocTN304e8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FJHgwgvh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 475D7C19421;
+	Mon,  5 Jan 2026 14:07:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767621976;
-	bh=xJOzuTIDhb3ygQMz8WU+0FFNxToIYJ1BxatmXhMwAk4=;
+	s=k20201202; t=1767622074;
+	bh=GpKZPqhT5/+YBjYIM0sYLQQ0FLF5mv7OOif+SNAqvJY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y3LERSk/OnKlWLjK/upbuEp/8JvvaPv+RLnIe2pQlPTMr13d5ZzcCG8H5gmvPZ1dj
-	 1TCoXHEZIsUFeuyMk1lLKkV2qhviJiSU8n+2HoHkLrF1pIHqg1VFGpr2K/JWnwXsh4
-	 jjz4sQ8YDkOlXXkibJ2XDU4e3vt4pIIBHeInCAcLCueQH876gHFhUYL7gNTtK204B5
-	 IShtseoPUKHorpMMz4x0VTf8XaJPa+u/kU4GhwM6yANgFQxVCPgny04wic6OAXBcRu
-	 PRcEPcCb7DTQB4Pwn/IZsbmahrz3T5EcmlKmVffnxzwq7BcwfVoHBYmri9dM0lLta9
-	 BRQwp8whSFWFw==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Johan Hovold <johan@kernel.org>,
-	Olivier Moysan <olivier.moysan@st.com>,
-	olivier moysan <olivier.moysan@foss.st.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y 2/2] ASoC: stm32: sai: fix clk prepare imbalance on probe failure
-Date: Mon,  5 Jan 2026 09:06:13 -0500
-Message-ID: <20260105140613.2598547-2-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260105140613.2598547-1-sashal@kernel.org>
-References: <2026010531-parole-sharpie-8fc0@gregkh>
- <20260105140613.2598547-1-sashal@kernel.org>
+	b=FJHgwgvhjPYcGpG3gw67iOtVLkF9pP91IUy9aQCaeWDBiIL+n6SxAWVtApqosBJdN
+	 NV8JGXX7Fwu3HKlEsCu8oRvf2gXClOeO0zD6ErKFWaEXaOo0br5CYMjGxWGjx+BzT4
+	 9g67kzc5esFrPGGGnI8MeG8DOlHkZPU9j4b7C/HF3qfxYASyuQxUt/+TlwDIoSkym1
+	 s2I6D5p03u53tzKQTJdh/uGMMtHX6KixWWEpSu9HfX0OV/LrZb5888VdJa8xd8IvIm
+	 dbbVO707hilNjOsc2HCS/Q4I1TBw9RRLD55lLcV5/C720P/g94LZzf3KxUdlVMqPnM
+	 ObnkoRnNkp5OQ==
+From: Bjorn Andersson <andersson@kernel.org>
+To: Stephen Boyd <sboyd@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Alexey Minnekhanov <alexeymin@postmarketos.org>
+Cc: linux-arm-msm@vger.kernel.org,
+	linux-clk@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	~postmarketos/upstreaming@lists.sr.ht
+Subject: Re: (subset) [PATCH v2 0/3] SDM630/660: Add missing MDSS reset
+Date: Mon,  5 Jan 2026 08:07:10 -0600
+Message-ID: <176762206410.2923194.11336536929752993764.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20251116-sdm660-mdss-reset-v2-0-6219bec0a97f@postmarketos.org>
+References: <20251116-sdm660-mdss-reset-v2-0-6219bec0a97f@postmarketos.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 
-From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 312ec2f0d9d1a5656f76d770bbf1d967e9289aa7 ]
+On Sun, 16 Nov 2025 04:12:32 +0300, Alexey Minnekhanov wrote:
+> Since kernel 6.17 display stack needs to reset the hardware properly to
+> ensure that we don't run into issues with the hardware configured by the
+> bootloader. MDSS reset is necessary to have working display when the
+> bootloader has already initialized it for the boot splash screen.
+> 
+> 
 
-Make sure to unprepare the parent clock also on probe failures (e.g.
-probe deferral).
+Applied, thanks!
 
-Fixes: a14bf98c045b ("ASoC: stm32: sai: fix possible circular locking")
-Cc: stable@vger.kernel.org	# 5.5
-Cc: Olivier Moysan <olivier.moysan@st.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: olivier moysan <olivier.moysan@foss.st.com>
-Link: https://patch.msgid.link/20251124104908.15754-3-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- sound/soc/stm/stm32_sai_sub.c | 28 +++++++++++++++++++++-------
- 1 file changed, 21 insertions(+), 7 deletions(-)
+[3/3] arm64: dts: qcom: sdm630: Add missing MDSS reset
+      commit: 0c1d1591f898d54eaa4c8f2a1535ab21bf4e42e4
 
-diff --git a/sound/soc/stm/stm32_sai_sub.c b/sound/soc/stm/stm32_sai_sub.c
-index a740ee6a3ca7..3eab8480a081 100644
---- a/sound/soc/stm/stm32_sai_sub.c
-+++ b/sound/soc/stm/stm32_sai_sub.c
-@@ -1483,14 +1483,21 @@ static int stm32_sai_sub_parse_of(struct platform_device *pdev,
- 	if (of_find_property(np, "#clock-cells", NULL)) {
- 		ret = stm32_sai_add_mclk_provider(sai);
- 		if (ret < 0)
--			return ret;
-+			goto err_unprepare_pclk;
- 	} else {
- 		sai->sai_mclk = devm_clk_get_optional(&pdev->dev, "MCLK");
--		if (IS_ERR(sai->sai_mclk))
--			return PTR_ERR(sai->sai_mclk);
-+		if (IS_ERR(sai->sai_mclk)) {
-+			ret = PTR_ERR(sai->sai_mclk);
-+			goto err_unprepare_pclk;
-+		}
- 	}
- 
- 	return 0;
-+
-+err_unprepare_pclk:
-+	clk_unprepare(sai->pdata->pclk);
-+
-+	return ret;
- }
- 
- static int stm32_sai_sub_probe(struct platform_device *pdev)
-@@ -1534,26 +1541,33 @@ static int stm32_sai_sub_probe(struct platform_device *pdev)
- 			       IRQF_SHARED, dev_name(&pdev->dev), sai);
- 	if (ret) {
- 		dev_err(&pdev->dev, "IRQ request returned %d\n", ret);
--		return ret;
-+		goto err_unprepare_pclk;
- 	}
- 
- 	if (STM_SAI_PROTOCOL_IS_SPDIF(sai))
- 		conf = &stm32_sai_pcm_config_spdif;
- 
- 	ret = snd_dmaengine_pcm_register(&pdev->dev, conf, 0);
--	if (ret)
--		return dev_err_probe(&pdev->dev, ret, "Could not register pcm dma\n");
-+	if (ret) {
-+		ret = dev_err_probe(&pdev->dev, ret, "Could not register pcm dma\n");
-+		goto err_unprepare_pclk;
-+	}
- 
- 	ret = snd_soc_register_component(&pdev->dev, &stm32_component,
- 					 &sai->cpu_dai_drv, 1);
- 	if (ret) {
- 		snd_dmaengine_pcm_unregister(&pdev->dev);
--		return ret;
-+		goto err_unprepare_pclk;
- 	}
- 
- 	pm_runtime_enable(&pdev->dev);
- 
- 	return 0;
-+
-+err_unprepare_pclk:
-+	clk_unprepare(sai->pdata->pclk);
-+
-+	return ret;
- }
- 
- static int stm32_sai_sub_remove(struct platform_device *pdev)
+Best regards,
 -- 
-2.51.0
-
+Bjorn Andersson <andersson@kernel.org>
 
