@@ -1,158 +1,145 @@
-Return-Path: <stable+bounces-204760-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204762-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA139CF3A17
-	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 13:56:46 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A040CCF3AB7
+	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 14:01:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2CDA130081BE
-	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 12:56:46 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CAFE63014DE6
+	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 13:01:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEA6C348452;
-	Mon,  5 Jan 2026 12:47:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51BC1335081;
+	Mon,  5 Jan 2026 12:52:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f4+udDbH"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="U41c3r2A"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C46034845E
-	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 12:47:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F0F932B9A8
+	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 12:51:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767617256; cv=none; b=W0N/WUgvN+2PUk1k+qINIPAGYaBmFhSvessTe4qFxGZHvtCb7wtyYHr68YOvmMmpOzlP7KKbZtysS/5SM2JSAHP8tFpaEIpaTkH7QjZwJhAR6o/jtgvHxNa6nzYQgFP4uguTyrri0Sq1DeBK01UYgaQQ1SZmEF79GLCChyyJ4Ys=
+	t=1767617522; cv=none; b=judif9UYuCO7cIdh0P6S0ce4m1K7AOWHuiCnXcdiCHnf42+nzKD4R/5WGmuemjsnoXoLJYYXBKAQ1clG414BKopBNTi/GMI7XpgKzLuwrZNvUhQwahahO9YZXwVBwW9+bE39Kr6dsdOW7me/E3bHHv9xuTjfEGkifDbkaEvczFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767617256; c=relaxed/simple;
-	bh=ySDDuWEB3/FI13IRm6z2Jd3OoprR2kDPvdIiKOISBD0=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=WOHCWHBRW2Vx3yMEZEdijSBD2rTjgC6+Eac9iPlOx0KftlCP1rAI4O2IJkzSJ9/b0iRAKcK56HZj6ec5zvk1sViRllvPr0QS3adqScgWyn5+NX9vzRiRQRb9aGhx1onI6cJ7o1jiF9yxYf5w8EjrtMdEZVZKVPR1KgVHswbGqLs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f4+udDbH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B14D0C116D0;
-	Mon,  5 Jan 2026 12:47:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767617256;
-	bh=ySDDuWEB3/FI13IRm6z2Jd3OoprR2kDPvdIiKOISBD0=;
-	h=Subject:To:Cc:From:Date:From;
-	b=f4+udDbHAv/eanygNrFDZTkbLx1E3DSNTX0yB+PdH3GTQYuwimrbZRYJKbzYt+fiY
-	 HLp2jSoQoZEwrsfpedZvYcCynV+61HRORHskKlT54pJkoZWxQrWj1OaieMYPWXOztk
-	 C9Kvq2UmPwPkUe9LxkzeP3wcZuZ0l2iURO2dzSUE=
-Subject: FAILED: patch "[PATCH] kasan: unpoison vms[area] addresses with a common tag" failed to apply to 6.1-stable tree
-To: maciej.wieczor-retman@intel.com,akpm@linux-foundation.org,andreyknvl@gmail.com,dakr@kernel.org,dvyukov@google.com,elver@google.com,glider@google.com,jiayuan.chen@linux.dev,kees@kernel.org,ryabinin.a.a@gmail.com,stable@vger.kernel.org,urezki@gmail.com,vincenzo.frascino@arm.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 05 Jan 2026 13:47:32 +0100
-Message-ID: <2026010532-stained-crumpet-3d80@gregkh>
+	s=arc-20240116; t=1767617522; c=relaxed/simple;
+	bh=4KlXMDvVk2Y9UNsBqpwH+8dwYAskJr0J9c/xBNsrefc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=lHHBr0c/7Qoxx4++DE/vq6eoU6QmFAGUUJMR7yvFIeaZmvylRMSFWlOPeaAKYNOKMsQ578EO/hRDKEu+wVngrxuBHRI4bpuQpZ9+Omu3A3iIivTb9HCVzL+LHsJws3HQptkc+wl8ptM7/ok59pFqm6HFwqmxb2aiLhCvzGUu5wA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=U41c3r2A; arc=none smtp.client-ip=209.85.214.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2a12ed4d205so122788885ad.0
+        for <stable@vger.kernel.org>; Mon, 05 Jan 2026 04:51:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1767617519; x=1768222319; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fIoM2jDtI46cPfcnhs6SMUE4vjSExS5U4Rjxj3hmM7M=;
+        b=U41c3r2AaWvX4xGAY9sIKpaMOC6864ynTLVc9LhWOGGzMPOWV1sJcT8gCx+SQip191
+         Q3agzNKJSFgQa3BAkgroBefsM5PSfB+p6n1mKVpB+ILkm84L8nwZNgY8e6bFwuzU99f9
+         EoPoCTxn64zCPWP41eb1WGH+qZsyrPzk2QWRvu410HmmtsAFa/I1AB6RNrdzyVN+mOlX
+         hVZr2vkft+Rz14aNuboWsDPacY5tRdT3wUruZEMwT94Ju7iyIOcdUy8MKQQhsTPVu7go
+         +ylb+Q0E3ToTGXQxrob+V3hZMbiL2bKl3Ead8vela3RijYs94DLoJWbo1jF/BguzzaCh
+         sRiw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767617519; x=1768222319;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=fIoM2jDtI46cPfcnhs6SMUE4vjSExS5U4Rjxj3hmM7M=;
+        b=vPcXe77S632R/eFbeir4irZjIwLtJSYNT9jqzQIPCSybSuhDs2YwULq+0AM0kho0e5
+         l9XCLzgBfp4YeFayuf4V4Z3wfDZaXBd4KDxs+l6rZL0LPJ8UQWNQDoC/IDAMrvJJWXwf
+         vP6SqR/f8yLt3Q9lAnFkAeZS6mcMoUSHnXc/FXOFssXbdAjrWzpExrXqq9c8ourZvXPY
+         SIEP+DpFBmQYy5K7RmUWhst9YDcH7S0i6ntGLve7vicbJ/8xMsaJ4wSWnxOSlGj/ZnoO
+         BOatEm7f0a0NtwhAkLm+N/8xthDWl0Sei3xu9IHEKr4u1NjDat4d3keaE04BQ4Mc4+1g
+         qPIw==
+X-Forwarded-Encrypted: i=1; AJvYcCWuVxPVgjzgS9eQrov+RG2Y/MGRTApDMDow45gS9/mwlapN8okRoxnb51jcGN4WOmESbz9Eswg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz+k6lvq9X2FAdamHrwAOfG33fE3AqZyP5VXoDcGtlbEq9o38MH
+	/RriteA83lK4sZ2fcqhwtcQnYCVF/9IBMxXW7sNJBS2JViS6CotbJSooAAdKH4pj0+ZUA71rmsx
+	JODCPReFo1+xlduMn4SCqzP6FZm1mKLM=
+X-Gm-Gg: AY/fxX7RqVKuVCsAsQYhoM73bSEkFh34WTUHmYfiIS9KJL4Nh/27aCSyni1Yzb2i4CZ
+	zB+dC5pkL4ERgC/XkZCqG7YqSEzpFk4+MfGPMbmfJ3XrCAvNGisxmskWHaoMhm0rbwSU3uewU96
+	UjrRD2jsOGhvdCpeOZkDCFOIahEdGq62562oVQVCIiEstYwMBQHxqJ4E2kE+zF7wXc6meiIvzvU
+	8vK8vCo2flJe65ncv9lZiZrbxxN7u+78Wd11rLT18rGj5cOcr5S86+z/F+pAxBUT4/LEK0=
+X-Google-Smtp-Source: AGHT+IEXerOKeKOtB2sspI6kFR5QkFJ+Zr+D0dSc5pMahKMWycdWJvhmtT1SmXyL/YXhI4p2gm1GSa3b4G+p2WkMb2s=
+X-Received: by 2002:a05:701b:230a:b0:11b:9386:8254 with SMTP id
+ a92af1059eb24-121722ec414mr44206169c88.41.1767617518832; Mon, 05 Jan 2026
+ 04:51:58 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+References: <20251231040506.7859-1-CFSworks@gmail.com>
+In-Reply-To: <20251231040506.7859-1-CFSworks@gmail.com>
+From: Ilya Dryomov <idryomov@gmail.com>
+Date: Mon, 5 Jan 2026 13:51:47 +0100
+X-Gm-Features: AQt7F2q47D6R4WXpHK6TLAOa1OdzRxSgQoSFN7TMgW_O5ppNSIvanQB-2ttegeY
+Message-ID: <CAOi1vP8WvK-0nGjKY6ss2MX6ZjvDOhcur5SyM=E=uipW0fy76g@mail.gmail.com>
+Subject: Re: [PATCH] libceph: Reset sparse-read on fault
+To: Sam Edwards <cfsworks@gmail.com>
+Cc: Xiubo Li <xiubli@redhat.com>, ceph-devel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Wed, Dec 31, 2025 at 5:05=E2=80=AFAM Sam Edwards <cfsworks@gmail.com> wr=
+ote:
+>
+> When a fault occurs, the connection is abandoned, reestablished, and any
+> pending operations are retried. The OSD client tracks the progress of a
+> sparse-read reply using a separate state machine, largely independent of
+> the messenger's state.
+>
+> If a connection is lost mid-payload or the sparse-read state machine
+> returns an error, the sparse-read state is not reset. The OSD client
+> will then interpret the beginning of a new reply as the continuation of
+> the old one. If this makes the sparse-read machinery enter a failure
+> state, it may never recover, producing loops like:
+>
+>   libceph:  [0] got 0 extents
+>   libceph: data len 142248331 !=3D extent len 0
+>   libceph: osd0 (1)...:6801 socket error on read
+>   libceph: data len 142248331 !=3D extent len 0
+>   libceph: osd0 (1)...:6801 socket error on read
+>
+> Therefore, reset the sparse-read state in osd_fault(), ensuring retries
+> start from a clean state.
+>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Sam Edwards <CFSworks@gmail.com>
+> ---
+>  net/ceph/osd_client.c | 3 +++
+>  1 file changed, 3 insertions(+)
+>
+> diff --git a/net/ceph/osd_client.c b/net/ceph/osd_client.c
+> index 3667319b949d..1a7be2f615dc 100644
+> --- a/net/ceph/osd_client.c
+> +++ b/net/ceph/osd_client.c
+> @@ -4281,6 +4281,9 @@ static void osd_fault(struct ceph_connection *con)
+>                 goto out_unlock;
+>         }
+>
+> +       osd->o_sparse_op_idx =3D -1;
+> +       ceph_init_sparse_read(&osd->o_sparse_read);
+> +
+>         if (!reopen_osd(osd))
+>                 kick_osd_requests(osd);
+>         maybe_request_map(osdc);
+> --
+> 2.51.2
+>
 
-The patch below does not apply to the 6.1-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Hi Sam,
 
-To reproduce the conflict and resubmit, you may use the following commands:
+Good catch!  Applied (with the sad note that support for sparse
+reads is officially the most problematic patchset that ever made it
+into libceph).
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
-git checkout FETCH_HEAD
-git cherry-pick -x 6a0e5b333842cf65d6f4e4f0a2a4386504802515
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026010532-stained-crumpet-3d80@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+Thanks,
 
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 6a0e5b333842cf65d6f4e4f0a2a4386504802515 Mon Sep 17 00:00:00 2001
-From: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
-Date: Thu, 4 Dec 2025 19:00:11 +0000
-Subject: [PATCH] kasan: unpoison vms[area] addresses with a common tag
-
-A KASAN tag mismatch, possibly causing a kernel panic, can be observed on
-systems with a tag-based KASAN enabled and with multiple NUMA nodes.  It
-was reported on arm64 and reproduced on x86.  It can be explained in the
-following points:
-
-1. There can be more than one virtual memory chunk.
-2. Chunk's base address has a tag.
-3. The base address points at the first chunk and thus inherits
-   the tag of the first chunk.
-4. The subsequent chunks will be accessed with the tag from the
-   first chunk.
-5. Thus, the subsequent chunks need to have their tag set to
-   match that of the first chunk.
-
-Use the new vmalloc flag that disables random tag assignment in
-__kasan_unpoison_vmalloc() - pass the same random tag to all the
-vm_structs by tagging the pointers before they go inside
-__kasan_unpoison_vmalloc().  Assigning a common tag resolves the pcpu
-chunk address mismatch.
-
-[akpm@linux-foundation.org: use WARN_ON_ONCE(), per Andrey]
-  Link: https://lkml.kernel.org/r/CA+fCnZeuGdKSEm11oGT6FS71_vGq1vjq-xY36kxVdFvwmag2ZQ@mail.gmail.com
-[maciej.wieczor-retman@intel.com: remove unneeded pr_warn()]
-  Link: https://lkml.kernel.org/r/919897daaaa3c982a27762a2ee038769ad033991.1764945396.git.m.wieczorretman@pm.me
-Link: https://lkml.kernel.org/r/873821114a9f722ffb5d6702b94782e902883fdf.1764874575.git.m.wieczorretman@pm.me
-Fixes: 1d96320f8d53 ("kasan, vmalloc: add vmalloc tagging for SW_TAGS")
-Signed-off-by: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
-Reviewed-by: Andrey Konovalov <andreyknvl@gmail.com>
-Cc: Alexander Potapenko <glider@google.com>
-Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Cc: Danilo Krummrich <dakr@kernel.org>
-Cc: Dmitriy Vyukov <dvyukov@google.com>
-Cc: Jiayuan Chen <jiayuan.chen@linux.dev>
-Cc: Kees Cook <kees@kernel.org>
-Cc: Marco Elver <elver@google.com>
-Cc: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
-Cc: Vincenzo Frascino <vincenzo.frascino@arm.com>
-Cc: <stable@vger.kernel.org>	[6.1+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-
-diff --git a/mm/kasan/common.c b/mm/kasan/common.c
-index b2b40c59ce18..ed489a14dddf 100644
---- a/mm/kasan/common.c
-+++ b/mm/kasan/common.c
-@@ -584,11 +584,26 @@ void __kasan_unpoison_vmap_areas(struct vm_struct **vms, int nr_vms,
- 	unsigned long size;
- 	void *addr;
- 	int area;
-+	u8 tag;
- 
--	for (area = 0 ; area < nr_vms ; area++) {
-+	/*
-+	 * If KASAN_VMALLOC_KEEP_TAG was set at this point, all vms[] pointers
-+	 * would be unpoisoned with the KASAN_TAG_KERNEL which would disable
-+	 * KASAN checks down the line.
-+	 */
-+	if (WARN_ON_ONCE(flags & KASAN_VMALLOC_KEEP_TAG))
-+		return;
-+
-+	size = vms[0]->size;
-+	addr = vms[0]->addr;
-+	vms[0]->addr = __kasan_unpoison_vmalloc(addr, size, flags);
-+	tag = get_tag(vms[0]->addr);
-+
-+	for (area = 1 ; area < nr_vms ; area++) {
- 		size = vms[area]->size;
--		addr = vms[area]->addr;
--		vms[area]->addr = __kasan_unpoison_vmalloc(addr, size, flags);
-+		addr = set_tag(vms[area]->addr, tag);
-+		vms[area]->addr =
-+			__kasan_unpoison_vmalloc(addr, size, flags | KASAN_VMALLOC_KEEP_TAG);
- 	}
- }
- #endif
-
+                Ilya
 
