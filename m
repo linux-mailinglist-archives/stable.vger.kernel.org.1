@@ -1,188 +1,213 @@
-Return-Path: <stable+bounces-204885-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204886-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6053CF5304
-	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 19:14:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 39B6BCF5359
+	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 19:19:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D6B2B302D3A4
-	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 18:14:19 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B9FAC301C0AE
+	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 18:18:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE59933BBD7;
-	Mon,  5 Jan 2026 18:14:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8CB833F8D3;
+	Mon,  5 Jan 2026 18:18:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LMS0fZK+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RcvMlcj2"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0496F31AA92
-	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 18:14:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 117A5325716
+	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 18:18:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767636858; cv=none; b=oQ06CJWYUq+kV/jqFVQfhxzRhngerZHCBNot3RoXjpmpFO55eb59l1goZ7fg0AcO6JNirABpTaw9Lfw0IL1BaUky6LmelpFBJ/1d8MOQbHz/JvejS94XVQ+QXDlHTNcZfUYMEw+vhKlln08dXrcehU75g2QVpXdxivN7gFkAZQU=
+	t=1767637138; cv=none; b=e4yjm5pbf2p43Y7oXmqPLmZa+LekxLrPoSyJqVNBNj5lJbqnu5puvp5tkh20rOqNQd0AMFkPHcALVmfyNFGrVkibRgWDvf9RCBZtduxynqOIiBRj8KAF1PKRtsE5z45VQ/pCY++II7B+2cc+a9oEMFW3L7XMIrX2GuAUaDT7uc4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767636858; c=relaxed/simple;
-	bh=bqtNUILbm6lJat/9Xu0gpKiAI1RZvgXVDpApnTxDQMU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=phRiL+z5ujClaAAar/q1/oKkx0OzfRoJ8jqMNneFp7bgZHP7lFJATximpuKtLcUGLNPx5gxJNfraQU4jB5mJsEJv53YaNDcwSH2BN7GD8ExAbKcJRHBbX+3o03Dur6UOi2IVekF6mBZ0sXN38Hk+V2CSHvHfU5GgOMWWQu3FZgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LMS0fZK+; arc=none smtp.client-ip=209.85.221.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-431048c4068so136127f8f.1
-        for <stable@vger.kernel.org>; Mon, 05 Jan 2026 10:14:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767636855; x=1768241655; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:mail-followup-to:message-id:subject:cc:to
-         :from:date:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=/oP9O+J1jrunuk+Y661pj013SgRFAFyNbhxBfEwCmlA=;
-        b=LMS0fZK+OcvnH2SLJUlfefKr5m2N44kV8AVnzvzSavD+dOeuKvn0xwu6F0AKfW3qCu
-         r3dtXyUjGdpyFV8SvoZ0RU7u05UyCyiMV4BRB2bfaCmpddUGrbgE69Slr562+ULf3FRJ
-         gXc6VFYne2jdZb+1X/fZ/NbSn+b8xRQH5a692xPH2J2PpLt0+bb28Jk01n58fdWnphLv
-         Rpx9rMXDGWlL9q5buhbwk0MlNiIeJSPDNesd1H+6s6wD0l/MIOnIekqr65xF7jOHbp2r
-         8eWPLNcRX+dPpJUuNSDEf5+Jh6MNMkSAp268mq/MykE/K6P+4gPpOPi0B4NYitH21ekf
-         9uig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767636855; x=1768241655;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:mail-followup-to:message-id:subject:cc:to
-         :from:date:sender:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/oP9O+J1jrunuk+Y661pj013SgRFAFyNbhxBfEwCmlA=;
-        b=TrkmZahmaaSUCfgLU0ShYJYSyUSZ3YmgpCxbFMX/BKTQbdLfNwdx+oChHGzywztgM9
-         7wiYkn9goLHKzoxVstJ9vhcDS2sdpMX9NE+Mweic9OUarXU4biMnnZ0fSZzCiX/QfzPE
-         zjQfU83jC4+eZK06/cmJqIT72FUJVlYdkolgeMdxgpXvB6T2GC/K4x9aWRZLjPJEz3a/
-         EVWkhP4dOk4XBRmdcciXT9bAFEkZjmXamo/8DDu6lBFtOJBSIwpNIalafmq6OVRTQDMn
-         cDJ8nTsiqV1HV7Qrrvqz8MA6pkDOy7uf+ZaimekCTApu1adhmHh37x0fC8mX3gdn/XSy
-         dnIw==
-X-Forwarded-Encrypted: i=1; AJvYcCUENaCvRIrjPMv41QmpWLLLuuEct+0s0TS3nudRSEphR1HJmD4wvkQwlIIkW5V2yuy3Xi4zbl0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzRjLZx9jcmDbKhMP0wBjip+DAiQIiHdwTgYBEJLtjAurnpha0o
-	NYlIEzqjHC2UFFIcut8Df1CYbKsPNXQVl92ahNTyVWCljvVq0qmM7pfa
-X-Gm-Gg: AY/fxX5tnddSfcvsCmK86oi5TjbAk9kdomPfc6TCLCq9CHNq1Uu6FXpKhYYI+AHW2jN
-	TPgFzntoa+xtse/QWSXswFupGKvgGlCZFdgLAypXGSspJgdtn7j3KsH1VTE7AvN+zQu4sGMDCt+
-	ljc7o4kIJ8rogd55/E2ad97C3z1kHfOuJiW7KrpmqhrFfC5ScczAaQLu84UD57q+evKFkhzcI8Q
-	FzZJASjmOd8jJCiyb5fequdeTLlPC24UpTm7e8f5EBr56rq19xh36IJYqLtEIoNKgZCa1n3EU8q
-	lnTqyqd7ne2svUV7XvpytoUjxUlrjCXDDumknLrcGq0RJB3aj6pSuzbNVbKAFI1e/jHpHO+KvXx
-	j3fMQlYnx5L2bcoJ6zwy2GfSW3fBATdOYbIimpbHHafpD9zj58jDKEnckjIJPcasCQJAsPRih7z
-	2nzPvTcrVtUf+DCXDqBAIpBk/q1MJ743sCE/l8UvlgSGSkB4isMJtu98I=
-X-Google-Smtp-Source: AGHT+IE/WbbnXt6m79lszz8chS7NFY/jLDyt4rB9ShhndFA1aa1Z8u6f+/lIFkSh4Lfi6OF6YByoxQ==
-X-Received: by 2002:a05:6000:26ce:b0:430:f3bd:71f8 with SMTP id ffacd0b85a97d-432bcfde915mr70237f8f.25.1767636855046;
-        Mon, 05 Jan 2026 10:14:15 -0800 (PST)
-Received: from eldamar.lan (c-82-192-244-13.customer.ggaweb.ch. [82.192.244.13])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-432bca5a132sm688291f8f.39.2026.01.05.10.14.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Jan 2026 10:14:14 -0800 (PST)
-Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
-Received: by eldamar.lan (Postfix, from userid 1000)
-	id 44C5FBE2EE7; Mon, 05 Jan 2026 19:14:13 +0100 (CET)
-Date: Mon, 5 Jan 2026 19:14:13 +0100
-From: Salvatore Bonaccorso <carnil@debian.org>
-To: Thorsten Leemhuis <regressions@leemhuis.info>
-Cc: Ben Hutchings <benh@debian.org>,
-	Roland Schwarzkopf <rschwarzkopf@mathematik.uni-marburg.de>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	David Ahern <dsahern@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>, debian-kernel@lists.debian.org,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Greg KH <gregkh@linuxfoundation.org>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	regressions@lists.linux.dev, 1124549@bugs.debian.org
-Subject: Re: [regression 5.10.y] Libvirt can no longer delete macvtap devices
- after backport of a6cec0bcd342 ("net: rtnetlink: add bulk delete support
- flag") to 5.10.y series (Debian 11)
-Message-ID: <aVv_dewfbbgQ5o0J@eldamar.lan>
-Mail-Followup-To: Thorsten Leemhuis <regressions@leemhuis.info>,
-	Ben Hutchings <benh@debian.org>,
-	Roland Schwarzkopf <rschwarzkopf@mathematik.uni-marburg.de>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	David Ahern <dsahern@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>, debian-kernel@lists.debian.org,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Greg KH <gregkh@linuxfoundation.org>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	regressions@lists.linux.dev, 1124549@bugs.debian.org
-References: <0b06eb09-b1a9-41f9-8655-67397be72b22@mathematik.uni-marburg.de>
- <aUMEVm1vb7bdhlcK@eldamar.lan>
- <e8bcfe99-5522-4430-9826-ed013f529403@mathematik.uni-marburg.de>
- <176608738558.457059.16166844651150713799@eldamar.lan>
- <d4b4a22e-c0cb-4e1f-8125-11e7a4f44562@leemhuis.info>
- <27c249d80c346a258cfbf32f1d131ad4fe64e77c.camel@debian.org>
- <6498cffd-5bf9-490a-910d-f64ab9b7f330@leemhuis.info>
+	s=arc-20240116; t=1767637138; c=relaxed/simple;
+	bh=4yiiXWHQhLUumIE957yTSZb3rAcd4FF3mFJnJOK/WJA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Tf7qLwCh2DWkyadWt9xZ1i8d7jfMeJRfa5cjgf8UFUF/l9bWivLNsInEXu34K99apgSQDO/og/GCg5KaKjTkzMoLS5n0FPMVUCnZhGdxfN6HH6UJYukssgVWKBCUGPdMe/u2Gv3H/nmZdqYD5Kr4ytfWZcfm8+9IcuPUuQ1F48I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RcvMlcj2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C464DC116D0;
+	Mon,  5 Jan 2026 18:18:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767637137;
+	bh=4yiiXWHQhLUumIE957yTSZb3rAcd4FF3mFJnJOK/WJA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=RcvMlcj2hvuiOZj054C04lch/84Zf4LcznD4wWyaZrNnICpY96hv43mstzgonb2vZ
+	 J5ov2Kn89juEVXlWrsb7cXS1oLvyj1VDwLbw0vsZP5saLgucTjWC7LLDPLNiFVUXWp
+	 BLWtq82QAD8T2lyXUgICnJJouESI4KTQOyU669Sl1za5QZ3VdSkcdzJm2iIB066PTw
+	 ZuB0N+k8lNkUNxVIISa9pzuN+il1XS6iWcERoZA2kNzxTZOgz+QaJElx3Fq6gybLFT
+	 f1zd1EkThahPfCF/4ED0QJ5t+dCNhsVzCdOU9pne5UWaufbh6C0DYJIC2HHpsIF5v8
+	 CBOn5z36qPEcA==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: David Hildenbrand <david@redhat.com>,
+	Zi Yan <ziy@nvidia.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Brendan Jackman <jackmanb@google.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	Christian Brauner <brauner@kernel.org>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	=?UTF-8?q?Eugenio=20P=C3=A9=20rez?= <eperezma@redhat.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Gregory Price <gourry@gourry.net>,
+	"Huang, Ying" <ying.huang@linux.alibaba.com>,
+	Jan Kara <jack@suse.cz>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Jason Wang <jasowang@redhat.com>,
+	Jerrin Shaji George <jerrin.shaji-george@broadcom.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>,
+	Liam Howlett <liam.howlett@oracle.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Mathew Brost <matthew.brost@intel.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Minchan Kim <minchan@kernel.org>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Peter Xu <peterx@redhat.com>,
+	Qi Zheng <zhengqi.arch@bytedance.com>,
+	Rakie Kim <rakie.kim@sk.com>,
+	Rik van Riel <riel@surriel.com>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	xu xin <xu.xin16@zte.com.cn>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1.y 1/3] mm/balloon_compaction: we cannot have isolated pages in the balloon list
+Date: Mon,  5 Jan 2026 13:18:47 -0500
+Message-ID: <20260105181849.2717306-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2026010547-partly-speller-54fa@gregkh>
+References: <2026010547-partly-speller-54fa@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <6498cffd-5bf9-490a-910d-f64ab9b7f330@leemhuis.info>
 
-Hi,
+From: David Hildenbrand <david@redhat.com>
 
-On Mon, Jan 05, 2026 at 01:30:59PM +0100, Thorsten Leemhuis wrote:
-> @stable team and/or @net maintainers: this imho needs a judgement call
-> from your side. See below for details.
-> 
-> On 1/2/26 21:18, Ben Hutchings wrote:
-> > On Fri, 2025-12-19 at 10:19 +0100, Thorsten Leemhuis wrote:
-> >> On 12/18/25 20:50, Salvatore Bonaccorso wrote:
-> >>>
-> >>> Is there soemthing missing?
-> >>>
-> >>> Roland I think it would be helpful if you can test as well more recent
-> >>> stable series versions to confirm if the issue is present there as
-> >>> well or not, which might indicate a 5.10.y specific backporting
-> >>> problem.
-> >>
-> >> FWIW, it (as usual) would be very important to know if this happens with
-> >> mainline as well, as that determines if it's a general problem or a
-> >> backporting problem
-> > [...]
-> > 
-> > The bug is this:
-> > 
-> > - libvirtd wrongly used to use NLM_F_CREATE (0x400) and NLM_F_EXCL
-> >   (0x200) flags on an RTM_DELLINK operation.  These flags are only
-> >   semantically valid for NEW-type operations.
-> > 
-> > - rtnetlink is rather lax about checking the flags on operations, so
-> >   these unsupported flags had no effect.
-> > 
-> > - rtnetlink can now support NLM_F_BULK (0x200) on some DEL-type
-> >   operations.  If the flag is used but is not valid for the specific
-> >   operation then the operation now fails with EOPNOTSUPP.  Since
-> >   NLM_F_EXCL == NLM_F_BULK and RTM_DELLINK does not support bulk
-> >   operations, libvirtd now hits this error case.
-> > 
-> > I have not tested with mainline, but in principle the same issue should
-> > occur with any other kernel version that has commit�a6cec0bcd342 "net:
-> > rtnetlink: add bulk delete support flag"
-> 
-> FWIW, merged for v5.19-rc1 and backported to v5.10.246 as 1550f3673972c5
-> End of October 2025 in parallel with 5b22f62724a0a0 ("net: rtnetlink:
-> fix module reference count leak issue in rtnetlink_rcv_msg") [v6.0-rc2],
-> which is a fix for the former.
-> 
-> > together with an older version of libvirt.
-> > 
-> > This was fixed in libvirt commit 1334002340b, which appears to have gone
-> > into version 7.1.0,
-> 
-> Could not find that commit when looking briefly, but that version was
-> released 2021-03-01.
+[ Upstream commit fb05f992b6bbb4702307d96f00703ee637b24dbf ]
 
-For reference it is this one I think:
-https://gitlab.com/libvirt/libvirt/-/commit/81334002340be6bd3a1a34c6584a85fe25cc049c
+Patch series "mm/migration: rework movable_ops page migration (part 1)",
+v2.
 
-Regards,
-Salvatore
+In the future, as we decouple "struct page" from "struct folio", pages
+that support "non-lru page migration" -- movable_ops page migration such
+as memory balloons and zsmalloc -- will no longer be folios.  They will
+not have ->mapping, ->lru, and likely no refcount and no page lock.  But
+they will have a type and flags 🙂
+
+This is the first part (other parts not written yet) of decoupling
+movable_ops page migration from folio migration.
+
+In this series, we get rid of the ->mapping usage, and start cleaning up
+the code + separating it from folio migration.
+
+Migration core will have to be further reworked to not treat movable_ops
+pages like folios.  This is the first step into that direction.
+
+This patch (of 29):
+
+The core will set PG_isolated only after mops->isolate_page() was called.
+In case of the balloon, that is where we will remove it from the balloon
+list.  So we cannot have isolated pages in the balloon list.
+
+Let's drop this unnecessary check.
+
+Link: https://lkml.kernel.org/r/20250704102524.326966-2-david@redhat.com
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Acked-by: Zi Yan <ziy@nvidia.com>
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Alistair Popple <apopple@nvidia.com>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Brendan Jackman <jackmanb@google.com>
+Cc: Byungchul Park <byungchul@sk.com>
+Cc: Chengming Zhou <chengming.zhou@linux.dev>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Eugenio Pé rez <eperezma@redhat.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Gregory Price <gourry@gourry.net>
+Cc: "Huang, Ying" <ying.huang@linux.alibaba.com>
+Cc: Jan Kara <jack@suse.cz>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Jason Wang <jasowang@redhat.com>
+Cc: Jerrin Shaji George <jerrin.shaji-george@broadcom.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: John Hubbard <jhubbard@nvidia.com>
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Mathew Brost <matthew.brost@intel.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Miaohe Lin <linmiaohe@huawei.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Minchan Kim <minchan@kernel.org>
+Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Qi Zheng <zhengqi.arch@bytedance.com>
+Cc: Rakie Kim <rakie.kim@sk.com>
+Cc: Rik van Riel <riel@surriel.com>
+Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+Cc: xu xin <xu.xin16@zte.com.cn>
+Cc: Harry Yoo <harry.yoo@oracle.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: 0da2ba35c0d5 ("powerpc/pseries/cmm: adjust BALLOON_MIGRATE when migrating pages")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ mm/balloon_compaction.c | 6 ------
+ 1 file changed, 6 deletions(-)
+
+diff --git a/mm/balloon_compaction.c b/mm/balloon_compaction.c
+index 22c96fed70b5..dafb7dc90cfd 100644
+--- a/mm/balloon_compaction.c
++++ b/mm/balloon_compaction.c
+@@ -93,12 +93,6 @@ size_t balloon_page_list_dequeue(struct balloon_dev_info *b_dev_info,
+ 		if (!trylock_page(page))
+ 			continue;
+ 
+-		if (IS_ENABLED(CONFIG_BALLOON_COMPACTION) &&
+-		    PageIsolated(page)) {
+-			/* raced with isolation */
+-			unlock_page(page);
+-			continue;
+-		}
+ 		balloon_page_delete(page);
+ 		__count_vm_event(BALLOON_DEFLATE);
+ 		list_add(&page->lru, pages);
+-- 
+2.51.0
+
 
