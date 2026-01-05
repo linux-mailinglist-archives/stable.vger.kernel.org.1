@@ -1,75 +1,124 @@
-Return-Path: <stable+bounces-204638-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204632-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCC9ECF30E3
-	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 11:51:09 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37213CF3078
+	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 11:42:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 8CA69300296B
-	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 10:51:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0C21E30552E0
+	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 10:39:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A2DE31618E;
-	Mon,  5 Jan 2026 10:51:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B1AB314D05;
+	Mon,  5 Jan 2026 10:39:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="Fz2JOjb4"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5620F314A6A
-	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 10:51:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from canpmsgout02.his.huawei.com (canpmsgout02.his.huawei.com [113.46.200.217])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C29AB2D8382;
+	Mon,  5 Jan 2026 10:39:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.217
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767610264; cv=none; b=gxULumoTu9Svdv6tUPnV5nH7hgj7EdqlebxasyJGjVsQr4OVqQUdrvYw9QjKnZA6edpHG0w34Lr8p7FT5+AJb98FbOLWoyBoiqAuu55ZiSPDaLsZXG884NqiGsBq7yCfSnTSAcqs6kXyQME5mteYwF+mxyv6zgn5sWSLEWaueXo=
+	t=1767609561; cv=none; b=i97XljJZhGKsRmxPXlaSKPaIZDMSDVSdDYmPnFoWXbXcYoLrL1t7FmNSDL4wYxD2JWo3y19xP15sVWJdaPfZ/AZ5m38w5Cf/KSjUpwB+jkbY6c/xLyVewA+vh49OT/BSk5H7BfgDfWAgyXIG22x83U2jBiGBxIUiGoyOOa543SA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767610264; c=relaxed/simple;
-	bh=IT87PXZ9aJFPb7BaTi+anWhD1WGXaW8lgf+azZwdEQE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VP1VxdpgzGunw31L+N3InfsouFcjMcnk5aaGnz9UvpPXhSbsowODwFYMeo3eNcPV4oZLoFfzgoFr/qrJeQEYDXTVlKynggPLp1UAx9aOUn3b/ETscg1Zo/fz//6M3/nMnVzoL6/22c2ZZElQrtGY42lTYAj2dNDCNthtQBS9MBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=foss.arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C9F7D497;
-	Mon,  5 Jan 2026 02:50:54 -0800 (PST)
-Received: from bogus (unknown [10.57.45.151])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6D97C3F6A8;
-	Mon,  5 Jan 2026 02:51:00 -0800 (PST)
-Date: Mon, 5 Jan 2026 10:50:57 +0000
-From: Sudeep Holla <sudeep.holla@arm.com>
-To: Petr Malat <oss@malat.biz>
-Cc: stable@vger.kernel.org, pierre.gondois@arm.com, wen.yang@linux.dev,
-	Sudeep Holla <sudeep.holla@arm.com>
-Subject: Re: [PATCH] cacheinfo: Remove of_node_put() for fw_token
-Message-ID: <aVuXkUjzIb7BC5vv@bogus>
-References: <20260102193457.270660-1-oss@malat.biz>
+	s=arc-20240116; t=1767609561; c=relaxed/simple;
+	bh=auaWrlklStGyGtxL5JgH4a3smEJfo2D0fNwKvm7SaKo=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ci135+EovxVX8FBQ3t/LjMPi1QuX2fxxNVKaZVVJoDg4JTCTtSZuwI8lFGTW+b/bFYtlRmCTnDZ8LsQ0QDSO3aSoF/A8dejiMdp6MqcF3/uT1jIzsp1p/uAZmgFe6jeng4m4UwV9xBPLfoIEc6gPcp/y449hcwMkWQvUHafAdMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=Fz2JOjb4; arc=none smtp.client-ip=113.46.200.217
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=l3s7cX/ZeOHl9HnqSZY8U8DaJGP2WKlEP0TykuYXlbM=;
+	b=Fz2JOjb4Te8gnO7rj4dgrJ7j+hrcNBCFgX/jivMD93VAMHJGMXFOwHSVS4imda5hIQsfjhwCY
+	ZimlykASdKpWy8j/AGUGvXUPUaq5Iu5hmnLE+f9S5gPh7L5BQUjdwefwpb+HTSL8Iwl3jo/CjGF
+	Vt+tJckoOQUSnru8/0geYw0=
+Received: from mail.maildlp.com (unknown [172.19.163.104])
+	by canpmsgout02.his.huawei.com (SkyGuard) with ESMTPS id 4dl9gL5NTDzcb14;
+	Mon,  5 Jan 2026 18:35:42 +0800 (CST)
+Received: from dggpemf100004.china.huawei.com (unknown [7.185.36.110])
+	by mail.maildlp.com (Postfix) with ESMTPS id 08AFD404AD;
+	Mon,  5 Jan 2026 18:39:11 +0800 (CST)
+Received: from huawei.com (10.175.121.217) by dggpemf100004.china.huawei.com
+ (7.185.36.110) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 5 Jan
+ 2026 18:39:09 +0800
+From: Cao Jiaqiang <caojiaqiang@huawei.com>
+To: <gregkh@linuxfoundation.org>, <davem@davemloft.net>, <kuba@kernel.org>,
+	<shuah@kernel.org>
+CC: <stable@vger.kernel.org>, <netdev@vger.kernel.org>,
+	<linux-kselftest@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<dsahern@kernel.org>, <vincent.wang@huawei.com>, <liujian56@huawei.com>,
+	<yi.zhang@huawei.com>, <caojiaqiang@huawei.com>
+Subject: [PATCH 5.15.y] selftests: net: test_vxlan_under_vrf: fix HV connectivity test
+Date: Mon, 5 Jan 2026 18:52:51 +0800
+Message-ID: <20260105105251.33854-1-caojiaqiang@huawei.com>
+X-Mailer: git-send-email 2.22.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260102193457.270660-1-oss@malat.biz>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
+ dggpemf100004.china.huawei.com (7.185.36.110)
 
-On Fri, Jan 02, 2026 at 08:34:57PM +0100, Petr Malat wrote:
-> fw_token is used for DT/ACPI systems to identify CPUs sharing caches.
-> For DT based systems, fw_token is set to a pointer to a DT node.
-> 
-> Commit 22def0b492e6 ("arch_topology: Build cacheinfo from primary CPU")
-> removed clearing of per_cpu_cacheinfo(cpu), which leads to reference
-> underrun in cache_shared_cpu_map_remove() during repeated cpu
-> offline/online as the reference is no longer incremented, because
-> allocate_cache_info() is now skipped in the online path.
-> 
-> The same problem existed on upstream but had a different root cause,
-> see 2613cc29c572 ("cacheinfo: Remove of_node_put() for fw_token").
-> 
+From: Andrea Righi <andrea.righi@canonical.com>
 
-Please let us know which stable versions you need this for ? I assume it
-is for stable only, but it not clear from the subject.
+[ Upstream commit e7e4785fa30f9b5d1b60ed2d8e221891325dfc5f ]
 
-Or do you want this to be applied only for v6.1.x as 22def0b492e6 exist
-in v6.1.x ?
+It looks like test_vxlan_under_vrf.sh is always failing to verify the
+connectivity test during the ping between the two simulated VMs.
 
+This is due to the fact that veth-hv in each VM should have a distinct
+MAC address.
+
+Fix by setting a unique MAC address on each simulated VM interface.
+
+Without this fix:
+
+ $ sudo ./tools/testing/selftests/net/test_vxlan_under_vrf.sh
+ Checking HV connectivity                                           [ OK ]
+ Check VM connectivity through VXLAN (underlay in the default VRF)  [FAIL]
+
+With this fix applied:
+
+ $ sudo ./tools/testing/selftests/net/test_vxlan_under_vrf.sh
+ Checking HV connectivity                                           [ OK ]
+ Check VM connectivity through VXLAN (underlay in the default VRF)  [ OK ]
+ Check VM connectivity through VXLAN (underlay in a VRF)            [FAIL]
+
+NOTE: the connectivity test with the underlay VRF is still failing; it
+seems that ARP requests are blocked at the simulated hypervisor level,
+probably due to some missing ARP forwarding rules. This requires more
+investigation (in the meantime we may consider to set that test as
+expected failure - XFAIL).
+
+Signed-off-by: Andrea Righi <andrea.righi@canonical.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Cao Jiaqiang <caojiaqiang@huawei.com>
+---
+ tools/testing/selftests/net/test_vxlan_under_vrf.sh | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/tools/testing/selftests/net/test_vxlan_under_vrf.sh b/tools/testing/selftests/net/test_vxlan_under_vrf.sh
+index 6fadc8e2f116..1fd1250ebc66 100755
+--- a/tools/testing/selftests/net/test_vxlan_under_vrf.sh
++++ b/tools/testing/selftests/net/test_vxlan_under_vrf.sh
+@@ -101,6 +101,8 @@ setup-vm() {
+     ip -netns hv-$id link set veth-tap master br0
+     ip -netns hv-$id link set veth-tap up
+ 
++    ip link set veth-hv address 02:1d:8d:dd:0c:6$id
++
+     ip link set veth-hv netns vm-$id
+     ip -netns vm-$id addr add 10.0.0.$id/24 dev veth-hv
+     ip -netns vm-$id link set veth-hv up
 -- 
-Regards,
-Sudeep
+2.22.0
+
 
