@@ -1,185 +1,166 @@
-Return-Path: <stable+bounces-204626-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204627-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB055CF2D31
-	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 10:48:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F1CFCCF2F3B
+	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 11:19:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5D6693010CE2
-	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 09:47:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 190DE301F5D2
+	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 10:17:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DA353370EC;
-	Mon,  5 Jan 2026 09:47:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73AEE3101DA;
+	Mon,  5 Jan 2026 10:17:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="TPN/Y6xV"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="XVT72kka"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+Received: from mail-pg1-f228.google.com (mail-pg1-f228.google.com [209.85.215.228])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62559336EEE
-	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 09:47:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC14E2F3C13
+	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 10:17:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.228
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767606461; cv=none; b=ki2bpqITn6+taEAOU80gS8Ae8cSX0h2MU5rZdsDJyA9CcToBDYcjtQAvD2u1zpVk1S+mLPUVodTLGc0yTQs0MWBB4kLAPQnXBcZsh+9QElM4Mz3GHx/SPnFT9yUrXE4mrgPm7JG283brSTJDBXdHauUhrZ2AzKOwpFYIuD4pse8=
+	t=1767608274; cv=none; b=hiMlq0v1DQv39ecb79qAVn+9+sF0tTr6AgQOpSu//LmJs/xFIjj+uQ7Oo5DXJFzBOQ2wsMtBSEKwQDCjI1oghYxB40JW7M86BrIxC2fSDyfYamfAP26fNN1MS/KokzAFCrAnvFGqpS7Yf1Mhcoc+VbcAOPIa2f5deZ5UUcrx5LM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767606461; c=relaxed/simple;
-	bh=e9Sk/pAZClslZsNFls1Af5fvQTuuOQ2N2wBxEju3Gv8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Sx6DGjL/SuG6cbkRMqdmfVXaXPNrTgeH0UYPDLVjwvnlhujj1ApKfX8VYzmtL4phQuwLLzNDMILxDU5Biql6+UmEwm7hsTUfQgr5vYFrAspusIkzq8ZIeiCbbp7aslad9ZIkgZpy6Q5T78iu4YDHcZtLK3/eXodY6Oio8xOcY+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=TPN/Y6xV; arc=none smtp.client-ip=209.85.218.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-b7a6e56193cso2170634566b.3
-        for <stable@vger.kernel.org>; Mon, 05 Jan 2026 01:47:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1767606458; x=1768211258; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=7s0pU3R0ZSMnky2KP1pM8uey2sObBdI/T7yO/ZGH/N8=;
-        b=TPN/Y6xVa9+GWWTjWs94ZJc37E5ySMPLP4jPvMEASn0iJAcGoA0gQX0z3rlu5OFR7A
-         w6glF3ZxhNyzj19WsxUsfY3gL7/Lmxfgej5QdVVjHOS2fklSN91SGjWcBjI5AJb0096B
-         cE02h7u7ApAwgnfbSX2bUYh7IpaKe+n7o84w1Jk4wZPDAC9/D0x3QQILCymV6r2grVh4
-         EYnB22y0msUP2Fx30qkfGO+151vFwimVTifnBPkYTEZBdihl+NU/lwKSnqV9szkXwh4o
-         Cm5tMHKWOqF5qbzbmlcQefejzHH61PdpgjmpaLbzpSsItNYkFK9dKggjGAi+UGN3roH5
-         p5NQ==
+	s=arc-20240116; t=1767608274; c=relaxed/simple;
+	bh=QY3HTEVaHPlfhfn0LQXxca+zyPZhcAwhzUarq0fwl9Q=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=I+6zxD1arlQODn4ptzQ4bn0ORigdGN2JzXLM+oTN5GgtaNZvURdauVHr96mTA2TvH8m0zpKzE42F+OB+Qh5XvmDOa3uZbAs5q7IbhU+mY+plDwAUzJzbtFBIuZwK6iNZFBm8xynvaSHPHpoGWgcwcV08n0bERK66h3Brx4HI0u0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=XVT72kka; arc=none smtp.client-ip=209.85.215.228
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-pg1-f228.google.com with SMTP id 41be03b00d2f7-c03e8ac1da3so12025246a12.2
+        for <stable@vger.kernel.org>; Mon, 05 Jan 2026 02:17:52 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767606458; x=1768211258;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1767608272; x=1768213072;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:dkim-signature:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=7s0pU3R0ZSMnky2KP1pM8uey2sObBdI/T7yO/ZGH/N8=;
-        b=CpSicraEXbUj8yPNJ3+dqpuMX+rdhsfHB+ToZjEnTK6oQL9gIvG5j3zyF+ctXyk/qF
-         ywFj3HdCgMwDNdlsf6UURykxL9xTpzwqStzdwHpEneQ5XV1XpZ9TDgwJYKKOoMrOheoK
-         t+m65tY99X4bBsYuf0jhuJGCNziwcznlSeKbl7ycI0QNEVJBLs4ms+5dDb05mCz87L5L
-         +1/T4uHWzZZNCtVgF8+soFX1zDWJWKsK7aMLAPx0NwBNiZ8QQaUA8U2SQ/W9jEhLD4DU
-         2H0xJ40/rHQajeotxflDos3NtaM+DSd5Q0vqE1i4ofTVq6p+Th7hUZPC15h8lNCTdovH
-         Q2Kw==
-X-Forwarded-Encrypted: i=1; AJvYcCVAnbTO6kGp0kQyeezkFMCBziUMCYDext0vBZwLrW2/scNnaBWO95LCYr/IO+MXfVDC1i+L1Nw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz0s9eiedlwyX9IhLP86wecMeXVhGGTjsPjJltiBtp/p+e9+fd/
-	UBsWAvPUnmptw7iaUDrN+Yv2aw1a+f8ZsufHEZfUuXA68bT1hU//CWtBIk4KHdxqCb4=
-X-Gm-Gg: AY/fxX57sF6hz4w12VxtAW8JUddIQry5jh0HzHYdtjqmN2vrDFJM7TzYFZ0WgKBTMfP
-	bLGp3v2uYYrihr+5OhiP3OOp5OAb+KS3wJ8pFDuZeB5TzXS+oP2IwMt88GmaOlFECO2adHBqcmi
-	eYr1b28WEGNfnM4kZbn7SX0izxlJwVFsVm5Peq31bn57aSdQZ3f6+657Ddt0iST/BniByoeJbPB
-	TfxE+lOUL1xMpjDZSOfKHV0sHAoQA7Lc90Xdn4u9SD9SAXypnnXIKxix12/bVKPqfl/LD6hLNM+
-	HJDmbJPB0RfyCZ3fLaARQ74G22cvE62khBQyy8sR+y2E0KIG3pDTcpTesVQ0F8V0ckKxRyQE4Hu
-	Vhh7817T+e/hohfB+TG2+5pK/s3KlNnvS499mC2JgpxuX//rHQkkbOdegREKg4yFQfo0gr5Zydy
-	2NzeGslUkx32uIpaG8
-X-Google-Smtp-Source: AGHT+IHtHz5vJ1UWzG+Etyf4fbI0hcKKBa1UrAp1qWDsuB1UqEaDANN85lzoP5jTefzne3dATAX6lQ==
-X-Received: by 2002:a17:907:3da3:b0:b70:b93c:26cf with SMTP id a640c23a62f3a-b8036f2d0a0mr4542730466b.6.1767606457580;
-        Mon, 05 Jan 2026 01:47:37 -0800 (PST)
-Received: from linaro.org ([77.64.146.193])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b8037f51144sm5542914066b.69.2026.01.05.01.47.36
+        bh=ZDEZfxXGKUHqnD6uzu3JESKT0vdq+bi9ssWL2yPlp2w=;
+        b=qQN8QWXJkPeRFFUI5oZCnc5sBV0fk3yp0gp7SsSaXoHoQWFISTlBa0VeDDlTMsJFWe
+         4v3732j1DzOSK4nzYJBEmCyU2hKxA+pvNDSlq+hs6PmnyD1ehHrOylTPsGLGXUp4tcfi
+         XOn0cKCCiLF66HjZwokwGPVpUBHScuLQXYsRDeTvgmHPP+s8Bf+7gAgIjjjENMENE4OQ
+         VjKcx2H/V3byJjPetf9PbpscpHPG9GKcQaoh703gjTw1mkHuNsT3MRpq+O7Vdg+/IiHh
+         GuXqoCk2ofzZ+nkUvk7NnWlhDoR1kE5x2cq3pA9khGgqBlPvjSBfaMWHR3OyDP76+rWq
+         mQJg==
+X-Gm-Message-State: AOJu0YyHb9kFxIugFQSGzJLVkeZC5PWW/rs5aeu/IwEbJ/K3qkKrT1LY
+	DnMZWvCNU0xZL9R7VQo+vPV36oGAJeX7BBHg0UhDvFyF0mM1sx2APn5MfhmmMtVYSYc3qyZHx3u
+	GT5yEeFbQApR9t+enBF+X9sk/DHo47nCXayEkScXqdRweNjgpQveVCjGcMvlHte1BHQ/v5l10x4
+	g2ISn6h1QJdD61DACzFIdN9m331MC1TJrfcPdbXUf96T7AU2jnkhiCgNl5J6JMWXSvNiB1grkm5
+	IJTaAPZdKkjlwU0/Q==
+X-Gm-Gg: AY/fxX7E7E9x7DD+72JZpb4tqUQJhYuxWSnkWR1H+p78UQdCEE//N8sNTIrQDSVCw1B
+	nBCJgtWPd3i+aKjwhwDEwrsqaP/eSwKw1qn3AtBrm2V/CXofJxpck1YSvvbzUXAeoLDqsYAPSi+
+	eo3IW4KzCMGxd97xRLIcil5YlLRtJkznLLkG17XHu10dHJ89qrjZQHBnmFsCk7JRVpioe9sZZTx
+	wQV/j4hpy+6jtp/7ke+eOfV9aIQba0RsNrf+FY2z30MYh5auzYhOghVkXaTBSeHWL/w8drZuiOt
+	N+KtI1eaLcNR/iR/M6NHwcLk7FK3Pd90TjenPn931Kw/m8R3qYvwTbAAfRcFaIeaFsioSZoS5Rr
+	IpcVu0TlDqdYnJYek009x9xRwSWnMiYwcv5a8zJbzfXlSCgJvGjPst0vZFFUA/9Vj2jVYcwDP6l
+	4+TACmm7NNkkbayQrIyv6tFZmqp00x/4MUpiQ/xVMqSf3qDg==
+X-Google-Smtp-Source: AGHT+IE0X5vclTX86wy+2jUPubDvuFID7HDhWbhUnoVKXQRRAkJcKJBoajkkwZ+x5rVBypKCRwmbA1B34ITG
+X-Received: by 2002:a05:7300:e50f:b0:2b0:5609:a58c with SMTP id 5a478bee46e88-2b05ec47d0emr38140583eec.32.1767608271982;
+        Mon, 05 Jan 2026 02:17:51 -0800 (PST)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-2.dlp.protect.broadcom.com. [144.49.247.2])
+        by smtp-relay.gmail.com with ESMTPS id 5a478bee46e88-2b140c61369sm1305758eec.5.2026.01.05.02.17.51
+        for <stable@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 05 Jan 2026 02:17:51 -0800 (PST)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-b9ceccbd7e8so31293428a12.0
+        for <stable@vger.kernel.org>; Mon, 05 Jan 2026 02:17:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1767608270; x=1768213070; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZDEZfxXGKUHqnD6uzu3JESKT0vdq+bi9ssWL2yPlp2w=;
+        b=XVT72kkahmHtaf719+HMdZO37C3gfnmLQw4FyrAMadM2CYk3a4lhAJOeKTrdwNfv5W
+         gzNHLCfteYMe/qZhuUZ/gG7ZnauTI9+wYtcgITdjvpX1JtUGeTwoxK7sfJZlfrrbTj5Q
+         5s5EbShd9BYjVHhQvn7CNcjg4S6XdoIvJ11cY=
+X-Received: by 2002:a05:7023:905:b0:11d:fd26:234e with SMTP id a92af1059eb24-121722b821amr43934368c88.16.1767608269994;
+        Mon, 05 Jan 2026 02:17:49 -0800 (PST)
+X-Received: by 2002:a05:7023:905:b0:11d:fd26:234e with SMTP id a92af1059eb24-121722b821amr43934337c88.16.1767608269346;
+        Mon, 05 Jan 2026 02:17:49 -0800 (PST)
+Received: from shivania.lvn.broadcom.net ([192.19.161.250])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1217254d369sm170077924c88.16.2026.01.05.02.17.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Jan 2026 01:47:37 -0800 (PST)
-Date: Mon, 5 Jan 2026 10:47:29 +0100
-From: Stephan Gerhold <stephan.gerhold@linaro.org>
-To: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
-Cc: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>, Taniya Das <quic_tdas@quicinc.com>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Bartosz Golaszewski <brgl@kernel.org>,
-	Shazad Hussain <quic_shazhuss@quicinc.com>,
-	Sibi Sankar <sibi.sankar@oss.qualcomm.com>,
-	Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
-	Melody Olvera <quic_molvera@quicinc.com>,
-	Dmitry Baryshkov <lumag@kernel.org>,
-	Taniya Das <taniya.das@oss.qualcomm.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Imran Shaik <quic_imrashai@quicinc.com>,
-	Abel Vesa <abelvesa@kernel.org>, linux-arm-msm@vger.kernel.org,
-	linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Rajendra Nayak <quic_rjendra@quicinc.com>, stable@vger.kernel.org
-Subject: Re: [PATCH 0/7] clk: qcom: gcc: Do not turn off PCIe GDSCs during
- gdsc_disable()
-Message-ID: <aVuIsUR0pinI0Wp7@linaro.org>
-References: <20260102-pci_gdsc_fix-v1-0-b17ed3d175bc@oss.qualcomm.com>
- <a42f963f-a869-4789-a353-e574ba22eca8@oss.qualcomm.com>
- <edca97aa-429e-4a6b-95a0-2a6dfe510ef2@oss.qualcomm.com>
- <500313f1-51fd-450e-877e-e4626b7652bc@oss.qualcomm.com>
- <4d61e8b3-0d40-4b78-9f40-a68b05284a3d@oss.qualcomm.com>
- <e917e98a-4ff3-45b8-87a0-fe0d6823ac2e@oss.qualcomm.com>
- <2lpx7rsko24e45gexsv3jp4ntwwenag47vgproqljqeuk4j7iy@zgh6hrln4h4e>
+        Mon, 05 Jan 2026 02:17:49 -0800 (PST)
+From: Shivani Agarwal <shivani.agarwal@broadcom.com>
+To: stable@vger.kernel.org,
+	gregkh@linuxfoundation.org
+Cc: sudeep.holla@arm.com,
+	cristian.marussi@arm.com,
+	rafael@kernel.org,
+	viresh.kumar@linaro.org,
+	arm-scmi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-pm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	ajay.kaher@broadcom.com,
+	alexey.makhalov@broadcom.com,
+	vamsi-krishna.brahmajosyula@broadcom.com,
+	yin.ding@broadcom.com,
+	tapas.kundu@broadcom.com,
+	Henry Martin <bsdhenrymartin@gmail.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Shivani Agarwal <shivani.agarwal@broadcom.com>
+Subject: [PATCH v5.10] cpufreq: scmi: Fix null-ptr-deref in scmi_cpufreq_get_rate()
+Date: Mon,  5 Jan 2026 01:57:01 -0800
+Message-Id: <20260105095701.659420-1-shivani.agarwal@broadcom.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2lpx7rsko24e45gexsv3jp4ntwwenag47vgproqljqeuk4j7iy@zgh6hrln4h4e>
+Content-Transfer-Encoding: 8bit
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-On Mon, Jan 05, 2026 at 10:44:39AM +0530, Manivannan Sadhasivam wrote:
-> On Fri, Jan 02, 2026 at 02:57:56PM +0100, Konrad Dybcio wrote:
-> > On 1/2/26 2:19 PM, Krishna Chaitanya Chundru wrote:
-> > > On 1/2/2026 5:09 PM, Konrad Dybcio wrote:
-> > >> On 1/2/26 12:36 PM, Krishna Chaitanya Chundru wrote:
-> > >>> On 1/2/2026 5:04 PM, Konrad Dybcio wrote:
-> > >>>> On 1/2/26 10:43 AM, Krishna Chaitanya Chundru wrote:
-> > >>>>> With PWRSTS_OFF_ON, PCIe GDSCs are turned off during gdsc_disable(). This
-> > >>>>> can happen during scenarios such as system suspend and breaks the resume
-> > >>>>> of PCIe controllers from suspend.
-> > >>>> Isn't turning the GDSCs off what we want though? At least during system
-> > >>>> suspend?
-> > >>> If we are keeping link in D3cold it makes sense, but currently we are not keeping in D3cold
-> > >>> so we don't expect them to get off.
-> > >> Since we seem to be tackling that in parallel, it seems to make sense
-> > >> that adding a mechanism to let the PCIe driver select "on" vs "ret" vs
-> > >> "off" could be useful for us
-> > > At least I am not aware of such API where we can tell genpd not to turn off gdsc
-> > > at runtime if we are keeping the device in D3cold state.
-> > > But anyway the PCIe gdsc supports Retention, in that case adding this flag here makes
-> > > more sense as it represents HW.
-> > > sm8450,sm8650 also had similar problem which are fixed by mani[1].
-> > 
-> > Perhaps I should ask for a clarification - is retention superior to
-> > powering the GDSC off? Does it have any power costs?
-> > 
-> 
-> In terms of power saving it is not superior, but that's not the only factor we
-> should consider here. If we keep GDSCs PWRSTS_OFF_ON, then the devices (PCIe)
-> need to be be in D3Cold. Sure we can change that using the new genpd API
-> dev_pm_genpd_rpm_always_on() dynamically, but I would prefer to avoid doing
-> that.
-> 
-> In my POV, GDSCs default state should be retention, so that the GDSCs will stay
-> ON if the rentention is not entered in hw and enter retention otherwise. This
-> requires no extra modification in the genpd client drivers. One more benefit is,
-> the hw can enter low power state even when the device is not in D3Cold state
-> i.e., during s2idle (provided we unvote other resources).
-> 
+From: Henry Martin <bsdhenrymartin@gmail.com>
 
-What about PCIe instances that are completely unused? The boot firmware
-on X1E for example is notorious for powering on completely unused PCIe
-links and powering them down in some half-baked off state (the &pcie3
-instance, in particular). I'm not sure if the GDSC remains on, but if it
-does then the unused PD cleanup would also only put them in retention
-state. I can't think of a good reason to keep those on at all.
+[ Upstream commit 484d3f15cc6cbaa52541d6259778e715b2c83c54 ]
 
-The implementation of PWRSTS_RET_ON essentially makes the PD power_off()
-callback a no-op. Everything in Linux (sysfs, debugfs, ...) will tell
-you that the power domain has been shut down, but at the end it will
-remain fully powered until you manage to reach a retention state for the
-parent power domain. Due to other consumers, that will likely happen
-only if you reach VDDmin or some equivalent SoC-wide low-power state,
-something barely any (or none?) of the platforms supported upstream is
-capable of today.
+cpufreq_cpu_get_raw() can return NULL when the target CPU is not present
+in the policy->cpus mask. scmi_cpufreq_get_rate() does not check for
+this case, which results in a NULL pointer dereference.
 
-PWRSTS_RET_ON is actually pretty close to setting GENPD_FLAG_ALWAYS_ON,
-the only advantage of PWRSTS_RET_ON I can think of is that unused GDSCs
-remain off iff you are lucky enough that the boot firmware has not
-already turned them on.
+Add NULL check after cpufreq_cpu_get_raw() to prevent this issue.
 
-IMHO, for GDSCs that support OFF state in the hardware, PWRSTS_RET_ON is
-a hack to workaround limitations in the consumer drivers. They should
-either save/restore registers and handle the power collapse or they
-should vote for the power domain to stay on. That way, sysfs/debugfs
-will show the real votes held by Linux and you won't be mislead when
-looking at those while trying to optimize power consumption.
+Fixes: 99d6bdf33877 ("cpufreq: add support for CPU DVFS based on SCMI message protocol")
+Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
+Acked-by: Sudeep Holla <sudeep.holla@arm.com>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+[Shivani: Modified to apply on 5.10.y]
+Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
+---
+ drivers/cpufreq/scmi-cpufreq.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-Thanks,
-Stephan
+diff --git a/drivers/cpufreq/scmi-cpufreq.c b/drivers/cpufreq/scmi-cpufreq.c
+index bb1389f27..6b65d537c 100644
+--- a/drivers/cpufreq/scmi-cpufreq.c
++++ b/drivers/cpufreq/scmi-cpufreq.c
+@@ -29,12 +29,18 @@ static const struct scmi_handle *handle;
+ 
+ static unsigned int scmi_cpufreq_get_rate(unsigned int cpu)
+ {
+-	struct cpufreq_policy *policy = cpufreq_cpu_get_raw(cpu);
++	struct cpufreq_policy *policy;
++	struct scmi_data *priv;
+ 	const struct scmi_perf_ops *perf_ops = handle->perf_ops;
+-	struct scmi_data *priv = policy->driver_data;
+ 	unsigned long rate;
+ 	int ret;
+ 
++	policy = cpufreq_cpu_get_raw(cpu);
++	if (unlikely(!policy))
++		return 0;
++
++	priv = policy->driver_data;
++
+ 	ret = perf_ops->freq_get(handle, priv->domain_id, &rate, false);
+ 	if (ret)
+ 		return 0;
+-- 
+2.40.4
+
 
