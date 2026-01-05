@@ -1,135 +1,126 @@
-Return-Path: <stable+bounces-204847-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204848-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7F1DCF4A03
-	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 17:18:21 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id E680BCF4B53
+	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 17:34:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3270C320B429
-	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 16:07:44 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1FB8730BCA51
+	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 16:28:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A01A5308F2A;
-	Mon,  5 Jan 2026 16:02:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DA132F12BA;
+	Mon,  5 Jan 2026 16:09:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DeyvN4fR"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D1E43054EF;
-	Mon,  5 Jan 2026 16:02:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF8B82765F8
+	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 16:09:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767628961; cv=none; b=ltMqIRDV2oU/yO5cnbdU7Q6UjS5fxtdPbyw5LshbBn/YYuKOt9H17baokeTIIc2uiqSMthUIhgltMaKZ8Lq94suFs2tynmbyQFl3iRkhNOyKgxy242L+qwHeEqluca2sAij+MXySZhqCiDZROAvdRI7KM56ExVIPS/A4F/hTQdE=
+	t=1767629354; cv=none; b=Y0nJubdEpWygXdvO02oTmtFBDgpy+sjfMlVlrRon5Qa8zVurSN97bshswKxjVwYn39pzy2N3cJZqqjzEmoCt6gr/KoCs33d2oN3hEpjKccGUZa+x5E2kkvH1elS5gCnGZWen5WNGbYpWiDxG3zRkCh0isIQJ3GVp/vxO5MRdNrI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767628961; c=relaxed/simple;
-	bh=di2LhU3ug2I5hflVeQXXWfZTSChbqV7U/Q/81dEwXT4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fep7xbzVqFP2i1+ZwF6mznd6WyobmXpxx13UM4YvH+RdpZDhLDorq0vskfFaFK7YBJNG4l2kyKk9QmEGaqpCFHAZBMcVeWXFQjmAxG48sZ7aOtqoD0VwuBufgyk9yjK07h81ycC1Dwtjtiw7pSor2R2PHpYN70UqF0Zc4ObxqHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 73603339;
-	Mon,  5 Jan 2026 08:02:31 -0800 (PST)
-Received: from [10.57.49.14] (unknown [10.57.49.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C2F973F6A8;
-	Mon,  5 Jan 2026 08:02:36 -0800 (PST)
-Message-ID: <f253d6aa-1dc2-4b1a-85df-f43b06719c04@arm.com>
-Date: Mon, 5 Jan 2026 16:02:34 +0000
+	s=arc-20240116; t=1767629354; c=relaxed/simple;
+	bh=yTkSY8a9RbmsAhWmLiy5Af+HV875Onr8lrQNtHwirJc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ciW0fpO9Q8eTqfvUYaXDKJPDRb8OiTEqjhuNjLFJgkqqSrcvBekT+aROKdTs02zO27ulTMTKbdsC11qY3xzrmmCk6NL5WnaHolpoRuDotOiyA1648/wo1PNybQ5ku+WH7GsTh37k+DDYzU1jVVzfeEPZLF9eoSzFqYRXKQ52K6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DeyvN4fR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 940FCC116D0;
+	Mon,  5 Jan 2026 16:09:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767629354;
+	bh=yTkSY8a9RbmsAhWmLiy5Af+HV875Onr8lrQNtHwirJc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=DeyvN4fRY5TtH5P1wHST4PQr2ojTcFSArsoAIlPdsiYJP77KGnZvGBBgyE1wTCODy
+	 0LdmkFA9aCq1fW0FCRydDSEh7ceXzC7zEf+txe8Tx8wM2jfR1wYM4nPVFN6LIV2U5Q
+	 HcQeB9BCUCUIrvEC1ZhqSe7Mz1rASHm984XU88+ConxkbC3EyRIsRMWAnqKGF0BLoH
+	 XRG56DCH0lzk+ARoVDWW1faM+GUbZAu+6rL2/qWZT7abSEbTTsLf6xv2jnXL8vssad
+	 /gNxWblGPyv3J9KtGYh8kfLVNFdsoG0gVe/7PCRoohkTkLmBkgFKP6rexB9kZc+FEJ
+	 beA7Kaa5PQBhA==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Johan Hovold <johan@kernel.org>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Joerg Roedel <joerg.roedel@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15.y] iommu/qcom: fix device leak on of_xlate()
+Date: Mon,  5 Jan 2026 11:09:11 -0500
+Message-ID: <20260105160912.2661912-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2026010520-snowdrop-judgingly-e0c4@gregkh>
+References: <2026010520-snowdrop-judgingly-e0c4@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] iommu/arm-smmu-v3: Maintain valid access attributes for
- non-coherent SMMU
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Dawei Li <dawei.li@linux.dev>, will@kernel.org, joro@8bytes.org,
- linux-arm-kernel@lists.infradead.org, iommu@lists.linux.dev,
- linux-kernel@vger.kernel.org, set_pte_at@outlook.com, stable@vger.kernel.org
-References: <20251229002354.162872-1-dawei.li@linux.dev>
- <c25309d1-0424-495e-82af-d025b3e6d8c8@arm.com>
- <20260105145321.GD125261@ziepe.ca>
-From: Robin Murphy <robin.murphy@arm.com>
-Content-Language: en-GB
-In-Reply-To: <20260105145321.GD125261@ziepe.ca>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 2026-01-05 2:53 pm, Jason Gunthorpe wrote:
-> On Mon, Jan 05, 2026 at 01:33:34PM +0000, Robin Murphy wrote:
->> The assumption is that if the SMMU is not I/O-coherent, then the Normal
->> Cacheable attribute will inherently degrade to a non-snooping (and thus
->> effectively Normal Non-Cacheable) one, as that's essentially what AXI will
->> do in practice, and thus the attribute doesn't actually matter all that much
->> in terms of functional correctness. If the SMMU _is_ capable of snooping but
->> is not described as such then frankly firmware is wrong.
-> 
-> Sadly I am aware of people doing this.. Either a HW bug or some other
-> weird issue forces the FW to set a non-coherent FW attribute even
-> though the HW is partially or fully able to process cachable AXI
-> attributes.
+From: Johan Hovold <johan@kernel.org>
 
-What I've seen more often is that firmware authors ignore (or don't even 
-realise) I/O-coherency, then someone ends up trying to "fix" Linux with 
-wacky DMA API patches when things start going wrong on mis-described 
-hardware... Yes, they might happen to get away with it with stuff like 
-SMMUs or Mali GPUs where a "well-behaved" driver might have control of 
-the source attributes, but where AxCACHE/AxDOMAIN are hard-wired there's 
-really no option other than to describe the hardware correctly, hence 
-that should always be the primary consideration.
+[ Upstream commit 6a3908ce56e6879920b44ef136252b2f0c954194 ]
 
-And as I say, if there *is* some reason to specifically avoid using 
-certain attributes, then deliberately describing the hardware 
-incorrectly, in the hope that OS drivers might be "well-behaved" in a 
-way that just happens to lead to them not using those attributes, is 
-really not a robust workaround anyway.
+Make sure to drop the reference taken to the iommu platform device when
+looking up its driver data during of_xlate().
 
-> It is reasonable that Linux will set the attributes properly based on
-> what it is doing. Setting the wrong attributes and expecting the HW to
-> ignore them seems like a hacky direction.
+Note that commit e2eae09939a8 ("iommu/qcom: add missing put_device()
+call in qcom_iommu_of_xlate()") fixed the leak in a couple of error
+paths, but the reference is still leaking on success and late failures.
 
-Oh, I'm not saying that we *shouldn't* set our attributes more exactly - 
-this would still be needed for doing things the "right" way too - I just 
-want to be very clear on the reasons why. The current assumption is not 
-a bug per se, and although it's indeed not 100% robust, the cases where 
-it doesn't hold are more often than not for the wrong reason. Therefore 
-I would say doing this purely for the sake of working around bad 
-firmware - and especially errata - is just as hacky if not more so.
+Fixes: 0ae349a0f33f ("iommu/qcom: Add qcom_iommu")
+Cc: stable@vger.kernel.org	# 4.14: e2eae09939a8
+Cc: Rob Clark <robin.clark@oss.qualcomm.com>
+Cc: Yu Kuai <yukuai3@huawei.com>
+Acked-by: Robin Murphy <robin.murphy@arm.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
+[ adapted validation logic from max_asid to num_ctxs ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/iommu/arm/arm-smmu/qcom_iommu.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-> I didn't see anything in the spec that says COHACC means the memory
-> attributes are ignored and forced to non-coherent, even though that is
-> the current assumption of the driver.
+diff --git a/drivers/iommu/arm/arm-smmu/qcom_iommu.c b/drivers/iommu/arm/arm-smmu/qcom_iommu.c
+index 9438203f08de..c4379109f11d 100644
+--- a/drivers/iommu/arm/arm-smmu/qcom_iommu.c
++++ b/drivers/iommu/arm/arm-smmu/qcom_iommu.c
+@@ -568,15 +568,15 @@ static int qcom_iommu_of_xlate(struct device *dev, struct of_phandle_args *args)
+ 
+ 	qcom_iommu = platform_get_drvdata(iommu_pdev);
+ 
++	put_device(&iommu_pdev->dev);
++
+ 	/* make sure the asid specified in dt is valid, so we don't have
+ 	 * to sanity check this elsewhere, since 'asid - 1' is used to
+ 	 * index into qcom_iommu->ctxs:
+ 	 */
+ 	if (WARN_ON(asid < 1) ||
+-	    WARN_ON(asid > qcom_iommu->num_ctxs)) {
+-		put_device(&iommu_pdev->dev);
++	    WARN_ON(asid > qcom_iommu->num_ctxs))
+ 		return -EINVAL;
+-	}
+ 
+ 	if (!dev_iommu_priv_get(dev)) {
+ 		dev_iommu_priv_set(dev, qcom_iommu);
+@@ -585,10 +585,8 @@ static int qcom_iommu_of_xlate(struct device *dev, struct of_phandle_args *args)
+ 		 * multiple different iommu devices.  Multiple context
+ 		 * banks are ok, but multiple devices are not:
+ 		 */
+-		if (WARN_ON(qcom_iommu != dev_iommu_priv_get(dev))) {
+-			put_device(&iommu_pdev->dev);
++		if (WARN_ON(qcom_iommu != dev_iommu_priv_get(dev)))
+ 			return -EINVAL;
+-		}
+ 	}
+ 
+ 	return iommu_fwspec_add_ids(dev, &asid, 1);
+-- 
+2.51.0
 
-It kinda works the other way round: COHACC==1 says that the Cacheability 
-and Shareability attributes *can* be configured to snoop CPU caches 
-(although do not have to be); therefore the "If a system does not 
-support IO-coherent access from the SMMU, SMMU_IDR0.COHACC must be 0" 
-case implies that the SMMU is incapable of snooping regardless of how 
-those attributes are set, thus must at least be in a different Inner 
-Shareability domain from the CPUs, at which point the Cacheability 
-domains probably aren't too meaningful either. I would consider it would 
-be unexpectedly incorrect behaviour for an SMMU reporting COHACC==0 to 
-actually be capable of snooping.
-
->> If prople have a good reason for wanting to use a coherent SMMU
->> non-coherently (and/or control of allocation hints), then that should really
->> be some kind of driver-level option - it would need a bit of additional DMA
->> API work (which has been low down my to-do list for a few years now...), but
->> it's perfectly achievable, and I think it's still preferable to abusing the
->> COHACC override in firmware.
-> 
-> IMHO, this is a different topic, and something that will probably
-> become interesting this year. I'm aware of some HW/drivers that needs
-> optional non-coherent mappings for isochronous flows - but it is not
-> the DMA API that is the main issue but the page table walks :\
-
-Hmm, yeah, potentially configuring PTW attributes for a DMA domain is 
-something I hadn't even thought about - the DMA API aspect I mean is 
-that in general we need some sort of DMA_ATTR_NO_SNOOP when 
-mapping/allocating such isochronous buffers/pagetables etc., to make the 
-DMA layer still do the cache maintenance/non-cacheable remaps despite 
-dev_is_dma_coherent() being true.
-
-Thanks,
-Robin.
 
