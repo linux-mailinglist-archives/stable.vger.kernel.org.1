@@ -1,69 +1,62 @@
-Return-Path: <stable+bounces-204895-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204896-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6079CF554D
-	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 20:17:04 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EDC8CF5570
+	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 20:17:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9DDC830B06C1
-	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 19:16:39 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id AADDC301007E
+	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 19:17:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3A01340DAD;
-	Mon,  5 Jan 2026 19:16:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33C9B3469F0;
+	Mon,  5 Jan 2026 19:16:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DRbZu16J"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V79mi+oW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7605E33987A;
-	Mon,  5 Jan 2026 19:16:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB0F13431F5;
+	Mon,  5 Jan 2026 19:16:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767640596; cv=none; b=nZIP1+vSetN1SiTsz/CINvjwUJ27iupi3xtSQwbayPZoavFmQ+9tGhMOvtNhn7rE4aZglj7PiQbMhuQFqQjPOdqFxnt03/4aSIRMFlTTVs5C8o2mPEgW8CCZ4gjhdNl07lzjtQ+SE+0ztbkuKlqBD9se/71ORZ6TTZS3csDuQCQ=
+	t=1767640605; cv=none; b=L+loDfB5nmAlFegA5SCWU3dmHnRD/hq05uSCMBuitqjbHs3pxHJItOt7G1u+WWenUSnOF4U1xvuBiyCSjpUTuJf2qY0/CNWxzRQ9jN5yphdwVsy4owgLVl1ez6z91LbrF/EykVXC/xDk03HnWV246skdz2bUk/sL//hqJq0uexY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767640596; c=relaxed/simple;
-	bh=6NTPGQSzR8P8uoDmYviebKFpUL21wqkHF4476elollI=;
+	s=arc-20240116; t=1767640605; c=relaxed/simple;
+	bh=LoDm3Shzh32Fz0vjSW6nHyXnSnMnTIlkXsEA7J6//4E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NHE02S/gxFAeOQn1SnCUeySXKrvFmLiZoaqsZtmQoqf9Lg6Mfccd/YV1JGe/rn6kTF9HCLJBtVdz699/HrfjGhEaBQAfrTfrhZ7MrMCWHwKcC52BM4X1+BPxNdFYy8TKnojvuAVOCswUWZdce9pgir5mENsZ/dTj6g5cfgQRSZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DRbZu16J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B21E0C2BCB0;
-	Mon,  5 Jan 2026 19:16:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=G+6W9BP21SgsPqC2IPnNvOPdMlS0ey3tp0/z1SbYgBxz0RtKDAPYr0ZjOD9/yjPgQZN/gVmFm8TUhbhO/wVmXRLkB+up5wvLWRlg1Th1g/CfgN/2ktGAsbs5tz8v+gIZyWfLs5Kg6TjAHtPQooFmcuQ7ov3N8gzvevMwfqDEIJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V79mi+oW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CBFFC19423;
+	Mon,  5 Jan 2026 19:16:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767640596;
-	bh=6NTPGQSzR8P8uoDmYviebKFpUL21wqkHF4476elollI=;
+	s=k20201202; t=1767640605;
+	bh=LoDm3Shzh32Fz0vjSW6nHyXnSnMnTIlkXsEA7J6//4E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DRbZu16JNwTsfEQaacAM93EIUbAs0/6VI34n4CvF06mwZ/Y/DaUvDg4sIx33HwZBb
-	 3gfDfuugQ6n5N4K7VumAN3ElbfCTcZj9+jZHpope+wcC51CN7Nc5f/wRkAiy2SLbEo
-	 QammlwtzIjPegFfP2UzM46jB/8x/xiL7d0nokoDFDoUceSDXALNs71ixBWyLiNsVmN
-	 HTtIycmwdGBJYmxdyQmMfBl30deShq5NCuGrAkI1+OA/7mJuDAmVgD8tJ0lgJYlt+q
-	 RQrlcwlOYKnLq8xpToOv2oCGcko6S/F7t0F0PcVyKWSz18S+68Su951o7UhXlnbVCE
-	 kL3Bw17MwxqqQ==
+	b=V79mi+oW3yCCrNi9mQn9RM0nXJYVZChENOtaJnOzxBLHnoWlaZv64owTRYOeceXK+
+	 VAB9bD3j96Pz2nE9oDwbB++iBXk9bVUJu9RsPInR6rtMmj6rXR7cfIDclv71ZYB6EI
+	 NRfaf6tdg41DMuX3IZIYD9OyxlKmTWF7OdAYPmT64xVrY83Kh/Yi+92REm7NDPSZxW
+	 KPGpXjekTZ6//XVDJhLjKwQnVJJiqUZYcdWdeLVjAf8zxdHw/LfdO9dLT/qyeRapB8
+	 qwKLRBxXMIJV2FGwv46v6MGdt3gzQ1xatJUOcKGkB6V5C2y/24DUKtooflTebISpVl
+	 VwL6I7gUxm2SQ==
 From: Bjorn Andersson <andersson@kernel.org>
-To: Vinod Koul <vkoul@kernel.org>,
-	Kishon Vijay Abraham I <kishon@kernel.org>,
+To: Konrad Dybcio <konradybcio@kernel.org>,
 	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
-	Dmitry Baryshkov <lumag@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Sibi Sankar <sibi.sankar@oss.qualcomm.com>,
-	Rajendra Nayak <quic_rjendra@quicinc.com>,
-	Abel Vesa <abel.vesa@oss.qualcomm.com>
-Cc: Neil Armstrong <neil.armstrong@linaro.org>,
+	Gaurav Kashyap <quic_gaurkash@quicinc.com>,
+	Melody Olvera <quic_molvera@quicinc.com>,
 	linux-arm-msm@vger.kernel.org,
-	linux-phy@lists.infradead.org,
 	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Abel Vesa <abelvesa@kernel.org>,
-	stable@vger.kernel.org
-Subject: Re: (subset) [PATCH RESEND v5 3/3] arm64: dts: qcom: x1e80100: Add missing TCSR ref clock to the DP PHYs
-Date: Mon,  5 Jan 2026 13:16:16 -0600
-Message-ID: <176764058413.2961867.6085786733249123604.b4-ty@kernel.org>
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Cc: stable@vger.kernel.org
+Subject: Re: [PATCH] arm64: qcom: sm8750: Fix BAM DMA probing
+Date: Mon,  5 Jan 2026 13:16:24 -0600
+Message-ID: <176764058419.2961867.6173748456448356571.b4-ty@kernel.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251224-phy-qcom-edp-add-missing-refclk-v5-3-3f45d349b5ac@oss.qualcomm.com>
-References: <20251224-phy-qcom-edp-add-missing-refclk-v5-0-3f45d349b5ac@oss.qualcomm.com> <20251224-phy-qcom-edp-add-missing-refclk-v5-3-3f45d349b5ac@oss.qualcomm.com>
+In-Reply-To: <20251229115734.205744-2-krzysztof.kozlowski@oss.qualcomm.com>
+References: <20251229115734.205744-2-krzysztof.kozlowski@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -74,22 +67,23 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 
 
-On Wed, 24 Dec 2025 12:53:29 +0200, Abel Vesa wrote:
-> The DP PHYs on X1E80100 need the ref clock which is provided by the
-> TCSR CC.
+On Mon, 29 Dec 2025 12:57:35 +0100, Krzysztof Kozlowski wrote:
+> Bindings always required "qcom,num-ees" and "num-channels" properties,
+> as reported by dtbs_check:
 > 
-> The current X Elite devices supported upstream work fine without this
-> clock, because the boot firmware leaves this clock enabled. But we should
-> not rely on that. Also, even though this change breaks the ABI, it is
-> needed in order to make the driver disables this clock along with the
-> other ones, for a proper bring-down of the entire PHY.
+>   sm8750-mtp.dtb: dma-controller@1dc4000 (qcom,bam-v1.7.4): 'anyOf' conditional failed, one must be fixed:
+>     'qcom,powered-remotely' is a required property
+>     'num-channels' is a required property
+>     'qcom,num-ees' is a required property
+>     'clocks' is a required property
+>     'clock-names' is a required property
 > 
 > [...]
 
 Applied, thanks!
 
-[3/3] arm64: dts: qcom: x1e80100: Add missing TCSR ref clock to the DP PHYs
-      commit: 0907cab01ff9746ecf08592edd9bd85d2636be58
+[1/1] arm64: qcom: sm8750: Fix BAM DMA probing
+      commit: 1c6192ec9c4ab8bdb7b2cf8763b7ef7e38671ffe
 
 Best regards,
 -- 
