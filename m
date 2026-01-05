@@ -1,115 +1,96 @@
-Return-Path: <stable+bounces-204713-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204717-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2316CF347B
-	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 12:35:57 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4E49CF34F3
+	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 12:41:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 21C8030B65C5
-	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 11:31:41 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DB21D30373B3
+	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 11:36:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDFBF33984A;
-	Mon,  5 Jan 2026 11:07:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC8F13161A9;
+	Mon,  5 Jan 2026 11:26:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B6akEFGn"
+	dkim=pass (2048-bit key) header.d=siemens.com header.i=jan.kiszka@siemens.com header.b="Bjrl0KLu"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mta-64-225.siemens.flowmailer.net (mta-64-225.siemens.flowmailer.net [185.136.64.225])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABD68339870
-	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 11:07:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A708329E69
+	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 11:26:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.136.64.225
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767611222; cv=none; b=aCWM6k9nNpFXC8OruPs5skH52Cuzi6GZU7dHHDSIj5IdaEtEMFGVGyiRb1m5PqM2t0vnCMrW+fyUWhbYm16k36gSp5ubgHsbgiZ++6yJEbRSA0aknwrJsq4E1xtNv6opnK6bze9n84RxZwdqfBCEB3dk9RKYViNSyFV3avs+Ke4=
+	t=1767612403; cv=none; b=RSO2VFs6/yNE7vKj2uvST/rVPz+jpLS8sTf20SzlUP+rSJ0MVNBV0Lh/pXAowsygOoWiiyDmQewJC7fI5rxKrO4n4yEIhGiGwGEKH4D1RvZHY4jVxiWi9T18qRcKK8OW//rS6W+497AzJ90VG6mdt+QxIOgni9qIjcKnH4/1ThE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767611222; c=relaxed/simple;
-	bh=muNZw63aL+wR6pfVZMen/3Ks5EK5/1kto729fYrL7Sk=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=PGwDsUNzdGwSZObjtHGVR7fD5Oj1GUnGxiHsHbrTrgshwTOCGGKfFReGL2jjM3gLmvlB65DSzzpQmmlSVno3lZa5+D47LhoNvH2qailaW+VyTIbCZf6cQlS1ULs04DUAhkdPPDju1QBlKVjPaWa1iH+SmDzCTiKc5eT1vCmFlFA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B6akEFGn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD3CFC116D0;
-	Mon,  5 Jan 2026 11:06:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767611220;
-	bh=muNZw63aL+wR6pfVZMen/3Ks5EK5/1kto729fYrL7Sk=;
-	h=Subject:To:Cc:From:Date:From;
-	b=B6akEFGnS+2GlUwdtLDHOtCsdP+lJhNMFScSPkfUBoAzt/UPeAx4zGVa13uaxq6Dt
-	 t/C2H/HqD46qSYzFN+EdG6qcIxbXthn8FhFQm2RS+HSR4lKLsQBIFR5V644Uj94GCB
-	 AZwuBRE6DIz7Qd2rnLN7sbgHyAvSjwqC78XOp6qI=
-Subject: FAILED: patch "[PATCH] mm/damon/tests/core-kunit: handle alloc failure on" failed to apply to 6.6-stable tree
-To: sj@kernel.org,akpm@linux-foundation.org,brendan.higgins@linux.dev,davidgow@google.com,stable@vger.kernel.org,wangkefeng.wang@huawei.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 05 Jan 2026 12:06:52 +0100
-Message-ID: <2026010552-thickness-copper-cc49@gregkh>
+	s=arc-20240116; t=1767612403; c=relaxed/simple;
+	bh=TDS5KiYlE+OV8vL/0T7qnbPj0yZ2MaXiKsyvvNu6Z9U=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sPy098HDM7Sw6aD6M/OnnpWDJdsjAQvFATP9PrxAShiU3zS7BgyMqj1Ylf6xXKTvnRgKz26KrLz+Xhpmdp+nzaIdgUiNgqhrEX3BVDY+i0qUuGjPliTs4QxcJLfjKMyVvpzXaMITPK18BonwX1sZHRKQFiLKnjqie9b4q2/Sdxw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com; dkim=pass (2048-bit key) header.d=siemens.com header.i=jan.kiszka@siemens.com header.b=Bjrl0KLu; arc=none smtp.client-ip=185.136.64.225
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com
+Received: by mta-64-225.siemens.flowmailer.net with ESMTPSA id 202601051116290f2f9a8ec6000207d3
+        for <stable@vger.kernel.org>;
+        Mon, 05 Jan 2026 12:16:30 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=fm1;
+ d=siemens.com; i=jan.kiszka@siemens.com;
+ h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Cc;
+ bh=ZtCgw+NRGu5rSbTjV408jt7hG/zRI1D3Ytl7rQF6fGA=;
+ b=Bjrl0KLuivek0UDLvspzK6kARD4G7IP6eXVQrVzUs8yUW/TOmMVhCZZ1O2Xklya5xnaJEI
+ AOcBqWXc+pdY6OXjI29pgPT0BNrRSZaXkQI9RgWlXikd2Kq9GxRTtZw1+mkbLIWmTi3AHoL6
+ lt9sI3+8vgVLd7S62bGEqOhcvG7Kz76/HwGf9e0kffnfWSMNPvP0w7ptH2PftcUkl+5Uyk1y
+ A5MRvVDw4/priqDkcaDAmRuqgmPih2Wjs+GE1GMhGvJex6dcQju5JuLQgrV3DewLiGIWPXdA
+ Bj9FUp1R6nAzFeIYN6tPa5HzRxHtqIDQNFrf1p0FT+4E0aJzvsKLrfJg==;
+From: Jan Kiszka <jan.kiszka@siemens.com>
+To: stable@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Felix Fietkau <nbd@nbd.name>,
+	Quan Zhou <quan.zhou@mediatek.com>
+Cc: Sasha Levin <sashal@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	linux-wireless@vger.kernel.org
+Subject: [PATCH 6.12 0/3] wifi: mt76: mt7925: fix suspend regression
+Date: Mon,  5 Jan 2026 12:16:25 +0100
+Message-ID: <cover.1767611788.git.jan.kiszka@siemens.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
+X-Flowmailer-Platform: Siemens
+Feedback-ID: 519:519-294854:519-21489:flowmailer
 
+Suspend to RAM with the mt7925 running is broken since 6.12.31 due to
+having ac3af695c4b0 without its dependencies. This brings them in as
+well.
 
-The patch below does not apply to the 6.6-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Jan
 
-To reproduce the conflict and resubmit, you may use the following commands:
+Quan Zhou (3):
+  wifi: mt76: mt7925: fix the unfinished command of regd_notifier before
+    suspend
+  wifi: mt76: mt7925: fix CLC command timeout when suspend/resume
+  wifi: mt76: mt7925: add handler to hif suspend/resume event
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
-git checkout FETCH_HEAD
-git cherry-pick -x 915a2453d824a9b6bf724e3f970d86ae1d092a61
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026010552-thickness-copper-cc49@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+ .../net/wireless/mediatek/mt76/mt7615/main.c  |  4 +-
+ .../net/wireless/mediatek/mt76/mt7615/pci.c   |  6 +--
+ .../net/wireless/mediatek/mt76/mt7615/sdio.c  |  4 +-
+ .../net/wireless/mediatek/mt76/mt7615/usb.c   |  4 +-
+ .../wireless/mediatek/mt76/mt76_connac_mcu.c  |  4 +-
+ .../wireless/mediatek/mt76/mt76_connac_mcu.h  |  3 +-
+ .../net/wireless/mediatek/mt76/mt7921/pci.c   |  6 +--
+ .../net/wireless/mediatek/mt76/mt7921/sdio.c  |  6 +--
+ .../net/wireless/mediatek/mt76/mt7921/usb.c   |  4 +-
+ .../net/wireless/mediatek/mt76/mt7925/init.c  | 24 +++++++--
+ .../net/wireless/mediatek/mt76/mt7925/mcu.c   | 49 ++++++++++++++++++-
+ .../wireless/mediatek/mt76/mt7925/mt7925.h    | 21 ++++++++
+ .../net/wireless/mediatek/mt76/mt7925/pci.c   | 33 ++++++++++---
+ .../net/wireless/mediatek/mt76/mt7925/usb.c   | 20 ++++++--
+ drivers/net/wireless/mediatek/mt76/mt792x.h   |  2 +
+ 15 files changed, 154 insertions(+), 36 deletions(-)
 
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 915a2453d824a9b6bf724e3f970d86ae1d092a61 Mon Sep 17 00:00:00 2001
-From: SeongJae Park <sj@kernel.org>
-Date: Sat, 1 Nov 2025 11:20:06 -0700
-Subject: [PATCH] mm/damon/tests/core-kunit: handle alloc failure on
- damon_test_set_attrs()
-
-damon_test_set_attrs() is assuming all dynamic memory allocation in it
-will succeed.  Those are indeed likely in the real use cases since those
-allocations are too small to fail, but theoretically those could fail.  In
-the case, inappropriate memory access can happen.  Fix it by appropriately
-cleanup pre-allocated memory and skip the execution of the remaining tests
-in the failure cases.
-
-Link: https://lkml.kernel.org/r/20251101182021.74868-13-sj@kernel.org
-Fixes: aa13779be6b7 ("mm/damon/core-test: add a test for damon_set_attrs()")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: Brendan Higgins <brendan.higgins@linux.dev>
-Cc: David Gow <davidgow@google.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: <stable@vger.kernel.org>	[6.5+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-
-diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
-index 10c9953581ee..b9bd69a57e62 100644
---- a/mm/damon/tests/core-kunit.h
-+++ b/mm/damon/tests/core-kunit.h
-@@ -465,6 +465,9 @@ static void damon_test_set_attrs(struct kunit *test)
- 		.sample_interval = 5000, .aggr_interval = 100000,};
- 	struct damon_attrs invalid_attrs;
- 
-+	if (!c)
-+		kunit_skip(test, "ctx alloc fail");
-+
- 	KUNIT_EXPECT_EQ(test, damon_set_attrs(c, &valid_attrs), 0);
- 
- 	invalid_attrs = valid_attrs;
+-- 
+2.51.0
 
 
