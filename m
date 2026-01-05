@@ -1,153 +1,157 @@
-Return-Path: <stable+bounces-204868-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204869-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28775CF501D
-	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 18:31:13 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76C12CF5079
+	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 18:41:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BAFAD301D332
-	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 17:31:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A1A7A30321E4
+	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 17:34:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D8BC33E345;
-	Mon,  5 Jan 2026 17:31:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1470B32BF42;
+	Mon,  5 Jan 2026 17:34:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uGfxZdmX"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ILNpMCE7"
 X-Original-To: stable@vger.kernel.org
 Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A44F33CE87
-	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 17:31:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7055B1FE45D
+	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 17:33:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767634268; cv=none; b=H0+04AsAySftB+rQxflsKWzyKDFUo5vzN4iP8yJpXoQqUDQbixZgqWr7GIGNz/6ExBo4EjKzIiPZyAc/fTGQ6KV49+T74OkNgr/99ovGtuMp8EqNomTgQWm8xX1IQiPcyo57jUynN5aicbpt8oxhKMUhnOEHIVl+5+xunI0Sf8w=
+	t=1767634440; cv=none; b=Ud5nUtbg9BMIU8tBcRPYwmd830pqKn8ZRX82Mb5+28k5VMkINv1dgi3X+dTTrDBggKwUNj73Kh/eE+dtZ4URIActLm88XKlw5EyY4Em/Jg5q9woWnHWR5ZEdBn80gzgf5ARtf2v8HhMsyhUBLl19X2cuboQ9Z1csm9FpB5+szB4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767634268; c=relaxed/simple;
-	bh=CxZ4OgJGj/k3K59SPvzFQSboJQlhCSm/PlRd8ioDSvI=;
+	s=arc-20240116; t=1767634440; c=relaxed/simple;
+	bh=FI/y3k70MGEsrWBmOco0n5n5y8bTb8Z/9pdkQyecoUw=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=bPQ5auCZN5xqqGqorKhGIBCJ6jpwOZ0/Di8UL7Po9SZz3Vw8pgCwHos/c4oWk5RsPWIK055/CKuLC7IxU9KO0NEDPQEOE6Sy3vT5Vrx0MFiItTzefneAxBpKRfqeEzPZSchbNLpZL2Oln+UNEhX3QGHECvqpdoJ447gucUGU8fs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uGfxZdmX; arc=none smtp.client-ip=209.85.216.74
+	 To:Cc:Content-Type; b=S+173KYtHWhvQEtsTuMDUSfKfXKYD1z5d29Ox7wlFnDpAyKLgJ43+ijHoI2b+1qXsBIFZOC5va8OPU77Jrm7W4GhHnAdssriPZz0ile7T9aZE2u/jPpgnkCATipJ+bzltgCv/UTbEba9AICQPMLWXukCpbUCrldJgmz1ykcpby0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--nktgrg.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ILNpMCE7; arc=none smtp.client-ip=209.85.216.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-34aa1d06456so671649a91.0
-        for <stable@vger.kernel.org>; Mon, 05 Jan 2026 09:31:07 -0800 (PST)
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--nktgrg.bounces.google.com
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-34c213419f5so174934a91.2
+        for <stable@vger.kernel.org>; Mon, 05 Jan 2026 09:33:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1767634267; x=1768239067; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1767634439; x=1768239239; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=8kSIPJzul/X8QFqPR13PL+AQ9eUnhoQcnkip5GRavHI=;
-        b=uGfxZdmX5TkKJXc+bdE8nuacRkRqvHrMEdWKdHhK0TaF2Jg/N8WbSzDB4qJjzP5SpG
-         yzI4bGE7H4Ara68Z7h7SO5xjFPYLnksdO1k7Qwu0EB8m/laUCCvqhfwzqE5KH0ZGUp/C
-         wWFDjmBs6r/+3WKOTByUl9XPyOMiJ2TkPZckDPEnqujzEp9Rtve8rJRgmBdRShlF09Ee
-         iOn1nTtgZk6EKaoc/eKCc4n2eOO6IMknbsse7Gl7WoYtGVwQLAMWee0sjX6MQiMfn9yj
-         ySyJQJ8k0B5HWdmsvLIsXVsjkprPYlsZabB9qfEfSGtxnahseilxbqeYZOKRj9xm8OJr
-         i/4w==
+        bh=IMKJH4+cAbmF7zR34yBcAd2WgEHbDH4oxuDfD1twveE=;
+        b=ILNpMCE7S3fvcUcwHqj8YBIVNilyUMnLER/Vbo+CtmTyOxqZ2HZgVqWDBexXIRqDtl
+         g2Dt/0wcIDIlw/HvlramDnQKuzqMhAZU7mUy4cuOzIDCha20g6wEwzaKowYkxNiL1Kdq
+         QdLNPLGHhdGmYBBLUnrGVxP6Srtk/xwZyY4jU8Km3P8ykww6PYw3EudtwGebtBDbtvfJ
+         0zGPIcYnvgU246aMTNtBlPfg1rP6PEaQ00g/ZP4RKXJ4+I0czf3u30jvbe9ZVv3N8qqn
+         wR62Sjpa6kKE8UxTUp+yPfx2Rt0MEmGfukFVbP2ZSp+Zz0JjOG+eeYhinHvvuhn+DmXw
+         VZNg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767634267; x=1768239067;
+        d=1e100.net; s=20230601; t=1767634439; x=1768239239;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=8kSIPJzul/X8QFqPR13PL+AQ9eUnhoQcnkip5GRavHI=;
-        b=blf2IgmvkDCOp5ipLn9ChLWnYjTcSqM/52wTPQPZSjZcUciKJx1LcoXKhG76uDGOdT
-         nPI3T3H45heW/FCQW/l3BrZwqe42AyHapfBbwcbFHKZ62B18XiS91Y+sLJVz+gOo5dNz
-         kY9+TwHEChd7zjsBWRZoy0v3hxyelL7o9NBQPsmQStt6lYOS8x3Z+UVKEN2L6BvI0Wue
-         d0vke5ARZM6uY+dqsDokUucZDnG75Kg8UUTbLIh/N8/vGrQiaCVKbvDD2qAYsc5Cg6UG
-         6tZzwCD6r1k6d+ScghIb6TAfVRKQTTqI4rWg56DUuleSWFG5b0b5Ybzm60FCxOAglCaS
-         leZg==
-X-Forwarded-Encrypted: i=1; AJvYcCWhAfmO1/tY6GA2l6om2qwiYuoWrzjD8WOo0GiZ6I09MYwCa4V3o99v/qYQ+c1x7rETTLADVOY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwlPH9KaI12sMnjAPEaRVoQfitiW5UCqbSNrGV8suRqzfySDwX6
-	XxGj8ERIXnx/nLRdcCkbrDaHfZYtjq2CJLnzMUp2NaHNF7dBBzPDF6Qu7nL6wIgurJxtwRGRW4K
-	IVcAQzA==
-X-Google-Smtp-Source: AGHT+IFNFCW51z5uQhSMaKAD/3SNzpI333xLiv4+CS5A7/6N6OYcuHjrQA1qzr3I/rduC2hfHA1d6uzkn6Q=
-X-Received: from pjok2.prod.google.com ([2002:a17:90a:9102:b0:34a:bcb2:43ba])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3c46:b0:340:5c27:a096
- with SMTP id 98e67ed59e1d1-34f5f273bebmr106658a91.6.1767634266701; Mon, 05
- Jan 2026 09:31:06 -0800 (PST)
-Date: Mon, 5 Jan 2026 09:31:05 -0800
-In-Reply-To: <aig6cfdj7vxmm5yt6lvfsyqwlnavrcl2n4z3gzomqydce5suxm@ydomfhhmwd7y>
+        bh=IMKJH4+cAbmF7zR34yBcAd2WgEHbDH4oxuDfD1twveE=;
+        b=Eot2Fwn6Fq7BSEuQ9V+AmoK9Br5SSfAR8i90nIGxm4b5KafeaRUeSMZk47rfrVeODQ
+         1xKI7hG75qHAKH8C+2Gr5WyvLHnhuScJI6N4ZuAIaJfdljDZNOx/eOtvf8VQswzPdOgT
+         zR7CgjnH1qAqLLkODen5jVIgmbwRqqgR2chcaLurLe1EAx16DxTTKNDoB5xQmJdAVwPg
+         jKgfOMlUcubi176owgTDaChjCe13PKhJyZE2stFa9FO1pDHiK9ZPK17iZ86LYRudqi+1
+         NTQhKLL4OXvebOTzu3R8xAzMaiLHZmRG+O2a48571atCRduY1rVwiDlj0F4dju5QWvSX
+         oDKA==
+X-Gm-Message-State: AOJu0Yykv0zU2zxC+G5ZyrNoCGKOZBYlNhOzQ2gnMdJEO16jtrmxNvDV
+	xU/sFQsQmcM6Vx6XMr9gbRSHOXpIWjVgFN+mUy+hQryc7MEIVlJwzj/9cETLTxaQJCVbKDb8GTq
+	foCuqWVtkwWHTo2srYxpId04HbAW3pwC+G9YovBAhNLQzzceAWwhAQBr8lngHHR87pRD5n6vEuf
+	Gm6DS6J4lbW2v9wle3pvfBGsyHl4Rv5qV50Yex
+X-Google-Smtp-Source: AGHT+IEZXN8L9YVjHhkLypoRKfnVHlDnIiIGr0zmf5DOsS35ZB7lQ9cER4vb0gEIHtR3rfULdNVYtJaQGVg=
+X-Received: from dlbvv19.prod.google.com ([2002:a05:7022:5f13:b0:11d:cf4c:62ab])
+ (user=nktgrg job=prod-delivery.src-stubby-dispatcher) by 2002:a05:7022:629d:b0:119:e56b:98bf
+ with SMTP id a92af1059eb24-121f18f09c4mr70065c88.38.1767634438441; Mon, 05
+ Jan 2026 09:33:58 -0800 (PST)
+Date: Mon,  5 Jan 2026 17:32:54 +0000
+In-Reply-To: <2026010559-clock-gore-94e2@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260101090516.316883-1-pbonzini@redhat.com> <20260101090516.316883-2-pbonzini@redhat.com>
- <aig6cfdj7vxmm5yt6lvfsyqwlnavrcl2n4z3gzomqydce5suxm@ydomfhhmwd7y>
-Message-ID: <aVv1WTR9Zsx2FpZ0@google.com>
-Subject: Re: [PATCH 1/4] x86/fpu: Clear XSTATE_BV[i] in save state whenever XFD[i]=1
-From: Sean Christopherson <seanjc@google.com>
-To: Yao Yuan <yaoyuan0329os@gmail.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	x86@kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+References: <2026010559-clock-gore-94e2@gregkh>
+X-Mailer: git-send-email 2.52.0.351.gbe84eed79e-goog
+Message-ID: <20260105173254.1676720-1-nktgrg@google.com>
+Subject: [PATCH 6.12.y] gve: defer interrupt enabling until NAPI registration
+From: Ankit Garg <nktgrg@google.com>
+To: stable@vger.kernel.org
+Cc: Ankit Garg <nktgrg@google.com>, Jordan Rhee <jordanrhee@google.com>, 
+	Joshua Washington <joshwash@google.com>, Harshitha Ramamurthy <hramamurthy@google.com>, 
+	Paolo Abeni <pabeni@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Sat, Jan 03, 2026, Yao Yuan wrote:
-> On Thu, Jan 01, 2026 at 10:05:13AM +0100, Paolo Bonzini wrote:
-> > diff --git a/arch/x86/kernel/fpu/core.c b/arch/x86/kernel/fpu/core.c
-> > index da233f20ae6f..166c380b0161 100644
-> > --- a/arch/x86/kernel/fpu/core.c
-> > +++ b/arch/x86/kernel/fpu/core.c
-> > @@ -319,10 +319,29 @@ EXPORT_SYMBOL_FOR_KVM(fpu_enable_guest_xfd_features);
-> >  #ifdef CONFIG_X86_64
-> >  void fpu_update_guest_xfd(struct fpu_guest *guest_fpu, u64 xfd)
-> >  {
-> > +	struct fpstate *fpstate = guest_fpu->fpstate;
-> > +
-> >  	fpregs_lock();
-> > -	guest_fpu->fpstate->xfd = xfd;
-> > -	if (guest_fpu->fpstate->in_use)
-> > -		xfd_update_state(guest_fpu->fpstate);
-> > +
-> > +	/*
-> > +	 * KVM's guest ABI is that setting XFD[i]=1 *can* immediately revert
-> > +	 * the save state to initialized.  Likewise, KVM_GET_XSAVE does the
-> > +	 * same as XSAVE and returns XSTATE_BV[i]=0 whenever XFD[i]=1.
-> > +	 *
-> > +	 * If the guest's FPU state is in hardware, just update XFD: the XSAVE
-> > +	 * in fpu_swap_kvm_fpstate will clear XSTATE_BV[i] whenever XFD[i]=1.
-> > +	 *
-> > +	 * If however the guest's FPU state is NOT resident in hardware, clear
-> > +	 * disabled components in XSTATE_BV now, or a subsequent XRSTOR will
-> > +	 * attempt to load disabled components and generate #NM _in the host_.
-> > +	 */
-> 
-> Hi Sean and Paolo,
-> 
-> > +	if (xfd && test_thread_flag(TIF_NEED_FPU_LOAD))
-> > +		fpstate->regs.xsave.header.xfeatures &= ~xfd;
-> > +
-> > +	fpstate->xfd = xfd;
-> > +	if (fpstate->in_use)
-> > +		xfd_update_state(fpstate);
-> 
-> I see a *small* window that the Host IRQ can happen just after above
-> TIF_NEED_FPU_LOAD checking, which could set TIF_NEED_FPU_LOAD
+Currently, interrupts are automatically enabled immediately upon
+request. This allows interrupt to fire before the associated NAPI
+context is fully initialized and cause failures like below:
 
-Only if the code using FPU from IRQ context is buggy.  More below.
+[    0.946369] Call Trace:
+[    0.946369]  <IRQ>
+[    0.946369]  __napi_poll+0x2a/0x1e0
+[    0.946369]  net_rx_action+0x2f9/0x3f0
+[    0.946369]  handle_softirqs+0xd6/0x2c0
+[    0.946369]  ? handle_edge_irq+0xc1/0x1b0
+[    0.946369]  __irq_exit_rcu+0xc3/0xe0
+[    0.946369]  common_interrupt+0x81/0xa0
+[    0.946369]  </IRQ>
+[    0.946369]  <TASK>
+[    0.946369]  asm_common_interrupt+0x22/0x40
+[    0.946369] RIP: 0010:pv_native_safe_halt+0xb/0x10
 
-> but w/o clear the xfd from fpstate->regs.xsave.header.xfeatures.
-> 
-> But there's WARN in in kernel_fpu_begin_mask():
-> 
-> 	WARN_ON_FPU(!irq_fpu_usable());
-> 
-> irq_fpu_usable()
-> {
-> 	...
-> 	/*
-> 	 * In hard interrupt context it's safe when soft interrupts
-> 	 * are enabled, which means the interrupt did not hit in
-> 	 * a fpregs_lock()'ed critical region.
-> 	 */
-> 	return !softirq_count();
-> }
-> 
-> Looks we are relying on this to catch the above *small* window
-> yet, we're in fpregs_lock() region yet.
+Use the `IRQF_NO_AUTOEN` flag when requesting interrupts to prevent auto
+enablement and explicitly enable the interrupt in NAPI initialization
+path (and disable it during NAPI teardown).
 
-Kernel use of FPU from (soft) IRQ context is required to check irq_fpu_usable()
-(e.g. via may_use_simd()), i.e. calling fpregs_lock() protects against the kernel
-using the FPU and thus setting TIF_NEED_FPU_LOAD.
+This ensures that interrupt lifecycle is strictly coupled with
+readiness of NAPI context.
 
-The WARN in kernel_fpu_begin_mask() is purely a sanity check to help detect and
-debug buggy users.
+Cc: stable@vger.kernel.org
+Fixes: 1dfc2e46117e ("gve: Refactor napi add and remove functions")
+Signed-off-by: Ankit Garg <nktgrg@google.com>
+Reviewed-by: Jordan Rhee <jordanrhee@google.com>
+Reviewed-by: Joshua Washington <joshwash@google.com>
+Signed-off-by: Harshitha Ramamurthy <hramamurthy@google.com>
+Link: https://patch.msgid.link/20251219102945.2193617-1-hramamurthy@google.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+
+(cherry picked from commit 3d970eda003441f66551a91fda16478ac0711617)
+---
+ drivers/net/ethernet/google/gve/gve_main.c  | 2 +-
+ drivers/net/ethernet/google/gve/gve_utils.c | 2 ++
+ 2 files changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/ethernet/google/gve/gve_main.c b/drivers/net/ethernet/google/gve/gve_main.c
+index 497a19ca198d..43d0c40de5fc 100644
+--- a/drivers/net/ethernet/google/gve/gve_main.c
++++ b/drivers/net/ethernet/google/gve/gve_main.c
+@@ -500,7 +500,7 @@ static int gve_alloc_notify_blocks(struct gve_priv *priv)
+ 		block->priv = priv;
+ 		err = request_irq(priv->msix_vectors[msix_idx].vector,
+ 				  gve_is_gqi(priv) ? gve_intr : gve_intr_dqo,
+-				  0, block->name, block);
++				  IRQF_NO_AUTOEN, block->name, block);
+ 		if (err) {
+ 			dev_err(&priv->pdev->dev,
+ 				"Failed to receive msix vector %d\n", i);
+diff --git a/drivers/net/ethernet/google/gve/gve_utils.c b/drivers/net/ethernet/google/gve/gve_utils.c
+index 2349750075a5..90805ab65f92 100644
+--- a/drivers/net/ethernet/google/gve/gve_utils.c
++++ b/drivers/net/ethernet/google/gve/gve_utils.c
+@@ -111,11 +111,13 @@ void gve_add_napi(struct gve_priv *priv, int ntfy_idx,
+ 	struct gve_notify_block *block = &priv->ntfy_blocks[ntfy_idx];
+ 
+ 	netif_napi_add(priv->dev, &block->napi, gve_poll);
++	enable_irq(block->irq);
+ }
+ 
+ void gve_remove_napi(struct gve_priv *priv, int ntfy_idx)
+ {
+ 	struct gve_notify_block *block = &priv->ntfy_blocks[ntfy_idx];
+ 
++	disable_irq(block->irq);
+ 	netif_napi_del(&block->napi);
+ }
+-- 
+2.52.0.351.gbe84eed79e-goog
+
 
