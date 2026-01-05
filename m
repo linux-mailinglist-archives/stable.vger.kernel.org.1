@@ -1,110 +1,370 @@
-Return-Path: <stable+bounces-204808-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204809-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D44ECF419D
-	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 15:27:33 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE560CF41A0
+	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 15:27:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4F121300D324
-	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 14:27:32 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 270453007652
+	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 14:27:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD9E51F12E9;
-	Mon,  5 Jan 2026 14:27:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B6CA244667;
+	Mon,  5 Jan 2026 14:27:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="MiOqiS63"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A2bLfYeQ"
 X-Original-To: stable@vger.kernel.org
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D02419CCFC;
-	Mon,  5 Jan 2026 14:27:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B66622FDEA
+	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 14:27:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767623250; cv=none; b=TOVIpCIz8Zugd/vcW906XKC+IbTZ7AZNUT4LY2XzSz4N0hfpcgcJwFMIUAZU8kF1Kpl2mL2ET6WLSwxMx9zs8HEr/hDVnuEFJ4VEBFn7jVjVN5HAuH9i5epjFMKYulvV6nJft0oCWoEJLIQH2pbRWYl9UK8FewKsCCAbnKbw4iU=
+	t=1767623251; cv=none; b=uw5qQNueuQwTzYL1j0Ig3yvoykx/pYoU1XJXKT7lvkx9woGPpiL7a4POcZOlNQW7x/+kPKj+rf3JME4cW4IsTIgNpJvUEMS7dyu37qdwiI+0K0X9lRhzUKfe0n0p3paSN4DwnqzVLNfJ0L/kW5FrB0I+ci8VL3NyadnSK7bfzGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767623250; c=relaxed/simple;
-	bh=DdYhTjNfP7e1khLO0LP+NDeTBRyadztgwywclnHYJSs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QzjvUu3Ycy0Ua9l3UkxfdvEZ9zvowcsGexD+p35UZdKMVfbjtnI+46b4z0e/K62zBgcF8WWERMbAvxtMgxU4TBP0QfIrSbI3mNvDw72QdSRnKsUd5dShWGb5ulrr+TACQJg8VXR2S/aiuxVkziczH4lXJSgXYHCLjGiKyXN9Y6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=MiOqiS63; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=r/xnRq6aPfliQavgZCSwZnJjF/QATt/NHvsM2dpp6t4=; b=MiOqiS63aY1JBxBuaXgV/E9PeG
-	bZ98oa2Rbel/LNh8KsP8+5PemWupQP1pija3Bymo6FHYWjb8TkUCD9YEl9ndLUndxM3huRUzsYDvL
-	NBUPNEomxgT4Lz/xMiACoeHMK7iBZAo1zVAmc/yn+1LoYAohw4SMztq/XAxAhhJplCusr897/itIB
-	SpG5AdXz5aEluw7rNXsMWtZB6C/D0szI0OvpkOnnL+qJtbyvk9e0LwlHf/X0V3IwdiMGIEJRIVDYw
-	CUB2YqNSYmZwN6R5ZCv831t5t8OFbYKAfov7BRppB2aFHl/3IwLO92BPPgPA+tDROQla5/2HnLY0a
-	HLWS23MQ==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:45724)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1vclYF-000000007vq-0TS5;
-	Mon, 05 Jan 2026 14:27:19 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1vclYC-000000007v5-1gLe;
-	Mon, 05 Jan 2026 14:27:16 +0000
-Date: Mon, 5 Jan 2026 14:27:16 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Breno Leitao <leitao@debian.org>
-Cc: Michael Chan <michael.chan@broadcom.com>,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, kernel-team@meta.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH net v2] bnxt_en: Fix NULL pointer crash in
- bnxt_ptp_enable during error cleanup
-Message-ID: <aVvKRGcSWb1muZ-k@shell.armlinux.org.uk>
-References: <20260105-bnxt-v2-1-9ac69edef726@debian.org>
- <aVu8xIfFrIIFqR0P@shell.armlinux.org.uk>
- <ft63jjhpr2w5s6cdpriixbmmxft5phkvui25pdy46vexpawzz6@mu6gblhm7ofv>
+	s=arc-20240116; t=1767623251; c=relaxed/simple;
+	bh=KVgAPbIp9WVnb7JVBAVYbbUuLCjmcYXbNMhAWsk/g7k=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=LSE+YBfgmHmO1tyUHJd1MUVR6LgJ/5/O5lNvO3h3bHIG++PPnfdRAQGPe0Xf0nabNtOFSWYlGHtjD8z5/Dng1I9T648CYeLvlHh9g6ZMyEK7NvJ1c4+jYTYDXNhRQZxc8t5azgYsWFk3tVfd8CYlKs/TgLrbkdpovxsTI86Fa5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A2bLfYeQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85036C19421;
+	Mon,  5 Jan 2026 14:27:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767623251;
+	bh=KVgAPbIp9WVnb7JVBAVYbbUuLCjmcYXbNMhAWsk/g7k=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=A2bLfYeQ6wsiLHGh44GDFr83uw4RZY01uPlHGQY5fdByjjgjIrrOGYIbJfPucEQXu
+	 aW3FF7ea1aw/GYbQ4+0BirHJTBaA2IorUpeQX7Ry+gk70GA7rhvVz7LUZx+prGPWGx
+	 iRSmGJXH63Nt52ry4DfDOEL5kavP3nqQPQ0jjUe3fvRBjV029rhAZV+jg9aIOTX/XI
+	 uloOfzhgVPVXiXeLcILXjLOFAOxrMppZn2Pei7A/R1OON0yTPwg3gcrhXbGbVgV02v
+	 IN/D6Un8KzinZ6SngmIn4xsZMmmncJqDAauGXngxKZpwQspPQJoOCo185KFsbXutzD
+	 8U7OSwrSpo5uA==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15.y 1/3] ASoC: stm: Use dev_err_probe() helper
+Date: Mon,  5 Jan 2026 09:27:26 -0500
+Message-ID: <20260105142728.2602716-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2026010531-vendor-unissued-6b5a@gregkh>
+References: <2026010531-vendor-unissued-6b5a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ft63jjhpr2w5s6cdpriixbmmxft5phkvui25pdy46vexpawzz6@mu6gblhm7ofv>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+Content-Transfer-Encoding: 8bit
 
-On Mon, Jan 05, 2026 at 06:11:26AM -0800, Breno Leitao wrote:
-> Hello Russell,
-> 
-> On Mon, Jan 05, 2026 at 01:29:40PM +0000, Russell King (Oracle) wrote:
-> > On Mon, Jan 05, 2026 at 04:00:16AM -0800, Breno Leitao wrote:
-> > My guess is that this has something to do with firmware, and maybe
-> > upgrading it at runtime - so if the firmware gets upgraded to a
-> > version that doesn't support PTP, the driver removes PTP. However,
-> > can PTP be used while firmware is being upgraded, and what happens
-> > if, e.g. bnxt_ptp_enable() were called mid-upgrade? Would that be
-> > safe?
-> 
-> This crash happened at boot time, when the kernel was having another
-> at DMA path, which was triggering this bug. There was no firmare upgrade
-> at all. Just rebooting the machine with 6.19 was crashing everytime due
-> to the early failure to initialize the driver.
+From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 
-Please read my email again. I wasn't questioning _when_ the problem you
-were seeing was occuring. I was questioning the overall structural
-quality of the driver, suggesting that there are further issues with it
-around PTP.
+[ Upstream commit efc162cbd480f1fb47d439c193ec9731bcc6c749 ]
 
+Use the dev_err_probe() helper, instead of open-coding the same
+operation.
+
+Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Link: https://lore.kernel.org/r/20211214020843.2225831-22-kuninori.morimoto.gx@renesas.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 312ec2f0d9d1 ("ASoC: stm32: sai: fix clk prepare imbalance on probe failure")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ sound/soc/stm/stm32_i2s.c     | 62 ++++++++++++-----------------------
+ sound/soc/stm/stm32_sai.c     | 37 ++++++++-------------
+ sound/soc/stm/stm32_sai_sub.c | 25 +++++---------
+ sound/soc/stm/stm32_spdifrx.c | 44 +++++++++----------------
+ 4 files changed, 57 insertions(+), 111 deletions(-)
+
+diff --git a/sound/soc/stm/stm32_i2s.c b/sound/soc/stm/stm32_i2s.c
+index 717f45a83445..08db73c2ed78 100644
+--- a/sound/soc/stm/stm32_i2s.c
++++ b/sound/soc/stm/stm32_i2s.c
+@@ -1044,36 +1044,24 @@ static int stm32_i2s_parse_dt(struct platform_device *pdev,
+ 
+ 	/* Get clocks */
+ 	i2s->pclk = devm_clk_get(&pdev->dev, "pclk");
+-	if (IS_ERR(i2s->pclk)) {
+-		if (PTR_ERR(i2s->pclk) != -EPROBE_DEFER)
+-			dev_err(&pdev->dev, "Could not get pclk: %ld\n",
+-				PTR_ERR(i2s->pclk));
+-		return PTR_ERR(i2s->pclk);
+-	}
++	if (IS_ERR(i2s->pclk))
++		return dev_err_probe(&pdev->dev, PTR_ERR(i2s->pclk),
++				     "Could not get pclk\n");
+ 
+ 	i2s->i2sclk = devm_clk_get(&pdev->dev, "i2sclk");
+-	if (IS_ERR(i2s->i2sclk)) {
+-		if (PTR_ERR(i2s->i2sclk) != -EPROBE_DEFER)
+-			dev_err(&pdev->dev, "Could not get i2sclk: %ld\n",
+-				PTR_ERR(i2s->i2sclk));
+-		return PTR_ERR(i2s->i2sclk);
+-	}
++	if (IS_ERR(i2s->i2sclk))
++		return dev_err_probe(&pdev->dev, PTR_ERR(i2s->i2sclk),
++				     "Could not get i2sclk\n");
+ 
+ 	i2s->x8kclk = devm_clk_get(&pdev->dev, "x8k");
+-	if (IS_ERR(i2s->x8kclk)) {
+-		if (PTR_ERR(i2s->x8kclk) != -EPROBE_DEFER)
+-			dev_err(&pdev->dev, "Could not get x8k parent clock: %ld\n",
+-				PTR_ERR(i2s->x8kclk));
+-		return PTR_ERR(i2s->x8kclk);
+-	}
++	if (IS_ERR(i2s->x8kclk))
++		return dev_err_probe(&pdev->dev, PTR_ERR(i2s->x8kclk),
++				     "Could not get x8k parent clock\n");
+ 
+ 	i2s->x11kclk = devm_clk_get(&pdev->dev, "x11k");
+-	if (IS_ERR(i2s->x11kclk)) {
+-		if (PTR_ERR(i2s->x11kclk) != -EPROBE_DEFER)
+-			dev_err(&pdev->dev, "Could not get x11k parent clock: %ld\n",
+-				PTR_ERR(i2s->x11kclk));
+-		return PTR_ERR(i2s->x11kclk);
+-	}
++	if (IS_ERR(i2s->x11kclk))
++		return dev_err_probe(&pdev->dev, PTR_ERR(i2s->x11kclk),
++				     "Could not get x11k parent clock\n");
+ 
+ 	/* Register mclk provider if requested */
+ 	if (of_find_property(np, "#clock-cells", NULL)) {
+@@ -1096,12 +1084,10 @@ static int stm32_i2s_parse_dt(struct platform_device *pdev,
+ 
+ 	/* Reset */
+ 	rst = devm_reset_control_get_optional_exclusive(&pdev->dev, NULL);
+-	if (IS_ERR(rst)) {
+-		if (PTR_ERR(rst) != -EPROBE_DEFER)
+-			dev_err(&pdev->dev, "Reset controller error %ld\n",
+-				PTR_ERR(rst));
+-		return PTR_ERR(rst);
+-	}
++	if (IS_ERR(rst))
++		return dev_err_probe(&pdev->dev, PTR_ERR(rst),
++				     "Reset controller error\n");
++
+ 	reset_control_assert(rst);
+ 	udelay(2);
+ 	reset_control_deassert(rst);
+@@ -1143,19 +1129,13 @@ static int stm32_i2s_probe(struct platform_device *pdev)
+ 
+ 	i2s->regmap = devm_regmap_init_mmio_clk(&pdev->dev, "pclk",
+ 						i2s->base, i2s->regmap_conf);
+-	if (IS_ERR(i2s->regmap)) {
+-		if (PTR_ERR(i2s->regmap) != -EPROBE_DEFER)
+-			dev_err(&pdev->dev, "Regmap init error %ld\n",
+-				PTR_ERR(i2s->regmap));
+-		return PTR_ERR(i2s->regmap);
+-	}
++	if (IS_ERR(i2s->regmap))
++		return dev_err_probe(&pdev->dev, PTR_ERR(i2s->regmap),
++				     "Regmap init error\n");
+ 
+ 	ret = snd_dmaengine_pcm_register(&pdev->dev, &stm32_i2s_pcm_config, 0);
+-	if (ret) {
+-		if (ret != -EPROBE_DEFER)
+-			dev_err(&pdev->dev, "PCM DMA register error %d\n", ret);
+-		return ret;
+-	}
++	if (ret)
++		return dev_err_probe(&pdev->dev, ret, "PCM DMA register error\n");
+ 
+ 	ret = snd_soc_register_component(&pdev->dev, &stm32_i2s_component,
+ 					 i2s->dai_drv, 1);
+diff --git a/sound/soc/stm/stm32_sai.c b/sound/soc/stm/stm32_sai.c
+index 058757c721f0..8e21e6f886fc 100644
+--- a/sound/soc/stm/stm32_sai.c
++++ b/sound/soc/stm/stm32_sai.c
+@@ -173,29 +173,20 @@ static int stm32_sai_probe(struct platform_device *pdev)
+ 
+ 	if (!STM_SAI_IS_F4(sai)) {
+ 		sai->pclk = devm_clk_get(&pdev->dev, "pclk");
+-		if (IS_ERR(sai->pclk)) {
+-			if (PTR_ERR(sai->pclk) != -EPROBE_DEFER)
+-				dev_err(&pdev->dev, "missing bus clock pclk: %ld\n",
+-					PTR_ERR(sai->pclk));
+-			return PTR_ERR(sai->pclk);
+-		}
++		if (IS_ERR(sai->pclk))
++			return dev_err_probe(&pdev->dev, PTR_ERR(sai->pclk),
++					     "missing bus clock pclk\n");
+ 	}
+ 
+ 	sai->clk_x8k = devm_clk_get(&pdev->dev, "x8k");
+-	if (IS_ERR(sai->clk_x8k)) {
+-		if (PTR_ERR(sai->clk_x8k) != -EPROBE_DEFER)
+-			dev_err(&pdev->dev, "missing x8k parent clock: %ld\n",
+-				PTR_ERR(sai->clk_x8k));
+-		return PTR_ERR(sai->clk_x8k);
+-	}
++	if (IS_ERR(sai->clk_x8k))
++		return dev_err_probe(&pdev->dev, PTR_ERR(sai->clk_x8k),
++				     "missing x8k parent clock\n");
+ 
+ 	sai->clk_x11k = devm_clk_get(&pdev->dev, "x11k");
+-	if (IS_ERR(sai->clk_x11k)) {
+-		if (PTR_ERR(sai->clk_x11k) != -EPROBE_DEFER)
+-			dev_err(&pdev->dev, "missing x11k parent clock: %ld\n",
+-				PTR_ERR(sai->clk_x11k));
+-		return PTR_ERR(sai->clk_x11k);
+-	}
++	if (IS_ERR(sai->clk_x11k))
++		return dev_err_probe(&pdev->dev, PTR_ERR(sai->clk_x11k),
++				     "missing x11k parent clock\n");
+ 
+ 	/* init irqs */
+ 	sai->irq = platform_get_irq(pdev, 0);
+@@ -204,12 +195,10 @@ static int stm32_sai_probe(struct platform_device *pdev)
+ 
+ 	/* reset */
+ 	rst = devm_reset_control_get_optional_exclusive(&pdev->dev, NULL);
+-	if (IS_ERR(rst)) {
+-		if (PTR_ERR(rst) != -EPROBE_DEFER)
+-			dev_err(&pdev->dev, "Reset controller error %ld\n",
+-				PTR_ERR(rst));
+-		return PTR_ERR(rst);
+-	}
++	if (IS_ERR(rst))
++		return dev_err_probe(&pdev->dev, PTR_ERR(rst),
++				     "Reset controller error\n");
++
+ 	reset_control_assert(rst);
+ 	udelay(2);
+ 	reset_control_deassert(rst);
+diff --git a/sound/soc/stm/stm32_sai_sub.c b/sound/soc/stm/stm32_sai_sub.c
+index d71b4aecd269..0db307cdb825 100644
+--- a/sound/soc/stm/stm32_sai_sub.c
++++ b/sound/soc/stm/stm32_sai_sub.c
+@@ -1379,12 +1379,9 @@ static int stm32_sai_sub_parse_of(struct platform_device *pdev,
+ 	 */
+ 	sai->regmap = devm_regmap_init_mmio(&pdev->dev, base,
+ 					    sai->regmap_config);
+-	if (IS_ERR(sai->regmap)) {
+-		if (PTR_ERR(sai->regmap) != -EPROBE_DEFER)
+-			dev_err(&pdev->dev, "Regmap init error %ld\n",
+-				PTR_ERR(sai->regmap));
+-		return PTR_ERR(sai->regmap);
+-	}
++	if (IS_ERR(sai->regmap))
++		return dev_err_probe(&pdev->dev, PTR_ERR(sai->regmap),
++				     "Regmap init error\n");
+ 
+ 	/* Get direction property */
+ 	if (of_property_match_string(np, "dma-names", "tx") >= 0) {
+@@ -1472,12 +1469,9 @@ static int stm32_sai_sub_parse_of(struct platform_device *pdev,
+ 
+ 	of_node_put(args.np);
+ 	sai->sai_ck = devm_clk_get(&pdev->dev, "sai_ck");
+-	if (IS_ERR(sai->sai_ck)) {
+-		if (PTR_ERR(sai->sai_ck) != -EPROBE_DEFER)
+-			dev_err(&pdev->dev, "Missing kernel clock sai_ck: %ld\n",
+-				PTR_ERR(sai->sai_ck));
+-		return PTR_ERR(sai->sai_ck);
+-	}
++	if (IS_ERR(sai->sai_ck))
++		return dev_err_probe(&pdev->dev, PTR_ERR(sai->sai_ck),
++				     "Missing kernel clock sai_ck\n");
+ 
+ 	ret = clk_prepare(sai->pdata->pclk);
+ 	if (ret < 0)
+@@ -1551,11 +1545,8 @@ static int stm32_sai_sub_probe(struct platform_device *pdev)
+ 		conf = &stm32_sai_pcm_config_spdif;
+ 
+ 	ret = snd_dmaengine_pcm_register(&pdev->dev, conf, 0);
+-	if (ret) {
+-		if (ret != -EPROBE_DEFER)
+-			dev_err(&pdev->dev, "Could not register pcm dma\n");
+-		return ret;
+-	}
++	if (ret)
++		return dev_err_probe(&pdev->dev, ret, "Could not register pcm dma\n");
+ 
+ 	ret = snd_soc_register_component(&pdev->dev, &stm32_component,
+ 					 &sai->cpu_dai_drv, 1);
+diff --git a/sound/soc/stm/stm32_spdifrx.c b/sound/soc/stm/stm32_spdifrx.c
+index e3d6258afbac..80f7761cbcb7 100644
+--- a/sound/soc/stm/stm32_spdifrx.c
++++ b/sound/soc/stm/stm32_spdifrx.c
+@@ -405,12 +405,9 @@ static int stm32_spdifrx_dma_ctrl_register(struct device *dev,
+ 	int ret;
+ 
+ 	spdifrx->ctrl_chan = dma_request_chan(dev, "rx-ctrl");
+-	if (IS_ERR(spdifrx->ctrl_chan)) {
+-		if (PTR_ERR(spdifrx->ctrl_chan) != -EPROBE_DEFER)
+-			dev_err(dev, "dma_request_slave_channel error %ld\n",
+-				PTR_ERR(spdifrx->ctrl_chan));
+-		return PTR_ERR(spdifrx->ctrl_chan);
+-	}
++	if (IS_ERR(spdifrx->ctrl_chan))
++		return dev_err_probe(dev, PTR_ERR(spdifrx->ctrl_chan),
++				     "dma_request_slave_channel error\n");
+ 
+ 	spdifrx->dmab = devm_kzalloc(dev, sizeof(struct snd_dma_buffer),
+ 				     GFP_KERNEL);
+@@ -929,12 +926,9 @@ static int stm32_spdifrx_parse_of(struct platform_device *pdev,
+ 	spdifrx->phys_addr = res->start;
+ 
+ 	spdifrx->kclk = devm_clk_get(&pdev->dev, "kclk");
+-	if (IS_ERR(spdifrx->kclk)) {
+-		if (PTR_ERR(spdifrx->kclk) != -EPROBE_DEFER)
+-			dev_err(&pdev->dev, "Could not get kclk: %ld\n",
+-				PTR_ERR(spdifrx->kclk));
+-		return PTR_ERR(spdifrx->kclk);
+-	}
++	if (IS_ERR(spdifrx->kclk))
++		return dev_err_probe(&pdev->dev, PTR_ERR(spdifrx->kclk),
++				     "Could not get kclk\n");
+ 
+ 	spdifrx->irq = platform_get_irq(pdev, 0);
+ 	if (spdifrx->irq < 0)
+@@ -985,12 +979,9 @@ static int stm32_spdifrx_probe(struct platform_device *pdev)
+ 	spdifrx->regmap = devm_regmap_init_mmio_clk(&pdev->dev, "kclk",
+ 						    spdifrx->base,
+ 						    spdifrx->regmap_conf);
+-	if (IS_ERR(spdifrx->regmap)) {
+-		if (PTR_ERR(spdifrx->regmap) != -EPROBE_DEFER)
+-			dev_err(&pdev->dev, "Regmap init error %ld\n",
+-				PTR_ERR(spdifrx->regmap));
+-		return PTR_ERR(spdifrx->regmap);
+-	}
++	if (IS_ERR(spdifrx->regmap))
++		return dev_err_probe(&pdev->dev, PTR_ERR(spdifrx->regmap),
++				     "Regmap init error\n");
+ 
+ 	ret = devm_request_irq(&pdev->dev, spdifrx->irq, stm32_spdifrx_isr, 0,
+ 			       dev_name(&pdev->dev), spdifrx);
+@@ -1000,23 +991,18 @@ static int stm32_spdifrx_probe(struct platform_device *pdev)
+ 	}
+ 
+ 	rst = devm_reset_control_get_optional_exclusive(&pdev->dev, NULL);
+-	if (IS_ERR(rst)) {
+-		if (PTR_ERR(rst) != -EPROBE_DEFER)
+-			dev_err(&pdev->dev, "Reset controller error %ld\n",
+-				PTR_ERR(rst));
+-		return PTR_ERR(rst);
+-	}
++	if (IS_ERR(rst))
++		return dev_err_probe(&pdev->dev, PTR_ERR(rst),
++				     "Reset controller error\n");
++
+ 	reset_control_assert(rst);
+ 	udelay(2);
+ 	reset_control_deassert(rst);
+ 
+ 	pcm_config = &stm32_spdifrx_pcm_config;
+ 	ret = snd_dmaengine_pcm_register(&pdev->dev, pcm_config, 0);
+-	if (ret) {
+-		if (ret != -EPROBE_DEFER)
+-			dev_err(&pdev->dev, "PCM DMA register error %d\n", ret);
+-		return ret;
+-	}
++	if (ret)
++		return dev_err_probe(&pdev->dev, ret, "PCM DMA register error\n");
+ 
+ 	ret = snd_soc_register_component(&pdev->dev,
+ 					 &stm32_spdifrx_component,
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+2.51.0
+
 
