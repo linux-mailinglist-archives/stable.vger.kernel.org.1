@@ -1,142 +1,137 @@
-Return-Path: <stable+bounces-204794-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204795-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70894CF3D9E
-	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 14:36:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DBC1CF3DA9
+	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 14:37:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 92FB130C9E47
-	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 13:28:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 72A5A30DC31C
+	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 13:30:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82CAE221F0C;
-	Mon,  5 Jan 2026 13:27:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A71D221F39;
+	Mon,  5 Jan 2026 13:30:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bwjURFi5"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="XkoXTaaj"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43B5C207A38
-	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 13:27:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE159225A35;
+	Mon,  5 Jan 2026 13:30:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767619678; cv=none; b=lvXhTYlJ2zPVvgyIzq5DrUQtTpmrBqSYFXQ8Euf76tMJEQ7O0ICl6fTL9/Qz3CrcIsP8vhiXEJw4qxfRI+4xVRi0FyzHGuY7hpE2Ps2dtNfjOQEAkyk8/mGaPzYTzC706D3WuVnXD0kLnHLffV3mE9DubXcd8LT76a/ZKO4Qzwc=
+	t=1767619806; cv=none; b=edNA4ogk6IHTtTL8bSiv2PUumuGlyaZlYkguF2MKj0kXsAcMImr9hO5ZwtDT7pT72/9XfKTblUOnjezk9Ql6wo7QePjNeipuj4wehrtCPIwwjYa+dYHSbWipZFUhwXDuA2TXz42VWaO1B26TSThsbtqVC8/I+50ctlgzog0Sis4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767619678; c=relaxed/simple;
-	bh=po1ff6FHVZxwfiGh8uQNjOQ8sOrnmK75TxzkYQHRWQc=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=OPCXhBalNVbLA3ugNi9y8Wd4xrdO9keyhLzHlc6D8xzAijdX3L8twWijWthq0KQHyWFTJPbAa5VKbgRml1G0VW+HO9LqHP+ygrEVJ8rAP/th1QLweMKjVIGktS7p5qWd5vYjRAazqSuQ7ocHy97OQRAZh2g+Gsh37SUK741TdLM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bwjURFi5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 744DEC116D0;
-	Mon,  5 Jan 2026 13:27:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767619677;
-	bh=po1ff6FHVZxwfiGh8uQNjOQ8sOrnmK75TxzkYQHRWQc=;
-	h=Subject:To:Cc:From:Date:From;
-	b=bwjURFi5ODrto6kfzKmOnoggPu5Od5J8bb2ZZYHSK4UZTXJ4vPg/hzgwJSaYG9P3x
-	 woG/NM2skRvFKLhkFeeNG+yknfQeXZ5tRPsjtOyklk+2ovpG1a3U5xx6f+HUURN78q
-	 /Eqeha7zF7wPPEFzab+5CUE4CC3HzPKVBgGTzGog=
-Subject: FAILED: patch "[PATCH] drm/mgag200: Fix big-endian support" failed to apply to 5.10-stable tree
-To: rene@exactco.de,tzimmermann@suse.de
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 05 Jan 2026 14:27:46 +0100
-Message-ID: <2026010546-target-ligament-64fa@gregkh>
+	s=arc-20240116; t=1767619806; c=relaxed/simple;
+	bh=o9jbkrV2OfQZyMx0HC5TQMvXRwI7iv6Z+cNosx+/llA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jrcYlpKyFVDmY37+mSwr5cUjzUv1nbNNZKRpqR1eqIAcSMjagfgubkqxK2mYdSCbNI46ZWbzgMovT5QshLrPC8Qwz+HmQvj28gur/NHaWKtDXX9BtjW4kd4n3O9vz1W1y5N/U7yn7anxTGo22awI59WQu2euBmfA9oqAiJUuoig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=XkoXTaaj; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=ENgS81baeUqSqQTbQeVHYozi6bLe6j1KLZFc66IniKM=; b=XkoXTaajLV+WtJIuchJPd1HT+3
+	H8i9hrkMDG4sBZowsMW7EYkqzlRW5sOFKoVBQcL1tIySlfSLHwUouFY2YOG9mEqUoDus8dYzrSQNW
+	Pgev2zvy5nFp+f0MAxuWynpxgSRU/tZ9Eq3Yz/GWMGdTHWJp1/trZObfsOZWCG1o40btMp+TqeUWm
+	gKlffeurT29cKpKDAvZsoaRvJYgsyc7xMUfHN3iFwgXbMOpWs+KwCaZdsSMYtG8UYVXEa0O2mgEpz
+	000MCF7rUGdXQ4WAsUusHLdscEya5t+FC5IvcZMiN5tObe/zP0US2X4WxtPTmQqmb98DAGOi4+7li
+	xDMNbKNw==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:51660)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1vckeX-000000007rH-3OTm;
+	Mon, 05 Jan 2026 13:29:45 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1vckeS-000000007t1-3Z1h;
+	Mon, 05 Jan 2026 13:29:40 +0000
+Date: Mon, 5 Jan 2026 13:29:40 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Breno Leitao <leitao@debian.org>
+Cc: Michael Chan <michael.chan@broadcom.com>,
+	Pavan Chebbi <pavan.chebbi@broadcom.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, kernel-team@meta.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH net v2] bnxt_en: Fix NULL pointer crash in
+ bnxt_ptp_enable during error cleanup
+Message-ID: <aVu8xIfFrIIFqR0P@shell.armlinux.org.uk>
+References: <20260105-bnxt-v2-1-9ac69edef726@debian.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260105-bnxt-v2-1-9ac69edef726@debian.org>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
+On Mon, Jan 05, 2026 at 04:00:16AM -0800, Breno Leitao wrote:
+> When bnxt_init_one() fails during initialization (e.g.,
+> bnxt_init_int_mode returns -ENODEV), the error path calls
+> bnxt_free_hwrm_resources() which destroys the DMA pool and sets
+> bp->hwrm_dma_pool to NULL. Subsequently, bnxt_ptp_clear() is called,
+> which invokes ptp_clock_unregister().
+> 
+> Since commit a60fc3294a37 ("ptp: rework ptp_clock_unregister() to
+> disable events"), ptp_clock_unregister() now calls
+> ptp_disable_all_events(), which in turn invokes the driver's .enable()
+> callback (bnxt_ptp_enable()) to disable PTP events before completing the
+> unregistration.
+> 
+> bnxt_ptp_enable() attempts to send HWRM commands via bnxt_ptp_cfg_pin()
+> and bnxt_ptp_cfg_event(), both of which call hwrm_req_init(). This
+> function tries to allocate from bp->hwrm_dma_pool, causing a NULL
+> pointer dereference:
 
-The patch below does not apply to the 5.10-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+This has revealed a latent bug in this driver. All the time that the
+PTP clock is registered, userspace can interact with it, and thus
+bnxt_ptp_enable() can be called. ptp_clock_unregister() unpublishes
+that interface.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+ptp_clock_unregister() must always be called _before_ tearing down any
+resources that the PTP clock implementation may use.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
-git checkout FETCH_HEAD
-git cherry-pick -x 6cb31fba137d45e682ce455b8ea364f44d5d4f98
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026010546-target-ligament-64fa@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+From what you describe, it sounds like this patch fixes that.
 
-Possible dependencies:
+Looking at the driver, however, it looks very suspicious.
 
+__bnxt_hwrm_ptp_qcfg() seems to be the place where PTP is setup and
+initialised (and ptp_clock_register() called in bnxt_ptp_init()).
 
+First, it looks like bnxt_ptp_init() will tear down an existing PTP
+clock via bnxt_ptp_free() before then re-registering it. That seems
+odd.
 
-thanks,
+Second, __bnxt_hwrm_ptp_qcfg() calls bnxt_ptp_clear() if
+bp->hwrm_spec_code < 0x10801 || !BNXT_CHIP_P5_PLUS(bp) is true or
+hwrm_req_init() fails. Is it really possible that we have the PTP
+clock registered when PTP isn't supported?
 
-greg k-h
+Third, same concern but with __bnxt_hwrm_func_qcaps().
 
------------------- original commit in Linus's tree ------------------
+My guess is that this has something to do with firmware, and maybe
+upgrading it at runtime - so if the firmware gets upgraded to a
+version that doesn't support PTP, the driver removes PTP. However,
+can PTP be used while firmware is being upgraded, and what happens
+if, e.g. bnxt_ptp_enable() were called mid-upgrade? Would that be
+safe?
 
-From 6cb31fba137d45e682ce455b8ea364f44d5d4f98 Mon Sep 17 00:00:00 2001
-From: =?UTF-8?q?Ren=C3=A9=20Rebe?= <rene@exactco.de>
-Date: Mon, 8 Dec 2025 14:18:27 +0100
-Subject: [PATCH] drm/mgag200: Fix big-endian support
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-
-Unlike the original, deleted Matrox mga driver, the new mgag200 driver
-has the XRGB frame-buffer byte swapped on big-endian "RISC"
-systems. Fix by enabling byte swapping "PowerPC" OPMODE for any
-__BIG_ENDIAN config.
-
-Fixes: 414c45310625 ("mgag200: initial g200se driver (v2)")
-Signed-off-by: René Rebe <rene@exactco.de>
-Cc: stable@kernel.org
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://patch.msgid.link/20251208.141827.965103015954471168.rene@exactco.de
-
-diff --git a/drivers/gpu/drm/mgag200/mgag200_mode.c b/drivers/gpu/drm/mgag200/mgag200_mode.c
-index 951d715dea30..d019177462cf 100644
---- a/drivers/gpu/drm/mgag200/mgag200_mode.c
-+++ b/drivers/gpu/drm/mgag200/mgag200_mode.c
-@@ -161,6 +161,30 @@ static void mgag200_set_startadd(struct mga_device *mdev,
- 	WREG_ECRT(0x00, crtcext0);
- }
- 
-+/*
-+ * Set the opmode for the hardware swapper for Big-Endian processor
-+ * support for the frame buffer aperture and DMAWIN space.
-+ */
-+static void mgag200_set_datasiz(struct mga_device *mdev, u32 format)
-+{
-+#if defined(__BIG_ENDIAN)
-+	u32 opmode = RREG32(MGAREG_OPMODE);
-+
-+	opmode &= ~(GENMASK(17, 16) | GENMASK(9, 8) | GENMASK(3, 2));
-+
-+	/* Big-endian byte-swapping */
-+	switch (format) {
-+	case DRM_FORMAT_RGB565:
-+		opmode |= 0x10100;
-+		break;
-+	case DRM_FORMAT_XRGB8888:
-+		opmode |= 0x20200;
-+		break;
-+	}
-+	WREG32(MGAREG_OPMODE, opmode);
-+#endif
-+}
-+
- void mgag200_init_registers(struct mga_device *mdev)
- {
- 	u8 crtc11, misc;
-@@ -496,6 +520,7 @@ void mgag200_primary_plane_helper_atomic_update(struct drm_plane *plane,
- 	struct drm_atomic_helper_damage_iter iter;
- 	struct drm_rect damage;
- 
-+	mgag200_set_datasiz(mdev, fb->format->format);
- 	drm_atomic_helper_damage_iter_init(&iter, old_plane_state, plane_state);
- 	drm_atomic_for_each_plane_damage(&iter, &damage) {
- 		mgag200_handle_damage(mdev, shadow_plane_state->data, fb, &damage);
-
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
 
