@@ -1,108 +1,199 @@
-Return-Path: <stable+bounces-204799-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204800-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F66DCF3EDB
-	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 14:50:17 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF67DCF3FC8
+	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 14:57:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2E68A3003F97
-	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 13:50:15 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2AB61300E4C7
+	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 13:56:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F295833A709;
-	Mon,  5 Jan 2026 13:38:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0E2026A09B;
+	Mon,  5 Jan 2026 13:42:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N5sRsAmV"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="DRk6mr0z"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012009.outbound.protection.outlook.com [52.101.43.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2BC11DE89A
-	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 13:38:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767620295; cv=none; b=bP86/t5vaIgAZdi7QcetypVpdfBAJymLQDd66yYKZjR20FLooM/+hqEAyH+EV9+4IQLGBnIaLOgt8UvRYqC9Gjk9xMlUqPc5zoGfc5d65f8kXNzn3JaFCY42cqbccNN9LTZxOrn5/E4R5nsgHLKAU8+gWnvHfcxbG/EGJnEctEk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767620295; c=relaxed/simple;
-	bh=BxRnVoepYo961Wnmb3LCCTWN4Z7mpoIUAwWPfPX5Pmc=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=i+9trv+hxOdeTGZibm+g86HGa5aZeoV/X+t5hLxuJn8gnri6FMPw5KIe9o5g4Yb901VhE3+KnRyZNHwwFIVZYtFY/4v82hRIZq7mRej564ptaQlku9ne8IH5pGmeE06dHnGruG3pWO5nxVRI5V9HDbeQJoY8dcip1BbADOG7xvs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N5sRsAmV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3172EC116D0;
-	Mon,  5 Jan 2026 13:38:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767620295;
-	bh=BxRnVoepYo961Wnmb3LCCTWN4Z7mpoIUAwWPfPX5Pmc=;
-	h=Subject:To:Cc:From:Date:From;
-	b=N5sRsAmVSV7rVFfba8anKQLR/C+ghg3pW2mm9zJm3sEESAxxkwPuXuWcbfCx43lKW
-	 gZo8vvnSu4RFkC4/xvLiosIWTynzntI9gQomM0dgMNf2gcxHbd6/GT37fFyDkndBJJ
-	 oip7IoqU3nR5S7YnlWoHiff9pp8JhUI1JMCQ9+d8=
-Subject: FAILED: patch "[PATCH] drm/amd: Fix unbind/rebind for VCN 4.0.5" failed to apply to 6.12-stable tree
-To: superm1@kernel.org,alexander.deucher@amd.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 05 Jan 2026 14:38:12 +0100
-Message-ID: <2026010512-maturely-filling-6860@gregkh>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2AEA27F724;
+	Mon,  5 Jan 2026 13:42:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.9
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1767620578; cv=fail; b=BGKjb63JlRz60bfz/9r7GAYicjQW3bHpLPeutD1oshqaw8KPZNf5ZKrxfv4QO7ZN4AH5eHrWH3vvnaSi469XM7YbgTEq0a5suScWFJ+h1rezdb+Q6yoVafjRjinNBoB85QKjYL6VYd2kG5UnA7bdKfsSSiI7J9cJvHv68Qqd93U=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1767620578; c=relaxed/simple;
+	bh=gK8Y5obdwWG6oZyMJZRve/yyBmuWIPA/5KTaLIOzsyA=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QRaAOfjUU14VVAGr6OvEhdQcWzsrCGHt4jZ4T69Cw0tVaWJ6Cx+J0okNApumwwiyRN8a0LgfIuoKHeXOxQZu9a2LtnYoOCPYNsnicj6kSvj+egL2CGCanralfio0gWTbvHIJatryIj/5D3SzD85kpnlHZcsKLGgI7Q0hj03mnAM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=unknown smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=DRk6mr0z; arc=fail smtp.client-ip=52.101.43.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=tempfail smtp.mailfrom=ti.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=JQZ7CB390+xNoeOGTj4RJNsPZXvygRRVXWUqL0x7jLvsGQPKinQBZSdYzIhN8JaHtK7KdwBnmBuoneegzGonSKW4xOiqjZNw9nuUVVLxIIcgMjtb8lyQ2KLYtJQi9EFlyUgVkd8i0pQSVFQDBGoLb83wLAYD4nGz5B7Fl+gyGhwOrSVmmL7NO2uaOvd5X/s+e3iQKLnN1ihf1Ou1LjU3NPihKnOfd5Fpog7LzYQ3pczIuUIm+CRE+uudXhMO3mnmicLZfqXcYXUOZVDI2mkV46kJJjNvD0jIOtUT7IB+c4mTXdJIV5hDiJ5AM4VWiZ5ZkHNT51LMB/3Y8Pd/cEWOkA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=rKXFWrqaSMIh5zv6ejKduXsLYO70vNrcLHgPEXF60R4=;
+ b=ACxzHe9cEd4iesgvgQoZSaeQ4S5qZHOk2/sEeyNyE0AxifQcuh4G9bEAt+TmDvx9m+ZPponnjeeJ8LeAIcReEyJXySvOj5IxyEivxuoiuegqIHdFwKRmuCPGje5cksGb1z9vevZYMsV9U2FPl1smOUDNE8lN+uWLInERnA71XmF8X1vVJens3sEdWJRMDh/XOTSRbn8xY1n0JQRGl6AlocdKTJIk+Ky8buZEls0vEFk31yl7ndFEaJo61af2f84E0jtLi89xGP1Biz1lUpw+w4JPxduoCxu337RKjWr1LBsLJDFDoNefAzaLYzYTre8c35UXHDBNjutDF66NoymqxA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 198.47.23.195) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=ti.com;
+ dmarc=pass (p=quarantine sp=none pct=100) action=none header.from=ti.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=rKXFWrqaSMIh5zv6ejKduXsLYO70vNrcLHgPEXF60R4=;
+ b=DRk6mr0zX10sjIs9e2tbTT4MkNv9id38cPQ5L+bZ+GKAkuGuj+Yrweu26bpvm/c6wArJj7/f9A7opVoA4wcXUuENAaswUsEkR6NgtjhnUN+VxHlD2PqHj2CmRlDtlFdat364YAjDHz4nJdkWbD0O9v6ihJdrFODStHC7DZpxe2w=
+Received: from SJ0PR13CA0094.namprd13.prod.outlook.com (2603:10b6:a03:2c5::9)
+ by SN4PR10MB5623.namprd10.prod.outlook.com (2603:10b6:806:20a::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9478.4; Mon, 5 Jan
+ 2026 13:42:49 +0000
+Received: from SJ1PEPF000023CF.namprd02.prod.outlook.com
+ (2603:10b6:a03:2c5:cafe::23) by SJ0PR13CA0094.outlook.office365.com
+ (2603:10b6:a03:2c5::9) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9499.1 via Frontend Transport; Mon, 5
+ Jan 2026 13:42:46 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 198.47.23.195)
+ smtp.mailfrom=ti.com; dkim=none (message not signed) header.d=none;dmarc=pass
+ action=none header.from=ti.com;
+Received-SPF: Pass (protection.outlook.com: domain of ti.com designates
+ 198.47.23.195 as permitted sender) receiver=protection.outlook.com;
+ client-ip=198.47.23.195; helo=lewvzet201.ext.ti.com; pr=C
+Received: from lewvzet201.ext.ti.com (198.47.23.195) by
+ SJ1PEPF000023CF.mail.protection.outlook.com (10.167.244.11) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9499.1 via Frontend Transport; Mon, 5 Jan 2026 13:42:49 +0000
+Received: from DLEE113.ent.ti.com (157.170.170.24) by lewvzet201.ext.ti.com
+ (10.4.14.104) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.2.2562.20; Mon, 5 Jan
+ 2026 07:42:45 -0600
+Received: from DLEE208.ent.ti.com (157.170.170.97) by DLEE113.ent.ti.com
+ (157.170.170.24) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55; Mon, 5
+ Jan 2026 07:42:44 -0600
+Received: from lelvem-mr06.itg.ti.com (10.180.75.8) by DLEE208.ent.ti.com
+ (157.170.170.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20 via Frontend
+ Transport; Mon, 5 Jan 2026 07:42:44 -0600
+Received: from localhost (uda0133052.dhcp.ti.com [128.247.81.232])
+	by lelvem-mr06.itg.ti.com (8.18.1/8.18.1) with ESMTP id 605DgifD1229634;
+	Mon, 5 Jan 2026 07:42:44 -0600
+Date: Mon, 5 Jan 2026 07:42:44 -0600
+From: Nishanth Menon <nm@ti.com>
+To: Wentao Liang <vulab@iscas.ac.cn>
+CC: <ssantosh@kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
+Subject: Re: [PATCH] soc: ti: pruss: fix double free in pruss_clk_mux_setup()
+Message-ID: <20260105134244.hahgkijqfsb3h4al@storage>
+References: <20251225143256.2363630-1-vulab@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20251225143256.2363630-1-vulab@iscas.ac.cn>
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ1PEPF000023CF:EE_|SN4PR10MB5623:EE_
+X-MS-Office365-Filtering-Correlation-Id: a01127d1-f9f6-4eb7-c856-08de4c60513e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|36860700013|82310400026|376014|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?FX1xut2Od5/eKeoYMGJDH65ObW3IYTeV7CfxG1+fqpCplg0NIlV2sUIyUvOy?=
+ =?us-ascii?Q?8+esxLzqxkjj6OyHnw1rcJAaRYO9iVDOmdidm50TCjan/wZrII7s3SJSVGze?=
+ =?us-ascii?Q?WIcvxazAI4cHIpEM+gEgloDA8/hSpntkVyvf2JxgiAo2xSR7EiRaKMh8Abfe?=
+ =?us-ascii?Q?Jk4gb3uSK45SymxF6flUhOQRf6Dy30FV/7PHYNev5OMsHgSnRL1U8DonghIW?=
+ =?us-ascii?Q?W57vtcCwrfDDEnu5ddN7NsBWqE2Jo9TXKJYZcx3OIeX3ox+18llyrRf3qauA?=
+ =?us-ascii?Q?+4eGpbAk9PCqF7s+aFtkh/+/aC3Rvz+x69F1Pz+VBaYuNJ/RVLJ0nvBbk55Y?=
+ =?us-ascii?Q?I/zdhyOr+0Zp6gass4lwckrF8ofF8y+k1Q3iRRWOysmAH5gnVyOx/wC+DAdU?=
+ =?us-ascii?Q?SnK+vQL/ywIqoSoblLnLAEl8JX3TG5fg2dyywZynb2FxMIIFa1pql9W80Rdh?=
+ =?us-ascii?Q?6Wi4BBLlduSK5LzHVhjvZr6Gb9in/PMnJicb701wYchYTVhLISqL7zWxNSxz?=
+ =?us-ascii?Q?rlrYMSLT+GZA8qRAdF7F7jWB9hQgsqfaXhwiPPxC7iSbkva/gDYVFd0UP9l4?=
+ =?us-ascii?Q?qrz9lNRvynOUPyuGidVkRHBfUxdZXD9f+TOWoq7X7jc5/JLl3k5bunxsTPhM?=
+ =?us-ascii?Q?31RqzstNLEsP1yanMl39xOglCpOuh5u/n+aW80n3ittGFb4xB/lRJfrVaO6d?=
+ =?us-ascii?Q?zn2vdIwoaJ5eUoAOLEfvIzPeQNFak64BfH0pl30xAf7X6qwsiA/fEbGmL6dD?=
+ =?us-ascii?Q?68npYvL8li4OZcbn541aGlb4kIt3Xoi35VTcOOH+7FWaq5Jx5296jev0ErIa?=
+ =?us-ascii?Q?ezqMTHHx0cvDAO52QUydlp6xHzkCSYKj9FJ2lPw8K568WLj0fId9idKyet7z?=
+ =?us-ascii?Q?pGnOazDkl9ssaibc7MMqRjdqIOMU7b2/p9qUu6ykH2y3J9PpM36Secooig3n?=
+ =?us-ascii?Q?CIWzhAE68qlA6Gy9+V62X8/vhE20Hg0WAijn5TLuZaiQUxQUlzBnKD7DZRgB?=
+ =?us-ascii?Q?rg1KyfsNy4dWUjGOIW99WnEFyCImuuciYWP8TMDlv45oP/Zv1gEf107moA/Q?=
+ =?us-ascii?Q?rFbNM2OgFFVAacVsI5ufsWLZFarTFMPb6y3rKp5RSPVVsBs1LgaKm5y9cR5u?=
+ =?us-ascii?Q?tM2/VuejgzKExC42c1fe7qeh/DM8MuAfZBoNOTp1K9DgPkBL68j3jny+pCxs?=
+ =?us-ascii?Q?d6Z0OcxK3rSgravBJcFKpfHohHAnhhJ4++WsMdg2mHbEMbXuEqwtJJic1NHd?=
+ =?us-ascii?Q?CTCgJVOwZ90eqA8xOESJDFqfHq8HXkK5s9tMGSMxga3gJOap3nVLgONsGLXd?=
+ =?us-ascii?Q?Kbs7QxaUH0JML0lmSCXlNvKmC8ZN7yxytMBZ7x8EBmnqFKAzr+p7oycwytWp?=
+ =?us-ascii?Q?WnCBRCDtf3w+xNt7A54tY8RuIc5lq9yDckUF8f6u2xA6/GTlBhkzhijAGd/H?=
+ =?us-ascii?Q?6ajusITrP3KBTa543Rxaodor/GNOcb5yUjZxFIPupozScIVxsTuHuT3Q0Qlg?=
+ =?us-ascii?Q?Ul93Ak8xA4q5ivLNZmAJXzA/hNN0UouzHFKLo2z/TAeLyfdUUWy96brmEnJ+?=
+ =?us-ascii?Q?L8z/bcmK0rJu74WT0ts=3D?=
+X-Forefront-Antispam-Report:
+	CIP:198.47.23.195;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:lewvzet201.ext.ti.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(36860700013)(82310400026)(376014)(7053199007);DIR:OUT;SFP:1101;
+X-OriginatorOrg: ti.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Jan 2026 13:42:49.5821
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: a01127d1-f9f6-4eb7-c856-08de4c60513e
+X-MS-Exchange-CrossTenant-Id: e5b49634-450b-4709-8abb-1e2b19b982b7
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=e5b49634-450b-4709-8abb-1e2b19b982b7;Ip=[198.47.23.195];Helo=[lewvzet201.ext.ti.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ1PEPF000023CF.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN4PR10MB5623
 
+On 14:32-20251225, Wentao Liang wrote:
+> In the pruss_clk_mux_setup(), the devm_add_action_or_reset() indirectly
+> calls pruss_of_free_clk_provider(), which calls of_node_put(clk_mux_np)
+> on the error path. However, after the devm_add_action_or_reset()
+> returns, the of_node_put(clk_mux_np) is called again, causing a double
+> free.
+> 
+> Fix by using a separate label to avoid the duplicate of_node_put().
+> 
+> Fixes: ba59c9b43c86 ("soc: ti: pruss: support CORECLK_MUX and IEPCLK_MUX")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+> ---
+>  drivers/soc/ti/pruss.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/soc/ti/pruss.c b/drivers/soc/ti/pruss.c
+> index d7634bf5413a..c16d96bebe3f 100644
+> --- a/drivers/soc/ti/pruss.c
+> +++ b/drivers/soc/ti/pruss.c
+> @@ -368,13 +368,14 @@ static int pruss_clk_mux_setup(struct pruss *pruss, struct clk *clk_mux,
+>  				       clk_mux_np);
+>  	if (ret) {
+>  		dev_err(dev, "failed to add clkmux free action %d", ret);
+> -		goto put_clk_mux_np;
+> +		goto ret_error;
+Drop this or just return ret here?
+>  	}
+>  
+>  	return 0;
 
-The patch below does not apply to the 6.12-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+if you dropped, then replace with return ret?
 
-To reproduce the conflict and resubmit, you may use the following commands:
+>  
+>  put_clk_mux_np:
+>  	of_node_put(clk_mux_np);
+> +ret_error:
+>  	return ret;
+>  }
+>  
+> -- 
+> 2.34.1
+> 
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
-git checkout FETCH_HEAD
-git cherry-pick -x 93a01629c8bfd30906c76921ec986802d76920c6
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026010512-maturely-filling-6860@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
-
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 93a01629c8bfd30906c76921ec986802d76920c6 Mon Sep 17 00:00:00 2001
-From: "Mario Limonciello (AMD)" <superm1@kernel.org>
-Date: Mon, 8 Dec 2025 22:46:46 -0600
-Subject: [PATCH] drm/amd: Fix unbind/rebind for VCN 4.0.5
-
-Unbinding amdgpu has no problems, but binding it again leads to an
-error of sysfs file already existing.  This is because it wasn't
-actually cleaned up on unbind.  Add the missing cleanup step.
-
-Fixes: 547aad32edac ("drm/amdgpu: add VCN4 ip block support")
-Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit d717e62e9b6ccff0e3cec78a58dfbd00858448b3)
-Cc: stable@vger.kernel.org
-
-diff --git a/drivers/gpu/drm/amd/amdgpu/vcn_v4_0_5.c b/drivers/gpu/drm/amd/amdgpu/vcn_v4_0_5.c
-index b107ee80e472..1f6a22983c0d 100644
---- a/drivers/gpu/drm/amd/amdgpu/vcn_v4_0_5.c
-+++ b/drivers/gpu/drm/amd/amdgpu/vcn_v4_0_5.c
-@@ -265,6 +265,8 @@ static int vcn_v4_0_5_sw_fini(struct amdgpu_ip_block *ip_block)
- 	if (amdgpu_sriov_vf(adev))
- 		amdgpu_virt_free_mm_table(adev);
- 
-+	amdgpu_vcn_sysfs_reset_mask_fini(adev);
-+
- 	for (i = 0; i < adev->vcn.num_vcn_inst; i++) {
- 		r = amdgpu_vcn_suspend(adev, i);
- 		if (r)
-
+-- 
+Regards,
+Nishanth Menon
+Key (0xDDB5849D1736249D) / Fingerprint: F8A2 8693 54EB 8232 17A3  1A34 DDB5 849D 1736 249D
+https://ti.com/opensource
 
