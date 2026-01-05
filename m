@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-204660-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204662-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74BE1CF3216
-	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 12:04:33 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AEB4CF31A1
+	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 12:00:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 480F73044857
-	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 10:59:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5EE69300EA12
+	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 11:00:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE86832ED31;
-	Mon,  5 Jan 2026 10:59:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CB3F330322;
+	Mon,  5 Jan 2026 11:00:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hKvaySjP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V5zOhYMM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E7FF32E14F
-	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 10:59:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBA9232FA2D
+	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 11:00:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767610790; cv=none; b=Luc7i6pFAMvgWQ20zdHpJJ+AfiWyIStaIoSF503L3C8rXtJHSM8PBDvgVrjDo3ZQTdE6cZCTTC/099EW4t0jAnyF6o6hsWtWpDdvYqbVszKMAAzdPiUW7wAdOPvpLxe4Qpw6RyQc0FEmOhNQ8fro8lPbRB4mNSjrb+pyCLNesAQ=
+	t=1767610811; cv=none; b=hby3SRVZ7R3yy78gg5oUwkL4z9ZufvxykbiUM3k+OYqvoORByyZk9HoTZOwTaXu0QjoVy/JDNu9ryb0nUfuLlFLMdwVe3oVcHmPbFPoHuK3FUmUcFgATfX4AzxH5lvEMrw9/jz2UqZzQKuFZMzHq0G0eUPJANezyHJHOYAFsaPg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767610790; c=relaxed/simple;
-	bh=1etz6QzbXvp5kamJv8NVz6/FY5HqOArgEYmHkWf/6qg=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=YgQ2ktR0P3LGwym1MVtd05J24re037CuwbbohKxkZkBuCTBPpqysKg4y4Vev41oH/VngpNh0orgGSyi1dpd3AT/ahCboNO8lwzzmwxB4QWe7L8nftVPuO2kHyEU8QSvuusHkqBkgIoPs+YQm3h3PJKulTe4gSJqzRYXWTJoraHc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hKvaySjP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCC55C116D0;
-	Mon,  5 Jan 2026 10:59:49 +0000 (UTC)
+	s=arc-20240116; t=1767610811; c=relaxed/simple;
+	bh=mDqu1vmuTpc9Qqid6mPgHFf0A8C+mYw7bMmRwHHqZWU=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Kzh314PUOabx0eLsFFVb4U0d4ohE0/iFoeVACKNXDm8Yq5JiRIc7HPfMI0Tmwf0KOvzfaXflpV0PT4mtKODhwtypqivqyqap4mPmYElDX4G9zMtPwShZKsNWFfDIxPBZO/2heqZ9kv8LMQYnT+b3JqjO/daY/lShRtW4pqWD048=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V5zOhYMM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16276C116D0;
+	Mon,  5 Jan 2026 11:00:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767610790;
-	bh=1etz6QzbXvp5kamJv8NVz6/FY5HqOArgEYmHkWf/6qg=;
+	s=korg; t=1767610811;
+	bh=mDqu1vmuTpc9Qqid6mPgHFf0A8C+mYw7bMmRwHHqZWU=;
 	h=Subject:To:Cc:From:Date:From;
-	b=hKvaySjPt24yrNNE9EW9NwWvdpNuwkS7Zs43opz9oFleM/pWOnSYNblX3obXmz2SF
-	 yi5Sv0HwpirYBTaAv77EbNUVeb8xGNAhg82LEYdc3dTX+LspmYAlnXw6dF0GvVmf2p
-	 Mbnu/wBN9SsY7e2sFJpqvRYOPOrU7opvgIa+T4iA=
-Subject: FAILED: patch "[PATCH] media: vpif_display: fix section mismatch" failed to apply to 5.15-stable tree
-To: johan@kernel.org,hverkuil+cisco@kernel.org
+	b=V5zOhYMMK1N1Ptb0SoRT3qVNGuA7FjOvxx9TcwSD9babnvpwR5lO5IaSOL5Ov4bUD
+	 dbjeqWPxQokbuN4O10u3Kj5zjeszoAor2MONhZ1BEHSLB0hY2MTbUgNJs7ar3NEE5n
+	 Hk8bhizosCrW7gf9g40MRns9oFZYCeD9qGYhRDwk=
+Subject: FAILED: patch "[PATCH] media: amphion: Remove vpu_vb_is_codecconfig" failed to apply to 6.12-stable tree
+To: ming.qian@oss.nxp.com,hverkuil+cisco@kernel.org,nicolas.dufresne@collabora.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 05 Jan 2026 11:59:47 +0100
-Message-ID: <2026010547-tactile-dancing-dce5@gregkh>
+Date: Mon, 05 Jan 2026 12:00:08 +0100
+Message-ID: <2026010508-varnish-estimate-f594@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -51,19 +51,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 6.12-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x 59ca64bf98e4209df8ace8057d31ae3c80f948cd
+git cherry-pick -x 634c2cd17bd021487c57b95973bddb14be8002ff
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026010547-tactile-dancing-dce5@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026010508-varnish-estimate-f594@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
@@ -75,45 +75,139 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 59ca64bf98e4209df8ace8057d31ae3c80f948cd Mon Sep 17 00:00:00 2001
-From: Johan Hovold <johan@kernel.org>
-Date: Fri, 17 Oct 2025 07:33:21 +0200
-Subject: [PATCH] media: vpif_display: fix section mismatch
+From 634c2cd17bd021487c57b95973bddb14be8002ff Mon Sep 17 00:00:00 2001
+From: Ming Qian <ming.qian@oss.nxp.com>
+Date: Tue, 16 Sep 2025 14:08:53 +0800
+Subject: [PATCH] media: amphion: Remove vpu_vb_is_codecconfig
 
-Platform drivers can be probed after their init sections have been
-discarded (e.g. on probe deferral or manual rebind through sysfs) so the
-probe function must not live in init.
+Currently the function vpu_vb_is_codecconfig() always returns 0.
+Delete it and its related code.
 
-Note that commit ffa1b391c61b ("V4L/DVB: vpif_cap/disp: Removed section
-mismatch warning") incorrectly suppressed the modpost warning.
-
-Fixes: ffa1b391c61b ("V4L/DVB: vpif_cap/disp: Removed section mismatch warning")
-Fixes: e7332e3a552f ("V4L/DVB (12176): davinci/vpif_display: Add VPIF display driver")
-Cc: stable@vger.kernel.org	# 2.6.32
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Fixes: 3cd084519c6f ("media: amphion: add vpu v4l2 m2m support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
+Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
 Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 
-diff --git a/drivers/media/platform/ti/davinci/vpif_display.c b/drivers/media/platform/ti/davinci/vpif_display.c
-index 70c89549f4b6..1e7815e9f8e0 100644
---- a/drivers/media/platform/ti/davinci/vpif_display.c
-+++ b/drivers/media/platform/ti/davinci/vpif_display.c
-@@ -1214,7 +1214,7 @@ static int vpif_probe_complete(void)
-  * vpif_probe: This function creates device entries by register itself to the
-  * V4L2 driver and initializes fields of each channel objects
-  */
--static __init int vpif_probe(struct platform_device *pdev)
-+static int vpif_probe(struct platform_device *pdev)
+diff --git a/drivers/media/platform/amphion/vpu_malone.c b/drivers/media/platform/amphion/vpu_malone.c
+index ba688566dffd..80802975c4f1 100644
+--- a/drivers/media/platform/amphion/vpu_malone.c
++++ b/drivers/media/platform/amphion/vpu_malone.c
+@@ -1337,22 +1337,18 @@ static int vpu_malone_insert_scode_vc1_g_seq(struct malone_scode_t *scode)
  {
- 	struct vpif_subdev_info *subdevdata;
- 	struct i2c_adapter *i2c_adap;
-@@ -1390,7 +1390,7 @@ static int vpif_resume(struct device *dev)
+ 	if (!scode->inst->total_input_count)
+ 		return 0;
+-	if (vpu_vb_is_codecconfig(to_vb2_v4l2_buffer(scode->vb)))
+-		scode->need_data = 0;
+ 	return 0;
+ }
  
- static SIMPLE_DEV_PM_OPS(vpif_pm_ops, vpif_suspend, vpif_resume);
+ static int vpu_malone_insert_scode_vc1_g_pic(struct malone_scode_t *scode)
+ {
+-	struct vb2_v4l2_buffer *vbuf;
+ 	u8 nal_hdr[MALONE_VC1_NAL_HEADER_LEN];
+ 	u32 *data = NULL;
+ 	int ret;
  
--static __refdata struct platform_driver vpif_driver = {
-+static struct platform_driver vpif_driver = {
- 	.driver	= {
- 			.name	= VPIF_DRIVER_NAME,
- 			.pm	= &vpif_pm_ops,
+-	vbuf = to_vb2_v4l2_buffer(scode->vb);
+ 	data = vb2_plane_vaddr(scode->vb, 0);
+ 
+-	if (scode->inst->total_input_count == 0 || vpu_vb_is_codecconfig(vbuf))
++	if (scode->inst->total_input_count == 0)
+ 		return 0;
+ 	if (MALONE_VC1_CONTAIN_NAL(*data))
+ 		return 0;
+@@ -1373,8 +1369,6 @@ static int vpu_malone_insert_scode_vc1_l_seq(struct malone_scode_t *scode)
+ 	int size = 0;
+ 	u8 rcv_seqhdr[MALONE_VC1_RCV_SEQ_HEADER_LEN];
+ 
+-	if (vpu_vb_is_codecconfig(to_vb2_v4l2_buffer(scode->vb)))
+-		scode->need_data = 0;
+ 	if (scode->inst->total_input_count)
+ 		return 0;
+ 	scode->need_data = 0;
+@@ -1560,7 +1554,7 @@ static int vpu_malone_input_frame_data(struct vpu_malone_str_buffer __iomem *str
+ 	scode.vb = vb;
+ 	scode.wptr = wptr;
+ 	scode.need_data = 1;
+-	if (vbuf->sequence == 0 || vpu_vb_is_codecconfig(vbuf))
++	if (vbuf->sequence == 0)
+ 		ret = vpu_malone_insert_scode(&scode, SCODE_SEQUENCE);
+ 
+ 	if (ret < 0)
+@@ -1596,7 +1590,7 @@ static int vpu_malone_input_frame_data(struct vpu_malone_str_buffer __iomem *str
+ 	 * This module is currently only supported for the H264 and HEVC formats,
+ 	 * for other formats, vpu_malone_add_scode() will return 0.
+ 	 */
+-	if ((disp_imm || low_latency) && !vpu_vb_is_codecconfig(vbuf)) {
++	if (disp_imm || low_latency) {
+ 		ret = vpu_malone_add_scode(inst->core->iface,
+ 					   inst->id,
+ 					   &inst->stream_buffer,
+@@ -1643,7 +1637,6 @@ int vpu_malone_input_frame(struct vpu_shared_addr *shared,
+ 			   struct vpu_inst *inst, struct vb2_buffer *vb)
+ {
+ 	struct vpu_dec_ctrl *hc = shared->priv;
+-	struct vb2_v4l2_buffer *vbuf;
+ 	struct vpu_malone_str_buffer __iomem *str_buf = hc->str_buf[inst->id];
+ 	u32 disp_imm = hc->codec_param[inst->id].disp_imm;
+ 	u32 size;
+@@ -1657,16 +1650,6 @@ int vpu_malone_input_frame(struct vpu_shared_addr *shared,
+ 		return ret;
+ 	size = ret;
+ 
+-	/*
+-	 * if buffer only contain codec data, and the timestamp is invalid,
+-	 * don't put the invalid timestamp to resync
+-	 * merge the data to next frame
+-	 */
+-	vbuf = to_vb2_v4l2_buffer(vb);
+-	if (vpu_vb_is_codecconfig(vbuf)) {
+-		inst->extra_size += size;
+-		return 0;
+-	}
+ 	if (inst->extra_size) {
+ 		size += inst->extra_size;
+ 		inst->extra_size = 0;
+diff --git a/drivers/media/platform/amphion/vpu_v4l2.c b/drivers/media/platform/amphion/vpu_v4l2.c
+index fcb2eff813ac..511881a131b7 100644
+--- a/drivers/media/platform/amphion/vpu_v4l2.c
++++ b/drivers/media/platform/amphion/vpu_v4l2.c
+@@ -349,16 +349,6 @@ struct vb2_v4l2_buffer *vpu_next_src_buf(struct vpu_inst *inst)
+ 	if (!src_buf || vpu_get_buffer_state(src_buf) == VPU_BUF_STATE_IDLE)
+ 		return NULL;
+ 
+-	while (vpu_vb_is_codecconfig(src_buf)) {
+-		v4l2_m2m_src_buf_remove(inst->fh.m2m_ctx);
+-		vpu_set_buffer_state(src_buf, VPU_BUF_STATE_IDLE);
+-		v4l2_m2m_buf_done(src_buf, VB2_BUF_STATE_DONE);
+-
+-		src_buf = v4l2_m2m_next_src_buf(inst->fh.m2m_ctx);
+-		if (!src_buf || vpu_get_buffer_state(src_buf) == VPU_BUF_STATE_IDLE)
+-			return NULL;
+-	}
+-
+ 	return src_buf;
+ }
+ 
+diff --git a/drivers/media/platform/amphion/vpu_v4l2.h b/drivers/media/platform/amphion/vpu_v4l2.h
+index 4a87b06ae520..da9945f25e32 100644
+--- a/drivers/media/platform/amphion/vpu_v4l2.h
++++ b/drivers/media/platform/amphion/vpu_v4l2.h
+@@ -39,14 +39,4 @@ static inline struct vpu_format *vpu_get_format(struct vpu_inst *inst, u32 type)
+ 	else
+ 		return &inst->cap_format;
+ }
+-
+-static inline int vpu_vb_is_codecconfig(struct vb2_v4l2_buffer *vbuf)
+-{
+-#ifdef V4L2_BUF_FLAG_CODECCONFIG
+-	return (vbuf->flags & V4L2_BUF_FLAG_CODECCONFIG) ? 1 : 0;
+-#else
+-	return 0;
+-#endif
+-}
+-
+ #endif
 
 
