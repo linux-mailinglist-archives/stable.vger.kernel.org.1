@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-204924-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204925-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 161CBCF5990
-	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 22:05:17 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A008CF5993
+	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 22:05:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 3E05B300D291
-	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 21:05:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4808F307BD0C
+	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 21:05:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0777A280A52;
-	Mon,  5 Jan 2026 21:05:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 191B8280A52;
+	Mon,  5 Jan 2026 21:05:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lsPUbF5N"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SUwaC1Yi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCB0027F017
-	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 21:05:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDF2C26F28A
+	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 21:05:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767647112; cv=none; b=cFE24bIWEZ1bKRMdDaHBiPv7i7c6LCKfnGUfbSWwA42pPFtf57FZdFF2dd13vkzrIEaRoftfM+w9sh4SxRF61hzJ4zkwHFfMQvup1H45R3Is1Emfk75hB/EWQV2Nu3nj6a9wtbzlH7PGHAomq9P2J20oL5mFDPU4HLehuROh1W0=
+	t=1767647134; cv=none; b=jSHyx550w75+Bi60w9Cqu6b9f0T7zAwxOUylk3+ehaveEksbPk2WKQnleeK5RiNeuiQZe6Nf5HBkU7UFiayV9fTCNdYl86Z+mdJe249iGIbVzKNq9qnsTKxDLMh1Lb8FawtyQctNWDanPKL0wgFh69TsOevov0QsMyHebzvgjuA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767647112; c=relaxed/simple;
-	bh=DwXC7733t+28A9jZXScU80VpoGlysucNAgD/juagQ9g=;
+	s=arc-20240116; t=1767647134; c=relaxed/simple;
+	bh=AiL97s7dRYE4UmLuaAMUEyY6nN+4AobVVMKC0d0zYDE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gxN9nqo76d1mCVjLPDFxu3QHmoo0Hdt2PahRFxZYu0mbbUTUhGLkG3nF0obwBJA88UDdjpW69ujAXkYTAh8NFcHAyBH8cnJCYrXY+Ba0jeSyqlCCn6IgnR/eyZcc0IKR14znYCvicG5WSZT+/SE92ONwLHOJRTmtN+heIvt0FL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lsPUbF5N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFF1CC116D0;
-	Mon,  5 Jan 2026 21:05:11 +0000 (UTC)
+	 MIME-Version; b=UgakpgzHifIVAWPGmowRisqCJFyA6F+H+G0l+L77/Ct2ko9I67p5Jf9zoVt0xft58pX92gWzOofnDnpbmsw3DnZ1dwfTJNocv+vMDI9IJvsMOMae1S2MV+DW5B/wFhs42B3rBtN35kaTWpgtlYd/RVwN5Al/u2gdwO6ayzyYzS0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SUwaC1Yi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDC82C116D0;
+	Mon,  5 Jan 2026 21:05:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767647112;
-	bh=DwXC7733t+28A9jZXScU80VpoGlysucNAgD/juagQ9g=;
+	s=k20201202; t=1767647134;
+	bh=AiL97s7dRYE4UmLuaAMUEyY6nN+4AobVVMKC0d0zYDE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lsPUbF5NN6/8ENofkTusj9/POlaqxq0GlFXnuQ32zgqi7tlnC0ZnRTWOTW6jPC9Me
-	 nKwNbyP782Me290OKrjpfnBYyzW4e2H+w1ElV9q7vBtnilD6C81r16mufXAd8+MMcL
-	 WH7loo7AyizYsuGDfJ69cF/lcLweMnoyBxbxKh+MbUy1635KNYT/OyZ963Ce1P4FNM
-	 v7BnAqjMp4XUBlVB9uqafxf0ilVtE/vV3Xnqr5+3MDDa1UB9dA/UmSBB/C4QBnabiR
-	 8a8CxQZK3+cD1a8/9JunHvINLRGLZawSTgm7VVNqVnMowFXKBFQQ1TW4DvDJQDhQyY
-	 R4187YnUAKREw==
+	b=SUwaC1YiOGFW8evXn7Hd8d8do2L41kxzlktvm7gpSgVblQSrWNoYdcir/Fos9YSuL
+	 GWcwO6X6PwePEbNm9BV0WO3Ie3ONaE9d5bxugBLZcY6qCTSmTlssgtdT+jp+H+OkwW
+	 307PLe9vWkHfkYBYBpYe/mG1Mjt7yWUrtcDtxf3qrFm/G+LJyQGKvo3tEi8RCh3/nW
+	 pfLmigfYfqBsvGm108xAO2qYgkP0kXRuQnYeT+eWDbgG/I+mF6tdjUZf97q09rF+HF
+	 eo3vRGL83sZPc5EiSE+b3G8m9C7UoKzqUl3Zp/wQ2Q3ffP6Er5XnxNEXqtUNQhlnEZ
+	 uCGnM30DET7RQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Johan Hovold <johan@kernel.org>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
+Cc: Ming Qian <ming.qian@oss.nxp.com>,
+	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+	Sebastian Fricke <sebastian.fricke@collabora.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y] media: vpif_capture: fix section mismatch
-Date: Mon,  5 Jan 2026 16:05:09 -0500
-Message-ID: <20260105210509.2799904-1-sashal@kernel.org>
+Subject: [PATCH 6.12.y 1/3] media: amphion: Add a frame flush mode for decoder
+Date: Mon,  5 Jan 2026 16:05:30 -0500
+Message-ID: <20260105210532.2800255-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026010534-slinging-linguini-bbf3@gregkh>
-References: <2026010534-slinging-linguini-bbf3@gregkh>
+In-Reply-To: <2026010508-varnish-estimate-f594@gregkh>
+References: <2026010508-varnish-estimate-f594@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,49 +60,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Johan Hovold <johan@kernel.org>
+From: Ming Qian <ming.qian@oss.nxp.com>
 
-[ Upstream commit 0ef841113724166c3c484d0e9ae6db1eb5634fde ]
+[ Upstream commit 9ea16ba6eaf93f25f61855751f71e2e701709ddf ]
 
-Platform drivers can be probed after their init sections have been
-discarded (e.g. on probe deferral or manual rebind through sysfs) so the
-probe function must not live in init.
+By default the amphion decoder will pre-parse 3 frames before starting
+to decode the first frame. Alternatively, a block of flush padding data
+can be appended to the frame, which will ensure that the decoder can
+start decoding immediately after parsing the flush padding data, thus
+potentially reducing decoding latency.
 
-Note that commit ffa1b391c61b ("V4L/DVB: vpif_cap/disp: Removed section
-mismatch warning") incorrectly suppressed the modpost warning.
+This mode was previously only enabled, when the display delay was set to
+0. Allow the user to manually toggle the use of that mode via a module
+parameter called low_latency, which enables the mode without
+changing the display order.
 
-Fixes: ffa1b391c61b ("V4L/DVB: vpif_cap/disp: Removed section mismatch warning")
-Fixes: 6ffefff5a9e7 ("V4L/DVB (12906c): V4L : vpif capture driver for DM6467")
-Cc: stable@vger.kernel.org	# 2.6.32
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
+Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Sebastian Fricke <sebastian.fricke@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Stable-dep-of: 634c2cd17bd0 ("media: amphion: Remove vpu_vb_is_codecconfig")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/davinci/vpif_capture.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/media/platform/amphion/vpu_malone.c | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/media/platform/davinci/vpif_capture.c b/drivers/media/platform/davinci/vpif_capture.c
-index c034e25dd9aa..164d287c293e 100644
---- a/drivers/media/platform/davinci/vpif_capture.c
-+++ b/drivers/media/platform/davinci/vpif_capture.c
-@@ -1614,7 +1614,7 @@ vpif_capture_get_pdata(struct platform_device *pdev)
-  * This creates device entries by register itself to the V4L2 driver and
-  * initializes fields of each channel objects
-  */
--static __init int vpif_probe(struct platform_device *pdev)
-+static int vpif_probe(struct platform_device *pdev)
- {
- 	struct vpif_subdev_info *subdevdata;
- 	struct i2c_adapter *i2c_adap;
-@@ -1817,7 +1817,7 @@ static int vpif_resume(struct device *dev)
+diff --git a/drivers/media/platform/amphion/vpu_malone.c b/drivers/media/platform/amphion/vpu_malone.c
+index 4769c053c6c2..ba63eeb18e69 100644
+--- a/drivers/media/platform/amphion/vpu_malone.c
++++ b/drivers/media/platform/amphion/vpu_malone.c
+@@ -25,6 +25,10 @@
+ #include "vpu_imx8q.h"
+ #include "vpu_malone.h"
  
- static SIMPLE_DEV_PM_OPS(vpif_pm_ops, vpif_suspend, vpif_resume);
++static bool low_latency;
++module_param(low_latency, bool, 0644);
++MODULE_PARM_DESC(low_latency, "Set low latency frame flush mode: 0 (disable) or 1 (enable)");
++
+ #define CMD_SIZE			25600
+ #define MSG_SIZE			25600
+ #define CODEC_SIZE			0x1000
+@@ -1562,7 +1566,15 @@ static int vpu_malone_input_frame_data(struct vpu_malone_str_buffer __iomem *str
  
--static __refdata struct platform_driver vpif_driver = {
-+static struct platform_driver vpif_driver = {
- 	.driver	= {
- 		.name	= VPIF_DRIVER_NAME,
- 		.pm	= &vpif_pm_ops,
+ 	vpu_malone_update_wptr(str_buf, wptr);
+ 
+-	if (disp_imm && !vpu_vb_is_codecconfig(vbuf)) {
++	/*
++	 * Enable the low latency flush mode if display delay is set to 0
++	 * or the low latency frame flush mode if it is set to 1.
++	 * The low latency flush mode requires some padding data to be appended to each frame,
++	 * but there must not be any padding data between the sequence header and the frame.
++	 * This module is currently only supported for the H264 and HEVC formats,
++	 * for other formats, vpu_malone_add_scode() will return 0.
++	 */
++	if ((disp_imm || low_latency) && !vpu_vb_is_codecconfig(vbuf)) {
+ 		ret = vpu_malone_add_scode(inst->core->iface,
+ 					   inst->id,
+ 					   &inst->stream_buffer,
 -- 
 2.51.0
 
