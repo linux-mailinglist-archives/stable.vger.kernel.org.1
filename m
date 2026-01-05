@@ -1,52 +1,54 @@
-Return-Path: <stable+bounces-204813-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204814-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F6DECF42ED
-	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 15:40:51 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDD5CCF42F0
+	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 15:40:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4B7043065222
-	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 14:36:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5D73E3079316
+	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 14:36:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0EEB30C610;
-	Mon,  5 Jan 2026 14:36:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBAAD29B217;
+	Mon,  5 Jan 2026 14:36:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Btvpt7O6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ABBxw478"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91D9D30C37B
-	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 14:36:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88BB82356A4
+	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 14:36:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767623790; cv=none; b=gD87fySvbb/fKFKiw9lZV4yiEL3aFv/mmc2Y9FTOp/PnpQZIKlVjFwV8FYRoL64E2D/EN9KA1b4hjU4l1ESZSp7g+tiQ5uemunrWBoQK8Ut+64gsGr83egQlLM0k1gRTLNXGni/U9J3sDA3j9wkFQQ0TVRtu7mWlbBDxjHKL2HM=
+	t=1767623792; cv=none; b=daJt5f3tFQbWQ1575sa6uGikAyzeCkc+4toqj1LHSR1zvBd037TkYWjYsulBJnWoUqEsyccMEcWkYFYYIuvdR5/6UCOeMnV0zk/kTESs9Z0oJ9kS0C4Z0HDBDImwhK2J/2NM3LLhWj/z+DRxPlylkW1moxfEvQ+prXebuUXiiJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767623790; c=relaxed/simple;
-	bh=6f8EgH4sGVmFuM9dl+wcbavsrSIqYnv1olBVsRO2Plw=;
+	s=arc-20240116; t=1767623792; c=relaxed/simple;
+	bh=yZeJGuzYEubGRrUlK9K7uAb2yzaLERhdi8nxaF4AqBY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=utA7ZT2+jY+OIy6G3tEAYINywsmoJIJRdEqhT9kR0b4JPYMFPCUI4+ekN8jB/yC3VCc/tqjgb9KKrOrNkKbXsV6qUyMi/NKPhX8hj+LTAuaWYE1FMqnL0XaVx9lwVaml5qnqaB07oLo/znGN69ruCZSucj3pLAs8ZCg6fTOCzXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Btvpt7O6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6FCFC19421;
-	Mon,  5 Jan 2026 14:36:29 +0000 (UTC)
+	 MIME-Version; b=r/tBEKQnBHt78xYlfehP7cSD7TAOFE/gm53lA1P3TESXro+TxULMp8qqbUhURYbE2tpjUr1/pJ8nkrMBQok4t4H1ets6DeaS1MjKxaY0WLQ1X4roFTYIaq3Pnlqzz+DwwsmEo14kJh0D3N7tCcUh6AQ3Omt31QzScQj+w+0eSnw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ABBxw478; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 793E9C116D0;
+	Mon,  5 Jan 2026 14:36:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767623790;
-	bh=6f8EgH4sGVmFuM9dl+wcbavsrSIqYnv1olBVsRO2Plw=;
+	s=k20201202; t=1767623791;
+	bh=yZeJGuzYEubGRrUlK9K7uAb2yzaLERhdi8nxaF4AqBY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Btvpt7O6QNm2TZN7tD7en8F7gQg5cfeoa/rvDuHl+ZjIx+823mZKZ4Dhi2a9TT+bg
-	 naNffxyKHocE49JEqZwN6G2symqPsNcmHtA+N1MQt7PZdLlmLpc7moUo6OYxabo2w1
-	 620JF+u6y+7v2MArOboLlpB2KA6qc96FlnYA66oTI7LdJoW8NqbYTLIQ0X1IgHnH8D
-	 bE8ztfcVy/SIU+5+8y7r/ksTdHxspHDoOS0ruvX3opeIYC8Itfq3fIItZKGwmGpCQy
-	 LJGKk/lfOmzxkp02CcOcHeY2QkHSNDzkkmhEuVuNVk93bd3/85JDlIyT+NuowZi33U
-	 DphkSfxifitjw==
+	b=ABBxw478ak+1JEYK94bodwsmaOpbl5+2yOCfLstKPAEp/sx0ElIh8y5DH8O6DxTsH
+	 WNIIsv7F0s2X88R/7oACo0DgTo2cniIVCeg8K75yWWMi4Qqr8gme4PD7DcOkgsCIPR
+	 9rXpKvsWj6q+UgzNehkbKXdaya4/ujCndEvN5H/I7mvhNct4I3X9K4QKg5/PnKRMN3
+	 5uSHd12WKfNbTeDEMNtAZiLvNteMWdyE1gHLZ2bzB5fiygwOk3/4WXzqUoB84Iy2Mh
+	 mjBO9wXu+q1n2v9RTWBP0P0EOE93Lu42cXhOoQcnSZmWtUMuqI67XKkUxILpOoiCIz
+	 ij0hxGoFF3cCg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+Cc: Johan Hovold <johan@kernel.org>,
+	Olivier Moysan <olivier.moysan@st.com>,
+	olivier moysan <olivier.moysan@foss.st.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y 2/3] ASoC: stm32: sai: Use the devm_clk_get_optional() helper
-Date: Mon,  5 Jan 2026 09:36:25 -0500
-Message-ID: <20260105143626.2605607-2-sashal@kernel.org>
+Subject: [PATCH 5.10.y 3/3] ASoC: stm32: sai: fix clk prepare imbalance on probe failure
+Date: Mon,  5 Jan 2026 09:36:26 -0500
+Message-ID: <20260105143626.2605607-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260105143626.2605607-1-sashal@kernel.org>
 References: <2026010531-relapse-parcel-11e0@gregkh>
@@ -59,42 +61,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 374628fb668e50b42fe81f2a63af616182415bcd ]
+[ Upstream commit 312ec2f0d9d1a5656f76d770bbf1d967e9289aa7 ]
 
-Use devm_clk_get_optional() instead of hand writing it.
-This saves some LoC and improves the semantic.
+Make sure to unprepare the parent clock also on probe failures (e.g.
+probe deferral).
 
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Link: https://lore.kernel.org/r/f7987f18dadf77bfa09969fd4c82d5a0f4e4e3b7.1684594838.git.christophe.jaillet@wanadoo.fr
+Fixes: a14bf98c045b ("ASoC: stm32: sai: fix possible circular locking")
+Cc: stable@vger.kernel.org	# 5.5
+Cc: Olivier Moysan <olivier.moysan@st.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: olivier moysan <olivier.moysan@foss.st.com>
+Link: https://patch.msgid.link/20251124104908.15754-3-johan@kernel.org
 Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: 312ec2f0d9d1 ("ASoC: stm32: sai: fix clk prepare imbalance on probe failure")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/stm/stm32_sai_sub.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ sound/soc/stm/stm32_sai_sub.c | 28 +++++++++++++++++++++-------
+ 1 file changed, 21 insertions(+), 7 deletions(-)
 
 diff --git a/sound/soc/stm/stm32_sai_sub.c b/sound/soc/stm/stm32_sai_sub.c
-index 0deaeb3d3c13..1ea083725655 100644
+index 1ea083725655..1810c43d0833 100644
 --- a/sound/soc/stm/stm32_sai_sub.c
 +++ b/sound/soc/stm/stm32_sai_sub.c
-@@ -1487,12 +1487,9 @@ static int stm32_sai_sub_parse_of(struct platform_device *pdev,
+@@ -1485,14 +1485,21 @@ static int stm32_sai_sub_parse_of(struct platform_device *pdev,
+ 	if (of_find_property(np, "#clock-cells", NULL)) {
+ 		ret = stm32_sai_add_mclk_provider(sai);
  		if (ret < 0)
- 			return ret;
+-			return ret;
++			goto err_unprepare_pclk;
  	} else {
--		sai->sai_mclk = devm_clk_get(&pdev->dev, "MCLK");
--		if (IS_ERR(sai->sai_mclk)) {
--			if (PTR_ERR(sai->sai_mclk) != -ENOENT)
--				return PTR_ERR(sai->sai_mclk);
--			sai->sai_mclk = NULL;
--		}
-+		sai->sai_mclk = devm_clk_get_optional(&pdev->dev, "MCLK");
-+		if (IS_ERR(sai->sai_mclk))
-+			return PTR_ERR(sai->sai_mclk);
+ 		sai->sai_mclk = devm_clk_get_optional(&pdev->dev, "MCLK");
+-		if (IS_ERR(sai->sai_mclk))
+-			return PTR_ERR(sai->sai_mclk);
++		if (IS_ERR(sai->sai_mclk)) {
++			ret = PTR_ERR(sai->sai_mclk);
++			goto err_unprepare_pclk;
++		}
  	}
  
  	return 0;
++
++err_unprepare_pclk:
++	clk_unprepare(sai->pdata->pclk);
++
++	return ret;
+ }
+ 
+ static int stm32_sai_sub_probe(struct platform_device *pdev)
+@@ -1536,26 +1543,33 @@ static int stm32_sai_sub_probe(struct platform_device *pdev)
+ 			       IRQF_SHARED, dev_name(&pdev->dev), sai);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "IRQ request returned %d\n", ret);
+-		return ret;
++		goto err_unprepare_pclk;
+ 	}
+ 
+ 	if (STM_SAI_PROTOCOL_IS_SPDIF(sai))
+ 		conf = &stm32_sai_pcm_config_spdif;
+ 
+ 	ret = snd_dmaengine_pcm_register(&pdev->dev, conf, 0);
+-	if (ret)
+-		return dev_err_probe(&pdev->dev, ret, "Could not register pcm dma\n");
++	if (ret) {
++		ret = dev_err_probe(&pdev->dev, ret, "Could not register pcm dma\n");
++		goto err_unprepare_pclk;
++	}
+ 
+ 	ret = snd_soc_register_component(&pdev->dev, &stm32_component,
+ 					 &sai->cpu_dai_drv, 1);
+ 	if (ret) {
+ 		snd_dmaengine_pcm_unregister(&pdev->dev);
+-		return ret;
++		goto err_unprepare_pclk;
+ 	}
+ 
+ 	pm_runtime_enable(&pdev->dev);
+ 
+ 	return 0;
++
++err_unprepare_pclk:
++	clk_unprepare(sai->pdata->pclk);
++
++	return ret;
+ }
+ 
+ static int stm32_sai_sub_remove(struct platform_device *pdev)
 -- 
 2.51.0
 
