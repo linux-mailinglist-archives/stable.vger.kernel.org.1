@@ -1,108 +1,182 @@
-Return-Path: <stable+bounces-204878-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204879-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EB6DCF5109
-	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 18:47:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 76FB2CF51A5
+	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 18:55:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0F89330C6114
-	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 17:42:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CFFD430E905E
+	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 17:51:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90A41320A30;
-	Mon,  5 Jan 2026 17:42:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64349346A05;
+	Mon,  5 Jan 2026 17:51:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TgMvN5tK"
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="GiM/WJV4"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F27A2FC00C
-	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 17:42:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC434346784
+	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 17:50:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767634938; cv=none; b=HLtzBop3x3/eRlWSWfUZ21XDzFgQPqxl4ElwQKA9Jz0tg0g4MRLxpCEAFInt2dWIEFECeWJ67UmVLFnz16VuY3LgzW9eLa6+gWKy+w5hjeL7gJXPO/UM/Uyjow0LuIAbqJ5PvafqYVqEVbwPVQoTVE0eNyhPAuLUBHGKQ1CqQNk=
+	t=1767635462; cv=none; b=ucNn90/Wrs1+ECtFUpfNhX3qhrb208bPWYX6KfidmVQw84Nl3G1AOY5c7AAwGioN2Hfug1b0+QPy4MvuBM1W5GLZCh8OlqRJUbvtbjzW5zNN2ZpCRjOyrsshje7Pflpf1Up3m6vGE4bcHJ2/tvYwLYWf7/2kIVqqEvV2UA4j2WQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767634938; c=relaxed/simple;
-	bh=MSuIA19HOzhzqaqXHUG3XbdQVfIKvnX8zde7DxytebY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cDiMDp4IIqMj01gjj4F8DQc0RQ18xAr3CoEUR9irWZVsZ93HAH0K8QHeec9JCQYJEo1KCNaUKKQIZqPiYQr8NIXKSCyiaRCZm4fI3hNwWvRp3M3QkHoZf07+1VtFbX1/HwxZKk+H2HDYYrAXTNgIplPSfzBuaP0Pzsq1DXLNZzg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TgMvN5tK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40C66C116D0;
-	Mon,  5 Jan 2026 17:42:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767634938;
-	bh=MSuIA19HOzhzqaqXHUG3XbdQVfIKvnX8zde7DxytebY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TgMvN5tKnRR6LvPRRB00EFyWLGLkEZnnJbfT5Xz8g/4qJCZSgFOOuzsM4a6SlSZ6d
-	 A7YBbNW8Um5Zo3jj/f7IbyUWuFz3ke5y7iysn2GF2OM6KzpL+HqRWbVhUfISt5upB8
-	 CTcQdKa5lfTBhgsaP70lqzLhFuKcAXVVnQgbdeCEiRJ+wsru4cvJr1HK8aAt+xdB6F
-	 lUv9uO5jT1ES4vzzQb0WGPFJMWVL5W3iMYk5/emKmWWc1KJrPjLPCyERTyGaeeWQCI
-	 YEAn5hMMY1M7rUsthf2sSKn5dHU47Tf8s/TAhCI+ZJq4VAkRsjXGYlpa/77WZxDc3P
-	 TdLBe0q84ViDg==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: David Hildenbrand <david@redhat.com>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y 3/3] powerpc/pseries/cmm: adjust BALLOON_MIGRATE when migrating pages
-Date: Mon,  5 Jan 2026 12:42:05 -0500
-Message-ID: <20260105174205.2697666-3-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260105174205.2697666-1-sashal@kernel.org>
-References: <2026010546-overcrowd-jarring-93b0@gregkh>
- <20260105174205.2697666-1-sashal@kernel.org>
+	s=arc-20240116; t=1767635462; c=relaxed/simple;
+	bh=9p1fiHwOGBf+CAAbiRfNz3uGPtd19UyeeyZrPnVWdbc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
+	 Content-Type:References; b=Fsul7JOyWJMl6FE//FlTujhi9b7Xp7q5URIqXaPT3mw0h1JbwG3p0F7fuOJ3zDPnn7NqzrOTwRVIxklkoDobzEEo2x9BbwxYYguVvScblS85KR9yJjVC9Zc5iyc+3xbgKVxCgBKOgU5v7fdxa0JoInmqFmzlgPGeP735BccyhLg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=GiM/WJV4; arc=none smtp.client-ip=210.118.77.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
+	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20260105175058euoutp02da7c95ba0b344b85cc15ebc046c71255~H5xVzR0a00773907739euoutp02K
+	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 17:50:58 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20260105175058euoutp02da7c95ba0b344b85cc15ebc046c71255~H5xVzR0a00773907739euoutp02K
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1767635458;
+	bh=UIl6SHJhWkfN0/1FLxWUZ38nXwKxplUrKF/eFOo1uVI=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=GiM/WJV48jrskVobEyKgi0zMxPnakTZILgr9xs5nLcJUMteqWX+UA4H5dn+8tQBfG
+	 eEjBFYSdZHxP7pXQLzHJadNpHOS1agFolQJbMwygokqAGAwGse0W4jjI5xCvrsJ2u5
+	 x9zG/eMfACdNYs9467DjD7I5LUrKcj9SYhQYX+LY=
+Received: from eusmtip2.samsung.com (unknown [203.254.199.222]) by
+	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
+	20260105175057eucas1p274610bd996f1599b43d386f0afdb0fb6~H5xVeVD8s2877028770eucas1p2i;
+	Mon,  5 Jan 2026 17:50:57 +0000 (GMT)
+Received: from [106.210.134.192] (unknown [106.210.134.192]) by
+	eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+	20260105175055eusmtip2bd9960cd4f35babf9088305da14604af~H5xTTw38e1923619236eusmtip2N;
+	Mon,  5 Jan 2026 17:50:55 +0000 (GMT)
+Message-ID: <d035fc29-3b03-4cd6-b8ec-001f93540bc6@samsung.com>
+Date: Mon, 5 Jan 2026 18:50:53 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH] pinctrl: meson: mark the GPIO controller as sleeping
+To: Bartosz Golaszewski <brgl@kernel.org>, Martin Blumenstingl
+	<martin.blumenstingl@googlemail.com>
+Cc: Linus Walleij <linusw@kernel.org>, Neil Armstrong
+	<neil.armstrong@linaro.org>, Kevin Hilman <khilman@baylibre.com>, Jerome
+	Brunet <jbrunet@baylibre.com>, linux-gpio@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-amlogic@lists.infradead.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org, Bartosz Golaszewski
+	<bartosz.golaszewski@oss.qualcomm.com>
+Content-Language: en-US
+From: Marek Szyprowski <m.szyprowski@samsung.com>
+In-Reply-To: <CAMRc=MeYWm=5bwfT5s+w6_kjt=wROonZSYo8=kA3Eyva4hpp1g@mail.gmail.com>
 Content-Transfer-Encoding: 8bit
+X-CMS-MailID: 20260105175057eucas1p274610bd996f1599b43d386f0afdb0fb6
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20260105173844eucas1p1d0d5b5a84d4690d42f98f73a04de8b42
+X-EPHeader: CA
+X-CMS-RootMailID: 20260105173844eucas1p1d0d5b5a84d4690d42f98f73a04de8b42
+References: <20260105150509.56537-1-bartosz.golaszewski@oss.qualcomm.com>
+	<CAFBinCAc7CO8gfNQakCu3LfkYXuyTd2iRpMRm8EKXSL0mwOnJw@mail.gmail.com>
+	<CGME20260105173844eucas1p1d0d5b5a84d4690d42f98f73a04de8b42@eucas1p1.samsung.com>
+	<CAMRc=MeYWm=5bwfT5s+w6_kjt=wROonZSYo8=kA3Eyva4hpp1g@mail.gmail.com>
 
-From: David Hildenbrand <david@redhat.com>
+On 05.01.2026 18:38, Bartosz Golaszewski wrote:
+> On Mon, 5 Jan 2026 18:28:23 +0100, Martin Blumenstingl
+> <martin.blumenstingl@googlemail.com> said:
+>> Hi Bartosz,
+>>
+>> On Mon, Jan 5, 2026 at 4:05 PM Bartosz Golaszewski
+>> <bartosz.golaszewski@oss.qualcomm.com> wrote:
+>> [...]
+>>>    mutex_lock_nested+0x24/0x30
+>>>    pinctrl_get_device_gpio_range+0x44/0x128
+>>>    pinctrl_gpio_set_config+0x40/0xdc
+>>>    gpiochip_generic_config+0x28/0x3c
+>>>    gpio_do_set_config+0xa8/0x194
+>> $ git grep gpiochip_generic_config drivers/pinctrl/meson/
+>> drivers/pinctrl/meson/pinctrl-amlogic-a4.c:     .set_config
+>>   = gpiochip_generic_config,
+>> drivers/pinctrl/meson/pinctrl-meson.c:  pc->chip.set_config =
+>> gpiochip_generic_config;
+>>
+>> pinctrl-amlogic-a4.c still has:
+>>    .can_sleep = false,
+>>
+>> Are there plans to send a separate fix for pinctrl-amlogic-a4.c - or
+>> was the intention to fix "all" Amlogic pin controllers in this patch
+>> (which would mean that the change to pinctrl-amlogic-a4.c is missing)?
+>>
+>>
+> Yeah, I missed it. I will send a follow-up tomorrow.
 
-[ Upstream commit 0da2ba35c0d532ca0fe7af698b17d74c4d084b9a ]
+I found that drivers/pinctrl/pinctrl-rockchip.c suffers for the same 
+issue, although I don't see where this ".can_sleep" flag has to be added:
 
-Let's properly adjust BALLOON_MIGRATE like the other drivers.
+BUG: sleeping function called from invalid context at 
+kernel/locking/mutex.c:591
+in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 12, name: 
+kworker/u16:0
+preempt_count: 1, expected: 0
+RCU nest depth: 0, expected: 0
+6 locks held by kworker/u16:0/12:
+  #0: ffff0001f0018d48 ((wq_completion)events_unbound#2){+.+.}-{0:0}, 
+at: process_one_work+0x18c/0x604
+  #1: ffff8000842dbdf0 (deferred_probe_work){+.+.}-{0:0}, at: 
+process_one_work+0x1b4/0x604
+  #2: ffff0001f18498f8 (&dev->mutex){....}-{4:4}, at: 
+__device_attach+0x38/0x1b0
+  #3: ffff0001f75f1e90 (&gdev->srcu){.+.?}-{0:0}, at: 
+gpiod_direction_output_raw_commit+0x0/0x360
+  #4: ffff0001f46e3db8 (&shared_desc->spinlock){....}-{3:3}, at: 
+gpio_shared_proxy_direction_output+0xd0/0x144 [gpio_shared_proxy]
+  #5: ffff0001f180ee90 (&gdev->srcu){.+.?}-{0:0}, at: 
+gpiod_direction_output_raw_commit+0x0/0x360
+irq event stamp: 81450
+hardirqs last  enabled at (81449): [<ffff8000813acba4>] 
+_raw_spin_unlock_irqrestore+0x74/0x78
+hardirqs last disabled at (81450): [<ffff8000813abfb8>] 
+_raw_spin_lock_irqsave+0x84/0x88
+softirqs last  enabled at (79616): [<ffff8000811455fc>] 
+__alloc_skb+0x17c/0x1e8
+softirqs last disabled at (79614): [<ffff8000811455fc>] 
+__alloc_skb+0x17c/0x1e8
+CPU: 2 UID: 0 PID: 12 Comm: kworker/u16:0 Not tainted 
+6.19.0-rc4-next-20260105+ #11975 PREEMPT
+Hardware name: Hardkernel ODROID-M1 (DT)
+Workqueue: events_unbound deferred_probe_work_func
+Call trace:
+  show_stack+0x18/0x24 (C)
+  dump_stack_lvl+0x90/0xd0
+  dump_stack+0x18/0x24
+  __might_resched+0x144/0x248
+  __might_sleep+0x48/0x98
+  __mutex_lock+0x5c/0x894
+  mutex_lock_nested+0x24/0x30
+  pinctrl_get_device_gpio_range+0x44/0x128
+  pinctrl_gpio_direction+0x3c/0xe0
+  pinctrl_gpio_direction_output+0x14/0x20
+  rockchip_gpio_direction_output+0xb8/0x19c
+  gpiochip_direction_output+0x38/0x94
+  gpiod_direction_output_raw_commit+0x1d8/0x360
+  gpiod_direction_output_nonotify+0x7c/0x230
+  gpiod_direction_output+0x34/0xf8
+  gpio_shared_proxy_direction_output+0xec/0x144 [gpio_shared_proxy]
+  gpiochip_direction_output+0x38/0x94
+  gpiod_direction_output_raw_commit+0x1d8/0x360
+  gpiod_direction_output_nonotify+0x7c/0x230
+  gpiod_configure_flags+0xbc/0x480
+  gpiod_find_and_request+0x1a0/0x574
+  gpiod_get_index+0x58/0x84
+  devm_gpiod_get_index+0x20/0xb4
+  devm_gpiod_get_optional+0x18/0x30
+  rockchip_pcie_probe+0x98/0x380
+  platform_probe+0x5c/0xac
+  really_probe+0xbc/0x298
 
-Note that the INFLATE/DEFLATE events are triggered from the core when
-enqueueing/dequeueing pages.
-
-This was found by code inspection.
-
-Link: https://lkml.kernel.org/r/20251021100606.148294-3-david@redhat.com
-Fixes: fe030c9b85e6 ("powerpc/pseries/cmm: Implement balloon compaction")
-Signed-off-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/powerpc/platforms/pseries/cmm.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/arch/powerpc/platforms/pseries/cmm.c b/arch/powerpc/platforms/pseries/cmm.c
-index 5e0a718d1be7..8c1f9721756e 100644
---- a/arch/powerpc/platforms/pseries/cmm.c
-+++ b/arch/powerpc/platforms/pseries/cmm.c
-@@ -532,6 +532,7 @@ static int cmm_migratepage(struct balloon_dev_info *b_dev_info,
- 
- 	spin_lock_irqsave(&b_dev_info->pages_lock, flags);
- 	balloon_page_insert(b_dev_info, newpage);
-+	__count_vm_event(BALLOON_MIGRATE);
- 	b_dev_info->isolated_pages--;
- 	spin_unlock_irqrestore(&b_dev_info->pages_lock, flags);
- 
+Best regards
 -- 
-2.51.0
+Marek Szyprowski, PhD
+Samsung R&D Institute Poland
 
 
