@@ -1,219 +1,213 @@
-Return-Path: <stable+bounces-204824-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204825-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8192DCF44B3
-	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 16:05:29 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C25ACCF4583
+	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 16:17:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5696D3006472
-	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 15:05:26 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 06FF13009200
+	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 15:17:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6BDD2FE59A;
-	Mon,  5 Jan 2026 15:05:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6288B2EC081;
+	Mon,  5 Jan 2026 15:08:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="HDdRI2aE";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="ArNp92B6"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="LphmDeQx"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f67.google.com (mail-wm1-f67.google.com [209.85.128.67])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B5CF2F3C0A
-	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 15:05:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 757B22DC320
+	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 15:07:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.67
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767625524; cv=none; b=DxLCXf62n00A8zoQSO5pfK0D/94+25MeSqOlsebREm7Btwtcn/PUim5TyDVOXpD2eDmQN0cLUCfRGpCvKno7s183g20Ru+R0eSdXkXxbKw6TxEgUB3LlXdTyKUAOtE+gUPDjn9X8XqXB3DatsEalT4Zz6jfbTQs3E3A7Eej6BSg=
+	t=1767625680; cv=none; b=PTCrJIt5kMl++jMK99OW6kh6osGMKC+pgsCq2ZLiji/jmHWJC/SRltti5LSWZowjwbA9t/hyqlCKAyA3Gvo+CxgY1N5Ft+WUy4TIKa+V+nz4a21NxhAOl1P0syhVocUR1oexQaUk2HXqbAYl0dj/XfX/zImiqtbmZ2P4Q/jRWcQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767625524; c=relaxed/simple;
-	bh=Nd5K0RjbOuP4dAx8M/lpJYl6guQq4laUFsGnK6qHp/g=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=aIXoeOaIP/jRa2au3ywFWi44VdihgnYUwgD5p8ZCdux+1cEPTABSqgwVTnxghLqCQWoH+D53c1p58sZznwwPPc8eqEBllmH9hQ0HgzzHrvTVIPkDYASgu5bR9eJT3PQj4U+2oRQ/S25NK7dV9sBYpiCV7G+PX8Vwe+w93vkj7A0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=HDdRI2aE; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=ArNp92B6; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 605A1ZGf091817
-	for <stable@vger.kernel.org>; Mon, 5 Jan 2026 15:05:22 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=qcppdkim1; bh=h8sqd0bRx4sFyRQxvQ/xS8g6YPcXDS+nVdy
-	q1H9VC1A=; b=HDdRI2aEFWBsVCXxYb7DDF/yRICuvU2f1RuxCRwfI5Ux79Ff1Ls
-	TAAc+iOctJFy16bG8MRe775UCe0R2y0gzCJpoSIq8yMX/SMVozMNBoWmRMmKHPMr
-	wWGMSJJc0jg6YaPx6DFv+z6S3ioL7TgmXLlmkH/OCIVvXUGERk1SIixoRjuKEOJR
-	x+LpUw6izpW2OetRDZs6XB312A5fN33LzD39eCa8lHr9zXR/W8wJlCm0SCat1ngC
-	kPUutsKih+ofHY7gWteQeDo3K8blwJ44VzKyX/9o6uUoqRF9k/vkGV549tWfTv7G
-	wv9A7eSrA5K1EwyUzp9RHicOe8TEhJY66Dw==
-Received: from mail-vk1-f199.google.com (mail-vk1-f199.google.com [209.85.221.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4bg4v61vt8-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Mon, 05 Jan 2026 15:05:21 +0000 (GMT)
-Received: by mail-vk1-f199.google.com with SMTP id 71dfb90a1353d-55b09eaea3fso31656e0c.0
-        for <stable@vger.kernel.org>; Mon, 05 Jan 2026 07:05:21 -0800 (PST)
+	s=arc-20240116; t=1767625680; c=relaxed/simple;
+	bh=OV9Z1KUE5yeE2dXIw79nHbxNnn1GF3eh4qO1VR3wxi0=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=leQUoI3868n8KheaTDzbvgZ3W/DiHyidjEIKDgRT0/jysjdV3XaKqDQIn0juhE00oTGYnv8yfBJ+3oZk13JiLsqu69mxKfa2XTpw6BQmUKilxOo3T4PVwyaQo8i5hh+/NJYqVpm8L1ykw+euNZWxtQ6HHJWlEDoQKHQvA1UuxS4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=LphmDeQx; arc=none smtp.client-ip=209.85.128.67
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f67.google.com with SMTP id 5b1f17b1804b1-47795f6f5c0so83085e9.1
+        for <stable@vger.kernel.org>; Mon, 05 Jan 2026 07:07:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1767625521; x=1768230321; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=h8sqd0bRx4sFyRQxvQ/xS8g6YPcXDS+nVdyq1H9VC1A=;
-        b=ArNp92B6KmgHGVzQXC+nJwG+UzwTzliMEWXnGUzOhN2JewxLdjuS/zqWKjJwDIaCfU
-         WCijVQPvXpBZljZ1qBwobCvu08HrH4nwzxXIMXEppSR34dWS8/j9jUrJo7mmLranLv7j
-         g6TLQqjRnyeIbF5ElEfMMT4hazxvKXyQ58jHGPzfV3O8AEdHubAzN8CgSZmLT3Oiqqy6
-         ZArk1zCpKAUweGLQYTX27efRZcDFFZPM/nOtqthYS0VEzR+VX47i9iCYf9eno7qhA9gP
-         r+Kc2QkQPjfpjVNYYXJeoPhD/blsvilp5SMx75dqymyH8ybS0+v0jgyNvwTUaXxIdFPd
-         W+qg==
+        d=linaro.org; s=google; t=1767625676; x=1768230476; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:references:cc:to:subject:reply-to:from:user-agent
+         :mime-version:date:message-id:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=DJeP3umUUPJKCdZprAUZ1ZTfLiCOqec4hH3IqgMAE2k=;
+        b=LphmDeQxjhzU/GQtoKhKwhGyDr1TlcsN+pLu4GxhMT1d3Nv0OC0w8FyiW4A80aFMKG
+         YJMgA8B0XlZG8Q5EurogkddbmBd66pJB2bIa2c9mg4K8E1MfSouy1pTrVN8/+QxUTI9f
+         ksQnfUUpw4uOdS4JPUAIG+Xudd2otNdWEjyFsiTrxbZO7GgZHNR1zl6Z0gHNdMXuTn92
+         TYsLgRyR9oIcYwDbbmLyvrJb14FnElNdsVNRBKiLwxakvNf6WWFHETJAPlHK+75wmeVM
+         E2pBpPvpaMZbuma/f8ZFnubh7dlOFfuuko/9zCFY69ISLYf3VCBAHnB8z71RQnxDt2jg
+         pDJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767625521; x=1768230321;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=h8sqd0bRx4sFyRQxvQ/xS8g6YPcXDS+nVdyq1H9VC1A=;
-        b=jWqlnOxqqjc5eMkyw04O/XKjY1fZCaTGZj7pxZTdRuiTgEDe4gp04hdftUknxdb2gO
-         6wFobpf0Ne1az7xu1Tm3BpLRhYSOPFc6XOFUQ+uPjULZm3bFWCWmK+exGWQp8EEpk80T
-         FyEJiIAioHbGvkT7OrYMeBq6gJGs3+ZszkGGMJpbfR7mW6sP+nD2qUzkWZ+hRkQsLIB7
-         uHSCrb6itNls6vjCEXh3DT83nIxH4dyCzmIPsMiVRs0SVdRjFfE7GKwOYevxALuczCuQ
-         l+ZdKNun7DyKMjBPBpRVwcrgr1fzGwBl9K1l3LznfvlVEnjBFp0qUSmQDtG5TUuHRdrL
-         BUcw==
-X-Forwarded-Encrypted: i=1; AJvYcCUgRacR0xsgzo1yf/ByT7qxatb2gB0FQly28KpbneFPNDpEiHrkMSz3c7tILCJ/CGUoNU3yV5o=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyRLs2ztvQ2/bV+7NHyzDbsmCzdtvbWra9zW3X+qyF664Ij1wP+
-	kZ7XiQMWLsyGBuwIf0AhZnA0Hh0tEEc20VcqEIgXbibBSgmghPIUp6aROA94UWZ+1O6+obXsnUr
-	IRZOGRvtgdq8OZsy9rir1BtWruUJVJXtcBvuLW8mYGWXeI6dykkZK7SsG/OM=
-X-Gm-Gg: AY/fxX7zns+d3GOWHnLatuMUejO8B/Pd3TXmRKrzphESnb/AM36VZxy85ovcszeFsg5
-	m3hF9SbQWI9jeOHXcArBgDAlUsbB9hhEAJl5nAcKzDgdtnQSZHszhSvgCw/GVohcP7rQyvNySzz
-	PMKHQfUWwcMJRx87unvki5KVAG4rt3oB4dQPAc4iQJV4j3VaucB3uIVsMJqturPRBAz5fyrnuvG
-	gpQ48CXPqE6rDMEtRBz32PHKRTIe1/r2BMSojIs7/hmemUpdW1JjqMI0vYRKjOpzEMIfOQJvoIs
-	9NK8iv0aD1KaugjBYc+zE63MbWx589A1SwKXpTx4AJuOVCMdNga3MoHVvkT3L//Rop54+pF+l+3
-	bnbdvit1UCNHWi8gvFMRhBHiVmHNe1DFeUvgRV5w=
-X-Received: by 2002:a05:6122:7cd:b0:559:6e78:a434 with SMTP id 71dfb90a1353d-5615bbb613fmr16174851e0c.0.1767625519856;
-        Mon, 05 Jan 2026 07:05:19 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHtVydwCbdWuKMgUh2s3Z2eGw3aJWvq/Nci+QqerT78i3llXQMgvkcfAvCV5pFW4+FSDFw4XQ==
-X-Received: by 2002:a05:6122:7cd:b0:559:6e78:a434 with SMTP id 71dfb90a1353d-5615bbb613fmr16174732e0c.0.1767625517957;
-        Mon, 05 Jan 2026 07:05:17 -0800 (PST)
-Received: from brgl-qcom.home ([2a01:cb1d:dc:7e00:dd3b:c635:dd06:9574])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47d6c08ef66sm57732685e9.10.2026.01.05.07.05.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Jan 2026 07:05:17 -0800 (PST)
-From: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-To: Linus Walleij <linusw@kernel.org>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Jerome Brunet <jbrunet@baylibre.com>,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        Bartosz Golaszewski <brgl@kernel.org>
-Cc: linux-gpio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org,
-        Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
-        stable@vger.kernel.org, Marek Szyprowski <m.szyprowski@samsung.com>
-Subject: [PATCH] pinctrl: meson: mark the GPIO controller as sleeping
-Date: Mon,  5 Jan 2026 16:05:08 +0100
-Message-ID: <20260105150509.56537-1-bartosz.golaszewski@oss.qualcomm.com>
-X-Mailer: git-send-email 2.47.3
+        d=1e100.net; s=20230601; t=1767625676; x=1768230476;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:references:cc:to:subject:reply-to:from:user-agent
+         :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=DJeP3umUUPJKCdZprAUZ1ZTfLiCOqec4hH3IqgMAE2k=;
+        b=euikDV8sNjVBAVtMoL3u+6bvw3ka9iW8h+tyMu7DNKt4KOVyvb6VkzelBNrmsJXZBX
+         4Tu2Lly3Nl+m1R71EMEmp2gf1zyv8DnpH6fNpO33xZgO/bsP18F7e9t0ZnWhjAc1H9V5
+         ROZwC0AdNPrPFWmcGDNZOzfNMUqVxMqhxSJohOjgf3kaHDdCVpe4+RUaVGOjMBc1JTJv
+         lol4CyiyYKlwdyAj1ukZLJ/EMpXNpRuaXv31yeUGm+BPx0uAeNpUhxaOGmx2UYlicHMJ
+         J7G4f2TW35qQLjnMRLbV46+LWA59XHFBUnAu3BbRzsEwVOHHrhYqrzTD2dEsvXApuy3Q
+         o6Xw==
+X-Forwarded-Encrypted: i=1; AJvYcCVrBw67hWCSozD4V0VtD2eOGI2GijUn5NlbJuw6LWdOWOlgGY+ZDnRF8Cq7tuCBE1wdcjGHQec=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx53ktxoScLgza9dNc0OdS82+qXIc1NclMy+eUezX8wkqh3cYFd
+	e5IZBkEjqzYi0dkP/AXuersQx+l0XWcVc7z3zqnyCCANUqKWyX0/Ylu7q3WQrBBuD3E=
+X-Gm-Gg: AY/fxX7eNn3q4QrOyTd6VRzPVU4sMW6E0UA+gJIloGfLch6gX/vmLvdoO1AoYeZxoId
+	MA3wYB0pF4lfzOtOxPDgzMd7OFYGH7MNcoBcOb6qv+hb0s+3Ixy+2ZXFOjYRX8oaM8mrB4Dd22o
+	/YbIj0tLOTxI+nTkp6aXg4ly+QRJvpSGFuCbJJBGleSj3KOKXXUFVUd8WnELhx5+p+FGbc2ywfz
+	a3wSAb5AgqZDnv0SV/IMQEZKXjyO7DdJoqCGNgU8PE5KXrXEBJ/kTEkDU57a4WM3x1b2amUpsWc
+	mTrmFn+7TRdBUPGEH9nMOXOwkNh2gU0gZNEmFGIhXSxP5D2OqYQQxdu+qGkCqh9jita66/Q7Vhf
+	KBDSY8zja7znC3PO6uMNeQqjiqaF+Jp9Q5tA3QDOlLffwCeI6HVHHk5sSqU3i91zsgamEZO1XuE
+	jPwr9+cII5gQSR16/AjUCJ3g3WXLJsBm/aScBY+uDZF09PBHsB81MxSxM4lj0HsXE=
+X-Google-Smtp-Source: AGHT+IHNPKjsE1L43Mcol0BPhYCu+RrWOpaqpZKfNqq23wdaZg/I9TTFl/xgV8vj8QWVD5+5pya8pQ==
+X-Received: by 2002:a05:600c:5249:b0:456:1a69:94fa with SMTP id 5b1f17b1804b1-47d1954a128mr636773765e9.13.1767625675529;
+        Mon, 05 Jan 2026 07:07:55 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:3d9:2080:d4c1:5589:eadb:1033? ([2a01:e0a:3d9:2080:d4c1:5589:eadb:1033])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47d7443c04csm35338465e9.1.2026.01.05.07.07.54
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 05 Jan 2026 07:07:55 -0800 (PST)
+Message-ID: <0a457882-1700-4edd-ba86-3682b05731f0@linaro.org>
+Date: Mon, 5 Jan 2026 16:07:54 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTA1MDEzMiBTYWx0ZWRfX5jIeiZdADo5U
- i2oCN199r8S2Lslkg/nr821NmhHgtMSXdWZvyCZEjL0YNAk2hoNngGNh8GBzq05pZEyYV1KHwkD
- kEKQHyNI8SCWJz8Qsmsk4Sq4NRkegnPWq2P1mbgJg2dtOVRn8VQeULQPHLJp31njqqWhESZgg7O
- dOkKGb+xbwyCQNd63fzV1QRUaZBBS4X21z0yTeGjhSzbyu9itFM2d+gmRfikQ2DU45vUW5oLYm4
- N2vBA0zpfhn6nGJpcPJrvVZ/Lp15KeMIn4eKdXO7ipoKvg35zX6DWgThdQpXhRbfhUGkKlTvcDM
- M0BWensm1Dn/CMioBPJycHyJFWSoapIWNvVEp9yZLxw+rJ1OShkLKaTrKh288IrJGYFNY4+pLk+
- r+EPKbK46iNuOgbUgA6WpmEP9xch7HSGoF84ECLwIblx52M6Fu5BJhkFPfIrZeGqY3xhEjUSDwa
- bD0yD0f7hVowAfGXv+Q==
-X-Proofpoint-ORIG-GUID: qBVnq5UYZ2HDomS3b_gp6dQNKX8Y766c
-X-Authority-Analysis: v=2.4 cv=c4ymgB9l c=1 sm=1 tr=0 ts=695bd331 cx=c_pps
- a=+D9SDfe9YZWTjADjLiQY5g==:117 a=xqWC_Br6kY4A:10 a=vUbySO9Y5rIA:10
- a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=hD80L64hAAAA:8
- a=EUspDBNiAAAA:8 a=z2IfzJB68yTmpBagawIA:9 a=vmgOmaN-Xu0dpDh8OwbV:22
-X-Proofpoint-GUID: qBVnq5UYZ2HDomS3b_gp6dQNKX8Y766c
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2026-01-05_01,2026-01-05_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 suspectscore=0 adultscore=0 clxscore=1015 bulkscore=0
- impostorscore=0 priorityscore=1501 phishscore=0 spamscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2512120000 definitions=main-2601050132
+User-Agent: Mozilla Thunderbird
+From: Neil Armstrong <neil.armstrong@linaro.org>
+Reply-To: Neil Armstrong <neil.armstrong@linaro.org>
+Subject: Re: [PATCH] pinctrl: meson: mark the GPIO controller as sleeping
+To: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
+ Linus Walleij <linusw@kernel.org>, Kevin Hilman <khilman@baylibre.com>,
+ Jerome Brunet <jbrunet@baylibre.com>,
+ Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+ Bartosz Golaszewski <brgl@kernel.org>
+Cc: linux-gpio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, Marek Szyprowski <m.szyprowski@samsung.com>
+References: <20260105150509.56537-1-bartosz.golaszewski@oss.qualcomm.com>
+Content-Language: en-US, fr
+Autocrypt: addr=neil.armstrong@linaro.org; keydata=
+ xsBNBE1ZBs8BCAD78xVLsXPwV/2qQx2FaO/7mhWL0Qodw8UcQJnkrWmgTFRobtTWxuRx8WWP
+ GTjuhvbleoQ5Cxjr+v+1ARGCH46MxFP5DwauzPekwJUD5QKZlaw/bURTLmS2id5wWi3lqVH4
+ BVF2WzvGyyeV1o4RTCYDnZ9VLLylJ9bneEaIs/7cjCEbipGGFlfIML3sfqnIvMAxIMZrvcl9
+ qPV2k+KQ7q+aXavU5W+yLNn7QtXUB530Zlk/d2ETgzQ5FLYYnUDAaRl+8JUTjc0CNOTpCeik
+ 80TZcE6f8M76Xa6yU8VcNko94Ck7iB4vj70q76P/J7kt98hklrr85/3NU3oti3nrIHmHABEB
+ AAHNKk5laWwgQXJtc3Ryb25nIDxuZWlsLmFybXN0cm9uZ0BsaW5hcm8ub3JnPsLAkQQTAQoA
+ OwIbIwULCQgHAwUVCgkICwUWAgMBAAIeAQIXgBYhBInsPQWERiF0UPIoSBaat7Gkz/iuBQJk
+ Q5wSAhkBAAoJEBaat7Gkz/iuyhMIANiD94qDtUTJRfEW6GwXmtKWwl/mvqQtaTtZID2dos04
+ YqBbshiJbejgVJjy+HODcNUIKBB3PSLaln4ltdsV73SBcwUNdzebfKspAQunCM22Mn6FBIxQ
+ GizsMLcP/0FX4en9NaKGfK6ZdKK6kN1GR9YffMJd2P08EO8mHowmSRe/ExAODhAs9W7XXExw
+ UNCY4pVJyRPpEhv373vvff60bHxc1k/FF9WaPscMt7hlkbFLUs85kHtQAmr8pV5Hy9ezsSRa
+ GzJmiVclkPc2BY592IGBXRDQ38urXeM4nfhhvqA50b/nAEXc6FzqgXqDkEIwR66/Gbp0t3+r
+ yQzpKRyQif3OwE0ETVkGzwEIALyKDN/OGURaHBVzwjgYq+ZtifvekdrSNl8TIDH8g1xicBYp
+ QTbPn6bbSZbdvfeQPNCcD4/EhXZuhQXMcoJsQQQnO4vwVULmPGgtGf8PVc7dxKOeta+qUh6+
+ SRh3vIcAUFHDT3f/Zdspz+e2E0hPV2hiSvICLk11qO6cyJE13zeNFoeY3ggrKY+IzbFomIZY
+ 4yG6xI99NIPEVE9lNBXBKIlewIyVlkOaYvJWSV+p5gdJXOvScNN1epm5YHmf9aE2ZjnqZGoM
+ Mtsyw18YoX9BqMFInxqYQQ3j/HpVgTSvmo5ea5qQDDUaCsaTf8UeDcwYOtgI8iL4oHcsGtUX
+ oUk33HEAEQEAAcLAXwQYAQIACQUCTVkGzwIbDAAKCRAWmrexpM/4rrXiB/sGbkQ6itMrAIfn
+ M7IbRuiSZS1unlySUVYu3SD6YBYnNi3G5EpbwfBNuT3H8//rVvtOFK4OD8cRYkxXRQmTvqa3
+ 3eDIHu/zr1HMKErm+2SD6PO9umRef8V82o2oaCLvf4WeIssFjwB0b6a12opuRP7yo3E3gTCS
+ KmbUuLv1CtxKQF+fUV1cVaTPMyT25Od+RC1K+iOR0F54oUJvJeq7fUzbn/KdlhA8XPGzwGRy
+ 4zcsPWvwnXgfe5tk680fEKZVwOZKIEuJC3v+/yZpQzDvGYJvbyix0lHnrCzq43WefRHI5XTT
+ QbM0WUIBIcGmq38+OgUsMYu4NzLu7uZFAcmp6h8g
+Organization: Linaro
+In-Reply-To: <20260105150509.56537-1-bartosz.golaszewski@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-The GPIO controller is configured as non-sleeping but it uses generic
-pinctrl helpers which use a mutex for synchronization.
+On 1/5/26 16:05, Bartosz Golaszewski wrote:
+> The GPIO controller is configured as non-sleeping but it uses generic
+> pinctrl helpers which use a mutex for synchronization.
+> 
+> This can cause the following lockdep splat with shared GPIOs enabled on
+> boards which have multiple devices using the same GPIO:
+> 
+> BUG: sleeping function called from invalid context at
+> kernel/locking/mutex.c:591
+> in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 142, name:
+> kworker/u25:3
+> preempt_count: 1, expected: 0
+> RCU nest depth: 0, expected: 0
+> INFO: lockdep is turned off.
+> irq event stamp: 46379
+> hardirqs last  enabled at (46379): [<ffff8000813acb24>]
+> _raw_spin_unlock_irqrestore+0x74/0x78
+> hardirqs last disabled at (46378): [<ffff8000813abf38>]
+> _raw_spin_lock_irqsave+0x84/0x88
+> softirqs last  enabled at (46330): [<ffff8000800c71b4>]
+> handle_softirqs+0x4c4/0x4dc
+> softirqs last disabled at (46295): [<ffff800080010674>]
+> __do_softirq+0x14/0x20
+> CPU: 1 UID: 0 PID: 142 Comm: kworker/u25:3 Tainted: G C
+> 6.19.0-rc4-next-20260105+ #11963 PREEMPT
+> Tainted: [C]=CRAP
+> Hardware name: Khadas VIM3 (DT)
+> Workqueue: events_unbound deferred_probe_work_func
+> Call trace:
+>    show_stack+0x18/0x24 (C)
+>    dump_stack_lvl+0x90/0xd0
+>    dump_stack+0x18/0x24
+>    __might_resched+0x144/0x248
+>    __might_sleep+0x48/0x98
+>    __mutex_lock+0x5c/0x894
+>    mutex_lock_nested+0x24/0x30
+>    pinctrl_get_device_gpio_range+0x44/0x128
+>    pinctrl_gpio_set_config+0x40/0xdc
+>    gpiochip_generic_config+0x28/0x3c
+>    gpio_do_set_config+0xa8/0x194
+>    gpiod_set_config+0x34/0xfc
+>    gpio_shared_proxy_set_config+0x6c/0xfc [gpio_shared_proxy]
+>    gpio_do_set_config+0xa8/0x194
+>    gpiod_set_transitory+0x4c/0xf0
+>    gpiod_configure_flags+0xa4/0x480
+>    gpiod_find_and_request+0x1a0/0x574
+>    gpiod_get_index+0x58/0x84
+>    devm_gpiod_get_index+0x20/0xb4
+>    devm_gpiod_get+0x18/0x24
+>    mmc_pwrseq_emmc_probe+0x40/0xb8
+>    platform_probe+0x5c/0xac
+>    really_probe+0xbc/0x298
+>    __driver_probe_device+0x78/0x12c
+>    driver_probe_device+0xdc/0x164
+>    __device_attach_driver+0xb8/0x138
+>    bus_for_each_drv+0x80/0xdc
+>    __device_attach+0xa8/0x1b0
+> 
+> Fixes: 6ac730951104 ("pinctrl: add driver for Amlogic Meson SoCs")
+> Cc: stable@vger.kernel.org
+> Reported-by: Marek Szyprowski <m.szyprowski@samsung.com>
+> Closes: https://lore.kernel.org/all/00107523-7737-4b92-a785-14ce4e93b8cb@samsung.com/
+> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+> ---
+>   drivers/pinctrl/meson/pinctrl-meson.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/pinctrl/meson/pinctrl-meson.c b/drivers/pinctrl/meson/pinctrl-meson.c
+> index 18295b15ecd9..4507dc8b5563 100644
+> --- a/drivers/pinctrl/meson/pinctrl-meson.c
+> +++ b/drivers/pinctrl/meson/pinctrl-meson.c
+> @@ -619,7 +619,7 @@ static int meson_gpiolib_register(struct meson_pinctrl *pc)
+>   	pc->chip.set = meson_gpio_set;
+>   	pc->chip.base = -1;
+>   	pc->chip.ngpio = pc->data->num_pins;
+> -	pc->chip.can_sleep = false;
+> +	pc->chip.can_sleep = true;
+>   
+>   	ret = gpiochip_add_data(&pc->chip, pc);
+>   	if (ret) {
 
-This can cause the following lockdep splat with shared GPIOs enabled on
-boards which have multiple devices using the same GPIO:
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
 
-BUG: sleeping function called from invalid context at
-kernel/locking/mutex.c:591
-in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 142, name:
-kworker/u25:3
-preempt_count: 1, expected: 0
-RCU nest depth: 0, expected: 0
-INFO: lockdep is turned off.
-irq event stamp: 46379
-hardirqs last  enabled at (46379): [<ffff8000813acb24>]
-_raw_spin_unlock_irqrestore+0x74/0x78
-hardirqs last disabled at (46378): [<ffff8000813abf38>]
-_raw_spin_lock_irqsave+0x84/0x88
-softirqs last  enabled at (46330): [<ffff8000800c71b4>]
-handle_softirqs+0x4c4/0x4dc
-softirqs last disabled at (46295): [<ffff800080010674>]
-__do_softirq+0x14/0x20
-CPU: 1 UID: 0 PID: 142 Comm: kworker/u25:3 Tainted: G C
-6.19.0-rc4-next-20260105+ #11963 PREEMPT
-Tainted: [C]=CRAP
-Hardware name: Khadas VIM3 (DT)
-Workqueue: events_unbound deferred_probe_work_func
-Call trace:
-  show_stack+0x18/0x24 (C)
-  dump_stack_lvl+0x90/0xd0
-  dump_stack+0x18/0x24
-  __might_resched+0x144/0x248
-  __might_sleep+0x48/0x98
-  __mutex_lock+0x5c/0x894
-  mutex_lock_nested+0x24/0x30
-  pinctrl_get_device_gpio_range+0x44/0x128
-  pinctrl_gpio_set_config+0x40/0xdc
-  gpiochip_generic_config+0x28/0x3c
-  gpio_do_set_config+0xa8/0x194
-  gpiod_set_config+0x34/0xfc
-  gpio_shared_proxy_set_config+0x6c/0xfc [gpio_shared_proxy]
-  gpio_do_set_config+0xa8/0x194
-  gpiod_set_transitory+0x4c/0xf0
-  gpiod_configure_flags+0xa4/0x480
-  gpiod_find_and_request+0x1a0/0x574
-  gpiod_get_index+0x58/0x84
-  devm_gpiod_get_index+0x20/0xb4
-  devm_gpiod_get+0x18/0x24
-  mmc_pwrseq_emmc_probe+0x40/0xb8
-  platform_probe+0x5c/0xac
-  really_probe+0xbc/0x298
-  __driver_probe_device+0x78/0x12c
-  driver_probe_device+0xdc/0x164
-  __device_attach_driver+0xb8/0x138
-  bus_for_each_drv+0x80/0xdc
-  __device_attach+0xa8/0x1b0
-
-Fixes: 6ac730951104 ("pinctrl: add driver for Amlogic Meson SoCs")
-Cc: stable@vger.kernel.org
-Reported-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Closes: https://lore.kernel.org/all/00107523-7737-4b92-a785-14ce4e93b8cb@samsung.com/
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
----
- drivers/pinctrl/meson/pinctrl-meson.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/pinctrl/meson/pinctrl-meson.c b/drivers/pinctrl/meson/pinctrl-meson.c
-index 18295b15ecd9..4507dc8b5563 100644
---- a/drivers/pinctrl/meson/pinctrl-meson.c
-+++ b/drivers/pinctrl/meson/pinctrl-meson.c
-@@ -619,7 +619,7 @@ static int meson_gpiolib_register(struct meson_pinctrl *pc)
- 	pc->chip.set = meson_gpio_set;
- 	pc->chip.base = -1;
- 	pc->chip.ngpio = pc->data->num_pins;
--	pc->chip.can_sleep = false;
-+	pc->chip.can_sleep = true;
- 
- 	ret = gpiochip_add_data(&pc->chip, pc);
- 	if (ret) {
--- 
-2.47.3
-
+Thanks,
+Neil
 
