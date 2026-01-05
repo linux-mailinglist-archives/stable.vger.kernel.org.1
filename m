@@ -1,124 +1,313 @@
-Return-Path: <stable+bounces-204634-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204635-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90BB5CF308F
-	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 11:43:57 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D65DDCF30B6
+	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 11:48:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0D14830F3C24
-	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 10:40:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9266F303DD3E
+	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 10:46:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 331E6316918;
-	Mon,  5 Jan 2026 10:40:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AABAA3195EC;
+	Mon,  5 Jan 2026 10:41:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TPBahxkD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x0rjYFtg"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C7253168EB
-	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 10:40:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69757316918
+	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 10:41:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767609605; cv=none; b=QN7L+5fTCCiyMLPgdQNqMIdjZ0dRCBpNS/H4Jq5NbgDA/DBQwJN42bb/K8coyuUQhtDEVOqh0aoP2WC7KjyKtfk//tPHqphBOvcl0mgRRISAM/0RM2SQYY5fxaH+tB/Z99useYgFLOdLBqHck39jxUDiFe3v5vx03NKpsxQUHM8=
+	t=1767609672; cv=none; b=US9Emq8s3q5Wk846iY9QojcSIaV2HNnG3lMAF6qkWIcrjxS44eczONBHMyB01HP7Lu5mNY5PYiKDTP96G3XG3eUANlc5QGWV09PPEZJCvW+t91dK7fA1vtrlX58zXhMZanbOTV0uytNZcqmqPB7vV6Sao+6A8fBV5+ictHglD7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767609605; c=relaxed/simple;
-	bh=ilQVyanHgKsLWkZPGkjqH6wvmpNb1DelmMugaEdB5jM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=iPOPfccDctvIybNlM1nO0XCQZfcwh1uKBVHn5YIwvTe0OhznYJ7bj9/UHJ9vz2n4qaP6wX/kc6KLAvSYysWuxlLpy48lO3ZwLOEDrcXbYeTqT1s4UzFpNW4kY9/C73ObPTnhXGRJ+l3PgG0zAl5oeC6SXVG8w0J3EsRw3A84ekI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TPBahxkD; arc=none smtp.client-ip=209.85.214.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2a08ced9a36so30573465ad.2
-        for <stable@vger.kernel.org>; Mon, 05 Jan 2026 02:40:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767609602; x=1768214402; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ilQVyanHgKsLWkZPGkjqH6wvmpNb1DelmMugaEdB5jM=;
-        b=TPBahxkDEzxpIldCY4B48Wn0U0NjzwIRbzpxV8VdgtEolAf7SDrhIa1TmNAYW6ytEL
-         MdFu0LTgkLyGgbi9UQIBVVUlnV/QfSD3GICWA6Hkpa8AjmWhr71O2TwGAQv2eDhDebYd
-         p4iITY36D8esuBSU02dRVLHpvlWikGcDejkfpANOUxejXnfB/V2oDJfYG2gUOP28/0ZU
-         9YhmIRHHsi0oW64Q958RraaJxBx8v1ufnPCHwaMWExcDEnZ+6KDCNggCFzma5s4abq5y
-         2+mRBT1JLftMEa6C/V1oLDRgIwMOVNlIh+2J7DcMKlW7AdJbnC5KghBWwo6fBJ4a9mkh
-         a+7Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767609602; x=1768214402;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=ilQVyanHgKsLWkZPGkjqH6wvmpNb1DelmMugaEdB5jM=;
-        b=jIeUM1o2r7MJzshEm7AI+WSm0Y3CWsRoc859VNX89xk/z07Y+hqVs+8mEMSyuDXG9E
-         Eon51zB6b+icuhfp/Qdf1wVB+UtvBXQuUaM2S8snebUPDRsVNphQc+UtmLGzAo+4bL1T
-         RLhoIn9EKKbkaGj7Q92I0GjTczkr+mUdxlw1idY+fAWriZsNLzUTceY84clFqPw4Bp+A
-         aj4+LNCEFPtk3FnaNJw68bZktsoVaO9+OA4fta8wj+XZmubYJUixaHP/MBKg9C7q+kcq
-         ez6yoK1WxLzvX0dKwO++ZpccPiC4NFMj8vDk0tuRAv6V7sSlKM09kf8sYtPK7I3AcQUc
-         yG4g==
-X-Forwarded-Encrypted: i=1; AJvYcCVby998GITunFQVIMrNCB77eirnlcmc/myidhiwGGpM09oIAGrn/cC9Pp1nzhmfHXJz21UbdnI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzxoysTGsx2h1U9xt2zPtJdVmvQuRgXmYmuy29hNPmvGEh/104o
-	ZKcVE8U7+7/pWQqWZe9EHHBZK9SvIZXa7yWEClbJfCAeLl3kAR3steTWXefN3547HeCWyRcunbe
-	yJ6x6WclHyMCnfrc2uLMlkcoXt03/4jw=
-X-Gm-Gg: AY/fxX5Iw18jDAMCli/z2yEQLieUMc7C/i0PHJVPYz22pX4iy30O7iwUv4HsNqk1E6/
-	ojYvrzDondheBAwgGD59wB4h+POd867R46y4OQZFaVkQFuXohLgxUrX1bcIbTo8WdAR5Ob/E2nd
-	uaidhizQcUozrLIjDL5kHCfOpDA+Xqr6klcXBkzYayxzB1nhj9dFFDQx9NUQ5kbMsvUwg8Gz5De
-	Y9nZyTszIJGtTLhwBHzsfFjV4LJ/aQ4jpvE97dixhE5pTT7EbCwIU8lQG4GWUjPdO4Cyv9ER3nm
-	Ub7snzgx0MpGeX0Z/daOmQ3c7mWM3yWjqEhO1rKT4LUa5xIvHlSTkTmSU6wpzivsAB+aapZF7tO
-	YKuAerNNe/qrm
-X-Google-Smtp-Source: AGHT+IFW2rQaG24jjJapMA2YCS5ndIcCTUrcLoVwM07bEOEYf1H++r47YjXTIrY1jYLwOX3qoKgMykSxPiszDmOKty4=
-X-Received: by 2002:a05:7300:80cc:b0:2ae:5dd5:c178 with SMTP id
- 5a478bee46e88-2b05eb787b8mr24225253eec.2.1767609602464; Mon, 05 Jan 2026
- 02:40:02 -0800 (PST)
+	s=arc-20240116; t=1767609672; c=relaxed/simple;
+	bh=qey6RYwt0vwb2LDKRYt1jA+1JB42w1eR3SxEcFW7R8c=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=RPPcv1umKHxxJC6Uwxe7FEjXyeNyhLRKX162bXysj3qJk5RFMvZ8lur1z+TnEJ2R92i00zJKFPHNM4gnIO2Xik4XQ/d2ZriAdqlMdcPz4obOVD5Keuv7B5hBbhWIol56ekYMETMrRQd8C86wJcWKgL+YJ/TUI59DEBrg6lLBltA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x0rjYFtg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C17AC116D0;
+	Mon,  5 Jan 2026 10:41:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1767609670;
+	bh=qey6RYwt0vwb2LDKRYt1jA+1JB42w1eR3SxEcFW7R8c=;
+	h=Subject:To:Cc:From:Date:From;
+	b=x0rjYFtg19m7xo2B8cI9FX+LglCc+Oekx2GPvOghcDXp+DJEEBqv1we1mhs8RBfUQ
+	 yIapA6QoNijEXmGVY+LhJcT4RQ6GpssocLumss2TQSrUf/4UZgZsH047Uup+sZMXXk
+	 DcpLf1gDTpOnJiqD94g4J1OvhVDVE2P5q0ZDiM6g=
+Subject: FAILED: patch "[PATCH] media: verisilicon: Fix CPU stalls on G2 bus error" failed to apply to 6.6-stable tree
+To: nicolas.dufresne@collabora.com,benjamin.gaignard@collabora.com,hverkuil+cisco@kernel.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 05 Jan 2026 11:41:07 +0100
+Message-ID: <2026010507-cringe-sterile-73c8@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260103143119.96095-1-mt@markoturk.info> <20260103143119.96095-2-mt@markoturk.info>
- <DFF23OTZRIDS.2PZIV7D8AHWFA@kernel.org> <84cc5699-f9ab-42b3-a1ea-15bf9bd80d19@gmail.com>
- <aVmHGBop5OPlVVBa@vps.markoturk.info> <CANiq72=t-U8JTH2JZxkQaW7sbYXjWLpkYkuMd_CuzLoJLbEvgQ@mail.gmail.com>
- <DFFV41VPS2MU.3LHXU4UKITD0U@kernel.org> <CANiq72=fFZpWJ9BvHEBqi4chZO3rFo8+-F9=myW1f_JzJ0PNrg@mail.gmail.com>
- <2026010520-quickness-humble-70db@gregkh>
-In-Reply-To: <2026010520-quickness-humble-70db@gregkh>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 5 Jan 2026 11:39:50 +0100
-X-Gm-Features: AQt7F2oJSnCa_SxWh-jZOT4jqarKH-djdmAAEP18_oI9iQTalSPqljHbD4ecNRg
-Message-ID: <CANiq72nrPiTmuFStm5fmOZZM8e_4TGHFyC_77+cSqPp8yC8nUQ@mail.gmail.com>
-Subject: Re: [PATCH 2/2] rust: pci: fix typo in Bar struct's comment
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Danilo Krummrich <dakr@kernel.org>, sashal@kernel.org, Marko Turk <mt@markoturk.info>, 
-	Dirk Behme <dirk.behme@gmail.com>, dirk.behme@de.bosch.com, linux-pci@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-On Mon, Jan 5, 2026 at 7:25=E2=80=AFAM Greg KH <gregkh@linuxfoundation.org>=
- wrote:
->
-> It all depends, sometimes we can handle file moves easily, sometimes we
-> can not.
->
-> But really, why is a comment typo being needed in stable kernels?
 
-It isn't (well, it is not just a comment since it does end up in the
-rendered docs, so it is a bit more "visible" than in a comment, and I
-imagine some projects reasonably treat them as a fix, but still, it is
-just a typo).
+The patch below does not apply to the 6.6-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-We discussed this years ago when I noticed a typo being picked up by
-stable since I wondered why. On my side, I am happy either way -- what
-I currently do is explicitly tag the ones that appear in docs. That
-way you can decide on your side.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-For the others (the ones in comments), I think it is not really worth
-it to even figure out a Fixes: tag etc.
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git checkout FETCH_HEAD
+git cherry-pick -x 19c286b755072a22a063052f530a6b1fac8a1f63
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026010507-cringe-sterile-73c8@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
-Of course, this is for trivial typos -- for something that e.g.
-completely changes the requirements of a `# Safety` precondition the
-story is different.
+Possible dependencies:
 
-Cheers,
-Miguel
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 19c286b755072a22a063052f530a6b1fac8a1f63 Mon Sep 17 00:00:00 2001
+From: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Date: Mon, 22 Sep 2025 14:43:38 -0400
+Subject: [PATCH] media: verisilicon: Fix CPU stalls on G2 bus error
+
+In some seek stress tests, we are getting IRQ from the G2 decoder where
+the dec_bus_int and the dec_e bits are high, meaning the decoder is
+still running despite the error.
+
+Fix this by reworking the IRQ handler to only finish the job once we
+have reached completion and move the software reset to when our software
+watchdog triggers.
+
+This way, we let the hardware continue on errors when it did not self
+reset and in worse case scenario the hardware timeout will
+automatically stop it. The actual error will be fixed in a follow up
+patch.
+
+Fixes: 3385c514ecc5a ("media: hantro: Convert imx8m_vpu_g2_irq to helper")
+Cc: stable@vger.kernel.org
+Reviewed-by: Benjamin Gaignard <benjamin.gaignard@collabora.com>
+Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+
+diff --git a/drivers/media/platform/verisilicon/hantro_g2.c b/drivers/media/platform/verisilicon/hantro_g2.c
+index aae0b562fabb..318673b66da8 100644
+--- a/drivers/media/platform/verisilicon/hantro_g2.c
++++ b/drivers/media/platform/verisilicon/hantro_g2.c
+@@ -5,43 +5,93 @@
+  * Copyright (C) 2021 Collabora Ltd, Andrzej Pietrasiewicz <andrzej.p@collabora.com>
+  */
+ 
++#include <linux/delay.h>
+ #include "hantro_hw.h"
+ #include "hantro_g2_regs.h"
+ 
+ #define G2_ALIGN	16
+ 
+-void hantro_g2_check_idle(struct hantro_dev *vpu)
++static bool hantro_g2_active(struct hantro_ctx *ctx)
+ {
+-	int i;
++	struct hantro_dev *vpu = ctx->dev;
++	u32 status;
+ 
+-	for (i = 0; i < 3; i++) {
+-		u32 status;
++	status = vdpu_read(vpu, G2_REG_INTERRUPT);
+ 
+-		/* Make sure the VPU is idle */
+-		status = vdpu_read(vpu, G2_REG_INTERRUPT);
+-		if (status & G2_REG_INTERRUPT_DEC_E) {
+-			dev_warn(vpu->dev, "device still running, aborting");
+-			status |= G2_REG_INTERRUPT_DEC_ABORT_E | G2_REG_INTERRUPT_DEC_IRQ_DIS;
+-			vdpu_write(vpu, status, G2_REG_INTERRUPT);
+-		}
++	return (status & G2_REG_INTERRUPT_DEC_E);
++}
++
++/**
++ * hantro_g2_reset:
++ * @ctx: the hantro context
++ *
++ * Emulates a reset using Hantro abort function. Failing this procedure would
++ * results in programming a running IP which leads to CPU hang.
++ *
++ * Using a hard reset procedure instead is prefferred.
++ */
++void hantro_g2_reset(struct hantro_ctx *ctx)
++{
++	struct hantro_dev *vpu = ctx->dev;
++	u32 status;
++
++	status = vdpu_read(vpu, G2_REG_INTERRUPT);
++	if (status & G2_REG_INTERRUPT_DEC_E) {
++		dev_warn_ratelimited(vpu->dev, "device still running, aborting");
++		status |= G2_REG_INTERRUPT_DEC_ABORT_E | G2_REG_INTERRUPT_DEC_IRQ_DIS;
++		vdpu_write(vpu, status, G2_REG_INTERRUPT);
++
++		do {
++			mdelay(1);
++		} while (hantro_g2_active(ctx));
+ 	}
+ }
+ 
+ irqreturn_t hantro_g2_irq(int irq, void *dev_id)
+ {
+ 	struct hantro_dev *vpu = dev_id;
+-	enum vb2_buffer_state state;
+ 	u32 status;
+ 
+ 	status = vdpu_read(vpu, G2_REG_INTERRUPT);
+-	state = (status & G2_REG_INTERRUPT_DEC_RDY_INT) ?
+-		 VB2_BUF_STATE_DONE : VB2_BUF_STATE_ERROR;
+ 
+-	vdpu_write(vpu, 0, G2_REG_INTERRUPT);
+-	vdpu_write(vpu, G2_REG_CONFIG_DEC_CLK_GATE_E, G2_REG_CONFIG);
++	if (!(status & G2_REG_INTERRUPT_DEC_IRQ))
++		return IRQ_NONE;
+ 
+-	hantro_irq_done(vpu, state);
++	hantro_reg_write(vpu, &g2_dec_irq, 0);
++	hantro_reg_write(vpu, &g2_dec_int_stat, 0);
++	hantro_reg_write(vpu, &g2_clk_gate_e, 1);
+ 
++	if (status & G2_REG_INTERRUPT_DEC_RDY_INT) {
++		hantro_irq_done(vpu, VB2_BUF_STATE_DONE);
++		return IRQ_HANDLED;
++	}
++
++	if (status & G2_REG_INTERRUPT_DEC_ABORT_INT) {
++		/* disabled on abort, though lets be safe and handle it */
++		dev_warn_ratelimited(vpu->dev, "decode operation aborted.");
++		return IRQ_HANDLED;
++	}
++
++	if (status & G2_REG_INTERRUPT_DEC_LAST_SLICE_INT)
++		dev_warn_ratelimited(vpu->dev, "not all macroblocks were decoded.");
++
++	if (status & G2_REG_INTERRUPT_DEC_BUS_INT)
++		dev_warn_ratelimited(vpu->dev, "bus error detected.");
++
++	if (status & G2_REG_INTERRUPT_DEC_ERROR_INT)
++		dev_warn_ratelimited(vpu->dev, "decode error detected.");
++
++	if (status & G2_REG_INTERRUPT_DEC_TIMEOUT)
++		dev_warn_ratelimited(vpu->dev, "frame decode timed out.");
++
++	/**
++	 * If the decoding haven't stopped, let it continue. The hardware timeout
++	 * will trigger if it is trully stuck.
++	 */
++	if (status & G2_REG_INTERRUPT_DEC_E)
++		return IRQ_HANDLED;
++
++	hantro_irq_done(vpu, VB2_BUF_STATE_ERROR);
+ 	return IRQ_HANDLED;
+ }
+ 
+diff --git a/drivers/media/platform/verisilicon/hantro_g2_hevc_dec.c b/drivers/media/platform/verisilicon/hantro_g2_hevc_dec.c
+index 0e212198dd65..f066636e56f9 100644
+--- a/drivers/media/platform/verisilicon/hantro_g2_hevc_dec.c
++++ b/drivers/media/platform/verisilicon/hantro_g2_hevc_dec.c
+@@ -582,8 +582,6 @@ int hantro_g2_hevc_dec_run(struct hantro_ctx *ctx)
+ 	struct hantro_dev *vpu = ctx->dev;
+ 	int ret;
+ 
+-	hantro_g2_check_idle(vpu);
+-
+ 	/* Prepare HEVC decoder context. */
+ 	ret = hantro_hevc_dec_prepare_run(ctx);
+ 	if (ret)
+diff --git a/drivers/media/platform/verisilicon/hantro_g2_regs.h b/drivers/media/platform/verisilicon/hantro_g2_regs.h
+index b943b1816db7..c614951121c7 100644
+--- a/drivers/media/platform/verisilicon/hantro_g2_regs.h
++++ b/drivers/media/platform/verisilicon/hantro_g2_regs.h
+@@ -22,7 +22,14 @@
+ #define G2_REG_VERSION			G2_SWREG(0)
+ 
+ #define G2_REG_INTERRUPT		G2_SWREG(1)
++#define G2_REG_INTERRUPT_DEC_LAST_SLICE_INT	BIT(19)
++#define G2_REG_INTERRUPT_DEC_TIMEOUT	BIT(18)
++#define G2_REG_INTERRUPT_DEC_ERROR_INT	BIT(16)
++#define G2_REG_INTERRUPT_DEC_BUF_INT	BIT(14)
++#define G2_REG_INTERRUPT_DEC_BUS_INT	BIT(13)
+ #define G2_REG_INTERRUPT_DEC_RDY_INT	BIT(12)
++#define G2_REG_INTERRUPT_DEC_ABORT_INT	BIT(11)
++#define G2_REG_INTERRUPT_DEC_IRQ	BIT(8)
+ #define G2_REG_INTERRUPT_DEC_ABORT_E	BIT(5)
+ #define G2_REG_INTERRUPT_DEC_IRQ_DIS	BIT(4)
+ #define G2_REG_INTERRUPT_DEC_E		BIT(0)
+@@ -35,6 +42,9 @@
+ #define BUS_WIDTH_128			2
+ #define BUS_WIDTH_256			3
+ 
++#define g2_dec_int_stat		G2_DEC_REG(1, 11, 0xf)
++#define g2_dec_irq		G2_DEC_REG(1, 8, 0x1)
++
+ #define g2_strm_swap		G2_DEC_REG(2, 28, 0xf)
+ #define g2_strm_swap_old	G2_DEC_REG(2, 27, 0x1f)
+ #define g2_pic_swap		G2_DEC_REG(2, 22, 0x1f)
+@@ -225,6 +235,9 @@
+ #define vp9_filt_level_seg5	G2_DEC_REG(19,  8, 0x3f)
+ #define vp9_quant_seg5		G2_DEC_REG(19,  0, 0xff)
+ 
++#define g2_timemout_override_e	G2_DEC_REG(45, 31, 0x1)
++#define g2_timemout_cycles	G2_DEC_REG(45, 0, 0x7fffffff)
++
+ #define hevc_cur_poc_00		G2_DEC_REG(46, 24, 0xff)
+ #define hevc_cur_poc_01		G2_DEC_REG(46, 16, 0xff)
+ #define hevc_cur_poc_02		G2_DEC_REG(46, 8,  0xff)
+diff --git a/drivers/media/platform/verisilicon/hantro_g2_vp9_dec.c b/drivers/media/platform/verisilicon/hantro_g2_vp9_dec.c
+index 82a478ac645e..56c79e339030 100644
+--- a/drivers/media/platform/verisilicon/hantro_g2_vp9_dec.c
++++ b/drivers/media/platform/verisilicon/hantro_g2_vp9_dec.c
+@@ -893,8 +893,6 @@ int hantro_g2_vp9_dec_run(struct hantro_ctx *ctx)
+ 	struct vb2_v4l2_buffer *dst;
+ 	int ret;
+ 
+-	hantro_g2_check_idle(ctx->dev);
+-
+ 	ret = start_prepare_run(ctx, &decode_params);
+ 	if (ret) {
+ 		hantro_end_prepare_run(ctx);
+diff --git a/drivers/media/platform/verisilicon/hantro_hw.h b/drivers/media/platform/verisilicon/hantro_hw.h
+index c9b6556f8b2b..5f2011529f02 100644
+--- a/drivers/media/platform/verisilicon/hantro_hw.h
++++ b/drivers/media/platform/verisilicon/hantro_hw.h
+@@ -583,6 +583,7 @@ void hantro_g2_vp9_dec_done(struct hantro_ctx *ctx);
+ int hantro_vp9_dec_init(struct hantro_ctx *ctx);
+ void hantro_vp9_dec_exit(struct hantro_ctx *ctx);
+ void hantro_g2_check_idle(struct hantro_dev *vpu);
++void hantro_g2_reset(struct hantro_ctx *ctx);
+ irqreturn_t hantro_g2_irq(int irq, void *dev_id);
+ 
+ #endif /* HANTRO_HW_H_ */
+diff --git a/drivers/media/platform/verisilicon/imx8m_vpu_hw.c b/drivers/media/platform/verisilicon/imx8m_vpu_hw.c
+index f9f276385c11..5be0e2e76882 100644
+--- a/drivers/media/platform/verisilicon/imx8m_vpu_hw.c
++++ b/drivers/media/platform/verisilicon/imx8m_vpu_hw.c
+@@ -294,11 +294,13 @@ static const struct hantro_codec_ops imx8mq_vpu_g1_codec_ops[] = {
+ static const struct hantro_codec_ops imx8mq_vpu_g2_codec_ops[] = {
+ 	[HANTRO_MODE_HEVC_DEC] = {
+ 		.run = hantro_g2_hevc_dec_run,
++		.reset = hantro_g2_reset,
+ 		.init = hantro_hevc_dec_init,
+ 		.exit = hantro_hevc_dec_exit,
+ 	},
+ 	[HANTRO_MODE_VP9_DEC] = {
+ 		.run = hantro_g2_vp9_dec_run,
++		.reset = hantro_g2_reset,
+ 		.done = hantro_g2_vp9_dec_done,
+ 		.init = hantro_vp9_dec_init,
+ 		.exit = hantro_vp9_dec_exit,
+
 
