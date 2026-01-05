@@ -1,231 +1,139 @@
-Return-Path: <stable+bounces-204858-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204875-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AE1ACF4D33
-	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 17:54:01 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50CBECF50FD
+	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 18:46:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2C30D302B530
-	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 16:50:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 358D1312E2D5
+	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 17:41:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB2F233ADA8;
-	Mon,  5 Jan 2026 16:49:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2077631B836;
+	Mon,  5 Jan 2026 17:41:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sSV6Wn3G"
+	dkim=pass (2048-bit key) header.d=gotplt.org header.i=@gotplt.org header.b="el1pXq7q"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from earwig.ash.relay.mailchannels.net (earwig.ash.relay.mailchannels.net [23.83.222.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BA35335571
-	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 16:49:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767631744; cv=none; b=hQGcd+aooXZVl8TPPFJByxk1ajqd22QYjNTXgQ3FSFnzaALUskzqC/yIrbsRMWNeFCC8z5U78dwYqxD/TIaw0nhrWmLKhZnHE3qcav6r7cp/8hKk5zprMwh24QN7aFHLZru3/6y2kMun/yPQi9sy+0kk7qJU4vYGjZ2k+WGRkRY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767631744; c=relaxed/simple;
-	bh=Vly797Yif5Uemi39W9M0qyPyjRdh1H5ro1LHScvao1o=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vbr2RTkwq1/puxp+LzIfCq4jYjQqxM+qh5gKOlbXSbjx7E+csFyyxELfv4/I9EznpSTUbtj2T0cVeLHYkL+X4nr/n8AhG4MAsqrRdZsBJP3svs98vXif7Gj3Ct4cCMCvPPtYJRbUGTz84p/3jmR7f3WZ5jflww4XFWGJSWX13jU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sSV6Wn3G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 234D4C116D0;
-	Mon,  5 Jan 2026 16:49:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767631744;
-	bh=Vly797Yif5Uemi39W9M0qyPyjRdh1H5ro1LHScvao1o=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sSV6Wn3G8FSWFlDyxBEFVoyxlLiIpthnuRa5JzkNBtsCQe6/sraoxtIuXEaAsCo2M
-	 9FOp56Y7avX2miEmhpYTUXbNV3Cf1a3mesVrfq/YgG3/ifO+5j7mAglVnGLFIs/EST
-	 a36TxeHYxcwlBwYb70nJNkWGK4B55OWSF5zxap2FyhUduBLLrHkCoARgFAJOKCqZNE
-	 uvj700NrTYe5z3AZksoK3pBFD8qZMt8s2k20JaGXC8c6G+PLhVmXSer5JjJnKHJi90
-	 vabDnYj94uZJcvqCQibAl+u7fsNlxqc7l3NLOEd0dSjfhJGB2HhPcUH2Kn1Ix7lFOO
-	 /V0IDzfj9VxwQ==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Benjamin Gaignard <benjamin.gaignard@collabora.com>,
-	Andrzej Pietrasiewicz <andrzej.p@collabora.com>,
-	Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y 2/3] media: verisilicon: g2: Use common helpers to compute chroma and mv offsets
-Date: Mon,  5 Jan 2026 11:48:59 -0500
-Message-ID: <20260105164900.2676927-2-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260105164900.2676927-1-sashal@kernel.org>
-References: <2026010507-cringe-sterile-73c8@gregkh>
- <20260105164900.2676927-1-sashal@kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4882E28750C;
+	Mon,  5 Jan 2026 17:41:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=23.83.222.54
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1767634871; cv=pass; b=pETPLzI/WlpP1fUp81y0+x9uuAq8ha/bqvuT4FNBgIg5QUGrgf0dpYC0O9vrymGZCSeUZAc6G86L2TJ3KokVwTWEz+z0+EsxJx7gqcsDoAZRE+gLk7E2nIXKFHVo8zXNwEK7yc+agg93Uc4pUoUNjiyYkgyDcdGDBj7aWKId1w4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1767634871; c=relaxed/simple;
+	bh=afR4gIGQqWhtKSR1X6mRLeY3XvSaFBMOEvA0r09mFAg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=en7uGfq1YhrFE2EZt46YGlJbZco0oONq62e0xnHFd7Hpdg+4zZlJwOruLzhDpoEYV8GDf/vfVM1nL6RBlPkXPJkxxGyucgEP0M62/JYk9uteHbfgplM7DmZRPVA4zaS1QLSQ3GRTVdUYMinV2OH3QDK4agcDDPZ5tdAvM0j2Vm4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gotplt.org; spf=pass smtp.mailfrom=gotplt.org; dkim=pass (2048-bit key) header.d=gotplt.org header.i=@gotplt.org header.b=el1pXq7q; arc=pass smtp.client-ip=23.83.222.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gotplt.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gotplt.org
+X-Sender-Id: dreamhost|x-authsender|siddhesh@gotplt.org
+Received: from relay.mailchannels.net (localhost [127.0.0.1])
+	by relay.mailchannels.net (Postfix) with ESMTP id 83EEB1222CA;
+	Mon, 05 Jan 2026 10:58:33 +0000 (UTC)
+Received: from pdx1-sub0-mail-a207.dreamhost.com (100-112-117-24.trex-nlb.outbound.svc.cluster.local [100.112.117.24])
+	(Authenticated sender: dreamhost)
+	by relay.mailchannels.net (Postfix) with ESMTPA id C7EDB12141B;
+	Mon, 05 Jan 2026 10:58:30 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; d=mailchannels.net; s=arc-2022; cv=none;
+	t=1767610710;
+	b=yDaTHnunXJtHF1PfK/rKts/kNyY9OSz1ehYlnrSWv2j0FJ7+SY1cBIJbOQKNBLTFX+m+Xj
+	YP0WAAEOlUVbLIdGGBEfFmgPsAOK4f29csQFaA0AnZ2MN02m8E/lvxBn/CMK0liqh61lty
+	Q24mK6w9H0wumSr2I2p2Kpsd00i1pq3+V02VzF+ZOol1sAIudCo5tvE2e70mDUhGaBomva
+	SAPpk91dh7ERVFIZjbUkXzLICteXfypeV1/0IRGePPxCnOkqT69OL0JZ0GYYx12+HLKveB
+	13ye+z+KIXgupqCreSfaoMJQUAa4V/GETevGF1JYClfAYpJxp6n04ID7EnB+Gg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=mailchannels.net;
+	s=arc-2022; t=1767610710;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=cNmAC3AVapO1Aew1Ac2I+U6usxxH3KR/0xXLpeGV+Do=;
+	b=IECAN491GkOpwdje5h1E80O+A9zqT7fjr2aWt3pHSd4etSy8RbCIbmSPQcpnB/R6Y7dlsC
+	35CiPU4mXGyH6hNwaNcgevNJ7YosJ4sTQJWJKQEda7QZRu4cCBKfjnuF6Cs3PGDYLTYDzb
+	uGuqo1gc+zrI1ZccLx+ooeS9DoBe6FMYLOSLsZf8lE9b5McI8e9U93RsiaD2WfAJu0OFb2
+	JaOQoDjpeY4evi+1GhyrZe6qV554cZG1sN93XYm7MXgsEfojG4cJGZzfZm2OLP6havDnWp
+	Q3eozlhl+S2EPc21imUraZcvQICdPKDH7i1R21ldONZ3HGT7pdaDkJvkZXbQWw==
+ARC-Authentication-Results: i=1;
+	rspamd-85db7f4c96-t7gj4;
+	auth=pass smtp.auth=dreamhost smtp.mailfrom=siddhesh@gotplt.org
+X-Sender-Id: dreamhost|x-authsender|siddhesh@gotplt.org
+X-MC-Relay: Neutral
+X-MailChannels-SenderId: dreamhost|x-authsender|siddhesh@gotplt.org
+X-MailChannels-Auth-Id: dreamhost
+X-Tank-Battle: 5df69bd121c8e0dc_1767610713071_630209668
+X-MC-Loop-Signature: 1767610713071:3562879293
+X-MC-Ingress-Time: 1767610713070
+Received: from pdx1-sub0-mail-a207.dreamhost.com (pop.dreamhost.com
+ [64.90.62.162])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
+	by 100.112.117.24 (trex/7.1.3);
+	Mon, 05 Jan 2026 10:58:33 +0000
+Received: from [192.168.0.135] (unknown [38.23.181.90])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: siddhesh@gotplt.org)
+	by pdx1-sub0-mail-a207.dreamhost.com (Postfix) with ESMTPSA id 4dlB9d0Rx9z2D;
+	Mon,  5 Jan 2026 02:58:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gotplt.org;
+	s=dreamhost; t=1767610710;
+	bh=cNmAC3AVapO1Aew1Ac2I+U6usxxH3KR/0xXLpeGV+Do=;
+	h=Date:Subject:To:Cc:From:Content-Type:Content-Transfer-Encoding;
+	b=el1pXq7qeqARVsRQgySVTc8sbPJZjNYilZVwzUIguE51RPtjZu0tjbqIsq+lAm/Fh
+	 MMk6tA5Db0T4g2wvhKp8acteRO/d2R9/eIjpv90MyHwaoVYwnHB8GuNEaQAwvQetVe
+	 KqnoRvM8xF65YvdaXssbc2aplhU6H0+X4dk46Kp0hX46ykF2pPqi3MCeVs2CQ1ieGX
+	 8uj35Et1QZcvQ1BF1Xa8zbfRn62UBnB4H7S7G9F4UPK8JlRHPEPImlHSUhiRWHHM3F
+	 M5e1eZh7xmobNQiYDhti2Mo2Dt1r+y318qQvTYgQgGdxLXqJ0JDS2QTNP7VSWwq/A/
+	 BXhmZ35ZIC5Lg==
+Message-ID: <68d83837-cc78-43d0-a084-d783b9de83e9@gotplt.org>
+Date: Mon, 5 Jan 2026 05:58:27 -0500
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] rust: Add -fdiagnostics-show-context to
+ bindgen_skip_c_flags
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+ Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>,
+ Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+ Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>
+Cc: rust-for-linux@vger.kernel.org, Kees Cook <kees@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ stable@vger.kernel.org,
+ Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
+ clang-built-linux <llvm@lists.linux.dev>
+References: <20251217150010.665153-1-siddhesh@gotplt.org>
+ <20251217224050.1186896-1-siddhesh@gotplt.org>
+ <CANiq72n0BtCxAsXOaNnSMWC-aW2bNTPzN=4VGb+ic8YA6jhsAw@mail.gmail.com>
+Content-Language: en-US
+From: Siddhesh Poyarekar <siddhesh@gotplt.org>
+In-Reply-To: <CANiq72n0BtCxAsXOaNnSMWC-aW2bNTPzN=4VGb+ic8YA6jhsAw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-From: Benjamin Gaignard <benjamin.gaignard@collabora.com>
+On 2026-01-04 15:53, Miguel Ojeda wrote:
+> On Wed, Dec 17, 2025 at 11:41 PM Siddhesh Poyarekar <siddhesh@gotplt.org> wrote:
+>>
+>> but clang does not have this option, so avoid passing it to bindgen.
+> 
+> This looks indeed correct, although it is not yet in a released GCC
+> (testing quickly in Compiler Explorer, GCC 15.2 doesn't have it, but
+> GCC trunk has).
 
-[ Upstream commit 3eeaee737dcee3c32e256870dbc2687a2a6fe970 ]
+Yes, sorry I didn't mention that in my commit message; it's mentioned in 
+Kees' commit message (7454048db27d6).
 
-HEVC and VP9 are running on the same hardware and share the same
-chroma and motion vectors offset constraint.
-Create common helpers functions for these computation.
-Source and destination buffer height may not be the same because
-alignment constraint are different so use destination height to
-compute chroma offset because we target this buffer as hardware
-output.
-To be able to use the helpers in both VP9 HEVC code remove dec_params
-and use context->bit_depth instead.
+> I will apply it -- Cc'ing ClangBuiltLinux and Kbuild so that they are aware.
 
-Signed-off-by: Benjamin Gaignard <benjamin.gaignard@collabora.com>
-Reviewed-by: Andrzej Pietrasiewicz <andrzej.p@collabora.com>
-CC: Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
-CC: Philipp Zabel <p.zabel@pengutronix.de>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-Stable-dep-of: 19c286b75507 ("media: verisilicon: Fix CPU stalls on G2 bus error")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- .../media/platform/verisilicon/hantro_g2.c    | 14 ++++++++++
- .../platform/verisilicon/hantro_g2_hevc_dec.c | 18 ++-----------
- .../platform/verisilicon/hantro_g2_vp9_dec.c  | 26 +++----------------
- .../media/platform/verisilicon/hantro_hw.h    |  3 +++
- 4 files changed, 23 insertions(+), 38 deletions(-)
+Thank you!
 
-diff --git a/drivers/media/platform/verisilicon/hantro_g2.c b/drivers/media/platform/verisilicon/hantro_g2.c
-index ee5f14c5f8f2..b880a6849d58 100644
---- a/drivers/media/platform/verisilicon/hantro_g2.c
-+++ b/drivers/media/platform/verisilicon/hantro_g2.c
-@@ -8,6 +8,8 @@
- #include "hantro_hw.h"
- #include "hantro_g2_regs.h"
- 
-+#define G2_ALIGN	16
-+
- void hantro_g2_check_idle(struct hantro_dev *vpu)
- {
- 	int i;
-@@ -42,3 +44,15 @@ irqreturn_t hantro_g2_irq(int irq, void *dev_id)
- 
- 	return IRQ_HANDLED;
- }
-+
-+size_t hantro_g2_chroma_offset(struct hantro_ctx *ctx)
-+{
-+	return ctx->dst_fmt.width * ctx->dst_fmt.height * ctx->bit_depth / 8;
-+}
-+
-+size_t hantro_g2_motion_vectors_offset(struct hantro_ctx *ctx)
-+{
-+	size_t cr_offset = hantro_g2_chroma_offset(ctx);
-+
-+	return ALIGN((cr_offset * 3) / 2, G2_ALIGN);
-+}
-diff --git a/drivers/media/platform/verisilicon/hantro_g2_hevc_dec.c b/drivers/media/platform/verisilicon/hantro_g2_hevc_dec.c
-index d1971af5f7fa..78eb52edd5c3 100644
---- a/drivers/media/platform/verisilicon/hantro_g2_hevc_dec.c
-+++ b/drivers/media/platform/verisilicon/hantro_g2_hevc_dec.c
-@@ -8,20 +8,6 @@
- #include "hantro_hw.h"
- #include "hantro_g2_regs.h"
- 
--#define G2_ALIGN	16
--
--static size_t hantro_hevc_chroma_offset(struct hantro_ctx *ctx)
--{
--	return ctx->dst_fmt.width * ctx->dst_fmt.height * ctx->bit_depth / 8;
--}
--
--static size_t hantro_hevc_motion_vectors_offset(struct hantro_ctx *ctx)
--{
--	size_t cr_offset = hantro_hevc_chroma_offset(ctx);
--
--	return ALIGN((cr_offset * 3) / 2, G2_ALIGN);
--}
--
- static void prepare_tile_info_buffer(struct hantro_ctx *ctx)
- {
- 	struct hantro_dev *vpu = ctx->dev;
-@@ -384,8 +370,8 @@ static int set_ref(struct hantro_ctx *ctx)
- 	struct hantro_dev *vpu = ctx->dev;
- 	struct vb2_v4l2_buffer *vb2_dst;
- 	struct hantro_decoded_buffer *dst;
--	size_t cr_offset = hantro_hevc_chroma_offset(ctx);
--	size_t mv_offset = hantro_hevc_motion_vectors_offset(ctx);
-+	size_t cr_offset = hantro_g2_chroma_offset(ctx);
-+	size_t mv_offset = hantro_g2_motion_vectors_offset(ctx);
- 	u32 max_ref_frames;
- 	u16 dpb_longterm_e;
- 	static const struct hantro_reg cur_poc[] = {
-diff --git a/drivers/media/platform/verisilicon/hantro_g2_vp9_dec.c b/drivers/media/platform/verisilicon/hantro_g2_vp9_dec.c
-index 6db1c32fce4d..342e543dee4c 100644
---- a/drivers/media/platform/verisilicon/hantro_g2_vp9_dec.c
-+++ b/drivers/media/platform/verisilicon/hantro_g2_vp9_dec.c
-@@ -16,8 +16,6 @@
- #include "hantro_vp9.h"
- #include "hantro_g2_regs.h"
- 
--#define G2_ALIGN 16
--
- enum hantro_ref_frames {
- 	INTRA_FRAME = 0,
- 	LAST_FRAME = 1,
-@@ -90,22 +88,6 @@ static int start_prepare_run(struct hantro_ctx *ctx, const struct v4l2_ctrl_vp9_
- 	return 0;
- }
- 
--static size_t chroma_offset(const struct hantro_ctx *ctx,
--			    const struct v4l2_ctrl_vp9_frame *dec_params)
--{
--	int bytes_per_pixel = dec_params->bit_depth == 8 ? 1 : 2;
--
--	return ctx->src_fmt.width * ctx->src_fmt.height * bytes_per_pixel;
--}
--
--static size_t mv_offset(const struct hantro_ctx *ctx,
--			const struct v4l2_ctrl_vp9_frame *dec_params)
--{
--	size_t cr_offset = chroma_offset(ctx, dec_params);
--
--	return ALIGN((cr_offset * 3) / 2, G2_ALIGN);
--}
--
- static struct hantro_decoded_buffer *
- get_ref_buf(struct hantro_ctx *ctx, struct vb2_v4l2_buffer *dst, u64 timestamp)
- {
-@@ -156,13 +138,13 @@ static void config_output(struct hantro_ctx *ctx,
- 	luma_addr = hantro_get_dec_buf_addr(ctx, &dst->base.vb.vb2_buf);
- 	hantro_write_addr(ctx->dev, G2_OUT_LUMA_ADDR, luma_addr);
- 
--	chroma_addr = luma_addr + chroma_offset(ctx, dec_params);
-+	chroma_addr = luma_addr + hantro_g2_chroma_offset(ctx);
- 	hantro_write_addr(ctx->dev, G2_OUT_CHROMA_ADDR, chroma_addr);
--	dst->vp9.chroma_offset = chroma_offset(ctx, dec_params);
-+	dst->vp9.chroma_offset = hantro_g2_chroma_offset(ctx);
- 
--	mv_addr = luma_addr + mv_offset(ctx, dec_params);
-+	mv_addr = luma_addr + hantro_g2_motion_vectors_offset(ctx);
- 	hantro_write_addr(ctx->dev, G2_OUT_MV_ADDR, mv_addr);
--	dst->vp9.mv_offset = mv_offset(ctx, dec_params);
-+	dst->vp9.mv_offset = hantro_g2_motion_vectors_offset(ctx);
- }
- 
- struct hantro_vp9_ref_reg {
-diff --git a/drivers/media/platform/verisilicon/hantro_hw.h b/drivers/media/platform/verisilicon/hantro_hw.h
-index 7f33f7b07ce4..c7a2a20c70b7 100644
---- a/drivers/media/platform/verisilicon/hantro_hw.h
-+++ b/drivers/media/platform/verisilicon/hantro_hw.h
-@@ -519,6 +519,9 @@ hantro_av1_mv_size(unsigned int width, unsigned int height)
- 	return ALIGN(num_sbs * 384, 16) * 2 + 512;
- }
- 
-+size_t hantro_g2_chroma_offset(struct hantro_ctx *ctx);
-+size_t hantro_g2_motion_vectors_offset(struct hantro_ctx *ctx);
-+
- int hantro_g1_mpeg2_dec_run(struct hantro_ctx *ctx);
- int rockchip_vpu2_mpeg2_dec_run(struct hantro_ctx *ctx);
- void hantro_mpeg2_dec_copy_qtable(u8 *qtable,
--- 
-2.51.0
-
+Sid
 
