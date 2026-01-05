@@ -1,128 +1,158 @@
-Return-Path: <stable+bounces-204758-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204761-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46176CF3EE7
-	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 14:50:37 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 799C1CF41A9
+	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 15:29:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0061F3169E0D
-	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 13:44:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0BA383067664
+	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 14:26:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6095833F8B4;
-	Mon,  5 Jan 2026 12:44:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67553349AFF;
+	Mon,  5 Jan 2026 12:48:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xPEX6xkc"
 X-Original-To: stable@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD6EB33F398
-	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 12:44:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2573E349AFC
+	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 12:48:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767617086; cv=none; b=a0ZqkNoJJtaZmSSWmdI4/ZuipW1aRLX4F/NvsOP5YXwWrAHINVtMgHsPOWY8oh7qtfT/ahNICRo6+BoYZfVTMw5oX+3oS/ClDa6pVK6ItQgWyFy4zaTjatzsEy/UWARanq8t4Wza9xdugCYU6X2cEUZFoiej2YeawysI0gGXVJQ=
+	t=1767617314; cv=none; b=SEiRhVW1Mv8MkSpKEaNiqiBDFPLiqGbNYvs7Gmg/HOMqa3339M0gWDU7mitQmB/rMBs1lzx2NPcepcc0Nt+y5sHV+oskZ0UVrOBv92JAYr6QuouXlBGkTS28wes2RebNnUI85d0BFuIN/Ha9bNJ+SulVzqJX0bvYehFWC0QXF0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767617086; c=relaxed/simple;
-	bh=4lhYeAVnDUcO7MjINejzeyEh1elj7BpTqDqq6DdfleY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XZ0EsMhy22Vf9xEBBec4oXI8GcskexVU1Q0ImbECOs4UTr99CTvGINHOyBi+poktYU/lX63dfUCddOkUzFgGvllHq3sQDvbZvTpkXOKDfRWiP14GsyvbDQMJQvtPKWCKKF8jO5UyFj3RUJP4kuyuw9UewinyrvczxyN7jQdgOBU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1vcjws-0007qq-Uz; Mon, 05 Jan 2026 13:44:38 +0100
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1vcjws-009Agf-2Q;
-	Mon, 05 Jan 2026 13:44:38 +0100
-Received: from pengutronix.de (p54b152ce.dip0.t-ipconnect.de [84.177.82.206])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 6D9474C6647;
-	Mon, 05 Jan 2026 12:44:38 +0000 (UTC)
-Date: Mon, 5 Jan 2026 13:44:38 +0100
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: Vincent Mailhol <mailhol@kernel.org>
-Cc: kernel@pengutronix.de, linux-can@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH can v2] can: gs_usb: gs_usb_receive_bulk_callback(): fix
- URB memory leak
-Message-ID: <20260105-sweet-fox-of-wholeness-5fc00d-mkl@pengutronix.de>
-References: <20260105-gs_usb-fix-memory-leak-v2-1-cc6ed6438034@pengutronix.de>
+	s=arc-20240116; t=1767617314; c=relaxed/simple;
+	bh=4JvE87Q/waNmFRnL8i7mws4FdVIkXYWHZiZ9+zaETrk=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=kKAr2aN59M7RGWe+GmK5+fwms6x06kdynv9DcIWzYMfilaCXqISgWt4f0sdZi67nDu0C2UDVave8fMJZkjlLGNRiBKmMO3QU/dFPkbnG4PXqudUGTvLjtWeLlDGaFxrVZ8IJVyqie8/y3/J/UkbUNA/akUgEdC8fD5Qv5d7F8mw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xPEX6xkc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29766C16AAE;
+	Mon,  5 Jan 2026 12:48:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1767617313;
+	bh=4JvE87Q/waNmFRnL8i7mws4FdVIkXYWHZiZ9+zaETrk=;
+	h=Subject:To:Cc:From:Date:From;
+	b=xPEX6xkcTNXLsuOOcriAA920jq19tWFJXukQ98ggnLyzIPMPRTtBpQbLoUlNEfVSd
+	 2xdTzKn3pY+OeEWqgvN+mADpcheEq5gJBsp5Yenw7W3vq6F9kMKiS4eUeVqCdJssj9
+	 5QBrEX6WFG0eHLEqoehadQKxct0m5QE7tlAqGhKY=
+Subject: FAILED: patch "[PATCH] kasan: unpoison vms[area] addresses with a common tag" failed to apply to 6.6-stable tree
+To: maciej.wieczor-retman@intel.com,akpm@linux-foundation.org,andreyknvl@gmail.com,dakr@kernel.org,dvyukov@google.com,elver@google.com,glider@google.com,jiayuan.chen@linux.dev,kees@kernel.org,ryabinin.a.a@gmail.com,stable@vger.kernel.org,urezki@gmail.com,vincenzo.frascino@arm.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 05 Jan 2026 13:48:30 +0100
+Message-ID: <2026010530-majesty-gangway-5658@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="rvbbsombzbarg4ph"
-Content-Disposition: inline
-In-Reply-To: <20260105-gs_usb-fix-memory-leak-v2-1-cc6ed6438034@pengutronix.de>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: stable@vger.kernel.org
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
 
---rvbbsombzbarg4ph
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH can v2] can: gs_usb: gs_usb_receive_bulk_callback(): fix
- URB memory leak
-MIME-Version: 1.0
+The patch below does not apply to the 6.6-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-On 05.01.2026 13:35:54, Marc Kleine-Budde wrote:
-> In gs_can_open(), the URBs for USB-in transfers are allocated, added to t=
-he
-> parent->rx_submitted anchor and submitted. In the complete callback
-> gs_usb_receive_bulk_callback(), the URB is processed and resubmitted. In
-> gs_can_close() the URBs are freed by calling
-> usb_kill_anchored_urbs(parent->rx_submitted).
->
-> However, this does not take into account that the USB framework
-> unanchors the URB before the close function is called. This means that
-> once an in-URB has been completed, it is no longer anchored and is
-> ultimately not released in gs_can_close().
->
-> Fix the memory leak by anchoring the URB in the
-> gs_usb_receive_bulk_callback() to the parent->rx_submitted anchor.
->
-> Fixes: d08e973a77d1 ("can: gs_usb: Added support for the GS_USB CAN devic=
-es")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+To reproduce the conflict and resubmit, you may use the following commands:
 
-applied to linux-can
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git checkout FETCH_HEAD
+git cherry-pick -x 6a0e5b333842cf65d6f4e4f0a2a4386504802515
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026010530-majesty-gangway-5658@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
-Marc
+Possible dependencies:
 
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
 
---rvbbsombzbarg4ph
-Content-Type: application/pgp-signature; name="signature.asc"
 
------BEGIN PGP SIGNATURE-----
+thanks,
 
-iQEzBAABCgAdFiEEn/sM2K9nqF/8FWzzDHRl3/mQkZwFAmlbsjMACgkQDHRl3/mQ
-kZyFcgf+O5HOFnmXbM8w0r0pmN+9ZdH9k6DhL8wQX2I3pRv0TNQ0+BUJTsVJndyJ
-BPScPh2D44UJb3cegn7Qt4h4N9A5VG08b85tob00cDLCK+l52x/3XJ4JWpRAenSv
-8Ng4O2RGjmvKGJincvWUAoaaFnUBg129NpFWnDhdN6k6DO3sDkKm2JS2nxV0AR5o
-PvMuydLvcC7zIBMiIIC9du1Jvn3eF6mnZlVl4+TOIlYdCDNkCe3TAjp60KkETyVU
-uMjDXc1d3nqt7QDFKBsX4SfLmDZ/prIreks96h470ys6+aKcX/5vWx2oqh1zO39t
-HfLLKY9nwpRLI7C2U2cIf054eRUeMA==
-=hWfG
------END PGP SIGNATURE-----
+greg k-h
 
---rvbbsombzbarg4ph--
+------------------ original commit in Linus's tree ------------------
+
+From 6a0e5b333842cf65d6f4e4f0a2a4386504802515 Mon Sep 17 00:00:00 2001
+From: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
+Date: Thu, 4 Dec 2025 19:00:11 +0000
+Subject: [PATCH] kasan: unpoison vms[area] addresses with a common tag
+
+A KASAN tag mismatch, possibly causing a kernel panic, can be observed on
+systems with a tag-based KASAN enabled and with multiple NUMA nodes.  It
+was reported on arm64 and reproduced on x86.  It can be explained in the
+following points:
+
+1. There can be more than one virtual memory chunk.
+2. Chunk's base address has a tag.
+3. The base address points at the first chunk and thus inherits
+   the tag of the first chunk.
+4. The subsequent chunks will be accessed with the tag from the
+   first chunk.
+5. Thus, the subsequent chunks need to have their tag set to
+   match that of the first chunk.
+
+Use the new vmalloc flag that disables random tag assignment in
+__kasan_unpoison_vmalloc() - pass the same random tag to all the
+vm_structs by tagging the pointers before they go inside
+__kasan_unpoison_vmalloc().  Assigning a common tag resolves the pcpu
+chunk address mismatch.
+
+[akpm@linux-foundation.org: use WARN_ON_ONCE(), per Andrey]
+  Link: https://lkml.kernel.org/r/CA+fCnZeuGdKSEm11oGT6FS71_vGq1vjq-xY36kxVdFvwmag2ZQ@mail.gmail.com
+[maciej.wieczor-retman@intel.com: remove unneeded pr_warn()]
+  Link: https://lkml.kernel.org/r/919897daaaa3c982a27762a2ee038769ad033991.1764945396.git.m.wieczorretman@pm.me
+Link: https://lkml.kernel.org/r/873821114a9f722ffb5d6702b94782e902883fdf.1764874575.git.m.wieczorretman@pm.me
+Fixes: 1d96320f8d53 ("kasan, vmalloc: add vmalloc tagging for SW_TAGS")
+Signed-off-by: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
+Reviewed-by: Andrey Konovalov <andreyknvl@gmail.com>
+Cc: Alexander Potapenko <glider@google.com>
+Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Cc: Danilo Krummrich <dakr@kernel.org>
+Cc: Dmitriy Vyukov <dvyukov@google.com>
+Cc: Jiayuan Chen <jiayuan.chen@linux.dev>
+Cc: Kees Cook <kees@kernel.org>
+Cc: Marco Elver <elver@google.com>
+Cc: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
+Cc: Vincenzo Frascino <vincenzo.frascino@arm.com>
+Cc: <stable@vger.kernel.org>	[6.1+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+
+diff --git a/mm/kasan/common.c b/mm/kasan/common.c
+index b2b40c59ce18..ed489a14dddf 100644
+--- a/mm/kasan/common.c
++++ b/mm/kasan/common.c
+@@ -584,11 +584,26 @@ void __kasan_unpoison_vmap_areas(struct vm_struct **vms, int nr_vms,
+ 	unsigned long size;
+ 	void *addr;
+ 	int area;
++	u8 tag;
+ 
+-	for (area = 0 ; area < nr_vms ; area++) {
++	/*
++	 * If KASAN_VMALLOC_KEEP_TAG was set at this point, all vms[] pointers
++	 * would be unpoisoned with the KASAN_TAG_KERNEL which would disable
++	 * KASAN checks down the line.
++	 */
++	if (WARN_ON_ONCE(flags & KASAN_VMALLOC_KEEP_TAG))
++		return;
++
++	size = vms[0]->size;
++	addr = vms[0]->addr;
++	vms[0]->addr = __kasan_unpoison_vmalloc(addr, size, flags);
++	tag = get_tag(vms[0]->addr);
++
++	for (area = 1 ; area < nr_vms ; area++) {
+ 		size = vms[area]->size;
+-		addr = vms[area]->addr;
+-		vms[area]->addr = __kasan_unpoison_vmalloc(addr, size, flags);
++		addr = set_tag(vms[area]->addr, tag);
++		vms[area]->addr =
++			__kasan_unpoison_vmalloc(addr, size, flags | KASAN_VMALLOC_KEEP_TAG);
+ 	}
+ }
+ #endif
+
 
