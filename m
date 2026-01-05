@@ -1,44 +1,44 @@
-Return-Path: <stable+bounces-204848-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204849-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id E680BCF4B53
-	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 17:34:15 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBABBCF4C2B
+	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 17:41:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1FB8730BCA51
-	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 16:28:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4195A30F1317
+	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 16:22:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DA132F12BA;
-	Mon,  5 Jan 2026 16:09:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6F82285C89;
+	Mon,  5 Jan 2026 16:22:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DeyvN4fR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S7D8LSpO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF8B82765F8
-	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 16:09:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66AB327FB25
+	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 16:22:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767629354; cv=none; b=Y0nJubdEpWygXdvO02oTmtFBDgpy+sjfMlVlrRon5Qa8zVurSN97bshswKxjVwYn39pzy2N3cJZqqjzEmoCt6gr/KoCs33d2oN3hEpjKccGUZa+x5E2kkvH1elS5gCnGZWen5WNGbYpWiDxG3zRkCh0isIQJ3GVp/vxO5MRdNrI=
+	t=1767630150; cv=none; b=EG0WJO3JNI7xJb4NRk5iTSXSIR4xq+veM+FY3sVKuw0UOf9xVQzXI+a5F91dnuvYbA5StPPmMI62viRSbXP7YHVd3qs6QHESwDSBM4qWc2cYw5+4wmxPqH9a8G8YDbVp9b/24OVmGAlfFXaPXQUb0CwwIeZKt7tDW3bkR95Ck/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767629354; c=relaxed/simple;
-	bh=yTkSY8a9RbmsAhWmLiy5Af+HV875Onr8lrQNtHwirJc=;
+	s=arc-20240116; t=1767630150; c=relaxed/simple;
+	bh=FEtfnCniyiHmJU1t+TJzy0E8RynO2U73xogvVuP9dx8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ciW0fpO9Q8eTqfvUYaXDKJPDRb8OiTEqjhuNjLFJgkqqSrcvBekT+aROKdTs02zO27ulTMTKbdsC11qY3xzrmmCk6NL5WnaHolpoRuDotOiyA1648/wo1PNybQ5ku+WH7GsTh37k+DDYzU1jVVzfeEPZLF9eoSzFqYRXKQ52K6s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DeyvN4fR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 940FCC116D0;
-	Mon,  5 Jan 2026 16:09:13 +0000 (UTC)
+	 MIME-Version; b=nSbbnTcqOvid1CGTOqmQOUOdTdMdZKDXWhQaVl7oxYTjZ7xbuPgrBiSfxGsQ38ng300NU0e8GwSptmYBU+5WPem0NLVHbvpVWsV1JL/f2GhPULUGFlq9B3QK46yasSwrJO2L7gf4rDXqPQydf78THMw+tYg8DJuFbOOO+TObRZ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S7D8LSpO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F49DC116D0;
+	Mon,  5 Jan 2026 16:22:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767629354;
-	bh=yTkSY8a9RbmsAhWmLiy5Af+HV875Onr8lrQNtHwirJc=;
+	s=k20201202; t=1767630150;
+	bh=FEtfnCniyiHmJU1t+TJzy0E8RynO2U73xogvVuP9dx8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DeyvN4fRY5TtH5P1wHST4PQr2ojTcFSArsoAIlPdsiYJP77KGnZvGBBgyE1wTCODy
-	 0LdmkFA9aCq1fW0FCRydDSEh7ceXzC7zEf+txe8Tx8wM2jfR1wYM4nPVFN6LIV2U5Q
-	 HcQeB9BCUCUIrvEC1ZhqSe7Mz1rASHm984XU88+ConxkbC3EyRIsRMWAnqKGF0BLoH
-	 XRG56DCH0lzk+ARoVDWW1faM+GUbZAu+6rL2/qWZT7abSEbTTsLf6xv2jnXL8vssad
-	 /gNxWblGPyv3J9KtGYh8kfLVNFdsoG0gVe/7PCRoohkTkLmBkgFKP6rexB9kZc+FEJ
-	 beA7Kaa5PQBhA==
+	b=S7D8LSpOkpFH3jMCPTu2JDl9VMzBd1n+STsXBFgraBJaretdn7LhSuetpEmaVnhXY
+	 XXx98EeD76HfC9ntf96j4VB6btaA9cIKV/Jy1DXgT90r+TklQnPONQX8pRvszCBoLv
+	 Dq9C6axaSaxmkNS219v4qZ7IwmhklN4kP7evHp4EYPW3QUOFqYiV4WBWPzTIeEHe/C
+	 998OMbpN2N2NPPakr0n1+NRi9hQvXmMz7/uAPmZUBfrUgJPFYImqwlVoPPtrlOeM4j
+	 qMM2Qr/0TZeHY3Ir0EUiW2TU4jLIrAUgDVhClNql8XK7n6QogO0LzbeVoVhe/+ONfR
+	 1eKMZQ08sUBCg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Johan Hovold <johan@kernel.org>,
@@ -47,12 +47,12 @@ Cc: Johan Hovold <johan@kernel.org>,
 	Robin Murphy <robin.murphy@arm.com>,
 	Joerg Roedel <joerg.roedel@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y] iommu/qcom: fix device leak on of_xlate()
-Date: Mon,  5 Jan 2026 11:09:11 -0500
-Message-ID: <20260105160912.2661912-1-sashal@kernel.org>
+Subject: [PATCH 5.10.y] iommu/qcom: fix device leak on of_xlate()
+Date: Mon,  5 Jan 2026 11:22:27 -0500
+Message-ID: <20260105162227.2665126-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026010520-snowdrop-judgingly-e0c4@gregkh>
-References: <2026010520-snowdrop-judgingly-e0c4@gregkh>
+In-Reply-To: <2026010520-happily-sycamore-0e22@gregkh>
+References: <2026010520-happily-sycamore-0e22@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -86,10 +86,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 4 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/iommu/arm/arm-smmu/qcom_iommu.c b/drivers/iommu/arm/arm-smmu/qcom_iommu.c
-index 9438203f08de..c4379109f11d 100644
+index 37c8f75a3580..369a34cb75b5 100644
 --- a/drivers/iommu/arm/arm-smmu/qcom_iommu.c
 +++ b/drivers/iommu/arm/arm-smmu/qcom_iommu.c
-@@ -568,15 +568,15 @@ static int qcom_iommu_of_xlate(struct device *dev, struct of_phandle_args *args)
+@@ -586,15 +586,15 @@ static int qcom_iommu_of_xlate(struct device *dev, struct of_phandle_args *args)
  
  	qcom_iommu = platform_get_drvdata(iommu_pdev);
  
@@ -108,7 +108,7 @@ index 9438203f08de..c4379109f11d 100644
  
  	if (!dev_iommu_priv_get(dev)) {
  		dev_iommu_priv_set(dev, qcom_iommu);
-@@ -585,10 +585,8 @@ static int qcom_iommu_of_xlate(struct device *dev, struct of_phandle_args *args)
+@@ -603,10 +603,8 @@ static int qcom_iommu_of_xlate(struct device *dev, struct of_phandle_args *args)
  		 * multiple different iommu devices.  Multiple context
  		 * banks are ok, but multiple devices are not:
  		 */
