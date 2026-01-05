@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-204725-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204726-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1A65CF3553
-	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 12:46:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 930DBCF356B
+	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 12:48:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2BBAB30060E5
-	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 11:46:37 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id BB3F030069AC
+	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 11:48:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C7E233291D;
-	Mon,  5 Jan 2026 11:46:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEE13333451;
+	Mon,  5 Jan 2026 11:48:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XNpl4+Hp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vm2QiY4m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 849F933290D
-	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 11:46:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F24C333447
+	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 11:48:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767613593; cv=none; b=pUooKQjG7gzhLtDL5bzaEyFmsgCXxm8wgFuPGkryBYgQD6I3X4jGZYKcs7cxZ4s9a8PgPsDYfnHxYrCckLUlPWtpL2sXFczg8kqbA4kGdvBDcoA8nZaEY0mQbjwkje6uWdeQTj2gWUACT6UQUcdNB7Jngbhoj2sB7kJ/ofokPBU=
+	t=1767613682; cv=none; b=iv3kdebp3ti5xDKsXql6jVWmyHNdpExdo+j0T0mN3AXeNkCEsmVhhBUa/xjkHaPRL6Bjyaf+NQ4dwRARKQwC+DADJ3i2hmnXf7ebMoNq67rNmYkkFIsdB5ciOzFTmAc0dV6pxGiWv+7Pwcr6vmLMZSERev7SVOSIZupBlvp7nOU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767613593; c=relaxed/simple;
-	bh=HAf9NIl0ANB11uecV6aUHdcdxkaygU/goJ3HdB7iQ+I=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Kp6hNqAK0rnTCctCJUc401DMp6zHZ21jrWJMGaX2noh8xNzRmZeFn+1RZEAPdDudWY0IeYifcoHIaNhR6jHK0WCo0fHpq21zmcQZoqNuLtVCHtVnFTTGUc9k038tv6q3hjDOhIxPEa4HXq3luptAXncYmYy3RUbewNI6MON2uSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XNpl4+Hp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01856C116D0;
-	Mon,  5 Jan 2026 11:46:31 +0000 (UTC)
+	s=arc-20240116; t=1767613682; c=relaxed/simple;
+	bh=sZLkOL0Ys1ZXnQ7q+nwJQmjlJ5ii4hLJakWyWV2gRag=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=buOjpiCS5LGvwht0aZ9rizkbBc1EiueNO8YSNWWT7Rqq+RuownD6SDzsU838VZ/Vm6mNeD3t2doqRi7tpXmargfQ/zrVaXzzujqkOAMObshqxIfmVkcqS4om3gdPlV8I1pPBm3dzdEmzpnXVzUJCMjYT9bevYOSmd+eUvj1fbDs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vm2QiY4m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F783C2BC9E;
+	Mon,  5 Jan 2026 11:48:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767613592;
-	bh=HAf9NIl0ANB11uecV6aUHdcdxkaygU/goJ3HdB7iQ+I=;
+	s=korg; t=1767613682;
+	bh=sZLkOL0Ys1ZXnQ7q+nwJQmjlJ5ii4hLJakWyWV2gRag=;
 	h=Subject:To:Cc:From:Date:From;
-	b=XNpl4+HpL7GglHKzF+fJfBWNVuRIuxAwoDvhVsenCAmAx3V34LXEMVDuU7co86GmS
-	 bRGavlAUN4Sup25WLmAEm/pYeKYW1BESLYUpSqR90bjVfCXwhCfj04efaR/hio1Og/
-	 7P2RiUyFRt6EpRexlwx7QDhb+JrgRqyc3e6ixix4=
-Subject: FAILED: patch "[PATCH] pmdomain: imx: Fix reference count leak in imx_gpc_probe()" failed to apply to 5.15-stable tree
-To: vulab@iscas.ac.cn,Frank.Li@nxp.com,ulf.hansson@linaro.org
+	b=vm2QiY4moTtjInJ2M0Yu/qpN/9lbISHDMSiYYUcd2zXtrJasaaKoREOkjtnck8ERc
+	 yngjgFXde9JSGUDZDalWcmzdM7ruxmgSRQLZgVCMC13Ju65WT2ocgO4/HrPB5j4xfI
+	 9QONHhrc9zaGrl++5a855rb47ljIC/Qej6Kmkxqg=
+Subject: FAILED: patch "[PATCH] vfio/pci: Disable qword access to the PCI ROM bar" failed to apply to 6.18-stable tree
+To: kevin.tian@intel.com,alex@shazbot.org,farrah.chen@intel.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 05 Jan 2026 12:46:15 +0100
-Message-ID: <2026010515-dragonish-pelican-5b3c@gregkh>
+Date: Mon, 05 Jan 2026 12:47:59 +0100
+Message-ID: <2026010559-recreate-attribute-0072@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -51,19 +51,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 6.18-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.18.y
 git checkout FETCH_HEAD
-git cherry-pick -x 73cb5f6eafb0ac7aea8cdeb8ff12981aa741d8fb
+git cherry-pick -x dc85a46928c41423ad89869baf05a589e2975575
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026010515-dragonish-pelican-5b3c@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026010559-recreate-attribute-0072@gregkh' --subject-prefix 'PATCH 6.18.y' HEAD^..
 
 Possible dependencies:
 
@@ -75,43 +75,164 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 73cb5f6eafb0ac7aea8cdeb8ff12981aa741d8fb Mon Sep 17 00:00:00 2001
-From: Wentao Liang <vulab@iscas.ac.cn>
-Date: Thu, 11 Dec 2025 04:02:52 +0000
-Subject: [PATCH] pmdomain: imx: Fix reference count leak in imx_gpc_probe()
+From dc85a46928c41423ad89869baf05a589e2975575 Mon Sep 17 00:00:00 2001
+From: Kevin Tian <kevin.tian@intel.com>
+Date: Thu, 18 Dec 2025 08:16:49 +0000
+Subject: [PATCH] vfio/pci: Disable qword access to the PCI ROM bar
 
-of_get_child_by_name() returns a node pointer with refcount incremented.
-Use the __free() attribute to manage the pgc_node reference, ensuring
-automatic of_node_put() cleanup when pgc_node goes out of scope.
+Commit 2b938e3db335 ("vfio/pci: Enable iowrite64 and ioread64 for vfio
+pci") enables qword access to the PCI bar resources. However certain
+devices (e.g. Intel X710) are observed with problem upon qword accesses
+to the rom bar, e.g. triggering PCI aer errors.
 
-This eliminates the need for explicit error handling paths and avoids
-reference count leaks.
+This is triggered by Qemu which caches the rom content by simply does a
+pread() of the remaining size until it gets the full contents. The other
+bars would only perform operations at the same access width as their
+guest drivers.
 
-Fixes: 721cabf6c660 ("soc: imx: move PGC handling to a new GPC driver")
+Instead of trying to identify all broken devices, universally disable
+qword access to the rom bar i.e. going back to the old way which worked
+reliably for years.
+
+Reported-by: Farrah Chen <farrah.chen@intel.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220740
+Fixes: 2b938e3db335 ("vfio/pci: Enable iowrite64 and ioread64 for vfio pci")
 Cc: stable@vger.kernel.org
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Kevin Tian <kevin.tian@intel.com>
+Tested-by: Farrah Chen <farrah.chen@intel.com>
+Link: https://lore.kernel.org/r/20251218081650.555015-2-kevin.tian@intel.com
+Signed-off-by: Alex Williamson <alex@shazbot.org>
 
-diff --git a/drivers/pmdomain/imx/gpc.c b/drivers/pmdomain/imx/gpc.c
-index a34b260274f7..de695f1944ab 100644
---- a/drivers/pmdomain/imx/gpc.c
-+++ b/drivers/pmdomain/imx/gpc.c
-@@ -402,13 +402,12 @@ static int imx_gpc_old_dt_init(struct device *dev, struct regmap *regmap,
- static int imx_gpc_probe(struct platform_device *pdev)
- {
- 	const struct imx_gpc_dt_data *of_id_data = device_get_match_data(&pdev->dev);
--	struct device_node *pgc_node;
-+	struct device_node *pgc_node __free(device_node)
-+		= of_get_child_by_name(pdev->dev.of_node, "pgc");
- 	struct regmap *regmap;
- 	void __iomem *base;
- 	int ret;
+diff --git a/drivers/vfio/pci/nvgrace-gpu/main.c b/drivers/vfio/pci/nvgrace-gpu/main.c
+index 84d142a47ec6..b45a24d00387 100644
+--- a/drivers/vfio/pci/nvgrace-gpu/main.c
++++ b/drivers/vfio/pci/nvgrace-gpu/main.c
+@@ -561,7 +561,7 @@ nvgrace_gpu_map_and_read(struct nvgrace_gpu_pci_core_device *nvdev,
+ 		ret = vfio_pci_core_do_io_rw(&nvdev->core_device, false,
+ 					     nvdev->resmem.ioaddr,
+ 					     buf, offset, mem_count,
+-					     0, 0, false);
++					     0, 0, false, VFIO_PCI_IO_WIDTH_8);
+ 	}
  
--	pgc_node = of_get_child_by_name(pdev->dev.of_node, "pgc");
--
- 	/* bail out if DT too old and doesn't provide the necessary info */
- 	if (!of_property_present(pdev->dev.of_node, "#power-domain-cells") &&
- 	    !pgc_node)
+ 	return ret;
+@@ -693,7 +693,7 @@ nvgrace_gpu_map_and_write(struct nvgrace_gpu_pci_core_device *nvdev,
+ 		ret = vfio_pci_core_do_io_rw(&nvdev->core_device, false,
+ 					     nvdev->resmem.ioaddr,
+ 					     (char __user *)buf, pos, mem_count,
+-					     0, 0, true);
++					     0, 0, true, VFIO_PCI_IO_WIDTH_8);
+ 	}
+ 
+ 	return ret;
+diff --git a/drivers/vfio/pci/vfio_pci_rdwr.c b/drivers/vfio/pci/vfio_pci_rdwr.c
+index 6192788c8ba3..25380b7dfe18 100644
+--- a/drivers/vfio/pci/vfio_pci_rdwr.c
++++ b/drivers/vfio/pci/vfio_pci_rdwr.c
+@@ -135,7 +135,8 @@ VFIO_IORDWR(64)
+ ssize_t vfio_pci_core_do_io_rw(struct vfio_pci_core_device *vdev, bool test_mem,
+ 			       void __iomem *io, char __user *buf,
+ 			       loff_t off, size_t count, size_t x_start,
+-			       size_t x_end, bool iswrite)
++			       size_t x_end, bool iswrite,
++			       enum vfio_pci_io_width max_width)
+ {
+ 	ssize_t done = 0;
+ 	int ret;
+@@ -150,20 +151,19 @@ ssize_t vfio_pci_core_do_io_rw(struct vfio_pci_core_device *vdev, bool test_mem,
+ 		else
+ 			fillable = 0;
+ 
+-		if (fillable >= 8 && !(off % 8)) {
++		if (fillable >= 8 && !(off % 8) && max_width >= 8) {
+ 			ret = vfio_pci_iordwr64(vdev, iswrite, test_mem,
+ 						io, buf, off, &filled);
+ 			if (ret)
+ 				return ret;
+ 
+-		} else
+-		if (fillable >= 4 && !(off % 4)) {
++		} else if (fillable >= 4 && !(off % 4) && max_width >= 4) {
+ 			ret = vfio_pci_iordwr32(vdev, iswrite, test_mem,
+ 						io, buf, off, &filled);
+ 			if (ret)
+ 				return ret;
+ 
+-		} else if (fillable >= 2 && !(off % 2)) {
++		} else if (fillable >= 2 && !(off % 2) && max_width >= 2) {
+ 			ret = vfio_pci_iordwr16(vdev, iswrite, test_mem,
+ 						io, buf, off, &filled);
+ 			if (ret)
+@@ -234,6 +234,7 @@ ssize_t vfio_pci_bar_rw(struct vfio_pci_core_device *vdev, char __user *buf,
+ 	void __iomem *io;
+ 	struct resource *res = &vdev->pdev->resource[bar];
+ 	ssize_t done;
++	enum vfio_pci_io_width max_width = VFIO_PCI_IO_WIDTH_8;
+ 
+ 	if (pci_resource_start(pdev, bar))
+ 		end = pci_resource_len(pdev, bar);
+@@ -262,6 +263,16 @@ ssize_t vfio_pci_bar_rw(struct vfio_pci_core_device *vdev, char __user *buf,
+ 		if (!io)
+ 			return -ENOMEM;
+ 		x_end = end;
++
++		/*
++		 * Certain devices (e.g. Intel X710) don't support qword
++		 * access to the ROM bar. Otherwise PCI AER errors might be
++		 * triggered.
++		 *
++		 * Disable qword access to the ROM bar universally, which
++		 * worked reliably for years before qword access is enabled.
++		 */
++		max_width = VFIO_PCI_IO_WIDTH_4;
+ 	} else {
+ 		int ret = vfio_pci_core_setup_barmap(vdev, bar);
+ 		if (ret) {
+@@ -278,7 +289,7 @@ ssize_t vfio_pci_bar_rw(struct vfio_pci_core_device *vdev, char __user *buf,
+ 	}
+ 
+ 	done = vfio_pci_core_do_io_rw(vdev, res->flags & IORESOURCE_MEM, io, buf, pos,
+-				      count, x_start, x_end, iswrite);
++				      count, x_start, x_end, iswrite, max_width);
+ 
+ 	if (done >= 0)
+ 		*ppos += done;
+@@ -352,7 +363,7 @@ ssize_t vfio_pci_vga_rw(struct vfio_pci_core_device *vdev, char __user *buf,
+ 	 * to the memory enable bit in the command register.
+ 	 */
+ 	done = vfio_pci_core_do_io_rw(vdev, false, iomem, buf, off, count,
+-				      0, 0, iswrite);
++				      0, 0, iswrite, VFIO_PCI_IO_WIDTH_8);
+ 
+ 	vga_put(vdev->pdev, rsrc);
+ 
+diff --git a/include/linux/vfio_pci_core.h b/include/linux/vfio_pci_core.h
+index 706877f998ff..1ac86896875c 100644
+--- a/include/linux/vfio_pci_core.h
++++ b/include/linux/vfio_pci_core.h
+@@ -145,6 +145,13 @@ struct vfio_pci_core_device {
+ 	struct list_head	dmabufs;
+ };
+ 
++enum vfio_pci_io_width {
++	VFIO_PCI_IO_WIDTH_1 = 1,
++	VFIO_PCI_IO_WIDTH_2 = 2,
++	VFIO_PCI_IO_WIDTH_4 = 4,
++	VFIO_PCI_IO_WIDTH_8 = 8,
++};
++
+ /* Will be exported for vfio pci drivers usage */
+ int vfio_pci_core_register_dev_region(struct vfio_pci_core_device *vdev,
+ 				      unsigned int type, unsigned int subtype,
+@@ -188,7 +195,8 @@ pci_ers_result_t vfio_pci_core_aer_err_detected(struct pci_dev *pdev,
+ ssize_t vfio_pci_core_do_io_rw(struct vfio_pci_core_device *vdev, bool test_mem,
+ 			       void __iomem *io, char __user *buf,
+ 			       loff_t off, size_t count, size_t x_start,
+-			       size_t x_end, bool iswrite);
++			       size_t x_end, bool iswrite,
++			       enum vfio_pci_io_width max_width);
+ bool __vfio_pci_memory_enabled(struct vfio_pci_core_device *vdev);
+ bool vfio_pci_core_range_intersect_range(loff_t buf_start, size_t buf_cnt,
+ 					 loff_t reg_start, size_t reg_cnt,
 
 
