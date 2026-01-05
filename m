@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-204631-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204633-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDDE7CF3065
-	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 11:41:54 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D2BFCF30A4
+	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 11:46:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0DE24309C3BA
-	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 10:38:33 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AC0443015127
+	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 10:46:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FB5D3148D5;
-	Mon,  5 Jan 2026 10:38:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78CBB3161B8;
+	Mon,  5 Jan 2026 10:39:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Et1UdDbS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l/QkPu6R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0DAB313E02
-	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 10:38:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34F1B3161A8
+	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 10:39:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767609510; cv=none; b=aY7cOO3PfmZrFqpXGCgnnwjPwNhfLS4/JlLYYlBp2eU+cZ19uhxrPclGr/8uYEJgT2uvBSvU1CoHmNsOS1gM9AK0CGpFtJSIkl6EamMroFSbiJ84wnrlqyAlLbsBAQQQI2DO0lTVdpYhzdgh75efEZSYHVPHxidFjRkBCix4h4o=
+	t=1767609563; cv=none; b=IhSlpD31eDKB70ee7ZPfbHUrXVWdK1bncR99bsVt0wGXdK9WdUHYsQ3KszjaFp7T8+W5mqudB0U7+SS0kg4iDTMoNVS7il3LWd3UBtOlx8AoF4+9DiorF2QRZSwAUSTUyDoZA1wI/p7RbCGvHvVa4h78OMmuVUzaDf3075DbJpY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767609510; c=relaxed/simple;
-	bh=oc9N2dDNnNtA5gNuh/6E/ZayE97HDbyPRpDpbVs04T8=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=uozeyvDHpsc9jZFgslDwE/zrXqXcI5lBfNZ3NL3PjPLK40FXyaFl33UoPTCF5nHuWogtFnku4qtY+eTGNA4AjLkPQMJXyyPcM0X1Yz1L3udlxhz5Qi726rhPSDB07Rs1RQyp5RblENKQrdwkh21Dha+j1yTajw7yFBLFfy1FAhg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Et1UdDbS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEBC7C116D0;
-	Mon,  5 Jan 2026 10:38:29 +0000 (UTC)
+	s=arc-20240116; t=1767609563; c=relaxed/simple;
+	bh=EY/8lI7RGL8R7aliV+hq3GetxYDxAgmXxLaQOWybN0g=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=KJKQEm94fC/emsztCsee2foLhnBBdvtFRBkamYmEW8o1lq5m2alGWrfq/bDJyZ9ion98Xic3bDlPg3RNIHxkBlMGChSOIKbVxi5s47c/G0uPELv1YewLYB0Dd6Vdx5EzVu/bzjIEce3762DC2xnDxnjUf+OScG2zpIc6Vt1kMrE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l/QkPu6R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 621C6C19421;
+	Mon,  5 Jan 2026 10:39:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767609510;
-	bh=oc9N2dDNnNtA5gNuh/6E/ZayE97HDbyPRpDpbVs04T8=;
+	s=korg; t=1767609563;
+	bh=EY/8lI7RGL8R7aliV+hq3GetxYDxAgmXxLaQOWybN0g=;
 	h=Subject:To:Cc:From:Date:From;
-	b=Et1UdDbSVv8L7h4aZ4hIhwsBN47Nvq9sESddNiDxPEvoRJ6qd5qDJd93RWLMbXp4T
-	 mfdwCfk933OPzZQImK/goKKpZj8SB1YHUzItW1Zq6/d1emTCSodY9D0Ze3GyM9/NWg
-	 B6X3b8Fyge8jgMh2TvJYQKO+JekpOIxeMJXlQIOc=
-Subject: FAILED: patch "[PATCH] powerpc/64s/slb: Fix SLB multihit issue during SLB preload" failed to apply to 5.10-stable tree
-To: donettom@linux.ibm.com,maddy@linux.ibm.com,npiggin@gmail.com,ritesh.list@gmail.com
+	b=l/QkPu6R0Y1Dr81YkVNwilHzjzChAG4hjm5+p9B96f4Vf2WdkWEhCuXDm4GBbTiwc
+	 agWNhnLYy4DvRVVms8criN+08/AeVkGd0/00T6chfLwKUuNG9smod2aRe4BUPn6MNt
+	 7Ad96aZwgcpYMIQ2hVTdn+LOMSlR2bVHwyhhcTWk=
+Subject: FAILED: patch "[PATCH] leds: leds-lp50xx: Enable chip before any communication" failed to apply to 5.10-stable tree
+To: christian.hitz@bbv.ch,lee@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 05 Jan 2026 11:38:27 +0100
-Message-ID: <2026010526-quake-familiar-452e@gregkh>
+Date: Mon, 05 Jan 2026 11:39:19 +0100
+Message-ID: <2026010519-botanical-suds-31fa@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,10 +60,10 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x 00312419f0863964625d6dcda8183f96849412c6
+git cherry-pick -x 434959618c47efe9e5f2e20f4a850caac4f6b823
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026010526-quake-familiar-452e@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026010519-botanical-suds-31fa@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
@@ -75,326 +75,149 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 00312419f0863964625d6dcda8183f96849412c6 Mon Sep 17 00:00:00 2001
-From: Donet Tom <donettom@linux.ibm.com>
-Date: Thu, 30 Oct 2025 20:27:26 +0530
-Subject: [PATCH] powerpc/64s/slb: Fix SLB multihit issue during SLB preload
+From 434959618c47efe9e5f2e20f4a850caac4f6b823 Mon Sep 17 00:00:00 2001
+From: Christian Hitz <christian.hitz@bbv.ch>
+Date: Tue, 28 Oct 2025 16:51:40 +0100
+Subject: [PATCH] leds: leds-lp50xx: Enable chip before any communication
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-On systems using the hash MMU, there is a software SLB preload cache that
-mirrors the entries loaded into the hardware SLB buffer. This preload
-cache is subject to periodic eviction — typically after every 256 context
-switches — to remove old entry.
+If a GPIO is used to control the chip's enable pin, it needs to be pulled
+high before any i2c communication is attempted.
 
-To optimize performance, the kernel skips switch_mmu_context() in
-switch_mm_irqs_off() when the prev and next mm_struct are the same.
-However, on hash MMU systems, this can lead to inconsistencies between
-the hardware SLB and the software preload cache.
+Currently, the enable GPIO handling is not correct.
 
-If an SLB entry for a process is evicted from the software cache on one
-CPU, and the same process later runs on another CPU without executing
-switch_mmu_context(), the hardware SLB may retain stale entries. If the
-kernel then attempts to reload that entry, it can trigger an SLB
-multi-hit error.
+Assume the enable GPIO is low when the probe function is entered. In this
+case the device is in SHUTDOWN mode and does not react to i2c commands.
 
-The following timeline shows how stale SLB entries are created and can
-cause a multi-hit error when a process moves between CPUs without a
-MMU context switch.
+During probe the following sequence happens:
+ 1. The call to lp50xx_reset() on line 548 has no effect as i2c is not
+    possible yet.
+ 2. Then - on line 552 - lp50xx_enable_disable() is called. As
+    "priv->enable_gpio“ has not yet been initialized, setting the GPIO has
+    no effect. Also the i2c enable command is not executed as the device
+    is still in SHUTDOWN.
+ 3. On line 556 the call to lp50xx_probe_dt() finally parses the rest of
+    the DT and the configured priv->enable_gpio is set up.
 
-CPU 0                                   CPU 1
------                                    -----
-Process P
-exec                                    swapper/1
- load_elf_binary
-  begin_new_exc
-    activate_mm
-     switch_mm_irqs_off
-      switch_mmu_context
-       switch_slb
-       /*
-        * This invalidates all
-        * the entries in the HW
-        * and setup the new HW
-        * SLB entries as per the
-        * preload cache.
-        */
-context_switch
-sched_migrate_task migrates process P to cpu-1
+As a result the device is still in SHUTDOWN mode and not ready for
+operation.
 
-Process swapper/0                       context switch (to process P)
-(uses mm_struct of Process P)           switch_mm_irqs_off()
-                                         switch_slb
-                                           load_slb++
-                                            /*
-                                            * load_slb becomes 0 here
-                                            * and we evict an entry from
-                                            * the preload cache with
-                                            * preload_age(). We still
-                                            * keep HW SLB and preload
-                                            * cache in sync, that is
-                                            * because all HW SLB entries
-                                            * anyways gets evicted in
-                                            * switch_slb during SLBIA.
-                                            * We then only add those
-                                            * entries back in HW SLB,
-                                            * which are currently
-                                            * present in preload_cache
-                                            * (after eviction).
-                                            */
-                                        load_elf_binary continues...
-                                         setup_new_exec()
-                                          slb_setup_new_exec()
+Split lp50xx_enable_disable() into distinct enable and disable functions
+to enforce correct ordering between enable_gpio manipulations and i2c
+commands.
+Read enable_gpio configuration from DT before attempting to manipulate
+enable_gpio.
+Add delays to observe correct wait timing after manipulating enable_gpio
+and before any i2c communication.
 
-                                        sched_switch event
-                                        sched_migrate_task migrates
-                                        process P to cpu-0
+Cc: stable@vger.kernel.org
+Fixes: 242b81170fb8 ("leds: lp50xx: Add the LP50XX family of the RGB LED driver")
+Signed-off-by: Christian Hitz <christian.hitz@bbv.ch>
+Link: https://patch.msgid.link/20251028155141.1603193-1-christian@klarinett.li
+Signed-off-by: Lee Jones <lee@kernel.org>
 
-context_switch from swapper/0 to Process P
- switch_mm_irqs_off()
-  /*
-   * Since both prev and next mm struct are same we don't call
-   * switch_mmu_context(). This will cause the HW SLB and SW preload
-   * cache to go out of sync in preload_new_slb_context. Because there
-   * was an SLB entry which was evicted from both HW and preload cache
-   * on cpu-1. Now later in preload_new_slb_context(), when we will try
-   * to add the same preload entry again, we will add this to the SW
-   * preload cache and then will add it to the HW SLB. Since on cpu-0
-   * this entry was never invalidated, hence adding this entry to the HW
-   * SLB will cause a SLB multi-hit error.
-   */
-load_elf_binary continues...
- START_THREAD
-  start_thread
-   preload_new_slb_context
-   /*
-    * This tries to add a new EA to preload cache which was earlier
-    * evicted from both cpu-1 HW SLB and preload cache. This caused the
-    * HW SLB of cpu-0 to go out of sync with the SW preload cache. The
-    * reason for this was, that when we context switched back on CPU-0,
-    * we should have ideally called switch_mmu_context() which will
-    * bring the HW SLB entries on CPU-0 in sync with SW preload cache
-    * entries by setting up the mmu context properly. But we didn't do
-    * that since the prev mm_struct running on cpu-0 was same as the
-    * next mm_struct (which is true for swapper / kernel threads). So
-    * now when we try to add this new entry into the HW SLB of cpu-0,
-    * we hit a SLB multi-hit error.
-    */
-
-WARNING: CPU: 0 PID: 1810970 at arch/powerpc/mm/book3s64/slb.c:62
-assert_slb_presence+0x2c/0x50(48 results) 02:47:29 [20157/42149]
-Modules linked in:
-CPU: 0 UID: 0 PID: 1810970 Comm: dd Not tainted 6.16.0-rc3-dirty #12
-VOLUNTARY
-Hardware name: IBM pSeries (emulated by qemu) POWER8 (architected)
-0x4d0200 0xf000004 of:SLOF,HEAD hv:linux,kvm pSeries
-NIP:  c00000000015426c LR: c0000000001543b4 CTR: 0000000000000000
-REGS: c0000000497c77e0 TRAP: 0700   Not tainted  (6.16.0-rc3-dirty)
-MSR:  8000000002823033 <SF,VEC,VSX,FP,ME,IR,DR,RI,LE>  CR: 28888482  XER: 00000000
-CFAR: c0000000001543b0 IRQMASK: 3
-<...>
-NIP [c00000000015426c] assert_slb_presence+0x2c/0x50
-LR [c0000000001543b4] slb_insert_entry+0x124/0x390
-Call Trace:
-  0x7fffceb5ffff (unreliable)
-  preload_new_slb_context+0x100/0x1a0
-  start_thread+0x26c/0x420
-  load_elf_binary+0x1b04/0x1c40
-  bprm_execve+0x358/0x680
-  do_execveat_common+0x1f8/0x240
-  sys_execve+0x58/0x70
-  system_call_exception+0x114/0x300
-  system_call_common+0x160/0x2c4
-
->From the above analysis, during early exec the hardware SLB is cleared,
-and entries from the software preload cache are reloaded into hardware
-by switch_slb. However, preload_new_slb_context and slb_setup_new_exec
-also attempt to load some of the same entries, which can trigger a
-multi-hit. In most cases, these additional preloads simply hit existing
-entries and add nothing new. Removing these functions avoids redundant
-preloads and eliminates the multi-hit issue. This patch removes these
-two functions.
-
-We tested process switching performance using the context_switch
-benchmark on POWER9/hash, and observed no regression.
-
-Without this patch: 129041 ops/sec
-With this patch:    129341 ops/sec
-
-We also measured SLB faults during boot, and the counts are essentially
-the same with and without this patch.
-
-SLB faults without this patch: 19727
-SLB faults with this patch:    19786
-
-Fixes: 5434ae74629a ("powerpc/64s/hash: Add a SLB preload cache")
-cc: stable@vger.kernel.org
-Suggested-by: Nicholas Piggin <npiggin@gmail.com>
-Signed-off-by: Donet Tom <donettom@linux.ibm.com>
-Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/0ac694ae683494fe8cadbd911a1a5018d5d3c541.1761834163.git.ritesh.list@gmail.com
-
-diff --git a/arch/powerpc/include/asm/book3s/64/mmu-hash.h b/arch/powerpc/include/asm/book3s/64/mmu-hash.h
-index 346351423207..af12e2ba8eb8 100644
---- a/arch/powerpc/include/asm/book3s/64/mmu-hash.h
-+++ b/arch/powerpc/include/asm/book3s/64/mmu-hash.h
-@@ -524,7 +524,6 @@ void slb_save_contents(struct slb_entry *slb_ptr);
- void slb_dump_contents(struct slb_entry *slb_ptr);
+diff --git a/drivers/leds/leds-lp50xx.c b/drivers/leds/leds-lp50xx.c
+index 3a0316be96ed..e2a9c8592953 100644
+--- a/drivers/leds/leds-lp50xx.c
++++ b/drivers/leds/leds-lp50xx.c
+@@ -50,6 +50,12 @@
  
- extern void slb_vmalloc_update(void);
--void preload_new_slb_context(unsigned long start, unsigned long sp);
+ #define LP50XX_SW_RESET		0xff
+ #define LP50XX_CHIP_EN		BIT(6)
++#define LP50XX_CHIP_DISABLE	0x00
++#define LP50XX_START_TIME_US	500
++#define LP50XX_RESET_TIME_US	3
++
++#define LP50XX_EN_GPIO_LOW	0
++#define LP50XX_EN_GPIO_HIGH	1
  
- #ifdef CONFIG_PPC_64S_HASH_MMU
- void slb_set_size(u16 size);
-diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
-index eb23966ac0a9..a45fe147868b 100644
---- a/arch/powerpc/kernel/process.c
-+++ b/arch/powerpc/kernel/process.c
-@@ -1897,8 +1897,6 @@ int copy_thread(struct task_struct *p, const struct kernel_clone_args *args)
- 	return 0;
+ /* There are 3 LED outputs per bank */
+ #define LP50XX_LEDS_PER_MODULE	3
+@@ -369,19 +375,42 @@ static int lp50xx_reset(struct lp50xx *priv)
+ 	return regmap_write(priv->regmap, priv->chip_info->reset_reg, LP50XX_SW_RESET);
  }
  
--void preload_new_slb_context(unsigned long start, unsigned long sp);
--
- /*
-  * Set up a thread for executing a new program
-  */
-@@ -1906,9 +1904,6 @@ void start_thread(struct pt_regs *regs, unsigned long start, unsigned long sp)
+-static int lp50xx_enable_disable(struct lp50xx *priv, int enable_disable)
++static int lp50xx_enable(struct lp50xx *priv)
  {
- #ifdef CONFIG_PPC64
- 	unsigned long load_addr = regs->gpr[2];	/* saved by ELF_PLAT_INIT */
--
--	if (IS_ENABLED(CONFIG_PPC_BOOK3S_64) && !radix_enabled())
--		preload_new_slb_context(start, sp);
- #endif
+ 	int ret;
  
- #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
-diff --git a/arch/powerpc/mm/book3s64/internal.h b/arch/powerpc/mm/book3s64/internal.h
-index a57a25f06a21..c26a6f0c90fc 100644
---- a/arch/powerpc/mm/book3s64/internal.h
-+++ b/arch/powerpc/mm/book3s64/internal.h
-@@ -24,8 +24,6 @@ static inline bool stress_hpt(void)
+-	ret = gpiod_direction_output(priv->enable_gpio, enable_disable);
++	if (priv->enable_gpio) {
++		ret = gpiod_direction_output(priv->enable_gpio, LP50XX_EN_GPIO_HIGH);
++		if (ret)
++			return ret;
++
++		udelay(LP50XX_START_TIME_US);
++	}
++
++	ret = lp50xx_reset(priv);
+ 	if (ret)
+ 		return ret;
  
- void hpt_do_stress(unsigned long ea, unsigned long hpte_group);
+-	if (enable_disable)
+-		return regmap_write(priv->regmap, LP50XX_DEV_CFG0, LP50XX_CHIP_EN);
+-	else
+-		return regmap_write(priv->regmap, LP50XX_DEV_CFG0, 0);
++	return regmap_write(priv->regmap, LP50XX_DEV_CFG0, LP50XX_CHIP_EN);
++}
  
--void slb_setup_new_exec(void);
--
- void exit_lazy_flush_tlb(struct mm_struct *mm, bool always_flush);
- 
- #endif /* ARCH_POWERPC_MM_BOOK3S64_INTERNAL_H */
-diff --git a/arch/powerpc/mm/book3s64/mmu_context.c b/arch/powerpc/mm/book3s64/mmu_context.c
-index 4e1e45420bd4..fb9dcf9ca599 100644
---- a/arch/powerpc/mm/book3s64/mmu_context.c
-+++ b/arch/powerpc/mm/book3s64/mmu_context.c
-@@ -150,8 +150,6 @@ static int hash__init_new_context(struct mm_struct *mm)
- void hash__setup_new_exec(void)
- {
- 	slice_setup_new_exec();
--
--	slb_setup_new_exec();
- }
- #else
- static inline int hash__init_new_context(struct mm_struct *mm)
-diff --git a/arch/powerpc/mm/book3s64/slb.c b/arch/powerpc/mm/book3s64/slb.c
-index 6b783552403c..7e053c561a09 100644
---- a/arch/powerpc/mm/book3s64/slb.c
-+++ b/arch/powerpc/mm/book3s64/slb.c
-@@ -328,94 +328,6 @@ static void preload_age(struct thread_info *ti)
- 	ti->slb_preload_tail = (ti->slb_preload_tail + 1) % SLB_PRELOAD_NR;
++static int lp50xx_disable(struct lp50xx *priv)
++{
++	int ret;
++
++	ret = regmap_write(priv->regmap, LP50XX_DEV_CFG0, LP50XX_CHIP_DISABLE);
++	if (ret)
++		return ret;
++
++	if (priv->enable_gpio) {
++		ret = gpiod_direction_output(priv->enable_gpio, LP50XX_EN_GPIO_LOW);
++		if (ret)
++			return ret;
++
++		udelay(LP50XX_RESET_TIME_US);
++	}
++
++	return 0;
  }
  
--void slb_setup_new_exec(void)
--{
--	struct thread_info *ti = current_thread_info();
--	struct mm_struct *mm = current->mm;
--	unsigned long exec = 0x10000000;
+ static int lp50xx_probe_leds(struct fwnode_handle *child, struct lp50xx *priv,
+@@ -445,6 +474,10 @@ static int lp50xx_probe_dt(struct lp50xx *priv)
+ 		return dev_err_probe(priv->dev, PTR_ERR(priv->enable_gpio),
+ 				     "Failed to get enable GPIO\n");
+ 
++	ret = lp50xx_enable(priv);
++	if (ret)
++		return ret;
++
+ 	priv->regulator = devm_regulator_get(priv->dev, "vled");
+ 	if (IS_ERR(priv->regulator))
+ 		priv->regulator = NULL;
+@@ -545,14 +578,6 @@ static int lp50xx_probe(struct i2c_client *client)
+ 		return ret;
+ 	}
+ 
+-	ret = lp50xx_reset(led);
+-	if (ret)
+-		return ret;
 -
--	WARN_ON(irqs_disabled());
+-	ret = lp50xx_enable_disable(led, 1);
+-	if (ret)
+-		return ret;
 -
--	/*
--	 * preload cache can only be used to determine whether a SLB
--	 * entry exists if it does not start to overflow.
--	 */
--	if (ti->slb_preload_nr + 2 > SLB_PRELOAD_NR)
--		return;
--
--	hard_irq_disable();
--
--	/*
--	 * We have no good place to clear the slb preload cache on exec,
--	 * flush_thread is about the earliest arch hook but that happens
--	 * after we switch to the mm and have already preloaded the SLBEs.
--	 *
--	 * For the most part that's probably okay to use entries from the
--	 * previous exec, they will age out if unused. It may turn out to
--	 * be an advantage to clear the cache before switching to it,
--	 * however.
--	 */
--
--	/*
--	 * preload some userspace segments into the SLB.
--	 * Almost all 32 and 64bit PowerPC executables are linked at
--	 * 0x10000000 so it makes sense to preload this segment.
--	 */
--	if (!is_kernel_addr(exec)) {
--		if (preload_add(ti, exec))
--			slb_allocate_user(mm, exec);
--	}
--
--	/* Libraries and mmaps. */
--	if (!is_kernel_addr(mm->mmap_base)) {
--		if (preload_add(ti, mm->mmap_base))
--			slb_allocate_user(mm, mm->mmap_base);
--	}
--
--	/* see switch_slb */
--	asm volatile("isync" : : : "memory");
--
--	local_irq_enable();
--}
--
--void preload_new_slb_context(unsigned long start, unsigned long sp)
--{
--	struct thread_info *ti = current_thread_info();
--	struct mm_struct *mm = current->mm;
--	unsigned long heap = mm->start_brk;
--
--	WARN_ON(irqs_disabled());
--
--	/* see above */
--	if (ti->slb_preload_nr + 3 > SLB_PRELOAD_NR)
--		return;
--
--	hard_irq_disable();
--
--	/* Userspace entry address. */
--	if (!is_kernel_addr(start)) {
--		if (preload_add(ti, start))
--			slb_allocate_user(mm, start);
--	}
--
--	/* Top of stack, grows down. */
--	if (!is_kernel_addr(sp)) {
--		if (preload_add(ti, sp))
--			slb_allocate_user(mm, sp);
--	}
--
--	/* Bottom of heap, grows up. */
--	if (heap && !is_kernel_addr(heap)) {
--		if (preload_add(ti, heap))
--			slb_allocate_user(mm, heap);
--	}
--
--	/* see switch_slb */
--	asm volatile("isync" : : : "memory");
--
--	local_irq_enable();
--}
--
- static void slb_cache_slbie_kernel(unsigned int index)
- {
- 	unsigned long slbie_data = get_paca()->slb_cache[index];
+ 	return lp50xx_probe_dt(led);
+ }
+ 
+@@ -561,7 +586,7 @@ static void lp50xx_remove(struct i2c_client *client)
+ 	struct lp50xx *led = i2c_get_clientdata(client);
+ 	int ret;
+ 
+-	ret = lp50xx_enable_disable(led, 0);
++	ret = lp50xx_disable(led);
+ 	if (ret)
+ 		dev_err(led->dev, "Failed to disable chip\n");
+ 
 
 
