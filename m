@@ -1,54 +1,52 @@
-Return-Path: <stable+bounces-204830-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204831-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B737FCF4576
-	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 16:16:42 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 531D4CF4507
+	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 16:10:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 10440315E075
-	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 15:10:38 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 164913007649
+	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 15:10:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C85AE17BCA;
-	Mon,  5 Jan 2026 15:10:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C6D73093CB;
+	Mon,  5 Jan 2026 15:10:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qbP0Kc4K"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t/iJ6aun"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78A053093D8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D0C83093C3
 	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 15:10:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767625837; cv=none; b=pYSp9//T99PkWjrv0QuK4GmpLKbaPM2un5gJFfBazI1gNSIQKj0Py+EmMBlIZbirCWR25n9KsBgCymMxxwGyc9vLzNDYcZWUYPvs5znA5VPsJolk4811Pilsghy9fNwVapR3ESU0oBr+9ck/cjhr5f0yvmU8yn/n079ud6gVx3M=
+	t=1767625838; cv=none; b=ictMR2dUEz8pbrp8Z/YOK6JEsXxdPSnugB3sZIEfaRk+FWiPmoAKPyz/Uxt3VdHcvwMlFF0TY1ZlaMKgFuE5PmYFOhp2xVzrguZOHKEuqlmPGwSc4HE347p3f+xWSAoiLgK2iqgr6YORV4GYpN2zsIUx5YffRlCPc+AA7YKyX0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767625837; c=relaxed/simple;
-	bh=vd6QhEsGWmoWVC6gUHpxnoaYITOXh5jEoqxRUa0CBL4=;
+	s=arc-20240116; t=1767625838; c=relaxed/simple;
+	bh=k8Ix1Uu/wEdCgDoHLWI7dMCdtwOSBNslUh8JSc22pg8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=j/QhVqHFPG3quRVS6J1X4RJmKD6P3YHNt4yoAlbi4lBWsEK78XDNCzqv90f3ojNNCVNxTjFb5aUbGJmCvcBmqE0+xLQ1YrAroyYMsrDMTvE5yQwy1Ox+nQE23mF8hdOe7VXDHYpyxk9iqdKyDk0gfb3zsgFcRPtQZQOq/QZ97q4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qbP0Kc4K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 631B3C19422;
-	Mon,  5 Jan 2026 15:10:36 +0000 (UTC)
+	 MIME-Version; b=fJgbCy3lD840cA9pqj2Bcb77W2soNtMxq9SSd2V68TPaLc6AUr7EziZYPtfQwAMFNBNS9GCCs+LOA8C+FmkuG179JRXNIhPFAkM+K6f4EBU5UDMtVI16wYI23Pe1KTHu+wELuy1TAHpswZFuKix81p8wBm6dV2vFXLZjz2QxA9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t/iJ6aun; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53DF0C19425;
+	Mon,  5 Jan 2026 15:10:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1767625837;
-	bh=vd6QhEsGWmoWVC6gUHpxnoaYITOXh5jEoqxRUa0CBL4=;
+	bh=k8Ix1Uu/wEdCgDoHLWI7dMCdtwOSBNslUh8JSc22pg8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qbP0Kc4K/hxjbDzB1b9O8JY5OTyJH+vhggKGXHsFea1mTLEPagk0kHlwm5B3YRR1y
-	 bEa+IbO7+9CtwqkW5lAiq+Dknw2es9H/kCGV8KEFOKKmmu2DB3YTyk3uABLgPWi04N
-	 M2RxqpFISV6jyL0NQtT1KNeH+ocpwJZszuOH14Tsu9OvdEnCYmpsvwUlAeHN2ueyBn
-	 fVVnnr20scBT3ehYY+e64hX1AZrUEL6Uv1B0eIM5HHgH1peiqVML3cup20Y/UuaF+N
-	 ZKf5F6hzg9sn77PVuJ2cN+epeehH76kg3omwPgKBtqHDX5Tb1f4BMvxuxN1rjhaCiE
-	 /nmGdM8+nRxJA==
+	b=t/iJ6aunLfnWZNYWVZItdvFcS0C94/X43X7lWqfOV6ywwIl55FYMl8jMMbovvp5gV
+	 BvzVj8hPrPz831q4ZhXvlUMAtonnpv6LafG6TMvVHl4j2eyJKWDDkE10MTfwvLTZ6q
+	 9/BRQNuAtrODcAEe7f/Pz3Dj09YgljaJfBxP36iO5ttdaL6Atd4v9kGVcOs4XA9ViU
+	 NHdRtwWzEZ979DaVtT257k4jxDpjCOGBm0amwNCbhZH4EVBQloJMGMI1a5xetfhazD
+	 yqWyKlt0tfGSzzXX5Sua9MJz+qpcPqXhQpEAoFXkuMLJ72D4zavpn0SfjOjdalfk9E
+	 Mrgliehc2742g==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Takashi Iwai <tiwai@suse.de>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
+Cc: Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y 2/6] ASoC: stm: stm32_sai_sub: Convert to platform remove callback returning void
-Date: Mon,  5 Jan 2026 10:10:29 -0500
-Message-ID: <20260105151034.2625317-2-sashal@kernel.org>
+Subject: [PATCH 5.15.y 3/6] ASoC: stm32: sai: Use the devm_clk_get_optional() helper
+Date: Mon,  5 Jan 2026 10:10:30 -0500
+Message-ID: <20260105151034.2625317-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260105151034.2625317-1-sashal@kernel.org>
 References: <2026010551-backpedal-chatroom-a9c7@gregkh>
@@ -59,66 +57,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit a3bd37e2e2bce4fb1757a940fa985d556662ba80 ]
+[ Upstream commit 374628fb668e50b42fe81f2a63af616182415bcd ]
 
-The .remove() callback for a platform driver returns an int which makes
-many driver authors wrongly assume it's possible to do error handling by
-returning an error code. However the value returned is (mostly) ignored
-and this typically results in resource leaks. To improve here there is a
-quest to make the remove callback return void. In the first step of this
-quest all drivers are converted to .remove_new() which already returns
-void.
+Use devm_clk_get_optional() instead of hand writing it.
+This saves some LoC and improves the semantic.
 
-Trivially convert this driver from always returning zero in the remove
-callback to the void returning variant.
-
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Acked-by: Takashi Iwai <tiwai@suse.de>
-Acked-by: Nicolas Ferre <nicolas.ferre@microchip.com>
-Link: https://lore.kernel.org/r/20230315150745.67084-139-u.kleine-koenig@pengutronix.de
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Link: https://lore.kernel.org/r/f7987f18dadf77bfa09969fd4c82d5a0f4e4e3b7.1684594838.git.christophe.jaillet@wanadoo.fr
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Stable-dep-of: 23261f0de094 ("ASoC: stm32: sai: fix OF node leak on probe")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/stm/stm32_sai_sub.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ sound/soc/stm/stm32_sai_sub.c | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
 diff --git a/sound/soc/stm/stm32_sai_sub.c b/sound/soc/stm/stm32_sai_sub.c
-index 0db307cdb825..d179400b9b09 100644
+index d179400b9b09..e4ee4c800275 100644
 --- a/sound/soc/stm/stm32_sai_sub.c
 +++ b/sound/soc/stm/stm32_sai_sub.c
-@@ -1560,7 +1560,7 @@ static int stm32_sai_sub_probe(struct platform_device *pdev)
+@@ -1486,12 +1486,9 @@ static int stm32_sai_sub_parse_of(struct platform_device *pdev,
+ 		if (ret < 0)
+ 			return ret;
+ 	} else {
+-		sai->sai_mclk = devm_clk_get(&pdev->dev, "MCLK");
+-		if (IS_ERR(sai->sai_mclk)) {
+-			if (PTR_ERR(sai->sai_mclk) != -ENOENT)
+-				return PTR_ERR(sai->sai_mclk);
+-			sai->sai_mclk = NULL;
+-		}
++		sai->sai_mclk = devm_clk_get_optional(&pdev->dev, "MCLK");
++		if (IS_ERR(sai->sai_mclk))
++			return PTR_ERR(sai->sai_mclk);
+ 	}
+ 
  	return 0;
- }
- 
--static int stm32_sai_sub_remove(struct platform_device *pdev)
-+static void stm32_sai_sub_remove(struct platform_device *pdev)
- {
- 	struct stm32_sai_sub_data *sai = dev_get_drvdata(&pdev->dev);
- 
-@@ -1568,8 +1568,6 @@ static int stm32_sai_sub_remove(struct platform_device *pdev)
- 	snd_dmaengine_pcm_unregister(&pdev->dev);
- 	snd_soc_unregister_component(&pdev->dev);
- 	pm_runtime_disable(&pdev->dev);
--
--	return 0;
- }
- 
- #ifdef CONFIG_PM_SLEEP
-@@ -1619,7 +1617,7 @@ static struct platform_driver stm32_sai_sub_driver = {
- 		.pm = &stm32_sai_sub_pm_ops,
- 	},
- 	.probe = stm32_sai_sub_probe,
--	.remove = stm32_sai_sub_remove,
-+	.remove_new = stm32_sai_sub_remove,
- };
- 
- module_platform_driver(stm32_sai_sub_driver);
 -- 
 2.51.0
 
