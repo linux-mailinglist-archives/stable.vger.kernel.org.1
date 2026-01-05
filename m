@@ -1,179 +1,137 @@
-Return-Path: <stable+bounces-204619-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204620-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E039DCF2C3B
-	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 10:30:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E66ECF2C44
+	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 10:30:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DF086300C36F
-	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 09:30:15 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3D4F5300995D
+	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 09:30:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C58B731A7E1;
-	Mon,  5 Jan 2026 09:30:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F2BD32E154;
+	Mon,  5 Jan 2026 09:30:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n+XmN7uj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uX0b+CEF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97BD332D0EF
-	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 09:30:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A7D832BF5D;
+	Mon,  5 Jan 2026 09:30:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767605412; cv=none; b=b3xzUEunbZM5Z3Mts5fg3XRbky96Uy0btY1LQFyqtOUHOh4sYMI6DB+dDYaDsB1eyxVOVSv2sX3m137hQ4FmgriVZZRDSYMU5l51cvGv4bFQViP2p24vX+qiUQcR+tzT1ICUqrQMSN0gwVuSgI1eEpp+b/vJUNaPhqLF6DlIO2Q=
+	t=1767605445; cv=none; b=Y8UIjQjgxxvmFBPK6gMNoQ3LUhdPkzjhaMvhLHjEope9QZ7lQCxHpIfR7cf6z12ODmc6PGH9sBVMep2NVoKbRoHMA8mRb5nj4dRscceSxOvJIC5IXHihMEE+MSfJFAJuRB30QajCHL0Cjbwg9kB55xD5NdAdbdhLjawoLTuxhuI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767605412; c=relaxed/simple;
-	bh=GNbYXmD1Fdpq4wFNTR5KsZEexPgQuQZbLUvHWbBkt/Q=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=A8qmOs4OVE9LJSkxKWW3BHrk/2Gs3FI4vRegHiSZsVRe7rZoqZtxG1sIzA4jFY67yXDWKhTvtVjXMlwnsmgVSmCBenJ23Egs9+GVOpTLgAyh+I7BGZb5H8F0Cnf0w5GbNbtMaJibXb0RjurxV7c6gMkVDbtkAAwwetehYN4mwlg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n+XmN7uj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA098C19421;
-	Mon,  5 Jan 2026 09:30:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767605411;
-	bh=GNbYXmD1Fdpq4wFNTR5KsZEexPgQuQZbLUvHWbBkt/Q=;
-	h=Subject:To:Cc:From:Date:From;
-	b=n+XmN7ujzhSILX36zKpYQ/HOakHFjX21vPbgGfaNiS6RCdDBKi0MloYcP/jWcccZS
-	 ucymsdFw+Lfunf+g2dYrdWoewv5CefYEPyX5adLMTF/dRN2/OJXAQvOcWygWzMsnf3
-	 e5tT2dB67zQlOFBMsNTRg4tE5w91j3vAr1NcIWJA=
-Subject: FAILED: patch "[PATCH] iommu: disable SVA when CONFIG_X86 is set" failed to apply to 5.10-stable tree
-To: baolu.lu@linux.intel.com,akpm@linux-foundation.org,apopple@nvidia.com,bp@alien8.de,dave.hansen@intel.com,david@redhat.com,jannh@google.com,jean-philippe@linaro.org,jgg@nvidia.com,joro@8bytes.org,kevin.tian@intel.com,liam.howlett@oracle.com,lorenzo.stoakes@oracle.com,luto@kernel.org,mhocko@kernel.org,mingo@redhat.com,peterz@infradead.org,robin.murphy@arm.com,rppt@kernel.org,stable@vger.kernel.org,tglx@linutronix.de,urezki@gmail.com,vasant.hegde@amd.com,vbabka@suse.cz,vinicius.gomes@intel.com,will@kernel.org,willy@infradead.org,yi1.lai@intel.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 05 Jan 2026 10:30:05 +0100
-Message-ID: <2026010504-amigo-tag-afbd@gregkh>
+	s=arc-20240116; t=1767605445; c=relaxed/simple;
+	bh=lyV7qVwbr8SDoYsnumOFtad80gHwrzHRh3mFSKwuj8Y=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=tshUK6VrksMX1miu5DpbboRoFP4GxrEnxdkbpOTvWigTxB+JUE6Fi0pdEIYj5k/JYgaWqS2q2owHC8/wvf7vRI868IHkKkeRKZsQjMtyBNhVgyYA7kyHo1AMYNJoxAA4boo7S3xo+2VWH0845OkaD1HafEsh81mCd1ivd+ZqzAc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uX0b+CEF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B81DC116D0;
+	Mon,  5 Jan 2026 09:30:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767605445;
+	bh=lyV7qVwbr8SDoYsnumOFtad80gHwrzHRh3mFSKwuj8Y=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=uX0b+CEFa5pDea6gkjd0bcCv2N+lW7iDGDCbpcyMcJEwjI7waQocG4XrYu6+wgiqR
+	 l9WDDGUHqoD9QXBRf18FWVCLBJ7B1mEsmypncNDzXbc92H0Qf1BXNPLNQ0pJZejGfI
+	 vzyGMFOjCuSilo0Z9SbE+enX7K61E2P6gvNSWlXPgSadMObbYV4rkUJn6uGhNFRTqU
+	 fJU42VGmbAEoUdMw3pDZvZqVihy/lOWFNSWDzkhTuDB2kzCpDTnw6cwKHYADzIOUWy
+	 /h3Kwj7VAoHZUz1c9/Zr9TaxVfRHkdzwpURuO/ELEA8FHqR6225ACreBy4k/38rRtM
+	 HNCmBX1vnvoFg==
+Message-ID: <b03a69a1-1f5a-4dae-a6d4-851f18e43917@kernel.org>
+Date: Mon, 5 Jan 2026 10:30:41 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/4] ASoC: codecs: wsa884x: fix codec initialisation
+To: Johan Hovold <johan@kernel.org>, Srinivas Kandagatla <srini@kernel.org>,
+ Mark Brown <broonie@kernel.org>
+Cc: Liam Girdwood <lgirdwood@gmail.com>, linux-sound@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20260102111413.9605-1-johan@kernel.org>
+ <20260102111413.9605-4-johan@kernel.org>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <20260102111413.9605-4-johan@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+On 02/01/2026 12:14, Johan Hovold wrote:
+> The soundwire update_status() callback may be called multiple times with
+> the same ATTACHED status but initialisation should only be done when
+> transitioning from UNATTACHED to ATTACHED.
+> 
+> Fix the inverted hw_init flag which was set to false instead of true
+> after initialisation which defeats its purpose and may result in
+> repeated unnecessary initialisation.
+> 
+> Similarly, the initial state of the flag was also inverted so that the
+> codec would only be initialised and brought out of regmap cache only
+> mode if its status first transitions to UNATTACHED.
+> 
+> Fixes: aa21a7d4f68a ("ASoC: codecs: wsa884x: Add WSA884x family of speakers")
+> Cc: stable@vger.kernel.org	# 6.5
+> Cc: Krzysztof Kozlowski <krzk@kernel.org>
+> Signed-off-by: Johan Hovold <johan@kernel.org>
+> ---
 
 
-The patch below does not apply to the 5.10-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
-git checkout FETCH_HEAD
-git cherry-pick -x 72f98ef9a4be30d2a60136dd6faee376f780d06c
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026010504-amigo-tag-afbd@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
-
-Possible dependencies:
+Tested on Lenovo T14s:
+Tested-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 
 
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 72f98ef9a4be30d2a60136dd6faee376f780d06c Mon Sep 17 00:00:00 2001
-From: Lu Baolu <baolu.lu@linux.intel.com>
-Date: Wed, 22 Oct 2025 16:26:27 +0800
-Subject: [PATCH] iommu: disable SVA when CONFIG_X86 is set
-
-Patch series "Fix stale IOTLB entries for kernel address space", v7.
-
-This proposes a fix for a security vulnerability related to IOMMU Shared
-Virtual Addressing (SVA).  In an SVA context, an IOMMU can cache kernel
-page table entries.  When a kernel page table page is freed and
-reallocated for another purpose, the IOMMU might still hold stale,
-incorrect entries.  This can be exploited to cause a use-after-free or
-write-after-free condition, potentially leading to privilege escalation or
-data corruption.
-
-This solution introduces a deferred freeing mechanism for kernel page
-table pages, which provides a safe window to notify the IOMMU to
-invalidate its caches before the page is reused.
-
-
-This patch (of 8):
-
-In the IOMMU Shared Virtual Addressing (SVA) context, the IOMMU hardware
-shares and walks the CPU's page tables.  The x86 architecture maps the
-kernel's virtual address space into the upper portion of every process's
-page table.  Consequently, in an SVA context, the IOMMU hardware can walk
-and cache kernel page table entries.
-
-The Linux kernel currently lacks a notification mechanism for kernel page
-table changes, specifically when page table pages are freed and reused.
-The IOMMU driver is only notified of changes to user virtual address
-mappings.  This can cause the IOMMU's internal caches to retain stale
-entries for kernel VA.
-
-Use-After-Free (UAF) and Write-After-Free (WAF) conditions arise when
-kernel page table pages are freed and later reallocated.  The IOMMU could
-misinterpret the new data as valid page table entries.  The IOMMU might
-then walk into attacker-controlled memory, leading to arbitrary physical
-memory DMA access or privilege escalation.  This is also a
-Write-After-Free issue, as the IOMMU will potentially continue to write
-Accessed and Dirty bits to the freed memory while attempting to walk the
-stale page tables.
-
-Currently, SVA contexts are unprivileged and cannot access kernel
-mappings.  However, the IOMMU will still walk kernel-only page tables all
-the way down to the leaf entries, where it realizes the mapping is for the
-kernel and errors out.  This means the IOMMU still caches these
-intermediate page table entries, making the described vulnerability a real
-concern.
-
-Disable SVA on x86 architecture until the IOMMU can receive notification
-to flush the paging cache before freeing the CPU kernel page table pages.
-
-Link: https://lkml.kernel.org/r/20251022082635.2462433-1-baolu.lu@linux.intel.com
-Link: https://lkml.kernel.org/r/20251022082635.2462433-2-baolu.lu@linux.intel.com
-Fixes: 26b25a2b98e4 ("iommu: Bind process address spaces to devices")
-Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
-Suggested-by: Jason Gunthorpe <jgg@nvidia.com>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Alistair Popple <apopple@nvidia.com>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Borislav Betkov <bp@alien8.de>
-Cc: Dave Hansen <dave.hansen@intel.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jann Horn <jannh@google.com>
-Cc: Jean-Philippe Brucker <jean-philippe@linaro.org>
-Cc: Joerg Roedel <joro@8bytes.org>
-Cc: Kevin Tian <kevin.tian@intel.com>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Michal Hocko <mhocko@kernel.org>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Robin Murohy <robin.murphy@arm.com>
-Cc: Thomas Gleinxer <tglx@linutronix.de>
-Cc: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
-Cc: Vasant Hegde <vasant.hegde@amd.com>
-Cc: Vinicius Costa Gomes <vinicius.gomes@intel.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Will Deacon <will@kernel.org>
-Cc: Yi Lai <yi1.lai@intel.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-
-diff --git a/drivers/iommu/iommu-sva.c b/drivers/iommu/iommu-sva.c
-index 1a51cfd82808..a0442faad952 100644
---- a/drivers/iommu/iommu-sva.c
-+++ b/drivers/iommu/iommu-sva.c
-@@ -77,6 +77,9 @@ struct iommu_sva *iommu_sva_bind_device(struct device *dev, struct mm_struct *mm
- 	if (!group)
- 		return ERR_PTR(-ENODEV);
- 
-+	if (IS_ENABLED(CONFIG_X86))
-+		return ERR_PTR(-EOPNOTSUPP);
-+
- 	mutex_lock(&iommu_sva_lock);
- 
- 	/* Allocate mm->pasid if necessary. */
+Best regards,
+Krzysztof
 
 
