@@ -1,218 +1,115 @@
-Return-Path: <stable+bounces-204839-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204840-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D08FFCF493B
-	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 17:06:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E3E96CF4D40
+	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 17:54:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C5BFE3009133
-	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 16:06:26 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E26923031669
+	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 16:51:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E740314A60;
-	Mon,  5 Jan 2026 15:33:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D1813093CA;
+	Mon,  5 Jan 2026 15:44:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eez2Xcqx"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nE/eBVSN"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B407130EF7E
-	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 15:33:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2029309EE7
+	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 15:44:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767627196; cv=none; b=QuW3ahqFPxuNY66KneZRnppov6NX/e6V4OzSVQIj13F2m4PXDNq/pYpKaKf5mZtPmkYWh0lqyZiKjUFIlPgQ2/2spn5fgF4YAo3yreqT3XNpQ6JdS/64uDog8XFz7G2SCWMQEeNvN1kEFTcW2T6viWauXf56Es2rd9bFdO/NlBo=
+	t=1767627896; cv=none; b=tlFCqGAN/5zQ1BKEEVUbOPHnVkHDSRbcn6CzGrKidZxmoKWhY98wB211hYgo+mVkZNwiiuemIm71/lzKVTZ1hxN1f6njsKU/CO/kd6Eqd8wNP92c3fZ/VfWKZ0OVAMB6e+jCKnOkW+JsutyoXEySzALp4tpnk9e8XLq/DAr6KWQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767627196; c=relaxed/simple;
-	bh=moZyJtisyATthSCbZqwm2UGhsTVhGXtFq3OMJPRVnvI=;
+	s=arc-20240116; t=1767627896; c=relaxed/simple;
+	bh=XQBAVNX3e+mGYGMC5YzptuXh6zUoPTmZc/LlbKa9StM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SL9oipx0MPEVi3leTHYlAhIA95TsbNu5TTG2pq4mL5sUa486uJQLyftwVxa0aHmDnWzjaXYfOj51x8cirZvcRLInlan5Q74WiPSyv5QaTjGjoQ1cFtDH1+9sb73dQGTFg6R5J3ahPonmsWQROa3yKPzFc7pNrZKGzPER4tKg24M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eez2Xcqx; arc=none smtp.client-ip=209.85.208.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-6505d141d02so845119a12.3
-        for <stable@vger.kernel.org>; Mon, 05 Jan 2026 07:33:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767627190; x=1768231990; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1nyTYjqM4L5f+3KbddnkLD/eRy3G1Yb3ej525lsqQIU=;
-        b=eez2Xcqx7uAy0sLIIIuV9ngJSM2bB/JU0oE0eCfq+3fa9obk4TYC4RztG/4Xeu+Sqv
-         zXkJ6djDp4CfeMwO2kQJPJ/3aYzlVIZEwQRwSLlzPy1bazyCjZzoBbQwX+gAwovc7w2L
-         /ZdHdPLPOZBp9uSZzxyQKRwxb6Q8j5SnymglFdyYQnBWI49/D5lrYtgyMx+dkzSTKSbo
-         7LzYd60GmYTzIHafUdOHiWFuFoFt7SYK+Kh3m2zbY+MPrebq9jNKfg9psKlQe1vzJuXR
-         1a1D4hhZ73IqO+jyabtuZeo6Zgs2yxE2fJHi1/cVlUpBYjOtiLP7E3G4Aa3WAeL/lzxa
-         JniQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767627190; x=1768231990;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=1nyTYjqM4L5f+3KbddnkLD/eRy3G1Yb3ej525lsqQIU=;
-        b=pmXgoe++Kf1va2k1eig7bwdV63v9YA7p/7/tiLQeviHC6GPwGqo2xldhQ6h3Tr403D
-         IPpFPzOVfO1EavavY9wu+dX6ltoABAWvTGUYxMb5Ke4zINY+n0TmDxYXKZ+rzhIWbjcl
-         Bi6sQJ5q+KDu4lOpTNI9n8D/AfP9Qi6H1Pg8cF/4n+Ur9tAmoPe1TmyyNqqcvfQPNque
-         jaBwewzQpz/U/jkm2ZPn52GklEJvFLbA+cRccHgdSP5D1PXRy2rAuceHs4WVI4GSR26o
-         umnPM0RXMspfDbPYWuCfxZiDqZeRjAFSMTxkqd9Cz1WQyd9s1Eone/mz3gStCcrDR05t
-         ifDQ==
-X-Gm-Message-State: AOJu0YxYM2oMufh1Q2XrTNQ9yUDkYtQAFBwBByK+U5ADN1bQmP/RZn//
-	WH3jZUWVnuJu7cJoP+39w2d26FE7GjKH4+40F/LUDuWRtbD7+sJRwC9gGsab7g==
-X-Gm-Gg: AY/fxX4K2KlXjLolJgLlV4c5cNgnYW2pTI6aRoAkT7EIRJLkeKEHdZbAX0wEPYnVLHy
-	Gb1wys9vhjJdRWu2noRMC5jDW0h/QiHaHdacXFl1ayD3FH/Cre29Rd0UHrlBa6HtcKmOm3B2hun
-	84VOQyECXNbL5fHVL4hmJkOdh69CmaUztDq+9Tsyb6d2hzccphSEn94HlfvnB6dEgAT6GZwJQa7
-	lJGZBW2dVmy9qE8zmXihNYANjNso4bN6piMkr0Z5GgpoZZlkHqqYhWpMSSceiYbsLN03vmuprxT
-	cugNGpPKLAQig1Wx1Op8D1qZP3EwO63uCNIQIUyUwuGpw3HTE9y6hMyEhf2D1Qv6bG0eJQcAZv0
-	FX/fhQ6UKjJs+ZA9n8G/Kbl049PJoRPb1TAJW3T8JSRREbBEbPlSqw6XPE8rOZsCgKsiWNAO1uS
-	2ILEHang0fTg0i+twWnAgAUejLkkPyoXI=
-X-Google-Smtp-Source: AGHT+IG9eIYHJHxS9p7fSGTKzDNQ99BZzExWforDggxMTrMuCe4bMLgcUU4LmFY7A92yc6SAqNynLg==
-X-Received: by 2002:a05:6402:5206:b0:64d:34a3:4df7 with SMTP id 4fb4d7f45d1cf-64d34a35198mr41823362a12.19.1767627189715;
-        Mon, 05 Jan 2026 07:33:09 -0800 (PST)
-Received: from localhost.localdomain ([2a00:23c4:a758:8a01:5f05:51:bdf:3930])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-65075a26079sm90809a12.1.2026.01.05.07.33.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Jan 2026 07:33:09 -0800 (PST)
-From: Biju <biju.das.au@gmail.com>
-X-Google-Original-From: Biju <biju.das.jz@bp.renesas.com>
+	 MIME-Version:Content-Type; b=Uu7axTkvgLCeWaoDmJFXujlwuCxAHM3YSvTHV0XjZDEMCb/AyXWnO4kyanWQvGO6pM36GLQSN5S5YQbRuJ5iCh7UjJ0YyGJw2JhVekeE8geCmRr3oUDY6Ak00Ozb+570Q0tYNW5KtqZgZUvTy8xAgSnvg/ZJfttiIbeqmfuCtZ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nE/eBVSN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EACEEC116D0;
+	Mon,  5 Jan 2026 15:44:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767627895;
+	bh=XQBAVNX3e+mGYGMC5YzptuXh6zUoPTmZc/LlbKa9StM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=nE/eBVSN8zWuo7SSXD3awCCt/lXn+pJ4FVxh7wdUwDBuM6tat93856TjWJUYH24u6
+	 UGOr1zbk/n10lB1b+fAln/byDkeoYNYHN9IJe8WFr0JpWaxvqxx46SRjMxRLSERSWY
+	 DBXDYATQbsj/lGczcdSdMJkGAym2B+yezR9WSDdSAP4KMfBIxT6mvo4cI1IEZ7AW+y
+	 jr+h2fz09NQQglj8SPlg197aeANbtWhiGiJJBJ8tRd+N4l7fcDym3enX95noP4BHbx
+	 9uLgfftWZ2A4+5VIlEoZRqu1wfPlDUV2YPZO4EXERI5rA1AWdtAewCwz8WnLMgAyax
+	 KHZFtfU34lQnw==
+From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Biju Das <biju.das.jz@bp.renesas.com>,
-	stable@kernel.org,
-	Tony Tang <tony.tang.ks@renesas.com>,
-	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.12.y] ASoC: renesas: rz-ssi: Fix channel swap issue in full duplex mode
-Date: Mon,  5 Jan 2026 15:33:04 +0000
-Message-ID: <20260105153304.252300-1-biju.das.jz@bp.renesas.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <2026010507-corned-slain-8ffe@gregkh>
-References: <2026010507-corned-slain-8ffe@gregkh>
+Cc: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Joerg Roedel <jroedel@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1.y 1/5] iommu/arm-smmu: Drop if with an always false condition
+Date: Mon,  5 Jan 2026 10:44:49 -0500
+Message-ID: <20260105154453.2644685-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2026010519-padlock-footman-35a7@gregkh>
+References: <2026010519-padlock-footman-35a7@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Biju Das <biju.das.jz@bp.renesas.com>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-[ Upstream commit 52a525011cb8e293799a085436f026f2958403f9 ]
+[ Upstream commit a2972cb89935160bfe515b15d28a77694723ac06 ]
 
-The full duplex audio starts with half duplex mode and then switch to
-full duplex mode (another FIFO reset) when both playback/capture
-streams available leading to random audio left/right channel swap
-issue. Fix this channel swap issue by detecting the full duplex
-condition by populating struct dup variable in startup() callback
-and synchronize starting both the play and capture at the same time
-in rz_ssi_start().
+The remove and shutdown callback are only called after probe completed
+successfully. In this case platform_set_drvdata() was called with a
+non-NULL argument and so smmu is never NULL. Other functions in this
+driver also don't check for smmu being non-NULL before using it.
 
-Cc: stable@kernel.org
-Fixes: 4f8cd05a4305 ("ASoC: sh: rz-ssi: Add full duplex support")
-Co-developed-by: Tony Tang <tony.tang.ks@renesas.com>
-Signed-off-by: Tony Tang <tony.tang.ks@renesas.com>
-Reviewed-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
-Link: https://patch.msgid.link/20251114073709.4376-2-biju.das.jz@bp.renesas.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Also note that returning an error code from a remove callback doesn't
+result in the device staying bound. It's still removed and devm allocated
+resources are freed (among others *smmu and the register mapping). So
+after an early exit to iommu device stayed around and using it probably
+oopses.
+
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Reviewed-by: Robin Murphy <robin.murphy@arm.com>
+Link: https://lore.kernel.org/r/20230321084125.337021-2-u.kleine-koenig@pengutronix.de
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Stable-dep-of: 6a3908ce56e6 ("iommu/qcom: fix device leak on of_xlate()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sh/rz-ssi.c | 51 ++++++++++++++++++++++++++++++++++++-------
- 1 file changed, 43 insertions(+), 8 deletions(-)
+ drivers/iommu/arm/arm-smmu/arm-smmu.c | 6 ------
+ 1 file changed, 6 deletions(-)
 
-diff --git a/sound/soc/sh/rz-ssi.c b/sound/soc/sh/rz-ssi.c
-index 4f483bfa584f..0076aa729fad 100644
---- a/sound/soc/sh/rz-ssi.c
-+++ b/sound/soc/sh/rz-ssi.c
-@@ -132,6 +132,12 @@ struct rz_ssi_priv {
- 	bool bckp_rise;	/* Bit clock polarity (SSICR.BCKP) */
- 	bool dma_rt;
+diff --git a/drivers/iommu/arm/arm-smmu/arm-smmu.c b/drivers/iommu/arm/arm-smmu/arm-smmu.c
+index 294120049750..fcd2cfd12e7f 100644
+--- a/drivers/iommu/arm/arm-smmu/arm-smmu.c
++++ b/drivers/iommu/arm/arm-smmu/arm-smmu.c
+@@ -2209,9 +2209,6 @@ static void arm_smmu_device_shutdown(struct platform_device *pdev)
+ {
+ 	struct arm_smmu_device *smmu = platform_get_drvdata(pdev);
  
-+	struct {
-+		bool tx_active;
-+		bool rx_active;
-+		bool one_stream_triggered;
-+	} dup;
-+
- 	/* Full duplex communication support */
- 	struct {
- 		unsigned int rate;
-@@ -352,13 +358,12 @@ static int rz_ssi_start(struct rz_ssi_priv *ssi, struct rz_ssi_stream *strm)
- 	bool is_full_duplex;
- 	u32 ssicr, ssifcr;
- 
--	is_full_duplex = rz_ssi_is_stream_running(&ssi->playback) ||
--		rz_ssi_is_stream_running(&ssi->capture);
-+	is_full_duplex = ssi->dup.tx_active && ssi->dup.rx_active;
- 	ssicr = rz_ssi_reg_readl(ssi, SSICR);
- 	ssifcr = rz_ssi_reg_readl(ssi, SSIFCR);
- 	if (!is_full_duplex) {
- 		ssifcr &= ~0xF;
--	} else {
-+	} else if (ssi->dup.one_stream_triggered) {
- 		rz_ssi_reg_mask_setl(ssi, SSICR, SSICR_TEN | SSICR_REN, 0);
- 		rz_ssi_set_idle(ssi);
- 		ssifcr &= ~SSIFCR_FIFO_RST;
-@@ -394,12 +399,16 @@ static int rz_ssi_start(struct rz_ssi_priv *ssi, struct rz_ssi_stream *strm)
- 			      SSISR_RUIRQ), 0);
- 
- 	strm->running = 1;
--	if (is_full_duplex)
--		ssicr |= SSICR_TEN | SSICR_REN;
--	else
-+	if (!is_full_duplex) {
- 		ssicr |= is_play ? SSICR_TEN : SSICR_REN;
+-	if (!smmu)
+-		return;
 -
--	rz_ssi_reg_writel(ssi, SSICR, ssicr);
-+		rz_ssi_reg_writel(ssi, SSICR, ssicr);
-+	} else if (ssi->dup.one_stream_triggered) {
-+		ssicr |= SSICR_TEN | SSICR_REN;
-+		rz_ssi_reg_writel(ssi, SSICR, ssicr);
-+		ssi->dup.one_stream_triggered = false;
-+	} else {
-+		ssi->dup.one_stream_triggered = true;
-+	}
+ 	if (!bitmap_empty(smmu->context_map, ARM_SMMU_MAX_CBS))
+ 		dev_notice(&pdev->dev, "disabling translation\n");
  
- 	return 0;
- }
-@@ -897,6 +906,30 @@ static int rz_ssi_dai_set_fmt(struct snd_soc_dai *dai, unsigned int fmt)
- 	return 0;
- }
+@@ -2232,9 +2229,6 @@ static int arm_smmu_device_remove(struct platform_device *pdev)
+ {
+ 	struct arm_smmu_device *smmu = platform_get_drvdata(pdev);
  
-+static int rz_ssi_startup(struct snd_pcm_substream *substream,
-+			  struct snd_soc_dai *dai)
-+{
-+	struct rz_ssi_priv *ssi = snd_soc_dai_get_drvdata(dai);
-+
-+	if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK)
-+		ssi->dup.tx_active = true;
-+	else
-+		ssi->dup.rx_active = true;
-+
-+	return 0;
-+}
-+
-+static void rz_ssi_shutdown(struct snd_pcm_substream *substream,
-+			    struct snd_soc_dai *dai)
-+{
-+	struct rz_ssi_priv *ssi = snd_soc_dai_get_drvdata(dai);
-+
-+	if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK)
-+		ssi->dup.tx_active = false;
-+	else
-+		ssi->dup.rx_active = false;
-+}
-+
- static bool rz_ssi_is_valid_hw_params(struct rz_ssi_priv *ssi, unsigned int rate,
- 				      unsigned int channels,
- 				      unsigned int sample_width,
-@@ -962,6 +995,8 @@ static int rz_ssi_dai_hw_params(struct snd_pcm_substream *substream,
- }
+-	if (!smmu)
+-		return -ENODEV;
+-
+ 	iommu_device_unregister(&smmu->iommu);
+ 	iommu_device_sysfs_remove(&smmu->iommu);
  
- static const struct snd_soc_dai_ops rz_ssi_dai_ops = {
-+	.startup	= rz_ssi_startup,
-+	.shutdown	= rz_ssi_shutdown,
- 	.trigger	= rz_ssi_dai_trigger,
- 	.set_fmt	= rz_ssi_dai_set_fmt,
- 	.hw_params	= rz_ssi_dai_hw_params,
 -- 
-2.43.0
+2.51.0
 
 
