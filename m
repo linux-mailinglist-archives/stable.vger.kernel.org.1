@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-204922-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204923-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0071ECF58C3
-	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 21:40:44 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9523ECF5941
+	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 21:54:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F40AF302D3B9
-	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 20:40:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0C1D830734EF
+	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 20:54:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45C9827F756;
-	Mon,  5 Jan 2026 20:40:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE7D3280A52;
+	Mon,  5 Jan 2026 20:54:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tz5NhrQM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Sfgcwi8Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0595513FEE
-	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 20:40:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FA8E207A32
+	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 20:54:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767645641; cv=none; b=mQ/XrCej03mtUXJPFOOSRP3lukEu7HCcNHDcHNLyjU8b6rIXuBJ6okv05RQiGfDN+caTiKxT5Lsa7DmpcYTuCaGKXYmBZIZkA5ZGwXiSK5TU9DkGjj4nreh5EC4j390kKyGGXpuifNg6DAesuiLbeJosfpm57Dt5+W00Ri9DaDU=
+	t=1767646469; cv=none; b=tou5aMYnZu0b3R5um5LHgGFnIIBrL6egQ6e10NF84ZVDPmyw/gU6no7Y8z4Vr1/00YLWpodCy8mbkHkhEZlmOw4JQixIx6GX/dE0y95Af/Ei14tIpqAgMCPtNmFcklXPw5Ti5mlASRV63ccXNR+d3F+AfM0nVg2JySWrm7EDEnA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767645641; c=relaxed/simple;
-	bh=G3W3qj/RFkmH0HNF1AQ2PRQwXnZu1MEly9kZ21rnPSM=;
+	s=arc-20240116; t=1767646469; c=relaxed/simple;
+	bh=RkbwfKy0+fiKqh28GDPVoHtIQf6dL/nOS4+sZS/E1A4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ecVs3xux8By9eLSvKtmXKZCSknLLEwdmJfIAcfwLyGc7IjPcB3Yu8rGF7icwvPabEI6WgAs17ItO5kWsMw8EiBCoDXj6VxFE5kMjmg8onaI7iptkvmUTXEL7sBgsU1sIHjQC4DR998TX1alD32GU/yWSsUyr9Zy8QIFPD52leeI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tz5NhrQM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BD02C116D0;
-	Mon,  5 Jan 2026 20:40:40 +0000 (UTC)
+	 MIME-Version; b=hB2ShT8jDJV4yzGaQ/5uhd79QXFJtYga9s+tifwkwrDEolT68Y0DfT3miCTnmjMplw76kBFmY0a7a2g45/ILJva8y/KJ76QpuVE/jkSvakJjb5Rz6cmBxVsoiVUI4ROzXYHhIevLdz1/6DtFu3WNitk3t7/Y+pKB20S7FSoCkn0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Sfgcwi8Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98A23C116D0;
+	Mon,  5 Jan 2026 20:54:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767645640;
-	bh=G3W3qj/RFkmH0HNF1AQ2PRQwXnZu1MEly9kZ21rnPSM=;
+	s=k20201202; t=1767646469;
+	bh=RkbwfKy0+fiKqh28GDPVoHtIQf6dL/nOS4+sZS/E1A4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tz5NhrQMQ7hpH2Czhq72OGrjNgGsABSSwlI3TBoqeTP+/MVP8VvIBymGvb0bH2XuX
-	 BSrlGXs3R6+09Qta6Fm4gv5iQMFJluJaMPDD9U1wifUQHRcrT0ItyJNZx337LltSY6
-	 IM48GnMwLITx3hb+oophQn+8xW4eBgkSObacussjwNcZ2zNBz+U1XUl7ls/xRZ4v9k
-	 NQb29pbhbZynShklBKmh1RmKDDaoshNV6jAov1jldRG7cFubJ1NTgvG+B6/8i21zo6
-	 m4qaNNK8/Ss/AeC5NnJvSQc7krvB5k1fwX8J4QFnYfEKaXe2x/P8I97UsA4bcttj/W
-	 syIn6rvBXWjag==
+	b=Sfgcwi8YxjCZezR4NVXKOby+stRY9oCEe1MNikAKSAIyL13UYJ59bhyzm5qP8psYT
+	 Y6skdWNTrrhGGCVlPYVsImhK94R5OUFNsnJ4henfuVe1yKHKoZpjRMWRuifAy0sbLw
+	 8dIrW+j3yWsVbXxm3dWp96hzXwcJqZGkHg8tKEHzCTtPzSnRlOt76lvA8sYuaeNq7f
+	 o9tvwUez0Y7AgY10vN/TPKsRD6nb12pq9Ent8SjHTGjl5sr32qy+6YBi6YlYevSNxx
+	 SzBGqGZ2+7LQROstr7tM2t21Aa7qRbYw12EtSOAtpLqItm2H8Fv5Ltk67Hvatet6vE
+	 bFfJ6ckkD1J7A==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Marek Szyprowski <m.szyprowski@samsung.com>,
-	Sylwester Nawrocki <s.nawrocki@samsung.com>,
+Cc: Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+	Benjamin Gaignard <benjamin.gaignard@collabora.com>,
 	Hans Verkuil <hverkuil+cisco@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y] media: samsung: exynos4-is: fix potential ABBA deadlock on init
-Date: Mon,  5 Jan 2026 15:40:38 -0500
-Message-ID: <20260105204038.2787172-1-sashal@kernel.org>
+Subject: [PATCH 5.15.y] media: verisilicon: Protect G2 HEVC decoder against invalid DPB index
+Date: Mon,  5 Jan 2026 15:54:26 -0500
+Message-ID: <20260105205426.2793242-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026010542-dastardly-curfew-2320@gregkh>
-References: <2026010542-dastardly-curfew-2320@gregkh>
+In-Reply-To: <2026010511-molasses-woven-927b@gregkh>
+References: <2026010511-molasses-woven-927b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -59,46 +59,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Marek Szyprowski <m.szyprowski@samsung.com>
+From: Nicolas Dufresne <nicolas.dufresne@collabora.com>
 
-[ Upstream commit 17dc8ccd6dd5ffe30aa9b0d36e2af1389344ce2b ]
+[ Upstream commit 47825b1646a6a9eca0f90baa3d4f98947c2add96 ]
 
-v4l2_device_register_subdev_nodes() must called without taking
-media_dev->graph_mutex to avoid potential AB-BA deadlock on further
-subdevice driver initialization.
+Fix the Hantro G2 HEVC decoder so that we use DPB index 0 whenever a
+ninvalid index is received from user space. This protects the hardware
+from doing faulty memory access which then leads to bus errors.
 
-Fixes: fa91f1056f17 ("[media] exynos4-is: Add support for asynchronous subdevices registration")
+To be noted that when a reference is missing, userspace such as GStreamer
+passes an invalid DPB index of 255. This issue was found by seeking to a
+CRA picture using GStreamer. The framework is currently missing the code
+to skip over RASL pictures placed after the CRA. This situation can also
+occur while doing live streaming over lossy transport.
+
+Fixes: cb5dd5a0fa518 ("media: hantro: Introduce G2/HEVC decoder")
 Cc: stable@vger.kernel.org
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Acked-by: Sylwester Nawrocki <s.nawrocki@samsung.com>
+Reviewed-by: Benjamin Gaignard <benjamin.gaignard@collabora.com>
+Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
 Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/exynos4-is/media-dev.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/staging/media/hantro/hantro_g2_hevc_dec.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/media/platform/exynos4-is/media-dev.c b/drivers/media/platform/exynos4-is/media-dev.c
-index bd37011fb671..2ae2a0aada0d 100644
---- a/drivers/media/platform/exynos4-is/media-dev.c
-+++ b/drivers/media/platform/exynos4-is/media-dev.c
-@@ -1409,12 +1409,14 @@ static int subdev_notifier_complete(struct v4l2_async_notifier *notifier)
- 	mutex_lock(&fmd->media_dev.graph_mutex);
+diff --git a/drivers/staging/media/hantro/hantro_g2_hevc_dec.c b/drivers/staging/media/hantro/hantro_g2_hevc_dec.c
+index bcdfa359de7f..618029926a21 100644
+--- a/drivers/staging/media/hantro/hantro_g2_hevc_dec.c
++++ b/drivers/staging/media/hantro/hantro_g2_hevc_dec.c
+@@ -264,6 +264,15 @@ static void set_params(struct hantro_ctx *ctx)
+ 	hantro_reg_write(vpu, &g2_apf_threshold, 8);
+ }
  
- 	ret = fimc_md_create_links(fmd);
--	if (ret < 0)
--		goto unlock;
-+	if (ret < 0) {
-+		mutex_unlock(&fmd->media_dev.graph_mutex);
-+		return ret;
-+	}
- 
--	ret = v4l2_device_register_subdev_nodes(&fmd->v4l2_dev);
--unlock:
- 	mutex_unlock(&fmd->media_dev.graph_mutex);
++static u32 get_dpb_index(const struct v4l2_ctrl_hevc_decode_params *decode_params,
++			 const u32 index)
++{
++	if (index > decode_params->num_active_dpb_entries)
++		return 0;
 +
-+	ret = v4l2_device_register_subdev_nodes(&fmd->v4l2_dev);
- 	if (ret < 0)
- 		return ret;
++	return index;
++}
++
+ static void set_ref_pic_list(struct hantro_ctx *ctx)
+ {
+ 	const struct hantro_hevc_dec_ctrls *ctrls = &ctx->hevc_dec.ctrls;
+@@ -336,8 +345,10 @@ static void set_ref_pic_list(struct hantro_ctx *ctx)
+ 		list1[j++] = list1[i++];
+ 
+ 	for (i = 0; i < V4L2_HEVC_DPB_ENTRIES_NUM_MAX; i++) {
+-		hantro_reg_write(vpu, &ref_pic_regs0[i], list0[i]);
+-		hantro_reg_write(vpu, &ref_pic_regs1[i], list1[i]);
++		hantro_reg_write(vpu, &ref_pic_regs0[i],
++				 get_dpb_index(decode_params, list0[i]));
++		hantro_reg_write(vpu, &ref_pic_regs1[i],
++				 get_dpb_index(decode_params, list1[i]));
+ 	}
+ }
  
 -- 
 2.51.0
