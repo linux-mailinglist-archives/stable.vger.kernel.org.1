@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-204672-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204673-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6D1DCF31EF
-	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 12:03:09 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A06ACF3210
+	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 12:04:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1D445301B11A
-	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 11:02:07 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0FDA3300BA18
+	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 11:02:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32FAF27A907;
-	Mon,  5 Jan 2026 11:01:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3ABA242D88;
+	Mon,  5 Jan 2026 11:02:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UE4RtWrc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EjqFIUCf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7F9222B5A5
-	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 11:01:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 849584C98
+	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 11:02:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767610900; cv=none; b=Y8wc6Ff+zFdy05w+iBKDizurt2exOvI31rRUCDsb5ee3DqvhxcOYmcp7mXc8yQLB0GfANM/y46h9I/AoW5Gw5oA1qOZzbSmuFf4s1387z2S47XnEuVQ+qaRAB9bPswBNF9egvlLK9m0L54IfiG7p2AWMM51t5wikCCeOwTNyQJU=
+	t=1767610971; cv=none; b=o02MVZBTIvsqwqvkuCX+1bZ3JmSlgwvEYNbqSumlgJXwfEsx4DyBTLS+4qRfJVIuL9K8/czQaXehexn6iDoVldAQMmVBjxDAD//jJ6e6Ia9jIX+MyP9pcQmA/F0RqD3D1JOd75/52xUDKL7hHPUdoGdNL9YcSi6zMQghXkGYEMo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767610900; c=relaxed/simple;
-	bh=BeR+vBDqah0G62oDYYFCDAIXuAlGMpczB/S16m9e8u8=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=LZ+UkgGfOC83hV8GZgc6oJR1DBI4IsKSc+r9onn88utRb3oNwnhkWEQfWWZsRtI52sp6/o0HvOFr64v2Naz4gg3Ck3dNk1J82VzJgd6RPbeKfxJMstYIhPKurgbiFadFVd2AER4IM1hW2o/bUE0SrqnAqe7cT6bHYecwYY9WEbo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UE4RtWrc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D3B4C116D0;
-	Mon,  5 Jan 2026 11:01:38 +0000 (UTC)
+	s=arc-20240116; t=1767610971; c=relaxed/simple;
+	bh=Zsxkb8egsmCT1JRCDIly077sQZQ4nIb+3FphM1njohc=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=fShxq9gndeSXSNAbiOH7qcPh14erdQu5qGn3nYtvpNZKINH/HZuhB1uGwUdivWkFj8ZoGPn0RwHGneR18iD8igjSdLnwIZiXwAEMy4qkHjQBgfJZa9QjYDFay2TWik2Ns2yhsYtXCNIfoYLxv8Dx2YcoWVSgmducCZsFkN6XbLw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EjqFIUCf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4579C116D0;
+	Mon,  5 Jan 2026 11:02:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767610899;
-	bh=BeR+vBDqah0G62oDYYFCDAIXuAlGMpczB/S16m9e8u8=;
+	s=korg; t=1767610970;
+	bh=Zsxkb8egsmCT1JRCDIly077sQZQ4nIb+3FphM1njohc=;
 	h=Subject:To:Cc:From:Date:From;
-	b=UE4RtWrcW/V2bODw4ig8DDzw66h2i8aco+kkcnKaD513kiclqbFcCX9oXC/GAYVNz
-	 +CMyQl1bRzKsgiPKkcVJuDzr3nUwf4tFbgWC0D2KZI3XhnbMo8r3YuV+puDbw3GDwi
-	 Mf1rZ1J3Au/HQVJ2w8GIyCyN6J43t/lZ1hrGVykA=
-Subject: FAILED: patch "[PATCH] media: mediatek: vcodec: Fix a reference leak in" failed to apply to 5.10-stable tree
-To: haoxiang_li2024@163.com,angelogioacchino.delregno@collabora.com,hverkuil+cisco@kernel.org,nicolas.dufresne@collabora.com,tzungbi@kernel.org
+	b=EjqFIUCfmEhPkjd2WjglBBzbr+jhrqXDsN511UB9ThEEY3oEEiBE9AnhDnqXdJWh4
+	 LoMNE4Px4JQ90/WTWfT8PtSIYJx1jTPtTqYUVbE/yAbwZGenKqXxF1z0fMef66Yzbp
+	 pL8g5tMJosuXNHYTmout3/s3ok3DxFgvQQdLw7CI=
+Subject: FAILED: patch "[PATCH] mm/damon/tests/vaddr-kunit: handle alloc failures on" failed to apply to 6.6-stable tree
+To: sj@kernel.org,akpm@linux-foundation.org,brendan.higgins@linux.dev,davidgow@google.com,stable@vger.kernel.org,wangkefeng.wang@huawei.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 05 Jan 2026 12:01:25 +0100
-Message-ID: <2026010525-dismiss-bootleg-46f2@gregkh>
+Date: Mon, 05 Jan 2026 12:02:47 +0100
+Message-ID: <2026010547-stays-strewn-1e8b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -51,19 +51,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x cdd0f118ef87db8a664fb5ea366fd1766d2df1cd
+git cherry-pick -x 2b22d0fcc6320ba29b2122434c1d2f0785fb0a25
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026010525-dismiss-bootleg-46f2@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026010547-stays-strewn-1e8b@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -75,42 +75,46 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From cdd0f118ef87db8a664fb5ea366fd1766d2df1cd Mon Sep 17 00:00:00 2001
-From: Haoxiang Li <haoxiang_li2024@163.com>
-Date: Mon, 15 Sep 2025 20:09:38 +0800
-Subject: [PATCH] media: mediatek: vcodec: Fix a reference leak in
- mtk_vcodec_fw_vpu_init()
+From 2b22d0fcc6320ba29b2122434c1d2f0785fb0a25 Mon Sep 17 00:00:00 2001
+From: SeongJae Park <sj@kernel.org>
+Date: Sat, 1 Nov 2025 11:20:11 -0700
+Subject: [PATCH] mm/damon/tests/vaddr-kunit: handle alloc failures on
+ damon_do_test_apply_three_regions()
 
-vpu_get_plat_device() increases the reference count of the returned
-platform device. However, when devm_kzalloc() fails, the reference
-is not released, causing a reference leak.
+damon_do_test_apply_three_regions() is assuming all dynamic memory
+allocation in it will succeed.  Those are indeed likely in the real use
+cases since those allocations are too small to fail, but theoretically
+those could fail.  In the case, inappropriate memory access can happen.
+Fix it by appropriately cleanup pre-allocated memory and skip the
+execution of the remaining tests in the failure cases.
 
-Fix this by calling put_device() on fw_pdev->dev before returning
-on the error path.
+Link: https://lkml.kernel.org/r/20251101182021.74868-18-sj@kernel.org
+Fixes: 17ccae8bb5c9 ("mm/damon: add kunit tests")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: Brendan Higgins <brendan.higgins@linux.dev>
+Cc: David Gow <davidgow@google.com>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: <stable@vger.kernel.org>	[5.15+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 
-Fixes: e25a89f743b1 ("media: mtk-vcodec: potential dereference of null pointer")
-Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: Tzung-Bi Shih <tzungbi@kernel.org>
-Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
-
-diff --git a/drivers/media/platform/mediatek/vcodec/common/mtk_vcodec_fw_vpu.c b/drivers/media/platform/mediatek/vcodec/common/mtk_vcodec_fw_vpu.c
-index 223fb2294894..3632037f78f5 100644
---- a/drivers/media/platform/mediatek/vcodec/common/mtk_vcodec_fw_vpu.c
-+++ b/drivers/media/platform/mediatek/vcodec/common/mtk_vcodec_fw_vpu.c
-@@ -119,8 +119,10 @@ struct mtk_vcodec_fw *mtk_vcodec_fw_vpu_init(void *priv, enum mtk_vcodec_fw_use
- 		vpu_wdt_reg_handler(fw_pdev, mtk_vcodec_vpu_reset_enc_handler, priv, rst_id);
+diff --git a/mm/damon/tests/vaddr-kunit.h b/mm/damon/tests/vaddr-kunit.h
+index fce38dd53cf8..484223f19545 100644
+--- a/mm/damon/tests/vaddr-kunit.h
++++ b/mm/damon/tests/vaddr-kunit.h
+@@ -136,8 +136,14 @@ static void damon_do_test_apply_three_regions(struct kunit *test,
+ 	int i;
  
- 	fw = devm_kzalloc(&plat_dev->dev, sizeof(*fw), GFP_KERNEL);
--	if (!fw)
-+	if (!fw) {
-+		put_device(&fw_pdev->dev);
- 		return ERR_PTR(-ENOMEM);
-+	}
- 	fw->type = VPU;
- 	fw->ops = &mtk_vcodec_vpu_msg;
- 	fw->pdev = fw_pdev;
+ 	t = damon_new_target();
++	if (!t)
++		kunit_skip(test, "target alloc fail");
+ 	for (i = 0; i < nr_regions / 2; i++) {
+ 		r = damon_new_region(regions[i * 2], regions[i * 2 + 1]);
++		if (!r) {
++			damon_destroy_target(t, NULL);
++			kunit_skip(test, "region alloc fail");
++		}
+ 		damon_add_region(r, t);
+ 	}
+ 
 
 
