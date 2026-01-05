@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-204729-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204731-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64675CF356E
-	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 12:48:22 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CBFECF358C
+	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 12:49:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C9D79300530F
-	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 11:48:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1C6A230274CB
+	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 11:48:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C46F30EF6F;
-	Mon,  5 Jan 2026 11:48:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E056F3191DE;
+	Mon,  5 Jan 2026 11:48:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pnrautLp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YkLG5S/b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D2912D9EFC
-	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 11:48:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A17963191B0
+	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 11:48:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767613698; cv=none; b=trkRQTqriohLRwcyNm3QPdluJfDiBKxXwoCuUVZQdWVIvTaHab8i5/QmnNIsmrNXBC7VFyk+Q/w+n9QdwtUswACoVBDaZX+GArXEnJsh/Vg6pV7cmzG/Os/iZo6jdqaajuP+YBMtKUOv6lhYJoA8zMwrT0EWZpPbun/pF93+C+g=
+	t=1767613704; cv=none; b=rr8cAeBk7fNqE583/aUXlvLmMKnBYST/RrHBdDGsnYEKpfvhywdFea2hWMlu2/hmks28W9XcTtkM7mjdNc7I+sEW3uKQjr9VqY9Zs4MP6Pzn2W09cNvjsY0BkR3mAEXkPxfqrbHnqNz1v6x/xHwd5lcF3cnjd68Aq/XcrTDAGFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767613698; c=relaxed/simple;
-	bh=RNTb+Wn7pPtqldE2IiTmVzJz78xwxZaadAg9kejLZbA=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=eaEYXpkohbX5UTLFISrDjjfT3Peren5HSuCv5iTlBV6kzyfAUjKPLapNdzXr3Q+b4NHvVksPG/0bjXCno9W6f74rF8/Ju33leUMqibB7JzsQ41tq+XrL1N+o+Nl08YNe67B+jA0H+Y4w8Qqd0jMGIZ+pUWxMo6o/eCqgIUWjFxY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pnrautLp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5816FC116D0;
-	Mon,  5 Jan 2026 11:48:17 +0000 (UTC)
+	s=arc-20240116; t=1767613704; c=relaxed/simple;
+	bh=kuuC146pzTI/C7pKeCu1YxbgnVd1mYG7vY9skUDqVFU=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=GKL9PYtS8JIoxp+SqFl8Ek/PYKZYNhLJxKaakVhSoUCpJG0GEuDWEOD1cwaCBxS09T+bWXWmyJLW/O+kBqGhqRDTKe+mkkXPd1Vj8qgSJNFmFkPMhAph7WzY3TBTsHuxV9qiCMAl15SjCKGknkvgAxPK0qxlnkNSz0bzwVkzH7w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YkLG5S/b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFE19C116D0;
+	Mon,  5 Jan 2026 11:48:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767613697;
-	bh=RNTb+Wn7pPtqldE2IiTmVzJz78xwxZaadAg9kejLZbA=;
+	s=korg; t=1767613704;
+	bh=kuuC146pzTI/C7pKeCu1YxbgnVd1mYG7vY9skUDqVFU=;
 	h=Subject:To:Cc:From:Date:From;
-	b=pnrautLpyWuXy5mxH+MnrYomFJYSSqXS6URjOK34NS5j2G1b4ZJ3OHBkKwPBGRKhn
-	 9VvFBSvtr+sdhb+ENmETGWCqSxt7OKMQMrVKUDCLPRPv8iBWrWxSOrCU7iranuaSnD
-	 JVB94OypUqbJ6qNcXGQTxUHDc46I2xO8YfUFUyTA=
-Subject: FAILED: patch "[PATCH] vfio/pci: Disable qword access to the PCI ROM bar" failed to apply to 6.1-stable tree
+	b=YkLG5S/bvsSBB8mqja5l14skspY+Fn37+j2sOLb6eqFHOQ/xBfO88+D473Pmpz1Q+
+	 AVmpxm3puF0qfnCOKGuzx1p9MlYts86wpoguyfhfYSqg6rIBVQ5/5p2lIqEkA79twk
+	 0YXKk5rRj3ws5D0EDyXbKPN7TLfjb/VVOVTOHqu0=
+Subject: FAILED: patch "[PATCH] vfio/pci: Disable qword access to the PCI ROM bar" failed to apply to 5.15-stable tree
 To: kevin.tian@intel.com,alex@shazbot.org,farrah.chen@intel.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 05 Jan 2026 12:48:01 +0100
-Message-ID: <2026010501-punctured-matchbook-1ff4@gregkh>
+Date: Mon, 05 Jan 2026 12:48:02 +0100
+Message-ID: <2026010502-immersion-jogging-5b58@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -51,19 +51,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x dc85a46928c41423ad89869baf05a589e2975575
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026010501-punctured-matchbook-1ff4@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026010502-immersion-jogging-5b58@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
