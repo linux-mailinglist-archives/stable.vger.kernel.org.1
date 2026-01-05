@@ -1,182 +1,213 @@
-Return-Path: <stable+bounces-204879-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204880-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76FB2CF51A5
-	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 18:55:24 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47CF7CF51D8
+	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 18:58:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CFFD430E905E
-	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 17:51:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4514931489AC
+	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 17:52:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64349346A05;
-	Mon,  5 Jan 2026 17:51:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6D59314B87;
+	Mon,  5 Jan 2026 17:52:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="GiM/WJV4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YqLzS5Zr"
 X-Original-To: stable@vger.kernel.org
-Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC434346784
-	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 17:50:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9645E29D29F
+	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 17:52:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767635462; cv=none; b=ucNn90/Wrs1+ECtFUpfNhX3qhrb208bPWYX6KfidmVQw84Nl3G1AOY5c7AAwGioN2Hfug1b0+QPy4MvuBM1W5GLZCh8OlqRJUbvtbjzW5zNN2ZpCRjOyrsshje7Pflpf1Up3m6vGE4bcHJ2/tvYwLYWf7/2kIVqqEvV2UA4j2WQ=
+	t=1767635539; cv=none; b=p+NvmrGhmRbjjTidhVmXyeglRk5+coCdBDidghTRAy08rhtlDkzy5lnQTQYmazrn6WmV6ernUrgsWgJzXOHNAKeuZ/USpNTnIPqliXxtOU4x38kp+1R3LinlgonsD80k/sWlXp7DzMmmRvGI4nA/Y2TCdWiOCzXb1WlumoYdP6c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767635462; c=relaxed/simple;
-	bh=9p1fiHwOGBf+CAAbiRfNz3uGPtd19UyeeyZrPnVWdbc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
-	 Content-Type:References; b=Fsul7JOyWJMl6FE//FlTujhi9b7Xp7q5URIqXaPT3mw0h1JbwG3p0F7fuOJ3zDPnn7NqzrOTwRVIxklkoDobzEEo2x9BbwxYYguVvScblS85KR9yJjVC9Zc5iyc+3xbgKVxCgBKOgU5v7fdxa0JoInmqFmzlgPGeP735BccyhLg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=GiM/WJV4; arc=none smtp.client-ip=210.118.77.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
-Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
-	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20260105175058euoutp02da7c95ba0b344b85cc15ebc046c71255~H5xVzR0a00773907739euoutp02K
-	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 17:50:58 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20260105175058euoutp02da7c95ba0b344b85cc15ebc046c71255~H5xVzR0a00773907739euoutp02K
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1767635458;
-	bh=UIl6SHJhWkfN0/1FLxWUZ38nXwKxplUrKF/eFOo1uVI=;
-	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
-	b=GiM/WJV48jrskVobEyKgi0zMxPnakTZILgr9xs5nLcJUMteqWX+UA4H5dn+8tQBfG
-	 eEjBFYSdZHxP7pXQLzHJadNpHOS1agFolQJbMwygokqAGAwGse0W4jjI5xCvrsJ2u5
-	 x9zG/eMfACdNYs9467DjD7I5LUrKcj9SYhQYX+LY=
-Received: from eusmtip2.samsung.com (unknown [203.254.199.222]) by
-	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
-	20260105175057eucas1p274610bd996f1599b43d386f0afdb0fb6~H5xVeVD8s2877028770eucas1p2i;
-	Mon,  5 Jan 2026 17:50:57 +0000 (GMT)
-Received: from [106.210.134.192] (unknown [106.210.134.192]) by
-	eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
-	20260105175055eusmtip2bd9960cd4f35babf9088305da14604af~H5xTTw38e1923619236eusmtip2N;
-	Mon,  5 Jan 2026 17:50:55 +0000 (GMT)
-Message-ID: <d035fc29-3b03-4cd6-b8ec-001f93540bc6@samsung.com>
-Date: Mon, 5 Jan 2026 18:50:53 +0100
+	s=arc-20240116; t=1767635539; c=relaxed/simple;
+	bh=4yiiXWHQhLUumIE957yTSZb3rAcd4FF3mFJnJOK/WJA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=JpJtOIweLWdhrNFmlYPmfz5freiRTGoTwKiF+mYilVQKFe1rtbuTvttG+e9wIeRWjVn4ucnRSMpE6fqkpTQi67Ax2TTwJeY3QEdjImym0HCA/khgnlHaH2IHmwxGwNbl6yToOM7rZ1Oc9CM7eSLgq/mxmfeGCHg4d85pKryMIjU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YqLzS5Zr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A0D0C116D0;
+	Mon,  5 Jan 2026 17:52:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767635539;
+	bh=4yiiXWHQhLUumIE957yTSZb3rAcd4FF3mFJnJOK/WJA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=YqLzS5ZrecSzL/GdD1gtggZMrYSG9eSJgLnZxhtBqIYPZa/UqRtKPvQvnBqYay7br
+	 84fnBo4T1NadLhx/FIXz/Rev1TTbV1U57CrShjLEOB8uWJVoFfZ722i6Xr2WwTskh1
+	 4NsPpqZF2I5XqvXO4adFMcW7A9Ekku5xMD5AIggiP6yCgahKDwBG6SHfrdbX7KKbpP
+	 5fTRU40VjRRmzuSKD26TsBfuFo9DehAi7nzpB5qrw0k+2eHwpMSJMAxQZXL0dv32yk
+	 U5RF0Bfr8xKD+aobYKlNcCOxlYVcL3vz1VME5hUtOO8VBw5b8ECxbPGbdKVKMTn2Yt
+	 HJC3YAaESqilw==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: David Hildenbrand <david@redhat.com>,
+	Zi Yan <ziy@nvidia.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Brendan Jackman <jackmanb@google.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	Christian Brauner <brauner@kernel.org>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	=?UTF-8?q?Eugenio=20P=C3=A9=20rez?= <eperezma@redhat.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Gregory Price <gourry@gourry.net>,
+	"Huang, Ying" <ying.huang@linux.alibaba.com>,
+	Jan Kara <jack@suse.cz>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Jason Wang <jasowang@redhat.com>,
+	Jerrin Shaji George <jerrin.shaji-george@broadcom.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>,
+	Liam Howlett <liam.howlett@oracle.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Mathew Brost <matthew.brost@intel.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Minchan Kim <minchan@kernel.org>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Peter Xu <peterx@redhat.com>,
+	Qi Zheng <zhengqi.arch@bytedance.com>,
+	Rakie Kim <rakie.kim@sk.com>,
+	Rik van Riel <riel@surriel.com>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	xu xin <xu.xin16@zte.com.cn>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6.y 1/3] mm/balloon_compaction: we cannot have isolated pages in the balloon list
+Date: Mon,  5 Jan 2026 12:52:10 -0500
+Message-ID: <20260105175213.2699504-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2026010547-ninth-clinking-d127@gregkh>
+References: <2026010547-ninth-clinking-d127@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH] pinctrl: meson: mark the GPIO controller as sleeping
-To: Bartosz Golaszewski <brgl@kernel.org>, Martin Blumenstingl
-	<martin.blumenstingl@googlemail.com>
-Cc: Linus Walleij <linusw@kernel.org>, Neil Armstrong
-	<neil.armstrong@linaro.org>, Kevin Hilman <khilman@baylibre.com>, Jerome
-	Brunet <jbrunet@baylibre.com>, linux-gpio@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-amlogic@lists.infradead.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org, Bartosz Golaszewski
-	<bartosz.golaszewski@oss.qualcomm.com>
-Content-Language: en-US
-From: Marek Szyprowski <m.szyprowski@samsung.com>
-In-Reply-To: <CAMRc=MeYWm=5bwfT5s+w6_kjt=wROonZSYo8=kA3Eyva4hpp1g@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CMS-MailID: 20260105175057eucas1p274610bd996f1599b43d386f0afdb0fb6
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20260105173844eucas1p1d0d5b5a84d4690d42f98f73a04de8b42
-X-EPHeader: CA
-X-CMS-RootMailID: 20260105173844eucas1p1d0d5b5a84d4690d42f98f73a04de8b42
-References: <20260105150509.56537-1-bartosz.golaszewski@oss.qualcomm.com>
-	<CAFBinCAc7CO8gfNQakCu3LfkYXuyTd2iRpMRm8EKXSL0mwOnJw@mail.gmail.com>
-	<CGME20260105173844eucas1p1d0d5b5a84d4690d42f98f73a04de8b42@eucas1p1.samsung.com>
-	<CAMRc=MeYWm=5bwfT5s+w6_kjt=wROonZSYo8=kA3Eyva4hpp1g@mail.gmail.com>
 
-On 05.01.2026 18:38, Bartosz Golaszewski wrote:
-> On Mon, 5 Jan 2026 18:28:23 +0100, Martin Blumenstingl
-> <martin.blumenstingl@googlemail.com> said:
->> Hi Bartosz,
->>
->> On Mon, Jan 5, 2026 at 4:05 PM Bartosz Golaszewski
->> <bartosz.golaszewski@oss.qualcomm.com> wrote:
->> [...]
->>>    mutex_lock_nested+0x24/0x30
->>>    pinctrl_get_device_gpio_range+0x44/0x128
->>>    pinctrl_gpio_set_config+0x40/0xdc
->>>    gpiochip_generic_config+0x28/0x3c
->>>    gpio_do_set_config+0xa8/0x194
->> $ git grep gpiochip_generic_config drivers/pinctrl/meson/
->> drivers/pinctrl/meson/pinctrl-amlogic-a4.c:     .set_config
->>   = gpiochip_generic_config,
->> drivers/pinctrl/meson/pinctrl-meson.c:  pc->chip.set_config =
->> gpiochip_generic_config;
->>
->> pinctrl-amlogic-a4.c still has:
->>    .can_sleep = false,
->>
->> Are there plans to send a separate fix for pinctrl-amlogic-a4.c - or
->> was the intention to fix "all" Amlogic pin controllers in this patch
->> (which would mean that the change to pinctrl-amlogic-a4.c is missing)?
->>
->>
-> Yeah, I missed it. I will send a follow-up tomorrow.
+From: David Hildenbrand <david@redhat.com>
 
-I found that drivers/pinctrl/pinctrl-rockchip.c suffers for the same 
-issue, although I don't see where this ".can_sleep" flag has to be added:
+[ Upstream commit fb05f992b6bbb4702307d96f00703ee637b24dbf ]
 
-BUG: sleeping function called from invalid context at 
-kernel/locking/mutex.c:591
-in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 12, name: 
-kworker/u16:0
-preempt_count: 1, expected: 0
-RCU nest depth: 0, expected: 0
-6 locks held by kworker/u16:0/12:
-  #0: ffff0001f0018d48 ((wq_completion)events_unbound#2){+.+.}-{0:0}, 
-at: process_one_work+0x18c/0x604
-  #1: ffff8000842dbdf0 (deferred_probe_work){+.+.}-{0:0}, at: 
-process_one_work+0x1b4/0x604
-  #2: ffff0001f18498f8 (&dev->mutex){....}-{4:4}, at: 
-__device_attach+0x38/0x1b0
-  #3: ffff0001f75f1e90 (&gdev->srcu){.+.?}-{0:0}, at: 
-gpiod_direction_output_raw_commit+0x0/0x360
-  #4: ffff0001f46e3db8 (&shared_desc->spinlock){....}-{3:3}, at: 
-gpio_shared_proxy_direction_output+0xd0/0x144 [gpio_shared_proxy]
-  #5: ffff0001f180ee90 (&gdev->srcu){.+.?}-{0:0}, at: 
-gpiod_direction_output_raw_commit+0x0/0x360
-irq event stamp: 81450
-hardirqs last  enabled at (81449): [<ffff8000813acba4>] 
-_raw_spin_unlock_irqrestore+0x74/0x78
-hardirqs last disabled at (81450): [<ffff8000813abfb8>] 
-_raw_spin_lock_irqsave+0x84/0x88
-softirqs last  enabled at (79616): [<ffff8000811455fc>] 
-__alloc_skb+0x17c/0x1e8
-softirqs last disabled at (79614): [<ffff8000811455fc>] 
-__alloc_skb+0x17c/0x1e8
-CPU: 2 UID: 0 PID: 12 Comm: kworker/u16:0 Not tainted 
-6.19.0-rc4-next-20260105+ #11975 PREEMPT
-Hardware name: Hardkernel ODROID-M1 (DT)
-Workqueue: events_unbound deferred_probe_work_func
-Call trace:
-  show_stack+0x18/0x24 (C)
-  dump_stack_lvl+0x90/0xd0
-  dump_stack+0x18/0x24
-  __might_resched+0x144/0x248
-  __might_sleep+0x48/0x98
-  __mutex_lock+0x5c/0x894
-  mutex_lock_nested+0x24/0x30
-  pinctrl_get_device_gpio_range+0x44/0x128
-  pinctrl_gpio_direction+0x3c/0xe0
-  pinctrl_gpio_direction_output+0x14/0x20
-  rockchip_gpio_direction_output+0xb8/0x19c
-  gpiochip_direction_output+0x38/0x94
-  gpiod_direction_output_raw_commit+0x1d8/0x360
-  gpiod_direction_output_nonotify+0x7c/0x230
-  gpiod_direction_output+0x34/0xf8
-  gpio_shared_proxy_direction_output+0xec/0x144 [gpio_shared_proxy]
-  gpiochip_direction_output+0x38/0x94
-  gpiod_direction_output_raw_commit+0x1d8/0x360
-  gpiod_direction_output_nonotify+0x7c/0x230
-  gpiod_configure_flags+0xbc/0x480
-  gpiod_find_and_request+0x1a0/0x574
-  gpiod_get_index+0x58/0x84
-  devm_gpiod_get_index+0x20/0xb4
-  devm_gpiod_get_optional+0x18/0x30
-  rockchip_pcie_probe+0x98/0x380
-  platform_probe+0x5c/0xac
-  really_probe+0xbc/0x298
+Patch series "mm/migration: rework movable_ops page migration (part 1)",
+v2.
 
-Best regards
+In the future, as we decouple "struct page" from "struct folio", pages
+that support "non-lru page migration" -- movable_ops page migration such
+as memory balloons and zsmalloc -- will no longer be folios.  They will
+not have ->mapping, ->lru, and likely no refcount and no page lock.  But
+they will have a type and flags 🙂
+
+This is the first part (other parts not written yet) of decoupling
+movable_ops page migration from folio migration.
+
+In this series, we get rid of the ->mapping usage, and start cleaning up
+the code + separating it from folio migration.
+
+Migration core will have to be further reworked to not treat movable_ops
+pages like folios.  This is the first step into that direction.
+
+This patch (of 29):
+
+The core will set PG_isolated only after mops->isolate_page() was called.
+In case of the balloon, that is where we will remove it from the balloon
+list.  So we cannot have isolated pages in the balloon list.
+
+Let's drop this unnecessary check.
+
+Link: https://lkml.kernel.org/r/20250704102524.326966-2-david@redhat.com
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Acked-by: Zi Yan <ziy@nvidia.com>
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Alistair Popple <apopple@nvidia.com>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Brendan Jackman <jackmanb@google.com>
+Cc: Byungchul Park <byungchul@sk.com>
+Cc: Chengming Zhou <chengming.zhou@linux.dev>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Eugenio Pé rez <eperezma@redhat.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Gregory Price <gourry@gourry.net>
+Cc: "Huang, Ying" <ying.huang@linux.alibaba.com>
+Cc: Jan Kara <jack@suse.cz>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Jason Wang <jasowang@redhat.com>
+Cc: Jerrin Shaji George <jerrin.shaji-george@broadcom.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: John Hubbard <jhubbard@nvidia.com>
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Mathew Brost <matthew.brost@intel.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Miaohe Lin <linmiaohe@huawei.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Minchan Kim <minchan@kernel.org>
+Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Qi Zheng <zhengqi.arch@bytedance.com>
+Cc: Rakie Kim <rakie.kim@sk.com>
+Cc: Rik van Riel <riel@surriel.com>
+Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+Cc: xu xin <xu.xin16@zte.com.cn>
+Cc: Harry Yoo <harry.yoo@oracle.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: 0da2ba35c0d5 ("powerpc/pseries/cmm: adjust BALLOON_MIGRATE when migrating pages")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ mm/balloon_compaction.c | 6 ------
+ 1 file changed, 6 deletions(-)
+
+diff --git a/mm/balloon_compaction.c b/mm/balloon_compaction.c
+index 22c96fed70b5..dafb7dc90cfd 100644
+--- a/mm/balloon_compaction.c
++++ b/mm/balloon_compaction.c
+@@ -93,12 +93,6 @@ size_t balloon_page_list_dequeue(struct balloon_dev_info *b_dev_info,
+ 		if (!trylock_page(page))
+ 			continue;
+ 
+-		if (IS_ENABLED(CONFIG_BALLOON_COMPACTION) &&
+-		    PageIsolated(page)) {
+-			/* raced with isolation */
+-			unlock_page(page);
+-			continue;
+-		}
+ 		balloon_page_delete(page);
+ 		__count_vm_event(BALLOON_DEFLATE);
+ 		list_add(&page->lru, pages);
 -- 
-Marek Szyprowski, PhD
-Samsung R&D Institute Poland
+2.51.0
 
 
