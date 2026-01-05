@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-204617-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204618-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3328FCF2C36
-	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 10:30:10 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 831FFCF2C77
+	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 10:33:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3449F300AFDF
-	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 09:30:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5229A304EDA5
+	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 09:30:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82728324B33;
-	Mon,  5 Jan 2026 09:30:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 347732E22BE;
+	Mon,  5 Jan 2026 09:30:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IT18FyXj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cRcueNK7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C96E211A09
-	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 09:30:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2C7E32D0E6
+	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 09:30:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767605407; cv=none; b=YdTtDUkgM7jjjCEhDsKy8Ev8XxxGZe92+MTwWF4KgVMb1PcA/wKAO+grajku4bGxmI/6+MKDulBzqBBZnHvrWOm8dyRMjjHWDdV+w7Q6CFGjWGx4dx7sAVu2oMqiPRCEbb+m9x8TE355JcSKaH5levutZm6oTjmWvUsIBdZvumc=
+	t=1767605411; cv=none; b=bk9qXecPHeM8bNni9bwlMSyL4KgY/SLJ1GtnRVh1HDFKhXbUNYzrIChGtd6LYrA6tNRCXvd47OAKtX/gD9tSdnr3zMdJReMX0g/l0ec7ClaE/b988oLgjLr9CI1pKRwsMWIhI/AF+mO2e87yUbhO8ug2TWACzE5UrAKvYMMgBDE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767605407; c=relaxed/simple;
-	bh=p7rmUmJn7PCXHTgHvy6lJ2N4wVfnLeP+1a7iugnj3wY=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ip8nnZAZtv4guq8fgXY+GF2ePmubt/29NwX9enqm21iOWRsRtOrkdqzP7anjjfQtPatquNluY3EpglsxSerCg6r5aP3so2HkS+uOV94XWLLDkyDU41dKPi4z1/VN5WhT6n2I8FlmVVfzgyRp9cgWgzS0+Vo4zocFp1DfDptIqG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IT18FyXj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F292C116D0;
-	Mon,  5 Jan 2026 09:30:04 +0000 (UTC)
+	s=arc-20240116; t=1767605411; c=relaxed/simple;
+	bh=wV1iBX1ry6R8p5MdgJdlfNk8/8n4CN4ApOMyQruChvY=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=JM0X3Zkklrykljn1PZeh14FI4PJ6bs3CUaMhqHzSe/pG2ZAokKvvdmSys/DX+7IZGri0mlP7xtw+MMcLZ7b0BOsd0hPj/09MIkl5u/WJa5IfFnZBxvcN3MxomvN4g7ixHsEUYWxAs9v8aaOSHMl6fEfmHA9MSsl5Mf1igm2W2BQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cRcueNK7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75827C2BC87;
+	Mon,  5 Jan 2026 09:30:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767605404;
-	bh=p7rmUmJn7PCXHTgHvy6lJ2N4wVfnLeP+1a7iugnj3wY=;
+	s=korg; t=1767605408;
+	bh=wV1iBX1ry6R8p5MdgJdlfNk8/8n4CN4ApOMyQruChvY=;
 	h=Subject:To:Cc:From:Date:From;
-	b=IT18FyXj54+bf3igMPmZE4Yc343DRKo4uc2TADwkM6JjX/33Nld5VXs7pRbJBZ3ph
-	 PZ2qZTSCjA20GAhIU+sxtqpEE2WUIKWtEcU3E6itehlNvRo/rfQE6dinYut/PsAIg4
-	 8d7zJo/emJStIl9laQ7rMAEvEdQDYfAGcFQ033pg=
-Subject: FAILED: patch "[PATCH] iommu: disable SVA when CONFIG_X86 is set" failed to apply to 6.1-stable tree
+	b=cRcueNK74qOf/FcegL1lbrfpHLVzVC0pp6MB2Rh4iumuWZ7DnRYWcqo/sUZhmtEW0
+	 pwV8W/gBl8eG0ykW3AqsKDvYJ2KJWDioPnwLNnLQ64CkatrHIXT7h5x0e0H4DPngpA
+	 ika+8p+Sz5q5eAu4aH4blv6Cdf9AdklnHLOXYg2c=
+Subject: FAILED: patch "[PATCH] iommu: disable SVA when CONFIG_X86 is set" failed to apply to 5.15-stable tree
 To: baolu.lu@linux.intel.com,akpm@linux-foundation.org,apopple@nvidia.com,bp@alien8.de,dave.hansen@intel.com,david@redhat.com,jannh@google.com,jean-philippe@linaro.org,jgg@nvidia.com,joro@8bytes.org,kevin.tian@intel.com,liam.howlett@oracle.com,lorenzo.stoakes@oracle.com,luto@kernel.org,mhocko@kernel.org,mingo@redhat.com,peterz@infradead.org,robin.murphy@arm.com,rppt@kernel.org,stable@vger.kernel.org,tglx@linutronix.de,urezki@gmail.com,vasant.hegde@amd.com,vbabka@suse.cz,vinicius.gomes@intel.com,will@kernel.org,willy@infradead.org,yi1.lai@intel.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 05 Jan 2026 10:30:02 +0100
-Message-ID: <2026010501-uninvited-verbose-d23b@gregkh>
+Date: Mon, 05 Jan 2026 10:30:03 +0100
+Message-ID: <2026010503-tweezers-junction-c503@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -51,19 +51,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 72f98ef9a4be30d2a60136dd6faee376f780d06c
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026010501-uninvited-verbose-d23b@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026010503-tweezers-junction-c503@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
