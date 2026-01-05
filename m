@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-204650-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204651-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA05CCF3167
-	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 11:56:55 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BF87CF31F8
+	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 12:03:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0279E3008CB1
-	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 10:56:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5E6793029C6D
+	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 10:58:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDEE532E126;
-	Mon,  5 Jan 2026 10:56:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9406032E14D;
+	Mon,  5 Jan 2026 10:58:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ORPFY6dv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wH4MBeGb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A305032E14F
-	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 10:56:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 331F332D452
+	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 10:58:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767610574; cv=none; b=a9sFvKIiPP+OYPO4vPRPmqtKE4x7CVb4xKIvZqQe8O/hv6VUaLIz7PKaqrVovOJ6a/zEWAs8Rx08Ouw9Ld5VunrBmleZa3TIt+BO+ubn1v5UWrnujLv3JdKzw6FT+9swRdaRAMj0eRA/6SFUrCK/jJB08CZRDULKfnWDYreTTMM=
+	t=1767610691; cv=none; b=EJveIOY2eqGaVYhjppbi7/ZdDZoDhHDlHezqNscu4m+vswy642m75H0Pq6lbMwA6M/pr/rfiX/h2Nnqls95++vvDhjNDwN460UBzK3R7M3qX22TO1mV4UDId08qLwqmIh1ZmRD8U3dJlJQx0GxNWvgKAWW4lISmw5iG6MsV5PPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767610574; c=relaxed/simple;
-	bh=WkFoCVZQsTBtI/AQToyWtw9ACiL1uebpYgxtpBAmSrY=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=FNMza7prUOuqqke9lNgS/TyazL+r4oJKlfLEfZkpE25hFRJ5/L7YdZphFrrLshQdsCXe6rgAnwiSWSRBcETZywfN/zmdDDD/woALBSGOvbhVsNgZBcDswjppmQmWxOEGS0bardmZ1TylRAidg7dUFWoFm0MZaOPCP6NoFx2dcY4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ORPFY6dv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9AB0C116D0;
-	Mon,  5 Jan 2026 10:56:13 +0000 (UTC)
+	s=arc-20240116; t=1767610691; c=relaxed/simple;
+	bh=kaveEOlISzNdqo8U/K/andAsiBcsPDOMzU2cvlVTPYA=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=CnpMttB74t81pMVV1vxkSV1baJ8gdscyeM9KDjaqeQglpTUUyrjIZqWdSkVIS/oWOttAu5/pRYrFnt3J0VcBbE8K7Gkqb6iavsAZUmQIY5ahT8+TE7E0IkMGS3eQjS0zdFONOi4eU0QuilVTEcUM+SPBnHN7pD8x6TJERC/rieo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wH4MBeGb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74809C116D0;
+	Mon,  5 Jan 2026 10:58:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767610574;
-	bh=WkFoCVZQsTBtI/AQToyWtw9ACiL1uebpYgxtpBAmSrY=;
+	s=korg; t=1767610690;
+	bh=kaveEOlISzNdqo8U/K/andAsiBcsPDOMzU2cvlVTPYA=;
 	h=Subject:To:Cc:From:Date:From;
-	b=ORPFY6dvqunY5cFLmjjfoJS8RAZwen8W1yfQotj/gjnrmmaiZK0ENOT8xrMpF16bC
-	 +1lSwcPRHhRehVTskXlCh+eVmmAmA5gWGt9DA1zXlW+TdTHGBfzx0goXtNBhZUdyQY
-	 SYbAEH3t8U/P1NQNVUftszxjeSxNtn49RCPX2C94=
-Subject: FAILED: patch "[PATCH] powerpc/pseries/cmm: call balloon_devinfo_init() also without" failed to apply to 5.10-stable tree
-To: david@kernel.org,akpm@linux-foundation.org,christophe.leroy@csgroup.eu,david@redhat.com,maddy@linux.ibm.com,mpe@ellerman.id.au,npiggin@gmail.com,ritesh.list@gmail.com,stable@vger.kernel.org
+	b=wH4MBeGbF8cLdra29iO7Xhuvl/964uNmKOJ0gQpADv9OaJTIHuMPyKtEmo9C8uBFL
+	 2UHppvNrrjSdmRHT/lHHleUVvvkKp5N5/5luPKbXD4u+F478TXFEsZEvrz0OeHMv++
+	 RjeDsBTJrWxEg38VEc2uxO5DkUjNTXnPHG/faSpQ=
+Subject: FAILED: patch "[PATCH] media: platform: mtk-mdp3: fix device leaks at probe" failed to apply to 6.6-stable tree
+To: johan@kernel.org,angelogioacchino.delregno@collabora.com,hverkuil+cisco@kernel.org,moudy.ho@mediatek.com,nicolas.dufresne@collabora.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 05 Jan 2026 11:56:00 +0100
-Message-ID: <2026010500-antirust-bacterium-2d22@gregkh>
+Date: Mon, 05 Jan 2026 11:58:07 +0100
+Message-ID: <2026010507-repulsion-scribing-ab04@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -51,19 +51,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x fc6bcf9ac4de76f5e7bcd020b3c0a86faff3f2d5
+git cherry-pick -x 8f6f3aa21517ef34d50808af0c572e69580dca20
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026010500-antirust-bacterium-2d22@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026010507-repulsion-scribing-ab04@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -75,59 +75,71 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From fc6bcf9ac4de76f5e7bcd020b3c0a86faff3f2d5 Mon Sep 17 00:00:00 2001
-From: David Hildenbrand <david@kernel.org>
-Date: Tue, 21 Oct 2025 12:06:05 +0200
-Subject: [PATCH] powerpc/pseries/cmm: call balloon_devinfo_init() also without
- CONFIG_BALLOON_COMPACTION
+From 8f6f3aa21517ef34d50808af0c572e69580dca20 Mon Sep 17 00:00:00 2001
+From: Johan Hovold <johan@kernel.org>
+Date: Wed, 24 Sep 2025 16:39:19 +0200
+Subject: [PATCH] media: platform: mtk-mdp3: fix device leaks at probe
 
-Patch series "powerpc/pseries/cmm: two smaller fixes".
+Make sure to drop the references taken when looking up the subsys
+devices during probe on probe failure (e.g. probe deferral) and on
+driver unbind.
 
-Two smaller fixes identified while doing a bigger rework.
+Similarly, drop the SCP device reference after retrieving its platform
+data during probe to avoid leaking it.
 
+Note that holding a reference to a device does not prevent its driver
+data from going away.
 
-This patch (of 2):
+Fixes: 61890ccaefaf ("media: platform: mtk-mdp3: add MediaTek MDP3 driver")
+Cc: stable@vger.kernel.org	# 6.1
+Cc: Moudy Ho <moudy.ho@mediatek.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 
-We always have to initialize the balloon_dev_info, even when compaction is
-not configured in: otherwise the containing list and the lock are left
-uninitialized.
-
-Likely not many such configs exist in practice, but let's CC stable to
-be sure.
-
-This was found by code inspection.
-
-Link: https://lkml.kernel.org/r/20251021100606.148294-1-david@redhat.com
-Link: https://lkml.kernel.org/r/20251021100606.148294-2-david@redhat.com
-Fixes: fe030c9b85e6 ("powerpc/pseries/cmm: Implement balloon compaction")
-Signed-off-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-
-diff --git a/arch/powerpc/platforms/pseries/cmm.c b/arch/powerpc/platforms/pseries/cmm.c
-index 0823fa2da151..688f5fa1c724 100644
---- a/arch/powerpc/platforms/pseries/cmm.c
-+++ b/arch/powerpc/platforms/pseries/cmm.c
-@@ -550,7 +550,6 @@ static int cmm_migratepage(struct balloon_dev_info *b_dev_info,
- 
- static void cmm_balloon_compaction_init(void)
- {
--	balloon_devinfo_init(&b_dev_info);
- 	b_dev_info.migratepage = cmm_migratepage;
+diff --git a/drivers/media/platform/mediatek/mdp3/mtk-mdp3-core.c b/drivers/media/platform/mediatek/mdp3/mtk-mdp3-core.c
+index 6559d72d5d42..6d26d4aa1eef 100644
+--- a/drivers/media/platform/mediatek/mdp3/mtk-mdp3-core.c
++++ b/drivers/media/platform/mediatek/mdp3/mtk-mdp3-core.c
+@@ -157,10 +157,18 @@ void mdp_video_device_release(struct video_device *vdev)
+ 	kfree(mdp);
  }
- #else /* CONFIG_BALLOON_COMPACTION */
-@@ -572,6 +571,7 @@ static int cmm_init(void)
- 	if (!firmware_has_feature(FW_FEATURE_CMO) && !simulate)
- 		return -EOPNOTSUPP;
  
-+	balloon_devinfo_init(&b_dev_info);
- 	cmm_balloon_compaction_init();
++static void mdp_put_device(void *_dev)
++{
++	struct device *dev = _dev;
++
++	put_device(dev);
++}
++
+ static int mdp_mm_subsys_deploy(struct mdp_dev *mdp, enum mdp_infra_id id)
+ {
+ 	struct platform_device *mm_pdev = NULL;
+ 	struct device **dev;
++	int ret;
+ 	int i;
  
- 	rc = register_oom_notifier(&cmm_oom_nb);
+ 	if (!mdp)
+@@ -194,6 +202,11 @@ static int mdp_mm_subsys_deploy(struct mdp_dev *mdp, enum mdp_infra_id id)
+ 		if (WARN_ON(!mm_pdev))
+ 			return -ENODEV;
+ 
++		ret = devm_add_action_or_reset(&mdp->pdev->dev, mdp_put_device,
++					       &mm_pdev->dev);
++		if (ret)
++			return ret;
++
+ 		*dev = &mm_pdev->dev;
+ 	}
+ 
+@@ -279,6 +292,7 @@ static int mdp_probe(struct platform_device *pdev)
+ 			goto err_destroy_clock_wq;
+ 		}
+ 		mdp->scp = platform_get_drvdata(mm_pdev);
++		put_device(&mm_pdev->dev);
+ 	}
+ 
+ 	mdp->rproc_handle = scp_get_rproc(mdp->scp);
 
 
