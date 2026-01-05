@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-204657-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204658-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0252DCF3213
-	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 12:04:20 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60FEACF3194
+	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 11:59:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 84D3C30533BE
-	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 10:59:17 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D0480300286B
+	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 10:59:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D71CE32ED31;
-	Mon,  5 Jan 2026 10:59:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83A9D32E12D;
+	Mon,  5 Jan 2026 10:59:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iSTZY12b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LnRhnLMc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9697D32E14D
-	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 10:59:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43A942D7810
+	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 10:59:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767610756; cv=none; b=hLqKOm1AyGdHZpyxB+aEm1+GFb8Rn4ITistRHkuOwEEfAlgstn8AAY4/7MN4gF1yKEtOALrnOPlNGJqP2ibw1B7LjkNBOm5Zwzgf/Bdnhr0MOerJJGzrxmKXn8PtAqkNIFFaZylRRNIqRuTxkjNI/JhLeRWatG+PBheuVet+hbE=
+	t=1767610778; cv=none; b=bYREnUj+KUSog7SkuXEMtKVMACvsvvkS2R2bTkQAy6XIDsUl1MmV/kI+JXjS9CXzXhGMNop403O5ylN3RwK0xKtqsFfCjAiwm8JULn+Et23zairS3QKaGSQv7kTzcEGGJZoYP4+37kloLG07CycPsRynugUzqr4m0iGNpnNqBmI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767610756; c=relaxed/simple;
-	bh=YsHU+LsOkW/tg9fZTWMqijbrP1J4SIRg6x6Oah/DTNc=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Ie4dYLDvOr2QxqK8wyQk0yqsnWMolPGycFFful/1ZPsE7n74uLQENjW75jv3Hn4YIhIOGQiqhHghK8px6u5bfdTfLYz/Cp1mgiPomTqAuXRTMkBuwv0aIgnYWE/2baEUvJ+M/igIYvysqaFWQBXFu3fDM2PU0yRtRyXLQjXyk/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iSTZY12b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A33EFC116D0;
-	Mon,  5 Jan 2026 10:59:14 +0000 (UTC)
+	s=arc-20240116; t=1767610778; c=relaxed/simple;
+	bh=vE1mT/uAx6uEDjM1QnLd85Cw7d3ZM8z2MqSSMM342Fc=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=jcuW20exiUTZ/LtS0myp9hPjYez53hBi8KhEWlbciKxzCaLmsLJ4hvHqeG8eR8j4yDoUuDap7lOW7uQsiLgq22b1kkumfiXc6NHZzNfAl3iQVLBQPRi3B8ilFNyOo+w4SnpLRobFPAmS6kNvOFAzImMT5ZpjaobpcVwUK+uEAfk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LnRhnLMc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 618F7C116D0;
+	Mon,  5 Jan 2026 10:59:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767610755;
-	bh=YsHU+LsOkW/tg9fZTWMqijbrP1J4SIRg6x6Oah/DTNc=;
+	s=korg; t=1767610777;
+	bh=vE1mT/uAx6uEDjM1QnLd85Cw7d3ZM8z2MqSSMM342Fc=;
 	h=Subject:To:Cc:From:Date:From;
-	b=iSTZY12bRt4bGtlSks4Z5piN2Y7pDCgtac/9MXboDCqdvy55AXPDGQ21YssiTw5Ps
-	 +XfwJ+oVAHMfqvoLVQ9+/fbrgZ+wGvdCR+yKDFOAPcyCqz67b5GLy2uPWIwMNrOkvU
-	 ObV7Y7oTuYDGjtMpjn0Mu8x0u8BQrCgLc1EEffB8=
-Subject: FAILED: patch "[PATCH] media: verisilicon: Protect G2 HEVC decoder against invalid" failed to apply to 5.15-stable tree
-To: nicolas.dufresne@collabora.com,benjamin.gaignard@collabora.com,hverkuil+cisco@kernel.org
+	b=LnRhnLMcFlTjOau3XKD15iAzIr399sJE1j4PfU6l+wVV1/lRxb3+rNxwwNNnx34eC
+	 YGFESDwrOhC0R5bq3d9BBoINg9LgT0KEy1aNWtDZ3nKvlTn18Zf2NHQm3/qfvZdxLX
+	 soOq+rU2Uc3aTQw57rPCq3YbaNKhWfw5jiEJgpbA=
+Subject: FAILED: patch "[PATCH] media: vpif_capture: fix section mismatch" failed to apply to 5.15-stable tree
+To: johan@kernel.org,hverkuil+cisco@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 05 Jan 2026 11:59:11 +0100
-Message-ID: <2026010511-molasses-woven-927b@gregkh>
+Date: Mon, 05 Jan 2026 11:59:34 +0100
+Message-ID: <2026010534-slinging-linguini-bbf3@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,10 +60,10 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x 47825b1646a6a9eca0f90baa3d4f98947c2add96
+git cherry-pick -x 0ef841113724166c3c484d0e9ae6db1eb5634fde
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026010511-molasses-woven-927b@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026010534-slinging-linguini-bbf3@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -75,60 +75,45 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 47825b1646a6a9eca0f90baa3d4f98947c2add96 Mon Sep 17 00:00:00 2001
-From: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Date: Mon, 22 Sep 2025 14:43:39 -0400
-Subject: [PATCH] media: verisilicon: Protect G2 HEVC decoder against invalid
- DPB index
+From 0ef841113724166c3c484d0e9ae6db1eb5634fde Mon Sep 17 00:00:00 2001
+From: Johan Hovold <johan@kernel.org>
+Date: Fri, 17 Oct 2025 07:33:20 +0200
+Subject: [PATCH] media: vpif_capture: fix section mismatch
 
-Fix the Hantro G2 HEVC decoder so that we use DPB index 0 whenever a
-ninvalid index is received from user space. This protects the hardware
-from doing faulty memory access which then leads to bus errors.
+Platform drivers can be probed after their init sections have been
+discarded (e.g. on probe deferral or manual rebind through sysfs) so the
+probe function must not live in init.
 
-To be noted that when a reference is missing, userspace such as GStreamer
-passes an invalid DPB index of 255. This issue was found by seeking to a
-CRA picture using GStreamer. The framework is currently missing the code
-to skip over RASL pictures placed after the CRA. This situation can also
-occur while doing live streaming over lossy transport.
+Note that commit ffa1b391c61b ("V4L/DVB: vpif_cap/disp: Removed section
+mismatch warning") incorrectly suppressed the modpost warning.
 
-Fixes: cb5dd5a0fa518 ("media: hantro: Introduce G2/HEVC decoder")
-Cc: stable@vger.kernel.org
-Reviewed-by: Benjamin Gaignard <benjamin.gaignard@collabora.com>
-Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Fixes: ffa1b391c61b ("V4L/DVB: vpif_cap/disp: Removed section mismatch warning")
+Fixes: 6ffefff5a9e7 ("V4L/DVB (12906c): V4L : vpif capture driver for DM6467")
+Cc: stable@vger.kernel.org	# 2.6.32
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 
-diff --git a/drivers/media/platform/verisilicon/hantro_g2_hevc_dec.c b/drivers/media/platform/verisilicon/hantro_g2_hevc_dec.c
-index f066636e56f9..e8c2e83379de 100644
---- a/drivers/media/platform/verisilicon/hantro_g2_hevc_dec.c
-+++ b/drivers/media/platform/verisilicon/hantro_g2_hevc_dec.c
-@@ -283,6 +283,15 @@ static void set_params(struct hantro_ctx *ctx)
- 	hantro_reg_write(vpu, &g2_apf_threshold, 8);
- }
- 
-+static u32 get_dpb_index(const struct v4l2_ctrl_hevc_decode_params *decode_params,
-+			 const u32 index)
-+{
-+	if (index > decode_params->num_active_dpb_entries)
-+		return 0;
-+
-+	return index;
-+}
-+
- static void set_ref_pic_list(struct hantro_ctx *ctx)
+diff --git a/drivers/media/platform/ti/davinci/vpif_capture.c b/drivers/media/platform/ti/davinci/vpif_capture.c
+index d053972888d1..243c6196b024 100644
+--- a/drivers/media/platform/ti/davinci/vpif_capture.c
++++ b/drivers/media/platform/ti/davinci/vpif_capture.c
+@@ -1600,7 +1600,7 @@ vpif_capture_get_pdata(struct platform_device *pdev,
+  * This creates device entries by register itself to the V4L2 driver and
+  * initializes fields of each channel objects
+  */
+-static __init int vpif_probe(struct platform_device *pdev)
++static int vpif_probe(struct platform_device *pdev)
  {
- 	const struct hantro_hevc_dec_ctrls *ctrls = &ctx->hevc_dec.ctrls;
-@@ -355,8 +364,10 @@ static void set_ref_pic_list(struct hantro_ctx *ctx)
- 		list1[j++] = list1[i++];
+ 	struct vpif_subdev_info *subdevdata;
+ 	struct i2c_adapter *i2c_adap;
+@@ -1807,7 +1807,7 @@ static int vpif_resume(struct device *dev)
  
- 	for (i = 0; i < V4L2_HEVC_DPB_ENTRIES_NUM_MAX; i++) {
--		hantro_reg_write(vpu, &ref_pic_regs0[i], list0[i]);
--		hantro_reg_write(vpu, &ref_pic_regs1[i], list1[i]);
-+		hantro_reg_write(vpu, &ref_pic_regs0[i],
-+				 get_dpb_index(decode_params, list0[i]));
-+		hantro_reg_write(vpu, &ref_pic_regs1[i],
-+				 get_dpb_index(decode_params, list1[i]));
- 	}
- }
+ static SIMPLE_DEV_PM_OPS(vpif_pm_ops, vpif_suspend, vpif_resume);
  
+-static __refdata struct platform_driver vpif_driver = {
++static struct platform_driver vpif_driver = {
+ 	.driver	= {
+ 		.name	= VPIF_DRIVER_NAME,
+ 		.pm	= &vpif_pm_ops,
 
 
