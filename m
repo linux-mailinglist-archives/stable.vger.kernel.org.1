@@ -1,100 +1,183 @@
-Return-Path: <stable+bounces-204851-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204852-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BB10CF4D1B
-	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 17:53:06 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD93CCF4E0F
+	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 18:03:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 96C8B306D71F
-	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 16:48:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A245F331E438
+	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 16:49:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D26531A812;
-	Mon,  5 Jan 2026 16:47:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD1472F5A01;
+	Mon,  5 Jan 2026 16:48:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="CrVgFhhv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KbZa9HS2"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D6382EB5A1
-	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 16:47:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DD32221F13
+	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 16:48:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767631659; cv=none; b=PjJwHQPhcQlehm8wMCcfYYrtcslGpVNU9Bsci4GAMTfR8ADOSpFTEgNtwktWDJk2znwDX3DAocgr2xuI8eJDJBd6g/pPFPSwl/AB+1FkSkRlp15N0Dvps6ZPD18n6xYeaoGKlXBFqN7544CYuanGULyaB4+CXMn5nqjjEQYeqL8=
+	t=1767631691; cv=none; b=gL4kfMDSFuubomKrN+1nJhaJwiHeJO6EQDNlQ6MuVkAnZ6316izjMdAEWOLWOdjvwm5zZ5yrfOv5qo6GErR3kMP7+kvJ8teQlHoQPjxmOq4CqKyM87AVxA16nxrKStE1UtDiQfnJyikYnGZYeIxMW8cHvvWLpmsx2NH3PhaLJKQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767631659; c=relaxed/simple;
-	bh=vE2794D/W5nXp6ET7kX4Q6YdPOCF+MHDmWXCqJjspZg=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=We3g5TcqjcqCtu06A5FI6b2BcdoanBM2syvath31K+mziuydV+DyLrnx0hY8ELHYw0MGfbuStoEh9wDiMudPv/b6x2Xht4+iPpMAPBDLva5da9sHlb6Z6G51ognB2ZCEls5fCiDG9Hq4V1JBvrNYSFVh/gqWS9V/tj1VFDnhX2o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=CrVgFhhv; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id CF0D81A266A;
-	Mon,  5 Jan 2026 16:47:34 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id A5DA160726;
-	Mon,  5 Jan 2026 16:47:34 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 45C4F103C85A3;
-	Mon,  5 Jan 2026 17:47:33 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1767631654; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=JmLOwaSunIUgS2Z/jJqnNxJyucJfx1rdYcUihadJ/Rs=;
-	b=CrVgFhhvlFnNvSnbbB0/ay71UP/pnNtJBSNYSJ99FPwNee9kUJygGlzSg3UY2gO8W1u2Jh
-	+Jhf/d0DUZN9ud9CAhSd2B1nXgi8ECJGer24/Uz3lADe+JUkl7fY/oeEFrFtBYPYQau0/l
-	tZt67x1sQmkB6/Db5+Ha1Bh4KAZqtsIQNPQmqOvLlEOK2sWfVYDOTohEKRzuZnR8+3lyGW
-	Ec3HmxbOEgpIe2p9RTTp50P/QJsKP/umNF0nVtoXa/27dP20LNluMkr7yYHQ+Ith63QPx0
-	8ywmLHuhlOh6kE6AMAz07wNUf3j5h4tRFrf3jz+0d3EDAXFqHcuNBOCF9bXigg==
-Date: Mon, 5 Jan 2026 17:47:32 +0100
-From: Kory Maincent <kory.maincent@bootlin.com>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: dianders@chromium.org, luca.ceresoli@bootlin.com, stable@vger.kernel.org
-Subject: Re: FAILED: patch "[PATCH] drm/tilcdc: Fix removal actions in case
- of failed probe" failed to apply to 6.12-stable tree
-Message-ID: <20260105174732.47163620@kmaincent-XPS-13-7390>
-In-Reply-To: <2026010512-flame-zips-0374@gregkh>
-References: <2026010529-certainty-unguided-7d41@gregkh>
-	<20260105154701.5bc5d143@kmaincent-XPS-13-7390>
-	<2026010512-flame-zips-0374@gregkh>
-Organization: bootlin
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1767631691; c=relaxed/simple;
+	bh=2KVNlRsBI2hOXt/v73nZlIraIiM6n4HAzzfO9I2BP28=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=o2q4dIznyvkpauXXr1ujUrgqjxVD2Fgc9mv09hBKF3/IO3YXtm8ZoG8JZOu7n8sq/Z0NBFBC9rp0qpoW2Itq6jguLQCW+njFGXFWikh8LnZJxtzyzQ/pvBQ18NDnk20CGER9xYsFnSJXzQVB/yhkikOz1mIm54X4KbBvwoPKZmw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KbZa9HS2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91D98C19424;
+	Mon,  5 Jan 2026 16:48:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767631691;
+	bh=2KVNlRsBI2hOXt/v73nZlIraIiM6n4HAzzfO9I2BP28=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=KbZa9HS2rlHV9YPSrJ0l8ERkZgqg7bUFSevaKdrqAH9ErtRaXzjl57ZCEyCXj2WEt
+	 0h7NCzTrK36oFyyVRrO3AtNSGUaTLeO1V97Y/JTbaEZdXeFWI2jRz2tApOceexBkzk
+	 eYAwInXFFCbc0y5l90V3qqvpA6DJIReTGRi0Nfxr1peN3KfPaIPNU0QROl77qhQY7r
+	 haBhEXyAWj5dktMbohhicOwvg/iz1NesH+7eHs4ni5gJyNAxRh2yzbNgug7GjB9qTw
+	 65SjfloKb5W0aHtvGdeGRjQrmayWHc502XnTIi21xlSpMliXxxDnLI3CWdf5IdJlNW
+	 sBIhwr6TvQ6Aw==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Pavel Machek <pavel@ucw.cz>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10.y 1/4] leds: lp50xx: Reduce level of dereferences
+Date: Mon,  5 Jan 2026 11:48:05 -0500
+Message-ID: <20260105164808.2675734-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2026010519-botanical-suds-31fa@gregkh>
+References: <2026010519-botanical-suds-31fa@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
 
-On Mon, 5 Jan 2026 17:30:39 +0100
-Greg KH <gregkh@linuxfoundation.org> wrote:
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-> On Mon, Jan 05, 2026 at 03:47:01PM +0100, Kory Maincent wrote:
-> > On Mon, 05 Jan 2026 14:26:29 +0100
-> > <gregkh@linuxfoundation.org> wrote:
-> >  =20
-> > > The patch below does not apply to the 6.12-stable tree.
-> > > If someone wants it applied there, or to any other stable or longterm
-> > > tree, then please email the backport, including the original git comm=
-it
-> > > id to <stable@vger.kernel.org>.
-> > >=20
-> > > To reproduce the conflict and resubmit, you may use the following
-> > > commands: =20
-> >=20
-> > No conflict on my side on current linux-6.12.y.
-> > Have you more informations? =20
->=20
-> Did you try building it?  I don't remember why this failed, sorry.
+[ Upstream commit 556f15fe023ec1d9f9cd2781ba6cd14bda650d22 ]
 
-Yes, and I didn't face any errors.
+The priv->dev is effectively the same as &priv->client->dev.
+So, drop the latter for the former.
 
-Regards,
---=20
-K=C3=B6ry Maincent, Bootlin
-Embedded Linux and kernel engineering
-https://bootlin.com
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Pavel Machek <pavel@ucw.cz>
+Stable-dep-of: 434959618c47 ("leds: leds-lp50xx: Enable chip before any communication")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/leds/leds-lp50xx.c | 26 ++++++++++++--------------
+ 1 file changed, 12 insertions(+), 14 deletions(-)
+
+diff --git a/drivers/leds/leds-lp50xx.c b/drivers/leds/leds-lp50xx.c
+index 279f3958e0ab..66299605d133 100644
+--- a/drivers/leds/leds-lp50xx.c
++++ b/drivers/leds/leds-lp50xx.c
+@@ -322,7 +322,7 @@ static int lp50xx_brightness_set(struct led_classdev *cdev,
+ 
+ 	ret = regmap_write(led->priv->regmap, reg_val, brightness);
+ 	if (ret) {
+-		dev_err(&led->priv->client->dev,
++		dev_err(led->priv->dev,
+ 			"Cannot write brightness value %d\n", ret);
+ 		goto out;
+ 	}
+@@ -338,7 +338,7 @@ static int lp50xx_brightness_set(struct led_classdev *cdev,
+ 		ret = regmap_write(led->priv->regmap, reg_val,
+ 				   mc_dev->subled_info[i].intensity);
+ 		if (ret) {
+-			dev_err(&led->priv->client->dev,
++			dev_err(led->priv->dev,
+ 				"Cannot write intensity value %d\n", ret);
+ 			goto out;
+ 		}
+@@ -404,7 +404,7 @@ static int lp50xx_probe_leds(struct fwnode_handle *child, struct lp50xx *priv,
+ 
+ 	if (num_leds > 1) {
+ 		if (num_leds > priv->chip_info->max_modules) {
+-			dev_err(&priv->client->dev, "reg property is invalid\n");
++			dev_err(priv->dev, "reg property is invalid\n");
+ 			return -EINVAL;
+ 		}
+ 
+@@ -412,13 +412,13 @@ static int lp50xx_probe_leds(struct fwnode_handle *child, struct lp50xx *priv,
+ 
+ 		ret = fwnode_property_read_u32_array(child, "reg", led_banks, num_leds);
+ 		if (ret) {
+-			dev_err(&priv->client->dev, "reg property is missing\n");
++			dev_err(priv->dev, "reg property is missing\n");
+ 			return ret;
+ 		}
+ 
+ 		ret = lp50xx_set_banks(priv, led_banks);
+ 		if (ret) {
+-			dev_err(&priv->client->dev, "Cannot setup banked LEDs\n");
++			dev_err(priv->dev, "Cannot setup banked LEDs\n");
+ 			return ret;
+ 		}
+ 
+@@ -426,12 +426,12 @@ static int lp50xx_probe_leds(struct fwnode_handle *child, struct lp50xx *priv,
+ 	} else {
+ 		ret = fwnode_property_read_u32(child, "reg", &led_number);
+ 		if (ret) {
+-			dev_err(&priv->client->dev, "led reg property missing\n");
++			dev_err(priv->dev, "led reg property missing\n");
+ 			return ret;
+ 		}
+ 
+ 		if (led_number > priv->chip_info->num_leds) {
+-			dev_err(&priv->client->dev, "led-sources property is invalid\n");
++			dev_err(priv->dev, "led-sources property is invalid\n");
+ 			return -EINVAL;
+ 		}
+ 
+@@ -470,7 +470,7 @@ static int lp50xx_probe_dt(struct lp50xx *priv)
+ 		led = &priv->leds[i];
+ 		ret = fwnode_property_count_u32(child, "reg");
+ 		if (ret < 0) {
+-			dev_err(&priv->client->dev, "reg property is invalid\n");
++			dev_err(priv->dev, "reg property is invalid\n");
+ 			goto child_out;
+ 		}
+ 
+@@ -520,12 +520,11 @@ static int lp50xx_probe_dt(struct lp50xx *priv)
+ 		led_cdev = &led->mc_cdev.led_cdev;
+ 		led_cdev->brightness_set_blocking = lp50xx_brightness_set;
+ 
+-		ret = devm_led_classdev_multicolor_register_ext(&priv->client->dev,
++		ret = devm_led_classdev_multicolor_register_ext(priv->dev,
+ 						       &led->mc_cdev,
+ 						       &init_data);
+ 		if (ret) {
+-			dev_err(&priv->client->dev, "led register err: %d\n",
+-				ret);
++			dev_err(priv->dev, "led register err: %d\n", ret);
+ 			goto child_out;
+ 		}
+ 		i++;
+@@ -588,15 +587,14 @@ static int lp50xx_remove(struct i2c_client *client)
+ 
+ 	ret = lp50xx_enable_disable(led, 0);
+ 	if (ret) {
+-		dev_err(&led->client->dev, "Failed to disable chip\n");
++		dev_err(led->dev, "Failed to disable chip\n");
+ 		return ret;
+ 	}
+ 
+ 	if (led->regulator) {
+ 		ret = regulator_disable(led->regulator);
+ 		if (ret)
+-			dev_err(&led->client->dev,
+-				"Failed to disable regulator\n");
++			dev_err(led->dev, "Failed to disable regulator\n");
+ 	}
+ 
+ 	mutex_destroy(&led->lock);
+-- 
+2.51.0
+
 
