@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-204593-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204594-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 938C8CF2B57
-	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 10:23:08 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BF0BCF2BDB
+	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 10:27:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id EC33830019E6
-	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 09:23:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3EB803022A90
+	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 09:24:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF45B328631;
-	Mon,  5 Jan 2026 09:23:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E906328631;
+	Mon,  5 Jan 2026 09:24:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wnO2xze0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TM4zrwxX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B4C0313534
-	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 09:23:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E08EA2E173D
+	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 09:24:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767604986; cv=none; b=LDYaFhZgbQiTupORpz/kYeGa+bbzQedJ1/LHgS60ce/N/L1Hw8tDeRwyr4nXfQ9FdnVH8HP9PGhoixxKeagm3mqVB1NKuVV5ZF/EMEwqpstANzWm13HtFCtgRWVugR7w6xPaCc7cSohvg6e9nJfRNIBrc0k4SkuESpbcixgmGXU=
+	t=1767605075; cv=none; b=T9c6LCnGQ7WuMxSWBZyCAQ89INAukFZt1R6iNkjpyndg9esrYeg8j5c0RvxFc2mYfdFwl8hzybLOtajJNWzWHSYjkIAbXpaZ8SS3Xq5ylQ48OUg4bRNH2ZthvhwZIkn2H3AvfdXeTOlvVE75KpmSg+7MMbjGnhS3i33nEqMbOSY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767604986; c=relaxed/simple;
-	bh=LzwTvoBgmVcjhCrj7TQRVQ/WJIJ8oow5qXi3cMFxF+M=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=GzcJELw2cAf50A3za/5OxeeVPAkD//Os7pz5/G/Wsx3zfQfQHPo0JlZs8YIExM+U22q4FyOPKfreuHSGCQwJ4LCr5l6CweeIaBFuLoWV55owJV62Mon+ucDx4ym4QU2/fVa83EYvIC9Dczr8+NoOCsd+pfRQYTh/M1fBr5irmZ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wnO2xze0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60098C116D0;
-	Mon,  5 Jan 2026 09:23:05 +0000 (UTC)
+	s=arc-20240116; t=1767605075; c=relaxed/simple;
+	bh=dVb+Dqr7CqLBW1yy9j35Zfgvou0vL8V6voo/e47gEc4=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=JiMoBXWMUIOLAUcGr3GvZc2qSSXTgWVhgCv1pcZCFAxEt5yNavMNM5S0YoTXcSpVJdJ54SgyM9hAstttK5kEVEzRaZXTHkN2Nyp4Qhvuj0UrDNGmV7f3lJqj101uK9TCxgJMgUN0R/YyaRV8NQ5rpOUBJjECEtm7u/yvAfF6alo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TM4zrwxX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D69D7C116D0;
+	Mon,  5 Jan 2026 09:24:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767604985;
-	bh=LzwTvoBgmVcjhCrj7TQRVQ/WJIJ8oow5qXi3cMFxF+M=;
+	s=korg; t=1767605074;
+	bh=dVb+Dqr7CqLBW1yy9j35Zfgvou0vL8V6voo/e47gEc4=;
 	h=Subject:To:Cc:From:Date:From;
-	b=wnO2xze0KGvnku1RxYGhS8EOx31Xiq93I7fgqgBtWXYcIzBzpqDVhuhrtnPVXfDR1
-	 Go6YDlu1FS6tt2PU6EALh+sjN5ONAmMsngYwoiI3x/GWrNlYP0mTxjx746WQhQuX1a
-	 zLnIQ3RVgck+NpgJCwNtXeeIm/AanotafQ4/+Dvc=
-Subject: FAILED: patch "[PATCH] block: handle zone management operations completions" failed to apply to 6.12-stable tree
-To: dlemoal@kernel.org,axboe@kernel.dk,hare@suse.de,hch@lst.de,johannes.thumshirn@wdc.com,kch@nvidia.com,martin.petersen@oracle.com
+	b=TM4zrwxXIjszaNhqmApFBvEnKu3L2+x9wPlPbjv7elAhibyxp+Oz2q6awWwJe2Uvc
+	 /GC+FbswnOnkULLd183a8t+3wmYQUH68cQOe4kZbkJf1Xlb4ohyJaxcfyra/jkAgg3
+	 NRdDk8l1PkF2F2tAdLqy0EEGs/VLzPLH1eTSU9wE=
+Subject: FAILED: patch "[PATCH] ASoC: stm32: sai: fix clk prepare imbalance on probe failure" failed to apply to 6.1-stable tree
+To: johan@kernel.org,broonie@kernel.org,olivier.moysan@foss.st.com,olivier.moysan@st.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 05 Jan 2026 10:23:02 +0100
-Message-ID: <2026010502-speak-resubmit-7be4@gregkh>
+Date: Mon, 05 Jan 2026 10:24:31 +0100
+Message-ID: <2026010531-parole-sharpie-8fc0@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -51,19 +51,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.12-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x efae226c2ef19528ffd81d29ba0eecf1b0896ca2
+git cherry-pick -x 312ec2f0d9d1a5656f76d770bbf1d967e9289aa7
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026010502-speak-resubmit-7be4@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026010531-parole-sharpie-8fc0@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -75,269 +75,88 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From efae226c2ef19528ffd81d29ba0eecf1b0896ca2 Mon Sep 17 00:00:00 2001
-From: Damien Le Moal <dlemoal@kernel.org>
-Date: Wed, 5 Nov 2025 06:22:35 +0900
-Subject: [PATCH] block: handle zone management operations completions
+From 312ec2f0d9d1a5656f76d770bbf1d967e9289aa7 Mon Sep 17 00:00:00 2001
+From: Johan Hovold <johan@kernel.org>
+Date: Mon, 24 Nov 2025 11:49:06 +0100
+Subject: [PATCH] ASoC: stm32: sai: fix clk prepare imbalance on probe failure
 
-The functions blk_zone_wplug_handle_reset_or_finish() and
-blk_zone_wplug_handle_reset_all() both modify the zone write pointer
-offset of zone write plugs that are the target of a reset, reset all or
-finish zone management operation. However, these functions do this
-modification before the BIO is executed. So if the zone operation fails,
-the modified zone write pointer offsets become invalid.
+Make sure to unprepare the parent clock also on probe failures (e.g.
+probe deferral).
 
-Avoid this by modifying the zone write pointer offset of a zone write
-plug that is the target of a zone management operation when the
-operation completes. To do so, modify blk_zone_bio_endio() to call the
-new function blk_zone_mgmt_bio_endio() which in turn calls the functions
-blk_zone_reset_all_bio_endio(), blk_zone_reset_bio_endio() or
-blk_zone_finish_bio_endio() depending on the operation of the completed
-BIO, to modify a zone write plug write pointer offset accordingly.
-These functions are called only if the BIO execution was successful.
+Fixes: a14bf98c045b ("ASoC: stm32: sai: fix possible circular locking")
+Cc: stable@vger.kernel.org	# 5.5
+Cc: Olivier Moysan <olivier.moysan@st.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: olivier moysan <olivier.moysan@foss.st.com>
+Link: https://patch.msgid.link/20251124104908.15754-3-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 
-Fixes: dd291d77cc90 ("block: Introduce zone write plugging")
-Cc: stable@vger.kernel.org
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-
-diff --git a/block/blk-zoned.c b/block/blk-zoned.c
-index 5e2a5788dc3b..1621e8f78338 100644
---- a/block/blk-zoned.c
-+++ b/block/blk-zoned.c
-@@ -71,6 +71,11 @@ struct blk_zone_wplug {
- 	struct gendisk		*disk;
- };
- 
-+static inline unsigned int disk_zone_wplugs_hash_size(struct gendisk *disk)
-+{
-+	return 1U << disk->zone_wplugs_hash_bits;
-+}
-+
- /*
-  * Zone write plug flags bits:
-  *  - BLK_ZONE_WPLUG_PLUGGED: Indicates that the zone write plug is plugged,
-@@ -698,71 +703,91 @@ static int disk_zone_sync_wp_offset(struct gendisk *disk, sector_t sector)
- 					disk_report_zones_cb, &args);
- }
- 
--static bool blk_zone_wplug_handle_reset_or_finish(struct bio *bio,
--						  unsigned int wp_offset)
-+static void blk_zone_reset_bio_endio(struct bio *bio)
- {
- 	struct gendisk *disk = bio->bi_bdev->bd_disk;
--	sector_t sector = bio->bi_iter.bi_sector;
- 	struct blk_zone_wplug *zwplug;
--	unsigned long flags;
--
--	/* Conventional zones cannot be reset nor finished. */
--	if (!bdev_zone_is_seq(bio->bi_bdev, sector)) {
--		bio_io_error(bio);
--		return true;
--	}
- 
- 	/*
--	 * No-wait reset or finish BIOs do not make much sense as the callers
--	 * issue these as blocking operations in most cases. To avoid issues
--	 * the BIO execution potentially failing with BLK_STS_AGAIN, warn about
--	 * REQ_NOWAIT being set and ignore that flag.
--	 */
--	if (WARN_ON_ONCE(bio->bi_opf & REQ_NOWAIT))
--		bio->bi_opf &= ~REQ_NOWAIT;
--
--	/*
--	 * If we have a zone write plug, set its write pointer offset to 0
--	 * (reset case) or to the zone size (finish case). This will abort all
--	 * BIOs plugged for the target zone. It is fine as resetting or
--	 * finishing zones while writes are still in-flight will result in the
-+	 * If we have a zone write plug, set its write pointer offset to 0.
-+	 * This will abort all BIOs plugged for the target zone. It is fine as
-+	 * resetting zones while writes are still in-flight will result in the
- 	 * writes failing anyway.
- 	 */
--	zwplug = disk_get_zone_wplug(disk, sector);
-+	zwplug = disk_get_zone_wplug(disk, bio->bi_iter.bi_sector);
- 	if (zwplug) {
-+		unsigned long flags;
-+
- 		spin_lock_irqsave(&zwplug->lock, flags);
--		disk_zone_wplug_set_wp_offset(disk, zwplug, wp_offset);
-+		disk_zone_wplug_set_wp_offset(disk, zwplug, 0);
- 		spin_unlock_irqrestore(&zwplug->lock, flags);
- 		disk_put_zone_wplug(zwplug);
+diff --git a/sound/soc/stm/stm32_sai_sub.c b/sound/soc/stm/stm32_sai_sub.c
+index 0ae1eae2a59e..7a005b4ad304 100644
+--- a/sound/soc/stm/stm32_sai_sub.c
++++ b/sound/soc/stm/stm32_sai_sub.c
+@@ -1634,14 +1634,21 @@ static int stm32_sai_sub_parse_of(struct platform_device *pdev,
+ 	if (of_property_present(np, "#clock-cells")) {
+ 		ret = stm32_sai_add_mclk_provider(sai);
+ 		if (ret < 0)
+-			return ret;
++			goto err_unprepare_pclk;
+ 	} else {
+ 		sai->sai_mclk = devm_clk_get_optional(&pdev->dev, "MCLK");
+-		if (IS_ERR(sai->sai_mclk))
+-			return PTR_ERR(sai->sai_mclk);
++		if (IS_ERR(sai->sai_mclk)) {
++			ret = PTR_ERR(sai->sai_mclk);
++			goto err_unprepare_pclk;
++		}
  	}
--
--	return false;
+ 
+ 	return 0;
++
++err_unprepare_pclk:
++	clk_unprepare(sai->pdata->pclk);
++
++	return ret;
  }
  
--static bool blk_zone_wplug_handle_reset_all(struct bio *bio)
-+static void blk_zone_reset_all_bio_endio(struct bio *bio)
- {
- 	struct gendisk *disk = bio->bi_bdev->bd_disk;
- 	struct blk_zone_wplug *zwplug;
- 	unsigned long flags;
--	sector_t sector;
-+	unsigned int i;
- 
--	/*
--	 * Set the write pointer offset of all zone write plugs to 0. This will
--	 * abort all plugged BIOs. It is fine as resetting zones while writes
--	 * are still in-flight will result in the writes failing anyway.
--	 */
--	for (sector = 0; sector < get_capacity(disk);
--	     sector += disk->queue->limits.chunk_sectors) {
--		zwplug = disk_get_zone_wplug(disk, sector);
--		if (zwplug) {
-+	/* Update the condition of all zone write plugs. */
-+	rcu_read_lock();
-+	for (i = 0; i < disk_zone_wplugs_hash_size(disk); i++) {
-+		hlist_for_each_entry_rcu(zwplug, &disk->zone_wplugs_hash[i],
-+					 node) {
- 			spin_lock_irqsave(&zwplug->lock, flags);
- 			disk_zone_wplug_set_wp_offset(disk, zwplug, 0);
- 			spin_unlock_irqrestore(&zwplug->lock, flags);
--			disk_put_zone_wplug(zwplug);
- 		}
+ static int stm32_sai_sub_probe(struct platform_device *pdev)
+@@ -1688,26 +1695,33 @@ static int stm32_sai_sub_probe(struct platform_device *pdev)
+ 			       IRQF_SHARED, dev_name(&pdev->dev), sai);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "IRQ request returned %d\n", ret);
+-		return ret;
++		goto err_unprepare_pclk;
  	}
-+	rcu_read_unlock();
-+}
  
--	return false;
-+static void blk_zone_finish_bio_endio(struct bio *bio)
-+{
-+	struct block_device *bdev = bio->bi_bdev;
-+	struct gendisk *disk = bdev->bd_disk;
-+	struct blk_zone_wplug *zwplug;
-+
-+	/*
-+	 * If we have a zone write plug, set its write pointer offset to the
-+	 * zone size. This will abort all BIOs plugged for the target zone. It
-+	 * is fine as resetting zones while writes are still in-flight will
-+	 * result in the writes failing anyway.
-+	 */
-+	zwplug = disk_get_zone_wplug(disk, bio->bi_iter.bi_sector);
-+	if (zwplug) {
-+		unsigned long flags;
-+
-+		spin_lock_irqsave(&zwplug->lock, flags);
-+		disk_zone_wplug_set_wp_offset(disk, zwplug,
-+					      bdev_zone_sectors(bdev));
-+		spin_unlock_irqrestore(&zwplug->lock, flags);
-+		disk_put_zone_wplug(zwplug);
-+	}
-+}
-+
-+void blk_zone_mgmt_bio_endio(struct bio *bio)
-+{
-+	/* If the BIO failed, we have nothing to do. */
-+	if (bio->bi_status != BLK_STS_OK)
-+		return;
-+
-+	switch (bio_op(bio)) {
-+	case REQ_OP_ZONE_RESET:
-+		blk_zone_reset_bio_endio(bio);
-+		return;
-+	case REQ_OP_ZONE_RESET_ALL:
-+		blk_zone_reset_all_bio_endio(bio);
-+		return;
-+	case REQ_OP_ZONE_FINISH:
-+		blk_zone_finish_bio_endio(bio);
-+		return;
-+	default:
-+		return;
-+	}
- }
+ 	if (STM_SAI_PROTOCOL_IS_SPDIF(sai))
+ 		conf = &stm32_sai_pcm_config_spdif;
  
- static void disk_zone_wplug_schedule_bio_work(struct gendisk *disk,
-@@ -1106,6 +1131,30 @@ static void blk_zone_wplug_handle_native_zone_append(struct bio *bio)
- 	disk_put_zone_wplug(zwplug);
- }
- 
-+static bool blk_zone_wplug_handle_zone_mgmt(struct bio *bio)
-+{
-+	if (bio_op(bio) != REQ_OP_ZONE_RESET_ALL &&
-+	    !bdev_zone_is_seq(bio->bi_bdev, bio->bi_iter.bi_sector)) {
-+		/*
-+		 * Zone reset and zone finish operations do not apply to
-+		 * conventional zones.
-+		 */
-+		bio_io_error(bio);
-+		return true;
+ 	ret = snd_dmaengine_pcm_register(&pdev->dev, conf, 0);
+-	if (ret)
+-		return dev_err_probe(&pdev->dev, ret, "Could not register pcm dma\n");
++	if (ret) {
++		ret = dev_err_probe(&pdev->dev, ret, "Could not register pcm dma\n");
++		goto err_unprepare_pclk;
 +	}
-+
-+	/*
-+	 * No-wait zone management BIOs do not make much sense as the callers
-+	 * issue these as blocking operations in most cases. To avoid issues
-+	 * with the BIO execution potentially failing with BLK_STS_AGAIN, warn
-+	 * about REQ_NOWAIT being set and ignore that flag.
-+	 */
-+	if (WARN_ON_ONCE(bio->bi_opf & REQ_NOWAIT))
-+		bio->bi_opf &= ~REQ_NOWAIT;
-+
-+	return false;
-+}
-+
- /**
-  * blk_zone_plug_bio - Handle a zone write BIO with zone write plugging
-  * @bio: The BIO being submitted
-@@ -1153,12 +1202,9 @@ bool blk_zone_plug_bio(struct bio *bio, unsigned int nr_segs)
- 	case REQ_OP_WRITE_ZEROES:
- 		return blk_zone_wplug_handle_write(bio, nr_segs);
- 	case REQ_OP_ZONE_RESET:
--		return blk_zone_wplug_handle_reset_or_finish(bio, 0);
- 	case REQ_OP_ZONE_FINISH:
--		return blk_zone_wplug_handle_reset_or_finish(bio,
--						bdev_zone_sectors(bdev));
- 	case REQ_OP_ZONE_RESET_ALL:
--		return blk_zone_wplug_handle_reset_all(bio);
-+		return blk_zone_wplug_handle_zone_mgmt(bio);
- 	default:
- 		return false;
+ 
+ 	ret = snd_soc_register_component(&pdev->dev, &stm32_component,
+ 					 &sai->cpu_dai_drv, 1);
+ 	if (ret) {
+ 		snd_dmaengine_pcm_unregister(&pdev->dev);
+-		return ret;
++		goto err_unprepare_pclk;
  	}
-@@ -1332,11 +1378,6 @@ static void blk_zone_wplug_bio_work(struct work_struct *work)
- 	disk_put_zone_wplug(zwplug);
+ 
+ 	pm_runtime_enable(&pdev->dev);
+ 
+ 	return 0;
++
++err_unprepare_pclk:
++	clk_unprepare(sai->pdata->pclk);
++
++	return ret;
  }
  
--static inline unsigned int disk_zone_wplugs_hash_size(struct gendisk *disk)
--{
--	return 1U << disk->zone_wplugs_hash_bits;
--}
--
- void disk_init_zone_resources(struct gendisk *disk)
- {
- 	spin_lock_init(&disk->zone_wplugs_lock);
-diff --git a/block/blk.h b/block/blk.h
-index 32a10024efba..4d809588b771 100644
---- a/block/blk.h
-+++ b/block/blk.h
-@@ -489,9 +489,23 @@ static inline bool blk_req_bio_is_zone_append(struct request *rq,
- void blk_zone_write_plug_bio_merged(struct bio *bio);
- void blk_zone_write_plug_init_request(struct request *rq);
- void blk_zone_append_update_request_bio(struct request *rq, struct bio *bio);
-+void blk_zone_mgmt_bio_endio(struct bio *bio);
- void blk_zone_write_plug_bio_endio(struct bio *bio);
- static inline void blk_zone_bio_endio(struct bio *bio)
- {
-+	/*
-+	 * Zone management BIOs may impact zone write plugs (e.g. a zone reset
-+	 * changes a zone write plug zone write pointer offset), but these
-+	 * operation do not go through zone write plugging as they may operate
-+	 * on zones that do not have a zone write
-+	 * plug. blk_zone_mgmt_bio_endio() handles the potential changes to zone
-+	 * write plugs that are present.
-+	 */
-+	if (op_is_zone_mgmt(bio_op(bio))) {
-+		blk_zone_mgmt_bio_endio(bio);
-+		return;
-+	}
-+
- 	/*
- 	 * For write BIOs to zoned devices, signal the completion of the BIO so
- 	 * that the next write BIO can be submitted by zone write plugging.
+ static void stm32_sai_sub_remove(struct platform_device *pdev)
 
 
