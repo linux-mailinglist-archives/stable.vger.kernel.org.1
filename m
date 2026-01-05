@@ -1,134 +1,85 @@
-Return-Path: <stable+bounces-204751-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204752-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44457CF3912
-	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 13:40:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 55642CF3969
+	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 13:43:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A458C30386B3
-	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 12:36:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id ACCFA30A32EC
+	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 12:38:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C64E7331A62;
-	Mon,  5 Jan 2026 12:36:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AFEB314D24;
+	Mon,  5 Jan 2026 12:38:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dQT898oO"
 X-Original-To: stable@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5B213358C1
-	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 12:36:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B568A2F84F;
+	Mon,  5 Jan 2026 12:38:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767616570; cv=none; b=lRZr9Dr7azDW342G/PQg/9JDW7tKwN4O8QfzFYqW7H+SOoq5ee0jfu44IEoogfsskcsM2OaR86g9W5NqbjbVb5zXaK4iWwErR2WcN7pkbW2A37cYuxJEboE9ysBykWedKpi+iUHzvwuiaN82CrGTgABkkGMa5oIR7CvoNbye1z4=
+	t=1767616711; cv=none; b=ujnPFeVuwBARg7p4eT/DvqR36VGrzLaUIrfD1fo7DkvYvPT70bPZwJcpsxJ/1+XIEJpo3godIhp5fzQXALICiko253fL07Se+5LEOld8I3jylxtDlioMnmW/yMjoVNV4YAPufiyq/bgghIzJRSviSfYLxU1Du2sZhHjfb2dl8eY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767616570; c=relaxed/simple;
-	bh=3S6fQNA/wWHdvRZhbZbuHGkM+uaqMWeI6loF/BuCYCA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=A6VIiuPUQLuKR5kjsRLaYqAywQ3JzpdyRryhw8Y4YoF8h1zBpAnwCwouNtdrTTlToU5oVCxXwjbWp9ElTaWuneEJ1s00eIQZHdV8gXGzZTT/KFmJvIs7s+Rolx38i9AcA6+/zsJiLcoFhMNs++tcMBuTuyKu9nZUNz1a9i+q4nM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1vcjoV-0006qP-5Y; Mon, 05 Jan 2026 13:35:59 +0100
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1vcjoU-009Afx-38;
-	Mon, 05 Jan 2026 13:35:58 +0100
-Received: from hardanger.blackshift.org (p54b152ce.dip0.t-ipconnect.de [84.177.82.206])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id AD0BA4C6627;
-	Mon, 05 Jan 2026 12:35:58 +0000 (UTC)
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-Date: Mon, 05 Jan 2026 13:35:54 +0100
-Subject: [PATCH can v2] can: gs_usb: gs_usb_receive_bulk_callback(): fix
- URB memory leak
+	s=arc-20240116; t=1767616711; c=relaxed/simple;
+	bh=3QGOZEd+/aLMEPGQFvaYlD74k4dh6Zh7WBpe16eIi44=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=cgLQEuDoPnR4PLAxOGNEEFDGjCk/dQHR2ptItXZ0ZAeQt1yeDiviYkGffbwv7YwD9mg8j6IOl836iUdf6GFfdJxiWbVRDuvjB2CIfb9hUq/6yzLFZU+7aqH8mWu1iqyOz00hmbNRljj6W7tIsUJi2ydAG1HMGUDFBC+g1PNykMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dQT898oO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A67DC116D0;
+	Mon,  5 Jan 2026 12:38:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767616711;
+	bh=3QGOZEd+/aLMEPGQFvaYlD74k4dh6Zh7WBpe16eIi44=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=dQT898oOvvcnTcLYMEfDwVemX8VmvqaET/imVvIuspha7UFME7xp/XoMH4N0IrY3r
+	 0QFrFA2FewZ/8Gl9y7KpfBxHz/1lmZddnOk/ZrhxyGsDAXhJRrHX7v9OJnQnPOJXju
+	 2kJcVbbbfGVxrlcnB9aXcbn7cXWyExl2Ra8fOdtJ1yfzHVqJB8VNJf+4I3PKNIj5lP
+	 06yaQoolkeo74Cs3vK6AFl8IEyNmBAqGX18CHDMWI5KoVJ3ybkl32zwcchsh19X5Pv
+	 ynDBGhjm+FGouwxcgmg5IXU9dQjoCf71dkSooUEGeYMM3HcOA6nz+kuT68G/xWrEgp
+	 sEZoQflqHzRig==
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260105-gs_usb-fix-memory-leak-v2-1-cc6ed6438034@pengutronix.de>
-X-B4-Tracking: v=1; b=H4sIACmwW2kC/4WNUQ6CMBBEr0L22zVtIwJ+eQ9DTGlXqEohXSAYw
- t0teAA/Z/LmzQJMwRHDJVkg0OTYdT4GdUjANNrXhM7GDEqoVCqVYs33kSt8uBlbarvwwTfpF4q
- zMuqUF7kxBcRxHygiu/gGRnsofyWP1ZPMsCk3rHE8RMd+P8kd/vc0SZSos0oUlAkrpL325OtxC
- J1389ESlOu6fgGRNkrT2AAAAA==
-X-Change-ID: 20251225-gs_usb-fix-memory-leak-062c24898cc9
-To: Vincent Mailhol <mailhol@kernel.org>
-Cc: kernel@pengutronix.de, linux-can@vger.kernel.org, 
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
- Marc Kleine-Budde <mkl@pengutronix.de>
-X-Mailer: b4 0.15-dev-47773
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1769; i=mkl@pengutronix.de;
- h=from:subject:message-id; bh=3S6fQNA/wWHdvRZhbZbuHGkM+uaqMWeI6loF/BuCYCA=;
- b=owEBbQGS/pANAwAKAQx0Zd/5kJGcAcsmYgBpW7ArP9SKnqUJwnmwFAHDJwUeqwTkIrTMuzKJ+
- rCEP4E4gfKJATMEAAEKAB0WIQSf+wzYr2eoX/wVbPMMdGXf+ZCRnAUCaVuwKwAKCRAMdGXf+ZCR
- nLBwB/4vYuZO+uOkwme7QuiGATLdcX/FjLP8evzu44vzBWXYIndMPE6zMJOgvOjXc8Tamfc+e4K
- Oom2n0mUgzW85qkfilpQvu7AoNzeD11NWppWx2QjsqMgYaBGlcM7f3bdb9wtS/6YcyyphxDzeJX
- Ot10qJBO8yF2aJKOjY91H6F7tkna+AVY9+LGma+5M8fOwi5E1hNYQRrS4i5gAhU3Sd9LZJx2Kvn
- k4KIZSLBPBUFNX0a9qwYCoEmlOUs9qtk69SZqjDWPqcZknoNPfLHgg5h6MlDKY8yBkJSna+xKC7
- YmRa0yQaybY+ix+EH64skc1SoXK1DriTfA+TbJsQQyj992A4
-X-Developer-Key: i=mkl@pengutronix.de; a=openpgp;
- fpr=C1400BA0B3989E6FBC7D5B5C2B5EE211C58AEA54
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: stable@vger.kernel.org
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 05 Jan 2026 13:38:27 +0100
+Message-Id: <DFGNTT6HB593.2C2IGNSHV9B82@kernel.org>
+Subject: Re: [PATCH 2/2] rust: pci: fix typo in Bar struct's comment
+Cc: "Greg KH" <gregkh@linuxfoundation.org>, <sashal@kernel.org>, "Marko
+ Turk" <mt@markoturk.info>, "Dirk Behme" <dirk.behme@gmail.com>,
+ <dirk.behme@de.bosch.com>, <linux-pci@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
+ <stable@vger.kernel.org>
+To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20260103143119.96095-1-mt@markoturk.info>
+ <20260103143119.96095-2-mt@markoturk.info>
+ <DFF23OTZRIDS.2PZIV7D8AHWFA@kernel.org>
+ <84cc5699-f9ab-42b3-a1ea-15bf9bd80d19@gmail.com>
+ <aVmHGBop5OPlVVBa@vps.markoturk.info>
+ <CANiq72=t-U8JTH2JZxkQaW7sbYXjWLpkYkuMd_CuzLoJLbEvgQ@mail.gmail.com>
+ <DFFV41VPS2MU.3LHXU4UKITD0U@kernel.org>
+ <CANiq72=fFZpWJ9BvHEBqi4chZO3rFo8+-F9=myW1f_JzJ0PNrg@mail.gmail.com>
+ <2026010520-quickness-humble-70db@gregkh>
+ <CANiq72nrPiTmuFStm5fmOZZM8e_4TGHFyC_77+cSqPp8yC8nUQ@mail.gmail.com>
+In-Reply-To: <CANiq72nrPiTmuFStm5fmOZZM8e_4TGHFyC_77+cSqPp8yC8nUQ@mail.gmail.com>
 
-In gs_can_open(), the URBs for USB-in transfers are allocated, added to the
-parent->rx_submitted anchor and submitted. In the complete callback
-gs_usb_receive_bulk_callback(), the URB is processed and resubmitted. In
-gs_can_close() the URBs are freed by calling
-usb_kill_anchored_urbs(parent->rx_submitted).
+On Mon Jan 5, 2026 at 11:39 AM CET, Miguel Ojeda wrote:
+> On my side, I am happy either way -- what I currently do is explicitly ta=
+g the
+> ones that appear in docs. That way you can decide on your side.
 
-However, this does not take into account that the USB framework
-unanchors the URB before the close function is called. This means that
-once an in-URB has been completed, it is no longer anchored and is
-ultimately not released in gs_can_close().
+This is how I handle it as well. For doc-comments I request a Fixes: tag to=
+ be
+added and leave it to the stable team to decide.
 
-Fix the memory leak by anchoring the URB in the
-gs_usb_receive_bulk_callback() to the parent->rx_submitted anchor.
-
-Fixes: d08e973a77d1 ("can: gs_usb: Added support for the GS_USB CAN devices")
-Cc: stable@vger.kernel.org
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
----
-Changes in v2:
-- correct "Fixes" tag
-- add stable@v.k.o on Cc
-- Link to v1: https://patch.msgid.link/20251225-gs_usb-fix-memory-leak-v1-1-a7b09e70d01d@pengutronix.de
----
- drivers/net/can/usb/gs_usb.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/drivers/net/can/usb/gs_usb.c b/drivers/net/can/usb/gs_usb.c
-index a0233e550a5a..d093babbc320 100644
---- a/drivers/net/can/usb/gs_usb.c
-+++ b/drivers/net/can/usb/gs_usb.c
-@@ -751,6 +751,8 @@ static void gs_usb_receive_bulk_callback(struct urb *urb)
- 			  hf, parent->hf_size_rx,
- 			  gs_usb_receive_bulk_callback, parent);
- 
-+	usb_anchor_urb(urb, &parent->rx_submitted);
-+
- 	rc = usb_submit_urb(urb, GFP_ATOMIC);
- 
- 	/* USB failure take down all interfaces */
-
----
-base-commit: 1806d210e5a8f431ad4711766ae4a333d407d972
-change-id: 20251225-gs_usb-fix-memory-leak-062c24898cc9
-
-Best regards,
---  
-Marc Kleine-Budde <mkl@pengutronix.de>
-
+Unless explicitly requested by the stable team (which obviously did not hap=
+pen
+so far) I do not send separate backport patches for typos when the upstream
+commit does not apply though.
 
