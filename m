@@ -1,56 +1,89 @@
-Return-Path: <stable+bounces-204923-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204928-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9523ECF5941
-	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 21:54:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 26A6ACF59A5
+	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 22:05:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0C1D830734EF
-	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 20:54:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5D20B307D45A
+	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 21:05:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE7D3280A52;
-	Mon,  5 Jan 2026 20:54:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE4182D9784;
+	Mon,  5 Jan 2026 21:05:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Sfgcwi8Y"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ku+JMIuR"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FA8E207A32
-	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 20:54:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D28D27F017
+	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 21:05:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767646469; cv=none; b=tou5aMYnZu0b3R5um5LHgGFnIIBrL6egQ6e10NF84ZVDPmyw/gU6no7Y8z4Vr1/00YLWpodCy8mbkHkhEZlmOw4JQixIx6GX/dE0y95Af/Ei14tIpqAgMCPtNmFcklXPw5Ti5mlASRV63ccXNR+d3F+AfM0nVg2JySWrm7EDEnA=
+	t=1767647152; cv=none; b=K4l3hVKsOuIrMHicg8C8O8fFdPgcRse7iUEwcyDhj7LoMQqGGWLg/cwhmFHCbcuvF3kvGx9v2kNX4rqKQ08PFSLcXSWdQ8+oYNL//Ldd/Rjo6e+71XLC80EOjxuikHmKt1ispp4C1QdmAOzfC0fxiXZ7cqOHhOT+heE+UVX3Z+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767646469; c=relaxed/simple;
-	bh=RkbwfKy0+fiKqh28GDPVoHtIQf6dL/nOS4+sZS/E1A4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hB2ShT8jDJV4yzGaQ/5uhd79QXFJtYga9s+tifwkwrDEolT68Y0DfT3miCTnmjMplw76kBFmY0a7a2g45/ILJva8y/KJ76QpuVE/jkSvakJjb5Rz6cmBxVsoiVUI4ROzXYHhIevLdz1/6DtFu3WNitk3t7/Y+pKB20S7FSoCkn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Sfgcwi8Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98A23C116D0;
-	Mon,  5 Jan 2026 20:54:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767646469;
-	bh=RkbwfKy0+fiKqh28GDPVoHtIQf6dL/nOS4+sZS/E1A4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Sfgcwi8YxjCZezR4NVXKOby+stRY9oCEe1MNikAKSAIyL13UYJ59bhyzm5qP8psYT
-	 Y6skdWNTrrhGGCVlPYVsImhK94R5OUFNsnJ4henfuVe1yKHKoZpjRMWRuifAy0sbLw
-	 8dIrW+j3yWsVbXxm3dWp96hzXwcJqZGkHg8tKEHzCTtPzSnRlOt76lvA8sYuaeNq7f
-	 o9tvwUez0Y7AgY10vN/TPKsRD6nb12pq9Ent8SjHTGjl5sr32qy+6YBi6YlYevSNxx
-	 SzBGqGZ2+7LQROstr7tM2t21Aa7qRbYw12EtSOAtpLqItm2H8Fv5Ltk67Hvatet6vE
-	 bFfJ6ckkD1J7A==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Nicolas Dufresne <nicolas.dufresne@collabora.com>,
-	Benjamin Gaignard <benjamin.gaignard@collabora.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y] media: verisilicon: Protect G2 HEVC decoder against invalid DPB index
-Date: Mon,  5 Jan 2026 15:54:26 -0500
-Message-ID: <20260105205426.2793242-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026010511-molasses-woven-927b@gregkh>
-References: <2026010511-molasses-woven-927b@gregkh>
+	s=arc-20240116; t=1767647152; c=relaxed/simple;
+	bh=DYutQNrGgwXioiun8+u6ap8SX04u9tbSx/6VE5md44I=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rbUbW2rGLBeuoVHXhqWp5abSGWTMDbs+8zs4Wd7H9Bly+ZANKSckTAISXoWOn2jqvGqx0uFFjldIT8WsTXC9ONZ5qmHFdDRKM3isI15P2oKwLKQt4Erv6WL7ivbfI8fIqozgipA1L+GSF2aE9mhXSrLwEwYB8GksodXM0l/AsIU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ku+JMIuR; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-47797676c62so556025e9.1
+        for <stable@vger.kernel.org>; Mon, 05 Jan 2026 13:05:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1767647149; x=1768251949; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ExRvh8gizlzCosztwzGXJoboDd+Ig4VaE8sOE6jME08=;
+        b=Ku+JMIuRXXN36vx+hTdo6UdaBePSUHw2TfXZDbKwmV+cRYVSrHwlCxD0+pldU/RoTd
+         +8r9TEXSC/OWD6mbu+kO+cOf1CP0WEx2heL1S3yKhvDbeZQlDomSoFC6nBR/yzE7Sq+9
+         oXosVwv/r1NAsSAK2xeWm9dpCbJ1pPClWxEXFdn80JZqzTj36kQOvISMZ004OQA1NDtP
+         6++Yf/3oN0UP26UJSsgrHO7wa/R3AhUthX1r629TA5HQ7AphZmt8A8dB2iNkywRn3vYP
+         PVhbBPw37HdzIFmFkrr0KlaWqxVmoaVQXNRA9II97EmGh//nopYxI4pBo4yqD+PJVD5C
+         IGNg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767647149; x=1768251949;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ExRvh8gizlzCosztwzGXJoboDd+Ig4VaE8sOE6jME08=;
+        b=np9utPUyEuKlzRmlzORRnqHXtRxCq+f7fKRYAkH3s0VGuwgNHgXyKzv2rNg6dye/NX
+         ZseTkPWezb1kc97Vb2TfcyVbNx/qabDMWf83QFBzqR09hzm7zGbsh6rZOg8VeqUFHhdg
+         imG7d0cb8o1rvEdj567ebTy6uV6Om29ABKhVYng4D8DA23qIq1utCHfYHj6/AJOYDLrk
+         kV8Qry88+9kEFN2p6X3/z1/x02kSLV3rUwUxMZy5BYBHxltiznwapvHxLMzRRY7pThx5
+         QMBYKaET0GhhNDp+ifd2nrV8lL7RRmM1l+HtCksVaY8FAU0wdFbw/IVdAGvXyDuHfEbe
+         IyQg==
+X-Forwarded-Encrypted: i=1; AJvYcCXXo1NOS3pPoDbYda5dhS76GAkP6Cpbc0aY2g8ZCPBy4wyCERQT+CFeRgmLJIW+qJBsqo6qpg8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwpF0U/2ezdCVQQKt5UQ17JubSAes1gQnUBmJBDoiBYNH5D+VbG
+	5wyEm0F7ABqD22/r97ZhPJcKof38M+4+uR4gPh+pV3AVDsNBsZ+Nl4Qh
+X-Gm-Gg: AY/fxX5CFkOJ9Pj5MNZRQ1hpO5bKkGD4D2I9MaVnDYrOKwqfCPS5EmViOUwnNONHnMK
+	d0IINoptBb1uzrfpJLPLE47ElqU7P8nI+Toshv3vL/17J13iDZY7HExjVAKpeg135G5lVyX206V
+	wME9/oPwlshXWO3p8FJvKpCV4cdx87ajVOXdRUDuiDZsE+D3Ff1+zS7/E4oEAmqJF8PSYs3KC3q
+	QqtZx4boJzH2F/pHdslsUrJJRhkzrbTgeaHr7/671SMWViVclI9odTCKJXE2kwla558J0Y2yiPi
+	KzjXjz4Dlb/Zv7wnwGp++1NQzH1z53tqaMJoeMPhpxVgaiWE/WtBnajJOMtDgn8lvpip1nRkNQF
+	gs95oYuiEZTAxjPAgYAUirS+KGK4QqDdnHbZTqaJy2K0Sew9fJcI6AR0V3UWrIUQKeQoFMnlDYF
+	YNcucUBkpeubj04ZWWxiXhj+aLJEyR6fdsKy4=
+X-Google-Smtp-Source: AGHT+IFjVV5YYWM1Hac/Fy7//KMT/cxXD4H8sP8nsBaJZGJr9obOAP5rEPdrJ+zyBeOpMLvhACyeFw==
+X-Received: by 2002:a05:600c:1f94:b0:47d:3ffb:39ed with SMTP id 5b1f17b1804b1-47d7f09cca9mr5148485e9.4.1767647149186;
+        Mon, 05 Jan 2026 13:05:49 -0800 (PST)
+Received: from thomas-precision3591.. ([2a0d:e487:144e:5eef:4e0a:3841:cee5:ead8])
+        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-432bd5df939sm535579f8f.21.2026.01.05.13.05.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 05 Jan 2026 13:05:48 -0800 (PST)
+From: Thomas Fourier <fourier.thomas@gmail.com>
+To: 
+Cc: Thomas Fourier <fourier.thomas@gmail.com>,
+	stable@vger.kernel.org,
+	Jeff Johnson <jjohnson@kernel.org>,
+	Kalle Valo <kvalo@qca.qualcomm.com>,
+	Govind Singh <govinds@qti.qualcomm.com>,
+	linux-wireless@vger.kernel.org,
+	ath10k@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net] wifi: ath10k: fix dma_free_coherent() pointer
+Date: Mon,  5 Jan 2026 22:04:38 +0100
+Message-ID: <20260105210439.20131-2-fourier.thomas@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -59,64 +92,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+dma_alloc_coherent() allocates a DMA mapped buffer and stores the
+addresses in XXX_unaligned fields.  Those should be reused when freeing
+the buffer rather than the aligned addresses.
 
-[ Upstream commit 47825b1646a6a9eca0f90baa3d4f98947c2add96 ]
-
-Fix the Hantro G2 HEVC decoder so that we use DPB index 0 whenever a
-ninvalid index is received from user space. This protects the hardware
-from doing faulty memory access which then leads to bus errors.
-
-To be noted that when a reference is missing, userspace such as GStreamer
-passes an invalid DPB index of 255. This issue was found by seeking to a
-CRA picture using GStreamer. The framework is currently missing the code
-to skip over RASL pictures placed after the CRA. This situation can also
-occur while doing live streaming over lossy transport.
-
-Fixes: cb5dd5a0fa518 ("media: hantro: Introduce G2/HEVC decoder")
-Cc: stable@vger.kernel.org
-Reviewed-by: Benjamin Gaignard <benjamin.gaignard@collabora.com>
-Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 2a1e1ad3fd37 ("ath10k: Add support for 64 bit ce descriptor")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
 ---
- drivers/staging/media/hantro/hantro_g2_hevc_dec.c | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ drivers/net/wireless/ath/ath10k/ce.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/staging/media/hantro/hantro_g2_hevc_dec.c b/drivers/staging/media/hantro/hantro_g2_hevc_dec.c
-index bcdfa359de7f..618029926a21 100644
---- a/drivers/staging/media/hantro/hantro_g2_hevc_dec.c
-+++ b/drivers/staging/media/hantro/hantro_g2_hevc_dec.c
-@@ -264,6 +264,15 @@ static void set_params(struct hantro_ctx *ctx)
- 	hantro_reg_write(vpu, &g2_apf_threshold, 8);
- }
- 
-+static u32 get_dpb_index(const struct v4l2_ctrl_hevc_decode_params *decode_params,
-+			 const u32 index)
-+{
-+	if (index > decode_params->num_active_dpb_entries)
-+		return 0;
-+
-+	return index;
-+}
-+
- static void set_ref_pic_list(struct hantro_ctx *ctx)
- {
- 	const struct hantro_hevc_dec_ctrls *ctrls = &ctx->hevc_dec.ctrls;
-@@ -336,8 +345,10 @@ static void set_ref_pic_list(struct hantro_ctx *ctx)
- 		list1[j++] = list1[i++];
- 
- 	for (i = 0; i < V4L2_HEVC_DPB_ENTRIES_NUM_MAX; i++) {
--		hantro_reg_write(vpu, &ref_pic_regs0[i], list0[i]);
--		hantro_reg_write(vpu, &ref_pic_regs1[i], list1[i]);
-+		hantro_reg_write(vpu, &ref_pic_regs0[i],
-+				 get_dpb_index(decode_params, list0[i]));
-+		hantro_reg_write(vpu, &ref_pic_regs1[i],
-+				 get_dpb_index(decode_params, list1[i]));
+diff --git a/drivers/net/wireless/ath/ath10k/ce.c b/drivers/net/wireless/ath/ath10k/ce.c
+index 7bbda46cfd93..82f120ee1c66 100644
+--- a/drivers/net/wireless/ath/ath10k/ce.c
++++ b/drivers/net/wireless/ath/ath10k/ce.c
+@@ -1727,8 +1727,8 @@ static void _ath10k_ce_free_pipe(struct ath10k *ar, int ce_id)
+ 				  (ce_state->src_ring->nentries *
+ 				   sizeof(struct ce_desc) +
+ 				   CE_DESC_RING_ALIGN),
+-				  ce_state->src_ring->base_addr_owner_space,
+-				  ce_state->src_ring->base_addr_ce_space);
++				  ce_state->src_ring->base_addr_owner_space_unaligned,
++				  ce_state->src_ring->base_addr_ce_space_unaligned);
+ 		kfree(ce_state->src_ring);
  	}
- }
+ 
+@@ -1737,8 +1737,8 @@ static void _ath10k_ce_free_pipe(struct ath10k *ar, int ce_id)
+ 				  (ce_state->dest_ring->nentries *
+ 				   sizeof(struct ce_desc) +
+ 				   CE_DESC_RING_ALIGN),
+-				  ce_state->dest_ring->base_addr_owner_space,
+-				  ce_state->dest_ring->base_addr_ce_space);
++				  ce_state->dest_ring->base_addr_owner_space_unaligned,
++				  ce_state->dest_ring->base_addr_ce_space_unaligned);
+ 		kfree(ce_state->dest_ring);
+ 	}
+ 
+@@ -1758,8 +1758,8 @@ static void _ath10k_ce_free_pipe_64(struct ath10k *ar, int ce_id)
+ 				  (ce_state->src_ring->nentries *
+ 				   sizeof(struct ce_desc_64) +
+ 				   CE_DESC_RING_ALIGN),
+-				  ce_state->src_ring->base_addr_owner_space,
+-				  ce_state->src_ring->base_addr_ce_space);
++				  ce_state->src_ring->base_addr_owner_space_unaligned,
++				  ce_state->src_ring->base_addr_ce_space_unaligned);
+ 		kfree(ce_state->src_ring);
+ 	}
+ 
+@@ -1768,8 +1768,8 @@ static void _ath10k_ce_free_pipe_64(struct ath10k *ar, int ce_id)
+ 				  (ce_state->dest_ring->nentries *
+ 				   sizeof(struct ce_desc_64) +
+ 				   CE_DESC_RING_ALIGN),
+-				  ce_state->dest_ring->base_addr_owner_space,
+-				  ce_state->dest_ring->base_addr_ce_space);
++				  ce_state->dest_ring->base_addr_owner_space_unaligned,
++				  ce_state->dest_ring->base_addr_ce_space_unaligned);
+ 		kfree(ce_state->dest_ring);
+ 	}
  
 -- 
-2.51.0
+2.43.0
 
 
