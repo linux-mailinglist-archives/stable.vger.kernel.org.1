@@ -1,242 +1,128 @@
-Return-Path: <stable+bounces-204750-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204758-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B97D3CF3B89
-	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 14:09:21 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46176CF3EE7
+	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 14:50:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0D427305D9B6
-	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 13:01:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0061F3169E0D
+	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 13:44:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C5D433AD90;
-	Mon,  5 Jan 2026 12:31:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="Bc2M7VaH"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6095833F8B4;
+	Mon,  5 Jan 2026 12:44:46 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE2813376A7
-	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 12:31:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD6EB33F398
+	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 12:44:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767616301; cv=none; b=ZfLFF/Pc0d27RSit71NTI4sEIp8CdKgFRh2qJ/Fy5lEheU3KOj0MfKLjUl+wyZ55oRF3Ix1MveuE9F4qNVhn4prYKL9gFWOzEtQvPH+VAjXv4eg87BacfBzVeQSTcbxKNu2JOTQzcjLkjQRmjRcbuZ0o8QjbnGW12K5iTfQxly0=
+	t=1767617086; cv=none; b=a0ZqkNoJJtaZmSSWmdI4/ZuipW1aRLX4F/NvsOP5YXwWrAHINVtMgHsPOWY8oh7qtfT/ahNICRo6+BoYZfVTMw5oX+3oS/ClDa6pVK6ItQgWyFy4zaTjatzsEy/UWARanq8t4Wza9xdugCYU6X2cEUZFoiej2YeawysI0gGXVJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767616301; c=relaxed/simple;
-	bh=rGEEZ95V6+M/i1YF/1tZgxeKtoKHGflfCQr5UDqK1Uo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kcXWXw+vg4wlRAH9azgfqEuqLH0b/8ovbNyOYnKfva6j+cLTpncsxl21g/orKRV2f4XdOoATwTbTBt904/heVwfleAbZiVsbET4DiD2PMq7L2vXfkesRpdCsfOTI5SCrqkNM+s36qZFpmG3OBWHCpooqu3oGHs+hruSOg2hRTYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=Bc2M7VaH; arc=none smtp.client-ip=209.85.128.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4779adb38d3so91825905e9.2
-        for <stable@vger.kernel.org>; Mon, 05 Jan 2026 04:31:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1767616296; x=1768221096; darn=vger.kernel.org;
-        h=in-reply-to:autocrypt:from:content-language:references:cc:to
-         :subject:user-agent:mime-version:date:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=rGEEZ95V6+M/i1YF/1tZgxeKtoKHGflfCQr5UDqK1Uo=;
-        b=Bc2M7VaHTeMf8wEQqn0C6EIevjCLKvAWWF2Y3TdYWfVtO+du3fUBFLs85l3a6cPojM
-         et+IETR7XJ2Y/X2PYXHVp6SzFIV3VWGXpDYwcLLo+pBtzbMjOaGWI4Ffqqo+l67/3Xq7
-         Q4x+cKNrZZlxfGOxEpWsK0dQEP6RbjgYGMqdBmLXM5kmInofmLuIxylfqeWybUlqL7pg
-         yWEOU3q5j40hzETvf1YBRgnGbC5NdOZS3rlo0/XOauKU4RF8Q9YT9hUeUKkz5c1omfMS
-         7NY1RAYCWa1qYyryKbXTuwBed6/7UNyH50F9oFCikU7TnJtY+wZXFMSKoqzvuFZIkhps
-         hCAA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767616296; x=1768221096;
-        h=in-reply-to:autocrypt:from:content-language:references:cc:to
-         :subject:user-agent:mime-version:date:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=rGEEZ95V6+M/i1YF/1tZgxeKtoKHGflfCQr5UDqK1Uo=;
-        b=RTmTRb+oACswzyklVT6YOPGJeyfvCStQhNknbJc9eNPT3LQy6sdh28IdSYqPOT/6ua
-         8XOPrhB6gN4vaaIjLPYwwL7wOe2/MLcbvrb8Ll9//32CKXzvlnr7NjekL+DaxeUlfgRo
-         2E3BRfCR53aOZWXk/k+5gr/T/X0YZ1SuPgsjHF3HNREJthwrGHIPN+IpidhpIjPQCfPq
-         2V2o3IYmKdiI1uuFVNVDP6pohpqbOFPYXbPF62+ZaQdxBvg1UW2v5Rw6w84VC6kkIJUu
-         r8s9iXd2CYIEGGWOTBbuDAM2fYuSKhCT3RImbhoem5QH+O7l8CTvW5cS36KOQYoeTSwB
-         o3Ng==
-X-Forwarded-Encrypted: i=1; AJvYcCWdje1RLBvA98hOFHQZGIMQu0LApAQ/IjCk6PjRA4olfsQzobNGv0Jd8oL6kRF0mglc3ohUr04=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzQQaGkRSP9cm3woO7NusKPEzHyBPFfgxmmHVC/dGw+ismEbZfA
-	lDpo9hT6Tam0U+3vufkE7y4jWbQti7azpFyzjvHOlfggkeO7kxhT7aqNBwMpqk3AhDc=
-X-Gm-Gg: AY/fxX4YIhNvpAgRuJglHOuup6F/2ZMlbmOUxEcvAiIgRkc1E9oa0JNtNyCftnZFJyW
-	Xx9ULtoIV8jlMbIEykzpJhCEYnl5dOH22+g5FeQXwwjwip28zzLn6J4GUdnM96c313XfNvCwyoZ
-	WdaYqcevQwtwloItxiyx5N2RDdEfDn98dHqDqy6ADpgCPLa6fvU9C5Vlx9YZQxe071Sa4AxsQz2
-	wx0KwPW8icDrh9UCexhPcgfqOCHTAAwH9h0ilDU5neF5p/2Zr3zpis0tQztScwouBiEduOXIJHl
-	1VN+rRT8E8lCSrKoCo3IGob5ez1Ydh/C3stQi/w0raIRN0QFrmE7pOc/sIBEyS7qvq3B4sZAh6c
-	vkdZTrMBmnLVdXRedp7F3BEqF15E59bFVKVo4rKJk4P+yoo+4SPmwoPrcbpMY+ndgEfOk/oNYpY
-	qfO7oz+tnsV5UdKMN0qLb/uoXK8l1iHLWO//6eDjexUXRlmYqOixoTrBmUMcb4GGH5qzI7T8vuV
-	jXt8F0QL2cnuGfdU4SGr+hBD2t1X/NXuqdykQk=
-X-Google-Smtp-Source: AGHT+IHJDiGO8drg4ZYGBJATctq186ma6rRJXaQSAy6VxKSZoMpGLRpPMYzlryZa8WpSL6qb/H592g==
-X-Received: by 2002:a05:600c:4447:b0:477:9a28:b0a4 with SMTP id 5b1f17b1804b1-47d194c6a2fmr565280845e9.0.1767616295958;
-        Mon, 05 Jan 2026 04:31:35 -0800 (PST)
-Received: from ?IPV6:2003:e5:8704:4800:66fd:131f:60bd:bc29? (p200300e58704480066fd131f60bdbc29.dip0.t-ipconnect.de. [2003:e5:8704:4800:66fd:131f:60bd:bc29])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47d6d1451f8sm154396385e9.5.2026.01.05.04.31.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 05 Jan 2026 04:31:35 -0800 (PST)
-Message-ID: <2cd0de6b-ebae-4542-ad84-a17ed9216d6b@suse.com>
-Date: Mon, 5 Jan 2026 13:31:34 +0100
+	s=arc-20240116; t=1767617086; c=relaxed/simple;
+	bh=4lhYeAVnDUcO7MjINejzeyEh1elj7BpTqDqq6DdfleY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XZ0EsMhy22Vf9xEBBec4oXI8GcskexVU1Q0ImbECOs4UTr99CTvGINHOyBi+poktYU/lX63dfUCddOkUzFgGvllHq3sQDvbZvTpkXOKDfRWiP14GsyvbDQMJQvtPKWCKKF8jO5UyFj3RUJP4kuyuw9UewinyrvczxyN7jQdgOBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1vcjws-0007qq-Uz; Mon, 05 Jan 2026 13:44:38 +0100
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1vcjws-009Agf-2Q;
+	Mon, 05 Jan 2026 13:44:38 +0100
+Received: from pengutronix.de (p54b152ce.dip0.t-ipconnect.de [84.177.82.206])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 6D9474C6647;
+	Mon, 05 Jan 2026 12:44:38 +0000 (UTC)
+Date: Mon, 5 Jan 2026 13:44:38 +0100
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: Vincent Mailhol <mailhol@kernel.org>
+Cc: kernel@pengutronix.de, linux-can@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH can v2] can: gs_usb: gs_usb_receive_bulk_callback(): fix
+ URB memory leak
+Message-ID: <20260105-sweet-fox-of-wholeness-5fc00d-mkl@pengutronix.de>
+References: <20260105-gs_usb-fix-memory-leak-v2-1-cc6ed6438034@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] xen/scsiback: fix potential memory leak in
- scsiback_remove()
-To: Abdun Nihaal <nihaal@cse.iitm.ac.in>
-Cc: sstabellini@kernel.org, oleksandr_tyshchenko@epam.com,
- linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20251223063012.119035-1-nihaal@cse.iitm.ac.in>
-Content-Language: en-US
-From: =?UTF-8?B?SsO8cmdlbiBHcm/Dnw==?= <jgross@suse.com>
-Autocrypt: addr=jgross@suse.com; keydata=
- xsBNBFOMcBYBCACgGjqjoGvbEouQZw/ToiBg9W98AlM2QHV+iNHsEs7kxWhKMjrioyspZKOB
- ycWxw3ie3j9uvg9EOB3aN4xiTv4qbnGiTr3oJhkB1gsb6ToJQZ8uxGq2kaV2KL9650I1SJve
- dYm8Of8Zd621lSmoKOwlNClALZNew72NjJLEzTalU1OdT7/i1TXkH09XSSI8mEQ/ouNcMvIJ
- NwQpd369y9bfIhWUiVXEK7MlRgUG6MvIj6Y3Am/BBLUVbDa4+gmzDC9ezlZkTZG2t14zWPvx
- XP3FAp2pkW0xqG7/377qptDmrk42GlSKN4z76ELnLxussxc7I2hx18NUcbP8+uty4bMxABEB
- AAHNH0p1ZXJnZW4gR3Jvc3MgPGpncm9zc0BzdXNlLmNvbT7CwHkEEwECACMFAlOMcK8CGwMH
- CwkIBwMCAQYVCAIJCgsEFgIDAQIeAQIXgAAKCRCw3p3WKL8TL8eZB/9G0juS/kDY9LhEXseh
- mE9U+iA1VsLhgDqVbsOtZ/S14LRFHczNd/Lqkn7souCSoyWsBs3/wO+OjPvxf7m+Ef+sMtr0
- G5lCWEWa9wa0IXx5HRPW/ScL+e4AVUbL7rurYMfwCzco+7TfjhMEOkC+va5gzi1KrErgNRHH
- kg3PhlnRY0Udyqx++UYkAsN4TQuEhNN32MvN0Np3WlBJOgKcuXpIElmMM5f1BBzJSKBkW0Jc
- Wy3h2Wy912vHKpPV/Xv7ZwVJ27v7KcuZcErtptDevAljxJtE7aJG6WiBzm+v9EswyWxwMCIO
- RoVBYuiocc51872tRGywc03xaQydB+9R7BHPzsBNBFOMcBYBCADLMfoA44MwGOB9YT1V4KCy
- vAfd7E0BTfaAurbG+Olacciz3yd09QOmejFZC6AnoykydyvTFLAWYcSCdISMr88COmmCbJzn
- sHAogjexXiif6ANUUlHpjxlHCCcELmZUzomNDnEOTxZFeWMTFF9Rf2k2F0Tl4E5kmsNGgtSa
- aMO0rNZoOEiD/7UfPP3dfh8JCQ1VtUUsQtT1sxos8Eb/HmriJhnaTZ7Hp3jtgTVkV0ybpgFg
- w6WMaRkrBh17mV0z2ajjmabB7SJxcouSkR0hcpNl4oM74d2/VqoW4BxxxOD1FcNCObCELfIS
- auZx+XT6s+CE7Qi/c44ibBMR7hyjdzWbABEBAAHCwF8EGAECAAkFAlOMcBYCGwwACgkQsN6d
- 1ii/Ey9D+Af/WFr3q+bg/8v5tCknCtn92d5lyYTBNt7xgWzDZX8G6/pngzKyWfedArllp0Pn
- fgIXtMNV+3t8Li1Tg843EXkP7+2+CQ98MB8XvvPLYAfW8nNDV85TyVgWlldNcgdv7nn1Sq8g
- HwB2BHdIAkYce3hEoDQXt/mKlgEGsLpzJcnLKimtPXQQy9TxUaLBe9PInPd+Ohix0XOlY+Uk
- QFEx50Ki3rSDl2Zt2tnkNYKUCvTJq7jvOlaPd6d/W0tZqpyy7KVay+K4aMobDsodB3dvEAs6
- ScCnh03dDAFgIq5nsB11j3KPKdVoPlfucX2c7kGNH+LUMbzqV6beIENfNexkOfxHfw==
-In-Reply-To: <20251223063012.119035-1-nihaal@cse.iitm.ac.in>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------BS4zf6rh8bgUAo5jqfw7uNk3"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="rvbbsombzbarg4ph"
+Content-Disposition: inline
+In-Reply-To: <20260105-gs_usb-fix-memory-leak-v2-1-cc6ed6438034@pengutronix.de>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: stable@vger.kernel.org
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------BS4zf6rh8bgUAo5jqfw7uNk3
-Content-Type: multipart/mixed; boundary="------------H7JcU5Hbi0Kcr1SADMo0ZUXx";
- protected-headers="v1"
-From: =?UTF-8?B?SsO8cmdlbiBHcm/Dnw==?= <jgross@suse.com>
-To: Abdun Nihaal <nihaal@cse.iitm.ac.in>
-Cc: sstabellini@kernel.org, oleksandr_tyshchenko@epam.com,
- linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Message-ID: <2cd0de6b-ebae-4542-ad84-a17ed9216d6b@suse.com>
-Subject: Re: [PATCH] xen/scsiback: fix potential memory leak in
- scsiback_remove()
-References: <20251223063012.119035-1-nihaal@cse.iitm.ac.in>
-In-Reply-To: <20251223063012.119035-1-nihaal@cse.iitm.ac.in>
 
---------------H7JcU5Hbi0Kcr1SADMo0ZUXx
-Content-Type: multipart/mixed; boundary="------------l5ApHduutsz64gc659VBCGlV"
-
---------------l5ApHduutsz64gc659VBCGlV
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
-
-T24gMjMuMTIuMjUgMDc6MzAsIEFiZHVuIE5paGFhbCB3cm90ZToNCj4gTWVtb3J5IGFsbG9j
-YXRlZCBmb3Igc3RydWN0IHZzY3NpYmxrX2luZm8gaW4gc2NzaWJhY2tfcHJvYmUoKSBpcyBu
-b3QNCj4gZnJlZWQgaW4gc2NzaWJhY2tfcmVtb3ZlKCkgbGVhZGluZyB0byBwb3RlbnRpYWwg
-bWVtb3J5IGxlYWtzIG9uIHJlbW92ZSwNCj4gYXMgd2VsbCBhcyBpbiB0aGUgc2NzaWJhY2tf
-cHJvYmUoKSBlcnJvciBwYXRocy4gRml4IHRoYXQgYnkgZnJlZWluZyBpdA0KPiBpbiBzY3Np
-YmFja19yZW1vdmUoKS4NCj4gDQo+IENjOiBzdGFibGVAdmdlci5rZXJuZWwub3JnDQo+IEZp
-eGVzOiBkOWQ2NjBmNmU1NjIgKCJ4ZW4tc2NzaWJhY2s6IEFkZCBYZW4gUFYgU0NTSSBiYWNr
-ZW5kIGRyaXZlciIpDQo+IFNpZ25lZC1vZmYtYnk6IEFiZHVuIE5paGFhbCA8bmloYWFsQGNz
-ZS5paXRtLmFjLmluPg0KDQpSZXZpZXdlZC1ieTogSnVlcmdlbiBHcm9zcyA8amdyb3NzQHN1
-c2UuY29tPg0KDQoNCkp1ZXJnZW4NCg==
---------------l5ApHduutsz64gc659VBCGlV
-Content-Type: application/pgp-keys; name="OpenPGP_0xB0DE9DD628BF132F.asc"
-Content-Disposition: attachment; filename="OpenPGP_0xB0DE9DD628BF132F.asc"
-Content-Description: OpenPGP public key
+--rvbbsombzbarg4ph
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH can v2] can: gs_usb: gs_usb_receive_bulk_callback(): fix
+ URB memory leak
+MIME-Version: 1.0
 
------BEGIN PGP PUBLIC KEY BLOCK-----
+On 05.01.2026 13:35:54, Marc Kleine-Budde wrote:
+> In gs_can_open(), the URBs for USB-in transfers are allocated, added to t=
+he
+> parent->rx_submitted anchor and submitted. In the complete callback
+> gs_usb_receive_bulk_callback(), the URB is processed and resubmitted. In
+> gs_can_close() the URBs are freed by calling
+> usb_kill_anchored_urbs(parent->rx_submitted).
+>
+> However, this does not take into account that the USB framework
+> unanchors the URB before the close function is called. This means that
+> once an in-URB has been completed, it is no longer anchored and is
+> ultimately not released in gs_can_close().
+>
+> Fix the memory leak by anchoring the URB in the
+> gs_usb_receive_bulk_callback() to the parent->rx_submitted anchor.
+>
+> Fixes: d08e973a77d1 ("can: gs_usb: Added support for the GS_USB CAN devic=
+es")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 
-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
-kt+z4drzFUyEjLM1vVvIMjkUoJs=3D
-=3DeeAB
------END PGP PUBLIC KEY BLOCK-----
+applied to linux-can
 
---------------l5ApHduutsz64gc659VBCGlV--
+Marc
 
---------------H7JcU5Hbi0Kcr1SADMo0ZUXx--
+--=20
+Pengutronix e.K.                 | Marc Kleine-Budde          |
+Embedded Linux                   | https://www.pengutronix.de |
+Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
+Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
 
---------------BS4zf6rh8bgUAo5jqfw7uNk3
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+--rvbbsombzbarg4ph
+Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-wsB5BAABCAAjFiEEhRJncuj2BJSl0Jf3sN6d1ii/Ey8FAmlbrycFAwAAAAAACgkQsN6d1ii/Ey9H
-DAgAhGPjvJZwV2cHYpUA7DWYbrEKPyZEXbXSobLe/5xeNkImsRKuAYOknAvdjKIS2SnjtIlTEDzh
-ecl75SWRWKXWOQLa6Gy5QsUnS7urIsfrlfWo1kW1QGqR3xvwF6JBVeBwZeQBCvu7C8sj+yWaA717
-ROCffzJ34eGVcZzDEiqrSEyqa4YF19m+cecLr25LXeGgT/8MK48JdilsG+zO8u7HbVfHurcXc4ci
-lQ92gBM90GWxWOkAjKEAjp/RfYVYj+lFsnLw037dWKU9YhnrItnIASiD2DuPc3WM5F27KttqNZUQ
-PzDwgd8FjoXeXh3HWg9pMJt1q5WFR/qxDlZyr5xr3g==
-=3fbZ
+iQEzBAABCgAdFiEEn/sM2K9nqF/8FWzzDHRl3/mQkZwFAmlbsjMACgkQDHRl3/mQ
+kZyFcgf+O5HOFnmXbM8w0r0pmN+9ZdH9k6DhL8wQX2I3pRv0TNQ0+BUJTsVJndyJ
+BPScPh2D44UJb3cegn7Qt4h4N9A5VG08b85tob00cDLCK+l52x/3XJ4JWpRAenSv
+8Ng4O2RGjmvKGJincvWUAoaaFnUBg129NpFWnDhdN6k6DO3sDkKm2JS2nxV0AR5o
+PvMuydLvcC7zIBMiIIC9du1Jvn3eF6mnZlVl4+TOIlYdCDNkCe3TAjp60KkETyVU
+uMjDXc1d3nqt7QDFKBsX4SfLmDZ/prIreks96h470ys6+aKcX/5vWx2oqh1zO39t
+HfLLKY9nwpRLI7C2U2cIf054eRUeMA==
+=hWfG
 -----END PGP SIGNATURE-----
 
---------------BS4zf6rh8bgUAo5jqfw7uNk3--
+--rvbbsombzbarg4ph--
 
