@@ -1,123 +1,188 @@
-Return-Path: <stable+bounces-204884-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204885-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B800BCF52B9
-	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 19:09:03 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6053CF5304
+	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 19:14:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 52A173045F4F
-	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 18:03:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D6B2B302D3A4
+	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 18:14:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E502322B6B;
-	Mon,  5 Jan 2026 18:03:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE59933BBD7;
+	Mon,  5 Jan 2026 18:14:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="PIxZNzZd"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LMS0fZK+"
 X-Original-To: stable@vger.kernel.org
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65AD12EE268;
-	Mon,  5 Jan 2026 18:03:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0496F31AA92
+	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 18:14:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767636229; cv=none; b=lzOLgIB34WxD0Ko2JTzRCm4DvC7bAb7sKX/01v97p9IFVaobzcoklDb+UPhM2VYgRQVIINFi7EIbbp9/owwNGOWK7g90o1Oi8sw2LzPjXvZVdf4tKn8oM7iYIX5l6SA0/WPK0MHgpq9MIM42Lr4VNHqSPRa66GzhBJzk7iybero=
+	t=1767636858; cv=none; b=oQ06CJWYUq+kV/jqFVQfhxzRhngerZHCBNot3RoXjpmpFO55eb59l1goZ7fg0AcO6JNirABpTaw9Lfw0IL1BaUky6LmelpFBJ/1d8MOQbHz/JvejS94XVQ+QXDlHTNcZfUYMEw+vhKlln08dXrcehU75g2QVpXdxivN7gFkAZQU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767636229; c=relaxed/simple;
-	bh=ZuqaS2J0jVOI/JnKtZE/N5VVqTj2FIgSKz/Mt6BAkBA=;
+	s=arc-20240116; t=1767636858; c=relaxed/simple;
+	bh=bqtNUILbm6lJat/9Xu0gpKiAI1RZvgXVDpApnTxDQMU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EjolfZQHENv2KYdkR1XHrqq1E4LqFcFImXGh97nIAnBtrE6gpXYhz2Z+j2kYndgEakvoOjMaMW1iJP1JUM8P2AxWsYOO+92frS1HkPgyV0T/CLlAxYBWQgExfm7+/8jbk6kDXv/DlVseZTV3AbUtZZQ3ekVq/8cPJJTBlPjc2VA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=PIxZNzZd; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
-	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=Z3DRnJt/taPDBXbjabnD73W8w7kKOKkOX1shpXCQdTo=; b=PIxZNzZd9T1vvpp/gtRqGTs/eU
-	KsUUAgnZHIT55HGCDU3bddRpbaezYw7FN7NE0eyh9qYEVhW/1c9Kt63WWdyl/RLP8xljWyT3UVdTm
-	xgFMBc/YVeSB4v/g9mBu1v46VWtX/Yz5oWniCO7QCMRIksTNaE8akDllG8ptfkxYEWdu0/v0H43cE
-	fMN6JUh+eLa8v6dFq9jWq4g1bfqXtdr1pY34z30aseIO57/+Kwd8Ge12tOA3W+lNIYSd1bcV9H12K
-	OC0K4XAaoifd252YuguZl68xstOQOGHl9NqLVgvFc1cQO4LNSwv8d9YwbR5t09WiMXQYJv86enM/b
-	fdGVozDw==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:46520)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1vcovX-000000008Ee-39SM;
-	Mon, 05 Jan 2026 18:03:35 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1vcovT-0000000083S-1TJx;
-	Mon, 05 Jan 2026 18:03:31 +0000
-Date: Mon, 5 Jan 2026 18:03:31 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Michael Chan <michael.chan@broadcom.com>
-Cc: Pavan Chebbi <pavan.chebbi@broadcom.com>,
-	Breno Leitao <leitao@debian.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
+	 Content-Type:Content-Disposition:In-Reply-To; b=phRiL+z5ujClaAAar/q1/oKkx0OzfRoJ8jqMNneFp7bgZHP7lFJATximpuKtLcUGLNPx5gxJNfraQU4jB5mJsEJv53YaNDcwSH2BN7GD8ExAbKcJRHBbX+3o03Dur6UOi2IVekF6mBZ0sXN38Hk+V2CSHvHfU5GgOMWWQu3FZgo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LMS0fZK+; arc=none smtp.client-ip=209.85.221.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-431048c4068so136127f8f.1
+        for <stable@vger.kernel.org>; Mon, 05 Jan 2026 10:14:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1767636855; x=1768241655; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:mail-followup-to:message-id:subject:cc:to
+         :from:date:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=/oP9O+J1jrunuk+Y661pj013SgRFAFyNbhxBfEwCmlA=;
+        b=LMS0fZK+OcvnH2SLJUlfefKr5m2N44kV8AVnzvzSavD+dOeuKvn0xwu6F0AKfW3qCu
+         r3dtXyUjGdpyFV8SvoZ0RU7u05UyCyiMV4BRB2bfaCmpddUGrbgE69Slr562+ULf3FRJ
+         gXc6VFYne2jdZb+1X/fZ/NbSn+b8xRQH5a692xPH2J2PpLt0+bb28Jk01n58fdWnphLv
+         Rpx9rMXDGWlL9q5buhbwk0MlNiIeJSPDNesd1H+6s6wD0l/MIOnIekqr65xF7jOHbp2r
+         8eWPLNcRX+dPpJUuNSDEf5+Jh6MNMkSAp268mq/MykE/K6P+4gPpOPi0B4NYitH21ekf
+         9uig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767636855; x=1768241655;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:mail-followup-to:message-id:subject:cc:to
+         :from:date:sender:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/oP9O+J1jrunuk+Y661pj013SgRFAFyNbhxBfEwCmlA=;
+        b=TrkmZahmaaSUCfgLU0ShYJYSyUSZ3YmgpCxbFMX/BKTQbdLfNwdx+oChHGzywztgM9
+         7wiYkn9goLHKzoxVstJ9vhcDS2sdpMX9NE+Mweic9OUarXU4biMnnZ0fSZzCiX/QfzPE
+         zjQfU83jC4+eZK06/cmJqIT72FUJVlYdkolgeMdxgpXvB6T2GC/K4x9aWRZLjPJEz3a/
+         EVWkhP4dOk4XBRmdcciXT9bAFEkZjmXamo/8DDu6lBFtOJBSIwpNIalafmq6OVRTQDMn
+         cDJ8nTsiqV1HV7Qrrvqz8MA6pkDOy7uf+ZaimekCTApu1adhmHh37x0fC8mX3gdn/XSy
+         dnIw==
+X-Forwarded-Encrypted: i=1; AJvYcCUENaCvRIrjPMv41QmpWLLLuuEct+0s0TS3nudRSEphR1HJmD4wvkQwlIIkW5V2yuy3Xi4zbl0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzRjLZx9jcmDbKhMP0wBjip+DAiQIiHdwTgYBEJLtjAurnpha0o
+	NYlIEzqjHC2UFFIcut8Df1CYbKsPNXQVl92ahNTyVWCljvVq0qmM7pfa
+X-Gm-Gg: AY/fxX5tnddSfcvsCmK86oi5TjbAk9kdomPfc6TCLCq9CHNq1Uu6FXpKhYYI+AHW2jN
+	TPgFzntoa+xtse/QWSXswFupGKvgGlCZFdgLAypXGSspJgdtn7j3KsH1VTE7AvN+zQu4sGMDCt+
+	ljc7o4kIJ8rogd55/E2ad97C3z1kHfOuJiW7KrpmqhrFfC5ScczAaQLu84UD57q+evKFkhzcI8Q
+	FzZJASjmOd8jJCiyb5fequdeTLlPC24UpTm7e8f5EBr56rq19xh36IJYqLtEIoNKgZCa1n3EU8q
+	lnTqyqd7ne2svUV7XvpytoUjxUlrjCXDDumknLrcGq0RJB3aj6pSuzbNVbKAFI1e/jHpHO+KvXx
+	j3fMQlYnx5L2bcoJ6zwy2GfSW3fBATdOYbIimpbHHafpD9zj58jDKEnckjIJPcasCQJAsPRih7z
+	2nzPvTcrVtUf+DCXDqBAIpBk/q1MJ743sCE/l8UvlgSGSkB4isMJtu98I=
+X-Google-Smtp-Source: AGHT+IE/WbbnXt6m79lszz8chS7NFY/jLDyt4rB9ShhndFA1aa1Z8u6f+/lIFkSh4Lfi6OF6YByoxQ==
+X-Received: by 2002:a05:6000:26ce:b0:430:f3bd:71f8 with SMTP id ffacd0b85a97d-432bcfde915mr70237f8f.25.1767636855046;
+        Mon, 05 Jan 2026 10:14:15 -0800 (PST)
+Received: from eldamar.lan (c-82-192-244-13.customer.ggaweb.ch. [82.192.244.13])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-432bca5a132sm688291f8f.39.2026.01.05.10.14.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 05 Jan 2026 10:14:14 -0800 (PST)
+Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
+Received: by eldamar.lan (Postfix, from userid 1000)
+	id 44C5FBE2EE7; Mon, 05 Jan 2026 19:14:13 +0100 (CET)
+Date: Mon, 5 Jan 2026 19:14:13 +0100
+From: Salvatore Bonaccorso <carnil@debian.org>
+To: Thorsten Leemhuis <regressions@leemhuis.info>
+Cc: Ben Hutchings <benh@debian.org>,
+	Roland Schwarzkopf <rschwarzkopf@mathematik.uni-marburg.de>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	David Ahern <dsahern@kernel.org>,
 	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>, debian-kernel@lists.debian.org,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, kernel-team@meta.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH net v2] bnxt_en: Fix NULL pointer crash in
- bnxt_ptp_enable during error cleanup
-Message-ID: <aVv885DfEfngQuZJ@shell.armlinux.org.uk>
-References: <20260105-bnxt-v2-1-9ac69edef726@debian.org>
- <aVu8xIfFrIIFqR0P@shell.armlinux.org.uk>
- <CALs4sv0s-cJqyK3Gn9X95o82==e8zGcaEeuLHns3VPJCo7v6rw@mail.gmail.com>
- <CACKFLi=WycRNcVu4xcxRE2X3_F=gRsWd+-Rr8k1M4P_k-6VwZg@mail.gmail.com>
+	Simon Horman <horms@kernel.org>,
+	Greg KH <gregkh@linuxfoundation.org>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	regressions@lists.linux.dev, 1124549@bugs.debian.org
+Subject: Re: [regression 5.10.y] Libvirt can no longer delete macvtap devices
+ after backport of a6cec0bcd342 ("net: rtnetlink: add bulk delete support
+ flag") to 5.10.y series (Debian 11)
+Message-ID: <aVv_dewfbbgQ5o0J@eldamar.lan>
+Mail-Followup-To: Thorsten Leemhuis <regressions@leemhuis.info>,
+	Ben Hutchings <benh@debian.org>,
+	Roland Schwarzkopf <rschwarzkopf@mathematik.uni-marburg.de>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	David Ahern <dsahern@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>, debian-kernel@lists.debian.org,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Greg KH <gregkh@linuxfoundation.org>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	regressions@lists.linux.dev, 1124549@bugs.debian.org
+References: <0b06eb09-b1a9-41f9-8655-67397be72b22@mathematik.uni-marburg.de>
+ <aUMEVm1vb7bdhlcK@eldamar.lan>
+ <e8bcfe99-5522-4430-9826-ed013f529403@mathematik.uni-marburg.de>
+ <176608738558.457059.16166844651150713799@eldamar.lan>
+ <d4b4a22e-c0cb-4e1f-8125-11e7a4f44562@leemhuis.info>
+ <27c249d80c346a258cfbf32f1d131ad4fe64e77c.camel@debian.org>
+ <6498cffd-5bf9-490a-910d-f64ab9b7f330@leemhuis.info>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CACKFLi=WycRNcVu4xcxRE2X3_F=gRsWd+-Rr8k1M4P_k-6VwZg@mail.gmail.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+In-Reply-To: <6498cffd-5bf9-490a-910d-f64ab9b7f330@leemhuis.info>
 
-On Mon, Jan 05, 2026 at 09:40:03AM -0800, Michael Chan wrote:
-> On Mon, Jan 5, 2026 at 7:51 AM Pavan Chebbi <pavan.chebbi@broadcom.com> wrote:
-> >
-> > On Mon, Jan 5, 2026 at 6:59 PM Russell King (Oracle)
-> > <linux@armlinux.org.uk> wrote:
-> > >
+Hi,
+
+On Mon, Jan 05, 2026 at 01:30:59PM +0100, Thorsten Leemhuis wrote:
+> @stable team and/or @net maintainers: this imho needs a judgement call
+> from your side. See below for details.
 > 
-> > > Second, __bnxt_hwrm_ptp_qcfg() calls bnxt_ptp_clear() if
-> > > bp->hwrm_spec_code < 0x10801 || !BNXT_CHIP_P5_PLUS(bp) is true or
-> > > hwrm_req_init() fails. Is it really possible that we have the PTP
-> > > clock registered when PTP isn't supported?
-> >
-> > Right, this check may not make much sense because we call
-> > __bnxt_hwrm_ptp_qcfg() only after we know PTP is supported.
-> > Michael may tell better but I think we could improve by removing that check.
-> >
+> On 1/2/26 21:18, Ben Hutchings wrote:
+> > On Fri, 2025-12-19 at 10:19 +0100, Thorsten Leemhuis wrote:
+> >> On 12/18/25 20:50, Salvatore Bonaccorso wrote:
+> >>>
+> >>> Is there soemthing missing?
+> >>>
+> >>> Roland I think it would be helpful if you can test as well more recent
+> >>> stable series versions to confirm if the issue is present there as
+> >>> well or not, which might indicate a 5.10.y specific backporting
+> >>> problem.
+> >>
+> >> FWIW, it (as usual) would be very important to know if this happens with
+> >> mainline as well, as that determines if it's a general problem or a
+> >> backporting problem
+> > [...]
+> > 
+> > The bug is this:
+> > 
+> > - libvirtd wrongly used to use NLM_F_CREATE (0x400) and NLM_F_EXCL
+> >   (0x200) flags on an RTM_DELLINK operation.  These flags are only
+> >   semantically valid for NEW-type operations.
+> > 
+> > - rtnetlink is rather lax about checking the flags on operations, so
+> >   these unsupported flags had no effect.
+> > 
+> > - rtnetlink can now support NLM_F_BULK (0x200) on some DEL-type
+> >   operations.  If the flag is used but is not valid for the specific
+> >   operation then the operation now fails with EOPNOTSUPP.  Since
+> >   NLM_F_EXCL == NLM_F_BULK and RTM_DELLINK does not support bulk
+> >   operations, libvirtd now hits this error case.
+> > 
+> > I have not tested with mainline, but in principle the same issue should
+> > occur with any other kernel version that has commit�a6cec0bcd342 "net:
+> > rtnetlink: add bulk delete support flag"
 > 
-> Some older FW may advertise support for PTP using an older scheme that
-> the driver does not support.  The FW running on an older class of
-> chips may also advertise support for PTP and it's also not supported
-> by the driver.  In the former case, if FW is downgraded, the test may
-> become true.
+> FWIW, merged for v5.19-rc1 and backported to v5.10.246 as 1550f3673972c5
+> End of October 2025 in parallel with 5b22f62724a0a0 ("net: rtnetlink:
+> fix module reference count leak issue in rtnetlink_rcv_msg") [v6.0-rc2],
+> which is a fix for the former.
+> 
+> > together with an older version of libvirt.
+> > 
+> > This was fixed in libvirt commit 1334002340b, which appears to have gone
+> > into version 7.1.0,
+> 
+> Could not find that commit when looking briefly, but that version was
+> released 2021-03-01.
 
-I'd like to restate my question, as it is the crux of the issue: as
-the PTP clock remains registered during the firmware change,
-userspace can interact with that device in every way possible.
+For reference it is this one I think:
+https://gitlab.com/libvirt/libvirt/-/commit/81334002340be6bd3a1a34c6584a85fe25cc049c
 
-If the firmware is in the process of being changed, and e.g.
-bnxt_ptp_enable() were to be called by way of userspace interacting
-with the PTP clock, we have already established that bnxt_ptp_enable()
-will talk to the firmware - but what happens if bnxt_ptp_enable()
-attempts to while the firmware is being changed? Is this safe?
-
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+Regards,
+Salvatore
 
