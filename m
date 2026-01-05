@@ -1,57 +1,89 @@
-Return-Path: <stable+bounces-204938-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204941-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE6FDCF5A36
-	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 22:18:15 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 115A8CF5A81
+	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 22:23:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B07B830223F8
-	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 21:18:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B534C301FB72
+	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 21:20:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EB132DECBA;
-	Mon,  5 Jan 2026 21:18:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E3B72DECDF;
+	Mon,  5 Jan 2026 21:20:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jc9lGJ4V"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ODNZ0OZH"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BB8E285CA7
-	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 21:18:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F59C2D877D
+	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 21:19:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767647893; cv=none; b=bPoXkVMWoJhul8Cz2xfcuHOf1CTKvsULdzNnJHLfi8fUEMY2t4FfBDYfQC9feot91EbDmZoaDYCTt0+wAwGqsOgzOoJ6dg4eRgtd9Nqsfy+sMMuVkZOSmRstL/1FPajkv7+i5qBjMLuzqMvkEBjdXWJUfKDNuV4VhXQsHoAMmlw=
+	t=1767648000; cv=none; b=d1kVAMYtJ6rBu13GHp/+yFVVaOJi+KJcNey+CitcM6S+POKfE5wsr8LQVEXYRH+IS7U89IpfLEObwd/dygufJn8wT62vDELPvri7T+4XOEeSc9YfALgElyhEU7o/ll7HkgmnDYJaBkDixj31bSns00zgCn5rxwMGJvWAKUeZzNc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767647893; c=relaxed/simple;
-	bh=R3Ih5UA8c7z1IUE1FTFaFxF17qhKOVqnVR7OH8Yro2o=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XAahqkcLSpinINTgr/3ZOa9SM/14xiWYsJiNAhJifKKAR0N5dhw3wxl7LBiFQVfaaZTDxw1g/9LKrHrafSSjyPyKVhQD9vtFDYjrMdaTRgsnOeqhoLcLvRCKwMwcnrL9e3HmqXuWHY/5xZe3UqVIZXZZ63gEt9w+R4C/Bqw0Qsk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jc9lGJ4V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62589C16AAE;
-	Mon,  5 Jan 2026 21:18:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767647892;
-	bh=R3Ih5UA8c7z1IUE1FTFaFxF17qhKOVqnVR7OH8Yro2o=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jc9lGJ4VlRDN17TZ8x9hEkBuJKKth2bGIhWgIGxeNdXhJAPV98pWlqQ7GAN60DjQd
-	 SMNVRyP8/HmBJIla9rwdVSy5RljpEEtuqJbhHVSxYavPUTI16/Agi/ylDWONzVVP6U
-	 vIXfQA0iWvKB9wt76poqRfvh1XP81VsQUIGXYVfYDUA8odiWhzf3c8vCTdB6KWvoYu
-	 7SMpc/SnHR2+OnLCegUrnir81nut25MaoaeyBJiu9BT/PWBM3mugbguZQOBVgA7Ev8
-	 goSIQblEV+Fg68gDT2op3oFkV3CMkI2TBZIzYasx8xLmVgTUIHCaPXTfs1Fm5DDeUv
-	 aPQeXD1FJAXXg==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Ming Qian <ming.qian@oss.nxp.com>,
-	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y 3/3] media: amphion: Remove vpu_vb_is_codecconfig
-Date: Mon,  5 Jan 2026 16:18:09 -0500
-Message-ID: <20260105211809.2802485-3-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260105211809.2802485-1-sashal@kernel.org>
-References: <2026010509-cardstock-selection-ef9d@gregkh>
- <20260105211809.2802485-1-sashal@kernel.org>
+	s=arc-20240116; t=1767648000; c=relaxed/simple;
+	bh=t9qFiFeqGxp4Cn6wya3cXn6vSYwDyML16YgOBP5gC9M=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=C9zO/HLe4AtkfDNf0FVAQVeMpXiCO2dRxdz3Wb4qDA4SBkbXrbRAagvGIjZDSyB2qJbMW5f+GBUKIKU/NOPQbKBagWdAJUCR/zMs/Ih41slGOYX19JKFgKs1uzzg9lU3WSVsEpA3+1Uf4zPWC8iEAawM50MuQjunqH3XmIUxHn8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ODNZ0OZH; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-47797676c62so576665e9.1
+        for <stable@vger.kernel.org>; Mon, 05 Jan 2026 13:19:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1767647997; x=1768252797; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=aYAiogr7/hdP4KHS0vv5xxzgIzj7f7R1MCPaXxXIEic=;
+        b=ODNZ0OZHYmFWfgKdzIWejzUDQfJCrnIB2dZz2e13gGH7zuYdJiFJiEseFb3h9akaE4
+         yu+SaBHExR1pfGKIOInxFtEp/hmuKjxDyFCiTkoCAZzE0s775FDQ8u9Hj9aRSxpilBoc
+         eSfyNKYW65XaVL7nuJdkI+QLeB74vYzSVTXHpP48m0DfFehMdxfnM/YMzHmw4R4RICdZ
+         d3G82EUXm76t9ArrzkxHZHN8abuvVaLhzLRj/afo8lrQANjapn8RrkRsx2Bd9j4dfaIZ
+         vBc6hDB11P+hn7JLL/aEx4cmcTsfVa/C9d82IoDCdaXq4PaOQ4W45zZoz5gsF6z/FGsF
+         jX5Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767647997; x=1768252797;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=aYAiogr7/hdP4KHS0vv5xxzgIzj7f7R1MCPaXxXIEic=;
+        b=ekey6XvxThHHXIewaZ5WnR9t/QTiC0JhfjcgfpMnl5UFWpLTf4vT/SaR0//HLmSnic
+         mXUeHIokf09s92eeq6Loba3UDXegnzemFKFeE569oBg7Yjm/2T/q+pzxkTcxaM9PbtMt
+         NifezblUDgCKK67nHyqEBH9ErkaTd+6p9I3LUb3k0JGiCHCSc90r9iPfzDCih6QKerR1
+         lV0L0ZhRH4lUD39Mhncy1iapEf/JD7BMLZi2Eh4srhczbPA65AAF4GENby9RX22eGLEv
+         xxBbdng1FUTMHlwvGq2c+FcTgqQzn8FvSixOrrJbZNGxmqCVwnze0inLS2OTPE94CEJs
+         mOIg==
+X-Forwarded-Encrypted: i=1; AJvYcCVGf8AB/1lCDB/y+Te59c3+VaxjaeCqsu/OFD9ZHE9MZEoeAhVbwRc//o7YWWArPUaEhMBDTo0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw+b9B+Um3wm2r4IGIQI+i1xnB10haKWQlk9omdRrrDJl//yC3v
+	cHSS/3nid1EZSCMQ0ZBVKC6vJHcKIv6z2evwZsyk0eYQvb7sLQSrD5qr/cTZzQ==
+X-Gm-Gg: AY/fxX6mbqhnhU9mzRnGUrWPN0T4dbsbPj2AEZToV6u1DiODh2xgQChh1o9gq0omwDG
+	drCFOrr8OjO6qwuvXWpFZgB+thQBBG+1D+Id04QDQVIXQ6WpGlIf5cgq8s8Zum/GuHloui+FoeV
+	fVepKIeBPnV/Qh91iVTR918QJahyV3AMYod1wKpOkLxX3/Fo33+KYb35sdYFPLzIQoVU6Qi1UHA
+	yLWP2gr9ab5q/TXq2afLWs5J8sT54xqBrqISMtYwLSbyYc86THu+aPlk1xpfRTSLjrP4PHuvDhF
+	7G0yGEL0B2ctgoxbE2PgkJDD+pHbb8/hcYYPcPnABe6MnXUsr/WyC7p6AuMe2Z7G3CTiKciuNb0
+	4FA8Q7jIL/idBMWg06gk9eQM6y83UPK5A2nHeBsdVxekGmhwaroEQVzsVVXjdel9DV3zUT8ZAO+
+	FiBfp5AHjutuwRzscLmS0fSW1tpoUktxzZ0s0=
+X-Google-Smtp-Source: AGHT+IFIa4aa3q7kG3OyPJxh1m15HSK01sRw7aceSgFDOoGG3uwGaBJZsocA2rlnxs6QMnXHm5c2Vg==
+X-Received: by 2002:a05:600c:5488:b0:47a:94fc:d063 with SMTP id 5b1f17b1804b1-47d7f06ca9bmr5264805e9.1.1767647997535;
+        Mon, 05 Jan 2026 13:19:57 -0800 (PST)
+Received: from thomas-precision3591.. ([2a0d:e487:144e:5eef:4e0a:3841:cee5:ead8])
+        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-47d7fae67ebsm1957965e9.1.2026.01.05.13.19.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 05 Jan 2026 13:19:57 -0800 (PST)
+From: Thomas Fourier <fourier.thomas@gmail.com>
+To: 
+Cc: Thomas Fourier <fourier.thomas@gmail.com>,
+	stable@vger.kernel.org,
+	Chas Williams <3chas3@gmail.com>,
+	chas williams - CONTRACTOR <chas@cmf.nrl.navy.mil>,
+	"David S. Miller" <davem@davemloft.net>,
+	linux-atm-general@lists.sourceforge.net,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] atm: Fix dma_free_coherent() size
+Date: Mon,  5 Jan 2026 22:19:11 +0100
+Message-ID: <20260105211913.24049-2-fourier.thomas@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,146 +92,31 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Ming Qian <ming.qian@oss.nxp.com>
+The size of the buffer is not the same when alloc'd with
+dma_alloc_coherent() in he_init_tpdrq() and freed.
 
-[ Upstream commit 634c2cd17bd021487c57b95973bddb14be8002ff ]
-
-Currently the function vpu_vb_is_codecconfig() always returns 0.
-Delete it and its related code.
-
-Fixes: 3cd084519c6f ("media: amphion: add vpu v4l2 m2m support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
-Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: ede58ef28e10 ("atm: remove deprecated use of pci api")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
 ---
- drivers/media/platform/amphion/vpu_malone.c | 23 +++------------------
- drivers/media/platform/amphion/vpu_v4l2.c   | 10 ---------
- drivers/media/platform/amphion/vpu_v4l2.h   | 10 ---------
- 3 files changed, 3 insertions(+), 40 deletions(-)
+ drivers/atm/he.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/media/platform/amphion/vpu_malone.c b/drivers/media/platform/amphion/vpu_malone.c
-index 4fbf179d98dc..8418dd5ea253 100644
---- a/drivers/media/platform/amphion/vpu_malone.c
-+++ b/drivers/media/platform/amphion/vpu_malone.c
-@@ -1320,22 +1320,18 @@ static int vpu_malone_insert_scode_vc1_g_seq(struct malone_scode_t *scode)
- {
- 	if (!scode->inst->total_input_count)
- 		return 0;
--	if (vpu_vb_is_codecconfig(to_vb2_v4l2_buffer(scode->vb)))
--		scode->need_data = 0;
- 	return 0;
- }
+diff --git a/drivers/atm/he.c b/drivers/atm/he.c
+index ad91cc6a34fc..92a041d5387b 100644
+--- a/drivers/atm/he.c
++++ b/drivers/atm/he.c
+@@ -1587,7 +1587,8 @@ he_stop(struct he_dev *he_dev)
+ 				  he_dev->tbrq_base, he_dev->tbrq_phys);
  
- static int vpu_malone_insert_scode_vc1_g_pic(struct malone_scode_t *scode)
- {
--	struct vb2_v4l2_buffer *vbuf;
- 	u8 nal_hdr[MALONE_VC1_NAL_HEADER_LEN];
- 	u32 *data = NULL;
- 	int ret;
+ 	if (he_dev->tpdrq_base)
+-		dma_free_coherent(&he_dev->pci_dev->dev, CONFIG_TBRQ_SIZE * sizeof(struct he_tbrq),
++		dma_free_coherent(&he_dev->pci_dev->dev,
++				  CONFIG_TPDRQ_SIZE * sizeof(struct he_tpdrq),
+ 				  he_dev->tpdrq_base, he_dev->tpdrq_phys);
  
--	vbuf = to_vb2_v4l2_buffer(scode->vb);
- 	data = vb2_plane_vaddr(scode->vb, 0);
- 
--	if (scode->inst->total_input_count == 0 || vpu_vb_is_codecconfig(vbuf))
-+	if (scode->inst->total_input_count == 0)
- 		return 0;
- 	if (MALONE_VC1_CONTAIN_NAL(*data))
- 		return 0;
-@@ -1356,8 +1352,6 @@ static int vpu_malone_insert_scode_vc1_l_seq(struct malone_scode_t *scode)
- 	int size = 0;
- 	u8 rcv_seqhdr[MALONE_VC1_RCV_SEQ_HEADER_LEN];
- 
--	if (vpu_vb_is_codecconfig(to_vb2_v4l2_buffer(scode->vb)))
--		scode->need_data = 0;
- 	if (scode->inst->total_input_count)
- 		return 0;
- 	scode->need_data = 0;
-@@ -1543,7 +1537,7 @@ static int vpu_malone_input_frame_data(struct vpu_malone_str_buffer __iomem *str
- 	scode.vb = vb;
- 	scode.wptr = wptr;
- 	scode.need_data = 1;
--	if (vbuf->sequence == 0 || vpu_vb_is_codecconfig(vbuf))
-+	if (vbuf->sequence == 0)
- 		ret = vpu_malone_insert_scode(&scode, SCODE_SEQUENCE);
- 
- 	if (ret < 0)
-@@ -1579,7 +1573,7 @@ static int vpu_malone_input_frame_data(struct vpu_malone_str_buffer __iomem *str
- 	 * This module is currently only supported for the H264 and HEVC formats,
- 	 * for other formats, vpu_malone_add_scode() will return 0.
- 	 */
--	if ((disp_imm || low_latency) && !vpu_vb_is_codecconfig(vbuf)) {
-+	if (disp_imm || low_latency) {
- 		ret = vpu_malone_add_scode(inst->core->iface,
- 					   inst->id,
- 					   &inst->stream_buffer,
-@@ -1626,7 +1620,6 @@ int vpu_malone_input_frame(struct vpu_shared_addr *shared,
- 			   struct vpu_inst *inst, struct vb2_buffer *vb)
- {
- 	struct vpu_dec_ctrl *hc = shared->priv;
--	struct vb2_v4l2_buffer *vbuf;
- 	struct vpu_malone_str_buffer __iomem *str_buf = hc->str_buf[inst->id];
- 	u32 disp_imm = hc->codec_param[inst->id].disp_imm;
- 	u32 size;
-@@ -1640,16 +1633,6 @@ int vpu_malone_input_frame(struct vpu_shared_addr *shared,
- 		return ret;
- 	size = ret;
- 
--	/*
--	 * if buffer only contain codec data, and the timestamp is invalid,
--	 * don't put the invalid timestamp to resync
--	 * merge the data to next frame
--	 */
--	vbuf = to_vb2_v4l2_buffer(vb);
--	if (vpu_vb_is_codecconfig(vbuf)) {
--		inst->extra_size += size;
--		return 0;
--	}
- 	if (inst->extra_size) {
- 		size += inst->extra_size;
- 		inst->extra_size = 0;
-diff --git a/drivers/media/platform/amphion/vpu_v4l2.c b/drivers/media/platform/amphion/vpu_v4l2.c
-index e122603b37e8..f54f2042430a 100644
---- a/drivers/media/platform/amphion/vpu_v4l2.c
-+++ b/drivers/media/platform/amphion/vpu_v4l2.c
-@@ -342,16 +342,6 @@ struct vb2_v4l2_buffer *vpu_next_src_buf(struct vpu_inst *inst)
- 	if (!src_buf || vpu_get_buffer_state(src_buf) == VPU_BUF_STATE_IDLE)
- 		return NULL;
- 
--	while (vpu_vb_is_codecconfig(src_buf)) {
--		v4l2_m2m_src_buf_remove(inst->fh.m2m_ctx);
--		vpu_set_buffer_state(src_buf, VPU_BUF_STATE_IDLE);
--		v4l2_m2m_buf_done(src_buf, VB2_BUF_STATE_DONE);
--
--		src_buf = v4l2_m2m_next_src_buf(inst->fh.m2m_ctx);
--		if (!src_buf || vpu_get_buffer_state(src_buf) == VPU_BUF_STATE_IDLE)
--			return NULL;
--	}
--
- 	return src_buf;
- }
- 
-diff --git a/drivers/media/platform/amphion/vpu_v4l2.h b/drivers/media/platform/amphion/vpu_v4l2.h
-index 064f61773f62..4ec7f0b44172 100644
---- a/drivers/media/platform/amphion/vpu_v4l2.h
-+++ b/drivers/media/platform/amphion/vpu_v4l2.h
-@@ -38,14 +38,4 @@ static inline struct vpu_format *vpu_get_format(struct vpu_inst *inst, u32 type)
- 	else
- 		return &inst->cap_format;
- }
--
--static inline int vpu_vb_is_codecconfig(struct vb2_v4l2_buffer *vbuf)
--{
--#ifdef V4L2_BUF_FLAG_CODECCONFIG
--	return (vbuf->flags & V4L2_BUF_FLAG_CODECCONFIG) ? 1 : 0;
--#else
--	return 0;
--#endif
--}
--
- #endif
+ 	dma_pool_destroy(he_dev->tpd_pool);
 -- 
-2.51.0
+2.43.0
 
 
