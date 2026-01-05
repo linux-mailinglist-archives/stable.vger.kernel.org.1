@@ -1,337 +1,121 @@
-Return-Path: <stable+bounces-204836-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204837-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65F1DCF46C2
-	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 16:33:10 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 966C7CF4AAE
+	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 17:26:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5630030203A1
-	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 15:29:34 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C03B9300C99C
+	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 16:26:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D96402DC320;
-	Mon,  5 Jan 2026 15:29:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8A85307AE4;
+	Mon,  5 Jan 2026 15:32:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="XmNsEvpX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="do4RK277"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E8FD2C0284;
-	Mon,  5 Jan 2026 15:29:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 225F73148DF
+	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 15:32:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767626972; cv=none; b=ApCgafdKcw9mmTH6JdwqdhmirbDtViI+n9fmSyVk4wkuKJZhB9IFW1S+FZ+52VQkK0r1Se0slzNr2IkhewIdg19EF7WxcE4xUUNT73iVFKPzUlD/D23R6BwXgsEduG7wK8VUjLUkpwv5jXKx3k+Kh5uhcV/uzdiK5mg7VYQJpmA=
+	t=1767627144; cv=none; b=TdqzOYGWxYclSHa+OKIcbFlzDJWOG8NlqIyPeyfDzrGU+k74x5egXPmo+V+/EwD0IQsy44Jl+8wuWZAcT7P6ICG5MkfsnnwbkEURPtX6uTSrK8AixJlCvKpDr4sb992rew2um7yu4u2MOMBlbutyy31Jt3vfDnIlC6f8nwcrGfs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767626972; c=relaxed/simple;
-	bh=4bZVFOscflBe/dlCrxkpfAlehbJTcoL4YWIjcntTNjo=;
-	h=Date:To:From:Subject:Message-Id; b=c3EZs6SGwHiCWSm9XhYHL+OD70HOPdjOgcOVbe6TKqToGrX52RtFyi5wf+cMzCbq+3HGBInEoi6A9TpCy58s8qGOcvBh5PJUzT5Fmi/s1hfovY/8Oju/CxseOPm2Ppai+kivMVsEV1hpSWuImCjNJNGL+ECZ/r7cXYjur5he88o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=XmNsEvpX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89565C116D0;
-	Mon,  5 Jan 2026 15:29:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1767626971;
-	bh=4bZVFOscflBe/dlCrxkpfAlehbJTcoL4YWIjcntTNjo=;
-	h=Date:To:From:Subject:From;
-	b=XmNsEvpXNMmIJokkSfPtULX3aLBdZ6mQLm6wTsLKB6TLe9t6eDvA2IriHicJntYYB
-	 BkCif+Uf7C2GjibyQ+WjdCOcsjmjOb+2KCp/CVDbCBzT0Mv66pMf5tIicSqLqXKJQ4
-	 swdfTh16WeQvT+zRYIB++TEp9ZQrW+7nx4KqCAHw=
-Date: Mon, 05 Jan 2026 07:29:30 -0800
-To: mm-commits@vger.kernel.org,yeoreum.yun@arm.com,vbabka@suse.cz,stable@vger.kernel.org,riel@surriel.com,pfalcato@suse.de,liam.howlett@oracle.com,jannh@google.com,david@kernel.org,aha310510@gmail.com,lorenzo.stoakes@oracle.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [to-be-updated] mm-vma-fix-anon_vma-uaf-on-mremap-faulted-unfaulted-merge.patch removed from -mm tree
-Message-Id: <20260105152931.89565C116D0@smtp.kernel.org>
+	s=arc-20240116; t=1767627144; c=relaxed/simple;
+	bh=lJN0MaZckvYdamk5cskCDMG5Jeb9pK4RrBv4F4ivbC0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ES42HUYBrGhtl0N5HQXvlnPIczIdXJjSArgQJa0rqtqLut0GklkP0DueMAMDvndNXwiKXROKGpj1qKR1P52fg09nRuw68HGWYgz4B0fi1qEZVuMwzGBKNnM+j1DARDmpB5ZXFox1P3A/tABFukd79rxDv76jkwG9OSjULx4HD94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=do4RK277; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DCCEC116D0;
+	Mon,  5 Jan 2026 15:32:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767627143;
+	bh=lJN0MaZckvYdamk5cskCDMG5Jeb9pK4RrBv4F4ivbC0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=do4RK277Jz7W9439wzC6JofEp8WkQ50cLmc4mCUN5A0SF9WntibwW6yIeCjFD66eW
+	 Ffg+YNvwSEovUtiRdJY4xoIcnSRxygxlkjg4uJVYXsYddyD/tXCC/PcRjTSa+IcER+
+	 i/4KigyejO3iq+B0FEjeliTK2+f9SogSLGsvNS7Roav45GJ1XBgbcpbO2Wp4bSdXxd
+	 +Ddp1IqQAqeVivrSejjCVFeYwpbv3i540/ny5fgKQFFJsC+eDp/2dmMXAc+HTLvZdS
+	 yQoxE8EqRYc63qTe3osSmCauTs4iz3p2b0hyzWmfDz/EVTZqKp2uNJ18r6p3O2cd4m
+	 w0STjBYZwd/fA==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Joerg Roedel <jroedel@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1.y 1/2] iommu/mtk_iommu_v1: Convert to platform remove callback returning void
+Date: Mon,  5 Jan 2026 10:32:19 -0500
+Message-ID: <20260105153220.2637603-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2026010545-bleak-stingily-e2a3@gregkh>
+References: <2026010545-bleak-stingily-e2a3@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-The quilt patch titled
-     Subject: mm/vma: fix anon_vma UAF on mremap() faulted, unfaulted merge
-has been removed from the -mm tree.  Its filename was
-     mm-vma-fix-anon_vma-uaf-on-mremap-faulted-unfaulted-merge.patch
+[ Upstream commit 85e1049e50da9409678fc247ebad4c019d68041f ]
 
-This patch was dropped because an updated version will be issued
+The .remove() callback for a platform driver returns an int which makes
+many driver authors wrongly assume it's possible to do error handling by
+returning an error code. However the value returned is (mostly) ignored
+and this typically results in resource leaks. To improve here there is a
+quest to make the remove callback return void. In the first step of this
+quest all drivers are converted to .remove_new() which already returns
+void.
 
-------------------------------------------------------
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Subject: mm/vma: fix anon_vma UAF on mremap() faulted, unfaulted merge
-Date: Fri, 2 Jan 2026 20:55:20 +0000
+Trivially convert this driver from always returning zero in the remove
+callback to the void returning variant.
 
-Commit 879bca0a2c4f ("mm/vma: fix incorrectly disallowed anonymous VMA
-merges") introduced the ability to merge previously unavailable VMA merge
-scenarios.
-
-The key piece of logic introduced was the ability to merge a faulted VMA
-immediately next to an unfaulted VMA, which relies upon dup_anon_vma() to
-correctly handle anon_vma state.
-
-In the case of the merge of an existing VMA (that is changing properties
-of a VMA and then merging if those properties are shared by adjacent
-VMAs), dup_anon_vma() is invoked correctly.
-
-However in the case of the merge of a new VMA, a corner case peculiar to
-mremap() was missed.
-
-The issue is that vma_expand() only performs dup_anon_vma() if the target
-(the VMA that will ultimately become the merged VMA): is not the next VMA,
-i.e.  the one that appears after the range in which the new VMA is to be
-established.
-
-A key insight here is that in all other cases other than mremap(), a new
-VMA merge either expands an existing VMA, meaning that the target VMA will
-be that VMA, or would have anon_vma be NULL.
-
-Specifically:
-
-* __mmap_region() - no anon_vma in place, initial mapping.
-* do_brk_flags() - expanding an existing VMA.
-* vma_merge_extend() - expanding an existing VMA.
-* relocate_vma_down() - no anon_vma in place, initial mapping.
-
-In addition, we are in the unique situation of needing to duplicate
-anon_vma state from a VMA that is neither the previous or next VMA being
-merged with.
-
-To account for this, introduce a new field in struct vma_merge_struct
-specifically for the mremap() case, and update vma_expand() to explicitly
-check for this case and invoke dup_anon_vma() to ensure anon_vma state is
-correctly propagated.
-
-This issue can be observed most directly by invoked mremap() to move
-around a VMA and cause this kind of merge with the MREMAP_DONTUNMAP flag
-specified.
-
-This will result in unlink_anon_vmas() being called after failing to
-duplicate anon_vma state to the target VMA, which results in the anon_vma
-itself being freed with folios still possessing dangling pointers to the
-anon_vma and thus a use-after-free bug.
-
-This bug was discovered via a syzbot report, which this patch resolves.
-
-The following program reproduces the issue (and is fixed by this patch):
-
-#define _GNU_SOURCE
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <sys/mman.h>
-
-#define RESERVED_PGS	(100)
-#define VMA_A_PGS	(10)
-#define VMA_B_PGS	(10)
-#define NUM_ITERS	(1000)
-
-static void trigger_bug(void)
-{
-	unsigned long page_size = sysconf(_SC_PAGE_SIZE);
-	char *reserved, *ptr_a, *ptr_b;
-
-	/*
-	 * The goal here is to achieve:
-	 *
-	 * mremap() with MREMAP_DONTUNMAP such that A and B merge:
-	 *
-	 *      |-------------------------|
-	 *      |                         |
-	 *      |    |-----------|   |---------|
-	 *      v    | unfaulted |   | faulted |
-	 *           |-----------|   |---------|
-	 *                 B              A
-	 *
-	 * Then unmap VMA A to trigger the bug.
-	 */
-
-	/* Reserve a region of memory to operate in. */
-	reserved = mmap(NULL, RESERVED_PGS * page_size, PROT_NONE,
-			MAP_PRIVATE | MAP_ANON, -1, 0);
-	if (reserved == MAP_FAILED) {
-		perror("mmap reserved");
-		exit(EXIT_FAILURE);
-	}
-
-	/* Map VMA A into place. */
-	ptr_a = mmap(&reserved[page_size], VMA_A_PGS * page_size,
-		     PROT_READ | PROT_WRITE,
-		     MAP_PRIVATE | MAP_ANON | MAP_FIXED, -1, 0);
-	if (ptr_a == MAP_FAILED) {
-		perror("mmap VMA A");
-		exit(EXIT_FAILURE);
-	}
-	/* Fault it in. */
-	ptr_a[0] = 'x';
-
-	/*
-	 * Now move it out of the way so we can place VMA B in position,
-	 * unfaulted.
-	 */
-	ptr_a = mremap(ptr_a, VMA_A_PGS * page_size, VMA_A_PGS * page_size,
-		       MREMAP_FIXED | MREMAP_MAYMOVE, &reserved[50 * page_size]);
-	if (ptr_a == MAP_FAILED) {
-		perror("mremap VMA A out of the way");
-		exit(EXIT_FAILURE);
-	}
-
-	/* Map VMA B into place. */
-	ptr_b = mmap(&reserved[page_size + VMA_A_PGS * page_size],
-		     VMA_B_PGS * page_size, PROT_READ | PROT_WRITE,
-		     MAP_PRIVATE | MAP_ANON | MAP_FIXED, -1, 0);
-	if (ptr_b == MAP_FAILED) {
-		perror("mmap VMA B");
-		exit(EXIT_FAILURE);
-	}
-
-	/* Now move VMA A into position w/MREMAP_DONTUNMAP + free anon_vma. */
-	ptr_a = mremap(ptr_a, VMA_A_PGS * page_size, VMA_A_PGS * page_size,
-		       MREMAP_FIXED | MREMAP_MAYMOVE | MREMAP_DONTUNMAP,
-		       &reserved[page_size]);
-	if (ptr_a == MAP_FAILED) {
-		perror("mremap VMA A with MREMAP_DONTUNMAP");
-		exit(EXIT_FAILURE);
-	}
-
-	/* Finally, unmap VMA A which should trigger the bug. */
-	munmap(ptr_a, VMA_A_PGS * page_size);
-
-	/* Cleanup in case bug didn't trigger sufficiently visibly... */
-	munmap(reserved, RESERVED_PGS * page_size);
-}
-
-int main(void)
-{
-	int i;
-
-	for (i = 0; i < NUM_ITERS; i++)
-		trigger_bug();
-
-	return EXIT_SUCCESS;
-}
-
-Link: https://lkml.kernel.org/r/20260102205520.986725-1-lorenzo.stoakes@oracle.com
-Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Fixes: 879bca0a2c4f ("mm/vma: fix incorrectly disallowed anonymous VMA merges")
-Reported-by: syzbot+b165fc2e11771c66d8ba@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/694a2745.050a0220.19928e.0017.GAE@google.com/
-Cc: David Hildenbrand (Red Hat) <david@kernel.org>
-Cc: Jann Horn <jannh@google.com>
-Cc: Jeongjun Park <aha310510@gmail.com>
-Cc: levi.yun <yeoreum.yun@arm.com>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Rik van Riel <riel@surriel.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Pedro Falcato <pfalcato@suse.de>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20230321084125.337021-9-u.kleine-koenig@pengutronix.de
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Stable-dep-of: 46207625c9f3 ("iommu/mediatek-v1: fix device leaks on probe()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
+ drivers/iommu/mtk_iommu_v1.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
- mm/vma.c |   58 ++++++++++++++++++++++++++++++++++++++++-------------
- mm/vma.h |    3 ++
- 2 files changed, 47 insertions(+), 14 deletions(-)
-
---- a/mm/vma.c~mm-vma-fix-anon_vma-uaf-on-mremap-faulted-unfaulted-merge
-+++ a/mm/vma.c
-@@ -1130,26 +1130,50 @@ int vma_expand(struct vma_merge_struct *
- 	mmap_assert_write_locked(vmg->mm);
+diff --git a/drivers/iommu/mtk_iommu_v1.c b/drivers/iommu/mtk_iommu_v1.c
+index 5dd06bcb507f..47334c3d41e6 100644
+--- a/drivers/iommu/mtk_iommu_v1.c
++++ b/drivers/iommu/mtk_iommu_v1.c
+@@ -706,7 +706,7 @@ static int mtk_iommu_v1_probe(struct platform_device *pdev)
+ 	return ret;
+ }
  
- 	vma_start_write(target);
--	if (next && (target != next) && (vmg->end == next->vm_end)) {
-+	if (next && vmg->end == next->vm_end) {
-+		struct vm_area_struct *copied_from = vmg->copied_from;
- 		int ret;
+-static int mtk_iommu_v1_remove(struct platform_device *pdev)
++static void mtk_iommu_v1_remove(struct platform_device *pdev)
+ {
+ 	struct mtk_iommu_v1_data *data = platform_get_drvdata(pdev);
  
--		sticky_flags |= next->vm_flags & VM_STICKY;
--		remove_next = true;
--		/* This should already have been checked by this point. */
--		VM_WARN_ON_VMG(!can_merge_remove_vma(next), vmg);
--		vma_start_write(next);
--		/*
--		 * In this case we don't report OOM, so vmg->give_up_on_mm is
--		 * safe.
--		 */
--		ret = dup_anon_vma(target, next, &anon_dup);
--		if (ret)
--			return ret;
-+		if (target != next) {
-+			sticky_flags |= next->vm_flags & VM_STICKY;
-+			remove_next = true;
-+			/* This should already have been checked by this point. */
-+			VM_WARN_ON_VMG(!can_merge_remove_vma(next), vmg);
-+			vma_start_write(next);
-+			/*
-+			 * In this case we don't report OOM, so vmg->give_up_on_mm is
-+			 * safe.
-+			 */
-+			ret = dup_anon_vma(target, next, &anon_dup);
-+			if (ret)
-+				return ret;
-+		} else if (copied_from) {
-+			vma_start_write(next);
-+
-+			/*
-+			 * We are copying from a VMA (i.e. mremap()'ing) to
-+			 * next, and thus must ensure that either anon_vma's are
-+			 * already compatible (in which case this call is a nop)
-+			 * or all anon_vma state is propagated to next
-+			 */
-+			ret = dup_anon_vma(next, copied_from, &anon_dup);
-+			if (ret)
-+				return ret;
-+		} else {
-+			/* In no other case may the anon_vma differ. */
-+			VM_WARN_ON_VMG(target->anon_vma != next->anon_vma, vmg);
-+		}
- 	}
+@@ -716,7 +716,6 @@ static int mtk_iommu_v1_remove(struct platform_device *pdev)
+ 	clk_disable_unprepare(data->bclk);
+ 	devm_free_irq(&pdev->dev, data->irq, data);
+ 	component_master_del(&pdev->dev, &mtk_iommu_v1_com_ops);
+-	return 0;
+ }
  
- 	/* Not merging but overwriting any part of next is not handled. */
- 	VM_WARN_ON_VMG(next && !remove_next &&
- 		       next != target && vmg->end > next->vm_start, vmg);
-+	/*
-+	 * We should only see a copy with next as the target on a new merge
-+	 * which sets the end to the next of next.
-+	 */
-+	VM_WARN_ON_VMG(target == next && vmg->copied_from &&
-+		       vmg->end != next->vm_end, vmg);
- 	/* Only handles expanding */
- 	VM_WARN_ON_VMG(target->vm_start < vmg->start ||
- 		       target->vm_end > vmg->end, vmg);
-@@ -1808,6 +1832,13 @@ struct vm_area_struct *copy_vma(struct v
- 	VMG_VMA_STATE(vmg, &vmi, NULL, vma, addr, addr + len);
+ static int __maybe_unused mtk_iommu_v1_suspend(struct device *dev)
+@@ -755,7 +754,7 @@ static const struct dev_pm_ops mtk_iommu_v1_pm_ops = {
  
- 	/*
-+	 * VMG_VMA_STATE() installs vma in middle, but this is a new VMA, inform
-+	 * merging logic correctly.
-+	 */
-+	vmg.copied_from = vma;
-+	vmg.middle = NULL;
-+
-+	/*
- 	 * If anonymous vma has not yet been faulted, update new pgoff
- 	 * to match new location, to increase its chance of merging.
- 	 */
-@@ -1828,7 +1859,6 @@ struct vm_area_struct *copy_vma(struct v
- 	if (new_vma && new_vma->vm_start < addr + len)
- 		return NULL;	/* should never get here */
- 
--	vmg.middle = NULL; /* New VMA range. */
- 	vmg.pgoff = pgoff;
- 	vmg.next = vma_iter_next_rewind(&vmi, NULL);
- 	new_vma = vma_merge_new_range(&vmg);
---- a/mm/vma.h~mm-vma-fix-anon_vma-uaf-on-mremap-faulted-unfaulted-merge
-+++ a/mm/vma.h
-@@ -106,6 +106,9 @@ struct vma_merge_struct {
- 	struct anon_vma_name *anon_name;
- 	enum vma_merge_state state;
- 
-+	/* If we are copying a VMA, which VMA are we copying from? */
-+	struct vm_area_struct *copied_from;
-+
- 	/* Flags which callers can use to modify merge behaviour: */
- 
- 	/*
-_
-
-Patches currently in -mm which might be from lorenzo.stoakes@oracle.com are
-
+ static struct platform_driver mtk_iommu_v1_driver = {
+ 	.probe	= mtk_iommu_v1_probe,
+-	.remove	= mtk_iommu_v1_remove,
++	.remove_new = mtk_iommu_v1_remove,
+ 	.driver	= {
+ 		.name = "mtk-iommu-v1",
+ 		.of_match_table = mtk_iommu_v1_of_ids,
+-- 
+2.51.0
 
 
