@@ -1,94 +1,119 @@
-Return-Path: <stable+bounces-204586-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204587-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 980C2CF2103
-	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 07:26:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC553CF216C
+	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 07:38:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 085383012DE3
-	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 06:25:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EC4043017671
+	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 06:37:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 979BC320A14;
-	Mon,  5 Jan 2026 06:25:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2101C1C84A0;
+	Mon,  5 Jan 2026 06:37:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y1+zCqp/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ahi4+sx0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 337EC2BCF5;
-	Mon,  5 Jan 2026 06:25:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF27F22097;
+	Mon,  5 Jan 2026 06:37:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767594355; cv=none; b=LSc5TkjOK+hrNEJhQPCQ5t6eV3+L6b/eYykU3I4w6kZzkk8uFsKhDtWwq4XVukbEWuweNzFJjWHOKndqE3/FRw3XEih3Gop8AHCV0ICJZNh2XAlpMSwVVvMQ89k+va3CI3/VZnURgjQL3aLiFP2b5PYaeEcmHQELMBExIAeqF6c=
+	t=1767595059; cv=none; b=uTP97coVDnsogJU/jTnKq6g2rT2i5KK0oT5b3ul5HH2CCc5ppTnSkpwpJ2Xujuy2+qR17rvLRUBPHAlbuxZeYHb2L0AdTuTooTWayQgoTxRwx53tdArtnuP+KIqv2aFu62G4EW/lHqNvp2rMiqf0/65JIw5uaqElGhVsHqRao2Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767594355; c=relaxed/simple;
-	bh=znNJncmbBCy4v0V/A8ag6P3qRxQ8kYYT08leohhSGkA=;
+	s=arc-20240116; t=1767595059; c=relaxed/simple;
+	bh=uKtCeE8JLza4obt2NU7Y+7OY8LjaSIfiEqzyaHz75lM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=af9pFzOa80zzogDiyTKuiwcAkNmObwbdyfl38imF6Gcx5vFnKfPf7nYoNzssW3fA6JVC4HT04L5m6XH6EUktGu4CeOc6ZjJxS4cs00951bXHLSf3C2NV3vpTweiXDtPRGU7QwHxBGM89Dyib0ziZ+uY6+hgK9s6J7gpNaGsBedA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y1+zCqp/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5814FC116D0;
-	Mon,  5 Jan 2026 06:25:54 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=amsvxz9jRGdICH6Zf6PtxRERS6kFAFuUPn/6Lylb+UjAMP6KGgihCuLpUgg+CY23Kx59ZqDpU+lMt88zEl95FiWbxOTTZolzOWV1D6Sn8sbG1GjFix4VhrG39T+cjOqyU+UbrlQTWwRm5ForeHwHqLQ6bQRwKp7rhVPJot6ZT4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ahi4+sx0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B49E5C116D0;
+	Mon,  5 Jan 2026 06:37:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767594354;
-	bh=znNJncmbBCy4v0V/A8ag6P3qRxQ8kYYT08leohhSGkA=;
+	s=korg; t=1767595059;
+	bh=uKtCeE8JLza4obt2NU7Y+7OY8LjaSIfiEqzyaHz75lM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=y1+zCqp/19qYNFp+skjNYUN8hzfo5VdLs6lyi4GRjKzIGzsNHMcVYWGJPsQ5FS4fK
-	 nB8f7w01P7OQm20CoPEIqRRafUQP0TF2FrCEwpavzb9KxVodgUK3dD/WIOxBFF5vrR
-	 dMVBjnHnGxZcP/9MKsdTGN3ZU4lAPo6pnecpH3u4=
-Date: Mon, 5 Jan 2026 07:25:51 +0100
+	b=ahi4+sx0XG/Kpy6u5Y2lyeMGHWQjj7JaQwiY30PljjplShJWWQ/M6IvU6od6O9iTc
+	 Hgc7lgwMNTxSQ71jhFaiqq4F0RszUjEVPVH3qSZTjss4V2oFRR/JKFMp2wyxL3s/yx
+	 rA0jQDBuNS5aevytFGjyhc4z42yL1WbxlZcaRz94=
+Date: Mon, 5 Jan 2026 07:37:36 +0100
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Danilo Krummrich <dakr@kernel.org>, sashal@kernel.org,
-	Marko Turk <mt@markoturk.info>, Dirk Behme <dirk.behme@gmail.com>,
-	dirk.behme@de.bosch.com, linux-pci@vger.kernel.org,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 2/2] rust: pci: fix typo in Bar struct's comment
-Message-ID: <2026010520-quickness-humble-70db@gregkh>
-References: <20260103143119.96095-1-mt@markoturk.info>
- <20260103143119.96095-2-mt@markoturk.info>
- <DFF23OTZRIDS.2PZIV7D8AHWFA@kernel.org>
- <84cc5699-f9ab-42b3-a1ea-15bf9bd80d19@gmail.com>
- <aVmHGBop5OPlVVBa@vps.markoturk.info>
- <CANiq72=t-U8JTH2JZxkQaW7sbYXjWLpkYkuMd_CuzLoJLbEvgQ@mail.gmail.com>
- <DFFV41VPS2MU.3LHXU4UKITD0U@kernel.org>
- <CANiq72=fFZpWJ9BvHEBqi4chZO3rFo8+-F9=myW1f_JzJ0PNrg@mail.gmail.com>
+To: caojiaqiang 00593155 <caojiaqiang@huawei.com>
+Cc: davem@davemloft.net, kuba@kernel.org, shuah@kernel.org,
+	stable@vger.kernel.org, netdev@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+	dsahern@kernel.org
+Subject: Re: [5.15.y BACKPORT] selftests: net: test_vxlan_under_vrf: fix HV
+ connectivity test
+Message-ID: <2026010521-removed-unclasp-f5cd@gregkh>
+References: <20260105063805.17044-1-caojiaqiang@huawei.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72=fFZpWJ9BvHEBqi4chZO3rFo8+-F9=myW1f_JzJ0PNrg@mail.gmail.com>
+In-Reply-To: <20260105063805.17044-1-caojiaqiang@huawei.com>
 
-On Sun, Jan 04, 2026 at 07:30:22PM +0100, Miguel Ojeda wrote:
-> On Sun, Jan 4, 2026 at 3:08 PM Danilo Krummrich <dakr@kernel.org> wrote:
-> >
-> > In general I prefer to only add a Fixes: tag for the commit that introduced the
-> > issue.
+On Mon, Jan 05, 2026 at 02:38:05PM +0800, caojiaqiang 00593155 wrote:
+> From: Andrea Righi <andrea.righi@canonical.com>
 > 
-> If their scripts track moves well, then it is great to avoid it, but I
-> am not sure how well that works or not or in which cases, i.e. it
-> could look like two different commits introduced the issue and thus
-> one backport could be missed. Not sure.
+> It looks like test_vxlan_under_vrf.sh is always failing to verify the
+> connectivity test during the ping between the two simulated VMs.
 > 
-> > Again, I could also remember this wrongly, but I think I just recently reviewed
-> > such a commit from Sasha. :)
+> This is due to the fact that veth-hv in each VM should have a distinct
+> MAC address.
 > 
-> Hmm... I also had a few cases where Sasha autoapplied, but in most
-> cases, I had to provide custom patches when they didn't apply cleanly,
-> even trivial ones.
+> Fix by setting a unique MAC address on each simulated VM interface.
+> 
+> Without this fix:
+> 
+>  $ sudo ./tools/testing/selftests/net/test_vxlan_under_vrf.sh
+>  Checking HV connectivity                                           [ OK ]
+>  Check VM connectivity through VXLAN (underlay in the default VRF)  [FAIL]
+> 
+> With this fix applied:
+> 
+>  $ sudo ./tools/testing/selftests/net/test_vxlan_under_vrf.sh
+>  Checking HV connectivity                                           [ OK ]
+>  Check VM connectivity through VXLAN (underlay in the default VRF)  [ OK ]
+>  Check VM connectivity through VXLAN (underlay in a VRF)            [FAIL]
+> 
+> NOTE: the connectivity test with the underlay VRF is still failing; it
+> seems that ARP requests are blocked at the simulated hypervisor level,
+> probably due to some missing ARP forwarding rules. This requires more
+> investigation (in the meantime we may consider to set that test as
+> expected failure - XFAIL).
+> 
+> Signed-off-by: Andrea Righi <andrea.righi@canonical.com>
+> Signed-off-by: David S. Miller <davem@davemloft.net>
+> Signed-off-by: Cao Jiaqiang <caojiaqiang@huawei.com>
+> ---
+>  tools/testing/selftests/net/test_vxlan_under_vrf.sh | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/tools/testing/selftests/net/test_vxlan_under_vrf.sh b/tools/testing/selftests/net/test_vxlan_under_vrf.sh
+> index 6fadc8e2f116..1fd1250ebc66 100755
+> --- a/tools/testing/selftests/net/test_vxlan_under_vrf.sh
+> +++ b/tools/testing/selftests/net/test_vxlan_under_vrf.sh
+> @@ -101,6 +101,8 @@ setup-vm() {
+>      ip -netns hv-$id link set veth-tap master br0
+>      ip -netns hv-$id link set veth-tap up
+>  
+> +    ip link set veth-hv address 02:1d:8d:dd:0c:6$id
+> +
+>      ip link set veth-hv netns vm-$id
+>      ip -netns vm-$id addr add 10.0.0.$id/24 dev veth-hv
+>      ip -netns vm-$id link set veth-hv up
+> -- 
+> 2.22.0
+> 
+> 
 
-It all depends, sometimes we can handle file moves easily, sometimes we
-can not.
-
-But really, why is a comment typo being needed in stable kernels?
+What is the git commit id of this change in Linus's tree?
 
 thanks,
-
 greg k-h
 
