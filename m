@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-204668-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204670-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76C39CF3228
-	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 12:05:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B69ECF322E
+	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 12:05:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 52E8430596BD
-	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 11:01:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8E448305D9BC
+	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 11:01:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38BB7313E03;
-	Mon,  5 Jan 2026 11:01:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE7A631ED95;
+	Mon,  5 Jan 2026 11:01:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s/4xd6cy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VpFYuEUL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED498280037
-	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 11:01:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D274314A65
+	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 11:01:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767610874; cv=none; b=qtYsYFb2zYZmv5yFHtScPJ+Uipcq/sgOedWe/0ZloQW3XI6EJhv71/zxfhwDhF9HOjK63Nysvxm2Yzby8ksQ66nXqtmcJaL7w+jGro1vjItN2swZeXeAzjNi7Y9IE83xr/h1YOqfKuW7B8nddqxL3RJgOL23/osWolxraKWgL/A=
+	t=1767610887; cv=none; b=oWJ1vyz/n2r6HGMfXI+mNjl5Tau/gHhkwLyWJ32LY7mjngRrcvY9ul68Ii8vFgzC7R0B07t2pYwfMu59SYBz+lh1ec5v5/Qg/aZs28AzB/l2iQU05KNK2nOVEkH/kUQNu17du8y1we4VDZ7L4RDzxmdPrqgG6gWfZoLIn5yCl7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767610874; c=relaxed/simple;
-	bh=+bpyGnL/ooyxssPiSCg/qy1xdAO44LQ3v+Is0eGbFKk=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=l6pRwiPiWTYct8j5+9+7FL7ZarOcBLKYAT1elm+wMxVpdyBwRtpQPmi09NQnAKkOhyoj5w5E6GGRzTcXTE19JcjiWTX4yBpxoYO9iWRQDOLta0IDJV1DuFrde6BfBxbiY03kR++GsG4tI0KNvN5V+v+M5yOtYmvtb2+c8rWs8WE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s/4xd6cy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6301C116D0;
-	Mon,  5 Jan 2026 11:01:11 +0000 (UTC)
+	s=arc-20240116; t=1767610887; c=relaxed/simple;
+	bh=NC7IKAlZC6qBJ0LxPdJcJ2HRz+HvdJIfjRA3rz1m70U=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=NgMzYL7a9pesNF0USaLuLfKqqfItPchh92p2t9hd77r1S0dGk99fYA4fHGgmZmDIdGW0fr95Rss8BWZgzAyzrkEghKPJROQRiIavG+r8IwjDNXd3FDQu34f4+d25ltdosFw3nZ1twzmB2WyDE4GE0fXAS9d2JFBTEHeF1Xxvqno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VpFYuEUL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDC93C116D0;
+	Mon,  5 Jan 2026 11:01:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767610872;
-	bh=+bpyGnL/ooyxssPiSCg/qy1xdAO44LQ3v+Is0eGbFKk=;
+	s=korg; t=1767610887;
+	bh=NC7IKAlZC6qBJ0LxPdJcJ2HRz+HvdJIfjRA3rz1m70U=;
 	h=Subject:To:Cc:From:Date:From;
-	b=s/4xd6cy+WL+kR0pNmrvl1+Fl5PGys7MWjtY/myfYRF9MApML30KSKY0LdXIU26Sv
-	 41Ksbxc3uSQLLunPHPCt0OamF8WbkHW/txw8PJlo6K6mDQ2pQ9pgLA/ozfj9YysziJ
-	 xsqL1XAMb6daFF5ggF4qX9aZ3ccM6Ev5uj0uc//E=
-Subject: FAILED: patch "[PATCH] media: mediatek: vcodec: Use spinlock for context list" failed to apply to 6.12-stable tree
-To: wenst@chromium.org,fshao@chromium.org,hverkuil+cisco@kernel.org,nicolas.dufresne@collabora.com,tfiga@chromium.org,yunfei.dong@mediatek.com
+	b=VpFYuEUL8SAAgisrcBfJpXdooij2iK90stGqMqlhcpivifyRsSg1v2OzSd9QaMKo+
+	 37PmhNPgiMHgAdlMKOC4+dA8CGlvKfvE9+IMrP88eBptF7eU49alBluBxPsOkonupr
+	 5dzalFlHKmGtzzb8vzLEZ81g6P0AVTL+Df8VC7AQ=
+Subject: FAILED: patch "[PATCH] media: mediatek: vcodec: Fix a reference leak in" failed to apply to 6.1-stable tree
+To: haoxiang_li2024@163.com,angelogioacchino.delregno@collabora.com,hverkuil+cisco@kernel.org,nicolas.dufresne@collabora.com,tzungbi@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 05 Jan 2026 12:01:09 +0100
-Message-ID: <2026010509-angelic-pavement-9017@gregkh>
+Date: Mon, 05 Jan 2026 12:01:24 +0100
+Message-ID: <2026010524-anthem-unpainted-c766@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -51,19 +51,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.12-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x a5844227e0f030d2af2d85d4aed10c5eca6ca176
+git cherry-pick -x cdd0f118ef87db8a664fb5ea366fd1766d2df1cd
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026010509-angelic-pavement-9017@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026010524-anthem-unpainted-c766@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -75,257 +75,42 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From a5844227e0f030d2af2d85d4aed10c5eca6ca176 Mon Sep 17 00:00:00 2001
-From: Chen-Yu Tsai <wenst@chromium.org>
-Date: Wed, 20 Aug 2025 15:54:05 +0800
-Subject: [PATCH] media: mediatek: vcodec: Use spinlock for context list
- protection lock
+From cdd0f118ef87db8a664fb5ea366fd1766d2df1cd Mon Sep 17 00:00:00 2001
+From: Haoxiang Li <haoxiang_li2024@163.com>
+Date: Mon, 15 Sep 2025 20:09:38 +0800
+Subject: [PATCH] media: mediatek: vcodec: Fix a reference leak in
+ mtk_vcodec_fw_vpu_init()
 
-Previously a mutex was added to protect the encoder and decoder context
-lists from unexpected changes originating from the SCP IP block, causing
-the context pointer to go invalid, resulting in a NULL pointer
-dereference in the IPI handler.
+vpu_get_plat_device() increases the reference count of the returned
+platform device. However, when devm_kzalloc() fails, the reference
+is not released, causing a reference leak.
 
-Turns out on the MT8173, the VPU IPI handler is called from hard IRQ
-context. This causes a big warning from the scheduler. This was first
-reported downstream on the ChromeOS kernels, but is also reproducible
-on mainline using Fluster with the FFmpeg v4l2m2m decoders. Even though
-the actual capture format is not supported, the affected code paths
-are triggered.
+Fix this by calling put_device() on fw_pdev->dev before returning
+on the error path.
 
-Since this lock just protects the context list and operations on it are
-very fast, it should be OK to switch to a spinlock.
-
-Fixes: 6467cda18c9f ("media: mediatek: vcodec: adding lock to protect decoder context list")
-Fixes: afaaf3a0f647 ("media: mediatek: vcodec: adding lock to protect encoder context list")
-Cc: Yunfei Dong <yunfei.dong@mediatek.com>
+Fixes: e25a89f743b1 ("media: mtk-vcodec: potential dereference of null pointer")
 Cc: stable@vger.kernel.org
-Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
-Reviewed-by: Fei Shao <fshao@chromium.org>
-Reviewed-by: Tomasz Figa <tfiga@chromium.org>
+Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: Tzung-Bi Shih <tzungbi@kernel.org>
 Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
 Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 
 diff --git a/drivers/media/platform/mediatek/vcodec/common/mtk_vcodec_fw_vpu.c b/drivers/media/platform/mediatek/vcodec/common/mtk_vcodec_fw_vpu.c
-index d7027d600208..223fb2294894 100644
+index 223fb2294894..3632037f78f5 100644
 --- a/drivers/media/platform/mediatek/vcodec/common/mtk_vcodec_fw_vpu.c
 +++ b/drivers/media/platform/mediatek/vcodec/common/mtk_vcodec_fw_vpu.c
-@@ -47,30 +47,32 @@ static void mtk_vcodec_vpu_reset_dec_handler(void *priv)
- {
- 	struct mtk_vcodec_dec_dev *dev = priv;
- 	struct mtk_vcodec_dec_ctx *ctx;
-+	unsigned long flags;
+@@ -119,8 +119,10 @@ struct mtk_vcodec_fw *mtk_vcodec_fw_vpu_init(void *priv, enum mtk_vcodec_fw_use
+ 		vpu_wdt_reg_handler(fw_pdev, mtk_vcodec_vpu_reset_enc_handler, priv, rst_id);
  
- 	dev_err(&dev->plat_dev->dev, "Watchdog timeout!!");
- 
--	mutex_lock(&dev->dev_ctx_lock);
-+	spin_lock_irqsave(&dev->dev_ctx_lock, flags);
- 	list_for_each_entry(ctx, &dev->ctx_list, list) {
- 		ctx->state = MTK_STATE_ABORT;
- 		mtk_v4l2_vdec_dbg(0, ctx, "[%d] Change to state MTK_STATE_ABORT", ctx->id);
- 	}
--	mutex_unlock(&dev->dev_ctx_lock);
-+	spin_unlock_irqrestore(&dev->dev_ctx_lock, flags);
- }
- 
- static void mtk_vcodec_vpu_reset_enc_handler(void *priv)
- {
- 	struct mtk_vcodec_enc_dev *dev = priv;
- 	struct mtk_vcodec_enc_ctx *ctx;
-+	unsigned long flags;
- 
- 	dev_err(&dev->plat_dev->dev, "Watchdog timeout!!");
- 
--	mutex_lock(&dev->dev_ctx_lock);
-+	spin_lock_irqsave(&dev->dev_ctx_lock, flags);
- 	list_for_each_entry(ctx, &dev->ctx_list, list) {
- 		ctx->state = MTK_STATE_ABORT;
- 		mtk_v4l2_vdec_dbg(0, ctx, "[%d] Change to state MTK_STATE_ABORT", ctx->id);
- 	}
--	mutex_unlock(&dev->dev_ctx_lock);
-+	spin_unlock_irqrestore(&dev->dev_ctx_lock, flags);
- }
- 
- static const struct mtk_vcodec_fw_ops mtk_vcodec_vpu_msg = {
-diff --git a/drivers/media/platform/mediatek/vcodec/decoder/mtk_vcodec_dec_drv.c b/drivers/media/platform/mediatek/vcodec/decoder/mtk_vcodec_dec_drv.c
-index 46d176e6de63..3b81fae9f913 100644
---- a/drivers/media/platform/mediatek/vcodec/decoder/mtk_vcodec_dec_drv.c
-+++ b/drivers/media/platform/mediatek/vcodec/decoder/mtk_vcodec_dec_drv.c
-@@ -198,6 +198,7 @@ static int fops_vcodec_open(struct file *file)
- 	struct mtk_vcodec_dec_ctx *ctx = NULL;
- 	int ret = 0, i, hw_count;
- 	struct vb2_queue *src_vq;
-+	unsigned long flags;
- 
- 	ctx = kzalloc(sizeof(*ctx), GFP_KERNEL);
- 	if (!ctx)
-@@ -267,9 +268,9 @@ static int fops_vcodec_open(struct file *file)
- 
- 	ctx->dev->vdec_pdata->init_vdec_params(ctx);
- 
--	mutex_lock(&dev->dev_ctx_lock);
-+	spin_lock_irqsave(&dev->dev_ctx_lock, flags);
- 	list_add(&ctx->list, &dev->ctx_list);
--	mutex_unlock(&dev->dev_ctx_lock);
-+	spin_unlock_irqrestore(&dev->dev_ctx_lock, flags);
- 	mtk_vcodec_dbgfs_create(ctx);
- 
- 	mutex_unlock(&dev->dev_mutex);
-@@ -294,6 +295,7 @@ static int fops_vcodec_release(struct file *file)
- {
- 	struct mtk_vcodec_dec_dev *dev = video_drvdata(file);
- 	struct mtk_vcodec_dec_ctx *ctx = file_to_dec_ctx(file);
-+	unsigned long flags;
- 
- 	mtk_v4l2_vdec_dbg(0, ctx, "[%d] decoder", ctx->id);
- 	mutex_lock(&dev->dev_mutex);
-@@ -312,9 +314,9 @@ static int fops_vcodec_release(struct file *file)
- 	v4l2_ctrl_handler_free(&ctx->ctrl_hdl);
- 
- 	mtk_vcodec_dbgfs_remove(dev, ctx->id);
--	mutex_lock(&dev->dev_ctx_lock);
-+	spin_lock_irqsave(&dev->dev_ctx_lock, flags);
- 	list_del_init(&ctx->list);
--	mutex_unlock(&dev->dev_ctx_lock);
-+	spin_unlock_irqrestore(&dev->dev_ctx_lock, flags);
- 	kfree(ctx);
- 	mutex_unlock(&dev->dev_mutex);
- 	return 0;
-@@ -407,7 +409,7 @@ static int mtk_vcodec_probe(struct platform_device *pdev)
- 	for (i = 0; i < MTK_VDEC_HW_MAX; i++)
- 		mutex_init(&dev->dec_mutex[i]);
- 	mutex_init(&dev->dev_mutex);
--	mutex_init(&dev->dev_ctx_lock);
-+	spin_lock_init(&dev->dev_ctx_lock);
- 	spin_lock_init(&dev->irqlock);
- 
- 	snprintf(dev->v4l2_dev.name, sizeof(dev->v4l2_dev.name), "%s",
-diff --git a/drivers/media/platform/mediatek/vcodec/decoder/mtk_vcodec_dec_drv.h b/drivers/media/platform/mediatek/vcodec/decoder/mtk_vcodec_dec_drv.h
-index d047d7c580fb..9d68808e8f9c 100644
---- a/drivers/media/platform/mediatek/vcodec/decoder/mtk_vcodec_dec_drv.h
-+++ b/drivers/media/platform/mediatek/vcodec/decoder/mtk_vcodec_dec_drv.h
-@@ -285,7 +285,7 @@ struct mtk_vcodec_dec_dev {
- 	/* decoder hardware mutex lock */
- 	struct mutex dec_mutex[MTK_VDEC_HW_MAX];
- 	struct mutex dev_mutex;
--	struct mutex dev_ctx_lock;
-+	spinlock_t dev_ctx_lock;
- 	struct workqueue_struct *decode_workqueue;
- 
- 	spinlock_t irqlock;
-diff --git a/drivers/media/platform/mediatek/vcodec/decoder/vdec_vpu_if.c b/drivers/media/platform/mediatek/vcodec/decoder/vdec_vpu_if.c
-index 145958206e38..40b97f114cf6 100644
---- a/drivers/media/platform/mediatek/vcodec/decoder/vdec_vpu_if.c
-+++ b/drivers/media/platform/mediatek/vcodec/decoder/vdec_vpu_if.c
-@@ -75,16 +75,17 @@ static void handle_get_param_msg_ack(const struct vdec_vpu_ipi_get_param_ack *ms
- static bool vpu_dec_check_ap_inst(struct mtk_vcodec_dec_dev *dec_dev, struct vdec_vpu_inst *vpu)
- {
- 	struct mtk_vcodec_dec_ctx *ctx;
-+	unsigned long flags;
- 	int ret = false;
- 
--	mutex_lock(&dec_dev->dev_ctx_lock);
-+	spin_lock_irqsave(&dec_dev->dev_ctx_lock, flags);
- 	list_for_each_entry(ctx, &dec_dev->ctx_list, list) {
- 		if (!IS_ERR_OR_NULL(ctx) && ctx->vpu_inst == vpu) {
- 			ret = true;
- 			break;
- 		}
- 	}
--	mutex_unlock(&dec_dev->dev_ctx_lock);
-+	spin_unlock_irqrestore(&dec_dev->dev_ctx_lock, flags);
- 
- 	return ret;
- }
-diff --git a/drivers/media/platform/mediatek/vcodec/encoder/mtk_vcodec_enc_drv.c b/drivers/media/platform/mediatek/vcodec/encoder/mtk_vcodec_enc_drv.c
-index fb1c3bdc2dae..82b8ff38e8f1 100644
---- a/drivers/media/platform/mediatek/vcodec/encoder/mtk_vcodec_enc_drv.c
-+++ b/drivers/media/platform/mediatek/vcodec/encoder/mtk_vcodec_enc_drv.c
-@@ -117,6 +117,7 @@ static int fops_vcodec_open(struct file *file)
- 	struct mtk_vcodec_enc_ctx *ctx = NULL;
- 	int ret = 0;
- 	struct vb2_queue *src_vq;
-+	unsigned long flags;
- 
- 	ctx = kzalloc(sizeof(*ctx), GFP_KERNEL);
- 	if (!ctx)
-@@ -176,9 +177,9 @@ static int fops_vcodec_open(struct file *file)
- 	mtk_v4l2_venc_dbg(2, ctx, "Create instance [%d]@%p m2m_ctx=%p ",
- 			  ctx->id, ctx, ctx->m2m_ctx);
- 
--	mutex_lock(&dev->dev_ctx_lock);
-+	spin_lock_irqsave(&dev->dev_ctx_lock, flags);
- 	list_add(&ctx->list, &dev->ctx_list);
--	mutex_unlock(&dev->dev_ctx_lock);
-+	spin_unlock_irqrestore(&dev->dev_ctx_lock, flags);
- 
- 	mutex_unlock(&dev->dev_mutex);
- 	mtk_v4l2_venc_dbg(0, ctx, "%s encoder [%d]", dev_name(&dev->plat_dev->dev),
-@@ -203,6 +204,7 @@ static int fops_vcodec_release(struct file *file)
- {
- 	struct mtk_vcodec_enc_dev *dev = video_drvdata(file);
- 	struct mtk_vcodec_enc_ctx *ctx = file_to_enc_ctx(file);
-+	unsigned long flags;
- 
- 	mtk_v4l2_venc_dbg(1, ctx, "[%d] encoder", ctx->id);
- 	mutex_lock(&dev->dev_mutex);
-@@ -213,9 +215,9 @@ static int fops_vcodec_release(struct file *file)
- 	v4l2_fh_exit(&ctx->fh);
- 	v4l2_ctrl_handler_free(&ctx->ctrl_hdl);
- 
--	mutex_lock(&dev->dev_ctx_lock);
-+	spin_lock_irqsave(&dev->dev_ctx_lock, flags);
- 	list_del_init(&ctx->list);
--	mutex_unlock(&dev->dev_ctx_lock);
-+	spin_unlock_irqrestore(&dev->dev_ctx_lock, flags);
- 	kfree(ctx);
- 	mutex_unlock(&dev->dev_mutex);
- 	return 0;
-@@ -297,7 +299,7 @@ static int mtk_vcodec_probe(struct platform_device *pdev)
- 
- 	mutex_init(&dev->enc_mutex);
- 	mutex_init(&dev->dev_mutex);
--	mutex_init(&dev->dev_ctx_lock);
-+	spin_lock_init(&dev->dev_ctx_lock);
- 	spin_lock_init(&dev->irqlock);
- 
- 	snprintf(dev->v4l2_dev.name, sizeof(dev->v4l2_dev.name), "%s",
-diff --git a/drivers/media/platform/mediatek/vcodec/encoder/mtk_vcodec_enc_drv.h b/drivers/media/platform/mediatek/vcodec/encoder/mtk_vcodec_enc_drv.h
-index 5b304a551236..0cddfa13594f 100644
---- a/drivers/media/platform/mediatek/vcodec/encoder/mtk_vcodec_enc_drv.h
-+++ b/drivers/media/platform/mediatek/vcodec/encoder/mtk_vcodec_enc_drv.h
-@@ -206,7 +206,7 @@ struct mtk_vcodec_enc_dev {
- 	/* encoder hardware mutex lock */
- 	struct mutex enc_mutex;
- 	struct mutex dev_mutex;
--	struct mutex dev_ctx_lock;
-+	spinlock_t dev_ctx_lock;
- 	struct workqueue_struct *encode_workqueue;
- 
- 	int enc_irq;
-diff --git a/drivers/media/platform/mediatek/vcodec/encoder/venc_vpu_if.c b/drivers/media/platform/mediatek/vcodec/encoder/venc_vpu_if.c
-index 51bb7ee141b9..3c229b1f6b21 100644
---- a/drivers/media/platform/mediatek/vcodec/encoder/venc_vpu_if.c
-+++ b/drivers/media/platform/mediatek/vcodec/encoder/venc_vpu_if.c
-@@ -45,16 +45,17 @@ static void handle_enc_encode_msg(struct venc_vpu_inst *vpu, const void *data)
- static bool vpu_enc_check_ap_inst(struct mtk_vcodec_enc_dev *enc_dev, struct venc_vpu_inst *vpu)
- {
- 	struct mtk_vcodec_enc_ctx *ctx;
-+	unsigned long flags;
- 	int ret = false;
- 
--	mutex_lock(&enc_dev->dev_ctx_lock);
-+	spin_lock_irqsave(&enc_dev->dev_ctx_lock, flags);
- 	list_for_each_entry(ctx, &enc_dev->ctx_list, list) {
- 		if (!IS_ERR_OR_NULL(ctx) && ctx->vpu_inst == vpu) {
- 			ret = true;
- 			break;
- 		}
- 	}
--	mutex_unlock(&enc_dev->dev_ctx_lock);
-+	spin_unlock_irqrestore(&enc_dev->dev_ctx_lock, flags);
- 
- 	return ret;
- }
+ 	fw = devm_kzalloc(&plat_dev->dev, sizeof(*fw), GFP_KERNEL);
+-	if (!fw)
++	if (!fw) {
++		put_device(&fw_pdev->dev);
+ 		return ERR_PTR(-ENOMEM);
++	}
+ 	fw->type = VPU;
+ 	fw->ops = &mtk_vcodec_vpu_msg;
+ 	fw->pdev = fw_pdev;
 
 
