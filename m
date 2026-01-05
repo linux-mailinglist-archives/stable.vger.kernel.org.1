@@ -1,95 +1,106 @@
-Return-Path: <stable+bounces-204951-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204952-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86DE6CF5EEC
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 00:04:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A4BDACF5F88
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 00:25:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 21F48302F6B0
-	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 23:03:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 536543057E9F
+	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 23:25:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDA1F310636;
-	Mon,  5 Jan 2026 23:03:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE7312EFD98;
+	Mon,  5 Jan 2026 23:25:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LDEuDAkw"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mEgc8P04"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 951CC3A1E6D;
-	Mon,  5 Jan 2026 23:03:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2405F3A1E63
+	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 23:25:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767654208; cv=none; b=qF11ITASeM8BfdLCbZ7wgnlLckk5dlY9aVMTOqpVs1iYaUUHlGgzcoMNibw66OO1px0dhsFvP604Bjz06H+QcUDHvq1jcly338MoZ/Gqekfxcyh1aShGkIKXnDfMA3bN+CGStiBcRjP91q9A8Hb5QU+3QvFJmPZUuUXjVnyhhpU=
+	t=1767655508; cv=none; b=X6cmCvL+9xIDrxBeR9/P9jOgYvmQwHm604/mAOnF6K75kbrisW4osIOFVql1JeGBxBkmYEiVL0NIP6U6ZHLMKWtYTD13yy+zyRJ7H9BONfzwYLyVGGSN9LYjimHS82JWROclw54xT/yVpCOBlFHe8pOUFx8my7jVVXAwWDH7ft4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767654208; c=relaxed/simple;
-	bh=xMpoAjOMiDQD0DfTNUYeG05v1tNz9/4y1VvJcgXMxf4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tDnAD9Y4YjkN5wE3QZT+VX7G5pxl60/TjdSctnuz4yXoft1ToHYJ4ScXRSMpTHbgrEc6rprJTo2nDWZaMPqHOZNjyG2IVa+wIsSWQ4a2lMtiQjCjgQwMvqf3uy1oXx4JmMmB8wJfGfjq1X9R3o+EKuKLg08YCuLKXSBuDxYUQeo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LDEuDAkw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CA0BC116D0;
-	Mon,  5 Jan 2026 23:03:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767654208;
-	bh=xMpoAjOMiDQD0DfTNUYeG05v1tNz9/4y1VvJcgXMxf4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LDEuDAkwdNtHJo0bsAkb1kq//l7nlma7NpMmPFsPAvSuQr2+ULCqLQKhf6dBKpzHy
-	 qt3BAnz9ZUNuGkz4c5FlVYPxJKMT7bsZEHfy6gaB1DH1Nuv6fTkBM2/g0J/qvYwGUR
-	 jqhNR/zr9MUmPMuHZmYOtCCF5uZtYoULCRIDWl0o9z99KakGyyWrZOreeVFFcenCfR
-	 tYFmtTNdgqVNT4M5NpvXf1JYItFIgCfOUtCdW4w6Sq5BpDLN08SGNUOyHlzPAOLxK0
-	 ikRMDFWE0OrutVVaRtblgciEUEg7c/M48AVNclFVP7TYnBEJoMds1IKvYetKwWxayC
-	 Yab4rcXbjF7fQ==
-Date: Mon, 5 Jan 2026 16:03:22 -0700
-From: Nathan Chancellor <nathan@kernel.org>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Siddhesh Poyarekar <siddhesh@gotplt.org>,
-	Nicolas Schier <nsc@kernel.org>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	rust-for-linux@vger.kernel.org, Kees Cook <kees@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	stable@vger.kernel.org,
-	Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
-	clang-built-linux <llvm@lists.linux.dev>
-Subject: Re: [PATCH v2] rust: Add -fdiagnostics-show-context to
- bindgen_skip_c_flags
-Message-ID: <20260105230322.GA1276749@ax162>
-References: <20251217150010.665153-1-siddhesh@gotplt.org>
- <20251217224050.1186896-1-siddhesh@gotplt.org>
- <CANiq72n0BtCxAsXOaNnSMWC-aW2bNTPzN=4VGb+ic8YA6jhsAw@mail.gmail.com>
+	s=arc-20240116; t=1767655508; c=relaxed/simple;
+	bh=2PCUcxAxYvAy2hcKx+rpzCh92HmmXeKRsj2JwCyhNNo=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=J8rYUtpoTXkrxuJ5JBE1HMnLkRkAo3h1gBN1sM6Eou4MRYsfwCy+hAbMqSmGF4LRR5bbRjyQRGkoKvpn3ZFLgbDbnHe6yQdHsD1eP8HeIgtBVzMIXPJuwR9ibjE9yx21UXhu1Vgem1XiLnCbEcoK8+UENMyH9uoZBSWCxACBGbI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--joshwash.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mEgc8P04; arc=none smtp.client-ip=209.85.210.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--joshwash.bounces.google.com
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-7bf5cdef41dso876874b3a.0
+        for <stable@vger.kernel.org>; Mon, 05 Jan 2026 15:25:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1767655506; x=1768260306; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=oan93+lIIMYyN82Q1bThEoWEawSCNkralKofR36luXo=;
+        b=mEgc8P042RNqmJ+zaeHwBN4l0EPeu3Xpyw7kGAHM9Lw1Beq/mXqAexQKjeHV0jy7kA
+         4nLLGTr7oOP3TCHxV6j4LlwED8RtTRraePCZhN/Xkw5cI5QbOgfyoP0JKGQFW8yfz/yU
+         KVUPwVAgnX3H9vj+zT5qjHmarEs6F10JGpnUeoo8D4SvR+s4fkZHKvY2kaRNrWNOLMa5
+         e2HqGXRgyVYsATDLV4phJSg2CU548ud4X1lkpdCfMOo1uuSsWkGaPzLvwvu7ik1wuhG5
+         nc9XjpiEfnZAQtclAHQJu6ToLyzulmY8LCKHQ8T2HsozenlKWE2QCteONxhjaCoEDgC6
+         GTWw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767655506; x=1768260306;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=oan93+lIIMYyN82Q1bThEoWEawSCNkralKofR36luXo=;
+        b=wWsCKLBXBwuXL2/Nb7rgVn3gWJTjWGvGzjr5uqSi76Nf7+zPVybssdWLge6sXkwGaN
+         8E4M0+TJReFafcTEULGpf40CSpnBxCL8nTpxQUJS07Fo81GCQFNZDiAadPV1K7t2d5Xa
+         9QShbDGcgT8y5fG8c17m45SASVP6niTszf1h8UAghyKcpTYhXZQEAwQ350IQ8rI9pAZd
+         At0/j3VosFhpZHHFgKY8Y9UJFWcyr+AgxpojBtDKN0Ia6KNb/gW9T+8+F8nwmINgwXRs
+         Qj9qU4vNPUwOiryw2kjvY85X8ZOqZ0x888yG41ESMGYAjbv2fgYj3Z4/tvj+T/V6KymU
+         QK8w==
+X-Forwarded-Encrypted: i=1; AJvYcCXX8O2v2TLceJye6IhFeZG1A3Wa6WNL3+d/BqMdK+0r3GcNaHSdP50zCo0apTbBM2uPcc5HcHk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywmgqf2sQv2R9UCJ3LI7+1H9SNbYtxJkOVCGrzoZNKyrcY16khL
+	vTVSajnS0xBCPXSQxEi/KqU6rEJ4Yjj/ivTAJqxOuEjSb8QHdyhIhE6nWlCzYDku+9bdm+1viVg
+	pmfuPbNTnn2Aj4g==
+X-Google-Smtp-Source: AGHT+IFjGBS1OewhxpTi+b0M8y/KRXURzfVXrE7TyQAgG4fiHsq4dPh1ARjDDlzv84hCcBhZTI9UvHqsSHQXXA==
+X-Received: from pgbfy11.prod.google.com ([2002:a05:6a02:2a8b:b0:c06:f719:e7b6])
+ (user=joshwash job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6a20:a120:b0:366:5bda:1ebd with SMTP id adf61e73a8af0-3898223c070mr773538637.2.1767655506441;
+ Mon, 05 Jan 2026 15:25:06 -0800 (PST)
+Date: Mon,  5 Jan 2026 15:25:02 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72n0BtCxAsXOaNnSMWC-aW2bNTPzN=4VGb+ic8YA6jhsAw@mail.gmail.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.52.0.351.gbe84eed79e-goog
+Message-ID: <20260105232504.3791806-1-joshwash@google.com>
+Subject: [PATCH net 0/2] gve: fix crashes on invalid TX queue indices
+From: Joshua Washington <joshwash@google.com>
+To: netdev@vger.kernel.org
+Cc: Joshua Washington <joshwash@google.com>, Harshitha Ramamurthy <hramamurthy@google.com>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Willem de Bruijn <willemb@google.com>, Ankit Garg <nktgrg@google.com>, 
+	Praveen Kaligineedi <pkaligineedi@google.com>, Catherine Sullivan <csully@google.com>, 
+	Luigi Rizzo <lrizzo@google.com>, Jon Olson <jonolson@google.com>, Sagi Shahar <sagis@google.com>, 
+	Bailey Forrest <bcf@google.com>, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Sun, Jan 04, 2026 at 09:53:25PM +0100, Miguel Ojeda wrote:
-> On Wed, Dec 17, 2025 at 11:41 PM Siddhesh Poyarekar <siddhesh@gotplt.org> wrote:
-> >
-> > but clang does not have this option, so avoid passing it to bindgen.
-> 
-> This looks indeed correct, although it is not yet in a released GCC
-> (testing quickly in Compiler Explorer, GCC 15.2 doesn't have it, but
-> GCC trunk has).
-> 
-> I will apply it -- Cc'ing ClangBuiltLinux and Kbuild so that they are aware.
+From: Ankit Garg <nktgrg@google.com>
 
-Right, this does look correct, as this option is specific to GCC for the
-purpose of exposing more information from GCC internals to the user for
-understanding diagnostics better.
+This series fixes a kernel panic in the GVE driver caused by
+out-of-bounds array access when the network stack provides an invalid
+TX queue index.
 
-I will say if this makes 6.19, the stable tag is not necessary since
-7454048db27d6 landed in 6.19-rc1 and I would not expect it to get
-backported (but even if it did via AUTOSEL or something, the Fixes tag
-should ensure it gets included).
+The issue impacts both GQI and DQO queue formats. For both cases, the
+driver is updated to validate the queue index and drop the packet if
+the index is out of range.
 
-Cheers,
-Nathan
+Ankit Garg (2):
+  gve: drop packets on invalid queue indices in GQI TX path
+  gve: drop packets on invalid queue indices in DQO TX path
+
+ drivers/net/ethernet/google/gve/gve_tx.c     | 12 +++++++++---
+ drivers/net/ethernet/google/gve/gve_tx_dqo.c |  9 ++++++++-
+ 2 files changed, 17 insertions(+), 4 deletions(-)
+
+-- 
+2.52.0.351.gbe84eed79e-goog
+
 
