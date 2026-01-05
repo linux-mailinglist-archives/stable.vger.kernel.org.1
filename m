@@ -1,128 +1,152 @@
-Return-Path: <stable+bounces-204801-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204802-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54D71CF3F6B
-	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 14:55:25 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CE6FCF4061
+	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 15:07:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 572E43011A88
-	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 13:55:24 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id BAF1230124C3
+	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 14:06:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31A9E2C159A;
-	Mon,  5 Jan 2026 13:55:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F6BC32ED45;
+	Mon,  5 Jan 2026 13:56:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O3UAcCP1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NSv2eP/K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87DC71EE033;
-	Mon,  5 Jan 2026 13:55:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A294330320
+	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 13:56:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767621323; cv=none; b=JM+cH1w5P6Yrj8uV0q2RQHtTcuqbODYbuRTdKdBQ547m4iimRnOfbW0K/YkaH9eyOLTEB8Id2soJhNmiFRqjn4/WWzNFkTnmxbTCuD2aWbjcauP84XYrUDiKeF18AHiyn67SH7jYiKGcMCT+fCQso6PLxXUtie+lwXtHjxrRTbs=
+	t=1767621392; cv=none; b=n8RLq8dyHL9xoo5RJ/76tFGAJ7HPPCAYkCN3tAvzhPD+aZbwJh9AEEcjSmN9XUHIsqv01fTmZCNGXyN9vpZ8s2n6qBV/RkpZNflbsuh+DDNcT055K4CB4CTlIjk2imxAFd56i0OD8+9tHOhtwXrt1n9JWPiqlzgjgdyXl9hMcXU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767621323; c=relaxed/simple;
-	bh=R3prR7NAkm/pmZYemezAYazX63wtmQSKkG62w/kXMDE=;
+	s=arc-20240116; t=1767621392; c=relaxed/simple;
+	bh=exf/ch0MIW7+QupHXcxhIWfeHbtq+6PKpQdBxOEUCvA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lsb1rRbBSODQ3Otiv570zzr0M83aIbhLT/73eLlPYKtarFltllGj8cmw17DcgYucFZQx3Ya+9omsN7L2KM55ySW3anWIE8SaZsQA3q+0blq0Ku+dDddGIgefaAZq23I4Yo+3qTK3kEym3BEicbHZShuTJh8qHKnFDGCtKHcd05U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O3UAcCP1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9A05C116D0;
-	Mon,  5 Jan 2026 13:55:21 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=Q3J4DEzuqQoziNyjtdiUrJkhvmCs/AhxsCdlYgP6KELVB0XoVR97Kj6HFv7WEhjRgX2fqBhbn7ory0cnInviSX7kTua1SzpOoXD4Na3ERwmZ9hHygD0gPb2O07LoVOAII+cUc4SPVkDo7YsaefzvhMbwsRz2htS5qpeZOw8N61Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NSv2eP/K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EB79C116D0;
+	Mon,  5 Jan 2026 13:56:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767621322;
-	bh=R3prR7NAkm/pmZYemezAYazX63wtmQSKkG62w/kXMDE=;
+	s=korg; t=1767621391;
+	bh=exf/ch0MIW7+QupHXcxhIWfeHbtq+6PKpQdBxOEUCvA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=O3UAcCP1534dpLzg8qmXWc5cdQtOo674VKbLWo/HU9KIQ+83VAQ4ZctLaqBpfLWvX
-	 2hvZJH0BCEu1Dj/fighKJJCA5yO6+KnWJViRgUmxZaiTGweeP0W57bosnXhNG69S4d
-	 cTZifnrIf+YiJ+/Mj0WiovaKbxcwi8K9zvCiDvcs=
-Date: Mon, 5 Jan 2026 14:55:19 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Stephen Zhang <starzhangzsd@gmail.com>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	Andreas Gruenbacher <agruenba@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.18 052/430] gfs2: Fix use of bio_chain
-Message-ID: <2026010551-recite-vacant-01fd@gregkh>
-References: <20251229160724.139406961@linuxfoundation.org>
- <20251229160726.283681845@linuxfoundation.org>
- <CANubcdVnWRkJ8x7zLGKih+uY0D0cE8jGmF_dx7+iDb5sgBWtQg@mail.gmail.com>
- <2026010240-certify-refined-7c02@gregkh>
- <CANubcdW2z9AEdML4sV9XEXFeDUUzbt20istLuZ9s=zUoPvjDLQ@mail.gmail.com>
+	b=NSv2eP/K6FmZx7gH9HYHTTslJS5KltgSZCPtDXLo/ScMY7RNyD5w7v7b3KBSdPWWW
+	 e+btA5pYqNmFlJkBUOQOlTb3Fixa0xcHfgewYzajUZNVLInnDdCCBptlDdXFj2MkC/
+	 06s4qhSRmh4XXdyFV4scC7M22WsASXQ18Ct91IFk=
+Date: Mon, 5 Jan 2026 14:56:28 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Gao Xiang <hsiangkao@linux.alibaba.com>
+Cc: stable@vger.kernel.org, Sasha Levin <sashal@kernel.org>,
+	linux-erofs@lists.ozlabs.org,
+	Junbeom Yeom <junbeom.yeom@samsung.com>,
+	Jaewook Kim <jw5454.kim@samsung.com>,
+	Sungjong Seo <sj1557.seo@samsung.com>
+Subject: Re: [PATCH 6.18.y v2] erofs: fix unexpected EIO under memory pressure
+Message-ID: <2026010521-snout-handheld-98f3@gregkh>
+References: <20251229185432.1616355-2-sashal@kernel.org>
+ <20251230023053.3682970-1-hsiangkao@linux.alibaba.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANubcdW2z9AEdML4sV9XEXFeDUUzbt20istLuZ9s=zUoPvjDLQ@mail.gmail.com>
+In-Reply-To: <20251230023053.3682970-1-hsiangkao@linux.alibaba.com>
 
-On Sat, Jan 03, 2026 at 02:26:01PM +0800, Stephen Zhang wrote:
-> Greg Kroah-Hartman <gregkh@linuxfoundation.org> 于2026年1月2日周五 14:49写道：
-> >
-> > On Wed, Dec 31, 2025 at 07:54:45PM +0800, Stephen Zhang wrote:
-> > > Greg Kroah-Hartman <gregkh@linuxfoundation.org> 于2025年12月30日周二 00:16写道：
-> > > >
-> > > > 6.18-stable review patch.  If anyone has any objections, please let me know.
-> > > >
-> > > > ------------------
-> > > >
-> > > > From: Andreas Gruenbacher <agruenba@redhat.com>
-> > > >
-> > > > [ Upstream commit 8a157e0a0aa5143b5d94201508c0ca1bb8cfb941 ]
-> > > >
-> > > > In gfs2_chain_bio(), the call to bio_chain() has its arguments swapped.
-> > > > The result is leaked bios and incorrect synchronization (only the last
-> > > > bio will actually be waited for).  This code is only used during mount
-> > > > and filesystem thaw, so the bug normally won't be noticeable.
-> > > >
-> > > > Reported-by: Stephen Zhang <starzhangzsd@gmail.com>
-> > > > Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
-> > > > Signed-off-by: Sasha Levin <sashal@kernel.org>
-> > > > ---
-> > > >  fs/gfs2/lops.c | 2 +-
-> > > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > > >
-> > > > diff --git a/fs/gfs2/lops.c b/fs/gfs2/lops.c
-> > > > index 9c8c305a75c46..914d03f6c4e82 100644
-> > > > --- a/fs/gfs2/lops.c
-> > > > +++ b/fs/gfs2/lops.c
-> > > > @@ -487,7 +487,7 @@ static struct bio *gfs2_chain_bio(struct bio *prev, unsigned int nr_iovecs)
-> > > >         new = bio_alloc(prev->bi_bdev, nr_iovecs, prev->bi_opf, GFP_NOIO);
-> > > >         bio_clone_blkg_association(new, prev);
-> > > >         new->bi_iter.bi_sector = bio_end_sector(prev);
-> > > > -       bio_chain(new, prev);
-> > > > +       bio_chain(prev, new);
-> > > >         submit_bio(prev);
-> > > >         return new;
-> > > >  }
-> > > > --
-> > >
-> > > Hi Greg,
-> > >
-> > > I believe this patch should be excluded from the stable series. Please
-> > > refer to the discussion in the linked thread, which clarifies the reasoning:
-> > >
-> > > https://lore.kernel.org/gfs2/tencent_B55495E8E88EEE66CC2C7A1E6FBC2FC16C0A@qq.com/T/#mad18b8492e01daa939c7d958200802c9603b6c73
-> >
-> > What exactly is the reasoning?  Why not just take these submitted
-> > patches when they hit Linus's tree as well?
-> >
+On Tue, Dec 30, 2025 at 10:30:53AM +0800, Gao Xiang wrote:
+> From: Junbeom Yeom <junbeom.yeom@samsung.com>
 > 
-> My understanding is that this patch didn't actually fix anything and
-> instead introduced a new bug by mistake. Since it was merged, a
-> second patch had to be submitted to revert/correct the original "fix."
+> erofs readahead could fail with ENOMEM under the memory pressure because
+> it tries to alloc_page with GFP_NOWAIT | GFP_NORETRY, while GFP_KERNEL
+> for a regular read. And if readahead fails (with non-uptodate folios),
+> the original request will then fall back to synchronous read, and
+> `.read_folio()` should return appropriate errnos.
 > 
-> Therefore, for the stable series, the appropriate action is to simply
-> drop this incorrect fix.
+> However, in scenarios where readahead and read operations compete,
+> read operation could return an unintended EIO because of an incorrect
+> error propagation.
+> 
+> To resolve this, this patch modifies the behavior so that, when the
+> PCL is for read(which means pcl.besteffort is true), it attempts actual
+> decompression instead of propagating the privios error except initial EIO.
+> 
+> - Page size: 4K
+> - The original size of FileA: 16K
+> - Compress-ratio per PCL: 50% (Uncompressed 8K -> Compressed 4K)
+> [page0, page1] [page2, page3]
+> [PCL0]---------[PCL1]
+> 
+> - functions declaration:
+>   . pread(fd, buf, count, offset)
+>   . readahead(fd, offset, count)
+> - Thread A tries to read the last 4K
+> - Thread B tries to do readahead 8K from 4K
+> - RA, besteffort == false
+> - R, besteffort == true
+> 
+>         <process A>                   <process B>
+> 
+> pread(FileA, buf, 4K, 12K)
+>   do readahead(page3) // failed with ENOMEM
+>   wait_lock(page3)
+>     if (!uptodate(page3))
+>       goto do_read
+>                                readahead(FileA, 4K, 8K)
+>                                // Here create PCL-chain like below:
+>                                // [null, page1] [page2, null]
+>                                //   [PCL0:RA]-----[PCL1:RA]
+> ...
+>   do read(page3)        // found [PCL1:RA] and add page3 into it,
+>                         // and then, change PCL1 from RA to R
+> ...
+>                                // Now, PCL-chain is as below:
+>                                // [null, page1] [page2, page3]
+>                                //   [PCL0:RA]-----[PCL1:R]
+> 
+>                                  // try to decompress PCL-chain...
+>                                  z_erofs_decompress_queue
+>                                    err = 0;
+> 
+>                                    // failed with ENOMEM, so page 1
+>                                    // only for RA will not be uptodated.
+>                                    // it's okay.
+>                                    err = decompress([PCL0:RA], err)
+> 
+>                                    // However, ENOMEM propagated to next
+>                                    // PCL, even though PCL is not only
+>                                    // for RA but also for R. As a result,
+>                                    // it just failed with ENOMEM without
+>                                    // trying any decompression, so page2
+>                                    // and page3 will not be uptodated.
+>                 ** BUG HERE ** --> err = decompress([PCL1:R], err)
+> 
+>                                    return err as ENOMEM
+> ...
+>     wait_lock(page3)
+>       if (!uptodate(page3))
+>         return EIO      <-- Return an unexpected EIO!
+> ...
+> 
+> Fixes: 2349d2fa02db ("erofs: sunset unneeded NOFAILs")
+> Cc: stable@vger.kernel.org
+> Reviewed-by: Jaewook Kim <jw5454.kim@samsung.com>
+> Reviewed-by: Sungjong Seo <sj1557.seo@samsung.com>
+> Signed-off-by: Junbeom Yeom <junbeom.yeom@samsung.com>
+> Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+> Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+> ---
+> Hi Greg and Sasha,
+> 
+> Let's just merge this directly.
+> No need to backport commit 831faabed812 ("erofs: improve decompression error reporting")
+> for now.
 
-It's best to take the revert as well, to keep in sync, otherwise scripts
-will keep trying to apply the original.  What is the revert's git id?
-
-thanks,
+Now taken, thanks!
 
 greg k-h
 
