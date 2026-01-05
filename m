@@ -1,137 +1,120 @@
-Return-Path: <stable+bounces-204795-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204796-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DBC1CF3DA9
-	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 14:37:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D12A5CF3DAC
+	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 14:37:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 72A5A30DC31C
-	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 13:30:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 784A230E42FF
+	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 13:30:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A71D221F39;
-	Mon,  5 Jan 2026 13:30:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B273236A8B;
+	Mon,  5 Jan 2026 13:30:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="XkoXTaaj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xy1Rzm5+"
 X-Original-To: stable@vger.kernel.org
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE159225A35;
-	Mon,  5 Jan 2026 13:30:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44ABE2356A4
+	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 13:30:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767619806; cv=none; b=edNA4ogk6IHTtTL8bSiv2PUumuGlyaZlYkguF2MKj0kXsAcMImr9hO5ZwtDT7pT72/9XfKTblUOnjezk9Ql6wo7QePjNeipuj4wehrtCPIwwjYa+dYHSbWipZFUhwXDuA2TXz42VWaO1B26TSThsbtqVC8/I+50ctlgzog0Sis4=
+	t=1767619827; cv=none; b=RatYObrzdxNw8bf3Wd8bYrLgxXEOam0w3HfrM5WQKHm+4LRefHPPBpVLBlMvWAurgGxqdvo+1ww7aAaT5SmVLllr855QJXyVvLTZxPZ4tndKwr8wJG0XYM8mhqnPcWtP4wx4T7HW1Rxp8kBaMsk37hoZBqoDeFKI++YBLjmRJno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767619806; c=relaxed/simple;
-	bh=o9jbkrV2OfQZyMx0HC5TQMvXRwI7iv6Z+cNosx+/llA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jrcYlpKyFVDmY37+mSwr5cUjzUv1nbNNZKRpqR1eqIAcSMjagfgubkqxK2mYdSCbNI46ZWbzgMovT5QshLrPC8Qwz+HmQvj28gur/NHaWKtDXX9BtjW4kd4n3O9vz1W1y5N/U7yn7anxTGo22awI59WQu2euBmfA9oqAiJUuoig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=XkoXTaaj; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=ENgS81baeUqSqQTbQeVHYozi6bLe6j1KLZFc66IniKM=; b=XkoXTaajLV+WtJIuchJPd1HT+3
-	H8i9hrkMDG4sBZowsMW7EYkqzlRW5sOFKoVBQcL1tIySlfSLHwUouFY2YOG9mEqUoDus8dYzrSQNW
-	Pgev2zvy5nFp+f0MAxuWynpxgSRU/tZ9Eq3Yz/GWMGdTHWJp1/trZObfsOZWCG1o40btMp+TqeUWm
-	gKlffeurT29cKpKDAvZsoaRvJYgsyc7xMUfHN3iFwgXbMOpWs+KwCaZdsSMYtG8UYVXEa0O2mgEpz
-	000MCF7rUGdXQ4WAsUusHLdscEya5t+FC5IvcZMiN5tObe/zP0US2X4WxtPTmQqmb98DAGOi4+7li
-	xDMNbKNw==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:51660)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1vckeX-000000007rH-3OTm;
-	Mon, 05 Jan 2026 13:29:45 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1vckeS-000000007t1-3Z1h;
-	Mon, 05 Jan 2026 13:29:40 +0000
-Date: Mon, 5 Jan 2026 13:29:40 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Breno Leitao <leitao@debian.org>
-Cc: Michael Chan <michael.chan@broadcom.com>,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, kernel-team@meta.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH net v2] bnxt_en: Fix NULL pointer crash in
- bnxt_ptp_enable during error cleanup
-Message-ID: <aVu8xIfFrIIFqR0P@shell.armlinux.org.uk>
-References: <20260105-bnxt-v2-1-9ac69edef726@debian.org>
+	s=arc-20240116; t=1767619827; c=relaxed/simple;
+	bh=Y9w6wEHkkFm/41Tlv85aOLs2CuQdt/9L7eCGCV3zXyA=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=AyGWiBEWqHhU6c0M6cqnLYNv5RHg07BAKp9fjZTjb6gIHPG3zOH343RYwstFRb0PZVSvYkbItsou0nai1d9MjmGDXrD8/FOibMT4Sf8sEzQgPl01UMpMVpJ5sCtw3Y5nvJE9dVhefnfBWR2PDeW4QtrqfQtTf0eyb0wbv+4jeYk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xy1Rzm5+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94379C116D0;
+	Mon,  5 Jan 2026 13:30:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1767619827;
+	bh=Y9w6wEHkkFm/41Tlv85aOLs2CuQdt/9L7eCGCV3zXyA=;
+	h=Subject:To:Cc:From:Date:From;
+	b=xy1Rzm5+9Ay6YSi2fEoR/aTDPGRaACa4O6LGsoHAEQLBm1n5vvfyvblGGEsdXA8w/
+	 jjLTqLeqUaKLGeZuAbqxROLBY5ALn3jbEqq6NBr6EV8x/Qy/V9pxQ5lijqgVoIy3en
+	 ZrAk+P1qJD1ZVFry8Kd5rmIae5GrFSokTDewcc6I=
+Subject: FAILED: patch "[PATCH] drm/msm/dpu: Add missing NULL pointer check for pingpong" failed to apply to 6.1-stable tree
+To: kniv@yandex-team.ru,dmitry.baryshkov@oss.qualcomm.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 05 Jan 2026 14:30:18 +0100
+Message-ID: <2026010518-urethane-exemption-8edc@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260105-bnxt-v2-1-9ac69edef726@debian.org>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-On Mon, Jan 05, 2026 at 04:00:16AM -0800, Breno Leitao wrote:
-> When bnxt_init_one() fails during initialization (e.g.,
-> bnxt_init_int_mode returns -ENODEV), the error path calls
-> bnxt_free_hwrm_resources() which destroys the DMA pool and sets
-> bp->hwrm_dma_pool to NULL. Subsequently, bnxt_ptp_clear() is called,
-> which invokes ptp_clock_unregister().
-> 
-> Since commit a60fc3294a37 ("ptp: rework ptp_clock_unregister() to
-> disable events"), ptp_clock_unregister() now calls
-> ptp_disable_all_events(), which in turn invokes the driver's .enable()
-> callback (bnxt_ptp_enable()) to disable PTP events before completing the
-> unregistration.
-> 
-> bnxt_ptp_enable() attempts to send HWRM commands via bnxt_ptp_cfg_pin()
-> and bnxt_ptp_cfg_event(), both of which call hwrm_req_init(). This
-> function tries to allocate from bp->hwrm_dma_pool, causing a NULL
-> pointer dereference:
 
-This has revealed a latent bug in this driver. All the time that the
-PTP clock is registered, userspace can interact with it, and thus
-bnxt_ptp_enable() can be called. ptp_clock_unregister() unpublishes
-that interface.
+The patch below does not apply to the 6.1-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-ptp_clock_unregister() must always be called _before_ tearing down any
-resources that the PTP clock implementation may use.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-From what you describe, it sounds like this patch fixes that.
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git checkout FETCH_HEAD
+git cherry-pick -x 88733a0b64872357e5ecd82b7488121503cb9cc6
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026010518-urethane-exemption-8edc@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
-Looking at the driver, however, it looks very suspicious.
+Possible dependencies:
 
-__bnxt_hwrm_ptp_qcfg() seems to be the place where PTP is setup and
-initialised (and ptp_clock_register() called in bnxt_ptp_init()).
 
-First, it looks like bnxt_ptp_init() will tear down an existing PTP
-clock via bnxt_ptp_free() before then re-registering it. That seems
-odd.
 
-Second, __bnxt_hwrm_ptp_qcfg() calls bnxt_ptp_clear() if
-bp->hwrm_spec_code < 0x10801 || !BNXT_CHIP_P5_PLUS(bp) is true or
-hwrm_req_init() fails. Is it really possible that we have the PTP
-clock registered when PTP isn't supported?
+thanks,
 
-Third, same concern but with __bnxt_hwrm_func_qcaps().
+greg k-h
 
-My guess is that this has something to do with firmware, and maybe
-upgrading it at runtime - so if the firmware gets upgraded to a
-version that doesn't support PTP, the driver removes PTP. However,
-can PTP be used while firmware is being upgraded, and what happens
-if, e.g. bnxt_ptp_enable() were called mid-upgrade? Would that be
-safe?
+------------------ original commit in Linus's tree ------------------
 
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+From 88733a0b64872357e5ecd82b7488121503cb9cc6 Mon Sep 17 00:00:00 2001
+From: Nikolay Kuratov <kniv@yandex-team.ru>
+Date: Thu, 11 Dec 2025 12:36:30 +0300
+Subject: [PATCH] drm/msm/dpu: Add missing NULL pointer check for pingpong
+ interface
+
+It is checked almost always in dpu_encoder_phys_wb_setup_ctl(), but in a
+single place the check is missing.
+Also use convenient locals instead of phys_enc->* where available.
+
+Cc: stable@vger.kernel.org
+Fixes: d7d0e73f7de33 ("drm/msm/dpu: introduce the dpu_encoder_phys_* for writeback")
+Signed-off-by: Nikolay Kuratov <kniv@yandex-team.ru>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Patchwork: https://patchwork.freedesktop.org/patch/693860/
+Link: https://lore.kernel.org/r/20251211093630.171014-1-kniv@yandex-team.ru
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_wb.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_wb.c
+index 46f348972a97..6d28f2281c76 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_wb.c
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_wb.c
+@@ -247,14 +247,12 @@ static void dpu_encoder_phys_wb_setup_ctl(struct dpu_encoder_phys *phys_enc)
+ 		if (hw_cdm)
+ 			intf_cfg.cdm = hw_cdm->idx;
+ 
+-		if (phys_enc->hw_pp->merge_3d && phys_enc->hw_pp->merge_3d->ops.setup_3d_mode)
+-			phys_enc->hw_pp->merge_3d->ops.setup_3d_mode(phys_enc->hw_pp->merge_3d,
+-					mode_3d);
++		if (hw_pp && hw_pp->merge_3d && hw_pp->merge_3d->ops.setup_3d_mode)
++			hw_pp->merge_3d->ops.setup_3d_mode(hw_pp->merge_3d, mode_3d);
+ 
+ 		/* setup which pp blk will connect to this wb */
+-		if (hw_pp && phys_enc->hw_wb->ops.bind_pingpong_blk)
+-			phys_enc->hw_wb->ops.bind_pingpong_blk(phys_enc->hw_wb,
+-					phys_enc->hw_pp->idx);
++		if (hw_pp && hw_wb->ops.bind_pingpong_blk)
++			hw_wb->ops.bind_pingpong_blk(hw_wb, hw_pp->idx);
+ 
+ 		phys_enc->hw_ctl->ops.setup_intf_cfg(phys_enc->hw_ctl, &intf_cfg);
+ 	} else if (phys_enc->hw_ctl && phys_enc->hw_ctl->ops.setup_intf_cfg) {
+
 
