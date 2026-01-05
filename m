@@ -1,122 +1,111 @@
-Return-Path: <stable+bounces-204941-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204942-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 115A8CF5A81
-	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 22:23:14 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F932CF5A90
+	for <lists+stable@lfdr.de>; Mon, 05 Jan 2026 22:25:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B534C301FB72
-	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 21:20:02 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 65CBC3027584
+	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 21:25:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E3B72DECDF;
-	Mon,  5 Jan 2026 21:20:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C464301708;
+	Mon,  5 Jan 2026 21:25:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ODNZ0OZH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DMqnwYu3"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F59C2D877D
-	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 21:19:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D08E23016E3
+	for <stable@vger.kernel.org>; Mon,  5 Jan 2026 21:25:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767648000; cv=none; b=d1kVAMYtJ6rBu13GHp/+yFVVaOJi+KJcNey+CitcM6S+POKfE5wsr8LQVEXYRH+IS7U89IpfLEObwd/dygufJn8wT62vDELPvri7T+4XOEeSc9YfALgElyhEU7o/ll7HkgmnDYJaBkDixj31bSns00zgCn5rxwMGJvWAKUeZzNc=
+	t=1767648339; cv=none; b=c9gz0S/68aSqqJeYX+Fzxs6x3gJ4KmgsknRQPFgTLGxutYiBnw9Gk13YEBfT7euqQuWvpCmw2zVrVDS+EVkO0+sm/ZtgDv4FGWdzfOMKKwiGzPbHz1YYepTayxoer0rY6q0RYuoIG8adiDe6WYHiJHHYVRzqYP7NM7VVRjHULjI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767648000; c=relaxed/simple;
-	bh=t9qFiFeqGxp4Cn6wya3cXn6vSYwDyML16YgOBP5gC9M=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=C9zO/HLe4AtkfDNf0FVAQVeMpXiCO2dRxdz3Wb4qDA4SBkbXrbRAagvGIjZDSyB2qJbMW5f+GBUKIKU/NOPQbKBagWdAJUCR/zMs/Ih41slGOYX19JKFgKs1uzzg9lU3WSVsEpA3+1Uf4zPWC8iEAawM50MuQjunqH3XmIUxHn8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ODNZ0OZH; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-47797676c62so576665e9.1
-        for <stable@vger.kernel.org>; Mon, 05 Jan 2026 13:19:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767647997; x=1768252797; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=aYAiogr7/hdP4KHS0vv5xxzgIzj7f7R1MCPaXxXIEic=;
-        b=ODNZ0OZHYmFWfgKdzIWejzUDQfJCrnIB2dZz2e13gGH7zuYdJiFJiEseFb3h9akaE4
-         yu+SaBHExR1pfGKIOInxFtEp/hmuKjxDyFCiTkoCAZzE0s775FDQ8u9Hj9aRSxpilBoc
-         eSfyNKYW65XaVL7nuJdkI+QLeB74vYzSVTXHpP48m0DfFehMdxfnM/YMzHmw4R4RICdZ
-         d3G82EUXm76t9ArrzkxHZHN8abuvVaLhzLRj/afo8lrQANjapn8RrkRsx2Bd9j4dfaIZ
-         vBc6hDB11P+hn7JLL/aEx4cmcTsfVa/C9d82IoDCdaXq4PaOQ4W45zZoz5gsF6z/FGsF
-         jX5Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767647997; x=1768252797;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=aYAiogr7/hdP4KHS0vv5xxzgIzj7f7R1MCPaXxXIEic=;
-        b=ekey6XvxThHHXIewaZ5WnR9t/QTiC0JhfjcgfpMnl5UFWpLTf4vT/SaR0//HLmSnic
-         mXUeHIokf09s92eeq6Loba3UDXegnzemFKFeE569oBg7Yjm/2T/q+pzxkTcxaM9PbtMt
-         NifezblUDgCKK67nHyqEBH9ErkaTd+6p9I3LUb3k0JGiCHCSc90r9iPfzDCih6QKerR1
-         lV0L0ZhRH4lUD39Mhncy1iapEf/JD7BMLZi2Eh4srhczbPA65AAF4GENby9RX22eGLEv
-         xxBbdng1FUTMHlwvGq2c+FcTgqQzn8FvSixOrrJbZNGxmqCVwnze0inLS2OTPE94CEJs
-         mOIg==
-X-Forwarded-Encrypted: i=1; AJvYcCVGf8AB/1lCDB/y+Te59c3+VaxjaeCqsu/OFD9ZHE9MZEoeAhVbwRc//o7YWWArPUaEhMBDTo0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw+b9B+Um3wm2r4IGIQI+i1xnB10haKWQlk9omdRrrDJl//yC3v
-	cHSS/3nid1EZSCMQ0ZBVKC6vJHcKIv6z2evwZsyk0eYQvb7sLQSrD5qr/cTZzQ==
-X-Gm-Gg: AY/fxX6mbqhnhU9mzRnGUrWPN0T4dbsbPj2AEZToV6u1DiODh2xgQChh1o9gq0omwDG
-	drCFOrr8OjO6qwuvXWpFZgB+thQBBG+1D+Id04QDQVIXQ6WpGlIf5cgq8s8Zum/GuHloui+FoeV
-	fVepKIeBPnV/Qh91iVTR918QJahyV3AMYod1wKpOkLxX3/Fo33+KYb35sdYFPLzIQoVU6Qi1UHA
-	yLWP2gr9ab5q/TXq2afLWs5J8sT54xqBrqISMtYwLSbyYc86THu+aPlk1xpfRTSLjrP4PHuvDhF
-	7G0yGEL0B2ctgoxbE2PgkJDD+pHbb8/hcYYPcPnABe6MnXUsr/WyC7p6AuMe2Z7G3CTiKciuNb0
-	4FA8Q7jIL/idBMWg06gk9eQM6y83UPK5A2nHeBsdVxekGmhwaroEQVzsVVXjdel9DV3zUT8ZAO+
-	FiBfp5AHjutuwRzscLmS0fSW1tpoUktxzZ0s0=
-X-Google-Smtp-Source: AGHT+IFIa4aa3q7kG3OyPJxh1m15HSK01sRw7aceSgFDOoGG3uwGaBJZsocA2rlnxs6QMnXHm5c2Vg==
-X-Received: by 2002:a05:600c:5488:b0:47a:94fc:d063 with SMTP id 5b1f17b1804b1-47d7f06ca9bmr5264805e9.1.1767647997535;
-        Mon, 05 Jan 2026 13:19:57 -0800 (PST)
-Received: from thomas-precision3591.. ([2a0d:e487:144e:5eef:4e0a:3841:cee5:ead8])
-        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-47d7fae67ebsm1957965e9.1.2026.01.05.13.19.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Jan 2026 13:19:57 -0800 (PST)
-From: Thomas Fourier <fourier.thomas@gmail.com>
-To: 
-Cc: Thomas Fourier <fourier.thomas@gmail.com>,
-	stable@vger.kernel.org,
-	Chas Williams <3chas3@gmail.com>,
-	chas williams - CONTRACTOR <chas@cmf.nrl.navy.mil>,
-	"David S. Miller" <davem@davemloft.net>,
-	linux-atm-general@lists.sourceforge.net,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] atm: Fix dma_free_coherent() size
-Date: Mon,  5 Jan 2026 22:19:11 +0100
-Message-ID: <20260105211913.24049-2-fourier.thomas@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1767648339; c=relaxed/simple;
+	bh=emnuWaNbQ/8r/CtexRe8ZoNLJgQGD8zcqE9kgbYDXbw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YEqZ5qr8r03aqsWMUaJD2mIhEbtUSBu+LiAkneHQWNpYc3F53WmSJdcVgQb3nxVYBLne2bsg0cPWsG8OEL2mqFFkDzpENtuYvQXE2WRprXudnbR67P6brfkhnkGsPuAwkJdJnuxzbg+I16oRT+EAdIhO7J2CI1WDF56M5YKGxX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DMqnwYu3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0F8CC116D0;
+	Mon,  5 Jan 2026 21:25:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767648339;
+	bh=emnuWaNbQ/8r/CtexRe8ZoNLJgQGD8zcqE9kgbYDXbw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=DMqnwYu3huICq9qp/8JaBvCQHBJWgeL+xOc0H3SsW56bt1rS9BavzrXVhL7tkllhc
+	 yHpM9qcealhig6gpwQyQqQoQTHu/KcujzUdKZiwNCfYP9q4mS5xUS7n9v7oWxAjhgd
+	 8CUi7aVA65YS3+9OSF5utS9vgoPkBALhMseN/QgvmMiPse/aTnhkTVyGiDHA+CG27P
+	 A+O5df3wxGMoWU+So3tHJrasroflA2GlBDghfTiRZtEl6i02lBFu386w71Z4ELQbKo
+	 F1aAmft3iDgjqdGiDVxg3+D89cuhemkeTxTLcUbD5QRe3ROwxUjwXYFXXPYY4x/+V+
+	 owYPatY0lTPDw==
+Date: Mon, 5 Jan 2026 21:25:34 +0000
+From: Will Deacon <will@kernel.org>
+To: Chaitanya Kulkarni <ckulkarnilinux@gmail.com>, joro@8bytes.org
+Cc: robin.murphy@arm.com, robin.clark@oss.qualcomm.com,
+	linux-arm-kernel@lists.infradead.org, kch@nvidia.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] iommu/io-pgtable-arm: fix size_t signedness bug in unmap
+ path
+Message-ID: <aVwsThVhGG-6bINs@willie-the-truck>
+References: <20251219232858.51902-1-ckulkarnilinux@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251219232858.51902-1-ckulkarnilinux@gmail.com>
 
-The size of the buffer is not the same when alloc'd with
-dma_alloc_coherent() in he_init_tpdrq() and freed.
+On Fri, Dec 19, 2025 at 03:28:58PM -0800, Chaitanya Kulkarni wrote:
+> __arm_lpae_unmap() returns size_t but was returning -ENOENT (negative
+> error code) when encountering an unmapped PTE. Since size_t is unsigned,
+> -ENOENT (typically -2) becomes a huge positive value (0xFFFFFFFFFFFFFFFE
+> on 64-bit systems).
+> 
+> This corrupted value propagates through the call chain:
+>   __arm_lpae_unmap() returns -ENOENT as size_t
+>   -> arm_lpae_unmap_pages() returns it
+>   -> __iommu_unmap() adds it to iova address
+>   -> iommu_pgsize() triggers BUG_ON due to corrupted iova
+> 
+> This can cause IOVA address overflow in __iommu_unmap() loop and
+> trigger BUG_ON in iommu_pgsize() from invalid address alignment.
+> 
+> Fix by returning 0 instead of -ENOENT. The WARN_ON already signals
+> the error condition, and returning 0 (meaning "nothing unmapped")
+> is the correct semantic for size_t return type. This matches the
+> behavior of other io-pgtable implementations (io-pgtable-arm-v7s,
+> io-pgtable-dart) which return 0 on error conditions.
+> 
+> Fixes: 3318f7b5cefb ("iommu/io-pgtable-arm: Add quirk to quiet WARN_ON()")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Chaitanya Kulkarni <ckulkarnilinux@gmail.com>
+> ---
+>  drivers/iommu/io-pgtable-arm.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/iommu/io-pgtable-arm.c b/drivers/iommu/io-pgtable-arm.c
+> index e6626004b323..05d63fe92e43 100644
+> --- a/drivers/iommu/io-pgtable-arm.c
+> +++ b/drivers/iommu/io-pgtable-arm.c
+> @@ -637,7 +637,7 @@ static size_t __arm_lpae_unmap(struct arm_lpae_io_pgtable *data,
+>  	pte = READ_ONCE(*ptep);
+>  	if (!pte) {
+>  		WARN_ON(!(data->iop.cfg.quirks & IO_PGTABLE_QUIRK_NO_WARN));
+> -		return -ENOENT;
+> +		return 0;
+>  	}
+>  
+>  	/* If the size matches this level, we're in the right place */
 
-Fixes: ede58ef28e10 ("atm: remove deprecated use of pci api")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
----
- drivers/atm/he.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Acked-by: Will Deacon <will@kernel.org>
 
-diff --git a/drivers/atm/he.c b/drivers/atm/he.c
-index ad91cc6a34fc..92a041d5387b 100644
---- a/drivers/atm/he.c
-+++ b/drivers/atm/he.c
-@@ -1587,7 +1587,8 @@ he_stop(struct he_dev *he_dev)
- 				  he_dev->tbrq_base, he_dev->tbrq_phys);
- 
- 	if (he_dev->tpdrq_base)
--		dma_free_coherent(&he_dev->pci_dev->dev, CONFIG_TBRQ_SIZE * sizeof(struct he_tbrq),
-+		dma_free_coherent(&he_dev->pci_dev->dev,
-+				  CONFIG_TPDRQ_SIZE * sizeof(struct he_tpdrq),
- 				  he_dev->tpdrq_base, he_dev->tpdrq_phys);
- 
- 	dma_pool_destroy(he_dev->tpd_pool);
--- 
-2.43.0
+Joerg -- please can you pick this one up for 6.19-rc?
 
+Cheers,
+
+Will
 
