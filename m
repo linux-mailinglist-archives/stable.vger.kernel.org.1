@@ -1,50 +1,51 @@
-Return-Path: <stable+bounces-205314-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205316-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CD0FCF9B50
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 18:32:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BDEBCF9B53
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 18:32:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 15DFE308C3A8
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:25:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 07F8A308D07B
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:25:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F35803557E5;
-	Tue,  6 Jan 2026 17:24:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAEF935503E;
+	Tue,  6 Jan 2026 17:24:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gMiuBJAi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A+RCV9gv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B02BA35505D;
-	Tue,  6 Jan 2026 17:24:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 563703557EC;
+	Tue,  6 Jan 2026 17:24:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767720282; cv=none; b=BME6UIyvi88WjhrRNPKRlJ7wwsKF7mw87Z+nWwbb6B547h0QQHsBSPZRnNPzSoPW7zwcuTtW8FpG07uHd7HXjpGh/PRHj2BEhmKJHr6d+KR04vTj/edXQDHtojsT2s1k4hBqsMUFvSynRIRr5rd6/l02VTnH9X/ESRg6dNmsTu0=
+	t=1767720289; cv=none; b=eo7iH5m0qQQUN1jNEJgRff6SPs4D1OGeASClz7Grys/EygmIzFvv2va2oO51uZCbv77RJ8K4qH9T3voRqA39uOtG3/5FjLrCCX7LtVgQopjw4zAJdwST5fgnHOIICbzkQmebcQc5wjdlOlcXQ90oGxZxVRQR8lABXS0tOhGoFQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767720282; c=relaxed/simple;
-	bh=CotsII0B3htusyeRr7G8ziTKBO4HHU7ngY0U+k5v5Q4=;
+	s=arc-20240116; t=1767720289; c=relaxed/simple;
+	bh=pTXFzuaHQpMVtiGKB0F1WG/Om2TlgfZvi5DfmNat9GE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UYZjiDj7w22LYZx/a8F2Wd00Ev4l0qrLq7Obl2kLMyqIBOsrBk6l5Oin3QDVnvU6VPC0mctC6SCbAjwEzP4FOnCqTYrYIQ/PojpJUxQxboRqvVwjrIWarKvHUeAoKttz2TK15+l8Axlrym14BDBdoVUW9HIsApVdt6fTeFVpTew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gMiuBJAi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 133FAC116C6;
-	Tue,  6 Jan 2026 17:24:41 +0000 (UTC)
+	 MIME-Version; b=cjOsC5q5O64GjtrOQNUZaPTKAg6pdCnUodzA7VEPmoJwnZ5pVo/zFejOgL+SDnqt8HrQHGd5f8jj3bNi6fP1USnr4Xvwwc/pRcEgaWyF6zr7pK6uzm2cwCBiX0U7Jln53GQcBsUjGXms7dZQl2mN7jHGKE1W8sck0QNby9j9Jo8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A+RCV9gv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B5C8C116C6;
+	Tue,  6 Jan 2026 17:24:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767720282;
-	bh=CotsII0B3htusyeRr7G8ziTKBO4HHU7ngY0U+k5v5Q4=;
+	s=korg; t=1767720289;
+	bh=pTXFzuaHQpMVtiGKB0F1WG/Om2TlgfZvi5DfmNat9GE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gMiuBJAipnwZLWXvE5BhItHrICTI46T8Rhqvl57Xy3F/btpbUn/QasVTsiiOf9HRK
-	 uT6ZHk7yQCG+HVohQxGlDECHcZJAF9sCYZ7iafKTJPRhlflmJJ6l/QlFjb912p5hcJ
-	 o6tvsmAOK6J//lN50pkZ6XlZsbHtS9aI8LcD1gHU=
+	b=A+RCV9gveSBtHxwsh2ShvAgOXBayDu+N21NFEhdxxo/L51C8+GmDcQkbYdKOUjLTY
+	 AOeCgqrXmwMpYHTHfJ9I15tl4nnP3tppHdaVCO94UL3jnJxm6OPd6YlerK5KmoNe00
+	 9984AAySUQeOfrBWONRO4EDdroD5c5sPrYv6exR0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Haoxiang Li <haoxiang_li2024@163.com>
-Subject: [PATCH 6.12 190/567] usb: renesas_usbhs: Fix a resource leak in usbhs_pipe_malloc()
-Date: Tue,  6 Jan 2026 17:59:32 +0100
-Message-ID: <20260106170458.356266106@linuxfoundation.org>
+	Tianchu Chen <flynnnchen@tencent.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	stable <stable@kernel.org>
+Subject: [PATCH 6.12 191/567] char: applicom: fix NULL pointer dereference in ac_ioctl
+Date: Tue,  6 Jan 2026 17:59:33 +0100
+Message-ID: <20260106170458.392150173@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
 References: <20260106170451.332875001@linuxfoundation.org>
@@ -63,39 +64,47 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Haoxiang Li <haoxiang_li2024@163.com>
+From: Tianchu Chen <flynnnchen@tencent.com>
 
-commit 36cc7e09df9e43db21b46519b740145410dd9f4a upstream.
+commit 82d12088c297fa1cef670e1718b3d24f414c23f7 upstream.
 
-usbhsp_get_pipe() set pipe's flags to IS_USED. In error paths,
-usbhsp_put_pipe() is required to clear pipe's flags to prevent
-pipe exhaustion.
+Discovered by Atuin - Automated Vulnerability Discovery Engine.
 
-Fixes: f1407d5c6624 ("usb: renesas_usbhs: Add Renesas USBHS common code")
+In ac_ioctl, the validation of IndexCard and the check for a valid
+RamIO pointer are skipped when cmd is 6. However, the function
+unconditionally executes readb(apbs[IndexCard].RamIO + VERS) at the
+end.
+
+If cmd is 6, IndexCard may reference a board that does not exist
+(where RamIO is NULL), leading to a NULL pointer dereference.
+
+Fix this by skipping the readb access when cmd is 6, as this
+command is a global information query and does not target a specific
+board context.
+
+Signed-off-by: Tianchu Chen <flynnnchen@tencent.com>
+Acked-by: Arnd Bergmann <arnd@arndb.de>
 Cc: stable <stable@kernel.org>
-Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
-Link: https://patch.msgid.link/20251204132129.109234-1-haoxiang_li2024@163.com
+Link: https://patch.msgid.link/20251128155323.a786fde92ebb926cbe96fcb1@linux.dev
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/renesas_usbhs/pipe.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/char/applicom.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/renesas_usbhs/pipe.c
-+++ b/drivers/usb/renesas_usbhs/pipe.c
-@@ -713,11 +713,13 @@ struct usbhs_pipe *usbhs_pipe_malloc(str
- 	/* make sure pipe is not busy */
- 	ret = usbhsp_pipe_barrier(pipe);
- 	if (ret < 0) {
-+		usbhsp_put_pipe(pipe);
- 		dev_err(dev, "pipe setup failed %d\n", usbhs_pipe_number(pipe));
- 		return NULL;
+--- a/drivers/char/applicom.c
++++ b/drivers/char/applicom.c
+@@ -835,7 +835,10 @@ static long ac_ioctl(struct file *file,
+ 		ret = -ENOTTY;
+ 		break;
  	}
- 
- 	if (usbhsp_setup_pipecfg(pipe, is_host, dir_in, &pipecfg)) {
-+		usbhsp_put_pipe(pipe);
- 		dev_err(dev, "can't setup pipe\n");
- 		return NULL;
- 	}
+-	Dummy = readb(apbs[IndexCard].RamIO + VERS);
++
++	if (cmd != 6)
++		Dummy = readb(apbs[IndexCard].RamIO + VERS);
++
+ 	kfree(adgl);
+ 	mutex_unlock(&ac_mutex);
+ 	return ret;
 
 
 
