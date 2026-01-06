@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-205520-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205798-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3684CF9E36
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 18:56:34 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6C29CF9F8B
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:10:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1E0A7319FCF2
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:43:26 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2CA673059A98
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:07:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F18A3358A7;
-	Tue,  6 Jan 2026 17:36:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 215B02BDC05;
+	Tue,  6 Jan 2026 17:51:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xdwX2nQZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l8wSud01"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0145335559;
-	Tue,  6 Jan 2026 17:36:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D032B2BEC27;
+	Tue,  6 Jan 2026 17:51:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767720965; cv=none; b=Ha7lDubSBNtlLxwM4RU9eBaUz2uVLDPSq50IzD+912YI6+bWgH7FIi8NZccSiqFIXtYdxj2Yv8hjWWT5UWnLiYpzryPU5AAqLXafHS9Rchzi+NXACFWkf4nnPPhlLzPCsfcAqJTkGzwYesDeb3Ax4SYEEcrluwk9JZPEKqDHSJQ=
+	t=1767721897; cv=none; b=NNoitivaRmsuKYUMvY3y4jP+ekz4XuYF1pYdEABQg6G6/XXTafrRxGi6FCjQbZW8h2HyNX034h7UeAPbFL+eUTS+N5GlZwx6A7ZB6P/hsWyf3wkugcKaFPsK8GIWx6AxtdTkwZ00loRru1ORcwum2kInpDRfoxznAk6tUA2X51k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767720965; c=relaxed/simple;
-	bh=4Ey8xn3Idk368EMUo0dHym4FL+A8OxXW+6qB+Cgw3GY=;
+	s=arc-20240116; t=1767721897; c=relaxed/simple;
+	bh=zLbsLG04euEuQ/lhdW6d4n3ji6pmKuSajvrspD7H3yI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=APzhSVIWgIa19M5fSrXSKfhKcNIh35kVgZyVhLpfCJsq72PxmoX54RarSqGuo5EHTttaYUL1TvtfjKvpgVkgQXreWxq6MYZnDNk4+vv1QpukGZwdL/3JvL39drq1U1BGhsUDh8GPssje/aSekbPCQUJ7Jah4F08rFxhAWiRztA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xdwX2nQZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40573C116C6;
-	Tue,  6 Jan 2026 17:36:05 +0000 (UTC)
+	 MIME-Version; b=qCO8riZK8Zonr+hGbVsz3txfYqg0BSO1G7dvjJVxoRO3sG99UAZe3T8SoeCnuGkpgzbiH56RZ4k2ZFOTdBvneDcjLTlDH8YYdjnKsQjeoPRwIAw8MqFEwCcjW4DR1tfxy4A/v/YQeRzP7jfr9uiMegvhuifHwp4765KUja6XVeI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l8wSud01; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4055FC116C6;
+	Tue,  6 Jan 2026 17:51:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767720965;
-	bh=4Ey8xn3Idk368EMUo0dHym4FL+A8OxXW+6qB+Cgw3GY=;
+	s=korg; t=1767721897;
+	bh=zLbsLG04euEuQ/lhdW6d4n3ji6pmKuSajvrspD7H3yI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xdwX2nQZcxcLQdKwTs6C55oSVrXr0f8FCRarRh2SKa89NBkYv/7FmRVoNzxqtiitg
-	 ml7XDHY+8kUgkt0bDIHh6XpDrjb3+Vxf8acMWruLI+brQB9le/IW2/4MqngHgrBbTe
-	 1UqAU4f7DtN+MU3XccDlONFJ7oFpstcFVvNgSKTs=
+	b=l8wSud01qbsLNydOBxi9nOCuScRy4swMd7c37ajnE9F+5pynJ0xLvGshCFQBQzqxH
+	 mU9NO20fC7/XCYBKk0XW2UdHjf5vqcZniXGB+PMI+nULwKAaUHvXFytxIPqDUSucT7
+	 dQqFzOKsCF6JHTBbw/xDuncMRj3rdHpXeSaaas7c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mahesh Rao <mahesh.rao@altera.com>,
-	Matthew Gerlach <matthew.gerlach@altera.com>,
-	Dinh Nguyen <dinguyen@kernel.org>
-Subject: [PATCH 6.12 396/567] firmware: stratix10-svc: Add mutex in stratix10 memory management
-Date: Tue,  6 Jan 2026 18:02:58 +0100
-Message-ID: <20260106170505.989558760@linuxfoundation.org>
+	Stable@vger.kernel.org,
+	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
+	Mark Brown <broonie@kernel.org>,
+	Alexey Klimov <alexey.klimov@linaro.org>
+Subject: [PATCH 6.18 105/312] ASoC: qcom: q6asm-dai: perform correct state check before closing
+Date: Tue,  6 Jan 2026 18:02:59 +0100
+Message-ID: <20260106170551.635515565@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
-References: <20260106170451.332875001@linuxfoundation.org>
+In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
+References: <20260106170547.832845344@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,85 +61,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mahesh Rao <mahesh.rao@altera.com>
+From: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
 
-commit 85f96cbbbc67b59652b2c1ec394b8ddc0ddf1b0b upstream.
+commit bfbb12dfa144d45575bcfe139a71360b3ce80237 upstream.
 
-Add mutex lock to stratix10_svc_allocate_memory and
-stratix10_svc_free_memory for thread safety. This prevents race
-conditions and ensures proper synchronization during memory operations.
-This is required for parallel communication with the Stratix10 service
-channel.
+Do not stop a q6asm stream if its not started, this can result in
+unnecessary dsp command which will timeout anyway something like below:
 
-Fixes: 7ca5ce896524f ("firmware: add Intel Stratix10 service layer driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Mahesh Rao <mahesh.rao@altera.com>
-Reviewed-by: Matthew Gerlach <matthew.gerlach@altera.com>
-Signed-off-by: Dinh Nguyen <dinguyen@kernel.org>
+q6asm-dai ab00000.remoteproc:glink-edge:apr:service@7:dais: CMD 10bcd timeout
+
+Fix this by correctly checking the state.
+
+Fixes: 2a9e92d371db ("ASoC: qdsp6: q6asm: Add q6asm dai driver")
+Cc: Stable@vger.kernel.org
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+Tested-by: Alexey Klimov <alexey.klimov@linaro.org> # RB5, RB3
+Link: https://patch.msgid.link/20251023102444.88158-5-srinivas.kandagatla@oss.qualcomm.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firmware/stratix10-svc.c |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+ sound/soc/qcom/qdsp6/q6asm-dai.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/firmware/stratix10-svc.c
-+++ b/drivers/firmware/stratix10-svc.c
-@@ -1,6 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0
- /*
-  * Copyright (C) 2017-2018, Intel Corporation
-+ * Copyright (C) 2025, Altera Corporation
-  */
+--- a/sound/soc/qcom/qdsp6/q6asm-dai.c
++++ b/sound/soc/qcom/qdsp6/q6asm-dai.c
+@@ -233,13 +233,14 @@ static int q6asm_dai_prepare(struct snd_
+ 	prtd->pcm_count = snd_pcm_lib_period_bytes(substream);
+ 	prtd->pcm_irq_pos = 0;
+ 	/* rate and channels are sent to audio driver */
+-	if (prtd->state) {
++	if (prtd->state == Q6ASM_STREAM_RUNNING) {
+ 		/* clear the previous setup if any  */
+ 		q6asm_cmd(prtd->audio_client, prtd->stream_id, CMD_CLOSE);
+ 		q6asm_unmap_memory_regions(substream->stream,
+ 					   prtd->audio_client);
+ 		q6routing_stream_close(soc_prtd->dai_link->id,
+ 					 substream->stream);
++		prtd->state = Q6ASM_STREAM_STOPPED;
+ 	}
  
- #include <linux/completion.h>
-@@ -176,6 +177,12 @@ static LIST_HEAD(svc_ctrl);
- static LIST_HEAD(svc_data_mem);
- 
- /**
-+ * svc_mem_lock protects access to the svc_data_mem list for
-+ * concurrent multi-client operations
-+ */
-+static DEFINE_MUTEX(svc_mem_lock);
-+
-+/**
-  * svc_pa_to_va() - translate physical address to virtual address
-  * @addr: to be translated physical address
-  *
-@@ -187,6 +194,7 @@ static void *svc_pa_to_va(unsigned long
- 	struct stratix10_svc_data_mem *pmem;
- 
- 	pr_debug("claim back P-addr=0x%016x\n", (unsigned int)addr);
-+	guard(mutex)(&svc_mem_lock);
- 	list_for_each_entry(pmem, &svc_data_mem, node)
- 		if (pmem->paddr == addr)
- 			return pmem->vaddr;
-@@ -996,6 +1004,7 @@ int stratix10_svc_send(struct stratix10_
- 			p_data->flag = ct->flags;
- 		}
- 	} else {
-+		guard(mutex)(&svc_mem_lock);
- 		list_for_each_entry(p_mem, &svc_data_mem, node)
- 			if (p_mem->vaddr == p_msg->payload) {
- 				p_data->paddr = p_mem->paddr;
-@@ -1078,6 +1087,7 @@ void *stratix10_svc_allocate_memory(stru
- 	if (!pmem)
- 		return ERR_PTR(-ENOMEM);
- 
-+	guard(mutex)(&svc_mem_lock);
- 	va = gen_pool_alloc(genpool, s);
- 	if (!va)
- 		return ERR_PTR(-ENOMEM);
-@@ -1106,6 +1116,7 @@ EXPORT_SYMBOL_GPL(stratix10_svc_allocate
- void stratix10_svc_free_memory(struct stratix10_svc_chan *chan, void *kaddr)
- {
- 	struct stratix10_svc_data_mem *pmem;
-+	guard(mutex)(&svc_mem_lock);
- 
- 	list_for_each_entry(pmem, &svc_data_mem, node)
- 		if (pmem->vaddr == kaddr) {
+ 	ret = q6asm_map_memory_regions(substream->stream, prtd->audio_client,
 
 
 
