@@ -1,51 +1,53 @@
-Return-Path: <stable+bounces-205838-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205903-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2881CFB093
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 22:06:37 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19E16CFB211
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 22:46:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0244C302AFE9
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 21:06:35 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CDA2830509CF
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 21:46:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F05AB3659E8;
-	Tue,  6 Jan 2026 17:53:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8473036C0A9;
+	Tue,  6 Jan 2026 17:57:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qL2LzoTJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gT/KjI/K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB7763659E2;
-	Tue,  6 Jan 2026 17:53:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42AC236C0A0;
+	Tue,  6 Jan 2026 17:57:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767722030; cv=none; b=aFKwgm5OZZoWCA5rnra/HREek1nqEfFrHjEYs7aXiAAQEVk44uZeHPOx729bbSSD4sCYvm92J21S8yMTLhnLJJg+gKRm4J7XC6XarmnZF6YXoCLYxyLmyXqJktGZMxS5xwNvSvBmUlvpo2GTjEeXMP2ZGOhvzrBiH9sTQDLTEss=
+	t=1767722248; cv=none; b=tG+OlkzZ0PaQrmIdaDCLAw2fmMFBbQlcPdZViFkf4G1V039Sp7/AIUde59wcwgfD1m5UzNdKHrkoRcX2q3sxDpOv8glbYKnYU9eQ3AVxhVix4owk2SHqbzgQNn3z1eYBdnM68BQlDxDzfQA3cwXzf42CGDqJDAqJB+nr3oqov4I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767722030; c=relaxed/simple;
-	bh=NusFh8b0xrOr2U5C9o8GTEgkcWrGk2k6U+xJ58seJHg=;
+	s=arc-20240116; t=1767722248; c=relaxed/simple;
+	bh=jXlDPGbZQMf/aRzXhXuLgAX2IIWGyrLAHSEf94SYrPQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oF23kcd+c75sXYlKSJomxFpXhNsF7IU5BHCTbpRbANjE+rv/qcA/4ibumQxlqF3+jTSqvN/sXlFtvQKbHMS24JQitpVz/9t/MwFH6IB1QJhv3WqeeAGsqKUObYzpSc97Vkdg8HqsXNybD3BlH9ClyCwybcZ4Oa5lSA7/hMXEu9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qL2LzoTJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 129CAC116C6;
-	Tue,  6 Jan 2026 17:53:49 +0000 (UTC)
+	 MIME-Version; b=aiVcp9IRdPtdNnLrAgPJRQozjul3U1/sSL7UC4weubW8wD6fbjOEvF0dKF59knslYWhDtRz0x0d5WChNPZykF4TgrXRjGuF7Tzr9hl7Hv5R/qOCrq7MNCbxYWWuIHG/boEP6CnQJwGWRBYWGz4GSqRBVcTrHRjwCXg3leuCI8VU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gT/KjI/K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A592BC16AAE;
+	Tue,  6 Jan 2026 17:57:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767722030;
-	bh=NusFh8b0xrOr2U5C9o8GTEgkcWrGk2k6U+xJ58seJHg=;
+	s=korg; t=1767722248;
+	bh=jXlDPGbZQMf/aRzXhXuLgAX2IIWGyrLAHSEf94SYrPQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qL2LzoTJamKXYpF9PisbwsuObO8f2v2N/G4n+oCQhCsUBOIyvkuZmYdpiLb5xmJaq
-	 EssQ6LEu0Ar5D04aegAlOSuf4pt12LC8fdCEu3phosJAmdexAHmC73qDSPxhodXkYI
-	 9IQINeESXlakJiR3ZN4KXUjn7HENT3QaezEKho1I=
+	b=gT/KjI/KeWJGzU1Geg2QHHJhjjRLVw29XX5Vub6CI4KXbzVtPVxA67L4P88ASBjMF
+	 tJwdedIFrEcn/5dmyh1r2gPwIz97R9I5Too03MvdCvC4jVziVwj21U10qEFqZlGWB8
+	 sLl4LUvmy9zl4L2por7Q7sG8mjDFh5q/JiC3nTjo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paresh Bhagat <p-bhagat@ti.com>,
-	Shree Ramamoorthy <s-ramamoorthy@ti.com>,
-	Vignesh Raghavendra <vigneshr@ti.com>
-Subject: [PATCH 6.18 144/312] arm64: dts: ti: k3-am62d2-evm: Fix regulator properties
-Date: Tue,  6 Jan 2026 18:03:38 +0100
-Message-ID: <20260106170553.051210142@linuxfoundation.org>
+	SeongJae Park <sj@kernel.org>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <davidgow@google.com>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.18 208/312] mm/damon/tests/core-kunit: handle alloc failures on dasmon_test_merge_regions_of()
+Date: Tue,  6 Jan 2026 18:04:42 +0100
+Message-ID: <20260106170555.360896721@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
 References: <20260106170547.832845344@linuxfoundation.org>
@@ -64,70 +66,47 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Paresh Bhagat <p-bhagat@ti.com>
+From: SeongJae Park <sj@kernel.org>
 
-commit 0103435072bf5c54bb43d1a9376d08396c825827 upstream.
+commit 0998d2757218771c59d5ca59ccf13d1542a38f17 upstream.
 
-Fix missing supply for regulators TLV7103318QDSERQ1 and TPS22918DBVR.
-Correct padconfig and gpio for TLV7103318QDSERQ1.
+damon_test_merge_regions_of() is assuming all dynamic memory allocation in
+it will succeed.  Those are indeed likely in the real use cases since
+those allocations are too small to fail, but theoretically those could
+fail.  In the case, inappropriate memory access can happen.  Fix it by
+appropriately cleanup pre-allocated memory and skip the execution of the
+remaining tests in the failure cases.
 
-Reference Docs
-Datasheet - https://www.ti.com/lit/ug/sprujd4/sprujd4.pdf
-Schematics - https://www.ti.com/lit/zip/sprcal5
-
-Fixes: 1544bca2f188e ("arm64: dts: ti: Add support for AM62D2-EVM")
-Cc: stable@vger.kernel.org
-Signed-off-by: Paresh Bhagat <p-bhagat@ti.com>
-Reviewed-by: Shree Ramamoorthy <s-ramamoorthy@ti.com>
-Link: https://patch.msgid.link/20251028210153.420473-1-p-bhagat@ti.com
-Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
+Link: https://lkml.kernel.org/r/20251101182021.74868-8-sj@kernel.org
+Fixes: 17ccae8bb5c9 ("mm/damon: add kunit tests")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: Brendan Higgins <brendan.higgins@linux.dev>
+Cc: David Gow <davidgow@google.com>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: <stable@vger.kernel.org>	[5.15+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/ti/k3-am62d2-evm.dts | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ mm/damon/tests/core-kunit.h |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/ti/k3-am62d2-evm.dts b/arch/arm64/boot/dts/ti/k3-am62d2-evm.dts
-index 83af889e790a..d202484eec3f 100644
---- a/arch/arm64/boot/dts/ti/k3-am62d2-evm.dts
-+++ b/arch/arm64/boot/dts/ti/k3-am62d2-evm.dts
-@@ -146,6 +146,7 @@
- 		regulator-name = "vdd_mmc1";
- 		regulator-min-microvolt = <3300000>;
- 		regulator-max-microvolt = <3300000>;
-+		vin-supply = <&vcc_3v3_sys>;
- 		regulator-boot-on;
- 		enable-active-high;
- 		gpio = <&exp1 3 GPIO_ACTIVE_HIGH>;
-@@ -165,14 +166,16 @@
- 	};
+--- a/mm/damon/tests/core-kunit.h
++++ b/mm/damon/tests/core-kunit.h
+@@ -238,8 +238,14 @@ static void damon_test_merge_regions_of(
+ 	int i;
  
- 	vddshv_sdio: regulator-6 {
-+		/* output of TLV7103318QDSERQ1 */
- 		compatible = "regulator-gpio";
- 		regulator-name = "vddshv_sdio";
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&vddshv_sdio_pins_default>;
- 		regulator-min-microvolt = <1800000>;
- 		regulator-max-microvolt = <3300000>;
-+		vin-supply = <&vcc_5v0>;
- 		regulator-boot-on;
--		gpios = <&main_gpio1 31 GPIO_ACTIVE_HIGH>;
-+		gpios = <&main_gpio0 59 GPIO_ACTIVE_HIGH>;
- 		states = <1800000 0x0>,
- 			 <3300000 0x1>;
- 		bootph-all;
-@@ -334,7 +337,7 @@
- 
- 	vddshv_sdio_pins_default: vddshv-sdio-default-pins {
- 		pinctrl-single,pins = <
--			AM62DX_IOPAD(0x1f4, PIN_OUTPUT, 7) /* (M19) GPMC0_CLK.GPIO1_31 */
-+			AM62DX_IOPAD(0x00f0, PIN_INPUT, 7) /* (Y21) GPIO0_59 */
- 		>;
- 		bootph-all;
- 	};
--- 
-2.52.0
-
+ 	t = damon_new_target();
++	if (!t)
++		kunit_skip(test, "target alloc fail");
+ 	for (i = 0; i < ARRAY_SIZE(sa); i++) {
+ 		r = damon_new_region(sa[i], ea[i]);
++		if (!r) {
++			damon_free_target(t);
++			kunit_skip(test, "region alloc fail");
++		}
+ 		r->nr_accesses = nrs[i];
+ 		r->nr_accesses_bp = nrs[i] * 10000;
+ 		damon_add_region(r, t);
 
 
 
