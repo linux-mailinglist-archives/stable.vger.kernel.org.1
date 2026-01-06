@@ -1,52 +1,50 @@
-Return-Path: <stable+bounces-205315-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205326-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E38DACF9B8E
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 18:34:50 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFBD5CF9A89
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 18:25:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 744413089CF9
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:25:07 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4F230303D36D
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:25:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81EB935505E;
-	Tue,  6 Jan 2026 17:24:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4108B3557F3;
+	Tue,  6 Jan 2026 17:25:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sS1p2pqt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tJiI9LaG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D5C735505D;
-	Tue,  6 Jan 2026 17:24:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFEF93557ED;
+	Tue,  6 Jan 2026 17:25:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767720286; cv=none; b=hVf/9lV/3PQ1wgcPLp9dcUVW1o8/JDUDEf3K5gMw7MR5G/mTkxFSoaVpNdw0JElI3BU1R9hHHoZHqB1DHANmj9uH3vlOviXP0bFHd12iHkzahnNgu6B++7mBb9ojNmPyJlozle0O+F+mDtQZBuNb4JrVbP5HSotU1uij0zG8Jnw=
+	t=1767720322; cv=none; b=XgM66e7DsDWDRSpXrxo9upPm7DE3ykYH+cUgyOd/vQrayXBTMYDO7x41WCHNNvRs5YOSWKRRp95PB0oUv+fodLKuzkc9eTTYFULxnihtZMAPEP9Mv+xJ0NcoyEsZwWTCHY3lkvJTlHBwhb3Y5mioRKc4O3XlHDUIkLH1ItWVetg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767720286; c=relaxed/simple;
-	bh=EynU4uQVQyZnulAUEpHFirFl2Iho4VIt02sUOaqMgH8=;
+	s=arc-20240116; t=1767720322; c=relaxed/simple;
+	bh=harV5kGS4w9Keo1Pf/q01Kw1k7V0WSkXgFmz4vOdgDc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fDt80AysW2OaLFVz/czoDOUJvk0iCedxmyP2UIToBfM4cltpkl8H1gnvW+e5Hl9J2rEF7ML93e5ljBrfeUxzZnseUy19cqqg6czHgWs2+et4beiHBFCiDfZZnC0yZDWMAhnlj06dBl4ygDVaScMpjoKlMfmkeU/XXWs4tyEF5Wk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sS1p2pqt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C288C116C6;
-	Tue,  6 Jan 2026 17:24:45 +0000 (UTC)
+	 MIME-Version; b=f6ODodbECvkPtPwR0m60fShb48ci0N/MRDE+r2wuSKfc2WxPaPIgMFw7pTW/1nE0tgiI/s0xyhQyOUC/5TJZBhsZ9KvLOuS9PUJpbN/cVAl9U/dw3vs+EIJIskib9kPUTO1AqZlNYrpbVSTTitGUPw4q0ur71krmSexTGHc9C+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tJiI9LaG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75439C116C6;
+	Tue,  6 Jan 2026 17:25:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767720285;
-	bh=EynU4uQVQyZnulAUEpHFirFl2Iho4VIt02sUOaqMgH8=;
+	s=korg; t=1767720321;
+	bh=harV5kGS4w9Keo1Pf/q01Kw1k7V0WSkXgFmz4vOdgDc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sS1p2pqtnYKFzKip3KuI27QbO7ine764sC05QtaQT8W/gDIKlRLg4WPK0NOfTxTyQ
-	 f6/vMZYDT87goo6NB4u2mVpu2nMj0i2y16B3/nsj/lPRAu5xBTF3OybC02an54T6aW
-	 90EoUhFkqH6K+QJFTHByl7R5Rhq/Z2drk1MfqZC4=
+	b=tJiI9LaGJa2IBKSDEaaGQTpQlc1yhL8UUdhyvw74I6JFuKZE6zvhVtFM1VMIR/Iyx
+	 dr6Jc9eGzgTS5Vs72qbwzr5cbzKthdAZb8CR02+EtUS4yX1Z18wC5Jynk3D3tpu2Dd
+	 FJsruiThAyvEEFnkBfq5qfb7HrLRkdOCZalR6+mA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Byungchul Park <byungchul@sk.com>,
-	Jan Kara <jack@suse.cz>,
-	stable@kernel.org,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.12 173/567] jbd2: use a weaker annotation in journal handling
-Date: Tue,  6 Jan 2026 17:59:15 +0100
-Message-ID: <20260106170457.725408402@linuxfoundation.org>
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 6.12 174/567] media: v4l2-mem2mem: Fix outdated documentation
+Date: Tue,  6 Jan 2026 17:59:16 +0100
+Message-ID: <20260106170457.763210856@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
 References: <20260106170451.332875001@linuxfoundation.org>
@@ -65,50 +63,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Byungchul Park <byungchul@sk.com>
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 
-commit 40a71b53d5a6d4ea17e4d54b99b2ac03a7f5e783 upstream.
+commit 082b86919b7a94de01d849021b4da820a6cb89dc upstream.
 
-jbd2 journal handling code doesn't want jbd2_might_wait_for_commit()
-to be placed between start_this_handle() and stop_this_handle().  So it
-marks the region with rwsem_acquire_read() and rwsem_release().
+Commit cbd9463da1b1 ("media: v4l2-mem2mem: Avoid calling .device_run in
+v4l2_m2m_job_finish") deferred calls to .device_run() to a work queue to
+avoid recursive calls when a job is finished right away from
+.device_run(). It failed to update the v4l2_m2m_job_finish()
+documentation that still states the function must not be called from
+.device_run(). Fix it.
 
-However, the annotation is too strong for that purpose.  We don't have
-to use more than try lock annotation for that.
-
-rwsem_acquire_read() implies:
-
-   1. might be a waiter on contention of the lock.
-   2. enter to the critical section of the lock.
-
-All we need in here is to act 2, not 1.  So trylock version of
-annotation is sufficient for that purpose.  Now that dept partially
-relies on lockdep annotaions, dept interpets rwsem_acquire_read() as a
-potential wait and might report a deadlock by the wait.
-
-Replace it with trylock version of annotation.
-
-Signed-off-by: Byungchul Park <byungchul@sk.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Cc: stable@kernel.org
-Message-ID: <20251024073940.1063-1-byungchul@sk.com>
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Fixes: cbd9463da1b1 ("media: v4l2-mem2mem: Avoid calling .device_run in v4l2_m2m_job_finish")
+Cc: stable@vger.kernel.org
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/jbd2/transaction.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/media/v4l2-mem2mem.h |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/fs/jbd2/transaction.c
-+++ b/fs/jbd2/transaction.c
-@@ -445,7 +445,7 @@ repeat:
- 	read_unlock(&journal->j_state_lock);
- 	current->journal_info = handle;
- 
--	rwsem_acquire_read(&journal->j_trans_commit_map, 0, 0, _THIS_IP_);
-+	rwsem_acquire_read(&journal->j_trans_commit_map, 0, 1, _THIS_IP_);
- 	jbd2_journal_free_transaction(new_transaction);
- 	/*
- 	 * Ensure that no allocations done while the transaction is open are
+--- a/include/media/v4l2-mem2mem.h
++++ b/include/media/v4l2-mem2mem.h
+@@ -192,8 +192,7 @@ void v4l2_m2m_try_schedule(struct v4l2_m
+  * other instances to take control of the device.
+  *
+  * This function has to be called only after &v4l2_m2m_ops->device_run
+- * callback has been called on the driver. To prevent recursion, it should
+- * not be called directly from the &v4l2_m2m_ops->device_run callback though.
++ * callback has been called on the driver.
+  */
+ void v4l2_m2m_job_finish(struct v4l2_m2m_dev *m2m_dev,
+ 			 struct v4l2_m2m_ctx *m2m_ctx);
 
 
 
