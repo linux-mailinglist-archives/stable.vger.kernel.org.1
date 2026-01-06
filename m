@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-205931-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205653-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5088CCFA7C3
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:07:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC845CFA9B9
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:22:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A9F86331829E
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:17:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5F7EA30DA5D6
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:35:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 250C036D4E7;
-	Tue,  6 Jan 2026 17:58:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E714A3446CC;
+	Tue,  6 Jan 2026 17:43:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qZjlTL8P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d4YZTcks"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D500436CE1D;
-	Tue,  6 Jan 2026 17:58:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 988103168E8;
+	Tue,  6 Jan 2026 17:43:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767722337; cv=none; b=Usod7DxXVvVVX/K982RQsua5qnzfbzFmIgPO2oE0KSQ/dp/zupuAaeBB9suBhALcrAEwIjbmsdY4RQqGnHtl+7YZQjMl7/X6aeHa49tOhZ8+a3mNZYmvwFvKsX11WmfVVMjrw0VR6pcXPOtKN9AQuRtLBbD4v2z2LSqdVqsgpQI=
+	t=1767721407; cv=none; b=c7eET0lXB9AuEaI+UkjHLIxNONXg1JP+esOX0EaJshHC6s66NHIMP+PbTh0hZ6rjXgfbw92/b5Ap9rXvyoYPtKs8N22eDMUK3paYsRClhJb5drWxobZaRPh5CgSdPUuUq8PnEjIUvnLTuB15QR96W9KDrT2oN2937y4+IpedR/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767722337; c=relaxed/simple;
-	bh=voXnQC5+hgYdjvuwrcCnjEJ/TgjKJtDY8jBY1kc2GVk=;
+	s=arc-20240116; t=1767721407; c=relaxed/simple;
+	bh=tzNbwE6ui/nrtFkXVY+tX2nD9d6YgLY43KdAD5331/o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LgipWepA1bIp95r6FKyzUISU1cqm/YQM72Dd53ULSMAuJI8y75EE+c68yoDENhstEXvQhpVFw5eREiRPhDxOe2INZpAkUGODPWmzwUjeuEE3XKsy4vUmfWe1PeIsQj0f2qWtFdUqLhV2T0tPGjVXZGxcUVyGy/xjIp6p482Pu24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qZjlTL8P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1112DC116C6;
-	Tue,  6 Jan 2026 17:58:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=djI4oPGQYazmqnLe7vSp+YgHlvlYkbzZOz8Ge84Po04HxqhvmunzqzgdDeE5O7T7qqS0qIh9SyHuoGOvrvrtqGXNd1ndhrlpXS+Sr2UfZ3I25YfzLjdJ9PVLPtSUU+t7Q+7WxerBud8U6A97nUQVHUcVLedIUWHmoxFgqEHJM8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d4YZTcks; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDDFFC16AAE;
+	Tue,  6 Jan 2026 17:43:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767722337;
-	bh=voXnQC5+hgYdjvuwrcCnjEJ/TgjKJtDY8jBY1kc2GVk=;
+	s=korg; t=1767721407;
+	bh=tzNbwE6ui/nrtFkXVY+tX2nD9d6YgLY43KdAD5331/o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qZjlTL8PqaYagQiA3Q7atxkJUdH4zJPK09rh8mL/34hwNevOawexksiWkOOfp/Y/M
-	 B6GRFBUiBmllRQWrn2V8Vv4uvtMDc9maVf1qcaWRc9k29nP9oLUaQ6ISL6F2H7RbEZ
-	 YNkCfcSN3k+qq9oBzXSgvEi087dua5squbmJ22Eg=
+	b=d4YZTckstjDUGhDN3fGZfZ75Z5gMxSnHyc14JlEvf0EJfJKe/zmpsKBlTfD/PaHu4
+	 yVhfXy1wEMjgIsJ+IA/48bU0EhjA4fkR3vZF4h96m2ymVSfvn1g73RP8BqFfVCYHiz
+	 1AOMvLozSacSImHxnKoJ5+8eMGFjddUfrjuiU0b0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@google.com>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.18 202/312] mm/damon/tests/core-kunit: fix memory leak in damon_test_set_filters_default_reject()
-Date: Tue,  6 Jan 2026 18:04:36 +0100
-Message-ID: <20260106170555.138638997@linuxfoundation.org>
+	stable@kernel.org,
+	Hong Yun <yhong@link.cuhk.edu.hk>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 495/567] f2fs: use global inline_xattr_slab instead of per-sb slab cache
+Date: Tue,  6 Jan 2026 18:04:37 +0100
+Message-ID: <20260106170509.674399876@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
-References: <20260106170547.832845344@linuxfoundation.org>
+In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
+References: <20260106170451.332875001@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,87 +60,244 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SeongJae Park <sj@kernel.org>
+From: Chao Yu <chao@kernel.org>
 
-commit b5ab490d85b772bc99d2648182a282f39f08feb6 upstream.
+[ Upstream commit 1f27ef42bb0b7c0740c5616ec577ec188b8a1d05 ]
 
-Patch series "mm/damon/tests: fix memory bugs in kunit tests".
+As Hong Yun reported in mailing list:
 
-DAMON kunit tests were initially written assuming those will be run on
-environments that are well controlled and therefore tolerant to transient
-test failures and bugs in the test code itself.  The user-mode linux based
-manual run of the tests is one example of such an environment.  And the
-test code was written for adding more test coverage as fast as possible,
-over making those safe and reliable.
+loop7: detected capacity change from 0 to 131072
+------------[ cut here ]------------
+kmem_cache of name 'f2fs_xattr_entry-7:7' already exists
+WARNING: CPU: 0 PID: 24426 at mm/slab_common.c:110 kmem_cache_sanity_check mm/slab_common.c:109 [inline]
+WARNING: CPU: 0 PID: 24426 at mm/slab_common.c:110 __kmem_cache_create_args+0xa6/0x320 mm/slab_common.c:307
+CPU: 0 UID: 0 PID: 24426 Comm: syz.7.1370 Not tainted 6.17.0-rc4 #1 PREEMPT(full)
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
+RIP: 0010:kmem_cache_sanity_check mm/slab_common.c:109 [inline]
+RIP: 0010:__kmem_cache_create_args+0xa6/0x320 mm/slab_common.c:307
+Call Trace:
+ __kmem_cache_create include/linux/slab.h:353 [inline]
+ f2fs_kmem_cache_create fs/f2fs/f2fs.h:2943 [inline]
+ f2fs_init_xattr_caches+0xa5/0xe0 fs/f2fs/xattr.c:843
+ f2fs_fill_super+0x1645/0x2620 fs/f2fs/super.c:4918
+ get_tree_bdev_flags+0x1fb/0x260 fs/super.c:1692
+ vfs_get_tree+0x43/0x140 fs/super.c:1815
+ do_new_mount+0x201/0x550 fs/namespace.c:3808
+ do_mount fs/namespace.c:4136 [inline]
+ __do_sys_mount fs/namespace.c:4347 [inline]
+ __se_sys_mount+0x298/0x2f0 fs/namespace.c:4324
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x8e/0x3a0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
 
-As a result, the tests resulted in having a number of bugs including real
-memory leaks, theoretical unhandled memory allocation failures, and unused
-memory allocations.  The allocation failures that are not handled well are
-unlikely in the real world, since those allocations are too small to fail.
-But in theory, it can happen and cause inappropriate memory access.
+The bug can be reproduced w/ below scripts:
+- mount /dev/vdb /mnt1
+- mount /dev/vdc /mnt2
+- umount /mnt1
+- mounnt /dev/vdb /mnt1
 
-It is arguable if bugs in test code can really harm users.  But, anyway
-bugs are bugs that need to be fixed.  Fix the bugs one by one.  Also Cc
-stable@ for the fixes of memory leak and unhandled memory allocation
-failures.  The unused memory allocations are only a matter of memory
-efficiency, so not Cc-ing stable@.
+The reason is if we created two slab caches, named f2fs_xattr_entry-7:3
+and f2fs_xattr_entry-7:7, and they have the same slab size. Actually,
+slab system will only create one slab cache core structure which has
+slab name of "f2fs_xattr_entry-7:3", and two slab caches share the same
+structure and cache address.
 
-The first patch fixes memory leaks in the test code for the DAMON core
-layer.
+So, if we destroy f2fs_xattr_entry-7:3 cache w/ cache address, it will
+decrease reference count of slab cache, rather than release slab cache
+entirely, since there is one more user has referenced the cache.
 
-Following fifteen, three, and one patches respectively fix unhandled
-memory allocation failures in the test code for DAMON core layer, virtual
-address space DAMON operation set, and DAMON sysfs interface, one by one
-per test function.
+Then, if we try to create slab cache w/ name "f2fs_xattr_entry-7:3" again,
+slab system will find that there is existed cache which has the same name
+and trigger the warning.
 
-Final two patches remove memory allocations that are correctly deallocated
-at the end, but not really being used by any code.
+Let's changes to use global inline_xattr_slab instead of per-sb slab cache
+for fixing.
 
-
-This patch (of 22):
-
-Kunit test function for damos_set_filters_default_reject() allocates two
-'struct damos_filter' objects and not deallocates those, so that the
-memory for the two objects are leaked for every time the test runs.  Fix
-this by deallocating those objects at the end of the test code.
-
-Link: https://lkml.kernel.org/r/20251101182021.74868-1-sj@kernel.org
-Link: https://lkml.kernel.org/r/20251101182021.74868-2-sj@kernel.org
-Fixes: 094fb14913c7 ("mm/damon/tests/core-kunit: add a test for damos_set_filters_default_reject()")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: Brendan Higgins <brendan.higgins@linux.dev>
-Cc: David Gow <davidgow@google.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: <stable@vger.kernel.org>	[6.16+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: a999150f4fe3 ("f2fs: use kmem_cache pool during inline xattr lookups")
+Cc: stable@kernel.org
+Reported-by: Hong Yun <yhong@link.cuhk.edu.hk>
+Tested-by: Hong Yun <yhong@link.cuhk.edu.hk>
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+[ folio => page ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/damon/tests/core-kunit.h | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/f2fs/f2fs.h  |    3 ---
+ fs/f2fs/super.c |   17 ++++++++---------
+ fs/f2fs/xattr.c |   30 ++++++++++--------------------
+ fs/f2fs/xattr.h |   10 ++++++----
+ 4 files changed, 24 insertions(+), 36 deletions(-)
 
-diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
-index 51369e35298b..69ca44f9270b 100644
---- a/mm/damon/tests/core-kunit.h
-+++ b/mm/damon/tests/core-kunit.h
-@@ -598,6 +598,9 @@ static void damon_test_set_filters_default_reject(struct kunit *test)
- 	 */
- 	KUNIT_EXPECT_EQ(test, scheme.core_filters_default_reject, false);
- 	KUNIT_EXPECT_EQ(test, scheme.ops_filters_default_reject, true);
-+
-+	damos_free_filter(anon_filter);
-+	damos_free_filter(target_filter);
+--- a/fs/f2fs/f2fs.h
++++ b/fs/f2fs/f2fs.h
+@@ -1804,9 +1804,6 @@ struct f2fs_sb_info {
+ 	spinlock_t error_lock;			/* protect errors/stop_reason array */
+ 	bool error_dirty;			/* errors of sb is dirty */
+ 
+-	struct kmem_cache *inline_xattr_slab;	/* inline xattr entry */
+-	unsigned int inline_xattr_slab_size;	/* default inline xattr slab size */
+-
+ 	/* For reclaimed segs statistics per each GC mode */
+ 	unsigned int gc_segment_mode;		/* GC state for reclaimed segments */
+ 	unsigned int gc_reclaimed_segs[MAX_GC_MODE];	/* Reclaimed segs for each mode */
+--- a/fs/f2fs/super.c
++++ b/fs/f2fs/super.c
+@@ -1695,7 +1695,6 @@ static void f2fs_put_super(struct super_
+ 	kfree(sbi->raw_super);
+ 
+ 	f2fs_destroy_page_array_cache(sbi);
+-	f2fs_destroy_xattr_caches(sbi);
+ #ifdef CONFIG_QUOTA
+ 	for (i = 0; i < MAXQUOTAS; i++)
+ 		kfree(F2FS_OPTION(sbi).s_qf_names[i]);
+@@ -4568,13 +4567,9 @@ try_onemore:
+ 	if (err)
+ 		goto free_iostat;
+ 
+-	/* init per sbi slab cache */
+-	err = f2fs_init_xattr_caches(sbi);
+-	if (err)
+-		goto free_percpu;
+ 	err = f2fs_init_page_array_cache(sbi);
+ 	if (err)
+-		goto free_xattr_cache;
++		goto free_percpu;
+ 
+ 	/* get an inode for meta space */
+ 	sbi->meta_inode = f2fs_iget(sb, F2FS_META_INO(sbi));
+@@ -4906,8 +4901,6 @@ free_meta_inode:
+ 	sbi->meta_inode = NULL;
+ free_page_array_cache:
+ 	f2fs_destroy_page_array_cache(sbi);
+-free_xattr_cache:
+-	f2fs_destroy_xattr_caches(sbi);
+ free_percpu:
+ 	destroy_percpu_info(sbi);
+ free_iostat:
+@@ -5069,10 +5062,15 @@ static int __init init_f2fs_fs(void)
+ 	err = f2fs_create_casefold_cache();
+ 	if (err)
+ 		goto free_compress_cache;
+-	err = register_filesystem(&f2fs_fs_type);
++	err = f2fs_init_xattr_cache();
+ 	if (err)
+ 		goto free_casefold_cache;
++	err = register_filesystem(&f2fs_fs_type);
++	if (err)
++		goto free_xattr_cache;
+ 	return 0;
++free_xattr_cache:
++	f2fs_destroy_xattr_cache();
+ free_casefold_cache:
+ 	f2fs_destroy_casefold_cache();
+ free_compress_cache:
+@@ -5113,6 +5111,7 @@ fail:
+ static void __exit exit_f2fs_fs(void)
+ {
+ 	unregister_filesystem(&f2fs_fs_type);
++	f2fs_destroy_xattr_cache();
+ 	f2fs_destroy_casefold_cache();
+ 	f2fs_destroy_compress_cache();
+ 	f2fs_destroy_compress_mempool();
+--- a/fs/f2fs/xattr.c
++++ b/fs/f2fs/xattr.c
+@@ -23,11 +23,12 @@
+ #include "xattr.h"
+ #include "segment.h"
+ 
++static struct kmem_cache *inline_xattr_slab;
+ static void *xattr_alloc(struct f2fs_sb_info *sbi, int size, bool *is_inline)
+ {
+-	if (likely(size == sbi->inline_xattr_slab_size)) {
++	if (likely(size == DEFAULT_XATTR_SLAB_SIZE)) {
+ 		*is_inline = true;
+-		return f2fs_kmem_cache_alloc(sbi->inline_xattr_slab,
++		return f2fs_kmem_cache_alloc(inline_xattr_slab,
+ 					GFP_F2FS_ZERO, false, sbi);
+ 	}
+ 	*is_inline = false;
+@@ -38,7 +39,7 @@ static void xattr_free(struct f2fs_sb_in
+ 							bool is_inline)
+ {
+ 	if (is_inline)
+-		kmem_cache_free(sbi->inline_xattr_slab, xattr_addr);
++		kmem_cache_free(inline_xattr_slab, xattr_addr);
+ 	else
+ 		kfree(xattr_addr);
+ }
+@@ -830,25 +831,14 @@ int f2fs_setxattr(struct inode *inode, i
+ 	return err;
  }
  
- static struct kunit_case damon_test_cases[] = {
--- 
-2.52.0
-
+-int f2fs_init_xattr_caches(struct f2fs_sb_info *sbi)
++int __init f2fs_init_xattr_cache(void)
+ {
+-	dev_t dev = sbi->sb->s_bdev->bd_dev;
+-	char slab_name[32];
+-
+-	sprintf(slab_name, "f2fs_xattr_entry-%u:%u", MAJOR(dev), MINOR(dev));
+-
+-	sbi->inline_xattr_slab_size = F2FS_OPTION(sbi).inline_xattr_size *
+-					sizeof(__le32) + XATTR_PADDING_SIZE;
+-
+-	sbi->inline_xattr_slab = f2fs_kmem_cache_create(slab_name,
+-					sbi->inline_xattr_slab_size);
+-	if (!sbi->inline_xattr_slab)
+-		return -ENOMEM;
+-
+-	return 0;
++	inline_xattr_slab = f2fs_kmem_cache_create("f2fs_xattr_entry",
++					DEFAULT_XATTR_SLAB_SIZE);
++	return inline_xattr_slab ? 0 : -ENOMEM;
+ }
+ 
+-void f2fs_destroy_xattr_caches(struct f2fs_sb_info *sbi)
++void f2fs_destroy_xattr_cache(void)
+ {
+-	kmem_cache_destroy(sbi->inline_xattr_slab);
++	kmem_cache_destroy(inline_xattr_slab);
+ }
+--- a/fs/f2fs/xattr.h
++++ b/fs/f2fs/xattr.h
+@@ -89,6 +89,8 @@ struct f2fs_xattr_entry {
+ 			F2FS_TOTAL_EXTRA_ATTR_SIZE / sizeof(__le32) -	\
+ 			DEF_INLINE_RESERVED_SIZE -			\
+ 			MIN_INLINE_DENTRY_SIZE / sizeof(__le32))
++#define DEFAULT_XATTR_SLAB_SIZE	(DEFAULT_INLINE_XATTR_ADDRS *		\
++				sizeof(__le32) + XATTR_PADDING_SIZE)
+ 
+ /*
+  * On-disk structure of f2fs_xattr
+@@ -132,8 +134,8 @@ extern int f2fs_setxattr(struct inode *,
+ extern int f2fs_getxattr(struct inode *, int, const char *, void *,
+ 						size_t, struct page *);
+ extern ssize_t f2fs_listxattr(struct dentry *, char *, size_t);
+-extern int f2fs_init_xattr_caches(struct f2fs_sb_info *);
+-extern void f2fs_destroy_xattr_caches(struct f2fs_sb_info *);
++extern int __init f2fs_init_xattr_cache(void);
++extern void f2fs_destroy_xattr_cache(void);
+ #else
+ 
+ #define f2fs_xattr_handlers	NULL
+@@ -150,8 +152,8 @@ static inline int f2fs_getxattr(struct i
+ {
+ 	return -EOPNOTSUPP;
+ }
+-static inline int f2fs_init_xattr_caches(struct f2fs_sb_info *sbi) { return 0; }
+-static inline void f2fs_destroy_xattr_caches(struct f2fs_sb_info *sbi) { }
++static inline int __init f2fs_init_xattr_cache(void) { return 0; }
++static inline void f2fs_destroy_xattr_cache(void) { }
+ #endif
+ 
+ #ifdef CONFIG_F2FS_FS_SECURITY
 
 
 
