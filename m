@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-205502-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205781-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B2F3CF9C74
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 18:42:31 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72DFBCFA6BE
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:00:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 6CE9730299C0
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:42:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 00C143218063
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:34:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4B562FF14F;
-	Tue,  6 Jan 2026 17:35:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 833B7364026;
+	Tue,  6 Jan 2026 17:50:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2tUIg6IV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mf5K7/0e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B0142FF147;
-	Tue,  6 Jan 2026 17:35:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41014363C50;
+	Tue,  6 Jan 2026 17:50:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767720907; cv=none; b=OyPnUYrd3YwPblpyCGtPpRX/Fdl5ouMffdT17bkzec91Jjs4Ixgln5O7KMoEfzNIQK+OLlcTA9qJKGpNVbNPphoPR6SVhUN5+WdG2mk2+/nvRBUg3F2yMbHIyqgq4pqFrgphgzBqpPkIda9enUlOCnp2AIK5S1/E4QfbuNSjmCU=
+	t=1767721841; cv=none; b=mhCcSRcYw9LZQ8KIAbkQoNJrdkjchZtmvWxHayY3bp0bilpaYdPVwmTP5W+738sHoLiPuyR3nWncCoQxyIevxdXqjFmJAU1zcyNzDHg7J1wXdvHeyulbF0ZxnKNfHl9gC60SKEBqgvPegLR6amyqShEQRQHbprpHPELHK57wR34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767720907; c=relaxed/simple;
-	bh=8p58U1HDMZ7DBc42nSmV7JLppAxwF2O/m7BYTeTX6fc=;
+	s=arc-20240116; t=1767721841; c=relaxed/simple;
+	bh=cTEtGOK/YgxJEtMeck09tHtdMOtMuyxnl9H2v2zl1Zc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lWkmewm/Lgh0X51eg1V97+4DmvzqiSHbhnZuNeu1B/keyl0drnLuB1u//b80mP6hmFL+0ZeYzYvIS2S5TT+mBwkkKxP2LQJBiCRrIIcmeveE9E8+dKjtMUqMOVEezsL+nVLduhOJjjvhUoGPtlxNb88jRboesKKBVctAvQZ5EjA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2tUIg6IV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67622C116C6;
-	Tue,  6 Jan 2026 17:35:06 +0000 (UTC)
+	 MIME-Version; b=J/eb3GzzbrRqv0SChN1f6JoPH2GwPE4rivELgIbKcGjLw8NC4Fshvx7cTJaEALdLPpwZXsEyYeg2SQ5GuQyF65OHAdZsLCTDVw1RHoGRwQclIYSJ37saSQlTLvnw/YQhv9xEmcFkTLfqEoxFxiubGQngK91Jv0Qr8m9hWK59PO0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mf5K7/0e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 343DAC116C6;
+	Tue,  6 Jan 2026 17:50:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767720906;
-	bh=8p58U1HDMZ7DBc42nSmV7JLppAxwF2O/m7BYTeTX6fc=;
+	s=korg; t=1767721841;
+	bh=cTEtGOK/YgxJEtMeck09tHtdMOtMuyxnl9H2v2zl1Zc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2tUIg6IVWmvYBDz6HQOg33AX0/dA5kOPIGlDrD1nlrMG77wo7pfH4hC/26/ubkqUl
-	 4YPEnv57nfug9vQmZdK+Vaqp/Gzj4waBmTiYuFqCAEogd4T1Xt2DISxxJLo+RP6slM
-	 n6kGZKy8gSIKGhJOaAgdqilK33rD+3GXOl3/LPcA=
+	b=Mf5K7/0eqdeqMAmzmhVrfAfne1bWOi5/YvDk5Hqs5sjIhtAZtgiyXsw6NpkYKDcij
+	 nUrHElKGzCtDibRJJq3XMG5Hn6BGB+tPf+64k0EsnG3siW/4esSS0M1AmUEsYfUAqm
+	 wB9tF8bzImZ3kVsB3KQvi1Lm1fWcv0lD8ZPvf1BQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Hitz <christian.hitz@bbv.ch>,
-	Lee Jones <lee@kernel.org>
-Subject: [PATCH 6.12 377/567] leds: leds-lp50xx: Enable chip before any communication
-Date: Tue,  6 Jan 2026 18:02:39 +0100
-Message-ID: <20260106170505.287170641@linuxfoundation.org>
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 086/312] RDMA/bnxt_re: fix dma_free_coherent() pointer
+Date: Tue,  6 Jan 2026 18:02:40 +0100
+Message-ID: <20260106170550.950196480@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
-References: <20260106170451.332875001@linuxfoundation.org>
+In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
+References: <20260106170547.832845344@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,155 +58,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Hitz <christian.hitz@bbv.ch>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-commit 434959618c47efe9e5f2e20f4a850caac4f6b823 upstream.
+[ Upstream commit fcd431a9627f272b4c0bec445eba365fe2232a94 ]
 
-If a GPIO is used to control the chip's enable pin, it needs to be pulled
-high before any i2c communication is attempted.
+The dma_alloc_coherent() allocates a dma-mapped buffer, pbl->pg_arr[i].
+The dma_free_coherent() should pass the same buffer to
+dma_free_coherent() and not page-aligned.
 
-Currently, the enable GPIO handling is not correct.
-
-Assume the enable GPIO is low when the probe function is entered. In this
-case the device is in SHUTDOWN mode and does not react to i2c commands.
-
-During probe the following sequence happens:
- 1. The call to lp50xx_reset() on line 548 has no effect as i2c is not
-    possible yet.
- 2. Then - on line 552 - lp50xx_enable_disable() is called. As
-    "priv->enable_gpio“ has not yet been initialized, setting the GPIO has
-    no effect. Also the i2c enable command is not executed as the device
-    is still in SHUTDOWN.
- 3. On line 556 the call to lp50xx_probe_dt() finally parses the rest of
-    the DT and the configured priv->enable_gpio is set up.
-
-As a result the device is still in SHUTDOWN mode and not ready for
-operation.
-
-Split lp50xx_enable_disable() into distinct enable and disable functions
-to enforce correct ordering between enable_gpio manipulations and i2c
-commands.
-Read enable_gpio configuration from DT before attempting to manipulate
-enable_gpio.
-Add delays to observe correct wait timing after manipulating enable_gpio
-and before any i2c communication.
-
-Cc: stable@vger.kernel.org
-Fixes: 242b81170fb8 ("leds: lp50xx: Add the LP50XX family of the RGB LED driver")
-Signed-off-by: Christian Hitz <christian.hitz@bbv.ch>
-Link: https://patch.msgid.link/20251028155141.1603193-1-christian@klarinett.li
-Signed-off-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1ac5a4047975 ("RDMA/bnxt_re: Add bnxt_re RoCE driver")
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Link: https://patch.msgid.link/20251230085121.8023-2-fourier.thomas@gmail.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/leds/leds-lp50xx.c |   55 ++++++++++++++++++++++++++++++++-------------
- 1 file changed, 40 insertions(+), 15 deletions(-)
+ drivers/infiniband/hw/bnxt_re/qplib_res.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/drivers/leds/leds-lp50xx.c
-+++ b/drivers/leds/leds-lp50xx.c
-@@ -52,6 +52,12 @@
- 
- #define LP50XX_SW_RESET		0xff
- #define LP50XX_CHIP_EN		BIT(6)
-+#define LP50XX_CHIP_DISABLE	0x00
-+#define LP50XX_START_TIME_US	500
-+#define LP50XX_RESET_TIME_US	3
-+
-+#define LP50XX_EN_GPIO_LOW	0
-+#define LP50XX_EN_GPIO_HIGH	1
- 
- /* There are 3 LED outputs per bank */
- #define LP50XX_LEDS_PER_MODULE	3
-@@ -371,19 +377,42 @@ static int lp50xx_reset(struct lp50xx *p
- 	return regmap_write(priv->regmap, priv->chip_info->reset_reg, LP50XX_SW_RESET);
- }
- 
--static int lp50xx_enable_disable(struct lp50xx *priv, int enable_disable)
-+static int lp50xx_enable(struct lp50xx *priv)
- {
- 	int ret;
- 
--	ret = gpiod_direction_output(priv->enable_gpio, enable_disable);
-+	if (priv->enable_gpio) {
-+		ret = gpiod_direction_output(priv->enable_gpio, LP50XX_EN_GPIO_HIGH);
-+		if (ret)
-+			return ret;
-+
-+		udelay(LP50XX_START_TIME_US);
-+	}
-+
-+	ret = lp50xx_reset(priv);
- 	if (ret)
- 		return ret;
- 
--	if (enable_disable)
--		return regmap_write(priv->regmap, LP50XX_DEV_CFG0, LP50XX_CHIP_EN);
--	else
--		return regmap_write(priv->regmap, LP50XX_DEV_CFG0, 0);
-+	return regmap_write(priv->regmap, LP50XX_DEV_CFG0, LP50XX_CHIP_EN);
-+}
- 
-+static int lp50xx_disable(struct lp50xx *priv)
-+{
-+	int ret;
-+
-+	ret = regmap_write(priv->regmap, LP50XX_DEV_CFG0, LP50XX_CHIP_DISABLE);
-+	if (ret)
-+		return ret;
-+
-+	if (priv->enable_gpio) {
-+		ret = gpiod_direction_output(priv->enable_gpio, LP50XX_EN_GPIO_LOW);
-+		if (ret)
-+			return ret;
-+
-+		udelay(LP50XX_RESET_TIME_US);
-+	}
-+
-+	return 0;
- }
- 
- static int lp50xx_probe_leds(struct fwnode_handle *child, struct lp50xx *priv,
-@@ -448,6 +477,10 @@ static int lp50xx_probe_dt(struct lp50xx
- 		return dev_err_probe(priv->dev, PTR_ERR(priv->enable_gpio),
- 				     "Failed to get enable GPIO\n");
- 
-+	ret = lp50xx_enable(priv);
-+	if (ret)
-+		return ret;
-+
- 	priv->regulator = devm_regulator_get(priv->dev, "vled");
- 	if (IS_ERR(priv->regulator))
- 		priv->regulator = NULL;
-@@ -554,14 +587,6 @@ static int lp50xx_probe(struct i2c_clien
- 		return ret;
- 	}
- 
--	ret = lp50xx_reset(led);
--	if (ret)
--		return ret;
--
--	ret = lp50xx_enable_disable(led, 1);
--	if (ret)
--		return ret;
--
- 	return lp50xx_probe_dt(led);
- }
- 
-@@ -570,7 +595,7 @@ static void lp50xx_remove(struct i2c_cli
- 	struct lp50xx *led = i2c_get_clientdata(client);
- 	int ret;
- 
--	ret = lp50xx_enable_disable(led, 0);
-+	ret = lp50xx_disable(led);
- 	if (ret)
- 		dev_err(led->dev, "Failed to disable chip\n");
- 
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_res.c b/drivers/infiniband/hw/bnxt_re/qplib_res.c
+index d5c12a51aa43..4d674a3aee1a 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_res.c
++++ b/drivers/infiniband/hw/bnxt_re/qplib_res.c
+@@ -64,9 +64,7 @@ static void __free_pbl(struct bnxt_qplib_res *res, struct bnxt_qplib_pbl *pbl,
+ 		for (i = 0; i < pbl->pg_count; i++) {
+ 			if (pbl->pg_arr[i])
+ 				dma_free_coherent(&pdev->dev, pbl->pg_size,
+-						  (void *)((unsigned long)
+-						   pbl->pg_arr[i] &
+-						  PAGE_MASK),
++						  pbl->pg_arr[i],
+ 						  pbl->pg_map_arr[i]);
+ 			else
+ 				dev_warn(&pdev->dev,
+-- 
+2.51.0
+
 
 
 
