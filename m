@@ -1,52 +1,56 @@
-Return-Path: <stable+bounces-205890-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205614-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1086ECFA489
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:48:38 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BF08CFA6AE
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:00:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E442330628DF
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:48:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 175FF31FF68F
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:34:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A14842F8BCA;
-	Tue,  6 Jan 2026 17:56:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC23B2EA482;
+	Tue,  6 Jan 2026 17:41:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i1Q2fs76"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BOas0PkR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F2CD1DF965;
-	Tue,  6 Jan 2026 17:56:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7911F1F1932;
+	Tue,  6 Jan 2026 17:41:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767722206; cv=none; b=JVw9YIRd0tbajvQjsvh/wqtewzslZ4ypNgZzt7WZOnXhYA3WxdAXXYv+0DnvtW1ru3BrMut6tRSngwZv8J5ASbjRO0XiDAd9TldsujKyqg/uEv+QnCeTvo+Q1Uvwro1N82xXvZHF+1Qwzm0RvrqxCClvsxoOmEOq2yWv4Um+r5s=
+	t=1767721276; cv=none; b=fweNfg4dR5Sn2HAh3QDOlCqAC5doO2CmIW/vNTV6NGQGrqVOdM/E/J+l1F4fyduvNWsDLXkrksg42BMzbgko/bxfyvSdRRjB1tU/f4b3w6CWTQ9/2uRPo/JBVnCDFIIq59bB5r1HBIlwm/Ef1g21SqoAXtBF/KenbPEocZvO2gE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767722206; c=relaxed/simple;
-	bh=veHRAwMoWI3dtoEyE9Q7trsTMfkmGmaQeu/PcSymCFU=;
+	s=arc-20240116; t=1767721276; c=relaxed/simple;
+	bh=CmgLKdB93tm3Bnc5prh1Oo1AlKCPqb3USnCHATZS46c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uUuaEv8oDHAbqQAVusBx/BehOzcF6qgSGqDXgYhQq2TAUO0H9qZcAj1In80tCHoRjAd5QJv0gcmbRnAh6ypl2xlXbSK4CuL7ShJxqeyUaGyxHxbYCuF2O+tTtdT1UhFD+I10i6g9j4/vNwKnDfy9wAqEQwHrRugkZe22jSLys/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i1Q2fs76; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2DB6C116C6;
-	Tue,  6 Jan 2026 17:56:45 +0000 (UTC)
+	 MIME-Version; b=cGnWcOD/8VgD+Tk49FHjgVc54GPyw1Si/cJBzt36/e9IZFCGg6B0XNyTWjmBfKbrqZe09jvt+ZEBglviP86gLZTzTKoB5BQdL7tJOfn2u+h2DSSzu9YFlqtP/EvJIIafGRh72j1DgtK3FO1Z5QZa2XIHOh+vWHFXN/9vb7BlcA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BOas0PkR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4663C16AAE;
+	Tue,  6 Jan 2026 17:41:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767722206;
-	bh=veHRAwMoWI3dtoEyE9Q7trsTMfkmGmaQeu/PcSymCFU=;
+	s=korg; t=1767721276;
+	bh=CmgLKdB93tm3Bnc5prh1Oo1AlKCPqb3USnCHATZS46c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i1Q2fs767KAQJrjehb7bbgZ1zMzD/MFvEI1JkeeZDbymmqP0yG4hZzPAj4XFc+nTl
-	 jaJ+JpzFVzqZc2BTVg+qjqcUXW7km2f06dWmwbK93+e0RNk4VpZ5Fw0IClUCxlGctV
-	 3SZgbb9cQQD7qKVNMw0vOf//3R7WoAkATOTMnK/o=
+	b=BOas0PkRLYcp4Apxhpk1BltXGY++h4s2UyURVoYlBwkkSatoJ47c5PRe2UvSCi6fo
+	 8+CQESsmUFuNMXzUkLk/+Qjf+oXv2r5Z6P2P0UxjkeCcfQCO/OfvUnEjoK/4awmC7l
+	 Rnsz79mWRj0Ovr+Q3bQRQSW1K6sztZr7Vq1mKUYc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.18 194/312] LoongArch: Fix arch_dup_task_struct() for CONFIG_RANDSTRUCT
-Date: Tue,  6 Jan 2026 18:04:28 +0100
-Message-ID: <20260106170554.844496690@linuxfoundation.org>
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Josef Bacik <josef@toxicpanda.com>,
+	Daniel Vacek <neelx@suse.com>,
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 487/567] btrfs: dont rewrite ret from inode_permission
+Date: Tue,  6 Jan 2026 18:04:29 +0100
+Message-ID: <20260106170509.375415662@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
-References: <20260106170547.832845344@linuxfoundation.org>
+In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
+References: <20260106170451.332875001@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,42 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Josef Bacik <josef@toxicpanda.com>
 
-commit a91b446e359aa96cc2655318789fd37441337415 upstream.
+[ Upstream commit 0185c2292c600993199bc6b1f342ad47a9e8c678 ]
 
-Now the optimized version of arch_dup_task_struct() for LoongArch
-assumes 'thread' is the last member of 'task_struct'. But this is
-not true if CONFIG_RANDSTRUCT is enabled after Linux-6.16.
+In our user safe ino resolve ioctl we'll just turn any ret into -EACCES
+from inode_permission().  This is redundant, and could potentially be
+wrong if we had an ENOMEM in the security layer or some such other
+error, so simply return the actual return value.
 
-So fix the arch_dup_task_struct() function for CONFIG_RANDSTRUCT by
-copying the whole 'task_struct'.
+Note: The patch was taken from v5 of fscrypt patchset
+(https://lore.kernel.org/linux-btrfs/cover.1706116485.git.josef@toxicpanda.com/)
+which was handled over time by various people: Omar Sandoval, Sweet Tea
+Dorminy, Josef Bacik.
 
-Cc: stable@vger.kernel.org   # 6.16+
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Fixes: 23d0b79dfaed ("btrfs: Add unprivileged version of ino_lookup ioctl")
+CC: stable@vger.kernel.org # 5.4+
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Signed-off-by: Daniel Vacek <neelx@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+[ add note ]
+Signed-off-by: David Sterba <dsterba@suse.com>
+[ Adjust context ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/kernel/process.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ fs/btrfs/ioctl.c |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/arch/loongarch/kernel/process.c
-+++ b/arch/loongarch/kernel/process.c
-@@ -130,6 +130,11 @@ int arch_dup_task_struct(struct task_str
+--- a/fs/btrfs/ioctl.c
++++ b/fs/btrfs/ioctl.c
+@@ -2012,10 +2012,8 @@ static int btrfs_search_path_in_tree_use
+ 			ret = inode_permission(idmap, temp_inode,
+ 					       MAY_READ | MAY_EXEC);
+ 			iput(temp_inode);
+-			if (ret) {
+-				ret = -EACCES;
++			if (ret)
+ 				goto out_put;
+-			}
  
- 	preempt_enable();
- 
-+	if (IS_ENABLED(CONFIG_RANDSTRUCT)) {
-+		memcpy(dst, src, sizeof(struct task_struct));
-+		return 0;
-+	}
-+
- 	if (!used_math())
- 		memcpy(dst, src, offsetof(struct task_struct, thread.fpu.fpr));
- 	else
+ 			if (key.offset == upper_limit)
+ 				break;
 
 
 
