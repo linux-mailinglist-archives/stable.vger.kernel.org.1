@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-205544-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205847-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B6ABCFA34E
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:36:36 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C64F1CF9FDA
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:12:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D095E3012655
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:36:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C24513236395
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:00:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3EF1341044;
-	Tue,  6 Jan 2026 17:37:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAFDD365A0E;
+	Tue,  6 Jan 2026 17:54:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W1SPlK2d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q38GlSaW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70F6D34029C;
-	Tue,  6 Jan 2026 17:37:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8032A366563;
+	Tue,  6 Jan 2026 17:54:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721047; cv=none; b=qSN8c2gShJdSvI5gkz4vX7UXlQ3NwT5KXkDeEjkhbLc9yviomDn5QWGesvE0JsTtBFGkdrUBEo0GFnzlxWBXG0u4yaMOI8TfeYFgUnzV+3x1mhtAo7ZDlVETvPPXlx+w/8m1rFfJgtNiZzjp2FZHO/hAmv4HKXDQvXxBcPcPdfY=
+	t=1767722060; cv=none; b=J7jl+G6BLX4MP2oJD6pZUCM7gHJ+l2EJ0BOZ9uxIrkkJl4smoe4lv7V6ESSyyENpmbf0JC9hOdjicoWGjK1vXFTgZ5UpWbkRg9hJpx/3vFm01ea7F6EWWx9uQx7YxZfsL0ohAZnmfGPa+VTNt9dCzrf/yiNQLMUqEHXKYQU5rBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721047; c=relaxed/simple;
-	bh=E12ZlP+gk0S7a61wU0B/m35U0w/ObvTAA7zOP5ENpIM=;
+	s=arc-20240116; t=1767722060; c=relaxed/simple;
+	bh=2aOO3ps+8uC5rJb11HmLHAAl9kCBcsstg+hoqmu3ovk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XgssCbfEAO2CGOqnI/y9jVLFQcJeDdAZr9BNMWBCVipzGCJYLCs8suSeuLOXAoBPjbRnPg4vzeir3CbHTnsz5DeKxYDTsiWQ4DzdHvwGA1fRovFIibweszyrruYmNoUAzpTHT6EOXSEprbiXRm8kgYK29X2M8D8QmPeLZ4i+lOQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W1SPlK2d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96D9AC19424;
-	Tue,  6 Jan 2026 17:37:26 +0000 (UTC)
+	 MIME-Version; b=MyZ1ejwbFLDRNvXcY5eLqk56qU0XUY8ZQqixiwQp+/9UwMU4nS2Xd/JgmTP5Ad0S2NN2SnCwlG0UuJCcYfWDroPmX+IoFqQOy2PYoUeFi36Pu6KKgROpxBhmTkW71UGmSCXeaV6opm2NX3X9ncF/UvFh5qxlri4wi3auQ/6jmaQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q38GlSaW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AA92C116C6;
+	Tue,  6 Jan 2026 17:54:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721047;
-	bh=E12ZlP+gk0S7a61wU0B/m35U0w/ObvTAA7zOP5ENpIM=;
+	s=korg; t=1767722060;
+	bh=2aOO3ps+8uC5rJb11HmLHAAl9kCBcsstg+hoqmu3ovk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W1SPlK2dc9tMK7quKRxkZQNCGvXmXmQbTYEVY/1SnWmGJ6lp0D6lJuI+n3PKaRmh/
-	 wUgOgZgbZs+vpt8ncvzL1w6voKoLspBLLq8dBnO8rtQlrdnZEwoW772khzdN/PoZGf
-	 jFTlmijhbZjraXv7uYDI6mEu0/QtJ+nBS/3xsPYg=
+	b=Q38GlSaWi/PX8xS2ZCFKdsDa0zQb/h6nILgSuk8yJU0WyzJ3P3/k5ZqwIMkomkpcH
+	 RcuAMe4KYhaQRtTBnSxB5tmZZkRJ80bQySKX98eKZN9xh/i6BTKTqKMPZRzRmaCVzP
+	 rmQ9lCNvVeNsG/ufb/mVYi3w1edGoukbmrFCCd9E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Rui Wang <wangrui@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.12 418/567] LoongArch: Fix build errors for CONFIG_RANDSTRUCT
+	Lukas Wunner <lukas@wunner.de>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	"Rafael J. Wysocki (Intel)" <rafael@kernel.org>
+Subject: [PATCH 6.18 126/312] PCI/PM: Reinstate clearing state_saved in legacy and !PM codepaths
 Date: Tue,  6 Jan 2026 18:03:20 +0100
-Message-ID: <20260106170506.805010613@linuxfoundation.org>
+Message-ID: <20260106170552.402199621@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
-References: <20260106170451.332875001@linuxfoundation.org>
+In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
+References: <20260106170547.832845344@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,43 +60,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Lukas Wunner <lukas@wunner.de>
 
-commit 3c250aecef62da81deb38ac6738ac0a88d91f1fc upstream.
+commit 894f475f88e06c0f352c829849560790dbdedbe5 upstream.
 
-When CONFIG_RANDSTRUCT enabled, members of task_struct are randomized.
-There is a chance that TASK_STACK_CANARY be out of 12bit immediate's
-range and causes build errors. TASK_STACK_CANARY is naturally aligned,
-so fix it by replacing ld.d/st.d with ldptr.d/stptr.d which have 14bit
-immediates.
+When a PCI device is suspended, it is normally the PCI core's job to save
+Config Space and put the device into a low power state.  However drivers
+are allowed to assume these responsibilities.  When they do, the PCI core
+can tell by looking at the state_saved flag in struct pci_dev:  The flag
+is cleared before commencing the suspend sequence and it is set when
+pci_save_state() is called.  If the PCI core finds the flag set late in
+the suspend sequence, it refrains from calling pci_save_state() itself.
 
-Cc: stable@vger.kernel.org
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202511240656.0NaPcJs1-lkp@intel.com/
-Suggested-by: Rui Wang <wangrui@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+But there are two corner cases where the PCI core neglects to clear the
+flag before commencing the suspend sequence:
+
+* If a driver has legacy PCI PM callbacks, pci_legacy_suspend() neglects
+  to clear the flag.  The (stale) flag is subsequently queried by
+  pci_legacy_suspend() itself and pci_legacy_suspend_late().
+
+* If a device has no driver or its driver has no PCI PM callbacks,
+  pci_pm_freeze() neglects to clear the flag.  The (stale) flag is
+  subsequently queried by pci_pm_freeze_noirq().
+
+The flag may be set prior to suspend if the device went through error
+recovery:  Drivers commonly invoke pci_restore_state() + pci_save_state()
+to restore Config Space after reset.
+
+The flag may also be set if drivers call pci_save_state() on probe to
+allow for recovery from subsequent errors.
+
+The result is that pci_legacy_suspend_late() and pci_pm_freeze_noirq()
+don't call pci_save_state() and so the state that will be restored on
+resume is the one recorded on last error recovery or on probe, not the one
+that the device had on suspend.  If the two states happen to be identical,
+there's no problem.
+
+Reinstate clearing the flag in pci_legacy_suspend() and pci_pm_freeze().
+The two functions used to do that until commit 4b77b0a2ba27 ("PCI: Clear
+saved_state after the state has been restored") deemed it unnecessary
+because it assumed that it's sufficient to clear the flag on resume in
+pci_restore_state().  The commit seemingly did not take into account that
+pci_save_state() and pci_restore_state() are not only used by power
+management code, but also for error recovery.
+
+Devices without driver or whose driver has no PCI PM callbacks may be in
+runtime suspend when pci_pm_freeze() is called.  Their state has already
+been saved, so don't clear the flag to skip a pointless pci_save_state()
+in pci_pm_freeze_noirq().
+
+None of the drivers with legacy PCI PM callbacks seem to use runtime PM,
+so clear the flag unconditionally in their case.
+
+Fixes: 4b77b0a2ba27 ("PCI: Clear saved_state after the state has been restored")
+Signed-off-by: Lukas Wunner <lukas@wunner.de>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Rafael J. Wysocki (Intel) <rafael@kernel.org>
+Cc: stable@vger.kernel.org # v2.6.32+
+Link: https://patch.msgid.link/094f2aad64418710daf0940112abe5a0afdc6bce.1763483367.git.lukas@wunner.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/kernel/switch.S |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/pci/pci-driver.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/arch/loongarch/kernel/switch.S
-+++ b/arch/loongarch/kernel/switch.S
-@@ -25,8 +25,8 @@ SYM_FUNC_START(__switch_to)
- 	stptr.d a4, a0, THREAD_SCHED_CFA
- #if defined(CONFIG_STACKPROTECTOR) && !defined(CONFIG_SMP)
- 	la	t7, __stack_chk_guard
--	LONG_L	t8, a1, TASK_STACK_CANARY
--	LONG_S	t8, t7, 0
-+	ldptr.d	t8, a1, TASK_STACK_CANARY
-+	stptr.d	t8, t7, 0
- #endif
- 	move	tp, a2
- 	cpu_restore_nonscratch a1
+--- a/drivers/pci/pci-driver.c
++++ b/drivers/pci/pci-driver.c
+@@ -629,6 +629,8 @@ static int pci_legacy_suspend(struct dev
+ 	struct pci_dev *pci_dev = to_pci_dev(dev);
+ 	struct pci_driver *drv = pci_dev->driver;
+ 
++	pci_dev->state_saved = false;
++
+ 	if (drv && drv->suspend) {
+ 		pci_power_t prev = pci_dev->current_state;
+ 		int error;
+@@ -1036,6 +1038,8 @@ static int pci_pm_freeze(struct device *
+ 
+ 	if (!pm) {
+ 		pci_pm_default_suspend(pci_dev);
++		if (!pm_runtime_suspended(dev))
++			pci_dev->state_saved = false;
+ 		return 0;
+ 	}
+ 
 
 
 
