@@ -1,67 +1,57 @@
-Return-Path: <stable+bounces-206060-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206058-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1F00CFB65E
-	for <lists+stable@lfdr.de>; Wed, 07 Jan 2026 00:58:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C642CFB658
+	for <lists+stable@lfdr.de>; Wed, 07 Jan 2026 00:58:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C6C053028F7E
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 23:58:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0587B3026859
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 23:58:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F25A2EE262;
-	Tue,  6 Jan 2026 23:58:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0078A2EE262;
+	Tue,  6 Jan 2026 23:58:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F1f8xW63"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U0KZGnpz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EC3D2D321B
-	for <stable@vger.kernel.org>; Tue,  6 Jan 2026 23:58:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E5342D321B
+	for <stable@vger.kernel.org>; Tue,  6 Jan 2026 23:58:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767743902; cv=none; b=b+4N7E0N2PIPe9hfAui7BiHjjDXjKyTd5w3MHVJQiAocpAbLWjU82qZZ1k5+ABtvTwT2ITuef7ChkXgQTy6F5R4joD/vfiKeUCFS1cDdhAQwzPpSANa8ZUOzaxzbYdSuiuZek1qGpCg2Eqrrtp7FWjMAdJsQfitbh9GNDExxGLw=
+	t=1767743899; cv=none; b=lIsqvmUBPCQrX05Yk0FGL30zb+VjS4jKeXdL90SYyJpSOmU73BXuohwWt+2+CqjOlgbOhtdFQ+GSFooL5p8Ft/ERFrFjV7prEsl+CIZfqDVsXHrE92RcAxtzAJhhzvh3reSL+z6047WgmXvlAcuZcSQF+4CVLlB8QSEu8f5fiJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767743902; c=relaxed/simple;
-	bh=ooosetT8/kos/u4t7aUOhIGOQvRTsdAfl/gQcBLGVO4=;
+	s=arc-20240116; t=1767743899; c=relaxed/simple;
+	bh=2+FFszy8HmWCpZ1v3xG00Z/0V3zdJcLrnMdqsH4k/Sk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KgImb1JlDbgFIRnfcCFlII5A11oOI//sEO60dP9tQVhjH9i0OT6bujQRR+Smq3CHNNDucMc17mrvlNt0cxGMOXbbuoiwZLo8uEpPik9ItbtbRJmY9IHcEmXDD5MFPbziJSi+iO/hYuyHuKOtBixMGmqB3jP+YJQuouQrxq5L2Ck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F1f8xW63; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64D85C19425;
-	Tue,  6 Jan 2026 23:58:20 +0000 (UTC)
+	 MIME-Version; b=FrJ4S5jaFTNuqaY5ewbob1M4WcMacCoLefa21ygEOVf6iFPOCvn7hT50Jl1Keo/PgzhVh4QEdvw+b7LAthwu1rBQ6cXk4OLZzK547XjSQlOlvkiGiz71+5qwRRU8L4KDWaKyMWNuFBaioIezN075jwhDqs68leCa1TONASO8ZQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U0KZGnpz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58EE5C19421;
+	Tue,  6 Jan 2026 23:58:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767743901;
-	bh=ooosetT8/kos/u4t7aUOhIGOQvRTsdAfl/gQcBLGVO4=;
+	s=k20201202; t=1767743899;
+	bh=2+FFszy8HmWCpZ1v3xG00Z/0V3zdJcLrnMdqsH4k/Sk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F1f8xW635753XqeOSeQzgxPRNIpH/UdD0DmpqMhMoGtIBLart5U3KvfrzQTUmq8Dk
-	 OckSQuV6daLvE0C3YAKh9eLM6xqBwbjXuMeZFL9wRmXI8+5oesTvkE/Mh5VVebB8Hf
-	 vNWHFh9bso4BqfG9Qlzp6+q16eOAySH9kRk2kfgcUE0bEbuwRPwwxdSd/C9HGKqKAr
-	 6MQlUdo6LhAxTLhBwSztak7D3SyRjHn0jCuaueswiLYE+eGoeLl87U8lch5INCsPaO
-	 qUxOTnJM3uuy0aa5ioLX8EvXacN4H0VG86eRpFC/A5tRSXAPobhG+vDPnOapS7hvc0
-	 oL9eQGl8H6/sg==
+	b=U0KZGnpzD8gbxkjiqTX5rInobGGOKOHz0iqaZc7vX4m0ISqq9o1hqd/GM74rmnQKs
+	 /+EHF8dt1W9k/UZUbo5i9fO+N9EotnOGRZHs6EpRMWjjaiYepk+5BD/mtlH1Siw1u+
+	 XG5HcCBXXWkBAH40xiFiS778m2YaOoGnAc4jBLzohkeGdJw1pNA6vcO/dR4zg7GM6u
+	 bqO6RQ5eCodZ5OoZcgNqscQRsIzyBW0o59ZT1oP/t5ud71qZCfywqJahyLiik9M22j
+	 zigWD5arb4ejL2xHSoSO9UZaQa5sGx6MPD7x11BKN0oe28pn7HSGkdkOrGuWkx0gxv
+	 /oy60bLu7tbQA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Bijan Tabatabai <bijan311@gmail.com>,
-	"David Hildenbrand (Red Hat)" <david@kernel.org>,
-	Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Liam Howlett <liam.howlett@oracle.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Shivank Garg <shivankg@amd.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Kairui Song <ryncsn@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+Cc: NeilBrown <neil@brown.name>,
+	Olga Kornievskaia <okorniev@redhat.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y 2/2] mm: consider non-anon swap cache folios in folio_expected_ref_count()
-Date: Tue,  6 Jan 2026 18:58:14 -0500
-Message-ID: <20260106235814.3462036-2-sashal@kernel.org>
+Subject: [PATCH 5.10.y] lockd: fix vfs_test_lock() calls
+Date: Tue,  6 Jan 2026 18:58:16 -0500
+Message-ID: <20260106235816.3462079-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260106235814.3462036-1-sashal@kernel.org>
-References: <2026010545-tracing-morbidly-6a4d@gregkh>
- <20260106235814.3462036-1-sashal@kernel.org>
+In-Reply-To: <2026010501-unsworn-elated-41e1@gregkh>
+References: <2026010501-unsworn-elated-41e1@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -70,119 +60,187 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Bijan Tabatabai <bijan311@gmail.com>
+From: NeilBrown <neil@brown.name>
 
-[ Upstream commit f183663901f21fe0fba8bd31ae894bc529709ee0 ]
+[ Upstream commit a49a2a1baa0c553c3548a1c414b6a3c005a8deba ]
 
-Currently, folio_expected_ref_count() only adds references for the swap
-cache if the folio is anonymous.  However, according to the comment above
-the definition of PG_swapcache in enum pageflags, shmem folios can also
-have PG_swapcache set.  This patch makes sure references for the swap
-cache are added if folio_test_swapcache(folio) is true.
+Usage of vfs_test_lock() is somewhat confused.  Documentation suggests
+it is given a "lock" but this is not the case.  It is given a struct
+file_lock which contains some details of the sort of lock it should be
+looking for.
 
-This issue was found when trying to hot-unplug memory in a QEMU/KVM
-virtual machine.  When initiating hot-unplug when most of the guest memory
-is allocated, hot-unplug hangs partway through removal due to migration
-failures.  The following message would be printed several times, and would
-be printed again about every five seconds:
+In particular passing a "file_lock" containing fl_lmops or fl_ops is
+meaningless and possibly confusing.
 
-[   49.641309] migrating pfn b12f25 failed ret:7
-[   49.641310] page: refcount:2 mapcount:0 mapping:0000000033bd8fe2 index:0x7f404d925 pfn:0xb12f25
-[   49.641311] aops:swap_aops
-[   49.641313] flags: 0x300000000030508(uptodate|active|owner_priv_1|reclaim|swapbacked|node=0|zone=3)
-[   49.641314] raw: 0300000000030508 ffffed312c4bc908 ffffed312c4bc9c8 0000000000000000
-[   49.641315] raw: 00000007f404d925 00000000000c823b 00000002ffffffff 0000000000000000
-[   49.641315] page dumped because: migration failure
+This is particularly problematic in lockd.  nlmsvc_testlock() receives
+an initialised "file_lock" from xdr-decode, including manager ops and an
+owner.  It then mistakenly passes this to vfs_test_lock() which might
+replace the owner and the ops.  This can lead to confusion when freeing
+the lock.
 
-When debugging this, I found that these migration failures were due to
-__migrate_folio() returning -EAGAIN for a small set of folios because the
-expected reference count it calculates via folio_expected_ref_count() is
-one less than the actual reference count of the folios.  Furthermore, all
-of the affected folios were not anonymous, but had the PG_swapcache flag
-set, inspiring this patch.  After applying this patch, the memory
-hot-unplug behaves as expected.
+The primary role of the 'struct file_lock' passed to vfs_test_lock() is
+to report a conflicting lock that was found, so it makes more sense for
+nlmsvc_testlock() to pass "conflock", which it uses for returning the
+conflicting lock.
 
-I tested this on a machine running Ubuntu 24.04 with kernel version
-6.8.0-90-generic and 64GB of memory.  The guest VM is managed by libvirt
-and runs Ubuntu 24.04 with kernel version 6.18 (though the head of the
-mm-unstable branch as a Dec 16, 2025 was also tested and behaves the same)
-and 48GB of memory.  The libvirt XML definition for the VM can be found at
-[1].  CONFIG_MHP_DEFAULT_ONLINE_TYPE_ONLINE_MOVABLE is set in the guest
-kernel so the hot-pluggable memory is automatically onlined.
+With this change, freeing of the lock is not confused and code in
+__nlm4svc_proc_test() and __nlmsvc_proc_test() can be simplified.
 
-Below are the steps to reproduce this behavior:
+Documentation for vfs_test_lock() is improved to reflect its real
+purpose, and a WARN_ON_ONCE() is added to avoid a similar problem in the
+future.
 
-1) Define and start and virtual machine
-  host$ virsh -c qemu:///system define ./test_vm.xml # test_vm.xml from [1]
-  host$ virsh -c qemu:///system start test_vm
-
-2) Setup swap in the guest
-  guest$ sudo fallocate -l 32G /swapfile
-  guest$ sudo chmod 0600 /swapfile
-  guest$ sudo mkswap /swapfile
-  guest$ sudo swapon /swapfile
-
-3) Use alloc_data [2] to allocate most of the remaining guest memory
-  guest$ ./alloc_data 45
-
-4) In a separate guest terminal, monitor the amount of used memory
-  guest$ watch -n1 free -h
-
-5) When alloc_data has finished allocating, initiate the memory
-hot-unplug using the provided xml file [3]
-  host$ virsh -c qemu:///system detach-device test_vm ./remove.xml --live
-
-After initiating the memory hot-unplug, you should see the amount of
-available memory in the guest decrease, and the amount of used swap data
-increase.  If everything works as expected, when all of the memory is
-unplugged, there should be around 8.5-9GB of data in swap.  If the
-unplugging is unsuccessful, the amount of used swap data will settle below
-that.  If that happens, you should be able to see log messages in dmesg
-similar to the one posted above.
-
-Link: https://lkml.kernel.org/r/20251216200727.2360228-1-bijan311@gmail.com
-Link: https://github.com/BijanT/linux_patch_files/blob/main/test_vm.xml [1]
-Link: https://github.com/BijanT/linux_patch_files/blob/main/alloc_data.c [2]
-Link: https://github.com/BijanT/linux_patch_files/blob/main/remove.xml [3]
-Fixes: 86ebd50224c0 ("mm: add folio_expected_ref_count() for reference count calculation")
-Signed-off-by: Bijan Tabatabai <bijan311@gmail.com>
-Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
-Acked-by: Zi Yan <ziy@nvidia.com>
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Shivank Garg <shivankg@amd.com>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Kairui Song <ryncsn@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Reported-by: Olga Kornievskaia <okorniev@redhat.com>
+Closes: https://lore.kernel.org/all/20251021130506.45065-1-okorniev@redhat.com
+Signed-off-by: NeilBrown <neil@brown.name>
+Fixes: 20fa19027286 ("nfs: add export operations")
+Cc: stable@vger.kernel.org
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+[ adapted c.flc_* field accesses to direct fl_* fields ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/mm.h | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ fs/lockd/svc4proc.c |  4 +---
+ fs/lockd/svclock.c  | 21 ++++++++++++---------
+ fs/lockd/svcproc.c  |  5 +----
+ fs/locks.c          | 13 +++++++++++--
+ 4 files changed, 25 insertions(+), 18 deletions(-)
 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 1025b0711de6..dd763d3da86d 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -2197,10 +2197,10 @@ static inline int folio_expected_ref_count(struct folio *folio)
- 	if (WARN_ON_ONCE(page_has_type(&folio->page) && !folio_test_hugetlb(folio)))
- 		return 0;
+diff --git a/fs/lockd/svc4proc.c b/fs/lockd/svc4proc.c
+index b72023a6b4c1..28ba7b1460aa 100644
+--- a/fs/lockd/svc4proc.c
++++ b/fs/lockd/svc4proc.c
+@@ -96,7 +96,6 @@ __nlm4svc_proc_test(struct svc_rqst *rqstp, struct nlm_res *resp)
+ 	struct nlm_args *argp = rqstp->rq_argp;
+ 	struct nlm_host	*host;
+ 	struct nlm_file	*file;
+-	struct nlm_lockowner *test_owner;
+ 	__be32 rc = rpc_success;
  
--	if (folio_test_anon(folio)) {
--		/* One reference per page from the swapcache. */
--		ref_count += folio_test_swapcache(folio) << order;
--	} else {
-+	/* One reference per page from the swapcache. */
-+	ref_count += folio_test_swapcache(folio) << order;
-+
-+	if (!folio_test_anon(folio)) {
- 		/* One reference per page from the pagecache. */
- 		ref_count += !!folio->mapping << order;
- 		/* One reference from PG_private. */
+ 	dprintk("lockd: TEST4        called\n");
+@@ -106,7 +105,6 @@ __nlm4svc_proc_test(struct svc_rqst *rqstp, struct nlm_res *resp)
+ 	if ((resp->status = nlm4svc_retrieve_args(rqstp, argp, &host, &file)))
+ 		return resp->status == nlm_drop_reply ? rpc_drop_reply :rpc_success;
+ 
+-	test_owner = argp->lock.fl.fl_owner;
+ 	/* Now check for conflicting locks */
+ 	resp->status = nlmsvc_testlock(rqstp, file, host, &argp->lock, &resp->lock, &resp->cookie);
+ 	if (resp->status == nlm_drop_reply)
+@@ -114,7 +112,7 @@ __nlm4svc_proc_test(struct svc_rqst *rqstp, struct nlm_res *resp)
+ 	else
+ 		dprintk("lockd: TEST4        status %d\n", ntohl(resp->status));
+ 
+-	nlmsvc_put_lockowner(test_owner);
++	nlmsvc_release_lockowner(&argp->lock);
+ 	nlmsvc_release_host(host);
+ 	nlm_release_file(file);
+ 	return rc;
+diff --git a/fs/lockd/svclock.c b/fs/lockd/svclock.c
+index 4e30f3c50970..035f885809dd 100644
+--- a/fs/lockd/svclock.c
++++ b/fs/lockd/svclock.c
+@@ -604,7 +604,13 @@ nlmsvc_testlock(struct svc_rqst *rqstp, struct nlm_file *file,
+ 	}
+ 
+ 	mode = lock_to_openmode(&lock->fl);
+-	error = vfs_test_lock(file->f_file[mode], &lock->fl);
++	locks_init_lock(&conflock->fl);
++	/* vfs_test_lock only uses start, end, and owner, but tests fl_file */
++	conflock->fl.fl_file = lock->fl.fl_file;
++	conflock->fl.fl_start = lock->fl.fl_start;
++	conflock->fl.fl_end = lock->fl.fl_end;
++	conflock->fl.fl_owner = lock->fl.fl_owner;
++	error = vfs_test_lock(file->f_file[mode], &conflock->fl);
+ 	if (error) {
+ 		/* We can't currently deal with deferred test requests */
+ 		if (error == FILE_LOCK_DEFERRED)
+@@ -614,22 +620,19 @@ nlmsvc_testlock(struct svc_rqst *rqstp, struct nlm_file *file,
+ 		goto out;
+ 	}
+ 
+-	if (lock->fl.fl_type == F_UNLCK) {
++	if (conflock->fl.fl_type == F_UNLCK) {
+ 		ret = nlm_granted;
+ 		goto out;
+ 	}
+ 
+ 	dprintk("lockd: conflicting lock(ty=%d, %Ld-%Ld)\n",
+-		lock->fl.fl_type, (long long)lock->fl.fl_start,
+-		(long long)lock->fl.fl_end);
++		conflock->fl.fl_type, (long long)conflock->fl.fl_start,
++		(long long)conflock->fl.fl_end);
+ 	conflock->caller = "somehost";	/* FIXME */
+ 	conflock->len = strlen(conflock->caller);
+ 	conflock->oh.len = 0;		/* don't return OH info */
+-	conflock->svid = lock->fl.fl_pid;
+-	conflock->fl.fl_type = lock->fl.fl_type;
+-	conflock->fl.fl_start = lock->fl.fl_start;
+-	conflock->fl.fl_end = lock->fl.fl_end;
+-	locks_release_private(&lock->fl);
++	conflock->svid = conflock->fl.fl_pid;
++	locks_release_private(&conflock->fl);
+ 
+ 	ret = nlm_lck_denied;
+ out:
+diff --git a/fs/lockd/svcproc.c b/fs/lockd/svcproc.c
+index 32784f508c81..1a4459763644 100644
+--- a/fs/lockd/svcproc.c
++++ b/fs/lockd/svcproc.c
+@@ -117,7 +117,6 @@ __nlmsvc_proc_test(struct svc_rqst *rqstp, struct nlm_res *resp)
+ 	struct nlm_args *argp = rqstp->rq_argp;
+ 	struct nlm_host	*host;
+ 	struct nlm_file	*file;
+-	struct nlm_lockowner *test_owner;
+ 	__be32 rc = rpc_success;
+ 
+ 	dprintk("lockd: TEST          called\n");
+@@ -127,8 +126,6 @@ __nlmsvc_proc_test(struct svc_rqst *rqstp, struct nlm_res *resp)
+ 	if ((resp->status = nlmsvc_retrieve_args(rqstp, argp, &host, &file)))
+ 		return resp->status == nlm_drop_reply ? rpc_drop_reply :rpc_success;
+ 
+-	test_owner = argp->lock.fl.fl_owner;
+-
+ 	/* Now check for conflicting locks */
+ 	resp->status = cast_status(nlmsvc_testlock(rqstp, file, host, &argp->lock, &resp->lock, &resp->cookie));
+ 	if (resp->status == nlm_drop_reply)
+@@ -137,7 +134,7 @@ __nlmsvc_proc_test(struct svc_rqst *rqstp, struct nlm_res *resp)
+ 		dprintk("lockd: TEST          status %d vers %d\n",
+ 			ntohl(resp->status), rqstp->rq_vers);
+ 
+-	nlmsvc_put_lockowner(test_owner);
++	nlmsvc_release_lockowner(&argp->lock);
+ 	nlmsvc_release_host(host);
+ 	nlm_release_file(file);
+ 	return rc;
+diff --git a/fs/locks.c b/fs/locks.c
+index ed8b3e318f97..24a82b793c66 100644
+--- a/fs/locks.c
++++ b/fs/locks.c
+@@ -2325,13 +2325,22 @@ SYSCALL_DEFINE2(flock, unsigned int, fd, unsigned int, cmd)
+ /**
+  * vfs_test_lock - test file byte range lock
+  * @filp: The file to test lock for
+- * @fl: The lock to test; also used to hold result
++ * @fl: The byte-range in the file to test; also used to hold result
+  *
++ * On entry, @fl does not contain a lock, but identifies a range (fl_start, fl_end)
++ * in the file (c.flc_file), and an owner (c.flc_owner) for whom existing locks
++ * should be ignored.  c.flc_type and c.flc_flags are ignored.
++ * Both fl_lmops and fl_ops in @fl must be NULL.
+  * Returns -ERRNO on failure.  Indicates presence of conflicting lock by
+- * setting conf->fl_type to something other than F_UNLCK.
++ * setting fl->fl_type to something other than F_UNLCK.
++ *
++ * If vfs_test_lock() does find a lock and return it, the caller must
++ * use locks_free_lock() or locks_release_private() on the returned lock.
+  */
+ int vfs_test_lock(struct file *filp, struct file_lock *fl)
+ {
++	WARN_ON_ONCE(fl->fl_ops || fl->fl_lmops);
++	WARN_ON_ONCE(filp != fl->fl_file);
+ 	if (filp->f_op->lock)
+ 		return filp->f_op->lock(filp, F_GETLK, fl);
+ 	posix_test_lock(filp, fl);
 -- 
 2.51.0
 
