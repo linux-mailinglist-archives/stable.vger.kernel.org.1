@@ -1,55 +1,64 @@
-Return-Path: <stable+bounces-205681-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205965-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22509CFA39F
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:38:18 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 968D0CFA607
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:57:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2C6A03046766
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:38:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B4CDC34A411E
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:14:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0030635504C;
-	Tue,  6 Jan 2026 17:45:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50DA1366547;
+	Tue,  6 Jan 2026 18:00:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rZYWlnHc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HrEC5bBJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB0E4322B7D;
-	Tue,  6 Jan 2026 17:45:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EA47365A13;
+	Tue,  6 Jan 2026 18:00:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721501; cv=none; b=O1uyi4sfnVm0jcej1/X2iuJeBamkbPPddx73lc9b/2wYC+HF8t7wr9Q8WopWzT96iV4FJI8FJeO+WLJ1oumbJWZ9hTgfd5RmVdrci6xLW4mjUX6c8cjztVVEZ2eynxLWp3uZbdKjlMwkm7wOL0+j4uTd7uWvI+GhAUi7yDTIV10=
+	t=1767722452; cv=none; b=mpk7OToFICpayJBnfOjiJIcd3hANdRMRz2vBBm61PTpmqRLlPZTy04RsclvVbHHHsXDRMeXntaWYBvbMsTX8Qu64cq7rZRv/kghaWFpYEbl9GYeeMRSMFj/jR965FnyuH4nybwKvkJoBYv5Sq4DL1Jrsc5adqyCpAk4VQtaII5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721501; c=relaxed/simple;
-	bh=khGjL8iGEO9eylWTjChyMyTrYtEBSJyhIBJEXRzj9kI=;
+	s=arc-20240116; t=1767722452; c=relaxed/simple;
+	bh=M0RIIYhJdHrRbn3iDp443SBow7UdBtVIKXn0nEuMMVM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T7ivhfRihJ8V08qL+83/r4whmt4xkroiLvtDzp/AiSI/aB420HqKk8LXfPMtyHHfxwg9ANYaEEuRSFouIYNlJd/kdOGRKiGGoYUnkSptXzECuQ0w71iTV/fvUCLGrXLegZir5Y51Q+4wCPGURlJel2X+2F6pg9QGO+bMPdR3isg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rZYWlnHc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F46BC19423;
-	Tue,  6 Jan 2026 17:45:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=qZVDMEf6HLe22HLizic/ZEPZHfp6yMjaiMb+6N0yShHxkZsCwv0gx9xyYHEIUFnN1FlgcZJJ7++HD7bi8jrUPF1utET27sSMALBk4q4Ch5nnP5eSAa2bSw4L9Z2UfaL/WIQdXBiph/IY7A2U4Vhe+c6Tp8l/FKbzQMnK8GJty1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HrEC5bBJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FA24C116C6;
+	Tue,  6 Jan 2026 18:00:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721501;
-	bh=khGjL8iGEO9eylWTjChyMyTrYtEBSJyhIBJEXRzj9kI=;
+	s=korg; t=1767722451;
+	bh=M0RIIYhJdHrRbn3iDp443SBow7UdBtVIKXn0nEuMMVM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rZYWlnHcTlyRfVP8kfeGFFMmvUczB5L5KVk76P8mtqCMfwKOF5w4mJyvhJJEFFIk4
-	 EdjRxU1RuEdy0Haj3ox66mrBPOUk6TVCsuukmlhZMrqWgnY5hNPRYBEW0gFU95w+dU
-	 DQbZwKx7bGgR4BcXPD5Con2U4hdUufGegpqS0BBc=
+	b=HrEC5bBJ3TLx0vLq1uq48E0kfZqtVG8j/Qlpfu3+KMjBrZyCAorDSbNzP/Eg/EhCK
+	 gvNozP5FG9tissWSUgh+HYGFjx2pqZrEi1Ipta6QZgeAkcAfVhwDnHXViBFxPH/Aiy
+	 2AdCmjyHPmrAZ2FFNv5RjMKqSdhEy65pK/WgZii8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Subject: [PATCH 6.12 528/567] net: use dst_dev_rcu() in sk_setup_caps()
+	Alice Ryhl <aliceryhl@google.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Andrew Ballance <andrewjballance@gmail.com>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Liam Howlett <liam.howlett@oracle.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.18 236/312] rust: maple_tree: rcu_read_lock() in destructor to silence lockdep
 Date: Tue,  6 Jan 2026 18:05:10 +0100
-Message-ID: <20260106170510.925578696@linuxfoundation.org>
+Message-ID: <20260106170556.389683809@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
-References: <20260106170451.332875001@linuxfoundation.org>
+In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
+References: <20260106170547.832845344@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,142 +68,111 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Alice Ryhl <aliceryhl@google.com>
 
-[ Upstream commit 99a2ace61b211b0be861b07fbaa062fca4b58879 ]
+commit 6558749ef3405c143711cbdc67ec88cbc1582d91 upstream.
 
-Use RCU to protect accesses to dst->dev from sk_setup_caps()
-and sk_dst_gso_max_size().
+When running the Rust maple tree kunit tests with lockdep, you may trigger
+a warning that looks like this:
 
-Also use dst_dev_rcu() in ip6_dst_mtu_maybe_forward(),
-and ip_dst_mtu_maybe_forward().
+	lib/maple_tree.c:780 suspicious rcu_dereference_check() usage!
 
-ip4_dst_hoplimit() can use dst_dev_net_rcu().
+	other info that might help us debug this:
 
-Fixes: 4a6ce2b6f2ec ("net: introduce a new function dst_dev_put()")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://patch.msgid.link/20250828195823.3958522-6-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[Harshit: Backport to 6.12.y, resolve conflict due to missing commit:
-22d6c9eebf2e ("net: Unexport shared functions for DCCP.")  in 6.12.y]
-Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+	rcu_scheduler_active = 2, debug_locks = 1
+	no locks held by kunit_try_catch/344.
+
+	stack backtrace:
+	CPU: 3 UID: 0 PID: 344 Comm: kunit_try_catch Tainted: G                 N  6.19.0-rc1+ #2 NONE
+	Tainted: [N]=TEST
+	Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.17.0-0-gb52ca86e094d-prebuilt.qemu.org 04/01/2014
+	Call Trace:
+	 <TASK>
+	 dump_stack_lvl+0x71/0x90
+	 lockdep_rcu_suspicious+0x150/0x190
+	 mas_start+0x104/0x150
+	 mas_find+0x179/0x240
+	 _RINvNtCs5QSdWC790r4_4core3ptr13drop_in_placeINtNtCs1cdwasc6FUb_6kernel10maple_tree9MapleTreeINtNtNtBL_5alloc4kbox3BoxlNtNtB1x_9allocator7KmallocEEECsgxAQYCfdR72_25doctests_kernel_generated+0xaf/0x130
+	 rust_doctest_kernel_maple_tree_rs_0+0x600/0x6b0
+	 ? lock_release+0xeb/0x2a0
+	 ? kunit_try_catch_run+0x210/0x210
+	 kunit_try_run_case+0x74/0x160
+	 ? kunit_try_catch_run+0x210/0x210
+	 kunit_generic_run_threadfn_adapter+0x12/0x30
+	 kthread+0x21c/0x230
+	 ? __do_trace_sched_kthread_stop_ret+0x40/0x40
+	 ret_from_fork+0x16c/0x270
+	 ? __do_trace_sched_kthread_stop_ret+0x40/0x40
+	 ret_from_fork_asm+0x11/0x20
+	 </TASK>
+
+This is because the destructor of maple tree calls mas_find() without
+taking rcu_read_lock() or the spinlock.  Doing that is actually ok in this
+case since the destructor has exclusive access to the entire maple tree,
+but it triggers a lockdep warning.  To fix that, take the rcu read lock.
+
+In the future, it's possible that memory reclaim could gain a feature
+where it reallocates entries in maple trees even if no user-code is
+touching it.  If that feature is added, then this use of rcu read lock
+would become load-bearing, so I did not make it conditional on lockdep.
+
+We have to repeatedly take and release rcu because the destructor of T
+might perform operations that sleep.
+
+Link: https://lkml.kernel.org/r/20251217-maple-drop-rcu-v1-1-702af063573f@google.com
+Fixes: da939ef4c494 ("rust: maple_tree: add MapleTree")
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+Reported-by: Andreas Hindborg <a.hindborg@kernel.org>
+Closes: https://rust-for-linux.zulipchat.com/#narrow/channel/x/topic/x/near/564215108
+Reviewed-by: Gary Guo <gary@garyguo.net>
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+Cc: Andrew Ballance <andrewjballance@gmail.com>
+Cc: Björn Roy Baron <bjorn3_gh@protonmail.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>
+Cc: Danilo Krummrich <dakr@kernel.org>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>
+Cc: Trevor Gross <tmgross@umich.edu>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/ip.h        |    6 ++++--
- include/net/ip6_route.h |    2 +-
- include/net/route.h     |    2 +-
- net/core/sock.c         |   16 ++++++++++------
- 4 files changed, 16 insertions(+), 10 deletions(-)
+ rust/kernel/maple_tree.rs | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
---- a/include/net/ip.h
-+++ b/include/net/ip.h
-@@ -470,12 +470,14 @@ static inline unsigned int ip_dst_mtu_ma
- 						    bool forwarding)
- {
- 	const struct rtable *rt = dst_rtable(dst);
-+	const struct net_device *dev;
- 	unsigned int mtu, res;
- 	struct net *net;
- 
- 	rcu_read_lock();
- 
--	net = dev_net_rcu(dst_dev(dst));
-+	dev = dst_dev_rcu(dst);
-+	net = dev_net_rcu(dev);
- 	if (READ_ONCE(net->ipv4.sysctl_ip_fwd_use_pmtu) ||
- 	    ip_mtu_locked(dst) ||
- 	    !forwarding) {
-@@ -489,7 +491,7 @@ static inline unsigned int ip_dst_mtu_ma
- 	if (mtu)
- 		goto out;
- 
--	mtu = READ_ONCE(dst_dev(dst)->mtu);
-+	mtu = READ_ONCE(dev->mtu);
- 
- 	if (unlikely(ip_mtu_locked(dst))) {
- 		if (rt->rt_uses_gateway && mtu > 576)
---- a/include/net/ip6_route.h
-+++ b/include/net/ip6_route.h
-@@ -337,7 +337,7 @@ static inline unsigned int ip6_dst_mtu_m
- 
- 	mtu = IPV6_MIN_MTU;
- 	rcu_read_lock();
--	idev = __in6_dev_get(dst_dev(dst));
-+	idev = __in6_dev_get(dst_dev_rcu(dst));
- 	if (idev)
- 		mtu = READ_ONCE(idev->cnf.mtu6);
- 	rcu_read_unlock();
---- a/include/net/route.h
-+++ b/include/net/route.h
-@@ -369,7 +369,7 @@ static inline int ip4_dst_hoplimit(const
- 		const struct net *net;
- 
- 		rcu_read_lock();
--		net = dev_net_rcu(dst_dev(dst));
-+		net = dst_dev_net_rcu(dst);
- 		hoplimit = READ_ONCE(net->ipv4.sysctl_ip_default_ttl);
- 		rcu_read_unlock();
- 	}
---- a/net/core/sock.c
-+++ b/net/core/sock.c
-@@ -2524,7 +2524,7 @@ void sk_free_unlock_clone(struct sock *s
- }
- EXPORT_SYMBOL_GPL(sk_free_unlock_clone);
- 
--static u32 sk_dst_gso_max_size(struct sock *sk, struct dst_entry *dst)
-+static u32 sk_dst_gso_max_size(struct sock *sk, const struct net_device *dev)
- {
- 	bool is_ipv6 = false;
- 	u32 max_size;
-@@ -2534,8 +2534,8 @@ static u32 sk_dst_gso_max_size(struct so
- 		   !ipv6_addr_v4mapped(&sk->sk_v6_rcv_saddr));
- #endif
- 	/* pairs with the WRITE_ONCE() in netif_set_gso(_ipv4)_max_size() */
--	max_size = is_ipv6 ? READ_ONCE(dst_dev(dst)->gso_max_size) :
--			READ_ONCE(dst_dev(dst)->gso_ipv4_max_size);
-+	max_size = is_ipv6 ? READ_ONCE(dev->gso_max_size) :
-+			READ_ONCE(dev->gso_ipv4_max_size);
- 	if (max_size > GSO_LEGACY_MAX_SIZE && !sk_is_tcp(sk))
- 		max_size = GSO_LEGACY_MAX_SIZE;
- 
-@@ -2544,9 +2544,12 @@ static u32 sk_dst_gso_max_size(struct so
- 
- void sk_setup_caps(struct sock *sk, struct dst_entry *dst)
- {
-+	const struct net_device *dev;
- 	u32 max_segs = 1;
- 
--	sk->sk_route_caps = dst_dev(dst)->features;
-+	rcu_read_lock();
-+	dev = dst_dev_rcu(dst);
-+	sk->sk_route_caps = dev->features;
- 	if (sk_is_tcp(sk)) {
- 		struct inet_connection_sock *icsk = inet_csk(sk);
- 
-@@ -2562,13 +2565,14 @@ void sk_setup_caps(struct sock *sk, stru
- 			sk->sk_route_caps &= ~NETIF_F_GSO_MASK;
- 		} else {
- 			sk->sk_route_caps |= NETIF_F_SG | NETIF_F_HW_CSUM;
--			sk->sk_gso_max_size = sk_dst_gso_max_size(sk, dst);
-+			sk->sk_gso_max_size = sk_dst_gso_max_size(sk, dev);
- 			/* pairs with the WRITE_ONCE() in netif_set_gso_max_segs() */
--			max_segs = max_t(u32, READ_ONCE(dst_dev(dst)->gso_max_segs), 1);
-+			max_segs = max_t(u32, READ_ONCE(dev->gso_max_segs), 1);
- 		}
- 	}
- 	sk->sk_gso_max_segs = max_segs;
- 	sk_dst_set(sk, dst);
-+	rcu_read_unlock();
- }
- EXPORT_SYMBOL_GPL(sk_setup_caps);
- 
+diff --git a/rust/kernel/maple_tree.rs b/rust/kernel/maple_tree.rs
+index e72eec56bf57..265d6396a78a 100644
+--- a/rust/kernel/maple_tree.rs
++++ b/rust/kernel/maple_tree.rs
+@@ -265,7 +265,16 @@ impl<T: ForeignOwnable> MapleTree<T> {
+         loop {
+             // This uses the raw accessor because we're destroying pointers without removing them
+             // from the maple tree, which is only valid because this is the destructor.
+-            let ptr = ma_state.mas_find_raw(usize::MAX);
++            //
++            // Take the rcu lock because mas_find_raw() requires that you hold either the spinlock
++            // or the rcu read lock. This is only really required if memory reclaim might
++            // reallocate entries in the tree, as we otherwise have exclusive access. That feature
++            // doesn't exist yet, so for now, taking the rcu lock only serves the purpose of
++            // silencing lockdep.
++            let ptr = {
++                let _rcu = kernel::sync::rcu::Guard::new();
++                ma_state.mas_find_raw(usize::MAX)
++            };
+             if ptr.is_null() {
+                 break;
+             }
+-- 
+2.52.0
+
 
 
 
