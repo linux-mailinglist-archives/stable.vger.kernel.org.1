@@ -1,125 +1,189 @@
-Return-Path: <stable+bounces-205068-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205066-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54066CF7DD4
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 11:47:49 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FC96CF7F6A
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 12:06:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 94CC4303A3D1
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 10:47:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3FDC930FA45A
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 11:01:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03B1C2EF64D;
-	Tue,  6 Jan 2026 10:47:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EB70329E53;
+	Tue,  6 Jan 2026 10:23:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bresA0Tt"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Mcz3AnU2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 997211EC01B;
-	Tue,  6 Jan 2026 10:47:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E94F8309F19;
+	Tue,  6 Jan 2026 10:23:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767696453; cv=none; b=dxxiEnf4OnmmDPlCWREsaN3bCtlBWFPZA274FMubaWMC1v2UW6SDH9jBF6G1PuddMFp+fUB5iZZK2/DaZPHwdgmNsBcahbgZN06G/GbyaRKLrT74Wlbf5nh5JYX4GOOp1a6mPqbcK5IFzX/cAz7Ky32143LiiLWT4ccBKQbpVVA=
+	t=1767694981; cv=none; b=Zn8wjN2XhgL953TgIodWDeEqlUPsOEhspl2dcCdL5rFaVyQbuwhRS/du6ZrCsOkG1MGcBewlin1a8HaYAX+nbp5q/zarMP05PVplWx7hm2Rt3Z87lpEnioz+xHeF49/iDrwqATn9aKHqKZdo7COoY/wMBxSXng8M4BdtAzAis8w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767696453; c=relaxed/simple;
-	bh=D415Vmm+d7Elv3P0DFSqcEe/eMe/7OE6ElIPBbXSSfI=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=pBt8QAUwTfhupL3wAShi1qGnVvZR461ejv2v1KQHWarClfPvWaAqq8Ev/ZZ3B6ToBpANmacJkGMISHvR87XYxscWMyEVcBSAYKW8QNjoj6A3uHpng/ztulwD7VpEEwbjYfFD//+JLKopYNKapuN6Jk32m7/UsSJNkr3scrQXqHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bresA0Tt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7607EC116C6;
-	Tue,  6 Jan 2026 10:47:28 +0000 (UTC)
+	s=arc-20240116; t=1767694981; c=relaxed/simple;
+	bh=coo59hx6eOu0vGs3Mvf5pYDqS+tTCWWQ6cQTmjAtPpY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=g6C/2X8PHQzwCVkfWeeYlwkji/Iuz4YSRGAWq6eKHgXEbFF4Uqlpxqm7Az3N4EiG8dLRvqHVwaJjxHn7hv3TEbXHMilcKQQe6Qs3PmaBuaHmVQ0Aosq4kuUy/6VKPuWkfm+BZjSKOP6Ug6gMfjk6VgAu/o210QqR1wh6xHMe1oU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Mcz3AnU2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAB1BC116C6;
+	Tue,  6 Jan 2026 10:22:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767696453;
-	bh=D415Vmm+d7Elv3P0DFSqcEe/eMe/7OE6ElIPBbXSSfI=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=bresA0TtwrDDsfi20uxaFi1g/hC2bT71h6bAPetD244H8uA900Nuyb+YyGpVa8KRI
-	 jzuxpTXRyxpr381jJDPrlVm6Ux3NhPo/8FaxAHzcPXvEEGaue4KZiH+BJ5faoU6Bh+
-	 XNAs7GazfhALw4H9HUqypAtt8F4RxMRxGdO4GhEJ3slMKUWVNp8rjgHrjEK3znQ+0B
-	 Bb1vvKy1Zpx9Oxykbxug7Pr/0Xn7ZwEs2QCaOV5VzdSXqPKkf9lVXcEe/Ai7xp0S58
-	 jGedEAhaHTMgExsX9khP3sLRgOKotRgyvJOVYzQHt9L7A41W9jtXBqMEvDNkt39jmV
-	 V3aJsZ69tcf7Q==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Alice Ryhl <aliceryhl@google.com>, Yury Norov <yury.norov@gmail.com>,
- Burak Emir <bqe@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary
- Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>, Benno
- Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>, Danilo
- Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, Alice Ryhl
- <aliceryhl@google.com>
-Subject: Re: [PATCH v2] rust: bitops: fix missing _find_* functions on
- 32-bit ARM
-In-Reply-To: <20260105-bitops-find-helper-v2-1-ae70b4fc9ecc@google.com>
-References: <20260105-bitops-find-helper-v2-1-ae70b4fc9ecc@google.com>
-Date: Tue, 06 Jan 2026 11:47:19 +0100
-Message-ID: <87secjhvbc.fsf@t14s.mail-host-address-is-not-set>
+	s=k20201202; t=1767694980;
+	bh=coo59hx6eOu0vGs3Mvf5pYDqS+tTCWWQ6cQTmjAtPpY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Mcz3AnU23rCd7g3gAAoHuH2oXu847Aljn2Lu4uQGu+fOUwY98XYRy56C4NQ2xr/6H
+	 n3fDnSqJiEiZTRkdxhwqdYAz7+f70bW/89W3L6qv6lHSXbZ/jSXNbb8zzzdGDhX8mg
+	 d+hwEDGyB4Psr9wOQEs3oB0le+O72YKBXNM75qXJrXXaTnZRkgoC7dlmZTSNFuJTo4
+	 FR7DSFp7QCbJSZEF2w83sGjnfzva4fij8UUB/Ds/Tx8PsEwbCl02XICAcwFwHB6tAa
+	 9h2RV1+kXH6cDZtyAy07bcKSF6827rsrcl0Bp1RybJHH+TBtyItACp4/+Cd7uYIkXE
+	 tOzIc1SD/c60w==
+Date: Tue, 6 Jan 2026 11:22:57 +0100
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
+To: Sean Nyekjaer <sean@geanix.com>
+Cc: Fabrice Gasnier <fabrice.gasnier@foss.st.com>, 
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+	linux-pwm@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] pwm: stm32: handle polarity change when PWM is enabled
+Message-ID: <kemjjoyrhqglqq4p2j6kygspevq2mdbiujtnksw4rkdapoqcfy@zte2c7fhqvn3>
+References: <20260106-stm32-pwm-v1-1-33e9e8a9fc33@geanix.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="adci6bclvlmizahh"
+Content-Disposition: inline
+In-Reply-To: <20260106-stm32-pwm-v1-1-33e9e8a9fc33@geanix.com>
 
-Alice Ryhl <aliceryhl@google.com> writes:
 
-> On 32-bit ARM, you may encounter linker errors such as this one:
->
-> 	ld.lld: error: undefined symbol: _find_next_zero_bit
-> 	>>> referenced by rust_binder_main.43196037ba7bcee1-cgu.0
-> 	>>>               drivers/android/binder/rust_binder_main.o:(<rust_binder_main::process::Process>::insert_or_update_handle) in archive vmlinux.a
-> 	>>> referenced by rust_binder_main.43196037ba7bcee1-cgu.0
-> 	>>>               drivers/android/binder/rust_binder_main.o:(<rust_binder_main::process::Process>::insert_or_update_handle) in archive vmlinux.a
->
-> This error occurs because even though the functions are declared by
-> include/linux/find.h, the definition is #ifdef'd out on 32-bit ARM. This
-> is because arch/arm/include/asm/bitops.h contains:
->
-> 	#define find_first_zero_bit(p,sz)	_find_first_zero_bit_le(p,sz)
-> 	#define find_next_zero_bit(p,sz,off)	_find_next_zero_bit_le(p,sz,off)
-> 	#define find_first_bit(p,sz)		_find_first_bit_le(p,sz)
-> 	#define find_next_bit(p,sz,off)		_find_next_bit_le(p,sz,off)
->
-> And the underscore-prefixed function is conditional on #ifndef of the
-> non-underscore-prefixed name, but the declaration in find.h is *not*
-> conditional on that #ifndef.
->
-> To fix the linker error, we ensure that the symbols in question exist
-> when compiling Rust code. We do this by definining them in rust/helpers/
-> whenever the normal definition is #ifndef'd out.
->
-> Note that these helpers are somewhat unusual in that they do not have
-> the rust_helper_ prefix that most helpers have. Adding the rust_helper_
-> prefix does not compile, as 'bindings::_find_next_zero_bit()' will
-> result in a call to a symbol called _find_next_zero_bit as defined by
-> include/linux/find.h rather than a symbol with the rust_helper_ prefix.
-> This is because when a symbol is present in both include/ and
-> rust/helpers/, the one from include/ wins under the assumption that the
-> current configuration is one where that helper is unnecessary. This
-> heuristic fails for _find_next_zero_bit() because the header file always
-> declares it even if the symbol does not exist.
->
-> The functions still use the __rust_helper annotation. This lets the
-> wrapper function be inlined into Rust code even if full kernel LTO is
-> not used once the patch series for that feature lands.
->
+--adci6bclvlmizahh
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH] pwm: stm32: handle polarity change when PWM is enabled
+MIME-Version: 1.0
+
+Hello Sean,
+
+On Tue, Jan 06, 2026 at 08:01:57AM +0100, Sean Nyekjaer wrote:
+> After commit 7346e7a058a2 ("pwm: stm32: Always do lazy disabling"),
+> polarity changes are ignored. Updates to the TIMx_CCER CCxP bits are
+> ignored by the hardware when the master output is enabled via the
+> TIMx_BDTR MOE bit.
+>=20
+> Handle polarity changes by temporarily disabling the PWM when required,
+> in line with apply() implementations used by other PWM drivers.
+>=20
+> Fixes: 7346e7a058a2 ("pwm: stm32: Always do lazy disabling")
 > Cc: stable@vger.kernel.org
-> Fixes: 6cf93a9ed39e ("rust: add bindings for bitops.h")
-> Reported-by: Andreas Hindborg <a.hindborg@kernel.org>
-> Closes: https://rust-for-linux.zulipchat.com/#narrow/channel/x/topic/x/near/561677301
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> Signed-off-by: Sean Nyekjaer <sean@geanix.com>
+> ---
+> This patch is only applicable for stable tree's <=3D 6.12
+> How to explicitly state that and what is the procedure?
 
-Built tested for arm32 with bindgen 0.72.1 with rustc-1.78.0 and
-rustc-1.88.0.
+I haven't checked in detail yet but I wonder if the problem also exists
+in newer kernels. Also I think that changing the polarity with the
+hardware on happend before 7346e7a058a2; in that case you blamed the
+wrong commit.
 
-Tested-by: Andreas Hindborg <a.hindborg@kernel.org>
+So even if we decide to apply a small targetted fix for the issue you
+report to stable without an equivalent commit in mainline (due to the
+rework the driver saw in v6.13-rc1~157^2~9^2~3 ("pwm: stm32:
+Implementation of the waveform callbacks")), I refuse to do that if the
+problem still exists in mainline.
 
+> ---
+>  drivers/pwm/pwm-stm32.c | 14 +++++++++++---
+>  1 file changed, 11 insertions(+), 3 deletions(-)
+>=20
+> diff --git a/drivers/pwm/pwm-stm32.c b/drivers/pwm/pwm-stm32.c
+> index eb24054f9729734da21eb96f2e37af03339e3440..d5f79e87a0653e1710d46e6bf=
+9268a59638943fe 100644
+> --- a/drivers/pwm/pwm-stm32.c
+> +++ b/drivers/pwm/pwm-stm32.c
+> @@ -452,15 +452,23 @@ static int stm32_pwm_apply(struct pwm_chip *chip, s=
+truct pwm_device *pwm,
+> =20
+>  	enabled =3D pwm->state.enabled;
+> =20
+> +	if (state->polarity !=3D pwm->state.polarity) {
+> +		if (enabled) {
+> +			stm32_pwm_disable(priv, pwm->hwpwm);
+> +			enabled =3D false;
+> +		}
+> +
+> +		ret =3D stm32_pwm_set_polarity(priv, pwm->hwpwm, state->polarity);
+> +		if (ret)
+> +			return ret;
+> +	}
+> +
+>  	if (!state->enabled) {
+>  		if (enabled)
+>  			stm32_pwm_disable(priv, pwm->hwpwm);
+>  		return 0;
+>  	}
+> =20
+> -	if (state->polarity !=3D pwm->state.polarity)
+> -		stm32_pwm_set_polarity(priv, pwm->hwpwm, state->polarity);
+> -
+>  	ret =3D stm32_pwm_config(priv, pwm->hwpwm,
+>  			       state->duty_cycle, state->period);
+>  	if (ret)
 
-Best regards,
-Andreas Hindborg
+I would prefer the following change:
 
+diff --git a/drivers/pwm/pwm-stm32.c b/drivers/pwm/pwm-stm32.c
+index eb24054f9729..5f118c20f1ca 100644
+--- a/drivers/pwm/pwm-stm32.c
++++ b/drivers/pwm/pwm-stm32.c
+@@ -452,12 +452,16 @@ static int stm32_pwm_apply(struct pwm_chip *chip, str=
+uct pwm_device *pwm,
+=20
+ 	enabled =3D pwm->state.enabled;
+=20
+-	if (!state->enabled) {
++	/* The hardware must be disabled to honor polarity changes. */
++	if (!state->enabled || state->polarity !=3D pwm->state.polarity) {
+ 		if (enabled)
+ 			stm32_pwm_disable(priv, pwm->hwpwm);
+-		return 0;
++		enabled =3D false;
+ 	}
+=20
++	if (!state->enabled)
++		return 0;
++
+ 	if (state->polarity !=3D pwm->state.polarity)
+ 		stm32_pwm_set_polarity(priv, pwm->hwpwm, state->polarity);
+=20
+Maybe it's just me, but I think the resulting code is simpler with this
+hunk.
 
+I have hardware using this driver, will set it up later this week for
+testing.
 
+Best regards
+Uwe
+
+--adci6bclvlmizahh
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmlc4n4ACgkQj4D7WH0S
+/k4PPQgAmawyHAcyv863JANknfAFeEAdQkQ06D1C/9LZyoVJJ7f5ozR8gwqQ+WDj
+MyfVx+Te/oM2rj8Hz94OPihbcEo2aM0VVmWPgcthdcHGBGGPf907/Emts0L9TZi9
+vWQIGys5Mc8DSJWB71krKZSngEEIup8AVQqoUxQIkLRTai7wPr5dH4P/BSe/eXRi
+OgD+EV4ToZQUQl2VnaHakcqKTiDsE5C1KFFCnKwKhHT0YfdYb89BbjT6U9uKL/kc
+BezmtEMe3rKH33czeKLwnKX0WXXCxY7zbHNgsA/Ukr5ZvrrUmlp/3Z+2n9xnnIGe
+qEl/4av0tDgRaS2c+bcGCpfoYo8BJA==
+=dPiB
+-----END PGP SIGNATURE-----
+
+--adci6bclvlmizahh--
 
