@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-205196-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205190-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31040CFB26B
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 22:49:14 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEA3ACFB247
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 22:48:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BDB853084371
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 21:46:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 339C23053800
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 21:46:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 947F03491F6;
-	Tue,  6 Jan 2026 17:18:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E67734887C;
+	Tue,  6 Jan 2026 17:17:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oo2ntJP1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UWd6e6O1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49787348899;
-	Tue,  6 Jan 2026 17:18:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38C88347BDB;
+	Tue,  6 Jan 2026 17:17:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767719894; cv=none; b=GSyv2gm+106N4sb+raQLWkXKyaZr0RwraDr0tXxLTplWUN6jWh5iD6nCp/tgXZ5GmzQ3PtJ7KyuuVH90UP6s0Mt0YG6mgC/Y2+hmsMV4UZyR0UtLpJFqVhwL2j1yNtWiIY68Z3B45BxaMi2drcPfhKZyEo7TPIUd/AsyXHvUgd4=
+	t=1767719875; cv=none; b=NMUhD5kD94rkKbqXQ1uV01O72RzUSDypIOsHzXtRWTppADJ4GI4Fr6mqlNW1pV7xYDlE3xt/7QHj0WW3K9FS7nESIcjGygqDaORwimLlRndhls9Sjp7V9hI0E7JiCk5BzwW8qvw/KDyOcjoY3qkIB6B0p5gzbk1kHQ7GCoWfJYk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767719894; c=relaxed/simple;
-	bh=J9XkiMD0r5eKtzhSuyUMoUl5R1a8XijA+p4cLpHJDsc=;
+	s=arc-20240116; t=1767719875; c=relaxed/simple;
+	bh=/GPSNfdcuExJ/uFPYidE+1WOSQdGr7ezVM0B5FSe0lM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GRasRIBtLTYCzm5lCbpbLGvBXBcbsc05iN76PPqwbZYyvKO9Ee9vtIa1Y0tds5Rj6I8QTPoMc/RwmP2+xwxtUZTAsnMiF1IpF9As7zKjXaK+P1S3L6Jf+6fy9UiAvTgtNMZgudUVU0gKOQeVOmxBPlBUNA4oH6dWfW2evkGGg5s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oo2ntJP1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDBECC116C6;
-	Tue,  6 Jan 2026 17:18:13 +0000 (UTC)
+	 MIME-Version; b=CW/o9AUoY3FAX2Xu1QufI7lylOgl8MvASrIBXsGof1hZajLA3Zo14UxtURsvEb48P77NtdHGvbL+jYdlgf/qH/p0RlPXHNbORHE6TuQ5ubnc1IuvrwfTcTfM1auJ/aVeBGaz7LEqJ3Vhqr6jzWU9hn8UpPX0tWsnuCp/bXSNbR4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UWd6e6O1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACCDCC116C6;
+	Tue,  6 Jan 2026 17:17:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767719894;
-	bh=J9XkiMD0r5eKtzhSuyUMoUl5R1a8XijA+p4cLpHJDsc=;
+	s=korg; t=1767719875;
+	bh=/GPSNfdcuExJ/uFPYidE+1WOSQdGr7ezVM0B5FSe0lM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oo2ntJP1b+chC58focZQRr7BwxDUuV99WLbv5Qf0DltocieAt9RRhgLYmywNw9k6B
-	 fg98Qd8aSiSfDdjEgKEIT3rluHzv0pJk9juT5imTGww/dhCFlXfbTnn0P5dW9qJWt5
-	 EQOTROesVY34UIlg5pUN8fcTcChYtF8P63jHmDv8=
+	b=UWd6e6O1dE/W3k3v54OxXIxdT+EI8NLdjOYUp81Yr0W/0JqzOzBr2ExjkHGEhw9IC
+	 p4jvo6dHnZ5PTId3ROb3yzCIBv1sneTzqSTBp7LbOpqza+89Mp//sDlS4J00YLcLlk
+	 GH1+8sfK6gkFVEXysN/gD5HOMVjh2nH7oT5CzD0I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Lu <chris.lu@mediatek.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Nicolin Chen <nicolinc@nvidia.com>,
+	kernel test robot <lkp@intel.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 040/567] Bluetooth: btusb: MT7922: Add VID/PID 0489/e170
-Date: Tue,  6 Jan 2026 17:57:02 +0100
-Message-ID: <20260106170452.824970388@linuxfoundation.org>
+Subject: [PATCH 6.12 065/567] iommufd/selftest: Make it clearer to gcc that the access is not out of bounds
+Date: Tue,  6 Jan 2026 17:57:27 +0100
+Message-ID: <20260106170453.742022942@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
 References: <20260106170451.332875001@linuxfoundation.org>
@@ -65,76 +66,68 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chris Lu <chris.lu@mediatek.com>
+From: Jason Gunthorpe <jgg@nvidia.com>
 
-[ Upstream commit 5a6700a31c953af9a17a7e2681335f31d922614d ]
+[ Upstream commit 5b244b077c0b0e76573fbb9542cf038e42368901 ]
 
-Add VID 0489 & PID e170 for MediaTek MT7922 USB Bluetooth chip.
+GCC gets a bit confused and reports:
 
-The information in /sys/kernel/debug/usb/devices about the Bluetooth
-device is listed as the below.
+   In function '_test_cmd_get_hw_info',
+       inlined from 'iommufd_ioas_get_hw_info' at iommufd.c:779:3,
+       inlined from 'wrapper_iommufd_ioas_get_hw_info' at iommufd.c:752:1:
+>> iommufd_utils.h:804:37: warning: array subscript 'struct iommu_test_hw_info[0]' is partly outside array bounds of 'struct iommu_test_hw_info_buffer_smaller[1]' [-Warray-bounds=]
+     804 |                         assert(!info->flags);
+         |                                 ~~~~^~~~~~~
+   iommufd.c: In function 'wrapper_iommufd_ioas_get_hw_info':
+   iommufd.c:761:11: note: object 'buffer_smaller' of size 4
+     761 |         } buffer_smaller;
+         |           ^~~~~~~~~~~~~~
 
-T:  Bus=06 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  2 Spd=480  MxCh= 0
-D:  Ver= 2.10 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
-P:  Vendor=0489 ProdID=e170 Rev= 1.00
-S:  Manufacturer=MediaTek Inc.
-S:  Product=Wireless_Device
-S:  SerialNumber=000000000
-C:* #Ifs= 3 Cfg#= 1 Atr=e0 MxPwr=100mA
-A:  FirstIf#= 0 IfCount= 3 Cls=e0(wlcon) Sub=01 Prot=01
-I:* If#= 0 Alt= 0 #EPs= 3 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=81(I) Atr=03(Int.) MxPS=  16 Ivl=125us
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 1 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=   0 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=   0 Ivl=1ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=   9 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=   9 Ivl=1ms
-I:  If#= 1 Alt= 2 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  17 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  17 Ivl=1ms
-I:  If#= 1 Alt= 3 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  25 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  25 Ivl=1ms
-I:  If#= 1 Alt= 4 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  33 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  33 Ivl=1ms
-I:  If#= 1 Alt= 5 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  49 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  49 Ivl=1ms
-I:  If#= 1 Alt= 6 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  63 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  63 Ivl=1ms
-I:* If#= 2 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=(none)
-E:  Ad=8a(I) Atr=03(Int.) MxPS=  64 Ivl=125us
-E:  Ad=0a(O) Atr=03(Int.) MxPS=  64 Ivl=125us
-I:  If#= 2 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=(none)
-E:  Ad=8a(I) Atr=03(Int.) MxPS= 512 Ivl=125us
-E:  Ad=0a(O) Atr=03(Int.) MxPS= 512 Ivl=125us
+While it is true that "struct iommu_test_hw_info[0]" is partly out of
+bounds of the input pointer, it is not true that info->flags is out of
+bounds. Unclear why it warns on this.
 
-Signed-off-by: Chris Lu <chris.lu@mediatek.com>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Reuse an existing properly sized stack buffer and pass a truncated length
+instead to test the same thing.
+
+Fixes: af4fde93c319 ("iommufd/selftest: Add coverage for IOMMU_GET_HW_INFO ioctl")
+Link: https://patch.msgid.link/r/0-v1-63a2cffb09da+4486-iommufd_gcc_bounds_jgg@nvidia.com
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Reviewed-by: Nicolin Chen <nicolinc@nvidia.com>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202512032344.kaAcKFIM-lkp@intel.com/
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btusb.c | 2 ++
- 1 file changed, 2 insertions(+)
+ tools/testing/selftests/iommu/iommufd.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
-index 479b98befdc5f..9dc3a50c5e833 100644
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -673,6 +673,8 @@ static const struct usb_device_id quirks_table[] = {
- 						     BTUSB_WIDEBAND_SPEECH },
- 	{ USB_DEVICE(0x0489, 0xe153), .driver_info = BTUSB_MEDIATEK |
- 						     BTUSB_WIDEBAND_SPEECH },
-+	{ USB_DEVICE(0x0489, 0xe170), .driver_info = BTUSB_MEDIATEK |
-+						     BTUSB_WIDEBAND_SPEECH },
- 	{ USB_DEVICE(0x04ca, 0x3804), .driver_info = BTUSB_MEDIATEK |
- 						     BTUSB_WIDEBAND_SPEECH },
- 	{ USB_DEVICE(0x04ca, 0x38e4), .driver_info = BTUSB_MEDIATEK |
+diff --git a/tools/testing/selftests/iommu/iommufd.c b/tools/testing/selftests/iommu/iommufd.c
+index b678b24f5a142..6f99268365338 100644
+--- a/tools/testing/selftests/iommu/iommufd.c
++++ b/tools/testing/selftests/iommu/iommufd.c
+@@ -606,9 +606,6 @@ TEST_F(iommufd_ioas, get_hw_info)
+ 		struct iommu_test_hw_info info;
+ 		uint64_t trailing_bytes;
+ 	} buffer_larger;
+-	struct iommu_test_hw_info_buffer_smaller {
+-		__u32 flags;
+-	} buffer_smaller;
+ 
+ 	if (self->device_id) {
+ 		uint8_t max_pasid = 0;
+@@ -640,8 +637,9 @@ TEST_F(iommufd_ioas, get_hw_info)
+ 		 * the fields within the size range still gets updated.
+ 		 */
+ 		test_cmd_get_hw_info(self->device_id,
+-				     IOMMU_HW_INFO_TYPE_DEFAULT,
+-				     &buffer_smaller, sizeof(buffer_smaller));
++				     IOMMU_HW_INFO_TYPE_DEFAULT, &buffer_exact,
++				     offsetofend(struct iommu_test_hw_info,
++						 flags));
+ 		test_cmd_get_hw_info_pasid(self->device_id, &max_pasid);
+ 		ASSERT_EQ(0, max_pasid);
+ 		if (variant->pasid_capable) {
 -- 
 2.51.0
 
