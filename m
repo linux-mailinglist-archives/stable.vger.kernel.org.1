@@ -1,128 +1,109 @@
-Return-Path: <stable+bounces-205001-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205002-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0FFCCF65E5
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 02:52:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EFF2CF65F1
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 02:53:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5FD5E303BF80
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 01:52:18 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 404DA3016EF6
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 01:52:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0CA521CC58;
-	Tue,  6 Jan 2026 01:52:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D665321E08D;
+	Tue,  6 Jan 2026 01:52:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="dIexnNYG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WqK/T0FB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7435C7640E;
-	Tue,  6 Jan 2026 01:52:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91ABF21CC58;
+	Tue,  6 Jan 2026 01:52:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767664324; cv=none; b=dLM9A4+W5UhUk7vN1ibcJJnYJZnhtoECzOKeHMltHy779eAynDeXsgOx/yzB7fRnXgERqvSx6KZiz+nzrtwmRg7elzny1+9Y21c4YcF81k082FSwS4QiiT4EvHjpbtFwc9XNe9sBzdgwyzlSrjYz+AnCKJlEUMhqn2luxona+EU=
+	t=1767664374; cv=none; b=j/i3kKf8Ugj3OklhFe+NYEvEnlWOzXffWjXbAa0ncNY7b5TTd8yt4FDTy6ilFY6W2FCjN59I5P3mwKxSNaoT3xuIDK4NQNBnkqMqWWG968jj4GfcORtvYQf3qedXrfJzFsctl43z8Y6snp+3MTX2AgunUBNc6OBjdm4Y8wJ6fdw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767664324; c=relaxed/simple;
-	bh=8M9WRPosv+pmCUnT3zeKqoQ7dPSwfGhrEoTLfOqZu5M=;
-	h=Date:To:From:Subject:Message-Id; b=IndA+XpibSsbbdi26c5+XBVmuzsyuPLqfBMmu2lNOQVbeXrZEx0xoCNQhdJMiowT3ckJs8paa7kgeRQ5Evm8pH2iEt9P4vZ/vncuiOxWRyndrMPG1snCwUZPXTC2cwI3P3UTk7MTQbvAZYdLiOilQ8LGX+xKZyxu8aRZQUU2O7I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=dIexnNYG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C0C0C116D0;
-	Tue,  6 Jan 2026 01:52:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1767664324;
-	bh=8M9WRPosv+pmCUnT3zeKqoQ7dPSwfGhrEoTLfOqZu5M=;
-	h=Date:To:From:Subject:From;
-	b=dIexnNYG1TggHmaSA3WWCn0hcuI6Dy0pdrfcwoXoa0SwIFLT+PP/g0zWYEr5ReWV2
-	 gwOYo1sXleXII6GEOfJE8ymwh80+pXgGbmneq05N5TV3RojPXgal0UfdQ9ctdjccgy
-	 G1Q62T1yglhAEy2r8+SNEA4VEAae0NFSE7Hzv51Y=
-Date: Mon, 05 Jan 2026 17:52:03 -0800
-To: mm-commits@vger.kernel.org,will@kernel.org,stable@vger.kernel.org,mark.rutland@arm.com,leitao@debian.org,coxu@redhat.com,catalin.marinas@arm.com,yeoreum.yun@arm.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged] arm64-kernel-initialize-missing-kexec_buf-random-field.patch removed from -mm tree
-Message-Id: <20260106015204.2C0C0C116D0@smtp.kernel.org>
+	s=arc-20240116; t=1767664374; c=relaxed/simple;
+	bh=Ho9VhnQYhFmNQHv4aKj1rzcirvBmSo49AaAqgnUDBwA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=n4cFqkHRPVLjKD4h1LHbe95hV0GNI0pN2B863I9+FMCp2aO9tWVKe8z3WULMqbFwh4WkkzAOvxUKVYbW7MIi+ijuTxToSmyAAuMLB3Su2D97L+iScH3Qn0UfrHvyMFoS5EK8y0/ijCX1jjW896yK4xpkO/zBFBCp+dkvuSrPeGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WqK/T0FB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAE38C16AAE;
+	Tue,  6 Jan 2026 01:52:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767664374;
+	bh=Ho9VhnQYhFmNQHv4aKj1rzcirvBmSo49AaAqgnUDBwA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=WqK/T0FBV+dUlaodq9DRpKnn0Twree05ZaXLqDmKX8ZTXlUTKbuX4vlGkevCHGRSu
+	 VndrHRvvhg9jrLaa5UInHctwhFZwYVcnKjATAusyl/qq11ZgNrzIZtqAPlVtxE2rgT
+	 VF/dAtOkabpSrvsyEb5ab/2usAp4mLcAlgwQPbSq2l5P9nhyAOktl1eohMQMzAPoX5
+	 IcwYfvNM/cfJO5Fcj4lIN1Y4Kul203rCJD8rj/O6iRGHKT10eh10ixYdvTfKfTiJGq
+	 32Aj8UMhFOeS/g7GiFIebusQ8gOU2yGmiEynm+xnE6wJJ3NW2Y0fphRKy/4jv9wfYs
+	 ou+1TU+smmwog==
+From: SeongJae Park <sj@kernel.org>
+To: stable@vger.kernel.org
+Cc: damon@lists.linux.dev,
+	SeongJae Park <sj@kernel.org>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <davidgow@google.com>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1.y] mm/damon/tests/vaddr-kunit: handle alloc failures in damon_test_split_evenly_fail()
+Date: Mon,  5 Jan 2026 17:52:46 -0800
+Message-ID: <20260106015246.451905-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <2026010502-dispersed-paper-9a89@gregkh>
+References: <2026010502-dispersed-paper-9a89@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
+damon_test_split_evenly_fail() is assuming all dynamic memory allocation
+in it will succeed.  Those are indeed likely in the real use cases since
+those allocations are too small to fail, but theoretically those could
+fail.  In the case, inappropriate memory access can happen.  Fix it by
+appropriately cleanup pre-allocated memory and skip the execution of the
+remaining tests in the failure cases.
 
-The quilt patch titled
-     Subject: arm64: kernel: initialize missing kexec_buf->random field
-has been removed from the -mm tree.  Its filename was
-     arm64-kernel-initialize-missing-kexec_buf-random-field.patch
-
-This patch was dropped because it was merged into mainline or a subsystem tree
-
-------------------------------------------------------
-From: Yeoreum Yun <yeoreum.yun@arm.com>
-Subject: arm64: kernel: initialize missing kexec_buf->random field
-Date: Mon, 1 Dec 2025 10:51:18 +0000
-
-Commit bf454ec31add ("kexec_file: allow to place kexec_buf randomly")
-introduced the kexec_buf->random field to enable random placement of
-kexec_buf.
-
-However, this field was never properly initialized for kexec images that
-do not need to be placed randomly, leading to the following UBSAN warning:
-
-[  +0.364528] ------------[ cut here ]------------
-[  +0.000019] UBSAN: invalid-load in ./include/linux/kexec.h:210:12
-[  +0.000131] load of value 2 is not a valid value for type 'bool' (aka '_Bool')
-[  +0.000003] CPU: 4 UID: 0 PID: 927 Comm: kexec Not tainted 6.18.0-rc7+ #3 PREEMPT(full)
-[  +0.000002] Hardware name: QEMU QEMU Virtual Machine, BIOS 0.0.0 02/06/2015
-[  +0.000000] Call trace:
-[  +0.000001]  show_stack+0x24/0x40 (C)
-[  +0.000006]  __dump_stack+0x28/0x48
-[  +0.000002]  dump_stack_lvl+0x7c/0xb0
-[  +0.000002]  dump_stack+0x18/0x34
-[  +0.000001]  ubsan_epilogue+0x10/0x50
-[  +0.000002]  __ubsan_handle_load_invalid_value+0xc8/0xd0
-[  +0.000003]  locate_mem_hole_callback+0x28c/0x2a0
-[  +0.000003]  kexec_locate_mem_hole+0xf4/0x2f0
-[  +0.000001]  kexec_add_buffer+0xa8/0x178
-[  +0.000002]  image_load+0xf0/0x258
-[  +0.000001]  __arm64_sys_kexec_file_load+0x510/0x718
-[  +0.000002]  invoke_syscall+0x68/0xe8
-[  +0.000001]  el0_svc_common+0xb0/0xf8
-[  +0.000002]  do_el0_svc+0x28/0x48
-[  +0.000001]  el0_svc+0x40/0xe8
-[  +0.000002]  el0t_64_sync_handler+0x84/0x140
-[  +0.000002]  el0t_64_sync+0x1bc/0x1c0
-
-To address this, initialise kexec_buf->random field properly.
-
-Link: https://lkml.kernel.org/r/20251201105118.2786335-1-yeoreum.yun@arm.com
-Fixes: bf454ec31add ("kexec_file: allow to place kexec_buf randomly")
-Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
-Suggested-by: Breno Leitao <leitao@debian.org>
-Reviewed-by: Breno Leitao <leitao@debian.org>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Coiby Xu <coxu@redhat.com>
-Cc: levi.yun <yeoreum.yun@arm.com>
-Cc: Marc Rutland <mark.rutland@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: <stable@vger.kernel.org>
+Link: https://lkml.kernel.org/r/20251101182021.74868-19-sj@kernel.org
+Fixes: 17ccae8bb5c9 ("mm/damon: add kunit tests")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: Brendan Higgins <brendan.higgins@linux.dev>
+Cc: David Gow <davidgow@google.com>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: <stable@vger.kernel.org>	[5.15+]
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+(cherry picked from commit 7890e5b5bb6e386155c6e755fe70e0cdcc77f18e)
 ---
+ mm/damon/vaddr-test.h | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
- arch/arm64/kernel/kexec_image.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
---- a/arch/arm64/kernel/kexec_image.c~arm64-kernel-initialize-missing-kexec_buf-random-field
-+++ a/arch/arm64/kernel/kexec_image.c
-@@ -41,7 +41,7 @@ static void *image_load(struct kimage *i
- 	struct arm64_image_header *h;
- 	u64 flags, value;
- 	bool be_image, be_kernel;
--	struct kexec_buf kbuf;
-+	struct kexec_buf kbuf = {};
- 	unsigned long text_offset, kernel_segment_number;
- 	struct kexec_segment *kernel_segment;
- 	int ret;
-_
-
-Patches currently in -mm which might be from yeoreum.yun@arm.com are
-
+diff --git a/mm/damon/vaddr-test.h b/mm/damon/vaddr-test.h
+index cfb3ba80a642..996fc14d2289 100644
+--- a/mm/damon/vaddr-test.h
++++ b/mm/damon/vaddr-test.h
+@@ -242,7 +242,16 @@ static void damon_test_split_evenly_fail(struct kunit *test,
+ 		unsigned long start, unsigned long end, unsigned int nr_pieces)
+ {
+ 	struct damon_target *t = damon_new_target();
+-	struct damon_region *r = damon_new_region(start, end);
++	struct damon_region *r;
++
++	if (!t)
++		kunit_skip(test, "target alloc fail");
++
++	r = damon_new_region(start, end);
++	if (!r) {
++		damon_free_target(t);
++		kunit_skip(test, "region alloc fail");
++	}
+ 
+ 	damon_add_region(r, t);
+ 	KUNIT_EXPECT_EQ(test,
+-- 
+2.47.3
 
 
