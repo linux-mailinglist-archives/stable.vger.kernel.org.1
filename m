@@ -1,126 +1,196 @@
-Return-Path: <stable+bounces-205062-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205063-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8433CF79FB
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 10:52:57 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07D2BCF7AA9
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 11:05:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 912DA30F86D2
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 09:49:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 818D730D159A
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 10:01:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10BCD30C60D;
-	Tue,  6 Jan 2026 09:49:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23F602DA762;
+	Tue,  6 Jan 2026 10:01:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bGhsONEx"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="ciUsSU+h";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="kNcWIUq1"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CA6F1F1313
-	for <stable@vger.kernel.org>; Tue,  6 Jan 2026 09:49:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB2EF30DEB9
+	for <stable@vger.kernel.org>; Tue,  6 Jan 2026 10:01:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767692947; cv=none; b=L5AdU2xgvD1FcXM6BwpqydFKBhaIU5zXf998DBKQLRO3kwi1sMx3etw7Uxzy1ASvgRuzP26glIk/ehjjva9+UM474oCXeRghgyR5VKT7ydTnSkWrgh3JX/ZihHWG3wYs6VYvXmS8BbwrroK56EMH7kYdBV95cHavRYFZh5Biyw8=
+	t=1767693688; cv=none; b=CnwfGUacHWnR45rJho+5+9lNy2LsdazcAiSXxqk7vJ+06TiWU6gg/Hlf/RtXFAR9mI5EQTV1hMUfPSCoTApcog20fjzbudcWka2Y81Icd6R5Q/Dmb0WKI/tGNTI5Uupg1OmITkwoBjfXI95ZVEGne41z78Oamhyn7gY6P9qikjw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767692947; c=relaxed/simple;
-	bh=93sInUW9zEA86TJ92/hM/OPNM3sAV6MsWLI7AyWVdm0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pSQaQk3MHLmmN75mSPb6kDZWF2Po2QwXGf3hhcVO5lHDFZ4FLDxSTDco+FMNzMyFIQyn33NQ37j7gMQCLPOYZ43UvCrYwXHFAb0EuijFSMpcdpK9mm9grodbFeP5i6tW+t0zVci1D8NPebwCFLYCVoFIwQ+D0+JSDSpNb+M5FW0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bGhsONEx; arc=none smtp.client-ip=209.85.128.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-47798f4059fso1113925e9.2
-        for <stable@vger.kernel.org>; Tue, 06 Jan 2026 01:49:04 -0800 (PST)
+	s=arc-20240116; t=1767693688; c=relaxed/simple;
+	bh=TEtCtHsqRpP9qf3468gIVgZon8mhEIVv+VTFec6/RCM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=CjqChBBgdcQeeaUkjzzOd6sKlbZ4nqY80nizkWul5PiHXDWRC/Wh/hr/tJ9r3mCWFbDso4P7+L1YAreCrI+OOkqI9g0MzNsYMYjsAD23UdoA8IM5N8xNuP+Y0GgzYIjQoQiulJzQXvRkvcN+9XqOXLJi3TIBe79cMu3vCZQi5cQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=ciUsSU+h; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=kNcWIUq1; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6063Q75N3442254
+	for <stable@vger.kernel.org>; Tue, 6 Jan 2026 10:01:24 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	j4HKFWWo6W7gPbfh2tN5wFUcJzGeLsVtA756B0bDLos=; b=ciUsSU+hN0+irebs
+	HeY9p2tv99RJ7fijeXMhdb03i+Pr8ewvCkXs3yXV4sN9eS/fXIAVIyqpJ/fcoDwI
+	hvLWFX3k+mHxSr5KTqhYp3UPut5BTfaoJ6Il0P44Koqb/tI2KjZTjcJs+2dsUUwD
+	qHmDN3LssnS3WyW3YyY/c5/jOtQ64UTMydaot83INJHV9LimEzroZIRDgvSWuJ4k
+	0VQ77N+VooGhc2G76dM2ycGCXSqQWZ7PeArFRApgaJG0Bu+banN8DacQp/aFt/UA
+	34oMH3DfjhmaA78rvZn74YwLg9aGtT/QlKymOrFakMClP+yT8Q3RLcrZjQEElecg
+	thYQdg==
+Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4bgmnh9yf5-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <stable@vger.kernel.org>; Tue, 06 Jan 2026 10:01:24 +0000 (GMT)
+Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-7aa9f595688so1290567b3a.2
+        for <stable@vger.kernel.org>; Tue, 06 Jan 2026 02:01:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767692943; x=1768297743; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZdSCrn+/q0mZzBSTq1BS80pekWEZnQx2RMu8OndDeLE=;
-        b=bGhsONExMOpFHhfHnDMLcWiwayhtQNSdJy4aiS0mU0IdC2lwyz4oLSeALwwYqQD6/v
-         2byTyN6a0YyQ+6LhNRzi0XA82d2qVgUf5gPlVXjC4oQu6WzRqDZ6mD2+PKMbFm7p8fRb
-         U+qbnjJB7Dc/W9uAbHukmnzp1sWDlrHyeug9PMUDQEsPhHXPoLKTwfVscZmH6PlEaMaV
-         ayp8O3P//GMPSjWjjTCaaPJG0whykLwnLit0pXd3Fbct6WHjWAndXnFyA6wSyCxRF0vQ
-         f+iEbphTz6Ofarb4+3UPImOENEl1F5PnlRjlJX3iJI5zv5Zw/DJn0MZlSkUtnbqes0GX
-         +D2Q==
+        d=oss.qualcomm.com; s=google; t=1767693683; x=1768298483; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=j4HKFWWo6W7gPbfh2tN5wFUcJzGeLsVtA756B0bDLos=;
+        b=kNcWIUq1aO9O31ki7spyXE3Jte8gfE3vsa7NbMTOAhUNT3WOR3nehVd3n1tEY0fPjI
+         VAH6b08sZ/LXd//e/IKzsBRgnaP56/0bIZt2gEEDYl7rCKE+H/Tgq43rnf2aMh/uD0x8
+         hOgCCsxq9Mu+3ooJn4wJjCcyxX2bZIjLGwYjAwemcfRDGJc6x3B6faTEteCSmapqpcz6
+         QTIK+P8BovwHHUgnF7xKP+/ZOOWDTV5vVeOpVCBChAyqYv3qLxQ7Br9PvQ2YLx8axJaW
+         epYthPqDWcgrKAJxFex6kiY7mKHIN0MXe91OoZAzcaTaMrqTSujs95DRilJcXbTgrHDv
+         YrtQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767692943; x=1768297743;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZdSCrn+/q0mZzBSTq1BS80pekWEZnQx2RMu8OndDeLE=;
-        b=UQKPgAB6Z4iU0fwgBtZfesTfXo8syjgOvFDWhrFgOYWG0w495wNIJUIYihLMYNXo8A
-         d75l2LjWShm+C/2PtYK1Qy3B/dHoPCzV4ljFkIBQnWLLENTnFyREYQN73XF4rfh8eguZ
-         Meq5rSOu6QPvNHcqgkDgT0wBaGEUua32P84GBRn2+T6W2h9Ji00WW8gj1G4f5p3LrcEA
-         +AYZsrpawicj8t0FD8Z3haYQzMBmUlktuwHkl6DagjLcIbCLC2QaD3+UBFHvqNH1BAFB
-         IK6BlOSUD/Ih+wl+2Ps+7C74kR/un+zZKrXVPWrFMYVbpsQ8w0t/a/opUBo/nROfNE/9
-         L7cg==
-X-Forwarded-Encrypted: i=1; AJvYcCXQnk/1/Ce9rG0cSH9bV2zwdfjezQFMP+OljCgG2hVYjVFbnNlsEzncXH3XrDeK6Z2KXvNxPOA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwTllZ4u0eW+Vo+XoNAiim3hofxQ7OX/oeVfFG8rjbrOuVTX+29
-	DQJe6ZnvfVqlSTKxjuNZi5vQNaxl/suMwBPRUImQ2P1QunBAynurr6TOaRwxsA==
-X-Gm-Gg: AY/fxX4sAEh/BOwVJor93q2wAVwxS10VZJ6JLPQGmy51OwxCGCHaw4fayUFvVEG2GVp
-	Ne20LMzYxLN5wR+gi7+KKBV/k14i07CvmXWHpZ+Sp50B+of1gxaVltustfPozrnjjQhc4sPlakl
-	pd8vERy8/84P7vW79G3aqUQ9b15HfIw4iJjM50TcuZDKng8v4Q9X/jYLxCL/3BctFbg5TO7p2it
-	coMyj6tT8isHls7owzDjm+nMLW7OTerFFItqXnJw02pMoqsBlbLDPMd/Oq/3NEDJ2dAjzzbmClj
-	YVj9fzx4+SC/p9jjqglba/pSezhH3/ryq8ADKx0oatJ+SVwZf1pyF9GV9o/2RPPi7aNuxc/F5gr
-	Lc2QPGTQHIt4kB4H6Awldxnbx3jk9s1iBALxnJnS6uR0MueDoewEDurld9uLfQaQmm60GWgwG1D
-	BROSPNr9g+F/leffXX+q4YctjJGU+BGM9M0n76ncPPhuTGUIA3XUAWqGIfp/Oo9/VQJ1WQ0Tic5
-	CIN6oE=
-X-Google-Smtp-Source: AGHT+IEx2UdQuxi7Q30O0PMFfygpPYTxnIeUBD5iNPkUORydOgAHKzsNi0xUzYgshQ1Av83QPmgZtw==
-X-Received: by 2002:a05:6000:2883:b0:429:d084:d210 with SMTP id ffacd0b85a97d-432bc97d535mr2100593f8f.0.1767692943323;
-        Tue, 06 Jan 2026 01:49:03 -0800 (PST)
-Received: from thomas-precision3591.paris.inria.fr (wifi-pro-83-215.paris.inria.fr. [128.93.83.215])
-        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-432bd5edd51sm3330081f8f.29.2026.01.06.01.49.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Jan 2026 01:49:03 -0800 (PST)
-From: Thomas Fourier <fourier.thomas@gmail.com>
-To: 
-Cc: Thomas Fourier <fourier.thomas@gmail.com>,
-	stable@vger.kernel.org,
-	Steffen Klassert <klassert@kernel.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net] net: 3com: 3c59x: fix possible null dereference in vortex_probe1()
-Date: Tue,  6 Jan 2026 10:47:21 +0100
-Message-ID: <20260106094731.25819-2-fourier.thomas@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        d=1e100.net; s=20230601; t=1767693683; x=1768298483;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=j4HKFWWo6W7gPbfh2tN5wFUcJzGeLsVtA756B0bDLos=;
+        b=c+UAUkeqNvWFsbsZvVZWl+cjUAGfTEjnHxUl0DjHPY/bmZRnAtKgYqUX5IZx+DmzeU
+         qtWQhD0Tuhrt/ajCA0/0MnkpJH7SL4oQdwPCNS3hCYiYD5+7fLPW3ywZQXowHfXQotqy
+         irmYFl78ZayltpiZqumLugXG6H9yQqDzl/saZBpGgNKnX8s16DvmrnbxCYk7Jov69IgK
+         OFQPsx1XSvJrj00l4+YUWHPAaMDTMoKKRM1bH4kRmO/uDRRt1n/0Kv1QZHB3cP4fhQSU
+         FxDW383nG0T+PI2ASvuUZZhhi6oOOXCQohmttyjn7lnZbavzn/L16ZT+ZsOnNHOmNc+i
+         moFQ==
+X-Gm-Message-State: AOJu0YwX8rsSOfmmxExK3luXE2nYEXnb9/F6YhPq67WytD7G3MsBAZEE
+	wnKogNA/Dbe2rhPcdeYQ7mBTF6IPAjmkS0shdl7KV/HjoJ8dZ0CcpXu7kQ8ogBOh5h+IPisoT8x
+	ownphXo1gPxiSCsvePZuEfzcVrG9t7AfHPV1450PtLPaubhY3rhWNL+pO6/Y=
+X-Gm-Gg: AY/fxX4VEfhO8ucu5ySTJg7fhjAGEEXfcaw4d5KP4RdLuU+05jpfo3QySgnAXcVbNOw
+	CDM9aoYlIjvUHw84yWCSLzt04GL4B8vf1naVwnRjYXdU5d1W5+XDZrFdaamSgI4Mbs7MmzwGqNG
+	jekOzuGWIAejE7Z8oJLGaTQlkuur1KbhaOLn3HMY/FXQF1t7wHN/AyjJ6zf+xZXirY010yjxD29
+	GbnGo6MnhqwfEzuCCFWrc7y7jA+c0welzTWn+rsNz8uSQ7LWO/LvlmXioIJv1AyA8L+MEppl+bf
+	uIJbeftL34z5ohKImw1iwB+RZZPugJ0x0pv5LYrXQz6I2SVeEVTXv1QKnrvtMXC3QjHleo8JlRC
+	Fea0jZWDPUO+u6Uxe1s5MVMb0Csvn1jEHQEwjJrP6bBorzVdKbs0MBz0IpC6Fq/EX6JuNYWtz4K
+	eagYB/mw==
+X-Received: by 2002:a05:6a00:1c97:b0:809:33e7:5d89 with SMTP id d2e1a72fcca58-818832c940dmr2279587b3a.64.1767693683515;
+        Tue, 06 Jan 2026 02:01:23 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFpJVZcGU/yMmbSm8cCO+VvvqV91A5JT4ce5P4ZY5G0vL39xcSvsOISQdH6C11AWWGi918cYA==
+X-Received: by 2002:a05:6a00:1c97:b0:809:33e7:5d89 with SMTP id d2e1a72fcca58-818832c940dmr2279545b3a.64.1767693682930;
+        Tue, 06 Jan 2026 02:01:22 -0800 (PST)
+Received: from [10.133.33.54] (tpe-colo-wan-fw-bordernet.qualcomm.com. [103.229.16.4])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-819c5301416sm1701367b3a.38.2026.01.06.02.01.20
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 06 Jan 2026 02:01:22 -0800 (PST)
+Message-ID: <ef342a0e-5f04-442c-aa4a-3375c6023547@oss.qualcomm.com>
+Date: Tue, 6 Jan 2026 18:01:18 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] wifi: ath12k: fix dma_free_coherent() pointer
+To: Thomas Fourier <fourier.thomas@gmail.com>
+Cc: stable@vger.kernel.org, Jeff Johnson <jjohnson@kernel.org>,
+        Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>,
+        Sriram R <quic_srirrama@quicinc.com>, Kalle Valo <kvalo@kernel.org>,
+        Wen Gong <quic_wgong@quicinc.com>, linux-wireless@vger.kernel.org,
+        ath12k@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20260106084905.18622-2-fourier.thomas@gmail.com>
+From: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Content-Language: en-US
+In-Reply-To: <20260106084905.18622-2-fourier.thomas@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-GUID: 9vmyYrB1iyeHvweEM9vGtBwzWchdJ4wW
+X-Proofpoint-ORIG-GUID: 9vmyYrB1iyeHvweEM9vGtBwzWchdJ4wW
+X-Authority-Analysis: v=2.4 cv=Vscuwu2n c=1 sm=1 tr=0 ts=695cdd74 cx=c_pps
+ a=mDZGXZTwRPZaeRUbqKGCBw==:117 a=nuhDOHQX5FNHPW3J6Bj6AA==:17
+ a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=pGLkceISAAAA:8 a=EUspDBNiAAAA:8
+ a=MvB9iNEEFr4mKuRVMNwA:9 a=QEXdDO2ut3YA:10 a=zc0IvFSfCIW2DFIPzwfm:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTA2MDA4NSBTYWx0ZWRfX28Ysent1F8mP
+ lL4MpH2eP51ugdOx9TKxpBjhtHlnULkHeuTYGhoDBg38VVgJSX5jNX4gzCpsKzg4Fo7l1YG8okj
+ 78WjifGVe/+rE73YpJ+yYzRnBPDC6dPtG5G31u0GeAyMzyTcSn4kkNI2vj/MPwSGGCzWgeOX7yv
+ 4ENAr3HEAZHe/j3UQn4wQgEnTzR3ggsRBH0zhsH5HrTEjb4B4gHoGuiFg8ZRakdvCqcDscw7HCp
+ /k0Ppy8ZuWX+ELkATPiRKTfauYs5Lhan/AirBDfPVFwJjEQZXSA51bfR1ZHhoi3RD+h2zOBhXCj
+ uO77LcsDMVhWE9slGiyIB6IOW+o+OK+0Tfv4qLm5Jf25FuZ+03n1/grTQAUqROkbeglNrU+CmOi
+ dpSqFcGmHTt1v7oIVoHPnqE7VVbxpGmTaugsjRPRf8LKjMtBQIl13MqspPZfBYKWZ2T/QI5Gnpp
+ 7d2Ym1OyV9i/CyJeU+w==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2026-01-05_02,2026-01-06_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 bulkscore=0 phishscore=0 suspectscore=0 clxscore=1015
+ lowpriorityscore=0 impostorscore=0 priorityscore=1501 spamscore=0
+ malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2512120000
+ definitions=main-2601060085
 
-pdev can be null and free_ring: can be called in 1297 with a null
-pdev.
 
-Fixes: 55c82617c3e8 ("3c59x: convert to generic DMA API")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
----
- drivers/net/ethernet/3com/3c59x.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/3com/3c59x.c b/drivers/net/ethernet/3com/3c59x.c
-index 8c9cc97efd4e..4fe4efdb3737 100644
---- a/drivers/net/ethernet/3com/3c59x.c
-+++ b/drivers/net/ethernet/3com/3c59x.c
-@@ -1473,7 +1473,7 @@ static int vortex_probe1(struct device *gendev, void __iomem *ioaddr, int irq,
- 		return 0;
- 
- free_ring:
--	dma_free_coherent(&pdev->dev,
-+	dma_free_coherent(gendev,
- 		sizeof(struct boom_rx_desc) * RX_RING_SIZE +
- 		sizeof(struct boom_tx_desc) * TX_RING_SIZE,
- 		vp->rx_ring, vp->rx_ring_dma);
--- 
-2.43.0
+On 1/6/2026 4:49 PM, Thomas Fourier wrote:
+> dma_alloc_coherent() allocates a DMA mapped buffer and stores the
+> addresses in XXX_unaligned fields.  Those should be reused when freeing
+> the buffer rather than the aligned addresses.
+> 
+> Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+> ---
+>  drivers/net/wireless/ath/ath12k/ce.c | 12 ++++++------
+>  1 file changed, 6 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/ath/ath12k/ce.c b/drivers/net/wireless/ath/ath12k/ce.c
+> index 9a63608838ac..4aea58446838 100644
+> --- a/drivers/net/wireless/ath/ath12k/ce.c
+> +++ b/drivers/net/wireless/ath/ath12k/ce.c
+> @@ -984,8 +984,8 @@ void ath12k_ce_free_pipes(struct ath12k_base *ab)
+>  			dma_free_coherent(ab->dev,
+>  					  pipe->src_ring->nentries * desc_sz +
+>  					  CE_DESC_RING_ALIGN,
+> -					  pipe->src_ring->base_addr_owner_space,
+> -					  pipe->src_ring->base_addr_ce_space);
+> +					  pipe->src_ring->base_addr_owner_space_unaligned,
+> +					  pipe->src_ring->base_addr_ce_space_unaligned);
+>  			kfree(pipe->src_ring);
+>  			pipe->src_ring = NULL;
+>  		}
+> @@ -995,8 +995,8 @@ void ath12k_ce_free_pipes(struct ath12k_base *ab)
+>  			dma_free_coherent(ab->dev,
+>  					  pipe->dest_ring->nentries * desc_sz +
+>  					  CE_DESC_RING_ALIGN,
+> -					  pipe->dest_ring->base_addr_owner_space,
+> -					  pipe->dest_ring->base_addr_ce_space);
+> +					  pipe->dest_ring->base_addr_owner_space_unaligned,
+> +					  pipe->dest_ring->base_addr_ce_space_unaligned);
+>  			kfree(pipe->dest_ring);
+>  			pipe->dest_ring = NULL;
+>  		}
+> @@ -1007,8 +1007,8 @@ void ath12k_ce_free_pipes(struct ath12k_base *ab)
+>  			dma_free_coherent(ab->dev,
+>  					  pipe->status_ring->nentries * desc_sz +
+>  					  CE_DESC_RING_ALIGN,
+> -					  pipe->status_ring->base_addr_owner_space,
+> -					  pipe->status_ring->base_addr_ce_space);
+> +					  pipe->status_ring->base_addr_owner_space_unaligned,
+> +					  pipe->status_ring->base_addr_ce_space_unaligned);
+>  			kfree(pipe->status_ring);
+>  			pipe->status_ring = NULL;
+>  		}
 
+Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
 
