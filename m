@@ -1,49 +1,52 @@
-Return-Path: <stable+bounces-205233-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205256-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B11FBCFA04A
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:16:30 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7834ECF9CF8
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 18:44:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0F2EE3070AB9
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:14:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2540331B578B
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:34:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 647C934D381;
-	Tue,  6 Jan 2026 17:20:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E77EC34F469;
+	Tue,  6 Jan 2026 17:21:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CPhqWfTS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oWzoUWmB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EEAF34CFC9;
-	Tue,  6 Jan 2026 17:20:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4B2B34EF0A;
+	Tue,  6 Jan 2026 17:21:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767720018; cv=none; b=eBdQkhDETNuV1D7zBiAkVHH2zQZSEljwHUX+aXIRaXMT6sitKNs59w9K957bnt/1uVbE5q4SHC0Tqa7nyrpj01tpgJOGKsZaz0E+7EC1A5+CLSAg+Iqo+szWOFNiqTIXt5ZJ7QzKpDacRqzkym5uEUOuxaT9B6g+5n38Rao8FNw=
+	t=1767720091; cv=none; b=FV1dB/XQD4VJ/p259jl2P4M7XyEDeRuW57x/Vx4aUGQfbERYIs6sGoWIWayKUAu7iD7M+n5POg3a03xCZbvVI8YevkyCtJDNqhmG4EX9LKfgp7xTIBzSWU9M0p2c183dxd5kug684HfFrb3cRgDIRJqzqPsgwqN9joMKR4SVvZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767720018; c=relaxed/simple;
-	bh=RoWILjF+wzYTZnJ3KBx72UAPcAk1NN+egl7/ers5zeQ=;
+	s=arc-20240116; t=1767720091; c=relaxed/simple;
+	bh=H/AK4q6H7s2pFIwbnoanw8gnvQ6wgOcs+QgFxnxdLUk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tiiGs5oBtUAlPS7oGtVbaa9UooLg3HKBHevIsva6kdwu6gZLOsTz93zdJJ37nc1cDcFkI2f1u5NZFeMnBfWlokNED+o+wTIojzL0h30jObRopQntUjLYAurxCTo5YmF/CKj+MQxXccbZ5Ph6Wbwg7NNXXDtqBeKHCq5SyhTo/0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CPhqWfTS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4229BC116C6;
-	Tue,  6 Jan 2026 17:20:17 +0000 (UTC)
+	 MIME-Version; b=poL3sSWk+tC1NPZrE4bmRPlF5DT9S6TZy+JuLQ3or/iWoTawDj9bd1Sd4e6U/IXRI9RjC3STGkE3w+zL8zCflElDJP3o2jpkwE1eAQ+NaTeT4CoCAHi9rnZKJLKSrEO4ZLsUt9/DCL/kFK6SZXAjLscoKfr7PLMCJ6ZYPDanchY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oWzoUWmB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2A8CC16AAE;
+	Tue,  6 Jan 2026 17:21:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767720017;
-	bh=RoWILjF+wzYTZnJ3KBx72UAPcAk1NN+egl7/ers5zeQ=;
+	s=korg; t=1767720091;
+	bh=H/AK4q6H7s2pFIwbnoanw8gnvQ6wgOcs+QgFxnxdLUk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CPhqWfTSVB3vD8sHoCCtYfGRpDHEWS6DcP8MF7Ry9gNCDohA+WKt9XYKfh7qJ5GA6
-	 SXz8wPF8+urVobmb2WTrDgRIPU6/LF+1uPlh/jR0m8SVegcdRSBvEkzh2KIGE3EI5u
-	 pn0T367XghMeFf75MUN+YoBDooeFjDKBmhv3epks=
+	b=oWzoUWmBg4AcNt5Ebq9TnIjMksxYdmIcoMXi4LBTxqlJZk1y7jL9hyFYKELXRJAYE
+	 b/X/wfjvTsSgrZB2aluKaVb4QbRfDZVqEitTTGJHAZ+jxi2l6a4WDd/FbtgcwwGmiM
+	 IZ12EOzec8bCJJRpcSD4X4zDs1QN9AMqCjRxtwxY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 6.12 102/567] can: gs_usb: gs_can_open(): fix error handling
-Date: Tue,  6 Jan 2026 17:58:04 +0100
-Message-ID: <20260106170455.102659029@linuxfoundation.org>
+	Pengjie Zhang <zhangpengjie2@huawei.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	lihuisong@huawei.com,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.12 104/567] ACPI: PCC: Fix race condition by removing static qualifier
+Date: Tue,  6 Jan 2026 17:58:06 +0100
+Message-ID: <20260106170455.175392367@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
 References: <20260106170451.332875001@linuxfoundation.org>
@@ -62,44 +65,41 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+From: Pengjie Zhang <zhangpengjie2@huawei.com>
 
-commit 3e54d3b4a8437b6783d4145c86962a2aa51022f3 upstream.
+commit f103fa127c93016bcd89b05d8e11dc1a84f6990d upstream.
 
-Commit 2603be9e8167 ("can: gs_usb: gs_can_open(): improve error handling")
-added missing error handling to the gs_can_open() function.
+Local variable 'ret' in acpi_pcc_address_space_setup() is currently
+declared as 'static'. This can lead to race conditions in a
+multithreaded environment.
 
-The driver uses 2 USB anchors to track the allocated URBs: the TX URBs in
-struct gs_can::tx_submitted for each netdev and the RX URBs in struct
-gs_usb::rx_submitted for the USB device. gs_can_open() allocates the RX
-URBs, while TX URBs are allocated during gs_can_start_xmit().
+Remove the 'static' qualifier to ensure that 'ret' will be allocated
+directly on the stack as a local variable.
 
-The cleanup in gs_can_open() kills all anchored dev->tx_submitted
-URBs (which is not necessary since the netdev is not yet registered), but
-misses the parent->rx_submitted URBs.
-
-Fix the problem by killing the rx_submitted instead of the tx_submitted.
-
-Fixes: 2603be9e8167 ("can: gs_usb: gs_can_open(): improve error handling")
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20251210-gs_usb-fix-error-handling-v1-1-d6a5a03f10bb@pengutronix.de
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Fixes: a10b1c99e2dc ("ACPI: PCC: Setup PCC Opregion handler only if platform interrupt is available")
+Signed-off-by: Pengjie Zhang <zhangpengjie2@huawei.com>
+Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
+Acked-by: lihuisong@huawei.com
+Cc: 6.2+ <stable@vger.kernel.org> # 6.2+
+[ rjw: Changelog edits ]
+Link: https://patch.msgid.link/20251210132634.2050033-1-zhangpengjie2@huawei.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/usb/gs_usb.c |    2 +-
+ drivers/acpi/acpi_pcc.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/can/usb/gs_usb.c
-+++ b/drivers/net/can/usb/gs_usb.c
-@@ -1071,7 +1071,7 @@ out_usb_free_urb:
- 	usb_free_urb(urb);
- out_usb_kill_anchored_urbs:
- 	if (!parent->active_channels) {
--		usb_kill_anchored_urbs(&dev->tx_submitted);
-+		usb_kill_anchored_urbs(&parent->rx_submitted);
+--- a/drivers/acpi/acpi_pcc.c
++++ b/drivers/acpi/acpi_pcc.c
+@@ -53,7 +53,7 @@ acpi_pcc_address_space_setup(acpi_handle
+ 	struct pcc_data *data;
+ 	struct acpi_pcc_info *ctx = handler_context;
+ 	struct pcc_mbox_chan *pcc_chan;
+-	static acpi_status ret;
++	acpi_status ret;
  
- 		if (dev->feature & GS_CAN_FEATURE_HW_TIMESTAMP)
- 			gs_usb_timestamp_stop(parent);
+ 	data = kzalloc(sizeof(*data), GFP_KERNEL);
+ 	if (!data)
 
 
 
