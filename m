@@ -1,53 +1,51 @@
-Return-Path: <stable+bounces-205731-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205733-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BADFCFA983
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:21:50 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDCB7CFA9AD
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:22:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8E3B73212B7C
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:34:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 919BB32714F5
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:35:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87C1435E54C;
-	Tue,  6 Jan 2026 17:47:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E389333FE23;
+	Tue,  6 Jan 2026 17:47:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L8lU+W2P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2mJqprsQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4496F35E53C;
-	Tue,  6 Jan 2026 17:47:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99C5E35E550;
+	Tue,  6 Jan 2026 17:47:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721672; cv=none; b=rk/4+2G1dtyxki/s0RwNEcsdkPGrLTmotNif/Daj7EkPYZMuVjSdUaXyfwWYuYvpEj+QvBCCVoDmEgqGJ4gvRTQgCs+IvW+Z9d0p033zdNkVopr9hDLOyl7lPZbq8ZvRSHsN4ZjkLDg9BKci0GvZ7PWlt8DTzSCMAx4d+TnkPtM=
+	t=1767721678; cv=none; b=gZYBd8K6ny39vtB5JP4EyT6WrRCpEHNwYV8JxPI+lb3iNnCZtM3zjXDcwkituq8zUuTydIH3XLUtfjhfq2Du+AQj9RrxXgJuOY8qk9pbjvmntlQQCD2e/1wRbvTTjcMsSYGQ1Mnsl/uuwCCyluq4SMys0B0GtSMgcBuRN6SzqKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721672; c=relaxed/simple;
-	bh=Tle8bdFOSM+YyiVmdVN4+z3z1OzpFg1BHqGJaeiddRY=;
+	s=arc-20240116; t=1767721678; c=relaxed/simple;
+	bh=5wzrzI8Oz9MpefXG7x0Q/1wN4vMeXfke9hC5TCfTwLk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KFotiA/JHAJ8ncp0/vQYmvQtG+9vrgcaIKDVFPLIUXMbYID+YFzqUW4sKkAcUejZjFUdxj3gMm0hDLB6vAC6D82h+yyBWk2LyvJ0t0QBbROcOjoZcKrxVErL1fAOrDRfsTCfAjskPM/7S7Z94w+x/RfS9pXxdiE1fFl23hIzJlo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L8lU+W2P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD2E6C116C6;
-	Tue,  6 Jan 2026 17:47:51 +0000 (UTC)
+	 MIME-Version; b=T/oJWdrsdSlo2+rOdDrN011QMVJ7yEBCkxRkBRyd9K3Zf17cIxUGQ9BSEdY5wZhcji6RQY3FMsvc2y1kcsyIvrcpKEuc+vo+2VQ+tXJpdGbzF234kK8Yc8pfgigg1nf+OFcIc73Z0YRwy9S9GRuwu+Oki/2xu7yj+ORFIGstDh0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2mJqprsQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0524AC116C6;
+	Tue,  6 Jan 2026 17:47:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721672;
-	bh=Tle8bdFOSM+YyiVmdVN4+z3z1OzpFg1BHqGJaeiddRY=;
+	s=korg; t=1767721678;
+	bh=5wzrzI8Oz9MpefXG7x0Q/1wN4vMeXfke9hC5TCfTwLk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L8lU+W2PJzCA5jnBlDJoS9nkTQwtS4I5O/jCqq3sOmdcQRixhD1Z17JklGN82CwP6
-	 AS+t77cgxd+J6l66z4VRV/PaDyFwxGwVxL3n/l+dnT86yOKF6H1p0RblbiBKccPKWp
-	 T9B3Ir46unXKKKwJ0S7h/tU8otcDTE0fp1HM1esA=
+	b=2mJqprsQXx1rgR09z+5aX/hXCBJsAgBUtnWv61Roo0vX9ZpRIhIfTFDbIa0YI7BCR
+	 yjdPciNNDlb2PnC9uFhoO4QOO0Ob3jVBT3WgUaZ0LqBVK5rdzXRFwAh8nIujnbFKEQ
+	 z0+y6AnIBJTNc+LiZLoNWboC54M+HvmZpjmfCZt8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Raju Rangoju <Raju.Rangoju@amd.com>,
-	Simon Horman <horms@kernel.org>,
-	Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
+	Daniel Zahka <daniel.zahka@gmail.com>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 037/312] amd-xgbe: reset retries and mode on RX adapt failures
-Date: Tue,  6 Jan 2026 18:01:51 +0100
-Message-ID: <20260106170549.197605306@linuxfoundation.org>
+Subject: [PATCH 6.18 039/312] selftests: drv-net: psp: fix test names in ipver_test_builder()
+Date: Tue,  6 Jan 2026 18:01:53 +0100
+Message-ID: <20260106170549.269321220@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
 References: <20260106170547.832845344@linuxfoundation.org>
@@ -66,51 +64,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Raju Rangoju <Raju.Rangoju@amd.com>
+From: Daniel Zahka <daniel.zahka@gmail.com>
 
-[ Upstream commit df60c332caf95d70f967aeace826e7e2f0847361 ]
+[ Upstream commit f0e5126f5e55d4939784ff61b0b7e9f9636d787d ]
 
-During the stress tests, early RX adaptation handshakes can fail, such
-as missing the RX_ADAPT ACK or not receiving a coefficient update before
-block lock is established. Continuing to retry RX adaptation in this
-state is often ineffective if the current mode selection is not viable.
+test_case will only take on the formatted name after being
+called. This does not work with the way ksft_run() currently
+works. Assign the name after the test_case is created.
 
-Resetting the RX adaptation retry counter when an RX_ADAPT request fails
-to receive ACK or a coefficient update prior to block lock, and clearing
-mode_set so the next bring-up performs a fresh mode selection rather
-than looping on a likely invalid configuration.
-
-Fixes: 4f3b20bfbb75 ("amd-xgbe: add support for rx-adaptation")
-Signed-off-by: Raju Rangoju <Raju.Rangoju@amd.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
-Link: https://patch.msgid.link/20251215151728.311713-1-Raju.Rangoju@amd.com
+Fixes: 81236c74dba6 ("selftests: drv-net: psp: add test for auto-adjusting TCP MSS")
+Signed-off-by: Daniel Zahka <daniel.zahka@gmail.com>
+Link: https://patch.msgid.link/20251216-psp-test-fix-v1-2-3b5a6dde186f@gmail.com
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/amd/xgbe/xgbe-phy-v2.c | 2 ++
- 1 file changed, 2 insertions(+)
+ tools/testing/selftests/drivers/net/psp.py | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-phy-v2.c b/drivers/net/ethernet/amd/xgbe/xgbe-phy-v2.c
-index a56efc1bee33..450a573960e7 100644
---- a/drivers/net/ethernet/amd/xgbe/xgbe-phy-v2.c
-+++ b/drivers/net/ethernet/amd/xgbe/xgbe-phy-v2.c
-@@ -1927,6 +1927,7 @@ static void xgbe_set_rx_adap_mode(struct xgbe_prv_data *pdata,
- {
- 	if (pdata->rx_adapt_retries++ >= MAX_RX_ADAPT_RETRIES) {
- 		pdata->rx_adapt_retries = 0;
-+		pdata->mode_set = false;
- 		return;
- 	}
+diff --git a/tools/testing/selftests/drivers/net/psp.py b/tools/testing/selftests/drivers/net/psp.py
+index 827e04cc8423..473573e216e3 100755
+--- a/tools/testing/selftests/drivers/net/psp.py
++++ b/tools/testing/selftests/drivers/net/psp.py
+@@ -570,8 +570,9 @@ def ipver_test_builder(name, test_func, ipver):
+     """Build test cases for each IP version"""
+     def test_case(cfg):
+         cfg.require_ipver(ipver)
+-        test_case.__name__ = f"{name}_ip{ipver}"
+         test_func(cfg, ipver)
++
++    test_case.__name__ = f"{name}_ip{ipver}"
+     return test_case
  
-@@ -1973,6 +1974,7 @@ static void xgbe_rx_adaptation(struct xgbe_prv_data *pdata)
- 		 */
- 		netif_dbg(pdata, link, pdata->netdev, "Block_lock done");
- 		pdata->rx_adapt_done = true;
-+		pdata->rx_adapt_retries = 0;
- 		pdata->mode_set = false;
- 		return;
- 	}
+ 
 -- 
 2.51.0
 
