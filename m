@@ -1,41 +1,41 @@
-Return-Path: <stable+bounces-205906-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205911-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A42DCFB244
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 22:48:14 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBEFACFB256
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 22:48:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 049D8303D179
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 21:46:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 64C2C305E342
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 21:46:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B793347FF8;
-	Tue,  6 Jan 2026 17:57:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 324A636C0C6;
+	Tue,  6 Jan 2026 17:57:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FqLAJ0hf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jBI+BTJR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30C7D357A50;
-	Tue,  6 Jan 2026 17:57:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2A6D230BCC;
+	Tue,  6 Jan 2026 17:57:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767722258; cv=none; b=Or2bboYfcK5PkS+hjwmWQb1nIJzaVdx072TpTyZbRza6IUK191sSLLYfuD9UjeSgwa0TcQmHQOdIpYn0WnLqhfFQ1ub4r2qCmapeu+/RYWt4LdlmWRGiDLhhCAqOH75Qd+rX4AdYnNyiFEFZ95YQYKUIPme/B3uc29BeWwAdsls=
+	t=1767722274; cv=none; b=sVurspnuMqUBQgtbq7DT8nXrJcodLcUuWn7ZH1G4lqLh7Ulq9zn2prVqJvQ4iH4jpUqllwg+xwRukOoAzeoRGrFSGDQ8HbgFs0quM+iJb3c2elePEvrTHCZaJqYdXUilYIwaPSsW9eCePUU+jmQbKTng7eI/58K9pzWZCfFL8Gc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767722258; c=relaxed/simple;
-	bh=eg7O+KpQzgGvcXo7XM9YolpqRPi4HGC36D3rWVbXpqQ=;
+	s=arc-20240116; t=1767722274; c=relaxed/simple;
+	bh=l2YVH/beIEOcNmEv63vFaryBh2a8IPG8K3l0Jm69f0M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MgpOEquYPUSacQATzVc0zbdEdmljA9d/H0L+l52MVbSAgeuv6bhlgqtq1p6Ib1Uw1Hx7tRkNVpMtBOd4LM7gXg9Gjh0BtdqcNuBE6+FJTCrcXkRK3Pkh5r9+8uWv/RNIFdwpDnenGVETIAJraWij/K6I8oVnIvLQwjzfn8EVkFs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FqLAJ0hf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4B34C116C6;
-	Tue,  6 Jan 2026 17:57:37 +0000 (UTC)
+	 MIME-Version; b=n137Gvz/pBvvib+awWRYUa1TSXMnAtaHPyLU3pcwwNEeFlAia484M0UoqCwQI9WKG64xWI9MJ9UlJA8delefZ+gR05u1fraSoBk0eyUYrtkiU5JJ28buQU97Etp0dwpNltQhYLDQS91KwPbuQtzcCZRFGWb7Xyc9zh8uCX8ubko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jBI+BTJR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3241BC116C6;
+	Tue,  6 Jan 2026 17:57:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767722258;
-	bh=eg7O+KpQzgGvcXo7XM9YolpqRPi4HGC36D3rWVbXpqQ=;
+	s=korg; t=1767722274;
+	bh=l2YVH/beIEOcNmEv63vFaryBh2a8IPG8K3l0Jm69f0M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FqLAJ0hf8XAPcFltkTVdHMRJU60jLCsYJRUscdPDV991xQQF/yj6lDcwOoj91E3CG
-	 g/1/ZkUr0hjmdaZ8jXQQyZ2PAAb5WdLOSqcxyWkAdj3Q4sPkpBMXIRddk/eBUXThLw
-	 +HULzMrXagxHkN3JwNGohSpsdrnp3f4Sn1l3Mh0c=
+	b=jBI+BTJRuApntisoUcg4He9f4+HTE5DB6TGMyZ8WPswlvRF31dK1Y+7ZyhGyTYyAs
+	 t8H10pl0B/J0AsnuT0YmSpS8LciEK5aIxyDpGNBX5q7/7o516u4UCqRjUdXlXJhZIf
+	 T8gMPz1CwE8JIsyu5iAN6dyRoIL7y7gADNUYuOqk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	David Gow <davidgow@google.com>,
 	Kefeng Wang <wangkefeng.wang@huawei.com>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.18 211/312] mm/damon/tests/core-kunit: handle alloc failures in damon_test_update_monitoring_result()
-Date: Tue,  6 Jan 2026 18:04:45 +0100
-Message-ID: <20260106170555.471912869@linuxfoundation.org>
+Subject: [PATCH 6.18 215/312] mm/damon/tests/core-kunit: handle alloc failure on damon_test_set_attrs()
+Date: Tue,  6 Jan 2026 18:04:49 +0100
+Message-ID: <20260106170555.619331439@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
 References: <20260106170547.832845344@linuxfoundation.org>
@@ -68,22 +68,22 @@ Content-Transfer-Encoding: 8bit
 
 From: SeongJae Park <sj@kernel.org>
 
-commit 8cf298c01b7fdb08eef5b6b26d0fe98d48134d72 upstream.
+commit 915a2453d824a9b6bf724e3f970d86ae1d092a61 upstream.
 
-damon_test_update_monitoring_result() is assuming all dynamic memory
-allocation in it will succeed.  Those are indeed likely in the real use
-cases since those allocations are too small to fail, but theoretically
-those could fail.  In the case, inappropriate memory access can happen.
-Fix it by appropriately cleanup pre-allocated memory and skip the
-execution of the remaining tests in the failure cases.
+damon_test_set_attrs() is assuming all dynamic memory allocation in it
+will succeed.  Those are indeed likely in the real use cases since those
+allocations are too small to fail, but theoretically those could fail.  In
+the case, inappropriate memory access can happen.  Fix it by appropriately
+cleanup pre-allocated memory and skip the execution of the remaining tests
+in the failure cases.
 
-Link: https://lkml.kernel.org/r/20251101182021.74868-12-sj@kernel.org
-Fixes: f4c978b6594b ("mm/damon/core-test: add a test for damon_update_monitoring_results()")
+Link: https://lkml.kernel.org/r/20251101182021.74868-13-sj@kernel.org
+Fixes: aa13779be6b7 ("mm/damon/core-test: add a test for damon_set_attrs()")
 Signed-off-by: SeongJae Park <sj@kernel.org>
 Cc: Brendan Higgins <brendan.higgins@linux.dev>
 Cc: David Gow <davidgow@google.com>
 Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: <stable@vger.kernel.org>	[6.3+]
+Cc: <stable@vger.kernel.org>	[6.5+]
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
@@ -92,16 +92,16 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/mm/damon/tests/core-kunit.h
 +++ b/mm/damon/tests/core-kunit.h
-@@ -406,6 +406,9 @@ static void damon_test_update_monitoring
- 	struct damon_attrs new_attrs;
- 	struct damon_region *r = damon_new_region(3, 7);
+@@ -445,6 +445,9 @@ static void damon_test_set_attrs(struct
+ 		.sample_interval = 5000, .aggr_interval = 100000,};
+ 	struct damon_attrs invalid_attrs;
  
-+	if (!r)
-+		kunit_skip(test, "region alloc fail");
++	if (!c)
++		kunit_skip(test, "ctx alloc fail");
 +
- 	r->nr_accesses = 15;
- 	r->nr_accesses_bp = 150000;
- 	r->age = 20;
+ 	KUNIT_EXPECT_EQ(test, damon_set_attrs(c, &valid_attrs), 0);
+ 
+ 	invalid_attrs = valid_attrs;
 
 
 
