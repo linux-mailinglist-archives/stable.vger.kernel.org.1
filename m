@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-205717-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205426-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42779CFA695
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:59:47 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6103CCF9B32
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 18:31:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 13EA931D3A17
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:33:25 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 68054302955D
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:31:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AA10350D53;
-	Tue,  6 Jan 2026 17:47:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2280677F39;
+	Tue,  6 Jan 2026 17:30:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WGhGvDy7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AD6TqYyX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC9EC35CB76;
-	Tue,  6 Jan 2026 17:47:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D19C1155389;
+	Tue,  6 Jan 2026 17:30:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721624; cv=none; b=aN1sGqUW/me1d1BBVaug5GvJkXsnWV9rv0aPGa0OJMCRhajsl424QcLZ8tYF6znFLJw+QzKD5lZTwAE6cG/KYNRBiYw3DmB1uxsYx1T8YxFNd673+LGPqPm0DgJ80z0WNEejIdbFQt242Mut0clB/jwulIsADvZfA8A12EyAvA4=
+	t=1767720652; cv=none; b=C50UxEpSoqYPhPpFUK8AqWovcunrXZaZwuAu8jXBFwWTRD0Ha32VnnUfeYQ6D8QUggsPQRMv1oOAqOc5ysGjv/O/hPuxIkLGX/LhMGw87RvgWxgmZt9dRzuxjnNxPBaquoRGoIBsulNDYb+nbqY4vCPry/7p5hM1Lg1HZLEX5Cg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721624; c=relaxed/simple;
-	bh=F+u1BFUCGAIR0ub/1v6ESNIlnbWImzI20qkk3xnW/bA=;
+	s=arc-20240116; t=1767720652; c=relaxed/simple;
+	bh=i2GW2IuTj0+UzuG+V8KkSch3qnEn8ipOQRpuDG4DW/A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LKXtLTVrPHvTyG2pT471tkH+R4BcuccyPPqUhvYgvj9Au8MX4BGQz4krdi8Vk+x9PujZdzXd0r6HQAfcDDazu3hOkAb2hn+18lxdSTMveRpDLSB38r+++532OeLLgsRDB+wBhGOF1owrnpzZf9x49Ca56+adeLbbWa2RJOdHGns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WGhGvDy7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A6F1C2BC9E;
-	Tue,  6 Jan 2026 17:47:03 +0000 (UTC)
+	 MIME-Version; b=bllL255fauvyqoZ+UmapM65w8+nUZLmisl7vfiOrb3WjpEOJGgp3+X9eso/w6BiDF5T1+LdFPyOYZ06Vaz0k8TDM9FLjgTgLnY0YF4G9u5sjzdzJgTP+bMq5iAwgrYjWz7Tfl9sfrkW4Iqdcql5a3W1lfq7kH3zRvMS84BA177o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AD6TqYyX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41520C116C6;
+	Tue,  6 Jan 2026 17:30:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721624;
-	bh=F+u1BFUCGAIR0ub/1v6ESNIlnbWImzI20qkk3xnW/bA=;
+	s=korg; t=1767720652;
+	bh=i2GW2IuTj0+UzuG+V8KkSch3qnEn8ipOQRpuDG4DW/A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WGhGvDy7W7C0AD3lomer8N63HScFXyB4mc6Ff8eDYuIXGrwt2/vBcbRhU8J+qtJOs
-	 BNRYtUwhgac1r3XAYR1B9XtChGGg2AeQN4D+zdt6q6kBlYXfe85aL5XgyGrQJGRG6o
-	 QcutXPr1/cIcFsn8J2SlsswofZVAVrvHcY5pjKpg=
+	b=AD6TqYyX4AUgUlhs2xGFIxTakxoioEEuJ8y9DwUQXsSrCvySllN6oDCPsqJhTDFaT
+	 3qNJAPEomNc3/ZV5UWuBOWYi40ZySq0ZB0gKqIs0yKQLqmrE1a6SLAHsvQZ2cwAm1h
+	 KfyQQKeysjaWxA65uTb9R0RivcqVeaxheE1zZ5s8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Tiago=20Martins=20Ara=C3=BAjo?= <tiago.martins.araujo@gmail.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Jani Nikula <jani.nikula@intel.com>,
+	Brian Vazquez <brianvv@google.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Samuel Salin <Samuel.salin@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 009/312] drm/edid: add DRM_EDID_IDENT_INIT() to initialize struct drm_edid_ident
+Subject: [PATCH 6.12 301/567] idpf: reduce mbx_task schedule delay to 300us
 Date: Tue,  6 Jan 2026 18:01:23 +0100
-Message-ID: <20260106170548.188919001@linuxfoundation.org>
+Message-ID: <20260106170502.467532142@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
-References: <20260106170547.832845344@linuxfoundation.org>
+In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
+References: <20260106170451.332875001@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,47 +60,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jani Nikula <jani.nikula@intel.com>
+From: Brian Vazquez <brianvv@google.com>
 
-[ Upstream commit 8b61583f993589a64c061aa91b44f5bd350d90a5 ]
+[ Upstream commit b3d6bbae1d6d5638a4ab702ab195476787cde857 ]
 
-Add a convenience helper for initializing struct drm_edid_ident.
+During the IDPF init phase, the mailbox runs in poll mode until it is
+configured to properly handle interrupts. The previous delay of 300ms is
+excessively long for the mailbox polling mechanism, which causes a slow
+initialization of ~2s:
 
-Cc: Tiago Martins Araújo <tiago.martins.araujo@gmail.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Tested-by: Tiago Martins Araújo <tiago.martins.araujo@gmail.com>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/710b2ac6a211606ec1f90afa57b79e8c7375a27e.1761681968.git.jani.nikula@intel.com
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-Stable-dep-of: 83cbb4d33dc2 ("drm/displayid: add quirk to ignore DisplayID checksum errors")
+echo 0000:06:12.4 > /sys/bus/pci/drivers/idpf/bind
+
+[   52.444239] idpf 0000:06:12.4: enabling device (0000 -> 0002)
+[   52.485005] idpf 0000:06:12.4: Device HW Reset initiated
+[   54.177181] idpf 0000:06:12.4: PTP init failed, err=-EOPNOTSUPP
+[   54.206177] idpf 0000:06:12.4: Minimum RX descriptor support not provided, using the default
+[   54.206182] idpf 0000:06:12.4: Minimum TX descriptor support not provided, using the default
+
+Changing the delay to 300us avoids the delays during the initial mailbox
+transactions, making the init phase much faster:
+
+[   83.342590] idpf 0000:06:12.4: enabling device (0000 -> 0002)
+[   83.384402] idpf 0000:06:12.4: Device HW Reset initiated
+[   83.518323] idpf 0000:06:12.4: PTP init failed, err=-EOPNOTSUPP
+[   83.547430] idpf 0000:06:12.4: Minimum RX descriptor support not provided, using the default
+[   83.547435] idpf 0000:06:12.4: Minimum TX descriptor support not provided, using the default
+
+Fixes: 4930fbf419a7 ("idpf: add core init and interrupt request")
+Signed-off-by: Brian Vazquez <brianvv@google.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Tested-by: Samuel Salin <Samuel.salin@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/drm/drm_edid.h |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/net/ethernet/intel/idpf/idpf_lib.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/include/drm/drm_edid.h
-+++ b/include/drm/drm_edid.h
-@@ -340,6 +340,12 @@ struct drm_edid_ident {
- 	const char *name;
- };
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_lib.c b/drivers/net/ethernet/intel/idpf/idpf_lib.c
+index 371fc5052420..173ddc248867 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_lib.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_lib.c
+@@ -1214,7 +1214,7 @@ void idpf_mbx_task(struct work_struct *work)
+ 		idpf_mb_irq_enable(adapter);
+ 	else
+ 		queue_delayed_work(adapter->mbx_wq, &adapter->mbx_task,
+-				   msecs_to_jiffies(300));
++				   usecs_to_jiffies(300));
  
-+#define DRM_EDID_IDENT_INIT(_vend_chr_0, _vend_chr_1, _vend_chr_2, _product_id, _name) \
-+{ \
-+	.panel_id = drm_edid_encode_panel_id(_vend_chr_0, _vend_chr_1, _vend_chr_2, _product_id), \
-+	.name = _name, \
-+}
-+
- #define EDID_PRODUCT_ID(e) ((e)->prod_code[0] | ((e)->prod_code[1] << 8))
- 
- /* Short Audio Descriptor */
+ 	idpf_recv_mb_msg(adapter);
+ }
+-- 
+2.51.0
+
 
 
 
