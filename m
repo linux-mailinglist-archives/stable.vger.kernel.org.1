@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-205450-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205727-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE982CFA1DF
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:26:31 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AC28CF9F55
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:09:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B01A63131C34
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:39:16 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C02F1304862D
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:07:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96CB72C234E;
-	Tue,  6 Jan 2026 17:32:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C91E935E543;
+	Tue,  6 Jan 2026 17:47:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l4wtj4fn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xen9ye/r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 515DF2BE7B2;
-	Tue,  6 Jan 2026 17:32:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 853E135E53C;
+	Tue,  6 Jan 2026 17:47:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767720735; cv=none; b=bpV4yx2WXcUTEJBzJVyD9Wu85i5ynyWfEfiamViGE7Pxv7gyQhuwWS4TD1sWgQqvgMExyu18KgJgmOR9tFE91DrRXiZfCMF7TvWx5HsC+Vol4jRe9GlwtRuI6jHT4NunpsR9ZM5UHIs18jeH4ZmcCQhvTxLB44eBzSqbcKZJA08=
+	t=1767721658; cv=none; b=BYhVLMZt4XLrbD1F1cbcDVWaZwZnAowO4Q4FqC8XO0ndfxE+7tJ7zmAg+1IVeY2uJpKuxpt+C6q30Cg5gdBMHDseWrI4I38MHeEm9m5eiS82wsJWaJwNJBunxRrMies/kLxMJODtitN3gbKAo9FmfvMQffyKtffgEAwtXRFTrVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767720735; c=relaxed/simple;
-	bh=aZv6BMmQ+wEeTMrw11xzhc0iD7tQMFRcPDm/zPB6V7E=;
+	s=arc-20240116; t=1767721658; c=relaxed/simple;
+	bh=iFy+DIOQPCJBoZ6RczqvWuxi9/XB3zO3LT31K3x/mZo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tnVlZxW6PyXdbmZgpQ+xQ2v1zZKZSpT9QKhX+p7n5TFJb6D/uG4bdIoEEXOf0ocb0aVEqtOejgDmvsLNYzRZtKSiYCl51IPoNHCLQ8R8VPO79y8+txQcM+JUUdR67/P1zEyvjgUJXG8A7S5MyUZNWOF6ac5ri06T1P9oy3tuDmc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l4wtj4fn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A6ADC116C6;
-	Tue,  6 Jan 2026 17:32:12 +0000 (UTC)
+	 MIME-Version; b=h8hiojXUe4cx4rzymx37trCCkVTQzrvVe8rfGSyd7jKg+mgkGTgCgC+SiZmq/VkRNUTDeSElBhajHe+kDX+avsH7ICQNtWVDuldNYWuNsl5pkF3hZCNbdaKaag+OJgJ2zX3k+h0x97uD8omuzpwald67yZDANrGEAKH/nXq2YBw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xen9ye/r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7D8AC116C6;
+	Tue,  6 Jan 2026 17:47:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767720732;
-	bh=aZv6BMmQ+wEeTMrw11xzhc0iD7tQMFRcPDm/zPB6V7E=;
+	s=korg; t=1767721658;
+	bh=iFy+DIOQPCJBoZ6RczqvWuxi9/XB3zO3LT31K3x/mZo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l4wtj4fnHaz0EPOTXoG91xVnaRZiRwbQ6525oyyPFRgnpKlrN78Lw58KT8Er7lxzV
-	 soKT/M0oM+apEXybofkh65aTI12Dpsgdg9O0X1KE7iUDuihZwjfK0V+IQHmsRjq3Cm
-	 X/pKtwejmZ4mqa5Y+7ATxgUyAw4zmhVqivG1YKLc=
+	b=Xen9ye/rx6tzFx9I4oNhuIxLUJusDlU7g1+XQx+HlWByrWicHwWeeF/SX/66SJEo1
+	 KUAOeymcKfKFCli5AMHoygaWHVkw5GIispirSuJGYZBna77SmS2WwsjXxBOGJItY4s
+	 Nq1due2BakjB5SZvGR8jKL8qIYwHey63kQAGmO6w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Moore <paul@paul-moore.com>,
-	Will Rosenberg <whrosenb@asu.edu>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Simon Horman <horms@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 326/567] ipv6: BUG() in pskb_expand_head() as part of calipso_skbuff_setattr()
+Subject: [PATCH 6.18 034/312] net: airoha: Move net_devs registration in a dedicated routine
 Date: Tue,  6 Jan 2026 18:01:48 +0100
-Message-ID: <20260106170503.383353655@linuxfoundation.org>
+Message-ID: <20260106170549.090604762@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
-References: <20260106170451.332875001@linuxfoundation.org>
+In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
+References: <20260106170547.832845344@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,99 +61,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Will Rosenberg <whrosenb@asu.edu>
+From: Lorenzo Bianconi <lorenzo@kernel.org>
 
-[ Upstream commit 58fc7342b529803d3c221101102fe913df7adb83 ]
+[ Upstream commit 5e7365b5a1ac8f517a7a84442289d7de242deb76 ]
 
-There exists a kernel oops caused by a BUG_ON(nhead < 0) at
-net/core/skbuff.c:2232 in pskb_expand_head().
-This bug is triggered as part of the calipso_skbuff_setattr()
-routine when skb_cow() is passed headroom > INT_MAX
-(i.e. (int)(skb_headroom(skb) + len_delta) < 0).
+Since airoha_probe() is not executed under rtnl lock, there is small race
+where a given device is configured by user-space while the remaining ones
+are not completely loaded from the dts yet. This condition will allow a
+hw device misconfiguration since there are some conditions (e.g. GDM2 check
+in airoha_dev_init()) that require all device are properly loaded from the
+device tree. Fix the issue moving net_devices registration at the end of
+the airoha_probe routine.
 
-The root cause of the bug is due to an implicit integer cast in
-__skb_cow(). The check (headroom > skb_headroom(skb)) is meant to ensure
-that delta = headroom - skb_headroom(skb) is never negative, otherwise
-we will trigger a BUG_ON in pskb_expand_head(). However, if
-headroom > INT_MAX and delta <= -NET_SKB_PAD, the check passes, delta
-becomes negative, and pskb_expand_head() is passed a negative value for
-nhead.
-
-Fix the trigger condition in calipso_skbuff_setattr(). Avoid passing
-"negative" headroom sizes to skb_cow() within calipso_skbuff_setattr()
-by only using skb_cow() to grow headroom.
-
-PoC:
-	Using `netlabelctl` tool:
-
-        netlabelctl map del default
-        netlabelctl calipso add pass doi:7
-        netlabelctl map add default address:0::1/128 protocol:calipso,7
-
-        Then run the following PoC:
-
-        int fd = socket(AF_INET6, SOCK_DGRAM, IPPROTO_UDP);
-
-        // setup msghdr
-        int cmsg_size = 2;
-        int cmsg_len = 0x60;
-        struct msghdr msg;
-        struct sockaddr_in6 dest_addr;
-        struct cmsghdr * cmsg = (struct cmsghdr *) calloc(1,
-                        sizeof(struct cmsghdr) + cmsg_len);
-        msg.msg_name = &dest_addr;
-        msg.msg_namelen = sizeof(dest_addr);
-        msg.msg_iov = NULL;
-        msg.msg_iovlen = 0;
-        msg.msg_control = cmsg;
-        msg.msg_controllen = cmsg_len;
-        msg.msg_flags = 0;
-
-        // setup sockaddr
-        dest_addr.sin6_family = AF_INET6;
-        dest_addr.sin6_port = htons(31337);
-        dest_addr.sin6_flowinfo = htonl(31337);
-        dest_addr.sin6_addr = in6addr_loopback;
-        dest_addr.sin6_scope_id = 31337;
-
-        // setup cmsghdr
-        cmsg->cmsg_len = cmsg_len;
-        cmsg->cmsg_level = IPPROTO_IPV6;
-        cmsg->cmsg_type = IPV6_HOPOPTS;
-        char * hop_hdr = (char *)cmsg + sizeof(struct cmsghdr);
-        hop_hdr[1] = 0x9; //set hop size - (0x9 + 1) * 8 = 80
-
-        sendmsg(fd, &msg, 0);
-
-Fixes: 2917f57b6bc1 ("calipso: Allow the lsm to label the skbuff directly.")
-Suggested-by: Paul Moore <paul@paul-moore.com>
-Signed-off-by: Will Rosenberg <whrosenb@asu.edu>
-Acked-by: Paul Moore <paul@paul-moore.com>
-Link: https://patch.msgid.link/20251219173637.797418-1-whrosenb@asu.edu
+Fixes: 9cd451d414f6e ("net: airoha: Add loopback support for GDM2")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20251214-airoha-fix-dev-registration-v1-1-860e027ad4c6@kernel.org
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/calipso.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/airoha/airoha_eth.c | 39 ++++++++++++++++--------
+ 1 file changed, 26 insertions(+), 13 deletions(-)
 
-diff --git a/net/ipv6/calipso.c b/net/ipv6/calipso.c
-index a247bb93908b..f5cc02ea3092 100644
---- a/net/ipv6/calipso.c
-+++ b/net/ipv6/calipso.c
-@@ -1342,7 +1342,8 @@ static int calipso_skbuff_setattr(struct sk_buff *skb,
- 	/* At this point new_end aligns to 4n, so (new_end & 4) pads to 8n */
- 	pad = ((new_end & 4) + (end & 7)) & 7;
- 	len_delta = new_end - (int)end + pad;
--	ret_val = skb_cow(skb, skb_headroom(skb) + len_delta);
-+	ret_val = skb_cow(skb,
-+			  skb_headroom(skb) + (len_delta > 0 ? len_delta : 0));
- 	if (ret_val < 0)
- 		return ret_val;
+diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ethernet/airoha/airoha_eth.c
+index 433a646e9831..0394ba6a90a9 100644
+--- a/drivers/net/ethernet/airoha/airoha_eth.c
++++ b/drivers/net/ethernet/airoha/airoha_eth.c
+@@ -2900,19 +2900,26 @@ static int airoha_alloc_gdm_port(struct airoha_eth *eth,
+ 	port->id = id;
+ 	eth->ports[p] = port;
  
+-	err = airoha_metadata_dst_alloc(port);
+-	if (err)
+-		return err;
++	return airoha_metadata_dst_alloc(port);
++}
+ 
+-	err = register_netdev(dev);
+-	if (err)
+-		goto free_metadata_dst;
++static int airoha_register_gdm_devices(struct airoha_eth *eth)
++{
++	int i;
+ 
+-	return 0;
++	for (i = 0; i < ARRAY_SIZE(eth->ports); i++) {
++		struct airoha_gdm_port *port = eth->ports[i];
++		int err;
+ 
+-free_metadata_dst:
+-	airoha_metadata_dst_free(port);
+-	return err;
++		if (!port)
++			continue;
++
++		err = register_netdev(port->dev);
++		if (err)
++			return err;
++	}
++
++	return 0;
+ }
+ 
+ static int airoha_probe(struct platform_device *pdev)
+@@ -2993,6 +3000,10 @@ static int airoha_probe(struct platform_device *pdev)
+ 		}
+ 	}
+ 
++	err = airoha_register_gdm_devices(eth);
++	if (err)
++		goto error_napi_stop;
++
+ 	return 0;
+ 
+ error_napi_stop:
+@@ -3006,10 +3017,12 @@ static int airoha_probe(struct platform_device *pdev)
+ 	for (i = 0; i < ARRAY_SIZE(eth->ports); i++) {
+ 		struct airoha_gdm_port *port = eth->ports[i];
+ 
+-		if (port && port->dev->reg_state == NETREG_REGISTERED) {
++		if (!port)
++			continue;
++
++		if (port->dev->reg_state == NETREG_REGISTERED)
+ 			unregister_netdev(port->dev);
+-			airoha_metadata_dst_free(port);
+-		}
++		airoha_metadata_dst_free(port);
+ 	}
+ 	free_netdev(eth->napi_dev);
+ 	platform_set_drvdata(pdev, NULL);
 -- 
 2.51.0
 
