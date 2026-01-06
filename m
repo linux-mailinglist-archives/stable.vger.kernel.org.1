@@ -1,127 +1,216 @@
-Return-Path: <stable+bounces-205041-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205042-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AFC6CF6F33
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 08:02:54 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65588CF70D8
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 08:36:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 094E2301D312
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 07:02:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 60E26303CF70
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 07:35:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B0EF3093AE;
-	Tue,  6 Jan 2026 07:02:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F32B30AAD4;
+	Tue,  6 Jan 2026 07:35:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b="KY24gprE"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="0QgzpOF4";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="KF9Ai33J";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="EMp+T4YW";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="3A+HAK7w"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-106112.protonmail.ch (mail-106112.protonmail.ch [79.135.106.112])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59AEA3093BB;
-	Tue,  6 Jan 2026 07:02:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.112
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DE0D42AA3
+	for <stable@vger.kernel.org>; Tue,  6 Jan 2026 07:35:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767682969; cv=none; b=S4bnsOsyXfn6khh6SfrYrV9pkRJDYG0Nl+0TZZ+qx3D5WQZMQfZxWKsUCDZTRGR84Xzk66XFdf34NvoOAjMwTpEJzJzZ2GD8lIHYLTlXUb1oOHKid9F5gruDOCQTDf+zBnieoLk/hgyz7DtzHyRx6nJySr1AAwhklmQY/khIDHs=
+	t=1767684950; cv=none; b=Hf4QhOu3OLYAMpArtzfga/JU/Y0oYHEX+LzFYE8amVgXosLq5PZEVVhI77FWkI91mvka0BXR8DHS3uZQCXqXCSqnBELLbsoiJmRgvMGYmnA6j6Lf/U9VU5xRs2g6zfJFpy3Vf63BYkyL2To6XRSzNFfZVAenryulBTyQ1HKZ09M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767682969; c=relaxed/simple;
-	bh=dl7pYMeFGS3yu5g46TvWW9y/9LSwCxG+//0ej2AUWLU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=cldqG30W+Tc/SeZLZrt1Vqic3ZJutBQFc50TBbiS5FRlwQ1TO6hjNPtpWySuX4gpITI/tusOXsLORCwKsUSn8rlkF5Nqbfx2/GFfucdbuebKAzPeO+vn2DFvAfzc8eP5cm4KqGH+Jn4sojF7ZAT7C/fkFOPxPTI8hmg8zapM8Mc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=geanix.com; spf=pass smtp.mailfrom=geanix.com; dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b=KY24gprE; arc=none smtp.client-ip=79.135.106.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=geanix.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=geanix.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=geanix.com;
-	s=protonmail2; t=1767682957; x=1767942157;
-	bh=Ff33WQ4GQXy7iOXr07oKwZiyvNoomCN0lMUIfbK3JYQ=;
-	h=From:Date:Subject:Message-Id:To:Cc:From:To:Cc:Date:Subject:
-	 Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=KY24gprEBSRLNs4XwnP8ztibL8SJvCsGaIRZl5Luww9RJVgq2f1n7OooViBUZ4eoD
-	 3F6SaU6rkt2Z8FKkDtCYGMXd54dsXinZA1/si92Lu22j0PqlHo6y936qjXCIRIiS7P
-	 p2vYjFs4YRnMcmlR436AYZv+GH3MqaCL0KEjWv6rBnB2fQaUZRm1+wX9tc5RIIhve7
-	 KsVZPYm2uGvLXnlYv/h78+W4ciQEraJ0pZaBmWJgIG5616aNBv3B0J7tLa0Yf80/qY
-	 wlkpmcClHRROnnmb+0JHb6WYCyrOfKTpRiGvUrKAtF5zY/qcKxv5DEWfsr5Ah2eeAh
-	 HIJA8EEJ5uclw==
-X-Pm-Submission-Id: 4dlhv00m80z1DFFx
-From: Sean Nyekjaer <sean@geanix.com>
-Date: Tue, 06 Jan 2026 08:01:57 +0100
-Subject: [PATCH] pwm: stm32: handle polarity change when PWM is enabled
+	s=arc-20240116; t=1767684950; c=relaxed/simple;
+	bh=UVmCgUiaqzJWRP6LAA8sduGoxldfxYIqEjUfvNn2YjY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=h+tgh/6VVxFdNmKgspy3IDYf19spprdnOqDpgKhucAapGJmYGbFYZeCpEs3yvwRHYZzhJETG1HhapsTu8dgi6CYqBtQZ5yRxml85K/Jo0ytG9cKLJzviDR1wMsXw9TQ891UQwIJQfMTf/1XIUckxM72Z9Y8fa8AfsdgFNNyjx3c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=0QgzpOF4; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=KF9Ai33J; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=EMp+T4YW; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=3A+HAK7w; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 44A1A338B8;
+	Tue,  6 Jan 2026 07:35:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1767684946; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=hfhhcVef8fH31OaVLzVbFzPACjHCBADmltloGy/SoPw=;
+	b=0QgzpOF4yFKtavoK/Z+LkRqljtjBi26k29OZT0KUyMpBxuVlZ4XoUSbEumW82goJuXZ/rl
+	OBqUEwTE3l+nMx9UfvTPFKoIsJP1J2xi4B8FVa0pgN1ZNGJbPIY5+HQ6Sc6bow5P8UPZo4
+	mZVnoPmesXNWob2SIOUynGe8uLAjIiM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1767684946;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=hfhhcVef8fH31OaVLzVbFzPACjHCBADmltloGy/SoPw=;
+	b=KF9Ai33Jy9i8hXxTBLeBXS5Fg8w7aUK/Bc092jcivQB/KGKv3vYwt16IB7ftPammBHhd5Y
+	3f+beu8nlaxzwHCA==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1767684945; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=hfhhcVef8fH31OaVLzVbFzPACjHCBADmltloGy/SoPw=;
+	b=EMp+T4YWT1MZh5FeGFELjS5i+dg7kWxYOYUkCEhWoMjsCuq5O9L+acNzSz+5bXEMS39b6P
+	3RjdiMqqWhyz+lagKtO0h2GuBA6fW2xDBfk+4Ud8UPHEgfNjmPvOO7Jlul6NF7N3hTZCBN
+	lNcfl5UP2BSzmyi3oyW8+I56JSEPwBY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1767684945;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=hfhhcVef8fH31OaVLzVbFzPACjHCBADmltloGy/SoPw=;
+	b=3A+HAK7wahLMGLujuKSkdNtmjFxP5bOXvBwu8uSSBWKyCFdxwuPCLc2ZjdrA/nxiv+4JXV
+	G1tSrWp/ndcEi1AA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id DF1F13EA63;
+	Tue,  6 Jan 2026 07:35:44 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id NZk3NVC7XGm6BgAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Tue, 06 Jan 2026 07:35:44 +0000
+Message-ID: <523b801b-8747-4e17-a4e3-50fd81cad3a0@suse.de>
+Date: Tue, 6 Jan 2026 08:35:44 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260106-stm32-pwm-v1-1-33e9e8a9fc33@geanix.com>
-X-B4-Tracking: v=1; b=H4sIAGSzXGkC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIzMDQwNT3eKSXGMj3YLyXF1Lw+QkCxNjMwuDNBMloPqCotS0zAqwWdGxtbU
- AIJCvw1sAAAA=
-X-Change-ID: 20260105-stm32-pwm-91cb843680f4
-To: Fabrice Gasnier <fabrice.gasnier@foss.st.com>, 
- =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>, 
- Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
- Alexandre Torgue <alexandre.torgue@foss.st.com>
-Cc: =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>, 
- linux-pwm@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org, Sean Nyekjaer <sean@geanix.com>
-X-Mailer: b4 0.14.2
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] drm: xlnx: zynqmp_kms: Init fbdev with 16 bit color
+To: Mikko Rapeli <mikko.rapeli@linaro.org>, dri-devel@lists.freedesktop.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+ Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Michal Simek <michal.simek@amd.com>,
+ Bill Mills <bill.mills@linaro.org>,
+ Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+ Anatoliy Klymenko <anatoliy.klymenko@amd.com>, stable@vger.kernel.org
+References: <20251205123751.2257694-1-mikko.rapeli@linaro.org>
+ <20251205123751.2257694-2-mikko.rapeli@linaro.org>
+Content-Language: en-US
+From: Thomas Zimmermann <tzimmermann@suse.de>
+Autocrypt: addr=tzimmermann@suse.de; keydata=
+ xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
+ XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
+ BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
+ hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
+ 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
+ AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
+ AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
+ AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
+ lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
+ U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
+ vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
+ 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
+ j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
+ T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
+ 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
+ GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
+ hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
+ EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
+ C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
+ yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
+ SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
+ Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
+ 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
+In-Reply-To: <20251205123751.2257694-2-mikko.rapeli@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-4.30 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-0.995];
+	MIME_GOOD(-0.10)[text/plain];
+	ARC_NA(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	RCVD_TLS_ALL(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[ideasonboard.com,linux.intel.com,kernel.org,gmail.com,ffwll.ch,amd.com,linaro.org,vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,suse.com:url,imap1.dmz-prg2.suse.org:helo,amd.com:email,suse.de:mid,suse.de:email]
+X-Spam-Level: 
+X-Spam-Flag: NO
+X-Spam-Score: -4.30
 
-After commit 7346e7a058a2 ("pwm: stm32: Always do lazy disabling"),
-polarity changes are ignored. Updates to the TIMx_CCER CCxP bits are
-ignored by the hardware when the master output is enabled via the
-TIMx_BDTR MOE bit.
+Hi
 
-Handle polarity changes by temporarily disabling the PWM when required,
-in line with apply() implementations used by other PWM drivers.
+Am 05.12.25 um 13:37 schrieb Mikko Rapeli:
+> From: Anatoliy Klymenko <anatoliy.klymenko@amd.com>
+>
+> Use RG16 buffer format for fbdev emulation. Fbdev backend is being used
+> by Mali 400 userspace driver which expects 16 bit RGB pixel color format.
+> This change should not affect console or other fbdev applications as we
+> still have plenty of colors left.
+>
+> Cc: Bill Mills <bill.mills@linaro.org>
+> Cc: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Anatoliy Klymenko <anatoliy.klymenko@amd.com>
+> Signed-off-by: Mikko Rapeli <mikko.rapeli@linaro.org>
 
-Fixes: 7346e7a058a2 ("pwm: stm32: Always do lazy disabling")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sean Nyekjaer <sean@geanix.com>
----
-This patch is only applicable for stable tree's <= 6.12
-How to explicitly state that and what is the procedure?
----
- drivers/pwm/pwm-stm32.c | 14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
 
-diff --git a/drivers/pwm/pwm-stm32.c b/drivers/pwm/pwm-stm32.c
-index eb24054f9729734da21eb96f2e37af03339e3440..d5f79e87a0653e1710d46e6bf9268a59638943fe 100644
---- a/drivers/pwm/pwm-stm32.c
-+++ b/drivers/pwm/pwm-stm32.c
-@@ -452,15 +452,23 @@ static int stm32_pwm_apply(struct pwm_chip *chip, struct pwm_device *pwm,
- 
- 	enabled = pwm->state.enabled;
- 
-+	if (state->polarity != pwm->state.polarity) {
-+		if (enabled) {
-+			stm32_pwm_disable(priv, pwm->hwpwm);
-+			enabled = false;
-+		}
-+
-+		ret = stm32_pwm_set_polarity(priv, pwm->hwpwm, state->polarity);
-+		if (ret)
-+			return ret;
-+	}
-+
- 	if (!state->enabled) {
- 		if (enabled)
- 			stm32_pwm_disable(priv, pwm->hwpwm);
- 		return 0;
- 	}
- 
--	if (state->polarity != pwm->state.polarity)
--		stm32_pwm_set_polarity(priv, pwm->hwpwm, state->polarity);
--
- 	ret = stm32_pwm_config(priv, pwm->hwpwm,
- 			       state->duty_cycle, state->period);
- 	if (ret)
+although with patch 2 applied, you can simply call 
+'drm_client_setup(drm, NULL)' and it should do the right thing.
 
----
-base-commit: eb18504ca5cf1e6a76a752b73daf0ef51de3551b
-change-id: 20260105-stm32-pwm-91cb843680f4
+Best regards
+Thomas
 
-Best regards,
+> ---
+>   drivers/gpu/drm/xlnx/zynqmp_kms.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/gpu/drm/xlnx/zynqmp_kms.c b/drivers/gpu/drm/xlnx/zynqmp_kms.c
+> index 2bee0a2275ede..ccc35cacd10cb 100644
+> --- a/drivers/gpu/drm/xlnx/zynqmp_kms.c
+> +++ b/drivers/gpu/drm/xlnx/zynqmp_kms.c
+> @@ -525,7 +525,7 @@ int zynqmp_dpsub_drm_init(struct zynqmp_dpsub *dpsub)
+>   		goto err_poll_fini;
+>   
+>   	/* Initialize fbdev generic emulation. */
+> -	drm_client_setup_with_fourcc(drm, DRM_FORMAT_RGB888);
+> +	drm_client_setup_with_fourcc(drm, DRM_FORMAT_RGB565);
+>   
+>   	return 0;
+>   
+
 -- 
-Sean Nyekjaer <sean@geanix.com>
+--
+Thomas Zimmermann
+Graphics Driver Developer
+SUSE Software Solutions Germany GmbH
+Frankenstr. 146, 90461 Nürnberg, Germany, www.suse.com
+GF: Jochen Jaser, Andrew McDonald, Werner Knoblich, (HRB 36809, AG Nürnberg)
+
 
 
