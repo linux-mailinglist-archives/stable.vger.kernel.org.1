@@ -1,44 +1,44 @@
-Return-Path: <stable+bounces-204995-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204996-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D12ECF6576
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 02:46:48 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E3EDCF659D
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 02:48:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DB11D301B4A1
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 01:45:21 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 2EB60300530A
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 01:48:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7470532939B;
-	Tue,  6 Jan 2026 01:45:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B358214A9B;
+	Tue,  6 Jan 2026 01:48:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AUopMDzp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D1cS02Z/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C97A329389;
-	Tue,  6 Jan 2026 01:45:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C64931FE46D;
+	Tue,  6 Jan 2026 01:48:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767663920; cv=none; b=Pjw+DtAIoo0R3qvRWBoW6VcsSYF2BhZK17ynh4erPSjTSfPUdF8/2gTstetTGJCIUanpjfdPddRmBftyjJPOqHHX5j3MxUqP2+l7umQ/OhRVTvUv/VyqtwA6DofCL/+h2aja+ZKg7eyuXt4+BwLPrW7Bno5FD8rhpc/4n1xR5Fw=
+	t=1767664096; cv=none; b=THblxLFfwWI3jKNFbC6YiGv4vNYD661Xgausiv5bZkhNWdbJ8Vf69D1s5RBpHS8MdFHoCW6rsVQyA4Qs9dfy/FWbw1az/UrBEKT8edj+Glp3xppX/Dh0PCcmusIprnjdyt5yd65E1cVM1B8j8QjMwb1VEC8bj3WmEl2Z+CftkiQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767663920; c=relaxed/simple;
-	bh=IbMNEw9lBhcSH8cRNEs0s/qONMcvyGFnAD7Wq4vbsjA=;
+	s=arc-20240116; t=1767664096; c=relaxed/simple;
+	bh=gWgwY5gnqLtgEV6SUiR41ffmkBcPFEdij50nSL0+hes=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eumy/mMJHN+em3vPBYwCmSkuj5Jkofv4JxyYAxbo1qJgCMuycdsdshHvgT+dqznG0E1+OLvTRxkwSV1faBhbOY4BwqKJHwSY0BnTVAvF9OpJLM7lYn8B+n4FqVKj8qbWFZxMkaj0utx/OAtP4f7USdCsvl08MPZdc5iY2yWsLgk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AUopMDzp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87D1DC116D0;
-	Tue,  6 Jan 2026 01:45:19 +0000 (UTC)
+	 MIME-Version; b=k/Ej6b1sOE6t5RzX9G2o3PJGLYZ1XVo+qUfH7igvEevS25FrX6C8F4EhfitfTFoy6LZuyzEmrCPdy+0sHF144gUKvd0e0aIKpE1iPx5VLPHrdGsLkOH7trvEMY40y3Byo30HqDPp8m7r7gA5hcg4crRA1hzTEZHjovVULZ1zyd8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D1cS02Z/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86979C116D0;
+	Tue,  6 Jan 2026 01:48:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767663919;
-	bh=IbMNEw9lBhcSH8cRNEs0s/qONMcvyGFnAD7Wq4vbsjA=;
+	s=k20201202; t=1767664096;
+	bh=gWgwY5gnqLtgEV6SUiR41ffmkBcPFEdij50nSL0+hes=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AUopMDzpH4fMyFRIa0oD3AjHJwyb6fonv467tV9Ykadlzg6tw3rWbKxqoF9St6mfx
-	 OgVCg10Oyy8rJ3XY++Lavl11M1rolW6Pj/lCR+fFbVg3Q+1G8qTwfJHD7fIyPWFkiJ
-	 BdYSLFtYzi/2fq64vPNsqPihCWAbC/LclO+zZyQ3DjJU/GfJ6NcWKsa6jZgk30L27B
-	 ft4XvmCT46ANAbHx/XXPIgcpQ/ucBJADFVAhoVkzlRDOIRFG8G1niziZ+5qRVB6CFi
-	 RtgP+f1869vG2Y+PlWtySGnPTClzMtzjoctnQ1MePCGgL3es4PZXkmi4lmexNX/l16
-	 xz8bFyzAteL6g==
+	b=D1cS02Z/IiZ/s8K97uDEHM5dYKy/+O3nFYUI7ilDtalpIVvtqhiMFcv1hEOKDsdmN
+	 GDSS8iBRi5eGjrnmrdiopX7UVwkKDx9p7SvMMO6vbFXPODCXNlN+7cGNcsf7l55q+c
+	 GWRZXo0FbB9qVTDeuo5L96s6QVsHcCQTTbw57MsByJDPiiHOPFFersgK4TldbL6Mpm
+	 RlV6Gm2uQZhGo3kewmbU7siuXrdz5U+Fo8I0M0LnZL34U70i3zrxBULyH3YReKsjeD
+	 96fnhCjwJiKZiiGleN95KSe9tv/YefQPmx1+9UU/SeDk4Wg8mu6YbFvmyEsdArhIkV
+	 KFCigD+v6TQ6A==
 From: SeongJae Park <sj@kernel.org>
 To: stable@vger.kernel.org
 Cc: damon@lists.linux.dev,
@@ -47,12 +47,12 @@ Cc: damon@lists.linux.dev,
 	David Gow <davidgow@google.com>,
 	Kefeng Wang <wangkefeng.wang@huawei.com>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12.y] mm/damon/tests/core-kunit: handle alloc failres in damon_test_new_filter()
-Date: Mon,  5 Jan 2026 17:45:10 -0800
-Message-ID: <20260106014510.377757-1-sj@kernel.org>
+Subject: [PATCH 6.12.y] mm/damon/tests/core-kunit: handle alloc failures on damon_test_split_regions_of()
+Date: Mon,  5 Jan 2026 17:48:13 -0800
+Message-ID: <20260106014813.404324-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <2026010550-tank-repugnant-eee6@gregkh>
-References: <2026010550-tank-repugnant-eee6@gregkh>
+In-Reply-To: <2026010533-capricorn-drown-ffcf@gregkh>
+References: <2026010533-capricorn-drown-ffcf@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,40 +61,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-damon_test_new_filter() is assuming all dynamic memory allocation in it
-will succeed.  Those are indeed likely in the real use cases since those
-allocations are too small to fail, but theoretically those could fail.  In
-the case, inappropriate memory access can happen.  Fix it by appropriately
-cleanup pre-allocated memory and skip the execution of the remaining tests
-in the failure cases.
+damon_test_split_regions_of() is assuming all dynamic memory allocation in
+it will succeed.  Those are indeed likely in the real use cases since
+those allocations are too small to fail, but theoretically those could
+fail.  In the case, inappropriate memory access can happen.  Fix it by
+appropriately cleanup pre-allocated memory and skip the execution of the
+remaining tests in the failure cases.
 
-Link: https://lkml.kernel.org/r/20251101182021.74868-14-sj@kernel.org
-Fixes: 2a158e956b98 ("mm/damon/core-test: add a test for damos_new_filter()")
+Link: https://lkml.kernel.org/r/20251101182021.74868-9-sj@kernel.org
+Fixes: 17ccae8bb5c9 ("mm/damon: add kunit tests")
 Signed-off-by: SeongJae Park <sj@kernel.org>
 Cc: Brendan Higgins <brendan.higgins@linux.dev>
 Cc: David Gow <davidgow@google.com>
 Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: <stable@vger.kernel.org>	[6.6+]
+Cc: <stable@vger.kernel.org>	[5.15+]
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-(cherry picked from commit 28ab2265e9422ccd81e4beafc0ace90f78de04c4)
+(cherry picked from commit eded254cb69044bd4abde87394ea44909708d7c0)
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- mm/damon/tests/core-kunit.h | 2 ++
- 1 file changed, 2 insertions(+)
+ mm/damon/tests/core-kunit.h | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
 diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
-index cf22e09a3507..28f88cc27517 100644
+index cf22e09a3507..54e4086a2df2 100644
 --- a/mm/damon/tests/core-kunit.h
 +++ b/mm/damon/tests/core-kunit.h
-@@ -412,6 +412,8 @@ static void damos_test_new_filter(struct kunit *test)
- 	struct damos_filter *filter;
+@@ -227,15 +227,35 @@ static void damon_test_split_regions_of(struct kunit *test)
+ 	struct damon_target *t;
+ 	struct damon_region *r;
  
- 	filter = damos_new_filter(DAMOS_FILTER_TYPE_ANON, true);
-+	if (!filter)
-+		kunit_skip(test, "filter alloc fail");
- 	KUNIT_EXPECT_EQ(test, filter->type, DAMOS_FILTER_TYPE_ANON);
- 	KUNIT_EXPECT_EQ(test, filter->matching, true);
- 	KUNIT_EXPECT_PTR_EQ(test, filter->list.prev, &filter->list);
++	if (!c)
++		kunit_skip(test, "ctx alloc fail");
+ 	t = damon_new_target();
++	if (!t) {
++		damon_destroy_ctx(c);
++		kunit_skip(test, "target alloc fail");
++	}
+ 	r = damon_new_region(0, 22);
++	if (!r) {
++		damon_destroy_ctx(c);
++		damon_free_target(t);
++		kunit_skip(test, "region alloc fail");
++	}
+ 	damon_add_region(r, t);
+ 	damon_split_regions_of(t, 2);
+ 	KUNIT_EXPECT_LE(test, damon_nr_regions(t), 2u);
+ 	damon_free_target(t);
+ 
+ 	t = damon_new_target();
++	if (!t) {
++		damon_destroy_ctx(c);
++		kunit_skip(test, "second target alloc fail");
++	}
+ 	r = damon_new_region(0, 220);
++	if (!r) {
++		damon_destroy_ctx(c);
++		damon_free_target(t);
++		kunit_skip(test, "second region alloc fail");
++	}
+ 	damon_add_region(r, t);
+ 	damon_split_regions_of(t, 4);
+ 	KUNIT_EXPECT_LE(test, damon_nr_regions(t), 4u);
 -- 
 2.47.3
 
