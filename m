@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-205824-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205507-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30B6CCFA75C
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:05:03 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CCC9CFA29A
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:30:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D258D3491E46
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:13:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 70C043261663
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:42:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3DF33644BF;
-	Tue,  6 Jan 2026 17:53:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F06733019D6;
+	Tue,  6 Jan 2026 17:35:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WUKS9ldc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CnjlGZR4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FA593644AD;
-	Tue,  6 Jan 2026 17:53:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACC513019BA;
+	Tue,  6 Jan 2026 17:35:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721984; cv=none; b=FU0cRt1YvO2uINpUed6NaJ8PZA90sKmG6Y7dVddZqTuIttswpSxJKryrNR+M+uuicRh98DDqnPHincQgHMMscv5NcOU8x1kxgQNzIWlh4Uq5TLyNvkj9FBow9zeaTArnc8NwdnDWUoCQj8lfWHC751khVoZ4zSSpNCAi4Z+snxc=
+	t=1767720923; cv=none; b=duAPciMEOjkBk2/FMnv6K7//W6RSfdQUF6W65oMwgEMSGW9R0BgeInrCymh2YOr+X6XbEl+o2KOwaZeQu6DWzGhgFN9Gtz7TlEcwNHzwE8xqHevQdyOdjHc88sFzKNtwa3cITJUIBQu6f7b6VyAXjZZcC7eNPQ6tJlM8Tr6z6b4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721984; c=relaxed/simple;
-	bh=Xa/tDtHAqJTNq86yD35E3MFZbHXMJO0zjqdv3bwoJ3I=;
+	s=arc-20240116; t=1767720923; c=relaxed/simple;
+	bh=URbG6XgYgKMGrD+lPlGq3mMJoj3TXuDIzYjZjO5ZXIs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OkQQz7rRXxIi8UGxgx0RuHnQo4i3obj13fF4E2aLd4H+DrEoP4vWii71i1GVYvCPbHC792v+w/Iowvwt27zqKAKTyvUvTp/XSxG+730C1Uvjkbhn6IlU+CzY7DaHe6JdWTdFln0YL9ccARWfnnSa5TgIwqqPW7lJZ6CYWHBcv3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WUKS9ldc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FB27C116C6;
-	Tue,  6 Jan 2026 17:53:03 +0000 (UTC)
+	 MIME-Version; b=gKJ0P5Q9kMd05oy8nl2WE+R5mtNBGEponFUnazIIfKjkSl8Fytiw6xRYRylJECwyU311Lbdjq8lutKQmab8QJYzYBlBKeTEIgW0X1lZA51PBYAUsovOrlXm4RFXdx+FCeMZvs64qvuj8YPtTJYSBXQwio8NX4ag6jcmIZlApDfg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CnjlGZR4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EE29C116C6;
+	Tue,  6 Jan 2026 17:35:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721984;
-	bh=Xa/tDtHAqJTNq86yD35E3MFZbHXMJO0zjqdv3bwoJ3I=;
+	s=korg; t=1767720923;
+	bh=URbG6XgYgKMGrD+lPlGq3mMJoj3TXuDIzYjZjO5ZXIs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WUKS9ldcMUSLBM8WLeeoqczaMnIWzYFJHbhQgcHeerPpmISO9swmKEFbHMb4GA/yi
-	 eqhtvwPWJ58OhogA+9hSdE6ou47/YYPv1REDRVk00p0UuPBvIIl247Zgkhdx+ZkjcY
-	 BPozV7w1Acb3JgcLzuXR7PchMSWVMSrsXpE/6PBU=
+	b=CnjlGZR4+3946gmNn28NReOF9ok+uR0Wo0bPfMND0hxfOXOTwfO6V/Q5QGrcvWti7
+	 ybpFF+4xvsYJoUx3XN2kWul99curIzhruzUcf8vf6T0XebvzajL+7oB4ilH3JHKlGC
+	 xsKJrdZMRF2s1pPX9uJgZagTrh4XuaWakkCtCIDg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Yipeng Zou <zouyipeng@huawei.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 088/312] selftests/ftrace: traceonoff_triggers: strip off names
-Date: Tue,  6 Jan 2026 18:02:42 +0100
-Message-ID: <20260106170551.020275805@linuxfoundation.org>
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Lee Jones <lee@kernel.org>
+Subject: [PATCH 6.12 381/567] mfd: max77620: Fix potential IRQ chip conflict when probing two devices
+Date: Tue,  6 Jan 2026 18:02:43 +0100
+Message-ID: <20260106170505.435992802@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
-References: <20260106170547.832845344@linuxfoundation.org>
+In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
+References: <20260106170451.332875001@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,98 +59,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yipeng Zou <zouyipeng@huawei.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit b889b4fb4cbea3ca7eb9814075d6a51936394bd9 ]
+commit 2bac49bad1f3553cc3b3bfb22cc194e9bd9e8427 upstream.
 
-The func_traceonoff_triggers.tc sometimes goes to fail
-on my board, Kunpeng-920.
+MAX77620 is most likely always a single device on the board, however
+nothing stops board designers to have two of them, thus same device
+driver could probe twice. Or user could manually try to probing second
+time.
 
-[root@localhost]# ./ftracetest ./test.d/ftrace/func_traceonoff_triggers.tc -l fail.log
-=== Ftrace unit tests ===
-[1] ftrace - test for function traceon/off triggers     [FAIL]
-[2] (instance)  ftrace - test for function traceon/off triggers [UNSUPPORTED]
+Device driver is not ready for that case, because it allocates
+statically 'struct regmap_irq_chip' as non-const and stores during
+probe in 'irq_drv_data' member a pointer to per-probe state
+container ('struct max77620_chip').  devm_regmap_add_irq_chip() does not
+make a copy of 'struct regmap_irq_chip' but store the pointer.
 
-I look up the log, and it shows that the md5sum is different between csum1 and csum2.
+Second probe - either successful or failure - would overwrite the
+'irq_drv_data' from previous device probe, so interrupts would be
+executed in a wrong context.
 
-++ cnt=611
-++ sleep .1
-+++ cnt_trace
-+++ grep -v '^#' trace
-+++ wc -l
-++ cnt2=611
-++ '[' 611 -ne 611 ']'
-+++ cat tracing_on
-++ on=0
-++ '[' 0 '!=' 0 ']'
-+++ md5sum trace
-++ csum1='76896aa74362fff66a6a5f3cf8a8a500  trace'
-++ sleep .1
-+++ md5sum trace
-++ csum2='ee8625a21c058818fc26e45c1ed3f6de  trace'
-++ '[' '76896aa74362fff66a6a5f3cf8a8a500  trace' '!=' 'ee8625a21c058818fc26e45c1ed3f6de  trace' ']'
-++ fail 'Tracing file is still changing'
-++ echo Tracing file is still changing
-Tracing file is still changing
-++ exit_fail
-++ exit 1
-
-So I directly dump the trace file before md5sum, the diff shows that:
-
-[root@localhost]# diff trace_1.log trace_2.log -y --suppress-common-lines
-dockerd-12285   [036] d.... 18385.510290: sched_stat | <...>-12285   [036] d.... 18385.510290: sched_stat
-dockerd-12285   [036] d.... 18385.510291: sched_swit | <...>-12285   [036] d.... 18385.510291: sched_swit
-<...>-740       [044] d.... 18385.602859: sched_stat | kworker/44:1-740 [044] d.... 18385.602859: sched_stat
-<...>-740       [044] d.... 18385.602860: sched_swit | kworker/44:1-740 [044] d.... 18385.602860: sched_swit
-
-And we can see that <...> filed be filled with names.
-
-We can strip off the names there to fix that.
-
-After strip off the names:
-
-kworker/u257:0-12 [019] d..2.  2528.758910: sched_stat | -12 [019] d..2.  2528.758910: sched_stat_runtime: comm=k
-kworker/u257:0-12 [019] d..2.  2528.758912: sched_swit | -12 [019] d..2.  2528.758912: sched_switch: prev_comm=kw
-<idle>-0          [000] d.s5.  2528.762318: sched_waki | -0  [000] d.s5.  2528.762318: sched_waking: comm=sshd pi
-<idle>-0          [037] dNh2.  2528.762326: sched_wake | -0  [037] dNh2.  2528.762326: sched_wakeup: comm=sshd pi
-<idle>-0          [037] d..2.  2528.762334: sched_swit | -0  [037] d..2.  2528.762334: sched_switch: prev_comm=sw
-
-Link: https://lore.kernel.org/r/20230818013226.2182299-1-zouyipeng@huawei.com
-Fixes: d87b29179aa0 ("selftests: ftrace: Use md5sum to take less time of checking logs")
-Suggested-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Yipeng Zou <zouyipeng@huawei.com>
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 3df140d11c6d ("mfd: max77620: Mask/unmask interrupt before/after servicing it")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://patch.msgid.link/20251023101939.67991-2-krzysztof.kozlowski@linaro.org
+Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../ftrace/test.d/ftrace/func_traceonoff_triggers.tc         | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/mfd/max77620.c |   15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
-diff --git a/tools/testing/selftests/ftrace/test.d/ftrace/func_traceonoff_triggers.tc b/tools/testing/selftests/ftrace/test.d/ftrace/func_traceonoff_triggers.tc
-index aee22289536b..1b57771dbfdf 100644
---- a/tools/testing/selftests/ftrace/test.d/ftrace/func_traceonoff_triggers.tc
-+++ b/tools/testing/selftests/ftrace/test.d/ftrace/func_traceonoff_triggers.tc
-@@ -90,9 +90,10 @@ if [ $on != "0" ]; then
-     fail "Tracing is not off"
- fi
+--- a/drivers/mfd/max77620.c
++++ b/drivers/mfd/max77620.c
+@@ -253,7 +253,7 @@ static int max77620_irq_global_unmask(vo
+ 	return ret;
+ }
  
--csum1=`md5sum trace`
-+# Cannot rely on names being around as they are only cached, strip them
-+csum1=`cat trace | sed -e 's/^ *[^ ]*\(-[0-9][0-9]*\)/\1/' | md5sum`
- sleep $SLEEP_TIME
--csum2=`md5sum trace`
-+csum2=`cat trace | sed -e 's/^ *[^ ]*\(-[0-9][0-9]*\)/\1/' | md5sum`
+-static struct regmap_irq_chip max77620_top_irq_chip = {
++static const struct regmap_irq_chip max77620_top_irq_chip = {
+ 	.name = "max77620-top",
+ 	.irqs = max77620_top_irqs,
+ 	.num_irqs = ARRAY_SIZE(max77620_top_irqs),
+@@ -497,6 +497,7 @@ static int max77620_probe(struct i2c_cli
+ 	const struct i2c_device_id *id = i2c_client_get_device_id(client);
+ 	const struct regmap_config *rmap_config;
+ 	struct max77620_chip *chip;
++	struct regmap_irq_chip *chip_desc;
+ 	const struct mfd_cell *mfd_cells;
+ 	int n_mfd_cells;
+ 	bool pm_off;
+@@ -507,6 +508,14 @@ static int max77620_probe(struct i2c_cli
+ 		return -ENOMEM;
  
- if [ "$csum1" != "$csum2" ]; then
-     fail "Tracing file is still changing"
--- 
-2.51.0
-
+ 	i2c_set_clientdata(client, chip);
++
++	chip_desc = devm_kmemdup(&client->dev, &max77620_top_irq_chip,
++				 sizeof(max77620_top_irq_chip),
++				 GFP_KERNEL);
++	if (!chip_desc)
++		return -ENOMEM;
++	chip_desc->irq_drv_data = chip;
++
+ 	chip->dev = &client->dev;
+ 	chip->chip_irq = client->irq;
+ 	chip->chip_id = (enum max77620_chip_id)id->driver_data;
+@@ -543,11 +552,9 @@ static int max77620_probe(struct i2c_cli
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	max77620_top_irq_chip.irq_drv_data = chip;
+ 	ret = devm_regmap_add_irq_chip(chip->dev, chip->rmap, client->irq,
+ 				       IRQF_ONESHOT | IRQF_SHARED, 0,
+-				       &max77620_top_irq_chip,
+-				       &chip->top_irq_data);
++				       chip_desc, &chip->top_irq_data);
+ 	if (ret < 0) {
+ 		dev_err(chip->dev, "Failed to add regmap irq: %d\n", ret);
+ 		return ret;
 
 
 
