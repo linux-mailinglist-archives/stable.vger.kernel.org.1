@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-204968-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204969-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9960CF61FF
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 01:55:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A466FCF620B
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 01:55:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D94F930215DB
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 00:55:20 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E82D43038197
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 00:55:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1A4E1F0E29;
-	Tue,  6 Jan 2026 00:55:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 809401F8BD6;
+	Tue,  6 Jan 2026 00:55:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O/ZvBwZf"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tnXUF6Fv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0CE34A3C
-	for <stable@vger.kernel.org>; Tue,  6 Jan 2026 00:55:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 413571F0E29
+	for <stable@vger.kernel.org>; Tue,  6 Jan 2026 00:55:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767660918; cv=none; b=NrIveYGO6/e7H+nqFK4WZuhqpPsa3Fh+X7fPIsvK1/zxEXJZIDQdlOiiEbhIBqhuanvYNZmwoony4bjPerzdUSVBpxkzW8s9lG3E4yDPeQvzXjnXF1cmojYztEwoqeEn056/ISaSqNCKS1AyTpwA9QPDUlibSoJ9SMFd+wqXx7Q=
+	t=1767660931; cv=none; b=cKGElmWAMvLMsgw8UOOPmnGvd89CCqf5mev7GWAvHqDAprATvqw3v89F2QssNw3rMfQ6MgyhhC9U7CML409sJF8HbIXu+mqitF5V7KbDZdjo5e5OH8UQAwogqz7kPWDR+1YwrP0jgke/G2qRgCmCBukZwgepqPFtcezsaLpA4Ak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767660918; c=relaxed/simple;
-	bh=mHWVZd2KXER1x1IfTvb/j9xyrtvExO/0m/3yvZYuC6o=;
+	s=arc-20240116; t=1767660931; c=relaxed/simple;
+	bh=A7g4xupfxtoqzRl1qIYiSPuJUQHWNdGpk8TlrCtcZcM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YFGVVcFYEL9wkjAXG45XONMmXl+PLpSmXpWrA/e6h00i0FjSxlU0zN8JRJy0a/lc6DeKk0YAzeWzMVVV9P4a0djOsVvhKE9Qh0/KVi2CkRoU2dTeDKANOFkkWffYHwr2J8rQZlTGXqZnHZiieEytcZzfYEsdsq/Bls9vV3/OFPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O/ZvBwZf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB041C116D0;
-	Tue,  6 Jan 2026 00:55:17 +0000 (UTC)
+	 MIME-Version; b=loajKjYx3B7qUgwNHLVfDmByD+2htp8cPsmQsIQw3rjzjleDpYLQA5S8JjDXZTKhtBb8CUoY7lWsGFUeYjxNPxxJP6gylrwwO6IOmcxC3oTtD3gMupE6q2e7DFwVslBjkHlgladz7sd2pLQutiopzCoTyH1Se0TPnBVFIU6NpQI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tnXUF6Fv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 468BDC16AAE;
+	Tue,  6 Jan 2026 00:55:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767660918;
-	bh=mHWVZd2KXER1x1IfTvb/j9xyrtvExO/0m/3yvZYuC6o=;
+	s=k20201202; t=1767660930;
+	bh=A7g4xupfxtoqzRl1qIYiSPuJUQHWNdGpk8TlrCtcZcM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O/ZvBwZfjKlxKzduTo5cX7KAThCCeesQzgFkUUdvu85wUL5Ut/ZbAXjIUqGDYVj8Q
-	 mn8u/+6CfbHkwlvQYt0eqUcbSk826w+qHzjckG0jiVjgKEKfc4pKiJ4NZHulVjYB6t
-	 41Fpayy0UZl5bDjW0BJtTXJZg15yRzishWMLZqUKHbDI5i7Q3cG/o6jiQ3myrbDPMn
-	 U1CAoBG9MFuZrzd5kzRpMV41bvyi0FwLIb/Wbf6Oivo6V5qRU/NOQdlpaRebHc874F
-	 W4UHmeI2L8+CwUN5/qw+HeNmTjYT94ncnyfkoPstnMgAk0RioT1SLCUdBYg38i2Cmt
-	 N6TtOFZr/fpWA==
+	b=tnXUF6Fv5P0kZFfApnw8hhZ3AyFU2s6lXPQMMouD1TrkEWf/RdC7fB/08Xvqgj7Ti
+	 lPz14sa231i0gDHkqSddkchulwU8uSCgv4OSDn/yzEUtl+cU0sLUd7UkTLvNK0xQfG
+	 E0OfpFTt43EHfNQtKmMpU1VRQR9ttrLNPtsllQtJleARzdboW7EwBiKOpnWVsV4N+h
+	 E1Ab6KNrIWbY6F6xAkUjD+QUHfhYVsUNzdlMkjhsuniJkuiId1vOMTnZs57MZxr9DI
+	 tb2gKLl+hjXa05ofCJjFVOm7GeaPlxCMBuybmrNuTe5zyD7fioC7l4kl1eblrLsWA3
+	 eSrJjt/INqt9Q==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: SeongJae Park <sj@kernel.org>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@google.com>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	Jonathan Corbet <corbet@lwn.net>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y] mm/damon/tests/vaddr-kunit: handle alloc failures on damon_do_test_apply_three_regions()
-Date: Mon,  5 Jan 2026 19:55:15 -0500
-Message-ID: <20260106005515.2865529-1-sashal@kernel.org>
+Subject: [PATCH 6.12.y 1/4] mm/damon: fixup damos_filter kernel-doc
+Date: Mon,  5 Jan 2026 19:55:25 -0500
+Message-ID: <20260106005528.2865815-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026010547-prankish-amuck-8ac0@gregkh>
-References: <2026010547-prankish-amuck-8ac0@gregkh>
+In-Reply-To: <2026010550-tank-repugnant-eee6@gregkh>
+References: <2026010550-tank-repugnant-eee6@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,47 +61,88 @@ Content-Transfer-Encoding: 8bit
 
 From: SeongJae Park <sj@kernel.org>
 
-[ Upstream commit 2b22d0fcc6320ba29b2122434c1d2f0785fb0a25 ]
+[ Upstream commit e20f52e8e3b7947e40bd40c6cdc69884c6df716c ]
 
-damon_do_test_apply_three_regions() is assuming all dynamic memory
-allocation in it will succeed.  Those are indeed likely in the real use
-cases since those allocations are too small to fail, but theoretically
-those could fail.  In the case, inappropriate memory access can happen.
-Fix it by appropriately cleanup pre-allocated memory and skip the
-execution of the remaining tests in the failure cases.
+Patch series "mm/damon: extend DAMOS filters for inclusion", v2.
 
-Link: https://lkml.kernel.org/r/20251101182021.74868-18-sj@kernel.org
-Fixes: 17ccae8bb5c9 ("mm/damon: add kunit tests")
+DAMOS fitlers are exclusive filters.  It only excludes memory of given
+criterias from the DAMOS action targets.  This has below limitations.
+
+First, the name is not explicitly explaining the behavior.  This actually
+resulted in users' confusions[1].  Secondly, combined uses of multiple
+filters provide only restriced coverages.  For example, building a DAMOS
+scheme that applies the action to memory that belongs to cgroup A "or"
+cgroup B is impossible.  A workaround would be using two schemes that
+fitlers out memory that not belong to cgroup A and cgroup B, respectively.
+It is cumbersome, and difficult to control quota-like per-scheme features
+in an orchestration.  Monitoring of filters-passed memory statistic will
+also be complicated.
+
+Extend DAMOS filters to support not only exclusion (rejecting), but also
+inclusion (allowing) behavior.  For this, add a new damos_filter struct
+field called 'allow' for DAMON kernel API users.  The filter works as an
+inclusion or exclusion filter when it is set or unset, respectively.  For
+DAMON user-space ABI users, add a DAMON sysfs file of same name under
+DAMOS filter sysfs directory.  To prevent exposing a behavioral change to
+old users, set rejecting as the default behavior.
+
+Note that allow-filters work for only inclusion, not exclusion of memory
+that not satisfying the criteria.  And the default behavior of DAMOS for
+memory that no filter has involved is that the action can be applied to
+those memory.  Also, filters-passed memory statistics are for any memory
+that passed through the DAMOS filters check stage.  These implies
+installing allow-filters at the endof the filter list is useless.  Refer
+to the design doc change of this series for more details.
+
+[1] https://lore.kernel.org/20240320165619.71478-1-sj@kernel.org
+
+This patch (of 10):
+
+The comment is slightly wrong.  DAMOS filters are not only for pages, but
+general bytes of memory.  Also the description of 'matching' is bit
+confusing, since DAMOS filters do only filtering out.  Update the comments
+to be less confusing.
+
+Link: https://lkml.kernel.org/r/20250109175126.57878-1-sj@kernel.org
+Link: https://lkml.kernel.org/r/20250109175126.57878-2-sj@kernel.org
 Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: Brendan Higgins <brendan.higgins@linux.dev>
-Cc: David Gow <davidgow@google.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: <stable@vger.kernel.org>	[5.15+]
+Cc: Jonathan Corbet <corbet@lwn.net>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: 28ab2265e942 ("mm/damon/tests/core-kunit: handle alloc failres in damon_test_new_filter()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/damon/vaddr-test.h | 6 ++++++
- 1 file changed, 6 insertions(+)
+ include/linux/damon.h | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/mm/damon/vaddr-test.h b/mm/damon/vaddr-test.h
-index cfb3ba80a642..6af42ef7bff4 100644
---- a/mm/damon/vaddr-test.h
-+++ b/mm/damon/vaddr-test.h
-@@ -128,8 +128,14 @@ static void damon_do_test_apply_three_regions(struct kunit *test,
- 	int i;
+diff --git a/include/linux/damon.h b/include/linux/damon.h
+index a67f2c4940e9..0078912823d2 100644
+--- a/include/linux/damon.h
++++ b/include/linux/damon.h
+@@ -327,8 +327,8 @@ enum damos_filter_type {
  
- 	t = damon_new_target();
-+	if (!t)
-+		kunit_skip(test, "target alloc fail");
- 	for (i = 0; i < nr_regions / 2; i++) {
- 		r = damon_new_region(regions[i * 2], regions[i * 2 + 1]);
-+		if (!r) {
-+			damon_destroy_target(t, NULL);
-+			kunit_skip(test, "region alloc fail");
-+		}
- 		damon_add_region(r, t);
- 	}
- 
+ /**
+  * struct damos_filter - DAMOS action target memory filter.
+- * @type:	Type of the page.
+- * @matching:	If the matching page should filtered out or in.
++ * @type:	Type of the target memory.
++ * @matching:	If the @type-matching memory should be filtered out.
+  * @memcg_id:	Memcg id of the question if @type is DAMOS_FILTER_MEMCG.
+  * @addr_range:	Address range if @type is DAMOS_FILTER_TYPE_ADDR.
+  * @target_idx:	Index of the &struct damon_target of
+@@ -337,9 +337,10 @@ enum damos_filter_type {
+  * @list:	List head for siblings.
+  *
+  * Before applying the &damos->action to a memory region, DAMOS checks if each
+- * page of the region matches to this and avoid applying the action if so.
+- * Support of each filter type depends on the running &struct damon_operations
+- * and the type.  Refer to &enum damos_filter_type for more detai.
++ * byte of the region matches to this given condition and avoid applying the
++ * action if so.  Support of each filter type depends on the running &struct
++ * damon_operations and the type.  Refer to &enum damos_filter_type for more
++ * details.
+  */
+ struct damos_filter {
+ 	enum damos_filter_type type;
 -- 
 2.51.0
 
