@@ -1,51 +1,50 @@
-Return-Path: <stable+bounces-205216-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205222-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28881CFA8AB
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:17:08 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AE18CFA79F
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:06:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4B85E30537A9
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 19:16:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B79B232ED42F
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:15:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2138D34AB1F;
-	Tue,  6 Jan 2026 17:19:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA3B034C830;
+	Tue,  6 Jan 2026 17:19:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ltW/R4nd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tHFzggoj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2F83322537;
-	Tue,  6 Jan 2026 17:19:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 963CE34C81B;
+	Tue,  6 Jan 2026 17:19:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767719961; cv=none; b=ssSaTCfWwNTxUCMaAy4BamDe7pe3ZUgfsQ/Q/5zTeBfJOoGkHCQJZeCERi/P1iY+mKmedBLvnhbh4A48fzkOSY99YQ/7wfZ9/+nqCY9ZcwwoT9Jhg0ZXjdGi95rA7vkNbG6A7rVlZFQF1zWdqGF455Q1Y4YkSRVHycua3APkAnk=
+	t=1767719981; cv=none; b=FU2ZuCvHg6UsljuQuVMubOd38t0SOAArqxLpR2t0WIYO/yacYXdvhsEFcoossiOlac/hkIIcON+8cU/NaHENmsDewUZBUBnXNMQ/2K6VJIP8H2O6YyrpSoqwtFhD6pVV1P70Wn2tNK8BaRlbz0ueFRtDZ+XxrLQtcuwJ6QwSug4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767719961; c=relaxed/simple;
-	bh=nkqvp8JJuqr9BW48y3m128IrKo6MvN03CO/zesJzQsw=;
+	s=arc-20240116; t=1767719981; c=relaxed/simple;
+	bh=07KiBOwBrrKX8JthCjkNN0I9Q32G3O/sRoA/H1fQ/BA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MbgHhHVIxc+EYeVexEnW7LTPlXLnxXFlO0Xeuymemre3eE8DiheaW2/pZLPSZk8mklUpHbsUB3uqq8B0vM4jGMQucscIq7v+genRgrhzK31PgEgJv/PZWzWho8DqnjSO7RPagoZi9+YI42ZZxVOMfes5UTQaQQzj8wfhx0hEE5I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ltW/R4nd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59A57C116C6;
-	Tue,  6 Jan 2026 17:19:21 +0000 (UTC)
+	 MIME-Version; b=m++z+j1jXGloQ2RUzR7//I8UMXXctCbHOiHLKyj3NWdB5wkeXteZzf4lWo6/ZGJ4NB3QolAAz4I1LLbNf3sTW1zcfki1y7Al7TWMs5RPZCaUYmEAC3lsQCEuXGfuZIoUG/KgibHh9LJkAD8Z07uDt8Awvbx1yCIS8zpNQZyGj2I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tHFzggoj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1816AC116C6;
+	Tue,  6 Jan 2026 17:19:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767719961;
-	bh=nkqvp8JJuqr9BW48y3m128IrKo6MvN03CO/zesJzQsw=;
+	s=korg; t=1767719981;
+	bh=07KiBOwBrrKX8JthCjkNN0I9Q32G3O/sRoA/H1fQ/BA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ltW/R4ndxIXNwzapGbypAmrEeTCiC9+LP1pe2wrk/se+rhfjh9lVFJwnwVBOrquSs
-	 xxZMmsUsWm+DFgiQ0DbhqZjVIq/IvRj4QzDab2JUfpGVqAAOtt5Tpbkc5jJy7/oimK
-	 QGTfd3MAnCvR6Kf5evkH6kPDkA1sB7tzBScO1noY=
+	b=tHFzggoj7FVjjCEISeEm9ZJOVuWUSODIqotE/8cksqJR8VAVVE7TwQhwZxydFAaNw
+	 byvuP2ThW/Yqr3s+d74SJcZJytOgucQx99/0yQoRotfKM92q2ga/8kB6qrffkEvUZo
+	 OOvWrmCV2ecoSMCYuphZ1W4bUXCnr9wQkRDhdSok=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 092/567] hwmon: (ltc4282): Fix reset_history file permissions
-Date: Tue,  6 Jan 2026 17:57:54 +0100
-Message-ID: <20260106170454.733138704@linuxfoundation.org>
+	Junjie Cao <junjie.cao@intel.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.12 097/567] Input: ti_am335x_tsc - fix off-by-one error in wire_order validation
+Date: Tue,  6 Jan 2026 17:57:59 +0100
+Message-ID: <20260106170454.916665300@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
 References: <20260106170451.332875001@linuxfoundation.org>
@@ -58,69 +57,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nuno Sá <nuno.sa@analog.com>
+From: Junjie Cao <junjie.cao@intel.com>
 
-[ Upstream commit b3db91c3bfea69a6c6258fea508f25a59c0feb1a ]
+commit 248d3a73a0167dce15ba100477c3e778c4787178 upstream.
 
-The reset_history attributes are write only. Hence don't report them as
-readable just to return -EOPNOTSUPP later on.
+The current validation 'wire_order[i] > ARRAY_SIZE(config_pins)' allows
+wire_order[i] to equal ARRAY_SIZE(config_pins), which causes out-of-bounds
+access when used as index in 'config_pins[wire_order[i]]'.
 
-Fixes: cbc29538dbf7 ("hwmon: Add driver for LTC4282")
-Signed-off-by: Nuno Sá <nuno.sa@analog.com>
-Link: https://lore.kernel.org/r/20251219-ltc4282-fix-reset-history-v1-1-8eab974c124b@analog.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Since config_pins has 4 elements (indices 0-3), the valid range for
+wire_order should be 0-3. Fix the off-by-one error by using >= instead
+of > in the validation check.
+
+Signed-off-by: Junjie Cao <junjie.cao@intel.com>
+Link: https://patch.msgid.link/20251114062817.852698-1-junjie.cao@intel.com
+Fixes: bb76dc09ddfc ("input: ti_am33x_tsc: Order of TSC wires, made configurable")
+Cc: stable@vger.kernel.org
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/ltc4282.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/input/touchscreen/ti_am335x_tsc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/hwmon/ltc4282.c b/drivers/hwmon/ltc4282.c
-index 953dfe2bd166..d98c57918ce3 100644
---- a/drivers/hwmon/ltc4282.c
-+++ b/drivers/hwmon/ltc4282.c
-@@ -1016,8 +1016,9 @@ static umode_t ltc4282_in_is_visible(const struct ltc4282_state *st, u32 attr)
- 	case hwmon_in_max:
- 	case hwmon_in_min:
- 	case hwmon_in_enable:
--	case hwmon_in_reset_history:
- 		return 0644;
-+	case hwmon_in_reset_history:
-+		return 0200;
- 	default:
- 		return 0;
+--- a/drivers/input/touchscreen/ti_am335x_tsc.c
++++ b/drivers/input/touchscreen/ti_am335x_tsc.c
+@@ -85,7 +85,7 @@ static int titsc_config_wires(struct tit
+ 		wire_order[i] = ts_dev->config_inp[i] & 0x0F;
+ 		if (WARN_ON(analog_line[i] > 7))
+ 			return -EINVAL;
+-		if (WARN_ON(wire_order[i] > ARRAY_SIZE(config_pins)))
++		if (WARN_ON(wire_order[i] >= ARRAY_SIZE(config_pins)))
+ 			return -EINVAL;
  	}
-@@ -1036,8 +1037,9 @@ static umode_t ltc4282_curr_is_visible(u32 attr)
- 		return 0444;
- 	case hwmon_curr_max:
- 	case hwmon_curr_min:
--	case hwmon_curr_reset_history:
- 		return 0644;
-+	case hwmon_curr_reset_history:
-+		return 0200;
- 	default:
- 		return 0;
- 	}
-@@ -1055,8 +1057,9 @@ static umode_t ltc4282_power_is_visible(u32 attr)
- 		return 0444;
- 	case hwmon_power_max:
- 	case hwmon_power_min:
--	case hwmon_power_reset_history:
- 		return 0644;
-+	case hwmon_power_reset_history:
-+		return 0200;
- 	default:
- 		return 0;
- 	}
--- 
-2.51.0
-
+ 
 
 
 
