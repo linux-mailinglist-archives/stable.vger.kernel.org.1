@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-205917-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205639-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98438CFA7A5
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:06:44 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79065CFAAF4
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:32:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A90DD3427042
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:16:38 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 129B3305DE6D
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 19:31:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B244636C5A1;
-	Tue,  6 Jan 2026 17:58:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 206922F83AE;
+	Tue,  6 Jan 2026 17:42:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BCm9aMN9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cEJpgmH+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47E5F36C599;
-	Tue,  6 Jan 2026 17:58:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D37E72EFD95;
+	Tue,  6 Jan 2026 17:42:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767722295; cv=none; b=J6KvCSY+9f35WOh9beFfnICFZA/tPcCCglRF7+I15Lj7d3CHOI6e592bkEvva0wsYJEzaCSiJBT5VbRcjs6ebbRNQ8S3uKF/wijh5bJyqZFoM9QwbM0Kn4kE+416m37/+ApV8IMm5JBYynFtdVmRHyekO2JrEd5i3GR6G2nIaTM=
+	t=1767721360; cv=none; b=LvoDON/kzflZ8lZFOMsqI9RAHD8EfRiWN6tRwRFl5QD93e42klXB9pSOODhIk4IRIGB5K2GtgTtGpMa+C6y3cM4nYFKRkFg1XK75zKU7LeYCEHfnh1zIhowemvIANzX0myQIjNjVXVTBGKc8+7I6h5gmijPM33C37K6d2CJSdF4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767722295; c=relaxed/simple;
-	bh=xjlDGSCqsG7YVSZudVHc7CopNUYKAGELv9d4ZdPoRWk=;
+	s=arc-20240116; t=1767721360; c=relaxed/simple;
+	bh=o7/WF1J1+a8NDcPt0CONJ2IVHU9cYCgY7XdPnMqP6sE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tig35AUiNboY1kriGHiA1tlesXS580j6pyxKgt9+7VtYGrD+ItxFo+XcQiw1auOq8fKe0N/PhEaJsluy98W/AyY01wzy33ZMSuKXFEqJw/ReYrxhaHwe+EexjRN1QSNuGRU98LH4b5Dy+mj6RO4Jofpfazzi7iRtG5/+MqxgIwk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BCm9aMN9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD48EC116C6;
-	Tue,  6 Jan 2026 17:58:14 +0000 (UTC)
+	 MIME-Version; b=kHViSC7Psu/gCTw4ha6Bku5KeK+JjbFFr4kzNp7eZAyEmB6M/Vx9A7RFCGL1f673suwz6ce9kTcuRs5fSaeDleEXHVt9OeEO81aUE/d8FTlUb0xUrfEE25sur9ntGo22Jse4TW0ClsyczCM7W/N/f0BCWlTP03eJXrpOYxr3tQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cEJpgmH+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43BF4C116C6;
+	Tue,  6 Jan 2026 17:42:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767722295;
-	bh=xjlDGSCqsG7YVSZudVHc7CopNUYKAGELv9d4ZdPoRWk=;
+	s=korg; t=1767721360;
+	bh=o7/WF1J1+a8NDcPt0CONJ2IVHU9cYCgY7XdPnMqP6sE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BCm9aMN9P+PVRJCMfMdxFQt4ulF8I4F38KHk+vA1YwjWBNQ2bOldTEAflaEdAym/0
-	 5xdIjjcDNeDhg4+iavj6gcMOKAzCVIYIdU59HUR2cmYMEBQ2vIqNf2PG+6Z+LySunA
-	 9P8j2I8bBfNO0cB6kiXfuOgDDDKx39Ubr8llsEK4=
+	b=cEJpgmH+uTuMT8oytKBnw0TALkJ/jF871Pr+1yf6kHCZsjsVw9HzMD+sDK9crkt9U
+	 1cdeTzMsPbF3Sl7aW7l7dH1blxWohSPCVTluIGhKO3ywY6yWhqgqvI73wpBOFHWNZq
+	 lGNABqsBgUHLBbJd6Wh2OSVzgz5oZD89fHgQTxnM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+0ff6b771b4f7a5bce83b@syzkaller.appspotmail.com,
-	Paolo Abeni <pabeni@redhat.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Subject: [PATCH 6.18 221/312] mptcp: fallback earlier on simult connection
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 513/567] f2fs: add timeout in f2fs_enable_checkpoint()
 Date: Tue,  6 Jan 2026 18:04:55 +0100
-Message-ID: <20260106170555.838200616@linuxfoundation.org>
+Message-ID: <20260106170510.353936461@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
-References: <20260106170547.832845344@linuxfoundation.org>
+In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
+References: <20260106170451.332875001@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,147 +60,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Chao Yu <chao@kernel.org>
 
-commit 71154bbe49423128c1c8577b6576de1ed6836830 upstream.
+[ Upstream commit 4bc347779698b5e67e1514bab105c2c083e55502 ]
 
-Syzkaller reports a simult-connect race leading to inconsistent fallback
-status:
+During f2fs_enable_checkpoint() in remount(), if we flush a large
+amount of dirty pages into slow device, it may take long time which
+will block write IO, let's add a timeout machanism during dirty
+pages flush to avoid long time block in f2fs_enable_checkpoint().
 
-  WARNING: CPU: 3 PID: 33 at net/mptcp/subflow.c:1515 subflow_data_ready+0x40b/0x7c0 net/mptcp/subflow.c:1515
-  Modules linked in:
-  CPU: 3 UID: 0 PID: 33 Comm: ksoftirqd/3 Not tainted syzkaller #0 PREEMPT(full)
-  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-  RIP: 0010:subflow_data_ready+0x40b/0x7c0 net/mptcp/subflow.c:1515
-  Code: 89 ee e8 78 61 3c f6 40 84 ed 75 21 e8 8e 66 3c f6 44 89 fe bf 07 00 00 00 e8 c1 61 3c f6 41 83 ff 07 74 09 e8 76 66 3c f6 90 <0f> 0b 90 e8 6d 66 3c f6 48 89 df e8 e5 ad ff ff 31 ff 89 c5 89 c6
-  RSP: 0018:ffffc900006cf338 EFLAGS: 00010246
-  RAX: 0000000000000000 RBX: ffff888031acd100 RCX: ffffffff8b7f2abf
-  RDX: ffff88801e6ea440 RSI: ffffffff8b7f2aca RDI: 0000000000000005
-  RBP: 0000000000000000 R08: 0000000000000005 R09: 0000000000000007
-  R10: 0000000000000004 R11: 0000000000002c10 R12: ffff88802ba69900
-  R13: 1ffff920000d9e67 R14: ffff888046f81800 R15: 0000000000000004
-  FS:  0000000000000000(0000) GS:ffff8880d69bc000(0000) knlGS:0000000000000000
-  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  CR2: 0000560fc0ca1670 CR3: 0000000032c3a000 CR4: 0000000000352ef0
-  Call Trace:
-   <TASK>
-   tcp_data_queue+0x13b0/0x4f90 net/ipv4/tcp_input.c:5197
-   tcp_rcv_state_process+0xfdf/0x4ec0 net/ipv4/tcp_input.c:6922
-   tcp_v6_do_rcv+0x492/0x1740 net/ipv6/tcp_ipv6.c:1672
-   tcp_v6_rcv+0x2976/0x41e0 net/ipv6/tcp_ipv6.c:1918
-   ip6_protocol_deliver_rcu+0x188/0x1520 net/ipv6/ip6_input.c:438
-   ip6_input_finish+0x1e4/0x4b0 net/ipv6/ip6_input.c:489
-   NF_HOOK include/linux/netfilter.h:318 [inline]
-   NF_HOOK include/linux/netfilter.h:312 [inline]
-   ip6_input+0x105/0x2f0 net/ipv6/ip6_input.c:500
-   dst_input include/net/dst.h:471 [inline]
-   ip6_rcv_finish net/ipv6/ip6_input.c:79 [inline]
-   NF_HOOK include/linux/netfilter.h:318 [inline]
-   NF_HOOK include/linux/netfilter.h:312 [inline]
-   ipv6_rcv+0x264/0x650 net/ipv6/ip6_input.c:311
-   __netif_receive_skb_one_core+0x12d/0x1e0 net/core/dev.c:5979
-   __netif_receive_skb+0x1d/0x160 net/core/dev.c:6092
-   process_backlog+0x442/0x15e0 net/core/dev.c:6444
-   __napi_poll.constprop.0+0xba/0x550 net/core/dev.c:7494
-   napi_poll net/core/dev.c:7557 [inline]
-   net_rx_action+0xa9f/0xfe0 net/core/dev.c:7684
-   handle_softirqs+0x216/0x8e0 kernel/softirq.c:579
-   run_ksoftirqd kernel/softirq.c:968 [inline]
-   run_ksoftirqd+0x3a/0x60 kernel/softirq.c:960
-   smpboot_thread_fn+0x3f7/0xae0 kernel/smpboot.c:160
-   kthread+0x3c2/0x780 kernel/kthread.c:463
-   ret_from_fork+0x5d7/0x6f0 arch/x86/kernel/process.c:148
-   ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
-   </TASK>
-
-The TCP subflow can process the simult-connect syn-ack packet after
-transitioning to TCP_FIN1 state, bypassing the MPTCP fallback check,
-as the sk_state_change() callback is not invoked for * -> FIN_WAIT1
-transitions.
-
-That will move the msk socket to an inconsistent status and the next
-incoming data will hit the reported splat.
-
-Close the race moving the simult-fallback check at the earliest possible
-stage - that is at syn-ack generation time.
-
-About the fixes tags: [2] was supposed to also fix this issue introduced
-by [3]. [1] is required as a dependence: it was not explicitly marked as
-a fix, but it is one and it has already been backported before [3]. In
-other words, this commit should be backported up to [3], including [2]
-and [1] if that's not already there.
-
-Fixes: 23e89e8ee7be ("tcp: Don't drop SYN+ACK for simultaneous connect().") [1]
-Fixes: 4fd19a307016 ("mptcp: fix inconsistent state on fastopen race") [2]
-Fixes: 1e777f39b4d7 ("mptcp: add MSG_FASTOPEN sendmsg flag support") [3]
-Cc: stable@vger.kernel.org
-Reported-by: syzbot+0ff6b771b4f7a5bce83b@syzkaller.appspotmail.com
-Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/586
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20251212-net-mptcp-subflow_data_ready-warn-v1-1-d1f9fd1c36c8@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Stable-dep-of: be112e7449a6 ("f2fs: fix to propagate error from f2fs_enable_checkpoint()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/options.c  |   10 ++++++++++
- net/mptcp/protocol.h |    6 ++----
- net/mptcp/subflow.c  |    6 ------
- 3 files changed, 12 insertions(+), 10 deletions(-)
+ fs/f2fs/f2fs.h  |    2 ++
+ fs/f2fs/super.c |   21 +++++++++++++++------
+ 2 files changed, 17 insertions(+), 6 deletions(-)
 
---- a/net/mptcp/options.c
-+++ b/net/mptcp/options.c
-@@ -408,6 +408,16 @@ bool mptcp_syn_options(struct sock *sk,
- 	 */
- 	subflow->snd_isn = TCP_SKB_CB(skb)->end_seq;
- 	if (subflow->request_mptcp) {
-+		if (unlikely(subflow_simultaneous_connect(sk))) {
-+			WARN_ON_ONCE(!mptcp_try_fallback(sk, MPTCP_MIB_SIMULTCONNFALLBACK));
-+
-+			/* Ensure mptcp_finish_connect() will not process the
-+			 * MPC handshake.
-+			 */
-+			subflow->request_mptcp = 0;
-+			return false;
-+		}
-+
- 		opts->suboptions = OPTION_MPTCP_MPC_SYN;
- 		opts->csum_reqd = mptcp_is_checksum_enabled(sock_net(sk));
- 		opts->allow_join_id0 = mptcp_allow_join_id0(sock_net(sk));
---- a/net/mptcp/protocol.h
-+++ b/net/mptcp/protocol.h
-@@ -1293,10 +1293,8 @@ static inline bool subflow_simultaneous_
+--- a/fs/f2fs/f2fs.h
++++ b/fs/f2fs/f2fs.h
+@@ -249,6 +249,7 @@ enum {
+ #define DEF_CP_INTERVAL			60	/* 60 secs */
+ #define DEF_IDLE_INTERVAL		5	/* 5 secs */
+ #define DEF_DISABLE_INTERVAL		5	/* 5 secs */
++#define DEF_ENABLE_INTERVAL		16	/* 16 secs */
+ #define DEF_DISABLE_QUICK_INTERVAL	1	/* 1 secs */
+ #define DEF_UMOUNT_DISCARD_TIMEOUT	5	/* 5 secs */
+ 
+@@ -1351,6 +1352,7 @@ enum {
+ 	DISCARD_TIME,
+ 	GC_TIME,
+ 	DISABLE_TIME,
++	ENABLE_TIME,
+ 	UMOUNT_DISCARD_TIMEOUT,
+ 	MAX_TIME,
+ };
+--- a/fs/f2fs/super.c
++++ b/fs/f2fs/super.c
+@@ -2283,16 +2283,24 @@ restore_flag:
+ 
+ static void f2fs_enable_checkpoint(struct f2fs_sb_info *sbi)
  {
- 	struct mptcp_subflow_context *subflow = mptcp_subflow_ctx(sk);
+-	int retry = DEFAULT_RETRY_IO_COUNT;
++	unsigned int nr_pages = get_pages(sbi, F2FS_DIRTY_DATA) / 16;
++
++	f2fs_update_time(sbi, ENABLE_TIME);
  
--	return (1 << sk->sk_state) &
--	       (TCPF_ESTABLISHED | TCPF_FIN_WAIT1 | TCPF_FIN_WAIT2 | TCPF_CLOSING) &&
--	       is_active_ssk(subflow) &&
--	       !subflow->conn_finished;
-+	/* Note that the sk state implies !subflow->conn_finished. */
-+	return sk->sk_state == TCP_SYN_RECV && is_active_ssk(subflow);
- }
+ 	/* we should flush all the data to keep data consistency */
+-	do {
+-		sync_inodes_sb(sbi->sb);
++	while (get_pages(sbi, F2FS_DIRTY_DATA)) {
++		writeback_inodes_sb_nr(sbi->sb, nr_pages, WB_REASON_SYNC);
+ 		f2fs_io_schedule_timeout(DEFAULT_IO_TIMEOUT);
+-	} while (get_pages(sbi, F2FS_DIRTY_DATA) && retry--);
  
- #ifdef CONFIG_SYN_COOKIES
---- a/net/mptcp/subflow.c
-+++ b/net/mptcp/subflow.c
-@@ -1856,12 +1856,6 @@ static void subflow_state_change(struct
+-	if (unlikely(retry < 0))
+-		f2fs_warn(sbi, "checkpoint=enable has some unwritten data.");
++		if (f2fs_time_over(sbi, ENABLE_TIME))
++			break;
++	}
++
++	sync_inodes_sb(sbi->sb);
++
++	if (unlikely(get_pages(sbi, F2FS_DIRTY_DATA)))
++		f2fs_warn(sbi, "checkpoint=enable has some unwritten data: %lld",
++					get_pages(sbi, F2FS_DIRTY_DATA));
  
- 	__subflow_state_change(sk);
- 
--	if (subflow_simultaneous_connect(sk)) {
--		WARN_ON_ONCE(!mptcp_try_fallback(sk, MPTCP_MIB_SIMULTCONNFALLBACK));
--		subflow->conn_finished = 1;
--		mptcp_propagate_state(parent, sk, subflow, NULL);
--	}
--
- 	/* as recvmsg() does not acquire the subflow socket for ssk selection
- 	 * a fin packet carrying a DSS can be unnoticed if we don't trigger
- 	 * the data available machinery here.
+ 	f2fs_down_write(&sbi->gc_lock);
+ 	f2fs_dirty_to_prefree(sbi);
+@@ -3868,6 +3876,7 @@ static void init_sb_info(struct f2fs_sb_
+ 	sbi->interval_time[DISCARD_TIME] = DEF_IDLE_INTERVAL;
+ 	sbi->interval_time[GC_TIME] = DEF_IDLE_INTERVAL;
+ 	sbi->interval_time[DISABLE_TIME] = DEF_DISABLE_INTERVAL;
++	sbi->interval_time[ENABLE_TIME] = DEF_ENABLE_INTERVAL;
+ 	sbi->interval_time[UMOUNT_DISCARD_TIMEOUT] =
+ 				DEF_UMOUNT_DISCARD_TIMEOUT;
+ 	clear_sbi_flag(sbi, SBI_NEED_FSCK);
 
 
 
