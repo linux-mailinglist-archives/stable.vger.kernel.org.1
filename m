@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-205677-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205958-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9705CFABBD
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:42:50 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52757CFAF2D
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 21:34:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id CE9BB300A9B3
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 19:42:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0A170309E449
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 20:31:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 774DB352FBA;
-	Tue,  6 Jan 2026 17:44:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 637F437C0FB;
+	Tue,  6 Jan 2026 18:00:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M0F+Fo8J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ab/wtBwI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B1C7352FB6;
-	Tue,  6 Jan 2026 17:44:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20670376BFD;
+	Tue,  6 Jan 2026 18:00:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721488; cv=none; b=iapTCECnEdpvc7r+B+NsRz9zUSnKCU4lzvP1pqdwezL2llW/PftWulBFw1MqRcU0541gIIE0YRp4HdJE1BTEfYdDanvpFMsqUjd8G2bIbaBu9PVwp4z9ly4DOunb6MtXd+iW7Ik2snDEj2zyO1kdtNwTcZXQ1avK37Wi3DnhTaY=
+	t=1767722429; cv=none; b=MJsc+GwHnib91LtQ782AVTd00B8LlfOA4i47ojW/UIfTgDCcXu4xJL+Oo9Bu3tnmo90Pm61uxuYKmctUY97AFQVk9t+LdF+rbZRXcX+bM96SflVfBBTYpzRZYyRDnFjgxl/PlbL297a1UosSoiRd8yRE/iIMJmaaZ2duPQOYOX0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721488; c=relaxed/simple;
-	bh=3opyZ+hVVVMN+f3pKd7dXCcp1i8teKGhR1AEuG4+ukM=;
+	s=arc-20240116; t=1767722429; c=relaxed/simple;
+	bh=63SBDZdXI4hyIKAnwK1ZUUbRfIEftZ4auEyxS1y74Qw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eZ+G2L5yqewpsGKQUu9aHyVYgi6lj9CE1bdxl7Mdj76uklTKxH9SeVNnmsOYsGPfV9zNIZNFRz63rw2aJyu0xh+XHkwKzi/7L4FgNCXbJCkTUzlUk2M+eP804/tJnb8ZTrFOTFoBN53QTqNVSQPCrCRpYKXjr5rpzM5+Hm9GYrM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M0F+Fo8J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72F75C116C6;
-	Tue,  6 Jan 2026 17:44:47 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BBTmKIzyLSJ32nBJsXPLHaHqdR9n+5PreV+XU5ls3q7DysBCc/4o0iZNVj/r8FX2C5k6fabD8uvCknC8IPZhW6lvGC/9GrbMY9ro8vxD9Urb6DIHKiV9i4Ts27/6KbnmUfxzDkciWWqAdJR7Hew5CMeWpdgoCbT7UMJXP9QCu/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ab/wtBwI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DDC6C116C6;
+	Tue,  6 Jan 2026 18:00:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721488;
-	bh=3opyZ+hVVVMN+f3pKd7dXCcp1i8teKGhR1AEuG4+ukM=;
+	s=korg; t=1767722429;
+	bh=63SBDZdXI4hyIKAnwK1ZUUbRfIEftZ4auEyxS1y74Qw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M0F+Fo8JEjBSV8peph/pUvSqW7MdnQBT711cV7j4gFmxfeYK/uFX/ex7s8zEYaNEb
-	 cYreKrQVhJ+ERGgaCQoL7XSjAHac8d3ZsoKZ5uAKi/Hmh53PG0Ln2lRb3dXGxzN2hu
-	 KF0e3LCebuIduItnKNvAbHrNthkPRE4FBGpSxf2I=
+	b=ab/wtBwIWUtp+MtOHfODUF4ERbAqzTa+DTWvtCcSb0Yu5pExT5CERe1FCnXvQFpv/
+	 ORy9nUsVNBbB501fyZ3nBzT4DhGbN/0x980GDUxyI1wwN8RXjFfEYF4JBtcotk+/Mz
+	 5TvP67oIr0ntdTmjThlJ3kjP+kHhWVqvH2IW22/I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 551/567] ASoC: renesas: rz-ssi: Fix rz_ssi_priv::hw_params_cache::sample_width
-Date: Tue,  6 Jan 2026 18:05:33 +0100
-Message-ID: <20260106170511.795959568@linuxfoundation.org>
+	Kurt Borja <kuurtb@gmail.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH 6.18 260/312] platform/x86: alienware-wmi-wmax: Add AWCC support for Alienware x16
+Date: Tue,  6 Jan 2026 18:05:34 +0100
+Message-ID: <20260106170557.253292397@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
-References: <20260106170451.332875001@linuxfoundation.org>
+In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
+References: <20260106170547.832845344@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,93 +57,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Biju Das <biju.das.jz@bp.renesas.com>
+From: Kurt Borja <kuurtb@gmail.com>
 
-[ Upstream commit 2bae7beda19f3b2dc6ab2062c94df19c27923712 ]
+commit a584644a490d276907e56817694859eaac2a4199 upstream.
 
-The strm->sample_width is not filled during rz_ssi_dai_hw_params(). This
-wrong value is used for caching sample_width in struct hw_params_cache.
-Fix this issue by replacing 'strm->sample_width'->'params_width(params)'
-in rz_ssi_dai_hw_params(). After this drop the variable sample_width
-from struct rz_ssi_stream as it is unused.
+Add AWCC support for Alienware x16 laptops.
 
-Cc: stable@kernel.org
-Fixes: 4f8cd05a4305 ("ASoC: sh: rz-ssi: Add full duplex support")
-Reviewed-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
-Link: https://patch.msgid.link/20251114073709.4376-3-biju.das.jz@bp.renesas.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Kurt Borja <kuurtb@gmail.com>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Link: https://patch.msgid.link/20251205-area-51-v1-2-d2cb13530851@gmail.com
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/sh/rz-ssi.c |   13 ++++---------
- 1 file changed, 4 insertions(+), 9 deletions(-)
+ drivers/platform/x86/dell/alienware-wmi-wmax.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/sound/soc/sh/rz-ssi.c
-+++ b/sound/soc/sh/rz-ssi.c
-@@ -12,6 +12,7 @@
- #include <linux/module.h>
- #include <linux/pm_runtime.h>
- #include <linux/reset.h>
-+#include <sound/pcm_params.h>
- #include <sound/soc.h>
- 
- /* REGISTER OFFSET */
-@@ -85,7 +86,6 @@ struct rz_ssi_stream {
- 	int fifo_sample_size;	/* sample capacity of SSI FIFO */
- 	int dma_buffer_pos;	/* The address for the next DMA descriptor */
- 	int period_counter;	/* for keeping track of periods transferred */
--	int sample_width;
- 	int buffer_pos;		/* current frame position in the buffer */
- 	int running;		/* 0=stopped, 1=running */
- 
-@@ -231,10 +231,7 @@ static inline bool rz_ssi_is_stream_runn
- static void rz_ssi_stream_init(struct rz_ssi_stream *strm,
- 			       struct snd_pcm_substream *substream)
- {
--	struct snd_pcm_runtime *runtime = substream->runtime;
--
- 	rz_ssi_set_substream(strm, substream);
--	strm->sample_width = samples_to_bytes(runtime, 1);
- 	strm->dma_buffer_pos = 0;
- 	strm->period_counter = 0;
- 	strm->buffer_pos = 0;
-@@ -960,9 +957,9 @@ static int rz_ssi_dai_hw_params(struct s
- 				struct snd_soc_dai *dai)
- {
- 	struct rz_ssi_priv *ssi = snd_soc_dai_get_drvdata(dai);
--	struct rz_ssi_stream *strm = rz_ssi_stream_get(ssi, substream);
- 	unsigned int sample_bits = hw_param_interval(params,
- 					SNDRV_PCM_HW_PARAM_SAMPLE_BITS)->min;
-+	unsigned int sample_width = params_width(params);
- 	unsigned int channels = params_channels(params);
- 	unsigned int rate = params_rate(params);
- 
-@@ -980,16 +977,14 @@ static int rz_ssi_dai_hw_params(struct s
- 
- 	if (rz_ssi_is_stream_running(&ssi->playback) ||
- 	    rz_ssi_is_stream_running(&ssi->capture)) {
--		if (rz_ssi_is_valid_hw_params(ssi, rate, channels,
--					      strm->sample_width, sample_bits))
-+		if (rz_ssi_is_valid_hw_params(ssi, rate, channels, sample_width, sample_bits))
- 			return 0;
- 
- 		dev_err(ssi->dev, "Full duplex needs same HW params\n");
- 		return -EINVAL;
- 	}
- 
--	rz_ssi_cache_hw_params(ssi, rate, channels, strm->sample_width,
--			       sample_bits);
-+	rz_ssi_cache_hw_params(ssi, rate, channels, sample_width, sample_bits);
- 
- 	return rz_ssi_clk_setup(ssi, rate, channels);
- }
+--- a/drivers/platform/x86/dell/alienware-wmi-wmax.c
++++ b/drivers/platform/x86/dell/alienware-wmi-wmax.c
+@@ -178,6 +178,14 @@ static const struct dmi_system_id awcc_d
+ 		.driver_data = &generic_quirks,
+ 	},
+ 	{
++		.ident = "Alienware x16",
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Alienware"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "Alienware x16"),
++		},
++		.driver_data = &g_series_quirks,
++	},
++	{
+ 		.ident = "Alienware x17",
+ 		.matches = {
+ 			DMI_MATCH(DMI_SYS_VENDOR, "Alienware"),
 
 
 
