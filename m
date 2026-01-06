@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-205220-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205230-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10B56CFA617
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:57:34 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07215CFA62F
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:58:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D050834A910A
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:14:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E895334B68ED
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:15:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46A1534C130;
-	Tue,  6 Jan 2026 17:19:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9889734CFC6;
+	Tue,  6 Jan 2026 17:20:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LQbsa6P1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mpr3H7Fb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0342834BA22;
-	Tue,  6 Jan 2026 17:19:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A96634CFBD;
+	Tue,  6 Jan 2026 17:20:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767719975; cv=none; b=SjHEcyD0ZN/4gsNDYAIUpeO2xl+EVG5vOHBkg2b5ZkVkpDS3gGNHlJMHbzzNIR7ZRr49nsh66WlHJSv2L9Ye8XyKuGJEttkfgvmv9RAIuxFkbL68/+uCrDEHh35rdlZQzKTu7JiUmazJ4FwoiItTzqDf5ClRnW32FAkb/nc9NkU=
+	t=1767720008; cv=none; b=sgwSabvzLdwHTxWOryYQlIZBCbdjJnWuFVfs9WOAq0bg5P+WVhuKxmH0kVzJ0nvAiD7+5p+LlrGs1cs9XBFfxtv8plcNHufKuaKwwiYauNOcF4yT0wDDPIVvLbU2SCFsSlGN72ACEPHrppEO5Ten2yJWx2uJxfRq/YSifASMR/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767719975; c=relaxed/simple;
-	bh=44kAaZgbAsY8huVv8W9qCtUCmOul0L2QtVmno65vlr0=;
+	s=arc-20240116; t=1767720008; c=relaxed/simple;
+	bh=WN8lI+6zStsNOlyUlz2aw3FBQ+xoxhOKCklqEOqjGeY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=COCx5IafZw0UfbxcUnz+HcBt8Zz8mmb6i0Y22ceH3svG9t/xRfaiSiRs9e3tL+ou35zknvJjk1e6TtXacG+4HLN+h8eDVx/LVkK08nlDcBTEph1V+gdlHf4l8c9C6P4euUZtg+Rv0PR4N7KUTS+0/PoO5I2Lfy8Ca3uQ3dP3FoE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LQbsa6P1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58C48C116C6;
-	Tue,  6 Jan 2026 17:19:34 +0000 (UTC)
+	 MIME-Version; b=fQd7JC+A+epANJAub/Owjp9n8Xk6+kKH1tserVQnYTqS0Ly/80j9N5t1cwlu7ABujP071NP2LXV3+XRPYfn3pBxiRjUnmw0v3zN9W38C7ngxwdY968MO2hr0QzIZ7yn5MPnvJG5OgIRfrbISwegLNDNCq78fsNDPUTcJsr2Df2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mpr3H7Fb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42183C116C6;
+	Tue,  6 Jan 2026 17:20:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767719974;
-	bh=44kAaZgbAsY8huVv8W9qCtUCmOul0L2QtVmno65vlr0=;
+	s=korg; t=1767720004;
+	bh=WN8lI+6zStsNOlyUlz2aw3FBQ+xoxhOKCklqEOqjGeY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LQbsa6P1osYLSHMko3QPjw1DGCIqE1Ju1CCYFU17zmdGlHaCdroi97CXCLBHxFDgK
-	 fy3tOhsdjtk2r1IfoYRrt3OShyD9RuUVg3vRw02rtMJcJboqfTQ+o617teaK3jhpui
-	 +QKT2Drt0Bab2U0O6J+oJ2eSFyBOrMyZGOBpYnmU=
+	b=Mpr3H7FbX9wNQW2SZKhu3P/+rRfKU4tQanYf3+dzbQjnZqQc3leBZDDkzT1O3ztCC
+	 JcH8yJfhekpWy1rDB/0vWoVSk9Kt/+Q7tFDnFR4z1wUBOgOlTSZFt8nPcLHpP8SxSK
+	 fTUNIX6Hf5mLODemQ8/zprFfcMBZsRRqPnbSMB8Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Moshe Shemesh <moshe@nvidia.com>,
-	Shay Drori <shayd@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Scott Mayhew <smayhew@redhat.com>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 069/567] net/mlx5: Drain firmware reset in shutdown callback
-Date: Tue,  6 Jan 2026 17:57:31 +0100
-Message-ID: <20260106170453.888424230@linuxfoundation.org>
+Subject: [PATCH 6.12 073/567] net/handshake: duplicate handshake cancellations leak socket
+Date: Tue,  6 Jan 2026 17:57:35 +0100
+Message-ID: <20260106170454.035193064@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
 References: <20260106170451.332875001@linuxfoundation.org>
@@ -66,36 +65,59 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Moshe Shemesh <moshe@nvidia.com>
+From: Scott Mayhew <smayhew@redhat.com>
 
-[ Upstream commit 5846a365fc6476b02d6766963cf0985520f0385f ]
+[ Upstream commit 15564bd67e2975002f2a8e9defee33e321d3183f ]
 
-Invoke drain_fw_reset() in the shutdown callback to ensure all
-firmware reset handling is completed before shutdown proceeds.
+When a handshake request is cancelled it is removed from the
+handshake_net->hn_requests list, but it is still present in the
+handshake_rhashtbl until it is destroyed.
 
-Fixes: 16d42d313350 ("net/mlx5: Drain fw_reset when removing device")
-Signed-off-by: Moshe Shemesh <moshe@nvidia.com>
-Reviewed-by: Shay Drori <shayd@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/1765284977-1363052-3-git-send-email-tariqt@nvidia.com
+If a second cancellation request arrives for the same handshake request,
+then remove_pending() will return false... and assuming
+HANDSHAKE_F_REQ_COMPLETED isn't set in req->hr_flags, we'll continue
+processing through the out_true label, where we put another reference on
+the sock and a refcount underflow occurs.
+
+This can happen for example if a handshake times out - particularly if
+the SUNRPC client sends the AUTH_TLS probe to the server but doesn't
+follow it up with the ClientHello due to a problem with tlshd.  When the
+timeout is hit on the server, the server will send a FIN, which triggers
+a cancellation request via xs_reset_transport().  When the timeout is
+hit on the client, another cancellation request happens via
+xs_tls_handshake_sync().
+
+Add a test_and_set_bit(HANDSHAKE_F_REQ_COMPLETED) in the pending cancel
+path so duplicate cancels can be detected.
+
+Fixes: 3b3009ea8abb ("net/handshake: Create a NETLINK service for handling handshake requests")
+Suggested-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Scott Mayhew <smayhew@redhat.com>
+Reviewed-by: Chuck Lever <chuck.lever@oracle.com>
+Link: https://patch.msgid.link/20251209193015.3032058-1-smayhew@redhat.com
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/main.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/handshake/request.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/main.c b/drivers/net/ethernet/mellanox/mlx5/core/main.c
-index 11d8739b9497a..e97b3494b9161 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/main.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/main.c
-@@ -2196,6 +2196,7 @@ static void shutdown(struct pci_dev *pdev)
+diff --git a/net/handshake/request.c b/net/handshake/request.c
+index 94d5cef3e048b..0ac126b0add60 100644
+--- a/net/handshake/request.c
++++ b/net/handshake/request.c
+@@ -325,7 +325,11 @@ bool handshake_req_cancel(struct sock *sk)
  
- 	mlx5_core_info(dev, "Shutdown was called\n");
- 	set_bit(MLX5_BREAK_FW_WAIT, &dev->intf_state);
-+	mlx5_drain_fw_reset(dev);
- 	mlx5_drain_health_wq(dev);
- 	err = mlx5_try_fast_unload(dev);
- 	if (err)
+ 	hn = handshake_pernet(net);
+ 	if (hn && remove_pending(hn, req)) {
+-		/* Request hadn't been accepted */
++		/* Request hadn't been accepted - mark cancelled */
++		if (test_and_set_bit(HANDSHAKE_F_REQ_COMPLETED, &req->hr_flags)) {
++			trace_handshake_cancel_busy(net, req, sk);
++			return false;
++		}
+ 		goto out_true;
+ 	}
+ 	if (test_and_set_bit(HANDSHAKE_F_REQ_COMPLETED, &req->hr_flags)) {
 -- 
 2.51.0
 
