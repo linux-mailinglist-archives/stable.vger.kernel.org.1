@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-205732-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205454-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3898CCF9FD3
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:12:24 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B211ACF9D8E
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 18:51:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 87CBE307283C
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:08:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4D8943136061
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:39:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECFAF35E54E;
-	Tue,  6 Jan 2026 17:47:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7E462D1931;
+	Tue,  6 Jan 2026 17:32:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RWo0p8Dd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S7rC57gg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA63B33FE23;
-	Tue,  6 Jan 2026 17:47:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 645112D0C99;
+	Tue,  6 Jan 2026 17:32:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721675; cv=none; b=ZYV5aB609wk8s+Y9VRjc+/vwoAC9/cJdDUeiDoZsCuscLr2EtvJAiDX0TtekwWLw2pSFrMLoLeun9N8jv3IXSOXwRMjgoICMmDk0hxX4t6V2COG/SC/y8Kcz5rOUBCziKwgwaz39coTG9vfAbKu5CpTbUEu/7TtFSD4YD29b5wI=
+	t=1767720747; cv=none; b=dwHrBxxivGjFMfZSjQwccy6iuVhkruvIRgnpekYO7w8hVz2U8Jvi0oma4e2vjsHoV2WnnwUtLx7tmYbK2uZ2PMhRa5WWvPoPKJtJP9e39yCw+mDTWvlVAYpjHuCOek4QnyI1ykQU25jwiwaQxjXrVH+UAWQXaImTk7JxXVlhDEU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721675; c=relaxed/simple;
-	bh=o4FVd+REffNTwMtmwh1RUHzlein/eiVvuzpOQeWdpFE=;
+	s=arc-20240116; t=1767720747; c=relaxed/simple;
+	bh=nE3W8G6G1vQglOnxmvbvJ5cPfvtjyrXZGd1vOMmyQlM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NO/z0cYF4nU6lG6a2OLYsO1k90rOsdj6bzuXsstzgiuD0AHYH2mUl44sJ2FH96vTMXS7YcrnflUaeAEOeyjWKmCSZRBlUhca+3hL+Fq1DBobzyhakKk1MUgB7mJO8bqzWDKqFm8B5m5LR+bnng8MRKjr0KfI0I2W1O3R+cRfzj0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RWo0p8Dd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1ED8C116C6;
-	Tue,  6 Jan 2026 17:47:54 +0000 (UTC)
+	 MIME-Version; b=tb3ge9rsCSDaaG4yFaKtZxQLrRONpuob0Flj7jhePckCQqZ7/6v1VSpcf/tieFpkhp+WtJCL1Whu/oEGarO+OCQ3ec9B4BWRDnP8fqPbKYkZoV07bdaXSkSbvcIU1OwJTAN6WTH8pdWrML8P71QNj+3wybjuWsLNc2/SR+4Y1h4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S7rC57gg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73438C116C6;
+	Tue,  6 Jan 2026 17:32:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721675;
-	bh=o4FVd+REffNTwMtmwh1RUHzlein/eiVvuzpOQeWdpFE=;
+	s=korg; t=1767720746;
+	bh=nE3W8G6G1vQglOnxmvbvJ5cPfvtjyrXZGd1vOMmyQlM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RWo0p8DdYo2QIEyXHMh9a1Hx3TMwSmCW74MsqbC0EkP35L9VQSAFJg9kWOtA5uTjl
-	 1Ij6m5PkoxGuxVtekuorvYNquDo7LaCHi0qGNUx64GIyksXolR4/FtdXQkLShklPMD
-	 kJBggrr6igtgGaaxHZKBLjv7N2JTxttwM5LfIPUU=
+	b=S7rC57ggxvXxTXrL6+bruf1ZPf4/hWMry9U9n+qW1RxFhstYJOzLcYgwWIea1K9Yz
+	 O+z7wisNaIwh3sS3mFFXcX44QscOJsqxGZimJJArnyZvOJF5ECOBtgLA8JDw50vE59
+	 Rk8gray8bDnawQNtW30eTHfdurm1hu5QRPuWFFLs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Zahka <daniel.zahka@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Michal Schmidt <mschmidt@redhat.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 038/312] selftests: drv-net: psp: fix templated test names in psp_ip_ver_test_builder()
+Subject: [PATCH 6.12 330/567] RDMA/irdma: avoid invalid read in irdma_net_event
 Date: Tue,  6 Jan 2026 18:01:52 +0100
-Message-ID: <20260106170549.233373893@linuxfoundation.org>
+Message-ID: <20260106170503.540929577@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
-References: <20260106170547.832845344@linuxfoundation.org>
+In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
+References: <20260106170451.332875001@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,42 +60,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Zahka <daniel.zahka@gmail.com>
+From: Michal Schmidt <mschmidt@redhat.com>
 
-[ Upstream commit d52668cac3f98f86aa1fb238dec1320c80fbefea ]
+[ Upstream commit 6f05611728e9d0ab024832a4f1abb74a5f5d0bb0 ]
 
-test_case will only take on its formatted name after it is called by
-the test runner. Move the assignment to test_case.__name__ to when the
-test_case is constructed, not called.
+irdma_net_event() should not dereference anything from "neigh" (alias
+"ptr") until it has checked that the event is NETEVENT_NEIGH_UPDATE.
+Other events come with different structures pointed to by "ptr" and they
+may be smaller than struct neighbour.
 
-Fixes: 8f90dc6e417a ("selftests: drv-net: psp: add basic data transfer and key rotation tests")
-Signed-off-by: Daniel Zahka <daniel.zahka@gmail.com>
-Link: https://patch.msgid.link/20251216-psp-test-fix-v1-1-3b5a6dde186f@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Move the read of neigh->dev under the NETEVENT_NEIGH_UPDATE case.
+
+The bug is mostly harmless, but it triggers KASAN on debug kernels:
+
+ BUG: KASAN: stack-out-of-bounds in irdma_net_event+0x32e/0x3b0 [irdma]
+ Read of size 8 at addr ffffc900075e07f0 by task kworker/27:2/542554
+
+ CPU: 27 PID: 542554 Comm: kworker/27:2 Kdump: loaded Not tainted 5.14.0-630.el9.x86_64+debug #1
+ Hardware name: [...]
+ Workqueue: events rt6_probe_deferred
+ Call Trace:
+  <IRQ>
+  dump_stack_lvl+0x60/0xb0
+  print_address_description.constprop.0+0x2c/0x3f0
+  print_report+0xb4/0x270
+  kasan_report+0x92/0xc0
+  irdma_net_event+0x32e/0x3b0 [irdma]
+  notifier_call_chain+0x9e/0x180
+  atomic_notifier_call_chain+0x5c/0x110
+  rt6_do_redirect+0xb91/0x1080
+  tcp_v6_err+0xe9b/0x13e0
+  icmpv6_notify+0x2b2/0x630
+  ndisc_redirect_rcv+0x328/0x530
+  icmpv6_rcv+0xc16/0x1360
+  ip6_protocol_deliver_rcu+0xb84/0x12e0
+  ip6_input_finish+0x117/0x240
+  ip6_input+0xc4/0x370
+  ipv6_rcv+0x420/0x7d0
+  __netif_receive_skb_one_core+0x118/0x1b0
+  process_backlog+0xd1/0x5d0
+  __napi_poll.constprop.0+0xa3/0x440
+  net_rx_action+0x78a/0xba0
+  handle_softirqs+0x2d4/0x9c0
+  do_softirq+0xad/0xe0
+  </IRQ>
+
+Fixes: 915cc7ac0f8e ("RDMA/irdma: Add miscellaneous utility definitions")
+Link: https://patch.msgid.link/r/20251127143150.121099-1-mschmidt@redhat.com
+Signed-off-by: Michal Schmidt <mschmidt@redhat.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/drivers/net/psp.py | 3 ++-
+ drivers/infiniband/hw/irdma/utils.c | 3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/drivers/net/psp.py b/tools/testing/selftests/drivers/net/psp.py
-index 4ae7a785ff10..827e04cc8423 100755
---- a/tools/testing/selftests/drivers/net/psp.py
-+++ b/tools/testing/selftests/drivers/net/psp.py
-@@ -560,8 +560,9 @@ def psp_ip_ver_test_builder(name, test_func, psp_ver, ipver):
-     """Build test cases for each combo of PSP version and IP version"""
-     def test_case(cfg):
-         cfg.require_ipver(ipver)
--        test_case.__name__ = f"{name}_v{psp_ver}_ip{ipver}"
-         test_func(cfg, psp_ver, ipver)
-+
-+    test_case.__name__ = f"{name}_v{psp_ver}_ip{ipver}"
-     return test_case
+diff --git a/drivers/infiniband/hw/irdma/utils.c b/drivers/infiniband/hw/irdma/utils.c
+index 0422787592d8..87a6d58663de 100644
+--- a/drivers/infiniband/hw/irdma/utils.c
++++ b/drivers/infiniband/hw/irdma/utils.c
+@@ -251,7 +251,7 @@ int irdma_net_event(struct notifier_block *notifier, unsigned long event,
+ 		    void *ptr)
+ {
+ 	struct neighbour *neigh = ptr;
+-	struct net_device *real_dev, *netdev = (struct net_device *)neigh->dev;
++	struct net_device *real_dev, *netdev;
+ 	struct irdma_device *iwdev;
+ 	struct ib_device *ibdev;
+ 	__be32 *p;
+@@ -260,6 +260,7 @@ int irdma_net_event(struct notifier_block *notifier, unsigned long event,
  
- 
+ 	switch (event) {
+ 	case NETEVENT_NEIGH_UPDATE:
++		netdev = neigh->dev;
+ 		real_dev = rdma_vlan_dev_real_dev(netdev);
+ 		if (!real_dev)
+ 			real_dev = netdev;
 -- 
 2.51.0
 
