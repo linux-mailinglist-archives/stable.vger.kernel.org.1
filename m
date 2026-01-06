@@ -1,51 +1,52 @@
-Return-Path: <stable+bounces-205349-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205356-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A2B4CFAB4B
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:36:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E57F3CFAB51
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:36:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 10D8B32724A1
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:56:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4BF543280AE5
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:56:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 661782367AC;
-	Tue,  6 Jan 2026 17:26:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D931349AFE;
+	Tue,  6 Jan 2026 17:27:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FkTJi9/f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D7oTi6pi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25F924A35;
-	Tue,  6 Jan 2026 17:26:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58FB1349AF3;
+	Tue,  6 Jan 2026 17:27:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767720397; cv=none; b=qScss9L+aWN6WRRj/hhHF9d4mceefL+L0qwXEr6vmFDxPnLvqfupSfzCMJndMU3mfJM4DFBXYOXinXOTQFIGA2frVQ+QqF2TGEQPfpRZUKQgKpi0emXmZG1zWJoqI8rLuio8DPh1U+k/Ij5rfOVwdmPKsKXafrIR3rv/clj9TuM=
+	t=1767720420; cv=none; b=ZSnkUfK/wSksINoGfT568/AbQaWa7WRn13yyqkPg7kaadGbgdbYtiwILitBlpKV7Bsv2i5YivLZDt/KfZX9Qdd/fSSFfIA9Zise2NL1SWHsv3dAdxFRwbXAT8lrPla2pGr4KNFtk/RM6mIrEveE0JC5p4f+UzMitl2tKGP6NYE0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767720397; c=relaxed/simple;
-	bh=t2Crl/vtsliF2l0CCWL9wAq9ZOBXiOZzPlPZmeORLeI=;
+	s=arc-20240116; t=1767720420; c=relaxed/simple;
+	bh=tqsKkianiRvbwxjzCXLGZZHsNWBMN3x52CQXBBaOw/A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CJFJ9+1+2FXqPiKa6onN9yRQnJQihFo+EBw+okE+fydnGr/EhabmDAdx46lMeM3ihPkT+lJ/voU6fR05V2e8RofUEGvsW+yQe6eOz9m3ypvYmxRmV+vYelWi1f1SNoKEigp3+BURHEUOJXlJQcFTi1gIQWee3PNI5mA+DwrV8ro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FkTJi9/f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 885A0C116C6;
-	Tue,  6 Jan 2026 17:26:36 +0000 (UTC)
+	 MIME-Version:Content-Type; b=KlN/DYIFZvOd+lKOdNigofNGSYc5g3fxLqqmJsmyLjBk/JcFIPpQzRq6Dfs5y1gm1zcaPNy9I46UJsLUvaTgqk9HTvZVpovQJOqhpXPsqKvnu9W4cKeIbMu3Ie6CsSF8wPgu6Ov3e80gW76zxzxiVA9OIExeEtyB+LMHsFbB9bE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D7oTi6pi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9932EC116C6;
+	Tue,  6 Jan 2026 17:26:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767720397;
-	bh=t2Crl/vtsliF2l0CCWL9wAq9ZOBXiOZzPlPZmeORLeI=;
+	s=korg; t=1767720420;
+	bh=tqsKkianiRvbwxjzCXLGZZHsNWBMN3x52CQXBBaOw/A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FkTJi9/fFnZPHpKZG4PvVmZE0oOUEhwPZ0AVYwWzVQ2Ss1FkbM6H1OGHYjIcw0hoX
-	 lKE4qsjDMAnIE0UTqvE2WsvjnvreSZDhMlpNVLsb7T4i6miROGThi2xJ4boQgeU/AF
-	 3w+ozzyOCVb1rtbI1qMVr2vZ69Wm1EKebDbaA6ic=
+	b=D7oTi6pi2TMB+YEZdR5D3q83SSw+9ai6IQkoa/Z/KKScpprGMya1lvX88Ts/vBrKv
+	 +wFovio2/bc6kuIFV1gXF6xobQyYvyEX2HCsGWbES+DgTC5roFinuV6W0jcSyYBi7K
+	 cYPE7LnwxKhgZVxjxhDWKKqkfDer39qNZtOYpfXc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matteo Rizzo <matteorizzo@google.com>,
-	Yosry Ahmed <yosry.ahmed@linux.dev>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.12 225/567] KVM: nSVM: Propagate SVM_EXIT_CR0_SEL_WRITE correctly for LMSW emulation
-Date: Tue,  6 Jan 2026 18:00:07 +0100
-Message-ID: <20260106170459.636497530@linuxfoundation.org>
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Carlos Maiolino <cmaiolino@redhat.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Carlos Maiolino <cem@kernel.org>
+Subject: [PATCH 6.12 231/567] xfs: fix stupid compiler warning
+Date: Tue,  6 Jan 2026 18:00:13 +0100
+Message-ID: <20260106170459.858064007@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
 References: <20260106170451.332875001@linuxfoundation.org>
@@ -65,66 +66,47 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Yosry Ahmed <yosry.ahmed@linux.dev>
+From: Darrick J. Wong <djwong@kernel.org>
 
-commit 5674a76db0213f9db1e4d08e847ff649b46889c0 upstream.
+commit f06725052098d7b1133ac3846d693c383dc427a2 upstream.
 
-When emulating L2 instructions, svm_check_intercept() checks whether a
-write to CR0 should trigger a synthesized #VMEXIT with
-SVM_EXIT_CR0_SEL_WRITE. For MOV-to-CR0, SVM_EXIT_CR0_SEL_WRITE is only
-triggered if any bit other than CR0.MP and CR0.TS is updated. However,
-according to the APM (24593—Rev.  3.42—March 2024, Table 15-7):
+gcc 14.2 warns about:
 
-  The LMSW instruction treats the selective CR0-write
-  intercept as a non-selective intercept (i.e., it intercepts
-  regardless of the value being written).
+xfs_attr_item.c: In function ‘xfs_attr_recover_work’:
+xfs_attr_item.c:785:9: warning: ‘ip’ may be used uninitialized [-Wmaybe-uninitialized]
+  785 |         xfs_trans_ijoin(tp, ip, 0);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~
+xfs_attr_item.c:740:42: note: ‘ip’ was declared here
+  740 |         struct xfs_inode                *ip;
+      |                                          ^~
 
-Skip checking the changed bits for x86_intercept_lmsw and always inject
-SVM_EXIT_CR0_SEL_WRITE.
+I think this is bogus since xfs_attri_recover_work either returns a real
+pointer having initialized ip or an ERR_PTR having not touched it, but
+the tools are smarter than me so let's just null-init the variable
+anyway.
 
-Fixes: cfec82cb7d31 ("KVM: SVM: Add intercept check for emulated cr accesses")
-Cc: stable@vger.kernel.org
-Reported-by: Matteo Rizzo <matteorizzo@google.com>
-Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
-Link: https://patch.msgid.link/20251024192918.3191141-3-yosry.ahmed@linux.dev
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Cc: stable@vger.kernel.org # v6.8
+Fixes: e70fb328d52772 ("xfs: recreate work items when recovering intent items")
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Reviewed-by: Carlos Maiolino <cmaiolino@redhat.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Carlos Maiolino <cem@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/svm/svm.c |   18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ fs/xfs/xfs_attr_item.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -4675,20 +4675,20 @@ static int svm_check_intercept(struct kv
- 		if (info->intercept == x86_intercept_clts)
- 			break;
- 
--		cr0 = vcpu->arch.cr0 & ~SVM_CR0_SELECTIVE_MASK;
--		val = info->src_val  & ~SVM_CR0_SELECTIVE_MASK;
--
-+		/* LMSW always triggers INTERCEPT_SELECTIVE_CR0 */
- 		if (info->intercept == x86_intercept_lmsw) {
--			cr0 &= 0xfUL;
--			val &= 0xfUL;
--			/* lmsw can't clear PE - catch this here */
--			if (cr0 & X86_CR0_PE)
--				val |= X86_CR0_PE;
-+			icpt_info.exit_code = SVM_EXIT_CR0_SEL_WRITE;
-+			break;
- 		}
- 
-+		/*
-+		 * MOV-to-CR0 only triggers INTERCEPT_SELECTIVE_CR0 if any bit
-+		 * other than SVM_CR0_SELECTIVE_MASK is changed.
-+		 */
-+		cr0 = vcpu->arch.cr0 & ~SVM_CR0_SELECTIVE_MASK;
-+		val = info->src_val  & ~SVM_CR0_SELECTIVE_MASK;
- 		if (cr0 ^ val)
- 			icpt_info.exit_code = SVM_EXIT_CR0_SEL_WRITE;
--
- 		break;
- 	}
- 	case SVM_EXIT_READ_DR0:
+--- a/fs/xfs/xfs_attr_item.c
++++ b/fs/xfs/xfs_attr_item.c
+@@ -739,7 +739,7 @@ xfs_attr_recover_work(
+ 	struct xfs_attri_log_item	*attrip = ATTRI_ITEM(lip);
+ 	struct xfs_attr_intent		*attr;
+ 	struct xfs_mount		*mp = lip->li_log->l_mp;
+-	struct xfs_inode		*ip;
++	struct xfs_inode		*ip = NULL;
+ 	struct xfs_da_args		*args;
+ 	struct xfs_trans		*tp;
+ 	struct xfs_trans_res		resv;
 
 
 
