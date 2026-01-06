@@ -1,52 +1,54 @@
-Return-Path: <stable+bounces-205740-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205745-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DF74CFB20E
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 22:46:37 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19FF3CFB214
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 22:46:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3D63F304F516
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 21:46:36 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B5B48300462D
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 21:46:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 754C435F8D0;
-	Tue,  6 Jan 2026 17:48:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7416A35F8DF;
+	Tue,  6 Jan 2026 17:48:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zQ9TgZDG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yjyvZnMi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2787035F8B3;
-	Tue,  6 Jan 2026 17:48:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30DA835F8B3;
+	Tue,  6 Jan 2026 17:48:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721702; cv=none; b=awXh3dWL0mr7+N8MDrgzjHc+wKNLqwSQbJTxztfdFZZdr0jvjhGM36UAOKS29noaKP/zDShDok3uiCo+WW3K6engj535q2lGS4v8WdsrljghnWjubbMqWRfJ4Mc4X4BMi7xYIz9cAB3yHi75/xj+luYYUG+0duzRlG6NH88syuo=
+	t=1767721719; cv=none; b=mTjS7v6w6Nh/6Du4Jk03BTwLfXvwA6qn5Brz2mjEv6qtLul/7ke7V1N7iX/cctYGOk+EdREIaopMOwi2KyaMxNFU4MsDh2KoOUkf49UbxpJIaYEP7SkDIlbloxGK3ve9GsbT2hcUatELG3hz/60ykFqOezI+4EKlCLbqcSlUj50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721702; c=relaxed/simple;
-	bh=qzl8hK9Qmh3dfkG8ME3O1rmQprQUCW6nbHltUUMaO8c=;
+	s=arc-20240116; t=1767721719; c=relaxed/simple;
+	bh=aqlIgYrcM8IqI6ngK94b8Cf4beu2Q/J9igMzpRRnZXY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gmsmoNMOL6nav9qfoOZd6OAI+/6fP4IMXJV+Lsx/DnGdSYNNrVVGLqHf6WyKhrWOInfuqmf8sIOWT/ZXXW0s5CHXr8CDcizxLIvVvGvDRaeMGz8M/FId0EFF8VMCUIIPvIZa3fnrb0/36LhvOy7vhLi4mPA4hnpdlbuB/fEwWy0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zQ9TgZDG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C2D7C116C6;
-	Tue,  6 Jan 2026 17:48:21 +0000 (UTC)
+	 MIME-Version; b=hvpsz7dvxyaFrgUsRMTlcrwauhpp9sj9cXvrVe+hI0zuQ7NwhTiQtQ3agksOD3HCneNAq15KLVNc0m4HBcFvIVzyVOlAYAVkFQqqhddUc1EfjTZIRgV8xR2kQN2n1OWxEHDCPij5V4n2sc7aHotdU2aOj+8g/F74I72rB67LE58=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yjyvZnMi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 400D7C116C6;
+	Tue,  6 Jan 2026 17:48:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721702;
-	bh=qzl8hK9Qmh3dfkG8ME3O1rmQprQUCW6nbHltUUMaO8c=;
+	s=korg; t=1767721718;
+	bh=aqlIgYrcM8IqI6ngK94b8Cf4beu2Q/J9igMzpRRnZXY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zQ9TgZDGJtKm1R5JsgmdVIV/AmFzy45R/413VMc3WGuNqjaCLDheEPA+heTsm0g7U
-	 yNSPX6nvA12Szsdg0plpNG6K1rR7qABNXeFucEDb3lwV+mueKBPKxFb/LjLblDVZGo
-	 11euHiOgy/QR3lU5GPYGHUSRJlCQiBpfWTZ51V3Q=
+	b=yjyvZnMieSqOcIyuehxeI38rnTMy/YweEEuy5r0gxizo1737DIMdCITmLwElGxrrG
+	 3i+ecosYIVHsW6mmmDKRVOgHgkLi7pHWL+TxrmpNqA5pzFvaR4N3lhtXrk/M9HDur4
+	 1ypLKM95KY3VgPlGlgUUq7nnmBVdNh3+OIwJJDoI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
+	Jorge Sanjuan Garcia <dev-jorge.sanjuangarcia@duagon.com>,
+	Jose Javier Rodriguez Barbarin <dev-josejavier.rodriguez@duagon.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
+	Nicolas Schier <nsc@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 046/312] firewire: nosy: Fix dma_free_coherent() size
-Date: Tue,  6 Jan 2026 18:02:00 +0100
-Message-ID: <20260106170549.523131790@linuxfoundation.org>
+Subject: [PATCH 6.18 050/312] mcb: Add missing modpost build support
+Date: Tue,  6 Jan 2026 18:02:04 +0100
+Message-ID: <20260106170549.664671272@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
 References: <20260106170547.832845344@linuxfoundation.org>
@@ -65,66 +67,71 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Jose Javier Rodriguez Barbarin <dev-josejavier.rodriguez@duagon.com>
 
-[ Upstream commit c48c0fd0e19684b6ecdb4108a429e3a4e73f5e21 ]
+[ Upstream commit 1f4ea4838b13c3b2278436a8dcb148e3c23f4b64 ]
 
-It looks like the buffer allocated and mapped in add_card() is done
-with size RCV_BUFFER_SIZE which is 16 KB and 4KB.
+mcb bus is not prepared to autoload client drivers with the data defined on
+the drivers' MODULE_DEVICE_TABLE. modpost cannot access to mcb_table_id
+inside MODULE_DEVICE_TABLE so the data declared inside is ignored.
 
-Fixes: 286468210d83 ("firewire: new driver: nosy - IEEE 1394 traffic sniffer")
-Co-developed-by: Thomas Fourier <fourier.thomas@gmail.com>
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Co-developed-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Link: https://lore.kernel.org/r/20251216165420.38355-2-fourier.thomas@gmail.com
-Signed-off-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+Add modpost build support for accessing to the mcb_table_id coded on device
+drivers' MODULE_DEVICE_TABLE.
+
+Fixes: 3764e82e5150 ("drivers: Introduce MEN Chameleon Bus")
+Reviewed-by: Jorge Sanjuan Garcia <dev-jorge.sanjuangarcia@duagon.com>
+Signed-off-by: Jose Javier Rodriguez Barbarin <dev-josejavier.rodriguez@duagon.com>
+Acked-by: Nathan Chancellor <nathan@kernel.org>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Link: https://patch.msgid.link/20251202084200.10410-1-dev-josejavier.rodriguez@duagon.com
+Signed-off-by: Nicolas Schier <nsc@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firewire/nosy.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ scripts/mod/devicetable-offsets.c | 3 +++
+ scripts/mod/file2alias.c          | 9 +++++++++
+ 2 files changed, 12 insertions(+)
 
-diff --git a/drivers/firewire/nosy.c b/drivers/firewire/nosy.c
-index ea31ac7ac1ca..e59053738a43 100644
---- a/drivers/firewire/nosy.c
-+++ b/drivers/firewire/nosy.c
-@@ -36,6 +36,8 @@
+diff --git a/scripts/mod/devicetable-offsets.c b/scripts/mod/devicetable-offsets.c
+index d3d00e85edf7..0470ba7c796d 100644
+--- a/scripts/mod/devicetable-offsets.c
++++ b/scripts/mod/devicetable-offsets.c
+@@ -198,6 +198,9 @@ int main(void)
+ 	DEVID(cpu_feature);
+ 	DEVID_FIELD(cpu_feature, feature);
  
- static char driver_name[] = KBUILD_MODNAME;
- 
-+#define RCV_BUFFER_SIZE (16 * 1024)
++	DEVID(mcb_device_id);
++	DEVID_FIELD(mcb_device_id, device);
 +
- /* this is the physical layout of a PCL, its size is 128 bytes */
- struct pcl {
- 	__le32 next;
-@@ -517,16 +519,14 @@ remove_card(struct pci_dev *dev)
- 			  lynx->rcv_start_pcl, lynx->rcv_start_pcl_bus);
- 	dma_free_coherent(&lynx->pci_device->dev, sizeof(struct pcl),
- 			  lynx->rcv_pcl, lynx->rcv_pcl_bus);
--	dma_free_coherent(&lynx->pci_device->dev, PAGE_SIZE, lynx->rcv_buffer,
--			  lynx->rcv_buffer_bus);
-+	dma_free_coherent(&lynx->pci_device->dev, RCV_BUFFER_SIZE,
-+			  lynx->rcv_buffer, lynx->rcv_buffer_bus);
- 
- 	iounmap(lynx->registers);
- 	pci_disable_device(dev);
- 	lynx_put(lynx);
+ 	DEVID(mei_cl_device_id);
+ 	DEVID_FIELD(mei_cl_device_id, name);
+ 	DEVID_FIELD(mei_cl_device_id, uuid);
+diff --git a/scripts/mod/file2alias.c b/scripts/mod/file2alias.c
+index b3333560b95e..4e99393a35f1 100644
+--- a/scripts/mod/file2alias.c
++++ b/scripts/mod/file2alias.c
+@@ -1110,6 +1110,14 @@ static void do_cpu_entry(struct module *mod, void *symval)
+ 	module_alias_printf(mod, false, "cpu:type:*:feature:*%04X*", feature);
  }
  
--#define RCV_BUFFER_SIZE (16 * 1024)
--
- static int
- add_card(struct pci_dev *dev, const struct pci_device_id *unused)
++/* Looks like: mcb:16zN */
++static void do_mcb_entry(struct module *mod, void *symval)
++{
++	DEF_FIELD(symval, mcb_device_id, device);
++
++	module_alias_printf(mod, false, "mcb:16z%03d", device);
++}
++
+ /* Looks like: mei:S:uuid:N:* */
+ static void do_mei_entry(struct module *mod, void *symval)
  {
-@@ -680,7 +680,7 @@ add_card(struct pci_dev *dev, const struct pci_device_id *unused)
- 		dma_free_coherent(&lynx->pci_device->dev, sizeof(struct pcl),
- 				  lynx->rcv_pcl, lynx->rcv_pcl_bus);
- 	if (lynx->rcv_buffer)
--		dma_free_coherent(&lynx->pci_device->dev, PAGE_SIZE,
-+		dma_free_coherent(&lynx->pci_device->dev, RCV_BUFFER_SIZE,
- 				  lynx->rcv_buffer, lynx->rcv_buffer_bus);
- 	iounmap(lynx->registers);
- 
+@@ -1444,6 +1452,7 @@ static const struct devtable devtable[] = {
+ 	{"mipscdmm", SIZE_mips_cdmm_device_id, do_mips_cdmm_entry},
+ 	{"x86cpu", SIZE_x86_cpu_id, do_x86cpu_entry},
+ 	{"cpu", SIZE_cpu_feature, do_cpu_entry},
++	{"mcb", SIZE_mcb_device_id, do_mcb_entry},
+ 	{"mei", SIZE_mei_cl_device_id, do_mei_entry},
+ 	{"rapidio", SIZE_rio_device_id, do_rio_entry},
+ 	{"ulpi", SIZE_ulpi_device_id, do_ulpi_entry},
 -- 
 2.51.0
 
