@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-205475-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205752-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C67FACFA21B
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:27:47 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2AABCFA4F4
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:51:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A280631FA558
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:40:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DE50332546F5
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:07:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A72672DEA93;
-	Tue,  6 Jan 2026 17:33:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4509035FF55;
+	Tue,  6 Jan 2026 17:49:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AumGM8vk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KszgFjCY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 643AC33993;
-	Tue,  6 Jan 2026 17:33:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01CD635FF4E;
+	Tue,  6 Jan 2026 17:49:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767720817; cv=none; b=UaAPNmQ6RXzZi9dIdqkVMU50IcbZL+c9lwanDZt2p9zb9dOP2EsUQM0KnEnJuxZWruG2CUO9TVvQYvLPP9BLxxll1gc4nAflJ69dVLWw138uGKygG3uj7yMp2boSPsq/8wF9NfYBxKaiFbo8Tp0J+B1WeiGKsK19HDxi3BHzle0=
+	t=1767721742; cv=none; b=ZRj7bv/qv6e8YgOF3w8YK4msDr/FPDNnkStaHAHtuRXefJ+1spVm13y66Gf7Vzw9hSXrZaaMPsNnf+JUHPY7bVSN9+L0r43qZDOJy+XnunL/pJPZK8IxyPigQazOCaCRHHtOMpIsv3msiJr4LseMgCb55MWtmZDZdaHszx87HLU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767720817; c=relaxed/simple;
-	bh=TsVxJMXKP8gvH6quXV+mExHAKZUwO6MKbuhIo05iJz8=;
+	s=arc-20240116; t=1767721742; c=relaxed/simple;
+	bh=xWKslqp4rjQmnb6aWlfAX7zogASUghSZnXADOXzAR6Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OTSl1+lhHPeoZqo12N7ncG/eMHde7fiAZPvBAVA0kA/564fPrUzHm4Bssev8zMyQiVU9iVqcUDhT+blD/mVeoG+qzZDd8Ke0TNMAANw42MuB6IWBCI04EjSvln1h+jxnuqaC2jS/OcLLlSS9JS0+Z8zMAOmAVrINoidPX1gnIWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AumGM8vk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7284C116C6;
-	Tue,  6 Jan 2026 17:33:36 +0000 (UTC)
+	 MIME-Version; b=dWl7dKEphQXEA9eO6wmRNvFD4bnilvUtTSyEtV91HrzQzQFTN5gZjAeidffrMGVMOX3gwNIRwE0HFE4yf0y92XXZkL8nMdx4ye5f7u5KSsEsCMSQvOolWfrpQtqyAR5KSxiYAfin59A0gey4wyRUtYgr+pVxsASDvIOJlom5PxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KszgFjCY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63D7BC116C6;
+	Tue,  6 Jan 2026 17:49:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767720817;
-	bh=TsVxJMXKP8gvH6quXV+mExHAKZUwO6MKbuhIo05iJz8=;
+	s=korg; t=1767721741;
+	bh=xWKslqp4rjQmnb6aWlfAX7zogASUghSZnXADOXzAR6Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AumGM8vkhhzqSpH9PZrnhyg6bvhSARoz85pbmUeIw0XjkHclSq2AbDoX/DDj2VdKY
-	 slWRayfQUwyD8kqSb6ft942YX5HcikdMEiB9gx/1le0XoC7B2HJ9Ys5vBRAHSXAUiJ
-	 bdcazZC9BH+w8djMHQr5GD465mk0wrEOWg9PQXWw=
+	b=KszgFjCYQpr/x9YQETJBtIiR4/CuXopXQf17s1BszQ/+dL0PsdOcJHMjaaFPZR6cy
+	 ntnRTVftdS7gM3xK3567f5i/v3gzxqpDMyM/0nBTKumGvLY0ZhOjL8dQHWMKiiNDw9
+	 pdwthHkvtR12iMNkZaTAy6ZcsPDCNUoMyVi+waEQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonas Gorski <jonas.gorski@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Jacky Chou <jacky_chou@aspeedtech.com>,
+	Andrew Lunn <andrew@lunn.ch>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 318/567] net: dsa: b53: skip multicast entries for fdb_dump()
+Subject: [PATCH 6.18 026/312] net: mdio: aspeed: add dummy read to avoid read-after-write issue
 Date: Tue,  6 Jan 2026 18:01:40 +0100
-Message-ID: <20260106170503.090830647@linuxfoundation.org>
+Message-ID: <20260106170548.803143890@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
-References: <20260106170451.332875001@linuxfoundation.org>
+In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
+References: <20260106170547.832845344@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +61,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Gorski <jonas.gorski@gmail.com>
+From: Jacky Chou <jacky_chou@aspeedtech.com>
 
-[ Upstream commit d42bce414d1c5c0b536758466a1f63ac358e613c ]
+[ Upstream commit d1a1a4bade4b20c0858d0b2f81d2611de055f675 ]
 
-port_fdb_dump() is supposed to only add fdb entries, but we iterate over
-the full ARL table, which also includes multicast entries.
+The Aspeed MDIO controller may return incorrect data when a read operation
+follows immediately after a write. Due to a controller bug, the subsequent
+read can latch stale data, causing the polling logic to terminate earlier
+than expected.
 
-So check if the entry is a multicast entry before passing it on to the
-callback().
+To work around this hardware issue, insert a dummy read after each write
+operation. This ensures that the next actual read returns the correct
+data and prevents premature polling exit.
 
-Additionally, the port of those entries is a bitmask, not a port number,
-so any included entries would have even be for the wrong port.
+This workaround has been verified to stabilize MDIO transactions on
+affected Aspeed platforms.
 
-Fixes: 1da6df85c6fb ("net: dsa: b53: Implement ARL add/del/dump operations")
-Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20251217205756.172123-1-jonas.gorski@gmail.com
+Fixes: f160e99462c6 ("net: phy: Add mdio-aspeed")
+Signed-off-by: Jacky Chou <jacky_chou@aspeedtech.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20251211-aspeed_mdio_add_dummy_read-v3-1-382868869004@aspeedtech.com
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/b53/b53_common.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/mdio/mdio-aspeed.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
-index 01eb62706412..0b666a77ea97 100644
---- a/drivers/net/dsa/b53/b53_common.c
-+++ b/drivers/net/dsa/b53/b53_common.c
-@@ -1972,6 +1972,9 @@ static int b53_fdb_copy(int port, const struct b53_arl_entry *ent,
- 	if (!ent->is_valid)
- 		return 0;
+diff --git a/drivers/net/mdio/mdio-aspeed.c b/drivers/net/mdio/mdio-aspeed.c
+index e55be6dc9ae7..d6b9004c61dc 100644
+--- a/drivers/net/mdio/mdio-aspeed.c
++++ b/drivers/net/mdio/mdio-aspeed.c
+@@ -63,6 +63,13 @@ static int aspeed_mdio_op(struct mii_bus *bus, u8 st, u8 op, u8 phyad, u8 regad,
  
-+	if (is_multicast_ether_addr(ent->mac))
-+		return 0;
+ 	iowrite32(ctrl, ctx->base + ASPEED_MDIO_CTRL);
+ 
++	/* Workaround for read-after-write issue.
++	 * The controller may return stale data if a read follows immediately
++	 * after a write. A dummy read forces the hardware to update its
++	 * internal state, ensuring that the next real read returns correct data.
++	 */
++	ioread32(ctx->base + ASPEED_MDIO_CTRL);
 +
- 	if (port != ent->port)
- 		return 0;
- 
+ 	return readl_poll_timeout(ctx->base + ASPEED_MDIO_CTRL, ctrl,
+ 				!(ctrl & ASPEED_MDIO_CTRL_FIRE),
+ 				ASPEED_MDIO_INTERVAL_US,
 -- 
 2.51.0
 
