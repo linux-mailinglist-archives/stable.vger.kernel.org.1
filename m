@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-205482-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205759-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE429CFA236
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:28:02 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED7BCCF9EF9
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:06:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 49622314F94B
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:40:24 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A153530151B6
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:06:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 030492E11D2;
-	Tue,  6 Jan 2026 17:34:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AEBC35FF6F;
+	Tue,  6 Jan 2026 17:49:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y0hiRJcj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LWiSnywI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5FFC2DF706;
-	Tue,  6 Jan 2026 17:33:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB19D35FF65;
+	Tue,  6 Jan 2026 17:49:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767720839; cv=none; b=YgCWHiPwF/9APmCqCVAlokhFXELSkgckf3qhNpZv5Z2SrWPRuvNKiNXv960xkzcaK6T94vT+rw/IWRqT6I+XOt1fsJlnh062f5mS5D+NAJbXIwbGTO1yQe0W1RxW84LqUyyoVzjBhtHLv8P6DQuQaLsVLzB+roTPxfcxsLfqx/Q=
+	t=1767721766; cv=none; b=SPAK3mygU+bqUxwNfvTj6uEDUXJrB4tQKGMenfuKIzEJHHh4DBhYyeBOYQI3JeNVC4u3aE1G9uIR9OgI2yfesupt/FaSmL0JlkMOn0NJgP6JlCPmBfki/4GW+aINms3e5qcOS6Gyz7Fsv3RGDIdFwQbDpUa8uMmnTsMd9c3klgs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767720839; c=relaxed/simple;
-	bh=znqa0kIFnFuHCa4LEs3dohwppL4PCHSLCexdxlqkqFE=;
+	s=arc-20240116; t=1767721766; c=relaxed/simple;
+	bh=ap9mCTBbXrB9TrGejOzecdnRN/sLQ88i73ofSyVfuFc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sMnhQAIs3k/KwN/JVyg5/kC8jQIuPAeF0Pt5q60t/I8Bn12xFCQCe1ivX9qq/k1yXfMGhOjx1uDIbHzPeG7buuxtfkj3H0Voq4dkEE7sZy5+Mwp1/ishdaZYeGwBI+n9b5U1rSf8LKtMdVVQFDNx/AsNc40wu+lByzP7NMici/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y0hiRJcj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2465DC16AAE;
-	Tue,  6 Jan 2026 17:33:58 +0000 (UTC)
+	 MIME-Version; b=DsiXH5s5lodg9c8g8nBqtu6owhgbytSC1CcFPT57x/mbMd2e79ekcxI7nJ5tCArQEjeFX2IXMSTsgvegSmD1uBBcYfMhOjBKCYTI70uztloMAsmXvOZ/lUKsbAXdVh7+EddbebuaHoWFp1IwV4IZBryBmomycflJ0o+z6cqSMGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LWiSnywI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A4DCC116C6;
+	Tue,  6 Jan 2026 17:49:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767720839;
-	bh=znqa0kIFnFuHCa4LEs3dohwppL4PCHSLCexdxlqkqFE=;
+	s=korg; t=1767721765;
+	bh=ap9mCTBbXrB9TrGejOzecdnRN/sLQ88i73ofSyVfuFc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y0hiRJcjZg9XXTPBn2js4KS23dWCknUJs/SW+gvfWYlT4t7+dx8lfd6poYFXcXkQx
-	 ftjwjXyLS9+x+0y3wWyHQ6e3Tpcqjwx0mOcg0JwPvXYuMEHCXTfOwr3koALWrR1iKx
-	 aG8pIo+gPQZ53/ubb5p3sr/J+Crt0rBcvPaoSFRk=
+	b=LWiSnywI+Ho5tyZbA3eqiDGFglYu3HDZHWaO1Hy7ONLRUovFtfwETFHYsg4oeTY5j
+	 5o9P0ANVOzh+7RDKx/XIWSGPdM65jRqeq1qKP6ZogkE0sAnrJLTIpA1nY+B2rnWuCQ
+	 TtiSKzAn2aEAK2bTESzD8SMK6igrNrDmZmNLRy8g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Magnus Damm <damm+renesas@opensource.se>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Johan Hovold <johan@kernel.org>,
-	Joerg Roedel <joerg.roedel@amd.com>
-Subject: [PATCH 6.12 358/567] iommu/ipmmu-vmsa: fix device leak on of_xlate()
+	Arnd Bergmann <arnd@arndb.de>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Jacob Moroni <jmoroni@google.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 066/312] RDMA/irdma: Fix irdma_alloc_ucontext_resp padding
 Date: Tue,  6 Jan 2026 18:02:20 +0100
-Message-ID: <20260106170504.578657603@linuxfoundation.org>
+Message-ID: <20260106170550.238576483@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
-References: <20260106170451.332875001@linuxfoundation.org>
+In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
+References: <20260106170547.832845344@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit 80aa518452c4aceb9459f9a8e3184db657d1b441 upstream.
+[ Upstream commit d95e99a74eaf35c070f5939295331e5d7857c723 ]
 
-Make sure to drop the reference taken to the iommu platform device when
-looking up its driver data during of_xlate().
+A recent commit modified struct irdma_alloc_ucontext_resp by adding a
+member with implicit padding in front of it, though this does not change
+the offset of the data members other than m68k. Reported by
+scripts/check-uapi.sh:
 
-Fixes: 7b2d59611fef ("iommu/ipmmu-vmsa: Replace local utlb code with fwspec ids")
-Cc: stable@vger.kernel.org	# 4.14
-Cc: Magnus Damm <damm+renesas@opensource.se>
-Acked-by: Robin Murphy <robin.murphy@arm.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+==== ABI differences detected in include/rdma/irdma-abi.h from 1dd7bde2e91c -> HEAD ====
+    [C] 'struct irdma_alloc_ucontext_resp' changed:
+      type size changed from 704 to 640 (in bits)
+      1 data member deletion:
+        '__u8 rsvd3[2]', at offset 640 (in bits) at irdma-abi.h:61:1
+      1 data member insertion:
+        '__u8 revd3[2]', at offset 592 (in bits) at irdma-abi.h:60:1
+
+Change the size back to the previous version, and remove the implicit
+padding by making it explicit and matching what x86-64 would do by placing
+max_hw_srq_quanta member into a naturally aligned location.
+
+Fixes: 563e1feb5f6e ("RDMA/irdma: Add SRQ support")
+Link: https://patch.msgid.link/r/20251208133849.315451-1-arnd@kernel.org
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Tested-by: Jacob Moroni <jmoroni@google.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/ipmmu-vmsa.c |    2 ++
- 1 file changed, 2 insertions(+)
+ include/uapi/rdma/irdma-abi.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/iommu/ipmmu-vmsa.c
-+++ b/drivers/iommu/ipmmu-vmsa.c
-@@ -719,6 +719,8 @@ static int ipmmu_init_platform_device(st
+diff --git a/include/uapi/rdma/irdma-abi.h b/include/uapi/rdma/irdma-abi.h
+index f7788d33376b..36f20802bcc8 100644
+--- a/include/uapi/rdma/irdma-abi.h
++++ b/include/uapi/rdma/irdma-abi.h
+@@ -57,8 +57,8 @@ struct irdma_alloc_ucontext_resp {
+ 	__u8 rsvd2;
+ 	__aligned_u64 comp_mask;
+ 	__u16 min_hw_wq_size;
++	__u8 revd3[2];
+ 	__u32 max_hw_srq_quanta;
+-	__u8 rsvd3[2];
+ };
  
- 	dev_iommu_priv_set(dev, platform_get_drvdata(ipmmu_pdev));
- 
-+	put_device(&ipmmu_pdev->dev);
-+
- 	return 0;
- }
- 
+ struct irdma_alloc_pd_resp {
+-- 
+2.51.0
+
 
 
 
