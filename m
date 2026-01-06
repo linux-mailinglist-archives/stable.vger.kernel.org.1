@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-205747-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205480-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D503CF9F25
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:07:34 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0142DCFA22A
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:28:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 080FB3026DD3
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:07:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 444173201971
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:40:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4354935FF44;
-	Tue,  6 Jan 2026 17:48:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFC6C2DFA5A;
+	Tue,  6 Jan 2026 17:33:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LIOaMX+h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qd2sjGff"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2408355031;
-	Tue,  6 Jan 2026 17:48:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C07533993;
+	Tue,  6 Jan 2026 17:33:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721725; cv=none; b=cBvmfJ7COcyhYaUKbeEWo8pojIN7Hc4v79TB/JzOmwric1rhjncll1P4y3b+CYQxmeCbPVfrzJPEFw3lg/3mPR0g5qZeu9EkgJ8rB8/ajFf874OvtC0KM41tfV9Jh0+x5hgg4VFoyf3CkbyiU2ZQDZBq4ra06+lPkvQZ/q+SP6g=
+	t=1767720833; cv=none; b=kzDsW35nJbk/dX110sCwQJEtRrf3bkTE/A0YvEPMYr9ytfiaa/jn/kukELa9ZebvKK8GWe8aUGhWQ2nETZgGMnwHa/OQC93AQGndYOXow3IyF2uz012RNRG89hWCSTSgA5UN2//YD7CQCqhDwE1zqokoRUy1NBLsO+WR8IbvuFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721725; c=relaxed/simple;
-	bh=Q4FB2rKKdgfd9JXTp3QKNK1YaPqRgQdPgPKbpZrRpzA=;
+	s=arc-20240116; t=1767720833; c=relaxed/simple;
+	bh=68X1AQZApyjLvXTSFbLCUItAP+9uiEEFjYuAHpU8ja8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rVafXpufUZvNm5baD3uzSVc1OWK1YWOG15PF9sfY+qY0aZr1wirShQ7CmFoG/PlNBiEBlGJgwpo0LOWw4+uTidWsv7FRg4m5lbL1AWw6IHYoVUOtvqqTwT72So/evhRH4unfR6x+y11CQ8Lhb7iTGEFb9TAaWOSWl8rh5wci2fw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LIOaMX+h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CB1DC116C6;
-	Tue,  6 Jan 2026 17:48:44 +0000 (UTC)
+	 MIME-Version; b=OFmDJ7+bEcdTMHkRgksyBj39ohAFhXy4ZhEgPd0Z6VOgSRsg2DOwfRBkvIuvJh73G/pKufNDWn9nUBO6k+9tXMZohdFdy/PLY2feKYWsYuzpJIAbhJDlQKPFizuFKjD5rB/jrEHHlJZvHzYZ+rMb93LOFzOBko/Zle+JHFoIurg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qd2sjGff; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBBAFC116C6;
+	Tue,  6 Jan 2026 17:33:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721724;
-	bh=Q4FB2rKKdgfd9JXTp3QKNK1YaPqRgQdPgPKbpZrRpzA=;
+	s=korg; t=1767720833;
+	bh=68X1AQZApyjLvXTSFbLCUItAP+9uiEEFjYuAHpU8ja8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LIOaMX+heojKAeKTcjWeMUOoIP9I3zOvUUo2Bfsrvgq39ha42W6crkTQvaebcWr6J
-	 NEBB92XoJihq/FKH66uj/RF54U7865v3oBBa7McowDr6eqj16QrkgbWZJJ4nmKBTvW
-	 dCTHfxepr5uoScuwTYugpiDS2dN5Z2oxNRox5Vp0=
+	b=qd2sjGffl/y6Qp7CkolLxds/7Z3ajQgRGXUbNS7325tENquFM4cYdvjB2zIzl5w5R
+	 BmA/n3//z6AGf9D9aN9NV/aJfm/kwsExr2j70sYXx/cZwUxBo9NW7B5vb5BY6P4fOv
+	 ED7lXYhC7p1qMXuF15oKGpXYYQTgmyEUB1yZJI+g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brian Vazquez <brianvv@google.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Samuel Salin <Samuel.salin@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	syzbot+8dd915c7cb0490fc8c52@syzkaller.appspotmail.com,
+	Deepakkumar Karn <dkarn@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 021/312] idpf: reduce mbx_task schedule delay to 300us
+Subject: [PATCH 6.12 313/567] net: usb: rtl8150: fix memory leak on usb_submit_urb() failure
 Date: Tue,  6 Jan 2026 18:01:35 +0100
-Message-ID: <20260106170548.621982886@linuxfoundation.org>
+Message-ID: <20260106170502.906310568@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
-References: <20260106170547.832845344@linuxfoundation.org>
+In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
+References: <20260106170451.332875001@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brian Vazquez <brianvv@google.com>
+From: Deepakkumar Karn <dkarn@redhat.com>
 
-[ Upstream commit b3d6bbae1d6d5638a4ab702ab195476787cde857 ]
+[ Upstream commit 12cab1191d9890097171156d06bfa8d31f1e39c8 ]
 
-During the IDPF init phase, the mailbox runs in poll mode until it is
-configured to properly handle interrupts. The previous delay of 300ms is
-excessively long for the mailbox polling mechanism, which causes a slow
-initialization of ~2s:
+In async_set_registers(), when usb_submit_urb() fails, the allocated
+  async_req structure and URB are not freed, causing a memory leak.
 
-echo 0000:06:12.4 > /sys/bus/pci/drivers/idpf/bind
+  The completion callback async_set_reg_cb() is responsible for freeing
+  these allocations, but it is only called after the URB is successfully
+  submitted and completes (successfully or with error). If submission
+  fails, the callback never runs and the memory is leaked.
 
-[   52.444239] idpf 0000:06:12.4: enabling device (0000 -> 0002)
-[   52.485005] idpf 0000:06:12.4: Device HW Reset initiated
-[   54.177181] idpf 0000:06:12.4: PTP init failed, err=-EOPNOTSUPP
-[   54.206177] idpf 0000:06:12.4: Minimum RX descriptor support not provided, using the default
-[   54.206182] idpf 0000:06:12.4: Minimum TX descriptor support not provided, using the default
+  Fix this by freeing both the URB and the request structure in the error
+  path when usb_submit_urb() fails.
 
-Changing the delay to 300us avoids the delays during the initial mailbox
-transactions, making the init phase much faster:
-
-[   83.342590] idpf 0000:06:12.4: enabling device (0000 -> 0002)
-[   83.384402] idpf 0000:06:12.4: Device HW Reset initiated
-[   83.518323] idpf 0000:06:12.4: PTP init failed, err=-EOPNOTSUPP
-[   83.547430] idpf 0000:06:12.4: Minimum RX descriptor support not provided, using the default
-[   83.547435] idpf 0000:06:12.4: Minimum TX descriptor support not provided, using the default
-
-Fixes: 4930fbf419a7 ("idpf: add core init and interrupt request")
-Signed-off-by: Brian Vazquez <brianvv@google.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Tested-by: Samuel Salin <Samuel.salin@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Reported-by: syzbot+8dd915c7cb0490fc8c52@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=8dd915c7cb0490fc8c52
+Fixes: 4d12997a9bb3 ("drivers: net: usb: rtl8150: concurrent URB bugfix")
+Signed-off-by: Deepakkumar Karn <dkarn@redhat.com>
+Link: https://patch.msgid.link/20251216151304.59865-2-dkarn@redhat.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/idpf/idpf_lib.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/usb/rtl8150.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_lib.c b/drivers/net/ethernet/intel/idpf/idpf_lib.c
-index 8a941f0fb048..aaafe40f5eaf 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_lib.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_lib.c
-@@ -1271,7 +1271,7 @@ void idpf_mbx_task(struct work_struct *work)
- 		idpf_mb_irq_enable(adapter);
- 	else
- 		queue_delayed_work(adapter->mbx_wq, &adapter->mbx_task,
--				   msecs_to_jiffies(300));
-+				   usecs_to_jiffies(300));
- 
- 	idpf_recv_mb_msg(adapter);
+diff --git a/drivers/net/usb/rtl8150.c b/drivers/net/usb/rtl8150.c
+index 278e6cb6f4d9..e40b0669d9f4 100644
+--- a/drivers/net/usb/rtl8150.c
++++ b/drivers/net/usb/rtl8150.c
+@@ -211,6 +211,8 @@ static int async_set_registers(rtl8150_t *dev, u16 indx, u16 size, u16 reg)
+ 		if (res == -ENODEV)
+ 			netif_device_detach(dev->netdev);
+ 		dev_err(&dev->udev->dev, "%s failed with %d\n", __func__, res);
++		kfree(req);
++		usb_free_urb(async_urb);
+ 	}
+ 	return res;
  }
 -- 
 2.51.0
