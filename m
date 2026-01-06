@@ -1,51 +1,52 @@
-Return-Path: <stable+bounces-205657-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205625-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6EC1CFA877
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:15:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A906CFA98D
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:22:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B58DA32A0D23
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:33:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0454432D5D92
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:34:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 045BD346E6C;
-	Tue,  6 Jan 2026 17:43:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBB9B2BDC13;
+	Tue,  6 Jan 2026 17:41:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bOJO6bDJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IrgnKeSv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1FEA346E57;
-	Tue,  6 Jan 2026 17:43:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87FB429B793;
+	Tue,  6 Jan 2026 17:41:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721420; cv=none; b=HYS09PwU8ExXuqFB+yi9ks67GupQrEOtpFpZfdIFBZmgWao2AmmtH5G53tF1PG4uGeEIgXFvvLzokziPcTJSvoAxMuVJs/YvJuy/KTjB2I7/Z6mM2WCCZ2lSp4Jaj3oD0wxFMzNlZxHr7G99EX3IoaFPeXctf/C06+ssxzXMlC4=
+	t=1767721313; cv=none; b=QFVm76fyLoixEBP8+yZZoLdaVv+mkiVkpPCjZYVeSpkKKuxi+1D1LZhbPlQzFhzagPbtEhCmxbgrgFZVjvmmUTySDErEB+o+zp3bcHMoHV4OTq2l54Hw+E+rKAsrNCK2u+gtfMOfJvvBp8j62UYqnyqAFTecUpJBTDYB+a3sSYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721420; c=relaxed/simple;
-	bh=j4IVjUKPavKuifwiMpQ96sJ1yubQQF8i7Dxjt2BAENI=;
+	s=arc-20240116; t=1767721313; c=relaxed/simple;
+	bh=DPnAM09zCouHRQ8wfTa8+r3vSbrvjYjL1cZBCtI/+Y0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LSQKbjtzaGSE/ax+eG/BGKYXruhcVZTbIHZbHH4CEXn1zzEaVChH7K2sPfeSVZR8GMctx6373zxirovQmSmaA7Ncjq2EJF7zLQTgvk8V+FWXs/UPQDa2Slzoy1wZO2E0ZhmkkD7q8dtIlb8GjjQzZZze0WouvGzOLUSShVY0064=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bOJO6bDJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA882C16AAE;
-	Tue,  6 Jan 2026 17:43:39 +0000 (UTC)
+	 MIME-Version; b=dhVdaRVEC4QP7MSVIaSqe8YIQjoGJ3iT1j2IPaZWwpI/vJJ+VO+Afp+U4odIL8jqJiT51xWV+W+etcNx9Njp2bZdKlnME6cEZCVxYwFrVy5MNeYKzpG5xro25RosgyzT31B3F+imZjTs99Efi29MdmbN00JAa0OhDF+mV1brItc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IrgnKeSv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6515C116C6;
+	Tue,  6 Jan 2026 17:41:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721420;
-	bh=j4IVjUKPavKuifwiMpQ96sJ1yubQQF8i7Dxjt2BAENI=;
+	s=korg; t=1767721313;
+	bh=DPnAM09zCouHRQ8wfTa8+r3vSbrvjYjL1cZBCtI/+Y0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bOJO6bDJjMot6f7dZ4X56pU08/gzoZh7bx+3BRnnaXVJY5w/2K1v2WynhoNyV6hWu
-	 H3DfJ+QlynpP83FU+rHalboJMU/7dmZ+4m23wVXnHxSFZwdEvPAHqb/hOmOyE+seeF
-	 zmzy5Sy0PDMM2YUYlaRVnLGOPmdX1PW3PPCGAXhg=
+	b=IrgnKeSvLEjAq31XvalGgD8tl7OUKTEMqx5xNiqPUdxE5zY9S8hKWt0XiYbphecsb
+	 yQnQfb8CVs8buVkBgUWdIR0FgDZ7VlmCDg3EjNhipN5NFHUULbDE2zGKOhlAj4RRmG
+	 UTcD0+/6I3TR3nkHCZoPYtXIz/cjHXbo4SK0hdv4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 499/567] serial: core: Restore sysfs fwnode information
-Date: Tue,  6 Jan 2026 18:04:41 +0100
-Message-ID: <20260106170509.826051068@linuxfoundation.org>
+Subject: [PATCH 6.12 500/567] mptcp: pm: ignore unknown endpoint flags
+Date: Tue,  6 Jan 2026 18:04:42 +0100
+Message-ID: <20260106170509.863163607@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
 References: <20260106170451.332875001@linuxfoundation.org>
@@ -64,71 +65,66 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 
-[ Upstream commit 24ec03cc55126b7b3adf102f4b3d9f716532b329 ]
+[ Upstream commit 0ace3297a7301911e52d8195cb1006414897c859 ]
 
-The change that restores sysfs fwnode information does it only for OF cases.
-Update the fix to cover all possible types of fwnodes.
+Before this patch, the kernel was saving any flags set by the userspace,
+even unknown ones. This doesn't cause critical issues because the kernel
+is only looking at specific ones. But on the other hand, endpoints dumps
+could tell the userspace some recent flags seem to be supported on older
+kernel versions.
 
-Fixes: d36f0e9a0002 ("serial: core: restore of_node information in sysfs")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://patch.msgid.link/20251127163650.2942075-1-andriy.shevchenko@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Instead, ignore all unknown flags when parsing them. By doing that, the
+userspace can continue to set unsupported flags, but it has a way to
+verify what is supported by the kernel.
+
+Note that it sounds better to continue accepting unsupported flags not
+to change the behaviour, but also that eases things on the userspace
+side by adding "optional" endpoint types only supported by newer kernel
+versions without having to deal with the different kernel versions.
+
+A note for the backports: there will be conflicts in mptcp.h on older
+versions not having the mentioned flags, the new line should still be
+added last, and the '5' needs to be adapted to have the same value as
+the last entry.
+
+Fixes: 01cacb00b35c ("mptcp: add netlink-based PM")
+Cc: stable@vger.kernel.org
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20251205-net-mptcp-misc-fixes-6-19-rc1-v1-1-9e4781a6c1b8@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ GENMASK(5, 0) => GENMASK(4, 0) + context ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/serial_base_bus.c |   10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ include/uapi/linux/mptcp.h |    1 +
+ net/mptcp/pm_netlink.c     |    3 ++-
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/tty/serial/serial_base_bus.c
-+++ b/drivers/tty/serial/serial_base_bus.c
-@@ -13,7 +13,7 @@
- #include <linux/device.h>
- #include <linux/idr.h>
- #include <linux/module.h>
--#include <linux/of.h>
-+#include <linux/property.h>
- #include <linux/serial_core.h>
- #include <linux/slab.h>
- #include <linux/spinlock.h>
-@@ -60,6 +60,7 @@ void serial_base_driver_unregister(struc
- 	driver_unregister(driver);
- }
+--- a/include/uapi/linux/mptcp.h
++++ b/include/uapi/linux/mptcp.h
+@@ -38,6 +38,7 @@
+ #define MPTCP_PM_ADDR_FLAG_BACKUP                      (1 << 2)
+ #define MPTCP_PM_ADDR_FLAG_FULLMESH                    (1 << 3)
+ #define MPTCP_PM_ADDR_FLAG_IMPLICIT                    (1 << 4)
++#define MPTCP_PM_ADDR_FLAGS_MASK		GENMASK(4, 0)
  
-+/* On failure the caller must put device @dev with put_device() */
- static int serial_base_device_init(struct uart_port *port,
- 				   struct device *dev,
- 				   struct device *parent_dev,
-@@ -73,7 +74,8 @@ static int serial_base_device_init(struc
- 	dev->parent = parent_dev;
- 	dev->bus = &serial_base_bus_type;
- 	dev->release = release;
--	device_set_of_node_from_dev(dev, parent_dev);
-+
-+	device_set_node(dev, fwnode_handle_get(dev_fwnode(parent_dev)));
+ struct mptcp_info {
+ 	__u8	mptcpi_subflows;
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -1409,7 +1409,8 @@ int mptcp_pm_parse_entry(struct nlattr *
+ 	}
  
- 	if (!serial_base_initialized) {
- 		dev_dbg(port->dev, "uart_add_one_port() called before arch_initcall()?\n");
-@@ -94,7 +96,7 @@ static void serial_base_ctrl_release(str
- {
- 	struct serial_ctrl_device *ctrl_dev = to_serial_base_ctrl_device(dev);
+ 	if (tb[MPTCP_PM_ADDR_ATTR_FLAGS])
+-		entry->flags = nla_get_u32(tb[MPTCP_PM_ADDR_ATTR_FLAGS]);
++		entry->flags = nla_get_u32(tb[MPTCP_PM_ADDR_ATTR_FLAGS]) &
++			       MPTCP_PM_ADDR_FLAGS_MASK;
  
--	of_node_put(dev->of_node);
-+	fwnode_handle_put(dev_fwnode(dev));
- 	kfree(ctrl_dev);
- }
- 
-@@ -142,7 +144,7 @@ static void serial_base_port_release(str
- {
- 	struct serial_port_device *port_dev = to_serial_base_port_device(dev);
- 
--	of_node_put(dev->of_node);
-+	fwnode_handle_put(dev_fwnode(dev));
- 	kfree(port_dev);
- }
- 
+ 	if (tb[MPTCP_PM_ADDR_ATTR_PORT])
+ 		entry->addr.port = htons(nla_get_u16(tb[MPTCP_PM_ADDR_ATTR_PORT]));
 
 
 
