@@ -1,51 +1,57 @@
-Return-Path: <stable+bounces-205203-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205208-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D6D9CFB238
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 22:47:13 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98519CFB241
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 22:48:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 05103300765B
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 21:46:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id ADE94303B1A9
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 21:46:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7816C349B0A;
-	Tue,  6 Jan 2026 17:18:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8774934A795;
+	Tue,  6 Jan 2026 17:18:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aawQ3Jp0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tH18hY45"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19B2F349B03;
-	Tue,  6 Jan 2026 17:18:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42C8234A785;
+	Tue,  6 Jan 2026 17:18:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767719917; cv=none; b=KkCRM04UYG1zRMhmKbiTtJM2Tqu4Ibye/sEZiP9RktTh/7xWYVnYBCj2YkvlptRLKouxltCIAKXVFwtl39oHtlcrmWV01wpl8f0zVdVlYAn+JvDnLSuLyFqT7e3npDYK5lgDRuo9c7jMTKKT+KeTH67miXGQ1ji4H+Xg0bfMSUU=
+	t=1767719933; cv=none; b=Crg+xvUk1dmfVMvN56M5bm77FlrpaLh9A4xRQpDoiPv8VSuZ0GsrcJTVoW46kAssHAYIoLuIFfNCczk14j3grN5P8XBhtvt+bJ818juOf+fITUOrn5cQrgq5V817k3TCLstmwLTNZI2O6mYKEBinEY/FmY0M9k1ilPtxJ8WXXow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767719917; c=relaxed/simple;
-	bh=f0Gut2S9tgDX9LBIk1U7dQLsbPjmauIP/jqrF9C1bn4=;
+	s=arc-20240116; t=1767719933; c=relaxed/simple;
+	bh=DRdZU67tRc3uH3d4zMNYcYIr9TWe1a48qlaEkWGi2j4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nabmbve7T2Pqu+D5k4PG38UjqtQgLhiebsAtReoA893jBPk/jm4jh6m93n5MLGjpZZ0b+ot/ttM5nHySziVMEgZ0gVBcVXr9WFRrH3R+LBoS75H3BuALVUDCxu7thmh8TYL0D+nOAKTTUGdcByYF4wdvAoQzL7smNzFh/qscf/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aawQ3Jp0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F348C116C6;
-	Tue,  6 Jan 2026 17:18:36 +0000 (UTC)
+	 MIME-Version; b=sdoSnnbP3Yk6un6RNKOESokSF+Al5g5fRIMA/PQYRQdyrjHGpl4opyvLRDQp5i4KyB6qPwhCorQvoTbx7V9xjX58qMNa71of1FrPucPIU0vF8VcY9nt1TR2oAbdsVt9C6HQ3U1aBALPyTzcd8wlkFKSsqpOmowIyEcsu7LrRBN0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tH18hY45; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB7D9C116C6;
+	Tue,  6 Jan 2026 17:18:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767719916;
-	bh=f0Gut2S9tgDX9LBIk1U7dQLsbPjmauIP/jqrF9C1bn4=;
+	s=korg; t=1767719933;
+	bh=DRdZU67tRc3uH3d4zMNYcYIr9TWe1a48qlaEkWGi2j4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aawQ3Jp0Pb54yEC9n60L5sw6kzbr0l8r7b25K5ttuPrjnjIxjQAn3oMGyaigT755/
-	 7RvlfOpix3oA7Yo01Bc4sRtTIHXWsL+p69Xc4wnrrv0d8lQI1DoOHKcs3qhU/HUdv1
-	 QLVE4wiziD28wE1rr0LZ0WhQWyBc9KFgy/0PateQ=
+	b=tH18hY45FI6GGFiG1OjHyhMbAtDea4WrCwah8E7VGHFhi4T6Y8fBw5keeK6hatGYk
+	 rYKQgBH8Z3mM9d5EZprwpbmlY+Zbu62ua55ycTZX7TLCP6UF4QMuzoTnlfFOyvy7fa
+	 0tESdog69iJwsujX0Gh/2pBxIs73K4AQaly7zRcM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexey Simakov <bigalex934@gmail.com>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Brian Gerst <brgerst@gmail.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Juergen Gross <jgross@suse.com>,
+	Sohil Mehta <sohil.mehta@intel.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Josh Poimboeuf <jpoimboe@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 080/567] hwmon: (tmp401) fix overflow caused by default conversion rate value
-Date: Tue,  6 Jan 2026 17:57:42 +0100
-Message-ID: <20260106170454.291066340@linuxfoundation.org>
+Subject: [PATCH 6.12 085/567] x86/xen: Move Xen upcall handler
+Date: Tue,  6 Jan 2026 17:57:47 +0100
+Message-ID: <20260106170454.474273408@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
 References: <20260106170451.332875001@linuxfoundation.org>
@@ -64,55 +70,211 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Alexey Simakov <bigalex934@gmail.com>
+From: Brian Gerst <brgerst@gmail.com>
 
-[ Upstream commit 82f2aab35a1ab2e1460de06ef04c726460aed51c ]
+[ Upstream commit 1ab7b5ed44ba9bce581e225f40219b793bc779d6 ]
 
-The driver computes conversion intervals using the formula:
+Move the upcall handler to Xen-specific files.
 
-    interval = (1 << (7 - rate)) * 125ms
+No functional changes.
 
-where 'rate' is the sensor's conversion rate register value. According to
-the datasheet, the power-on reset value of this register is 0x8, which
-could be assigned to the register, after handling i2c general call.
-Using this default value causes a result greater than the bit width of
-left operand and an undefined behaviour in the calculation above, since
-shifting by values larger than the bit width is undefined behaviour as
-per C language standard.
-
-Limit the maximum usable 'rate' value to 7 to prevent undefined
-behaviour in calculations.
-
-Found by Linux Verification Center (linuxtesting.org) with Svace.
-
-Note (groeck):
-    This does not matter in practice unless someone overwrites the chip
-    configuration from outside the driver while the driver is loaded.
-    The conversion time register is initialized with a value of 5 (500ms)
-    when the driver is loaded, and the driver never writes a bad value.
-
-Fixes: ca53e7640de7 ("hwmon: (tmp401) Convert to _info API")
-Signed-off-by: Alexey Simakov <bigalex934@gmail.com>
-Link: https://lore.kernel.org/r/20251211164342.6291-1-bigalex934@gmail.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Brian Gerst <brgerst@gmail.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Reviewed-by: Sohil Mehta <sohil.mehta@intel.com>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: H. Peter Anvin <hpa@zytor.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Josh Poimboeuf <jpoimboe@redhat.com>
+Link: https://lore.kernel.org/r/20250314151220.862768-2-brgerst@gmail.com
+Stable-dep-of: e5aff444e3a7 ("x86/xen: Fix sparse warning in enlighten_pv.c")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/tmp401.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/entry/common.c     | 72 -------------------------------------
+ arch/x86/xen/enlighten_pv.c | 69 +++++++++++++++++++++++++++++++++++
+ 2 files changed, 69 insertions(+), 72 deletions(-)
 
-diff --git a/drivers/hwmon/tmp401.c b/drivers/hwmon/tmp401.c
-index 02c5a3bb1071..84aaf817144c 100644
---- a/drivers/hwmon/tmp401.c
-+++ b/drivers/hwmon/tmp401.c
-@@ -401,7 +401,7 @@ static int tmp401_chip_read(struct device *dev, u32 attr, int channel, long *val
- 		ret = regmap_read(data->regmap, TMP401_CONVERSION_RATE, &regval);
- 		if (ret < 0)
- 			return ret;
--		*val = (1 << (7 - regval)) * 125;
-+		*val = (1 << (7 - min(regval, 7))) * 125;
- 		break;
- 	case hwmon_chip_temp_reset_history:
- 		*val = 0;
+diff --git a/arch/x86/entry/common.c b/arch/x86/entry/common.c
+index 51efd2da4d7f..7b9321c48a90 100644
+--- a/arch/x86/entry/common.c
++++ b/arch/x86/entry/common.c
+@@ -21,11 +21,6 @@
+ #include <linux/uaccess.h>
+ #include <linux/init.h>
+ 
+-#ifdef CONFIG_XEN_PV
+-#include <xen/xen-ops.h>
+-#include <xen/events.h>
+-#endif
+-
+ #include <asm/apic.h>
+ #include <asm/desc.h>
+ #include <asm/traps.h>
+@@ -454,70 +449,3 @@ SYSCALL_DEFINE0(ni_syscall)
+ {
+ 	return -ENOSYS;
+ }
+-
+-#ifdef CONFIG_XEN_PV
+-#ifndef CONFIG_PREEMPTION
+-/*
+- * Some hypercalls issued by the toolstack can take many 10s of
+- * seconds. Allow tasks running hypercalls via the privcmd driver to
+- * be voluntarily preempted even if full kernel preemption is
+- * disabled.
+- *
+- * Such preemptible hypercalls are bracketed by
+- * xen_preemptible_hcall_begin() and xen_preemptible_hcall_end()
+- * calls.
+- */
+-DEFINE_PER_CPU(bool, xen_in_preemptible_hcall);
+-EXPORT_SYMBOL_GPL(xen_in_preemptible_hcall);
+-
+-/*
+- * In case of scheduling the flag must be cleared and restored after
+- * returning from schedule as the task might move to a different CPU.
+- */
+-static __always_inline bool get_and_clear_inhcall(void)
+-{
+-	bool inhcall = __this_cpu_read(xen_in_preemptible_hcall);
+-
+-	__this_cpu_write(xen_in_preemptible_hcall, false);
+-	return inhcall;
+-}
+-
+-static __always_inline void restore_inhcall(bool inhcall)
+-{
+-	__this_cpu_write(xen_in_preemptible_hcall, inhcall);
+-}
+-#else
+-static __always_inline bool get_and_clear_inhcall(void) { return false; }
+-static __always_inline void restore_inhcall(bool inhcall) { }
+-#endif
+-
+-static void __xen_pv_evtchn_do_upcall(struct pt_regs *regs)
+-{
+-	struct pt_regs *old_regs = set_irq_regs(regs);
+-
+-	inc_irq_stat(irq_hv_callback_count);
+-
+-	xen_evtchn_do_upcall();
+-
+-	set_irq_regs(old_regs);
+-}
+-
+-__visible noinstr void xen_pv_evtchn_do_upcall(struct pt_regs *regs)
+-{
+-	irqentry_state_t state = irqentry_enter(regs);
+-	bool inhcall;
+-
+-	instrumentation_begin();
+-	run_sysvec_on_irqstack_cond(__xen_pv_evtchn_do_upcall, regs);
+-
+-	inhcall = get_and_clear_inhcall();
+-	if (inhcall && !WARN_ON_ONCE(state.exit_rcu)) {
+-		irqentry_exit_cond_resched();
+-		instrumentation_end();
+-		restore_inhcall(inhcall);
+-	} else {
+-		instrumentation_end();
+-		irqentry_exit(regs, state);
+-	}
+-}
+-#endif /* CONFIG_XEN_PV */
+diff --git a/arch/x86/xen/enlighten_pv.c b/arch/x86/xen/enlighten_pv.c
+index e033d5594265..6e9d1b287f8e 100644
+--- a/arch/x86/xen/enlighten_pv.c
++++ b/arch/x86/xen/enlighten_pv.c
+@@ -72,6 +72,7 @@
+ #include <asm/mwait.h>
+ #include <asm/pci_x86.h>
+ #include <asm/cpu.h>
++#include <asm/irq_stack.h>
+ #ifdef CONFIG_X86_IOPL_IOPERM
+ #include <asm/io_bitmap.h>
+ #endif
+@@ -93,6 +94,44 @@ void *xen_initial_gdt;
+ static int xen_cpu_up_prepare_pv(unsigned int cpu);
+ static int xen_cpu_dead_pv(unsigned int cpu);
+ 
++#ifndef CONFIG_PREEMPTION
++/*
++ * Some hypercalls issued by the toolstack can take many 10s of
++ * seconds. Allow tasks running hypercalls via the privcmd driver to
++ * be voluntarily preempted even if full kernel preemption is
++ * disabled.
++ *
++ * Such preemptible hypercalls are bracketed by
++ * xen_preemptible_hcall_begin() and xen_preemptible_hcall_end()
++ * calls.
++ */
++DEFINE_PER_CPU(bool, xen_in_preemptible_hcall);
++EXPORT_SYMBOL_GPL(xen_in_preemptible_hcall);
++
++/*
++ * In case of scheduling the flag must be cleared and restored after
++ * returning from schedule as the task might move to a different CPU.
++ */
++static __always_inline bool get_and_clear_inhcall(void)
++{
++	bool inhcall = __this_cpu_read(xen_in_preemptible_hcall);
++
++	__this_cpu_write(xen_in_preemptible_hcall, false);
++	return inhcall;
++}
++
++static __always_inline void restore_inhcall(bool inhcall)
++{
++	__this_cpu_write(xen_in_preemptible_hcall, inhcall);
++}
++
++#else
++
++static __always_inline bool get_and_clear_inhcall(void) { return false; }
++static __always_inline void restore_inhcall(bool inhcall) { }
++
++#endif
++
+ struct tls_descs {
+ 	struct desc_struct desc[3];
+ };
+@@ -686,6 +725,36 @@ DEFINE_IDTENTRY_RAW(xenpv_exc_machine_check)
+ }
+ #endif
+ 
++static void __xen_pv_evtchn_do_upcall(struct pt_regs *regs)
++{
++	struct pt_regs *old_regs = set_irq_regs(regs);
++
++	inc_irq_stat(irq_hv_callback_count);
++
++	xen_evtchn_do_upcall();
++
++	set_irq_regs(old_regs);
++}
++
++__visible noinstr void xen_pv_evtchn_do_upcall(struct pt_regs *regs)
++{
++	irqentry_state_t state = irqentry_enter(regs);
++	bool inhcall;
++
++	instrumentation_begin();
++	run_sysvec_on_irqstack_cond(__xen_pv_evtchn_do_upcall, regs);
++
++	inhcall = get_and_clear_inhcall();
++	if (inhcall && !WARN_ON_ONCE(state.exit_rcu)) {
++		irqentry_exit_cond_resched();
++		instrumentation_end();
++		restore_inhcall(inhcall);
++	} else {
++		instrumentation_end();
++		irqentry_exit(regs, state);
++	}
++}
++
+ struct trap_array_entry {
+ 	void (*orig)(void);
+ 	void (*xen)(void);
 -- 
 2.51.0
 
