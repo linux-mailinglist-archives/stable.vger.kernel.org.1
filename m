@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-205453-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205732-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2798DCFA1E2
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:26:36 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3898CCF9FD3
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:12:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3BB7232E78F7
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:39:21 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 87CBE307283C
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:08:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 554AC2D0C68;
-	Tue,  6 Jan 2026 17:32:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECFAF35E54E;
+	Tue,  6 Jan 2026 17:47:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UfY/f+Hk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RWo0p8Dd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F9622C3770;
-	Tue,  6 Jan 2026 17:32:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA63B33FE23;
+	Tue,  6 Jan 2026 17:47:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767720744; cv=none; b=Ixo2eBYzwOBbf6O00n0J4+UoQ6sDn57QPt1z4fRc1O6wZaPeTS+aa/wcjJl7/BKrvolV0gDX5+nXz8R+FmDEpblGN3JXrfKkQMVxbz12MOzIGWTynyDPwlI+iyKKzNGRUqpoBIUxROIibXVU+nCm6HGzVUNGLoLxtQxheVKm3ag=
+	t=1767721675; cv=none; b=ZYV5aB609wk8s+Y9VRjc+/vwoAC9/cJdDUeiDoZsCuscLr2EtvJAiDX0TtekwWLw2pSFrMLoLeun9N8jv3IXSOXwRMjgoICMmDk0hxX4t6V2COG/SC/y8Kcz5rOUBCziKwgwaz39coTG9vfAbKu5CpTbUEu/7TtFSD4YD29b5wI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767720744; c=relaxed/simple;
-	bh=C1ePl8ydEQqWgoRvTjenL2Wb58ob1Yyq/e1yTFOzBpo=;
+	s=arc-20240116; t=1767721675; c=relaxed/simple;
+	bh=o4FVd+REffNTwMtmwh1RUHzlein/eiVvuzpOQeWdpFE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LP+9HFln6NQ1bcv1FzvwC/tzM8NoRtD256f7E4zes8Au2QCFwnOdwkzXPs27glYsnDaP1eMy+PNooYLq86ftouEzYzs0toHT3IsQzKQ6J82T+nTV97WCx6/LkQxiVvfgEgJN6gx/KAzy5L48BxbJLOTSIxdIPE5m/IjTMmTwxSI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UfY/f+Hk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 195D5C116C6;
-	Tue,  6 Jan 2026 17:32:22 +0000 (UTC)
+	 MIME-Version; b=NO/z0cYF4nU6lG6a2OLYsO1k90rOsdj6bzuXsstzgiuD0AHYH2mUl44sJ2FH96vTMXS7YcrnflUaeAEOeyjWKmCSZRBlUhca+3hL+Fq1DBobzyhakKk1MUgB7mJO8bqzWDKqFm8B5m5LR+bnng8MRKjr0KfI0I2W1O3R+cRfzj0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RWo0p8Dd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1ED8C116C6;
+	Tue,  6 Jan 2026 17:47:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767720743;
-	bh=C1ePl8ydEQqWgoRvTjenL2Wb58ob1Yyq/e1yTFOzBpo=;
+	s=korg; t=1767721675;
+	bh=o4FVd+REffNTwMtmwh1RUHzlein/eiVvuzpOQeWdpFE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UfY/f+HkO6HuvoNmiUoR6HdDPGP6aVMwTZ2RDCBJoJMWunuqXYOquywXJLgGV1DSx
-	 ZxnvRZmPGn3STeOlKkoUXbR7Z2ICMILL3lC2sv/ccI1hOtDe27mCE6IOSfjJztT5fG
-	 GomBLBvldbXIbHjxivcbGyq8x1FQVUmjUJ+HaC+0=
+	b=RWo0p8DdYo2QIEyXHMh9a1Hx3TMwSmCW74MsqbC0EkP35L9VQSAFJg9kWOtA5uTjl
+	 1Ij6m5PkoxGuxVtekuorvYNquDo7LaCHi0qGNUx64GIyksXolR4/FtdXQkLShklPMD
+	 kJBggrr6igtgGaaxHZKBLjv7N2JTxttwM5LfIPUU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+9b35e9bc0951140d13e6@syzkaller.appspotmail.com,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Daniel Zahka <daniel.zahka@gmail.com>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 329/567] ipv6: fix a BUG in rt6_get_pcpu_route() under PREEMPT_RT
-Date: Tue,  6 Jan 2026 18:01:51 +0100
-Message-ID: <20260106170503.505024650@linuxfoundation.org>
+Subject: [PATCH 6.18 038/312] selftests: drv-net: psp: fix templated test names in psp_ip_ver_test_builder()
+Date: Tue,  6 Jan 2026 18:01:52 +0100
+Message-ID: <20260106170549.233373893@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
-References: <20260106170451.332875001@linuxfoundation.org>
+In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
+References: <20260106170547.832845344@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,66 +60,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
+From: Daniel Zahka <daniel.zahka@gmail.com>
 
-[ Upstream commit 1adaea51c61b52e24e7ab38f7d3eba023b2d050d ]
+[ Upstream commit d52668cac3f98f86aa1fb238dec1320c80fbefea ]
 
-On PREEMPT_RT kernels, after rt6_get_pcpu_route() returns NULL, the
-current task can be preempted. Another task running on the same CPU
-may then execute rt6_make_pcpu_route() and successfully install a
-pcpu_rt entry. When the first task resumes execution, its cmpxchg()
-in rt6_make_pcpu_route() will fail because rt6i_pcpu is no longer
-NULL, triggering the BUG_ON(prev). It's easy to reproduce it by adding
-mdelay() after rt6_get_pcpu_route().
+test_case will only take on its formatted name after it is called by
+the test runner. Move the assignment to test_case.__name__ to when the
+test_case is constructed, not called.
 
-Using preempt_disable/enable is not appropriate here because
-ip6_rt_pcpu_alloc() may sleep.
-
-Fix this by handling the cmpxchg() failure gracefully on PREEMPT_RT:
-free our allocation and return the existing pcpu_rt installed by
-another task. The BUG_ON is replaced by WARN_ON_ONCE for non-PREEMPT_RT
-kernels where such races should not occur.
-
-Link: https://syzkaller.appspot.com/bug?extid=9b35e9bc0951140d13e6
-Fixes: d2d6422f8bd1 ("x86: Allow to enable PREEMPT_RT.")
-Reported-by: syzbot+9b35e9bc0951140d13e6@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/6918cd88.050a0220.1c914e.0045.GAE@google.com/T/
-Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Link: https://patch.msgid.link/20251223051413.124687-1-jiayuan.chen@linux.dev
+Fixes: 8f90dc6e417a ("selftests: drv-net: psp: add basic data transfer and key rotation tests")
+Signed-off-by: Daniel Zahka <daniel.zahka@gmail.com>
+Link: https://patch.msgid.link/20251216-psp-test-fix-v1-1-3b5a6dde186f@gmail.com
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/route.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ tools/testing/selftests/drivers/net/psp.py | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/ipv6/route.c b/net/ipv6/route.c
-index 22866444efc0..276fa74af206 100644
---- a/net/ipv6/route.c
-+++ b/net/ipv6/route.c
-@@ -1470,7 +1470,18 @@ static struct rt6_info *rt6_make_pcpu_route(struct net *net,
- 
- 	p = this_cpu_ptr(res->nh->rt6i_pcpu);
- 	prev = cmpxchg(p, NULL, pcpu_rt);
--	BUG_ON(prev);
-+	if (unlikely(prev)) {
-+		/*
-+		 * Another task on this CPU already installed a pcpu_rt.
-+		 * This can happen on PREEMPT_RT where preemption is possible.
-+		 * Free our allocation and return the existing one.
-+		 */
-+		WARN_ON_ONCE(!IS_ENABLED(CONFIG_PREEMPT_RT));
+diff --git a/tools/testing/selftests/drivers/net/psp.py b/tools/testing/selftests/drivers/net/psp.py
+index 4ae7a785ff10..827e04cc8423 100755
+--- a/tools/testing/selftests/drivers/net/psp.py
++++ b/tools/testing/selftests/drivers/net/psp.py
+@@ -560,8 +560,9 @@ def psp_ip_ver_test_builder(name, test_func, psp_ver, ipver):
+     """Build test cases for each combo of PSP version and IP version"""
+     def test_case(cfg):
+         cfg.require_ipver(ipver)
+-        test_case.__name__ = f"{name}_v{psp_ver}_ip{ipver}"
+         test_func(cfg, psp_ver, ipver)
 +
-+		dst_dev_put(&pcpu_rt->dst);
-+		dst_release(&pcpu_rt->dst);
-+		return prev;
-+	}
++    test_case.__name__ = f"{name}_v{psp_ver}_ip{ipver}"
+     return test_case
  
- 	if (res->f6i->fib6_destroying) {
- 		struct fib6_info *from;
+ 
 -- 
 2.51.0
 
