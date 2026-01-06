@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-205818-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205539-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 630B6CFAF09
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 21:33:27 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46317CFAA0D
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:24:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 99BBA306A0FD
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 20:31:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3F798310AE69
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:37:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E55233A00C;
-	Tue,  6 Jan 2026 17:52:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E59933E355;
+	Tue,  6 Jan 2026 17:37:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vG7Lcbko"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X5P0GsPH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CFB72FFDF9;
-	Tue,  6 Jan 2026 17:52:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C14AE280327;
+	Tue,  6 Jan 2026 17:37:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721965; cv=none; b=hZ+SZftNvu0MlNdE6Au/XZ7VJ6ptvbw2Mmg2V3A/wBIypJ+SyfzI4vKRxtS5Uhv/TtxoVa0uRp+42lo4Ybczk6JI6sPdjDYnP/nq2pN25rU4ITC4m6JF4Mldk76tFrUsv/vIx36YtYc8GmpOarbzwo9OqE8y0tZu77AGYacJTDo=
+	t=1767721029; cv=none; b=P60GQJSWhuyKTuiXuUkL+xDNxa/fM8NK2PQ3FFnR66VKyRpd1fmGdLk5SZ9oPq4nlR4UYLL0YirWQkG6uuABp0+6xTmffXLaTWYX739xwOMw69TZsXNJe6P9/1qFASZfHhPBSNK5prA9TQa0Pj2hAyc73+xef+GsIxgX4rjRecQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721965; c=relaxed/simple;
-	bh=bzC5mdUwy9zCNQ0vtql3ILY737Vf+Zvr7HDsHmrv4nA=;
+	s=arc-20240116; t=1767721029; c=relaxed/simple;
+	bh=4dagcf/ImojDKwavont0DygMhYP1D4gKJaWcXipjeZ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kgBw5dk/Nu/l5nWmP2NC2r/3IneldN5BSxJZMWwy8HkHAtnf2EMWqUcFnXBsiem3a+ux1Ad9w83jALNj9F3dGy1OKI4kZb6iCwVkVoVW3hLxKTSd0ztynos5js+2m7XnWhehFSF/rn+a4NewWCox0ARAgI/89xCapyRbJIZH0cs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vG7Lcbko; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68A5DC116C6;
-	Tue,  6 Jan 2026 17:52:44 +0000 (UTC)
+	 MIME-Version; b=jqXXDiuXA4HYxpq2hr3S7qtj02hcNRVmTXCMVqwWfgcvcxDenUW43lbLrn4YgS2i9TMsRNpKsmIh9jObJ2Chha2zOA29ctzY2dxHh+h81XcXwLQTk2I1MHuXc8rxj9MURYV3U4khT6fR9uus2azR66dv25YaYUvVWKK6Tt2p1/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X5P0GsPH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31047C16AAE;
+	Tue,  6 Jan 2026 17:37:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721964;
-	bh=bzC5mdUwy9zCNQ0vtql3ILY737Vf+Zvr7HDsHmrv4nA=;
+	s=korg; t=1767721029;
+	bh=4dagcf/ImojDKwavont0DygMhYP1D4gKJaWcXipjeZ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vG7LcbkotWboC5P3uvdIDLW1GZUJ9zoWMrd0DkurgOmoO6xsiP2oqx7PSssnX5VLJ
-	 KeqDxjhqn10mL8yjUc2Q6oxDFBrNNvWmRl3CRuQADo/l6DCN7uLKltpIg1PCCsYTu8
-	 0HVG6tG/HdEACNB8RakCLnknf6gp5lKWwQt8xCsI=
+	b=X5P0GsPHR0iqCj65JVGUuISzQD5PT1zKp+6RzFB7KqcetzU3kO2WJb6e3kNdgG32U
+	 q7M+bkkU9AkBjwTSfzZ52zeMkLjhiJTmaao16CFlEcABrAz0Zt8xPu5e1SVKEv9lWT
+	 NzPiG7QLxI7fI0NZWoEssO5IWx6qOsDTVpFWmOuI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	olivier moysan <olivier.moysan@st.com>,
-	Wen Yang <yellowriver2010@hotmail.com>,
-	Johan Hovold <johan@kernel.org>,
-	olivier moysan <olivier.moysan@foss.st.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.18 092/312] ASoC: stm32: sai: fix device leak on probe
-Date: Tue,  6 Jan 2026 18:02:46 +0100
-Message-ID: <20260106170551.162452391@linuxfoundation.org>
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Michael Walle <mwalle@kernel.org>,
+	Pratyush Yadav <pratyush@kernel.org>
+Subject: [PATCH 6.12 387/567] mtd: spi-nor: winbond: Add support for W25Q02NWxxIM chips
+Date: Tue,  6 Jan 2026 18:02:49 +0100
+Message-ID: <20260106170505.658311885@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
-References: <20260106170547.832845344@linuxfoundation.org>
+In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
+References: <20260106170451.332875001@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +60,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Miquel Raynal <miquel.raynal@bootlin.com>
 
-commit e26ff429eaf10c4ef1bc3dabd9bf27eb54b7e1f4 upstream.
+commit 71c239348d9fbdb1f0d6f36013f1697cc06c3e9c upstream.
 
-Make sure to drop the reference taken when looking up the sync provider
-device and its driver data during DAI probe on probe failures and on
-unbind.
+These chips must be described as none of the block protection
+information are discoverable. This chip supports 4 bits plus the
+top/bottom addressing capability to identify the protected blocks.
 
-Note that holding a reference to a device does not prevent its driver
-data from going away so there is no point in keeping the reference.
-
-Fixes: 7dd0d835582f ("ASoC: stm32: sai: simplify sync modes management")
-Fixes: 1c3816a19487 ("ASoC: stm32: sai: add missing put_device()")
-Cc: stable@vger.kernel.org	# 4.16: 1c3816a19487
-Cc: olivier moysan <olivier.moysan@st.com>
-Cc: Wen Yang <yellowriver2010@hotmail.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: olivier moysan <olivier.moysan@foss.st.com>
-Link: https://patch.msgid.link/20251124104908.15754-2-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Reviewed-by: Michael Walle <mwalle@kernel.org>
+Signed-off-by: Pratyush Yadav <pratyush@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/stm/stm32_sai.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mtd/spi-nor/winbond.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/sound/soc/stm/stm32_sai.c
-+++ b/sound/soc/stm/stm32_sai.c
-@@ -143,6 +143,7 @@ static int stm32_sai_set_sync(struct stm
- 	}
+--- a/drivers/mtd/spi-nor/winbond.c
++++ b/drivers/mtd/spi-nor/winbond.c
+@@ -262,6 +262,10 @@ static const struct flash_info winbond_n
+ 		/* W25Q01NWxxIM */
+ 		.id = SNOR_ID(0xef, 0x80, 0x21),
+ 		.flags = SPI_NOR_HAS_LOCK | SPI_NOR_HAS_TB | SPI_NOR_TB_SR_BIT6 | SPI_NOR_4BIT_BP,
++	}, {
++		/* W25Q02NWxxIM */
++		.id = SNOR_ID(0xef, 0x80, 0x22),
++		.flags = SPI_NOR_HAS_LOCK | SPI_NOR_HAS_TB | SPI_NOR_TB_SR_BIT6 | SPI_NOR_4BIT_BP,
+ 	},
+ };
  
- 	sai_provider = platform_get_drvdata(pdev);
-+	put_device(&pdev->dev);
- 	if (!sai_provider) {
- 		dev_err(&sai_client->pdev->dev,
- 			"SAI sync provider data not found\n");
-@@ -159,7 +160,6 @@ static int stm32_sai_set_sync(struct stm
- 	ret = stm32_sai_sync_conf_provider(sai_provider, synco);
- 
- error:
--	put_device(&pdev->dev);
- 	of_node_put(np_provider);
- 	return ret;
- }
 
 
 
