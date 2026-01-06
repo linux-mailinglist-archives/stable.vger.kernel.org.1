@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-205714-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205703-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F1A1CFAA31
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:25:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A4A7CFB00B
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 21:49:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BF8DB330B8F0
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:38:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 69C9C30B50E2
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 20:46:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11B4E346E40;
-	Tue,  6 Jan 2026 17:46:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 385A535C1BE;
+	Tue,  6 Jan 2026 17:46:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kZmIBK6Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LEirnHbL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C14D62E1C63;
-	Tue,  6 Jan 2026 17:46:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E60B035C1B6;
+	Tue,  6 Jan 2026 17:46:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721613; cv=none; b=j46WjlqIHblTrVfAFG2VWBq/ibnGgGlLbLJkJWuhruWqlCNJlwtOnSf9lbeBCFj1AvgCbdo9c6MoieqIipqrF8GGT4WSiLjofGbOH/3esBcvCQO6y0wf7cSxDZ/vSss3kFKnOq7/2UltMwkuMjSVFhxLXkd7YpO9iD5B4p0/b58=
+	t=1767721577; cv=none; b=D5H4IhaFMepwW0JZL7jUbFbGgUxE44IunhwW1U67+r0lz5qxSVyxrn+zgM5G2PggZpmRq2wI+/s1VUfEs1v7sqSzBxxZjm7ynGGqiuGlLdgVg3iRsD5Ybg7ldW62/ko/a4AYBpdk+efkBp3czj+cTcftDoZDCgzgitwu+GcRT6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721613; c=relaxed/simple;
-	bh=RTJHEFa2TrQ93qSzMdELueRlF8bYmL6PtbL1trPGOWw=;
+	s=arc-20240116; t=1767721577; c=relaxed/simple;
+	bh=Tc8mSl7NoSMRcPFX76hgVR0VcYzEPBXK15ayYyKva4w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wey9PfyJfkLzbz+xU71BGJs5jDgpJcxmQ1o3eNarVjAx5LeIQK3+AOtd8neBLjLclKDiItJx7bfnSvmdS0SUmf+3G4ri9yFVBWSBNNKhC79DtkHJ9X1GO9BKW3tT68tY9tCOVzEr4WMK78GP1ZP1FgWRgZ8algJ0gRnV9FHY4T8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kZmIBK6Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 307F5C116C6;
-	Tue,  6 Jan 2026 17:46:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=JsSa76CcH24LcRcxTUq5v8R8C6rl0Z3GRg/K34oWOmC1VoaYbLJvPk9/jluZe5LarYUpKu33TMPy0OhHyKIaumnF9zgwxfMpJhXf0uJewMU1XFV7GPCzBN+RAmXeRGzbUEVSJeJuCM6AFz4raz/NEYrGmJjx7sKzhchrrLfOg4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LEirnHbL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52079C116C6;
+	Tue,  6 Jan 2026 17:46:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721613;
-	bh=RTJHEFa2TrQ93qSzMdELueRlF8bYmL6PtbL1trPGOWw=;
+	s=korg; t=1767721576;
+	bh=Tc8mSl7NoSMRcPFX76hgVR0VcYzEPBXK15ayYyKva4w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kZmIBK6QnmvFnukRFCRsnLAfKlQujbbSIKw3hTbjeAli4AVCpY+DXtqdZT69YNBkT
-	 kx/slU+jI5GNTJBahoykL9JzVjwNwIWkRgvp1AhRPX2aLgJR99v9gRle9xi0UyRLRe
-	 im4krv2sRj9/Uhc4Hj28zgZrNUBmKZ61yAE6EWUs=
+	b=LEirnHbLiQuPOssUxFUY3TfK7wVjpmc2XHjHIBCv8uPdpQQxTJPu0VXFKhC1E1s9u
+	 cp2VUzVHIUmsXavlIz3YXgD1JPQ6I+YW7OV6b+dTC7lpiDF8O3XhFPezW5q1RhIEHh
+	 PifA5guDDGxQNvsq1pqshoyMsJPtxfcYbiJbqkeg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zqiang <qiang.zhang@linux.dev>,
-	Andrea Righi <arighi@nvidia.com>,
-	Tejun Heo <tj@kernel.org>,
+	=?UTF-8?q?Tiago=20Martins=20Ara=C3=BAjo?= <tiago.martins.araujo@gmail.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Jani Nikula <jani.nikula@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 006/312] sched_ext: Fix incorrect sched_class settings for per-cpu migration tasks
-Date: Tue,  6 Jan 2026 18:01:20 +0100
-Message-ID: <20260106170548.071330598@linuxfoundation.org>
+Subject: [PATCH 6.18 010/312] drm/displayid: add quirk to ignore DisplayID checksum errors
+Date: Tue,  6 Jan 2026 18:01:24 +0100
+Message-ID: <20260106170548.225304295@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
 References: <20260106170547.832845344@linuxfoundation.org>
@@ -59,109 +59,142 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zqiang <qiang.zhang@linux.dev>
+From: Jani Nikula <jani.nikula@intel.com>
 
-[ Upstream commit 1dd6c84f1c544e552848a8968599220bd464e338 ]
+[ Upstream commit 83cbb4d33dc22b0ca1a4e85c6e892c9b729e28d4 ]
 
-When loading the ebpf scheduler, the tasks in the scx_tasks list will
-be traversed and invoke __setscheduler_class() to get new sched_class.
-however, this would also incorrectly set the per-cpu migration
-task's->sched_class to rt_sched_class, even after unload, the per-cpu
-migration task's->sched_class remains sched_rt_class.
+Add a mechanism for DisplayID specific quirks, and add the first quirk
+to ignore DisplayID section checksum errors.
 
-The log for this issue is as follows:
+It would be quite inconvenient to pass existing EDID quirks from
+drm_edid.c for DisplayID parsing. Not all places doing DisplayID
+iteration have the quirks readily available, and would have to pass it
+in all places. Simply add a separate array of DisplayID specific EDID
+quirks. We do end up checking it every time we iterate DisplayID blocks,
+but hopefully the number of quirks remains small.
 
-./scx_rustland --stats 1
-[  199.245639][  T630] sched_ext: "rustland" does not implement cgroup cpu.weight
-[  199.269213][  T630] sched_ext: BPF scheduler "rustland" enabled
-04:25:09 [INFO] RustLand scheduler attached
+There are a few laptop models with DisplayID checksum failures, leading
+to higher refresh rates only present in the DisplayID blocks being
+ignored. Add a quirk for the panel in the machines.
 
-bpftrace -e 'iter:task /strcontains(ctx->task->comm, "migration")/
-{ printf("%s:%d->%pS\n", ctx->task->comm, ctx->task->pid, ctx->task->sched_class); }'
-Attaching 1 probe...
-migration/0:24->rt_sched_class+0x0/0xe0
-migration/1:27->rt_sched_class+0x0/0xe0
-migration/2:33->rt_sched_class+0x0/0xe0
-migration/3:39->rt_sched_class+0x0/0xe0
-migration/4:45->rt_sched_class+0x0/0xe0
-migration/5:52->rt_sched_class+0x0/0xe0
-migration/6:58->rt_sched_class+0x0/0xe0
-migration/7:64->rt_sched_class+0x0/0xe0
-
-sched_ext: BPF scheduler "rustland" disabled (unregistered from user space)
-EXIT: unregistered from user space
-04:25:21 [INFO] Unregister RustLand scheduler
-
-bpftrace -e 'iter:task /strcontains(ctx->task->comm, "migration")/
-{ printf("%s:%d->%pS\n", ctx->task->comm, ctx->task->pid, ctx->task->sched_class); }'
-Attaching 1 probe...
-migration/0:24->rt_sched_class+0x0/0xe0
-migration/1:27->rt_sched_class+0x0/0xe0
-migration/2:33->rt_sched_class+0x0/0xe0
-migration/3:39->rt_sched_class+0x0/0xe0
-migration/4:45->rt_sched_class+0x0/0xe0
-migration/5:52->rt_sched_class+0x0/0xe0
-migration/6:58->rt_sched_class+0x0/0xe0
-migration/7:64->rt_sched_class+0x0/0xe0
-
-This commit therefore generate a new scx_setscheduler_class() and
-add check for stop_sched_class to replace __setscheduler_class().
-
-Fixes: f0e1a0643a59 ("sched_ext: Implement BPF extensible scheduler class")
-Cc: stable@vger.kernel.org # v6.12+
-Signed-off-by: Zqiang <qiang.zhang@linux.dev>
-Reviewed-by: Andrea Righi <arighi@nvidia.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
-[ Adjust context ]
+Reported-by: Tiago Martins Araújo <tiago.martins.araujo@gmail.com>
+Closes: https://lore.kernel.org/r/CACRbrPGvLP5LANXuFi6z0S7XMbAG4X5y2YOLBDxfOVtfGGqiKQ@mail.gmail.com
+Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14703
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Tested-by: Tiago Martins Araújo <tiago.martins.araujo@gmail.com>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/c04d81ae648c5f21b3f5b7953f924718051f2798.1761681968.git.jani.nikula@intel.com
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/ext.c |   14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/drm_displayid.c          |   41 +++++++++++++++++++++++++++----
+ drivers/gpu/drm/drm_displayid_internal.h |    2 +
+ 2 files changed, 39 insertions(+), 4 deletions(-)
 
---- a/kernel/sched/ext.c
-+++ b/kernel/sched/ext.c
-@@ -210,6 +210,14 @@ static struct scx_dispatch_q *find_user_
- 	return rhashtable_lookup_fast(&sch->dsq_hash, &dsq_id, dsq_hash_params);
- }
+--- a/drivers/gpu/drm/drm_displayid.c
++++ b/drivers/gpu/drm/drm_displayid.c
+@@ -9,6 +9,34 @@
+ #include "drm_crtc_internal.h"
+ #include "drm_displayid_internal.h"
  
-+static const struct sched_class *scx_setscheduler_class(struct task_struct *p)
-+{
-+	if (p->sched_class == &stop_sched_class)
-+		return &stop_sched_class;
++enum {
++	QUIRK_IGNORE_CHECKSUM,
++};
 +
-+	return __setscheduler_class(p->policy, p->prio);
++struct displayid_quirk {
++	const struct drm_edid_ident ident;
++	u8 quirks;
++};
++
++static const struct displayid_quirk quirks[] = {
++	{
++		.ident = DRM_EDID_IDENT_INIT('C', 'S', 'O', 5142, "MNE007ZA1-5"),
++		.quirks = BIT(QUIRK_IGNORE_CHECKSUM),
++	},
++};
++
++static u8 get_quirks(const struct drm_edid *drm_edid)
++{
++	int i;
++
++	for (i = 0; i < ARRAY_SIZE(quirks); i++) {
++		if (drm_edid_match(drm_edid, &quirks[i].ident))
++			return quirks[i].quirks;
++	}
++
++	return 0;
 +}
 +
- /*
-  * scx_kf_mask enforcement. Some kfuncs can only be called from specific SCX
-  * ops. When invoking SCX ops, SCX_CALL_OP[_RET]() should be used to indicate
-@@ -3994,8 +4002,7 @@ static void scx_disable_workfn(struct kt
- 	scx_task_iter_start(&sti);
- 	while ((p = scx_task_iter_next_locked(&sti))) {
- 		const struct sched_class *old_class = p->sched_class;
--		const struct sched_class *new_class =
--			__setscheduler_class(p->policy, p->prio);
-+		const struct sched_class *new_class = scx_setscheduler_class(p);
- 		struct sched_enq_and_set_ctx ctx;
+ static const struct displayid_header *
+ displayid_get_header(const u8 *displayid, int length, int index)
+ {
+@@ -23,7 +51,7 @@ displayid_get_header(const u8 *displayid
+ }
  
- 		if (old_class != new_class && p->se.sched_delayed)
-@@ -4779,8 +4786,7 @@ static int scx_enable(struct sched_ext_o
- 	scx_task_iter_start(&sti);
- 	while ((p = scx_task_iter_next_locked(&sti))) {
- 		const struct sched_class *old_class = p->sched_class;
--		const struct sched_class *new_class =
--			__setscheduler_class(p->policy, p->prio);
-+		const struct sched_class *new_class = scx_setscheduler_class(p);
- 		struct sched_enq_and_set_ctx ctx;
+ static const struct displayid_header *
+-validate_displayid(const u8 *displayid, int length, int idx)
++validate_displayid(const u8 *displayid, int length, int idx, bool ignore_checksum)
+ {
+ 	int i, dispid_length;
+ 	u8 csum = 0;
+@@ -41,8 +69,11 @@ validate_displayid(const u8 *displayid,
+ 	for (i = 0; i < dispid_length; i++)
+ 		csum += displayid[idx + i];
+ 	if (csum) {
+-		DRM_NOTE("DisplayID checksum invalid, remainder is %d\n", csum);
+-		return ERR_PTR(-EINVAL);
++		DRM_NOTE("DisplayID checksum invalid, remainder is %d%s\n", csum,
++			 ignore_checksum ? " (ignoring)" : "");
++
++		if (!ignore_checksum)
++			return ERR_PTR(-EINVAL);
+ 	}
  
- 		if (!tryget_task_struct(p))
+ 	return base;
+@@ -52,6 +83,7 @@ static const u8 *find_next_displayid_ext
+ {
+ 	const struct displayid_header *base;
+ 	const u8 *displayid;
++	bool ignore_checksum = iter->quirks & BIT(QUIRK_IGNORE_CHECKSUM);
+ 
+ 	displayid = drm_edid_find_extension(iter->drm_edid, DISPLAYID_EXT, &iter->ext_index);
+ 	if (!displayid)
+@@ -61,7 +93,7 @@ static const u8 *find_next_displayid_ext
+ 	iter->length = EDID_LENGTH - 1;
+ 	iter->idx = 1;
+ 
+-	base = validate_displayid(displayid, iter->length, iter->idx);
++	base = validate_displayid(displayid, iter->length, iter->idx, ignore_checksum);
+ 	if (IS_ERR(base))
+ 		return NULL;
+ 
+@@ -76,6 +108,7 @@ void displayid_iter_edid_begin(const str
+ 	memset(iter, 0, sizeof(*iter));
+ 
+ 	iter->drm_edid = drm_edid;
++	iter->quirks = get_quirks(drm_edid);
+ }
+ 
+ static const struct displayid_block *
+--- a/drivers/gpu/drm/drm_displayid_internal.h
++++ b/drivers/gpu/drm/drm_displayid_internal.h
+@@ -167,6 +167,8 @@ struct displayid_iter {
+ 
+ 	u8 version;
+ 	u8 primary_use;
++
++	u8 quirks;
+ };
+ 
+ void displayid_iter_edid_begin(const struct drm_edid *drm_edid,
 
 
 
