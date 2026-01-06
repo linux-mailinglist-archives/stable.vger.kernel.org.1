@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-205446-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205749-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92691CFA1D9
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:26:05 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13133CFA2F7
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:33:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 405A032F27A5
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:38:52 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1A5DF301B64D
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:33:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 030512C11F9;
-	Tue,  6 Jan 2026 17:32:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E490E35F8DA;
+	Tue,  6 Jan 2026 17:48:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R+wV18g1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ekBZb1bW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3A282773E5;
-	Tue,  6 Jan 2026 17:31:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EE5535FF49;
+	Tue,  6 Jan 2026 17:48:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767720719; cv=none; b=fjn/Bm429/5bFlPilV2Is4pfeMVV+VoAaFCAZoEFRHt2p1zK4OMVP5Hz69JsThQuFbvBcnVaxnl/qnagf5XumQEUa+E7AsczFnhTXLg47gcRFS6MzCngYc3GSLO8j9cC8p2AsayZ+jMySq1fntKOEZR7oNUj9S5VYQya8w+KbkY=
+	t=1767721731; cv=none; b=TNDP9ikAqJ7naAejkMjw10rTYCEXsUtqX39W4wNjIS6Pb2mCVhH1GBgB48osAnSbN1UPEDRk3iVrW1etb1Hc6gHRHGwDGpDtdk8/RsDgIuqwdavJEDJGs8jz4asTMa2VHZm6xsnp2W5K+QNFIBVds8GNLkaYvUHXN+gznEl7mNQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767720719; c=relaxed/simple;
-	bh=3FnSlG2C63ecpNzidA6vPpUEx7y2gR02zgcc6skTRLo=;
+	s=arc-20240116; t=1767721731; c=relaxed/simple;
+	bh=PaZNuwEYoD9YfjngvFax7qXaIJKezUT1SiYMHrBypRA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ScN/MQhHGdF0y9KWdH5Di+aURr+qYYix3nqm+ZaKs2ICzP6uj8lGIWhs6NUz/HBVk9ORmchJIGZGZvvtWg/9xRZ85ke2rrZmSBBmoYmFtrciIXVICLy9IF8W8UO6ryLrOd0MdQWYUWOyvM1RJi8HaxJNIWH6veY1AK5GoOaJUGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R+wV18g1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23D87C116C6;
-	Tue,  6 Jan 2026 17:31:58 +0000 (UTC)
+	 MIME-Version; b=VgoyICRMRteWx6DAMDQ3Wf/krOwn8sK4PEF+8OLBe3mK3vaByHrf/fcMVSBuOhuL7qJmvaPyDigQclyv4CDluKEWcMbsRCiLVJ/VOthyjJXmALWb0x59mfL5gSkZRhVtQaj/WRd5guxtRPG6uJtKJCwrkyIyDDohYfAXoiHUpHU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ekBZb1bW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E50EC116C6;
+	Tue,  6 Jan 2026 17:48:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767720719;
-	bh=3FnSlG2C63ecpNzidA6vPpUEx7y2gR02zgcc6skTRLo=;
+	s=korg; t=1767721731;
+	bh=PaZNuwEYoD9YfjngvFax7qXaIJKezUT1SiYMHrBypRA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R+wV18g1ErVM2QsD/B2kBIF5ipSSR20A7B7FEQg3ZU1Y0yj0Z9pr2vp9dcpfUv9oc
-	 bzZZFy9UBruY60It0NBYBii4iOSGQ6yyCp//34y00lF+PjbtBEj3sMdzVtkGW7C7a4
-	 oQaWsiTX86zVrQPx55Kg8dvq5/svCSKLHWl5360I=
+	b=ekBZb1bWNQTAkfUbnrfpRi/USYx2sR/pMPsL0C0haL9WWJY+OmAG9peUQ43x5fa7Z
+	 +zpAoxDsiAgobttdarFCQxeEcmdbbPDOaQJ/q2Zfp0++TNnyNUxLAT6W0UlyQMkAHf
+	 GTlqPxA03GSPbNXSUFkwrjtqM/BpoUQeVddubeQM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Alice C. Munduruca" <alice.munduruca@canonical.com>,
-	Cengiz Can <cengiz.can@canonical.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Xiumei Mu <xmu@redhat.com>,
+	Xin Long <lucien.xin@gmail.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 314/567] selftests: net: fix "buffer overflow detected" for tap.c
-Date: Tue,  6 Jan 2026 18:01:36 +0100
-Message-ID: <20260106170502.944266431@linuxfoundation.org>
+Subject: [PATCH 6.18 023/312] crypto: seqiv - Do not use req->iv after crypto_aead_encrypt
+Date: Tue,  6 Jan 2026 18:01:37 +0100
+Message-ID: <20260106170548.694350356@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
-References: <20260106170451.332875001@linuxfoundation.org>
+In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
+References: <20260106170547.832845344@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,99 +61,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alice C. Munduruca <alice.munduruca@canonical.com>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-[ Upstream commit 472c5dd6b95c02b3e5d7395acf542150e91165e7 ]
+[ Upstream commit 50fdb78b7c0bcc550910ef69c0984e751cac72fa ]
 
-When the selftest 'tap.c' is compiled with '-D_FORTIFY_SOURCE=3',
-the strcpy() in rtattr_add_strsz() is replaced with a checked
-version which causes the test to consistently fail when compiled
-with toolchains for which this option is enabled by default.
+As soon as crypto_aead_encrypt is called, the underlying request
+may be freed by an asynchronous completion.  Thus dereferencing
+req->iv after it returns is invalid.
 
- TAP version 13
- 1..3
- # Starting 3 tests from 1 test cases.
- #  RUN           tap.test_packet_valid_udp_gso ...
- *** buffer overflow detected ***: terminated
- # test_packet_valid_udp_gso: Test terminated by assertion
- #          FAIL  tap.test_packet_valid_udp_gso
- not ok 1 tap.test_packet_valid_udp_gso
- #  RUN           tap.test_packet_valid_udp_csum ...
- *** buffer overflow detected ***: terminated
- # test_packet_valid_udp_csum: Test terminated by assertion
- #          FAIL  tap.test_packet_valid_udp_csum
- not ok 2 tap.test_packet_valid_udp_csum
- #  RUN           tap.test_packet_crash_tap_invalid_eth_proto ...
- *** buffer overflow detected ***: terminated
- # test_packet_crash_tap_invalid_eth_proto: Test terminated by assertion
- #          FAIL  tap.test_packet_crash_tap_invalid_eth_proto
- not ok 3 tap.test_packet_crash_tap_invalid_eth_proto
- # FAILED: 0 / 3 tests passed.
- # Totals: pass:0 fail:3 xfail:0 xpass:0 skip:0 error:0
+Instead of checking req->iv against info, create a new variable
+unaligned_info and use it for that purpose instead.
 
-A buffer overflow is detected by the fortified glibc __strcpy_chk()
-since the __builtin_object_size() of `RTA_DATA(rta)` is incorrectly
-reported as 1, even though there is ample space in its bounding
-buffer `req`.
-
-Additionally, given that IFLA_IFNAME also expects a null-terminated
-string, callers of rtaddr_add_str{,sz}() could simply use the
-rtaddr_add_strsz() variant. (which has been renamed to remove the
-trailing `sz`) memset() has been used for this function since it
-is unchecked and thus circumvents the issue discussed in the
-previous paragraph.
-
-Fixes: 2e64fe4624d1 ("selftests: add few test cases for tap driver")
-Signed-off-by: Alice C. Munduruca <alice.munduruca@canonical.com>
-Reviewed-by: Cengiz Can <cengiz.can@canonical.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/20251216170641.250494-1-alice.munduruca@canonical.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 0a270321dbf9 ("[CRYPTO] seqiv: Add Sequence Number IV Generator")
+Reported-by: Xiumei Mu <xmu@redhat.com>
+Reported-by: Xin Long <lucien.xin@gmail.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/tap.c | 16 +++++-----------
- 1 file changed, 5 insertions(+), 11 deletions(-)
+ crypto/seqiv.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/tools/testing/selftests/net/tap.c b/tools/testing/selftests/net/tap.c
-index 247c3b3ac1c9..51a209014f1c 100644
---- a/tools/testing/selftests/net/tap.c
-+++ b/tools/testing/selftests/net/tap.c
-@@ -56,18 +56,12 @@ static void rtattr_end(struct nlmsghdr *nh, struct rtattr *attr)
- static struct rtattr *rtattr_add_str(struct nlmsghdr *nh, unsigned short type,
- 				     const char *s)
- {
--	struct rtattr *rta = rtattr_add(nh, type, strlen(s));
-+	unsigned int strsz = strlen(s) + 1;
-+	struct rtattr *rta;
+diff --git a/crypto/seqiv.c b/crypto/seqiv.c
+index 2bae99e33526..678bb4145d78 100644
+--- a/crypto/seqiv.c
++++ b/crypto/seqiv.c
+@@ -50,6 +50,7 @@ static int seqiv_aead_encrypt(struct aead_request *req)
+ 	struct aead_geniv_ctx *ctx = crypto_aead_ctx(geniv);
+ 	struct aead_request *subreq = aead_request_ctx(req);
+ 	crypto_completion_t compl;
++	bool unaligned_info;
+ 	void *data;
+ 	u8 *info;
+ 	unsigned int ivsize = 8;
+@@ -68,8 +69,9 @@ static int seqiv_aead_encrypt(struct aead_request *req)
+ 		memcpy_sglist(req->dst, req->src,
+ 			      req->assoclen + req->cryptlen);
  
--	memcpy(RTA_DATA(rta), s, strlen(s));
--	return rta;
--}
--
--static struct rtattr *rtattr_add_strsz(struct nlmsghdr *nh, unsigned short type,
--				       const char *s)
--{
--	struct rtattr *rta = rtattr_add(nh, type, strlen(s) + 1);
-+	rta = rtattr_add(nh, type, strsz);
+-	if (unlikely(!IS_ALIGNED((unsigned long)info,
+-				 crypto_aead_alignmask(geniv) + 1))) {
++	unaligned_info = !IS_ALIGNED((unsigned long)info,
++				     crypto_aead_alignmask(geniv) + 1);
++	if (unlikely(unaligned_info)) {
+ 		info = kmemdup(req->iv, ivsize, req->base.flags &
+ 			       CRYPTO_TFM_REQ_MAY_SLEEP ? GFP_KERNEL :
+ 			       GFP_ATOMIC);
+@@ -89,7 +91,7 @@ static int seqiv_aead_encrypt(struct aead_request *req)
+ 	scatterwalk_map_and_copy(info, req->dst, req->assoclen, ivsize, 1);
  
--	strcpy(RTA_DATA(rta), s);
-+	memcpy(RTA_DATA(rta), s, strsz);
- 	return rta;
+ 	err = crypto_aead_encrypt(subreq);
+-	if (unlikely(info != req->iv))
++	if (unlikely(unaligned_info))
+ 		seqiv_aead_encrypt_complete2(req, err);
+ 	return err;
  }
- 
-@@ -119,7 +113,7 @@ static int dev_create(const char *dev, const char *link_type,
- 
- 	link_info = rtattr_begin(&req.nh, IFLA_LINKINFO);
- 
--	rtattr_add_strsz(&req.nh, IFLA_INFO_KIND, link_type);
-+	rtattr_add_str(&req.nh, IFLA_INFO_KIND, link_type);
- 
- 	if (fill_info_data) {
- 		info_data = rtattr_begin(&req.nh, IFLA_INFO_DATA);
 -- 
 2.51.0
 
