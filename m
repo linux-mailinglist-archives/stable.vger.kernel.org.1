@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-205686-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205992-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24B67CF9FB9
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:11:45 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4418CFA07A
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:17:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F0E66306DA84
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:08:34 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E8B7130146D5
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:16:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D422B34402D;
-	Tue,  6 Jan 2026 17:45:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F911355817;
+	Tue,  6 Jan 2026 18:02:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u+jMCkX5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AnMocbJ8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 869883016E5;
-	Tue,  6 Jan 2026 17:45:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ECB03559C4;
+	Tue,  6 Jan 2026 18:02:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721519; cv=none; b=BGdeK3McDJ9xGcogLvySzqm3Q6HrzTo2uTcYj+ADxJr8+aPxVWNsCItps6NTIJxU8BiQ4DJGtBfeuyIqFL0mNB8AQJ/5ueQwRISqtgzWWgcLP+wLBDn8Rsa1biiLrUqdk2m3gV8yoC7Vh1QjcTZJTbUZ7DCdvTGVkoUgg6Hi2IA=
+	t=1767722542; cv=none; b=nzIbztjbIliAWq678x0nzYFFVsDnDvDEb6g1sJX9Yygm2ShVUNJeZqI8CEhK71UioPRa+UuHQBG1xzzTVDI8QZEu/CElCCM6m9K2Dss/sjDa5qF/cWO0QZdcJn95GS0aKhWn3mTAJrwf3FevTK3h9uOZ04VEk+lYqcfawB0dlus=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721519; c=relaxed/simple;
-	bh=qMlUb3TXj2TRCMh6uljErXMye0aUvB3o8z9mR3U0DHk=;
+	s=arc-20240116; t=1767722542; c=relaxed/simple;
+	bh=2GRUWnoBu+POPtjH1/15m5iZdBlkuMLKQcAuwPvgj1E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PyWsve93CdvlwgUlLd3IcypQ6S9qlMvJ9yrqFV0OOlT0hualTOY+/J2V9mAPMm15c0r7eNZfXau7Hp++5MyHfVYJ9vnzOgheB6JgUJUTCNxe8qpE5ICGr8BSpS6UqM2WIDZApGfBvC7z0EfhVhAN1HPJtDzdp7aaF74mHF+u/a8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u+jMCkX5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F3FEC116C6;
-	Tue,  6 Jan 2026 17:45:18 +0000 (UTC)
+	 MIME-Version; b=dp180PoYkyERQS3MQvmOJaWEo/UgjJENAC38OFjGKFTnYBf6q99ZOoD+gk4vHfKcHsA7M1NCpevqBHRzNrg9ZA1XSPukQxIcfRbiTL122IA2TpQF2uMBmlgxAhNhF0y4lq+o/PbDrUrL04kJyJSXUqu6ErKA2tZzzZBcfdBtxHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AnMocbJ8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74A2FC116C6;
+	Tue,  6 Jan 2026 18:02:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721519;
-	bh=qMlUb3TXj2TRCMh6uljErXMye0aUvB3o8z9mR3U0DHk=;
+	s=korg; t=1767722541;
+	bh=2GRUWnoBu+POPtjH1/15m5iZdBlkuMLKQcAuwPvgj1E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u+jMCkX5waFBmS+1jDXajN1/G5yRRzPX0bILbOiyJBICg/Xh1EHn2/CsXRnT+xoZx
-	 AwO+T93bTswsQ3hckkAelNRDQjJeFM3Y0buM4WxwJ2IFzNgB32Cuvklkd8pMQzYAuw
-	 /CbeLLgRcLAgR9l3uoAJvP8bWjPynf3V8KDgON1c=
+	b=AnMocbJ83loDiHblVOaQcwRFRGiHbm4od4mgCDfyx6UXimSLuIonSDFFpE6ddSR6g
+	 VCYIDOxu/hjvoa/jtHhG9kMOBRYGW/xn+YZbyln+9o6zmIt7d5WkqxnD2vBQqCz3R+
+	 DP4t4rm07ULFJJOcgY+Zy/kydIMASMsxcRJQRFts=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming Qian <ming.qian@oss.nxp.com>,
-	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
-	Sebastian Fricke <sebastian.fricke@collabora.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 559/567] media: amphion: Add a frame flush mode for decoder
-Date: Tue,  6 Jan 2026 18:05:41 +0100
-Message-ID: <20260106170512.105229061@linuxfoundation.org>
+	Akhil P Oommen <akhilpo@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Rob Clark <robin.clark@oss.qualcomm.com>
+Subject: [PATCH 6.18 268/312] drm/msm/a6xx: Fix out of bound IO access in a6xx_get_gmu_registers
+Date: Tue,  6 Jan 2026 18:05:42 +0100
+Message-ID: <20260106170557.540416401@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
-References: <20260106170451.332875001@linuxfoundation.org>
+In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
+References: <20260106170547.832845344@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,66 +60,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Qian <ming.qian@oss.nxp.com>
+From: Akhil P Oommen <akhilpo@oss.qualcomm.com>
 
-[ Upstream commit 9ea16ba6eaf93f25f61855751f71e2e701709ddf ]
+commit 779b68a5bf2764c8ed3aa800e41ba0d5d007e1e7 upstream.
 
-By default the amphion decoder will pre-parse 3 frames before starting
-to decode the first frame. Alternatively, a block of flush padding data
-can be appended to the frame, which will ensure that the decoder can
-start decoding immediately after parsing the flush padding data, thus
-potentially reducing decoding latency.
+REG_A6XX_GMU_AO_AHB_FENCE_CTRL register falls under GMU's register
+range. So, use gmu_write() routines to write to this register.
 
-This mode was previously only enabled, when the display delay was set to
-0. Allow the user to manually toggle the use of that mode via a module
-parameter called low_latency, which enables the mode without
-changing the display order.
-
-Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
-Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Sebastian Fricke <sebastian.fricke@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Stable-dep-of: 634c2cd17bd0 ("media: amphion: Remove vpu_vb_is_codecconfig")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 1707add81551 ("drm/msm/a6xx: Add a6xx gpu state")
+Cc: stable@vger.kernel.org
+Signed-off-by: Akhil P Oommen <akhilpo@oss.qualcomm.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Patchwork: https://patchwork.freedesktop.org/patch/688993/
+Message-ID: <20251118-kaana-gpu-support-v4-1-86eeb8e93fb6@oss.qualcomm.com>
+Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/amphion/vpu_malone.c |   14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/media/platform/amphion/vpu_malone.c
-+++ b/drivers/media/platform/amphion/vpu_malone.c
-@@ -25,6 +25,10 @@
- #include "vpu_imx8q.h"
- #include "vpu_malone.h"
+--- a/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c
++++ b/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c
+@@ -1255,7 +1255,7 @@ static void a6xx_get_gmu_registers(struc
+ 		return;
  
-+static bool low_latency;
-+module_param(low_latency, bool, 0644);
-+MODULE_PARM_DESC(low_latency, "Set low latency frame flush mode: 0 (disable) or 1 (enable)");
-+
- #define CMD_SIZE			25600
- #define MSG_SIZE			25600
- #define CODEC_SIZE			0x1000
-@@ -1562,7 +1566,15 @@ static int vpu_malone_input_frame_data(s
+ 	/* Set the fence to ALLOW mode so we can access the registers */
+-	gpu_write(gpu, REG_A6XX_GMU_AO_AHB_FENCE_CTRL, 0);
++	gmu_write(&a6xx_gpu->gmu, REG_A6XX_GMU_AO_AHB_FENCE_CTRL, 0);
  
- 	vpu_malone_update_wptr(str_buf, wptr);
- 
--	if (disp_imm && !vpu_vb_is_codecconfig(vbuf)) {
-+	/*
-+	 * Enable the low latency flush mode if display delay is set to 0
-+	 * or the low latency frame flush mode if it is set to 1.
-+	 * The low latency flush mode requires some padding data to be appended to each frame,
-+	 * but there must not be any padding data between the sequence header and the frame.
-+	 * This module is currently only supported for the H264 and HEVC formats,
-+	 * for other formats, vpu_malone_add_scode() will return 0.
-+	 */
-+	if ((disp_imm || low_latency) && !vpu_vb_is_codecconfig(vbuf)) {
- 		ret = vpu_malone_add_scode(inst->core->iface,
- 					   inst->id,
- 					   &inst->stream_buffer,
+ 	_a6xx_get_gmu_registers(gpu, a6xx_state, &a6xx_gmu_reglist[2],
+ 		&a6xx_state->gmu_registers[3], false);
 
 
 
