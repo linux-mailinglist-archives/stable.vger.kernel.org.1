@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-206040-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205197-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE87FCFB06B
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 21:57:33 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C12DCFB27A
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 22:49:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EA84D303E038
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 20:56:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 89B0A30C79D5
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 21:46:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28F0A29BD91;
-	Tue,  6 Jan 2026 20:56:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA252349AE0;
+	Tue,  6 Jan 2026 17:18:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PEq+gG//"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BJ/37OsP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDB431CDFD5
-	for <stable@vger.kernel.org>; Tue,  6 Jan 2026 20:56:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6729E3491F5;
+	Tue,  6 Jan 2026 17:18:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767732960; cv=none; b=pIx1TfUAyGQHJAgLu6HoMXvC9bR4RbkZDBcS0nCKl+l0hglVJP+FCvtSAb+iY3BIH09+YInPWvywJzoapecQLsKh0JH19d/9oL4gcToJ3iYNUGScA1Kju1Chz3OXFMdF8hUXZyc5/G1Q/63E/UKwDk67eHcNJAobDlYv/PWY1DY=
+	t=1767719897; cv=none; b=Ynr1iVi6wk2OLXCAd6RkgHJM3gQZpBWJke0NWa5zQpHM1pfTRBIs6svB5PQDymlARHWFxehZHReZpXOEG9o5sCm8gxrE4rC4O/hAzy1kvNA76mWk0F6Y9zcdM2Z1jwQPM4f0DnMnfrg5BUYoPGZwYswZmW+FgAEOqlejhuo2n0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767732960; c=relaxed/simple;
-	bh=T0BA6hmGNprVCsxkMzWu2dBHyX9thgtoGpEwP+SISZs=;
+	s=arc-20240116; t=1767719897; c=relaxed/simple;
+	bh=Z/l/CVk3mglW/kuSdO5S2izJxApvLzKxlbL1tJiKDkY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p0jrkjXlNM1qxC3WHWPtpyeZdQ25QDfsKk774b7r2uYP9AKGHh3NZjBASftAdB1ALkNueKuRSPMlekOr+Lbe1+Q0Dvkwg/nzKtjNe+Y0PQJiDAYAhUZV1UhRl6+QJEiCcrOd7y7Mx1WRhoqdQ/Z2zGJr6oaXwC86Tht8aXrXSR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PEq+gG//; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1AA0C116C6;
-	Tue,  6 Jan 2026 20:55:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767732960;
-	bh=T0BA6hmGNprVCsxkMzWu2dBHyX9thgtoGpEwP+SISZs=;
+	 MIME-Version; b=TMhPv5A17P/Qqcrm2jubYf+IDqmyPUnw5eMaRUlJTfuqHjHzASIKx8qatzYOc1fnYv1BZ7tPRH5O1aYufdyJT2Q/1xJPOkc1Ok9p5HKWyv0K2nIMDtwCouXxwDf+CxFWotJUfqs4vJ9t22mrIT1JZGHhsT7sXkv03AXXea3IH/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BJ/37OsP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E57A3C116C6;
+	Tue,  6 Jan 2026 17:18:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1767719897;
+	bh=Z/l/CVk3mglW/kuSdO5S2izJxApvLzKxlbL1tJiKDkY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PEq+gG//5pEMVsYK3SNX4WdVHqeQ4SA2SdpwNk8kvhVrZsICwe5l9Q5nuqJV71dBd
-	 9lAjkRTAk8K+enkSIoC3vtm2vBTFxa6h4jy5r6Odz7eON8TB531esMZNE/1nJxyxOg
-	 URPshEMiV6bRpbaE+GQa0D1U/maNhgyYb0n8O/v2eK18so2XDU0nRHz+UGR4ePmd3K
-	 1gfJWdsalOwfBY4pXLsSokxNZU8I9rcl7R0GZDiccx1j51WhngvnXIeRBE1NWRxJzS
-	 083SrtcfgukzIbJvR0P9jT/4oVqcMmDhN/mBEA/ZE5/ew+nhTtfeOhm6Mnm+A82P8U
-	 YBkqaPPUOAQGg==
-From: Sasha Levin <sashal@kernel.org>
+	b=BJ/37OsPwI5F008DRj4PcblqiTO6ICt3NTtyFCt0wkqZ2Ra9lReisx3WW3Q5yNRgi
+	 X8tR0lecGlkQ6utPnbAI5uIbVAergkcXimxscKewUR8PDYf77MHZehIYudqptbRETb
+	 hM+KdjrK7HHpzV9fXzF3s+OYcZHEY57umhihd/pc=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
-Cc: Paolo Abeni <pabeni@redhat.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	Quan Zhou <quan.zhou@mediatek.com>,
+	druth@chromium.org,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18.y] mptcp: ensure context reset on disconnect()
-Date: Tue,  6 Jan 2026 15:55:58 -0500
-Message-ID: <20260106205558.3365755-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026010548-scotch-cardboard-13c7@gregkh>
-References: <2026010548-scotch-cardboard-13c7@gregkh>
+Subject: [PATCH 6.12 031/567] wifi: mt76: mt792x: fix wifi init fail by setting MCU_RUNNING after CLC load
+Date: Tue,  6 Jan 2026 17:56:53 +0100
+Message-ID: <20260106170452.493302835@linuxfoundation.org>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
+References: <20260106170451.332875001@linuxfoundation.org>
+User-Agent: quilt/0.69
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,124 +61,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Paolo Abeni <pabeni@redhat.com>
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
-[ Upstream commit 86730ac255b0497a272704de9a1df559f5d6602e ]
+------------------
 
-After the blamed commit below, if the MPC subflow is already in TCP_CLOSE
-status or has fallback to TCP at mptcp_disconnect() time,
-mptcp_do_fastclose() skips setting the `send_fastclose flag` and the later
-__mptcp_close_ssk() does not reset anymore the related subflow context.
+From: Quan Zhou <quan.zhou@mediatek.com>
 
-Any later connection will be created with both the `request_mptcp` flag
-and the msk-level fallback status off (it is unconditionally cleared at
-MPTCP disconnect time), leading to a warning in subflow_data_ready():
+[ Upstream commit 066f417be5fd8c7fe581c5550206364735dad7a3 ]
 
-  WARNING: CPU: 26 PID: 8996 at net/mptcp/subflow.c:1519 subflow_data_ready (net/mptcp/subflow.c:1519 (discriminator 13))
-  Modules linked in:
-  CPU: 26 UID: 0 PID: 8996 Comm: syz.22.39 Not tainted 6.18.0-rc7-05427-g11fc074f6c36 #1 PREEMPT(voluntary)
-  Hardware name: Bochs Bochs, BIOS Bochs 01/01/2011
-  RIP: 0010:subflow_data_ready (net/mptcp/subflow.c:1519 (discriminator 13))
-  Code: 90 0f 0b 90 90 e9 04 fe ff ff e8 b7 1e f5 fe 89 ee bf 07 00 00 00 e8 db 19 f5 fe 83 fd 07 0f 84 35 ff ff ff e8 9d 1e f5 fe 90 <0f> 0b 90 e9 27 ff ff ff e8 8f 1e f5 fe 4c 89 e7 48 89 de e8 14 09
-  RSP: 0018:ffffc9002646fb30 EFLAGS: 00010293
-  RAX: 0000000000000000 RBX: ffff88813b218000 RCX: ffffffff825c8435
-  RDX: ffff8881300b3580 RSI: ffffffff825c8443 RDI: 0000000000000005
-  RBP: 000000000000000b R08: ffffffff825c8435 R09: 000000000000000b
-  R10: 0000000000000005 R11: 0000000000000007 R12: ffff888131ac0000
-  R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
-  FS:  00007f88330af6c0(0000) GS:ffff888a93dd2000(0000) knlGS:0000000000000000
-  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  CR2: 00007f88330aefe8 CR3: 000000010ff59000 CR4: 0000000000350ef0
-  Call Trace:
-   <TASK>
-   tcp_data_ready (net/ipv4/tcp_input.c:5356)
-   tcp_data_queue (net/ipv4/tcp_input.c:5445)
-   tcp_rcv_state_process (net/ipv4/tcp_input.c:7165)
-   tcp_v4_do_rcv (net/ipv4/tcp_ipv4.c:1955)
-   __release_sock (include/net/sock.h:1158 (discriminator 6) net/core/sock.c:3180 (discriminator 6))
-   release_sock (net/core/sock.c:3737)
-   mptcp_sendmsg (net/mptcp/protocol.c:1763 net/mptcp/protocol.c:1857)
-   inet_sendmsg (net/ipv4/af_inet.c:853 (discriminator 7))
-   __sys_sendto (net/socket.c:727 (discriminator 15) net/socket.c:742 (discriminator 15) net/socket.c:2244 (discriminator 15))
-   __x64_sys_sendto (net/socket.c:2247)
-   do_syscall_64 (arch/x86/entry/syscall_64.c:63 (discriminator 1) arch/x86/entry/syscall_64.c:94 (discriminator 1))
-   entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
-  RIP: 0033:0x7f883326702d
+Set the MT76_STATE_MCU_RUNNING bit only after mt7921_load_clc()
+has successfully completed. Previously, the MCU_RUNNING state
+was set before loading CLC, which could cause conflict between
+chip mcu_init retry and mac_reset flow, result in chip init fail
+and chip abnormal status. By moving the state set after CLC load,
+firmware initialization becomes robust and resolves init fail issue.
 
-Address the issue setting an explicit `fastclosing` flag at fastclose
-time, and checking such flag after mptcp_do_fastclose().
-
-Fixes: ae155060247b ("mptcp: fix duplicate reset on fastclose")
-Cc: stable@vger.kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20251212-net-mptcp-subflow_data_ready-warn-v1-2-d1f9fd1c36c8@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-[ Adjust context ]
+Signed-off-by: Quan Zhou <quan.zhou@mediatek.com>
+Reviewed-by: druth@chromium.org
+Link: https://patch.msgid.link/19ec8e4465142e774f17801025accd0ae2214092.1763465933.git.quan.zhou@mediatek.com
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/protocol.c | 8 +++++---
- net/mptcp/protocol.h | 3 ++-
- 2 files changed, 7 insertions(+), 4 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7921/mcu.c | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7925/mcu.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index 221a5ea019e6..d4e3111ba643 100644
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -2421,10 +2421,10 @@ bool __mptcp_retransmit_pending_data(struct sock *sk)
-  */
- static void __mptcp_subflow_disconnect(struct sock *ssk,
- 				       struct mptcp_subflow_context *subflow,
--				       unsigned int flags)
-+				       bool fastclosing)
- {
- 	if (((1 << ssk->sk_state) & (TCPF_CLOSE | TCPF_LISTEN)) ||
--	    subflow->send_fastclose) {
-+	    fastclosing) {
- 		/* The MPTCP code never wait on the subflow sockets, TCP-level
- 		 * disconnect should never fail
- 		 */
-@@ -2476,7 +2476,7 @@ static void __mptcp_close_ssk(struct sock *sk, struct sock *ssk,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
+index 02c1de8620a7f..8d3f3c8b1a889 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
+@@ -637,10 +637,10 @@ int mt7921_run_firmware(struct mt792x_dev *dev)
+ 	if (err)
+ 		return err;
  
- 	need_push = (flags & MPTCP_CF_PUSH) && __mptcp_retransmit_pending_data(sk);
- 	if (!dispose_it) {
--		__mptcp_subflow_disconnect(ssk, subflow, flags);
-+		__mptcp_subflow_disconnect(ssk, subflow, msk->fastclosing);
- 		release_sock(ssk);
+-	set_bit(MT76_STATE_MCU_RUNNING, &dev->mphy.state);
+ 	err = mt7921_load_clc(dev, mt792x_ram_name(dev));
+ 	if (err)
+ 		return err;
++	set_bit(MT76_STATE_MCU_RUNNING, &dev->mphy.state);
  
- 		goto out;
-@@ -2789,6 +2789,7 @@ static void mptcp_do_fastclose(struct sock *sk)
- 	struct mptcp_sock *msk = mptcp_sk(sk);
+ 	return mt7921_mcu_fw_log_2_host(dev, 1);
+ }
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+index e42b4f0abbe7a..c42b3b376f77e 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+@@ -958,10 +958,10 @@ int mt7925_run_firmware(struct mt792x_dev *dev)
+ 	if (err)
+ 		return err;
  
- 	mptcp_set_state(sk, TCP_CLOSE);
-+	msk->fastclosing = 1;
+-	set_bit(MT76_STATE_MCU_RUNNING, &dev->mphy.state);
+ 	err = mt7925_load_clc(dev, mt792x_ram_name(dev));
+ 	if (err)
+ 		return err;
++	set_bit(MT76_STATE_MCU_RUNNING, &dev->mphy.state);
  
- 	/* Explicitly send the fastclose reset as need */
- 	if (__mptcp_check_fallback(msk))
-@@ -3299,6 +3300,7 @@ static int mptcp_disconnect(struct sock *sk, int flags)
- 	msk->bytes_sent = 0;
- 	msk->bytes_retrans = 0;
- 	msk->rcvspace_init = 0;
-+	msk->fastclosing = 0;
- 
- 	WRITE_ONCE(sk->sk_shutdown, 0);
- 	sk_error_report(sk);
-diff --git a/net/mptcp/protocol.h b/net/mptcp/protocol.h
-index 6ca97096607c..0dde779d9489 100644
---- a/net/mptcp/protocol.h
-+++ b/net/mptcp/protocol.h
-@@ -321,7 +321,8 @@ struct mptcp_sock {
- 			fastopening:1,
- 			in_accept_queue:1,
- 			free_first:1,
--			rcvspace_init:1;
-+			rcvspace_init:1,
-+			fastclosing:1;
- 	u32		notsent_lowat;
- 	int		keepalive_cnt;
- 	int		keepalive_idle;
+ 	return mt7925_mcu_fw_log_2_host(dev, 1);
+ }
 -- 
 2.51.0
+
+
 
 
