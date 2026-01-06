@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-205907-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205629-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E54BDCFACAD
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:52:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A277FCFAC7A
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:49:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6DF8A31426D0
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 19:27:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 00F0E3192EE4
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 19:32:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F59736C0BB;
-	Tue,  6 Jan 2026 17:57:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AA192E62C3;
+	Tue,  6 Jan 2026 17:42:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nDPBgCrr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yZTiVk1q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CE5B36C0B7;
-	Tue,  6 Jan 2026 17:57:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAC492DF6EA;
+	Tue,  6 Jan 2026 17:42:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767722261; cv=none; b=TzEAgHvY9kt4Wra30CTzjquT05EnyKaAOx88/bc5nfsQahH5Pxn8UEsWEEKHP+mPeE05ue8UdvW7ryG08UfRoxRGqJWggA7KWM5WE3MBruMxfy4gdPiiJuEGnioSrTx9aQFxYE4/3JseNfYxILaATo8IaGQB+eUQGbdigmC1sOo=
+	t=1767721327; cv=none; b=ZudfULnCzARuawbxmuCM9L0MLMrRrrDnl2KfJdGoNTApUl/BE2CO3oQLCJuZHpbpHMFLvrxszyDO57SxukwULRyxM+0Q9uPyC3qMOkRhgbdDrdEzYaR/7fjKwR074TROq2KwZH/p8VrYUgijNZLgZKA5L+Ryy5SDoZNIbfnrY5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767722261; c=relaxed/simple;
-	bh=fRkCU9UWvsi8gFfu/upTBz2+fwIBRcHcaZhki3GFxJE=;
+	s=arc-20240116; t=1767721327; c=relaxed/simple;
+	bh=M2DchLKRX+8SwO6vQjqbKK0QQlkkwDm6pHZfr4GEgAo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p+RFSk5hLWSxE+ZcGcvl9Ba+Dpg49VYb1oQ9NUnzvjFMJDU4Wdg6yB1olJTQfMyuRfc5gAMntXrEkLYqslKVxxvHEnQ1BrCQlF9sGPbdGTOPs5x6d+oBLhgOMmOERfXW2NTF1D/0v0aIYxASA7RDu8X1bIS0G/DTVh7SG4I+IJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nDPBgCrr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0572C116C6;
-	Tue,  6 Jan 2026 17:57:40 +0000 (UTC)
+	 MIME-Version; b=komC13fwTNyz96B+G2O1H7CX726QSbsQ4oWE0HM4jCNj0LvXCqt7eulMqdEUAEE9P+uTPbJ5oMMyLRqKasljjdKgpn9UUqizLvldxIyO57z1KsaopP3FFPc2gE8kvKVoeorvRr9+XOicumquIM/B1TWx61l44tu5PLp+h6i35rU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yZTiVk1q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A128C116C6;
+	Tue,  6 Jan 2026 17:42:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767722261;
-	bh=fRkCU9UWvsi8gFfu/upTBz2+fwIBRcHcaZhki3GFxJE=;
+	s=korg; t=1767721326;
+	bh=M2DchLKRX+8SwO6vQjqbKK0QQlkkwDm6pHZfr4GEgAo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nDPBgCrryTEGiL2nz9uBUIwueEYRWhrqAkcw/AEz3sRFMJ8/QoABgs7uVEH2anYb/
-	 g7TtOMtXZG2ETrYFlc6+pE59kwpUOiWOxBwtdk3ZJySuq8W9+G6oyIHXPYx13flVxh
-	 FZosEXYsly5V457r10drx4w863HoJIuRpnbLFLnU=
+	b=yZTiVk1qxR0MjaGREerB18m3KfIY67vBgsCotN9xiun/nfN7ZAmvFoimsD2bh9MXp
+	 SmW1x+ruUtrmOMB1dWWOqzE9+UHSn3swkO/1v2nNvlgSqoEbZAVc4rLbFS+p7Gp2vI
+	 sPYOZ/VDYJKIuEU8rNhtWeL3JEDStlpK3xXOng6I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@google.com>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.18 212/312] mm/damon/tests/core-kunit: handle alloc failures on damon_test_set_filters_default_reject()
+	Damien Le Moal <dlemoal@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Hannes Reinecke <hare@suse.de>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 504/567] block: freeze queue when updating zone resources
 Date: Tue,  6 Jan 2026 18:04:46 +0100
-Message-ID: <20260106170555.509077097@linuxfoundation.org>
+Message-ID: <20260106170510.014112753@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
-References: <20260106170547.832845344@linuxfoundation.org>
+In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
+References: <20260106170451.332875001@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +65,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SeongJae Park <sj@kernel.org>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-commit 84be856cc87317bc60ff54bd7c8f8a5aa8f0e2c8 upstream.
+[ Upstream commit bba4322e3f303b2d656e748be758320b567f046f ]
 
-damon_test_set_filters_default_reject() is assuming all dynamic memory
-allocation in it will succeed.  Those are indeed likely in the real use
-cases since those allocations are too small to fail, but theoretically
-those could fail.  In the case, inappropriate memory access can happen.
-Fix it by appropriately cleanup pre-allocated memory and skip the
-execution of the remaining tests in the failure cases.
+Modify disk_update_zone_resources() to freeze the device queue before
+updating the number of zones, zone capacity and other zone related
+resources. The locking order resulting from the call to
+queue_limits_commit_update_frozen() is preserved, that is, the queue
+limits lock is first taken by calling queue_limits_start_update() before
+freezing the queue, and the queue is unfrozen after executing
+queue_limits_commit_update(), which replaces the call to
+queue_limits_commit_update_frozen().
 
-Link: https://lkml.kernel.org/r/20251101182021.74868-17-sj@kernel.org
-Fixes: 094fb14913c7 ("mm/damon/tests/core-kunit: add a test for damos_set_filters_default_reject()")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: Brendan Higgins <brendan.higgins@linux.dev>
-Cc: David Gow <davidgow@google.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: <stable@vger.kernel.org>	[6.16+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+This change ensures that there are no in-flights I/Os when the zone
+resources are updated due to a zone revalidation. In case of error when
+the limits are applied, directly call disk_free_zone_resources() from
+disk_update_zone_resources() while the disk queue is still frozen to
+avoid needing to freeze & unfreeze the queue again in
+blk_revalidate_disk_zones(), thus simplifying that function code a
+little.
+
+Fixes: 0b83c86b444a ("block: Prevent potential deadlock in blk_revalidate_disk_zones()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+[ adapted blk_mq_freeze_queue/unfreeze_queue calls to single-argument void API ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/damon/tests/core-kunit.h |    6 ++++++
- 1 file changed, 6 insertions(+)
+ block/blk-zoned.c |   39 +++++++++++++++++++++++----------------
+ 1 file changed, 23 insertions(+), 16 deletions(-)
 
---- a/mm/damon/tests/core-kunit.h
-+++ b/mm/damon/tests/core-kunit.h
-@@ -617,6 +617,8 @@ static void damon_test_set_filters_defau
- 	KUNIT_EXPECT_EQ(test, scheme.ops_filters_default_reject, false);
+--- a/block/blk-zoned.c
++++ b/block/blk-zoned.c
+@@ -1514,6 +1514,11 @@ static int disk_update_zone_resources(st
+ 	unsigned int nr_seq_zones, nr_conv_zones;
+ 	unsigned int pool_size;
+ 	struct queue_limits lim;
++	int ret = 0;
++
++	lim = queue_limits_start_update(q);
++
++	blk_mq_freeze_queue(q);
  
- 	target_filter = damos_new_filter(DAMOS_FILTER_TYPE_TARGET, true, true);
-+	if (!target_filter)
-+		kunit_skip(test, "filter alloc fail");
- 	damos_add_filter(&scheme, target_filter);
- 	damos_set_filters_default_reject(&scheme);
+ 	disk->nr_zones = args->nr_zones;
+ 	disk->zone_capacity = args->zone_capacity;
+@@ -1523,11 +1528,10 @@ static int disk_update_zone_resources(st
+ 	if (nr_conv_zones >= disk->nr_zones) {
+ 		pr_warn("%s: Invalid number of conventional zones %u / %u\n",
+ 			disk->disk_name, nr_conv_zones, disk->nr_zones);
+-		return -ENODEV;
++		ret = -ENODEV;
++		goto unfreeze;
+ 	}
+ 
+-	lim = queue_limits_start_update(q);
+-
  	/*
-@@ -642,6 +644,10 @@ static void damon_test_set_filters_defau
- 	KUNIT_EXPECT_EQ(test, scheme.ops_filters_default_reject, false);
+ 	 * Some devices can advertize zone resource limits that are larger than
+ 	 * the number of sequential zones of the zoned block device, e.g. a
+@@ -1564,7 +1568,15 @@ static int disk_update_zone_resources(st
+ 	}
  
- 	anon_filter = damos_new_filter(DAMOS_FILTER_TYPE_ANON, true, true);
-+	if (!anon_filter) {
-+		damos_free_filter(target_filter);
-+		kunit_skip(test, "anon_filter alloc fail");
-+	}
- 	damos_add_filter(&scheme, anon_filter);
+ commit:
+-	return queue_limits_commit_update_frozen(q, &lim);
++	ret = queue_limits_commit_update(q, &lim);
++
++unfreeze:
++	if (ret)
++		disk_free_zone_resources(disk);
++
++	blk_mq_unfreeze_queue(q);
++
++	return ret;
+ }
  
- 	damos_set_filters_default_reject(&scheme);
+ static int blk_revalidate_conv_zone(struct blk_zone *zone, unsigned int idx,
+@@ -1785,19 +1797,14 @@ int blk_revalidate_disk_zones(struct gen
+ 		ret = -ENODEV;
+ 	}
+ 
+-	/*
+-	 * Set the new disk zone parameters only once the queue is frozen and
+-	 * all I/Os are completed.
+-	 */
+ 	if (ret > 0)
+-		ret = disk_update_zone_resources(disk, &args);
+-	else
+-		pr_warn("%s: failed to revalidate zones\n", disk->disk_name);
+-	if (ret) {
+-		blk_mq_freeze_queue(q);
+-		disk_free_zone_resources(disk);
+-		blk_mq_unfreeze_queue(q);
+-	}
++		return disk_update_zone_resources(disk, &args);
++
++	pr_warn("%s: failed to revalidate zones\n", disk->disk_name);
++
++	blk_mq_freeze_queue(q);
++	disk_free_zone_resources(disk);
++	blk_mq_unfreeze_queue(q);
+ 
+ 	return ret;
+ }
 
 
 
