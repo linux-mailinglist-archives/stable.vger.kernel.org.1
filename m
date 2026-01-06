@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-205793-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205550-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81857CFA6E8
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:01:33 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A69CCFA36F
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:36:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1860A320EFBE
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:35:10 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2B93E305001D
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:36:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A911D364054;
-	Tue,  6 Jan 2026 17:51:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD582342526;
+	Tue,  6 Jan 2026 17:37:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fpAUthbM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e0lk2GiI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66296322B93;
-	Tue,  6 Jan 2026 17:51:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B1E7225A3B;
+	Tue,  6 Jan 2026 17:37:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721881; cv=none; b=lVvH/6FTrgnxz31Fxc4OwugA5kk6P4XoeoQVwk7/Gqdli0eeR9IznbB1xw/b9Mpvm5vjrFoPvD6xFAGq6paTw6a4/T8v+kTKFQ7IEvMfjvlcuoz9yV7O8IeFM+jGo+WM9WHKqIdO0UPqzmSkqyv46b2JpGAvroxCI4AUttHoz1U=
+	t=1767721067; cv=none; b=cYts3lqBIGpSmdUpDZG/OlAtSLsB61WsQhV/42U0Zi6RzG5mOCdtN8fRrTnIdqnPYIr1t0eAN21Jzt21+wm/T9A0rHQIUsHK9T2ADgxiH18+yBGoAW2aXYg6aFmxCpoj+1Edkj8CraNS2Em+sZOuidP7FbP1rz6PMUJ8/XXHaNg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721881; c=relaxed/simple;
-	bh=4pAiceHPcFShYBvjZC2uQcVwZTZEiljNjWtsl1FAebw=;
+	s=arc-20240116; t=1767721067; c=relaxed/simple;
+	bh=8V81BwuHmz4IakOAZcI6bSMMQxACn9z4nYpmi5ggJAs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ofKtsUP/r3hYyHLB15sIcjLbtREXL2HSplCAlpupCEsYUeY9NuZ/FZ/YQxkhYQ+n7x2EBuPt62hIdWiuLvGFFk/lR95M7UyNUk2VCLjmBABpr+NE6apC6hh/d+tOvqqN7gNh8EqRYxPCeAOdWUECVHl+q4v7gQy22w+HcS75eZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fpAUthbM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70EE0C116C6;
-	Tue,  6 Jan 2026 17:51:20 +0000 (UTC)
+	 MIME-Version; b=jtqAmEP+d4jVmjKuHgIwpPSYpIk6x6ZTxfPTPB/uAbnNP0OOmc0cs2fMfDkfcgep6sAjWY+V4soBBrs+rbahnZkfn7nB+0I8Z3rqB/+5J6P1kdjhXPORJQP2RKO6JnZpB28lVFfNALo8yw+m0wRAHihNqdhZ12KmgAHn93HFQ8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e0lk2GiI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15143C116C6;
+	Tue,  6 Jan 2026 17:37:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721880;
-	bh=4pAiceHPcFShYBvjZC2uQcVwZTZEiljNjWtsl1FAebw=;
+	s=korg; t=1767721067;
+	bh=8V81BwuHmz4IakOAZcI6bSMMQxACn9z4nYpmi5ggJAs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fpAUthbMOHLe3ulf35dWBvIgSZe7iYPtSJ3GiAvlZcgCGJ9cpa1C7y6qRsvRVDqrV
-	 G7FWu2xg+j9QvWcZ8Qbvu2YaiuBJBgXNo9vP5Lpa/iE3yeFPBSxTO735Bj2dLF5DqG
-	 a/zd0oXi8Tip8dyvgLuklgNpnUebQjMNhs0VKZL0=
+	b=e0lk2GiItswsEwtjm7vEZiqafA/S9ZqT1gfelpsRG3LKn/PXHkKhpohJVuN+v/Wse
+	 +kHhk60Hdq5Bji5SuqV0yIO50TsBT9wgPG/2Ck2i7sstSW8YYkp0VTZRb9MIaP2gDi
+	 7DiPoLSxDw88a0iOPPavN7/NG6YdM3FBmXrsleZY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stable@vger.kernel.org,
-	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.18 100/312] ASoC: codecs: lpass-tx-macro: fix SM6115 support
-Date: Tue,  6 Jan 2026 18:02:54 +0100
-Message-ID: <20260106170551.456428239@linuxfoundation.org>
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Sandipan Das <sandipan.das@amd.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>
+Subject: [PATCH 6.12 393/567] perf/x86/amd/uncore: Fix the return value of amd_uncore_df_event_init() on error
+Date: Tue,  6 Jan 2026 18:02:55 +0100
+Message-ID: <20260106170505.879254617@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
-References: <20260106170547.832845344@linuxfoundation.org>
+In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
+References: <20260106170451.332875001@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,41 +61,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+From: Sandipan Das <sandipan.das@amd.com>
 
-commit 7c63b5a8ed972a2c8c03d984f6a43349007cea93 upstream.
+commit 01439286514ce9d13b8123f8ec3717d7135ff1d6 upstream.
 
-SM6115 does have soundwire controller in tx. For some reason
-we ended up with this incorrect patch.
+If amd_uncore_event_init() fails, return an error irrespective of the
+pmu_version. Setting hwc->config should be safe even if there is an
+error so use this opportunity to simplify the code.
 
-Fix this by adding the flag to reflect this in SoC data.
+Closes: https://lore.kernel.org/all/aTaI0ci3vZ44lmBn@stanley.mountain/
 
-Fixes: 510c46884299 ("ASoC: codecs: lpass-tx-macro: Add SM6115 support")
-Cc: Stable@vger.kernel.org
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
-Link: https://patch.msgid.link/20251031120703.590201-2-srinivas.kandagatla@oss.qualcomm.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: d6389d3ccc13 ("perf/x86/amd/uncore: Refactor uncore management")
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Sandipan Das <sandipan.das@amd.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/076935e23a70335d33bd6e23308b75ae0ad35ba2.1765268667.git.sandipan.das@amd.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/lpass-tx-macro.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/x86/events/amd/uncore.c |    5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
---- a/sound/soc/codecs/lpass-tx-macro.c
-+++ b/sound/soc/codecs/lpass-tx-macro.c
-@@ -2473,7 +2473,8 @@ static const struct tx_macro_data lpass_
- };
+--- a/arch/x86/events/amd/uncore.c
++++ b/arch/x86/events/amd/uncore.c
+@@ -595,14 +595,11 @@ static int amd_uncore_df_event_init(stru
+ 	struct hw_perf_event *hwc = &event->hw;
+ 	int ret = amd_uncore_event_init(event);
  
- static const struct tx_macro_data lpass_ver_10_sm6115 = {
--	.flags			= LPASS_MACRO_FLAG_HAS_NPL_CLOCK,
-+	.flags			= LPASS_MACRO_FLAG_HAS_NPL_CLOCK |
-+				  LPASS_MACRO_FLAG_RESET_SWR,
- 	.ver			= LPASS_VER_10_0_0,
- 	.extra_widgets		= tx_macro_dapm_widgets_v9_2,
- 	.extra_widgets_num	= ARRAY_SIZE(tx_macro_dapm_widgets_v9_2),
+-	if (ret || pmu_version < 2)
+-		return ret;
+-
+ 	hwc->config = event->attr.config &
+ 		      (pmu_version >= 2 ? AMD64_PERFMON_V2_RAW_EVENT_MASK_NB :
+ 					  AMD64_RAW_EVENT_MASK_NB);
+ 
+-	return 0;
++	return ret;
+ }
+ 
+ static int amd_uncore_df_add(struct perf_event *event, int flags)
 
 
 
