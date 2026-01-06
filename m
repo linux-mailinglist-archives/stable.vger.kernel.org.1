@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-205588-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205893-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DB4ACFAD1F
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:57:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C9B2BCFAC8F
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:50:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 69A2531C3F37
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 19:42:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 295763112731
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 19:27:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 663C82D77E6;
-	Tue,  6 Jan 2026 17:39:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 243EA34D4C1;
+	Tue,  6 Jan 2026 17:56:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JdMPJMvr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HWyHNL4f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C39D3446C6;
-	Tue,  6 Jan 2026 17:39:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D53C534D384;
+	Tue,  6 Jan 2026 17:56:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721192; cv=none; b=UCaVHqAZUVPFgck+Iljc152STJt9RaxsHrb2yMeMDe4/3I6GffI0r4HUqxqWDlQ+sAldBB5mNAcLtA3W2Q2k4RLsZk2Hu+x86yBERbmxEEHI/uD8FNRdO8K5wUMGeDj/eGysNSDO+/XlAfJMLQaL0qk6f3lu3kJBSo4RUhIieHw=
+	t=1767722213; cv=none; b=SEwGvzAtIgJ9rQAaE26xmnxgzETFGof5pnFEQjjfZqxrRjy6QP0SCpL986WroN4/HwIKZ6K9bBuRO2DGZksUdJjcBi2ZjGmOyjkhSVyPULvdV2Uq33umcuGu7Jr85imc75yPl6DhU+GTznhettlcMGOmkdchYwfjFkAL68D54nE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721192; c=relaxed/simple;
-	bh=UP1TJUkCnXeWtCApFKX45BCGQZ3SFLGC7G7tyqir67Q=;
+	s=arc-20240116; t=1767722213; c=relaxed/simple;
+	bh=yyVnMmS7Dm19RMqT1ebT9MMYWciLUUQ6g38yZVqus/0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J83KSOfzdRYBWnbhYfm+LwYRZJuQzmpU1UdBRHAg309mVkA8KbpzvHw5tFoHI+RbRqMbTCmnMPw20cWwk9FqNqJhqNyfrR8YbxTAildkd5aQzEVRHflOStow4LBsZolVMeT6UB0UFAfVAT63aHwk0Rnkn06mnAD5F0h0SluLk44=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JdMPJMvr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FA9EC116C6;
-	Tue,  6 Jan 2026 17:39:51 +0000 (UTC)
+	 MIME-Version; b=AZZ1ripoU6ouAv2rc1X4Rn/iTi4hakkcntON0bybV+RqhpyjJmjyuQjdm8rvY5Qu0quIX0kuEr3887Ha5LwBZU7v8EylPUrMOoXt+affU9+hU/soJoPqECNJJ0mYxcdfewp4zYcC9pe5/BK8SOler2HRPVgofR47QgxGNUMVCOw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HWyHNL4f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42144C16AAE;
+	Tue,  6 Jan 2026 17:56:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721192;
-	bh=UP1TJUkCnXeWtCApFKX45BCGQZ3SFLGC7G7tyqir67Q=;
+	s=korg; t=1767722213;
+	bh=yyVnMmS7Dm19RMqT1ebT9MMYWciLUUQ6g38yZVqus/0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JdMPJMvr6OUMjF5kyTsnaeerVogBb4btNt2Re0qoTgyoyd4ubx22/7CfEo8IW9TFW
-	 9WC/Uha9G1dTqYzKBxPZxxYCZ4Pa7NA9Kw1prCfvA/vO6luXUCvziSkvhZpJnYhjT7
-	 gO8/a5MvcvXD745xpoBQav3z4XsSwr/JLJ4IoFIE=
+	b=HWyHNL4f6hbI5gxrAccqR+q9I2C8KzVXYWVnnDCfPWIcSmIVtfL8BZQTV/Nh8rFJt
+	 3aySvI4R1HF3V7zqAR1ECKSKVtfJKKDG5GEdlV9JYNz6NNdGPbbMpV7j+dr0bZ5oiR
+	 nV6oQkB0pkglif8FlcF/Vp4YC1cpxVwXYtXwBht4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Mario Limonciello (AMD)" <superm1@kernel.org>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Konstantin <answer2019@yandex.ru>,
-	Matthew Schwartz <matthew.schwartz@linux.dev>
-Subject: [PATCH 6.12 456/567] Revert "drm/amd: Skip power ungate during suspend for VPE"
+	David Hildenbrand <david@redhat.com>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.18 164/312] powerpc/pseries/cmm: call balloon_devinfo_init() also without CONFIG_BALLOON_COMPACTION
 Date: Tue,  6 Jan 2026 18:03:58 +0100
-Message-ID: <20260106170508.214913258@linuxfoundation.org>
+Message-ID: <20260106170553.768196884@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
-References: <20260106170451.332875001@linuxfoundation.org>
+In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
+References: <20260106170547.832845344@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +64,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello (AMD) <superm1@kernel.org>
+From: David Hildenbrand <david@redhat.com>
 
-commit 3925683515e93844be204381d2d5a1df5de34f31 upstream.
+commit fc6bcf9ac4de76f5e7bcd020b3c0a86faff3f2d5 upstream.
 
-Skipping power ungate exposed some scenarios that will fail
-like below:
+Patch series "powerpc/pseries/cmm: two smaller fixes".
 
-```
-amdgpu: Register(0) [regVPEC_QUEUE_RESET_REQ] failed to reach value 0x00000000 != 0x00000001n
-amdgpu 0000:c1:00.0: amdgpu: VPE queue reset failed
-...
-amdgpu: [drm] *ERROR* wait_for_completion_timeout timeout!
-```
+Two smaller fixes identified while doing a bigger rework.
 
-The underlying s2idle issue that prompted this commit is going to
-be fixed in BIOS.
-This reverts commit 2a6c826cfeedd7714611ac115371a959ead55bda.
 
-Fixes: 2a6c826cfeed ("drm/amd: Skip power ungate during suspend for VPE")
-Cc: stable@vger.kernel.org
-Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Reported-by: Konstantin <answer2019@yandex.ru>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220812
-Reported-by: Matthew Schwartz <matthew.schwartz@linux.dev>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+This patch (of 2):
+
+We always have to initialize the balloon_dev_info, even when compaction is
+not configured in: otherwise the containing list and the lock are left
+uninitialized.
+
+Likely not many such configs exist in practice, but let's CC stable to
+be sure.
+
+This was found by code inspection.
+
+Link: https://lkml.kernel.org/r/20251021100606.148294-1-david@redhat.com
+Link: https://lkml.kernel.org/r/20251021100606.148294-2-david@redhat.com
+Fixes: fe030c9b85e6 ("powerpc/pseries/cmm: Implement balloon compaction")
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ arch/powerpc/platforms/pseries/cmm.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -3092,11 +3092,10 @@ int amdgpu_device_set_pg_state(struct am
- 		    (adev->ip_blocks[i].version->type == AMD_IP_BLOCK_TYPE_GFX ||
- 		     adev->ip_blocks[i].version->type == AMD_IP_BLOCK_TYPE_SDMA))
- 			continue;
--		/* skip CG for VCE/UVD/VPE, it's handled specially */
-+		/* skip CG for VCE/UVD, it's handled specially */
- 		if (adev->ip_blocks[i].version->type != AMD_IP_BLOCK_TYPE_UVD &&
- 		    adev->ip_blocks[i].version->type != AMD_IP_BLOCK_TYPE_VCE &&
- 		    adev->ip_blocks[i].version->type != AMD_IP_BLOCK_TYPE_VCN &&
--		    adev->ip_blocks[i].version->type != AMD_IP_BLOCK_TYPE_VPE &&
- 		    adev->ip_blocks[i].version->type != AMD_IP_BLOCK_TYPE_JPEG &&
- 		    adev->ip_blocks[i].version->funcs->set_powergating_state) {
- 			/* enable powergating to save power */
+--- a/arch/powerpc/platforms/pseries/cmm.c
++++ b/arch/powerpc/platforms/pseries/cmm.c
+@@ -551,7 +551,6 @@ static int cmm_migratepage(struct balloo
+ 
+ static void cmm_balloon_compaction_init(void)
+ {
+-	balloon_devinfo_init(&b_dev_info);
+ 	b_dev_info.migratepage = cmm_migratepage;
+ }
+ #else /* CONFIG_BALLOON_COMPACTION */
+@@ -573,6 +572,7 @@ static int cmm_init(void)
+ 	if (!firmware_has_feature(FW_FEATURE_CMO) && !simulate)
+ 		return -EOPNOTSUPP;
+ 
++	balloon_devinfo_init(&b_dev_info);
+ 	cmm_balloon_compaction_init();
+ 
+ 	rc = register_oom_notifier(&cmm_oom_nb);
 
 
 
