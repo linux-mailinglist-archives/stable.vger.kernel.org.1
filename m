@@ -1,53 +1,51 @@
-Return-Path: <stable+bounces-205599-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205601-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0D04CFAD1C
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:57:00 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03AA4CFABD2
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:43:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5582A31C2F95
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 19:42:01 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 038783003B1F
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 19:42:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60E112DEA73;
-	Tue,  6 Jan 2026 17:40:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38CBF2DECCB;
+	Tue,  6 Jan 2026 17:40:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QUUctKiI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CYjkCzla"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E1372D73B9;
-	Tue,  6 Jan 2026 17:40:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA6AC2DF13B;
+	Tue,  6 Jan 2026 17:40:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721226; cv=none; b=PfTVfG3deFFT0ak0s8iZly8Q9l6d3EomaG2mwzVFA3wHrzMhW2+bM3/OXvOJBLDPRDwPVO4Kw7wb3putcODQSnhhhWnZVtRZsGjSDvFCvOG2TLF++IeWEA1XoLJFPljg5h8XO7rzc6SU9gUa+PI2x6G4jvlrL00loGIp9mUXTvg=
+	t=1767721233; cv=none; b=SQUSFP9Ld0L229oeSSYrhp4S6IDpdfXAQBXy47CZDhy8aUiP37gvP8BeEWqLm5ai7YGoFG79i8frDq4abI7o5risuU4OkyX0aAiKvp/62ctH+yoj9XQanE38G0AFoVv9diOCd1MnncoO3HorCnZFU4AbpWWlAe/AfqGfy07Stp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721226; c=relaxed/simple;
-	bh=WZZGxm0oNgqJbOfnNYSTVSZvf0hS7Bon3TfZHogulQo=;
+	s=arc-20240116; t=1767721233; c=relaxed/simple;
+	bh=jUx37cv3Qeb04lO6JdMmyZkoRG5/x8I3iwSuTN305ns=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SFvlRbbUKnt7Bs4AQb2mE3EHGeqv20Vs6HGKKtWBa7t6kWu/zcmA6f3/gibz85T69P3uUI7P4g6pA9wYfNGWr1T2D4U8VYOPszrR0xbp0h7aNPyNZFKmiSNE3FJzd1t8xVIQgFJkFirdBD/wnCwRwsYGVnenooSiZiUYnLgsG4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QUUctKiI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BE37C116C6;
-	Tue,  6 Jan 2026 17:40:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=C5zoNeVAvIgNdVGpOYRHxa+7Z43nR6wY8sbNHXcn65xh2eAE5nBfwXghc8jsn5F7EDwpZAZxEdzgHfdL0YAS7r0AfK7OGhTZXfzSDMHIBfrattesAUR1nVhkd5HtlWI+mFcb98jrRpRDuPbZN9+5Dg10DX72S86Ce/mZBe2RiyI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CYjkCzla; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A17FC116C6;
+	Tue,  6 Jan 2026 17:40:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721226;
-	bh=WZZGxm0oNgqJbOfnNYSTVSZvf0hS7Bon3TfZHogulQo=;
+	s=korg; t=1767721232;
+	bh=jUx37cv3Qeb04lO6JdMmyZkoRG5/x8I3iwSuTN305ns=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QUUctKiI9YIfvEiuHAEjsblW7t6nARCpaCp+84pFmNPRAFAh76n6mF9TyCoGOHCJw
-	 svnx3WVMWX7W/xPl2Y7e342Tq8mCAjiZSDCCk3nTLJSMxTCrpnAOIKtgUVw184yEV3
-	 bxnOBXmw8ASwhz0G/KVZGU59WrPt5Ajvd6Z+/Jqs=
+	b=CYjkCzlaM0EQw40/gaPXGRjV/ES+/TPnnOP/WZaFyc0njg915V/GLFnHZeCNz9FXF
+	 KtCjVW9ZI32ep4gybNTlbjW1hgpS+xrgx3bR/OcWVvFzt9rPF1l2gyTv9+8VSyeHgw
+	 UxO2GlxQNzWmaHBxejhml4Wlk4a+17CAyl2t7kV0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Simon Richter <Simon.Richter@hogyros.de>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Shuicheng Lin <shuicheng.lin@intel.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>
-Subject: [PATCH 6.12 474/567] drm/ttm: Avoid NULL pointer deref for evicted BOs
-Date: Tue,  6 Jan 2026 18:04:16 +0100
-Message-ID: <20260106170508.888496102@linuxfoundation.org>
+	=?UTF-8?q?Ren=C3=A9=20Rebe?= <rene@exactco.de>,
+	stable@kernel.org,
+	Thomas Zimmermann <tzimmermann@suse.de>
+Subject: [PATCH 6.12 475/567] drm/mgag200: Fix big-endian support
+Date: Tue,  6 Jan 2026 18:04:17 +0100
+Message-ID: <20260106170508.924707707@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
 References: <20260106170451.332875001@linuxfoundation.org>
@@ -67,54 +65,67 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Simon Richter <Simon.Richter@hogyros.de>
+From: René Rebe <rene@exactco.de>
 
-commit 491adc6a0f9903c32b05f284df1148de39e8e644 upstream.
+commit 6cb31fba137d45e682ce455b8ea364f44d5d4f98 upstream.
 
-It is possible for a BO to exist that is not currently associated with a
-resource, e.g. because it has been evicted.
+Unlike the original, deleted Matrox mga driver, the new mgag200 driver
+has the XRGB frame-buffer byte swapped on big-endian "RISC"
+systems. Fix by enabling byte swapping "PowerPC" OPMODE for any
+__BIG_ENDIAN config.
 
-When devcoredump tries to read the contents of all BOs for dumping, we need
-to expect this as well -- in this case, ENODATA is recorded instead of the
-buffer contents.
-
-Fixes: 7d08df5d0bd3 ("drm/ttm: Add ttm_bo_access")
-Fixes: 09ac4fcb3f25 ("drm/ttm: Implement vm_operations_struct.access v2")
-Cc: stable <stable@kernel.org>
-Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/6271
-Signed-off-by: Simon Richter <Simon.Richter@hogyros.de>
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
-Reviewed-by: Shuicheng Lin <shuicheng.lin@intel.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
-Link: https://patch.msgid.link/20251013161241.709916-1-Simon.Richter@hogyros.de
+Fixes: 414c45310625 ("mgag200: initial g200se driver (v2)")
+Signed-off-by: René Rebe <rene@exactco.de>
+Cc: stable@kernel.org
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Link: https://patch.msgid.link/20251208.141827.965103015954471168.rene@exactco.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/ttm/ttm_bo_vm.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/gpu/drm/mgag200/mgag200_mode.c |   25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
 
---- a/drivers/gpu/drm/ttm/ttm_bo_vm.c
-+++ b/drivers/gpu/drm/ttm/ttm_bo_vm.c
-@@ -421,6 +421,11 @@ int ttm_bo_vm_access(struct vm_area_stru
- 	if (ret)
- 		return ret;
+--- a/drivers/gpu/drm/mgag200/mgag200_mode.c
++++ b/drivers/gpu/drm/mgag200/mgag200_mode.c
+@@ -175,6 +175,30 @@ static void mgag200_set_startadd(struct
+ 	WREG_ECRT(0x00, crtcext0);
+ }
  
-+	if (!bo->resource) {
-+		ret = -ENODATA;
-+		goto unlock;
-+	}
++/*
++ * Set the opmode for the hardware swapper for Big-Endian processor
++ * support for the frame buffer aperture and DMAWIN space.
++ */
++static void mgag200_set_datasiz(struct mga_device *mdev, u32 format)
++{
++#if defined(__BIG_ENDIAN)
++	u32 opmode = RREG32(MGAREG_OPMODE);
 +
- 	switch (bo->resource->mem_type) {
- 	case TTM_PL_SYSTEM:
- 		fallthrough;
-@@ -435,6 +440,7 @@ int ttm_bo_vm_access(struct vm_area_stru
- 			ret = -EIO;
- 	}
++	opmode &= ~(GENMASK(17, 16) | GENMASK(9, 8) | GENMASK(3, 2));
++
++	/* Big-endian byte-swapping */
++	switch (format) {
++	case DRM_FORMAT_RGB565:
++		opmode |= 0x10100;
++		break;
++	case DRM_FORMAT_XRGB8888:
++		opmode |= 0x20200;
++		break;
++	}
++	WREG32(MGAREG_OPMODE, opmode);
++#endif
++}
++
+ void mgag200_init_registers(struct mga_device *mdev)
+ {
+ 	u8 crtc11, misc;
+@@ -510,6 +534,7 @@ void mgag200_primary_plane_helper_atomic
+ 	struct drm_atomic_helper_damage_iter iter;
+ 	struct drm_rect damage;
  
-+unlock:
- 	ttm_bo_unreserve(bo);
- 
- 	return ret;
++	mgag200_set_datasiz(mdev, fb->format->format);
+ 	drm_atomic_helper_damage_iter_init(&iter, old_plane_state, plane_state);
+ 	drm_atomic_for_each_plane_damage(&iter, &damage) {
+ 		mgag200_handle_damage(mdev, shadow_plane_state->data, fb, &damage);
 
 
 
