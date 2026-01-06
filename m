@@ -1,51 +1,52 @@
-Return-Path: <stable+bounces-205660-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205662-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7DD7CFACE0
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:55:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 377B5CFAFED
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 21:48:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 910D53187726
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 19:31:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6E915308792D
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 20:46:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 055733491FB;
-	Tue,  6 Jan 2026 17:43:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 856E134B192;
+	Tue,  6 Jan 2026 17:43:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ktTgkeKU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gorxdpen"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B55D834889F;
-	Tue,  6 Jan 2026 17:43:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4259D34AB03;
+	Tue,  6 Jan 2026 17:43:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721430; cv=none; b=fcNZd+ZmGC0mv0Ez018MnL/57S4dMdc3+YKUY5hs8vZIgjm1uVx8QbW1vrBFmex58cSP7SfIHL+Eas1NwDhN1KgaJek0S5wDrrDN6BgX8QDpw8U6nKWGCE8enCKEKYbPw8F5u1aIrRJwLCLJkjAoKPBUk19xE2pFXppbkWXGoHE=
+	t=1767721437; cv=none; b=OZb6LdtWO5EMP2LjX4zVQQeWFSE0UoTUFMby/YquRerXlXOx3lWDZDcuYOvLvr5+HnamMB15tVhYk96HnLKatsVMXHxFpw6j7WMMjulSVgUTIeVFqC91JYZv8PyKTgDKEI7XP4yhe2b+Q1652FgG/gaijNLD2Q3aJsSq1UT0dPY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721430; c=relaxed/simple;
-	bh=h7uyfoS1z19c5xgZMNZnS6LSlms9cXgN1TclDqbvNNs=;
+	s=arc-20240116; t=1767721437; c=relaxed/simple;
+	bh=W4cqYthHfpg6NSP7U6zyaUs/NAYa9LGydY4bkHwFyLs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JH+KubqfAxdZU/OmgaiBb8hgrBdRbHD7ujDTZGN4qj1yWV8rtHvYH+IK9P8ImZylm3z788jgZ992vk/5/Sf3Ub1PmkvcomN/n3HXzyNX2ylOumg0Av3PN2NeWcKnI5ZvAsWpUNe7XGvwJO4NDfHTu2iOZscgjSmnStjbT4e7xDA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ktTgkeKU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9F2DC116C6;
-	Tue,  6 Jan 2026 17:43:49 +0000 (UTC)
+	 MIME-Version; b=pAetfhU1d7JgeH141ZoOcdlkUq5/pEi9sf/u0fnD8jbFTD50woy3yUtdGFaFTHvxSwUggzqjqkY/EFcqkBxZIhYSMzzQTyxgOQizGQoHbK1oWIpWAdTQZ568YL4Wnb4RKQRulngSYs98GRoQx7WqVBGCWRngexSAy2+Z0mDhP3Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gorxdpen; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7061C16AAE;
+	Tue,  6 Jan 2026 17:43:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721430;
-	bh=h7uyfoS1z19c5xgZMNZnS6LSlms9cXgN1TclDqbvNNs=;
+	s=korg; t=1767721437;
+	bh=W4cqYthHfpg6NSP7U6zyaUs/NAYa9LGydY4bkHwFyLs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ktTgkeKUJA9tnGbzeY5p8oCp41rJ83vh3yRwKoac88T8RaKDuyH5V2cjWpkbJPLDH
-	 LbuvwpuprrdObcVVJ4gO/31Y+I+jUJ++6lxha/e6xluj2p7vTyI635JcDBPu2HjxuU
-	 FZeiDOYzaZGJBLW6sbLkXUttcI1wobIZqKe2M55o=
+	b=gorxdpenRHV3w/Nt2NBY3Y+cVbN8Ne1FHlUX3kcSUmanSiC0zQt2PmPl8JsgI3Lgq
+	 kP//An6kdxt09FTmxSLBY8O1f8mRIkq3PfI8X5xzx80WU1pGD+w/m8ChDT88VpEv3i
+	 PXFb88/qX7+9L6tYN0JTWNbYkuSgYJJeIWbYy1PI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Quan Zhou <quan.zhou@mediatek.com>,
-	Felix Fietkau <nbd@nbd.name>,
-	Jan Kiszka <jan.kiszka@siemens.com>
-Subject: [PATCH 6.12 535/567] wifi: mt76: mt7925: fix CLC command timeout when suspend/resume
-Date: Tue,  6 Jan 2026 18:05:17 +0100
-Message-ID: <20260106170511.190618560@linuxfoundation.org>
+	Madhu Chittim <madhu.chittim@intel.com>,
+	Joshua Hay <joshua.a.hay@intel.com>,
+	Krishneil Singh <krishneil.k.singh@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>
+Subject: [PATCH 6.12 537/567] idpf: add support for SW triggered interrupts
+Date: Tue,  6 Jan 2026 18:05:19 +0100
+Message-ID: <20260106170511.267328700@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
 References: <20260106170451.332875001@linuxfoundation.org>
@@ -64,101 +65,91 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Quan Zhou <quan.zhou@mediatek.com>
+From: Joshua Hay <joshua.a.hay@intel.com>
 
-[ Upstream commit a0f721b8d986b62b4de316444f2b2e356d17e3b5 ]
+[ Upstream commit 93433c1d919775f8ac0f7893692f42e6731a5373 ]
 
-When enter suspend/resume while in a connected state, the upper layer
-will trigger disconnection before entering suspend, and at the same time,
-it will trigger regd_notifier() and update CLC, causing the CLC event to
-not be received due to suspend, resulting in a command timeout.
+SW triggered interrupts are guaranteed to fire after their timer
+expires, unlike Tx and Rx interrupts which will only fire after the
+timer expires _and_ a descriptor write back is available to be processed
+by the driver.
 
-Therefore, the update of CLC is postponed until resume, to ensure data
-consistency and avoid the occurrence of command timeout.
+Add the necessary fields, defines, and initializations to enable a SW
+triggered interrupt in the vector's dyn_ctl register.
 
-Signed-off-by: Quan Zhou <quan.zhou@mediatek.com>
-Link: https://patch.msgid.link/bab00a2805d0533fd8beaa059222659858a9dcb5.1735910455.git.quan.zhou@mediatek.com
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
+Reviewed-by: Madhu Chittim <madhu.chittim@intel.com>
+Signed-off-by: Joshua Hay <joshua.a.hay@intel.com>
+Tested-by: Krishneil Singh <krishneil.k.singh@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7925/init.c   |   20 +++++++++++++++++---
- drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h |    1 +
- drivers/net/wireless/mediatek/mt76/mt7925/pci.c    |    3 +++
- 3 files changed, 21 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/intel/idpf/idpf_dev.c    |    3 +++
+ drivers/net/ethernet/intel/idpf/idpf_txrx.h   |    8 +++++++-
+ drivers/net/ethernet/intel/idpf/idpf_vf_dev.c |    3 +++
+ 3 files changed, 13 insertions(+), 1 deletion(-)
 
---- a/drivers/net/wireless/mediatek/mt76/mt7925/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/init.c
-@@ -59,6 +59,18 @@ static int mt7925_thermal_init(struct mt
- 						       mt7925_hwmon_groups);
- 	return PTR_ERR_OR_ZERO(hwmon);
- }
-+
-+void mt7925_regd_update(struct mt792x_dev *dev)
-+{
-+	struct mt76_dev *mdev = &dev->mt76;
-+	struct ieee80211_hw *hw = mdev->hw;
-+
-+	mt7925_mcu_set_clc(dev, mdev->alpha2, dev->country_ie_env);
-+	mt7925_mcu_set_channel_domain(hw->priv);
-+	mt7925_set_tx_sar_pwr(hw, NULL);
-+}
-+EXPORT_SYMBOL_GPL(mt7925_regd_update);
-+
- static void
- mt7925_regd_notifier(struct wiphy *wiphy,
- 		     struct regulatory_request *req)
-@@ -66,6 +78,7 @@ mt7925_regd_notifier(struct wiphy *wiphy
- 	struct ieee80211_hw *hw = wiphy_to_ieee80211_hw(wiphy);
- 	struct mt792x_dev *dev = mt792x_hw_dev(hw);
- 	struct mt76_dev *mdev = &dev->mt76;
-+	struct mt76_connac_pm *pm = &dev->pm;
+--- a/drivers/net/ethernet/intel/idpf/idpf_dev.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_dev.c
+@@ -101,6 +101,9 @@ static int idpf_intr_reg_init(struct idp
+ 		intr->dyn_ctl_itridx_s = PF_GLINT_DYN_CTL_ITR_INDX_S;
+ 		intr->dyn_ctl_intrvl_s = PF_GLINT_DYN_CTL_INTERVAL_S;
+ 		intr->dyn_ctl_wb_on_itr_m = PF_GLINT_DYN_CTL_WB_ON_ITR_M;
++		intr->dyn_ctl_swint_trig_m = PF_GLINT_DYN_CTL_SWINT_TRIG_M;
++		intr->dyn_ctl_sw_itridx_ena_m =
++			PF_GLINT_DYN_CTL_SW_ITR_INDX_ENA_M;
  
- 	/* allow world regdom at the first boot only */
- 	if (!memcmp(req->alpha2, "00", 2) &&
-@@ -81,11 +94,12 @@ mt7925_regd_notifier(struct wiphy *wiphy
- 	mdev->region = req->dfs_region;
- 	dev->country_ie_env = req->country_ie_env;
+ 		spacing = IDPF_ITR_IDX_SPACING(reg_vals[vec_id].itrn_index_spacing,
+ 					       IDPF_PF_ITR_IDX_SPACING);
+--- a/drivers/net/ethernet/intel/idpf/idpf_txrx.h
++++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.h
+@@ -354,6 +354,8 @@ struct idpf_vec_regs {
+  * @dyn_ctl_itridx_m: Mask for ITR index
+  * @dyn_ctl_intrvl_s: Register bit offset for ITR interval
+  * @dyn_ctl_wb_on_itr_m: Mask for WB on ITR feature
++ * @dyn_ctl_sw_itridx_ena_m: Mask for SW ITR index
++ * @dyn_ctl_swint_trig_m: Mask for dyn_ctl SW triggered interrupt enable
+  * @rx_itr: RX ITR register
+  * @tx_itr: TX ITR register
+  * @icr_ena: Interrupt cause register offset
+@@ -367,6 +369,8 @@ struct idpf_intr_reg {
+ 	u32 dyn_ctl_itridx_m;
+ 	u32 dyn_ctl_intrvl_s;
+ 	u32 dyn_ctl_wb_on_itr_m;
++	u32 dyn_ctl_sw_itridx_ena_m;
++	u32 dyn_ctl_swint_trig_m;
+ 	void __iomem *rx_itr;
+ 	void __iomem *tx_itr;
+ 	void __iomem *icr_ena;
+@@ -437,7 +441,7 @@ struct idpf_q_vector {
+ 	cpumask_var_t affinity_mask;
+ 	__cacheline_group_end_aligned(cold);
+ };
+-libeth_cacheline_set_assert(struct idpf_q_vector, 112,
++libeth_cacheline_set_assert(struct idpf_q_vector, 120,
+ 			    24 + sizeof(struct napi_struct) +
+ 			    2 * sizeof(struct dim),
+ 			    8 + sizeof(cpumask_var_t));
+@@ -471,6 +475,8 @@ struct idpf_tx_queue_stats {
+ #define IDPF_ITR_IS_DYNAMIC(itr_mode) (itr_mode)
+ #define IDPF_ITR_TX_DEF		IDPF_ITR_20K
+ #define IDPF_ITR_RX_DEF		IDPF_ITR_20K
++/* Index used for 'SW ITR' update in DYN_CTL register */
++#define IDPF_SW_ITR_UPDATE_IDX	2
+ /* Index used for 'No ITR' update in DYN_CTL register */
+ #define IDPF_NO_ITR_UPDATE_IDX	3
+ #define IDPF_ITR_IDX_SPACING(spacing, dflt)	(spacing ? spacing : dflt)
+--- a/drivers/net/ethernet/intel/idpf/idpf_vf_dev.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_vf_dev.c
+@@ -101,6 +101,9 @@ static int idpf_vf_intr_reg_init(struct
+ 		intr->dyn_ctl_itridx_s = VF_INT_DYN_CTLN_ITR_INDX_S;
+ 		intr->dyn_ctl_intrvl_s = VF_INT_DYN_CTLN_INTERVAL_S;
+ 		intr->dyn_ctl_wb_on_itr_m = VF_INT_DYN_CTLN_WB_ON_ITR_M;
++		intr->dyn_ctl_swint_trig_m = VF_INT_DYN_CTLN_SWINT_TRIG_M;
++		intr->dyn_ctl_sw_itridx_ena_m =
++			VF_INT_DYN_CTLN_SW_ITR_INDX_ENA_M;
  
-+	if (pm->suspended)
-+		return;
-+
- 	dev->regd_in_progress = true;
- 	mt792x_mutex_acquire(dev);
--	mt7925_mcu_set_clc(dev, req->alpha2, req->country_ie_env);
--	mt7925_mcu_set_channel_domain(hw->priv);
--	mt7925_set_tx_sar_pwr(hw, NULL);
-+	mt7925_regd_update(dev);
- 	mt792x_mutex_release(dev);
- 	dev->regd_in_progress = false;
- 	wake_up(&dev->wait);
---- a/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h
-@@ -218,6 +218,7 @@ int mt7925_mcu_chip_config(struct mt792x
- int mt7925_mcu_set_rxfilter(struct mt792x_dev *dev, u32 fif,
- 			    u8 bit_op, u32 bit_map);
- 
-+void mt7925_regd_update(struct mt792x_dev *dev);
- int mt7925_mac_init(struct mt792x_dev *dev);
- int mt7925_mac_sta_add(struct mt76_dev *mdev, struct ieee80211_vif *vif,
- 		       struct ieee80211_sta *sta);
---- a/drivers/net/wireless/mediatek/mt76/mt7925/pci.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/pci.c
-@@ -554,11 +554,14 @@ static int mt7925_pci_resume(struct devi
- 	local_bh_enable();
- 
- 	err = mt76_connac_mcu_set_hif_suspend(mdev, false);
-+	if (err < 0)
-+		goto failed;
- 
- 	/* restore previous ds setting */
- 	if (!pm->ds_enable)
- 		mt7925_mcu_set_deep_sleep(dev, false);
- 
-+	mt7925_regd_update(dev);
- failed:
- 	pm->suspended = false;
- 
+ 		spacing = IDPF_ITR_IDX_SPACING(reg_vals[vec_id].itrn_index_spacing,
+ 					       IDPF_VF_ITR_IDX_SPACING);
 
 
 
