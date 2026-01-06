@@ -1,136 +1,236 @@
-Return-Path: <stable+bounces-205037-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205038-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2037CF6CED
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 06:45:40 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66D93CF6ED2
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 07:52:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 56CB8302105D
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 05:45:27 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 63CC93019541
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 06:52:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C8C927B340;
-	Tue,  6 Jan 2026 05:45:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C5FF2D97B8;
+	Tue,  6 Jan 2026 06:52:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nPnIuCyD"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZjFae/BG"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AD511FE471
-	for <stable@vger.kernel.org>; Tue,  6 Jan 2026 05:45:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B68E51A83F9
+	for <stable@vger.kernel.org>; Tue,  6 Jan 2026 06:52:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767678326; cv=none; b=WO+KGjrUAlfEwxIWuqW2ROBH/AgxVLK5OaOtC7PIxzyV5dDHPVFt1bzmmiBM5BJVD6IWK6CxOaQRu9xG6l7Im/AkB+UNkTtUnu5azLIg1o3aRpFGPrp5VsQ7LTgQCUzUOK6ftor5HGp+nx4bhIQsurDY4WJ9f+t6LGNA4+wS/JE=
+	t=1767682343; cv=none; b=OXo2jUd8nHL3UDdvHd4p/mad/IZcJ6UKrsbkG5NDq8BaLbs32It5kvmXUUcIZQmqh009fSAsIUBhN3oIMo2QKXl9fHgl1uDmHfWuIn6PEbqVaqyCBxEghEd9J7liEf8/YWorFySno7eHmwdJcX5IHAxolGw2QJXJNIYbw1y8lcw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767678326; c=relaxed/simple;
-	bh=/SYccTC3igvd2gmgSeQ2U2RaSyPjN7ENLlBvFQ16Rlk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KqUb+dgcD1GOUcowWy8ml6/Jk3uJ6G7G71Omw02ARo1X0gHNHqdojsmN1dskfosrptxLEXLUU9QdLiH2ynfzdWrYWMTZwIj6troLgaNyYcFCjw2qICNNUQ2GvtMjcpjsHna28kK//a4F3fEK4SS3WSIDAi0vwv12Bz/IdQUk0CM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nPnIuCyD; arc=none smtp.client-ip=209.85.215.175
+	s=arc-20240116; t=1767682343; c=relaxed/simple;
+	bh=9Cw86CX0Dci1mnYLZkNN+CeP0LIAhYvokNBtfKQI0Nw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=hoO1OSOTEonadtRav9/Qoc9qoLSh0dkuhcOuAh+i1Q0Dba03txqpkIu5fF2JVixop2b6x8nJuethjHRh6gv5cOqwEMRNojZ47fYXHpkiKnq8p3MJyTrfIAY2GAmM6OxMKVVu84+484NhMOl3DEGveS4+PSzzyRq6H9BBOegjvEc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZjFae/BG; arc=none smtp.client-ip=209.85.221.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-c3e921afad1so359759a12.1
-        for <stable@vger.kernel.org>; Mon, 05 Jan 2026 21:45:24 -0800 (PST)
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-42fbad1fa90so475022f8f.0
+        for <stable@vger.kernel.org>; Mon, 05 Jan 2026 22:52:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767678324; x=1768283124; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=d4FNQCGxQx8iOKij8d4YGaJkQe2u5Bu+8scxY9YuuaQ=;
-        b=nPnIuCyDmmuY2LBHP5mMDPcbSuPCwQMtg0kjTMIRH0km+/aHcsgsFno0QUBfsvexnd
-         ogh9N5VpcsW1QXWkFWj6uBo3bCI5reBAFoaQe4VBsEcJJsVKKLUdyWHNPbYMj87upgaU
-         ZXSMUBKEJjrlgU5DuF5CNRbo5543FZHFpMSW0AdSzoRDqdzhcAi1c8/l+hCYmz91gWCm
-         DwwRysBpahm4aTfrKFj7L5OX56agqmZqx98WBtKzqraNtGfTI/AXnrRa10z94ooab2bJ
-         jYs7cxUz+7LQYFD0OwZC9bfTyzy6x7hQo6ZcjTTC8USFWi27w8dSgUwakWv8Ihsc2TPU
-         b7MA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767678324; x=1768283124;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1767682340; x=1768287140; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=d4FNQCGxQx8iOKij8d4YGaJkQe2u5Bu+8scxY9YuuaQ=;
-        b=AfZ/FDWos1BVzE2N82Si9oPvOrOtfEkX6eE/prAdpQ1NatFQBj3Y1NTZVVDvkOLJ2R
-         SR5yQq5iLiGgPbqR/c12XN37cQc6YAR7ETnOizG85YN7ACrxr1DkQGZwz2nTw5VEyTP3
-         IWut3zac0TuPJJb/34w2UJ79I8WDtbd1aqq8GG/2lScy2kC15b1cdtH6TzBlP5tsvr7h
-         qP8Ib6X7lTZZ8eUuD37JpgigEeoJC+mRNZFNTA5xnIe3Gcpy48yT/Gd1dV2iOJStWFjP
-         BotEnaCCnF1jzhLLRBQfmZTTsdaDcVIfZsErRsotwO3SNk6JcuEUw+WRYrV0U2cUtrp7
-         HbbQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX1mS+umNlKLIyYQGhY6uyb12K+wtZHegFlJLhpXWNHDE0591WMYvE/kiGCCZqCcWRoera9uCg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw7PS+EmbKkHMzzMtPmBSNPVD56Zj9PLlCf5yIKTt96eLZsuNgj
-	vjQWnlPBErcZDPxof/JI0RVY6Qpggan7v8QjgRwEWeeeLmJjlW9azLfh
-X-Gm-Gg: AY/fxX7F2GGwylb3om/Tklv4K8do/Fo40NaHVB3cELFA34tq+WPD30gcE57HA3yWMAa
-	XkWqjTRBD6eb+gCLjQyzmqaODAYV/oSTf+PpjdfplVm96I7xQJwnFDj0SYg+b036lLpiyvJjuU8
-	jURsz/JNS02JclNY0DeSXoEnMqjT5HDaV73W44YSOmStWNuNHlWag6ZXZ4JmEGJfB6g87xeGbaf
-	7nwrQ268SHlL4cDJqTYwYC9CMBkpYWSzb8mzaqFmrSl1gkXm4kc3uxz8RI1A+nknvNhCEJ6bcfg
-	x/wgQEdpjYU00+00Dy0NDR0qSJD6Wcdb2qUkuI4fwXd9enxdZNFuTowEXoKR8oZqeftv81u/JjD
-	JI7aoswrtWHeJhJplSi801HyOwehV2krC9+Qvh1y6PWS+quUvOdoVhlvTJ3VefsQ/Udu4lb6ie/
-	csagGLr3zzZIx+EV8P23hG5pbzCWpTaisH2B1em6g3AowI0P7BOcBUJtpflujRJR8=
-X-Google-Smtp-Source: AGHT+IGtbGQnHPVMy7yv8FIzmXgtNyoU2JtGqSy/ckCA0YX5D21h89Cmom/fmR2hFZZF5RRFL7RB/Q==
-X-Received: by 2002:a05:7301:1807:b0:2b0:5a77:5753 with SMTP id 5a478bee46e88-2b16f8eccb5mr1490668eec.21.1767678323618;
-        Mon, 05 Jan 2026 21:45:23 -0800 (PST)
-Received: from lappy (108-228-232-20.lightspeed.sndgca.sbcglobal.net. [108.228.232.20])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b17052dbc7sm1805817eec.0.2026.01.05.21.45.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Jan 2026 21:45:23 -0800 (PST)
-From: "Derek J. Clark" <derekjohn.clark@gmail.com>
-To: Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Andy Shevchenko <andy@kernel.org>
-Cc: Alex Lanzano <lanzano.alex@gmail.com>,
-	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	"Derek J. Clark" <derekjohn.clark@gmail.com>
-Subject: [PATCH] iio: bmi270_i2c: Add MODULE_DEVICE_TABLE for BMI260/270
-Date: Tue,  6 Jan 2026 05:45:19 +0000
-Message-ID: <20260106054519.566796-1-derekjohn.clark@gmail.com>
-X-Mailer: git-send-email 2.51.2
+        bh=a5MbjTHPCVCDNqoOckwZhtsYdIa3XvI/J5e476w1Ly4=;
+        b=ZjFae/BGABzOds5GfoWGEG9XcMfO/Enf4ExBUwZT3JKNiYLdxSLynd5nNzgCAfYSM5
+         emsIvW5uEP6eSY+zd18hhiGdihWS78/MZh9/bfn4ieVl5JLKE1k47KvaPYzSnk+g5qnw
+         OamgCwoI0pSCOkAbiC7Zk4nZKRGqZ1m6ZkeBSzIbuNlmcqQfqdXbA1vsQHKcbvLchsus
+         /qrPW71Cd9+1P0XvZF6ROwUhboEsTN2JrTQyEKSNgiazCc4p8qClhs+uVdRx6J8ZxT1J
+         dinhgPiZ5ILSXGdg4tqo2pGRCeNeEqVVc1zsJwvzsL31L8GztU73BYOjU5lPwsuJaBRY
+         J9FA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767682340; x=1768287140;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=a5MbjTHPCVCDNqoOckwZhtsYdIa3XvI/J5e476w1Ly4=;
+        b=Qwp4XVmch1DXjgP8LWem8XC2/lrYILPByEDLUw1XLvD5mcZrgxxhJRoDkaXVS/x9qi
+         VCJfr+ekjk4c7KnWn+cW0DMtqWbGPbXNECaCr7G0uSVYKpzKwVADEIWQ+jqbESKcivjf
+         /Cey/GG6KSItNl3F9QOp9a1m7mcAapbUWgnLOJ8VZQbkHHkuSdlHO8I2N8L77dT5XTq9
+         MwB/mW3z6n5ilIYqwBc2BuqfKVBRiAkOsjjk/hoh0OuRA+iYxkjlvq/2sJNIeImj1EyI
+         V3bke0Qc8vL7cvYN8rCb1lWyh26TLOWhshVRkaA/vChR5q5yjmO/xMHv9fvWilC1gczz
+         6EIw==
+X-Forwarded-Encrypted: i=1; AJvYcCVkAUbw3fEomMz9H6eHpAwn4yO695rMuMQe7wsqBg/1o5ZZEmyVUooTguPF2do2xl29hWKqneY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxJyS5A+K74Bn7txHe/M/LN467JLTT4UEmA3pZ5uYRreRC/BukW
+	sdJR3MDjJLKMQfveFKfsD7z9/mHEZGI2oc3i5uDuBM6ctfaJ1QawwKw1aSgrxAlEk/RinH26W06
+	oMTTDAtGsxosUxft7F8UCWq4EJw1Uc04=
+X-Gm-Gg: AY/fxX765WAN679rv0IQE47yPdYzHDz1RWy7/uqe6F4TgT9b9JBWTawFl61qKFKKjxY
+	eBOuM1IJnsRrsVLEausw1hAkmchUCk2cE1Hm+SuzoTK1s1UsTIusLTULKIfzoFlOn4NrE4WHxf/
+	yPYl64KKXV74umTpDLtJFPGzGQDX9lOcgu1uc0BIyUIzLkAFwaCbiMvGBGC8vtAax+bKNbToATT
+	WVE+EdPz6xNwcgKioLuVI+o7YABJE1sAWy9PvvdsURCo6AjzWI4enoczhjbm7EGp+1Cfx0ctuFC
+	VHqvAVqPgunl8fx0tYo+M7p2FmJW
+X-Google-Smtp-Source: AGHT+IEwY7f43Mq2osMvDOQZjAjOg6y4nxe8jcr9nGSLJUpcrEWhLOs46bxfR7AfUXsae8GTxGfxj8WFRO3TzUfdp5M=
+X-Received: by 2002:a05:6000:310c:b0:430:b100:f591 with SMTP id
+ ffacd0b85a97d-432bc9d9128mr2322950f8f.28.1767682339754; Mon, 05 Jan 2026
+ 22:52:19 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20251231024316.4643-1-CFSworks@gmail.com> <20251231024316.4643-2-CFSworks@gmail.com>
+ <24adfb894c25531d342fdc20310ca9286d605e3d.camel@ibm.com>
+In-Reply-To: <24adfb894c25531d342fdc20310ca9286d605e3d.camel@ibm.com>
+From: Sam Edwards <cfsworks@gmail.com>
+Date: Mon, 5 Jan 2026 22:52:07 -0800
+X-Gm-Features: AQt7F2qdUUpXyURjPb1fuUeAHQtsYXnqOL0vDFAcXJSkfDM9w4GJZdn6dtJNEBo
+Message-ID: <CAH5Ym4gHTNDVCiy5YQwQwg_JmBt=UKgoui9RzUcBgv6Vr-ezZw@mail.gmail.com>
+Subject: Re: [PATCH 1/5] ceph: Do not propagate page array emplacement errors
+ as batch errors
+To: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
+Cc: Xiubo Li <xiubli@redhat.com>, "idryomov@gmail.com" <idryomov@gmail.com>, 
+	Milind Changire <mchangir@redhat.com>, "stable@vger.kernel.org" <stable@vger.kernel.org>, 
+	"ceph-devel@vger.kernel.org" <ceph-devel@vger.kernel.org>, "brauner@kernel.org" <brauner@kernel.org>, 
+	"jlayton@kernel.org" <jlayton@kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Currently BMI260 & BMI270 devices do not automatically load this
-driver. To fix this, add missing MODULE_DEVICE_TABLE for the i2c,
-acpi, and of device tables so the driver will load when the hardware
-is detected.
+On Mon, Jan 5, 2026 at 12:24=E2=80=AFPM Viacheslav Dubeyko
+<Slava.Dubeyko@ibm.com> wrote:
+>
+> On Tue, 2025-12-30 at 18:43 -0800, Sam Edwards wrote:
+> > When fscrypt is enabled, move_dirty_folio_in_page_array() may fail
+> > because it needs to allocate bounce buffers to store the encrypted
+> > versions of each folio. Each folio beyond the first allocates its bounc=
+e
+> > buffer with GFP_NOWAIT. Failures are common (and expected) under this
+> > allocation mode; they should flush (not abort) the batch.
+> >
+> > However, ceph_process_folio_batch() uses the same `rc` variable for its
+> > own return code and for capturing the return codes of its routine calls=
+;
+> > failing to reset `rc` back to 0 results in the error being propagated
+> > out to the main writeback loop, which cannot actually tolerate any
+> > errors here: once `ceph_wbc.pages` is allocated, it must be passed to
+> > ceph_submit_write() to be freed. If it survives until the next iteratio=
+n
+> > (e.g. due to the goto being followed), ceph_allocate_page_array()'s
+> > BUG_ON() will oops the worker. (Subsequent patches in this series make
+> > the loop more robust.)
+>
 
-Tested on my OneXPlayer F1 Pro.
+Hi Slava,
 
-Signed-off-by: Derek J. Clark <derekjohn.clark@gmail.com>
----
- drivers/iio/imu/bmi270/bmi270_i2c.c | 3 +++
- 1 file changed, 3 insertions(+)
+> I think you are right with the fix. We have the loop here and if we alrea=
+dy
+> moved some dirty folios, then we should flush it. But what if we failed o=
+n the
+> first one folio, then should we return no error code in this case?
 
-diff --git a/drivers/iio/imu/bmi270/bmi270_i2c.c b/drivers/iio/imu/bmi270/bmi270_i2c.c
-index b909a421ad01..b92da4e0776f 100644
---- a/drivers/iio/imu/bmi270/bmi270_i2c.c
-+++ b/drivers/iio/imu/bmi270/bmi270_i2c.c
-@@ -37,6 +37,7 @@ static const struct i2c_device_id bmi270_i2c_id[] = {
- 	{ "bmi270", (kernel_ulong_t)&bmi270_chip_info },
- 	{ }
- };
-+MODULE_DEVICE_TABLE(i2c, bmi270_i2c_id);
- 
- static const struct acpi_device_id bmi270_acpi_match[] = {
- 	/* GPD Win Mini, Aya Neo AIR Pro, OXP Mini Pro, etc. */
-@@ -45,12 +46,14 @@ static const struct acpi_device_id bmi270_acpi_match[] = {
- 	{ "BMI0260",  (kernel_ulong_t)&bmi260_chip_info },
- 	{ }
- };
-+MODULE_DEVICE_TABLE(acpi, bmi270_acpi_match);
- 
- static const struct of_device_id bmi270_of_match[] = {
- 	{ .compatible = "bosch,bmi260", .data = &bmi260_chip_info },
- 	{ .compatible = "bosch,bmi270", .data = &bmi270_chip_info },
- 	{ }
- };
-+MODULE_DEVICE_TABLE(of, bmi270_of_match);
- 
- static struct i2c_driver bmi270_i2c_driver = {
- 	.driver = {
--- 
-2.51.2
+The case you ask about, where move_dirty_folio_in_page_array() returns
+an error for the first folio, is currently not possible:
+1) The only error code that move_dirty_folio_in_page_array() can
+propagate is from fscrypt_encrypt_pagecache_blocks(), which it calls
+with GFP_NOFS for the first folio. The latter function's doc comment
+outright states:
+ * The bounce page allocation is mempool-backed, so it will always succeed =
+when
+ * @gfp_flags includes __GFP_DIRECT_RECLAIM, e.g. when it's GFP_NOFS.
+2) The error return isn't even reachable for the first folio because
+of the BUG_ON(ceph_wbc->locked_pages =3D=3D 0); line.
 
+>
+> >
+> > Note that this failure mode is currently masked due to another bug
+> > (addressed later in this series) that prevents multiple encrypted folio=
+s
+> > from being selected for the same write.
+>
+> So, maybe, this patch has been not correctly placed in the order?
+
+This crash is unmasked by patch 5 of this series. (It allows multiple
+folios to be batched when fscrypt is enabled.) Patch 5 has no hard
+dependency on anything else in this series, so it could -- in
+principle -- be ordered first as you suggest. However, that ordering
+would deliberately cause a regression in kernel stability, even if
+only briefly. That's not considered good practice in my view, as it
+may affect people who are trying to bisect and regression test. So the
+ordering of this series is: fix the crash in the unused code first,
+then fix the bug that makes it unused.
+
+> It will be
+> good to see the reproduction of the issue and which symptoms we have for =
+this
+> issue. Do you have the reproduction script and call trace of the issue?
+
+Fair point!
+
+Function inlining makes the call trace not very interesting:
+Call trace:
+ ceph_writepages_start+0x16ec/0x18e0 [ceph] ()
+ do_writepages+0xb0/0x1c0
+ __writeback_single_inode+0x4c/0x4d8
+ writeback_sb_inodes+0x238/0x4c8
+ __writeback_inodes_wb+0x64/0x120
+ wb_writeback+0x320/0x3e8
+ wb_workfn+0x42c/0x518
+ process_one_work+0x17c/0x428
+ worker_thread+0x260/0x390
+ kthread+0x148/0x240
+ ret_from_fork+0x10/0x20
+Code: 34ffdee0 52800020 3903e7e0 17fffef4 (d4210000)
+---[ end trace 0000000000000000 ]---
+Kernel panic - not syncing: Oops - BUG: Fatal exception
+
+ceph_writepages_start+0x16ec corresponds to linux-6.18.2/fs/ceph/addr.c:122=
+2
+
+However, these repro steps should work:
+1) Apply patch 5 from this series (and no other patches)
+2) Mount CephFS and activate fscrypt
+3) Copy a large directory into the CephFS mount
+4) After dozens of GBs transferred, you should observe the above kernel oop=
+s
+
+Warm regards,
+Sam
+
+
+
+
+>
+> >
+> > For now, just reset `rc` when redirtying the folio and prevent the
+> > error from propagating. After this change, ceph_process_folio_batch() n=
+o
+> > longer returns errors; its only remaining failure indicator is
+> > `locked_pages =3D=3D 0`, which the caller already handles correctly. Th=
+e
+> > next patch in this series addresses this.
+> >
+> > Fixes: ce80b76dd327 ("ceph: introduce ceph_process_folio_batch() method=
+")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Sam Edwards <CFSworks@gmail.com>
+> > ---
+> >  fs/ceph/addr.c | 1 +
+> >  1 file changed, 1 insertion(+)
+> >
+> > diff --git a/fs/ceph/addr.c b/fs/ceph/addr.c
+> > index 63b75d214210..3462df35d245 100644
+> > --- a/fs/ceph/addr.c
+> > +++ b/fs/ceph/addr.c
+> > @@ -1369,6 +1369,7 @@ int ceph_process_folio_batch(struct address_space=
+ *mapping,
+> >               rc =3D move_dirty_folio_in_page_array(mapping, wbc, ceph_=
+wbc,
+> >                               folio);
+> >               if (rc) {
+> > +                     rc =3D 0;
+>
+> I like the fix but I would like to clarify the above questions at first.
+>
+> Thanks,
+> Slava.
+>
+> >                       folio_redirty_for_writepage(wbc, folio);
+> >                       folio_unlock(folio);
+> >                       break;
 
