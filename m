@@ -1,52 +1,50 @@
-Return-Path: <stable+bounces-205140-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205142-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14DF8CF9A2E
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 18:23:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FE8ECF9A28
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 18:23:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F262C3024122
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:15:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2B1BC3091F41
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:15:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B50134679B;
-	Tue,  6 Jan 2026 17:15:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F9EA346781;
+	Tue,  6 Jan 2026 17:15:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bTEA2S5u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QYbRUKHb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 551F3346784;
-	Tue,  6 Jan 2026 17:15:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1862634679C;
+	Tue,  6 Jan 2026 17:15:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767719717; cv=none; b=tK78Fglm00aYARsK/bMOYNxV/xcN7wjzFgjLK6Ig4PFPKoM1DJcbbUbtCDrg9xIO297l1pDMfQeQGzRep0+GC4un/8lqe82ofFeFNrRaK/edE4WLY4Hc+FPgBjNxvUqLezb1mo4B5qIUSSbL20Fd3zten2pkGTvweDduTQL5YWc=
+	t=1767719724; cv=none; b=A8nKO4jWWjoNnBdn5LRCiuQBuwcaFJWMxLtDinwRmLusna1En5z652co1XMMdnIsVm9R9dpfmwuv8JQLitAC/9QsrlL3nW0pqg4hYCBmnu6CtHgvNrm8Zen4aNjQL8hYyR4D0RiJFeJRqn0WR22ZBhNMU2HeVYGNQKFup710P3Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767719717; c=relaxed/simple;
-	bh=BmDFnffO65VasTxyMNxEgDWRg6f9TojbYKc3sKRNvVQ=;
+	s=arc-20240116; t=1767719724; c=relaxed/simple;
+	bh=kLQOaamVBlocJ8A7n225Htr2sPyD2TSY/EAaoaTY7sg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TVUz41lfO04b8gR8zZpp3oX+/oHiMenrd7TYmEQMvk/LEpnXcAGwSFsUJbLC8qfUA/4h5zBPU2gbE3cesQE7Td9dYwu4GdAlaGNHByaljUIUNbVByz395FOUTGbMdi5Jj/P5FqxFqF5tnfRVJmPwQqlkDewa/Foazvezm6hUddw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bTEA2S5u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87D18C116C6;
-	Tue,  6 Jan 2026 17:15:16 +0000 (UTC)
+	 MIME-Version; b=TjJLheqFZYVwK8GOLS0wUzcn7D+l1k+K+pZslTgCaEhKjnXYiIMCutuc0EidfJV7euSC8zQxjO6rS5kImPsuq19zL6mKaiATZPEY/4R2ZA/4Crcz3kX76bc1E98zfggdRv9hO2p/ib6OHaHAvsCm0GIrkuxSdOjdPqTJJIntmqQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QYbRUKHb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42623C116C6;
+	Tue,  6 Jan 2026 17:15:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767719717;
-	bh=BmDFnffO65VasTxyMNxEgDWRg6f9TojbYKc3sKRNvVQ=;
+	s=korg; t=1767719723;
+	bh=kLQOaamVBlocJ8A7n225Htr2sPyD2TSY/EAaoaTY7sg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bTEA2S5u5q6uEaORuVk3TJRqMO6ZtC1YWO2U/lYeelDDA1RvwwrDdqIS+owXxh/R0
-	 1HDRDnREgxD/KJ0586UVw22DoDewCxdoNLh4LusX0r4+in8e0QbTWE8OPeHfdEk0n3
-	 dMpLIjXTKw0AkVjGxCW30MWzjB72jSWOUSuuY+1E=
+	b=QYbRUKHbkSCqcqTpeoA80dCA7XqhEcVA3G7InyiDl2vfQuXmoy83E/7TLRUjsnnfO
+	 +13sxTMhIGp4tw/AKNfzirIo9DFEUeIGPxmb7qndH11+aqurUkdp1IEr822RO4pItl
+	 MFIsLkdBkceKFy8G18SJ6EvraVLNR1hph/Ij7TQI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Song Liu <song@kernel.org>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Petr Mladek <pmladek@suse.com>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 019/567] livepatch: Match old_sympos 0 and 1 in klp_find_func()
-Date: Tue,  6 Jan 2026 17:56:41 +0100
-Message-ID: <20260106170452.053168290@linuxfoundation.org>
+Subject: [PATCH 6.12 020/567] fs/ntfs3: Support timestamps prior to epoch
+Date: Tue,  6 Jan 2026 17:56:42 +0100
+Message-ID: <20260106170452.089768440@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
 References: <20260106170451.332875001@linuxfoundation.org>
@@ -65,86 +63,41 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Song Liu <song@kernel.org>
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-[ Upstream commit 139560e8b973402140cafeb68c656c1374bd4c20 ]
+[ Upstream commit 5180138604323895b5c291eca6aa7c20be494ade ]
 
-When there is only one function of the same name, old_sympos of 0 and 1
-are logically identical. Match them in klp_find_func().
+Before it used an unsigned 64-bit type, which prevented proper handling
+of timestamps earlier than 1970-01-01. Switch to a signed 64-bit type to
+support pre-epoch timestamps. The issue was caught by xfstests.
 
-This is to avoid a corner case with different toolchain behavior.
-
-In this specific issue, two versions of kpatch-build were used to
-build livepatch for the same kernel. One assigns old_sympos == 0 for
-unique local functions, the other assigns old_sympos == 1 for unique
-local functions. Both versions work fine by themselves. (PS: This
-behavior change was introduced in a downstream version of kpatch-build.
-This change does not exist in upstream kpatch-build.)
-
-However, during livepatch upgrade (with the replace flag set) from a
-patch built with one version of kpatch-build to the same fix built with
-the other version of kpatch-build, livepatching fails with errors like:
-
-[   14.218706] sysfs: cannot create duplicate filename 'xxx/somefunc,1'
-...
-[   14.219466] Call Trace:
-[   14.219468]  <TASK>
-[   14.219469]  dump_stack_lvl+0x47/0x60
-[   14.219474]  sysfs_warn_dup.cold+0x17/0x27
-[   14.219476]  sysfs_create_dir_ns+0x95/0xb0
-[   14.219479]  kobject_add_internal+0x9e/0x260
-[   14.219483]  kobject_add+0x68/0x80
-[   14.219485]  ? kstrdup+0x3c/0xa0
-[   14.219486]  klp_enable_patch+0x320/0x830
-[   14.219488]  patch_init+0x443/0x1000 [ccc_0_6]
-[   14.219491]  ? 0xffffffffa05eb000
-[   14.219492]  do_one_initcall+0x2e/0x190
-[   14.219494]  do_init_module+0x67/0x270
-[   14.219496]  init_module_from_file+0x75/0xa0
-[   14.219499]  idempotent_init_module+0x15a/0x240
-[   14.219501]  __x64_sys_finit_module+0x61/0xc0
-[   14.219503]  do_syscall_64+0x5b/0x160
-[   14.219505]  entry_SYSCALL_64_after_hwframe+0x4b/0x53
-[   14.219507] RIP: 0033:0x7f545a4bd96d
-...
-[   14.219516] kobject: kobject_add_internal failed for somefunc,1 with
-    -EEXIST, don't try to register things with the same name ...
-
-This happens because klp_find_func() thinks somefunc with old_sympos==0
-is not the same as somefunc with old_sympos==1, and klp_add_object_nops
-adds another xxx/func,1 to the list of functions to patch.
-
-Signed-off-by: Song Liu <song@kernel.org>
-Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
-[pmladek@suse.com: Fixed some typos.]
-Reviewed-by: Petr Mladek <pmladek@suse.com>
-Tested-by: Petr Mladek <pmladek@suse.com>
-Signed-off-by: Petr Mladek <pmladek@suse.com>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/livepatch/core.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ fs/ntfs3/ntfs_fs.h | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/kernel/livepatch/core.c b/kernel/livepatch/core.c
-index 3c21c31796db0..077e078032e05 100644
---- a/kernel/livepatch/core.c
-+++ b/kernel/livepatch/core.c
-@@ -90,8 +90,14 @@ static struct klp_func *klp_find_func(struct klp_object *obj,
- 	struct klp_func *func;
+diff --git a/fs/ntfs3/ntfs_fs.h b/fs/ntfs3/ntfs_fs.h
+index ff7f241a25b24..a1040060b081f 100644
+--- a/fs/ntfs3/ntfs_fs.h
++++ b/fs/ntfs3/ntfs_fs.h
+@@ -980,11 +980,12 @@ static inline __le64 kernel2nt(const struct timespec64 *ts)
+  */
+ static inline void nt2kernel(const __le64 tm, struct timespec64 *ts)
+ {
+-	u64 t = le64_to_cpu(tm) - _100ns2seconds * SecondsToStartOf1970;
++	s32 t32;
++	/* use signed 64 bit to support timestamps prior to epoch. xfstest 258. */
++	s64 t = le64_to_cpu(tm) - _100ns2seconds * SecondsToStartOf1970;
  
- 	klp_for_each_func(obj, func) {
-+		/*
-+		 * Besides identical old_sympos, also consider old_sympos
-+		 * of 0 and 1 are identical.
-+		 */
- 		if ((strcmp(old_func->old_name, func->old_name) == 0) &&
--		    (old_func->old_sympos == func->old_sympos)) {
-+		    ((old_func->old_sympos == func->old_sympos) ||
-+		     (old_func->old_sympos == 0 && func->old_sympos == 1) ||
-+		     (old_func->old_sympos == 1 && func->old_sympos == 0))) {
- 			return func;
- 		}
- 	}
+-	// WARNING: do_div changes its first argument(!)
+-	ts->tv_nsec = do_div(t, _100ns2seconds) * 100;
+-	ts->tv_sec = t;
++	ts->tv_sec = div_s64_rem(t, _100ns2seconds, &t32);
++	ts->tv_nsec = t32 * 100;
+ }
+ 
+ static inline struct ntfs_sb_info *ntfs_sb(struct super_block *sb)
 -- 
 2.51.0
 
