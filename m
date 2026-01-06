@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-205425-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205717-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C43A2CF9C47
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 18:41:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 42779CFA695
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:59:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CDE513055F4A
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:31:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 13EA931D3A17
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:33:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9F132749ED;
-	Tue,  6 Jan 2026 17:30:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AA10350D53;
+	Tue,  6 Jan 2026 17:47:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ubnjaGu1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WGhGvDy7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76573846F;
-	Tue,  6 Jan 2026 17:30:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC9EC35CB76;
+	Tue,  6 Jan 2026 17:47:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767720649; cv=none; b=qqfU5UMQo1T0CZ99EarsNmjyG8jCiFVgph+DhTxekuGjsspf30MsUTmxd5r7TbjdrqbCC9boVczbGLXvfpVir2dLszm0L2G0vGp6I5XKAam6ZM9lzk+oEvpmXJeuwPCBQLnlzPK++SYs4YorKdDp6+3hMOCGKMuNX2FELY1PZjw=
+	t=1767721624; cv=none; b=aN1sGqUW/me1d1BBVaug5GvJkXsnWV9rv0aPGa0OJMCRhajsl424QcLZ8tYF6znFLJw+QzKD5lZTwAE6cG/KYNRBiYw3DmB1uxsYx1T8YxFNd673+LGPqPm0DgJ80z0WNEejIdbFQt242Mut0clB/jwulIsADvZfA8A12EyAvA4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767720649; c=relaxed/simple;
-	bh=vAtoFfMvbV4dmiQ4sAL0JCu1+Ke2nEtJCeBp+6V377Y=;
+	s=arc-20240116; t=1767721624; c=relaxed/simple;
+	bh=F+u1BFUCGAIR0ub/1v6ESNIlnbWImzI20qkk3xnW/bA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DMMjMR/W/iHOTODriX6S81G/BMIJQB58uGD9d7mRg21GFCnufaR+Q6ULjY1iKy6RZC3JOcyuYeXVM+HAzoKLm7OZ5r0WlaCcMrUuRwKy0Rc45k3jp06EGe7h31SzlMDTxnKI6GzI7jhEriuT71NzkWzA8kkoL3ssiy+i5zTUTlk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ubnjaGu1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D95BEC116C6;
-	Tue,  6 Jan 2026 17:30:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=LKXtLTVrPHvTyG2pT471tkH+R4BcuccyPPqUhvYgvj9Au8MX4BGQz4krdi8Vk+x9PujZdzXd0r6HQAfcDDazu3hOkAb2hn+18lxdSTMveRpDLSB38r+++532OeLLgsRDB+wBhGOF1owrnpzZf9x49Ca56+adeLbbWa2RJOdHGns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WGhGvDy7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A6F1C2BC9E;
+	Tue,  6 Jan 2026 17:47:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767720649;
-	bh=vAtoFfMvbV4dmiQ4sAL0JCu1+Ke2nEtJCeBp+6V377Y=;
+	s=korg; t=1767721624;
+	bh=F+u1BFUCGAIR0ub/1v6ESNIlnbWImzI20qkk3xnW/bA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ubnjaGu1Go04gWrK5SuPrTnGuiR2V27mbsxs23DX2nGBFv1aKMifvLFlTQMiC1q/u
-	 TkT/bMQhf7261jG37+rS1bidKV0kL2PefGa+N9pwpoDGkiVJ0lFcik4Rl6KDauvAcL
-	 C5IXZ14N38BZN0DUJ4zUOZS9PKPdbMTUzaLGyyAY=
+	b=WGhGvDy7W7C0AD3lomer8N63HScFXyB4mc6Ff8eDYuIXGrwt2/vBcbRhU8J+qtJOs
+	 BNRYtUwhgac1r3XAYR1B9XtChGGg2AeQN4D+zdt6q6kBlYXfe85aL5XgyGrQJGRG6o
+	 QcutXPr1/cIcFsn8J2SlsswofZVAVrvHcY5pjKpg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kohei Enju <enjuk@amazon.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	=?UTF-8?q?Tiago=20Martins=20Ara=C3=BAjo?= <tiago.martins.araujo@gmail.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Jani Nikula <jani.nikula@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 300/567] iavf: fix off-by-one issues in iavf_config_rss_reg()
-Date: Tue,  6 Jan 2026 18:01:22 +0100
-Message-ID: <20260106170502.430625532@linuxfoundation.org>
+Subject: [PATCH 6.18 009/312] drm/edid: add DRM_EDID_IDENT_INIT() to initialize struct drm_edid_ident
+Date: Tue,  6 Jan 2026 18:01:23 +0100
+Message-ID: <20260106170548.188919001@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
-References: <20260106170451.332875001@linuxfoundation.org>
+In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
+References: <20260106170547.832845344@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,120 +59,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kohei Enju <enjuk@amazon.com>
+From: Jani Nikula <jani.nikula@intel.com>
 
-[ Upstream commit 6daa2893f323981c7894c68440823326e93a7d61 ]
+[ Upstream commit 8b61583f993589a64c061aa91b44f5bd350d90a5 ]
 
-There are off-by-one bugs when configuring RSS hash key and lookup
-table, causing out-of-bounds reads to memory [1] and out-of-bounds
-writes to device registers.
+Add a convenience helper for initializing struct drm_edid_ident.
 
-Before commit 43a3d9ba34c9 ("i40evf: Allow PF driver to configure RSS"),
-the loop upper bounds were:
-    i <= I40E_VFQF_{HKEY,HLUT}_MAX_INDEX
-which is safe since the value is the last valid index.
-
-That commit changed the bounds to:
-    i <= adapter->rss_{key,lut}_size / 4
-where `rss_{key,lut}_size / 4` is the number of dwords, so the last
-valid index is `(rss_{key,lut}_size / 4) - 1`. Therefore, using `<=`
-accesses one element past the end.
-
-Fix the issues by using `<` instead of `<=`, ensuring we do not exceed
-the bounds.
-
-[1] KASAN splat about rss_key_size off-by-one
-  BUG: KASAN: slab-out-of-bounds in iavf_config_rss+0x619/0x800
-  Read of size 4 at addr ffff888102c50134 by task kworker/u8:6/63
-
-  CPU: 0 UID: 0 PID: 63 Comm: kworker/u8:6 Not tainted 6.18.0-rc2-enjuk-tnguy-00378-g3005f5b77652-dirty #156 PREEMPT(voluntary)
-  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-  Workqueue: iavf iavf_watchdog_task
-  Call Trace:
-   <TASK>
-   dump_stack_lvl+0x6f/0xb0
-   print_report+0x170/0x4f3
-   kasan_report+0xe1/0x1a0
-   iavf_config_rss+0x619/0x800
-   iavf_watchdog_task+0x2be7/0x3230
-   process_one_work+0x7fd/0x1420
-   worker_thread+0x4d1/0xd40
-   kthread+0x344/0x660
-   ret_from_fork+0x249/0x320
-   ret_from_fork_asm+0x1a/0x30
-   </TASK>
-
-  Allocated by task 63:
-   kasan_save_stack+0x30/0x50
-   kasan_save_track+0x14/0x30
-   __kasan_kmalloc+0x7f/0x90
-   __kmalloc_noprof+0x246/0x6f0
-   iavf_watchdog_task+0x28fc/0x3230
-   process_one_work+0x7fd/0x1420
-   worker_thread+0x4d1/0xd40
-   kthread+0x344/0x660
-   ret_from_fork+0x249/0x320
-   ret_from_fork_asm+0x1a/0x30
-
-  The buggy address belongs to the object at ffff888102c50100
-   which belongs to the cache kmalloc-64 of size 64
-  The buggy address is located 0 bytes to the right of
-   allocated 52-byte region [ffff888102c50100, ffff888102c50134)
-
-  The buggy address belongs to the physical page:
-  page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x102c50
-  flags: 0x200000000000000(node=0|zone=2)
-  page_type: f5(slab)
-  raw: 0200000000000000 ffff8881000418c0 dead000000000122 0000000000000000
-  raw: 0000000000000000 0000000080200020 00000000f5000000 0000000000000000
-  page dumped because: kasan: bad access detected
-
-  Memory state around the buggy address:
-   ffff888102c50000: 00 00 00 00 00 00 00 fc fc fc fc fc fc fc fc fc
-   ffff888102c50080: 00 00 00 00 00 00 00 fc fc fc fc fc fc fc fc fc
-  >ffff888102c50100: 00 00 00 00 00 00 04 fc fc fc fc fc fc fc fc fc
-                                       ^
-   ffff888102c50180: 00 00 00 00 00 00 00 00 fc fc fc fc fc fc fc fc
-   ffff888102c50200: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-
-Fixes: 43a3d9ba34c9 ("i40evf: Allow PF driver to configure RSS")
-Signed-off-by: Kohei Enju <enjuk@amazon.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Cc: Tiago Martins Araújo <tiago.martins.araujo@gmail.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Tested-by: Tiago Martins Araújo <tiago.martins.araujo@gmail.com>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/710b2ac6a211606ec1f90afa57b79e8c7375a27e.1761681968.git.jani.nikula@intel.com
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Stable-dep-of: 83cbb4d33dc2 ("drm/displayid: add quirk to ignore DisplayID checksum errors")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/iavf/iavf_main.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/drm/drm_edid.h |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
-index 5516795cc250..422af897d933 100644
---- a/drivers/net/ethernet/intel/iavf/iavf_main.c
-+++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
-@@ -1718,11 +1718,11 @@ static int iavf_config_rss_reg(struct iavf_adapter *adapter)
- 	u16 i;
+--- a/include/drm/drm_edid.h
++++ b/include/drm/drm_edid.h
+@@ -340,6 +340,12 @@ struct drm_edid_ident {
+ 	const char *name;
+ };
  
- 	dw = (u32 *)adapter->rss_key;
--	for (i = 0; i <= adapter->rss_key_size / 4; i++)
-+	for (i = 0; i < adapter->rss_key_size / 4; i++)
- 		wr32(hw, IAVF_VFQF_HKEY(i), dw[i]);
++#define DRM_EDID_IDENT_INIT(_vend_chr_0, _vend_chr_1, _vend_chr_2, _product_id, _name) \
++{ \
++	.panel_id = drm_edid_encode_panel_id(_vend_chr_0, _vend_chr_1, _vend_chr_2, _product_id), \
++	.name = _name, \
++}
++
+ #define EDID_PRODUCT_ID(e) ((e)->prod_code[0] | ((e)->prod_code[1] << 8))
  
- 	dw = (u32 *)adapter->rss_lut;
--	for (i = 0; i <= adapter->rss_lut_size / 4; i++)
-+	for (i = 0; i < adapter->rss_lut_size / 4; i++)
- 		wr32(hw, IAVF_VFQF_HLUT(i), dw[i]);
- 
- 	iavf_flush(hw);
--- 
-2.51.0
-
+ /* Short Audio Descriptor */
 
 
 
