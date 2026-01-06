@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-205636-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205916-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8BAACFA493
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:48:54 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2ED8CFA0FB
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:19:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3EA9C342CF33
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:03:15 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4815F30848D2
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:16:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C1492F659C;
-	Tue,  6 Jan 2026 17:42:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58EDC36C598;
+	Tue,  6 Jan 2026 17:58:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="daSZBtie"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Iydos4QZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAF582F6918;
-	Tue,  6 Jan 2026 17:42:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1691636C0C9;
+	Tue,  6 Jan 2026 17:58:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721350; cv=none; b=rwWTxlFNrUB8bQ/WHnLtGxsmukEnNu6gZYbED+BKsfVHu4e/imOG4l6FucMrAMc0ScrMjAIqu466ThoeH+mmhVCiOhv9Mp9AExTSYw60FcS2gLq/s/XWjATt8jSeaRdW8g6x+LVEkepoKNG/5XNXdy8tRMIv9HJo1puQcPA5CvU=
+	t=1767722292; cv=none; b=cmrWH2Dqh0Hn3yP22KKjR3o+wwym0UTwK/Z4+eyobUAtS9D2N8U1HF8SQJVUamtqg3Qy92x7qyTTrpTTPlC3byUZYJ+bH7d5mL262gVATPCks6eyg4HBBwdyUJyE4GCRv5B3CWGe/DE7AQetVZG2ZiYz6huWcdHbQhTk/eqoJKk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721350; c=relaxed/simple;
-	bh=WkeOKlQbY4IZ0R9XxPqs9ui4YACUgKCuhNe0NSsjdiA=;
+	s=arc-20240116; t=1767722292; c=relaxed/simple;
+	bh=bEJxCyaaRy6F7sujwd+9QlYdSAwcmk2Ts73IEh0pmr4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CLWWTHYxpBGC3KI3oyuWL1914vgEaqNm+80a+Qz6CLePsUIpcu21bg42KDrTTeIyygLUAe953WPBDA5/rZtCFHaL3cyuu1DVf2E8qv8a5MvGgBJCckGWiuPnrZlynPbRiyCutYo1N1TWNYk77RMf9MVSCrk9/2G7ydNdGNGpzvI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=daSZBtie; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38C14C19423;
-	Tue,  6 Jan 2026 17:42:30 +0000 (UTC)
+	 MIME-Version; b=HucvyOmb+icrp4faZD+7xYgEGVcvZNDxFulv9wRLPh2NLIfjjAsdcZJyZDetmOsWwAlfbiEnYvl3u6KHaKXBWGjCACACe8TfeYyDtENRlkEDfkEmKc4hsRFUWEHcNzGtbtEmOtrDtHtD/LzJn3GuVfAMvysyYJDpZel9N/4wVSg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Iydos4QZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ED5DC116C6;
+	Tue,  6 Jan 2026 17:58:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721350;
-	bh=WkeOKlQbY4IZ0R9XxPqs9ui4YACUgKCuhNe0NSsjdiA=;
+	s=korg; t=1767722292;
+	bh=bEJxCyaaRy6F7sujwd+9QlYdSAwcmk2Ts73IEh0pmr4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=daSZBtiexNr7Eez3nygIZWUFmk15qbKnZ1ZlH2K+2kDfAARgCBb+AAynxqtypxGt1
-	 KdF4Pm8RHeVHdwEsDwXUNgQ/aBj5zExYh/40/feqX54ACgw7WDL2osp73+vrka9MNj
-	 B/3wpguqyJ+YOEJci1zFojkxA1hAtjEnk+ANiUc4=
+	b=Iydos4QZvx2doWvpL39yBLM0vZcP+++LH39sNqbFVvqLU2aOamIl0n1ERlRaw1WsU
+	 GV7Vldz6BOgDpyv0FUR/Yy3EeEu15AGr4y4x4WZjIwa4htSfiAQ4D+kx/dUlppenEk
+	 HbEHl68pnYRBrLBjdpp6sKBjV4Yc629R/axw/k94=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nam Cao <namcao@linutronix.de>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 510/567] serial: xilinx_uartps: Use helper function hrtimer_update_function()
-Date: Tue,  6 Jan 2026 18:04:52 +0100
-Message-ID: <20260106170510.242569225@linuxfoundation.org>
+	"H. Peter Anvin (Intel)" <hpa@zytor.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	stable@kernel.org
+Subject: [PATCH 6.18 220/312] compiler_types.h: add "auto" as a macro for "__auto_type"
+Date: Tue,  6 Jan 2026 18:04:54 +0100
+Message-ID: <20260106170555.802158421@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
-References: <20260106170451.332875001@linuxfoundation.org>
+In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
+References: <20260106170547.832845344@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,51 +60,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nam Cao <namcao@linutronix.de>
+From: H. Peter Anvin <hpa@zytor.com>
 
-[ Upstream commit eee00df8e1f1f5648ed8f9e40e2bb54c2877344a ]
+commit 2fb6915fa22dc5524d704afba58a13305dd9f533 upstream.
 
-The field 'function' of struct hrtimer should not be changed directly, as
-the write is lockless and a concurrent timer expiry might end up using the
-wrong function pointer.
+"auto" was defined as a keyword back in the K&R days, but as a storage
+type specifier.  No one ever used it, since it was and is the default
+storage type for local variables.
 
-Switch to use hrtimer_update_function() which also performs runtime checks
-that it is safe to modify the callback.
+C++11 recycled the keyword to allow a type to be declared based on the
+type of an initializer.  This was finally adopted into standard C in
+C23.
 
-Signed-off-by: Nam Cao <namcao@linutronix.de>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/all/af7823518fb060c6c97105a2513cfc61adbdf38f.1738746927.git.namcao@linutronix.de
-Stable-dep-of: 267ee93c417e ("serial: xilinx_uartps: fix rs485 delay_rts_after_send")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+gcc and clang provide the "__auto_type" alias keyword as an extension
+for pre-C23, however, there is no reason to pollute the bulk of the
+source base with this temporary keyword; instead define "auto" as a
+macro unless the compiler is running in C23+ mode.
+
+This macro is added in <linux/compiler_types.h> because that header is
+included in some of the tools headers, wheres <linux/compiler.h> is
+not as it has a bunch of very kernel-specific things in it.
+
+[ Cc: stable to reduce potential backporting burden. ]
+
+Signed-off-by: H. Peter Anvin (Intel) <hpa@zytor.com>
+Acked-by: Miguel Ojeda <ojeda@kernel.org>
+Cc: <stable@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/xilinx_uartps.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/linux/compiler_types.h |   13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
---- a/drivers/tty/serial/xilinx_uartps.c
-+++ b/drivers/tty/serial/xilinx_uartps.c
-@@ -454,7 +454,7 @@ static void cdns_uart_handle_tx(void *de
+--- a/include/linux/compiler_types.h
++++ b/include/linux/compiler_types.h
+@@ -14,6 +14,19 @@
+ #ifndef __ASSEMBLY__
  
- 	if (cdns_uart->port->rs485.flags & SER_RS485_ENABLED &&
- 	    (kfifo_is_empty(&tport->xmit_fifo) || uart_tx_stopped(port))) {
--		cdns_uart->tx_timer.function = &cdns_rs485_rx_callback;
-+		hrtimer_update_function(&cdns_uart->tx_timer, cdns_rs485_rx_callback);
- 		hrtimer_start(&cdns_uart->tx_timer,
- 			      ns_to_ktime(cdns_calc_after_tx_delay(cdns_uart)), HRTIMER_MODE_REL);
- 	}
-@@ -734,7 +734,7 @@ static void cdns_uart_start_tx(struct ua
- 
- 	if (cdns_uart->port->rs485.flags & SER_RS485_ENABLED) {
- 		if (!cdns_uart->rs485_tx_started) {
--			cdns_uart->tx_timer.function = &cdns_rs485_tx_callback;
-+			hrtimer_update_function(&cdns_uart->tx_timer, cdns_rs485_tx_callback);
- 			cdns_rs485_tx_setup(cdns_uart);
- 			return hrtimer_start(&cdns_uart->tx_timer,
- 					     ms_to_ktime(port->rs485.delay_rts_before_send),
+ /*
++ * C23 introduces "auto" as a standard way to define type-inferred
++ * variables, but "auto" has been a (useless) keyword even since K&R C,
++ * so it has always been "namespace reserved."
++ *
++ * Until at some future time we require C23 support, we need the gcc
++ * extension __auto_type, but there is no reason to put that elsewhere
++ * in the source code.
++ */
++#if __STDC_VERSION__ < 202311L
++# define auto __auto_type
++#endif
++
++/*
+  * Skipped when running bindgen due to a libclang issue;
+  * see https://github.com/rust-lang/rust-bindgen/issues/2244.
+  */
 
 
 
