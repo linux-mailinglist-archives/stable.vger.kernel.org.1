@@ -1,64 +1,55 @@
-Return-Path: <stable+bounces-205935-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205651-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CF7BCFA7A8
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:06:45 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43737CFACBC
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:53:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9416F342800F
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:16:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1D0F4318F399
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 19:32:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46F9D36D513;
-	Tue,  6 Jan 2026 17:59:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DB00302CC0;
+	Tue,  6 Jan 2026 17:43:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CpTTL9cF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Sm0jmxj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC42E36D4F8;
-	Tue,  6 Jan 2026 17:59:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B4893002BA;
+	Tue,  6 Jan 2026 17:43:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767722351; cv=none; b=j35xH01+I9EosLgFdaodO/0RLeQ1urRR3KGF9Ln4FbNc/EtufXrEe3SoYovIEscryxI9tpTVPauJRsQ3vQu4gwNF4o8ybe/vJbDLVpSa1c6kgtnF9cOHnWlYS3VhWgnsRg0ALqNXSjbaDXyB7nKfBXf6oiwQLUkcg8Mvt+45hUI=
+	t=1767721401; cv=none; b=sVg2aekguOEfv9eMYv4B3/30ZjJP8bYd89mboR8VBQIR2ozFhpgK1dKeGTnIp03pynOrIZ9aceJF/s+8oLqrmKQkYpmmCizFvZfygG97AgUOvy9lN9canEX7KS/idpo5mvKRMPHLRroYkWnhZRfJaB9XJ4tUFbhAnczV5g4XY0o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767722351; c=relaxed/simple;
-	bh=UiP6IQDaqpkjud7nVAfuMxgnz4iwUHZeMvCOhmSY/9o=;
+	s=arc-20240116; t=1767721401; c=relaxed/simple;
+	bh=ROTcuEA1lQm6nTzvfJlh67lCiSbBD5wT6Xrxk6zWZgg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IJjTsxQWpCocrMT1z30zmq7aoK+Mit8cPZdDy61wnXFTrSRZDGOy/xr2GUjLWygi0g2QVsO84NtjIsGpVlLZKaeHST8MH62UwcAXGrdawOl8TRzC/Uv+PysiSZZFLPpK8tJFYt4oSZYCGHm0W0eIfpGdz4jooeJSAkTdxtLLvC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CpTTL9cF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ED6EC116C6;
-	Tue,  6 Jan 2026 17:59:09 +0000 (UTC)
+	 MIME-Version; b=c+SF19+vt/KU4/31WDTeo5xUohCn98Ze36FDvupgeIlmtq1PVRwHLNqvQ/ttnx50Mu4j9TyHN0AnsFCgeXYDHbyBx64XcuXcCyb0hYO8e06V6xgaJ2T/NldrGe/nrhcssQCEC41rdsx71hRASQIqAtVB8g1ehfq7wSe5BKsQgdo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Sm0jmxj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76FFFC116C6;
+	Tue,  6 Jan 2026 17:43:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767722350;
-	bh=UiP6IQDaqpkjud7nVAfuMxgnz4iwUHZeMvCOhmSY/9o=;
+	s=korg; t=1767721400;
+	bh=ROTcuEA1lQm6nTzvfJlh67lCiSbBD5wT6Xrxk6zWZgg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CpTTL9cFjcouej3uWBHGLAs3bXo/NxhWXnZKGSL6RC+4tfCdG8os53wBnAdnkhJsM
-	 BiKSM2h1RNrMNBQ/STJ0UP0au4fl/MmftIDYA+dUvspc5KlXRUZTTS+9aUxoDQAghl
-	 2TdEzxy2hU4z+BWHEg2qbrHyKJpJ0LBc39Iy/Jv4=
+	b=2Sm0jmxjW3ymm58a1tqP370/vpDwG7H93G1StIPe8UeWqutJmsZUbkvDMxrGn675Z
+	 8AyRG84ekq/VHCIuRglManRE2TomQ+zWAkEWLSgg/mRa8U9R6NJT6UFrrHbrwaIuSa
+	 +y2GeOfSHNJFz1MqCbzbg+VbpWlbMGr4qL7/p/hw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bijan Tabatabai <bijan311@gmail.com>,
-	"David Hildenbrand (Red Hat)" <david@kernel.org>,
-	Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Liam Howlett <liam.howlett@oracle.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Shivank Garg <shivankg@amd.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Kairui Song <ryncsn@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.18 231/312] mm: consider non-anon swap cache folios in folio_expected_ref_count()
-Date: Tue,  6 Jan 2026 18:05:05 +0100
-Message-ID: <20260106170556.209086043@linuxfoundation.org>
+	Xiao Ni <xni@redhat.com>,
+	Coly Li <colyli@kernel.org>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Subject: [PATCH 6.12 524/567] md/raid10: wait barrier before returning discard request with REQ_NOWAIT
+Date: Tue,  6 Jan 2026 18:05:06 +0100
+Message-ID: <20260106170510.774551670@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
-References: <20260106170547.832845344@linuxfoundation.org>
+In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
+References: <20260106170451.332875001@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,121 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bijan Tabatabai <bijan311@gmail.com>
+From: Xiao Ni <xni@redhat.com>
 
-commit f183663901f21fe0fba8bd31ae894bc529709ee0 upstream.
+[ Upstream commit 3db4404435397a345431b45f57876a3df133f3b4 ]
 
-Currently, folio_expected_ref_count() only adds references for the swap
-cache if the folio is anonymous.  However, according to the comment above
-the definition of PG_swapcache in enum pageflags, shmem folios can also
-have PG_swapcache set.  This patch makes sure references for the swap
-cache are added if folio_test_swapcache(folio) is true.
+raid10_handle_discard should wait barrier before returning a discard bio
+which has REQ_NOWAIT. And there is no need to print warning calltrace
+if a discard bio has REQ_NOWAIT flag. Quality engineer usually checks
+dmesg and reports error if dmesg has warning/error calltrace.
 
-This issue was found when trying to hot-unplug memory in a QEMU/KVM
-virtual machine.  When initiating hot-unplug when most of the guest memory
-is allocated, hot-unplug hangs partway through removal due to migration
-failures.  The following message would be printed several times, and would
-be printed again about every five seconds:
-
-[   49.641309] migrating pfn b12f25 failed ret:7
-[   49.641310] page: refcount:2 mapcount:0 mapping:0000000033bd8fe2 index:0x7f404d925 pfn:0xb12f25
-[   49.641311] aops:swap_aops
-[   49.641313] flags: 0x300000000030508(uptodate|active|owner_priv_1|reclaim|swapbacked|node=0|zone=3)
-[   49.641314] raw: 0300000000030508 ffffed312c4bc908 ffffed312c4bc9c8 0000000000000000
-[   49.641315] raw: 00000007f404d925 00000000000c823b 00000002ffffffff 0000000000000000
-[   49.641315] page dumped because: migration failure
-
-When debugging this, I found that these migration failures were due to
-__migrate_folio() returning -EAGAIN for a small set of folios because the
-expected reference count it calculates via folio_expected_ref_count() is
-one less than the actual reference count of the folios.  Furthermore, all
-of the affected folios were not anonymous, but had the PG_swapcache flag
-set, inspiring this patch.  After applying this patch, the memory
-hot-unplug behaves as expected.
-
-I tested this on a machine running Ubuntu 24.04 with kernel version
-6.8.0-90-generic and 64GB of memory.  The guest VM is managed by libvirt
-and runs Ubuntu 24.04 with kernel version 6.18 (though the head of the
-mm-unstable branch as a Dec 16, 2025 was also tested and behaves the same)
-and 48GB of memory.  The libvirt XML definition for the VM can be found at
-[1].  CONFIG_MHP_DEFAULT_ONLINE_TYPE_ONLINE_MOVABLE is set in the guest
-kernel so the hot-pluggable memory is automatically onlined.
-
-Below are the steps to reproduce this behavior:
-
-1) Define and start and virtual machine
-  host$ virsh -c qemu:///system define ./test_vm.xml # test_vm.xml from [1]
-  host$ virsh -c qemu:///system start test_vm
-
-2) Setup swap in the guest
-  guest$ sudo fallocate -l 32G /swapfile
-  guest$ sudo chmod 0600 /swapfile
-  guest$ sudo mkswap /swapfile
-  guest$ sudo swapon /swapfile
-
-3) Use alloc_data [2] to allocate most of the remaining guest memory
-  guest$ ./alloc_data 45
-
-4) In a separate guest terminal, monitor the amount of used memory
-  guest$ watch -n1 free -h
-
-5) When alloc_data has finished allocating, initiate the memory
-hot-unplug using the provided xml file [3]
-  host$ virsh -c qemu:///system detach-device test_vm ./remove.xml --live
-
-After initiating the memory hot-unplug, you should see the amount of
-available memory in the guest decrease, and the amount of used swap data
-increase.  If everything works as expected, when all of the memory is
-unplugged, there should be around 8.5-9GB of data in swap.  If the
-unplugging is unsuccessful, the amount of used swap data will settle below
-that.  If that happens, you should be able to see log messages in dmesg
-similar to the one posted above.
-
-Link: https://lkml.kernel.org/r/20251216200727.2360228-1-bijan311@gmail.com
-Link: https://github.com/BijanT/linux_patch_files/blob/main/test_vm.xml [1]
-Link: https://github.com/BijanT/linux_patch_files/blob/main/alloc_data.c [2]
-Link: https://github.com/BijanT/linux_patch_files/blob/main/remove.xml [3]
-Fixes: 86ebd50224c0 ("mm: add folio_expected_ref_count() for reference count calculation")
-Signed-off-by: Bijan Tabatabai <bijan311@gmail.com>
-Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
-Acked-by: Zi Yan <ziy@nvidia.com>
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Shivank Garg <shivankg@amd.com>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Kairui Song <ryncsn@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: c9aa889b035f ("md: raid10 add nowait support")
+Signed-off-by: Xiao Ni <xni@redhat.com>
+Acked-by: Coly Li <colyli@kernel.org>
+Link: https://lore.kernel.org/linux-raid/20250306094938.48952-1-xni@redhat.com
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+[Harshit: Clean backport to 6.12.y]
+Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/mm.h |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/md/raid10.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -2272,10 +2272,10 @@ static inline int folio_expected_ref_cou
- 	if (WARN_ON_ONCE(page_has_type(&folio->page) && !folio_test_hugetlb(folio)))
- 		return 0;
+--- a/drivers/md/raid10.c
++++ b/drivers/md/raid10.c
+@@ -1626,11 +1626,10 @@ static int raid10_handle_discard(struct
+ 	if (test_bit(MD_RECOVERY_RESHAPE, &mddev->recovery))
+ 		return -EAGAIN;
  
--	if (folio_test_anon(folio)) {
--		/* One reference per page from the swapcache. */
--		ref_count += folio_test_swapcache(folio) << order;
--	} else {
-+	/* One reference per page from the swapcache. */
-+	ref_count += folio_test_swapcache(folio) << order;
-+
-+	if (!folio_test_anon(folio)) {
- 		/* One reference per page from the pagecache. */
- 		ref_count += !!folio->mapping << order;
- 		/* One reference from PG_private. */
+-	if (WARN_ON_ONCE(bio->bi_opf & REQ_NOWAIT)) {
++	if (!wait_barrier(conf, bio->bi_opf & REQ_NOWAIT)) {
+ 		bio_wouldblock_error(bio);
+ 		return 0;
+ 	}
+-	wait_barrier(conf, false);
+ 
+ 	/*
+ 	 * Check reshape again to avoid reshape happens after checking
 
 
 
