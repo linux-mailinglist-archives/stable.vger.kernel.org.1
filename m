@@ -1,146 +1,136 @@
-Return-Path: <stable+bounces-205129-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205173-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6759CF98EB
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 18:10:41 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69DA2CF9A72
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 18:25:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D15983027093
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:10:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 892F630BCA95
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:17:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D34A34321C;
-	Tue,  6 Jan 2026 17:10:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0ED13385B1;
+	Tue,  6 Jan 2026 17:17:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b="BTjU7zXV"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="zRmMf3cz"
 X-Original-To: stable@vger.kernel.org
-Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B33D6340283;
-	Tue,  6 Jan 2026 17:10:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.11.138.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5363F337BB8;
+	Tue,  6 Jan 2026 17:17:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767719437; cv=none; b=Irj+VI4Y5jTMoFtFCZJqO7M+WQXLndBba0JR4LrfKB90eiBeSjR36Z+xve6EAf4z1oNpbJPUVVFEU0oW8l7KNpglMXMC1IOMQ9NAHONOHjB7Uq45oqcY9FqxmM4XmmP7Bdw+l5hpiUqNq5w3yDFiGcfF+v+RnoVnr73Wc5HjvtQ=
+	t=1767719822; cv=none; b=GNqzlMVBr9RFLaSWZqpeFRS/IoNsKT1yChOL3wMoV/VFHcocq1ubeqrZL01x+EjRMaoq59S4COK8zdqXg/JIv6Qe0BX0K8Q/91vqi3v4A2Mfgh7aNfjtWBdKwOszlwE0t8NB1cSPovAcC84oqUw2EOT9BEBKtCyzrnOAaQ2wUYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767719437; c=relaxed/simple;
-	bh=ufPTmoqMRkm2QhPzvFsZLoO2NqK0iYTByjSK+BV3oxU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Y+/Ckt8S/SUWSaAETMHUqsG1ssEwGKpFyQwFe5ZBb9YHdXReAUNDUpNSHecdS07qMnAo7pt67jI22taAaYFBxB529QPmmZwuJdX7A1HbobFk5xETMhF0ZHaclup0RqFRqUS8rt2gWaaTi95BlIvMc4FediPC545zCpdhVRBjxWE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de; spf=pass smtp.mailfrom=sntech.de; dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b=BTjU7zXV; arc=none smtp.client-ip=185.11.138.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sntech.de
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=sntech.de;
-	s=gloria202408; h=Content-Type:Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Reply-To;
-	bh=CK1pjOZHgHUmALyetdFeD/XBzJb0zHryAM/HjnpXBsw=; b=BTjU7zXVaPTBCgdfTupnegVh5x
-	spGEnvNDYbg3RYXwMnEjdKlxIBwBgicISdzhcMdGRegCutQ11QolnDgo5/ixuQ4nwV2KWBupqViNM
-	OhON3+V7CCPPbSJ163hewlWzGY4ZFXMM7bZJLWwEMKQnHdJ6mNduhOHcUgyJ9MJ940JzGVw7+YJ0N
-	SO92W8SEAwKgcYZVs4sJgEhLlvSKup4+B2gfit+1A25r34cxWszyBs10z/cZsTvUXZmEnDcOL0eNr
-	GX+83mB7fdnB6/g0wjzRyZu4Zvd+HXFYmAsc4eVIxRHlxJFxcJMkM6g0rH8KqP+zb8VWf+40RVjUH
-	BPXR7xww==;
-Received: from [194.95.143.137] (helo=phil.localnet)
-	by gloria.sntech.de with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <heiko@sntech.de>)
-	id 1vdAZT-001Gyr-JH; Tue, 06 Jan 2026 18:10:16 +0100
-From: Heiko Stuebner <heiko@sntech.de>
-To: Linus Walleij <linusw@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>,
- Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Cc: linux-gpio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org,
- Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
- stable@vger.kernel.org, Marek Szyprowski <m.szyprowski@samsung.com>
-Subject: Re: [PATCH] gpio: rockchip: mark the GPIO controller as sleeping
-Date: Tue, 06 Jan 2026 18:10:15 +0100
-Message-ID: <6940171.Sb9uPGUboI@phil>
-In-Reply-To: <20260106090011.21603-1-bartosz.golaszewski@oss.qualcomm.com>
-References: <20260106090011.21603-1-bartosz.golaszewski@oss.qualcomm.com>
+	s=arc-20240116; t=1767719822; c=relaxed/simple;
+	bh=GpUUakj2qAg0mreZfE0T2jsgf7d85KdlNRXMuVpBbG8=;
+	h=Date:To:From:Subject:Message-Id; b=ZLcbiWuNEbInYmbcPsaSxTJr47xplur7iKd60ztnbFSLsBgyzZv2nGuitWoHugdl3VCDuHwg3c61Luf0ByuJ1TwcXScQPXVbbQXIwgr/TiLQ/nTk33ZQV61Xku//ktBpQalM5dfJwF73APfJKmbzulGH7l+dz/yU2JMpf6+1j6Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=zRmMf3cz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1F4BC19424;
+	Tue,  6 Jan 2026 17:17:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1767719822;
+	bh=GpUUakj2qAg0mreZfE0T2jsgf7d85KdlNRXMuVpBbG8=;
+	h=Date:To:From:Subject:From;
+	b=zRmMf3cz6miiZIANZx+w84Vx/mN33Li1wf2JXL8sXlIc1XyAEG4MKCkrm00nE46iI
+	 vuJMCZE4AZuc+Py0WhnzcSO9MDyXgf6I3ZIxD5qExdGMEXPVSo3nbX+Lqov7YkBTE+
+	 JMZBvA3MgTOqZMkCIKf6P+G4r5kg7gK7ionN3IXQ=
+Date: Tue, 06 Jan 2026 09:17:01 -0800
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,pmladek@suse.com,noren@nvidia.com,mbloch@nvidia.com,joel.granados@kernel.org,feng.tang@linux.alibaba.com,gal@nvidia.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + panic-only-warn-about-deprecated-panic_print-on-write-access.patch added to mm-hotfixes-unstable branch
+Message-Id: <20260106171701.E1F4BC19424@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="utf-8"
 
-Am Dienstag, 6. Januar 2026, 10:00:11 Mitteleurop=C3=A4ische Normalzeit sch=
-rieb Bartosz Golaszewski:
-> The GPIO controller is configured as non-sleeping but it uses generic
-> pinctrl helpers which use a mutex for synchronization.
->=20
-> This can cause the following lockdep splat with shared GPIOs enabled on
-> boards which have multiple devices using the same GPIO:
->=20
-> BUG: sleeping function called from invalid context at
-> kernel/locking/mutex.c:591
-> in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 12, name:
-> kworker/u16:0
-> preempt_count: 1, expected: 0
-> RCU nest depth: 0, expected: 0
-> 6 locks held by kworker/u16:0/12:
->   #0: ffff0001f0018d48 ((wq_completion)events_unbound#2){+.+.}-{0:0},
-> at: process_one_work+0x18c/0x604
->   #1: ffff8000842dbdf0 (deferred_probe_work){+.+.}-{0:0}, at:
-> process_one_work+0x1b4/0x604
->   #2: ffff0001f18498f8 (&dev->mutex){....}-{4:4}, at:
-> __device_attach+0x38/0x1b0
->   #3: ffff0001f75f1e90 (&gdev->srcu){.+.?}-{0:0}, at:
-> gpiod_direction_output_raw_commit+0x0/0x360
->   #4: ffff0001f46e3db8 (&shared_desc->spinlock){....}-{3:3}, at:
-> gpio_shared_proxy_direction_output+0xd0/0x144 [gpio_shared_proxy]
->   #5: ffff0001f180ee90 (&gdev->srcu){.+.?}-{0:0}, at:
-> gpiod_direction_output_raw_commit+0x0/0x360
-> irq event stamp: 81450
-> hardirqs last  enabled at (81449): [<ffff8000813acba4>]
-> _raw_spin_unlock_irqrestore+0x74/0x78
-> hardirqs last disabled at (81450): [<ffff8000813abfb8>]
-> _raw_spin_lock_irqsave+0x84/0x88
-> softirqs last  enabled at (79616): [<ffff8000811455fc>]
-> __alloc_skb+0x17c/0x1e8
-> softirqs last disabled at (79614): [<ffff8000811455fc>]
-> __alloc_skb+0x17c/0x1e8
-> CPU: 2 UID: 0 PID: 12 Comm: kworker/u16:0 Not tainted
-> 6.19.0-rc4-next-20260105+ #11975 PREEMPT
-> Hardware name: Hardkernel ODROID-M1 (DT)
-> Workqueue: events_unbound deferred_probe_work_func
-> Call trace:
->   show_stack+0x18/0x24 (C)
->   dump_stack_lvl+0x90/0xd0
->   dump_stack+0x18/0x24
->   __might_resched+0x144/0x248
->   __might_sleep+0x48/0x98
->   __mutex_lock+0x5c/0x894
->   mutex_lock_nested+0x24/0x30
->   pinctrl_get_device_gpio_range+0x44/0x128
->   pinctrl_gpio_direction+0x3c/0xe0
->   pinctrl_gpio_direction_output+0x14/0x20
->   rockchip_gpio_direction_output+0xb8/0x19c
->   gpiochip_direction_output+0x38/0x94
->   gpiod_direction_output_raw_commit+0x1d8/0x360
->   gpiod_direction_output_nonotify+0x7c/0x230
->   gpiod_direction_output+0x34/0xf8
->   gpio_shared_proxy_direction_output+0xec/0x144 [gpio_shared_proxy]
->   gpiochip_direction_output+0x38/0x94
->   gpiod_direction_output_raw_commit+0x1d8/0x360
->   gpiod_direction_output_nonotify+0x7c/0x230
->   gpiod_configure_flags+0xbc/0x480
->   gpiod_find_and_request+0x1a0/0x574
->   gpiod_get_index+0x58/0x84
->   devm_gpiod_get_index+0x20/0xb4
->   devm_gpiod_get_optional+0x18/0x30
->   rockchip_pcie_probe+0x98/0x380
->   platform_probe+0x5c/0xac
->   really_probe+0xbc/0x298
->=20
-> Fixes: 936ee2675eee ("gpio/rockchip: add driver for rockchip gpio")
-> Cc: stable@vger.kernel.org
-> Reported-by: Marek Szyprowski <m.szyprowski@samsung.com>
-> Closes: https://lore.kernel.org/all/d035fc29-3b03-4cd6-b8ec-001f93540bc6@=
-samsung.com/
-> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 
-Acked-by: Heiko Stuebner <heiko@sntech.de>
+The patch titled
+     Subject: panic: only warn about deprecated panic_print on write access
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     panic-only-warn-about-deprecated-panic_print-on-write-access.patch
 
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/panic-only-warn-about-deprecated-panic_print-on-write-access.patch
+
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via various
+branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there most days
+
+------------------------------------------------------
+From: Gal Pressman <gal@nvidia.com>
+Subject: panic: only warn about deprecated panic_print on write access
+Date: Tue, 6 Jan 2026 18:33:21 +0200
+
+The panic_print_deprecated() warning is being triggered on both read and
+write operations to the panic_print parameter.
+
+This causes spurious warnings when users run 'sysctl -a' to list all
+sysctl values, since that command reads /proc/sys/kernel/panic_print and
+triggers the deprecation notice.
+
+Modify the handlers to only emit the deprecation warning when the
+parameter is actually being set:
+
+ - sysctl_panic_print_handler(): check 'write' flag before warning.
+ - panic_print_get(): remove the deprecation call entirely.
+
+This way, users are only warned when they actively try to use the
+deprecated parameter, not when passively querying system state.
+
+Link: https://lkml.kernel.org/r/20260106163321.83586-1-gal@nvidia.com
+Fixes: ee13240cd78b ("panic: add note that panic_print sysctl interface is deprecated")
+Fixes: 2683df6539cb ("panic: add note that 'panic_print' parameter is deprecated")
+Signed-off-by: Gal Pressman <gal@nvidia.com>
+Reviewed-by: Mark Bloch <mbloch@nvidia.com>
+Reviewed-by: Nimrod Oren <noren@nvidia.com>
+Cc: Feng Tang <feng.tang@linux.alibaba.com>
+Cc: Joel Granados <joel.granados@kernel.org>
+Cc: Petr Mladek <pmladek@suse.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ kernel/panic.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+--- a/kernel/panic.c~panic-only-warn-about-deprecated-panic_print-on-write-access
++++ a/kernel/panic.c
+@@ -131,7 +131,8 @@ static int proc_taint(const struct ctl_t
+ static int sysctl_panic_print_handler(const struct ctl_table *table, int write,
+ 			   void *buffer, size_t *lenp, loff_t *ppos)
+ {
+-	panic_print_deprecated();
++	if (write)
++		panic_print_deprecated();
+ 	return proc_doulongvec_minmax(table, write, buffer, lenp, ppos);
+ }
+ 
+@@ -1014,7 +1015,6 @@ static int panic_print_set(const char *v
+ 
+ static int panic_print_get(char *val, const struct kernel_param *kp)
+ {
+-	panic_print_deprecated();
+ 	return  param_get_ulong(val, kp);
+ }
+ 
+_
+
+Patches currently in -mm which might be from gal@nvidia.com are
+
+panic-only-warn-about-deprecated-panic_print-on-write-access.patch
 
 
