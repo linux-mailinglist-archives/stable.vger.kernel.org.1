@@ -1,159 +1,133 @@
-Return-Path: <stable+bounces-205032-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205033-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA8AFCF6985
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 04:18:10 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6DB9CF69DF
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 04:41:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6BC0D307EA35
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 03:14:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 670CB304D48F
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 03:40:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 153B923815B;
-	Tue,  6 Jan 2026 03:14:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E037257844;
+	Tue,  6 Jan 2026 03:40:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="rTUwvQR7"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3E3C22F77E
-	for <stable@vger.kernel.org>; Tue,  6 Jan 2026 03:14:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46F1624E4A8;
+	Tue,  6 Jan 2026 03:40:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767669294; cv=none; b=VSwFb/4Ed88gXVr3l601LEKfB6cDvevxb6dLdfs8leaRLkTJWhbne4NuZUr9QYrF0eax0cVpRTLKdqi9T3M76hgea8PwcrBxa/QtI8BCvLmDFNoM7WQ4EqJIPa6SCQd7rLaJ9m3It7VspDX3y3s7OPDcO9bUIElA+X85R6BitTI=
+	t=1767670852; cv=none; b=q4gawnaptx5Z9s9jC/Hgs0iDTh94kGqNLTCp4x20HvZcLCfeeg40fRoLLL70B85GJ6hr7HP1mtVUeWW4GWs7y1aM0o4S7dgagAQR/X9aN0yCBsJXa/wm9Y0HjsjwqqiEdwEB9rnyIqlBipG6iIi+3C8/37J7RRtbjjbvf91HqIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767669294; c=relaxed/simple;
-	bh=ndtzkHIXBDN21nnNaVYnaKPpyZvp3q/RWPWEOTz1qt0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
-	 MIME-Version:Message-ID; b=AAp0xM4JVZnflNjfATfaC7MK1Fu+S1Ljv3gQh7Qs3+2Bg6oQksFmPbFMPLU9/mN+E4AIw3yAIa2kbOqogROWtYddJ/c+QUNECJ5P9eBr2VvtDryMLaf2DjEB+XKjjrw/01vdkyPsah/Vl9m+jYXeZv2mvK9r8Z4z9frvbf/I5g8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [223.64.69.1])
-	by gateway (Coremail) with SMTP id _____8DxPMMoflxpRdQFAA--.18310S3;
-	Tue, 06 Jan 2026 11:14:48 +0800 (CST)
-Received: from chenhuacai$loongson.cn ( [223.64.69.1] ) by
- ajax-webmail-front1 (Coremail) ; Tue, 6 Jan 2026 11:14:48 +0800 (GMT+08:00)
-Date: Tue, 6 Jan 2026 11:14:48 +0800 (GMT+08:00)
-X-CM-HeaderCharset: UTF-8
-From: =?UTF-8?B?6ZmI5Y2O5omN?= <chenhuacai@loongson.cn>
-To: gregkh@linuxfoundation.org
-Cc: duanchenghao@kylinos.cn, stable@vger.kernel.org
-Subject: Re: FAILED: patch "[PATCH] LoongArch: Refactor register restoration
- in" failed to apply to 6.6-stable tree
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version 2024.3-cmXT6 build
- 20250609(354f7833) Copyright (c) 2002-2026 www.mailtech.cn loongson
-In-Reply-To: <2026010541-varmint-tablet-f295@gregkh>
-References: <2026010541-varmint-tablet-f295@gregkh>
-Content-Transfer-Encoding: base64
-X-CM-CTRLDATA: YcQK/GZvb3Rlcl90eHQ9Mzc2Mzo2MTg=
-Content-Type: text/plain; charset=UTF-8
+	s=arc-20240116; t=1767670852; c=relaxed/simple;
+	bh=1CuxBdl5njbHYYq62NVazGyyPuBrBX9k3Tg7xgE5b6A=;
+	h=Date:To:From:Subject:Message-Id; b=W+cfhKhl3a+8fgAU4jgr9VvbCmUVvksxKgx7SQ4ouZaseuXQ5IM16o2vlVa+xpu5yneFkcpOOOMY9qVkfKnysRT3gdoZSXp0jv7gtz3EZDM6GXoqmtw8pU+TPT2jcQ94vUhV/elvb0Lqp3pbOKwSn8Ek2sOwS7bn0oUYbWeyHCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=rTUwvQR7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A53BC116D0;
+	Tue,  6 Jan 2026 03:40:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1767670852;
+	bh=1CuxBdl5njbHYYq62NVazGyyPuBrBX9k3Tg7xgE5b6A=;
+	h=Date:To:From:Subject:From;
+	b=rTUwvQR75EkVrnCI9g8E1L6GHE3aQcexeAyB8npFGBi0ACro6LXnJeZgFv716Vb8l
+	 BiZGv8W0s66yQPkU8u7LnqD/wi+AfbZ4M6qKDoyaT59PwIjrri0IkmTj0YYjLCvbsl
+	 LPbs8fk9XIW86VGk4nfcXMTgn4ukRIAuwR36a82o=
+Date: Mon, 05 Jan 2026 19:40:51 -0800
+To: mm-commits@vger.kernel.org,willy@infradead.org,stable@vger.kernel.org,liam.howlett@oracle.com,andrewjballance@gmail.com,aliceryhl@google.com,boudewijn@delta-utec.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [to-be-updated] maple_tree-add-dead-node-check-in-mas_dup_alloc.patch removed from -mm tree
+Message-Id: <20260106034052.1A53BC116D0@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Message-ID: <210c3985.3886f.19b914ccdbf.Coremail.chenhuacai@loongson.cn>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID:qMiowJAxOeAoflxp8aMPAA--.3620W
-X-CM-SenderInfo: hfkh0x5xdftxo6or00hjvr0hdfq/1tbiAQETBmlbUrYSmwAFsP
-X-Coremail-Antispam: 1Uk129KBj93XoWxXFWkCr45KF4fGry8AF4fZwc_yoWrXrWkp3
-	sxCasFkrWDuF1rGrWvg3WruFy5Xa9rJFWa9FyDGF1rCwn8uFn2qw1furykXFy2q3yUG34x
-	Zr4DurWYkF4kZFgCm3ZEXasCq-sJn29KB7ZKAUJUUUU5529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUBab4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv6xkF7I0E14v2
-	6r4UJVWxJr1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27w
-	Aqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_JF0_Jw1lYx0Ex4A2jsIE
-	14v26r4j6F4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACY4xI67k042
-	43AVAKzVAKj4xxM4xvF2IEb7IF0Fy26I8I3I1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC
-	6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWw
-	C2zVAF1VAY17CE14v26r1Y6r17MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_JFI_
-	Gr1lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJV
-	WUCwCI42IY6I8E87Iv67AKxVW8JVWxJwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJwCE
-	64xvF2IEb7IF0Fy7YxBIdaVFxhVjvjDU0xZFpf9x07jooGdUUUUU=
 
-SGksIEdyZWcsCgpQbGVhc2UgdXNlOgpodHRwczovL2xvcmUua2VybmVsLm9yZy9sb29uZ2FyY2gv
-MjAyNjAxMDYwMzEzMDAuOTYxMTk4LTEtY2hlbmh1YWNhaUBsb29uZ3Nvbi5jbi9ULyN1CgpIdWFj
-YWkKCgo+IC0tLS0t5Y6f5aeL6YKu5Lu2LS0tLS0KPiDlj5Hku7bkuro6IGdyZWdraEBsaW51eGZv
-dW5kYXRpb24ub3JnCj4g5Y+R6YCB5pe26Ze0OjIwMjYtMDEtMDUgMjA6NTg6NDEgKOaYn+acn+S4
-gCkKPiDmlLbku7bkuro6IGR1YW5jaGVuZ2hhb0BreWxpbm9zLmNuLCBjaGVuaHVhY2FpQGxvb25n
-c29uLmNuCj4g5oqE6YCBOiBzdGFibGVAdmdlci5rZXJuZWwub3JnCj4g5Li76aKYOiBGQUlMRUQ6
-IHBhdGNoICJbUEFUQ0hdIExvb25nQXJjaDogUmVmYWN0b3IgcmVnaXN0ZXIgcmVzdG9yYXRpb24g
-aW4iIGZhaWxlZCB0byBhcHBseSB0byA2LjYtc3RhYmxlIHRyZWUKPiAKPiAKPiBUaGUgcGF0Y2gg
-YmVsb3cgZG9lcyBub3QgYXBwbHkgdG8gdGhlIDYuNi1zdGFibGUgdHJlZS4KPiBJZiBzb21lb25l
-IHdhbnRzIGl0IGFwcGxpZWQgdGhlcmUsIG9yIHRvIGFueSBvdGhlciBzdGFibGUgb3IgbG9uZ3Rl
-cm0KPiB0cmVlLCB0aGVuIHBsZWFzZSBlbWFpbCB0aGUgYmFja3BvcnQsIGluY2x1ZGluZyB0aGUg
-b3JpZ2luYWwgZ2l0IGNvbW1pdAo+IGlkIHRvIDxzdGFibGVAdmdlci5rZXJuZWwub3JnPi4KPiAK
-PiBUbyByZXByb2R1Y2UgdGhlIGNvbmZsaWN0IGFuZCByZXN1Ym1pdCwgeW91IG1heSB1c2UgdGhl
-IGZvbGxvd2luZyBjb21tYW5kczoKPiAKPiBnaXQgZmV0Y2ggaHR0cHM6Ly9naXQua2VybmVsLm9y
-Zy9wdWIvc2NtL2xpbnV4L2tlcm5lbC9naXQvc3RhYmxlL2xpbnV4LmdpdC8gbGludXgtNi42LnkK
-PiBnaXQgY2hlY2tvdXQgRkVUQ0hfSEVBRAo+IGdpdCBjaGVycnktcGljayAteCA0NWNiNDdjNjI4
-ZGZiZDE5OTRjNjE5ZjNlYWMyNzFhNzgwNjAyODI2Cj4gIyA8cmVzb2x2ZSBjb25mbGljdHMsIGJ1
-aWxkLCB0ZXN0LCBldGMuPgo+IGdpdCBjb21taXQgLXMKPiBnaXQgc2VuZC1lbWFpbCAtLXRvICc8
-c3RhYmxlQHZnZXIua2VybmVsLm9yZz4nIC0taW4tcmVwbHktdG8gJzIwMjYwMTA1NDEtdmFybWlu
-dC10YWJsZXQtZjI5NUBncmVna2gnIC0tc3ViamVjdC1wcmVmaXggJ1BBVENIIDYuNi55JyBIRUFE
-Xi4uCj4gCj4gUG9zc2libGUgZGVwZW5kZW5jaWVzOgo+IAo+IAo+IAo+IHRoYW5rcywKPiAKPiBn
-cmVnIGstaAo+IAo+IC0tLS0tLS0tLS0tLS0tLS0tLSBvcmlnaW5hbCBjb21taXQgaW4gTGludXMn
-cyB0cmVlIC0tLS0tLS0tLS0tLS0tLS0tLQo+IAo+IEZyb20gNDVjYjQ3YzYyOGRmYmQxOTk0YzYx
-OWYzZWFjMjcxYTc4MDYwMjgyNiBNb24gU2VwIDE3IDAwOjAwOjAwIDIwMDEKPiBGcm9tOiBDaGVu
-Z2hhbyBEdWFuIDxkdWFuY2hlbmdoYW9Aa3lsaW5vcy5jbj4KPiBEYXRlOiBXZWQsIDMxIERlYyAy
-MDI1IDE1OjE5OjIwICswODAwCj4gU3ViamVjdDogW1BBVENIXSBMb29uZ0FyY2g6IFJlZmFjdG9y
-IHJlZ2lzdGVyIHJlc3RvcmF0aW9uIGluCj4gIGZ0cmFjZV9jb21tb25fcmV0dXJuCj4gCj4gUmVm
-YWN0b3IgdGhlIHJlZ2lzdGVyIHJlc3RvcmF0aW9uIHNlcXVlbmNlIGluIHRoZSBmdHJhY2VfY29t
-bW9uX3JldHVybgo+IGZ1bmN0aW9uIHRvIGNsZWFybHkgZGlzdGluZ3Vpc2ggYmV0d2VlbiB0aGUg
-bG9naWMgb2Ygbm9ybWFsIHJldHVybnMgYW5kCj4gZGlyZWN0IGNhbGwgcmV0dXJucyBpbiBmdW5j
-dGlvbiB0cmFjaW5nIHNjZW5hcmlvcy4gVGhlIGxvZ2ljIGlzIGFzCj4gZm9sbG93czoKPiAKPiAx
-LiBJbiB0aGUgY2FzZSBvZiBhIG5vcm1hbCByZXR1cm4sIHRoZSBleGVjdXRpb24gZmxvdyByZXR1
-cm5zIHRvIHRoZQo+IHRyYWNlZCBmdW5jdGlvbiwgYW5kIGZ0cmFjZSBtdXN0IGVuc3VyZSB0aGF0
-IHRoZSByZWdpc3RlciBkYXRhIGlzCj4gY29uc2lzdGVudCB3aXRoIHRoZSBzdGF0ZSB3aGVuIHRo
-ZSBmdW5jdGlvbiB3YXMgZW50ZXJlZC4KPiAKPiByYSA9IHBhcmVudCByZXR1cm4gYWRkcmVzczsg
-dDAgPSB0cmFjZWQgZnVuY3Rpb24gcmV0dXJuIGFkZHJlc3MuCj4gCj4gMi4gSW4gdGhlIGNhc2Ug
-b2YgYSBkaXJlY3QgY2FsbCByZXR1cm4sIHRoZSBleGVjdXRpb24gZmxvdyBqdW1wcyB0byB0aGUK
-PiBjdXN0b20gdHJhbXBvbGluZSBmdW5jdGlvbiwgYW5kIGZ0cmFjZSBtdXN0IGVuc3VyZSB0aGF0
-IHRoZSByZWdpc3Rlcgo+IGRhdGEgaXMgY29uc2lzdGVudCB3aXRoIHRoZSBzdGF0ZSB3aGVuIGZ0
-cmFjZSB3YXMgZW50ZXJlZC4KPiAKPiByYSA9IHRyYWNlZCBmdW5jdGlvbiByZXR1cm4gYWRkcmVz
-czsgdDAgPSBwYXJlbnQgcmV0dXJuIGFkZHJlc3MuCj4gCj4gQ2M6IHN0YWJsZUB2Z2VyLmtlcm5l
-bC5vcmcKPiBGaXhlczogOWNkYzNiNmEyOTljICgiTG9vbmdBcmNoOiBmdHJhY2U6IEFkZCBkaXJl
-Y3QgY2FsbCBzdXBwb3J0IikKPiBTaWduZWQtb2ZmLWJ5OiBDaGVuZ2hhbyBEdWFuIDxkdWFuY2hl
-bmdoYW9Aa3lsaW5vcy5jbj4KPiBTaWduZWQtb2ZmLWJ5OiBIdWFjYWkgQ2hlbiA8Y2hlbmh1YWNh
-aUBsb29uZ3Nvbi5jbj4KPiAKPiBkaWZmIC0tZ2l0IGEvYXJjaC9sb29uZ2FyY2gva2VybmVsL21j
-b3VudF9keW4uUyBiL2FyY2gvbG9vbmdhcmNoL2tlcm5lbC9tY291bnRfZHluLlMKPiBpbmRleCBk
-NmI0NzRhZDFkNWUuLjU3MjljMjBlNWI4YiAxMDA2NDQKPiAtLS0gYS9hcmNoL2xvb25nYXJjaC9r
-ZXJuZWwvbWNvdW50X2R5bi5TCj4gKysrIGIvYXJjaC9sb29uZ2FyY2gva2VybmVsL21jb3VudF9k
-eW4uUwo+IEBAIC05NCw3ICs5NCw2IEBAIFNZTV9JTk5FUl9MQUJFTChmdHJhY2VfZ3JhcGhfY2Fs
-bCwgU1lNX0xfR0xPQkFMKQo+ICAgKiBhdCB0aGUgY2FsbHNpdGUsIHNvIHRoZXJlIGlzIG5vIG5l
-ZWQgdG8gcmVzdG9yZSB0aGUgVCBzZXJpZXMgcmVncy4KPiAgICovCj4gIGZ0cmFjZV9jb21tb25f
-cmV0dXJuOgo+IC0JUFRSX0wJCXJhLCBzcCwgUFRfUjEKPiAgCVBUUl9MCQlhMCwgc3AsIFBUX1I0
-Cj4gIAlQVFJfTAkJYTEsIHNwLCBQVF9SNQo+ICAJUFRSX0wJCWEyLCBzcCwgUFRfUjYKPiBAQCAt
-MTA0LDEyICsxMDMsMTcgQEAgZnRyYWNlX2NvbW1vbl9yZXR1cm46Cj4gIAlQVFJfTAkJYTYsIHNw
-LCBQVF9SMTAKPiAgCVBUUl9MCQlhNywgc3AsIFBUX1IxMQo+ICAJUFRSX0wJCWZwLCBzcCwgUFRf
-UjIyCj4gLQlQVFJfTAkJdDAsIHNwLCBQVF9FUkEKPiAgCVBUUl9MCQl0MSwgc3AsIFBUX1IxMwo+
-IC0JUFRSX0FEREkJc3AsIHNwLCBQVF9TSVpFCj4gIAlibmV6CQl0MSwgLkxkaXJlY3QKPiArCj4g
-KwlQVFJfTAkJcmEsIHNwLCBQVF9SMQo+ICsJUFRSX0wJCXQwLCBzcCwgUFRfRVJBCj4gKwlQVFJf
-QURESQlzcCwgc3AsIFBUX1NJWkUKPiAgCWpyCQl0MAo+ICAuTGRpcmVjdDoKPiArCVBUUl9MCQl0
-MCwgc3AsIFBUX1IxCj4gKwlQVFJfTAkJcmEsIHNwLCBQVF9FUkEKPiArCVBUUl9BRERJCXNwLCBz
-cCwgUFRfU0laRQo+ICAJanIJCXQxCj4gIFNZTV9DT0RFX0VORChmdHJhY2VfY29tbW9uKQo+ICAK
-PiBAQCAtMTYxLDYgKzE2NSw4IEBAIFNZTV9DT0RFX0VORChyZXR1cm5fdG9faGFuZGxlcikKPiAg
-I2lmZGVmIENPTkZJR19EWU5BTUlDX0ZUUkFDRV9XSVRIX0RJUkVDVF9DQUxMUwo+ICBTWU1fQ09E
-RV9TVEFSVChmdHJhY2Vfc3R1Yl9kaXJlY3RfdHJhbXApCj4gIAlVTldJTkRfSElOVF9VTkRFRklO
-RUQKPiAtCWpyCQl0MAo+ICsJbW92ZQkJdDEsIHJhCj4gKwltb3ZlCQlyYSwgdDAKPiArCWpyCQl0
-MQo+ICBTWU1fQ09ERV9FTkQoZnRyYWNlX3N0dWJfZGlyZWN0X3RyYW1wKQo+ICAjZW5kaWYgLyog
-Q09ORklHX0RZTkFNSUNfRlRSQUNFX1dJVEhfRElSRUNUX0NBTExTICovCg0KDQrmnKzpgq7ku7bl
-j4rlhbbpmYTku7blkKvmnInpvpnoiq/kuK3np5HnmoTllYbkuJrnp5jlr4bkv6Hmga/vvIzku4Xp
-mZDkuo7lj5HpgIHnu5nkuIrpnaLlnLDlnYDkuK3liJflh7rnmoTkuKrkurrmiJbnvqTnu4TjgILn
-poHmraLku7vkvZXlhbbku5bkurrku6Xku7vkvZXlvaLlvI/kvb/nlKjvvIjljIXmi6zkvYbkuI3p
-mZDkuo7lhajpg6jmiJbpg6jliIblnLDms4TpnLLjgIHlpI3liLbmiJbmlaPlj5HvvInmnKzpgq7k
-u7blj4rlhbbpmYTku7bkuK3nmoTkv6Hmga/jgILlpoLmnpzmgqjplJnmlLbmnKzpgq7ku7bvvIzo
-r7fmgqjnq4vljbPnlLXor53miJbpgq7ku7bpgJrnn6Xlj5Hku7bkurrlubbliKDpmaTmnKzpgq7k
-u7bjgIIgDQpUaGlzIGVtYWlsIGFuZCBpdHMgYXR0YWNobWVudHMgY29udGFpbiBjb25maWRlbnRp
-YWwgaW5mb3JtYXRpb24gZnJvbSBMb29uZ3NvbiBUZWNobm9sb2d5ICwgd2hpY2ggaXMgaW50ZW5k
-ZWQgb25seSBmb3IgdGhlIHBlcnNvbiBvciBlbnRpdHkgd2hvc2UgYWRkcmVzcyBpcyBsaXN0ZWQg
-YWJvdmUuIEFueSB1c2Ugb2YgdGhlIGluZm9ybWF0aW9uIGNvbnRhaW5lZCBoZXJlaW4gaW4gYW55
-IHdheSAoaW5jbHVkaW5nLCBidXQgbm90IGxpbWl0ZWQgdG8sIHRvdGFsIG9yIHBhcnRpYWwgZGlz
-Y2xvc3VyZSwgcmVwcm9kdWN0aW9uIG9yIGRpc3NlbWluYXRpb24pIGJ5IHBlcnNvbnMgb3RoZXIg
-dGhhbiB0aGUgaW50ZW5kZWQgcmVjaXBpZW50KHMpIGlzIHByb2hpYml0ZWQuIElmIHlvdSByZWNl
-aXZlIHRoaXMgZW1haWwgaW4gZXJyb3IsIHBsZWFzZSBub3RpZnkgdGhlIHNlbmRlciBieSBwaG9u
-ZSBvciBlbWFpbCBpbW1lZGlhdGVseSBhbmQgZGVsZXRlIGl0LiANCg0KDQo=
+
+The quilt patch titled
+     Subject: maple_tree: add dead node check in mas_dup_alloc()
+has been removed from the -mm tree.  Its filename was
+     maple_tree-add-dead-node-check-in-mas_dup_alloc.patch
+
+This patch was dropped because an updated version will be issued
+
+------------------------------------------------------
+From: Boudewijn van der Heide <boudewijn@delta-utec.com>
+Subject: maple_tree: add dead node check in mas_dup_alloc()
+Date: Sat, 3 Jan 2026 17:57:58 +0100
+
+__mt_dup() is exported and can be called without internal locking, relying
+on the caller to provide appropriate synchronization.  If a caller fails
+to hold proper locks, the source tree may be modified concurrently,
+potentially resulting in dead nodes during traversal.
+
+The call stack is:
+  __mt_dup()
+    → mas_dup_build()
+      → mas_dup_alloc()  [accesses node->slot[]]
+
+mas_dup_alloc() may access node slots without first verifying that the
+node is still alive.  If a dead node is encountered, its memory layout may
+have been switched to the RCU union member, making slot array access
+undefined behavior as we would be reading from the rcu_head structure
+instead.
+
+If __mt_dup() is invoked without the required external locking and the
+source tree is concurrently modified, a node can transition to the dead
+RCU layout while mas_dup_alloc() is still traversing it.  In that case the
+code may interpret the rcu_head contents as slot pointers.
+
+Practically, this could lead to invalid pointer dereferences (kernel oops)
+or corruption of the duplicated tree.  Depending on how that duplicated
+tree is later used (e.g.  in mm/VMA paths), the effects could be
+userspace-visible, such as fork() failures, process crashes, or broader
+system instability.
+
+My understanding is that current in-tree users hold the appropriate locks
+and should not hit this, as triggering it requires violating the
+__mt_dup() synchronization contract.  The risk primarily comes from the
+fact that __mt_dup() is exported (EXPORT_SYMBOL), making it reachable by
+out-of-tree modules or future callers which may not follow the locking
+rules.
+
+Add an explicit dead node check to detect concurrent modification during
+duplication.  When a dead node is detected, return -EBUSY to indicate that
+the tree is undergoing concurrent modification.
+
+Link: https://lkml.kernel.org/r/20260103165758.74094-1-boudewijn@delta-utec.com
+Fixes: fd32e4e9b764 ("maple_tree: introduce interfaces __mt_dup() and mtree_dup()")
+Signed-off-by: Boudewijn van der Heide <boudewijn@delta-utec.com>
+Cc: Alice Ryhl <aliceryhl@google.com>
+Cc: Andrew Ballance <andrewjballance@gmail.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ lib/maple_tree.c |    5 +++++
+ 1 file changed, 5 insertions(+)
+
+--- a/lib/maple_tree.c~maple_tree-add-dead-node-check-in-mas_dup_alloc
++++ a/lib/maple_tree.c
+@@ -6251,6 +6251,11 @@ static inline void mas_dup_alloc(struct
+ 	/* Allocate memory for child nodes. */
+ 	type = mte_node_type(mas->node);
+ 	new_slots = ma_slots(new_node, type);
++	if (unlikely(ma_dead_node(node))) {
++		mas_set_err(mas, -EBUSY);
++		return;
++	}
++
+ 	count = mas->node_request = mas_data_end(mas) + 1;
+ 	mas_alloc_nodes(mas, gfp);
+ 	if (unlikely(mas_is_err(mas)))
+_
+
+Patches currently in -mm which might be from boudewijn@delta-utec.com are
+
 
 
