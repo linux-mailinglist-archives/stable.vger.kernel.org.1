@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-205207-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205210-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28B6FCF9E54
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 18:57:53 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78EB8CFA03D
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:15:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8EBF532796A0
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:44:37 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id EC548300E605
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:15:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66B4334A77F;
-	Tue,  6 Jan 2026 17:18:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA9B234AAE4;
+	Tue,  6 Jan 2026 17:18:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hmdY5CZo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="doSZFZxq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2526634A763;
-	Tue,  6 Jan 2026 17:18:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FCED34AAE0;
+	Tue,  6 Jan 2026 17:18:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767719930; cv=none; b=OzW97avgnhX7cRpmBhS3QHPZhpflTjPDKUgwmudqVWAWV/RH3BJCEpMrj89+SmVYlvTt+W3E9V6rPP+sFAGbMMSRWKVGCz5evzEiEnD8nftp1oOwBVqKhcDrSNNGieK387o7X9+nTwABWexJSKyvQO16ZYkam2Q8TJ6kLO9J+pw=
+	t=1767719939; cv=none; b=Q1UaJPkUMBcJe46Fn8lKPZoiznqStp9xAbEUal8Bg7tXZljaL+wnO81hs0bOfKUhBpnYqFJgWr4Vbmd9rM6se0+JruRu7ANckd4VqREl86DUPpoMXD18XpaIobXMojHy3y/RISRGO8UqulFJdY24CNG9Q02ajH1taqIfuqXDahs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767719930; c=relaxed/simple;
-	bh=330Ms+fxQ84cMXfBiUOGegbryFFsCPwPxRYc7ABAIEA=;
+	s=arc-20240116; t=1767719939; c=relaxed/simple;
+	bh=fG/9WHJWqFsFrelx5pyw4iC0GZMJm07bePM5hp1JMCU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f8thXIuxd3lK2dvIGBTn1g6//UHOh6D8olJuylI/pm7IpKcNkYz7UsgxWseYzi/IDp+uL5gcsVMuvnkiAXNqgOibq9u/Xa7dFjOLNBuJmtaKeorIo9fy+9KaQrE2xSI7AuoNogjYlA4WjHA+rbn3mK7QBH0XyOc1KYC1zcI1WYc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hmdY5CZo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 558A8C16AAE;
-	Tue,  6 Jan 2026 17:18:49 +0000 (UTC)
+	 MIME-Version; b=hjSj/YayQJj3+HwJwH9vSjEf6fu8rrQOdHUgjJKBRisPFPAlUliXjdyM5CagxXENAHoUY53IzAkhCsuBb57qtHKILO0nufzFuQeRkevdov6/0N4TergmMIyK+EaZXFw8e720T99NPHs1/QQ1wM2WapRA7taFplDfaLBEEy30ibc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=doSZFZxq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 230ACC116C6;
+	Tue,  6 Jan 2026 17:18:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767719929;
-	bh=330Ms+fxQ84cMXfBiUOGegbryFFsCPwPxRYc7ABAIEA=;
+	s=korg; t=1767719939;
+	bh=fG/9WHJWqFsFrelx5pyw4iC0GZMJm07bePM5hp1JMCU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hmdY5CZoDOQvuakAZ8iiXvzAjNQliErF9SxbIE4lupkbKMfvLgD+2bVR0vZluGXP5
-	 5/c+l7EVq/clwHyLCvMFde0gsZXoSRhzqaRI+6CxV0YXWoOxhxk48LfQbDaiVFUknY
-	 hMZevutCR73piBdY293HO35+WjlI2tbjN/lxvr9k=
+	b=doSZFZxqoy7fsGHiegPlvzf0Qnv/wNPEt7Od+RQufhNY/9llR+87PKl/SH+5VXZul
+	 bvNScIriYlotCYbLHnDY7fB+HJH4c1DICAOmqe0JD4jY0w2Wew4EJcOzQzj22tboK+
+	 BBtwyBV2cR8oi7gabP8oaUldE+fygBuHUgFzfOGs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marijn Suijten <marijn.suijten@somainline.org>,
-	Douglas Anderson <dianders@chromium.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Martin Botka <martin.botka@somainline.org>,
+	kernel test robot <lkp@intel.com>,
+	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+	Juergen Gross <jgross@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 084/567] drm/panel: sony-td4353-jdi: Enable prepare_prev_first
-Date: Tue,  6 Jan 2026 17:57:46 +0100
-Message-ID: <20260106170454.438106983@linuxfoundation.org>
+Subject: [PATCH 6.12 086/567] x86/xen: Fix sparse warning in enlighten_pv.c
+Date: Tue,  6 Jan 2026 17:57:48 +0100
+Message-ID: <20260106170454.512500840@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
 References: <20260106170451.332875001@linuxfoundation.org>
@@ -66,39 +65,44 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Marijn Suijten <marijn.suijten@somainline.org>
+From: Juergen Gross <jgross@suse.com>
 
-[ Upstream commit 2b973ca48ff3ef1952091c8f988d7796781836c8 ]
+[ Upstream commit e5aff444e3a7bdeef5ea796a2099fc3c60a070fa ]
 
-The DSI host must be enabled before our prepare function can run, which
-has to send its init sequence over DSI.  Without enabling the host first
-the panel will not probe.
+The sparse tool issues a warning for arch/x76/xen/enlighten_pv.c:
 
-Fixes: 9e15123eca79 ("drm/msm/dsi: Stop unconditionally powering up DSI hosts at modeset")
-Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: Martin Botka <martin.botka@somainline.org>
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Link: https://patch.msgid.link/20251130-sony-akari-fix-panel-v1-1-1d27c60a55f5@somainline.org
+   arch/x86/xen/enlighten_pv.c:120:9: sparse: sparse: incorrect type
+     in initializer (different address spaces)
+     expected void const [noderef] __percpu *__vpp_verify
+     got bool *
+
+This is due to the percpu variable xen_in_preemptible_hcall being
+exported via EXPORT_SYMBOL_GPL() instead of EXPORT_PER_CPU_SYMBOL_GPL().
+
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202512140856.Ic6FetG6-lkp@intel.com/
+Fixes: fdfd811ddde3 ("x86/xen: allow privcmd hypercalls to be preempted")
+Reviewed-by: Boris Ostrovsky <boris.ostrovsky@oracle.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Message-ID: <20251215115112.15072-1-jgross@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panel/panel-sony-td4353-jdi.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/x86/xen/enlighten_pv.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/panel/panel-sony-td4353-jdi.c b/drivers/gpu/drm/panel/panel-sony-td4353-jdi.c
-index 472195d4bbbe..9ac3e0759efc 100644
---- a/drivers/gpu/drm/panel/panel-sony-td4353-jdi.c
-+++ b/drivers/gpu/drm/panel/panel-sony-td4353-jdi.c
-@@ -274,6 +274,8 @@ static int sony_td4353_jdi_probe(struct mipi_dsi_device *dsi)
- 	if (ret)
- 		return dev_err_probe(dev, ret, "Failed to get backlight\n");
+diff --git a/arch/x86/xen/enlighten_pv.c b/arch/x86/xen/enlighten_pv.c
+index 6e9d1b287f8e..bf750cd599b2 100644
+--- a/arch/x86/xen/enlighten_pv.c
++++ b/arch/x86/xen/enlighten_pv.c
+@@ -106,7 +106,7 @@ static int xen_cpu_dead_pv(unsigned int cpu);
+  * calls.
+  */
+ DEFINE_PER_CPU(bool, xen_in_preemptible_hcall);
+-EXPORT_SYMBOL_GPL(xen_in_preemptible_hcall);
++EXPORT_PER_CPU_SYMBOL_GPL(xen_in_preemptible_hcall);
  
-+	ctx->panel.prepare_prev_first = true;
-+
- 	drm_panel_add(&ctx->panel);
- 
- 	ret = mipi_dsi_attach(dsi);
+ /*
+  * In case of scheduling the flag must be cleared and restored after
 -- 
 2.51.0
 
