@@ -1,50 +1,55 @@
-Return-Path: <stable+bounces-205995-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205998-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85896CFAF4E
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 21:37:11 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54A65CFA911
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:19:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BEE6230DE07B
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 20:31:58 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4E8A23065F4D
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 19:17:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 742A83559CD;
-	Tue,  6 Jan 2026 18:02:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 347B23559E8;
+	Tue,  6 Jan 2026 18:02:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sbSBox6y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PrRjdwxT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3202F27700D;
-	Tue,  6 Jan 2026 18:02:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E385C3559E1;
+	Tue,  6 Jan 2026 18:02:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767722552; cv=none; b=WLoA5dr928qQb78ANQ4hK3cMOfVOeiAZfozx4cWKvi1pAzHt1MUAndS0JCytmIgkUa5k4tmAoTIVZZTyTt+vRsgg/D79qer0VqNiODdBG+z8WIK+3qVuF04t/RP8QvUQeT6er12j54N5D3aFotdev2IPMflH/iwnc4CsduiYrMQ=
+	t=1767722562; cv=none; b=oesZXuwteECcVtgbfnW5ilQhVkhzMxC3/cWcTY7Hed8AVzLKPUCNxmA85TgIhCm0i5eSxG6+jyyM576oJvG4Mg0fa40kf6ImCooFJbzhx+no/QRYBQzYebtmjOuyK6+BmbOgfb+yHENnJz/s+J4i2Yd2262UQ3yzkzFYls4+hnQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767722552; c=relaxed/simple;
-	bh=nRxkrKz//VpdUw/4oY9fXW1utvjYu5zDikQI9XM1M8c=;
+	s=arc-20240116; t=1767722562; c=relaxed/simple;
+	bh=zddPmB0v9qdjI17g29IPysHgC5GqpjUZvbKDtgFJ2Kg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=N9uMVLG3cQMSRm6tE+vJXVQSjp33irt05lauRtkjZw43+JyfocsIwTJUGXR/FK8X0dCk7zjLRBLWYLGWTDfX3BYbvVwVPmtFhknvE3hGTrl3y4Of+OQdV1E66QJZRoubdge2jmM7rha5J10d+jO8NnNtCQnddX1o59cNy4IJ+qY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sbSBox6y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B1E4C116C6;
-	Tue,  6 Jan 2026 18:02:31 +0000 (UTC)
+	 MIME-Version; b=VPonSishVTI9G6FKWpDuHAdIeEv3of+833/sovQ5xb1FB1KrYqIuqw2/ZC9q0/K9IN/USQZ90X/myJMkbySvgk6EJimYLRboTkXK3E2fPCwSXsPH7pgEhWr2JEwme1sZRyRxQHM4ILwVeW9zBXQ4ipYCMPhc3F0zgi1m6PyOZnw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PrRjdwxT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50197C116C6;
+	Tue,  6 Jan 2026 18:02:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767722552;
-	bh=nRxkrKz//VpdUw/4oY9fXW1utvjYu5zDikQI9XM1M8c=;
+	s=korg; t=1767722561;
+	bh=zddPmB0v9qdjI17g29IPysHgC5GqpjUZvbKDtgFJ2Kg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sbSBox6yrWc4Vaho8yEop6czHwHqUl5JDrjCAakkyJGEWa8RBbVVom5y34nAtax1p
-	 aSqQx8aziosnwa9QhDt906JYbmn/mKYVtjGu5p0li7HklfW5Sb8SP8a1W67bw5LEe5
-	 2O96ATTo9kNSKylekgthMDfih39+YK/4jCGoGOxo=
+	b=PrRjdwxTQhafZvG8wpSspbqDNUOsUUZdxoO4QQEw+VuwHzLc1biTCg10vAq+xdkVE
+	 U69LZ+4o0zNF/M7CuriX6gEyZzyiSUzbOVElg9VkXXuBPEFSe8AFtixnWGtingLwdh
+	 UASVvD+Pz+cPA+jL5mX34aSLD7/AXc8530cCu5j8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Brost <matthew.brost@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
-Subject: [PATCH 6.18 297/312] drm/xe: Drop preempt-fences when destroying imported dma-bufs.
-Date: Tue,  6 Jan 2026 18:06:11 +0100
-Message-ID: <20260106170558.599956723@linuxfoundation.org>
+	Gangmin Kim <km.kim1503@gmail.com>,
+	Krzysztof Niemiec <krzysztof.niemiec@intel.com>,
+	Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
+	Krzysztof Karas <krzysztof.karas@intel.com>,
+	Andi Shyti <andi.shyti@linux.intel.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Jani Nikula <jani.nikula@intel.com>
+Subject: [PATCH 6.18 300/312] drm/i915/gem: Zero-initialize the eb.vma array in i915_gem_do_execbuffer
+Date: Tue,  6 Jan 2026 18:06:14 +0100
+Message-ID: <20260106170558.709452020@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
 References: <20260106170547.832845344@linuxfoundation.org>
@@ -57,96 +62,144 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+From: Krzysztof Niemiec <krzysztof.niemiec@intel.com>
 
-commit fe3ccd24138fd391ae8e32289d492c85f67770fc upstream.
+commit 4fe2bd195435e71c117983d87f278112c5ab364c upstream.
 
-When imported dma-bufs are destroyed, TTM is not fully
-individualizing the dma-resv, but it *is* copying the fences that
-need to be waited for before declaring idle. So in the case where
-the bo->resv != bo->_resv we can still drop the preempt-fences, but
-make sure we do that on bo->_resv which contains the fence-pointer
-copy.
+Initialize the eb.vma array with values of 0 when the eb structure is
+first set up. In particular, this sets the eb->vma[i].vma pointers to
+NULL, simplifying cleanup and getting rid of the bug described below.
 
-In the case where the copying fails, bo->_resv will typically not
-contain any fences pointers at all, so there will be nothing to
-drop. In that case, TTM would have ensured all fences that would
-have been copied are signaled, including any remaining preempt
-fences.
+During the execution of eb_lookup_vmas(), the eb->vma array is
+successively filled up with struct eb_vma objects. This process includes
+calling eb_add_vma(), which might fail; however, even in the event of
+failure, eb->vma[i].vma is set for the currently processed buffer.
 
-Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
-Fixes: fa0af721bd1f ("drm/ttm: test private resv obj on release/destroy")
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: <stable@vger.kernel.org> # v6.16+
-Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Tested-by: Matthew Brost <matthew.brost@intel.com>
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
-Link: https://patch.msgid.link/20251217093441.5073-1-thomas.hellstrom@linux.intel.com
-(cherry picked from commit 425fe550fb513b567bd6d01f397d274092a9c274)
-Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+If eb_add_vma() fails, eb_lookup_vmas() returns with an error, which
+prompts a call to eb_release_vmas() to clean up the mess. Since
+eb_lookup_vmas() might fail during processing any (possibly not first)
+buffer, eb_release_vmas() checks whether a buffer's vma is NULL to know
+at what point did the lookup function fail.
+
+In eb_lookup_vmas(), eb->vma[i].vma is set to NULL if either the helper
+function eb_lookup_vma() or eb_validate_vma() fails. eb->vma[i+1].vma is
+set to NULL in case i915_gem_object_userptr_submit_init() fails; the
+current one needs to be cleaned up by eb_release_vmas() at this point,
+so the next one is set. If eb_add_vma() fails, neither the current nor
+the next vma is set to NULL, which is a source of a NULL deref bug
+described in the issue linked in the Closes tag.
+
+When entering eb_lookup_vmas(), the vma pointers are set to the slab
+poison value, instead of NULL. This doesn't matter for the actual
+lookup, since it gets overwritten anyway, however the eb_release_vmas()
+function only recognizes NULL as the stopping value, hence the pointers
+are being set to NULL as they go in case of intermediate failure. This
+patch changes the approach to filling them all with NULL at the start
+instead, rather than handling that manually during failure.
+
+Reported-by: Gangmin Kim <km.kim1503@gmail.com>
+Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15062
+Fixes: 544460c33821 ("drm/i915: Multi-BB execbuf")
+Cc: stable@vger.kernel.org # 5.16.x
+Signed-off-by: Krzysztof Niemiec <krzysztof.niemiec@intel.com>
+Reviewed-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Reviewed-by: Krzysztof Karas <krzysztof.karas@intel.com>
+Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://lore.kernel.org/r/20251216180900.54294-2-krzysztof.niemiec@intel.com
+(cherry picked from commit 08889b706d4f0b8d2352b7ca29c2d8df4d0787cd)
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/xe_bo.c |   15 ++++-----------
- 1 file changed, 4 insertions(+), 11 deletions(-)
+ drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c |   37 +++++++++++--------------
+ 1 file changed, 17 insertions(+), 20 deletions(-)
 
---- a/drivers/gpu/drm/xe/xe_bo.c
-+++ b/drivers/gpu/drm/xe/xe_bo.c
-@@ -1480,7 +1480,7 @@ static bool xe_ttm_bo_lock_in_destructor
- 	 * always succeed here, as long as we hold the lru lock.
- 	 */
- 	spin_lock(&ttm_bo->bdev->lru_lock);
--	locked = dma_resv_trylock(ttm_bo->base.resv);
-+	locked = dma_resv_trylock(&ttm_bo->base._resv);
- 	spin_unlock(&ttm_bo->bdev->lru_lock);
- 	xe_assert(xe, locked);
+--- a/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
++++ b/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
+@@ -950,13 +950,13 @@ static int eb_lookup_vmas(struct i915_ex
+ 		vma = eb_lookup_vma(eb, eb->exec[i].handle);
+ 		if (IS_ERR(vma)) {
+ 			err = PTR_ERR(vma);
+-			goto err;
++			return err;
+ 		}
  
-@@ -1500,13 +1500,6 @@ static void xe_ttm_bo_release_notify(str
- 	bo = ttm_to_xe_bo(ttm_bo);
- 	xe_assert(xe_bo_device(bo), !(bo->created && kref_read(&ttm_bo->base.refcount)));
+ 		err = eb_validate_vma(eb, &eb->exec[i], vma);
+ 		if (unlikely(err)) {
+ 			i915_vma_put(vma);
+-			goto err;
++			return err;
+ 		}
  
--	/*
--	 * Corner case where TTM fails to allocate memory and this BOs resv
--	 * still points the VMs resv
--	 */
--	if (ttm_bo->base.resv != &ttm_bo->base._resv)
--		return;
+ 		err = eb_add_vma(eb, &current_batch, i, vma);
+@@ -965,19 +965,8 @@ static int eb_lookup_vmas(struct i915_ex
+ 
+ 		if (i915_gem_object_is_userptr(vma->obj)) {
+ 			err = i915_gem_object_userptr_submit_init(vma->obj);
+-			if (err) {
+-				if (i + 1 < eb->buffer_count) {
+-					/*
+-					 * Execbuffer code expects last vma entry to be NULL,
+-					 * since we already initialized this entry,
+-					 * set the next value to NULL or we mess up
+-					 * cleanup handling.
+-					 */
+-					eb->vma[i + 1].vma = NULL;
+-				}
 -
- 	if (!xe_ttm_bo_lock_in_destructor(ttm_bo))
- 		return;
++			if (err)
+ 				return err;
+-			}
  
-@@ -1516,14 +1509,14 @@ static void xe_ttm_bo_release_notify(str
- 	 * TODO: Don't do this for external bos once we scrub them after
- 	 * unbind.
- 	 */
--	dma_resv_for_each_fence(&cursor, ttm_bo->base.resv,
-+	dma_resv_for_each_fence(&cursor, &ttm_bo->base._resv,
- 				DMA_RESV_USAGE_BOOKKEEP, fence) {
- 		if (xe_fence_is_xe_preempt(fence) &&
- 		    !dma_fence_is_signaled(fence)) {
- 			if (!replacement)
- 				replacement = dma_fence_get_stub();
- 
--			dma_resv_replace_fences(ttm_bo->base.resv,
-+			dma_resv_replace_fences(&ttm_bo->base._resv,
- 						fence->context,
- 						replacement,
- 						DMA_RESV_USAGE_BOOKKEEP);
-@@ -1531,7 +1524,7 @@ static void xe_ttm_bo_release_notify(str
+ 			eb->vma[i].flags |= __EXEC_OBJECT_USERPTR_INIT;
+ 			eb->args->flags |= __EXEC_USERPTR_USED;
+@@ -985,10 +974,6 @@ static int eb_lookup_vmas(struct i915_ex
  	}
- 	dma_fence_put(replacement);
  
--	dma_resv_unlock(ttm_bo->base.resv);
-+	dma_resv_unlock(&ttm_bo->base._resv);
+ 	return 0;
+-
+-err:
+-	eb->vma[i].vma = NULL;
+-	return err;
  }
  
- static void xe_ttm_bo_delete_mem_notify(struct ttm_buffer_object *ttm_bo)
+ static int eb_lock_vmas(struct i915_execbuffer *eb)
+@@ -3374,7 +3359,8 @@ i915_gem_do_execbuffer(struct drm_device
+ 
+ 	eb.exec = exec;
+ 	eb.vma = (struct eb_vma *)(exec + args->buffer_count + 1);
+-	eb.vma[0].vma = NULL;
++	memset(eb.vma, 0, (args->buffer_count + 1) * sizeof(struct eb_vma));
++
+ 	eb.batch_pool = NULL;
+ 
+ 	eb.invalid_flags = __EXEC_OBJECT_UNKNOWN_FLAGS;
+@@ -3583,7 +3569,18 @@ i915_gem_execbuffer2_ioctl(struct drm_de
+ 	if (err)
+ 		return err;
+ 
+-	/* Allocate extra slots for use by the command parser */
++	/*
++	 * Allocate extra slots for use by the command parser.
++	 *
++	 * Note that this allocation handles two different arrays (the
++	 * exec2_list array, and the eventual eb.vma array introduced in
++	 * i915_gem_do_execbuffer()), that reside in virtually contiguous
++	 * memory. Also note that the allocation intentionally doesn't fill the
++	 * area with zeros, because the exec2_list part doesn't need to be, as
++	 * it's immediately overwritten by user data a few lines below.
++	 * However, the eb.vma part is explicitly zeroed later in
++	 * i915_gem_do_execbuffer().
++	 */
+ 	exec2_list = kvmalloc_array(count + 2, eb_element_size(),
+ 				    __GFP_NOWARN | GFP_KERNEL);
+ 	if (exec2_list == NULL) {
 
 
 
