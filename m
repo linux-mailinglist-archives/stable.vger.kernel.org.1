@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-205464-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205743-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76AC6CFA206
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:27:20 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E1DFCF9FC4
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:11:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BA434303889E
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:39:53 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 48B3B30AAB52
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:08:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AC1B2D7DD5;
-	Tue,  6 Jan 2026 17:33:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D57E535F8D7;
+	Tue,  6 Jan 2026 17:48:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iuf9TwWE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vARrdjvK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBCF526E6F2;
-	Tue,  6 Jan 2026 17:33:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9346E35F8D3;
+	Tue,  6 Jan 2026 17:48:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767720780; cv=none; b=jXpv/DVAonghGDaPjJuDrGjIFbo7CsIsr+vbBTC/vbcAU/+0wn4YwNoohQoMq3DS6AupM0pvb74DCz+LoupFygmEZVCMsrfRB7PC5/0BZ7+1mKQuHXpgvdVg7RJMl+a6TCiQnyG3EsWQf4VC+C8mtlls+soyYjZhtIhNYYffKWY=
+	t=1767721712; cv=none; b=OAzkWJvad5WGLUAxAiNLLFrfdhBD4yO548slsro4w3KaDunQmE2QceRgvj1hx7Vg1XCk/kpwpyb96hou8YJXofD3Z20/nlyHVCr2uUt5PkzLEWTw9Z2J2SHv3n7p+hFjah8kr7/JDwZjHMVP1p/0rIvSrgZuxQnqAVYbPilLsRg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767720780; c=relaxed/simple;
-	bh=lwD2Znoe65COnElf/SeQrkuC+m1He19flIGP1ar0gtU=;
+	s=arc-20240116; t=1767721712; c=relaxed/simple;
+	bh=rKm3ELVF+T9csxG6Svcba3i3W6mYHsrPkD0aRAhIZeo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AxQfdN5sIDLtLgJdmW7Jr7Amu1R4WK1VgDOzIM49pm/e5YKRFDGJ2umTZ18x0Yi5YJ/tee6MMt4y8EbxRfqT+beGDWyKsrH0VQJh60IMsG1ZrVFYcmutMywlT66z1cU5yJ/XE0LQkq6zL6fGBQa9FPOWZjCdpOsCqibkN/47jn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iuf9TwWE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36D14C116C6;
-	Tue,  6 Jan 2026 17:33:00 +0000 (UTC)
+	 MIME-Version; b=dfJsKxOlTfpSCbbzcE9ioZZcfTvlmj3cuXIoRAEAPiCXVQVqEl2w1OzFAvYqWCo9yk4LAP4b5kybqnEWOjMzsEJCA7TvkyUVJ8Jt9I2RF7udGUNOcfK2+7uRWOmlgBqNwQWS7FTy6TxJb/CtbZHbI58MOeDNDQyLSbbD+CCv32w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vARrdjvK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04760C116C6;
+	Tue,  6 Jan 2026 17:48:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767720780;
-	bh=lwD2Znoe65COnElf/SeQrkuC+m1He19flIGP1ar0gtU=;
+	s=korg; t=1767721712;
+	bh=rKm3ELVF+T9csxG6Svcba3i3W6mYHsrPkD0aRAhIZeo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iuf9TwWEKkLxRJRtVL686E1m5cV2FXZ5ea7euj12EfhiDD/pkWWkYDGGthXDNaJ18
-	 YDyBTbaKJAFKtKnHfrRN0GP7vpB5GjmEU7g4nrn0+i37pMzHXAv66OJ/DQ4Uy/rtdI
-	 n22IdvFgD7C3vYjWBci2lWMQDGHlm5+m8kXuKk74=
+	b=vARrdjvKyAZYICJMOut3nl6FURp0L5MQcX0YMozhG5koOaEkS9fJJ9a+152hR4eql
+	 yI+0dGkpQ2+DSBi8IDhUEHilEQ6+r39aCRyxkt5/fk9RkKuEgpmRtGbVBg4vaCc5gW
+	 G2rhomhzx+VHPxo1Er1TJyP3pSagUnZOkijnbaNw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zilin Guan <zilin@seu.edu.cn>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Jonas Gorski <jonas.gorski@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 339/567] ksmbd: Fix memory leak in get_file_all_info()
-Date: Tue,  6 Jan 2026 18:02:01 +0100
-Message-ID: <20260106170503.868762474@linuxfoundation.org>
+Subject: [PATCH 6.18 048/312] net: dsa: b53: skip multicast entries for fdb_dump()
+Date: Tue,  6 Jan 2026 18:02:02 +0100
+Message-ID: <20260106170549.593349415@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
-References: <20260106170451.332875001@linuxfoundation.org>
+In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
+References: <20260106170547.832845344@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zilin Guan <zilin@seu.edu.cn>
+From: Jonas Gorski <jonas.gorski@gmail.com>
 
-[ Upstream commit 0c56693b06a68476ba113db6347e7897475f9e4c ]
+[ Upstream commit d42bce414d1c5c0b536758466a1f63ac358e613c ]
 
-In get_file_all_info(), if vfs_getattr() fails, the function returns
-immediately without freeing the allocated filename, leading to a memory
-leak.
+port_fdb_dump() is supposed to only add fdb entries, but we iterate over
+the full ARL table, which also includes multicast entries.
 
-Fix this by freeing the filename before returning in this error case.
+So check if the entry is a multicast entry before passing it on to the
+callback().
 
-Fixes: 5614c8c487f6a ("ksmbd: replace generic_fillattr with vfs_getattr")
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Additionally, the port of those entries is a bitmask, not a port number,
+so any included entries would have even be for the wrong port.
+
+Fixes: 1da6df85c6fb ("net: dsa: b53: Implement ARL add/del/dump operations")
+Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://patch.msgid.link/20251217205756.172123-1-jonas.gorski@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/smb2pdu.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/dsa/b53/b53_common.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
-index a1579f76e063..e2cde9723001 100644
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -4926,8 +4926,10 @@ static int get_file_all_info(struct ksmbd_work *work,
+diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
+index 62cafced758e..7d6ec2eb7c75 100644
+--- a/drivers/net/dsa/b53/b53_common.c
++++ b/drivers/net/dsa/b53/b53_common.c
+@@ -2155,6 +2155,9 @@ static int b53_fdb_copy(int port, const struct b53_arl_entry *ent,
+ 	if (!ent->is_valid)
+ 		return 0;
  
- 	ret = vfs_getattr(&fp->filp->f_path, &stat, STATX_BASIC_STATS,
- 			  AT_STATX_SYNC_AS_STAT);
--	if (ret)
-+	if (ret) {
-+		kfree(filename);
- 		return ret;
-+	}
++	if (is_multicast_ether_addr(ent->mac))
++		return 0;
++
+ 	if (port != ent->port)
+ 		return 0;
  
- 	ksmbd_debug(SMB, "filename = %s\n", filename);
- 	delete_pending = ksmbd_inode_pending_delete(fp);
 -- 
 2.51.0
 
