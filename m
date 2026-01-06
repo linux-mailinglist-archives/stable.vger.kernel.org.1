@@ -1,67 +1,55 @@
-Return-Path: <stable+bounces-206048-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206047-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81E76CFB52C
-	for <lists+stable@lfdr.de>; Wed, 07 Jan 2026 00:07:58 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E588CFB52F
+	for <lists+stable@lfdr.de>; Wed, 07 Jan 2026 00:08:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CCD033051C75
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6E1C23024118
 	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 23:07:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D6C62F99BD;
-	Tue,  6 Jan 2026 23:07:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF3262550BA;
+	Tue,  6 Jan 2026 23:07:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RJ/f8/FQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BzBBt49O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C6302F25EB
-	for <stable@vger.kernel.org>; Tue,  6 Jan 2026 23:07:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0FFE2EB5B8
+	for <stable@vger.kernel.org>; Tue,  6 Jan 2026 23:07:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767740876; cv=none; b=rjbeFNgSl67+fHTmn2gXoZBxhoFH5meIBcH4WuN9mGUKxtonYyPAM8Cp0hFzBEuYBhostWFqzy3lKxaMKGNRJ4pn1tqKt/b3EB8tAYH8lwcmIbpfULW2cGgpFEh00IFzzE87eeBL5HqrMt5tvuLml75TTgxuY51UvHUZdy1zRhk=
+	t=1767740874; cv=none; b=s3FMLDSidnWHCz2BWtaQ0VFNUAvCCp4NMcQDkut40DQ8bPlw33+RxYVJfYcgfo5klUGwl4crfimDN/BKaezR7i22b2SZo/HmVZJgEMp9vEGaFrW8T34qgo5P7+I3pmVEZCZ82CWagWJMjRcX7uT04L973z/DC1iBFSTgQb9+IWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767740876; c=relaxed/simple;
-	bh=0G8tNrwGgcJrBNRzhj9ZE2XzGKZTWiEwbWI0gQuInbs=;
+	s=arc-20240116; t=1767740874; c=relaxed/simple;
+	bh=X6ROx7DZgQ3EirxbdHfO3RZvzn1Ve7AqdH2c6cYquXA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n7aD3c5TxMFCnfoUEh58+L9NjN/GuDQVrU2EwGo2unY5YESpNaqiSkg6cc2LRqev1I4MA3qKaNKaaEi/L687VJuvKx8/Ql6rS+cNt4haK5FCiO/XOfR0eKbMHC3Li9z4CbEhWlZX5j1ksWACauHiba4CjQ9O7ZqKS2CdSp14ZzA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RJ/f8/FQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30371C19423;
-	Tue,  6 Jan 2026 23:07:54 +0000 (UTC)
+	 MIME-Version; b=FcF1qYtlQ0H0YjZ/ye6zgkNydT/12cmaY1NaJ0f2BNEstl7f3sCEw1pBGQCpk7r1MvQmVrO3UXdQVGJvWgBEFT7X/lIYgl6PlNKllGX0WZeBvKzXc5Lico3RvMWEgJ3+o8vo9CqGWQMhnuUnVBucSdaEkTYJFbaVfGfDsY1K/z0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BzBBt49O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7802C19421;
+	Tue,  6 Jan 2026 23:07:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767740875;
-	bh=0G8tNrwGgcJrBNRzhj9ZE2XzGKZTWiEwbWI0gQuInbs=;
+	s=k20201202; t=1767740874;
+	bh=X6ROx7DZgQ3EirxbdHfO3RZvzn1Ve7AqdH2c6cYquXA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RJ/f8/FQrz4/DqIVtAiATIYRKTTPLwJ7NqWK0Ptw+WJOp7EhY3+8Yk7szapvf7yVS
-	 LzJUR5TUGZtFBYeqW2y44ipXdeyLEaOGE729UEzqQXPWuf425AX7SGRJMqtSmssNMe
-	 dfqymuCEnocT4MWTiwOi4jPhQm5uk7I3w9sZgF5i1EtXXFOfm3ROXlqYusmGicrMUn
-	 lyQBaUy3oojzmHgDEYkX2ueJG5vzRo7TJ4Ju1FhHoFTFp6RwqY15I2TxEaNeyNHZ6X
-	 YV9gitorwJ5ZYESKl3ODs1mP4k5TxDUXGTooBWKhWevpv6XcZt+7ozAkRuYpe4UQ+I
-	 1y/y8gHWauU6g==
+	b=BzBBt49OMWzHOPU2q1ZcJWx4rMR0vMm5OWx/97xJp3A4txGO5jBxy8HC9oc4Hxcvk
+	 hI/IxKGEU7WBp/nuA1Zucq/94M4GehMe3eSVKaJoY1szbbSP/19EIsU95Eyy2MWPiZ
+	 ffQ9js49ZwKqszuSUguoglh5ZR6e2DjGmJXDHWyCuoVAkmlDUmbjRYw1ybclAgQ/AM
+	 iitminNwmhuRKGYyAbUEL+796p0ZvZG2eh9srM8wCA/cD3QWuQtZab9gcJevH43lRP
+	 wIg5BN3sJ4Vq6S2q1dyfb+uLaKt6dQJ4ffv2Bak6ojNzNsLUu8CxRg27E5rkCzkQv5
+	 A3xvuVK+ewk0A==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Bijan Tabatabai <bijan311@gmail.com>,
-	"David Hildenbrand (Red Hat)" <david@kernel.org>,
-	Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Liam Howlett <liam.howlett@oracle.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Shivank Garg <shivankg@amd.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Kairui Song <ryncsn@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+Cc: Paolo Abeni <pabeni@redhat.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y 2/2] mm: consider non-anon swap cache folios in folio_expected_ref_count()
-Date: Tue,  6 Jan 2026 18:07:47 -0500
-Message-ID: <20260106230747.3447947-2-sashal@kernel.org>
+Subject: [PATCH 6.12.y] mptcp: ensure context reset on disconnect()
+Date: Tue,  6 Jan 2026 18:07:52 -0500
+Message-ID: <20260106230752.3447994-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260106230747.3447947-1-sashal@kernel.org>
-References: <2026010544-pavestone-gloating-a829@gregkh>
- <20260106230747.3447947-1-sashal@kernel.org>
+In-Reply-To: <2026010549-throwaway-structure-a291@gregkh>
+References: <2026010549-throwaway-structure-a291@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -70,119 +58,123 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Bijan Tabatabai <bijan311@gmail.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-[ Upstream commit f183663901f21fe0fba8bd31ae894bc529709ee0 ]
+[ Upstream commit 86730ac255b0497a272704de9a1df559f5d6602e ]
 
-Currently, folio_expected_ref_count() only adds references for the swap
-cache if the folio is anonymous.  However, according to the comment above
-the definition of PG_swapcache in enum pageflags, shmem folios can also
-have PG_swapcache set.  This patch makes sure references for the swap
-cache are added if folio_test_swapcache(folio) is true.
+After the blamed commit below, if the MPC subflow is already in TCP_CLOSE
+status or has fallback to TCP at mptcp_disconnect() time,
+mptcp_do_fastclose() skips setting the `send_fastclose flag` and the later
+__mptcp_close_ssk() does not reset anymore the related subflow context.
 
-This issue was found when trying to hot-unplug memory in a QEMU/KVM
-virtual machine.  When initiating hot-unplug when most of the guest memory
-is allocated, hot-unplug hangs partway through removal due to migration
-failures.  The following message would be printed several times, and would
-be printed again about every five seconds:
+Any later connection will be created with both the `request_mptcp` flag
+and the msk-level fallback status off (it is unconditionally cleared at
+MPTCP disconnect time), leading to a warning in subflow_data_ready():
 
-[   49.641309] migrating pfn b12f25 failed ret:7
-[   49.641310] page: refcount:2 mapcount:0 mapping:0000000033bd8fe2 index:0x7f404d925 pfn:0xb12f25
-[   49.641311] aops:swap_aops
-[   49.641313] flags: 0x300000000030508(uptodate|active|owner_priv_1|reclaim|swapbacked|node=0|zone=3)
-[   49.641314] raw: 0300000000030508 ffffed312c4bc908 ffffed312c4bc9c8 0000000000000000
-[   49.641315] raw: 00000007f404d925 00000000000c823b 00000002ffffffff 0000000000000000
-[   49.641315] page dumped because: migration failure
+  WARNING: CPU: 26 PID: 8996 at net/mptcp/subflow.c:1519 subflow_data_ready (net/mptcp/subflow.c:1519 (discriminator 13))
+  Modules linked in:
+  CPU: 26 UID: 0 PID: 8996 Comm: syz.22.39 Not tainted 6.18.0-rc7-05427-g11fc074f6c36 #1 PREEMPT(voluntary)
+  Hardware name: Bochs Bochs, BIOS Bochs 01/01/2011
+  RIP: 0010:subflow_data_ready (net/mptcp/subflow.c:1519 (discriminator 13))
+  Code: 90 0f 0b 90 90 e9 04 fe ff ff e8 b7 1e f5 fe 89 ee bf 07 00 00 00 e8 db 19 f5 fe 83 fd 07 0f 84 35 ff ff ff e8 9d 1e f5 fe 90 <0f> 0b 90 e9 27 ff ff ff e8 8f 1e f5 fe 4c 89 e7 48 89 de e8 14 09
+  RSP: 0018:ffffc9002646fb30 EFLAGS: 00010293
+  RAX: 0000000000000000 RBX: ffff88813b218000 RCX: ffffffff825c8435
+  RDX: ffff8881300b3580 RSI: ffffffff825c8443 RDI: 0000000000000005
+  RBP: 000000000000000b R08: ffffffff825c8435 R09: 000000000000000b
+  R10: 0000000000000005 R11: 0000000000000007 R12: ffff888131ac0000
+  R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
+  FS:  00007f88330af6c0(0000) GS:ffff888a93dd2000(0000) knlGS:0000000000000000
+  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  CR2: 00007f88330aefe8 CR3: 000000010ff59000 CR4: 0000000000350ef0
+  Call Trace:
+   <TASK>
+   tcp_data_ready (net/ipv4/tcp_input.c:5356)
+   tcp_data_queue (net/ipv4/tcp_input.c:5445)
+   tcp_rcv_state_process (net/ipv4/tcp_input.c:7165)
+   tcp_v4_do_rcv (net/ipv4/tcp_ipv4.c:1955)
+   __release_sock (include/net/sock.h:1158 (discriminator 6) net/core/sock.c:3180 (discriminator 6))
+   release_sock (net/core/sock.c:3737)
+   mptcp_sendmsg (net/mptcp/protocol.c:1763 net/mptcp/protocol.c:1857)
+   inet_sendmsg (net/ipv4/af_inet.c:853 (discriminator 7))
+   __sys_sendto (net/socket.c:727 (discriminator 15) net/socket.c:742 (discriminator 15) net/socket.c:2244 (discriminator 15))
+   __x64_sys_sendto (net/socket.c:2247)
+   do_syscall_64 (arch/x86/entry/syscall_64.c:63 (discriminator 1) arch/x86/entry/syscall_64.c:94 (discriminator 1))
+   entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
+  RIP: 0033:0x7f883326702d
 
-When debugging this, I found that these migration failures were due to
-__migrate_folio() returning -EAGAIN for a small set of folios because the
-expected reference count it calculates via folio_expected_ref_count() is
-one less than the actual reference count of the folios.  Furthermore, all
-of the affected folios were not anonymous, but had the PG_swapcache flag
-set, inspiring this patch.  After applying this patch, the memory
-hot-unplug behaves as expected.
+Address the issue setting an explicit `fastclosing` flag at fastclose
+time, and checking such flag after mptcp_do_fastclose().
 
-I tested this on a machine running Ubuntu 24.04 with kernel version
-6.8.0-90-generic and 64GB of memory.  The guest VM is managed by libvirt
-and runs Ubuntu 24.04 with kernel version 6.18 (though the head of the
-mm-unstable branch as a Dec 16, 2025 was also tested and behaves the same)
-and 48GB of memory.  The libvirt XML definition for the VM can be found at
-[1].  CONFIG_MHP_DEFAULT_ONLINE_TYPE_ONLINE_MOVABLE is set in the guest
-kernel so the hot-pluggable memory is automatically onlined.
-
-Below are the steps to reproduce this behavior:
-
-1) Define and start and virtual machine
-  host$ virsh -c qemu:///system define ./test_vm.xml # test_vm.xml from [1]
-  host$ virsh -c qemu:///system start test_vm
-
-2) Setup swap in the guest
-  guest$ sudo fallocate -l 32G /swapfile
-  guest$ sudo chmod 0600 /swapfile
-  guest$ sudo mkswap /swapfile
-  guest$ sudo swapon /swapfile
-
-3) Use alloc_data [2] to allocate most of the remaining guest memory
-  guest$ ./alloc_data 45
-
-4) In a separate guest terminal, monitor the amount of used memory
-  guest$ watch -n1 free -h
-
-5) When alloc_data has finished allocating, initiate the memory
-hot-unplug using the provided xml file [3]
-  host$ virsh -c qemu:///system detach-device test_vm ./remove.xml --live
-
-After initiating the memory hot-unplug, you should see the amount of
-available memory in the guest decrease, and the amount of used swap data
-increase.  If everything works as expected, when all of the memory is
-unplugged, there should be around 8.5-9GB of data in swap.  If the
-unplugging is unsuccessful, the amount of used swap data will settle below
-that.  If that happens, you should be able to see log messages in dmesg
-similar to the one posted above.
-
-Link: https://lkml.kernel.org/r/20251216200727.2360228-1-bijan311@gmail.com
-Link: https://github.com/BijanT/linux_patch_files/blob/main/test_vm.xml [1]
-Link: https://github.com/BijanT/linux_patch_files/blob/main/alloc_data.c [2]
-Link: https://github.com/BijanT/linux_patch_files/blob/main/remove.xml [3]
-Fixes: 86ebd50224c0 ("mm: add folio_expected_ref_count() for reference count calculation")
-Signed-off-by: Bijan Tabatabai <bijan311@gmail.com>
-Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
-Acked-by: Zi Yan <ziy@nvidia.com>
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Shivank Garg <shivankg@amd.com>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Kairui Song <ryncsn@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: ae155060247b ("mptcp: fix duplicate reset on fastclose")
+Cc: stable@vger.kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20251212-net-mptcp-subflow_data_ready-warn-v1-2-d1f9fd1c36c8@kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+[ Adjust context ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/mm.h | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ net/mptcp/protocol.c | 8 +++++---
+ net/mptcp/protocol.h | 3 ++-
+ 2 files changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index bbea39a8d441..20f9287d23a5 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -2241,10 +2241,10 @@ static inline int folio_expected_ref_count(const struct folio *folio)
- 	if (WARN_ON_ONCE(page_has_type(&folio->page) && !folio_test_hugetlb(folio)))
- 		return 0;
+diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
+index ed29132fd48e..37b50c6edf3b 100644
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -2475,10 +2475,10 @@ bool __mptcp_retransmit_pending_data(struct sock *sk)
+  */
+ static void __mptcp_subflow_disconnect(struct sock *ssk,
+ 				       struct mptcp_subflow_context *subflow,
+-				       unsigned int flags)
++				       bool fastclosing)
+ {
+ 	if (((1 << ssk->sk_state) & (TCPF_CLOSE | TCPF_LISTEN)) ||
+-	    subflow->send_fastclose) {
++	    fastclosing) {
+ 		/* The MPTCP code never wait on the subflow sockets, TCP-level
+ 		 * disconnect should never fail
+ 		 */
+@@ -2530,7 +2530,7 @@ static void __mptcp_close_ssk(struct sock *sk, struct sock *ssk,
  
--	if (folio_test_anon(folio)) {
--		/* One reference per page from the swapcache. */
--		ref_count += folio_test_swapcache(folio) << order;
--	} else {
-+	/* One reference per page from the swapcache. */
-+	ref_count += folio_test_swapcache(folio) << order;
-+
-+	if (!folio_test_anon(folio)) {
- 		/* One reference per page from the pagecache. */
- 		ref_count += !!folio->mapping << order;
- 		/* One reference from PG_private. */
+ 	need_push = (flags & MPTCP_CF_PUSH) && __mptcp_retransmit_pending_data(sk);
+ 	if (!dispose_it) {
+-		__mptcp_subflow_disconnect(ssk, subflow, flags);
++		__mptcp_subflow_disconnect(ssk, subflow, msk->fastclosing);
+ 		release_sock(ssk);
+ 
+ 		goto out;
+@@ -2839,6 +2839,7 @@ static void mptcp_do_fastclose(struct sock *sk)
+ 	struct mptcp_sock *msk = mptcp_sk(sk);
+ 
+ 	mptcp_set_state(sk, TCP_CLOSE);
++	msk->fastclosing = 1;
+ 
+ 	/* Explicitly send the fastclose reset as need */
+ 	if (__mptcp_check_fallback(msk))
+@@ -3356,6 +3357,7 @@ static int mptcp_disconnect(struct sock *sk, int flags)
+ 	msk->bytes_sent = 0;
+ 	msk->bytes_retrans = 0;
+ 	msk->rcvspace_init = 0;
++	msk->fastclosing = 0;
+ 
+ 	WRITE_ONCE(sk->sk_shutdown, 0);
+ 	sk_error_report(sk);
+diff --git a/net/mptcp/protocol.h b/net/mptcp/protocol.h
+index 73b842350677..c1c1bc19d61b 100644
+--- a/net/mptcp/protocol.h
++++ b/net/mptcp/protocol.h
+@@ -316,7 +316,8 @@ struct mptcp_sock {
+ 			fastopening:1,
+ 			in_accept_queue:1,
+ 			free_first:1,
+-			rcvspace_init:1;
++			rcvspace_init:1,
++			fastclosing:1;
+ 	u32		notsent_lowat;
+ 	int		keepalive_cnt;
+ 	int		keepalive_idle;
 -- 
 2.51.0
 
