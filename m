@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-205510-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205788-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32558CFA2A0
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:30:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 129BBCFA577
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:54:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EEBB03266436
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:43:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E1F86318AF17
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:08:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22419304BA3;
-	Tue,  6 Jan 2026 17:35:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23A26364045;
+	Tue,  6 Jan 2026 17:51:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GjFd//Lx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JiOYQeDf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDF28303CB6;
-	Tue,  6 Jan 2026 17:35:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D405836402B;
+	Tue,  6 Jan 2026 17:51:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767720934; cv=none; b=n1mheHFGz5MGPH0A5FYzXSZ/c0E3ZHVfUWa0B6winL5zLTWwcJG5AlboK1BRyAUuxX5ycaZ1MGIMWx7UUT90zFnkDwJ4Pi8/E0pIe/Y20imv4hl0AoKZWvvKY0kIYNO2mrx3+YaWeF/NauXOG9x3ane7lw6Dkdn7G+E9Gq/gTfo=
+	t=1767721864; cv=none; b=Z+M9FGQMXH8jpWHQZm8adRCTj6f3Hh22JU7GqWuboDd58rMqBw7TODEMC+ksaJqohwEYnaoxiS4yBejtWehsGt1vUQzL4R3RBm8lcVfo6Szv6KkUiet/vqF67cI5xOgA2B95ivXyh0gP6mQawqkq5EUzKe8mBzo0ZpqawM3geos=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767720934; c=relaxed/simple;
-	bh=ovpVKps7ARTbg43rPewdsOcymPEj9Q3aPJVo+vnIahY=;
+	s=arc-20240116; t=1767721864; c=relaxed/simple;
+	bh=1dooVpSJNOpFVj9jGnzjR7tbuUIeuB7hflP72OlzSdk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fkkjATl/JKxJWRHwULT27hzrG5B2h+b0LapgG7ffL5CDqUeDb7eObj4XS0WkF/3X2LZIem4e4OXuxS2Heyhr0/GjSV+rJsXDre+QngvoPxjlRNrtSMszuebY9Txm9VOXh0syV3gioTC0RhKduu84OA7gER/guZn0h8SX5VcDhZo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GjFd//Lx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 043F9C116C6;
-	Tue,  6 Jan 2026 17:35:32 +0000 (UTC)
+	 MIME-Version; b=dNHufiwAbOb0nu8h6K/nxICTqO0oAB9IMUAbWoPfVrpdyVP36vLQwMp7RVqDVNFaqS/VDbYl4A5VhUR1EyIc7+CyKHQ6aPVVuEuvWLuM97KyNMR4/OMRGr1Sw3/aaH/L98vxFhT6BK1RbV9J8256uDaiQKqJb38yMMV9SQYq2AE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JiOYQeDf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1474DC19423;
+	Tue,  6 Jan 2026 17:51:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767720933;
-	bh=ovpVKps7ARTbg43rPewdsOcymPEj9Q3aPJVo+vnIahY=;
+	s=korg; t=1767721864;
+	bh=1dooVpSJNOpFVj9jGnzjR7tbuUIeuB7hflP72OlzSdk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GjFd//LxmTkY27xzdjhPpAwSiDdOMxhSDz/ybI+e4hJiS3j9xK5twlt/IecwSpMPS
-	 BJPWSzwg3PfIIUyTpmnb1kx4UCeinvLXwMzZEO3GrKyl4Ou889/oQeXQUxfalnVaCj
-	 2HPO79ywtmFGVJ4E2eu+YjBO2z7V7My3KkNv8kf4=
+	b=JiOYQeDfW+Q6E93gmbuEJW9Xvvy8SGdzJaTpXFLn9pAG79R2+ciC+U4pG67nrrYUn
+	 fsMHxkswuYUcAE8DC9V6ZccBWdRMfOD3x3IOhirRFcSdDynMrMqNIHhIOAtvy1tIRl
+	 Xj65SAJ9esTEbh7+Q36NwkloBClSkqRiFyMOEXQ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stable@vger.kernel.org,
-	Martino Facchin <m.facchin@arduino.cc>,
-	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
-	Mark Brown <broonie@kernel.org>,
-	Alexey Klimov <alexey.klimov@linaro.org>
-Subject: [PATCH 6.12 352/567] ASoC: qcom: q6adm: the the copp device only during last instance
-Date: Tue,  6 Jan 2026 18:02:14 +0100
-Message-ID: <20260106170504.354353573@linuxfoundation.org>
+	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+	syzbot+881d65229ca4f9ae8c84@syzkaller.appspotmail.com,
+	Ido Schimmel <idosch@nvidia.com>,
+	David Ahern <dsahern@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 061/312] ipv4: Fix reference count leak when using error routes with nexthop objects
+Date: Tue,  6 Jan 2026 18:02:15 +0100
+Message-ID: <20260106170550.057891656@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
-References: <20260106170451.332875001@linuxfoundation.org>
+In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
+References: <20260106170547.832845344@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,228 +63,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-commit 74cc4f3ea4e99262ba0d619c6a4ee33e2cd47f65 upstream.
+[ Upstream commit ac782f4e3bfcde145b8a7f8af31d9422d94d172a ]
 
-A matching Common object post processing instance is normally resused
-across multiple streams. However currently we close this on DSP
-even though there is a refcount on this copp object, this can result in
-below error.
+When a nexthop object is deleted, it is marked as dead and then
+fib_table_flush() is called to flush all the routes that are using the
+dead nexthop.
 
-q6routing ab00000.remoteproc:glink-edge:apr:service@8:routing: Found Matching Copp 0x0
-qcom-q6adm aprsvc:service:4:8: cmd = 0x10325 return error = 0x2
-q6routing ab00000.remoteproc:glink-edge:apr:service@8:routing: DSP returned error[2]
-q6routing ab00000.remoteproc:glink-edge:apr:service@8:routing: Found Matching Copp 0x0
-qcom-q6adm aprsvc:service:4:8: cmd = 0x10325 return error = 0x2
-q6routing ab00000.remoteproc:glink-edge:apr:service@8:routing: DSP returned error[2]
-qcom-q6adm aprsvc:service:4:8: cmd = 0x10327 return error = 0x2
-qcom-q6adm aprsvc:service:4:8: DSP returned error[2]
-qcom-q6adm aprsvc:service:4:8: Failed to close copp -22
-qcom-q6adm aprsvc:service:4:8: cmd = 0x10327 return error = 0x2
-qcom-q6adm aprsvc:service:4:8: DSP returned error[2]
-qcom-q6adm aprsvc:service:4:8: Failed to close copp -22
+The current logic in fib_table_flush() is to only flush error routes
+(e.g., blackhole) when it is called as part of network namespace
+dismantle (i.e., with flush_all=true). Therefore, error routes are not
+flushed when their nexthop object is deleted:
 
-Fix this by addressing moving the adm_close to copp_kref destructor
-callback.
+ # ip link add name dummy1 up type dummy
+ # ip nexthop add id 1 dev dummy1
+ # ip route add 198.51.100.1/32 nhid 1
+ # ip route add blackhole 198.51.100.2/32 nhid 1
+ # ip nexthop del id 1
+ # ip route show
+ blackhole 198.51.100.2 nhid 1 dev dummy1
 
-Fixes: 7b20b2be51e1 ("ASoC: qdsp6: q6adm: Add q6adm driver")
-Cc: Stable@vger.kernel.org
-Reported-by: Martino Facchin <m.facchin@arduino.cc>
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
-Tested-by: Alexey Klimov <alexey.klimov@linaro.org> # RB5, RB3
-Link: https://patch.msgid.link/20251023102444.88158-3-srinivas.kandagatla@oss.qualcomm.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+As such, they keep holding a reference on the nexthop object which in
+turn holds a reference on the nexthop device, resulting in a reference
+count leak:
+
+ # ip link del dev dummy1
+ [   70.516258] unregister_netdevice: waiting for dummy1 to become free. Usage count = 2
+
+Fix by flushing error routes when their nexthop is marked as dead.
+
+IPv6 does not suffer from this problem.
+
+Fixes: 493ced1ac47c ("ipv4: Allow routes to use nexthop objects")
+Reported-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Closes: https://lore.kernel.org/netdev/d943f806-4da6-4970-ac28-b9373b0e63ac@I-love.SAKURA.ne.jp/
+Reported-by: syzbot+881d65229ca4f9ae8c84@syzkaller.appspotmail.com
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/20251221144829.197694-1-idosch@nvidia.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/qcom/qdsp6/q6adm.c |  146 ++++++++++++++++++++-----------------------
- 1 file changed, 71 insertions(+), 75 deletions(-)
+ net/ipv4/fib_trie.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/sound/soc/qcom/qdsp6/q6adm.c
-+++ b/sound/soc/qcom/qdsp6/q6adm.c
-@@ -109,11 +109,75 @@ static struct q6copp *q6adm_find_copp(st
+diff --git a/net/ipv4/fib_trie.c b/net/ipv4/fib_trie.c
+index 59a6f0a9638f..7e2c17fec3fc 100644
+--- a/net/ipv4/fib_trie.c
++++ b/net/ipv4/fib_trie.c
+@@ -2053,10 +2053,11 @@ int fib_table_flush(struct net *net, struct fib_table *tb, bool flush_all)
+ 				continue;
+ 			}
  
- }
- 
-+static int q6adm_apr_send_copp_pkt(struct q6adm *adm, struct q6copp *copp,
-+				   struct apr_pkt *pkt, uint32_t rsp_opcode)
-+{
-+	struct device *dev = adm->dev;
-+	uint32_t opcode = pkt->hdr.opcode;
-+	int ret;
-+
-+	mutex_lock(&adm->lock);
-+	copp->result.opcode = 0;
-+	copp->result.status = 0;
-+	ret = apr_send_pkt(adm->apr, pkt);
-+	if (ret < 0) {
-+		dev_err(dev, "Failed to send APR packet\n");
-+		ret = -EINVAL;
-+		goto err;
-+	}
-+
-+	/* Wait for the callback with copp id */
-+	if (rsp_opcode)
-+		ret = wait_event_timeout(copp->wait,
-+					 (copp->result.opcode == opcode) ||
-+					 (copp->result.opcode == rsp_opcode),
-+					 msecs_to_jiffies(TIMEOUT_MS));
-+	else
-+		ret = wait_event_timeout(copp->wait,
-+					 (copp->result.opcode == opcode),
-+					 msecs_to_jiffies(TIMEOUT_MS));
-+
-+	if (!ret) {
-+		dev_err(dev, "ADM copp cmd timedout\n");
-+		ret = -ETIMEDOUT;
-+	} else if (copp->result.status > 0) {
-+		dev_err(dev, "DSP returned error[%d]\n",
-+			copp->result.status);
-+		ret = -EINVAL;
-+	}
-+
-+err:
-+	mutex_unlock(&adm->lock);
-+	return ret;
-+}
-+
-+static int q6adm_device_close(struct q6adm *adm, struct q6copp *copp,
-+			      int port_id, int copp_idx)
-+{
-+	struct apr_pkt close;
-+
-+	close.hdr.hdr_field = APR_HDR_FIELD(APR_MSG_TYPE_SEQ_CMD,
-+					APR_HDR_LEN(APR_HDR_SIZE),
-+					APR_PKT_VER);
-+	close.hdr.pkt_size = sizeof(close);
-+	close.hdr.src_port = port_id;
-+	close.hdr.dest_port = copp->id;
-+	close.hdr.token = port_id << 16 | copp_idx;
-+	close.hdr.opcode = ADM_CMD_DEVICE_CLOSE_V5;
-+
-+	return q6adm_apr_send_copp_pkt(adm, copp, &close, 0);
-+}
-+
- static void q6adm_free_copp(struct kref *ref)
- {
- 	struct q6copp *c = container_of(ref, struct q6copp, refcount);
- 	struct q6adm *adm = c->adm;
- 	unsigned long flags;
-+	int ret;
-+
-+	ret = q6adm_device_close(adm, c, c->afe_port, c->copp_idx);
-+	if (ret < 0)
-+		dev_err(adm->dev, "Failed to close copp %d\n", ret);
- 
- 	spin_lock_irqsave(&adm->copps_list_lock, flags);
- 	clear_bit(c->copp_idx, &adm->copp_bitmap[c->afe_port]);
-@@ -155,13 +219,13 @@ static int q6adm_callback(struct apr_dev
- 		switch (result->opcode) {
- 		case ADM_CMD_DEVICE_OPEN_V5:
- 		case ADM_CMD_DEVICE_CLOSE_V5:
--			copp = q6adm_find_copp(adm, port_idx, copp_idx);
--			if (!copp)
--				return 0;
--
--			copp->result = *result;
--			wake_up(&copp->wait);
--			kref_put(&copp->refcount, q6adm_free_copp);
-+			list_for_each_entry(copp, &adm->copps_list, node) {
-+				if ((port_idx == copp->afe_port) && (copp_idx == copp->copp_idx)) {
-+					copp->result = *result;
-+					wake_up(&copp->wait);
-+					break;
-+				}
-+			}
- 			break;
- 		case ADM_CMD_MATRIX_MAP_ROUTINGS_V5:
- 			adm->result = *result;
-@@ -234,65 +298,6 @@ static struct q6copp *q6adm_alloc_copp(s
- 	return c;
- }
- 
--static int q6adm_apr_send_copp_pkt(struct q6adm *adm, struct q6copp *copp,
--				   struct apr_pkt *pkt, uint32_t rsp_opcode)
--{
--	struct device *dev = adm->dev;
--	uint32_t opcode = pkt->hdr.opcode;
--	int ret;
--
--	mutex_lock(&adm->lock);
--	copp->result.opcode = 0;
--	copp->result.status = 0;
--	ret = apr_send_pkt(adm->apr, pkt);
--	if (ret < 0) {
--		dev_err(dev, "Failed to send APR packet\n");
--		ret = -EINVAL;
--		goto err;
--	}
--
--	/* Wait for the callback with copp id */
--	if (rsp_opcode)
--		ret = wait_event_timeout(copp->wait,
--					 (copp->result.opcode == opcode) ||
--					 (copp->result.opcode == rsp_opcode),
--					 msecs_to_jiffies(TIMEOUT_MS));
--	else
--		ret = wait_event_timeout(copp->wait,
--					 (copp->result.opcode == opcode),
--					 msecs_to_jiffies(TIMEOUT_MS));
--
--	if (!ret) {
--		dev_err(dev, "ADM copp cmd timedout\n");
--		ret = -ETIMEDOUT;
--	} else if (copp->result.status > 0) {
--		dev_err(dev, "DSP returned error[%d]\n",
--			copp->result.status);
--		ret = -EINVAL;
--	}
--
--err:
--	mutex_unlock(&adm->lock);
--	return ret;
--}
--
--static int q6adm_device_close(struct q6adm *adm, struct q6copp *copp,
--			      int port_id, int copp_idx)
--{
--	struct apr_pkt close;
--
--	close.hdr.hdr_field = APR_HDR_FIELD(APR_MSG_TYPE_SEQ_CMD,
--					APR_HDR_LEN(APR_HDR_SIZE),
--					APR_PKT_VER);
--	close.hdr.pkt_size = sizeof(close);
--	close.hdr.src_port = port_id;
--	close.hdr.dest_port = copp->id;
--	close.hdr.token = port_id << 16 | copp_idx;
--	close.hdr.opcode = ADM_CMD_DEVICE_CLOSE_V5;
--
--	return q6adm_apr_send_copp_pkt(adm, copp, &close, 0);
--}
--
- static struct q6copp *q6adm_find_matching_copp(struct q6adm *adm,
- 					       int port_id, int topology,
- 					       int mode, int rate,
-@@ -567,15 +572,6 @@ EXPORT_SYMBOL_GPL(q6adm_matrix_map);
-  */
- int q6adm_close(struct device *dev, struct q6copp *copp)
- {
--	struct q6adm *adm = dev_get_drvdata(dev->parent);
--	int ret = 0;
--
--	ret = q6adm_device_close(adm, copp, copp->afe_port, copp->copp_idx);
--	if (ret < 0) {
--		dev_err(adm->dev, "Failed to close copp %d\n", ret);
--		return ret;
--	}
--
- 	kref_put(&copp->refcount, q6adm_free_copp);
- 
- 	return 0;
+-			/* Do not flush error routes if network namespace is
+-			 * not being dismantled
++			/* When not flushing the entire table, skip error
++			 * routes that are not marked for deletion.
+ 			 */
+-			if (!flush_all && fib_props[fa->fa_type].error) {
++			if (!flush_all && fib_props[fa->fa_type].error &&
++			    !(fi->fib_flags & RTNH_F_DEAD)) {
+ 				slen = fa->fa_slen;
+ 				continue;
+ 			}
+-- 
+2.51.0
+
 
 
 
