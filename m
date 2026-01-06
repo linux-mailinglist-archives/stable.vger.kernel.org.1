@@ -1,66 +1,95 @@
-Return-Path: <stable+bounces-205091-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205094-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF386CF8D46
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 15:42:57 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E21BCF8E3D
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 15:54:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E789330D2C23
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 14:35:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A359C3043111
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 14:49:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63DD731283B;
-	Tue,  6 Jan 2026 14:35:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84380330651;
+	Tue,  6 Jan 2026 14:49:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="CThrL6m/"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FWL7fmRr"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C84F030F95B
-	for <stable@vger.kernel.org>; Tue,  6 Jan 2026 14:35:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8389832D451
+	for <stable@vger.kernel.org>; Tue,  6 Jan 2026 14:48:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767710145; cv=none; b=D1zMbbmVXzx85RCIm4rd/V4dlFIETKbNcaRecf9xWutmGe5/r2pGJcOPrgzfoQA3YxalvbymH6XrQrpxFIjxHV81VD+6HpZGVqRiKwPzj8/QBDKDlMdktIKBRcshUF2HHQ4uXamoi7PXZjzl28LH6FZxCEuGM9/Nwyj1urR92mA=
+	t=1767710941; cv=none; b=EXWgAe/dSs8luesFdcjNmSYgcYwKTaCZi2CwAn8aUL8jVlKnSCJuUItQ8BomUIwpUygmEXp18gZaVjDXfh5ROpxmod7EvpkPPZUqMfSd8iD+/g+oSJMxLj5f5JoimCuDi3ptfkOJJDVMbpJdPYsD/2HTQRzSsURg2Slb5v99nQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767710145; c=relaxed/simple;
-	bh=2g0arGsCZS+agmJlzhw9RVi7pA48B0o0QCSrw7QaI24=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MvazyvX/sa/KwPvTVVHZzMCnNn4uskENOs+O3OAOItzVOFOKMAwNQyoNkgOawbisjPq4dpWZ0+aafZHGWrsnaT2QnemjeazB6aIoqa70KFXmBHJQ30CuxfrzZyMgo36i4qve3M+LX+a+01WTbAEyv3OMCCnpIBLiuY76JbHx1to=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=CThrL6m/; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id C68AE1A26A1
-	for <stable@vger.kernel.org>; Tue,  6 Jan 2026 14:35:38 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 99E5360739;
-	Tue,  6 Jan 2026 14:35:38 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id DB75D103C81A4;
-	Tue,  6 Jan 2026 15:35:36 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1767710137; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=GPXBG+K7kv9gnhWYjUJagnLMTxYyWguUJrYhQLKaAoE=;
-	b=CThrL6m/Ln7UlqIAlk7mtYdrgF4xs9rETt3Qy7sZix3RwUyIZMJt2ftkpipKQCEaRu2IbG
-	J4ctgsvB3d1+1REUu9tm5REuw/Pf++jpfox/pL6qICoZ7L06aQyNSXxBAEAF8CMAZ3Qcem
-	fTqSwY2YjUPznqtVygEeUN0vsqL6xMOTiIbPKG20fiY49kLhC+uZPUfeZMq9jia4YPjGmh
-	PW8EjndMtSTYYexEh59/DjQaga+KoyXIKMkKsnsxhu5cPgmzYqk34o5T9H5PheTMgE+f2v
-	BU/Y1srizL9f+4jPP0j44sgnnOKvo31vUFLwjAOIpVwS0PQQ6G+czChpbDJrfA==
-Date: Tue, 6 Jan 2026 15:35:35 +0100
-From: Kory Maincent <kory.maincent@bootlin.com>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: dianders@chromium.org, luca.ceresoli@bootlin.com, stable@vger.kernel.org
-Subject: Re: FAILED: patch "[PATCH] drm/tilcdc: Fix removal actions in case
- of failed probe" failed to apply to 6.12-stable tree
-Message-ID: <20260106153535.40819ba3@kmaincent-XPS-13-7390>
-In-Reply-To: <2026010623-sierra-delay-cd63@gregkh>
-References: <2026010529-certainty-unguided-7d41@gregkh>
-	<20260105154701.5bc5d143@kmaincent-XPS-13-7390>
-	<2026010512-flame-zips-0374@gregkh>
-	<20260105174732.47163620@kmaincent-XPS-13-7390>
-	<2026010623-sierra-delay-cd63@gregkh>
-Organization: bootlin
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1767710941; c=relaxed/simple;
+	bh=6YOiDJGD/xN647oeFLRihMwreWGKsEw4MO9xcq+Juho=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=lG+nxOEz8rUtd9bzzBC1h/4M8MMfBO2AKss5Hfl9F3+YUY9fK3FtypuwcGrAeXM7UJIV5z3EQ/4G5v96qQ8t42xZMlhmMLxkP94ol4C+y+FTvKLoxg9DB5zeSqjvRI52eVB/apbxH5MdvDBA1Xg6RuY7tJN1xI65w2+rm54AMkg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FWL7fmRr; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-47d3ffa6720so10387155e9.0
+        for <stable@vger.kernel.org>; Tue, 06 Jan 2026 06:48:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1767710938; x=1768315738; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=gxkFIY8qM1qxfl1HL58V0glbGXXY0jztZigsQiwZ12I=;
+        b=FWL7fmRrwjfKdAIe5oYslIrym+s5QmaLtQljTsUvqDW6DstBKJo7NxqsGtwEDoyZLY
+         le32rSrvbLBRQY0YITEeawJ7UleFQk4qVmft0egOTsrYuzS6zdyy/Ujwe9GU0UWoZ9Sy
+         2p2R/nid6IQIDSXM9md4pNepC4RDU1vYmCv3qS4CUJztiLnlm7kXHB7R3XAvswB5cKB5
+         KnCIg0II64VHrKezapXxSktOVmmdt6MmQTfVU9CKFlLaHTi9r20VbIvUrBwGV5cJ08Jg
+         yLJzvsulBo5wsH83yILR/fZmRSeDySBGLOWn7w4JrnyPZl2mYNe40tuGrZXPIcAblhUK
+         tJlA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767710938; x=1768315738;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=gxkFIY8qM1qxfl1HL58V0glbGXXY0jztZigsQiwZ12I=;
+        b=Ym/kwEZztOn4k+UcqtvFTymgu7kMvZvR7vtcbR7uOoYyK6zEi/gWQ0uiy3UCfLf1Ss
+         khuVuQJMk1muChqAzMf8VdJ9RkeYk1OgC/U/XoOWc2O0NF4vaePsOvNwveidG3HPP3LB
+         QlyZBAYEeUcoNcC2XO0w9CPwKcFtx5lynBp1SURkkFXTDFuB5gMx+36medxrGPkh5Ok2
+         ftx9HEqXaCs41pWVENorSCGGQ5yMJwH65Cx04QWthHVsegYlbZaMH5OjIB7JyBAL/9nS
+         CxQ+KG8XXaJMUpMD/GFeo0+6CDU1lR+4OxSfV8zku/UrvEqRyQesss+HIGLhyUE/PIPr
+         WPvw==
+X-Forwarded-Encrypted: i=1; AJvYcCU4Knlo8xwvutgwaUASMA3gipJN8G4xUMb9+shtZOl5suU37O1+3GtM8C3CMT/wm0z1XhIyjcQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyc0W+E+/lP5xsrmH+T5Eb+GyARa7VDaiLgc4lrgh+LQPJSHIy8
+	ARHPt5U6UzDT1dN+nbwohbvBHdiFyad75eaNclGvykm3voXUqSdPu3VT
+X-Gm-Gg: AY/fxX4zvbUx3t9GSAc1vABa0ahxGKUjW55MTaL5INLwtZaHPKYXmRv8LH5r8JMaOJs
+	2cAJoHQjbyd5H52Xoll/pFVmOQ1z06kDThoAGb69GWOAw4ZctAriCJv6BdYQz3UIRIz0qSSIFf4
+	MsYBb8fPY91hOV+euIhpexBONZwHopocbxtJHZto1iYf8kgSrvjMfHep4Nb/vGf7Hz3elDrRwgB
+	ob7OkJCka23S+6lW215VzpFUlnrea6DtUZcxjQm5JONp2AsR7+O8AgLibnISak7s8mL5rbQn0oi
+	DXOa8DuCVWXORZK4sX8jejfuHftsrIinxXdrmyHyqUB9AfiYoDrx4PzZ/B3P/Xx6tXxvTYM4lSf
+	5GmyX6yWzft3/pGiL9I4A8uIaYNHyHgMkqzQkNdCsLb73+7iMfPCeJOTOsDGWDcQDqimDQvBHV7
+	My789nQh+tzX9wEaqMyIsYSiIcRs8WV/CtFsqvSCJe/8pS
+X-Google-Smtp-Source: AGHT+IEj73RVY8eYlp2o73JgkLW4iMwOBRsV69LLVN84xy5evsMlhdmdNOmgoJ0bEI5q3eY0MF7NJw==
+X-Received: by 2002:a05:600c:8b05:b0:471:14f5:126f with SMTP id 5b1f17b1804b1-47d7f0a806bmr32999185e9.33.1767710937649;
+        Tue, 06 Jan 2026 06:48:57 -0800 (PST)
+Received: from ionutnechita-arz2022.local ([2a02:2f0e:ca09:7000:33fc:5cce:3767:6b22])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47d7fb3a912sm19743095e9.4.2026.01.06.06.48.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 06 Jan 2026 06:48:56 -0800 (PST)
+From: Ionut Nechita <djiony2011@gmail.com>
+X-Google-Original-From: Ionut Nechita <ionut.nechita@windriver.com>
+To: bvanassche@acm.org
+Cc: axboe@kernel.dk,
+	gregkh@linuxfoundation.org,
+	ionut.nechita@windriver.com,
+	linux-block@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	ming.lei@redhat.com,
+	muchun.song@linux.dev,
+	sashal@kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] block: Fix WARN_ON in blk_mq_run_hw_queue when called from interrupt context
+Date: Tue,  6 Jan 2026 16:40:21 +0200
+Message-ID: <20260106144023.381884-2-ionut.nechita@windriver.com>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <6eb6abcf-26aa-473d-843e-428ae0f38203@acm.org>
+References: <6eb6abcf-26aa-473d-843e-428ae0f38203@acm.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,60 +97,82 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
 
-On Tue, 6 Jan 2026 15:20:15 +0100
-Greg KH <gregkh@linuxfoundation.org> wrote:
+Hi Bart,
 
-> On Mon, Jan 05, 2026 at 05:47:32PM +0100, Kory Maincent wrote:
-> > On Mon, 5 Jan 2026 17:30:39 +0100
-> > Greg KH <gregkh@linuxfoundation.org> wrote:
-> >  =20
-> > > On Mon, Jan 05, 2026 at 03:47:01PM +0100, Kory Maincent wrote: =20
-> > > > On Mon, 05 Jan 2026 14:26:29 +0100
-> > > > <gregkh@linuxfoundation.org> wrote:
-> > > >    =20
-> > > > > The patch below does not apply to the 6.12-stable tree.
-> > > > > If someone wants it applied there, or to any other stable or long=
-term
-> > > > > tree, then please email the backport, including the original git
-> > > > > commit id to <stable@vger.kernel.org>.
-> > > > >=20
-> > > > > To reproduce the conflict and resubmit, you may use the following
-> > > > > commands:   =20
-> > > >=20
-> > > > No conflict on my side on current linux-6.12.y.
-> > > > Have you more informations?   =20
-> > >=20
-> > > Did you try building it?  I don't remember why this failed, sorry. =20
-> >=20
-> > Yes, and I didn't face any errors. =20
->=20
-> Fails due to other stable patches in the queue in this same area:
-> 	Applying drm-tilcdc-fix-removal-actions-in-case-of-failed-probe.patch
-> to linux-6.12.y Applying patch
-> drm-tilcdc-fix-removal-actions-in-case-of-failed-probe.patch patching file
-> drivers/gpu/drm/tilcdc/tilcdc_crtc.c patching file
-> drivers/gpu/drm/tilcdc/tilcdc_drv.c Hunk #1 succeeded at 171 (offset -1
-> lines). Hunk #2 succeeded at 218 (offset -1 lines).
-> 	Hunk #3 succeeded at 311 (offset -1 lines).
-> 	Hunk #4 succeeded at 322 (offset -1 lines).
-> 	Hunk #5 FAILED at 371.
-> 	1 out of 5 hunks FAILED -- rejects in file
-> drivers/gpu/drm/tilcdc/tilcdc_drv.c patching file
-> drivers/gpu/drm/tilcdc/tilcdc_drv.h Patch
-> drm-tilcdc-fix-removal-actions-in-case-of-failed-probe.patch does not app=
-ly
-> (enforce with -f)
->=20
-> Care to rebase on the next release and send it then?
+Thank you for the thorough and insightful review. You've identified several critical issues with my submission that I need to address.
 
-Ok for me.
+> 6.6.71 is pretty far away from Jens' for-next branch. Please use Jens'
+> for-next branch for testing kernel patches intended for the upstream kernel.
 
-Regards,
---=20
-K=C3=B6ry Maincent, Bootlin
-Embedded Linux and kernel engineering
-https://bootlin.com
+You're absolutely right. I was testing on the stable Debian kernel (6.6.71-rt) which was where the issue was originally reported. I will now fetch and test on Jens' for-next branch and ensure the issue reproduces there before resubmitting.
+
+> Where in the above call stack is the code that disables interrupts?
+
+This was poorly worded on my part, and I apologize for the confusion. The issue is NOT "interrupt context" in the hardirq sense.
+
+What's actually happening:
+- **Context:** kworker thread (async SCSI device scan)
+- **State:** Running with preemption disabled (atomic context, not hardirq)
+- **Path:** Queue destruction during device probe error cleanup
+- **Trigger:** On PREEMPT_RT, in_interrupt() returns true when preemption is disabled, even in process context
+
+The WARN_ON in blk_mq_run_hw_queue() at line 2291 is:
+  WARN_ON_ONCE(!async && in_interrupt());
+
+On PREEMPT_RT, this check fires because:
+1. blk_freeze_queue_start() calls blk_mq_run_hw_queues(q, false) ← async=false
+2. This eventually calls blk_mq_run_hw_queue() with async=false
+3. in_interrupt() returns true (because preempt_count indicates atomic state)
+4. WARN_ON triggers
+
+So it's not "interrupt context" - it's atomic context (preemption disabled) being detected by in_interrupt() on RT kernel.
+
+> How is the above call stack related to the reported problem? The above
+> call stack is about request queue allocation while the reported problem
+> happens during request queue destruction.
+
+You're absolutely correct, and I apologize for the confusion. I mistakenly included two different call stacks in my commit message:
+
+1. **"scheduling while atomic" during blk_mq_realloc_hw_ctxs** - This was from queue allocation and is a DIFFERENT issue. It should NOT have been included.
+
+2. **WARN_ON during blk_queue_start_drain** - This is the ACTUAL issue that my patch addresses (queue destruction path).
+
+I will revise the commit message to remove the unrelated allocation stack trace and focus solely on the queue destruction path.
+
+> I apologize for the confusion in my commit message. Should I:
+> 1. Revise the commit message to accurately describe the blk_queue_start_drain() path?
+> 2. Add details about the PREEMPT_RT context causing the atomic state?
+>
+> The answer to both questions is yes.
+
+Understood. I will prepare v3->v5 with the following corrections:
+
+1. **Test on Jens' for-next branch** - Fetch, reproduce, and validate the fix on the upstream development tree
+
+2. **Accurate context description** - Replace "IRQ thread context" with "kworker context with preemption disabled (atomic context on RT)"
+
+3. **Single, clear call stack** - Remove the confusing allocation stack trace, focus only on the destruction path:
+   ```
+   scsi_alloc_sdev (error path)
+   → __scsi_remove_device
+   → blk_mq_destroy_queue
+   → blk_queue_start_drain
+   → blk_freeze_queue_start
+   → blk_mq_run_hw_queues(q, false)  ← Problem: async=false
+   ```
+
+4. **Explain PREEMPT_RT specifics** - Clearly describe why in_interrupt() returns true in atomic context on RT kernel, and how changing to async=true avoids the problem
+
+5. **Accurate problem statement** - This is about avoiding synchronous queue runs in atomic context on RT, not about MSI-X IRQ thread contention (that was a misunderstanding on my part)
+
+I'll respond again once I've validated on for-next and have a corrected v3->v5 ready.
+
+Thank you again for the detailed feedback.
+
+Best regards,
+Ionut
+--
+2.52.0
 
