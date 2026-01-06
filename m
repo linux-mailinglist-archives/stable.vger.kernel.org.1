@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-205688-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205967-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 958F9CFAFB1
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 21:46:43 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D4C0CFAF48
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 21:37:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5744B301664B
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 20:46:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2666630DC67B
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 20:31:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 819883563C6;
-	Tue,  6 Jan 2026 17:45:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3FF9366DA2;
+	Tue,  6 Jan 2026 18:00:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lSojw1KS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KEPBsnBs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E73A3559FD;
-	Tue,  6 Jan 2026 17:45:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B014B36655B;
+	Tue,  6 Jan 2026 18:00:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721526; cv=none; b=lOiqOJMP3o3m+XTx4MaZs6a5urjwEdHMFkEv75KRRvLIVwo9vCQmLiVXfn+J5Vu6DOYiXRlxwov6Aq5lE7NruExn0FjIFhw2NpRHyss62/lok0p4DWRfjHK4K2+pJTJt5X9J32Uc2yYmiKsdoXNHoSwgOGvzVDk3WkORKRfGbsU=
+	t=1767722458; cv=none; b=tKwT02GllBFGev5PSXw7+SjCc10kLN60MMa+Xhz9cG9QddZ0JIG8hrPXhGE2prxRKRBerlsTqN/TtyfGA0MN2sZBz652t4lQ4xeDTdPBsgXJ15c62VWtiVDT487wZ2I6sRYVGVPuKo9TwU48AUoEy0hAV/SCGSU53GEvYxrU8HU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721526; c=relaxed/simple;
-	bh=iWVhLUey+Y3NadkMP0BScf4Fj1U6HV9GGKzmam1/N5Q=;
+	s=arc-20240116; t=1767722458; c=relaxed/simple;
+	bh=WzjStEDWmZsIVK+z8hjjruP5zV+YLeHJ25Xp2bKWnj0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AJXOKvaKv19G/EkN+3gFtvtr+55ZvcP+XMwgNzrlOPqPtbqjM5IBuhRD9QlOR//V2jjMgkFGwLxqZ0FYybwArn8dUieuL0MdNg6Mor4BnrSv20lXb9VWgkNQYz6XTHhFQq99zj1AkQ9VzZA9GDUDFGS16nix8pJ2VVwLFlVCX5A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lSojw1KS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7089C2BC86;
-	Tue,  6 Jan 2026 17:45:25 +0000 (UTC)
+	 MIME-Version; b=r1G3p3Vl/p5ByBBlDYZn8dofGCS1/tWizQauHlC6OYWiir3bp3INO3aQfTIY2OGMEO24zF/sM9mQmssThAuF1ynUh0ES51evZbK4KJ81mqV17EsME5F+rjN3cvgerZi9TfZv/d1vMXWS+IGTR/HD4OKtF8SNX9uhITJalmYUHpA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KEPBsnBs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2027C116C6;
+	Tue,  6 Jan 2026 18:00:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721526;
-	bh=iWVhLUey+Y3NadkMP0BScf4Fj1U6HV9GGKzmam1/N5Q=;
+	s=korg; t=1767722458;
+	bh=WzjStEDWmZsIVK+z8hjjruP5zV+YLeHJ25Xp2bKWnj0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lSojw1KSVBmz/c90r+XXZKnC8TEkceMapnnXIQISyWA3Sl0sOop73cLUjAy8DltZk
-	 pc5pizYrgDNEdbd2E071+K5VIuSokYmSBw5FMWjQ+lL0EwcNN37gt0JTca8jFpR9+B
-	 WvhKN/pBpc228iyU7yZmfIxkSYVHxNZYCMjo+ocM=
+	b=KEPBsnBsHeVCF4gNF40pMHwFygGcu6JRdixTGuhZ43mJ8x9gxHK7ZmB+94X/CHuJW
+	 KjG7SQg0Mn5YrlmQqWoYM+A9rQhbGhAxyf7WOC2hmTv/kc81KdQw0FmuxonxJ0QxA8
+	 hnSAcQr8gh9+c6/zSlNRhM0RE38Qf46i1HN/az4Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Cosmin Tanislav <demonsingur@gmail.com>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Michael Walle <mwalle@kernel.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>
-Subject: [PATCH 6.12 530/567] serial: core: Fix serial device initialization
+	syzbot+b0da83a6c0e2e2bddbd4@syzkaller.appspotmail.com,
+	Jason Gunthorpe <jgg@nvidia.com>
+Subject: [PATCH 6.18 238/312] RDMA/cm: Fix leaking the multicast GID table reference
 Date: Tue,  6 Jan 2026 18:05:12 +0100
-Message-ID: <20260106170511.002582854@linuxfoundation.org>
+Message-ID: <20260106170556.461632302@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
-References: <20260106170451.332875001@linuxfoundation.org>
+In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
+References: <20260106170547.832845344@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +59,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
+From: Jason Gunthorpe <jgg@nvidia.com>
 
-commit f54151148b969fb4b62bec8093d255306d20df30 upstream.
+commit 57f3cb6c84159d12ba343574df2115fb18dd83ca upstream.
 
-During restoring sysfs fwnode information the information of_node_reused
-was dropped. This was previously set by device_set_of_node_from_dev().
-Add it back manually
+If the CM ID is destroyed while the CM event for multicast creating is
+still queued the cancel_work_sync() will prevent the work from running
+which also prevents destroying the ah_attr. This leaks a refcount and
+triggers a WARN:
 
-Fixes: 24ec03cc5512 ("serial: core: Restore sysfs fwnode information")
-Cc: stable <stable@kernel.org>
-Suggested-by: Cosmin Tanislav <demonsingur@gmail.com>
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Tested-by: Michael Walle <mwalle@kernel.org>
-Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Tested-by: Cosmin Tanislav <demonsingur@gmail.com>
-Link: https://patch.msgid.link/20251219152813.1893982-1-alexander.stein@ew.tq-group.com
+   GID entry ref leak for dev syz1 index 2 ref=573
+   WARNING: CPU: 1 PID: 655 at drivers/infiniband/core/cache.c:809 release_gid_table drivers/infiniband/core/cache.c:806 [inline]
+   WARNING: CPU: 1 PID: 655 at drivers/infiniband/core/cache.c:809 gid_table_release_one+0x284/0x3cc drivers/infiniband/core/cache.c:886
+
+Destroy the ah_attr after canceling the work, it is safe to call this
+twice.
+
+Link: https://patch.msgid.link/r/0-v1-4285d070a6b2+20a-rdma_mc_gid_leak_syz_jgg@nvidia.com
+Cc: stable@vger.kernel.org
+Fixes: fe454dc31e84 ("RDMA/ucma: Fix use-after-free bug in ucma_create_uevent")
+Reported-by: syzbot+b0da83a6c0e2e2bddbd4@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/68232e7b.050a0220.f2294.09f6.GAE@google.com
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/serial_base_bus.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/infiniband/core/cma.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/tty/serial/serial_base_bus.c
-+++ b/drivers/tty/serial/serial_base_bus.c
-@@ -74,6 +74,7 @@ static int serial_base_device_init(struc
- 	dev->parent = parent_dev;
- 	dev->bus = &serial_base_bus_type;
- 	dev->release = release;
-+	dev->of_node_reused = true;
+--- a/drivers/infiniband/core/cma.c
++++ b/drivers/infiniband/core/cma.c
+@@ -2009,6 +2009,7 @@ static void destroy_mc(struct rdma_id_pr
+ 		ib_sa_free_multicast(mc->sa_mc);
  
- 	device_set_node(dev, fwnode_handle_get(dev_fwnode(parent_dev)));
+ 	if (rdma_protocol_roce(id_priv->id.device, id_priv->id.port_num)) {
++		struct rdma_cm_event *event = &mc->iboe_join.event;
+ 		struct rdma_dev_addr *dev_addr =
+ 			&id_priv->id.route.addr.dev_addr;
+ 		struct net_device *ndev = NULL;
+@@ -2031,6 +2032,8 @@ static void destroy_mc(struct rdma_id_pr
+ 		dev_put(ndev);
  
+ 		cancel_work_sync(&mc->iboe_join.work);
++		if (event->event == RDMA_CM_EVENT_MULTICAST_JOIN)
++			rdma_destroy_ah_attr(&event->param.ud.ah_attr);
+ 	}
+ 	kfree(mc);
+ }
 
 
 
