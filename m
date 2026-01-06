@@ -1,127 +1,290 @@
-Return-Path: <stable+bounces-204958-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204959-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A53E8CF608B
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 00:51:25 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE020CF60D8
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 01:02:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9030F3075F0A
-	for <lists+stable@lfdr.de>; Mon,  5 Jan 2026 23:51:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D7D26303E41A
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 00:02:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E45662D7DE1;
-	Mon,  5 Jan 2026 23:51:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C36A9BA3D;
+	Tue,  6 Jan 2026 00:02:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e7RX2XPm"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Rfb8dlqw"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96303221F39;
-	Mon,  5 Jan 2026 23:51:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2AD73A1E88
+	for <stable@vger.kernel.org>; Tue,  6 Jan 2026 00:02:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767657079; cv=none; b=B8JsteOu6JYAefULJ7XUP9AiV/gA1PA6kkeDyhHXIFrsQ+7ngYJ1ME3BPTl9birL98TnWQW2YAgS5oO3tJPBDuQ8aVW3Is0Axfny4KvuYT4g1zpwFh0JexiDRNS7OxAoa7Pft5LY0sbIyZAe008gN4Cxms3iLnW1jz0iy/GY0Z8=
+	t=1767657734; cv=none; b=eU+858cEGVk4KrdHwy8ZlkynolkE5chplom7BcvZYAxTTSGmZJEJ/pHQkmabC+YstHc+COvsvXNdz7rKZiSesf31QVTO2lX1zDAauar7cnthuVH3X2ZZev/AkIvrD00rzYiHEbC6jvaMpDkdXIjSOpLiuyLfUO4HwJ5pYbGmaUU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767657079; c=relaxed/simple;
-	bh=XJ9eT8cqm1GHWwEU2heyZiCGj7Z4P2U8GtuPK/Nfre8=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=Goyaat7npe3WuH0d0+udFMQUstcF0uiavthC2IheSIWwVdT9/LOgFsb8F/XbcxS3A8kIdFVQn4sBJ8kvFPRrm26XAOwg6aYFGd9ZMK6/Y3fOlvaq7AZztB2o0A5b1jdwyWcDG7dfWTwumSObk95w0Uai98eK3phKStxvBPEoQpU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e7RX2XPm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44F11C116D0;
-	Mon,  5 Jan 2026 23:51:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767657079;
-	bh=XJ9eT8cqm1GHWwEU2heyZiCGj7Z4P2U8GtuPK/Nfre8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=e7RX2XPmxqj4f6CbWY9AVg6rRnvsskKfFhb5TFLQGzbKfnCPORmxNF5EMQDlV74nF
-	 LPKJzDwWzCHrPhqSflFNsl5R8dfK1JbcHzqhp6sxrDw9FtKRdSgcyt9xW3Kmug0+yx
-	 yu8u3mWSDjkiJapdMyzGc/Ym2wCBYFk9sGZSd80MpeFRGOBYXm8ZsqdwBk5c3kVDmh
-	 8z7cq/Sot4SsQn8Y7RZCymPFgYkYs/bDNWXMgz0PSzcRK3dVS8HvZ8aMaJRR18OCrj
-	 xTMHghvdX94v/geEMdPBPE8ddudD6TdwuCxzEc89LsYjjfHr3fGk6sbUmCHVk6iXbM
-	 kgdmfxZr9A40w==
-Date: Mon, 5 Jan 2026 17:51:17 -0600
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Brian Norris <briannorris@chromium.org>
-Cc: Bjorn Helgaas <bhelgaas@google.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-	Brian Norris <briannorris@google.com>, stable@vger.kernel.org
-Subject: Re: [PATCH] PCI/PM: Avoid redundant delays on D3hot->D3cold
-Message-ID: <20260105235117.GA336996@bhelgaas>
+	s=arc-20240116; t=1767657734; c=relaxed/simple;
+	bh=rroKNlVbZCy7ELszwC9b9j/yeamYk+rHS6PmAGGv8BE=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=qRYKr3yNjDTnnw5iZbCWAt+z2ezzlO0gUl/aX2Em5PTT2iX2wyswo5PBXlP/tN8OxiVll4BivohiOQnEgJYrO3NFWeDNLvFegT2Ync1oXuaLg49cWuEEfcnbOg2fQviH2U6/orbiAvfw4JfzRWY9BH8nxWKtFWcSrFQSqSzFuEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Rfb8dlqw; arc=none smtp.client-ip=209.85.216.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-34c64cd48a8so950571a91.0
+        for <stable@vger.kernel.org>; Mon, 05 Jan 2026 16:02:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1767657732; x=1768262532; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=vGRWL2JiL9rij9W12TBCl4/Iu/deWdZO6/owu4HUTBY=;
+        b=Rfb8dlqwxuGA5RYfLr1i9KzHzPVMpAkb9EMBlXdRhz5Z5LCZbfkzw9Cyv3cAik1/n1
+         VDDYqM/v4LIQ6bXR5FuozMDKFsIh+2/70tvFV1nFjUSUGTEBYlruE48rQDGAO8CdV6tm
+         sDJd60VKAlAfSmYKy3fv9HgkZ8xdBl/9Bt5Qc2DsjyeLuqz7pNrfcLjm8q6v4u8s7qOT
+         zg5CqIZqGb/tlKZRy8SW9CQAQ9WZY1T26ETHIcnVzaXngv74D5gq7qEoAD/02FK+ABuA
+         0KSwMXJxopSuiXbffh17SsK6m2zN2v1DEKGTkTnBqcAmvDXjrsfrf5CPuFv3hTPNg0YZ
+         ObAQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767657732; x=1768262532;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=vGRWL2JiL9rij9W12TBCl4/Iu/deWdZO6/owu4HUTBY=;
+        b=otb+0EB9USZAEV3xVOoGTYQupDTiIFIvaaV41n+XmIAmZN+7ydN+JgsVxWnytHw+/R
+         8XdoiP8OmDBpdsh+y3LgCCkRd3fT27NzZSNFN7P2QevWGQn2VmIkMLhCEC97ySTB8WGI
+         bF/1/cOEVZswdY1p0B50Lf9r44zKY1V+bIy+T8ccgkoGAMjck2dAEy3ysWmpKfv2ZRvd
+         R37hN3HFWF0mJ2OaBjh7HM9kU9KLlYK/sgSEAQHv/qnrn9GZb4WfGTirTM3WHyuHRRD5
+         98OaaJJaU6VVWrTiy3qtMbyxtw3BjF98CK1VAUmh1B3kFWGPm6BJ+e9IZEe2BMhVjqw+
+         v3uA==
+X-Forwarded-Encrypted: i=1; AJvYcCW5Bh0Hgi3dEd1uzCepv11T6H5ugB/RxYDvSMesfsVLzOhlmsF8rnsH3K1rdAzJa/idKZSGLqI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzwfkfiqg/APjETa43f3kXpNHsdwSXs4Bmvsq8vEjOmJdtisvR6
+	JZQ7r3689QeszEhQ0cogLrWReUCl3MJ8odXOVCm13UHgZ1dtWF8Ez5n2BM8K4Zh5FJ4DJ8KYae7
+	tSM2awQ==
+X-Google-Smtp-Source: AGHT+IEXmYTixm9R/utCr6gAiHjqsYw478azZr867duSrNV/vHlG45jG6yVt0zjtI4tUhhNJAOwAeNNTZ5s=
+X-Received: from pjxx11.prod.google.com ([2002:a17:90b:58cb:b0:349:a1a3:75fb])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:35c1:b0:33b:dec9:d9aa
+ with SMTP id 98e67ed59e1d1-34f5f3362f4mr711865a91.25.1767657732300; Mon, 05
+ Jan 2026 16:02:12 -0800 (PST)
+Date: Mon, 5 Jan 2026 16:02:10 -0800
+In-Reply-To: <20260101090516.316883-3-pbonzini@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251003154008.1.I7a21c240b30062c66471329567a96dceb6274358@changeid>
+Mime-Version: 1.0
+References: <20260101090516.316883-1-pbonzini@redhat.com> <20260101090516.316883-3-pbonzini@redhat.com>
+Message-ID: <aVxRAv888jsmQJ8-@google.com>
+Subject: Re: [PATCH 2/4] selftests: kvm: replace numbered sync points with actions
+From: Sean Christopherson <seanjc@google.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, x86@kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-On Fri, Oct 03, 2025 at 03:40:09PM -0700, Brian Norris wrote:
-> From: Brian Norris <briannorris@google.com>
+On Thu, Jan 01, 2026, Paolo Bonzini wrote:
+> Rework the guest=>host syncs in the AMX test to use named actions instead
+> of arbitrary, incrementing numbers.  The "stage" of the test has no real
+> meaning, what matters is what action the test wants the host to perform.
+> The incrementing numbers are somewhat helpful for triaging failures, but
+> fully debugging failures almost always requires a much deeper dive into
+> the test (and KVM).
 > 
-> When transitioning to D3cold, __pci_set_power_state() will first
-> transition a device to D3hot. If the device was already in D3hot, this
-> will add excess work:
-> (a) read/modify/write PMCSR; and
-> (b) excess delay (pci_dev_d3_sleep()).
+> Using named actions not only makes it easier to extend the test without
+> having to shift all sync point numbers, it makes the code easier to read.
 > 
-> For (b), we already performed the necessary delay on the previous D3hot
-> entry; this was extra noticeable when evaluating runtime PM transition
-> latency.
+> [Commit message by Sean Christopherson]
 > 
-> Check whether we're already in the target state before continuing.
-> 
-> Note that __pci_set_power_state() already does this same check for other
-> state transitions, but D3cold is special because __pci_set_power_state()
-> converts it to D3hot for the purposes of PMCSR.
-> 
-> This seems to be an oversight in commit 0aacdc957401 ("PCI/PM: Clean up
-> pci_set_low_power_state()").
-> 
-> Fixes: 0aacdc957401 ("PCI/PM: Clean up pci_set_low_power_state()")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Brian Norris <briannorris@google.com>
-> Signed-off-by: Brian Norris <briannorris@chromium.org>
-
-Applied to pci/pm for v6.20, thanks!
-
-I reversed the test to match similar tests in
-pci_set_low_power_state(), __pci_set_power_state(), etc.
-
-I dropped the stable tag because this is a performance improvement
-that I can't quantify and doesn't seem to fit in the categories here:
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/process/stable-kernel-rules.rst?id=v6.18#n15
-
-I'm not sure anybody pays attention to that list; lots of things I
-don't expect get backported, so likely this will get backported as
-well.  But as long as we have the documented list, I try to follow it.
-
-Would be good to have Rafael's ack, but I don't think we need to wait
-for it.
-
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 > ---
-> 
->  drivers/pci/pci.c | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-> index b0f4d98036cd..7517f1380201 100644
-> --- a/drivers/pci/pci.c
-> +++ b/drivers/pci/pci.c
-> @@ -1539,6 +1539,9 @@ static int pci_set_low_power_state(struct pci_dev *dev, pci_power_t state, bool
->  	   || (state == PCI_D2 && !dev->d2_support))
->  		return -EIO;
+> 	I wrote this before seeing your patch... It's obviously
+> 	similar but different enough that I kept my version. :)
+
+Heh, no worries.
+
+> @@ -244,6 +254,7 @@ int main(int argc, char *argv[])
+>  	memset(addr_gva2hva(vm, xstate), 0, PAGE_SIZE * DIV_ROUND_UP(XSAVE_SIZE, PAGE_SIZE));
+>  	vcpu_args_set(vcpu, 3, amx_cfg, tiledata, xstate);
 >  
-> +	if (state == dev->current_state)
-> +		return 0;
-> +
->  	pci_read_config_word(dev, dev->pm_cap + PCI_PM_CTRL, &pmcsr);
->  	if (PCI_POSSIBLE_ERROR(pmcsr)) {
->  		pci_err(dev, "Unable to change power state from %s to %s, device inaccessible\n",
-> -- 
-> 2.51.0.618.g983fd99d29-goog
-> 
+> +	int iter = 0;
+
+If we want to retain "tracing" of guest syncs, I vote to provide the information
+from the guest, otherwise I'll end up counting GUEST_SYNC() calls on my fingers
+(and run out of fingers) :-D.
+
+E.g. if we wrap all GUEST_SYNC() calls in a macro, we can print the line number
+without having to hardcode sync point numbers.
+
+# ./x86/amx_test 
+Random seed: 0x6b8b4567
+GUEST_SYNC line 164, save/restore VM state
+GUEST_SYNC line 168, save/restore VM state
+GUEST_SYNC line 172, save/restore VM state
+GUEST_SYNC line 175, save tiledata
+GUEST_SYNC line 175, check TMM0 contents
+GUEST_SYNC line 175, save/restore VM state
+GUEST_SYNC line 181, before KVM_SET_XSAVE
+GUEST_SYNC line 181, after KVM_SET_XSAVE
+GUEST_SYNC line 182, save/restore VM state
+GUEST_SYNC line 186, save/restore VM state
+GUEST_SYNC line 210, save/restore VM state
+GUEST_SYNC line 224, save/restore VM state
+GUEST_SYNC line 231, save/restore VM state
+GUEST_SYNC line 234, check TMM0 contents
+GUEST_SYNC line 234, save/restore VM state
+UCALL_DONE
+
+---
+ tools/testing/selftests/kvm/x86/amx_test.c | 55 +++++++++++++---------
+ 1 file changed, 33 insertions(+), 22 deletions(-)
+
+diff --git a/tools/testing/selftests/kvm/x86/amx_test.c b/tools/testing/selftests/kvm/x86/amx_test.c
+index 37b166260ee3..9593ecd47d28 100644
+--- a/tools/testing/selftests/kvm/x86/amx_test.c
++++ b/tools/testing/selftests/kvm/x86/amx_test.c
+@@ -131,19 +131,27 @@ static void set_tilecfg(struct tile_config *cfg)
+ }
+ 
+ enum {
++	TEST_SYNC_LINE_NUMBER_MASK = GENMASK(15, 0),
++
+ 	/* Retrieve TMM0 from guest, stash it for TEST_RESTORE_TILEDATA */
+-	TEST_SAVE_TILEDATA = 1,
++	TEST_SAVE_TILEDATA = BIT(16),
+ 
+ 	/* Check TMM0 against tiledata */
+-	TEST_COMPARE_TILEDATA = 2,
++	TEST_COMPARE_TILEDATA = BIT(17),
+ 
+ 	/* Restore TMM0 from earlier save */
+-	TEST_RESTORE_TILEDATA = 4,
++	TEST_RESTORE_TILEDATA = BIT(18),
+ 
+ 	/* Full VM save/restore */
+-	TEST_SAVE_RESTORE = 8,
++	TEST_SAVE_RESTORE = BIT(19),
+ };
+ 
++#define AMX_GUEST_SYNC(action)						\
++do {									\
++	kvm_static_assert(!((action) & TEST_SYNC_LINE_NUMBER_MASK));	\
++	GUEST_SYNC((action) | __LINE__);				\
++} while (0)
++
+ static void __attribute__((__flatten__)) guest_code(struct tile_config *amx_cfg,
+ 						    struct tile_data *tiledata,
+ 						    struct xstate *xstate)
+@@ -153,29 +161,29 @@ static void __attribute__((__flatten__)) guest_code(struct tile_config *amx_cfg,
+ 	GUEST_ASSERT(this_cpu_has(X86_FEATURE_XSAVE) &&
+ 		     this_cpu_has(X86_FEATURE_OSXSAVE));
+ 	check_xtile_info();
+-	GUEST_SYNC(TEST_SAVE_RESTORE);
++	AMX_GUEST_SYNC(TEST_SAVE_RESTORE);
+ 
+ 	/* xfd=0, enable amx */
+ 	wrmsr(MSR_IA32_XFD, 0);
+-	GUEST_SYNC(TEST_SAVE_RESTORE);
++	AMX_GUEST_SYNC(TEST_SAVE_RESTORE);
+ 	GUEST_ASSERT(rdmsr(MSR_IA32_XFD) == 0);
+ 	set_tilecfg(amx_cfg);
+ 	__ldtilecfg(amx_cfg);
+-	GUEST_SYNC(TEST_SAVE_RESTORE);
++	AMX_GUEST_SYNC(TEST_SAVE_RESTORE);
+ 	/* Check save/restore when trap to userspace */
+ 	__tileloadd(tiledata);
+-	GUEST_SYNC(TEST_SAVE_TILEDATA | TEST_COMPARE_TILEDATA | TEST_SAVE_RESTORE);
++	AMX_GUEST_SYNC(TEST_SAVE_TILEDATA | TEST_COMPARE_TILEDATA | TEST_SAVE_RESTORE);
+ 
+ 	/* xfd=0x40000, disable amx tiledata */
+ 	wrmsr(MSR_IA32_XFD, XFEATURE_MASK_XTILE_DATA);
+ 
+ 	/* host tries setting tiledata while guest XFD is set */
+-	GUEST_SYNC(TEST_RESTORE_TILEDATA);
+-	GUEST_SYNC(TEST_SAVE_RESTORE);
++	AMX_GUEST_SYNC(TEST_RESTORE_TILEDATA);
++	AMX_GUEST_SYNC(TEST_SAVE_RESTORE);
+ 
+ 	wrmsr(MSR_IA32_XFD, 0);
+ 	__tilerelease();
+-	GUEST_SYNC(TEST_SAVE_RESTORE);
++	AMX_GUEST_SYNC(TEST_SAVE_RESTORE);
+ 	/*
+ 	 * After XSAVEC, XTILEDATA is cleared in the xstate_bv but is set in
+ 	 * the xcomp_bv.
+@@ -199,7 +207,7 @@ static void __attribute__((__flatten__)) guest_code(struct tile_config *amx_cfg,
+ 	GUEST_ASSERT(!(xstate->header.xstate_bv & XFEATURE_MASK_XTILE_DATA));
+ 	GUEST_ASSERT((xstate->header.xcomp_bv & XFEATURE_MASK_XTILE_DATA));
+ 
+-	GUEST_SYNC(TEST_SAVE_RESTORE);
++	AMX_GUEST_SYNC(TEST_SAVE_RESTORE);
+ 	GUEST_ASSERT(rdmsr(MSR_IA32_XFD) == XFEATURE_MASK_XTILE_DATA);
+ 	set_tilecfg(amx_cfg);
+ 	__ldtilecfg(amx_cfg);
+@@ -213,17 +221,17 @@ static void __attribute__((__flatten__)) guest_code(struct tile_config *amx_cfg,
+ 	GUEST_ASSERT(!(get_cr0() & X86_CR0_TS));
+ 	GUEST_ASSERT(rdmsr(MSR_IA32_XFD_ERR) == XFEATURE_MASK_XTILE_DATA);
+ 	GUEST_ASSERT(rdmsr(MSR_IA32_XFD) == XFEATURE_MASK_XTILE_DATA);
+-	GUEST_SYNC(TEST_SAVE_RESTORE);
++	AMX_GUEST_SYNC(TEST_SAVE_RESTORE);
+ 	GUEST_ASSERT(rdmsr(MSR_IA32_XFD_ERR) == XFEATURE_MASK_XTILE_DATA);
+ 	GUEST_ASSERT(rdmsr(MSR_IA32_XFD) == XFEATURE_MASK_XTILE_DATA);
+ 	/* Clear xfd_err */
+ 	wrmsr(MSR_IA32_XFD_ERR, 0);
+ 	/* xfd=0, enable amx */
+ 	wrmsr(MSR_IA32_XFD, 0);
+-	GUEST_SYNC(TEST_SAVE_RESTORE);
++	AMX_GUEST_SYNC(TEST_SAVE_RESTORE);
+ 
+ 	__tileloadd(tiledata);
+-	GUEST_SYNC(TEST_COMPARE_TILEDATA | TEST_SAVE_RESTORE);
++	AMX_GUEST_SYNC(TEST_COMPARE_TILEDATA | TEST_SAVE_RESTORE);
+ 
+ 	GUEST_DONE();
+ }
+@@ -275,7 +283,6 @@ int main(int argc, char *argv[])
+ 	memset(addr_gva2hva(vm, xstate), 0, PAGE_SIZE * DIV_ROUND_UP(XSAVE_SIZE, PAGE_SIZE));
+ 	vcpu_args_set(vcpu, 3, amx_cfg, tiledata, xstate);
+ 
+-	int iter = 0;
+ 	for (;;) {
+ 		vcpu_run(vcpu);
+ 		TEST_ASSERT_KVM_EXIT_REASON(vcpu, KVM_EXIT_IO);
+@@ -285,13 +292,14 @@ int main(int argc, char *argv[])
+ 			REPORT_GUEST_ASSERT(uc);
+ 			/* NOT REACHED */
+ 		case UCALL_SYNC:
+-			++iter;
+ 			if (uc.args[1] & TEST_SAVE_TILEDATA) {
+-				fprintf(stderr, "GUEST_SYNC #%d, save tiledata\n", iter);
++				fprintf(stderr, "GUEST_SYNC line %d, save tiledata\n",
++					(u16)(uc.args[1] & TEST_SYNC_LINE_NUMBER_MASK));
+ 				tile_state = vcpu_save_state(vcpu);
+ 			}
+ 			if (uc.args[1] & TEST_COMPARE_TILEDATA) {
+-				fprintf(stderr, "GUEST_SYNC #%d, check TMM0 contents\n", iter);
++				fprintf(stderr, "GUEST_SYNC line %d, check TMM0 contents\n",
++					(u16)(uc.args[1] & TEST_SYNC_LINE_NUMBER_MASK));
+ 
+ 				/* Compacted mode, get amx offset by xsave area
+ 				 * size subtract 8K amx size.
+@@ -304,12 +312,15 @@ int main(int argc, char *argv[])
+ 				TEST_ASSERT(ret == 0, "memcmp failed, ret=%d", ret);
+ 			}
+ 			if (uc.args[1] & TEST_RESTORE_TILEDATA) {
+-				fprintf(stderr, "GUEST_SYNC #%d, before KVM_SET_XSAVE\n", iter);
++				fprintf(stderr, "GUEST_SYNC line %d, before KVM_SET_XSAVE\n",
++					(u16)(uc.args[1] & TEST_SYNC_LINE_NUMBER_MASK));
+ 				vcpu_xsave_set(vcpu, tile_state->xsave);
+-				fprintf(stderr, "GUEST_SYNC #%d, after KVM_SET_XSAVE\n", iter);
++				fprintf(stderr, "GUEST_SYNC line %d, after KVM_SET_XSAVE\n",
++					(u16)(uc.args[1] & TEST_SYNC_LINE_NUMBER_MASK));
+ 			}
+ 			if (uc.args[1] & TEST_SAVE_RESTORE) {
+-				fprintf(stderr, "GUEST_SYNC #%d, save/restore VM state\n", iter);
++				fprintf(stderr, "GUEST_SYNC line %d, save/restore VM state\n",
++					(u16)(uc.args[1] & TEST_SYNC_LINE_NUMBER_MASK));
+ 				state = vcpu_save_state(vcpu);
+ 				memset(&regs1, 0, sizeof(regs1));
+ 				vcpu_regs_get(vcpu, &regs1);
+
+base-commit: bc6eb58bab2fda28ef473ff06f4229c814c29380
+--
 
