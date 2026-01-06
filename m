@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-205089-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205090-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FFD2CF8CD9
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 15:34:03 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32913CF8D3D
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 15:42:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 659083023517
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 14:34:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4133130184CB
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 14:35:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5E8D31354D;
-	Tue,  6 Jan 2026 14:34:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38D7631352D;
+	Tue,  6 Jan 2026 14:35:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qqpBBoRA"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cHWmxWE8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C6FD313529;
-	Tue,  6 Jan 2026 14:34:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA33C31159C
+	for <stable@vger.kernel.org>; Tue,  6 Jan 2026 14:35:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767710040; cv=none; b=DDJb5WsTW1aaCFGm3So8oUQQnzfhH7gow4OHpM4FQe6v0TqhnB+9O1WFA0u/geHVKxKLQvrL30EQhAJh5asFWcd5/eOwi6Pwl9zzoShrQJ+SxeeN155UWc/khTegV9nMuMRZ8c6UtzLmc5bcBojiTJV5QlAI0iefDh/nkEjUrJk=
+	t=1767710140; cv=none; b=fPqGG0SFlbV34nRnnlce4CIsy3gG2q/Tx+fyJ0fCi/OHSdPFemS7RozWAO2PN5LtzXYJ2TPf0zUxGt9RnIih8RNLegXVONil3rRD1zokXdWId+FBfVknAD/1D0q7pKwvmA9BJtkvZ555N2MH57sFCGY0jgQ6+OS+yAKcyNiSwrU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767710040; c=relaxed/simple;
-	bh=OD1TgDZeB7mYEnHxc/Q1fkeQ0gYBFCDnhMkeUpbXDxU=;
+	s=arc-20240116; t=1767710140; c=relaxed/simple;
+	bh=3aey1rxhyZ3DGxEvx20ao4JiVSSZMfpaEGZCiLcboFg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BRwfKo7cVAavTA09J/3AnYaT3hVsyAk3HtpK7PzAaNCBrJxoajZIEageL3rHhZMZk9YoPRslN6ek3GA08j3t3k/X37GZaydtapdVq2qNG/afYqmy3mq/o67asY268H7uV16cqsos5wKzqyALiB10k9XU7BoeU1Hikl6uW6bbzfw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qqpBBoRA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 684BDC16AAE;
-	Tue,  6 Jan 2026 14:33:57 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=iz0qOBogKE4GZvsMjit+H+pAE61o8YctmFSY4nVaCEdnKG/YoZ3GpwiaNSTRDDS6I/psZL9V/Apy5Dw12ZvC0K9fWYqWmbaRmQAWkEwf7Njkemfr9/JdhvcdHFP4Yh9vCumbUb16gu2F5R4Oh3WcGmH8kgdtoRNAp3mQTF7fO2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cHWmxWE8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00765C116C6;
+	Tue,  6 Jan 2026 14:35:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767710040;
-	bh=OD1TgDZeB7mYEnHxc/Q1fkeQ0gYBFCDnhMkeUpbXDxU=;
+	s=k20201202; t=1767710139;
+	bh=3aey1rxhyZ3DGxEvx20ao4JiVSSZMfpaEGZCiLcboFg=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=qqpBBoRAPpFtdbygI5te+6DMFR2ULPHp+mdHIgT7EXp5Ap0QmtmsaVE+8wVktWG7+
-	 E3EpkARf0310WL7WpvBXnUKYlGaOD50KEK3ESWBcHpHb5blEZu+M32HYLhlg8DcoWL
-	 /OJiRimM3kzA87J3x5V6QH1Yx0nWn2el52RYxAOxFegRifD41A/thNtnLEQl+T6xwv
-	 uqr4uW0cugJ3igO3b/PuLaScCEl3co3p9oZp/bvOb+vMG03MkXPvwHWdmw8PJeY+t1
-	 SHgcb40tthApNsYn4G+c4qT4Wco7grALBDJWgNgb8CbwNIDG99mIBBAYgkLL+Y+MaT
-	 ibJnSp0MVoqPQ==
-Message-ID: <238ef4ab-7ea3-442a-a344-a683dd64f818@kernel.org>
-Date: Tue, 6 Jan 2026 15:33:54 +0100
+	b=cHWmxWE82GCfipjOW4wSp2eiSFL7GX3slkYtxEOnlG40PamJVFJZuq/ou01pgfShe
+	 AjZhRUSDPzBTmzL+L2E9oVUexngtFf0BuVuPvsqhVlzvYmIx0YhAodzSXJKq28OpLd
+	 hcb2IBhuLrjGk12pURhF9MZ2K6dRTr5s0Fdv7oFf5JLrFNV+xWk8Ka9TwP/nEWxCuL
+	 gVFcAGcEl7ABrQL7AfptHAs19hndNtKTW+GK559Kp8i6htL3xa6DYRT0X1DeRcONFc
+	 KLm1DHPKSNTZDFnl3zDYQyRyXjlH1jt9EPye5oDU7C8BOGwHICeeDlv1xVa0zB/u3Y
+	 0xgMEbnrILVLA==
+Message-ID: <3c1000ae-6c4b-4b03-a458-e74edf64db8f@kernel.org>
+Date: Tue, 6 Jan 2026 15:35:32 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -48,18 +48,15 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/1] fs/writeback: skip AS_NO_DATA_INTEGRITY mappings
- in wait_sb_inodes()
-To: Miklos Szeredi <miklos@szeredi.hu>
-Cc: Jan Kara <jack@suse.cz>, Joanne Koong <joannelkoong@gmail.com>,
- akpm@linux-foundation.org, linux-mm@kvack.org,
- athul.krishna.kr@protonmail.com, j.neuschaefer@gmx.net, carnil@debian.org,
- linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
-References: <20251215030043.1431306-1-joannelkoong@gmail.com>
- <20251215030043.1431306-2-joannelkoong@gmail.com>
- <ypyumqgv5p7dnxmq34q33keb6kzqnp66r33gtbm4pglgdmhma6@3oleltql2qgp>
- <616c2e51-ff69-4ef9-9637-41f3ff8691dd@kernel.org>
- <CAJfpeguBuHBGUq45bOFvypsyd8XXekLKycRBGO1eeqLxz3L0eA@mail.gmail.com>
+Subject: Re: [PATCH V2 5.15.y 0/2] Fix bad pmd due to race between
+ change_prot_numa() and THP migration
+To: Harry Yoo <harry.yoo@oracle.com>, stable@vger.kernel.org
+Cc: Liam.Howlett@oracle.com, akpm@linux-foundation.org, baohua@kernel.org,
+ baolin.wang@linux.alibaba.com, dev.jain@arm.com, hughd@google.com,
+ jane.chu@oracle.com, jannh@google.com, kas@kernel.org, lance.yang@linux.dev,
+ linux-mm@kvack.org, lorenzo.stoakes@oracle.com, npache@redhat.com,
+ pfalcato@suse.de, ryan.roberts@arm.com, vbabka@suse.cz, ziy@nvidia.com
+References: <20260106115036.86042-1-harry.yoo@oracle.com>
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -105,78 +102,25 @@ Autocrypt: addr=david@kernel.org; keydata=
  cFAM8nBWrEmNU2vvIGJzjJ/NVYYIY0TgOc5bS9wh6jKHL2+chrfDW5neLJjY2x3snF8q7U9G
  EIbBfNHDlOV8SyhEjtX0DyKxQKioTYPOHcW9gdV5fhSz5tEv+ipqt4kIgWqBgzK8ePtDTqRM
  qZq457g1/SXSoSQi4jN+gsneqvlTJdzaEu1bJP0iv6ViVf15+qHuY5iojCz8fa0=
-In-Reply-To: <CAJfpeguBuHBGUq45bOFvypsyd8XXekLKycRBGO1eeqLxz3L0eA@mail.gmail.com>
+In-Reply-To: <20260106115036.86042-1-harry.yoo@oracle.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 1/6/26 14:13, Miklos Szeredi wrote:
-> On Tue, 6 Jan 2026 at 11:05, David Hildenbrand (Red Hat)
-> <david@kernel.org> wrote:
-> 
->>> So I understand your patch fixes the regression with suspend blocking but I
->>> don't have a high confidence we are not just starting a whack-a-mole game
-> 
-> Joanne did a thorough analysis, so I still have hope.  Missing a case
-> in such a complex thing is not unexpected.
-> 
->> Yes, I think so, and I think it is [1] not even only limited to
->> writeback [2].
-> 
-> You are referring to DoS against compaction?
-
-In previous discussions it was raised that readahead runs into similar 
-problems.
-
-I don't recall all the details, but I think that we might end up holding 
-the folio lock forever while the fuse user space daemon is supposed to 
-fill the page with data; anybody trying to lock the folio would 
-similarly deadlock.
-
-Maybe only compaction/migration is affected by that, hard to tell.
-
-> 
-> It is a much more benign issue, since compaction will just skip locked
-> pages, AFAIU (wasn't always so:
-> https://lore.kernel.org/all/1288817005.4235.11393.camel@nimitz/).
-> 
-> Not saying it shouldn't be fixed, but it should be a separate discussion.
-
-Right. But as I pointed out in [4], there are other call paths where we 
-might end up waiting for writeback unless I am missing something.
-
-So it has whack-a-mole smell to it.
-
-> 
->> To handle the bigger picture (I raised another problematic instance in
->> [4]): I don't know how to handle that without properly fixing fuse. Fuse
->> folks should really invest some time to solve this problem for good.
-> 
-> Fixing it generically in fuse would necessarily involve bringing back
-> some sort of temp buffer.  The performance penalty could be minimized,
-> but complexity is what really hurts.
-
-I'm not sure about temp buffers. During early discussions there were 
-ideas about canceling writeback and instead marking the folio dirty 
-again. I assume there is a non-trivial solution space left unexplored 
-for now.
-
-> 
-> Maybe doing whack-a-mole results in less mess overall :-/
+On 1/6/26 12:50, Harry Yoo wrote:
+> V1 -> V2:
+>    - Because `pmd_val` variable broke ppc builds due to its name,
+>      renamed it to `_pmd`. see [1].
+>      [1] https://lore.kernel.org/stable/aS7lPZPYuChOTdXU@hyeyoo
 > 
 
-Maybe :) I'm fine with the patch as is as well.
+Ouch.
 
->> As a big temporary kernel hack, we could add a
->> AS_ANY_WAITING_UTTERLY_BROKEN and simply refuse to wait for writeback
->> directly inside folio_wait_writeback() -- not arbitrarily skipping it in
->> callers -- and possibly other places (readahead, not sure). That would
->> restore the old behavior.
-> 
-> No it wouldn't, since the old code had surrogate methods for waiting
-> on outstanding writes, which were called on fsync, etc.
+>    - Added David Hildenbrand's Acked-by [2], thanks a lot!
+>      [2] https://lore.kernel.org/linux-mm/ac8d7137-3819-4a75-9dd3-fb3d2259ebe4@kernel.org/
 
-Yeah, I raised some "except" below, I assume there are more. No that I 
-would want to go down that path :)
+
+LGTM
+
 
 -- 
 Cheers
