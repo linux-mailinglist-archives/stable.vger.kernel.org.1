@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-205419-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205711-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DA73CF9B28
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 18:30:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A08B1CF9F73
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:09:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7628A302E872
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:30:56 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5F8C93088E5F
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:07:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C24E721FF55;
-	Tue,  6 Jan 2026 17:30:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB9202D0C7B;
+	Tue,  6 Jan 2026 17:46:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uX3OXzqn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XAP9VBrQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F11F1D6AA;
-	Tue,  6 Jan 2026 17:30:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 767AF2C027F;
+	Tue,  6 Jan 2026 17:46:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767720629; cv=none; b=RBaoHhgHG/MrcikRSVS0kddWHnYZEM34a6/uqEx1ctwclgEAuoBRBM9SiiU1iELVmvVs05Xs0AIEyfSTkppv5MJCmgx/gofkB+KS4sMZnd4s4IzLmMzpoumGhRfUxXdDn9wNn5dqAe6NEM0AhH/R68XZcGO34cpaQXf/rslyDVA=
+	t=1767721603; cv=none; b=lbfP770oaNvmeYRN+l2sMAMBG80F1IcUNhOm/TyM5veThJTOyxIBTjPdobUUqqDkJRdvXJUy6P8Bue0uqHc+eIKd2nnPAmmD43jWvWl5bK1KuM3Po3AQXTFA9PcnKIlY7MJYkcfhuSUQgPgojvBrBhn0etss9/7Xz9HJvv/QquM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767720629; c=relaxed/simple;
-	bh=N4f1DZjgQhk5SYq9k9J8ivOmY3MpwcCQwnMssQT2Oaw=;
+	s=arc-20240116; t=1767721603; c=relaxed/simple;
+	bh=8Os0WCoU/3rcUFH21KBW3XzrFD0vJtPHp9NGkRoVyrk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a+n+Ha/guN2Q2H8AyZhnU5Uv6ZPJFyFiX+y8X04KCkGXh+TBpatpbKZsSKweag0vAfQxknPWS60mqqYMaLbhUAS9Gl/Bvolv7Z0a6lE5NYZZDN+PMQyaEmtUz9ty1u2YwxNeb9lkEir0sSXmZcs500L2XkBDC/PdBV+eBcw9US0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uX3OXzqn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C740FC116C6;
-	Tue,  6 Jan 2026 17:30:28 +0000 (UTC)
+	 MIME-Version; b=oGmsxkhFGYYtAS/KE4qgLBmunhAITOyvb6LOeSlwipZScGM/r2VOe+BXDeljs+Y7bBNwP/lsWjXPzIscQNoULxBIwt9DsvO4i+Tx+AoPt6tNrT12IpRrwBYuFiIfBq1yr/mc70Kwim3IjShQN+p+02l6vX4yDyeY8IfD7zlba4s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XAP9VBrQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1ACFC116C6;
+	Tue,  6 Jan 2026 17:46:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767720629;
-	bh=N4f1DZjgQhk5SYq9k9J8ivOmY3MpwcCQwnMssQT2Oaw=;
+	s=korg; t=1767721603;
+	bh=8Os0WCoU/3rcUFH21KBW3XzrFD0vJtPHp9NGkRoVyrk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uX3OXzqn02PnYFmpl8waIjGvgH9I6u+HUPOSgzjlNYwb13Sp/KqNRkSfjnCXEKSWa
-	 5F4hn6A31+o8/Z7jgc5XvCFGzEu5fC7zg+PmCYWxGPzUXwZImmIclUc0rJi6yfoL+W
-	 uh5aF3YtUFwTm0OhY+83EllqtOPzVsUCSEMnjo1E=
+	b=XAP9VBrQnKJY+530k5OnhgSb7uSpslUwb+ZWTltuQbMPC/vcMd+aCorXhBPggFtdz
+	 Uwf9ycSRFoOqwoFiixuPBbabbAwV6lbBlaYliiikinpJ24VcMTz/2hsca/Zqq+++Y8
+	 GK1yBD4coq3wAWyqEPxE2H8Cmq7BkHr5FbisMCbQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Morning Star <alexbestoso@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 295/567] wifi: rtlwifi: 8192cu: fix tid out of range in rtl92cu_tx_fill_desc()
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Waiman Long <longman@redhat.com>
+Subject: [PATCH 6.18 003/312] x86/microcode/AMD: Select which microcode patch to load
 Date: Tue,  6 Jan 2026 18:01:17 +0100
-Message-ID: <20260106170502.245169129@linuxfoundation.org>
+Message-ID: <20260106170547.963574449@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
-References: <20260106170451.332875001@linuxfoundation.org>
+In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
+References: <20260106170547.832845344@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +59,190 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Morning Star <alexbestoso@gmail.com>
+From: Borislav Petkov (AMD) <bp@alien8.de>
 
-[ Upstream commit dd39edb445f07400e748da967a07d5dca5c5f96e ]
+commit 8d171045069c804e5ffaa18be590c42c6af0cf3f upstream.
 
-TID getting from ieee80211_get_tid() might be out of range of array size
-of sta_entry->tids[], so check TID is less than MAX_TID_COUNT. Othwerwise,
-UBSAN warn:
+All microcode patches up to the proper BIOS Entrysign fix are loaded
+only after the sha256 signature carried in the driver has been verified.
 
- UBSAN: array-index-out-of-bounds in drivers/net/wireless/realtek/rtlwifi/rtl8192cu/trx.c:514:30
- index 10 is out of range for type 'rtl_tid_data [9]'
+Microcode patches after the Entrysign fix has been applied, do not need
+that signature verification anymore.
 
-Fixes: 8ca4cdef9329 ("wifi: rtlwifi: rtl8192cu: Fix TX aggregation")
-Signed-off-by: Morning Star <alexbestoso@gmail.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/1764232628-13625-1-git-send-email-pkshih@realtek.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+In order to not abandon machines which haven't received the BIOS update
+yet, add the capability to select which microcode patch to load.
+
+The corresponding microcode container supplied through firmware-linux
+has been modified to carry two patches per CPU type
+(family/model/stepping) so that the proper one gets selected.
+
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Tested-by: Waiman Long <longman@redhat.com>
+Link: https://patch.msgid.link/20251027133818.4363-1-bp@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/realtek/rtlwifi/rtl8192cu/trx.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/trx.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/trx.c
-index aa702ba7c9f5..d6c35e8d02a5 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/trx.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/trx.c
-@@ -511,7 +511,8 @@ void rtl92cu_tx_fill_desc(struct ieee80211_hw *hw,
- 	if (sta) {
- 		sta_entry = (struct rtl_sta_info *)sta->drv_priv;
- 		tid = ieee80211_get_tid(hdr);
--		agg_state = sta_entry->tids[tid].agg.agg_state;
-+		if (tid < MAX_TID_COUNT)
-+			agg_state = sta_entry->tids[tid].agg.agg_state;
- 		ampdu_density = sta->deflink.ht_cap.ampdu_density;
+---
+ arch/x86/kernel/cpu/microcode/amd.c |  113 ++++++++++++++++++++++--------------
+ 1 file changed, 72 insertions(+), 41 deletions(-)
+
+--- a/arch/x86/kernel/cpu/microcode/amd.c
++++ b/arch/x86/kernel/cpu/microcode/amd.c
+@@ -186,50 +186,61 @@ static u32 cpuid_to_ucode_rev(unsigned i
+ 	return p.ucode_rev;
+ }
+ 
++static u32 get_cutoff_revision(u32 rev)
++{
++	switch (rev >> 8) {
++	case 0x80012: return 0x8001277; break;
++	case 0x80082: return 0x800820f; break;
++	case 0x83010: return 0x830107c; break;
++	case 0x86001: return 0x860010e; break;
++	case 0x86081: return 0x8608108; break;
++	case 0x87010: return 0x8701034; break;
++	case 0x8a000: return 0x8a0000a; break;
++	case 0xa0010: return 0xa00107a; break;
++	case 0xa0011: return 0xa0011da; break;
++	case 0xa0012: return 0xa001243; break;
++	case 0xa0082: return 0xa00820e; break;
++	case 0xa1011: return 0xa101153; break;
++	case 0xa1012: return 0xa10124e; break;
++	case 0xa1081: return 0xa108109; break;
++	case 0xa2010: return 0xa20102f; break;
++	case 0xa2012: return 0xa201212; break;
++	case 0xa4041: return 0xa404109; break;
++	case 0xa5000: return 0xa500013; break;
++	case 0xa6012: return 0xa60120a; break;
++	case 0xa7041: return 0xa704109; break;
++	case 0xa7052: return 0xa705208; break;
++	case 0xa7080: return 0xa708009; break;
++	case 0xa70c0: return 0xa70C009; break;
++	case 0xaa001: return 0xaa00116; break;
++	case 0xaa002: return 0xaa00218; break;
++	case 0xb0021: return 0xb002146; break;
++	case 0xb0081: return 0xb008111; break;
++	case 0xb1010: return 0xb101046; break;
++	case 0xb2040: return 0xb204031; break;
++	case 0xb4040: return 0xb404031; break;
++	case 0xb4041: return 0xb404101; break;
++	case 0xb6000: return 0xb600031; break;
++	case 0xb6080: return 0xb608031; break;
++	case 0xb7000: return 0xb700031; break;
++	default: break;
++
++	}
++	return 0;
++}
++
+ static bool need_sha_check(u32 cur_rev)
+ {
++	u32 cutoff;
++
+ 	if (!cur_rev) {
+ 		cur_rev = cpuid_to_ucode_rev(bsp_cpuid_1_eax);
+ 		pr_info_once("No current revision, generating the lowest one: 0x%x\n", cur_rev);
  	}
  
--- 
-2.51.0
-
+-	switch (cur_rev >> 8) {
+-	case 0x80012: return cur_rev <= 0x8001277; break;
+-	case 0x80082: return cur_rev <= 0x800820f; break;
+-	case 0x83010: return cur_rev <= 0x830107c; break;
+-	case 0x86001: return cur_rev <= 0x860010e; break;
+-	case 0x86081: return cur_rev <= 0x8608108; break;
+-	case 0x87010: return cur_rev <= 0x8701034; break;
+-	case 0x8a000: return cur_rev <= 0x8a0000a; break;
+-	case 0xa0010: return cur_rev <= 0xa00107a; break;
+-	case 0xa0011: return cur_rev <= 0xa0011da; break;
+-	case 0xa0012: return cur_rev <= 0xa001243; break;
+-	case 0xa0082: return cur_rev <= 0xa00820e; break;
+-	case 0xa1011: return cur_rev <= 0xa101153; break;
+-	case 0xa1012: return cur_rev <= 0xa10124e; break;
+-	case 0xa1081: return cur_rev <= 0xa108109; break;
+-	case 0xa2010: return cur_rev <= 0xa20102f; break;
+-	case 0xa2012: return cur_rev <= 0xa201212; break;
+-	case 0xa4041: return cur_rev <= 0xa404109; break;
+-	case 0xa5000: return cur_rev <= 0xa500013; break;
+-	case 0xa6012: return cur_rev <= 0xa60120a; break;
+-	case 0xa7041: return cur_rev <= 0xa704109; break;
+-	case 0xa7052: return cur_rev <= 0xa705208; break;
+-	case 0xa7080: return cur_rev <= 0xa708009; break;
+-	case 0xa70c0: return cur_rev <= 0xa70C009; break;
+-	case 0xaa001: return cur_rev <= 0xaa00116; break;
+-	case 0xaa002: return cur_rev <= 0xaa00218; break;
+-	case 0xb0021: return cur_rev <= 0xb002146; break;
+-	case 0xb0081: return cur_rev <= 0xb008111; break;
+-	case 0xb1010: return cur_rev <= 0xb101046; break;
+-	case 0xb2040: return cur_rev <= 0xb204031; break;
+-	case 0xb4040: return cur_rev <= 0xb404031; break;
+-	case 0xb4041: return cur_rev <= 0xb404101; break;
+-	case 0xb6000: return cur_rev <= 0xb600031; break;
+-	case 0xb6080: return cur_rev <= 0xb608031; break;
+-	case 0xb7000: return cur_rev <= 0xb700031; break;
+-	default: break;
+-	}
++	cutoff = get_cutoff_revision(cur_rev);
++	if (cutoff)
++		return cur_rev <= cutoff;
+ 
+ 	pr_info("You should not be seeing this. Please send the following couple of lines to x86-<at>-kernel.org\n");
+ 	pr_info("CPUID(1).EAX: 0x%x, current revision: 0x%x\n", bsp_cpuid_1_eax, cur_rev);
+@@ -494,6 +505,7 @@ static int verify_patch(const u8 *buf, s
+ {
+ 	u8 family = x86_family(bsp_cpuid_1_eax);
+ 	struct microcode_header_amd *mc_hdr;
++	u32 cur_rev, cutoff, patch_rev;
+ 	u32 sh_psize;
+ 	u16 proc_id;
+ 	u8 patch_fam;
+@@ -533,11 +545,32 @@ static int verify_patch(const u8 *buf, s
+ 	proc_id	= mc_hdr->processor_rev_id;
+ 	patch_fam = 0xf + (proc_id >> 12);
+ 
+-	ucode_dbg("Patch-ID 0x%08x: family: 0x%x\n", mc_hdr->patch_id, patch_fam);
+-
+ 	if (patch_fam != family)
+ 		return 1;
+ 
++	cur_rev = get_patch_level();
++
++	/* No cutoff revision means old/unaffected by signing algorithm weakness => matches */
++	cutoff = get_cutoff_revision(cur_rev);
++	if (!cutoff)
++		goto ok;
++
++	patch_rev = mc_hdr->patch_id;
++
++	ucode_dbg("cur_rev: 0x%x, cutoff: 0x%x, patch_rev: 0x%x\n",
++		  cur_rev, cutoff, patch_rev);
++
++	if (cur_rev <= cutoff && patch_rev <= cutoff)
++		goto ok;
++
++	if (cur_rev > cutoff && patch_rev > cutoff)
++		goto ok;
++
++	return 1;
++
++ok:
++	ucode_dbg("Patch-ID 0x%08x: family: 0x%x\n", mc_hdr->patch_id, patch_fam);
++
+ 	return 0;
+ }
+ 
+@@ -606,8 +639,6 @@ static size_t parse_container(u8 *ucode,
+ 
+ 		mc = (struct microcode_amd *)(buf + SECTION_HDR_SIZE);
+ 
+-		ucode_dbg("patch_id: 0x%x\n", mc->hdr.patch_id);
+-
+ 		if (mc_patch_matches(mc, eq_id)) {
+ 			desc->psize = patch_size;
+ 			desc->mc = mc;
 
 
 
