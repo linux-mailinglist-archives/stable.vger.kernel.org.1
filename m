@@ -1,50 +1,52 @@
-Return-Path: <stable+bounces-205153-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205161-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D2E5CF9D46
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 18:47:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78FEECF9D64
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 18:49:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 54744324E8CB
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:36:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9424231E3E19
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:37:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80527346E64;
-	Tue,  6 Jan 2026 17:16:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F393347BC1;
+	Tue,  6 Jan 2026 17:16:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mzQC48ca"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z7zdC2YV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CF7D346E5F;
-	Tue,  6 Jan 2026 17:15:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D22D347BB8;
+	Tue,  6 Jan 2026 17:16:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767719760; cv=none; b=CpStuCV+lDh7hYwMAbF6PAQB7XoOFK06H39sk2kEODMmB0vyGeItbrJEuzieOXyb7VtSE7o7BdxlO/77lnfsAxFPVq6IO/cSeGLqqoafHH/Wiiy3hj+FGOcGER8MbYYi5AxMWaaJF3erv23hqs3me8d6VL27G1ZE9duvFyZrD0g=
+	t=1767719786; cv=none; b=B8yMLv0+BuNudQysgns025g8NtKseCbFbBgqUFOR5+53+GU6VRSIruvX9D5r3Tf5g4dd28e6gQvBx+IREDE8SoPDGaamMh2wYyMThywkRBaZ66LHyB6OfAUNYYwWvw8N1F/nZWFe/q/yI4hLcv4eDMP8eCqNAGRSUNi1w87MKbg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767719760; c=relaxed/simple;
-	bh=DQZYEr1PMUQXhmo6kHnx61Wh3pyT4LFuOOZFrErrGK4=;
+	s=arc-20240116; t=1767719786; c=relaxed/simple;
+	bh=SAyI67ABSwPfcV48Oorr/fJ9BueuICbvSHvqHfNJ3II=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cKDdkCdvRX8VID0avxnsimls8Ye9xWfSvJFJr7L1jziFcHS0GQqF0zj5z89n7FN3aBRF8XaZwBlj9kfIiC5XTVviveU+U+FKmPXTSdwPJTvTvPMdaZybq44cy/u4FKpxj59w2nxbH6gTCAJ8/HNWBqnDHONZuucRMNdEC1k5FiY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mzQC48ca; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 575FFC116C6;
-	Tue,  6 Jan 2026 17:15:59 +0000 (UTC)
+	 MIME-Version; b=RAVKAqj2Kb9BJK8mtnCFWJ1bkXTTeGj3nfDaXiOt292nT9tRSrejuFKPh8HtG4n5Fr1mMvlPmoJXmFtxy7/AYP69Ez5psNd/NU1XexaxKP8wMPJSowzGtDKOjP2CoEKYIGCSPS4B9kiWZN4fsNPhd28Rh9mxXFpFMTynVZErxIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z7zdC2YV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 692F0C116C6;
+	Tue,  6 Jan 2026 17:16:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767719759;
-	bh=DQZYEr1PMUQXhmo6kHnx61Wh3pyT4LFuOOZFrErrGK4=;
+	s=korg; t=1767719785;
+	bh=SAyI67ABSwPfcV48Oorr/fJ9BueuICbvSHvqHfNJ3II=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mzQC48capmcCABgUrprjRHpr2WcbeqojT7/p50v82w6dlHxQ4OBHFEovJpwHbPqd6
-	 FwxckeovqMlryZ+X+PBwHpaquL4pMvGlPr/nhjztsMsioDGGAb7Kmf1UHYhiiT7/lT
-	 lkQGUagTjouP/sip6ESCQxhrQlo0mh1eWK1AKx1c=
+	b=Z7zdC2YVB3bNdJ2IG0jbpcsLwfDAA0v0iJbKkR3WY2wg4Xi0TDS8uUPoi7L10G4Nm
+	 uy00ErehzGxNtCNPeVOqEGiVPVd6M7fqjXqD0c+7OQTZ88e9H0qVVz2USnxSPBEIRD
+	 4jtr8v3Qa0+fhMk0+4xaM8yMH9KN1xin0Go4gnqY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Arend van Spriel <arend.vanspriel@broadcom.com>,
+	Hans de Goede <hansg@kernel.org>,
 	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 030/567] wifi: cfg80211: use cfg80211_leave() in iftype change
-Date: Tue,  6 Jan 2026 17:56:52 +0100
-Message-ID: <20260106170452.457159461@linuxfoundation.org>
+Subject: [PATCH 6.12 032/567] wifi: brcmfmac: Add DMI nvram filename quirk for Acer A1 840 tablet
+Date: Tue,  6 Jan 2026 17:56:54 +0100
+Message-ID: <20260106170452.530113636@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
 References: <20260106170451.332875001@linuxfoundation.org>
@@ -63,61 +65,59 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Hans de Goede <hansg@kernel.org>
 
-[ Upstream commit 7a27b73943a70ee226fa125327101fb18e94701d ]
+[ Upstream commit a8e5a110c0c38e08e5dd66356cd1156e91cf88e1 ]
 
-When changing the interface type, all activity on the interface has
-to be stopped first. This was done independent of existing code in
-cfg80211_leave(), so didn't handle e.g. background radar detection.
-Use cfg80211_leave() to handle it the same way.
+The Acer A1 840 tablet contains quite generic names in the sys_vendor and
+product_name DMI strings, without this patch brcmfmac will try to load:
+brcmfmac43340-sdio.Insyde-BayTrail.txt as nvram file which is a bit
+too generic.
 
-Note that cfg80211_leave() behaves slightly differently for IBSS in
-wireless extensions, it won't send an event in that case. We could
-handle that, but since nl80211 was used to change the type, IBSS is
-rare, and wext is already a corner case, it doesn't seem worth it.
+Add a DMI quirk so that a unique and clearly identifiable nvram file name
+is used on the Acer A1 840 tablet.
 
-Link: https://patch.msgid.link/20251121174021.922ef48ce007.I970c8514252ef8a864a7fbdab9591b71031dee03@changeid
+Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+Signed-off-by: Hans de Goede <hansg@kernel.org>
+Link: https://patch.msgid.link/20251103100314.353826-1-hansg@kernel.org
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/util.c | 23 +----------------------
- 1 file changed, 1 insertion(+), 22 deletions(-)
+ .../net/wireless/broadcom/brcm80211/brcmfmac/dmi.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/net/wireless/util.c b/net/wireless/util.c
-index b115489a846f8..6aff651a9b68d 100644
---- a/net/wireless/util.c
-+++ b/net/wireless/util.c
-@@ -1230,28 +1230,7 @@ int cfg80211_change_iface(struct cfg80211_registered_device *rdev,
- 		dev->ieee80211_ptr->use_4addr = false;
- 		rdev_set_qos_map(rdev, dev, NULL);
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/dmi.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/dmi.c
+index c3a602197662b..abe7f6501e5ed 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/dmi.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/dmi.c
+@@ -24,6 +24,10 @@ static const struct brcmf_dmi_data acepc_t8_data = {
+ 	BRCM_CC_4345_CHIP_ID, 6, "acepc-t8"
+ };
  
--		switch (otype) {
--		case NL80211_IFTYPE_AP:
--		case NL80211_IFTYPE_P2P_GO:
--			cfg80211_stop_ap(rdev, dev, -1, true);
--			break;
--		case NL80211_IFTYPE_ADHOC:
--			cfg80211_leave_ibss(rdev, dev, false);
--			break;
--		case NL80211_IFTYPE_STATION:
--		case NL80211_IFTYPE_P2P_CLIENT:
--			cfg80211_disconnect(rdev, dev,
--					    WLAN_REASON_DEAUTH_LEAVING, true);
--			break;
--		case NL80211_IFTYPE_MESH_POINT:
--			/* mesh should be handled? */
--			break;
--		case NL80211_IFTYPE_OCB:
--			cfg80211_leave_ocb(rdev, dev);
--			break;
--		default:
--			break;
--		}
-+		cfg80211_leave(rdev, dev->ieee80211_ptr);
- 
- 		cfg80211_process_rdev_events(rdev);
- 		cfg80211_mlme_purge_registrations(dev->ieee80211_ptr);
++static const struct brcmf_dmi_data acer_a1_840_data = {
++	BRCM_CC_43340_CHIP_ID, 2, "acer-a1-840"
++};
++
+ /* The Chuwi Hi8 Pro uses the same Ampak AP6212 module as the Chuwi Vi8 Plus
+  * and the nvram for the Vi8 Plus is already in linux-firmware, so use that.
+  */
+@@ -91,6 +95,16 @@ static const struct dmi_system_id dmi_platform_data[] = {
+ 		},
+ 		.driver_data = (void *)&acepc_t8_data,
+ 	},
++	{
++		/* Acer Iconia One 8 A1-840 (non FHD version) */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Insyde"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "BayTrail"),
++			/* Above strings are too generic also match BIOS date */
++			DMI_MATCH(DMI_BIOS_DATE, "04/01/2014"),
++		},
++		.driver_data = (void *)&acer_a1_840_data,
++	},
+ 	{
+ 		/* Chuwi Hi8 Pro with D2D3_Hi8Pro.233 BIOS */
+ 		.matches = {
 -- 
 2.51.0
 
