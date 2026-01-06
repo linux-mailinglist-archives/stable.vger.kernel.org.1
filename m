@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-205723-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205725-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6955CCFAAE2
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:31:56 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E66CCFAAD6
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:31:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B52463015AE4
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 19:31:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E39E03058794
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 19:31:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7722835CBA7;
-	Tue,  6 Jan 2026 17:47:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D71935CBB2;
+	Tue,  6 Jan 2026 17:47:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kHl3W3kf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0zYVyRen"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3165835CB76;
-	Tue,  6 Jan 2026 17:47:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A65D35975;
+	Tue,  6 Jan 2026 17:47:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721645; cv=none; b=VRBzP0BSGV2crj8RAUC2jU/0aExtrx/gyslO6h9odl1bzhSQb+hMZNIiA1SI4u+KgvkPP/70xhafVwSAIjBcMmpikLf5m4z/jeZMp/hrnie1JQXs/+rCyqX5xGbBrmFicpGgBBaHzVExwCHCZN4i/257LngPk9qgieqwCbnltUY=
+	t=1767721652; cv=none; b=NZQ45wkyppsgI8C4hJQaWLnOe2ng6+nPsY86YRjPZvGxTMqfpTOaeqdDsdAYzoahVQW/j2Tn5Mlgb0DSK1FMP5vhj1oBFDiJ7AsmwW7BAUdge6C50psGHIJXwqlLd1/+0uOiLX4sr1YrvuDpW3mXWxmpFCHCf8G8w+NQSDWQhik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721645; c=relaxed/simple;
-	bh=KSMn+YEtoWChojJlKFlWaeJaeXuKa5MuHGkRHpVfymQ=;
+	s=arc-20240116; t=1767721652; c=relaxed/simple;
+	bh=+X7wGytDnV/d6ObMeP6BUi0VD/PZO10sIUoyFoS95g4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hvqc1csP94h786UY4bHJzgK+Vfua3d+U0rGzeLkCny89NGnjOm+2gtOCjsOvzv8TkZgMdMGZZ33IeBHwir8bxlyL4sZ0MTUdwy5TNdz2a+JlpMs/NDTByCOj2oihDr9kEunVZdNPoGMJgEUToG/vkNbUzIxw73nJjXiQZdPucjg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kHl3W3kf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D9DAC116C6;
-	Tue,  6 Jan 2026 17:47:24 +0000 (UTC)
+	 MIME-Version:Content-Type; b=AY+7N7YWSACPr1x3FtAdVkQJodX2/kyetUF/6tobQ6GUq0FaymW3bo8sGjmEHvY+Hx16hNcs8EvbXB36OsMYFgHkj+yOzgAnIdeeAMXBWPsxtuROHCSFevydcFv1hhNAynpnOv+b+6O81CX1xaFZBHYzkduZL9MqUdcFZcbur4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0zYVyRen; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90256C116C6;
+	Tue,  6 Jan 2026 17:47:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721644;
-	bh=KSMn+YEtoWChojJlKFlWaeJaeXuKa5MuHGkRHpVfymQ=;
+	s=korg; t=1767721652;
+	bh=+X7wGytDnV/d6ObMeP6BUi0VD/PZO10sIUoyFoS95g4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kHl3W3kf/7ALY1jA0AeokeGj5pGxUYPfmRmE0kM4UygzA4rG9t2cgrvU/H8VjHne9
-	 3VSuAdFxb2HDiZQNBujezls6IgpXZ01+3plb/zp9DrP2GNZUGWH22uJAvkVM/69fgR
-	 6GK7nribfFdtpn7L32pEpYg7Qv+JXwijwoyNBQew=
+	b=0zYVyRen6gcvbP90l2Rw1sEbreBsEGeAUunGFRTYFbTp6SojLUE+5ezbBcIrYTyWE
+	 i8N/V3tFHU5n6bhv9EnCq6ZrzFbqBDgncpd05lBr2p6zY9ugS0rE9MARY0eiDmcMLf
+	 RzN4puHk38fDVG1MTGLcxXyb0GeBUuycWtOG0DJI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shravan Kumar Ramani <shravankr@nvidia.com>,
-	David Thompson <davthompson@nvidia.com>,
+	Yuhao Jiang <danisjiang@gmail.com>,
+	Junrui Luo <moonafterrain@outlook.com>,
 	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 030/312] platform/mellanox: mlxbf-pmc: Remove trailing whitespaces from event names
-Date: Tue,  6 Jan 2026 18:01:44 +0100
-Message-ID: <20260106170548.947335282@linuxfoundation.org>
+Subject: [PATCH 6.18 032/312] platform/x86: ibm_rtl: fix EBDA signature search pointer arithmetic
+Date: Tue,  6 Jan 2026 18:01:46 +0100
+Message-ID: <20260106170549.018509370@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
 References: <20260106170547.832845344@linuxfoundation.org>
@@ -66,55 +66,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Shravan Kumar Ramani <shravankr@nvidia.com>
+From: Junrui Luo <moonafterrain@outlook.com>
 
-[ Upstream commit f13bce715d1600698310a4a7832f6a52499d5395 ]
+[ Upstream commit 15dd100349b8526cbdf2de0ce3e72e700eb6c208 ]
 
-Some event names have trailing whitespaces at the end which causes programming
-of counters using the name for these specific events to fail and hence need to
-be removed.
+The ibm_rtl_init() function searches for the signature but has a pointer
+arithmetic error. The loop counter suggests searching at 4-byte intervals
+but the implementation only advances by 1 byte per iteration.
 
-Fixes: 423c3361855c ("platform/mellanox: mlxbf-pmc: Add support for BlueField-3")
-Signed-off-by: Shravan Kumar Ramani <shravankr@nvidia.com>
-Reviewed-by: David Thompson <davthompson@nvidia.com>
-Link: https://patch.msgid.link/065cbae0717dcc1169681c4dbb1a6e050b8574b3.1766059953.git.shravankr@nvidia.com
+Fix by properly advancing the pointer by sizeof(unsigned int) bytes
+each iteration.
+
+Reported-by: Yuhao Jiang <danisjiang@gmail.com>
+Reported-by: Junrui Luo <moonafterrain@outlook.com>
+Fixes: 35f0ce032b0f ("IBM Real-Time "SMI Free" mode driver -v7")
+Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
+Link: https://patch.msgid.link/SYBPR01MB78812D887A92DE3802D0D06EAFA9A@SYBPR01MB7881.ausprd01.prod.outlook.com
 Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/mellanox/mlxbf-pmc.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/platform/x86/ibm_rtl.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/platform/mellanox/mlxbf-pmc.c b/drivers/platform/mellanox/mlxbf-pmc.c
-index 16a2fd9fdd9b..5ec1ad471696 100644
---- a/drivers/platform/mellanox/mlxbf-pmc.c
-+++ b/drivers/platform/mellanox/mlxbf-pmc.c
-@@ -801,18 +801,18 @@ static const struct mlxbf_pmc_events mlxbf_pmc_llt_miss_events[] = {
- 	{11, "GDC_MISS_MACHINE_CHI_TXDAT"},
- 	{12, "GDC_MISS_MACHINE_CHI_RXDAT"},
- 	{13, "GDC_MISS_MACHINE_G_FIFO_FF_EXEC0_0"},
--	{14, "GDC_MISS_MACHINE_G_FIFO_FF_EXEC0_1 "},
-+	{14, "GDC_MISS_MACHINE_G_FIFO_FF_EXEC0_1"},
- 	{15, "GDC_MISS_MACHINE_G_FIFO_FF_EXEC0_2"},
--	{16, "GDC_MISS_MACHINE_G_FIFO_FF_EXEC0_3 "},
--	{17, "GDC_MISS_MACHINE_G_FIFO_FF_EXEC1_0 "},
--	{18, "GDC_MISS_MACHINE_G_FIFO_FF_EXEC1_1 "},
--	{19, "GDC_MISS_MACHINE_G_FIFO_FF_EXEC1_2 "},
--	{20, "GDC_MISS_MACHINE_G_FIFO_FF_EXEC1_3 "},
-+	{16, "GDC_MISS_MACHINE_G_FIFO_FF_EXEC0_3"},
-+	{17, "GDC_MISS_MACHINE_G_FIFO_FF_EXEC1_0"},
-+	{18, "GDC_MISS_MACHINE_G_FIFO_FF_EXEC1_1"},
-+	{19, "GDC_MISS_MACHINE_G_FIFO_FF_EXEC1_2"},
-+	{20, "GDC_MISS_MACHINE_G_FIFO_FF_EXEC1_3"},
- 	{21, "GDC_MISS_MACHINE_G_FIFO_FF_EXEC_DONE0_0"},
- 	{22, "GDC_MISS_MACHINE_G_FIFO_FF_EXEC_DONE0_1"},
- 	{23, "GDC_MISS_MACHINE_G_FIFO_FF_EXEC_DONE0_2"},
- 	{24, "GDC_MISS_MACHINE_G_FIFO_FF_EXEC_DONE0_3"},
--	{25, "GDC_MISS_MACHINE_G_FIFO_FF_EXEC_DONE1_0 "},
-+	{25, "GDC_MISS_MACHINE_G_FIFO_FF_EXEC_DONE1_0"},
- 	{26, "GDC_MISS_MACHINE_G_FIFO_FF_EXEC_DONE1_1"},
- 	{27, "GDC_MISS_MACHINE_G_FIFO_FF_EXEC_DONE1_2"},
- 	{28, "GDC_MISS_MACHINE_G_FIFO_FF_EXEC_DONE1_3"},
+diff --git a/drivers/platform/x86/ibm_rtl.c b/drivers/platform/x86/ibm_rtl.c
+index 231b37909801..139956168cf9 100644
+--- a/drivers/platform/x86/ibm_rtl.c
++++ b/drivers/platform/x86/ibm_rtl.c
+@@ -273,7 +273,7 @@ static int __init ibm_rtl_init(void) {
+ 	/* search for the _RTL_ signature at the start of the table */
+ 	for (i = 0 ; i < ebda_size/sizeof(unsigned int); i++) {
+ 		struct ibm_rtl_table __iomem * tmp;
+-		tmp = (struct ibm_rtl_table __iomem *) (ebda_map+i);
++		tmp = (struct ibm_rtl_table __iomem *) (ebda_map + i*sizeof(unsigned int));
+ 		if ((readq(&tmp->signature) & RTL_MASK) == RTL_SIGNATURE) {
+ 			phys_addr_t addr;
+ 			unsigned int plen;
 -- 
 2.51.0
 
