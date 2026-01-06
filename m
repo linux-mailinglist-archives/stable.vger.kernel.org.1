@@ -1,41 +1,41 @@
-Return-Path: <stable+bounces-205825-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205836-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BA6FCFA601
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:57:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B8E9ACFA74A
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:04:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AB92534A3A80
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:14:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7A26A33F1065
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:12:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F3663644CF;
-	Tue,  6 Jan 2026 17:53:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46565364E95;
+	Tue,  6 Jan 2026 17:53:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ri2E7Dv5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YKSSVRUe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEE163644BE;
-	Tue,  6 Jan 2026 17:53:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03EE5364E89;
+	Tue,  6 Jan 2026 17:53:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721988; cv=none; b=Go/NYFg47F2cZshUGet5aFStzNaKwhYDXdGXG+VXldhJ1xhiFiAhJorV0FrdGIzKGMm/DytXdhqbaHNxTi3Fddz6pESkjl121yYmSVGffjpdSY0ayQ3Fm/YQ/9gjaNvJ4b1274kR8himt3ntX5gZ1205pOPEr1ZCd9zHiuOyZlc=
+	t=1767722024; cv=none; b=W1BEavAvK+jY4qC3/95QYmzg7n4eBrZrJV/7TqVUtsxPUeTjFd2jMbVCMsetpfunp6vCwMzkeHZsrSizTW8kAf2SXPFhHQbNp5pyFdkgykmTWeq0nwxjK8QdVVQwxw2Gc1JxkjNaTWvc9zSsAErBODTP4mW6dODGcJqwFQMzfts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721988; c=relaxed/simple;
-	bh=DUAfrA4EVcG/fASPY7jqL0rYDaelLH2o+FYYwlRCxrU=;
+	s=arc-20240116; t=1767722024; c=relaxed/simple;
+	bh=lbcQRH7pvMkqdW5WCsYNO0Kn6uOpoz2lvehG+MI3DZA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pfKaNkuL2+R4IMku6AAByhG0+cpGVsu2WmZFkg+OedlaM9rcC9z3AZzmQDp1btvqrqZMBIZNJ00XVoy9EmjYjoluM5bQ9bC/Vc6wqjccnIhAmd/HbN9+gJjWy67Q9V+w5dIgUweAKTmcce33WVnDUi8x1ZD6bdwkv8SGTD7JzWY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ri2E7Dv5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43E8EC116C6;
-	Tue,  6 Jan 2026 17:53:08 +0000 (UTC)
+	 MIME-Version; b=aUQEX81sokMYMi22/uH2jMuYEPyJ7pTteJJo0j9dIEfh5Ms4FciZ/O/bae/b015rR93GkkT4R1Tv1EToOehBvIywtMFNQ8n/bK5eWrBW04hiiyUYMxwqPStk+XUyCAzZt5z441NH6Is9Nev+yRO6yTjTjREdylcmuz/G0xs57hI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YKSSVRUe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 660DDC16AAE;
+	Tue,  6 Jan 2026 17:53:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721988;
-	bh=DUAfrA4EVcG/fASPY7jqL0rYDaelLH2o+FYYwlRCxrU=;
+	s=korg; t=1767722023;
+	bh=lbcQRH7pvMkqdW5WCsYNO0Kn6uOpoz2lvehG+MI3DZA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ri2E7Dv5LkcaVbMmkwnY/x6UOGLeZLa3VZAURCa5NHzWDVcomIy8nlMSUzEXJk/Gv
-	 auvnshe9oLGQw6JZMqjvRputywdxs67XQNNbDfniJwsdVw6BkDfDq3UHdu/BkUSk0R
-	 csim7XZ+63HZ2SlTYIAG7dqoIKHMZ509ymn0UBdU=
+	b=YKSSVRUeWIscaKVWhWQAPGHyf3oD36lFLh0BMrfSjXwTa1OToc3TNz5OcCHHqtglE
+	 TXSfRc+Fo3xDZf6Ihf88jtkIO86a2HPdBPgs+URRzGbCtDOpLlwM+qaB+UPhUXM3fU
+	 ZVNiw10EyQL0ErxdMs7aH/6U2p0eRcDyn6HidPwU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -48,9 +48,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	yang.yang29@zte.com.cn,
 	Shengming Hu <hu.shengming@zte.com.cn>,
 	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.18 124/312] fgraph: Initialize ftrace_ops->private for function graph ops
-Date: Tue,  6 Jan 2026 18:03:18 +0100
-Message-ID: <20260106170552.330383637@linuxfoundation.org>
+Subject: [PATCH 6.18 125/312] fgraph: Check ftrace_pids_enabled on registration for early filtering
+Date: Tue,  6 Jan 2026 18:03:19 +0100
+Message-ID: <20260106170552.366326434@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
 References: <20260106170547.832845344@linuxfoundation.org>
@@ -71,15 +71,11 @@ Content-Transfer-Encoding: 8bit
 
 From: Shengming Hu <hu.shengming@zte.com.cn>
 
-commit b5d6d3f73d0bac4a7e3a061372f6da166fc6ee5c upstream.
+commit 1650a1b6cb1ae6cb99bb4fce21b30ebdf9fc238e upstream.
 
-The ftrace_pids_enabled(op) check relies on op->private being properly
-initialized, but fgraph_ops's underlying ftrace_ops->private was left
-uninitialized. This caused ftrace_pids_enabled() to always return false,
-effectively disabling PID filtering for function graph tracing.
-
-Fix this by copying src_ops->private to dst_ops->private in
-fgraph_init_ops(), ensuring PID filter state is correctly propagated.
+When registering ftrace_graph, check if ftrace_pids_enabled is active.
+If enabled, assign entryfunc to fgraph_pid_func to ensure filtering
+is performed before executing the saved original entry function.
 
 Cc: stable@vger.kernel.org
 Cc: <wang.yaxin@zte.com.cn>
@@ -88,25 +84,40 @@ Cc: <mark.rutland@arm.com>
 Cc: <mathieu.desnoyers@efficios.com>
 Cc: <zhang.run@zte.com.cn>
 Cc: <yang.yang29@zte.com.cn>
-Fixes: c132be2c4fcc1 ("function_graph: Have the instances use their own ftrace_ops for filtering")
-Link: https://patch.msgid.link/20251126172926004y3hC8QyU4WFOjBkU_UxLC@zte.com.cn
+Link: https://patch.msgid.link/20251126173331679XGVF98NLhyLJRdtNkVZ6w@zte.com.cn
+Fixes: df3ec5da6a1e7 ("function_graph: Add pid tracing back to function graph tracer")
 Signed-off-by: Shengming Hu <hu.shengming@zte.com.cn>
 Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/fgraph.c |    1 +
- 1 file changed, 1 insertion(+)
+ kernel/trace/fgraph.c |    9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
 --- a/kernel/trace/fgraph.c
 +++ b/kernel/trace/fgraph.c
-@@ -1019,6 +1019,7 @@ void fgraph_init_ops(struct ftrace_ops *
- 		mutex_init(&dst_ops->local_hash.regex_lock);
- 		INIT_LIST_HEAD(&dst_ops->subop_list);
- 		dst_ops->flags |= FTRACE_OPS_FL_INITIALIZED;
-+		dst_ops->private = src_ops->private;
+@@ -1377,6 +1377,13 @@ int register_ftrace_graph(struct fgraph_
+ 
+ 	ftrace_graph_active++;
+ 
++	/* Always save the function, and reset at unregistering */
++	gops->saved_func = gops->entryfunc;
++#ifdef CONFIG_DYNAMIC_FTRACE
++	if (ftrace_pids_enabled(&gops->ops))
++		gops->entryfunc = fgraph_pid_func;
++#endif
++
+ 	if (ftrace_graph_active == 2)
+ 		ftrace_graph_disable_direct(true);
+ 
+@@ -1396,8 +1403,6 @@ int register_ftrace_graph(struct fgraph_
+ 	} else {
+ 		init_task_vars(gops->idx);
  	}
- #endif
- }
+-	/* Always save the function, and reset at unregistering */
+-	gops->saved_func = gops->entryfunc;
+ 
+ 	gops->ops.flags |= FTRACE_OPS_FL_GRAPH;
+ 
 
 
 
