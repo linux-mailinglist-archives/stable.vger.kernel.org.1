@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-205698-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206004-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E2A2CFB01D
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 21:50:45 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5338CCFAC59
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:47:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 00CCE30CFFC8
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 20:46:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1E74430BB24D
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 19:18:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C23535C1A7;
-	Tue,  6 Jan 2026 17:46:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 747D13563F0;
+	Tue,  6 Jan 2026 18:03:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HiD48bvS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zjED+XcH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5902935BDC0;
-	Tue,  6 Jan 2026 17:46:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 326023563EC;
+	Tue,  6 Jan 2026 18:03:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721560; cv=none; b=n262p2ku6WB2B7rFGL2obo3G+MeaOw2O+9CMxCw/Fw87YOwWmUuhh9KwttXO2EGleYqiGuCxY5hX7LpU9TMEfyDaJlCrGm0y3/nKuw3REn+f935b0cbQ+SusS0TFrEZOEubaeiTd3u1PKnXG5Q5dspNHbOKnPSweh1uez9HYhtg=
+	t=1767722582; cv=none; b=ZpQcMKeAvW1MHuVS7C1Ew+m/We55ryOzr9hPgeE0HQ2omWKBFBQB0An8h0jQM2cxiJRf0rQA3aEdgx06abdEvq5HJVJBUQRVt4qdcST9s/9ggwtAsOh1t3HR1piTz1YXp2ehgKyp7ocCjtefRhK/70bCZ/k9NafSkxWeSvtTOw8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721560; c=relaxed/simple;
-	bh=X+oTosNNNm1/NHh6gGLqc1TNu2vzxBbhAM8jsv/2NHY=;
+	s=arc-20240116; t=1767722582; c=relaxed/simple;
+	bh=xz2avXP8R1cTmR4S6N0UJkMZGV1y5OiFiKS9WFZAQt8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PXZ+JXWi2jX7XQeTpRfhXWSYMf1VakaQWD07qtvcb4Jxr06vSlK416SQhB+pOz169ViEGf02idHkcqot3ie47md3WB3zuDeukBfisZIfJmqBfaE2cpbKfEMJps5x8JT/jwkjbL7FPxHoHf6WdNPCcvFOi4JGNnpeuYrYRwgpJHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HiD48bvS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3272C116C6;
-	Tue,  6 Jan 2026 17:45:59 +0000 (UTC)
+	 MIME-Version; b=uMkevyHevPrB2MXA2qA1PGnjQOVcrQvwelOqMCCDIbH+mHyW3DhwiraqagJD04zVWpxbV03kGQJoiA7MDUTiLDqU5oW1a0nDAj8itufIp0IbmyAXWgNcnsOZhtKRvNe46cKmjgkW3c7mHGW3q6oxCi8KLkys2pwRZ/Yb2CmDOmY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zjED+XcH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F0D2C116C6;
+	Tue,  6 Jan 2026 18:03:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721560;
-	bh=X+oTosNNNm1/NHh6gGLqc1TNu2vzxBbhAM8jsv/2NHY=;
+	s=korg; t=1767722582;
+	bh=xz2avXP8R1cTmR4S6N0UJkMZGV1y5OiFiKS9WFZAQt8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HiD48bvSj3kh6nRmqn+Em8sxO9zMcjTxvcInxmclNwL6vQBYNVhB7c9YbdR7AEpsF
-	 HtTW+K6FsdGFLROnUjk7z71j8lEN3rhvr+AUerfCz1WOybtgyEBTRcGexk3CIbdgED
-	 DS1XAFRB57A/GOWcdZzE8fJmFP+oLNrTKJGgBATo=
+	b=zjED+XcHPbCG7rz4s5xtg64bpiyJhpAqxVXuXPXj1gsyDNnnXv18Brl0YMLgqK0wi
+	 0f2Wc1J3N1bsFTCSfA1V8cJXnXKjH/ry7xCbZC3YPm71XbEIGCHqJoMbu/H3o5nVmr
+	 iayym6uF1AEnulpJj1p2o+IZVq3OX61yS3suMilY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@google.com>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 565/567] mm/damon/tests/vaddr-kunit: handle alloc failures on damon_do_test_apply_three_regions()
-Date: Tue,  6 Jan 2026 18:05:47 +0100
-Message-ID: <20260106170512.336588743@linuxfoundation.org>
+	Miaoqian Lin <linmq006@gmail.com>,
+	Markus Schneider-Pargmann <msp@baylibre.com>,
+	CK Hu <ck.hu@mediatek.com>,
+	Chun-Kuang Hu <chunkuang.hu@kernel.org>
+Subject: [PATCH 6.18 274/312] drm/mediatek: Fix device node reference leak in mtk_dp_dt_parse()
+Date: Tue,  6 Jan 2026 18:05:48 +0100
+Message-ID: <20260106170557.760747499@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
-References: <20260106170451.332875001@linuxfoundation.org>
+In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
+References: <20260106170547.832845344@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SeongJae Park <sj@kernel.org>
+From: Miaoqian Lin <linmq006@gmail.com>
 
-commit 2b22d0fcc6320ba29b2122434c1d2f0785fb0a25 upstream.
+commit a846505a193d7492ad3531e33cacfca31e4bcdd1 upstream.
 
-damon_do_test_apply_three_regions() is assuming all dynamic memory
-allocation in it will succeed.  Those are indeed likely in the real use
-cases since those allocations are too small to fail, but theoretically
-those could fail.  In the case, inappropriate memory access can happen.
-Fix it by appropriately cleanup pre-allocated memory and skip the
-execution of the remaining tests in the failure cases.
+The function mtk_dp_dt_parse() calls of_graph_get_endpoint_by_regs()
+to get the endpoint device node, but fails to call of_node_put() to release
+the reference when the function returns. This results in a device node
+reference leak.
 
-Link: https://lkml.kernel.org/r/20251101182021.74868-18-sj@kernel.org
-Fixes: 17ccae8bb5c9 ("mm/damon: add kunit tests")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: Brendan Higgins <brendan.higgins@linux.dev>
-Cc: David Gow <davidgow@google.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: <stable@vger.kernel.org>	[5.15+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: SeongJae Park <sj@kernel.org>
+Fix this by adding the missing of_node_put() call before returning from
+the function.
+
+Found via static analysis and code review.
+
+Fixes: f70ac097a2cf ("drm/mediatek: Add MT8195 Embedded DisplayPort driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+Reviewed-by: Markus Schneider-Pargmann <msp@baylibre.com>
+Reviewed-by: CK Hu <ck.hu@mediatek.com>
+Link: https://patchwork.kernel.org/project/dri-devel/patch/20251029072307.10955-1-linmq006@gmail.com/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/damon/tests/vaddr-kunit.h |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/gpu/drm/mediatek/mtk_dp.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/mm/damon/tests/vaddr-kunit.h
-+++ b/mm/damon/tests/vaddr-kunit.h
-@@ -136,8 +136,14 @@ static void damon_do_test_apply_three_re
- 	int i;
- 
- 	t = damon_new_target();
-+	if (!t)
-+		kunit_skip(test, "target alloc fail");
- 	for (i = 0; i < nr_regions / 2; i++) {
- 		r = damon_new_region(regions[i * 2], regions[i * 2 + 1]);
-+		if (!r) {
-+			damon_destroy_target(t);
-+			kunit_skip(test, "region alloc fail");
-+		}
- 		damon_add_region(r, t);
- 	}
- 
+--- a/drivers/gpu/drm/mediatek/mtk_dp.c
++++ b/drivers/gpu/drm/mediatek/mtk_dp.c
+@@ -2087,6 +2087,7 @@ static int mtk_dp_dt_parse(struct mtk_dp
+ 	endpoint = of_graph_get_endpoint_by_regs(pdev->dev.of_node, 1, -1);
+ 	len = of_property_count_elems_of_size(endpoint,
+ 					      "data-lanes", sizeof(u32));
++	of_node_put(endpoint);
+ 	if (len < 0 || len > 4 || len == 3) {
+ 		dev_err(dev, "invalid data lane size: %d\n", len);
+ 		return -EINVAL;
 
 
 
