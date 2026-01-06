@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-205766-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205489-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC843CF9F00
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:07:03 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 387E0CFA3BA
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:39:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id EEC8930223F8
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:06:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1BDF3331CB16
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:51:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C61803612CA;
-	Tue,  6 Jan 2026 17:49:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 414622E9ED6;
+	Tue,  6 Jan 2026 17:34:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hQUlAVe/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2ME06DTX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8108A3612C7;
-	Tue,  6 Jan 2026 17:49:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDFCB29B8FE;
+	Tue,  6 Jan 2026 17:34:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721789; cv=none; b=O7AqOPUV5u4kLgNghKfzj+qimtYMH5BITwDdK+UidvOYcDAvkvLzFQi37IpPS5d523gYcIq3rFiYNpztUq+NgbK3aIYDBurdqt3cX5R2B53a8CEYAcLZvoYjiBXio9qbFQ5ReC+LANYy4e14yhcNeki6HvrWkGQxxBMxJHIUCHc=
+	t=1767720863; cv=none; b=CvH5s/IT1erm6vvcjQMB/Bx8ZMtDcx8l1bMxYLKom5mjGh5xAixrBaQWL4CxM4nrSW4kgGF2nd/oLZFM+mGuIn/qms9igKT2FEsngogINCMyXQRaLHU0lZx6SrosxZmX1aI1VOB+qhrkJ6lMTa0lf4UrI6A/CUhSX4cKIsNZ35o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721789; c=relaxed/simple;
-	bh=TOutcNPsYixcm4KYvSRdJBgcQunEdbwd3SeeKQ/xQM4=;
+	s=arc-20240116; t=1767720863; c=relaxed/simple;
+	bh=1cxuaUYvzFKPzrLsTXBxzSTVIonRpOkYG1DJYMYFdoU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m86t4Fz1hwF9UdBKZs5JTb4xqY5wlByHvmptPB/MbJHTWjilzOxe4LWc9JXJHR81th+/lJnGAHSnN4rXuNAlaKkEAWEzQ4x5c4assYleZz18MlJjsYETaD0pp/fxKZQhphOPCHrpxDAIobTgiwHWsWfThITU7rujXlp7RExA69k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hQUlAVe/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94033C116C6;
-	Tue,  6 Jan 2026 17:49:48 +0000 (UTC)
+	 MIME-Version; b=UwyCLHob9PydCb/8Qm3v1aM0VJLM1KKmmrQeT+0Cr6wYwzIJjqZAgb4fxdOFjjQ7Dwuq09TU/GIF/pcfHroWPMHpjQREVkqMRVstioSi7k09COrfUEaaxESFWxrs8YHQxDc7cysB9Py4MEB3PgENvAvvPC5ThNbfaIpy64YyyVs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2ME06DTX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DE42C116C6;
+	Tue,  6 Jan 2026 17:34:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721789;
-	bh=TOutcNPsYixcm4KYvSRdJBgcQunEdbwd3SeeKQ/xQM4=;
+	s=korg; t=1767720862;
+	bh=1cxuaUYvzFKPzrLsTXBxzSTVIonRpOkYG1DJYMYFdoU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hQUlAVe/O1raYbcOg7A0SAFI+KjmCZ/OHcINmOwzuo5p+4EFr7l4sZbhM14+JI5J9
-	 lRBZP0RQ+nH8CrSLK7E8k0LbrEYEN1WBy99ObH/Ng9zl1v5UrXKZAMI0NLp+eRgrD2
-	 +OO+T0oRzGtdsWXUoivMojFE7B4PF+J3WxYz9+0c=
+	b=2ME06DTX+a0VG1FgwzSDvLqi3jiK2nyrZAiEA2z6fvAcEVLH1tDzGoFyn/i1thX1j
+	 ce6RLKeW9CumRgTPujcIPYciteal58ZF+ukdgrUpKf81VtRZE2vHVBS5Rt8Lz1UOQ+
+	 ojAUaWfvJrqcv45F5Uv4kGgBxnuJJerMsdR0BimM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+881d65229ca4f9ae8c84@syzkaller.appspotmail.com,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-	Parav Pandit <parav@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 072/312] RDMA/core: always drop device refcount in ib_del_sub_device_and_put()
-Date: Tue,  6 Jan 2026 18:02:26 +0100
-Message-ID: <20260106170550.453061639@linuxfoundation.org>
+	Miaoqian Lin <linmq006@gmail.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Thierry Reding <treding@nvidia.com>,
+	Johan Hovold <johan@kernel.org>,
+	Joerg Roedel <joerg.roedel@amd.com>
+Subject: [PATCH 6.12 365/567] iommu/tegra: fix device leak on probe_device()
+Date: Tue,  6 Jan 2026 18:02:27 +0100
+Message-ID: <20260106170504.842466345@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
-References: <20260106170547.832845344@linuxfoundation.org>
+In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
+References: <20260106170451.332875001@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit fa3c411d21ebc26ffd175c7256c37cefa35020aa ]
+commit c08934a61201db8f1d1c66fcc63fb2eb526b656d upstream.
 
-Since nldev_deldev() (introduced by commit 060c642b2ab8 ("RDMA/nldev: Add
-support to add/delete a sub IB device through netlink") grabs a reference
-using ib_device_get_by_index() before calling ib_del_sub_device_and_put(),
-we need to drop that reference before returning -EOPNOTSUPP error.
+Make sure to drop the reference taken to the iommu platform device when
+looking up its driver data during probe_device().
 
-Reported-by: syzbot+881d65229ca4f9ae8c84@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=881d65229ca4f9ae8c84
-Fixes: bca51197620a ("RDMA/core: Support IB sub device with type "SMI"")
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Link: https://patch.msgid.link/80749a85-cbe2-460c-8451-42516013f9fa@I-love.SAKURA.ne.jp
-Reviewed-by: Parav Pandit <parav@nvidia.com>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Note that commit 9826e393e4a8 ("iommu/tegra-smmu: Fix missing
+put_device() call in tegra_smmu_find") fixed the leak in an error path,
+but the reference is still leaking on success.
+
+Fixes: 891846516317 ("memory: Add NVIDIA Tegra memory controller support")
+Cc: stable@vger.kernel.org	# 3.19: 9826e393e4a8
+Cc: Miaoqian Lin <linmq006@gmail.com>
+Acked-by: Robin Murphy <robin.murphy@arm.com>
+Acked-by: Thierry Reding <treding@nvidia.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/core/device.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/iommu/tegra-smmu.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/infiniband/core/device.c b/drivers/infiniband/core/device.c
-index b4f3c835844a..e3ba236d7c09 100644
---- a/drivers/infiniband/core/device.c
-+++ b/drivers/infiniband/core/device.c
-@@ -2881,8 +2881,10 @@ int ib_del_sub_device_and_put(struct ib_device *sub)
- {
- 	struct ib_device *parent = sub->parent;
+--- a/drivers/iommu/tegra-smmu.c
++++ b/drivers/iommu/tegra-smmu.c
+@@ -823,10 +823,9 @@ static struct tegra_smmu *tegra_smmu_fin
+ 		return NULL;
  
--	if (!parent)
-+	if (!parent) {
-+		ib_device_put(sub);
- 		return -EOPNOTSUPP;
-+	}
+ 	mc = platform_get_drvdata(pdev);
+-	if (!mc) {
+-		put_device(&pdev->dev);
++	put_device(&pdev->dev);
++	if (!mc)
+ 		return NULL;
+-	}
  
- 	mutex_lock(&parent->subdev_lock);
- 	list_del(&sub->subdev_list);
--- 
-2.51.0
-
+ 	return mc->smmu;
+ }
 
 
 
