@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-205948-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205668-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5BEECFA061
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:16:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94A22CF9EEA
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:06:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C18A430299DF
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:16:46 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D1BFF302A0F7
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:06:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FC29376BD9;
-	Tue,  6 Jan 2026 17:59:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B22EA34F46C;
+	Tue,  6 Jan 2026 17:44:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Au1BlfSI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L0bbJU1Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B5C4376BD3;
-	Tue,  6 Jan 2026 17:59:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E4B434B1AB;
+	Tue,  6 Jan 2026 17:44:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767722395; cv=none; b=O+wzrSOnlNuFn59L+c4T0rqjlLp1RG7Nl5MVxn81BujMj6YLBKjCUUymRGVYILv2nExSj7nwr3yppEZId0Mv2qpg4ragESy/mdYSNLC9Y7UawW5PkGfGx7uCVLLgzmvMNza5PGp3odw8AygPAqBAHtDOXytGw906x/j+Rxoa3jI=
+	t=1767721457; cv=none; b=dSXiPRUwJJx9a8tGCAy3DgkzBeUUpL7uwQo7G+I/Go9pvyEM8Eyipbh+siRI8oEXDEVNtncqh6jerutLIF3xNhqnRzoorHAh02TkiCcwWNJhkfvxE4/89ekh08bCqoR/MaYVUXUREe04Sn2Gx9ewxUeAK30b6GhciljePlSgO08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767722395; c=relaxed/simple;
-	bh=724lZXmaHDp0+o68yJu+33hnDFFg7smiD1rxxX0rCyA=;
+	s=arc-20240116; t=1767721457; c=relaxed/simple;
+	bh=AUo/DtIMA3ySk/6i0JP+MZ31lXslQDL9gLru2ZMddWQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l+NH+oi4ZLv+mgwONFLUX/8vSx+dtYXCNW9uv6pPOtjdhOYTQnjtghrBEM6Yg8YZhJrnG8utziNUvF38L4hHgUeNTSSa4GO6LSC1XNsZO3eXnns1p3jwv5IfuJOQMVBnqoupvyR8e1GqUer7fgaPivBUSOOcnYJouXcy5hRH1gk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Au1BlfSI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EB03C19423;
-	Tue,  6 Jan 2026 17:59:54 +0000 (UTC)
+	 MIME-Version; b=LKrOGLcfHpiKJSpSQgM3UU/KXOP+iDlyYPQYhj7eid0rvt+e7BME4VKqn3WsGq0SAIEyoKetMpwLPc4qlvFbPz8YvTvsDWKm7VKN+8ZLKBYxTxycv7vU9103E2EOaA6dcRhU/XaJGKeYs2Phlhu+bO3sslGS1gIQs8g8qaLuKaE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L0bbJU1Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69711C19424;
+	Tue,  6 Jan 2026 17:44:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767722395;
-	bh=724lZXmaHDp0+o68yJu+33hnDFFg7smiD1rxxX0rCyA=;
+	s=korg; t=1767721456;
+	bh=AUo/DtIMA3ySk/6i0JP+MZ31lXslQDL9gLru2ZMddWQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Au1BlfSI3nGPYukQ46Uf92dFXpo+H4aSchSYyy633Baz/nwdjyBzLqwOv5fweh3CP
-	 Q3rrLtApTAafKgEml2NXM5jx+zDPStAuNsDtcyMwC5QkhWyXqsm4FBvY8YvN0dHHRv
-	 /yv2tjscmP9aYdszkR1Vzi2s31CkxXGkBCkdk0gY=
+	b=L0bbJU1ZyM8ysT918F9I70euh1MmrTke1GkXwqemh3prpCoxVQgd1WETmT8Zw+eZG
+	 7OWX7OkYiQauv3xZCTpjL5MTX1WXM/D8/OHogzFdhzh1VI5pFqpD/kpZJIwKaydkC9
+	 7J1QvX8gvXVe6ZzWhm1glcTisqheStii81GHX4A4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.18 251/312] nfsd: fix nfsd_file reference leak in nfsd4_add_rdaccess_to_wrdeleg()
+	Joshua Hay <joshua.a.hay@intel.com>,
+	Madhu Chittim <madhu.chittim@intel.com>,
+	Samuel Salin <Samuel.salin@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>
+Subject: [PATCH 6.12 543/567] idpf: stop Tx if there are insufficient buffer resources
 Date: Tue,  6 Jan 2026 18:05:25 +0100
-Message-ID: <20260106170556.929269283@linuxfoundation.org>
+Message-ID: <20260106170511.495019307@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
-References: <20260106170547.832845344@linuxfoundation.org>
+In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
+References: <20260106170451.332875001@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,77 +61,186 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Joshua Hay <joshua.a.hay@intel.com>
 
-commit 8072e34e1387d03102b788677d491e2bcceef6f5 upstream.
+[ Upstream commit 0c3f135e840d4a2ba4253e15d530ec61bc30718e ]
 
-nfsd4_add_rdaccess_to_wrdeleg() unconditionally overwrites
-fp->fi_fds[O_RDONLY] with a newly acquired nfsd_file. However, if
-the client already has a SHARE_ACCESS_READ open from a previous OPEN
-operation, this action overwrites the existing pointer without
-releasing its reference, orphaning the previous reference.
+The Tx refillq logic will cause packets to be silently dropped if there
+are not enough buffer resources available to send a packet in flow
+scheduling mode. Instead, determine how many buffers are needed along
+with number of descriptors. Make sure there are enough of both resources
+to send the packet, and stop the queue if not.
 
-Additionally, the function originally stored the same nfsd_file
-pointer in both fp->fi_fds[O_RDONLY] and fp->fi_rdeleg_file with
-only a single reference. When put_deleg_file() runs, it clears
-fi_rdeleg_file and calls nfs4_file_put_access() to release the file.
-
-However, nfs4_file_put_access() only releases fi_fds[O_RDONLY] when
-the fi_access[O_RDONLY] counter drops to zero. If another READ open
-exists on the file, the counter remains elevated and the nfsd_file
-reference from the delegation is never released. This potentially
-causes open conflicts on that file.
-
-Then, on server shutdown, these leaks cause __nfsd_file_cache_purge()
-to encounter files with an elevated reference count that cannot be
-cleaned up, ultimately triggering a BUG() in kmem_cache_destroy()
-because there are still nfsd_file objects allocated in that cache.
-
-Fixes: e7a8ebc305f2 ("NFSD: Offer write delegation for OPEN with OPEN4_SHARE_ACCESS_WRITE")
-Cc: stable@vger.kernel.org
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: 7292af042bcf ("idpf: fix a race in txq wakeup")
+Signed-off-by: Joshua Hay <joshua.a.hay@intel.com>
+Reviewed-by: Madhu Chittim <madhu.chittim@intel.com>
+Tested-by: Samuel Salin <Samuel.salin@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfs4state.c |   14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/intel/idpf/idpf_singleq_txrx.c |    4 -
+ drivers/net/ethernet/intel/idpf/idpf_txrx.c         |   47 +++++++++++++-------
+ drivers/net/ethernet/intel/idpf/idpf_txrx.h         |   15 +++++-
+ 3 files changed, 47 insertions(+), 19 deletions(-)
 
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -1218,8 +1218,10 @@ static void put_deleg_file(struct nfs4_f
+--- a/drivers/net/ethernet/intel/idpf/idpf_singleq_txrx.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_singleq_txrx.c
+@@ -415,11 +415,11 @@ netdev_tx_t idpf_tx_singleq_frame(struct
+ {
+ 	struct idpf_tx_offload_params offload = { };
+ 	struct idpf_tx_buf *first;
++	u32 count, buf_count = 1;
+ 	int csum, tso, needed;
+-	unsigned int count;
+ 	__be16 protocol;
  
- 	if (nf)
- 		nfsd_file_put(nf);
--	if (rnf)
-+	if (rnf) {
-+		nfsd_file_put(rnf);
- 		nfs4_file_put_access(fp, NFS4_SHARE_ACCESS_READ);
-+	}
+-	count = idpf_tx_desc_count_required(tx_q, skb);
++	count = idpf_tx_res_count_required(tx_q, skb, &buf_count);
+ 	if (unlikely(!count))
+ 		return idpf_tx_drop_skb(tx_q, skb);
+ 
+--- a/drivers/net/ethernet/intel/idpf/idpf_txrx.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
+@@ -2160,15 +2160,22 @@ void idpf_tx_splitq_build_flow_desc(unio
+ 	desc->flow.qw1.compl_tag = cpu_to_le16(params->compl_tag);
  }
  
- static void nfsd4_finalize_deleg_timestamps(struct nfs4_delegation *dp, struct file *f)
-@@ -6253,10 +6255,14 @@ nfsd4_add_rdaccess_to_wrdeleg(struct svc
- 		fp = stp->st_stid.sc_file;
- 		spin_lock(&fp->fi_lock);
- 		__nfs4_file_get_access(fp, NFS4_SHARE_ACCESS_READ);
--		fp = stp->st_stid.sc_file;
--		fp->fi_fds[O_RDONLY] = nf;
--		fp->fi_rdeleg_file = nf;
-+		if (!fp->fi_fds[O_RDONLY]) {
-+			fp->fi_fds[O_RDONLY] = nf;
-+			nf = NULL;
-+		}
-+		fp->fi_rdeleg_file = nfsd_file_get(fp->fi_fds[O_RDONLY]);
- 		spin_unlock(&fp->fi_lock);
-+		if (nf)
-+			nfsd_file_put(nf);
- 	}
- 	return true;
+-/* Global conditions to tell whether the txq (and related resources)
+- * has room to allow the use of "size" descriptors.
++/**
++ * idpf_tx_splitq_has_room - check if enough Tx splitq resources are available
++ * @tx_q: the queue to be checked
++ * @descs_needed: number of descriptors required for this packet
++ * @bufs_needed: number of Tx buffers required for this packet
++ *
++ * Return: 0 if no room available, 1 otherwise
+  */
+-static int idpf_txq_has_room(struct idpf_tx_queue *tx_q, u32 size)
++static int idpf_txq_has_room(struct idpf_tx_queue *tx_q, u32 descs_needed,
++			     u32 bufs_needed)
+ {
+-	if (IDPF_DESC_UNUSED(tx_q) < size ||
++	if (IDPF_DESC_UNUSED(tx_q) < descs_needed ||
+ 	    IDPF_TX_COMPLQ_PENDING(tx_q->txq_grp) >
+ 		IDPF_TX_COMPLQ_OVERFLOW_THRESH(tx_q->txq_grp->complq) ||
+-	    IDPF_TX_BUF_RSV_LOW(tx_q))
++	    IDPF_TX_BUF_RSV_LOW(tx_q) ||
++	    idpf_tx_splitq_get_free_bufs(tx_q->refillq) < bufs_needed)
+ 		return 0;
+ 	return 1;
  }
+@@ -2177,14 +2184,21 @@ static int idpf_txq_has_room(struct idpf
+  * idpf_tx_maybe_stop_splitq - 1st level check for Tx splitq stop conditions
+  * @tx_q: the queue to be checked
+  * @descs_needed: number of descriptors required for this packet
++ * @bufs_needed: number of buffers needed for this packet
+  *
+- * Returns 0 if stop is not needed
++ * Return: 0 if stop is not needed
+  */
+ static int idpf_tx_maybe_stop_splitq(struct idpf_tx_queue *tx_q,
+-				     unsigned int descs_needed)
++				     u32 descs_needed,
++				     u32 bufs_needed)
+ {
++	/* Since we have multiple resources to check for splitq, our
++	 * start,stop_thrs becomes a boolean check instead of a count
++	 * threshold.
++	 */
+ 	if (netif_subqueue_maybe_stop(tx_q->netdev, tx_q->idx,
+-				      idpf_txq_has_room(tx_q, descs_needed),
++				      idpf_txq_has_room(tx_q, descs_needed,
++							bufs_needed),
+ 				      1, 1))
+ 		return 0;
+ 
+@@ -2226,14 +2240,16 @@ void idpf_tx_buf_hw_update(struct idpf_t
+ }
+ 
+ /**
+- * idpf_tx_desc_count_required - calculate number of Tx descriptors needed
++ * idpf_tx_res_count_required - get number of Tx resources needed for this pkt
+  * @txq: queue to send buffer on
+  * @skb: send buffer
++ * @bufs_needed: (output) number of buffers needed for this skb.
+  *
+- * Returns number of data descriptors needed for this skb.
++ * Return: number of data descriptors and buffers needed for this skb.
+  */
+-unsigned int idpf_tx_desc_count_required(struct idpf_tx_queue *txq,
+-					 struct sk_buff *skb)
++unsigned int idpf_tx_res_count_required(struct idpf_tx_queue *txq,
++					struct sk_buff *skb,
++					u32 *bufs_needed)
+ {
+ 	const struct skb_shared_info *shinfo;
+ 	unsigned int count = 0, i;
+@@ -2244,6 +2260,7 @@ unsigned int idpf_tx_desc_count_required
+ 		return count;
+ 
+ 	shinfo = skb_shinfo(skb);
++	*bufs_needed += shinfo->nr_frags;
+ 	for (i = 0; i < shinfo->nr_frags; i++) {
+ 		unsigned int size;
+ 
+@@ -2688,11 +2705,11 @@ static netdev_tx_t idpf_tx_splitq_frame(
+ 		.prev_ntu = tx_q->next_to_use,
+ 	};
+ 	struct idpf_tx_buf *first;
+-	unsigned int count;
++	u32 count, buf_count = 1;
+ 	u32 buf_id;
+ 	int tso;
+ 
+-	count = idpf_tx_desc_count_required(tx_q, skb);
++	count = idpf_tx_res_count_required(tx_q, skb, &buf_count);
+ 	if (unlikely(!count))
+ 		return idpf_tx_drop_skb(tx_q, skb);
+ 
+@@ -2702,7 +2719,7 @@ static netdev_tx_t idpf_tx_splitq_frame(
+ 
+ 	/* Check for splitq specific TX resources */
+ 	count += (IDPF_TX_DESCS_PER_CACHE_LINE + tso);
+-	if (idpf_tx_maybe_stop_splitq(tx_q, count)) {
++	if (idpf_tx_maybe_stop_splitq(tx_q, count, buf_count)) {
+ 		idpf_tx_buf_hw_update(tx_q, tx_q->next_to_use, false);
+ 
+ 		return NETDEV_TX_BUSY;
+--- a/drivers/net/ethernet/intel/idpf/idpf_txrx.h
++++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.h
+@@ -1034,6 +1034,17 @@ static inline void idpf_vport_intr_set_w
+ 	       reg->dyn_ctl);
+ }
+ 
++/**
++ * idpf_tx_splitq_get_free_bufs - get number of free buf_ids in refillq
++ * @refillq: pointer to refillq containing buf_ids
++ */
++static inline u32 idpf_tx_splitq_get_free_bufs(struct idpf_sw_queue *refillq)
++{
++	return (refillq->next_to_use > refillq->next_to_clean ?
++		0 : refillq->desc_count) +
++	       refillq->next_to_use - refillq->next_to_clean - 1;
++}
++
+ int idpf_vport_singleq_napi_poll(struct napi_struct *napi, int budget);
+ void idpf_vport_init_num_qs(struct idpf_vport *vport,
+ 			    struct virtchnl2_create_vport *vport_msg);
+@@ -1061,8 +1072,8 @@ void idpf_tx_buf_hw_update(struct idpf_t
+ 			   bool xmit_more);
+ unsigned int idpf_size_to_txd_count(unsigned int size);
+ netdev_tx_t idpf_tx_drop_skb(struct idpf_tx_queue *tx_q, struct sk_buff *skb);
+-unsigned int idpf_tx_desc_count_required(struct idpf_tx_queue *txq,
+-					 struct sk_buff *skb);
++unsigned int idpf_tx_res_count_required(struct idpf_tx_queue *txq,
++					struct sk_buff *skb, u32 *buf_count);
+ void idpf_tx_timeout(struct net_device *netdev, unsigned int txqueue);
+ netdev_tx_t idpf_tx_singleq_frame(struct sk_buff *skb,
+ 				  struct idpf_tx_queue *tx_q);
 
 
 
