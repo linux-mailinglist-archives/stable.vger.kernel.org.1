@@ -1,50 +1,52 @@
-Return-Path: <stable+bounces-205279-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205281-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB9E9CF9D43
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 18:47:13 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90539CF9B68
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 18:33:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AF33E30C79E1
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:35:57 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 191F7303A97E
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:33:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15860354AC3;
-	Tue,  6 Jan 2026 17:22:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF579354ADF;
+	Tue,  6 Jan 2026 17:22:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NwXhLrWL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CseQWhxM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4ECC352FBF;
-	Tue,  6 Jan 2026 17:22:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A91E354ACD;
+	Tue,  6 Jan 2026 17:22:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767720168; cv=none; b=QKbWRGzReXwPvqUL33PEOamAtmdF3JS3ALya/qCk44BXHzdyqt5AGXhpmx+fhLTzeBvLEVtMaWyXpS/Lec6LyTvR4xL22ATwZCd3bVKJVZrAFxcRP20jl/QqeLFXtywYxCr/fPPy11n1SG3mRroTxknReDlZgAHAMCap8UAxkfA=
+	t=1767720175; cv=none; b=qwAhdutzFL5dLqkDGbVt07HjKCCIbN9zGcEGKFhMPU+u/JKWS25+7a6+I86A7OOvlELYu6SJXzLskkqSMbezyuQUiyES/SK7NrsW8jYKsVYVPaeTbkRFL3olN6l/7Oieqhmgm0jgGI68DHjI32EFWiEdw0ytHHY4B5wKAaJ8cFQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767720168; c=relaxed/simple;
-	bh=T1eY8XcvOWlZ4TQNPOCcSMyK8qdY60zx6pct342lrxg=;
+	s=arc-20240116; t=1767720175; c=relaxed/simple;
+	bh=WHIB2yPP3IYuWuqIwY6Gbv+DTGfwKLghrWY76oMM5Y8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gSlCHXH+ilbNgXXsX5CB4k0vA3rB4DTMxt9hnAWMn8fpvbTmya2xpgwcC+KzHTQilZDkAuLQ9UBkq7SXbDO3S+Iold3FpqM8vdRTa1aS2nOrCmlTwE9zk0aO6no5iYu8mZiCDN4s9m4bvHcZtyLaChz4dTk2MnjZdETOILmzDn8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NwXhLrWL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34124C116C6;
-	Tue,  6 Jan 2026 17:22:48 +0000 (UTC)
+	 MIME-Version; b=LIacztKZoWmxUiNNFubCu7njKIgB0r0un4KRtFJufGfrWvBIAH49BHH9tSBJ2hLwfl2+0bl0dCvicVwbCWsXfZ0aWcyOJOLV4roRVLNNrkV4Y5iOAUd+NzEP8su977qRF5dO3EwtMT24YQD7JEoOVx/42/Eh+9YYwrUS97NpFqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CseQWhxM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDBD2C116C6;
+	Tue,  6 Jan 2026 17:22:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767720168;
-	bh=T1eY8XcvOWlZ4TQNPOCcSMyK8qdY60zx6pct342lrxg=;
+	s=korg; t=1767720175;
+	bh=WHIB2yPP3IYuWuqIwY6Gbv+DTGfwKLghrWY76oMM5Y8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NwXhLrWL4cdFIqavICsVK91j9n+Ne+dyTacXwl6oNO7TP60xSuQJbMtKZbbLxrMRP
-	 aZ6FKm/gXVkuYUL8+8nb3L3MDTqDHZNRYMlPrRl94GfM1sNzM/fX13zBK/YxFtA9oD
-	 kOTzyQQ8VpqpcVLlyuyz5nf0FGfadDldUU4C9Lds=
+	b=CseQWhxMI02YALC1TCfnra/KhRqW+hOWHglVlCc7N5x//1zGVZMDxuKZ8YXjjoPkS
+	 WfIyOWwpAp1Vlx5P2dUXRaGRb9d/pQnWetuVx413Qb2dE8cBL+5TIfzh1p4tJ1M6u0
+	 N2+t9ILC5RppJYwcW2ko3AgVXam3F1WrpSKdBanA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Avadhut Naik <avadhut.naik@amd.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 6.12 155/567] x86/mce: Do not clear banks poll bit in mce_poll_banks on AMD SMCA systems
-Date: Tue,  6 Jan 2026 17:58:57 +0100
-Message-ID: <20260106170457.061615082@linuxfoundation.org>
+	Sarthak Garg <sarthak.garg@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.12 156/567] mmc: sdhci-msm: Avoid early clock doubling during HS400 transition
+Date: Tue,  6 Jan 2026 17:58:58 +0100
+Message-ID: <20260106170457.100695057@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
 References: <20260106170451.332875001@linuxfoundation.org>
@@ -63,44 +65,122 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Avadhut Naik <avadhut.naik@amd.com>
+From: Sarthak Garg <sarthak.garg@oss.qualcomm.com>
 
-commit d7ac083f095d894a0b8ac0573516bfd035e6b25a upstream.
+commit b1f856b1727c2eaa4be2c6d7cd7a8ed052bbeb87 upstream.
 
-Currently, when a CMCI storm detected on a Machine Check bank, subsides, the
-bank's corresponding bit in the mce_poll_banks per-CPU variable is cleared
-unconditionally by cmci_storm_end().
+According to the hardware programming guide, the clock frequency must
+remain below 52MHz during the transition to HS400 mode.
 
-On AMD SMCA systems, this essentially disables polling on that particular bank
-on that CPU. Consequently, any subsequent correctable errors or storms will not
-be logged.
+However,in the current implementation, the timing is set to HS400 (a
+DDR mode) before adjusting the clock. This causes the clock to double
+prematurely to 104MHz during the transition phase, violating the
+specification and potentially resulting in CRC errors or CMD timeouts.
 
-Since AMD SMCA systems allow banks to be managed by both polling and
-interrupts, the polling banks bitmap for a CPU, i.e., mce_poll_banks, should
-not be modified when a storm subsides.
+This change ensures that clock doubling is avoided during intermediate
+transitions and is applied only when the card requires a 200MHz clock
+for HS400 operation.
 
-Fixes: 7eae17c4add5 ("x86/mce: Add per-bank CMCI storm mitigation")
-Signed-off-by: Avadhut Naik <avadhut.naik@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Signed-off-by: Sarthak Garg <sarthak.garg@oss.qualcomm.com>
+Reviewed-by: Bjorn Andersson <andersson@kernel.org>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20251121190542.2447913-2-avadhut.naik@amd.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/mce/threshold.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/mmc/host/sdhci-msm.c |   27 +++++++++++++++------------
+ 1 file changed, 15 insertions(+), 12 deletions(-)
 
---- a/arch/x86/kernel/cpu/mce/threshold.c
-+++ b/arch/x86/kernel/cpu/mce/threshold.c
-@@ -85,7 +85,8 @@ void cmci_storm_end(unsigned int bank)
+--- a/drivers/mmc/host/sdhci-msm.c
++++ b/drivers/mmc/host/sdhci-msm.c
+@@ -344,41 +344,43 @@ static void sdhci_msm_v5_variant_writel_
+ 	writel_relaxed(val, host->ioaddr + offset);
+ }
+ 
+-static unsigned int msm_get_clock_mult_for_bus_mode(struct sdhci_host *host)
++static unsigned int msm_get_clock_mult_for_bus_mode(struct sdhci_host *host,
++						    unsigned int clock,
++						    unsigned int timing)
  {
- 	struct mca_storm_desc *storm = this_cpu_ptr(&storm_desc);
+-	struct mmc_ios ios = host->mmc->ios;
+ 	/*
+ 	 * The SDHC requires internal clock frequency to be double the
+ 	 * actual clock that will be set for DDR mode. The controller
+ 	 * uses the faster clock(100/400MHz) for some of its parts and
+ 	 * send the actual required clock (50/200MHz) to the card.
+ 	 */
+-	if (ios.timing == MMC_TIMING_UHS_DDR50 ||
+-	    ios.timing == MMC_TIMING_MMC_DDR52 ||
+-	    ios.timing == MMC_TIMING_MMC_HS400 ||
++	if (timing == MMC_TIMING_UHS_DDR50 ||
++	    timing == MMC_TIMING_MMC_DDR52 ||
++	    (timing == MMC_TIMING_MMC_HS400 &&
++	    clock == MMC_HS200_MAX_DTR) ||
+ 	    host->flags & SDHCI_HS400_TUNING)
+ 		return 2;
+ 	return 1;
+ }
  
--	__clear_bit(bank, this_cpu_ptr(mce_poll_banks));
-+	if (!mce_flags.amd_threshold)
-+		__clear_bit(bank, this_cpu_ptr(mce_poll_banks));
- 	storm->banks[bank].history = 0;
- 	storm->banks[bank].in_storm_mode = false;
+ static void msm_set_clock_rate_for_bus_mode(struct sdhci_host *host,
+-					    unsigned int clock)
++					    unsigned int clock,
++					    unsigned int timing)
+ {
+ 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
+ 	struct sdhci_msm_host *msm_host = sdhci_pltfm_priv(pltfm_host);
+-	struct mmc_ios curr_ios = host->mmc->ios;
+ 	struct clk *core_clk = msm_host->bulk_clks[0].clk;
+ 	unsigned long achieved_rate;
+ 	unsigned int desired_rate;
+ 	unsigned int mult;
+ 	int rc;
  
+-	mult = msm_get_clock_mult_for_bus_mode(host);
++	mult = msm_get_clock_mult_for_bus_mode(host, clock, timing);
+ 	desired_rate = clock * mult;
+ 	rc = dev_pm_opp_set_rate(mmc_dev(host->mmc), desired_rate);
+ 	if (rc) {
+ 		pr_err("%s: Failed to set clock at rate %u at timing %d\n",
+-		       mmc_hostname(host->mmc), desired_rate, curr_ios.timing);
++		       mmc_hostname(host->mmc), desired_rate, timing);
+ 		return;
+ 	}
+ 
+@@ -397,7 +399,7 @@ static void msm_set_clock_rate_for_bus_m
+ 	msm_host->clk_rate = desired_rate;
+ 
+ 	pr_debug("%s: Setting clock at rate %lu at timing %d\n",
+-		 mmc_hostname(host->mmc), achieved_rate, curr_ios.timing);
++		 mmc_hostname(host->mmc), achieved_rate, timing);
+ }
+ 
+ /* Platform specific tuning */
+@@ -1239,7 +1241,7 @@ static int sdhci_msm_execute_tuning(stru
+ 	 */
+ 	if (host->flags & SDHCI_HS400_TUNING) {
+ 		sdhci_msm_hc_select_mode(host);
+-		msm_set_clock_rate_for_bus_mode(host, ios.clock);
++		msm_set_clock_rate_for_bus_mode(host, ios.clock, ios.timing);
+ 		host->flags &= ~SDHCI_HS400_TUNING;
+ 	}
+ 
+@@ -1864,6 +1866,7 @@ static void sdhci_msm_set_clock(struct s
+ {
+ 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
+ 	struct sdhci_msm_host *msm_host = sdhci_pltfm_priv(pltfm_host);
++	struct mmc_ios ios = host->mmc->ios;
+ 
+ 	if (!clock) {
+ 		host->mmc->actual_clock = msm_host->clk_rate = 0;
+@@ -1872,7 +1875,7 @@ static void sdhci_msm_set_clock(struct s
+ 
+ 	sdhci_msm_hc_select_mode(host);
+ 
+-	msm_set_clock_rate_for_bus_mode(host, clock);
++	msm_set_clock_rate_for_bus_mode(host, ios.clock, ios.timing);
+ out:
+ 	__sdhci_msm_set_clock(host, clock);
+ }
 
 
 
