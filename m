@@ -1,53 +1,56 @@
-Return-Path: <stable+bounces-205833-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205556-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39583CFA62B
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:58:04 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A917BCFA37E
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:37:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3791F34B1A3D
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:15:05 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A9E98305BD08
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:37:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0245364E88;
-	Tue,  6 Jan 2026 17:53:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C534342169;
+	Tue,  6 Jan 2026 17:38:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PdvEN4TR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fp29V5Jh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B3D13644AD;
-	Tue,  6 Jan 2026 17:53:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD778338918;
+	Tue,  6 Jan 2026 17:38:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767722014; cv=none; b=pA9TZXz9Msq8/XfdW+qpa/4uiEPVwKZLFOHFrsQERtFqzRffs0m9cUxW10XlG7YOzw8+XDuFcyu/8UicH1GC5M4K5XDN2u87P7o+E252liSFtVzYCh/UXWaNw3T4Qmd07x1GttyZQKoP5RQ2z+zckjLdDM2DQI48jFkmZBmGn1s=
+	t=1767721087; cv=none; b=LDj1Hd6E84bLlxVUdoSvmcy6Ikfq63jkQ920hLrxIqs0jOy0qFZ4/iPYmaAEK6byMWB5sVinrNYO40Kfte0E8Idd1Oamt3Yjkk2HnDJf19GsKPZnHDvEMvOxbhHWH6TMXywKCXRL1GpsqIyvhonMYJaRqvJqREStpCPp/uNuv5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767722014; c=relaxed/simple;
-	bh=7/3bJL4vdnCaxqwQK1HtezW2nINNZCcVFSEvn2nXjs4=;
+	s=arc-20240116; t=1767721087; c=relaxed/simple;
+	bh=Ea8k+XUzBi1jWo3PEoLpEZamZiDBfdtWwhFT8x2saDY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ChdVXFQjNucxrlWN7/U58scJpJHvqJMNxa/2QGnkqPnewL1nKw+2YRgzqp9Hb7SxwYaViNEQ2pTpeVnDyDfonlELomSKdogZ3BlHn+4oT+2rN86ABwzBDS0kaZm0+sPGLnogDFefaV9i0yNgwae5TOGBYdYvLdjrRRtKwtEXOZ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PdvEN4TR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D189DC116C6;
-	Tue,  6 Jan 2026 17:53:33 +0000 (UTC)
+	 MIME-Version; b=F7T3mM+ugsywR0t1HWO3i9f0OfFQLGiEuG0DDspfMD1VQkAe+seFiE3MALHxnXsqZ3CqDGv1j4YQknPu5N7vFDCV4E0LxB26Jjvf78vTYmHPhSwkplhmfa/ULPm5A3LzyDZpzSIRndGEPU/nun+9aeqw+Hj4Xz+YgOGYqmRcERM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fp29V5Jh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D466C116C6;
+	Tue,  6 Jan 2026 17:38:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767722014;
-	bh=7/3bJL4vdnCaxqwQK1HtezW2nINNZCcVFSEvn2nXjs4=;
+	s=korg; t=1767721086;
+	bh=Ea8k+XUzBi1jWo3PEoLpEZamZiDBfdtWwhFT8x2saDY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PdvEN4TR7+dUIFd+2z0Jge287pcwx7r6GemcUYmUsa5Qpy9mGiwEER/HSgNj5LaOt
-	 HmDZ8bUY5kyXs0S5odRoOPCCPci9HFtWFgoM9Ij3AygvAeXd4WbwbS1XfQZ92MllH7
-	 EiVgVjE7jX1EmdoxmHhUh0GKbsX9hwtgTjVA1GJ4=
+	b=fp29V5Jhc2hFGhOczZNxx8tl+1gFb9TzNrNE9Cou1mwp1PNBanyN+EqJtkW3AR+78
+	 ISykHLQKX6JAdeeWQQHPeA/mZWkgWx09cR9EQ4rnB3VzoUjwQAyEutdE82zHE/DFTU
+	 ho4VVkJIQ5yUiBPo5zZySmbvFJqvoVLT0/ucMVlA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>,
-	Lee Jones <lee@kernel.org>
-Subject: [PATCH 6.18 140/312] mfd: altera-sysmgr: Fix device leak on sysmgr regmap lookup
+	SeongJae Park <sj@kernel.org>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <davidgow@google.com>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 432/567] mm/damon/tests/core-kunit: handle alloc failures in damon_test_ops_registration()
 Date: Tue,  6 Jan 2026 18:03:34 +0100
-Message-ID: <20260106170552.906748071@linuxfoundation.org>
+Message-ID: <20260106170507.331377546@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
-References: <20260106170547.832845344@linuxfoundation.org>
+In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
+References: <20260106170451.332875001@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,40 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: SeongJae Park <sj@kernel.org>
 
-commit ccb7cd3218e48665f3c7e19eede0da5f069c323d upstream.
+commit 4f835f4e8c863985f15abd69db033c2f66546094 upstream.
 
-Make sure to drop the reference taken to the sysmgr platform device when
-retrieving its driver data.
+damon_test_ops_registration() is assuming all dynamic memory allocation in
+it will succeed.  Those are indeed likely in the real use cases since
+those allocations are too small to fail, but theoretically those could
+fail.  In the case, inappropriate memory access can happen.  Fix it by
+appropriately cleanup pre-allocated memory and skip the execution of the
+remaining tests in the failure cases.
 
-Note that holding a reference to a device does not prevent its driver
-data from going away.
-
-Fixes: f36e789a1f8d ("mfd: altera-sysmgr: Add SOCFPGA System Manager")
-Cc: stable@vger.kernel.org	# 5.2
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Lee Jones <lee@kernel.org>
+Link: https://lkml.kernel.org/r/20251101182021.74868-10-sj@kernel.org
+Fixes: 4f540f5ab4f2 ("mm/damon/core-test: add a kunit test case for ops registration")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: Brendan Higgins <brendan.higgins@linux.dev>
+Cc: David Gow <davidgow@google.com>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: <stable@vger.kernel.org>	[5.19+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mfd/altera-sysmgr.c |    2 ++
- 1 file changed, 2 insertions(+)
+ mm/damon/tests/core-kunit.h |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/mfd/altera-sysmgr.c
-+++ b/drivers/mfd/altera-sysmgr.c
-@@ -117,6 +117,8 @@ struct regmap *altr_sysmgr_regmap_lookup
+--- a/mm/damon/tests/core-kunit.h
++++ b/mm/damon/tests/core-kunit.h
+@@ -300,6 +300,9 @@ static void damon_test_ops_registration(
+ 	struct damon_operations ops = {.id = DAMON_OPS_VADDR}, bak;
+ 	bool need_cleanup = false;
  
- 	sysmgr = dev_get_drvdata(dev);
- 
-+	put_device(dev);
++	if (!c)
++		kunit_skip(test, "ctx alloc fail");
 +
- 	return sysmgr->regmap;
- }
- EXPORT_SYMBOL_GPL(altr_sysmgr_regmap_lookup_by_phandle);
+ 	/* DAMON_OPS_VADDR is registered only if CONFIG_DAMON_VADDR is set */
+ 	if (!damon_is_registered_ops(DAMON_OPS_VADDR)) {
+ 		bak.id = DAMON_OPS_VADDR;
 
 
 
