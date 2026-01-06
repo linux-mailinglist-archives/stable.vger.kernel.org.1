@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-205977-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205986-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F2C1CFA60F
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:57:24 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5CE8CFA122
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:19:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A5AA834A4D51
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:14:23 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 88598305BD68
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:16:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AC862135D7;
-	Tue,  6 Jan 2026 18:01:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42E8034DCF9;
+	Tue,  6 Jan 2026 18:02:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vUA1oJF8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CsSmc5Dw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1647828C871;
-	Tue,  6 Jan 2026 18:01:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2A562F5A29;
+	Tue,  6 Jan 2026 18:02:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767722492; cv=none; b=kkPEIIKXLtJx1/OZERE/11/GSBy40ucps0jW37Kkmula/Sq3Qps5ZXraTGD1O9iTfwUzvTYOSkblSVV/ODI4JKuv2k15hzaKQ0oBYPHvbof4YRf0S06qUgFybMdhh/kVsarVKxl9TZ40di6e0KU0Q+kdPpPKrfC5rdsPDw1d2y0=
+	t=1767722522; cv=none; b=ULZ/oTPBE3E3cUWt3tb182ebVF/WzQ6uRre4RGIJBd1YgJWnr2HblSmZ2H09EfW2PEAnqv6EzLokXaNcW1XBcOEuboCx9be7zNUzztwV48doHLyfgMOTRP2Q1REfKWPwUbnJHj0T4URiaDKoDGwJvzE2/LfKNcaL3DskxoR/3BI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767722492; c=relaxed/simple;
-	bh=P++wQaAAAljvdhjoTwHgRxGQYwCYZWNV7mABTNgWt58=;
+	s=arc-20240116; t=1767722522; c=relaxed/simple;
+	bh=04yWbFchua011NiNQVfSQtmYOZXP4JIsgyqgWDCttGs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DI3Qosk3O40p3XS9gTWY/28H0eC02NOJSshRJd7D22BcfZ0xJb7cQLabB2jcr9OhYSKbNp+IN+8TNV3c45v/+rzQ8LxDkXk8GTjmyGpzoDeN79czru8HAfMGc44VnQG+uhX1Bvx+MFJYRnAuDNrSJIN5udgah1fCKae49/kT3GY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vUA1oJF8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AC9EC116C6;
-	Tue,  6 Jan 2026 18:01:31 +0000 (UTC)
+	 MIME-Version:Content-Type; b=OiyoApKgunTJFrEAkeRGNjI7rY+OuYim4LiGXowUBsZmnWfkLoafxFR2d6iPija2qvD0FZqJxbP1iyglLTjLgYaLMNBSyNWftW8HnEx+Z2ynm3TF8x06BdURMOl8Qeoojemg/W8TnlxeBXYlxoFSuOtGkNNgVafm22cZ+yoBUfI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CsSmc5Dw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61D38C116C6;
+	Tue,  6 Jan 2026 18:02:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767722492;
-	bh=P++wQaAAAljvdhjoTwHgRxGQYwCYZWNV7mABTNgWt58=;
+	s=korg; t=1767722521;
+	bh=04yWbFchua011NiNQVfSQtmYOZXP4JIsgyqgWDCttGs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vUA1oJF87L5SfOlB6iwQm86pB3SZpoZ9o2UTmH1VCktN42Ot8xSDykunOZyGwIOp9
-	 w21AIfhxSTHMfAIej3HpjuzQfeiOMPbGg+O4Zh/jiQfF71bC8aZCCd0AFVrzX6Et0D
-	 Jujq4vTfsPv1ZWEkjU7TSiuDy9HvP10WBi4V+tYM=
+	b=CsSmc5DwTKEhUMdYxJwfB42D5tRSwDhBinJxQ/Cdtr8uJ/GK2q1jK4234Hp3UrrxS
+	 jmCun8rbgfTvwKjxifAl7BQ7FlBvm0Ya0lVU4dlWynKUInHJ9bYYUZJzFidfkB4rBr
+	 B3bXGb3DcdYWy7ce7GyLOr60egj6ZcOcvWsCzIBU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Diederik de Haas <diederik@cknow-tech.com>,
-	Andy Yan <andy.yan@rock-chips.com>,
-	Dang Huynh <dang.huynh@mainlining.org>,
-	Heiko Stuebner <heiko@sntech.de>
-Subject: [PATCH 6.18 281/312] drm/rockchip: vop2: Use OVL_LAYER_SEL configuration instead of use win_mask calculate used layers
-Date: Tue,  6 Jan 2026 18:05:55 +0100
-Message-ID: <20260106170558.018325424@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Simon Richter <Simon.Richter@hogyros.de>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Shuicheng Lin <shuicheng.lin@intel.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>
+Subject: [PATCH 6.18 289/312] drm/ttm: Avoid NULL pointer deref for evicted BOs
+Date: Tue,  6 Jan 2026 18:06:03 +0100
+Message-ID: <20260106170558.309013054@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
 References: <20260106170547.832845344@linuxfoundation.org>
@@ -59,118 +60,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Yan <andy.yan@rock-chips.com>
+From: Simon Richter <Simon.Richter@hogyros.de>
 
-commit d3fe9aa495854f8d88c69c41a4b31e69424656ad upstream.
+commit 491adc6a0f9903c32b05f284df1148de39e8e644 upstream.
 
-When there are multiple Video Ports, and only one of them is working
-(for example, VP1 is working while VP0 is not), in this case, the
-win_mask of VP0 is 0. However, we have already set the port mux for VP0
-according to vp0->nlayers, and at the same time, in the OVL_LAYER_SEL
-register, there are windows will also be assigned to layers which will
-map to the inactive VPs. In this situation, vp0->win_mask is zero as it
-now working, it is more reliable to calculate the used layers based on
-the configuration of the OVL_LAYER_SEL register.
+It is possible for a BO to exist that is not currently associated with a
+resource, e.g. because it has been evicted.
 
-Note: as the configuration of OVL_LAYER_SEL is take effect when the
-vsync is come, so we use the value backup in vop2->old_layer_sel instead
-of read OVL_LAYER_SEL directly.
+When devcoredump tries to read the contents of all BOs for dumping, we need
+to expect this as well -- in this case, ENODATA is recorded instead of the
+buffer contents.
 
-Fixes: 3e89a8c68354 ("drm/rockchip: vop2: Fix the update of LAYER/PORT select registers when there are multi display output on rk3588/rk3568")
-Cc: stable@vger.kernel.org
-Reported-by: Diederik de Haas <diederik@cknow-tech.com>
-Closes: https://bugs.kde.org/show_bug.cgi?id=511274
-Signed-off-by: Andy Yan <andy.yan@rock-chips.com>
-Tested-by: Dang Huynh <dang.huynh@mainlining.org>
-Tested-by: Diederik de Haas <diederik@cknow-tech.com>
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://lore.kernel.org/r/20251112085024.2480111-1-andyshrk@163.com
+Fixes: 7d08df5d0bd3 ("drm/ttm: Add ttm_bo_access")
+Fixes: 09ac4fcb3f25 ("drm/ttm: Implement vm_operations_struct.access v2")
+Cc: stable <stable@kernel.org>
+Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/6271
+Signed-off-by: Simon Richter <Simon.Richter@hogyros.de>
+Reviewed-by: Matthew Brost <matthew.brost@intel.com>
+Reviewed-by: Shuicheng Lin <shuicheng.lin@intel.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+Link: https://patch.msgid.link/20251013161241.709916-1-Simon.Richter@hogyros.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/rockchip/rockchip_vop2_reg.c |   49 +++++++++++++++++++++++----
- 1 file changed, 42 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/ttm/ttm_bo_vm.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/gpu/drm/rockchip/rockchip_vop2_reg.c
-+++ b/drivers/gpu/drm/rockchip/rockchip_vop2_reg.c
-@@ -1369,6 +1369,25 @@ static const struct vop2_regs_dump rk358
- 	},
- };
+--- a/drivers/gpu/drm/ttm/ttm_bo_vm.c
++++ b/drivers/gpu/drm/ttm/ttm_bo_vm.c
+@@ -434,6 +434,11 @@ int ttm_bo_access(struct ttm_buffer_obje
+ 	if (ret)
+ 		return ret;
  
-+/*
-+ * phys_id is used to identify a main window(Cluster Win/Smart Win, not
-+ * include the sub win of a cluster or the multi area) that can do overlay
-+ * in main overlay stage.
-+ */
-+static struct vop2_win *vop2_find_win_by_phys_id(struct vop2 *vop2, uint8_t phys_id)
-+{
-+	struct vop2_win *win;
-+	int i;
-+
-+	for (i = 0; i < vop2->data->win_size; i++) {
-+		win = &vop2->win[i];
-+		if (win->data->phys_id == phys_id)
-+			return win;
++	if (!bo->resource) {
++		ret = -ENODATA;
++		goto unlock;
 +	}
 +
-+	return NULL;
-+}
-+
- static unsigned long rk3568_set_intf_mux(struct vop2_video_port *vp, int id, u32 polflags)
- {
- 	struct vop2 *vop2 = vp->vop2;
-@@ -1842,15 +1861,31 @@ static void vop2_parse_alpha(struct vop2
- 	alpha->dst_alpha_ctrl.bits.factor_mode = ALPHA_SRC_INVERSE;
- }
- 
--static int vop2_find_start_mixer_id_for_vp(struct vop2 *vop2, u8 port_id)
-+static int vop2_find_start_mixer_id_for_vp(struct vop2_video_port *vp)
- {
--	struct vop2_video_port *vp;
--	int used_layer = 0;
-+	struct vop2 *vop2 = vp->vop2;
-+	struct vop2_win *win;
-+	u32 layer_sel = vop2->old_layer_sel;
-+	u32 used_layer = 0;
-+	unsigned long win_mask = vp->win_mask;
-+	unsigned long phys_id;
-+	bool match;
- 	int i;
- 
--	for (i = 0; i < port_id; i++) {
--		vp = &vop2->vps[i];
--		used_layer += hweight32(vp->win_mask);
-+	for (i = 0; i < 31; i += 4) {
-+		match = false;
-+		for_each_set_bit(phys_id, &win_mask, ROCKCHIP_VOP2_ESMART3) {
-+			win = vop2_find_win_by_phys_id(vop2, phys_id);
-+			if (win->data->layer_sel_id[vp->id] == ((layer_sel >> i) & 0xf)) {
-+				match = true;
-+				break;
-+			}
-+		}
-+
-+		if (!match)
-+			used_layer += 1;
-+		else
-+			break;
+ 	switch (bo->resource->mem_type) {
+ 	case TTM_PL_SYSTEM:
+ 		fallthrough;
+@@ -448,6 +453,7 @@ int ttm_bo_access(struct ttm_buffer_obje
+ 			ret = -EIO;
  	}
  
- 	return used_layer;
-@@ -1935,7 +1970,7 @@ static void vop2_setup_alpha(struct vop2
- 	u32 dst_global_alpha = DRM_BLEND_ALPHA_OPAQUE;
++unlock:
+ 	ttm_bo_unreserve(bo);
  
- 	if (vop2->version <= VOP_VERSION_RK3588)
--		mixer_id = vop2_find_start_mixer_id_for_vp(vop2, vp->id);
-+		mixer_id = vop2_find_start_mixer_id_for_vp(vp);
- 	else
- 		mixer_id = 0;
- 
+ 	return ret;
 
 
 
