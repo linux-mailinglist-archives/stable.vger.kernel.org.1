@@ -1,290 +1,86 @@
-Return-Path: <stable+bounces-204959-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204960-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE020CF60D8
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 01:02:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CAA32CF60E4
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 01:05:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D7D26303E41A
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 00:02:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AC3B63062E1B
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 00:05:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C36A9BA3D;
-	Tue,  6 Jan 2026 00:02:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EBDFBA3D;
+	Tue,  6 Jan 2026 00:05:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Rfb8dlqw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gcBEECdo"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2AD73A1E88
-	for <stable@vger.kernel.org>; Tue,  6 Jan 2026 00:02:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC9E033EC;
+	Tue,  6 Jan 2026 00:05:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767657734; cv=none; b=eU+858cEGVk4KrdHwy8ZlkynolkE5chplom7BcvZYAxTTSGmZJEJ/pHQkmabC+YstHc+COvsvXNdz7rKZiSesf31QVTO2lX1zDAauar7cnthuVH3X2ZZev/AkIvrD00rzYiHEbC6jvaMpDkdXIjSOpLiuyLfUO4HwJ5pYbGmaUU=
+	t=1767657901; cv=none; b=FQClq0XE4Zr1n9OBE+2RJLBXxYxz+CfL74nWA55aRivp1cXC2wSoqQK8v69VtwaWQykdq9j9PI+22mjo2XtI3itmor45RYm90cAEe8fBNsoC36ustLt6SS0rG6iEn0RLmJh2000Z33Q2RYENZ6c6fuPl5pNOQANoHIOHiPFoIJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767657734; c=relaxed/simple;
-	bh=rroKNlVbZCy7ELszwC9b9j/yeamYk+rHS6PmAGGv8BE=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=qRYKr3yNjDTnnw5iZbCWAt+z2ezzlO0gUl/aX2Em5PTT2iX2wyswo5PBXlP/tN8OxiVll4BivohiOQnEgJYrO3NFWeDNLvFegT2Ync1oXuaLg49cWuEEfcnbOg2fQviH2U6/orbiAvfw4JfzRWY9BH8nxWKtFWcSrFQSqSzFuEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Rfb8dlqw; arc=none smtp.client-ip=209.85.216.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-34c64cd48a8so950571a91.0
-        for <stable@vger.kernel.org>; Mon, 05 Jan 2026 16:02:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1767657732; x=1768262532; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=vGRWL2JiL9rij9W12TBCl4/Iu/deWdZO6/owu4HUTBY=;
-        b=Rfb8dlqwxuGA5RYfLr1i9KzHzPVMpAkb9EMBlXdRhz5Z5LCZbfkzw9Cyv3cAik1/n1
-         VDDYqM/v4LIQ6bXR5FuozMDKFsIh+2/70tvFV1nFjUSUGTEBYlruE48rQDGAO8CdV6tm
-         sDJd60VKAlAfSmYKy3fv9HgkZ8xdBl/9Bt5Qc2DsjyeLuqz7pNrfcLjm8q6v4u8s7qOT
-         zg5CqIZqGb/tlKZRy8SW9CQAQ9WZY1T26ETHIcnVzaXngv74D5gq7qEoAD/02FK+ABuA
-         0KSwMXJxopSuiXbffh17SsK6m2zN2v1DEKGTkTnBqcAmvDXjrsfrf5CPuFv3hTPNg0YZ
-         ObAQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767657732; x=1768262532;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=vGRWL2JiL9rij9W12TBCl4/Iu/deWdZO6/owu4HUTBY=;
-        b=otb+0EB9USZAEV3xVOoGTYQupDTiIFIvaaV41n+XmIAmZN+7ydN+JgsVxWnytHw+/R
-         8XdoiP8OmDBpdsh+y3LgCCkRd3fT27NzZSNFN7P2QevWGQn2VmIkMLhCEC97ySTB8WGI
-         bF/1/cOEVZswdY1p0B50Lf9r44zKY1V+bIy+T8ccgkoGAMjck2dAEy3ysWmpKfv2ZRvd
-         R37hN3HFWF0mJ2OaBjh7HM9kU9KLlYK/sgSEAQHv/qnrn9GZb4WfGTirTM3WHyuHRRD5
-         98OaaJJaU6VVWrTiy3qtMbyxtw3BjF98CK1VAUmh1B3kFWGPm6BJ+e9IZEe2BMhVjqw+
-         v3uA==
-X-Forwarded-Encrypted: i=1; AJvYcCW5Bh0Hgi3dEd1uzCepv11T6H5ugB/RxYDvSMesfsVLzOhlmsF8rnsH3K1rdAzJa/idKZSGLqI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzwfkfiqg/APjETa43f3kXpNHsdwSXs4Bmvsq8vEjOmJdtisvR6
-	JZQ7r3689QeszEhQ0cogLrWReUCl3MJ8odXOVCm13UHgZ1dtWF8Ez5n2BM8K4Zh5FJ4DJ8KYae7
-	tSM2awQ==
-X-Google-Smtp-Source: AGHT+IEXmYTixm9R/utCr6gAiHjqsYw478azZr867duSrNV/vHlG45jG6yVt0zjtI4tUhhNJAOwAeNNTZ5s=
-X-Received: from pjxx11.prod.google.com ([2002:a17:90b:58cb:b0:349:a1a3:75fb])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:35c1:b0:33b:dec9:d9aa
- with SMTP id 98e67ed59e1d1-34f5f3362f4mr711865a91.25.1767657732300; Mon, 05
- Jan 2026 16:02:12 -0800 (PST)
-Date: Mon, 5 Jan 2026 16:02:10 -0800
-In-Reply-To: <20260101090516.316883-3-pbonzini@redhat.com>
+	s=arc-20240116; t=1767657901; c=relaxed/simple;
+	bh=B74BagB6SCV2x9DBpJXHJyqf1LRlBLte5qZJstFZsM8=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=thHw+z3sFAM5yeh7/bv5yZl9a5UcNPPQaQyeIBt4UEpo5fBzTAMKXfMmmFJGApPPCIJv/4Y1XtTnOuP4LaqsR27Tjf4o6pthaWgr0zskKRw/fScm1WvQRMXR1/eWHZGFDynCTAwSZqotm6KwbCwiHq4VsfO5Gl3tZrCykGuZWMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gcBEECdo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3475C116D0;
+	Tue,  6 Jan 2026 00:04:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767657900;
+	bh=B74BagB6SCV2x9DBpJXHJyqf1LRlBLte5qZJstFZsM8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=gcBEECdoxj8ODTbaJ2qu1nbuadk/uIqYhNLS0oqiMFBW6prPRNmdV6PrzdzXK48Wp
+	 OvYz3JBwB3M8fA3oH+x0Ju2tjtSZhC/uR/o6kLlGP0PUz8i7DIM9FIU5VTYlgk6qQs
+	 c6vSz6WWrKgznS62DloZRkqneXEVcXfCZ4PMCy47s+7k+UPWKyY13hKd3NS2Ezbg3X
+	 +uTjEwM3OVjauzBx/L6Zne/mqwhmbvWadbAhU8XIG6akzCIYOhRrP7l5YDlT0A7SRv
+	 A9FtLAkyHdOCL8mpEFZp5l9GLRay0zxOKSiV6aHCmjwVspfKTwjjKVvV3BRlLV/QyJ
+	 ajmKwcTJUM8pA==
+Date: Mon, 5 Jan 2026 16:04:58 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Breno Leitao <leitao@debian.org>
+Cc: Michael Chan <michael.chan@broadcom.com>, Pavan Chebbi
+ <pavan.chebbi@broadcom.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo
+ Abeni <pabeni@redhat.com>, Richard Cochran <richardcochran@gmail.com>,
+ "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>, Vadim Fedorenko
+ <vadim.fedorenko@linux.dev>, Vladimir Oltean <vladimir.oltean@nxp.com>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, kernel-team@meta.com,
+ stable@vger.kernel.org
+Subject: Re: [PATCH net v2] bnxt_en: Fix NULL pointer crash in
+ bnxt_ptp_enable during error cleanup
+Message-ID: <20260105160458.5483a5ea@kernel.org>
+In-Reply-To: <20260105-bnxt-v2-1-9ac69edef726@debian.org>
+References: <20260105-bnxt-v2-1-9ac69edef726@debian.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260101090516.316883-1-pbonzini@redhat.com> <20260101090516.316883-3-pbonzini@redhat.com>
-Message-ID: <aVxRAv888jsmQJ8-@google.com>
-Subject: Re: [PATCH 2/4] selftests: kvm: replace numbered sync points with actions
-From: Sean Christopherson <seanjc@google.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, x86@kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Thu, Jan 01, 2026, Paolo Bonzini wrote:
-> Rework the guest=>host syncs in the AMX test to use named actions instead
-> of arbitrary, incrementing numbers.  The "stage" of the test has no real
-> meaning, what matters is what action the test wants the host to perform.
-> The incrementing numbers are somewhat helpful for triaging failures, but
-> fully debugging failures almost always requires a much deeper dive into
-> the test (and KVM).
-> 
-> Using named actions not only makes it easier to extend the test without
-> having to shift all sync point numbers, it makes the code easier to read.
-> 
-> [Commit message by Sean Christopherson]
-> 
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
-> 	I wrote this before seeing your patch... It's obviously
-> 	similar but different enough that I kept my version. :)
+On Mon, 05 Jan 2026 04:00:16 -0800 Breno Leitao wrote:
+>  init_err_pci_clean:
+>  	bnxt_hwrm_func_drv_unrgtr(bp);
+> +	bnxt_ptp_clear(bp);
+> +	kfree(bp->ptp_cfg);
+>  	bnxt_free_hwrm_resources(bp);
+>  	bnxt_hwmon_uninit(bp);
+>  	bnxt_ethtool_free(bp);
+> -	bnxt_ptp_clear(bp);
+> -	kfree(bp->ptp_cfg);
+>  	bp->ptp_cfg = NULL;
 
-Heh, no worries.
+Is there a reason to leave clearing of the pointer behind?
+I don't see it mentioned in the commit msg..
+Checking previous discussion it sounds like Pavan asked for the
+clearing to also be moved.
 
-> @@ -244,6 +254,7 @@ int main(int argc, char *argv[])
->  	memset(addr_gva2hva(vm, xstate), 0, PAGE_SIZE * DIV_ROUND_UP(XSAVE_SIZE, PAGE_SIZE));
->  	vcpu_args_set(vcpu, 3, amx_cfg, tiledata, xstate);
->  
-> +	int iter = 0;
-
-If we want to retain "tracing" of guest syncs, I vote to provide the information
-from the guest, otherwise I'll end up counting GUEST_SYNC() calls on my fingers
-(and run out of fingers) :-D.
-
-E.g. if we wrap all GUEST_SYNC() calls in a macro, we can print the line number
-without having to hardcode sync point numbers.
-
-# ./x86/amx_test 
-Random seed: 0x6b8b4567
-GUEST_SYNC line 164, save/restore VM state
-GUEST_SYNC line 168, save/restore VM state
-GUEST_SYNC line 172, save/restore VM state
-GUEST_SYNC line 175, save tiledata
-GUEST_SYNC line 175, check TMM0 contents
-GUEST_SYNC line 175, save/restore VM state
-GUEST_SYNC line 181, before KVM_SET_XSAVE
-GUEST_SYNC line 181, after KVM_SET_XSAVE
-GUEST_SYNC line 182, save/restore VM state
-GUEST_SYNC line 186, save/restore VM state
-GUEST_SYNC line 210, save/restore VM state
-GUEST_SYNC line 224, save/restore VM state
-GUEST_SYNC line 231, save/restore VM state
-GUEST_SYNC line 234, check TMM0 contents
-GUEST_SYNC line 234, save/restore VM state
-UCALL_DONE
-
----
- tools/testing/selftests/kvm/x86/amx_test.c | 55 +++++++++++++---------
- 1 file changed, 33 insertions(+), 22 deletions(-)
-
-diff --git a/tools/testing/selftests/kvm/x86/amx_test.c b/tools/testing/selftests/kvm/x86/amx_test.c
-index 37b166260ee3..9593ecd47d28 100644
---- a/tools/testing/selftests/kvm/x86/amx_test.c
-+++ b/tools/testing/selftests/kvm/x86/amx_test.c
-@@ -131,19 +131,27 @@ static void set_tilecfg(struct tile_config *cfg)
- }
- 
- enum {
-+	TEST_SYNC_LINE_NUMBER_MASK = GENMASK(15, 0),
-+
- 	/* Retrieve TMM0 from guest, stash it for TEST_RESTORE_TILEDATA */
--	TEST_SAVE_TILEDATA = 1,
-+	TEST_SAVE_TILEDATA = BIT(16),
- 
- 	/* Check TMM0 against tiledata */
--	TEST_COMPARE_TILEDATA = 2,
-+	TEST_COMPARE_TILEDATA = BIT(17),
- 
- 	/* Restore TMM0 from earlier save */
--	TEST_RESTORE_TILEDATA = 4,
-+	TEST_RESTORE_TILEDATA = BIT(18),
- 
- 	/* Full VM save/restore */
--	TEST_SAVE_RESTORE = 8,
-+	TEST_SAVE_RESTORE = BIT(19),
- };
- 
-+#define AMX_GUEST_SYNC(action)						\
-+do {									\
-+	kvm_static_assert(!((action) & TEST_SYNC_LINE_NUMBER_MASK));	\
-+	GUEST_SYNC((action) | __LINE__);				\
-+} while (0)
-+
- static void __attribute__((__flatten__)) guest_code(struct tile_config *amx_cfg,
- 						    struct tile_data *tiledata,
- 						    struct xstate *xstate)
-@@ -153,29 +161,29 @@ static void __attribute__((__flatten__)) guest_code(struct tile_config *amx_cfg,
- 	GUEST_ASSERT(this_cpu_has(X86_FEATURE_XSAVE) &&
- 		     this_cpu_has(X86_FEATURE_OSXSAVE));
- 	check_xtile_info();
--	GUEST_SYNC(TEST_SAVE_RESTORE);
-+	AMX_GUEST_SYNC(TEST_SAVE_RESTORE);
- 
- 	/* xfd=0, enable amx */
- 	wrmsr(MSR_IA32_XFD, 0);
--	GUEST_SYNC(TEST_SAVE_RESTORE);
-+	AMX_GUEST_SYNC(TEST_SAVE_RESTORE);
- 	GUEST_ASSERT(rdmsr(MSR_IA32_XFD) == 0);
- 	set_tilecfg(amx_cfg);
- 	__ldtilecfg(amx_cfg);
--	GUEST_SYNC(TEST_SAVE_RESTORE);
-+	AMX_GUEST_SYNC(TEST_SAVE_RESTORE);
- 	/* Check save/restore when trap to userspace */
- 	__tileloadd(tiledata);
--	GUEST_SYNC(TEST_SAVE_TILEDATA | TEST_COMPARE_TILEDATA | TEST_SAVE_RESTORE);
-+	AMX_GUEST_SYNC(TEST_SAVE_TILEDATA | TEST_COMPARE_TILEDATA | TEST_SAVE_RESTORE);
- 
- 	/* xfd=0x40000, disable amx tiledata */
- 	wrmsr(MSR_IA32_XFD, XFEATURE_MASK_XTILE_DATA);
- 
- 	/* host tries setting tiledata while guest XFD is set */
--	GUEST_SYNC(TEST_RESTORE_TILEDATA);
--	GUEST_SYNC(TEST_SAVE_RESTORE);
-+	AMX_GUEST_SYNC(TEST_RESTORE_TILEDATA);
-+	AMX_GUEST_SYNC(TEST_SAVE_RESTORE);
- 
- 	wrmsr(MSR_IA32_XFD, 0);
- 	__tilerelease();
--	GUEST_SYNC(TEST_SAVE_RESTORE);
-+	AMX_GUEST_SYNC(TEST_SAVE_RESTORE);
- 	/*
- 	 * After XSAVEC, XTILEDATA is cleared in the xstate_bv but is set in
- 	 * the xcomp_bv.
-@@ -199,7 +207,7 @@ static void __attribute__((__flatten__)) guest_code(struct tile_config *amx_cfg,
- 	GUEST_ASSERT(!(xstate->header.xstate_bv & XFEATURE_MASK_XTILE_DATA));
- 	GUEST_ASSERT((xstate->header.xcomp_bv & XFEATURE_MASK_XTILE_DATA));
- 
--	GUEST_SYNC(TEST_SAVE_RESTORE);
-+	AMX_GUEST_SYNC(TEST_SAVE_RESTORE);
- 	GUEST_ASSERT(rdmsr(MSR_IA32_XFD) == XFEATURE_MASK_XTILE_DATA);
- 	set_tilecfg(amx_cfg);
- 	__ldtilecfg(amx_cfg);
-@@ -213,17 +221,17 @@ static void __attribute__((__flatten__)) guest_code(struct tile_config *amx_cfg,
- 	GUEST_ASSERT(!(get_cr0() & X86_CR0_TS));
- 	GUEST_ASSERT(rdmsr(MSR_IA32_XFD_ERR) == XFEATURE_MASK_XTILE_DATA);
- 	GUEST_ASSERT(rdmsr(MSR_IA32_XFD) == XFEATURE_MASK_XTILE_DATA);
--	GUEST_SYNC(TEST_SAVE_RESTORE);
-+	AMX_GUEST_SYNC(TEST_SAVE_RESTORE);
- 	GUEST_ASSERT(rdmsr(MSR_IA32_XFD_ERR) == XFEATURE_MASK_XTILE_DATA);
- 	GUEST_ASSERT(rdmsr(MSR_IA32_XFD) == XFEATURE_MASK_XTILE_DATA);
- 	/* Clear xfd_err */
- 	wrmsr(MSR_IA32_XFD_ERR, 0);
- 	/* xfd=0, enable amx */
- 	wrmsr(MSR_IA32_XFD, 0);
--	GUEST_SYNC(TEST_SAVE_RESTORE);
-+	AMX_GUEST_SYNC(TEST_SAVE_RESTORE);
- 
- 	__tileloadd(tiledata);
--	GUEST_SYNC(TEST_COMPARE_TILEDATA | TEST_SAVE_RESTORE);
-+	AMX_GUEST_SYNC(TEST_COMPARE_TILEDATA | TEST_SAVE_RESTORE);
- 
- 	GUEST_DONE();
- }
-@@ -275,7 +283,6 @@ int main(int argc, char *argv[])
- 	memset(addr_gva2hva(vm, xstate), 0, PAGE_SIZE * DIV_ROUND_UP(XSAVE_SIZE, PAGE_SIZE));
- 	vcpu_args_set(vcpu, 3, amx_cfg, tiledata, xstate);
- 
--	int iter = 0;
- 	for (;;) {
- 		vcpu_run(vcpu);
- 		TEST_ASSERT_KVM_EXIT_REASON(vcpu, KVM_EXIT_IO);
-@@ -285,13 +292,14 @@ int main(int argc, char *argv[])
- 			REPORT_GUEST_ASSERT(uc);
- 			/* NOT REACHED */
- 		case UCALL_SYNC:
--			++iter;
- 			if (uc.args[1] & TEST_SAVE_TILEDATA) {
--				fprintf(stderr, "GUEST_SYNC #%d, save tiledata\n", iter);
-+				fprintf(stderr, "GUEST_SYNC line %d, save tiledata\n",
-+					(u16)(uc.args[1] & TEST_SYNC_LINE_NUMBER_MASK));
- 				tile_state = vcpu_save_state(vcpu);
- 			}
- 			if (uc.args[1] & TEST_COMPARE_TILEDATA) {
--				fprintf(stderr, "GUEST_SYNC #%d, check TMM0 contents\n", iter);
-+				fprintf(stderr, "GUEST_SYNC line %d, check TMM0 contents\n",
-+					(u16)(uc.args[1] & TEST_SYNC_LINE_NUMBER_MASK));
- 
- 				/* Compacted mode, get amx offset by xsave area
- 				 * size subtract 8K amx size.
-@@ -304,12 +312,15 @@ int main(int argc, char *argv[])
- 				TEST_ASSERT(ret == 0, "memcmp failed, ret=%d", ret);
- 			}
- 			if (uc.args[1] & TEST_RESTORE_TILEDATA) {
--				fprintf(stderr, "GUEST_SYNC #%d, before KVM_SET_XSAVE\n", iter);
-+				fprintf(stderr, "GUEST_SYNC line %d, before KVM_SET_XSAVE\n",
-+					(u16)(uc.args[1] & TEST_SYNC_LINE_NUMBER_MASK));
- 				vcpu_xsave_set(vcpu, tile_state->xsave);
--				fprintf(stderr, "GUEST_SYNC #%d, after KVM_SET_XSAVE\n", iter);
-+				fprintf(stderr, "GUEST_SYNC line %d, after KVM_SET_XSAVE\n",
-+					(u16)(uc.args[1] & TEST_SYNC_LINE_NUMBER_MASK));
- 			}
- 			if (uc.args[1] & TEST_SAVE_RESTORE) {
--				fprintf(stderr, "GUEST_SYNC #%d, save/restore VM state\n", iter);
-+				fprintf(stderr, "GUEST_SYNC line %d, save/restore VM state\n",
-+					(u16)(uc.args[1] & TEST_SYNC_LINE_NUMBER_MASK));
- 				state = vcpu_save_state(vcpu);
- 				memset(&regs1, 0, sizeof(regs1));
- 				vcpu_regs_get(vcpu, &regs1);
-
-base-commit: bc6eb58bab2fda28ef473ff06f4229c814c29380
---
+>  	kfree(bp->fw_health);
+>  	bp->fw_health = NULL;
 
