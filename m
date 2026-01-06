@@ -1,51 +1,52 @@
-Return-Path: <stable+bounces-205481-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205492-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44464CFA231
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:28:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E02BBCFA260
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:29:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E237632029BD
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:40:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0690F316ED02
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:41:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01EB12E093B;
-	Tue,  6 Jan 2026 17:33:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 797062EA159;
+	Tue,  6 Jan 2026 17:34:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FOm4IlmP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OG4923Gn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A97832DF719;
-	Tue,  6 Jan 2026 17:33:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3612929B8FE;
+	Tue,  6 Jan 2026 17:34:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767720836; cv=none; b=ebfDpKubNOCvz9rYGtKqvCc1HEXWJfSpkf+Z/u3LCn2So2vii+hGw3RSrQIuDS9y7S+dj56+8xpqCbcGQT4/f8aCjeubIJA/mO+7MtO2+WK762cEqQ+4cepWZqDqXPPGIr0qxPd3DsRVRe23YP/TDkJWOeZTRuBIHcF4zoi4q+s=
+	t=1767720873; cv=none; b=SRjdVd2grX8578nscJ1GC7zOjOHWWZZ1ll6tCee4qnbgBGOwegacwy1gfAFmm4Msk6ooLav19YD0Qa2Be9fezggEW7G+C47wuxfzqDxc2OW7Gz/A++nGfVhr4DDyOVVyBtpcmD/NgpKD8HSwb5WgoCStYxR+txq4815GJRosbhs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767720836; c=relaxed/simple;
-	bh=+opZzcdkGsAMQ74+Ns/QaOMQz7J8o4lhfGlTpI6Dric=;
+	s=arc-20240116; t=1767720873; c=relaxed/simple;
+	bh=+wsiNCV5HkvC2gYMwyGkUf8rCaUbg809YnFg1PeZBoM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jtOMf0CtBh0QnQB7+Y5BywtiJ4sWAl/K3C0aeZ86Xf5sQYyJO6QvPXU69vMbMCaRN5aK0msSIIhy1yA31/rxtoWGR+gxaKZhILIIGhJDVm7vU8x3kC9ccwJRtcSfvqE5vtOokw8zhT664Eh41tBFvBqhyjfai79SjGWTAKACVHo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FOm4IlmP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 124D0C116C6;
-	Tue,  6 Jan 2026 17:33:55 +0000 (UTC)
+	 MIME-Version; b=jnU51AIgg/O9Df/YssoEZj8r5VBzci08ibu9I87HUYBkuxkLYxBNtu36TQH5FpIKUS+vsQsCBZs0owZG5dXdTmaHdeBJTh/MPGcwhRScaZ9JVRYSe74MvXekrRMCWZFwNLlRq/fVhL0YLQVDZDT+DtKd4Gr/KtduS1YYNsgq/M0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OG4923Gn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C04EC116C6;
+	Tue,  6 Jan 2026 17:34:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767720836;
-	bh=+opZzcdkGsAMQ74+Ns/QaOMQz7J8o4lhfGlTpI6Dric=;
+	s=korg; t=1767720873;
+	bh=+wsiNCV5HkvC2gYMwyGkUf8rCaUbg809YnFg1PeZBoM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FOm4IlmPeewx/eCdBeeVdkJuknQh2yD6dP+sxGdTta7WjowMGzuJq+Fk4OUHKmOd1
-	 6O0fzOP2S++UiWaRjeM1xP+twIk7AWr5LFyrUsNS5t/1xSG24ztcEx/0Gpjx5rmgPb
-	 AUhtlSmZljU4twjt2hJGAGyNWf4Y9WB9et46mvjo=
+	b=OG4923GnUYV0Ms5TJlLSKKLjQZnuDh8XqRQbAa1c5RNXrNBVDYz5BkRwQyv+5m+jU
+	 jxLZiEgQ0FXlX5AR7NyQZHBAyAxMoDmlXQ90xsJX3Ve/b6eaMRT7euHKCtXjodxhI+
+	 VBzvtTD4lER4VeMxK0ET2H9so8pAJDdezoU4eurQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Stable@vger.kernel.org,
 	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.12 349/567] ASoC: codecs: lpass-tx-macro: fix SM6115 support
-Date: Tue,  6 Jan 2026 18:02:11 +0100
-Message-ID: <20260106170504.240333376@linuxfoundation.org>
+	Mark Brown <broonie@kernel.org>,
+	Alexey Klimov <alexey.klimov@linaro.org>
+Subject: [PATCH 6.12 350/567] ASoC: qcom: q6apm-dai: set flags to reflect correct operation of appl_ptr
+Date: Tue,  6 Jan 2026 18:02:12 +0100
+Message-ID: <20260106170504.276957968@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
 References: <20260106170451.332875001@linuxfoundation.org>
@@ -66,35 +67,44 @@ Content-Transfer-Encoding: 8bit
 
 From: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
 
-commit 7c63b5a8ed972a2c8c03d984f6a43349007cea93 upstream.
+commit 950a4e5788fc7dc6e8e93614a7d4d0449c39fb8d upstream.
 
-SM6115 does have soundwire controller in tx. For some reason
-we ended up with this incorrect patch.
+Driver does not expect the appl_ptr to move backward and requires
+explict sync. Make sure that the userspace does not do appl_ptr rewinds
+by specifying the correct flags in pcm_info.
 
-Fix this by adding the flag to reflect this in SoC data.
+Without this patch, the result could be a forever loop as current logic assumes
+that appl_ptr can only move forward.
 
-Fixes: 510c46884299 ("ASoC: codecs: lpass-tx-macro: Add SM6115 support")
+Fixes: 3d4a4411aa8b ("ASoC: q6apm-dai: schedule all available frames to avoid dsp under-runs")
 Cc: Stable@vger.kernel.org
 Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
-Link: https://patch.msgid.link/20251031120703.590201-2-srinivas.kandagatla@oss.qualcomm.com
+Tested-by: Alexey Klimov <alexey.klimov@linaro.org> # RB5, RB3
+Link: https://patch.msgid.link/20251023102444.88158-2-srinivas.kandagatla@oss.qualcomm.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/lpass-tx-macro.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ sound/soc/qcom/qdsp6/q6apm-dai.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/sound/soc/codecs/lpass-tx-macro.c
-+++ b/sound/soc/codecs/lpass-tx-macro.c
-@@ -2474,7 +2474,8 @@ static const struct tx_macro_data lpass_
- };
- 
- static const struct tx_macro_data lpass_ver_10_sm6115 = {
--	.flags			= LPASS_MACRO_FLAG_HAS_NPL_CLOCK,
-+	.flags			= LPASS_MACRO_FLAG_HAS_NPL_CLOCK |
-+				  LPASS_MACRO_FLAG_RESET_SWR,
- 	.ver			= LPASS_VER_10_0_0,
- 	.extra_widgets		= tx_macro_dapm_widgets_v9_2,
- 	.extra_widgets_num	= ARRAY_SIZE(tx_macro_dapm_widgets_v9_2),
+--- a/sound/soc/qcom/qdsp6/q6apm-dai.c
++++ b/sound/soc/qcom/qdsp6/q6apm-dai.c
+@@ -85,6 +85,7 @@ static const struct snd_pcm_hardware q6a
+ 	.info =                 (SNDRV_PCM_INFO_MMAP | SNDRV_PCM_INFO_BLOCK_TRANSFER |
+ 				 SNDRV_PCM_INFO_MMAP_VALID | SNDRV_PCM_INFO_INTERLEAVED |
+ 				 SNDRV_PCM_INFO_PAUSE | SNDRV_PCM_INFO_RESUME |
++				 SNDRV_PCM_INFO_NO_REWINDS | SNDRV_PCM_INFO_SYNC_APPLPTR |
+ 				 SNDRV_PCM_INFO_BATCH),
+ 	.formats =              (SNDRV_PCM_FMTBIT_S16_LE | SNDRV_PCM_FMTBIT_S24_LE),
+ 	.rates =                SNDRV_PCM_RATE_8000_48000,
+@@ -104,6 +105,7 @@ static const struct snd_pcm_hardware q6a
+ 	.info =                 (SNDRV_PCM_INFO_MMAP | SNDRV_PCM_INFO_BLOCK_TRANSFER |
+ 				 SNDRV_PCM_INFO_MMAP_VALID | SNDRV_PCM_INFO_INTERLEAVED |
+ 				 SNDRV_PCM_INFO_PAUSE | SNDRV_PCM_INFO_RESUME |
++				 SNDRV_PCM_INFO_NO_REWINDS | SNDRV_PCM_INFO_SYNC_APPLPTR |
+ 				 SNDRV_PCM_INFO_BATCH),
+ 	.formats =              (SNDRV_PCM_FMTBIT_S16_LE | SNDRV_PCM_FMTBIT_S24_LE),
+ 	.rates =                SNDRV_PCM_RATE_8000_192000,
 
 
 
