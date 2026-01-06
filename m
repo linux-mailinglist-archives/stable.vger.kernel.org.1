@@ -1,442 +1,310 @@
-Return-Path: <stable+bounces-205124-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205125-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73010CF9663
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 17:40:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DEA06CF9709
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 17:48:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0C673302035E
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 16:36:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A763730173BF
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 16:41:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12841254B18;
-	Tue,  6 Jan 2026 16:36:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5F22326D5D;
+	Tue,  6 Jan 2026 16:41:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ijrpFfJS"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="H/8AgGyH"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+Received: from mail-pl1-f225.google.com (mail-pl1-f225.google.com [209.85.214.225])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BECA01D90DD
-	for <stable@vger.kernel.org>; Tue,  6 Jan 2026 16:36:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 099C62EACEE
+	for <stable@vger.kernel.org>; Tue,  6 Jan 2026 16:41:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.225
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767717374; cv=none; b=aJQ+KYUTEcsEq/eus4gKA4pHvFz3JBngVt6mBbCHGRnVWR39kpYjAWJT6dDF6VyhfVjK2gTz0v6gPU5F7N2Fc65pppSLaToD1kI6ylnonsj8eNHfXFWq5+Cw3OGrbRdFsI0Rk4SZODZ+oiBbcogW1EqB1/sRGwSbb7/EqHnRETU=
+	t=1767717664; cv=none; b=BlDaDDsvV4an0PYM+iVlT0W4pXWKNpJXct8/VhsiDlYnZB+D9PlPjhFNjXe5LhaBSBz153OJBnT57eXnTCx6tyW9zpWoxkYYuayxa2ti0Y89Yf4xLwxhAUlvVeX2u+eQtGzbjrArMnnUc/57glXgby0wSED2OJ2VCunP8RRpX4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767717374; c=relaxed/simple;
-	bh=fbfnFXxPvdmihDUx6O1pUH15NA4z2Jq0GBIYnKOXeQE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=goA9ojzMsM5v4+okrvpcc3/Y4BnjpgSmR5gWZHLgafR4kwfib6QYfcO2RRr/3xatTb1XMDt2lAioj9SJYcoiAQsw8kCMJV0rx0DZ8spMQNI46rKsWCg0t4XckBgU9pc/jOOpP6fTqzCbiuwKpZ7f3TK9KhHoZ4+qWw9oRAg4hYM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ijrpFfJS; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-477770019e4so9963295e9.3
-        for <stable@vger.kernel.org>; Tue, 06 Jan 2026 08:36:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767717371; x=1768322171; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=m05O6szv3ztLcdGBKw/XhCvY0Xp40lTIJVCQNLoUnGg=;
-        b=ijrpFfJStMF/ymo8vgDtRJGkfeCZu5T06KEMsOMkaYYb+hGnR2LA2YNX7Pg4oizrKr
-         GJI069gwnCeAx61RzcuIGzNuVTP4wUoO/NUyJBFxP1iPTn29cc47QoHAdSxzu/d2WnUS
-         NDQanoCnGmwWhn+MDpaLHG8doa3zsHsuN4zOX98UAnuN30jbTksEh91MMgq2S3ZvsNvE
-         X0x9Y4jGttKqZbLjmecAPDOOJ5p/Hgf/jsG4x3WfSYicERi1U4xofm+yBCfurBsGay5l
-         +rrKSckAy3BwelO0CwMJTbvh8RrqCm1mQEORfNg5SZluhu1eq1sashZYqr5rCniaalCY
-         X1bg==
+	s=arc-20240116; t=1767717664; c=relaxed/simple;
+	bh=NF9lFmdg9ZpfcMKL+FKn/TPqcl/qMDT9v/2lUQIP8Ac=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=cBi3uenM4h0AQioKvL0EQJcsttqJd8MXJ0fNUNKykg++zCKYqBG0lK6QtJ2V8YM9VaDJGtfZy4iJ32w7wwcBQVj5QL1YDv1E/keskHWb+ZNkmMgCRdDPogTMRxOo1xVM/5njZ81XeCqf/Sm8an9WLE85vQ2qK4aHMwwUFwu6StU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=H/8AgGyH; arc=none smtp.client-ip=209.85.214.225
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-pl1-f225.google.com with SMTP id d9443c01a7336-29f30233d8aso12115925ad.0
+        for <stable@vger.kernel.org>; Tue, 06 Jan 2026 08:41:02 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767717371; x=1768322171;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=m05O6szv3ztLcdGBKw/XhCvY0Xp40lTIJVCQNLoUnGg=;
-        b=OV1B2tYh2rjzMQWQ4VbW3oQQYhh8QeZebNz55JYtFJOARjcEPbIK0wv2wdIqZlyVt2
-         I/vYgIhkhbOfagyDE0eWPeNoqT+XXpqPj5z1t+YGVSfsCh+zfyvtD0OZj1XAxJ/xEUnc
-         ZnMLxnwBLEBJwAKrizvsI9QVHGek3heb/AJvh+SwRfWpyYBGKZSf1gd6G+6GXG7dAuOI
-         AtzDBjWRIAIOpmh9gSku3G4AvFHLdm4xkjkeR5ZtWvfQzFmB+C08CRtq9gbnAhPVDCCc
-         n4g/WIqZ7pz824ObqAXhmyIc3B1kUp3YFCpApX+z2wRRpXxDnFe3CD25pc48FJiIBCmx
-         eDlQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXKyJ4i64sdIHswvb8NkAmOqDSQ7+OZipp/dBQXBJCmJxCcMxiboAkqymnsjrMcOjQwJxgOQgg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyI19hBvqDyjoYh6ftseYGLIV/LnBUcsOp44fEoHrzblllDAmtH
-	wMh0EfscuxflwTCb02xt7OLmHaVpiD5A6cWKXk/Mx0Nw0DG8neVexgFw
-X-Gm-Gg: AY/fxX75eh7GqWU8fSnJjAISAjq9ZHzT319oom0qytIFa5Gnzk+4it6vim1EgKL0fk8
-	Cs6Eh3Ox45bV/eEEZ8PxUrmcxAvSJVnPrLD0dP8+GeLxmWEhojEAAfcQ3rQeMwc9RBMAEafkIgl
-	VPdsBl7B8Xm3lnUCMdgIbKXXNhAHY/Wfri+fQBb+stXrtnC7sB9gj1Wzj620RJlLuYoV4MKF9yx
-	/Iq5SEXGQ+j5VpNSNlz2BB7L0f23S04QDeK+DxfW97NriEDW8dVOFYPv6BYYW/S+b/SGmKx2V/a
-	INkgyViUhDta7Lyu+PSH/qfp7bqRsgpVaM+fJISXEYyDhTVq1MXesLpLYq4g3t3Us2uX9gCYFUd
-	deZrdIrsQqGTras9LAjHKe13z1VVQgOQqVY8K0qS6SoFmOSzsqwGI6UD8mLaeqGgbQk6oFxyAMn
-	HNCuN83VWD829TcsenZrEFwxAoBqYeFKQmc1g+70gEiRpW
-X-Google-Smtp-Source: AGHT+IFot2qjzVeWiBFgwlHh/92zvu6BeESvfCHb1Xh4NEVOw93szDJC3J99SMXWiI6L0J67PnZwFA==
-X-Received: by 2002:a05:600c:8216:b0:476:4efc:8ed4 with SMTP id 5b1f17b1804b1-47d7f073134mr38820325e9.11.1767717370637;
-        Tue, 06 Jan 2026 08:36:10 -0800 (PST)
-Received: from ionutnechita-arz2022.local ([2a02:2f0e:ca09:7000:33fc:5cce:3767:6b22])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47d7f68f686sm50967685e9.3.2026.01.06.08.36.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Jan 2026 08:36:09 -0800 (PST)
-From: "Ionut Nechita (WindRiver)" <djiony2011@gmail.com>
-X-Google-Original-From: "Ionut Nechita (WindRiver)" <ionut.nechita@windriver.com>
-To: ming.lei@redhat.com
-Cc: axboe@kernel.dk,
-	gregkh@linuxfoundation.org,
-	ionut.nechita@windriver.com,
-	linux-block@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	muchun.song@linux.dev,
-	sashal@kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] block: Fix WARN_ON in blk_mq_run_hw_queue when called from interrupt context
-Date: Tue,  6 Jan 2026 18:35:13 +0200
-Message-ID: <20260106163515.145571-2-ionut.nechita@windriver.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <aV0kdKSvufPFflQ8@fedora>
-References: <aV0kdKSvufPFflQ8@fedora>
+        d=1e100.net; s=20230601; t=1767717662; x=1768322462;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=1bCSbgV2Htb2ev3Z0vxXE9M501a8TzHgRq+yEArjcpY=;
+        b=GWruSglijrI2vMJb5uuuafVj0h6eO2tAwBhDU1JrpO+kKtL/q3S1uH5xnWMFGeu/nP
+         jYihcPy6PfhOoAbI3W2LRuEfgypbvu2+L/SVGNp0+LQW7faH2OWnB3B0TB2cCr+BAg8y
+         q1+JD05y8p6NDmtUq9MaZIi2tle7mUBW/tXfRoUPotT+5Qqu5sa+6dehy2rUD/+rgWeC
+         v6+QWMn/ekcg+NstyZSw+JbJibmP6+35p+Yf/7YFAFAQZ3vkqBT7KNQS1+cW7EY9RPwX
+         8IGX8HOi+NWOcu0JNMZHEQptX9Zz1hM5nxFbfORhQSvFpNk5tPCB1ur0+p8/pa2tKWte
+         1+Vg==
+X-Forwarded-Encrypted: i=1; AJvYcCX7Umm6TcwJ8Err1Emyr18dM17TcGP5ES1TA+utwY4IdgeYFEL17S/tAS4QSJ++YDZ7Lk4cvg0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwGihCAFZLxwZ5GZYpI8N0kW5cirR4esCV1TYybaWbYntI6adjy
+	3bJ9UXOJcqI+g7IP7bGR8WWeHRqYv9Fm3H9wOopQmXko9334WLxV4dCf/gTDRKWDx30vmttL7tH
+	PUfNrcDwpzvwos+dzLdH5Y/k2lQQ8NRalux4jZ2FNophSpL1DJAeVOVrhFap3GtpCIcNXaNKdpG
+	YckzobVkYu/f8BYJG4Ld3mK7UhoB1mwMA0u4G2CEGH+M2D89hQ35+QKrQuvWFaqT0wc42cX/oya
+	H2rAAyTKV4=
+X-Gm-Gg: AY/fxX4nm5lTUGTsL1A3yBSq1H4mPcaXE0LjfYNBNVzXptgr4uqQqOIdNZgNSxnc3O1
+	+suOfWsyCr9CjrDBNArqJE2TQrv4Z/qLJMifepdzr9GNYS1dVYsPjnXHZM2xsd3G1VaUnYcDpHZ
+	TYiGmTALAc1SyzY4zzZpSI56lrRzXUn5n4VZiLWUExWI36wwB9uJy9MFddRa63knvFMXtAbn8mT
+	fR7z/cgZmCDlgWQduBma9yv49lbX36PQj3EO3UlRKevhnNfHxV4gGEYOsswqYug3+CS2f2cceS9
+	jFbjz0CnuXZu+N2V2iSEc+UDtA8bQgzrtiK8YlBhsWMwVjOPaFKkFXMAvOnezi6FQuBq4n8BAO2
+	t/jYOHFJSVQmJh3d7YlAg/DistC49A71ItTacRttDBgo73mSht4CL52NQK2PATsgzO6rdm0dqKY
+	lL9hl/tvtcs9i1lFOHOy4HBi9p6+8RLzd+3VDOTl873A==
+X-Google-Smtp-Source: AGHT+IF3fRDHXR8yCOpKeiedLo2S076jYSnKlXfFJb/Fu7FBg12CKr31LwyW4yky+tRE7G9vXayfoDOjg995
+X-Received: by 2002:a17:902:ce84:b0:2a0:909a:1535 with SMTP id d9443c01a7336-2a3e2cae061mr31825435ad.11.1767717661897;
+        Tue, 06 Jan 2026 08:41:01 -0800 (PST)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-1.dlp.protect.broadcom.com. [144.49.247.1])
+        by smtp-relay.gmail.com with ESMTPS id d9443c01a7336-2a3e3cc4cb7sm2944595ad.51.2026.01.06.08.41.01
+        for <stable@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 06 Jan 2026 08:41:01 -0800 (PST)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2a09845b7faso16050315ad.3
+        for <stable@vger.kernel.org>; Tue, 06 Jan 2026 08:41:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1767717660; x=1768322460; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=1bCSbgV2Htb2ev3Z0vxXE9M501a8TzHgRq+yEArjcpY=;
+        b=H/8AgGyHjS/JFbZ97lUF5xq7DT1KtZVvjGU2FWXU/IHqve/dCry+uXms6wECEpo9WN
+         R7tE54Rndk5itKtQjdCgbeA63ZMY8w28OHLhfmwgFRMbPRxMRnfUtJAjh81b8Q+p+Apj
+         3wU5oqdVvUdT6NMDe000VWr+euRJ5vS23Gi5g=
+X-Forwarded-Encrypted: i=1; AJvYcCVf1rm4J85B4Wcx2ba6oxVoL9e6nrgz8RjtvAO15XSzaNXKhb79cGglP+qmVzKumaIfrGrom/s=@vger.kernel.org
+X-Received: by 2002:a17:902:eb8b:b0:29e:9e97:ca70 with SMTP id d9443c01a7336-2a3e2cce21cmr32265585ad.25.1767717660301;
+        Tue, 06 Jan 2026 08:41:00 -0800 (PST)
+X-Received: by 2002:a17:902:eb8b:b0:29e:9e97:ca70 with SMTP id
+ d9443c01a7336-2a3e2cce21cmr32265415ad.25.1767717659928; Tue, 06 Jan 2026
+ 08:40:59 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20260106-bnxt-v3-1-71f37e11446a@debian.org>
+In-Reply-To: <20260106-bnxt-v3-1-71f37e11446a@debian.org>
+From: Pavan Chebbi <pavan.chebbi@broadcom.com>
+Date: Tue, 6 Jan 2026 22:10:47 +0530
+X-Gm-Features: AQt7F2qIjVSFmMfnnBdtTvY1qN3sCke7ouWEZOHPzpPp15NFsglEpm6gp7mhJU8
+Message-ID: <CALs4sv2aZUs097NXxNDyy7xJbdurPzFbODeFX5dJ=GBO5s3+Ew@mail.gmail.com>
+Subject: Re: [PATCH net v3] bnxt_en: Fix NULL pointer crash in bnxt_ptp_enable
+ during error cleanup
+To: Breno Leitao <leitao@debian.org>
+Cc: Michael Chan <michael.chan@broadcom.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Richard Cochran <richardcochran@gmail.com>, 
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>, Vadim Fedorenko <vadim.fedorenko@linux.dev>, 
+	Vladimir Oltean <vladimir.oltean@nxp.com>, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, kernel-team@meta.com, stable@vger.kernel.org
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
+	boundary="0000000000003a1c810647bad757"
 
-From: Ionut Nechita <ionut.nechita@windriver.com>
+--0000000000003a1c810647bad757
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Ming,
+On Tue, Jan 6, 2026 at 8:01=E2=80=AFPM Breno Leitao <leitao@debian.org> wro=
+te:
+>
+> When bnxt_init_one() fails during initialization (e.g.,
+> bnxt_init_int_mode returns -ENODEV), the error path calls
+> bnxt_free_hwrm_resources() which destroys the DMA pool and sets
+> bp->hwrm_dma_pool to NULL. Subsequently, bnxt_ptp_clear() is called,
+> which invokes ptp_clock_unregister().
+>
+> Since commit a60fc3294a37 ("ptp: rework ptp_clock_unregister() to
+> disable events"), ptp_clock_unregister() now calls
+> ptp_disable_all_events(), which in turn invokes the driver's .enable()
+> callback (bnxt_ptp_enable()) to disable PTP events before completing the
+> unregistration.
+>
+> bnxt_ptp_enable() attempts to send HWRM commands via bnxt_ptp_cfg_pin()
+> and bnxt_ptp_cfg_event(), both of which call hwrm_req_init(). This
+> function tries to allocate from bp->hwrm_dma_pool, causing a NULL
+> pointer dereference:
+>
+>   bnxt_en 0000:01:00.0 (unnamed net_device) (uninitialized): bnxt_init_in=
+t_mode err: ffffffed
+>   KASAN: null-ptr-deref in range [0x0000000000000028-0x000000000000002f]
+>   Call Trace:
+>    __hwrm_req_init (drivers/net/ethernet/broadcom/bnxt/bnxt_hwrm.c:72)
+>    bnxt_ptp_enable (drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c:323 dri=
+vers/net/ethernet/broadcom/bnxt/bnxt_ptp.c:517)
+>    ptp_disable_all_events (drivers/ptp/ptp_chardev.c:66)
+>    ptp_clock_unregister (drivers/ptp/ptp_clock.c:518)
+>    bnxt_ptp_clear (drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c:1134)
+>    bnxt_init_one (drivers/net/ethernet/broadcom/bnxt/bnxt.c:16889)
+>
+> Lines are against commit f8f9c1f4d0c7 ("Linux 6.19-rc3")
+>
+> Fix this by clearing and unregistering ptp (bnxt_ptp_clear()) before
+> freeing HWRM resources.
+>
+> Suggested-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
+> Signed-off-by: Breno Leitao <leitao@debian.org>
+> Fixes: a60fc3294a37 ("ptp: rework ptp_clock_unregister() to disable event=
+s")
+> Cc: stable@vger.kernel.org
+> ---
+> Changes in v3:
+> - Moved bp->ptp_cfg to be closer to the kfree(). (Pavan/Jakub)
+> - Link to v2: https://patch.msgid.link/20260105-bnxt-v2-1-9ac69edef726@de=
+bian.org
+>
+> Changes in v2:
+> - Instead of checking for HWRM resources in bnxt_ptp_enable(), call it
+>   when HWRM resources are availble (Pavan Chebbi)
+> - Link to v1: https://patch.msgid.link/20251231-bnxt-v1-1-8f9cde6698b4@de=
+bian.org
+> ---
+>  drivers/net/ethernet/broadcom/bnxt/bnxt.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+>
+> diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethe=
+rnet/broadcom/bnxt/bnxt.c
+> index d160e54ac121..8419d1eb4035 100644
+> --- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+> +++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+> @@ -16891,12 +16891,12 @@ static int bnxt_init_one(struct pci_dev *pdev, =
+const struct pci_device_id *ent)
+>
+>  init_err_pci_clean:
+>         bnxt_hwrm_func_drv_unrgtr(bp);
+> -       bnxt_free_hwrm_resources(bp);
+> -       bnxt_hwmon_uninit(bp);
+> -       bnxt_ethtool_free(bp);
+>         bnxt_ptp_clear(bp);
+>         kfree(bp->ptp_cfg);
+>         bp->ptp_cfg =3D NULL;
+> +       bnxt_free_hwrm_resources(bp);
+> +       bnxt_hwmon_uninit(bp);
+> +       bnxt_ethtool_free(bp);
+>         kfree(bp->fw_health);
+>         bp->fw_health =3D NULL;
+>         bnxt_cleanup_pci(bp);
+>
+> ---
+> base-commit: e146b276a817807b8f4a94b5781bf80c6c00601b
+> change-id: 20251231-bnxt-c54d317d8bfe
+>
+> Best regards,
+> --
+> Breno Leitao <leitao@debian.org>
+>
 
-Thank you for the thorough review. You've identified critical issues with my analysis.
+Thanks, Breno!
+Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
 
-> There is so big change between 6.6.0-1-rt and 6.19, because Real-Time
-> "PREEMPT_RT" Support Merged For Linux 6.12
+--0000000000003a1c810647bad757
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
 
-You're absolutely right. I tested on Debian's 6.6.71-rt which uses the out-of-tree
-RT patches. I will retest on Friday with both 6.12 (first kernel with merged RT
-support) and linux-next to confirm whether this issue still exists in current upstream.
-
-> Why is the above warning related with your patch?
-
-After reviewing the complete dmesg log, I now see there are TWO separate errors
-from the same process (PID 2041):
-
-**Error #1** - Root cause (the one you highlighted):
-```
-BUG: scheduling while atomic: kworker/u385:1/2041/0x00000002
-  mutex_lock
-  → __cpuhp_state_add_instance
-  → blk_mq_realloc_hw_ctxs
-  → blk_mq_init_queue
-  → scsi_alloc_sdev          ← Queue ALLOCATION
-```
-
-**Error #2** - Symptom (the one my patch addresses):
-```
-WARNING at blk_mq_run_hw_queue+0x1fa
-  blk_mq_run_hw_queue
-  → blk_mq_run_hw_queues
-  → blk_queue_start_drain
-  → blk_mq_destroy_queue
-  → __scsi_remove_device
-  → scsi_alloc_sdev          ← Queue DESTRUCTION (cleanup)
-```
-
-The sequence is:
-1. Queue allocation in scsi_alloc_sdev() hits Error #1 (mutex in atomic context)
-2. Allocation fails, enters cleanup path
-3. Cleanup calls blk_mq_destroy_queue() while STILL in atomic context
-4. blk_queue_start_drain() → blk_mq_run_hw_queues(q, false)
-5. WARN_ON(!async && in_interrupt()) triggers → Error #2
-
-> Or please share how preempt is disabled in the above blk_mq_run_hw_queues
-> code path.
-
-The atomic context (preempt_count = 0x00000002) is inherited from Error #1.
-The code is already in atomic state when it enters the cleanup path.
-
-> If you think the same issue exists on recent kernel, show the stack trace.
-
-I don't have current data from upstream kernels. I will test on Friday and provide:
-1. Results from 6.12-rt (first kernel with merged RT support)
-2. Results from linux-next
-3. Complete stack traces if the issue reproduces
-
-If the issue still exists on current upstream, I need to address Error #1 (the
-root cause) rather than Error #2 (the symptom). My current patch only suppresses
-the warning during cleanup but doesn't fix the underlying atomic context problem.
-
-I will report back with test results on Friday.
-
- - 
-
-BUG: scheduling while atomic: kworker/u385:1/2041/0x00000002
-Modules linked in:
-CPU: 190 PID: 2041 Comm: kworker/u385:1 Not tainted 6.6.0-1-rt-amd64 #1  Debian 6.6.71-1
-Hardware name: Dell Inc. PowerEdge R7615/09K9WP, BIOS 1.11.2 12/19/2024
-Workqueue: events_unbound async_run_entry_fn
-Call Trace:
- <TASK>
- dump_stack_lvl+0x37/0x50
- __schedule_bug+0x52/0x60
- __schedule+0x87d/0xb10
- rt_mutex_schedule+0x21/0x40
- rt_mutex_slowlock_block.constprop.0+0x33/0x170
- __rt_mutex_slowlock_locked.constprop.0+0xc4/0x1e0
- mutex_lock+0x44/0x60
- __cpuhp_state_add_instance_cpuslocked+0x41/0x110
- __cpuhp_state_add_instance+0x48/0xd0
- blk_mq_realloc_hw_ctxs+0x405/0x420
- blk_mq_init_allocated_queue+0x10a/0x480
-intel_rapl_common: Found RAPL domain package
- ? srso_alias_return_thunk+0x5/0xfbef5
-intel_rapl_common: Found RAPL domain core
- ? percpu_ref_init+0x6e/0x130
- blk_mq_init_queue+0x3c/0x70
- scsi_alloc_sdev+0x225/0x360
- scsi_probe_and_add_lun+0x8ac/0xc00
- ? srso_alias_return_thunk+0x5/0xfbef5
- ? dev_set_name+0x57/0x80
- ? srso_alias_return_thunk+0x5/0xfbef5
- ? attribute_container_add_device+0x4d/0x130
- __scsi_scan_target+0xf0/0x520
- ? srso_alias_return_thunk+0x5/0xfbef5
- ? sched_clock_cpu+0x64/0x190
- scsi_scan_channel+0x57/0x90
- scsi_scan_host_selected+0xd4/0x110
- do_scan_async+0x1c/0x190
- async_run_entry_fn+0x2f/0x130
- process_one_work+0x175/0x370
- worker_thread+0x280/0x390
- ? __pfx_worker_thread+0x10/0x10
- kthread+0xdd/0x110
- ? __pfx_kthread+0x10/0x10
- ret_from_fork+0x31/0x50
- ? __pfx_kthread+0x10/0x10
- ret_from_fork_asm+0x1b/0x30
- </TASK>
-gnss: GNSS driver registered with major 241
-------------[ cut here ]------------
-WARNING: CPU: 190 PID: 2041 at block/blk-mq.c:2291 blk_mq_run_hw_queue+0x1fa/0x260
-Modules linked in:
-CPU: 190 PID: 2041 Comm: kworker/u385:1 Tainted: G        W          6.6.0-1-rt-amd64 #1  Debian 6.6.71-1
-Hardware name: Dell Inc. PowerEdge R7615/09K9WP, BIOS 1.11.2 12/19/2024
-Workqueue: events_unbound async_run_entry_fn
-RIP: 0010:blk_mq_run_hw_queue+0x1fa/0x260
-Code: ff 75 68 44 89 f6 e8 e5 45 c0 ff e9 ac fe ff ff e8 2b 70 c0 ff 48 89 ef e8 b3 a0 00 00 5b 5d 41 5c 41 5d 41 5e e9 26 9e c0 ff <0f> 0b e9 43 fe ff ff e8 0a 70 c0 ff 48 8b 85 d0 00 00 00 48 8b 80
-RSP: 0018:ff630f098528fb98 EFLAGS: 00010206
-RAX: 0000000000ff0000 RBX: 0000000000000000 RCX: 0000000000000000
-RDX: 0000000000ff0000 RSI: 0000000000000000 RDI: ff3edc0247159400
-RBP: ff3edc0247159400 R08: ff3edc0247159400 R09: ff630f098528fb60
-R10: 0000000000000000 R11: 0000000045069ed3 R12: 0000000000000000
-R13: ff3edc024715a828 R14: 0000000000000000 R15: 0000000000000000
-FS:  0000000000000000(0000) GS:ff3edc10fd380000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000000000000 CR3: 000000073961a001 CR4: 0000000000771ee0
-PKRU: 55555554
-Call Trace:
- <TASK>
- ? __warn+0x89/0x140
- ? blk_mq_run_hw_queue+0x1fa/0x260
- ? report_bug+0x198/0x1b0
- ? handle_bug+0x53/0x90
- ? exc_invalid_op+0x18/0x70
- ? asm_exc_invalid_op+0x1a/0x20
- ? blk_mq_run_hw_queue+0x1fa/0x260
- blk_mq_run_hw_queues+0x6c/0x130
- blk_queue_start_drain+0x12/0x40
- blk_mq_destroy_queue+0x37/0x70
- __scsi_remove_device+0x6a/0x180
- scsi_alloc_sdev+0x357/0x360
- scsi_probe_and_add_lun+0x8ac/0xc00
- ? srso_alias_return_thunk+0x5/0xfbef5
- ? dev_set_name+0x57/0x80
- ? srso_alias_return_thunk+0x5/0xfbef5
- ? attribute_container_add_device+0x4d/0x130
- __scsi_scan_target+0xf0/0x520
- ? srso_alias_return_thunk+0x5/0xfbef5
- ? sched_clock_cpu+0x64/0x190
- scsi_scan_channel+0x57/0x90
- scsi_scan_host_selected+0xd4/0x110
- do_scan_async+0x1c/0x190
- async_run_entry_fn+0x2f/0x130
- process_one_work+0x175/0x370
- worker_thread+0x280/0x390
- ? __pfx_worker_thread+0x10/0x10
- kthread+0xdd/0x110
- ? __pfx_kthread+0x10/0x10
- ret_from_fork+0x31/0x50
- ? __pfx_kthread+0x10/0x10
- ret_from_fork_asm+0x1b/0x30
- </TASK>
----[ end trace 0000000000000000 ]---
-------------[ cut here ]------------
-WARNING: CPU: 190 PID: 2041 at kernel/time/timer.c:1570 __timer_delete_sync+0x152/0x170
-Modules linked in:
-CPU: 190 PID: 2041 Comm: kworker/u385:1 Tainted: G        W          6.6.0-1-rt-amd64 #1  Debian 6.6.71-1
-Hardware name: Dell Inc. PowerEdge R7615/09K9WP, BIOS 1.11.2 12/19/2024
-Workqueue: events_unbound async_run_entry_fn
-RIP: 0010:__timer_delete_sync+0x152/0x170
-Code: 8b 04 24 4c 89 c7 e8 ad 11 b9 00 f0 ff 4d 30 4c 8b 04 24 4c 89 c7 e8 8d 03 b9 00 be 00 02 00 00 4c 89 ff e8 e0 83 f3 ff eb 93 <0f> 0b e9 e8 fe ff ff 49 8d 2c 16 eb a8 e8 5c 49 b8 00 66 66 2e 0f
-RSP: 0018:ff630f098528fba8 EFLAGS: 00010246
-RAX: 000000007fffffff RBX: ff3edc02829426d0 RCX: 0000000000000000
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: ff3edc02829426d0
-RBP: ff3edc02829425b0 R08: ff3edc0282942938 R09: ff630f098528fba0
-R10: 0000000000000000 R11: 0000000045069ed3 R12: 0000000000000000
-R13: ff3edc024715a828 R14: 0000000000000000 R15: 0000000000000000
-FS:  0000000000000000(0000) GS:ff3edc10fd380000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000000000000 CR3: 000000073961a001 CR4: 0000000000771ee0
-PKRU: 55555554
-Call Trace:
- <TASK>
- ? __warn+0x89/0x140
- ? __timer_delete_sync+0x152/0x170
- ? report_bug+0x198/0x1b0
- ? handle_bug+0x53/0x90
- ? exc_invalid_op+0x18/0x70
- ? asm_exc_invalid_op+0x1a/0x20
- ? __timer_delete_sync+0x152/0x170
- ? srso_alias_return_thunk+0x5/0xfbef5
- ? percpu_ref_is_zero+0x3b/0x50
- ? srso_alias_return_thunk+0x5/0xfbef5
- blk_sync_queue+0x19/0x30
- blk_mq_destroy_queue+0x47/0x70
- __scsi_remove_device+0x6a/0x180
- scsi_alloc_sdev+0x357/0x360
- scsi_probe_and_add_lun+0x8ac/0xc00
- ? srso_alias_return_thunk+0x5/0xfbef5
- ? dev_set_name+0x57/0x80
- ? srso_alias_return_thunk+0x5/0xfbef5
- ? attribute_container_add_device+0x4d/0x130
- __scsi_scan_target+0xf0/0x520
- ? srso_alias_return_thunk+0x5/0xfbef5
- ? sched_clock_cpu+0x64/0x190
- scsi_scan_channel+0x57/0x90
- scsi_scan_host_selected+0xd4/0x110
- do_scan_async+0x1c/0x190
- async_run_entry_fn+0x2f/0x130
- process_one_work+0x175/0x370
- worker_thread+0x280/0x390
- ? __pfx_worker_thread+0x10/0x10
- kthread+0xdd/0x110
- ? __pfx_kthread+0x10/0x10
- ret_from_fork+0x31/0x50
- ? __pfx_kthread+0x10/0x10
- ret_from_fork_asm+0x1b/0x30
- </TASK>
----[ end trace 0000000000000000 ]---
-drop_monitor: Initializing network drop monitor service
-------------[ cut here ]------------
-WARNING: CPU: 190 PID: 2041 at kernel/time/timer.c:1570 __timer_delete_sync+0x152/0x170
-Modules linked in:
-CPU: 190 PID: 2041 Comm: kworker/u385:1 Tainted: G        W          6.6.0-1-rt-amd64 #1  Debian 6.6.71-1
-Hardware name: Dell Inc. PowerEdge R7615/09K9WP, BIOS 1.11.2 12/19/2024
-Workqueue: events_unbound async_run_entry_fn
-RIP: 0010:__timer_delete_sync+0x152/0x170
-Code: 8b 04 24 4c 89 c7 e8 ad 11 b9 00 f0 ff 4d 30 4c 8b 04 24 4c 89 c7 e8 8d 03 b9 00 be 00 02 00 00 4c 89 ff e8 e0 83 f3 ff eb 93 <0f> 0b e9 e8 fe ff ff 49 8d 2c 16 eb a8 e8 5c 49 b8 00 66 66 2e 0f
-RSP: 0018:ff630f098528fba8 EFLAGS: 00010246
-RAX: 000000007fffffff RBX: ff3edc0282943790 RCX: 0000000000000000
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: ff3edc0282943790
-RBP: ff3edc0282943670 R08: ff3edc02829439f8 R09: ff630f098528fba0
-R10: 0000000000000000 R11: 00000000b3b80e06 R12: 0000000000000000
-R13: ff3edc02828dc428 R14: 0000000000000000 R15: 0000000000000000
-FS:  0000000000000000(0000) GS:ff3edc10fd380000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000000000000 CR3: 000000073961a001 CR4: 0000000000771ee0
-PKRU: 55555554
-Call Trace:
- <TASK>
- ? __warn+0x89/0x140
- ? __timer_delete_sync+0x152/0x170
- ? report_bug+0x198/0x1b0
- ? handle_bug+0x53/0x90
- ? exc_invalid_op+0x18/0x70
- ? asm_exc_invalid_op+0x1a/0x20
- ? __timer_delete_sync+0x152/0x170
- ? srso_alias_return_thunk+0x5/0xfbef5
- ? percpu_ref_is_zero+0x3b/0x50
- ? srso_alias_return_thunk+0x5/0xfbef5
- blk_sync_queue+0x19/0x30
- blk_mq_destroy_queue+0x47/0x70
- __scsi_remove_device+0x6a/0x180
- scsi_alloc_sdev+0x357/0x360
- scsi_probe_and_add_lun+0x8ac/0xc00
- ? srso_alias_return_thunk+0x5/0xfbef5
- ? dev_set_name+0x57/0x80
- ? srso_alias_return_thunk+0x5/0xfbef5
- ? attribute_container_add_device+0x4d/0x130
- __scsi_scan_target+0xf0/0x520
- ? srso_alias_return_thunk+0x5/0xfbef5
- ? sched_clock_cpu+0x64/0x190
- scsi_scan_channel+0x57/0x90
- scsi_scan_host_selected+0xd4/0x110
- do_scan_async+0x1c/0x190
- async_run_entry_fn+0x2f/0x130
- process_one_work+0x175/0x370
- worker_thread+0x280/0x390
- ? __pfx_worker_thread+0x10/0x10
- kthread+0xdd/0x110
- ? __pfx_kthread+0x10/0x10
- ret_from_fork+0x31/0x50
- ? __pfx_kthread+0x10/0x10
- ret_from_fork_asm+0x1b/0x30
- </TASK>
----[ end trace 0000000000000000 ]---
-------------[ cut here ]------------
-WARNING: CPU: 190 PID: 2041 at kernel/time/timer.c:1570 __timer_delete_sync+0x152/0x170
-Modules linked in:
-CPU: 190 PID: 2041 Comm: kworker/u385:1 Tainted: G        W          6.6.0-1-rt-amd64 #1  Debian 6.6.71-1
-Hardware name: Dell Inc. PowerEdge R7615/09K9WP, BIOS 1.11.2 12/19/2024
-Workqueue: events_unbound async_run_entry_fn
-RIP: 0010:__timer_delete_sync+0x152/0x170
-Code: 8b 04 24 4c 89 c7 e8 ad 11 b9 00 f0 ff 4d 30 4c 8b 04 24 4c 89 c7 e8 8d 03 b9 00 be 00 02 00 00 4c 89 ff e8 e0 83 f3 ff eb 93 <0f> 0b e9 e8 fe ff ff 49 8d 2c 16 eb a8 e8 5c 49 b8 00 66 66 2e 0f
-RSP: 0018:ff630f098528fba8 EFLAGS: 00010246
-RAX: 000000007fffffff RBX: ff3edc0282944420 RCX: 0000000000000000
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: ff3edc0282944420
-RBP: ff3edc0282944300 R08: ff3edc0282944688 R09: ff630f098528fba0
-R10: 0000000000000000 R11: 0000000043ba156d R12: 0000000000000000
-R13: ff3edc02829ec028 R14: 0000000000000000 R15: 0000000000000000
-FS:  0000000000000000(0000) GS:ff3edc10fd380000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000000000000 CR3: 000000073961a001 CR4: 0000000000771ee0
-PKRU: 55555554
-Call Trace:
- <TASK>
- ? __warn+0x89/0x140
- ? __timer_delete_sync+0x152/0x170
- ? report_bug+0x198/0x1b0
- ? handle_bug+0x53/0x90
- ? exc_invalid_op+0x18/0x70
- ? asm_exc_invalid_op+0x1a/0x20
- ? __timer_delete_sync+0x152/0x170
- ? srso_alias_return_thunk+0x5/0xfbef5
- ? percpu_ref_is_zero+0x3b/0x50
- ? srso_alias_return_thunk+0x5/0xfbef5
- blk_sync_queue+0x19/0x30
- blk_mq_destroy_queue+0x47/0x70
- __scsi_remove_device+0x6a/0x180
- scsi_alloc_sdev+0x357/0x360
- scsi_probe_and_add_lun+0x8ac/0xc00
- ? srso_alias_return_thunk+0x5/0xfbef5
- ? dev_set_name+0x57/0x80
- ? srso_alias_return_thunk+0x5/0xfbef5
- ? attribute_container_add_device+0x4d/0x130
- __scsi_scan_target+0xf0/0x520
- ? srso_alias_return_thunk+0x5/0xfbef5
- ? sched_clock_cpu+0x64/0x190
- scsi_scan_channel+0x57/0x90
- scsi_scan_host_selected+0xd4/0x110
- do_scan_async+0x1c/0x190
- async_run_entry_fn+0x2f/0x130
- process_one_work+0x175/0x370
- worker_thread+0x280/0x390
- ? __pfx_worker_thread+0x10/0x10
- kthread+0xdd/0x110
- ? __pfx_kthread+0x10/0x10
- ret_from_fork+0x31/0x50
- ? __pfx_kthread+0x10/0x10
- ret_from_fork_asm+0x1b/0x30
- </TASK>
----[ end trace 0000000000000000 ]---
-Initializing XFRM netlink socket
-
-
-Thank you for the careful review,
-Ionut
+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
+/HTPxpDrr4vzZL0yoc9XefyCbdiwfyFl99oBekp+1ZxXc5bZsVhRPVyEWFtCys66nqu5cU2GPT3a
+ySQEHOtIKyGGgzMVvitOzO2suQkoMvu/swsftfgCY/PObdlBZhv0BD97+WwR6CQJh/YEuDDEHYCy
+NDeiVtF3/jwT04bHB7lR9n+AiCSLr9wlgBHGdBFIOmT/XMX3K8fuMMGLq9PpGQEMvYa9QTkE9+zc
+MddiNNh1xtCTG0+kC7KIttdXTnffisXKsX44B8ECAwEAAaOCAd0wggHZMA4GA1UdDwEB/wQEAwIF
+oDAMBgNVHRMBAf8EAjAAMIGTBggrBgEFBQcBAQSBhjCBgzBGBggrBgEFBQcwAoY6aHR0cDovL3Nl
+Y3VyZS5nbG9iYWxzaWduLmNvbS9jYWNlcnQvZ3NnY2NyNnNtaW1lY2EyMDIzLmNydDA5BggrBgEF
+BQcwAYYtaHR0cDovL29jc3AuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyNnNtaW1lY2EyMDIzMGUGA1Ud
+IAReMFwwCQYHZ4EMAQUDAzALBgkrBgEEAaAyASgwQgYKKwYBBAGgMgoDAjA0MDIGCCsGAQUFBwIB
+FiZodHRwczovL3d3dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzBBBgNVHR8EOjA4MDagNKAy
+hjBodHRwOi8vY3JsLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjZzbWltZWNhMjAyMy5jcmwwJAYDVR0R
+BB0wG4EZcGF2YW4uY2hlYmJpQGJyb2FkY29tLmNvbTATBgNVHSUEDDAKBggrBgEFBQcDBDAfBgNV
+HSMEGDAWgBQAKTaeXHq6D68tUC3boCOFGLCgkjAdBgNVHQ4EFgQUxJ6fps/yOGneJRYDWUKPuLPk
+miYwDQYJKoZIhvcNAQELBQADggIBAI2j2qBMKYV8SLK1ysjOOS54Lpm3geezjBYrWor/BAKGP7kT
+QN61VWg3QlZqiX21KLNeBWzJH7r+zWiS8ykHApTnBlTjfNGF8ihZz7GkpBTa3xDW5rT/oLfyVQ5k
+Wr2OZ268FfZPyAgHYnrfhmojupPS4c7bT9fQyep3P0sAm6TQxmhLDh/HcsloIn7w1QywGRyesbRw
+CFkRbTnhhTS9Tz3pYs5kHbphHY5oF3HNdKgFPrfpF9ei6dL4LlwvQgNlRB6PhdUBL80CJ0UlY2Oz
+jIAKPusiSluFH+NvwqsI8VuId34ug+B5VOM2dWXR/jY0as0Va5Fpjpn1G+jG2pzr1FQu2OHR5GAh
+6Uw50Yh3H77mYK67fCzQVcHrl0qdOLSZVsz/T3qjRGjAZlIDyFRjewxLNunJl/TGtu1jk1ij7Uzh
+PtF4nfZaVnWJowp/gE+Hr21BXA1nj+wBINHA0eufDHd/Y0/MLK+++i3gPTermGBIfadXUj8NGCGe
+eIj4fd2b29HwMCvfX78QR4JQM9dkDoD1ZFClV17bxRPtxhwEU8DzzcGlLfKJhj8IxkLoww9hqNul
+Md+LwA5kUTLPBBl9irP7Rn3jfftdK1MgrNyomyZUZSI1pisbv0Zn/ru3KD3QZLE17esvHAqCfXAZ
+a2vE+o+ZbomB5XkihtQpb/DYrfjAMYICVzCCAlMCAQEwYjBSMQswCQYDVQQGEwJCRTEZMBcGA1UE
+ChMQR2xvYmFsU2lnbiBudi1zYTEoMCYGA1UEAxMfR2xvYmFsU2lnbiBHQ0MgUjYgU01JTUUgQ0Eg
+MjAyMwIMClwVCDIzIfrgd31IMA0GCWCGSAFlAwQCAQUAoIHHMC8GCSqGSIb3DQEJBDEiBCB3EZB5
+wYgm8PLTNVllrSsxID9sUoCbXnyBWoquuQ9KrzAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwG
+CSqGSIb3DQEJBTEPFw0yNjAxMDYxNjQxMDBaMFwGCSqGSIb3DQEJDzFPME0wCwYJYIZIAWUDBAEq
+MAsGCWCGSAFlAwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEHMAsGCWCG
+SAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQBIN2G3/azDb+1GwA1pCK71+e/ypvCjxO3342YdnyTR
+Cax5/x7aA/wIFRQ1UdnEN+O5fPpSd5rY9yn79jmGOmX+06Ka+aDJ3/G8cXopMe44kXlWm1ugwzQy
+iF4X1s824T/h8NdFfJxsI+jfhFbr+NfXnrED0IYbtlHkszUWQ1cmWnLRBatUWWCoOHYRcdrFck66
+jsu7ZqG/SdqetaaOoYfFm9snDsAoV9cVkFSiMevjvNgqUVuXWLwiM7jX6TDnQEfIbYP+1EvD6C41
+krnjcgrrh46JkQjHT23iaOR8pk/N4xdKzYelPsR5brRHuB9NTOu+jYxXKcNO0mP31CpAPu8B
+--0000000000003a1c810647bad757--
 
