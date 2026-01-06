@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-205549-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205796-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB7D4CFABE7
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:43:27 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52E18CFAFBD
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 21:47:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D21A830116C9
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 19:42:31 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0B7D23024F7E
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 20:46:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7978B33EAF5;
-	Tue,  6 Jan 2026 17:37:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AE5E3644BC;
+	Tue,  6 Jan 2026 17:51:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iaVqjf05"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gOOesTVl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 364BF225A3B;
-	Tue,  6 Jan 2026 17:37:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A28B3644AB;
+	Tue,  6 Jan 2026 17:51:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721064; cv=none; b=KGqMi+bxzsfqNoNyY5luaqI74zrnAJgBFhfXreZGxT03+TDuXFjQb2tHBE670D8AsOS1suSKdB9o9YK5i03F73L2VZ98DG3ACRRe9UwHWVxSMM0gG75TJiRFfO+IE4Xy/jLA0XwySuZZ+iTwpAK7D4lCiih02hobgajit+erWpk=
+	t=1767721891; cv=none; b=nSf4UdQ5qmyeTk9bSuE5leb7/8LjMXH2YXeRGX9nxBCc9IMQQSLSsOwb7aoQA29JBAdD6yrjnNVWdb1kbDi6pVCeqnZrj6lpRvXwjj1ysisYJesnzG8dKXC/tejyukiZLIdC50hBLDEXHlpToZNHKphS+8Zg+dW3f2wUoykshTE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721064; c=relaxed/simple;
-	bh=EcneMUXGOo9eCjKwkMvYJiXmepLfIF5EvIxOFKC4Wzg=;
+	s=arc-20240116; t=1767721891; c=relaxed/simple;
+	bh=+DXKa9FnmeHaJUbyMURM7UvFNToVzEoeI6URpV1eB0E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mgzuhl55ho9VPiKLf0Hhv/vlD2sKgGQYwVWEcg1y61o2QZU8QhH6dGohPYaTmPTVEmUi8Kq0vQk44sVaLFxsYSdI1MWqwA71LoG7UbmGVXD0XuEgxb2ydru5/AmXZYrplKLoHXf80vArQ2GoLSo+TgAAihuOStfapqWeazW2JjM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iaVqjf05; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F81BC116C6;
-	Tue,  6 Jan 2026 17:37:43 +0000 (UTC)
+	 MIME-Version; b=LZC0VftCLzkIWi0IB8S0ad2ZWMyRnDVVr9pYWlsCHChXPLmYCZGNvMZaqTPdc7LM9YRV+4OThaTeayXmbEnz0gDMlqIWqgitPPb3MWdrNtELTX8YsNvQZQbVIUGToCj9XB81OdM6q3xfObBa/gCFE1UYqWXxa3BP+MR2QfaGsR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gOOesTVl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CCD7C116C6;
+	Tue,  6 Jan 2026 17:51:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721064;
-	bh=EcneMUXGOo9eCjKwkMvYJiXmepLfIF5EvIxOFKC4Wzg=;
+	s=korg; t=1767721891;
+	bh=+DXKa9FnmeHaJUbyMURM7UvFNToVzEoeI6URpV1eB0E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iaVqjf05YgioxvrQnrHI4r7M0tW1Tkwjxe7zwwJaDPGs74KS99g5KQeFPudRLzjPB
-	 qq5k79NKfCMyzfkmwHxXuflJlzgP2FsGSWB/Z4MOK5TG79xVyXWC83PU2Q5FoyzAkr
-	 8JtjRStzVa33uCMtM9Xf4B0mx8hnBpTBHVrywtD4=
+	b=gOOesTVlmi/JjP3eCK084NXd51aAV7sn8Ice18bbLJzr6cNSIk2HZLvNri0DbO0nt
+	 l8nbYJ9mmjwhjoaRLrfbwN0Nn4zIoJCGfYVgXAoNDTMLApFpsm5UQ836uPDyBIZgTh
+	 8ycW+TtQGXX8HhORDX2wjaJItyNMuPoWziq5baXs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sven Schnelle <svens@stackframe.org>,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.12 392/567] parisc: entry: set W bit for !compat tasks in syscall_restore_rfi()
-Date: Tue,  6 Jan 2026 18:02:54 +0100
-Message-ID: <20260106170505.842450598@linuxfoundation.org>
+	Ma Ke <make24@iscas.ac.cn>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.18 103/312] ASoC: codecs: Fix error handling in pm4125 audio codec driver
+Date: Tue,  6 Jan 2026 18:02:57 +0100
+Message-ID: <20260106170551.563857762@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
-References: <20260106170451.332875001@linuxfoundation.org>
+In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
+References: <20260106170547.832845344@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,63 +60,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Schnelle <svens@stackframe.org>
+From: Ma Ke <make24@iscas.ac.cn>
 
-commit 5fb1d3ce3e74a4530042795e1e065422295f1371 upstream.
+commit 2196e8172bee2002e9baaa0d02b2f9f2dd213949 upstream.
 
-When the kernel leaves to userspace via syscall_restore_rfi(), the
-W bit is not set in the new PSW. This doesn't cause any problems
-because there's no 64 bit userspace for parisc. Simple static binaries
-are usually loaded at addresses way below the 32 bit limit so the W bit
-doesn't matter.
+pm4125_bind() acquires references through pm4125_sdw_device_get() but
+fails to release them in error paths and during normal unbind
+operations. This could result in reference count leaks, preventing
+proper cleanup and potentially causing resource exhaustion over
+multiple bind/unbind cycles.
 
-Fix this by setting the W bit when TIF_32BIT is not set.
+Calling path: pm4125_sdw_device_get() -> bus_find_device_by_of_node()
+-> bus_find_device() -> get_device.
 
-Signed-off-by: Sven Schnelle <svens@stackframe.org>
+Found by code review.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Helge Deller <deller@gmx.de>
+Fixes: 8ad529484937 ("ASoC: codecs: add new pm4125 audio codec driver")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://patch.msgid.link/20251116033716.29369-1-make24@iscas.ac.cn
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/parisc/kernel/asm-offsets.c |    2 ++
- arch/parisc/kernel/entry.S       |    5 ++++-
- 2 files changed, 6 insertions(+), 1 deletion(-)
+ sound/soc/codecs/pm4125.c |   21 ++++++++++++++++++---
+ 1 file changed, 18 insertions(+), 3 deletions(-)
 
---- a/arch/parisc/kernel/asm-offsets.c
-+++ b/arch/parisc/kernel/asm-offsets.c
-@@ -258,6 +258,8 @@ int main(void)
- 	BLANK();
- 	DEFINE(TIF_BLOCKSTEP_PA_BIT, 31-TIF_BLOCKSTEP);
- 	DEFINE(TIF_SINGLESTEP_PA_BIT, 31-TIF_SINGLESTEP);
-+	DEFINE(TIF_32BIT_PA_BIT, 31-TIF_32BIT);
+--- a/sound/soc/codecs/pm4125.c
++++ b/sound/soc/codecs/pm4125.c
+@@ -1549,6 +1549,10 @@ static int pm4125_bind(struct device *de
+ 	struct device_link *devlink;
+ 	int ret;
+ 
++	/* Initialize device pointers to NULL for safe cleanup */
++	pm4125->rxdev = NULL;
++	pm4125->txdev = NULL;
 +
- 	BLANK();
- 	DEFINE(ASM_PMD_SHIFT, PMD_SHIFT);
- 	DEFINE(ASM_PGDIR_SHIFT, PGDIR_SHIFT);
---- a/arch/parisc/kernel/entry.S
-+++ b/arch/parisc/kernel/entry.S
-@@ -1846,6 +1846,10 @@ syscall_restore_rfi:
- 	extru,= %r19,TIF_BLOCKSTEP_PA_BIT,1,%r0
- 	depi	-1,7,1,%r20			   /* T bit */
+ 	/* Give the soundwire subdevices some more time to settle */
+ 	usleep_range(15000, 15010);
  
-+#ifdef CONFIG_64BIT
-+	extru,<> %r19,TIF_32BIT_PA_BIT,1,%r0
-+	depi	-1,4,1,%r20			   /* W bit */
-+#endif
- 	STREG	%r20,TASK_PT_PSW(%r1)
+@@ -1572,7 +1576,7 @@ static int pm4125_bind(struct device *de
+ 	if (!pm4125->txdev) {
+ 		dev_err(dev, "could not find txslave with matching of node\n");
+ 		ret = -EINVAL;
+-		goto error_unbind_all;
++		goto error_put_rx;
+ 	}
  
- 	/* Always store space registers, since sr3 can be changed (e.g. fork) */
-@@ -1859,7 +1863,6 @@ syscall_restore_rfi:
- 	STREG   %r25,TASK_PT_IASQ0(%r1)
- 	STREG   %r25,TASK_PT_IASQ1(%r1)
+ 	pm4125->sdw_priv[AIF1_CAP] = dev_get_drvdata(pm4125->txdev);
+@@ -1582,7 +1586,7 @@ static int pm4125_bind(struct device *de
+ 	if (!pm4125->tx_sdw_dev) {
+ 		dev_err(dev, "could not get txslave with matching of dev\n");
+ 		ret = -EINVAL;
+-		goto error_unbind_all;
++		goto error_put_tx;
+ 	}
  
--	/* XXX W bit??? */
- 	/* Now if old D bit is clear, it means we didn't save all registers
- 	 * on syscall entry, so do that now.  This only happens on TRACEME
- 	 * calls, or if someone attached to us while we were on a syscall.
+ 	/*
+@@ -1594,7 +1598,7 @@ static int pm4125_bind(struct device *de
+ 	if (!devlink) {
+ 		dev_err(dev, "Could not devlink TX and RX\n");
+ 		ret = -EINVAL;
+-		goto error_unbind_all;
++		goto error_put_tx;
+ 	}
+ 
+ 	devlink = device_link_add(dev, pm4125->txdev,
+@@ -1648,6 +1652,10 @@ link_remove_dev_tx:
+ 	device_link_remove(dev, pm4125->txdev);
+ link_remove_rx_tx:
+ 	device_link_remove(pm4125->rxdev, pm4125->txdev);
++error_put_tx:
++	put_device(pm4125->txdev);
++error_put_rx:
++	put_device(pm4125->rxdev);
+ error_unbind_all:
+ 	component_unbind_all(dev, pm4125);
+ 	return ret;
+@@ -1663,6 +1671,13 @@ static void pm4125_unbind(struct device
+ 	device_link_remove(dev, pm4125->txdev);
+ 	device_link_remove(dev, pm4125->rxdev);
+ 	device_link_remove(pm4125->rxdev, pm4125->txdev);
++
++	/* Release device references acquired in bind */
++	if (pm4125->txdev)
++		put_device(pm4125->txdev);
++	if (pm4125->rxdev)
++		put_device(pm4125->rxdev);
++
+ 	component_unbind_all(dev, pm4125);
+ }
+ 
 
 
 
