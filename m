@@ -1,247 +1,136 @@
-Return-Path: <stable+bounces-206058-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206061-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C642CFB658
-	for <lists+stable@lfdr.de>; Wed, 07 Jan 2026 00:58:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD622CFB661
+	for <lists+stable@lfdr.de>; Wed, 07 Jan 2026 00:59:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0587B3026859
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 23:58:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2AA2D3021059
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 23:59:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0078A2EE262;
-	Tue,  6 Jan 2026 23:58:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A2C82FD685;
+	Tue,  6 Jan 2026 23:59:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U0KZGnpz"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="SBjqIdvB"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E5342D321B
-	for <stable@vger.kernel.org>; Tue,  6 Jan 2026 23:58:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9883F2D321B
+	for <stable@vger.kernel.org>; Tue,  6 Jan 2026 23:59:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767743899; cv=none; b=lIsqvmUBPCQrX05Yk0FGL30zb+VjS4jKeXdL90SYyJpSOmU73BXuohwWt+2+CqjOlgbOhtdFQ+GSFooL5p8Ft/ERFrFjV7prEsl+CIZfqDVsXHrE92RcAxtzAJhhzvh3reSL+z6047WgmXvlAcuZcSQF+4CVLlB8QSEu8f5fiJU=
+	t=1767743953; cv=none; b=swKr/mLhpgETCHI0m+tfjGyAu1nOa/YyfpAyltO8zrx/Qa4E3XSj8fv/vvv/bEOaUFaVSzXpWTs2Uu5sGIavXFCQdLQuGQZLGo2WmNgIJe+Nrj6gUBiGBpejlfTFx6YSWeNdENdSNidTR7V6A6VZpyB/04e/91MYUnQubdflMqo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767743899; c=relaxed/simple;
-	bh=2+FFszy8HmWCpZ1v3xG00Z/0V3zdJcLrnMdqsH4k/Sk=;
+	s=arc-20240116; t=1767743953; c=relaxed/simple;
+	bh=Qk4B1BQlCWLjCwn1qd7LA87Fg8Y70vCSqNKFz0DcYk0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FrJ4S5jaFTNuqaY5ewbob1M4WcMacCoLefa21ygEOVf6iFPOCvn7hT50Jl1Keo/PgzhVh4QEdvw+b7LAthwu1rBQ6cXk4OLZzK547XjSQlOlvkiGiz71+5qwRRU8L4KDWaKyMWNuFBaioIezN075jwhDqs68leCa1TONASO8ZQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U0KZGnpz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58EE5C19421;
-	Tue,  6 Jan 2026 23:58:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767743899;
-	bh=2+FFszy8HmWCpZ1v3xG00Z/0V3zdJcLrnMdqsH4k/Sk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U0KZGnpzD8gbxkjiqTX5rInobGGOKOHz0iqaZc7vX4m0ISqq9o1hqd/GM74rmnQKs
-	 /+EHF8dt1W9k/UZUbo5i9fO+N9EotnOGRZHs6EpRMWjjaiYepk+5BD/mtlH1Siw1u+
-	 XG5HcCBXXWkBAH40xiFiS778m2YaOoGnAc4jBLzohkeGdJw1pNA6vcO/dR4zg7GM6u
-	 bqO6RQ5eCodZ5OoZcgNqscQRsIzyBW0o59ZT1oP/t5ud71qZCfywqJahyLiik9M22j
-	 zigWD5arb4ejL2xHSoSO9UZaQa5sGx6MPD7x11BKN0oe28pn7HSGkdkOrGuWkx0gxv
-	 /oy60bLu7tbQA==
-From: Sasha Levin <sashal@kernel.org>
+	 MIME-Version:Content-Type; b=U601GSyi6yrD7Q/guldMlI+9NlICKpANkGb8aMWSIpGzcRFk4Nn9euxTRfwqDOyaRY49SudHiI/dti9RDf4vb6yEyflffSpHdU6X5ZMecezOQlc74SB+ppIDVRvhowwvQrchka3rysfmKLCDMDKHLGg8o06BwsjyDPROetCx1qE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=SBjqIdvB; arc=none smtp.client-ip=209.85.218.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-b7a02592efaso248907166b.1
+        for <stable@vger.kernel.org>; Tue, 06 Jan 2026 15:59:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1767743949; x=1768348749; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=uT1w68RGwKrDDZHtEQnhlyASoBy2XlIjZ9waRP+OZtA=;
+        b=SBjqIdvB7fzsZrFBJLYeGluq2bkHnp7b3k8ClARtfWm3/QsCB1uxfzyd4eMM9YPt7r
+         9WXlh5EnDdDr4E7pnZJMkTrdNZEZy2neUDceFLGDXZatFXgY3qYv9rBCs4oZfE0qjy6s
+         84iLQ77M15vKHd5D0zrejWL0OMwq6FgcOM6/w=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767743949; x=1768348749;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=uT1w68RGwKrDDZHtEQnhlyASoBy2XlIjZ9waRP+OZtA=;
+        b=kWhGeO0xzJ/48il1KjfYabvSQ3WnO4FlrRg8UW6kP7DtQ6p9yuFT+NW9cfQZYRxRcm
+         gsWDL/q51A4vs/bmcwsl45kpBIGEGg0Zex+D1xCYnzMnMcqWwc2727ZhuFp6IVoX9POy
+         /Pl/7cXiRwmTGmFkU3DJdUO3PP/KFZLe9YqPcWFeENMETIK6aW3EDiLV4uwqLMF4l0vd
+         0GauiT5nyWpuT7ysqRX1V+kLuTeqMtY/A+e3XbctKHCn9QbaeZa7cXUoX/6pE5JjUtvL
+         CcJV+bkkhCZBjuL+ozEAdLx8mDBHoiyPRSWX6L4ku0frN71yxkNvkKPlXpMw7iNt1EAt
+         V0hw==
+X-Gm-Message-State: AOJu0YxnFMJWda3b1qHaQ+JZ8ayWW/7RhjupNhXjUvlNg2zLJP6dN0ta
+	OS4yuahWdJvwmiGvN6ZlLgegTUU3eXmz4/co//DaJSBxkCxP5rPW3QNdnVjyfys7JXLIJJccpFi
+	DJ+LngO8=
+X-Gm-Gg: AY/fxX5BPUxd6afqbJin9kO9iTFpyzPv7s2LdvhRaRWgxlWCMdd4BcozDKuFuaMm3rX
+	3FM72SjF2dUnQLvZya6yD7Nu7x3ili99KrN/HYcJCx6NDf1m4LnIbS1IIzxhwfqDRKx3ep8TrDB
+	w20oxtw29pPOyLihCKt8xaqqturyffzWKlsbMirfxqW2Ps+9Jd2lZZWnuFp/G3LOsEzVIiAvtyA
+	zcKIKo1hVPK+noRH4Vn81sRHFS0ammUN75KdpzjZYLgp/JChuKZoyESHwAh8fxGflXcte4sctS8
+	sB7mjlf6SZE1lXNvkbv3UaG4QfPRy+cUw+fE67LEVo6yq+GC7mJOXGlJQl7+X0Bu/llwRTgIwX8
+	nnLnIU7+DPOfeGoHyJr4/SFFjudcw2QlgGR/tsPkuHnq/BIXaCnD+7LdsuBoIgg8hRoe5AoLaxS
+	foV+KnlIHAaCOFY0NvwnEBghq8+kUrvcWVuhQfTXYlcepJmOVSfORpdKBy9flH6OorZkNFduHNT
+	w==
+X-Google-Smtp-Source: AGHT+IHAr53+MtuRfVModHU2JVKDHnuHdj0K2pgH0bHOHvYvnl7Y02fkmfnzqT5vgPM6LM7DW6+snA==
+X-Received: by 2002:a17:907:3fa4:b0:b71:1420:334b with SMTP id a640c23a62f3a-b8444c40046mr80579566b.8.1767743949289;
+        Tue, 06 Jan 2026 15:59:09 -0800 (PST)
+Received: from januszek.c.googlers.com.com (3.23.91.34.bc.googleusercontent.com. [34.91.23.3])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b842a511546sm344187266b.48.2026.01.06.15.59.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 06 Jan 2026 15:59:08 -0800 (PST)
+From: =?UTF-8?q?=C5=81ukasz=20Bartosik?= <ukaszb@chromium.org>
 To: stable@vger.kernel.org
-Cc: NeilBrown <neil@brown.name>,
-	Olga Kornievskaia <okorniev@redhat.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y] lockd: fix vfs_test_lock() calls
-Date: Tue,  6 Jan 2026 18:58:16 -0500
-Message-ID: <20260106235816.3462079-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026010501-unsworn-elated-41e1@gregkh>
-References: <2026010501-unsworn-elated-41e1@gregkh>
+Cc: =?UTF-8?q?=C5=81ukasz=20Bartosik?= <ukaszb@chromium.org>,
+	stable <stable@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: [PATCH 6.12.y] xhci: dbgtty: fix device unregister: fixup
+Date: Tue,  6 Jan 2026 23:58:20 +0000
+Message-ID: <20260106235820.2995848-1-ukaszb@chromium.org>
+X-Mailer: git-send-email 2.52.0.351.gbe84eed79e-goog
+In-Reply-To: <2025122917-unsheathe-breeder-0ac2@gregkh>
+References: <2025122917-unsheathe-breeder-0ac2@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: NeilBrown <neil@brown.name>
+This fixup replaces tty_vhangup() call with call to
+tty_port_tty_vhangup(). Both calls hangup tty device
+synchronously however tty_port_tty_vhangup() increases
+reference count during the hangup operation using
+scoped_guard(tty_port_tty).
 
-[ Upstream commit a49a2a1baa0c553c3548a1c414b6a3c005a8deba ]
-
-Usage of vfs_test_lock() is somewhat confused.  Documentation suggests
-it is given a "lock" but this is not the case.  It is given a struct
-file_lock which contains some details of the sort of lock it should be
-looking for.
-
-In particular passing a "file_lock" containing fl_lmops or fl_ops is
-meaningless and possibly confusing.
-
-This is particularly problematic in lockd.  nlmsvc_testlock() receives
-an initialised "file_lock" from xdr-decode, including manager ops and an
-owner.  It then mistakenly passes this to vfs_test_lock() which might
-replace the owner and the ops.  This can lead to confusion when freeing
-the lock.
-
-The primary role of the 'struct file_lock' passed to vfs_test_lock() is
-to report a conflicting lock that was found, so it makes more sense for
-nlmsvc_testlock() to pass "conflock", which it uses for returning the
-conflicting lock.
-
-With this change, freeing of the lock is not confused and code in
-__nlm4svc_proc_test() and __nlmsvc_proc_test() can be simplified.
-
-Documentation for vfs_test_lock() is improved to reflect its real
-purpose, and a WARN_ON_ONCE() is added to avoid a similar problem in the
-future.
-
-Reported-by: Olga Kornievskaia <okorniev@redhat.com>
-Closes: https://lore.kernel.org/all/20251021130506.45065-1-okorniev@redhat.com
-Signed-off-by: NeilBrown <neil@brown.name>
-Fixes: 20fa19027286 ("nfs: add export operations")
-Cc: stable@vger.kernel.org
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-[ adapted c.flc_* field accesses to direct fl_* fields ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable <stable@kernel.org>
+Fixes: 1f73b8b56cf3 ("xhci: dbgtty: fix device unregister")
+Signed-off-by: Łukasz Bartosik <ukaszb@chromium.org>
+Link: https://patch.msgid.link/20251127111644.3161386-1-ukaszb@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/lockd/svc4proc.c |  4 +---
- fs/lockd/svclock.c  | 21 ++++++++++++---------
- fs/lockd/svcproc.c  |  5 +----
- fs/locks.c          | 13 +++++++++++--
- 4 files changed, 25 insertions(+), 18 deletions(-)
+ drivers/usb/host/xhci-dbgtty.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/fs/lockd/svc4proc.c b/fs/lockd/svc4proc.c
-index b72023a6b4c1..28ba7b1460aa 100644
---- a/fs/lockd/svc4proc.c
-+++ b/fs/lockd/svc4proc.c
-@@ -96,7 +96,6 @@ __nlm4svc_proc_test(struct svc_rqst *rqstp, struct nlm_res *resp)
- 	struct nlm_args *argp = rqstp->rq_argp;
- 	struct nlm_host	*host;
- 	struct nlm_file	*file;
--	struct nlm_lockowner *test_owner;
- 	__be32 rc = rpc_success;
- 
- 	dprintk("lockd: TEST4        called\n");
-@@ -106,7 +105,6 @@ __nlm4svc_proc_test(struct svc_rqst *rqstp, struct nlm_res *resp)
- 	if ((resp->status = nlm4svc_retrieve_args(rqstp, argp, &host, &file)))
- 		return resp->status == nlm_drop_reply ? rpc_drop_reply :rpc_success;
- 
--	test_owner = argp->lock.fl.fl_owner;
- 	/* Now check for conflicting locks */
- 	resp->status = nlmsvc_testlock(rqstp, file, host, &argp->lock, &resp->lock, &resp->cookie);
- 	if (resp->status == nlm_drop_reply)
-@@ -114,7 +112,7 @@ __nlm4svc_proc_test(struct svc_rqst *rqstp, struct nlm_res *resp)
- 	else
- 		dprintk("lockd: TEST4        status %d\n", ntohl(resp->status));
- 
--	nlmsvc_put_lockowner(test_owner);
-+	nlmsvc_release_lockowner(&argp->lock);
- 	nlmsvc_release_host(host);
- 	nlm_release_file(file);
- 	return rc;
-diff --git a/fs/lockd/svclock.c b/fs/lockd/svclock.c
-index 4e30f3c50970..035f885809dd 100644
---- a/fs/lockd/svclock.c
-+++ b/fs/lockd/svclock.c
-@@ -604,7 +604,13 @@ nlmsvc_testlock(struct svc_rqst *rqstp, struct nlm_file *file,
- 	}
- 
- 	mode = lock_to_openmode(&lock->fl);
--	error = vfs_test_lock(file->f_file[mode], &lock->fl);
-+	locks_init_lock(&conflock->fl);
-+	/* vfs_test_lock only uses start, end, and owner, but tests fl_file */
-+	conflock->fl.fl_file = lock->fl.fl_file;
-+	conflock->fl.fl_start = lock->fl.fl_start;
-+	conflock->fl.fl_end = lock->fl.fl_end;
-+	conflock->fl.fl_owner = lock->fl.fl_owner;
-+	error = vfs_test_lock(file->f_file[mode], &conflock->fl);
- 	if (error) {
- 		/* We can't currently deal with deferred test requests */
- 		if (error == FILE_LOCK_DEFERRED)
-@@ -614,22 +620,19 @@ nlmsvc_testlock(struct svc_rqst *rqstp, struct nlm_file *file,
- 		goto out;
- 	}
- 
--	if (lock->fl.fl_type == F_UNLCK) {
-+	if (conflock->fl.fl_type == F_UNLCK) {
- 		ret = nlm_granted;
- 		goto out;
- 	}
- 
- 	dprintk("lockd: conflicting lock(ty=%d, %Ld-%Ld)\n",
--		lock->fl.fl_type, (long long)lock->fl.fl_start,
--		(long long)lock->fl.fl_end);
-+		conflock->fl.fl_type, (long long)conflock->fl.fl_start,
-+		(long long)conflock->fl.fl_end);
- 	conflock->caller = "somehost";	/* FIXME */
- 	conflock->len = strlen(conflock->caller);
- 	conflock->oh.len = 0;		/* don't return OH info */
--	conflock->svid = lock->fl.fl_pid;
--	conflock->fl.fl_type = lock->fl.fl_type;
--	conflock->fl.fl_start = lock->fl.fl_start;
--	conflock->fl.fl_end = lock->fl.fl_end;
--	locks_release_private(&lock->fl);
-+	conflock->svid = conflock->fl.fl_pid;
-+	locks_release_private(&conflock->fl);
- 
- 	ret = nlm_lck_denied;
- out:
-diff --git a/fs/lockd/svcproc.c b/fs/lockd/svcproc.c
-index 32784f508c81..1a4459763644 100644
---- a/fs/lockd/svcproc.c
-+++ b/fs/lockd/svcproc.c
-@@ -117,7 +117,6 @@ __nlmsvc_proc_test(struct svc_rqst *rqstp, struct nlm_res *resp)
- 	struct nlm_args *argp = rqstp->rq_argp;
- 	struct nlm_host	*host;
- 	struct nlm_file	*file;
--	struct nlm_lockowner *test_owner;
- 	__be32 rc = rpc_success;
- 
- 	dprintk("lockd: TEST          called\n");
-@@ -127,8 +126,6 @@ __nlmsvc_proc_test(struct svc_rqst *rqstp, struct nlm_res *resp)
- 	if ((resp->status = nlmsvc_retrieve_args(rqstp, argp, &host, &file)))
- 		return resp->status == nlm_drop_reply ? rpc_drop_reply :rpc_success;
- 
--	test_owner = argp->lock.fl.fl_owner;
--
- 	/* Now check for conflicting locks */
- 	resp->status = cast_status(nlmsvc_testlock(rqstp, file, host, &argp->lock, &resp->lock, &resp->cookie));
- 	if (resp->status == nlm_drop_reply)
-@@ -137,7 +134,7 @@ __nlmsvc_proc_test(struct svc_rqst *rqstp, struct nlm_res *resp)
- 		dprintk("lockd: TEST          status %d vers %d\n",
- 			ntohl(resp->status), rqstp->rq_vers);
- 
--	nlmsvc_put_lockowner(test_owner);
-+	nlmsvc_release_lockowner(&argp->lock);
- 	nlmsvc_release_host(host);
- 	nlm_release_file(file);
- 	return rc;
-diff --git a/fs/locks.c b/fs/locks.c
-index ed8b3e318f97..24a82b793c66 100644
---- a/fs/locks.c
-+++ b/fs/locks.c
-@@ -2325,13 +2325,22 @@ SYSCALL_DEFINE2(flock, unsigned int, fd, unsigned int, cmd)
- /**
-  * vfs_test_lock - test file byte range lock
-  * @filp: The file to test lock for
-- * @fl: The lock to test; also used to hold result
-+ * @fl: The byte-range in the file to test; also used to hold result
-  *
-+ * On entry, @fl does not contain a lock, but identifies a range (fl_start, fl_end)
-+ * in the file (c.flc_file), and an owner (c.flc_owner) for whom existing locks
-+ * should be ignored.  c.flc_type and c.flc_flags are ignored.
-+ * Both fl_lmops and fl_ops in @fl must be NULL.
-  * Returns -ERRNO on failure.  Indicates presence of conflicting lock by
-- * setting conf->fl_type to something other than F_UNLCK.
-+ * setting fl->fl_type to something other than F_UNLCK.
-+ *
-+ * If vfs_test_lock() does find a lock and return it, the caller must
-+ * use locks_free_lock() or locks_release_private() on the returned lock.
-  */
- int vfs_test_lock(struct file *filp, struct file_lock *fl)
+diff --git a/drivers/usb/host/xhci-dbgtty.c b/drivers/usb/host/xhci-dbgtty.c
+index 349931a80cc8..9cbeae487736 100644
+--- a/drivers/usb/host/xhci-dbgtty.c
++++ b/drivers/usb/host/xhci-dbgtty.c
+@@ -515,6 +515,7 @@ static int xhci_dbc_tty_register_device(struct xhci_dbc *dbc)
+ static void xhci_dbc_tty_unregister_device(struct xhci_dbc *dbc)
  {
-+	WARN_ON_ONCE(fl->fl_ops || fl->fl_lmops);
-+	WARN_ON_ONCE(filp != fl->fl_file);
- 	if (filp->f_op->lock)
- 		return filp->f_op->lock(filp, F_GETLK, fl);
- 	posix_test_lock(filp, fl);
+ 	struct dbc_port		*port = dbc_to_port(dbc);
++	struct tty_struct	*tty;
+ 
+ 	if (!port->registered)
+ 		return;
+@@ -522,7 +523,11 @@ static void xhci_dbc_tty_unregister_device(struct xhci_dbc *dbc)
+ 	 * Hang up the TTY. This wakes up any blocked
+ 	 * writers and causes subsequent writes to fail.
+ 	 */
+-	tty_vhangup(port->port.tty);
++	tty = tty_port_tty_get(&port->port);
++	if (tty) {
++		tty_vhangup(tty);
++		tty_kref_put(tty);
++	}
+ 
+ 	tty_unregister_device(dbc_tty_driver, port->minor);
+ 	xhci_dbc_tty_exit_port(port);
 -- 
-2.51.0
+2.52.0.351.gbe84eed79e-goog
 
 
