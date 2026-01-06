@@ -1,53 +1,56 @@
-Return-Path: <stable+bounces-205506-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205824-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB76ECF9E21
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 18:55:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 30B6CCFA75C
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:05:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 50C2F318EFCD
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:42:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D258D3491E46
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:13:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D18FB30103F;
-	Tue,  6 Jan 2026 17:35:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3DF33644BF;
+	Tue,  6 Jan 2026 17:53:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aQzlV7va"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WUKS9ldc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D6673009E2;
-	Tue,  6 Jan 2026 17:35:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FA593644AD;
+	Tue,  6 Jan 2026 17:53:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767720920; cv=none; b=PGLcqmCdB3dxUIkS6JyETlGF6L4XtkK46R2YAMTG8KmLAoWGQC3vKiMsBjZaz51e+16HX3n66AlD9gv8mm3xulQKvjSEewVhkrataSrJacZE8nL4Rzv27hwhF7BhUQyoUAZ4xcmkkga5ENdtG/FGWkNBTjQMJNNqO2/fOT+e+GI=
+	t=1767721984; cv=none; b=FU0cRt1YvO2uINpUed6NaJ8PZA90sKmG6Y7dVddZqTuIttswpSxJKryrNR+M+uuicRh98DDqnPHincQgHMMscv5NcOU8x1kxgQNzIWlh4Uq5TLyNvkj9FBow9zeaTArnc8NwdnDWUoCQj8lfWHC751khVoZ4zSSpNCAi4Z+snxc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767720920; c=relaxed/simple;
-	bh=A+Zrq+5hsBh1jKuMIOmUIWOfiu7ilJc6PO14pzeK7Qw=;
+	s=arc-20240116; t=1767721984; c=relaxed/simple;
+	bh=Xa/tDtHAqJTNq86yD35E3MFZbHXMJO0zjqdv3bwoJ3I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WAqzRgcShvIhgaz1HfDR/g0v8evTb2PgjUnVXkDowGVoV3IGdGjm67Slb2+JNCl2EQcP68QMne/bn+1Wep9nYrZWRUM/DGGJEuYlG8CJ42pV61yHUHQWa4WrixalSYi2rdjXQCUTI0ktECsO+yLjvzUn/MVeRE9ypV8kUQ0Pu/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aQzlV7va; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AED07C16AAE;
-	Tue,  6 Jan 2026 17:35:19 +0000 (UTC)
+	 MIME-Version; b=OkQQz7rRXxIi8UGxgx0RuHnQo4i3obj13fF4E2aLd4H+DrEoP4vWii71i1GVYvCPbHC792v+w/Iowvwt27zqKAKTyvUvTp/XSxG+730C1Uvjkbhn6IlU+CzY7DaHe6JdWTdFln0YL9ccARWfnnSa5TgIwqqPW7lJZ6CYWHBcv3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WUKS9ldc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FB27C116C6;
+	Tue,  6 Jan 2026 17:53:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767720920;
-	bh=A+Zrq+5hsBh1jKuMIOmUIWOfiu7ilJc6PO14pzeK7Qw=;
+	s=korg; t=1767721984;
+	bh=Xa/tDtHAqJTNq86yD35E3MFZbHXMJO0zjqdv3bwoJ3I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aQzlV7vaEEQPiZeFQWlexaVDuY08ux8CKkK3JCXWW2d1VyT8VgLyvRe2M81UL070r
-	 T2r0WXZAQgHzqewkggzqGJIltEF24datv+SyLN6JwyLQGubnY8cdr+ZFXU3Anh+TuW
-	 Gw/552tOXS6gBiXhGvMkWiLOFqEbBvDqfuBQ39uE=
+	b=WUKS9ldcMUSLBM8WLeeoqczaMnIWzYFJHbhQgcHeerPpmISO9swmKEFbHMb4GA/yi
+	 eqhtvwPWJ58OhogA+9hSdE6ou47/YYPv1REDRVk00p0UuPBvIIl247Zgkhdx+ZkjcY
+	 BPozV7w1Acb3JgcLzuXR7PchMSWVMSrsXpE/6PBU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>,
-	Lee Jones <lee@kernel.org>
-Subject: [PATCH 6.12 380/567] mfd: altera-sysmgr: Fix device leak on sysmgr regmap lookup
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Yipeng Zou <zouyipeng@huawei.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 088/312] selftests/ftrace: traceonoff_triggers: strip off names
 Date: Tue,  6 Jan 2026 18:02:42 +0100
-Message-ID: <20260106170505.398333378@linuxfoundation.org>
+Message-ID: <20260106170551.020275805@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
-References: <20260106170451.332875001@linuxfoundation.org>
+In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
+References: <20260106170547.832845344@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,40 +62,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Yipeng Zou <zouyipeng@huawei.com>
 
-commit ccb7cd3218e48665f3c7e19eede0da5f069c323d upstream.
+[ Upstream commit b889b4fb4cbea3ca7eb9814075d6a51936394bd9 ]
 
-Make sure to drop the reference taken to the sysmgr platform device when
-retrieving its driver data.
+The func_traceonoff_triggers.tc sometimes goes to fail
+on my board, Kunpeng-920.
 
-Note that holding a reference to a device does not prevent its driver
-data from going away.
+[root@localhost]# ./ftracetest ./test.d/ftrace/func_traceonoff_triggers.tc -l fail.log
+=== Ftrace unit tests ===
+[1] ftrace - test for function traceon/off triggers     [FAIL]
+[2] (instance)  ftrace - test for function traceon/off triggers [UNSUPPORTED]
 
-Fixes: f36e789a1f8d ("mfd: altera-sysmgr: Add SOCFPGA System Manager")
-Cc: stable@vger.kernel.org	# 5.2
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+I look up the log, and it shows that the md5sum is different between csum1 and csum2.
+
+++ cnt=611
+++ sleep .1
++++ cnt_trace
++++ grep -v '^#' trace
++++ wc -l
+++ cnt2=611
+++ '[' 611 -ne 611 ']'
++++ cat tracing_on
+++ on=0
+++ '[' 0 '!=' 0 ']'
++++ md5sum trace
+++ csum1='76896aa74362fff66a6a5f3cf8a8a500  trace'
+++ sleep .1
++++ md5sum trace
+++ csum2='ee8625a21c058818fc26e45c1ed3f6de  trace'
+++ '[' '76896aa74362fff66a6a5f3cf8a8a500  trace' '!=' 'ee8625a21c058818fc26e45c1ed3f6de  trace' ']'
+++ fail 'Tracing file is still changing'
+++ echo Tracing file is still changing
+Tracing file is still changing
+++ exit_fail
+++ exit 1
+
+So I directly dump the trace file before md5sum, the diff shows that:
+
+[root@localhost]# diff trace_1.log trace_2.log -y --suppress-common-lines
+dockerd-12285   [036] d.... 18385.510290: sched_stat | <...>-12285   [036] d.... 18385.510290: sched_stat
+dockerd-12285   [036] d.... 18385.510291: sched_swit | <...>-12285   [036] d.... 18385.510291: sched_swit
+<...>-740       [044] d.... 18385.602859: sched_stat | kworker/44:1-740 [044] d.... 18385.602859: sched_stat
+<...>-740       [044] d.... 18385.602860: sched_swit | kworker/44:1-740 [044] d.... 18385.602860: sched_swit
+
+And we can see that <...> filed be filled with names.
+
+We can strip off the names there to fix that.
+
+After strip off the names:
+
+kworker/u257:0-12 [019] d..2.  2528.758910: sched_stat | -12 [019] d..2.  2528.758910: sched_stat_runtime: comm=k
+kworker/u257:0-12 [019] d..2.  2528.758912: sched_swit | -12 [019] d..2.  2528.758912: sched_switch: prev_comm=kw
+<idle>-0          [000] d.s5.  2528.762318: sched_waki | -0  [000] d.s5.  2528.762318: sched_waking: comm=sshd pi
+<idle>-0          [037] dNh2.  2528.762326: sched_wake | -0  [037] dNh2.  2528.762326: sched_wakeup: comm=sshd pi
+<idle>-0          [037] d..2.  2528.762334: sched_swit | -0  [037] d..2.  2528.762334: sched_switch: prev_comm=sw
+
+Link: https://lore.kernel.org/r/20230818013226.2182299-1-zouyipeng@huawei.com
+Fixes: d87b29179aa0 ("selftests: ftrace: Use md5sum to take less time of checking logs")
+Suggested-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Yipeng Zou <zouyipeng@huawei.com>
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/altera-sysmgr.c |    2 ++
- 1 file changed, 2 insertions(+)
+ .../ftrace/test.d/ftrace/func_traceonoff_triggers.tc         | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/mfd/altera-sysmgr.c
-+++ b/drivers/mfd/altera-sysmgr.c
-@@ -117,6 +117,8 @@ struct regmap *altr_sysmgr_regmap_lookup
+diff --git a/tools/testing/selftests/ftrace/test.d/ftrace/func_traceonoff_triggers.tc b/tools/testing/selftests/ftrace/test.d/ftrace/func_traceonoff_triggers.tc
+index aee22289536b..1b57771dbfdf 100644
+--- a/tools/testing/selftests/ftrace/test.d/ftrace/func_traceonoff_triggers.tc
++++ b/tools/testing/selftests/ftrace/test.d/ftrace/func_traceonoff_triggers.tc
+@@ -90,9 +90,10 @@ if [ $on != "0" ]; then
+     fail "Tracing is not off"
+ fi
  
- 	sysmgr = dev_get_drvdata(dev);
+-csum1=`md5sum trace`
++# Cannot rely on names being around as they are only cached, strip them
++csum1=`cat trace | sed -e 's/^ *[^ ]*\(-[0-9][0-9]*\)/\1/' | md5sum`
+ sleep $SLEEP_TIME
+-csum2=`md5sum trace`
++csum2=`cat trace | sed -e 's/^ *[^ ]*\(-[0-9][0-9]*\)/\1/' | md5sum`
  
-+	put_device(dev);
-+
- 	return sysmgr->regmap;
- }
- EXPORT_SYMBOL_GPL(altr_sysmgr_regmap_lookup_by_phandle);
+ if [ "$csum1" != "$csum2" ]; then
+     fail "Tracing file is still changing"
+-- 
+2.51.0
+
 
 
 
