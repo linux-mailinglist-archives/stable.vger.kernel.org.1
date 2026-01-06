@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-205894-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205611-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 707D7CFAB0C
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:32:16 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B198CFA96E
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:21:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A3D95301DEAE
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 19:32:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C72FD31FF69A
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:34:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1089434DCEE;
-	Tue,  6 Jan 2026 17:56:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B54202E6CD5;
+	Tue,  6 Jan 2026 17:41:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TvWWpE+T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CtCvbynp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C07F934D4E4;
-	Tue,  6 Jan 2026 17:56:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 724052D8777;
+	Tue,  6 Jan 2026 17:41:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767722217; cv=none; b=g80t4w2TYQ1aMcLfdc7ZqyInBgSZlkPt3ZKbjQVmtCOsvZdC3XaNJEP2riDQPVrqhQ5MbTJh/u7A28HJi3vodX9NyORzMWDf/OLBCLQzciOw6YdpvUIwAFzOG35QIS7yb0KOxuqFHnoJbQkn4GPQxSbnxywW9GQcfUEwNbyX920=
+	t=1767721266; cv=none; b=FWbqx0A2o8ADpIMx3IbKKyQrUiYWB0EOtmtTDoo0t2HzR/LdwdJleTIFZuxeTjrhTasDVX7FVN3dlq9ghWyUKt4jc2b8X5Noch/20u0DyjTw3neLztnBdTJ9AaC8HF9koI/4u1PX04Q+6j1wqaleVUDlilkiqk7nSqLqLkV6lOo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767722217; c=relaxed/simple;
-	bh=sp85bRDzhYYWzn/l+zVQ/dojH7DZ569LH9GhmnwvWBc=;
+	s=arc-20240116; t=1767721266; c=relaxed/simple;
+	bh=Cq767w4k8UhhyHJMpeWsKgKlspA/IRjV64PCA1ov3j8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A3CJb+dSRP8poibniiNhocL4wcL75uayLUlTuQYeBAkI2e4viEBrVh0tNn/Bxq7GvRYs9u2K6WjwCGsHTSvkNU211sNYdwPEHm1P2/jhbg9n+4wq4/EthxlWMQJayrbUo7i8jDAOrdouw9OWDVSZNDG0Y1HTdFeFVfOVzW/7Z7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TvWWpE+T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F4183C116C6;
-	Tue,  6 Jan 2026 17:56:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=MiK0wCFhjCBLOsxVg6Jv8FahfmAlJIu5ivuvPxAOJSYmoUSOuWHPWzqAffsLuSuaA0Mh1Gbd1jGh6savXUpHT88uw1Hiar9o3BiNCGohKk3ZcT9ZhbcrH8nS2tF3UNUFxEeCz4FCW+eyzdCpHcXsLHRXXc/m5JjBr7NRzUPQQyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CtCvbynp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1048C116C6;
+	Tue,  6 Jan 2026 17:41:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767722217;
-	bh=sp85bRDzhYYWzn/l+zVQ/dojH7DZ569LH9GhmnwvWBc=;
+	s=korg; t=1767721266;
+	bh=Cq767w4k8UhhyHJMpeWsKgKlspA/IRjV64PCA1ov3j8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TvWWpE+TVZmz7OwdPUjEADmoNd5wmZk5XAL6HvPXWQcE03704ca50dzTQ/TUwz5Ch
-	 iUh/X+xu38g7KwFH3doR0mcTswxw2m4Tcq92MpyMkr5xkWR39DMkQYamH/AurizOE/
-	 cyQkqbcL/jadAaDc8RPE6gUL0NEbS8e7K5ewZIGs=
+	b=CtCvbynpEhlilkHBWAalQrIguIXHRC83XCXnaDASynQRUs6zTlEkyTvqzsrkBCIOx
+	 8SA/7TywuLzLzEpEYM35f3roCiVBrtmqz1SuhXkiVZmvQDkaEhIF32Cvpspu0NKVSS
+	 ZjsWgUztLkCcu9yL3WAUSl/s6+78WqpuSUGmTNLw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ivan Abramov <i.abramov@mt-integration.ru>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 6.18 165/312] media: adv7842: Avoid possible out-of-bounds array accesses in adv7842_cp_log_status()
-Date: Tue,  6 Jan 2026 18:03:59 +0100
-Message-ID: <20260106170553.803684814@linuxfoundation.org>
+	Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.12 458/567] drm/amdgpu: add missing lock to amdgpu_ttm_access_memory_sdma
+Date: Tue,  6 Jan 2026 18:04:00 +0100
+Message-ID: <20260106170508.287998223@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
-References: <20260106170547.832845344@linuxfoundation.org>
+In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
+References: <20260106170451.332875001@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,64 +58,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Abramov <i.abramov@mt-integration.ru>
+From: Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>
 
-commit 8163419e3e05d71dcfa8fb49c8fdf8d76908fe51 upstream.
+commit 4fa944255be521b1bbd9780383f77206303a3a5c upstream.
 
-It's possible for cp_read() and hdmi_read() to return -EIO. Those
-values are further used as indexes for accessing arrays.
+Users of ttm entities need to hold the gtt_window_lock before using them
+to guarantee proper ordering of jobs.
 
-Fix that by checking return values where it's needed.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: a89bcd4c6c20 ("[media] adv7842: add new video decoder driver")
 Cc: stable@vger.kernel.org
-Signed-off-by: Ivan Abramov <i.abramov@mt-integration.ru>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Fixes: cb5cc4f573e1 ("drm/amdgpu: improve debug VRAM access performance using sdma")
+Signed-off-by: Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/i2c/adv7842.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/media/i2c/adv7842.c
-+++ b/drivers/media/i2c/adv7842.c
-@@ -2699,6 +2699,7 @@ static int adv7842_cp_log_status(struct
- 	/* CP block */
- 	struct adv7842_state *state = to_state(sd);
- 	struct v4l2_dv_timings timings;
-+	int temp;
- 	u8 reg_io_0x02 = io_read(sd, 0x02);
- 	u8 reg_io_0x21 = io_read(sd, 0x21);
- 	u8 reg_rep_0x77 = rep_read(sd, 0x77);
-@@ -2821,8 +2822,9 @@ static int adv7842_cp_log_status(struct
- 		  (((reg_io_0x02 >> 2) & 0x01) ^ (reg_io_0x02 & 0x01)) ?
- 			"(16-235)" : "(0-255)",
- 		  (reg_io_0x02 & 0x08) ? "enabled" : "disabled");
-+	temp = cp_read(sd, 0xf4) >> 4;
- 	v4l2_info(sd, "Color space conversion: %s\n",
--		  csc_coeff_sel_rb[cp_read(sd, 0xf4) >> 4]);
-+		  temp < 0 ? "" : csc_coeff_sel_rb[temp]);
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
+@@ -1513,6 +1513,7 @@ static int amdgpu_ttm_access_memory_sdma
+ 	if (r)
+ 		goto out;
  
- 	if (!is_digital_input(sd))
- 		return 0;
-@@ -2852,8 +2854,9 @@ static int adv7842_cp_log_status(struct
- 			hdmi_read(sd, 0x5f));
- 	v4l2_info(sd, "AV Mute: %s\n",
- 			(hdmi_read(sd, 0x04) & 0x40) ? "on" : "off");
-+	temp = hdmi_read(sd, 0x0b) >> 6;
- 	v4l2_info(sd, "Deep color mode: %s\n",
--			deep_color_mode_txt[hdmi_read(sd, 0x0b) >> 6]);
-+			temp < 0 ? "" : deep_color_mode_txt[temp]);
++	mutex_lock(&adev->mman.gtt_window_lock);
+ 	amdgpu_res_first(abo->tbo.resource, offset, len, &src_mm);
+ 	src_addr = amdgpu_ttm_domain_start(adev, bo->resource->mem_type) +
+ 		src_mm.start;
+@@ -1527,6 +1528,7 @@ static int amdgpu_ttm_access_memory_sdma
+ 	WARN_ON(job->ibs[0].length_dw > num_dw);
  
- 	adv7842_log_infoframes(sd);
+ 	fence = amdgpu_job_submit(job);
++	mutex_unlock(&adev->mman.gtt_window_lock);
  
+ 	if (!dma_fence_wait_timeout(fence, false, adev->sdma_timeout))
+ 		r = -ETIMEDOUT;
 
 
 
