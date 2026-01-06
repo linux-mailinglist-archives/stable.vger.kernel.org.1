@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-205484-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205761-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18642CF9C26
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 18:40:28 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 142B8CFA4F6
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:51:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 86C0A300E40C
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:40:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EE1C53257DFD
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:07:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3FC12E2EF2;
-	Tue,  6 Jan 2026 17:34:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD62C35FF77;
+	Tue,  6 Jan 2026 17:49:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bHyQUMQq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q0LZn8Hg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F4A02DF719;
-	Tue,  6 Jan 2026 17:34:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9796035FF65;
+	Tue,  6 Jan 2026 17:49:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767720846; cv=none; b=qbDRBM4ygmbRb604l8BgSesIoKQz75FdIyuod34854yGmp5kDELSa3hJGUGtaxYdOxK/j/QBFTyF+VhB/X0wTuUW8EOgY02uFnZk9RUS+toOpNn9pJpRedsjg753eAuuagcQKtpilIF3QHWdY/sJXNNTNbNdgdgNAENMRhJUn+M=
+	t=1767721772; cv=none; b=t9cksN+DDejLRZe7w5KQSeG4au8rkfSQzYXVGARYBmCpsLSVvWZwPgo4vLuue1fHE9xrnu7VDrdzCVSa7jYUR3HmBH4hJI23ARFHb1him8sowFKBt2xe0eHEdD+Q4f+mD9C+GyuXNIGZQ2Qi1BjAImXbv1FrBcT+UmnwX1M+lNE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767720846; c=relaxed/simple;
-	bh=ENZsN/uGd63xpnybB54E9eVg+h5NIgIvQx9VsMYz46Q=;
+	s=arc-20240116; t=1767721772; c=relaxed/simple;
+	bh=vODT1hQwdj2TvsIIFXiLX7F9VIt/A2jjEhEji/n3SEk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QJaWM8s1KIiWAa3llWqPFFt7+hMQ5mb7ZcKlYUwQr+k/h791iCmmWHjDzEnupy1HJKmgNtbgPw4KTNhqJAbIAa3ohyWVn4QtBfeH7APnK7odRkWkSEDE1iU6e7Md/PeNsoJGGk8FNaoiY70HK4UnX56FVxq3FnyggDM2fkJZPgU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bHyQUMQq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC4DBC116C6;
-	Tue,  6 Jan 2026 17:34:05 +0000 (UTC)
+	 MIME-Version; b=m2ocUx89/l+5MjdiZi2q2krCrQIcrhekr3vYvBfUen61D/wahgAj47B/iHzR1VOWJLO42JzuGE3wLuDuFe8A2jiJ/cinG5gw4anKAzw5VbcH3xMao39vCkhGc3y8xaXSdIyrTQAFwE+sABsA/yfEVZWKfTt/aGvJtCHA03h6bLM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q0LZn8Hg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 040E8C116C6;
+	Tue,  6 Jan 2026 17:49:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767720846;
-	bh=ENZsN/uGd63xpnybB54E9eVg+h5NIgIvQx9VsMYz46Q=;
+	s=korg; t=1767721772;
+	bh=vODT1hQwdj2TvsIIFXiLX7F9VIt/A2jjEhEji/n3SEk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bHyQUMQqXizYOb0xF1gRpUEIGA4/bbMlP2OrfOXFYLxQBmHtmK/IK5Se598J2OGMm
-	 JfjNmE57fklkPQ8bC/h2gX+lgLcOShEYeu9yQ6cuitTO+6oAhvxSfAc5eO9nLc4MYR
-	 9zsL3o4mV/BUidO0cJAVhyLmAMSiwdK1x5RQZetA=
+	b=q0LZn8HgflKgGWutR/osd/Eu4cSBMiD0BPbrzjTDV2NuiECZAnQndAJOIfMhsGOSa
+	 35TQUmZZMlJkQCmNNou1fS9ZwmxgVk0AhccGMFzGuru3mv/VkOQxBN6YkCyr9PvrzP
+	 qwOsK+zQHh9DfqIOffnY+64K10gxVPkjSodROLAc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Honghui Zhang <honghui.zhang@mediatek.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Johan Hovold <johan@kernel.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Joerg Roedel <joerg.roedel@amd.com>
-Subject: [PATCH 6.12 360/567] iommu/mediatek-v1: fix device leaks on probe()
+	Michal Schmidt <mschmidt@redhat.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 068/312] RDMA/irdma: avoid invalid read in irdma_net_event
 Date: Tue,  6 Jan 2026 18:02:22 +0100
-Message-ID: <20260106170504.653989773@linuxfoundation.org>
+Message-ID: <20260106170550.310331245@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
-References: <20260106170451.332875001@linuxfoundation.org>
+In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
+References: <20260106170547.832845344@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,98 +60,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Michal Schmidt <mschmidt@redhat.com>
 
-commit 46207625c9f33da0e43bb4ae1e91f0791b6ed633 upstream.
+[ Upstream commit 6f05611728e9d0ab024832a4f1abb74a5f5d0bb0 ]
 
-Make sure to drop the references taken to the larb devices during
-probe on probe failure (e.g. probe deferral) and on driver unbind.
+irdma_net_event() should not dereference anything from "neigh" (alias
+"ptr") until it has checked that the event is NETEVENT_NEIGH_UPDATE.
+Other events come with different structures pointed to by "ptr" and they
+may be smaller than struct neighbour.
 
-Fixes: b17336c55d89 ("iommu/mediatek: add support for mtk iommu generation one HW")
-Cc: stable@vger.kernel.org	# 4.8
-Cc: Honghui Zhang <honghui.zhang@mediatek.com>
-Acked-by: Robin Murphy <robin.murphy@arm.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Move the read of neigh->dev under the NETEVENT_NEIGH_UPDATE case.
+
+The bug is mostly harmless, but it triggers KASAN on debug kernels:
+
+ BUG: KASAN: stack-out-of-bounds in irdma_net_event+0x32e/0x3b0 [irdma]
+ Read of size 8 at addr ffffc900075e07f0 by task kworker/27:2/542554
+
+ CPU: 27 PID: 542554 Comm: kworker/27:2 Kdump: loaded Not tainted 5.14.0-630.el9.x86_64+debug #1
+ Hardware name: [...]
+ Workqueue: events rt6_probe_deferred
+ Call Trace:
+  <IRQ>
+  dump_stack_lvl+0x60/0xb0
+  print_address_description.constprop.0+0x2c/0x3f0
+  print_report+0xb4/0x270
+  kasan_report+0x92/0xc0
+  irdma_net_event+0x32e/0x3b0 [irdma]
+  notifier_call_chain+0x9e/0x180
+  atomic_notifier_call_chain+0x5c/0x110
+  rt6_do_redirect+0xb91/0x1080
+  tcp_v6_err+0xe9b/0x13e0
+  icmpv6_notify+0x2b2/0x630
+  ndisc_redirect_rcv+0x328/0x530
+  icmpv6_rcv+0xc16/0x1360
+  ip6_protocol_deliver_rcu+0xb84/0x12e0
+  ip6_input_finish+0x117/0x240
+  ip6_input+0xc4/0x370
+  ipv6_rcv+0x420/0x7d0
+  __netif_receive_skb_one_core+0x118/0x1b0
+  process_backlog+0xd1/0x5d0
+  __napi_poll.constprop.0+0xa3/0x440
+  net_rx_action+0x78a/0xba0
+  handle_softirqs+0x2d4/0x9c0
+  do_softirq+0xad/0xe0
+  </IRQ>
+
+Fixes: 915cc7ac0f8e ("RDMA/irdma: Add miscellaneous utility definitions")
+Link: https://patch.msgid.link/r/20251127143150.121099-1-mschmidt@redhat.com
+Signed-off-by: Michal Schmidt <mschmidt@redhat.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/mtk_iommu_v1.c |   23 ++++++++++++++++++-----
- 1 file changed, 18 insertions(+), 5 deletions(-)
+ drivers/infiniband/hw/irdma/utils.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/iommu/mtk_iommu_v1.c
-+++ b/drivers/iommu/mtk_iommu_v1.c
-@@ -647,8 +647,10 @@ static int mtk_iommu_v1_probe(struct pla
- 		struct platform_device *plarbdev;
- 
- 		larbnode = of_parse_phandle(dev->of_node, "mediatek,larbs", i);
--		if (!larbnode)
--			return -EINVAL;
-+		if (!larbnode) {
-+			ret = -EINVAL;
-+			goto out_put_larbs;
-+		}
- 
- 		if (!of_device_is_available(larbnode)) {
- 			of_node_put(larbnode);
-@@ -658,11 +660,14 @@ static int mtk_iommu_v1_probe(struct pla
- 		plarbdev = of_find_device_by_node(larbnode);
- 		if (!plarbdev) {
- 			of_node_put(larbnode);
--			return -ENODEV;
-+			ret = -ENODEV;
-+			goto out_put_larbs;
- 		}
- 		if (!plarbdev->dev.driver) {
- 			of_node_put(larbnode);
--			return -EPROBE_DEFER;
-+			put_device(&plarbdev->dev);
-+			ret = -EPROBE_DEFER;
-+			goto out_put_larbs;
- 		}
- 		data->larb_imu[i].dev = &plarbdev->dev;
- 
-@@ -674,7 +679,7 @@ static int mtk_iommu_v1_probe(struct pla
- 
- 	ret = mtk_iommu_v1_hw_init(data);
- 	if (ret)
--		return ret;
-+		goto out_put_larbs;
- 
- 	ret = iommu_device_sysfs_add(&data->iommu, &pdev->dev, NULL,
- 				     dev_name(&pdev->dev));
-@@ -696,12 +701,17 @@ out_sysfs_remove:
- 	iommu_device_sysfs_remove(&data->iommu);
- out_clk_unprepare:
- 	clk_disable_unprepare(data->bclk);
-+out_put_larbs:
-+	for (i = 0; i < MTK_LARB_NR_MAX; i++)
-+		put_device(data->larb_imu[i].dev);
-+
- 	return ret;
- }
- 
- static void mtk_iommu_v1_remove(struct platform_device *pdev)
+diff --git a/drivers/infiniband/hw/irdma/utils.c b/drivers/infiniband/hw/irdma/utils.c
+index 8b94d87b0192..b6c4ccf38eb7 100644
+--- a/drivers/infiniband/hw/irdma/utils.c
++++ b/drivers/infiniband/hw/irdma/utils.c
+@@ -251,7 +251,7 @@ int irdma_net_event(struct notifier_block *notifier, unsigned long event,
+ 		    void *ptr)
  {
- 	struct mtk_iommu_v1_data *data = platform_get_drvdata(pdev);
-+	int i;
+ 	struct neighbour *neigh = ptr;
+-	struct net_device *real_dev, *netdev = (struct net_device *)neigh->dev;
++	struct net_device *real_dev, *netdev;
+ 	struct irdma_device *iwdev;
+ 	struct ib_device *ibdev;
+ 	__be32 *p;
+@@ -260,6 +260,7 @@ int irdma_net_event(struct notifier_block *notifier, unsigned long event,
  
- 	iommu_device_sysfs_remove(&data->iommu);
- 	iommu_device_unregister(&data->iommu);
-@@ -709,6 +719,9 @@ static void mtk_iommu_v1_remove(struct p
- 	clk_disable_unprepare(data->bclk);
- 	devm_free_irq(&pdev->dev, data->irq, data);
- 	component_master_del(&pdev->dev, &mtk_iommu_v1_com_ops);
-+
-+	for (i = 0; i < MTK_LARB_NR_MAX; i++)
-+		put_device(data->larb_imu[i].dev);
- }
- 
- static int __maybe_unused mtk_iommu_v1_suspend(struct device *dev)
+ 	switch (event) {
+ 	case NETEVENT_NEIGH_UPDATE:
++		netdev = neigh->dev;
+ 		real_dev = rdma_vlan_dev_real_dev(netdev);
+ 		if (!real_dev)
+ 			real_dev = netdev;
+-- 
+2.51.0
+
 
 
 
