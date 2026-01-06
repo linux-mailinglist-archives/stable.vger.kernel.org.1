@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-205553-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205830-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D82ACFA9DA
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:23:28 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DD94CFA763
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:05:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 508ED32AD842
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:36:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6B8E8349DA98
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:14:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4467B343D8F;
-	Tue,  6 Jan 2026 17:37:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B2F73644DF;
+	Tue,  6 Jan 2026 17:53:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JKvfqlaV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vtlKAC40"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 012B8343D88;
-	Tue,  6 Jan 2026 17:37:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD6F33644DD;
+	Tue,  6 Jan 2026 17:53:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721077; cv=none; b=kWnV3HE/UigSYbFQnsgPjAH7t4CPHiogNd4G4sH5MsJoMBNeqjDN4BKnW2yLjIu4TVNRTYXIuUmVhFLa2eIg8ywmAVsKgYoY2BrmlwX3ZhCXrKee0ELFiu5YFPvoHufB1bbl877Er/0l5zykXq978utl8Rq6psRNchE/sG/2Q+4=
+	t=1767722004; cv=none; b=Er+yilM4rqjaP/4C+oUDloZ4qu5wX6pO5h6UuIF6hSByqDXNF5Bsw8iTVVQ2D2C1kKCxErwcuO6nCWWMKrtEIrZdgkhuHATCjFf38Qe6WpQKtyGwLkpCMm5OpiKUULng/659eRRDSExNPrE/wj2DFz0SkBxNBfKovJOwo8Ho584=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721077; c=relaxed/simple;
-	bh=Sjo6MgDdpmQLKH2hX0r9w5bQ7+/Sf91gVrwNnXSbb5I=;
+	s=arc-20240116; t=1767722004; c=relaxed/simple;
+	bh=Jwpt7SZz+BoR824jollab26Bm5epo12vgGUmsaKA9xw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sb6YpPekSJXsNeIPwUVuUp9zckQfOGV6tv1ADYWnLk1wGvmeM4wsR6FPZVCKhV9q5m/REa9Qs9Lj5IM3NIsSrPwQR4rfnWFS5/vMx+BR1ze/AdB3q1MMRYUyyRy+9cJozX10xpECZJ4EcWWWMgwMhgH2mbfFjTooxveE5jgm548=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JKvfqlaV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8094EC116C6;
-	Tue,  6 Jan 2026 17:37:56 +0000 (UTC)
+	 MIME-Version; b=flIP2zrf8mV0QLeyAiz4K48V/fvx1gebUh7LwTKeD6ZboCF5+tRX6rXPTVMM/Uj+iDkGkXxC52Lfm3xaLdKHX5+PFDXyko4BFJP1/wmzh58e6qCpc2FSPyQwNFH+CvaORe5yDbK7MvD/nqb0mCBgkCkccXZJkiLd8Nj8+Yl/vfc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vtlKAC40; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37759C116C6;
+	Tue,  6 Jan 2026 17:53:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721076;
-	bh=Sjo6MgDdpmQLKH2hX0r9w5bQ7+/Sf91gVrwNnXSbb5I=;
+	s=korg; t=1767722004;
+	bh=Jwpt7SZz+BoR824jollab26Bm5epo12vgGUmsaKA9xw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JKvfqlaVjHuwqshJwNTEDdVL6AEhm8h0u4SuRJ0nkKkEyuj06jiAC8dEfOaB8soyO
-	 D+N7u+fAdo0HLHbXmyQMK67+kCydgaTSFrTx9UwRalVWq18Yd1lBQ8XdZ06UPOKE/L
-	 uz+8Tfn0h7asCUyHn0Ai57ZFvwiKAHhIu9rq9aGQ=
+	b=vtlKAC40+VEYJHMqTCf9Wupbr/Pk83mTdF3jqcc+ROn53uCkT5HuVrHxIaZfXjY/B
+	 80E2bFT4vuTudUYgDlorKOA8mOTcj3eHb/lJgFL5Mh6b2TlmiSiZn3GSVm4RaSWlsG
+	 IDgFEPwp7Lcney1P0ZTZB6KFd/Mw8lBf4YSTbkHQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@google.com>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 429/567] mm/damon/tests/core-kunit: handle alloc failures on damon_test_merge_two()
+	Alexey Minnekhanov <alexeymin@postmarketos.org>,
+	Taniya Das <taniya.das@oss.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.18 137/312] clk: qcom: mmcc-sdm660: Add missing MDSS reset
 Date: Tue,  6 Jan 2026 18:03:31 +0100
-Message-ID: <20260106170507.218812910@linuxfoundation.org>
+Message-ID: <20260106170552.797380372@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
-References: <20260106170451.332875001@linuxfoundation.org>
+In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
+References: <20260106170547.832845344@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +61,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SeongJae Park <sj@kernel.org>
+From: Alexey Minnekhanov <alexeymin@postmarketos.org>
 
-commit 3d443dd29a1db7efa587a4bb0c06a497e13ca9e4 upstream.
+commit 0a0ea5541d30c0fbb3dac975bd1983f299cd6948 upstream.
 
-damon_test_merge_two() is assuming all dynamic memory allocation in it
-will succeed.  Those are indeed likely in the real use cases since those
-allocations are too small to fail, but theoretically those could fail.  In
-the case, inappropriate memory access can happen.  Fix it by appropriately
-cleanup pre-allocated memory and skip the execution of the remaining tests
-in the failure cases.
+Add offset for display subsystem reset in multimedia clock controller
+block, which is necessary to reset display when there is some
+configuration in display controller left by previous stock (Android)
+bootloader to provide continuous splash functionaluty.
 
-Link: https://lkml.kernel.org/r/20251101182021.74868-7-sj@kernel.org
-Fixes: 17ccae8bb5c9 ("mm/damon: add kunit tests")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: Brendan Higgins <brendan.higgins@linux.dev>
-Cc: David Gow <davidgow@google.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: <stable@vger.kernel.org>	[5.15+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Before 6.17 power domains were turned off for long enough to clear
+registers, now this is not the case and a proper reset is needed to
+have functioning display.
+
+Fixes: 0e789b491ba0 ("pmdomain: core: Leave powered-on genpds on until sync_state")
+Cc: stable@vger.kernel.org # 6.17
+Signed-off-by: Alexey Minnekhanov <alexeymin@postmarketos.org>
+Reviewed-by: Taniya Das <taniya.das@oss.qualcomm.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20251116-sdm660-mdss-reset-v2-2-6219bec0a97f@postmarketos.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/damon/tests/core-kunit.h |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/clk/qcom/mmcc-sdm660.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/mm/damon/tests/core-kunit.h
-+++ b/mm/damon/tests/core-kunit.h
-@@ -188,11 +188,21 @@ static void damon_test_merge_two(struct
- 	int i;
+diff --git a/drivers/clk/qcom/mmcc-sdm660.c b/drivers/clk/qcom/mmcc-sdm660.c
+index b723c536dfb6..dbd3f561dc6d 100644
+--- a/drivers/clk/qcom/mmcc-sdm660.c
++++ b/drivers/clk/qcom/mmcc-sdm660.c
+@@ -2781,6 +2781,7 @@ static struct gdsc *mmcc_sdm660_gdscs[] = {
+ };
  
- 	t = damon_new_target();
-+	if (!t)
-+		kunit_skip(test, "target alloc fail");
- 	r = damon_new_region(0, 100);
-+	if (!r) {
-+		damon_free_target(t);
-+		kunit_skip(test, "region alloc fail");
-+	}
- 	r->nr_accesses = 10;
- 	r->nr_accesses_bp = 100000;
- 	damon_add_region(r, t);
- 	r2 = damon_new_region(100, 300);
-+	if (!r2) {
-+		damon_free_target(t);
-+		kunit_skip(test, "second region alloc fail");
-+	}
- 	r2->nr_accesses = 20;
- 	r2->nr_accesses_bp = 200000;
- 	damon_add_region(r2, t);
+ static const struct qcom_reset_map mmcc_660_resets[] = {
++	[MDSS_BCR] = { 0x2300 },
+ 	[CAMSS_MICRO_BCR] = { 0x3490 },
+ };
+ 
+-- 
+2.52.0
+
 
 
 
