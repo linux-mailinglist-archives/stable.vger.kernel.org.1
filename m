@@ -1,234 +1,115 @@
-Return-Path: <stable+bounces-205055-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205056-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 617C6CF7646
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 10:05:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB73CCF7796
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 10:20:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 07B9630C3145
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 09:04:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1191E312A6F2
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 09:15:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B74130AD10;
-	Tue,  6 Jan 2026 09:04:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C181C30F94B;
+	Tue,  6 Jan 2026 09:15:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="WteLVuoC"
+	dkim=pass (1024-bit key) header.d=konsulko.com header.i=@konsulko.com header.b="RpS+foLe"
 X-Original-To: stable@vger.kernel.org
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8F651E50E;
-	Tue,  6 Jan 2026 09:04:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17DC630DED7
+	for <stable@vger.kernel.org>; Tue,  6 Jan 2026 09:15:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767690256; cv=none; b=e3VblqC+q0K+z43/A6g4s17jfB7EVcRsk1yT1Uk7WkQPtVInvc3ZeiTPUNGtNq/s+gebtYhmbruh0nDaFwXysPPMCv9WLLomZ380iXYV5n+eM1BC+T40vWFk0e3btdMjjDQ53ZlfYoEn/2AA2P/el6/FC+RI8Ucxz435ao1R0E8=
+	t=1767690938; cv=none; b=coGdyO2Gq37e8Zb+tQBJFZ0F/DkhZm96z8aQ3y41XGQZvkDgaIvH3D/N5I68W+M0Di1XTgb+JK6CETq7XGpYbE/KxC7Ujd1KpyTc/+jTFf5ko0dfmwCzetqkVK4GZTzyquOwTUbQuSvv0f7pdOProtNPH6NsJOUToLF+QWzWe5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767690256; c=relaxed/simple;
-	bh=6QYI3zQJ0Tl2jVP8SQayMsYp7gq06LwHG0RQrX00PhY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=A3onFboHDoR5P26H4oNIItrd1L2QARsISj8LShVRh7wwAyX6Vre3z4BgBeo7/fle7AZ8Goz9XWgiD9afFiszp8MLI2yXCt8xtNdY2GFG+RRuO+qLUjkW4Y/uZxgJhxnM98sQRZQkfhUpXygBGM6ZjFCfjm0vTVdHvr7c1DZHjW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=WteLVuoC; arc=none smtp.client-ip=80.237.130.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:In-Reply-To:
-	References; bh=hZWhWS6u8qnxThFxrHymtByvkuCdMoLtOGR4+l86sSM=; t=1767690254;
-	x=1768122254; b=WteLVuoCFa49xlGPGJNL0H6IFtIJ7IyhJj8FF2L1PVEiQYSL3CPXf7u/aIcLR
-	3z75aY2ZRKk4R2XWLgXKSDP9FpljCGXh1jcx7g8NvVOLgT/xTp21KIoaXsUDob88O9NrdEwLCSJcM
-	86xuvjXy7eQFt+TqKl2RxdnUXl4Jy5c7b1SaFnB2kNX8PiqifkjnlAP+YvdaL938azKgK0fWdVhKK
-	MlZd9UA9nZIpjXCYtEQaTwQZLf9tvwjlifUYl52UbNTYuxWD92N9MUD7jTjSrMBa0clL5QvrqbiE7
-	PQd4pwDir95eTZEXdb26maLe2l8dpK0AdENU72d/BLSGbf4tbg==;
-Received: from [2a02:8108:8984:1d00:a0cf:1912:4be:477f]; authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128)
-	id 1vd2z0-004AI7-0E;
-	Tue, 06 Jan 2026 10:04:06 +0100
-Message-ID: <785e9aa8-dbfa-4325-bbcd-0ab44a2feb46@leemhuis.info>
-Date: Tue, 6 Jan 2026 10:04:05 +0100
+	s=arc-20240116; t=1767690938; c=relaxed/simple;
+	bh=OA52/i2DySdJ2oa/UO8WVQLSVE0wUq50Xz8n8YBQARw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EEdlnZ2r+psOYD4lVsWCTYWKKd6YkPt3GHqgWpMX++HPeCxnPsCnmAsfjmuncChS/SoeAUXGKfXaqQMTpiWGrIRc/jnN+P9O5OMV5w8oId7POWmlXTN/uxyH7Gw7uUEN+qV7XliFRGZCWGNAbABlyl6JPNa4Zv+WhB/0nCn/2z0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=konsulko.com; spf=pass smtp.mailfrom=konsulko.com; dkim=pass (1024-bit key) header.d=konsulko.com header.i=@konsulko.com header.b=RpS+foLe; arc=none smtp.client-ip=209.85.208.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=konsulko.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=konsulko.com
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-6505cbe47d8so1226255a12.1
+        for <stable@vger.kernel.org>; Tue, 06 Jan 2026 01:15:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=konsulko.com; s=google; t=1767690934; x=1768295734; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=j6/zpETfkXIXzs5jvYKUCRYKONy/bc8t30ozg4s3tEQ=;
+        b=RpS+foLe7a6RinjXLpQ5o5TSzKdgfG8HShjE+fkVJtaPJudVXiJlkfi4ofYeoxkqBD
+         mLQeOUxUl2p1OiejsUV6cmoNM6gIQwEB+k39bAn9ZL00YaTLFoY5nIi7JoJXo2DKEnw1
+         7QHIVKeuD5oTQZPnhuNk5P1//+GiQlQ9zJL9U=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767690934; x=1768295734;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=j6/zpETfkXIXzs5jvYKUCRYKONy/bc8t30ozg4s3tEQ=;
+        b=T+eZyZI7LFwA0YUPcfXev8y8LQ71WAUGP3w5UDvVfQHt6k6Q0dLTVRIgDCkr92gmby
+         VtknVw/aDaJOoKDyM8UDvHm2LWH1WOKDI5sxpSHVOdjU5GdOQdQvK8rzUf4+PPzYeq02
+         phNliqkD5jirJWRXlA21YKUteUuHp2NITCFrfoC18p4FeMR+aTu5VvJusMmL9bjIiVMO
+         oFuAbrNJ1lgnh7jI8KQGw3OTZCBzXQms/n+SdgZkCTD0xTPPzUrFdYnkMf9JRO8hlQpS
+         JKCGL3Di0soi6/deyGeS+VypWKT1urQuBvptOsRecYDPDKhhN6tPBceYnyJIpI94P4H4
+         8+qA==
+X-Forwarded-Encrypted: i=1; AJvYcCX/QzQCPr0jJ8aKbxjV363cVY43kvBK3lHWHEzOn4bFDprqOGjyAHWUKMh36MBfEQrQ+JE69c4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwefW0Ji/NylOkJL83q9JFU4IMs5874EA1CltLIbZXA/AXT8nq3
+	WMppxxlDeC6l4jXgqloKZyU/UnXVyYlKm0oU0wJBjQwypqX34IK51z8QyD7yQyYGD1XAdpvNdPL
+	8uJbE
+X-Gm-Gg: AY/fxX40DV93EEHWsOryua7NT1clt/wsStAWbqxvO38BPRYeC+QGyffjc+5R5h+cmE5
+	7fjpQFYKRpdJhO+lvx1BzUViwxTDBLFyh/eKlZbL3YQ7WSwHvTdVVhH0ScvJUSbSwm8joNcMswy
+	XV4LRCxtisxUybpHD6asmPiVs1j53V7uCAauF10VLamDxZXYeaWnDEqM9S/tg13qa2Wtuuxn4Ff
+	JlUkMPWCovshqJlApF4XFO0jbq1EGMXsp2+F0kf5C84TohcniZo9gWnAoKGCdgbH0LCSoDPaYzI
+	TbeOLzpZQt9yaq+JvYAd8Lm2Yl1Qak6sqg82mviGGriTLup9lJP/Luf+GEI6TQJazNqNoAL+/sR
+	TLpED43bYspX5iPMJDo1fBMEo7Vg7wf8rOlwx+KN9dUQoIe9XU/CwIttuLUjzzRYn64wm54R0F1
+	2nHKrlefvRW/INi9XNpNQ=
+X-Google-Smtp-Source: AGHT+IHa1yFWPnvONAfuUp5TLEw8FoXzXY4i9ww+OmCrNhj1GQ19Fi4TwPShASdRT4IaN8gbBkvqQw==
+X-Received: by 2002:a17:907:3ea1:b0:b83:1326:a56a with SMTP id a640c23a62f3a-b8426c68092mr253739866b.58.1767690933968;
+        Tue, 06 Jan 2026 01:15:33 -0800 (PST)
+Received: from cabron.k.g ([95.111.117.177])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b842a27c0bfsm177640866b.22.2026.01.06.01.15.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 06 Jan 2026 01:15:33 -0800 (PST)
+Date: Tue, 6 Jan 2026 11:15:32 +0200
+From: Petko Manolov <petko.manolov@konsulko.com>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Paolo Abeni <pabeni@redhat.com>, davem@davemloft.net,
+	netdev@vger.kernel.org, kuba@kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] net: usb: pegasus: fix memory leak on usb_submit_urb()
+ failure
+Message-ID: <20260106091532.GA4723@cabron.k.g>
+References: <20251216184113.197439-1-petko.manolov@konsulko.com>
+ <b3d2a2fa-35cb-48ad-ad2e-de997e9b2395@redhat.com>
+ <20260102121011.GA25015@carbon.k.g>
+ <38d73c63-7521-41ad-8d4d-03d5ba2288df@lunn.ch>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] fbdev: bitblit: bound-check glyph index in bit_putcs*
-To: "Barry K. Nathan" <barryn@pobox.com>, Vitaly Chikunov <vt@altlinux.org>,
- Junjie Cao <junjie.cao@intel.com>, Thomas Zimmermann <tzimmermann@suse.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Peilin Ye <yepeilin.cs@gmail.com>, Daniel Vetter
- <daniel.vetter@ffwll.ch>, Shigeru Yoshida <syoshida@redhat.com>,
- Simona Vetter <simona@ffwll.ch>, Helge Deller <deller@gmx.de>,
- Zsolt Kajtar <soci@c64.rulez.org>,
- Albin Babu Varghese <albinbabuvarghese20@gmail.com>,
- linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- regressions@lists.linux.dev, Ben Hutchings <ben@decadent.org.uk>
-References: <20251020134701.84082-1-junjie.cao@intel.com>
- <aU23brU4lZqIkw4Z@altlinux.org> <aU58SeZZPxScVPad@altlinux.org>
- <ccbbf777-cf4e-4c66-856e-282dd9d61970@pobox.com>
-From: Thorsten Leemhuis <regressions@leemhuis.info>
-Content-Language: de-DE, en-US
-In-Reply-To: <ccbbf777-cf4e-4c66-856e-282dd9d61970@pobox.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1767690254;1b0531b9;
-X-HE-SMSGID: 1vd2z0-004AI7-0E
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <38d73c63-7521-41ad-8d4d-03d5ba2288df@lunn.ch>
 
-[Top posting to make this easy processable]
-
-TWIMC, Ben (now CCed) meanwhile reported the problem as well:
-
-https://lore.kernel.org/all/c5a27a57597c78553bf121d09a1b45ed86dc02a8.camel@decadent.org.uk/
-
-There he wrote
-"""
-This can be fixed by backporting the following commits from 5.11:
-
-7a089ec7d77f console: Delete unused con_font_copy() callback implementations
-259a252c1f4e console: Delete dummy con_font_set() and con_font_default()
-callback implementations
-4ee573086bd8 Fonts: Add charcount field to font_desc
-4497364e5f61 parisc/sticore: Avoid hard-coding built-in font charcount
-a1ac250a82a5 fbcon: Avoid using FNTCHARCNT() and hard-coded built-in
-font charcount
-
-These all apply without fuzz and builds cleanly for x86_64 and parisc64.
-"""
-
-Ciao, Thorsten
-
-On 12/27/25 03:04, Barry K. Nathan wrote:
-> On 12/26/25 4:21 AM, Vitaly Chikunov wrote:
->> Dear linux-fbdev, stable,
->>
->> On Fri, Dec 26, 2025 at 01:29:13AM +0300, Vitaly Chikunov wrote:
->>>
->>> On Mon, Oct 20, 2025 at 09:47:01PM +0800, Junjie Cao wrote:
->>>> bit_putcs_aligned()/unaligned() derived the glyph pointer from the
->>>> character value masked by 0xff/0x1ff, which may exceed the actual
->>>> font's
->>>> glyph count and read past the end of the built-in font array.
->>>> Clamp the index to the actual glyph count before computing the address.
->>>>
->>>> This fixes a global out-of-bounds read reported by syzbot.
->>>>
->>>> Reported-by: syzbot+793cf822d213be1a74f2@syzkaller.appspotmail.com
->>>> Closes: https://syzkaller.appspot.com/bug?extid=793cf822d213be1a74f2
->>>> Tested-by: syzbot+793cf822d213be1a74f2@syzkaller.appspotmail.com
->>>> Signed-off-by: Junjie Cao <junjie.cao@intel.com>
->>>
->>> This commit is applied to v5.10.247 and causes a regression: when
->>> switching VT with ctrl-alt-f2 the screen is blank or completely filled
->>> with angle characters, then new text is not appearing (or not visible).
->>>
->>> This commit is found with git bisect from v5.10.246 to v5.10.247:
->>>
->>>    0998a6cb232674408a03e8561dc15aa266b2f53b is the first bad commit
->>>    commit 0998a6cb232674408a03e8561dc15aa266b2f53b
->>>    Author:     Junjie Cao <junjie.cao@intel.com>
->>>    AuthorDate: 2025-10-20 21:47:01 +0800
->>>    Commit:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
->>>    CommitDate: 2025-12-07 06:08:07 +0900
->>>
->>>        fbdev: bitblit: bound-check glyph index in bit_putcs*
->>>
->>>        commit 18c4ef4e765a798b47980555ed665d78b71aeadf upstream.
->>>
->>>        bit_putcs_aligned()/unaligned() derived the glyph pointer from
->>> the
->>>        character value masked by 0xff/0x1ff, which may exceed the
->>> actual font's
->>>        glyph count and read past the end of the built-in font array.
->>>        Clamp the index to the actual glyph count before computing the
->>> address.
->>>
->>>        This fixes a global out-of-bounds read reported by syzbot.
->>>
->>>        Reported-by:
->>> syzbot+793cf822d213be1a74f2@syzkaller.appspotmail.com
->>>        Closes: https://syzkaller.appspot.com/bug?
->>> extid=793cf822d213be1a74f2
->>>        Tested-by: syzbot+793cf822d213be1a74f2@syzkaller.appspotmail.com
->>>        Signed-off-by: Junjie Cao <junjie.cao@intel.com>
->>>        Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
->>>        Signed-off-by: Helge Deller <deller@gmx.de>
->>>        Cc: stable@vger.kernel.org
->>>        Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
->>>
->>>     drivers/video/fbdev/core/bitblit.c | 16 ++++++++++++----
->>>     1 file changed, 12 insertions(+), 4 deletions(-)
->>>
->>> The minimal reproducer in cli, after kernel is booted:
->>>
->>>    date >/dev/tty2; chvt 2
->>>
->>> and the date does not appear.
->>>
->>> Thanks,
->>>
->>> #regzbot introduced: 0998a6cb232674408a03e8561dc15aa266b2f53b
->>>
->>>> ---
->>>> v1: https://lore.kernel.org/linux-fbdev/5d237d1a-a528-4205-
->>>> a4d8-71709134f1e1@suse.de/
->>>> v1 -> v2:
->>>>   - Fix indentation and add blank line after declarations with
->>>> the .pl helper
->>>>   - No functional changes
->>>>
->>>>   drivers/video/fbdev/core/bitblit.c | 16 ++++++++++++----
->>>>   1 file changed, 12 insertions(+), 4 deletions(-)
->>>>
->>>> diff --git a/drivers/video/fbdev/core/bitblit.c b/drivers/video/
->>>> fbdev/core/bitblit.c
->>>> index 9d2e59796c3e..085ffb44c51a 100644
->>>> --- a/drivers/video/fbdev/core/bitblit.c
->>>> +++ b/drivers/video/fbdev/core/bitblit.c
->>>> @@ -79,12 +79,16 @@ static inline void bit_putcs_aligned(struct
->>>> vc_data *vc, struct fb_info *info,
->>>>                        struct fb_image *image, u8 *buf, u8 *dst)
->>>>   {
->>>>       u16 charmask = vc->vc_hi_font_mask ? 0x1ff : 0xff;
->>>> +    unsigned int charcnt = vc->vc_font.charcount;
->>
->> Perhaps, vc->vc_font.charcount (which is relied upon in the following
->> comparison) is not always set correctly in v5.10.247. At least two
->> commits that set vc_font.charcount are missing from v5.10.247:
->>
->>    a1ac250a82a5 ("fbcon: Avoid using FNTCHARCNT() and hard-coded
->> built-in font charcount")
->>    a5a923038d70 ("fbdev: fbcon: Properly revert changes when
->> vc_resize() failed")
->>
->> Thanks,
+On 26-01-02 23:02:53, Andrew Lunn wrote:
+> > Sure, will do.  However, my v2 patch makes use of __free() cleanup
+> > functionality, which in turn only applies back to v6.6 stable kernels.
 > 
-> I was just about to report this.
+> I would suggest not using the magical __free() cleanup.
 > 
-> I found two ways to fix this bug. One is to revert this patch; the other
-> is to apply the following 3 patches, which are already present in 5.11
-> and later:
+> https://www.kernel.org/doc/html/latest/process/maintainer-netdev.html#using-device-managed-and-cleanup-h-constructs
 > 
-> 7a089ec7d77fe7d50f6bb7b178fa25eec9fd822b
->     console: Delete unused con_font_copy() callback implementations
-> 
-> 4ee573086bd88ff3060dda07873bf755d332e9ba
->     Fonts: Add charcount field to font_desc
-> 
-> a1ac250a82a5e97db71f14101ff7468291a6aaef
->     fbcon: Avoid using FNTCHARCNT() and hard-coded built-in font
->     charcount
-> 
-> (Oh, by the way, this same regression also affects 5.4.302, and the same
-> 3 patches fix the regression on 5.4 as well, once you manually fix merge
-> conflicts. Maybe it would be better to backport other additional commits
-> instead of fixing the merge conflicts manually, but since 5.4 is now EOL
-> I didn't dig that deep.)
-> 
-> Once these 3 patches are applied, I wonder if a5a923038d70 now becomes
-> necessary for 5.10.y. For what it's worth, it applies fine and the
-> resulting kernel seems to run OK in brief testing.
-> 
+>     Low level cleanup constructs (such as __free()) can be used when
+>     building APIs and helpers, especially scoped iterators. However,
+>     direct use of __free() within networking core and drivers is
+>     discouraged. Similar guidance applies to declaring variables
+>     mid-function.
 
+
+Heh, __free() is OK for APIs, but not drivers...
+
+Maybe this text is a relic from the times auto cleanup was not fully understood?
+
+
+		Petko
 
