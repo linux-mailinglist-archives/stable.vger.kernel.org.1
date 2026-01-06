@@ -1,41 +1,41 @@
-Return-Path: <stable+bounces-205394-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205395-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AE05CF9AF1
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 18:29:19 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32F65CFA0EC
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:18:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 29CD63042243
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:29:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 563D13120AD5
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:29:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA2AA3559E0;
-	Tue,  6 Jan 2026 17:29:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 252723559CC;
+	Tue,  6 Jan 2026 17:29:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2WxCb7Ti"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oqIYf0yL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9615E3559DC;
-	Tue,  6 Jan 2026 17:29:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D89FE2F619A;
+	Tue,  6 Jan 2026 17:29:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767720544; cv=none; b=lIULhJd6Xv23dFyaE2SQXomVCMohz6++HZt6e5VkkqJZATXz+bAg+VuEoitqTnvgOP9K1RZYiqwWEgLud+ogIdkAru7MSEfKbdV3nxEA5ZaSVGbkgBXaYgRVHuAzO21KNIUxH6LARAU3UrY9FtEWHnNI8gF/FT5e+MN5WXJ7Vi0=
+	t=1767720547; cv=none; b=VcodqEO7PkxJrDvA3Qb9CvyGLaOSu5Fjh/EcQ8RgbcwdkS7AYk0ny8Rd7UPEvZsBHp4gPBexnwtdcHeo403/w+YLicbphxWSugpEmlccfDYGYkN6BqXB66Qxaa3SjVGjrj0ThlWST8BNuWZAArvE5G3dHV0RRMfgpbNgZ5ml+io=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767720544; c=relaxed/simple;
-	bh=br0ZY6EwhYKuZ0hofkmuJCYZyIOe2z5QaWppBshwgUo=;
+	s=arc-20240116; t=1767720547; c=relaxed/simple;
+	bh=E5XjxIEcVt41tVfT9uWVcfHo10DdLZSa4U1dcxN01Co=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=doNSRAuEhNWk1WhoU/jiV8yiQXdKLagb9f5k6qP2ph0DHry4lk9RgFl/MwXIdJgPoQXFTtbYwUkE1G6bj3DzBn8bfxHxfmY9XIqghOmzoX7np7Fr1C8o+RpqRGuI2k28cemFyv4iKeu4ORdKWv8ew0+Z4Q+NYNwymFCIyR1v+YA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2WxCb7Ti; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E9DCC116C6;
-	Tue,  6 Jan 2026 17:29:03 +0000 (UTC)
+	 MIME-Version; b=CMwoe9+lczqiae+ibQtVorvgsK6N3D0ruSZTwUe/s6WBfj1bhh59xXhKaHjj0fZXlpAFfWWYBwWk7lx43htXPL7Hutow4jPtLmc9I+sADFu2//QtLNBZXO3IS9v5M34B0hOs6GBr6owxeGY7QZEDBITsPfjcYxBZs1X6LM4lpJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oqIYf0yL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A082C116C6;
+	Tue,  6 Jan 2026 17:29:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767720544;
-	bh=br0ZY6EwhYKuZ0hofkmuJCYZyIOe2z5QaWppBshwgUo=;
+	s=korg; t=1767720547;
+	bh=E5XjxIEcVt41tVfT9uWVcfHo10DdLZSa4U1dcxN01Co=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2WxCb7Ti+VId5Ar1afxPARi5EIin9872+SyHGvptujUiiLIKC4ME3TyhNcupWQV6t
-	 6bt/j6m6s15XLV4WmVlL1B0RRwnkzBFsEm9/TomI/vgAI0qprk5aUy0/KsyjGq0gMG
-	 oyGjMercUVOdt+R2pg57KFZerAKVOKHFIQ+aXKqE=
+	b=oqIYf0yLOK+sCXV/EOwN1Ra3h+WZVRXYXwjbrRw/je0HGhPB9MgpBU/XbORR+pT1e
+	 vxBUmwFk4YZeSucLfNbUSRQ2gHLh94pROEmMPAo6/G5G60VuQymLf+LjZSxhba3PhU
+	 jw2AABdSl9lI/5cZaGFawYc5t/JlVlTXG6Gu49XI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -43,9 +43,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
 	Manivannan Sadhasivam <mani@kernel.org>,
 	"Rob Herring (Arm)" <robh@kernel.org>
-Subject: [PATCH 6.12 269/567] dt-bindings: PCI: qcom,pcie-sm8350: Add missing required power-domains and resets
-Date: Tue,  6 Jan 2026 18:00:51 +0100
-Message-ID: <20260106170501.275474461@linuxfoundation.org>
+Subject: [PATCH 6.12 270/567] dt-bindings: PCI: qcom,pcie-sm8450: Add missing required power-domains and resets
+Date: Tue,  6 Jan 2026 18:00:52 +0100
+Message-ID: <20260106170501.312267042@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
 References: <20260106170451.332875001@linuxfoundation.org>
@@ -66,27 +66,27 @@ Content-Transfer-Encoding: 8bit
 
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit 012ba0d5f02e1f192eda263b5f9f826e47d607bb upstream.
+commit 667facc4000c49a7c280097ef6638f133bcb1e59 upstream.
 
-Commit 2278b8b54773 ("dt-bindings: PCI: qcom,pcie-sm8350: Move SM8350 to
+Commit 88c9b3af4e31 ("dt-bindings: PCI: qcom,pcie-sm8450: Move SM8450 to
 dedicated schema") move the device schema to separate file, but it
 missed a "if:not:...then:" clause in the original binding which was
 requiring power-domains and resets for this particular chip.
 
-Fixes: 2278b8b54773 ("dt-bindings: PCI: qcom,pcie-sm8350: Move SM8350 to dedicated schema")
+Fixes: 88c9b3af4e31 ("dt-bindings: PCI: qcom,pcie-sm8450: Move SM8450 to dedicated schema")
 Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
 Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20251030-dt-bindings-pci-qcom-fixes-power-domains-v2-6-28c1f11599fe@linaro.org
+Link: https://patch.msgid.link/20251030-dt-bindings-pci-qcom-fixes-power-domains-v2-7-28c1f11599fe@linaro.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/devicetree/bindings/pci/qcom,pcie-sm8350.yaml |    5 +++++
+ Documentation/devicetree/bindings/pci/qcom,pcie-sm8450.yaml |    5 +++++
  1 file changed, 5 insertions(+)
 
---- a/Documentation/devicetree/bindings/pci/qcom,pcie-sm8350.yaml
-+++ b/Documentation/devicetree/bindings/pci/qcom,pcie-sm8350.yaml
-@@ -71,6 +71,11 @@ properties:
+--- a/Documentation/devicetree/bindings/pci/qcom,pcie-sm8450.yaml
++++ b/Documentation/devicetree/bindings/pci/qcom,pcie-sm8450.yaml
+@@ -81,6 +81,11 @@ properties:
      items:
        - const: pci
  
