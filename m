@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-205246-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205249-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9C02CFA073
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:16:58 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9BDBCFA2CD
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:32:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 37668305CCFB
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:15:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5B3483275120
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:44:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7884634D916;
-	Tue,  6 Jan 2026 17:21:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5931C34DCCE;
+	Tue,  6 Jan 2026 17:21:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xAF4AILv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sNGIsolv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34ACE34D90C;
-	Tue,  6 Jan 2026 17:21:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 176F534DCC5;
+	Tue,  6 Jan 2026 17:21:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767720061; cv=none; b=RJPBUoEpJA8NXiaGLVnk8GNr73Sh5fnBCt6GNSkU6TS+CKuJ5HyeoQztZAe4fuz8HWmBMwiPpW6MbhIGwTYogOJnZcHYitpRGrg/hbGl+OigZVdpYGQaT0zSEeR3/yKYso5NsgX9lqW30PgZuge107ZdXZ0fbF8oMcw+lOBtMXM=
+	t=1767720071; cv=none; b=p/tP7XctpdkPPcAcxquu9PDxucxtu1iOaucqeIROYlzT8OdQbDDCwhD9kN5iUqofhCPvCmcf7DHBM7cos0tS0suUwzGm1lsRk9By3+zTAAibIE8K4ti/ZxXL4ANTJZjgqk0wsk/1wufWT81MSUXy12GMet9tK81EuSwhh1nkSqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767720061; c=relaxed/simple;
-	bh=VxUeamOwkSE+F24J6rFKVa7RDXOjFl2fFJkkAeucA/s=;
+	s=arc-20240116; t=1767720071; c=relaxed/simple;
+	bh=VWqQ5ix63y8XAN53UP3sl9Ob7jcoxJRcjbhjv7LyrVs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZF3v2Kl3uNP4bvGVENwLuNh5FLLaI+FENRN9uA5rVoweyOdTBTaAPk9DJg05lkb4HHG1j0cGSb5eraFhKkDPaGtaNqdnPlYzmENhFALD3362zPRlicZmbLN4M+vtrCTrawHVbj6IxWmCnvbXO5t8iqndVV41Q52MnR/PMPK/3NY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xAF4AILv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E510C116C6;
-	Tue,  6 Jan 2026 17:20:59 +0000 (UTC)
+	 MIME-Version; b=cjg5NQuFVrP2eEKg27C0YP8ws4LW+6YgdITvrPAIX5HMkqvIobDKFqjWEE7Jn7QDzhTAsAd5GCeQT4oFlcQj7f6Pe/3zkYdeSyz62iJkiskj3rQPGedtwdYER9MozLwZPz+fS/QL62UMX5HOebdBE76Ue3yIaXXENJJlel5Abg0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sNGIsolv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FD1AC19423;
+	Tue,  6 Jan 2026 17:21:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767720060;
-	bh=VxUeamOwkSE+F24J6rFKVa7RDXOjFl2fFJkkAeucA/s=;
+	s=korg; t=1767720071;
+	bh=VWqQ5ix63y8XAN53UP3sl9Ob7jcoxJRcjbhjv7LyrVs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xAF4AILvu6In+s1ivfim54jR9DGQoemLgFrAvS1E9uZ3iu526dnip6SwtE5fP0i1N
-	 Ln8c5gu46jdID4ruUkmNqHDCSZmB+pvTyif6sk9ptdI9vAL4KpPkhyNhJOkpKUYTsb
-	 3tHiSeN6JbYnA51m6KMy9WNJJBNrIU0Ydp+vfRAI=
+	b=sNGIsolv9GKiuGMDRD8Rj9VhbSHTqqxvC//w8Ha6dSARg8xuD3+cQJ0xKmlEHbdbO
+	 JMY3E3Km4aYiLD+ogz6sjz3HtX4LlxCFBI2iCfJoEgUVuNxDweOpBBKCfCb28cE/yy
+	 3qkNNuUTCckVLUQ5Zna4VXwPbLmUt78ZpwGNv408=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>,
-	Peng Fan <peng.fan@nxp.com>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Josua Mayer <josua@solid-run.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Gregory CLEMENT <gregory.clement@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 122/567] firmware: imx: scu-irq: Init workqueue before request mbox channel
-Date: Tue,  6 Jan 2026 17:58:24 +0100
-Message-ID: <20260106170455.841569141@linuxfoundation.org>
+Subject: [PATCH 6.12 125/567] clk: mvebu: cp110 add CLK_IGNORE_UNUSED to pcie_x10, pcie_x11 & pcie_x4
+Date: Tue,  6 Jan 2026 17:58:27 +0100
+Message-ID: <20260106170455.955832246@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
 References: <20260106170451.332875001@linuxfoundation.org>
@@ -65,44 +65,76 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Peng Fan <peng.fan@nxp.com>
+From: Josua Mayer <josua@solid-run.com>
 
-[ Upstream commit 81fb53feb66a3aefbf6fcab73bb8d06f5b0c54ad ]
+[ Upstream commit f0e6bc0c3ef4b4afb299bd6912586cafd5d864e9 ]
 
-With mailbox channel requested, there is possibility that interrupts may
-come in, so need to make sure the workqueue is initialized before
-the queue is scheduled by mailbox rx callback.
+CP110 based platforms rely on the bootloader for pci port
+initialization.
+TF-A actively prevents non-uboot re-configuration of pci lanes, and many
+boards do not have software control over the pci card reset.
 
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+If a pci port had link at boot-time and the clock is stopped at a later
+point, the link fails and can not be recovered.
+
+PCI controller driver probe - and by extension ownership of a driver for
+the pci clocks - may be delayed especially on large modular kernels,
+causing the clock core to start disabling unused clocks.
+
+Add the CLK_IGNORE_UNUSED flag to the three pci port's clocks to ensure
+they are not stopped before the pci controller driver has taken
+ownership and tested for an existing link.
+
+This fixes failed pci link detection when controller driver probes late,
+e.g. with arm64 defconfig and CONFIG_PHY_MVEBU_CP110_COMPHY=m.
+
+Closes: https://lore.kernel.org/r/b71596c7-461b-44b6-89ab-3cfbd492639f@solid-run.com
+Signed-off-by: Josua Mayer <josua@solid-run.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Gregory CLEMENT <gregory.clement@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/imx/imx-scu-irq.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/clk/mvebu/cp110-system-controller.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-diff --git a/drivers/firmware/imx/imx-scu-irq.c b/drivers/firmware/imx/imx-scu-irq.c
-index f2b902e95b73..b9f6128d56f7 100644
---- a/drivers/firmware/imx/imx-scu-irq.c
-+++ b/drivers/firmware/imx/imx-scu-irq.c
-@@ -214,6 +214,8 @@ int imx_scu_enable_general_irq_channel(struct device *dev)
- 	cl->dev = dev;
- 	cl->rx_callback = imx_scu_irq_callback;
+diff --git a/drivers/clk/mvebu/cp110-system-controller.c b/drivers/clk/mvebu/cp110-system-controller.c
+index 03c59bf22106..b47c86906046 100644
+--- a/drivers/clk/mvebu/cp110-system-controller.c
++++ b/drivers/clk/mvebu/cp110-system-controller.c
+@@ -110,6 +110,25 @@ static const char * const gate_base_names[] = {
+ 	[CP110_GATE_EIP197]	= "eip197"
+ };
  
-+	INIT_WORK(&imx_sc_irq_work, imx_scu_irq_work_handler);
++static unsigned long gate_flags(const u8 bit_idx)
++{
++	switch (bit_idx) {
++	case CP110_GATE_PCIE_X1_0:
++	case CP110_GATE_PCIE_X1_1:
++	case CP110_GATE_PCIE_X4:
++		/*
++		 * If a port had an active link at boot time, stopping
++		 * the clock creates a failed state from which controller
++		 * driver can not recover.
++		 * Prevent stopping this clock till after a driver has taken
++		 * ownership.
++		 */
++		return CLK_IGNORE_UNUSED;
++	default:
++		return 0;
++	}
++};
 +
- 	/* SCU general IRQ uses general interrupt channel 3 */
- 	ch = mbox_request_channel_byname(cl, "gip3");
- 	if (IS_ERR(ch)) {
-@@ -223,8 +225,6 @@ int imx_scu_enable_general_irq_channel(struct device *dev)
- 		return ret;
- 	}
+ struct cp110_gate_clk {
+ 	struct clk_hw hw;
+ 	struct regmap *regmap;
+@@ -171,6 +190,7 @@ static struct clk_hw *cp110_register_gate(const char *name,
+ 	init.ops = &cp110_gate_ops;
+ 	init.parent_names = &parent_name;
+ 	init.num_parents = 1;
++	init.flags = gate_flags(bit_idx);
  
--	INIT_WORK(&imx_sc_irq_work, imx_scu_irq_work_handler);
--
- 	if (!of_parse_phandle_with_args(dev->of_node, "mboxes",
- 				       "#mbox-cells", 0, &spec)) {
- 		i = of_alias_get_id(spec.np, "mu");
+ 	gate->regmap = regmap;
+ 	gate->bit_idx = bit_idx;
 -- 
 2.51.0
 
