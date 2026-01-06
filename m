@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-205302-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205270-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B011CF9A53
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 18:24:17 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD007CFA1AC
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:24:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 915943045D92
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:24:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8930530F86E1
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:37:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3959735504C;
-	Tue,  6 Jan 2026 17:24:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB6B9350D7B;
+	Tue,  6 Jan 2026 17:22:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wV3X70IE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="km/Oq7Mm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAA11352F8F;
-	Tue,  6 Jan 2026 17:24:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60F5F350D70;
+	Tue,  6 Jan 2026 17:22:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767720243; cv=none; b=SK8HrnwRrGqacunPympAaLEci19PwxnMYYM3ss21G9ogIuRIBI8P8UD7cnrD7tJicdndhi+PvP1TQGN2TFE1BMDn6bswokGj7meq0092Q4wQftL55JFxcF91UKScZTMyVQn+WAlqOTTMa3wEqEKlurNqakT2a4XCzFCZ703l4Z8=
+	t=1767720139; cv=none; b=gEUECnRqrrNuUKK2U86WeAZWZJH74yRqWvVlhZs5zqOXC3V2nh9TajBQ/CnImVXnNY0V+bb3LcCz9mhn4LoagGPZUpL21gfV7at5QBEjKgReRvBh6XoJH/aWQeQBVXTlbvjf0k/z2TfKvA5e3o4bp8C3M+5w5XAJZZlOv53dtQ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767720243; c=relaxed/simple;
-	bh=Q2S0B43sZEqJppGUVnEt1hTomTip1ViwmZA3JvA8mDY=;
+	s=arc-20240116; t=1767720139; c=relaxed/simple;
+	bh=x+sFpt3H/QVbKJEn0RMcXBbcg3BNFokP4v2kRLyvV0c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t68IwW33gm5nSwVoyn/91eaSSr6GwW0iqJkQ7lSn31SRvlxTM+fYT540GdVlTGK5cTwT7+Uwu4E0oAjl+Jqbn/f3RlgqLPGHDCOjEkM+UuANSMy3UnUp6MTKTK6NLC3FcU+6madRgFxO+zoB33FzB9Lemjx7QuaLvP4a2fIgyGM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wV3X70IE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12006C16AAE;
-	Tue,  6 Jan 2026 17:24:01 +0000 (UTC)
+	 MIME-Version; b=D38ArKXAqfAmV3ofJjoVDgDjXkDODSWR7TIAQCdXBfQ9n8jdLLuhRtYCvStTtX20LhYnHJ/M6CKqcLfmMgOa1lMSz/CXyeNC5ZU48uktAxbplHAlGr49ErBLk0cquK7J+luYP1UyqtjkMhKr50Wlxe0iVeab6FEjwjgLHxRqSNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=km/Oq7Mm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C180C116C6;
+	Tue,  6 Jan 2026 17:22:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767720242;
-	bh=Q2S0B43sZEqJppGUVnEt1hTomTip1ViwmZA3JvA8mDY=;
+	s=korg; t=1767720139;
+	bh=x+sFpt3H/QVbKJEn0RMcXBbcg3BNFokP4v2kRLyvV0c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wV3X70IEKsb30tcecqzFYz7wrGjhKik19U03O18/w0ZOPsVY2XpluLsKnEMz+4dYI
-	 STzNyZuKIEmPRwvvi1a2KW9X9DmmfmmYi5MNib8ww9O1VdHABL7QaPDK7PlRcsQGU/
-	 X2JRLMCxwjLDboS9eXx9SxJEB5ydzj2GNrFbHv5g=
+	b=km/Oq7MmUPXJ9sRuG8YRB8gMQI9eAB9VbEdr1EpO3J6SmrzX65/s2KG24x2VheskB
+	 gVuDFbcEvjEKSCbBwXjAoEyc9WhmdQfbYYz/VDOSC7x1fGo1zKHkzRAgsr93f74YeA
+	 STLpHc/aud6uCRBebgW/ctKuLDmZLggrB7NVs3BM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Tee <justin.tee@broadcom.com>,
-	Christoph Hellwig <hch@lst.de>,
 	Daniel Wagner <wagi@kernel.org>,
+	Hannes Reinecke <hare@suse.de>,
+	Justin Tee <justintee8345@gmail.com>,
 	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 145/567] nvme-fc: dont hold rport lock when putting ctrl
-Date: Tue,  6 Jan 2026 17:58:47 +0100
-Message-ID: <20260106170456.688007414@linuxfoundation.org>
+Subject: [PATCH 6.12 146/567] nvme-fabrics: add ENOKEY to no retry criteria for authentication failures
+Date: Tue,  6 Jan 2026 17:58:48 +0100
+Message-ID: <20260106170456.724053490@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
 References: <20260106170451.332875001@linuxfoundation.org>
@@ -66,62 +66,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Daniel Wagner <wagi@kernel.org>
+From: Justin Tee <justintee8345@gmail.com>
 
-[ Upstream commit b71cbcf7d170e51148d5467820ae8a72febcb651 ]
+[ Upstream commit 13989207ee29c40501e719512e8dc90768325895 ]
 
-nvme_fc_ctrl_put can acquire the rport lock when freeing the
-ctrl object:
+With authentication, in addition to EKEYREJECTED there is also no point in
+retrying reconnects when status is ENOKEY.  Thus, add -ENOKEY as another
+criteria to determine when to stop retries.
 
-nvme_fc_ctrl_put
-  nvme_fc_ctrl_free
-    spin_lock_irqsave(rport->lock)
-
-Thus we can't hold the rport lock when calling nvme_fc_ctrl_put.
-
-Justin suggested use the safe list iterator variant because
-nvme_fc_ctrl_put will also modify the rport->list.
-
-Cc: Justin Tee <justin.tee@broadcom.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Daniel Wagner <wagi@kernel.org>
+Cc: Daniel Wagner <wagi@kernel.org>
+Cc: Hannes Reinecke <hare@suse.de>
+Closes: https://lore.kernel.org/linux-nvme/20250829-nvme-fc-sync-v3-0-d69c87e63aee@kernel.org/
+Signed-off-by: Justin Tee <justintee8345@gmail.com>
+Tested-by: Daniel Wagner <wagi@kernel.org>
+Reviewed-by: Daniel Wagner <wagi@kernel.org>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
 Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/fc.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/nvme/host/fabrics.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/nvme/host/fc.c b/drivers/nvme/host/fc.c
-index d01bd3c300fa..3d90ace0b537 100644
---- a/drivers/nvme/host/fc.c
-+++ b/drivers/nvme/host/fc.c
-@@ -1462,14 +1462,14 @@ nvme_fc_match_disconn_ls(struct nvme_fc_rport *rport,
- {
- 	struct fcnvme_ls_disconnect_assoc_rqst *rqst =
- 					&lsop->rqstbuf->rq_dis_assoc;
--	struct nvme_fc_ctrl *ctrl, *ret = NULL;
-+	struct nvme_fc_ctrl *ctrl, *tmp, *ret = NULL;
- 	struct nvmefc_ls_rcv_op *oldls = NULL;
- 	u64 association_id = be64_to_cpu(rqst->associd.association_id);
- 	unsigned long flags;
+diff --git a/drivers/nvme/host/fabrics.c b/drivers/nvme/host/fabrics.c
+index 432efcbf9e2f..2e47c56b2d4b 100644
+--- a/drivers/nvme/host/fabrics.c
++++ b/drivers/nvme/host/fabrics.c
+@@ -591,7 +591,7 @@ bool nvmf_should_reconnect(struct nvme_ctrl *ctrl, int status)
+ 	if (status > 0 && (status & NVME_STATUS_DNR))
+ 		return false;
  
- 	spin_lock_irqsave(&rport->lock, flags);
+-	if (status == -EKEYREJECTED)
++	if (status == -EKEYREJECTED || status == -ENOKEY)
+ 		return false;
  
--	list_for_each_entry(ctrl, &rport->ctrl_list, ctrl_list) {
-+	list_for_each_entry_safe(ctrl, tmp, &rport->ctrl_list, ctrl_list) {
- 		if (!nvme_fc_ctrl_get(ctrl))
- 			continue;
- 		spin_lock(&ctrl->lock);
-@@ -1482,7 +1482,9 @@ nvme_fc_match_disconn_ls(struct nvme_fc_rport *rport,
- 		if (ret)
- 			/* leave the ctrl get reference */
- 			break;
-+		spin_unlock_irqrestore(&rport->lock, flags);
- 		nvme_fc_ctrl_put(ctrl);
-+		spin_lock_irqsave(&rport->lock, flags);
- 	}
- 
- 	spin_unlock_irqrestore(&rport->lock, flags);
+ 	if (ctrl->opts->max_reconnects == -1 ||
 -- 
 2.51.0
 
