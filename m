@@ -1,50 +1,50 @@
-Return-Path: <stable+bounces-205151-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205153-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A6E4CF996E
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 18:16:05 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D2E5CF9D46
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 18:47:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 683C33028E7F
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:16:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 54744324E8CB
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:36:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E2941E1DFC;
-	Tue,  6 Jan 2026 17:15:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80527346E64;
+	Tue,  6 Jan 2026 17:16:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nPuyAZ6B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mzQC48ca"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C38AF284694;
-	Tue,  6 Jan 2026 17:15:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CF7D346E5F;
+	Tue,  6 Jan 2026 17:15:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767719754; cv=none; b=U4RFPo7KsA2x6FcYK5u3KFD3i2qdtuDHEJhke6N/08BX2ImPUALLWuaehx8ZStyJxXQfbTQYbhEGmHf5v61JNnxgasKxM8ox7OItdGgrucxhyivpE4Y9DCpKZXC46MMEOQxNgvd6mFDG7GiY3vHt3JzNiI+CXYpKaAl7xuUD3jY=
+	t=1767719760; cv=none; b=CpStuCV+lDh7hYwMAbF6PAQB7XoOFK06H39sk2kEODMmB0vyGeItbrJEuzieOXyb7VtSE7o7BdxlO/77lnfsAxFPVq6IO/cSeGLqqoafHH/Wiiy3hj+FGOcGER8MbYYi5AxMWaaJF3erv23hqs3me8d6VL27G1ZE9duvFyZrD0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767719754; c=relaxed/simple;
-	bh=AqSsDoIabaK4a30pDEwE+dgf/Ksolsb5Hxy2uDtzSo8=;
+	s=arc-20240116; t=1767719760; c=relaxed/simple;
+	bh=DQZYEr1PMUQXhmo6kHnx61Wh3pyT4LFuOOZFrErrGK4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qIbQeKOkAm8rDMRDJGUqs3Quse/0h5HIWBVqGcggDn7L01njbmi324vTQFbIJN5bC7AMKMhPagqoKnTlTQRkYyR3p6ptdctUKLyaDGfNvpjgtazB9oZS5msi3A1qEJk6qJcDujKy1mf3ZZpqh0xZW1hD7wRtUCPaPbOwL/0Xy2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nPuyAZ6B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2700C116C6;
-	Tue,  6 Jan 2026 17:15:52 +0000 (UTC)
+	 MIME-Version; b=cKDdkCdvRX8VID0avxnsimls8Ye9xWfSvJFJr7L1jziFcHS0GQqF0zj5z89n7FN3aBRF8XaZwBlj9kfIiC5XTVviveU+U+FKmPXTSdwPJTvTvPMdaZybq44cy/u4FKpxj59w2nxbH6gTCAJ8/HNWBqnDHONZuucRMNdEC1k5FiY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mzQC48ca; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 575FFC116C6;
+	Tue,  6 Jan 2026 17:15:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767719753;
-	bh=AqSsDoIabaK4a30pDEwE+dgf/Ksolsb5Hxy2uDtzSo8=;
+	s=korg; t=1767719759;
+	bh=DQZYEr1PMUQXhmo6kHnx61Wh3pyT4LFuOOZFrErrGK4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nPuyAZ6BRHyCHmUcM/tgdtLzwQnaN/nUJ/du3JbrtN7Kwx+Ezx4bKTe33rOMNkiTi
-	 FSV0eQI5ykAHE5jHulz9DtLtEXC1oxCQCfXtyUCSTT96XEBxZ5TeiY1XZeCfxD0207
-	 9Zwf4VuFIOM7OyDeTCJkCIAsJ6fa/BB5D2mX77XU=
+	b=mzQC48capmcCABgUrprjRHpr2WcbeqojT7/p50v82w6dlHxQ4OBHFEovJpwHbPqd6
+	 FwxckeovqMlryZ+X+PBwHpaquL4pMvGlPr/nhjztsMsioDGGAb7Kmf1UHYhiiT7/lT
+	 lkQGUagTjouP/sip6ESCQxhrQlo0mh1eWK1AKx1c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 029/567] wifi: cfg80211: stop radar detection in cfg80211_leave()
-Date: Tue,  6 Jan 2026 17:56:51 +0100
-Message-ID: <20260106170452.421267384@linuxfoundation.org>
+Subject: [PATCH 6.12 030/567] wifi: cfg80211: use cfg80211_leave() in iftype change
+Date: Tue,  6 Jan 2026 17:56:52 +0100
+Message-ID: <20260106170452.457159461@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
 References: <20260106170451.332875001@linuxfoundation.org>
@@ -65,81 +65,59 @@ Content-Transfer-Encoding: 8bit
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 9f33477b9a31a1edfe2df9f1a0359cccb0e16b4c ]
+[ Upstream commit 7a27b73943a70ee226fa125327101fb18e94701d ]
 
-If an interface is set down or, per the previous patch, changes
-type, radar detection for it should be cancelled. This is done
-for AP mode in mac80211 (somewhat needlessly, since cfg80211 can
-do it, but didn't until now), but wasn't handled for mesh, so if
-radar detection was started and then the interface set down or
-its type switched (the latter sometimes happning in the hwsim
-test 'mesh_peer_connected_dfs'), radar detection would be around
-with the interface unknown to the driver, later leading to some
-warnings around chanctx usage.
+When changing the interface type, all activity on the interface has
+to be stopped first. This was done independent of existing code in
+cfg80211_leave(), so didn't handle e.g. background radar detection.
+Use cfg80211_leave() to handle it the same way.
 
-Link: https://patch.msgid.link/20251121174021.290120e419e3.I2a5650c9062e29c988992dd8ce0d8eb570d23267@changeid
+Note that cfg80211_leave() behaves slightly differently for IBSS in
+wireless extensions, it won't send an event in that case. We could
+handle that, but since nl80211 was used to change the type, IBSS is
+rare, and wext is already a corner case, it doesn't seem worth it.
+
+Link: https://patch.msgid.link/20251121174021.922ef48ce007.I970c8514252ef8a864a7fbdab9591b71031dee03@changeid
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/core.c |  1 +
- net/wireless/core.h |  1 +
- net/wireless/mlme.c | 19 +++++++++++++++++++
- 3 files changed, 21 insertions(+)
+ net/wireless/util.c | 23 +----------------------
+ 1 file changed, 1 insertion(+), 22 deletions(-)
 
-diff --git a/net/wireless/core.c b/net/wireless/core.c
-index dc207a8986c7f..6bb8a7037d24d 100644
---- a/net/wireless/core.c
-+++ b/net/wireless/core.c
-@@ -1343,6 +1343,7 @@ void cfg80211_leave(struct cfg80211_registered_device *rdev,
+diff --git a/net/wireless/util.c b/net/wireless/util.c
+index b115489a846f8..6aff651a9b68d 100644
+--- a/net/wireless/util.c
++++ b/net/wireless/util.c
+@@ -1230,28 +1230,7 @@ int cfg80211_change_iface(struct cfg80211_registered_device *rdev,
+ 		dev->ieee80211_ptr->use_4addr = false;
+ 		rdev_set_qos_map(rdev, dev, NULL);
  
- 	cfg80211_pmsr_wdev_down(wdev);
+-		switch (otype) {
+-		case NL80211_IFTYPE_AP:
+-		case NL80211_IFTYPE_P2P_GO:
+-			cfg80211_stop_ap(rdev, dev, -1, true);
+-			break;
+-		case NL80211_IFTYPE_ADHOC:
+-			cfg80211_leave_ibss(rdev, dev, false);
+-			break;
+-		case NL80211_IFTYPE_STATION:
+-		case NL80211_IFTYPE_P2P_CLIENT:
+-			cfg80211_disconnect(rdev, dev,
+-					    WLAN_REASON_DEAUTH_LEAVING, true);
+-			break;
+-		case NL80211_IFTYPE_MESH_POINT:
+-			/* mesh should be handled? */
+-			break;
+-		case NL80211_IFTYPE_OCB:
+-			cfg80211_leave_ocb(rdev, dev);
+-			break;
+-		default:
+-			break;
+-		}
++		cfg80211_leave(rdev, dev->ieee80211_ptr);
  
-+	cfg80211_stop_radar_detection(wdev);
- 	cfg80211_stop_background_radar_detection(wdev);
- 
- 	switch (wdev->iftype) {
-diff --git a/net/wireless/core.h b/net/wireless/core.h
-index 3b3e3cd7027ac..d4b26cbe3342d 100644
---- a/net/wireless/core.h
-+++ b/net/wireless/core.h
-@@ -483,6 +483,7 @@ cfg80211_start_background_radar_detection(struct cfg80211_registered_device *rde
- 					  struct wireless_dev *wdev,
- 					  struct cfg80211_chan_def *chandef);
- 
-+void cfg80211_stop_radar_detection(struct wireless_dev *wdev);
- void cfg80211_stop_background_radar_detection(struct wireless_dev *wdev);
- 
- void cfg80211_background_cac_done_wk(struct work_struct *work);
-diff --git a/net/wireless/mlme.c b/net/wireless/mlme.c
-index d1a66410b9c55..26319522c7abc 100644
---- a/net/wireless/mlme.c
-+++ b/net/wireless/mlme.c
-@@ -1271,6 +1271,25 @@ cfg80211_start_background_radar_detection(struct cfg80211_registered_device *rde
- 	return 0;
- }
- 
-+void cfg80211_stop_radar_detection(struct wireless_dev *wdev)
-+{
-+	struct wiphy *wiphy = wdev->wiphy;
-+	struct cfg80211_registered_device *rdev = wiphy_to_rdev(wiphy);
-+	int link_id;
-+
-+	for_each_valid_link(wdev, link_id) {
-+		struct cfg80211_chan_def chandef;
-+
-+		if (!wdev->links[link_id].cac_started)
-+			continue;
-+
-+		chandef = *wdev_chandef(wdev, link_id);
-+		rdev_end_cac(rdev, wdev->netdev, link_id);
-+		nl80211_radar_notify(rdev, &chandef, NL80211_RADAR_CAC_ABORTED,
-+				     wdev->netdev, GFP_KERNEL);
-+	}
-+}
-+
- void cfg80211_stop_background_radar_detection(struct wireless_dev *wdev)
- {
- 	struct wiphy *wiphy = wdev->wiphy;
+ 		cfg80211_process_rdev_events(rdev);
+ 		cfg80211_mlme_purge_registrations(dev->ieee80211_ptr);
 -- 
 2.51.0
 
