@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-205495-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205772-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EB68CF9DF1
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 18:53:56 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D321CF9F9A
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:10:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C98B232313A2
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:41:18 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B915D306318B
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:07:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED1CD2EBB8D;
-	Tue,  6 Jan 2026 17:34:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AC223612D9;
+	Tue,  6 Jan 2026 17:50:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mflsUeGH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZGABdbOH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FA4A2F659C;
-	Tue,  6 Jan 2026 17:34:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB8E53612D7;
+	Tue,  6 Jan 2026 17:50:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767720883; cv=none; b=HIdcvxbbeuLivytEBQ3hVVgmR9PgFaa+nCviBUJtAqu+DAVeMGnYII7H2Q+h8pZeoiG9CZkQLrtQs9Nj9rsXCFw1rno9L+ut+pHQxVe0gh5En/OUnjI1D5DA9JdQQRY6SDQg40beNHj2PNhqYluQElElaowvsEEgXf8tKBHwwfA=
+	t=1767721810; cv=none; b=T8RLnaTQw6qzU+0nT5B+N+8wkBnILgmdBto5X/NQzMnQUZvJYkh8qlse4E8PPAcNQlzwLqfj3bccoxnjmjt/BT/dA/4QCuO2Sr7jUybrLLu8oenJsK6gbZBuE1Eg0M1Qq/987tfYgnGBMOhdCEj+g6G/+I1b/jBVPiqTrYMJFYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767720883; c=relaxed/simple;
-	bh=RzQPAN5v2WnkHIFbcmLLzYmC7s+czEcoJfA2HrAT/0I=;
+	s=arc-20240116; t=1767721810; c=relaxed/simple;
+	bh=UUD7Lv5dg2xcSFyZKFC5B8X7isSYE2+UKfN4yfWCHsg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pwnhwaI9GZcAuW72Wbrum171uVEenTgHkNSaW9IyeqmlAoaC6+dr3tUokGpKt3XTNqtNn9ok+eVxN4xH5xuGVrSYIT1zkxd3gWhpbQH2GaZzyYlYmOwEn4zQUWjysrY1y6yL789B1mY13Qmp/yt9cVRG2Y5i5g6K74kBR32UKx4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mflsUeGH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFBEFC116C6;
-	Tue,  6 Jan 2026 17:34:42 +0000 (UTC)
+	 MIME-Version; b=mW7PVvbYcZEorgYXvltZ+b1i4QeZE+C9Ttz6zebFZi9xvwDTLT8xfKs1Lle3RtZ+ttp1cSzxMsVE0tVPgxvo8RKkUH4CCNGdXFGPYMjq73m93TquYe4p0gvImE6pIKO7DJFvokyZGO0P8SXddFaY1QCKBng0E13HQKCLRVa73d4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZGABdbOH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5FFBC19425;
+	Tue,  6 Jan 2026 17:50:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767720883;
-	bh=RzQPAN5v2WnkHIFbcmLLzYmC7s+czEcoJfA2HrAT/0I=;
+	s=korg; t=1767721810;
+	bh=UUD7Lv5dg2xcSFyZKFC5B8X7isSYE2+UKfN4yfWCHsg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mflsUeGHIikQ5G5vwiSHBGjCWq4Ur+FvbsIA2/9uDBbNMOBLCZFDXM6xgOIO39Vhn
-	 qChon8t7vanA56+ibJ/JKF5VqNDKvbwSxMLwaCyovOnJBhWi974yvaX9Zs6ttdUzfB
-	 GqnjHTsNeGxJD5yi+MsmvR2DJTv5LxCvVXv+L+tk=
+	b=ZGABdbOHUewTwJOsoEMjjXIvHOmz9nPdZQN2SxZKBl9RtmvbsQMs7+KmdebKInTA1
+	 6jOtCibDjDhwt47M+fFjxUXW9U4uw1AZOtTZU/3JwTQUGixQUxYkMhYtsqXuEM92D1
+	 5UuGvB8tZhbkCKAdxr3VwHy/edymw1QX0uwYJGyM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lukas Wunner <lukas@wunner.de>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	"Rafael J. Wysocki (Intel)" <rafael@kernel.org>
-Subject: [PATCH 6.12 370/567] PCI/PM: Reinstate clearing state_saved in legacy and !PM codepaths
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Li Nan <linan122@huawei.com>,
+	Yu Kuai <yukuai@fnnas.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 078/312] md: Fix static checker warning in analyze_sbs
 Date: Tue,  6 Jan 2026 18:02:32 +0100
-Message-ID: <20260106170505.028643393@linuxfoundation.org>
+Message-ID: <20260106170550.663451733@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
-References: <20260106170451.332875001@linuxfoundation.org>
+In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
+References: <20260106170547.832845344@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,93 +61,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukas Wunner <lukas@wunner.de>
+From: Li Nan <linan122@huawei.com>
 
-commit 894f475f88e06c0f352c829849560790dbdedbe5 upstream.
+[ Upstream commit 00f6c1b4d15d35fadb7f34768a1831c81aaa8936 ]
 
-When a PCI device is suspended, it is normally the PCI core's job to save
-Config Space and put the device into a low power state.  However drivers
-are allowed to assume these responsibilities.  When they do, the PCI core
-can tell by looking at the state_saved flag in struct pci_dev:  The flag
-is cleared before commencing the suspend sequence and it is set when
-pci_save_state() is called.  If the PCI core finds the flag set late in
-the suspend sequence, it refrains from calling pci_save_state() itself.
+The following warn is reported:
 
-But there are two corner cases where the PCI core neglects to clear the
-flag before commencing the suspend sequence:
+ drivers/md/md.c:3912 analyze_sbs()
+ warn: iterator 'i' not incremented
 
-* If a driver has legacy PCI PM callbacks, pci_legacy_suspend() neglects
-  to clear the flag.  The (stale) flag is subsequently queried by
-  pci_legacy_suspend() itself and pci_legacy_suspend_late().
-
-* If a device has no driver or its driver has no PCI PM callbacks,
-  pci_pm_freeze() neglects to clear the flag.  The (stale) flag is
-  subsequently queried by pci_pm_freeze_noirq().
-
-The flag may be set prior to suspend if the device went through error
-recovery:  Drivers commonly invoke pci_restore_state() + pci_save_state()
-to restore Config Space after reset.
-
-The flag may also be set if drivers call pci_save_state() on probe to
-allow for recovery from subsequent errors.
-
-The result is that pci_legacy_suspend_late() and pci_pm_freeze_noirq()
-don't call pci_save_state() and so the state that will be restored on
-resume is the one recorded on last error recovery or on probe, not the one
-that the device had on suspend.  If the two states happen to be identical,
-there's no problem.
-
-Reinstate clearing the flag in pci_legacy_suspend() and pci_pm_freeze().
-The two functions used to do that until commit 4b77b0a2ba27 ("PCI: Clear
-saved_state after the state has been restored") deemed it unnecessary
-because it assumed that it's sufficient to clear the flag on resume in
-pci_restore_state().  The commit seemingly did not take into account that
-pci_save_state() and pci_restore_state() are not only used by power
-management code, but also for error recovery.
-
-Devices without driver or whose driver has no PCI PM callbacks may be in
-runtime suspend when pci_pm_freeze() is called.  Their state has already
-been saved, so don't clear the flag to skip a pointless pci_save_state()
-in pci_pm_freeze_noirq().
-
-None of the drivers with legacy PCI PM callbacks seem to use runtime PM,
-so clear the flag unconditionally in their case.
-
-Fixes: 4b77b0a2ba27 ("PCI: Clear saved_state after the state has been restored")
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Rafael J. Wysocki (Intel) <rafael@kernel.org>
-Cc: stable@vger.kernel.org # v2.6.32+
-Link: https://patch.msgid.link/094f2aad64418710daf0940112abe5a0afdc6bce.1763483367.git.lukas@wunner.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d8730f0cf4ef ("md: Remove deprecated CONFIG_MD_MULTIPATH")
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/linux-raid/7e2e95ce-3740-09d8-a561-af6bfb767f18@huaweicloud.com/T/#t
+Signed-off-by: Li Nan <linan122@huawei.com>
+Link: https://lore.kernel.org/linux-raid/20251215124412.4015572-1-linan666@huaweicloud.com
+Signed-off-by: Yu Kuai <yukuai@fnnas.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/pci-driver.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/md/md.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
---- a/drivers/pci/pci-driver.c
-+++ b/drivers/pci/pci-driver.c
-@@ -635,6 +635,8 @@ static int pci_legacy_suspend(struct dev
- 	struct pci_dev *pci_dev = to_pci_dev(dev);
- 	struct pci_driver *drv = pci_dev->driver;
+diff --git a/drivers/md/md.c b/drivers/md/md.c
+index cef5b2954ac5..7b1365143f58 100644
+--- a/drivers/md/md.c
++++ b/drivers/md/md.c
+@@ -3874,7 +3874,6 @@ static struct md_rdev *md_import_device(dev_t newdev, int super_format, int supe
  
-+	pci_dev->state_saved = false;
-+
- 	if (drv && drv->suspend) {
- 		pci_power_t prev = pci_dev->current_state;
- 		int error;
-@@ -1039,6 +1041,8 @@ static int pci_pm_freeze(struct device *
+ static int analyze_sbs(struct mddev *mddev)
+ {
+-	int i;
+ 	struct md_rdev *rdev, *freshest, *tmp;
  
- 	if (!pm) {
- 		pci_pm_default_suspend(pci_dev);
-+		if (!pm_runtime_suspended(dev))
-+			pci_dev->state_saved = false;
- 		return 0;
- 	}
+ 	freshest = NULL;
+@@ -3901,11 +3900,9 @@ static int analyze_sbs(struct mddev *mddev)
+ 	super_types[mddev->major_version].
+ 		validate_super(mddev, NULL/*freshest*/, freshest);
  
+-	i = 0;
+ 	rdev_for_each_safe(rdev, tmp, mddev) {
+ 		if (mddev->max_disks &&
+-		    (rdev->desc_nr >= mddev->max_disks ||
+-		     i > mddev->max_disks)) {
++		    rdev->desc_nr >= mddev->max_disks) {
+ 			pr_warn("md: %s: %pg: only %d devices permitted\n",
+ 				mdname(mddev), rdev->bdev,
+ 				mddev->max_disks);
+-- 
+2.51.0
+
 
 
 
