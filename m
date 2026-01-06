@@ -1,54 +1,52 @@
-Return-Path: <stable+bounces-205829-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205832-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB2E7CFA604
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:57:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E87CCFA5F8
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:57:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9610034A4110
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:14:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D7C93340D2F7
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:14:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAD423644DC;
-	Tue,  6 Jan 2026 17:53:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB3A1364E85;
+	Tue,  6 Jan 2026 17:53:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y2G/0iHb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cLpuVHcb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 773F73644AD;
-	Tue,  6 Jan 2026 17:53:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78EA33644AD;
+	Tue,  6 Jan 2026 17:53:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767722001; cv=none; b=a3QwJcj8cFyGoSjuPePxIkep3jiLSI7REFRxcNvwdY0tpxoGK4gm+7jgSNjvWxKGxADKfj6YyWNHLElv8o6/jr+sGg0+t5Cccc2kuhL/wC/4laZZikZFhTsChTbE6UD3s/xDS9IL/mYNZOE5EdQoSNGeC4E+gyqvxpfq0HOKapg=
+	t=1767722011; cv=none; b=QKbDzM5sDMaKsCDkBgK6T3fuKOXtpUtW2zb5MOja0gQ9b8m8SazdJ1VPKAL1QnkcuIBWKTr/Bqwpc58mX7SIa51M31qoiOJ7Bvq3VlEgAfAArE3tbXKkhA1z1hYSkzxs4N6OncUTvooNDIN+KndsD5Nuj0TDlOb/b58Wk4RG0c8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767722001; c=relaxed/simple;
-	bh=YXYa3DlS535JIXYY58Po6ptG3xXC53Zsw9ldtZQ4UoY=;
+	s=arc-20240116; t=1767722011; c=relaxed/simple;
+	bh=AxGiPyJg10AcZns44Utoku0frjkckQ8FiVy0Y4KkC9Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jUAjf4sP+4lizx6JAuiTxPe5cUKDnJ1a7NwCvLhlbYG3uLFRoMUQUHQnCfhv6MAiWplzdCDMAg2wWywqzY5jT1RJCqBOkGXj1ZUwY2ki2hDdZwkwdiLnEtZxOUDB5yZtqP03s+8ky3/FRSAQVEiKG3IQT+xEwBxtKJda8oHYqlU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y2G/0iHb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2EA3C16AAE;
-	Tue,  6 Jan 2026 17:53:20 +0000 (UTC)
+	 MIME-Version; b=Us06elWUnR2HpPqoXsEBbMe3O/gu+fyxjEeU9O310yRZ0FmI04UyLdZ3MeDQ0coEIvw0BDfdgVPEE++CHJiMIpJBRRz7e4DPl6KZqIDoM6Tdxz7uNQTjuJ3mO6qt57ytWjLrF7uZbDH6tiKeS0Pvt1G5Y+1NnRXPMefSAeqdncc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cLpuVHcb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2B02C16AAE;
+	Tue,  6 Jan 2026 17:53:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767722001;
-	bh=YXYa3DlS535JIXYY58Po6ptG3xXC53Zsw9ldtZQ4UoY=;
+	s=korg; t=1767722011;
+	bh=AxGiPyJg10AcZns44Utoku0frjkckQ8FiVy0Y4KkC9Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y2G/0iHb1VUC1ZMHP4HI5q/JAm8rp1XNc19atEWNZDqd84fEj72zsJ1SKLTWronQJ
-	 8POzwL+sR6KThpAjSC52kgqdbkTS/TDfYL3Oh+elvmrbuvzEBULS2wlf+gQ3gJfvyc
-	 0DKxegOF2tZhvJGNQGUS8t5o5zlEjIkAP2UR+cmI=
+	b=cLpuVHcbjQQG2KV9nhet750hHKwqWq+MrXVGKfTuG+P/MMdSZx2hxlVEAXiVk2VCC
+	 TxDWWE7SFLWh+BS2xh0Xyn82RVwi+0F+LGxl3XgHdv1rsAzPE/2g7FPpEPUdo4EEuQ
+	 Jm+FqPamIXGviAJOY2CHyyLXbY20NojrE/2G+730=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jochen Sprickerhof <jochen@sprickerhof.de>,
 	Nathan Chancellor <nathan@kernel.org>,
-	Kees Cook <kees@kernel.org>,
-	Sam Protsenko <semen.protsenko@linaro.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
-	Stephen Boyd <sboyd@kernel.org>
-Subject: [PATCH 6.18 136/312] clk: samsung: exynos-clkout: Assign .num before accessing .hws
-Date: Tue,  6 Jan 2026 18:03:30 +0100
-Message-ID: <20260106170552.762010161@linuxfoundation.org>
+	Imran Shaik <imran.shaik@oss.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.18 139/312] clk: qcom: Fix dependencies of QCS_{DISP,GPU,VIDEO}CC_615
+Date: Tue,  6 Jan 2026 18:03:33 +0100
+Message-ID: <20260106170552.870977524@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
 References: <20260106170547.832845344@linuxfoundation.org>
@@ -69,58 +67,68 @@ Content-Transfer-Encoding: 8bit
 
 From: Nathan Chancellor <nathan@kernel.org>
 
-commit cf33f0b7df13685234ccea7be7bfe316b60db4db upstream.
+commit 7ec1ba01ae37897f0ecf6ab0c980378cb8a2f388 upstream.
 
-Commit f316cdff8d67 ("clk: Annotate struct clk_hw_onecell_data with
-__counted_by") annotated the hws member of 'struct clk_hw_onecell_data'
-with __counted_by, which informs the bounds sanitizer (UBSAN_BOUNDS)
-about the number of elements in .hws[], so that it can warn when .hws[]
-is accessed out of bounds. As noted in that change, the __counted_by
-member must be initialized with the number of elements before the first
-array access happens, otherwise there will be a warning from each access
-prior to the initialization because the number of elements is zero. This
-occurs in exynos_clkout_probe() due to .num being assigned after .hws[]
-has been accessed:
+It is possible to select CONFIG_QCS_{DISP,GPU,VIDEO}CC_615 when
+targeting ARCH=arm, causing a Kconfig warning when selecting
+CONFIG_QCS_GCC_615 without its dependencies, CONFIG_ARM64 or
+CONFIG_COMPILE_TEST.
 
-  UBSAN: array-index-out-of-bounds in drivers/clk/samsung/clk-exynos-clkout.c:178:18
-  index 0 is out of range for type 'clk_hw *[*]'
+  WARNING: unmet direct dependencies detected for QCS_GCC_615
+    Depends on [n]: COMMON_CLK [=y] && COMMON_CLK_QCOM [=m] && (ARM64 || COMPILE_TEST [=n])
+    Selected by [m]:
+    - QCS_DISPCC_615 [=m] && COMMON_CLK [=y] && COMMON_CLK_QCOM [=m]
+    - QCS_GPUCC_615 [=m] && COMMON_CLK [=y] && COMMON_CLK_QCOM [=m]
+    - QCS_VIDEOCC_615 [=m] && COMMON_CLK [=y] && COMMON_CLK_QCOM [=m]
 
-Move the .num initialization to before the first access of .hws[],
-clearing up the warning.
+Add the same dependency to these configurations to clear up the
+warnings.
 
 Cc: stable@vger.kernel.org
-Fixes: f316cdff8d67 ("clk: Annotate struct clk_hw_onecell_data with __counted_by")
-Reported-by: Jochen Sprickerhof <jochen@sprickerhof.de>
-Closes: https://lore.kernel.org/aSIYDN5eyKFKoXKL@eldamar.lan/
-Tested-by: Jochen Sprickerhof <jochen@sprickerhof.de>
+Fixes: 9b47105f5434 ("clk: qcom: dispcc-qcs615: Add QCS615 display clock controller driver")
+Fixes: f4b5b40805ab ("clk: qcom: gpucc-qcs615: Add QCS615 graphics clock controller driver")
+Fixes: f6a8abe0cc16 ("clk: qcom: videocc-qcs615: Add QCS615 video clock controller driver")
 Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Reviewed-by: Kees Cook <kees@kernel.org>
-Reviewed-by: Sam Protsenko <semen.protsenko@linaro.org>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Reviewed-by: Imran Shaik <imran.shaik@oss.qualcomm.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250930-clk-qcom-kconfig-fixes-arm-v1-2-15ae1ae9ec9f@kernel.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/samsung/clk-exynos-clkout.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/qcom/Kconfig | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/clk/samsung/clk-exynos-clkout.c
-+++ b/drivers/clk/samsung/clk-exynos-clkout.c
-@@ -175,6 +175,7 @@ static int exynos_clkout_probe(struct pl
- 	clkout->mux.shift = EXYNOS_CLKOUT_MUX_SHIFT;
- 	clkout->mux.lock = &clkout->slock;
+diff --git a/drivers/clk/qcom/Kconfig b/drivers/clk/qcom/Kconfig
+index ec7d1a9b578e..6fef0bfc1773 100644
+--- a/drivers/clk/qcom/Kconfig
++++ b/drivers/clk/qcom/Kconfig
+@@ -531,6 +531,7 @@ config QCM_DISPCC_2290
  
-+	clkout->data.num = EXYNOS_CLKOUT_NR_CLKS;
- 	clkout->data.hws[0] = clk_hw_register_composite(NULL, "clkout",
- 				parent_names, parent_count, &clkout->mux.hw,
- 				&clk_mux_ops, NULL, NULL, &clkout->gate.hw,
-@@ -185,7 +186,6 @@ static int exynos_clkout_probe(struct pl
- 		goto err_unmap;
- 	}
+ config QCS_DISPCC_615
+ 	tristate "QCS615 Display Clock Controller"
++	depends on ARM64 || COMPILE_TEST
+ 	select QCS_GCC_615
+ 	help
+ 	  Support for the display clock controller on Qualcomm Technologies, Inc
+@@ -586,6 +587,7 @@ config QCS_GCC_615
  
--	clkout->data.num = EXYNOS_CLKOUT_NR_CLKS;
- 	ret = of_clk_add_hw_provider(clkout->np, of_clk_hw_onecell_get, &clkout->data);
- 	if (ret)
- 		goto err_clk_unreg;
+ config QCS_GPUCC_615
+ 	tristate "QCS615 Graphics clock controller"
++	depends on ARM64 || COMPILE_TEST
+ 	select QCS_GCC_615
+ 	help
+ 	  Support for the graphics clock controller on QCS615 devices.
+@@ -594,6 +596,7 @@ config QCS_GPUCC_615
+ 
+ config QCS_VIDEOCC_615
+ 	tristate "QCS615 Video Clock Controller"
++	depends on ARM64 || COMPILE_TEST
+ 	select QCS_GCC_615
+ 	help
+ 	  Support for the video clock controller on QCS615 devices.
+-- 
+2.52.0
+
 
 
 
