@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-205763-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205486-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14DFBCF9F2B
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:07:39 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40F6BCF9DD9
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 18:53:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0555E305EF92
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:06:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 67BA332077CD
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:40:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55C1B35FF7D;
-	Tue,  6 Jan 2026 17:49:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3177A2E6CD5;
+	Tue,  6 Jan 2026 17:34:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IBjmUP8s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HTACbwzF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10F54355031;
-	Tue,  6 Jan 2026 17:49:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E511028C037;
+	Tue,  6 Jan 2026 17:34:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721779; cv=none; b=rchheiJfIVaNbNPf1WGkb5zzK523xnEO8nEL9r3CRpNNJRRmWV0IeluynfXinKbW8Z+EJklHhwgLy+KEqfjGAr5btITWQIDqa4W+dd0S1fM+9Z6RrKfe8/N7iZxgGroRv74RQhVdupYWMEtD2k5zYAjs8zSXq5glPVydItKQcU4=
+	t=1767720853; cv=none; b=Rrq5RiLLfgmlDndE9eUOXlZY1g9xJkchKvlDPyFX3nCHI1T8i7Wivr+OvW5rsSyX99QtmApk694Z5lYH4JSuJksxpnq195FXeO/qZ50qErcih7Voy3D5ZlzZR+SNqZVkOj8H4K7jONYLj3stp/gRPfsIy1HP18qrD3x3oA6p72M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721779; c=relaxed/simple;
-	bh=7kw9ys6Kph7AP3PekCvsuIBl7Zlmdv6kUvbIx96szDU=;
+	s=arc-20240116; t=1767720853; c=relaxed/simple;
+	bh=cndLYkuhgZwBsA7HJu1RCs1RbqCvsDXrssJY4I4GfmI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E99X6WRQVp9NaZR3oxXV2aY9VeeWB8B1JhIOkmJr63TT4JW5SaRAcUfhdo5YkZw7ZYHQSTQ0xfXQh9ZbgUXIwJXUwklzxfzhgA68AudXTbD0SDEtaO+jglK0ZglHrKAso+/vh8TGd02rza348piRwTDi/5pLG1iciWjMjT9Dwcc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IBjmUP8s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 717DEC116C6;
-	Tue,  6 Jan 2026 17:49:38 +0000 (UTC)
+	 MIME-Version; b=dU0WgYQODb6AKcVm+95ReTN+jLSyyFaWUaOz6hjNFa/gP4g/Qbgb27NhRI2OsaFguS5EBXKmvLuxXwhfqTH+a0G1hteBCNoGf1cRikEi676kGoqvUiI5osxVBIat4+3HtSgVFluUAUbEqWnF5DB3gDsfdU3zUPjyloYlUtdv2Rs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HTACbwzF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55B6CC116C6;
+	Tue,  6 Jan 2026 17:34:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721778;
-	bh=7kw9ys6Kph7AP3PekCvsuIBl7Zlmdv6kUvbIx96szDU=;
+	s=korg; t=1767720852;
+	bh=cndLYkuhgZwBsA7HJu1RCs1RbqCvsDXrssJY4I4GfmI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IBjmUP8s98hDftTDA7QfBZGh//HiI+iQqfcul6Nul9nZnc6xTdHH+O1GN2sS6WU+T
-	 wWba5HlYyA6y5SAXXrnrIFjrPz19vFDGG7ZjmxkRyPjpNv7vFlPMBouOzShS0rOu4h
-	 I3q6lnxTC8TIIrDAv5YMXsaG3Fzsd7VwwWsi1y4Q=
+	b=HTACbwzFmdTaEH76j6hbysK3aNLp3L1t9EPxpkYm/j3RkCjGoj1/BGwCyWHFZBCZq
+	 1lnMzqNwILdnKeiw+Y9PrCKjfgJjKgPbTkhx3bgjahQGgb2LN33Yk3m2E0M7QXdXaK
+	 +sjlYbvHfngYM//dLSBW5RdnQAXe8mjZXru/TPl4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jang Ingyu <ingyujang25@korea.ac.kr>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 070/312] RDMA/core: Fix logic error in ib_get_gids_from_rdma_hdr()
+	Suman Anna <s-anna@ti.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Johan Hovold <johan@kernel.org>,
+	Joerg Roedel <joerg.roedel@amd.com>
+Subject: [PATCH 6.12 362/567] iommu/omap: fix device leaks on probe_device()
 Date: Tue,  6 Jan 2026 18:02:24 +0100
-Message-ID: <20260106170550.381534963@linuxfoundation.org>
+Message-ID: <20260106170504.729468851@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
-References: <20260106170547.832845344@linuxfoundation.org>
+In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
+References: <20260106170451.332875001@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,44 +61,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jang Ingyu <ingyujang25@korea.ac.kr>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 8aaa848eaddd9ef8680fc6aafbd3a0646da5df40 ]
+commit b5870691065e6bbe6ba0650c0412636c6a239c5a upstream.
 
-Fix missing comparison operator for RDMA_NETWORK_ROCE_V1 in the
-conditional statement. The constant was used directly instead of
-being compared with net_type, causing the condition to always
-evaluate to true.
+Make sure to drop the references taken to the iommu platform devices
+when looking up their driver data during probe_device().
 
-Fixes: 1c15b4f2a42f ("RDMA/core: Modify enum ib_gid_type and enum rdma_network_type")
-Signed-off-by: Jang Ingyu <ingyujang25@korea.ac.kr>
-Link: https://patch.msgid.link/20251219041508.1725947-1-ingyujang25@korea.ac.kr
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Note that the arch data device pointer added by commit 604629bcb505
+("iommu/omap: add support for late attachment of iommu devices") has
+never been used. Remove it to underline that the references are not
+needed.
+
+Fixes: 9d5018deec86 ("iommu/omap: Add support to program multiple iommus")
+Fixes: 7d6827748d54 ("iommu/omap: Fix iommu archdata name for DT-based devices")
+Cc: stable@vger.kernel.org	# 3.18
+Cc: Suman Anna <s-anna@ti.com>
+Acked-by: Robin Murphy <robin.murphy@arm.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/core/verbs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iommu/omap-iommu.c |    2 +-
+ drivers/iommu/omap-iommu.h |    2 --
+ 2 files changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/infiniband/core/verbs.c b/drivers/infiniband/core/verbs.c
-index 3a5f81402d2f..d279e301f5a1 100644
---- a/drivers/infiniband/core/verbs.c
-+++ b/drivers/infiniband/core/verbs.c
-@@ -735,7 +735,7 @@ int ib_get_gids_from_rdma_hdr(const union rdma_network_hdr *hdr,
- 				       (struct in6_addr *)dgid);
- 		return 0;
- 	} else if (net_type == RDMA_NETWORK_IPV6 ||
--		   net_type == RDMA_NETWORK_IB || RDMA_NETWORK_ROCE_V1) {
-+		   net_type == RDMA_NETWORK_IB || net_type == RDMA_NETWORK_ROCE_V1) {
- 		*dgid = hdr->ibgrh.dgid;
- 		*sgid = hdr->ibgrh.sgid;
- 		return 0;
--- 
-2.51.0
-
+--- a/drivers/iommu/omap-iommu.c
++++ b/drivers/iommu/omap-iommu.c
+@@ -1688,6 +1688,7 @@ static struct iommu_device *omap_iommu_p
+ 		}
+ 
+ 		oiommu = platform_get_drvdata(pdev);
++		put_device(&pdev->dev);
+ 		if (!oiommu) {
+ 			of_node_put(np);
+ 			kfree(arch_data);
+@@ -1695,7 +1696,6 @@ static struct iommu_device *omap_iommu_p
+ 		}
+ 
+ 		tmp->iommu_dev = oiommu;
+-		tmp->dev = &pdev->dev;
+ 
+ 		of_node_put(np);
+ 	}
+--- a/drivers/iommu/omap-iommu.h
++++ b/drivers/iommu/omap-iommu.h
+@@ -88,7 +88,6 @@ struct omap_iommu {
+ /**
+  * struct omap_iommu_arch_data - omap iommu private data
+  * @iommu_dev: handle of the OMAP iommu device
+- * @dev: handle of the iommu device
+  *
+  * This is an omap iommu private data object, which binds an iommu user
+  * to its iommu device. This object should be placed at the iommu user's
+@@ -97,7 +96,6 @@ struct omap_iommu {
+  */
+ struct omap_iommu_arch_data {
+ 	struct omap_iommu *iommu_dev;
+-	struct device *dev;
+ };
+ 
+ struct cr_regs {
 
 
 
