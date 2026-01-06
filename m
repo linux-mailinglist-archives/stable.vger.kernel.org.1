@@ -1,50 +1,53 @@
-Return-Path: <stable+bounces-205527-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205529-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37A02CFA2B2
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:31:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AF14CF9FFE
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:14:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0857B319F6F6
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:43:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0295A340B246
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:01:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5FC433BBD0;
-	Tue,  6 Jan 2026 17:36:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A20620296E;
+	Tue,  6 Jan 2026 17:36:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fs+pcGnW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2uyR/i+t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ECC833B971;
-	Tue,  6 Jan 2026 17:36:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 485234A35;
+	Tue,  6 Jan 2026 17:36:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767720989; cv=none; b=gFT3GamIx/xROe/RzdHpjql+xrgooSpCoGjoYQAb1OOSW26QXX5G+bmzbtpLec4OzROOYqbwCjDlAdGHcJIS1b3hnJUbjTR9J4bvR7L6GSdfeCKH8YD9/+7sw6FJ16ntxzqZRMo2ZaaRV68xpFgtl5xD8v4okvswrZ3JkCGTtW0=
+	t=1767720996; cv=none; b=pkEjzmXF/e7BCu5dhBkufipDEtLdHJgAs2nq1d8LH+z22/tQbRJS7lhgI/UieSDuihfwuuK5J5Ics3iz+UDuGlqpJ15R04lVHrhfqSU5UVGm2vLTZWs88bFSYC3jM+NN4SEGLIA1t8gVl4yyyb6lMZrJRc6tbw6cCE79UVgN79o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767720989; c=relaxed/simple;
-	bh=YtrwdEBsWo+dZXqUfXhgAmdmkEYffBfxkGAhjIvzHWY=;
+	s=arc-20240116; t=1767720996; c=relaxed/simple;
+	bh=4ZoVoprKO36lPFe93BBx2ZI7nUoVqwrQa5od930/VBM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dQ8jDZHUSm/TPlgLQdaalBSgWNa3rTSGczV0vw4uhmG2haHDklhcgG5UvKKeGUm1o8khttpiuugLZLDUF3oDNl04tjCSxIU08ANvpstBaFDz6k2AdBqYgBK5+9aUh3+y3r3I7zTNG1O8kqgHqfQWfx5ApokvzHjH6kK8rzsrrkU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fs+pcGnW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D29B3C116C6;
-	Tue,  6 Jan 2026 17:36:28 +0000 (UTC)
+	 MIME-Version; b=QOCl5P6COFS3LGQ/o9VGYtPQtevve3dh7hbo+AAF4apHbqkD1/KMGmpWZ0VgrEet80tFvsEamda7sVThiI+6H/6yG2CCzWTvUwWDjdaGktOoIRJQSeQo9wdj8IeSV1DwUjmcuciqvhn/h5r4X+mwAzheZ4K2h/tsJG1vQVRxVKA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2uyR/i+t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEB78C116C6;
+	Tue,  6 Jan 2026 17:36:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767720989;
-	bh=YtrwdEBsWo+dZXqUfXhgAmdmkEYffBfxkGAhjIvzHWY=;
+	s=korg; t=1767720996;
+	bh=4ZoVoprKO36lPFe93BBx2ZI7nUoVqwrQa5od930/VBM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fs+pcGnWz5579tfkPdk0z9R53rieXxpzIisCwUMT8YctTZ1yLACl/F4PniZY5BuW6
-	 oCZ1fUz+Njihi4hbS1AyrMHeZSqA4RYEo/5AcX6+IvtXPQRCLD6O0FX/cj6Vs8tVp1
-	 /bVVWXK7ZaZTgiYn3zsNyeJM2ZSVbKzd6O2KOZvY=
+	b=2uyR/i+tQnBJyhnzCReVXPZVn6HslmzZS2Q46rbu2fyi0Ts62XXa63Qe8W1VXsXPE
+	 AhRYo76R7HtXnJtrWZ3OTIyFmJZqONtpVh6tz69yk+vmV+gCJOqWk8So36FIJJA5M5
+	 8o+ZEzjmu3h36Bzq6LZh5ZDNhCAIXddXlKUDywVc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ivan Abramov <i.abramov@mt-integration.ru>,
+	Moudy Ho <moudy.ho@mediatek.com>,
+	Johan Hovold <johan@kernel.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
 	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 6.12 403/567] media: msp3400: Avoid possible out-of-bounds array accesses in msp3400c_thread()
-Date: Tue,  6 Jan 2026 18:03:05 +0100
-Message-ID: <20260106170506.251385406@linuxfoundation.org>
+Subject: [PATCH 6.12 404/567] media: platform: mtk-mdp3: fix device leaks at probe
+Date: Tue,  6 Jan 2026 18:03:06 +0100
+Message-ID: <20260106170506.287266243@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
 References: <20260106170451.332875001@linuxfoundation.org>
@@ -63,40 +66,73 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ivan Abramov <i.abramov@mt-integration.ru>
+From: Johan Hovold <johan@kernel.org>
 
-commit d2bceb2e20e783d57e739c71e4e50b4b9f4a3953 upstream.
+commit 8f6f3aa21517ef34d50808af0c572e69580dca20 upstream.
 
-It's possible for max1 to remain -1 if msp_read() always fail. This
-variable is further used as index for accessing arrays.
+Make sure to drop the references taken when looking up the subsys
+devices during probe on probe failure (e.g. probe deferral) and on
+driver unbind.
 
-Fix that by checking max1 prior to array accesses.
+Similarly, drop the SCP device reference after retrieving its platform
+data during probe to avoid leaking it.
 
-It seems that restart is the preferable action in case of out-of-bounds
-value.
+Note that holding a reference to a device does not prevent its driver
+data from going away.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 8a4b275f9c19 ("V4L/DVB (3427): audmode and rxsubchans fixes (VIDIOC_G/S_TUNER)")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ivan Abramov <i.abramov@mt-integration.ru>
+Fixes: 61890ccaefaf ("media: platform: mtk-mdp3: add MediaTek MDP3 driver")
+Cc: stable@vger.kernel.org	# 6.1
+Cc: Moudy Ho <moudy.ho@mediatek.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
 Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/i2c/msp3400-kthreads.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/media/platform/mediatek/mdp3/mtk-mdp3-core.c |   14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
---- a/drivers/media/i2c/msp3400-kthreads.c
-+++ b/drivers/media/i2c/msp3400-kthreads.c
-@@ -596,6 +596,8 @@ restart:
- 				"carrier2 val: %5d / %s\n", val, cd[i].name);
- 		}
+--- a/drivers/media/platform/mediatek/mdp3/mtk-mdp3-core.c
++++ b/drivers/media/platform/mediatek/mdp3/mtk-mdp3-core.c
+@@ -176,10 +176,18 @@ void mdp_video_device_release(struct vid
+ 	kfree(mdp);
+ }
  
-+		if (max1 < 0 || max1 > 3)
-+			goto restart;
- 		/* program the msp3400 according to the results */
- 		state->main = msp3400c_carrier_detect_main[max1].cdo;
- 		switch (max1) {
++static void mdp_put_device(void *_dev)
++{
++	struct device *dev = _dev;
++
++	put_device(dev);
++}
++
+ static int mdp_mm_subsys_deploy(struct mdp_dev *mdp, enum mdp_infra_id id)
+ {
+ 	struct platform_device *mm_pdev = NULL;
+ 	struct device **dev;
++	int ret;
+ 	int i;
+ 
+ 	if (!mdp)
+@@ -213,6 +221,11 @@ static int mdp_mm_subsys_deploy(struct m
+ 		if (WARN_ON(!mm_pdev))
+ 			return -ENODEV;
+ 
++		ret = devm_add_action_or_reset(&mdp->pdev->dev, mdp_put_device,
++					       &mm_pdev->dev);
++		if (ret)
++			return ret;
++
+ 		*dev = &mm_pdev->dev;
+ 	}
+ 
+@@ -298,6 +311,7 @@ static int mdp_probe(struct platform_dev
+ 			goto err_destroy_clock_wq;
+ 		}
+ 		mdp->scp = platform_get_drvdata(mm_pdev);
++		put_device(&mm_pdev->dev);
+ 	}
+ 
+ 	mdp->rproc_handle = scp_get_rproc(mdp->scp);
 
 
 
