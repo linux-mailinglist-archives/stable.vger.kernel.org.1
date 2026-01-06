@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-205445-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205410-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58592CFA1D6
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:26:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 25823CF9C0E
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 18:39:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 535A5312C520
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:38:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9455E3138642
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:30:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0D722BD001;
-	Tue,  6 Jan 2026 17:31:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B48C3563D6;
+	Tue,  6 Jan 2026 17:29:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KKPb7YF1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QrwnaShN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A85A29B793;
-	Tue,  6 Jan 2026 17:31:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 116BF3563D2;
+	Tue,  6 Jan 2026 17:29:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767720716; cv=none; b=iYvOEe1gAy1AV9F6SeeswB4OghZFMG+t7kb8fJ6rxHT1uSaxOPWt5/OmzCy53xrjyqI42KSlRIxiUJgV+r7xsY1YSh9MC7KbKoYKRsrGLS6ImOpmZsrc6bjf3/ZVOx5MLH6czuPWNlWoZ5V4X0NVlhY3V3aPSrEYfb5VFVDHsxU=
+	t=1767720598; cv=none; b=lbtipTS45R2ZZBLhzDeldV29AErED6lYm42CrY/RG66cEyP5UelVz6qnu3AENKADAwI0Q3waYUKnvr57dJurDSVOl94ZURSDrR/AAbcHybbYF+a/8IF8tw0O/ww63ejMT3gR7wb/hd9z2cRNVSQz92d8e4kvXaFdCI4ubdfkTE8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767720716; c=relaxed/simple;
-	bh=DpMN6pnLc6ZE7WDJI9wkpxPKCEGiX+mmWlgLs5B2gew=;
+	s=arc-20240116; t=1767720598; c=relaxed/simple;
+	bh=0mfibLpCfBj57MKw+m4h7KVnrHuLu9MAzinrJfG8fvA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=URue+sJUDMXWq2WOsvmvigGEsHVzymt/cQRIz/ZZEI3x7vB2CCOwTR+nbbVRsLcIKxOlIbxyPsDHvd96Es5cN2v3ulTcdMHtaQje7UXp7jP/p09glHPHhmo+b5daCTGDlAQc163IUGSgBHzteAvg4Am0PTyzeDPtS9M8h7Enobk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KKPb7YF1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA130C19424;
-	Tue,  6 Jan 2026 17:31:55 +0000 (UTC)
+	 MIME-Version; b=Xz3wrwb8Sb7Pc+G9FiifnbmfTgXL61SNW8fI2YZD2pFcNx3sbJwM/C4BfYjrff8vUeobgzM7UBc8zYx19jxwg60b643je5JXZ6OvKJXXtJNwLxzzmq0E7b7NQyk84jxK/uWLKeR0EDWwWfbdXLH9twLr6d3uusfNSzR2+Q0JDTM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QrwnaShN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 879D4C19423;
+	Tue,  6 Jan 2026 17:29:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767720716;
-	bh=DpMN6pnLc6ZE7WDJI9wkpxPKCEGiX+mmWlgLs5B2gew=;
+	s=korg; t=1767720597;
+	bh=0mfibLpCfBj57MKw+m4h7KVnrHuLu9MAzinrJfG8fvA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KKPb7YF1afOFQvooDqX9e87D6d65ETEeVC7dE+tOZ+MtKax0dgTMGrvGEEAqfgqnD
-	 TqC0hrHNJdfbY03b35LZhL9Mz8nAq36IovEkEe65IX2jiLb2xcE6jWISqQfRvWdcXn
-	 Du6jr7Jo2zLYfSPGC0vyZfafaUbxjKaR8Lyff/lU=
+	b=QrwnaShNPQS/tExg4PjzCerr4/dnYNYhzJiiTU5sfUeeyG885KJPYIkGXrENH6Pfu
+	 vFLW7T1errTBeOZBW0VXMiWYYf1Uz+tRrhQ50kZUVEnzMtYj5PKJFtegVWGMwvm2TP
+	 LixhwsdmlBGIpP5c7OpDJIKyqtLKIeXE8akiWv+Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Griffin <peter.griffin@linaro.org>,
+	Anjelique Melendez <quic_amelende@quicinc.com>,
 	Johan Hovold <johan@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>
-Subject: [PATCH 6.12 277/567] soc: samsung: exynos-pmu: fix device leak on regmap lookup
-Date: Tue,  6 Jan 2026 18:00:59 +0100
-Message-ID: <20260106170501.573001955@linuxfoundation.org>
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.12 278/567] soc: qcom: pbs: fix device leak on lookup
+Date: Tue,  6 Jan 2026 18:01:00 +0100
+Message-ID: <20260106170501.612013581@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
 References: <20260106170451.332875001@linuxfoundation.org>
@@ -66,36 +66,36 @@ Content-Transfer-Encoding: 8bit
 
 From: Johan Hovold <johan@kernel.org>
 
-commit 990eb9a8eb4540ab90c7b34bb07b87ff13881cad upstream.
+commit 94124bf253d24b13e89c45618a168d5a1d8a61e7 upstream.
 
-Make sure to drop the reference taken when looking up the PMU device and
-its regmap.
+Make sure to drop the reference taken to the pbs platform device when
+looking up its driver data.
 
-Note that holding a reference to a device does not prevent its regmap
-from going away so there is no point in keeping the reference.
+Note that holding a reference to a device does not prevent its driver
+data from going away so there is no point in keeping the reference.
 
-Fixes: 0b7c6075022c ("soc: samsung: exynos-pmu: Add regmap support for SoCs that protect PMU regs")
+Fixes: 5b2dd77be1d8 ("soc: qcom: add QCOM PBS driver")
 Cc: stable@vger.kernel.org	# 6.9
-Cc: Peter Griffin <peter.griffin@linaro.org>
+Cc: Anjelique Melendez <quic_amelende@quicinc.com>
 Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20251121121852.16825-1-johan@kernel.org
-Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+Link: https://lore.kernel.org/r/20250926143511.6715-3-johan@kernel.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/soc/samsung/exynos-pmu.c |    2 ++
+ drivers/soc/qcom/qcom-pbs.c |    2 ++
  1 file changed, 2 insertions(+)
 
---- a/drivers/soc/samsung/exynos-pmu.c
-+++ b/drivers/soc/samsung/exynos-pmu.c
-@@ -322,6 +322,8 @@ struct regmap *exynos_get_pmu_regmap_by_
- 	if (!dev)
- 		return ERR_PTR(-EPROBE_DEFER);
+--- a/drivers/soc/qcom/qcom-pbs.c
++++ b/drivers/soc/qcom/qcom-pbs.c
+@@ -179,6 +179,8 @@ struct pbs_dev *get_pbs_client_device(st
+ 		return ERR_PTR(-EINVAL);
+ 	}
  
-+	put_device(dev);
++	platform_device_put(pdev);
 +
- 	return syscon_node_to_regmap(pmu_np);
+ 	return pbs;
  }
- EXPORT_SYMBOL_GPL(exynos_get_pmu_regmap_by_phandle);
+ EXPORT_SYMBOL_GPL(get_pbs_client_device);
 
 
 
