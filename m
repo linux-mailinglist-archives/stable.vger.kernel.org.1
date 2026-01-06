@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-205529-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205806-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AF14CF9FFE
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:14:03 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44A11CFA535
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:52:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0295A340B246
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:01:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BCC87321D7CB
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:06:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A20620296E;
-	Tue,  6 Jan 2026 17:36:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B87E22E1F0E;
+	Tue,  6 Jan 2026 17:52:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2uyR/i+t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d/Pwa2k0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 485234A35;
-	Tue,  6 Jan 2026 17:36:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7576727FD76;
+	Tue,  6 Jan 2026 17:52:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767720996; cv=none; b=pkEjzmXF/e7BCu5dhBkufipDEtLdHJgAs2nq1d8LH+z22/tQbRJS7lhgI/UieSDuihfwuuK5J5Ics3iz+UDuGlqpJ15R04lVHrhfqSU5UVGm2vLTZWs88bFSYC3jM+NN4SEGLIA1t8gVl4yyyb6lMZrJRc6tbw6cCE79UVgN79o=
+	t=1767721924; cv=none; b=mDQc27JbQyp08ww9I3ImLQ/v6NjIhvyNQNwHHM6GdR4x+9ySBgJoKWyhYL6MJVTyuSc7PfFu42Y9YOMz8g+6woVgDGx1oIp/2jQCTLDDlH/T6boagl7SxAi9+tNRt0jm9EDNBEc7R0Ok1zb44P9vflj63lgyhyYR4MlnFqYKEJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767720996; c=relaxed/simple;
-	bh=4ZoVoprKO36lPFe93BBx2ZI7nUoVqwrQa5od930/VBM=;
+	s=arc-20240116; t=1767721924; c=relaxed/simple;
+	bh=IL7P2bFvjkKX6vSZFytsOIyhxZmgrUHUJHH2OAFHaYM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QOCl5P6COFS3LGQ/o9VGYtPQtevve3dh7hbo+AAF4apHbqkD1/KMGmpWZ0VgrEet80tFvsEamda7sVThiI+6H/6yG2CCzWTvUwWDjdaGktOoIRJQSeQo9wdj8IeSV1DwUjmcuciqvhn/h5r4X+mwAzheZ4K2h/tsJG1vQVRxVKA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2uyR/i+t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEB78C116C6;
-	Tue,  6 Jan 2026 17:36:35 +0000 (UTC)
+	 MIME-Version; b=YBv/W+y/H7pcm7mrPJlNQ6a+ZxYt3KnnbBdLmSSVP9JRm9J3vq2HcSzb5fslY8knK49qTEJKtnrSLb6LiJgJS1VMnkxiWm5o4Plomx77MNF7ShLXrwF2DvVcJjkqkaz3i88ZQVl/+Y+knfYcXd6KR9/BJkR6b4nDZnFxWgC7jqc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d/Pwa2k0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D599FC116C6;
+	Tue,  6 Jan 2026 17:52:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767720996;
-	bh=4ZoVoprKO36lPFe93BBx2ZI7nUoVqwrQa5od930/VBM=;
+	s=korg; t=1767721924;
+	bh=IL7P2bFvjkKX6vSZFytsOIyhxZmgrUHUJHH2OAFHaYM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2uyR/i+tQnBJyhnzCReVXPZVn6HslmzZS2Q46rbu2fyi0Ts62XXa63Qe8W1VXsXPE
-	 AhRYo76R7HtXnJtrWZ3OTIyFmJZqONtpVh6tz69yk+vmV+gCJOqWk8So36FIJJA5M5
-	 8o+ZEzjmu3h36Bzq6LZh5ZDNhCAIXddXlKUDywVc=
+	b=d/Pwa2k08HTeYUnmuWqKzUTuJ+1/zwkR5mWHkaTH+ZVb7EqW/2WD1CJiUkPANz27l
+	 2s1PpH99zpwRjp1E2Wm/pHfo4YvxJS09VTL/NP1BpVogQ+90Ahcu0c+4/u05zCdnyS
+	 98g3ESelbrkI+D+TvANbi1FRSrtPE4BMAB9vvH5w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Moudy Ho <moudy.ho@mediatek.com>,
+	Magnus Damm <damm+renesas@opensource.se>,
+	Robin Murphy <robin.murphy@arm.com>,
 	Johan Hovold <johan@kernel.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 6.12 404/567] media: platform: mtk-mdp3: fix device leaks at probe
+	Joerg Roedel <joerg.roedel@amd.com>
+Subject: [PATCH 6.18 112/312] iommu/ipmmu-vmsa: fix device leak on of_xlate()
 Date: Tue,  6 Jan 2026 18:03:06 +0100
-Message-ID: <20260106170506.287266243@linuxfoundation.org>
+Message-ID: <20260106170551.888268644@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
-References: <20260106170451.332875001@linuxfoundation.org>
+In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
+References: <20260106170547.832845344@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Johan Hovold <johan@kernel.org>
 
-commit 8f6f3aa21517ef34d50808af0c572e69580dca20 upstream.
+commit 80aa518452c4aceb9459f9a8e3184db657d1b441 upstream.
 
-Make sure to drop the references taken when looking up the subsys
-devices during probe on probe failure (e.g. probe deferral) and on
-driver unbind.
+Make sure to drop the reference taken to the iommu platform device when
+looking up its driver data during of_xlate().
 
-Similarly, drop the SCP device reference after retrieving its platform
-data during probe to avoid leaking it.
-
-Note that holding a reference to a device does not prevent its driver
-data from going away.
-
-Fixes: 61890ccaefaf ("media: platform: mtk-mdp3: add MediaTek MDP3 driver")
-Cc: stable@vger.kernel.org	# 6.1
-Cc: Moudy Ho <moudy.ho@mediatek.com>
+Fixes: 7b2d59611fef ("iommu/ipmmu-vmsa: Replace local utlb code with fwspec ids")
+Cc: stable@vger.kernel.org	# 4.14
+Cc: Magnus Damm <damm+renesas@opensource.se>
+Acked-by: Robin Murphy <robin.murphy@arm.com>
 Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/mediatek/mdp3/mtk-mdp3-core.c |   14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ drivers/iommu/ipmmu-vmsa.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/media/platform/mediatek/mdp3/mtk-mdp3-core.c
-+++ b/drivers/media/platform/mediatek/mdp3/mtk-mdp3-core.c
-@@ -176,10 +176,18 @@ void mdp_video_device_release(struct vid
- 	kfree(mdp);
+--- a/drivers/iommu/ipmmu-vmsa.c
++++ b/drivers/iommu/ipmmu-vmsa.c
+@@ -720,6 +720,8 @@ static int ipmmu_init_platform_device(st
+ 
+ 	dev_iommu_priv_set(dev, platform_get_drvdata(ipmmu_pdev));
+ 
++	put_device(&ipmmu_pdev->dev);
++
+ 	return 0;
  }
  
-+static void mdp_put_device(void *_dev)
-+{
-+	struct device *dev = _dev;
-+
-+	put_device(dev);
-+}
-+
- static int mdp_mm_subsys_deploy(struct mdp_dev *mdp, enum mdp_infra_id id)
- {
- 	struct platform_device *mm_pdev = NULL;
- 	struct device **dev;
-+	int ret;
- 	int i;
- 
- 	if (!mdp)
-@@ -213,6 +221,11 @@ static int mdp_mm_subsys_deploy(struct m
- 		if (WARN_ON(!mm_pdev))
- 			return -ENODEV;
- 
-+		ret = devm_add_action_or_reset(&mdp->pdev->dev, mdp_put_device,
-+					       &mm_pdev->dev);
-+		if (ret)
-+			return ret;
-+
- 		*dev = &mm_pdev->dev;
- 	}
- 
-@@ -298,6 +311,7 @@ static int mdp_probe(struct platform_dev
- 			goto err_destroy_clock_wq;
- 		}
- 		mdp->scp = platform_get_drvdata(mm_pdev);
-+		put_device(&mm_pdev->dev);
- 	}
- 
- 	mdp->rproc_handle = scp_get_rproc(mdp->scp);
 
 
 
