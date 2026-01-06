@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-205814-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205537-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CC0ECFA871
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:15:23 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A4AECFABA2
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:42:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A918A30BAD78
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:26:39 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 880D73002D09
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 19:42:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B8C82FB630;
-	Tue,  6 Jan 2026 17:52:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95CC633D6D2;
+	Tue,  6 Jan 2026 17:37:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="twSZHj2n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BkAlwwqf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27E4A2FFDF9;
-	Tue,  6 Jan 2026 17:52:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 535B533987D;
+	Tue,  6 Jan 2026 17:37:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721952; cv=none; b=Z+oQas0wIZWyhgloS4oXKQyk8yfx7IN3x+c0KiPfaBgsPZqyWyvGSLcYJd3MRXhVxV6SmjY0Le9Rr/boQweN3V+iMWEOtVmcLgPrz5tZgrhtSgajqXpQuL+YqhtuKXed+ZRoTje7OKydzgxF3AoBwvJqlbkMTjCEI3sPcAtX+rI=
+	t=1767721023; cv=none; b=tZ/QA/eAHbVBDRGgxMKAAHJQxNykSsXBpMfWeoWV4catA6QG35onSSbjX/K9TBGfojSNYCcEiJ+vvSHqHxt0oNOxXve0JssBg/b9pRD034MfDi8raxPL3JBahB3rnb1Icah4fGkLNFP3EUPqu/Dphrvh6K1YJ1yMWxcy+qN1ee8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721952; c=relaxed/simple;
-	bh=bzh7EXS+KtbrYbaaRGBwb49ZYBee+WgXpaN5eQmy2TY=;
+	s=arc-20240116; t=1767721023; c=relaxed/simple;
+	bh=HomahYILYSnV+q/06P+i36ZuNuXu/wl+JHuEalVj9vI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l2uiYzKkTAYpNZ8jVfaO74Cw4I0P1ph1Le5OnlMWrf7kyhfAT5104Lz4I60QsbfXLt4/Xs/eYTP+k/b8TyGxPPZPvnHv7kQmOfaQL++Un3uV0Jbp2IIwz/y6DcVi36o/qpmNJ38HMVVEkMU+Cvyz6u/vhuReyfgAEuWyPkKPyRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=twSZHj2n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82EEDC116C6;
-	Tue,  6 Jan 2026 17:52:31 +0000 (UTC)
+	 MIME-Version; b=pMlBP8btnlgEwbI/z8863ZPQgUGXMKrsdBCl3vo3RujGHgpl88ckZ2nqTuQ6b7OVy3zEaRJY+yqlXIHSAsqcCzgZq6HIYrgISyAzkYHywzLcHJstLBDXuPTF2ZXmulJb2TfjoyEv1yQsrMHAx/BIJHlSb5WJg4s6077ZYtu0MLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BkAlwwqf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5D42C116C6;
+	Tue,  6 Jan 2026 17:37:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721952;
-	bh=bzh7EXS+KtbrYbaaRGBwb49ZYBee+WgXpaN5eQmy2TY=;
+	s=korg; t=1767721023;
+	bh=HomahYILYSnV+q/06P+i36ZuNuXu/wl+JHuEalVj9vI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=twSZHj2n3Pk4Kk+4qTYRXl47MaWVlYtwANCw7pCG4Cd0slEnhWGAmcvT81/5+jT+m
-	 rufa3zKbA7zSQLmi3J1NpP1fj52PwJKbT0NBybezOWkKPgcUL6sh2fkawtKLwXYmMd
-	 o48a1mRzIzlwmjoWyFrvxSzjZUWph2PaucsIR7Zg=
+	b=BkAlwwqf+dHyjhB9RzhD+IQ+EcWLV5INBDY2LkDBOC1MKnG2Xw4OW5u8V2mXQUVBE
+	 6EIWVzzu+KCI9AMFYL4fNIUoA6unUmTuThibaHG3naWnnLvE+N1yz+8Vomocbn8Z03
+	 WwARBO4RHvk+zCUkD3BlNQ08D6vS1BZwsXVO///0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miaoqian Lin <linmq006@gmail.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Thierry Reding <treding@nvidia.com>,
-	Johan Hovold <johan@kernel.org>,
-	Joerg Roedel <joerg.roedel@amd.com>
-Subject: [PATCH 6.18 119/312] iommu/tegra: fix device leak on probe_device()
-Date: Tue,  6 Jan 2026 18:03:13 +0100
-Message-ID: <20260106170552.149033096@linuxfoundation.org>
+	Ming Qian <ming.qian@oss.nxp.com>,
+	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 6.12 412/567] media: amphion: Cancel message work before releasing the VPU core
+Date: Tue,  6 Jan 2026 18:03:14 +0100
+Message-ID: <20260106170506.586079587@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
-References: <20260106170547.832845344@linuxfoundation.org>
+In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
+References: <20260106170451.332875001@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +60,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Ming Qian <ming.qian@oss.nxp.com>
 
-commit c08934a61201db8f1d1c66fcc63fb2eb526b656d upstream.
+commit ae246b0032146e352c4c06a7bf03cd3d5bcb2ecd upstream.
 
-Make sure to drop the reference taken to the iommu platform device when
-looking up its driver data during probe_device().
+To avoid accessing the VPU register after release of the VPU core,
+cancel the message work and destroy the workqueue that handles the
+VPU message before release of the VPU core.
 
-Note that commit 9826e393e4a8 ("iommu/tegra-smmu: Fix missing
-put_device() call in tegra_smmu_find") fixed the leak in an error path,
-but the reference is still leaking on success.
-
-Fixes: 891846516317 ("memory: Add NVIDIA Tegra memory controller support")
-Cc: stable@vger.kernel.org	# 3.19: 9826e393e4a8
-Cc: Miaoqian Lin <linmq006@gmail.com>
-Acked-by: Robin Murphy <robin.murphy@arm.com>
-Acked-by: Thierry Reding <treding@nvidia.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
+Fixes: 3cd084519c6f ("media: amphion: add vpu v4l2 m2m support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
+Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/tegra-smmu.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/media/platform/amphion/vpu_v4l2.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/iommu/tegra-smmu.c
-+++ b/drivers/iommu/tegra-smmu.c
-@@ -830,10 +830,9 @@ static struct tegra_smmu *tegra_smmu_fin
- 		return NULL;
+--- a/drivers/media/platform/amphion/vpu_v4l2.c
++++ b/drivers/media/platform/amphion/vpu_v4l2.c
+@@ -698,15 +698,15 @@ static int vpu_v4l2_release(struct vpu_i
+ {
+ 	vpu_trace(inst->vpu->dev, "%p\n", inst);
  
- 	mc = platform_get_drvdata(pdev);
--	if (!mc) {
--		put_device(&pdev->dev);
-+	put_device(&pdev->dev);
-+	if (!mc)
- 		return NULL;
--	}
+-	vpu_release_core(inst->core);
+-	put_device(inst->dev);
+-
+ 	if (inst->workqueue) {
+ 		cancel_work_sync(&inst->msg_work);
+ 		destroy_workqueue(inst->workqueue);
+ 		inst->workqueue = NULL;
+ 	}
  
- 	return mc->smmu;
- }
++	vpu_release_core(inst->core);
++	put_device(inst->dev);
++
+ 	v4l2_ctrl_handler_free(&inst->ctrl_handler);
+ 	mutex_destroy(&inst->lock);
+ 
 
 
 
