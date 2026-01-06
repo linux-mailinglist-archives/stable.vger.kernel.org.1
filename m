@@ -1,51 +1,50 @@
-Return-Path: <stable+bounces-206016-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206008-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8702FCFA0C8
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:18:34 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62F0FCFA0DA
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:18:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DB5893079B9C
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:16:42 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 152F630223F9
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:16:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEA4833EAEB;
-	Tue,  6 Jan 2026 18:03:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5401D348466;
+	Tue,  6 Jan 2026 18:03:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fhr59/HY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S3Poykep"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AE1D338590;
-	Tue,  6 Jan 2026 18:03:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 119C833D50F;
+	Tue,  6 Jan 2026 18:03:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767722620; cv=none; b=gowKeK+ZXnopBxsDVPJW/4bW9WRTXU0mcdJ9znbSI/B0tSDwplalwMYNHWT05bnolD9YXs2P8RD0juDwvdLmWm1xo7KQcJQFt7KNuQMROislM7fqKVD3G8svhIQhivJOBs+8IRWd+rZgaLQ3OvHjZeWZqgrHGUBBftdvOtCH8nY=
+	t=1767722595; cv=none; b=r5Tmv1Di1lLY/KvVJQTUTMBg4mXFUuZGHmMUC+cRJmMdhspMht/+t2z3WqGpcYAMciCE6rH/M5GAhdzW+0OXIkpBDX5TreNr5tpREAipOo7EN0bndW3oLjc54hNmd90P9Jk0VpXcjedIZ3VPUtoqtZ/eFEt1DdgAxE/GQSmQ6hE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767722620; c=relaxed/simple;
-	bh=Jp1tzmtgFW2DbYtIxUmJPYD+ibWBxWy8WEtJoOI/TmY=;
+	s=arc-20240116; t=1767722595; c=relaxed/simple;
+	bh=8CtP+WDRh0D3wV66rnDjdruzzCVFL7UyjhUN5pno06Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XpSi1unC4CDcvjR1zRIo5TIICyCOPZTqhD5M3xLFX1u4LWAc/TU8CagQ3sFhpsQqd8FhyCV5DkXoam9xwBW3io9yj5BGJ9+JerMs5tBz6/H+s5NGX612VxEhzOSvqtmZ3R2uSD++Bl7ZDdYrWfBrHP/5hlrgjRsEjPcsz94mcvc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fhr59/HY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED193C116C6;
-	Tue,  6 Jan 2026 18:03:39 +0000 (UTC)
+	 MIME-Version; b=sb566K8cG8DofQC9YcGCpdMdNg8pBdHP0PExi6XATPs6OD6ZWBZl2S+L7G97HC1lbc/IoME6bbyVO2aJ1v6lnH43jlaHG4L5e8xZ/HKUroEx5dRGJh/am8setfBNvDQf+uThKkcbDS4kavThdVLKzjuYHqJYtV+IpfAWKs/1PoI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S3Poykep; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BF85C116C6;
+	Tue,  6 Jan 2026 18:03:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767722620;
-	bh=Jp1tzmtgFW2DbYtIxUmJPYD+ibWBxWy8WEtJoOI/TmY=;
+	s=korg; t=1767722594;
+	bh=8CtP+WDRh0D3wV66rnDjdruzzCVFL7UyjhUN5pno06Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fhr59/HYZRrWoURlzEoe5ybj4TkZJwvfqypUoygm/WLVnahsT41LkSRMhs1PbmZQm
-	 kwPesqeikiT5f3pbfQoVTtCnEIOUF6RVgla+ZYzNRrAhSagQxgRPpjg8MXLtEL1ZY0
-	 G3TIZ9nCUy1mabywVTSnmm+ORYmbwvKv+6wLdNzs=
+	b=S3PoykepUsjffZvkDkXZa5BrE42geN8hdJsN20dZNDWjdHXPdt7hkeXXFMtk5CYHu
+	 gVYHi1UOvFI/VJ3bvhgFpykutVmaYASuXxePY1kvu+ebLNtdBs6xg4rR2vzEU0IIlP
+	 YniP/3fVX+GWZfn1Lw6Qi07iK4zw474ifhMLb+WM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Farrah Chen <farrah.chen@intel.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Alex Williamson <alex@shazbot.org>
-Subject: [PATCH 6.18 310/312] vfio/pci: Disable qword access to the PCI ROM bar
-Date: Tue,  6 Jan 2026 18:06:24 +0100
-Message-ID: <20260106170559.074694065@linuxfoundation.org>
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>
+Subject: [PATCH 6.18 312/312] [PATCH v2] Revert "gpio: swnode: dont use the swnodes name as the key for GPIO lookup"
+Date: Tue,  6 Jan 2026 18:06:26 +0100
+Message-ID: <20260106170559.148390086@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
 References: <20260106170547.832845344@linuxfoundation.org>
@@ -64,164 +63,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Kevin Tian <kevin.tian@intel.com>
+From: Charles Keepax <ckeepax@opensource.cirrus.com>
 
-[ Upstream commit dc85a46928c41423ad89869baf05a589e2975575 ]
+This reverts commit e5d527be7e6984882306b49c067f1fec18920735.
 
-Commit 2b938e3db335 ("vfio/pci: Enable iowrite64 and ioread64 for vfio
-pci") enables qword access to the PCI bar resources. However certain
-devices (e.g. Intel X710) are observed with problem upon qword accesses
-to the rom bar, e.g. triggering PCI aer errors.
+This software node change doesn't actually fix any current issues
+with the kernel, it is an improvement to the lookup process rather
+than fixing a live bug. It also causes a couple of regressions with
+shipping laptops, which relied on the label based lookup.
 
-This is triggered by Qemu which caches the rom content by simply does a
-pread() of the remaining size until it gets the full contents. The other
-bars would only perform operations at the same access width as their
-guest drivers.
+There is a fix for the regressions in mainline, the first 5 patches
+of [1]. However, those patches are fairly substantial changes and
+given the patch causing the regression doesn't actually fix a bug
+it seems better to just revert it in stable.
 
-Instead of trying to identify all broken devices, universally disable
-qword access to the rom bar i.e. going back to the old way which worked
-reliably for years.
-
-Reported-by: Farrah Chen <farrah.chen@intel.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220740
-Fixes: 2b938e3db335 ("vfio/pci: Enable iowrite64 and ioread64 for vfio pci")
-Cc: stable@vger.kernel.org
-Signed-off-by: Kevin Tian <kevin.tian@intel.com>
-Tested-by: Farrah Chen <farrah.chen@intel.com>
-Link: https://lore.kernel.org/r/20251218081650.555015-2-kevin.tian@intel.com
-Signed-off-by: Alex Williamson <alex@shazbot.org>
+CC: stable@vger.kernel.org # 6.18
+Link: https://lore.kernel.org/linux-sound/20251120-reset-gpios-swnodes-v7-0-a100493a0f4b@linaro.org/ [1]
+Closes: https://github.com/thesofproject/linux/issues/5599
+Closes: https://github.com/thesofproject/linux/issues/5603
+Acked-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/vfio/pci/nvgrace-gpu/main.c |    4 ++--
- drivers/vfio/pci/vfio_pci_rdwr.c    |   25 ++++++++++++++++++-------
- include/linux/vfio_pci_core.h       |   10 +++++++++-
- 3 files changed, 29 insertions(+), 10 deletions(-)
+ drivers/gpio/gpiolib-swnode.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/vfio/pci/nvgrace-gpu/main.c
-+++ b/drivers/vfio/pci/nvgrace-gpu/main.c
-@@ -491,7 +491,7 @@ nvgrace_gpu_map_and_read(struct nvgrace_
- 		ret = vfio_pci_core_do_io_rw(&nvdev->core_device, false,
- 					     nvdev->resmem.ioaddr,
- 					     buf, offset, mem_count,
--					     0, 0, false);
-+					     0, 0, false, VFIO_PCI_IO_WIDTH_8);
- 	}
+--- a/drivers/gpio/gpiolib-swnode.c
++++ b/drivers/gpio/gpiolib-swnode.c
+@@ -41,7 +41,7 @@ static struct gpio_device *swnode_get_gp
+ 	    !strcmp(gdev_node->name, GPIOLIB_SWNODE_UNDEFINED_NAME))
+ 		return ERR_PTR(-ENOENT);
  
- 	return ret;
-@@ -609,7 +609,7 @@ nvgrace_gpu_map_and_write(struct nvgrace
- 		ret = vfio_pci_core_do_io_rw(&nvdev->core_device, false,
- 					     nvdev->resmem.ioaddr,
- 					     (char __user *)buf, pos, mem_count,
--					     0, 0, true);
-+					     0, 0, true, VFIO_PCI_IO_WIDTH_8);
- 	}
+-	gdev = gpio_device_find_by_fwnode(fwnode);
++	gdev = gpio_device_find_by_label(gdev_node->name);
+ 	return gdev ?: ERR_PTR(-EPROBE_DEFER);
+ }
  
- 	return ret;
---- a/drivers/vfio/pci/vfio_pci_rdwr.c
-+++ b/drivers/vfio/pci/vfio_pci_rdwr.c
-@@ -135,7 +135,8 @@ VFIO_IORDWR(64)
- ssize_t vfio_pci_core_do_io_rw(struct vfio_pci_core_device *vdev, bool test_mem,
- 			       void __iomem *io, char __user *buf,
- 			       loff_t off, size_t count, size_t x_start,
--			       size_t x_end, bool iswrite)
-+			       size_t x_end, bool iswrite,
-+			       enum vfio_pci_io_width max_width)
- {
- 	ssize_t done = 0;
- 	int ret;
-@@ -150,20 +151,19 @@ ssize_t vfio_pci_core_do_io_rw(struct vf
- 		else
- 			fillable = 0;
- 
--		if (fillable >= 8 && !(off % 8)) {
-+		if (fillable >= 8 && !(off % 8) && max_width >= 8) {
- 			ret = vfio_pci_iordwr64(vdev, iswrite, test_mem,
- 						io, buf, off, &filled);
- 			if (ret)
- 				return ret;
- 
--		} else
--		if (fillable >= 4 && !(off % 4)) {
-+		} else if (fillable >= 4 && !(off % 4) && max_width >= 4) {
- 			ret = vfio_pci_iordwr32(vdev, iswrite, test_mem,
- 						io, buf, off, &filled);
- 			if (ret)
- 				return ret;
- 
--		} else if (fillable >= 2 && !(off % 2)) {
-+		} else if (fillable >= 2 && !(off % 2) && max_width >= 2) {
- 			ret = vfio_pci_iordwr16(vdev, iswrite, test_mem,
- 						io, buf, off, &filled);
- 			if (ret)
-@@ -234,6 +234,7 @@ ssize_t vfio_pci_bar_rw(struct vfio_pci_
- 	void __iomem *io;
- 	struct resource *res = &vdev->pdev->resource[bar];
- 	ssize_t done;
-+	enum vfio_pci_io_width max_width = VFIO_PCI_IO_WIDTH_8;
- 
- 	if (pci_resource_start(pdev, bar))
- 		end = pci_resource_len(pdev, bar);
-@@ -262,6 +263,16 @@ ssize_t vfio_pci_bar_rw(struct vfio_pci_
- 		if (!io)
- 			return -ENOMEM;
- 		x_end = end;
-+
-+		/*
-+		 * Certain devices (e.g. Intel X710) don't support qword
-+		 * access to the ROM bar. Otherwise PCI AER errors might be
-+		 * triggered.
-+		 *
-+		 * Disable qword access to the ROM bar universally, which
-+		 * worked reliably for years before qword access is enabled.
-+		 */
-+		max_width = VFIO_PCI_IO_WIDTH_4;
- 	} else {
- 		int ret = vfio_pci_core_setup_barmap(vdev, bar);
- 		if (ret) {
-@@ -278,7 +289,7 @@ ssize_t vfio_pci_bar_rw(struct vfio_pci_
- 	}
- 
- 	done = vfio_pci_core_do_io_rw(vdev, res->flags & IORESOURCE_MEM, io, buf, pos,
--				      count, x_start, x_end, iswrite);
-+				      count, x_start, x_end, iswrite, max_width);
- 
- 	if (done >= 0)
- 		*ppos += done;
-@@ -352,7 +363,7 @@ ssize_t vfio_pci_vga_rw(struct vfio_pci_
- 	 * to the memory enable bit in the command register.
- 	 */
- 	done = vfio_pci_core_do_io_rw(vdev, false, iomem, buf, off, count,
--				      0, 0, iswrite);
-+				      0, 0, iswrite, VFIO_PCI_IO_WIDTH_8);
- 
- 	vga_put(vdev->pdev, rsrc);
- 
---- a/include/linux/vfio_pci_core.h
-+++ b/include/linux/vfio_pci_core.h
-@@ -102,6 +102,13 @@ struct vfio_pci_core_device {
- 	struct rw_semaphore	memory_lock;
- };
- 
-+enum vfio_pci_io_width {
-+	VFIO_PCI_IO_WIDTH_1 = 1,
-+	VFIO_PCI_IO_WIDTH_2 = 2,
-+	VFIO_PCI_IO_WIDTH_4 = 4,
-+	VFIO_PCI_IO_WIDTH_8 = 8,
-+};
-+
- /* Will be exported for vfio pci drivers usage */
- int vfio_pci_core_register_dev_region(struct vfio_pci_core_device *vdev,
- 				      unsigned int type, unsigned int subtype,
-@@ -139,7 +146,8 @@ pci_ers_result_t vfio_pci_core_aer_err_d
- ssize_t vfio_pci_core_do_io_rw(struct vfio_pci_core_device *vdev, bool test_mem,
- 			       void __iomem *io, char __user *buf,
- 			       loff_t off, size_t count, size_t x_start,
--			       size_t x_end, bool iswrite);
-+			       size_t x_end, bool iswrite,
-+			       enum vfio_pci_io_width max_width);
- bool vfio_pci_core_range_intersect_range(loff_t buf_start, size_t buf_cnt,
- 					 loff_t reg_start, size_t reg_cnt,
- 					 loff_t *buf_offset,
 
 
 
