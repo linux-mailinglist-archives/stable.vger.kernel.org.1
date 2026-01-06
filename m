@@ -1,196 +1,179 @@
-Return-Path: <stable+bounces-205126-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205938-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AF74CF9918
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 18:13:00 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 481CFCFA5A0
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:56:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9BE37300DB0D
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:12:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 993713480055
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:13:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D4C4342502;
-	Tue,  6 Jan 2026 17:05:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D64FC36D4FD;
+	Tue,  6 Jan 2026 17:59:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bJj0QeAT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FCNR3yNF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEB4B342177
-	for <stable@vger.kernel.org>; Tue,  6 Jan 2026 17:05:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92A0636CE1C;
+	Tue,  6 Jan 2026 17:59:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767719125; cv=none; b=i/mFVyZmD+5re+f7vdpRNuJQvO6l9/1Qu5p5rP+1DIhKO0j5s0IVn9GjupO98pHLtDEaXOgL1VAWtgk+YwJBR9PocAteHhqJz1tntgVxrjyQGgq9wxv8Werhrok0hvWMmZkJ6we1wvjkljHeooF2FzGq+Lv6mWEjUXZHpY8XKPg=
+	t=1767722360; cv=none; b=OnDg209zAZlVUPbqc7q8J9eoukhJ21HoSwVZFi2RM32NR6rK8styGVwucrzewmtvVaxXvtMVcGNIxICoYHPtM1kj7B+rnrOryvK+9rCsid5/DYIOHYpNoJ26l2Gha2DNaz8UZS3Vi2YpaopUJzryfC2VjrzjAFYDaoiZn5Rw19s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767719125; c=relaxed/simple;
-	bh=tXbrWKf9tkxCHTWE1VMpbAwjjQbEUqvUmVC3UJ3GSzo=;
+	s=arc-20240116; t=1767722360; c=relaxed/simple;
+	bh=UD6+4ER9Ai5UoFB4vxt898ubugE5tDg3kSepWZqaWa0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Olmw81+EfaeLyKZj5SAZwNVO5AowqF+FEHkWJlxp2vJrbUMtLYA37QcFL19g9PRPLXnj7OpROfy98TUtNcdkdJZx/ovm2QbOzPxTq1n2o+mFlwzrCOTf5HeTmWwlO8UGfqjSd+IMisqMczGMJey6nR3HaGhzfU4yKh4fQtHsss0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bJj0QeAT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAF0DC116C6;
-	Tue,  6 Jan 2026 17:05:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767719124;
-	bh=tXbrWKf9tkxCHTWE1VMpbAwjjQbEUqvUmVC3UJ3GSzo=;
+	 MIME-Version; b=AsKAY1YH1MLeQw4+rkY/qZjGl7hyJXfK3fslt7HqLKAI0rcSotf17NV4+CPxC+qafW2y7BM0uH/i4ZiNz7ssxKg3Dwx6/oxTcqy/OhnK0+WjCQ0bwu7YBEhgkiEk8r4BvwKsrgJOWUO3AGzTH3QeVY54rPsxoVfMUq+w3KhLKmE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FCNR3yNF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00390C116C6;
+	Tue,  6 Jan 2026 17:59:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1767722360;
+	bh=UD6+4ER9Ai5UoFB4vxt898ubugE5tDg3kSepWZqaWa0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bJj0QeATNVLbZ6JRUZY6lOV6ilshKiZPoPtauZ5EINTawOzlzdeBbMQxzD+KbIu12
-	 moWO3ZSTb4w3j2/MfwbZ7vqRF2CFfwrJCN2fGKB/hZe/sBBO0Kk+gY86MOSlu4tTPe
-	 7kgsLP+AFDMKdljP65KkWhVhyROjoj01tvA2oYgpBj2AOdQ6kWfH1ffvjaari9eabr
-	 /dUzeJLUTy1ie8mpfv5O2FdY6PAG6wKI7tHWa8hpPp82wBs7PvIbJiZJsbkNpWLPUt
-	 ckclFP7jU3i9BSVvlqC5h0UJ3mrulP6QIXMJqoE1AGWxvzagTCn3aibmXQA0KsH8U1
-	 MnSFeMfBQ0Ohw==
-From: Sasha Levin <sashal@kernel.org>
+	b=FCNR3yNF0YVYMIPIDkbyWe9LExKh3EopbUxds1lPvxFYnkJNZCCJ1IXCVBDJPidxk
+	 ak2JzJfTiaX4qckyQYayD5bpFXq1quUlETzGxTNRxGvwVgXyn1PL1++6W0Ag9+stKO
+	 RS0P3Yncsl/986yJo6Li6bP4y/8Oxugn1l4UAZ1I=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
-Cc: Rob Herring <robh@kernel.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y 1/2] pmdomain: Use device_get_match_data()
-Date: Tue,  6 Jan 2026 12:05:16 -0500
-Message-ID: <20260106170520.3081258-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026010514-cahoots-scholar-954d@gregkh>
-References: <2026010514-cahoots-scholar-954d@gregkh>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	Frode Nordahl <fnordahl@ubuntu.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.18 242/312] erspan: Initialize options_len before referencing options.
+Date: Tue,  6 Jan 2026 18:05:16 +0100
+Message-ID: <20260106170556.605308089@linuxfoundation.org>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
+References: <20260106170547.832845344@linuxfoundation.org>
+User-Agent: quilt/0.69
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Rob Herring <robh@kernel.org>
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
-[ Upstream commit 3ba9fdfaa550936837b50b73d6c27ac401fde875 ]
+------------------
 
-Use preferred device_get_match_data() instead of of_match_device() to
-get the driver match data. With this, adjust the includes to explicitly
-include the correct headers.
+From: Frode Nordahl <fnordahl@ubuntu.com>
 
-Signed-off-by: Rob Herring <robh@kernel.org>
-Link: https://lore.kernel.org/r/20231006224614.444488-1-robh@kernel.org
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Stable-dep-of: 73cb5f6eafb0 ("pmdomain: imx: Fix reference count leak in imx_gpc_probe()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+commit 35ddf66c65eff93fff91406756ba273600bf61a3 upstream.
+
+The struct ip_tunnel_info has a flexible array member named
+options that is protected by a counted_by(options_len)
+attribute.
+
+The compiler will use this information to enforce runtime bounds
+checking deployed by FORTIFY_SOURCE string helpers.
+
+As laid out in the GCC documentation, the counter must be
+initialized before the first reference to the flexible array
+member.
+
+After scanning through the files that use struct ip_tunnel_info
+and also refer to options or options_len, it appears the normal
+case is to use the ip_tunnel_info_opts_set() helper.
+
+Said helper would initialize options_len properly before copying
+data into options, however in the GRE ERSPAN code a partial
+update is done, preventing the use of the helper function.
+
+Before this change the handling of ERSPAN traffic in GRE tunnels
+would cause a kernel panic when the kernel is compiled with
+GCC 15+ and having FORTIFY_SOURCE configured:
+
+memcpy: detected buffer overflow: 4 byte write of buffer size 0
+
+Call Trace:
+ <IRQ>
+ __fortify_panic+0xd/0xf
+ erspan_rcv.cold+0x68/0x83
+ ? ip_route_input_slow+0x816/0x9d0
+ gre_rcv+0x1b2/0x1c0
+ gre_rcv+0x8e/0x100
+ ? raw_v4_input+0x2a0/0x2b0
+ ip_protocol_deliver_rcu+0x1ea/0x210
+ ip_local_deliver_finish+0x86/0x110
+ ip_local_deliver+0x65/0x110
+ ? ip_rcv_finish_core+0xd6/0x360
+ ip_rcv+0x186/0x1a0
+
+Cc: stable@vger.kernel.org
+Link: https://gcc.gnu.org/onlinedocs/gcc/Common-Variable-Attributes.html#index-counted_005fby-variable-attribute
+Reported-at: https://launchpad.net/bugs/2129580
+Fixes: bb5e62f2d547 ("net: Add options as a flexible array to struct ip_tunnel_info")
+Signed-off-by: Frode Nordahl <fnordahl@ubuntu.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20251213101338.4693-1-fnordahl@ubuntu.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/soc/actions/owl-sps.c     | 16 +++++-----------
- drivers/soc/imx/gpc.c             |  7 +++----
- drivers/soc/rockchip/pm_domains.c | 13 ++++---------
- 3 files changed, 12 insertions(+), 24 deletions(-)
+ net/ipv4/ip_gre.c  |    6 ++++--
+ net/ipv6/ip6_gre.c |    6 ++++--
+ 2 files changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/soc/actions/owl-sps.c b/drivers/soc/actions/owl-sps.c
-index 73a9e0bb7e8e..3a586d1f3256 100644
---- a/drivers/soc/actions/owl-sps.c
-+++ b/drivers/soc/actions/owl-sps.c
-@@ -8,8 +8,10 @@
-  * Copyright (c) 2017 Andreas Färber
-  */
+--- a/net/ipv4/ip_gre.c
++++ b/net/ipv4/ip_gre.c
+@@ -330,6 +330,10 @@ static int erspan_rcv(struct sk_buff *sk
+ 			if (!tun_dst)
+ 				return PACKET_REJECT;
  
-+#include <linux/mod_devicetable.h>
- #include <linux/of_address.h>
--#include <linux/of_platform.h>
-+#include <linux/platform_device.h>
-+#include <linux/property.h>
- #include <linux/pm_domain.h>
- #include <linux/soc/actions/owl-sps.h>
- #include <dt-bindings/power/owl-s500-powergate.h>
-@@ -96,24 +98,16 @@ static int owl_sps_init_domain(struct owl_sps *sps, int index)
++			/* MUST set options_len before referencing options */
++			info = &tun_dst->u.tun_info;
++			info->options_len = sizeof(*md);
++
+ 			/* skb can be uncloned in __iptunnel_pull_header, so
+ 			 * old pkt_md is no longer valid and we need to reset
+ 			 * it
+@@ -344,10 +348,8 @@ static int erspan_rcv(struct sk_buff *sk
+ 			memcpy(md2, pkt_md, ver == 1 ? ERSPAN_V1_MDSIZE :
+ 						       ERSPAN_V2_MDSIZE);
  
- static int owl_sps_probe(struct platform_device *pdev)
- {
--	const struct of_device_id *match;
- 	const struct owl_sps_info *sps_info;
- 	struct owl_sps *sps;
- 	int i, ret;
+-			info = &tun_dst->u.tun_info;
+ 			__set_bit(IP_TUNNEL_ERSPAN_OPT_BIT,
+ 				  info->key.tun_flags);
+-			info->options_len = sizeof(*md);
+ 		}
  
--	if (!pdev->dev.of_node) {
--		dev_err(&pdev->dev, "no device node\n");
--		return -ENODEV;
--	}
--
--	match = of_match_device(pdev->dev.driver->of_match_table, &pdev->dev);
--	if (!match || !match->data) {
-+	sps_info = device_get_match_data(&pdev->dev);
-+	if (!sps_info) {
- 		dev_err(&pdev->dev, "unknown compatible or missing data\n");
- 		return -EINVAL;
- 	}
+ 		skb_reset_mac_header(skb);
+--- a/net/ipv6/ip6_gre.c
++++ b/net/ipv6/ip6_gre.c
+@@ -535,6 +535,10 @@ static int ip6erspan_rcv(struct sk_buff
+ 			if (!tun_dst)
+ 				return PACKET_REJECT;
  
--	sps_info = match->data;
--
- 	sps = devm_kzalloc(&pdev->dev,
- 			   struct_size(sps, domains, sps_info->num_domains),
- 			   GFP_KERNEL);
-diff --git a/drivers/soc/imx/gpc.c b/drivers/soc/imx/gpc.c
-index 0b63ec213f1e..859193153f96 100644
---- a/drivers/soc/imx/gpc.c
-+++ b/drivers/soc/imx/gpc.c
-@@ -7,9 +7,10 @@
- #include <linux/clk.h>
- #include <linux/delay.h>
- #include <linux/io.h>
--#include <linux/of_device.h>
-+#include <linux/of.h>
- #include <linux/platform_device.h>
- #include <linux/pm_domain.h>
-+#include <linux/property.h>
- #include <linux/regmap.h>
- #include <linux/regulator/consumer.h>
++			/* MUST set options_len before referencing options */
++			info = &tun_dst->u.tun_info;
++			info->options_len = sizeof(*md);
++
+ 			/* skb can be uncloned in __iptunnel_pull_header, so
+ 			 * old pkt_md is no longer valid and we need to reset
+ 			 * it
+@@ -543,7 +547,6 @@ static int ip6erspan_rcv(struct sk_buff
+ 			     skb_network_header_len(skb);
+ 			pkt_md = (struct erspan_metadata *)(gh + gre_hdr_len +
+ 							    sizeof(*ershdr));
+-			info = &tun_dst->u.tun_info;
+ 			md = ip_tunnel_info_opts(info);
+ 			md->version = ver;
+ 			md2 = &md->u.md2;
+@@ -551,7 +554,6 @@ static int ip6erspan_rcv(struct sk_buff
+ 						       ERSPAN_V2_MDSIZE);
+ 			__set_bit(IP_TUNNEL_ERSPAN_OPT_BIT,
+ 				  info->key.tun_flags);
+-			info->options_len = sizeof(*md);
  
-@@ -403,9 +404,7 @@ static int imx_gpc_old_dt_init(struct device *dev, struct regmap *regmap,
+ 			ip6_tnl_rcv(tunnel, skb, tpi, tun_dst, log_ecn_error);
  
- static int imx_gpc_probe(struct platform_device *pdev)
- {
--	const struct of_device_id *of_id =
--			of_match_device(imx_gpc_dt_ids, &pdev->dev);
--	const struct imx_gpc_dt_data *of_id_data = of_id->data;
-+	const struct imx_gpc_dt_data *of_id_data = device_get_match_data(&pdev->dev);
- 	struct device_node *pgc_node;
- 	struct regmap *regmap;
- 	void __iomem *base;
-diff --git a/drivers/soc/rockchip/pm_domains.c b/drivers/soc/rockchip/pm_domains.c
-index 84bc022f9e5b..5ba582ffaa1a 100644
---- a/drivers/soc/rockchip/pm_domains.c
-+++ b/drivers/soc/rockchip/pm_domains.c
-@@ -9,11 +9,13 @@
- #include <linux/iopoll.h>
- #include <linux/err.h>
- #include <linux/mutex.h>
-+#include <linux/platform_device.h>
- #include <linux/pm_clock.h>
- #include <linux/pm_domain.h>
-+#include <linux/property.h>
-+#include <linux/of.h>
- #include <linux/of_address.h>
- #include <linux/of_clk.h>
--#include <linux/of_platform.h>
- #include <linux/clk.h>
- #include <linux/regmap.h>
- #include <linux/mfd/syscon.h>
-@@ -770,7 +772,6 @@ static int rockchip_pm_domain_probe(struct platform_device *pdev)
- 	struct device_node *node;
- 	struct device *parent;
- 	struct rockchip_pmu *pmu;
--	const struct of_device_id *match;
- 	const struct rockchip_pmu_info *pmu_info;
- 	int error;
- 
-@@ -779,13 +780,7 @@ static int rockchip_pm_domain_probe(struct platform_device *pdev)
- 		return -ENODEV;
- 	}
- 
--	match = of_match_device(dev->driver->of_match_table, dev);
--	if (!match || !match->data) {
--		dev_err(dev, "missing pmu data\n");
--		return -EINVAL;
--	}
--
--	pmu_info = match->data;
-+	pmu_info = device_get_match_data(dev);
- 
- 	pmu = devm_kzalloc(dev,
- 			   struct_size(pmu, domains, pmu_info->num_domains),
--- 
-2.51.0
+
 
 
