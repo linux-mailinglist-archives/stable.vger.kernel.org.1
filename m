@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-205492-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205785-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E02BBCFA260
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:29:29 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B7E3CFA578
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:54:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0690F316ED02
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:41:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D606230A27EA
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:08:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 797062EA159;
-	Tue,  6 Jan 2026 17:34:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 265E736402C;
+	Tue,  6 Jan 2026 17:50:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OG4923Gn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RoQqF98h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3612929B8FE;
-	Tue,  6 Jan 2026 17:34:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D781C36402B;
+	Tue,  6 Jan 2026 17:50:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767720873; cv=none; b=SRjdVd2grX8578nscJ1GC7zOjOHWWZZ1ll6tCee4qnbgBGOwegacwy1gfAFmm4Msk6ooLav19YD0Qa2Be9fezggEW7G+C47wuxfzqDxc2OW7Gz/A++nGfVhr4DDyOVVyBtpcmD/NgpKD8HSwb5WgoCStYxR+txq4815GJRosbhs=
+	t=1767721854; cv=none; b=bOi7f/AMK1XOluuKjNYnFfWuLEt9ADT6gyEP0vI6Icnz2NMtu4G9nvN/VT23++tH5HIYX2XQu9EqbcYZLEt0f1ifq1CGV+7/xtKNcXYiZsQByGf6K/DjvSgBlO1OMfOKdwdSxopVfsI1OiqXbInjL9cyXeA2CQSzBJRClCVVtL4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767720873; c=relaxed/simple;
-	bh=+wsiNCV5HkvC2gYMwyGkUf8rCaUbg809YnFg1PeZBoM=;
+	s=arc-20240116; t=1767721854; c=relaxed/simple;
+	bh=Trv2bRl8k75w/wdo95I91PJ4FMqq65qZZSEtbYy1kZw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jnU51AIgg/O9Df/YssoEZj8r5VBzci08ibu9I87HUYBkuxkLYxBNtu36TQH5FpIKUS+vsQsCBZs0owZG5dXdTmaHdeBJTh/MPGcwhRScaZ9JVRYSe74MvXekrRMCWZFwNLlRq/fVhL0YLQVDZDT+DtKd4Gr/KtduS1YYNsgq/M0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OG4923Gn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C04EC116C6;
-	Tue,  6 Jan 2026 17:34:32 +0000 (UTC)
+	 MIME-Version; b=OJ0gjbcLqkvmMGoTPwcOGhdhiat9BB8euaC20ATcb3WfLVk6zDFqaShL6CVpDolps1S7jhN51S+mm8R1FOhu8oKD2QdVjv+sua2Ha+Bth0woQOn60IHJZYd2akqCpR5gCaB65MxGLuG+LMccPXPftPdfUflw1CNamWeGpWOM3Jw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RoQqF98h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B6A2C116C6;
+	Tue,  6 Jan 2026 17:50:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767720873;
-	bh=+wsiNCV5HkvC2gYMwyGkUf8rCaUbg809YnFg1PeZBoM=;
+	s=korg; t=1767721854;
+	bh=Trv2bRl8k75w/wdo95I91PJ4FMqq65qZZSEtbYy1kZw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OG4923GnUYV0Ms5TJlLSKKLjQZnuDh8XqRQbAa1c5RNXrNBVDYz5BkRwQyv+5m+jU
-	 jxLZiEgQ0FXlX5AR7NyQZHBAyAxMoDmlXQ90xsJX3Ve/b6eaMRT7euHKCtXjodxhI+
-	 VBzvtTD4lER4VeMxK0ET2H9so8pAJDdezoU4eurQ=
+	b=RoQqF98h5UDdKx0EHHQCqitKAT7mF2bxu2pZad2B8/lM3V271tVvJuYgW7xoVkO9D
+	 LYu9OZ/LyEl4umv4Y0iKBCNpcHKmD0Bm2JSxEjsAdOHZLFQwILCSUWUvgdfZWPpmdq
+	 tq8WCHV16w74JaTYKv3Idt46wvTgx7evVPFK3Wx0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stable@vger.kernel.org,
-	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
-	Mark Brown <broonie@kernel.org>,
-	Alexey Klimov <alexey.klimov@linaro.org>
-Subject: [PATCH 6.12 350/567] ASoC: qcom: q6apm-dai: set flags to reflect correct operation of appl_ptr
+	Anshumali Gaur <agaur@marvell.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 058/312] octeontx2-pf: fix "UBSAN: shift-out-of-bounds error"
 Date: Tue,  6 Jan 2026 18:02:12 +0100
-Message-ID: <20260106170504.276957968@linuxfoundation.org>
+Message-ID: <20260106170549.951284119@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
-References: <20260106170451.332875001@linuxfoundation.org>
+In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
+References: <20260106170547.832845344@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +60,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+From: Anshumali Gaur <agaur@marvell.com>
 
-commit 950a4e5788fc7dc6e8e93614a7d4d0449c39fb8d upstream.
+[ Upstream commit 85f4b0c650d9f9db10bda8d3acfa1af83bf78cf7 ]
 
-Driver does not expect the appl_ptr to move backward and requires
-explict sync. Make sure that the userspace does not do appl_ptr rewinds
-by specifying the correct flags in pcm_info.
+This patch ensures that the RX ring size (rx_pending) is not
+set below the permitted length. This avoids UBSAN
+shift-out-of-bounds errors when users passes small or zero
+ring sizes via ethtool -G.
 
-Without this patch, the result could be a forever loop as current logic assumes
-that appl_ptr can only move forward.
-
-Fixes: 3d4a4411aa8b ("ASoC: q6apm-dai: schedule all available frames to avoid dsp under-runs")
-Cc: Stable@vger.kernel.org
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
-Tested-by: Alexey Klimov <alexey.klimov@linaro.org> # RB5, RB3
-Link: https://patch.msgid.link/20251023102444.88158-2-srinivas.kandagatla@oss.qualcomm.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d45d8979840d ("octeontx2-pf: Add basic ethtool support")
+Signed-off-by: Anshumali Gaur <agaur@marvell.com>
+Link: https://patch.msgid.link/20251219062226.524844-1-agaur@marvell.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/qcom/qdsp6/q6apm-dai.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/sound/soc/qcom/qdsp6/q6apm-dai.c
-+++ b/sound/soc/qcom/qdsp6/q6apm-dai.c
-@@ -85,6 +85,7 @@ static const struct snd_pcm_hardware q6a
- 	.info =                 (SNDRV_PCM_INFO_MMAP | SNDRV_PCM_INFO_BLOCK_TRANSFER |
- 				 SNDRV_PCM_INFO_MMAP_VALID | SNDRV_PCM_INFO_INTERLEAVED |
- 				 SNDRV_PCM_INFO_PAUSE | SNDRV_PCM_INFO_RESUME |
-+				 SNDRV_PCM_INFO_NO_REWINDS | SNDRV_PCM_INFO_SYNC_APPLPTR |
- 				 SNDRV_PCM_INFO_BATCH),
- 	.formats =              (SNDRV_PCM_FMTBIT_S16_LE | SNDRV_PCM_FMTBIT_S24_LE),
- 	.rates =                SNDRV_PCM_RATE_8000_48000,
-@@ -104,6 +105,7 @@ static const struct snd_pcm_hardware q6a
- 	.info =                 (SNDRV_PCM_INFO_MMAP | SNDRV_PCM_INFO_BLOCK_TRANSFER |
- 				 SNDRV_PCM_INFO_MMAP_VALID | SNDRV_PCM_INFO_INTERLEAVED |
- 				 SNDRV_PCM_INFO_PAUSE | SNDRV_PCM_INFO_RESUME |
-+				 SNDRV_PCM_INFO_NO_REWINDS | SNDRV_PCM_INFO_SYNC_APPLPTR |
- 				 SNDRV_PCM_INFO_BATCH),
- 	.formats =              (SNDRV_PCM_FMTBIT_S16_LE | SNDRV_PCM_FMTBIT_S24_LE),
- 	.rates =                SNDRV_PCM_RATE_8000_192000,
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
+index b90e23dc49de..b6449f0a9e7d 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
+@@ -418,6 +418,14 @@ static int otx2_set_ringparam(struct net_device *netdev,
+ 	 */
+ 	if (rx_count < pfvf->hw.rq_skid)
+ 		rx_count =  pfvf->hw.rq_skid;
++
++	if (ring->rx_pending < 16) {
++		netdev_err(netdev,
++			   "rx ring size %u invalid, min is 16\n",
++			   ring->rx_pending);
++		return -EINVAL;
++	}
++
+ 	rx_count = Q_COUNT(Q_SIZE(rx_count, 3));
+ 
+ 	/* Due pipelining impact minimum 2000 unused SQ CQE's
+-- 
+2.51.0
+
 
 
 
