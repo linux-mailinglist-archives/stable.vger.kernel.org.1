@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-205488-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205766-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74BC0CFA23C
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:28:21 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC843CF9F00
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:07:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 51EE431543B5
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:40:34 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id EEC8930223F8
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:06:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7EBE2E8DE3;
-	Tue,  6 Jan 2026 17:34:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C61803612CA;
+	Tue,  6 Jan 2026 17:49:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nPBoTScr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hQUlAVe/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 943CF28C037;
-	Tue,  6 Jan 2026 17:34:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8108A3612C7;
+	Tue,  6 Jan 2026 17:49:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767720859; cv=none; b=d28n+amqYlKvZA70gR69cB4cgsuyNnQBMeA66/B7LTn5raulHosT5xT+L1Et+DK4+5eI4xl3m5VK2aswtMOkxsKWFsZvLSVMkduMozBNc/SHp5SeKf63wo8KBCVa5Q998CKxFxwMhmkuG+UQ4KBRPAgPKAmXD0fkCJ53AqFgtm4=
+	t=1767721789; cv=none; b=O7AqOPUV5u4kLgNghKfzj+qimtYMH5BITwDdK+UidvOYcDAvkvLzFQi37IpPS5d523gYcIq3rFiYNpztUq+NgbK3aIYDBurdqt3cX5R2B53a8CEYAcLZvoYjiBXio9qbFQ5ReC+LANYy4e14yhcNeki6HvrWkGQxxBMxJHIUCHc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767720859; c=relaxed/simple;
-	bh=fmFfUEv721q8xxb1rnBRovK1i50VmTzYASxh1a+4gwk=;
+	s=arc-20240116; t=1767721789; c=relaxed/simple;
+	bh=TOutcNPsYixcm4KYvSRdJBgcQunEdbwd3SeeKQ/xQM4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=da/S7hvYO78nbDVEY/mFkxXsAicjgHuUpl0kQ+5K8n604X6p5izjD9t5CKu9SZaonIL43+NZQSoWCYc/A8ZB55EY4hngsoluFDe1Kili3MZX4geQRZjztOIJL8oKa1JyN6nXTrz2ts8G+oIpYRJ0LTE4R2iy/Cn8E10HjuXb5Lg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nPBoTScr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04203C116C6;
-	Tue,  6 Jan 2026 17:34:18 +0000 (UTC)
+	 MIME-Version; b=m86t4Fz1hwF9UdBKZs5JTb4xqY5wlByHvmptPB/MbJHTWjilzOxe4LWc9JXJHR81th+/lJnGAHSnN4rXuNAlaKkEAWEzQ4x5c4assYleZz18MlJjsYETaD0pp/fxKZQhphOPCHrpxDAIobTgiwHWsWfThITU7rujXlp7RExA69k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hQUlAVe/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94033C116C6;
+	Tue,  6 Jan 2026 17:49:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767720859;
-	bh=fmFfUEv721q8xxb1rnBRovK1i50VmTzYASxh1a+4gwk=;
+	s=korg; t=1767721789;
+	bh=TOutcNPsYixcm4KYvSRdJBgcQunEdbwd3SeeKQ/xQM4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nPBoTScrBllAEfqCp1YXuLjzJbQEjJlI2RkRIdEln/wHvXqZztXooZeJtPQJ9yGF+
-	 b5W78QYyHKhr6kGD4owwVQJ7Kwk6r7TKCQLZ4LgJp6QwSGhJpzSn+Dsg9S4ko2+48Z
-	 Jk14pHgVL+I8o8Lxa5VUHw2OmG0gSz3JyDpCLMU0=
+	b=hQUlAVe/O1raYbcOg7A0SAFI+KjmCZ/OHcINmOwzuo5p+4EFr7l4sZbhM14+JI5J9
+	 lRBZP0RQ+nH8CrSLK7E8k0LbrEYEN1WBy99ObH/Ng9zl1v5UrXKZAMI0NLp+eRgrD2
+	 +OO+T0oRzGtdsWXUoivMojFE7B4PF+J3WxYz9+0c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxime Ripard <mripard@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Johan Hovold <johan@kernel.org>,
-	Joerg Roedel <joerg.roedel@amd.com>
-Subject: [PATCH 6.12 364/567] iommu/sun50i: fix device leak on of_xlate()
+	syzbot+881d65229ca4f9ae8c84@syzkaller.appspotmail.com,
+	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+	Parav Pandit <parav@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 072/312] RDMA/core: always drop device refcount in ib_del_sub_device_and_put()
 Date: Tue,  6 Jan 2026 18:02:26 +0100
-Message-ID: <20260106170504.803929426@linuxfoundation.org>
+Message-ID: <20260106170550.453061639@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
-References: <20260106170451.332875001@linuxfoundation.org>
+In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
+References: <20260106170547.832845344@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 
-commit f916109bf53864605d10bf6f4215afa023a80406 upstream.
+[ Upstream commit fa3c411d21ebc26ffd175c7256c37cefa35020aa ]
 
-Make sure to drop the reference taken to the iommu platform device when
-looking up its driver data during of_xlate().
+Since nldev_deldev() (introduced by commit 060c642b2ab8 ("RDMA/nldev: Add
+support to add/delete a sub IB device through netlink") grabs a reference
+using ib_device_get_by_index() before calling ib_del_sub_device_and_put(),
+we need to drop that reference before returning -EOPNOTSUPP error.
 
-Fixes: 4100b8c229b3 ("iommu: Add Allwinner H6 IOMMU driver")
-Cc: stable@vger.kernel.org	# 5.8
-Cc: Maxime Ripard <mripard@kernel.org>
-Acked-by: Robin Murphy <robin.murphy@arm.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot+881d65229ca4f9ae8c84@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=881d65229ca4f9ae8c84
+Fixes: bca51197620a ("RDMA/core: Support IB sub device with type "SMI"")
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Link: https://patch.msgid.link/80749a85-cbe2-460c-8451-42516013f9fa@I-love.SAKURA.ne.jp
+Reviewed-by: Parav Pandit <parav@nvidia.com>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/sun50i-iommu.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/infiniband/core/device.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/iommu/sun50i-iommu.c
-+++ b/drivers/iommu/sun50i-iommu.c
-@@ -837,6 +837,8 @@ static int sun50i_iommu_of_xlate(struct
+diff --git a/drivers/infiniband/core/device.c b/drivers/infiniband/core/device.c
+index b4f3c835844a..e3ba236d7c09 100644
+--- a/drivers/infiniband/core/device.c
++++ b/drivers/infiniband/core/device.c
+@@ -2881,8 +2881,10 @@ int ib_del_sub_device_and_put(struct ib_device *sub)
+ {
+ 	struct ib_device *parent = sub->parent;
  
- 	dev_iommu_priv_set(dev, platform_get_drvdata(iommu_pdev));
+-	if (!parent)
++	if (!parent) {
++		ib_device_put(sub);
+ 		return -EOPNOTSUPP;
++	}
  
-+	put_device(&iommu_pdev->dev);
-+
- 	return iommu_fwspec_add_ids(dev, &id, 1);
- }
- 
+ 	mutex_lock(&parent->subdev_lock);
+ 	list_del(&sub->subdev_list);
+-- 
+2.51.0
+
 
 
 
