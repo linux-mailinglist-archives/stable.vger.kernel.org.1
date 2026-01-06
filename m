@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-205921-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205658-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87F6ACFA5C2
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:56:41 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24F31CFA327
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:34:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DCCB4340986E
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:13:50 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 92715300FD4B
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:34:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D80A36CDF7;
-	Tue,  6 Jan 2026 17:58:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48772346FB6;
+	Tue,  6 Jan 2026 17:43:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t1QFzs4d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hAOtyseQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCB9A36CDF5;
-	Tue,  6 Jan 2026 17:58:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0274E26E6F2;
+	Tue,  6 Jan 2026 17:43:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767722309; cv=none; b=C1P8eVRPzHYE086680Ja231fr+qof39ur/Q3I6JFtBkoIXS67A1QjcIiJW0g4nbaHPabCVM41JGIWpsbet4fmVWoUFP+eOiItRmJ2JNDC0Q3DrYdgXSURs0cm+dIdwErD8cxkWtKCOAODRhFA/CINz7rXBBjH8gQIFzIV6IH/cc=
+	t=1767721424; cv=none; b=JH4DNaxVL062NXGj9lmeFmVNiz9rS2k2pQmT2JsWP+9LOiDNeTT3MId/p7OVPfMBPHpvdZuCq7Un5vitQprb/9vM5jllrl9z3LDmLSU1PiAdagzZHKOmUYtNpldVt6psgFWW4V/hxdR4mIlEVq4G39eLFqktSRabUsvoUeupbN0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767722309; c=relaxed/simple;
-	bh=NAuvlHYNFwg0Ne6PmwTSyWlZgOfnmB50fu5c74mJVC8=;
+	s=arc-20240116; t=1767721424; c=relaxed/simple;
+	bh=BhRCOohn4hbHUeuaWiV1DDl7OMz1rjfz2almXtCLIhY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Co3Ws0g6+UffMcx1u2nvTZZkn+y6VJO8OwQAnKCJg+VyRwoGUUKNqkMoVwUWKXVt7HPAdW35EUVxeDV0sT8WwmwZADMQhZUzgwEloaMdaCVZVCP3c0II3G4VT+zYC70lxEDLuoH92qlKMj9QjW2AEsMyYAjzDbWWG2e1yGVqnsM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t1QFzs4d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0CBBC116C6;
-	Tue,  6 Jan 2026 17:58:27 +0000 (UTC)
+	 MIME-Version; b=cR9K6OqefeVh3JTq1qAS0xJOJT+6z5ywRAP2JXfi0lC0XKK+o1Z60mTHODQhtRdCePg6WF5op/leIW9vji7nKUteOmesi2kQR1dgHpxRTzxBZhysrQgSMalRcVLiApMHSWvhOM5ZQwN4adoI4d1cO588LoHq8My0oVIbSu7PYQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hAOtyseQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 235F9C19425;
+	Tue,  6 Jan 2026 17:43:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767722308;
-	bh=NAuvlHYNFwg0Ne6PmwTSyWlZgOfnmB50fu5c74mJVC8=;
+	s=korg; t=1767721423;
+	bh=BhRCOohn4hbHUeuaWiV1DDl7OMz1rjfz2almXtCLIhY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t1QFzs4d2AUiC9bS/SI2YSO8kffKbI9vkbYakgCkIIgIWKcwNxBgUQLAH4l5KVznJ
-	 X1Urcow1Xja5DevYy7xBBKISpdTsetAMzlyk8TYlUC+UDsoNRzSAzeKT2Lx/ZyQrcZ
-	 zWsGbQTFRZIXUPgB9+bsvRU4W8xhJSmIoYDvl+n8=
+	b=hAOtyseQ6YqLp78u1CeEHn8UZ/992WrcJpHtwgbxVqepAIQoE3d60qO2K5EixnQrf
+	 N7ZhVUohMiv5Ccmu11DEUHmYWhl0Nlus84bNjEY2EYfLNktFkKhi7kkbKNkI9UW49H
+	 uctpTusDCuIii0ubBgo/NHmxYk/I/7vpNy7B4e/A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@google.com>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.18 198/312] mm/damon/tests/sysfs-kunit: handle alloc failures on damon_sysfs_test_add_targets()
+	Zqiang <qiang.zhang@linux.dev>,
+	Andrea Righi <arighi@nvidia.com>,
+	Tejun Heo <tj@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 490/567] sched_ext: Fix incorrect sched_class settings for per-cpu migration tasks
 Date: Tue,  6 Jan 2026 18:04:32 +0100
-Message-ID: <20260106170554.988511084@linuxfoundation.org>
+Message-ID: <20260106170509.488341378@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
-References: <20260106170547.832845344@linuxfoundation.org>
+In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
+References: <20260106170451.332875001@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,78 +61,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SeongJae Park <sj@kernel.org>
+From: Zqiang <qiang.zhang@linux.dev>
 
-commit 7d808bf13943f4c6a6142400bffe14267f6dc997 upstream.
+[ Upstream commit 1dd6c84f1c544e552848a8968599220bd464e338 ]
 
-damon_sysfs_test_add_targets() is assuming all dynamic memory allocation
-in it will succeed.  Those are indeed likely in the real use cases since
-those allocations are too small to fail, but theoretically those could
-fail.  In the case, inappropriate memory access can happen.  Fix it by
-appropriately cleanup pre-allocated memory and skip the execution of the
-remaining tests in the failure cases.
+When loading the ebpf scheduler, the tasks in the scx_tasks list will
+be traversed and invoke __setscheduler_class() to get new sched_class.
+however, this would also incorrectly set the per-cpu migration
+task's->sched_class to rt_sched_class, even after unload, the per-cpu
+migration task's->sched_class remains sched_rt_class.
 
-Link: https://lkml.kernel.org/r/20251101182021.74868-21-sj@kernel.org
-Fixes: b8ee5575f763 ("mm/damon/sysfs-test: add a unit test for damon_sysfs_set_targets()")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: Brendan Higgins <brendan.higgins@linux.dev>
-Cc: David Gow <davidgow@google.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: <stable@vger.kernel.org>	[6.7+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+The log for this issue is as follows:
+
+./scx_rustland --stats 1
+[  199.245639][  T630] sched_ext: "rustland" does not implement cgroup cpu.weight
+[  199.269213][  T630] sched_ext: BPF scheduler "rustland" enabled
+04:25:09 [INFO] RustLand scheduler attached
+
+bpftrace -e 'iter:task /strcontains(ctx->task->comm, "migration")/
+{ printf("%s:%d->%pS\n", ctx->task->comm, ctx->task->pid, ctx->task->sched_class); }'
+Attaching 1 probe...
+migration/0:24->rt_sched_class+0x0/0xe0
+migration/1:27->rt_sched_class+0x0/0xe0
+migration/2:33->rt_sched_class+0x0/0xe0
+migration/3:39->rt_sched_class+0x0/0xe0
+migration/4:45->rt_sched_class+0x0/0xe0
+migration/5:52->rt_sched_class+0x0/0xe0
+migration/6:58->rt_sched_class+0x0/0xe0
+migration/7:64->rt_sched_class+0x0/0xe0
+
+sched_ext: BPF scheduler "rustland" disabled (unregistered from user space)
+EXIT: unregistered from user space
+04:25:21 [INFO] Unregister RustLand scheduler
+
+bpftrace -e 'iter:task /strcontains(ctx->task->comm, "migration")/
+{ printf("%s:%d->%pS\n", ctx->task->comm, ctx->task->pid, ctx->task->sched_class); }'
+Attaching 1 probe...
+migration/0:24->rt_sched_class+0x0/0xe0
+migration/1:27->rt_sched_class+0x0/0xe0
+migration/2:33->rt_sched_class+0x0/0xe0
+migration/3:39->rt_sched_class+0x0/0xe0
+migration/4:45->rt_sched_class+0x0/0xe0
+migration/5:52->rt_sched_class+0x0/0xe0
+migration/6:58->rt_sched_class+0x0/0xe0
+migration/7:64->rt_sched_class+0x0/0xe0
+
+This commit therefore generate a new scx_setscheduler_class() and
+add check for stop_sched_class to replace __setscheduler_class().
+
+Fixes: f0e1a0643a59 ("sched_ext: Implement BPF extensible scheduler class")
+Cc: stable@vger.kernel.org # v6.12+
+Signed-off-by: Zqiang <qiang.zhang@linux.dev>
+Reviewed-by: Andrea Righi <arighi@nvidia.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
+[ Adjust context ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/damon/tests/sysfs-kunit.h |   25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+ kernel/sched/ext.c |   14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
---- a/mm/damon/tests/sysfs-kunit.h
-+++ b/mm/damon/tests/sysfs-kunit.h
-@@ -45,16 +45,41 @@ static void damon_sysfs_test_add_targets
- 	struct damon_ctx *ctx;
+--- a/kernel/sched/ext.c
++++ b/kernel/sched/ext.c
+@@ -1057,6 +1057,14 @@ static struct scx_dispatch_q *find_user_
+ 	return rhashtable_lookup_fast(&dsq_hash, &dsq_id, dsq_hash_params);
+ }
  
- 	sysfs_targets = damon_sysfs_targets_alloc();
-+	if (!sysfs_targets)
-+		kunit_skip(test, "sysfs_targets alloc fail");
- 	sysfs_targets->nr = 1;
- 	sysfs_targets->targets_arr = kmalloc_array(1,
- 			sizeof(*sysfs_targets->targets_arr), GFP_KERNEL);
-+	if (!sysfs_targets->targets_arr) {
-+		kfree(sysfs_targets);
-+		kunit_skip(test, "targets_arr alloc fail");
-+	}
- 
- 	sysfs_target = damon_sysfs_target_alloc();
-+	if (!sysfs_target) {
-+		kfree(sysfs_targets->targets_arr);
-+		kfree(sysfs_targets);
-+		kunit_skip(test, "sysfs_target alloc fail");
-+	}
- 	sysfs_target->pid = __damon_sysfs_test_get_any_pid(12, 100);
- 	sysfs_target->regions = damon_sysfs_regions_alloc();
-+	if (!sysfs_target->regions) {
-+		kfree(sysfs_targets->targets_arr);
-+		kfree(sysfs_targets);
-+		kfree(sysfs_target);
-+		kunit_skip(test, "sysfs_regions alloc fail");
-+	}
++static const struct sched_class *scx_setscheduler_class(struct task_struct *p)
++{
++	if (p->sched_class == &stop_sched_class)
++		return &stop_sched_class;
 +
- 	sysfs_targets->targets_arr[0] = sysfs_target;
++	return __setscheduler_class(p->policy, p->prio);
++}
++
+ /*
+  * scx_kf_mask enforcement. Some kfuncs can only be called from specific SCX
+  * ops. When invoking SCX ops, SCX_CALL_OP[_RET]() should be used to indicate
+@@ -4653,8 +4661,7 @@ static void scx_ops_disable_workfn(struc
+ 	scx_task_iter_start(&sti);
+ 	while ((p = scx_task_iter_next_locked(&sti))) {
+ 		const struct sched_class *old_class = p->sched_class;
+-		const struct sched_class *new_class =
+-			__setscheduler_class(p->policy, p->prio);
++		const struct sched_class *new_class = scx_setscheduler_class(p);
+ 		struct sched_enq_and_set_ctx ctx;
  
- 	ctx = damon_new_ctx();
-+	if (!ctx) {
-+		kfree(sysfs_targets->targets_arr);
-+		kfree(sysfs_targets);
-+		kfree(sysfs_target);
-+		kfree(sysfs_target->regions);
-+		kunit_skip(test, "ctx alloc fail");
-+	}
+ 		if (old_class != new_class && p->se.sched_delayed)
+@@ -5368,8 +5375,7 @@ static int scx_ops_enable(struct sched_e
+ 	scx_task_iter_start(&sti);
+ 	while ((p = scx_task_iter_next_locked(&sti))) {
+ 		const struct sched_class *old_class = p->sched_class;
+-		const struct sched_class *new_class =
+-			__setscheduler_class(p->policy, p->prio);
++		const struct sched_class *new_class = scx_setscheduler_class(p);
+ 		struct sched_enq_and_set_ctx ctx;
  
- 	damon_sysfs_add_targets(ctx, sysfs_targets);
- 	KUNIT_EXPECT_EQ(test, 1u, nr_damon_targets(ctx));
+ 		if (!tryget_task_struct(p))
 
 
 
