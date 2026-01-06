@@ -1,126 +1,134 @@
-Return-Path: <stable+bounces-205108-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205109-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D43C7CF917B
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 16:33:47 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E68ACF90E0
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 16:27:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D5CB230EECCB
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 15:27:11 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id DFBD4300877B
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 15:27:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CFD833985A;
-	Tue,  6 Jan 2026 15:17:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b5z/c2Y5"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4608D341AD6;
+	Tue,  6 Jan 2026 15:21:04 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC2F5339B2F
-	for <stable@vger.kernel.org>; Tue,  6 Jan 2026 15:17:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 975441684B4;
+	Tue,  6 Jan 2026 15:21:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.40.44.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767712650; cv=none; b=tE9+TYYdWOJCJ4cBGCgnLCUJ+sqkhs4b2x3bt2xYvhs/f57n+/79ZRZsM5pR/ZCdk5p30Qy/r47gfN1PhR/UqGJr61lzVo/U3dqfC3hFpe+Sa9880qY3NlkJGCAGSHhFNIXxXS0sY9O88z3iyliZus9yQir+mTbaC0cmUX/3+QU=
+	t=1767712864; cv=none; b=gTrabMaASJMRW5L8O6s9pI0d7PPp2pXgu7keQqm90lO2lYAtHb4RbGV3V0GM7bRGYxPUgqZW6XqpgLlA8J0A+qe5xvufhfZ7Zlov86ZWZKD+JPRQJU9t0Fd1hNlN+y+K3EaPjzXAFRJOO68XaaRTiplT3mRKFzEnNMulVcIv++M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767712650; c=relaxed/simple;
-	bh=GUHXWmHyMLvaWlTPF1CR9NYTi/5V8ZpmHDrJJ+tYVAg=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=pta5oIQ/eBEE/7lop97Hlq0TVacLiRpdf+mCxgsyqjQXTJ/RuAaKS3eJI+0vspbgXsD8VUcoqlKTrxWnS6yUV2spHQz/efG/C50gFcNYaWizFUDzIHjq/MfLhb9GqbqclZtjoJCPbVa8mLYg9xiJbCVsVCigOEH96I+O+hxiWHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b5z/c2Y5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0344EC116C6;
-	Tue,  6 Jan 2026 15:17:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767712649;
-	bh=GUHXWmHyMLvaWlTPF1CR9NYTi/5V8ZpmHDrJJ+tYVAg=;
-	h=Subject:To:Cc:From:Date:From;
-	b=b5z/c2Y5aCoHQwpUHJxLwMNldf0U5yCzE3/YSR/rMn2fvWG5HFTIjgIF8H2VP0Au4
-	 UtCCQYkrryNr9hWrB8XHQcIW8KetTcKnIV0sbuws+WRlwQ7VSQpG/KBGPUeaJ8Ubse
-	 59kWsN0Vzx19TYhj/ps+13/oDJRCluFn8+fSuRW8=
-Subject: FAILED: patch "[PATCH] drm/mediatek: ovl_adaptor: Fix probe device leaks" failed to apply to 6.6-stable tree
-To: johan@kernel.org,angelogioacchino.delregno@collabora.com,chunkuang.hu@kernel.org,nancy.lin@mediatek.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Tue, 06 Jan 2026 16:17:26 +0100
-Message-ID: <2026010626-drainable-stricken-476d@gregkh>
+	s=arc-20240116; t=1767712864; c=relaxed/simple;
+	bh=KS1C9bAwlDhZvSLMwp9flwtHD0RxO1IUENqc9t4uHLI=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=L300JkI56f+J1YzSvX/JX1jYUDMgLu1rXeBO/+HzXm+ZOKWF29NQEKx+xOC2mAq0Nfix0DvymBEml+XmDyYpuaH07LF1OPpK/yWB9fFJM4cd+zHt0bbBaLz0fsXenHMi6TAKd8duQU+gEiQV0U/U6LUEmru0M1YsS8E8m9iFO5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org; spf=pass smtp.mailfrom=goodmis.org; arc=none smtp.client-ip=216.40.44.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=goodmis.org
+Received: from omf13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 384438ABED;
+	Tue,  6 Jan 2026 15:20:59 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf13.hostedemail.com (Postfix) with ESMTPA id ECE9C2000D;
+	Tue,  6 Jan 2026 15:20:55 +0000 (UTC)
+Date: Tue, 6 Jan 2026 10:21:20 -0500
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Vlastimil Babka <vbabka@suse.cz>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Suren Baghdasaryan
+ <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Brendan Jackman
+ <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan
+ <ziy@nvidia.com>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Clark
+ Williams <clrkwllms@kernel.org>, Mel Gorman <mgorman@techsingularity.net>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-rt-devel@lists.linux.dev, stable@vger.kernel.org, kernel test robot
+ <oliver.sang@intel.com>, Matthew Wilcox <willy@infradead.org>
+Subject: Re: [PATCH mm-hotfixes] mm/page_alloc: prevent pcp corruption with
+ SMP=n
+Message-ID: <20260106102120.4272260e@gandalf.local.home>
+In-Reply-To: <04624b16-40ea-42c6-b687-4013796e4779@suse.cz>
+References: <20260105-fix-pcp-up-v1-1-5579662d2071@suse.cz>
+	<20260105164036.32a22c2e@gandalf.local.home>
+	<04624b16-40ea-42c6-b687-4013796e4779@suse.cz>
+X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: kadyobb6jxgg53rrgr8pk5kiu7pjqpd4
+X-Rspamd-Server: rspamout03
+X-Rspamd-Queue-Id: ECE9C2000D
+X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
+X-Session-ID: U2FsdGVkX19Cnps0ORM9wOahzNOtx0DT319eAQmpInc=
+X-HE-Tag: 1767712855-198917
+X-HE-Meta: U2FsdGVkX18qn3xbopg0HXbkKioqQiII+KS+SESHqD4DmcTs87FqtTwlrJHklBpNtixlk38wVYTWl58BF19c+TgMm92szMg+VQcnCFJNRD4AHB5RYUf1fMNVhQROcMki6PZDC0Yr/gdYibD8NrC5wWG37/dIiBSLdagQmEYQCqe4JL5jxVSUPjcFfM05fbU3ts99MchYGe3AcRK+OZCbq7ODj7gIEfL2XaQLW0BDxwqvZlqdVSGAODffh/iEG18lJF8gLB7q7qfRDRhLXeXY2dl8zEBMD79afbk00Tj1xF5+SjEf+Sp0KISnnd++GCQG
 
+On Tue, 6 Jan 2026 09:28:29 +0100
+Vlastimil Babka <vbabka@suse.cz> wrote:
 
-The patch below does not apply to the 6.6-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+> >> + */
+> >> +#if defined(CONFIG_SMP) || defined(CONFIG_PREEMPT_RT)
+> >> +static inline void __flags_noop(unsigned long *flags) { }
+> >> +#define spin_lock_maybe_irqsave(lock, flags)		\
+> >> +({							\
+> >> +	 __flags_noop(&(flags));			\
+> >> +	 spin_lock(lock);				\
+> >> +})
+> >> +#define spin_unlock_maybe_irqrestore(lock, flags)	\
+> >> +({							\
+> >> +	 spin_unlock(lock);				\
+> >> +	 __flags_noop(&(flags));			\
+> >> +})
+> >> +#else
+> >> +#define spin_lock_maybe_irqsave(lock, flags)		spin_lock_irqsave(lock, flags)
+> >> +#define spin_unlock_maybe_irqrestore(lock, flags)	spin_unlock_irqrestore(lock, flags)
+> >> +#endif
+> >> +  
+> > 
+> > These are very generic looking names for something specific for
+> > page_alloc.c. Could you add a prefix of some kind to make it easy to see
+> > that these are specific to the mm code?
+> > 
+> >  mm_spin_lock_maybe_irqsave() ?  
+> OK, I think it's best like this:
 
-To reproduce the conflict and resubmit, you may use the following commands:
+Yeah, thanks.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
-git checkout FETCH_HEAD
-git cherry-pick -x e0f44f74ed6313e50b38eb39a2c7f210ae208db2
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026010626-drainable-stricken-476d@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+-- Steve
 
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From e0f44f74ed6313e50b38eb39a2c7f210ae208db2 Mon Sep 17 00:00:00 2001
-From: Johan Hovold <johan@kernel.org>
-Date: Tue, 23 Sep 2025 17:23:40 +0200
-Subject: [PATCH] drm/mediatek: ovl_adaptor: Fix probe device leaks
-
-Make sure to drop the references taken to the component devices by
-of_find_device_by_node() during probe on probe failure (e.g. probe
-deferral) and on driver unbind.
-
-Fixes: 453c3364632a ("drm/mediatek: Add ovl_adaptor support for MT8195")
-Cc: stable@vger.kernel.org	# 6.4
-Cc: Nancy.Lin <nancy.lin@mediatek.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://patchwork.kernel.org/project/dri-devel/patch/20250923152340.18234-6-johan@kernel.org/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
-
-diff --git a/drivers/gpu/drm/mediatek/mtk_disp_ovl_adaptor.c b/drivers/gpu/drm/mediatek/mtk_disp_ovl_adaptor.c
-index fe97bb97e004..c0af3e3b51d5 100644
---- a/drivers/gpu/drm/mediatek/mtk_disp_ovl_adaptor.c
-+++ b/drivers/gpu/drm/mediatek/mtk_disp_ovl_adaptor.c
-@@ -527,6 +527,13 @@ bool mtk_ovl_adaptor_is_comp_present(struct device_node *node)
- 	       type == OVL_ADAPTOR_TYPE_PADDING;
- }
- 
-+static void ovl_adaptor_put_device(void *_dev)
-+{
-+	struct device *dev = _dev;
-+
-+	put_device(dev);
-+}
-+
- static int ovl_adaptor_comp_init(struct device *dev, struct component_match **match)
- {
- 	struct mtk_disp_ovl_adaptor *priv = dev_get_drvdata(dev);
-@@ -560,6 +567,11 @@ static int ovl_adaptor_comp_init(struct device *dev, struct component_match **ma
- 		if (!comp_pdev)
- 			return -EPROBE_DEFER;
- 
-+		ret = devm_add_action_or_reset(dev, ovl_adaptor_put_device,
-+					       &comp_pdev->dev);
-+		if (ret)
-+			return ret;
-+
- 		priv->ovl_adaptor_comp[id] = &comp_pdev->dev;
- 
- 		drm_of_component_match_add(dev, match, component_compare_of, node);
-
+> 
+> ----8<----
+> >From a6da5d9e3db005a2f44f3196814d7253dce21d3e Mon Sep 17 00:00:00 2001  
+> From: Vlastimil Babka <vbabka@suse.cz>
+> Date: Tue, 6 Jan 2026 09:23:37 +0100
+> Subject: [PATCH] mm/page_alloc: prevent pcp corruption with SMP=n - fix
+> 
+> Add pcp_ prefix to the spin_lock_irqsave wrappers, per Steven.
+> With that make them also take pcp pointer and reference the lock
+> field themselves, to be like the existing pcp trylock wrappers.
+> 
+> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+> ---
+>  mm/page_alloc.c | 30 ++++++++++++++++--------------
+>  1 file changed, 16 insertions(+), 14 deletions(-)
+> 
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index ec3551d56cde..dd72ff39da8c 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -177,19 +177,21 @@ static inline void __pcp_trylock_noop(unsigned long *flags) { }
+>   */
+>  #if defined(CONFIG_SMP) || defined(CONFIG_PREEMPT_RT)
+>  static inline void __flags_noop(unsigned long *flags) { }
+> -#define spin_lock_maybe_irqsave(lock, flags)		\
+> +#define pcp_spin_lock_maybe_irqsave(ptr, flags)		\
+>  ({							\
+>  	 __flags_noop(&(flags));			\
+> -	 spin_lock(lock);				\
+> +	 spin_lock(&(ptr)->lock);			\
+>  })
 
