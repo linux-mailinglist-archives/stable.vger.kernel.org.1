@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-205385-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205387-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFDF6CF9AD4
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 18:28:41 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D873CFA0D7
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:18:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 81D163018C9F
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:28:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7D26C301B82B
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:28:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE362355819;
-	Tue,  6 Jan 2026 17:28:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD77A3559EF;
+	Tue,  6 Jan 2026 17:28:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rU8/psPX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ynZ+Le2Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A91A3559C5;
-	Tue,  6 Jan 2026 17:28:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7960D3559CA;
+	Tue,  6 Jan 2026 17:28:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767720516; cv=none; b=nbwd7o2QKZA7RgRAW8dLLA3PxLJKHxp519v0M0MBbDROAJe3yaWhJNkcOcXBFWWyMxxnCiACcDpww4AY2YCSAfWaJNhoL/wMMtHm7NV3W/8FWpo2Eon0WqsEMxKpWSyCjWscRfTAnzDw14FPguplgmKyRnM2uLlY4iE3weSORro=
+	t=1767720522; cv=none; b=gulLe87c++0+eZ0ue0PDwZ9D9ykh6RQFD24D/cz7wYkXDTZMxmLj9Xsht0dDDCwQ0ZQwMu0mfBxcTO124/yH2I3xlmRyRr9IPipcNofgzfs2mLJ81J7YAnUOD8UCB4ICLctjb09rrrWNlAUP1Kny5nLVCkNJvqmjyscOsrWPovg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767720516; c=relaxed/simple;
-	bh=brvzo5S5lyYNHasEojc6f6wqs2SzB3xSKS67AIZ9QhQ=;
+	s=arc-20240116; t=1767720522; c=relaxed/simple;
+	bh=fgKu7fMEcV5ICjFxas5iah3/A7QukH+/cXi9uI/anSI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GgzketE6+UYaFdO1D7ppeSUU1ij4Lm3CGLke+jH3CsxXLQPMJQ/KGPzs+qdgPNjE6u4/MK8jZ6IqptUh066is61MEYLNbioeR7aoMvWfe9sWDPAdUOstch5py8e4M1iJJZMrOYGya7g87fvBcekM3Uav3mLFq1MfP1wGHGlIu9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rU8/psPX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA1F2C116C6;
-	Tue,  6 Jan 2026 17:28:35 +0000 (UTC)
+	 MIME-Version; b=r/RzW39QhbsDGO8AAo4KkByd0Xi3lZeYcGICsG52rr8XJpwgVzVqRig+eo8EpsR/RsuNXWHP2ozORQZ/U6ym2hLi+mcD52S4ReWgm/NZ7LEi4dXL/2I/e+eyN1/n4ezy2RQlhW+S0p4H04j87uX5MA6Apfhmkni3C1kCJuWi5pU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ynZ+Le2Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E975DC116C6;
+	Tue,  6 Jan 2026 17:28:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767720516;
-	bh=brvzo5S5lyYNHasEojc6f6wqs2SzB3xSKS67AIZ9QhQ=;
+	s=korg; t=1767720522;
+	bh=fgKu7fMEcV5ICjFxas5iah3/A7QukH+/cXi9uI/anSI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rU8/psPX23IqVdMVo3VBCyBGLyL4AVadVfPXCK+l21DgeyGhhWg7jIVlK2chYd/MW
-	 9UY5Qp3848H2uXxar1EmYBk0KYFtpXldOxpjK/WWaKw/bQjwJyHK1bYslG9puG/G9H
-	 e4585NNi7BvFkhpqNaCM/Da4forULjjBl7SdQ4Hg=
+	b=ynZ+Le2QpSOMhbpQ+fd+rtfkR/KQklIqG5NxExZoiEzzbFfvBQ0xcJkcNcMYNv6xm
+	 GanpCvWPSOAUfb1DUQSkvDL7STGsdcTuJAI9rZb122oYW3JrStMI+TfKf+fCFnF6nq
+	 e6P9e8kXPhBU7c86ZoDhG5YVR+c1wIJGog9zp0lc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jon Kohler <jon@nutanix.com>,
-	Gauri Patwardhan <gauri.patwardhan@nutanix.com>,
-	Rahul Chunduru <rahul.chunduru@nutanix.com>,
-	Harshit Agarwal <harshit@nutanix.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Phil Auld <pauld@redhat.com>,
-	Will Ton <william.ton@nutanix.com>,
-	Rajani Kantha <681739313@139.com>
-Subject: [PATCH 6.12 261/567] sched/rt: Fix race in push_rt_task
-Date: Tue,  6 Jan 2026 18:00:43 +0100
-Message-ID: <20260106170500.977072343@linuxfoundation.org>
+	Mark Rutland <mark.rutland@arm.com>,
+	Ahmed Genidi <ahmed.genidi@arm.com>,
+	Ben Horgan <ben.horgan@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Leo Yan <leo.yan@arm.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Will Deacon <will@kernel.org>,
+	Wei-Lin Chang <weilin.chang@arm.com>
+Subject: [PATCH 6.12 262/567] KVM: arm64: Initialize HCR_EL2.E2H early
+Date: Tue,  6 Jan 2026 18:00:44 +0100
+Message-ID: <20260106170501.013523726@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
 References: <20260106170451.332875001@linuxfoundation.org>
@@ -64,297 +64,153 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harshit Agarwal <harshit@nutanix.com>
+From: Mark Rutland <mark.rutland@arm.com>
 
-commit 690e47d1403e90b7f2366f03b52ed3304194c793 upstream.
+[ Upstream commit 7a68b55ff39b0a1638acb1694c185d49f6077a0d ]
 
-Overview
-========
-When a CPU chooses to call push_rt_task and picks a task to push to
-another CPU's runqueue then it will call find_lock_lowest_rq method
-which would take a double lock on both CPUs' runqueues. If one of the
-locks aren't readily available, it may lead to dropping the current
-runqueue lock and reacquiring both the locks at once. During this window
-it is possible that the task is already migrated and is running on some
-other CPU. These cases are already handled. However, if the task is
-migrated and has already been executed and another CPU is now trying to
-wake it up (ttwu) such that it is queued again on the runqeue
-(on_rq is 1) and also if the task was run by the same CPU, then the
-current checks will pass even though the task was migrated out and is no
-longer in the pushable tasks list.
+On CPUs without FEAT_E2H0, HCR_EL2.E2H is RES1, but may reset to an
+UNKNOWN value out of reset and consequently may not read as 1 unless it
+has been explicitly initialized.
 
-Crashes
-=======
-This bug resulted in quite a few flavors of crashes triggering kernel
-panics with various crash signatures such as assert failures, page
-faults, null pointer dereferences, and queue corruption errors all
-coming from scheduler itself.
+We handled this for the head.S boot code in commits:
 
-Some of the crashes:
--> kernel BUG at kernel/sched/rt.c:1616! BUG_ON(idx >= MAX_RT_PRIO)
-   Call Trace:
-   ? __die_body+0x1a/0x60
-   ? die+0x2a/0x50
-   ? do_trap+0x85/0x100
-   ? pick_next_task_rt+0x6e/0x1d0
-   ? do_error_trap+0x64/0xa0
-   ? pick_next_task_rt+0x6e/0x1d0
-   ? exc_invalid_op+0x4c/0x60
-   ? pick_next_task_rt+0x6e/0x1d0
-   ? asm_exc_invalid_op+0x12/0x20
-   ? pick_next_task_rt+0x6e/0x1d0
-   __schedule+0x5cb/0x790
-   ? update_ts_time_stats+0x55/0x70
-   schedule_idle+0x1e/0x40
-   do_idle+0x15e/0x200
-   cpu_startup_entry+0x19/0x20
-   start_secondary+0x117/0x160
-   secondary_startup_64_no_verify+0xb0/0xbb
+  3944382fa6f22b54 ("arm64: Treat HCR_EL2.E2H as RES1 when ID_AA64MMFR4_EL1.E2H0 is negative")
+  b3320142f3db9b3f ("arm64: Fix early handling of FEAT_E2H0 not being implemented")
 
--> BUG: kernel NULL pointer dereference, address: 00000000000000c0
-   Call Trace:
-   ? __die_body+0x1a/0x60
-   ? no_context+0x183/0x350
-   ? __warn+0x8a/0xe0
-   ? exc_page_fault+0x3d6/0x520
-   ? asm_exc_page_fault+0x1e/0x30
-   ? pick_next_task_rt+0xb5/0x1d0
-   ? pick_next_task_rt+0x8c/0x1d0
-   __schedule+0x583/0x7e0
-   ? update_ts_time_stats+0x55/0x70
-   schedule_idle+0x1e/0x40
-   do_idle+0x15e/0x200
-   cpu_startup_entry+0x19/0x20
-   start_secondary+0x117/0x160
-   secondary_startup_64_no_verify+0xb0/0xbb
+Unfortunately, we forgot to apply a similar fix to the KVM PSCI entry
+points used when relaying CPU_ON, CPU_SUSPEND, and SYSTEM SUSPEND. When
+KVM is entered via these entry points, the value of HCR_EL2.E2H may be
+consumed before it has been initialized (e.g. by the 'init_el2_state'
+macro).
 
--> BUG: unable to handle page fault for address: ffff9464daea5900
-   kernel BUG at kernel/sched/rt.c:1861! BUG_ON(rq->cpu != task_cpu(p))
+Initialize HCR_EL2.E2H early in these paths such that it can be consumed
+reliably. The existing code in head.S is factored out into a new
+'init_el2_hcr' macro, and this is used in the __kvm_hyp_init_cpu()
+function common to all the relevant PSCI entry points.
 
--> kernel BUG at kernel/sched/rt.c:1055! BUG_ON(!rq->nr_running)
-   Call Trace:
-   ? __die_body+0x1a/0x60
-   ? die+0x2a/0x50
-   ? do_trap+0x85/0x100
-   ? dequeue_top_rt_rq+0xa2/0xb0
-   ? do_error_trap+0x64/0xa0
-   ? dequeue_top_rt_rq+0xa2/0xb0
-   ? exc_invalid_op+0x4c/0x60
-   ? dequeue_top_rt_rq+0xa2/0xb0
-   ? asm_exc_invalid_op+0x12/0x20
-   ? dequeue_top_rt_rq+0xa2/0xb0
-   dequeue_rt_entity+0x1f/0x70
-   dequeue_task_rt+0x2d/0x70
-   __schedule+0x1a8/0x7e0
-   ? blk_finish_plug+0x25/0x40
-   schedule+0x3c/0xb0
-   futex_wait_queue_me+0xb6/0x120
-   futex_wait+0xd9/0x240
-   do_futex+0x344/0xa90
-   ? get_mm_exe_file+0x30/0x60
-   ? audit_exe_compare+0x58/0x70
-   ? audit_filter_rules.constprop.26+0x65e/0x1220
-   __x64_sys_futex+0x148/0x1f0
-   do_syscall_64+0x30/0x80
-   entry_SYSCALL_64_after_hwframe+0x62/0xc7
+For clarity, I've tweaked the assembly used to check whether
+ID_AA64MMFR4_EL1.E2H0 is negative. The bitfield is extracted as a signed
+value, and this is checked with a signed-greater-or-equal (GE) comparison.
 
--> BUG: unable to handle page fault for address: ffff8cf3608bc2c0
-   Call Trace:
-   ? __die_body+0x1a/0x60
-   ? no_context+0x183/0x350
-   ? spurious_kernel_fault+0x171/0x1c0
-   ? exc_page_fault+0x3b6/0x520
-   ? plist_check_list+0x15/0x40
-   ? plist_check_list+0x2e/0x40
-   ? asm_exc_page_fault+0x1e/0x30
-   ? _cond_resched+0x15/0x30
-   ? futex_wait_queue_me+0xc8/0x120
-   ? futex_wait+0xd9/0x240
-   ? try_to_wake_up+0x1b8/0x490
-   ? futex_wake+0x78/0x160
-   ? do_futex+0xcd/0xa90
-   ? plist_check_list+0x15/0x40
-   ? plist_check_list+0x2e/0x40
-   ? plist_del+0x6a/0xd0
-   ? plist_check_list+0x15/0x40
-   ? plist_check_list+0x2e/0x40
-   ? dequeue_pushable_task+0x20/0x70
-   ? __schedule+0x382/0x7e0
-   ? asm_sysvec_reschedule_ipi+0xa/0x20
-   ? schedule+0x3c/0xb0
-   ? exit_to_user_mode_prepare+0x9e/0x150
-   ? irqentry_exit_to_user_mode+0x5/0x30
-   ? asm_sysvec_reschedule_ipi+0x12/0x20
+As the hyp code will reconfigure HCR_EL2 later in ___kvm_hyp_init(), all
+bits other than E2H are initialized to zero in __kvm_hyp_init_cpu().
 
-Above are some of the common examples of the crashes that were observed
-due to this issue.
-
-Details
-=======
-Let's look at the following scenario to understand this race.
-
-1) CPU A enters push_rt_task
-  a) CPU A has chosen next_task = task p.
-  b) CPU A calls find_lock_lowest_rq(Task p, CPU Z’s rq).
-  c) CPU A identifies CPU X as a destination CPU (X < Z).
-  d) CPU A enters double_lock_balance(CPU Z’s rq, CPU X’s rq).
-  e) Since X is lower than Z, CPU A unlocks CPU Z’s rq. Someone else has
-     locked CPU X’s rq, and thus, CPU A must wait.
-
-2) At CPU Z
-  a) Previous task has completed execution and thus, CPU Z enters
-     schedule, locks its own rq after CPU A releases it.
-  b) CPU Z dequeues previous task and begins executing task p.
-  c) CPU Z unlocks its rq.
-  d) Task p yields the CPU (ex. by doing IO or waiting to acquire a
-     lock) which triggers the schedule function on CPU Z.
-  e) CPU Z enters schedule again, locks its own rq, and dequeues task p.
-  f) As part of dequeue, it sets p.on_rq = 0 and unlocks its rq.
-
-3) At CPU B
-  a) CPU B enters try_to_wake_up with input task p.
-  b) Since CPU Z dequeued task p, p.on_rq = 0, and CPU B updates
-     B.state = WAKING.
-  c) CPU B via select_task_rq determines CPU Y as the target CPU.
-
-4) The race
-  a) CPU A acquires CPU X’s lock and relocks CPU Z.
-  b) CPU A reads task p.cpu = Z and incorrectly concludes task p is
-     still on CPU Z.
-  c) CPU A failed to notice task p had been dequeued from CPU Z while
-     CPU A was waiting for locks in double_lock_balance. If CPU A knew
-     that task p had been dequeued, it would return NULL forcing
-     push_rt_task to give up the task p's migration.
-  d) CPU B updates task p.cpu = Y and calls ttwu_queue.
-  e) CPU B locks Ys rq. CPU B enqueues task p onto Y and sets task
-     p.on_rq = 1.
-  f) CPU B unlocks CPU Y, triggering memory synchronization.
-  g) CPU A reads task p.on_rq = 1, cementing its assumption that task p
-     has not migrated.
-  h) CPU A decides to migrate p to CPU X.
-
-This leads to A dequeuing p from Y's queue and various crashes down the
-line.
-
-Solution
-========
-The solution here is fairly simple. After obtaining the lock (at 4a),
-the check is enhanced to make sure that the task is still at the head of
-the pushable tasks list. If not, then it is anyway not suitable for
-being pushed out.
-
-Testing
-=======
-The fix is tested on a cluster of 3 nodes, where the panics due to this
-are hit every couple of days. A fix similar to this was deployed on such
-cluster and was stable for more than 30 days.
-
-Co-developed-by: Jon Kohler <jon@nutanix.com>
-Signed-off-by: Jon Kohler <jon@nutanix.com>
-Co-developed-by: Gauri Patwardhan <gauri.patwardhan@nutanix.com>
-Signed-off-by: Gauri Patwardhan <gauri.patwardhan@nutanix.com>
-Co-developed-by: Rahul Chunduru <rahul.chunduru@nutanix.com>
-Signed-off-by: Rahul Chunduru <rahul.chunduru@nutanix.com>
-Signed-off-by: Harshit Agarwal <harshit@nutanix.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: "Steven Rostedt (Google)" <rostedt@goodmis.org>
-Reviewed-by: Phil Auld <pauld@redhat.com>
-Tested-by: Will Ton <william.ton@nutanix.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250225180553.167995-1-harshit@nutanix.com
-Signed-off-by: Rajani Kantha <681739313@139.com>
+Fixes: 3944382fa6f22b54 ("arm64: Treat HCR_EL2.E2H as RES1 when ID_AA64MMFR4_EL1.E2H0 is negative")
+Fixes: b3320142f3db9b3f ("arm64: Fix early handling of FEAT_E2H0 not being implemented")
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Cc: Ahmed Genidi <ahmed.genidi@arm.com>
+Cc: Ben Horgan <ben.horgan@arm.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Leo Yan <leo.yan@arm.com>
+Cc: Marc Zyngier <maz@kernel.org>
+Cc: Oliver Upton <oliver.upton@linux.dev>
+Cc: Will Deacon <will@kernel.org>
+Link: https://lore.kernel.org/r/20250227180526.1204723-2-mark.rutland@arm.com
+[maz: fixed LT->GE thinko]
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Signed-off-by: Wei-Lin Chang <weilin.chang@arm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/rt.c |   52 +++++++++++++++++++++++++---------------------------
- 1 file changed, 25 insertions(+), 27 deletions(-)
+ arch/arm64/include/asm/el2_setup.h |   26 ++++++++++++++++++++++++++
+ arch/arm64/kernel/head.S           |   19 +------------------
+ arch/arm64/kvm/hyp/nvhe/hyp-init.S |    8 +++++++-
+ 3 files changed, 34 insertions(+), 19 deletions(-)
 
---- a/kernel/sched/rt.c
-+++ b/kernel/sched/rt.c
-@@ -1895,6 +1895,26 @@ static int find_lowest_rq(struct task_st
- 	return -1;
- }
+--- a/arch/arm64/include/asm/el2_setup.h
++++ b/arch/arm64/include/asm/el2_setup.h
+@@ -16,6 +16,32 @@
+ #include <asm/sysreg.h>
+ #include <linux/irqchip/arm-gic-v3.h>
  
-+static struct task_struct *pick_next_pushable_task(struct rq *rq)
-+{
-+	struct task_struct *p;
++.macro init_el2_hcr	val
++	mov_q	x0, \val
 +
-+	if (!has_pushable_tasks(rq))
-+		return NULL;
++	/*
++	 * Compliant CPUs advertise their VHE-onlyness with
++	 * ID_AA64MMFR4_EL1.E2H0 < 0. On such CPUs HCR_EL2.E2H is RES1, but it
++	 * can reset into an UNKNOWN state and might not read as 1 until it has
++	 * been initialized explicitly.
++	 *
++	 * Fruity CPUs seem to have HCR_EL2.E2H set to RAO/WI, but
++	 * don't advertise it (they predate this relaxation).
++	 *
++	 * Initalize HCR_EL2.E2H so that later code can rely upon HCR_EL2.E2H
++	 * indicating whether the CPU is running in E2H mode.
++	 */
++	mrs_s	x1, SYS_ID_AA64MMFR4_EL1
++	sbfx	x1, x1, #ID_AA64MMFR4_EL1_E2H0_SHIFT, #ID_AA64MMFR4_EL1_E2H0_WIDTH
++	cmp	x1, #0
++	b.ge	.LnVHE_\@
 +
-+	p = plist_first_entry(&rq->rt.pushable_tasks,
-+			      struct task_struct, pushable_tasks);
++	orr	x0, x0, #HCR_E2H
++.LnVHE_\@:
++	msr	hcr_el2, x0
++	isb
++.endm
 +
-+	BUG_ON(rq->cpu != task_cpu(p));
-+	BUG_ON(task_current(rq, p));
-+	BUG_ON(p->nr_cpus_allowed <= 1);
-+
-+	BUG_ON(!task_on_rq_queued(p));
-+	BUG_ON(!rt_task(p));
-+
-+	return p;
-+}
-+
- /* Will lock the rq it finds */
- static struct rq *find_lock_lowest_rq(struct task_struct *task, struct rq *rq)
- {
-@@ -1925,18 +1945,16 @@ static struct rq *find_lock_lowest_rq(st
- 			/*
- 			 * We had to unlock the run queue. In
- 			 * the mean time, task could have
--			 * migrated already or had its affinity changed.
--			 * Also make sure that it wasn't scheduled on its rq.
-+			 * migrated already or had its affinity changed,
-+			 * therefore check if the task is still at the
-+			 * head of the pushable tasks list.
- 			 * It is possible the task was scheduled, set
- 			 * "migrate_disabled" and then got preempted, so we must
- 			 * check the task migration disable flag here too.
- 			 */
--			if (unlikely(task_rq(task) != rq ||
-+			if (unlikely(is_migration_disabled(task) ||
- 				     !cpumask_test_cpu(lowest_rq->cpu, &task->cpus_mask) ||
--				     task_on_cpu(rq, task) ||
--				     !rt_task(task) ||
--				     is_migration_disabled(task) ||
--				     !task_on_rq_queued(task))) {
-+				     task != pick_next_pushable_task(rq))) {
+ .macro __init_el2_sctlr
+ 	mov_q	x0, INIT_SCTLR_EL2_MMU_OFF
+ 	msr	sctlr_el2, x0
+--- a/arch/arm64/kernel/head.S
++++ b/arch/arm64/kernel/head.S
+@@ -295,25 +295,8 @@ SYM_INNER_LABEL(init_el2, SYM_L_LOCAL)
+ 	msr	sctlr_el2, x0
+ 	isb
+ 0:
+-	mov_q	x0, HCR_HOST_NVHE_FLAGS
+-
+-	/*
+-	 * Compliant CPUs advertise their VHE-onlyness with
+-	 * ID_AA64MMFR4_EL1.E2H0 < 0. HCR_EL2.E2H can be
+-	 * RES1 in that case. Publish the E2H bit early so that
+-	 * it can be picked up by the init_el2_state macro.
+-	 *
+-	 * Fruity CPUs seem to have HCR_EL2.E2H set to RAO/WI, but
+-	 * don't advertise it (they predate this relaxation).
+-	 */
+-	mrs_s	x1, SYS_ID_AA64MMFR4_EL1
+-	tbz	x1, #(ID_AA64MMFR4_EL1_E2H0_SHIFT + ID_AA64MMFR4_EL1_E2H0_WIDTH - 1), 1f
+-
+-	orr	x0, x0, #HCR_E2H
+-1:
+-	msr	hcr_el2, x0
+-	isb
  
- 				double_unlock_balance(rq, lowest_rq);
- 				lowest_rq = NULL;
-@@ -1956,26 +1974,6 @@ static struct rq *find_lock_lowest_rq(st
- 	return lowest_rq;
- }
++	init_el2_hcr	HCR_HOST_NVHE_FLAGS
+ 	init_el2_state
  
--static struct task_struct *pick_next_pushable_task(struct rq *rq)
--{
--	struct task_struct *p;
--
--	if (!has_pushable_tasks(rq))
--		return NULL;
--
--	p = plist_first_entry(&rq->rt.pushable_tasks,
--			      struct task_struct, pushable_tasks);
--
--	BUG_ON(rq->cpu != task_cpu(p));
--	BUG_ON(task_current(rq, p));
--	BUG_ON(p->nr_cpus_allowed <= 1);
--
--	BUG_ON(!task_on_rq_queued(p));
--	BUG_ON(!rt_task(p));
--
--	return p;
--}
--
- /*
-  * If the current CPU has more than one RT task, see if the non
-  * running task can migrate over to a CPU that is running a task
+ 	/* Hypervisor stub */
+--- a/arch/arm64/kvm/hyp/nvhe/hyp-init.S
++++ b/arch/arm64/kvm/hyp/nvhe/hyp-init.S
+@@ -73,8 +73,12 @@ __do_hyp_init:
+ 	eret
+ SYM_CODE_END(__kvm_hyp_init)
+ 
++/*
++ * Initialize EL2 CPU state to sane values.
++ *
++ * HCR_EL2.E2H must have been initialized already.
++ */
+ SYM_CODE_START_LOCAL(__kvm_init_el2_state)
+-	/* Initialize EL2 CPU state to sane values. */
+ 	init_el2_state				// Clobbers x0..x2
+ 	finalise_el2_state
+ 	ret
+@@ -206,6 +210,8 @@ SYM_CODE_START_LOCAL(__kvm_hyp_init_cpu)
+ 
+ 2:	msr	SPsel, #1			// We want to use SP_EL{1,2}
+ 
++	init_el2_hcr	0
++
+ 	bl	__kvm_init_el2_state
+ 
+ 	__init_el2_nvhe_prepare_eret
 
 
 
