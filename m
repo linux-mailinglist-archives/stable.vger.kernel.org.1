@@ -1,51 +1,49 @@
-Return-Path: <stable+bounces-205255-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205344-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEDBBCFAE73
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 21:21:57 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAD9BCFAB4E
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:36:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 40EC63055C29
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 20:21:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 80D553273059
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:56:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F49B34EF15;
-	Tue,  6 Jan 2026 17:21:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E30C3557F5;
+	Tue,  6 Jan 2026 17:26:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UpTGaB8b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iiwbAPo0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5BF834EF11;
-	Tue,  6 Jan 2026 17:21:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C42035505C;
+	Tue,  6 Jan 2026 17:26:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767720088; cv=none; b=bwBfZtWtx/GrjDdwAR7EFB/C32fQHRNgIzVd+p7XHeVXISlo2nYkTOYOIHCHhxDZJNNccPLX+q75W3I7GBxuT9kGOOs4Yhsnj2G4rlMZub52C9V29vSgeBE6aXIbYeeMs8WAsX5zWtwKCQ5N4TiXgFnAv0gbaf70U8lEXf6nnk0=
+	t=1767720381; cv=none; b=miQgq5KyJNzXcNoIafjmowDeezdsobXPBw6CFh4iF+s2gJSfqqgx4e5CVtWhKj03B2BfQQCKKLjbMYT+x96KqlK/8QF6B4ZLUIgQ3n78e8lEpGN+x5aXi4eg9HPZNBlnQOgvp+CMlvxR6ZQL+wdYUmI7odVVCtwme1XsIDdSpT8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767720088; c=relaxed/simple;
-	bh=dd6+9r/3EufCPWDAfCUPm9kkBsjjEzoWl6dj38G3tAo=;
+	s=arc-20240116; t=1767720381; c=relaxed/simple;
+	bh=tSPB+fpk/KbIObNozHCWXlCCCmO3wnpm3GDGSuHHpTY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MgKwhysZGeHvFnrxs4rb/X5Kpk78toaFzcv6SHg35KtWczTKJNp1MA55wd+cr80zXpr3OSUU5RrgrG+wWFMx+q5vZkp8KLaqZjHc+qCuhz4oLDVZJLXWu+LnJNx8xO/yw7Xkqps9kjKKtAq2+SIfeD5FmLMAXVA3zhUdJEofWgI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UpTGaB8b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 631B2C2BC9E;
-	Tue,  6 Jan 2026 17:21:27 +0000 (UTC)
+	 MIME-Version; b=sn4eb6VJxxsF8JaK8Ia2jf5JLNZvU2EGgZ5I6a78dP0KB/YR955UU128p8geZ56ZvoSqvk0l0J9UiJQ/4Bbe4hdD0Up1kVjVsXHDsIRRpoXDqxR6sjIte8U8MqVJ2M6dQPo1IfFEWD+fUrJOwJoCXth/XCuqtlYXAv24AXx+ICw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iiwbAPo0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91432C116C6;
+	Tue,  6 Jan 2026 17:26:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767720087;
-	bh=dd6+9r/3EufCPWDAfCUPm9kkBsjjEzoWl6dj38G3tAo=;
+	s=korg; t=1767720381;
+	bh=tSPB+fpk/KbIObNozHCWXlCCCmO3wnpm3GDGSuHHpTY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UpTGaB8bYeXIc5+ej2x4ohZz4eG7NU1xUhYgzq+rx5pDw1/j0fsDLzF/Y0aCJZeAN
-	 jW+EerigXKk0OZDFl3O23yin20Sg1KqDeZNxTrMcSAa92e3MtzXDhExhIbMN3qyY//
-	 OiUNo+N2O8iisnRygtF/hBzf3VHI7xAXXtLKeZLc=
+	b=iiwbAPo0tCTaDTHu8vyeXOTc02U09w47hqWx0xAtlpSnoN9kZS1MZW/xYM7H/AliB
+	 EH9/SNg/7ctfHYL1IyMD7wc5NWF4BBV+beLd24PIUaa5gQrnm6hXd9Nc88Siyn1yOR
+	 UFoGGb5Mupgq9T2TnnPZ7S3b9xQl8eOVXtKvo+gQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bernd Schubert <bschubert@ddn.com>,
-	Miklos Szeredi <mszeredi@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 130/567] fuse: Always flush the page cache before FOPEN_DIRECT_IO write
-Date: Tue,  6 Jan 2026 17:58:32 +0100
-Message-ID: <20260106170456.137807784@linuxfoundation.org>
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.12 220/567] KVM: x86: WARN if hrtimer callback for periodic APIC timer fires with period=0
+Date: Tue,  6 Jan 2026 18:00:02 +0100
+Message-ID: <20260106170459.453328561@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
 References: <20260106170451.332875001@linuxfoundation.org>
@@ -64,37 +62,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Bernd Schubert <bschubert@ddn.com>
+From: Sean Christopherson <seanjc@google.com>
 
-[ Upstream commit 1ce120dcefc056ce8af2486cebbb77a458aad4c3 ]
+commit 0ea9494be9c931ddbc084ad5e11fda91b554cf47 upstream.
 
-This was done as condition on direct_io_allow_mmap, but I believe
-this is not right, as a file might be open two times - once with
-write-back enabled another time with FOPEN_DIRECT_IO.
+WARN and don't restart the hrtimer if KVM's callback runs with the guest's
+APIC timer in periodic mode but with a period of '0', as not advancing the
+hrtimer's deadline would put the CPU into an infinite loop of hrtimer
+events.  Observing a period of '0' should be impossible, even when the
+hrtimer is running on a different CPU than the vCPU, as KVM is supposed to
+cancel the hrtimer before changing (or zeroing) the period, e.g. when
+switching from periodic to one-shot.
 
-Signed-off-by: Bernd Schubert <bschubert@ddn.com>
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20251113205114.1647493-2-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/fuse/file.c | 2 +-
+ arch/x86/kvm/lapic.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/fuse/file.c b/fs/fuse/file.c
-index a8218a3bc0b4..ec1b235df91d 100644
---- a/fs/fuse/file.c
-+++ b/fs/fuse/file.c
-@@ -1582,7 +1582,7 @@ ssize_t fuse_direct_io(struct fuse_io_priv *io, struct iov_iter *iter,
- 	if (!ia)
- 		return -ENOMEM;
+--- a/arch/x86/kvm/lapic.c
++++ b/arch/x86/kvm/lapic.c
+@@ -2869,7 +2869,7 @@ static enum hrtimer_restart apic_timer_f
  
--	if (fopen_direct_io && fc->direct_io_allow_mmap) {
-+	if (fopen_direct_io) {
- 		res = filemap_write_and_wait_range(mapping, pos, pos + count - 1);
- 		if (res) {
- 			fuse_io_free(ia);
--- 
-2.51.0
-
+ 	apic_timer_expired(apic, true);
+ 
+-	if (lapic_is_periodic(apic)) {
++	if (lapic_is_periodic(apic) && !WARN_ON_ONCE(!apic->lapic_timer.period)) {
+ 		advance_periodic_target_expiration(apic);
+ 		hrtimer_add_expires_ns(&ktimer->timer, ktimer->period);
+ 		return HRTIMER_RESTART;
 
 
 
