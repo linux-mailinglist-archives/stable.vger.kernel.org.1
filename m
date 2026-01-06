@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-205942-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205663-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5582CFA0B3
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:18:11 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C00ACF9F4C
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:09:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C4857306EEDE
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:16:38 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1444A3047DA3
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:07:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EDA236D512;
-	Tue,  6 Jan 2026 17:59:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9C0534A79F;
+	Tue,  6 Jan 2026 17:44:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OzSaix36"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VR7vz4rl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BDAC36A01B;
-	Tue,  6 Jan 2026 17:59:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 816D334C124;
+	Tue,  6 Jan 2026 17:44:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767722375; cv=none; b=FwqRXD+ceyrc90YKp/yVm5iOQs8GHBqJJ6yDHKgmKtF/0BId2xz9L5u5cT18+n1/UYpMdCVj89nlKttPY2FUQzNMwj7XF6HBWQTwjbNfkkmwwm7giBB6srm9vIbgx9wPBhhoZwpb1bcmSDhrrogfEGPgbRtW1meox+FYv+qx/IQ=
+	t=1767721440; cv=none; b=hDybUdb8wREXjR/vddmYbEXUg+q1Ckgh1BGf+P5aE04KBXU3eZd8dgVtd90EBIG8oNeihRH8PmA7n8s458ETEF3567H/z3sidahAyyxDog2ETkpojiDOeWvyWCFlPy9AHnWQPKSnN19/GbHS5Y64ijlP+5Wihr5yVXYj5BsEJNo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767722375; c=relaxed/simple;
-	bh=6DHn/Ry/HvxKA3GaTkY2tfNp8JRDS/J/WuFdBQJyDxc=;
+	s=arc-20240116; t=1767721440; c=relaxed/simple;
+	bh=D38Ds4JXz3pPQL+21Lx1EdgHLh2KTcVBVgI6ggigLRE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O1TLr/y32Mafs/Nrij/YKhdeQO6216mOtND2maxPIO/zKB2wk3zEi205T/r3GeE30t9EetoWOiNh4BMnAGq4oQS3lv7eSnJHIe4E/jLrWSkb5ujXAmy7HlBv/NQRVZGTA7Gjw7WbUnKWygyr1IAy2fdV1IiY+/9VmPgRvEnTzTk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OzSaix36; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23985C116C6;
-	Tue,  6 Jan 2026 17:59:33 +0000 (UTC)
+	 MIME-Version; b=DHQp913rsUOB4yDvhGyd7wmi1o/o/6WcgVyFrjxMP7GWJfV4Ja8wu7P4HfbUhr6/OuO19lBuLm7ePQOIunu/ZKvum6ZQc6MBW/mJBPWZQ7DdfT4r1H7zZzRmzmTC4gELHTL4KpA8HMR2tjA1EOMIXu8HGdS3xgmjrWfA+AU6Nrk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VR7vz4rl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A2E5C19423;
+	Tue,  6 Jan 2026 17:43:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767722374;
-	bh=6DHn/Ry/HvxKA3GaTkY2tfNp8JRDS/J/WuFdBQJyDxc=;
+	s=korg; t=1767721440;
+	bh=D38Ds4JXz3pPQL+21Lx1EdgHLh2KTcVBVgI6ggigLRE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OzSaix36N6I9o/NkEyGG96y/erK1iVfMmEflb6ZIcBoKf3he6F7egZkx+B1udmybL
-	 cXE74wdS9z8uj0LDQMb7zgzKKjVG3g1JBbrBh8O7KErb+pUL1gP7WEenZnL5YCer12
-	 9Na0tja2PALzf8/w6/5nP5uqarlkCF/OJ3EmgQk4=
+	b=VR7vz4rlwrOFqpMQiZ1KXS0TvYRl3TCg1dKLuG2+wrTsGB5NjCF7n69UX7ehoWWJu
+	 742UEYPwhYt5mk3jooIGIn0R/u7H5adEHUaCtd2oLQDj6SyegKPNjWjgQU8I8aBYSd
+	 7gW40Tw54tDWbGsTppkFPLykiy/Q0bgAE9q2SpCw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hengqi Chen <hengqi.chen@gmail.com>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.18 246/312] LoongArch: BPF: Zero-extend bpf_tail_call() index
+	Madhu Chittim <madhu.chittim@intel.com>,
+	Joshua Hay <joshua.a.hay@intel.com>,
+	Krishneil Singh <krishneil.k.singh@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>
+Subject: [PATCH 6.12 538/567] idpf: trigger SW interrupt when exiting wb_on_itr mode
 Date: Tue,  6 Jan 2026 18:05:20 +0100
-Message-ID: <20260106170556.749777939@linuxfoundation.org>
+Message-ID: <20260106170511.304650427@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
-References: <20260106170547.832845344@linuxfoundation.org>
+In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
+References: <20260106170451.332875001@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,41 +61,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hengqi Chen <hengqi.chen@gmail.com>
+From: Joshua Hay <joshua.a.hay@intel.com>
 
-commit eb71f5c433e1c6dff089b315881dec40a88a7baf upstream.
+[ Upstream commit 0c1683c681681c14f4389e3bfa8de10baf242ba8 ]
 
-The bpf_tail_call() index should be treated as a u32 value. Let's
-zero-extend it to avoid calling wrong BPF progs. See similar fixes
-for x86 [1]) and arm64 ([2]) for more details.
+There is a race condition between exiting wb_on_itr and completion write
+backs. For example, we are in wb_on_itr mode and a Tx completion is
+generated by HW, ready to be written back, as we are re-enabling
+interrupts:
 
-  [1]: https://github.com/torvalds/linux/commit/90caccdd8cc0215705f18b92771b449b01e2474a
-  [2]: https://github.com/torvalds/linux/commit/16338a9b3ac30740d49f5dfed81bac0ffa53b9c7
+	HW                      SW
+	|                       |
+	|			| idpf_tx_splitq_clean_all
+	|                       | napi_complete_done
+	|			|
+	| tx_completion_wb 	| idpf_vport_intr_update_itr_ena_irq
 
-Cc: stable@vger.kernel.org
-Fixes: 5dc615520c4d ("LoongArch: Add BPF JIT support")
-Signed-off-by: Hengqi Chen <hengqi.chen@gmail.com>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+That tx_completion_wb happens before the vector is fully re-enabled.
+Continuing with this example, it is a UDP stream and the
+tx_completion_wb is the last one in the flow (there are no rx packets).
+Because the HW generated the completion before the interrupt is fully
+enabled, the HW will not fire the interrupt once the timer expires and
+the write back will not happen. NAPI poll won't be called.  We have
+indicated we're back in interrupt mode but nothing else will trigger the
+interrupt. Therefore, the completion goes unprocessed, triggering a Tx
+timeout.
+
+To mitigate this, fire a SW triggered interrupt upon exiting wb_on_itr.
+This interrupt will catch the rogue completion and avoid the timeout.
+Add logic to set the appropriate bits in the vector's dyn_ctl register.
+
+Fixes: 9c4a27da0ecc ("idpf: enable WB_ON_ITR")
+Reviewed-by: Madhu Chittim <madhu.chittim@intel.com>
+Signed-off-by: Joshua Hay <joshua.a.hay@intel.com>
+Tested-by: Krishneil Singh <krishneil.k.singh@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/net/bpf_jit.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/intel/idpf/idpf_txrx.c |   29 ++++++++++++++++++----------
+ 1 file changed, 19 insertions(+), 10 deletions(-)
 
---- a/arch/loongarch/net/bpf_jit.c
-+++ b/arch/loongarch/net/bpf_jit.c
-@@ -280,6 +280,8 @@ static int emit_bpf_tail_call(struct jit
- 	 *	 goto out;
- 	 */
- 	tc_ninsn = insn ? ctx->offset[insn+1] - ctx->offset[insn] : ctx->offset[0];
-+	emit_zext_32(ctx, a2, true);
+--- a/drivers/net/ethernet/intel/idpf/idpf_txrx.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
+@@ -3502,21 +3502,31 @@ static void idpf_vport_intr_dis_irq_all(
+ /**
+  * idpf_vport_intr_buildreg_itr - Enable default interrupt generation settings
+  * @q_vector: pointer to q_vector
+- * @type: itr index
+- * @itr: itr value
+  */
+-static u32 idpf_vport_intr_buildreg_itr(struct idpf_q_vector *q_vector,
+-					const int type, u16 itr)
++static u32 idpf_vport_intr_buildreg_itr(struct idpf_q_vector *q_vector)
+ {
+-	u32 itr_val;
++	u32 itr_val = q_vector->intr_reg.dyn_ctl_intena_m;
++	int type = IDPF_NO_ITR_UPDATE_IDX;
++	u16 itr = 0;
 +
- 	off = offsetof(struct bpf_array, map.max_entries);
- 	emit_insn(ctx, ldwu, t1, a1, off);
- 	/* bgeu $a2, $t1, jmp_offset */
++	if (q_vector->wb_on_itr) {
++		/*
++		 * Trigger a software interrupt when exiting wb_on_itr, to make
++		 * sure we catch any pending write backs that might have been
++		 * missed due to interrupt state transition.
++		 */
++		itr_val |= q_vector->intr_reg.dyn_ctl_swint_trig_m |
++			   q_vector->intr_reg.dyn_ctl_sw_itridx_ena_m;
++		type = IDPF_SW_ITR_UPDATE_IDX;
++		itr = IDPF_ITR_20K;
++	}
+ 
+ 	itr &= IDPF_ITR_MASK;
+ 	/* Don't clear PBA because that can cause lost interrupts that
+ 	 * came in while we were cleaning/polling
+ 	 */
+-	itr_val = q_vector->intr_reg.dyn_ctl_intena_m |
+-		  (type << q_vector->intr_reg.dyn_ctl_itridx_s) |
+-		  (itr << (q_vector->intr_reg.dyn_ctl_intrvl_s - 1));
++	itr_val |= (type << q_vector->intr_reg.dyn_ctl_itridx_s) |
++		   (itr << (q_vector->intr_reg.dyn_ctl_intrvl_s - 1));
+ 
+ 	return itr_val;
+ }
+@@ -3614,9 +3624,8 @@ void idpf_vport_intr_update_itr_ena_irq(
+ 	/* net_dim() updates ITR out-of-band using a work item */
+ 	idpf_net_dim(q_vector);
+ 
++	intval = idpf_vport_intr_buildreg_itr(q_vector);
+ 	q_vector->wb_on_itr = false;
+-	intval = idpf_vport_intr_buildreg_itr(q_vector,
+-					      IDPF_NO_ITR_UPDATE_IDX, 0);
+ 
+ 	writel(intval, q_vector->intr_reg.dyn_ctl);
+ }
 
 
 
