@@ -1,119 +1,188 @@
-Return-Path: <stable+bounces-205046-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205047-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09042CF757A
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 09:49:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5E27CF757D
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 09:50:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CC0903073F88
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 08:48:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9D871301A19D
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 08:48:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B16B2DC792;
-	Tue,  6 Jan 2026 08:48:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C59E12BD597;
+	Tue,  6 Jan 2026 08:48:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=konsulko.com header.i=@konsulko.com header.b="mrjPrQqF"
+	dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b="Vrhj2GoN"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013032.outbound.protection.outlook.com [52.101.83.32])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ACA81BBBE5
-	for <stable@vger.kernel.org>; Tue,  6 Jan 2026 08:48:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767689313; cv=none; b=Opyu/lhL6Bool+lKGLIpVnXKiqh8msN6RInBLylruLb+s6mRCX2/FO8bQp5GNZshRKpCQfrgT1LrTP3U9V2HuOemuDH1/nAC4VNAYa3S5AiB0Px8W69CIKQhluryU+Qx89yvee12krO8iH3tGmMevYNK7Mt/R+hbhTy2gQgY/9I=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767689313; c=relaxed/simple;
-	bh=tzas3/joaMGBU+SDtnWhUHfVRcM4fTGJmqiHajhVV8E=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=IPkKSIfKEyvV+UNhaXhcRx9uG09ELeQ+uKebMBPLWSMlXTuYic8VFofSoo6UXhqcWw3AH79CH1Zz4EbQJJyXs5O23ieAxYUw0cUuyv2NvR8m4hrk8VWzTdSIiPnj7MPduC0+4BIkGsOTHjIX5TnX4vVNH+ftlGfYZcI9ji81rTk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=konsulko.com; spf=pass smtp.mailfrom=konsulko.com; dkim=pass (1024-bit key) header.d=konsulko.com header.i=@konsulko.com header.b=mrjPrQqF; arc=none smtp.client-ip=209.85.208.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=konsulko.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=konsulko.com
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-64fabaf9133so1253612a12.3
-        for <stable@vger.kernel.org>; Tue, 06 Jan 2026 00:48:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=konsulko.com; s=google; t=1767689309; x=1768294109; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=XxK6mB3Dr2ZqUnEijrTyuH4FtxcVLOKZHeBdJMmwl24=;
-        b=mrjPrQqFSqKB70HKsGgI7jVzLP6HBAMcTnEiJONvbI8/vhwybbgySVRD2/5dOYSi0k
-         N3Z/w1SHJ1kg3d51xfubfWr3VNSl4ANCbnlROfjAiImi18GVtd0zeVjFVTsA7WYZTDRX
-         ylMw0eFfj2V5qGNQWxAsyWOWOK9NzVpRAn7bM=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767689309; x=1768294109;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=XxK6mB3Dr2ZqUnEijrTyuH4FtxcVLOKZHeBdJMmwl24=;
-        b=G+LhiZdI+0LMNzsu6TAHG8uFLMTwwiwhSo8T9xeyTHThmsAX9GrB5ccdZhuEaavJ/h
-         oXuIwVqEPI0SJmXXj1Gtlqal1xgd+kfw0j/vG/SC9CYAZpl1FZDDLE+JlwTwEEOi7gTc
-         Yt4M3iIUcEctOJlulV0w6Y+SfMjuclTD5KCMTkRNplkwyqrZV6B2WKs5ATWkWvguoiFc
-         cjYHktP8wqCb0zP+6R/yPVHNGEYAyawDv5VH+dTH7J6/wCTzwA6D6XNtbSId4Ly8npOv
-         H+ICD8cV3E4II0iPK/bRF68zoZkw+kZxaMy5drnibd4ctjzGYH9iVbCW2xKU2/625EbF
-         jxIg==
-X-Forwarded-Encrypted: i=1; AJvYcCVRJ74tELtv/fo/dBSWpI4jucIpQwLpAJPSqm4d5724cdu2Utux2mkNOQf30J+FQmq6PUxnx2A=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyfRH0Zz8TxoC+REJn+ggKxID7Vkow9SAIOlvlU2hDmgMFzk8L8
-	QfmikXJCv9jKLZggulVZ3DswwX2eSpGrei7e1FEbrASnVeg42Y9grHmIfErCjknWSfc=
-X-Gm-Gg: AY/fxX4cijFGP5J41SD+8urN5s3DacbcbL71J5SO2BvVk2UnOvv+c3AYuHzbVryOd6D
-	ZtmUv4/AKcZLOEHuqpsY1UWzk5sgPBHNg9Afww9Z7p6UlF9Rh8B9TVtkziwaoBVPFY0MCtLpTey
-	KwgsNY9ApQEP8VBW4OzqauGKIK7lOQwN961sGuQhrfxtkIYLLBpFWG+KzSk+FmySBqIAy4RLsYh
-	lbnWEtBKAnBzd3PbzeWFOsARjSK5U013CqP1j5krwuxDkxrDhaqIk2anglFg15srUx3TPeiW1NX
-	2eLo/Mibcz7nfzC+7nqDG1t2obgWA42OmFUYqP8q9hUodnBjHF+UMDopdI4kOuswGbZaB/YRIMG
-	8fTz65tSd0g9gENYVU8+KOZ7UzcJtb05wA7AL0JTFuyWjydNxBoo/HM0gPxA9CsaKRfHdfDT7qL
-	Nv2wAi/c5EZoqnY04VD0rqKNSyI9koZPqXURkbQho=
-X-Google-Smtp-Source: AGHT+IGNZG9HYrU6znG1XT2PLBjL9IBlLbwC6us1VE4nZSB+4uRh97YAaMpzUsuYysrkWNcCZSkDdg==
-X-Received: by 2002:a05:6402:3594:b0:64d:589a:572b with SMTP id 4fb4d7f45d1cf-6507954bd5amr2316942a12.17.1767689308605;
-        Tue, 06 Jan 2026 00:48:28 -0800 (PST)
-Received: from tone.k.g (lan.nucleusys.com. [92.247.61.126])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6507b9d4ed5sm1513832a12.11.2026.01.06.00.48.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Jan 2026 00:48:28 -0800 (PST)
-From: Petko Manolov <petko.manolov@konsulko.com>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	stable@vger.kernel.org,
-	pabeni@redhat.com,
-	andrew@lunn.ch,
-	Petko Manolov <petkan@nucleusys.com>
-Subject: [PATCH NET v2 1/1] net: usb: pegasus: fix memory leak in update_eth_regs_async()
-Date: Tue,  6 Jan 2026 10:48:21 +0200
-Message-ID: <20260106084821.3746677-1-petko.manolov@konsulko.com>
-X-Mailer: git-send-email 2.47.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A810D277C96;
+	Tue,  6 Jan 2026 08:48:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.32
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1767689337; cv=fail; b=QXtRhBoPy+K3yysIILe24xzBiNDCkzohYv08XHCSS8DDsalQ5WRdtorxj3ldj/F8NigcionJMpw8Zq1+9UmlzDFu7V8yXoo0RCjwbiFvkY7GDTj+2wz9b3DgDmffc7KpTkMtrEroSdaGUZeuF5ByGVIH20Ik7c4Ki77S6o7dL+Y=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1767689337; c=relaxed/simple;
+	bh=bPXdw5NEBH+jadp3rJUVufa6rnvUTzi0GSCWoSapPWY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=djQABVW50US4k2xfniepc/K1eS5F7OcuiP9w2twixH4fIsSMxbIGMPXj7Gi1ocU2/ANSyOroek4kKxYgzhLn9p36INLgC4hCmROpdVPPzNoaAU0VDNBc2eFjn043ODswkV3tU3LizeyUdNdnI8LOTxA4HdKhqwKZJozwgmACtVM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com; spf=pass smtp.mailfrom=de.bosch.com; dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b=Vrhj2GoN; arc=fail smtp.client-ip=52.101.83.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=de.bosch.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=RV7nDIPNlKcHYlbOBPN9qdldDwP8C0nagUvsugm99ysmHEes9Lt2x7sf0u2LZyth0xAb6lkNdsMRYavhn7ROfV0yd0LBQeIC8doPZlM9qMEI09XsRgsD7UX+nP2D5K3+uLLOTtVXd3OcltE1iizOk1se55cAF95WEM/sW+CLVC3HkNK4nq8G9FZNSMcLL0SUu2XhgXTRN5bVA/Bja4ZTIoRyEZxlYoxV4+OckcK3bGLbV/MfWbW+1X7GgwykhtLFEZs9ZJ9T1r2datHl3N3o+y7KpOahCyPOBMbsd043ZV1CrKg5ftYm8dJqAsKu/sjKGHZTPs6i7oVb7TbHlE8cDw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=/cVx83CiqR6uLx2NiAYQmE/psbX07IM0FEyMC1VlDHs=;
+ b=vLCAXPC9mXJdXpkwBaeSOm7SaAtwEoCzRz6UK28xDsBOdrjEVDOTF01602RllOB1HmPczAx558pxKMI8FDlt4ECg9waL0gHCRQCVRoyQUZ6X3/hbtGCLB6YmmrzgftJkldMZORco2bFzxOIjQO2f1syP8if9Qt8nhCAcCk/GV+sr+eAnXDzhMlUBgfrmaMcM6ew+/FwPHPapocbLnkPwcxI/LhZegUs7oH5gG3BfKZLyyr5i9emlKZ9+D3JUTWcrcUftXWiSTjGk+FWwGK3euFa8X5GZS60L1WypfuKjikbU4EXkwCcHKtyMh+5XW5I4yEON2wGj4ayIcnYFadDUxw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 139.15.153.205) smtp.rcpttodomain=google.com smtp.mailfrom=de.bosch.com;
+ dmarc=pass (p=reject sp=none pct=100) action=none header.from=de.bosch.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=de.bosch.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=/cVx83CiqR6uLx2NiAYQmE/psbX07IM0FEyMC1VlDHs=;
+ b=Vrhj2GoNn9lzivntACtwK4EaXb+6fKp0a07o+sU5NZgnv5IEiWQMHn/C4qNEBe04plxPXpilElmA0htGuQnlu4pB8JXzoVeHTLg4YOWJun5ik8RFgG8ZP+Y6SCapKYiAoMxZWY2Q6Smi5a02NiNdjPX5qygSHA+8VpStEohtFSno/M+vyezAMdyxF++9bmOsTLU9/w/7WtFVEEq45gAYJVIeG//HFwQsvnBTnH7j/nJDOUGQuGmfMoG3Kh+Xp7xXD50BfAIpW8V2luDrCg0Clc6+aqHvnbO2gpbNBLiA62+cWaiyaoNe/CGBmyxwj5vUCKw+pqcMSWcw3BI88w+wkA==
+Received: from AM6P191CA0101.EURP191.PROD.OUTLOOK.COM (2603:10a6:209:8a::42)
+ by AM0PR10MB3714.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:154::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9478.4; Tue, 6 Jan
+ 2026 08:48:48 +0000
+Received: from AM3PEPF00009BA1.eurprd04.prod.outlook.com
+ (2603:10a6:209:8a:cafe::25) by AM6P191CA0101.outlook.office365.com
+ (2603:10a6:209:8a::42) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9478.5 via Frontend Transport; Tue, 6
+ Jan 2026 08:48:49 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 139.15.153.205)
+ smtp.mailfrom=de.bosch.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=de.bosch.com;
+Received-SPF: Pass (protection.outlook.com: domain of de.bosch.com designates
+ 139.15.153.205 as permitted sender) receiver=protection.outlook.com;
+ client-ip=139.15.153.205; helo=eop.bosch-org.com; pr=C
+Received: from eop.bosch-org.com (139.15.153.205) by
+ AM3PEPF00009BA1.mail.protection.outlook.com (10.167.16.26) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9499.1 via Frontend Transport; Tue, 6 Jan 2026 08:48:47 +0000
+Received: from RNGMBX3003.de.bosch.com (10.124.11.208) by eop.bosch-org.com
+ (139.15.153.205) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.35; Tue, 6 Jan
+ 2026 09:48:35 +0100
+Received: from [10.34.219.93] (10.34.219.93) by smtp.app.bosch.com
+ (10.124.11.208) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.35; Tue, 6 Jan
+ 2026 09:48:35 +0100
+Message-ID: <d4fc5d93-d147-4263-a672-4b6016957327@de.bosch.com>
+Date: Tue, 6 Jan 2026 09:48:25 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH v2] rust: bitops: fix missing _find_* functions on 32-bit
+ ARM
+To: Alice Ryhl <aliceryhl@google.com>, Yury Norov <yury.norov@gmail.com>,
+	Burak Emir <bqe@google.com>, Andreas Hindborg <a.hindborg@kernel.org>
+CC: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, "Gary
+ Guo" <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+	<bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Trevor Gross
+	<tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
+	<rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<stable@vger.kernel.org>
+References: <20260105-bitops-find-helper-v2-1-ae70b4fc9ecc@google.com>
+Content-Language: en-GB
+From: Dirk Behme <dirk.behme@de.bosch.com>
+In-Reply-To: <20260105-bitops-find-helper-v2-1-ae70b4fc9ecc@google.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM3PEPF00009BA1:EE_|AM0PR10MB3714:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0571a298-e95d-4126-a96a-08de4d006857
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|82310400026|36860700013|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?QTRyb0R5ektBREpueFMvbFhDTHpjNUpSYXFMQmpjWWlDd3BIY1ZEZmFxbUZs?=
+ =?utf-8?B?aGNCTHhyZW81RitPeHcxNERiajgwRE1Jd2VBUkR6VVgyWlp6UGpWTUVkSGFL?=
+ =?utf-8?B?NlgybXlvTmVaYm1GQlFMdXc2bHVGSWFidnJ3T1hSUnlQNEdDTnlFSEpyZ05m?=
+ =?utf-8?B?WVN0UHArS1ZUUUtlZ1FwU0dHMmd3SVp2a01jMEVMS0RBODI1TVRXR1NKQytH?=
+ =?utf-8?B?THhKNEpRejRYV000YmREQmpzNllSSkdFcVJjaGdyQlpINFQ4OVQxb3I3U2k4?=
+ =?utf-8?B?Vm56VnUzM1dXOXBqVlgxK0wwMWc0TFlMemMxUnU4alNTUmdWTDhlWDY2VGI5?=
+ =?utf-8?B?Y2Q0ZVRMYXQwWk1aQ2dEbk5QYVhaaDRGRFlXZW9INEUzZkRpUENtd0N4QStB?=
+ =?utf-8?B?QWZFbE05TEp5RVg4d25UZ29mSEJYQzd1UmZSaFR3RjQ4TkpOZVdWNU54QXFK?=
+ =?utf-8?B?WndtMzhIOWcvS0hDRHBTblFodWNPdXR1aHh5alJldktUSE5QTFZEME93eTlo?=
+ =?utf-8?B?Qk1NbXRseGxxR2s0U1J6VDA5YTVTdFBZNDBneHZoSk1MbTFuRFVsekp4Vm4r?=
+ =?utf-8?B?d1ltaVZwYWJZVDg0b1M3YThkRHl6dE16RjdnU1lhc2J2cUtOTXF6UUZKM1Qr?=
+ =?utf-8?B?UVFZeCtPTDRINFQ4R0liK281aTIyY3B0Mmw3bVVzUHhNTzlJSU5SNmdNTjFh?=
+ =?utf-8?B?UjV1d1pIbnFlKy9XQ1VqMGxhaEw4WllzWnNYRE5BcUwrWVY1aHlWU1V3bzhv?=
+ =?utf-8?B?aWxBSk5NOWxwQ1JFSFFHdUQxTk54ZEpQSFVEQTBpYnpMYlMySEFiYlpWMnhw?=
+ =?utf-8?B?aThHVnJtYzlZVVpMOWN5TzJ2ZXYreTNzc3UrZ1lYQnNzQzMrb1lxeWZEa2pG?=
+ =?utf-8?B?ZURJbUs4dW5kRENwT2dqQjBkQy96U2hJczBIaUxQMEFrNERXSU9lblorU1A0?=
+ =?utf-8?B?cVZQRlhkYncvbytlaWxvZWJDNDcwckJhOUNwZ2ZhNldqSkdSRkhLZTFyQlZ5?=
+ =?utf-8?B?ci9hL2VEVmJLWmczVkNUYnorZ1hsMkJscmpCKzBkcGhUUzR1Zy9hTXVJL3Rt?=
+ =?utf-8?B?SWI1cUZrUGlGUHNaMlhsT1UvTUQ1LzR6VjZKMU53c0hUUlVxTC9ucVlhVmJq?=
+ =?utf-8?B?Z1oxZ3hJT2hQMlV4LzZ5ZGszckY4MnZiNDhKSmdRRlIyOExMUWZzbVlUUVpU?=
+ =?utf-8?B?d09rYnlWWDJINlFxUU0vMzAvaFUrMXpVbmJEdGtTcElSaWFURy9Ob1ZZZENH?=
+ =?utf-8?B?elZkdlVMeTI1NWJjMWtWQmxiTnRRL0krTHdpRDd3UEp4VGsxNGMvQk9hZDVk?=
+ =?utf-8?B?Z2R6cUYwL1R0RGQ3QlhBWFZ4dDRIcCtRcjJOZkRtYUgzOEpmK2FRVFduS1U1?=
+ =?utf-8?B?L3Vlb1A5S1NOZHJrL0V5cE5OUEt3ME9EQmtHQS9ldUN4cUd1UWd2QXV1NEhT?=
+ =?utf-8?B?UmxaaDV5bkg1eGQ2VTdteHhjcG1YRHVOREJmckt2RWZLUlpYT3RPZ1k2Rndt?=
+ =?utf-8?B?UzBPRk9oS0VzdERmNXdKekdZSGIrUHBNbUo2eTF0NG5Ub2gyYzZQZk9hNVVH?=
+ =?utf-8?B?a2luREJ1ZVkzSzVyVHV5aC9rbHRUS2t1cWNqeUlWYS9vKzE4b3ZOajNIdGt6?=
+ =?utf-8?B?MWNHMmpKdVZia1kvZE9QMmNCb2F0MnNwSmFkYldCdFpUNzBNVmcwN24zdDIr?=
+ =?utf-8?B?NktTcjZ2QWZWMGNyQlV5ZTdEL0VnQzhPM1MzUEp0UmlQb0dZMDJPR2ZDc2po?=
+ =?utf-8?B?cFphblJ4amh1QlJ2eFJCNWhZeUVuVm5SVks2TTlNNzN6S2dHQkNsMVJ1YmNY?=
+ =?utf-8?B?bFJtSnFSdERhaUxsWVFUL1pHSWI0RnVxSW1KWTQ3QWtPbTlGRFRSOWV5TzlO?=
+ =?utf-8?B?SThBQ3JYMHl4RCsydUVBRzNFVHZBN01XSVZCS2xCTW1icU4wSnZLaTNETVJF?=
+ =?utf-8?B?M0d6MStodkhtUkhpQ3c1ZGlKc0ZhTDhsSkhPMEk0WU8zbjBxUGNzendRaENp?=
+ =?utf-8?B?K2gyVFBwc3I2RzZscjdqTitEUlZXdWQ0eUErNkw5SW45T0dGQ0lPK3ZwUnlx?=
+ =?utf-8?B?VDN5MDZMV1Y4ei9TSEl0OTUyY1lRNjN5R2VyY0tpVjVxemdUeHNlUTk3T2V5?=
+ =?utf-8?Q?2zgc=3D?=
+X-Forefront-Antispam-Report:
+	CIP:139.15.153.205;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:eop.bosch-org.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(7416014)(376014)(82310400026)(36860700013)(1800799024);DIR:OUT;SFP:1101;
+X-OriginatorOrg: de.bosch.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Jan 2026 08:48:47.8341
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0571a298-e95d-4126-a96a-08de4d006857
+X-MS-Exchange-CrossTenant-Id: 0ae51e19-07c8-4e4b-bb6d-648ee58410f4
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=0ae51e19-07c8-4e4b-bb6d-648ee58410f4;Ip=[139.15.153.205];Helo=[eop.bosch-org.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	AM3PEPF00009BA1.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR10MB3714
 
-From: Petko Manolov <petkan@nucleusys.com>
+Am 1/5/2026 um 11:44 AM schrieb Alice Ryhl:
+> On 32-bit ARM, you may encounter linker errors such as this one:
+> 
+> 	ld.lld: error: undefined symbol: _find_next_zero_bit
+> 	>>> referenced by rust_binder_main.43196037ba7bcee1-cgu.0
+> 	>>>               drivers/android/binder/rust_binder_main.o:(<rust_binder_main::process::Process>::insert_or_update_handle) in archive vmlinux.a
+> 	>>> referenced by rust_binder_main.43196037ba7bcee1-cgu.0
+> 	>>>               drivers/android/binder/rust_binder_main.o:(<rust_binder_main::process::Process>::insert_or_update_handle) in archive vmlinux.a
+> 
+> This error occurs because even though the functions are declared by
+> include/linux/find.h, the definition is #ifdef'd out on 32-bit ARM. This
+> is because arch/arm/include/asm/bitops.h contains:
+> 
+> 	#define find_first_zero_bit(p,sz)	_find_first_zero_bit_le(p,sz)
+> 	#define find_next_zero_bit(p,sz,off)	_find_next_zero_bit_le(p,sz,off)
+> 	#define find_first_bit(p,sz)		_find_first_bit_le(p,sz)
+> 	#define find_next_bit(p,sz,off)		_find_next_bit_le(p,sz,off)
+> 
+> And the underscore-prefixed function is conditional on #ifndef of the
+> non-underscore-prefixed name, but the declaration in find.h is *not*
+> conditional on that #ifndef.
+> 
+> To fix the linker error, we ensure that the symbols in question exist
+> when compiling Rust code. We do this by definining them in rust/helpers/
 
-When asynchronously writing to the device registers and if usb_submit_urb()
-fail, the code fail to release allocated to this point resources.
+Just a quite minor nit: typo: definining -> defining
 
-Fixes: 323b34963d11 ("drivers: net: usb: pegasus: fix control urb submission")
-Signed-off-by: Petko Manolov <petkan@nucleusys.com>
----
-v2:
-  - replace the auto-cleanup form with the classic kfree();
-
- drivers/net/usb/pegasus.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/drivers/net/usb/pegasus.c b/drivers/net/usb/pegasus.c
-index 81ca64debc5b..c514483134f0 100644
---- a/drivers/net/usb/pegasus.c
-+++ b/drivers/net/usb/pegasus.c
-@@ -168,6 +168,8 @@ static int update_eth_regs_async(pegasus_t *pegasus)
- 			netif_device_detach(pegasus->net);
- 		netif_err(pegasus, drv, pegasus->net,
- 			  "%s returned %d\n", __func__, ret);
-+		usb_free_urb(async_urb);
-+		kfree(req);
- 	}
- 	return ret;
- }
--- 
-2.52.0
-
+Dirk
 
