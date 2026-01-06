@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-205949-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205128-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B434FCFB23E
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 22:48:06 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29F96CFB0C6
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 22:11:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1B754301F5F6
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 21:46:35 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6D81C300EE4F
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 21:11:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A20636D514;
-	Tue,  6 Jan 2026 17:59:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DA10342514;
+	Tue,  6 Jan 2026 17:05:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WVtYAD9d"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oRhZkGwJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45720376BD1;
-	Tue,  6 Jan 2026 17:59:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BB48342512
+	for <stable@vger.kernel.org>; Tue,  6 Jan 2026 17:05:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767722398; cv=none; b=PIyjNrrTNOJxm+yVpjjARmGcrTz/Y7DTklDDVPX4OqGRAWp+d989G/iMrNgUZz3Uldh9uhQ+EzD+4ovsOrHvs944OUhhC1Bq38njecaf0lWYKLN04Qcx+ci6bPkd1lrXT6qD4zJAkiMVdqcOkUDvyW8O4v/IDGqWgNEEMVk/7e0=
+	t=1767719130; cv=none; b=ew+I7CheOXjvk9crj62dQXwSkQNO7WN3qAHIATqXFoaEN9lZB8/gLRF2UcXrMnMk0FVD1gKJBnbc3m2XhAdlkv9tLoun8I3wK07VerBlWRjLAVlYs3YEQi5zybSkgoB8bsp2aVTi1pkFdO33WUDesO/AQlbFc11hHxws/5MWcDw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767722398; c=relaxed/simple;
-	bh=HO7AUNFlXGCc2s00oiQaqkK7Tegrmauf+bclUc16fWg=;
+	s=arc-20240116; t=1767719130; c=relaxed/simple;
+	bh=8q6iV+acNJ7Pi/locTsiDPTMeB7i8DVHI1QzTJiaBqk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GhrrMaJkBn0NMlp8JE0bWTacq+Rt7vqZeBxxtH77z3droyyz2rlW1bYPOO+ynaboesPL9Q5HAQxwL05gX4JeKtTFGMdTPiMq8Fo2LJ+AyStkNmU/37CRluOaeISluaHiYTADoaHAI3m5dZUjU2nqjgD4deyaKHBypFzAfE3FFdE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WVtYAD9d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9F98C116C6;
-	Tue,  6 Jan 2026 17:59:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767722398;
-	bh=HO7AUNFlXGCc2s00oiQaqkK7Tegrmauf+bclUc16fWg=;
+	 MIME-Version; b=HMHKVyaoZMbNNF+4QxuaLUSQ5Uv20LBSppmulFHOVr7Rgs92R0yoNSF9VEOVdmgPE+rGNvWLNDeUW35sv1L/x3XttLV8brvORHggmbmHqswAp3KXfQ9K+Ojz1ADwY2qp9RMLl89ABW6+i8YnX+hWtBtlQGIgymz6dYcS8tqvo1I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oRhZkGwJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9759FC16AAE;
+	Tue,  6 Jan 2026 17:05:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767719130;
+	bh=8q6iV+acNJ7Pi/locTsiDPTMeB7i8DVHI1QzTJiaBqk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WVtYAD9dVYo8qsvRpYW/uF+wzWcfjB1y7q852tyK4LezrfgukhyH5hDzB3WD5mS9D
-	 MOdvMLXg+OLvy+LSGlyFA3KC2hSkyVKKKx9R0WkdAU+qFrmYt8o1pM9aoNWepmBlik
-	 AFG/9uplvGtVuWTPJwxfYNkgnm7Vxl4pMd0wB8Zk=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+	b=oRhZkGwJQyrN2AnRSltSKyZKphjBjT1kosZhWN7kc4Wwge2+C6VqG3o9bX49+UaMM
+	 qsTXPgzYrUFtt6UDdg1Vcfg5jB+GuKNhjh0M7dMn1HL1MBDlB/Eng4nRTp8vAFCq/V
+	 1LI/v5cRDru5bb4jq/SjgS7GSHoz1sYi4Mln2J2LMyzdtyfjcV1z2oCj0c5THjotwg
+	 X9xzITPIF/BrAprgXYOEpUuy/zZizhfaLHTTU3oPLC+ug9qxMBy2m0EJkjYxxQDmUH
+	 EYtVGDxF2Q8YkFVkJl9enO14IlcSP8/ctWSiGC6E1vAt0wESVKOITnafeEHljDM3Ha
+	 BzNdA2Eu8m0QQ==
+From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.18 252/312] nfsd: use ATTR_DELEG in nfsd4_finalize_deleg_timestamps()
-Date: Tue,  6 Jan 2026 18:05:26 +0100
-Message-ID: <20260106170556.965107370@linuxfoundation.org>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
-References: <20260106170547.832845344@linuxfoundation.org>
-User-Agent: quilt/0.69
-X-stable: review
-X-Patchwork-Hint: ignore
+Cc: Paolo Abeni <pabeni@redhat.com>,
+	syzbot+0ff6b771b4f7a5bce83b@syzkaller.appspotmail.com,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12.y] mptcp: fallback earlier on simult connection
+Date: Tue,  6 Jan 2026 12:05:27 -0500
+Message-ID: <20260106170527.3081647-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2026010538-sage-flashcard-993f@gregkh>
+References: <2026010538-sage-flashcard-993f@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -59,45 +59,158 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+From: Paolo Abeni <pabeni@redhat.com>
 
-------------------
+[ Upstream commit 71154bbe49423128c1c8577b6576de1ed6836830 ]
 
-From: Jeff Layton <jlayton@kernel.org>
+Syzkaller reports a simult-connect race leading to inconsistent fallback
+status:
 
-commit 8f9e967830ff32ab7756f530a36adf74a9f12b76 upstream.
+  WARNING: CPU: 3 PID: 33 at net/mptcp/subflow.c:1515 subflow_data_ready+0x40b/0x7c0 net/mptcp/subflow.c:1515
+  Modules linked in:
+  CPU: 3 UID: 0 PID: 33 Comm: ksoftirqd/3 Not tainted syzkaller #0 PREEMPT(full)
+  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
+  RIP: 0010:subflow_data_ready+0x40b/0x7c0 net/mptcp/subflow.c:1515
+  Code: 89 ee e8 78 61 3c f6 40 84 ed 75 21 e8 8e 66 3c f6 44 89 fe bf 07 00 00 00 e8 c1 61 3c f6 41 83 ff 07 74 09 e8 76 66 3c f6 90 <0f> 0b 90 e8 6d 66 3c f6 48 89 df e8 e5 ad ff ff 31 ff 89 c5 89 c6
+  RSP: 0018:ffffc900006cf338 EFLAGS: 00010246
+  RAX: 0000000000000000 RBX: ffff888031acd100 RCX: ffffffff8b7f2abf
+  RDX: ffff88801e6ea440 RSI: ffffffff8b7f2aca RDI: 0000000000000005
+  RBP: 0000000000000000 R08: 0000000000000005 R09: 0000000000000007
+  R10: 0000000000000004 R11: 0000000000002c10 R12: ffff88802ba69900
+  R13: 1ffff920000d9e67 R14: ffff888046f81800 R15: 0000000000000004
+  FS:  0000000000000000(0000) GS:ffff8880d69bc000(0000) knlGS:0000000000000000
+  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  CR2: 0000560fc0ca1670 CR3: 0000000032c3a000 CR4: 0000000000352ef0
+  Call Trace:
+   <TASK>
+   tcp_data_queue+0x13b0/0x4f90 net/ipv4/tcp_input.c:5197
+   tcp_rcv_state_process+0xfdf/0x4ec0 net/ipv4/tcp_input.c:6922
+   tcp_v6_do_rcv+0x492/0x1740 net/ipv6/tcp_ipv6.c:1672
+   tcp_v6_rcv+0x2976/0x41e0 net/ipv6/tcp_ipv6.c:1918
+   ip6_protocol_deliver_rcu+0x188/0x1520 net/ipv6/ip6_input.c:438
+   ip6_input_finish+0x1e4/0x4b0 net/ipv6/ip6_input.c:489
+   NF_HOOK include/linux/netfilter.h:318 [inline]
+   NF_HOOK include/linux/netfilter.h:312 [inline]
+   ip6_input+0x105/0x2f0 net/ipv6/ip6_input.c:500
+   dst_input include/net/dst.h:471 [inline]
+   ip6_rcv_finish net/ipv6/ip6_input.c:79 [inline]
+   NF_HOOK include/linux/netfilter.h:318 [inline]
+   NF_HOOK include/linux/netfilter.h:312 [inline]
+   ipv6_rcv+0x264/0x650 net/ipv6/ip6_input.c:311
+   __netif_receive_skb_one_core+0x12d/0x1e0 net/core/dev.c:5979
+   __netif_receive_skb+0x1d/0x160 net/core/dev.c:6092
+   process_backlog+0x442/0x15e0 net/core/dev.c:6444
+   __napi_poll.constprop.0+0xba/0x550 net/core/dev.c:7494
+   napi_poll net/core/dev.c:7557 [inline]
+   net_rx_action+0xa9f/0xfe0 net/core/dev.c:7684
+   handle_softirqs+0x216/0x8e0 kernel/softirq.c:579
+   run_ksoftirqd kernel/softirq.c:968 [inline]
+   run_ksoftirqd+0x3a/0x60 kernel/softirq.c:960
+   smpboot_thread_fn+0x3f7/0xae0 kernel/smpboot.c:160
+   kthread+0x3c2/0x780 kernel/kthread.c:463
+   ret_from_fork+0x5d7/0x6f0 arch/x86/kernel/process.c:148
+   ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+   </TASK>
 
-When finalizing timestamps that have never been updated and preparing to
-release the delegation lease, the notify_change() call can trigger a
-delegation break, and fail to update the timestamps. When this happens,
-there will be messages like this in dmesg:
+The TCP subflow can process the simult-connect syn-ack packet after
+transitioning to TCP_FIN1 state, bypassing the MPTCP fallback check,
+as the sk_state_change() callback is not invoked for * -> FIN_WAIT1
+transitions.
 
-    [ 2709.375785] Unable to update timestamps on inode 00:39:263: -11
+That will move the msk socket to an inconsistent status and the next
+incoming data will hit the reported splat.
 
-Since this code is going to release the lease just after updating the
-timestamps, breaking the delegation is undesirable. Fix this by setting
-ATTR_DELEG in ia_valid, in order to avoid the delegation break.
+Close the race moving the simult-fallback check at the earliest possible
+stage - that is at syn-ack generation time.
 
-Fixes: e5e9b24ab8fa ("nfsd: freeze c/mtime updates with outstanding WRITE_ATTRS delegation")
+About the fixes tags: [2] was supposed to also fix this issue introduced
+by [3]. [1] is required as a dependence: it was not explicitly marked as
+a fix, but it is one and it has already been backported before [3]. In
+other words, this commit should be backported up to [3], including [2]
+and [1] if that's not already there.
+
+Fixes: 23e89e8ee7be ("tcp: Don't drop SYN+ACK for simultaneous connect().") [1]
+Fixes: 4fd19a307016 ("mptcp: fix inconsistent state on fastopen race") [2]
+Fixes: 1e777f39b4d7 ("mptcp: add MSG_FASTOPEN sendmsg flag support") [3]
 Cc: stable@vger.kernel.org
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot+0ff6b771b4f7a5bce83b@syzkaller.appspotmail.com
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/586
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20251212-net-mptcp-subflow_data_ready-warn-v1-1-d1f9fd1c36c8@kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+[ adapted mptcp_try_fallback() call ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs4state.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/mptcp/options.c  | 10 ++++++++++
+ net/mptcp/protocol.h |  6 ++----
+ net/mptcp/subflow.c  | 10 +---------
+ 3 files changed, 13 insertions(+), 13 deletions(-)
 
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -1226,7 +1226,7 @@ static void put_deleg_file(struct nfs4_f
- 
- static void nfsd4_finalize_deleg_timestamps(struct nfs4_delegation *dp, struct file *f)
+diff --git a/net/mptcp/options.c b/net/mptcp/options.c
+index bc089388530b..b9c8205fadbf 100644
+--- a/net/mptcp/options.c
++++ b/net/mptcp/options.c
+@@ -408,6 +408,16 @@ bool mptcp_syn_options(struct sock *sk, const struct sk_buff *skb,
+ 	 */
+ 	subflow->snd_isn = TCP_SKB_CB(skb)->end_seq;
+ 	if (subflow->request_mptcp) {
++		if (unlikely(subflow_simultaneous_connect(sk))) {
++			WARN_ON_ONCE(!mptcp_try_fallback(sk));
++
++			/* Ensure mptcp_finish_connect() will not process the
++			 * MPC handshake.
++			 */
++			subflow->request_mptcp = 0;
++			return false;
++		}
++
+ 		opts->suboptions = OPTION_MPTCP_MPC_SYN;
+ 		opts->csum_reqd = mptcp_is_checksum_enabled(sock_net(sk));
+ 		opts->allow_join_id0 = mptcp_allow_join_id0(sock_net(sk));
+diff --git a/net/mptcp/protocol.h b/net/mptcp/protocol.h
+index 73b842350677..fcc3ef246166 100644
+--- a/net/mptcp/protocol.h
++++ b/net/mptcp/protocol.h
+@@ -1283,10 +1283,8 @@ static inline bool subflow_simultaneous_connect(struct sock *sk)
  {
--	struct iattr ia = { .ia_valid = ATTR_ATIME | ATTR_CTIME | ATTR_MTIME };
-+	struct iattr ia = { .ia_valid = ATTR_ATIME | ATTR_CTIME | ATTR_MTIME | ATTR_DELEG };
- 	struct inode *inode = file_inode(f);
- 	int ret;
+ 	struct mptcp_subflow_context *subflow = mptcp_subflow_ctx(sk);
  
-
+-	return (1 << sk->sk_state) &
+-	       (TCPF_ESTABLISHED | TCPF_FIN_WAIT1 | TCPF_FIN_WAIT2 | TCPF_CLOSING) &&
+-	       is_active_ssk(subflow) &&
+-	       !subflow->conn_finished;
++	/* Note that the sk state implies !subflow->conn_finished. */
++	return sk->sk_state == TCP_SYN_RECV && is_active_ssk(subflow);
+ }
+ 
+ #ifdef CONFIG_SYN_COOKIES
+diff --git a/net/mptcp/subflow.c b/net/mptcp/subflow.c
+index e3d4ed49e588..1618483b05e8 100644
+--- a/net/mptcp/subflow.c
++++ b/net/mptcp/subflow.c
+@@ -1848,18 +1848,10 @@ static void subflow_state_change(struct sock *sk)
+ {
+ 	struct mptcp_subflow_context *subflow = mptcp_subflow_ctx(sk);
+ 	struct sock *parent = subflow->conn;
+-	struct mptcp_sock *msk;
++	struct mptcp_sock *msk = mptcp_sk(parent);
+ 
+ 	__subflow_state_change(sk);
+ 
+-	msk = mptcp_sk(parent);
+-	if (subflow_simultaneous_connect(sk)) {
+-		WARN_ON_ONCE(!mptcp_try_fallback(sk));
+-		pr_fallback(msk);
+-		subflow->conn_finished = 1;
+-		mptcp_propagate_state(parent, sk, subflow, NULL);
+-	}
+-
+ 	/* as recvmsg() does not acquire the subflow socket for ssk selection
+ 	 * a fin packet carrying a DSS can be unnoticed if we don't trigger
+ 	 * the data available machinery here.
+-- 
+2.51.0
 
 
