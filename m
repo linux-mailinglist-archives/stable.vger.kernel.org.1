@@ -1,132 +1,212 @@
-Return-Path: <stable+bounces-205029-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205028-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BC82CF6878
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 03:56:07 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FD89CF686F
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 03:55:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 33D91305CA24
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 02:55:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 98B6E304378E
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 02:55:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 424F92253EF;
-	Tue,  6 Jan 2026 02:55:35 +0000 (UTC)
-X-Original-To: stable@vger.kernel.org
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 410C523B61E;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8105A225A3B;
 	Tue,  6 Jan 2026 02:55:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="KEUOHeOW";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="jEx29UmG"
+X-Original-To: stable@vger.kernel.org
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0557220F37
+	for <stable@vger.kernel.org>; Tue,  6 Jan 2026 02:55:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767668135; cv=none; b=m4Q4hakSXJDEp0OLnEkVGBDsBYgs4aJO5WUaaq7JmWSmCUysoFIwhSL2EnYGSMSVHdb93sThZKlbPplAkFN7SrREuX/XfsS8w1nrXcs9XqDtKmAVvQNthiBoOL1eGTNveu7MeeST5ThhLI4NNT1kNj0GeoEcEPthoZvDM23Zn0g=
+	t=1767668127; cv=none; b=doNi6aqLQ4/24P9XQ5ltHdkwi4vECWtRhnSYu8WR5W6Qt53IKSP1Prt1FuSXBIbzKqNQv3k2riRcvN3toyCzsLYApTibrkwOuDUyjtZ8Z6vnK2zbJdvh5Lz7h+b0Mdk4KhZLVsIjGYhaPDpcA6JUwdl+wEPL9s2AiFAf/0ncYKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767668135; c=relaxed/simple;
-	bh=fmT91oIOnqReX/Vuc295d8fDIpY7NrtNMKwQyfTV0vk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JhER7QrtHWqacbYPtyzFLuwOLCaY+gqnnd+BGi5ue3+zlt5IhmTbJj0FxLYXJP14znTBuHw2c72X3aX+myLt6BFW5ZlVHR2meBgG6BQmFSkMRg8Mg2MLF9SmO8zR/GGWATz7mCIxGqF8hUG/u4vapyOxrac8APwYK9ZSD9WEkOU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [223.64.69.1])
-	by gateway (Coremail) with SMTP id _____8BxWcKVeVxpT9MFAA--.18158S3;
-	Tue, 06 Jan 2026 10:55:17 +0800 (CST)
-Received: from localhost.localdomain (unknown [223.64.69.1])
-	by front1 (Coremail) with SMTP id qMiowJBxiuCQeVxp450PAA--.7830S2;
-	Tue, 06 Jan 2026 10:55:15 +0800 (CST)
-From: Huacai Chen <chenhuacai@loongson.cn>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Huacai Chen <chenhuacai@kernel.org>
-Cc: Xuerui Wang <kernel@xen0n.name>,
-	stable@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	loongarch@lists.linux.dev,
-	Chenghao Duan <duanchenghao@kylinos.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.18] LoongArch: BPF: Enhance the bpf_arch_text_poke() function
-Date: Tue,  6 Jan 2026 10:55:02 +0800
-Message-ID: <20260106025502.951868-1-chenhuacai@loongson.cn>
-X-Mailer: git-send-email 2.47.3
+	s=arc-20240116; t=1767668127; c=relaxed/simple;
+	bh=e+bHD5TKtbpywM0stm8uonBloPKJPmN4SpJbj/PrQJI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=OzW8agpjV/PAbdDC/hqrXPDc8gNMF27wxRaMyvULtTDwsN106hDwjZ0+KKWsDcVJSvcel2DvXrhwNsNSC52UUMpOzp7dwqxo14GRe5EN4iGnK3JOSh4anIgh8lGDuAPuw/1ey8Z5PJHpJCqOkCco0VW+aF6tUst9npZ8Asge878=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=KEUOHeOW; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=jEx29UmG; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6062BTeE2765482
+	for <stable@vger.kernel.org>; Tue, 6 Jan 2026 02:55:25 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	jeK2FlfxI96cOkTAnGRDcPuRUDyzWVMyyzk3ooH1how=; b=KEUOHeOW7w22wUh6
+	/835hD5eNA5LZRwFgs0e5XSrclQoade/N+Om6uliJAR6A4Zd9BiGWZBomu3Si3w6
+	EdUrLW31fMr/3d8J8h24J1qyvre1BVMZd3u88fLZ8pyMIE6aHwKVWQhGoRL13Lzz
+	gNCDlr+Z7j+xZCnGTapVL0wjKmswuJI1CqJNqdlDVg1hQXgYkz9Z0Rf2ziZk0DJx
+	dwVX07lJJF7W3Ec23w5mW17QSACvLRLtYX4yq8ZuntTZ55FWj66KY2Tn8S5xkObP
+	+r37+5T2eWzuX/qwP39Zft5LW+trL1uehUMwXFE0CrggPp89FDpj4W+7oVoIwH5V
+	ABgDnw==
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4bgscy83dh-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <stable@vger.kernel.org>; Tue, 06 Jan 2026 02:55:25 +0000 (GMT)
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2a0a8c465c1so15216425ad.1
+        for <stable@vger.kernel.org>; Mon, 05 Jan 2026 18:55:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1767668124; x=1768272924; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=jeK2FlfxI96cOkTAnGRDcPuRUDyzWVMyyzk3ooH1how=;
+        b=jEx29UmGS1YeZ+/IWMM5Vx0YoVG3uK3ivXsFVF8rFrsTny/Sc1oefqEUTn9gWuao16
+         NVubKoeKBpZQaKeureyZi2TdjjHLpwI6HpKcTtm9gF/jXOshwwl0gSLB3zPNIssbeSV/
+         UhRmn/5GK/z0XDOUiLyI5pSLgx7g1h1KmbXhuiW2WM5CyNXc15eFR1rfsk01dl1Q8FlA
+         ui8Yt2IsH6oKdwzgrIzzh0UajSBeN65+B+skOmFBdKuzqzhEDVCjJHsvQWBb2oHs23vu
+         Bz1K0RfpUF9mYOSrqoLEVZg/vQnme2J304A+bNt9bAPnf3hWl6QxY5t0Ap/vXXt2pAyk
+         IUow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767668124; x=1768272924;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=jeK2FlfxI96cOkTAnGRDcPuRUDyzWVMyyzk3ooH1how=;
+        b=ep5cXTWcFcnS9z27wW21CLsjgfkK73HdWj42buGDiQ6tyMTo/8ApBlgi+JLfI3YuNi
+         TfDm3xA0uUA8H4Xa8gt3LP5WeRAZcIPgqVBm2nCdHAWRNL1eD8P/MmhcTFQzfLYYhpFS
+         LbrLjpaY052ekMn5+afUzUE9booGU3VSPVhM12dNHYNXFRhSnu0E3NjcsqdrUXpFPqg+
+         mK8tZx9knttY1jZ0V7n62ZmESa9g9c0psYGF0TW3D7tFJKdJCWMnt02DuNt5OfBLFDkO
+         yeNYPcbIszCdGxY/QXrP/ESWPXXbWKZCU3k0EZt7ZiDf3Hg0E5MLM62R3bEfj8cj2tYP
+         WjYA==
+X-Gm-Message-State: AOJu0YxdAcGXbNOSFMNdYMtde9XqT4yIoZiZhxt/Dc5cBpSGOuu0DHU8
+	F0EP/XGJOaLJT4vMB9FpVSvcUgLUrqZSJUjiJynwGI9DVK42qw3dONC+Z6KX2uTr6igMpe3DzuN
+	mWBmF5GmPm5AU2NZ4/bx3m0s1GcxUw7RMQoBn9jm67YMsgB8/1oS4WlNagHYRsCrX8HY=
+X-Gm-Gg: AY/fxX7wJ2h8YiNXBN+GueMIrLpkBxeeU7SKCVzBWVEb75toPscShZxd5KHGOoVo6Iy
+	2OtXptD7txVjzGR6ol6uvpk9O0Drh1xefJE/7qumjGEi6Sit4sd3AJmGUhNBnJRs2VYgzhZ/tGs
+	3kVuM/YEw/C66yCTnPdrdjxZHbh+pkqFb/jnZipnzo9yzFbj4ffKo9ypgoStpBvJfqx0OTsRyLQ
+	Uf1i1+PNvv+yb5dFI0Lk1tYZNgFmdvQR9yUuLEe0KzX8jARGmQGzq061MrlTOG5B9lEGwi9jQv8
+	w1D0VTspAHuzvPDf1BVbHOzf8YEW5RnNBWXwNXYyDIRFk/5/ALP8sD0mZJnzciRKX0fkG3yi/mj
+	g81f2xAwRnm8TJGoJO6XbWRjZTxBygrSb9eJvHH5F6wyCv5Rx5Tm5zU7DIPp2qQkv+eYqQkxkLm
+	ebnfSMTw==
+X-Received: by 2002:a17:902:c40c:b0:29e:e5e6:247c with SMTP id d9443c01a7336-2a3e39d82bdmr10652395ad.14.1767668124317;
+        Mon, 05 Jan 2026 18:55:24 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEm+epUO5voVQquz6sVBvYJuUN550AnDeQ2R3i6J+Q6+wFvDH9JwAks/rShsvT3f0wEY+uGtg==
+X-Received: by 2002:a17:902:c40c:b0:29e:e5e6:247c with SMTP id d9443c01a7336-2a3e39d82bdmr10652225ad.14.1767668123882;
+        Mon, 05 Jan 2026 18:55:23 -0800 (PST)
+Received: from [10.133.33.54] (tpe-colo-wan-fw-bordernet.qualcomm.com. [103.229.16.4])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a3e3cd4be5sm5391245ad.99.2026.01.05.18.55.21
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 05 Jan 2026 18:55:23 -0800 (PST)
+Message-ID: <ccba2a0b-3312-4a49-8de3-1601fa95d10f@oss.qualcomm.com>
+Date: Tue, 6 Jan 2026 10:55:20 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJBxiuCQeVxp450PAA--.7830S2
-X-CM-SenderInfo: hfkh0x5xdftxo6or00hjvr0hdfq/
-X-Coremail-Antispam: 1Uk129KBj93XoW7KFWUZrWkKw4fCr43ZF1fAFc_yoW8ur15pr
-	1DArs5XrWUWr47Ja9rJw45Xry5Ja93Wr47WF43KryrCw13Xwn7Zw1Sk3ZxXasYkw48ur1r
-	ZFZ8trnIg3WDZacCm3ZEXasCq-sJn29KB7ZKAUJUUUUr529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUU90b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv6xkF7I0E14v2
-	6r4UJVWxJr1ln4kS14v26r1Y6r17M2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12
-	xvs2x26I8E6xACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1Y
-	6r17McIj6I8E87Iv67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64
-	vIr41l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1l4IxYO2xFxVAFwI0_
-	Jrv_JF1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1V
-	AY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAI
-	cVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42
-	IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVj
-	vjDU0xZFpf9x07jFa0PUUUUU=
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] wifi: ath10k: fix dma_free_coherent() pointer
+To: Thomas Fourier <fourier.thomas@gmail.com>
+Cc: stable@vger.kernel.org, Jeff Johnson <jjohnson@kernel.org>,
+        Kalle Valo <kvalo@qca.qualcomm.com>,
+        Govind Singh
+ <govinds@qti.qualcomm.com>,
+        linux-wireless@vger.kernel.org, ath10k@lists.infradead.org,
+        linux-kernel@vger.kernel.org
+References: <20260105210439.20131-2-fourier.thomas@gmail.com>
+From: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Content-Language: en-US
+In-Reply-To: <20260105210439.20131-2-fourier.thomas@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-GUID: cnUsc6Pup_34mTwyZta2NKuIOjtss8C7
+X-Authority-Analysis: v=2.4 cv=fOw0HJae c=1 sm=1 tr=0 ts=695c799d cx=c_pps
+ a=cmESyDAEBpBGqyK7t0alAg==:117 a=nuhDOHQX5FNHPW3J6Bj6AA==:17
+ a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=pGLkceISAAAA:8 a=EUspDBNiAAAA:8
+ a=sJ90gTr51a4L_-UUfAIA:9 a=QEXdDO2ut3YA:10 a=1OuFwYUASf3TG4hYMiVC:22
+X-Proofpoint-ORIG-GUID: cnUsc6Pup_34mTwyZta2NKuIOjtss8C7
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTA2MDAyNCBTYWx0ZWRfX+xtkAZZoqRTA
+ 4U9RbShmBeRD/fWQMSXHuHOePUsO3bLEcUCzJBHjbnMfFWohC7a9kh4rUeUFz2HxQYBRSi+3lhh
+ aJh7QxCNfBVsV/aHhrTg/jR0vwqdtvxIpv3cXqo243K7U8RzFICBKnbHXz7W8MFYq3D89YF+BDd
+ 4OwDu9RQ1sAlsSQGT0nYmUGhpJ9ZbMDfoalWTNQsmcvysTMh6bYdrxjYqrNAZhO+ktnxa/pT8uV
+ jjZFAqDyP0+mHR/Pw1SC7Ws5AlEZ6LtnX1fDLtxMkrm6IXTY0kiBmymx8qRwiSXQ9UM0u6vETdF
+ 5jX+ZPPkCyFILngXy3ve55XXhCVftJmPTA4T5zobQny4odSpTSQCNLzo3jl/7Ue1IF5nBJK8G1i
+ c5D8zx0Myds2yUin6H9pwbiwzL0lr7SdlCtwR3tK/mLIGzH4DzLukmRF2kZOt/K3dgeWSNGqny3
+ P8Ikswp5XS6d/H1mnaw==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2026-01-05_02,2026-01-05_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1011 priorityscore=1501 suspectscore=0 bulkscore=0 malwarescore=0
+ lowpriorityscore=0 adultscore=0 phishscore=0 spamscore=0 impostorscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2512120000 definitions=main-2601060024
 
-From: Chenghao Duan <duanchenghao@kylinos.cn>
 
-commit 73721d8676771c6c7b06d4e636cc053fc76afefd upstream.
 
-Enhance the bpf_arch_text_poke() function to enable accurate location
-of BPF program entry points.
+On 1/6/2026 5:04 AM, Thomas Fourier wrote:
+> dma_alloc_coherent() allocates a DMA mapped buffer and stores the
+> addresses in XXX_unaligned fields.  Those should be reused when freeing
+> the buffer rather than the aligned addresses.
+> 
+> Fixes: 2a1e1ad3fd37 ("ath10k: Add support for 64 bit ce descriptor")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
 
-When modifying the entry point of a BPF program, skip the "move t0, ra"
-instruction to ensure the correct logic and copy of the jump address.
+Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
 
-Cc: stable@vger.kernel.org
-Fixes: 677e6123e3d2 ("LoongArch: BPF: Disable trampoline for kernel module function trace")
-Signed-off-by: Chenghao Duan <duanchenghao@kylinos.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
----
- arch/loongarch/net/bpf_jit.c | 17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
+> ---
+>  drivers/net/wireless/ath/ath10k/ce.c | 16 ++++++++--------
+>  1 file changed, 8 insertions(+), 8 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/ath/ath10k/ce.c b/drivers/net/wireless/ath/ath10k/ce.c
+> index 7bbda46cfd93..82f120ee1c66 100644
+> --- a/drivers/net/wireless/ath/ath10k/ce.c
+> +++ b/drivers/net/wireless/ath/ath10k/ce.c
+> @@ -1727,8 +1727,8 @@ static void _ath10k_ce_free_pipe(struct ath10k *ar, int ce_id)
+>  				  (ce_state->src_ring->nentries *
+>  				   sizeof(struct ce_desc) +
+>  				   CE_DESC_RING_ALIGN),
+> -				  ce_state->src_ring->base_addr_owner_space,
+> -				  ce_state->src_ring->base_addr_ce_space);
+> +				  ce_state->src_ring->base_addr_owner_space_unaligned,
+> +				  ce_state->src_ring->base_addr_ce_space_unaligned);
+>  		kfree(ce_state->src_ring);
+>  	}
+>  
+> @@ -1737,8 +1737,8 @@ static void _ath10k_ce_free_pipe(struct ath10k *ar, int ce_id)
+>  				  (ce_state->dest_ring->nentries *
+>  				   sizeof(struct ce_desc) +
+>  				   CE_DESC_RING_ALIGN),
+> -				  ce_state->dest_ring->base_addr_owner_space,
+> -				  ce_state->dest_ring->base_addr_ce_space);
+> +				  ce_state->dest_ring->base_addr_owner_space_unaligned,
+> +				  ce_state->dest_ring->base_addr_ce_space_unaligned);
+>  		kfree(ce_state->dest_ring);
+>  	}
+>  
+> @@ -1758,8 +1758,8 @@ static void _ath10k_ce_free_pipe_64(struct ath10k *ar, int ce_id)
+>  				  (ce_state->src_ring->nentries *
+>  				   sizeof(struct ce_desc_64) +
+>  				   CE_DESC_RING_ALIGN),
+> -				  ce_state->src_ring->base_addr_owner_space,
+> -				  ce_state->src_ring->base_addr_ce_space);
+> +				  ce_state->src_ring->base_addr_owner_space_unaligned,
+> +				  ce_state->src_ring->base_addr_ce_space_unaligned);
+>  		kfree(ce_state->src_ring);
+>  	}
+>  
+> @@ -1768,8 +1768,8 @@ static void _ath10k_ce_free_pipe_64(struct ath10k *ar, int ce_id)
+>  				  (ce_state->dest_ring->nentries *
+>  				   sizeof(struct ce_desc_64) +
+>  				   CE_DESC_RING_ALIGN),
+> -				  ce_state->dest_ring->base_addr_owner_space,
+> -				  ce_state->dest_ring->base_addr_ce_space);
+> +				  ce_state->dest_ring->base_addr_owner_space_unaligned,
+> +				  ce_state->dest_ring->base_addr_ce_space_unaligned);
+>  		kfree(ce_state->dest_ring);
+>  	}
+>  
 
-diff --git a/arch/loongarch/net/bpf_jit.c b/arch/loongarch/net/bpf_jit.c
-index 95c214e2cf09..87ff02513787 100644
---- a/arch/loongarch/net/bpf_jit.c
-+++ b/arch/loongarch/net/bpf_jit.c
-@@ -1307,6 +1307,10 @@ int bpf_arch_text_poke(void *ip, enum bpf_text_poke_type poke_type,
- 		       void *old_addr, void *new_addr)
- {
- 	int ret;
-+	unsigned long size = 0;
-+	unsigned long offset = 0;
-+	void *image = NULL;
-+	char namebuf[KSYM_NAME_LEN];
- 	bool is_call = (poke_type == BPF_MOD_CALL);
- 	u32 old_insns[LOONGARCH_LONG_JUMP_NINSNS] = {[0 ... 4] = INSN_NOP};
- 	u32 new_insns[LOONGARCH_LONG_JUMP_NINSNS] = {[0 ... 4] = INSN_NOP};
-@@ -1314,9 +1318,20 @@ int bpf_arch_text_poke(void *ip, enum bpf_text_poke_type poke_type,
- 	/* Only poking bpf text is supported. Since kernel function entry
- 	 * is set up by ftrace, we rely on ftrace to poke kernel functions.
- 	 */
--	if (!is_bpf_text_address((unsigned long)ip))
-+	if (!__bpf_address_lookup((unsigned long)ip, &size, &offset, namebuf))
- 		return -ENOTSUPP;
- 
-+	image = ip - offset;
-+
-+	/* zero offset means we're poking bpf prog entry */
-+	if (offset == 0) {
-+		/* skip to the nop instruction in bpf prog entry:
-+		 * move t0, ra
-+		 * nop
-+		 */
-+		ip = image + LOONGARCH_INSN_SIZE;
-+	}
-+
- 	ret = emit_jump_or_nops(old_addr, ip, old_insns, is_call);
- 	if (ret)
- 		return ret;
--- 
-2.47.3
+seems ath12k has the same issue, would you like to fix it as well?
+
 
 
