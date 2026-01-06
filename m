@@ -1,50 +1,50 @@
-Return-Path: <stable+bounces-205943-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205945-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01167CFA672
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:59:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04DB1CFA688
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:59:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 92A0E33253A9
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:17:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 94EF5311CB71
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:17:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C519376BC3;
-	Tue,  6 Jan 2026 17:59:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AEF7376BC8;
+	Tue,  6 Jan 2026 17:59:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yzVyKMLO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k43kL5tp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB4AA36D51D;
-	Tue,  6 Jan 2026 17:59:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8B3F376BC5;
+	Tue,  6 Jan 2026 17:59:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767722378; cv=none; b=touqLbWHOgURxWsQAAF6XmKYxJR8YsOdCq9ed4de8gj5SMDfEok/5s+lhyLYxmD4uPq38QFPjDtsVz8EqG16ess4uGu5lp4mujChi+wxkMiKvK2kNpHmlCYYB/88dcJYAXtT1TT1frTZmysV7DFqqRUnDgyNFWqwebGVTub6p04=
+	t=1767722385; cv=none; b=cwkV8HQKD5zj48BWSMToFX+VZ4Pq1jzgbcWlHjimlY1xABjL9oJP/C1sWaHm/n09r0PaYzs/5WKYlCW7V+vXWrN2Sg/E7B+SkQbbIOjA+mYWe9ldR1RcmsMTlAQNPWMRDB89osQFYXdJefgMfkiZNSrbkIxjfQkkOY1n1VyUzy0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767722378; c=relaxed/simple;
-	bh=uPXaqtXP10YTk/JppKOADjSTnxGJ20voo/e+1pSFArM=;
+	s=arc-20240116; t=1767722385; c=relaxed/simple;
+	bh=huF2bwhD6SiVPOyA+wFbOEPxzGcL4TlPtvURnH8jZ2Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hFeYB0yL9aan8hiRN7Z3AhTMWMvhe+mq+uBgkHja1paTLoW9Z1JV7rHLJdzX09+xq4FYqYTHQdo6dGWpj4g3rVLTFSDCAv0upnMhFaVtAzQlWvrUOhd2OZtcK0G5IUxDD46VqwlkwfFS4IHp+cbt4si7SmdinGGKhKoN4qb7VJ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yzVyKMLO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C4C1C116C6;
-	Tue,  6 Jan 2026 17:59:37 +0000 (UTC)
+	 MIME-Version; b=syh7X6wkVlrxVkIa2kt2NMJH2UUmfOnRsFYbBDqwUCxIV91HDrjiuCscyCKwlLKPB5UGwFIRs96Kv2Ov5ZP/5/5Gu0Ew6eCWkA5mStO1tNA7vccmXT7sZgu0vgEODxWho0kfAKajiESyKZgQD3CmmVKKuVRWE+51OXzo0E9sNSE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k43kL5tp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29E22C116C6;
+	Tue,  6 Jan 2026 17:59:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767722377;
-	bh=uPXaqtXP10YTk/JppKOADjSTnxGJ20voo/e+1pSFArM=;
+	s=korg; t=1767722384;
+	bh=huF2bwhD6SiVPOyA+wFbOEPxzGcL4TlPtvURnH8jZ2Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yzVyKMLORErCy/g/G3pc37OC4yGN9XINUBojqO7Ten0YwAwkHg+KRkN92qPQj0GLC
-	 a18AxyGx6EcnWXdGyzS2pJItAq00NGLPhK1lnfYKfpq34VgtLm80d/Dp2tioq+p2Eq
-	 XnGUALl2QmN45TnJY3PATdKNVcR5sawrgpyT7O9k=
+	b=k43kL5tpHUImtJDhwuRfirwWjv4M1Y+5lKt6Uz8bzUxCApwpxFXhfNzFi5jwYNzf9
+	 ymlTa2FD0rDex6DAKVXaAJWESonCdFhXQVji0C/rmXrroMEPBy6UrLa1E+0/O8YbdV
+	 EGf5wpLiEe7809vnEpBlHkq+9ZmOH+pO3OfPhQg4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hengqi Chen <hengqi.chen@gmail.com>,
+	Chenghao Duan <duanchenghao@kylinos.cn>,
 	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.18 247/312] LoongArch: BPF: Sign extend kfunc call arguments
-Date: Tue,  6 Jan 2026 18:05:21 +0100
-Message-ID: <20260106170556.785233169@linuxfoundation.org>
+Subject: [PATCH 6.18 249/312] LoongArch: BPF: Enable trampoline-based tracing for module functions
+Date: Tue,  6 Jan 2026 18:05:23 +0100
+Message-ID: <20260106170556.857248151@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
 References: <20260106170547.832845344@linuxfoundation.org>
@@ -63,87 +63,84 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Hengqi Chen <hengqi.chen@gmail.com>
+From: Chenghao Duan <duanchenghao@kylinos.cn>
 
-commit 3f5a238f24d7b75f9efe324d3539ad388f58536e upstream.
+commit 26138762d9a27a7f1c33f467c4123c600f64a36e upstream.
 
-The kfunc calls are native calls so they should follow LoongArch calling
-conventions. Sign extend its arguments properly to avoid kernel panic.
-This is done by adding a new emit_abi_ext() helper. The emit_abi_ext()
-helper performs extension in place meaning a value already store in the
-target register (Note: this is different from the existing sign_extend()
-helper and thus we can't reuse it).
+Remove the previous restrictions that blocked the tracing of kernel
+module functions. Fix the issue that previously caused kernel lockups
+when attempting to trace module functions.
+
+Before entering the trampoline code, the return address register ra
+shall store the address of the next assembly instruction after the
+'bl trampoline' instruction, which is the traced function address, and
+the register t0 shall store the parent function return address. Refine
+the trampoline return logic to ensure that register data remains correct
+when returning to both the traced function and the parent function.
+
+Before this patch was applied, the module_attach test in selftests/bpf
+encountered a deadlock issue. This was caused by an incorrect jump
+address after the trampoline execution, which resulted in an infinite
+loop within the module function.
 
 Cc: stable@vger.kernel.org
-Fixes: 5dc615520c4d ("LoongArch: Add BPF JIT support")
-Signed-off-by: Hengqi Chen <hengqi.chen@gmail.com>
+Fixes: 677e6123e3d2 ("LoongArch: BPF: Disable trampoline for kernel module function trace")
+Signed-off-by: Chenghao Duan <duanchenghao@kylinos.cn>
 Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/net/bpf_jit.c |   16 ++++++++++++++++
- arch/loongarch/net/bpf_jit.h |   26 ++++++++++++++++++++++++++
- 2 files changed, 42 insertions(+)
+ arch/loongarch/net/bpf_jit.c |   20 +++++++++++---------
+ 1 file changed, 11 insertions(+), 9 deletions(-)
 
 --- a/arch/loongarch/net/bpf_jit.c
 +++ b/arch/loongarch/net/bpf_jit.c
-@@ -952,6 +952,22 @@ static int build_insn(const struct bpf_i
- 			emit_insn(ctx, ldd, REG_TCC, LOONGARCH_GPR_SP, tcc_ptr_off);
- 		}
+@@ -1284,7 +1284,7 @@ static int emit_jump_or_nops(void *targe
+ 		return 0;
+ 	}
  
-+		if (insn->src_reg == BPF_PSEUDO_KFUNC_CALL) {
-+			const struct btf_func_model *m;
-+			int i;
-+
-+			m = bpf_jit_find_kfunc_model(ctx->prog, insn);
-+			if (!m)
-+				return -EINVAL;
-+
-+			for (i = 0; i < m->nr_args; i++) {
-+				u8 reg = regmap[BPF_REG_1 + i];
-+				bool sign = m->arg_flags[i] & BTF_FMODEL_SIGNED_ARG;
-+
-+				emit_abi_ext(ctx, reg, m->arg_size[i], sign);
-+			}
-+		}
-+
- 		move_addr(ctx, t1, func_addr);
- 		emit_insn(ctx, jirl, LOONGARCH_GPR_RA, t1, 0);
- 
---- a/arch/loongarch/net/bpf_jit.h
-+++ b/arch/loongarch/net/bpf_jit.h
-@@ -88,6 +88,32 @@ static inline void emit_sext_32(struct j
- 	emit_insn(ctx, addiw, reg, reg, 0);
+-	return emit_jump_and_link(&ctx, is_call ? LOONGARCH_GPR_T0 : LOONGARCH_GPR_ZERO, (u64)target);
++	return emit_jump_and_link(&ctx, is_call ? LOONGARCH_GPR_RA : LOONGARCH_GPR_ZERO, (u64)target);
  }
  
-+/* Emit proper extension according to ABI requirements.
-+ * Note that it requires a value of size `size` already resides in register `reg`.
-+ */
-+static inline void emit_abi_ext(struct jit_ctx *ctx, int reg, u8 size, bool sign)
-+{
-+	/* ABI requires unsigned char/short to be zero-extended */
-+	if (!sign && (size == 1 || size == 2))
-+		return;
-+
-+	switch (size) {
-+	case 1:
-+		emit_insn(ctx, extwb, reg, reg);
-+		break;
-+	case 2:
-+		emit_insn(ctx, extwh, reg, reg);
-+		break;
-+	case 4:
-+		emit_insn(ctx, addiw, reg, reg, 0);
-+		break;
-+	case 8:
-+		break;
-+	default:
-+		pr_warn("bpf_jit: invalid size %d for extension\n", size);
-+	}
-+}
-+
- static inline void move_addr(struct jit_ctx *ctx, enum loongarch_gpr rd, u64 addr)
- {
- 	u64 imm_11_0, imm_31_12, imm_51_32, imm_63_52;
+ static int emit_call(struct jit_ctx *ctx, u64 addr)
+@@ -1638,14 +1638,12 @@ static int __arch_prepare_bpf_trampoline
+ 
+ 	/* To traced function */
+ 	/* Ftrace jump skips 2 NOP instructions */
+-	if (is_kernel_text((unsigned long)orig_call))
++	if (is_kernel_text((unsigned long)orig_call) ||
++	    is_module_text_address((unsigned long)orig_call))
+ 		orig_call += LOONGARCH_FENTRY_NBYTES;
+ 	/* Direct jump skips 5 NOP instructions */
+ 	else if (is_bpf_text_address((unsigned long)orig_call))
+ 		orig_call += LOONGARCH_BPF_FENTRY_NBYTES;
+-	/* Module tracing not supported - cause kernel lockups */
+-	else if (is_module_text_address((unsigned long)orig_call))
+-		return -ENOTSUPP;
+ 
+ 	if (flags & BPF_TRAMP_F_CALL_ORIG) {
+ 		move_addr(ctx, LOONGARCH_GPR_A0, (const u64)im);
+@@ -1738,12 +1736,16 @@ static int __arch_prepare_bpf_trampoline
+ 		emit_insn(ctx, ldd, LOONGARCH_GPR_FP, LOONGARCH_GPR_SP, 0);
+ 		emit_insn(ctx, addid, LOONGARCH_GPR_SP, LOONGARCH_GPR_SP, 16);
+ 
+-		if (flags & BPF_TRAMP_F_SKIP_FRAME)
++		if (flags & BPF_TRAMP_F_SKIP_FRAME) {
+ 			/* return to parent function */
+-			emit_insn(ctx, jirl, LOONGARCH_GPR_ZERO, LOONGARCH_GPR_RA, 0);
+-		else
+-			/* return to traced function */
++			move_reg(ctx, LOONGARCH_GPR_RA, LOONGARCH_GPR_T0);
+ 			emit_insn(ctx, jirl, LOONGARCH_GPR_ZERO, LOONGARCH_GPR_T0, 0);
++		} else {
++			/* return to traced function */
++			move_reg(ctx, LOONGARCH_GPR_T1, LOONGARCH_GPR_RA);
++			move_reg(ctx, LOONGARCH_GPR_RA, LOONGARCH_GPR_T0);
++			emit_insn(ctx, jirl, LOONGARCH_GPR_ZERO, LOONGARCH_GPR_T1, 0);
++		}
+ 	}
+ 
+ 	ret = ctx->idx;
 
 
 
