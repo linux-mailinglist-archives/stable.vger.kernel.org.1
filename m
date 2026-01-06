@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-205360-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205364-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68386CFB0C0
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 22:11:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A980CFB0D8
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 22:11:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3305B30319B5
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 21:11:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 577983038974
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 21:11:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2780434AAEB;
-	Tue,  6 Jan 2026 17:27:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0115034DB5B;
+	Tue,  6 Jan 2026 17:27:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zr4fq520"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bhD0CCLT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D881834C818;
-	Tue,  6 Jan 2026 17:27:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B231434DB4F;
+	Tue,  6 Jan 2026 17:27:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767720433; cv=none; b=C9NS7dejKcBsSvIXAbc/PY5eVWQzvoJp/ANPjENBvgVLfbsu/Fx0q/Zflcvm2KuLaj8/8MpAQ0ceZx56EJjVtm6+ToB17D5TXcshZf3VGq8UxPa/gYWvmGTr05IcFlukgyzeF0KcdUb5iMQMOHgubtLX+/FOyxcJYgD7CcANNPM=
+	t=1767720447; cv=none; b=GW2aScf62Sl3eDG0SnBQFpheH7C30YIgIDsCavhOMH+cPc5CESZTa7+MRv/TkPLbVejSapumPz40BWL4yO4l2mXlSTBeYPwDcu1nNlcmvY1zwRB651OBBzJD5/+OABGJO6GYJQfY6ZTJQetHBmLbPBPdDTegXng3KIbYvX0WIgI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767720433; c=relaxed/simple;
-	bh=BsV18arQV8AkNizj4UkpwnmdeqdmQgk7WbhtETmbe/w=;
+	s=arc-20240116; t=1767720447; c=relaxed/simple;
+	bh=U9OeWTFz+rqpc95rOAW+elB6zqpbkowl8YC3WEO7uUI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mUeblzj0MF8CmuYYuwqG/5nE4BCsdpUiBfzVcWjqdx8jfQGFtc/7qQ4xKWIe1+ypIbWNd11jKj9wglrdPr4cnL0YeqX4JtXbH6F0j/asQ/qsscm/oSBi/nOBVg5Me0AseULPWmhacnYn4vNGw8XyTOVdxtSFeXhoo9jQrmL1tj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zr4fq520; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05B48C116C6;
-	Tue,  6 Jan 2026 17:27:12 +0000 (UTC)
+	 MIME-Version; b=T1GJOmcK8Ujxn+b6pgzmlYCJ8OFdK7IAdGtHv+Vlhq7y82LNSw8YzmgGn/+0DETQaN4pv8t/WrJSMK1vaRghUOgqlbVK+HXMTxCQD2Kn4a1qbiabM3v2wpa5mWif9dK+sk3VoGhUvnxEXhz5cs8iJtN6Wx8b2avj3BYSSYOJ09s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bhD0CCLT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD246C116C6;
+	Tue,  6 Jan 2026 17:27:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767720433;
-	bh=BsV18arQV8AkNizj4UkpwnmdeqdmQgk7WbhtETmbe/w=;
+	s=korg; t=1767720447;
+	bh=U9OeWTFz+rqpc95rOAW+elB6zqpbkowl8YC3WEO7uUI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zr4fq520BOKK3Eq0B5s5N9tf1WsWUzNrcv0rqK9ddrw5DvZykuEdFdQZYefZ/Ofp0
-	 hAGd1jdFxQdy487BQPWIH2YEVdMMwrLyqQdSnr5E/yQjSnkAxqJ1DHngplUICBnKvJ
-	 8fJR5nTRnt1GCbcwHRJeZMo+63QBQUIa3k3riON4=
+	b=bhD0CCLTf0PpKMAkW9SA076bAh5eqQIU23Udl/Rc7C+4BQQ6oaiQT3C87Lr7xhnA2
+	 ge1Zz20HU38anDgkV+enWd0HM3VyNaAfhYfvBVCvVV6mB67Bb98LGWblZF4fSDBZHf
+	 rwMgR6X15VMwqw1SxfnHVqRb4Fxc2+WCWhAexKic=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ren=C3=A9=20Rebe?= <rene@exactco.de>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	caoping <caoping@cmss.chinamobile.com>,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 235/567] r8169: fix RTL8117 Wake-on-Lan in DASH mode
-Date: Tue,  6 Jan 2026 18:00:17 +0100
-Message-ID: <20260106170500.013714783@linuxfoundation.org>
+Subject: [PATCH 6.12 238/567] net/handshake: restore destructor on submit failure
+Date: Tue,  6 Jan 2026 18:00:20 +0100
+Message-ID: <20260106170500.122100278@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
 References: <20260106170451.332875001@linuxfoundation.org>
@@ -58,56 +58,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: René Rebe <rene@exactco.de>
+From: caoping <caoping@cmss.chinamobile.com>
 
-commit dd75c723ef566f7f009c047f47e0eee95fe348ab upstream.
+commit 6af2a01d65f89e73c1cbb9267f8880d83a88cee4 upstream.
 
-Wake-on-Lan does currently not work for r8169 in DASH mode, e.g. the
-ASUS Pro WS X570-ACE with RTL8168fp/RTL8117.
+handshake_req_submit() replaces sk->sk_destruct but never restores it when
+submission fails before the request is hashed. handshake_sk_destruct() then
+returns early and the original destructor never runs, leaking the socket.
+Restore sk_destruct on the error path.
 
-Fix by not returning early in rtl_prepare_power_down when dash_enabled.
-While this fixes WoL, it still kills the OOB RTL8117 remote management
-BMC connection. Fix by not calling rtl8168_driver_stop if WoL is enabled.
-
-Fixes: 065c27c184d6 ("r8169: phy power ops")
-Signed-off-by: René Rebe <rene@exactco.de>
+Fixes: 3b3009ea8abb ("net/handshake: Create a NETLINK service for handling handshake requests")
+Reviewed-by: Chuck Lever <chuck.lever@oracle.com>
 Cc: stable@vger.kernel.org
-Reviewed-by: Heiner Kallweit <hkallweit1@gmail.com>
-Link: https://patch.msgid.link/20251202.194137.1647877804487085954.rene@exactco.de
+Signed-off-by: caoping <caoping@cmss.chinamobile.com>
+Link: https://patch.msgid.link/20251204091058.1545151-1-caoping@cmss.chinamobile.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/realtek/r8169_main.c |    5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ net/handshake/request.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/net/ethernet/realtek/r8169_main.c
-+++ b/drivers/net/ethernet/realtek/r8169_main.c
-@@ -2724,9 +2724,6 @@ static void rtl_wol_enable_rx(struct rtl
- 
- static void rtl_prepare_power_down(struct rtl8169_private *tp)
- {
--	if (tp->dash_enabled)
--		return;
--
- 	if (tp->mac_version == RTL_GIGA_MAC_VER_32 ||
- 	    tp->mac_version == RTL_GIGA_MAC_VER_33)
- 		rtl_ephy_write(tp, 0x19, 0xff64);
-@@ -4862,7 +4859,7 @@ static void rtl8169_down(struct rtl8169_
- 	rtl_disable_exit_l1(tp);
- 	rtl_prepare_power_down(tp);
- 
--	if (tp->dash_type != RTL_DASH_NONE)
-+	if (tp->dash_type != RTL_DASH_NONE && !tp->saved_wolopts)
- 		rtl8168_driver_stop(tp);
- }
- 
+--- a/net/handshake/request.c
++++ b/net/handshake/request.c
+@@ -277,6 +277,8 @@ int handshake_req_submit(struct socket *
+ out_unlock:
+ 	spin_unlock(&hn->hn_lock);
+ out_err:
++	/* Restore original destructor so socket teardown still runs on failure */
++	req->hr_sk->sk_destruct = req->hr_odestruct;
+ 	trace_handshake_submit_err(net, req, req->hr_sk, ret);
+ 	handshake_req_destroy(req);
+ 	return ret;
 
 
 
