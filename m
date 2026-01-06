@@ -1,53 +1,56 @@
-Return-Path: <stable+bounces-205551-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205818-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB4DECFAB8A
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:41:51 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 630B6CFAF09
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 21:33:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id BF8343006459
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 19:41:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 99BBA306A0FD
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 20:31:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8761F34252B;
-	Tue,  6 Jan 2026 17:37:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E55233A00C;
+	Tue,  6 Jan 2026 17:52:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T3z6+Gv3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vG7Lcbko"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4181633C539;
-	Tue,  6 Jan 2026 17:37:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CFB72FFDF9;
+	Tue,  6 Jan 2026 17:52:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721071; cv=none; b=QZgmKjAYyKwCzGg/Eprhcn8HmnfmhvDcw/ptomJ5VIa+d+ocoYr0E2Ol98jRKyXdZ78ELS/yzvhb6VVevUuahoy1/1wY/4cKaqW0EzUeRoIOJqPnLk82vBRacBy6JJE2KtiiQFo3LyaWVhCNF6yI1M1XuGWWthftBmfrhBntZPM=
+	t=1767721965; cv=none; b=hZ+SZftNvu0MlNdE6Au/XZ7VJ6ptvbw2Mmg2V3A/wBIypJ+SyfzI4vKRxtS5Uhv/TtxoVa0uRp+42lo4Ybczk6JI6sPdjDYnP/nq2pN25rU4ITC4m6JF4Mldk76tFrUsv/vIx36YtYc8GmpOarbzwo9OqE8y0tZu77AGYacJTDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721071; c=relaxed/simple;
-	bh=epzQMZjj5EiVBA+KdCwdDIOus3sVn7fdVkKhDe9Uq88=;
+	s=arc-20240116; t=1767721965; c=relaxed/simple;
+	bh=bzC5mdUwy9zCNQ0vtql3ILY737Vf+Zvr7HDsHmrv4nA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L+vlV9HiqxUqvIofZ6Ec4hVyAD/1Sg07sJe2u27j4vpY/FKGj0trR6oPTnzVDseF2jhbcfI67jDCTAMpZL73LPqnbcE/lYZxsPtueq53+FE4Q1M005bRQm8q6z6GUN1HuiaWLcx87iVhHkkJa0QgUyk0RSEkUanVshLJGlWYNEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T3z6+Gv3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A4F8C116C6;
-	Tue,  6 Jan 2026 17:37:50 +0000 (UTC)
+	 MIME-Version; b=kgBw5dk/Nu/l5nWmP2NC2r/3IneldN5BSxJZMWwy8HkHAtnf2EMWqUcFnXBsiem3a+ux1Ad9w83jALNj9F3dGy1OKI4kZb6iCwVkVoVW3hLxKTSd0ztynos5js+2m7XnWhehFSF/rn+a4NewWCox0ARAgI/89xCapyRbJIZH0cs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vG7Lcbko; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68A5DC116C6;
+	Tue,  6 Jan 2026 17:52:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721070;
-	bh=epzQMZjj5EiVBA+KdCwdDIOus3sVn7fdVkKhDe9Uq88=;
+	s=korg; t=1767721964;
+	bh=bzC5mdUwy9zCNQ0vtql3ILY737Vf+Zvr7HDsHmrv4nA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T3z6+Gv3z0oqjE80+0o/h0XQXfbJ75MbONOL/A28cXJwl04VI+5p77Jj5WoLFOm1u
-	 ZZKuHaa7gb2GDZB9OQ/Ub6bgtwyERC69a/zH9v76DEa3gERtpOgSi8o3TmIPA8cXRT
-	 Omfeap0l/jeULgW2+S3RrBI+1xUVwEUSrgzm+a8M=
+	b=vG7LcbkotWboC5P3uvdIDLW1GZUJ9zoWMrd0DkurgOmoO6xsiP2oqx7PSssnX5VLJ
+	 KeqDxjhqn10mL8yjUc2Q6oxDFBrNNvWmRl3CRuQADo/l6DCN7uLKltpIg1PCCsYTu8
+	 0HVG6tG/HdEACNB8RakCLnknf6gp5lKWwQt8xCsI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Marangi <ansuelsmth@gmail.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 6.12 384/567] mtd: mtdpart: ignore error -ENOENT from parsers on subpartitions
+	olivier moysan <olivier.moysan@st.com>,
+	Wen Yang <yellowriver2010@hotmail.com>,
+	Johan Hovold <johan@kernel.org>,
+	olivier moysan <olivier.moysan@foss.st.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.18 092/312] ASoC: stm32: sai: fix device leak on probe
 Date: Tue,  6 Jan 2026 18:02:46 +0100
-Message-ID: <20260106170505.547256658@linuxfoundation.org>
+Message-ID: <20260106170551.162452391@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
-References: <20260106170451.332875001@linuxfoundation.org>
+In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
+References: <20260106170547.832845344@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,70 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Marangi <ansuelsmth@gmail.com>
+From: Johan Hovold <johan@kernel.org>
 
-commit 64ef5f454e167bb66cf70104f033c3d71e6ef9c0 upstream.
+commit e26ff429eaf10c4ef1bc3dabd9bf27eb54b7e1f4 upstream.
 
-Commit 5c2f7727d437 ("mtd: mtdpart: check for subpartitions parsing
-result") introduced some kind of regression with parser on subpartitions
-where if a parser emits an error then the entire parsing process from the
-upper parser fails and partitions are deleted.
+Make sure to drop the reference taken when looking up the sync provider
+device and its driver data during DAI probe on probe failures and on
+unbind.
 
-Not checking for error in subpartitions was originally intended as
-special parser can emit error also in the case of the partition not
-correctly init (for example a wiped partition) or special case where the
-partition should be skipped due to some ENV variables externally
-provided (from bootloader for example)
+Note that holding a reference to a device does not prevent its driver
+data from going away so there is no point in keeping the reference.
 
-One example case is the TRX partition where, in the context of a wiped
-partition, returns a -ENOENT as the trx_magic is not found in the
-expected TRX header (as the partition is wiped)
-
-To better handle this and still keep some kind of error tracking (for
-example to catch -ENOMEM errors or -EINVAL errors), permit parser on
-subpartition to emit -ENOENT error, print a debug log and skip them
-accordingly.
-
-This results in giving better tracking of the status of the parser
-(instead of returning just 0, dropping any kind of signal that there is
-something wrong with the parser) and to some degree restore the original
-logic of the subpartitions parse.
-
-(worth to notice that some special partition might have all the special
-header present for the parser and declare 0 partition in it, this is why
-it would be wrong to simply return 0 in the case of a special partition
-that is NOT init for the scanning parser)
-
-Cc: stable@vger.kernel.org
-Fixes: 5c2f7727d437 ("mtd: mtdpart: check for subpartitions parsing result")
-Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Fixes: 7dd0d835582f ("ASoC: stm32: sai: simplify sync modes management")
+Fixes: 1c3816a19487 ("ASoC: stm32: sai: add missing put_device()")
+Cc: stable@vger.kernel.org	# 4.16: 1c3816a19487
+Cc: olivier moysan <olivier.moysan@st.com>
+Cc: Wen Yang <yellowriver2010@hotmail.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: olivier moysan <olivier.moysan@foss.st.com>
+Link: https://patch.msgid.link/20251124104908.15754-2-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/mtdpart.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ sound/soc/stm/stm32_sai.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/mtd/mtdpart.c
-+++ b/drivers/mtd/mtdpart.c
-@@ -425,9 +425,12 @@ int add_mtd_partitions(struct mtd_info *
+--- a/sound/soc/stm/stm32_sai.c
++++ b/sound/soc/stm/stm32_sai.c
+@@ -143,6 +143,7 @@ static int stm32_sai_set_sync(struct stm
+ 	}
  
- 		mtd_add_partition_attrs(child);
+ 	sai_provider = platform_get_drvdata(pdev);
++	put_device(&pdev->dev);
+ 	if (!sai_provider) {
+ 		dev_err(&sai_client->pdev->dev,
+ 			"SAI sync provider data not found\n");
+@@ -159,7 +160,6 @@ static int stm32_sai_set_sync(struct stm
+ 	ret = stm32_sai_sync_conf_provider(sai_provider, synco);
  
--		/* Look for subpartitions */
-+		/* Look for subpartitions (skip if no maching parser found) */
- 		ret = parse_mtd_partitions(child, parts[i].types, NULL);
--		if (ret < 0) {
-+		if (ret < 0 && ret == -ENOENT) {
-+			pr_debug("Skip parsing subpartitions: %d\n", ret);
-+			continue;
-+		} else if (ret < 0) {
- 			pr_err("Failed to parse subpartitions: %d\n", ret);
- 			goto err_del_partitions;
- 		}
+ error:
+-	put_device(&pdev->dev);
+ 	of_node_put(np_provider);
+ 	return ret;
+ }
 
 
 
