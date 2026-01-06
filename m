@@ -1,53 +1,56 @@
-Return-Path: <stable+bounces-205491-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205769-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52446CFA245
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:28:29 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61C57CF9EF3
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:06:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 564FA3155D10
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:40:42 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3940C30024D4
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:06:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8891E2EA482;
-	Tue,  6 Jan 2026 17:34:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3F4D3612C8;
+	Tue,  6 Jan 2026 17:49:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GzoeV41k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oJjR9NMW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41C8929B8FE;
-	Tue,  6 Jan 2026 17:34:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FACF355031;
+	Tue,  6 Jan 2026 17:49:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767720870; cv=none; b=Bqc3NuSDAmw6T7rcklky8oqzGp7wCKGqfqAMOhmU/hCIJbPbeun6lXgVJpicj1ZGGEvCpoGWXG5DtCriLdhWpqP4l1Qh/oOVqHg2j7DIDAyaEUNWCwghr18oZtGxlJrfQwKe7QrZUruu1bm251/yVrycGqgQ4A+1/rHlZyqjDag=
+	t=1767721799; cv=none; b=Ywoi/ABa2fYvf5zGLgAB+IGZ/XiiiSgyjpYJ7mvqWto9tT3xZA/Y7+UP/vpamQ/YPsbRW0yTE7qYGz4rD0jE4OLK3ISJim1kaCwZLzIXrB6fjalEKp2JN81y5rhn/RpbwBEOT7psHAG2FZHMNH7IHLMK2sgDrIg0+0MJmImq+ig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767720870; c=relaxed/simple;
-	bh=3j/Stzw/Liqfj1OloygjOnaWk0uERZPmWCM5fGbo/1U=;
+	s=arc-20240116; t=1767721799; c=relaxed/simple;
+	bh=gkwTfbvinZP53c6Mvr03g5cSpfRtl0k7RFixa1VKAvY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K11tv3DANdA53/8/6WxhhHb21OCO3oDwOgOoEvYyY8xK3KRGPhPI9kXjzDEmRqEJz4273AuTE9wUDc1iLqh7+peF5HCo/5v9gjIkDSIgj9QBeJJmiLYXcyfto73Ww2ExNUw0er+xqqfJo1dp1sg+VPtovpz8uciACLkwU/nVxtg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GzoeV41k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E383C116C6;
-	Tue,  6 Jan 2026 17:34:29 +0000 (UTC)
+	 MIME-Version; b=XivnK7rjiUM8Q75qFRKrg5k1QouFvV66hNTgk5lVhm8yqUn6/Rm+JNSlmj8bd/f538YY6Td9PHnCie3cXAb71IgWIZO3Sme85RdMZwBtIFHDF5wQXjBNFnDmbPaEXZibHEmxPjkdIKILb6r0/5axU3d29sD5BXAJQNNUAEUpmus=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oJjR9NMW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0ACCC19423;
+	Tue,  6 Jan 2026 17:49:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767720869;
-	bh=3j/Stzw/Liqfj1OloygjOnaWk0uERZPmWCM5fGbo/1U=;
+	s=korg; t=1767721799;
+	bh=gkwTfbvinZP53c6Mvr03g5cSpfRtl0k7RFixa1VKAvY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GzoeV41kEMMo9MzJ27qmBx1iu1CXMhqUMB/n3ASdF1Cl2IvmAhuCufMYRMSxXyc2I
-	 TfOCHRGG363rTtzDnxkXKcxrVktHMdFuNfiVDBfbM/li8xthLVXS75S54qqXvhZ31N
-	 +ffMvo3zyTgauix+iUoJMwhSMTcvYvfkIPteSmi8=
+	b=oJjR9NMWGkLOi3OWLXNgNaaMGKovH6TxuZSa7nwtBQxMsO20cSrCE1hBEPoAm9e62
+	 4mUS/ZkJiNIZPIEL95AptU/Yq+h5WuFQ9WtLN5ZebPzj2KVdfOn/DTNpS3JFeQ19GL
+	 rRyTAehahZLW5aGqSHjVj3Ew5h/K+bKaDmOj5WwA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <johannes.goede@oss.qualcomm.com>,
-	Jiri Kosina <jkosina@suse.com>
-Subject: [PATCH 6.12 367/567] HID: logitech-dj: Remove duplicate error logging
+	Yingying Zheng <zhengyingying@sangfor.com.cn>,
+	Ding Hui <dinghui@sangfor.com.cn>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 075/312] RDMA/bnxt_re: Fix OOB write in bnxt_re_copy_err_stats()
 Date: Tue,  6 Jan 2026 18:02:29 +0100
-Message-ID: <20260106170504.918142652@linuxfoundation.org>
+Message-ID: <20260106170550.558027547@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
-References: <20260106170451.332875001@linuxfoundation.org>
+In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
+References: <20260106170547.832845344@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,168 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <johannes.goede@oss.qualcomm.com>
+From: Ding Hui <dinghui@sangfor.com.cn>
 
-commit ca389a55d8b2d86a817433bf82e0602b68c4d541 upstream.
+[ Upstream commit 9b68a1cc966bc947d00e4c0df7722d118125aa37 ]
 
-logi_dj_recv_query_paired_devices() and logi_dj_recv_switch_to_dj_mode()
-both have 2 callers which all log an error if the function fails. Move
-the error logging to inside these 2 functions to remove the duplicated
-error logging in the callers.
+Commit ef56081d1864 ("RDMA/bnxt_re: RoCE related hardware counters
+update") added three new counters and placed them after
+BNXT_RE_OUT_OF_SEQ_ERR.
 
-While at it also move the logi_dj_recv_send_report() call error handling
-in logi_dj_recv_switch_to_dj_mode() to directly after the call. That call
-only fails if the report cannot be found and in that case it does nothing,
-so the msleep() is not necessary on failures.
+BNXT_RE_OUT_OF_SEQ_ERR acts as a boundary marker for allocating hardware
+statistics with different num_counters values on chip_gen_p5_p7 devices.
 
-Fixes: 6f20d3261265 ("HID: logitech-dj: Fix error handling in logi_dj_recv_switch_to_dj_mode()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+As a result, BNXT_RE_NUM_STD_COUNTERS are used when allocating
+hw_stats, which leads to an out-of-bounds write in
+bnxt_re_copy_err_stats().
+
+The counters BNXT_RE_REQ_CQE_ERROR, BNXT_RE_RESP_CQE_ERROR, and
+BNXT_RE_RESP_REMOTE_ACCESS_ERRS are applicable to generic hardware, not
+only p5/p7 devices.
+
+Fix this by moving these counters before BNXT_RE_OUT_OF_SEQ_ERR so they
+are included in the generic counter set.
+
+Fixes: ef56081d1864 ("RDMA/bnxt_re: RoCE related hardware counters update")
+Reported-by: Yingying Zheng <zhengyingying@sangfor.com.cn>
+Signed-off-by: Ding Hui <dinghui@sangfor.com.cn>
+Link: https://patch.msgid.link/20251208072110.28874-1-dinghui@sangfor.com.cn
+Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Tested-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-logitech-dj.c |   56 +++++++++++++++++-------------------------
- 1 file changed, 23 insertions(+), 33 deletions(-)
+ drivers/infiniband/hw/bnxt_re/hw_counters.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/hid/hid-logitech-dj.c
-+++ b/drivers/hid/hid-logitech-dj.c
-@@ -805,7 +805,6 @@ static void delayedwork_callback(struct
- 	struct dj_workitem workitem;
- 	unsigned long flags;
- 	int count;
--	int retval;
+diff --git a/drivers/infiniband/hw/bnxt_re/hw_counters.h b/drivers/infiniband/hw/bnxt_re/hw_counters.h
+index 09d371d442aa..cebec033f4a0 100644
+--- a/drivers/infiniband/hw/bnxt_re/hw_counters.h
++++ b/drivers/infiniband/hw/bnxt_re/hw_counters.h
+@@ -89,6 +89,9 @@ enum bnxt_re_hw_stats {
+ 	BNXT_RE_RES_SRQ_LOAD_ERR,
+ 	BNXT_RE_RES_TX_PCI_ERR,
+ 	BNXT_RE_RES_RX_PCI_ERR,
++	BNXT_RE_REQ_CQE_ERROR,
++	BNXT_RE_RESP_CQE_ERROR,
++	BNXT_RE_RESP_REMOTE_ACCESS_ERRS,
+ 	BNXT_RE_OUT_OF_SEQ_ERR,
+ 	BNXT_RE_TX_ATOMIC_REQ,
+ 	BNXT_RE_TX_READ_REQ,
+@@ -110,9 +113,6 @@ enum bnxt_re_hw_stats {
+ 	BNXT_RE_TX_CNP,
+ 	BNXT_RE_RX_CNP,
+ 	BNXT_RE_RX_ECN,
+-	BNXT_RE_REQ_CQE_ERROR,
+-	BNXT_RE_RESP_CQE_ERROR,
+-	BNXT_RE_RESP_REMOTE_ACCESS_ERRS,
+ 	BNXT_RE_NUM_EXT_COUNTERS
+ };
  
- 	dbg_hid("%s\n", __func__);
- 
-@@ -842,11 +841,7 @@ static void delayedwork_callback(struct
- 		logi_dj_recv_destroy_djhid_device(djrcv_dev, &workitem);
- 		break;
- 	case WORKITEM_TYPE_UNKNOWN:
--		retval = logi_dj_recv_query_paired_devices(djrcv_dev);
--		if (retval) {
--			hid_err(djrcv_dev->hidpp, "%s: logi_dj_recv_query_paired_devices error: %d\n",
--				__func__, retval);
--		}
-+		logi_dj_recv_query_paired_devices(djrcv_dev);
- 		break;
- 	case WORKITEM_TYPE_EMPTY:
- 		dbg_hid("%s: device list is empty\n", __func__);
-@@ -1239,8 +1234,10 @@ static int logi_dj_recv_query_paired_dev
- 
- 	djrcv_dev->last_query = jiffies;
- 
--	if (djrcv_dev->type != recvr_type_dj)
--		return logi_dj_recv_query_hidpp_devices(djrcv_dev);
-+	if (djrcv_dev->type != recvr_type_dj) {
-+		retval = logi_dj_recv_query_hidpp_devices(djrcv_dev);
-+		goto out;
-+	}
- 
- 	dj_report = kzalloc(sizeof(struct dj_report), GFP_KERNEL);
- 	if (!dj_report)
-@@ -1250,6 +1247,10 @@ static int logi_dj_recv_query_paired_dev
- 	dj_report->report_type = REPORT_TYPE_CMD_GET_PAIRED_DEVICES;
- 	retval = logi_dj_recv_send_report(djrcv_dev, dj_report);
- 	kfree(dj_report);
-+out:
-+	if (retval < 0)
-+		hid_err(djrcv_dev->hidpp, "%s error:%d\n", __func__, retval);
-+
- 	return retval;
- }
- 
-@@ -1275,6 +1276,8 @@ static int logi_dj_recv_switch_to_dj_mod
- 								(u8)timeout;
- 
- 		retval = logi_dj_recv_send_report(djrcv_dev, dj_report);
-+		if (retval)
-+			goto out;
- 
- 		/*
- 		 * Ugly sleep to work around a USB 3.0 bug when the receiver is
-@@ -1283,11 +1286,6 @@ static int logi_dj_recv_switch_to_dj_mod
- 		 * 50 msec should gives enough time to the receiver to be ready.
- 		 */
- 		msleep(50);
--
--		if (retval) {
--			kfree(dj_report);
--			return retval;
--		}
- 	}
- 
- 	/*
-@@ -1313,7 +1311,12 @@ static int logi_dj_recv_switch_to_dj_mod
- 			HIDPP_REPORT_SHORT_LENGTH, HID_OUTPUT_REPORT,
- 			HID_REQ_SET_REPORT);
- 
-+out:
- 	kfree(dj_report);
-+
-+	if (retval < 0)
-+		hid_err(hdev, "%s error:%d\n", __func__, retval);
-+
- 	return retval;
- }
- 
-@@ -1835,11 +1838,8 @@ static int logi_dj_probe(struct hid_devi
- 
- 	if (has_hidpp) {
- 		retval = logi_dj_recv_switch_to_dj_mode(djrcv_dev, 0);
--		if (retval < 0) {
--			hid_err(hdev, "%s: logi_dj_recv_switch_to_dj_mode returned error:%d\n",
--				__func__, retval);
-+		if (retval < 0)
- 			goto switch_to_dj_mode_fail;
--		}
- 	}
- 
- 	/* This is enabling the polling urb on the IN endpoint */
-@@ -1857,15 +1857,11 @@ static int logi_dj_probe(struct hid_devi
- 		spin_lock_irqsave(&djrcv_dev->lock, flags);
- 		djrcv_dev->ready = true;
- 		spin_unlock_irqrestore(&djrcv_dev->lock, flags);
--		retval = logi_dj_recv_query_paired_devices(djrcv_dev);
--		if (retval < 0) {
--			hid_err(hdev, "%s: logi_dj_recv_query_paired_devices error:%d\n",
--				__func__, retval);
--			/*
--			 * This can happen with a KVM, let the probe succeed,
--			 * logi_dj_recv_queue_unknown_work will retry later.
--			 */
--		}
-+		/*
-+		 * This can fail with a KVM. Ignore errors to let the probe
-+		 * succeed, logi_dj_recv_queue_unknown_work will retry later.
-+		 */
-+		logi_dj_recv_query_paired_devices(djrcv_dev);
- 	}
- 
- 	return 0;
-@@ -1882,18 +1878,12 @@ hid_hw_start_fail:
- #ifdef CONFIG_PM
- static int logi_dj_reset_resume(struct hid_device *hdev)
- {
--	int retval;
- 	struct dj_receiver_dev *djrcv_dev = hid_get_drvdata(hdev);
- 
- 	if (!djrcv_dev || djrcv_dev->hidpp != hdev)
- 		return 0;
- 
--	retval = logi_dj_recv_switch_to_dj_mode(djrcv_dev, 0);
--	if (retval < 0) {
--		hid_err(hdev, "%s: logi_dj_recv_switch_to_dj_mode returned error:%d\n",
--			__func__, retval);
--	}
--
-+	logi_dj_recv_switch_to_dj_mode(djrcv_dev, 0);
- 	return 0;
- }
- #endif
+-- 
+2.51.0
+
 
 
 
