@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-205746-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205469-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62AEFCF9F2E
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:07:49 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9CBFCF9DBB
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 18:52:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D36FD306305B
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:06:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 866E531F4EE9
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:40:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 526E735FF43;
-	Tue,  6 Jan 2026 17:48:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B4522D97BF;
+	Tue,  6 Jan 2026 17:33:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xYwcno3r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dfb02SnD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EFF8355031;
-	Tue,  6 Jan 2026 17:48:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDBB62D9484;
+	Tue,  6 Jan 2026 17:33:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721722; cv=none; b=bntyaFWb0YZ00wTX/gTEQJgsToqdIlN6XOCEfSUvQ7O+0/N2wv4Fz4uNxuNmt5rkj3R30+KBv4AXEEN9SxTLkZQinHeW6qBj09eAeE2xQS6SQ85eIGYpP7UauOtMOvXAGQa87ISf8XZqwH7A+iwdpCpNIllc1459N2j963GvKco=
+	t=1767720798; cv=none; b=YkywlnHGQttU06Q714R7slDAA5eiJsSJcrwHfaebrbdg3FC6HuMskcMM8JwkU3Dz3gACdwq5DkvGG1HUAkHA6Vm2ivZgyd41Zft5kuJFHIxtSAuEbiKvDh3YTkHDtoRBAJbXNmSe4XmVtD1/jZP6zQgmvv+01Nu7/n5FRQEUXZw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721722; c=relaxed/simple;
-	bh=ciZsVo4fL67vM4yuiR3DFLcph5s+IXz36GJDCR8BlTc=;
+	s=arc-20240116; t=1767720798; c=relaxed/simple;
+	bh=DxpDgCJUMyph5pKKRbi3xWme+4gd/+ssiaO3eqODCiI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wy+NzY9hUu+69GPhcOOwGEG8R+KF/cL3iVadRYCn/2VGOWA4pbxVSaAMeIszc0+3MgQV2/O6LZ795RB0oR31y7ZQQdIlqZ616oNAAyijvxaap5/Sqm4wBo/C+dx2PTTErDidd1JYzYvb3qaPiK9EbbRprIjhnseygw8b+eU/I6M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xYwcno3r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DCB7C16AAE;
-	Tue,  6 Jan 2026 17:48:41 +0000 (UTC)
+	 MIME-Version; b=asudzx38fdlqL/R5OL9NBtvo1DXPxtqP0gQhXxPa0OFD43Mf2qN9FMtS9p1Rfpk3NNnOWFUpCpShwa1QomFrPwIyUFYK0hVQO2TKZ1cTx6/QCzhwXr2q++Bgllg5uNDcpkSXcIIYWJ6xftZ0r19jtxiHOCZrevBRelTBcBlNXMw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dfb02SnD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B416C116C6;
+	Tue,  6 Jan 2026 17:33:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721721;
-	bh=ciZsVo4fL67vM4yuiR3DFLcph5s+IXz36GJDCR8BlTc=;
+	s=korg; t=1767720797;
+	bh=DxpDgCJUMyph5pKKRbi3xWme+4gd/+ssiaO3eqODCiI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xYwcno3rat6bRMXpl58Sn9i4y2wxlH3q9U9dXie6VCl1lLOGDEvvARTpRO6mPd8K1
-	 vy+elkrtEfnWdxJ8yqdBF/YMDsnuTCpmLFchhXTBV4aVgmtZTvf7NVmKnKIZVl+hqD
-	 5FNeK5gTnAfNq1VWSf3MTQ5k+8RN4CfWtL8P5YbY=
+	b=dfb02SnDlchKbn8QIGDMeXzD05bE6gpEjwXHMYUb7yAPaNscYc6QzoPnjVhaCRabx
+	 KwHOcP5YPD9Tm47UooK7irft9dAPHwYIxlIG74H3l57LZmXdGNB3w6d1r2Xub7limF
+	 dMgeN40BznaKGP8Je6dWQI67v2HVO2+p5Mdqy/Aw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rosen Penev <rosenp@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Yipeng Zou <zouyipeng@huawei.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 051/312] net: mdio: rtl9300: use scoped for loops
+Subject: [PATCH 6.12 343/567] selftests/ftrace: traceonoff_triggers: strip off names
 Date: Tue,  6 Jan 2026 18:02:05 +0100
-Message-ID: <20260106170549.700641987@linuxfoundation.org>
+Message-ID: <20260106170504.015204722@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
-References: <20260106170547.832845344@linuxfoundation.org>
+In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
+References: <20260106170451.332875001@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,64 +62,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rosen Penev <rosenp@gmail.com>
+From: Yipeng Zou <zouyipeng@huawei.com>
 
-[ Upstream commit a4f800c4487dc5d6fcc28da89c7cc3c187ccc731 ]
+[ Upstream commit b889b4fb4cbea3ca7eb9814075d6a51936394bd9 ]
 
-Currently in the return path, fwnode_handle_put calls are missing. Just use
-_scoped to avoid the issue.
+The func_traceonoff_triggers.tc sometimes goes to fail
+on my board, Kunpeng-920.
 
-Fixes: 24e31e474769 ("net: mdio: Add RTL9300 MDIO driver")
-Signed-off-by: Rosen Penev <rosenp@gmail.com>
-Link: https://patch.msgid.link/20251217210153.14641-1-rosenp@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+[root@localhost]# ./ftracetest ./test.d/ftrace/func_traceonoff_triggers.tc -l fail.log
+=== Ftrace unit tests ===
+[1] ftrace - test for function traceon/off triggers     [FAIL]
+[2] (instance)  ftrace - test for function traceon/off triggers [UNSUPPORTED]
+
+I look up the log, and it shows that the md5sum is different between csum1 and csum2.
+
+++ cnt=611
+++ sleep .1
++++ cnt_trace
++++ grep -v '^#' trace
++++ wc -l
+++ cnt2=611
+++ '[' 611 -ne 611 ']'
++++ cat tracing_on
+++ on=0
+++ '[' 0 '!=' 0 ']'
++++ md5sum trace
+++ csum1='76896aa74362fff66a6a5f3cf8a8a500  trace'
+++ sleep .1
++++ md5sum trace
+++ csum2='ee8625a21c058818fc26e45c1ed3f6de  trace'
+++ '[' '76896aa74362fff66a6a5f3cf8a8a500  trace' '!=' 'ee8625a21c058818fc26e45c1ed3f6de  trace' ']'
+++ fail 'Tracing file is still changing'
+++ echo Tracing file is still changing
+Tracing file is still changing
+++ exit_fail
+++ exit 1
+
+So I directly dump the trace file before md5sum, the diff shows that:
+
+[root@localhost]# diff trace_1.log trace_2.log -y --suppress-common-lines
+dockerd-12285   [036] d.... 18385.510290: sched_stat | <...>-12285   [036] d.... 18385.510290: sched_stat
+dockerd-12285   [036] d.... 18385.510291: sched_swit | <...>-12285   [036] d.... 18385.510291: sched_swit
+<...>-740       [044] d.... 18385.602859: sched_stat | kworker/44:1-740 [044] d.... 18385.602859: sched_stat
+<...>-740       [044] d.... 18385.602860: sched_swit | kworker/44:1-740 [044] d.... 18385.602860: sched_swit
+
+And we can see that <...> filed be filled with names.
+
+We can strip off the names there to fix that.
+
+After strip off the names:
+
+kworker/u257:0-12 [019] d..2.  2528.758910: sched_stat | -12 [019] d..2.  2528.758910: sched_stat_runtime: comm=k
+kworker/u257:0-12 [019] d..2.  2528.758912: sched_swit | -12 [019] d..2.  2528.758912: sched_switch: prev_comm=kw
+<idle>-0          [000] d.s5.  2528.762318: sched_waki | -0  [000] d.s5.  2528.762318: sched_waking: comm=sshd pi
+<idle>-0          [037] dNh2.  2528.762326: sched_wake | -0  [037] dNh2.  2528.762326: sched_wakeup: comm=sshd pi
+<idle>-0          [037] d..2.  2528.762334: sched_swit | -0  [037] d..2.  2528.762334: sched_switch: prev_comm=sw
+
+Link: https://lore.kernel.org/r/20230818013226.2182299-1-zouyipeng@huawei.com
+Fixes: d87b29179aa0 ("selftests: ftrace: Use md5sum to take less time of checking logs")
+Suggested-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Yipeng Zou <zouyipeng@huawei.com>
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/mdio/mdio-realtek-rtl9300.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ .../ftrace/test.d/ftrace/func_traceonoff_triggers.tc         | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/mdio/mdio-realtek-rtl9300.c b/drivers/net/mdio/mdio-realtek-rtl9300.c
-index 33694c3ff9a7..405a07075dd1 100644
---- a/drivers/net/mdio/mdio-realtek-rtl9300.c
-+++ b/drivers/net/mdio/mdio-realtek-rtl9300.c
-@@ -354,7 +354,6 @@ static int rtl9300_mdiobus_probe_one(struct device *dev, struct rtl9300_mdio_pri
- 				     struct fwnode_handle *node)
- {
- 	struct rtl9300_mdio_chan *chan;
--	struct fwnode_handle *child;
- 	struct mii_bus *bus;
- 	u32 mdio_bus;
- 	int err;
-@@ -371,7 +370,7 @@ static int rtl9300_mdiobus_probe_one(struct device *dev, struct rtl9300_mdio_pri
- 	 * compatible = "ethernet-phy-ieee802.3-c45". This does mean we can't
- 	 * support both c45 and c22 on the same MDIO bus.
- 	 */
--	fwnode_for_each_child_node(node, child)
-+	fwnode_for_each_child_node_scoped(node, child)
- 		if (fwnode_device_is_compatible(child, "ethernet-phy-ieee802.3-c45"))
- 			priv->smi_bus_is_c45[mdio_bus] = true;
+diff --git a/tools/testing/selftests/ftrace/test.d/ftrace/func_traceonoff_triggers.tc b/tools/testing/selftests/ftrace/test.d/ftrace/func_traceonoff_triggers.tc
+index aee22289536b..1b57771dbfdf 100644
+--- a/tools/testing/selftests/ftrace/test.d/ftrace/func_traceonoff_triggers.tc
++++ b/tools/testing/selftests/ftrace/test.d/ftrace/func_traceonoff_triggers.tc
+@@ -90,9 +90,10 @@ if [ $on != "0" ]; then
+     fail "Tracing is not off"
+ fi
  
-@@ -409,7 +408,6 @@ static int rtl9300_mdiobus_map_ports(struct device *dev)
- {
- 	struct rtl9300_mdio_priv *priv = dev_get_drvdata(dev);
- 	struct device *parent = dev->parent;
--	struct fwnode_handle *port;
- 	int err;
+-csum1=`md5sum trace`
++# Cannot rely on names being around as they are only cached, strip them
++csum1=`cat trace | sed -e 's/^ *[^ ]*\(-[0-9][0-9]*\)/\1/' | md5sum`
+ sleep $SLEEP_TIME
+-csum2=`md5sum trace`
++csum2=`cat trace | sed -e 's/^ *[^ ]*\(-[0-9][0-9]*\)/\1/' | md5sum`
  
- 	struct fwnode_handle *ports __free(fwnode_handle) =
-@@ -418,7 +416,7 @@ static int rtl9300_mdiobus_map_ports(struct device *dev)
- 		return dev_err_probe(dev, -EINVAL, "%pfwP missing ethernet-ports\n",
- 				     dev_fwnode(parent));
- 
--	fwnode_for_each_child_node(ports, port) {
-+	fwnode_for_each_child_node_scoped(ports, port) {
- 		struct device_node *mdio_dn;
- 		u32 addr;
- 		u32 bus;
+ if [ "$csum1" != "$csum2" ]; then
+     fail "Tracing file is still changing"
 -- 
 2.51.0
 
