@@ -1,51 +1,52 @@
-Return-Path: <stable+bounces-205410-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205421-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25823CF9C0E
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 18:39:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B523FCF9C2F
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 18:40:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9455E3138642
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:30:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3B7783155E52
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:31:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B48C3563D6;
-	Tue,  6 Jan 2026 17:29:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D944229B12;
+	Tue,  6 Jan 2026 17:30:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QrwnaShN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wBolGYKJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 116BF3563D2;
-	Tue,  6 Jan 2026 17:29:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A0F820F079;
+	Tue,  6 Jan 2026 17:30:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767720598; cv=none; b=lbtipTS45R2ZZBLhzDeldV29AErED6lYm42CrY/RG66cEyP5UelVz6qnu3AENKADAwI0Q3waYUKnvr57dJurDSVOl94ZURSDrR/AAbcHybbYF+a/8IF8tw0O/ww63ejMT3gR7wb/hd9z2cRNVSQz92d8e4kvXaFdCI4ubdfkTE8=
+	t=1767720636; cv=none; b=XzLS/cJOM94sYvOYEHI84Qeqdx7L//lbQCzWDwOp7Kj3hiuo8clo+O8MUpaR8uUxFpii6lULwDKM7TJEKRZ5i104Ut1TBjU0UE83PScbotCcEzR0S0hzmOjCJ4X++DwT/sC0SHFIKcol6vvSRghKd5VEjkGo7Khwmlb2N/imSFA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767720598; c=relaxed/simple;
-	bh=0mfibLpCfBj57MKw+m4h7KVnrHuLu9MAzinrJfG8fvA=;
+	s=arc-20240116; t=1767720636; c=relaxed/simple;
+	bh=VzfdIdt/p/qTTu3uDEJH1zfzqWOjDFaP/ZQhFKSTTeI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xz3wrwb8Sb7Pc+G9FiifnbmfTgXL61SNW8fI2YZD2pFcNx3sbJwM/C4BfYjrff8vUeobgzM7UBc8zYx19jxwg60b643je5JXZ6OvKJXXtJNwLxzzmq0E7b7NQyk84jxK/uWLKeR0EDWwWfbdXLH9twLr6d3uusfNSzR2+Q0JDTM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QrwnaShN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 879D4C19423;
-	Tue,  6 Jan 2026 17:29:57 +0000 (UTC)
+	 MIME-Version; b=dPZzg8sFbU4lYP8sJY1iZq18DdFm/DM//ZQ8uuf5+yEgNkFdOuFXTa98cznvyrETTVI2AGVb7/mTwOzuCCz5yrvE75+3AcwglCijRi8Qn7CL8Cy+VACcjuT4ktVNZYH4K7k4V515a47fCBLYs9GgqyiceVazgZyL1vSSg5EzK9o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wBolGYKJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE717C116C6;
+	Tue,  6 Jan 2026 17:30:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767720597;
-	bh=0mfibLpCfBj57MKw+m4h7KVnrHuLu9MAzinrJfG8fvA=;
+	s=korg; t=1767720636;
+	bh=VzfdIdt/p/qTTu3uDEJH1zfzqWOjDFaP/ZQhFKSTTeI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QrwnaShNPQS/tExg4PjzCerr4/dnYNYhzJiiTU5sfUeeyG885KJPYIkGXrENH6Pfu
-	 vFLW7T1errTBeOZBW0VXMiWYYf1Uz+tRrhQ50kZUVEnzMtYj5PKJFtegVWGMwvm2TP
-	 LixhwsdmlBGIpP5c7OpDJIKyqtLKIeXE8akiWv+Q=
+	b=wBolGYKJEqzdzcVqvTWNIRvGdiA1tjitWmDjsMUQ6kdfYm5p6ntvvxgEXgr8cvOed
+	 Id2Pmma+aSPsvqqRyvAL32VNgta/dg278fm28aYLqiyY9dRhg4cnhUcAViKhQJy5ow
+	 xvfj5ak//bGO4UVFzAptMJUuZyfqs1g8RvD63wBI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anjelique Melendez <quic_amelende@quicinc.com>,
+	Brian Masney <bmasney@redhat.com>,
+	Miaoqian Lin <linmq006@gmail.com>,
 	Johan Hovold <johan@kernel.org>,
 	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.12 278/567] soc: qcom: pbs: fix device leak on lookup
-Date: Tue,  6 Jan 2026 18:01:00 +0100
-Message-ID: <20260106170501.612013581@linuxfoundation.org>
+Subject: [PATCH 6.12 279/567] soc: qcom: ocmem: fix device leak on lookup
+Date: Tue,  6 Jan 2026 18:01:01 +0100
+Message-ID: <20260106170501.649226117@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
 References: <20260106170451.332875001@linuxfoundation.org>
@@ -66,36 +67,44 @@ Content-Transfer-Encoding: 8bit
 
 From: Johan Hovold <johan@kernel.org>
 
-commit 94124bf253d24b13e89c45618a168d5a1d8a61e7 upstream.
+commit b5c16ea57b030b8e9428ec726e26219dfe05c3d9 upstream.
 
-Make sure to drop the reference taken to the pbs platform device when
+Make sure to drop the reference taken to the ocmem platform device when
 looking up its driver data.
 
 Note that holding a reference to a device does not prevent its driver
 data from going away so there is no point in keeping the reference.
 
-Fixes: 5b2dd77be1d8 ("soc: qcom: add QCOM PBS driver")
-Cc: stable@vger.kernel.org	# 6.9
-Cc: Anjelique Melendez <quic_amelende@quicinc.com>
+Also note that commit 0ff027027e05 ("soc: qcom: ocmem: Fix missing
+put_device() call in of_get_ocmem") fixed the leak in a lookup error
+path, but the reference is still leaking on success.
+
+Fixes: 88c1e9404f1d ("soc: qcom: add OCMEM driver")
+Cc: stable@vger.kernel.org	# 5.5: 0ff027027e05
+Cc: Brian Masney <bmasney@redhat.com>
+Cc: Miaoqian Lin <linmq006@gmail.com>
 Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://lore.kernel.org/r/20250926143511.6715-3-johan@kernel.org
+Reviewed-by: Brian Masney <bmasney@redhat.com>
+Link: https://lore.kernel.org/r/20250926143511.6715-2-johan@kernel.org
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/soc/qcom/qcom-pbs.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/soc/qcom/ocmem.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/soc/qcom/qcom-pbs.c
-+++ b/drivers/soc/qcom/qcom-pbs.c
-@@ -179,6 +179,8 @@ struct pbs_dev *get_pbs_client_device(st
- 		return ERR_PTR(-EINVAL);
+--- a/drivers/soc/qcom/ocmem.c
++++ b/drivers/soc/qcom/ocmem.c
+@@ -202,9 +202,9 @@ struct ocmem *of_get_ocmem(struct device
  	}
  
-+	platform_device_put(pdev);
-+
- 	return pbs;
- }
- EXPORT_SYMBOL_GPL(get_pbs_client_device);
+ 	ocmem = platform_get_drvdata(pdev);
++	put_device(&pdev->dev);
+ 	if (!ocmem) {
+ 		dev_err(dev, "Cannot get ocmem\n");
+-		put_device(&pdev->dev);
+ 		return ERR_PTR(-ENODEV);
+ 	}
+ 	return ocmem;
 
 
 
