@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-205705-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205708-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10D23CFAA13
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:25:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AFA38CFA9D7
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:23:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3671F33138C7
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:38:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AC4313311563
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:37:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A4C535C1BA;
-	Tue,  6 Jan 2026 17:46:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CAD41DF751;
+	Tue,  6 Jan 2026 17:46:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mHBUpuQv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wI3lln0d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB9942F744F;
-	Tue,  6 Jan 2026 17:46:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD68735CB65;
+	Tue,  6 Jan 2026 17:46:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721583; cv=none; b=meR7mDWTpqSbiF/0WwmRzS/fAPxI5tQqvJ1pfZiCLJsapd/H3SmtlGb0lQsx+wOJpj5PZ6jJyH9+zKZepmAn5qbv30gblsZtF17mF6E8l4VAo9qZfIn1FPmDipyTitrB/asuha2Hwh+r3C5VZXQnulQZm+uBNI/kybsy4IldyA0=
+	t=1767721594; cv=none; b=gC3aoY+VgpxfgzIIP2yCs8lvlem+NstO7cNjGMd8ht5Cj2AU0h7xGp8Zy62116r3Efgi/bgibU4kINwuyd8t0wnlhDP29t7TA7XBulEG7HUCejI9trs+MKXxj05m5gzrsuT4eG/s0MGm0gj6EGJHD2yIAlom8YOf3G0GZ8WDwao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721583; c=relaxed/simple;
-	bh=4NkMuJlq8BS0aKmZWq+O0dqMCFLfa2bz44Jy8H3wOd8=;
+	s=arc-20240116; t=1767721594; c=relaxed/simple;
+	bh=UyzgdVq4H1FUIh8a3DuyUPvnbeEge2EDoJayOI/0Xew=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Co+1RMzroiDU99B/SlfAvlTTEs9eaywUoeTZ89j3KIGtN+gI/skFV7XAb8HvYxJDzxY2Pl7Na6yKNNvW1bmnNd2cvLSRS9+dG4wP7fYUVVgSNA6XyHU/xRPrPOX+wUxlsB0YhP3LX1QyZIHHF72P16lWdzCDuZnOraRTu96evgA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mHBUpuQv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 494C1C116C6;
-	Tue,  6 Jan 2026 17:46:23 +0000 (UTC)
+	 MIME-Version; b=brMUHhyau5YK8TldKzd+epCXkLpZkAnoXGXtsUrLA28VeyUf7MgLkuKF/sfmu12DRAkMlqPVnRrnwNxaOcJoO9nST6VB7PPh8zLowBZdiS08fQwB3v+befvlkHRr2Xy2/5HUSMvkhNrrp51jaLtKpXm9zh1hDMkSNN7QHZ6kH8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wI3lln0d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51BE3C116C6;
+	Tue,  6 Jan 2026 17:46:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721583;
-	bh=4NkMuJlq8BS0aKmZWq+O0dqMCFLfa2bz44Jy8H3wOd8=;
+	s=korg; t=1767721593;
+	bh=UyzgdVq4H1FUIh8a3DuyUPvnbeEge2EDoJayOI/0Xew=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mHBUpuQvb9w7it/znbpsoaembR7a03E7n5Ew7MW7Lt6hICkFIMjohlyJiMl5oyioN
-	 vEvnuuimJ+wXrBBnyi8//3h8ISDvIM6c7Y1LEAQ0UUCzisl161IYAzSwmcqmH9N6Q3
-	 UZpqcVewDvgT0klAzP/p6BGKgEuj/aN/7oLSwfDc=
+	b=wI3lln0dIx80/q5uRIZzKBjvs6TPuVkTN0z8Pjjl+u5yZYcGpVbHRq+MFzyc7N7vQ
+	 K9u/zDMxNfNDmN6V2LtoWO5cwhZtqqU5uTKtW3atxz1+Vr81LmqyrlK8NCaOfJkx/n
+	 Grk0SK0/hZn5mzC9be5Qvw8KnUauO+VTnVqM5X6E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrey Skvortsov <andrej.skvortzov@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	Aloka Dixit <aloka.dixit@oss.qualcomm.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 012/312] wifi: rtw88: limit indirect IO under powered off for RTL8822CS
-Date: Tue,  6 Jan 2026 18:01:26 +0100
-Message-ID: <20260106170548.296983170@linuxfoundation.org>
+Subject: [PATCH 6.18 015/312] wifi: mac80211: do not use old MBSSID elements
+Date: Tue,  6 Jan 2026 18:01:29 +0100
+Message-ID: <20260106170548.405574603@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
 References: <20260106170547.832845344@linuxfoundation.org>
@@ -64,49 +64,66 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ping-Ke Shih <pkshih@realtek.com>
+From: Aloka Dixit <aloka.dixit@oss.qualcomm.com>
 
-[ Upstream commit f3ccdfda345ca9a624ea425840a926b8338c1e25 ]
+[ Upstream commit a519be2f5d958c5804f2cfd68f1f384291271fab ]
 
-The indirect IO is necessary for RTL8822CS, but not necessary for other
-chips. Otherwiese, it throws errors and becomes unusable.
+When userspace brings down and deletes a non-transmitted profile,
+it is expected to send a new updated Beacon template for the
+transmitted profile of that multiple BSSID (MBSSID) group which
+does not include the removed profile in MBSSID element. This
+update comes via NL80211_CMD_SET_BEACON.
 
- rtw88_8723cs mmc1:0001:1: WOW Firmware version 11.0.0, H2C version 0
- rtw88_8723cs mmc1:0001:1: Firmware version 11.0.0, H2C version 0
- rtw88_8723cs mmc1:0001:1: sdio read32 failed (0xf0): -110
- rtw88_8723cs mmc1:0001:1: sdio write8 failed (0x1c): -110
- rtw88_8723cs mmc1:0001:1: sdio read32 failed (0xf0): -110
+Such updates work well as long as the group continues to have at
+least one non-transmitted profile as NL80211_ATTR_MBSSID_ELEMS
+is included in the new Beacon template.
 
-By vendor driver, only RTL8822CS and RTL8822ES need indirect IO, but
-RTL8822ES isn't supported yet. Therefore, limit it to RTL8822CS only.
+But when the last non-trasmitted profile is removed, it still
+gets included in Beacon templates sent to driver. This happens
+because when no MBSSID elements are sent by the userspace,
+ieee80211_assign_beacon() ends up using the element stored from
+earlier Beacon template.
 
-Reported-by: Andrey Skvortsov <andrej.skvortzov@gmail.com>
-Closes: https://lore.kernel.org/linux-wireless/07a32e2d6c764eb1bd9415b5a921a652@realtek.com/T/#m997b4522f7209ba629561c776bfd1d13ab24c1d4
-Fixes: 58de1f91e033 ("wifi: rtw88: sdio: use indirect IO for device registers before power-on")
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Tested-by: Andrey Skvortsov <andrej.skvortzov@gmail.com>
-Link: https://patch.msgid.link/1764034729-1251-1-git-send-email-pkshih@realtek.com
+Do not copy old MBSSID elements, instead userspace should always
+include these when applicable.
+
+Fixes: 2b3171c6fe0a ("mac80211: MBSSID beacon handling in AP mode")
+Signed-off-by: Aloka Dixit <aloka.dixit@oss.qualcomm.com>
+Link: https://patch.msgid.link/20251215174656.2866319-2-aloka.dixit@oss.qualcomm.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw88/sdio.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/mac80211/cfg.c | 10 ----------
+ 1 file changed, 10 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/sdio.c b/drivers/net/wireless/realtek/rtw88/sdio.c
-index 99d7c629eac6..e35de52d8eb4 100644
---- a/drivers/net/wireless/realtek/rtw88/sdio.c
-+++ b/drivers/net/wireless/realtek/rtw88/sdio.c
-@@ -144,8 +144,10 @@ static u32 rtw_sdio_to_io_address(struct rtw_dev *rtwdev, u32 addr,
+diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+index c52b0456039d..e18df59951a8 100644
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -1328,7 +1328,6 @@ ieee80211_assign_beacon(struct ieee80211_sub_if_data *sdata,
  
- static bool rtw_sdio_use_direct_io(struct rtw_dev *rtwdev, u32 addr)
- {
-+	bool might_indirect_under_power_off = rtwdev->chip->id == RTW_CHIP_TYPE_8822C;
-+
- 	if (!test_bit(RTW_FLAG_POWERON, rtwdev->flags) &&
--	    !rtw_sdio_is_bus_addr(addr))
-+	    !rtw_sdio_is_bus_addr(addr) && might_indirect_under_power_off)
- 		return false;
+ 	size = sizeof(*new) + new_head_len + new_tail_len;
  
- 	return !rtw_sdio_is_sdio30_supported(rtwdev) ||
+-	/* new or old multiple BSSID elements? */
+ 	if (params->mbssid_ies) {
+ 		mbssid = params->mbssid_ies;
+ 		size += struct_size(new->mbssid_ies, elem, mbssid->cnt);
+@@ -1338,15 +1337,6 @@ ieee80211_assign_beacon(struct ieee80211_sub_if_data *sdata,
+ 		}
+ 		size += ieee80211_get_mbssid_beacon_len(mbssid, rnr,
+ 							mbssid->cnt);
+-	} else if (old && old->mbssid_ies) {
+-		mbssid = old->mbssid_ies;
+-		size += struct_size(new->mbssid_ies, elem, mbssid->cnt);
+-		if (old && old->rnr_ies) {
+-			rnr = old->rnr_ies;
+-			size += struct_size(new->rnr_ies, elem, rnr->cnt);
+-		}
+-		size += ieee80211_get_mbssid_beacon_len(mbssid, rnr,
+-							mbssid->cnt);
+ 	}
+ 
+ 	new = kzalloc(size, GFP_KERNEL);
 -- 
 2.51.0
 
