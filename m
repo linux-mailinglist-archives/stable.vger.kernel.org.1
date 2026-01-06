@@ -1,170 +1,211 @@
-Return-Path: <stable+bounces-205892-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205929-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF444CFA0F2
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:19:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7861DCFA0D4
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:18:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1265930809B2
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:16:48 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D1CD3307C08C
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:16:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54D58345CBE;
-	Tue,  6 Jan 2026 17:56:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D137D36D4E2;
+	Tue,  6 Jan 2026 17:58:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="i/v+mhsp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ac0yOcVZ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45F7729D273
-	for <stable@vger.kernel.org>; Tue,  6 Jan 2026 17:56:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.50
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767722212; cv=pass; b=acFElMmngY0tQMzzJwl1GT+LmAbDozdM6zQP9P0+Sf01JpSQiPUNImrYyKtvlOKgeuVwVINcrnnCQ4VAoKQj8jyKlXXVF+FcwlsrkAn11gkDubYgkLpJCYZxDI2BxuqZjjJwFgztBk11U3qbeCElJMLQdK4IV+mL1xgVSCnPG3Y=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767722212; c=relaxed/simple;
-	bh=b1EoNNjieLxcoSo0AfHltNs1toOanJO0lCrICvL08UU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gvgAYLJpd+zAcaIfLhzH56fc5R57WRQI1weD/nPj3bx08AkozqGV0TRwr2qsIGDx6OACZ4WPuGGdfMzTPGacQpyBodz5VR37KolqGJVbBaOMMXy9MnN/ax66Gm2PxAKmyGjUqnrE4J2EMYbHeolyV6bF7jZET/y82UvuGz+u1zg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=i/v+mhsp; arc=pass smtp.client-ip=209.85.208.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-6505d147ce4so432a12.0
-        for <stable@vger.kernel.org>; Tue, 06 Jan 2026 09:56:50 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1767722209; cv=none;
-        d=google.com; s=arc-20240605;
-        b=lMkajOU3Ki3LZMabjenAZsowy8PLCJvzZNlKTGP7bTmkteEkQsvOuwUOvCd7Yvy6iP
-         a8HuyneQsU+XRD3urPNs0JY7s25S6Xy3HDYdKPsVrZMU6VyOrl8wQVY5drTQ4HSXtCwu
-         eXLwtxAm64d+w6C5QTeWUj+pU/ry47+90TVTDKI01tKy0zROoIWRGy+Sfs9Mu+poNVFO
-         jgpfnlecSac4xXEi3WbTg0XD1yEH6tciRGPrTNYFXKh56Co0Sze6/vu9SYgYxL25/QJ4
-         fFY1TyLmfmmN2wOGkuoqZ8eX3IpLT9mx2LXebYuxhsu9lorhq+rI+oOk2QlkRkh+IRh0
-         FR9g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=QYxpL+XnUS5UB2Ui7qcrOxbu+fTcZjWEGOnFGGJMq0w=;
-        fh=5wGKyRWEtusGpBe/f95CfpcwDByplDY5zitT5PPaKkU=;
-        b=K/8nyDGC/17p/nuWjy5uZHl/xmv4tNPGoltDyhzj9ZyyraoBwScbquxLi36YHVNQjp
-         r3TlNILILhov6L9sxTeBSUhs0YW88qgFboV7A1Q6EP2V4iQf2RTNTm3nXQzvuyTk14Jx
-         uT2INj0B2v/eEihINLXjMLBZYibpkAm4onEq3D5ddgzVYe3WNpXiLOxcHWYZ7MB0hDYD
-         hG7TYVaB3T5T1O9QCmv0WHF3mauY0XATLAijEyqkCW4M18dCFhnnX6hVXkoMLITagRjc
-         5mX7mgfzk96HvxM4fzzM9MXsT7gtmElvmFjjWyTz29nFrsBWh/70IgzgytNi/8dH19rD
-         T7BQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1767722208; x=1768327008; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QYxpL+XnUS5UB2Ui7qcrOxbu+fTcZjWEGOnFGGJMq0w=;
-        b=i/v+mhspmYYRWZL5UHeqx7uEVuojyOIHnb1Lhm3+loxCqyD+4+AoYnJNNGu8CR9jo9
-         TbTlbcfmSEpX/LebGAQWybe0laWU6RH1NeLhrJWotkfjnP31pKxUbpq4EEOT8HYiX4or
-         eXqJevgssbTiOO1n5Pjq/Q7IbiRcMMdU944HG4OaIrSLsT/zZ0NfivhmE6RM3HYfsfSV
-         HtDYK2HRr/CfmNT70+8KIKbaa5xWL7DiHflmvw/3opCFxtTAXzaLSJ56CIYpxNfjGzBf
-         seIHyOyZxJWug6UKDHbDp+llbV6S8l8aGKpge88tkUu3ygYRiQLzv4eCEaEZzGaH4b+w
-         dS4A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767722208; x=1768327008;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=QYxpL+XnUS5UB2Ui7qcrOxbu+fTcZjWEGOnFGGJMq0w=;
-        b=lVFBrtU+/geHP6QGI1VLXvJmeKCxiWGHUHRjbeEMWtiBuyLQxDVb/6f/MZ9OK53U7S
-         O7yvnG+eR1GAJ04BGUV8a1B7aJSxI+3ZzijjxuMVXMucEDAS5pDDKmXpAvqv8ax94vVQ
-         nbcKlzsnvsuTbSqFCsZIHH0uzfiI36oivjZxLwuyY6O9Y70DDm2Xszys69Wh9ER0qRC2
-         fCEMxce8UdQfdOrNboe2PyuvXD3NPE4UEHpwLhpXnGq0Px0uPhvyEMA7rdZwK42F5bdY
-         jJcqpA0OGJOPWwKVcoqXcYD4av8a6z3WN37o0S8fAwNWb4sV/tIllyAoqc6Okdb+MBK4
-         UcWw==
-X-Forwarded-Encrypted: i=1; AJvYcCU8ahhrqzhmRMqBi2QR71ttq/hNKJZI/3rKAbLKC1NrLEv6aZ2vw7deafPPK7Rcbuy3TU7cfnc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxwHqBPrc1fjEe/cGxJmppq+kqd54U0GZbB/YJefF2StGz3sqFW
-	kMBF7Y8MbT1O/PJbcpi68OnHt0YPdthAwvX3X104FwVNF0GJKQQ5vpj/e/zJVZ3rSSutvyoTPFc
-	1xtrKtF2A5X7NzEvrER3TPNjVTjS6tz05KzB9I3/2
-X-Gm-Gg: AY/fxX55kN+fVG3xeO+WJlCQLLWAxZoz8oliStkOzv5334Jl5/5BeiWYE6CWCzOkObV
-	HlfBCq4IkggUYuUYUlAeqxbdpltXZCUD0D62aAXZWYmK3ltLDGLNtBZpc2Mdjjb3wy1o5mhgykp
-	7hOybB7GmOCqhPve9uk/47iQx3CSLkiIH9j1LLyOgLi4SH4dGLCjW3js7CR5HETtm40Ciyj9l5L
-	mEZgxQoUkHArrojgvCLKaQSGxq12530c66g+kTbVHKRHssNo+U9b9QFRjKm/vn/TCRJXPo=
-X-Google-Smtp-Source: AGHT+IHKi5u0ZUoIiLDKZvTW1fieJbK4f2Ck1yEd4b1rskSfipnf8lmsJb/sxIxC/QxMT48vm6QhJurThfZqBdXk6DI=
-X-Received: by 2002:a05:6402:1811:b0:643:6975:537f with SMTP id
- 4fb4d7f45d1cf-65080907a25mr39042a12.13.1767722208281; Tue, 06 Jan 2026
- 09:56:48 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FA7036CE1D
+	for <stable@vger.kernel.org>; Tue,  6 Jan 2026 17:58:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1767722334; cv=none; b=ehj+en+UAsUUqZvrb64AiV81BKzpJ15LnS4FoIv4PrSvEIsscvyxGlCZTSYXMdOq9/e8tRuh8iLUqJ6IavYDDD44xLJUG54fLtbSu57Rhdz8g3sWNFamEg/AJVNsuOJZJzg0YyKECTUmGNpu1fUvWkKURJG4Z5cXxQLS8B4yry0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1767722334; c=relaxed/simple;
+	bh=65Ofsb5OFSAR5cJGax+2PFjG5onbpYQbytHwJsD/gXU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=J6BP5L8YjeKo9rO3Kf0RNIflhlulNrnlXAZUZ6l/R4m6RsU/3inQh8xyOmWKegQDAS9SgPQWiZQcuSBbNnviz09XhWDHaTsMDAsO0h/rQa58Vu4aBLzL0OieuRTgBFkoHdV/KRMqPGWnXuwV6ZzPRLRu4kiqFXY0xUPAsJ5G8ZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ac0yOcVZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98813C116C6;
+	Tue,  6 Jan 2026 17:58:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767722334;
+	bh=65Ofsb5OFSAR5cJGax+2PFjG5onbpYQbytHwJsD/gXU=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Ac0yOcVZjOAzdgDK6h5DEHC/1Q9+HV/LtzMy3ED7H4IaP3soah8R4Zp+4IBrfQBxB
+	 GGTIfIkXNK2rG4iEf46LsOxAIJa3bvCRSfv0nke1PJIKo5zxHMVSgZzearYx6t/QhI
+	 SDMb3m6SmMSU9cM4HxfEDxjwhM4k5J0QDJmIinvmbE8KlR72Oa+ZoICm0A/7XyJO4t
+	 lprlpPw9372KKs3ESgow1DaUqk2CsBXisPRqF+NvRguRNVsdPJq0wI2KbXnxtsAKlq
+	 XB+KBxA4DIRT/y2/hYzuBxsUvayNN8qy6GU6w1ttW2FBGwRdhXAp42R6zA5sc8Ljwm
+	 NUXqzJ+V77u0A==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Paolo Abeni <pabeni@redhat.com>,
+	syzbot+0ff6b771b4f7a5bce83b@syzkaller.appspotmail.com,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1.y] mptcp: fallback earlier on simult connection
+Date: Tue,  6 Jan 2026 12:58:52 -0500
+Message-ID: <20260106175852.3105095-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2026010540-smuggler-passably-11d2@gregkh>
+References: <2026010540-smuggler-passably-11d2@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260101090516.316883-1-pbonzini@redhat.com> <20260101090516.316883-2-pbonzini@redhat.com>
- <CALMp9eSWwjZ83VQXRSD3ciwHmtaK5_i-941KdiAv9V9eU20B8g@mail.gmail.com> <aVxiowGbWNgY2cWD@google.com>
-In-Reply-To: <aVxiowGbWNgY2cWD@google.com>
-From: Jim Mattson <jmattson@google.com>
-Date: Tue, 6 Jan 2026 09:56:35 -0800
-X-Gm-Features: AQt7F2ri3iKInZYTA5GeVwZP_koMuCHpRuMrgpaA7xmYZy37HUARMY0JidPig6w
-Message-ID: <CALMp9eToT-af8kntKK2TiFHHUcUQgU25GaaNqq49RZZt2Buffg@mail.gmail.com>
-Subject: Re: [PATCH 1/4] x86/fpu: Clear XSTATE_BV[i] in save state whenever XFD[i]=1
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	x86@kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Mon, Jan 5, 2026 at 5:17=E2=80=AFPM Sean Christopherson <seanjc@google.c=
-om> wrote:
->
-> On Mon, Jan 05, 2026, Jim Mattson wrote:
-> > On Thu, Jan 1, 2026 at 1:13=E2=80=AFAM Paolo Bonzini <pbonzini@redhat.c=
-om> wrote:
-> > >
-> > > From: Sean Christopherson <seanjc@google.com>
-> > > ...
-> > > +       /*
-> > > +        * KVM's guest ABI is that setting XFD[i]=3D1 *can* immediate=
-ly revert
-> > > +        * the save state to initialized.
-> >
-> > This comment suggests that an entry should be added to
-> > Documentation/virt/kvm/x86/errata.rst.
->
-> Hmm, I don't think it's necessary, the SDM (in a style more suited for th=
-e APM,
-> *sigh*), "recommends" that software not rely on state being maintained wh=
-en disabled
-> via XFD.
->
->   Before doing so, system software should first initialize AMX state (e.g=
-., by
->   executing TILERELEASE); maintaining AMX state in a non-initialized stat=
-e may
->   have negative power and performance implications and will prevent the e=
-xecution
->   of In-Field Scan tests. In addition, software should not rely on the st=
-ate of
->   the tile data after setting IA32_XFD[17] or IA32_XFD[18]; software shou=
-ld always
->   reload or reinitialize the tile data after clearing IA32_XFD[17] and IA=
-32_XFD[18].
->
->   System software should not use XFD to implement a =E2=80=9Clazy restore=
-=E2=80=9D approach to
->   management of the TILEDATA state component. This approach will not oper=
-ate correctly
->   for a variety of reasons. One is that the LDTILECFG and TILERELEASE ins=
-tructions
->   initialize TILEDATA and do not cause an #NM exception. Another is that =
-an execution
->   of XSAVE, XSAVEC, XSAVEOPT, or XSAVES by a user thread will save TILEDA=
-TA as
->   initialized instead of the data expected by the user thread.
->
-> I suppose that doesn't _quite_ say that the CPU is allowed to clobber sta=
-te, but
-> it's darn close.
->
-> I'm definitely not opposed to officially documenting KVM's virtual CPU im=
-plementation,
-> but IMO calling it an erratum is a bit unfair.
+From: Paolo Abeni <pabeni@redhat.com>
 
-Apologies. You're right. Though Intel is a bit coy, the only way to
-interpret that section of the SDM is to conclude that the AMX state in
-the CPU becomes undefined when XFD[18] is set.
+[ Upstream commit 71154bbe49423128c1c8577b6576de1ed6836830 ]
+
+Syzkaller reports a simult-connect race leading to inconsistent fallback
+status:
+
+  WARNING: CPU: 3 PID: 33 at net/mptcp/subflow.c:1515 subflow_data_ready+0x40b/0x7c0 net/mptcp/subflow.c:1515
+  Modules linked in:
+  CPU: 3 UID: 0 PID: 33 Comm: ksoftirqd/3 Not tainted syzkaller #0 PREEMPT(full)
+  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
+  RIP: 0010:subflow_data_ready+0x40b/0x7c0 net/mptcp/subflow.c:1515
+  Code: 89 ee e8 78 61 3c f6 40 84 ed 75 21 e8 8e 66 3c f6 44 89 fe bf 07 00 00 00 e8 c1 61 3c f6 41 83 ff 07 74 09 e8 76 66 3c f6 90 <0f> 0b 90 e8 6d 66 3c f6 48 89 df e8 e5 ad ff ff 31 ff 89 c5 89 c6
+  RSP: 0018:ffffc900006cf338 EFLAGS: 00010246
+  RAX: 0000000000000000 RBX: ffff888031acd100 RCX: ffffffff8b7f2abf
+  RDX: ffff88801e6ea440 RSI: ffffffff8b7f2aca RDI: 0000000000000005
+  RBP: 0000000000000000 R08: 0000000000000005 R09: 0000000000000007
+  R10: 0000000000000004 R11: 0000000000002c10 R12: ffff88802ba69900
+  R13: 1ffff920000d9e67 R14: ffff888046f81800 R15: 0000000000000004
+  FS:  0000000000000000(0000) GS:ffff8880d69bc000(0000) knlGS:0000000000000000
+  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  CR2: 0000560fc0ca1670 CR3: 0000000032c3a000 CR4: 0000000000352ef0
+  Call Trace:
+   <TASK>
+   tcp_data_queue+0x13b0/0x4f90 net/ipv4/tcp_input.c:5197
+   tcp_rcv_state_process+0xfdf/0x4ec0 net/ipv4/tcp_input.c:6922
+   tcp_v6_do_rcv+0x492/0x1740 net/ipv6/tcp_ipv6.c:1672
+   tcp_v6_rcv+0x2976/0x41e0 net/ipv6/tcp_ipv6.c:1918
+   ip6_protocol_deliver_rcu+0x188/0x1520 net/ipv6/ip6_input.c:438
+   ip6_input_finish+0x1e4/0x4b0 net/ipv6/ip6_input.c:489
+   NF_HOOK include/linux/netfilter.h:318 [inline]
+   NF_HOOK include/linux/netfilter.h:312 [inline]
+   ip6_input+0x105/0x2f0 net/ipv6/ip6_input.c:500
+   dst_input include/net/dst.h:471 [inline]
+   ip6_rcv_finish net/ipv6/ip6_input.c:79 [inline]
+   NF_HOOK include/linux/netfilter.h:318 [inline]
+   NF_HOOK include/linux/netfilter.h:312 [inline]
+   ipv6_rcv+0x264/0x650 net/ipv6/ip6_input.c:311
+   __netif_receive_skb_one_core+0x12d/0x1e0 net/core/dev.c:5979
+   __netif_receive_skb+0x1d/0x160 net/core/dev.c:6092
+   process_backlog+0x442/0x15e0 net/core/dev.c:6444
+   __napi_poll.constprop.0+0xba/0x550 net/core/dev.c:7494
+   napi_poll net/core/dev.c:7557 [inline]
+   net_rx_action+0xa9f/0xfe0 net/core/dev.c:7684
+   handle_softirqs+0x216/0x8e0 kernel/softirq.c:579
+   run_ksoftirqd kernel/softirq.c:968 [inline]
+   run_ksoftirqd+0x3a/0x60 kernel/softirq.c:960
+   smpboot_thread_fn+0x3f7/0xae0 kernel/smpboot.c:160
+   kthread+0x3c2/0x780 kernel/kthread.c:463
+   ret_from_fork+0x5d7/0x6f0 arch/x86/kernel/process.c:148
+   ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+   </TASK>
+
+The TCP subflow can process the simult-connect syn-ack packet after
+transitioning to TCP_FIN1 state, bypassing the MPTCP fallback check,
+as the sk_state_change() callback is not invoked for * -> FIN_WAIT1
+transitions.
+
+That will move the msk socket to an inconsistent status and the next
+incoming data will hit the reported splat.
+
+Close the race moving the simult-fallback check at the earliest possible
+stage - that is at syn-ack generation time.
+
+About the fixes tags: [2] was supposed to also fix this issue introduced
+by [3]. [1] is required as a dependence: it was not explicitly marked as
+a fix, but it is one and it has already been backported before [3]. In
+other words, this commit should be backported up to [3], including [2]
+and [1] if that's not already there.
+
+Fixes: 23e89e8ee7be ("tcp: Don't drop SYN+ACK for simultaneous connect().") [1]
+Fixes: 4fd19a307016 ("mptcp: fix inconsistent state on fastopen race") [2]
+Fixes: 1e777f39b4d7 ("mptcp: add MSG_FASTOPEN sendmsg flag support") [3]
+Cc: stable@vger.kernel.org
+Reported-by: syzbot+0ff6b771b4f7a5bce83b@syzkaller.appspotmail.com
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/586
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20251212-net-mptcp-subflow_data_ready-warn-v1-1-d1f9fd1c36c8@kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+[ adapted mptcp_try_fallback() call from two arguments to one argument ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ net/mptcp/options.c  | 10 ++++++++++
+ net/mptcp/protocol.h |  5 ++---
+ net/mptcp/subflow.c  |  9 ---------
+ 3 files changed, 12 insertions(+), 12 deletions(-)
+
+diff --git a/net/mptcp/options.c b/net/mptcp/options.c
+index 56c502a66330..eab815d42ac6 100644
+--- a/net/mptcp/options.c
++++ b/net/mptcp/options.c
+@@ -403,6 +403,16 @@ bool mptcp_syn_options(struct sock *sk, const struct sk_buff *skb,
+ 	 */
+ 	subflow->snd_isn = TCP_SKB_CB(skb)->end_seq;
+ 	if (subflow->request_mptcp) {
++		if (unlikely(subflow_simultaneous_connect(sk))) {
++			WARN_ON_ONCE(!mptcp_try_fallback(sk));
++
++			/* Ensure mptcp_finish_connect() will not process the
++			 * MPC handshake.
++			 */
++			subflow->request_mptcp = 0;
++			return false;
++		}
++
+ 		opts->suboptions = OPTION_MPTCP_MPC_SYN;
+ 		opts->csum_reqd = mptcp_is_checksum_enabled(sock_net(sk));
+ 		opts->allow_join_id0 = mptcp_allow_join_id0(sock_net(sk));
+diff --git a/net/mptcp/protocol.h b/net/mptcp/protocol.h
+index 375633719d23..6575712c789e 100644
+--- a/net/mptcp/protocol.h
++++ b/net/mptcp/protocol.h
+@@ -1053,9 +1053,8 @@ static inline bool subflow_simultaneous_connect(struct sock *sk)
+ {
+ 	struct mptcp_subflow_context *subflow = mptcp_subflow_ctx(sk);
+ 
+-	return sk->sk_state == TCP_ESTABLISHED &&
+-	       is_active_ssk(subflow) &&
+-	       !subflow->conn_finished;
++	/* Note that the sk state implies !subflow->conn_finished. */
++	return sk->sk_state == TCP_SYN_RECV && is_active_ssk(subflow);
+ }
+ 
+ #ifdef CONFIG_SYN_COOKIES
+diff --git a/net/mptcp/subflow.c b/net/mptcp/subflow.c
+index 263a5f817dd3..f9ebcfa1acad 100644
+--- a/net/mptcp/subflow.c
++++ b/net/mptcp/subflow.c
+@@ -1700,15 +1700,6 @@ static void subflow_state_change(struct sock *sk)
+ 	__subflow_state_change(sk);
+ 
+ 	msk = mptcp_sk(parent);
+-	if (subflow_simultaneous_connect(sk)) {
+-		mptcp_propagate_sndbuf(parent, sk);
+-		WARN_ON_ONCE(!mptcp_try_fallback(sk));
+-		mptcp_rcv_space_init(msk, sk);
+-		pr_fallback(msk);
+-		subflow->conn_finished = 1;
+-		mptcp_set_connected(parent);
+-	}
+-
+ 	/* as recvmsg() does not acquire the subflow socket for ssk selection
+ 	 * a fin packet carrying a DSS can be unnoticed if we don't trigger
+ 	 * the data available machinery here.
+-- 
+2.51.0
+
 
