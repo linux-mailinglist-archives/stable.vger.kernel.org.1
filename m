@@ -1,53 +1,51 @@
-Return-Path: <stable+bounces-205199-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205201-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22A4DCFB24A
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 22:48:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A67F1CFB262
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 22:49:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 59C6C30549BE
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 21:46:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E5175307E265
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 21:46:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89A0D349AED;
-	Tue,  6 Jan 2026 17:18:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 987AA349AE3;
+	Tue,  6 Jan 2026 17:18:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kea0D7kM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tzAgh0C5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46795349AE8;
-	Tue,  6 Jan 2026 17:18:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56C26349AE8;
+	Tue,  6 Jan 2026 17:18:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767719904; cv=none; b=u5fqgnbpzQfr4FrGRJu9OI6MRMF7WDimvHaM5OrLC+GyOLo2yqpFd6YzcSNbnxtnfAHo3egnCFJb762rt4It2iFGcayficIemG1I9dVNNc0U21J9trkYfJkYVimSXbdIXvsAk3MgF8eB0wwrfNpOG0/2vzawXHwdLKZMXvkREqo=
+	t=1767719910; cv=none; b=nvDrKHD3Pxi1pzxnp8za2u2Au50Xc9XvKv/8xZw0Xw+fiutGtk0DV/WSj3cWWJhCL7gF923RAWzOv1G0IyIicsJi3TelVCNFS4BnF2pWGZdLbm2C92bM94MopX180GkgKVy9NviH8gWZnjR1iVsuwRiOLXx78+PMxCEiTMa8g5c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767719904; c=relaxed/simple;
-	bh=v9gvtYahj3Z1bxMZzhvd43UA0GJ1Xf2qV1Ha4fH1nJM=;
+	s=arc-20240116; t=1767719910; c=relaxed/simple;
+	bh=cf5nt6KWWYV+IG7NgKBwktvcBr8kgw1skPIkYMsMDdk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BT/Q/vGnfWDprsrD8OfeRbVi/PYTPVurQrhs8A/uvLjdHg3bW+nq8/1IGjboH9PALprCTv4T34S2ING9IL2qHOc8Agh7j1SlXl8vXsa1kCtUaYZyVmkgRX7f2nFVD+BeS9vT1xbHwm34rE6btRz3WkzPCjvt5ZjNCV3YPzrvjfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kea0D7kM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 615DDC116C6;
-	Tue,  6 Jan 2026 17:18:23 +0000 (UTC)
+	 MIME-Version; b=rNwGglVXhgKjN0vUAWxbP6UVvWOO0XMEUokT9GFyJWc1LBqRV9FJ4FCIw7YL3oxuLN3TwbTtEN0HKX8ScwV4R+hf1yiFWsCCVDM3C4rQAaupvtkqJ18mYHv6W1dU1XDF996UInn+xRCSX8Ra5rVmlKtXSnmHKQvOB+ArUeVssUE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tzAgh0C5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7A51C116C6;
+	Tue,  6 Jan 2026 17:18:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767719903;
-	bh=v9gvtYahj3Z1bxMZzhvd43UA0GJ1Xf2qV1Ha4fH1nJM=;
+	s=korg; t=1767719910;
+	bh=cf5nt6KWWYV+IG7NgKBwktvcBr8kgw1skPIkYMsMDdk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kea0D7kMLzjVLmZ2OdAdaZXy4KDGOhAWCPZHnn1JwzuvkPpIhfpDBj13bxD9uFNKc
-	 ZSVPcb8u4Id5R52Bz2llxL8lLPnA3jCBTAnV0Wmnx8+Ai57OHrhrE+y5VeyDLP1Zx8
-	 i4zZ6/YHVxsIun0A13t02Ama6kVuH9slZTzlvt3o=
+	b=tzAgh0C5b4sYYLbJuefpeQht1AAygnrSwkXZeDJYXlQ9d6uMkXOth61xuAaGdfSYp
+	 defi2VxpW87Fw89ZU29sBjDgTGPYYouv734UGXsJMkiNN+/RYll8+/HLmlR1QVs3K2
+	 5eGsndsVbt/BiwRrrvdcfo4P1xs/fuViRK4Wjzkw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jian Shen <shenjian15@huawei.com>,
-	Jijie Shao <shaojijie@huawei.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Denis Sergeev <denserg.edu@gmail.com>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 076/567] net: hns3: using the num_tqps to check whether tqp_index is out of range when vf get ring info from mbx
-Date: Tue,  6 Jan 2026 17:57:38 +0100
-Message-ID: <20260106170454.145614977@linuxfoundation.org>
+Subject: [PATCH 6.12 078/567] hwmon: (dell-smm) Limit fan multiplier to avoid overflow
+Date: Tue,  6 Jan 2026 17:57:40 +0100
+Message-ID: <20260106170454.218295303@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
 References: <20260106170451.332875001@linuxfoundation.org>
@@ -66,46 +64,55 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jian Shen <shenjian15@huawei.com>
+From: Denis Sergeev <denserg.edu@gmail.com>
 
-[ Upstream commit d180c11aa8a6fa735f9ac2c72c61364a9afc2ba7 ]
+[ Upstream commit 46c28bbbb150b80827e4bcbea231560af9d16854 ]
 
-Currently, rss_size = num_tqps / tc_num. If tc_num is 1, then num_tqps
-equals rss_size. However, if the tc_num is greater than 1, then rss_size
-will be less than num_tqps, causing the tqp_index check for subsequent TCs
-using rss_size to always fail.
+The fan nominal speed returned by SMM is limited to 16 bits, but the
+driver allows the fan multiplier to be set via a module parameter.
 
-This patch uses the num_tqps to check whether tqp_index is out of range,
-instead of rss_size.
+Clamp the computed fan multiplier so that fan_nominal_speed *
+i8k_fan_mult always fits into a signed 32-bit integer and refuse to
+initialize the driver if the value is too large.
 
-Fixes: 326334aad024 ("net: hns3: add a check for tqp_index in hclge_get_ring_chain_from_mbx()")
-Signed-off-by: Jian Shen <shenjian15@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20251211023737.2327018-3-shaojijie@huawei.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 20bdeebc88269 ("hwmon: (dell-smm) Introduce helper function for data init")
+Signed-off-by: Denis Sergeev <denserg.edu@gmail.com>
+Link: https://lore.kernel.org/r/20251209063706.49008-1-denserg.edu@gmail.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mbx.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/hwmon/dell-smm-hwmon.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mbx.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mbx.c
-index 59c863306657f..9eab095d784bd 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mbx.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mbx.c
-@@ -193,10 +193,10 @@ static int hclge_get_ring_chain_from_mbx(
- 		return -EINVAL;
+diff --git a/drivers/hwmon/dell-smm-hwmon.c b/drivers/hwmon/dell-smm-hwmon.c
+index f73f46193748..9df78861f5f8 100644
+--- a/drivers/hwmon/dell-smm-hwmon.c
++++ b/drivers/hwmon/dell-smm-hwmon.c
+@@ -75,6 +75,9 @@
+ #define DELL_SMM_NO_TEMP	10
+ #define DELL_SMM_NO_FANS	4
  
- 	for (i = 0; i < ring_num; i++) {
--		if (req->msg.param[i].tqp_index >= vport->nic.kinfo.rss_size) {
-+		if (req->msg.param[i].tqp_index >= vport->nic.kinfo.num_tqps) {
- 			dev_err(&hdev->pdev->dev, "tqp index(%u) is out of range(0-%u)\n",
- 				req->msg.param[i].tqp_index,
--				vport->nic.kinfo.rss_size - 1U);
-+				vport->nic.kinfo.num_tqps - 1U);
- 			return -EINVAL;
- 		}
- 	}
++/* limit fan multiplier to avoid overflow */
++#define DELL_SMM_MAX_FAN_MULT (INT_MAX / U16_MAX)
++
+ struct smm_regs {
+ 	unsigned int eax;
+ 	unsigned int ebx;
+@@ -1203,6 +1206,12 @@ static int dell_smm_init_data(struct device *dev, const struct dell_smm_ops *ops
+ 	data->ops = ops;
+ 	/* All options must not be 0 */
+ 	data->i8k_fan_mult = fan_mult ? : I8K_FAN_MULT;
++	if (data->i8k_fan_mult > DELL_SMM_MAX_FAN_MULT) {
++		dev_err(dev,
++			"fan multiplier %u is too large (max %u)\n",
++			data->i8k_fan_mult, DELL_SMM_MAX_FAN_MULT);
++		return -EINVAL;
++	}
+ 	data->i8k_fan_max = fan_max ? : I8K_FAN_HIGH;
+ 	data->i8k_pwm_mult = DIV_ROUND_UP(255, data->i8k_fan_max);
+ 
 -- 
 2.51.0
 
