@@ -1,77 +1,88 @@
-Return-Path: <stable+bounces-205036-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205037-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6703DCF6CB7
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 06:40:24 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2037CF6CED
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 06:45:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 70EF43019E15
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 05:40:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 56CB8302105D
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 05:45:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 782082D9792;
-	Tue,  6 Jan 2026 05:40:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C8C927B340;
+	Tue,  6 Jan 2026 05:45:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=richtek.com header.i=@richtek.com header.b="dPEwKXVa";
-	dkim=pass (2048-bit key) header.d=richtek.com header.i=@richtek.com header.b="XE3dY9hu"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nPnIuCyD"
 X-Original-To: stable@vger.kernel.org
-Received: from mg.richtek.com (mg.richtek.com [220.130.44.152])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9912A2DA77E;
-	Tue,  6 Jan 2026 05:40:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.130.44.152
+Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AD511FE471
+	for <stable@vger.kernel.org>; Tue,  6 Jan 2026 05:45:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767678021; cv=none; b=ZnS/uukvR6bhlhsZAIPGY6JfswuLY3J39nS2sTGjYxd1NwIRxO0kHCPF/2x+Q5fw+pBeN5RjzZVD6iOubLLc8UovRJDLcIC0zHeMS8pDC0Hk8RYAOkjA3E2q3zrsoCH8osY+SLtYMpIb/T8Un/D2LXVq8sqJpmbfsy2IJViV8Do=
+	t=1767678326; cv=none; b=WO+KGjrUAlfEwxIWuqW2ROBH/AgxVLK5OaOtC7PIxzyV5dDHPVFt1bzmmiBM5BJVD6IWK6CxOaQRu9xG6l7Im/AkB+UNkTtUnu5azLIg1o3aRpFGPrp5VsQ7LTgQCUzUOK6ftor5HGp+nx4bhIQsurDY4WJ9f+t6LGNA4+wS/JE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767678021; c=relaxed/simple;
-	bh=nlZeKx/WsdUVRencZTnNcZrTLH/ONVDy/mFGibneVQE=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=i4xoYMhkLqMohTRFEUoBFmAoK8f4vAaYO9FKFMQacRJOMZETzu6WKOE4hSPz8Fr0dNM48jKivr2WLxLjVqoccasy4OHN24Iz8On2eJXdEyEj4pdtVu4k1WVZNhg8BhLyQpZ9SMauZbNVm9jzuBiv2qcKpZsvjQQCKWlvXRL5EEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=richtek.com; spf=pass smtp.mailfrom=richtek.com; dkim=pass (2048-bit key) header.d=richtek.com header.i=@richtek.com header.b=dPEwKXVa; dkim=pass (2048-bit key) header.d=richtek.com header.i=@richtek.com header.b=XE3dY9hu; arc=none smtp.client-ip=220.130.44.152
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=richtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=richtek.com
-X-MailGates: (SIP:2,PASS,NONE)(compute_score:DELIVER,40,3)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=richtek.com;
-	s=richtek; t=1767678006;
-	bh=jAXQypJwkEBdsBc3burggqz+vq2Lgfm2waHWJh0qX4c=; l=1676;
-	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=dPEwKXVaCmWDG1H4OFNnhaSeqO4HDLD4DB1/X7R+b7tquCSIkYOjdeE30BKCZvFon
-	 ahkD2Tob7CNNiKiMySlifjLvfyCTN4enbt3dRfoH0jve/VKQym1T6sXfCJYyYtMo7J
-	 96HaZiVA5LmXIVHkTSxVQc2hg3Dsj7eawFUtmR9l1me+JA1JU2/fb6DV32ofdMYK+D
-	 MFxL4uMc9YGwzRunpWTS1G72EsRI54qifnh/qIfaHq4yoJRFErcGhlvduvhH3FmD/b
-	 THqR+bg0G9RL07E10K5Irj9sSFgmzED4Iv5OelaxNkDaOCFoSqpEvIDVUOWV0w23uX
-	 BceGXMT2NR5zw==
-Received: from 192.168.8.21
-	by mg.richtek.com with MailGates ESMTP Server V3.0(1128079:0:AUTH_RELAY)
-	(envelope-from <prvs=1464629B15=cy_huang@richtek.com>); Tue, 06 Jan 2026 13:40:04 +0800 (CST)
-X-MailGates: (compute_score:DELIVER,40,3)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=richtek.com;
-	s=richtek; t=1767678004;
-	bh=jAXQypJwkEBdsBc3burggqz+vq2Lgfm2waHWJh0qX4c=; l=1676;
-	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=XE3dY9huV1amArTOzVo1/bjGXctaqZK/i4k32D9VDoeTlt6IUQ7MIrNz+ZauCl5WB
-	 t+rq8ibcxbyfTONnLCcDzial0qEFYxV43rrN5qBUDHCBdu2QcQGuW8Ms2GoU4zw+V1
-	 bBRnxR7iqEC0fHu624vk/xgBcuRoidn8TYYgDihJvgfxStLWHHupds+bmfkmC77WEm
-	 YdQNz1bh9fgaNNSDCAb3w883/Y0KQ9evws+vQMjw18k8x2YkABxXRPQlBJC379j1Z8
-	 DJHfxquzv0Trd5SMxygW7tVXN5wKAkLVYTB6NNxl6L2QWwpuNjcGiUZuuZYUandwzb
-	 X9yoec/TNfOOg==
-Received: from 192.168.10.46
-	by mg.richtek.com with MailGates ESMTPS Server V6.0(2572460:1:AUTH_RELAY)
-	(envelope-from <cy_huang@richtek.com>)
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256/256); Tue, 06 Jan 2026 13:33:05 +0800 (CST)
-Received: from ex4.rt.l (192.168.10.47) by ex3.rt.l (192.168.10.46) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.26; Tue, 6 Jan
- 2026 13:33:04 +0800
-Received: from git-send.richtek.com (192.168.10.154) by ex4.rt.l
- (192.168.10.45) with Microsoft SMTP Server id 15.2.1748.26 via Frontend
- Transport; Tue, 6 Jan 2026 13:33:04 +0800
-From: <cy_huang@richtek.com>
-To: Mauro Carvalho Chehab <mchehab@kernel.org>
-CC: ChiYuan Huang <cy_huang@richtek.com>, <linux-media@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>, Roger Wang
-	<roger-hy.wang@mediatek.com>
-Subject: [PATCH] media: v4l2-flash: Enter LED off state after file handle closed
-Date: Tue, 6 Jan 2026 13:32:59 +0800
-Message-ID: <0e7005f10222b57f100b442a8b48bb5bc2747e78.1767674614.git.cy_huang@richtek.com>
-X-Mailer: git-send-email 2.43.5
+	s=arc-20240116; t=1767678326; c=relaxed/simple;
+	bh=/SYccTC3igvd2gmgSeQ2U2RaSyPjN7ENLlBvFQ16Rlk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KqUb+dgcD1GOUcowWy8ml6/Jk3uJ6G7G71Omw02ARo1X0gHNHqdojsmN1dskfosrptxLEXLUU9QdLiH2ynfzdWrYWMTZwIj6troLgaNyYcFCjw2qICNNUQ2GvtMjcpjsHna28kK//a4F3fEK4SS3WSIDAi0vwv12Bz/IdQUk0CM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nPnIuCyD; arc=none smtp.client-ip=209.85.215.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-c3e921afad1so359759a12.1
+        for <stable@vger.kernel.org>; Mon, 05 Jan 2026 21:45:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1767678324; x=1768283124; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=d4FNQCGxQx8iOKij8d4YGaJkQe2u5Bu+8scxY9YuuaQ=;
+        b=nPnIuCyDmmuY2LBHP5mMDPcbSuPCwQMtg0kjTMIRH0km+/aHcsgsFno0QUBfsvexnd
+         ogh9N5VpcsW1QXWkFWj6uBo3bCI5reBAFoaQe4VBsEcJJsVKKLUdyWHNPbYMj87upgaU
+         ZXSMUBKEJjrlgU5DuF5CNRbo5543FZHFpMSW0AdSzoRDqdzhcAi1c8/l+hCYmz91gWCm
+         DwwRysBpahm4aTfrKFj7L5OX56agqmZqx98WBtKzqraNtGfTI/AXnrRa10z94ooab2bJ
+         jYs7cxUz+7LQYFD0OwZC9bfTyzy6x7hQo6ZcjTTC8USFWi27w8dSgUwakWv8Ihsc2TPU
+         b7MA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767678324; x=1768283124;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=d4FNQCGxQx8iOKij8d4YGaJkQe2u5Bu+8scxY9YuuaQ=;
+        b=AfZ/FDWos1BVzE2N82Si9oPvOrOtfEkX6eE/prAdpQ1NatFQBj3Y1NTZVVDvkOLJ2R
+         SR5yQq5iLiGgPbqR/c12XN37cQc6YAR7ETnOizG85YN7ACrxr1DkQGZwz2nTw5VEyTP3
+         IWut3zac0TuPJJb/34w2UJ79I8WDtbd1aqq8GG/2lScy2kC15b1cdtH6TzBlP5tsvr7h
+         qP8Ib6X7lTZZ8eUuD37JpgigEeoJC+mRNZFNTA5xnIe3Gcpy48yT/Gd1dV2iOJStWFjP
+         BotEnaCCnF1jzhLLRBQfmZTTsdaDcVIfZsErRsotwO3SNk6JcuEUw+WRYrV0U2cUtrp7
+         HbbQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX1mS+umNlKLIyYQGhY6uyb12K+wtZHegFlJLhpXWNHDE0591WMYvE/kiGCCZqCcWRoera9uCg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw7PS+EmbKkHMzzMtPmBSNPVD56Zj9PLlCf5yIKTt96eLZsuNgj
+	vjQWnlPBErcZDPxof/JI0RVY6Qpggan7v8QjgRwEWeeeLmJjlW9azLfh
+X-Gm-Gg: AY/fxX7F2GGwylb3om/Tklv4K8do/Fo40NaHVB3cELFA34tq+WPD30gcE57HA3yWMAa
+	XkWqjTRBD6eb+gCLjQyzmqaODAYV/oSTf+PpjdfplVm96I7xQJwnFDj0SYg+b036lLpiyvJjuU8
+	jURsz/JNS02JclNY0DeSXoEnMqjT5HDaV73W44YSOmStWNuNHlWag6ZXZ4JmEGJfB6g87xeGbaf
+	7nwrQ268SHlL4cDJqTYwYC9CMBkpYWSzb8mzaqFmrSl1gkXm4kc3uxz8RI1A+nknvNhCEJ6bcfg
+	x/wgQEdpjYU00+00Dy0NDR0qSJD6Wcdb2qUkuI4fwXd9enxdZNFuTowEXoKR8oZqeftv81u/JjD
+	JI7aoswrtWHeJhJplSi801HyOwehV2krC9+Qvh1y6PWS+quUvOdoVhlvTJ3VefsQ/Udu4lb6ie/
+	csagGLr3zzZIx+EV8P23hG5pbzCWpTaisH2B1em6g3AowI0P7BOcBUJtpflujRJR8=
+X-Google-Smtp-Source: AGHT+IGtbGQnHPVMy7yv8FIzmXgtNyoU2JtGqSy/ckCA0YX5D21h89Cmom/fmR2hFZZF5RRFL7RB/Q==
+X-Received: by 2002:a05:7301:1807:b0:2b0:5a77:5753 with SMTP id 5a478bee46e88-2b16f8eccb5mr1490668eec.21.1767678323618;
+        Mon, 05 Jan 2026 21:45:23 -0800 (PST)
+Received: from lappy (108-228-232-20.lightspeed.sndgca.sbcglobal.net. [108.228.232.20])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b17052dbc7sm1805817eec.0.2026.01.05.21.45.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 05 Jan 2026 21:45:23 -0800 (PST)
+From: "Derek J. Clark" <derekjohn.clark@gmail.com>
+To: Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Andy Shevchenko <andy@kernel.org>
+Cc: Alex Lanzano <lanzano.alex@gmail.com>,
+	linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	"Derek J. Clark" <derekjohn.clark@gmail.com>
+Subject: [PATCH] iio: bmi270_i2c: Add MODULE_DEVICE_TABLE for BMI260/270
+Date: Tue,  6 Jan 2026 05:45:19 +0000
+Message-ID: <20260106054519.566796-1-derekjohn.clark@gmail.com>
+X-Mailer: git-send-email 2.51.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -79,50 +90,47 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
 
-From: ChiYuan Huang <cy_huang@richtek.com>
+Currently BMI260 & BMI270 devices do not automatically load this
+driver. To fix this, add missing MODULE_DEVICE_TABLE for the i2c,
+acpi, and of device tables so the driver will load when the hardware
+is detected.
 
-To make sure LED enter off state after file handle is closed, initiatively
-configure LED_MODE to NONE. This can guarantee whatever the previous state
-is torch or strobe mode, the final state will be off.
+Tested on my OneXPlayer F1 Pro.
 
-Cc: stable@vger.kernel.org
-Fixes : 42bd6f59ae90 ("media: Add registration helpers for V4L2 flash sub-devices")
-Reported-by: Roger Wang <roger-hy.wang@mediatek.com>
-Signed-off-by: ChiYuan Huang <cy_huang@richtek.com>
+Signed-off-by: Derek J. Clark <derekjohn.clark@gmail.com>
 ---
-Hi,
-  We encounter an issue. When the upper layer camera process is crashed,
-if the new process did not reinit the LED,  it will keeps the previous
-state whatever it's in torch or strobe mode
+ drivers/iio/imu/bmi270/bmi270_i2c.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-OS will handle the resource management. So when the process is crashed
-or terminated, the 'close' API will be called to release resources.
-That's why we add the initiative action to trigger LED off in file
-handle close is called.
----
- drivers/media/v4l2-core/v4l2-flash-led-class.c | 6 ++++++
- 1 file changed, 6 insertions(+)
-
-diff --git a/drivers/media/v4l2-core/v4l2-flash-led-class.c b/drivers/media/v4l2-core/v4l2-flash-led-class.c
-index 355595a0fefa..347b37f3ef69 100644
---- a/drivers/media/v4l2-core/v4l2-flash-led-class.c
-+++ b/drivers/media/v4l2-core/v4l2-flash-led-class.c
-@@ -623,6 +623,12 @@ static int v4l2_flash_close(struct v4l2_subdev *sd, struct v4l2_subdev_fh *fh)
- 		return 0;
+diff --git a/drivers/iio/imu/bmi270/bmi270_i2c.c b/drivers/iio/imu/bmi270/bmi270_i2c.c
+index b909a421ad01..b92da4e0776f 100644
+--- a/drivers/iio/imu/bmi270/bmi270_i2c.c
++++ b/drivers/iio/imu/bmi270/bmi270_i2c.c
+@@ -37,6 +37,7 @@ static const struct i2c_device_id bmi270_i2c_id[] = {
+ 	{ "bmi270", (kernel_ulong_t)&bmi270_chip_info },
+ 	{ }
+ };
++MODULE_DEVICE_TABLE(i2c, bmi270_i2c_id);
  
- 	if (led_cdev) {
-+		/* If file handle is released, make sure LED enter off state */
-+		ret = v4l2_ctrl_s_ctrl(v4l2_flash->ctrls[LED_MODE],
-+			V4L2_FLASH_LED_MODE_NONE);
-+		if (ret)
-+			return ret;
-+
- 		mutex_lock(&led_cdev->led_access);
+ static const struct acpi_device_id bmi270_acpi_match[] = {
+ 	/* GPD Win Mini, Aya Neo AIR Pro, OXP Mini Pro, etc. */
+@@ -45,12 +46,14 @@ static const struct acpi_device_id bmi270_acpi_match[] = {
+ 	{ "BMI0260",  (kernel_ulong_t)&bmi260_chip_info },
+ 	{ }
+ };
++MODULE_DEVICE_TABLE(acpi, bmi270_acpi_match);
  
- 		if (v4l2_flash->ctrls[STROBE_SOURCE])
+ static const struct of_device_id bmi270_of_match[] = {
+ 	{ .compatible = "bosch,bmi260", .data = &bmi260_chip_info },
+ 	{ .compatible = "bosch,bmi270", .data = &bmi270_chip_info },
+ 	{ }
+ };
++MODULE_DEVICE_TABLE(of, bmi270_of_match);
+ 
+ static struct i2c_driver bmi270_i2c_driver = {
+ 	.driver = {
 -- 
-2.34.1
+2.51.2
 
 
