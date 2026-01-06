@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-205980-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205982-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72E42CFA9F8
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:24:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DB40CFA7EA
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:08:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A2C02330F479
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:37:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DF0BA311DDDE
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:17:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B52A248F68;
-	Tue,  6 Jan 2026 18:01:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E74F833EAF3;
+	Tue,  6 Jan 2026 18:01:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dvGJuqa9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Jb3yREX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBF9D224AF2;
-	Tue,  6 Jan 2026 18:01:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A56FB33B971;
+	Tue,  6 Jan 2026 18:01:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767722502; cv=none; b=QPKcw0z2MgMwxmGQ32CT4bN+izA7f2qoChbl1PiQxvSr03EizkwZBXDbBAJZq6+QSiyo+qpYKnV1xTx0hRDtGEsiz/afwouB7Grff6XSddQk7z+/KJS5Y6UjxF11r5fk/TQPp7oeypIP/PxJpHKGZ6Q+Mpy5PNtAZCYWJ5frLQs=
+	t=1767722508; cv=none; b=GIVK4hrnyU2AiMZUVU1SxTh0jaYXL3yodUvVbod2YYhLeQGVdl6BQSPQG3DH9zIOGsWynb6E7i/lIraJfykz8RN0M7qkj3ZWkz6ruNKBVnf6XQ8VygCLSu3L5KETGq1OtWPKY7yWcC87EowoK2he49KbC6PanFkvTtaxib+Disg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767722502; c=relaxed/simple;
-	bh=ngPgXp01rarMsfyA7FaI7BbbaIwWZ5VrbGzPdtqZ5/E=;
+	s=arc-20240116; t=1767722508; c=relaxed/simple;
+	bh=0xsoAv5rhC4ReGiBMGap5/Ici8Fqd089PZxuPSj3DNs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C2gHIxqGUKHsOnEBVToa20WfM8kFAjJx7CJhyQoZcIRSruOUxNGHCC5qHr1h8/NKvPbrvsJIoDVQUBduLEgd+vwgiM159x6//M5Tdc3AyXVs5Wq3uIKYt1PRDFS261MvfqpVbUa7Brg9B7VnBpE0ePgfkQExvpmvEK8g9YdF2+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dvGJuqa9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F4A0C116C6;
-	Tue,  6 Jan 2026 18:01:41 +0000 (UTC)
+	 MIME-Version; b=juCv9X3m4PW6CC/5rSjKj9+wdjJrRygikiklrqkcFRl6zCNtEvq57tz0qhcBXz5QBl3FFtiMFInzcmXw4hxDbsHQ1SYZdLYTNOQnDvSm3VBJvNilsqwuxqMYCFrI0m+vHNix5xXkfn8zW1h8CcuHYOg2LSMq70Sb6SKEhCGzfkk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Jb3yREX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14E85C19423;
+	Tue,  6 Jan 2026 18:01:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767722501;
-	bh=ngPgXp01rarMsfyA7FaI7BbbaIwWZ5VrbGzPdtqZ5/E=;
+	s=korg; t=1767722508;
+	bh=0xsoAv5rhC4ReGiBMGap5/Ici8Fqd089PZxuPSj3DNs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dvGJuqa9wYRBknaQkNUAGE7XcIVqXZipbMJmW2oO5qZmsuwAVCQpt4aA2pXoLwheG
-	 GAtGOOHhJNAgR3nN7cJZ/Ej5gOKKUYJbwNX/P+PcbWwvt8/Ty7rYKiclrQpLtSd8LK
-	 IeSwQuWl1x2ZqtW9OdXxSFBeOXuFiMNOe2qzI4PA=
+	b=2Jb3yREXvmtTorQlfWpU689tudT/++BOYeMGD/TZ/DOmLlvnOMATNTQUUgLNHRbTK
+	 73rYsmZj1aJo8CImS0iXsFQ4a9r8heWRuKZVJmV67nSZ6CBBemOa5oRWTmKtEhL7/L
+	 DlVS4vXG5cleqFV7g1o3mUAQhYL3W/2FefWCKYKs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kent Russell <kent.russell@amd.com>,
+	Jonathan Kim <jonathan.kim@amd.com>,
 	Mario Limonciello <mario.limonciello@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.18 284/312] drm/amdkfd: Export the cwsr_size and ctl_stack_size to userspace
-Date: Tue,  6 Jan 2026 18:05:58 +0100
-Message-ID: <20260106170558.128849434@linuxfoundation.org>
+Subject: [PATCH 6.18 285/312] drm/amdkfd: bump minimum vgpr size for gfx1151
+Date: Tue,  6 Jan 2026 18:05:59 +0100
+Message-ID: <20260106170558.164519242@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
 References: <20260106170547.832845344@linuxfoundation.org>
@@ -64,35 +64,33 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Jonathan Kim <jonathan.kim@amd.com>
 
-commit 8fc2796dea6f1210e1a01573961d5836a7ce531e upstream.
+commit cf326449637a566ba98fb82c47d46cd479608c88 upstream.
 
-This is important for userspace to avoid hardcoding VGPR size.
+GFX1151 has 1.5x the number of available physical VGPRs per SIMD.
+Bump total memory availability for acquire checks on queue creation.
 
-Reviewed-by: Kent Russell <kent.russell@amd.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Jonathan Kim <jonathan.kim@amd.com>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 71776e0965f9f730af19c5f548827f2a7c91f5a8)
+(cherry picked from commit b42f3bf9536c9b710fd1d4deb7d1b0dc819dc72d)
 Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_topology.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/gpu/drm/amd/amdkfd/kfd_queue.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/gpu/drm/amd/amdkfd/kfd_topology.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_topology.c
-@@ -491,6 +491,10 @@ static ssize_t node_show(struct kobject
- 			      dev->node_props.num_sdma_queues_per_engine);
- 	sysfs_show_32bit_prop(buffer, offs, "num_cp_queues",
- 			      dev->node_props.num_cp_queues);
-+	sysfs_show_32bit_prop(buffer, offs, "cwsr_size",
-+			      dev->node_props.cwsr_size);
-+	sysfs_show_32bit_prop(buffer, offs, "ctl_stack_size",
-+			      dev->node_props.ctl_stack_size);
- 
- 	if (dev->gpu) {
- 		log_max_watch_addr =
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_queue.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_queue.c
+@@ -409,6 +409,7 @@ static u32 kfd_get_vgpr_size_per_cu(u32
+ 		vgpr_size = 0x80000;
+ 	else if (gfxv == 110000 ||		/* GFX_VERSION_PLUM_BONITO */
+ 		 gfxv == 110001 ||		/* GFX_VERSION_WHEAT_NAS */
++		 gfxv == 110501 ||		/* GFX_VERSION_GFX1151 */
+ 		 gfxv == 120000 ||		/* GFX_VERSION_GFX1200 */
+ 		 gfxv == 120001)		/* GFX_VERSION_GFX1201 */
+ 		vgpr_size = 0x60000;
 
 
 
