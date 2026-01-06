@@ -1,52 +1,51 @@
-Return-Path: <stable+bounces-205421-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205432-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B523FCF9C2F
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 18:40:43 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 871D0CF9C59
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 18:41:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3B7783155E52
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:31:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 92E38316F005
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:31:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D944229B12;
-	Tue,  6 Jan 2026 17:30:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17C1D2BD001;
+	Tue,  6 Jan 2026 17:31:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wBolGYKJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pOc/CqJw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A0F820F079;
-	Tue,  6 Jan 2026 17:30:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8D4F224B15;
+	Tue,  6 Jan 2026 17:31:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767720636; cv=none; b=XzLS/cJOM94sYvOYEHI84Qeqdx7L//lbQCzWDwOp7Kj3hiuo8clo+O8MUpaR8uUxFpii6lULwDKM7TJEKRZ5i104Ut1TBjU0UE83PScbotCcEzR0S0hzmOjCJ4X++DwT/sC0SHFIKcol6vvSRghKd5VEjkGo7Khwmlb2N/imSFA=
+	t=1767720672; cv=none; b=AsHs1dvpRrfsLhSwj0ohUhT3ffIvCoP+6o2FuZMGBLKMoKnf0Nw96aHI26ehTVWSAVwatxa+azj57aqz9r5+lqykwt3StyAMC1Qr1VZDST42vgkvts9d2HoyeFB14H3Xj4uYw5uGB/EOk+jisp8kpnB5qK2hv1LbTCLFODIbX2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767720636; c=relaxed/simple;
-	bh=VzfdIdt/p/qTTu3uDEJH1zfzqWOjDFaP/ZQhFKSTTeI=;
+	s=arc-20240116; t=1767720672; c=relaxed/simple;
+	bh=yTsJbd/SqQf5bi/N1AEhaFTtviQlHVkPIUThdTJiK0U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dPZzg8sFbU4lYP8sJY1iZq18DdFm/DM//ZQ8uuf5+yEgNkFdOuFXTa98cznvyrETTVI2AGVb7/mTwOzuCCz5yrvE75+3AcwglCijRi8Qn7CL8Cy+VACcjuT4ktVNZYH4K7k4V515a47fCBLYs9GgqyiceVazgZyL1vSSg5EzK9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wBolGYKJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE717C116C6;
-	Tue,  6 Jan 2026 17:30:35 +0000 (UTC)
+	 MIME-Version; b=qUpHhblVEPYpaHvoidKYIdN6CKNsERkbKqW3dbzYuHYmUofJJNy2i6IeXtyOjjiWEkKHuGowDxF446MXzxT0Nr2tsuxvQX9Igv+5Zh405dQNF1dQK+nVmLUDbdewXx8xhhTeXZOtdGqRwJKrEPtzQUgeGZO99Z98vqpozeYprZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pOc/CqJw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 364EFC16AAE;
+	Tue,  6 Jan 2026 17:31:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767720636;
-	bh=VzfdIdt/p/qTTu3uDEJH1zfzqWOjDFaP/ZQhFKSTTeI=;
+	s=korg; t=1767720672;
+	bh=yTsJbd/SqQf5bi/N1AEhaFTtviQlHVkPIUThdTJiK0U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wBolGYKJEqzdzcVqvTWNIRvGdiA1tjitWmDjsMUQ6kdfYm5p6ntvvxgEXgr8cvOed
-	 Id2Pmma+aSPsvqqRyvAL32VNgta/dg278fm28aYLqiyY9dRhg4cnhUcAViKhQJy5ow
-	 xvfj5ak//bGO4UVFzAptMJUuZyfqs1g8RvD63wBI=
+	b=pOc/CqJwvuRSyFL5ZyZFLnBI+zNBxJxmBqSG1wGWmAOVU1NTQtT9iEZ7glt2Q8AB4
+	 HEKwz2lsZlHFsyUWsXeDOvYG6uFs49XVQFDXrjaoDXV8YiBvFKdMmK+1Si5BpAiUYA
+	 ggAqH3oX0gZqyB2LWryDgdBo/KFNYwXP6/eTWkv4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brian Masney <bmasney@redhat.com>,
-	Miaoqian Lin <linmq006@gmail.com>,
 	Johan Hovold <johan@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.12 279/567] soc: qcom: ocmem: fix device leak on lookup
-Date: Tue,  6 Jan 2026 18:01:01 +0100
-Message-ID: <20260106170501.649226117@linuxfoundation.org>
+	Neal Gompa <neal@gompa.dev>,
+	Sven Peter <sven@kernel.org>
+Subject: [PATCH 6.12 280/567] soc: apple: mailbox: fix device leak on lookup
+Date: Tue,  6 Jan 2026 18:01:02 +0100
+Message-ID: <20260106170501.687994395@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
 References: <20260106170451.332875001@linuxfoundation.org>
@@ -67,44 +66,49 @@ Content-Transfer-Encoding: 8bit
 
 From: Johan Hovold <johan@kernel.org>
 
-commit b5c16ea57b030b8e9428ec726e26219dfe05c3d9 upstream.
+commit f401671e90ccc26b3022f177c4156a429c024f6c upstream.
 
-Make sure to drop the reference taken to the ocmem platform device when
+Make sure to drop the reference taken to the mbox platform device when
 looking up its driver data.
 
 Note that holding a reference to a device does not prevent its driver
 data from going away so there is no point in keeping the reference.
 
-Also note that commit 0ff027027e05 ("soc: qcom: ocmem: Fix missing
-put_device() call in of_get_ocmem") fixed the leak in a lookup error
-path, but the reference is still leaking on success.
-
-Fixes: 88c1e9404f1d ("soc: qcom: add OCMEM driver")
-Cc: stable@vger.kernel.org	# 5.5: 0ff027027e05
-Cc: Brian Masney <bmasney@redhat.com>
-Cc: Miaoqian Lin <linmq006@gmail.com>
+Fixes: 6e1457fcad3f ("soc: apple: mailbox: Add ASC/M3 mailbox driver")
+Cc: stable@vger.kernel.org	# 6.8
 Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: Brian Masney <bmasney@redhat.com>
-Link: https://lore.kernel.org/r/20250926143511.6715-2-johan@kernel.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Reviewed-by: Neal Gompa <neal@gompa.dev>
+Signed-off-by: Sven Peter <sven@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/soc/qcom/ocmem.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/soc/apple/mailbox.c |   15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
---- a/drivers/soc/qcom/ocmem.c
-+++ b/drivers/soc/qcom/ocmem.c
-@@ -202,9 +202,9 @@ struct ocmem *of_get_ocmem(struct device
- 	}
+--- a/drivers/soc/apple/mailbox.c
++++ b/drivers/soc/apple/mailbox.c
+@@ -299,11 +299,18 @@ struct apple_mbox *apple_mbox_get(struct
+ 		return ERR_PTR(-EPROBE_DEFER);
  
- 	ocmem = platform_get_drvdata(pdev);
+ 	mbox = platform_get_drvdata(pdev);
+-	if (!mbox)
+-		return ERR_PTR(-EPROBE_DEFER);
++	if (!mbox) {
++		mbox = ERR_PTR(-EPROBE_DEFER);
++		goto out_put_pdev;
++	}
++
++	if (!device_link_add(dev, &pdev->dev, DL_FLAG_AUTOREMOVE_CONSUMER)) {
++		mbox = ERR_PTR(-ENODEV);
++		goto out_put_pdev;
++	}
+ 
+-	if (!device_link_add(dev, &pdev->dev, DL_FLAG_AUTOREMOVE_CONSUMER))
+-		return ERR_PTR(-ENODEV);
++out_put_pdev:
 +	put_device(&pdev->dev);
- 	if (!ocmem) {
- 		dev_err(dev, "Cannot get ocmem\n");
--		put_device(&pdev->dev);
- 		return ERR_PTR(-ENODEV);
- 	}
- 	return ocmem;
+ 
+ 	return mbox;
+ }
 
 
 
