@@ -1,64 +1,56 @@
-Return-Path: <stable+bounces-205715-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205424-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37ABECF9F08
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:07:10 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C47FECF9C41
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 18:41:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4CE853048D9D
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:06:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 71D4B315BE23
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:31:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3BA02E6116;
-	Tue,  6 Jan 2026 17:46:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69B04229B38;
+	Tue,  6 Jan 2026 17:30:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gG2GMWCV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d2locVYv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DE0B2D23A6;
-	Tue,  6 Jan 2026 17:46:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27B861DA23;
+	Tue,  6 Jan 2026 17:30:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721617; cv=none; b=R+LGltMeqOy/15bo9L4DVriOyk+V0pMOUYfMoE0w91wE9e4Rd5pYj+TtXeZ1F5IDmn5hCM9VltABvCh1zUK9Z5TJFm3hwxsUP7yKiCo/qS2yshoO8ih55DEDwnj+hgJSpHchYQYRFIhcsVsvsjqzLAhoOLkBe81+0tvY0mXlVLc=
+	t=1767720646; cv=none; b=r+cdCG7Z1EeWy5ojJ9yo5w0Zz5E/w/ykucFMLo1G/9zRQf9OckWvfrobQjxxS8UzRbjdXcjkYALxQxKb2yt7KiyDJ8GAg0KLiU5c6eRaMmgK9oLtxRZ/KZbpHai9Y8PlmkkqyWdtCQ0idimGKQoTVxxageasNLidAwjX2j/o+Bk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721617; c=relaxed/simple;
-	bh=/AB9+2nOEi0ZxhrXLJuqxhJbSITYy0dg3z2y/2R2mjY=;
+	s=arc-20240116; t=1767720646; c=relaxed/simple;
+	bh=AhyP0wd9kozF1Nz3NSDGm4g4nXUvTl0Kxm1SC1cBJVE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ia2Dn/m+FpuBVGR+nx1H8I/rlGp15YpI+yQCMT7oGmnAUHzE2agTRXqiKbtSGNTtQ8MwDQn8fHZzgwThmMmiIzGe7BOeEObryxu7sRQR0RpQehQFtiYmYqKakkfAdLjScGV2SfEG7qr201/0MUSFKk8IFjEkV6jhWGH12lOzWO0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gG2GMWCV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B224C116C6;
-	Tue,  6 Jan 2026 17:46:56 +0000 (UTC)
+	 MIME-Version; b=quPpcAeTrkjK8yScYEoprqEKdoIuml/26hsnaZ7acvrKxMFLacCGJM3amBJGrBFdcWJhGJKy4Qn6F6p0YM/G91jutD7E68tLMmqlPgzdzKPNcTDP5CwNOLc3fBwP2Hdx1G5Y2dhPk2Nx+awn+pwCledfnvLoRSbWOlEzDXLFCG8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d2locVYv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95776C116C6;
+	Tue,  6 Jan 2026 17:30:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721617;
-	bh=/AB9+2nOEi0ZxhrXLJuqxhJbSITYy0dg3z2y/2R2mjY=;
+	s=korg; t=1767720646;
+	bh=AhyP0wd9kozF1Nz3NSDGm4g4nXUvTl0Kxm1SC1cBJVE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gG2GMWCVu7h0NdpEjWBKJ+d5NWE9slwu3jDRnID7yXY+Aonbr1c0FALzj7Pi44+3Y
-	 N8U1YX9a1M8EWTdSCz1I9XOzrwBZoZ614zQYD2r5lIAChSJ0lSeKxvId827GNhnqFp
-	 zzigl3Q9Farvm5oB4mxA9533ATU2rIGloHDQ45F4=
+	b=d2locVYv5Dwwg6mhY+9tk7w683ue0T8xCJHmmn7DqwaUL7KGrX3nILyY290vIajH+
+	 0io7Xm5BW9T3JkT4bpc+InRSFt4THMVSG9rvSuy5Vhakze21R+tHxbTa68TcC5eB8a
+	 IdBKWGL9EX8i17fgMyJzEiTnQxn5g335KPE0b+l0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wei Yang <richard.weiyang@gmail.com>,
-	Zi Yan <ziy@nvidia.com>,
-	"David Hildenbrand (Red Hat)" <david@kernel.org>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Barry Song <baohua@kernel.org>,
-	Dev Jain <dev.jain@arm.com>,
-	Lance Yang <lance.yang@linux.dev>,
-	Liam Howlett <liam.howlett@oracle.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Nico Pache <npache@redhat.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Gregory Herrero <gregory.herrero@oracle.com>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 007/312] mm/huge_memory: merge uniform_split_supported() and non_uniform_split_supported()
+Subject: [PATCH 6.12 299/567] i40e: validate ring_len parameter against hardware-specific values
 Date: Tue,  6 Jan 2026 18:01:21 +0100
-Message-ID: <20260106170548.116358213@linuxfoundation.org>
+Message-ID: <20260106170502.393605503@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
-References: <20260106170547.832845344@linuxfoundation.org>
+In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
+References: <20260106170451.332875001@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,188 +62,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wei Yang <richard.weiyang@gmail.com>
+From: Gregory Herrero <gregory.herrero@oracle.com>
 
-[ Upstream commit 8a0e4bdddd1c998b894d879a1d22f1e745606215 ]
+[ Upstream commit 69942834215323cd9131db557091b4dec43f19c5 ]
 
-uniform_split_supported() and non_uniform_split_supported() share
-significantly similar logic.
+The maximum number of descriptors supported by the hardware is
+hardware-dependent and can be retrieved using
+i40e_get_max_num_descriptors(). Move this function to a shared header
+and use it when checking for valid ring_len parameter rather than using
+hardcoded value.
 
-The only functional difference is that uniform_split_supported() includes
-an additional check on the requested @new_order.
+By fixing an over-acceptance issue, behavior change could be seen where
+ring_len could now be rejected while configuring rx and tx queues if its
+size is larger than the hardware-dependent maximum number of
+descriptors.
 
-The reason for this check comes from the following two aspects:
-
-  * some file system or swap cache just supports order-0 folio
-  * the behavioral difference between uniform/non-uniform split
-
-The behavioral difference between uniform split and non-uniform:
-
-  * uniform split splits folio directly to @new_order
-  * non-uniform split creates after-split folios with orders from
-    folio_order(folio) - 1 to new_order.
-
-This means for non-uniform split or !new_order split we should check the
-file system and swap cache respectively.
-
-This commit unifies the logic and merge the two functions into a single
-combined helper, removing redundant code and simplifying the split
-support checking mechanism.
-
-Link: https://lkml.kernel.org/r/20251106034155.21398-3-richard.weiyang@gmail.com
-Fixes: c010d47f107f ("mm: thp: split huge page to any lower order pages")
-Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
-Reviewed-by: Zi Yan <ziy@nvidia.com>
-Cc: Zi Yan <ziy@nvidia.com>
-Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Barry Song <baohua@kernel.org>
-Cc: Dev Jain <dev.jain@arm.com>
-Cc: Lance Yang <lance.yang@linux.dev>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Nico Pache <npache@redhat.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-[ split_type => uniform_split and replaced SPLIT_TYPE_NON_UNIFORM checks ]
+Fixes: 55d225670def ("i40e: add validation for ring_len param")
+Signed-off-by: Gregory Herrero <gregory.herrero@oracle.com>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/huge_mm.h |    8 ++---
- mm/huge_memory.c        |   71 ++++++++++++++++++++----------------------------
- 2 files changed, 33 insertions(+), 46 deletions(-)
+ drivers/net/ethernet/intel/i40e/i40e.h             | 11 +++++++++++
+ drivers/net/ethernet/intel/i40e/i40e_ethtool.c     | 12 ------------
+ drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c |  4 ++--
+ 3 files changed, 13 insertions(+), 14 deletions(-)
 
---- a/include/linux/huge_mm.h
-+++ b/include/linux/huge_mm.h
-@@ -369,10 +369,8 @@ int split_huge_page_to_list_to_order(str
- 		unsigned int new_order);
- int min_order_for_split(struct folio *folio);
- int split_folio_to_list(struct folio *folio, struct list_head *list);
--bool uniform_split_supported(struct folio *folio, unsigned int new_order,
--		bool warns);
--bool non_uniform_split_supported(struct folio *folio, unsigned int new_order,
--		bool warns);
-+bool folio_split_supported(struct folio *folio, unsigned int new_order,
-+		bool uniform_split, bool warns);
- int folio_split(struct folio *folio, unsigned int new_order, struct page *page,
- 		struct list_head *list);
- /*
-@@ -392,7 +390,7 @@ int folio_split(struct folio *folio, uns
- static inline int try_folio_split_to_order(struct folio *folio,
- 		struct page *page, unsigned int new_order)
- {
--	if (!non_uniform_split_supported(folio, new_order, /* warns= */ false))
-+	if (!folio_split_supported(folio, new_order, false, /* warns= */ false))
- 		return split_huge_page_to_list_to_order(&folio->page, NULL,
- 				new_order);
- 	return folio_split(folio, new_order, page, NULL);
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -3515,8 +3515,8 @@ static int __split_unmapped_folio(struct
- 	return ret;
+diff --git a/drivers/net/ethernet/intel/i40e/i40e.h b/drivers/net/ethernet/intel/i40e/i40e.h
+index b8de97343ad3..de3d5e5b8306 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e.h
++++ b/drivers/net/ethernet/intel/i40e/i40e.h
+@@ -1415,4 +1415,15 @@ static inline struct i40e_veb *i40e_pf_get_main_veb(struct i40e_pf *pf)
+ 	return (pf->lan_veb != I40E_NO_VEB) ? pf->veb[pf->lan_veb] : NULL;
  }
  
--bool non_uniform_split_supported(struct folio *folio, unsigned int new_order,
--		bool warns)
-+bool folio_split_supported(struct folio *folio, unsigned int new_order,
-+		bool uniform_split, bool warns)
- {
- 	if (folio_test_anon(folio)) {
- 		/* order-1 is not supported for anonymous THP. */
-@@ -3524,48 +3524,41 @@ bool non_uniform_split_supported(struct
- 				"Cannot split to order-1 folio");
- 		if (new_order == 1)
- 			return false;
--	} else if (IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) &&
--	    !mapping_large_folio_support(folio->mapping)) {
--		/*
--		 * No split if the file system does not support large folio.
--		 * Note that we might still have THPs in such mappings due to
--		 * CONFIG_READ_ONLY_THP_FOR_FS. But in that case, the mapping
--		 * does not actually support large folios properly.
--		 */
--		VM_WARN_ONCE(warns,
--			"Cannot split file folio to non-0 order");
--		return false;
--	}
++static inline u32 i40e_get_max_num_descriptors(const struct i40e_pf *pf)
++{
++	const struct i40e_hw *hw = &pf->hw;
++
++	switch (hw->mac.type) {
++	case I40E_MAC_XL710:
++		return I40E_MAX_NUM_DESCRIPTORS_XL710;
++	default:
++		return I40E_MAX_NUM_DESCRIPTORS;
++	}
++}
+ #endif /* _I40E_H_ */
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_ethtool.c b/drivers/net/ethernet/intel/i40e/i40e_ethtool.c
+index bce5b76f1e7a..9a96f67fb648 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_ethtool.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_ethtool.c
+@@ -2010,18 +2010,6 @@ static void i40e_get_drvinfo(struct net_device *netdev,
+ 		drvinfo->n_priv_flags += I40E_GL_PRIV_FLAGS_STR_LEN;
+ }
+ 
+-static u32 i40e_get_max_num_descriptors(struct i40e_pf *pf)
+-{
+-	struct i40e_hw *hw = &pf->hw;
 -
--	/* Only swapping a whole PMD-mapped folio is supported */
--	if (folio_test_swapcache(folio)) {
--		VM_WARN_ONCE(warns,
--			"Cannot split swapcache folio to non-0 order");
--		return false;
+-	switch (hw->mac.type) {
+-	case I40E_MAC_XL710:
+-		return I40E_MAX_NUM_DESCRIPTORS_XL710;
+-	default:
+-		return I40E_MAX_NUM_DESCRIPTORS;
 -	}
--
--	return true;
 -}
 -
--/* See comments in non_uniform_split_supported() */
--bool uniform_split_supported(struct folio *folio, unsigned int new_order,
--		bool warns)
--{
--	if (folio_test_anon(folio)) {
--		VM_WARN_ONCE(warns && new_order == 1,
--				"Cannot split to order-1 folio");
--		if (new_order == 1)
--			return false;
--	} else  if (new_order) {
-+	} else if (!uniform_split || new_order) {
- 		if (IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) &&
- 		    !mapping_large_folio_support(folio->mapping)) {
-+			/*
-+			 * We can always split a folio down to a single page
-+			 * (new_order == 0) uniformly.
-+			 *
-+			 * For any other scenario
-+			 *   a) uniform split targeting a large folio
-+			 *      (new_order > 0)
-+			 *   b) any non-uniform split
-+			 * we must confirm that the file system supports large
-+			 * folios.
-+			 *
-+			 * Note that we might still have THPs in such
-+			 * mappings, which is created from khugepaged when
-+			 * CONFIG_READ_ONLY_THP_FOR_FS is enabled. But in that
-+			 * case, the mapping does not actually support large
-+			 * folios properly.
-+			 */
- 			VM_WARN_ONCE(warns,
- 				"Cannot split file folio to non-0 order");
- 			return false;
- 		}
+ static void i40e_get_ringparam(struct net_device *netdev,
+ 			       struct ethtool_ringparam *ring,
+ 			       struct kernel_ethtool_ringparam *kernel_ring,
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+index 646e394f5190..3251ffa7d994 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+@@ -656,7 +656,7 @@ static int i40e_config_vsi_tx_queue(struct i40e_vf *vf, u16 vsi_id,
+ 
+ 	/* ring_len has to be multiple of 8 */
+ 	if (!IS_ALIGNED(info->ring_len, 8) ||
+-	    info->ring_len > I40E_MAX_NUM_DESCRIPTORS_XL710) {
++	    info->ring_len > i40e_get_max_num_descriptors(pf)) {
+ 		ret = -EINVAL;
+ 		goto error_context;
  	}
+@@ -726,7 +726,7 @@ static int i40e_config_vsi_rx_queue(struct i40e_vf *vf, u16 vsi_id,
  
--	if (new_order && folio_test_swapcache(folio)) {
-+	/*
-+	 * swapcache folio could only be split to order 0
-+	 *
-+	 * non-uniform split creates after-split folios with orders from
-+	 * folio_order(folio) - 1 to new_order, making it not suitable for any
-+	 * swapcache folio split. Only uniform split to order-0 can be used
-+	 * here.
-+	 */
-+	if ((!uniform_split || new_order) && folio_test_swapcache(folio)) {
- 		VM_WARN_ONCE(warns,
- 			"Cannot split swapcache folio to non-0 order");
- 		return false;
-@@ -3632,11 +3625,7 @@ static int __folio_split(struct folio *f
- 	if (new_order >= folio_order(folio))
- 		return -EINVAL;
- 
--	if (uniform_split && !uniform_split_supported(folio, new_order, true))
--		return -EINVAL;
--
--	if (!uniform_split &&
--	    !non_uniform_split_supported(folio, new_order, true))
-+	if (!folio_split_supported(folio, new_order, uniform_split, /* warn = */ true))
- 		return -EINVAL;
- 
- 	is_hzp = is_huge_zero_folio(folio);
+ 	/* ring_len has to be multiple of 32 */
+ 	if (!IS_ALIGNED(info->ring_len, 32) ||
+-	    info->ring_len > I40E_MAX_NUM_DESCRIPTORS_XL710) {
++	    info->ring_len > i40e_get_max_num_descriptors(pf)) {
+ 		ret = -EINVAL;
+ 		goto error_param;
+ 	}
+-- 
+2.51.0
+
 
 
 
