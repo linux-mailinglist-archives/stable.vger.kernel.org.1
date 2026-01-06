@@ -1,128 +1,94 @@
-Return-Path: <stable+bounces-204996-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204997-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E3EDCF659D
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 02:48:20 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D71FECF6609
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 02:54:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2EB60300530A
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 01:48:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5BBF1307AFAD
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 01:48:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B358214A9B;
-	Tue,  6 Jan 2026 01:48:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF02E21B9F5;
+	Tue,  6 Jan 2026 01:48:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D1cS02Z/"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Q9Foh+b6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C64931FE46D;
-	Tue,  6 Jan 2026 01:48:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90232216E24;
+	Tue,  6 Jan 2026 01:48:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767664096; cv=none; b=THblxLFfwWI3jKNFbC6YiGv4vNYD661Xgausiv5bZkhNWdbJ8Vf69D1s5RBpHS8MdFHoCW6rsVQyA4Qs9dfy/FWbw1az/UrBEKT8edj+Glp3xppX/Dh0PCcmusIprnjdyt5yd65E1cVM1B8j8QjMwb1VEC8bj3WmEl2Z+CftkiQ=
+	t=1767664105; cv=none; b=o//OBIiAnYQDB4Yv5opCaQ/XXwWuNG6MZjoNtCBY9sdUdRZX2N/XlBT0DrB+RX9e+LjwAEa/nUqNGZN4yX2NQpWHZsrDoiE5KjyDasDYLKLdABZe4RLxE0FRUMiw4UbgBeWhGX81uVQZksjs3OiSri8DCw8pplMCA8eFNi6EBo0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767664096; c=relaxed/simple;
-	bh=gWgwY5gnqLtgEV6SUiR41ffmkBcPFEdij50nSL0+hes=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k/Ej6b1sOE6t5RzX9G2o3PJGLYZ1XVo+qUfH7igvEevS25FrX6C8F4EhfitfTFoy6LZuyzEmrCPdy+0sHF144gUKvd0e0aIKpE1iPx5VLPHrdGsLkOH7trvEMY40y3Byo30HqDPp8m7r7gA5hcg4crRA1hzTEZHjovVULZ1zyd8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D1cS02Z/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86979C116D0;
-	Tue,  6 Jan 2026 01:48:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767664096;
-	bh=gWgwY5gnqLtgEV6SUiR41ffmkBcPFEdij50nSL0+hes=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D1cS02Z/IiZ/s8K97uDEHM5dYKy/+O3nFYUI7ilDtalpIVvtqhiMFcv1hEOKDsdmN
-	 GDSS8iBRi5eGjrnmrdiopX7UVwkKDx9p7SvMMO6vbFXPODCXNlN+7cGNcsf7l55q+c
-	 GWRZXo0FbB9qVTDeuo5L96s6QVsHcCQTTbw57MsByJDPiiHOPFFersgK4TldbL6Mpm
-	 RlV6Gm2uQZhGo3kewmbU7siuXrdz5U+Fo8I0M0LnZL34U70i3zrxBULyH3YReKsjeD
-	 96fnhCjwJiKZiiGleN95KSe9tv/YefQPmx1+9UU/SeDk4Wg8mu6YbFvmyEsdArhIkV
-	 KFCigD+v6TQ6A==
-From: SeongJae Park <sj@kernel.org>
-To: stable@vger.kernel.org
-Cc: damon@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@google.com>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12.y] mm/damon/tests/core-kunit: handle alloc failures on damon_test_split_regions_of()
-Date: Mon,  5 Jan 2026 17:48:13 -0800
-Message-ID: <20260106014813.404324-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <2026010533-capricorn-drown-ffcf@gregkh>
-References: <2026010533-capricorn-drown-ffcf@gregkh>
+	s=arc-20240116; t=1767664105; c=relaxed/simple;
+	bh=1/kzawURfiBIGn4XEZ9FPaoyI0WW3RZ6ou8fvJ0ipT8=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=iPKcqDTQsHhwRHM2g6nWEcDB1K956UQt4SHZdM6nn+KFyPyE3AagcW+v05ali+CMLQnCQGhKenlmLE6NEgqPAgy4zeyLHJVAP3hyu7Hd+ahVkaRJFS1padvSa7y+vMK4uUSBVWIaRLcYoomFaaTAOrJd2h0efJqiDK7Od6IRThg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Q9Foh+b6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB75AC116D0;
+	Tue,  6 Jan 2026 01:48:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1767664105;
+	bh=1/kzawURfiBIGn4XEZ9FPaoyI0WW3RZ6ou8fvJ0ipT8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Q9Foh+b6h09pHMzu+j9QQgqKvZpYFqmKPByoqpG7MmWQ3FYkyfaGsubCnK7WEI2UI
+	 /0ZFeeyAVDHXbug9r2Yk+Zt2QAKUtqdi52HgkRt46P+aoQ6VhSyjC5s7ss2gPN/Lou
+	 NF1jZF9kF6Q2/s1x/v3lV3/dEWG0yhc5a9WT5AGg=
+Date: Mon, 5 Jan 2026 17:48:24 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Joanne Koong <joannelkoong@gmail.com>
+Cc: david@redhat.com, miklos@szeredi.hu, linux-mm@kvack.org,
+ athul.krishna.kr@protonmail.com, j.neuschaefer@gmx.net, carnil@debian.org,
+ linux-fsdevel@vger.kernel.org, stable@vger.kernel.org, Bernd Schubert
+ <bschubert@ddn.com>
+Subject: Re: [PATCH v3 1/1] fs/writeback: skip AS_NO_DATA_INTEGRITY mappings
+ in wait_sb_inodes()
+Message-Id: <20260105174824.5ea19dc45b79e29e0219e6a3@linux-foundation.org>
+In-Reply-To: <20260105211737.4105620-2-joannelkoong@gmail.com>
+References: <20260105211737.4105620-1-joannelkoong@gmail.com>
+	<20260105211737.4105620-2-joannelkoong@gmail.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
 
-damon_test_split_regions_of() is assuming all dynamic memory allocation in
-it will succeed.  Those are indeed likely in the real use cases since
-those allocations are too small to fail, but theoretically those could
-fail.  In the case, inappropriate memory access can happen.  Fix it by
-appropriately cleanup pre-allocated memory and skip the execution of the
-remaining tests in the failure cases.
+On Mon,  5 Jan 2026 13:17:27 -0800 Joanne Koong <joannelkoong@gmail.com> wr=
+ote:
 
-Link: https://lkml.kernel.org/r/20251101182021.74868-9-sj@kernel.org
-Fixes: 17ccae8bb5c9 ("mm/damon: add kunit tests")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: Brendan Higgins <brendan.higgins@linux.dev>
-Cc: David Gow <davidgow@google.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: <stable@vger.kernel.org>	[5.15+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-(cherry picked from commit eded254cb69044bd4abde87394ea44909708d7c0)
-Signed-off-by: SeongJae Park <sj@kernel.org>
----
- mm/damon/tests/core-kunit.h | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+> Above the while() loop in wait_sb_inodes(), we document that we must
+> wait for all pages under writeback for data integrity. Consequently, if
+> a mapping, like fuse, traditionally does not have data integrity
+> semantics, there is no need to wait at all; we can simply skip these
+> inodes.
+>=20
+> This restores fuse back to prior behavior where syncs are no-ops. This
+> fixes a user regression where if a system is running a faulty fuse
+> server that does not reply to issued write requests, this causes
+> wait_sb_inodes() to wait forever.
+>=20
+> Fixes: 0c58a97f919c ("fuse: remove tmp folio for writebacks and internal =
+rb tree")
+> Reported-by: Athul Krishna <athul.krishna.kr@protonmail.com>
+> Reported-by: J. Neusch=E4fer <j.neuschaefer@gmx.net>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
+> Reviewed-by: Bernd Schubert <bschubert@ddn.com>
+> Tested-by: J. Neusch=E4fer <j.neuschaefer@gmx.net>
 
-diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
-index cf22e09a3507..54e4086a2df2 100644
---- a/mm/damon/tests/core-kunit.h
-+++ b/mm/damon/tests/core-kunit.h
-@@ -227,15 +227,35 @@ static void damon_test_split_regions_of(struct kunit *test)
- 	struct damon_target *t;
- 	struct damon_region *r;
- 
-+	if (!c)
-+		kunit_skip(test, "ctx alloc fail");
- 	t = damon_new_target();
-+	if (!t) {
-+		damon_destroy_ctx(c);
-+		kunit_skip(test, "target alloc fail");
-+	}
- 	r = damon_new_region(0, 22);
-+	if (!r) {
-+		damon_destroy_ctx(c);
-+		damon_free_target(t);
-+		kunit_skip(test, "region alloc fail");
-+	}
- 	damon_add_region(r, t);
- 	damon_split_regions_of(t, 2);
- 	KUNIT_EXPECT_LE(test, damon_nr_regions(t), 2u);
- 	damon_free_target(t);
- 
- 	t = damon_new_target();
-+	if (!t) {
-+		damon_destroy_ctx(c);
-+		kunit_skip(test, "second target alloc fail");
-+	}
- 	r = damon_new_region(0, 220);
-+	if (!r) {
-+		damon_destroy_ctx(c);
-+		damon_free_target(t);
-+		kunit_skip(test, "second region alloc fail");
-+	}
- 	damon_add_region(r, t);
- 	damon_split_regions_of(t, 4);
- 	KUNIT_EXPECT_LE(test, damon_nr_regions(t), 4u);
--- 
-2.47.3
+Thanks.
+
+>  fs/fs-writeback.c       |  7 ++++++-
+>  fs/fuse/file.c          |  4 +++-
+>  include/linux/pagemap.h | 11 +++++++++++
+>  3 files changed, 20 insertions(+), 2 deletions(-)
+
+I'll queue this in mm.git's mm-hotfixes branches for a 6.19-rcX merge.
 
 
