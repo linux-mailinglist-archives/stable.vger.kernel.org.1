@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-205212-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205215-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D6A9CFA8A1
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:16:53 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1327DCFA778
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:05:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6ECF0304A95B
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 19:16:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7BEF634A23E8
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:14:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D547B34AAF4;
-	Tue,  6 Jan 2026 17:19:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CB1E34AB16;
+	Tue,  6 Jan 2026 17:19:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L8rw2FIS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LJbPZOyi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92DC934AAE0;
-	Tue,  6 Jan 2026 17:19:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF9C434AB0D;
+	Tue,  6 Jan 2026 17:19:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767719945; cv=none; b=m3VOrB7TuR5Nwnz2lAKoW9tBXhYA8yxsdrrAcmKtAGBKlx20ZIr2ppyRJaJt/Z4LCje+sxH77jepE0XztHGxsOBJB+QR+NBh+j3zZWrdBpxYFfE0OYUvpkFc9Oeg4AQxtv3b3DCBeaYIJGWKXjuluqf1+XzKYfQzz+um/MlYY4I=
+	t=1767719958; cv=none; b=OBEr/VyP12JKMRAN0Dlou/admPhbj31jcXlhPnk4AvuL/rF6sqj5NnaaO2gqfsiaHT4S98YbMKmxpLzdlg7WY38Kei5SuC271/nl6E06oD5t1Tyw628E3/yoLX2RXnA2ANBRhESa8J0GKGqJ7ieRFdfyU+2SGvrc/k239ClIbR0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767719945; c=relaxed/simple;
-	bh=5E7DTdy2Oh3cJXpIX+Fpqx0J0KJtnrzdOGADIfsauCA=;
+	s=arc-20240116; t=1767719958; c=relaxed/simple;
+	bh=qddo7xiLvlKHRMYDYn8BsG99ILGx4HGEcCX1hmm2Tb8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZZcnvow4Sfz4Hh5O7lbrkAFqsNdncB4l8a572RRgMUyxqYTx1QFkecmw3QTKhStLXdNuBlUC37e66NxGVg1vFhEMdHBTIoDJ0RukV33vbRtlU3g2q1lZmjX8c2IXbPqQQU36u18HbE0WzZGMajQi8LFaC9dIwjZGVRzKY1lFPzw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L8rw2FIS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AE91C116C6;
-	Tue,  6 Jan 2026 17:19:04 +0000 (UTC)
+	 MIME-Version:Content-Type; b=MAyr14zSWd2LAkKBhVDOQOgUrG5AX+rOx1LROiUp85TKMFA01m+Ycc7/XZ5tPWfYZucU0am0SC+xT8pATsDTWmi9POgsdAgMpxbm7CPgIH+Tg2FWwfj76VP7m77NkXjbKJtHUnB2Pc+gDiOBkBskU/6a/Y1I/XqjeWigJevtEC8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LJbPZOyi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A1E2C116C6;
+	Tue,  6 Jan 2026 17:19:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767719945;
-	bh=5E7DTdy2Oh3cJXpIX+Fpqx0J0KJtnrzdOGADIfsauCA=;
+	s=korg; t=1767719958;
+	bh=qddo7xiLvlKHRMYDYn8BsG99ILGx4HGEcCX1hmm2Tb8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L8rw2FISvtrLSEHV4HxlWX4b/jNfnvqrN+P0pNobnZwNJMMXn+28ezD4kbPUGma6j
-	 te5E0x4FgwKXY8cjwNN9rPj4d9igPEmwRqdoHR1LuQS+LuTwmajOAkWzXFOtoouoV3
-	 T6CyRqhOUf9olfVPelVDe3MrHKoposOjCp/Tj37c=
+	b=LJbPZOyimy9d1bqcN0rvFJqHMuTFL3KUMTPNvuITyKwwMD/tMIMjs0X3+cFxZzT1z
+	 XWjMMeiqyi3G69G1y2ZG9eb0f535HLD5mGugRvWoSVyG2pZrKvpio7nmTx9ZFx5Q2M
+	 7T7plTXUX1IWLNRUCVBoM25sjZ1wcR1xAB7MOcBU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anurag Dutta <a-dutta@ti.com>,
-	Nishanth Menon <nm@ti.com>,
-	Mark Brown <broonie@kernel.org>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Ashutosh Dixit <ashutosh.dixit@intel.com>,
+	Shuicheng Lin <shuicheng.lin@intel.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 088/567] spi: cadence-quadspi: Fix clock disable on probe failure path
-Date: Tue,  6 Jan 2026 17:57:50 +0100
-Message-ID: <20260106170454.584972309@linuxfoundation.org>
+Subject: [PATCH 6.12 091/567] drm/xe/oa: Limit num_syncs to prevent oversized allocations
+Date: Tue,  6 Jan 2026 17:57:53 +0100
+Message-ID: <20260106170454.696751950@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
 References: <20260106170451.332875001@linuxfoundation.org>
@@ -59,48 +60,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anurag Dutta <a-dutta@ti.com>
+From: Shuicheng Lin <shuicheng.lin@intel.com>
 
-[ Upstream commit 1889dd2081975ce1f6275b06cdebaa8d154847a9 ]
+[ Upstream commit f8dd66bfb4e184c71bd26418a00546ebe7f5c17a ]
 
-When cqspi_request_mmap_dma() returns -EPROBE_DEFER after runtime PM
-is enabled, the error path calls clk_disable_unprepare() on an already
-disabled clock, causing an imbalance.
+The OA open parameters did not validate num_syncs, allowing
+userspace to pass arbitrarily large values, potentially
+leading to excessive allocations.
 
-Use pm_runtime_get_sync() to increment the usage counter and resume the
-device. This prevents runtime_suspend() from being invoked and causing
-a double clock disable.
+Add check to ensure that num_syncs does not exceed DRM_XE_MAX_SYNCS,
+returning -EINVAL when the limit is violated.
 
-Fixes: 140623410536 ("mtd: spi-nor: Add driver for Cadence Quad SPI Flash Controller")
-Signed-off-by: Anurag Dutta <a-dutta@ti.com>
-Tested-by: Nishanth Menon <nm@ti.com>
-Link: https://patch.msgid.link/20251212072312.2711806-3-a-dutta@ti.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+v2: use XE_IOCTL_DBG() and drop duplicated check. (Ashutosh)
+
+Fixes: c8507a25cebd ("drm/xe/oa/uapi: Define and parse OA sync properties")
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Signed-off-by: Shuicheng Lin <shuicheng.lin@intel.com>
+Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+Link: https://patch.msgid.link/20251205234715.2476561-6-shuicheng.lin@intel.com
+(cherry picked from commit e057b2d2b8d815df3858a87dffafa2af37e5945b)
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-cadence-quadspi.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/xe/xe_oa.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
-index 06e43b184d85..aca3681d32ea 100644
---- a/drivers/spi/spi-cadence-quadspi.c
-+++ b/drivers/spi/spi-cadence-quadspi.c
-@@ -1959,7 +1959,9 @@ static int cqspi_probe(struct platform_device *pdev)
- probe_reset_failed:
- 	if (cqspi->is_jh7110)
- 		cqspi_jh7110_disable_clk(pdev, cqspi);
--	clk_disable_unprepare(cqspi->clk);
+diff --git a/drivers/gpu/drm/xe/xe_oa.c b/drivers/gpu/drm/xe/xe_oa.c
+index d306ed0a0443..5916187cd78f 100644
+--- a/drivers/gpu/drm/xe/xe_oa.c
++++ b/drivers/gpu/drm/xe/xe_oa.c
+@@ -1200,6 +1200,9 @@ static int xe_oa_set_no_preempt(struct xe_oa *oa, u64 value,
+ static int xe_oa_set_prop_num_syncs(struct xe_oa *oa, u64 value,
+ 				    struct xe_oa_open_param *param)
+ {
++	if (XE_IOCTL_DBG(oa->xe, value > DRM_XE_MAX_SYNCS))
++		return -EINVAL;
 +
-+	if (pm_runtime_get_sync(&pdev->dev) >= 0)
-+		clk_disable_unprepare(cqspi->clk);
- probe_clk_failed:
- 	return ret;
+ 	param->num_syncs = value;
+ 	return 0;
  }
 -- 
 2.51.0
