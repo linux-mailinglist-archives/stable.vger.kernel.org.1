@@ -1,105 +1,152 @@
-Return-Path: <stable+bounces-205072-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205073-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B83FBCF8175
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 12:39:45 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C71DCF815A
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 12:37:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E2372302A973
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 11:33:39 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 233CC301CD2B
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 11:37:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C29B32721D;
-	Tue,  6 Jan 2026 11:33:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 131A933343A;
+	Tue,  6 Jan 2026 11:37:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aH8clGh0"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oi1-f171.google.com (mail-oi1-f171.google.com [209.85.167.171])
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A97D31AABC
-	for <stable@vger.kernel.org>; Tue,  6 Jan 2026 11:33:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C4B3332ECF
+	for <stable@vger.kernel.org>; Tue,  6 Jan 2026 11:37:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767699216; cv=none; b=FPHPErN1QFxHIPxtCcuJz78slDJcFllUcqG9rcuG9bWVkSQQIfm4VKxFVITR/7DCPJ0hgbH6mzn7gT2es/Ml6Vo/v9rPA6bLHde7VG4DNHP1oAZlm5J7gK6V81WnkzHqIyZSvavQyOrSsbi6u3g9y8HR9/KNEPztb50TWSN34q0=
+	t=1767699455; cv=none; b=rEEGauxvFk3rKy+L27ev1xXMa63Tnae2xqC0Bp+qThA9ojHCllps5D81xyFj7MeoRn7HqaLbyKpombImIv2XPFGQF8SlnxjsZy75EF3k7MK3LhiYiyIi2Jrfn6D4wvnuV6KEO0y25Yx9StNfRjE+AV+BSkD0u318iarYyCpCqPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767699216; c=relaxed/simple;
-	bh=A6LqIfDgKDeozuV1RCujGg1NJdi4mYw8+E40Sot9BoQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DZVQn0IBOJTqzqccYnXQdc8OupPo12pZJEaUQdDtXP88Ip9MTPzeXhqQsWpO7DzHxvpbw76rnbjC7fwaNi0JDgu+Kw2ReNzZsjF0PCGXfuiQblMcswlN7AiktihlO8MiPYKJSHsoH1O4WhNfg+x8Yu4+8zirkNcGZrFMuKaMRMQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.167.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+	s=arc-20240116; t=1767699455; c=relaxed/simple;
+	bh=v4YuHG1rupxsoSiOid32tx2tUkEKlM5xOQlZqfA5aZY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=EF281Ezo3SEDfKwKeFCgCozWZf6UT96CbO/Q4ol6Ni8EYQGTZfBCTGLa0uChVK+NGai0X5DffFhTJVL5KqsCl6a5yTZj++TLVxvdpYBlm5RhogtshHS1fGxvoy7Bw3Y3u+4cnu0JGDulxYTtLYXYFLPZ0s9EyqvsZTrgeeep5vE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aH8clGh0; arc=none smtp.client-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oi1-f171.google.com with SMTP id 5614622812f47-455af5758fdso579411b6e.1
-        for <stable@vger.kernel.org>; Tue, 06 Jan 2026 03:33:33 -0800 (PST)
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-477ba2c1ca2so9128985e9.2
+        for <stable@vger.kernel.org>; Tue, 06 Jan 2026 03:37:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1767699451; x=1768304251; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=q6uW+A2P9pkdDCkg7XZPcaKU2E1i1mrVtntLiN6dJWY=;
+        b=aH8clGh0aGB7eBc1MCM7+h6zNBiz4ABTMAJg9hhbrbFi4nOyCRr7Oat7A+tYBQBb+A
+         u32LlHWneALAikJjmB2Yl0OvLjjBRNx1JiJXj1lRKFo/ZubXBcXx3S5xB6od0wQrBWsV
+         RC32c19kxeBU1uzmp9KTRZLmW6n8E0I5sz3zNu7Qad/rhe2ZD2Zi7e1a16e0RXDtsfQB
+         0G2t4RHKUxprxxuIzszkCpEWnI8yptSiK+LfO9Gl9OIi09NBDiEh2MiJkgBs1nuMIl4n
+         oxJwyoFgvjuu4YrCbvup8BUVo9BN7cJUFXBg6TK0NcZ1c+OofZ9I+mz3pAiyUtIQMVj2
+         03TQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767699213; x=1768304013;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=aY5FARf65kfsbdb7ftnB/uPYG4AgZz8PgCWDolIuCL0=;
-        b=UuWEHBcdSsdo0HYty8J4BrSjYv+GGp5KErSUKfd1TC4XjASshOtW15D1yX6ZDZmRRu
-         Ug5XFl3IT1JhDZ30S5upKxogzTqRUTkwQvk91REpuPvzBbLyFvpE4ixvcQvLGtfXJEIw
-         xIWyX33pVSJsLzABaykzCAtmx7V1bPDaBt0srOxduIiXzduDqhSH82ugk+hxS4hiXJ1v
-         UYHpVrWfatda+3AGo/zuH1YOxIXZMUBM+OODFW1xA923AjmnihwdZk5Y9UR9e3E4LMwf
-         p44Quq7nV3ZOtVcP82D1vJGQ4xpVyz0UnxRj4D2zN57O4s4MX6Pie7FG3ipCamdsmI8B
-         PD3g==
-X-Forwarded-Encrypted: i=1; AJvYcCVNn6wgEkKnRnQQDcgvTwygMcX0T5hhPX5rtdfsrBOHrNn3T0nT1KSnslxLeKyHDCD599eLga8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx7jD7PIo5nQgNI7CWqla9KpRMaPRImlvXl5zmQbPv9lzdlQvFR
-	efMH75oeeQF3fYG/LbEu1vUB5M8Mx7tIATbmV/XoM4YpEcDuNeuTxQCh
-X-Gm-Gg: AY/fxX4KOTHxcI7MlW+AmpaqBRdI65lvKCNnGGuE/1nboLHdtyHcej2RDZbnJnpK9oF
-	sZ28lvszseII1PAllpFxS1YsdM0S29PM78NocGjP/7qWMLcz+u2sBhZJOtU+0wYdKSlmqQwQ1tu
-	TJwfqVTMIMD+MMluRRi8IhChaBjZSc8wQT3+jEfcYV3J51Tvyw1L81nPk2JhxHdi+QgDgSS1nWh
-	xPgw/GUNGesnUKaty6cjQyqvQYLyPffFDGboqh07U/A1fpOhmSjLKwTpZeZhf0tVhKgM/0a/L4R
-	p6I6UyhQCE+0LUlw++xA476XRkQKvOgq/vlXp9m2ne2eQlRnm25oOlwp8Iy4aToZcLwOFND1IsN
-	y5YQTd4JscPt5wkJj4lrJD6PQwxM5UCqejhh+W3mjcQ/1qmmGoIkykXweoF3YnbvgPYdrm2idcC
-	t9pt73tuknFEZOYdnT+RnMUYEd
-X-Google-Smtp-Source: AGHT+IFKAjFYphYrDLHhk+T24gU/abKK3UAW6NHo0VX7fL8TrRcAZexjFpgP0TK8XjvR+rJnKRdFMQ==
-X-Received: by 2002:a05:6808:bd4:b0:450:b7a0:41d3 with SMTP id 5614622812f47-45a5b1a49famr1581987b6e.67.1767699212842;
-        Tue, 06 Jan 2026 03:33:32 -0800 (PST)
-Received: from gmail.com ([2a03:2880:10ff:5a::])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7ce478ede38sm1246486a34.26.2026.01.06.03.33.31
+        d=1e100.net; s=20230601; t=1767699451; x=1768304251;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=q6uW+A2P9pkdDCkg7XZPcaKU2E1i1mrVtntLiN6dJWY=;
+        b=PaItBi9DXbVwnn89lKrqwm7er9kIMXNjv2b4bubRl392umwey/Bd8cMWhq8f8HwBqz
+         QHNmRZ6eHGSjy+tMzh39iM6IaNuiMtu9WwqzCxZ+IM6ggTly8pLpxJFCz+bnbD/82QKt
+         wnQXaaOS1N+0rjEfMkJuOHVU6qesaq1YLX9ad0Zese9Hq0DfU7TNfi6+b08VUZ2HzLS0
+         dFm/XFqstz3O9qgjmAuxGYYHy45d0bItPxXxt56FWU4g4Jk9LBlGvrpHCTOPY0HxPka/
+         HqQjFTLCOfgnsRNsVWhr0o6ijNngwro1oPLOvUdbgdzn37u/riE7whXL5mRHqoHXs6sY
+         hbLA==
+X-Forwarded-Encrypted: i=1; AJvYcCWwxqev8HQHb1PPBmtN+x248cQzqi7XQ1zJTyv6u1PzZHziKLMGDRpVWoQMJIQ93ET/cs6EH9s=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxW8cRPoRfPY5bh9Pni39A05vg7Z1GoOzEgdXxa+H/mAskFOhrB
+	HWaIAqpcEH2MjITZ8c4bNYnxj88YSUwd1Pkzhg5Xs3N01SKOr4nNfwgFSigzTg==
+X-Gm-Gg: AY/fxX4aPAhM7nTQJEs0CAQDY1upUnRqD6Xl+yJVXldwI7+fELsejN/JycmBfW49GSE
+	QutsqCznyLiX9GaDmsPOXLRObfyABHXeIzigBcREHSox+OTprqgERwINL98ieTpK19K9A5plKOz
+	NU5jsdBZvVdw3SK7MJyVuCLeQAi87yqVDEftR7zxGRbiz96xzO5vLTu1ZUMDKMA0PIvPLl4jG+x
+	qkeJXswiujTAVYYwDdlHLsShztXGm0zqJA/2Bkjnk+6v7DNhwMOQLirJ4dbMs2nqr6ACkkaKRIs
+	kZXjjs8cO8ip4g/O4Z8gWlB1BRcpHibIJ5EAtswDkVTG/XDbea5hffTXfXtVYRChANCVqOdJAHm
+	hLEEjOCVMU34VUylGLzANJHM4YlJSsDZD+FcHHdx4UokzRIbZBw8KqnD8cRf4FzUNwx8SPxHdGb
+	7SxRzS+JPzvmoL+8LP2Bq5449kk21n+GKA3i1JSnRpQcHd
+X-Google-Smtp-Source: AGHT+IFZ91WQ+XxVidfhxQyJyWI8jqmAirmsj1rp2dJE8QgUjcxhZbOX7ZjT1XaFm0hj6+FAliB85A==
+X-Received: by 2002:a05:600c:4e86:b0:477:98f7:2aec with SMTP id 5b1f17b1804b1-47d7f066195mr30148295e9.3.1767699451299;
+        Tue, 06 Jan 2026 03:37:31 -0800 (PST)
+Received: from ionutnechita-arz2022.local ([2a02:2f0e:ca09:7000:33fc:5cce:3767:6b22])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47d7f410c6csm40282735e9.1.2026.01.06.03.37.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Jan 2026 03:33:32 -0800 (PST)
-Date: Tue, 6 Jan 2026 03:33:30 -0800
-From: Breno Leitao <leitao@debian.org>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Michael Chan <michael.chan@broadcom.com>, 
-	Pavan Chebbi <pavan.chebbi@broadcom.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Paolo Abeni <pabeni@redhat.com>, Richard Cochran <richardcochran@gmail.com>, 
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>, Vadim Fedorenko <vadim.fedorenko@linux.dev>, 
-	Vladimir Oltean <vladimir.oltean@nxp.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	kernel-team@meta.com, stable@vger.kernel.org
-Subject: Re: [PATCH net v2] bnxt_en: Fix NULL pointer crash in
- bnxt_ptp_enable during error cleanup
-Message-ID: <eitjt4fn4kty35a7ilfuygdwrpbye2gaz3zu6uoposmtbk52ax@skrxzmvkz6p4>
-References: <20260105-bnxt-v2-1-9ac69edef726@debian.org>
- <20260105160458.5483a5ea@kernel.org>
+        Tue, 06 Jan 2026 03:37:30 -0800 (PST)
+From: djiony2011@gmail.com
+X-Google-Original-From: ionut.nechita@windriver.com
+To: muchun.song@linux.dev
+Cc: axboe@kernel.dk,
+	gregkh@linuxfoundation.org,
+	ionut.nechita@windriver.com,
+	linux-block@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	ming.lei@redhat.com,
+	sashal@kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] block/blk-mq: fix RT kernel regression with queue_lock in hot path
+Date: Tue,  6 Jan 2026 13:36:27 +0200
+Message-ID: <20260106113626.7319-2-ionut.nechita@windriver.com>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <73000e7f-14a7-40be-a137-060e5c2c49dc@linux.dev>
+References: <73000e7f-14a7-40be-a137-060e5c2c49dc@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260105160458.5483a5ea@kernel.org>
+Content-Transfer-Encoding: 8bit
 
-On Mon, Jan 05, 2026 at 04:04:58PM -0800, Jakub Kicinski wrote:
-> On Mon, 05 Jan 2026 04:00:16 -0800 Breno Leitao wrote:
-> >  init_err_pci_clean:
-> >  	bnxt_hwrm_func_drv_unrgtr(bp);
-> > +	bnxt_ptp_clear(bp);
-> > +	kfree(bp->ptp_cfg);
-> >  	bnxt_free_hwrm_resources(bp);
-> >  	bnxt_hwmon_uninit(bp);
-> >  	bnxt_ethtool_free(bp);
-> > -	bnxt_ptp_clear(bp);
-> > -	kfree(bp->ptp_cfg);
-> >  	bp->ptp_cfg = NULL;
-> 
-> Is there a reason to leave clearing of the pointer behind?
-> I don't see it mentioned in the commit msg..
-> Checking previous discussion it sounds like Pavan asked for the
-> clearing to also be moved.
+From: Ionut Nechita <ionut.nechita@windriver.com>
 
-no reason, just a mistake. I will update.
+Hi Muchun,
+
+Thank you for the detailed review. Your questions about the memory barriers are
+absolutely correct and highlight fundamental issues with my approach.
+
+> Memory barriers must be used in pairs. So how to synchronize?
+
+> Why we need another barrier? What order does this barrier guarantee?
+
+You're right to ask these questions. After careful consideration and discussion
+with Ming Lei, I've concluded that the memory barrier approach in this patch is
+flawed and insufficient.
+
+The fundamental problem is:
+1. Memory barriers need proper pairing on both read and write sides
+2. The write-side barriers would need to be inserted at MULTIPLE call sites
+   throughout the block layer - everywhere work is added before calling
+   blk_mq_run_hw_queue()
+3. This is exactly why the original commit 679b1874eba7 chose the lock-based
+   approach, noting that "memory barrier is not easy to be maintained"
+
+My patch attempted to add barriers only in blk_mq_run_hw_queue(), but didn't
+address the pairing barriers needed at all the call sites that add work to
+dispatch lists/sw queues. This makes the synchronization incomplete.
+
+## New approach: dedicated raw_spinlock
+
+I'm abandoning the memory barrier approach and preparing a new patch that uses
+a dedicated raw_spinlock_t (quiesce_sync_lock) instead of the general-purpose
+queue_lock.
+
+The key differences from the current problematic code:
+- Current: Uses queue_lock (spinlock_t) which becomes rt_mutex in RT kernel
+- New: Uses quiesce_sync_lock (raw_spinlock_t) which stays a real spinlock
+
+Why raw_spinlock is safe:
+- Critical section is provably short (only flag and counter checks)
+- No sleeping operations under the lock
+- Specific to quiesce synchronization, not general queue operations
+
+This approach:
+- Maintains the correct synchronization from 679b1874eba7
+- Avoids sleeping in RT kernel's IRQ thread context
+- Simpler and more maintainable than memory barrier pairing across many call sites
+
+I'll send the new patch shortly. Thank you for catching these issues before
+they made it into the kernel.
+
+Best regards,
+Ionut
 
