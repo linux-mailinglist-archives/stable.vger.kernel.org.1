@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-206053-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206054-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22704CFB584
-	for <lists+stable@lfdr.de>; Wed, 07 Jan 2026 00:28:41 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C846DCFB587
+	for <lists+stable@lfdr.de>; Wed, 07 Jan 2026 00:28:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C2EA43044BB2
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 23:28:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 02AAF3045CEB
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 23:28:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3E0B2DE6FC;
-	Tue,  6 Jan 2026 23:28:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38BDB2DE6FC;
+	Tue,  6 Jan 2026 23:28:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GEmSdtyp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WDRS6o97"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A441C2C15A0
-	for <stable@vger.kernel.org>; Tue,  6 Jan 2026 23:28:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED5DB2C15A0
+	for <stable@vger.kernel.org>; Tue,  6 Jan 2026 23:28:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767742118; cv=none; b=J2Uoc+zaktwSHuQkaHhlIfmNDmynE3iJwRPWnKp3lsrKIWTiW12/y89DyFKwP+f1Nk0rbI6Xx6OpRknq+9cwSUYRLynXRvMIMZYS5YcFwG/UIM1RNEjPhNvX8W6dSIg1ufj/YBZkpk+GewROMca5NR7v+gPb0XjNtDbvnSYvny8=
+	t=1767742122; cv=none; b=jzh5uQSR7aDJLbXN7DSYsItT2mkZeXhtt/NPdQCWr276xjT/5chbpByl/ldmD/W+gLk+aeeo1UooVRCsG6Qv92PC+Uk7f4RZBoKaxlcT5eEbqEwbb+hB09NyjJQ7z1K+p4c+up7GPzK5tfd4wDeV8QkqAS9FDc8yUvrSOFN5g7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767742118; c=relaxed/simple;
-	bh=PWuTjR+X4u7/k4uYH4ee6VjD1RedGNokjxA1Bkf4byI=;
+	s=arc-20240116; t=1767742122; c=relaxed/simple;
+	bh=cGmwM5Zz7fUlcVZ8t/bvcO/X06pX09ahQg5VG9sn0+g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t3kUMKh9GL+CARQGcxgUvEroPz0ok/XZ0qef7Lu5V8MSsDwkuxiaNu9zfNyZqFABdadMvwUKxftvsu8NVqRkyJwfEgmyHADzuB/rJX53YcS8VYzyshGyhCKKC+4+wHyEIplXSYT1/BWoyscKc5D1UDL5avqcrmA09U0HnkFGS9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GEmSdtyp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C116C116C6;
-	Tue,  6 Jan 2026 23:28:37 +0000 (UTC)
+	 MIME-Version; b=lPSdEvtJFL3QqbZLafBPlast42k/gSP3jIIizplDSuEGMepIjeL20UGJ+gHJ07QgL3+8ZpTpjariPG7iBl27N7fUQ//CGQRS5u/6Eetqrh3Tmp9phFtmNuF2+OHAfKmE8WOQSknYugVE/GOdUns9yDg2MbymTm37wAsQbEyrduE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WDRS6o97; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10C41C116C6;
+	Tue,  6 Jan 2026 23:28:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767742118;
-	bh=PWuTjR+X4u7/k4uYH4ee6VjD1RedGNokjxA1Bkf4byI=;
+	s=k20201202; t=1767742121;
+	bh=cGmwM5Zz7fUlcVZ8t/bvcO/X06pX09ahQg5VG9sn0+g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GEmSdtypp4gJtj8DmpE18P0a4efMvekCNVkWlkqQ4yROXF6IbgyKuIeU9MuvsKyAe
-	 W+mQ8d/5eKXvqZUpWY331S0QzoYdmnYUlcAhkYIA8c5bdoIKPYpT+T0QD+cS+8GUut
-	 wlb1Tm1GfRcTW0sWVySyG2ddC8TemluLVsnRunYL0Sd2DcXpuleEKAsZSqFLvvr44n
-	 LjnqrHVVzBvs8O6PEIYww2nBmumPW7xzB5PCQTtooJT1FIprAeP3iHQRHLBXyZULn9
-	 naMnMKAB0+AbLhrUA9kZn1bDnw58LIni7wlMFe3r8gizfvsGmPyjEbUIHSWiY7O/DJ
-	 WlabsZbi3zB5g==
+	b=WDRS6o97JtGoHZwqrVMlaA6YxIUAdZrcJPYaBj9zQ1rj2IHZWMnj7wJj5eLQjy0HI
+	 E18z+0nwTYexxckFDMQKNnHQrjqA9A2fd64NQM2gNa1Z0Wwc/Mz92X/kNk410luGLh
+	 Rd31kOOcO4VMpjZeFrpdnDG96bLRYBAt3ZteZKDja5OkEOcJOJRdfdKRZ/U3a3VI3e
+	 Kksde+6JIRH2WRv4tXl/xvRbiZRLKU3UvpqCi8PvcQXnIX1nCa+Omn+me/MeTrpSxV
+	 g9N6aYtB+OvL1iBbzthS994MOkcJVN12NCrv81NOccFmm1grCuzZ36Je/qMnjLZReq
+	 xrZGfPk/mJ9bA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: NeilBrown <neil@brown.name>,
-	Olga Kornievskaia <okorniev@redhat.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
+Cc: Jouni Malinen <jouni.malinen@oss.qualcomm.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y] lockd: fix vfs_test_lock() calls
-Date: Tue,  6 Jan 2026 18:28:35 -0500
-Message-ID: <20260106232835.3452850-1-sashal@kernel.org>
+Subject: [PATCH 6.6.y] wifi: mac80211: Discard Beacon frames to non-broadcast address
+Date: Tue,  6 Jan 2026 18:28:39 -0500
+Message-ID: <20260106232839.3452928-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026010500-dentist-busybody-6e8b@gregkh>
-References: <2026010500-dentist-busybody-6e8b@gregkh>
+In-Reply-To: <2026010516-playmate-shorthand-2e97@gregkh>
+References: <2026010516-playmate-shorthand-2e97@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,187 +58,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: NeilBrown <neil@brown.name>
+From: Jouni Malinen <jouni.malinen@oss.qualcomm.com>
 
-[ Upstream commit a49a2a1baa0c553c3548a1c414b6a3c005a8deba ]
+[ Upstream commit 193d18f60588e95d62e0f82b6a53893e5f2f19f8 ]
 
-Usage of vfs_test_lock() is somewhat confused.  Documentation suggests
-it is given a "lock" but this is not the case.  It is given a struct
-file_lock which contains some details of the sort of lock it should be
-looking for.
+Beacon frames are required to be sent to the broadcast address, see IEEE
+Std 802.11-2020, 11.1.3.1 ("The Address 1 field of the Beacon .. frame
+shall be set to the broadcast address"). A unicast Beacon frame might be
+used as a targeted attack to get one of the associated STAs to do
+something (e.g., using CSA to move it to another channel). As such, it
+is better have strict filtering for this on the received side and
+discard all Beacon frames that are sent to an unexpected address.
 
-In particular passing a "file_lock" containing fl_lmops or fl_ops is
-meaningless and possibly confusing.
+This is even more important for cases where beacon protection is used.
+The current implementation in mac80211 is correctly discarding unicast
+Beacon frames if the Protected Frame bit in the Frame Control field is
+set to 0. However, if that bit is set to 1, the logic used for checking
+for configured BIGTK(s) does not actually work. If the driver does not
+have logic for dropping unicast Beacon frames with Protected Frame bit
+1, these frames would be accepted in mac80211 processing as valid Beacon
+frames even though they are not protected. This would allow beacon
+protection to be bypassed. While the logic for checking beacon
+protection could be extended to cover this corner case, a more generic
+check for discard all Beacon frames based on A1=unicast address covers
+this without needing additional changes.
 
-This is particularly problematic in lockd.  nlmsvc_testlock() receives
-an initialised "file_lock" from xdr-decode, including manager ops and an
-owner.  It then mistakenly passes this to vfs_test_lock() which might
-replace the owner and the ops.  This can lead to confusion when freeing
-the lock.
+Address all these issues by dropping received Beacon frames if they are
+sent to a non-broadcast address.
 
-The primary role of the 'struct file_lock' passed to vfs_test_lock() is
-to report a conflicting lock that was found, so it makes more sense for
-nlmsvc_testlock() to pass "conflock", which it uses for returning the
-conflicting lock.
-
-With this change, freeing of the lock is not confused and code in
-__nlm4svc_proc_test() and __nlmsvc_proc_test() can be simplified.
-
-Documentation for vfs_test_lock() is improved to reflect its real
-purpose, and a WARN_ON_ONCE() is added to avoid a similar problem in the
-future.
-
-Reported-by: Olga Kornievskaia <okorniev@redhat.com>
-Closes: https://lore.kernel.org/all/20251021130506.45065-1-okorniev@redhat.com
-Signed-off-by: NeilBrown <neil@brown.name>
-Fixes: 20fa19027286 ("nfs: add export operations")
 Cc: stable@vger.kernel.org
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-[ adapted c.flc_* field accesses to direct fl_* fields ]
+Fixes: af2d14b01c32 ("mac80211: Beacon protection using the new BIGTK (STA)")
+Signed-off-by: Jouni Malinen <jouni.malinen@oss.qualcomm.com>
+Link: https://patch.msgid.link/20251215151134.104501-1-jouni.malinen@oss.qualcomm.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+[ changed RX_DROP to RX_DROP_MONITOR ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/lockd/svc4proc.c |  4 +---
- fs/lockd/svclock.c  | 21 ++++++++++++---------
- fs/lockd/svcproc.c  |  5 +----
- fs/locks.c          | 13 +++++++++++--
- 4 files changed, 25 insertions(+), 18 deletions(-)
+ net/mac80211/rx.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/fs/lockd/svc4proc.c b/fs/lockd/svc4proc.c
-index e318d55e4c0e..277d665937ae 100644
---- a/fs/lockd/svc4proc.c
-+++ b/fs/lockd/svc4proc.c
-@@ -96,7 +96,6 @@ __nlm4svc_proc_test(struct svc_rqst *rqstp, struct nlm_res *resp)
- 	struct nlm_args *argp = rqstp->rq_argp;
- 	struct nlm_host	*host;
- 	struct nlm_file	*file;
--	struct nlm_lockowner *test_owner;
- 	__be32 rc = rpc_success;
+diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
+index e6a0a65d4d43..1303b15e2b29 100644
+--- a/net/mac80211/rx.c
++++ b/net/mac80211/rx.c
+@@ -3388,6 +3388,11 @@ ieee80211_rx_h_mgmt_check(struct ieee80211_rx_data *rx)
+ 	    rx->skb->len < IEEE80211_MIN_ACTION_SIZE)
+ 		return RX_DROP_UNUSABLE;
  
- 	dprintk("lockd: TEST4        called\n");
-@@ -106,7 +105,6 @@ __nlm4svc_proc_test(struct svc_rqst *rqstp, struct nlm_res *resp)
- 	if ((resp->status = nlm4svc_retrieve_args(rqstp, argp, &host, &file)))
- 		return resp->status == nlm_drop_reply ? rpc_drop_reply :rpc_success;
- 
--	test_owner = argp->lock.fl.fl_owner;
- 	/* Now check for conflicting locks */
- 	resp->status = nlmsvc_testlock(rqstp, file, host, &argp->lock, &resp->lock, &resp->cookie);
- 	if (resp->status == nlm_drop_reply)
-@@ -114,7 +112,7 @@ __nlm4svc_proc_test(struct svc_rqst *rqstp, struct nlm_res *resp)
- 	else
- 		dprintk("lockd: TEST4        status %d\n", ntohl(resp->status));
- 
--	nlmsvc_put_lockowner(test_owner);
-+	nlmsvc_release_lockowner(&argp->lock);
- 	nlmsvc_release_host(host);
- 	nlm_release_file(file);
- 	return rc;
-diff --git a/fs/lockd/svclock.c b/fs/lockd/svclock.c
-index 4e30f3c50970..035f885809dd 100644
---- a/fs/lockd/svclock.c
-+++ b/fs/lockd/svclock.c
-@@ -604,7 +604,13 @@ nlmsvc_testlock(struct svc_rqst *rqstp, struct nlm_file *file,
- 	}
- 
- 	mode = lock_to_openmode(&lock->fl);
--	error = vfs_test_lock(file->f_file[mode], &lock->fl);
-+	locks_init_lock(&conflock->fl);
-+	/* vfs_test_lock only uses start, end, and owner, but tests fl_file */
-+	conflock->fl.fl_file = lock->fl.fl_file;
-+	conflock->fl.fl_start = lock->fl.fl_start;
-+	conflock->fl.fl_end = lock->fl.fl_end;
-+	conflock->fl.fl_owner = lock->fl.fl_owner;
-+	error = vfs_test_lock(file->f_file[mode], &conflock->fl);
- 	if (error) {
- 		/* We can't currently deal with deferred test requests */
- 		if (error == FILE_LOCK_DEFERRED)
-@@ -614,22 +620,19 @@ nlmsvc_testlock(struct svc_rqst *rqstp, struct nlm_file *file,
- 		goto out;
- 	}
- 
--	if (lock->fl.fl_type == F_UNLCK) {
-+	if (conflock->fl.fl_type == F_UNLCK) {
- 		ret = nlm_granted;
- 		goto out;
- 	}
- 
- 	dprintk("lockd: conflicting lock(ty=%d, %Ld-%Ld)\n",
--		lock->fl.fl_type, (long long)lock->fl.fl_start,
--		(long long)lock->fl.fl_end);
-+		conflock->fl.fl_type, (long long)conflock->fl.fl_start,
-+		(long long)conflock->fl.fl_end);
- 	conflock->caller = "somehost";	/* FIXME */
- 	conflock->len = strlen(conflock->caller);
- 	conflock->oh.len = 0;		/* don't return OH info */
--	conflock->svid = lock->fl.fl_pid;
--	conflock->fl.fl_type = lock->fl.fl_type;
--	conflock->fl.fl_start = lock->fl.fl_start;
--	conflock->fl.fl_end = lock->fl.fl_end;
--	locks_release_private(&lock->fl);
-+	conflock->svid = conflock->fl.fl_pid;
-+	locks_release_private(&conflock->fl);
- 
- 	ret = nlm_lck_denied;
- out:
-diff --git a/fs/lockd/svcproc.c b/fs/lockd/svcproc.c
-index 2a615032f5d0..fdbe93accb86 100644
---- a/fs/lockd/svcproc.c
-+++ b/fs/lockd/svcproc.c
-@@ -117,7 +117,6 @@ __nlmsvc_proc_test(struct svc_rqst *rqstp, struct nlm_res *resp)
- 	struct nlm_args *argp = rqstp->rq_argp;
- 	struct nlm_host	*host;
- 	struct nlm_file	*file;
--	struct nlm_lockowner *test_owner;
- 	__be32 rc = rpc_success;
- 
- 	dprintk("lockd: TEST          called\n");
-@@ -127,8 +126,6 @@ __nlmsvc_proc_test(struct svc_rqst *rqstp, struct nlm_res *resp)
- 	if ((resp->status = nlmsvc_retrieve_args(rqstp, argp, &host, &file)))
- 		return resp->status == nlm_drop_reply ? rpc_drop_reply :rpc_success;
- 
--	test_owner = argp->lock.fl.fl_owner;
--
- 	/* Now check for conflicting locks */
- 	resp->status = cast_status(nlmsvc_testlock(rqstp, file, host, &argp->lock, &resp->lock, &resp->cookie));
- 	if (resp->status == nlm_drop_reply)
-@@ -137,7 +134,7 @@ __nlmsvc_proc_test(struct svc_rqst *rqstp, struct nlm_res *resp)
- 		dprintk("lockd: TEST          status %d vers %d\n",
- 			ntohl(resp->status), rqstp->rq_vers);
- 
--	nlmsvc_put_lockowner(test_owner);
-+	nlmsvc_release_lockowner(&argp->lock);
- 	nlmsvc_release_host(host);
- 	nlm_release_file(file);
- 	return rc;
-diff --git a/fs/locks.c b/fs/locks.c
-index 250559af8064..d923a9edff66 100644
---- a/fs/locks.c
-+++ b/fs/locks.c
-@@ -2229,13 +2229,22 @@ SYSCALL_DEFINE2(flock, unsigned int, fd, unsigned int, cmd)
- /**
-  * vfs_test_lock - test file byte range lock
-  * @filp: The file to test lock for
-- * @fl: The lock to test; also used to hold result
-+ * @fl: The byte-range in the file to test; also used to hold result
-  *
-+ * On entry, @fl does not contain a lock, but identifies a range (fl_start, fl_end)
-+ * in the file (c.flc_file), and an owner (c.flc_owner) for whom existing locks
-+ * should be ignored.  c.flc_type and c.flc_flags are ignored.
-+ * Both fl_lmops and fl_ops in @fl must be NULL.
-  * Returns -ERRNO on failure.  Indicates presence of conflicting lock by
-- * setting conf->fl_type to something other than F_UNLCK.
-+ * setting fl->fl_type to something other than F_UNLCK.
-+ *
-+ * If vfs_test_lock() does find a lock and return it, the caller must
-+ * use locks_free_lock() or locks_release_private() on the returned lock.
-  */
- int vfs_test_lock(struct file *filp, struct file_lock *fl)
- {
-+	WARN_ON_ONCE(fl->fl_ops || fl->fl_lmops);
-+	WARN_ON_ONCE(filp != fl->fl_file);
- 	if (filp->f_op->lock)
- 		return filp->f_op->lock(filp, F_GETLK, fl);
- 	posix_test_lock(filp, fl);
++	/* Drop non-broadcast Beacon frames */
++	if (ieee80211_is_beacon(mgmt->frame_control) &&
++	    !is_broadcast_ether_addr(mgmt->da))
++		return RX_DROP_MONITOR;
++
+ 	if (rx->sdata->vif.type == NL80211_IFTYPE_AP &&
+ 	    ieee80211_is_beacon(mgmt->frame_control) &&
+ 	    !(rx->flags & IEEE80211_RX_BEACON_REPORTED)) {
 -- 
 2.51.0
 
