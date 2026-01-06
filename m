@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-205501-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205780-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68162CF9E15
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 18:55:22 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC460CF9EED
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:06:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 87F5C317926D
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:42:25 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 90F5E302ADF0
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:06:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DED782FE598;
-	Tue,  6 Jan 2026 17:35:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4528364021;
+	Tue,  6 Jan 2026 17:50:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z5b3Oczy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2baXE4Bg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C7692FE076;
-	Tue,  6 Jan 2026 17:35:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7118A363C50;
+	Tue,  6 Jan 2026 17:50:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767720903; cv=none; b=cCkHBV+8VVWiOMG5HZyAL4eOa6a49K5+jH3GTgU7e38BtdMP4IWwNefNwylJG/sYXX3vJeh04amky8UDD3YWIxjtMGlSfa4KJ7rjK9gdpZjItweNg8J65r2qO7USbIouEs69NzOKlBncjB3hLc8SM+m8IP2Fll/TFBTnYc83x60=
+	t=1767721837; cv=none; b=KWIaJOJ76BKs1rzfTOd4AGahW8YAMt1Iz4iuAiFf2sqn45MGEbU7nSZeTqes6qY3Gbh7uEjNi2cuXBCxVe5hrIceXYtZOqaS09y65jLJYhXRsGZchMtqWgMXp73xYiobhfM1phl2iq36GSganJ1ZUgicU4bZ9eSg9bLGzg2RQII=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767720903; c=relaxed/simple;
-	bh=J0M6THuPidHZSq/hndcr6yNWZbrDw10ioJrpzqT2A0Y=;
+	s=arc-20240116; t=1767721837; c=relaxed/simple;
+	bh=+my1UPdPstnaG0Bq/1f+u4LIxMFE+4q1KGeIJlLFdRc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rKQ38WszBwfeBrl42gAP27AbFDYo6BEiicAGOz1n4xewTPiw52ve7iE7eHIpb1gs0EWDHK3GN+paRMT1xgycEKgxy2IceWHVJDwHSYI6Y9kyN8PRQ7W3AABG+fH2of8tvy/uSCgnaWTPtGnsY001USO/YWrf0M9KcEnLmSyFLIQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z5b3Oczy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10E8FC116C6;
-	Tue,  6 Jan 2026 17:35:02 +0000 (UTC)
+	 MIME-Version; b=KJent85s7hOw/m5AxfkIyE5U77V6UVdQwZxLpJCLlN8vMIfmoJxTiSVJdAmbuGZotlvszWB4l8x4Uw/IJBHZB6qPJJXk1bWBEZuxMX7YtoFgZOmFzVzINAL7jvyCVHHZ1MrxP96rqGHxTTb9lLxKisbH5Vj77rx4YMBTrjTDvFY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2baXE4Bg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B418CC116C6;
+	Tue,  6 Jan 2026 17:50:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767720903;
-	bh=J0M6THuPidHZSq/hndcr6yNWZbrDw10ioJrpzqT2A0Y=;
+	s=korg; t=1767721837;
+	bh=+my1UPdPstnaG0Bq/1f+u4LIxMFE+4q1KGeIJlLFdRc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z5b3Oczyz82hE0sL7oOEDGMB5SDQB2ClPVocASkIlXy9/Ff3jzF7ewaPKFOSgcp8C
-	 OamM390CSEO7diouDMrwc7lNtzQ5ktFotOx2I0w7NpPJsTXqLtulppW+FGnNhoS0JB
-	 aWgFRxHpfbUAsRorFaG9KImf7FS4vY5rIxFCLJyI=
+	b=2baXE4BgaOQ83oo/8J4qkOZw28FCyqTF9KY3Sf8Nlb2lnIPmo+OgYcOJRJMNTB5/2
+	 3obb5RmZjHop16B6KxKwoVTdfO8MPsYCv5urjgZkO69hAyiHSCLArzq69iwTa+n+k2
+	 7Uzo0C5v3TL+CuD93N25SnP6jWg8n4TYS+R54HBM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Hitz <christian.hitz@bbv.ch>,
-	Lee Jones <lee@kernel.org>
-Subject: [PATCH 6.12 376/567] leds: leds-lp50xx: LP5009 supports 3 modules for a total of 9 LEDs
-Date: Tue,  6 Jan 2026 18:02:38 +0100
-Message-ID: <20260106170505.249797594@linuxfoundation.org>
+	Honggang LI <honggangli@163.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 085/312] RDMA/rtrs: Fix clt_path::max_pages_per_mr calculation
+Date: Tue,  6 Jan 2026 18:02:39 +0100
+Message-ID: <20260106170550.914113884@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
-References: <20260106170451.332875001@linuxfoundation.org>
+In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
+References: <20260106170547.832845344@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,37 +60,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Hitz <christian.hitz@bbv.ch>
+From: Honggang LI <honggangli@163.com>
 
-commit 5246e3673eeeccb4f5bf4f42375dd495d465ac15 upstream.
+[ Upstream commit 43bd09d5b750f700499ae8ec45fd41a4c48673e6 ]
 
-LP5009 supports 9 LED outputs that are grouped into 3 modules.
+If device max_mr_size bits in the range [mr_page_shift+31:mr_page_shift]
+are zero, the `min3` function will set clt_path::max_pages_per_mr to
+zero.
 
-Cc: stable@vger.kernel.org
-Fixes: 242b81170fb8 ("leds: lp50xx: Add the LP50XX family of the RGB LED driver")
-Signed-off-by: Christian Hitz <christian.hitz@bbv.ch>
-Link: https://patch.msgid.link/20251022063305.972190-1-christian@klarinett.li
-Signed-off-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+`alloc_path_reqs` will pass zero, which is invalid, as the third parameter
+to `ib_alloc_mr`.
+
+Fixes: 6a98d71daea1 ("RDMA/rtrs: client: main functionality")
+Signed-off-by: Honggang LI <honggangli@163.com>
+Link: https://patch.msgid.link/20251229025617.13241-1-honggangli@163.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/leds/leds-lp50xx.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/infiniband/ulp/rtrs/rtrs-clt.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/leds/leds-lp50xx.c
-+++ b/drivers/leds/leds-lp50xx.c
-@@ -56,7 +56,7 @@
- /* There are 3 LED outputs per bank */
- #define LP50XX_LEDS_PER_MODULE	3
- 
--#define LP5009_MAX_LED_MODULES	2
-+#define LP5009_MAX_LED_MODULES	3
- #define LP5012_MAX_LED_MODULES	4
- #define LP5018_MAX_LED_MODULES	6
- #define LP5024_MAX_LED_MODULES	8
+diff --git a/drivers/infiniband/ulp/rtrs/rtrs-clt.c b/drivers/infiniband/ulp/rtrs/rtrs-clt.c
+index 71387811b281..2b397a544cb9 100644
+--- a/drivers/infiniband/ulp/rtrs/rtrs-clt.c
++++ b/drivers/infiniband/ulp/rtrs/rtrs-clt.c
+@@ -1464,6 +1464,7 @@ static void query_fast_reg_mode(struct rtrs_clt_path *clt_path)
+ 	mr_page_shift      = max(12, ffs(ib_dev->attrs.page_size_cap) - 1);
+ 	max_pages_per_mr   = ib_dev->attrs.max_mr_size;
+ 	do_div(max_pages_per_mr, (1ull << mr_page_shift));
++	max_pages_per_mr = min_not_zero((u32)max_pages_per_mr, U32_MAX);
+ 	clt_path->max_pages_per_mr =
+ 		min3(clt_path->max_pages_per_mr, (u32)max_pages_per_mr,
+ 		     ib_dev->attrs.max_fast_reg_page_list_len);
+-- 
+2.51.0
+
 
 
 
