@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-205647-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205649-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B28A4CFA306
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:33:36 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DEA5CFA342
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:35:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BCD35301F7C9
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:33:35 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id BC39730118FB
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:35:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 698172FE566;
-	Tue,  6 Jan 2026 17:43:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E111E2FE579;
+	Tue,  6 Jan 2026 17:43:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qOaDUrmY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mjnBkZua"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 233012FD69E;
-	Tue,  6 Jan 2026 17:43:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 994C32FE57B;
+	Tue,  6 Jan 2026 17:43:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721388; cv=none; b=P5oRnHcjHOMPUxoTQ3uMmMs5w6DqoK4Rt4yEAOqKV7HOb4sJWgJJz5saoviZyHddvx6pn5IrZRSQLd0uVo9cXvu9nfoJGOIc8c5SMPdh19cCPGatBEqhfI+N8Yogh1uxbCp33EuWiaPtWs6yldCeQXpfeOoWSZogYOVAeUGRtkE=
+	t=1767721394; cv=none; b=T2Ld9iJ1L6ANTqWr/iiNsbAnCaNLsCkKCGeP4YKfzsDM6ecTDT5aL8zMDnoZJY1cmGWDq1BqpfBdeJYecpRx1Q/KIgYxp9FnwP8jWH2h2HncLIGK7/cmT4dNe3DV6/Er8+pa+XovMRhainX97sW2fIM3bTlNYDXfOG6l0GizLu8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721388; c=relaxed/simple;
-	bh=hWGmpzPhdW1Yo5uvJAJtwKJh6KT/AuHvPJEuDPeFTUI=;
+	s=arc-20240116; t=1767721394; c=relaxed/simple;
+	bh=cKPpLJl4rFxCKdvs6wAlqerp/IJdtJc7mP7UoeOekJo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pBvgVLZ21HhnYPkGYQYw2odOrPRjOIO88dHPLx/wj7sMgTOOBBspV2R7P7fTbqMNxlrw9sfQuIjKi5I/ZPHZybU2wQyx0lb65z9YmLpk9dxJ3HFSzOOgqE/IacPdcPdgGPzxjUBnK/Losla64wQ3ohYVyJIv6SPsCmPCzUwu6gE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qOaDUrmY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C4C9C116C6;
-	Tue,  6 Jan 2026 17:43:07 +0000 (UTC)
+	 MIME-Version; b=ls0ZEHMYQh43uKUz3G4epgLMRriFTUs9SKaweOYD9HaeUbAc13gqwSQ20muZMd1mnhvgRsSr7pTTh3IcJe92HpsWlBF4GXvpn+nernJoF9amSdrdHKFyCjhc1J9p/deE8FQNz9Vxci1f2EXvEw3zaIo52p7lV6gUd+7Rsh0X3WI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mjnBkZua; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F109C116C6;
+	Tue,  6 Jan 2026 17:43:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721388;
-	bh=hWGmpzPhdW1Yo5uvJAJtwKJh6KT/AuHvPJEuDPeFTUI=;
+	s=korg; t=1767721394;
+	bh=cKPpLJl4rFxCKdvs6wAlqerp/IJdtJc7mP7UoeOekJo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qOaDUrmYGSEZM394RiAtRsp66FNfV1PSuR4oNvdAlaGuhdIcmDkLOMxpjZZjjEYfs
-	 x0DDEqpERsCQD8mG8ykDxA9tXV8d1lReiKjaAX0Ey8+mYiGokEkTyB9L6FU8KXb7l0
-	 bkZVooaI44nzbcAmjz2BvnfGUdXGg+GC34imPMmU=
+	b=mjnBkZuar5Pps9KLey6kFLac+8MGf4k6YkxHho7fXqYIHSYXQrXPTPM7a6u4j5WiC
+	 TJAuDakMH4oepI1yoLMmMGv2tD7O6b+b4TN8emSAqnp9oAx2chRnpuI+u4xYH0hv5K
+	 fN4L00Pl/pVHxaoujDzkOyxbSiQWwNxeXSCo6XOo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Mika Westerberg <westeri@kernel.org>,
 	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Askar Safin <safinaskar@gmail.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 520/567] gpiolib: acpi: Add a quirk for Acer Nitro V15
-Date: Tue,  6 Jan 2026 18:05:02 +0100
-Message-ID: <20260106170510.623724462@linuxfoundation.org>
+Subject: [PATCH 6.12 522/567] gpiolib: acpi: Add quirk for Dell Precision 7780
+Date: Tue,  6 Jan 2026 18:05:04 +0100
+Message-ID: <20260106170510.698908752@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
 References: <20260106170451.332875001@linuxfoundation.org>
@@ -65,48 +65,53 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Askar Safin <safinaskar@gmail.com>
 
-[ Upstream commit 9ab29ed505557bd106e292184fa4917955eb8e6e ]
+[ Upstream commit 2d967310c49ed93ac11cef408a55ddf15c3dd52e ]
 
-It is reported that on Acer Nitro V15 suspend only works properly if the
-keyboard backlight is turned off. In looking through the issue Acer Nitro
-V15 has a GPIO (#8) specified in _AEI but it has no matching notify device
-in _EVT. The values for GPIO #8 change as keyboard backlight is turned on
-and off.
+Dell Precision 7780 often wakes up on its own from suspend. Sometimes
+wake up happens immediately (i. e. within 7 seconds), sometimes it happens
+after, say, 30 minutes.
 
-This makes it seem that GPIO #8 is actually supposed to be solely for
-keyboard backlight.  Turning off the interrupt for this GPIO fixes the issue.
-Add a quirk that does just that.
-
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4169
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Acked-by: Mika Westerberg <westeri@kernel.org>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Stable-dep-of: 2d967310c49e ("gpiolib: acpi: Add quirk for Dell Precision 7780")
+Fixes: 1796f808e4bb ("HID: i2c-hid: acpi: Stop setting wakeup_capable")
+Link: https://lore.kernel.org/linux-i2c/197ae95ffd8.dc819e60457077.7692120488609091556@zohomail.com/
+Cc: stable@vger.kernel.org
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Askar Safin <safinaskar@gmail.com>
+Link: https://lore.kernel.org/r/20251206180414.3183334-2-safinaskar@gmail.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpiolib-acpi-quirks.c |   13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ drivers/gpio/gpiolib-acpi-quirks.c |   22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
 --- a/drivers/gpio/gpiolib-acpi-quirks.c
 +++ b/drivers/gpio/gpiolib-acpi-quirks.c
-@@ -331,6 +331,19 @@ static const struct dmi_system_id gpioli
- 			.ignore_interrupt = "AMDI0030:00@11",
+@@ -358,6 +358,28 @@ static const struct dmi_system_id gpioli
+ 			.ignore_wake = "ASCP1A00:00@8",
  		},
  	},
 +	{
 +		/*
-+		 * Wakeup only works when keyboard backlight is turned off
-+		 * https://gitlab.freedesktop.org/drm/amd/-/issues/4169
++		 * Spurious wakeups, likely from touchpad controller
++		 * Dell Precision 7780
++		 * Found in BIOS 1.24.1
++		 *
++		 * Found in touchpad firmware, installed by Dell Touchpad Firmware Update Utility version 1160.4196.9, A01
++		 * ( Dell-Touchpad-Firmware-Update-Utility_VYGNN_WIN64_1160.4196.9_A00.EXE ),
++		 * released on 11 Jul 2024
++		 *
++		 * https://lore.kernel.org/linux-i2c/197ae95ffd8.dc819e60457077.7692120488609091556@zohomail.com/
 +		 */
 +		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
-+			DMI_MATCH(DMI_PRODUCT_FAMILY, "Acer Nitro V 15"),
++			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
++			DMI_MATCH(DMI_PRODUCT_FAMILY, "Precision"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "Precision 7780"),
++			DMI_MATCH(DMI_BOARD_NAME, "0C6JVW"),
 +		},
 +		.driver_data = &(struct acpi_gpiolib_dmi_quirk) {
-+			.ignore_interrupt = "AMDI0030:00@8",
++			.ignore_wake = "VEN_0488:00@355",
 +		},
 +	},
  	{} /* Terminating entry */
