@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-205710-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205418-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CC7CCFA52B
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:52:38 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6BDDCF9C2C
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 18:40:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 992893178F29
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:06:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EDFAE3152C96
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:30:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B749528A1E6;
-	Tue,  6 Jan 2026 17:46:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A2AE21773D;
+	Tue,  6 Jan 2026 17:30:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MVA4lri2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ycc+JnfS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73C12224B15;
-	Tue,  6 Jan 2026 17:46:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 466671D6AA;
+	Tue,  6 Jan 2026 17:30:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721600; cv=none; b=MEREuzHg/oYCHOvWKyHim2YYx7BS6g8y4+8A5zE6mc5oAMXq+8LuLAu4f5cgI3veHQjYPIUSl/hb/IMmQPAE+Q00tsn6z8idSyg3QzvsHZ7SoGcYvCxJJ+bmde+jjb3fk4HfgOHQBAgY9WR/vONAmPI1on9kL9NL3frhMW7Y4hA=
+	t=1767720626; cv=none; b=fHGaVT3vyOq3r2DKlT/ppC6LoP65QQTpNRW1Y6/MiRyHzMzi/MndrmShaPJQlXpVqIcHjnJ8Ali3o0oFUMdEBGQ15PcYFtkJC4vH043RmfIZRicg4bWI3CDtb8sE503aIZdU/YHr+9TW9Rim46TbX1h0QIQJfb4DHDJUfnYchSE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721600; c=relaxed/simple;
-	bh=7KlFOj2H1Muak6/stiqHPnXb355GcSoD/Qq7p+bZYQU=;
+	s=arc-20240116; t=1767720626; c=relaxed/simple;
+	bh=25Cuzv5A7X7+8nKHtrdBA47rCk9N1bKO2Ap1DTWK250=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KZl6fnMIHwXaYDIlwkCY3IJ3UsDTZmoBUcbkwfE2WiN0NOrk2UN/AiWAcqnaUbRPBoVkWc+Lm9Q9NJ+q6rXQxjbqUP9ZDvy7V474rNO1R6ah/pqShjrBELj0hK9POcxgXQNkSOsQkfJ40mDdkM2XAENK6jpTajyKJs0hPp4/8UM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MVA4lri2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D955C116C6;
-	Tue,  6 Jan 2026 17:46:39 +0000 (UTC)
+	 MIME-Version; b=H/frYS5OKpcvp2/QhAEQG7Xaa2t2WjBH+c/w1LXSRMDpV5ctjNl0Mu689avb2u6iWNGG8EUXAsqLDq8zB/1xtISJ2mSRGBQZT8DOcU+kkQixc7kbbDMmjdJrTNBypP4jD6rxBIwetMeTDNh+F/uw968rY0VbsmMgqNoJyZKeQLM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ycc+JnfS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F95BC116C6;
+	Tue,  6 Jan 2026 17:30:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721600;
-	bh=7KlFOj2H1Muak6/stiqHPnXb355GcSoD/Qq7p+bZYQU=;
+	s=korg; t=1767720625;
+	bh=25Cuzv5A7X7+8nKHtrdBA47rCk9N1bKO2Ap1DTWK250=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MVA4lri2WQ5wN3Rtf523D7SXLb5oFlH57EyZDy3YPuwp4qge2fRGMSOcf/3G+nHLB
-	 mgN2A3cRhjGhhsCsrbm7aiJFItPWsZBcKoOAxfSvAdNdLjkRk7kgVLJ8CM8/amJLuf
-	 2hO9IJFLa/7DJJE3KzXfCUJy3scRtrmvX8LoE0uE=
+	b=ycc+JnfSRjvD/3/YsohUXZOXHlOGQvIA/oXg9jhSc4WP9ZzfMOwDVlL67c2/gJr6I
+	 lmtLVx2JR+LXH63VUWLqGEPJBzjGS2PrCcstobGxxJENbUZUUwUZPL9AQJ0TRWGNw4
+	 1K6rBPVC96FsyL2+eIgF5FLjDYza+xtbVfJaUSeo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Subject: [PATCH 6.18 002/312] drm: nova: depend on CONFIG_64BIT
+	Andrey Skvortsov <andrej.skvortzov@gmail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 294/567] wifi: rtw88: limit indirect IO under powered off for RTL8822CS
 Date: Tue,  6 Jan 2026 18:01:16 +0100
-Message-ID: <20260106170547.928444007@linuxfoundation.org>
+Message-ID: <20260106170502.209099943@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
-References: <20260106170547.832845344@linuxfoundation.org>
+In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
+References: <20260106170451.332875001@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,36 +60,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Danilo Krummrich <dakr@kernel.org>
+From: Ping-Ke Shih <pkshih@realtek.com>
 
-commit ba1b40ed0e34bab597fd90d4c4e9f7397f878c8f upstream.
+[ Upstream commit f3ccdfda345ca9a624ea425840a926b8338c1e25 ]
 
-nova-core already depends on CONFIG_64BIT, hence also depend on
-CONFIG_64BIT for nova-drm.
+The indirect IO is necessary for RTL8822CS, but not necessary for other
+chips. Otherwiese, it throws errors and becomes unusable.
 
-Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
-Reviewed-by: John Hubbard <jhubbard@nvidia.com>
-Link: https://patch.msgid.link/20251028110058.340320-1-dakr@kernel.org
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+ rtw88_8723cs mmc1:0001:1: WOW Firmware version 11.0.0, H2C version 0
+ rtw88_8723cs mmc1:0001:1: Firmware version 11.0.0, H2C version 0
+ rtw88_8723cs mmc1:0001:1: sdio read32 failed (0xf0): -110
+ rtw88_8723cs mmc1:0001:1: sdio write8 failed (0x1c): -110
+ rtw88_8723cs mmc1:0001:1: sdio read32 failed (0xf0): -110
+
+By vendor driver, only RTL8822CS and RTL8822ES need indirect IO, but
+RTL8822ES isn't supported yet. Therefore, limit it to RTL8822CS only.
+
+Reported-by: Andrey Skvortsov <andrej.skvortzov@gmail.com>
+Closes: https://lore.kernel.org/linux-wireless/07a32e2d6c764eb1bd9415b5a921a652@realtek.com/T/#m997b4522f7209ba629561c776bfd1d13ab24c1d4
+Fixes: 58de1f91e033 ("wifi: rtw88: sdio: use indirect IO for device registers before power-on")
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Tested-by: Andrey Skvortsov <andrej.skvortzov@gmail.com>
+Link: https://patch.msgid.link/1764034729-1251-1-git-send-email-pkshih@realtek.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/nova/Kconfig |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/realtek/rtw88/sdio.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/nova/Kconfig
-+++ b/drivers/gpu/drm/nova/Kconfig
-@@ -1,5 +1,6 @@
- config DRM_NOVA
- 	tristate "Nova DRM driver"
-+	depends on 64BIT
- 	depends on DRM=y
- 	depends on PCI
- 	depends on RUST
+diff --git a/drivers/net/wireless/realtek/rtw88/sdio.c b/drivers/net/wireless/realtek/rtw88/sdio.c
+index d6bea5ec8e24..d8db341a5731 100644
+--- a/drivers/net/wireless/realtek/rtw88/sdio.c
++++ b/drivers/net/wireless/realtek/rtw88/sdio.c
+@@ -144,8 +144,10 @@ static u32 rtw_sdio_to_io_address(struct rtw_dev *rtwdev, u32 addr,
+ 
+ static bool rtw_sdio_use_direct_io(struct rtw_dev *rtwdev, u32 addr)
+ {
++	bool might_indirect_under_power_off = rtwdev->chip->id == RTW_CHIP_TYPE_8822C;
++
+ 	if (!test_bit(RTW_FLAG_POWERON, rtwdev->flags) &&
+-	    !rtw_sdio_is_bus_addr(addr))
++	    !rtw_sdio_is_bus_addr(addr) && might_indirect_under_power_off)
+ 		return false;
+ 
+ 	return !rtw_sdio_is_sdio30_supported(rtwdev) ||
+-- 
+2.51.0
+
 
 
 
