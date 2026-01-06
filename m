@@ -1,51 +1,50 @@
-Return-Path: <stable+bounces-205225-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205244-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 437A2CFA8EA
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:17:53 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60C96CFAE94
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 21:23:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 63164305E864
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 19:17:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 910A53055F45
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 20:21:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1425134C9AF;
-	Tue,  6 Jan 2026 17:19:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1986F34D4D4;
+	Tue,  6 Jan 2026 17:20:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aTLkYNmu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IATdmDkZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0F7F34C9A1;
-	Tue,  6 Jan 2026 17:19:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA2E534D3B9;
+	Tue,  6 Jan 2026 17:20:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767719991; cv=none; b=NS0pMk2QiEB7c88Da7z0Gql6iKkPNbdc4KviGfxwQ+hX4DjePStxdLpiilsJl8ovyN3nb/cStb0vpL5hi//6426CrqbE4vSpqhl29tEXZoqwtEJIcm34uDOrnZXYdJ2pD+ID3D7dAaH3E8eEj4Mu2beuXHm5sbx8HYjcaPs8HSc=
+	t=1767720053; cv=none; b=aoWG/i2TtV4OrfyAG11V5apnyNed52gWh5CR0nA/nsZOTvRwQkNV5t7H5JIdwydRxoChnRAjIz0tdMK+sAzhlT+DtI8KWe/HCT3JDAQEXpM4RTyM+TYEmJ4Si8eaSkZKOzOEi5HtqKEmo0nE2R+EPcvQMJVMLPE8vrdJ4I5bwvA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767719991; c=relaxed/simple;
-	bh=5pIwRzWNV0Yq6YPi/nW0ZcyjH6VeMgvYA6Idu+oMr7Y=;
+	s=arc-20240116; t=1767720053; c=relaxed/simple;
+	bh=jWwZENcqcTuRM66GvopzIacFEjWhRDJyv1G3tDfqBVg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fQeNIFx5zctPCHe0TA/in3VHv20GI+nEh3yl4EzNdgk7hgzo/MrjPBKbYzUr6unvfvaTO4rmaA26X0JZ19FDkwQFvDHTLX0LG/n62oNGZu5oIZTopHGLww6+IvnNu0gJRmH4JUsr+JFv6xhxO7j5CKc/qMIGZDsN7aa/dnS+cZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aTLkYNmu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1003C116C6;
-	Tue,  6 Jan 2026 17:19:50 +0000 (UTC)
+	 MIME-Version; b=MHTtqQbk94J9H5t8nnzgHhwgqmGfbeB8MHDfvcIVunr+sk93FxRPCCLs6a4f6n0qe7CE6JpWMjNHr5A3i/wy+O/o+Kqda9btZmFhSjmEdyzF8DwYxMKSpHT3vM8IWRis8B5xWf5UzD7ODVTCIeKilkut56nLhqK1WSBz1wCyVu4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IATdmDkZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37D9AC116C6;
+	Tue,  6 Jan 2026 17:20:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767719991;
-	bh=5pIwRzWNV0Yq6YPi/nW0ZcyjH6VeMgvYA6Idu+oMr7Y=;
+	s=korg; t=1767720053;
+	bh=jWwZENcqcTuRM66GvopzIacFEjWhRDJyv1G3tDfqBVg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aTLkYNmuMisBLcgGyPXowl7GOD97Xp4VPxr/I2Ce+/c4ADYmlssqEEwZg/r+tpbYR
-	 Epvs4esOD5V5Evyi+3MoCUhC/qg2xuf3bzUqG9J5a3b+NkpjziMBrimtyeHrMxOhOe
-	 EzzrlhxXaxya5608YPinZfVfI/Aa8ffC8evA5wB0=
+	b=IATdmDkZkpBE9TToU6bheAt5OwOdXA1WAtlfvUZboS84lb8xe9nB2axVb93ipZchy
+	 nan9KqnJ+RI1HaAmcjfAusjPTsqTJiAuZQURI2jjuh3EkXk5Cpbsar4Gu4MpreK7KG
+	 SUMgaCsN3RFtsManjcCkFxgTZHTxgoRJWcl83AVE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoffer Sandberg <cs@tuxedo.de>,
-	Werner Sembach <wse@tuxedocomputers.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.12 100/567] Input: i8042 - add TUXEDO InfinityBook Max Gen10 AMD to i8042 quirk table
-Date: Tue,  6 Jan 2026 17:58:02 +0100
-Message-ID: <20260106170455.028137365@linuxfoundation.org>
+	Kartik Rajput <kkartik@nvidia.com>,
+	Thierry Reding <treding@nvidia.com>
+Subject: [PATCH 6.12 103/567] soc/tegra: fuse: Do not register SoC device on ACPI boot
+Date: Tue,  6 Jan 2026 17:58:05 +0100
+Message-ID: <20260106170455.139721468@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
 References: <20260106170451.332875001@linuxfoundation.org>
@@ -64,40 +63,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Christoffer Sandberg <cs@tuxedo.de>
+From: Kartik Rajput <kkartik@nvidia.com>
 
-commit aed3716db7fff74919cc5775ca3a80c8bb246489 upstream.
+commit c87f820bc4748fdd4d50969e8930cd88d1b61582 upstream.
 
-The device occasionally wakes up from suspend with missing input on the
-internal keyboard and the following suspend attempt results in an instant
-wake-up. The quirks fix both issues for this device.
+On Tegra platforms using ACPI, the SMCCC driver already registers the
+SoC device. This makes the registration performed by the Tegra fuse
+driver redundant.
 
-Signed-off-by: Christoffer Sandberg <cs@tuxedo.de>
-Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
+When booted via ACPI, skip registering the SoC device and suppress
+printing SKU information from the Tegra fuse driver, as this information
+is already provided by the SMCCC driver.
+
+Fixes: 972167c69080 ("soc/tegra: fuse: Add ACPI support for Tegra194 and Tegra234")
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20251124203336.64072-1-wse@tuxedocomputers.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Kartik Rajput <kkartik@nvidia.com>
+Signed-off-by: Thierry Reding <treding@nvidia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/serio/i8042-acpipnpio.h |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/soc/tegra/fuse/fuse-tegra.c |    2 --
+ 1 file changed, 2 deletions(-)
 
---- a/drivers/input/serio/i8042-acpipnpio.h
-+++ b/drivers/input/serio/i8042-acpipnpio.h
-@@ -1169,6 +1169,13 @@ static const struct dmi_system_id i8042_
- 		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
- 					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
- 	},
-+	{
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_NAME, "X5KK45xS_X5SP45xS"),
-+		},
-+		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
-+					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
-+	},
- 	/*
- 	 * A lot of modern Clevo barebones have touchpad and/or keyboard issues
- 	 * after suspend fixable with the forcenorestore quirk.
+--- a/drivers/soc/tegra/fuse/fuse-tegra.c
++++ b/drivers/soc/tegra/fuse/fuse-tegra.c
+@@ -182,8 +182,6 @@ static int tegra_fuse_probe(struct platf
+ 		}
+ 
+ 		fuse->soc->init(fuse);
+-		tegra_fuse_print_sku_info(&tegra_sku_info);
+-		tegra_soc_device_register();
+ 
+ 		err = tegra_fuse_add_lookups(fuse);
+ 		if (err)
 
 
 
