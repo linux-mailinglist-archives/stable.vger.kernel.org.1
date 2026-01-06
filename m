@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-205674-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205677-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8B01CFAA05
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:24:51 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9705CFABBD
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:42:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6968D32F72AF
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:37:49 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id CE9BB300A9B3
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 19:42:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F83D350A3F;
-	Tue,  6 Jan 2026 17:44:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 774DB352FBA;
+	Tue,  6 Jan 2026 17:44:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vI7c0bqr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M0F+Fo8J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCA6B34C134;
-	Tue,  6 Jan 2026 17:44:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B1C7352FB6;
+	Tue,  6 Jan 2026 17:44:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721478; cv=none; b=QoCWLCORajmf62g02dxSdph7ZedueOqYJfeIWu+X2w79nOcAHd2vFpsUuGlah37X19ZL5894GFWbbR4sbtEmn/T8PlDPRWEDppWIh+VfURIOoWAyfaYzqgIY/xyTtCdsPphys0FoEXS/qvvpCC2VFr/T5VWc1BMdt/kJGS7kGfI=
+	t=1767721488; cv=none; b=iapTCECnEdpvc7r+B+NsRz9zUSnKCU4lzvP1pqdwezL2llW/PftWulBFw1MqRcU0541gIIE0YRp4HdJE1BTEfYdDanvpFMsqUjd8G2bIbaBu9PVwp4z9ly4DOunb6MtXd+iW7Ik2snDEj2zyO1kdtNwTcZXQ1avK37Wi3DnhTaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721478; c=relaxed/simple;
-	bh=FzbcuDwnWFw1Jur2CUb8OlXIKgnTUUha1M0T+6ZbBTg=;
+	s=arc-20240116; t=1767721488; c=relaxed/simple;
+	bh=3opyZ+hVVVMN+f3pKd7dXCcp1i8teKGhR1AEuG4+ukM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ydy0sp5NdENXE2+tNs7vdwuwzBMvUEh/FFCL4JPkV007LCEVnzvV3QapbTaUxzP0xY8lPZfJ0ICIDV/wuPVGfHEcHMXz/8QwwJT4hhHAC5AltG1mwBkaMsN2epv52rPiGNvQtIdFghTuuRwqRFnsqibQMoPY8kBAQ1q0rdUS6KA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vI7c0bqr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C9D6C19423;
-	Tue,  6 Jan 2026 17:44:37 +0000 (UTC)
+	 MIME-Version; b=eZ+G2L5yqewpsGKQUu9aHyVYgi6lj9CE1bdxl7Mdj76uklTKxH9SeVNnmsOYsGPfV9zNIZNFRz63rw2aJyu0xh+XHkwKzi/7L4FgNCXbJCkTUzlUk2M+eP804/tJnb8ZTrFOTFoBN53QTqNVSQPCrCRpYKXjr5rpzM5+Hm9GYrM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M0F+Fo8J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72F75C116C6;
+	Tue,  6 Jan 2026 17:44:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721477;
-	bh=FzbcuDwnWFw1Jur2CUb8OlXIKgnTUUha1M0T+6ZbBTg=;
+	s=korg; t=1767721488;
+	bh=3opyZ+hVVVMN+f3pKd7dXCcp1i8teKGhR1AEuG4+ukM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vI7c0bqrN8WA2wNKtQ0HTPAeA1MHGIzteJrawYBtISvhCb+VfJOUc2oTQNTtPpolk
-	 XYP0tUkZW4ARxL8+e6FcUM6USGyOt10QyvJ6jpO2Fdzv3GpnATd5HaIamRHy1dXKaA
-	 2tpjML3poui66/JuLuikR9h4Iy66sUGMLbpbsxz8=
+	b=M0F+Fo8JEjBSV8peph/pUvSqW7MdnQBT711cV7j4gFmxfeYK/uFX/ex7s8zEYaNEb
+	 cYreKrQVhJ+ERGgaCQoL7XSjAHac8d3ZsoKZ5uAKi/Hmh53PG0Ln2lRb3dXGxzN2hu
+	 KF0e3LCebuIduItnKNvAbHrNthkPRE4FBGpSxf2I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Hannes Reinecke <hare@suse.de>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	stable@kernel.org,
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 548/567] block: handle zone management operations completions
-Date: Tue,  6 Jan 2026 18:05:30 +0100
-Message-ID: <20260106170511.681670042@linuxfoundation.org>
+Subject: [PATCH 6.12 551/567] ASoC: renesas: rz-ssi: Fix rz_ssi_priv::hw_params_cache::sample_width
+Date: Tue,  6 Jan 2026 18:05:33 +0100
+Message-ID: <20260106170511.795959568@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
 References: <20260106170451.332875001@linuxfoundation.org>
@@ -69,275 +66,87 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Biju Das <biju.das.jz@bp.renesas.com>
 
-[ Upstream commit efae226c2ef19528ffd81d29ba0eecf1b0896ca2 ]
+[ Upstream commit 2bae7beda19f3b2dc6ab2062c94df19c27923712 ]
 
-The functions blk_zone_wplug_handle_reset_or_finish() and
-blk_zone_wplug_handle_reset_all() both modify the zone write pointer
-offset of zone write plugs that are the target of a reset, reset all or
-finish zone management operation. However, these functions do this
-modification before the BIO is executed. So if the zone operation fails,
-the modified zone write pointer offsets become invalid.
+The strm->sample_width is not filled during rz_ssi_dai_hw_params(). This
+wrong value is used for caching sample_width in struct hw_params_cache.
+Fix this issue by replacing 'strm->sample_width'->'params_width(params)'
+in rz_ssi_dai_hw_params(). After this drop the variable sample_width
+from struct rz_ssi_stream as it is unused.
 
-Avoid this by modifying the zone write pointer offset of a zone write
-plug that is the target of a zone management operation when the
-operation completes. To do so, modify blk_zone_bio_endio() to call the
-new function blk_zone_mgmt_bio_endio() which in turn calls the functions
-blk_zone_reset_all_bio_endio(), blk_zone_reset_bio_endio() or
-blk_zone_finish_bio_endio() depending on the operation of the completed
-BIO, to modify a zone write plug write pointer offset accordingly.
-These functions are called only if the BIO execution was successful.
-
-Fixes: dd291d77cc90 ("block: Introduce zone write plugging")
-Cc: stable@vger.kernel.org
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-[ adapted bdev_zone_is_seq() check to disk_zone_is_conv() ]
+Cc: stable@kernel.org
+Fixes: 4f8cd05a4305 ("ASoC: sh: rz-ssi: Add full duplex support")
+Reviewed-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+Link: https://patch.msgid.link/20251114073709.4376-3-biju.das.jz@bp.renesas.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/blk-zoned.c |  141 +++++++++++++++++++++++++++++++++++-------------------
- block/blk.h       |   14 +++++
- 2 files changed, 106 insertions(+), 49 deletions(-)
+ sound/soc/sh/rz-ssi.c |   13 ++++---------
+ 1 file changed, 4 insertions(+), 9 deletions(-)
 
---- a/block/blk-zoned.c
-+++ b/block/blk-zoned.c
-@@ -73,6 +73,11 @@ struct blk_zone_wplug {
- 	struct gendisk		*disk;
- };
+--- a/sound/soc/sh/rz-ssi.c
++++ b/sound/soc/sh/rz-ssi.c
+@@ -12,6 +12,7 @@
+ #include <linux/module.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/reset.h>
++#include <sound/pcm_params.h>
+ #include <sound/soc.h>
  
-+static inline unsigned int disk_zone_wplugs_hash_size(struct gendisk *disk)
-+{
-+	return 1U << disk->zone_wplugs_hash_bits;
-+}
-+
- /*
-  * Zone write plug flags bits:
-  *  - BLK_ZONE_WPLUG_PLUGGED: Indicates that the zone write plug is plugged,
-@@ -712,71 +717,91 @@ static int disk_zone_sync_wp_offset(stru
- 					disk_report_zones_cb, &args);
- }
+ /* REGISTER OFFSET */
+@@ -85,7 +86,6 @@ struct rz_ssi_stream {
+ 	int fifo_sample_size;	/* sample capacity of SSI FIFO */
+ 	int dma_buffer_pos;	/* The address for the next DMA descriptor */
+ 	int period_counter;	/* for keeping track of periods transferred */
+-	int sample_width;
+ 	int buffer_pos;		/* current frame position in the buffer */
+ 	int running;		/* 0=stopped, 1=running */
  
--static bool blk_zone_wplug_handle_reset_or_finish(struct bio *bio,
--						  unsigned int wp_offset)
-+static void blk_zone_reset_bio_endio(struct bio *bio)
+@@ -231,10 +231,7 @@ static inline bool rz_ssi_is_stream_runn
+ static void rz_ssi_stream_init(struct rz_ssi_stream *strm,
+ 			       struct snd_pcm_substream *substream)
  {
- 	struct gendisk *disk = bio->bi_bdev->bd_disk;
--	sector_t sector = bio->bi_iter.bi_sector;
- 	struct blk_zone_wplug *zwplug;
--	unsigned long flags;
+-	struct snd_pcm_runtime *runtime = substream->runtime;
 -
--	/* Conventional zones cannot be reset nor finished. */
--	if (disk_zone_is_conv(disk, sector)) {
--		bio_io_error(bio);
--		return true;
--	}
--
--	/*
--	 * No-wait reset or finish BIOs do not make much sense as the callers
--	 * issue these as blocking operations in most cases. To avoid issues
--	 * the BIO execution potentially failing with BLK_STS_AGAIN, warn about
--	 * REQ_NOWAIT being set and ignore that flag.
--	 */
--	if (WARN_ON_ONCE(bio->bi_opf & REQ_NOWAIT))
--		bio->bi_opf &= ~REQ_NOWAIT;
+ 	rz_ssi_set_substream(strm, substream);
+-	strm->sample_width = samples_to_bytes(runtime, 1);
+ 	strm->dma_buffer_pos = 0;
+ 	strm->period_counter = 0;
+ 	strm->buffer_pos = 0;
+@@ -960,9 +957,9 @@ static int rz_ssi_dai_hw_params(struct s
+ 				struct snd_soc_dai *dai)
+ {
+ 	struct rz_ssi_priv *ssi = snd_soc_dai_get_drvdata(dai);
+-	struct rz_ssi_stream *strm = rz_ssi_stream_get(ssi, substream);
+ 	unsigned int sample_bits = hw_param_interval(params,
+ 					SNDRV_PCM_HW_PARAM_SAMPLE_BITS)->min;
++	unsigned int sample_width = params_width(params);
+ 	unsigned int channels = params_channels(params);
+ 	unsigned int rate = params_rate(params);
  
- 	/*
--	 * If we have a zone write plug, set its write pointer offset to 0
--	 * (reset case) or to the zone size (finish case). This will abort all
--	 * BIOs plugged for the target zone. It is fine as resetting or
--	 * finishing zones while writes are still in-flight will result in the
-+	 * If we have a zone write plug, set its write pointer offset to 0.
-+	 * This will abort all BIOs plugged for the target zone. It is fine as
-+	 * resetting zones while writes are still in-flight will result in the
- 	 * writes failing anyway.
- 	 */
--	zwplug = disk_get_zone_wplug(disk, sector);
-+	zwplug = disk_get_zone_wplug(disk, bio->bi_iter.bi_sector);
- 	if (zwplug) {
-+		unsigned long flags;
-+
- 		spin_lock_irqsave(&zwplug->lock, flags);
--		disk_zone_wplug_set_wp_offset(disk, zwplug, wp_offset);
-+		disk_zone_wplug_set_wp_offset(disk, zwplug, 0);
- 		spin_unlock_irqrestore(&zwplug->lock, flags);
- 		disk_put_zone_wplug(zwplug);
+@@ -980,16 +977,14 @@ static int rz_ssi_dai_hw_params(struct s
+ 
+ 	if (rz_ssi_is_stream_running(&ssi->playback) ||
+ 	    rz_ssi_is_stream_running(&ssi->capture)) {
+-		if (rz_ssi_is_valid_hw_params(ssi, rate, channels,
+-					      strm->sample_width, sample_bits))
++		if (rz_ssi_is_valid_hw_params(ssi, rate, channels, sample_width, sample_bits))
+ 			return 0;
+ 
+ 		dev_err(ssi->dev, "Full duplex needs same HW params\n");
+ 		return -EINVAL;
  	}
--
--	return false;
+ 
+-	rz_ssi_cache_hw_params(ssi, rate, channels, strm->sample_width,
+-			       sample_bits);
++	rz_ssi_cache_hw_params(ssi, rate, channels, sample_width, sample_bits);
+ 
+ 	return rz_ssi_clk_setup(ssi, rate, channels);
  }
- 
--static bool blk_zone_wplug_handle_reset_all(struct bio *bio)
-+static void blk_zone_reset_all_bio_endio(struct bio *bio)
- {
- 	struct gendisk *disk = bio->bi_bdev->bd_disk;
- 	struct blk_zone_wplug *zwplug;
- 	unsigned long flags;
--	sector_t sector;
-+	unsigned int i;
- 
--	/*
--	 * Set the write pointer offset of all zone write plugs to 0. This will
--	 * abort all plugged BIOs. It is fine as resetting zones while writes
--	 * are still in-flight will result in the writes failing anyway.
--	 */
--	for (sector = 0; sector < get_capacity(disk);
--	     sector += disk->queue->limits.chunk_sectors) {
--		zwplug = disk_get_zone_wplug(disk, sector);
--		if (zwplug) {
-+	/* Update the condition of all zone write plugs. */
-+	rcu_read_lock();
-+	for (i = 0; i < disk_zone_wplugs_hash_size(disk); i++) {
-+		hlist_for_each_entry_rcu(zwplug, &disk->zone_wplugs_hash[i],
-+					 node) {
- 			spin_lock_irqsave(&zwplug->lock, flags);
- 			disk_zone_wplug_set_wp_offset(disk, zwplug, 0);
- 			spin_unlock_irqrestore(&zwplug->lock, flags);
--			disk_put_zone_wplug(zwplug);
- 		}
- 	}
-+	rcu_read_unlock();
-+}
- 
--	return false;
-+static void blk_zone_finish_bio_endio(struct bio *bio)
-+{
-+	struct block_device *bdev = bio->bi_bdev;
-+	struct gendisk *disk = bdev->bd_disk;
-+	struct blk_zone_wplug *zwplug;
-+
-+	/*
-+	 * If we have a zone write plug, set its write pointer offset to the
-+	 * zone size. This will abort all BIOs plugged for the target zone. It
-+	 * is fine as resetting zones while writes are still in-flight will
-+	 * result in the writes failing anyway.
-+	 */
-+	zwplug = disk_get_zone_wplug(disk, bio->bi_iter.bi_sector);
-+	if (zwplug) {
-+		unsigned long flags;
-+
-+		spin_lock_irqsave(&zwplug->lock, flags);
-+		disk_zone_wplug_set_wp_offset(disk, zwplug,
-+					      bdev_zone_sectors(bdev));
-+		spin_unlock_irqrestore(&zwplug->lock, flags);
-+		disk_put_zone_wplug(zwplug);
-+	}
-+}
-+
-+void blk_zone_mgmt_bio_endio(struct bio *bio)
-+{
-+	/* If the BIO failed, we have nothing to do. */
-+	if (bio->bi_status != BLK_STS_OK)
-+		return;
-+
-+	switch (bio_op(bio)) {
-+	case REQ_OP_ZONE_RESET:
-+		blk_zone_reset_bio_endio(bio);
-+		return;
-+	case REQ_OP_ZONE_RESET_ALL:
-+		blk_zone_reset_all_bio_endio(bio);
-+		return;
-+	case REQ_OP_ZONE_FINISH:
-+		blk_zone_finish_bio_endio(bio);
-+		return;
-+	default:
-+		return;
-+	}
- }
- 
- static void disk_zone_wplug_schedule_bio_work(struct gendisk *disk,
-@@ -1119,6 +1144,32 @@ static void blk_zone_wplug_handle_native
- 	disk_put_zone_wplug(zwplug);
- }
- 
-+static bool blk_zone_wplug_handle_zone_mgmt(struct bio *bio)
-+{
-+	struct gendisk *disk = bio->bi_bdev->bd_disk;
-+
-+	if (bio_op(bio) != REQ_OP_ZONE_RESET_ALL &&
-+	    disk_zone_is_conv(disk, bio->bi_iter.bi_sector)) {
-+		/*
-+		 * Zone reset and zone finish operations do not apply to
-+		 * conventional zones.
-+		 */
-+		bio_io_error(bio);
-+		return true;
-+	}
-+
-+	/*
-+	 * No-wait zone management BIOs do not make much sense as the callers
-+	 * issue these as blocking operations in most cases. To avoid issues
-+	 * with the BIO execution potentially failing with BLK_STS_AGAIN, warn
-+	 * about REQ_NOWAIT being set and ignore that flag.
-+	 */
-+	if (WARN_ON_ONCE(bio->bi_opf & REQ_NOWAIT))
-+		bio->bi_opf &= ~REQ_NOWAIT;
-+
-+	return false;
-+}
-+
- /**
-  * blk_zone_plug_bio - Handle a zone write BIO with zone write plugging
-  * @bio: The BIO being submitted
-@@ -1166,12 +1217,9 @@ bool blk_zone_plug_bio(struct bio *bio,
- 	case REQ_OP_WRITE_ZEROES:
- 		return blk_zone_wplug_handle_write(bio, nr_segs);
- 	case REQ_OP_ZONE_RESET:
--		return blk_zone_wplug_handle_reset_or_finish(bio, 0);
- 	case REQ_OP_ZONE_FINISH:
--		return blk_zone_wplug_handle_reset_or_finish(bio,
--						bdev_zone_sectors(bdev));
- 	case REQ_OP_ZONE_RESET_ALL:
--		return blk_zone_wplug_handle_reset_all(bio);
-+		return blk_zone_wplug_handle_zone_mgmt(bio);
- 	default:
- 		return false;
- 	}
-@@ -1328,11 +1376,6 @@ put_zwplug:
- 	disk_put_zone_wplug(zwplug);
- }
- 
--static inline unsigned int disk_zone_wplugs_hash_size(struct gendisk *disk)
--{
--	return 1U << disk->zone_wplugs_hash_bits;
--}
--
- void disk_init_zone_resources(struct gendisk *disk)
- {
- 	spin_lock_init(&disk->zone_wplugs_lock);
---- a/block/blk.h
-+++ b/block/blk.h
-@@ -486,10 +486,24 @@ static inline void blk_zone_update_reque
- 	    bio_flagged(bio, BIO_EMULATES_ZONE_APPEND))
- 		bio->bi_iter.bi_sector = rq->__sector;
- }
-+void blk_zone_mgmt_bio_endio(struct bio *bio);
- void blk_zone_write_plug_bio_endio(struct bio *bio);
- static inline void blk_zone_bio_endio(struct bio *bio)
- {
- 	/*
-+	 * Zone management BIOs may impact zone write plugs (e.g. a zone reset
-+	 * changes a zone write plug zone write pointer offset), but these
-+	 * operation do not go through zone write plugging as they may operate
-+	 * on zones that do not have a zone write
-+	 * plug. blk_zone_mgmt_bio_endio() handles the potential changes to zone
-+	 * write plugs that are present.
-+	 */
-+	if (op_is_zone_mgmt(bio_op(bio))) {
-+		blk_zone_mgmt_bio_endio(bio);
-+		return;
-+	}
-+
-+	/*
- 	 * For write BIOs to zoned devices, signal the completion of the BIO so
- 	 * that the next write BIO can be submitted by zone write plugging.
- 	 */
 
 
 
