@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-205719-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205436-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB069CF9F0B
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:07:11 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 652C6CF9C65
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 18:42:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 55BDE301C346
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:06:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D50AC3175D1D
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:32:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CB2635CB87;
-	Tue,  6 Jan 2026 17:47:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF3AB27B4FB;
+	Tue,  6 Jan 2026 17:31:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wRMZ74Rs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AG5rIjBL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1899D35CB84;
-	Tue,  6 Jan 2026 17:47:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BF1121773D;
+	Tue,  6 Jan 2026 17:31:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721631; cv=none; b=eSvDFNCOZutdlhbuUXnA5oW11E9IJBtgCw3cbOrjPU7TkppZoi6sPJTIfktrDi09zt+TeaVzkEU5ISZ9lXYr9mh9l7VRBnbd8rRw2rtP15bMseTUIVYwvYr30Mbx7/EEjgS4qdb4gasqLQoGDajyRpW5h3KBrn4u+xn/NewHCtw=
+	t=1767720686; cv=none; b=bs541USrmXa/HgqCCBQ+XE65N8UXo3pnAYUiLy/ziw/r0sZgF2AdW6v56FxHf5qMSrdJBG+9MOQYjxWbQ5d8Yk92/9lRU7qGT9ibucN85vbzF0gqivh9mi8gQQTRVA2Mh4Synq6Hq1ZmnGDZFTZjXUnVpkOndhWPvSeYgimZMQw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721631; c=relaxed/simple;
-	bh=v2ylIVucQiMUTy/JKJWvGtW3p/9oXiMsgkzothNFoyA=;
+	s=arc-20240116; t=1767720686; c=relaxed/simple;
+	bh=NbKJ4xa0BZSvtm5+Wng8FZaRy0uMwYM9SQzM8BD881I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZT6jHhTeeTDw9VSNh4LNgm6xZwhnIBYCvRBKCN2xhrzmoh7b/IlZ3qQHkql+/uvrC2kfT8s24TtO2jvi0kBy3htnDRzosf/jCT1kBYPjU0YrE4XQcruIecm3Tv+xaHrCC9NnbBZSdzRTtOnrOAFdT6KZPMABy2NXDRWl277/W3U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wRMZ74Rs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86463C116C6;
-	Tue,  6 Jan 2026 17:47:10 +0000 (UTC)
+	 MIME-Version; b=IhQr5Ifk5NCrtBaicj82jTJoquWLbih3pY/X7WJ+7mubgBQen+Nvi1u4mBBFwTtRQQiWN7jxQcWwQF/Q39d1P6BeAkHSpF0dV2h89kph/GyKgekqqUcCvuJXDtsbzkHIVA7cAjcCG340djq1O6FMNKfBcQJ2YsC66+Qq8jitjfg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AG5rIjBL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D085CC116C6;
+	Tue,  6 Jan 2026 17:31:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721631;
-	bh=v2ylIVucQiMUTy/JKJWvGtW3p/9oXiMsgkzothNFoyA=;
+	s=korg; t=1767720686;
+	bh=NbKJ4xa0BZSvtm5+Wng8FZaRy0uMwYM9SQzM8BD881I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wRMZ74RsjnXRBVERjyIP4ResmZ+bDtk7SZGQb/3DqdE/jucaVFwKNpLa4IXAcGEyN
-	 k/vyeTXgonvjGaLlsRCOF4C9Usbv421C1RrQSULMw+h5h+hkoh6I7pb20B/juv9OTv
-	 0jArTkmbwMAaKfB87aSCi2S3NmMCvHIGNAUJpcWE=
+	b=AG5rIjBLa+8asvUhrQb0GgEJJULfCvDrmxHJSSbWGn7zYruBgCICB+4MnHd5upaas
+	 em1T6MANg1jigI/o1tFoSZwM7wAvwbGae7tI8DWqiLRHNORPpKKfs1MlE/X0wJ9xS6
+	 KB8pL6C2F9IaduLIUlPsxPp9AlNTm1X21Ss/u2Q0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gregory Herrero <gregory.herrero@oracle.com>,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	syzbot+422806e5f4cce722a71f@syzkaller.appspotmail.com,
+	Jiri Pirko <jiri@nvidia.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 018/312] i40e: validate ring_len parameter against hardware-specific values
+Subject: [PATCH 6.12 310/567] team: fix check for port enabled in team_queue_override_port_prio_changed()
 Date: Tue,  6 Jan 2026 18:01:32 +0100
-Message-ID: <20260106170548.514690774@linuxfoundation.org>
+Message-ID: <20260106170502.795600918@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
-References: <20260106170547.832845344@linuxfoundation.org>
+In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
+References: <20260106170451.332875001@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,102 +62,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gregory Herrero <gregory.herrero@oracle.com>
+From: Jiri Pirko <jiri@nvidia.com>
 
-[ Upstream commit 69942834215323cd9131db557091b4dec43f19c5 ]
+[ Upstream commit 932ac51d9953eaf77a1252f79b656d4ca86163c6 ]
 
-The maximum number of descriptors supported by the hardware is
-hardware-dependent and can be retrieved using
-i40e_get_max_num_descriptors(). Move this function to a shared header
-and use it when checking for valid ring_len parameter rather than using
-hardcoded value.
+There has been a syzkaller bug reported recently with the following
+trace:
 
-By fixing an over-acceptance issue, behavior change could be seen where
-ring_len could now be rejected while configuring rx and tx queues if its
-size is larger than the hardware-dependent maximum number of
-descriptors.
+list_del corruption, ffff888058bea080->prev is LIST_POISON2 (dead000000000122)
+------------[ cut here ]------------
+kernel BUG at lib/list_debug.c:59!
+Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
+CPU: 3 UID: 0 PID: 21246 Comm: syz.0.2928 Not tainted syzkaller #0 PREEMPT(full)
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
+RIP: 0010:__list_del_entry_valid_or_report+0x13e/0x200 lib/list_debug.c:59
+Code: 48 c7 c7 e0 71 f0 8b e8 30 08 ef fc 90 0f 0b 48 89 ef e8 a5 02 55 fd 48 89 ea 48 89 de 48 c7 c7 40 72 f0 8b e8 13 08 ef fc 90 <0f> 0b 48 89 ef e8 88 02 55 fd 48 89 ea 48 b8 00 00 00 00 00 fc ff
+RSP: 0018:ffffc9000d49f370 EFLAGS: 00010286
+RAX: 000000000000004e RBX: ffff888058bea080 RCX: ffffc9002817d000
+RDX: 0000000000000000 RSI: ffffffff819becc6 RDI: 0000000000000005
+RBP: dead000000000122 R08: 0000000000000005 R09: 0000000000000000
+R10: 0000000080000000 R11: 0000000000000001 R12: ffff888039e9c230
+R13: ffff888058bea088 R14: ffff888058bea080 R15: ffff888055461480
+FS:  00007fbbcfe6f6c0(0000) GS:ffff8880d6d0a000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 000000110c3afcb0 CR3: 00000000382c7000 CR4: 0000000000352ef0
+Call Trace:
+ <TASK>
+ __list_del_entry_valid include/linux/list.h:132 [inline]
+ __list_del_entry include/linux/list.h:223 [inline]
+ list_del_rcu include/linux/rculist.h:178 [inline]
+ __team_queue_override_port_del drivers/net/team/team_core.c:826 [inline]
+ __team_queue_override_port_del drivers/net/team/team_core.c:821 [inline]
+ team_queue_override_port_prio_changed drivers/net/team/team_core.c:883 [inline]
+ team_priority_option_set+0x171/0x2f0 drivers/net/team/team_core.c:1534
+ team_option_set drivers/net/team/team_core.c:376 [inline]
+ team_nl_options_set_doit+0x8ae/0xe60 drivers/net/team/team_core.c:2653
+ genl_family_rcv_msg_doit+0x209/0x2f0 net/netlink/genetlink.c:1115
+ genl_family_rcv_msg net/netlink/genetlink.c:1195 [inline]
+ genl_rcv_msg+0x55c/0x800 net/netlink/genetlink.c:1210
+ netlink_rcv_skb+0x158/0x420 net/netlink/af_netlink.c:2552
+ genl_rcv+0x28/0x40 net/netlink/genetlink.c:1219
+ netlink_unicast_kernel net/netlink/af_netlink.c:1320 [inline]
+ netlink_unicast+0x5aa/0x870 net/netlink/af_netlink.c:1346
+ netlink_sendmsg+0x8c8/0xdd0 net/netlink/af_netlink.c:1896
+ sock_sendmsg_nosec net/socket.c:727 [inline]
+ __sock_sendmsg net/socket.c:742 [inline]
+ ____sys_sendmsg+0xa98/0xc70 net/socket.c:2630
+ ___sys_sendmsg+0x134/0x1d0 net/socket.c:2684
+ __sys_sendmsg+0x16d/0x220 net/socket.c:2716
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xcd/0xfa0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-Fixes: 55d225670def ("i40e: add validation for ring_len param")
-Signed-off-by: Gregory Herrero <gregory.herrero@oracle.com>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+The problem is in this flow:
+1) Port is enabled, queue_id != 0, in qom_list
+2) Port gets disabled
+        -> team_port_disable()
+        -> team_queue_override_port_del()
+        -> del (removed from list)
+3) Port is disabled, queue_id != 0, not in any list
+4) Priority changes
+        -> team_queue_override_port_prio_changed()
+        -> checks: port disabled && queue_id != 0
+        -> calls del - hits the BUG as it is removed already
+
+To fix this, change the check in team_queue_override_port_prio_changed()
+so it returns early if port is not enabled.
+
+Reported-by: syzbot+422806e5f4cce722a71f@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=422806e5f4cce722a71f
+Fixes: 6c31ff366c11 ("team: remove synchronize_rcu() called during queue override change")
+Signed-off-by: Jiri Pirko <jiri@nvidia.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20251212102953.167287-1-jiri@resnulli.us
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e.h             | 11 +++++++++++
- drivers/net/ethernet/intel/i40e/i40e_ethtool.c     | 12 ------------
- drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c |  4 ++--
- 3 files changed, 13 insertions(+), 14 deletions(-)
+ drivers/net/team/team_core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e.h b/drivers/net/ethernet/intel/i40e/i40e.h
-index 801a57a925da..feec9e1e13b3 100644
---- a/drivers/net/ethernet/intel/i40e/i40e.h
-+++ b/drivers/net/ethernet/intel/i40e/i40e.h
-@@ -1418,4 +1418,15 @@ static inline struct i40e_veb *i40e_pf_get_main_veb(struct i40e_pf *pf)
- 	return (pf->lan_veb != I40E_NO_VEB) ? pf->veb[pf->lan_veb] : NULL;
- }
- 
-+static inline u32 i40e_get_max_num_descriptors(const struct i40e_pf *pf)
-+{
-+	const struct i40e_hw *hw = &pf->hw;
-+
-+	switch (hw->mac.type) {
-+	case I40E_MAC_XL710:
-+		return I40E_MAX_NUM_DESCRIPTORS_XL710;
-+	default:
-+		return I40E_MAX_NUM_DESCRIPTORS;
-+	}
-+}
- #endif /* _I40E_H_ */
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_ethtool.c b/drivers/net/ethernet/intel/i40e/i40e_ethtool.c
-index 86c72596617a..61c39e881b00 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_ethtool.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_ethtool.c
-@@ -2013,18 +2013,6 @@ static void i40e_get_drvinfo(struct net_device *netdev,
- 		drvinfo->n_priv_flags += I40E_GL_PRIV_FLAGS_STR_LEN;
- }
- 
--static u32 i40e_get_max_num_descriptors(struct i40e_pf *pf)
--{
--	struct i40e_hw *hw = &pf->hw;
--
--	switch (hw->mac.type) {
--	case I40E_MAC_XL710:
--		return I40E_MAX_NUM_DESCRIPTORS_XL710;
--	default:
--		return I40E_MAX_NUM_DESCRIPTORS;
--	}
--}
--
- static void i40e_get_ringparam(struct net_device *netdev,
- 			       struct ethtool_ringparam *ring,
- 			       struct kernel_ethtool_ringparam *kernel_ring,
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-index 081a4526a2f0..cf831c649c9c 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-@@ -656,7 +656,7 @@ static int i40e_config_vsi_tx_queue(struct i40e_vf *vf, u16 vsi_id,
- 
- 	/* ring_len has to be multiple of 8 */
- 	if (!IS_ALIGNED(info->ring_len, 8) ||
--	    info->ring_len > I40E_MAX_NUM_DESCRIPTORS_XL710) {
-+	    info->ring_len > i40e_get_max_num_descriptors(pf)) {
- 		ret = -EINVAL;
- 		goto error_context;
- 	}
-@@ -726,7 +726,7 @@ static int i40e_config_vsi_rx_queue(struct i40e_vf *vf, u16 vsi_id,
- 
- 	/* ring_len has to be multiple of 32 */
- 	if (!IS_ALIGNED(info->ring_len, 32) ||
--	    info->ring_len > I40E_MAX_NUM_DESCRIPTORS_XL710) {
-+	    info->ring_len > i40e_get_max_num_descriptors(pf)) {
- 		ret = -EINVAL;
- 		goto error_param;
- 	}
+diff --git a/drivers/net/team/team_core.c b/drivers/net/team/team_core.c
+index 94c40c5cebdd..50732f9699ee 100644
+--- a/drivers/net/team/team_core.c
++++ b/drivers/net/team/team_core.c
+@@ -877,7 +877,7 @@ static void __team_queue_override_enabled_check(struct team *team)
+ static void team_queue_override_port_prio_changed(struct team *team,
+ 						  struct team_port *port)
+ {
+-	if (!port->queue_id || team_port_enabled(port))
++	if (!port->queue_id || !team_port_enabled(port))
+ 		return;
+ 	__team_queue_override_port_del(team, port);
+ 	__team_queue_override_port_add(team, port);
 -- 
 2.51.0
 
