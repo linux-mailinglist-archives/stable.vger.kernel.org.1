@@ -1,58 +1,49 @@
-Return-Path: <stable+bounces-205027-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205029-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C8C4CF6836
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 03:49:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BC82CF6878
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 03:56:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 42D1D30204AD
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 02:49:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 33D91305CA24
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 02:55:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 055FD21D3C0;
-	Tue,  6 Jan 2026 02:49:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WqXhvgVC"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 424F92253EF;
+	Tue,  6 Jan 2026 02:55:35 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6D5C13C918;
-	Tue,  6 Jan 2026 02:49:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 410C523B61E;
+	Tue,  6 Jan 2026 02:55:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767667780; cv=none; b=DKQW6vINOU+MyvtQ77YU91NzumwPP4UVvwuRkBTvVM2epv1HJRcPljKgeFZDahjrA0qU0HRMRD/iKHxum4A1vxnHKwwLVyQoLKe4FzGff7OT8dQtlJgT55n6NDM3CDdGc0e8V3jyKfoGltCe4dWVlc4OfTCZRlmEZO8DIARuWdw=
+	t=1767668135; cv=none; b=m4Q4hakSXJDEp0OLnEkVGBDsBYgs4aJO5WUaaq7JmWSmCUysoFIwhSL2EnYGSMSVHdb93sThZKlbPplAkFN7SrREuX/XfsS8w1nrXcs9XqDtKmAVvQNthiBoOL1eGTNveu7MeeST5ThhLI4NNT1kNj0GeoEcEPthoZvDM23Zn0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767667780; c=relaxed/simple;
-	bh=zg/9X94gNdRg2GZTX9IWKS6ggfxIfG4V440gh+ew5TY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZvtGfwuIwzVe2Mnsta/nV9zmS5wt9BS/FIYtmHbfx2cGkfgTEVUsCPmqSkwMhUEdziyRYD7x/rjPeG7AwdBTc5EsYj/6B786Tk7NkUetf+qjVZyz713rw6L475C0ONatbrh06cn7i+j7MI+kWmTTD1r7FK+NP5OQk9e517eUGkA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WqXhvgVC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D1F8C116D0;
-	Tue,  6 Jan 2026 02:49:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767667780;
-	bh=zg/9X94gNdRg2GZTX9IWKS6ggfxIfG4V440gh+ew5TY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WqXhvgVCwaJ4lIaUhHySg/lBwOLKZnI8TlYmgrse49py606wHW4J7HX9C+8wtuj8e
-	 8r5JhCyY/Ai4BJMCss4FGYssrO6hpqYgoYgGan55g/965tVQQG4ncSoxDU/cgPdkoS
-	 xpjyoYo1z2J2ndb36qgb9oapkRgwHQiIQNUFkylKpS13rgA46LTQ3nRp/2iu1zsQJn
-	 bNLcGSgm1k2x9rNU96nB+9jItoskvit8xef/k639b91P+sdwwtVpz1VGQAHTNUU6Y9
-	 wyXSjFZuyNqgN36K81cwIs7+x8kQ6+NVU03TlBrC5ipLvc/ebVBqic5vHiRxcK48u5
-	 7v76MGnpzwDMg==
-From: SeongJae Park <sj@kernel.org>
-To: stable@vger.kernel.org
-Cc: damon@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@google.com>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.15.y] mm/damon/tests/vaddr-kunit: handle alloc failures on damon_test_split_evenly_succ()
-Date: Mon,  5 Jan 2026 18:49:33 -0800
-Message-ID: <20260106024933.850848-1-sj@kernel.org>
+	s=arc-20240116; t=1767668135; c=relaxed/simple;
+	bh=fmT91oIOnqReX/Vuc295d8fDIpY7NrtNMKwQyfTV0vk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JhER7QrtHWqacbYPtyzFLuwOLCaY+gqnnd+BGi5ue3+zlt5IhmTbJj0FxLYXJP14znTBuHw2c72X3aX+myLt6BFW5ZlVHR2meBgG6BQmFSkMRg8Mg2MLF9SmO8zR/GGWATz7mCIxGqF8hUG/u4vapyOxrac8APwYK9ZSD9WEkOU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [223.64.69.1])
+	by gateway (Coremail) with SMTP id _____8BxWcKVeVxpT9MFAA--.18158S3;
+	Tue, 06 Jan 2026 10:55:17 +0800 (CST)
+Received: from localhost.localdomain (unknown [223.64.69.1])
+	by front1 (Coremail) with SMTP id qMiowJBxiuCQeVxp450PAA--.7830S2;
+	Tue, 06 Jan 2026 10:55:15 +0800 (CST)
+From: Huacai Chen <chenhuacai@loongson.cn>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Huacai Chen <chenhuacai@kernel.org>
+Cc: Xuerui Wang <kernel@xen0n.name>,
+	stable@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	loongarch@lists.linux.dev,
+	Chenghao Duan <duanchenghao@kylinos.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.18] LoongArch: BPF: Enhance the bpf_arch_text_poke() function
+Date: Tue,  6 Jan 2026 10:55:02 +0800
+Message-ID: <20260106025502.951868-1-chenhuacai@loongson.cn>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <2026010513-quickness-paging-fee4@gregkh>
-References: <2026010513-quickness-paging-fee4@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,51 +51,81 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowJBxiuCQeVxp450PAA--.7830S2
+X-CM-SenderInfo: hfkh0x5xdftxo6or00hjvr0hdfq/
+X-Coremail-Antispam: 1Uk129KBj93XoW7KFWUZrWkKw4fCr43ZF1fAFc_yoW8ur15pr
+	1DArs5XrWUWr47Ja9rJw45Xry5Ja93Wr47WF43KryrCw13Xwn7Zw1Sk3ZxXasYkw48ur1r
+	ZFZ8trnIg3WDZacCm3ZEXasCq-sJn29KB7ZKAUJUUUUr529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUU90b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv6xkF7I0E14v2
+	6r4UJVWxJr1ln4kS14v26r1Y6r17M2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12
+	xvs2x26I8E6xACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1Y
+	6r17McIj6I8E87Iv67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64
+	vIr41l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1l4IxYO2xFxVAFwI0_
+	Jrv_JF1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1V
+	AY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAI
+	cVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42
+	IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVj
+	vjDU0xZFpf9x07jFa0PUUUUU=
 
-damon_test_split_evenly_succ() is assuming all dynamic memory allocation
-in it will succeed.  Those are indeed likely in the real use cases since
-those allocations are too small to fail, but theoretically those could
-fail.  In the case, inappropriate memory access can happen.  Fix it by
-appropriately cleanup pre-allocated memory and skip the execution of the
-remaining tests in the failure cases.
+From: Chenghao Duan <duanchenghao@kylinos.cn>
 
-Link: https://lkml.kernel.org/r/20251101182021.74868-20-sj@kernel.org
-Fixes: 17ccae8bb5c9 ("mm/damon: add kunit tests")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: Brendan Higgins <brendan.higgins@linux.dev>
-Cc: David Gow <davidgow@google.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: <stable@vger.kernel.org>	[5.15+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-(cherry picked from commit 0a63a0e7570b9b2631dfb8d836dc572709dce39e)
-Signed-off-by: SeongJae Park <sj@kernel.org>
+commit 73721d8676771c6c7b06d4e636cc053fc76afefd upstream.
+
+Enhance the bpf_arch_text_poke() function to enable accurate location
+of BPF program entry points.
+
+When modifying the entry point of a BPF program, skip the "move t0, ra"
+instruction to ensure the correct logic and copy of the jump address.
+
+Cc: stable@vger.kernel.org
+Fixes: 677e6123e3d2 ("LoongArch: BPF: Disable trampoline for kernel module function trace")
+Signed-off-by: Chenghao Duan <duanchenghao@kylinos.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 ---
- mm/damon/vaddr-test.h | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ arch/loongarch/net/bpf_jit.c | 17 ++++++++++++++++-
+ 1 file changed, 16 insertions(+), 1 deletion(-)
 
-diff --git a/mm/damon/vaddr-test.h b/mm/damon/vaddr-test.h
-index 5531766ff09f..b23073e52a95 100644
---- a/mm/damon/vaddr-test.h
-+++ b/mm/damon/vaddr-test.h
-@@ -275,10 +275,17 @@ static void damon_test_split_evenly_succ(struct kunit *test,
- 	unsigned long start, unsigned long end, unsigned int nr_pieces)
+diff --git a/arch/loongarch/net/bpf_jit.c b/arch/loongarch/net/bpf_jit.c
+index 95c214e2cf09..87ff02513787 100644
+--- a/arch/loongarch/net/bpf_jit.c
++++ b/arch/loongarch/net/bpf_jit.c
+@@ -1307,6 +1307,10 @@ int bpf_arch_text_poke(void *ip, enum bpf_text_poke_type poke_type,
+ 		       void *old_addr, void *new_addr)
  {
- 	struct damon_target *t = damon_new_target(42);
--	struct damon_region *r = damon_new_region(start, end);
-+	struct damon_region *r;
- 	unsigned long expected_width = (end - start) / nr_pieces;
- 	unsigned long i = 0;
+ 	int ret;
++	unsigned long size = 0;
++	unsigned long offset = 0;
++	void *image = NULL;
++	char namebuf[KSYM_NAME_LEN];
+ 	bool is_call = (poke_type == BPF_MOD_CALL);
+ 	u32 old_insns[LOONGARCH_LONG_JUMP_NINSNS] = {[0 ... 4] = INSN_NOP};
+ 	u32 new_insns[LOONGARCH_LONG_JUMP_NINSNS] = {[0 ... 4] = INSN_NOP};
+@@ -1314,9 +1318,20 @@ int bpf_arch_text_poke(void *ip, enum bpf_text_poke_type poke_type,
+ 	/* Only poking bpf text is supported. Since kernel function entry
+ 	 * is set up by ftrace, we rely on ftrace to poke kernel functions.
+ 	 */
+-	if (!is_bpf_text_address((unsigned long)ip))
++	if (!__bpf_address_lookup((unsigned long)ip, &size, &offset, namebuf))
+ 		return -ENOTSUPP;
  
-+	if (!t)
-+		kunit_skip(test, "target alloc fail");
-+	r = damon_new_region(start, end);
-+	if (!r) {
-+		damon_free_target(t);
-+		kunit_skip(test, "region alloc fail");
++	image = ip - offset;
++
++	/* zero offset means we're poking bpf prog entry */
++	if (offset == 0) {
++		/* skip to the nop instruction in bpf prog entry:
++		 * move t0, ra
++		 * nop
++		 */
++		ip = image + LOONGARCH_INSN_SIZE;
 +	}
- 	damon_add_region(r, t);
- 	KUNIT_EXPECT_EQ(test,
- 			damon_va_evenly_split_region(t, r, nr_pieces), 0);
++
+ 	ret = emit_jump_or_nops(old_addr, ip, old_insns, is_call);
+ 	if (ret)
+ 		return ret;
 -- 
 2.47.3
 
