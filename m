@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-205429-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205706-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 491B7CF9C4D
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 18:41:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CF6CCFA4FB
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:51:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2F4423161B21
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:31:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E339D324F0EC
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:07:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A547155389;
-	Tue,  6 Jan 2026 17:31:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FF7435CB63;
+	Tue,  6 Jan 2026 17:46:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aRIXovlX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c3ejMmew"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 020D22222AC;
-	Tue,  6 Jan 2026 17:31:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D5C02C1595;
+	Tue,  6 Jan 2026 17:46:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767720663; cv=none; b=H8F3/Q/p/J6reqyUAtQZevtNKp6zjWrHx7/65DOlSqpQnBpoB7DnvWP5aocpdW2Zn0PZosXWzrKkBL+glyue1L3CbyGfQsb8HKwLLFYWXSQIJOF2TaxO0pCz5KMMQO3ZrsUqb8kMF/HBrEIlhDN+MFqNIDw/8Tv96gimxL6s3dw=
+	t=1767721587; cv=none; b=iG3HtYl86J4EC3Err2FcRrZjIA4rtQJXQ/hHWFqU9Xg+W9auYmwMB51G3fAMOcHWUqQvXMKj6ZQVU5E3KEhtc1VoDitwYjRK+RK6yn8Ja86Xi9NzNfCznjB6qtOFG8ASEmrjPSevLxYLWhZ5xv/eZbcx6OsetCQkEttITJJb1VU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767720663; c=relaxed/simple;
-	bh=z06EowQbYbJnXGOjLBBqNVBqlUh07xeBQQVHDXJJSEc=;
+	s=arc-20240116; t=1767721587; c=relaxed/simple;
+	bh=Tu+Zj78WEgJYj5sUJVedW8QY+lKnnJ2AGxHE6sOEmk4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EcP6iZpmkMFP9ESVuRd3d4K0jVk5NP+BQZlqUKllXf+RDRcY/1UJbgFAzY5Op8UBP02/5rXag9ACaO6KivcbWuNQQB7Big9v66OxPWzWLVHF/Ko5UBMc2XtA/fCnN4406m8LAXT7vlWrb3KdTypnygkZUq6Y5pwfi5JSpPlVTKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aRIXovlX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 629A7C116C6;
-	Tue,  6 Jan 2026 17:31:02 +0000 (UTC)
+	 MIME-Version; b=DTpzbnM73HIdhZZvMqaBeZbQ3OnlnCcv7cxM4aN348dlgYXH67vaNSNymBPykyWdWPQOOTr4Q4DZsGOJfWlrI8HqiBKRC2yJer7+biAzGPZQPYUFeH3IVGCrp02Jsmmu0CiYsaYP//9002v6214IXHac6HU+KanX4MHNIwUD8Qw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c3ejMmew; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83F58C116C6;
+	Tue,  6 Jan 2026 17:46:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767720662;
-	bh=z06EowQbYbJnXGOjLBBqNVBqlUh07xeBQQVHDXJJSEc=;
+	s=korg; t=1767721586;
+	bh=Tu+Zj78WEgJYj5sUJVedW8QY+lKnnJ2AGxHE6sOEmk4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aRIXovlXRGbmSki3+4HMv1qScZvbMzjNtVHBR8vNN7OexuPxKOIFu80qeKmHIwGz+
-	 xTiHR6mE6bmp5FIAhUZ4q0gFkhqPPlInBPs9EF93jY+9OA9jdbZx62bwDq+SmBIrss
-	 gVSrgPCH6r5+MjTykuQsuffOXhyBrR9owamEzANE=
+	b=c3ejMmewXyvee4dbRzuNQ9TjDc5tAhRtMgZJdfm15shRQl+GGg4bHF3p2/6P9790m
+	 z+VEOLEJjPf0Q8WzdNcgFDetyxMuf8WbUYFztiipdfnsI9GFQpyUU/ad4BuPtqY58q
+	 DfFiQxaYOWtXIPZp9Ec6ItBgqEUma+KqR+hsI4Mg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacky Chou <jacky_chou@aspeedtech.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Morning Star <alexbestoso@gmail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 304/567] net: mdio: aspeed: add dummy read to avoid read-after-write issue
-Date: Tue,  6 Jan 2026 18:01:26 +0100
-Message-ID: <20260106170502.576590182@linuxfoundation.org>
+Subject: [PATCH 6.18 013/312] wifi: rtlwifi: 8192cu: fix tid out of range in rtl92cu_tx_fill_desc()
+Date: Tue,  6 Jan 2026 18:01:27 +0100
+Message-ID: <20260106170548.333868369@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
-References: <20260106170451.332875001@linuxfoundation.org>
+In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
+References: <20260106170547.832845344@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +60,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacky Chou <jacky_chou@aspeedtech.com>
+From: Morning Star <alexbestoso@gmail.com>
 
-[ Upstream commit d1a1a4bade4b20c0858d0b2f81d2611de055f675 ]
+[ Upstream commit dd39edb445f07400e748da967a07d5dca5c5f96e ]
 
-The Aspeed MDIO controller may return incorrect data when a read operation
-follows immediately after a write. Due to a controller bug, the subsequent
-read can latch stale data, causing the polling logic to terminate earlier
-than expected.
+TID getting from ieee80211_get_tid() might be out of range of array size
+of sta_entry->tids[], so check TID is less than MAX_TID_COUNT. Othwerwise,
+UBSAN warn:
 
-To work around this hardware issue, insert a dummy read after each write
-operation. This ensures that the next actual read returns the correct
-data and prevents premature polling exit.
+ UBSAN: array-index-out-of-bounds in drivers/net/wireless/realtek/rtlwifi/rtl8192cu/trx.c:514:30
+ index 10 is out of range for type 'rtl_tid_data [9]'
 
-This workaround has been verified to stabilize MDIO transactions on
-affected Aspeed platforms.
-
-Fixes: f160e99462c6 ("net: phy: Add mdio-aspeed")
-Signed-off-by: Jacky Chou <jacky_chou@aspeedtech.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20251211-aspeed_mdio_add_dummy_read-v3-1-382868869004@aspeedtech.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 8ca4cdef9329 ("wifi: rtlwifi: rtl8192cu: Fix TX aggregation")
+Signed-off-by: Morning Star <alexbestoso@gmail.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/1764232628-13625-1-git-send-email-pkshih@realtek.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/mdio/mdio-aspeed.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/net/wireless/realtek/rtlwifi/rtl8192cu/trx.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/mdio/mdio-aspeed.c b/drivers/net/mdio/mdio-aspeed.c
-index c2170650415c..4f2bd20cdc05 100644
---- a/drivers/net/mdio/mdio-aspeed.c
-+++ b/drivers/net/mdio/mdio-aspeed.c
-@@ -63,6 +63,13 @@ static int aspeed_mdio_op(struct mii_bus *bus, u8 st, u8 op, u8 phyad, u8 regad,
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/trx.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/trx.c
+index aa702ba7c9f5..d6c35e8d02a5 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/trx.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/trx.c
+@@ -511,7 +511,8 @@ void rtl92cu_tx_fill_desc(struct ieee80211_hw *hw,
+ 	if (sta) {
+ 		sta_entry = (struct rtl_sta_info *)sta->drv_priv;
+ 		tid = ieee80211_get_tid(hdr);
+-		agg_state = sta_entry->tids[tid].agg.agg_state;
++		if (tid < MAX_TID_COUNT)
++			agg_state = sta_entry->tids[tid].agg.agg_state;
+ 		ampdu_density = sta->deflink.ht_cap.ampdu_density;
+ 	}
  
- 	iowrite32(ctrl, ctx->base + ASPEED_MDIO_CTRL);
- 
-+	/* Workaround for read-after-write issue.
-+	 * The controller may return stale data if a read follows immediately
-+	 * after a write. A dummy read forces the hardware to update its
-+	 * internal state, ensuring that the next real read returns correct data.
-+	 */
-+	ioread32(ctx->base + ASPEED_MDIO_CTRL);
-+
- 	return readl_poll_timeout(ctx->base + ASPEED_MDIO_CTRL, ctrl,
- 				!(ctrl & ASPEED_MDIO_CTRL_FIRE),
- 				ASPEED_MDIO_INTERVAL_US,
 -- 
 2.51.0
 
