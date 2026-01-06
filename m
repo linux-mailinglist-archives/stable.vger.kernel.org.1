@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-205190-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205227-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEA3ACFB247
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 22:48:15 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBB88CFB289
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 22:50:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 339C23053800
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 21:46:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6D7B030DE054
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 21:46:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E67734887C;
-	Tue,  6 Jan 2026 17:17:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76ACB34CFB1;
+	Tue,  6 Jan 2026 17:19:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UWd6e6O1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="giV/gO7O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38C88347BDB;
-	Tue,  6 Jan 2026 17:17:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33E7934C99D;
+	Tue,  6 Jan 2026 17:19:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767719875; cv=none; b=NMUhD5kD94rkKbqXQ1uV01O72RzUSDypIOsHzXtRWTppADJ4GI4Fr6mqlNW1pV7xYDlE3xt/7QHj0WW3K9FS7nESIcjGygqDaORwimLlRndhls9Sjp7V9hI0E7JiCk5BzwW8qvw/KDyOcjoY3qkIB6B0p5gzbk1kHQ7GCoWfJYk=
+	t=1767719998; cv=none; b=b45m2uKdh1UonH90SG8V9MvSTQpXHzUFHh1GQyc/eNUFoy5cKCFVEWdWyR6p6sNxZR2ty5gdDxiyxg4tD/6FYFYDxg8Wla2uK3GIKqxqN4MQxToOmR5hYvtdXYjuyUPIe9QXEHOZLHlDnUKGhCCvQFW+eez5TfSo+ow4y0ep2WQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767719875; c=relaxed/simple;
-	bh=/GPSNfdcuExJ/uFPYidE+1WOSQdGr7ezVM0B5FSe0lM=;
+	s=arc-20240116; t=1767719998; c=relaxed/simple;
+	bh=E4/AYNcTThlAb5/zUaY3k43372pyZPFYJeYYhyaiOrI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CW/o9AUoY3FAX2Xu1QufI7lylOgl8MvASrIBXsGof1hZajLA3Zo14UxtURsvEb48P77NtdHGvbL+jYdlgf/qH/p0RlPXHNbORHE6TuQ5ubnc1IuvrwfTcTfM1auJ/aVeBGaz7LEqJ3Vhqr6jzWU9hn8UpPX0tWsnuCp/bXSNbR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UWd6e6O1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACCDCC116C6;
-	Tue,  6 Jan 2026 17:17:54 +0000 (UTC)
+	 MIME-Version; b=dYHAYqaWNo29DIXrqyqXEIlanRYkUsSGDfKOL5/5yIYVfTlIugZci0bFus0Q8zRb/68SFiiB8Zgg9o9oXo4SvINXU/Q2phKeTU21C1ii9oUgmMLoYRo20HFp1nkdmOfrV+MCmM4x97je3bivVVoAzm5LYbSSg0FOJ6UElvigYZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=giV/gO7O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95FA8C116C6;
+	Tue,  6 Jan 2026 17:19:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767719875;
-	bh=/GPSNfdcuExJ/uFPYidE+1WOSQdGr7ezVM0B5FSe0lM=;
+	s=korg; t=1767719998;
+	bh=E4/AYNcTThlAb5/zUaY3k43372pyZPFYJeYYhyaiOrI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UWd6e6O1dE/W3k3v54OxXIxdT+EI8NLdjOYUp81Yr0W/0JqzOzBr2ExjkHGEhw9IC
-	 p4jvo6dHnZ5PTId3ROb3yzCIBv1sneTzqSTBp7LbOpqza+89Mp//sDlS4J00YLcLlk
-	 GH1+8sfK6gkFVEXysN/gD5HOMVjh2nH7oT5CzD0I=
+	b=giV/gO7OWqSTOrOwqgML7unepcZb8sao1eY8aZBifhBC0BT4PDzGC08Lqcj5Nl/Ko
+	 0q5oEy/W87YUdbJ70SCFbyEqUXNNeSnjXbBYnafHIu/5LFo0blIcHE2w4A7HKB3me8
+	 Pp0W6hfSTMmKDxdu2oK3IkJEtmSn2JCfEZYfCq8g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kevin Tian <kevin.tian@intel.com>,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	kernel test robot <lkp@intel.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
+	Shay Drory <shayd@nvidia.com>,
+	Breno Leitao <leitao@debian.org>,
+	Moshe Shemesh <moshe@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 065/567] iommufd/selftest: Make it clearer to gcc that the access is not out of bounds
-Date: Tue,  6 Jan 2026 17:57:27 +0100
-Message-ID: <20260106170453.742022942@linuxfoundation.org>
+Subject: [PATCH 6.12 071/567] net/mlx5: fw_tracer, Handle escaped percent properly
+Date: Tue,  6 Jan 2026 17:57:33 +0100
+Message-ID: <20260106170453.961189157@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
 References: <20260106170451.332875001@linuxfoundation.org>
@@ -66,68 +67,82 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jason Gunthorpe <jgg@nvidia.com>
+From: Shay Drory <shayd@nvidia.com>
 
-[ Upstream commit 5b244b077c0b0e76573fbb9542cf038e42368901 ]
+[ Upstream commit c0289f67f7d6a0dfba0e92cfe661a5c70c8c6e92 ]
 
-GCC gets a bit confused and reports:
+The firmware tracer's format string validation and parameter counting
+did not properly handle escaped percent signs (%%). This caused
+fw_tracer to count more parameters when trace format strings contained
+literal percent characters.
 
-   In function '_test_cmd_get_hw_info',
-       inlined from 'iommufd_ioas_get_hw_info' at iommufd.c:779:3,
-       inlined from 'wrapper_iommufd_ioas_get_hw_info' at iommufd.c:752:1:
->> iommufd_utils.h:804:37: warning: array subscript 'struct iommu_test_hw_info[0]' is partly outside array bounds of 'struct iommu_test_hw_info_buffer_smaller[1]' [-Warray-bounds=]
-     804 |                         assert(!info->flags);
-         |                                 ~~~~^~~~~~~
-   iommufd.c: In function 'wrapper_iommufd_ioas_get_hw_info':
-   iommufd.c:761:11: note: object 'buffer_smaller' of size 4
-     761 |         } buffer_smaller;
-         |           ^~~~~~~~~~~~~~
+To fix it, allow %% to pass string validation and skip %% sequences when
+counting parameters since they represent literal percent signs rather
+than format specifiers.
 
-While it is true that "struct iommu_test_hw_info[0]" is partly out of
-bounds of the input pointer, it is not true that info->flags is out of
-bounds. Unclear why it warns on this.
-
-Reuse an existing properly sized stack buffer and pass a truncated length
-instead to test the same thing.
-
-Fixes: af4fde93c319 ("iommufd/selftest: Add coverage for IOMMU_GET_HW_INFO ioctl")
-Link: https://patch.msgid.link/r/0-v1-63a2cffb09da+4486-iommufd_gcc_bounds_jgg@nvidia.com
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Reviewed-by: Nicolin Chen <nicolinc@nvidia.com>
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202512032344.kaAcKFIM-lkp@intel.com/
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Fixes: 70dd6fdb8987 ("net/mlx5: FW tracer, parse traces and kernel tracing support")
+Signed-off-by: Shay Drory <shayd@nvidia.com>
+Reported-by: Breno Leitao <leitao@debian.org>
+Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
+Closes: https://lore.kernel.org/netdev/hanz6rzrb2bqbplryjrakvkbmv4y5jlmtthnvi3thg5slqvelp@t3s3erottr6s/
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/1765284977-1363052-5-git-send-email-tariqt@nvidia.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/iommu/iommufd.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ .../mellanox/mlx5/core/diag/fw_tracer.c       | 20 +++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
 
-diff --git a/tools/testing/selftests/iommu/iommufd.c b/tools/testing/selftests/iommu/iommufd.c
-index b678b24f5a142..6f99268365338 100644
---- a/tools/testing/selftests/iommu/iommufd.c
-+++ b/tools/testing/selftests/iommu/iommufd.c
-@@ -606,9 +606,6 @@ TEST_F(iommufd_ioas, get_hw_info)
- 		struct iommu_test_hw_info info;
- 		uint64_t trailing_bytes;
- 	} buffer_larger;
--	struct iommu_test_hw_info_buffer_smaller {
--		__u32 flags;
--	} buffer_smaller;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c b/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c
+index 9c86c8c72d049..0b82a6a133d6c 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c
+@@ -368,11 +368,11 @@ static bool mlx5_is_valid_spec(const char *str)
+ 	while (isdigit(*str) || *str == '#' || *str == '.' || *str == 'l')
+ 		str++;
  
- 	if (self->device_id) {
- 		uint8_t max_pasid = 0;
-@@ -640,8 +637,9 @@ TEST_F(iommufd_ioas, get_hw_info)
- 		 * the fields within the size range still gets updated.
- 		 */
- 		test_cmd_get_hw_info(self->device_id,
--				     IOMMU_HW_INFO_TYPE_DEFAULT,
--				     &buffer_smaller, sizeof(buffer_smaller));
-+				     IOMMU_HW_INFO_TYPE_DEFAULT, &buffer_exact,
-+				     offsetofend(struct iommu_test_hw_info,
-+						 flags));
- 		test_cmd_get_hw_info_pasid(self->device_id, &max_pasid);
- 		ASSERT_EQ(0, max_pasid);
- 		if (variant->pasid_capable) {
+-	/* Check if it's a valid integer/hex specifier:
++	/* Check if it's a valid integer/hex specifier or %%:
+ 	 * Valid formats: %x, %d, %i, %u, etc.
+ 	 */
+ 	if (*str != 'x' && *str != 'X' && *str != 'd' && *str != 'i' &&
+-	    *str != 'u' && *str != 'c')
++	    *str != 'u' && *str != 'c' && *str != '%')
+ 		return false;
+ 
+ 	return true;
+@@ -390,7 +390,11 @@ static bool mlx5_tracer_validate_params(const char *str)
+ 		if (!mlx5_is_valid_spec(substr + 1))
+ 			return false;
+ 
+-		substr = strstr(substr + 1, PARAM_CHAR);
++		if (*(substr + 1) == '%')
++			substr = strstr(substr + 2, PARAM_CHAR);
++		else
++			substr = strstr(substr + 1, PARAM_CHAR);
++
+ 	}
+ 
+ 	return true;
+@@ -469,11 +473,15 @@ static int mlx5_tracer_get_num_of_params(char *str)
+ 		substr = strstr(pstr, VAL_PARM);
+ 	}
+ 
+-	/* count all the % characters */
++	/* count all the % characters, but skip %% (escaped percent) */
+ 	substr = strstr(str, PARAM_CHAR);
+ 	while (substr) {
+-		num_of_params += 1;
+-		str = substr + 1;
++		if (*(substr + 1) != '%') {
++			num_of_params += 1;
++			str = substr + 1;
++		} else {
++			str = substr + 2;
++		}
+ 		substr = strstr(str, PARAM_CHAR);
+ 	}
+ 
 -- 
 2.51.0
 
