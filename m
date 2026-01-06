@@ -1,52 +1,54 @@
-Return-Path: <stable+bounces-205748-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205720-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1EB1CFA9B6
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:22:44 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB6F7CFA835
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:11:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6A54F3020C4F
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:35:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id ACB7932ADF72
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:31:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B9C035FF48;
-	Tue,  6 Jan 2026 17:48:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2C7435CB93;
+	Tue,  6 Jan 2026 17:47:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SC8L/5Vn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bwLOKpiY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59CCD35F8DA;
-	Tue,  6 Jan 2026 17:48:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D40335CB91;
+	Tue,  6 Jan 2026 17:47:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721728; cv=none; b=p4h2Ky0SMZwMjYch19IBJYu4wE4g/WMAToGQBCZZkpdYpYB4eGJFDDbG6Dpp5QcnQhcZW9VXeoWuDJ8JC1J2Q1ERa+xHREFPLL9V3NVQqo/k4TYXnzK+c7IIn6290jf0FTm+n8zpBT8ne0cbr9BZgW0rOCo1dS2RhEcaAmqveXw=
+	t=1767721634; cv=none; b=XtxxExLOoV5bqLYjh1H84mrTas5VX09JRqV+6aisp9WM7+1pnfg3+AEvEkEncNie65vmKNJ1fwIF8tu/Xh3f7uViGTrCuduVb+X5D/CW4jyV5kqQ72KGmT4OKTIinR7XPNTLQZPT1WMieCT5C1w5sMZ0HGv6sRdKCjdi0Hh17Cs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721728; c=relaxed/simple;
-	bh=Jep1JRCCKCINjLesbYH/z6OCUpAMDfcGUBrEUqKgxiE=;
+	s=arc-20240116; t=1767721634; c=relaxed/simple;
+	bh=uTsua12XyVJdYMsP6DkkhjoraU+zl1RsYEyoZKfcvP8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EiSd3nlFkCNNQwWwK8AD4YyhDg/iNyQ95M36cuxuiS83PHOBatHY4yhZC33egZseaHTd+hXLoE25Tj503qMxAknaItqb2W2mGRTm2cnEwCNZmL4gflZP6h71AAi4wIl7rwc1XdwfAg/xsHrTdCo00pVFozmRcpwMsAGfXnrFsJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SC8L/5Vn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8C5CC116C6;
-	Tue,  6 Jan 2026 17:48:47 +0000 (UTC)
+	 MIME-Version:Content-Type; b=XpBSNz2DVu4aK1qKqvuGJ/bfDf23wNcgGtwIOQ+T2ylTzJyW7ugCExdlYZNpWUhU63F72eDHUuD1D0wq3WSx9hJ4Z2/7puZpYZRcVXh+Gz+soOItLTY0XlQUjX8TzcJQHk2CsacSPh/MwnStEuE6fgR4BO4NtQYz07+ToTgmlNo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bwLOKpiY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1850C116C6;
+	Tue,  6 Jan 2026 17:47:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721728;
-	bh=Jep1JRCCKCINjLesbYH/z6OCUpAMDfcGUBrEUqKgxiE=;
+	s=korg; t=1767721634;
+	bh=uTsua12XyVJdYMsP6DkkhjoraU+zl1RsYEyoZKfcvP8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SC8L/5VnFvZa9puvoEuz1Y6lotGElihffedIETjNfnmM/xQKJ8H9PBQUQNgBEpaiU
-	 7tqW1ylOeoMthanPlPiKC9A9+o4pTnSQu1WXTHMmRQD5wqB31LI15rwklrP/hnO67K
-	 80Jv/bn8+gS7kw7MM3wAKJFfvh1eJblx6bNAu3jE=
+	b=bwLOKpiY20ISTBi/l8U1DM+9fXGbs/GaUZUkYM1zaVogWdoQz2hwZPaO7geuVHV/j
+	 32xo649KGmnz9KmCH1xdUa1ULKivNHJfoTeRUPf+tbcqjoMrblhTbckdBpB7Gj6Phy
+	 oc1hWCfHaLJXdUzxUG8vzDGfUOzQmyoB2Xu4c6x8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Ridong <chenridong@huawei.com>,
-	Waiman Long <longman@redhat.com>,
-	Tejun Heo <tj@kernel.org>,
+	Adrian Moreno <amorenoz@redhat.com>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+	Eelco Chaudron <echaudro@redhat.com>,
+	Aaron Conole <aconole@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 022/312] cpuset: fix warning when disabling remote partition
-Date: Tue,  6 Jan 2026 18:01:36 +0100
-Message-ID: <20260106170548.658214981@linuxfoundation.org>
+Subject: [PATCH 6.18 027/312] net: openvswitch: Avoid needlessly taking the RTNL on vport destroy
+Date: Tue,  6 Jan 2026 18:01:41 +0100
+Message-ID: <20260106170548.839332204@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
 References: <20260106170547.832845344@linuxfoundation.org>
@@ -59,121 +61,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Ridong <chenridong@huawei.com>
+From: Toke Høiland-Jørgensen <toke@redhat.com>
 
-[ Upstream commit aa7d3a56a20f07978d9f401e13637a6479b13bd0 ]
+[ Upstream commit 5498227676303e3ffa9a3a46214af96bc3e81314 ]
 
-A warning was triggered as follows:
+The openvswitch teardown code will immediately call
+ovs_netdev_detach_dev() in response to a NETDEV_UNREGISTER notification.
+It will then start the dp_notify_work workqueue, which will later end up
+calling the vport destroy() callback. This callback takes the RTNL to do
+another ovs_netdev_detach_port(), which in this case is unnecessary.
+This causes extra pressure on the RTNL, in some cases leading to
+"unregister_netdevice: waiting for XX to become free" warnings on
+teardown.
 
-WARNING: kernel/cgroup/cpuset.c:1651 at remote_partition_disable+0xf7/0x110
-RIP: 0010:remote_partition_disable+0xf7/0x110
-RSP: 0018:ffffc90001947d88 EFLAGS: 00000206
-RAX: 0000000000007fff RBX: ffff888103b6e000 RCX: 0000000000006f40
-RDX: 0000000000006f00 RSI: ffffc90001947da8 RDI: ffff888103b6e000
-RBP: ffff888103b6e000 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000001 R11: ffff88810b2e2728 R12: ffffc90001947da8
-R13: 0000000000000000 R14: ffffc90001947da8 R15: ffff8881081f1c00
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f55c8bbe0b2 CR3: 000000010b14c000 CR4: 00000000000006f0
-Call Trace:
- <TASK>
- update_prstate+0x2d3/0x580
- cpuset_partition_write+0x94/0xf0
- kernfs_fop_write_iter+0x147/0x200
- vfs_write+0x35d/0x500
- ksys_write+0x66/0xe0
- do_syscall_64+0x6b/0x390
- entry_SYSCALL_64_after_hwframe+0x4b/0x53
-RIP: 0033:0x7f55c8cd4887
+We can straight-forwardly avoid the extra RTNL lock acquisition by
+checking the device flags before taking the lock, and skip the locking
+altogether if the IFF_OVS_DATAPATH flag has already been unset.
 
-Reproduction steps (on a 16-CPU machine):
-
-        # cd /sys/fs/cgroup/
-        # mkdir A1
-        # echo +cpuset > A1/cgroup.subtree_control
-        # echo "0-14" > A1/cpuset.cpus.exclusive
-        # mkdir A1/A2
-        # echo "0-14" > A1/A2/cpuset.cpus.exclusive
-        # echo "root" > A1/A2/cpuset.cpus.partition
-        # echo 0 > /sys/devices/system/cpu/cpu15/online
-        # echo member > A1/A2/cpuset.cpus.partition
-
-When CPU 15 is offlined, subpartitions_cpus gets cleared because no CPUs
-remain available for the top_cpuset, forcing partitions to share CPUs with
-the top_cpuset. In this scenario, disabling the remote partition triggers
-a warning stating that effective_xcpus is not a subset of
-subpartitions_cpus. Partitions should be invalidated in this case to
-inform users that the partition is now invalid(cpus are shared with
-top_cpuset).
-
-To fix this issue:
-1. Only emit the warning only if subpartitions_cpus is not empty and the
-   effective_xcpus is not a subset of subpartitions_cpus.
-2. During the CPU hotplug process, invalidate partitions if
-   subpartitions_cpus is empty.
-
-Fixes: f62a5d39368e ("cgroup/cpuset: Remove remote_partition_check() & make update_cpumasks_hier() handle remote partition")
-Signed-off-by: Chen Ridong <chenridong@huawei.com>
-Reviewed-by: Waiman Long <longman@redhat.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
+Fixes: b07c26511e94 ("openvswitch: fix vport-netdev unregister")
+Tested-by: Adrian Moreno <amorenoz@redhat.com>
+Signed-off-by: Toke Høiland-Jørgensen <toke@redhat.com>
+Acked-by: Eelco Chaudron <echaudro@redhat.com>
+Acked-by: Aaron Conole <aconole@redhat.com>
+Link: https://patch.msgid.link/20251211115006.228876-1-toke@redhat.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/cgroup/cpuset.c | 21 ++++++++++++++++-----
- 1 file changed, 16 insertions(+), 5 deletions(-)
+ net/openvswitch/vport-netdev.c | 17 +++++++++++++----
+ 1 file changed, 13 insertions(+), 4 deletions(-)
 
-diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
-index 4dcd633fd6df..61b56b6ca66a 100644
---- a/kernel/cgroup/cpuset.c
-+++ b/kernel/cgroup/cpuset.c
-@@ -1600,7 +1600,14 @@ static void remote_partition_disable(struct cpuset *cs, struct tmpmasks *tmp)
- 	bool isolcpus_updated;
+diff --git a/net/openvswitch/vport-netdev.c b/net/openvswitch/vport-netdev.c
+index 91a11067e458..6574f9bcdc02 100644
+--- a/net/openvswitch/vport-netdev.c
++++ b/net/openvswitch/vport-netdev.c
+@@ -160,10 +160,19 @@ void ovs_netdev_detach_dev(struct vport *vport)
  
- 	WARN_ON_ONCE(!is_remote_partition(cs));
--	WARN_ON_ONCE(!cpumask_subset(cs->effective_xcpus, subpartitions_cpus));
-+	/*
-+	 * When a CPU is offlined, top_cpuset may end up with no available CPUs,
-+	 * which should clear subpartitions_cpus. We should not emit a warning for this
-+	 * scenario: the hierarchy is updated from top to bottom, so subpartitions_cpus
-+	 * may already be cleared when disabling the partition.
+ static void netdev_destroy(struct vport *vport)
+ {
+-	rtnl_lock();
+-	if (netif_is_ovs_port(vport->dev))
+-		ovs_netdev_detach_dev(vport);
+-	rtnl_unlock();
++	/* When called from ovs_db_notify_wq() after a dp_device_event(), the
++	 * port has already been detached, so we can avoid taking the RTNL by
++	 * checking this first.
 +	 */
-+	WARN_ON_ONCE(!cpumask_subset(cs->effective_xcpus, subpartitions_cpus) &&
-+		     !cpumask_empty(subpartitions_cpus));
++	if (netif_is_ovs_port(vport->dev)) {
++		rtnl_lock();
++		/* Check again while holding the lock to ensure we don't race
++		 * with the netdev notifier and detach twice.
++		 */
++		if (netif_is_ovs_port(vport->dev))
++			ovs_netdev_detach_dev(vport);
++		rtnl_unlock();
++	}
  
- 	spin_lock_irq(&callback_lock);
- 	list_del_init(&cs->remote_sibling);
-@@ -3927,8 +3934,9 @@ static void cpuset_hotplug_update_tasks(struct cpuset *cs, struct tmpmasks *tmp)
- 	if (remote || (is_partition_valid(cs) && is_partition_valid(parent)))
- 		compute_partition_effective_cpumask(cs, &new_cpus);
- 
--	if (remote && cpumask_empty(&new_cpus) &&
--	    partition_is_populated(cs, NULL)) {
-+	if (remote && (cpumask_empty(subpartitions_cpus) ||
-+			(cpumask_empty(&new_cpus) &&
-+			 partition_is_populated(cs, NULL)))) {
- 		cs->prs_err = PERR_HOTPLUG;
- 		remote_partition_disable(cs, tmp);
- 		compute_effective_cpumask(&new_cpus, cs, parent);
-@@ -3941,9 +3949,12 @@ static void cpuset_hotplug_update_tasks(struct cpuset *cs, struct tmpmasks *tmp)
- 	 * 1) empty effective cpus but not valid empty partition.
- 	 * 2) parent is invalid or doesn't grant any cpus to child
- 	 *    partitions.
-+	 * 3) subpartitions_cpus is empty.
- 	 */
--	if (is_local_partition(cs) && (!is_partition_valid(parent) ||
--				tasks_nocpu_error(parent, cs, &new_cpus)))
-+	if (is_local_partition(cs) &&
-+	    (!is_partition_valid(parent) ||
-+	     tasks_nocpu_error(parent, cs, &new_cpus) ||
-+	     cpumask_empty(subpartitions_cpus)))
- 		partcmd = partcmd_invalidate;
- 	/*
- 	 * On the other hand, an invalid partition root may be transitioned
+ 	call_rcu(&vport->rcu, vport_netdev_free);
+ }
 -- 
 2.51.0
 
