@@ -1,51 +1,52 @@
-Return-Path: <stable+bounces-205211-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205213-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 312ABCFA013
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:15:19 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7F4BCF9E4E
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 18:57:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 2F65730299FB
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:15:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1B7BD31A94B6
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:44:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF2D334AAEF;
-	Tue,  6 Jan 2026 17:19:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F3AC34AB05;
+	Tue,  6 Jan 2026 17:19:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GYNdHAco"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XDG1W8Y2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D3F234A78B;
-	Tue,  6 Jan 2026 17:19:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1323034A78B;
+	Tue,  6 Jan 2026 17:19:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767719942; cv=none; b=D9atHS3Yh05yeezvyV2zw4WMAt/K4wVD3gi6BOs8jAO0HBXjvY/JL65cHNCxMFGkgSReMr517uNvlqYQvahGa8GUdqZ61Z6PgoE+ktCAutRAU0bBbCRhsuNL5FBVr4/JQ/q2wQvz2D0R6aOZYiXv2BVETYjBBcnb94yyMZlky68=
+	t=1767719952; cv=none; b=izykvyznGbLlBWGiilpjQgXiidb2AV786WE/4G8vpOhUz0o9m0UypFGer0WIUXwcTHrXMchjpgWNfCqj91/opKF8ixmC9wnS1xk3Q2DxbcDN3DDu0ZcfANCzLddbqBs56nlFHS6xw806sInEytkm37P1BgFqIzpwUZ8MtIq8CVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767719942; c=relaxed/simple;
-	bh=PjAulDDmX6FCDbv95LIw4ABEdgEJmD+tHmTNB956U7A=;
+	s=arc-20240116; t=1767719952; c=relaxed/simple;
+	bh=I/n3xfR0qv+Kj1Z2WeKbYI1ihNGp2i16BfAHzSzevyM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PY1Jpor21tFsXWn0aS3V2Y4iDtuLndjgrOSy6Cyq05zX9+xr9OqOFYUi1T+SZfh2uAF80V9y6fnySOe+wocs/9blG1293rYIn+jB4lzyQHPq30neNnbZx/8+SE9j5PG+duz4IHA8Wrckk727hwvgXNGzxzxKsu3XHLBQxEzA8S0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GYNdHAco; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12522C116C6;
-	Tue,  6 Jan 2026 17:19:01 +0000 (UTC)
+	 MIME-Version; b=dAOQP2YLqrR2JHuikKYA1Lxk6n8UKd+etNeH8TWkEijI9+dqc82SciBtq8BAZl4pwv/893z0v2BZzsAU2J/DC2A7TECnIFd95XiDa8KaxojRmHcGkQnEbTnvV+2QQ3K0JJ2ogMipdwlWzNlWnGFV0MKpE3ZHlIIFZ0A15pt+SLs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XDG1W8Y2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DDADC116C6;
+	Tue,  6 Jan 2026 17:19:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767719942;
-	bh=PjAulDDmX6FCDbv95LIw4ABEdgEJmD+tHmTNB956U7A=;
+	s=korg; t=1767719951;
+	bh=I/n3xfR0qv+Kj1Z2WeKbYI1ihNGp2i16BfAHzSzevyM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GYNdHAcoO5KtHD/GWEOfUcNyUEqHwdfiYB46mUgTERP8Qg+89CcLL+DpLLBHgHzoV
-	 M++oYny9ux24cBy/HT0+xE5pVxIhWCskSVRCE7QDKPPR+u/2Td7Kc5oqGU8BUiLENs
-	 uIO3DEZJb6sXnBSXolcRUYzpbVcFwy6ZAiXSAIdo=
+	b=XDG1W8Y2xqB3UsVgCHeIWZLfMwAfexkux6sNEY8Izo2VGhVHwvhoWwst0iY2NKUvk
+	 mmUWeAmO2T92hsHlEuSxq4h2qCXEvzfVDbCiHpwKSaKQEi1uPcL/YAxnOM9geJKOJ8
+	 5ro0UntutzEHipHLhwDBLAcBA12GdT6b0qS8gaHI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jianpeng Chang <jianpeng.chang.cn@windriver.com>,
-	"Rob Herring (Arm)" <robh@kernel.org>,
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Jack Wang <jinpu.wang@ionos.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 087/567] arm64: kdump: Fix elfcorehdr overlap caused by reserved memory processing reorder
-Date: Tue,  6 Jan 2026 17:57:49 +0100
-Message-ID: <20260106170454.549107002@linuxfoundation.org>
+Subject: [PATCH 6.12 089/567] block: rnbd-clt: Fix leaked ID in init_dev()
+Date: Tue,  6 Jan 2026 17:57:51 +0100
+Message-ID: <20260106170454.622589614@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
 References: <20260106170451.332875001@linuxfoundation.org>
@@ -64,63 +65,61 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jianpeng Chang <jianpeng.chang.cn@windriver.com>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-[ Upstream commit 3e8ade58b71b48913d21b647b2089e03e81f117e ]
+[ Upstream commit c9b5645fd8ca10f310e41b07540f98e6a9720f40 ]
 
-Commit 8a6e02d0c00e ("of: reserved_mem: Restructure how the reserved
-memory regions are processed") changed the processing order of reserved
-memory regions, causing elfcorehdr to overlap with dynamically allocated
-reserved memory regions during kdump kernel boot.
+If kstrdup() fails in init_dev(), then the newly allocated ID is lost.
 
-The issue occurs because:
-1. kexec-tools allocates elfcorehdr in the last crashkernel reserved
-   memory region and passes it to the second kernel
-2. The problematic commit moved dynamic reserved memory allocation
-   (like bman-fbpr) to occur during fdt_scan_reserved_mem(), before
-   elfcorehdr reservation in fdt_reserve_elfcorehdr()
-3. bman-fbpr with 16MB alignment requirement can get allocated at
-   addresses that overlap with the elfcorehdr location
-4. When fdt_reserve_elfcorehdr() tries to reserve elfcorehdr memory,
-   overlap detection identifies the conflict and skips reservation
-5. kdump kernel fails with "Unable to handle kernel paging request"
-   because elfcorehdr memory is not properly reserved
-
-The boot log:
-Before 8a6e02d0c00e:
-  OF: fdt: Reserving 1 KiB of memory at 0xf4fff000 for elfcorehdr
-  OF: reserved mem: 0xf3000000..0xf3ffffff bman-fbpr
-
-After 8a6e02d0c00e:
-  OF: reserved mem: 0xf4000000..0xf4ffffff bman-fbpr
-  OF: fdt: elfcorehdr is overlapped
-
-Fix this by ensuring elfcorehdr reservation occurs before dynamic
-reserved memory allocation.
-
-Fixes: 8a6e02d0c00e ("of: reserved_mem: Restructure how the reserved memory regions are processed")
-Signed-off-by: Jianpeng Chang <jianpeng.chang.cn@windriver.com>
-Link: https://patch.msgid.link/20251205015934.700016-1-jianpeng.chang.cn@windriver.com
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Fixes: 64e8a6ece1a5 ("block/rnbd-clt: Dynamically alloc buffer for pathname & blk_symlink_name")
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Acked-by: Jack Wang <jinpu.wang@ionos.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/of/fdt.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/block/rnbd/rnbd-clt.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
-index 8c80f4dc8b3f..0940955d3701 100644
---- a/drivers/of/fdt.c
-+++ b/drivers/of/fdt.c
-@@ -501,8 +501,8 @@ void __init early_init_fdt_scan_reserved_mem(void)
- 	if (!initial_boot_params)
- 		return;
+diff --git a/drivers/block/rnbd/rnbd-clt.c b/drivers/block/rnbd/rnbd-clt.c
+index c34695d2eea7..5be0581c3334 100644
+--- a/drivers/block/rnbd/rnbd-clt.c
++++ b/drivers/block/rnbd/rnbd-clt.c
+@@ -1424,9 +1424,11 @@ static struct rnbd_clt_dev *init_dev(struct rnbd_clt_session *sess,
+ 		goto out_alloc;
+ 	}
  
--	fdt_scan_reserved_mem();
- 	fdt_reserve_elfcorehdr();
-+	fdt_scan_reserved_mem();
+-	ret = ida_alloc_max(&index_ida, (1 << (MINORBITS - RNBD_PART_BITS)) - 1,
+-			    GFP_KERNEL);
+-	if (ret < 0) {
++	dev->clt_device_id = ida_alloc_max(&index_ida,
++					   (1 << (MINORBITS - RNBD_PART_BITS)) - 1,
++					   GFP_KERNEL);
++	if (dev->clt_device_id < 0) {
++		ret = dev->clt_device_id;
+ 		pr_err("Failed to initialize device '%s' from session %s, allocating idr failed, err: %d\n",
+ 		       pathname, sess->sessname, ret);
+ 		goto out_queues;
+@@ -1435,10 +1437,9 @@ static struct rnbd_clt_dev *init_dev(struct rnbd_clt_session *sess,
+ 	dev->pathname = kstrdup(pathname, GFP_KERNEL);
+ 	if (!dev->pathname) {
+ 		ret = -ENOMEM;
+-		goto out_queues;
++		goto out_ida;
+ 	}
  
- 	/* Process header /memreserve/ fields */
- 	for (n = 0; ; n++) {
+-	dev->clt_device_id	= ret;
+ 	dev->sess		= sess;
+ 	dev->access_mode	= access_mode;
+ 	dev->nr_poll_queues	= nr_poll_queues;
+@@ -1454,6 +1455,8 @@ static struct rnbd_clt_dev *init_dev(struct rnbd_clt_session *sess,
+ 
+ 	return dev;
+ 
++out_ida:
++	ida_free(&index_ida, dev->clt_device_id);
+ out_queues:
+ 	kfree(dev->hw_queues);
+ out_alloc:
 -- 
 2.51.0
 
