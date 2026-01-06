@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-205777-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205499-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 485A3CFA54A
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:52:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FEEBCFA272
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:30:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 810DB323AEB9
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:06:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 142983250EC9
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:42:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45A3E362142;
-	Tue,  6 Jan 2026 17:50:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B7F02FC871;
+	Tue,  6 Jan 2026 17:34:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="itIpT2KU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cOG6a7Pf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00384362135;
-	Tue,  6 Jan 2026 17:50:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 141942FE579;
+	Tue,  6 Jan 2026 17:34:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721827; cv=none; b=O3tHcj4tPBhymnYpfCbLaKAt+T2GYCUzpPTUPmAAdGdrvB8ifcKw7H0nKBC1rhc1W+wz88rOMtfj985mlTDEjqGBN43ulKzppkVA+8LGpUgYjy4goI6k9D3mOeT1CifQASvKWixFzTkpw2ecBGBqSTbqL2mZ1LJNLhOIfOZbhQE=
+	t=1767720897; cv=none; b=McS3B3fOaH/nOyAr7KTpGu1Vh7Kk0fJW+bATL2eYFzaSHMO6+x7CwomU2nFUnPJ0KvCBwOwLZdgUUWmJT7M1hYgZPPpu1MY16KCKDtMMItVlYvzAM1hkpSgkXPMC51URQcEutd7UeksmgHmyKwnoY/TR4yBsYY/0/qlhRc+OL5Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721827; c=relaxed/simple;
-	bh=tfjizciqjTAEvxTLmCaOOzjgmfsYHBU+rbAvFpJIj00=;
+	s=arc-20240116; t=1767720897; c=relaxed/simple;
+	bh=XEFNPQFVdFA4PXkYscyCrLqyZOaawpxKyb8NsEa9DeU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TJPd2/EAjRKcRHBAl6u2LJ5GM6WazQt/tc7KN7yOhdKaFg04DjXsr2TlQrW4MsoDoDlLxc+4OfAg0QiN9QIQK4EzzgEF57GiOrdE0+nGT63sR7Fikz2jMlsIWIAqpcLAr9/01Ak6UN4YO8jADIXwR44f+pIxRk9xgfFn7vezkqk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=itIpT2KU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61CAFC116C6;
-	Tue,  6 Jan 2026 17:50:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=VF3T1SNwARTKySQy6x3C1IhUL4/XDUsj1+/1hKouoK7I8CZ695tm/LGl7xPqJXF3U16H8qIz01+WUjkIIqqaKFjODBbN47/a3movnEAxM+CpfwOFhWCzO9t27nc+UA2vaJ0tKg/z0UCrLyG+tPM7a9k12QCgfsLcPW0JdZ1DTEs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cOG6a7Pf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46993C116C6;
+	Tue,  6 Jan 2026 17:34:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721826;
-	bh=tfjizciqjTAEvxTLmCaOOzjgmfsYHBU+rbAvFpJIj00=;
+	s=korg; t=1767720896;
+	bh=XEFNPQFVdFA4PXkYscyCrLqyZOaawpxKyb8NsEa9DeU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=itIpT2KUC+tssSbYoiTvjz/KR8UnJtVrlfnM6n6EnUTB1GAuKoZ5CQyA7rcp3pGa0
-	 7ufxTIXbECFL8NenT2c3cvzBpGYLq70wyjCUXmLpi5dCQBnSkFfopQTT5UsqhZJaoD
-	 iGcH8UvZarRSjsJAqGKnDuCKP50yfiwitW047nxE=
+	b=cOG6a7PfNQYZxBmWMXvj9N9jUXrSimECeAv8/INzBMJFWga/2sHOL545kJ14vyC3D
+	 PwSYu3Kd53NVOomwtYRpVdqnHzvlCHEipE1qQvs2qzA6OaUAw/66VItORPueWaE5sw
+	 v5XcSAmxzdd4sxsqTnRj2ssllRE7FUZoiBnYwRKM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Brost <matthew.brost@intel.com>,
-	Jonathan Cavitt <jonathan.cavitt@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 082/312] drm/xe/guc: READ/WRITE_ONCE g2h_fence->done
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	Lee Jones <lee@kernel.org>
+Subject: [PATCH 6.12 374/567] leds: leds-cros_ec: Skip LEDs without color components
 Date: Tue,  6 Jan 2026 18:02:36 +0100
-Message-ID: <20260106170550.804665535@linuxfoundation.org>
+Message-ID: <20260106170505.177618604@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
-References: <20260106170547.832845344@linuxfoundation.org>
+In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
+References: <20260106170451.332875001@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,76 +60,64 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonathan Cavitt <jonathan.cavitt@intel.com>
+From: Thomas Weißschuh <linux@weissschuh.net>
 
-[ Upstream commit bed2a6bd20681aacfb063015c1edfab6f58a333e ]
+commit 4dbf066d965cd3299fb396f1375d10423c9c625c upstream.
 
-Use READ_ONCE and WRITE_ONCE when operating on g2h_fence->done
-to prevent the compiler from ignoring important modifications
-to its value.
+A user reports that on their Lenovo Corsola Magneton with EC firmware
+steelix-15194.270.0 the driver probe fails with EINVAL. It turns out
+that the power LED does not contain any color components as indicated
+by the following "ectool led power query" output:
 
-Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
-Suggested-by: Matthew Brost <matthew.brost@intel.com>
-Signed-off-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
-Link: https://patch.msgid.link/20251222201957.63245-5-jonathan.cavitt@intel.com
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-(cherry picked from commit b5179dbd1c14743ae80f0aaa28eaaf35c361608f)
-Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Brightness range for LED 1:
+        red     : 0x0
+        green   : 0x0
+        blue    : 0x0
+        yellow  : 0x0
+        white   : 0x0
+        amber   : 0x0
+
+The LED also does not react to commands sent manually through ectool and
+is generally non-functional.
+
+Instead of failing the probe for all LEDs managed by the EC when one
+without color components is encountered, silently skip those.
+
+Cc: stable@vger.kernel.org
+Fixes: 8d6ce6f3ec9d ("leds: Add ChromeOS EC driver")
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+Link: https://patch.msgid.link/20251028-cros_ec-leds-no-colors-v1-1-ebe13a02022a@weissschuh.net
+Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/xe_guc_ct.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ drivers/leds/leds-cros_ec.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_guc_ct.c b/drivers/gpu/drm/xe/xe_guc_ct.c
-index b7afe8e983cb..3aac1a7aa2e7 100644
---- a/drivers/gpu/drm/xe/xe_guc_ct.c
-+++ b/drivers/gpu/drm/xe/xe_guc_ct.c
-@@ -106,7 +106,9 @@ static void g2h_fence_cancel(struct g2h_fence *g2h_fence)
- {
- 	g2h_fence->cancel = true;
- 	g2h_fence->fail = true;
--	g2h_fence->done = true;
-+
-+	/* WRITE_ONCE pairs with READ_ONCEs in guc_ct_send_recv. */
-+	WRITE_ONCE(g2h_fence->done, true);
- }
- 
- static bool g2h_fence_needs_alloc(struct g2h_fence *g2h_fence)
-@@ -1128,10 +1130,13 @@ static int guc_ct_send_recv(struct xe_guc_ct *ct, const u32 *action, u32 len,
- 		return ret;
+--- a/drivers/leds/leds-cros_ec.c
++++ b/drivers/leds/leds-cros_ec.c
+@@ -155,9 +155,6 @@ static int cros_ec_led_count_subleds(str
+ 		}
  	}
  
--	ret = wait_event_timeout(ct->g2h_fence_wq, g2h_fence.done, HZ);
-+	/* READ_ONCEs pairs with WRITE_ONCEs in parse_g2h_response
-+	 * and g2h_fence_cancel.
-+	 */
-+	ret = wait_event_timeout(ct->g2h_fence_wq, READ_ONCE(g2h_fence.done), HZ);
- 	if (!ret) {
- 		LNL_FLUSH_WORK(&ct->g2h_worker);
--		if (g2h_fence.done) {
-+		if (READ_ONCE(g2h_fence.done)) {
- 			xe_gt_warn(gt, "G2H fence %u, action %04x, done\n",
- 				   g2h_fence.seqno, action[0]);
- 			ret = 1;
-@@ -1375,7 +1380,8 @@ static int parse_g2h_response(struct xe_guc_ct *ct, u32 *msg, u32 len)
+-	if (!num_subleds)
+-		return -EINVAL;
+-
+ 	*max_brightness = common_range;
+ 	return num_subleds;
+ }
+@@ -202,6 +199,8 @@ static int cros_ec_led_probe_one(struct
+ 						&priv->led_mc_cdev.led_cdev.max_brightness);
+ 	if (num_subleds < 0)
+ 		return num_subleds;
++	if (num_subleds == 0)
++		return 0; /* LED without any colors, skip */
  
- 	g2h_release_space(ct, GUC_CTB_HXG_MSG_MAX_LEN);
- 
--	g2h_fence->done = true;
-+	/* WRITE_ONCE pairs with READ_ONCEs in guc_ct_send_recv. */
-+	WRITE_ONCE(g2h_fence->done, true);
- 	smp_mb();
- 
- 	wake_up_all(&ct->g2h_fence_wq);
--- 
-2.51.0
-
+ 	priv->cros_ec = cros_ec;
+ 	priv->led_id = id;
 
 
 
