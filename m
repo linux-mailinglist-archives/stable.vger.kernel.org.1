@@ -1,50 +1,50 @@
-Return-Path: <stable+bounces-205610-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205612-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 865C3CFABCC
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:43:01 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B1A3CFAA28
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:25:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E059A3018690
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 19:42:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4314535577EF
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:38:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E3BF2E542C;
-	Tue,  6 Jan 2026 17:41:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C5E32E88AE;
+	Tue,  6 Jan 2026 17:41:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="li3zw5eW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C2IjDEC5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE70F2D8777;
-	Tue,  6 Jan 2026 17:41:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B56EE2D8777;
+	Tue,  6 Jan 2026 17:41:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721263; cv=none; b=kheBryyBDY9jmLSDObny3bneH7d9CPgUZwnXOnwwCOZtbfdwcSrHpmkomTV8PJdyB7J3LF/7v9ngWP5P4elsGjXpK3ZD4neNMs5asdh2ecAdCmpYOMjjMx9QsfajtJaMI50WTUIFj27StdS6qYZg3plNJIvxKFHznMjc90WiTWU=
+	t=1767721269; cv=none; b=W1BiCIIxZVutl3XcFXc0B2nhbY4/Nrae3xih77C9Nzq0Q1yb6vSG2ADwkHX6mXxixRTg9RjSzChaqsVuwPAZXMJj4q109FqVVqdF1sFOvkjb5b45N+C9O/41OG3hOPwxOkDJ38OcWFYlDgezh6F7a657fPZUxvYyIVkVUaxmJGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721263; c=relaxed/simple;
-	bh=R9vAIiKMD/CDRP6WMHkzELBao1XZRTXrUi6k+WgKH/8=;
+	s=arc-20240116; t=1767721269; c=relaxed/simple;
+	bh=4J1zYQzlNpt88nmBAr2YpJmCyzD1bNNO3W/hHUZxWkk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bhGuEVjyM3ggYyylaojMC+XKMEJEMo+0Qhye2bC0FzVFCb8o4DhA0cq9A/MrFNqnp+HJT0yFpftLqHyB4SVwHHHxwHMTU4odsHn3ppclCcd7E51zuZ/rIschOwLgXOCyVP4kUx/LUKad7rIViSd/3lX8pJOVhp6RP0XBfwkXRRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=li3zw5eW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BFFAC116C6;
-	Tue,  6 Jan 2026 17:41:02 +0000 (UTC)
+	 MIME-Version; b=mHnjjY8PeWxiNJHy5P7f7fET2E6Nn15/nmqErsoakqJmFOALnuF2siNJ4W00hZAocrJUPWgAplP3FvERYtImXId8zBcIQdCIoITC8YTnEtqky+8gqHbwaxCyD2es9IfE702m/X6cLuZVlS9d5wY4EMp1DRpuElroYbuJehg/1ZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C2IjDEC5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AD3BC116C6;
+	Tue,  6 Jan 2026 17:41:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721262;
-	bh=R9vAIiKMD/CDRP6WMHkzELBao1XZRTXrUi6k+WgKH/8=;
+	s=korg; t=1767721269;
+	bh=4J1zYQzlNpt88nmBAr2YpJmCyzD1bNNO3W/hHUZxWkk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=li3zw5eWEInZJllg67B+Qmh8xOWLB/c5gFiemn19bA93d9V00/u1Xf2+LDuQmoHm1
-	 rW2byYnQiQwJCXFtlB/xT9q3nSo80hplRqTpxCMThkXOipgdWPPGvaPyVpBW8TSBAY
-	 1cBeNSbfuJLc3eBjsAFl4LtTSu3GTWxKxJkh8K/k=
+	b=C2IjDEC5JjxgbQWMszkrsRBV5lUfy6Wmj0D1gOgc7jABLrZW6Hx3hONaSKxO9W9AY
+	 MQUqmhIFHk57XXNUSvLzsZQME/eFPa7IRJ0QZAWvrATz4UVSULrEIE/m4LBFp4rV5Z
+	 guIesckCJxYyrvrEmvbJF7sxQWLpYRbZ9nQQomIo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alessio Belle <alessio.belle@imgtec.com>,
-	Matt Coster <matt.coster@imgtec.com>
-Subject: [PATCH 6.12 484/567] drm/imagination: Disallow exporting of PM/FW protected objects
-Date: Tue,  6 Jan 2026 18:04:26 +0100
-Message-ID: <20260106170509.262682977@linuxfoundation.org>
+	Vivian Wang <wangruikang@iscas.ac.cn>,
+	Eric Biggers <ebiggers@kernel.org>
+Subject: [PATCH 6.12 485/567] lib/crypto: riscv/chacha: Avoid s0/fp register
+Date: Tue,  6 Jan 2026 18:04:27 +0100
+Message-ID: <20260106170509.300061672@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
 References: <20260106170451.332875001@linuxfoundation.org>
@@ -63,53 +63,55 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Alessio Belle <alessio.belle@imgtec.com>
+From: Vivian Wang <wangruikang@iscas.ac.cn>
 
-commit 6b991ad8dc3abfe5720fc2e9ee96be63ae43e362 upstream.
+commit 43169328c7b4623b54b7713ec68479cebda5465f upstream.
 
-These objects are meant to be used by the GPU firmware or by the PM unit
-within the GPU, in which case they may contain physical addresses.
+In chacha_zvkb, avoid using the s0 register, which is the frame pointer,
+by reallocating KEY0 to t5. This makes stack traces available if e.g. a
+crash happens in chacha_zvkb.
 
-This adds a layer of protection against exposing potentially exploitable
-information outside of the driver.
+No frame pointer maintenance is otherwise required since this is a leaf
+function.
 
-Fixes: ff5f643de0bf ("drm/imagination: Add GEM and VM related code")
-Signed-off-by: Alessio Belle <alessio.belle@imgtec.com>
+Signed-off-by: Vivian Wang <wangruikang@iscas.ac.cn>
+Fixes: bb54668837a0 ("crypto: riscv - add vector crypto accelerated ChaCha20")
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20251208-no-export-pm-fw-obj-v1-1-83ab12c61693@imgtec.com
-Signed-off-by: Matt Coster <matt.coster@imgtec.com>
+Link: https://lore.kernel.org/r/20251202-riscv-chacha_zvkb-fp-v2-1-7bd00098c9dc@iscas.ac.cn
+Signed-off-by: Eric Biggers <ebiggers@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/imagination/pvr_gem.c |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+ arch/riscv/crypto/chacha-riscv64-zvkb.S |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/drivers/gpu/drm/imagination/pvr_gem.c
-+++ b/drivers/gpu/drm/imagination/pvr_gem.c
-@@ -27,6 +27,16 @@ static void pvr_gem_object_free(struct d
- 	drm_gem_shmem_object_free(obj);
- }
+--- a/arch/riscv/crypto/chacha-riscv64-zvkb.S
++++ b/arch/riscv/crypto/chacha-riscv64-zvkb.S
+@@ -60,7 +60,8 @@
+ #define VL		t2
+ #define STRIDE		t3
+ #define NROUNDS		t4
+-#define KEY0		s0
++#define KEY0		t5
++// Avoid s0/fp to allow for unwinding
+ #define KEY1		s1
+ #define KEY2		s2
+ #define KEY3		s3
+@@ -141,7 +142,6 @@ SYM_FUNC_START(chacha20_zvkb)
+ 	srli		LEN, LEN, 6	// Bytes to blocks
  
-+static struct dma_buf *pvr_gem_export(struct drm_gem_object *obj, int flags)
-+{
-+	struct pvr_gem_object *pvr_obj = gem_to_pvr_gem(obj);
-+
-+	if (pvr_obj->flags & DRM_PVR_BO_PM_FW_PROTECT)
-+		return ERR_PTR(-EPERM);
-+
-+	return drm_gem_prime_export(obj, flags);
-+}
-+
- static int pvr_gem_mmap(struct drm_gem_object *gem_obj, struct vm_area_struct *vma)
- {
- 	struct pvr_gem_object *pvr_obj = gem_to_pvr_gem(gem_obj);
-@@ -41,6 +51,7 @@ static int pvr_gem_mmap(struct drm_gem_o
- static const struct drm_gem_object_funcs pvr_gem_object_funcs = {
- 	.free = pvr_gem_object_free,
- 	.print_info = drm_gem_shmem_object_print_info,
-+	.export = pvr_gem_export,
- 	.pin = drm_gem_shmem_object_pin,
- 	.unpin = drm_gem_shmem_object_unpin,
- 	.get_sg_table = drm_gem_shmem_object_get_sg_table,
+ 	addi		sp, sp, -96
+-	sd		s0, 0(sp)
+ 	sd		s1, 8(sp)
+ 	sd		s2, 16(sp)
+ 	sd		s3, 24(sp)
+@@ -277,7 +277,6 @@ SYM_FUNC_START(chacha20_zvkb)
+ 	add		INP, INP, TMP
+ 	bnez		LEN, .Lblock_loop
+ 
+-	ld		s0, 0(sp)
+ 	ld		s1, 8(sp)
+ 	ld		s2, 16(sp)
+ 	ld		s3, 24(sp)
 
 
 
