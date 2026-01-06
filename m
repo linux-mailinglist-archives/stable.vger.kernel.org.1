@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-205880-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205603-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEC7CCFA040
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:16:00 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0528CFA3AE
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:38:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 727AC32F0322
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:02:47 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 32C38304BC81
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:38:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35FD636BCE5;
-	Tue,  6 Jan 2026 17:56:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A3882E11DC;
+	Tue,  6 Jan 2026 17:40:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yjuiAKOS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ggHkajWi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E799A36BCE4;
-	Tue,  6 Jan 2026 17:56:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2EE22E090B;
+	Tue,  6 Jan 2026 17:40:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767722170; cv=none; b=sZN4tLSURYAbCU7CBWrLaafA4G4WmqFuIWkZeruVuwdo4y/lmlDyupuQvcywlOTfAhWg8GSVMiYnd+nUXM0vwMWaJcTpo8UbGXJ+M4/4aCqsblA9GD6tUh0stDWucF5f6aF1P7f0D6Djkkqtm0YxLD/XvbtW7HXDj4vXLCgnoZQ=
+	t=1767721239; cv=none; b=u0/0GVayDOTIaGK1n1CUcntZTnIExGCEjTzayzaeY2y2s4bxd36/d5oOmdd7xvTuQaAiUd8H4KxzwB7u9QqlbLifFvdIc/9iNXxbrplOs/e4hLgM/bpK5FJH4dLGT/nnmeOs5037ZGvmb2tHuGDswYcn6ZrAfG7+lZd/h25+cSk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767722170; c=relaxed/simple;
-	bh=1Z5TVUy+JTVeDZtbKDDYGterm36EFklt3UvOeLe7jlE=;
+	s=arc-20240116; t=1767721239; c=relaxed/simple;
+	bh=NZeGgkbFrONkVkUvkOLWTo90TVk/VcPIImNj+6I29wY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FE1zEXTcn/gjOsz1MnFwyJpiPqvAGaLxXEH0+zUN7fNWqPh0CULaa4luqCQ+SmqwvHCNvyT7FXPx8ACcvQAC0gek/2AVUGEOqA/mmow1flfXGV4NlTlVXUcOPMpITToz6DIzKZzYFNIy00erjkAvnYPXgJjAqkGW9/X0TebGRVM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yjuiAKOS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53A74C116C6;
-	Tue,  6 Jan 2026 17:56:09 +0000 (UTC)
+	 MIME-Version:Content-Type; b=K48zBkoQGoOKAr9OY2fRUSzfT3ReKzKT6igkCigMQZ3XGG+baBIikSI7/qbtglUrav67cSnK7T1n4kYWtr2PkclfRvvKW9zIVqUFBNFJB3POByGKW6b/Rakqau/xyqkWkjMfvOu1GhJd4crwMX+G5WJsT9WxDDXKk60DzAalzW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ggHkajWi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E686C116C6;
+	Tue,  6 Jan 2026 17:40:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767722169;
-	bh=1Z5TVUy+JTVeDZtbKDDYGterm36EFklt3UvOeLe7jlE=;
+	s=korg; t=1767721239;
+	bh=NZeGgkbFrONkVkUvkOLWTo90TVk/VcPIImNj+6I29wY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yjuiAKOSGiX6sAoGBhEfr53+sIFoeaNPrxBvQ/lIlT/q+mSjCzo237ySFPrvY5j75
-	 OZb8W5VzEcx/FgyMU/rmvkeDFioKuKKVNoaqaOyYdTJguikZROEylG2xbVAyImqRih
-	 ACnZG2hZs6YkaYMeLggs0ofvdrp1RUma83VTraRE=
+	b=ggHkajWiN7WdSQ0pvLHLRZPgqI8I3mx/OOBJBJ0VBjgIWsBgg2Wkr7D+Ontp6h9Sq
+	 0CiDDmjIQkgNZ+pDEsstvYW8eN4cgLiWcX0Li6szBHx87rcFmKOl2fu5D4Sd1okbX4
+	 PcTsKCrPEMmWu88MgOUsqDPIMhO5zAvPJf+6/V1Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming Qian <ming.qian@oss.nxp.com>,
-	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 6.18 185/312] media: amphion: Remove vpu_vb_is_codecconfig
+	Peter Senna Tschudin <peter.senna@linux.intel.com>,
+	Ashutosh Dixit <ashutosh.dixit@intel.com>,
+	Harish Chegondi <harish.chegondi@intel.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
+Subject: [PATCH 6.12 477/567] drm/xe/oa: Disallow 0 OA property values
 Date: Tue,  6 Jan 2026 18:04:19 +0100
-Message-ID: <20260106170554.521041652@linuxfoundation.org>
+Message-ID: <20260106170508.998931514@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
-References: <20260106170547.832845344@linuxfoundation.org>
+In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
+References: <20260106170451.332875001@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,145 +59,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Qian <ming.qian@oss.nxp.com>
+From: Ashutosh Dixit <ashutosh.dixit@intel.com>
 
-commit 634c2cd17bd021487c57b95973bddb14be8002ff upstream.
+commit 3595114bc31d1eb5e1996164c901485c1ffac6f7 upstream.
 
-Currently the function vpu_vb_is_codecconfig() always returns 0.
-Delete it and its related code.
+An OA property value of 0 is invalid and will cause a NPD.
 
-Fixes: 3cd084519c6f ("media: amphion: add vpu v4l2 m2m support")
+Reported-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
+Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/6452
+Fixes: cc4e6994d5a2 ("drm/xe/oa: Move functions up so they can be reused for config ioctl")
 Cc: stable@vger.kernel.org
-Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
-Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Reviewed-by: Harish Chegondi <harish.chegondi@intel.com>
+Link: https://patch.msgid.link/20251212061850.1565459-3-ashutosh.dixit@intel.com
+(cherry picked from commit 7a100e6ddcc47c1f6ba7a19402de86ce24790621)
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/amphion/vpu_malone.c |   23 +++--------------------
- drivers/media/platform/amphion/vpu_v4l2.c   |   10 ----------
- drivers/media/platform/amphion/vpu_v4l2.h   |   10 ----------
- 3 files changed, 3 insertions(+), 40 deletions(-)
+ drivers/gpu/drm/xe/xe_oa.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/media/platform/amphion/vpu_malone.c
-+++ b/drivers/media/platform/amphion/vpu_malone.c
-@@ -1337,22 +1337,18 @@ static int vpu_malone_insert_scode_vc1_g
- {
- 	if (!scode->inst->total_input_count)
- 		return 0;
--	if (vpu_vb_is_codecconfig(to_vb2_v4l2_buffer(scode->vb)))
--		scode->need_data = 0;
- 	return 0;
- }
+--- a/drivers/gpu/drm/xe/xe_oa.c
++++ b/drivers/gpu/drm/xe/xe_oa.c
+@@ -1266,7 +1266,7 @@ static int xe_oa_user_ext_set_property(s
+ 		     ARRAY_SIZE(xe_oa_set_property_funcs_config));
  
- static int vpu_malone_insert_scode_vc1_g_pic(struct malone_scode_t *scode)
- {
--	struct vb2_v4l2_buffer *vbuf;
- 	u8 nal_hdr[MALONE_VC1_NAL_HEADER_LEN];
- 	u32 *data = NULL;
- 	int ret;
+ 	if (XE_IOCTL_DBG(oa->xe, ext.property >= ARRAY_SIZE(xe_oa_set_property_funcs_open)) ||
+-	    XE_IOCTL_DBG(oa->xe, ext.pad))
++	    XE_IOCTL_DBG(oa->xe, !ext.property) || XE_IOCTL_DBG(oa->xe, ext.pad))
+ 		return -EINVAL;
  
--	vbuf = to_vb2_v4l2_buffer(scode->vb);
- 	data = vb2_plane_vaddr(scode->vb, 0);
- 
--	if (scode->inst->total_input_count == 0 || vpu_vb_is_codecconfig(vbuf))
-+	if (scode->inst->total_input_count == 0)
- 		return 0;
- 	if (MALONE_VC1_CONTAIN_NAL(*data))
- 		return 0;
-@@ -1373,8 +1369,6 @@ static int vpu_malone_insert_scode_vc1_l
- 	int size = 0;
- 	u8 rcv_seqhdr[MALONE_VC1_RCV_SEQ_HEADER_LEN];
- 
--	if (vpu_vb_is_codecconfig(to_vb2_v4l2_buffer(scode->vb)))
--		scode->need_data = 0;
- 	if (scode->inst->total_input_count)
- 		return 0;
- 	scode->need_data = 0;
-@@ -1560,7 +1554,7 @@ static int vpu_malone_input_frame_data(s
- 	scode.vb = vb;
- 	scode.wptr = wptr;
- 	scode.need_data = 1;
--	if (vbuf->sequence == 0 || vpu_vb_is_codecconfig(vbuf))
-+	if (vbuf->sequence == 0)
- 		ret = vpu_malone_insert_scode(&scode, SCODE_SEQUENCE);
- 
- 	if (ret < 0)
-@@ -1596,7 +1590,7 @@ static int vpu_malone_input_frame_data(s
- 	 * This module is currently only supported for the H264 and HEVC formats,
- 	 * for other formats, vpu_malone_add_scode() will return 0.
- 	 */
--	if ((disp_imm || low_latency) && !vpu_vb_is_codecconfig(vbuf)) {
-+	if (disp_imm || low_latency) {
- 		ret = vpu_malone_add_scode(inst->core->iface,
- 					   inst->id,
- 					   &inst->stream_buffer,
-@@ -1643,7 +1637,6 @@ int vpu_malone_input_frame(struct vpu_sh
- 			   struct vpu_inst *inst, struct vb2_buffer *vb)
- {
- 	struct vpu_dec_ctrl *hc = shared->priv;
--	struct vb2_v4l2_buffer *vbuf;
- 	struct vpu_malone_str_buffer __iomem *str_buf = hc->str_buf[inst->id];
- 	u32 disp_imm = hc->codec_param[inst->id].disp_imm;
- 	u32 size;
-@@ -1657,16 +1650,6 @@ int vpu_malone_input_frame(struct vpu_sh
- 		return ret;
- 	size = ret;
- 
--	/*
--	 * if buffer only contain codec data, and the timestamp is invalid,
--	 * don't put the invalid timestamp to resync
--	 * merge the data to next frame
--	 */
--	vbuf = to_vb2_v4l2_buffer(vb);
--	if (vpu_vb_is_codecconfig(vbuf)) {
--		inst->extra_size += size;
--		return 0;
--	}
- 	if (inst->extra_size) {
- 		size += inst->extra_size;
- 		inst->extra_size = 0;
---- a/drivers/media/platform/amphion/vpu_v4l2.c
-+++ b/drivers/media/platform/amphion/vpu_v4l2.c
-@@ -349,16 +349,6 @@ struct vb2_v4l2_buffer *vpu_next_src_buf
- 	if (!src_buf || vpu_get_buffer_state(src_buf) == VPU_BUF_STATE_IDLE)
- 		return NULL;
- 
--	while (vpu_vb_is_codecconfig(src_buf)) {
--		v4l2_m2m_src_buf_remove(inst->fh.m2m_ctx);
--		vpu_set_buffer_state(src_buf, VPU_BUF_STATE_IDLE);
--		v4l2_m2m_buf_done(src_buf, VB2_BUF_STATE_DONE);
--
--		src_buf = v4l2_m2m_next_src_buf(inst->fh.m2m_ctx);
--		if (!src_buf || vpu_get_buffer_state(src_buf) == VPU_BUF_STATE_IDLE)
--			return NULL;
--	}
--
- 	return src_buf;
- }
- 
---- a/drivers/media/platform/amphion/vpu_v4l2.h
-+++ b/drivers/media/platform/amphion/vpu_v4l2.h
-@@ -39,14 +39,4 @@ static inline struct vpu_format *vpu_get
- 	else
- 		return &inst->cap_format;
- }
--
--static inline int vpu_vb_is_codecconfig(struct vb2_v4l2_buffer *vbuf)
--{
--#ifdef V4L2_BUF_FLAG_CODECCONFIG
--	return (vbuf->flags & V4L2_BUF_FLAG_CODECCONFIG) ? 1 : 0;
--#else
--	return 0;
--#endif
--}
--
- #endif
+ 	idx = array_index_nospec(ext.property, ARRAY_SIZE(xe_oa_set_property_funcs_open));
 
 
 
