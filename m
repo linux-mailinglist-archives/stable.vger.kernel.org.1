@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-205954-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205676-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D834CFA6EB
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:01:34 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5449CFA2DF
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:32:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1C77A354592E
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:37:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0F49631B023F
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:44:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A04D376BF9;
-	Tue,  6 Jan 2026 18:00:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB244352F86;
+	Tue,  6 Jan 2026 17:44:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G3SU7shY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ybEuiqAX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAE243446C2;
-	Tue,  6 Jan 2026 18:00:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95AF835295E;
+	Tue,  6 Jan 2026 17:44:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767722415; cv=none; b=Usf9snqvaXFtvqIuxRBo2Od+fkpXdODfYaTNT0Tqk6Mcyx3R3DLaJltabuB/qKf1N/xRrKyMOxHfMNfTnfTrbMla2nD/Ulu681dy/MZh96zejLnNrtxA/RgggkUjrdtKp+In5WvXpYxo6HEQkClrfLxWgqqsMdLsfxQZy2cjZdg=
+	t=1767721484; cv=none; b=CpfCCITI0JBW4su4Y7hFm0XMWaadsATQocacplnFKn3nMDcTfnwlEI7r8Eg5Od9y4RPrTvoEpSf9PeGitcQaQeCUyA2//z+kdMD5GKFPbvVdX/7I34LqZfTYdt3WG+gQBk+Hxcw7dTuR5va7eTtP0WdR5vsIo95Dw/XxFmet2qs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767722415; c=relaxed/simple;
-	bh=MLTkoEBMAOecsJ82fvBi4/DxU9y4pbde0M9CCt0Jz8Q=;
+	s=arc-20240116; t=1767721484; c=relaxed/simple;
+	bh=briJ6xLuXwDRII0bmWbBleOgI6EA7P76gxKaAvUiVFU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FIQ5zmhuiFANvPLmeOWk17bmHOXkFPRWaB7/Hy+inEk+L4cuiHa9T4VguHTK+T/exQQuzb0PAIHX9G0J5CnyV/MczKmXNIpCjHAZ2vo1vvmQL6JPWWHGuIWbD//VMGRFl+BAMau8VCZGyGuhMxAMkY3vXEXRtJq3woUhf56tQAY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G3SU7shY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01259C116C6;
-	Tue,  6 Jan 2026 18:00:14 +0000 (UTC)
+	 MIME-Version; b=clbCqEFL954aQsiRGKTj6OmiQ41hUfQcSuGHrS2BwpXzZUq2qMV0xCjYRLqOvpPgVrp4xLBFLuiv+VGVuslpCQq3/P2KGCzsJlbQgR23on64AYxX4RGDO/qSkGDFGDnbJl6NvtcFPJ9p+NYW7DVroPGA+PZRlLMC33wFwqkM/mU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ybEuiqAX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA162C2BC9E;
+	Tue,  6 Jan 2026 17:44:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767722415;
-	bh=MLTkoEBMAOecsJ82fvBi4/DxU9y4pbde0M9CCt0Jz8Q=;
+	s=korg; t=1767721484;
+	bh=briJ6xLuXwDRII0bmWbBleOgI6EA7P76gxKaAvUiVFU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G3SU7shYExTBcIAfCWnkX54pUTCO8sb3zRI5r76AhG96ZMT8JiErdLmB080RoJFi8
-	 xoECJWm63HMTTaUVoPEac5TDV91hslGQJRD66MLbAf4hqmSJlWYwWqRHIblzAp89+T
-	 nWqqvzFDrJUU2XR81ZG/5qWt0/9gEI3/Stu1kBh4=
+	b=ybEuiqAX4HlIZ6tA1iN+QhJBUdqNEBVjNwR2nRuB/VXc9bStnSAx/dcXaO2M1k+Fn
+	 9X3dn+bl60d7QmiL6eMIyKW1UpGoB1w4LqshR07T+Axd/MATKK91HpQDlBE0iNtrcB
+	 6HFKRAgtQ6sVVdVCRTTnoYRNz4KkJE8GEnN2iTmQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kevin Hao <kexin.hao@windriver.com>,
-	Xiaolei Wang <xiaolei.wang@windriver.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.18 257/312] net: macb: Relocate mog_init_rings() callback from macb_mac_link_up() to macb_open()
-Date: Tue,  6 Jan 2026 18:05:31 +0100
-Message-ID: <20260106170557.145459828@linuxfoundation.org>
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Stable@vger.kernel.org,
+	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Steev Klimaszewski <threeway@gmail.com>
+Subject: [PATCH 6.12 550/567] ASoC: qcom: sdw: fix memory leak for sdw_stream_runtime
+Date: Tue,  6 Jan 2026 18:05:32 +0100
+Message-ID: <20260106170511.757667327@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
-References: <20260106170547.832845344@linuxfoundation.org>
+In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
+References: <20260106170451.332875001@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,175 +63,251 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiaolei Wang <xiaolei.wang@windriver.com>
+From: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
 
-commit 99537d5c476cada9cf75aef9fa75579a31faadb9 upstream.
+[ Upstream commit bcba17279327c6e85dee6a97014dc642e2dc93cc ]
 
-In the non-RT kernel, local_bh_disable() merely disables preemption,
-whereas it maps to an actual spin lock in the RT kernel. Consequently,
-when attempting to refill RX buffers via netdev_alloc_skb() in
-macb_mac_link_up(), a deadlock scenario arises as follows:
+For some reason we endedup allocating sdw_stream_runtime for every cpu dai,
+this has two issues.
+1. we never set snd_soc_dai_set_stream for non soundwire dai, which
+   means there is no way that we can free this, resulting in memory leak
+2. startup and shutdown callbacks can be called without
+   hw_params callback called. This combination results in memory leak
+because machine driver sruntime array pointer is only set in hw_params
+callback.
 
-   WARNING: possible circular locking dependency detected
-   6.18.0-08691-g2061f18ad76e #39 Not tainted
-   ------------------------------------------------------
-   kworker/0:0/8 is trying to acquire lock:
-   ffff00080369bbe0 (&bp->lock){+.+.}-{3:3}, at: macb_start_xmit+0x808/0xb7c
+Fix this by
+ 1. adding a helper function to get sdw_runtime for substream
+which can be used by shutdown callback to get hold of sruntime to free.
+ 2. only allocate sdw_runtime for soundwire dais.
 
-   but task is already holding lock:
-   ffff000803698e58 (&queue->tx_ptr_lock){+...}-{3:3}, at: macb_start_xmit
-   +0x148/0xb7c
-
-   which lock already depends on the new lock.
-
-   the existing dependency chain (in reverse order) is:
-
-   -> #3 (&queue->tx_ptr_lock){+...}-{3:3}:
-          rt_spin_lock+0x50/0x1f0
-          macb_start_xmit+0x148/0xb7c
-          dev_hard_start_xmit+0x94/0x284
-          sch_direct_xmit+0x8c/0x37c
-          __dev_queue_xmit+0x708/0x1120
-          neigh_resolve_output+0x148/0x28c
-          ip6_finish_output2+0x2c0/0xb2c
-          __ip6_finish_output+0x114/0x308
-          ip6_output+0xc4/0x4a4
-          mld_sendpack+0x220/0x68c
-          mld_ifc_work+0x2a8/0x4f4
-          process_one_work+0x20c/0x5f8
-          worker_thread+0x1b0/0x35c
-          kthread+0x144/0x200
-          ret_from_fork+0x10/0x20
-
-   -> #2 (_xmit_ETHER#2){+...}-{3:3}:
-          rt_spin_lock+0x50/0x1f0
-          sch_direct_xmit+0x11c/0x37c
-          __dev_queue_xmit+0x708/0x1120
-          neigh_resolve_output+0x148/0x28c
-          ip6_finish_output2+0x2c0/0xb2c
-          __ip6_finish_output+0x114/0x308
-          ip6_output+0xc4/0x4a4
-          mld_sendpack+0x220/0x68c
-          mld_ifc_work+0x2a8/0x4f4
-          process_one_work+0x20c/0x5f8
-          worker_thread+0x1b0/0x35c
-          kthread+0x144/0x200
-          ret_from_fork+0x10/0x20
-
-   -> #1 ((softirq_ctrl.lock)){+.+.}-{3:3}:
-          lock_release+0x250/0x348
-          __local_bh_enable_ip+0x7c/0x240
-          __netdev_alloc_skb+0x1b4/0x1d8
-          gem_rx_refill+0xdc/0x240
-          gem_init_rings+0xb4/0x108
-          macb_mac_link_up+0x9c/0x2b4
-          phylink_resolve+0x170/0x614
-          process_one_work+0x20c/0x5f8
-          worker_thread+0x1b0/0x35c
-          kthread+0x144/0x200
-          ret_from_fork+0x10/0x20
-
-   -> #0 (&bp->lock){+.+.}-{3:3}:
-          __lock_acquire+0x15a8/0x2084
-          lock_acquire+0x1cc/0x350
-          rt_spin_lock+0x50/0x1f0
-          macb_start_xmit+0x808/0xb7c
-          dev_hard_start_xmit+0x94/0x284
-          sch_direct_xmit+0x8c/0x37c
-          __dev_queue_xmit+0x708/0x1120
-          neigh_resolve_output+0x148/0x28c
-          ip6_finish_output2+0x2c0/0xb2c
-          __ip6_finish_output+0x114/0x308
-          ip6_output+0xc4/0x4a4
-          mld_sendpack+0x220/0x68c
-          mld_ifc_work+0x2a8/0x4f4
-          process_one_work+0x20c/0x5f8
-          worker_thread+0x1b0/0x35c
-          kthread+0x144/0x200
-          ret_from_fork+0x10/0x20
-
-   other info that might help us debug this:
-
-   Chain exists of:
-     &bp->lock --> _xmit_ETHER#2 --> &queue->tx_ptr_lock
-
-    Possible unsafe locking scenario:
-
-          CPU0                    CPU1
-          ----                    ----
-     lock(&queue->tx_ptr_lock);
-                                  lock(_xmit_ETHER#2);
-                                  lock(&queue->tx_ptr_lock);
-     lock(&bp->lock);
-
-    *** DEADLOCK ***
-
-   Call trace:
-    show_stack+0x18/0x24 (C)
-    dump_stack_lvl+0xa0/0xf0
-    dump_stack+0x18/0x24
-    print_circular_bug+0x28c/0x370
-    check_noncircular+0x198/0x1ac
-    __lock_acquire+0x15a8/0x2084
-    lock_acquire+0x1cc/0x350
-    rt_spin_lock+0x50/0x1f0
-    macb_start_xmit+0x808/0xb7c
-    dev_hard_start_xmit+0x94/0x284
-    sch_direct_xmit+0x8c/0x37c
-    __dev_queue_xmit+0x708/0x1120
-    neigh_resolve_output+0x148/0x28c
-    ip6_finish_output2+0x2c0/0xb2c
-    __ip6_finish_output+0x114/0x308
-    ip6_output+0xc4/0x4a4
-    mld_sendpack+0x220/0x68c
-    mld_ifc_work+0x2a8/0x4f4
-    process_one_work+0x20c/0x5f8
-    worker_thread+0x1b0/0x35c
-    kthread+0x144/0x200
-    ret_from_fork+0x10/0x20
-
-Notably, invoking the mog_init_rings() callback upon link establishment
-is unnecessary. Instead, we can exclusively call mog_init_rings() within
-the ndo_open() callback. This adjustment resolves the deadlock issue.
-Furthermore, since MACB_CAPS_MACB_IS_EMAC cases do not use mog_init_rings()
-when opening the network interface via at91ether_open(), moving
-mog_init_rings() to macb_open() also eliminates the MACB_CAPS_MACB_IS_EMAC
-check.
-
-Fixes: 633e98a711ac ("net: macb: use resolved link config in mac_link_up()")
-Cc: stable@vger.kernel.org
-Suggested-by: Kevin Hao <kexin.hao@windriver.com>
-Signed-off-by: Xiaolei Wang <xiaolei.wang@windriver.com>
-Link: https://patch.msgid.link/20251222015624.1994551-1-xiaolei.wang@windriver.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: d32bac9cb09c ("ASoC: qcom: Add helper for allocating Soundwire stream runtime")
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: Stable@vger.kernel.org
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+Tested-by: Steev Klimaszewski <threeway@gmail.com> # Thinkpad X13s
+Link: https://patch.msgid.link/20251022143349.1081513-2-srinivas.kandagatla@oss.qualcomm.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/cadence/macb_main.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ sound/soc/qcom/sc7280.c   |    2 
+ sound/soc/qcom/sc8280xp.c |    2 
+ sound/soc/qcom/sdw.c      |  105 +++++++++++++++++++++++++---------------------
+ sound/soc/qcom/sdw.h      |    1 
+ sound/soc/qcom/sm8250.c   |    2 
+ sound/soc/qcom/x1e80100.c |    2 
+ 6 files changed, 64 insertions(+), 50 deletions(-)
 
---- a/drivers/net/ethernet/cadence/macb_main.c
-+++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -744,7 +744,6 @@ static void macb_mac_link_up(struct phyl
- 		/* Initialize rings & buffers as clearing MACB_BIT(TE) in link down
- 		 * cleared the pipeline and control registers.
- 		 */
--		bp->macbgem_ops.mog_init_rings(bp);
- 		macb_init_buffers(bp);
+--- a/sound/soc/qcom/sc7280.c
++++ b/sound/soc/qcom/sc7280.c
+@@ -317,7 +317,7 @@ static void sc7280_snd_shutdown(struct s
+ 	struct snd_soc_card *card = rtd->card;
+ 	struct sc7280_snd_data *data = snd_soc_card_get_drvdata(card);
+ 	struct snd_soc_dai *cpu_dai = snd_soc_rtd_to_cpu(rtd, 0);
+-	struct sdw_stream_runtime *sruntime = data->sruntime[cpu_dai->id];
++	struct sdw_stream_runtime *sruntime = qcom_snd_sdw_get_stream(substream);
  
- 		for (q = 0, queue = bp->queues; q < bp->num_queues; ++q, ++queue)
-@@ -2991,6 +2990,8 @@ static int macb_open(struct net_device *
- 		goto pm_exit;
+ 	switch (cpu_dai->id) {
+ 	case MI2S_PRIMARY:
+--- a/sound/soc/qcom/sc8280xp.c
++++ b/sound/soc/qcom/sc8280xp.c
+@@ -69,7 +69,7 @@ static void sc8280xp_snd_shutdown(struct
+ 	struct snd_soc_pcm_runtime *rtd = snd_soc_substream_to_rtd(substream);
+ 	struct snd_soc_dai *cpu_dai = snd_soc_rtd_to_cpu(rtd, 0);
+ 	struct sc8280xp_snd_data *pdata = snd_soc_card_get_drvdata(rtd->card);
+-	struct sdw_stream_runtime *sruntime = pdata->sruntime[cpu_dai->id];
++	struct sdw_stream_runtime *sruntime = qcom_snd_sdw_get_stream(substream);
+ 
+ 	pdata->sruntime[cpu_dai->id] = NULL;
+ 	sdw_release_stream(sruntime);
+--- a/sound/soc/qcom/sdw.c
++++ b/sound/soc/qcom/sdw.c
+@@ -7,6 +7,37 @@
+ #include <sound/soc.h>
+ #include "sdw.h"
+ 
++static bool qcom_snd_is_sdw_dai(int id)
++{
++	switch (id) {
++	case WSA_CODEC_DMA_RX_0:
++	case WSA_CODEC_DMA_TX_0:
++	case WSA_CODEC_DMA_RX_1:
++	case WSA_CODEC_DMA_TX_1:
++	case WSA_CODEC_DMA_TX_2:
++	case RX_CODEC_DMA_RX_0:
++	case TX_CODEC_DMA_TX_0:
++	case RX_CODEC_DMA_RX_1:
++	case TX_CODEC_DMA_TX_1:
++	case RX_CODEC_DMA_RX_2:
++	case TX_CODEC_DMA_TX_2:
++	case RX_CODEC_DMA_RX_3:
++	case TX_CODEC_DMA_TX_3:
++	case RX_CODEC_DMA_RX_4:
++	case TX_CODEC_DMA_TX_4:
++	case RX_CODEC_DMA_RX_5:
++	case TX_CODEC_DMA_TX_5:
++	case RX_CODEC_DMA_RX_6:
++	case RX_CODEC_DMA_RX_7:
++	case SLIMBUS_0_RX...SLIMBUS_6_TX:
++		return true;
++	default:
++		break;
++	}
++
++	return false;
++}
++
+ /**
+  * qcom_snd_sdw_startup() - Helper to start Soundwire stream for SoC audio card
+  * @substream: The PCM substream from audio, as passed to snd_soc_ops->startup()
+@@ -27,6 +58,9 @@ int qcom_snd_sdw_startup(struct snd_pcm_
+ 	struct snd_soc_dai *codec_dai;
+ 	int ret, i;
+ 
++	if (!qcom_snd_is_sdw_dai(cpu_dai->id))
++		return 0;
++
+ 	sruntime = sdw_alloc_stream(cpu_dai->name, SDW_STREAM_PCM);
+ 	if (!sruntime)
+ 		return -ENOMEM;
+@@ -61,19 +95,8 @@ int qcom_snd_sdw_prepare(struct snd_pcm_
+ 	if (!sruntime)
+ 		return 0;
+ 
+-	switch (cpu_dai->id) {
+-	case WSA_CODEC_DMA_RX_0:
+-	case WSA_CODEC_DMA_RX_1:
+-	case RX_CODEC_DMA_RX_0:
+-	case RX_CODEC_DMA_RX_1:
+-	case TX_CODEC_DMA_TX_0:
+-	case TX_CODEC_DMA_TX_1:
+-	case TX_CODEC_DMA_TX_2:
+-	case TX_CODEC_DMA_TX_3:
+-		break;
+-	default:
++	if (!qcom_snd_is_sdw_dai(cpu_dai->id))
+ 		return 0;
+-	}
+ 
+ 	if (*stream_prepared)
+ 		return 0;
+@@ -101,9 +124,7 @@ int qcom_snd_sdw_prepare(struct snd_pcm_
+ }
+ EXPORT_SYMBOL_GPL(qcom_snd_sdw_prepare);
+ 
+-int qcom_snd_sdw_hw_params(struct snd_pcm_substream *substream,
+-			   struct snd_pcm_hw_params *params,
+-			   struct sdw_stream_runtime **psruntime)
++struct sdw_stream_runtime *qcom_snd_sdw_get_stream(struct snd_pcm_substream *substream)
+ {
+ 	struct snd_soc_pcm_runtime *rtd = snd_soc_substream_to_rtd(substream);
+ 	struct snd_soc_dai *codec_dai;
+@@ -111,21 +132,23 @@ int qcom_snd_sdw_hw_params(struct snd_pc
+ 	struct sdw_stream_runtime *sruntime;
+ 	int i;
+ 
+-	switch (cpu_dai->id) {
+-	case WSA_CODEC_DMA_RX_0:
+-	case RX_CODEC_DMA_RX_0:
+-	case RX_CODEC_DMA_RX_1:
+-	case TX_CODEC_DMA_TX_0:
+-	case TX_CODEC_DMA_TX_1:
+-	case TX_CODEC_DMA_TX_2:
+-	case TX_CODEC_DMA_TX_3:
+-		for_each_rtd_codec_dais(rtd, i, codec_dai) {
+-			sruntime = snd_soc_dai_get_stream(codec_dai, substream->stream);
+-			if (sruntime != ERR_PTR(-ENOTSUPP))
+-				*psruntime = sruntime;
+-		}
+-		break;
++	if (!qcom_snd_is_sdw_dai(cpu_dai->id))
++		return NULL;
++
++	for_each_rtd_codec_dais(rtd, i, codec_dai) {
++		sruntime = snd_soc_dai_get_stream(codec_dai, substream->stream);
++		if (sruntime != ERR_PTR(-ENOTSUPP))
++			return sruntime;
+ 	}
++	return NULL;
++}
++EXPORT_SYMBOL_GPL(qcom_snd_sdw_get_stream);
++
++int qcom_snd_sdw_hw_params(struct snd_pcm_substream *substream,
++			   struct snd_pcm_hw_params *params,
++			   struct sdw_stream_runtime **psruntime)
++{
++	*psruntime = qcom_snd_sdw_get_stream(substream);
+ 
+ 	return 0;
+ 
+@@ -138,23 +161,13 @@ int qcom_snd_sdw_hw_free(struct snd_pcm_
+ 	struct snd_soc_pcm_runtime *rtd = snd_soc_substream_to_rtd(substream);
+ 	struct snd_soc_dai *cpu_dai = snd_soc_rtd_to_cpu(rtd, 0);
+ 
+-	switch (cpu_dai->id) {
+-	case WSA_CODEC_DMA_RX_0:
+-	case WSA_CODEC_DMA_RX_1:
+-	case RX_CODEC_DMA_RX_0:
+-	case RX_CODEC_DMA_RX_1:
+-	case TX_CODEC_DMA_TX_0:
+-	case TX_CODEC_DMA_TX_1:
+-	case TX_CODEC_DMA_TX_2:
+-	case TX_CODEC_DMA_TX_3:
+-		if (sruntime && *stream_prepared) {
+-			sdw_disable_stream(sruntime);
+-			sdw_deprepare_stream(sruntime);
+-			*stream_prepared = false;
+-		}
+-		break;
+-	default:
+-		break;
++	if (!qcom_snd_is_sdw_dai(cpu_dai->id))
++		return 0;
++
++	if (sruntime && *stream_prepared) {
++		sdw_disable_stream(sruntime);
++		sdw_deprepare_stream(sruntime);
++		*stream_prepared = false;
  	}
  
-+	bp->macbgem_ops.mog_init_rings(bp);
-+
- 	for (q = 0, queue = bp->queues; q < bp->num_queues; ++q, ++queue) {
- 		napi_enable(&queue->napi_rx);
- 		napi_enable(&queue->napi_tx);
+ 	return 0;
+--- a/sound/soc/qcom/sdw.h
++++ b/sound/soc/qcom/sdw.h
+@@ -10,6 +10,7 @@ int qcom_snd_sdw_startup(struct snd_pcm_
+ int qcom_snd_sdw_prepare(struct snd_pcm_substream *substream,
+ 			 struct sdw_stream_runtime *runtime,
+ 			 bool *stream_prepared);
++struct sdw_stream_runtime *qcom_snd_sdw_get_stream(struct snd_pcm_substream *stream);
+ int qcom_snd_sdw_hw_params(struct snd_pcm_substream *substream,
+ 			   struct snd_pcm_hw_params *params,
+ 			   struct sdw_stream_runtime **psruntime);
+--- a/sound/soc/qcom/sm8250.c
++++ b/sound/soc/qcom/sm8250.c
+@@ -86,7 +86,7 @@ static void sm2450_snd_shutdown(struct s
+ 	struct snd_soc_pcm_runtime *rtd = snd_soc_substream_to_rtd(substream);
+ 	struct snd_soc_dai *cpu_dai = snd_soc_rtd_to_cpu(rtd, 0);
+ 	struct sm8250_snd_data *data = snd_soc_card_get_drvdata(rtd->card);
+-	struct sdw_stream_runtime *sruntime = data->sruntime[cpu_dai->id];
++	struct sdw_stream_runtime *sruntime = qcom_snd_sdw_get_stream(substream);
+ 
+ 	data->sruntime[cpu_dai->id] = NULL;
+ 	sdw_release_stream(sruntime);
+--- a/sound/soc/qcom/x1e80100.c
++++ b/sound/soc/qcom/x1e80100.c
+@@ -55,7 +55,7 @@ static void x1e80100_snd_shutdown(struct
+ 	struct snd_soc_pcm_runtime *rtd = snd_soc_substream_to_rtd(substream);
+ 	struct snd_soc_dai *cpu_dai = snd_soc_rtd_to_cpu(rtd, 0);
+ 	struct x1e80100_snd_data *data = snd_soc_card_get_drvdata(rtd->card);
+-	struct sdw_stream_runtime *sruntime = data->sruntime[cpu_dai->id];
++	struct sdw_stream_runtime *sruntime = qcom_snd_sdw_get_stream(substream);
+ 
+ 	data->sruntime[cpu_dai->id] = NULL;
+ 	sdw_release_stream(sruntime);
 
 
 
