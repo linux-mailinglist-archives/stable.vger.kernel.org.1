@@ -1,53 +1,56 @@
-Return-Path: <stable+bounces-205532-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205811-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E73A9CF9FF8
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:13:48 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7ADA1CF9F9D
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:10:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B948F32667DE
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:01:23 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8ADA83063DAA
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:07:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D6A327C866;
-	Tue,  6 Jan 2026 17:36:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CB3430ACE8;
+	Tue,  6 Jan 2026 17:52:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qy3nV9nB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2rH4TE/u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29DA3227BA4;
-	Tue,  6 Jan 2026 17:36:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDBB93019AA;
+	Tue,  6 Jan 2026 17:52:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721006; cv=none; b=OS+oOlsLZjlNDyhtMt5xaYr0j9p0HP6jPU5QlVW6ZrTbYA3JF50CEVIh+RWFvf6dq9xCDlS2InRPFr4RvlCA4MIpKberEE4b/oP8bKuM99Pv3hokFD67kROmBZ1Sf5vxeNQWjvEMPLtgWyYeWRr8WaVsLyUIDUU98H8RQjeiorc=
+	t=1767721941; cv=none; b=XeyZcYvwCl6bmPgDNVBcuZR0ZGX/mheg7ejHzLaeI+y+llup5adjuGx1sUa8/pnPF3HosJoD11TzhwHzqgGqyksxOtbQbKl3tnQJXCZRDgfZaktQsKjdluHt+JVRqEqpQgkCJxoocMn/djx1V+6koOyHTj0RLLg0OgdyaKuJitM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721006; c=relaxed/simple;
-	bh=UU0tGsOcP6MQrHwD/Mal1Sa2snVM1Ef5kUt1q1hAlIU=;
+	s=arc-20240116; t=1767721941; c=relaxed/simple;
+	bh=5Ce0nVvdrgOmw5ZpV2zrYzzirdV2Kx4HHUMLiSDN0Hs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iAQPjAugw/DZeNmXe1meBv9unrM8f8Kng0iI0tTXEMIZmbWw57+NF+v50EdCe4AsO46i4geIC9aGgrNSRs4HA6X3SzMHuXHX+aRkcLMA4ZwM5cxfJNl8MogWJ5EMzJjB9/0/V2zx/HZHwMXH/s2tENh0attqRXLNUQ1RvjRF+qs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qy3nV9nB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 871A4C16AAE;
-	Tue,  6 Jan 2026 17:36:45 +0000 (UTC)
+	 MIME-Version; b=KySWkYAMzGRPZFaZXdSYRR2pIO8R+yKc6F+oXzsmsTUpLXC8QrUOGpyBmQCo+a8PcyRLhFAljKCyrd9V9oM91nTR7s6aKoCPOa2/85v8hVFEIHyIGS+5YUti/qhmJ8Q023Mkk0c+lWgB3gln8qj9aTn0v7ZfuMYPI2IJ+ohzVnM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2rH4TE/u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3015FC116C6;
+	Tue,  6 Jan 2026 17:52:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721006;
-	bh=UU0tGsOcP6MQrHwD/Mal1Sa2snVM1Ef5kUt1q1hAlIU=;
+	s=korg; t=1767721941;
+	bh=5Ce0nVvdrgOmw5ZpV2zrYzzirdV2Kx4HHUMLiSDN0Hs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qy3nV9nBPGpKqas0/YUYN3HGyCN9Bf9vDGjjqV0cdRu7p1WwFWQPqZUw04yh0CnXI
-	 SrT6Fz78wb2ybLdJ9n8xWK4bSGdEBX1v3R2tdiL4fv5JpvZdpBHdzouNPg9mn6QeEY
-	 3eNWfXrJDi07zgmZttlR5Anmgr0ANdgs10N2Q5r8=
+	b=2rH4TE/uRch4CtUosTNKzCGp4FxfY8EO/6e7Ac4GC6ltRn3IaQtHGE0JYa62VKU0c
+	 maM0p53BttG37iBL8DdUQvSF3fSG0Gkx2j3X4AVJ6yPSy5km4+Zd+yPSCLQSrg+qgE
+	 WWdcgPQYDU0FesCFo8D02OcG5poWzFhOZTPxsMvc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Duoming Zhou <duoming@zju.edu.cn>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 6.12 407/567] media: TDA1997x: Remove redundant cancel_delayed_work in probe
-Date: Tue,  6 Jan 2026 18:03:09 +0100
-Message-ID: <20260106170506.398214420@linuxfoundation.org>
+	Rob Clark <robin.clark@oss.qualcomm.com>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Johan Hovold <johan@kernel.org>,
+	Joerg Roedel <joerg.roedel@amd.com>
+Subject: [PATCH 6.18 117/312] iommu/qcom: fix device leak on of_xlate()
+Date: Tue,  6 Jan 2026 18:03:11 +0100
+Message-ID: <20260106170552.074955838@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
-References: <20260106170451.332875001@linuxfoundation.org>
+In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
+References: <20260106170547.832845344@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,43 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Duoming Zhou <duoming@zju.edu.cn>
+From: Johan Hovold <johan@kernel.org>
 
-commit 29de195ca39fc2ac0af6fd45522994df9f431f80 upstream.
+commit 6a3908ce56e6879920b44ef136252b2f0c954194 upstream.
 
-The delayed_work delayed_work_enable_hpd is initialized with
-INIT_DELAYED_WORK(), but it is never scheduled in tda1997x_probe().
+Make sure to drop the reference taken to the iommu platform device when
+looking up its driver data during of_xlate().
 
-Calling cancel_delayed_work() on a work that has never been
-scheduled is redundant and unnecessary, as there is no pending
-work to cancel.
+Note that commit e2eae09939a8 ("iommu/qcom: add missing put_device()
+call in qcom_iommu_of_xlate()") fixed the leak in a couple of error
+paths, but the reference is still leaking on success and late failures.
 
-Remove the redundant cancel_delayed_work() from error handling
-path in tda1997x_probe() to avoid potential confusion.
-
-Fixes: 9ac0038db9a7 ("media: i2c: Add TDA1997x HDMI receiver driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Fixes: 0ae349a0f33f ("iommu/qcom: Add qcom_iommu")
+Cc: stable@vger.kernel.org	# 4.14: e2eae09939a8
+Cc: Rob Clark <robin.clark@oss.qualcomm.com>
+Cc: Yu Kuai <yukuai3@huawei.com>
+Acked-by: Robin Murphy <robin.murphy@arm.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/i2c/tda1997x.c |    1 -
- 1 file changed, 1 deletion(-)
+ drivers/iommu/arm/arm-smmu/qcom_iommu.c |   10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
---- a/drivers/media/i2c/tda1997x.c
-+++ b/drivers/media/i2c/tda1997x.c
-@@ -2798,7 +2798,6 @@ err_free_media:
- err_free_handler:
- 	v4l2_ctrl_handler_free(&state->hdl);
- err_free_mutex:
--	cancel_delayed_work(&state->delayed_work_enable_hpd);
- 	mutex_destroy(&state->page_lock);
- 	mutex_destroy(&state->lock);
- 	tda1997x_set_power(state, 0);
+--- a/drivers/iommu/arm/arm-smmu/qcom_iommu.c
++++ b/drivers/iommu/arm/arm-smmu/qcom_iommu.c
+@@ -565,14 +565,14 @@ static int qcom_iommu_of_xlate(struct de
+ 
+ 	qcom_iommu = platform_get_drvdata(iommu_pdev);
+ 
++	put_device(&iommu_pdev->dev);
++
+ 	/* make sure the asid specified in dt is valid, so we don't have
+ 	 * to sanity check this elsewhere:
+ 	 */
+ 	if (WARN_ON(asid > qcom_iommu->max_asid) ||
+-	    WARN_ON(qcom_iommu->ctxs[asid] == NULL)) {
+-		put_device(&iommu_pdev->dev);
++	    WARN_ON(qcom_iommu->ctxs[asid] == NULL))
+ 		return -EINVAL;
+-	}
+ 
+ 	if (!dev_iommu_priv_get(dev)) {
+ 		dev_iommu_priv_set(dev, qcom_iommu);
+@@ -581,10 +581,8 @@ static int qcom_iommu_of_xlate(struct de
+ 		 * multiple different iommu devices.  Multiple context
+ 		 * banks are ok, but multiple devices are not:
+ 		 */
+-		if (WARN_ON(qcom_iommu != dev_iommu_priv_get(dev))) {
+-			put_device(&iommu_pdev->dev);
++		if (WARN_ON(qcom_iommu != dev_iommu_priv_get(dev)))
+ 			return -EINVAL;
+-		}
+ 	}
+ 
+ 	return iommu_fwspec_add_ids(dev, &asid, 1);
 
 
 
