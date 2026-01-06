@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-205663-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205943-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C00ACF9F4C
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:09:08 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01167CFA672
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:59:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1444A3047DA3
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:07:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 92A0E33253A9
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:17:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9C0534A79F;
-	Tue,  6 Jan 2026 17:44:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C519376BC3;
+	Tue,  6 Jan 2026 17:59:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VR7vz4rl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yzVyKMLO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 816D334C124;
-	Tue,  6 Jan 2026 17:44:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB4AA36D51D;
+	Tue,  6 Jan 2026 17:59:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721440; cv=none; b=hDybUdb8wREXjR/vddmYbEXUg+q1Ckgh1BGf+P5aE04KBXU3eZd8dgVtd90EBIG8oNeihRH8PmA7n8s458ETEF3567H/z3sidahAyyxDog2ETkpojiDOeWvyWCFlPy9AHnWQPKSnN19/GbHS5Y64ijlP+5Wihr5yVXYj5BsEJNo=
+	t=1767722378; cv=none; b=touqLbWHOgURxWsQAAF6XmKYxJR8YsOdCq9ed4de8gj5SMDfEok/5s+lhyLYxmD4uPq38QFPjDtsVz8EqG16ess4uGu5lp4mujChi+wxkMiKvK2kNpHmlCYYB/88dcJYAXtT1TT1frTZmysV7DFqqRUnDgyNFWqwebGVTub6p04=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721440; c=relaxed/simple;
-	bh=D38Ds4JXz3pPQL+21Lx1EdgHLh2KTcVBVgI6ggigLRE=;
+	s=arc-20240116; t=1767722378; c=relaxed/simple;
+	bh=uPXaqtXP10YTk/JppKOADjSTnxGJ20voo/e+1pSFArM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DHQp913rsUOB4yDvhGyd7wmi1o/o/6WcgVyFrjxMP7GWJfV4Ja8wu7P4HfbUhr6/OuO19lBuLm7ePQOIunu/ZKvum6ZQc6MBW/mJBPWZQ7DdfT4r1H7zZzRmzmTC4gELHTL4KpA8HMR2tjA1EOMIXu8HGdS3xgmjrWfA+AU6Nrk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VR7vz4rl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A2E5C19423;
-	Tue,  6 Jan 2026 17:43:59 +0000 (UTC)
+	 MIME-Version; b=hFeYB0yL9aan8hiRN7Z3AhTMWMvhe+mq+uBgkHja1paTLoW9Z1JV7rHLJdzX09+xq4FYqYTHQdo6dGWpj4g3rVLTFSDCAv0upnMhFaVtAzQlWvrUOhd2OZtcK0G5IUxDD46VqwlkwfFS4IHp+cbt4si7SmdinGGKhKoN4qb7VJ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yzVyKMLO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C4C1C116C6;
+	Tue,  6 Jan 2026 17:59:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721440;
-	bh=D38Ds4JXz3pPQL+21Lx1EdgHLh2KTcVBVgI6ggigLRE=;
+	s=korg; t=1767722377;
+	bh=uPXaqtXP10YTk/JppKOADjSTnxGJ20voo/e+1pSFArM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VR7vz4rlwrOFqpMQiZ1KXS0TvYRl3TCg1dKLuG2+wrTsGB5NjCF7n69UX7ehoWWJu
-	 742UEYPwhYt5mk3jooIGIn0R/u7H5adEHUaCtd2oLQDj6SyegKPNjWjgQU8I8aBYSd
-	 7gW40Tw54tDWbGsTppkFPLykiy/Q0bgAE9q2SpCw=
+	b=yzVyKMLORErCy/g/G3pc37OC4yGN9XINUBojqO7Ten0YwAwkHg+KRkN92qPQj0GLC
+	 a18AxyGx6EcnWXdGyzS2pJItAq00NGLPhK1lnfYKfpq34VgtLm80d/Dp2tioq+p2Eq
+	 XnGUALl2QmN45TnJY3PATdKNVcR5sawrgpyT7O9k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Madhu Chittim <madhu.chittim@intel.com>,
-	Joshua Hay <joshua.a.hay@intel.com>,
-	Krishneil Singh <krishneil.k.singh@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>
-Subject: [PATCH 6.12 538/567] idpf: trigger SW interrupt when exiting wb_on_itr mode
-Date: Tue,  6 Jan 2026 18:05:20 +0100
-Message-ID: <20260106170511.304650427@linuxfoundation.org>
+	Hengqi Chen <hengqi.chen@gmail.com>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.18 247/312] LoongArch: BPF: Sign extend kfunc call arguments
+Date: Tue,  6 Jan 2026 18:05:21 +0100
+Message-ID: <20260106170556.785233169@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
-References: <20260106170451.332875001@linuxfoundation.org>
+In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
+References: <20260106170547.832845344@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,103 +59,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joshua Hay <joshua.a.hay@intel.com>
+From: Hengqi Chen <hengqi.chen@gmail.com>
 
-[ Upstream commit 0c1683c681681c14f4389e3bfa8de10baf242ba8 ]
+commit 3f5a238f24d7b75f9efe324d3539ad388f58536e upstream.
 
-There is a race condition between exiting wb_on_itr and completion write
-backs. For example, we are in wb_on_itr mode and a Tx completion is
-generated by HW, ready to be written back, as we are re-enabling
-interrupts:
+The kfunc calls are native calls so they should follow LoongArch calling
+conventions. Sign extend its arguments properly to avoid kernel panic.
+This is done by adding a new emit_abi_ext() helper. The emit_abi_ext()
+helper performs extension in place meaning a value already store in the
+target register (Note: this is different from the existing sign_extend()
+helper and thus we can't reuse it).
 
-	HW                      SW
-	|                       |
-	|			| idpf_tx_splitq_clean_all
-	|                       | napi_complete_done
-	|			|
-	| tx_completion_wb 	| idpf_vport_intr_update_itr_ena_irq
-
-That tx_completion_wb happens before the vector is fully re-enabled.
-Continuing with this example, it is a UDP stream and the
-tx_completion_wb is the last one in the flow (there are no rx packets).
-Because the HW generated the completion before the interrupt is fully
-enabled, the HW will not fire the interrupt once the timer expires and
-the write back will not happen. NAPI poll won't be called.  We have
-indicated we're back in interrupt mode but nothing else will trigger the
-interrupt. Therefore, the completion goes unprocessed, triggering a Tx
-timeout.
-
-To mitigate this, fire a SW triggered interrupt upon exiting wb_on_itr.
-This interrupt will catch the rogue completion and avoid the timeout.
-Add logic to set the appropriate bits in the vector's dyn_ctl register.
-
-Fixes: 9c4a27da0ecc ("idpf: enable WB_ON_ITR")
-Reviewed-by: Madhu Chittim <madhu.chittim@intel.com>
-Signed-off-by: Joshua Hay <joshua.a.hay@intel.com>
-Tested-by: Krishneil Singh <krishneil.k.singh@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Cc: stable@vger.kernel.org
+Fixes: 5dc615520c4d ("LoongArch: Add BPF JIT support")
+Signed-off-by: Hengqi Chen <hengqi.chen@gmail.com>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/idpf/idpf_txrx.c |   29 ++++++++++++++++++----------
- 1 file changed, 19 insertions(+), 10 deletions(-)
+ arch/loongarch/net/bpf_jit.c |   16 ++++++++++++++++
+ arch/loongarch/net/bpf_jit.h |   26 ++++++++++++++++++++++++++
+ 2 files changed, 42 insertions(+)
 
---- a/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-@@ -3502,21 +3502,31 @@ static void idpf_vport_intr_dis_irq_all(
- /**
-  * idpf_vport_intr_buildreg_itr - Enable default interrupt generation settings
-  * @q_vector: pointer to q_vector
-- * @type: itr index
-- * @itr: itr value
-  */
--static u32 idpf_vport_intr_buildreg_itr(struct idpf_q_vector *q_vector,
--					const int type, u16 itr)
-+static u32 idpf_vport_intr_buildreg_itr(struct idpf_q_vector *q_vector)
- {
--	u32 itr_val;
-+	u32 itr_val = q_vector->intr_reg.dyn_ctl_intena_m;
-+	int type = IDPF_NO_ITR_UPDATE_IDX;
-+	u16 itr = 0;
+--- a/arch/loongarch/net/bpf_jit.c
++++ b/arch/loongarch/net/bpf_jit.c
+@@ -952,6 +952,22 @@ static int build_insn(const struct bpf_i
+ 			emit_insn(ctx, ldd, REG_TCC, LOONGARCH_GPR_SP, tcc_ptr_off);
+ 		}
+ 
++		if (insn->src_reg == BPF_PSEUDO_KFUNC_CALL) {
++			const struct btf_func_model *m;
++			int i;
 +
-+	if (q_vector->wb_on_itr) {
-+		/*
-+		 * Trigger a software interrupt when exiting wb_on_itr, to make
-+		 * sure we catch any pending write backs that might have been
-+		 * missed due to interrupt state transition.
-+		 */
-+		itr_val |= q_vector->intr_reg.dyn_ctl_swint_trig_m |
-+			   q_vector->intr_reg.dyn_ctl_sw_itridx_ena_m;
-+		type = IDPF_SW_ITR_UPDATE_IDX;
-+		itr = IDPF_ITR_20K;
++			m = bpf_jit_find_kfunc_model(ctx->prog, insn);
++			if (!m)
++				return -EINVAL;
++
++			for (i = 0; i < m->nr_args; i++) {
++				u8 reg = regmap[BPF_REG_1 + i];
++				bool sign = m->arg_flags[i] & BTF_FMODEL_SIGNED_ARG;
++
++				emit_abi_ext(ctx, reg, m->arg_size[i], sign);
++			}
++		}
++
+ 		move_addr(ctx, t1, func_addr);
+ 		emit_insn(ctx, jirl, LOONGARCH_GPR_RA, t1, 0);
+ 
+--- a/arch/loongarch/net/bpf_jit.h
++++ b/arch/loongarch/net/bpf_jit.h
+@@ -88,6 +88,32 @@ static inline void emit_sext_32(struct j
+ 	emit_insn(ctx, addiw, reg, reg, 0);
+ }
+ 
++/* Emit proper extension according to ABI requirements.
++ * Note that it requires a value of size `size` already resides in register `reg`.
++ */
++static inline void emit_abi_ext(struct jit_ctx *ctx, int reg, u8 size, bool sign)
++{
++	/* ABI requires unsigned char/short to be zero-extended */
++	if (!sign && (size == 1 || size == 2))
++		return;
++
++	switch (size) {
++	case 1:
++		emit_insn(ctx, extwb, reg, reg);
++		break;
++	case 2:
++		emit_insn(ctx, extwh, reg, reg);
++		break;
++	case 4:
++		emit_insn(ctx, addiw, reg, reg, 0);
++		break;
++	case 8:
++		break;
++	default:
++		pr_warn("bpf_jit: invalid size %d for extension\n", size);
 +	}
- 
- 	itr &= IDPF_ITR_MASK;
- 	/* Don't clear PBA because that can cause lost interrupts that
- 	 * came in while we were cleaning/polling
- 	 */
--	itr_val = q_vector->intr_reg.dyn_ctl_intena_m |
--		  (type << q_vector->intr_reg.dyn_ctl_itridx_s) |
--		  (itr << (q_vector->intr_reg.dyn_ctl_intrvl_s - 1));
-+	itr_val |= (type << q_vector->intr_reg.dyn_ctl_itridx_s) |
-+		   (itr << (q_vector->intr_reg.dyn_ctl_intrvl_s - 1));
- 
- 	return itr_val;
- }
-@@ -3614,9 +3624,8 @@ void idpf_vport_intr_update_itr_ena_irq(
- 	/* net_dim() updates ITR out-of-band using a work item */
- 	idpf_net_dim(q_vector);
- 
-+	intval = idpf_vport_intr_buildreg_itr(q_vector);
- 	q_vector->wb_on_itr = false;
--	intval = idpf_vport_intr_buildreg_itr(q_vector,
--					      IDPF_NO_ITR_UPDATE_IDX, 0);
- 
- 	writel(intval, q_vector->intr_reg.dyn_ctl);
- }
++}
++
+ static inline void move_addr(struct jit_ctx *ctx, enum loongarch_gpr rd, u64 addr)
+ {
+ 	u64 imm_11_0, imm_31_12, imm_51_32, imm_63_52;
 
 
 
