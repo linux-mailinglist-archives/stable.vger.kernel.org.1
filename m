@@ -1,95 +1,101 @@
-Return-Path: <stable+bounces-205069-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205070-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04F42CF7FCA
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 12:14:23 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9ACF0CF8019
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 12:19:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 72DA4300103B
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 11:14:22 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 151E73010514
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 11:19:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4570316919;
-	Tue,  6 Jan 2026 11:14:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 275D43254BC;
+	Tue,  6 Jan 2026 11:18:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fuBQyE8V"
+	dkim=pass (2048-bit key) header.d=cirrus.com header.i=@cirrus.com header.b="aydPtYOV";
+	dkim=pass (1024-bit key) header.d=cirrus4.onmicrosoft.com header.i=@cirrus4.onmicrosoft.com header.b="M8SYd72s"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-001ae601.pphosted.com (mx0b-001ae601.pphosted.com [67.231.152.168])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5AEE30F7E8
-	for <stable@vger.kernel.org>; Tue,  6 Jan 2026 11:14:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767698060; cv=none; b=dEAsB4xGkqdYsvnSHVpsThkzy2FAes5FUSsNp8DBDEXXgJv0ec766yq7F+WbJx0X2L1sZOoVAu5uTAuUG6yln474QVLRD8MFMIb3qU1B5bhJcqx+Av37TjI7eN5Xa2WyaqqnwzPrjsSq5lm6LYQnJND3CA2FpFm14sjLCRdRnpI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767698060; c=relaxed/simple;
-	bh=QOLwE9yKsz5lnjMBwPThXPhLN/5p+dXW3dZqdcLvkU4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s2NxlKrYqXcJ76CHBe0/tx0v+uMG5uapUnHvtnjbHx3asMQdHsEvT9xwywHQMlR2RJ+Jrs3suC1nnAklUJmG7Lto7UHLrY9ZO6FJGovoSHxFDtDq0RBWs8jPS9sZ49zngG2jXO9G6mlGC/qnvgFiCIkT0kfRjpcHuJvM0c14Suk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fuBQyE8V; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-47774d3536dso8036485e9.0
-        for <stable@vger.kernel.org>; Tue, 06 Jan 2026 03:14:18 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E49D830ACEB
+	for <stable@vger.kernel.org>; Tue,  6 Jan 2026 11:18:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=67.231.152.168
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1767698338; cv=fail; b=Zom7fb7ySKQEH0KMZx+0nPjWRYeZU+ja8k5s2cj0xExXk2Uv/yM3M6RQH/LekzCxRKrA4fseUmOciMqksNnBj3naVZcsQY2kS+GEyrr/f29BhB3Dw26EcGpX3q5q+SnmdDdX7FJyIHkNetbwMaG99unypeBR72HX5/TRSsBbGn0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1767698338; c=relaxed/simple;
+	bh=/yenBXxZGhrPQ/+NLOoqEIVuRYPH/vem0t7pGaS8a0w=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=OQFWmnxIl5XyDdm+eyFHgUcTtjSYrh4ZVqNHNl59ibkuH8kV/nB2FrWXw2PmdQp5zkg8I534uEeJDALVWy5EEQqfD/qOyVGI8FDPqyR1OjGyCC0UTNpeqWxX2fLlL00FuXz1r6wdAUwbg0JiW8ySRkRAWuWqNg+vLH2Keljdth4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=opensource.cirrus.com; spf=pass smtp.mailfrom=opensource.cirrus.com; dkim=pass (2048-bit key) header.d=cirrus.com header.i=@cirrus.com header.b=aydPtYOV; dkim=pass (1024-bit key) header.d=cirrus4.onmicrosoft.com header.i=@cirrus4.onmicrosoft.com header.b=M8SYd72s; arc=fail smtp.client-ip=67.231.152.168
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=opensource.cirrus.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=opensource.cirrus.com
+Received: from pps.filterd (m0077474.ppops.net [127.0.0.1])
+	by mx0b-001ae601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60648tpq220030;
+	Tue, 6 Jan 2026 05:18:48 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=PODMain02222019; bh=mydB9d2nvjTn5HfS
+	vW9laIyzxWLsZPCNb/oDLF7Ijm0=; b=aydPtYOV1kB9jvRW/FmQaeNs5BKJGxvq
+	B7S9AsgTcrrgKs6lANHhlw/rlF5R1IczU7rFlXZ/PXeSbArfrQm1hkSfdcM6OaJo
+	xIvJgIIHAC00qSBJJxb4gIPG9lYt1wRdZKRaIXGs+yI1k28j5EpbnXRcUBxmCTQb
+	Q55EpacUBPlUeqdpjPNAHd4i4TYxlitZNY45F4JeLAESyS96HdylQJqcx1jdcLT0
+	WHGSbwxSj6B8XTgLGGd8KyU81U/8wyAOshwD5BFdSFn1H2G1BYXyk5WvmHzYp2j/
+	1MRznGIjkEM+8bwRyhMTviD66SivYo7iCRnub9cYST74XJFj329dKw==
+Received: from bl2pr02cu003.outbound.protection.outlook.com (mail-eastusazon11021100.outbound.protection.outlook.com [52.101.52.100])
+	by mx0b-001ae601.pphosted.com (PPS) with ESMTPS id 4bf0dntuq4-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Tue, 06 Jan 2026 05:18:48 -0600 (CST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Pmejvx1PvI3Wo0G088ihIBr8hIEm28IZJSI05lcwgbT1Tg4RwJwbZSsVu8Z1mNbQfwAYPjtfTFR9kaEtekVOyHzvTiVPfnl0GLPl6kO3Ya+5Y4PjIyI/DPk5zySbxHx6Dypd5vFi5v01GrsfKzScJZSYBPR0sZS3BQxppbpcOgTo9MBWkNWetoEj7UtR3YuCsFh+/xkJFgYfjl2rP7NKUfFpuJH9ZVeTD2sjFcYQc+/cL/r8/qkK+egV9Vln/TwKuhr0Ge9Jrf00g7rTF6z+HOmGo+z89d9az10nSfpATgChxdnqj6FCgoMGZ2c1kK9wJ1lxz3jIhCVuQ0SmiJXgnA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=mydB9d2nvjTn5HfSvW9laIyzxWLsZPCNb/oDLF7Ijm0=;
+ b=E1Iy1E2WU7jvoyboa6oTaw0iPhzRFQPw5B0VyIRHLyeaCrTqMOGTDkDivzwxMQrNrbvt8i2IZiSmQmo4F1t2g+Tq+dWdNZ0IoxjPdQ5j5t2lh2U3Yw5Li6QBAZgjw+loMFLmUioQyvd2HDNMzLE2ZCliikllYrUxZkuDXAQgjggGzjBmrqQr6j+Y1leN7CCsNQZmls8YbsVXIc6kkbp+Gbo6Pp+CRqx7HfBvk31AMiegJ0QjrzW8ssTfglVkM3ZLPhfVUoff+WuFk3+NZXW4SKSgQQ+h2pKiFM0iZ0ui1LOe04vwZ6AKlT0D19r/voH/gQ3lt9P8IAkO+rH76E+NUQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=fail (sender ip is
+ 84.19.233.75) smtp.rcpttodomain=bgdev.pl smtp.mailfrom=opensource.cirrus.com;
+ dmarc=fail (p=reject sp=reject pct=100) action=oreject
+ header.from=opensource.cirrus.com; dkim=none (message not signed); arc=none
+ (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767698057; x=1768302857; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uVZKk5oU5K00jot4Bi+Ldjw0RUZal7DJ8vw00Z3l9Ao=;
-        b=fuBQyE8VFjI56nbGVn3kCau7Cao5nMoyrAyV4pPDEk2Nut/B2FqfMiLZwvwtA8tRGc
-         /6gSZnIqsmK0mfgUOGzq0qjEtiwxKncfGvQCB5qkmsn/LswzjtwKe6h3tCyK/Hgi6Mwi
-         ngRIm6pI4lj4ingwyO4btF2rmmD0mG7bN97Yy9lb2mvoZczzRDXmr15uoRk9MfbCeMEd
-         N9vwLkIVE5yXu5AfjEXMWTV/u4zjZjYQU7zracT2oMEiDZOJOVWo+QxB2W7p5+HXDBhZ
-         PE+l/Ej651nZBi9fptFOE2hMXq6XgjFPUmNYNZvd8uwSzbQwALPRTjJ6T/LovAPCCHSk
-         5fMw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767698057; x=1768302857;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=uVZKk5oU5K00jot4Bi+Ldjw0RUZal7DJ8vw00Z3l9Ao=;
-        b=qxDaSaS3rUktEhYr/LNvboRNhJNtcOgZYMrH3IJNTB3td5OeVcbIzL7NOFNG+FuNRL
-         mueFMBErS8cjQJt7aW5Hup5w1B6eB6GU09aoYomBtpgWDGUuG5OLvWSJ9EqIzIZ32Qbd
-         SEq7I183HrLdjr3NbGOY3HcA+FuFGNA/Q1TwrRBy1eN7mbH4A54FkbA9duXSqTxO6U5z
-         KzWd3Ngy9ON2Z5w/W3+fvH3aM/j1g06om88DNpywXOreF/SeTKaSanghAixkViJ0S/TW
-         0DmvBnbh1TtxDq9dgm26G6EmCrReyhUX/H8Kr6QmaEVUdL4FGzvgHwcx5EyBTF12nL9z
-         jdgQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUVs5BV50daC4NNd4ZX9gfppsljL1rQvRIj+zOHVCDXgVYfOgmXzBUno/dezi2OKpPjFNIvx5Q=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzfFa+GJ9NaFondRT1QzEtP6Up8fpfVmUF2v/fJk3bWH3hQIYYm
-	lyn+1UqbQoz+VU1j8LiKKQSFXoc8F2SGQC88o9n1i5TtVk1p+eUoJtnB
-X-Gm-Gg: AY/fxX5dUXq0F5n2PqnRJkB54It1P1o362QKduaTgbHgQ8p2g2cAeHGbGEIoF+6RnYf
-	MvEQuI0OJlVYeJcpZlA2d8QaJrgSX5NS6wj3DYJnr84XXiJbb5IRg/M2fJ3lGME2jMi9eVNxTq4
-	XMHpR+M9KwyBVv0cuPwaU70K9188ZChpcUumZsQHbjTzmN13Jxd2YfyK8fx27OeyatejMTJBJGR
-	tI41gVtXEaRweMWTRoDmjLmOqo5IJtDmX9f2BcxKo2Xutbqp6rzasi0e3sVGQgJ3PpQ2dP6YzV5
-	3tUruoxmtsW3LSIERBZyeNA15sdDZwZBhaMmvsCcGRHlfEUpFShYl9RnZmgQI/s9fWMHZvj3Hjl
-	dEUak+7tZNuteH+hkvJhKX+um79fG5tTxKM7PFwnZKvnDSC+fP4zjdy/n8gCzmkBMmfC+euBNbV
-	MT2EYKSH7b5d1vMUWJAD5VBnpVLdqcIR9cMi+vDIXW86jI
-X-Google-Smtp-Source: AGHT+IG/t9UJd68fz0l1BGBLOMyHx0xQkUDFtE4j/3hcbemCE6oPqV9gYdA6M3tFBxVd6A1XGZr8cQ==
-X-Received: by 2002:a05:600c:1f0f:b0:479:13e9:3d64 with SMTP id 5b1f17b1804b1-47d7f422387mr26901935e9.15.1767698056740;
-        Tue, 06 Jan 2026 03:14:16 -0800 (PST)
-Received: from ionutnechita-arz2022.local ([2a02:2f0e:ca09:7000:33fc:5cce:3767:6b22])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47d7f6f0e15sm35531705e9.10.2026.01.06.03.14.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Jan 2026 03:14:15 -0800 (PST)
-From: djiony2011@gmail.com
-X-Google-Original-From: ionut.nechita@windriver.com
-To: ming.lei@redhat.com
-Cc: axboe@kernel.dk,
-	djiony2011@gmail.com,
-	gregkh@linuxfoundation.org,
-	ionut.nechita@windriver.com,
-	linux-block@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	muchun.song@linux.dev,
-	sashal@kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] block: Fix WARN_ON in blk_mq_run_hw_queue when called from interrupt context
-Date: Tue,  6 Jan 2026 13:14:11 +0200
-Message-ID: <20260106111411.6435-1-ionut.nechita@windriver.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <aUnu1HdMqQbksLeY@fedora>
-References: <aUnu1HdMqQbksLeY@fedora>
+ d=cirrus4.onmicrosoft.com; s=selector2-cirrus4-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=mydB9d2nvjTn5HfSvW9laIyzxWLsZPCNb/oDLF7Ijm0=;
+ b=M8SYd72s+4b8ma87mupP5HSAmGYLcUaC7gsapwdcFpLT0jjhAicCAoOm+8E/lt7xhOtygcc8ev2INmd2IiqArRV+ITdlJ3zCsPfJUQbg4urPZ32Puw6wzT11U5FQDwZNOHiPukXT5KQAE2EhW1tjgdRRltmVwlIQtUJGV5xckEI=
+Received: from PH7PR13CA0003.namprd13.prod.outlook.com (2603:10b6:510:174::14)
+ by LV8PR19MB8269.namprd19.prod.outlook.com (2603:10b6:408:191::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9478.4; Tue, 6 Jan
+ 2026 11:18:44 +0000
+Received: from CY4PEPF0000E9D7.namprd05.prod.outlook.com
+ (2603:10b6:510:174:cafe::d8) by PH7PR13CA0003.outlook.office365.com
+ (2603:10b6:510:174::14) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9499.2 via Frontend Transport; Tue, 6
+ Jan 2026 11:18:42 +0000
+X-MS-Exchange-Authentication-Results: spf=fail (sender IP is 84.19.233.75)
+ smtp.mailfrom=opensource.cirrus.com; dkim=none (message not signed)
+ header.d=none;dmarc=fail action=oreject header.from=opensource.cirrus.com;
+Received-SPF: Fail (protection.outlook.com: domain of opensource.cirrus.com
+ does not designate 84.19.233.75 as permitted sender)
+ receiver=protection.outlook.com; client-ip=84.19.233.75;
+ helo=edirelay1.ad.cirrus.com;
+Received: from edirelay1.ad.cirrus.com (84.19.233.75) by
+ CY4PEPF0000E9D7.mail.protection.outlook.com (10.167.241.70) with Microsoft
+ SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.20.9499.1
+ via Frontend Transport; Tue, 6 Jan 2026 11:18:42 +0000
+Received: from ediswmail9.ad.cirrus.com (ediswmail9.ad.cirrus.com [198.61.86.93])
+	by edirelay1.ad.cirrus.com (Postfix) with ESMTPS id 8EFD1406541;
+	Tue,  6 Jan 2026 11:18:41 +0000 (UTC)
+Received: from ediswws07.ad.cirrus.com (ediswws07.ad.cirrus.com [198.90.208.14])
+	by ediswmail9.ad.cirrus.com (Postfix) with ESMTPSA id 6D3EC820247;
+	Tue,  6 Jan 2026 11:18:41 +0000 (UTC)
+From: Charles Keepax <ckeepax@opensource.cirrus.com>
+To: stable@vger.kernel.org
+Cc: linus.walleij@linaro.org, brgl@bgdev.pl, patches@opensource.cirrus.com
+Subject: [PATCH RESEND] Revert "gpio: swnode: don't use the swnode's name as the key for GPIO lookup"
+Date: Tue,  6 Jan 2026 11:18:38 +0000
+Message-ID: <20260106111838.1360888-1-ckeepax@opensource.cirrus.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -97,122 +103,119 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY4PEPF0000E9D7:EE_|LV8PR19MB8269:EE_
+Content-Type: text/plain
+X-MS-Office365-Filtering-Correlation-Id: a3e02c76-3735-4b48-599c-08de4d1559e4
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|82310400026|36860700013|61400799027|13003099007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?3ifF+DkVqpG0g97oy06eTD6m7ZsYKvJiKvE6ZABUcFzgG/H8pNxxF0pzOHmJ?=
+ =?us-ascii?Q?1rmyeR5iOadjRULuvjhsdGFGSaIuDzCMrO417a++T9vdGU9ihwx0xH742bvV?=
+ =?us-ascii?Q?vNSJArbNf28SEhlATABZM1eZ5p2kWyy2er4egogCypSFRdirvWkKJLglElO5?=
+ =?us-ascii?Q?OIG9pAZZman69aNu8/QwqeVL370izqProP5v+ofWibZrBL/DCPUccCGgkxqP?=
+ =?us-ascii?Q?+eTcj9w0jDI22bk4Divs+Dz5KlDgxYT4fWQj5wHaUgVou9YrYGtQqOJAL4X2?=
+ =?us-ascii?Q?z5ARuwcECps777fTldJJMgwAfH1LfPJEiuYYzSQKEgde+u33Hn4cgws7XE8F?=
+ =?us-ascii?Q?CV3yzNktxgJdp2dw6wmPAhUVVU1pFn39T9sICfDEm0JtmnPORUJoBx0dAPQc?=
+ =?us-ascii?Q?/wbhT8eFniP5Bk/Yg5Q7TJc0Bpw+4JYVXEG9h3Ei1O68c8sM7bajKzBwKQ1a?=
+ =?us-ascii?Q?0oqbEtKTxOTyftzhD8Er2eDqhjQChA2QjPz3R4XPPyko7SaiizzyFb1dcqp6?=
+ =?us-ascii?Q?Fj185v1WbwKjU57G8jVcD6FQ4qitdwbmHRbnLNH4PKDClR+LybLR+bBdn1Ux?=
+ =?us-ascii?Q?IL/2BWJJpP41s2mULs3ZGHIr1o0kwWcQ2YRXzwUEgZoZmvoC+P06XqlyaKs5?=
+ =?us-ascii?Q?7NFbgxxnDDmQCW7+qMTP1ex68ewwXMjFiMtvKlkw6b0nFbAx74v9KPZqeE58?=
+ =?us-ascii?Q?lvEzm8l/yvi4GzutP2PKZlT0jQNNrfLtqea9XKUY1CHHLYJ+Ab3O5n1TrQn/?=
+ =?us-ascii?Q?3ptfx2geykcEb3nOlgefTZROEJa+KlVppj3LPXgF0VPb3tkKoV6o24S1Bwqw?=
+ =?us-ascii?Q?/67ODwo/p/T/C35KAsIYBYSXFZeCIbdkUTVGjZkcQ6dk1yJpFB4OCXKKlhh7?=
+ =?us-ascii?Q?q0VWgp+gjO8HSOod+SsvSLAH4yEBuyGhmn3lQdpz5JjCafT7FLkO3SfiA0nA?=
+ =?us-ascii?Q?GJaAtaG2j17Uqlig2XAmMX/6ql7kLr6AdpZJYDq2ITgvCnJVPR6uq5i7wa9v?=
+ =?us-ascii?Q?rDAeeAfKfeJhW1jRlsTaUSbqfkm+DGEdbZRiRWL1IOzQ3p1viSwOmzGqw4DX?=
+ =?us-ascii?Q?HTzdxJ9IZgj7f7xRFOL8Wa23k5zCCs07VIAv7nHfvdTkl8ri2j9gBaea5+Sh?=
+ =?us-ascii?Q?qPtyssih1j6tUowlqojAUh6KV68x7gXcI2w0zkfV5w8Bjpp1Q4bt419K/8g8?=
+ =?us-ascii?Q?GaruQ6y2qHn0VrQV74Nf5H6OgFRvf3aPgwOqdBwnYP4wFsQ9IsOEOgTX9j+S?=
+ =?us-ascii?Q?QP9LFDS3pekAfzqFwgXsARmyd1lttjzxfmXof15oo5rTl//wdTeubrJVtExH?=
+ =?us-ascii?Q?vy+jZd2nbdWpGt2GWhShgbxW5LeQvJUxddjsW2sxk10E1ipdmrEJ0H/Oc9Yh?=
+ =?us-ascii?Q?aUl5z5IZ6ZAm/CuYnMNTtG5I1g5iACIb/gqPmHGFkjMNRL3QvVFjywxU734o?=
+ =?us-ascii?Q?kKTxOWzaaWrxLk58S0dpgLSrFIoNLZbrH+YTm2Z1+VtkFwtI/4Ux7BM3WIOi?=
+ =?us-ascii?Q?dUjIi8k3pXqo2JketUwrS9Gvz/M8xQbWbmnVi8mERnqW7m/UE+OX4Sk4UB8Y?=
+ =?us-ascii?Q?Tu2Ru5u+gzy/n2utC6U=3D?=
+X-Forefront-Antispam-Report:
+	CIP:84.19.233.75;CTRY:GB;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:edirelay1.ad.cirrus.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(82310400026)(36860700013)(61400799027)(13003099007);DIR:OUT;SFP:1102;
+X-OriginatorOrg: opensource.cirrus.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Jan 2026 11:18:42.8014
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: a3e02c76-3735-4b48-599c-08de4d1559e4
+X-MS-Exchange-CrossTenant-Id: bec09025-e5bc-40d1-a355-8e955c307de8
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=bec09025-e5bc-40d1-a355-8e955c307de8;Ip=[84.19.233.75];Helo=[edirelay1.ad.cirrus.com]
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: TreatMessagesAsInternal-CY4PEPF0000E9D7.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV8PR19MB8269
+X-Proofpoint-GUID: YBE7_YESubysJjZ4OCFCdQ0EdySKNdXh
+X-Proofpoint-ORIG-GUID: YBE7_YESubysJjZ4OCFCdQ0EdySKNdXh
+X-Authority-Analysis: v=2.4 cv=FscIPmrq c=1 sm=1 tr=0 ts=695cef98 cx=c_pps
+ a=oHVU4+OBm0glsEb2BXLEfQ==:117 a=h1hSm8JtM9GN1ddwPAif2w==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=O_mYIUxG9PxvoMOS:21 a=vUbySO9Y5rIA:10 a=s63m1ICgrNkA:10 a=RWc_ulEos4gA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=KKAkSRfTAAAA:8 a=NEAV23lmAAAA:8
+ a=w1d2syhTAAAA:8 a=1LwIm-yovOpG0Fd6MUkA:9 a=cvBusfyB2V15izCimMoJ:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTA2MDA5NyBTYWx0ZWRfX7t1KLwUNq82N
+ dAnGYrrvTbzLjJ+rOMtIgwk4Z5B763qHxc0IY/YDvzNt3w1dLh9sFg3K6FHA2tSPqlzknyB1E4M
+ fluHbnO0bgi6hVzTCbPrXuDMQh3TjvUnuDt4LE7Nq58qszytydJ0gL9cjDo8c9bvIVFhSUHWVXw
+ 3DGStnFe4cMlDayLq8jKJ9p1TAVBzsnxhCaBbFjGpMfX0AkJfOB7Tf9m/+re9GySx3PcmSMEz77
+ wdLyVtu4W8f4MU/aI7FGJ69cFdGjXZQ/n4gSs3eUNL8v7QXUIezTb/WA5OnGLWGc9jBQiyk2kE1
+ VhJnyJxuu+rgm3wAl6KhgYWAyndQ1Bs4zDvJNDFSJSzXhDcJCeiayIa44Kx+xTNQ1bClIDaMInK
+ LdxAesGccZJ0/Heli2GKFePXCD3PtWc/I+cIBQCtWjmQSDBG7lZ2E48Yj2k/kWB/50UjdlQXIks
+ aTMjnWWFoGMuGGQqmrg==
+X-Proofpoint-Spam-Reason: safe
 
-From: Ionut Nechita <ionut.nechita@windriver.com>
+This reverts commit 25decf0469d4c91d90aa2e28d996aed276bfc622.
 
-Hi Ming,
+This software node change doesn't actually fix any current issues
+with the kernel, it is an improvement to the lookup process rather
+than fixing a live bug. It also causes a couple of regressions with
+shipping laptops, which relied on the label based lookup.
 
-Thank you for the review. You're absolutely right to ask for clarification - I need to
-correct my commit message as it's misleading about the actual call path.
+There is a fix for the regressions in mainline, the first 5 patches
+of [1]. However, those patches are fairly substantial changes and
+given the patch causing the regression doesn't actually fix a bug
+it seems better to just revert it in stable.
 
-> Can you show the whole stack trace in the warning? The in-code doesn't
-> indicate that freeze queue can be called from scsi's interrupt context.
+CC: stable@vger.kernel.org # 6.18
+Link: https://lore.kernel.org/linux-sound/20251120-reset-gpios-swnodes-v7-0-a100493a0f4b@linaro.org/ [1]
+Closes: https://github.com/thesofproject/linux/issues/5599
+Closes: https://github.com/thesofproject/linux/issues/5603
+Acked-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+---
 
-Here's the complete stack trace from the WARNING at blk_mq_run_hw_queue:
+This fix for the software node lookups is also required on 6.18 stable,
+see the discussion for 6.12/6.17 in [2] for why we are doing a revert
+rather than backporting the other fixes. The "full" fixes are merged in
+6.19 so this should be the last kernel we need to push this revert onto.
 
-[Mon Dec 22 10:18:18 2025] WARNING: CPU: 190 PID: 2041 at block/blk-mq.c:2291 blk_mq_run_hw_queue+0x1fa/0x260
-[Mon Dec 22 10:18:18 2025] Modules linked in:
-[Mon Dec 22 10:18:18 2025] CPU: 190 PID: 2041 Comm: kworker/u385:1 Tainted: G        W          6.6.0-1-rt-amd64 #1  Debian 6.6.71-1
-[Mon Dec 22 10:18:18 2025] Hardware name: Dell Inc. PowerEdge R7615/09K9WP, BIOS 1.11.2 12/19/2024
-[Mon Dec 22 10:18:18 2025] Workqueue: events_unbound async_run_entry_fn
-[Mon Dec 22 10:18:18 2025] RIP: 0010:blk_mq_run_hw_queue+0x1fa/0x260
-[Mon Dec 22 10:18:18 2025] Code: ff 75 68 44 89 f6 e8 e5 45 c0 ff e9 ac fe ff ff e8 2b 70 c0 ff 48 89 ef e8 b3 a0 00 00 5b 5d 41 5c 41 5d 41 5e e9 26 9e c0 ff <0f> 0b e9 43 fe ff ff e8 0a 70 c0 ff 48 8b 85 d0 00 00 00 48 8b 80
-[Mon Dec 22 10:18:18 2025] RSP: 0018:ff630f098528fb98 EFLAGS: 00010206
-[Mon Dec 22 10:18:18 2025] RAX: 0000000000ff0000 RBX: 0000000000000000 RCX: 0000000000000000
-[Mon Dec 22 10:18:18 2025] RDX: 0000000000ff0000 RSI: 0000000000000000 RDI: ff3edc0247159400
-[Mon Dec 22 10:18:18 2025] RBP: ff3edc0247159400 R08: ff3edc0247159400 R09: ff630f098528fb60
-[Mon Dec 22 10:18:18 2025] R10: 0000000000000000 R11: 0000000045069ed3 R12: 0000000000000000
-[Mon Dec 22 10:18:18 2025] R13: ff3edc024715a828 R14: 0000000000000000 R15: 0000000000000000
-[Mon Dec 22 10:18:18 2025] FS:  0000000000000000(0000) GS:ff3edc10fd380000(0000) knlGS:0000000000000000
-[Mon Dec 22 10:18:18 2025] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[Mon Dec 22 10:18:18 2025] CR2: 0000000000000000 CR3: 000000073961a001 CR4: 0000000000771ee0
-[Mon Dec 22 10:18:18 2025] PKRU: 55555554
-[Mon Dec 22 10:18:18 2025] Call Trace:
-[Mon Dec 22 10:18:18 2025]  <TASK>
-[Mon Dec 22 10:18:18 2025]  ? __warn+0x89/0x140
-[Mon Dec 22 10:18:18 2025]  ? blk_mq_run_hw_queue+0x1fa/0x260
-[Mon Dec 22 10:18:18 2025]  ? report_bug+0x198/0x1b0
-[Mon Dec 22 10:18:18 2025]  ? handle_bug+0x53/0x90
-[Mon Dec 22 10:18:18 2025]  ? exc_invalid_op+0x18/0x70
-[Mon Dec 22 10:18:18 2025]  ? asm_exc_invalid_op+0x1a/0x20
-[Mon Dec 22 10:18:18 2025]  ? blk_mq_run_hw_queue+0x1fa/0x260
-[Mon Dec 22 10:18:18 2025]  blk_mq_run_hw_queues+0x6c/0x130
-[Mon Dec 22 10:18:18 2025]  blk_queue_start_drain+0x12/0x40
-[Mon Dec 22 10:18:18 2025]  blk_mq_destroy_queue+0x37/0x70
-[Mon Dec 22 10:18:18 2025]  __scsi_remove_device+0x6a/0x180
-[Mon Dec 22 10:18:18 2025]  scsi_alloc_sdev+0x357/0x360
-[Mon Dec 22 10:18:18 2025]  scsi_probe_and_add_lun+0x8ac/0xc00
-[Mon Dec 22 10:18:18 2025]  ? srso_alias_return_thunk+0x5/0xfbef5
-[Mon Dec 22 10:18:18 2025]  ? dev_set_name+0x57/0x80
-[Mon Dec 22 10:18:18 2025]  ? srso_alias_return_thunk+0x5/0xfbef5
-[Mon Dec 22 10:18:18 2025]  ? attribute_container_add_device+0x4d/0x130
-[Mon Dec 22 10:18:18 2025]  __scsi_scan_target+0xf0/0x520
-[Mon Dec 22 10:18:18 2025]  ? srso_alias_return_thunk+0x5/0xfbef5
-[Mon Dec 22 10:18:18 2025]  ? sched_clock_cpu+0x64/0x190
-[Mon Dec 22 10:18:18 2025]  scsi_scan_channel+0x57/0x90
-[Mon Dec 22 10:18:18 2025]  scsi_scan_host_selected+0xd4/0x110
-[Mon Dec 22 10:18:18 2025]  do_scan_async+0x1c/0x190
-[Mon Dec 22 10:18:18 2025]  async_run_entry_fn+0x2f/0x130
-[Mon Dec 22 10:18:18 2025]  process_one_work+0x175/0x370
-[Mon Dec 22 10:18:18 2025]  worker_thread+0x280/0x390
-[Mon Dec 22 10:18:18 2025]  ? __pfx_worker_thread+0x10/0x10
-[Mon Dec 22 10:18:18 2025]  kthread+0xdd/0x110
-[Mon Dec 22 10:18:18 2025]  ? __pfx_kthread+0x10/0x10
-[Mon Dec 22 10:18:18 2025]  ret_from_fork+0x31/0x50
-[Mon Dec 22 10:18:18 2025]  ? __pfx_kthread+0x10/0x10
-[Mon Dec 22 10:18:18 2025]  ret_from_fork_asm+0x1b/0x30
-[Mon Dec 22 10:18:18 2025]  </TASK>
-[Mon Dec 22 10:18:18 2025] ---[ end trace 0000000000000000 ]---
+Thanks,
+Charles
 
-## Important clarifications:
 
-1. **Not freeze queue, but drain during destroy**: My commit message was incorrect.
-   The call path is:
-   blk_mq_destroy_queue() -> blk_queue_start_drain() -> blk_mq_run_hw_queues(q, false)
+ drivers/gpio/gpiolib-swnode.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-   This is NOT during blk_freeze_queue_start(), but during queue destruction when a
-   SCSI device probe fails and cleanup is triggered.
+diff --git a/drivers/gpio/gpiolib-swnode.c b/drivers/gpio/gpiolib-swnode.c
+index e3806db1c0e07..f21dbc28cf2c8 100644
+--- a/drivers/gpio/gpiolib-swnode.c
++++ b/drivers/gpio/gpiolib-swnode.c
+@@ -41,7 +41,7 @@ static struct gpio_device *swnode_get_gpio_device(struct fwnode_handle *fwnode)
+ 	    !strcmp(gdev_node->name, GPIOLIB_SWNODE_UNDEFINED_NAME))
+ 		return ERR_PTR(-ENOENT);
+ 
+-	gdev = gpio_device_find_by_fwnode(fwnode);
++	gdev = gpio_device_find_by_label(gdev_node->name);
+ 	return gdev ?: ERR_PTR(-EPROBE_DEFER);
+ }
+ 
+-- 
+2.47.3
 
-2. **Not true interrupt context**: You're correct that this isn't from an interrupt
-   handler. The workqueue context is process context, not interrupt context.
-
-3. **The actual problem on PREEMPT_RT**: There's a preceding "scheduling while atomic"
-   error that provides the real context:
-
-[Mon Dec 22 10:18:18 2025] BUG: scheduling while atomic: kworker/u385:1/2041/0x00000002
-[Mon Dec 22 10:18:18 2025] Call Trace:
-[Mon Dec 22 10:18:18 2025]  dump_stack_lvl+0x37/0x50
-[Mon Dec 22 10:18:18 2025]  __schedule_bug+0x52/0x60
-[Mon Dec 22 10:18:18 2025]  __schedule+0x87d/0xb10
-[Mon Dec 22 10:18:18 2025]  rt_mutex_schedule+0x21/0x40
-[Mon Dec 22 10:18:18 2025]  rt_mutex_slowlock_block.constprop.0+0x33/0x170
-[Mon Dec 22 10:18:18 2025]  __rt_mutex_slowlock_locked.constprop.0+0xc4/0x1e0
-[Mon Dec 22 10:18:18 2025]  mutex_lock+0x44/0x60
-[Mon Dec 22 10:18:18 2025]  __cpuhp_state_add_instance_cpuslocked+0x41/0x110
-[Mon Dec 22 10:18:18 2025]  __cpuhp_state_add_instance+0x48/0xd0
-[Mon Dec 22 10:18:18 2025]  blk_mq_realloc_hw_ctxs+0x405/0x420
-[Mon Dec 22 10:18:18 2025]  blk_mq_init_allocated_queue+0x10a/0x480
-
-The context is atomic because on PREEMPT_RT, some spinlock earlier in the call chain has
-been converted to an rt_mutex, and the code is holding that lock. When blk_mq_run_hw_queues()
-is called with async=false, it triggers kblockd_mod_delayed_work_on(), which calls
-in_interrupt(), and this returns true because preempt_count() is non-zero due to the
-rt_mutex being held.
-
-## What this means:
-
-The issue is specific to PREEMPT_RT where:
-- Spinlocks become sleeping mutexes (rt_mutex)
-- Holding an rt_mutex sets preempt_count, making in_interrupt() return true
-- blk_mq_run_hw_queues() with async=false hits WARN_ON_ONCE(!async && in_interrupt())
-
-This is why the async parameter needs to be true when called in contexts that might
-hold spinlocks on RT kernels.
-
-I apologize for the confusion in my commit message. Should I:
-1. Revise the commit message to accurately describe the blk_queue_start_drain() path?
-2. Add details about the PREEMPT_RT context causing the atomic state?
-
-Best regards,
-Ionut
 
