@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-205296-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205339-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C9ADCF9AF8
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 18:29:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 014C7CF9B80
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 18:34:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A81BC3026BC5
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:23:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AC69E30DF07E
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:26:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 512CC355043;
-	Tue,  6 Jan 2026 17:23:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAAB53557F7;
+	Tue,  6 Jan 2026 17:26:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o20sWREC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VOY39vUe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C97B35503E;
-	Tue,  6 Jan 2026 17:23:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75645227BA4;
+	Tue,  6 Jan 2026 17:26:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767720223; cv=none; b=FJz6ASzcbkrNHhd5ziswIaIgTxAxus/7IR9BwOGmgiP3SI2jOptmv7MWdjEpvPi3z5efJx7SLpsOJkgvYjPuO5K1iEn6GR+cRYVHp5sqwJ+syMfNWiwYMrfhuLT8ucTTGoyH53dcEKdffY31fJjVl/j994k0EPsAJ7smjV+BeLM=
+	t=1767720364; cv=none; b=FPM0C0WOs+e9tlQOLN8JDyVCRS2O44hVPROas4QLqiMIKgWde7x9MlwcNR+Vlg/3rMkFZMO3akEGiSys+HPZgp2du52cWIjahP7NMIzm6yL9hPg2qPKFMMc9McTtsnoBudI3bGvzdqt8g35R8kmFxIoL/YX8ymnUs9v5wcewfSU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767720223; c=relaxed/simple;
-	bh=WdYQMjzuWvM3v3EpZr3AJklOxDdTLyTmWpKjPAoCwz8=;
+	s=arc-20240116; t=1767720364; c=relaxed/simple;
+	bh=CrxYyJgPYm8674ummJ+x3pr8vj9Ft4lqS1JQ4SmlR3M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UahXW2PMBcv6sAs5OUZhIgCEJDd6jUkddYL67GZUS6ecgY4z3xnj/fEpiFrbrmtx7kgjlS3AUWelda1koo5blOIl0e+B5/lm8h5S/GcuhwhgIJjuhTQhd3a3spjfSSljI5qQV9J9W322qHwZMkthT8K98lW4aeiDfKgzxPTQEyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o20sWREC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 433C4C116C6;
-	Tue,  6 Jan 2026 17:23:42 +0000 (UTC)
+	 MIME-Version:Content-Type; b=HkpLehEnhpKlGlqf46ETgrLxXD1QivvPrdVRxwQCZxedTBgu7JUll4CVZDEkwIsFZp1ImSAst7xSVTk2tSx8dmYI+NmzovHows5U67qRU/Kge2V19y5yl9+HyGkdv3+eIKCZMNRMEvqCPzkBVrMRfnZBBnAV/vPHMjJLk9RwNz8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VOY39vUe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC34CC116C6;
+	Tue,  6 Jan 2026 17:26:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767720222;
-	bh=WdYQMjzuWvM3v3EpZr3AJklOxDdTLyTmWpKjPAoCwz8=;
+	s=korg; t=1767720364;
+	bh=CrxYyJgPYm8674ummJ+x3pr8vj9Ft4lqS1JQ4SmlR3M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o20sWREC78IshtGz370VN5wj78dU58khD3ldfXXC/JARHAicMc+cT4oqbRQ0x1D4g
-	 yD+nIJReT11Xma4ahhbWtrU31kTaeU9DF/8OdOrYVoWzaDsDNjrpc+05g/3U0Fodak
-	 EGuGGSu+F1nE6abkVvuVAOp6I0ziFPl1RKmWiV6U=
+	b=VOY39vUeuGkXp0Mf9tXeHLs1xcm+qJz/rTYOZD5trWEzffULHJTLFRj14LqXi6pMe
+	 r9SaBg2aid4MVZpvc4fnBWunARmzAdDK7Vb0lkjXBilF1xKsbivP4FxPyVa1Whg5vx
+	 lC9nKyYRgNP1qsBzUXlJ+PRPsfC/Moi05vfAersQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yongjian Sun <sunyongjian1@huawei.com>,
 	Baokun Li <libaokun1@huawei.com>,
 	Jan Kara <jack@suse.cz>,
 	Theodore Tso <tytso@mit.edu>,
 	stable@kernel.org
-Subject: [PATCH 6.12 170/567] ext4: fix incorrect group number assertion in mb_check_buddy
-Date: Tue,  6 Jan 2026 17:59:12 +0100
-Message-ID: <20260106170457.615315509@linuxfoundation.org>
+Subject: [PATCH 6.12 171/567] ext4: align max orphan file size with e2fsprogs limit
+Date: Tue,  6 Jan 2026 17:59:13 +0100
+Message-ID: <20260106170457.652110080@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
 References: <20260106170451.332875001@linuxfoundation.org>
@@ -60,70 +59,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yongjian Sun <sunyongjian1@huawei.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-commit 3f7a79d05c692c7cfec70bf104b1b3c3d0ce6247 upstream.
+commit 7c11c56eb32eae96893eebafdbe3decadefe88ad upstream.
 
-When the MB_CHECK_ASSERT macro is enabled, an assertion failure can
-occur in __mb_check_buddy when checking preallocated blocks (pa) in
-a block group:
+Kernel commit 0a6ce20c1564 ("ext4: verify orphan file size is not too big")
+limits the maximum supported orphan file size to 8 << 20.
 
-Assertion failure in mb_free_blocks() : "groupnr == e4b->bd_group"
+However, in e2fsprogs, the orphan file size is set to 32–512 filesystem
+blocks when creating a filesystem.
 
-This happens when a pa at the very end of a block group (e.g.,
-pa_pstart=32765, pa_len=3 in a group of 32768 blocks) becomes
-exhausted - its pa_pstart is advanced by pa_len to 32768, which
-lies in the next block group. If this exhausted pa (with pa_len == 0)
-is still in the bb_prealloc_list during the buddy check, the assertion
-incorrectly flags it as belonging to the wrong group. A possible
-sequence is as follows:
+With 64k block size, formatting an ext4 fs >32G gives an orphan file bigger
+than the kernel allows, so mount prints an error and fails:
 
-ext4_mb_new_blocks
-  ext4_mb_release_context
-    pa->pa_pstart += EXT4_C2B(sbi, ac->ac_b_ex.fe_len)
-    pa->pa_len -= ac->ac_b_ex.fe_len
+    EXT4-fs (vdb): orphan file too big: 8650752
+    EXT4-fs (vdb): mount failed
 
-	                 __mb_check_buddy
-                           for each pa in group
-                             ext4_get_group_no_and_offset
-                             MB_CHECK_ASSERT(groupnr == e4b->bd_group)
+To prevent this issue and allow previously created 64KB filesystems to
+mount, we updates the maximum allowed orphan file size in the kernel to
+512 filesystem blocks.
 
-To fix this, we modify the check to skip block group validation for
-exhausted preallocations (where pa_len == 0). Such entries are in a
-transitional state and will be removed from the list soon, so they
-should not trigger an assertion. This change prevents the false
-positive while maintaining the integrity of the checks for active
-allocations.
-
-Fixes: c9de560ded61f ("ext4: Add multi block allocator for ext4")
-Signed-off-by: Yongjian Sun <sunyongjian1@huawei.com>
-Reviewed-by: Baokun Li <libaokun1@huawei.com>
+Fixes: 0a6ce20c1564 ("ext4: verify orphan file size is not too big")
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
 Reviewed-by: Jan Kara <jack@suse.cz>
-Message-ID: <20251106060614.631382-2-sunyongjian@huaweicloud.com>
+Message-ID: <20251120134233.2994147-1-libaokun@huaweicloud.com>
 Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Cc: stable@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/mballoc.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/ext4/orphan.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -778,6 +778,8 @@ static void __mb_check_buddy(struct ext4
- 		ext4_group_t groupnr;
- 		struct ext4_prealloc_space *pa;
- 		pa = list_entry(cur, struct ext4_prealloc_space, pa_group_list);
-+		if (!pa->pa_len)
-+			continue;
- 		ext4_get_group_no_and_offset(sb, pa->pa_pstart, &groupnr, &k);
- 		MB_CHECK_ASSERT(groupnr == e4b->bd_group);
- 		for (i = 0; i < pa->pa_len; i++)
+--- a/fs/ext4/orphan.c
++++ b/fs/ext4/orphan.c
+@@ -8,6 +8,8 @@
+ #include "ext4.h"
+ #include "ext4_jbd2.h"
+ 
++#define EXT4_MAX_ORPHAN_FILE_BLOCKS 512
++
+ static int ext4_orphan_file_add(handle_t *handle, struct inode *inode)
+ {
+ 	int i, j, start;
+@@ -589,7 +591,7 @@ int ext4_init_orphan_info(struct super_b
+ 	 * consuming absurd amounts of memory when pinning blocks of orphan
+ 	 * file in memory.
+ 	 */
+-	if (inode->i_size > 8 << 20) {
++	if (inode->i_size > (EXT4_MAX_ORPHAN_FILE_BLOCKS << inode->i_blkbits)) {
+ 		ext4_msg(sb, KERN_ERR, "orphan file too big: %llu",
+ 			 (unsigned long long)inode->i_size);
+ 		ret = -EFSCORRUPTED;
 
 
 
