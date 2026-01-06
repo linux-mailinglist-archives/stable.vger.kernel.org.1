@@ -1,51 +1,52 @@
-Return-Path: <stable+bounces-205221-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205374-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC76FCFB286
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 22:50:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 546C6CFB0ED
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 22:12:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D3BB830D80D5
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 21:46:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9FB1C304BE4C
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 21:11:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F1CB34C80D;
-	Tue,  6 Jan 2026 17:19:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E64034F46A;
+	Tue,  6 Jan 2026 17:28:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mc0mRJvF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UnYjeRKo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B6C234C13B;
-	Tue,  6 Jan 2026 17:19:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A48A34F278;
+	Tue,  6 Jan 2026 17:28:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767719978; cv=none; b=evI71qQQsva2Hbp/KlH4RdBjnTfiGV+TISbCVWjkbgrWK1tP+kVO5i692xcGiq1x9NOJ/LTjhZEQKWoW4BoxQrJQ1lbd6ZmCUrsoaP+OjSQmEqP4SoL1l+UsTJvn5wfWDXlORk9MZs3GW26BkwumW7UZYX565dNYNAuVs3F0fdk=
+	t=1767720480; cv=none; b=mZNa6+HuRlJqj6x5nZIfoGSri/Uz6dUuWkOJT44Jx5Fhq5ceFr3Wfm4P0a0KlSPorNpP6XtLwMT79bIbB12fTwUpgnsiRLviTmT5Xkz0DUijcLTxx+WEOs3TpVetAgD3DpJuIR+J/zF322ZLNHXAQXqnlo0ZcxVB9sFO3JLkiwA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767719978; c=relaxed/simple;
-	bh=cYS1X7cuGyMENjngZfI+HI3cnkAoIllT/qGuc5VPX+8=;
+	s=arc-20240116; t=1767720480; c=relaxed/simple;
+	bh=FEVUhAy4PiGlHwX1GFU1SMzUYZzx3WIkNJNL4izjqRk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NTcyzHiRw7oGdrmkITNqqNQbCvaXmr9wYs10TzgZQ9Nz93SVJr0iCU/oVjv11Lt47H1LquUFRZDjIYfDcFzuUG4UgRvViqGBk2wq/H5lR7+bNUASEzzaI+EE95TYQnrwchDu8Yc396AGF9oQWt5O0g9k79RE4jIBsVBN6CtZaQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mc0mRJvF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C7ADC116C6;
-	Tue,  6 Jan 2026 17:19:37 +0000 (UTC)
+	 MIME-Version; b=G8n1Nh9kAkc3gMuyqbNpK2OwNO7TGRCtlVo6PzqUa2p269GUdZlFOu9NqFxt9CnAvpUvWL7D3JLCffM+99nhnShpc8lR87DnwWuPcAO2T3R9kSNbPqy+qbFMn4E1gqW37b1Z7YBdlrGpnple8/ePhEZ1TgsOpRXl11urf65TI8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UnYjeRKo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94B4EC19423;
+	Tue,  6 Jan 2026 17:27:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767719978;
-	bh=cYS1X7cuGyMENjngZfI+HI3cnkAoIllT/qGuc5VPX+8=;
+	s=korg; t=1767720480;
+	bh=FEVUhAy4PiGlHwX1GFU1SMzUYZzx3WIkNJNL4izjqRk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Mc0mRJvFATr/8WxsdjSFlzBT0QXMZ+dLio+arMp4rpnSl6y/OjlEl0rpXpBpM1P1h
-	 hSnxOO1H/OeKBz9yBLfC/UlJeLQ+Grsx/v/qt+ulJmxvUKRq23iN4wlQe55Nk+PHXW
-	 yDfdNti+DfMTfKsB2K31+ussDoKXvgQagwbJ6rAI=
+	b=UnYjeRKoFlmwHmiQC0ULmhR5lWeW6Nezwd7gYt73zaPJo2zIuqrssE0AHHYrqxXSn
+	 PmALRtlJp7e3FWAqdr15xQnpGofNGDfZb3bkVJ6HWxvHptNhBQTkAO4U2yQi++ZMok
+	 o9JSSGouSATHs2P7Q5WgBtzgrBhX5+L9yJhNiYgs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ping Cheng <ping.cheng@wacom.com>,
 	stable@kernel.org,
-	Jiri Kosina <jkosina@suse.com>
-Subject: [PATCH 6.12 096/567] HID: input: map HID_GD_Z to ABS_DISTANCE for stylus/pen
-Date: Tue,  6 Jan 2026 17:57:58 +0100
-Message-ID: <20260106170454.879494972@linuxfoundation.org>
+	Xiaole He <hexiaole1994@126.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>
+Subject: [PATCH 6.12 207/567] f2fs: fix age extent cache insertion skip on counter overflow
+Date: Tue,  6 Jan 2026 17:59:49 +0100
+Message-ID: <20260106170458.981682967@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
 References: <20260106170451.332875001@linuxfoundation.org>
@@ -64,71 +65,144 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ping Cheng <pinglinux@gmail.com>
+From: Xiaole He <hexiaole1994@126.com>
 
-commit 7953794f741e94d30df9dafaaa4c031c85b891d6 upstream.
+commit 27bf6a637b7613fc85fa6af468b7d612d78cd5c0 upstream.
 
-HID_GD_Z is mapped to ABS_Z for stylus and pen in hid-input.c. But HID_GD_Z
-should be used to report ABS_DISTANCE for stylus and pen as described at:
-Documentation/input/event-codes.rst#n226
+The age extent cache uses last_blocks (derived from
+allocated_data_blocks) to determine data age. However, there's a
+conflict between the deletion
+marker (last_blocks=0) and legitimate last_blocks=0 cases when
+allocated_data_blocks overflows to 0 after reaching ULLONG_MAX.
 
-* ABS_DISTANCE:
+In this case, valid extents are incorrectly skipped due to the
+"if (!tei->last_blocks)" check in __update_extent_tree_range().
 
-  - Used to describe the distance of a tool from an interaction surface. This
-    event should only be emitted while the tool is hovering, meaning in close
-    proximity of the device and while the value of the BTN_TOUCH code is 0. If
-    the input device may be used freely in three dimensions, consider ABS_Z
-    instead.
-  - BTN_TOOL_<name> should be set to 1 when the tool comes into detectable
-    proximity and set to 0 when the tool leaves detectable proximity.
-    BTN_TOOL_<name> signals the type of tool that is currently detected by the
-    hardware and is otherwise independent of ABS_DISTANCE and/or BTN_TOUCH.
+This patch fixes the issue by:
+1. Reserving ULLONG_MAX as an invalid/deletion marker
+2. Limiting allocated_data_blocks to range [0, ULLONG_MAX-1]
+3. Using F2FS_EXTENT_AGE_INVALID for deletion scenarios
+4. Adjusting overflow age calculation from ULLONG_MAX to (ULLONG_MAX-1)
 
-This patch makes the correct mapping. The ABS_DISTANCE is currently not mapped
-by any HID usage in hid-generic driver.
+Reproducer (using a patched kernel with allocated_data_blocks
+initialized to ULLONG_MAX - 3 for quick testing):
 
-Signed-off-by: Ping Cheng <ping.cheng@wacom.com>
+Step 1: Mount and check initial state
+  # dd if=/dev/zero of=/tmp/test.img bs=1M count=100
+  # mkfs.f2fs -f /tmp/test.img
+  # mkdir -p /mnt/f2fs_test
+  # mount -t f2fs -o loop,age_extent_cache /tmp/test.img /mnt/f2fs_test
+  # cat /sys/kernel/debug/f2fs/status | grep -A 4 "Block Age"
+  Allocated Data Blocks: 18446744073709551612 # ULLONG_MAX - 3
+  Inner Struct Count: tree: 1(0), node: 0
+
+Step 2: Create files and write data to trigger overflow
+  # touch /mnt/f2fs_test/{1,2,3,4}.txt; sync
+  # cat /sys/kernel/debug/f2fs/status | grep -A 4 "Block Age"
+  Allocated Data Blocks: 18446744073709551613 # ULLONG_MAX - 2
+  Inner Struct Count: tree: 5(0), node: 1
+
+  # dd if=/dev/urandom of=/mnt/f2fs_test/1.txt bs=4K count=1; sync
+  # cat /sys/kernel/debug/f2fs/status | grep -A 4 "Block Age"
+  Allocated Data Blocks: 18446744073709551614 # ULLONG_MAX - 1
+  Inner Struct Count: tree: 5(0), node: 2
+
+  # dd if=/dev/urandom of=/mnt/f2fs_test/2.txt bs=4K count=1; sync
+  # cat /sys/kernel/debug/f2fs/status | grep -A 4 "Block Age"
+  Allocated Data Blocks: 18446744073709551615 # ULLONG_MAX
+  Inner Struct Count: tree: 5(0), node: 3
+
+  # dd if=/dev/urandom of=/mnt/f2fs_test/3.txt bs=4K count=1; sync
+  # cat /sys/kernel/debug/f2fs/status | grep -A 4 "Block Age"
+  Allocated Data Blocks: 0 # Counter overflowed!
+  Inner Struct Count: tree: 5(0), node: 4
+
+Step 3: Trigger the bug - next write should create node but gets skipped
+  # dd if=/dev/urandom of=/mnt/f2fs_test/4.txt bs=4K count=1; sync
+  # cat /sys/kernel/debug/f2fs/status | grep -A 4 "Block Age"
+  Allocated Data Blocks: 1
+  Inner Struct Count: tree: 5(0), node: 4
+
+  Expected: node: 5 (new extent node for 4.txt)
+  Actual: node: 4 (extent insertion was incorrectly skipped due to
+  last_blocks = allocated_data_blocks = 0 in __get_new_block_age)
+
+After this fix, the extent node is correctly inserted and node count
+becomes 5 as expected.
+
+Fixes: 71644dff4811 ("f2fs: add block_age-based extent cache")
 Cc: stable@kernel.org
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Xiaole He <hexiaole1994@126.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-input.c |   18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
+ fs/f2fs/extent_cache.c |    5 +++--
+ fs/f2fs/f2fs.h         |    6 ++++++
+ fs/f2fs/segment.c      |    9 +++++++--
+ 3 files changed, 16 insertions(+), 4 deletions(-)
 
---- a/drivers/hid/hid-input.c
-+++ b/drivers/hid/hid-input.c
-@@ -864,7 +864,7 @@ static void hidinput_configure_usage(str
+--- a/fs/f2fs/extent_cache.c
++++ b/fs/f2fs/extent_cache.c
+@@ -756,7 +756,7 @@ static void __update_extent_tree_range(s
+ 	}
+ 	goto out_read_extent_cache;
+ update_age_extent_cache:
+-	if (!tei->last_blocks)
++	if (tei->last_blocks == F2FS_EXTENT_AGE_INVALID)
+ 		goto out_read_extent_cache;
  
- 		switch (usage->hid) {
- 		/* These usage IDs map directly to the usage codes. */
--		case HID_GD_X: case HID_GD_Y: case HID_GD_Z:
-+		case HID_GD_X: case HID_GD_Y:
- 		case HID_GD_RX: case HID_GD_RY: case HID_GD_RZ:
- 			if (field->flags & HID_MAIN_ITEM_RELATIVE)
- 				map_rel(usage->hid & 0xf);
-@@ -872,6 +872,22 @@ static void hidinput_configure_usage(str
- 				map_abs_clear(usage->hid & 0xf);
- 			break;
+ 	__set_extent_info(&ei, fofs, len, 0, false,
+@@ -860,7 +860,7 @@ static int __get_new_block_age(struct in
+ 			cur_age = cur_blocks - tei.last_blocks;
+ 		else
+ 			/* allocated_data_blocks overflow */
+-			cur_age = ULLONG_MAX - tei.last_blocks + cur_blocks;
++			cur_age = (ULLONG_MAX - 1) - tei.last_blocks + cur_blocks;
  
-+		case HID_GD_Z:
-+			/* HID_GD_Z is mapped to ABS_DISTANCE for stylus/pen */
-+			if (field->flags & HID_MAIN_ITEM_RELATIVE) {
-+				map_rel(usage->hid & 0xf);
-+			} else {
-+				if (field->application == HID_DG_PEN ||
-+				    field->physical == HID_DG_PEN ||
-+				    field->logical == HID_DG_STYLUS ||
-+				    field->physical == HID_DG_STYLUS ||
-+				    field->application == HID_DG_DIGITIZER)
-+					map_abs_clear(ABS_DISTANCE);
-+				else
-+					map_abs_clear(usage->hid & 0xf);
-+			}
-+			break;
+ 		if (tei.age)
+ 			ei->age = __calculate_block_age(sbi, cur_age, tei.age);
+@@ -1062,6 +1062,7 @@ void f2fs_update_age_extent_cache_range(
+ 	struct extent_info ei = {
+ 		.fofs = fofs,
+ 		.len = len,
++		.last_blocks = F2FS_EXTENT_AGE_INVALID,
+ 	};
+ 
+ 	if (!__may_extent_tree(dn->inode, EX_BLOCK_AGE))
+--- a/fs/f2fs/f2fs.h
++++ b/fs/f2fs/f2fs.h
+@@ -644,6 +644,12 @@ enum extent_type {
+ 	NR_EXTENT_CACHES,
+ };
+ 
++/*
++ * Reserved value to mark invalid age extents, hence valid block range
++ * from 0 to ULLONG_MAX-1
++ */
++#define F2FS_EXTENT_AGE_INVALID	ULLONG_MAX
 +
- 		case HID_GD_WHEEL:
- 			if (field->flags & HID_MAIN_ITEM_RELATIVE) {
- 				set_bit(REL_WHEEL, input->relbit);
+ struct extent_info {
+ 	unsigned int fofs;		/* start offset in a file */
+ 	unsigned int len;		/* length of the extent */
+--- a/fs/f2fs/segment.c
++++ b/fs/f2fs/segment.c
+@@ -3746,8 +3746,13 @@ skip_new_segment:
+ 	locate_dirty_segment(sbi, GET_SEGNO(sbi, old_blkaddr));
+ 	locate_dirty_segment(sbi, GET_SEGNO(sbi, *new_blkaddr));
+ 
+-	if (IS_DATASEG(curseg->seg_type))
+-		atomic64_inc(&sbi->allocated_data_blocks);
++	if (IS_DATASEG(curseg->seg_type)) {
++		unsigned long long new_val;
++
++		new_val = atomic64_inc_return(&sbi->allocated_data_blocks);
++		if (unlikely(new_val == ULLONG_MAX))
++			atomic64_set(&sbi->allocated_data_blocks, 0);
++	}
+ 
+ 	up_write(&sit_i->sentry_lock);
+ 
 
 
 
