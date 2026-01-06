@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-205600-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205895-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6E09CFA35B
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:36:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 32057CFA098
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:17:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1B8D1303EB4F
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:36:37 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5D582306744F
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:16:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8B6B2DECBF;
-	Tue,  6 Jan 2026 17:40:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFC07350A06;
+	Tue,  6 Jan 2026 17:57:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iew/ePQT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U2OlAzqz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75E602D73B9;
-	Tue,  6 Jan 2026 17:40:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7641834D4E4;
+	Tue,  6 Jan 2026 17:57:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721229; cv=none; b=eH6wdivrkHcsAO2uJlmwzUoVaUcG9WzJ3gZdeUc4h2APpNhKu8Bs9VV/UjT+s8sMTUrLDWVZE6ZxLzGZORsqyEKpPUZOSB+4vW0n7dy9V7eNl9J24pe/1ybFlVzfT3rWweo9DANa2Z45zT8Nf88flcVwT14O50lPkPe7d1k8BLQ=
+	t=1767722221; cv=none; b=V5jTy+5K6lekuXFQG/0DbKI3ECHFjUk7PtLdZ2wokgiGPWfRy2OdNM+22CG7X2O7KjoiAjQnVTUR4KoK34XyHoEHsEY1iuDEEtQ29BHb9tFx90FMx05uU3SF0/CNIdtTV4ZLuw1tKjEDJeWC/em1G58JdVdxUF8GmBqsN++KbHc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721229; c=relaxed/simple;
-	bh=IJfNp7p/56k5O3ywbh28aaMq+717n+nNcbPE5UUfTtU=;
+	s=arc-20240116; t=1767722221; c=relaxed/simple;
+	bh=tMiWbtS2/Z4bJgrpBMNB8LLIm+wM4GZSESv1oA598ZE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=m70L36mEuK1oZvOiB/zBIHYsr1yoMgs+gI4EVTwWLg4oKX+7wpOcf18e8bN8ExXIQ+0djzSq/0s8g1SqhYBEoXt4UQSSXIszUIWQKg1C7fXT1lwCmiFAnjjkyQmauuuNsvS0Q1yZ/AgqMVqBFela0fiJRVmX0p2rdfK+l1Mla4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iew/ePQT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7882C16AAE;
-	Tue,  6 Jan 2026 17:40:28 +0000 (UTC)
+	 MIME-Version; b=Tv46gF3lrqKmmwipjB7mqlbfWcuqBuHoCIsGfhq2PC8cSuPsMyd+zI4ADaSASnTGd75W2/H6+rnRwljjpa3F/tLjvl4vzj/rHSKtSIY8wcb5qyczfq3m8UCiTcN/a7Al/6mehLdUWWUKTtEpJke286XnIejTqAozmYB2rXBL1SM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U2OlAzqz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5D68C116C6;
+	Tue,  6 Jan 2026 17:57:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721229;
-	bh=IJfNp7p/56k5O3ywbh28aaMq+717n+nNcbPE5UUfTtU=;
+	s=korg; t=1767722221;
+	bh=tMiWbtS2/Z4bJgrpBMNB8LLIm+wM4GZSESv1oA598ZE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iew/ePQT3BAjLF7WiBRE1OIxx/BcgeHdD0JImyXmbjpr6xB5Ph49d4KhbNDVVXLmS
-	 VSbD4g6XCux14sSceRKp+oNV0aGBjUqGoEsLhDY2fdLAw48Ba7e5ova+3/zKkRvgS5
-	 7SfBMLDhL3wxDg9J2mokXkSrAa6AYpTGPqDM2sMg=
+	b=U2OlAzqz86BgaOEOZZK8X+tprPZR5nmAyhzcxElRJTbl2ZYh++AQ9PVgtVJWxNQdO
+	 WLdW9J72v3gz/tYsxA+Cd0iwGKhC6CJ9f91U1fCNQVZrpgguGg0Eo8EIq65HJ2KvHS
+	 VcOmV991YJe8t/69tZ/3/az5U8QnDnWdzPKj4Fw4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.12 457/567] drm/amdgpu/gmc12: add amdgpu_vm_handle_fault() handling
-Date: Tue,  6 Jan 2026 18:03:59 +0100
-Message-ID: <20260106170508.251782268@linuxfoundation.org>
+	Mahesh Rao <mahesh.rao@altera.com>,
+	Matthew Gerlach <matthew.gerlach@altera.com>,
+	Dinh Nguyen <dinguyen@kernel.org>
+Subject: [PATCH 6.18 166/312] firmware: stratix10-svc: Add mutex in stratix10 memory management
+Date: Tue,  6 Jan 2026 18:04:00 +0100
+Message-ID: <20260106170553.839762719@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
-References: <20260106170451.332875001@linuxfoundation.org>
+In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
+References: <20260106170547.832845344@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,72 +58,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Mahesh Rao <mahesh.rao@altera.com>
 
-commit ff28ff98db6a8eeb469e02fb8bd1647b353232a9 upstream.
+commit 85f96cbbbc67b59652b2c1ec394b8ddc0ddf1b0b upstream.
 
-We need to call amdgpu_vm_handle_fault() on page fault
-on all gfx9 and newer parts to properly update the
-page tables, not just for recoverable page faults.
+Add mutex lock to stratix10_svc_allocate_memory and
+stratix10_svc_free_memory for thread safety. This prevents race
+conditions and ensures proper synchronization during memory operations.
+This is required for parallel communication with the Stratix10 service
+channel.
 
+Fixes: 7ca5ce896524f ("firmware: add Intel Stratix10 service layer driver")
 Cc: stable@vger.kernel.org
-Reviewed-by: Timur Kristóf <timur.kristof@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Mahesh Rao <mahesh.rao@altera.com>
+Reviewed-by: Matthew Gerlach <matthew.gerlach@altera.com>
+Signed-off-by: Dinh Nguyen <dinguyen@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gmc_v12_0.c |   27 +++++++++++++++++++++++++++
- 1 file changed, 27 insertions(+)
+ drivers/firmware/stratix10-svc.c |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
---- a/drivers/gpu/drm/amd/amdgpu/gmc_v12_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gmc_v12_0.c
-@@ -91,6 +91,8 @@ static int gmc_v12_0_process_interrupt(s
- 				       struct amdgpu_iv_entry *entry)
+--- a/drivers/firmware/stratix10-svc.c
++++ b/drivers/firmware/stratix10-svc.c
+@@ -1,6 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0
+ /*
+  * Copyright (C) 2017-2018, Intel Corporation
++ * Copyright (C) 2025, Altera Corporation
+  */
+ 
+ #include <linux/completion.h>
+@@ -176,6 +177,12 @@ static LIST_HEAD(svc_ctrl);
+ static LIST_HEAD(svc_data_mem);
+ 
+ /**
++ * svc_mem_lock protects access to the svc_data_mem list for
++ * concurrent multi-client operations
++ */
++static DEFINE_MUTEX(svc_mem_lock);
++
++/**
+  * svc_pa_to_va() - translate physical address to virtual address
+  * @addr: to be translated physical address
+  *
+@@ -187,6 +194,7 @@ static void *svc_pa_to_va(unsigned long
+ 	struct stratix10_svc_data_mem *pmem;
+ 
+ 	pr_debug("claim back P-addr=0x%016x\n", (unsigned int)addr);
++	guard(mutex)(&svc_mem_lock);
+ 	list_for_each_entry(pmem, &svc_data_mem, node)
+ 		if (pmem->paddr == addr)
+ 			return pmem->vaddr;
+@@ -993,6 +1001,7 @@ int stratix10_svc_send(struct stratix10_
+ 			p_data->flag = ct->flags;
+ 		}
+ 	} else {
++		guard(mutex)(&svc_mem_lock);
+ 		list_for_each_entry(p_mem, &svc_data_mem, node)
+ 			if (p_mem->vaddr == p_msg->payload) {
+ 				p_data->paddr = p_mem->paddr;
+@@ -1075,6 +1084,7 @@ void *stratix10_svc_allocate_memory(stru
+ 	if (!pmem)
+ 		return ERR_PTR(-ENOMEM);
+ 
++	guard(mutex)(&svc_mem_lock);
+ 	va = gen_pool_alloc(genpool, s);
+ 	if (!va)
+ 		return ERR_PTR(-ENOMEM);
+@@ -1103,6 +1113,7 @@ EXPORT_SYMBOL_GPL(stratix10_svc_allocate
+ void stratix10_svc_free_memory(struct stratix10_svc_chan *chan, void *kaddr)
  {
- 	struct amdgpu_vmhub *hub;
-+	bool retry_fault = !!(entry->src_data[1] & 0x80);
-+	bool write_fault = !!(entry->src_data[1] & 0x20);
- 	uint32_t status = 0;
- 	u64 addr;
+ 	struct stratix10_svc_data_mem *pmem;
++	guard(mutex)(&svc_mem_lock);
  
-@@ -102,6 +104,31 @@ static int gmc_v12_0_process_interrupt(s
- 	else
- 		hub = &adev->vmhub[AMDGPU_GFXHUB(0)];
- 
-+	if (retry_fault) {
-+		/* Returning 1 here also prevents sending the IV to the KFD */
-+
-+		/* Process it only if it's the first fault for this address */
-+		if (entry->ih != &adev->irq.ih_soft &&
-+		    amdgpu_gmc_filter_faults(adev, entry->ih, addr, entry->pasid,
-+					     entry->timestamp))
-+			return 1;
-+
-+		/* Delegate it to a different ring if the hardware hasn't
-+		 * already done it.
-+		 */
-+		if (entry->ih == &adev->irq.ih) {
-+			amdgpu_irq_delegate(adev, entry, 8);
-+			return 1;
-+		}
-+
-+		/* Try to handle the recoverable page faults by filling page
-+		 * tables
-+		 */
-+		if (amdgpu_vm_handle_fault(adev, entry->pasid, 0, 0, addr,
-+					   entry->timestamp, write_fault))
-+			return 1;
-+	}
-+
- 	if (!amdgpu_sriov_vf(adev)) {
- 		/*
- 		 * Issue a dummy read to wait for the status register to
+ 	list_for_each_entry(pmem, &svc_data_mem, node)
+ 		if (pmem->vaddr == kaddr) {
 
 
 
