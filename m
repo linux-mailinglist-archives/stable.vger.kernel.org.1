@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-205485-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205762-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11F45CF9DD3
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 18:53:00 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CCBBCF9FA0
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:11:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CE31A3151B25
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:40:28 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C34DC309645E
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:07:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D55E2E7F38;
-	Tue,  6 Jan 2026 17:34:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D0B135FF79;
+	Tue,  6 Jan 2026 17:49:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vZG6nkqt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zWf/SOY5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 229632E62D9;
-	Tue,  6 Jan 2026 17:34:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD80335FF5F;
+	Tue,  6 Jan 2026 17:49:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767720850; cv=none; b=rJmxcnhK7aqT4CoAC3G8z/ZiCYR9rqX3agEWTj1RLjCePHKJWezz7bdhMfO+xzACY7PjJ8i5m0sE37FS3x4zKUoOo63/DKcqmrUBWqD1+1DY0KcRaPka1aG5PMAL5SYWcuRhWaeQgPV2qY6+bJFSvWOjpTaiFE9rAD6/unWqMY0=
+	t=1767721775; cv=none; b=Tbim/ID89ORewlRIqfS5aNcjs6fmbvNUJuQEJCvSFZgPkFEzR/usInXzjoVChDpzg07oNmJsDSq0WQHL3A/6alfensfzmd8+8tc7OXzgZSoEYiH8uqAM0Mizi49JQp6sCfr3s2r+nEXb6fhKGH5xALCVAFUmwe5N1iRP9a8EFPE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767720850; c=relaxed/simple;
-	bh=El4RkmlspS/hYqUewbgiAXSEGXP8+dm9pHzw5ivzgXI=;
+	s=arc-20240116; t=1767721775; c=relaxed/simple;
+	bh=VwuydnVkqulZp3iC01BkS8tqaZev8/Flz+1QhyKYq8o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cgDhtvzg1nM3K47uo+9IHmdSijz03d0tf2Wwtd+9h5r00ly8WnIrAGnVDZhL1vH3MOygI4IsROnHSRnsDktgcno2mKYO0tK3xeZ0UTOhc4NMNjcIO2B2Pjq11u/PYfGWnAVWFL1WsOoJo+8sHYRFAMT5q/ujT/VBAybrZsIgaIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vZG6nkqt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C5BDC116C6;
-	Tue,  6 Jan 2026 17:34:08 +0000 (UTC)
+	 MIME-Version; b=BLOLgITKx1YZ1wS/PrOc65kpP41vroKrGdMeJZEZjULrDjoy5AIOweclClmYE0hVvxAorFxSJVEVPME/8feeYJCy+NKCwlyGORXYCc0haQ6Q+M0ZMtoQwxs1rdrX+8HrV5ToC+Hl0SNMyTqp8OowoRJXl/lzg/2epwDXgSQhlvw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zWf/SOY5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E25AC19423;
+	Tue,  6 Jan 2026 17:49:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767720849;
-	bh=El4RkmlspS/hYqUewbgiAXSEGXP8+dm9pHzw5ivzgXI=;
+	s=korg; t=1767721775;
+	bh=VwuydnVkqulZp3iC01BkS8tqaZev8/Flz+1QhyKYq8o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vZG6nkqtejnKQRziuFqQPXNdszv98bNqAaTYA3UCQY2uK5opiWiLH6WCnT7gTj6A3
-	 /SnLLA+kBbFFFdENYMXKskZo50UgfUNqJ3IaEI/CVi7efwMDVGeLKSwBnKTuk/uafb
-	 J9fO7zJFx+ydK299B1DQYzOg00ER9yh5XokFH540=
+	b=zWf/SOY51YdJ7Y7CWnDeLvQCU2FAxNrITfP6aV8LQ96gDYBOVS9eOSjD2O5dioUsv
+	 +YVLzKIEOW6SjDMz/zoL3cUsi9XA5trhHNK0JsFSI673nTnJIjqhB8PU/vwyT9uPwD
+	 /8BCVKkn7RhzU3QaHvS9cT5SGpfn9xH3Uzv8lK+k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robin Murphy <robin.murphy@arm.com>,
-	Yong Wu <yong.wu@mediatek.com>,
-	Johan Hovold <johan@kernel.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Joerg Roedel <joerg.roedel@amd.com>
-Subject: [PATCH 6.12 361/567] iommu/mediatek: fix device leak on of_xlate()
+	Tom Sela <tomsela@amazon.com>,
+	Yonatan Nachum <ynachum@amazon.com>,
+	Michael Margolin <mrgolin@amazon.com>,
+	Gal Pressman <gal.pressman@linux.dev>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 069/312] RDMA/efa: Remove possible negative shift
 Date: Tue,  6 Jan 2026 18:02:23 +0100
-Message-ID: <20260106170504.691971955@linuxfoundation.org>
+Message-ID: <20260106170550.346299482@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
-References: <20260106170451.332875001@linuxfoundation.org>
+In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
+References: <20260106170547.832845344@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Michael Margolin <mrgolin@amazon.com>
 
-commit b3f1ee18280363ef17f82b564fc379ceba9ec86f upstream.
+[ Upstream commit 85463eb6a46caf2f1e0e1a6d0731f2f3bab17780 ]
 
-Make sure to drop the reference taken to the iommu platform device when
-looking up its driver data during of_xlate().
+The page size used for device might in some cases be smaller than
+PAGE_SIZE what results in a negative shift when calculating the number of
+host pages in PAGE_SIZE for a debug log. Remove the debug line together
+with the calculation.
 
-Fixes: 0df4fabe208d ("iommu/mediatek: Add mt8173 IOMMU driver")
-Cc: stable@vger.kernel.org	# 4.6
-Acked-by: Robin Murphy <robin.murphy@arm.com>
-Reviewed-by: Yong Wu <yong.wu@mediatek.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 40909f664d27 ("RDMA/efa: Add EFA verbs implementation")
+Link: https://patch.msgid.link/r/20251210173656.8180-1-mrgolin@amazon.com
+Reviewed-by: Tom Sela <tomsela@amazon.com>
+Reviewed-by: Yonatan Nachum <ynachum@amazon.com>
+Signed-off-by: Michael Margolin <mrgolin@amazon.com>
+Reviewed-by: Gal Pressman <gal.pressman@linux.dev>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/mtk_iommu.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/infiniband/hw/efa/efa_verbs.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
---- a/drivers/iommu/mtk_iommu.c
-+++ b/drivers/iommu/mtk_iommu.c
-@@ -975,6 +975,8 @@ static int mtk_iommu_of_xlate(struct dev
- 			return -EINVAL;
+diff --git a/drivers/infiniband/hw/efa/efa_verbs.c b/drivers/infiniband/hw/efa/efa_verbs.c
+index 22d3e25c3b9d..755bba8d58bb 100644
+--- a/drivers/infiniband/hw/efa/efa_verbs.c
++++ b/drivers/infiniband/hw/efa/efa_verbs.c
+@@ -1320,13 +1320,9 @@ static int umem_to_page_list(struct efa_dev *dev,
+ 			     u32 hp_cnt,
+ 			     u8 hp_shift)
+ {
+-	u32 pages_in_hp = BIT(hp_shift - PAGE_SHIFT);
+ 	struct ib_block_iter biter;
+ 	unsigned int hp_idx = 0;
  
- 		dev_iommu_priv_set(dev, platform_get_drvdata(m4updev));
-+
-+		put_device(&m4updev->dev);
- 	}
+-	ibdev_dbg(&dev->ibdev, "hp_cnt[%u], pages_in_hp[%u]\n",
+-		  hp_cnt, pages_in_hp);
+-
+ 	rdma_umem_for_each_dma_block(umem, &biter, BIT(hp_shift))
+ 		page_list[hp_idx++] = rdma_block_iter_dma_address(&biter);
  
- 	return iommu_fwspec_add_ids(dev, args->args, 1);
+-- 
+2.51.0
+
 
 
 
