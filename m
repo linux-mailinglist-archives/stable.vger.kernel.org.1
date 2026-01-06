@@ -1,53 +1,51 @@
-Return-Path: <stable+bounces-205726-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205729-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78F20CFAAD9
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:31:53 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7967FCFA9AA
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:22:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5A0DD301EFFB
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 19:31:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5E60F30DB4B1
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:35:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CA8935CBC5;
-	Tue,  6 Jan 2026 17:47:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA7DE35E53F;
+	Tue,  6 Jan 2026 17:47:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M+7aXHoW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xzdccbH0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5912A35CBAE;
-	Tue,  6 Jan 2026 17:47:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A706F35E541;
+	Tue,  6 Jan 2026 17:47:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721655; cv=none; b=NYFbaGTdrVjPqGxcgmUXrwHZgrpfzjYIdh+TJpCDmxCZAeZ6ZD2ANksaNKUhKaFyJMEWewuQyZ6M0lASegSZI4J6RBT+fwLps0Up4aQDh8whdkN4gamUdr/n/hKNbXNsFzsEAsVxkMT+ARp9o3gwr4uxLXGX7WgECYacPctlj2k=
+	t=1767721665; cv=none; b=kxMah93Mj+dDdfx7WfbJTITzFw4aAIbTo6tHHHSi/hwNdusU+x+LLpL1lG6XUYifyByMBUKzaDnTClx1UoA21kBCYojogcfePL50Wygs0H0uyXe+ayXDYG34Dfea0pjnAAlgSKGYIk/DpKDLy7C7rUXTy9+y1nTym85r4SlfyIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721655; c=relaxed/simple;
-	bh=CMeTiRZbOHYACL+YslPcL5K3lOw7Rn77dMqAuk7vl8A=;
+	s=arc-20240116; t=1767721665; c=relaxed/simple;
+	bh=rO3PN0kV1absZP67zedRory/d7Taq4mhHcjt8/rTlV4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h3XWDVicFA3COzOhDNLivSTQa16J1LMhF8njQio2yBefq5xcgzsnXqG/iH/aXicAgthe+GEUJRiLsopP1QNHM73ut/ucozwjNkyyG7cQJZy76pnBG4LGrq+K4q6yFWEKiwZizRMH/dcWFIstRh+M0GQcDU5AHB8jQCkFnWq5Koo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M+7aXHoW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC659C16AAE;
-	Tue,  6 Jan 2026 17:47:34 +0000 (UTC)
+	 MIME-Version; b=u3UJevmQBdXarbC5meO7UW50azq5LMUTbTI1L1IJVeD9We6xBiP+Ct0YPTGNxq7lUVmM+gsdCS+jgUycCllqDkQAh3fmrLwpDmKlJLtmZFq1ksMy3lUGVVbNxXleN3/byGaQ1m5N3/LiJonWNm4PEgIECFDaRbfGAdMK0tnGSjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xzdccbH0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C337EC116C6;
+	Tue,  6 Jan 2026 17:47:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721655;
-	bh=CMeTiRZbOHYACL+YslPcL5K3lOw7Rn77dMqAuk7vl8A=;
+	s=korg; t=1767721665;
+	bh=rO3PN0kV1absZP67zedRory/d7Taq4mhHcjt8/rTlV4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M+7aXHoWjRORnvSgIcRqK3q5Bzc6j4L1rkGr1/Lza3esigHm7S5h30Aib+0JHJLoW
-	 kofpq/HJ5m/fbizDvPfB2N0n6enynO5eqGo4Y7b4keWcdABVaEmwj8Nfd5m2qfkK29
-	 rctIPlDyUByQpG8a7mlI8LpOYdqbiUkHPO9hUnDQ=
+	b=xzdccbH0kvAmewd3PD9KZSnGCZgMY1pGgjmOSCNUKYTGLlmesXABwV6NgIrEakpSQ
+	 0ZOrSGCH2t/V0eq+GOFoL+vVh1TkrfIQy6OzIP9Ez3yNwr8QJb5d+QzD22iUVZWm1J
+	 e6bjb3wOfEm/Tu5nLWbmJ2RLcxsFU6cU0epZ1nhw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+422806e5f4cce722a71f@syzkaller.appspotmail.com,
-	Jiri Pirko <jiri@nvidia.com>,
-	Simon Horman <horms@kernel.org>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 033/312] team: fix check for port enabled in team_queue_override_port_prio_changed()
-Date: Tue,  6 Jan 2026 18:01:47 +0100
-Message-ID: <20260106170549.054284538@linuxfoundation.org>
+Subject: [PATCH 6.18 036/312] net: dsa: fix missing put_device() in dsa_tree_find_first_conduit()
+Date: Tue,  6 Jan 2026 18:01:50 +0100
+Message-ID: <20260106170549.162411124@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
 References: <20260106170547.832845344@linuxfoundation.org>
@@ -66,98 +64,100 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jiri Pirko <jiri@nvidia.com>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-[ Upstream commit 932ac51d9953eaf77a1252f79b656d4ca86163c6 ]
+[ Upstream commit a9f96dc59b4a50ffbf86158f315e115969172d48 ]
 
-There has been a syzkaller bug reported recently with the following
-trace:
+of_find_net_device_by_node() searches net devices by their /sys/class/net/,
+entry. It is documented in its kernel-doc that:
 
-list_del corruption, ffff888058bea080->prev is LIST_POISON2 (dead000000000122)
-------------[ cut here ]------------
-kernel BUG at lib/list_debug.c:59!
-Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
-CPU: 3 UID: 0 PID: 21246 Comm: syz.0.2928 Not tainted syzkaller #0 PREEMPT(full)
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-RIP: 0010:__list_del_entry_valid_or_report+0x13e/0x200 lib/list_debug.c:59
-Code: 48 c7 c7 e0 71 f0 8b e8 30 08 ef fc 90 0f 0b 48 89 ef e8 a5 02 55 fd 48 89 ea 48 89 de 48 c7 c7 40 72 f0 8b e8 13 08 ef fc 90 <0f> 0b 48 89 ef e8 88 02 55 fd 48 89 ea 48 b8 00 00 00 00 00 fc ff
-RSP: 0018:ffffc9000d49f370 EFLAGS: 00010286
-RAX: 000000000000004e RBX: ffff888058bea080 RCX: ffffc9002817d000
-RDX: 0000000000000000 RSI: ffffffff819becc6 RDI: 0000000000000005
-RBP: dead000000000122 R08: 0000000000000005 R09: 0000000000000000
-R10: 0000000080000000 R11: 0000000000000001 R12: ffff888039e9c230
-R13: ffff888058bea088 R14: ffff888058bea080 R15: ffff888055461480
-FS:  00007fbbcfe6f6c0(0000) GS:ffff8880d6d0a000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 000000110c3afcb0 CR3: 00000000382c7000 CR4: 0000000000352ef0
-Call Trace:
- <TASK>
- __list_del_entry_valid include/linux/list.h:132 [inline]
- __list_del_entry include/linux/list.h:223 [inline]
- list_del_rcu include/linux/rculist.h:178 [inline]
- __team_queue_override_port_del drivers/net/team/team_core.c:826 [inline]
- __team_queue_override_port_del drivers/net/team/team_core.c:821 [inline]
- team_queue_override_port_prio_changed drivers/net/team/team_core.c:883 [inline]
- team_priority_option_set+0x171/0x2f0 drivers/net/team/team_core.c:1534
- team_option_set drivers/net/team/team_core.c:376 [inline]
- team_nl_options_set_doit+0x8ae/0xe60 drivers/net/team/team_core.c:2653
- genl_family_rcv_msg_doit+0x209/0x2f0 net/netlink/genetlink.c:1115
- genl_family_rcv_msg net/netlink/genetlink.c:1195 [inline]
- genl_rcv_msg+0x55c/0x800 net/netlink/genetlink.c:1210
- netlink_rcv_skb+0x158/0x420 net/netlink/af_netlink.c:2552
- genl_rcv+0x28/0x40 net/netlink/genetlink.c:1219
- netlink_unicast_kernel net/netlink/af_netlink.c:1320 [inline]
- netlink_unicast+0x5aa/0x870 net/netlink/af_netlink.c:1346
- netlink_sendmsg+0x8c8/0xdd0 net/netlink/af_netlink.c:1896
- sock_sendmsg_nosec net/socket.c:727 [inline]
- __sock_sendmsg net/socket.c:742 [inline]
- ____sys_sendmsg+0xa98/0xc70 net/socket.c:2630
- ___sys_sendmsg+0x134/0x1d0 net/socket.c:2684
- __sys_sendmsg+0x16d/0x220 net/socket.c:2716
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xcd/0xfa0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
+ * If successful, returns a pointer to the net_device with the embedded
+ * struct device refcount incremented by one, or NULL on failure. The
+ * refcount must be dropped when done with the net_device.
 
-The problem is in this flow:
-1) Port is enabled, queue_id != 0, in qom_list
-2) Port gets disabled
-        -> team_port_disable()
-        -> team_queue_override_port_del()
-        -> del (removed from list)
-3) Port is disabled, queue_id != 0, not in any list
-4) Priority changes
-        -> team_queue_override_port_prio_changed()
-        -> checks: port disabled && queue_id != 0
-        -> calls del - hits the BUG as it is removed already
+We are missing a put_device(&conduit->dev) which we could place at the
+end of dsa_tree_find_first_conduit(). But to explain why calling
+put_device() right away is safe is the same as to explain why the chosen
+solution is different.
 
-To fix this, change the check in team_queue_override_port_prio_changed()
-so it returns early if port is not enabled.
+The code is very poorly split: dsa_tree_find_first_conduit() was first
+introduced in commit 95f510d0b792 ("net: dsa: allow the DSA master to be
+seen and changed through rtnetlink") but was first used several commits
+later, in commit acc43b7bf52a ("net: dsa: allow masters to join a LAG").
 
-Reported-by: syzbot+422806e5f4cce722a71f@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=422806e5f4cce722a71f
-Fixes: 6c31ff366c11 ("team: remove synchronize_rcu() called during queue override change")
-Signed-off-by: Jiri Pirko <jiri@nvidia.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20251212102953.167287-1-jiri@resnulli.us
+Assume there is a switch with 2 CPU ports and 2 conduits, eno2 and eno3.
+When we create a LAG (bonding or team device) and place eno2 and eno3
+beneath it, we create a 3rd conduit (the LAG device itself), but this is
+slightly different than the first two.
+
+Namely, the cpu_dp->conduit pointer of the CPU ports does not change,
+and remains pointing towards the physical Ethernet controllers which are
+now LAG ports. Only 2 things change:
+- the LAG device has a dev->dsa_ptr which marks it as a DSA conduit
+- dsa_port_to_conduit(user port) finds the LAG and not the physical
+  conduit, because of the dp->cpu_port_in_lag bit being set.
+
+When the LAG device is destroyed, dsa_tree_migrate_ports_from_lag_conduit()
+is called and this is where dsa_tree_find_first_conduit() kicks in.
+
+This is the logical mistake and the reason why introducing code in one
+patch and using it from another is bad practice. I didn't realize that I
+don't have to call of_find_net_device_by_node() again; the cpu_dp->conduit
+association was never undone, and is still available for direct (re)use.
+There's only one concern - maybe the conduit disappeared in the
+meantime, but the netdev_hold() call we made during dsa_port_parse_cpu()
+(see previous change) ensures that this was not the case.
+
+Therefore, fixing the code means reimplementing it in the simplest way.
+
+I am blaming the time of use, since this is what "git blame" would show
+if we were to monitor for the conduit's kobject's refcount remaining
+elevated instead of being freed.
+
+Tested on the NXP LS1028A, using the steps from
+Documentation/networking/dsa/configuration.rst section "Affinity of user
+ports to CPU ports", followed by (extra prints added by me):
+
+$ ip link del bond0
+mscc_felix 0000:00:00.5 swp3: Link is Down
+bond0 (unregistering): (slave eno2): Releasing backup interface
+fsl_enetc 0000:00:00.2 eno2: Link is Down
+mscc_felix 0000:00:00.5 swp0: bond0 disappeared, migrating to eno2
+mscc_felix 0000:00:00.5 swp1: bond0 disappeared, migrating to eno2
+mscc_felix 0000:00:00.5 swp2: bond0 disappeared, migrating to eno2
+mscc_felix 0000:00:00.5 swp3: bond0 disappeared, migrating to eno2
+
+Fixes: acc43b7bf52a ("net: dsa: allow masters to join a LAG")
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Link: https://patch.msgid.link/20251215150236.3931670-2-vladimir.oltean@nxp.com
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/team/team_core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/dsa/dsa.c | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
-diff --git a/drivers/net/team/team_core.c b/drivers/net/team/team_core.c
-index 25562b17debe..2fd3469d1046 100644
---- a/drivers/net/team/team_core.c
-+++ b/drivers/net/team/team_core.c
-@@ -878,7 +878,7 @@ static void __team_queue_override_enabled_check(struct team *team)
- static void team_queue_override_port_prio_changed(struct team *team,
- 						  struct team_port *port)
+diff --git a/net/dsa/dsa.c b/net/dsa/dsa.c
+index d466d0234087..ded9a291e620 100644
+--- a/net/dsa/dsa.c
++++ b/net/dsa/dsa.c
+@@ -366,16 +366,10 @@ static struct dsa_port *dsa_tree_find_first_cpu(struct dsa_switch_tree *dst)
+ 
+ struct net_device *dsa_tree_find_first_conduit(struct dsa_switch_tree *dst)
  {
--	if (!port->queue_id || team_port_enabled(port))
-+	if (!port->queue_id || !team_port_enabled(port))
- 		return;
- 	__team_queue_override_port_del(team, port);
- 	__team_queue_override_port_add(team, port);
+-	struct device_node *ethernet;
+-	struct net_device *conduit;
+ 	struct dsa_port *cpu_dp;
+ 
+ 	cpu_dp = dsa_tree_find_first_cpu(dst);
+-	ethernet = of_parse_phandle(cpu_dp->dn, "ethernet", 0);
+-	conduit = of_find_net_device_by_node(ethernet);
+-	of_node_put(ethernet);
+-
+-	return conduit;
++	return cpu_dp->conduit;
+ }
+ 
+ /* Assign the default CPU port (the first one in the tree) to all ports of the
 -- 
 2.51.0
 
