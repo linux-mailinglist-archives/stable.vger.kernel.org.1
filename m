@@ -1,50 +1,57 @@
-Return-Path: <stable+bounces-205371-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205373-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23DEBCF9BED
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 18:38:38 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EF3FCF9F49
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:09:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AB10331055D3
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:27:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7BE4630779FD
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:07:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 877F534F253;
-	Tue,  6 Jan 2026 17:27:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD76634EF16;
+	Tue,  6 Jan 2026 17:27:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y5BxiwOv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Umzxl2HF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 414D334EF13;
-	Tue,  6 Jan 2026 17:27:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8217434F26F;
+	Tue,  6 Jan 2026 17:27:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767720470; cv=none; b=XQqIhn4VPcNoIrLB6+Ewpx3kic3lfMooJWFh4B0rmQI5dLvgto+OWIhHwm6RwGEcnr8s5kXf4GLH3qr7eq1VfC1hmcfe1U+QKRZq2LjPmL6l+de+5iZGuhEPv4MZiLZJEkUAYFdy5FwI2VgH25gI9NzjiCCLACK5WwyAFhG8VJM=
+	t=1767720476; cv=none; b=CurbBlmPozJiNyhbVHjWhusj8chD7fQiG3N2pdfxhnJ3MWA4j0xDbF4+Nle7MPKDoG1tTHCa/ntcFQ5aHJc1YmVdayevi36vIejeDoDNrnpypVFr9pkynk0K4mEVdqA6TQmuV9rl4YpjiKcSSOUaklWpbnRecGxlJ6OvINTPAdA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767720470; c=relaxed/simple;
-	bh=DQf4TeCKtAESopSrdqqeqJdcSe0wbgfGyO7vv2p/cnM=;
+	s=arc-20240116; t=1767720476; c=relaxed/simple;
+	bh=T5aG74A9XegOwx2SK/JYSN+yjU3WPgx3ECd44X8Xf7o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CZ+Spk4uD39g/FDPoj6q5tb0VnqGe1EE8UMd6mbM5goHBQMus4v6MV2aiuKRaMMoeCr+yUL4egFhlppOfncdj/DjSIu43r70B4bUszgWMMFDv9uHrkcaS668i764vrWyt+0Z+X7ZgXTxqyEXAnZB9ezoU0AMPrd4e2Ki07y7j+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y5BxiwOv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A855AC116C6;
-	Tue,  6 Jan 2026 17:27:49 +0000 (UTC)
+	 MIME-Version; b=rWZchU1eKj4jHxVz03p6rTWyTZYXdvDfGe+BBD67e5ftOmNyBuvAeMZHvM5GWWPG8O5n8asodMxVRNGs4iGoC3iblrJFZZb09prjjGerRHMUBWkjXRqb2dXEQtayVtDw4Excs17myWH0H9gSyOsqiFSkuRkMTsTp32W61uYpaac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Umzxl2HF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 089D9C116C6;
+	Tue,  6 Jan 2026 17:27:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767720470;
-	bh=DQf4TeCKtAESopSrdqqeqJdcSe0wbgfGyO7vv2p/cnM=;
+	s=korg; t=1767720476;
+	bh=T5aG74A9XegOwx2SK/JYSN+yjU3WPgx3ECd44X8Xf7o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y5BxiwOvWZlKX8z9Je1OoXCepT5fl+Ltc4HGToVhmskQoN3MF9rX7aY1JCLwSX71L
-	 oPdyYKX1irsAYiQNG/QbfSt+ZhyUHL8fkQpJWUNcGuouo+R6cYpDDjjfCVT50tJeHR
-	 6cqpCPwOCe2VcU4fqcDQvSb52NBcl3M5sVCodwWQ=
+	b=Umzxl2HFXDSww2qpm/EcLq39fVdXMVgwDhg/vY9fIGsrmEZOtEmGP7vcfyexIWUPe
+	 qfOW0a3SBaC6W8n2gB3nzwnGuzUYKYG11fbuOVfoU2U9wcNAhS9epeGyb+IFXzmgwS
+	 Gns7TnFgm07+8fJ+oL8nO/HkBUu/eevLoJruvqZ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxim Levitsky <mlevitsk@redhat.com>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.12 214/567] KVM: x86: Dont clear async #PF queue when CR0.PG is disabled (e.g. on #SMI)
-Date: Tue,  6 Jan 2026 17:59:56 +0100
-Message-ID: <20260106170459.235079450@linuxfoundation.org>
+	Jiyuan Xie <xiejiyuan@vivo.com>,
+	Zhichi Lin <zhichi.lin@vivo.com>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Will Deacon <will@kernel.org>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Kees Cook <keescook@chromium.org>,
+	Marco Elver <elver@google.com>,
+	Yee Lee <yee.lee@mediatek.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 216/567] scs: fix a wrong parameter in __scs_magic
+Date: Tue,  6 Jan 2026 17:59:58 +0100
+Message-ID: <20260106170459.307864917@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
 References: <20260106170451.332875001@linuxfoundation.org>
@@ -63,106 +70,66 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Maxim Levitsky <mlevitsk@redhat.com>
+From: Zhichi Lin <zhichi.lin@vivo.com>
 
-commit ab4e41eb9fabd4607304fa7cfe8ec9c0bd8e1552 upstream.
+commit 08bd4c46d5e63b78e77f2605283874bbe868ab19 upstream.
 
-Fix an interaction between SMM and PV asynchronous #PFs where an #SMI can
-cause KVM to drop an async #PF ready event, and thus result in guest tasks
-becoming permanently stuck due to the task that encountered the #PF never
-being resumed.  Specifically, don't clear the completion queue when paging
-is disabled, and re-check for completed async #PFs if/when paging is
-enabled.
+__scs_magic() needs a 'void *' variable, but a 'struct task_struct *' is
+given.  'task_scs(tsk)' is the starting address of the task's shadow call
+stack, and '__scs_magic(task_scs(tsk))' is the end address of the task's
+shadow call stack.  Here should be '__scs_magic(task_scs(tsk))'.
 
-Prior to commit 2635b5c4a0e4 ("KVM: x86: interrupt based APF 'page ready'
-event delivery"), flushing the APF queue without notifying the guest of
-completed APF requests when paging is disabled was "necessary", in that
-delivering a #PF to the guest when paging is disabled would likely confuse
-and/or crash the guest.  And presumably the original async #PF development
-assumed that a guest would only disable paging when there was no intent to
-ever re-enable paging.
+The user-visible effect of this bug is that when CONFIG_DEBUG_STACK_USAGE
+is enabled, the shadow call stack usage checking function
+(scs_check_usage) would scan an incorrect memory range.  This could lead
+to:
 
-That assumption fails in several scenarios, most visibly on an emulated
-SMI, as entering SMM always disables CR0.PG (i.e. initially runs with
-paging disabled).  When the SMM handler eventually executes RSM, the
-interrupted paging-enabled is restored, and the async #PF event is lost.
+1. **Inaccurate stack usage reporting**: The function would calculate
+   wrong usage statistics for the shadow call stack, potentially showing
+   incorrect value in kmsg.
 
-Similarly, invoking firmware, e.g. via EFI runtime calls, might require a
-transition through paging modes and thus also disable paging with valid
-entries in the competion queue.
+2. **Potential kernel crash**: If the value of __scs_magic(tsk)is
+   greater than that of __scs_magic(task_scs(tsk)), the for loop may
+   access unmapped memory, potentially causing a kernel panic.  However,
+   this scenario is unlikely because task_struct is allocated via the slab
+   allocator (which typically returns lower addresses), while the shadow
+   call stack returned by task_scs(tsk) is allocated via vmalloc(which
+   typically returns higher addresses).
 
-To avoid dropping completion events, drop the "clear" entirely, and handle
-paging-enable transitions in the same way KVM already handles APIC
-enable/disable events: if a vCPU's APIC is disabled, APF completion events
-are not kept pending and not injected while APIC is disabled.  Once a
-vCPU's APIC is re-enabled, KVM raises KVM_REQ_APF_READY so that the vCPU
-recognizes any pending pending #APF ready events.
+However, since this is purely a debugging feature
+(CONFIG_DEBUG_STACK_USAGE), normal production systems should be not
+unaffected.  The bug only impacts developers and testers who are actively
+debugging stack usage with this configuration enabled.
 
-Signed-off-by: Maxim Levitsky <mlevitsk@redhat.com>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20251015033258.50974-4-mlevitsk@redhat.com
-[sean: rework changelog to call out #PF injection, drop "real mode"
-       references, expand the code comment]
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Link: https://lkml.kernel.org/r/20251011082222.12965-1-zhichi.lin@vivo.com
+Fixes: 5bbaf9d1fcb9 ("scs: Add support for stack usage debugging")
+Signed-off-by: Jiyuan Xie <xiejiyuan@vivo.com>
+Signed-off-by: Zhichi Lin <zhichi.lin@vivo.com>
+Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
+Acked-by: Will Deacon <will@kernel.org>
+Cc: Andrey Konovalov <andreyknvl@gmail.com>
+Cc: Kees Cook <keescook@chromium.org>
+Cc: Marco Elver <elver@google.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Yee Lee <yee.lee@mediatek.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/x86.c |   25 +++++++++++++++----------
- 1 file changed, 15 insertions(+), 10 deletions(-)
+ kernel/scs.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -1035,6 +1035,13 @@ bool kvm_require_dr(struct kvm_vcpu *vcp
- }
- EXPORT_SYMBOL_GPL(kvm_require_dr);
+--- a/kernel/scs.c
++++ b/kernel/scs.c
+@@ -135,7 +135,7 @@ static void scs_check_usage(struct task_
+ 	if (!IS_ENABLED(CONFIG_DEBUG_STACK_USAGE))
+ 		return;
  
-+static bool kvm_pv_async_pf_enabled(struct kvm_vcpu *vcpu)
-+{
-+	u64 mask = KVM_ASYNC_PF_ENABLED | KVM_ASYNC_PF_DELIVERY_AS_INT;
-+
-+	return (vcpu->arch.apf.msr_en_val & mask) == mask;
-+}
-+
- static inline u64 pdptr_rsvd_bits(struct kvm_vcpu *vcpu)
- {
- 	return vcpu->arch.reserved_gpa_bits | rsvd_bits(5, 8) | rsvd_bits(1, 2);
-@@ -1127,15 +1134,20 @@ void kvm_post_set_cr0(struct kvm_vcpu *v
- 	}
- 
- 	if ((cr0 ^ old_cr0) & X86_CR0_PG) {
--		kvm_clear_async_pf_completion_queue(vcpu);
--		kvm_async_pf_hash_reset(vcpu);
--
- 		/*
- 		 * Clearing CR0.PG is defined to flush the TLB from the guest's
- 		 * perspective.
- 		 */
- 		if (!(cr0 & X86_CR0_PG))
- 			kvm_make_request(KVM_REQ_TLB_FLUSH_GUEST, vcpu);
-+		/*
-+		 * Check for async #PF completion events when enabling paging,
-+		 * as the vCPU may have previously encountered async #PFs (it's
-+		 * entirely legal for the guest to toggle paging on/off without
-+		 * waiting for the async #PF queue to drain).
-+		 */
-+		else if (kvm_pv_async_pf_enabled(vcpu))
-+			kvm_make_request(KVM_REQ_APF_READY, vcpu);
- 	}
- 
- 	if ((cr0 ^ old_cr0) & KVM_MMU_CR0_ROLE_BITS)
-@@ -3539,13 +3551,6 @@ static int set_msr_mce(struct kvm_vcpu *
- 	return 0;
- }
- 
--static inline bool kvm_pv_async_pf_enabled(struct kvm_vcpu *vcpu)
--{
--	u64 mask = KVM_ASYNC_PF_ENABLED | KVM_ASYNC_PF_DELIVERY_AS_INT;
--
--	return (vcpu->arch.apf.msr_en_val & mask) == mask;
--}
--
- static int kvm_pv_enable_async_pf(struct kvm_vcpu *vcpu, u64 data)
- {
- 	gpa_t gpa = data & ~0x3f;
+-	for (p = task_scs(tsk); p < __scs_magic(tsk); ++p) {
++	for (p = task_scs(tsk); p < __scs_magic(task_scs(tsk)); ++p) {
+ 		if (!READ_ONCE_NOCHECK(*p))
+ 			break;
+ 		used += sizeof(*p);
 
 
 
