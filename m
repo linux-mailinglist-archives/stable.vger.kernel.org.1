@@ -1,58 +1,49 @@
-Return-Path: <stable+bounces-205370-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205372-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56CE0CFB0D5
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 22:11:44 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76368CFB0D0
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 22:11:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 29E5E3036CB1
+	by sea.lore.kernel.org (Postfix) with ESMTP id 02B5F30361C3
 	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 21:11:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A8C934EEF8;
-	Tue,  6 Jan 2026 17:27:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8625A3557FC;
+	Tue,  6 Jan 2026 17:27:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r5YiSCij"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zV88tNDo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24BEE34EEF4;
-	Tue,  6 Jan 2026 17:27:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42B953557F9;
+	Tue,  6 Jan 2026 17:27:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767720467; cv=none; b=LKfgTwLHCjbdEOVISvyYlhCWxZgX6LeowWkPZcqfcOR8+Z00SsMq08QGrv2vU/8WjjHCH4zHU9x6ihvtamg9lwYS0Xup14vOtn44aSCrQZL7v4ZeHqFsGS0EZPvZF5MD32NeFFbe4xms/BpoTxctAIiwSY4bmuw3vXYgXMO03I4=
+	t=1767720473; cv=none; b=CScpfvmoTF3xH/f00BfnjvRAu/JpAqtpDeJGvJ/2xWT5QuDzjUUzFy0228Ix8BTiUmejKa4cMnbGVdOgPZ/v9MaGGOheXpPniNRJDiP6XDfk3HVw5GT3xmR8fwx6KBUCXEUP0r0fmr2TEkAAp/ELXWBXBvUUkzpj+LnVxRbl1OI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767720467; c=relaxed/simple;
-	bh=AlvWmvJIBg5C+PRVOsUj5f+RjNm7SmsEl1VissGl5jU=;
+	s=arc-20240116; t=1767720473; c=relaxed/simple;
+	bh=AyuB7l9dARyy+yTf+bWRJSUZpD/TKtJg8zrDFL2hjL0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bL00aAlMEXNTAz813UsCZJIn6NgvhQ8qh1DqfKubhKUesuZXHLQTdTmGAS7PrrcJkPCACssJcXVmH43ZWeHrbABo2OlHFiZhF3JiaCj1XYnDR8eo43ZyIuUB9TKs6N/tf6MZxQpOqpbe/PqbpqSIERVR8BZiIqbYde9FS4jfeas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r5YiSCij; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31D3DC116C6;
-	Tue,  6 Jan 2026 17:27:46 +0000 (UTC)
+	 MIME-Version; b=TGVyfM4g2EvW0IqOH4WnxKkXKJZVp0IW92iA6Yi6Jv/ivHHgTgT5/jpAWTw1h6NL4VNcw8gq5S+Dee4AK5X1BaESAgcxAbwDgevZBj5z8VBoqO4uF2F9VxGtUFY/+9kAUsQE2C6jjCUwXRUtYwDWNwY8UHvTycIced9DBy4ZoBM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zV88tNDo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C24EEC116C6;
+	Tue,  6 Jan 2026 17:27:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767720466;
-	bh=AlvWmvJIBg5C+PRVOsUj5f+RjNm7SmsEl1VissGl5jU=;
+	s=korg; t=1767720473;
+	bh=AyuB7l9dARyy+yTf+bWRJSUZpD/TKtJg8zrDFL2hjL0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r5YiSCijwbZMkvLEVZw27dWN/hhxOMCsZO7MNfmT3wQ40tWaPnCmBO6e/AyETdpgK
-	 6eencIfiAkJO9TZ3Scuv4z0HZR6U0H5pOAHTEctOSp05+9H7V3Udbu28VAAC295Cpc
-	 E7ZFfzvLm4wHJgo8Xql04dV7+6yso7P0xAoLgECQ=
+	b=zV88tNDoOOULfbveLnf13dK2HzUXSGV4+KEEpQOSlkRMJNeAE3frDDZgE4UIDFdS0
+	 GCkcVw5NjG/UGFIsm0IapExlcN1Mj2BIDlsmzZBbkH+aT1UrX9WTqPSDsYR6O9aaE9
+	 xd68Q4lflb1p8SNWixtws8ShifE2HJ/5NyqJ0oQs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Prithvi Tambewagh <activprithvi@gmail.com>,
-	syzbot+96d38c6e1655c1420a72@syzkaller.appspotmail.com,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Jun Piao <piaojun@huawei.com>,
-	Heming Zhao <heming.zhao@suse.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 213/567] ocfs2: fix kernel BUG in ocfs2_find_victim_chain
-Date: Tue,  6 Jan 2026 17:59:55 +0100
-Message-ID: <20260106170459.198941595@linuxfoundation.org>
+	Tzung-Bi Shih <tzungbi@kernel.org>
+Subject: [PATCH 6.12 215/567] platform/chrome: cros_ec_ishtp: Fix UAF after unbinding driver
+Date: Tue,  6 Jan 2026 17:59:57 +0100
+Message-ID: <20260106170459.271541853@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
 References: <20260106170451.332875001@linuxfoundation.org>
@@ -71,68 +62,35 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Prithvi Tambewagh <activprithvi@gmail.com>
+From: Tzung-Bi Shih <tzungbi@kernel.org>
 
-commit 039bef30e320827bac8990c9f29d2a68cd8adb5f upstream.
+commit 944edca81e7aea15f83cf9a13a6ab67f711e8abd upstream.
 
-syzbot reported a kernel BUG in ocfs2_find_victim_chain() because the
-`cl_next_free_rec` field of the allocation chain list (next free slot in
-the chain list) is 0, triggring the BUG_ON(!cl->cl_next_free_rec)
-condition in ocfs2_find_victim_chain() and panicking the kernel.
+After unbinding the driver, another kthread `cros_ec_console_log_work`
+is still accessing the device, resulting an UAF and crash.
 
-To fix this, an if condition is introduced in ocfs2_claim_suballoc_bits(),
-just before calling ocfs2_find_victim_chain(), the code block in it being
-executed when either of the following conditions is true:
+The driver doesn't unregister the EC device in .remove() which should
+shutdown sub-devices synchronously.  Fix it.
 
-1. `cl_next_free_rec` is equal to 0, indicating that there are no free
-chains in the allocation chain list
-2. `cl_next_free_rec` is greater than `cl_count` (the total number of
-chains in the allocation chain list)
-
-Either of them being true is indicative of the fact that there are no
-chains left for usage.
-
-This is addressed using ocfs2_error(), which prints
-the error log for debugging purposes, rather than panicking the kernel.
-
-Link: https://lkml.kernel.org/r/20251201130711.143900-1-activprithvi@gmail.com
-Signed-off-by: Prithvi Tambewagh <activprithvi@gmail.com>
-Reported-by: syzbot+96d38c6e1655c1420a72@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=96d38c6e1655c1420a72
-Tested-by: syzbot+96d38c6e1655c1420a72@syzkaller.appspotmail.com
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: Heming Zhao <heming.zhao@suse.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 26a14267aff2 ("platform/chrome: Add ChromeOS EC ISHTP driver")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20251031033900.3577394-1-tzungbi@kernel.org
+Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ocfs2/suballoc.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/platform/chrome/cros_ec_ishtp.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/ocfs2/suballoc.c
-+++ b/fs/ocfs2/suballoc.c
-@@ -1992,6 +1992,16 @@ static int ocfs2_claim_suballoc_bits(str
- 	}
+--- a/drivers/platform/chrome/cros_ec_ishtp.c
++++ b/drivers/platform/chrome/cros_ec_ishtp.c
+@@ -671,6 +671,7 @@ static void cros_ec_ishtp_remove(struct
  
- 	cl = (struct ocfs2_chain_list *) &fe->id2.i_chain;
-+	if (!le16_to_cpu(cl->cl_next_free_rec) ||
-+	    le16_to_cpu(cl->cl_next_free_rec) > le16_to_cpu(cl->cl_count)) {
-+		status = ocfs2_error(ac->ac_inode->i_sb,
-+				     "Chain allocator dinode %llu has invalid next "
-+				     "free chain record %u, but only %u total\n",
-+				     (unsigned long long)le64_to_cpu(fe->i_blkno),
-+				     le16_to_cpu(cl->cl_next_free_rec),
-+				     le16_to_cpu(cl->cl_count));
-+		goto bail;
-+	}
- 
- 	victim = ocfs2_find_victim_chain(cl);
- 	ac->ac_chain = victim;
+ 	cancel_work_sync(&client_data->work_ishtp_reset);
+ 	cancel_work_sync(&client_data->work_ec_evt);
++	cros_ec_unregister(client_data->ec_dev);
+ 	cros_ish_deinit(cros_ish_cl);
+ 	ishtp_put_device(cl_device);
+ }
 
 
 
