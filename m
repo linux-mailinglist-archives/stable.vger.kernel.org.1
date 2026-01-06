@@ -1,54 +1,51 @@
-Return-Path: <stable+bounces-205745-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205838-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19FF3CFB214
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 22:46:39 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2881CFB093
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 22:06:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B5B48300462D
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 21:46:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0244C302AFE9
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 21:06:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7416A35F8DF;
-	Tue,  6 Jan 2026 17:48:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F05AB3659E8;
+	Tue,  6 Jan 2026 17:53:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yjyvZnMi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qL2LzoTJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30DA835F8B3;
-	Tue,  6 Jan 2026 17:48:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB7763659E2;
+	Tue,  6 Jan 2026 17:53:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721719; cv=none; b=mTjS7v6w6Nh/6Du4Jk03BTwLfXvwA6qn5Brz2mjEv6qtLul/7ke7V1N7iX/cctYGOk+EdREIaopMOwi2KyaMxNFU4MsDh2KoOUkf49UbxpJIaYEP7SkDIlbloxGK3ve9GsbT2hcUatELG3hz/60ykFqOezI+4EKlCLbqcSlUj50=
+	t=1767722030; cv=none; b=aFKwgm5OZZoWCA5rnra/HREek1nqEfFrHjEYs7aXiAAQEVk44uZeHPOx729bbSSD4sCYvm92J21S8yMTLhnLJJg+gKRm4J7XC6XarmnZF6YXoCLYxyLmyXqJktGZMxS5xwNvSvBmUlvpo2GTjEeXMP2ZGOhvzrBiH9sTQDLTEss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721719; c=relaxed/simple;
-	bh=aqlIgYrcM8IqI6ngK94b8Cf4beu2Q/J9igMzpRRnZXY=;
+	s=arc-20240116; t=1767722030; c=relaxed/simple;
+	bh=NusFh8b0xrOr2U5C9o8GTEgkcWrGk2k6U+xJ58seJHg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hvpsz7dvxyaFrgUsRMTlcrwauhpp9sj9cXvrVe+hI0zuQ7NwhTiQtQ3agksOD3HCneNAq15KLVNc0m4HBcFvIVzyVOlAYAVkFQqqhddUc1EfjTZIRgV8xR2kQN2n1OWxEHDCPij5V4n2sc7aHotdU2aOj+8g/F74I72rB67LE58=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yjyvZnMi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 400D7C116C6;
-	Tue,  6 Jan 2026 17:48:38 +0000 (UTC)
+	 MIME-Version; b=oF23kcd+c75sXYlKSJomxFpXhNsF7IU5BHCTbpRbANjE+rv/qcA/4ibumQxlqF3+jTSqvN/sXlFtvQKbHMS24JQitpVz/9t/MwFH6IB1QJhv3WqeeAGsqKUObYzpSc97Vkdg8HqsXNybD3BlH9ClyCwybcZ4Oa5lSA7/hMXEu9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qL2LzoTJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 129CAC116C6;
+	Tue,  6 Jan 2026 17:53:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721718;
-	bh=aqlIgYrcM8IqI6ngK94b8Cf4beu2Q/J9igMzpRRnZXY=;
+	s=korg; t=1767722030;
+	bh=NusFh8b0xrOr2U5C9o8GTEgkcWrGk2k6U+xJ58seJHg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yjyvZnMieSqOcIyuehxeI38rnTMy/YweEEuy5r0gxizo1737DIMdCITmLwElGxrrG
-	 3i+ecosYIVHsW6mmmDKRVOgHgkLi7pHWL+TxrmpNqA5pzFvaR4N3lhtXrk/M9HDur4
-	 1ypLKM95KY3VgPlGlgUUq7nnmBVdNh3+OIwJJDoI=
+	b=qL2LzoTJamKXYpF9PisbwsuObO8f2v2N/G4n+oCQhCsUBOIyvkuZmYdpiLb5xmJaq
+	 EssQ6LEu0Ar5D04aegAlOSuf4pt12LC8fdCEu3phosJAmdexAHmC73qDSPxhodXkYI
+	 9IQINeESXlakJiR3ZN4KXUjn7HENT3QaezEKho1I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jorge Sanjuan Garcia <dev-jorge.sanjuangarcia@duagon.com>,
-	Jose Javier Rodriguez Barbarin <dev-josejavier.rodriguez@duagon.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@intel.com>,
-	Nicolas Schier <nsc@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 050/312] mcb: Add missing modpost build support
-Date: Tue,  6 Jan 2026 18:02:04 +0100
-Message-ID: <20260106170549.664671272@linuxfoundation.org>
+	Paresh Bhagat <p-bhagat@ti.com>,
+	Shree Ramamoorthy <s-ramamoorthy@ti.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>
+Subject: [PATCH 6.18 144/312] arm64: dts: ti: k3-am62d2-evm: Fix regulator properties
+Date: Tue,  6 Jan 2026 18:03:38 +0100
+Message-ID: <20260106170553.051210142@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
 References: <20260106170547.832845344@linuxfoundation.org>
@@ -67,73 +64,69 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jose Javier Rodriguez Barbarin <dev-josejavier.rodriguez@duagon.com>
+From: Paresh Bhagat <p-bhagat@ti.com>
 
-[ Upstream commit 1f4ea4838b13c3b2278436a8dcb148e3c23f4b64 ]
+commit 0103435072bf5c54bb43d1a9376d08396c825827 upstream.
 
-mcb bus is not prepared to autoload client drivers with the data defined on
-the drivers' MODULE_DEVICE_TABLE. modpost cannot access to mcb_table_id
-inside MODULE_DEVICE_TABLE so the data declared inside is ignored.
+Fix missing supply for regulators TLV7103318QDSERQ1 and TPS22918DBVR.
+Correct padconfig and gpio for TLV7103318QDSERQ1.
 
-Add modpost build support for accessing to the mcb_table_id coded on device
-drivers' MODULE_DEVICE_TABLE.
+Reference Docs
+Datasheet - https://www.ti.com/lit/ug/sprujd4/sprujd4.pdf
+Schematics - https://www.ti.com/lit/zip/sprcal5
 
-Fixes: 3764e82e5150 ("drivers: Introduce MEN Chameleon Bus")
-Reviewed-by: Jorge Sanjuan Garcia <dev-jorge.sanjuangarcia@duagon.com>
-Signed-off-by: Jose Javier Rodriguez Barbarin <dev-josejavier.rodriguez@duagon.com>
-Acked-by: Nathan Chancellor <nathan@kernel.org>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-Link: https://patch.msgid.link/20251202084200.10410-1-dev-josejavier.rodriguez@duagon.com
-Signed-off-by: Nicolas Schier <nsc@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 1544bca2f188e ("arm64: dts: ti: Add support for AM62D2-EVM")
+Cc: stable@vger.kernel.org
+Signed-off-by: Paresh Bhagat <p-bhagat@ti.com>
+Reviewed-by: Shree Ramamoorthy <s-ramamoorthy@ti.com>
+Link: https://patch.msgid.link/20251028210153.420473-1-p-bhagat@ti.com
+Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/mod/devicetable-offsets.c | 3 +++
- scripts/mod/file2alias.c          | 9 +++++++++
- 2 files changed, 12 insertions(+)
+ arch/arm64/boot/dts/ti/k3-am62d2-evm.dts | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/scripts/mod/devicetable-offsets.c b/scripts/mod/devicetable-offsets.c
-index d3d00e85edf7..0470ba7c796d 100644
---- a/scripts/mod/devicetable-offsets.c
-+++ b/scripts/mod/devicetable-offsets.c
-@@ -198,6 +198,9 @@ int main(void)
- 	DEVID(cpu_feature);
- 	DEVID_FIELD(cpu_feature, feature);
+diff --git a/arch/arm64/boot/dts/ti/k3-am62d2-evm.dts b/arch/arm64/boot/dts/ti/k3-am62d2-evm.dts
+index 83af889e790a..d202484eec3f 100644
+--- a/arch/arm64/boot/dts/ti/k3-am62d2-evm.dts
++++ b/arch/arm64/boot/dts/ti/k3-am62d2-evm.dts
+@@ -146,6 +146,7 @@
+ 		regulator-name = "vdd_mmc1";
+ 		regulator-min-microvolt = <3300000>;
+ 		regulator-max-microvolt = <3300000>;
++		vin-supply = <&vcc_3v3_sys>;
+ 		regulator-boot-on;
+ 		enable-active-high;
+ 		gpio = <&exp1 3 GPIO_ACTIVE_HIGH>;
+@@ -165,14 +166,16 @@
+ 	};
  
-+	DEVID(mcb_device_id);
-+	DEVID_FIELD(mcb_device_id, device);
-+
- 	DEVID(mei_cl_device_id);
- 	DEVID_FIELD(mei_cl_device_id, name);
- 	DEVID_FIELD(mei_cl_device_id, uuid);
-diff --git a/scripts/mod/file2alias.c b/scripts/mod/file2alias.c
-index b3333560b95e..4e99393a35f1 100644
---- a/scripts/mod/file2alias.c
-+++ b/scripts/mod/file2alias.c
-@@ -1110,6 +1110,14 @@ static void do_cpu_entry(struct module *mod, void *symval)
- 	module_alias_printf(mod, false, "cpu:type:*:feature:*%04X*", feature);
- }
+ 	vddshv_sdio: regulator-6 {
++		/* output of TLV7103318QDSERQ1 */
+ 		compatible = "regulator-gpio";
+ 		regulator-name = "vddshv_sdio";
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&vddshv_sdio_pins_default>;
+ 		regulator-min-microvolt = <1800000>;
+ 		regulator-max-microvolt = <3300000>;
++		vin-supply = <&vcc_5v0>;
+ 		regulator-boot-on;
+-		gpios = <&main_gpio1 31 GPIO_ACTIVE_HIGH>;
++		gpios = <&main_gpio0 59 GPIO_ACTIVE_HIGH>;
+ 		states = <1800000 0x0>,
+ 			 <3300000 0x1>;
+ 		bootph-all;
+@@ -334,7 +337,7 @@
  
-+/* Looks like: mcb:16zN */
-+static void do_mcb_entry(struct module *mod, void *symval)
-+{
-+	DEF_FIELD(symval, mcb_device_id, device);
-+
-+	module_alias_printf(mod, false, "mcb:16z%03d", device);
-+}
-+
- /* Looks like: mei:S:uuid:N:* */
- static void do_mei_entry(struct module *mod, void *symval)
- {
-@@ -1444,6 +1452,7 @@ static const struct devtable devtable[] = {
- 	{"mipscdmm", SIZE_mips_cdmm_device_id, do_mips_cdmm_entry},
- 	{"x86cpu", SIZE_x86_cpu_id, do_x86cpu_entry},
- 	{"cpu", SIZE_cpu_feature, do_cpu_entry},
-+	{"mcb", SIZE_mcb_device_id, do_mcb_entry},
- 	{"mei", SIZE_mei_cl_device_id, do_mei_entry},
- 	{"rapidio", SIZE_rio_device_id, do_rio_entry},
- 	{"ulpi", SIZE_ulpi_device_id, do_ulpi_entry},
+ 	vddshv_sdio_pins_default: vddshv-sdio-default-pins {
+ 		pinctrl-single,pins = <
+-			AM62DX_IOPAD(0x1f4, PIN_OUTPUT, 7) /* (M19) GPMC0_CLK.GPIO1_31 */
++			AM62DX_IOPAD(0x00f0, PIN_INPUT, 7) /* (Y21) GPIO0_59 */
+ 		>;
+ 		bootph-all;
+ 	};
 -- 
-2.51.0
+2.52.0
 
 
 
