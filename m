@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-205805-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205807-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE819CFAEFA
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 21:33:16 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 208F5CFA9AE
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:22:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6EC6C3027DBE
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 20:31:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A77FA3273619
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:35:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A5F42F12D6;
-	Tue,  6 Jan 2026 17:52:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABE842E8B87;
+	Tue,  6 Jan 2026 17:52:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GQwYv7Zk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zYVvnMN9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 321D827FD76;
-	Tue,  6 Jan 2026 17:52:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B06623F42D;
+	Tue,  6 Jan 2026 17:52:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721921; cv=none; b=fKNrU1CqQYlDcQ3oQ/HCTnUUNbnqXXDHqokFAvzg0lgEEzsFxvdL/7gVvECzJM4GeaTv+KEXE/aLIaQthYZAWfjAdmYjGaHXoGvvLURXXvMm4OWRk3DIpc6SLJ3ujZaxJ7nG500YL2Vh4I0zCmkoCzdoZVarRYUxA+gACWZEJz4=
+	t=1767721928; cv=none; b=qMKnU412452ivAT2NxJiZ2KdBQdUTRG2oIdjBqJQvMb6by1oIcLuviZpZ6A/28DUzaaN4liMdqRHhNxuSvqGfbStu9r4mbCBzwkeYfia5vbUjnSY21EHBIRAJ5LaP0I7Ntfei/vj63zpWIvuWdUDzhoX64xsWqC7rKgRYiF3Jtk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721921; c=relaxed/simple;
-	bh=wbh2g/vRprOay/v/OZItls6RkfvGg+X1c3DD/+9C1kk=;
+	s=arc-20240116; t=1767721928; c=relaxed/simple;
+	bh=ZiSdvhm0tU5BreDbqOAW1xiY+9mzUaa98PhkR3AuHZc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=abQF1nEvIc/E2G1dqGJKn69zUcoy/2OYvC4fHHazcuOfqBJQTixDUJN0vqirpEdINuMuBRU0fRn0DkJOs4ATPtUr1zMyrorLiq8ZzcB8jTYdxFog01b3ztdhwzUnlSsR2XtCX+neX+R49WQ4cHNPU5tXJGehdtiX1vquTRY+OuA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GQwYv7Zk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96893C116C6;
-	Tue,  6 Jan 2026 17:52:00 +0000 (UTC)
+	 MIME-Version; b=Wrdu6xSY6PzPZhqKFT7Aze+OjuYlqyqkRvPA/w8J5LOe0va8Vw/n6XaR+BPM4FyxcJ0em7au/sai9ev+no5XuNs0DeQq5F5PC58by7Hdj28QwaH8pG9uwWooHBy2Y+mUe1er8D20eYxCkrI0ojts1q/iVxDSAgp9J3HoGtuh6Ps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zYVvnMN9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4109EC116C6;
+	Tue,  6 Jan 2026 17:52:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721921;
-	bh=wbh2g/vRprOay/v/OZItls6RkfvGg+X1c3DD/+9C1kk=;
+	s=korg; t=1767721927;
+	bh=ZiSdvhm0tU5BreDbqOAW1xiY+9mzUaa98PhkR3AuHZc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GQwYv7ZkpC7XlwHXuyu/0G9ncZI1skOB6ob2tRjLlulaMSGDvgII/3cBNTqoTX239
-	 Pcft+g82/hfboswEnpq6drIot9+8opOdgxtssEoGOUS5w0TNAu0gYNKoALoo8hjYFL
-	 DhYnwIzUr3oZvENUWl1eseWLSBhjFxy1GelG83KA=
+	b=zYVvnMN9iA2uM//7bFtWcLR3ZaHTDegmdWsS8w+PEXKQqldGTtkPFvsIP9CjECF/b
+	 ehs+tq4CDq5AHP2Ejq/RgE5qleQjUHDCTfTBLJHeHN4Hg/CJRbYdQPPJZ+roD4C9+4
+	 NG6L5nstVxFhbunxV1Ic7J85wTBX3YvC6oAo74S0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Kuai <yukuai3@huawei.com>,
+	Honghui Zhang <honghui.zhang@mediatek.com>,
 	Robin Murphy <robin.murphy@arm.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Yong Wu <yong.wu@mediatek.com>,
 	Johan Hovold <johan@kernel.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Joerg Roedel <joerg.roedel@amd.com>
-Subject: [PATCH 6.18 111/312] iommu/exynos: fix device leak on of_xlate()
-Date: Tue,  6 Jan 2026 18:03:05 +0100
-Message-ID: <20260106170551.852518326@linuxfoundation.org>
+Subject: [PATCH 6.18 113/312] iommu/mediatek-v1: fix device leak on probe_device()
+Date: Tue,  6 Jan 2026 18:03:07 +0100
+Message-ID: <20260106170551.926293835@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
 References: <20260106170547.832845344@linuxfoundation.org>
@@ -68,50 +69,35 @@ Content-Transfer-Encoding: 8bit
 
 From: Johan Hovold <johan@kernel.org>
 
-commit 05913cc43cb122f9afecdbe775115c058b906e1b upstream.
+commit c77ad28bfee0df9cbc719eb5adc9864462cfb65b upstream.
 
 Make sure to drop the reference taken to the iommu platform device when
-looking up its driver data during of_xlate().
+looking up its driver data during probe_device().
 
-Note that commit 1a26044954a6 ("iommu/exynos: add missing put_device()
-call in exynos_iommu_of_xlate()") fixed the leak in a couple of error
-paths, but the reference is still leaking on success.
-
-Fixes: aa759fd376fb ("iommu/exynos: Add callback for initializing devices from device tree")
-Cc: stable@vger.kernel.org	# 4.2: 1a26044954a6
-Cc: Yu Kuai <yukuai3@huawei.com>
+Fixes: b17336c55d89 ("iommu/mediatek: add support for mtk iommu generation one HW")
+Cc: stable@vger.kernel.org	# 4.8
+Cc: Honghui Zhang <honghui.zhang@mediatek.com>
 Acked-by: Robin Murphy <robin.murphy@arm.com>
-Acked-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Reviewed-by: Yong Wu <yong.wu@mediatek.com>
 Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/exynos-iommu.c |    9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ drivers/iommu/mtk_iommu_v1.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/iommu/exynos-iommu.c
-+++ b/drivers/iommu/exynos-iommu.c
-@@ -1446,17 +1446,14 @@ static int exynos_iommu_of_xlate(struct
- 		return -ENODEV;
+--- a/drivers/iommu/mtk_iommu_v1.c
++++ b/drivers/iommu/mtk_iommu_v1.c
+@@ -435,6 +435,8 @@ static int mtk_iommu_v1_create_mapping(s
+ 			return -EINVAL;
  
- 	data = platform_get_drvdata(sysmmu);
--	if (!data) {
--		put_device(&sysmmu->dev);
-+	put_device(&sysmmu->dev);
-+	if (!data)
- 		return -ENODEV;
--	}
+ 		dev_iommu_priv_set(dev, platform_get_drvdata(m4updev));
++
++		put_device(&m4updev->dev);
+ 	}
  
- 	if (!owner) {
- 		owner = kzalloc(sizeof(*owner), GFP_KERNEL);
--		if (!owner) {
--			put_device(&sysmmu->dev);
-+		if (!owner)
- 			return -ENOMEM;
--		}
- 
- 		INIT_LIST_HEAD(&owner->controllers);
- 		mutex_init(&owner->rpm_lock);
+ 	ret = iommu_fwspec_add_ids(dev, args->args, 1);
 
 
 
