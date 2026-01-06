@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-205739-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205742-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EA4DCFA980
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:21:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F8B7CFAC80
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:49:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9D5F53520910
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:34:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 208C1314A794
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 19:27:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16FC435F8CC;
-	Tue,  6 Jan 2026 17:48:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 624B135F8CD;
+	Tue,  6 Jan 2026 17:48:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jEjybaB4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1bjnJ8uy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C632B35F8B3;
-	Tue,  6 Jan 2026 17:48:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2037035F8D3;
+	Tue,  6 Jan 2026 17:48:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721698; cv=none; b=LyvFmaBzgZCRdGnDCcuh5FBGsakDMwQRBLuLQxaXGSLvt0QG9wTnbtSYF4PB8+9/XKjpwS3hF5LLKYhNAdsI4eTU8QyTwiWfz2ejbzQLuOhnOqlPWFH/xsmBhh4VIxE9CD8qVekMa4KCNOyme8V4pqLjhAcEKqBxWjNwehTtCgo=
+	t=1767721709; cv=none; b=Sbvsj8HnS7GgJ/w/33xOtd9M0uF7fkMDfEofEjoB3oYdPPHkQBtpYi2Z09TXnyBDvYR+xzWuVRO1jRgyqpl7yC+YFcSyMFgjDIP1JT8AL3aRnGVZqOmR3WDRtvzyEvNbxhyT2kubMr9lxfOFVmEloggP+VPmu190l2vlg4+6ScM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721698; c=relaxed/simple;
-	bh=EhDw1F9p58xrlFLKOYa1+LH2SSYndJUjIsbkRrHef1M=;
+	s=arc-20240116; t=1767721709; c=relaxed/simple;
+	bh=sajxAa95S3oQLraWLwCERTyVAYWDAoLajdSNmYCRK78=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OCkop2OuoNLHeQNVj2xsV4Ioq0oJVS/F1B1lOoWvAl3EozWr5zWhs0hltePsGRY/TSu1FLsZ54KeBH/Sfbam9K+JgRFoNG770SSfl5wfrXaC0CLsjr15ugiQxw35qOj5dqi5WejKUOiBbhm+ybL2RrJmHh4ihncpPsaDoYZJ96Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jEjybaB4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 321DCC116C6;
-	Tue,  6 Jan 2026 17:48:17 +0000 (UTC)
+	 MIME-Version; b=JVcaaSYwmRV1EYZhkBlKDK5mig8BiIjm9Kiu7VVVhvKV5NvT0SWIo4z98lQ2tYpeHxpOrJkcC5nMFOiu6oeL2GIbEyq/dVd5omrxuvonviEsIoTetMeeRxDl/jUKfud9B5GtfUHQxfygCFa9s07sPxKpt21YzhgigrwfY1NzpP8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1bjnJ8uy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82AC2C116C6;
+	Tue,  6 Jan 2026 17:48:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721698;
-	bh=EhDw1F9p58xrlFLKOYa1+LH2SSYndJUjIsbkRrHef1M=;
+	s=korg; t=1767721709;
+	bh=sajxAa95S3oQLraWLwCERTyVAYWDAoLajdSNmYCRK78=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jEjybaB4Fhu2bmLK/zeQWs686mvpBluEUON6BT9jfb7R36cqX18AMyK0/n3WwHgCq
-	 S7H/AqIeyoA8hGW2YQ3MiI6BtsrZ16xjAOlUn+iTqxURrobnYDGJ8tdcsujD704XFS
-	 x1hcicbx95XM4wyQpaDFKdVvBYk5Y4ulhIdsRFmg=
+	b=1bjnJ8uyuSxS2xDbHV2S+AbngrlSgLkcnBYMMZVXsBpKmRvdNbbAKJXlcVNbX6aV9
+	 fxpbS458s1M24fX6F729ZnroKSXM6M3MDeJVLLlwt/ICq3YkrpB4yaeqNiZdxpyWzp
+	 Llq8lQHmIPS80jse72nfAkkjsH++UIDaEY9YhDiY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephen Rothwell <sfr@canb.auug.org.au>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Alexey Skidanov <alexey.skidanov@intel.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Rajashekar Hudumula <rajashekar.hudumula@broadcom.com>,
+	Vikas Gupta <vikas.gupta@broadcom.com>,
+	Bhargava Chenna Marreddy <bhargava.marreddy@broadcom.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 045/312] genalloc.h: fix htmldocs warning
-Date: Tue,  6 Jan 2026 18:01:59 +0100
-Message-ID: <20260106170549.487253353@linuxfoundation.org>
+Subject: [PATCH 6.18 047/312] bng_en: update module description
+Date: Tue,  6 Jan 2026 18:02:01 +0100
+Message-ID: <20260106170549.558220342@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
 References: <20260106170547.832845344@linuxfoundation.org>
@@ -66,36 +66,75 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Andrew Morton <akpm@linux-foundation.org>
+From: Rajashekar Hudumula <rajashekar.hudumula@broadcom.com>
 
-[ Upstream commit 5393802c94e0ab1295c04c94c57bcb00222d4674 ]
+[ Upstream commit d5dc28305143f126dc3d8da21e1ad75865b194e2 ]
 
-WARNING: include/linux/genalloc.h:52 function parameter 'start_addr' not described in 'genpool_algo_t'
+The Broadcom BCM57708/800G NIC family is branded as ThorUltra.
+Update the driver description accordingly.
 
-Fixes: 52fbf1134d47 ("lib/genalloc.c: fix allocation of aligned buffer from non-aligned chunk")
-Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
-Closes: https://lkml.kernel.org/r/20251127130624.563597e3@canb.auug.org.au
-Acked-by: Randy Dunlap <rdunlap@infradead.org>
-Tested-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Alexey Skidanov <alexey.skidanov@intel.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 74715c4ab0fa0 ("bng_en: Add PCI interface")
+Signed-off-by: Rajashekar Hudumula <rajashekar.hudumula@broadcom.com>
+Reviewed-by: Vikas Gupta <vikas.gupta@broadcom.com>
+Reviewed-by: Bhargava Chenna Marreddy <bhargava.marreddy@broadcom.com>
+Link: https://patch.msgid.link/20251217104748.3004706-1-rajashekar.hudumula@broadcom.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/genalloc.h | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/broadcom/Kconfig          | 8 ++++----
+ drivers/net/ethernet/broadcom/bnge/bnge.h      | 2 +-
+ drivers/net/ethernet/broadcom/bnge/bnge_core.c | 2 +-
+ 3 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/include/linux/genalloc.h b/include/linux/genalloc.h
-index 0bd581003cd5..60de63e46b33 100644
---- a/include/linux/genalloc.h
-+++ b/include/linux/genalloc.h
-@@ -44,6 +44,7 @@ struct gen_pool;
-  * @nr: The number of zeroed bits we're looking for
-  * @data: optional additional data used by the callback
-  * @pool: the pool being allocated from
-+ * @start_addr: start address of memory chunk
-  */
- typedef unsigned long (*genpool_algo_t)(unsigned long *map,
- 			unsigned long size,
+diff --git a/drivers/net/ethernet/broadcom/Kconfig b/drivers/net/ethernet/broadcom/Kconfig
+index 9fdef874f5ca..fe15d684990f 100644
+--- a/drivers/net/ethernet/broadcom/Kconfig
++++ b/drivers/net/ethernet/broadcom/Kconfig
+@@ -254,14 +254,14 @@ config BNXT_HWMON
+ 	  devices, via the hwmon sysfs interface.
+ 
+ config BNGE
+-	tristate "Broadcom Ethernet device support"
++	tristate "Broadcom ThorUltra Ethernet device support"
+ 	depends on PCI
+ 	select NET_DEVLINK
+ 	select PAGE_POOL
+ 	help
+-	  This driver supports Broadcom 50/100/200/400/800 gigabit Ethernet cards.
+-	  The module will be called bng_en. To compile this driver as a module,
+-	  choose M here.
++	  This driver supports Broadcom ThorUltra 50/100/200/400/800 gigabit
++	  Ethernet cards. The module will be called bng_en. To compile this
++	  driver as a module, choose M here.
+ 
+ config BCMASP
+ 	tristate "Broadcom ASP 2.0 Ethernet support"
+diff --git a/drivers/net/ethernet/broadcom/bnge/bnge.h b/drivers/net/ethernet/broadcom/bnge/bnge.h
+index 7aed5f81cd51..0c154995d9ab 100644
+--- a/drivers/net/ethernet/broadcom/bnge/bnge.h
++++ b/drivers/net/ethernet/broadcom/bnge/bnge.h
+@@ -5,7 +5,7 @@
+ #define _BNGE_H_
+ 
+ #define DRV_NAME	"bng_en"
+-#define DRV_SUMMARY	"Broadcom 800G Ethernet Linux Driver"
++#define DRV_SUMMARY	"Broadcom ThorUltra NIC Ethernet Driver"
+ 
+ #include <linux/etherdevice.h>
+ #include <linux/bnxt/hsi.h>
+diff --git a/drivers/net/ethernet/broadcom/bnge/bnge_core.c b/drivers/net/ethernet/broadcom/bnge/bnge_core.c
+index 2c72dd34d50d..312a9db4d75d 100644
+--- a/drivers/net/ethernet/broadcom/bnge/bnge_core.c
++++ b/drivers/net/ethernet/broadcom/bnge/bnge_core.c
+@@ -19,7 +19,7 @@ char bnge_driver_name[] = DRV_NAME;
+ static const struct {
+ 	char *name;
+ } board_info[] = {
+-	[BCM57708] = { "Broadcom BCM57708 50Gb/100Gb/200Gb/400Gb/800Gb Ethernet" },
++	[BCM57708] = { "Broadcom BCM57708 ThorUltra 50Gb/100Gb/200Gb/400Gb/800Gb Ethernet" },
+ };
+ 
+ static const struct pci_device_id bnge_pci_tbl[] = {
 -- 
 2.51.0
 
