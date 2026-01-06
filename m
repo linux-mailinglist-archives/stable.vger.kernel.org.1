@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-205523-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205803-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27F47CFAE7F
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 21:22:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DDA1CFAEFD
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 21:33:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 268133027E14
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 20:21:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BB902306706C
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 20:31:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 580223385AE;
-	Tue,  6 Jan 2026 17:36:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CED52DF13B;
+	Tue,  6 Jan 2026 17:51:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lZCKNVwa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CzChU7db"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1659C338593;
-	Tue,  6 Jan 2026 17:36:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3826423F42D;
+	Tue,  6 Jan 2026 17:51:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767720976; cv=none; b=vB+FfyK7xGHhzR4bPLfxp6WWMSJ/byFa4diSgV3aACXs9zPsqOIoidLBnrYRL9BUJtvfTmO0gDIignObIVPO8lvVHcw1urYu8HErCmrJ+5QpGxdbDqxIRJr4VKTcXhutHmGCeXv8nHmViLqnVBZqdSryDIkJXL2/vOf+bZg8/cs=
+	t=1767721914; cv=none; b=EkmKLJ6xD5it+lvoj9a4jcTkIuPNUcT3CLZdQA8lhrEEYxmY9GUbx8/QYpp7qLVN9IlVECSpKXeQbM37Mtj8hHGMmt0RAHj51Ec5R3A7xTNLBQ803pTLqUroYUCxWAR5UWsQL5exbSlZwyyf6AfxapBsqrCCMVzTwzvj1U0ayGc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767720976; c=relaxed/simple;
-	bh=MXV9GbzeUSzHlftvFqXtnQM3et9ve1wGNu/sQ4KTz6w=;
+	s=arc-20240116; t=1767721914; c=relaxed/simple;
+	bh=1yMZ/442irs62YVRl4oOMjEFKk550rE4r6Ww6FwZJB8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aUR69IwkrVqPFZntBj/kT1UrfWgpU6zI7xE36GdIUoDWf93PxVuIuyMKd4qSgL434B9Hu/tlcWwEFZBZedDT9AoH3keOWwnHrrWc2gWavOZkrNdticr4170Rn5elPMCCKD6HU3Ob6HFtuQE90raU965Oy8bjqU3WTERzC0ljjyQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lZCKNVwa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2204EC116C6;
-	Tue,  6 Jan 2026 17:36:14 +0000 (UTC)
+	 MIME-Version; b=qEY/nuIn6onSCqboaByIaC4cId1CelcQ8kfpFTwxso3Y8bHZf7Yk7Ei3wmH3qEKMP0dFCfz/rQWGGccODlN3xRQh/srOI9bJNbuQMtApohdlOurtG6GLMIbkrrQTrC9d8d2B+JeQ9NUWn3bns5xuv45S02fvKsbNM0oeO9GipAU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CzChU7db; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BD53C116C6;
+	Tue,  6 Jan 2026 17:51:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767720975;
-	bh=MXV9GbzeUSzHlftvFqXtnQM3et9ve1wGNu/sQ4KTz6w=;
+	s=korg; t=1767721914;
+	bh=1yMZ/442irs62YVRl4oOMjEFKk550rE4r6Ww6FwZJB8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lZCKNVwao8ez/Dnj7D1uYoj0mj0hIN6BMRK5cc9olzBfa0i3Uz/UQTR0tmvH+vm1H
-	 zjcHv1JW6aePFs6l8OJYeIrpgrmEyWSuwrVcFSSyX6MPC7WAmiMQLL2qMwmpPwrseH
-	 3XisVwI9Q4r7Sv6CJfL+NLwuLs+pQ35PII3lGRoc=
+	b=CzChU7dbvOZT0uPm47j6lZAv6veMADCjAnm1SeC0gYMXbr8XELD3Iyypx2+Tgtfcu
+	 wVDc3g1xJF2AL6BkDmD5QTV5QvXozTO5bTnblBigH67UQy+ikASyGnGyJ9eyA20B0o
+	 MhWSrFuA/hu+cNPBqvVKQilhwUSCQwy1S9NdE/S4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ren=C3=A9=20Rebe?= <rene@exactco.de>,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.12 399/567] fbdev: gbefb: fix to use physical address instead of dma address
-Date: Tue,  6 Jan 2026 18:03:01 +0100
-Message-ID: <20260106170506.101349362@linuxfoundation.org>
+	Jinhui Guo <guojinhui.liam@bytedance.com>,
+	Vasant Hegde <vasant.hegde@amd.com>,
+	Joerg Roedel <joerg.roedel@amd.com>
+Subject: [PATCH 6.18 109/312] iommu/amd: Propagate the error code returned by __modify_irte_ga() in modify_irte_ga()
+Date: Tue,  6 Jan 2026 18:03:03 +0100
+Message-ID: <20260106170551.779300441@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
-References: <20260106170451.332875001@linuxfoundation.org>
+In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
+References: <20260106170547.832845344@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,58 +58,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rene Rebe <rene@exactco.de>
+From: Jinhui Guo <guojinhui.liam@bytedance.com>
 
-commit e3f44742bbb10537fe53d83d20dea2a7c167674d upstream.
+commit 2381a1b40be4b286062fb3cf67dd7f005692aa2a upstream.
 
-While debuggigng why X would not start on mips64 Sgi/O2 I found the
-phys adress being off. Turns out the gbefb passed the internal
-dma_addr as phys. May be broken pre git history. Fix by converting
-dma_to_phys.
+The return type of __modify_irte_ga() is int, but modify_irte_ga()
+treats it as a bool. Casting the int to bool discards the error code.
 
-Signed-off-by: René Rebe <rene@exactco.de>
-Cc: <stable@vger.kernel.org> # v4.0+
-Signed-off-by: Helge Deller <deller@gmx.de>
+To fix the issue, change the type of ret to int in modify_irte_ga().
+
+Fixes: 57cdb720eaa5 ("iommu/amd: Do not flush IRTE when only updating isRun and destination fields")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jinhui Guo <guojinhui.liam@bytedance.com>
+Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
+Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/fbdev/gbefb.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/iommu/amd/iommu.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/video/fbdev/gbefb.c
-+++ b/drivers/video/fbdev/gbefb.c
-@@ -12,6 +12,7 @@
- #include <linux/delay.h>
- #include <linux/platform_device.h>
- #include <linux/dma-mapping.h>
-+#include <linux/dma-direct.h>
- #include <linux/errno.h>
- #include <linux/gfp.h>
- #include <linux/fb.h>
-@@ -65,7 +66,7 @@ struct gbefb_par {
- static unsigned int gbe_mem_size = CONFIG_FB_GBE_MEM * 1024*1024;
- static void *gbe_mem;
- static dma_addr_t gbe_dma_addr;
--static unsigned long gbe_mem_phys;
-+static phys_addr_t gbe_mem_phys;
+--- a/drivers/iommu/amd/iommu.c
++++ b/drivers/iommu/amd/iommu.c
+@@ -3354,7 +3354,7 @@ static int __modify_irte_ga(struct amd_i
+ static int modify_irte_ga(struct amd_iommu *iommu, u16 devid, int index,
+ 			  struct irte_ga *irte)
+ {
+-	bool ret;
++	int ret;
  
- static struct {
- 	uint16_t *cpu;
-@@ -1183,7 +1184,7 @@ static int gbefb_probe(struct platform_d
- 			goto out_release_mem_region;
- 		}
- 
--		gbe_mem_phys = (unsigned long) gbe_dma_addr;
-+		gbe_mem_phys = dma_to_phys(&p_dev->dev, gbe_dma_addr);
- 	}
- 
- 	par = info->par;
+ 	ret = __modify_irte_ga(iommu, devid, index, irte);
+ 	if (ret)
 
 
 
