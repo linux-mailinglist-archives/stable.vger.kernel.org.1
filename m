@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-205753-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205730-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17291CFA9A7
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:22:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CCEDCFAC86
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:49:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 96F2830D59F3
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:35:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 60F8E312471A
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 19:27:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EC1A35FF58;
-	Tue,  6 Jan 2026 17:49:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D96A35E549;
+	Tue,  6 Jan 2026 17:47:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lpxJ+u3Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QF+wRVGy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B97C355031;
-	Tue,  6 Jan 2026 17:49:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEF0135E53C;
+	Tue,  6 Jan 2026 17:47:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721745; cv=none; b=pMF9KAEz4IHXB5B8+9JjSKw9QOE06FX7/UH5cGTUGImlWE75wDAoRdVmhXNiFrd81cTCVM14htv3cB9HDR4hEgnox/7V6tEIVnmMjN8zbCPEDCEz4R/W4hOGludRqS+WCrlMg9irsTBae4jag9kyPKzw2BU2hc1VkNy+LgayV6U=
+	t=1767721668; cv=none; b=f5lTUalrF0nRa6FMkcXe1/psmeqMBBnmpjDzhCoNMqppgZQjr4sEYd8jCoK2f/j52f6pRR9PVel+rsTes8uI2lUOyzmX6cX3FyKjNDddEX7yfvboC0wzJNSjXwSXmIaB38JFg0Aw6cCagdlIp9Wj6/mNIYUBrzSLTJ99DF2dRLY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721745; c=relaxed/simple;
-	bh=zo1aRdCUIzUn0Izi1lidpH5/TTVesAB7z51nTimXJ3A=;
+	s=arc-20240116; t=1767721668; c=relaxed/simple;
+	bh=4mivJ6k6AOO8Tvtdeyr0diVjzi0ej5IecCNjU/CZpD4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EyTyUjYIbjWtRZijrzqxTzt7boQsyUwEV9GabFSYOWAGFDQ4QplOHL0wIo/0ltRacsrIdRbM8mJmnM95juULo4KmuX6uksy4d8oFQSJXeG6fkDLyIrnV/citKDnsSHCy6Dyb8W9Ly9nfWag/q9GgailU5zMDsXU7DxDXLwlURJA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lpxJ+u3Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFF8DC116C6;
-	Tue,  6 Jan 2026 17:49:04 +0000 (UTC)
+	 MIME-Version; b=tOFizgnF55znzM2CAJDeztCvaoLbGTXfkTGyqUcOuQqAjnzJFFko3ZIxxjWZpJy5ebEmz5Losj2fAkChTZH7YJ5eXVPnx166nLc+lTcMG0DsxgjJ067ko0SG7ivM1vKZezCC13QfTV1xq4lqurc+Lj0NeNX8dYC0UHtjkkOZ+SY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QF+wRVGy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D88AC116C6;
+	Tue,  6 Jan 2026 17:47:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721745;
-	bh=zo1aRdCUIzUn0Izi1lidpH5/TTVesAB7z51nTimXJ3A=;
+	s=korg; t=1767721668;
+	bh=4mivJ6k6AOO8Tvtdeyr0diVjzi0ej5IecCNjU/CZpD4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lpxJ+u3YK6g2T1CJcPPXp46xd/ppqKiAYV9vdbwlsAS9CJ6snJY4HAMoVeUpI3ULn
-	 B40SVljWnzeAgSba5Dy9QruyHWWQhIquG84BOI24TTFh1ayq7g1CBTZvzxNu9hrACO
-	 +b8IHiUjVQGamJN9V9kL1EZiSJGFPByUSnL3aYdU=
+	b=QF+wRVGyUendtbXdV5P0uyP503Uwbi6y6jPg5j5h2kpALL4Wn1eVgB1HthLq4EwEv
+	 WALsX4LRc52b1XLB1iE2zr9DbATzCFzH9GOcRPxzwsUkfuIYlHRii/Fbw7+nddUWL2
+	 KR+tvCz5vv0mImPy6Iv8zhh2BYDV8Sx0uvgzZ9DY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Grzegorz Nitka <grzegorz.nitka@intel.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
+	Kohei Enju <enjuk@amazon.com>,
 	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Przemyslaw Korba <przemyslaw.korba@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
 	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Rinitha S <sx.rinitha@intel.com>
-Subject: [PATCH 6.18 017/312] i40e: fix scheduling in set_rx_mode
-Date: Tue,  6 Jan 2026 18:01:31 +0100
-Message-ID: <20260106170548.477893203@linuxfoundation.org>
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 019/312] iavf: fix off-by-one issues in iavf_config_rss_reg()
+Date: Tue,  6 Jan 2026 18:01:33 +0100
+Message-ID: <20260106170548.550223994@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
 References: <20260106170547.832845344@linuxfoundation.org>
@@ -68,51 +67,111 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Przemyslaw Korba <przemyslaw.korba@intel.com>
+From: Kohei Enju <enjuk@amazon.com>
 
-[ Upstream commit be43abc5514167cc129a8d8e9727b89b8e1d9719 ]
+[ Upstream commit 6daa2893f323981c7894c68440823326e93a7d61 ]
 
-Add service task schedule to set_rx_mode.
-In some cases there are error messages printed out in PTP application
-(ptp4l):
+There are off-by-one bugs when configuring RSS hash key and lookup
+table, causing out-of-bounds reads to memory [1] and out-of-bounds
+writes to device registers.
 
-ptp4l[13848.762]: port 1 (ens2f3np3): received SYNC without timestamp
-ptp4l[13848.825]: port 1 (ens2f3np3): received SYNC without timestamp
-ptp4l[13848.887]: port 1 (ens2f3np3): received SYNC without timestamp
+Before commit 43a3d9ba34c9 ("i40evf: Allow PF driver to configure RSS"),
+the loop upper bounds were:
+    i <= I40E_VFQF_{HKEY,HLUT}_MAX_INDEX
+which is safe since the value is the last valid index.
 
-This happens when service task would not run immediately after
-set_rx_mode, and we need it for setup tasks. This service task checks, if
-PTP RX packets are hung in firmware, and propagate correct settings such
-as multicast address for IEEE 1588 Precision Time Protocol.
-RX timestamping depends on some of these filters set. Bug happens only
-with high PTP packets frequency incoming, and not every run since
-sometimes service task is being ran from a different place immediately
-after starting ptp4l.
+That commit changed the bounds to:
+    i <= adapter->rss_{key,lut}_size / 4
+where `rss_{key,lut}_size / 4` is the number of dwords, so the last
+valid index is `(rss_{key,lut}_size / 4) - 1`. Therefore, using `<=`
+accesses one element past the end.
 
-Fixes: 0e4425ed641f ("i40e: fix: do not sleep in netdev_ops")
-Reviewed-by: Grzegorz Nitka <grzegorz.nitka@intel.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Fix the issues by using `<` instead of `<=`, ensuring we do not exceed
+the bounds.
+
+[1] KASAN splat about rss_key_size off-by-one
+  BUG: KASAN: slab-out-of-bounds in iavf_config_rss+0x619/0x800
+  Read of size 4 at addr ffff888102c50134 by task kworker/u8:6/63
+
+  CPU: 0 UID: 0 PID: 63 Comm: kworker/u8:6 Not tainted 6.18.0-rc2-enjuk-tnguy-00378-g3005f5b77652-dirty #156 PREEMPT(voluntary)
+  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+  Workqueue: iavf iavf_watchdog_task
+  Call Trace:
+   <TASK>
+   dump_stack_lvl+0x6f/0xb0
+   print_report+0x170/0x4f3
+   kasan_report+0xe1/0x1a0
+   iavf_config_rss+0x619/0x800
+   iavf_watchdog_task+0x2be7/0x3230
+   process_one_work+0x7fd/0x1420
+   worker_thread+0x4d1/0xd40
+   kthread+0x344/0x660
+   ret_from_fork+0x249/0x320
+   ret_from_fork_asm+0x1a/0x30
+   </TASK>
+
+  Allocated by task 63:
+   kasan_save_stack+0x30/0x50
+   kasan_save_track+0x14/0x30
+   __kasan_kmalloc+0x7f/0x90
+   __kmalloc_noprof+0x246/0x6f0
+   iavf_watchdog_task+0x28fc/0x3230
+   process_one_work+0x7fd/0x1420
+   worker_thread+0x4d1/0xd40
+   kthread+0x344/0x660
+   ret_from_fork+0x249/0x320
+   ret_from_fork_asm+0x1a/0x30
+
+  The buggy address belongs to the object at ffff888102c50100
+   which belongs to the cache kmalloc-64 of size 64
+  The buggy address is located 0 bytes to the right of
+   allocated 52-byte region [ffff888102c50100, ffff888102c50134)
+
+  The buggy address belongs to the physical page:
+  page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x102c50
+  flags: 0x200000000000000(node=0|zone=2)
+  page_type: f5(slab)
+  raw: 0200000000000000 ffff8881000418c0 dead000000000122 0000000000000000
+  raw: 0000000000000000 0000000080200020 00000000f5000000 0000000000000000
+  page dumped because: kasan: bad access detected
+
+  Memory state around the buggy address:
+   ffff888102c50000: 00 00 00 00 00 00 00 fc fc fc fc fc fc fc fc fc
+   ffff888102c50080: 00 00 00 00 00 00 00 fc fc fc fc fc fc fc fc fc
+  >ffff888102c50100: 00 00 00 00 00 00 04 fc fc fc fc fc fc fc fc fc
+                                       ^
+   ffff888102c50180: 00 00 00 00 00 00 00 00 fc fc fc fc fc fc fc fc
+   ffff888102c50200: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+
+Fixes: 43a3d9ba34c9 ("i40evf: Allow PF driver to configure RSS")
+Signed-off-by: Kohei Enju <enjuk@amazon.com>
 Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Signed-off-by: Przemyslaw Korba <przemyslaw.korba@intel.com>
-Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_main.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/intel/iavf/iavf_main.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
-index 50be0a60ae13..07d32f2586c8 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_main.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
-@@ -2234,6 +2234,7 @@ static void i40e_set_rx_mode(struct net_device *netdev)
- 		vsi->flags |= I40E_VSI_FLAG_FILTER_CHANGED;
- 		set_bit(__I40E_MACVLAN_SYNC_PENDING, vsi->back->state);
- 	}
-+	i40e_service_event_schedule(vsi->back);
- }
+diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
+index c2fbe443ef85..4b0fc8f354bc 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf_main.c
++++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
+@@ -1726,11 +1726,11 @@ static int iavf_config_rss_reg(struct iavf_adapter *adapter)
+ 	u16 i;
  
- /**
+ 	dw = (u32 *)adapter->rss_key;
+-	for (i = 0; i <= adapter->rss_key_size / 4; i++)
++	for (i = 0; i < adapter->rss_key_size / 4; i++)
+ 		wr32(hw, IAVF_VFQF_HKEY(i), dw[i]);
+ 
+ 	dw = (u32 *)adapter->rss_lut;
+-	for (i = 0; i <= adapter->rss_lut_size / 4; i++)
++	for (i = 0; i < adapter->rss_lut_size / 4; i++)
+ 		wr32(hw, IAVF_VFQF_HLUT(i), dw[i]);
+ 
+ 	iavf_flush(hw);
 -- 
 2.51.0
 
