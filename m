@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-205353-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205360-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 751DBCFB0CC
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 22:11:39 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68386CFB0C0
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 22:11:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9C63A3032ABC
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3305B30319B5
 	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 21:11:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24BDC346799;
-	Tue,  6 Jan 2026 17:26:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2780434AAEB;
+	Tue,  6 Jan 2026 17:27:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EUUve+hT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zr4fq520"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 360A933CEAF;
-	Tue,  6 Jan 2026 17:26:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D881834C818;
+	Tue,  6 Jan 2026 17:27:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767720410; cv=none; b=FwvF+fePeTWbB+OIVN6gVWnzYS9bZ0w7VOqgHznR/CcDQkjJMOzQ5kquFd70yW9lnpT7qLl1lqhGxeR7cl3TpzRRk/4UR+MRnO1f+HpV80DQtqYUXtmgaFceYe0jhzzP/tFvMQChmCkHc2vvqbrwDnmXWSX8SZZLFv16Y8cGhDg=
+	t=1767720433; cv=none; b=C9NS7dejKcBsSvIXAbc/PY5eVWQzvoJp/ANPjENBvgVLfbsu/Fx0q/Zflcvm2KuLaj8/8MpAQ0ceZx56EJjVtm6+ToB17D5TXcshZf3VGq8UxPa/gYWvmGTr05IcFlukgyzeF0KcdUb5iMQMOHgubtLX+/FOyxcJYgD7CcANNPM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767720410; c=relaxed/simple;
-	bh=UGtO8HxBPaLkxq//2UVwFPoJvVSBXziCXDkfhuI7EJo=;
+	s=arc-20240116; t=1767720433; c=relaxed/simple;
+	bh=BsV18arQV8AkNizj4UkpwnmdeqdmQgk7WbhtETmbe/w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bWlVGA0fdbjFaaZJ+5MtaeLr5MussKT7c78ZjXxxELCPwZHLdtJO3thnQlKp1jFJVIsGfRa8096zW/qHBgdPc4eAgoGL6JWQHYueHG5Wv//QnB9XJrs064Nzmd0rTa0BxDo7LmcqKj/aDhSSb0YKhgJH4KZd/1QbMMpN7n8HOcs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EUUve+hT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BC19C19424;
-	Tue,  6 Jan 2026 17:26:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=mUeblzj0MF8CmuYYuwqG/5nE4BCsdpUiBfzVcWjqdx8jfQGFtc/7qQ4xKWIe1+ypIbWNd11jKj9wglrdPr4cnL0YeqX4JtXbH6F0j/asQ/qsscm/oSBi/nOBVg5Me0AseULPWmhacnYn4vNGw8XyTOVdxtSFeXhoo9jQrmL1tj8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zr4fq520; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05B48C116C6;
+	Tue,  6 Jan 2026 17:27:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767720410;
-	bh=UGtO8HxBPaLkxq//2UVwFPoJvVSBXziCXDkfhuI7EJo=;
+	s=korg; t=1767720433;
+	bh=BsV18arQV8AkNizj4UkpwnmdeqdmQgk7WbhtETmbe/w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EUUve+hTl0xa0+JM9t/ZvrpvvPTsUniXjL1TicyX6dvQolNpOgiefT8lueI2uitlM
-	 FM3rXJbGyTZlvzYEo5F8YUbfR8uh7VB5sBDF3/Y2Fll/ojbVJ6NpS7abeJS14VsdFS
-	 3PiF5Brn5prwtGlyApB0K+XIVR2NZdw//KCAzvig=
+	b=Zr4fq520BOKK3Eq0B5s5N9tf1WsWUzNrcv0rqK9ddrw5DvZykuEdFdQZYefZ/Ofp0
+	 hAGd1jdFxQdy487BQPWIH2YEVdMMwrLyqQdSnr5E/yQjSnkAxqJ1DHngplUICBnKvJ
+	 8fJR5nTRnt1GCbcwHRJeZMo+63QBQUIa3k3riON4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jim Mattson <jmattson@google.com>,
-	Yosry Ahmed <yosry.ahmed@linux.dev>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.12 228/567] KVM: nSVM: Set exit_code_hi to -1 when synthesizing SVM_EXIT_ERR (failed VMRUN)
-Date: Tue,  6 Jan 2026 18:00:10 +0100
-Message-ID: <20260106170459.747836175@linuxfoundation.org>
+	=?UTF-8?q?Ren=C3=A9=20Rebe?= <rene@exactco.de>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 235/567] r8169: fix RTL8117 Wake-on-Lan in DASH mode
+Date: Tue,  6 Jan 2026 18:00:17 +0100
+Message-ID: <20260106170500.013714783@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
 References: <20260106170451.332875001@linuxfoundation.org>
@@ -65,62 +65,48 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: René Rebe <rene@exactco.de>
 
-commit f402ecd7a8b6446547076f4bd24bd5d4dcc94481 upstream.
+commit dd75c723ef566f7f009c047f47e0eee95fe348ab upstream.
 
-Set exit_code_hi to -1u as a temporary band-aid to fix a long-standing
-(effectively since KVM's inception) bug where KVM treats the exit code as
-a 32-bit value, when in reality it's a 64-bit value.  Per the APM, offset
-0x70 is a single 64-bit value:
+Wake-on-Lan does currently not work for r8169 in DASH mode, e.g. the
+ASUS Pro WS X570-ACE with RTL8168fp/RTL8117.
 
-  070h 63:0 EXITCODE
+Fix by not returning early in rtl_prepare_power_down when dash_enabled.
+While this fixes WoL, it still kills the OOB RTL8117 remote management
+BMC connection. Fix by not calling rtl8168_driver_stop if WoL is enabled.
 
-And a sane reading of the error values defined in "Table C-1. SVM Intercept
-Codes" is that negative values use the full 64 bits:
-
-  –1 VMEXIT_INVALID Invalid guest state in VMCB.
-  –2 VMEXIT_BUSYBUSY bit was set in the VMSA
-  –3 VMEXIT_IDLE_REQUIREDThe sibling thread is not in an idle state
-  -4 VMEXIT_INVALID_PMC Invalid PMC state
-
-And that interpretation is confirmed by testing on Milan and Turin (by
-setting bits in CR0[63:32] to generate VMEXIT_INVALID on VMRUN).
-
-Furthermore, Xen has treated exitcode as a 64-bit value since HVM support
-was adding in 2006 (see Xen commit d1bd157fbc ("Big merge the HVM
-full-virtualisation abstractions.")).
-
-Cc: Jim Mattson <jmattson@google.com>
-Cc: Yosry Ahmed <yosry.ahmed@linux.dev>
+Fixes: 065c27c184d6 ("r8169: phy power ops")
+Signed-off-by: René Rebe <rene@exactco.de>
 Cc: stable@vger.kernel.org
-Reviewed-by: Yosry Ahmed <yosry.ahmed@linux.dev>
-Link: https://patch.msgid.link/20251113225621.1688428-3-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Reviewed-by: Heiner Kallweit <hkallweit1@gmail.com>
+Link: https://patch.msgid.link/20251202.194137.1647877804487085954.rene@exactco.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/svm/nested.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/realtek/r8169_main.c |    5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
---- a/arch/x86/kvm/svm/nested.c
-+++ b/arch/x86/kvm/svm/nested.c
-@@ -883,7 +883,7 @@ int nested_svm_vmrun(struct kvm_vcpu *vc
- 	if (!nested_vmcb_check_save(vcpu) ||
- 	    !nested_vmcb_check_controls(vcpu)) {
- 		vmcb12->control.exit_code    = SVM_EXIT_ERR;
--		vmcb12->control.exit_code_hi = 0;
-+		vmcb12->control.exit_code_hi = -1u;
- 		vmcb12->control.exit_info_1  = 0;
- 		vmcb12->control.exit_info_2  = 0;
- 		goto out;
-@@ -916,7 +916,7 @@ out_exit_err:
- 	svm->soft_int_injected = false;
+--- a/drivers/net/ethernet/realtek/r8169_main.c
++++ b/drivers/net/ethernet/realtek/r8169_main.c
+@@ -2724,9 +2724,6 @@ static void rtl_wol_enable_rx(struct rtl
  
- 	svm->vmcb->control.exit_code    = SVM_EXIT_ERR;
--	svm->vmcb->control.exit_code_hi = 0;
-+	svm->vmcb->control.exit_code_hi = -1u;
- 	svm->vmcb->control.exit_info_1  = 0;
- 	svm->vmcb->control.exit_info_2  = 0;
+ static void rtl_prepare_power_down(struct rtl8169_private *tp)
+ {
+-	if (tp->dash_enabled)
+-		return;
+-
+ 	if (tp->mac_version == RTL_GIGA_MAC_VER_32 ||
+ 	    tp->mac_version == RTL_GIGA_MAC_VER_33)
+ 		rtl_ephy_write(tp, 0x19, 0xff64);
+@@ -4862,7 +4859,7 @@ static void rtl8169_down(struct rtl8169_
+ 	rtl_disable_exit_l1(tp);
+ 	rtl_prepare_power_down(tp);
+ 
+-	if (tp->dash_type != RTL_DASH_NONE)
++	if (tp->dash_type != RTL_DASH_NONE && !tp->saved_wolopts)
+ 		rtl8168_driver_stop(tp);
+ }
  
 
 
