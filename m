@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-205229-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205231-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD839CFA5E8
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:56:59 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EC69CFA01C
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:15:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9C251349E67A
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:14:03 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7BAA7300CF3C
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:15:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62BB634CFC0;
-	Tue,  6 Jan 2026 17:20:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBCB234CFD4;
+	Tue,  6 Jan 2026 17:20:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wrt9yRoG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yYTGYuEd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2036C34CFB9;
-	Tue,  6 Jan 2026 17:20:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98D0634CFC9;
+	Tue,  6 Jan 2026 17:20:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767720008; cv=none; b=tQ7ca1DWEjAFfEmjb2z8aNA4hp4wnyWKTlBP35yR8r00vWN4zTEehJ6mzkjCxXh7kItiGw7eGZm2KPCvlZeKHQTELHkUVjJ//YrivUgUoKgF+ZEmebsoMVAXbhlwPddJrmroO329fpUNpa3pLjJoFM5YL0T7P7NiqBtzgW8L6Sc=
+	t=1767720011; cv=none; b=GnKga+par8NslyoEePPLrPzvNBdZMGxJm2Cg+4fJ4FoMLzjcgCnMOZGSFRQeE4PBNPu/2yIVS+sMri7ai5ikbXuAFDb3koezlidH2U4muzTTnMHiVC6J1CdfoVqCPT0159EGPTfYCttikdneT7HJKI+GgPlMI2XjHXlYSE0yBXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767720008; c=relaxed/simple;
-	bh=F4Z1C8g37HJwgLeKIwjwKOG1cfmi2DYmFxSUUSlMIGw=;
+	s=arc-20240116; t=1767720011; c=relaxed/simple;
+	bh=8C/UJ1AZiTpHs5m4AJUN4QpH3nainP+YaNs3cypuQkY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F8xpVOaRL5AMserjqau0Pesht48rdK/TIAEgAHLBfuBBrWwTDk9+oFH0J8Mm+L7Hk6gr3p5ysUj9hHuTwhqi9NEl/So0ticaHDJ+Wd8Psl0NNmTp562h+hztgAPyeVGpPKiISsks8evN1eDqCwKH2gfyWDo3xLdUi9ZutNNPj9c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wrt9yRoG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FDDDC19423;
-	Tue,  6 Jan 2026 17:20:07 +0000 (UTC)
+	 MIME-Version; b=r55bobMPnMF96fIucoW3Zu/UiFLV+cof0KDPyamVF3M61zgx1M7/81VNb0MpW5oIIfK4JVyOx9g0EGs0VcNhsnxk0M9+Ih89bSJG68f/p6JGBT0QtsATmqpGhCguKeFie/hknhINlemCl6tpxUtH0H+gGVIqc3ZkYf707oV95uI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yYTGYuEd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 088A7C116C6;
+	Tue,  6 Jan 2026 17:20:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767720008;
-	bh=F4Z1C8g37HJwgLeKIwjwKOG1cfmi2DYmFxSUUSlMIGw=;
+	s=korg; t=1767720011;
+	bh=8C/UJ1AZiTpHs5m4AJUN4QpH3nainP+YaNs3cypuQkY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wrt9yRoG4ozXC6bfYMp3KF+TdG3fQBxOJ5XO6w+Egu4a+E3ZbWXRpIedsX01bhCmi
-	 d/cCWSvBhl2OgVPbXkwaC+mJbQOk5rqDY0U8l3ICvNlDyHX0PJoGB6Y3gE8QbgEGcj
-	 BCczopyvG15ODYloxpzGuHuDt9AP98HUERlKMIyI=
+	b=yYTGYuEdHV+dp+b02l/Y51pkj991t5kEyZ2cQrnjoSZ+scgGSR2QEC7uREjqUKQFq
+	 q4NU5EyFX3WMGaNedBRY2sdkkXf+JQHv9p6cXSd15KTWBN/Hqt7FrwU631IycRNlUL
+	 zjvykuIy/ls7KZoJaiZqoXhdtFnT+OBcZith7bU4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wei Fang <wei.fang@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Hariprasad Kelam <hkelam@marvell.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Jian Shen <shenjian15@huawei.com>,
+	Jijie Shao <shaojijie@huawei.com>,
+	Simon Horman <horms@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 074/567] net: enetc: do not transmit redirected XDP frames when the link is down
-Date: Tue,  6 Jan 2026 17:57:36 +0100
-Message-ID: <20260106170454.071502549@linuxfoundation.org>
+Subject: [PATCH 6.12 075/567] net: hns3: using the num_tqps in the vf driver to apply for resources
+Date: Tue,  6 Jan 2026 17:57:37 +0100
+Message-ID: <20260106170454.109180293@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
 References: <20260106170451.332875001@linuxfoundation.org>
@@ -67,63 +66,50 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Wei Fang <wei.fang@nxp.com>
+From: Jian Shen <shenjian15@huawei.com>
 
-[ Upstream commit 2939203ffee818f1e5ebd60bbb85a174d63aab9c ]
+[ Upstream commit c2a16269742e176fccdd0ef9c016a233491a49ad ]
 
-In the current implementation, the enetc_xdp_xmit() always transmits
-redirected XDP frames even if the link is down, but the frames cannot
-be transmitted from TX BD rings when the link is down, so the frames
-are still kept in the TX BD rings. If the XDP program is uninstalled,
-users will see the following warning logs.
+Currently, hdev->htqp is allocated using hdev->num_tqps, and kinfo->tqp
+is allocated using kinfo->num_tqps. However, kinfo->num_tqps is set to
+min(new_tqps, hdev->num_tqps);  Therefore, kinfo->num_tqps may be smaller
+than hdev->num_tqps, which causes some hdev->htqp[i] to remain
+uninitialized in hclgevf_knic_setup().
 
-fsl_enetc 0000:00:00.0 eno0: timeout for tx ring #6 clear
+Thus, this patch allocates hdev->htqp and kinfo->tqp using hdev->num_tqps,
+ensuring that the lengths of hdev->htqp and kinfo->tqp are consistent
+and that all elements are properly initialized.
 
-More worse, the TX BD ring cannot work properly anymore, because the
-HW PIR and CIR are not equal after the re-initialization of the TX
-BD ring. At this point, the BDs between CIR and PIR are invalid,
-which will cause a hardware malfunction.
-
-Another reason is that there is internal context in the ring prefetch
-logic that will retain the state from the first incarnation of the ring
-and continue prefetching from the stale location when we re-initialize
-the ring. The internal context is only reset by an FLR. That is to say,
-for LS1028A ENETC, software cannot set the HW CIR and PIR when
-initializing the TX BD ring.
-
-It does not make sense to transmit redirected XDP frames when the link is
-down. Add a link status check to prevent transmission in this condition.
-This fixes part of the issue, but more complex cases remain. For example,
-the TX BD ring may still contain unsent frames when the link goes down.
-Those situations require additional patches, which will build on this
-one.
-
-Fixes: 9d2b68cc108d ("net: enetc: add support for XDP_REDIRECT")
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Reviewed-by: Hariprasad Kelam <hkelam@marvell.com>
-Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://patch.msgid.link/20251211020919.121113-1-wei.fang@nxp.com
+Fixes: e2cb1dec9779 ("net: hns3: Add HNS3 VF HCL(Hardware Compatibility Layer) Support")
+Signed-off-by: Jian Shen <shenjian15@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20251211023737.2327018-2-shaojijie@huawei.com
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/enetc/enetc.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c b/drivers/net/ethernet/freescale/enetc/enetc.c
-index 749b65aab14a9..c58e44144c2fa 100644
---- a/drivers/net/ethernet/freescale/enetc/enetc.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc.c
-@@ -1429,7 +1429,8 @@ int enetc_xdp_xmit(struct net_device *ndev, int num_frames,
- 	int xdp_tx_bd_cnt, i, k;
- 	int xdp_tx_frm_cnt = 0;
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
+index e8573358309ca..0bf8fc7e6b3a8 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
+@@ -370,12 +370,12 @@ static int hclgevf_knic_setup(struct hclgevf_dev *hdev)
+ 	new_tqps = kinfo->rss_size * num_tc;
+ 	kinfo->num_tqps = min(new_tqps, hdev->num_tqps);
  
--	if (unlikely(test_bit(ENETC_TX_DOWN, &priv->flags)))
-+	if (unlikely(test_bit(ENETC_TX_DOWN, &priv->flags) ||
-+		     !netif_carrier_ok(ndev)))
- 		return -ENETDOWN;
+-	kinfo->tqp = devm_kcalloc(&hdev->pdev->dev, kinfo->num_tqps,
++	kinfo->tqp = devm_kcalloc(&hdev->pdev->dev, hdev->num_tqps,
+ 				  sizeof(struct hnae3_queue *), GFP_KERNEL);
+ 	if (!kinfo->tqp)
+ 		return -ENOMEM;
  
- 	enetc_lock_mdio();
+-	for (i = 0; i < kinfo->num_tqps; i++) {
++	for (i = 0; i < hdev->num_tqps; i++) {
+ 		hdev->htqp[i].q.handle = &hdev->nic;
+ 		hdev->htqp[i].q.tqp_index = i;
+ 		kinfo->tqp[i] = &hdev->htqp[i].q;
 -- 
 2.51.0
 
