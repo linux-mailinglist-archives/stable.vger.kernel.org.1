@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-205227-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205199-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBB88CFB289
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 22:50:22 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22A4DCFB24A
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 22:48:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6D7B030DE054
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 21:46:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 59C6C30549BE
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 21:46:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76ACB34CFB1;
-	Tue,  6 Jan 2026 17:19:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89A0D349AED;
+	Tue,  6 Jan 2026 17:18:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="giV/gO7O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kea0D7kM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33E7934C99D;
-	Tue,  6 Jan 2026 17:19:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46795349AE8;
+	Tue,  6 Jan 2026 17:18:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767719998; cv=none; b=b45m2uKdh1UonH90SG8V9MvSTQpXHzUFHh1GQyc/eNUFoy5cKCFVEWdWyR6p6sNxZR2ty5gdDxiyxg4tD/6FYFYDxg8Wla2uK3GIKqxqN4MQxToOmR5hYvtdXYjuyUPIe9QXEHOZLHlDnUKGhCCvQFW+eez5TfSo+ow4y0ep2WQ=
+	t=1767719904; cv=none; b=u5fqgnbpzQfr4FrGRJu9OI6MRMF7WDimvHaM5OrLC+GyOLo2yqpFd6YzcSNbnxtnfAHo3egnCFJb762rt4It2iFGcayficIemG1I9dVNNc0U21J9trkYfJkYVimSXbdIXvsAk3MgF8eB0wwrfNpOG0/2vzawXHwdLKZMXvkREqo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767719998; c=relaxed/simple;
-	bh=E4/AYNcTThlAb5/zUaY3k43372pyZPFYJeYYhyaiOrI=;
+	s=arc-20240116; t=1767719904; c=relaxed/simple;
+	bh=v9gvtYahj3Z1bxMZzhvd43UA0GJ1Xf2qV1Ha4fH1nJM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dYHAYqaWNo29DIXrqyqXEIlanRYkUsSGDfKOL5/5yIYVfTlIugZci0bFus0Q8zRb/68SFiiB8Zgg9o9oXo4SvINXU/Q2phKeTU21C1ii9oUgmMLoYRo20HFp1nkdmOfrV+MCmM4x97je3bivVVoAzm5LYbSSg0FOJ6UElvigYZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=giV/gO7O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95FA8C116C6;
-	Tue,  6 Jan 2026 17:19:57 +0000 (UTC)
+	 MIME-Version; b=BT/Q/vGnfWDprsrD8OfeRbVi/PYTPVurQrhs8A/uvLjdHg3bW+nq8/1IGjboH9PALprCTv4T34S2ING9IL2qHOc8Agh7j1SlXl8vXsa1kCtUaYZyVmkgRX7f2nFVD+BeS9vT1xbHwm34rE6btRz3WkzPCjvt5ZjNCV3YPzrvjfY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kea0D7kM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 615DDC116C6;
+	Tue,  6 Jan 2026 17:18:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767719998;
-	bh=E4/AYNcTThlAb5/zUaY3k43372pyZPFYJeYYhyaiOrI=;
+	s=korg; t=1767719903;
+	bh=v9gvtYahj3Z1bxMZzhvd43UA0GJ1Xf2qV1Ha4fH1nJM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=giV/gO7OWqSTOrOwqgML7unepcZb8sao1eY8aZBifhBC0BT4PDzGC08Lqcj5Nl/Ko
-	 0q5oEy/W87YUdbJ70SCFbyEqUXNNeSnjXbBYnafHIu/5LFo0blIcHE2w4A7HKB3me8
-	 Pp0W6hfSTMmKDxdu2oK3IkJEtmSn2JCfEZYfCq8g=
+	b=kea0D7kMLzjVLmZ2OdAdaZXy4KDGOhAWCPZHnn1JwzuvkPpIhfpDBj13bxD9uFNKc
+	 ZSVPcb8u4Id5R52Bz2llxL8lLPnA3jCBTAnV0Wmnx8+Ai57OHrhrE+y5VeyDLP1Zx8
+	 i4zZ6/YHVxsIun0A13t02Ama6kVuH9slZTzlvt3o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shay Drory <shayd@nvidia.com>,
-	Breno Leitao <leitao@debian.org>,
-	Moshe Shemesh <moshe@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
+	Jian Shen <shenjian15@huawei.com>,
+	Jijie Shao <shaojijie@huawei.com>,
+	Simon Horman <horms@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 071/567] net/mlx5: fw_tracer, Handle escaped percent properly
-Date: Tue,  6 Jan 2026 17:57:33 +0100
-Message-ID: <20260106170453.961189157@linuxfoundation.org>
+Subject: [PATCH 6.12 076/567] net: hns3: using the num_tqps to check whether tqp_index is out of range when vf get ring info from mbx
+Date: Tue,  6 Jan 2026 17:57:38 +0100
+Message-ID: <20260106170454.145614977@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
 References: <20260106170451.332875001@linuxfoundation.org>
@@ -67,82 +66,46 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Shay Drory <shayd@nvidia.com>
+From: Jian Shen <shenjian15@huawei.com>
 
-[ Upstream commit c0289f67f7d6a0dfba0e92cfe661a5c70c8c6e92 ]
+[ Upstream commit d180c11aa8a6fa735f9ac2c72c61364a9afc2ba7 ]
 
-The firmware tracer's format string validation and parameter counting
-did not properly handle escaped percent signs (%%). This caused
-fw_tracer to count more parameters when trace format strings contained
-literal percent characters.
+Currently, rss_size = num_tqps / tc_num. If tc_num is 1, then num_tqps
+equals rss_size. However, if the tc_num is greater than 1, then rss_size
+will be less than num_tqps, causing the tqp_index check for subsequent TCs
+using rss_size to always fail.
 
-To fix it, allow %% to pass string validation and skip %% sequences when
-counting parameters since they represent literal percent signs rather
-than format specifiers.
+This patch uses the num_tqps to check whether tqp_index is out of range,
+instead of rss_size.
 
-Fixes: 70dd6fdb8987 ("net/mlx5: FW tracer, parse traces and kernel tracing support")
-Signed-off-by: Shay Drory <shayd@nvidia.com>
-Reported-by: Breno Leitao <leitao@debian.org>
-Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
-Closes: https://lore.kernel.org/netdev/hanz6rzrb2bqbplryjrakvkbmv4y5jlmtthnvi3thg5slqvelp@t3s3erottr6s/
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/1765284977-1363052-5-git-send-email-tariqt@nvidia.com
+Fixes: 326334aad024 ("net: hns3: add a check for tqp_index in hclge_get_ring_chain_from_mbx()")
+Signed-off-by: Jian Shen <shenjian15@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20251211023737.2327018-3-shaojijie@huawei.com
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../mellanox/mlx5/core/diag/fw_tracer.c       | 20 +++++++++++++------
- 1 file changed, 14 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mbx.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c b/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c
-index 9c86c8c72d049..0b82a6a133d6c 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c
-@@ -368,11 +368,11 @@ static bool mlx5_is_valid_spec(const char *str)
- 	while (isdigit(*str) || *str == '#' || *str == '.' || *str == 'l')
- 		str++;
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mbx.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mbx.c
+index 59c863306657f..9eab095d784bd 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mbx.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mbx.c
+@@ -193,10 +193,10 @@ static int hclge_get_ring_chain_from_mbx(
+ 		return -EINVAL;
  
--	/* Check if it's a valid integer/hex specifier:
-+	/* Check if it's a valid integer/hex specifier or %%:
- 	 * Valid formats: %x, %d, %i, %u, etc.
- 	 */
- 	if (*str != 'x' && *str != 'X' && *str != 'd' && *str != 'i' &&
--	    *str != 'u' && *str != 'c')
-+	    *str != 'u' && *str != 'c' && *str != '%')
- 		return false;
- 
- 	return true;
-@@ -390,7 +390,11 @@ static bool mlx5_tracer_validate_params(const char *str)
- 		if (!mlx5_is_valid_spec(substr + 1))
- 			return false;
- 
--		substr = strstr(substr + 1, PARAM_CHAR);
-+		if (*(substr + 1) == '%')
-+			substr = strstr(substr + 2, PARAM_CHAR);
-+		else
-+			substr = strstr(substr + 1, PARAM_CHAR);
-+
+ 	for (i = 0; i < ring_num; i++) {
+-		if (req->msg.param[i].tqp_index >= vport->nic.kinfo.rss_size) {
++		if (req->msg.param[i].tqp_index >= vport->nic.kinfo.num_tqps) {
+ 			dev_err(&hdev->pdev->dev, "tqp index(%u) is out of range(0-%u)\n",
+ 				req->msg.param[i].tqp_index,
+-				vport->nic.kinfo.rss_size - 1U);
++				vport->nic.kinfo.num_tqps - 1U);
+ 			return -EINVAL;
+ 		}
  	}
- 
- 	return true;
-@@ -469,11 +473,15 @@ static int mlx5_tracer_get_num_of_params(char *str)
- 		substr = strstr(pstr, VAL_PARM);
- 	}
- 
--	/* count all the % characters */
-+	/* count all the % characters, but skip %% (escaped percent) */
- 	substr = strstr(str, PARAM_CHAR);
- 	while (substr) {
--		num_of_params += 1;
--		str = substr + 1;
-+		if (*(substr + 1) != '%') {
-+			num_of_params += 1;
-+			str = substr + 1;
-+		} else {
-+			str = substr + 2;
-+		}
- 		substr = strstr(str, PARAM_CHAR);
- 	}
- 
 -- 
 2.51.0
 
