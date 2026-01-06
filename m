@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-205417-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205702-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBD00CF9C29
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 18:40:30 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 152DBCF9F05
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:07:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0C4903152175
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:30:50 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C68633047AD1
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:06:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31CBE194C96;
-	Tue,  6 Jan 2026 17:30:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC79D35C1BC;
+	Tue,  6 Jan 2026 17:46:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rYl3vKp4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZyBcqYjg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2BCE1D6AA;
-	Tue,  6 Jan 2026 17:30:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DD7535C1B3;
+	Tue,  6 Jan 2026 17:46:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767720622; cv=none; b=kGh3ZUMHNuL4N3YMYwY92sAp0jBsm63K/gDAjFILBDKRemq2/PhqKHZQE7MiGN27vB9jdR9ONM52ESQgeRtbqfEFppihwAEvdOsbYBA0gupmSxhOjLTaBtMor/1256/I6hQaF48BiJGY5T16EsD2PHnt5wQbp4d454YnH5QA/Co=
+	t=1767721573; cv=none; b=UfvOJqeYXnzpM3aFU4p+kdG3eFh7sieuqTBYhwZlmlo0wWgqnR+QmR6tQlZ0eg90QkI49NpD4yXRBpB4QoRNHm9UuyQVhPxio/q5z9HqH3K4HZqWKKAgMhQJ0OwVa0VsQYpQVb5lPT1S/DdnG5HvTgAMWUrieykkohm240F8VzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767720622; c=relaxed/simple;
-	bh=wWFN5meBKByaU6pUjVUBurXyyEZYv7qfJhkoqqcXLAM=;
+	s=arc-20240116; t=1767721573; c=relaxed/simple;
+	bh=yYNbcevIFGl1jHgmxma8GWMY+M1ygwWeiwpi/WLhgJk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SfGOrsdYqrP+H+Ujo4Ijwg56n6jn9nL5Yxy3k11l55TFgB3cuDu9t0aSlkcJdo4K1XGC7fGE7HJvMN+SOk4ZoDBcTYJ0xPBm74sPZlphbb1q/bEfhHNY1oA4C41eDoPe3tK/X37VKuphZmho+50j7iEMcD60HpEUUlftOYv7Zpk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rYl3vKp4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54CF4C116C6;
-	Tue,  6 Jan 2026 17:30:21 +0000 (UTC)
+	 MIME-Version:Content-Type; b=n8OCyiFW1s7c4MdRJ2LhHvi0vU+dxS7dYqWhRjnH9AcXDMFwWHgWOYV5wJ1VTeIP05sJGyfCudxnjoIWYIjGormT7d/TqiGE3BkmL3yhEInAe+acrENxABrpj3I5pPjgI2VP7oSHrM9Xl9rdpkLhnbsmaQSsj+drsGzK+GFO+lQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZyBcqYjg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1CC9C116C6;
+	Tue,  6 Jan 2026 17:46:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767720621;
-	bh=wWFN5meBKByaU6pUjVUBurXyyEZYv7qfJhkoqqcXLAM=;
+	s=korg; t=1767721573;
+	bh=yYNbcevIFGl1jHgmxma8GWMY+M1ygwWeiwpi/WLhgJk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rYl3vKp4Yz/Vo/Ggy3fI0YSF6IUIXyYK40p342Cbnw1cRxWdjMPIKXPOyL+FqqB4L
-	 8Z5lfzT7PuFj0oVbZWqkdyXizVoL1ogw0WMH3kL6MWkdmuDk91gWaWpYMygGqcc86l
-	 LPkX/qbVpnbq0bQJ9DEaVwC4zQAEJ0S95mIauUOY=
+	b=ZyBcqYjgPlIh2ybOhoQQ/alr0kIS8QzL3OHcLKlCqtMK0XjpfOhdBHC8Pw6xuP9nh
+	 bYRNjvPMkWnKmBz/6HYDjuazUZYSe4JddZ+YWAU12kE1FEE1BWyhk6Pd3J0AwAYdx6
+	 dbAKh8Gwk1SWxnzcYyAODrPynrHob+VXAeA+gZoM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joanne Koong <joannelkoong@gmail.com>,
-	Omar Sandoval <osandov@fb.com>,
-	Miklos Szeredi <mszeredi@redhat.com>
-Subject: [PATCH 6.12 293/567] fuse: fix readahead reclaim deadlock
+	kernel test robot <oliver.sang@intel.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Fernand Sieber <sieberf@amazon.com>,
+	=?UTF-8?q?Holger=20Hoffst=C3=A4tte?= <holger@applied-asynchrony.com>
+Subject: [PATCH 6.18 001/312] sched/proxy: Yield the donor task
 Date: Tue,  6 Jan 2026 18:01:15 +0100
-Message-ID: <20260106170502.172577661@linuxfoundation.org>
+Message-ID: <20260106170547.891234889@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
-References: <20260106170451.332875001@linuxfoundation.org>
+In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
+References: <20260106170547.832845344@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,123 +59,119 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joanne Koong <joannelkoong@gmail.com>
+From: Fernand Sieber <sieberf@amazon.com>
 
-commit bd5603eaae0aabf527bfb3ce1bb07e979ce5bd50 upstream.
+commit 127b90315ca07ccad2618db7ba950a63e3b32d22 upstream.
 
-Commit e26ee4efbc79 ("fuse: allocate ff->release_args only if release is
-needed") skips allocating ff->release_args if the server does not
-implement open. However in doing so, fuse_prepare_release() now skips
-grabbing the reference on the inode, which makes it possible for an
-inode to be evicted from the dcache while there are inflight readahead
-requests. This causes a deadlock if the server triggers reclaim while
-servicing the readahead request and reclaim attempts to evict the inode
-of the file being read ahead. Since the folio is locked during
-readahead, when reclaim evicts the fuse inode and fuse_evict_inode()
-attempts to remove all folios associated with the inode from the page
-cache (truncate_inode_pages_range()), reclaim will block forever waiting
-for the lock since readahead cannot relinquish the lock because it is
-itself blocked in reclaim:
+When executing a task in proxy context, handle yields as if they were
+requested by the donor task. This matches the traditional PI semantics
+of yield() as well.
 
->>> stack_trace(1504735)
- folio_wait_bit_common (mm/filemap.c:1308:4)
- folio_lock (./include/linux/pagemap.h:1052:3)
- truncate_inode_pages_range (mm/truncate.c:336:10)
- fuse_evict_inode (fs/fuse/inode.c:161:2)
- evict (fs/inode.c:704:3)
- dentry_unlink_inode (fs/dcache.c:412:3)
- __dentry_kill (fs/dcache.c:615:3)
- shrink_kill (fs/dcache.c:1060:12)
- shrink_dentry_list (fs/dcache.c:1087:3)
- prune_dcache_sb (fs/dcache.c:1168:2)
- super_cache_scan (fs/super.c:221:10)
- do_shrink_slab (mm/shrinker.c:435:9)
- shrink_slab (mm/shrinker.c:626:10)
- shrink_node (mm/vmscan.c:5951:2)
- shrink_zones (mm/vmscan.c:6195:3)
- do_try_to_free_pages (mm/vmscan.c:6257:3)
- do_swap_page (mm/memory.c:4136:11)
- handle_pte_fault (mm/memory.c:5562:10)
- handle_mm_fault (mm/memory.c:5870:9)
- do_user_addr_fault (arch/x86/mm/fault.c:1338:10)
- handle_page_fault (arch/x86/mm/fault.c:1481:3)
- exc_page_fault (arch/x86/mm/fault.c:1539:2)
- asm_exc_page_fault+0x22/0x27
+This avoids scenario like proxy task yielding, pick next task selecting the
+same previous blocked donor, running the proxy task again, etc.
 
-Fix this deadlock by allocating ff->release_args and grabbing the
-reference on the inode when preparing the file for release even if the
-server does not implement open. The inode reference will be dropped when
-the last reference on the fuse file is dropped (see fuse_file_put() ->
-fuse_release_end()).
-
-Fixes: e26ee4efbc79 ("fuse: allocate ff->release_args only if release is needed")
-Cc: stable@vger.kernel.org
-Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
-Reported-by: Omar Sandoval <osandov@fb.com>
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Closes: https://lore.kernel.org/oe-lkp/202510211205.1e0f5223-lkp@intel.com
+Suggested-by: Peter Zijlstra <peterz@infradead.org>
+Signed-off-by: Fernand Sieber <sieberf@amazon.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://patch.msgid.link/20251106104022.195157-1-sieberf@amazon.com
+Cc: Holger Hoffstätte <holger@applied-asynchrony.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/fuse/file.c |   26 +++++++++++++++++++-------
- 1 file changed, 19 insertions(+), 7 deletions(-)
+ kernel/sched/deadline.c |    2 +-
+ kernel/sched/ext.c      |    4 ++--
+ kernel/sched/fair.c     |    2 +-
+ kernel/sched/rt.c       |    2 +-
+ kernel/sched/syscalls.c |    5 +++--
+ 5 files changed, 8 insertions(+), 7 deletions(-)
 
---- a/fs/fuse/file.c
-+++ b/fs/fuse/file.c
-@@ -109,7 +109,9 @@ static void fuse_file_put(struct fuse_fi
- 			fuse_file_io_release(ff, ra->inode);
+--- a/kernel/sched/deadline.c
++++ b/kernel/sched/deadline.c
+@@ -2143,7 +2143,7 @@ static void yield_task_dl(struct rq *rq)
+ 	 * it and the bandwidth timer will wake it up and will give it
+ 	 * new scheduling parameters (thanks to dl_yielded=1).
+ 	 */
+-	rq->curr->dl.dl_yielded = 1;
++	rq->donor->dl.dl_yielded = 1;
  
- 		if (!args) {
--			/* Do nothing when server does not implement 'open' */
-+			/* Do nothing when server does not implement 'opendir' */
-+		} else if (args->opcode == FUSE_RELEASE && ff->fm->fc->no_open) {
-+			fuse_release_end(ff->fm, args, 0);
- 		} else if (sync) {
- 			fuse_simple_request(ff->fm, args);
- 			fuse_release_end(ff->fm, args, 0);
-@@ -130,8 +132,17 @@ struct fuse_file *fuse_file_open(struct
- 	struct fuse_file *ff;
- 	int opcode = isdir ? FUSE_OPENDIR : FUSE_OPEN;
- 	bool open = isdir ? !fc->no_opendir : !fc->no_open;
-+	bool release = !isdir || open;
+ 	update_rq_clock(rq);
+ 	update_curr_dl(rq);
+--- a/kernel/sched/ext.c
++++ b/kernel/sched/ext.c
+@@ -1493,7 +1493,7 @@ static bool dequeue_task_scx(struct rq *
+ static void yield_task_scx(struct rq *rq)
+ {
+ 	struct scx_sched *sch = scx_root;
+-	struct task_struct *p = rq->curr;
++	struct task_struct *p = rq->donor;
  
--	ff = fuse_file_alloc(fm, open);
-+	/*
-+	 * ff->args->release_args still needs to be allocated (so we can hold an
-+	 * inode reference while there are pending inflight file operations when
-+	 * ->release() is called, see fuse_prepare_release()) even if
-+	 * fc->no_open is set else it becomes possible for reclaim to deadlock
-+	 * if while servicing the readahead request the server triggers reclaim
-+	 * and reclaim evicts the inode of the file being read ahead.
-+	 */
-+	ff = fuse_file_alloc(fm, release);
- 	if (!ff)
- 		return ERR_PTR(-ENOMEM);
+ 	if (SCX_HAS_OP(sch, yield))
+ 		SCX_CALL_OP_2TASKS_RET(sch, SCX_KF_REST, yield, rq, p, NULL);
+@@ -1504,7 +1504,7 @@ static void yield_task_scx(struct rq *rq
+ static bool yield_to_task_scx(struct rq *rq, struct task_struct *to)
+ {
+ 	struct scx_sched *sch = scx_root;
+-	struct task_struct *from = rq->curr;
++	struct task_struct *from = rq->donor;
  
-@@ -151,13 +162,14 @@ struct fuse_file *fuse_file_open(struct
- 			fuse_file_free(ff);
- 			return ERR_PTR(err);
- 		} else {
--			/* No release needed */
--			kfree(ff->args);
--			ff->args = NULL;
--			if (isdir)
-+			if (isdir) {
-+				/* No release needed */
-+				kfree(ff->args);
-+				ff->args = NULL;
- 				fc->no_opendir = 1;
--			else
-+			} else {
- 				fc->no_open = 1;
-+			}
- 		}
- 	}
+ 	if (SCX_HAS_OP(sch, yield))
+ 		return SCX_CALL_OP_2TASKS_RET(sch, SCX_KF_REST, yield, rq,
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -8993,7 +8993,7 @@ static void put_prev_task_fair(struct rq
+  */
+ static void yield_task_fair(struct rq *rq)
+ {
+-	struct task_struct *curr = rq->curr;
++	struct task_struct *curr = rq->donor;
+ 	struct cfs_rq *cfs_rq = task_cfs_rq(curr);
+ 	struct sched_entity *se = &curr->se;
  
+--- a/kernel/sched/rt.c
++++ b/kernel/sched/rt.c
+@@ -1490,7 +1490,7 @@ static void requeue_task_rt(struct rq *r
+ 
+ static void yield_task_rt(struct rq *rq)
+ {
+-	requeue_task_rt(rq, rq->curr, 0);
++	requeue_task_rt(rq, rq->donor, 0);
+ }
+ 
+ static int find_lowest_rq(struct task_struct *task);
+--- a/kernel/sched/syscalls.c
++++ b/kernel/sched/syscalls.c
+@@ -1351,7 +1351,7 @@ static void do_sched_yield(void)
+ 	rq = this_rq_lock_irq(&rf);
+ 
+ 	schedstat_inc(rq->yld_count);
+-	current->sched_class->yield_task(rq);
++	rq->donor->sched_class->yield_task(rq);
+ 
+ 	preempt_disable();
+ 	rq_unlock_irq(rq, &rf);
+@@ -1420,12 +1420,13 @@ EXPORT_SYMBOL(yield);
+  */
+ int __sched yield_to(struct task_struct *p, bool preempt)
+ {
+-	struct task_struct *curr = current;
++	struct task_struct *curr;
+ 	struct rq *rq, *p_rq;
+ 	int yielded = 0;
+ 
+ 	scoped_guard (raw_spinlock_irqsave, &p->pi_lock) {
+ 		rq = this_rq();
++		curr = rq->donor;
+ 
+ again:
+ 		p_rq = task_rq(p);
 
 
 
