@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-205752-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205476-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2AABCFA4F4
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:51:36 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F456CFA21E
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:27:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DE50332546F5
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:07:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D54BA314A7B9
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:40:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4509035FF55;
-	Tue,  6 Jan 2026 17:49:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6ABA2DECBF;
+	Tue,  6 Jan 2026 17:33:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KszgFjCY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pCq3FYmL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01CD635FF4E;
-	Tue,  6 Jan 2026 17:49:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 734D533993;
+	Tue,  6 Jan 2026 17:33:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721742; cv=none; b=ZRj7bv/qv6e8YgOF3w8YK4msDr/FPDNnkStaHAHtuRXefJ+1spVm13y66Gf7Vzw9hSXrZaaMPsNnf+JUHPY7bVSN9+L0r43qZDOJy+XnunL/pJPZK8IxyPigQazOCaCRHHtOMpIsv3msiJr4LseMgCb55MWtmZDZdaHszx87HLU=
+	t=1767720820; cv=none; b=imzCqB5Q+/gJw/Sgrldk1iX4iHgVWxIKgZExga2VwGLOYeyqwSVmbXgt49nzyQZO7hmCs1hB/8jcjpm5awZC1fzO2VBR6lgwDuwfS8+haNLwPWQAhadowNl9vSR8hHI3urpEEgslnmrPjBZPuq3DWo6J4Q/1oKf7id19IwwI618=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721742; c=relaxed/simple;
-	bh=xWKslqp4rjQmnb6aWlfAX7zogASUghSZnXADOXzAR6Q=;
+	s=arc-20240116; t=1767720820; c=relaxed/simple;
+	bh=fR2tI5DlXmvcpxAVOwbd38QmwmdbWTLt0HP4ALeDono=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dWl7dKEphQXEA9eO6wmRNvFD4bnilvUtTSyEtV91HrzQzQFTN5gZjAeidffrMGVMOX3gwNIRwE0HFE4yf0y92XXZkL8nMdx4ye5f7u5KSsEsCMSQvOolWfrpQtqyAR5KSxiYAfin59A0gey4wyRUtYgr+pVxsASDvIOJlom5PxA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KszgFjCY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63D7BC116C6;
-	Tue,  6 Jan 2026 17:49:01 +0000 (UTC)
+	 MIME-Version; b=C+lzyosNREZfQFoY8dNyLdIz66Pk/QEr6NFlIQlQI7Ltayi2CF+ibm/6lDTJrQcm3RXmmV4TbwGruFvACHcQI+wCBc5OEb2OKmiuRdAwxuks+KIA0qwQMhg4QXgCUTvL5/Ie41ltzq1pQDxifOBvYyA/wMmTyak+zpHDZmkx/j4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pCq3FYmL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F277FC116C6;
+	Tue,  6 Jan 2026 17:33:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721741;
-	bh=xWKslqp4rjQmnb6aWlfAX7zogASUghSZnXADOXzAR6Q=;
+	s=korg; t=1767720820;
+	bh=fR2tI5DlXmvcpxAVOwbd38QmwmdbWTLt0HP4ALeDono=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KszgFjCYQpr/x9YQETJBtIiR4/CuXopXQf17s1BszQ/+dL0PsdOcJHMjaaFPZR6cy
-	 ntnRTVftdS7gM3xK3567f5i/v3gzxqpDMyM/0nBTKumGvLY0ZhOjL8dQHWMKiiNDw9
-	 pdwthHkvtR12iMNkZaTAy6ZcsPDCNUoMyVi+waEQ=
+	b=pCq3FYmLzoGnsQd1lm01nKvMoSuUuI0Hi8lXU4fcd+97CfFLdOERynNH2NrpIsLiI
+	 45IP0eRFTmJjhSNYN3s4tq5W16ypzQhOWk4MWS+8m1w2ASskZtIlzPcWPn5mdf6Vw7
+	 WazDXBcciNwG9gfxcFZuz0TpRkwLs8OL2I7N58Zc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacky Chou <jacky_chou@aspeedtech.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Thomas De Schampheleire <thomas.de_schampheleire@nokia.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	"Rob Herring (Arm)" <robh@kernel.org>,
+	Nicolas Schier <nsc@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 026/312] net: mdio: aspeed: add dummy read to avoid read-after-write issue
-Date: Tue,  6 Jan 2026 18:01:40 +0100
-Message-ID: <20260106170548.803143890@linuxfoundation.org>
+Subject: [PATCH 6.12 319/567] kbuild: fix compilation of dtb specified on command-line without make rule
+Date: Tue,  6 Jan 2026 18:01:41 +0100
+Message-ID: <20260106170503.126178958@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
-References: <20260106170547.832845344@linuxfoundation.org>
+In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
+References: <20260106170451.332875001@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +62,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacky Chou <jacky_chou@aspeedtech.com>
+From: Thomas De Schampheleire <thomas.de_schampheleire@nokia.com>
 
-[ Upstream commit d1a1a4bade4b20c0858d0b2f81d2611de055f675 ]
+[ Upstream commit b08fc4d0ec2466558f6d5511434efdfabbddf2a6 ]
 
-The Aspeed MDIO controller may return incorrect data when a read operation
-follows immediately after a write. Due to a controller bug, the subsequent
-read can latch stale data, causing the polling logic to terminate earlier
-than expected.
+Since commit e7e2941300d2 ("kbuild: split device tree build rules into
+scripts/Makefile.dtbs"), it is no longer possible to compile a device tree
+blob that is not specified in a make rule
+like:
+    dtb-$(CONFIG_FOO) += foo.dtb
 
-To work around this hardware issue, insert a dummy read after each write
-operation. This ensures that the next actual read returns the correct
-data and prevents premature polling exit.
+Before the mentioned commit, one could copy a dts file to e.g.
+arch/arm64/boot/dts/ (or a new subdirectory) and then convert it to a dtb
+file using:
+    make ARCH=arm64 foo.dtb
 
-This workaround has been verified to stabilize MDIO transactions on
-affected Aspeed platforms.
+In this scenario, both 'dtb-y' and 'dtb-' are empty, and the inclusion of
+scripts/Makefile.dtbs relies on 'targets' to contain the MAKECMDGOALS. The
+value of 'targets', however, is only final later in the code.
 
-Fixes: f160e99462c6 ("net: phy: Add mdio-aspeed")
-Signed-off-by: Jacky Chou <jacky_chou@aspeedtech.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20251211-aspeed_mdio_add_dummy_read-v3-1-382868869004@aspeedtech.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Move the conditional include of scripts/Makefile.dtbs down to where the
+value of 'targets' is final. Since Makefile.dtbs updates 'always-y' which is
+used as a prerequisite in the build rule, the build rule also needs to move
+down.
+
+Fixes: e7e2941300d2 ("kbuild: split device tree build rules into scripts/Makefile.dtbs")
+Signed-off-by: Thomas De Schampheleire <thomas.de_schampheleire@nokia.com>
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+Tested-by: Nathan Chancellor <nathan@kernel.org>
+Acked-by: Rob Herring (Arm) <robh@kernel.org>
+Link: https://patch.msgid.link/20251126100017.1162330-1-thomas.de_schampheleire@nokia.com
+Signed-off-by: Nicolas Schier <nsc@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/mdio/mdio-aspeed.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ scripts/Makefile.build | 26 ++++++++++++++------------
+ 1 file changed, 14 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/mdio/mdio-aspeed.c b/drivers/net/mdio/mdio-aspeed.c
-index e55be6dc9ae7..d6b9004c61dc 100644
---- a/drivers/net/mdio/mdio-aspeed.c
-+++ b/drivers/net/mdio/mdio-aspeed.c
-@@ -63,6 +63,13 @@ static int aspeed_mdio_op(struct mii_bus *bus, u8 st, u8 op, u8 phyad, u8 regad,
+diff --git a/scripts/Makefile.build b/scripts/Makefile.build
+index 2c5c1a214f3b..6e07023b5442 100644
+--- a/scripts/Makefile.build
++++ b/scripts/Makefile.build
+@@ -449,18 +449,6 @@ ifneq ($(userprogs),)
+ include $(srctree)/scripts/Makefile.userprogs
+ endif
  
- 	iowrite32(ctrl, ctx->base + ASPEED_MDIO_CTRL);
+-ifneq ($(need-dtbslist)$(dtb-y)$(dtb-)$(filter %.dtb %.dtb.o %.dtbo.o,$(targets)),)
+-include $(srctree)/scripts/Makefile.dtbs
+-endif
+-
+-# Build
+-# ---------------------------------------------------------------------------
+-
+-$(obj)/: $(if $(KBUILD_BUILTIN), $(targets-for-builtin)) \
+-	 $(if $(KBUILD_MODULES), $(targets-for-modules)) \
+-	 $(subdir-ym) $(always-y)
+-	@:
+-
+ # Single targets
+ # ---------------------------------------------------------------------------
  
-+	/* Workaround for read-after-write issue.
-+	 * The controller may return stale data if a read follows immediately
-+	 * after a write. A dummy read forces the hardware to update its
-+	 * internal state, ensuring that the next real read returns correct data.
-+	 */
-+	ioread32(ctx->base + ASPEED_MDIO_CTRL);
+@@ -490,6 +478,20 @@ FORCE:
+ targets += $(filter-out $(single-subdir-goals), $(MAKECMDGOALS))
+ targets := $(filter-out $(PHONY), $(targets))
+ 
++# Now that targets is fully known, include dtb rules if needed
++ifneq ($(need-dtbslist)$(dtb-y)$(dtb-)$(filter %.dtb %.dtb.o %.dtbo.o,$(targets)),)
++include $(srctree)/scripts/Makefile.dtbs
++endif
 +
- 	return readl_poll_timeout(ctx->base + ASPEED_MDIO_CTRL, ctrl,
- 				!(ctrl & ASPEED_MDIO_CTRL_FIRE),
- 				ASPEED_MDIO_INTERVAL_US,
++# Build
++# Needs to be after the include of Makefile.dtbs, which updates always-y
++# ---------------------------------------------------------------------------
++
++$(obj)/: $(if $(KBUILD_BUILTIN), $(targets-for-builtin)) \
++	 $(if $(KBUILD_MODULES), $(targets-for-modules)) \
++	 $(subdir-ym) $(always-y)
++	@:
++
+ # Read all saved command lines and dependencies for the $(targets) we
+ # may be building above, using $(if_changed{,_dep}). As an
+ # optimization, we don't need to read them if the target does not
 -- 
 2.51.0
 
