@@ -1,60 +1,52 @@
-Return-Path: <stable+bounces-205561-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205564-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06AAACFA9E4
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:23:55 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1DA8CFABA6
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:42:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6A3D33282781
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:36:35 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0E33D300ACBE
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 19:42:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCAE92C029F;
-	Tue,  6 Jan 2026 17:38:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70F77271457;
+	Tue,  6 Jan 2026 17:38:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mVxoSmcv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="flZA8RL2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 757982264AA;
-	Tue,  6 Jan 2026 17:38:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E9AF200C2;
+	Tue,  6 Jan 2026 17:38:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721103; cv=none; b=R6fWcPMcneicOJK/XCbDkzvAoPSbgPQaDrQsXdJWlICHoSDHpotMXEWIF517hvF1BQPfLBFvNCLR89/pjG/O8NaWoZUCBYsBspzmkuQ7+9JR2Nb7uqbEVV5KB9WJdd3PKwAYO89jb6po+o1Xe76j+DwGxee0tt9bLqnjj/4RBno=
+	t=1767721113; cv=none; b=YKWkm/vhNfhaQ5kW+dieo0yRMOT4mi8M/9ZhS854H5RcWj1mLghonLKfGqNRpvIzgBgCiHE3WfMioYLtuVATbFOajyeKK6+jYMaseL1ToKcxullzopwUqZKNJhcvxqlr2fxKRZARP+F8xN6+uVjNNauLD2K9YJYAngzP0LqTpPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721103; c=relaxed/simple;
-	bh=uZ+V5b2ybyhNfvLBzG6F6gPoXNOYrBbpncv6HP+6kgE=;
+	s=arc-20240116; t=1767721113; c=relaxed/simple;
+	bh=GKoJFIif6rRJEtDbKqL0IrP98gRAzqhYgOfzo+s8DDU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PxwLuR6+//bfNYMJn8cC7pLAZHxkCL0GlhOW/ehtkyNLc2x3nqxLMOPznVtboM18nob9HBmnP5gS2Su6e/YGgt2P3xaT3pjlvDxOI9EljgGtkm4t2AkB2wuikc4RuPE5eg1Y+6FCmh7GO5573TyXrXN11MdBclFC8XrweXgc/xs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mVxoSmcv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59AC6C116C6;
-	Tue,  6 Jan 2026 17:38:22 +0000 (UTC)
+	 MIME-Version; b=qYgpZ0z2QzEtBArVA0UFjvJ7LPsvNf+qxWMegRzfy78z6eDVmNli1E3PdETTrZxiOT6PnoCEacMpZltOuboHAVaTXwZOXgN0CW6aB8uh0H7CWJDiYnCy9UKm5gqvRs8JCP9/bElsVINWAz+zY1Ewgm/zoGnaR1f3VZ7UHfSNDpk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=flZA8RL2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A477DC116C6;
+	Tue,  6 Jan 2026 17:38:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721103;
-	bh=uZ+V5b2ybyhNfvLBzG6F6gPoXNOYrBbpncv6HP+6kgE=;
+	s=korg; t=1767721113;
+	bh=GKoJFIif6rRJEtDbKqL0IrP98gRAzqhYgOfzo+s8DDU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mVxoSmcv6mG5vK7Wzawq3+mqdoSFhw5J9lmyq2cYshfn9CdDZrYZoHqFWVFma0PJG
-	 r5tojrOITGcBNEaRjXfeU3szVn+4Bg6TZbijEElFoTSqESCjUfELpzCrngNX9oAKSE
-	 ysR6oyuEidISz+jd1iwAU2F76vNU0fAarclL23AA=
+	b=flZA8RL25roGozm6N9OTSBg6qItzVn781K2T2qeww1x79/mTPz3Uum+3GQ7HPdcy3
+	 EDEjPhZqCcRq/VBVKNBCxsSat9EH5CTC+omFt+c9JRPt5E3YqS0g16lM4a71mwswzQ
+	 8gyrE4HrqtbQf4d4B2YGa1cKfDJbdzeTzqhd096M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Alexander Potapenko <glider@google.com>,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Dmitriy Vyukov <dvyukov@google.com>,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Kees Cook <kees@kernel.org>,
-	Marco Elver <elver@google.com>,
-	"Uladzislau Rezki (Sony)" <urezki@gmail.com>,
-	Vincenzo Frascino <vincenzo.frascino@arm.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 437/567] kasan: refactor pcpu kasan vmalloc unpoison
-Date: Tue,  6 Jan 2026 18:03:39 +0100
-Message-ID: <20260106170507.517067067@linuxfoundation.org>
+	Olga Kornievskaia <okorniev@redhat.com>,
+	NeilBrown <neil@brown.name>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.12 439/567] lockd: fix vfs_test_lock() calls
+Date: Tue,  6 Jan 2026 18:03:41 +0100
+Message-ID: <20260106170507.593610139@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
 References: <20260106170451.332875001@linuxfoundation.org>
@@ -73,123 +65,177 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
+From: NeilBrown <neil@brown.name>
 
-commit 6f13db031e27e88213381039032a9cc061578ea6 upstream.
+commit a49a2a1baa0c553c3548a1c414b6a3c005a8deba upstream.
 
-A KASAN tag mismatch, possibly causing a kernel panic, can be observed
-on systems with a tag-based KASAN enabled and with multiple NUMA nodes.
-It was reported on arm64 and reproduced on x86. It can be explained in
-the following points:
+Usage of vfs_test_lock() is somewhat confused.  Documentation suggests
+it is given a "lock" but this is not the case.  It is given a struct
+file_lock which contains some details of the sort of lock it should be
+looking for.
 
-1. There can be more than one virtual memory chunk.
-2. Chunk's base address has a tag.
-3. The base address points at the first chunk and thus inherits
-   the tag of the first chunk.
-4. The subsequent chunks will be accessed with the tag from the
-   first chunk.
-5. Thus, the subsequent chunks need to have their tag set to
-   match that of the first chunk.
+In particular passing a "file_lock" containing fl_lmops or fl_ops is
+meaningless and possibly confusing.
 
-Refactor code by reusing __kasan_unpoison_vmalloc in a new helper in
-preparation for the actual fix.
+This is particularly problematic in lockd.  nlmsvc_testlock() receives
+an initialised "file_lock" from xdr-decode, including manager ops and an
+owner.  It then mistakenly passes this to vfs_test_lock() which might
+replace the owner and the ops.  This can lead to confusion when freeing
+the lock.
 
-Link: https://lkml.kernel.org/r/eb61d93b907e262eefcaa130261a08bcb6c5ce51.1764874575.git.m.wieczorretman@pm.me
-Fixes: 1d96320f8d53 ("kasan, vmalloc: add vmalloc tagging for SW_TAGS")
-Signed-off-by: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
-Reviewed-by: Andrey Konovalov <andreyknvl@gmail.com>
-Cc: Alexander Potapenko <glider@google.com>
-Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Cc: Danilo Krummrich <dakr@kernel.org>
-Cc: Dmitriy Vyukov <dvyukov@google.com>
-Cc: Jiayuan Chen <jiayuan.chen@linux.dev>
-Cc: Kees Cook <kees@kernel.org>
-Cc: Marco Elver <elver@google.com>
-Cc: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
-Cc: Vincenzo Frascino <vincenzo.frascino@arm.com>
-Cc: <stable@vger.kernel.org>	[6.1+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+The primary role of the 'struct file_lock' passed to vfs_test_lock() is
+to report a conflicting lock that was found, so it makes more sense for
+nlmsvc_testlock() to pass "conflock", which it uses for returning the
+conflicting lock.
+
+With this change, freeing of the lock is not confused and code in
+__nlm4svc_proc_test() and __nlmsvc_proc_test() can be simplified.
+
+Documentation for vfs_test_lock() is improved to reflect its real
+purpose, and a WARN_ON_ONCE() is added to avoid a similar problem in the
+future.
+
+Reported-by: Olga Kornievskaia <okorniev@redhat.com>
+Closes: https://lore.kernel.org/all/20251021130506.45065-1-okorniev@redhat.com
+Signed-off-by: NeilBrown <neil@brown.name>
+Fixes: 20fa19027286 ("nfs: add export operations")
+Cc: stable@vger.kernel.org
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/kasan.h |   15 +++++++++++++++
- mm/kasan/common.c     |   17 +++++++++++++++++
- mm/vmalloc.c          |    4 +---
- 3 files changed, 33 insertions(+), 3 deletions(-)
+ fs/lockd/svc4proc.c |    4 +---
+ fs/lockd/svclock.c  |   21 ++++++++++++---------
+ fs/lockd/svcproc.c  |    5 +----
+ fs/locks.c          |   12 ++++++++++--
+ 4 files changed, 24 insertions(+), 18 deletions(-)
 
---- a/include/linux/kasan.h
-+++ b/include/linux/kasan.h
-@@ -608,6 +608,16 @@ static __always_inline void kasan_poison
- 		__kasan_poison_vmalloc(start, size);
- }
+--- a/fs/lockd/svc4proc.c
++++ b/fs/lockd/svc4proc.c
+@@ -96,7 +96,6 @@ __nlm4svc_proc_test(struct svc_rqst *rqs
+ 	struct nlm_args *argp = rqstp->rq_argp;
+ 	struct nlm_host	*host;
+ 	struct nlm_file	*file;
+-	struct nlm_lockowner *test_owner;
+ 	__be32 rc = rpc_success;
  
-+void __kasan_unpoison_vmap_areas(struct vm_struct **vms, int nr_vms,
-+				 kasan_vmalloc_flags_t flags);
-+static __always_inline void
-+kasan_unpoison_vmap_areas(struct vm_struct **vms, int nr_vms,
-+			  kasan_vmalloc_flags_t flags)
-+{
-+	if (kasan_enabled())
-+		__kasan_unpoison_vmap_areas(vms, nr_vms, flags);
-+}
-+
- #else /* CONFIG_KASAN_VMALLOC */
+ 	dprintk("lockd: TEST4        called\n");
+@@ -106,7 +105,6 @@ __nlm4svc_proc_test(struct svc_rqst *rqs
+ 	if ((resp->status = nlm4svc_retrieve_args(rqstp, argp, &host, &file)))
+ 		return resp->status == nlm_drop_reply ? rpc_drop_reply :rpc_success;
  
- static inline void kasan_populate_early_vm_area_shadow(void *start,
-@@ -632,6 +642,11 @@ static inline void *kasan_unpoison_vmall
- static inline void kasan_poison_vmalloc(const void *start, unsigned long size)
- { }
+-	test_owner = argp->lock.fl.c.flc_owner;
+ 	/* Now check for conflicting locks */
+ 	resp->status = nlmsvc_testlock(rqstp, file, host, &argp->lock, &resp->lock, &resp->cookie);
+ 	if (resp->status == nlm_drop_reply)
+@@ -114,7 +112,7 @@ __nlm4svc_proc_test(struct svc_rqst *rqs
+ 	else
+ 		dprintk("lockd: TEST4        status %d\n", ntohl(resp->status));
  
-+static __always_inline void
-+kasan_unpoison_vmap_areas(struct vm_struct **vms, int nr_vms,
-+			  kasan_vmalloc_flags_t flags)
-+{ }
-+
- #endif /* CONFIG_KASAN_VMALLOC */
- 
- #if (defined(CONFIG_KASAN_GENERIC) || defined(CONFIG_KASAN_SW_TAGS)) && \
---- a/mm/kasan/common.c
-+++ b/mm/kasan/common.c
-@@ -28,6 +28,7 @@
- #include <linux/string.h>
- #include <linux/types.h>
- #include <linux/bug.h>
-+#include <linux/vmalloc.h>
- 
- #include "kasan.h"
- #include "../slab.h"
-@@ -559,3 +560,19 @@ bool __kasan_check_byte(const void *addr
+-	nlmsvc_put_lockowner(test_owner);
++	nlmsvc_release_lockowner(&argp->lock);
+ 	nlmsvc_release_host(host);
+ 	nlm_release_file(file);
+ 	return rc;
+--- a/fs/lockd/svclock.c
++++ b/fs/lockd/svclock.c
+@@ -628,7 +628,13 @@ nlmsvc_testlock(struct svc_rqst *rqstp,
  	}
- 	return true;
- }
-+
-+#ifdef CONFIG_KASAN_VMALLOC
-+void __kasan_unpoison_vmap_areas(struct vm_struct **vms, int nr_vms,
-+				 kasan_vmalloc_flags_t flags)
-+{
-+	unsigned long size;
-+	void *addr;
-+	int area;
-+
-+	for (area = 0 ; area < nr_vms ; area++) {
-+		size = vms[area]->size;
-+		addr = vms[area]->addr;
-+		vms[area]->addr = __kasan_unpoison_vmalloc(addr, size, flags);
-+	}
-+}
-+#endif
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -4812,9 +4812,7 @@ retry:
- 	 * With hardware tag-based KASAN, marking is skipped for
- 	 * non-VM_ALLOC mappings, see __kasan_unpoison_vmalloc().
- 	 */
--	for (area = 0; area < nr_vms; area++)
--		vms[area]->addr = kasan_unpoison_vmalloc(vms[area]->addr,
--				vms[area]->size, KASAN_VMALLOC_PROT_NORMAL);
-+	kasan_unpoison_vmap_areas(vms, nr_vms, KASAN_VMALLOC_PROT_NORMAL);
  
- 	kfree(vas);
- 	return vms;
+ 	mode = lock_to_openmode(&lock->fl);
+-	error = vfs_test_lock(file->f_file[mode], &lock->fl);
++	locks_init_lock(&conflock->fl);
++	/* vfs_test_lock only uses start, end, and owner, but tests flc_file */
++	conflock->fl.c.flc_file = lock->fl.c.flc_file;
++	conflock->fl.fl_start = lock->fl.fl_start;
++	conflock->fl.fl_end = lock->fl.fl_end;
++	conflock->fl.c.flc_owner = lock->fl.c.flc_owner;
++	error = vfs_test_lock(file->f_file[mode], &conflock->fl);
+ 	if (error) {
+ 		/* We can't currently deal with deferred test requests */
+ 		if (error == FILE_LOCK_DEFERRED)
+@@ -638,22 +644,19 @@ nlmsvc_testlock(struct svc_rqst *rqstp,
+ 		goto out;
+ 	}
+ 
+-	if (lock->fl.c.flc_type == F_UNLCK) {
++	if (conflock->fl.c.flc_type == F_UNLCK) {
+ 		ret = nlm_granted;
+ 		goto out;
+ 	}
+ 
+ 	dprintk("lockd: conflicting lock(ty=%d, %Ld-%Ld)\n",
+-		lock->fl.c.flc_type, (long long)lock->fl.fl_start,
+-		(long long)lock->fl.fl_end);
++		conflock->fl.c.flc_type, (long long)conflock->fl.fl_start,
++		(long long)conflock->fl.fl_end);
+ 	conflock->caller = "somehost";	/* FIXME */
+ 	conflock->len = strlen(conflock->caller);
+ 	conflock->oh.len = 0;		/* don't return OH info */
+-	conflock->svid = lock->fl.c.flc_pid;
+-	conflock->fl.c.flc_type = lock->fl.c.flc_type;
+-	conflock->fl.fl_start = lock->fl.fl_start;
+-	conflock->fl.fl_end = lock->fl.fl_end;
+-	locks_release_private(&lock->fl);
++	conflock->svid = conflock->fl.c.flc_pid;
++	locks_release_private(&conflock->fl);
+ 
+ 	ret = nlm_lck_denied;
+ out:
+--- a/fs/lockd/svcproc.c
++++ b/fs/lockd/svcproc.c
+@@ -117,7 +117,6 @@ __nlmsvc_proc_test(struct svc_rqst *rqst
+ 	struct nlm_args *argp = rqstp->rq_argp;
+ 	struct nlm_host	*host;
+ 	struct nlm_file	*file;
+-	struct nlm_lockowner *test_owner;
+ 	__be32 rc = rpc_success;
+ 
+ 	dprintk("lockd: TEST          called\n");
+@@ -127,8 +126,6 @@ __nlmsvc_proc_test(struct svc_rqst *rqst
+ 	if ((resp->status = nlmsvc_retrieve_args(rqstp, argp, &host, &file)))
+ 		return resp->status == nlm_drop_reply ? rpc_drop_reply :rpc_success;
+ 
+-	test_owner = argp->lock.fl.c.flc_owner;
+-
+ 	/* Now check for conflicting locks */
+ 	resp->status = cast_status(nlmsvc_testlock(rqstp, file, host, &argp->lock, &resp->lock, &resp->cookie));
+ 	if (resp->status == nlm_drop_reply)
+@@ -137,7 +134,7 @@ __nlmsvc_proc_test(struct svc_rqst *rqst
+ 		dprintk("lockd: TEST          status %d vers %d\n",
+ 			ntohl(resp->status), rqstp->rq_vers);
+ 
+-	nlmsvc_put_lockowner(test_owner);
++	nlmsvc_release_lockowner(&argp->lock);
+ 	nlmsvc_release_host(host);
+ 	nlm_release_file(file);
+ 	return rc;
+--- a/fs/locks.c
++++ b/fs/locks.c
+@@ -2190,13 +2190,21 @@ SYSCALL_DEFINE2(flock, unsigned int, fd,
+ /**
+  * vfs_test_lock - test file byte range lock
+  * @filp: The file to test lock for
+- * @fl: The lock to test; also used to hold result
++ * @fl: The byte-range in the file to test; also used to hold result
+  *
++ * On entry, @fl does not contain a lock, but identifies a range (fl_start, fl_end)
++ * in the file (c.flc_file), and an owner (c.flc_owner) for whom existing locks
++ * should be ignored.  c.flc_type and c.flc_flags are ignored.
++ * Both fl_lmops and fl_ops in @fl must be NULL.
+  * Returns -ERRNO on failure.  Indicates presence of conflicting lock by
+- * setting conf->fl_type to something other than F_UNLCK.
++ * setting fl->fl_type to something other than F_UNLCK.
++ *
++ * If vfs_test_lock() does find a lock and return it, the caller must
++ * use locks_free_lock() or locks_release_private() on the returned lock.
+  */
+ int vfs_test_lock(struct file *filp, struct file_lock *fl)
+ {
++	WARN_ON_ONCE(fl->fl_ops || fl->fl_lmops);
+ 	WARN_ON_ONCE(filp != fl->c.flc_file);
+ 	if (filp->f_op->lock)
+ 		return filp->f_op->lock(filp, F_GETLK, fl);
 
 
 
