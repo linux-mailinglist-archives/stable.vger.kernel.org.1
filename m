@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-205700-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205975-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69C41CF9F1D
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:07:26 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E62B2CFA628
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:58:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C694630205B7
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:07:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2B1DB32AB91D
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:15:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F23935C1AC;
-	Tue,  6 Jan 2026 17:46:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4315E27C866;
+	Tue,  6 Jan 2026 18:01:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fquyeQlM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z8e+TOwd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 059DB2F744F;
-	Tue,  6 Jan 2026 17:46:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F34B319309C;
+	Tue,  6 Jan 2026 18:01:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721567; cv=none; b=Y9llFSNGPsWE4yG7r6Km5P4NOVAPTZKkatwSDnVWtcVrE4YRP5gxwYP96PDFt9E4T8mYtGJgyHlCEvo4FsH8D5G9862WhihnBYZMMMyS6FFlpyqPiFjWAcL9wkhjMgV9NpKuTaGHfMmP4rD1legdZvpfwHM/YTqgZ+WqWZXrTK0=
+	t=1767722486; cv=none; b=c25IibxLgDiMHmhuKLwp5Bw742jHPYNhb55vBqUfjiLZsth1J3dABzd8+q83rEfDj+J3PPXEFmaLCfKLqVKxXBkAXNCUf68wV0PTJLWq9351rbACrpU+PZdreG1ICPPP18Tf9GbNmtq0F6qRKcq1RL9pO40H0vEYMjUDJr/unug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721567; c=relaxed/simple;
-	bh=NJhgBHOYTMNyvWLOg7G7OMEno/2y1k8Sx1Jxk14tz+U=;
+	s=arc-20240116; t=1767722486; c=relaxed/simple;
+	bh=fnYey1QyOgdydJ/2JdkgsVz9fm0PN6Geq3RPHttz66M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AD9P9BDCOokZV9CXwGMWnEgzLCkd4Xx99iUbEbmzJWpsMyPTa2W5/Je6lvIaH01rRpYieK895Asm9N5ipxlwWCHxuwUdZW7mTgFHRmYEuElwcYF3SckG3/Di7Po0Eh9PjC7t9vGIiJMQ9/Ktvo9sUfCyKFNwgTzQ9ADIvf91ZqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fquyeQlM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42DB9C116C6;
-	Tue,  6 Jan 2026 17:46:06 +0000 (UTC)
+	 MIME-Version; b=bBmam8VEcEjRP+M7m9y3izMq2bKz49l6XVcXRFxK7MASLGtc3anqvPXzRgVUZZzGT8cNmIR0tHTQLD3YS69xidzNA4nwcvbySLdVsoIqAvWNG3nUZEcFQbMG9FSzKQIfjTq36bG6ldpVbGIaaDcHSs+GfgxFHQPDsVEHp0CHP0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z8e+TOwd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A052C116C6;
+	Tue,  6 Jan 2026 18:01:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721566;
-	bh=NJhgBHOYTMNyvWLOg7G7OMEno/2y1k8Sx1Jxk14tz+U=;
+	s=korg; t=1767722485;
+	bh=fnYey1QyOgdydJ/2JdkgsVz9fm0PN6Geq3RPHttz66M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fquyeQlMUon+dhTGIfcH6eaQlGObvYgoLcdwdElV0afyfHY3Sqdj9kbwHa70/7tZ/
-	 uzXPdAsxeaf1OyiTpLr2LdXFHcWEem5sTwTSH91NPozB6CJxQaGSa4btPSRXiwJpaT
-	 qLtWq9AaVNpzy1B/kgcwHvGJryeGMYFavvubKtfs=
+	b=Z8e+TOwdbQIH6lUN+mpv9EtyOuFocEmnScpLc4TFIDfI05bUZriv35xnSB2wzvYxk
+	 Yb4D1eGrbgiPfTe098I24xKKyB5dz9qs8QVvCgFcGcRu+ss34ChUuJJqPqNVlUHtU8
+	 3CIXnL6RnqQyv/edt/yxx1Rva/G99OxoyibzHrXE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.12 567/567] block: fix NULL pointer dereference in blk_zone_reset_all_bio_endio()
-Date: Tue,  6 Jan 2026 18:05:49 +0100
-Message-ID: <20260106170512.411023459@linuxfoundation.org>
+	"Nancy.Lin" <nancy.lin@mediatek.com>,
+	Johan Hovold <johan@kernel.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Chun-Kuang Hu <chunkuang.hu@kernel.org>
+Subject: [PATCH 6.18 279/312] drm/mediatek: ovl_adaptor: Fix probe device leaks
+Date: Tue,  6 Jan 2026 18:05:53 +0100
+Message-ID: <20260106170557.945287218@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
-References: <20260106170451.332875001@linuxfoundation.org>
+In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
+References: <20260106170547.832845344@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,69 +61,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Johan Hovold <johan@kernel.org>
 
-commit c2b8d20628ca789640f64074a642f9440eefc623 upstream.
+commit e0f44f74ed6313e50b38eb39a2c7f210ae208db2 upstream.
 
-For zoned block devices that do not need zone write plugs (e.g. most
-device mapper devices that support zones), the disk hash table of zone
-write plugs is NULL. For such devices, blk_zone_reset_all_bio_endio()
-should not attempt to scan this has table as that causes a NULL pointer
-dereference.
+Make sure to drop the references taken to the component devices by
+of_find_device_by_node() during probe on probe failure (e.g. probe
+deferral) and on driver unbind.
 
-Fix this by checking that the disk does have zone write plugs using the
-atomic counter. This is equivalent to checking for a non-NULL hash table
-but has the advantage to also speed up the execution of
-blk_zone_reset_all_bio_endio() for devices that do use zone write plugs
-but do not have any plug in the hash table (e.g. a disk with only full
-zones).
-
-Fixes: efae226c2ef1 ("block: handle zone management operations completions")
-Reported-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: 453c3364632a ("drm/mediatek: Add ovl_adaptor support for MT8195")
+Cc: stable@vger.kernel.org	# 6.4
+Cc: Nancy.Lin <nancy.lin@mediatek.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://patchwork.kernel.org/project/dri-devel/patch/20250923152340.18234-6-johan@kernel.org/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/blk-zoned.c |   21 ++++++++++++---------
- 1 file changed, 12 insertions(+), 9 deletions(-)
+ drivers/gpu/drm/mediatek/mtk_disp_ovl_adaptor.c |   12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
---- a/block/blk-zoned.c
-+++ b/block/blk-zoned.c
-@@ -746,17 +746,20 @@ static void blk_zone_reset_all_bio_endio
- 	unsigned long flags;
- 	unsigned int i;
- 
--	/* Update the condition of all zone write plugs. */
--	rcu_read_lock();
--	for (i = 0; i < disk_zone_wplugs_hash_size(disk); i++) {
--		hlist_for_each_entry_rcu(zwplug, &disk->zone_wplugs_hash[i],
--					 node) {
--			spin_lock_irqsave(&zwplug->lock, flags);
--			disk_zone_wplug_set_wp_offset(disk, zwplug, 0);
--			spin_unlock_irqrestore(&zwplug->lock, flags);
-+	if (atomic_read(&disk->nr_zone_wplugs)) {
-+		/* Update the condition of all zone write plugs. */
-+		rcu_read_lock();
-+		for (i = 0; i < disk_zone_wplugs_hash_size(disk); i++) {
-+			hlist_for_each_entry_rcu(zwplug,
-+						 &disk->zone_wplugs_hash[i],
-+						 node) {
-+				spin_lock_irqsave(&zwplug->lock, flags);
-+				disk_zone_wplug_set_wp_offset(disk, zwplug, 0);
-+				spin_unlock_irqrestore(&zwplug->lock, flags);
-+			}
- 		}
-+		rcu_read_unlock();
- 	}
--	rcu_read_unlock();
+--- a/drivers/gpu/drm/mediatek/mtk_disp_ovl_adaptor.c
++++ b/drivers/gpu/drm/mediatek/mtk_disp_ovl_adaptor.c
+@@ -527,6 +527,13 @@ bool mtk_ovl_adaptor_is_comp_present(str
+ 	       type == OVL_ADAPTOR_TYPE_PADDING;
  }
  
- static void blk_zone_finish_bio_endio(struct bio *bio)
++static void ovl_adaptor_put_device(void *_dev)
++{
++	struct device *dev = _dev;
++
++	put_device(dev);
++}
++
+ static int ovl_adaptor_comp_init(struct device *dev, struct component_match **match)
+ {
+ 	struct mtk_disp_ovl_adaptor *priv = dev_get_drvdata(dev);
+@@ -560,6 +567,11 @@ static int ovl_adaptor_comp_init(struct
+ 		if (!comp_pdev)
+ 			return -EPROBE_DEFER;
+ 
++		ret = devm_add_action_or_reset(dev, ovl_adaptor_put_device,
++					       &comp_pdev->dev);
++		if (ret)
++			return ret;
++
+ 		priv->ovl_adaptor_comp[id] = &comp_pdev->dev;
+ 
+ 		drm_of_component_match_add(dev, match, component_compare_of, node);
 
 
 
