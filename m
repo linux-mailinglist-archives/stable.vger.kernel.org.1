@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-205697-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205700-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DE0BCFA544
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:52:47 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69C41CF9F1D
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:07:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CF5723232FDE
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:06:50 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C694630205B7
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:07:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FB7135C1A9;
-	Tue,  6 Jan 2026 17:45:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F23935C1AC;
+	Tue,  6 Jan 2026 17:46:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KoOEwfNC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fquyeQlM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C2BC35C1A7;
-	Tue,  6 Jan 2026 17:45:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 059DB2F744F;
+	Tue,  6 Jan 2026 17:46:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721557; cv=none; b=fkzm80gXblxStAGIFtC8vVMCRp6oM9h2UYoqCnn1G3nI7VGO8bRrV/8shrbUaFzUQGXHkB+xucrwok1XQWRRw8EZekPbnzA10wb+eRisiIqggfTzu7L9pn4j8P/x2HU8IxfRFa1j3RoO5FxpYavqgh4eTUxIOuEAdqW7X9yf/To=
+	t=1767721567; cv=none; b=Y9llFSNGPsWE4yG7r6Km5P4NOVAPTZKkatwSDnVWtcVrE4YRP5gxwYP96PDFt9E4T8mYtGJgyHlCEvo4FsH8D5G9862WhihnBYZMMMyS6FFlpyqPiFjWAcL9wkhjMgV9NpKuTaGHfMmP4rD1legdZvpfwHM/YTqgZ+WqWZXrTK0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721557; c=relaxed/simple;
-	bh=Ykt7qzcZ/Wb7uY9FBPhkBeJRTp56vhLEMqxTVNTrKEo=;
+	s=arc-20240116; t=1767721567; c=relaxed/simple;
+	bh=NJhgBHOYTMNyvWLOg7G7OMEno/2y1k8Sx1Jxk14tz+U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q2s8BSJTZaOPR5sqdw6EXiI/BXSXbIjI6g6A8b66I4/YHgeGJRk0deBFDIAP/GxhIQNI/KllhhUePOM5pLKyrMnOSEaw6ecxuSBXWwr36uhJCV+OOsqox3xbykRaBVRpZU+Nug7vP23uqqPyyiHVgjMmaAQS4oA0+mRzICJMiOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KoOEwfNC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40C5AC116C6;
-	Tue,  6 Jan 2026 17:45:56 +0000 (UTC)
+	 MIME-Version; b=AD9P9BDCOokZV9CXwGMWnEgzLCkd4Xx99iUbEbmzJWpsMyPTa2W5/Je6lvIaH01rRpYieK895Asm9N5ipxlwWCHxuwUdZW7mTgFHRmYEuElwcYF3SckG3/Di7Po0Eh9PjC7t9vGIiJMQ9/Ktvo9sUfCyKFNwgTzQ9ADIvf91ZqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fquyeQlM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42DB9C116C6;
+	Tue,  6 Jan 2026 17:46:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721556;
-	bh=Ykt7qzcZ/Wb7uY9FBPhkBeJRTp56vhLEMqxTVNTrKEo=;
+	s=korg; t=1767721566;
+	bh=NJhgBHOYTMNyvWLOg7G7OMEno/2y1k8Sx1Jxk14tz+U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KoOEwfNC81PbSDNpnM4I6sSt2ruwsE8IktPAMrainZm2IKRXrPizjivs2PucQ4t9e
-	 A8/aLtPkwM4+PkfTN0aB5WGycblV3hdMhgzU+1BMvxNtp6ZdITAeJnFhk0bHpXZXKS
-	 LLhBbZqhUxWy5ZNVg7fU3tPvQoTIObPTBxZ6o8+A=
+	b=fquyeQlMUon+dhTGIfcH6eaQlGObvYgoLcdwdElV0afyfHY3Sqdj9kbwHa70/7tZ/
+	 uzXPdAsxeaf1OyiTpLr2LdXFHcWEem5sTwTSH91NPozB6CJxQaGSa4btPSRXiwJpaT
+	 qLtWq9AaVNpzy1B/kgcwHvGJryeGMYFavvubKtfs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@google.com>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 564/567] mm/damon/tests/core-kunit: handle alloc failres in damon_test_new_filter()
-Date: Tue,  6 Jan 2026 18:05:46 +0100
-Message-ID: <20260106170512.297289759@linuxfoundation.org>
+	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.12 567/567] block: fix NULL pointer dereference in blk_zone_reset_all_bio_endio()
+Date: Tue,  6 Jan 2026 18:05:49 +0100
+Message-ID: <20260106170512.411023459@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
 References: <20260106170451.332875001@linuxfoundation.org>
@@ -66,42 +65,65 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: SeongJae Park <sj@kernel.org>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-commit 28ab2265e9422ccd81e4beafc0ace90f78de04c4 upstream.
+commit c2b8d20628ca789640f64074a642f9440eefc623 upstream.
 
-damon_test_new_filter() is assuming all dynamic memory allocation in it
-will succeed.  Those are indeed likely in the real use cases since those
-allocations are too small to fail, but theoretically those could fail.  In
-the case, inappropriate memory access can happen.  Fix it by appropriately
-cleanup pre-allocated memory and skip the execution of the remaining tests
-in the failure cases.
+For zoned block devices that do not need zone write plugs (e.g. most
+device mapper devices that support zones), the disk hash table of zone
+write plugs is NULL. For such devices, blk_zone_reset_all_bio_endio()
+should not attempt to scan this has table as that causes a NULL pointer
+dereference.
 
-Link: https://lkml.kernel.org/r/20251101182021.74868-14-sj@kernel.org
-Fixes: 2a158e956b98 ("mm/damon/core-test: add a test for damos_new_filter()")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: Brendan Higgins <brendan.higgins@linux.dev>
-Cc: David Gow <davidgow@google.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: <stable@vger.kernel.org>	[6.6+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: SeongJae Park <sj@kernel.org>
+Fix this by checking that the disk does have zone write plugs using the
+atomic counter. This is equivalent to checking for a non-NULL hash table
+but has the advantage to also speed up the execution of
+blk_zone_reset_all_bio_endio() for devices that do use zone write plugs
+but do not have any plug in the hash table (e.g. a disk with only full
+zones).
+
+Fixes: efae226c2ef1 ("block: handle zone management operations completions")
+Reported-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/damon/tests/core-kunit.h |    2 ++
- 1 file changed, 2 insertions(+)
+ block/blk-zoned.c |   21 ++++++++++++---------
+ 1 file changed, 12 insertions(+), 9 deletions(-)
 
---- a/mm/damon/tests/core-kunit.h
-+++ b/mm/damon/tests/core-kunit.h
-@@ -505,6 +505,8 @@ static void damos_test_new_filter(struct
- 	struct damos_filter *filter;
+--- a/block/blk-zoned.c
++++ b/block/blk-zoned.c
+@@ -746,17 +746,20 @@ static void blk_zone_reset_all_bio_endio
+ 	unsigned long flags;
+ 	unsigned int i;
  
- 	filter = damos_new_filter(DAMOS_FILTER_TYPE_ANON, true);
-+	if (!filter)
-+		kunit_skip(test, "filter alloc fail");
- 	KUNIT_EXPECT_EQ(test, filter->type, DAMOS_FILTER_TYPE_ANON);
- 	KUNIT_EXPECT_EQ(test, filter->matching, true);
- 	KUNIT_EXPECT_PTR_EQ(test, filter->list.prev, &filter->list);
+-	/* Update the condition of all zone write plugs. */
+-	rcu_read_lock();
+-	for (i = 0; i < disk_zone_wplugs_hash_size(disk); i++) {
+-		hlist_for_each_entry_rcu(zwplug, &disk->zone_wplugs_hash[i],
+-					 node) {
+-			spin_lock_irqsave(&zwplug->lock, flags);
+-			disk_zone_wplug_set_wp_offset(disk, zwplug, 0);
+-			spin_unlock_irqrestore(&zwplug->lock, flags);
++	if (atomic_read(&disk->nr_zone_wplugs)) {
++		/* Update the condition of all zone write plugs. */
++		rcu_read_lock();
++		for (i = 0; i < disk_zone_wplugs_hash_size(disk); i++) {
++			hlist_for_each_entry_rcu(zwplug,
++						 &disk->zone_wplugs_hash[i],
++						 node) {
++				spin_lock_irqsave(&zwplug->lock, flags);
++				disk_zone_wplug_set_wp_offset(disk, zwplug, 0);
++				spin_unlock_irqrestore(&zwplug->lock, flags);
++			}
+ 		}
++		rcu_read_unlock();
+ 	}
+-	rcu_read_unlock();
+ }
+ 
+ static void blk_zone_finish_bio_endio(struct bio *bio)
 
 
 
