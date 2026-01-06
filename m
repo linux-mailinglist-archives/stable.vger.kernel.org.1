@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-205709-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205753-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C05C1CFAFC0
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 21:47:10 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17291CFA9A7
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:22:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 058DF30259E4
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 20:46:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 96F2830D59F3
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:35:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FAAA2C0F6F;
-	Tue,  6 Jan 2026 17:46:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EC1A35FF58;
+	Tue,  6 Jan 2026 17:49:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WFe5s0t/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lpxJ+u3Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F0AB2749D5;
-	Tue,  6 Jan 2026 17:46:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B97C355031;
+	Tue,  6 Jan 2026 17:49:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721597; cv=none; b=HDXHVbg2zmSEkVKJfJPXZx7QuNQNtl9aIVM5VrnfHK2/8wOdwyayRy1gcrqOmwmH/1aleALp3LxToqbUOGHFencdV3XzpdRn3Rpnf7msTYho3zkU1Kd+CLek63t+c+AgU+C/amyDNRvnfitx0nEwU/fYsG3Wh8WcjAEarDvc8zs=
+	t=1767721745; cv=none; b=pMF9KAEz4IHXB5B8+9JjSKw9QOE06FX7/UH5cGTUGImlWE75wDAoRdVmhXNiFrd81cTCVM14htv3cB9HDR4hEgnox/7V6tEIVnmMjN8zbCPEDCEz4R/W4hOGludRqS+WCrlMg9irsTBae4jag9kyPKzw2BU2hc1VkNy+LgayV6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721597; c=relaxed/simple;
-	bh=J4QeRzuXO3Vwn9QO+opyhfZPGybutp7jYZ3s3cR8tyc=;
+	s=arc-20240116; t=1767721745; c=relaxed/simple;
+	bh=zo1aRdCUIzUn0Izi1lidpH5/TTVesAB7z51nTimXJ3A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rNt4mdfNUcuMuH7z48dGir9qmgnigZCXN2zAi+7V78L1GwcesmoyHdpsZLtxDF+ET3frPYFHEukccnchtvBiGG7rIOR1gEGJfW5LlgKwLCNSP+1ouCHexEZkNHaLVYJyjnSR4CgdN8v2wimpamiY6EU94XJRcoWJjB+so2P1kBE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WFe5s0t/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A575C116C6;
-	Tue,  6 Jan 2026 17:46:36 +0000 (UTC)
+	 MIME-Version; b=EyTyUjYIbjWtRZijrzqxTzt7boQsyUwEV9GabFSYOWAGFDQ4QplOHL0wIo/0ltRacsrIdRbM8mJmnM95juULo4KmuX6uksy4d8oFQSJXeG6fkDLyIrnV/citKDnsSHCy6Dyb8W9Ly9nfWag/q9GgailU5zMDsXU7DxDXLwlURJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lpxJ+u3Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFF8DC116C6;
+	Tue,  6 Jan 2026 17:49:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721596;
-	bh=J4QeRzuXO3Vwn9QO+opyhfZPGybutp7jYZ3s3cR8tyc=;
+	s=korg; t=1767721745;
+	bh=zo1aRdCUIzUn0Izi1lidpH5/TTVesAB7z51nTimXJ3A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WFe5s0t/v1Iydk/7b7y6Y8TEy3iofBHdNwuP9goDw1tMvPOR9YAM3+BJh10URpTA7
-	 tQjtHCvd9H8g6AA/LIgGl1OHR9AQCO89Z7F+QzGdabzfiP/ln3aaBTZ+ionkJ1peDV
-	 S6ayFIlRJKs1FqzZyYj5qYblCrJdaOVgf8FYZ1AA=
+	b=lpxJ+u3YK6g2T1CJcPPXp46xd/ppqKiAYV9vdbwlsAS9CJ6snJY4HAMoVeUpI3ULn
+	 B40SVljWnzeAgSba5Dy9QruyHWWQhIquG84BOI24TTFh1ayq7g1CBTZvzxNu9hrACO
+	 +b8IHiUjVQGamJN9V9kL1EZiSJGFPByUSnL3aYdU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Dan Carpenter <error27@gmail.com>,
-	Liang Jie <liangjie@lixiang.com>,
-	Emil Tsalapatis <emil@etsalapatis.com>,
-	Andrea Righi <arighi@nvidia.com>,
-	Tejun Heo <tj@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 016/312] sched_ext: fix uninitialized ret on alloc_percpu() failure
-Date: Tue,  6 Jan 2026 18:01:30 +0100
-Message-ID: <20260106170548.441766288@linuxfoundation.org>
+	Grzegorz Nitka <grzegorz.nitka@intel.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Przemyslaw Korba <przemyslaw.korba@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Rinitha S <sx.rinitha@intel.com>
+Subject: [PATCH 6.18 017/312] i40e: fix scheduling in set_rx_mode
+Date: Tue,  6 Jan 2026 18:01:31 +0100
+Message-ID: <20260106170548.477893203@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
 References: <20260106170547.832845344@linuxfoundation.org>
@@ -68,51 +68,51 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Liang Jie <liangjie@lixiang.com>
+From: Przemyslaw Korba <przemyslaw.korba@intel.com>
 
-[ Upstream commit b0101ccb5b4641885f30fecc352ef891ed06e083 ]
+[ Upstream commit be43abc5514167cc129a8d8e9727b89b8e1d9719 ]
 
-Smatch reported:
+Add service task schedule to set_rx_mode.
+In some cases there are error messages printed out in PTP application
+(ptp4l):
 
-  kernel/sched/ext.c:5332 scx_alloc_and_add_sched() warn: passing zero to 'ERR_PTR'
+ptp4l[13848.762]: port 1 (ens2f3np3): received SYNC without timestamp
+ptp4l[13848.825]: port 1 (ens2f3np3): received SYNC without timestamp
+ptp4l[13848.887]: port 1 (ens2f3np3): received SYNC without timestamp
 
-In scx_alloc_and_add_sched(), the alloc_percpu() failure path jumps to
-err_free_gdsqs without initializing @ret. That can lead to returning
-ERR_PTR(0), which violates the ERR_PTR() convention and confuses
-callers.
+This happens when service task would not run immediately after
+set_rx_mode, and we need it for setup tasks. This service task checks, if
+PTP RX packets are hung in firmware, and propagate correct settings such
+as multicast address for IEEE 1588 Precision Time Protocol.
+RX timestamping depends on some of these filters set. Bug happens only
+with high PTP packets frequency incoming, and not every run since
+sometimes service task is being ran from a different place immediately
+after starting ptp4l.
 
-Set @ret to -ENOMEM before jumping to the error path when
-alloc_percpu() fails.
-
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/r/202512141601.yAXDAeA9-lkp@intel.com/
-Reported-by: Dan Carpenter <error27@gmail.com>
-Fixes: c201ea1578d3 ("sched_ext: Move event_stats_cpu into scx_sched")
-Signed-off-by: Liang Jie <liangjie@lixiang.com>
-Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
-Reviewed-by: Andrea Righi <arighi@nvidia.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
+Fixes: 0e4425ed641f ("i40e: fix: do not sleep in netdev_ops")
+Reviewed-by: Grzegorz Nitka <grzegorz.nitka@intel.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Przemyslaw Korba <przemyslaw.korba@intel.com>
+Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/ext.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/intel/i40e/i40e_main.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/kernel/sched/ext.c b/kernel/sched/ext.c
-index 6139263afd59..31eda2a56920 100644
---- a/kernel/sched/ext.c
-+++ b/kernel/sched/ext.c
-@@ -4508,8 +4508,10 @@ static struct scx_sched *scx_alloc_and_add_sched(struct sched_ext_ops *ops)
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
+index 50be0a60ae13..07d32f2586c8 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_main.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
+@@ -2234,6 +2234,7 @@ static void i40e_set_rx_mode(struct net_device *netdev)
+ 		vsi->flags |= I40E_VSI_FLAG_FILTER_CHANGED;
+ 		set_bit(__I40E_MACVLAN_SYNC_PENDING, vsi->back->state);
  	}
++	i40e_service_event_schedule(vsi->back);
+ }
  
- 	sch->pcpu = alloc_percpu(struct scx_sched_pcpu);
--	if (!sch->pcpu)
-+	if (!sch->pcpu) {
-+		ret = -ENOMEM;
- 		goto err_free_gdsqs;
-+	}
- 
- 	sch->helper = kthread_run_worker(0, "sched_ext_helper");
- 	if (IS_ERR(sch->helper)) {
+ /**
 -- 
 2.51.0
 
