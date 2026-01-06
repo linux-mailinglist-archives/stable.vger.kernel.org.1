@@ -1,50 +1,51 @@
-Return-Path: <stable+bounces-205244-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205234-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60C96CFAE94
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 21:23:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E9A5CFA781
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:05:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 910A53055F45
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 20:21:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 30D1331157A8
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:14:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1986F34D4D4;
-	Tue,  6 Jan 2026 17:20:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D8A634D388;
+	Tue,  6 Jan 2026 17:20:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IATdmDkZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c/KyXoZx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA2E534D3B9;
-	Tue,  6 Jan 2026 17:20:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 033D834CFD6;
+	Tue,  6 Jan 2026 17:20:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767720053; cv=none; b=aoWG/i2TtV4OrfyAG11V5apnyNed52gWh5CR0nA/nsZOTvRwQkNV5t7H5JIdwydRxoChnRAjIz0tdMK+sAzhlT+DtI8KWe/HCT3JDAQEXpM4RTyM+TYEmJ4Si8eaSkZKOzOEi5HtqKEmo0nE2R+EPcvQMJVMLPE8vrdJ4I5bwvA=
+	t=1767720021; cv=none; b=PMRw+HI6GTtFaXkLzlHoDdBOnsIsYfoSLNsMQkCykKpkvhtbNy3D0y2JU0JT2H5/+BC9WkNxAvZ9vBAKHyX2PEcBYHAMYXprG1o26kvrM7DqPeVWnyEqBwaqfrgaochehWKuLmurVNijLrXjj7LbJX2K5ZjrPrvv6t2sJrI4mow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767720053; c=relaxed/simple;
-	bh=jWwZENcqcTuRM66GvopzIacFEjWhRDJyv1G3tDfqBVg=;
+	s=arc-20240116; t=1767720021; c=relaxed/simple;
+	bh=dD3+Hs54T1oHQiGFq7qokp2Rpv1DcDqHYfE4rE1xNPM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MHTtqQbk94J9H5t8nnzgHhwgqmGfbeB8MHDfvcIVunr+sk93FxRPCCLs6a4f6n0qe7CE6JpWMjNHr5A3i/wy+O/o+Kqda9btZmFhSjmEdyzF8DwYxMKSpHT3vM8IWRis8B5xWf5UzD7ODVTCIeKilkut56nLhqK1WSBz1wCyVu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IATdmDkZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37D9AC116C6;
-	Tue,  6 Jan 2026 17:20:53 +0000 (UTC)
+	 MIME-Version; b=u0FxnQniVEQT6UBj51BDts1oUi1sY4MkPmZOh0poZ+hp+rEHbVrGuj6Rs9am0fHshpbx2uAs3gDbFnfbU28tjDazp2s+Jld1YR86iU4tji7Sk5Ky5IDNMSaJtfZIpHiAAo+TeC9VdGMaoqAOk19pEaG6H3vOiI4n30BpdnBdePA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c/KyXoZx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C603C116C6;
+	Tue,  6 Jan 2026 17:20:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767720053;
-	bh=jWwZENcqcTuRM66GvopzIacFEjWhRDJyv1G3tDfqBVg=;
+	s=korg; t=1767720020;
+	bh=dD3+Hs54T1oHQiGFq7qokp2Rpv1DcDqHYfE4rE1xNPM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IATdmDkZkpBE9TToU6bheAt5OwOdXA1WAtlfvUZboS84lb8xe9nB2axVb93ipZchy
-	 nan9KqnJ+RI1HaAmcjfAusjPTsqTJiAuZQURI2jjuh3EkXk5Cpbsar4Gu4MpreK7KG
-	 SUMgaCsN3RFtsManjcCkFxgTZHTxgoRJWcl83AVE=
+	b=c/KyXoZxPj4Cnw1J5ptY7GT6TCAl7u4KomSFDl8W52dVcOB3dfqN8ulW4bmyNnyc/
+	 8AuqLpIjKd6/4DnYxVOafntLN8jnkGxFsOAfIZtjPY4iQRgj6CSPPT9IC2tugXnbAK
+	 ZvfFUL/ZrL/HS3DaEJVD9X56RZeyGV40w+vV00Uk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kartik Rajput <kkartik@nvidia.com>,
-	Thierry Reding <treding@nvidia.com>
-Subject: [PATCH 6.12 103/567] soc/tegra: fuse: Do not register SoC device on ACPI boot
-Date: Tue,  6 Jan 2026 17:58:05 +0100
-Message-ID: <20260106170455.139721468@linuxfoundation.org>
+	Yongxin Liu <yongxin.liu@windriver.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 111/567] x86/fpu: Fix FPU state core dump truncation on CPUs with no extended xfeatures
+Date: Tue,  6 Jan 2026 17:58:13 +0100
+Message-ID: <20260106170455.435476784@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
 References: <20260106170451.332875001@linuxfoundation.org>
@@ -63,38 +64,54 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Kartik Rajput <kkartik@nvidia.com>
+From: Yongxin Liu <yongxin.liu@windriver.com>
 
-commit c87f820bc4748fdd4d50969e8930cd88d1b61582 upstream.
+[ Upstream commit c8161e5304abb26e6c0bec6efc947992500fa6c5 ]
 
-On Tegra platforms using ACPI, the SMCCC driver already registers the
-SoC device. This makes the registration performed by the Tegra fuse
-driver redundant.
+Zero can be a valid value of num_records. For example, on Intel Atom x6425RE,
+only x87 and SSE are supported (features 0, 1), and fpu_user_cfg.max_features
+is 3. The for_each_extended_xfeature() loop only iterates feature 2, which is
+not enabled, so num_records = 0. This is valid and should not cause core dump
+failure.
 
-When booted via ACPI, skip registering the SoC device and suppress
-printing SKU information from the Tegra fuse driver, as this information
-is already provided by the SMCCC driver.
+The issue is that dump_xsave_layout_desc() returns 0 for both genuine errors
+(dump_emit() failure) and valid cases (no extended features). Use negative
+return values for errors and only abort on genuine failures.
 
-Fixes: 972167c69080 ("soc/tegra: fuse: Add ACPI support for Tegra194 and Tegra234")
-Cc: stable@vger.kernel.org
-Signed-off-by: Kartik Rajput <kkartik@nvidia.com>
-Signed-off-by: Thierry Reding <treding@nvidia.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: ba386777a30b ("x86/elf: Add a new FPU buffer layout info to x86 core files")
+Signed-off-by: Yongxin Liu <yongxin.liu@windriver.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://patch.msgid.link/20251210000219.4094353-2-yongxin.liu@windriver.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/tegra/fuse/fuse-tegra.c |    2 --
- 1 file changed, 2 deletions(-)
+ arch/x86/kernel/fpu/xstate.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/soc/tegra/fuse/fuse-tegra.c
-+++ b/drivers/soc/tegra/fuse/fuse-tegra.c
-@@ -182,8 +182,6 @@ static int tegra_fuse_probe(struct platf
- 		}
+diff --git a/arch/x86/kernel/fpu/xstate.c b/arch/x86/kernel/fpu/xstate.c
+index 22abb5ee0cf2..aacb59c4a35c 100644
+--- a/arch/x86/kernel/fpu/xstate.c
++++ b/arch/x86/kernel/fpu/xstate.c
+@@ -1879,7 +1879,7 @@ static int dump_xsave_layout_desc(struct coredump_params *cprm)
+ 		};
  
- 		fuse->soc->init(fuse);
--		tegra_fuse_print_sku_info(&tegra_sku_info);
--		tegra_soc_device_register();
+ 		if (!dump_emit(cprm, &xc, sizeof(xc)))
+-			return 0;
++			return -1;
  
- 		err = tegra_fuse_add_lookups(fuse);
- 		if (err)
+ 		num_records++;
+ 	}
+@@ -1917,7 +1917,7 @@ int elf_coredump_extra_notes_write(struct coredump_params *cprm)
+ 		return 1;
+ 
+ 	num_records = dump_xsave_layout_desc(cprm);
+-	if (!num_records)
++	if (num_records < 0)
+ 		return 1;
+ 
+ 	/* Total size should be equal to the number of records */
+-- 
+2.51.0
+
 
 
 
