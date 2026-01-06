@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-205768-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205773-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3C79CFA82C
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:10:38 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CE9BCFA962
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:21:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 48A81319475E
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:29:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CDF0C350EABB
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:33:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0D1F3612C6;
-	Tue,  6 Jan 2026 17:49:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 146C73612DB;
+	Tue,  6 Jan 2026 17:50:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GgMjOUo5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gQ1mqeho"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E1903612C2;
-	Tue,  6 Jan 2026 17:49:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2E46355031;
+	Tue,  6 Jan 2026 17:50:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721796; cv=none; b=ZSDrwuFTKOJKbj9yQ15p14oqFrDic7RDZNpx3DFUMamWRqqqm1FLZeKmgOJf0JG2dDotRhWt1J63omPN5xrfJkw7TghiiWevpGo4/3xxhKQMLjIZcgtYLq0qxujHtKvdUdeLDnn4mHNYNphTIjJbfiky9TLNMANGs3DVN7FbFUk=
+	t=1767721813; cv=none; b=N0+pt5pm3P+euWvbrCClMKL0bacHE79FRRB36kMc8b7Yz8ur5BoRkyzXrZHwg42d1Cm3qbUwm/T62kw7sSDhvtgvnfAd0NVJss5rwgkIcFFETBz3Z0F72mpR+igNrSWSlMRbR7n3eN2WWH1D65LUojmbOdI5db44DGMNqmciHdI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721796; c=relaxed/simple;
-	bh=9YIpejEKsCeC75liy2JWdCIHu4pV0XlZDRnP8XK/I0Y=;
+	s=arc-20240116; t=1767721813; c=relaxed/simple;
+	bh=KhJzazsBe7+N6ELWaGr5rD+hDbwPSTmIErQNlfaUv8w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X+0sadQirPQpFYkfRgZPidL+S65Qzc9o0jldBekkPXFW3Lg3imAj3/Mxpb8a7J9snnZIZB+yNV0INPgN4IdnA//TaFu20LGMkL9QRV5xAPHEl2WC08lxy+tINwh+1iQ1d4x1Vc2M6XZ0LaPusyYbqBosvvlBgtIYxDAntjDEegk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GgMjOUo5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DFB7C116C6;
-	Tue,  6 Jan 2026 17:49:55 +0000 (UTC)
+	 MIME-Version; b=S6tcNKpagfGCUKDP59vBtMcdXXq0UOhkVT4U4Z2dRrtt4k+jcoZvfPdj+oG8ITl0WpwwJFmM38FrRJu0HvFIziwKrvx/bx4ID+D/VF2y//jlO0p6UPOS/3S7zEmj8Xpk7NSakge/zeTHsHRD6JX0hBQtLKi379vBuBtL9rtAx3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gQ1mqeho; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 461D7C116C6;
+	Tue,  6 Jan 2026 17:50:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721796;
-	bh=9YIpejEKsCeC75liy2JWdCIHu4pV0XlZDRnP8XK/I0Y=;
+	s=korg; t=1767721813;
+	bh=KhJzazsBe7+N6ELWaGr5rD+hDbwPSTmIErQNlfaUv8w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GgMjOUo5SQ2JamowgsaQH+YrcgmLymWUsF1rPHBDFX4hsBiBOUMWRkClTh2I8CsOw
-	 GMOm4/oWDQ1fYzNZZioklbxP3kmlUhTSLB231hBu93PDQ4TuzVCkiNeVoEusXM0/gB
-	 bPAsdCxcQnelEQe4P4tSWvy9Jcv4s67+UM/B1pus=
+	b=gQ1mqehoxArOkep8BSwrZPoyuPETEdYoGaXFy6+k8Y7M8o/Qv0WdzWhdRf1bcc61X
+	 TW8JOAAKQkyMYtgbsxDz5eTkl/3HvvLkLnkZ0Z0su1HCiYSXCyOEfv8fYNc4xjT3qr
+	 UuOHY0vqoKvZGchWSDhoECM5eVE//qYNSKHomLc4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Tuo Li <islituo@gmail.com>,
+	Xiao Ni <xni@redhat.com>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Yu Kuai <yukuai@fnnas.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 074/312] RDMA/bnxt_re: Fix IB_SEND_IP_CSUM handling in post_send
-Date: Tue,  6 Jan 2026 18:02:28 +0100
-Message-ID: <20260106170550.522401018@linuxfoundation.org>
+Subject: [PATCH 6.18 079/312] md/raid5: fix possible null-pointer dereferences in raid5_store_group_thread_cnt()
+Date: Tue,  6 Jan 2026 18:02:33 +0100
+Message-ID: <20260106170550.698431776@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
 References: <20260106170547.832845344@linuxfoundation.org>
@@ -65,56 +66,65 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Tuo Li <islituo@gmail.com>
 
-[ Upstream commit f01765a2361323e78e3d91b1cb1d5527a83c5cf7 ]
+[ Upstream commit 7ad6ef91d8745d04aff9cce7bdbc6320d8e05fe9 ]
 
-The bnxt_re SEND path checks wr->send_flags to enable features such as
-IP checksum offload. However, send_flags is a bitmask and may contain
-multiple flags (e.g. IB_SEND_SIGNALED | IB_SEND_IP_CSUM), while the
-existing code uses a switch() statement that only matches when
-send_flags is exactly IB_SEND_IP_CSUM.
+The variable mddev->private is first assigned to conf and then checked:
 
-As a result, checksum offload is not enabled when additional SEND
-flags are present.
+  conf = mddev->private;
+  if (!conf) ...
 
-Replace the switch() with a bitmask test:
+If conf is NULL, then mddev->private is also NULL. In this case,
+null-pointer dereferences can occur when calling raid5_quiesce():
 
-    if (wr->send_flags & IB_SEND_IP_CSUM)
+  raid5_quiesce(mddev, true);
+  raid5_quiesce(mddev, false);
 
-This ensures IP checksum offload is enabled correctly when multiple
-SEND flags are used.
+since mddev->private is assigned to conf again in raid5_quiesce(), and conf
+is dereferenced in several places, for example:
 
-Fixes: 1ac5a4047975 ("RDMA/bnxt_re: Add bnxt_re RoCE driver")
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Link: https://patch.msgid.link/20251219093308.2415620-1-alok.a.tiwari@oracle.com
-Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+  conf->quiesce = 0;
+  wake_up(&conf->wait_for_quiescent);
+
+To fix this issue, the function should unlock mddev and return before
+invoking raid5_quiesce() when conf is NULL, following the existing pattern
+in raid5_change_consistency_policy().
+
+Fixes: fa1944bbe622 ("md/raid5: Wait sync io to finish before changing group cnt")
+Signed-off-by: Tuo Li <islituo@gmail.com>
+Reviewed-by: Xiao Ni <xni@redhat.com>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Link: https://lore.kernel.org/linux-raid/20251225130326.67780-1-islituo@gmail.com
+Signed-off-by: Yu Kuai <yukuai@fnnas.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/bnxt_re/ib_verbs.c | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+ drivers/md/raid5.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/ib_verbs.c b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-index f19b55c13d58..ff91511bd338 100644
---- a/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-+++ b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-@@ -2919,14 +2919,9 @@ int bnxt_re_post_send(struct ib_qp *ib_qp, const struct ib_send_wr *wr,
- 				wqe.rawqp1.lflags |=
- 					SQ_SEND_RAWETH_QP1_LFLAGS_ROCE_CRC;
- 			}
--			switch (wr->send_flags) {
--			case IB_SEND_IP_CSUM:
-+			if (wr->send_flags & IB_SEND_IP_CSUM)
- 				wqe.rawqp1.lflags |=
- 					SQ_SEND_RAWETH_QP1_LFLAGS_IP_CHKSUM;
--				break;
--			default:
--				break;
--			}
- 			fallthrough;
- 		case IB_WR_SEND_WITH_INV:
- 			rc = bnxt_re_build_send_wqe(qp, wr, &wqe);
+diff --git a/drivers/md/raid5.c b/drivers/md/raid5.c
+index 8b5f8a12d417..41de29206402 100644
+--- a/drivers/md/raid5.c
++++ b/drivers/md/raid5.c
+@@ -7187,12 +7187,14 @@ raid5_store_group_thread_cnt(struct mddev *mddev, const char *page, size_t len)
+ 	err = mddev_suspend_and_lock(mddev);
+ 	if (err)
+ 		return err;
++	conf = mddev->private;
++	if (!conf) {
++		mddev_unlock_and_resume(mddev);
++		return -ENODEV;
++	}
+ 	raid5_quiesce(mddev, true);
+ 
+-	conf = mddev->private;
+-	if (!conf)
+-		err = -ENODEV;
+-	else if (new != conf->worker_cnt_per_group) {
++	if (new != conf->worker_cnt_per_group) {
+ 		old_groups = conf->worker_groups;
+ 		if (old_groups)
+ 			flush_workqueue(raid5_wq);
 -- 
 2.51.0
 
