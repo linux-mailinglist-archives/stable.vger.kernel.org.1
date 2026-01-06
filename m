@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-205332-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205340-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CFABCF9B79
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 18:33:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CAEE6CF9BC4
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 18:36:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7AFDE30BB27B
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:25:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id ECB8730E069B
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:26:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27AD93557E1;
-	Tue,  6 Jan 2026 17:25:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E2843557F8;
+	Tue,  6 Jan 2026 17:26:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CNjNDAys"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1a9GnoW0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB59635505F;
-	Tue,  6 Jan 2026 17:25:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEB0D355050;
+	Tue,  6 Jan 2026 17:26:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767720341; cv=none; b=So26BzU8h6majGybTfsAlu8qomAG5A4HpDFrXXkGMF/Cn8W9zKtHMx5QMWefw7oKJ4r6mt++0tfHumsvPRsxMzQ77Hd0EbR9E5GLzkEFRm/tF/Eo8I+IIif+y5qqIE2B+uoavng+cunGIfdcsHdgWL8g4YKLKX5TWxErH6X8c3c=
+	t=1767720368; cv=none; b=T7ILvi4G0L2Cb9wxALMwcN+sKYI9Ap/PD/0aHOU8pzoCZrf8r051bhGDivFFcsef+BWjfWgPoHcZ16aaMEQa95foKNh8wbCXTfuLfQ40BqTJ5SKJKUYnVRkolClXD8Albd9eJGIiR9DAKwBW6VcC+ReMb2RTSzV19OFxrOp4szs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767720341; c=relaxed/simple;
-	bh=+ppy/2NyWRw9/zWLbs2nYNRZBtX67fv3dR8r0ULxskQ=;
+	s=arc-20240116; t=1767720368; c=relaxed/simple;
+	bh=4znrcpIif2RbsH+ivoYYewzGzfSFE3amDv4ex2hFPYc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LMI/smAmY6+fvHrhy5eFs9rjs/mVjIFtDUPUOljYTtE84VnobrLP2xq2wWSspN6vL8iuN6TQaHNOjmGKFGNdB1htV0DlwK0n+0zQPnHT9bH+C3/qEzRwRkqk/LAhh83YrQZmygKDYBcLbEjSVgQCbAZR8tNF7zH20oYbhirGS7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CNjNDAys; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0907FC16AAE;
-	Tue,  6 Jan 2026 17:25:40 +0000 (UTC)
+	 MIME-Version; b=EgplBvZROWsbKbp5QEyqz0AvFIkMzmy0GC6xmJGucfNDzYLgIhmShYjWUbEnE9FjCDMB2e6iuVWwl6hfR1ql+5IlPY26yJP5x/dHwqynRkn5a9BJY2SpSxMp3SmL4szx1UcQ2AcoNTWjkBVbTWZ7k6SHfbe2nO+G+TkU6TIfvt4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1a9GnoW0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60159C116C6;
+	Tue,  6 Jan 2026 17:26:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767720341;
-	bh=+ppy/2NyWRw9/zWLbs2nYNRZBtX67fv3dR8r0ULxskQ=;
+	s=korg; t=1767720367;
+	bh=4znrcpIif2RbsH+ivoYYewzGzfSFE3amDv4ex2hFPYc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CNjNDAyskoMUC2vAymYdXhN3iHXxF0RXEfnJuezVx+LpAHTLgj9lnracxkj23uiTU
-	 lYwtLo17oFJhJjozkk9ctlxWe5++HJtJtcKAoEnLNRN/j7a8+boDNtwp9OqVaJco0z
-	 dCzrrIW+0Qbz/hkcBkVNdid/J3ADvfey4LTgP28Y=
+	b=1a9GnoW0fYupm1p541xqpGNNL8o/cW+ujSwkkfyMLcJTtPOIkexVXK1LW4lIBlgou
+	 OhkpFhJgn9tkudzm9aCRE1Qkff4jZuC0C+bzNFKZolwsD6/w0zqaa30BTiZn5Sgh1Y
+	 A7kW7ALYGLgsc2H5coTJ7yHK1HivIA6EaENpzYvk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+632cf32276a9a564188d@syzkaller.appspotmail.com,
+	stable@kernel.org,
+	Xiaole He <hexiaole1994@126.com>,
 	Chao Yu <chao@kernel.org>,
-	Deepanshu Kartikey <kartikey406@gmail.com>,
 	Jaegeuk Kim <jaegeuk@kernel.org>
-Subject: [PATCH 6.12 206/567] f2fs: invalidate dentry cache on failed whiteout creation
-Date: Tue,  6 Jan 2026 17:59:48 +0100
-Message-ID: <20260106170458.944292572@linuxfoundation.org>
+Subject: [PATCH 6.12 208/567] f2fs: fix uninitialized one_time_gc in victim_sel_policy
+Date: Tue,  6 Jan 2026 17:59:50 +0100
+Message-ID: <20260106170459.017630214@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
 References: <20260106170451.332875001@linuxfoundation.org>
@@ -59,96 +59,113 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Deepanshu Kartikey <kartikey406@gmail.com>
+From: Xiaole He <hexiaole1994@126.com>
 
-commit d33f89b34aa313f50f9a512d58dd288999f246b0 upstream.
+commit 392711ef18bff524a873b9c239a73148c5432262 upstream.
 
-F2FS can mount filesystems with corrupted directory depth values that
-get runtime-clamped to MAX_DIR_HASH_DEPTH. When RENAME_WHITEOUT
-operations are performed on such directories, f2fs_rename performs
-directory modifications (updating target entry and deleting source
-entry) before attempting to add the whiteout entry via f2fs_add_link.
+The one_time_gc field in struct victim_sel_policy is conditionally
+initialized but unconditionally read, leading to undefined behavior
+that triggers UBSAN warnings.
 
-If f2fs_add_link fails due to the corrupted directory structure, the
-function returns an error to VFS, but the partial directory
-modifications have already been committed to disk. VFS assumes the
-entire rename operation failed and does not update the dentry cache,
-leaving stale mappings.
+In f2fs_get_victim() at fs/f2fs/gc.c:774, the victim_sel_policy
+structure is declared without initialization:
 
-In the error path, VFS does not call d_move() to update the dentry
-cache. This results in new_dentry still pointing to the old inode
-(new_inode) which has already had its i_nlink decremented to zero.
-The stale cache causes subsequent operations to incorrectly reference
-the freed inode.
+    struct victim_sel_policy p;
 
-This causes subsequent operations to use cached dentry information that
-no longer matches the on-disk state. When a second rename targets the
-same entry, VFS attempts to decrement i_nlink on the stale inode, which
-may already have i_nlink=0, triggering a WARNING in drop_nlink().
+The field p.one_time_gc is only assigned when the 'one_time' parameter
+is true (line 789):
 
-Example sequence:
-1. First rename (RENAME_WHITEOUT): file2 → file1
-   - f2fs updates file1 entry on disk (points to inode 8)
-   - f2fs deletes file2 entry on disk
-   - f2fs_add_link(whiteout) fails (corrupted directory)
-   - Returns error to VFS
-   - VFS does not call d_move() due to error
-   - VFS cache still has: file1 → inode 7 (stale!)
-   - inode 7 has i_nlink=0 (already decremented)
+    if (one_time) {
+        p.one_time_gc = one_time;
+        ...
+    }
 
-2. Second rename: file3 → file1
-   - VFS uses stale cache: file1 → inode 7
-   - Tries to drop_nlink on inode 7 (i_nlink already 0)
-   - WARNING in drop_nlink()
+However, this field is unconditionally read in subsequent get_gc_cost()
+at line 395:
 
-Fix this by explicitly invalidating old_dentry and new_dentry when
-f2fs_add_link fails during whiteout creation. This forces VFS to
-refresh from disk on subsequent operations, ensuring cache consistency
-even when the rename partially succeeds.
+    if (p->one_time_gc && (valid_thresh_ratio < 100) && ...)
 
-Reproducer:
-1. Mount F2FS image with corrupted i_current_depth
-2. renameat2(file2, file1, RENAME_WHITEOUT)
-3. renameat2(file3, file1, 0)
-4. System triggers WARNING in drop_nlink()
+When one_time is false, p.one_time_gc contains uninitialized stack
+memory. Hence p.one_time_gc is an invalid bool value.
 
-Fixes: 7e01e7ad746b ("f2fs: support RENAME_WHITEOUT")
-Reported-by: syzbot+632cf32276a9a564188d@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=632cf32276a9a564188d
-Suggested-by: Chao Yu <chao@kernel.org>
-Link: https://lore.kernel.org/all/20251022233349.102728-1-kartikey406@gmail.com/ [v1]
-Cc: stable@vger.kernel.org
-Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+UBSAN detects this invalid bool value:
+
+    UBSAN: invalid-load in fs/f2fs/gc.c:395:7
+    load of value 77 is not a valid value for type '_Bool'
+    CPU: 3 UID: 0 PID: 1297 Comm: f2fs_gc-252:16 Not tainted 6.18.0-rc3
+    #5 PREEMPT(voluntary)
+    Hardware name: OpenStack Foundation OpenStack Nova,
+    BIOS 1.13.0-1ubuntu1.1 04/01/2014
+    Call Trace:
+     <TASK>
+     dump_stack_lvl+0x70/0x90
+     dump_stack+0x14/0x20
+     __ubsan_handle_load_invalid_value+0xb3/0xf0
+     ? dl_server_update+0x2e/0x40
+     ? update_curr+0x147/0x170
+     f2fs_get_victim.cold+0x66/0x134 [f2fs]
+     ? sched_balance_newidle+0x2ca/0x470
+     ? finish_task_switch.isra.0+0x8d/0x2a0
+     f2fs_gc+0x2ba/0x8e0 [f2fs]
+     ? _raw_spin_unlock_irqrestore+0x12/0x40
+     ? __timer_delete_sync+0x80/0xe0
+     ? timer_delete_sync+0x14/0x20
+     ? schedule_timeout+0x82/0x100
+     gc_thread_func+0x38b/0x860 [f2fs]
+     ? gc_thread_func+0x38b/0x860 [f2fs]
+     ? __pfx_autoremove_wake_function+0x10/0x10
+     kthread+0x10b/0x220
+     ? __pfx_gc_thread_func+0x10/0x10 [f2fs]
+     ? _raw_spin_unlock_irq+0x12/0x40
+     ? __pfx_kthread+0x10/0x10
+     ret_from_fork+0x11a/0x160
+     ? __pfx_kthread+0x10/0x10
+     ret_from_fork_asm+0x1a/0x30
+     </TASK>
+
+This issue is reliably reproducible with the following steps on a
+100GB SSD /dev/vdb:
+
+    mkfs.f2fs -f /dev/vdb
+    mount /dev/vdb /mnt/f2fs_test
+    fio --name=gc --directory=/mnt/f2fs_test --rw=randwrite \
+        --bs=4k --size=8G --numjobs=12 --fsync=4 --runtime=10 \
+        --time_based
+    echo 1 > /sys/fs/f2fs/vdb/gc_urgent
+
+The uninitialized value causes incorrect GC victim selection, leading
+to unpredictable garbage collection behavior.
+
+Fix by zero-initializing the entire victim_sel_policy structure to
+ensure all fields have defined values.
+
+Fixes: e791d00bd06c ("f2fs: add valid block ratio not to do excessive GC for one time GC")
+Cc: stable@kernel.org
+Signed-off-by: Xiaole He <hexiaole1994@126.com>
 Reviewed-by: Chao Yu <chao@kernel.org>
 Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/namei.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ fs/f2fs/gc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/f2fs/namei.c
-+++ b/fs/f2fs/namei.c
-@@ -1044,9 +1044,11 @@ static int f2fs_rename(struct mnt_idmap
- 	if (whiteout) {
- 		set_inode_flag(whiteout, FI_INC_LINK);
- 		err = f2fs_add_link(old_dentry, whiteout);
--		if (err)
-+		if (err) {
-+			d_invalidate(old_dentry);
-+			d_invalidate(new_dentry);
- 			goto put_out_dir;
--
-+		}
- 		spin_lock(&whiteout->i_lock);
- 		whiteout->i_state &= ~I_LINKABLE;
- 		spin_unlock(&whiteout->i_lock);
+--- a/fs/f2fs/gc.c
++++ b/fs/f2fs/gc.c
+@@ -787,7 +787,7 @@ int f2fs_get_victim(struct f2fs_sb_info
+ {
+ 	struct dirty_seglist_info *dirty_i = DIRTY_I(sbi);
+ 	struct sit_info *sm = SIT_I(sbi);
+-	struct victim_sel_policy p;
++	struct victim_sel_policy p = {0};
+ 	unsigned int secno, last_victim;
+ 	unsigned int last_segment;
+ 	unsigned int nsearched;
 
 
 
