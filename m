@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-205574-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205859-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D087ECFA2EE
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:32:45 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20BECCF9E7B
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:01:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DB015301EA01
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:32:44 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 29D0E3041F4C
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:01:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE8232C1593;
-	Tue,  6 Jan 2026 17:39:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E03EC36826A;
+	Tue,  6 Jan 2026 17:54:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rrx7zYri"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fc+ZNi6D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C3BB253932;
-	Tue,  6 Jan 2026 17:39:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CDB2368264;
+	Tue,  6 Jan 2026 17:54:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721145; cv=none; b=J7HGmqCUk5kHaL0XixszbXfRDwF90zY2evqsSq7lhXR00SoJsz9Q2uPwjFCbWQc5O2gimwP4I2Wri1nJS1wrLA6tI8Ng8xDyI6JEAcnbfzk3k/Gv3NkwlFiwUtRSNPccOJZ/Cg0Oyko2OxgSUduBk1aoRDFgNYZwvUcFurjjyhw=
+	t=1767722097; cv=none; b=GQdGVSZhD4o6gu66THz11jdQ1OeF985Q6fTyEGJHe6+hx3xlB5vRu1YCFJ6dl44SIMsLilo9A/PPRqnXRpInd9YdjT8SSOTzD2zeo0URe/mPQvV+VLt3i+jEQNkoiB7CSFynQvAOQcFgOmtFUIT3Q2rhirU5yOz7CkMHq1mUbeQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721145; c=relaxed/simple;
-	bh=5ktCHSDr3yyrTr+7oD70/uyEvsagYlBWeyMlx4rX/ws=;
+	s=arc-20240116; t=1767722097; c=relaxed/simple;
+	bh=/YC42PXbOrSKcNond8pu1cX9Poxe5d1hKhIiQptsNTk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fGA1IIInSkX3z8UaJsbPJ7Tkbp4LLfC0f0EjqHs8WEYKfx7v5+TO2Vle+p39GOKE5U1ZDqsX9+9ukErYasghME/pyZX58qmseiuzfS3h7L6sd6rl9iIKz1XAwRVPm+2qGZONR09KKAZ6skkCViR0ZJ0Q+KF4s6dkRs6fOp2N6/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rrx7zYri; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05884C116C6;
-	Tue,  6 Jan 2026 17:39:04 +0000 (UTC)
+	 MIME-Version:Content-Type; b=lhhpDSrIfyJzGMxSvsVdEeu+KA96rx4WROcLLqWlEFgeEUPCp8GG7NMbHAj7cWmMDGYZ00+2JqdQ0wVm8fDaPwzCvawUVdwAkjQkrdnJd04DTeSHNjt3syR8pMdZ04hRh9rsukZbtxiLPWI0BZWPOedaaQkdIIaxVavneR/JBWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fc+ZNi6D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B697C16AAE;
+	Tue,  6 Jan 2026 17:54:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721145;
-	bh=5ktCHSDr3yyrTr+7oD70/uyEvsagYlBWeyMlx4rX/ws=;
+	s=korg; t=1767722097;
+	bh=/YC42PXbOrSKcNond8pu1cX9Poxe5d1hKhIiQptsNTk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rrx7zYrifERWghbExIXmLeLMMalWIl87cf8eLc4P4dctN4EkU+rXbFUhvRlz+MTFK
-	 uGiAwzM9wODLdA0YA2ZxL4MZPjlT24EibE2GL0yBpFlybYCNLDGVYewZYlz/tohunM
-	 tiaL4SFF1nRCiQoY5S1PGqYnfjKZvT2VwrkMoTvU=
+	b=Fc+ZNi6DDJah4hxV92Iddo6hclNl3lTc/fqU/07h2oZ56QTuOYwysHqnvWN3A30ky
+	 /Wh5SLHjpqVuLIH3LR1NcrBCo6FpQGQFJ4eWxkL7m2RhDFlk9vgI+VY9GE6i2Pfr2L
+	 VPiSeKYUvDYQ7XQ1jpkGMXpX17Vq2u5zR2IDN4yE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@google.com>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 422/567] mm/damon/tests/vaddr-kunit: handle alloc failures in damon_test_split_evenly_fail()
-Date: Tue,  6 Jan 2026 18:03:24 +0100
-Message-ID: <20260106170506.951759549@linuxfoundation.org>
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	Lee Jones <lee@kernel.org>
+Subject: [PATCH 6.18 131/312] leds: leds-cros_ec: Skip LEDs without color components
+Date: Tue,  6 Jan 2026 18:03:25 +0100
+Message-ID: <20260106170552.582546258@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
-References: <20260106170451.332875001@linuxfoundation.org>
+In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
+References: <20260106170547.832845344@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,56 +57,67 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SeongJae Park <sj@kernel.org>
+From: Thomas Weißschuh <linux@weissschuh.net>
 
-commit 7890e5b5bb6e386155c6e755fe70e0cdcc77f18e upstream.
+commit 4dbf066d965cd3299fb396f1375d10423c9c625c upstream.
 
-damon_test_split_evenly_fail() is assuming all dynamic memory allocation
-in it will succeed.  Those are indeed likely in the real use cases since
-those allocations are too small to fail, but theoretically those could
-fail.  In the case, inappropriate memory access can happen.  Fix it by
-appropriately cleanup pre-allocated memory and skip the execution of the
-remaining tests in the failure cases.
+A user reports that on their Lenovo Corsola Magneton with EC firmware
+steelix-15194.270.0 the driver probe fails with EINVAL. It turns out
+that the power LED does not contain any color components as indicated
+by the following "ectool led power query" output:
 
-Link: https://lkml.kernel.org/r/20251101182021.74868-19-sj@kernel.org
-Fixes: 17ccae8bb5c9 ("mm/damon: add kunit tests")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: Brendan Higgins <brendan.higgins@linux.dev>
-Cc: David Gow <davidgow@google.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: <stable@vger.kernel.org>	[5.15+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Brightness range for LED 1:
+        red     : 0x0
+        green   : 0x0
+        blue    : 0x0
+        yellow  : 0x0
+        white   : 0x0
+        amber   : 0x0
+
+The LED also does not react to commands sent manually through ectool and
+is generally non-functional.
+
+Instead of failing the probe for all LEDs managed by the EC when one
+without color components is encountered, silently skip those.
+
+Cc: stable@vger.kernel.org
+Fixes: 8d6ce6f3ec9d ("leds: Add ChromeOS EC driver")
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+Link: https://patch.msgid.link/20251028-cros_ec-leds-no-colors-v1-1-ebe13a02022a@weissschuh.net
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/damon/tests/vaddr-kunit.h |   11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ drivers/leds/leds-cros_ec.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/mm/damon/tests/vaddr-kunit.h
-+++ b/mm/damon/tests/vaddr-kunit.h
-@@ -250,7 +250,16 @@ static void damon_test_split_evenly_fail
- 		unsigned long start, unsigned long end, unsigned int nr_pieces)
- {
- 	struct damon_target *t = damon_new_target();
--	struct damon_region *r = damon_new_region(start, end);
-+	struct damon_region *r;
-+
-+	if (!t)
-+		kunit_skip(test, "target alloc fail");
-+
-+	r = damon_new_region(start, end);
-+	if (!r) {
-+		damon_free_target(t);
-+		kunit_skip(test, "region alloc fail");
-+	}
+--- a/drivers/leds/leds-cros_ec.c
++++ b/drivers/leds/leds-cros_ec.c
+@@ -142,9 +142,6 @@ static int cros_ec_led_count_subleds(str
+ 		}
+ 	}
  
- 	damon_add_region(r, t);
- 	KUNIT_EXPECT_EQ(test,
+-	if (!num_subleds)
+-		return -EINVAL;
+-
+ 	*max_brightness = common_range;
+ 	return num_subleds;
+ }
+@@ -189,6 +186,8 @@ static int cros_ec_led_probe_one(struct
+ 						&priv->led_mc_cdev.led_cdev.max_brightness);
+ 	if (num_subleds < 0)
+ 		return num_subleds;
++	if (num_subleds == 0)
++		return 0; /* LED without any colors, skip */
+ 
+ 	priv->cros_ec = cros_ec;
+ 	priv->led_id = id;
 
 
 
