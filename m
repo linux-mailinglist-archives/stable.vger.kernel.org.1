@@ -1,88 +1,87 @@
-Return-Path: <stable+bounces-205038-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205039-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66D93CF6ED2
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 07:52:26 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77550CF6EED
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 07:54:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 63CC93019541
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 06:52:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2A721305B5A6
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 06:52:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C5FF2D97B8;
-	Tue,  6 Jan 2026 06:52:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C756308F39;
+	Tue,  6 Jan 2026 06:52:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZjFae/BG"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Q+Ho42mv"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B68E51A83F9
-	for <stable@vger.kernel.org>; Tue,  6 Jan 2026 06:52:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1DD12D97B8
+	for <stable@vger.kernel.org>; Tue,  6 Jan 2026 06:52:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767682343; cv=none; b=OXo2jUd8nHL3UDdvHd4p/mad/IZcJ6UKrsbkG5NDq8BaLbs32It5kvmXUUcIZQmqh009fSAsIUBhN3oIMo2QKXl9fHgl1uDmHfWuIn6PEbqVaqyCBxEghEd9J7liEf8/YWorFySno7eHmwdJcX5IHAxolGw2QJXJNIYbw1y8lcw=
+	t=1767682365; cv=none; b=hp8CTlgZF22YQsNrL++J1HemdIqIOwXk1r6hcnYNruR942GCHKVZzVqqSNVTKhEEA95+lloVLRhDq4YS8Yco5fx93BkfyLYpXYYaeWElZnWhfV+NTSkcamEYEgQmvbW3zHfEdAjxYa2qTflYEB8O53c57ANqTh55HpjPwdKMH80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767682343; c=relaxed/simple;
-	bh=9Cw86CX0Dci1mnYLZkNN+CeP0LIAhYvokNBtfKQI0Nw=;
+	s=arc-20240116; t=1767682365; c=relaxed/simple;
+	bh=ldGsdXFxFu3xsBTGzSJZFSXDMtd7h8Xq1ZGg8CU04mQ=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hoO1OSOTEonadtRav9/Qoc9qoLSh0dkuhcOuAh+i1Q0Dba03txqpkIu5fF2JVixop2b6x8nJuethjHRh6gv5cOqwEMRNojZ47fYXHpkiKnq8p3MJyTrfIAY2GAmM6OxMKVVu84+484NhMOl3DEGveS4+PSzzyRq6H9BBOegjvEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZjFae/BG; arc=none smtp.client-ip=209.85.221.44
+	 To:Cc:Content-Type; b=QX5do2jcYpVF51DbF7Ahie/QA4/1IaJS4oLhERtHQM1vAfLSC0/xWf5FbjTzUBQvgj74R7LKRcJGDB0iq/Lz8jWBNc9Kgt3tcWyHQ1N3EC2W6AhGZdS0oJlqUhLMniTuJH9hlQ5PEFIG1mNetb5ZnmhipoEiH4VJL2F8tsXmmgs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Q+Ho42mv; arc=none smtp.client-ip=209.85.221.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-42fbad1fa90so475022f8f.0
-        for <stable@vger.kernel.org>; Mon, 05 Jan 2026 22:52:21 -0800 (PST)
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-42b3b0d76fcso366986f8f.3
+        for <stable@vger.kernel.org>; Mon, 05 Jan 2026 22:52:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767682340; x=1768287140; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1767682361; x=1768287161; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=a5MbjTHPCVCDNqoOckwZhtsYdIa3XvI/J5e476w1Ly4=;
-        b=ZjFae/BGABzOds5GfoWGEG9XcMfO/Enf4ExBUwZT3JKNiYLdxSLynd5nNzgCAfYSM5
-         emsIvW5uEP6eSY+zd18hhiGdihWS78/MZh9/bfn4ieVl5JLKE1k47KvaPYzSnk+g5qnw
-         OamgCwoI0pSCOkAbiC7Zk4nZKRGqZ1m6ZkeBSzIbuNlmcqQfqdXbA1vsQHKcbvLchsus
-         /qrPW71Cd9+1P0XvZF6ROwUhboEsTN2JrTQyEKSNgiazCc4p8qClhs+uVdRx6J8ZxT1J
-         dinhgPiZ5ILSXGdg4tqo2pGRCeNeEqVVc1zsJwvzsL31L8GztU73BYOjU5lPwsuJaBRY
-         J9FA==
+        bh=Rn9TQgUB35xi9VXhhElF6zAI0W2Qq/UK06bS94ywRVk=;
+        b=Q+Ho42mvBrRVrrmsgICGv3qc0zqJq0WBiuPL5DOhIMOayFltYMe4OnIcMxvP/fv4So
+         y69ALWU3fgqwxvxK0vIFXB+07Lb1R5HAmYoUAzdnsQgTkw/D8zxlTpCDoH3Xv/Of0NAM
+         jauid+RI0PmB1Myj6UI8hergg6fgifJ4yP7PXUBGox2R9cVSOeHQ9oK3wFngvR3HY2x/
+         sZTllQXk+Yfe9LlSyQaXfwofYDP/4jRDvElayHRpRzq3dLyYBZ9ucxuwyqtcHhXqSUPZ
+         saQkILtml+fBI7CuW4yEPMh/SyXkzd8QcK785XNByBkU6xRxf5ycR15Ie8mTuwKXyoR4
+         cPqQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767682340; x=1768287140;
+        d=1e100.net; s=20230601; t=1767682361; x=1768287161;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=a5MbjTHPCVCDNqoOckwZhtsYdIa3XvI/J5e476w1Ly4=;
-        b=Qwp4XVmch1DXjgP8LWem8XC2/lrYILPByEDLUw1XLvD5mcZrgxxhJRoDkaXVS/x9qi
-         VCJfr+ekjk4c7KnWn+cW0DMtqWbGPbXNECaCr7G0uSVYKpzKwVADEIWQ+jqbESKcivjf
-         /Cey/GG6KSItNl3F9QOp9a1m7mcAapbUWgnLOJ8VZQbkHHkuSdlHO8I2N8L77dT5XTq9
-         MwB/mW3z6n5ilIYqwBc2BuqfKVBRiAkOsjjk/hoh0OuRA+iYxkjlvq/2sJNIeImj1EyI
-         V3bke0Qc8vL7cvYN8rCb1lWyh26TLOWhshVRkaA/vChR5q5yjmO/xMHv9fvWilC1gczz
-         6EIw==
-X-Forwarded-Encrypted: i=1; AJvYcCVkAUbw3fEomMz9H6eHpAwn4yO695rMuMQe7wsqBg/1o5ZZEmyVUooTguPF2do2xl29hWKqneY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxJyS5A+K74Bn7txHe/M/LN467JLTT4UEmA3pZ5uYRreRC/BukW
-	sdJR3MDjJLKMQfveFKfsD7z9/mHEZGI2oc3i5uDuBM6ctfaJ1QawwKw1aSgrxAlEk/RinH26W06
-	oMTTDAtGsxosUxft7F8UCWq4EJw1Uc04=
-X-Gm-Gg: AY/fxX765WAN679rv0IQE47yPdYzHDz1RWy7/uqe6F4TgT9b9JBWTawFl61qKFKKjxY
-	eBOuM1IJnsRrsVLEausw1hAkmchUCk2cE1Hm+SuzoTK1s1UsTIusLTULKIfzoFlOn4NrE4WHxf/
-	yPYl64KKXV74umTpDLtJFPGzGQDX9lOcgu1uc0BIyUIzLkAFwaCbiMvGBGC8vtAax+bKNbToATT
-	WVE+EdPz6xNwcgKioLuVI+o7YABJE1sAWy9PvvdsURCo6AjzWI4enoczhjbm7EGp+1Cfx0ctuFC
-	VHqvAVqPgunl8fx0tYo+M7p2FmJW
-X-Google-Smtp-Source: AGHT+IEwY7f43Mq2osMvDOQZjAjOg6y4nxe8jcr9nGSLJUpcrEWhLOs46bxfR7AfUXsae8GTxGfxj8WFRO3TzUfdp5M=
-X-Received: by 2002:a05:6000:310c:b0:430:b100:f591 with SMTP id
- ffacd0b85a97d-432bc9d9128mr2322950f8f.28.1767682339754; Mon, 05 Jan 2026
- 22:52:19 -0800 (PST)
+        bh=Rn9TQgUB35xi9VXhhElF6zAI0W2Qq/UK06bS94ywRVk=;
+        b=vAyGzIxfJW8Fumu1OAROeCgIrce+BNlVIVxiPegdLMW+Ccd2aXCoTmqhMKu5tIv8ec
+         emWEcHRZAE7jJnQs44oSowazBB0dMNo0rDBA+kfN7g5ZXHiVNJKb9yJ8g/c7t3bm/tqa
+         bvgXrcNk11GuCD/sSKeSZlLe6csN1anMhiZVrcCjNGqstnqJwwCxppEjs01VS1jjZP2K
+         FXuGBX8CLM/kFQTimKnc1vjdoM1jRA7h7nVP5VSSJl3eU+iEBKlu023AOR8qbBJOvdjK
+         BgTznFa3ewqPaq+lXMnZflpB5baiZ7Wzrb8COGj81bnO9o3g9+eZ1tUV65Rar53VA6er
+         cJWA==
+X-Forwarded-Encrypted: i=1; AJvYcCUPyAQHWK016FRSghHlcD8Oi81SVSXFsC/Si8BKGR0kUXE0IG4htk5aczKvixDp8ySLiv2W+SE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzaQSsjJMQ4qkftZplxLM+kruAzBTT4n9qv8M7U0GaLqsZJnjq5
+	OqquORyISaWAd0JjJrfJAvhrJ8Ht9xlY+fv9x4VRvPdoCxqkeRWf7r9qgX1bvjmBwBcwzKFnMz5
+	ooy4GL8v1zADHe7txDfK+29eeA4o/WLg=
+X-Gm-Gg: AY/fxX4dl/aIpHsBinH4k/xVBEdwvUPh+LilWKS/ckRcdXEQxiI2y09WRk3OgXtHLNI
+	dcSbQeZu0uK4eAtdBqsvGblzvuYLlyCPVfVsORKThZ2MSKRjZBwXNdXUujZRiw8uqBuwRxeNEHb
+	F2CcvjxxSECQRKXpGd9BmFjElhpLPV9LbGFB8pqaAtso1O//pGNQdwk7qBrXGLkF9ikJoUB3xqy
+	qjJ02O/auyuwBsYu6NksQ3TL53lYGiueU5Ox682kIjkZuaiL0NxM20POMSIgalszb9E9VZtOpAx
+	2chQ/DAbQL4fCYDeJZcsZlzjKikG
+X-Google-Smtp-Source: AGHT+IHkzheiWDsu3Tie2YRfl2Rs17I2MZZFoKuqAplH4JngFa3MjKXuUVDsqgaz71+jH30+7xzENXTwDBSKqDXexEQ=
+X-Received: by 2002:a05:6000:2302:b0:430:f255:14b3 with SMTP id
+ ffacd0b85a97d-432bc9f562amr2306441f8f.43.1767682360802; Mon, 05 Jan 2026
+ 22:52:40 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251231024316.4643-1-CFSworks@gmail.com> <20251231024316.4643-2-CFSworks@gmail.com>
- <24adfb894c25531d342fdc20310ca9286d605e3d.camel@ibm.com>
-In-Reply-To: <24adfb894c25531d342fdc20310ca9286d605e3d.camel@ibm.com>
+References: <20251231024316.4643-1-CFSworks@gmail.com> <20251231024316.4643-4-CFSworks@gmail.com>
+ <90190adb0e384d4d9d451d444c46f177bb95366d.camel@ibm.com>
+In-Reply-To: <90190adb0e384d4d9d451d444c46f177bb95366d.camel@ibm.com>
 From: Sam Edwards <cfsworks@gmail.com>
-Date: Mon, 5 Jan 2026 22:52:07 -0800
-X-Gm-Features: AQt7F2qdUUpXyURjPb1fuUeAHQtsYXnqOL0vDFAcXJSkfDM9w4GJZdn6dtJNEBo
-Message-ID: <CAH5Ym4gHTNDVCiy5YQwQwg_JmBt=UKgoui9RzUcBgv6Vr-ezZw@mail.gmail.com>
-Subject: Re: [PATCH 1/5] ceph: Do not propagate page array emplacement errors
- as batch errors
+Date: Mon, 5 Jan 2026 22:52:29 -0800
+X-Gm-Features: AQt7F2qecFY42oeNK1b5j0ZScFM7tbibbtSuEsvYRAf7mNPiTGRbxAk-2svhnhw
+Message-ID: <CAH5Ym4is+dfE4Td8cuA0s4_4fkGNy+X1R_N+nSZDzSjYfxNBfg@mail.gmail.com>
+Subject: Re: [PATCH 3/5] ceph: Free page array when ceph_submit_write fails
 To: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
 Cc: Xiubo Li <xiubli@redhat.com>, "idryomov@gmail.com" <idryomov@gmail.com>, 
 	Milind Changire <mchangir@redhat.com>, "stable@vger.kernel.org" <stable@vger.kernel.org>, 
@@ -92,145 +91,125 @@ Cc: Xiubo Li <xiubli@redhat.com>, "idryomov@gmail.com" <idryomov@gmail.com>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jan 5, 2026 at 12:24=E2=80=AFPM Viacheslav Dubeyko
-<Slava.Dubeyko@ibm.com> wrote:
+On Mon, Jan 5, 2026 at 1:09=E2=80=AFPM Viacheslav Dubeyko <Slava.Dubeyko@ib=
+m.com> wrote:
 >
 > On Tue, 2025-12-30 at 18:43 -0800, Sam Edwards wrote:
-> > When fscrypt is enabled, move_dirty_folio_in_page_array() may fail
-> > because it needs to allocate bounce buffers to store the encrypted
-> > versions of each folio. Each folio beyond the first allocates its bounc=
-e
-> > buffer with GFP_NOWAIT. Failures are common (and expected) under this
-> > allocation mode; they should flush (not abort) the batch.
+> > If `locked_pages` is zero, the page array must not be allocated:
+> > ceph_process_folio_batch() uses `locked_pages` to decide when to
+> > allocate `pages`,
 > >
-> > However, ceph_process_folio_batch() uses the same `rc` variable for its
-> > own return code and for capturing the return codes of its routine calls=
-;
-> > failing to reset `rc` back to 0 results in the error being propagated
-> > out to the main writeback loop, which cannot actually tolerate any
-> > errors here: once `ceph_wbc.pages` is allocated, it must be passed to
-> > ceph_submit_write() to be freed. If it survives until the next iteratio=
-n
-> > (e.g. due to the goto being followed), ceph_allocate_page_array()'s
-> > BUG_ON() will oops the worker. (Subsequent patches in this series make
-> > the loop more robust.)
 >
 
 Hi Slava,
 
-> I think you are right with the fix. We have the loop here and if we alrea=
-dy
-> moved some dirty folios, then we should flush it. But what if we failed o=
-n the
-> first one folio, then should we return no error code in this case?
+> I don't quite follow how this statement is relevant to the issue. If
+> `locked_pages` is zero, then ceph_submit_write() will not to be called. D=
+o I
+> miss something here?
 
-The case you ask about, where move_dirty_folio_in_page_array() returns
-an error for the first folio, is currently not possible:
-1) The only error code that move_dirty_folio_in_page_array() can
-propagate is from fscrypt_encrypt_pagecache_blocks(), which it calls
-with GFP_NOFS for the first folio. The latter function's doc comment
-outright states:
- * The bounce page allocation is mempool-backed, so it will always succeed =
-when
- * @gfp_flags includes __GFP_DIRECT_RECLAIM, e.g. when it's GFP_NOFS.
-2) The error return isn't even reachable for the first folio because
-of the BUG_ON(ceph_wbc->locked_pages =3D=3D 0); line.
+That statement is only informing that ceph_process_folio_batch() will
+BUG() when locked_pages =3D=3D 0 && pages !=3D NULL. It establishes why
+`pages` must be freed/NULLed before the next iteration of
+ceph_writepages_start()'s loop (which sets locked_pages =3D 0).
+
+>
+> > and redundant allocations trigger
+> > ceph_allocate_page_array()'s BUG_ON(), resulting in a worker oops (and
+> > writeback stall) or even a kernel panic. Consequently, the main loop in
+> > ceph_writepages_start() assumes that the lifetime of `pages` is confine=
+d
+> > to a single iteration.
+>
+> It will be great to see the reproducer script or application and call tra=
+ce of
+> the issue. Could you please share the reproduction path and the call trac=
+e of
+> the issue?
+
+It's difficult to reproduce organically. It arises when
+`!ceph_inc_osd_stopping_blocker(fsc->mdsc)`, which I understand can
+only happen in a race. I used the fault injection framework to force
+ceph_inc_osd_stopping_blocker() to fail.
+
+The call trace is disinteresting. See my reply to your comments on
+patch 1: it's the same trace.
 
 >
 > >
-> > Note that this failure mode is currently masked due to another bug
-> > (addressed later in this series) that prevents multiple encrypted folio=
-s
-> > from being selected for the same write.
+> > The ceph_submit_write() function claims ownership of the page array on
+> > success.
+> >
 >
-> So, maybe, this patch has been not correctly placed in the order?
+> As far as I can see, writepages_finish() should free the page array on su=
+ccess.
 
-This crash is unmasked by patch 5 of this series. (It allows multiple
-folios to be batched when fscrypt is enabled.) Patch 5 has no hard
-dependency on anything else in this series, so it could -- in
-principle -- be ordered first as you suggest. However, that ordering
-would deliberately cause a regression in kernel stability, even if
-only briefly. That's not considered good practice in my view, as it
-may affect people who are trying to bisect and regression test. So the
-ordering of this series is: fix the crash in the unused code first,
-then fix the bug that makes it unused.
+That's my understanding too; by "claims ownership of the page array" I
+only mean that ceph_writepages_start() isn't responsible for cleaning
+it up, once it calls ceph_submit_write().
 
-> It will be
-> good to see the reproduction of the issue and which symptoms we have for =
-this
-> issue. Do you have the reproduction script and call trace of the issue?
+>
+> > But failures only redirty/unlock the pages and fail to free the
+> > array, making the failure case in ceph_submit_write() fatal.
+> >
+> > Free the page array in ceph_submit_write()'s error-handling 'if' block
+> > so that the caller's invariant (that the array does not outlive the
+> > iteration) is maintained unconditionally, allowing failures in
+> > ceph_submit_write() to be recoverable as originally intended.
+> >
+> > Fixes: 1551ec61dc55 ("ceph: introduce ceph_submit_write() method")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Sam Edwards <CFSworks@gmail.com>
+> > ---
+> >  fs/ceph/addr.c | 7 +++++++
+> >  1 file changed, 7 insertions(+)
+> >
+> > diff --git a/fs/ceph/addr.c b/fs/ceph/addr.c
+> > index 2b722916fb9b..91cc43950162 100644
+> > --- a/fs/ceph/addr.c
+> > +++ b/fs/ceph/addr.c
+> > @@ -1466,6 +1466,13 @@ int ceph_submit_write(struct address_space *mapp=
+ing,
+> >                       unlock_page(page);
+> >               }
+> >
+> > +             if (ceph_wbc->from_pool) {
+> > +                     mempool_free(ceph_wbc->pages, ceph_wb_pagevec_poo=
+l);
+> > +                     ceph_wbc->from_pool =3D false;
+> > +             } else
+> > +                     kfree(ceph_wbc->pages);
+> > +             ceph_wbc->pages =3D NULL;
+>
+> Probably, it makes sense to introduce a method ceph_free_page_array likew=
+ise to
+> __ceph_allocate_page_array() and to use for freeing page array in all pla=
+ces.
 
-Fair point!
+I like the suggestion but not the name. Instead of
+ceph_free_page_array(), it should probably be called
+ceph_discard_page_array(), because it is also redirtying the pages and
+must not be used after successful writeback. (To me, "free" implies
+success while "discard" implies failure.)
 
-Function inlining makes the call trace not very interesting:
-Call trace:
- ceph_writepages_start+0x16ec/0x18e0 [ceph] ()
- do_writepages+0xb0/0x1c0
- __writeback_single_inode+0x4c/0x4d8
- writeback_sb_inodes+0x238/0x4c8
- __writeback_inodes_wb+0x64/0x120
- wb_writeback+0x320/0x3e8
- wb_workfn+0x42c/0x518
- process_one_work+0x17c/0x428
- worker_thread+0x260/0x390
- kthread+0x148/0x240
- ret_from_fork+0x10/0x20
-Code: 34ffdee0 52800020 3903e7e0 17fffef4 (d4210000)
----[ end trace 0000000000000000 ]---
-Kernel panic - not syncing: Oops - BUG: Fatal exception
+> Could ceph_wbc->locked_pages be greater than zero but ceph_wbc->pages =3D=
+=3D NULL?
 
-ceph_writepages_start+0x16ec corresponds to linux-6.18.2/fs/ceph/addr.c:122=
-2
-
-However, these repro steps should work:
-1) Apply patch 5 from this series (and no other patches)
-2) Mount CephFS and activate fscrypt
-3) Copy a large directory into the CephFS mount
-4) After dozens of GBs transferred, you should observe the above kernel oop=
-s
+ceph_wbc->locked_pages is the current array index into
+ceph_wbc->pages, so they both need to be reset sometime before the
+next iteration of ceph_writepages_start()'s loop.
 
 Warm regards,
 Sam
 
 
 
-
->
-> >
-> > For now, just reset `rc` when redirtying the folio and prevent the
-> > error from propagating. After this change, ceph_process_folio_batch() n=
-o
-> > longer returns errors; its only remaining failure indicator is
-> > `locked_pages =3D=3D 0`, which the caller already handles correctly. Th=
-e
-> > next patch in this series addresses this.
-> >
-> > Fixes: ce80b76dd327 ("ceph: introduce ceph_process_folio_batch() method=
-")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Sam Edwards <CFSworks@gmail.com>
-> > ---
-> >  fs/ceph/addr.c | 1 +
-> >  1 file changed, 1 insertion(+)
-> >
-> > diff --git a/fs/ceph/addr.c b/fs/ceph/addr.c
-> > index 63b75d214210..3462df35d245 100644
-> > --- a/fs/ceph/addr.c
-> > +++ b/fs/ceph/addr.c
-> > @@ -1369,6 +1369,7 @@ int ceph_process_folio_batch(struct address_space=
- *mapping,
-> >               rc =3D move_dirty_folio_in_page_array(mapping, wbc, ceph_=
-wbc,
-> >                               folio);
-> >               if (rc) {
-> > +                     rc =3D 0;
->
-> I like the fix but I would like to clarify the above questions at first.
 >
 > Thanks,
 > Slava.
 >
-> >                       folio_redirty_for_writepage(wbc, folio);
-> >                       folio_unlock(folio);
-> >                       break;
+> > +
+> >               ceph_osdc_put_request(req);
+> >               return -EIO;
+> >       }
 
