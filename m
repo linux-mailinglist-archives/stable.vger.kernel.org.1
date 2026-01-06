@@ -1,207 +1,220 @@
-Return-Path: <stable+bounces-205101-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205100-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 118F5CF90AE
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 16:25:09 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47BEBCF8FA6
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 16:09:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 287E730E8D5A
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 15:17:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 50969306F8E7
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 15:05:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DA6C33A02B;
-	Tue,  6 Jan 2026 15:06:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45472337B89;
+	Tue,  6 Jan 2026 15:05:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="UVhoiYgS"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="InUmX2Tc"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07D9833A032
-	for <stable@vger.kernel.org>; Tue,  6 Jan 2026 15:06:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95174336ED7
+	for <stable@vger.kernel.org>; Tue,  6 Jan 2026 15:05:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767711965; cv=none; b=h3cl+F9sNI3lO6jAoZFTN5Z3XbSp6tSfpVp0/eJvaE/mClE9cbug/KDNlRXz4TgyuHrLQpW69y1eQlUMkLPseV/JYcOp6WYM4qNrkHUk4g9us6P9ECx88kVX6S1dziKqekTb7YwF4E69o8LN+S+405tNiUoByqPL7o7zAT94C+E=
+	t=1767711905; cv=none; b=LCp3T+hzl2U1zI2tHGS55wGQrYW1TkLkvizsdm4bzUTMJMnZCC38uU3cF55DdxBILWfQfxi9qayHs43ChdSkFlmpvw7F4/yHbwc3izh2pBS8z4MDjL6qXLXGbYS0Xl94Fwdh/12A+i5yz/Q1CjriBwdn9H5Rxxeo81u+MbCZtwg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767711965; c=relaxed/simple;
-	bh=AuF0ZNWNX8tx+EqQ6ge6AqRotPQTjft/0huFQJnmnwc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oRI5tgy2BU2gNQ49TdeI8MHw5DIm8FTwf/y5/quM5tOjafjOMIDHY8P3FmW4JrcE/rpDr74lpO5SprOPglDUYFgExDVHnCrcPtbUVDJ8kkDqF02yAnt039yKBn5OqbbrFCM5pGWHFZKcasbDTDIbeJOCzXGv+tUUz48qa6Mhzlw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=UVhoiYgS; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1767711957;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=bndakk8tV+THlPhBiVbOCDHYYU6NOemGYWdM8KPqmKE=;
-	b=UVhoiYgSWqhSMSP1w0kiD2oOJaJhwyHXeLB491SH7vJB7kNmHK5YlvGIBxSdGLDrtyKyM5
-	cTOxGtcnPHfMJG/QxKPa2mKArA4WzjMWhv2IodJ844EI7c36oknbDz7qPl2rnSGlbXSog9
-	Zwjxf9Jh9sI5tSuiwKjZ17tfwRCO/6E=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-274-c5fQlrvFMJqIfzUET8KE7A-1; Tue,
- 06 Jan 2026 10:05:19 -0500
-X-MC-Unique: c5fQlrvFMJqIfzUET8KE7A-1
-X-Mimecast-MFC-AGG-ID: c5fQlrvFMJqIfzUET8KE7A_1767711901
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 93ADC197732A;
-	Tue,  6 Jan 2026 15:04:31 +0000 (UTC)
-Received: from fedora (unknown [10.72.116.130])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A601819560A7;
-	Tue,  6 Jan 2026 15:04:25 +0000 (UTC)
-Date: Tue, 6 Jan 2026 23:04:20 +0800
-From: Ming Lei <ming.lei@redhat.com>
-To: djiony2011@gmail.com
-Cc: axboe@kernel.dk, gregkh@linuxfoundation.org,
-	ionut.nechita@windriver.com, linux-block@vger.kernel.org,
-	linux-kernel@vger.kernel.org, muchun.song@linux.dev,
-	sashal@kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] block: Fix WARN_ON in blk_mq_run_hw_queue when
- called from interrupt context
-Message-ID: <aV0kdKSvufPFflQ8@fedora>
-References: <aUnu1HdMqQbksLeY@fedora>
- <20260106111411.6435-1-ionut.nechita@windriver.com>
+	s=arc-20240116; t=1767711905; c=relaxed/simple;
+	bh=xszaQ3qzOot1odzGyBA0Zkfa9b0Ivks3e8yQFqhs2jc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Osx2tXnDrEEqvsdg1ZrVEz66qpco1w+4b9qiYVkdrtR+WFtEEZZX0pBxqUCS15As8bvqubtE52IzTJmYGSDMOdbG6pvvhH8PFZQTbJRQEnarjx0zdA6fZ4mBhbkO6+rnSxM7sAfKsKKDWPcyf0AN7EbPrjOqMoSxjmfGFFc9HVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=InUmX2Tc; arc=none smtp.client-ip=209.85.210.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-7e1651ae0d5so914828b3a.1
+        for <stable@vger.kernel.org>; Tue, 06 Jan 2026 07:05:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1767711901; x=1768316701; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HCgDdsFcTcXxf+qbWNQRt/nwxivkvn3dRLkqvh820N0=;
+        b=InUmX2Tc85X+x4r1XsBfynIkmazzuKxkR4u+dpkAHvul0xSw+BeGD/9SAhp9Bq77Go
+         XGqgUM5aZJeylku7TEDr4kYRwbnH8Uln41jW3De/Yc0G0BfCc7GD+Qz2L0XxQdqyfyHK
+         ugpnj9OtaUgXdhfIozd3XfVq9K0QX8Qf+V4dx+3oEhuMpDxPds7pjibwrJ30yUGnj23O
+         sXCQxNFAKbkAFPnM1noZzT39K2I/x2VvHINveqRBwpIp7CV/YrSzQpip9HhkurwGBSAQ
+         wCV8t06fGv28Id8n65INMNw2+8ahemFmK76qQvt5qfxCi7axA6Wa1OFnbfsmZG00G99A
+         AwmA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767711901; x=1768316701;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=HCgDdsFcTcXxf+qbWNQRt/nwxivkvn3dRLkqvh820N0=;
+        b=HLia2vwEYTgdnuLlJV4atN+b55/hjBHhrPVwZXBnSj/8WKkmgPqRRhsagebk35/oX6
+         v46mQY6zGhWzUO2x94HyFix20o7EoO1lxa9SE0TzAdSN8UmGtpmFeKBZfIxVipPbrjyn
+         zO0Xk3dHJbscfNfNzdEqN8C47ryZgElpWCE4tVRK6gr+kNULfq+kV3rx8M9esWUtBCGE
+         /pqDq/Q9j01YuXHBxeJ4d3OofIOe+F07LquMz9ARdtLugcQgpCU4514TlbOMbG466lBM
+         ZiXb7Tt4Toh171KwEknUHvsEcxogPKhKL8wAgVHBOduyotLIhlGTXLVg2EknHPee/pF6
+         El+w==
+X-Forwarded-Encrypted: i=1; AJvYcCU8aXytNRlFffbVk4uUjQu1Nm6LXz2iD4M/U12GWVp21/zzD+Re1rZPd04MFqdtTmQArMqO5T4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yydj9cZyX7ezPSegvsgKFq3EEEB2NQ0JqfYlU1w/FFjcTbTRBg0
+	e0vDMD7RQaY4ZSj9FFUi1jztMrk/Vq9PeYo3v62qLwLb83cjjGC7g0G4
+X-Gm-Gg: AY/fxX45h4JPqk1uVjf+UdZzxEt8fmYjEUX4HeMDYi/Ezxg7F1AbjYIkmCWHja5m3U5
+	I0ODeT7uog/Gl0+FzTPqy6aJoW7rTezyxUlc0WYyIrqEQA5r8TwHVLHe3Jxcj7fT3Muu7fxGCQe
+	lz72zlj7y/QL0OQQfOdK0hKPlY1Fz8wuNpZZZO7AbWohvvn7KuwIyGoZ30Dfrypx4HgcdVtZjvW
+	X0meV97qiMQq5/GCIQSq/gXVwnUWGvttElklFpxOmnjkR6xLqfDJ3B+OBIYaEj1i4BLpiLs0XOb
+	I2gJ4Auj0lZSr837nk2WHl9YrmSnhT7cKoyhrbyt8lsePwnIr6UpGNYhubGJzJ3zLf/GK+KRs1A
+	q2QPzjy+v57gBcGCirE1TUZBugYIKMOWkFMEy34broQ2zQw9/LjS8tql0DeewQmIQ5+p93xNqw1
+	b37KwHzercSXX1P9tWGXo=
+X-Google-Smtp-Source: AGHT+IHDogIdZKcYrYsV8f80P4yM3C43vbE23Xgd+qTKk7rTQsoMMRcLT36sPlF6l2euTU7zw8ZVRA==
+X-Received: by 2002:a05:6a20:244a:b0:34f:2070:89d5 with SMTP id adf61e73a8af0-389822449d3mr2785149637.11.1767711901107;
+        Tue, 06 Jan 2026 07:05:01 -0800 (PST)
+Received: from minh.. ([14.187.47.150])
+        by smtp.googlemail.com with ESMTPSA id 41be03b00d2f7-c4cbfc2f481sm2674231a12.10.2026.01.06.07.04.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 06 Jan 2026 07:05:00 -0800 (PST)
+From: Bui Quang Minh <minhquangbui99@gmail.com>
+To: netdev@vger.kernel.org
+Cc: "Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	virtualization@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	bpf@vger.kernel.org,
+	Bui Quang Minh <minhquangbui99@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH net v3 1/3] virtio-net: don't schedule delayed refill worker
+Date: Tue,  6 Jan 2026 22:04:36 +0700
+Message-ID: <20260106150438.7425-2-minhquangbui99@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260106150438.7425-1-minhquangbui99@gmail.com>
+References: <20260106150438.7425-1-minhquangbui99@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260106111411.6435-1-ionut.nechita@windriver.com>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Content-Transfer-Encoding: 8bit
 
-On Tue, Jan 06, 2026 at 01:14:11PM +0200, djiony2011@gmail.com wrote:
-> From: Ionut Nechita <ionut.nechita@windriver.com>
-> 
-> Hi Ming,
-> 
-> Thank you for the review. You're absolutely right to ask for clarification - I need to
-> correct my commit message as it's misleading about the actual call path.
-> 
-> > Can you show the whole stack trace in the warning? The in-code doesn't
-> > indicate that freeze queue can be called from scsi's interrupt context.
-> 
-> Here's the complete stack trace from the WARNING at blk_mq_run_hw_queue:
-> 
-> [Mon Dec 22 10:18:18 2025] WARNING: CPU: 190 PID: 2041 at block/blk-mq.c:2291 blk_mq_run_hw_queue+0x1fa/0x260
-> [Mon Dec 22 10:18:18 2025] Modules linked in:
-> [Mon Dec 22 10:18:18 2025] CPU: 190 PID: 2041 Comm: kworker/u385:1 Tainted: G        W          6.6.0-1-rt-amd64 #1  Debian 6.6.71-1
+When we fail to refill the receive buffers, we schedule a delayed worker
+to retry later. However, this worker creates some concurrency issues.
+For example, when the worker runs concurrently with virtnet_xdp_set,
+both need to temporarily disable queue's NAPI before enabling again.
+Without proper synchronization, a deadlock can happen when
+napi_disable() is called on an already disabled NAPI. That
+napi_disable() call will be stuck and so will the subsequent
+napi_enable() call.
 
-There is so big change between 6.6.0-1-rt and 6.19, because Real-Time "PREEMPT_RT" Support Merged For Linux 6.12
+To simplify the logic and avoid further problems, we will instead retry
+refilling in the next NAPI poll.
 
-https://www.phoronix.com/news/Linux-6.12-Does-Real-Time
+Fixes: 4bc12818b363 ("virtio-net: disable delayed refill when pausing rx")
+Reported-by: Paolo Abeni <pabeni@redhat.com>
+Closes: https://netdev-ctrl.bots.linux.dev/logs/vmksft/drv-hw-dbg/results/400961/3-xdp-py/stderr
+Cc: stable@vger.kernel.org
+Suggested-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
+---
+ drivers/net/virtio_net.c | 48 +++++++++++++++++++++-------------------
+ 1 file changed, 25 insertions(+), 23 deletions(-)
 
-
-> [Mon Dec 22 10:18:18 2025] Hardware name: Dell Inc. PowerEdge R7615/09K9WP, BIOS 1.11.2 12/19/2024
-> [Mon Dec 22 10:18:18 2025] Workqueue: events_unbound async_run_entry_fn
-> [Mon Dec 22 10:18:18 2025] RIP: 0010:blk_mq_run_hw_queue+0x1fa/0x260
-> [Mon Dec 22 10:18:18 2025] Code: ff 75 68 44 89 f6 e8 e5 45 c0 ff e9 ac fe ff ff e8 2b 70 c0 ff 48 89 ef e8 b3 a0 00 00 5b 5d 41 5c 41 5d 41 5e e9 26 9e c0 ff <0f> 0b e9 43 fe ff ff e8 0a 70 c0 ff 48 8b 85 d0 00 00 00 48 8b 80
-> [Mon Dec 22 10:18:18 2025] RSP: 0018:ff630f098528fb98 EFLAGS: 00010206
-> [Mon Dec 22 10:18:18 2025] RAX: 0000000000ff0000 RBX: 0000000000000000 RCX: 0000000000000000
-> [Mon Dec 22 10:18:18 2025] RDX: 0000000000ff0000 RSI: 0000000000000000 RDI: ff3edc0247159400
-> [Mon Dec 22 10:18:18 2025] RBP: ff3edc0247159400 R08: ff3edc0247159400 R09: ff630f098528fb60
-> [Mon Dec 22 10:18:18 2025] R10: 0000000000000000 R11: 0000000045069ed3 R12: 0000000000000000
-> [Mon Dec 22 10:18:18 2025] R13: ff3edc024715a828 R14: 0000000000000000 R15: 0000000000000000
-> [Mon Dec 22 10:18:18 2025] FS:  0000000000000000(0000) GS:ff3edc10fd380000(0000) knlGS:0000000000000000
-> [Mon Dec 22 10:18:18 2025] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> [Mon Dec 22 10:18:18 2025] CR2: 0000000000000000 CR3: 000000073961a001 CR4: 0000000000771ee0
-> [Mon Dec 22 10:18:18 2025] PKRU: 55555554
-> [Mon Dec 22 10:18:18 2025] Call Trace:
-> [Mon Dec 22 10:18:18 2025]  <TASK>
-> [Mon Dec 22 10:18:18 2025]  ? __warn+0x89/0x140
-> [Mon Dec 22 10:18:18 2025]  ? blk_mq_run_hw_queue+0x1fa/0x260
-> [Mon Dec 22 10:18:18 2025]  ? report_bug+0x198/0x1b0
-> [Mon Dec 22 10:18:18 2025]  ? handle_bug+0x53/0x90
-> [Mon Dec 22 10:18:18 2025]  ? exc_invalid_op+0x18/0x70
-> [Mon Dec 22 10:18:18 2025]  ? asm_exc_invalid_op+0x1a/0x20
-> [Mon Dec 22 10:18:18 2025]  ? blk_mq_run_hw_queue+0x1fa/0x260
-> [Mon Dec 22 10:18:18 2025]  blk_mq_run_hw_queues+0x6c/0x130
-> [Mon Dec 22 10:18:18 2025]  blk_queue_start_drain+0x12/0x40
-> [Mon Dec 22 10:18:18 2025]  blk_mq_destroy_queue+0x37/0x70
-> [Mon Dec 22 10:18:18 2025]  __scsi_remove_device+0x6a/0x180
-> [Mon Dec 22 10:18:18 2025]  scsi_alloc_sdev+0x357/0x360
-> [Mon Dec 22 10:18:18 2025]  scsi_probe_and_add_lun+0x8ac/0xc00
-> [Mon Dec 22 10:18:18 2025]  ? srso_alias_return_thunk+0x5/0xfbef5
-> [Mon Dec 22 10:18:18 2025]  ? dev_set_name+0x57/0x80
-> [Mon Dec 22 10:18:18 2025]  ? srso_alias_return_thunk+0x5/0xfbef5
-> [Mon Dec 22 10:18:18 2025]  ? attribute_container_add_device+0x4d/0x130
-> [Mon Dec 22 10:18:18 2025]  __scsi_scan_target+0xf0/0x520
-> [Mon Dec 22 10:18:18 2025]  ? srso_alias_return_thunk+0x5/0xfbef5
-> [Mon Dec 22 10:18:18 2025]  ? sched_clock_cpu+0x64/0x190
-> [Mon Dec 22 10:18:18 2025]  scsi_scan_channel+0x57/0x90
-> [Mon Dec 22 10:18:18 2025]  scsi_scan_host_selected+0xd4/0x110
-> [Mon Dec 22 10:18:18 2025]  do_scan_async+0x1c/0x190
-> [Mon Dec 22 10:18:18 2025]  async_run_entry_fn+0x2f/0x130
-> [Mon Dec 22 10:18:18 2025]  process_one_work+0x175/0x370
-> [Mon Dec 22 10:18:18 2025]  worker_thread+0x280/0x390
-> [Mon Dec 22 10:18:18 2025]  ? __pfx_worker_thread+0x10/0x10
-> [Mon Dec 22 10:18:18 2025]  kthread+0xdd/0x110
-> [Mon Dec 22 10:18:18 2025]  ? __pfx_kthread+0x10/0x10
-> [Mon Dec 22 10:18:18 2025]  ret_from_fork+0x31/0x50
-> [Mon Dec 22 10:18:18 2025]  ? __pfx_kthread+0x10/0x10
-> [Mon Dec 22 10:18:18 2025]  ret_from_fork_asm+0x1b/0x30
-> [Mon Dec 22 10:18:18 2025]  </TASK>
-> [Mon Dec 22 10:18:18 2025] ---[ end trace 0000000000000000 ]---
-> 
-> ## Important clarifications:
-> 
-> 1. **Not freeze queue, but drain during destroy**: My commit message was incorrect.
->    The call path is:
->    blk_mq_destroy_queue() -> blk_queue_start_drain() -> blk_mq_run_hw_queues(q, false)
-> 
->    This is NOT during blk_freeze_queue_start(), but during queue destruction when a
->    SCSI device probe fails and cleanup is triggered.
-> 
-> 2. **Not true interrupt context**: You're correct that this isn't from an interrupt
->    handler. The workqueue context is process context, not interrupt context.
-> 
-> 3. **The actual problem on PREEMPT_RT**: There's a preceding "scheduling while atomic"
->    error that provides the real context:
-> 
-> [Mon Dec 22 10:18:18 2025] BUG: scheduling while atomic: kworker/u385:1/2041/0x00000002
-> [Mon Dec 22 10:18:18 2025] Call Trace:
-> [Mon Dec 22 10:18:18 2025]  dump_stack_lvl+0x37/0x50
-> [Mon Dec 22 10:18:18 2025]  __schedule_bug+0x52/0x60
-> [Mon Dec 22 10:18:18 2025]  __schedule+0x87d/0xb10
-> [Mon Dec 22 10:18:18 2025]  rt_mutex_schedule+0x21/0x40
-> [Mon Dec 22 10:18:18 2025]  rt_mutex_slowlock_block.constprop.0+0x33/0x170
-> [Mon Dec 22 10:18:18 2025]  __rt_mutex_slowlock_locked.constprop.0+0xc4/0x1e0
-> [Mon Dec 22 10:18:18 2025]  mutex_lock+0x44/0x60
-> [Mon Dec 22 10:18:18 2025]  __cpuhp_state_add_instance_cpuslocked+0x41/0x110
-> [Mon Dec 22 10:18:18 2025]  __cpuhp_state_add_instance+0x48/0xd0
-> [Mon Dec 22 10:18:18 2025]  blk_mq_realloc_hw_ctxs+0x405/0x420
-
-Why is the above warning related with your patch?
-
-> [Mon Dec 22 10:18:18 2025]  blk_mq_init_allocated_queue+0x10a/0x480
-> 
-> The context is atomic because on PREEMPT_RT, some spinlock earlier in the call chain has
-> been converted to an rt_mutex, and the code is holding that lock. When blk_mq_run_hw_queues()
-> is called with async=false, it triggers kblockd_mod_delayed_work_on(), which calls
-> in_interrupt(), and this returns true because preempt_count() is non-zero due to the
-> rt_mutex being held.
-> 
-> ## What this means:
-> 
-> The issue is specific to PREEMPT_RT where:
-> - Spinlocks become sleeping mutexes (rt_mutex)
-> - Holding an rt_mutex sets preempt_count, making in_interrupt() return true
-> - blk_mq_run_hw_queues() with async=false hits WARN_ON_ONCE(!async && in_interrupt())
-
-If you think the same issue exists on recent kernel, show the stack trace.
-
-Or please share how preempt is disabled in the above blk_mq_run_hw_queues code
-path.
-
-
-Thanks,
-Ming
+diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+index 1bb3aeca66c6..f986abf0c236 100644
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -3046,16 +3046,16 @@ static int virtnet_receive(struct receive_queue *rq, int budget,
+ 	else
+ 		packets = virtnet_receive_packets(vi, rq, budget, xdp_xmit, &stats);
+ 
++	u64_stats_set(&stats.packets, packets);
+ 	if (rq->vq->num_free > min((unsigned int)budget, virtqueue_get_vring_size(rq->vq)) / 2) {
+-		if (!try_fill_recv(vi, rq, GFP_ATOMIC)) {
+-			spin_lock(&vi->refill_lock);
+-			if (vi->refill_enabled)
+-				schedule_delayed_work(&vi->refill, 0);
+-			spin_unlock(&vi->refill_lock);
+-		}
++		if (!try_fill_recv(vi, rq, GFP_ATOMIC))
++			/* We need to retry refilling in the next NAPI poll so
++			 * we must return budget to make sure the NAPI is
++			 * repolled.
++			 */
++			packets = budget;
+ 	}
+ 
+-	u64_stats_set(&stats.packets, packets);
+ 	u64_stats_update_begin(&rq->stats.syncp);
+ 	for (i = 0; i < ARRAY_SIZE(virtnet_rq_stats_desc); i++) {
+ 		size_t offset = virtnet_rq_stats_desc[i].offset;
+@@ -3230,9 +3230,10 @@ static int virtnet_open(struct net_device *dev)
+ 
+ 	for (i = 0; i < vi->max_queue_pairs; i++) {
+ 		if (i < vi->curr_queue_pairs)
+-			/* Make sure we have some buffers: if oom use wq. */
+-			if (!try_fill_recv(vi, &vi->rq[i], GFP_KERNEL))
+-				schedule_delayed_work(&vi->refill, 0);
++			/* Pre-fill rq agressively, to make sure we are ready to
++			 * get packets immediately.
++			 */
++			try_fill_recv(vi, &vi->rq[i], GFP_KERNEL);
+ 
+ 		err = virtnet_enable_queue_pair(vi, i);
+ 		if (err < 0)
+@@ -3472,16 +3473,15 @@ static void __virtnet_rx_resume(struct virtnet_info *vi,
+ 				struct receive_queue *rq,
+ 				bool refill)
+ {
+-	bool running = netif_running(vi->dev);
+-	bool schedule_refill = false;
++	if (netif_running(vi->dev)) {
++		/* Pre-fill rq agressively, to make sure we are ready to get
++		 * packets immediately.
++		 */
++		if (refill)
++			try_fill_recv(vi, rq, GFP_KERNEL);
+ 
+-	if (refill && !try_fill_recv(vi, rq, GFP_KERNEL))
+-		schedule_refill = true;
+-	if (running)
+ 		virtnet_napi_enable(rq);
+-
+-	if (schedule_refill)
+-		schedule_delayed_work(&vi->refill, 0);
++	}
+ }
+ 
+ static void virtnet_rx_resume_all(struct virtnet_info *vi)
+@@ -3829,11 +3829,13 @@ static int virtnet_set_queues(struct virtnet_info *vi, u16 queue_pairs)
+ 	}
+ succ:
+ 	vi->curr_queue_pairs = queue_pairs;
+-	/* virtnet_open() will refill when device is going to up. */
+-	spin_lock_bh(&vi->refill_lock);
+-	if (dev->flags & IFF_UP && vi->refill_enabled)
+-		schedule_delayed_work(&vi->refill, 0);
+-	spin_unlock_bh(&vi->refill_lock);
++	if (dev->flags & IFF_UP) {
++		local_bh_disable();
++		for (int i = 0; i < vi->curr_queue_pairs; ++i)
++			virtqueue_napi_schedule(&vi->rq[i].napi, vi->rq[i].vq);
++
++		local_bh_enable();
++	}
+ 
+ 	return 0;
+ }
+-- 
+2.43.0
 
 
