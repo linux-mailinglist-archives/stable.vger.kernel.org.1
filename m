@@ -1,50 +1,53 @@
-Return-Path: <stable+bounces-206015-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206007-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60855CFA926
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:19:47 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84E0CCFA8BA
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:17:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9831E307C9C2
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 19:18:26 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C0D9C301D1E3
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 19:17:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9264184039;
-	Tue,  6 Jan 2026 18:03:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 184FD3446CE;
+	Tue,  6 Jan 2026 18:03:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c+Xcoqgp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H+6JXTVa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E924284B26;
-	Tue,  6 Jan 2026 18:03:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7D5A33B6E1;
+	Tue,  6 Jan 2026 18:03:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767722617; cv=none; b=NLqcA5gWkbD6+/Y7pwzQJnf9Kohokh6GmO6vC/b6KFdDvlb4is3PhXgC2PlnshY77XWXi6VAMuCYeFXGoCGqPpTyCas+XsT2oXAFRsvfQ9I3P6TyntxIEtwqqqTVTrJKcU9MavbuuI4DJcslsb8ENTCF4jnLhQu12Rwc1BK409Y=
+	t=1767722591; cv=none; b=OmFH+lvGaX7nrJAaXuIjcivTYd1kAzju/gllUI7jJxQzCokDBq9vScKm9JSP1DTYZcp9ewLkG+4VkOGxt33Ns0dvNEDzCMCe/DVnyi3oNYWy28kJwEu3HqNLtVZy7RnAzMAGYVOuQh+okAa7HloWe34B9F8WbuaxJUKJCfpegsw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767722617; c=relaxed/simple;
-	bh=gf9XdvP7AvckO+vz2mWF5b8IdE6RAIXnjZsSzxyULmQ=;
+	s=arc-20240116; t=1767722591; c=relaxed/simple;
+	bh=ccdmvEBZ+VTeSXJjzpbDWvecnLeYn8dq/kBPvsOllm4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H3hR52OfhhAVf3xdwoEcb668lvfcuU8dmN5sHwAsVr5Lxeus9Rw2Clr2/5aef0rhBM/kdVTHvFshULWaJF9FIz4GQ8fKHNy6RycDcQUUFmi2McDrm+zMRxzLlmAXT8vCN4d07Z5ERHt5qiQ1P3wHXdayF5PV4OiJqAH734yu1Qs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c+Xcoqgp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9A4EC116C6;
-	Tue,  6 Jan 2026 18:03:36 +0000 (UTC)
+	 MIME-Version; b=lmbReGhmGQoMkxuBgJrxRbXIelotjX3+CyS/JOHTlhwyZNIy8/P26lhF8P/Edd7L7mjO8w6FH3G0E5WgGt9v4loLQUHCy21sVnTM1ZSFbSDIX+vTybuWQVqsUm+0iB1Fs4ZdNNguiTKn5SwPOfRgolJ8ZQ4J2UOvQhvWDp8DjVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H+6JXTVa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37477C116C6;
+	Tue,  6 Jan 2026 18:03:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767722617;
-	bh=gf9XdvP7AvckO+vz2mWF5b8IdE6RAIXnjZsSzxyULmQ=;
+	s=korg; t=1767722591;
+	bh=ccdmvEBZ+VTeSXJjzpbDWvecnLeYn8dq/kBPvsOllm4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c+Xcoqgpq2minvLq3AuOMpfc/R4NsmkKgT4BfFuydOaaBKSJOP+A7dUYn+FJjSDfp
-	 BdCydoLepltiMqq5Yv2F+d8GtM0dW76xlQdIbhASZzsmsDUiGv/d/umHQiKRVebluo
-	 4ydsI7n5uSJtd6PwFUrEIQx57tK3sye/TcifIKnA=
+	b=H+6JXTVaJAVZMXdWw96wVtp47Rni8WX1oMaKcEkbh5SpNlaMNdfxhSXiP5Tnk01MI
+	 /bGtTo5HvuFtxZJuTG9+B2IKcUg172ToTkIVDbSh8aws+sZJBzQ3WJyWs9uGWEd90S
+	 TJrBeSA3nbVSHYiE9BWf9NXMBzF9JQ+kgbiVBm0U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chenghao Duan <duanchenghao@kylinos.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.18 309/312] LoongArch: BPF: Enhance the bpf_arch_text_poke() function
-Date: Tue,  6 Jan 2026 18:06:23 +0100
-Message-ID: <20260106170559.037779115@linuxfoundation.org>
+	SeongJae Park <sj@kernel.org>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <davidgow@google.com>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.18 311/312] mm/damon/tests/core-kunit: handle alloc failures on damon_test_split_regions_of()
+Date: Tue,  6 Jan 2026 18:06:25 +0100
+Message-ID: <20260106170559.111588295@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
 References: <20260106170547.832845344@linuxfoundation.org>
@@ -63,60 +66,68 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chenghao Duan <duanchenghao@kylinos.cn>
+From: SeongJae Park <sj@kernel.org>
 
-commit 73721d8676771c6c7b06d4e636cc053fc76afefd upstream.
+damon_test_split_regions_of() is assuming all dynamic memory allocation in
+it will succeed.  Those are indeed likely in the real use cases since
+those allocations are too small to fail, but theoretically those could
+fail.  In the case, inappropriate memory access can happen.  Fix it by
+appropriately cleanup pre-allocated memory and skip the execution of the
+remaining tests in the failure cases.
 
-Enhance the bpf_arch_text_poke() function to enable accurate location
-of BPF program entry points.
-
-When modifying the entry point of a BPF program, skip the "move t0, ra"
-instruction to ensure the correct logic and copy of the jump address.
-
-Cc: stable@vger.kernel.org
-Fixes: 677e6123e3d2 ("LoongArch: BPF: Disable trampoline for kernel module function trace")
-Signed-off-by: Chenghao Duan <duanchenghao@kylinos.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Link: https://lkml.kernel.org/r/20251101182021.74868-9-sj@kernel.org
+Fixes: 17ccae8bb5c9 ("mm/damon: add kunit tests")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: Brendan Higgins <brendan.higgins@linux.dev>
+Cc: David Gow <davidgow@google.com>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: <stable@vger.kernel.org>	[5.15+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+(cherry picked from commit eded254cb69044bd4abde87394ea44909708d7c0)
+Signed-off-by: SeongJae Park <sj@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/net/bpf_jit.c |   17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
+ mm/damon/tests/core-kunit.h |   20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
---- a/arch/loongarch/net/bpf_jit.c
-+++ b/arch/loongarch/net/bpf_jit.c
-@@ -1307,6 +1307,10 @@ int bpf_arch_text_poke(void *ip, enum bp
- 		       void *old_addr, void *new_addr)
- {
- 	int ret;
-+	unsigned long size = 0;
-+	unsigned long offset = 0;
-+	void *image = NULL;
-+	char namebuf[KSYM_NAME_LEN];
- 	bool is_call = (poke_type == BPF_MOD_CALL);
- 	u32 old_insns[LOONGARCH_LONG_JUMP_NINSNS] = {[0 ... 4] = INSN_NOP};
- 	u32 new_insns[LOONGARCH_LONG_JUMP_NINSNS] = {[0 ... 4] = INSN_NOP};
-@@ -1314,9 +1318,20 @@ int bpf_arch_text_poke(void *ip, enum bp
- 	/* Only poking bpf text is supported. Since kernel function entry
- 	 * is set up by ftrace, we rely on ftrace to poke kernel functions.
- 	 */
--	if (!is_bpf_text_address((unsigned long)ip))
-+	if (!__bpf_address_lookup((unsigned long)ip, &size, &offset, namebuf))
- 		return -ENOTSUPP;
+--- a/mm/damon/tests/core-kunit.h
++++ b/mm/damon/tests/core-kunit.h
+@@ -278,15 +278,35 @@ static void damon_test_split_regions_of(
+ 	struct damon_target *t;
+ 	struct damon_region *r;
  
-+	image = ip - offset;
-+
-+	/* zero offset means we're poking bpf prog entry */
-+	if (offset == 0) {
-+		/* skip to the nop instruction in bpf prog entry:
-+		 * move t0, ra
-+		 * nop
-+		 */
-+		ip = image + LOONGARCH_INSN_SIZE;
++	if (!c)
++		kunit_skip(test, "ctx alloc fail");
+ 	t = damon_new_target();
++	if (!t) {
++		damon_destroy_ctx(c);
++		kunit_skip(test, "target alloc fail");
 +	}
-+
- 	ret = emit_jump_or_nops(old_addr, ip, old_insns, is_call);
- 	if (ret)
- 		return ret;
+ 	r = damon_new_region(0, 22);
++	if (!r) {
++		damon_destroy_ctx(c);
++		damon_free_target(t);
++		kunit_skip(test, "region alloc fail");
++	}
+ 	damon_add_region(r, t);
+ 	damon_split_regions_of(t, 2, DAMON_MIN_REGION);
+ 	KUNIT_EXPECT_LE(test, damon_nr_regions(t), 2u);
+ 	damon_free_target(t);
+ 
+ 	t = damon_new_target();
++	if (!t) {
++		damon_destroy_ctx(c);
++		kunit_skip(test, "second target alloc fail");
++	}
+ 	r = damon_new_region(0, 220);
++	if (!r) {
++		damon_destroy_ctx(c);
++		damon_free_target(t);
++		kunit_skip(test, "second region alloc fail");
++	}
+ 	damon_add_region(r, t);
+ 	damon_split_regions_of(t, 4, DAMON_MIN_REGION);
+ 	KUNIT_EXPECT_LE(test, damon_nr_regions(t), 4u);
 
 
 
