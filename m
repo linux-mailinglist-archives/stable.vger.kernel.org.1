@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-205922-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205643-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09038CFA5E2
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:56:53 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B0D9CFA324
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:34:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0BE5D340ACB6
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:13:57 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2659B3030230
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:34:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09DED36CDF5;
-	Tue,  6 Jan 2026 17:58:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42BB42FDC27;
+	Tue,  6 Jan 2026 17:42:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N/k9e7hu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KBKKhjU4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B812036CDEF;
-	Tue,  6 Jan 2026 17:58:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F27902FD7C3;
+	Tue,  6 Jan 2026 17:42:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767722311; cv=none; b=lLIMwtc6bC+NqaQkavmghsVDC72j1+66xaqFwKozpyF179pPlALyHGdIzZWCuFaAJi0KJN2+PD4aSbuf4xOEDQoIBNtIHOn7wfYzxcQBOO750Fe4E/mrTGukU6cx9t4lr6Hal3kKKN+nnPWDz8N8aCoudWsLyeLwzClKU8472D0=
+	t=1767721374; cv=none; b=FlcIWrlHxAHXaroBfrIJnwxxol/tyH2WCUshBzVfFTINVBRHgJtMUWFznYqq/W+9CdXsparene+jDYve4qXCjaK4ea4EGhY5xhyvNCD3HubOY15+JaI0pFHbP+Ra8+wiGY8SjJaxL65+sX2pX0ganChVgfGvASh5m9v3TU4B1Ng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767722311; c=relaxed/simple;
-	bh=F//olfWLEpSlAsWGzw48FNIS4x/yg/y80nOHLA/liOs=;
+	s=arc-20240116; t=1767721374; c=relaxed/simple;
+	bh=Qkmh3FBoey17/0Cn3R9A8zMdccy9DrwLtCfkunaSeUg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E0ivJFDorfbsW4B8KXKbka3usCMN5bgWD9uknou/6gHnmNz9DR50n1LndgnP56FeANDr5tYkGiE1dp4N5NyADdYkLMpyZr7bsXY+rTZvT995XaP5b6fqQ7MqOhxXByCIo12MfScM6MCuLKSs8F2KKv+2keaHLufxjq+aseamIDQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N/k9e7hu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27A71C116C6;
-	Tue,  6 Jan 2026 17:58:30 +0000 (UTC)
+	 MIME-Version; b=MhwLP/8la3W8qUYfQAJ+iDAQrc4ZV0P8tcbCwp911N2/D71A3V+8WlMGM0XZzunluyi6in9g5Y5mcRM0JbWL3Rh4D72VHchBMDD21ls19fI3cqllRPCXePjMCwvdq8TpQlI6zEnZ+E/AWosn/mIvLFRfFhAb+IMBxs56JTzv1m4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KBKKhjU4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 684CEC116C6;
+	Tue,  6 Jan 2026 17:42:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767722311;
-	bh=F//olfWLEpSlAsWGzw48FNIS4x/yg/y80nOHLA/liOs=;
+	s=korg; t=1767721373;
+	bh=Qkmh3FBoey17/0Cn3R9A8zMdccy9DrwLtCfkunaSeUg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N/k9e7huSOdu7bIJh6qf5XhgZY/but+llBHW3Z/VBkNNXmnu+I/+1O0vMZYVnQiJR
-	 NaWd74WXqS5HIbHBzt2e8zKq/ZMuc8VasrykifD/tSbA1o0SO2cX525xXBbKHfMaWV
-	 rRTMhU+sNe1GlZaN/41oNaT4mlQcem8bvehrc1/U=
+	b=KBKKhjU4Na1qxzSwtPFUwHTKtWBjPtW3wb3mIC30E4O9f/DGtUBQU9rNyaKb/njC6
+	 7GT0TD6IBmgAdNdjfUCT9cn98dbf/BNEi1ha0jB63Cfm0u0BfJ/tY7WjHf16thiH2V
+	 ORIsh2pjA7wY1J7BLSHQUdKGbKLpZUbpIowtLUP8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pingfan Liu <piliu@redhat.com>,
-	Baoquan He <bhe@redhat.com>,
-	Mimi Zohar <zohar@linux.ibm.com>,
-	Roberto Sassu <roberto.sassu@huawei.com>,
-	Alexander Graf <graf@amazon.com>,
-	Steven Chen <chenste@linux.microsoft.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.18 225/312] kernel/kexec: change the prototype of kimage_map_segment()
+	Hans de Goede <hdegoede@redhat.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 517/567] gpiolib: acpi: Handle deferred list via new API
 Date: Tue,  6 Jan 2026 18:04:59 +0100
-Message-ID: <20260106170555.993286416@linuxfoundation.org>
+Message-ID: <20260106170510.505523653@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
-References: <20260106170547.832845344@linuxfoundation.org>
+In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
+References: <20260106170451.332875001@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,95 +61,142 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pingfan Liu <piliu@redhat.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-commit fe55ea85939efcbf0e6baa234f0d70acb79e7b58 upstream.
+[ Upstream commit a594877663d1e3d5cf57ec8af739582fc5c47cec ]
 
-The kexec segment index will be required to extract the corresponding
-information for that segment in kimage_map_segment().  Additionally,
-kexec_segment already holds the kexec relocation destination address and
-size.  Therefore, the prototype of kimage_map_segment() can be changed.
+Introduce a new API and handle deferred list via it which moves
+towards isolating the GPIO ACPI and quirk APIs. It will helps
+splitting them completely in the next changes.
 
-Link: https://lkml.kernel.org/r/20251216014852.8737-1-piliu@redhat.com
-Fixes: 07d24902977e ("kexec: enable CMA based contiguous allocation")
-Signed-off-by: Pingfan Liu <piliu@redhat.com>
-Acked-by: Baoquan He <bhe@redhat.com>
-Cc: Mimi Zohar <zohar@linux.ibm.com>
-Cc: Roberto Sassu <roberto.sassu@huawei.com>
-Cc: Alexander Graf <graf@amazon.com>
-Cc: Steven Chen <chenste@linux.microsoft.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+No functional changes.
+
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Stable-dep-of: 2d967310c49e ("gpiolib: acpi: Add quirk for Dell Precision 7780")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/kexec.h              |    4 ++--
- kernel/kexec_core.c                |    9 ++++++---
- security/integrity/ima/ima_kexec.c |    4 +---
- 3 files changed, 9 insertions(+), 8 deletions(-)
+ drivers/gpio/gpiolib-acpi.c |   52 +++++++++++++++++++++++++++-----------------
+ drivers/gpio/gpiolib-acpi.h |    5 ++++
+ 2 files changed, 37 insertions(+), 20 deletions(-)
 
---- a/include/linux/kexec.h
-+++ b/include/linux/kexec.h
-@@ -530,7 +530,7 @@ extern bool kexec_file_dbg_print;
- #define kexec_dprintk(fmt, arg...) \
-         do { if (kexec_file_dbg_print) pr_info(fmt, ##arg); } while (0)
- 
--extern void *kimage_map_segment(struct kimage *image, unsigned long addr, unsigned long size);
-+extern void *kimage_map_segment(struct kimage *image, int idx);
- extern void kimage_unmap_segment(void *buffer);
- #else /* !CONFIG_KEXEC_CORE */
- struct pt_regs;
-@@ -540,7 +540,7 @@ static inline void __crash_kexec(struct
- static inline void crash_kexec(struct pt_regs *regs) { }
- static inline int kexec_should_crash(struct task_struct *p) { return 0; }
- static inline int kexec_crash_loaded(void) { return 0; }
--static inline void *kimage_map_segment(struct kimage *image, unsigned long addr, unsigned long size)
-+static inline void *kimage_map_segment(struct kimage *image, int idx)
- { return NULL; }
- static inline void kimage_unmap_segment(void *buffer) { }
- #define kexec_in_progress false
---- a/kernel/kexec_core.c
-+++ b/kernel/kexec_core.c
-@@ -960,17 +960,20 @@ int kimage_load_segment(struct kimage *i
- 	return result;
+--- a/drivers/gpio/gpiolib-acpi.c
++++ b/drivers/gpio/gpiolib-acpi.c
+@@ -350,6 +350,27 @@ static struct gpio_desc *acpi_request_ow
+ 	return desc;
  }
  
--void *kimage_map_segment(struct kimage *image,
--			 unsigned long addr, unsigned long size)
-+void *kimage_map_segment(struct kimage *image, int idx)
- {
-+	unsigned long addr, size, eaddr;
- 	unsigned long src_page_addr, dest_page_addr = 0;
--	unsigned long eaddr = addr + size;
- 	kimage_entry_t *ptr, entry;
- 	struct page **src_pages;
- 	unsigned int npages;
- 	void *vaddr = NULL;
- 	int i;
- 
-+	addr = image->segment[idx].mem;
-+	size = image->segment[idx].memsz;
-+	eaddr = addr + size;
++bool acpi_gpio_add_to_deferred_list(struct list_head *list)
++{
++	bool defer;
 +
- 	/*
- 	 * Collect the source pages and map them in a contiguous VA range.
- 	 */
---- a/security/integrity/ima/ima_kexec.c
-+++ b/security/integrity/ima/ima_kexec.c
-@@ -250,9 +250,7 @@ void ima_kexec_post_load(struct kimage *
- 	if (!image->ima_buffer_addr)
++	mutex_lock(&acpi_gpio_deferred_req_irqs_lock);
++	defer = !acpi_gpio_deferred_req_irqs_done;
++	if (defer)
++		list_add(list, &acpi_gpio_deferred_req_irqs_list);
++	mutex_unlock(&acpi_gpio_deferred_req_irqs_lock);
++
++	return defer;
++}
++
++void acpi_gpio_remove_from_deferred_list(struct list_head *list)
++{
++	mutex_lock(&acpi_gpio_deferred_req_irqs_lock);
++	if (!list_empty(list))
++		list_del_init(list);
++	mutex_unlock(&acpi_gpio_deferred_req_irqs_lock);
++}
++
+ bool acpi_gpio_in_ignore_list(enum acpi_gpio_ignore_list list, const char *controller_in,
+ 			      unsigned int pin_in)
+ {
+@@ -536,7 +557,6 @@ void acpi_gpiochip_request_interrupts(st
+ 	struct acpi_gpio_chip *acpi_gpio;
+ 	acpi_handle handle;
+ 	acpi_status status;
+-	bool defer;
+ 
+ 	if (!chip->parent || !chip->to_irq)
+ 		return;
+@@ -555,14 +575,7 @@ void acpi_gpiochip_request_interrupts(st
+ 	acpi_walk_resources(handle, METHOD_NAME__AEI,
+ 			    acpi_gpiochip_alloc_event, acpi_gpio);
+ 
+-	mutex_lock(&acpi_gpio_deferred_req_irqs_lock);
+-	defer = !acpi_gpio_deferred_req_irqs_done;
+-	if (defer)
+-		list_add(&acpi_gpio->deferred_req_irqs_list_entry,
+-			 &acpi_gpio_deferred_req_irqs_list);
+-	mutex_unlock(&acpi_gpio_deferred_req_irqs_lock);
+-
+-	if (defer)
++	if (acpi_gpio_add_to_deferred_list(&acpi_gpio->deferred_req_irqs_list_entry))
  		return;
  
--	ima_kexec_buffer = kimage_map_segment(image,
--					      image->ima_buffer_addr,
--					      image->ima_buffer_size);
-+	ima_kexec_buffer = kimage_map_segment(image, image->ima_segment_index);
- 	if (!ima_kexec_buffer) {
- 		pr_err("Could not map measurements buffer.\n");
+ 	acpi_gpiochip_request_irqs(acpi_gpio);
+@@ -594,10 +607,7 @@ void acpi_gpiochip_free_interrupts(struc
+ 	if (ACPI_FAILURE(status))
  		return;
+ 
+-	mutex_lock(&acpi_gpio_deferred_req_irqs_lock);
+-	if (!list_empty(&acpi_gpio->deferred_req_irqs_list_entry))
+-		list_del_init(&acpi_gpio->deferred_req_irqs_list_entry);
+-	mutex_unlock(&acpi_gpio_deferred_req_irqs_lock);
++	acpi_gpio_remove_from_deferred_list(&acpi_gpio->deferred_req_irqs_list_entry);
+ 
+ 	list_for_each_entry_safe_reverse(event, ep, &acpi_gpio->events, node) {
+ 		if (event->irq_requested) {
+@@ -615,6 +625,14 @@ void acpi_gpiochip_free_interrupts(struc
+ }
+ EXPORT_SYMBOL_GPL(acpi_gpiochip_free_interrupts);
+ 
++void __init acpi_gpio_process_deferred_list(struct list_head *list)
++{
++	struct acpi_gpio_chip *acpi_gpio, *tmp;
++
++	list_for_each_entry_safe(acpi_gpio, tmp, list, deferred_req_irqs_list_entry)
++		acpi_gpiochip_request_irqs(acpi_gpio);
++}
++
+ int acpi_dev_add_driver_gpios(struct acpi_device *adev,
+ 			      const struct acpi_gpio_mapping *gpios)
+ {
+@@ -1505,14 +1523,8 @@ int acpi_gpio_count(const struct fwnode_
+ /* Run deferred acpi_gpiochip_request_irqs() */
+ static int __init acpi_gpio_handle_deferred_request_irqs(void)
+ {
+-	struct acpi_gpio_chip *acpi_gpio, *tmp;
+-
+ 	mutex_lock(&acpi_gpio_deferred_req_irqs_lock);
+-	list_for_each_entry_safe(acpi_gpio, tmp,
+-				 &acpi_gpio_deferred_req_irqs_list,
+-				 deferred_req_irqs_list_entry)
+-		acpi_gpiochip_request_irqs(acpi_gpio);
+-
++	acpi_gpio_process_deferred_list(&acpi_gpio_deferred_req_irqs_list);
+ 	acpi_gpio_deferred_req_irqs_done = true;
+ 	mutex_unlock(&acpi_gpio_deferred_req_irqs_lock);
+ 
+--- a/drivers/gpio/gpiolib-acpi.h
++++ b/drivers/gpio/gpiolib-acpi.h
+@@ -58,6 +58,11 @@ static inline int acpi_gpio_count(const
+ }
+ #endif
+ 
++void acpi_gpio_process_deferred_list(struct list_head *list);
++
++bool acpi_gpio_add_to_deferred_list(struct list_head *list);
++void acpi_gpio_remove_from_deferred_list(struct list_head *list);
++
+ enum acpi_gpio_ignore_list {
+ 	ACPI_GPIO_IGNORE_WAKE,
+ 	ACPI_GPIO_IGNORE_INTERRUPT,
 
 
 
