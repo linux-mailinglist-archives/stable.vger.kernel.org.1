@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-205868-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205591-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3C0DCFA46F
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:48:09 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85F62CFA372
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:36:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8BD8432ECCAD
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:02:23 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A90F9302DF39
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:36:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11C5F36B07C;
-	Tue,  6 Jan 2026 17:55:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC6A92C21F1;
+	Tue,  6 Jan 2026 17:40:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vy5wgcEm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jARimdOe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C346436B048;
-	Tue,  6 Jan 2026 17:55:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 886CD2222AC;
+	Tue,  6 Jan 2026 17:40:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767722127; cv=none; b=fOi6AWOlowwGQsYNxXmivvtkEuYDw83XKDA4+PoyxAhihyI1qhR7oxcep2/YyMxBy/chJ23hgcXaq19RFQFTPmhnGioF1pjctCrb6GgCgEgnLtZznEhAvGbIqNJki8q+jEBum6FwoS4FcFwVIexSuXf5wpx1n+iDBtnjrQYqWuA=
+	t=1767721202; cv=none; b=EA+RGM2mP+x8MYVjphIX82T74zEdVGyiFezsEUg+tJK35CGntqCxP8/YcmZ6T3CwNeLH80PCPd+DYZH5yU8VtRsmlEbAG5FdXwkGZrHIhD0/wkSa6H8MQf4f0UhUlfnMkD/+U7ueUSo5fOrABA2kPLP2GV5eFriebycRZkEPYJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767722127; c=relaxed/simple;
-	bh=mjrGx7X4QmDw7aqd7Wzwe1iX83o5emwcb6iIZFmJ30c=;
+	s=arc-20240116; t=1767721202; c=relaxed/simple;
+	bh=LPswcb18Q3/Pi4RUF4BlwEr8loQN0TzNTW8nn6mmknc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TgxFkO+vCstewj/yenK0WypUGobg+VnkLySds0Hb/sUA3OO7oFS37Wop3Es4OWhbeEnhS3lQKs3EIbHB7ClaHBvjzF8UsHehdWps8laLNqaXPSF3aLiKoALnOa3QM3D5pc7lKKYh2mWujXuzgu0Yl70ZCNQNG8NLOOc3uMyRjkU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vy5wgcEm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CED3FC16AAE;
-	Tue,  6 Jan 2026 17:55:26 +0000 (UTC)
+	 MIME-Version; b=CXmos4gLGB6nIdRj/NQCtyLSuZvww1HQ0oc2Lh6FHT0lkANhFwwduX/zCzAWE9YxaOU9pScj2jMgQNHoQKQ9fqLzzizEeH933kIRiUZH8CfKbr1/py2SSICNw4EWg+zX4foWds9zNbk8+rT1AryDDahO9B+Jr2OGnnjNqjdkUq8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jARimdOe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9A03C116C6;
+	Tue,  6 Jan 2026 17:40:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767722127;
-	bh=mjrGx7X4QmDw7aqd7Wzwe1iX83o5emwcb6iIZFmJ30c=;
+	s=korg; t=1767721202;
+	bh=LPswcb18Q3/Pi4RUF4BlwEr8loQN0TzNTW8nn6mmknc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vy5wgcEm3MveDbgCweEjgvuMiYyZcN6J6QpZihP2fSanJuPPUNpgUUxD04EW5dNzv
-	 ufQ2yNyk+O454k5XMR8Ylu64GCdZXrwgjiqQhNBK85foNckWXWe/rNTkaxPNtVg5Vg
-	 GwWpoKxKI+JBKHbJrhJ/pD6uW7jprIzEi14CKV1A=
+	b=jARimdOeJ0I+Gqh8e+t+ItQXNVvWwZi4/yVxa077UDsjvxQZo24S2dt65irgdrebX
+	 0mn3NBmF3krWEE/lAKZBrX4lPWcTkiNPs3w8424tqQut9QkIcmZg8RB7kwOvSrR+DV
+	 UN2p9XKfTIylHai3Gt4v3RD41lrYZOJVMUUKXa7M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 6.18 174/312] media: cec: Fix debugfs leak on bus_register() failure
-Date: Tue,  6 Jan 2026 18:04:08 +0100
-Message-ID: <20260106170554.129973581@linuxfoundation.org>
+	CK Hu <ck.hu@mediatek.com>,
+	Johan Hovold <johan@kernel.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Chun-Kuang Hu <chunkuang.hu@kernel.org>
+Subject: [PATCH 6.12 467/567] drm/mediatek: Fix probe resource leaks
+Date: Tue,  6 Jan 2026 18:04:09 +0100
+Message-ID: <20260106170508.624822699@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
-References: <20260106170547.832845344@linuxfoundation.org>
+In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
+References: <20260106170451.332875001@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,40 +61,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Johan Hovold <johan@kernel.org>
 
-commit c43bcd2b2aa3c2ca9d2433c3990ecbc2c47d10eb upstream.
+commit 07c7c640a8eb9e196f357d15d88a59602a947197 upstream.
 
-In cec_devnode_init(), the debugfs directory created with
-debugfs_create_dir() is not removed if bus_register() fails.
-This leaves a stale "cec" entry in debugfs and prevents
-proper module reloading.
+Make sure to unmap and release the component iomap and clock on probe
+failure (e.g. probe deferral) and on driver unbind.
 
-Fix this by removing the debugfs directory in the error path.
+Note that unlike of_iomap(), devm_of_iomap() also checks whether the
+region is already mapped.
 
-Fixes: a56960e8b406 ("[media] cec: add HDMI CEC framework (core)")
-Cc: stable@vger.kernel.org
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Fixes: 119f5173628a ("drm/mediatek: Add DRM Driver for Mediatek SoC MT8173.")
+Cc: stable@vger.kernel.org	# 4.7
+Cc: CK Hu <ck.hu@mediatek.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://patchwork.kernel.org/project/dri-devel/patch/20250923152340.18234-2-johan@kernel.org/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/cec/core/cec-core.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/mediatek/mtk_ddp_comp.c |   20 ++++++++++++++++----
+ drivers/gpu/drm/mediatek/mtk_ddp_comp.h |    2 +-
+ drivers/gpu/drm/mediatek/mtk_drm_drv.c  |    4 ++--
+ 3 files changed, 19 insertions(+), 7 deletions(-)
 
---- a/drivers/media/cec/core/cec-core.c
-+++ b/drivers/media/cec/core/cec-core.c
-@@ -421,6 +421,7 @@ static int __init cec_devnode_init(void)
+--- a/drivers/gpu/drm/mediatek/mtk_ddp_comp.c
++++ b/drivers/gpu/drm/mediatek/mtk_ddp_comp.c
+@@ -621,15 +621,20 @@ int mtk_find_possible_crtcs(struct drm_d
+ 	return ret;
+ }
  
- 	ret = bus_register(&cec_bus_type);
- 	if (ret < 0) {
-+		debugfs_remove_recursive(top_cec_dir);
- 		unregister_chrdev_region(cec_dev_t, CEC_NUM_DEVICES);
- 		pr_warn("cec: bus_register failed\n");
- 		return -EIO;
+-int mtk_ddp_comp_init(struct device_node *node, struct mtk_ddp_comp *comp,
++static void mtk_ddp_comp_clk_put(void *_clk)
++{
++	struct clk *clk = _clk;
++
++	clk_put(clk);
++}
++
++int mtk_ddp_comp_init(struct device *dev, struct device_node *node, struct mtk_ddp_comp *comp,
+ 		      unsigned int comp_id)
+ {
+ 	struct platform_device *comp_pdev;
+ 	enum mtk_ddp_comp_type type;
+ 	struct mtk_ddp_comp_dev *priv;
+-#if IS_REACHABLE(CONFIG_MTK_CMDQ)
+ 	int ret;
+-#endif
+ 
+ 	if (comp_id >= DDP_COMPONENT_DRM_ID_MAX)
+ 		return -EINVAL;
+@@ -670,11 +675,18 @@ int mtk_ddp_comp_init(struct device_node
+ 	if (!priv)
+ 		return -ENOMEM;
+ 
+-	priv->regs = of_iomap(node, 0);
++	priv->regs = devm_of_iomap(dev, node, 0, NULL);
++	if (IS_ERR(priv->regs))
++		return PTR_ERR(priv->regs);
++
+ 	priv->clk = of_clk_get(node, 0);
+ 	if (IS_ERR(priv->clk))
+ 		return PTR_ERR(priv->clk);
+ 
++	ret = devm_add_action_or_reset(dev, mtk_ddp_comp_clk_put, priv->clk);
++	if (ret)
++		return ret;
++
+ #if IS_REACHABLE(CONFIG_MTK_CMDQ)
+ 	ret = cmdq_dev_get_client_reg(comp->dev, &priv->cmdq_reg, 0);
+ 	if (ret)
+--- a/drivers/gpu/drm/mediatek/mtk_ddp_comp.h
++++ b/drivers/gpu/drm/mediatek/mtk_ddp_comp.h
+@@ -350,7 +350,7 @@ static inline void mtk_ddp_comp_encoder_
+ int mtk_ddp_comp_get_id(struct device_node *node,
+ 			enum mtk_ddp_comp_type comp_type);
+ int mtk_find_possible_crtcs(struct drm_device *drm, struct device *dev);
+-int mtk_ddp_comp_init(struct device_node *comp_node, struct mtk_ddp_comp *comp,
++int mtk_ddp_comp_init(struct device *dev, struct device_node *comp_node, struct mtk_ddp_comp *comp,
+ 		      unsigned int comp_id);
+ enum mtk_ddp_comp_type mtk_ddp_comp_get_type(unsigned int comp_id);
+ void mtk_ddp_write(struct cmdq_pkt *cmdq_pkt, unsigned int value,
+--- a/drivers/gpu/drm/mediatek/mtk_drm_drv.c
++++ b/drivers/gpu/drm/mediatek/mtk_drm_drv.c
+@@ -874,7 +874,7 @@ static int mtk_drm_probe(struct platform
+ 							    (void *)private->mmsys_dev,
+ 							    sizeof(*private->mmsys_dev));
+ 		private->ddp_comp[DDP_COMPONENT_DRM_OVL_ADAPTOR].dev = &ovl_adaptor->dev;
+-		mtk_ddp_comp_init(NULL, &private->ddp_comp[DDP_COMPONENT_DRM_OVL_ADAPTOR],
++		mtk_ddp_comp_init(dev, NULL, &private->ddp_comp[DDP_COMPONENT_DRM_OVL_ADAPTOR],
+ 				  DDP_COMPONENT_DRM_OVL_ADAPTOR);
+ 		component_match_add(dev, &match, compare_dev, &ovl_adaptor->dev);
+ 	}
+@@ -943,7 +943,7 @@ static int mtk_drm_probe(struct platform
+ 						   node);
+ 		}
+ 
+-		ret = mtk_ddp_comp_init(node, &private->ddp_comp[comp_id], comp_id);
++		ret = mtk_ddp_comp_init(dev, node, &private->ddp_comp[comp_id], comp_id);
+ 		if (ret) {
+ 			of_node_put(node);
+ 			goto err_node;
 
 
 
