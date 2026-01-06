@@ -1,52 +1,50 @@
-Return-Path: <stable+bounces-205991-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205993-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68611CFA681
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:59:15 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9DF2CFA38A
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:37:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 120F93343070
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:17:43 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9CE44306099C
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:37:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1F2135580E;
-	Tue,  6 Jan 2026 18:02:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A833347BAF;
+	Tue,  6 Jan 2026 18:02:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oV8Vrwp3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="beILhr/O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FA75327C19;
-	Tue,  6 Jan 2026 18:02:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB040327C19;
+	Tue,  6 Jan 2026 18:02:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767722538; cv=none; b=bNdtdcipo4Zxk8dTjh57SKrg/qwVJzFRVt8bCXqbK8xgb6HU+8tELbgJhhWyWpu+ry2FwXKDIAGxXqTxfyph4lDkbylbkdtXKaK3FMdJN8XDp28Udoa9rp2wh1yWK3E3PYcD9CBwT6Sl0GE+yBSgwJl4rOpAHfmcTeguDaG4FjM=
+	t=1767722545; cv=none; b=S1OsRt001oD+1SQH1MdwzQdJsuoGVl+Gsb+QmtWD+GcVE9OS0yIlca4JlFtoS6ov/+JNw/7I90d5hpehr8XPTLRJo6lymFyiifwdbLAKBUEA/hRIng5o9Ni9jKdzKdWwymYBrTEJ3SMLWizzOAtgAbMXdhEWwuD/4B1xn8klSkE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767722538; c=relaxed/simple;
-	bh=4Bg00wOdEOI5Oi3rbWlLIO1RqlV4Dx8lJP63q/XIe+c=;
+	s=arc-20240116; t=1767722545; c=relaxed/simple;
+	bh=0T59KhUC7Ac6GdBqHzgiq5gbfMF/CVVDKN5n0SanLow=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZWItPDz7kjpaX7qshFjrnXopEq0KSMfICFPhkS3aZPavIBxyq2l58D0Zge1Vaw9Wf+CSIpeHKS0N03EXCHRqORBrSH9QCfYhwAdoCjyYrcpigicKI/CUeqV9l6MtQ/skprBIf/9YrP4ROhHsL/PZfA4DElldAfHtxG3KscHObYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oV8Vrwp3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F163BC116C6;
-	Tue,  6 Jan 2026 18:02:17 +0000 (UTC)
+	 MIME-Version:Content-Type; b=PVcgaArjwb4G8omboHFC7E0emovnZLAnTz8/8B4kSDDMR1AIxVRYiOUxtCtm+0dKTxIZd30+Fb9L6i7NF7nMQHdtyoPjvNDy87xIe2z0IdqYyJ2ShyT1OKCNbVE+8uhs3VmrH7rYduh9sfKpR0qdTJzLjJYzfBqGZI0Kn/sz3iM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=beILhr/O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8143C116C6;
+	Tue,  6 Jan 2026 18:02:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767722538;
-	bh=4Bg00wOdEOI5Oi3rbWlLIO1RqlV4Dx8lJP63q/XIe+c=;
+	s=korg; t=1767722545;
+	bh=0T59KhUC7Ac6GdBqHzgiq5gbfMF/CVVDKN5n0SanLow=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oV8Vrwp31z0ieDL7RxrZv2x6Wpqw1cQfUQLDoSg7ZCX5lmFcKlZ5udAWJqrWjtE7h
-	 CkAo/IDOHP5TNYN0bfbPKUWJ/g6ANJgupUSCtWSS7jGTYxLkcdlp4Z5JcyAS2JX0RA
-	 M7zEdlqn6SB2clnFxy8OAWP5SkHQX96IclOfXgzk=
+	b=beILhr/OIwWDElCZB1l0h1jXPDDWEnaCxUIG7afwvQcxV2nlgpcsiJ4nHLIE4Mqa7
+	 pckr+8rGBRseqt8tmw/HZHZPxnWieTEBGveYJA4AcJ2kZ2z1KEiK2zoIk3YlcRFEOT
+	 azIpKZcSopb5WWDjRP/dKxpNymUSbXT2IsP74chI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Senna Tschudin <peter.senna@linux.intel.com>,
-	Ashutosh Dixit <ashutosh.dixit@intel.com>,
-	Harish Chegondi <harish.chegondi@intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
 	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
-Subject: [PATCH 6.18 294/312] drm/xe/eustall: Disallow 0 EU stall property values
-Date: Tue,  6 Jan 2026 18:06:08 +0100
-Message-ID: <20260106170558.491508407@linuxfoundation.org>
+Subject: [PATCH 6.18 295/312] drm/xe: Adjust long-running workload timeslices to reasonable values
+Date: Tue,  6 Jan 2026 18:06:09 +0100
+Message-ID: <20260106170558.527720872@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
 References: <20260106170547.832845344@linuxfoundation.org>
@@ -66,37 +64,58 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ashutosh Dixit <ashutosh.dixit@intel.com>
+From: Matthew Brost <matthew.brost@intel.com>
 
-commit 3767ca4166ad42fa9e34269efeaf9f15995cd92d upstream.
+commit 6f0f404bd289d79a260b634c5b3f4d330b13472c upstream.
 
-An EU stall property value of 0 is invalid and will cause a NPD.
+A 10ms timeslice for long-running workloads is far too long and causes
+significant jitter in benchmarks when the system is shared. Adjust the
+value to 5ms for preempt-fencing VMs, as the resume step there is quite
+costly as memory is moved around, and set it to zero for pagefault VMs,
+since switching back to pagefault mode after dma-fence mode is
+relatively fast.
 
-Reported-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
-Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/6453
-Fixes: 1537ec85ebd7 ("drm/xe/uapi: Introduce API for EU stall sampling")
+Also change min_run_period_ms to 'unsiged int' type rather than 's64' as
+only positive values make sense.
+
+Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
 Cc: stable@vger.kernel.org
-Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Reviewed-by: Harish Chegondi <harish.chegondi@intel.com>
-Link: https://patch.msgid.link/20251212061850.1565459-4-ashutosh.dixit@intel.com
-(cherry picked from commit 5bf763e908bf795da4ad538d21c1ec41f8021f76)
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+Reviewed-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Link: https://patch.msgid.link/20251212182847.1683222-2-matthew.brost@intel.com
+(cherry picked from commit 33a5abd9a68394aa67f9618b20eee65ee8702ff4)
 Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/xe_eu_stall.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/xe/xe_vm.c       |    5 ++++-
+ drivers/gpu/drm/xe/xe_vm_types.h |    2 +-
+ 2 files changed, 5 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/xe/xe_eu_stall.c
-+++ b/drivers/gpu/drm/xe/xe_eu_stall.c
-@@ -290,7 +290,7 @@ static int xe_eu_stall_user_ext_set_prop
- 		return -EFAULT;
+--- a/drivers/gpu/drm/xe/xe_vm.c
++++ b/drivers/gpu/drm/xe/xe_vm.c
+@@ -1481,7 +1481,10 @@ struct xe_vm *xe_vm_create(struct xe_dev
+ 	INIT_WORK(&vm->destroy_work, vm_destroy_work_func);
  
- 	if (XE_IOCTL_DBG(xe, ext.property >= ARRAY_SIZE(xe_set_eu_stall_property_funcs)) ||
--	    XE_IOCTL_DBG(xe, ext.pad))
-+	    XE_IOCTL_DBG(xe, !ext.property) || XE_IOCTL_DBG(xe, ext.pad))
- 		return -EINVAL;
+ 	INIT_LIST_HEAD(&vm->preempt.exec_queues);
+-	vm->preempt.min_run_period_ms = 10;	/* FIXME: Wire up to uAPI */
++	if (flags & XE_VM_FLAG_FAULT_MODE)
++		vm->preempt.min_run_period_ms = 0;
++	else
++		vm->preempt.min_run_period_ms = 5;
  
- 	idx = array_index_nospec(ext.property, ARRAY_SIZE(xe_set_eu_stall_property_funcs));
+ 	for_each_tile(tile, xe, id)
+ 		xe_range_fence_tree_init(&vm->rftree[id]);
+--- a/drivers/gpu/drm/xe/xe_vm_types.h
++++ b/drivers/gpu/drm/xe/xe_vm_types.h
+@@ -268,7 +268,7 @@ struct xe_vm {
+ 		 * @min_run_period_ms: The minimum run period before preempting
+ 		 * an engine again
+ 		 */
+-		s64 min_run_period_ms;
++		unsigned int min_run_period_ms;
+ 		/** @exec_queues: list of exec queues attached to this VM */
+ 		struct list_head exec_queues;
+ 		/** @num_exec_queues: number exec queues attached to this VM */
 
 
 
