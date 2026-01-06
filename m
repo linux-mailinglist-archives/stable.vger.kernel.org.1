@@ -1,94 +1,126 @@
-Return-Path: <stable+bounces-205112-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205113-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81791CF9281
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 16:48:48 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 655E4CF91F7
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 16:41:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 794F9308952C
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5E85F3045480
 	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 15:41:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5141E23A9AD;
-	Tue,  6 Jan 2026 15:31:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD8D933BBA1;
+	Tue,  6 Jan 2026 15:36:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FyvM5OUU"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7043E6FC5;
-	Tue,  6 Jan 2026 15:31:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73C4533B971
+	for <stable@vger.kernel.org>; Tue,  6 Jan 2026 15:36:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767713517; cv=none; b=aXSmB1FTXzm03gzbd/zpCLsK30IT0G5vkbii2wDr3sf5R5NokATRZ1tCl0imOG8ykH1NAbjaQTfc8IidQcBc7gtnOK4h1wki1uNFlPiXEQiFpuqUv7UCkHj2ydoydMhEXFC3kl2Rs59A1fJ6lBAl7GD2/5wBxcACjnd1Natx118=
+	t=1767713787; cv=none; b=SqVAdBzuACf3EVTZ4X1hLzizRwGZsCTrDPfmWTEwKbSHpV40U08E0lOsjnnlfteWiiswgDe+hBTEJcwR7VOYtYWsemhSOjrwA2d2Tc7C7rOon9MRhDGWnDrMA/15ReHXi5xiG9Nk2AkzJMGQkfc55FhzUJTX2shPXTb3v5snmSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767713517; c=relaxed/simple;
-	bh=wJ868SthR8cJ99tIgLhHTd2k4GKn7vnQkbfuQpLaouo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DSlyy8bbGodErDdCdMxZtes8j8rwh9BjRakesYVnjf4/1g/DWTH0LVNREiwEJ9pjGykcOBz6YueL9V833AuNWzd1y9KjZRpRUWFr7gV+4GKj479AY9ImxgIkKtyIcyVbuOugt67fLbf2LOEztLym2meaeLgr9iGimXxJ2HnnV0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 06DC5497;
-	Tue,  6 Jan 2026 07:31:48 -0800 (PST)
-Received: from J2N7QTR9R3 (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 958933F5A1;
-	Tue,  6 Jan 2026 07:31:52 -0800 (PST)
-Date: Tue, 6 Jan 2026 15:31:16 +0000
-From: Mark Rutland <mark.rutland@arm.com>
-To: Breno Leitao <leitao@debian.org>
-Cc: Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Laura Abbott <labbott@redhat.com>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>, kernel-team@meta.com,
-	puranjay@kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2] arm64: Disable branch profiling for all arm64 code
-Message-ID: <aV0qxGioAXxkh6QD@J2N7QTR9R3>
-References: <20260106-annotated-v2-1-fb7600ebd47f@debian.org>
- <aVz-NHMG7rSJ9u1N@J2N7QTR9R3>
- <tj43kozcibuidfzoqzrvk6gsxylddfpyftkdiy7xb2zm7yncx5@z33xu7tavuts>
+	s=arc-20240116; t=1767713787; c=relaxed/simple;
+	bh=aiZ8ye9+a/3GNAtogIAHR8uU/bFu7Wq0IskBPQv2D1g=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=US18jddhdMP2I6LwQri1vOI+dZexGVPaj8I9zn/Q1ZQMYRzXYvK4FDKnXLyGr52auSho9qBAwF/yWzlKAsC8Zkk6jIFHnNqZ+oHoRH4r4b8hVDwZ/VepDZlClfVpDztVO9/ddZBtDs51nAEebnJAFGceAv907WhXr6sKvkz4w1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FyvM5OUU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9FF0C116C6;
+	Tue,  6 Jan 2026 15:36:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1767713787;
+	bh=aiZ8ye9+a/3GNAtogIAHR8uU/bFu7Wq0IskBPQv2D1g=;
+	h=Subject:To:Cc:From:Date:From;
+	b=FyvM5OUUbVVqURZctpa0YNqy1MPh+oMQ1zYIVCC8LuneDAJ0lSJRxSnbYldEzn3zf
+	 WdlSUcQnW3pM3B5A2YrquRsRkVAYkbx9xdZD6f38W5NZh6b6w1+cSaQPdRe0keQEtC
+	 OHe4PPJ7p5gOGgvF2MRQK93Y2uU0W4IU+uNWo4/8=
+Subject: FAILED: patch "[PATCH] drm/mediatek: ovl_adaptor: Fix probe device leaks" failed to apply to 6.12-stable tree
+To: johan@kernel.org,angelogioacchino.delregno@collabora.com,chunkuang.hu@kernel.org,nancy.lin@mediatek.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Tue, 06 Jan 2026 16:36:23 +0100
+Message-ID: <2026010623-surrender-evolve-4b79@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <tj43kozcibuidfzoqzrvk6gsxylddfpyftkdiy7xb2zm7yncx5@z33xu7tavuts>
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-On Tue, Jan 06, 2026 at 06:05:37AM -0800, Breno Leitao wrote:
-> On Tue, Jan 06, 2026 at 12:21:47PM +0000, Mark Rutland wrote:
-> > On Tue, Jan 06, 2026 at 02:16:35AM -0800, Breno Leitao wrote:
-> > > The arm64 kernel doesn't boot with annotated branches
-> > > (PROFILE_ANNOTATED_BRANCHES) enabled and CONFIG_DEBUG_VIRTUAL together.
-> > > 
-> > > Bisecting it, I found that disabling branch profiling in arch/arm64/mm
-> > > solved the problem. Narrowing down a bit further, I found that
-> > > physaddr.c is the file that needs to have branch profiling disabled to
-> > > get the machine to boot.
-> > > 
-> > > I suspect that it might invoke some ftrace helper very early in the boot
-> > > process and ftrace is still not enabled(!?).
-> > > 
-> > > Rather than playing whack-a-mole with individual files, disable branch
-> > > profiling for the entire arch/arm64 tree, similar to what x86 already
-> > > does in arch/x86/Kbuild.
-> > > 
-> > > Cc: stable@vger.kernel.org
-> > > Fixes: ec6d06efb0bac ("arm64: Add support for CONFIG_DEBUG_VIRTUAL")
-> > > Signed-off-by: Breno Leitao <leitao@debian.org>
-> > 
-> > I don't think ec6d06efb0bac is to blame here, and CONFIG_DEBUG_VIRTUAL
-> > is unsound in a number of places, so I'd prefer to remove that Fixes tag
-> > and backport this for all stable trees.
-> 
-> That is fair, thanks for the review.
-> 
-> Should I submit a new version without the fixes tag, or, do you guys do
-> it while merging the patch?
 
-I assume that Catalin or Will can handle that when applying (if they
-agree with me); no need to respin.
+The patch below does not apply to the 6.12-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Mark.
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git checkout FETCH_HEAD
+git cherry-pick -x e0f44f74ed6313e50b38eb39a2c7f210ae208db2
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026010623-surrender-evolve-4b79@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From e0f44f74ed6313e50b38eb39a2c7f210ae208db2 Mon Sep 17 00:00:00 2001
+From: Johan Hovold <johan@kernel.org>
+Date: Tue, 23 Sep 2025 17:23:40 +0200
+Subject: [PATCH] drm/mediatek: ovl_adaptor: Fix probe device leaks
+
+Make sure to drop the references taken to the component devices by
+of_find_device_by_node() during probe on probe failure (e.g. probe
+deferral) and on driver unbind.
+
+Fixes: 453c3364632a ("drm/mediatek: Add ovl_adaptor support for MT8195")
+Cc: stable@vger.kernel.org	# 6.4
+Cc: Nancy.Lin <nancy.lin@mediatek.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://patchwork.kernel.org/project/dri-devel/patch/20250923152340.18234-6-johan@kernel.org/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+
+diff --git a/drivers/gpu/drm/mediatek/mtk_disp_ovl_adaptor.c b/drivers/gpu/drm/mediatek/mtk_disp_ovl_adaptor.c
+index fe97bb97e004..c0af3e3b51d5 100644
+--- a/drivers/gpu/drm/mediatek/mtk_disp_ovl_adaptor.c
++++ b/drivers/gpu/drm/mediatek/mtk_disp_ovl_adaptor.c
+@@ -527,6 +527,13 @@ bool mtk_ovl_adaptor_is_comp_present(struct device_node *node)
+ 	       type == OVL_ADAPTOR_TYPE_PADDING;
+ }
+ 
++static void ovl_adaptor_put_device(void *_dev)
++{
++	struct device *dev = _dev;
++
++	put_device(dev);
++}
++
+ static int ovl_adaptor_comp_init(struct device *dev, struct component_match **match)
+ {
+ 	struct mtk_disp_ovl_adaptor *priv = dev_get_drvdata(dev);
+@@ -560,6 +567,11 @@ static int ovl_adaptor_comp_init(struct device *dev, struct component_match **ma
+ 		if (!comp_pdev)
+ 			return -EPROBE_DEFER;
+ 
++		ret = devm_add_action_or_reset(dev, ovl_adaptor_put_device,
++					       &comp_pdev->dev);
++		if (ret)
++			return ret;
++
+ 		priv->ovl_adaptor_comp[id] = &comp_pdev->dev;
+ 
+ 		drm_of_component_match_add(dev, match, component_compare_of, node);
+
 
