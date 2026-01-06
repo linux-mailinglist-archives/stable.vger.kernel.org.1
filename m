@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-205618-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205897-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E27DCFA31C
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:34:28 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51C61CFA0F6
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:19:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E2831302C900
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:34:25 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9C42E308329C
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:16:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C90D2F3C19;
-	Tue,  6 Jan 2026 17:41:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D8AF35FF4F;
+	Tue,  6 Jan 2026 17:57:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p97jnFWO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yI1S111z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A1231F1932;
-	Tue,  6 Jan 2026 17:41:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1617C3590BA;
+	Tue,  6 Jan 2026 17:57:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721290; cv=none; b=RoMnWiTuLKUBKp+CSXDmusA00mJQocJOFOPEW09peSSg5KIKGUFxOaUeqKUKMo8ftHAUfqPlJ+RDIRytUrx63aHQULZm83Ku7VRGl7pdfJIWmmBe3itY8TGLVoLinqAI4PlAnIisRn5lOGYc3fAiBANosIt8smHzMipcWL/s5SM=
+	t=1767722228; cv=none; b=NFW34VTLJo6PRLZSOKC1Ehk+CFW1D4HXGdt6IjkX3ybIJ+8x9NcZrhqIbIcm2EJkdo59P0bIXsG41ce+vSj96jbBXhqwNYcz7X41OVsK6m4DmVeSTAssF9PJ+xiVLhzk7bEtKYfPh63J3ZUbpvRGP/ADOI7v+owbf72BbZkn3xg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721290; c=relaxed/simple;
-	bh=w+luoWE+cg4S/yoJJ0J/DdDdd3l3f76OJw0cwrN4aBg=;
+	s=arc-20240116; t=1767722228; c=relaxed/simple;
+	bh=JNcKi3zojhwPQYohldBI4sV0zg97L077+Wl4Vt/g50Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o2P0DTWUvxv8r0RBOMtLw5RvnHqzwWhZjwvDHDTvtncUANv890uJiN5kh2+k39MMcRpCHrbC3kc0y8hNiLnUCD0stViPMPR3jKYmhn6AS4rhB0z/e14YMYKLA8nY3J+Eu8+lEXLy841X05skNd8Jr7v8TXtrjByVJKglF1BtLgA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p97jnFWO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C3CDC116C6;
-	Tue,  6 Jan 2026 17:41:29 +0000 (UTC)
+	 MIME-Version; b=Ngwuqu22teVYSy312yRzpnhs1ZJmh7hzPkQ5YTJvwrR2MaB2e4RUW+/jBYovOEp2AmjbMnq5uXBCoisY0sxyNcz+tOpwq7oN5m5x3XQ9MVu1KRtgJLHchdqihBif+OKL6puSwP6tDrnFcfXeeveGzcgqL1OhDBgGSzzT7CUECNo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yI1S111z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CE70C16AAE;
+	Tue,  6 Jan 2026 17:57:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721290;
-	bh=w+luoWE+cg4S/yoJJ0J/DdDdd3l3f76OJw0cwrN4aBg=;
+	s=korg; t=1767722228;
+	bh=JNcKi3zojhwPQYohldBI4sV0zg97L077+Wl4Vt/g50Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p97jnFWOTvtIxqghwkoJ5SM2lLz7scdF16vXR9xzEEfZp5fySC/39p1em0PpqnoxN
-	 nNDrP6nsDRGPRYqIvjzKIiI92yMKMy0bHydjdudXYf4O4HQuWxFOk7RxuRavRFw6cD
-	 wvo8DhE5amX4pfVzp+ZO/WgDVM26kOZrRxdSW0Ic=
+	b=yI1S111zUSSSa/49kqENGv9fUgAU2V0ssSBQW4vQGR4k2NxQqzc0WSyguvW7g2si8
+	 /MOkq+9AEflHSp4/R8gQjMxUz4eni6dkfl9e1G6fDe46Rk6/bfLDyZg+ZXJmoa/leq
+	 PwQpXapnL+AalfXnn/kg9xaCzxpuiYC429YF92GY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Akhil P Oommen <akhilpo@oss.qualcomm.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Rob Clark <robin.clark@oss.qualcomm.com>
-Subject: [PATCH 6.12 460/567] drm/msm/a6xx: Fix out of bound IO access in a6xx_get_gmu_registers
+	Mikulas Patocka <mpatocka@redhat.com>,
+	"Uladzislau Rezki (Sony)" <urezki@gmail.com>
+Subject: [PATCH 6.18 168/312] dm-bufio: align write boundary on physical block size
 Date: Tue,  6 Jan 2026 18:04:02 +0100
-Message-ID: <20260106170508.362574487@linuxfoundation.org>
+Message-ID: <20260106170553.915019998@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
-References: <20260106170451.332875001@linuxfoundation.org>
+In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
+References: <20260106170547.832845344@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,40 +59,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Akhil P Oommen <akhilpo@oss.qualcomm.com>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-commit 779b68a5bf2764c8ed3aa800e41ba0d5d007e1e7 upstream.
+commit d0ac06ae53be0cdb61f5fe6b62d25d3317c51657 upstream.
 
-REG_A6XX_GMU_AO_AHB_FENCE_CTRL register falls under GMU's register
-range. So, use gmu_write() routines to write to this register.
+There may be devices with physical block size larger than 4k.
 
-Fixes: 1707add81551 ("drm/msm/a6xx: Add a6xx gpu state")
+If dm-bufio sends I/O that is not aligned on physical block size,
+performance is degraded.
+
+The 4k minimum alignment limit is there because some SSDs report logical
+and physical block size 512 despite having 4k internally - so dm-bufio
+shouldn't send I/Os not aligned on 4k boundary, because they perform
+badly (the SSD does read-modify-write for them).
+
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Reported-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Akhil P Oommen <akhilpo@oss.qualcomm.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Patchwork: https://patchwork.freedesktop.org/patch/688993/
-Message-ID: <20251118-kaana-gpu-support-v4-1-86eeb8e93fb6@oss.qualcomm.com>
-Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/md/dm-bufio.c |   10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
---- a/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c
-+++ b/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c
-@@ -1231,7 +1231,7 @@ static void a6xx_get_gmu_registers(struc
- 		return;
+--- a/drivers/md/dm-bufio.c
++++ b/drivers/md/dm-bufio.c
+@@ -1374,7 +1374,7 @@ static void submit_io(struct dm_buffer *
+ {
+ 	unsigned int n_sectors;
+ 	sector_t sector;
+-	unsigned int offset, end;
++	unsigned int offset, end, align;
  
- 	/* Set the fence to ALLOW mode so we can access the registers */
--	gpu_write(gpu, REG_A6XX_GMU_AO_AHB_FENCE_CTRL, 0);
-+	gmu_write(&a6xx_gpu->gmu, REG_A6XX_GMU_AO_AHB_FENCE_CTRL, 0);
+ 	b->end_io = end_io;
  
- 	_a6xx_get_gmu_registers(gpu, a6xx_state, &a6xx_gmu_reglist[2],
- 		&a6xx_state->gmu_registers[2], false);
+@@ -1388,9 +1388,11 @@ static void submit_io(struct dm_buffer *
+ 			b->c->write_callback(b);
+ 		offset = b->write_start;
+ 		end = b->write_end;
+-		offset &= -DM_BUFIO_WRITE_ALIGN;
+-		end += DM_BUFIO_WRITE_ALIGN - 1;
+-		end &= -DM_BUFIO_WRITE_ALIGN;
++		align = max(DM_BUFIO_WRITE_ALIGN,
++			bdev_physical_block_size(b->c->bdev));
++		offset &= -align;
++		end += align - 1;
++		end &= -align;
+ 		if (unlikely(end > b->c->block_size))
+ 			end = b->c->block_size;
+ 
 
 
 
