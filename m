@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-205716-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205425-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC5AECF9F85
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:10:13 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C43A2CF9C47
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 18:41:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 13A3E30574CA
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:07:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CDE513055F4A
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:31:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBD0D350A28;
-	Tue,  6 Jan 2026 17:47:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9F132749ED;
+	Tue,  6 Jan 2026 17:30:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VPHa+ss4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ubnjaGu1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86F5E2D1F4E;
-	Tue,  6 Jan 2026 17:47:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76573846F;
+	Tue,  6 Jan 2026 17:30:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721620; cv=none; b=n42pe+GlFBABalB/W8ShiX/frUggs/5JhJDzW5EhpmdZ7Pz0lMdf0ipmtirhaOGy4TteeyvUfqlkb/yCQzv7NBW5Rol4RyTo+ivy5X/AII8bmcmCApmsct8KL/i6ySzxPXPJL//E68Eu+ktzq4/QYw1+5PD+fxRgSdPff2L0jUc=
+	t=1767720649; cv=none; b=qqfU5UMQo1T0CZ99EarsNmjyG8jCiFVgph+DhTxekuGjsspf30MsUTmxd5r7TbjdrqbCC9boVczbGLXvfpVir2dLszm0L2G0vGp6I5XKAam6ZM9lzk+oEvpmXJeuwPCBQLnlzPK++SYs4YorKdDp6+3hMOCGKMuNX2FELY1PZjw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721620; c=relaxed/simple;
-	bh=RByyTSiesJQXphUpfKVl+bKECoD2qOcU/CNzizwYm7w=;
+	s=arc-20240116; t=1767720649; c=relaxed/simple;
+	bh=vAtoFfMvbV4dmiQ4sAL0JCu1+Ke2nEtJCeBp+6V377Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YFd6MqsO5jgIxVbi7+i5/Jb9p+YJX2ZPkcwIAzkj2o3IRMrvcqWKe1xHqc3s8V1qa2nrJnB8hbRxBSSXMm0YzIRoOJJLYo3mFeLPWFjuJYCCqGktu74sI07iF9N3RLCVRq6uZflF1rVCJawUWMi1IkOTMUKk1YPtVE32Idy9k8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VPHa+ss4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9A6CC116C6;
-	Tue,  6 Jan 2026 17:46:59 +0000 (UTC)
+	 MIME-Version; b=DMMjMR/W/iHOTODriX6S81G/BMIJQB58uGD9d7mRg21GFCnufaR+Q6ULjY1iKy6RZC3JOcyuYeXVM+HAzoKLm7OZ5r0WlaCcMrUuRwKy0Rc45k3jp06EGe7h31SzlMDTxnKI6GzI7jhEriuT71NzkWzA8kkoL3ssiy+i5zTUTlk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ubnjaGu1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D95BEC116C6;
+	Tue,  6 Jan 2026 17:30:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721620;
-	bh=RByyTSiesJQXphUpfKVl+bKECoD2qOcU/CNzizwYm7w=;
+	s=korg; t=1767720649;
+	bh=vAtoFfMvbV4dmiQ4sAL0JCu1+Ke2nEtJCeBp+6V377Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VPHa+ss4sOxIF+aemc0etUOb7vdoK+O6GUXat6aZh4oovO2rvoAnseoPsAe1Ot8jF
-	 AIZOpdZDDu6YkLx39Z512VG1Ng1kpWkFw1/oNz2T2DWZXudPz6uboVJHmmy+SWM7le
-	 CLkLaRefBLC5E/w1noxtH58CnSvNH93t+icwqkFc=
+	b=ubnjaGu1Go04gWrK5SuPrTnGuiR2V27mbsxs23DX2nGBFv1aKMifvLFlTQMiC1q/u
+	 TkT/bMQhf7261jG37+rS1bidKV0kL2PefGa+N9pwpoDGkiVJ0lFcik4Rl6KDauvAcL
+	 C5IXZ14N38BZN0DUJ4zUOZS9PKPdbMTUzaLGyyAY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marc Hartmayer <mhartmay@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
+	Kohei Enju <enjuk@amazon.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 008/312] KVM: s390: Fix gmap_helper_zap_one_page() again
+Subject: [PATCH 6.12 300/567] iavf: fix off-by-one issues in iavf_config_rss_reg()
 Date: Tue,  6 Jan 2026 18:01:22 +0100
-Message-ID: <20260106170548.152444548@linuxfoundation.org>
+Message-ID: <20260106170502.430625532@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
-References: <20260106170547.832845344@linuxfoundation.org>
+In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
+References: <20260106170451.332875001@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +63,118 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudio Imbrenda <imbrenda@linux.ibm.com>
+From: Kohei Enju <enjuk@amazon.com>
 
-[ Upstream commit 2f393c228cc519ddf19b8c6c05bf15723241aa96 ]
+[ Upstream commit 6daa2893f323981c7894c68440823326e93a7d61 ]
 
-A few checks were missing in gmap_helper_zap_one_page(), which can lead
-to memory corruption in the guest under specific circumstances.
+There are off-by-one bugs when configuring RSS hash key and lookup
+table, causing out-of-bounds reads to memory [1] and out-of-bounds
+writes to device registers.
 
-Add the missing checks.
+Before commit 43a3d9ba34c9 ("i40evf: Allow PF driver to configure RSS"),
+the loop upper bounds were:
+    i <= I40E_VFQF_{HKEY,HLUT}_MAX_INDEX
+which is safe since the value is the last valid index.
 
-Fixes: 5deafa27d9ae ("KVM: s390: Fix to clear PTE when discarding a swapped page")
-Cc: stable@vger.kernel.org
-Reported-by: Marc Hartmayer <mhartmay@linux.ibm.com>
-Tested-by: Marc Hartmayer <mhartmay@linux.ibm.com>
-Acked-by: Christian Borntraeger <borntraeger@linux.ibm.com>
-Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-[ adapted ptep_zap_softleaf_entry() and softleaf_from_pte() calls to ptep_zap_swap_entry() and pte_to_swp_entry() ]
+That commit changed the bounds to:
+    i <= adapter->rss_{key,lut}_size / 4
+where `rss_{key,lut}_size / 4` is the number of dwords, so the last
+valid index is `(rss_{key,lut}_size / 4) - 1`. Therefore, using `<=`
+accesses one element past the end.
+
+Fix the issues by using `<` instead of `<=`, ensuring we do not exceed
+the bounds.
+
+[1] KASAN splat about rss_key_size off-by-one
+  BUG: KASAN: slab-out-of-bounds in iavf_config_rss+0x619/0x800
+  Read of size 4 at addr ffff888102c50134 by task kworker/u8:6/63
+
+  CPU: 0 UID: 0 PID: 63 Comm: kworker/u8:6 Not tainted 6.18.0-rc2-enjuk-tnguy-00378-g3005f5b77652-dirty #156 PREEMPT(voluntary)
+  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+  Workqueue: iavf iavf_watchdog_task
+  Call Trace:
+   <TASK>
+   dump_stack_lvl+0x6f/0xb0
+   print_report+0x170/0x4f3
+   kasan_report+0xe1/0x1a0
+   iavf_config_rss+0x619/0x800
+   iavf_watchdog_task+0x2be7/0x3230
+   process_one_work+0x7fd/0x1420
+   worker_thread+0x4d1/0xd40
+   kthread+0x344/0x660
+   ret_from_fork+0x249/0x320
+   ret_from_fork_asm+0x1a/0x30
+   </TASK>
+
+  Allocated by task 63:
+   kasan_save_stack+0x30/0x50
+   kasan_save_track+0x14/0x30
+   __kasan_kmalloc+0x7f/0x90
+   __kmalloc_noprof+0x246/0x6f0
+   iavf_watchdog_task+0x28fc/0x3230
+   process_one_work+0x7fd/0x1420
+   worker_thread+0x4d1/0xd40
+   kthread+0x344/0x660
+   ret_from_fork+0x249/0x320
+   ret_from_fork_asm+0x1a/0x30
+
+  The buggy address belongs to the object at ffff888102c50100
+   which belongs to the cache kmalloc-64 of size 64
+  The buggy address is located 0 bytes to the right of
+   allocated 52-byte region [ffff888102c50100, ffff888102c50134)
+
+  The buggy address belongs to the physical page:
+  page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x102c50
+  flags: 0x200000000000000(node=0|zone=2)
+  page_type: f5(slab)
+  raw: 0200000000000000 ffff8881000418c0 dead000000000122 0000000000000000
+  raw: 0000000000000000 0000000080200020 00000000f5000000 0000000000000000
+  page dumped because: kasan: bad access detected
+
+  Memory state around the buggy address:
+   ffff888102c50000: 00 00 00 00 00 00 00 fc fc fc fc fc fc fc fc fc
+   ffff888102c50080: 00 00 00 00 00 00 00 fc fc fc fc fc fc fc fc fc
+  >ffff888102c50100: 00 00 00 00 00 00 04 fc fc fc fc fc fc fc fc fc
+                                       ^
+   ffff888102c50180: 00 00 00 00 00 00 00 00 fc fc fc fc fc fc fc fc
+   ffff888102c50200: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+
+Fixes: 43a3d9ba34c9 ("i40evf: Allow PF driver to configure RSS")
+Signed-off-by: Kohei Enju <enjuk@amazon.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/mm/gmap_helpers.c |    9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/intel/iavf/iavf_main.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/s390/mm/gmap_helpers.c
-+++ b/arch/s390/mm/gmap_helpers.c
-@@ -47,6 +47,7 @@ static void ptep_zap_swap_entry(struct m
- void gmap_helper_zap_one_page(struct mm_struct *mm, unsigned long vmaddr)
- {
- 	struct vm_area_struct *vma;
-+	unsigned long pgstev;
- 	spinlock_t *ptl;
- 	pgste_t pgste;
- 	pte_t *ptep;
-@@ -65,9 +66,13 @@ void gmap_helper_zap_one_page(struct mm_
- 	if (pte_swap(*ptep)) {
- 		preempt_disable();
- 		pgste = pgste_get_lock(ptep);
-+		pgstev = pgste_val(pgste);
+diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
+index 5516795cc250..422af897d933 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf_main.c
++++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
+@@ -1718,11 +1718,11 @@ static int iavf_config_rss_reg(struct iavf_adapter *adapter)
+ 	u16 i;
  
--		ptep_zap_swap_entry(mm, pte_to_swp_entry(*ptep));
--		pte_clear(mm, vmaddr, ptep);
-+		if ((pgstev & _PGSTE_GPS_USAGE_MASK) == _PGSTE_GPS_USAGE_UNUSED ||
-+		    (pgstev & _PGSTE_GPS_ZERO)) {
-+			ptep_zap_swap_entry(mm, pte_to_swp_entry(*ptep));
-+			pte_clear(mm, vmaddr, ptep);
-+		}
+ 	dw = (u32 *)adapter->rss_key;
+-	for (i = 0; i <= adapter->rss_key_size / 4; i++)
++	for (i = 0; i < adapter->rss_key_size / 4; i++)
+ 		wr32(hw, IAVF_VFQF_HKEY(i), dw[i]);
  
- 		pgste_set_unlock(ptep, pgste);
- 		preempt_enable();
+ 	dw = (u32 *)adapter->rss_lut;
+-	for (i = 0; i <= adapter->rss_lut_size / 4; i++)
++	for (i = 0; i < adapter->rss_lut_size / 4; i++)
+ 		wr32(hw, IAVF_VFQF_HLUT(i), dw[i]);
+ 
+ 	iavf_flush(hw);
+-- 
+2.51.0
+
 
 
 
