@@ -1,52 +1,50 @@
-Return-Path: <stable+bounces-205374-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205368-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 546C6CFB0ED
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 22:12:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 42542CFB0E7
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 22:11:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9FB1C304BE4C
+	by sea.lore.kernel.org (Postfix) with ESMTP id 626173049C6C
 	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 21:11:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E64034F46A;
-	Tue,  6 Jan 2026 17:28:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9855934EEF3;
+	Tue,  6 Jan 2026 17:27:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UnYjeRKo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AdyyRSHj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A48A34F278;
-	Tue,  6 Jan 2026 17:28:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5411F34EEEE;
+	Tue,  6 Jan 2026 17:27:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767720480; cv=none; b=mZNa6+HuRlJqj6x5nZIfoGSri/Uz6dUuWkOJT44Jx5Fhq5ceFr3Wfm4P0a0KlSPorNpP6XtLwMT79bIbB12fTwUpgnsiRLviTmT5Xkz0DUijcLTxx+WEOs3TpVetAgD3DpJuIR+J/zF322ZLNHXAQXqnlo0ZcxVB9sFO3JLkiwA=
+	t=1767720460; cv=none; b=Oh3+caHh3pZaK9Re1jVhJ9nGBfIIDdrsOYUtXBdDaHPBgCURiJRH2etgjxbeIBZAHJNUrwg4B3BKSrqiu2zCrsdbP4yw1dzsHM/kWCDLNH5Z2s2N0OZm+Ja3Civbbl8bQQFYtFa8tq32xjSLKiejyfoK9Z9p7eZUl4ncniasPvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767720480; c=relaxed/simple;
-	bh=FEVUhAy4PiGlHwX1GFU1SMzUYZzx3WIkNJNL4izjqRk=;
+	s=arc-20240116; t=1767720460; c=relaxed/simple;
+	bh=kAc/DvJ8ADYHlVvgnTi9GZlJcMTvmqjD21imr2avACg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G8n1Nh9kAkc3gMuyqbNpK2OwNO7TGRCtlVo6PzqUa2p269GUdZlFOu9NqFxt9CnAvpUvWL7D3JLCffM+99nhnShpc8lR87DnwWuPcAO2T3R9kSNbPqy+qbFMn4E1gqW37b1Z7YBdlrGpnple8/ePhEZ1TgsOpRXl11urf65TI8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UnYjeRKo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94B4EC19423;
-	Tue,  6 Jan 2026 17:27:59 +0000 (UTC)
+	 MIME-Version; b=BiLddZjxhpquoriIVIdsH8JsirkArtU/OktTyApdI3EEnW8v+KxkSKNRFPB2sdFog4XrdrmlvAcl4Z3ttjjbruam4dhcBT2L0myDRGnV6L3tCVCXT2IDnjnSD+U+qkulNB8UjKuuc9B/XEgEYWrrC+22AJLnxSvob1mfZyVOwPQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AdyyRSHj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFFBCC16AAE;
+	Tue,  6 Jan 2026 17:27:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767720480;
-	bh=FEVUhAy4PiGlHwX1GFU1SMzUYZzx3WIkNJNL4izjqRk=;
+	s=korg; t=1767720460;
+	bh=kAc/DvJ8ADYHlVvgnTi9GZlJcMTvmqjD21imr2avACg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UnYjeRKoFlmwHmiQC0ULmhR5lWeW6Nezwd7gYt73zaPJo2zIuqrssE0AHHYrqxXSn
-	 PmALRtlJp7e3FWAqdr15xQnpGofNGDfZb3bkVJ6HWxvHptNhBQTkAO4U2yQi++ZMok
-	 o9JSSGouSATHs2P7Q5WgBtzgrBhX5+L9yJhNiYgs=
+	b=AdyyRSHjlnKfB/LV5gc9+dpdpcyG/miVW7ZIVYZlWbXRMKHGP+TMEUpZf7w+o3A76
+	 tAZzBdcEQAiNKYlpEy0Jf+RPoS5PkDRQqwtUWGBook4LtqLYFIt3kT3ibeGJBfXAyz
+	 EchLK5BSrLivKEKiOPgKX0tWF/qsIbVZ4vCkub4Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Xiaole He <hexiaole1994@126.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>
-Subject: [PATCH 6.12 207/567] f2fs: fix age extent cache insertion skip on counter overflow
-Date: Tue,  6 Jan 2026 17:59:49 +0100
-Message-ID: <20260106170458.981682967@linuxfoundation.org>
+	Alexander Potapenko <glider@google.com>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.12 211/567] KVM: Disallow toggling KVM_MEM_GUEST_MEMFD on an existing memslot
+Date: Tue,  6 Jan 2026 17:59:53 +0100
+Message-ID: <20260106170459.127664389@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
 References: <20260106170451.332875001@linuxfoundation.org>
@@ -65,144 +63,88 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Xiaole He <hexiaole1994@126.com>
+From: Sean Christopherson <seanjc@google.com>
 
-commit 27bf6a637b7613fc85fa6af468b7d612d78cd5c0 upstream.
+commit 9935df5333aa503a18de5071f53762b65c783c4c upstream.
 
-The age extent cache uses last_blocks (derived from
-allocated_data_blocks) to determine data age. However, there's a
-conflict between the deletion
-marker (last_blocks=0) and legitimate last_blocks=0 cases when
-allocated_data_blocks overflows to 0 after reaching ULLONG_MAX.
+Reject attempts to disable KVM_MEM_GUEST_MEMFD on a memslot that was
+initially created with a guest_memfd binding, as KVM doesn't support
+toggling KVM_MEM_GUEST_MEMFD on existing memslots.  KVM prevents enabling
+KVM_MEM_GUEST_MEMFD, but doesn't prevent clearing the flag.
 
-In this case, valid extents are incorrectly skipped due to the
-"if (!tei->last_blocks)" check in __update_extent_tree_range().
+Failure to reject the new memslot results in a use-after-free due to KVM
+not unbinding from the guest_memfd instance.  Unbinding on a FLAGS_ONLY
+change is easy enough, and can/will be done as a hardening measure (in
+anticipation of KVM supporting dirty logging on guest_memfd at some point),
+but fixing the use-after-free would only address the immediate symptom.
 
-This patch fixes the issue by:
-1. Reserving ULLONG_MAX as an invalid/deletion marker
-2. Limiting allocated_data_blocks to range [0, ULLONG_MAX-1]
-3. Using F2FS_EXTENT_AGE_INVALID for deletion scenarios
-4. Adjusting overflow age calculation from ULLONG_MAX to (ULLONG_MAX-1)
+  ==================================================================
+  BUG: KASAN: slab-use-after-free in kvm_gmem_release+0x362/0x400 [kvm]
+  Write of size 8 at addr ffff8881111ae908 by task repro/745
 
-Reproducer (using a patched kernel with allocated_data_blocks
-initialized to ULLONG_MAX - 3 for quick testing):
+  CPU: 7 UID: 1000 PID: 745 Comm: repro Not tainted 6.18.0-rc6-115d5de2eef3-next-kasan #3 NONE
+  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 0.0.0 02/06/2015
+  Call Trace:
+   <TASK>
+   dump_stack_lvl+0x51/0x60
+   print_report+0xcb/0x5c0
+   kasan_report+0xb4/0xe0
+   kvm_gmem_release+0x362/0x400 [kvm]
+   __fput+0x2fa/0x9d0
+   task_work_run+0x12c/0x200
+   do_exit+0x6ae/0x2100
+   do_group_exit+0xa8/0x230
+   __x64_sys_exit_group+0x3a/0x50
+   x64_sys_call+0x737/0x740
+   do_syscall_64+0x5b/0x900
+   entry_SYSCALL_64_after_hwframe+0x4b/0x53
+  RIP: 0033:0x7f581f2eac31
+   </TASK>
 
-Step 1: Mount and check initial state
-  # dd if=/dev/zero of=/tmp/test.img bs=1M count=100
-  # mkfs.f2fs -f /tmp/test.img
-  # mkdir -p /mnt/f2fs_test
-  # mount -t f2fs -o loop,age_extent_cache /tmp/test.img /mnt/f2fs_test
-  # cat /sys/kernel/debug/f2fs/status | grep -A 4 "Block Age"
-  Allocated Data Blocks: 18446744073709551612 # ULLONG_MAX - 3
-  Inner Struct Count: tree: 1(0), node: 0
+  Allocated by task 745 on cpu 6 at 9.746971s:
+   kasan_save_stack+0x20/0x40
+   kasan_save_track+0x13/0x50
+   __kasan_kmalloc+0x77/0x90
+   kvm_set_memory_region.part.0+0x652/0x1110 [kvm]
+   kvm_vm_ioctl+0x14b0/0x3290 [kvm]
+   __x64_sys_ioctl+0x129/0x1a0
+   do_syscall_64+0x5b/0x900
+   entry_SYSCALL_64_after_hwframe+0x4b/0x53
 
-Step 2: Create files and write data to trigger overflow
-  # touch /mnt/f2fs_test/{1,2,3,4}.txt; sync
-  # cat /sys/kernel/debug/f2fs/status | grep -A 4 "Block Age"
-  Allocated Data Blocks: 18446744073709551613 # ULLONG_MAX - 2
-  Inner Struct Count: tree: 5(0), node: 1
+  Freed by task 745 on cpu 6 at 9.747467s:
+   kasan_save_stack+0x20/0x40
+   kasan_save_track+0x13/0x50
+   __kasan_save_free_info+0x37/0x50
+   __kasan_slab_free+0x3b/0x60
+   kfree+0xf5/0x440
+   kvm_set_memslot+0x3c2/0x1160 [kvm]
+   kvm_set_memory_region.part.0+0x86a/0x1110 [kvm]
+   kvm_vm_ioctl+0x14b0/0x3290 [kvm]
+   __x64_sys_ioctl+0x129/0x1a0
+   do_syscall_64+0x5b/0x900
+   entry_SYSCALL_64_after_hwframe+0x4b/0x53
 
-  # dd if=/dev/urandom of=/mnt/f2fs_test/1.txt bs=4K count=1; sync
-  # cat /sys/kernel/debug/f2fs/status | grep -A 4 "Block Age"
-  Allocated Data Blocks: 18446744073709551614 # ULLONG_MAX - 1
-  Inner Struct Count: tree: 5(0), node: 2
-
-  # dd if=/dev/urandom of=/mnt/f2fs_test/2.txt bs=4K count=1; sync
-  # cat /sys/kernel/debug/f2fs/status | grep -A 4 "Block Age"
-  Allocated Data Blocks: 18446744073709551615 # ULLONG_MAX
-  Inner Struct Count: tree: 5(0), node: 3
-
-  # dd if=/dev/urandom of=/mnt/f2fs_test/3.txt bs=4K count=1; sync
-  # cat /sys/kernel/debug/f2fs/status | grep -A 4 "Block Age"
-  Allocated Data Blocks: 0 # Counter overflowed!
-  Inner Struct Count: tree: 5(0), node: 4
-
-Step 3: Trigger the bug - next write should create node but gets skipped
-  # dd if=/dev/urandom of=/mnt/f2fs_test/4.txt bs=4K count=1; sync
-  # cat /sys/kernel/debug/f2fs/status | grep -A 4 "Block Age"
-  Allocated Data Blocks: 1
-  Inner Struct Count: tree: 5(0), node: 4
-
-  Expected: node: 5 (new extent node for 4.txt)
-  Actual: node: 4 (extent insertion was incorrectly skipped due to
-  last_blocks = allocated_data_blocks = 0 in __get_new_block_age)
-
-After this fix, the extent node is correctly inserted and node count
-becomes 5 as expected.
-
-Fixes: 71644dff4811 ("f2fs: add block_age-based extent cache")
-Cc: stable@kernel.org
-Signed-off-by: Xiaole He <hexiaole1994@126.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Reported-by: Alexander Potapenko <glider@google.com>
+Fixes: a7800aa80ea4 ("KVM: Add KVM_CREATE_GUEST_MEMFD ioctl() for guest-specific backing memory")
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20251202020334.1171351-2-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/extent_cache.c |    5 +++--
- fs/f2fs/f2fs.h         |    6 ++++++
- fs/f2fs/segment.c      |    9 +++++++--
- 3 files changed, 16 insertions(+), 4 deletions(-)
+ virt/kvm/kvm_main.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/f2fs/extent_cache.c
-+++ b/fs/f2fs/extent_cache.c
-@@ -756,7 +756,7 @@ static void __update_extent_tree_range(s
- 	}
- 	goto out_read_extent_cache;
- update_age_extent_cache:
--	if (!tei->last_blocks)
-+	if (tei->last_blocks == F2FS_EXTENT_AGE_INVALID)
- 		goto out_read_extent_cache;
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -2062,7 +2062,7 @@ int __kvm_set_memory_region(struct kvm *
+ 			return -EINVAL;
+ 		if ((mem->userspace_addr != old->userspace_addr) ||
+ 		    (npages != old->npages) ||
+-		    ((mem->flags ^ old->flags) & KVM_MEM_READONLY))
++		    ((mem->flags ^ old->flags) & (KVM_MEM_READONLY | KVM_MEM_GUEST_MEMFD)))
+ 			return -EINVAL;
  
- 	__set_extent_info(&ei, fofs, len, 0, false,
-@@ -860,7 +860,7 @@ static int __get_new_block_age(struct in
- 			cur_age = cur_blocks - tei.last_blocks;
- 		else
- 			/* allocated_data_blocks overflow */
--			cur_age = ULLONG_MAX - tei.last_blocks + cur_blocks;
-+			cur_age = (ULLONG_MAX - 1) - tei.last_blocks + cur_blocks;
- 
- 		if (tei.age)
- 			ei->age = __calculate_block_age(sbi, cur_age, tei.age);
-@@ -1062,6 +1062,7 @@ void f2fs_update_age_extent_cache_range(
- 	struct extent_info ei = {
- 		.fofs = fofs,
- 		.len = len,
-+		.last_blocks = F2FS_EXTENT_AGE_INVALID,
- 	};
- 
- 	if (!__may_extent_tree(dn->inode, EX_BLOCK_AGE))
---- a/fs/f2fs/f2fs.h
-+++ b/fs/f2fs/f2fs.h
-@@ -644,6 +644,12 @@ enum extent_type {
- 	NR_EXTENT_CACHES,
- };
- 
-+/*
-+ * Reserved value to mark invalid age extents, hence valid block range
-+ * from 0 to ULLONG_MAX-1
-+ */
-+#define F2FS_EXTENT_AGE_INVALID	ULLONG_MAX
-+
- struct extent_info {
- 	unsigned int fofs;		/* start offset in a file */
- 	unsigned int len;		/* length of the extent */
---- a/fs/f2fs/segment.c
-+++ b/fs/f2fs/segment.c
-@@ -3746,8 +3746,13 @@ skip_new_segment:
- 	locate_dirty_segment(sbi, GET_SEGNO(sbi, old_blkaddr));
- 	locate_dirty_segment(sbi, GET_SEGNO(sbi, *new_blkaddr));
- 
--	if (IS_DATASEG(curseg->seg_type))
--		atomic64_inc(&sbi->allocated_data_blocks);
-+	if (IS_DATASEG(curseg->seg_type)) {
-+		unsigned long long new_val;
-+
-+		new_val = atomic64_inc_return(&sbi->allocated_data_blocks);
-+		if (unlikely(new_val == ULLONG_MAX))
-+			atomic64_set(&sbi->allocated_data_blocks, 0);
-+	}
- 
- 	up_write(&sit_i->sentry_lock);
- 
+ 		if (base_gfn != old->base_gfn)
 
 
 
