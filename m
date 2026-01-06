@@ -1,52 +1,50 @@
-Return-Path: <stable+bounces-205990-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205994-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A471CFAEE2
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 21:32:01 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCDC4CFA905
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:18:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A6D753051595
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 20:31:54 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C07293078EFF
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 19:17:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90B79355802;
-	Tue,  6 Jan 2026 18:02:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3670D3559C4;
+	Tue,  6 Jan 2026 18:02:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NDegD8Bx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wrP6R6Dn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BA33327C19;
-	Tue,  6 Jan 2026 18:02:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E30E0281503;
+	Tue,  6 Jan 2026 18:02:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767722535; cv=none; b=IcpTjFIK6XMbGvGnc7IQy1XiUm9/nPsqMa58HPBIPZ9vrQsUzys1M+CvvMVRCr3Cn1duWo6mefEbETNMSmeTXf/Vi0uBVfug9JiIKo5lnSUp2q7us8xeaaDp0U/X0QijGAUnUYqQi27fplOyI4q0tVNY75kJnjJojGfSiLtdae0=
+	t=1767722549; cv=none; b=PrYdRqlM2MJdQAnSJX3J5aUA4i5uOVVWp7w9NQn51sGD34/fdQJXQDcKU36yVJYD6Vz+oVTaPZPyYCRMyBTbjMXA7jA3mgamIwbm3bRxBYVZq+AcIFkOSe5H66Cqi5ASNbMz9sQ7CsNiwEWErUzkh6bAjGh11IbShpbxVlZJ1DE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767722535; c=relaxed/simple;
-	bh=08fv80oZAQAKqakRt8nLHmb195Cl/Z6QpE/qF6q1Y5Y=;
+	s=arc-20240116; t=1767722549; c=relaxed/simple;
+	bh=FvyHbraLLSBECotcK7mgKJkO+K20SFND+D5fDG0F0bk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NQoBNmJFCcmIk415MHhuKmaW5IFm3iVboNSa/+XEbVYIIZP9LipnWmC7BOe9JI2YZcGTVvZvdGONNmR+D8WEUaqocNubpMlwILupVEPRL9CWDk/7L18C8A01viux9eukRcJZiECyAWCFo1iQ//wlBcfRH+9nWIJyPXGZ6tfEnzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NDegD8Bx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFABDC116C6;
-	Tue,  6 Jan 2026 18:02:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=jprediIQFO4ni5aO00Nyjr+4cjxsoKTTy8LPvpYRMqpTF5dFS8TLWXrNN6l/Q8x6u11wX0gM0JcLY6FADPnHAFlNP1w/mnVqy19O6qys3KP7NZGY2m8JQoRVlla6+LfUs8+7O2da93PbvG/uwG/AoUPl31Ya9e96Kjjdlk5CDEs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wrP6R6Dn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50F82C16AAE;
+	Tue,  6 Jan 2026 18:02:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767722535;
-	bh=08fv80oZAQAKqakRt8nLHmb195Cl/Z6QpE/qF6q1Y5Y=;
+	s=korg; t=1767722548;
+	bh=FvyHbraLLSBECotcK7mgKJkO+K20SFND+D5fDG0F0bk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NDegD8BxRnxC7iah/iKCi2nuuIIAc3FkczO0yKCVbKl9iew/f4ix3cJM34kMwewAa
-	 riW8RRs5hhwpwjcALOrkR0PAbjMYkTt2KnKLvCxm6dJQ/PnY9VlvHcN3JbKldS8LCG
-	 NqQYN6RcjXq1gyfcYl5YJIaVsThPo1lY20NR/Z5U=
+	b=wrP6R6DnYHpCpkFiOWwNpbDEaoPuMG07e+Z++MV0/1O72bvKVMMb7w+7aH7+9YVTq
+	 DrzO8Yh5FfbSi9jQ7ibj2VdRZf8WdK/5kk2CQLaeD08SixuGoxEA5I0CdJy0Smyfv1
+	 tHF2BsDSevNnHt4ujBhfcs4T2YdEuu6yIYTpT4q0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Senna Tschudin <peter.senna@linux.intel.com>,
-	Ashutosh Dixit <ashutosh.dixit@intel.com>,
-	Harish Chegondi <harish.chegondi@intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
 	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
-Subject: [PATCH 6.18 293/312] drm/xe/oa: Disallow 0 OA property values
-Date: Tue,  6 Jan 2026 18:06:07 +0100
-Message-ID: <20260106170558.455437411@linuxfoundation.org>
+Subject: [PATCH 6.18 296/312] drm/xe: Use usleep_range for accurate long-running workload timeslicing
+Date: Tue,  6 Jan 2026 18:06:10 +0100
+Message-ID: <20260106170558.563951476@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
 References: <20260106170547.832845344@linuxfoundation.org>
@@ -66,37 +64,63 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ashutosh Dixit <ashutosh.dixit@intel.com>
+From: Matthew Brost <matthew.brost@intel.com>
 
-commit 3595114bc31d1eb5e1996164c901485c1ffac6f7 upstream.
+commit 80f9c601d9c4d26f00356c0a9c461650e7089273 upstream.
 
-An OA property value of 0 is invalid and will cause a NPD.
+msleep is not very accurate in terms of how long it actually sleeps,
+whereas usleep_range is precise. Replace the timeslice sleep for
+long-running workloads with the more accurate usleep_range to avoid
+jitter if the sleep period is less than 20ms.
 
-Reported-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
-Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/6452
-Fixes: cc4e6994d5a2 ("drm/xe/oa: Move functions up so they can be reused for config ioctl")
+Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
 Cc: stable@vger.kernel.org
-Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Reviewed-by: Harish Chegondi <harish.chegondi@intel.com>
-Link: https://patch.msgid.link/20251212061850.1565459-3-ashutosh.dixit@intel.com
-(cherry picked from commit 7a100e6ddcc47c1f6ba7a19402de86ce24790621)
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+Reviewed-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Link: https://patch.msgid.link/20251212182847.1683222-3-matthew.brost@intel.com
+(cherry picked from commit ca415c4d4c17ad676a2c8981e1fcc432221dce79)
 Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/xe_oa.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/xe/xe_guc_submit.c |   20 +++++++++++++++++++-
+ 1 file changed, 19 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/xe/xe_oa.c
-+++ b/drivers/gpu/drm/xe/xe_oa.c
-@@ -1346,7 +1346,7 @@ static int xe_oa_user_ext_set_property(s
- 		     ARRAY_SIZE(xe_oa_set_property_funcs_config));
+--- a/drivers/gpu/drm/xe/xe_guc_submit.c
++++ b/drivers/gpu/drm/xe/xe_guc_submit.c
+@@ -670,6 +670,24 @@ static u32 wq_space_until_wrap(struct xe
+ 	return (WQ_SIZE - q->guc->wqi_tail);
+ }
  
- 	if (XE_IOCTL_DBG(oa->xe, ext.property >= ARRAY_SIZE(xe_oa_set_property_funcs_open)) ||
--	    XE_IOCTL_DBG(oa->xe, ext.pad))
-+	    XE_IOCTL_DBG(oa->xe, !ext.property) || XE_IOCTL_DBG(oa->xe, ext.pad))
- 		return -EINVAL;
++static inline void relaxed_ms_sleep(unsigned int delay_ms)
++{
++	unsigned long min_us, max_us;
++
++	if (!delay_ms)
++		return;
++
++	if (delay_ms > 20) {
++		msleep(delay_ms);
++		return;
++	}
++
++	min_us = mul_u32_u32(delay_ms, 1000);
++	max_us = min_us + 500;
++
++	usleep_range(min_us, max_us);
++}
++
+ static int wq_wait_for_space(struct xe_exec_queue *q, u32 wqi_size)
+ {
+ 	struct xe_guc *guc = exec_queue_to_guc(q);
+@@ -1559,7 +1577,7 @@ static void __guc_exec_queue_process_msg
+ 				since_resume_ms;
  
- 	idx = array_index_nospec(ext.property, ARRAY_SIZE(xe_oa_set_property_funcs_open));
+ 			if (wait_ms > 0 && q->guc->resume_time)
+-				msleep(wait_ms);
++				relaxed_ms_sleep(wait_ms);
+ 
+ 			set_exec_queue_suspended(q);
+ 			disable_scheduling(q, false);
 
 
 
