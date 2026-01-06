@@ -1,52 +1,51 @@
-Return-Path: <stable+bounces-205651-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205659-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43737CFACBC
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:53:43 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB6D1CFAAFD
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:32:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1D0F4318F399
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 19:32:04 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E30F1301CA0E
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 19:31:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DB00302CC0;
-	Tue,  6 Jan 2026 17:43:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69EB7347BA5;
+	Tue,  6 Jan 2026 17:43:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Sm0jmxj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AnFWUNRJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B4893002BA;
-	Tue,  6 Jan 2026 17:43:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DB84347BA7;
+	Tue,  6 Jan 2026 17:43:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721401; cv=none; b=sVg2aekguOEfv9eMYv4B3/30ZjJP8bYd89mboR8VBQIR2ozFhpgK1dKeGTnIp03pynOrIZ9aceJF/s+8oLqrmKQkYpmmCizFvZfygG97AgUOvy9lN9canEX7KS/idpo5mvKRMPHLRroYkWnhZRfJaB9XJ4tUFbhAnczV5g4XY0o=
+	t=1767721427; cv=none; b=hKg3MLix1XdCkKf2SXOuHYisAkCVNYPCUvNE3LnKvN6rbqlTifKnB3S7dgaeInU0FyCq9KjtsWN6GPQpKy/mMWHkRAzBy3kJeik4vyocr2pobuR0fTSsAGgVefqKSXWRlym2HW5dILtpTGW2PBNah4qpcRepcbrxOLnlzSlrkBM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721401; c=relaxed/simple;
-	bh=ROTcuEA1lQm6nTzvfJlh67lCiSbBD5wT6Xrxk6zWZgg=;
+	s=arc-20240116; t=1767721427; c=relaxed/simple;
+	bh=8EG+7gfw2QfRXKPT1NjR0R2sL/ptkbIgE1RNT2LK0xk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c+SF19+vt/KU4/31WDTeo5xUohCn98Ze36FDvupgeIlmtq1PVRwHLNqvQ/ttnx50Mu4j9TyHN0AnsFCgeXYDHbyBx64XcuXcCyb0hYO8e06V6xgaJ2T/NldrGe/nrhcssQCEC41rdsx71hRASQIqAtVB8g1ehfq7wSe5BKsQgdo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Sm0jmxj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76FFFC116C6;
-	Tue,  6 Jan 2026 17:43:20 +0000 (UTC)
+	 MIME-Version; b=AZuh3z+eC9CU1AyQqGwCBUBMqrdoJ0ApgzPPVqvYYSHyrHnV5v5SJb2Dlmtt5PM7xEChBHE76MdpfAK+SpiOsP9olAXEL7D7EFo3sfUTNNTKf7VAPjnVUKty1BGm3Nbeoy5eNBImVB1fi8oaHJHRLPptdVYXY3CnbsWcl5Xcab8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AnFWUNRJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E8BDC19423;
+	Tue,  6 Jan 2026 17:43:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721400;
-	bh=ROTcuEA1lQm6nTzvfJlh67lCiSbBD5wT6Xrxk6zWZgg=;
+	s=korg; t=1767721427;
+	bh=8EG+7gfw2QfRXKPT1NjR0R2sL/ptkbIgE1RNT2LK0xk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2Sm0jmxjW3ymm58a1tqP370/vpDwG7H93G1StIPe8UeWqutJmsZUbkvDMxrGn675Z
-	 8AyRG84ekq/VHCIuRglManRE2TomQ+zWAkEWLSgg/mRa8U9R6NJT6UFrrHbrwaIuSa
-	 +y2GeOfSHNJFz1MqCbzbg+VbpWlbMGr4qL7/p/hw=
+	b=AnFWUNRJy1Lv16MiQad7CucSJUcapJnVPUyOrbICCYD3gKQCwGLUPt8mWezgHMRiM
+	 VmNta6ph3JKBYkORujFuthCG7VWRXIqQl6O3TWJ9F7PDSpvwdmgqp6OvfMLOv93M8f
+	 sdMmuHi4dXGHJ2kBBH9wTrrHluLiJOolM0ghJtU0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiao Ni <xni@redhat.com>,
-	Coly Li <colyli@kernel.org>,
-	Yu Kuai <yukuai3@huawei.com>,
+	Justin Iurman <justin.iurman@uliege.be>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Subject: [PATCH 6.12 524/567] md/raid10: wait barrier before returning discard request with REQ_NOWAIT
-Date: Tue,  6 Jan 2026 18:05:06 +0100
-Message-ID: <20260106170510.774551670@linuxfoundation.org>
+Subject: [PATCH 6.12 526/567] net: ipv6: ioam6: use consistent dst names
+Date: Tue,  6 Jan 2026 18:05:08 +0100
+Message-ID: <20260106170510.849369273@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
 References: <20260106170451.332875001@linuxfoundation.org>
@@ -65,42 +64,131 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Xiao Ni <xni@redhat.com>
+From: Justin Iurman <justin.iurman@uliege.be>
 
-[ Upstream commit 3db4404435397a345431b45f57876a3df133f3b4 ]
+[ Upstream commit d55acb9732d981c7a8e07dd63089a77d2938e382 ]
 
-raid10_handle_discard should wait barrier before returning a discard bio
-which has REQ_NOWAIT. And there is no need to print warning calltrace
-if a discard bio has REQ_NOWAIT flag. Quality engineer usually checks
-dmesg and reports error if dmesg has warning/error calltrace.
+Be consistent and use the same terminology as other lwt users: orig_dst
+is the dst_entry before the transformation, while dst is either the
+dst_entry in the cache or the dst_entry after the transformation
 
-Fixes: c9aa889b035f ("md: raid10 add nowait support")
-Signed-off-by: Xiao Ni <xni@redhat.com>
-Acked-by: Coly Li <colyli@kernel.org>
-Link: https://lore.kernel.org/linux-raid/20250306094938.48952-1-xni@redhat.com
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-[Harshit: Clean backport to 6.12.y]
+Signed-off-by: Justin Iurman <justin.iurman@uliege.be>
+Link: https://patch.msgid.link/20250415112554.23823-2-justin.iurman@uliege.be
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+[Harshit: Backport to 6.12.y]
+Stable-dep-of: 99a2ace61b21 ("net: use dst_dev_rcu() in sk_setup_caps()")
 Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/raid10.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ net/ipv6/ioam6_iptunnel.c |   35 ++++++++++++++++++-----------------
+ 1 file changed, 18 insertions(+), 17 deletions(-)
 
---- a/drivers/md/raid10.c
-+++ b/drivers/md/raid10.c
-@@ -1626,11 +1626,10 @@ static int raid10_handle_discard(struct
- 	if (test_bit(MD_RECOVERY_RESHAPE, &mddev->recovery))
- 		return -EAGAIN;
+--- a/net/ipv6/ioam6_iptunnel.c
++++ b/net/ipv6/ioam6_iptunnel.c
+@@ -338,7 +338,8 @@ static int ioam6_do_encap(struct net *ne
  
--	if (WARN_ON_ONCE(bio->bi_opf & REQ_NOWAIT)) {
-+	if (!wait_barrier(conf, bio->bi_opf & REQ_NOWAIT)) {
- 		bio_wouldblock_error(bio);
- 		return 0;
+ static int ioam6_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+ {
+-	struct dst_entry *dst = skb_dst(skb), *cache_dst = NULL;
++	struct dst_entry *orig_dst = skb_dst(skb);
++	struct dst_entry *dst = NULL;
+ 	struct ioam6_lwt *ilwt;
+ 	int err = -EINVAL;
+ 	u32 pkt_cnt;
+@@ -346,7 +347,7 @@ static int ioam6_output(struct net *net,
+ 	if (skb->protocol != htons(ETH_P_IPV6))
+ 		goto drop;
+ 
+-	ilwt = ioam6_lwt_state(dst->lwtstate);
++	ilwt = ioam6_lwt_state(orig_dst->lwtstate);
+ 
+ 	/* Check for insertion frequency (i.e., "k over n" insertions) */
+ 	pkt_cnt = atomic_fetch_inc(&ilwt->pkt_cnt);
+@@ -354,7 +355,7 @@ static int ioam6_output(struct net *net,
+ 		goto out;
+ 
+ 	local_bh_disable();
+-	cache_dst = dst_cache_get(&ilwt->cache);
++	dst = dst_cache_get(&ilwt->cache);
+ 	local_bh_enable();
+ 
+ 	switch (ilwt->mode) {
+@@ -364,7 +365,7 @@ do_inline:
+ 		if (ipv6_hdr(skb)->nexthdr == NEXTHDR_HOP)
+ 			goto out;
+ 
+-		err = ioam6_do_inline(net, skb, &ilwt->tuninfo, cache_dst);
++		err = ioam6_do_inline(net, skb, &ilwt->tuninfo, dst);
+ 		if (unlikely(err))
+ 			goto drop;
+ 
+@@ -374,7 +375,7 @@ do_encap:
+ 		/* Encapsulation (ip6ip6) */
+ 		err = ioam6_do_encap(net, skb, &ilwt->tuninfo,
+ 				     ilwt->has_tunsrc, &ilwt->tunsrc,
+-				     &ilwt->tundst, cache_dst);
++				     &ilwt->tundst, dst);
+ 		if (unlikely(err))
+ 			goto drop;
+ 
+@@ -392,7 +393,7 @@ do_encap:
+ 		goto drop;
  	}
--	wait_barrier(conf, false);
  
- 	/*
- 	 * Check reshape again to avoid reshape happens after checking
+-	if (unlikely(!cache_dst)) {
++	if (unlikely(!dst)) {
+ 		struct ipv6hdr *hdr = ipv6_hdr(skb);
+ 		struct flowi6 fl6;
+ 
+@@ -403,20 +404,20 @@ do_encap:
+ 		fl6.flowi6_mark = skb->mark;
+ 		fl6.flowi6_proto = hdr->nexthdr;
+ 
+-		cache_dst = ip6_route_output(net, NULL, &fl6);
+-		if (cache_dst->error) {
+-			err = cache_dst->error;
++		dst = ip6_route_output(net, NULL, &fl6);
++		if (dst->error) {
++			err = dst->error;
+ 			goto drop;
+ 		}
+ 
+ 		/* cache only if we don't create a dst reference loop */
+-		if (dst->lwtstate != cache_dst->lwtstate) {
++		if (orig_dst->lwtstate != dst->lwtstate) {
+ 			local_bh_disable();
+-			dst_cache_set_ip6(&ilwt->cache, cache_dst, &fl6.saddr);
++			dst_cache_set_ip6(&ilwt->cache, dst, &fl6.saddr);
+ 			local_bh_enable();
+ 		}
+ 
+-		err = skb_cow_head(skb, LL_RESERVED_SPACE(cache_dst->dev));
++		err = skb_cow_head(skb, LL_RESERVED_SPACE(dst->dev));
+ 		if (unlikely(err))
+ 			goto drop;
+ 	}
+@@ -424,16 +425,16 @@ do_encap:
+ 	/* avoid lwtunnel_output() reentry loop when destination is the same
+ 	 * after transformation (e.g., with the inline mode)
+ 	 */
+-	if (dst->lwtstate != cache_dst->lwtstate) {
++	if (orig_dst->lwtstate != dst->lwtstate) {
+ 		skb_dst_drop(skb);
+-		skb_dst_set(skb, cache_dst);
++		skb_dst_set(skb, dst);
+ 		return dst_output(net, sk, skb);
+ 	}
+ out:
+-	dst_release(cache_dst);
+-	return dst->lwtstate->orig_output(net, sk, skb);
++	dst_release(dst);
++	return orig_dst->lwtstate->orig_output(net, sk, skb);
+ drop:
+-	dst_release(cache_dst);
++	dst_release(dst);
+ 	kfree_skb(skb);
+ 	return err;
+ }
 
 
 
