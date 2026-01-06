@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-205693-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205957-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5946BCF9F37
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:08:36 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92107CFA3A2
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:38:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C7605300384C
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:08:35 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 939A53044843
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:38:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA55C3590C5;
-	Tue,  6 Jan 2026 17:45:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 026DB376BF2;
+	Tue,  6 Jan 2026 18:00:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mRm654Z/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z+HXyhUP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 925C83590B9;
-	Tue,  6 Jan 2026 17:45:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3908376BFD;
+	Tue,  6 Jan 2026 18:00:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721543; cv=none; b=pbT0asb1PMaLJAGEIV2Pdmn/WvVIboQP60K876nLFRhKsoOp4q07Z1dxJJ2CXDVct5o6tYGwdSJaQelwWM6ubPkStaeiwBRWDsguav+ZvVNpWctW4wW87l33LjIGFk7XTlIDXOCqEH+iSwsvTMTsJBh/6ZSOx16GIVDZaLsPc1E=
+	t=1767722425; cv=none; b=duc/J5q6qQSuvqUZv7V3pKcS2ALgmTl9hU/273o11TkCBeJe4XtSpl10i3GS/0k+4Kgn25J3uZMiWqPKnwWUg/2SSJvieJSWrA1vKItihyyWdJhxAtDt/yJGyZlpwZD6gc1Whk9GPKwDCa5m+j1eoc4YsRtrl8FJFYAtmixwzHI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721543; c=relaxed/simple;
-	bh=X6w1RNtIf7D/y+Ip4BG8RuIKzociJEUxHUVZN65zR5M=;
+	s=arc-20240116; t=1767722425; c=relaxed/simple;
+	bh=GuEAsQQHza2ph64jAzU8/uYFIKSpqyn/VBuRebTaRrA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=naTrA9H2Httqk30v5WgP6Y7PWIi+KA8Q3lwC5NoLmD4Jvos5wG9QKKxa392KSbvRZrLM2cPUjBdxdGqn+YJ9mxuVOp88qe8IxPEZ1p+rdSFIPEnwMRyy49tR3B9MeeB0+q6IOPyNPTxiZnxiNxji49Zu9qP2bLyIgt6pWhNg5jU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mRm654Z/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E78DAC16AAE;
-	Tue,  6 Jan 2026 17:45:42 +0000 (UTC)
+	 MIME-Version; b=TiZ7wvfzTC+WtaTlcGV/CWuAarK/+iglP4GJru8RpFJq8KBjIjyHVbUU+Tg9GpaKrHE4H032bVqqpTII2be6yjQAn6epyKmSz+C2QDA1xmPM9A0EMJ0bNQhuVNrWyqVb1zGD1ebQtekiDxgNWA1g33MaIVzfSCmjOXG/uzik0zg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z+HXyhUP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21CF5C116C6;
+	Tue,  6 Jan 2026 18:00:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721543;
-	bh=X6w1RNtIf7D/y+Ip4BG8RuIKzociJEUxHUVZN65zR5M=;
+	s=korg; t=1767722425;
+	bh=GuEAsQQHza2ph64jAzU8/uYFIKSpqyn/VBuRebTaRrA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mRm654Z/iPCTIfzHeuHQe1zplLcj66HvLct6Wmn8+YH3YDsewfE4WeV0I2wZrLLIP
-	 wNs0OZDxlRoDT5e6eKhmPxW1JGOOfHcYO6aqWPvlEp1R+DCFreJPwhkHDEmHqP/5sU
-	 DHWeKNJAmZCfXLlUfq4y6x/HY6/TEJmgOSg4/j6k=
+	b=Z+HXyhUP2z9nqgLzPff50V5eOCw56zr3kz8cZNeWeClyg2DGL9Dg8JTxNzHGXsJ/F
+	 dE/cuEGnNWGGXvDm3OK969pEnrvZj5XxNnKLpn7v/uYk98ZeXJKOPoL0g67ww+4AwD
+	 VQsSw+Fg4rE3FIN1wQx/rW/zaupyJCWtK9UWb4t8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Boris Brezillon <boris.brezillon@collabora.com>,
-	Steven Price <steven.price@arm.com>,
-	Liviu Dudau <liviu.dudau@arm.com>,
-	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Subject: [PATCH 6.12 525/567] drm/panthor: Flush shmem writes before mapping buffers CPU-uncached
+	Kaushlendra Kumar <kaushlendra.kumar@intel.com>,
+	Chongxi Zhao <zhaochongxi2019@email.szu.edu.cn>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.18 233/312] tools/mm/page_owner_sort: fix timestamp comparison for stable sorting
 Date: Tue,  6 Jan 2026 18:05:07 +0100
-Message-ID: <20260106170510.811846047@linuxfoundation.org>
+Message-ID: <20260106170556.280239111@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
-References: <20260106170451.332875001@linuxfoundation.org>
+In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
+References: <20260106170547.832845344@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,68 +60,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Boris Brezillon <boris.brezillon@collabora.com>
+From: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
 
-[ Upstream commit 576c930e5e7dcb937648490611a83f1bf0171048 ]
+commit 7013803444dd3bbbe28fd3360c084cec3057c554 upstream.
 
-The shmem layer zeroes out the new pages using cached mappings, and if
-we don't CPU-flush we might leave dirty cachelines behind, leading to
-potential data leaks and/or asynchronous buffer corruption when dirty
-cachelines are evicted.
+The ternary operator in compare_ts() returns 1 when timestamps are equal,
+causing unstable sorting behavior. Replace with explicit three-way
+comparison that returns 0 for equal timestamps, ensuring stable qsort
+ordering and consistent output.
 
-Fixes: 8a1cc07578bf ("drm/panthor: Add GEM logical block")
-Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
-Reviewed-by: Steven Price <steven.price@arm.com>
-Reviewed-by: Liviu Dudau <liviu.dudau@arm.com>
-Signed-off-by: Steven Price <steven.price@arm.com>
-Link: https://patch.msgid.link/20251107171214.1186299-1-boris.brezillon@collabora.com
-[Harshit: Resolve conflicts due to missing commit: fe69a3918084
-("drm/panthor: Fix UAF in panthor_gem_create_with_handle() debugfs
-code") in 6.12.y]
-Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Link: https://lkml.kernel.org/r/20251209044552.3396468-1-kaushlendra.kumar@intel.com
+Fixes: 8f9c447e2e2b ("tools/vm/page_owner_sort.c: support sorting pid and time")
+Signed-off-by: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
+Cc: Chongxi Zhao <zhaochongxi2019@email.szu.edu.cn>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/panthor/panthor_gem.c |   18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ tools/mm/page_owner_sort.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/panthor/panthor_gem.c
-+++ b/drivers/gpu/drm/panthor/panthor_gem.c
-@@ -214,6 +214,23 @@ panthor_gem_create_with_handle(struct dr
- 		bo->base.base.resv = bo->exclusive_vm_root_gem->resv;
- 	}
+--- a/tools/mm/page_owner_sort.c
++++ b/tools/mm/page_owner_sort.c
+@@ -183,7 +183,11 @@ static int compare_ts(const void *p1, co
+ {
+ 	const struct block_list *l1 = p1, *l2 = p2;
  
-+	/* If this is a write-combine mapping, we query the sgt to force a CPU
-+	 * cache flush (dma_map_sgtable() is called when the sgt is created).
-+	 * This ensures the zero-ing is visible to any uncached mapping created
-+	 * by vmap/mmap.
-+	 * FIXME: Ideally this should be done when pages are allocated, not at
-+	 * BO creation time.
-+	 */
-+	if (shmem->map_wc) {
-+		struct sg_table *sgt;
-+
-+		sgt = drm_gem_shmem_get_pages_sgt(shmem);
-+		if (IS_ERR(sgt)) {
-+			ret = PTR_ERR(sgt);
-+			goto out_put_gem;
-+		}
-+	}
-+
- 	/*
- 	 * Allocate an id of idr table where the obj is registered
- 	 * and handle has the id what user can see.
-@@ -222,6 +239,7 @@ panthor_gem_create_with_handle(struct dr
- 	if (!ret)
- 		*size = bo->base.base.size;
+-	return l1->ts_nsec < l2->ts_nsec ? -1 : 1;
++	if (l1->ts_nsec < l2->ts_nsec)
++		return -1;
++	if (l1->ts_nsec > l2->ts_nsec)
++		return 1;
++	return 0;
+ }
  
-+out_put_gem:
- 	/* drop reference from allocate - handle holds it now. */
- 	drm_gem_object_put(&shmem->base);
- 
+ static int compare_cull_condition(const void *p1, const void *p2)
 
 
 
