@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-205744-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205466-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18E05CF9F67
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:09:41 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78C30CFA20F
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:27:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F2A5330504E6
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:07:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5E04A3142AA0
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:39:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE1D835F8DD;
-	Tue,  6 Jan 2026 17:48:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 472482D8796;
+	Tue,  6 Jan 2026 17:33:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HqDB7dim"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HBewmeuD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AC5F35F8D9;
-	Tue,  6 Jan 2026 17:48:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 037912D8762;
+	Tue,  6 Jan 2026 17:33:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721715; cv=none; b=I4O+vqxqQLBNknkFifLp2ahj5F7y4Ce14N0YGQtZ+jeltgTm4FMV/EYG5uF//DtWScyPE599qyMGUbmhrUOtMlf7qumvxDWSnRLPjagZQHTCb0kHCQZHHQcjDV418z+z0ndrlH6pehX3Idl1t7MjzZSUcwkD3ZQJS49rXgtKfXE=
+	t=1767720788; cv=none; b=ZWOFbShWv8LaVdzz+bCVMzi2/QZ3itPkhbFsbJItWdRxalXqKAaa2by1Pdsn9iPnwYXqiOAQ+0rU90g6B+rW4e1+eCVBua7GfOSfqqNIwT4MdVxwFgpDT+Nt2xPc30lHQjBJYBUlKNwLMdQwrAt3GEa7U2G5wcpkzMvKL9FVBkw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721715; c=relaxed/simple;
-	bh=mo9G37PRcQFoz1BTOaMk6zA6NbVklz+c+Pwo90pj7RI=;
+	s=arc-20240116; t=1767720788; c=relaxed/simple;
+	bh=JBvFIMRlUxFXX8ZazNKCAtBv4StMySC7OpCUHJ2ZGr8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tekNfjhUPZ2gjkjyial0ZLsyGKlHqPy+9sK3zRL18uAuJZb3FBfWC81NZCZ/25IKeKnzJ9SSs0z2+eLsD0GRqEdumPlsqdmcAM8YEt+OkGVhVoI08NEmpY7puGQaGM4Ny+5e6jKtdZ2yKPyh2fRnmfhaioiEC98IK7S5zUacF7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HqDB7dim; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22453C116C6;
-	Tue,  6 Jan 2026 17:48:34 +0000 (UTC)
+	 MIME-Version; b=YarZ2oILrLXIhRi/fziWOGT2MHJ1mKeC+EkHEMriJUgQBGpLTz2CiTHW6HGhjy/2IXc4x+mCnnTWznlc7PvIuxh46QAGk3tN6mIzpGl/X4uSmWceQWTYHVgCUbvpPesIRH0qx3QGzSlFqRHX8HzA6Sy5GEI4s0L4bVmlBcRFmrU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HBewmeuD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69EE8C116C6;
+	Tue,  6 Jan 2026 17:33:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721715;
-	bh=mo9G37PRcQFoz1BTOaMk6zA6NbVklz+c+Pwo90pj7RI=;
+	s=korg; t=1767720787;
+	bh=JBvFIMRlUxFXX8ZazNKCAtBv4StMySC7OpCUHJ2ZGr8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HqDB7dimiwj3KjnlWE5iXtCMrJ0Hpibw2LQyYeVfZzu+Dg6e8ZNhpZjydiOccNlK5
-	 F9ZnQDDbbq37S0LT9vCjxLvbhh1zVwouosEU7AJ9xHTcVaHpKILl1TjgUI8e89G0AY
-	 aMcoAy/wht8XWNrBjk6suhRi44DD7rdQiOYKy6yY=
+	b=HBewmeuDCWrKS62UVFms7Jyx1JCIUzrLoSEgqucZfpFaH8Q9dYHGZLpIKSEwZ54Zn
+	 9Ulv1QVWHmDwJVA2VNkkLR1AJuCEPQaX3N06RfwIjDyCqLKfzLUOZFD1zHav8lzBD1
+	 7g6j6DlRR5zRepcnzQb34cW2WANYq6bjotH8904g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas De Schampheleire <thomas.de_schampheleire@nokia.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	"Rob Herring (Arm)" <robh@kernel.org>,
-	Nicolas Schier <nsc@kernel.org>,
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 049/312] kbuild: fix compilation of dtb specified on command-line without make rule
+Subject: [PATCH 6.12 341/567] RDMA/bnxt_re: fix dma_free_coherent() pointer
 Date: Tue,  6 Jan 2026 18:02:03 +0100
-Message-ID: <20260106170549.629316141@linuxfoundation.org>
+Message-ID: <20260106170503.940886685@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
-References: <20260106170547.832845344@linuxfoundation.org>
+In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
+References: <20260106170451.332875001@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,90 +60,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas De Schampheleire <thomas.de_schampheleire@nokia.com>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-[ Upstream commit b08fc4d0ec2466558f6d5511434efdfabbddf2a6 ]
+[ Upstream commit fcd431a9627f272b4c0bec445eba365fe2232a94 ]
 
-Since commit e7e2941300d2 ("kbuild: split device tree build rules into
-scripts/Makefile.dtbs"), it is no longer possible to compile a device tree
-blob that is not specified in a make rule
-like:
-    dtb-$(CONFIG_FOO) += foo.dtb
+The dma_alloc_coherent() allocates a dma-mapped buffer, pbl->pg_arr[i].
+The dma_free_coherent() should pass the same buffer to
+dma_free_coherent() and not page-aligned.
 
-Before the mentioned commit, one could copy a dts file to e.g.
-arch/arm64/boot/dts/ (or a new subdirectory) and then convert it to a dtb
-file using:
-    make ARCH=arm64 foo.dtb
-
-In this scenario, both 'dtb-y' and 'dtb-' are empty, and the inclusion of
-scripts/Makefile.dtbs relies on 'targets' to contain the MAKECMDGOALS. The
-value of 'targets', however, is only final later in the code.
-
-Move the conditional include of scripts/Makefile.dtbs down to where the
-value of 'targets' is final. Since Makefile.dtbs updates 'always-y' which is
-used as a prerequisite in the build rule, the build rule also needs to move
-down.
-
-Fixes: e7e2941300d2 ("kbuild: split device tree build rules into scripts/Makefile.dtbs")
-Signed-off-by: Thomas De Schampheleire <thomas.de_schampheleire@nokia.com>
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-Tested-by: Nathan Chancellor <nathan@kernel.org>
-Acked-by: Rob Herring (Arm) <robh@kernel.org>
-Link: https://patch.msgid.link/20251126100017.1162330-1-thomas.de_schampheleire@nokia.com
-Signed-off-by: Nicolas Schier <nsc@kernel.org>
+Fixes: 1ac5a4047975 ("RDMA/bnxt_re: Add bnxt_re RoCE driver")
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Link: https://patch.msgid.link/20251230085121.8023-2-fourier.thomas@gmail.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/Makefile.build | 26 ++++++++++++++------------
- 1 file changed, 14 insertions(+), 12 deletions(-)
+ drivers/infiniband/hw/bnxt_re/qplib_res.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/scripts/Makefile.build b/scripts/Makefile.build
-index 52c08c4eb0b9..5037f4715d74 100644
---- a/scripts/Makefile.build
-+++ b/scripts/Makefile.build
-@@ -527,18 +527,6 @@ ifneq ($(userprogs),)
- include $(srctree)/scripts/Makefile.userprogs
- endif
- 
--ifneq ($(need-dtbslist)$(dtb-y)$(dtb-)$(filter %.dtb %.dtb.o %.dtbo.o,$(targets)),)
--include $(srctree)/scripts/Makefile.dtbs
--endif
--
--# Build
--# ---------------------------------------------------------------------------
--
--$(obj)/: $(if $(KBUILD_BUILTIN), $(targets-for-builtin)) \
--	 $(if $(KBUILD_MODULES), $(targets-for-modules)) \
--	 $(subdir-ym) $(always-y)
--	@:
--
- # Single targets
- # ---------------------------------------------------------------------------
- 
-@@ -568,6 +556,20 @@ FORCE:
- targets += $(filter-out $(single-subdir-goals), $(MAKECMDGOALS))
- targets := $(filter-out $(PHONY), $(targets))
- 
-+# Now that targets is fully known, include dtb rules if needed
-+ifneq ($(need-dtbslist)$(dtb-y)$(dtb-)$(filter %.dtb %.dtb.o %.dtbo.o,$(targets)),)
-+include $(srctree)/scripts/Makefile.dtbs
-+endif
-+
-+# Build
-+# Needs to be after the include of Makefile.dtbs, which updates always-y
-+# ---------------------------------------------------------------------------
-+
-+$(obj)/: $(if $(KBUILD_BUILTIN), $(targets-for-builtin)) \
-+	 $(if $(KBUILD_MODULES), $(targets-for-modules)) \
-+	 $(subdir-ym) $(always-y)
-+	@:
-+
- # Read all saved command lines and dependencies for the $(targets) we
- # may be building above, using $(if_changed{,_dep}). As an
- # optimization, we don't need to read them if the target does not
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_res.c b/drivers/infiniband/hw/bnxt_re/qplib_res.c
+index f1a4bce6ce64..dfb72a5adc91 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_res.c
++++ b/drivers/infiniband/hw/bnxt_re/qplib_res.c
+@@ -70,9 +70,7 @@ static void __free_pbl(struct bnxt_qplib_res *res, struct bnxt_qplib_pbl *pbl,
+ 		for (i = 0; i < pbl->pg_count; i++) {
+ 			if (pbl->pg_arr[i])
+ 				dma_free_coherent(&pdev->dev, pbl->pg_size,
+-						  (void *)((unsigned long)
+-						   pbl->pg_arr[i] &
+-						  PAGE_MASK),
++						  pbl->pg_arr[i],
+ 						  pbl->pg_map_arr[i]);
+ 			else
+ 				dev_warn(&pdev->dev,
 -- 
 2.51.0
 
