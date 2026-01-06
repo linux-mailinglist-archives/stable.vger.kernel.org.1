@@ -1,50 +1,50 @@
-Return-Path: <stable+bounces-205899-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205910-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 117B5CFA141
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:20:34 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EC03CFA058
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:16:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 66136304CAE6
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:17:50 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5ABF53010518
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:16:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5D2436BCFC;
-	Tue,  6 Jan 2026 17:57:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFC2B36C0C0;
+	Tue,  6 Jan 2026 17:57:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UeKRoWHX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JPZmhkRR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2F52357A50;
-	Tue,  6 Jan 2026 17:57:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D699230BCC;
+	Tue,  6 Jan 2026 17:57:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767722234; cv=none; b=hiltLfScGEfV+yAgcL5MqDbqUcih5w12bY57X4OK+VvLJH/N0xn/XU1tYjD9i0ExcZmKXU0nDln60H8JbuxWKG7dShOCYJgEvudiVg33arJjWt0xl20jJNE2Ydh5V7JCOX+grryNvcW99BE4qpVD+qADdPlBXG5ptF91SXqZ9/k=
+	t=1767722271; cv=none; b=Z6dLxGz26SPzKEnTq2RTHZu6sXFkiJ+8i1fUOXAH2IdnYXwFrstRby6vBGKmEaRPPmJodjLoV5pxDUe5kxj3Nqm0+YKL1lNUQPDWzdzeJ7ohSOk8urDPM/Sn8x/SDgRJzAfqZglMgnBSmI1zjkdr3AQothKNfGwi0YrBV2YBN/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767722234; c=relaxed/simple;
-	bh=2Py3HI+5NQqJ5uKNgm3CyXgSkH9oTjwf7YUDqdp9PIg=;
+	s=arc-20240116; t=1767722271; c=relaxed/simple;
+	bh=S0qG4aZhjSDVmQeFbyviEQL9YYpyQ/7aZ1GPPFVrUyc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kPARvd2OXhYyvn5FzyywtAfrMMiZre348fCdSqko1lo5TqBavIcp8qprxc2bFuz1NEG17/rSuGlrhmSqSZQjj0W+y51q0Yv3l/qoUOoaXocSejYNcret7HI6qUJUkIXdvzsNpDMtEzWUjdK0rfvZ3m9Ck/o0m+XmrDvV52qNQyc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UeKRoWHX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C53DC116C6;
-	Tue,  6 Jan 2026 17:57:13 +0000 (UTC)
+	 MIME-Version; b=FDngav9pIX1BABrRAHI1jjGBCxMMtOG90P8R7BFoewdshNCkSFidernEQXpsu86sFZ2Rza8sa1Bx6tqDDQYB7vEcu1RZi16pUPS3xpV68u83TmTTxDT9RYBZtaF5pp5u572LhZOeNuoo7TIccZv4tRnsn28JtvAskyRUFtIWRgc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JPZmhkRR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E19B8C116C6;
+	Tue,  6 Jan 2026 17:57:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767722234;
-	bh=2Py3HI+5NQqJ5uKNgm3CyXgSkH9oTjwf7YUDqdp9PIg=;
+	s=korg; t=1767722271;
+	bh=S0qG4aZhjSDVmQeFbyviEQL9YYpyQ/7aZ1GPPFVrUyc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UeKRoWHXi1pjW32Vj2q+x1AqrgKLL5mxJAOG0zTOJR87uAFOFWDazrsB+6N0ANFos
-	 QhsstCw2TbOs3Y8vJxrF5yPZYU8yDZUlPFrhdfMaQukJ1XP1rXzbPRXCsZ6b0R4HU3
-	 zlTQINRwlloEyeju7Jw5KGrbpK9jALsOqN0dgyEw=
+	b=JPZmhkRR54g0qkA5xTqzd41hPLryal3XHZCcIV26/16keKOR+Z1PdcenUpS2hRL8c
+	 6u+Jm3Ej+1jfqEBxjFbQct6r3xJdXJ7ojbtILJkEqOqn/GF/MRyylRyGU2JuE92s+6
+	 a8DFwDgTKpimxleUVbsuL4320KatfSKGPpRqLNAI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuli Wang <wangyl5933@chinaunicom.cn>,
+	Tiezhu Yang <yangtiezhu@loongson.cn>,
 	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.18 196/312] LoongArch: Use __pmd()/__pte() for swap entry conversions
-Date: Tue,  6 Jan 2026 18:04:30 +0100
-Message-ID: <20260106170554.915673978@linuxfoundation.org>
+Subject: [PATCH 6.18 197/312] LoongArch: Use unsigned long for _end and _text
+Date: Tue,  6 Jan 2026 18:04:31 +0100
+Message-ID: <20260106170554.951583325@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
 References: <20260106170547.832845344@linuxfoundation.org>
@@ -57,62 +57,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: WangYuli <wangyl5933@chinaunicom.cn>
+From: Tiezhu Yang <yangtiezhu@loongson.cn>
 
-commit 4a71df151e703b5e7e85b33369cee59ef2665e61 upstream.
+commit a258a3cb1895e3acf5f2fe245d17426e894bc935 upstream.
 
-The __pmd() and __pte() helper macros provide the correct initialization
-syntax and abstraction for the pmd_t and pte_t types.
+It is better to use unsigned long rather than long for _end and _text to
+calculate the kernel length.
 
-Use __pmd() to fix follow warning about __swp_entry_to_pmd() with gcc-15
-under specific configs [1] :
-
-  In file included from ./include/linux/pgtable.h:6,
-                   from ./include/linux/mm.h:31,
-                   from ./include/linux/pagemap.h:8,
-                   from arch/loongarch/mm/init.c:14:
-  ./include/linux/swapops.h: In function ‘swp_entry_to_pmd’:
-  ./arch/loongarch/include/asm/pgtable.h:302:34: error: missing braces around initializer [-Werror=missing-braces]
-    302 | #define __swp_entry_to_pmd(x)   ((pmd_t) { (x).val | _PAGE_HUGE })
-        |                                  ^
-  ./include/linux/swapops.h:559:16: note: in expansion of macro ‘__swp_entry_to_pmd’
-    559 |         return __swp_entry_to_pmd(arch_entry);
-        |                ^~~~~~~~~~~~~~~~~~
-  cc1: all warnings being treated as errors
-
-Also update __swp_entry_to_pte() to use __pte() for consistency.
-
-[1]. https://download.01.org/0day-ci/archive/20251119/202511190316.luI90kAo-lkp@intel.com/config
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Yuli Wang <wangyl5933@chinaunicom.cn>
+Cc: stable@vger.kernel.org # v6.3+
+Fixes: e5f02b51fa0c ("LoongArch: Add support for kernel address space layout randomization (KASLR)")
+Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
 Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/include/asm/pgtable.h |    4 ++--
+ arch/loongarch/kernel/relocate.c |    4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/loongarch/include/asm/pgtable.h
-+++ b/arch/loongarch/include/asm/pgtable.h
-@@ -297,9 +297,9 @@ static inline pte_t mk_swap_pte(unsigned
- #define __swp_offset(x)		((x).val >> 24)
- #define __swp_entry(type, offset) ((swp_entry_t) { pte_val(mk_swap_pte((type), (offset))) })
- #define __pte_to_swp_entry(pte) ((swp_entry_t) { pte_val(pte) })
--#define __swp_entry_to_pte(x)	((pte_t) { (x).val })
-+#define __swp_entry_to_pte(x)	__pte((x).val)
- #define __pmd_to_swp_entry(pmd) ((swp_entry_t) { pmd_val(pmd) })
--#define __swp_entry_to_pmd(x)	((pmd_t) { (x).val | _PAGE_HUGE })
-+#define __swp_entry_to_pmd(x)	__pmd((x).val | _PAGE_HUGE)
+--- a/arch/loongarch/kernel/relocate.c
++++ b/arch/loongarch/kernel/relocate.c
+@@ -183,7 +183,7 @@ static inline void __init *determine_rel
+ 	if (kaslr_disabled())
+ 		return destination;
  
- static inline bool pte_swp_exclusive(pte_t pte)
- {
+-	kernel_length = (long)_end - (long)_text;
++	kernel_length = (unsigned long)_end - (unsigned long)_text;
+ 
+ 	random_offset = get_random_boot() << 16;
+ 	random_offset &= (CONFIG_RANDOMIZE_BASE_MAX_OFFSET - 1);
+@@ -232,7 +232,7 @@ unsigned long __init relocate_kernel(voi
+ 	early_memunmap(cmdline, COMMAND_LINE_SIZE);
+ 
+ 	if (random_offset) {
+-		kernel_length = (long)(_end) - (long)(_text);
++		kernel_length = (unsigned long)(_end) - (unsigned long)(_text);
+ 
+ 		/* Copy the kernel to it's new location */
+ 		memcpy(location_new, _text, kernel_length);
 
 
 
