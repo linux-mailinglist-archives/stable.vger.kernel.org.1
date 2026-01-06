@@ -1,53 +1,63 @@
-Return-Path: <stable+bounces-205840-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205562-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E98E9CFA3D8
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:41:00 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC462CFA369
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:36:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8FF25336683C
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:54:10 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 69A97304F50C
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:36:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8562B3659F6;
-	Tue,  6 Jan 2026 17:53:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C642B344053;
+	Tue,  6 Jan 2026 17:38:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l69pQ82d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2qRkOs0e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D5BF3659E6;
-	Tue,  6 Jan 2026 17:53:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76826200C2;
+	Tue,  6 Jan 2026 17:38:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767722037; cv=none; b=tWa1NPP2lNQuR2V4cb6hJ4obumCDYDFCx1qeO+lco0yVQ/wDnG/vUxLqPa1duhwYId2JZFq/8QHZxY+CUBK9SV6sGZnUCh6hJc+X05msk1UrF+BDOckg56wvBLkeVxd/FdzYzgXhdZG1lkya9Lqa1sSy5Z/MUHX2whXkTYMr900=
+	t=1767721106; cv=none; b=WD702Umonqro3BdbFdzxfBolRN4xbSlipW/SthdcKiSd9xzLIu54yV/wH4Ca0p4rsQCO4Yc/cTPe4HPyuJwCf327VcMVy9nmo37dWTpSjctRKqUFHHEcvcOWo38g5iMx+E+sSaoJ2WOx8GjeuLSeOQ1kx8ndHa1qQFh6nvF1jZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767722037; c=relaxed/simple;
-	bh=zPWQRRaxgDk+oFD2Zvpf+UGfQUbiedFO6J1ToT3UpX4=;
+	s=arc-20240116; t=1767721106; c=relaxed/simple;
+	bh=l0QCNuB51Onui1cPB5IOZBJw+P23gJmgFhThMptxfMk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qXY9UJgO22ULG+q1gL45CBNNtX3PnlmwIS8z4+2Rul9WBJ1f+VzO99rfmc6nOjuMVNZDFzfFazc3sEZVR3Ex8cuhmaSAKqCPUtxZIgdbYdPm9efnC2InQulC2RhOkE7LWhkv2wvY7uGf0vB0EAgRD101o47hAxcusUrvSQ2bHYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l69pQ82d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABB33C116C6;
-	Tue,  6 Jan 2026 17:53:56 +0000 (UTC)
+	 MIME-Version; b=TqZ/uUrTRt7N5VLDWVfZEYNcRBH49HdrHp8nhgZEzVPjtb45i17uj0c+zKe3yD4e5Z3W4h8MpRe8At2OIZsivRiNHB13vgrwIKt/oZ0g5pq2lvxfTVWW1MLUWsLigFgYvBV5OkyYe+3miT6ftBBesU7Kowos8wD3fKRBD2BJZr8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2qRkOs0e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C29BDC116C6;
+	Tue,  6 Jan 2026 17:38:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767722037;
-	bh=zPWQRRaxgDk+oFD2Zvpf+UGfQUbiedFO6J1ToT3UpX4=;
+	s=korg; t=1767721106;
+	bh=l0QCNuB51Onui1cPB5IOZBJw+P23gJmgFhThMptxfMk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l69pQ82d6FM0+lbmrF6tosxhDkn4OZDfp4ZDqi73sLFQXXrDYUwz556Ohyq7RpNJG
-	 2c3QUR6kdAPYMoTz4XJziVEg8D9TDM2bzIugMTHbibjqtxCxtJl3SP+wxg+2B9LmY9
-	 TT6FfTvPIN8S4B+chehVksxyhZ0p/BG4BHQneFJg=
+	b=2qRkOs0e2g7oteUBRRvXa0/VQDmkuLVfutsfrT9eDkvqBE6ezVrBOaivyYxAKmr8M
+	 Ers78JJ527HcPjRrbbFeE9dVTQF+NYOz9Yy+QefEa83qKXlpleGijE4QdXVFk5dz9Q
+	 r2GIiGXqVLMHCxHrewmJOU+qPk1H1V2AdEfvf+/0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Patrice Chotard <patrice.chotard@foss.st.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>
-Subject: [PATCH 6.18 146/312] arm64: dts: st: Add memory-region-names property for stm32mp257f-ev1
+	Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Alexander Potapenko <glider@google.com>,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Dmitriy Vyukov <dvyukov@google.com>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Kees Cook <kees@kernel.org>,
+	Marco Elver <elver@google.com>,
+	"Uladzislau Rezki (Sony)" <urezki@gmail.com>,
+	Vincenzo Frascino <vincenzo.frascino@arm.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 438/567] kasan: unpoison vms[area] addresses with a common tag
 Date: Tue,  6 Jan 2026 18:03:40 +0100
-Message-ID: <20260106170553.123297574@linuxfoundation.org>
+Message-ID: <20260106170507.555281768@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
-References: <20260106170547.832845344@linuxfoundation.org>
+In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
+References: <20260106170451.332875001@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,46 +69,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Patrice Chotard <patrice.chotard@foss.st.com>
+From: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
 
-commit 22f0ae971cf5536349521853737d3e06203286d8 upstream.
+commit 6a0e5b333842cf65d6f4e4f0a2a4386504802515 upstream.
 
-In order to set the AMCR register, which configures the
-memory-region split between ospi1 and ospi2, we need to
-identify the ospi instance.
+A KASAN tag mismatch, possibly causing a kernel panic, can be observed on
+systems with a tag-based KASAN enabled and with multiple NUMA nodes.  It
+was reported on arm64 and reproduced on x86.  It can be explained in the
+following points:
 
-By using memory-region-names, it allows to identify the
-ospi instance this memory-region belongs to.
+1. There can be more than one virtual memory chunk.
+2. Chunk's base address has a tag.
+3. The base address points at the first chunk and thus inherits
+   the tag of the first chunk.
+4. The subsequent chunks will be accessed with the tag from the
+   first chunk.
+5. Thus, the subsequent chunks need to have their tag set to
+   match that of the first chunk.
 
-Fixes: cad2492de91c ("arm64: dts: st: Add SPI NOR flash support on stm32mp257f-ev1 board")
-Signed-off-by: Patrice Chotard <patrice.chotard@foss.st.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20251031-upstream_fix_dts_omm-v4-1-e4a059a50074@foss.st.com
-Signed-off-by: Alexandre Torgue <alexandre.torgue@foss.st.com>
+Use the new vmalloc flag that disables random tag assignment in
+__kasan_unpoison_vmalloc() - pass the same random tag to all the
+vm_structs by tagging the pointers before they go inside
+__kasan_unpoison_vmalloc().  Assigning a common tag resolves the pcpu
+chunk address mismatch.
+
+[akpm@linux-foundation.org: use WARN_ON_ONCE(), per Andrey]
+  Link: https://lkml.kernel.org/r/CA+fCnZeuGdKSEm11oGT6FS71_vGq1vjq-xY36kxVdFvwmag2ZQ@mail.gmail.com
+[maciej.wieczor-retman@intel.com: remove unneeded pr_warn()]
+  Link: https://lkml.kernel.org/r/919897daaaa3c982a27762a2ee038769ad033991.1764945396.git.m.wieczorretman@pm.me
+Link: https://lkml.kernel.org/r/873821114a9f722ffb5d6702b94782e902883fdf.1764874575.git.m.wieczorretman@pm.me
+Fixes: 1d96320f8d53 ("kasan, vmalloc: add vmalloc tagging for SW_TAGS")
+Signed-off-by: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
+Reviewed-by: Andrey Konovalov <andreyknvl@gmail.com>
+Cc: Alexander Potapenko <glider@google.com>
+Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Cc: Danilo Krummrich <dakr@kernel.org>
+Cc: Dmitriy Vyukov <dvyukov@google.com>
+Cc: Jiayuan Chen <jiayuan.chen@linux.dev>
+Cc: Kees Cook <kees@kernel.org>
+Cc: Marco Elver <elver@google.com>
+Cc: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
+Cc: Vincenzo Frascino <vincenzo.frascino@arm.com>
+Cc: <stable@vger.kernel.org>	[6.1+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/st/stm32mp257f-ev1.dts | 1 +
- 1 file changed, 1 insertion(+)
+ mm/kasan/common.c |   21 ++++++++++++++++++---
+ 1 file changed, 18 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/st/stm32mp257f-ev1.dts b/arch/arm64/boot/dts/st/stm32mp257f-ev1.dts
-index 6e165073f732..bb6d6393d2e4 100644
---- a/arch/arm64/boot/dts/st/stm32mp257f-ev1.dts
-+++ b/arch/arm64/boot/dts/st/stm32mp257f-ev1.dts
-@@ -266,6 +266,7 @@
+--- a/mm/kasan/common.c
++++ b/mm/kasan/common.c
+@@ -568,11 +568,26 @@ void __kasan_unpoison_vmap_areas(struct
+ 	unsigned long size;
+ 	void *addr;
+ 	int area;
++	u8 tag;
  
- &ommanager {
- 	memory-region = <&mm_ospi1>;
-+	memory-region-names = "ospi1";
- 	pinctrl-0 = <&ospi_port1_clk_pins_a
- 		     &ospi_port1_io03_pins_a
- 		     &ospi_port1_cs0_pins_a>;
--- 
-2.52.0
-
+-	for (area = 0 ; area < nr_vms ; area++) {
++	/*
++	 * If KASAN_VMALLOC_KEEP_TAG was set at this point, all vms[] pointers
++	 * would be unpoisoned with the KASAN_TAG_KERNEL which would disable
++	 * KASAN checks down the line.
++	 */
++	if (WARN_ON_ONCE(flags & KASAN_VMALLOC_KEEP_TAG))
++		return;
++
++	size = vms[0]->size;
++	addr = vms[0]->addr;
++	vms[0]->addr = __kasan_unpoison_vmalloc(addr, size, flags);
++	tag = get_tag(vms[0]->addr);
++
++	for (area = 1 ; area < nr_vms ; area++) {
+ 		size = vms[area]->size;
+-		addr = vms[area]->addr;
+-		vms[area]->addr = __kasan_unpoison_vmalloc(addr, size, flags);
++		addr = set_tag(vms[area]->addr, tag);
++		vms[area]->addr =
++			__kasan_unpoison_vmalloc(addr, size, flags | KASAN_VMALLOC_KEEP_TAG);
+ 	}
+ }
+ #endif
 
 
 
