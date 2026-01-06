@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-205791-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205548-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBB37CFA995
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:22:20 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 174BBCFABC0
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:42:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E981932DA369
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:34:53 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4FFA33010501
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 19:42:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 968CB364050;
-	Tue,  6 Jan 2026 17:51:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA48D33DED6;
+	Tue,  6 Jan 2026 17:37:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NZ383k9S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yxExKrOF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53661364041;
-	Tue,  6 Jan 2026 17:51:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65F47335577;
+	Tue,  6 Jan 2026 17:37:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721874; cv=none; b=VSJj0xGibFvesQetyK2NlCXnJGqx0TYsUtBjw4D3v0i+g0lW0zeihyFLpP6VNlO1RRSQgKCYUipIv0OEgIFirFtrqe/1xzUqsenJTcKTnR4YiJhnxgiiB2ijdZbJUNM/zlh88X3fnbrZUyr4pAesIKx342RVr+9UWDrXLdoNu38=
+	t=1767721060; cv=none; b=X8JkHeLrU2F2I1QvpFHqUn78I0FEtezEldBOnu+EEgxQ9TrrdYsWEG9Z8gQaF/SGoLsE9cXkTZBLwWqpc+XGE9XCR2SF6fEyLYZZZy9AKuppY+C19Yi2DHFzRmjZ3dbu3glYAZgLwfXU2Log8wWcBtrYGeoQvXGeiUO7MSiG4YU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721874; c=relaxed/simple;
-	bh=XtM/SHiw3DmqkcNMzREby7yio5pBEhlnDdghOXVNwXU=;
+	s=arc-20240116; t=1767721060; c=relaxed/simple;
+	bh=rD9xJRs3vASbDRnKRO5/2HG3nX33Y+vgSo891XtfOPs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XvJLi6UHcULpdYNnwYEbOBR3cNd+fKkK7BcB6ogjGYZwzGEzQs5A6wiX5MXBbixBOAxLjFZGjnhSP8sBn9/cUU/152+A/VY7YHUoSyCFSdixFs2jOqaLCLDnDKqWWA5w+8P113coi+7rWjrzIoWchc9W51LZn/+eyfs5t9BcAO0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NZ383k9S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C266EC116C6;
-	Tue,  6 Jan 2026 17:51:13 +0000 (UTC)
+	 MIME-Version; b=E/8G849if+Lnf3TLOzeZqug1xaNA3g1A2pbhnvrVdGarF0LO5MNIO5+jk+qgjasyDo8QfBnk21WMVheTYNLACu6HN0/2Txbjoct1cf0ZIdid4vNIosfJf0/q3Y8Ty4ZiUiUekF3EDYwi3BmDOCBRWc+79BsDxQqYn4l+gSCW8uk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yxExKrOF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D679FC116C6;
+	Tue,  6 Jan 2026 17:37:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721874;
-	bh=XtM/SHiw3DmqkcNMzREby7yio5pBEhlnDdghOXVNwXU=;
+	s=korg; t=1767721060;
+	bh=rD9xJRs3vASbDRnKRO5/2HG3nX33Y+vgSo891XtfOPs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NZ383k9Sw2cUWlAsIwus2KGaqfB0E8UQLVQDvtquq0Sla7lY+CPn0wh+LWD1GiNiy
-	 WVnVqx8sA9XprTGXLxkB/FVNP3yG0ZuBrGbFc7u2suZdaGzxeaR/1VMSWHf7IZjVUv
-	 WOyk59zJ7fgKteCSAa43v5039DwCTrWmzzuadp7A=
+	b=yxExKrOF0QQOxDkv81AYEs2G1TzVEJsppZ3ZAqmENymgyvhfUiEtptgwlu0SXvK8s
+	 vvqwS2jBNfF8hUf7ZGrgKDLSzT51MD04lZCg4Z2987NI5l4LYckI450DVQm37AtfZX
+	 sKxMTO1+VRwcjcqQLDUq93Gy6B5JRINc6L/k9BO4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.18 098/312] ASoC: codecs: pm4125: Fix potential conflict when probing two devices
-Date: Tue,  6 Jan 2026 18:02:52 +0100
-Message-ID: <20260106170551.385020593@linuxfoundation.org>
+	Sven Schnelle <svens@stackframe.org>,
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 6.12 391/567] parisc: entry.S: fix space adjustment on interruption for 64-bit userspace
+Date: Tue,  6 Jan 2026 18:02:53 +0100
+Message-ID: <20260106170505.804331306@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
-References: <20260106170547.832845344@linuxfoundation.org>
+In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
+References: <20260106170451.332875001@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,94 +59,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Sven Schnelle <svens@stackframe.org>
 
-commit fd94857a934cbe613353810a024c84d54826ead3 upstream.
+commit 1aa4524c0c1b54842c4c0a370171d11b12d0709b upstream.
 
-Qualcomm PM4125 codec is always a single device on the board, however
-nothing stops board designers to have two of them, thus same device
-driver could probe twice.
+In wide mode, the IASQ contain the upper part of the GVA
+during interruption. This needs to be reversed before
+the space is used - otherwise it contains parts of IAOQ.
+See Page 2-13 "Processing Resources / Interruption Instruction
+Address Queues" in the Parisc 2.0 Architecture Manual page 2-13
+for an explanation.
 
-Device driver is not ready for that case, because it allocates
-statically 'struct regmap_irq_chip' as non-const and stores during
-component bind in 'irq_drv_data' member a pointer to per-probe state
-container ('struct pm4125_priv').
+The IAOQ/IASQ space_adjust was skipped for other interruptions
+than itlb misses. However, the code in handle_interruption()
+checks whether iasq[0] contains a valid space. Due to the not
+masked out bits this match failed and the process was killed.
 
-Second component bind would overwrite the 'irq_drv_data' from previous
-device probe, so interrupts would be executed in wrong context.
+Also add space_adjust for IAOQ1/IASQ1 so ptregs contains sane values.
 
-The fix makes use of currently unused 'struct pm4125_priv' member
-'pm4125_regmap_irq_chip', but renames it to a shorter name.
-
-Fixes: 8ad529484937 ("ASoC: codecs: add new pm4125 audio codec driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://patch.msgid.link/20251023-asoc-regmap-irq-chip-v1-1-17ad32680913@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sven Schnelle <svens@stackframe.org>
+Cc: stable@vger.kernel.org # v6.0+
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/pm4125.c |   17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+ arch/parisc/kernel/entry.S |   11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
---- a/sound/soc/codecs/pm4125.c
-+++ b/sound/soc/codecs/pm4125.c
-@@ -70,7 +70,7 @@ struct pm4125_priv {
- 	struct wcd_mbhc_config mbhc_cfg;
- 	struct wcd_mbhc_intr intr_ids;
- 	struct irq_domain *virq;
--	const struct regmap_irq_chip *pm4125_regmap_irq_chip;
-+	const struct regmap_irq_chip *chip_desc;
- 	struct regmap_irq_chip_data *irq_chip;
- 	struct snd_soc_jack *jack;
- 	unsigned long status_mask;
-@@ -179,7 +179,7 @@ static const u32 pm4125_config_regs[] =
- 	PM4125_DIG_SWR_INTR_LEVEL_0,
- };
+--- a/arch/parisc/kernel/entry.S
++++ b/arch/parisc/kernel/entry.S
+@@ -1059,8 +1059,6 @@ ENTRY_CFI(intr_save)		/* for os_hpmc */
+ 	STREG           %r17, PT_IOR(%r29)
  
--static struct regmap_irq_chip pm4125_regmap_irq_chip = {
-+static const struct regmap_irq_chip pm4125_regmap_irq_chip = {
- 	.name = "pm4125",
- 	.irqs = pm4125_irqs,
- 	.num_irqs = ARRAY_SIZE(pm4125_irqs),
-@@ -1320,10 +1320,8 @@ static int pm4125_irq_init(struct pm4125
- 		return -EINVAL;
- 	}
- 
--	pm4125_regmap_irq_chip.irq_drv_data = pm4125;
+ #if defined(CONFIG_64BIT)
+-	b,n		intr_save2
 -
- 	return devm_regmap_add_irq_chip(dev, pm4125->regmap, irq_create_mapping(pm4125->virq, 0),
--					IRQF_ONESHOT, 0, &pm4125_regmap_irq_chip,
-+					IRQF_ONESHOT, 0, pm4125->chip_desc,
- 					&pm4125->irq_chip);
- }
- 
-@@ -1695,6 +1693,7 @@ static int pm4125_probe(struct platform_
- {
- 	struct component_match *match = NULL;
- 	struct device *dev = &pdev->dev;
-+	struct regmap_irq_chip *chip_desc;
- 	struct pm4125_priv *pm4125;
- 	struct wcd_mbhc_config *cfg;
- 	int ret;
-@@ -1705,6 +1704,14 @@ static int pm4125_probe(struct platform_
- 
- 	dev_set_drvdata(dev, pm4125);
- 
-+	chip_desc = devm_kmemdup(dev, &pm4125_regmap_irq_chip,
-+				 sizeof(pm4125_regmap_irq_chip),
-+				 GFP_KERNEL);
-+	if (!chip_desc)
-+		return -ENOMEM;
-+	chip_desc->irq_drv_data = pm4125;
-+	pm4125->chip_desc = chip_desc;
+ skip_save_ior:
+ 	/* We have a itlb miss, and when executing code above 4 Gb on ILP64, we
+ 	 * need to adjust iasq/iaoq here in the same way we adjusted isr/ior
+@@ -1069,10 +1067,17 @@ skip_save_ior:
+ 	bb,COND(>=),n	%r8,PSW_W_BIT,intr_save2
+ 	LDREG		PT_IASQ0(%r29), %r16
+ 	LDREG		PT_IAOQ0(%r29), %r17
+-	/* adjust iasq/iaoq */
++	/* adjust iasq0/iaoq0 */
+ 	space_adjust	%r16,%r17,%r1
+ 	STREG           %r16, PT_IASQ0(%r29)
+ 	STREG           %r17, PT_IAOQ0(%r29)
 +
- 	ret = devm_regulator_bulk_get_enable(dev, ARRAY_SIZE(pm4125_power_supplies),
- 					     pm4125_power_supplies);
- 	if (ret)
++	LDREG		PT_IASQ1(%r29), %r16
++	LDREG		PT_IAOQ1(%r29), %r17
++	/* adjust iasq1/iaoq1 */
++	space_adjust	%r16,%r17,%r1
++	STREG           %r16, PT_IASQ1(%r29)
++	STREG           %r17, PT_IAOQ1(%r29)
+ #else
+ skip_save_ior:
+ #endif
 
 
 
