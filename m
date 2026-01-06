@@ -1,50 +1,51 @@
-Return-Path: <stable+bounces-205801-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205812-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34C96CFA874
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:15:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20E6DCFA974
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:21:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E55B430B9B81
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:26:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CA16A32C72CB
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:34:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 631722C0F79;
-	Tue,  6 Jan 2026 17:51:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81713330322;
+	Tue,  6 Jan 2026 17:52:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dbz0uI1a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vUPfX34e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E58A27FD76;
-	Tue,  6 Jan 2026 17:51:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FC462FB630;
+	Tue,  6 Jan 2026 17:52:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721908; cv=none; b=RghE08mEthg/I8fOI3GhI08Y2+XLbSJcMnjfHWUtZ00fr1roux4CjrU9FGZK6Pv1ZhRonYb6giCdKht0ZyF2dCmGaVVp7FDG5FEnsnQLiiFUXtXVK/sqdrn/3sc3vynMD3QDneXcA+3wbO61KpO9GUb8pgSQk+LGKLrYONJWfrs=
+	t=1767721945; cv=none; b=gLR4yGKVSUwPIrpYqWX1yEh2qGhR9AnWBUfKrNa8+ANwLzaHV/xZZ6M/NyteVkn8E6Nk1STOieBEzAfPQIvbMel34Wrd23ToofRFSxFBJAiRvkMVRVusI1qgh7D+VrcwQgnRUWhxxw02XLcchDK3Mcly3ZSyTuULYyZWTEsrPN4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721908; c=relaxed/simple;
-	bh=/ODFcD4JNktW031ZihyfpJDvwvMOGnulM1FlMi6I6xY=;
+	s=arc-20240116; t=1767721945; c=relaxed/simple;
+	bh=LuTewjhgpMj3o8wiAd4UqIQX+CbLjGEDfkGnNX1ku8U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r0QPVcxCjLvdaN7e6+at+nQ1nEain6e/1YX2mG1ERCQFQZO6ywU+EKJQSv26PcSx7hVgbK5I+G6dyO43JlkGF+fmMBx5OjZKDA/0oljdKt0aEPH4qM/phWBa611229Gp+PIcUp1r7zN0BAfGjbOcA/6dirsSeVrYVIkjIpRsjRY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dbz0uI1a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5351BC116C6;
-	Tue,  6 Jan 2026 17:51:47 +0000 (UTC)
+	 MIME-Version; b=UYw4CM8cp1aM0ifgdQJnF/ZyC1aQ3yePQ2rUinEeJCz0EvNPN/AGutJjCIoVq6pQGhuikTgGCY2D7PWgr6hlnc0UoLharfG7p/L+AE2+2foKN8h+34Buhsks/ljIHKNm+cTtneCdGzCVh7re2rCh/hX73WOvu/Nu7vyix1fWdJo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vUPfX34e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4180C116C6;
+	Tue,  6 Jan 2026 17:52:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721907;
-	bh=/ODFcD4JNktW031ZihyfpJDvwvMOGnulM1FlMi6I6xY=;
+	s=korg; t=1767721945;
+	bh=LuTewjhgpMj3o8wiAd4UqIQX+CbLjGEDfkGnNX1ku8U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Dbz0uI1ackOBngf2thMqTf9XVDmS8jUdaYueZfSZ7QG/QWZow00xCpKvz7owLKUBn
-	 ESZMWmwmzfLb3QxrsP12exVKHehPRSl1oFyrk3tO6bZye3iU3cahti2MKuQzcnHdUE
-	 Jruyautnm1bdW4teEg8KsEgNWhtFV3gzckCOSpSA=
+	b=vUPfX34e3arn/27EZWnERyzXKq7m24EVutZ7lrMnry0cJf6JJPGaxXKdr1v/ee2wz
+	 EG2cv32pSMjwpip3g1DYZ4CVmBS8r4QH+v7osjGzK2v7dZtLpxkvaOmCZZIbAnJz7W
+	 KoQEOUbUjz/ckGe88ZdWI2zy7Ydam+Obxej/mvH4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-Subject: [PATCH 6.18 090/312] ntfs: Do not overwrite uptodate pages
-Date: Tue,  6 Jan 2026 18:02:44 +0100
-Message-ID: <20260106170551.091061055@linuxfoundation.org>
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Johan Hovold <johan@kernel.org>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.18 091/312] ASoC: codecs: wcd939x: fix regmap leak on probe failure
+Date: Tue,  6 Jan 2026 18:02:45 +0100
+Message-ID: <20260106170551.125670690@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
 References: <20260106170547.832845344@linuxfoundation.org>
@@ -63,97 +64,48 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Matthew Wilcox (Oracle) <willy@infradead.org>
+From: Johan Hovold <johan@kernel.org>
 
-commit 68f6bd128e75a032432eda9d16676ed2969a1096 upstream.
+commit 86dc090f737953f16f8dc60c546ae7854690d4f6 upstream.
 
-When reading a compressed file, we may read several pages in addition to
-the one requested.  The current code will overwrite pages in the page
-cache with the data from disc which can definitely result in changes
-that have been made being lost.
+The soundwire regmap that may be allocated during probe is not freed on
+late probe failures.
 
-For example if we have four consecutie pages ABCD in the file compressed
-into a single extent, on first access, we'll bring in ABCD.  Then we
-write to page B.  Memory pressure results in the eviction of ACD.
-When we attempt to write to page C, we will overwrite the data in page
-B with the data currently on disk.
+Add the missing error handling.
 
-I haven't investigated the decompression code to check whether it's
-OK to overwrite a clean page or whether it might be possible to see
-corrupt data.  Out of an abundance of caution, decline to overwrite
-uptodate pages, not just dirty pages.
-
-Fixes: 4342306f0f0d (fs/ntfs3: Add file operations and implementation)
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Fixes: be2af391cea0 ("ASoC: codecs: Add WCD939x Soundwire devices driver")
+Cc: stable@vger.kernel.org	# 6.9
+Cc: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20251127135057.2216-1-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ntfs3/frecord.c |   35 +++++++++++++++++++++++++++++------
- 1 file changed, 29 insertions(+), 6 deletions(-)
+ sound/soc/codecs/wcd939x-sdw.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/fs/ntfs3/frecord.c
-+++ b/fs/ntfs3/frecord.c
-@@ -2022,6 +2022,29 @@ out:
- 	return err;
+--- a/sound/soc/codecs/wcd939x-sdw.c
++++ b/sound/soc/codecs/wcd939x-sdw.c
+@@ -1400,12 +1400,18 @@ static int wcd9390_probe(struct sdw_slav
+ 
+ 	ret = component_add(dev, &wcd_sdw_component_ops);
+ 	if (ret)
+-		return ret;
++		goto err_free_regmap;
+ 
+ 	/* Set suspended until aggregate device is bind */
+ 	pm_runtime_set_suspended(dev);
+ 
+ 	return 0;
++
++err_free_regmap:
++	if (wcd->regmap)
++		regmap_exit(wcd->regmap);
++
++	return ret;
  }
  
-+static struct page *ntfs_lock_new_page(struct address_space *mapping,
-+		pgoff_t index, gfp_t gfp)
-+{
-+	struct folio *folio = __filemap_get_folio(mapping, index,
-+			FGP_LOCK | FGP_ACCESSED | FGP_CREAT, gfp);
-+	struct page *page;
-+
-+	if (IS_ERR(folio))
-+		return ERR_CAST(folio);
-+
-+	if (!folio_test_uptodate(folio))
-+		return folio_file_page(folio, index);
-+
-+	/* Use a temporary page to avoid data corruption */
-+	folio_unlock(folio);
-+	folio_put(folio);
-+	page = alloc_page(gfp);
-+	if (!page)
-+		return ERR_PTR(-ENOMEM);
-+	__SetPageLocked(page);
-+	return page;
-+}
-+
- /*
-  * ni_readpage_cmpr
-  *
-@@ -2076,9 +2099,9 @@ int ni_readpage_cmpr(struct ntfs_inode *
- 		if (i == idx)
- 			continue;
- 
--		pg = find_or_create_page(mapping, index, gfp_mask);
--		if (!pg) {
--			err = -ENOMEM;
-+		pg = ntfs_lock_new_page(mapping, index, gfp_mask);
-+		if (IS_ERR(pg)) {
-+			err = PTR_ERR(pg);
- 			goto out1;
- 		}
- 		pages[i] = pg;
-@@ -2177,13 +2200,13 @@ int ni_decompress_file(struct ntfs_inode
- 		for (i = 0; i < pages_per_frame; i++, index++) {
- 			struct page *pg;
- 
--			pg = find_or_create_page(mapping, index, gfp_mask);
--			if (!pg) {
-+			pg = ntfs_lock_new_page(mapping, index, gfp_mask);
-+			if (IS_ERR(pg)) {
- 				while (i--) {
- 					unlock_page(pages[i]);
- 					put_page(pages[i]);
- 				}
--				err = -ENOMEM;
-+				err = PTR_ERR(pg);
- 				goto out;
- 			}
- 			pages[i] = pg;
+ static int wcd9390_remove(struct sdw_slave *pdev)
 
 
 
