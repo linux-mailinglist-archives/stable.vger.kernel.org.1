@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-205676-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205955-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5449CFA2DF
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:32:37 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5ABAACFA080
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:17:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0F49631B023F
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:44:45 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E704A30205BD
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:16:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB244352F86;
-	Tue,  6 Jan 2026 17:44:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 407DA376BF5;
+	Tue,  6 Jan 2026 18:00:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ybEuiqAX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mSC0qlVq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95AF835295E;
-	Tue,  6 Jan 2026 17:44:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF9C3355808;
+	Tue,  6 Jan 2026 18:00:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721484; cv=none; b=CpfCCITI0JBW4su4Y7hFm0XMWaadsATQocacplnFKn3nMDcTfnwlEI7r8Eg5Od9y4RPrTvoEpSf9PeGitcQaQeCUyA2//z+kdMD5GKFPbvVdX/7I34LqZfTYdt3WG+gQBk+Hxcw7dTuR5va7eTtP0WdR5vsIo95Dw/XxFmet2qs=
+	t=1767722419; cv=none; b=tkTKOA+54bax00f3pGq4RzhQRTmjK6sV0x2hUI/iSZqSWIMKS5WsTeVjiBXwz5Wzry/gXptNKRgQVnYNKWgVKpDcIcUW3Wrzqhrg9Fi4WcHxyC7Az3wcSk+r0MrN5DB9m1N9AiT4cnPdvh5vEyPbvbKSQU58LOIJn/6UbkB1djU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721484; c=relaxed/simple;
-	bh=briJ6xLuXwDRII0bmWbBleOgI6EA7P76gxKaAvUiVFU=;
+	s=arc-20240116; t=1767722419; c=relaxed/simple;
+	bh=zxIosl0xFQwNTy0IDbqt3sol0mq+wbzEGUAC88w0Tck=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=clbCqEFL954aQsiRGKTj6OmiQ41hUfQcSuGHrS2BwpXzZUq2qMV0xCjYRLqOvpPgVrp4xLBFLuiv+VGVuslpCQq3/P2KGCzsJlbQgR23on64AYxX4RGDO/qSkGDFGDnbJl6NvtcFPJ9p+NYW7DVroPGA+PZRlLMC33wFwqkM/mU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ybEuiqAX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA162C2BC9E;
-	Tue,  6 Jan 2026 17:44:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ubXbmVcutZtxlG4RJUPI7CAMQav/q0w6Lt47n06WQ5l9rIBu/Hs2xxNANVRWdTy0k34hG7p/gq2yJBlvepHdsbVGuo87wJiIN82ZZlmt0A3QJK3PnZA1toibH114Yq6tUOW687MDxfDFhAfP3d923zvohpxmNE6VbQ57q268lkY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mSC0qlVq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B3FAC116C6;
+	Tue,  6 Jan 2026 18:00:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721484;
-	bh=briJ6xLuXwDRII0bmWbBleOgI6EA7P76gxKaAvUiVFU=;
+	s=korg; t=1767722418;
+	bh=zxIosl0xFQwNTy0IDbqt3sol0mq+wbzEGUAC88w0Tck=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ybEuiqAX4HlIZ6tA1iN+QhJBUdqNEBVjNwR2nRuB/VXc9bStnSAx/dcXaO2M1k+Fn
-	 9X3dn+bl60d7QmiL6eMIyKW1UpGoB1w4LqshR07T+Axd/MATKK91HpQDlBE0iNtrcB
-	 6HFKRAgtQ6sVVdVCRTTnoYRNz4KkJE8GEnN2iTmQ=
+	b=mSC0qlVq4osAYUZUaD6Hq9Er5QXHuW8K8RtDr68/JQpjP10IE9Mz8v9jGhj5m5lNl
+	 BTzIiD7hdNACMEwll8VgEYMMKMV4XLODHj82kT2K2re0O2nOM1OJ8wvdHozzEfz3Fz
+	 PxgFWvIrAXJMrAG/R2XNyS7sqLVL6GWg8rOZj+K4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Stable@vger.kernel.org,
-	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Steev Klimaszewski <threeway@gmail.com>
-Subject: [PATCH 6.12 550/567] ASoC: qcom: sdw: fix memory leak for sdw_stream_runtime
+	Gianni Ceccarelli <dakkar@thenautilus.net>,
+	Armin Wolf <W_Armin@gmx.de>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH 6.18 258/312] platform/x86: samsung-galaxybook: Fix problematic pointer cast
 Date: Tue,  6 Jan 2026 18:05:32 +0100
-Message-ID: <20260106170511.757667327@linuxfoundation.org>
+Message-ID: <20260106170557.181727463@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
-References: <20260106170451.332875001@linuxfoundation.org>
+In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
+References: <20260106170547.832845344@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,253 +58,68 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+From: Armin Wolf <W_Armin@gmx.de>
 
-[ Upstream commit bcba17279327c6e85dee6a97014dc642e2dc93cc ]
+commit d37cd54ebeac37a763fbf303ed25f8a6e98328ff upstream.
 
-For some reason we endedup allocating sdw_stream_runtime for every cpu dai,
-this has two issues.
-1. we never set snd_soc_dai_set_stream for non soundwire dai, which
-   means there is no way that we can free this, resulting in memory leak
-2. startup and shutdown callbacks can be called without
-   hw_params callback called. This combination results in memory leak
-because machine driver sruntime array pointer is only set in hw_params
-callback.
+A user reported that reading the charge threshold on his device
+results in very strange values (like 78497792) being returned.
+The reason for this seems to be the fact that the driver casts
+the int pointer to an u8 pointer, leaving the last 3 bytes of
+the destination uninitialized. Fix this by using a temporary
+variable instead.
 
-Fix this by
- 1. adding a helper function to get sdw_runtime for substream
-which can be used by shutdown callback to get hold of sruntime to free.
- 2. only allocate sdw_runtime for soundwire dais.
-
-Fixes: d32bac9cb09c ("ASoC: qcom: Add helper for allocating Soundwire stream runtime")
-Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: Stable@vger.kernel.org
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
-Tested-by: Steev Klimaszewski <threeway@gmail.com> # Thinkpad X13s
-Link: https://patch.msgid.link/20251022143349.1081513-2-srinivas.kandagatla@oss.qualcomm.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 56f529ce4370 ("platform/x86: samsung-galaxybook: Add samsung-galaxybook driver")
+Reported-by: Gianni Ceccarelli <dakkar@thenautilus.net>
+Closes: https://lore.kernel.org/platform-driver-x86/20251228115556.14362d66@thenautilus.net/
+Tested-by: Gianni Ceccarelli <dakkar@thenautilus.net>
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+Link: https://patch.msgid.link/20251228214217.35972-1-W_Armin@gmx.de
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/qcom/sc7280.c   |    2 
- sound/soc/qcom/sc8280xp.c |    2 
- sound/soc/qcom/sdw.c      |  105 +++++++++++++++++++++++++---------------------
- sound/soc/qcom/sdw.h      |    1 
- sound/soc/qcom/sm8250.c   |    2 
- sound/soc/qcom/x1e80100.c |    2 
- 6 files changed, 64 insertions(+), 50 deletions(-)
+ drivers/platform/x86/samsung-galaxybook.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
---- a/sound/soc/qcom/sc7280.c
-+++ b/sound/soc/qcom/sc7280.c
-@@ -317,7 +317,7 @@ static void sc7280_snd_shutdown(struct s
- 	struct snd_soc_card *card = rtd->card;
- 	struct sc7280_snd_data *data = snd_soc_card_get_drvdata(card);
- 	struct snd_soc_dai *cpu_dai = snd_soc_rtd_to_cpu(rtd, 0);
--	struct sdw_stream_runtime *sruntime = data->sruntime[cpu_dai->id];
-+	struct sdw_stream_runtime *sruntime = qcom_snd_sdw_get_stream(substream);
- 
- 	switch (cpu_dai->id) {
- 	case MI2S_PRIMARY:
---- a/sound/soc/qcom/sc8280xp.c
-+++ b/sound/soc/qcom/sc8280xp.c
-@@ -69,7 +69,7 @@ static void sc8280xp_snd_shutdown(struct
- 	struct snd_soc_pcm_runtime *rtd = snd_soc_substream_to_rtd(substream);
- 	struct snd_soc_dai *cpu_dai = snd_soc_rtd_to_cpu(rtd, 0);
- 	struct sc8280xp_snd_data *pdata = snd_soc_card_get_drvdata(rtd->card);
--	struct sdw_stream_runtime *sruntime = pdata->sruntime[cpu_dai->id];
-+	struct sdw_stream_runtime *sruntime = qcom_snd_sdw_get_stream(substream);
- 
- 	pdata->sruntime[cpu_dai->id] = NULL;
- 	sdw_release_stream(sruntime);
---- a/sound/soc/qcom/sdw.c
-+++ b/sound/soc/qcom/sdw.c
-@@ -7,6 +7,37 @@
- #include <sound/soc.h>
- #include "sdw.h"
- 
-+static bool qcom_snd_is_sdw_dai(int id)
-+{
-+	switch (id) {
-+	case WSA_CODEC_DMA_RX_0:
-+	case WSA_CODEC_DMA_TX_0:
-+	case WSA_CODEC_DMA_RX_1:
-+	case WSA_CODEC_DMA_TX_1:
-+	case WSA_CODEC_DMA_TX_2:
-+	case RX_CODEC_DMA_RX_0:
-+	case TX_CODEC_DMA_TX_0:
-+	case RX_CODEC_DMA_RX_1:
-+	case TX_CODEC_DMA_TX_1:
-+	case RX_CODEC_DMA_RX_2:
-+	case TX_CODEC_DMA_TX_2:
-+	case RX_CODEC_DMA_RX_3:
-+	case TX_CODEC_DMA_TX_3:
-+	case RX_CODEC_DMA_RX_4:
-+	case TX_CODEC_DMA_TX_4:
-+	case RX_CODEC_DMA_RX_5:
-+	case TX_CODEC_DMA_TX_5:
-+	case RX_CODEC_DMA_RX_6:
-+	case RX_CODEC_DMA_RX_7:
-+	case SLIMBUS_0_RX...SLIMBUS_6_TX:
-+		return true;
-+	default:
-+		break;
-+	}
-+
-+	return false;
-+}
-+
- /**
-  * qcom_snd_sdw_startup() - Helper to start Soundwire stream for SoC audio card
-  * @substream: The PCM substream from audio, as passed to snd_soc_ops->startup()
-@@ -27,6 +58,9 @@ int qcom_snd_sdw_startup(struct snd_pcm_
- 	struct snd_soc_dai *codec_dai;
- 	int ret, i;
- 
-+	if (!qcom_snd_is_sdw_dai(cpu_dai->id))
-+		return 0;
-+
- 	sruntime = sdw_alloc_stream(cpu_dai->name, SDW_STREAM_PCM);
- 	if (!sruntime)
- 		return -ENOMEM;
-@@ -61,19 +95,8 @@ int qcom_snd_sdw_prepare(struct snd_pcm_
- 	if (!sruntime)
- 		return 0;
- 
--	switch (cpu_dai->id) {
--	case WSA_CODEC_DMA_RX_0:
--	case WSA_CODEC_DMA_RX_1:
--	case RX_CODEC_DMA_RX_0:
--	case RX_CODEC_DMA_RX_1:
--	case TX_CODEC_DMA_TX_0:
--	case TX_CODEC_DMA_TX_1:
--	case TX_CODEC_DMA_TX_2:
--	case TX_CODEC_DMA_TX_3:
--		break;
--	default:
-+	if (!qcom_snd_is_sdw_dai(cpu_dai->id))
- 		return 0;
--	}
- 
- 	if (*stream_prepared)
- 		return 0;
-@@ -101,9 +124,7 @@ int qcom_snd_sdw_prepare(struct snd_pcm_
- }
- EXPORT_SYMBOL_GPL(qcom_snd_sdw_prepare);
- 
--int qcom_snd_sdw_hw_params(struct snd_pcm_substream *substream,
--			   struct snd_pcm_hw_params *params,
--			   struct sdw_stream_runtime **psruntime)
-+struct sdw_stream_runtime *qcom_snd_sdw_get_stream(struct snd_pcm_substream *substream)
+--- a/drivers/platform/x86/samsung-galaxybook.c
++++ b/drivers/platform/x86/samsung-galaxybook.c
+@@ -442,12 +442,13 @@ static int galaxybook_battery_ext_proper
+ 					       union power_supply_propval *val)
  {
- 	struct snd_soc_pcm_runtime *rtd = snd_soc_substream_to_rtd(substream);
- 	struct snd_soc_dai *codec_dai;
-@@ -111,21 +132,23 @@ int qcom_snd_sdw_hw_params(struct snd_pc
- 	struct sdw_stream_runtime *sruntime;
- 	int i;
+ 	struct samsung_galaxybook *galaxybook = ext_data;
++	u8 value;
+ 	int err;
  
--	switch (cpu_dai->id) {
--	case WSA_CODEC_DMA_RX_0:
--	case RX_CODEC_DMA_RX_0:
--	case RX_CODEC_DMA_RX_1:
--	case TX_CODEC_DMA_TX_0:
--	case TX_CODEC_DMA_TX_1:
--	case TX_CODEC_DMA_TX_2:
--	case TX_CODEC_DMA_TX_3:
--		for_each_rtd_codec_dais(rtd, i, codec_dai) {
--			sruntime = snd_soc_dai_get_stream(codec_dai, substream->stream);
--			if (sruntime != ERR_PTR(-ENOTSUPP))
--				*psruntime = sruntime;
--		}
--		break;
-+	if (!qcom_snd_is_sdw_dai(cpu_dai->id))
-+		return NULL;
+ 	if (psp != POWER_SUPPLY_PROP_CHARGE_CONTROL_END_THRESHOLD)
+ 		return -EINVAL;
+ 
+-	err = charge_control_end_threshold_acpi_get(galaxybook, (u8 *)&val->intval);
++	err = charge_control_end_threshold_acpi_get(galaxybook, &value);
+ 	if (err)
+ 		return err;
+ 
+@@ -455,8 +456,10 @@ static int galaxybook_battery_ext_proper
+ 	 * device stores "no end threshold" as 0 instead of 100;
+ 	 * if device has 0, report 100
+ 	 */
+-	if (val->intval == 0)
+-		val->intval = 100;
++	if (value == 0)
++		value = 100;
 +
-+	for_each_rtd_codec_dais(rtd, i, codec_dai) {
-+		sruntime = snd_soc_dai_get_stream(codec_dai, substream->stream);
-+		if (sruntime != ERR_PTR(-ENOTSUPP))
-+			return sruntime;
- 	}
-+	return NULL;
-+}
-+EXPORT_SYMBOL_GPL(qcom_snd_sdw_get_stream);
-+
-+int qcom_snd_sdw_hw_params(struct snd_pcm_substream *substream,
-+			   struct snd_pcm_hw_params *params,
-+			   struct sdw_stream_runtime **psruntime)
-+{
-+	*psruntime = qcom_snd_sdw_get_stream(substream);
++	val->intval = value;
  
  	return 0;
- 
-@@ -138,23 +161,13 @@ int qcom_snd_sdw_hw_free(struct snd_pcm_
- 	struct snd_soc_pcm_runtime *rtd = snd_soc_substream_to_rtd(substream);
- 	struct snd_soc_dai *cpu_dai = snd_soc_rtd_to_cpu(rtd, 0);
- 
--	switch (cpu_dai->id) {
--	case WSA_CODEC_DMA_RX_0:
--	case WSA_CODEC_DMA_RX_1:
--	case RX_CODEC_DMA_RX_0:
--	case RX_CODEC_DMA_RX_1:
--	case TX_CODEC_DMA_TX_0:
--	case TX_CODEC_DMA_TX_1:
--	case TX_CODEC_DMA_TX_2:
--	case TX_CODEC_DMA_TX_3:
--		if (sruntime && *stream_prepared) {
--			sdw_disable_stream(sruntime);
--			sdw_deprepare_stream(sruntime);
--			*stream_prepared = false;
--		}
--		break;
--	default:
--		break;
-+	if (!qcom_snd_is_sdw_dai(cpu_dai->id))
-+		return 0;
-+
-+	if (sruntime && *stream_prepared) {
-+		sdw_disable_stream(sruntime);
-+		sdw_deprepare_stream(sruntime);
-+		*stream_prepared = false;
- 	}
- 
- 	return 0;
---- a/sound/soc/qcom/sdw.h
-+++ b/sound/soc/qcom/sdw.h
-@@ -10,6 +10,7 @@ int qcom_snd_sdw_startup(struct snd_pcm_
- int qcom_snd_sdw_prepare(struct snd_pcm_substream *substream,
- 			 struct sdw_stream_runtime *runtime,
- 			 bool *stream_prepared);
-+struct sdw_stream_runtime *qcom_snd_sdw_get_stream(struct snd_pcm_substream *stream);
- int qcom_snd_sdw_hw_params(struct snd_pcm_substream *substream,
- 			   struct snd_pcm_hw_params *params,
- 			   struct sdw_stream_runtime **psruntime);
---- a/sound/soc/qcom/sm8250.c
-+++ b/sound/soc/qcom/sm8250.c
-@@ -86,7 +86,7 @@ static void sm2450_snd_shutdown(struct s
- 	struct snd_soc_pcm_runtime *rtd = snd_soc_substream_to_rtd(substream);
- 	struct snd_soc_dai *cpu_dai = snd_soc_rtd_to_cpu(rtd, 0);
- 	struct sm8250_snd_data *data = snd_soc_card_get_drvdata(rtd->card);
--	struct sdw_stream_runtime *sruntime = data->sruntime[cpu_dai->id];
-+	struct sdw_stream_runtime *sruntime = qcom_snd_sdw_get_stream(substream);
- 
- 	data->sruntime[cpu_dai->id] = NULL;
- 	sdw_release_stream(sruntime);
---- a/sound/soc/qcom/x1e80100.c
-+++ b/sound/soc/qcom/x1e80100.c
-@@ -55,7 +55,7 @@ static void x1e80100_snd_shutdown(struct
- 	struct snd_soc_pcm_runtime *rtd = snd_soc_substream_to_rtd(substream);
- 	struct snd_soc_dai *cpu_dai = snd_soc_rtd_to_cpu(rtd, 0);
- 	struct x1e80100_snd_data *data = snd_soc_card_get_drvdata(rtd->card);
--	struct sdw_stream_runtime *sruntime = data->sruntime[cpu_dai->id];
-+	struct sdw_stream_runtime *sruntime = qcom_snd_sdw_get_stream(substream);
- 
- 	data->sruntime[cpu_dai->id] = NULL;
- 	sdw_release_stream(sruntime);
+ }
 
 
 
