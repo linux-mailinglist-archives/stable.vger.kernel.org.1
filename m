@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-205964-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205687-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC466CFA773
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:05:21 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8065DCFAA02
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:24:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 768BF34A23DE
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:14:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 16F3432F728F
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:37:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B51BF365A0E;
-	Tue,  6 Jan 2026 18:00:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DE7935581C;
+	Tue,  6 Jan 2026 17:45:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kykYsHbe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gqk6TKPc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70F9530595C;
-	Tue,  6 Jan 2026 18:00:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEE75355817;
+	Tue,  6 Jan 2026 17:45:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767722448; cv=none; b=bn5/AYBvMbKbLhu9ht0EAolihzKKPCkMBqCjrET6DNn+EILWrgweVfLs6+TgOKU0IDyMSIxECU/8qc7iZFebMCUzLIi/awFO4H8db+8wprf4R7j6G0E5j4E/a3g6QOrEu42kzOdPOSzf/VwlIy5KRNpkNVYMryL+5L2CD1ra4g0=
+	t=1767721523; cv=none; b=oWOOu/FNT9BWqKqzs09ZiCLkuGUpjLt6/XmlRyD9P8S7JRaniuBiKwVJu6qK0ji5vNzhhspLdhnQ4mWMJxmYx5VssZawzQtMYt3hyytCuAwlt0Y8E+Q1c3vMOY1PyPueVWfCiusSWl43MelDotNNd59GHDL3A1EVzNz2dlTUTn8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767722448; c=relaxed/simple;
-	bh=V6TvJTbC0eoe+0esIF8e7TtRZIHyXhicWKRXevDqLvE=;
+	s=arc-20240116; t=1767721523; c=relaxed/simple;
+	bh=Y4u+EkoUASIgPTs36oyPfCQ3UuqYxRtIz+5oj24e5g0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B1KRl+Ty1U928uPDFKMDRM4BQryFdHRYgRJbcqgq3hezQWUHDxnYfVupW9feKP6R3p7o56TGWDBnjG5vw51PQDKnDHsHFRXMJv3/PoATUWOFRcPFi2j+3v9u3y9o3C73NBCItjAGHVEwqpL7yviOwaBLHUNDZOaPlZKwHQ071uI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kykYsHbe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D42B9C16AAE;
-	Tue,  6 Jan 2026 18:00:47 +0000 (UTC)
+	 MIME-Version; b=SpHNoPGSqssMbh0fMJ6diJv4aqGn0c8FV4RY/1Enq+ntJaArwCJ20MupMg/FSdNZEwHZG7lOPMM1ahHXD7NMWF3dU8eH8ACBavbs8VYcZgQsCyIfhW/oiifUw2vp8/34laiEw09ZYu6P+XwxQoX1q0gXIiw3UnBXMkyxx7q5gXs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gqk6TKPc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41B67C116C6;
+	Tue,  6 Jan 2026 17:45:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767722448;
-	bh=V6TvJTbC0eoe+0esIF8e7TtRZIHyXhicWKRXevDqLvE=;
+	s=korg; t=1767721522;
+	bh=Y4u+EkoUASIgPTs36oyPfCQ3UuqYxRtIz+5oj24e5g0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kykYsHbeWfHXDrHZ/NttI1skwZVBQmFr6g+JdIfrvUl7nex+2KvieQiWPeqog+c2j
-	 s8TRnt88sRTELgrrWT6EW7mE6RN51n7ZY4V1WPwDIfnJPGWcZWbvJWHGhNCZiiEtNI
-	 yhs2hGbf81HYomwpu9sTLl8PcItsb6dmtwv75J5o=
+	b=gqk6TKPc7dVRTqR4e949oc4ECwQwSRe8tdbZNcPlK4qpOMljmeenfgin+FusgeTAa
+	 /l1EXQU613XUsog/RK1BKZD5DXxJ4I9HwzOP0TkMeiWlNOl3It+8ClcDl06Ab/TzCv
+	 BdD+QePrxvDLfZBwXuayqmmY4Fe5kjBrlgDBXUVA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Youling Tang <tangyouling@kylinos.cn>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Chenghao Duan <duanchenghao@kylinos.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.18 235/312] samples/ftrace: Adjust LoongArch register restore order in direct calls
-Date: Tue,  6 Jan 2026 18:05:09 +0100
-Message-ID: <20260106170556.353647844@linuxfoundation.org>
+	Jakub Kicinski <kuba@kernel.org>,
+	Zqiang <qiang.zhang@linux.dev>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Subject: [PATCH 6.12 529/567] usbnet: Fix using smp_processor_id() in preemptible code warnings
+Date: Tue,  6 Jan 2026 18:05:11 +0100
+Message-ID: <20260106170510.964268694@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
-References: <20260106170547.832845344@linuxfoundation.org>
+In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
+References: <20260106170451.332875001@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,122 +61,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chenghao Duan <duanchenghao@kylinos.cn>
+From: Zqiang <qiang.zhang@linux.dev>
 
-commit bb85d206be208bbf834883e948125a35ac59993a upstream.
+[ Upstream commit 327cd4b68b4398b6c24f10eb2b2533ffbfc10185 ]
 
-Ensure that in the ftrace direct call logic, the CPU register state
-(with ra = parent return address) is restored to the correct state after
-the execution of the custom trampoline function and before returning to
-the traced function. Additionally, guarantee the correctness of the jump
-logic for jr t0 (traced function address).
+Syzbot reported the following warning:
 
-Cc: stable@vger.kernel.org
-Fixes: 9cdc3b6a299c ("LoongArch: ftrace: Add direct call support")
-Reported-by: Youling Tang <tangyouling@kylinos.cn>
-Acked-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Chenghao Duan <duanchenghao@kylinos.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+BUG: using smp_processor_id() in preemptible [00000000] code: dhcpcd/2879
+caller is usbnet_skb_return+0x74/0x490 drivers/net/usb/usbnet.c:331
+CPU: 1 UID: 0 PID: 2879 Comm: dhcpcd Not tainted 6.15.0-rc4-syzkaller-00098-g615dca38c2ea #0 PREEMPT(voluntary)
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x16c/0x1f0 lib/dump_stack.c:120
+ check_preemption_disabled+0xd0/0xe0 lib/smp_processor_id.c:49
+ usbnet_skb_return+0x74/0x490 drivers/net/usb/usbnet.c:331
+ usbnet_resume_rx+0x4b/0x170 drivers/net/usb/usbnet.c:708
+ usbnet_change_mtu+0x1be/0x220 drivers/net/usb/usbnet.c:417
+ __dev_set_mtu net/core/dev.c:9443 [inline]
+ netif_set_mtu_ext+0x369/0x5c0 net/core/dev.c:9496
+ netif_set_mtu+0xb0/0x160 net/core/dev.c:9520
+ dev_set_mtu+0xae/0x170 net/core/dev_api.c:247
+ dev_ifsioc+0xa31/0x18d0 net/core/dev_ioctl.c:572
+ dev_ioctl+0x223/0x10e0 net/core/dev_ioctl.c:821
+ sock_do_ioctl+0x19d/0x280 net/socket.c:1204
+ sock_ioctl+0x42f/0x6a0 net/socket.c:1311
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:906 [inline]
+ __se_sys_ioctl fs/ioctl.c:892 [inline]
+ __x64_sys_ioctl+0x190/0x200 fs/ioctl.c:892
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xcd/0x260 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+For historical and portability reasons, the netif_rx() is usually
+run in the softirq or interrupt context, this commit therefore add
+local_bh_disable/enable() protection in the usbnet_resume_rx().
+
+Fixes: 43daa96b166c ("usbnet: Stop RX Q on MTU change")
+Link: https://syzkaller.appspot.com/bug?id=81f55dfa587ee544baaaa5a359a060512228c1e1
+Suggested-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Zqiang <qiang.zhang@linux.dev>
+Link: https://patch.msgid.link/20251011070518.7095-1-qiang.zhang@linux.dev
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+[Harshit: Resolved conflicts due to missing commit: 2c04d279e857 ("net:
+usb: Convert tasklet API to new bottom half workqueue mechanism") in
+6.12.y]
+Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- samples/ftrace/ftrace-direct-modify.c       |    8 ++++----
- samples/ftrace/ftrace-direct-multi-modify.c |    8 ++++----
- samples/ftrace/ftrace-direct-multi.c        |    4 ++--
- samples/ftrace/ftrace-direct-too.c          |    4 ++--
- samples/ftrace/ftrace-direct.c              |    4 ++--
- 5 files changed, 14 insertions(+), 14 deletions(-)
+ drivers/net/usb/usbnet.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/samples/ftrace/ftrace-direct-modify.c
-+++ b/samples/ftrace/ftrace-direct-modify.c
-@@ -176,8 +176,8 @@ asm (
- "	st.d	$t0, $sp, 0\n"
- "	st.d	$ra, $sp, 8\n"
- "	bl	my_direct_func1\n"
--"	ld.d	$t0, $sp, 0\n"
--"	ld.d	$ra, $sp, 8\n"
-+"	ld.d	$ra, $sp, 0\n"
-+"	ld.d	$t0, $sp, 8\n"
- "	addi.d	$sp, $sp, 16\n"
- "	jr	$t0\n"
- "	.size		my_tramp1, .-my_tramp1\n"
-@@ -189,8 +189,8 @@ asm (
- "	st.d	$t0, $sp, 0\n"
- "	st.d	$ra, $sp, 8\n"
- "	bl	my_direct_func2\n"
--"	ld.d	$t0, $sp, 0\n"
--"	ld.d	$ra, $sp, 8\n"
-+"	ld.d	$ra, $sp, 0\n"
-+"	ld.d	$t0, $sp, 8\n"
- "	addi.d	$sp, $sp, 16\n"
- "	jr	$t0\n"
- "	.size		my_tramp2, .-my_tramp2\n"
---- a/samples/ftrace/ftrace-direct-multi-modify.c
-+++ b/samples/ftrace/ftrace-direct-multi-modify.c
-@@ -199,8 +199,8 @@ asm (
- "	move	$a0, $t0\n"
- "	bl	my_direct_func1\n"
- "	ld.d	$a0, $sp, 0\n"
--"	ld.d	$t0, $sp, 8\n"
--"	ld.d	$ra, $sp, 16\n"
-+"	ld.d	$ra, $sp, 8\n"
-+"	ld.d	$t0, $sp, 16\n"
- "	addi.d	$sp, $sp, 32\n"
- "	jr	$t0\n"
- "	.size		my_tramp1, .-my_tramp1\n"
-@@ -215,8 +215,8 @@ asm (
- "	move	$a0, $t0\n"
- "	bl	my_direct_func2\n"
- "	ld.d	$a0, $sp, 0\n"
--"	ld.d	$t0, $sp, 8\n"
--"	ld.d	$ra, $sp, 16\n"
-+"	ld.d	$ra, $sp, 8\n"
-+"	ld.d	$t0, $sp, 16\n"
- "	addi.d	$sp, $sp, 32\n"
- "	jr	$t0\n"
- "	.size		my_tramp2, .-my_tramp2\n"
---- a/samples/ftrace/ftrace-direct-multi.c
-+++ b/samples/ftrace/ftrace-direct-multi.c
-@@ -131,8 +131,8 @@ asm (
- "	move	$a0, $t0\n"
- "	bl	my_direct_func\n"
- "	ld.d	$a0, $sp, 0\n"
--"	ld.d	$t0, $sp, 8\n"
--"	ld.d	$ra, $sp, 16\n"
-+"	ld.d	$ra, $sp, 8\n"
-+"	ld.d	$t0, $sp, 16\n"
- "	addi.d	$sp, $sp, 32\n"
- "	jr	$t0\n"
- "	.size		my_tramp, .-my_tramp\n"
---- a/samples/ftrace/ftrace-direct-too.c
-+++ b/samples/ftrace/ftrace-direct-too.c
-@@ -143,8 +143,8 @@ asm (
- "	ld.d	$a0, $sp, 0\n"
- "	ld.d	$a1, $sp, 8\n"
- "	ld.d	$a2, $sp, 16\n"
--"	ld.d	$t0, $sp, 24\n"
--"	ld.d	$ra, $sp, 32\n"
-+"	ld.d	$ra, $sp, 24\n"
-+"	ld.d	$t0, $sp, 32\n"
- "	addi.d	$sp, $sp, 48\n"
- "	jr	$t0\n"
- "	.size		my_tramp, .-my_tramp\n"
---- a/samples/ftrace/ftrace-direct.c
-+++ b/samples/ftrace/ftrace-direct.c
-@@ -124,8 +124,8 @@ asm (
- "	st.d	$ra, $sp, 16\n"
- "	bl	my_direct_func\n"
- "	ld.d	$a0, $sp, 0\n"
--"	ld.d	$t0, $sp, 8\n"
--"	ld.d	$ra, $sp, 16\n"
-+"	ld.d	$ra, $sp, 8\n"
-+"	ld.d	$t0, $sp, 16\n"
- "	addi.d	$sp, $sp, 32\n"
- "	jr	$t0\n"
- "	.size		my_tramp, .-my_tramp\n"
+--- a/drivers/net/usb/usbnet.c
++++ b/drivers/net/usb/usbnet.c
+@@ -702,6 +702,7 @@ void usbnet_resume_rx(struct usbnet *dev
+ 	struct sk_buff *skb;
+ 	int num = 0;
+ 
++	local_bh_disable();
+ 	clear_bit(EVENT_RX_PAUSED, &dev->flags);
+ 
+ 	while ((skb = skb_dequeue(&dev->rxq_pause)) != NULL) {
+@@ -710,6 +711,7 @@ void usbnet_resume_rx(struct usbnet *dev
+ 	}
+ 
+ 	tasklet_schedule(&dev->bh);
++	local_bh_enable();
+ 
+ 	netif_dbg(dev, rx_status, dev->net,
+ 		  "paused rx queue disabled, %d skbs requeued\n", num);
 
 
 
