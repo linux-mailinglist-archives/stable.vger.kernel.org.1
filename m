@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-205575-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205898-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B00FBCFA947
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:20:30 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28D40CFAC68
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:48:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6396A3288DF0
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:32:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D65FE31A1DBF
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 19:32:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 289842C11F6;
-	Tue,  6 Jan 2026 17:39:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7167736BCF9;
+	Tue,  6 Jan 2026 17:57:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w0RVV3bo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IWmXfoZ1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA1AE224B04;
-	Tue,  6 Jan 2026 17:39:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D674357A50;
+	Tue,  6 Jan 2026 17:57:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721148; cv=none; b=b4I5NfGgBnZ1mPYd/ZLmO0v2+yjULry4ZLj9YnHRDLsX649/AfbDzayIGb9HSEE3XLpDXM6fdaXItSopaf7MnXoSv5Wnc4avbQ+6grBrsVkPDQk8rNv+Bp/aGE0ET+sN/yKfmQmJ+g7P3zhpJZtYYliAZKTlH5/QElFtNIXlUI4=
+	t=1767722231; cv=none; b=eRMBcXhzmwQIAEi1iEqaJtfkF+pKEwAfUq6WRUt0WSqO1/m4Ld5IXqQP2qqy2qjQZF3mrLnoUwln+lsot8g8Gfabo5oaK9rA+xusS9vX7XyEEZxlUqQqFnw4LA7kuaX+90oRVQ1VbHwntKU22iNJFAu2Cmgjm7LfhZXMangn3WQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721148; c=relaxed/simple;
-	bh=eAXr5VRXsWpcnlWbQVT4h0dBAjgPoXuidGUz7U0wryc=;
+	s=arc-20240116; t=1767722231; c=relaxed/simple;
+	bh=WYg/DpMVmklvzInbeTfJjOSXDIUzApZnEFVzuzsF/i8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SU8gLVufqgbdo1erqSVe1wDWGd4rXgcdi8v/zG3k9o0j12gM9IYmWgCYCpZKdHbBgN5TlA3VvKN9iEuoj4I7EYTNu+/IC/GFjHQezXQVDt4Ffo4m68aQoVGfCa1QzEYiGGWIR/THAbhG0nDqTEmDoy+C7CbEJRtG3/imaO3bp4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w0RVV3bo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 626E3C116C6;
-	Tue,  6 Jan 2026 17:39:08 +0000 (UTC)
+	 MIME-Version; b=bBf2Ews584+SJcMPqUhVAz34UVt88zSNU1MNz/3qfdz6cTFhw+Ok752ns6Y2DubUFf9UxExMQ3YEcwcsCQmZeeFZT3yms6eOMAMyzv4hzqjN7XfyYJrQf1venyc3gBOvxZSYK+H2eTmBj5mYqyt3GtIm4bcCC/JFTGN2GBivgcI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IWmXfoZ1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A586EC16AAE;
+	Tue,  6 Jan 2026 17:57:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721148;
-	bh=eAXr5VRXsWpcnlWbQVT4h0dBAjgPoXuidGUz7U0wryc=;
+	s=korg; t=1767722231;
+	bh=WYg/DpMVmklvzInbeTfJjOSXDIUzApZnEFVzuzsF/i8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w0RVV3boXRmgjR0XWgfsIC53yiLmb1//+8Rj+MoGM60jKBdp1v5BWJw6W5je1jyKb
-	 w5OyVAKYtgRP+nM83eBIbrvjX1QxDl1lHnmMmDpU49ARZoLMYe7bqNgKAdV9LD5T9x
-	 id5+L+eWj2X/K3zIWhqcd7zow+KWg1+vAgOV4U5M=
+	b=IWmXfoZ1npODyMQlI0I/yXrdibgJpxpVA+0D7elJkDVtED1dGJ7uXV4UwDgj63JZj
+	 ItBuAM+MkWaQ7D5Vn8+RhWDBiOnQRo4ZVLmNMQkcVbYch4IVRt/jn1DEzo1ibt5fQu
+	 xwx2f/Hv0tvY628ESd3FRZgllwPWgpMMM5QmkqpU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chenghao Duan <duanchenghao@kylinos.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.12 449/567] LoongArch: Refactor register restoration in ftrace_common_return
-Date: Tue,  6 Jan 2026 18:03:51 +0100
-Message-ID: <20260106170507.958203377@linuxfoundation.org>
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Jim Quinlan <james.quinlan@broadcom.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Florian Fainelli <florian.fainelli@broadcom.com>
+Subject: [PATCH 6.18 159/312] PCI: brcmstb: Fix disabling L0s capability
+Date: Tue,  6 Jan 2026 18:03:53 +0100
+Message-ID: <20260106170553.589551614@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
-References: <20260106170451.332875001@linuxfoundation.org>
+In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
+References: <20260106170547.832845344@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,80 +61,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chenghao Duan <duanchenghao@kylinos.cn>
+From: Jim Quinlan <james.quinlan@broadcom.com>
 
-commit 45cb47c628dfbd1994c619f3eac271a780602826 upstream.
+commit 9583f9d22991d2cfb5cc59a2552040c4ae98d998 upstream.
 
-Refactor the register restoration sequence in the ftrace_common_return
-function to clearly distinguish between the logic of normal returns and
-direct call returns in function tracing scenarios. The logic is as
-follows:
+caab002d5069 ("PCI: brcmstb: Disable L0s component of ASPM if requested")
+set PCI_EXP_LNKCAP_ASPM_L1 and (optionally) PCI_EXP_LNKCAP_ASPM_L0S in
+PCI_EXP_LNKCAP (aka PCIE_RC_CFG_PRIV1_LINK_CAPABILITY in brcmstb).
 
-1. In the case of a normal return, the execution flow returns to the
-traced function, and ftrace must ensure that the register data is
-consistent with the state when the function was entered.
+But instead of using PCI_EXP_LNKCAP_ASPM_L1 and PCI_EXP_LNKCAP_ASPM_L0S
+directly, it used PCIE_LINK_STATE_L1 and PCIE_LINK_STATE_L0S, which are
+Linux-created values that only coincidentally matched the PCIe spec.
+b478e162f227 ("PCI/ASPM: Consolidate link state defines") later changed
+them so they no longer matched the PCIe spec, so the bits ended up in the
+wrong place in PCI_EXP_LNKCAP.
 
-ra = parent return address; t0 = traced function return address.
+Use PCI_EXP_LNKCAP_ASPM_L0S to clear L0s support when there's an
+'aspm-no-l0s' property.  Rely on brcmstb hardware to advertise L0s and/or
+L1 support otherwise.
 
-2. In the case of a direct call return, the execution flow jumps to the
-custom trampoline function, and ftrace must ensure that the register
-data is consistent with the state when ftrace was entered.
-
-ra = traced function return address; t0 = parent return address.
-
+Fixes: caab002d5069 ("PCI: brcmstb: Disable L0s component of ASPM if requested")
+Reported-by: Bjorn Helgaas <bhelgaas@google.com>
+Closes: https://lore.kernel.org/linux-pci/20250925194424.GA2197200@bhelgaas
+Signed-off-by: Jim Quinlan <james.quinlan@broadcom.com>
+[mani: reworded subject and description, added closes tag and CCed stable]
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+[bhelgaas: commit log]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
 Cc: stable@vger.kernel.org
-Fixes: 9cdc3b6a299c ("LoongArch: ftrace: Add direct call support")
-Signed-off-by: Chenghao Duan <duanchenghao@kylinos.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Link: https://patch.msgid.link/20251003170436.1446030-1-james.quinlan@broadcom.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/kernel/mcount_dyn.S |   14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ drivers/pci/controller/pcie-brcmstb.c |   10 +++-------
+ 1 file changed, 3 insertions(+), 7 deletions(-)
 
---- a/arch/loongarch/kernel/mcount_dyn.S
-+++ b/arch/loongarch/kernel/mcount_dyn.S
-@@ -94,7 +94,6 @@ SYM_INNER_LABEL(ftrace_graph_call, SYM_L
-  * at the callsite, so there is no need to restore the T series regs.
-  */
- ftrace_common_return:
--	PTR_L		ra, sp, PT_R1
- 	PTR_L		a0, sp, PT_R4
- 	PTR_L		a1, sp, PT_R5
- 	PTR_L		a2, sp, PT_R6
-@@ -104,12 +103,17 @@ ftrace_common_return:
- 	PTR_L		a6, sp, PT_R10
- 	PTR_L		a7, sp, PT_R11
- 	PTR_L		fp, sp, PT_R22
--	PTR_L		t0, sp, PT_ERA
- 	PTR_L		t1, sp, PT_R13
--	PTR_ADDI	sp, sp, PT_SIZE
- 	bnez		t1, .Ldirect
-+
-+	PTR_L		ra, sp, PT_R1
-+	PTR_L		t0, sp, PT_ERA
-+	PTR_ADDI	sp, sp, PT_SIZE
- 	jr		t0
- .Ldirect:
-+	PTR_L		t0, sp, PT_R1
-+	PTR_L		ra, sp, PT_ERA
-+	PTR_ADDI	sp, sp, PT_SIZE
- 	jr		t1
- SYM_CODE_END(ftrace_common)
+--- a/drivers/pci/controller/pcie-brcmstb.c
++++ b/drivers/pci/controller/pcie-brcmstb.c
+@@ -48,7 +48,6 @@
  
-@@ -161,6 +165,8 @@ SYM_CODE_END(return_to_handler)
- #ifdef CONFIG_DYNAMIC_FTRACE_WITH_DIRECT_CALLS
- SYM_CODE_START(ftrace_stub_direct_tramp)
- 	UNWIND_HINT_UNDEFINED
--	jr		t0
-+	move		t1, ra
-+	move		ra, t0
-+	jr		t1
- SYM_CODE_END(ftrace_stub_direct_tramp)
- #endif /* CONFIG_DYNAMIC_FTRACE_WITH_DIRECT_CALLS */
+ #define PCIE_RC_CFG_PRIV1_LINK_CAPABILITY			0x04dc
+ #define  PCIE_RC_CFG_PRIV1_LINK_CAPABILITY_MAX_LINK_WIDTH_MASK	0x1f0
+-#define  PCIE_RC_CFG_PRIV1_LINK_CAPABILITY_ASPM_SUPPORT_MASK	0xc00
+ 
+ #define PCIE_RC_CFG_PRIV1_ROOT_CAP			0x4f8
+ #define  PCIE_RC_CFG_PRIV1_ROOT_CAP_L1SS_MODE_MASK	0xf8
+@@ -1075,7 +1074,7 @@ static int brcm_pcie_setup(struct brcm_p
+ 	void __iomem *base = pcie->base;
+ 	struct pci_host_bridge *bridge;
+ 	struct resource_entry *entry;
+-	u32 tmp, burst, aspm_support, num_lanes, num_lanes_cap;
++	u32 tmp, burst, num_lanes, num_lanes_cap;
+ 	u8 num_out_wins = 0;
+ 	int num_inbound_wins = 0;
+ 	int memc, ret;
+@@ -1175,12 +1174,9 @@ static int brcm_pcie_setup(struct brcm_p
+ 
+ 
+ 	/* Don't advertise L0s capability if 'aspm-no-l0s' */
+-	aspm_support = PCIE_LINK_STATE_L1;
+-	if (!of_property_read_bool(pcie->np, "aspm-no-l0s"))
+-		aspm_support |= PCIE_LINK_STATE_L0S;
+ 	tmp = readl(base + PCIE_RC_CFG_PRIV1_LINK_CAPABILITY);
+-	u32p_replace_bits(&tmp, aspm_support,
+-		PCIE_RC_CFG_PRIV1_LINK_CAPABILITY_ASPM_SUPPORT_MASK);
++	if (of_property_read_bool(pcie->np, "aspm-no-l0s"))
++		tmp &= ~PCI_EXP_LNKCAP_ASPM_L0S;
+ 	writel(tmp, base + PCIE_RC_CFG_PRIV1_LINK_CAPABILITY);
+ 
+ 	/* 'tmp' still holds the contents of PRIV1_LINK_CAPABILITY */
 
 
 
