@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-205524-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205802-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42FF2CFA2AF
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:31:22 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1451CF9F0E
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:07:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 600FC309D9E1
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:43:32 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 47BEF30131D0
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:06:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7363F33985D;
-	Tue,  6 Jan 2026 17:36:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F4F92D7DD5;
+	Tue,  6 Jan 2026 17:51:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fysCSjIb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ndSZOmrQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3188929BD9A;
-	Tue,  6 Jan 2026 17:36:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BE8327FD76;
+	Tue,  6 Jan 2026 17:51:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767720979; cv=none; b=JVkOlw8dKa7MS3umxux/Xh1F1zW5E+uwLQMT2jl5YLFbwiRLuHG1NWWg1YCQzHf7NM7q1lATIarhP+Ygdp3ZhqFJP/fBA2K5xNCUSkbGxMZCcIGdSHdtvx0m/gv6r6zAabD/nbfnszI/eXxdcbZhiGR4FwxYwEPwwVRKnuDBnMo=
+	t=1767721911; cv=none; b=bj09RfUS4mSmJoaUCu/OKXiW9ydoEfTztCMcqZdavaYMYLHuTMZqHc+49lKlhy5Bx/n1qfqPq1Sf2ku+QECc184gp//3RUJoGLGb8GeOEIMcXFnJA204vqvPaVZ9b24q+nSM+5ZLKxqokW0dh38YZPhdGghAIdNegI7H6BHguQc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767720979; c=relaxed/simple;
-	bh=kWdFU81tVCvLvRIjYByYa5xQqhm/3giYqN8+n3fk5BM=;
+	s=arc-20240116; t=1767721911; c=relaxed/simple;
+	bh=tIaNnqo3B9LA6GciclTAb/oFmk5583TJESCSCjtHs9c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CcBxBosyEsfdfa/ptrKay47HHBFe6CtTRuLopmEBkZRdX2WfDoUSglwvbnIv0Egi1lIOoinSEfqzh5BN8w2BsLeHxOrC4TZjMw9vr0tRu+K8tORdlHxifcT44o2EKOFaxMgTcGgcQxMa7cJ7ucEdDkZVLZEuWxwynu5A8TTAjMc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fysCSjIb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 951CFC116C6;
-	Tue,  6 Jan 2026 17:36:18 +0000 (UTC)
+	 MIME-Version; b=EIWOyFUxOw0nhYRWf8U4qoHayyTWlOXbGUNCiebWwqrG85OE+9dgJeDH2RcCcR9Qdx0F+HsTBa/dMl99mQbN1+xbUsxZJhWuxkOaQEXYjMhDqFUlKilC23l4xRJDbgyxpYeZ1FjS0ahML6E+ELncYD067GvpG7PYXb0/HYY5Hg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ndSZOmrQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A971C116C6;
+	Tue,  6 Jan 2026 17:51:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767720979;
-	bh=kWdFU81tVCvLvRIjYByYa5xQqhm/3giYqN8+n3fk5BM=;
+	s=korg; t=1767721910;
+	bh=tIaNnqo3B9LA6GciclTAb/oFmk5583TJESCSCjtHs9c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fysCSjIbLLyRn11P3LBcWYgQVOZs/JGANhwXt0XuK4EUEyvNKXlck1Cq1WTeNlX0C
-	 ggjSGmbMlrbrr6egO99pLAz8QcglgMW3J+vQe/3sYpxsyHZZvnQ5xWioWhqUnuTfb4
-	 XdVWnk7EeSsWNl87jGs30qP5BoEoml9aegLd68+Q=
+	b=ndSZOmrQ84YRhQWWtufliL9+ujeXs27H/7pmGfnGncv7GDMfSS7LA11b39iHwbn9/
+	 mAgqDRu0fudfi82/MXltu0yCc+ZOqg1YdwLl98yKniDBXScrkgosNVZbLZu2rbT5b2
+	 GYjdUsxuHf5m5af5XbwWPa9VpFzYuGCYjQBW+Ej8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thorsten Blum <thorsten.blum@linux.dev>,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.12 400/567] fbdev: pxafb: Fix multiple clamped values in pxafb_adjust_timing
+	Jinhui Guo <guojinhui.liam@bytedance.com>,
+	Joerg Roedel <joerg.roedel@amd.com>
+Subject: [PATCH 6.18 108/312] iommu/amd: Fix pci_segment memleak in alloc_pci_segment()
 Date: Tue,  6 Jan 2026 18:03:02 +0100
-Message-ID: <20260106170506.139248445@linuxfoundation.org>
+Message-ID: <20260106170551.744408958@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
-References: <20260106170451.332875001@linuxfoundation.org>
+In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
+References: <20260106170547.832845344@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,48 +59,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thorsten Blum <thorsten.blum@linux.dev>
+From: Jinhui Guo <guojinhui.liam@bytedance.com>
 
-commit 0155e868cbc111846cc2809c1546ea53810a56ae upstream.
+commit 75ba146c2674ba49ed8a222c67f9abfb4a4f2a4f upstream.
 
-The variables were never clamped because the return value of clamp_val()
-was not used. Fix this by assigning the clamped values, and use clamp()
-instead of clamp_val().
+Fix a memory leak of struct amd_iommu_pci_segment in alloc_pci_segment()
+when system memory (or contiguous memory) is insufficient.
 
+Fixes: 04230c119930 ("iommu/amd: Introduce per PCI segment device table")
+Fixes: eda797a27795 ("iommu/amd: Introduce per PCI segment rlookup table")
+Fixes: 99fc4ac3d297 ("iommu/amd: Introduce per PCI segment alias_table")
 Cc: stable@vger.kernel.org
-Fixes: 3f16ff608a75 ("[ARM] pxafb: cleanup of the timing checking code")
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Jinhui Guo <guojinhui.liam@bytedance.com>
+Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/fbdev/pxafb.c |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/iommu/amd/init.c |   15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
---- a/drivers/video/fbdev/pxafb.c
-+++ b/drivers/video/fbdev/pxafb.c
-@@ -418,12 +418,12 @@ static int pxafb_adjust_timing(struct px
- 	var->yres = max_t(int, var->yres, MIN_YRES);
+--- a/drivers/iommu/amd/init.c
++++ b/drivers/iommu/amd/init.c
+@@ -1731,13 +1731,22 @@ static struct amd_iommu_pci_seg *__init
+ 	list_add_tail(&pci_seg->list, &amd_iommu_pci_seg_list);
  
- 	if (!(fbi->lccr0 & LCCR0_LCDT)) {
--		clamp_val(var->hsync_len, 1, 64);
--		clamp_val(var->vsync_len, 1, 64);
--		clamp_val(var->left_margin,  1, 255);
--		clamp_val(var->right_margin, 1, 255);
--		clamp_val(var->upper_margin, 1, 255);
--		clamp_val(var->lower_margin, 1, 255);
-+		var->hsync_len = clamp(var->hsync_len, 1, 64);
-+		var->vsync_len = clamp(var->vsync_len, 1, 64);
-+		var->left_margin  = clamp(var->left_margin,  1, 255);
-+		var->right_margin = clamp(var->right_margin, 1, 255);
-+		var->upper_margin = clamp(var->upper_margin, 1, 255);
-+		var->lower_margin = clamp(var->lower_margin, 1, 255);
- 	}
+ 	if (alloc_dev_table(pci_seg))
+-		return NULL;
++		goto err_free_pci_seg;
+ 	if (alloc_alias_table(pci_seg))
+-		return NULL;
++		goto err_free_dev_table;
+ 	if (alloc_rlookup_table(pci_seg))
+-		return NULL;
++		goto err_free_alias_table;
  
- 	/* make sure each line is aligned on word boundary */
+ 	return pci_seg;
++
++err_free_alias_table:
++	free_alias_table(pci_seg);
++err_free_dev_table:
++	free_dev_table(pci_seg);
++err_free_pci_seg:
++	list_del(&pci_seg->list);
++	kfree(pci_seg);
++	return NULL;
+ }
+ 
+ static struct amd_iommu_pci_seg *__init get_pci_segment(u16 id,
 
 
 
