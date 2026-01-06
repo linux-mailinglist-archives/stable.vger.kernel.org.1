@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-205802-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205525-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1451CF9F0E
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:07:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF2F9CF9C9E
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 18:43:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 47BEF30131D0
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:06:55 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 69315300EE64
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:43:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F4F92D7DD5;
-	Tue,  6 Jan 2026 17:51:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E3DF33AD8D;
+	Tue,  6 Jan 2026 17:36:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ndSZOmrQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EUFngG8c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BE8327FD76;
-	Tue,  6 Jan 2026 17:51:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEE3C33B6CA;
+	Tue,  6 Jan 2026 17:36:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721911; cv=none; b=bj09RfUS4mSmJoaUCu/OKXiW9ydoEfTztCMcqZdavaYMYLHuTMZqHc+49lKlhy5Bx/n1qfqPq1Sf2ku+QECc184gp//3RUJoGLGb8GeOEIMcXFnJA204vqvPaVZ9b24q+nSM+5ZLKxqokW0dh38YZPhdGghAIdNegI7H6BHguQc=
+	t=1767720983; cv=none; b=etMaqGup0hOg7vDlbL2/TpT/1dGJbofMxRkE2ZBKBISpnTf11ogcvBwwwdXQOZnuMeP8xMMY/URidprerCe/OzP5Cq6nCtJEQnNMfR7/5REiNKyqa2juE3zOBFpqslNjTF750y8m6+LZUgKlvgxqb4PGrW0vzfv1c8TG5GeMqmE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721911; c=relaxed/simple;
-	bh=tIaNnqo3B9LA6GciclTAb/oFmk5583TJESCSCjtHs9c=;
+	s=arc-20240116; t=1767720983; c=relaxed/simple;
+	bh=KpnTsvFefhuSKBC4iqDTNJfGG97NXZ6LSd8eWHFlKwc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EIWOyFUxOw0nhYRWf8U4qoHayyTWlOXbGUNCiebWwqrG85OE+9dgJeDH2RcCcR9Qdx0F+HsTBa/dMl99mQbN1+xbUsxZJhWuxkOaQEXYjMhDqFUlKilC23l4xRJDbgyxpYeZ1FjS0ahML6E+ELncYD067GvpG7PYXb0/HYY5Hg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ndSZOmrQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A971C116C6;
-	Tue,  6 Jan 2026 17:51:50 +0000 (UTC)
+	 MIME-Version:Content-Type; b=AW1EngH2jNuee27Nj6EnsUEGkBVSpGx9AOJPitjvByR+nmT21+LlMWWAMBNVghV8Yez2mPsY9d1Lh8bsp+qGxnoTUprIU1f3wb/XwoCI4mBVvbTWVKi+m8HBgfyyO2WiTX6jzF1MFNnth26J9RnqDGEuAl2KYnDdLsFng3b2Y5E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EUFngG8c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38177C16AAE;
+	Tue,  6 Jan 2026 17:36:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721910;
-	bh=tIaNnqo3B9LA6GciclTAb/oFmk5583TJESCSCjtHs9c=;
+	s=korg; t=1767720982;
+	bh=KpnTsvFefhuSKBC4iqDTNJfGG97NXZ6LSd8eWHFlKwc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ndSZOmrQ84YRhQWWtufliL9+ujeXs27H/7pmGfnGncv7GDMfSS7LA11b39iHwbn9/
-	 mAgqDRu0fudfi82/MXltu0yCc+ZOqg1YdwLl98yKniDBXScrkgosNVZbLZu2rbT5b2
-	 GYjdUsxuHf5m5af5XbwWPa9VpFzYuGCYjQBW+Ej8=
+	b=EUFngG8cKF7xnJ6xvUSEf07lBbk6r7vIzYMpzzT8ousbluaimUg1M1Q9XI3YXhUR4
+	 TyNnIbKvrmQnaNgpomVW9wHQefAixN4EYk0M5ddzyXcvT69hpTC+NHNVo4lV1rZSxN
+	 7uE2qmXj5JMWt0HlKuZhbAWP83nYrAQen3fGcaAk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinhui Guo <guojinhui.liam@bytedance.com>,
-	Joerg Roedel <joerg.roedel@amd.com>
-Subject: [PATCH 6.18 108/312] iommu/amd: Fix pci_segment memleak in alloc_pci_segment()
-Date: Tue,  6 Jan 2026 18:03:02 +0100
-Message-ID: <20260106170551.744408958@linuxfoundation.org>
+	=?UTF-8?q?Ren=C3=A9=20Rebe?= <rene@exactco.de>,
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 6.12 401/567] fbdev: tcx.c fix mem_map to correct smem_start offset
+Date: Tue,  6 Jan 2026 18:03:03 +0100
+Message-ID: <20260106170506.175841148@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
-References: <20260106170547.832845344@linuxfoundation.org>
+In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
+References: <20260106170451.332875001@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,58 +57,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinhui Guo <guojinhui.liam@bytedance.com>
+From: René Rebe <rene@exactco.de>
 
-commit 75ba146c2674ba49ed8a222c67f9abfb4a4f2a4f upstream.
+commit 35fa2b4bf96415b88d7edaa5cf8af5185d9ce76e upstream.
 
-Fix a memory leak of struct amd_iommu_pci_segment in alloc_pci_segment()
-when system memory (or contiguous memory) is insufficient.
+403ae52ac047 ("sparc: fix drivers/video/tcx.c warning") changed the
+physbase initializing breaking the user-space mmap, e.g. for Xorg
+entirely.
 
-Fixes: 04230c119930 ("iommu/amd: Introduce per PCI segment device table")
-Fixes: eda797a27795 ("iommu/amd: Introduce per PCI segment rlookup table")
-Fixes: 99fc4ac3d297 ("iommu/amd: Introduce per PCI segment alias_table")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jinhui Guo <guojinhui.liam@bytedance.com>
-Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
+Fix fbdev mmap table so the sbus mmap helper work correctly, and
+not try to map vastly (physbase) offset memory.
+
+Fixes: 403ae52ac047 ("sparc: fix drivers/video/tcx.c warning")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: René Rebe <rene@exactco.de>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/amd/init.c |   15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+ drivers/video/fbdev/tcx.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/iommu/amd/init.c
-+++ b/drivers/iommu/amd/init.c
-@@ -1731,13 +1731,22 @@ static struct amd_iommu_pci_seg *__init
- 	list_add_tail(&pci_seg->list, &amd_iommu_pci_seg_list);
+--- a/drivers/video/fbdev/tcx.c
++++ b/drivers/video/fbdev/tcx.c
+@@ -428,7 +428,7 @@ static int tcx_probe(struct platform_dev
+ 			j = i;
+ 			break;
+ 		}
+-		par->mmap_map[i].poff = op->resource[j].start;
++		par->mmap_map[i].poff = op->resource[j].start - info->fix.smem_start;
+ 	}
  
- 	if (alloc_dev_table(pci_seg))
--		return NULL;
-+		goto err_free_pci_seg;
- 	if (alloc_alias_table(pci_seg))
--		return NULL;
-+		goto err_free_dev_table;
- 	if (alloc_rlookup_table(pci_seg))
--		return NULL;
-+		goto err_free_alias_table;
- 
- 	return pci_seg;
-+
-+err_free_alias_table:
-+	free_alias_table(pci_seg);
-+err_free_dev_table:
-+	free_dev_table(pci_seg);
-+err_free_pci_seg:
-+	list_del(&pci_seg->list);
-+	kfree(pci_seg);
-+	return NULL;
- }
- 
- static struct amd_iommu_pci_seg *__init get_pci_segment(u16 id,
+ 	info->fbops = &tcx_ops;
 
 
 
