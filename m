@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-205514-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205757-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E375DCF9E2D
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 18:56:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96121CFA6DB
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:01:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7731E318F21D
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:43:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C824832D6A6D
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:34:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 094EC30C368;
-	Tue,  6 Jan 2026 17:35:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B93135FF68;
+	Tue,  6 Jan 2026 17:49:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XB3YTxkE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ujtBXOOD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA055303C88;
-	Tue,  6 Jan 2026 17:35:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53BB235FF5F;
+	Tue,  6 Jan 2026 17:49:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767720946; cv=none; b=dujzv6fvBYt+eq83vMVqEj4M89/4pImbx98jUv+OjbwNO8ghKMnKyd0ZaTCk8tesOuo6vPHnDnbqZujY1hjqzYgDUS1s+yhP1ch8XCCkGKwdCd+8C1XCoHddQap/nrRhLzYtLHRi3kI96MMlm78YIVMlWo+KvoJ067vy6sxFPjw=
+	t=1767721759; cv=none; b=IqmdETHTvemo8F8MX2AORpw+Q2LClo/fihzFn+VjcuceUDkWP26mtzAFlTqvF13H+Cti+fuUp4vai/DrzGyIPUWusXwClNT+vmpA5TFb6c2o2GgUG+z7abPxLlO7T2zb3VqbReNoGLqoMDoQG037QZEg320n6ScTXmvqobWNY2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767720946; c=relaxed/simple;
-	bh=KTb623t+378tl+YSv/Gl0p+53LHFL9008ssj1MIVT7U=;
+	s=arc-20240116; t=1767721759; c=relaxed/simple;
+	bh=Q1MNz2XJsk23soszSa6M1u55sK+Mj4XwfUCfLwz2sQc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f1BIBtsm+iJPEMJGy04yv/1txn8oPUrjcsyhZlWI2Bh8ih4OXC/iDiZSO3+TGwevzvPPj9W1hge1MpduecAIpylhF+B+H/757oBS3qauL3x8HvurVMTzCXvwTIWR3PtbTqhugDE5g6CqVrTMR0JeXdYFNSNjuxPILP2S1Hjd694=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XB3YTxkE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F273C116C6;
-	Tue,  6 Jan 2026 17:35:46 +0000 (UTC)
+	 MIME-Version; b=ZtGb97O6f6yuVRmD1L1fLZPGjOi2ExIjzvzlmwQFZ1YtHAYOxWbY/6MLUlHvKg5MCyX4qmE98i4Jbzj7vHRIx/EYdu7b2cijHos4bu2XvTgndyrdcgl/P2oxAobNV8xuIi15mY6SJ9btKX9dFfWkQtfi7TAWEGhZfUXbazXhSKQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ujtBXOOD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF456C16AAE;
+	Tue,  6 Jan 2026 17:49:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767720946;
-	bh=KTb623t+378tl+YSv/Gl0p+53LHFL9008ssj1MIVT7U=;
+	s=korg; t=1767721759;
+	bh=Q1MNz2XJsk23soszSa6M1u55sK+Mj4XwfUCfLwz2sQc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XB3YTxkEVOlNqCFLiWzupgbDLxaGXlG7ylSw6KTwtldyNIfcM8nvqQhR04bul08Iz
-	 5KgCpcGTc3SX03Tlz4Ln8BKuE2InKuM6dmSEu1xoE4F0h8bFTT2WdAxapIVXtFEjjt
-	 sDLgK3r9XZq3SV3lu8mNGhyrayUaxDHiC+VMm4l4=
+	b=ujtBXOODEIJgA/u9DazYi6BilKMJy12h04f8Ktnplmt0hudpNrBWmihgW1xt708V1
+	 TuIFoK+sHKQB7J0AZ1cXxYg1yGmOKzOCDiJfOdZnXi14sphgIRfwM1LhTO8pMWoVs9
+	 0+gJCtrqy1nLgo1GIpzsRTd88jHmeS7KItsfHWBE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sven Peter <sven@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Johan Hovold <johan@kernel.org>,
-	Joerg Roedel <joerg.roedel@amd.com>
-Subject: [PATCH 6.12 356/567] iommu/apple-dart: fix device leak on of_xlate()
+	syzbot+9b35e9bc0951140d13e6@syzkaller.appspotmail.com,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 064/312] ipv6: fix a BUG in rt6_get_pcpu_route() under PREEMPT_RT
 Date: Tue,  6 Jan 2026 18:02:18 +0100
-Message-ID: <20260106170504.502997156@linuxfoundation.org>
+Message-ID: <20260106170550.166683229@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
-References: <20260106170451.332875001@linuxfoundation.org>
+In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
+References: <20260106170547.832845344@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +61,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
 
-commit a6eaa872c52a181ae9a290fd4e40c9df91166d7a upstream.
+[ Upstream commit 1adaea51c61b52e24e7ab38f7d3eba023b2d050d ]
 
-Make sure to drop the reference taken to the iommu platform device when
-looking up its driver data during of_xlate().
+On PREEMPT_RT kernels, after rt6_get_pcpu_route() returns NULL, the
+current task can be preempted. Another task running on the same CPU
+may then execute rt6_make_pcpu_route() and successfully install a
+pcpu_rt entry. When the first task resumes execution, its cmpxchg()
+in rt6_make_pcpu_route() will fail because rt6i_pcpu is no longer
+NULL, triggering the BUG_ON(prev). It's easy to reproduce it by adding
+mdelay() after rt6_get_pcpu_route().
 
-Fixes: 46d1fb072e76 ("iommu/dart: Add DART iommu driver")
-Cc: stable@vger.kernel.org	# 5.15
-Cc: Sven Peter <sven@kernel.org>
-Acked-by: Robin Murphy <robin.murphy@arm.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Using preempt_disable/enable is not appropriate here because
+ip6_rt_pcpu_alloc() may sleep.
+
+Fix this by handling the cmpxchg() failure gracefully on PREEMPT_RT:
+free our allocation and return the existing pcpu_rt installed by
+another task. The BUG_ON is replaced by WARN_ON_ONCE for non-PREEMPT_RT
+kernels where such races should not occur.
+
+Link: https://syzkaller.appspot.com/bug?extid=9b35e9bc0951140d13e6
+Fixes: d2d6422f8bd1 ("x86: Allow to enable PREEMPT_RT.")
+Reported-by: syzbot+9b35e9bc0951140d13e6@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/6918cd88.050a0220.1c914e.0045.GAE@google.com/T/
+Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Link: https://patch.msgid.link/20251223051413.124687-1-jiayuan.chen@linux.dev
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/apple-dart.c |    2 ++
- 1 file changed, 2 insertions(+)
+ net/ipv6/route.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
---- a/drivers/iommu/apple-dart.c
-+++ b/drivers/iommu/apple-dart.c
-@@ -790,6 +790,8 @@ static int apple_dart_of_xlate(struct de
- 	struct apple_dart *cfg_dart;
- 	int i, sid;
+diff --git a/net/ipv6/route.c b/net/ipv6/route.c
+index aee6a10b112a..a3e051dc66ee 100644
+--- a/net/ipv6/route.c
++++ b/net/ipv6/route.c
+@@ -1470,7 +1470,18 @@ static struct rt6_info *rt6_make_pcpu_route(struct net *net,
  
-+	put_device(&iommu_pdev->dev);
+ 	p = this_cpu_ptr(res->nh->rt6i_pcpu);
+ 	prev = cmpxchg(p, NULL, pcpu_rt);
+-	BUG_ON(prev);
++	if (unlikely(prev)) {
++		/*
++		 * Another task on this CPU already installed a pcpu_rt.
++		 * This can happen on PREEMPT_RT where preemption is possible.
++		 * Free our allocation and return the existing one.
++		 */
++		WARN_ON_ONCE(!IS_ENABLED(CONFIG_PREEMPT_RT));
 +
- 	if (args->args_count != 1)
- 		return -EINVAL;
- 	sid = args->args[0];
++		dst_dev_put(&pcpu_rt->dst);
++		dst_release(&pcpu_rt->dst);
++		return prev;
++	}
+ 
+ 	if (res->f6i->fib6_destroying) {
+ 		struct fib6_info *from;
+-- 
+2.51.0
+
 
 
 
