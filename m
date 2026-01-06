@@ -1,52 +1,51 @@
-Return-Path: <stable+bounces-205267-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205235-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5E9BCFA15E
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:22:12 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE46ECFA001
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:14:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E05C231BA8D9
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:34:18 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E33A6300FEC1
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:14:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4B2E350A0C;
-	Tue,  6 Jan 2026 17:22:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81B8834D38F;
+	Tue,  6 Jan 2026 17:20:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hRaoWy/m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CPYswXqS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E4703502B7;
-	Tue,  6 Jan 2026 17:22:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3450B34CFDC;
+	Tue,  6 Jan 2026 17:20:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767720128; cv=none; b=KA0teXQi5mVf8v6+bxUvqcsXEqfJuISptWrqlqLJhVRnu0OHH2f74cWzVHaiL9ot0Vp8gNU/yOu9JiWqej8NT6ywfcJR1ySKDTopx2NVEPIKHrtPO2O57DJM9DFI0pJFMo3i5rO3Va3WubfxgOLL/LlF/f+797bBF/7kmx6+Q6k=
+	t=1767720024; cv=none; b=NQpHs5pCTv8WdwN8Mlonu0od1RETwQqIBv7EWXFsgo6RnR+OqFqmhpsm2aHjHsr7nRWoEhYQQg+uIkB6F1n8sqXRNZyG9WNeq8tOMtxzfIJzp5C7hobZuNA9KgL610bHb9RoDr5I5r006MqJqQi8XoaVGGcjBZH6W8BO78MdYO4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767720128; c=relaxed/simple;
-	bh=QbYs3BqqnFqDqKaokkMA/fb3GkbRdvKKZrvqDM4Aucg=;
+	s=arc-20240116; t=1767720024; c=relaxed/simple;
+	bh=CVYIoF8+wabA/BFK2n+AE3L+vFzk8N1BdOx8BIqgz48=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fnoilNjwZKky4k2pMjaXJ9hy3wkTOt3LtBsMuzk1bri5+HE9PdaaNvYgSLNgqKJqhRBK0nClT6BWI2i1/T5kidUqkTaE1s+vIIygRXaKAixTwuw+Y4V4zzLj1BtCkkrwnJXqvUDMFTtayVtPuwK4i5eu3S9+P0ziARs6RR8URCg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hRaoWy/m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25BACC116C6;
-	Tue,  6 Jan 2026 17:22:07 +0000 (UTC)
+	 MIME-Version; b=TXJD3Da5vXRkJKlblpEeV4PkCGKJD28KncMcIpoWb9ZRyRmPpRVxH8lo+SXw0RajssYQzfilLqugBxztM2ap1ZWc6+LYm8laUafXSyHt1AJcz7dFiUGn1b+mJJEciGgp3r6uSgvzmT8LI7k5VWDoBxFI2Ml/owHyB/LVWhKndxw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CPYswXqS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97D83C116C6;
+	Tue,  6 Jan 2026 17:20:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767720128;
-	bh=QbYs3BqqnFqDqKaokkMA/fb3GkbRdvKKZrvqDM4Aucg=;
+	s=korg; t=1767720024;
+	bh=CVYIoF8+wabA/BFK2n+AE3L+vFzk8N1BdOx8BIqgz48=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hRaoWy/m7rBuS0bJdc35yZ5xGlKBz/suwoz06AiLU7ybqNmuVukmwp37HbkLnGkZ0
-	 XzW5dpEv/3vd25sBi+KQHjHjQcA/RrwZFbhyE8KLRKqg2NjagLgATZEE0yWDr9gfnF
-	 ZfD5ORqaAznjOYAwXJuGxQNNHeAgS+wgtEqbcDPo=
+	b=CPYswXqSrgs1yOmV8886M4ohYuZWPvLLQzh/qcL3B1glV4hHR0Yf/px9607LGo/a/
+	 cNwPrMs9RZQucxyWPt61V9k5e7cCJT21QAaNtfRKqcKWFiDKnsyPaZUdCyrmp+xo8J
+	 F7w7h1dpiEz5hZ0RY574aSpf/XCdA34DkQpONP1E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+2fa344348a579b779e05@syzkaller.appspotmail.com,
-	Shaurya Rane <ssrane_b23@ee.vjti.ac.in>,
-	Felix Maurer <fmaurer@redhat.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.12 110/567] net/hsr: fix NULL pointer dereference in prp_get_untagged_frame()
-Date: Tue,  6 Jan 2026 17:58:12 +0100
-Message-ID: <20260106170455.397967708@linuxfoundation.org>
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 112/567] ALSA: vxpocket: Fix resource leak in vxpocket_probe error path
+Date: Tue,  6 Jan 2026 17:58:14 +0100
+Message-ID: <20260106170455.471903387@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
 References: <20260106170451.332875001@linuxfoundation.org>
@@ -65,86 +64,48 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Shaurya Rane <ssrane_b23@ee.vjti.ac.in>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-commit 188e0fa5a679570ea35474575e724d8211423d17 upstream.
+[ Upstream commit 2a03b40deacbd293ac9aed0f9b11197dad54fe5f ]
 
-prp_get_untagged_frame() calls __pskb_copy() to create frame->skb_std
-but doesn't check if the allocation failed. If __pskb_copy() returns
-NULL, skb_clone() is called with a NULL pointer, causing a crash:
+When vxpocket_config() fails, vxpocket_probe() returns the error code
+directly without freeing the sound card resources allocated by
+snd_card_new(), which leads to a memory leak.
 
-Oops: general protection fault, probably for non-canonical address 0xdffffc000000000f: 0000 [#1] SMP KASAN NOPTI
-KASAN: null-ptr-deref in range [0x0000000000000078-0x000000000000007f]
-CPU: 0 UID: 0 PID: 5625 Comm: syz.1.18 Not tainted syzkaller #0 PREEMPT(full)
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-RIP: 0010:skb_clone+0xd7/0x3a0 net/core/skbuff.c:2041
-Code: 03 42 80 3c 20 00 74 08 4c 89 f7 e8 23 29 05 f9 49 83 3e 00 0f 85 a0 01 00 00 e8 94 dd 9d f8 48 8d 6b 7e 49 89 ee 49 c1 ee 03 <43> 0f b6 04 26 84 c0 0f 85 d1 01 00 00 44 0f b6 7d 00 41 83 e7 0c
-RSP: 0018:ffffc9000d00f200 EFLAGS: 00010207
-RAX: ffffffff892235a1 RBX: 0000000000000000 RCX: ffff88803372a480
-RDX: 0000000000000000 RSI: 0000000000000820 RDI: 0000000000000000
-RBP: 000000000000007e R08: ffffffff8f7d0f77 R09: 1ffffffff1efa1ee
-R10: dffffc0000000000 R11: fffffbfff1efa1ef R12: dffffc0000000000
-R13: 0000000000000820 R14: 000000000000000f R15: ffff88805144cc00
-FS:  0000555557f6d500(0000) GS:ffff88808d72f000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000555581d35808 CR3: 000000005040e000 CR4: 0000000000352ef0
-Call Trace:
- <TASK>
- hsr_forward_do net/hsr/hsr_forward.c:-1 [inline]
- hsr_forward_skb+0x1013/0x2860 net/hsr/hsr_forward.c:741
- hsr_handle_frame+0x6ce/0xa70 net/hsr/hsr_slave.c:84
- __netif_receive_skb_core+0x10b9/0x4380 net/core/dev.c:5966
- __netif_receive_skb_one_core net/core/dev.c:6077 [inline]
- __netif_receive_skb+0x72/0x380 net/core/dev.c:6192
- netif_receive_skb_internal net/core/dev.c:6278 [inline]
- netif_receive_skb+0x1cb/0x790 net/core/dev.c:6337
- tun_rx_batched+0x1b9/0x730 drivers/net/tun.c:1485
- tun_get_user+0x2b65/0x3e90 drivers/net/tun.c:1953
- tun_chr_write_iter+0x113/0x200 drivers/net/tun.c:1999
- new_sync_write fs/read_write.c:593 [inline]
- vfs_write+0x5c9/0xb30 fs/read_write.c:686
- ksys_write+0x145/0x250 fs/read_write.c:738
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f0449f8e1ff
-Code: 89 54 24 18 48 89 74 24 10 89 7c 24 08 e8 f9 92 02 00 48 8b 54 24 18 48 8b 74 24 10 41 89 c0 8b 7c 24 08 b8 01 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 31 44 89 c7 48 89 44 24 08 e8 4c 93 02 00 48
-RSP: 002b:00007ffd7ad94c90 EFLAGS: 00000293 ORIG_RAX: 0000000000000001
-RAX: ffffffffffffffda RBX: 00007f044a1e5fa0 RCX: 00007f0449f8e1ff
-RDX: 000000000000003e RSI: 0000200000000500 RDI: 00000000000000c8
-RBP: 00007ffd7ad94d20 R08: 0000000000000000 R09: 0000000000000000
-R10: 000000000000003e R11: 0000000000000293 R12: 0000000000000001
-R13: 00007f044a1e5fa0 R14: 00007f044a1e5fa0 R15: 0000000000000003
- </TASK>
+Add proper error handling to free the sound card and clear the
+allocation bit when vxpocket_config() fails.
 
-Add a NULL check immediately after __pskb_copy() to handle allocation
-failures gracefully.
-
-Reported-by: syzbot+2fa344348a579b779e05@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=2fa344348a579b779e05
-Fixes: f266a683a480 ("net/hsr: Better frame dispatch")
-Cc: stable@vger.kernel.org
-Signed-off-by: Shaurya Rane <ssrane_b23@ee.vjti.ac.in>
-Reviewed-by: Felix Maurer <fmaurer@redhat.com>
-Tested-by: Felix Maurer <fmaurer@redhat.com>
-Link: https://patch.msgid.link/20251129093718.25320-1-ssrane_b23@ee.vjti.ac.in
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 15b99ac17295 ("[PATCH] pcmcia: add return value to _config() functions")
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Link: https://patch.msgid.link/20251215042652.695-1-vulab@iscas.ac.cn
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/hsr/hsr_forward.c |    2 ++
- 1 file changed, 2 insertions(+)
+ sound/pcmcia/vx/vxpocket.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/net/hsr/hsr_forward.c
-+++ b/net/hsr/hsr_forward.c
-@@ -205,6 +205,8 @@ struct sk_buff *prp_get_untagged_frame(s
- 				__pskb_copy(frame->skb_prp,
- 					    skb_headroom(frame->skb_prp),
- 					    GFP_ATOMIC);
-+			if (!frame->skb_std)
-+				return NULL;
- 		} else {
- 			/* Unexpected */
- 			WARN_ONCE(1, "%s:%d: Unexpected frame received (port_src %s)\n",
+diff --git a/sound/pcmcia/vx/vxpocket.c b/sound/pcmcia/vx/vxpocket.c
+index d2d5f64d63b4..e1f5b8cfeef0 100644
+--- a/sound/pcmcia/vx/vxpocket.c
++++ b/sound/pcmcia/vx/vxpocket.c
+@@ -284,7 +284,13 @@ static int vxpocket_probe(struct pcmcia_device *p_dev)
+ 
+ 	vxp->p_dev = p_dev;
+ 
+-	return vxpocket_config(p_dev);
++	err = vxpocket_config(p_dev);
++	if (err < 0) {
++		card_alloc &= ~(1 << i);
++		snd_card_free(card);
++		return err;
++	}
++	return 0;
+ }
+ 
+ static void vxpocket_detach(struct pcmcia_device *link)
+-- 
+2.51.0
+
 
 
 
