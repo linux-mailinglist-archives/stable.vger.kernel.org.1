@@ -1,86 +1,110 @@
-Return-Path: <stable+bounces-204960-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204961-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAA32CF60E4
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 01:05:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 21929CF6157
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 01:32:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AC3B63062E1B
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 00:05:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 83DD63004F4F
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 00:31:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EBDFBA3D;
-	Tue,  6 Jan 2026 00:05:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A6E7149C7B;
+	Tue,  6 Jan 2026 00:31:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gcBEECdo"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RXS+aqh0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC9E033EC;
-	Tue,  6 Jan 2026 00:05:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 574A84503B
+	for <stable@vger.kernel.org>; Tue,  6 Jan 2026 00:31:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767657901; cv=none; b=FQClq0XE4Zr1n9OBE+2RJLBXxYxz+CfL74nWA55aRivp1cXC2wSoqQK8v69VtwaWQykdq9j9PI+22mjo2XtI3itmor45RYm90cAEe8fBNsoC36ustLt6SS0rG6iEn0RLmJh2000Z33Q2RYENZ6c6fuPl5pNOQANoHIOHiPFoIJw=
+	t=1767659509; cv=none; b=hLNxZ2wI+hhkE88OZ5I3UXfOFAHBGtE9+F/ABGZJlq4p8Vmcu+D7+r65n3N+fgeTjgUGbg84OBVk2cjRYC6b9i2v7xy7i90mYZL6qwihvnZY3A8iRRPCGZq1jnnVoCH+eYMMEC0XQ5XTVMfm/jhLjQ09HNowRuLtjXy1PFy28/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767657901; c=relaxed/simple;
-	bh=B74BagB6SCV2x9DBpJXHJyqf1LRlBLte5qZJstFZsM8=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=thHw+z3sFAM5yeh7/bv5yZl9a5UcNPPQaQyeIBt4UEpo5fBzTAMKXfMmmFJGApPPCIJv/4Y1XtTnOuP4LaqsR27Tjf4o6pthaWgr0zskKRw/fScm1WvQRMXR1/eWHZGFDynCTAwSZqotm6KwbCwiHq4VsfO5Gl3tZrCykGuZWMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gcBEECdo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3475C116D0;
-	Tue,  6 Jan 2026 00:04:59 +0000 (UTC)
+	s=arc-20240116; t=1767659509; c=relaxed/simple;
+	bh=I5u2qjKXmYsQV9Z2o4wDYa50SKAvAm9YEa+jCPI2518=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=MGiMGD8j46tsmz9ewk8IJd5t1Qse2uacEIN/KdSUXU1tew8XH+zWwUgRt/8p8VaOG51R2y2aY71U/j4uiYMFO820COeSMbcQtc6LdCm1b+aFWIZeyWAQCaMn82z2PzAkt0ywR95JkZTzBVSTnP33lhTP5Jz94KbDlEWuTKKqKzg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RXS+aqh0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12B47C116D0;
+	Tue,  6 Jan 2026 00:31:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767657900;
-	bh=B74BagB6SCV2x9DBpJXHJyqf1LRlBLte5qZJstFZsM8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=gcBEECdoxj8ODTbaJ2qu1nbuadk/uIqYhNLS0oqiMFBW6prPRNmdV6PrzdzXK48Wp
-	 OvYz3JBwB3M8fA3oH+x0Ju2tjtSZhC/uR/o6kLlGP0PUz8i7DIM9FIU5VTYlgk6qQs
-	 c6vSz6WWrKgznS62DloZRkqneXEVcXfCZ4PMCy47s+7k+UPWKyY13hKd3NS2Ezbg3X
-	 +uTjEwM3OVjauzBx/L6Zne/mqwhmbvWadbAhU8XIG6akzCIYOhRrP7l5YDlT0A7SRv
-	 A9FtLAkyHdOCL8mpEFZp5l9GLRay0zxOKSiV6aHCmjwVspfKTwjjKVvV3BRlLV/QyJ
-	 ajmKwcTJUM8pA==
-Date: Mon, 5 Jan 2026 16:04:58 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Breno Leitao <leitao@debian.org>
-Cc: Michael Chan <michael.chan@broadcom.com>, Pavan Chebbi
- <pavan.chebbi@broadcom.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo
- Abeni <pabeni@redhat.com>, Richard Cochran <richardcochran@gmail.com>,
- "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>, Vadim Fedorenko
- <vadim.fedorenko@linux.dev>, Vladimir Oltean <vladimir.oltean@nxp.com>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, kernel-team@meta.com,
- stable@vger.kernel.org
-Subject: Re: [PATCH net v2] bnxt_en: Fix NULL pointer crash in
- bnxt_ptp_enable during error cleanup
-Message-ID: <20260105160458.5483a5ea@kernel.org>
-In-Reply-To: <20260105-bnxt-v2-1-9ac69edef726@debian.org>
-References: <20260105-bnxt-v2-1-9ac69edef726@debian.org>
+	s=k20201202; t=1767659506;
+	bh=I5u2qjKXmYsQV9Z2o4wDYa50SKAvAm9YEa+jCPI2518=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=RXS+aqh0AfN2bsj8sCqjy4wa/e4fmslR3QnItrghk2/YzOX2CMUKBTDT30oobgGEz
+	 lxABH/G3JvkondzAcneynLQtznaa6jgka7gpwF95sJpYJ23LPob7erLN5Oz/in0cgq
+	 Xbhf2PeKPVYkl24f0Hcyc7nX0o8zuwblG/Nx4qc0DxGK6u6fOVX1pnYY2Bn8qNL2zQ
+	 hOwo3cWcQJaiL23xndR3gaF19JXHrOqvGvs6DrC29uOlUBXfj2//0hhr5xOk0QBwe8
+	 JBBvdlqhxJkwsOdkym8TH8eKsa4Qxddg+aAzyyWLn4eG9vJcae9wmBljs+nnRd1cP2
+	 EZ06wuKYBzPyw==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: SeongJae Park <sj@kernel.org>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <davidgow@google.com>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6.y] mm/damon/tests/vaddr-kunit: handle alloc failures on damon_do_test_apply_three_regions()
+Date: Mon,  5 Jan 2026 19:31:44 -0500
+Message-ID: <20260106003144.2858431-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2026010547-stays-strewn-1e8b@gregkh>
+References: <2026010547-stays-strewn-1e8b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Mon, 05 Jan 2026 04:00:16 -0800 Breno Leitao wrote:
->  init_err_pci_clean:
->  	bnxt_hwrm_func_drv_unrgtr(bp);
-> +	bnxt_ptp_clear(bp);
-> +	kfree(bp->ptp_cfg);
->  	bnxt_free_hwrm_resources(bp);
->  	bnxt_hwmon_uninit(bp);
->  	bnxt_ethtool_free(bp);
-> -	bnxt_ptp_clear(bp);
-> -	kfree(bp->ptp_cfg);
->  	bp->ptp_cfg = NULL;
+From: SeongJae Park <sj@kernel.org>
 
-Is there a reason to leave clearing of the pointer behind?
-I don't see it mentioned in the commit msg..
-Checking previous discussion it sounds like Pavan asked for the
-clearing to also be moved.
+[ Upstream commit 2b22d0fcc6320ba29b2122434c1d2f0785fb0a25 ]
 
->  	kfree(bp->fw_health);
->  	bp->fw_health = NULL;
+damon_do_test_apply_three_regions() is assuming all dynamic memory
+allocation in it will succeed.  Those are indeed likely in the real use
+cases since those allocations are too small to fail, but theoretically
+those could fail.  In the case, inappropriate memory access can happen.
+Fix it by appropriately cleanup pre-allocated memory and skip the
+execution of the remaining tests in the failure cases.
+
+Link: https://lkml.kernel.org/r/20251101182021.74868-18-sj@kernel.org
+Fixes: 17ccae8bb5c9 ("mm/damon: add kunit tests")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: Brendan Higgins <brendan.higgins@linux.dev>
+Cc: David Gow <davidgow@google.com>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: <stable@vger.kernel.org>	[5.15+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ mm/damon/vaddr-test.h | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/mm/damon/vaddr-test.h b/mm/damon/vaddr-test.h
+index b4fc21ef3c70..b335f74e4e4e 100644
+--- a/mm/damon/vaddr-test.h
++++ b/mm/damon/vaddr-test.h
+@@ -136,8 +136,14 @@ static void damon_do_test_apply_three_regions(struct kunit *test,
+ 	int i;
+ 
+ 	t = damon_new_target();
++	if (!t)
++		kunit_skip(test, "target alloc fail");
+ 	for (i = 0; i < nr_regions / 2; i++) {
+ 		r = damon_new_region(regions[i * 2], regions[i * 2 + 1]);
++		if (!r) {
++			damon_destroy_target(t, NULL);
++			kunit_skip(test, "region alloc fail");
++		}
+ 		damon_add_region(r, t);
+ 	}
+ 
+-- 
+2.51.0
+
 
