@@ -1,115 +1,176 @@
-Return-Path: <stable+bounces-205056-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205057-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB73CCF7796
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 10:20:16 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 503D2CF78D8
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 10:36:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1191E312A6F2
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 09:15:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DA39D3061145
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 09:30:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C181C30F94B;
-	Tue,  6 Jan 2026 09:15:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D69822D94B5;
+	Tue,  6 Jan 2026 09:30:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=konsulko.com header.i=@konsulko.com header.b="RpS+foLe"
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="tC4ldA3y"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.web.de (mout.web.de [212.227.17.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17DC630DED7
-	for <stable@vger.kernel.org>; Tue,  6 Jan 2026 09:15:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C190199E94;
+	Tue,  6 Jan 2026 09:30:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767690938; cv=none; b=coGdyO2Gq37e8Zb+tQBJFZ0F/DkhZm96z8aQ3y41XGQZvkDgaIvH3D/N5I68W+M0Di1XTgb+JK6CETq7XGpYbE/KxC7Ujd1KpyTc/+jTFf5ko0dfmwCzetqkVK4GZTzyquOwTUbQuSvv0f7pdOProtNPH6NsJOUToLF+QWzWe5E=
+	t=1767691838; cv=none; b=Z+Mmqemd7tgsXot5UYPFcU0T3/UwwY60twI5JdZthfWsxAd7jQprYvWZaItNW9y2OiNnwkAf0gPDCG1ZMhLL3VPHbwlUK6CmbxkS/ioMu7wxdNet/FY3sXmHSgYjP1MEp6FkZavVITDTFS/QamwTjT76yye4kzFyb7ARylZlyz4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767690938; c=relaxed/simple;
-	bh=OA52/i2DySdJ2oa/UO8WVQLSVE0wUq50Xz8n8YBQARw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EEdlnZ2r+psOYD4lVsWCTYWKKd6YkPt3GHqgWpMX++HPeCxnPsCnmAsfjmuncChS/SoeAUXGKfXaqQMTpiWGrIRc/jnN+P9O5OMV5w8oId7POWmlXTN/uxyH7Gw7uUEN+qV7XliFRGZCWGNAbABlyl6JPNa4Zv+WhB/0nCn/2z0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=konsulko.com; spf=pass smtp.mailfrom=konsulko.com; dkim=pass (1024-bit key) header.d=konsulko.com header.i=@konsulko.com header.b=RpS+foLe; arc=none smtp.client-ip=209.85.208.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=konsulko.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=konsulko.com
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-6505cbe47d8so1226255a12.1
-        for <stable@vger.kernel.org>; Tue, 06 Jan 2026 01:15:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=konsulko.com; s=google; t=1767690934; x=1768295734; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=j6/zpETfkXIXzs5jvYKUCRYKONy/bc8t30ozg4s3tEQ=;
-        b=RpS+foLe7a6RinjXLpQ5o5TSzKdgfG8HShjE+fkVJtaPJudVXiJlkfi4ofYeoxkqBD
-         mLQeOUxUl2p1OiejsUV6cmoNM6gIQwEB+k39bAn9ZL00YaTLFoY5nIi7JoJXo2DKEnw1
-         7QHIVKeuD5oTQZPnhuNk5P1//+GiQlQ9zJL9U=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767690934; x=1768295734;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=j6/zpETfkXIXzs5jvYKUCRYKONy/bc8t30ozg4s3tEQ=;
-        b=T+eZyZI7LFwA0YUPcfXev8y8LQ71WAUGP3w5UDvVfQHt6k6Q0dLTVRIgDCkr92gmby
-         VtknVw/aDaJOoKDyM8UDvHm2LWH1WOKDI5sxpSHVOdjU5GdOQdQvK8rzUf4+PPzYeq02
-         phNliqkD5jirJWRXlA21YKUteUuHp2NITCFrfoC18p4FeMR+aTu5VvJusMmL9bjIiVMO
-         oFuAbrNJ1lgnh7jI8KQGw3OTZCBzXQms/n+SdgZkCTD0xTPPzUrFdYnkMf9JRO8hlQpS
-         JKCGL3Di0soi6/deyGeS+VypWKT1urQuBvptOsRecYDPDKhhN6tPBceYnyJIpI94P4H4
-         8+qA==
-X-Forwarded-Encrypted: i=1; AJvYcCX/QzQCPr0jJ8aKbxjV363cVY43kvBK3lHWHEzOn4bFDprqOGjyAHWUKMh36MBfEQrQ+JE69c4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwefW0Ji/NylOkJL83q9JFU4IMs5874EA1CltLIbZXA/AXT8nq3
-	WMppxxlDeC6l4jXgqloKZyU/UnXVyYlKm0oU0wJBjQwypqX34IK51z8QyD7yQyYGD1XAdpvNdPL
-	8uJbE
-X-Gm-Gg: AY/fxX40DV93EEHWsOryua7NT1clt/wsStAWbqxvO38BPRYeC+QGyffjc+5R5h+cmE5
-	7fjpQFYKRpdJhO+lvx1BzUViwxTDBLFyh/eKlZbL3YQ7WSwHvTdVVhH0ScvJUSbSwm8joNcMswy
-	XV4LRCxtisxUybpHD6asmPiVs1j53V7uCAauF10VLamDxZXYeaWnDEqM9S/tg13qa2Wtuuxn4Ff
-	JlUkMPWCovshqJlApF4XFO0jbq1EGMXsp2+F0kf5C84TohcniZo9gWnAoKGCdgbH0LCSoDPaYzI
-	TbeOLzpZQt9yaq+JvYAd8Lm2Yl1Qak6sqg82mviGGriTLup9lJP/Luf+GEI6TQJazNqNoAL+/sR
-	TLpED43bYspX5iPMJDo1fBMEo7Vg7wf8rOlwx+KN9dUQoIe9XU/CwIttuLUjzzRYn64wm54R0F1
-	2nHKrlefvRW/INi9XNpNQ=
-X-Google-Smtp-Source: AGHT+IHa1yFWPnvONAfuUp5TLEw8FoXzXY4i9ww+OmCrNhj1GQ19Fi4TwPShASdRT4IaN8gbBkvqQw==
-X-Received: by 2002:a17:907:3ea1:b0:b83:1326:a56a with SMTP id a640c23a62f3a-b8426c68092mr253739866b.58.1767690933968;
-        Tue, 06 Jan 2026 01:15:33 -0800 (PST)
-Received: from cabron.k.g ([95.111.117.177])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b842a27c0bfsm177640866b.22.2026.01.06.01.15.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Jan 2026 01:15:33 -0800 (PST)
-Date: Tue, 6 Jan 2026 11:15:32 +0200
-From: Petko Manolov <petko.manolov@konsulko.com>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Paolo Abeni <pabeni@redhat.com>, davem@davemloft.net,
-	netdev@vger.kernel.org, kuba@kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] net: usb: pegasus: fix memory leak on usb_submit_urb()
- failure
-Message-ID: <20260106091532.GA4723@cabron.k.g>
-References: <20251216184113.197439-1-petko.manolov@konsulko.com>
- <b3d2a2fa-35cb-48ad-ad2e-de997e9b2395@redhat.com>
- <20260102121011.GA25015@carbon.k.g>
- <38d73c63-7521-41ad-8d4d-03d5ba2288df@lunn.ch>
+	s=arc-20240116; t=1767691838; c=relaxed/simple;
+	bh=10KeLpvcK0XQneKz06fKufgo7xQ24gRwX9MvhrFEcnA=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
+	 In-Reply-To:Content-Type; b=sbsRubM1C30ETQTRiu+GpieJZ3OnKC/EdX9XB2VpZtDnqaw2AN+aHJszRF2UYwTAUaszF04LVK8D9M7kCbH16XigFOFSqmHCI1wa76bJHfbeh+nAIT7CpHMyxgXrDKpPpjKuZ5DLvMD9p68Wu1xsmPaw/KiYomOOpiwiSDf9OU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=tC4ldA3y; arc=none smtp.client-ip=212.227.17.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1767691827; x=1768296627; i=markus.elfring@web.de;
+	bh=6dht8SJkC2rzRbuhZR4GkSwtU/MGsqJhcdvKRHb5nIg=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
+	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 cc:content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=tC4ldA3yk1CzIzy4pUu5URMfUmT5E6vEmLnQ22ESLyG3ANSWqdhp7ijODMGVRV/J
+	 p3aFPvT7dYly2ZZ6GLeDqx1g0Gs6TUba63QzWgHwNkuDOAqh93SxnLvzH2VL7cB8h
+	 EAzNj6nKmz8GHQB30X4rokzuKcGtjn3tzWQTmZcGDJARok0xbpvHJr+b6aBgqA825
+	 4a9wPwIuloqgw3xlZveiEh4CU+5FeC1AwGT4IuSvdAP3UZSV8x6GNGh2nMOA+T4fX
+	 CqUR7kiG4PnQKnfdcbaTRLvueW4EgEyc+NqiLQ/mZbD3+dpd1n45jOsrz6lZKXmlK
+	 ANjpBf/9FsNSUmyeBA==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.29] ([94.31.69.180]) by smtp.web.de (mrweb105
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1MoecF-1wEcG20HIP-00hfos; Tue, 06
+ Jan 2026 10:30:27 +0100
+Message-ID: <57a9f219-2612-4a64-a9fb-44b04e09ec15@web.de>
+Date: Tue, 6 Jan 2026 10:30:15 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <38d73c63-7521-41ad-8d4d-03d5ba2288df@lunn.ch>
+User-Agent: Mozilla Thunderbird
+To: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>, amd-gfx@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org, Alex Deucher <alexander.deucher@amd.com>,
+ =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ David Airlie <airlied@gmail.com>, =?UTF-8?Q?Felix_K=C3=BChling?=
+ <felix.kuehling@amd.com>, Oak Zeng <ozeng@amd.com>,
+ Simona Vetter <simona@ffwll.ch>
+Cc: stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>
+References: <20260106015731.1906738-1-lihaoxiang@isrc.iscas.ac.cn>
+Subject: Re: [PATCH v2] drm/amdkfd: fix a memory leak in
+ device_queue_manager_init()
+Content-Language: en-GB, de-DE
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <20260106015731.1906738-1-lihaoxiang@isrc.iscas.ac.cn>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:27LJ+tSBb4OMp24QRjdLwne1rdlZJUpA7LX3k5d6QKKcEnfp5aA
+ gYRNn1vxb7sgau5aF7q5Mr1McPEMf2zY4zNrwLyDGOL3b68CzxCt0ua0v2aDNOjCA6MYpFj
+ S+A+uKDP0Ml660z073sj9q8sBYajmj0wAhxkXDrer50QRFoX9gWt9S+gsIV63uD1HiM4ohB
+ sGSy+Uq2T/G6Jb9wWHTfg==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:0BgHn/RCNrA=;OEJxKMLYF8w24gJ6seaFk28TAWl
+ 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
 
-On 26-01-02 23:02:53, Andrew Lunn wrote:
-> > Sure, will do.  However, my v2 patch makes use of __free() cleanup
-> > functionality, which in turn only applies back to v6.6 stable kernels.
-> 
-> I would suggest not using the magical __free() cleanup.
-> 
-> https://www.kernel.org/doc/html/latest/process/maintainer-netdev.html#using-device-managed-and-cleanup-h-constructs
-> 
->     Low level cleanup constructs (such as __free()) can be used when
->     building APIs and helpers, especially scoped iterators. However,
->     direct use of __free() within networking core and drivers is
->     discouraged. Similar guidance applies to declaring variables
->     mid-function.
+=E2=80=A6
+> Move deallocate_hiq_sdma_mqd() up to ensure proper function
+> visibility at the point of use.
 
+=E2=80=A6
+> +++ b/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c
+> @@ -2919,6 +2919,14 @@ static int allocate_hiq_sdma_mqd(struct device_qu=
+eue_manager *dqm)
+>  	return retval;
+>  }
+> =20
+> +static void deallocate_hiq_sdma_mqd(struct kfd_node *dev,
+> +				    struct kfd_mem_obj *mqd)
+> +{
+> +	WARN(!mqd, "No hiq sdma mqd trunk to free");
+> +
+> +	amdgpu_amdkfd_free_gtt_mem(dev->adev, &mqd->gtt_mem);
+> +}
 
-Heh, __free() is OK for APIs, but not drivers...
+Is there also a need to reconsider the implementation of the applied
+null pointer check here?
 
-Maybe this text is a relic from the times auto cleanup was not fully understood?
-
-
-		Petko
+Regards,
+Markus
 
