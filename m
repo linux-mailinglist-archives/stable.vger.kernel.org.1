@@ -1,50 +1,53 @@
-Return-Path: <stable+bounces-205910-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205921-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EC03CFA058
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:16:43 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87F6ACFA5C2
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:56:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5ABF53010518
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:16:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DCCB4340986E
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:13:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFC2B36C0C0;
-	Tue,  6 Jan 2026 17:57:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D80A36CDF7;
+	Tue,  6 Jan 2026 17:58:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JPZmhkRR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t1QFzs4d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D699230BCC;
-	Tue,  6 Jan 2026 17:57:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCB9A36CDF5;
+	Tue,  6 Jan 2026 17:58:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767722271; cv=none; b=Z6dLxGz26SPzKEnTq2RTHZu6sXFkiJ+8i1fUOXAH2IdnYXwFrstRby6vBGKmEaRPPmJodjLoV5pxDUe5kxj3Nqm0+YKL1lNUQPDWzdzeJ7ohSOk8urDPM/Sn8x/SDgRJzAfqZglMgnBSmI1zjkdr3AQothKNfGwi0YrBV2YBN/s=
+	t=1767722309; cv=none; b=C1P8eVRPzHYE086680Ja231fr+qof39ur/Q3I6JFtBkoIXS67A1QjcIiJW0g4nbaHPabCVM41JGIWpsbet4fmVWoUFP+eOiItRmJ2JNDC0Q3DrYdgXSURs0cm+dIdwErD8cxkWtKCOAODRhFA/CINz7rXBBjH8gQIFzIV6IH/cc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767722271; c=relaxed/simple;
-	bh=S0qG4aZhjSDVmQeFbyviEQL9YYpyQ/7aZ1GPPFVrUyc=;
+	s=arc-20240116; t=1767722309; c=relaxed/simple;
+	bh=NAuvlHYNFwg0Ne6PmwTSyWlZgOfnmB50fu5c74mJVC8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FDngav9pIX1BABrRAHI1jjGBCxMMtOG90P8R7BFoewdshNCkSFidernEQXpsu86sFZ2Rza8sa1Bx6tqDDQYB7vEcu1RZi16pUPS3xpV68u83TmTTxDT9RYBZtaF5pp5u572LhZOeNuoo7TIccZv4tRnsn28JtvAskyRUFtIWRgc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JPZmhkRR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E19B8C116C6;
-	Tue,  6 Jan 2026 17:57:50 +0000 (UTC)
+	 MIME-Version; b=Co3Ws0g6+UffMcx1u2nvTZZkn+y6VJO8OwQAnKCJg+VyRwoGUUKNqkMoVwUWKXVt7HPAdW35EUVxeDV0sT8WwmwZADMQhZUzgwEloaMdaCVZVCP3c0II3G4VT+zYC70lxEDLuoH92qlKMj9QjW2AEsMyYAjzDbWWG2e1yGVqnsM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t1QFzs4d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0CBBC116C6;
+	Tue,  6 Jan 2026 17:58:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767722271;
-	bh=S0qG4aZhjSDVmQeFbyviEQL9YYpyQ/7aZ1GPPFVrUyc=;
+	s=korg; t=1767722308;
+	bh=NAuvlHYNFwg0Ne6PmwTSyWlZgOfnmB50fu5c74mJVC8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JPZmhkRR54g0qkA5xTqzd41hPLryal3XHZCcIV26/16keKOR+Z1PdcenUpS2hRL8c
-	 6u+Jm3Ej+1jfqEBxjFbQct6r3xJdXJ7ojbtILJkEqOqn/GF/MRyylRyGU2JuE92s+6
-	 a8DFwDgTKpimxleUVbsuL4320KatfSKGPpRqLNAI=
+	b=t1QFzs4d2AUiC9bS/SI2YSO8kffKbI9vkbYakgCkIIgIWKcwNxBgUQLAH4l5KVznJ
+	 X1Urcow1Xja5DevYy7xBBKISpdTsetAMzlyk8TYlUC+UDsoNRzSAzeKT2Lx/ZyQrcZ
+	 zWsGbQTFRZIXUPgB9+bsvRU4W8xhJSmIoYDvl+n8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tiezhu Yang <yangtiezhu@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.18 197/312] LoongArch: Use unsigned long for _end and _text
-Date: Tue,  6 Jan 2026 18:04:31 +0100
-Message-ID: <20260106170554.951583325@linuxfoundation.org>
+	SeongJae Park <sj@kernel.org>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <davidgow@google.com>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.18 198/312] mm/damon/tests/sysfs-kunit: handle alloc failures on damon_sysfs_test_add_targets()
+Date: Tue,  6 Jan 2026 18:04:32 +0100
+Message-ID: <20260106170554.988511084@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
 References: <20260106170547.832845344@linuxfoundation.org>
@@ -63,42 +66,74 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Tiezhu Yang <yangtiezhu@loongson.cn>
+From: SeongJae Park <sj@kernel.org>
 
-commit a258a3cb1895e3acf5f2fe245d17426e894bc935 upstream.
+commit 7d808bf13943f4c6a6142400bffe14267f6dc997 upstream.
 
-It is better to use unsigned long rather than long for _end and _text to
-calculate the kernel length.
+damon_sysfs_test_add_targets() is assuming all dynamic memory allocation
+in it will succeed.  Those are indeed likely in the real use cases since
+those allocations are too small to fail, but theoretically those could
+fail.  In the case, inappropriate memory access can happen.  Fix it by
+appropriately cleanup pre-allocated memory and skip the execution of the
+remaining tests in the failure cases.
 
-Cc: stable@vger.kernel.org # v6.3+
-Fixes: e5f02b51fa0c ("LoongArch: Add support for kernel address space layout randomization (KASLR)")
-Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Link: https://lkml.kernel.org/r/20251101182021.74868-21-sj@kernel.org
+Fixes: b8ee5575f763 ("mm/damon/sysfs-test: add a unit test for damon_sysfs_set_targets()")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: Brendan Higgins <brendan.higgins@linux.dev>
+Cc: David Gow <davidgow@google.com>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: <stable@vger.kernel.org>	[6.7+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/kernel/relocate.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ mm/damon/tests/sysfs-kunit.h |   25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
 
---- a/arch/loongarch/kernel/relocate.c
-+++ b/arch/loongarch/kernel/relocate.c
-@@ -183,7 +183,7 @@ static inline void __init *determine_rel
- 	if (kaslr_disabled())
- 		return destination;
+--- a/mm/damon/tests/sysfs-kunit.h
++++ b/mm/damon/tests/sysfs-kunit.h
+@@ -45,16 +45,41 @@ static void damon_sysfs_test_add_targets
+ 	struct damon_ctx *ctx;
  
--	kernel_length = (long)_end - (long)_text;
-+	kernel_length = (unsigned long)_end - (unsigned long)_text;
+ 	sysfs_targets = damon_sysfs_targets_alloc();
++	if (!sysfs_targets)
++		kunit_skip(test, "sysfs_targets alloc fail");
+ 	sysfs_targets->nr = 1;
+ 	sysfs_targets->targets_arr = kmalloc_array(1,
+ 			sizeof(*sysfs_targets->targets_arr), GFP_KERNEL);
++	if (!sysfs_targets->targets_arr) {
++		kfree(sysfs_targets);
++		kunit_skip(test, "targets_arr alloc fail");
++	}
  
- 	random_offset = get_random_boot() << 16;
- 	random_offset &= (CONFIG_RANDOMIZE_BASE_MAX_OFFSET - 1);
-@@ -232,7 +232,7 @@ unsigned long __init relocate_kernel(voi
- 	early_memunmap(cmdline, COMMAND_LINE_SIZE);
+ 	sysfs_target = damon_sysfs_target_alloc();
++	if (!sysfs_target) {
++		kfree(sysfs_targets->targets_arr);
++		kfree(sysfs_targets);
++		kunit_skip(test, "sysfs_target alloc fail");
++	}
+ 	sysfs_target->pid = __damon_sysfs_test_get_any_pid(12, 100);
+ 	sysfs_target->regions = damon_sysfs_regions_alloc();
++	if (!sysfs_target->regions) {
++		kfree(sysfs_targets->targets_arr);
++		kfree(sysfs_targets);
++		kfree(sysfs_target);
++		kunit_skip(test, "sysfs_regions alloc fail");
++	}
++
+ 	sysfs_targets->targets_arr[0] = sysfs_target;
  
- 	if (random_offset) {
--		kernel_length = (long)(_end) - (long)(_text);
-+		kernel_length = (unsigned long)(_end) - (unsigned long)(_text);
+ 	ctx = damon_new_ctx();
++	if (!ctx) {
++		kfree(sysfs_targets->targets_arr);
++		kfree(sysfs_targets);
++		kfree(sysfs_target);
++		kfree(sysfs_target->regions);
++		kunit_skip(test, "ctx alloc fail");
++	}
  
- 		/* Copy the kernel to it's new location */
- 		memcpy(location_new, _text, kernel_length);
+ 	damon_sysfs_add_targets(ctx, sysfs_targets);
+ 	KUNIT_EXPECT_EQ(test, 1u, nr_damon_targets(ctx));
 
 
 
