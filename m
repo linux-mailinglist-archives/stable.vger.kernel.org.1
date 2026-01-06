@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-205706-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205430-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CF6CCFA4FB
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:51:41 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 033E8CFA12E
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:20:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E339D324F0EC
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:07:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 81F61305DD81
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:31:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FF7435CB63;
-	Tue,  6 Jan 2026 17:46:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BBEB230BCC;
+	Tue,  6 Jan 2026 17:31:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c3ejMmew"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="efjutA5X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D5C02C1595;
-	Tue,  6 Jan 2026 17:46:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58CBD2222AC;
+	Tue,  6 Jan 2026 17:31:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721587; cv=none; b=iG3HtYl86J4EC3Err2FcRrZjIA4rtQJXQ/hHWFqU9Xg+W9auYmwMB51G3fAMOcHWUqQvXMKj6ZQVU5E3KEhtc1VoDitwYjRK+RK6yn8Ja86Xi9NzNfCznjB6qtOFG8ASEmrjPSevLxYLWhZ5xv/eZbcx6OsetCQkEttITJJb1VU=
+	t=1767720666; cv=none; b=UrXMIFpDxcuXtZ6J7vjEg1lILZFOmGBKt+KJ6Nm7ziByXA2//qlBr8+MvPHGWcQNpwNfRBK6WeCFO56GcNi+m7MURLLQt3xWmhudMRADQUd+skSunXEO+lAGHR1bG8AVWqxYLUzA3JkoxyFtfHhbr7qTfSe9lfvZixzhin5sMi0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721587; c=relaxed/simple;
-	bh=Tu+Zj78WEgJYj5sUJVedW8QY+lKnnJ2AGxHE6sOEmk4=;
+	s=arc-20240116; t=1767720666; c=relaxed/simple;
+	bh=jLaFlpUlogtTiAuX0v4S0BIv+lZxa1hUpDSyM2T97gs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DTpzbnM73HIdhZZvMqaBeZbQ3OnlnCcv7cxM4aN348dlgYXH67vaNSNymBPykyWdWPQOOTr4Q4DZsGOJfWlrI8HqiBKRC2yJer7+biAzGPZQPYUFeH3IVGCrp02Jsmmu0CiYsaYP//9002v6214IXHac6HU+KanX4MHNIwUD8Qw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c3ejMmew; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83F58C116C6;
-	Tue,  6 Jan 2026 17:46:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=qDDt9H4LgTgr4CqaZ1viyEGgND4WokmmYa3q0jnSs8PW7MSUjYhOVO6DkKjqzNeB6us+DXhxTH4BxBKIon1s2/QIVAxO+OKJrgOEA0gLrjgA6rhyYwBEOWV6anLvXEgEt8xCq1FArJySI8RC5gX063eiRSMHnV94CGv9UGKnpss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=efjutA5X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDB7AC116C6;
+	Tue,  6 Jan 2026 17:31:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721586;
-	bh=Tu+Zj78WEgJYj5sUJVedW8QY+lKnnJ2AGxHE6sOEmk4=;
+	s=korg; t=1767720666;
+	bh=jLaFlpUlogtTiAuX0v4S0BIv+lZxa1hUpDSyM2T97gs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c3ejMmewXyvee4dbRzuNQ9TjDc5tAhRtMgZJdfm15shRQl+GGg4bHF3p2/6P9790m
-	 z+VEOLEJjPf0Q8WzdNcgFDetyxMuf8WbUYFztiipdfnsI9GFQpyUU/ad4BuPtqY58q
-	 DfFiQxaYOWtXIPZp9Ec6ItBgqEUma+KqR+hsI4Mg=
+	b=efjutA5Xh/h1PBHkIpFT/efXf77CUoulHbDrktf432s2JhxSY0XKpQ1Nd+2SGE0fW
+	 9rkercHG9yrK6sjIPHUT+3EZfoggamixsXu2xYqYWOCMUGl2/PHLsTDyxGtC3DY3KA
+	 BCebAs4WjLHP82T0bH5fJI5ts/LLVC6IyNBaIoOs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Morning Star <alexbestoso@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	Adrian Moreno <amorenoz@redhat.com>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+	Eelco Chaudron <echaudro@redhat.com>,
+	Aaron Conole <aconole@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 013/312] wifi: rtlwifi: 8192cu: fix tid out of range in rtl92cu_tx_fill_desc()
+Subject: [PATCH 6.12 305/567] net: openvswitch: Avoid needlessly taking the RTNL on vport destroy
 Date: Tue,  6 Jan 2026 18:01:27 +0100
-Message-ID: <20260106170548.333868369@linuxfoundation.org>
+Message-ID: <20260106170502.613658641@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
-References: <20260106170547.832845344@linuxfoundation.org>
+In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
+References: <20260106170451.332875001@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,46 +61,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Morning Star <alexbestoso@gmail.com>
+From: Toke Høiland-Jørgensen <toke@redhat.com>
 
-[ Upstream commit dd39edb445f07400e748da967a07d5dca5c5f96e ]
+[ Upstream commit 5498227676303e3ffa9a3a46214af96bc3e81314 ]
 
-TID getting from ieee80211_get_tid() might be out of range of array size
-of sta_entry->tids[], so check TID is less than MAX_TID_COUNT. Othwerwise,
-UBSAN warn:
+The openvswitch teardown code will immediately call
+ovs_netdev_detach_dev() in response to a NETDEV_UNREGISTER notification.
+It will then start the dp_notify_work workqueue, which will later end up
+calling the vport destroy() callback. This callback takes the RTNL to do
+another ovs_netdev_detach_port(), which in this case is unnecessary.
+This causes extra pressure on the RTNL, in some cases leading to
+"unregister_netdevice: waiting for XX to become free" warnings on
+teardown.
 
- UBSAN: array-index-out-of-bounds in drivers/net/wireless/realtek/rtlwifi/rtl8192cu/trx.c:514:30
- index 10 is out of range for type 'rtl_tid_data [9]'
+We can straight-forwardly avoid the extra RTNL lock acquisition by
+checking the device flags before taking the lock, and skip the locking
+altogether if the IFF_OVS_DATAPATH flag has already been unset.
 
-Fixes: 8ca4cdef9329 ("wifi: rtlwifi: rtl8192cu: Fix TX aggregation")
-Signed-off-by: Morning Star <alexbestoso@gmail.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/1764232628-13625-1-git-send-email-pkshih@realtek.com
+Fixes: b07c26511e94 ("openvswitch: fix vport-netdev unregister")
+Tested-by: Adrian Moreno <amorenoz@redhat.com>
+Signed-off-by: Toke Høiland-Jørgensen <toke@redhat.com>
+Acked-by: Eelco Chaudron <echaudro@redhat.com>
+Acked-by: Aaron Conole <aconole@redhat.com>
+Link: https://patch.msgid.link/20251211115006.228876-1-toke@redhat.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtlwifi/rtl8192cu/trx.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/openvswitch/vport-netdev.c | 17 +++++++++++++----
+ 1 file changed, 13 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/trx.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/trx.c
-index aa702ba7c9f5..d6c35e8d02a5 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/trx.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/trx.c
-@@ -511,7 +511,8 @@ void rtl92cu_tx_fill_desc(struct ieee80211_hw *hw,
- 	if (sta) {
- 		sta_entry = (struct rtl_sta_info *)sta->drv_priv;
- 		tid = ieee80211_get_tid(hdr);
--		agg_state = sta_entry->tids[tid].agg.agg_state;
-+		if (tid < MAX_TID_COUNT)
-+			agg_state = sta_entry->tids[tid].agg.agg_state;
- 		ampdu_density = sta->deflink.ht_cap.ampdu_density;
- 	}
+diff --git a/net/openvswitch/vport-netdev.c b/net/openvswitch/vport-netdev.c
+index 91a11067e458..6574f9bcdc02 100644
+--- a/net/openvswitch/vport-netdev.c
++++ b/net/openvswitch/vport-netdev.c
+@@ -160,10 +160,19 @@ void ovs_netdev_detach_dev(struct vport *vport)
  
+ static void netdev_destroy(struct vport *vport)
+ {
+-	rtnl_lock();
+-	if (netif_is_ovs_port(vport->dev))
+-		ovs_netdev_detach_dev(vport);
+-	rtnl_unlock();
++	/* When called from ovs_db_notify_wq() after a dp_device_event(), the
++	 * port has already been detached, so we can avoid taking the RTNL by
++	 * checking this first.
++	 */
++	if (netif_is_ovs_port(vport->dev)) {
++		rtnl_lock();
++		/* Check again while holding the lock to ensure we don't race
++		 * with the netdev notifier and detach twice.
++		 */
++		if (netif_is_ovs_port(vport->dev))
++			ovs_netdev_detach_dev(vport);
++		rtnl_unlock();
++	}
+ 
+ 	call_rcu(&vport->rcu, vport_netdev_free);
+ }
 -- 
 2.51.0
 
