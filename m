@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-205754-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205472-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE350CFA348
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:35:29 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B637FCF9DC1
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 18:52:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 885703041CD3
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:35:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0D521320DD61
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:40:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E62D635FF5A;
-	Tue,  6 Jan 2026 17:49:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F8CB2DAFBA;
+	Tue,  6 Jan 2026 17:33:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SssXWqNi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2kBIg1mT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A085D355031;
-	Tue,  6 Jan 2026 17:49:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E3D72D8DC4;
+	Tue,  6 Jan 2026 17:33:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721748; cv=none; b=QvG4/2visyEvaSNm1D27y0GjRZTGlcF5S9TFjI7/ol8YTRQ+RAJz0RLebIft6ZDyuKKxAB1uRH6c6LMPjFdwABu5dlLDjkNuwP8z3HCXtsJ0uFO7EG8BSnnvOJplNTwYrJF/TbGMrQnDDUzez8lpTH/KVD3Knlofk/VD1TvBD8k=
+	t=1767720808; cv=none; b=WOmx0moemK79g1YjCqGUXSFTtnYO+go+JWzfENsrbAS8+MTVRlXy0RL0S7SLbZi6qn/U5P1zUkIunGARVjwcn5DSDbhy0hke9OncZDtQUHCEsq/7S7nmrFIu2+/1OsOItkMoRm/KjzSkaBfU1TyjckVF+0jklj9wghzU8ROSKwo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721748; c=relaxed/simple;
-	bh=Wq1l3GaHp2NxmU2LXnC7+f63NxvlbP9ehH2NFVZjL/0=;
+	s=arc-20240116; t=1767720808; c=relaxed/simple;
+	bh=OaU8aMK3Lfp1AURX9VLhp7zzzL5/UDbTm2delzXFlMw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VJpuLqqkzM6z1x8osKNs0i3oaK4nC/eI05H2uqA4SLaX+eCG27JQ7s3uSesLWL///nEjwbAmr0GeDYdtYjMdvT4ZEACClgV7x43HgAZ9Y1d1K15douJpM1cZ3Jb2OCNFt0P3PhAx9SEz38s5q/HpKqOzigDs6OXdjGnHOgc/Cpw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SssXWqNi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27F68C116C6;
-	Tue,  6 Jan 2026 17:49:07 +0000 (UTC)
+	 MIME-Version; b=aXGUkhrcj5ytDhouUq3CMof6p01lWLXpFWfk/K2kENqfEQlmuGNvuUOm9ihnYnX64GLLRy6GrxvbKuNDcioI70+QpbbN3aOBmEv3Ycc7FQBOARtxi5AVneHoKQE3PdelqnGnREyxG0ASds40McFfgqkEPG94Dfwtf+dApME1OJo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2kBIg1mT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93D47C116C6;
+	Tue,  6 Jan 2026 17:33:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721748;
-	bh=Wq1l3GaHp2NxmU2LXnC7+f63NxvlbP9ehH2NFVZjL/0=;
+	s=korg; t=1767720808;
+	bh=OaU8aMK3Lfp1AURX9VLhp7zzzL5/UDbTm2delzXFlMw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SssXWqNiIq73WuFgDiZQ/ixmCHQ2b7FzQB+kF4kggs40yU9JgKK6alW90vxb3bSat
-	 nbSn62utMztzLcBsX5d8Wm49T+IeONHL4yKsXgpqx4HfjN1Se+gV67u2R+dojYfqOm
-	 jjPZ2Mus/nRLj/A308Z7g1TDK85OYwW0wdwngOlY=
+	b=2kBIg1mTQDt5btqmNYHWcraHWVYavfl05RaI2sE/WKdSoQHYKc/l8e3Xz4xtWP3qj
+	 0i8juXW/rIG2ylqtRtjVf/GyA/bM7OSxigcvTL49CknRbtLlCUsByJLA8CLmpEj8G1
+	 SnoHFTOaSAsxQIzY2A0F90HSdiJE/T69CVpsGP1Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bagas Sanjaya <bagasdotme@gmail.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 053/312] net: bridge: Describe @tunnel_hash member in net_bridge_vlan_group struct
-Date: Tue,  6 Jan 2026 18:02:07 +0100
-Message-ID: <20260106170549.771492477@linuxfoundation.org>
+	olivier moysan <olivier.moysan@st.com>,
+	Wen Yang <yellowriver2010@hotmail.com>,
+	Johan Hovold <johan@kernel.org>,
+	olivier moysan <olivier.moysan@foss.st.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.12 346/567] ASoC: stm32: sai: fix device leak on probe
+Date: Tue,  6 Jan 2026 18:02:08 +0100
+Message-ID: <20260106170504.125782272@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
-References: <20260106170547.832845344@linuxfoundation.org>
+In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
+References: <20260106170451.332875001@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bagas Sanjaya <bagasdotme@gmail.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit f79f9b7ace1713e4b83888c385f5f55519dfb687 ]
+commit e26ff429eaf10c4ef1bc3dabd9bf27eb54b7e1f4 upstream.
 
-Sphinx reports kernel-doc warning:
+Make sure to drop the reference taken when looking up the sync provider
+device and its driver data during DAI probe on probe failures and on
+unbind.
 
-WARNING: ./net/bridge/br_private.h:267 struct member 'tunnel_hash' not described in 'net_bridge_vlan_group'
+Note that holding a reference to a device does not prevent its driver
+data from going away so there is no point in keeping the reference.
 
-Fix it by describing @tunnel_hash member.
-
-Fixes: efa5356b0d9753 ("bridge: per vlan dst_metadata netlink support")
-Signed-off-by: Bagas Sanjaya <bagasdotme@gmail.com>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20251218042936.24175-2-bagasdotme@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 7dd0d835582f ("ASoC: stm32: sai: simplify sync modes management")
+Fixes: 1c3816a19487 ("ASoC: stm32: sai: add missing put_device()")
+Cc: stable@vger.kernel.org	# 4.16: 1c3816a19487
+Cc: olivier moysan <olivier.moysan@st.com>
+Cc: Wen Yang <yellowriver2010@hotmail.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: olivier moysan <olivier.moysan@foss.st.com>
+Link: https://patch.msgid.link/20251124104908.15754-2-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bridge/br_private.h | 1 +
- 1 file changed, 1 insertion(+)
+ sound/soc/stm/stm32_sai.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/bridge/br_private.h b/net/bridge/br_private.h
-index 7280c4e9305f..b9b2981c4841 100644
---- a/net/bridge/br_private.h
-+++ b/net/bridge/br_private.h
-@@ -247,6 +247,7 @@ struct net_bridge_vlan {
-  * struct net_bridge_vlan_group
-  *
-  * @vlan_hash: VLAN entry rhashtable
-+ * @tunnel_hash: Hash table to map from tunnel key ID (e.g. VXLAN VNI) to VLAN
-  * @vlan_list: sorted VLAN entry list
-  * @num_vlans: number of total VLAN entries
-  * @pvid: PVID VLAN id
--- 
-2.51.0
-
+--- a/sound/soc/stm/stm32_sai.c
++++ b/sound/soc/stm/stm32_sai.c
+@@ -127,6 +127,7 @@ static int stm32_sai_set_sync(struct stm
+ 	}
+ 
+ 	sai_provider = platform_get_drvdata(pdev);
++	put_device(&pdev->dev);
+ 	if (!sai_provider) {
+ 		dev_err(&sai_client->pdev->dev,
+ 			"SAI sync provider data not found\n");
+@@ -143,7 +144,6 @@ static int stm32_sai_set_sync(struct stm
+ 	ret = stm32_sai_sync_conf_provider(sai_provider, synco);
+ 
+ error:
+-	put_device(&pdev->dev);
+ 	of_node_put(np_provider);
+ 	return ret;
+ }
 
 
 
