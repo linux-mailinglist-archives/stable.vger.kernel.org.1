@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-205631-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205909-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61481CFA055
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:16:36 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id B95B4CFA070
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:16:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 197A132FA364
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:03:08 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 831013019B5D
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:16:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E229C2E973F;
-	Tue,  6 Jan 2026 17:42:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 539D936C0BF;
+	Tue,  6 Jan 2026 17:57:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e9Uch4wx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bXTrFthy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97DFE28C037;
-	Tue,  6 Jan 2026 17:42:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A1F8357A50;
+	Tue,  6 Jan 2026 17:57:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721333; cv=none; b=hvfnCy3z+y1xzaZ598x5PNLGjXdAdRf0bAgaZmkm6AWR0ZP+AgEq3ZXlVASbElGdhlkOPzMoR4Br7qyOt2Lpe4XRAV3fElnAdqETuE/V2L6SnFUuF/y0HKhoHEpc7MiEzM8dAw6Ok1dgaFg3YFArP1g35iX+QeoXpxm7N2IVms0=
+	t=1767722268; cv=none; b=BGs374NX69qUxX2J2seX0FRP2SOAin/rg8W020oZETkczGj9BpwLR7aAseUq4ih3Sc02u6RaG1BaLQSWQm0QOMLJAmxTWOK1kudl//5pMsJmMzjVL1x8ewNZl7V8vrbt0Ed0Oj/fZaF7Sf1ZA0N/oT9V6aObTUKDxa+3XItaIFk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721333; c=relaxed/simple;
-	bh=VIhaUHDjrzMhqHDYGU2Ci8yBxUny/dkCQ9hae9+Ey/w=;
+	s=arc-20240116; t=1767722268; c=relaxed/simple;
+	bh=tePTIqHnxs2cED40YxUr11CztjxJ9x1BPk1rbGc/H+A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WNDuAfPaur9Moxa7rCr46+v9ZMKojbX6U9lNyyEZxharJNROVea1+koW4CIW0sqBCbtUUcEZk8HqGbGdlYq/p7h+GthNYehnI1SJNYFfe2/hm+yweGal0LF9BkbMzaqiov2ESqehs/rBXgURALF4kc0gDDzp+PE3ni2CIJs6q/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e9Uch4wx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 079D5C16AAE;
-	Tue,  6 Jan 2026 17:42:12 +0000 (UTC)
+	 MIME-Version; b=EouWxAS+oMluZCuIdtZi928k6po4xbf1LAVHmB8DdXVkXVGjWNRE3JlT9TYbHyqlKH2sqyRlGbHIneb0uO15NWsxV5MnNAgKTZ63FSB7XEMVOPvyGubaehM64Z5loQkH9oLMV1cspNwJQSiju05W4nKjjeICiFF53TdAAH98q6Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bXTrFthy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C8CCC116C6;
+	Tue,  6 Jan 2026 17:57:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721333;
-	bh=VIhaUHDjrzMhqHDYGU2Ci8yBxUny/dkCQ9hae9+Ey/w=;
+	s=korg; t=1767722267;
+	bh=tePTIqHnxs2cED40YxUr11CztjxJ9x1BPk1rbGc/H+A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e9Uch4wxoGCWx3eN2/MZ1bnh5iV+Rk+F92E1Yt8XB8Lq39zqOQBxSGtjgQTEt00Q8
-	 QaYT7bzgn47yDSgfnSENAgNThbC4s8Vb1AN0+XEA8U+a4TB8xO2xk0ldbGz1ZNPZT2
-	 jCVwDTmTy/Pms4nD6erOK/RjbkJRk/SrZJRT625Y=
+	b=bXTrFthyauVVbF9CMEiLH4e24v2z82BVjOG2pEytyiN+Pk05kgZuQiKeSzxw2QEpr
+	 GmUVp/Of36Eefi3zrPrlaJmULAvDTpov5LUEMq+efCIk2s8cGLjQvGpo81Fjd5k4Cj
+	 q0m83To/5RHGfFvDMu5/225L7t6MNhPPabChsMkA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrea Righi <arighi@nvidia.com>,
-	Emil Tsalapatis <emil@etsalapatis.com>,
-	Tejun Heo <tj@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 506/567] sched_ext: Factor out local_dsq_post_enq() from dispatch_enqueue()
+	SeongJae Park <sj@kernel.org>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <davidgow@google.com>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.18 214/312] mm/damon/tests/core-kunit: handle alloc failures in damon_test_ops_registration()
 Date: Tue,  6 Jan 2026 18:04:48 +0100
-Message-ID: <20260106170510.090865593@linuxfoundation.org>
+Message-ID: <20260106170555.582869416@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
-References: <20260106170451.332875001@linuxfoundation.org>
+In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
+References: <20260106170547.832845344@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,81 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tejun Heo <tj@kernel.org>
+From: SeongJae Park <sj@kernel.org>
 
-[ Upstream commit 530b6637c79e728d58f1d9b66bd4acf4b735b86d ]
+commit 4f835f4e8c863985f15abd69db033c2f66546094 upstream.
 
-Factor out local_dsq_post_enq() which performs post-enqueue handling for
-local DSQs - triggering resched_curr() if SCX_ENQ_PREEMPT is specified or if
-the current CPU is idle. No functional change.
+damon_test_ops_registration() is assuming all dynamic memory allocation in
+it will succeed.  Those are indeed likely in the real use cases since
+those allocations are too small to fail, but theoretically those could
+fail.  In the case, inappropriate memory access can happen.  Fix it by
+appropriately cleanup pre-allocated memory and skip the execution of the
+remaining tests in the failure cases.
 
-This will be used by the next patch to fix move_local_task_to_local_dsq().
-
-Cc: stable@vger.kernel.org # v6.12+
-Reviewed-by: Andrea Righi <arighi@nvidia.com>
-Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20251101182021.74868-10-sj@kernel.org
+Fixes: 4f540f5ab4f2 ("mm/damon/core-test: add a kunit test case for ops registration")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: Brendan Higgins <brendan.higgins@linux.dev>
+Cc: David Gow <davidgow@google.com>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: <stable@vger.kernel.org>	[5.19+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/ext.c |   34 +++++++++++++++++++---------------
- 1 file changed, 19 insertions(+), 15 deletions(-)
+ mm/damon/tests/core-kunit.h |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/kernel/sched/ext.c
-+++ b/kernel/sched/ext.c
-@@ -1676,6 +1676,22 @@ static void dsq_mod_nr(struct scx_dispat
- 	WRITE_ONCE(dsq->nr, dsq->nr + delta);
- }
+--- a/mm/damon/tests/core-kunit.h
++++ b/mm/damon/tests/core-kunit.h
+@@ -300,6 +300,9 @@ static void damon_test_ops_registration(
+ 	struct damon_operations ops = {.id = DAMON_OPS_VADDR}, bak;
+ 	bool need_cleanup = false;
  
-+static void local_dsq_post_enq(struct scx_dispatch_q *dsq, struct task_struct *p,
-+			       u64 enq_flags)
-+{
-+	struct rq *rq = container_of(dsq, struct rq, scx.local_dsq);
-+	bool preempt = false;
++	if (!c)
++		kunit_skip(test, "ctx alloc fail");
 +
-+	if ((enq_flags & SCX_ENQ_PREEMPT) && p != rq->curr &&
-+	    rq->curr->sched_class == &ext_sched_class) {
-+		rq->curr->scx.slice = 0;
-+		preempt = true;
-+	}
-+
-+	if (preempt || sched_class_above(&ext_sched_class, rq->curr->sched_class))
-+		resched_curr(rq);
-+}
-+
- static void dispatch_enqueue(struct scx_dispatch_q *dsq, struct task_struct *p,
- 			     u64 enq_flags)
- {
-@@ -1773,22 +1789,10 @@ static void dispatch_enqueue(struct scx_
- 	if (enq_flags & SCX_ENQ_CLEAR_OPSS)
- 		atomic_long_set_release(&p->scx.ops_state, SCX_OPSS_NONE);
- 
--	if (is_local) {
--		struct rq *rq = container_of(dsq, struct rq, scx.local_dsq);
--		bool preempt = false;
--
--		if ((enq_flags & SCX_ENQ_PREEMPT) && p != rq->curr &&
--		    rq->curr->sched_class == &ext_sched_class) {
--			rq->curr->scx.slice = 0;
--			preempt = true;
--		}
--
--		if (preempt || sched_class_above(&ext_sched_class,
--						 rq->curr->sched_class))
--			resched_curr(rq);
--	} else {
-+	if (is_local)
-+		local_dsq_post_enq(dsq, p, enq_flags);
-+	else
- 		raw_spin_unlock(&dsq->lock);
--	}
- }
- 
- static void task_unlink_from_dsq(struct task_struct *p,
+ 	/* DAMON_OPS_VADDR is registered only if CONFIG_DAMON_VADDR is set */
+ 	if (!damon_is_registered_ops(DAMON_OPS_VADDR)) {
+ 		bak.id = DAMON_OPS_VADDR;
 
 
 
