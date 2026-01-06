@@ -1,50 +1,50 @@
-Return-Path: <stable+bounces-205365-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205367-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF13ACFA5D0
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:56:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E3568CF9CC8
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 18:44:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BB969304CAE0
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:56:40 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id EED0F30052E7
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:44:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F292D34DCF4;
-	Tue,  6 Jan 2026 17:27:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53D8F34E779;
+	Tue,  6 Jan 2026 17:27:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oz04rCJa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pPjwgMVs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF4C334DCEA;
-	Tue,  6 Jan 2026 17:27:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 107AA2874E9;
+	Tue,  6 Jan 2026 17:27:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767720450; cv=none; b=kzo8rUnWRrnhuSbs5SwiiLOlREqP48EdyQnJPnR3z6+1hk+DfPbLyDOnhp50spocw+cg1OFMoV/Avif+LuGxDN5NSH5zPq9TWhGtvQmLe38QIHLJzzbn0DPVc8sY4bJwXg2qCileCS3eiG1Ew8BC+el9PuCUn2FTTwJpfKS1QcE=
+	t=1767720457; cv=none; b=L/rysI2RBSw2NB4j1VNDRrR3fB3NNT3/FBfB7hyp9xjT/ctie1QT+9n14ll584DSENK9e04QtNzKBHsF1N14Sob9KKGwgShHuCSgj2SCzX/j51/n3gUWbsPZ7deSlbgmbcE0j0y+cE6//Z8Bm7Qy1Vs2MyXFRrYNJEPsZyLfVy8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767720450; c=relaxed/simple;
-	bh=qiQ2BPk6bhb56R92Zn6iFgd0d/EdKGb/cZAyDisR+PA=;
+	s=arc-20240116; t=1767720457; c=relaxed/simple;
+	bh=lf2BA2khvc43yLxJ6SI7WQ0+Fpxs8JFAFpPCEy3qDJY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MXAI2g1Z1yNOgIiN5ieXkDb2tIFQXnuLNKvMjtHCn6LOiA9oEqnFb5i1Uo6l/AawBUGFeKwcIboVnGkRAaLUZJhGV25rO1efmwtebheZhFGZsExNmBNo1wsCUkBrGIBLFtYN4R1jcB1NDEZ2RcWplqhUOUL+lcWEXpKSVapY0Gc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oz04rCJa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CA1EC16AAE;
-	Tue,  6 Jan 2026 17:27:29 +0000 (UTC)
+	 MIME-Version; b=nHu4uBEU3OvrC6v3aqvzU9ZcTjiiX1n0vhfRsvxDHYqk5z7x/Y//QafwGEjw32+njwvmM1eO/NhXvpP1300DnwNqK/C5rQzo2qXEejdnEP5s63JBKyn8sXCucm0j4uuPbMTgiuWRRhrP7KLJlKxjZOS8Zmk2q6ciRof/k/FhT88=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pPjwgMVs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FD01C116C6;
+	Tue,  6 Jan 2026 17:27:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767720450;
-	bh=qiQ2BPk6bhb56R92Zn6iFgd0d/EdKGb/cZAyDisR+PA=;
+	s=korg; t=1767720456;
+	bh=lf2BA2khvc43yLxJ6SI7WQ0+Fpxs8JFAFpPCEy3qDJY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oz04rCJaUx+Cad/fikKUia6X/2LYjO+0HWYymQ7fa0Nic0K5h4I5yRADOBN59Wb+c
-	 AvH0PjXvqMBWBv6s9pFGYKiYbmbx/MpY2l/48QSoRhJEA8iSZezUWVX3z0w9wRBK19
-	 3Sd+QsLbSUdmCP7YCRV3Gwyjzq8KZudsvPLXC260=
+	b=pPjwgMVsrT8RqLL9rCdTk1GX45a4yNugKVJGNS20/+yeu8R2b5GGlRffEODSHpa9J
+	 QVdeABjT+s/umJSaO5+dfv9Sqp0i87HzeKRHij/rQGUhfR6iJSMlzM3egeiSj4tWCP
+	 m6ll9jgliD39nYy7MRUI5nNxn6ocvv7D6bL97AJI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.12 239/567] NFSD: Clear SECLABEL in the suppattr_exclcreat bitmap
-Date: Tue,  6 Jan 2026 18:00:21 +0100
-Message-ID: <20260106170500.158723560@linuxfoundation.org>
+Subject: [PATCH 6.12 241/567] nfsd: Mark variable __maybe_unused to avoid W=1 build break
+Date: Tue,  6 Jan 2026 18:00:23 +0100
+Message-ID: <20260106170500.232397701@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
 References: <20260106170451.332875001@linuxfoundation.org>
@@ -63,53 +63,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-commit 27d17641cacfedd816789b75d342430f6b912bd2 upstream.
+commit ebae102897e760e9e6bc625f701dd666b2163bd1 upstream.
 
->From RFC 8881:
+Clang is not happy about set but (in some cases) unused variable:
 
-5.8.1.14. Attribute 75: suppattr_exclcreat
+fs/nfsd/export.c:1027:17: error: variable 'inode' set but not used [-Werror,-Wunused-but-set-variable]
 
-> The bit vector that would set all REQUIRED and RECOMMENDED
-> attributes that are supported by the EXCLUSIVE4_1 method of file
-> creation via the OPEN operation. The scope of this attribute
-> applies to all objects with a matching fsid.
+since it's used as a parameter to dprintk() which might be configured
+a no-op. To avoid uglifying code with the specific ifdeffery just mark
+the variable __maybe_unused.
 
-There's nothing in RFC 8881 that states that suppattr_exclcreat is
-or is not allowed to contain bits for attributes that are clear in
-the reported supported_attrs bitmask. But it doesn't make sense for
-an NFS server to indicate that it /doesn't/ implement an attribute,
-but then also indicate that clients /are/ allowed to set that
-attribute using OPEN(create) with EXCLUSIVE4_1.
+The commit [1], which introduced this behaviour, is quite old and hence
+the Fixes tag points to the first of the Git era.
 
-Ensure that the SECURITY_LABEL and ACL bits are not set in the
-suppattr_exclcreat bitmask when they are also not set in the
-supported_attrs bitmask.
-
-Fixes: 8c18f2052e75 ("nfsd41: SUPPATTR_EXCLCREAT attribute")
+Link: https://git.kernel.org/pub/scm/linux/kernel/git/history/history.git/commit/?id=0431923fb7a1 [1]
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 Cc: stable@vger.kernel.org
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfs4xdr.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ fs/nfsd/export.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/nfsd/nfs4xdr.c
-+++ b/fs/nfsd/nfs4xdr.c
-@@ -3362,6 +3362,11 @@ static __be32 nfsd4_encode_fattr4_suppat
- 	u32 supp[3];
- 
- 	memcpy(supp, nfsd_suppattrs[resp->cstate.minorversion], sizeof(supp));
-+	if (!IS_POSIXACL(d_inode(args->dentry)))
-+		supp[0] &= ~FATTR4_WORD0_ACL;
-+	if (!args->contextsupport)
-+		supp[2] &= ~FATTR4_WORD2_SECURITY_LABEL;
-+
- 	supp[0] &= NFSD_SUPPATTR_EXCLCREAT_WORD0;
- 	supp[1] &= NFSD_SUPPATTR_EXCLCREAT_WORD1;
- 	supp[2] &= NFSD_SUPPATTR_EXCLCREAT_WORD2;
+--- a/fs/nfsd/export.c
++++ b/fs/nfsd/export.c
+@@ -1017,7 +1017,7 @@ exp_rootfh(struct net *net, struct auth_
+ {
+ 	struct svc_export	*exp;
+ 	struct path		path;
+-	struct inode		*inode;
++	struct inode		*inode __maybe_unused;
+ 	struct svc_fh		fh;
+ 	int			err;
+ 	struct nfsd_net		*nn = net_generic(net, nfsd_net_id);
 
 
 
