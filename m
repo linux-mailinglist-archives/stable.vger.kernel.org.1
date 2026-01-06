@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-205811-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205813-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7ADA1CF9F9D
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:10:54 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1619CF9F88
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:10:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8ADA83063DAA
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:07:53 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 685B3308E932
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:07:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CB3430ACE8;
-	Tue,  6 Jan 2026 17:52:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E38CC339875;
+	Tue,  6 Jan 2026 17:52:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2rH4TE/u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1J7B9rUj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDBB93019AA;
-	Tue,  6 Jan 2026 17:52:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CEB832ED2F;
+	Tue,  6 Jan 2026 17:52:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721941; cv=none; b=XeyZcYvwCl6bmPgDNVBcuZR0ZGX/mheg7ejHzLaeI+y+llup5adjuGx1sUa8/pnPF3HosJoD11TzhwHzqgGqyksxOtbQbKl3tnQJXCZRDgfZaktQsKjdluHt+JVRqEqpQgkCJxoocMn/djx1V+6koOyHTj0RLLg0OgdyaKuJitM=
+	t=1767721948; cv=none; b=ZEITqRW3LiyoGMdvAH8n4jVZtoVtQrlv7ZLgqzbiYDJuwk78wGmi1nV+EKqiY5chReXv/PTs7VBuRGqofQn9uOd0G0bnEDL5mKk6ts4UCMYQsQ44kHeOcIpAdxdZHdK5AfuTGXKkGBlbv277SrrCY16MWThG0B5zj6dtxJyoIG8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721941; c=relaxed/simple;
-	bh=5Ce0nVvdrgOmw5ZpV2zrYzzirdV2Kx4HHUMLiSDN0Hs=;
+	s=arc-20240116; t=1767721948; c=relaxed/simple;
+	bh=OMV9meG4eqQL/wFkV4mXhcJxg1UPlFkKIQAzozJpGT8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KySWkYAMzGRPZFaZXdSYRR2pIO8R+yKc6F+oXzsmsTUpLXC8QrUOGpyBmQCo+a8PcyRLhFAljKCyrd9V9oM91nTR7s6aKoCPOa2/85v8hVFEIHyIGS+5YUti/qhmJ8Q023Mkk0c+lWgB3gln8qj9aTn0v7ZfuMYPI2IJ+ohzVnM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2rH4TE/u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3015FC116C6;
-	Tue,  6 Jan 2026 17:52:20 +0000 (UTC)
+	 MIME-Version; b=rQAvSEzdMM9dFJ4VsoJooyjuptNIyOPo+kdNtt6Ju+pEmyLUZa33oFpfngfnUqTmCI75f8As7vn7Fb4dg6/dus9BWGXnDzxNF27Uxm0XSNcOLJqZjatoxUITE65z7Crsw56t8SXCQ9GjdeHNl3/tZWpm75pEcHoDWKMlVqqviuU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1J7B9rUj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C404C116C6;
+	Tue,  6 Jan 2026 17:52:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721941;
-	bh=5Ce0nVvdrgOmw5ZpV2zrYzzirdV2Kx4HHUMLiSDN0Hs=;
+	s=korg; t=1767721948;
+	bh=OMV9meG4eqQL/wFkV4mXhcJxg1UPlFkKIQAzozJpGT8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2rH4TE/uRch4CtUosTNKzCGp4FxfY8EO/6e7Ac4GC6ltRn3IaQtHGE0JYa62VKU0c
-	 maM0p53BttG37iBL8DdUQvSF3fSG0Gkx2j3X4AVJ6yPSy5km4+Zd+yPSCLQSrg+qgE
-	 WWdcgPQYDU0FesCFo8D02OcG5poWzFhOZTPxsMvc=
+	b=1J7B9rUjYd1ydN/c0RPX2mikFLtZ0QeN5oSdk0qj54nySaqscct/RrG+WD8OaO+yA
+	 b2FEa/vW4Uke47PNnGwanXm6KIP8H+Wlv+0TCXs9Bpj1cWC/EavrdPe5qIoPIYaOJ4
+	 HFCoqBtLL8Tc+jrU87w/2wxpS+hO3TMx6oY8uK7I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
-	Yu Kuai <yukuai3@huawei.com>,
+	Maxime Ripard <mripard@kernel.org>,
 	Robin Murphy <robin.murphy@arm.com>,
 	Johan Hovold <johan@kernel.org>,
 	Joerg Roedel <joerg.roedel@amd.com>
-Subject: [PATCH 6.18 117/312] iommu/qcom: fix device leak on of_xlate()
-Date: Tue,  6 Jan 2026 18:03:11 +0100
-Message-ID: <20260106170552.074955838@linuxfoundation.org>
+Subject: [PATCH 6.18 118/312] iommu/sun50i: fix device leak on of_xlate()
+Date: Tue,  6 Jan 2026 18:03:12 +0100
+Message-ID: <20260106170552.112385635@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
 References: <20260106170547.832845344@linuxfoundation.org>
@@ -68,59 +67,33 @@ Content-Transfer-Encoding: 8bit
 
 From: Johan Hovold <johan@kernel.org>
 
-commit 6a3908ce56e6879920b44ef136252b2f0c954194 upstream.
+commit f916109bf53864605d10bf6f4215afa023a80406 upstream.
 
 Make sure to drop the reference taken to the iommu platform device when
 looking up its driver data during of_xlate().
 
-Note that commit e2eae09939a8 ("iommu/qcom: add missing put_device()
-call in qcom_iommu_of_xlate()") fixed the leak in a couple of error
-paths, but the reference is still leaking on success and late failures.
-
-Fixes: 0ae349a0f33f ("iommu/qcom: Add qcom_iommu")
-Cc: stable@vger.kernel.org	# 4.14: e2eae09939a8
-Cc: Rob Clark <robin.clark@oss.qualcomm.com>
-Cc: Yu Kuai <yukuai3@huawei.com>
+Fixes: 4100b8c229b3 ("iommu: Add Allwinner H6 IOMMU driver")
+Cc: stable@vger.kernel.org	# 5.8
+Cc: Maxime Ripard <mripard@kernel.org>
 Acked-by: Robin Murphy <robin.murphy@arm.com>
 Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/arm/arm-smmu/qcom_iommu.c |   10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ drivers/iommu/sun50i-iommu.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/iommu/arm/arm-smmu/qcom_iommu.c
-+++ b/drivers/iommu/arm/arm-smmu/qcom_iommu.c
-@@ -565,14 +565,14 @@ static int qcom_iommu_of_xlate(struct de
+--- a/drivers/iommu/sun50i-iommu.c
++++ b/drivers/iommu/sun50i-iommu.c
+@@ -839,6 +839,8 @@ static int sun50i_iommu_of_xlate(struct
  
- 	qcom_iommu = platform_get_drvdata(iommu_pdev);
+ 	dev_iommu_priv_set(dev, platform_get_drvdata(iommu_pdev));
  
 +	put_device(&iommu_pdev->dev);
 +
- 	/* make sure the asid specified in dt is valid, so we don't have
- 	 * to sanity check this elsewhere:
- 	 */
- 	if (WARN_ON(asid > qcom_iommu->max_asid) ||
--	    WARN_ON(qcom_iommu->ctxs[asid] == NULL)) {
--		put_device(&iommu_pdev->dev);
-+	    WARN_ON(qcom_iommu->ctxs[asid] == NULL))
- 		return -EINVAL;
--	}
+ 	return iommu_fwspec_add_ids(dev, &id, 1);
+ }
  
- 	if (!dev_iommu_priv_get(dev)) {
- 		dev_iommu_priv_set(dev, qcom_iommu);
-@@ -581,10 +581,8 @@ static int qcom_iommu_of_xlate(struct de
- 		 * multiple different iommu devices.  Multiple context
- 		 * banks are ok, but multiple devices are not:
- 		 */
--		if (WARN_ON(qcom_iommu != dev_iommu_priv_get(dev))) {
--			put_device(&iommu_pdev->dev);
-+		if (WARN_ON(qcom_iommu != dev_iommu_priv_get(dev)))
- 			return -EINVAL;
--		}
- 	}
- 
- 	return iommu_fwspec_add_ids(dev, &asid, 1);
 
 
 
