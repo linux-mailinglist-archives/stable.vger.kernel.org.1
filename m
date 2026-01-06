@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-205605-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205882-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6580CFA35A
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:36:40 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4883FCFA043
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:16:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 9FF11302C925
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:36:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 39C1532FBE1D
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:02:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB83B2D23A5;
-	Tue,  6 Jan 2026 17:40:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D46836402B;
+	Tue,  6 Jan 2026 17:56:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bOwajFOK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dbB0ZjTt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 780852C326A;
-	Tue,  6 Jan 2026 17:40:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48F3536BCD5;
+	Tue,  6 Jan 2026 17:56:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721246; cv=none; b=VxBxZsNYnIoXGoxz4aM+zjdIm7uopZ/hc8yp6nKskfmBSRxgpyULpbT9LoNWJSQHUnzkCGza9iD1qJAhNvlAc55HZwy8q1eSJZ6VhGjZn0hi6AuckE1KMyyxcbzZx5ribmNrmSxVuruEuUHcZ1zmdgC4e5Yn1hvmWjovnkWhpSw=
+	t=1767722176; cv=none; b=lzpJXUD6vuH9qtEUIoI5YbRvoLFQ/5CGMuMqZ8XU4tnGoprCCMUAqDcPT9YWMWwCMKyJRmgGrIjKGf9WeCDToeuYF7t+iK2P8dQRvti/t4DvcdXjXGjGpy9xMkNpJVcSA8P1Kb0Ry5n9+O3QqgVDkyNFLRj8NysUwJ+XTOUibdM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721246; c=relaxed/simple;
-	bh=x/a+N7h94NZhrFnFtupChpD0s/xrhfc3gax2xcofn4s=;
+	s=arc-20240116; t=1767722176; c=relaxed/simple;
+	bh=ayhLWMcZ4PkVXneu1lwl8qgT4ZsTInIjqclB4Y+x3m0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=N+hyKwLK6n+btpnWLwP9nadSUitzCB70OKLbISJHJqeiYeMh3FrETmE9GEhCGKxGM/6XVnQ81d/K/lS+trgfFW24hdtL/h9gDlfvj938dOFIklCUgWvwDrCeakNye5cYR6nBiAyogrnw7AiYe3roHoZun8ws3DAugxJIhHqjmYM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bOwajFOK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8DBDC116C6;
-	Tue,  6 Jan 2026 17:40:45 +0000 (UTC)
+	 MIME-Version; b=IH2l8n/Dlv25B56feNjtxO/un5CcuUGCskNS1598S78N38tJVRxDye+p2yzUnGpsNmxqUQ7f+ms8VWIdIqST5vqQIz8ztL/WtUWnOMofuBlHUWArL52XD8UZKU/6CriIjbeXwz6/kruANGz5j0l5//cICaHCPnF4DZet1LdnYYM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dbB0ZjTt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C08AFC116C6;
+	Tue,  6 Jan 2026 17:56:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721246;
-	bh=x/a+N7h94NZhrFnFtupChpD0s/xrhfc3gax2xcofn4s=;
+	s=korg; t=1767722176;
+	bh=ayhLWMcZ4PkVXneu1lwl8qgT4ZsTInIjqclB4Y+x3m0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bOwajFOKlhJLcmYj57FFr3GzKe0+TaZO8qE3sXpEN8OusrkOR53hRqdGc8yXAHCDX
-	 lAzWC/n26wYPXBj04FqLAr9j8LIemWIF4driPBdmQXYnKg/nSrSk0yq6umkxVUf63Z
-	 xRizsYWgH32xyAnm3ADL60QmmEMhbQ1uIEU+ZzhU=
+	b=dbB0ZjTtq/fwpfagjT4qzEJO/B27cqcCE0qzuwEJpGW1lHeGtvc9jVn6gq1mT5rOn
+	 KEsKwuS5JgPEUopvoGcEkmxf8bbu22wrrBQ7bDpG7hMHCS6MBiuJ3jMpsaICj+egE9
+	 TMFInflPELl1UDioY0826YA85tgoKpP+kUG/kr40=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Brost <matthew.brost@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
-Subject: [PATCH 6.12 479/567] drm/xe: Use usleep_range for accurate long-running workload timeslicing
+	Duoming Zhou <duoming@zju.edu.cn>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 6.18 187/312] media: i2c: ADV7604: Remove redundant cancel_delayed_work in probe
 Date: Tue,  6 Jan 2026 18:04:21 +0100
-Message-ID: <20260106170509.074701830@linuxfoundation.org>
+Message-ID: <20260106170554.593688870@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
-References: <20260106170451.332875001@linuxfoundation.org>
+In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
+References: <20260106170547.832845344@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,70 +57,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Brost <matthew.brost@intel.com>
+From: Duoming Zhou <duoming@zju.edu.cn>
 
-commit 80f9c601d9c4d26f00356c0a9c461650e7089273 upstream.
+commit 8f34f24355a607b98ecd9924837aab13c676eeca upstream.
 
-msleep is not very accurate in terms of how long it actually sleeps,
-whereas usleep_range is precise. Replace the timeslice sleep for
-long-running workloads with the more accurate usleep_range to avoid
-jitter if the sleep period is less than 20ms.
+The delayed_work delayed_work_enable_hotplug is initialized with
+INIT_DELAYED_WORK() in adv76xx_probe(), but it is never scheduled
+anywhere in the probe function.
 
-Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
+Calling cancel_delayed_work() on a work that has never been
+scheduled is redundant and unnecessary, as there is no pending
+work to cancel.
+
+Remove the redundant cancel_delayed_work() from error handling
+path and adjust the goto label accordingly to simplify the code
+and avoid potential confusion.
+
+Fixes: 54450f591c99 ("[media] adv7604: driver for the Analog Devices ADV7604 video decoder")
 Cc: stable@vger.kernel.org
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
-Reviewed-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Link: https://patch.msgid.link/20251212182847.1683222-3-matthew.brost@intel.com
-(cherry picked from commit ca415c4d4c17ad676a2c8981e1fcc432221dce79)
-Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/xe_guc_submit.c |   20 +++++++++++++++++++-
- 1 file changed, 19 insertions(+), 1 deletion(-)
+ drivers/media/i2c/adv7604.c |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/drivers/gpu/drm/xe/xe_guc_submit.c
-+++ b/drivers/gpu/drm/xe/xe_guc_submit.c
-@@ -578,6 +578,24 @@ static u32 wq_space_until_wrap(struct xe
- 	return (WQ_SIZE - q->guc->wqi_tail);
- }
+--- a/drivers/media/i2c/adv7604.c
++++ b/drivers/media/i2c/adv7604.c
+@@ -3670,7 +3670,7 @@ static int adv76xx_probe(struct i2c_clie
+ 	err = media_entity_pads_init(&sd->entity, state->source_pad + 1,
+ 				state->pads);
+ 	if (err)
+-		goto err_work_queues;
++		goto err_i2c;
  
-+static inline void relaxed_ms_sleep(unsigned int delay_ms)
-+{
-+	unsigned long min_us, max_us;
-+
-+	if (!delay_ms)
-+		return;
-+
-+	if (delay_ms > 20) {
-+		msleep(delay_ms);
-+		return;
-+	}
-+
-+	min_us = mul_u32_u32(delay_ms, 1000);
-+	max_us = min_us + 500;
-+
-+	usleep_range(min_us, max_us);
-+}
-+
- static int wq_wait_for_space(struct xe_exec_queue *q, u32 wqi_size)
- {
- 	struct xe_guc *guc = exec_queue_to_guc(q);
-@@ -1356,7 +1374,7 @@ static void __guc_exec_queue_process_msg
- 				since_resume_ms;
+ 	/* Configure regmaps */
+ 	err = configure_regmaps(state);
+@@ -3711,8 +3711,6 @@ static int adv76xx_probe(struct i2c_clie
  
- 			if (wait_ms > 0 && q->guc->resume_time)
--				msleep(wait_ms);
-+				relaxed_ms_sleep(wait_ms);
- 
- 			set_exec_queue_suspended(q);
- 			disable_scheduling(q, false);
+ err_entity:
+ 	media_entity_cleanup(&sd->entity);
+-err_work_queues:
+-	cancel_delayed_work(&state->delayed_work_enable_hotplug);
+ err_i2c:
+ 	adv76xx_unregister_clients(state);
+ err_hdl:
 
 
 
