@@ -1,52 +1,50 @@
-Return-Path: <stable+bounces-205256-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205262-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7834ECF9CF8
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 18:44:46 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5480FCF9B45
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 18:32:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2540331B578B
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:34:10 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 60FD63020FD0
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:32:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E77EC34F469;
-	Tue,  6 Jan 2026 17:21:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B993C34F470;
+	Tue,  6 Jan 2026 17:21:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oWzoUWmB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RAsH2CMn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4B2B34EF0A;
-	Tue,  6 Jan 2026 17:21:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E4EF346A18;
+	Tue,  6 Jan 2026 17:21:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767720091; cv=none; b=FV1dB/XQD4VJ/p259jl2P4M7XyEDeRuW57x/Vx4aUGQfbERYIs6sGoWIWayKUAu7iD7M+n5POg3a03xCZbvVI8YevkyCtJDNqhmG4EX9LKfgp7xTIBzSWU9M0p2c183dxd5kug684HfFrb3cRgDIRJqzqPsgwqN9joMKR4SVvZs=
+	t=1767720111; cv=none; b=Th0bY/KBK5h/qQMlgUQjkHzJ5TGNIOSYJTLZnNr4yxFC5n2XdRV5n6zm9nyYXprzKiTLY8qrAKl/iJFkru2rybJLN0loHutcBIp6O+iaa8vsQ3RvNWW9RO413tvHJd42JGKtBZ0rN6W5L3NJZe8a9fel/aCtILOZy0aEDIBWwkM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767720091; c=relaxed/simple;
-	bh=H/AK4q6H7s2pFIwbnoanw8gnvQ6wgOcs+QgFxnxdLUk=;
+	s=arc-20240116; t=1767720111; c=relaxed/simple;
+	bh=BhcEhRnWRieEb7tSSduaiDmW6BoPXJ0u1DLDdE0B8BI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=poL3sSWk+tC1NPZrE4bmRPlF5DT9S6TZy+JuLQ3or/iWoTawDj9bd1Sd4e6U/IXRI9RjC3STGkE3w+zL8zCflElDJP3o2jpkwE1eAQ+NaTeT4CoCAHi9rnZKJLKSrEO4ZLsUt9/DCL/kFK6SZXAjLscoKfr7PLMCJ6ZYPDanchY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oWzoUWmB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2A8CC16AAE;
-	Tue,  6 Jan 2026 17:21:30 +0000 (UTC)
+	 MIME-Version; b=MZZRbW/I/cmZYP34yI9INkY1sz+5vHfs2vt1B8ueqFgtVd4bl47CjQ7Amz+YjGwYalTBFfCkdqIMOUYOx5WnJcSIQu0qm5ZCOSuW+oQ6iWlQvIjSaN2wDHpPgq3uW7GeGJfbVeCDGjBESe9R3RrsaEPsAmEqrClZJMMmCLZMhx0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RAsH2CMn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3B0CC16AAE;
+	Tue,  6 Jan 2026 17:21:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767720091;
-	bh=H/AK4q6H7s2pFIwbnoanw8gnvQ6wgOcs+QgFxnxdLUk=;
+	s=korg; t=1767720111;
+	bh=BhcEhRnWRieEb7tSSduaiDmW6BoPXJ0u1DLDdE0B8BI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oWzoUWmBg4AcNt5Ebq9TnIjMksxYdmIcoMXi4LBTxqlJZk1y7jL9hyFYKELXRJAYE
-	 b/X/wfjvTsSgrZB2aluKaVb4QbRfDZVqEitTTGJHAZ+jxi2l6a4WDd/FbtgcwwGmiM
-	 IZ12EOzec8bCJJRpcSD4X4zDs1QN9AMqCjRxtwxY=
+	b=RAsH2CMnF4CRV+FGG8xKhWkSBF7FKJMq9d8ZPqaGpA/fLfc9arX0AwC3b8d6fv2FY
+	 ST7jHnzZ5cU2juqTaCj8ricvL3v2saf3vqo3stxfsWS5DfjdY4Pu6a9hNLu2ScKE07
+	 hlWKRRGcf0wOnIHmAIUx6r85s5JIN0n6xHvJJMEU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Pengjie Zhang <zhangpengjie2@huawei.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	lihuisong@huawei.com,
 	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.12 104/567] ACPI: PCC: Fix race condition by removing static qualifier
-Date: Tue,  6 Jan 2026 17:58:06 +0100
-Message-ID: <20260106170455.175392367@linuxfoundation.org>
+Subject: [PATCH 6.12 105/567] ACPI: CPPC: Fix missing PCC check for guaranteed_perf
+Date: Tue,  6 Jan 2026 17:58:07 +0100
+Message-ID: <20260106170455.213677837@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
 References: <20260106170451.332875001@linuxfoundation.org>
@@ -67,39 +65,39 @@ Content-Transfer-Encoding: 8bit
 
 From: Pengjie Zhang <zhangpengjie2@huawei.com>
 
-commit f103fa127c93016bcd89b05d8e11dc1a84f6990d upstream.
+commit 6ea3a44cef28add2d93b1ef119d84886cb1e3c9b upstream.
 
-Local variable 'ret' in acpi_pcc_address_space_setup() is currently
-declared as 'static'. This can lead to race conditions in a
-multithreaded environment.
+The current implementation overlooks the 'guaranteed_perf'
+register in this check.
 
-Remove the 'static' qualifier to ensure that 'ret' will be allocated
-directly on the stack as a local variable.
+If the Guaranteed Performance register is located in the PCC
+subspace, the function currently attempts to read it without
+acquiring the lock and without sending the CMD_READ doorbell
+to the firmware. This can result in reading stale data.
 
-Fixes: a10b1c99e2dc ("ACPI: PCC: Setup PCC Opregion handler only if platform interrupt is available")
+Fixes: 29523f095397 ("ACPI / CPPC: Add support for guaranteed performance")
 Signed-off-by: Pengjie Zhang <zhangpengjie2@huawei.com>
-Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
-Acked-by: lihuisong@huawei.com
-Cc: 6.2+ <stable@vger.kernel.org> # 6.2+
-[ rjw: Changelog edits ]
-Link: https://patch.msgid.link/20251210132634.2050033-1-zhangpengjie2@huawei.com
+Cc: 4.20+ <stable@vger.kernel.org> # 4.20+
+[ rjw: Subject and changelog edits ]
+Link: https://patch.msgid.link/20251210132227.1988380-1-zhangpengjie2@huawei.com
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/acpi_pcc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/acpi/cppc_acpi.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/acpi/acpi_pcc.c
-+++ b/drivers/acpi/acpi_pcc.c
-@@ -53,7 +53,7 @@ acpi_pcc_address_space_setup(acpi_handle
- 	struct pcc_data *data;
- 	struct acpi_pcc_info *ctx = handler_context;
- 	struct pcc_mbox_chan *pcc_chan;
--	static acpi_status ret;
-+	acpi_status ret;
- 
- 	data = kzalloc(sizeof(*data), GFP_KERNEL);
- 	if (!data)
+--- a/drivers/acpi/cppc_acpi.c
++++ b/drivers/acpi/cppc_acpi.c
+@@ -1297,7 +1297,8 @@ int cppc_get_perf_caps(int cpunum, struc
+ 	/* Are any of the regs PCC ?*/
+ 	if (CPC_IN_PCC(highest_reg) || CPC_IN_PCC(lowest_reg) ||
+ 		CPC_IN_PCC(lowest_non_linear_reg) || CPC_IN_PCC(nominal_reg) ||
+-		CPC_IN_PCC(low_freq_reg) || CPC_IN_PCC(nom_freq_reg)) {
++		CPC_IN_PCC(low_freq_reg) || CPC_IN_PCC(nom_freq_reg) ||
++		CPC_IN_PCC(guaranteed_reg)) {
+ 		if (pcc_ss_id < 0) {
+ 			pr_debug("Invalid pcc_ss_id\n");
+ 			return -ENODEV;
 
 
 
