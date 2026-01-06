@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-205467-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205746-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4BD2CF9DB5
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 18:52:06 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62AEFCF9F2E
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:07:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 38C7A303B7C3
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:40:00 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D36FD306305B
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:06:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7497A2D8DB8;
-	Tue,  6 Jan 2026 17:33:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 526E735FF43;
+	Tue,  6 Jan 2026 17:48:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="brJYuvbi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xYwcno3r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F62D2D8762;
-	Tue,  6 Jan 2026 17:33:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EFF8355031;
+	Tue,  6 Jan 2026 17:48:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767720791; cv=none; b=CSx1nfx3a74Aef5f0NfFfqmPoELnkFl3HpKm+mhXJfNyLEhPS7F/otyKmugjE/+BTQOHZ8kawPHhQ5y3P8BOu2ZwQ2+yiO3NGWzLuIsNlUb3yaf/iL8QMUfyIeVNnn+XeEVhRO0hy4/b8RUUDE7joT+S/qiM5PUd3kqOhlj+XzE=
+	t=1767721722; cv=none; b=bntyaFWb0YZ00wTX/gTEQJgsToqdIlN6XOCEfSUvQ7O+0/N2wv4Fz4uNxuNmt5rkj3R30+KBv4AXEEN9SxTLkZQinHeW6qBj09eAeE2xQS6SQ85eIGYpP7UauOtMOvXAGQa87ISf8XZqwH7A+iwdpCpNIllc1459N2j963GvKco=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767720791; c=relaxed/simple;
-	bh=2HqYaLeSNaHg+jIE3VPHyvZv7RgcdD2wzabG/FQ93E4=;
+	s=arc-20240116; t=1767721722; c=relaxed/simple;
+	bh=ciZsVo4fL67vM4yuiR3DFLcph5s+IXz36GJDCR8BlTc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I7KkWJmk+Z0TUiJFmnkbIFfS9P8fNmN+ygrLQyfWPF05f2+fhe9dCAsOKXR+JkegC4siFNCKIN4uABY+RoTwPJsCBcshizKsHgkD60/e3+8FOsXCKnp7Sj6t7ftjNhj3Aby4tUIhfA5apMT0FmtsU0mzVFMq8gfg+Gt43hhlXL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=brJYuvbi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 958D7C116C6;
-	Tue,  6 Jan 2026 17:33:10 +0000 (UTC)
+	 MIME-Version; b=Wy+NzY9hUu+69GPhcOOwGEG8R+KF/cL3iVadRYCn/2VGOWA4pbxVSaAMeIszc0+3MgQV2/O6LZ795RB0oR31y7ZQQdIlqZ616oNAAyijvxaap5/Sqm4wBo/C+dx2PTTErDidd1JYzYvb3qaPiK9EbbRprIjhnseygw8b+eU/I6M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xYwcno3r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DCB7C16AAE;
+	Tue,  6 Jan 2026 17:48:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767720791;
-	bh=2HqYaLeSNaHg+jIE3VPHyvZv7RgcdD2wzabG/FQ93E4=;
+	s=korg; t=1767721721;
+	bh=ciZsVo4fL67vM4yuiR3DFLcph5s+IXz36GJDCR8BlTc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=brJYuvbiZmBObSgTqAJBhQxMa1jZwinnYohBHJm59C72QNppXf/oigr1f/nxtZIbt
-	 dQGrUovDdtdAQDaYd/nFik+FUwQhxZdmdr1h/nXUGTZrdGZsx9r+asuO9Jb6Mkt0aY
-	 W3zfm0TG2wNaNcKLjJZJW9ZceSI+/vo07lKhE1uo=
+	b=xYwcno3rat6bRMXpl58Sn9i4y2wxlH3q9U9dXie6VCl1lLOGDEvvARTpRO6mPd8K1
+	 vy+elkrtEfnWdxJ8yqdBF/YMDsnuTCpmLFchhXTBV4aVgmtZTvf7NVmKnKIZVl+hqD
+	 5FNeK5gTnAfNq1VWSf3MTQ5k+8RN4CfWtL8P5YbY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cong Zhang <cong.zhang@oss.qualcomm.com>,
-	Ming Lei <ming.lei@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Rosen Penev <rosenp@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 342/567] blk-mq: skip CPU offline notify on unmapped hctx
-Date: Tue,  6 Jan 2026 18:02:04 +0100
-Message-ID: <20260106170503.978357162@linuxfoundation.org>
+Subject: [PATCH 6.18 051/312] net: mdio: rtl9300: use scoped for loops
+Date: Tue,  6 Jan 2026 18:02:05 +0100
+Message-ID: <20260106170549.700641987@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
-References: <20260106170451.332875001@linuxfoundation.org>
+In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
+References: <20260106170547.832845344@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +60,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cong Zhang <cong.zhang@oss.qualcomm.com>
+From: Rosen Penev <rosenp@gmail.com>
 
-[ Upstream commit 10845a105bbcb030647a729f1716c2309da71d33 ]
+[ Upstream commit a4f800c4487dc5d6fcc28da89c7cc3c187ccc731 ]
 
-If an hctx has no software ctx mapped, blk_mq_map_swqueue() never
-allocates tags and leaves hctx->tags NULL. The CPU hotplug offline
-notifier can still run for that hctx, return early since hctx cannot
-hold any requests.
+Currently in the return path, fwnode_handle_put calls are missing. Just use
+_scoped to avoid the issue.
 
-Signed-off-by: Cong Zhang <cong.zhang@oss.qualcomm.com>
-Fixes: bf0beec0607d ("blk-mq: drain I/O when all CPUs in a hctx are offline")
-Reviewed-by: Ming Lei <ming.lei@redhat.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: 24e31e474769 ("net: mdio: Add RTL9300 MDIO driver")
+Signed-off-by: Rosen Penev <rosenp@gmail.com>
+Link: https://patch.msgid.link/20251217210153.14641-1-rosenp@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-mq.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/mdio/mdio-realtek-rtl9300.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/block/blk-mq.c b/block/blk-mq.c
-index db72779760d5..1891863dcba1 100644
---- a/block/blk-mq.c
-+++ b/block/blk-mq.c
-@@ -3658,7 +3658,7 @@ static int blk_mq_hctx_notify_offline(unsigned int cpu, struct hlist_node *node)
- 			struct blk_mq_hw_ctx, cpuhp_online);
- 	int ret = 0;
+diff --git a/drivers/net/mdio/mdio-realtek-rtl9300.c b/drivers/net/mdio/mdio-realtek-rtl9300.c
+index 33694c3ff9a7..405a07075dd1 100644
+--- a/drivers/net/mdio/mdio-realtek-rtl9300.c
++++ b/drivers/net/mdio/mdio-realtek-rtl9300.c
+@@ -354,7 +354,6 @@ static int rtl9300_mdiobus_probe_one(struct device *dev, struct rtl9300_mdio_pri
+ 				     struct fwnode_handle *node)
+ {
+ 	struct rtl9300_mdio_chan *chan;
+-	struct fwnode_handle *child;
+ 	struct mii_bus *bus;
+ 	u32 mdio_bus;
+ 	int err;
+@@ -371,7 +370,7 @@ static int rtl9300_mdiobus_probe_one(struct device *dev, struct rtl9300_mdio_pri
+ 	 * compatible = "ethernet-phy-ieee802.3-c45". This does mean we can't
+ 	 * support both c45 and c22 on the same MDIO bus.
+ 	 */
+-	fwnode_for_each_child_node(node, child)
++	fwnode_for_each_child_node_scoped(node, child)
+ 		if (fwnode_device_is_compatible(child, "ethernet-phy-ieee802.3-c45"))
+ 			priv->smi_bus_is_c45[mdio_bus] = true;
  
--	if (blk_mq_hctx_has_online_cpu(hctx, cpu))
-+	if (!hctx->nr_ctx || blk_mq_hctx_has_online_cpu(hctx, cpu))
- 		return 0;
+@@ -409,7 +408,6 @@ static int rtl9300_mdiobus_map_ports(struct device *dev)
+ {
+ 	struct rtl9300_mdio_priv *priv = dev_get_drvdata(dev);
+ 	struct device *parent = dev->parent;
+-	struct fwnode_handle *port;
+ 	int err;
  
- 	/*
+ 	struct fwnode_handle *ports __free(fwnode_handle) =
+@@ -418,7 +416,7 @@ static int rtl9300_mdiobus_map_ports(struct device *dev)
+ 		return dev_err_probe(dev, -EINVAL, "%pfwP missing ethernet-ports\n",
+ 				     dev_fwnode(parent));
+ 
+-	fwnode_for_each_child_node(ports, port) {
++	fwnode_for_each_child_node_scoped(ports, port) {
+ 		struct device_node *mdio_dn;
+ 		u32 addr;
+ 		u32 bus;
 -- 
 2.51.0
 
