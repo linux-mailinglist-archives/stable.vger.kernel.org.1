@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-206038-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206039-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02B28CFAF8A
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 21:42:12 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 119CBCFAF9F
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 21:44:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 8E7653002958
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 20:42:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4776830D1842
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 20:41:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9559A33B6D1;
-	Tue,  6 Jan 2026 20:34:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC3DB33DEEC;
+	Tue,  6 Jan 2026 20:35:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qUsOr3d0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="atkt7Maf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 560C51C2324
-	for <stable@vger.kernel.org>; Tue,  6 Jan 2026 20:34:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABCC733DED4
+	for <stable@vger.kernel.org>; Tue,  6 Jan 2026 20:35:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767731676; cv=none; b=szHThF5OaIQiIm++cImnu5qohmrKDAylGsFv4H0coYIBdqiM53Z2IwV+I9mt/GQgpnqL1SP14fRN5bwLGAe62kkSEhlMwYFxUZMDro/4LLKZTQgGKdQfQZ8U6Wsadd75EacKxK+byLHiAAy01TERW4Ry31TtETuKkc/LDC1HgTw=
+	t=1767731704; cv=none; b=e8Q4+aOxu1PJv4Evt5b7FocrdCGGMgN0EyrYVZNuqdd4fzvXFNzmN7+4O/XOkd0wLLTIx5keHLNxQZ3VZDlP0Z8KKy2wwcI0zuXFPyqxMnz7p00PzDP5JfSyhQo5ZM9qBv9rwhp2FPnnnfOaNSysUXLJ0kzrxrhJAIucU4RJXRU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767731676; c=relaxed/simple;
-	bh=CX5JNpG5D9tkgiZ1vDfZocfHcMW1LH3tigqks33rAlU=;
+	s=arc-20240116; t=1767731704; c=relaxed/simple;
+	bh=Q33P7e3wREeB6Z2jprXKRdbkYw3fkYnLiMzp/UBcWzM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zg7Rp1v3M7aMRypJpOPtHbw9p6kx6Yq415n47BG0gu0bT3cNMDqV4lWeWShxnhONhRp/stLIjOex+F8rO1vPA9q3+dsOGLaHDa1/OQ0MxBoImwFHgiYkEqxpzsebldAwNskeG0U8PCTuOgKJ/rTW0hhekWjlJLEjP/nE4TVA5vE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qUsOr3d0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49840C116C6;
-	Tue,  6 Jan 2026 20:34:35 +0000 (UTC)
+	 MIME-Version; b=IQU7WEw0YsMWCjDaiqihN/SmrHUY+aive20H7TrGA8u+K/n4B4A4Tet2KDxC3iXDPbnnHqwO0/6PPcFVUb7yY4edosgrMayW156PoT8JY3hX1tt54gBcvjoX25ZoD80vUFKetqDvORx7yistDnNsD5fIRTufgAbB3SB0CJ3N4uM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=atkt7Maf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C147C116C6;
+	Tue,  6 Jan 2026 20:35:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767731676;
-	bh=CX5JNpG5D9tkgiZ1vDfZocfHcMW1LH3tigqks33rAlU=;
+	s=k20201202; t=1767731704;
+	bh=Q33P7e3wREeB6Z2jprXKRdbkYw3fkYnLiMzp/UBcWzM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qUsOr3d0SSrkghrnxKM9R6XcqX4wWFtCl9gCPQKxQYxap5oUugaJ1m+NHUi/wf+1O
-	 GweQMQfSkfjJIqfNaT4PhdFY9OpmQf/lp0sIj+ISo0Z7Q26gM65W0T+hryb28jkiqb
-	 CiCFpPsvCfP+KXLqP8DAj0HBFbo+J46d7d86TEPMIk3AH/p1WgCiek7JxGA+X83XaI
-	 Fw76rRHjdn6BoVH4E5Kx8MenIKviRzXaoQA9jsZvRHxOP7UQ8X5jUS6UyWuBtx1M4L
-	 eq8lQ/exCRDSbay1xIstghNfhUMU4AgZB2Zpx+6j6VKgWvxiyvftOhqW/aS9DzC0AQ
-	 +nhSh+wvGs7Xw==
+	b=atkt7MafEK3jTDEd+IT0D7XLxS02zpXT/dgcNZYzMiHckX3epQnSWZ39xEYHz4C2R
+	 8Vy66EEJiCVoNeKa/qSj2miH1/SiFADVdwOMYQOA82g/VBHAP0NCHJHHGjxwYxoq8t
+	 DzAd1a3ZDWKGq5+EoZLy0KtJpTDPXDS5ZSOanM5+1HoXdlNl7RLce5AXypQmaMnsmq
+	 7IScQq4RAsZ0fFHtwJzECj2dixfbYpoBlEOieD2WnDJ7E7KdSG8VMcsNBUR5VxJxKC
+	 Gmhm5Dabio8f9DPGchsNXA+2xnh7yUJlcjwpG0AYB5WLx/Ojc7o0gPXot51FqqDVsU
+	 WGUaYqii4JTug==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: NeilBrown <neil@brown.name>,
-	Olga Kornievskaia <okorniev@redhat.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
+Cc: Alexander Gordeev <agordeev@linux.ibm.com>,
+	Marc Hartmayer <mhartmay@linux.ibm.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Wei Yang <richard.weiyang@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y] lockd: fix vfs_test_lock() calls
-Date: Tue,  6 Jan 2026 15:34:33 -0500
-Message-ID: <20260106203433.3165546-1-sashal@kernel.org>
+Subject: [PATCH 6.12.y] mm/page_alloc: change all pageblocks migrate type on coalescing
+Date: Tue,  6 Jan 2026 15:35:01 -0500
+Message-ID: <20260106203501.3166182-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026010559-outthink-mutilated-30df@gregkh>
-References: <2026010559-outthink-mutilated-30df@gregkh>
+In-Reply-To: <2026010526-crux-caddy-a1e3@gregkh>
+References: <2026010526-crux-caddy-a1e3@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,186 +62,193 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: NeilBrown <neil@brown.name>
+From: Alexander Gordeev <agordeev@linux.ibm.com>
 
-[ Upstream commit a49a2a1baa0c553c3548a1c414b6a3c005a8deba ]
+[ Upstream commit 7838a4eb8a1d23160bd3f588ea7f2b8f7c00c55b ]
 
-Usage of vfs_test_lock() is somewhat confused.  Documentation suggests
-it is given a "lock" but this is not the case.  It is given a struct
-file_lock which contains some details of the sort of lock it should be
-looking for.
+When a page is freed it coalesces with a buddy into a higher order page
+while possible.  When the buddy page migrate type differs, it is expected
+to be updated to match the one of the page being freed.
 
-In particular passing a "file_lock" containing fl_lmops or fl_ops is
-meaningless and possibly confusing.
+However, only the first pageblock of the buddy page is updated, while the
+rest of the pageblocks are left unchanged.
 
-This is particularly problematic in lockd.  nlmsvc_testlock() receives
-an initialised "file_lock" from xdr-decode, including manager ops and an
-owner.  It then mistakenly passes this to vfs_test_lock() which might
-replace the owner and the ops.  This can lead to confusion when freeing
-the lock.
+That causes warnings in later expand() and other code paths (like below),
+since an inconsistency between migration type of the list containing the
+page and the page-owned pageblocks migration types is introduced.
 
-The primary role of the 'struct file_lock' passed to vfs_test_lock() is
-to report a conflicting lock that was found, so it makes more sense for
-nlmsvc_testlock() to pass "conflock", which it uses for returning the
-conflicting lock.
+[  308.986589] ------------[ cut here ]------------
+[  308.987227] page type is 0, passed migratetype is 1 (nr=256)
+[  308.987275] WARNING: CPU: 1 PID: 5224 at mm/page_alloc.c:812 expand+0x23c/0x270
+[  308.987293] Modules linked in: algif_hash(E) af_alg(E) nft_fib_inet(E) nft_fib_ipv4(E) nft_fib_ipv6(E) nft_fib(E) nft_reject_inet(E) nf_reject_ipv4(E) nf_reject_ipv6(E) nft_reject(E) nft_ct(E) nft_chain_nat(E) nf_nat(E) nf_conntrack(E) nf_defrag_ipv6(E) nf_defrag_ipv4(E) nf_tables(E) s390_trng(E) vfio_ccw(E) mdev(E) vfio_iommu_type1(E) vfio(E) sch_fq_codel(E) drm(E) i2c_core(E) drm_panel_orientation_quirks(E) loop(E) nfnetlink(E) vsock_loopback(E) vmw_vsock_virtio_transport_common(E) vsock(E) ctcm(E) fsm(E) diag288_wdt(E) watchdog(E) zfcp(E) scsi_transport_fc(E) ghash_s390(E) prng(E) aes_s390(E) des_generic(E) des_s390(E) libdes(E) sha3_512_s390(E) sha3_256_s390(E) sha_common(E) paes_s390(E) crypto_engine(E) pkey_cca(E) pkey_ep11(E) zcrypt(E) rng_core(E) pkey_pckmo(E) pkey(E) autofs4(E)
+[  308.987439] Unloaded tainted modules: hmac_s390(E):2
+[  308.987650] CPU: 1 UID: 0 PID: 5224 Comm: mempig_verify Kdump: loaded Tainted: G            E       6.18.0-gcc-bpf-debug #431 PREEMPT
+[  308.987657] Tainted: [E]=UNSIGNED_MODULE
+[  308.987661] Hardware name: IBM 3906 M04 704 (z/VM 7.3.0)
+[  308.987666] Krnl PSW : 0404f00180000000 00000349976fa600 (expand+0x240/0x270)
+[  308.987676]            R:0 T:1 IO:0 EX:0 Key:0 M:1 W:0 P:0 AS:3 CC:3 PM:0 RI:0 EA:3
+[  308.987682] Krnl GPRS: 0000034980000004 0000000000000005 0000000000000030 000003499a0e6d88
+[  308.987688]            0000000000000005 0000034980000005 000002be803ac000 0000023efe6c8300
+[  308.987692]            0000000000000008 0000034998d57290 000002be00000100 0000023e00000008
+[  308.987696]            0000000000000000 0000000000000000 00000349976fa5fc 000002c99b1eb6f0
+[  308.987708] Krnl Code: 00000349976fa5f0: c020008a02f2	larl	%r2,000003499883abd4
+                          00000349976fa5f6: c0e5ffe3f4b5	brasl	%r14,0000034997378f60
+                         #00000349976fa5fc: af000000		mc	0,0
+                         >00000349976fa600: a7f4ff4c		brc	15,00000349976fa498
+                          00000349976fa604: b9040026		lgr	%r2,%r6
+                          00000349976fa608: c0300088317f	larl	%r3,0000034998800906
+                          00000349976fa60e: c0e5fffdb6e1	brasl	%r14,00000349976b13d0
+                          00000349976fa614: af000000		mc	0,0
+[  308.987734] Call Trace:
+[  308.987738]  [<00000349976fa600>] expand+0x240/0x270
+[  308.987744] ([<00000349976fa5fc>] expand+0x23c/0x270)
+[  308.987749]  [<00000349976ff95e>] rmqueue_bulk+0x71e/0x940
+[  308.987754]  [<00000349976ffd7e>] __rmqueue_pcplist+0x1fe/0x2a0
+[  308.987759]  [<0000034997700966>] rmqueue.isra.0+0xb46/0xf40
+[  308.987763]  [<0000034997703ec8>] get_page_from_freelist+0x198/0x8d0
+[  308.987768]  [<0000034997706fa8>] __alloc_frozen_pages_noprof+0x198/0x400
+[  308.987774]  [<00000349977536f8>] alloc_pages_mpol+0xb8/0x220
+[  308.987781]  [<0000034997753bf6>] folio_alloc_mpol_noprof+0x26/0xc0
+[  308.987786]  [<0000034997753e4c>] vma_alloc_folio_noprof+0x6c/0xa0
+[  308.987791]  [<0000034997775b22>] vma_alloc_anon_folio_pmd+0x42/0x240
+[  308.987799]  [<000003499777bfea>] __do_huge_pmd_anonymous_page+0x3a/0x210
+[  308.987804]  [<00000349976cb08e>] __handle_mm_fault+0x4de/0x500
+[  308.987809]  [<00000349976cb14c>] handle_mm_fault+0x9c/0x3a0
+[  308.987813]  [<000003499734d70e>] do_exception+0x1de/0x540
+[  308.987822]  [<0000034998387390>] __do_pgm_check+0x130/0x220
+[  308.987830]  [<000003499839a934>] pgm_check_handler+0x114/0x160
+[  308.987838] 3 locks held by mempig_verify/5224:
+[  308.987842]  #0: 0000023ea44c1e08 (vm_lock){++++}-{0:0}, at: lock_vma_under_rcu+0xb2/0x2a0
+[  308.987859]  #1: 0000023ee4d41b18 (&pcp->lock){+.+.}-{2:2}, at: rmqueue.isra.0+0xad6/0xf40
+[  308.987871]  #2: 0000023efe6c8998 (&zone->lock){..-.}-{2:2}, at: rmqueue_bulk+0x5a/0x940
+[  308.987886] Last Breaking-Event-Address:
+[  308.987890]  [<0000034997379096>] __warn_printk+0x136/0x140
+[  308.987897] irq event stamp: 52330356
+[  308.987901] hardirqs last  enabled at (52330355): [<000003499838742e>] __do_pgm_check+0x1ce/0x220
+[  308.987907] hardirqs last disabled at (52330356): [<000003499839932e>] _raw_spin_lock_irqsave+0x9e/0xe0
+[  308.987913] softirqs last  enabled at (52329882): [<0000034997383786>] handle_softirqs+0x2c6/0x530
+[  308.987922] softirqs last disabled at (52329859): [<0000034997382f86>] __irq_exit_rcu+0x126/0x140
+[  308.987929] ---[ end trace 0000000000000000 ]---
+[  308.987936] ------------[ cut here ]------------
+[  308.987940] page type is 0, passed migratetype is 1 (nr=256)
+[  308.987951] WARNING: CPU: 1 PID: 5224 at mm/page_alloc.c:860 __del_page_from_free_list+0x1be/0x1e0
+[  308.987960] Modules linked in: algif_hash(E) af_alg(E) nft_fib_inet(E) nft_fib_ipv4(E) nft_fib_ipv6(E) nft_fib(E) nft_reject_inet(E) nf_reject_ipv4(E) nf_reject_ipv6(E) nft_reject(E) nft_ct(E) nft_chain_nat(E) nf_nat(E) nf_conntrack(E) nf_defrag_ipv6(E) nf_defrag_ipv4(E) nf_tables(E) s390_trng(E) vfio_ccw(E) mdev(E) vfio_iommu_type1(E) vfio(E) sch_fq_codel(E) drm(E) i2c_core(E) drm_panel_orientation_quirks(E) loop(E) nfnetlink(E) vsock_loopback(E) vmw_vsock_virtio_transport_common(E) vsock(E) ctcm(E) fsm(E) diag288_wdt(E) watchdog(E) zfcp(E) scsi_transport_fc(E) ghash_s390(E) prng(E) aes_s390(E) des_generic(E) des_s390(E) libdes(E) sha3_512_s390(E) sha3_256_s390(E) sha_common(E) paes_s390(E) crypto_engine(E) pkey_cca(E) pkey_ep11(E) zcrypt(E) rng_core(E) pkey_pckmo(E) pkey(E) autofs4(E)
+[  308.988070] Unloaded tainted modules: hmac_s390(E):2
+[  308.988087] CPU: 1 UID: 0 PID: 5224 Comm: mempig_verify Kdump: loaded Tainted: G        W   E       6.18.0-gcc-bpf-debug #431 PREEMPT
+[  308.988095] Tainted: [W]=WARN, [E]=UNSIGNED_MODULE
+[  308.988100] Hardware name: IBM 3906 M04 704 (z/VM 7.3.0)
+[  308.988105] Krnl PSW : 0404f00180000000 00000349976f9e32 (__del_page_from_free_list+0x1c2/0x1e0)
+[  308.988118]            R:0 T:1 IO:0 EX:0 Key:0 M:1 W:0 P:0 AS:3 CC:3 PM:0 RI:0 EA:3
+[  308.988127] Krnl GPRS: 0000034980000004 0000000000000005 0000000000000030 000003499a0e6d88
+[  308.988133]            0000000000000005 0000034980000005 0000034998d57290 0000023efe6c8300
+[  308.988139]            0000000000000001 0000000000000008 000002be00000100 000002be803ac000
+[  308.988144]            0000000000000000 0000000000000001 00000349976f9e2e 000002c99b1eb728
+[  308.988153] Krnl Code: 00000349976f9e22: c020008a06d9	larl	%r2,000003499883abd4
+                          00000349976f9e28: c0e5ffe3f89c	brasl	%r14,0000034997378f60
+                         #00000349976f9e2e: af000000		mc	0,0
+                         >00000349976f9e32: a7f4ff4e		brc	15,00000349976f9cce
+                          00000349976f9e36: b904002b		lgr	%r2,%r11
+                          00000349976f9e3a: c030008a06e7	larl	%r3,000003499883ac08
+                          00000349976f9e40: c0e5fffdbac8	brasl	%r14,00000349976b13d0
+                          00000349976f9e46: af000000		mc	0,0
+[  308.988184] Call Trace:
+[  308.988188]  [<00000349976f9e32>] __del_page_from_free_list+0x1c2/0x1e0
+[  308.988195] ([<00000349976f9e2e>] __del_page_from_free_list+0x1be/0x1e0)
+[  308.988202]  [<00000349976ff946>] rmqueue_bulk+0x706/0x940
+[  308.988208]  [<00000349976ffd7e>] __rmqueue_pcplist+0x1fe/0x2a0
+[  308.988214]  [<0000034997700966>] rmqueue.isra.0+0xb46/0xf40
+[  308.988221]  [<0000034997703ec8>] get_page_from_freelist+0x198/0x8d0
+[  308.988227]  [<0000034997706fa8>] __alloc_frozen_pages_noprof+0x198/0x400
+[  308.988233]  [<00000349977536f8>] alloc_pages_mpol+0xb8/0x220
+[  308.988240]  [<0000034997753bf6>] folio_alloc_mpol_noprof+0x26/0xc0
+[  308.988247]  [<0000034997753e4c>] vma_alloc_folio_noprof+0x6c/0xa0
+[  308.988253]  [<0000034997775b22>] vma_alloc_anon_folio_pmd+0x42/0x240
+[  308.988260]  [<000003499777bfea>] __do_huge_pmd_anonymous_page+0x3a/0x210
+[  308.988267]  [<00000349976cb08e>] __handle_mm_fault+0x4de/0x500
+[  308.988273]  [<00000349976cb14c>] handle_mm_fault+0x9c/0x3a0
+[  308.988279]  [<000003499734d70e>] do_exception+0x1de/0x540
+[  308.988286]  [<0000034998387390>] __do_pgm_check+0x130/0x220
+[  308.988293]  [<000003499839a934>] pgm_check_handler+0x114/0x160
+[  308.988300] 3 locks held by mempig_verify/5224:
+[  308.988305]  #0: 0000023ea44c1e08 (vm_lock){++++}-{0:0}, at: lock_vma_under_rcu+0xb2/0x2a0
+[  308.988322]  #1: 0000023ee4d41b18 (&pcp->lock){+.+.}-{2:2}, at: rmqueue.isra.0+0xad6/0xf40
+[  308.988334]  #2: 0000023efe6c8998 (&zone->lock){..-.}-{2:2}, at: rmqueue_bulk+0x5a/0x940
+[  308.988346] Last Breaking-Event-Address:
+[  308.988350]  [<0000034997379096>] __warn_printk+0x136/0x140
+[  308.988356] irq event stamp: 52330356
+[  308.988360] hardirqs last  enabled at (52330355): [<000003499838742e>] __do_pgm_check+0x1ce/0x220
+[  308.988366] hardirqs last disabled at (52330356): [<000003499839932e>] _raw_spin_lock_irqsave+0x9e/0xe0
+[  308.988373] softirqs last  enabled at (52329882): [<0000034997383786>] handle_softirqs+0x2c6/0x530
+[  308.988380] softirqs last disabled at (52329859): [<0000034997382f86>] __irq_exit_rcu+0x126/0x140
+[  308.988388] ---[ end trace 0000000000000000 ]---
 
-With this change, freeing of the lock is not confused and code in
-__nlm4svc_proc_test() and __nlmsvc_proc_test() can be simplified.
-
-Documentation for vfs_test_lock() is improved to reflect its real
-purpose, and a WARN_ON_ONCE() is added to avoid a similar problem in the
-future.
-
-Reported-by: Olga Kornievskaia <okorniev@redhat.com>
-Closes: https://lore.kernel.org/all/20251021130506.45065-1-okorniev@redhat.com
-Signed-off-by: NeilBrown <neil@brown.name>
-Fixes: 20fa19027286 ("nfs: add export operations")
-Cc: stable@vger.kernel.org
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-[ adapted fl->c.flc_* field references to flat fl->fl_* naming convention ]
+Link: https://lkml.kernel.org/r/20251215081002.3353900A9c-agordeev@linux.ibm.com
+Link: https://lkml.kernel.org/r/20251212151457.3898073Add-agordeev@linux.ibm.com
+Fixes: e6cf9e1c4cde ("mm: page_alloc: fix up block types when merging compatible blocks")
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Reported-by: Marc Hartmayer <mhartmay@linux.ibm.com>
+Closes: https://lore.kernel.org/linux-mm/87wmalyktd.fsf@linux.ibm.com/
+Acked-by: Vlastimil Babka <vbabka@suse.cz>
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
+Cc: Marc Hartmayer <mhartmay@linux.ibm.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+[ adapted context for function removal ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/lockd/svc4proc.c |  4 +---
- fs/lockd/svclock.c  | 21 ++++++++++++---------
- fs/lockd/svcproc.c  |  5 +----
- fs/locks.c          | 12 ++++++++++--
- 4 files changed, 24 insertions(+), 18 deletions(-)
+ mm/page_alloc.c | 24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
 
-diff --git a/fs/lockd/svc4proc.c b/fs/lockd/svc4proc.c
-index b72023a6b4c1..28ba7b1460aa 100644
---- a/fs/lockd/svc4proc.c
-+++ b/fs/lockd/svc4proc.c
-@@ -96,7 +96,6 @@ __nlm4svc_proc_test(struct svc_rqst *rqstp, struct nlm_res *resp)
- 	struct nlm_args *argp = rqstp->rq_argp;
- 	struct nlm_host	*host;
- 	struct nlm_file	*file;
--	struct nlm_lockowner *test_owner;
- 	__be32 rc = rpc_success;
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 765c890e6a84..9d43bd47da26 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -744,6 +744,17 @@ buddy_merge_likely(unsigned long pfn, unsigned long buddy_pfn,
+ 			NULL) != NULL;
+ }
  
- 	dprintk("lockd: TEST4        called\n");
-@@ -106,7 +105,6 @@ __nlm4svc_proc_test(struct svc_rqst *rqstp, struct nlm_res *resp)
- 	if ((resp->status = nlm4svc_retrieve_args(rqstp, argp, &host, &file)))
- 		return resp->status == nlm_drop_reply ? rpc_drop_reply :rpc_success;
- 
--	test_owner = argp->lock.fl.fl_owner;
- 	/* Now check for conflicting locks */
- 	resp->status = nlmsvc_testlock(rqstp, file, host, &argp->lock, &resp->lock, &resp->cookie);
- 	if (resp->status == nlm_drop_reply)
-@@ -114,7 +112,7 @@ __nlm4svc_proc_test(struct svc_rqst *rqstp, struct nlm_res *resp)
- 	else
- 		dprintk("lockd: TEST4        status %d\n", ntohl(resp->status));
- 
--	nlmsvc_put_lockowner(test_owner);
-+	nlmsvc_release_lockowner(&argp->lock);
- 	nlmsvc_release_host(host);
- 	nlm_release_file(file);
- 	return rc;
-diff --git a/fs/lockd/svclock.c b/fs/lockd/svclock.c
-index 43aeba9de55c..ef6d8061460d 100644
---- a/fs/lockd/svclock.c
-+++ b/fs/lockd/svclock.c
-@@ -615,7 +615,13 @@ nlmsvc_testlock(struct svc_rqst *rqstp, struct nlm_file *file,
- 	}
- 
- 	mode = lock_to_openmode(&lock->fl);
--	error = vfs_test_lock(file->f_file[mode], &lock->fl);
-+	locks_init_lock(&conflock->fl);
-+	/* vfs_test_lock only uses start, end, and owner, but tests fl_file */
-+	conflock->fl.fl_file = lock->fl.fl_file;
-+	conflock->fl.fl_start = lock->fl.fl_start;
-+	conflock->fl.fl_end = lock->fl.fl_end;
-+	conflock->fl.fl_owner = lock->fl.fl_owner;
-+	error = vfs_test_lock(file->f_file[mode], &conflock->fl);
- 	if (error) {
- 		/* We can't currently deal with deferred test requests */
- 		if (error == FILE_LOCK_DEFERRED)
-@@ -625,22 +631,19 @@ nlmsvc_testlock(struct svc_rqst *rqstp, struct nlm_file *file,
- 		goto out;
- 	}
- 
--	if (lock->fl.fl_type == F_UNLCK) {
-+	if (conflock->fl.fl_type == F_UNLCK) {
- 		ret = nlm_granted;
- 		goto out;
- 	}
- 
- 	dprintk("lockd: conflicting lock(ty=%d, %Ld-%Ld)\n",
--		lock->fl.fl_type, (long long)lock->fl.fl_start,
--		(long long)lock->fl.fl_end);
-+		conflock->fl.fl_type, (long long)conflock->fl.fl_start,
-+		(long long)conflock->fl.fl_end);
- 	conflock->caller = "somehost";	/* FIXME */
- 	conflock->len = strlen(conflock->caller);
- 	conflock->oh.len = 0;		/* don't return OH info */
--	conflock->svid = lock->fl.fl_pid;
--	conflock->fl.fl_type = lock->fl.fl_type;
--	conflock->fl.fl_start = lock->fl.fl_start;
--	conflock->fl.fl_end = lock->fl.fl_end;
--	locks_release_private(&lock->fl);
-+	conflock->svid = conflock->fl.fl_pid;
-+	locks_release_private(&conflock->fl);
- 
- 	ret = nlm_lck_denied;
- out:
-diff --git a/fs/lockd/svcproc.c b/fs/lockd/svcproc.c
-index 32784f508c81..1a4459763644 100644
---- a/fs/lockd/svcproc.c
-+++ b/fs/lockd/svcproc.c
-@@ -117,7 +117,6 @@ __nlmsvc_proc_test(struct svc_rqst *rqstp, struct nlm_res *resp)
- 	struct nlm_args *argp = rqstp->rq_argp;
- 	struct nlm_host	*host;
- 	struct nlm_file	*file;
--	struct nlm_lockowner *test_owner;
- 	__be32 rc = rpc_success;
- 
- 	dprintk("lockd: TEST          called\n");
-@@ -127,8 +126,6 @@ __nlmsvc_proc_test(struct svc_rqst *rqstp, struct nlm_res *resp)
- 	if ((resp->status = nlmsvc_retrieve_args(rqstp, argp, &host, &file)))
- 		return resp->status == nlm_drop_reply ? rpc_drop_reply :rpc_success;
- 
--	test_owner = argp->lock.fl.fl_owner;
--
- 	/* Now check for conflicting locks */
- 	resp->status = cast_status(nlmsvc_testlock(rqstp, file, host, &argp->lock, &resp->lock, &resp->cookie));
- 	if (resp->status == nlm_drop_reply)
-@@ -137,7 +134,7 @@ __nlmsvc_proc_test(struct svc_rqst *rqstp, struct nlm_res *resp)
- 		dprintk("lockd: TEST          status %d vers %d\n",
- 			ntohl(resp->status), rqstp->rq_vers);
- 
--	nlmsvc_put_lockowner(test_owner);
-+	nlmsvc_release_lockowner(&argp->lock);
- 	nlmsvc_release_host(host);
- 	nlm_release_file(file);
- 	return rc;
-diff --git a/fs/locks.c b/fs/locks.c
-index ccfa441e487e..19e9fcd1d4ca 100644
---- a/fs/locks.c
-+++ b/fs/locks.c
-@@ -2124,13 +2124,21 @@ SYSCALL_DEFINE2(flock, unsigned int, fd, unsigned int, cmd)
- /**
-  * vfs_test_lock - test file byte range lock
-  * @filp: The file to test lock for
-- * @fl: The lock to test; also used to hold result
-+ * @fl: The byte-range in the file to test; also used to hold result
++static void change_pageblock_range(struct page *pageblock_page,
++				   int start_order, int migratetype)
++{
++	int nr_pageblocks = 1 << (start_order - pageblock_order);
++
++	while (nr_pageblocks--) {
++		set_pageblock_migratetype(pageblock_page, migratetype);
++		pageblock_page += pageblock_nr_pages;
++	}
++}
++
+ /*
+  * Freeing function for a buddy system allocator.
   *
-+ * On entry, @fl does not contain a lock, but identifies a range (fl_start, fl_end)
-+ * in the file (c.flc_file), and an owner (c.flc_owner) for whom existing locks
-+ * should be ignored.  c.flc_type and c.flc_flags are ignored.
-+ * Both fl_lmops and fl_ops in @fl must be NULL.
-  * Returns -ERRNO on failure.  Indicates presence of conflicting lock by
-- * setting conf->fl_type to something other than F_UNLCK.
-+ * setting fl->fl_type to something other than F_UNLCK.
-+ *
-+ * If vfs_test_lock() does find a lock and return it, the caller must
-+ * use locks_free_lock() or locks_release_private() on the returned lock.
-  */
- int vfs_test_lock(struct file *filp, struct file_lock *fl)
- {
-+	WARN_ON_ONCE(fl->fl_ops || fl->fl_lmops);
- 	WARN_ON_ONCE(filp != fl->fl_file);
- 	if (filp->f_op->lock)
- 		return filp->f_op->lock(filp, F_GETLK, fl);
+@@ -830,7 +841,7 @@ static inline void __free_one_page(struct page *page,
+ 			 * expand() down the line puts the sub-blocks
+ 			 * on the right freelists.
+ 			 */
+-			set_pageblock_migratetype(buddy, migratetype);
++			change_pageblock_range(buddy, order, migratetype);
+ 		}
+ 
+ 		combined_pfn = buddy_pfn & pfn;
+@@ -1817,17 +1828,6 @@ bool move_freepages_block_isolate(struct zone *zone, struct page *page,
+ }
+ #endif /* CONFIG_MEMORY_ISOLATION */
+ 
+-static void change_pageblock_range(struct page *pageblock_page,
+-					int start_order, int migratetype)
+-{
+-	int nr_pageblocks = 1 << (start_order - pageblock_order);
+-
+-	while (nr_pageblocks--) {
+-		set_pageblock_migratetype(pageblock_page, migratetype);
+-		pageblock_page += pageblock_nr_pages;
+-	}
+-}
+-
+ /*
+  * When we are falling back to another migratetype during allocation, try to
+  * steal extra free pages from the same pageblocks to satisfy further
 -- 
 2.51.0
 
