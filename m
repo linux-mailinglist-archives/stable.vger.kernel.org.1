@@ -1,173 +1,234 @@
-Return-Path: <stable+bounces-205054-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205055-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39245CF762A
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 10:03:30 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 617C6CF7646
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 10:05:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 17F7C3036598
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 09:03:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 07B9630C3145
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 09:04:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 984642EA468;
-	Tue,  6 Jan 2026 09:03:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B74130AD10;
+	Tue,  6 Jan 2026 09:04:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Qs+mQiW4"
+	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="WteLVuoC"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8AA01E50E
-	for <stable@vger.kernel.org>; Tue,  6 Jan 2026 09:03:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8F651E50E;
+	Tue,  6 Jan 2026 09:04:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767690205; cv=none; b=TxrjVv2rHXxgIPXBBN+h2d4y1d3jrs7dYwbsmuDcfDWdttAMck6/Tms4HqReH0k3rv57q3r2i/Z5prUkxGksEpjT1OE2Wk5yS7+64FphcdR9iBRCBraLblDQ6ajdOv9C/FrmUJCEUj8uHtBVKmm2vIGRA0KnwJOjJzCVmWivbEk=
+	t=1767690256; cv=none; b=e3VblqC+q0K+z43/A6g4s17jfB7EVcRsk1yT1Uk7WkQPtVInvc3ZeiTPUNGtNq/s+gebtYhmbruh0nDaFwXysPPMCv9WLLomZ380iXYV5n+eM1BC+T40vWFk0e3btdMjjDQ53ZlfYoEn/2AA2P/el6/FC+RI8Ucxz435ao1R0E8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767690205; c=relaxed/simple;
-	bh=WxygpNIGAYmuhRDssNs3rS9qUuNs6DZkI9Gs3akikV8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=SJgUZxWLo9s+JvXDxGSJfcj3EQzynfZxNN1MHxa47cRREJkXYMf4ivxIWL+th7XxYme0+50/DSWfejSGhsD1NnZx7y6UBzHoiGGzuCCZZ8pCQff+jDU93lfwVGvsfJ1Ts/5IP+KV0P3GjWebA68HgPlG8Vb9Z0I0/h62DZMnK1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Qs+mQiW4; arc=none smtp.client-ip=209.85.128.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-47774d3536dso6838515e9.0
-        for <stable@vger.kernel.org>; Tue, 06 Jan 2026 01:03:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1767690202; x=1768295002; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=SCQ8yUN+i0rvVsgyEjAFAtlzFy0COcjHCjMr8hXPIGk=;
-        b=Qs+mQiW4bmaLVAdbULwSNrZ30HqhlU/F27QCIYQgxS5OUTUo14NnVLq5Hm+sAQhD6y
-         +RZ6RhQvXVKSL1eOnTbgxTw/rTEdTIwjq6xxfZieyQFWBVLSUsNdUW05OrVCww2qverQ
-         tZch1SGIKpaoYxp5bzU8ri4yhSKZDl4ESEHSuiH4Yl4//VCYAvN6pgE9yo7jiZMkQ1Pt
-         R55WbabF9Dem/BVgkDVFKM7Qydtq5nXpYk4MEBGuskvtmjpv7Uf9J7PoGmbGYb3fMk4o
-         fTXAkRrJsUJ7uk9Wkdq1MjXE6B8KtIq3XN+rHBfdlcf+w/T4FXCuhGM9o9f8oqSX/Zbn
-         3FQw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767690202; x=1768295002;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=SCQ8yUN+i0rvVsgyEjAFAtlzFy0COcjHCjMr8hXPIGk=;
-        b=YA/BN7D/02Pm/X5T46QkFe9aGrXGdGiy55WcGU1lOkPU1TgLHbOHP1DEpaGxNV86uH
-         Mwm91Kq4qNPOwz2+LrhjmoBR6I4SQ3uwCggS0brPT7SOiNmObQIExkh2/oijDV72+/af
-         lRqliCGxSJ/mpDOowVmRwGaRYDPlghKHpRXgfz0QW8mK2Z7wqmDFClGddnTRqreTWC4a
-         9JkeNJajeGTjqaFRszOkNKZhZaNJx1zlppnnL+mPRENdB2aWNrgrTpx6yNDqBr9t+7xY
-         qax4m3gd96IIQ2f9cxBFT7w1ds7oDFqtNCuQu4SWFbvy/ZsJE5g9dDpJdbWLEuR8eJAm
-         8QeQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU4OdeSgSHnXwNOtsE42E7L4rlHegB6/QFmG3jlR7TSjg+K+D0YhnUIBrxNTSN6663ZtJXRLNk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzb0lh6YTSDeMo/a8h464+Lvv6E6Zr5CAwYYcNNDEwTcfqeYBoB
-	DUBlRdfua1xpVjr7BMbVAQT72bfYlZZaknewhtCOytAPYwmWMwMSgxN3Dkq6C9xxN4ipQuvV0D+
-	nNU6icx9Z1iijUwWefSP80t3KfamaW2n+DAKjtVsD
-X-Gm-Gg: AY/fxX5qycdFvAiyrguqKvGNrc+Lk5Vt//plO5LQ9qllKE1SNeSokQkTkEPJTcH9G8V
-	bXAHfKuw9hLYDbaxrM+y0kYJDq4UUtPnp31MIeA/tgGaGOKBaT68CDQYm9hMaSr2ldlv6+ZMxh1
-	13XzorUKryodyeEdBv+tPljiZHAMWMbVtIy4Imn4AQWwA49UkYWPzSmTnusxHrpSZ3M3Ustlmxk
-	UXpe0chtjasA5iiwwVyC6oyscqQ1+sQfqtwoHqpXWN7Obp+qipq0U1n3ELBXmBlcr+dA2MjkmQu
-	eZsFahhNrv6KAz5icNOaAZhZUn4pvX6ZXiSZDYhskvrEzYana5ZJrJulBg==
-X-Google-Smtp-Source: AGHT+IGGGc1RVk+K2NJjNVeOteqGDnGciIVGvJ1Rs+WgvGuh/StSsQp6X2DQcpVdTZKkFnRSftcjzDbnXqB+UXG54vs=
-X-Received: by 2002:a05:600c:81ca:b0:471:5c0:94fc with SMTP id
- 5b1f17b1804b1-47d7f41069bmr21995215e9.6.1767690201980; Tue, 06 Jan 2026
- 01:03:21 -0800 (PST)
+	s=arc-20240116; t=1767690256; c=relaxed/simple;
+	bh=6QYI3zQJ0Tl2jVP8SQayMsYp7gq06LwHG0RQrX00PhY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=A3onFboHDoR5P26H4oNIItrd1L2QARsISj8LShVRh7wwAyX6Vre3z4BgBeo7/fle7AZ8Goz9XWgiD9afFiszp8MLI2yXCt8xtNdY2GFG+RRuO+qLUjkW4Y/uZxgJhxnM98sQRZQkfhUpXygBGM6ZjFCfjm0vTVdHvr7c1DZHjW8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=WteLVuoC; arc=none smtp.client-ip=80.237.130.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:From:
+	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:In-Reply-To:
+	References; bh=hZWhWS6u8qnxThFxrHymtByvkuCdMoLtOGR4+l86sSM=; t=1767690254;
+	x=1768122254; b=WteLVuoCFa49xlGPGJNL0H6IFtIJ7IyhJj8FF2L1PVEiQYSL3CPXf7u/aIcLR
+	3z75aY2ZRKk4R2XWLgXKSDP9FpljCGXh1jcx7g8NvVOLgT/xTp21KIoaXsUDob88O9NrdEwLCSJcM
+	86xuvjXy7eQFt+TqKl2RxdnUXl4Jy5c7b1SaFnB2kNX8PiqifkjnlAP+YvdaL938azKgK0fWdVhKK
+	MlZd9UA9nZIpjXCYtEQaTwQZLf9tvwjlifUYl52UbNTYuxWD92N9MUD7jTjSrMBa0clL5QvrqbiE7
+	PQd4pwDir95eTZEXdb26maLe2l8dpK0AdENU72d/BLSGbf4tbg==;
+Received: from [2a02:8108:8984:1d00:a0cf:1912:4be:477f]; authenticated
+	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128)
+	id 1vd2z0-004AI7-0E;
+	Tue, 06 Jan 2026 10:04:06 +0100
+Message-ID: <785e9aa8-dbfa-4325-bbcd-0ab44a2feb46@leemhuis.info>
+Date: Tue, 6 Jan 2026 10:04:05 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260105-bitops-find-helper-v2-1-ae70b4fc9ecc@google.com> <aVvu3zF2rYKR3XC0@yury>
-In-Reply-To: <aVvu3zF2rYKR3XC0@yury>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Tue, 6 Jan 2026 10:03:10 +0100
-X-Gm-Features: AQt7F2oro7hRfrIYlzb25JB-Q-PHqgoGcjloMFDUeSreDCEcIL-6_a7DKUDFFZw
-Message-ID: <CAH5fLgjtXHH40Pcw=ZoOKPzvJzDA8fohNtC6W6DsfkcE-6vtrQ@mail.gmail.com>
-Subject: Re: [PATCH v2] rust: bitops: fix missing _find_* functions on 32-bit ARM
-To: Yury Norov <yury.norov@gmail.com>
-Cc: Burak Emir <bqe@google.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] fbdev: bitblit: bound-check glyph index in bit_putcs*
+To: "Barry K. Nathan" <barryn@pobox.com>, Vitaly Chikunov <vt@altlinux.org>,
+ Junjie Cao <junjie.cao@intel.com>, Thomas Zimmermann <tzimmermann@suse.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Peilin Ye <yepeilin.cs@gmail.com>, Daniel Vetter
+ <daniel.vetter@ffwll.ch>, Shigeru Yoshida <syoshida@redhat.com>,
+ Simona Vetter <simona@ffwll.ch>, Helge Deller <deller@gmx.de>,
+ Zsolt Kajtar <soci@c64.rulez.org>,
+ Albin Babu Varghese <albinbabuvarghese20@gmail.com>,
+ linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ regressions@lists.linux.dev, Ben Hutchings <ben@decadent.org.uk>
+References: <20251020134701.84082-1-junjie.cao@intel.com>
+ <aU23brU4lZqIkw4Z@altlinux.org> <aU58SeZZPxScVPad@altlinux.org>
+ <ccbbf777-cf4e-4c66-856e-282dd9d61970@pobox.com>
+From: Thorsten Leemhuis <regressions@leemhuis.info>
+Content-Language: de-DE, en-US
+In-Reply-To: <ccbbf777-cf4e-4c66-856e-282dd9d61970@pobox.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1767690254;1b0531b9;
+X-HE-SMSGID: 1vd2z0-004AI7-0E
 
-On Mon, Jan 5, 2026 at 6:03=E2=80=AFPM Yury Norov <yury.norov@gmail.com> wr=
-ote:
->
-> On Mon, Jan 05, 2026 at 10:44:06AM +0000, Alice Ryhl wrote:
-> > atus: O
-> > Content-Length: 4697
-> > Lines: 121
-> >
-> > On 32-bit ARM, you may encounter linker errors such as this one:
-> >
-> >       ld.lld: error: undefined symbol: _find_next_zero_bit
-> >       >>> referenced by rust_binder_main.43196037ba7bcee1-cgu.0
-> >       >>>               drivers/android/binder/rust_binder_main.o:(<rus=
-t_binder_main::process::Process>::insert_or_update_handle) in archive vmlin=
-ux.a
-> >       >>> referenced by rust_binder_main.43196037ba7bcee1-cgu.0
-> >       >>>               drivers/android/binder/rust_binder_main.o:(<rus=
-t_binder_main::process::Process>::insert_or_update_handle) in archive vmlin=
-ux.a
-> >
-> > This error occurs because even though the functions are declared by
-> > include/linux/find.h, the definition is #ifdef'd out on 32-bit ARM. Thi=
-s
-> > is because arch/arm/include/asm/bitops.h contains:
-> >
-> >       #define find_first_zero_bit(p,sz)       _find_first_zero_bit_le(p=
-,sz)
-> >       #define find_next_zero_bit(p,sz,off)    _find_next_zero_bit_le(p,=
-sz,off)
-> >       #define find_first_bit(p,sz)            _find_first_bit_le(p,sz)
-> >       #define find_next_bit(p,sz,off)         _find_next_bit_le(p,sz,of=
-f)
-> >
-> > And the underscore-prefixed function is conditional on #ifndef of the
-> > non-underscore-prefixed name, but the declaration in find.h is *not*
-> > conditional on that #ifndef.
-> >
-> > To fix the linker error, we ensure that the symbols in question exist
-> > when compiling Rust code. We do this by definining them in rust/helpers=
-/
-> > whenever the normal definition is #ifndef'd out.
-> >
-> > Note that these helpers are somewhat unusual in that they do not have
-> > the rust_helper_ prefix that most helpers have. Adding the rust_helper_
-> > prefix does not compile, as 'bindings::_find_next_zero_bit()' will
-> > result in a call to a symbol called _find_next_zero_bit as defined by
-> > include/linux/find.h rather than a symbol with the rust_helper_ prefix.
-> > This is because when a symbol is present in both include/ and
-> > rust/helpers/, the one from include/ wins under the assumption that the
-> > current configuration is one where that helper is unnecessary. This
-> > heuristic fails for _find_next_zero_bit() because the header file alway=
-s
-> > declares it even if the symbol does not exist.
-> >
-> > The functions still use the __rust_helper annotation. This lets the
-> > wrapper function be inlined into Rust code even if full kernel LTO is
-> > not used once the patch series for that feature lands.
-> >
-> > Cc: stable@vger.kernel.org
-> > Fixes: 6cf93a9ed39e ("rust: add bindings for bitops.h")
-> > Reported-by: Andreas Hindborg <a.hindborg@kernel.org>
-> > Closes: https://rust-for-linux.zulipchat.com/#narrow/channel/x/topic/x/=
-near/561677301
-> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
->
-> Which means, you're running active testing, which in turn means that
-> Rust is in a good shape indeed. Thanks to you and Andreas for the work.
+[Top posting to make this easy processable]
 
-I've put together this collection of GitHub actions jobs that build
-and test a few common configurations, which I used to test this:
-https://github.com/Darksonn/linux
+TWIMC, Ben (now CCed) meanwhile reported the problem as well:
 
-> Before I merge it, can you also test m68k build? Arm and m68k are the
-> only arches implementing custom API there.
+https://lore.kernel.org/all/c5a27a57597c78553bf121d09a1b45ed86dc02a8.camel@decadent.org.uk/
 
-I ran a gcc build for m68k with these patches applied and it built
-successfully for me.
+There he wrote
+"""
+This can be fixed by backporting the following commits from 5.11:
 
-Alice
+7a089ec7d77f console: Delete unused con_font_copy() callback implementations
+259a252c1f4e console: Delete dummy con_font_set() and con_font_default()
+callback implementations
+4ee573086bd8 Fonts: Add charcount field to font_desc
+4497364e5f61 parisc/sticore: Avoid hard-coding built-in font charcount
+a1ac250a82a5 fbcon: Avoid using FNTCHARCNT() and hard-coded built-in
+font charcount
+
+These all apply without fuzz and builds cleanly for x86_64 and parisc64.
+"""
+
+Ciao, Thorsten
+
+On 12/27/25 03:04, Barry K. Nathan wrote:
+> On 12/26/25 4:21 AM, Vitaly Chikunov wrote:
+>> Dear linux-fbdev, stable,
+>>
+>> On Fri, Dec 26, 2025 at 01:29:13AM +0300, Vitaly Chikunov wrote:
+>>>
+>>> On Mon, Oct 20, 2025 at 09:47:01PM +0800, Junjie Cao wrote:
+>>>> bit_putcs_aligned()/unaligned() derived the glyph pointer from the
+>>>> character value masked by 0xff/0x1ff, which may exceed the actual
+>>>> font's
+>>>> glyph count and read past the end of the built-in font array.
+>>>> Clamp the index to the actual glyph count before computing the address.
+>>>>
+>>>> This fixes a global out-of-bounds read reported by syzbot.
+>>>>
+>>>> Reported-by: syzbot+793cf822d213be1a74f2@syzkaller.appspotmail.com
+>>>> Closes: https://syzkaller.appspot.com/bug?extid=793cf822d213be1a74f2
+>>>> Tested-by: syzbot+793cf822d213be1a74f2@syzkaller.appspotmail.com
+>>>> Signed-off-by: Junjie Cao <junjie.cao@intel.com>
+>>>
+>>> This commit is applied to v5.10.247 and causes a regression: when
+>>> switching VT with ctrl-alt-f2 the screen is blank or completely filled
+>>> with angle characters, then new text is not appearing (or not visible).
+>>>
+>>> This commit is found with git bisect from v5.10.246 to v5.10.247:
+>>>
+>>>    0998a6cb232674408a03e8561dc15aa266b2f53b is the first bad commit
+>>>    commit 0998a6cb232674408a03e8561dc15aa266b2f53b
+>>>    Author:     Junjie Cao <junjie.cao@intel.com>
+>>>    AuthorDate: 2025-10-20 21:47:01 +0800
+>>>    Commit:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+>>>    CommitDate: 2025-12-07 06:08:07 +0900
+>>>
+>>>        fbdev: bitblit: bound-check glyph index in bit_putcs*
+>>>
+>>>        commit 18c4ef4e765a798b47980555ed665d78b71aeadf upstream.
+>>>
+>>>        bit_putcs_aligned()/unaligned() derived the glyph pointer from
+>>> the
+>>>        character value masked by 0xff/0x1ff, which may exceed the
+>>> actual font's
+>>>        glyph count and read past the end of the built-in font array.
+>>>        Clamp the index to the actual glyph count before computing the
+>>> address.
+>>>
+>>>        This fixes a global out-of-bounds read reported by syzbot.
+>>>
+>>>        Reported-by:
+>>> syzbot+793cf822d213be1a74f2@syzkaller.appspotmail.com
+>>>        Closes: https://syzkaller.appspot.com/bug?
+>>> extid=793cf822d213be1a74f2
+>>>        Tested-by: syzbot+793cf822d213be1a74f2@syzkaller.appspotmail.com
+>>>        Signed-off-by: Junjie Cao <junjie.cao@intel.com>
+>>>        Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+>>>        Signed-off-by: Helge Deller <deller@gmx.de>
+>>>        Cc: stable@vger.kernel.org
+>>>        Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+>>>
+>>>     drivers/video/fbdev/core/bitblit.c | 16 ++++++++++++----
+>>>     1 file changed, 12 insertions(+), 4 deletions(-)
+>>>
+>>> The minimal reproducer in cli, after kernel is booted:
+>>>
+>>>    date >/dev/tty2; chvt 2
+>>>
+>>> and the date does not appear.
+>>>
+>>> Thanks,
+>>>
+>>> #regzbot introduced: 0998a6cb232674408a03e8561dc15aa266b2f53b
+>>>
+>>>> ---
+>>>> v1: https://lore.kernel.org/linux-fbdev/5d237d1a-a528-4205-
+>>>> a4d8-71709134f1e1@suse.de/
+>>>> v1 -> v2:
+>>>>   - Fix indentation and add blank line after declarations with
+>>>> the .pl helper
+>>>>   - No functional changes
+>>>>
+>>>>   drivers/video/fbdev/core/bitblit.c | 16 ++++++++++++----
+>>>>   1 file changed, 12 insertions(+), 4 deletions(-)
+>>>>
+>>>> diff --git a/drivers/video/fbdev/core/bitblit.c b/drivers/video/
+>>>> fbdev/core/bitblit.c
+>>>> index 9d2e59796c3e..085ffb44c51a 100644
+>>>> --- a/drivers/video/fbdev/core/bitblit.c
+>>>> +++ b/drivers/video/fbdev/core/bitblit.c
+>>>> @@ -79,12 +79,16 @@ static inline void bit_putcs_aligned(struct
+>>>> vc_data *vc, struct fb_info *info,
+>>>>                        struct fb_image *image, u8 *buf, u8 *dst)
+>>>>   {
+>>>>       u16 charmask = vc->vc_hi_font_mask ? 0x1ff : 0xff;
+>>>> +    unsigned int charcnt = vc->vc_font.charcount;
+>>
+>> Perhaps, vc->vc_font.charcount (which is relied upon in the following
+>> comparison) is not always set correctly in v5.10.247. At least two
+>> commits that set vc_font.charcount are missing from v5.10.247:
+>>
+>>    a1ac250a82a5 ("fbcon: Avoid using FNTCHARCNT() and hard-coded
+>> built-in font charcount")
+>>    a5a923038d70 ("fbdev: fbcon: Properly revert changes when
+>> vc_resize() failed")
+>>
+>> Thanks,
+> 
+> I was just about to report this.
+> 
+> I found two ways to fix this bug. One is to revert this patch; the other
+> is to apply the following 3 patches, which are already present in 5.11
+> and later:
+> 
+> 7a089ec7d77fe7d50f6bb7b178fa25eec9fd822b
+>     console: Delete unused con_font_copy() callback implementations
+> 
+> 4ee573086bd88ff3060dda07873bf755d332e9ba
+>     Fonts: Add charcount field to font_desc
+> 
+> a1ac250a82a5e97db71f14101ff7468291a6aaef
+>     fbcon: Avoid using FNTCHARCNT() and hard-coded built-in font
+>     charcount
+> 
+> (Oh, by the way, this same regression also affects 5.4.302, and the same
+> 3 patches fix the regression on 5.4 as well, once you manually fix merge
+> conflicts. Maybe it would be better to backport other additional commits
+> instead of fixing the merge conflicts manually, but since 5.4 is now EOL
+> I didn't dig that deep.)
+> 
+> Once these 3 patches are applied, I wonder if a5a923038d70 now becomes
+> necessary for 5.10.y. For what it's worth, it applies fine and the
+> resulting kernel seems to run OK in brief testing.
+> 
+
 
