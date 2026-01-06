@@ -1,41 +1,41 @@
-Return-Path: <stable+bounces-205930-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205932-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81C13CFA0BF
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:18:24 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDA01CFA140
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:20:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 277133075AEC
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:16:41 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 41B303047113
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:17:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D35D036D4E3;
-	Tue,  6 Jan 2026 17:58:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 307D936D4EC;
+	Tue,  6 Jan 2026 17:59:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s7F+aSyn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="obec4VE6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F9EA36CE1C;
-	Tue,  6 Jan 2026 17:58:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E03D636CE1D;
+	Tue,  6 Jan 2026 17:59:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767722334; cv=none; b=qKxH6aS49ndadb6vktGsYb1p2dbR0e767tayDYxauPve3mSjdJpGqCOdrj1/d0seeZOCNWfvEwt0i3UhxFTdJaNO5DU+bjAsnOkXkRF4VBTkNN6J8PJmL9mFXX1r6+jDrksHX8BgSASSvdSMnE3wTH7VoadynxEHaD7+hYUCVmQ=
+	t=1767722341; cv=none; b=K9yxqb4FHVFPbYGUblJYXYg4anmLE6LmtM15tXWNDC+ar+TBTo6a7t/5hBDDR/89e97rMEQf+Z5sRDa9Vx7UkxCXy64M9LTjKpIPt0J74C7tsb/XNwkPZqFiuZAnf4HcoQbE70FU9cNK0v8aEcJi52cx+YKFtvBzuj3LeIVP9OA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767722334; c=relaxed/simple;
-	bh=MVZGGY26anjnfzoiHnCkcd8DnxqQuraDDRCMuBBvUlg=;
+	s=arc-20240116; t=1767722341; c=relaxed/simple;
+	bh=ujyMk63gvXWuz7JABW29ceRrY4Er/e8XHUYeY5fZyYY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TUOlfAK/Sr5CT7TneEwbR+QI/f0jnjrq3GK3rkXvHTEX9SU+cJK9xvBu2K7wDAa/3sqLsr8wycVmHJ+P3gyqtI8bZ+wpms/0JmubFQ9I/ft28atU5FrzFptZqRRc6Pc/HTGOE1KAibXEymamfIyBbFo7WocgFHn6m7XBndhMPVs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s7F+aSyn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBC31C16AAE;
-	Tue,  6 Jan 2026 17:58:53 +0000 (UTC)
+	 MIME-Version; b=CFq5Ks0A/6vJMBGUCNLtHa8K8TwMLF6t0E9GVlqt3ADkqsGWd87TxrkT/FYGXWy6AFTiPKDcm9IVWdJiOhzRGM9+Frr05DmhLS8u+IfnC3PpHwuJd4+jIe8At9gyerKH7cGG6KzJa4fgXuyvsN5nIuwNO3IPOM1KRgPG2clI6rU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=obec4VE6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56775C116C6;
+	Tue,  6 Jan 2026 17:59:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767722334;
-	bh=MVZGGY26anjnfzoiHnCkcd8DnxqQuraDDRCMuBBvUlg=;
+	s=korg; t=1767722340;
+	bh=ujyMk63gvXWuz7JABW29ceRrY4Er/e8XHUYeY5fZyYY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s7F+aSynCtpHJBmOMNmnunjmVgJU7DEN5qeUZvd1QI0huC/oqhYy3tyr4RMfrgiDK
-	 x56Bp7Ky9R0KOlktJPFC2YFKtdSUpe8zP8RnA9NJNIGx5TI1nDIisQIAOlVqnbQ8mW
-	 6CCBQ2ED4cDDrhrBbovBE5sPK9CG6/Ez914xmvJw=
+	b=obec4VE6SC67xb8aoxVkI0dUy/+frz9Ee2wUk+hI9TGLGQOCHGInGEymJkwoVxaTh
+	 +tV0ovKKTN1qLalEoPsfAvJcgxVjWxX8GOA55Ul0xZEyIYqnbwiZwWV1SBIzbyEn02
+	 6xb4IWhsy0M9DU3l0Nk56UI6WVwO0XKM30wmCbEc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	David Gow <davidgow@google.com>,
 	Kefeng Wang <wangkefeng.wang@huawei.com>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.18 201/312] mm/damon/tests/vaddr-kunit: handle alloc failures on damon_test_split_evenly_succ()
-Date: Tue,  6 Jan 2026 18:04:35 +0100
-Message-ID: <20260106170555.101672508@linuxfoundation.org>
+Subject: [PATCH 6.18 203/312] mm/damon/tests/core-kunit: handle alloc failres in damon_test_new_filter()
+Date: Tue,  6 Jan 2026 18:04:37 +0100
+Message-ID: <20260106170555.176618270@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
 References: <20260106170547.832845344@linuxfoundation.org>
@@ -68,49 +68,39 @@ Content-Transfer-Encoding: 8bit
 
 From: SeongJae Park <sj@kernel.org>
 
-commit 0a63a0e7570b9b2631dfb8d836dc572709dce39e upstream.
+commit 28ab2265e9422ccd81e4beafc0ace90f78de04c4 upstream.
 
-damon_test_split_evenly_succ() is assuming all dynamic memory allocation
-in it will succeed.  Those are indeed likely in the real use cases since
-those allocations are too small to fail, but theoretically those could
-fail.  In the case, inappropriate memory access can happen.  Fix it by
-appropriately cleanup pre-allocated memory and skip the execution of the
-remaining tests in the failure cases.
+damon_test_new_filter() is assuming all dynamic memory allocation in it
+will succeed.  Those are indeed likely in the real use cases since those
+allocations are too small to fail, but theoretically those could fail.  In
+the case, inappropriate memory access can happen.  Fix it by appropriately
+cleanup pre-allocated memory and skip the execution of the remaining tests
+in the failure cases.
 
-Link: https://lkml.kernel.org/r/20251101182021.74868-20-sj@kernel.org
-Fixes: 17ccae8bb5c9 ("mm/damon: add kunit tests")
+Link: https://lkml.kernel.org/r/20251101182021.74868-14-sj@kernel.org
+Fixes: 2a158e956b98 ("mm/damon/core-test: add a test for damos_new_filter()")
 Signed-off-by: SeongJae Park <sj@kernel.org>
 Cc: Brendan Higgins <brendan.higgins@linux.dev>
 Cc: David Gow <davidgow@google.com>
 Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: <stable@vger.kernel.org>	[5.15+]
+Cc: <stable@vger.kernel.org>	[6.6+]
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/damon/tests/vaddr-kunit.h |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ mm/damon/tests/core-kunit.h |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/mm/damon/tests/vaddr-kunit.h
-+++ b/mm/damon/tests/vaddr-kunit.h
-@@ -284,10 +284,17 @@ static void damon_test_split_evenly_succ
- 	unsigned long start, unsigned long end, unsigned int nr_pieces)
- {
- 	struct damon_target *t = damon_new_target();
--	struct damon_region *r = damon_new_region(start, end);
-+	struct damon_region *r;
- 	unsigned long expected_width = (end - start) / nr_pieces;
- 	unsigned long i = 0;
+--- a/mm/damon/tests/core-kunit.h
++++ b/mm/damon/tests/core-kunit.h
+@@ -412,6 +412,8 @@ static void damos_test_new_filter(struct
+ 	struct damos_filter *filter;
  
-+	if (!t)
-+		kunit_skip(test, "target alloc fail");
-+	r = damon_new_region(start, end);
-+	if (!r) {
-+		damon_free_target(t);
-+		kunit_skip(test, "region alloc fail");
-+	}
- 	damon_add_region(r, t);
- 	KUNIT_EXPECT_EQ(test,
- 			damon_va_evenly_split_region(t, r, nr_pieces), 0);
+ 	filter = damos_new_filter(DAMOS_FILTER_TYPE_ANON, true, false);
++	if (!filter)
++		kunit_skip(test, "filter alloc fail");
+ 	KUNIT_EXPECT_EQ(test, filter->type, DAMOS_FILTER_TYPE_ANON);
+ 	KUNIT_EXPECT_EQ(test, filter->matching, true);
+ 	KUNIT_EXPECT_PTR_EQ(test, filter->list.prev, &filter->list);
 
 
 
