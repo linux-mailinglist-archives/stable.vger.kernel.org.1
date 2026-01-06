@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-205915-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205637-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D8F3CFAF2A
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 21:34:34 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48E49CFAC74
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:48:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 768783098787
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 20:31:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2B5EB319BEAC
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 19:32:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66B2136C0D8;
-	Tue,  6 Jan 2026 17:58:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DCEA2F7AB1;
+	Tue,  6 Jan 2026 17:42:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="omGtPVjP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L4d5PB5A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20C7936C0D4;
-	Tue,  6 Jan 2026 17:58:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B2BB2EFD95;
+	Tue,  6 Jan 2026 17:42:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767722289; cv=none; b=cPA8HC+zvov7fwZFs9Et+I8uIeVP1SxG/0xzt1f2X1ZvVVB6/rcFJ1uB4KTEFCF6Yv9FTyaT/KHRQYI4QDJmjFfWI9q2TQ6gSMRKM2igizSXgUqlfEoVQ5qXwwbEpHvGjszQhqgsZCeBs9vSPM+YWdg6vXZ3FueXCP7AF/ZwB5g=
+	t=1767721354; cv=none; b=XDXtHq78MFkG9viPnCp2G3VUMLThUCN+8X2PPYc4u8LGFjOaMDxc/aI6KpsFMIWVGGyMqJS/at2tDIwXap4KCwrzt9vWqd2rv1k5f3TFB/1/Slz2rRESXjPYmaX66B2wA//B4+rw/aNIiR6/PQmfcev777ZPCZYanOXft6CMNP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767722289; c=relaxed/simple;
-	bh=h1aj4nzhbQz8xZt5sSTSiSoOPgdq/wk5IPoiVGKjB/4=;
+	s=arc-20240116; t=1767721354; c=relaxed/simple;
+	bh=+o1r+hKcP0uHx41W821nbRTrbd2uM8AVyUs8kXp0BPQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mhEsNt8QF13UI8f9xonzVR6o1qhD2BziN7v1wgBDSxnQcRayM5lEGKnFCxUDSMxikkU1mUGIsYPTmIvilLMxZTuSLFG+GKIUIWE6ODYiEzUqrZcsDQsLJjXY7QvoRydbJkzs+XwseCrI0VGVJxWfSsigpfrA7SDSwUzzjxJI4Hc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=omGtPVjP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D879DC16AAE;
-	Tue,  6 Jan 2026 17:58:07 +0000 (UTC)
+	 MIME-Version; b=usQbLMCxGQame91wyWrfGngeAAI5QmlL8oWsjdnG/JQWMPoPnPz3vDxG03f5v+zkndahL7FYSS3lxYjCb9GAv2XUMF8CzQLzGKjIqz3NUhDfKeHQ0V6ylF8NpJZFp6UAk2zg/rGnrQ+5q4wr77ZoI4zwvg7oAY+t+E25e1BraL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L4d5PB5A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67273C116C6;
+	Tue,  6 Jan 2026 17:42:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767722289;
-	bh=h1aj4nzhbQz8xZt5sSTSiSoOPgdq/wk5IPoiVGKjB/4=;
+	s=korg; t=1767721354;
+	bh=+o1r+hKcP0uHx41W821nbRTrbd2uM8AVyUs8kXp0BPQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=omGtPVjPwZuyi8iu81aIPQ/uQjjYaTwphpJxVWqqE/Zyq2TZ9z+Q188VUVHx2fL47
-	 2fqQ1cQMF35CUl0SoVEum9qEr5ofULvBOUYIG+XjpfS6B14jyFJDzxm4zawv3oAHWl
-	 TqIpVo/ps6lrYAa2930x77aA67zL10+L8oCt72X4=
+	b=L4d5PB5AnxaRwMPmJk2PBpADstQFX33qk6xfNRx3dTp9qBLtsS9mbZMS3fnhGc1sH
+	 Wuv8fDBxNaZxvV/AOjDCchvBim+/1L5puk2g9qmmDnVfwnRjwCqIwsI6v0r230pcAX
+	 viSpQWyNMxQyTdhKQ7/uS7U4XD1wipGL4B6lOnCE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Julian Orth <ju.orth@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Willem de Bruijn <willemb@google.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.18 219/312] af_unix: dont post cmsg for SO_INQ unless explicitly asked for
+	stable <stable@kernel.org>,
+	Jakub Turek <jakub.turek@elsta.tech>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 511/567] serial: xilinx_uartps: fix rs485 delay_rts_after_send
 Date: Tue,  6 Jan 2026 18:04:53 +0100
-Message-ID: <20260106170555.765641919@linuxfoundation.org>
+Message-ID: <20260106170510.279914112@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
-References: <20260106170547.832845344@linuxfoundation.org>
+In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
+References: <20260106170451.332875001@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,77 +60,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: "j.turek" <jakub.turek@elsta.tech>
 
-commit 4d1442979e4a53b9457ce1e373e187e1511ff688 upstream.
+[ Upstream commit 267ee93c417e685d9f8e079e41c70ba6ee4df5a5 ]
 
-A previous commit added SO_INQ support for AF_UNIX (SOCK_STREAM), but it
-posts a SCM_INQ cmsg even if just msg->msg_get_inq is set. This is
-incorrect, as ->msg_get_inq is just the caller asking for the remainder
-to be passed back in msg->msg_inq, it has nothing to do with cmsg. The
-original commit states that this is done to make sockets
-io_uring-friendly", but it's actually incorrect as io_uring doesn't use
-cmsg headers internally at all, and it's actively wrong as this means
-that cmsg's are always posted if someone does recvmsg via io_uring.
+RTS line control with delay should be triggered when there is no more
+bytes in kfifo and hardware buffer is empty. Without this patch RTS
+control is scheduled right after feeding hardware buffer and this is too
+early.
 
-Fix that up by only posting a cmsg if u->recvmsg_inq is set.
+RTS line may change state before hardware buffer is empty.
 
-Additionally, mirror how TCP handles inquiry handling in that it should
-only be done for a successful return. This makes the logic for the two
-identical.
+With this patch delayed RTS state change is triggered when function
+cdns_uart_handle_tx is called from cdns_uart_isr on
+CDNS_UART_IXR_TXEMPTY exactly when hardware completed transmission
 
-Cc: stable@vger.kernel.org
-Fixes: df30285b3670 ("af_unix: Introduce SO_INQ.")
-Reported-by: Julian Orth <ju.orth@gmail.com>
-Link: https://github.com/axboe/liburing/issues/1509
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/07adc0c2-2c3b-4d08-8af1-1c466a40b6a8@kernel.dk
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: fccc9d9233f9 ("tty: serial: uartps: Add rs485 support to uartps driver")
+Cc: stable <stable@kernel.org>
+Link: https://patch.msgid.link/20251221103221.1971125-1-jakub.turek@elsta.tech
+Signed-off-by: Jakub Turek  <jakub.turek@elsta.tech>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/unix/af_unix.c |   11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ drivers/tty/serial/xilinx_uartps.c |   14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -2929,6 +2929,7 @@ static int unix_stream_read_generic(stru
- 	unsigned int last_len;
- 	struct unix_sock *u;
- 	int copied = 0;
-+	bool do_cmsg;
- 	int err = 0;
- 	long timeo;
- 	int target;
-@@ -2954,6 +2955,9 @@ static int unix_stream_read_generic(stru
+--- a/drivers/tty/serial/xilinx_uartps.c
++++ b/drivers/tty/serial/xilinx_uartps.c
+@@ -431,10 +431,17 @@ static void cdns_uart_handle_tx(void *de
+ 	struct tty_port *tport = &port->state->port;
+ 	unsigned int numbytes;
+ 	unsigned char ch;
++	ktime_t rts_delay;
  
- 	u = unix_sk(sk);
+ 	if (kfifo_is_empty(&tport->xmit_fifo) || uart_tx_stopped(port)) {
+ 		/* Disable the TX Empty interrupt */
+ 		writel(CDNS_UART_IXR_TXEMPTY, port->membase + CDNS_UART_IDR);
++		/* Set RTS line after delay */
++		if (cdns_uart->port->rs485.flags & SER_RS485_ENABLED) {
++			cdns_uart->tx_timer.function = &cdns_rs485_rx_callback;
++			rts_delay = ns_to_ktime(cdns_calc_after_tx_delay(cdns_uart));
++			hrtimer_start(&cdns_uart->tx_timer, rts_delay, HRTIMER_MODE_REL);
++		}
+ 		return;
+ 	}
  
-+	do_cmsg = READ_ONCE(u->recvmsg_inq);
-+	if (do_cmsg)
-+		msg->msg_get_inq = 1;
- redo:
- 	/* Lock the socket to prevent queue disordering
- 	 * while sleeps in memcpy_tomsg
-@@ -3113,10 +3117,11 @@ unlock:
- 	if (msg) {
- 		scm_recv_unix(sock, msg, &scm, flags);
+@@ -451,13 +458,6 @@ static void cdns_uart_handle_tx(void *de
  
--		if (READ_ONCE(u->recvmsg_inq) || msg->msg_get_inq) {
-+		if (msg->msg_get_inq && (copied ?: err) >= 0) {
- 			msg->msg_inq = READ_ONCE(u->inq_len);
--			put_cmsg(msg, SOL_SOCKET, SCM_INQ,
--				 sizeof(msg->msg_inq), &msg->msg_inq);
-+			if (do_cmsg)
-+				put_cmsg(msg, SOL_SOCKET, SCM_INQ,
-+					 sizeof(msg->msg_inq), &msg->msg_inq);
- 		}
- 	} else {
- 		scm_destroy(&scm);
+ 	/* Enable the TX Empty interrupt */
+ 	writel(CDNS_UART_IXR_TXEMPTY, cdns_uart->port->membase + CDNS_UART_IER);
+-
+-	if (cdns_uart->port->rs485.flags & SER_RS485_ENABLED &&
+-	    (kfifo_is_empty(&tport->xmit_fifo) || uart_tx_stopped(port))) {
+-		hrtimer_update_function(&cdns_uart->tx_timer, cdns_rs485_rx_callback);
+-		hrtimer_start(&cdns_uart->tx_timer,
+-			      ns_to_ktime(cdns_calc_after_tx_delay(cdns_uart)), HRTIMER_MODE_REL);
+-	}
+ }
+ 
+ /**
 
 
 
