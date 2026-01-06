@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-205760-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205484-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5B9BCFA6DE
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:01:19 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18642CF9C26
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 18:40:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9DB21353B901
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:34:53 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 86C0A300E40C
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:40:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BC6B35FF73;
-	Tue,  6 Jan 2026 17:49:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3FC12E2EF2;
+	Tue,  6 Jan 2026 17:34:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EVixW+ry"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bHyQUMQq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56F6935FF65;
-	Tue,  6 Jan 2026 17:49:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F4A02DF719;
+	Tue,  6 Jan 2026 17:34:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721769; cv=none; b=qCxZqda21QYbgqs0I29TzXTIskKpPTGmwLYd94tsLSD2VpxGdevs2vSJtSIQaKAmWuFIl8xlwMXNLIPABgmIxGFBYK98KjZseNWT3/oTfsi/3CqhRk+tAsB7kk7K1jCvwXUuTm8BRVv+CGQkHRSwMgv5WYgmiNT7QRXgFjgM+hU=
+	t=1767720846; cv=none; b=qbDRBM4ygmbRb604l8BgSesIoKQz75FdIyuod34854yGmp5kDELSa3hJGUGtaxYdOxK/j/QBFTyF+VhB/X0wTuUW8EOgY02uFnZk9RUS+toOpNn9pJpRedsjg753eAuuagcQKtpilIF3QHWdY/sJXNNTNbNdgdgNAENMRhJUn+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721769; c=relaxed/simple;
-	bh=n2aQuoJ3TiQmYdpCZzsAT3WQCRuvjVdVGg9o66k+xCU=;
+	s=arc-20240116; t=1767720846; c=relaxed/simple;
+	bh=ENZsN/uGd63xpnybB54E9eVg+h5NIgIvQx9VsMYz46Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V1574oXSuCbbhhCqi2c398VqVnUkf93D4cFQcu/+6hyFL9kTZpjVdQeQpZU92QniS8hrnsZ65SiDdr0hAL96Mvgkb912zf+who+vuZoHJQ9gjHrd6tyLu4xQWUbxQo4rgF31xZg273WqJ/BNgzkchDo6VoTPDkhdCTVFWplgRMQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EVixW+ry; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6648C116C6;
-	Tue,  6 Jan 2026 17:49:28 +0000 (UTC)
+	 MIME-Version; b=QJaWM8s1KIiWAa3llWqPFFt7+hMQ5mb7ZcKlYUwQr+k/h791iCmmWHjDzEnupy1HJKmgNtbgPw4KTNhqJAbIAa3ohyWVn4QtBfeH7APnK7odRkWkSEDE1iU6e7Md/PeNsoJGGk8FNaoiY70HK4UnX56FVxq3FnyggDM2fkJZPgU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bHyQUMQq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC4DBC116C6;
+	Tue,  6 Jan 2026 17:34:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721769;
-	bh=n2aQuoJ3TiQmYdpCZzsAT3WQCRuvjVdVGg9o66k+xCU=;
+	s=korg; t=1767720846;
+	bh=ENZsN/uGd63xpnybB54E9eVg+h5NIgIvQx9VsMYz46Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EVixW+ryPY7ik/TdZ7oTYIaYCe1xW4ujYpnBHQ45oOmVSIJzApRYYbgFic5pCxXRN
-	 b1+Asu5i6W8Grv0Ry3bNhpx2jPYEy8XUOxZxuKoAZ/8mHTcURp6JaXg8tmE00JjLXZ
-	 QSngPL1UXPdAS4hFCSj417izbH9Gts5ToglIEcj8=
+	b=bHyQUMQqXizYOb0xF1gRpUEIGA4/bbMlP2OrfOXFYLxQBmHtmK/IK5Se598J2OGMm
+	 JfjNmE57fklkPQ8bC/h2gX+lgLcOShEYeu9yQ6cuitTO+6oAhvxSfAc5eO9nLc4MYR
+	 9zsL3o4mV/BUidO0cJAVhyLmAMSiwdK1x5RQZetA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Taranov <kotaranov@microsoft.com>,
-	Long Li <longli@microsoft.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 067/312] RDMA/mana_ib: check cqe length for kernel CQs
-Date: Tue,  6 Jan 2026 18:02:21 +0100
-Message-ID: <20260106170550.274104681@linuxfoundation.org>
+	Honghui Zhang <honghui.zhang@mediatek.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Johan Hovold <johan@kernel.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Joerg Roedel <joerg.roedel@amd.com>
+Subject: [PATCH 6.12 360/567] iommu/mediatek-v1: fix device leaks on probe()
+Date: Tue,  6 Jan 2026 18:02:22 +0100
+Message-ID: <20260106170504.653989773@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
-References: <20260106170547.832845344@linuxfoundation.org>
+In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
+References: <20260106170451.332875001@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +62,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Taranov <kotaranov@microsoft.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 887bfe5986396aca908b7afd2d214471ba7d5544 ]
+commit 46207625c9f33da0e43bb4ae1e91f0791b6ed633 upstream.
 
-Check queue size during kernel CQ creation to prevent overflow of u32.
+Make sure to drop the references taken to the larb devices during
+probe on probe failure (e.g. probe deferral) and on driver unbind.
 
-Fixes: bec127e45d9f ("RDMA/mana_ib: create kernel-level CQs")
-Link: https://patch.msgid.link/r/1761213780-5457-1-git-send-email-kotaranov@linux.microsoft.com
-Signed-off-by: Konstantin Taranov <kotaranov@microsoft.com>
-Reviewed-by: Long Li <longli@microsoft.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: b17336c55d89 ("iommu/mediatek: add support for mtk iommu generation one HW")
+Cc: stable@vger.kernel.org	# 4.8
+Cc: Honghui Zhang <honghui.zhang@mediatek.com>
+Acked-by: Robin Murphy <robin.murphy@arm.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/mana/cq.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/iommu/mtk_iommu_v1.c |   23 ++++++++++++++++++-----
+ 1 file changed, 18 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/infiniband/hw/mana/cq.c b/drivers/infiniband/hw/mana/cq.c
-index 1becc8779123..7600412b0739 100644
---- a/drivers/infiniband/hw/mana/cq.c
-+++ b/drivers/infiniband/hw/mana/cq.c
-@@ -56,6 +56,10 @@ int mana_ib_create_cq(struct ib_cq *ibcq, const struct ib_cq_init_attr *attr,
- 		doorbell = mana_ucontext->doorbell;
- 	} else {
- 		is_rnic_cq = true;
-+		if (attr->cqe > U32_MAX / COMP_ENTRY_SIZE / 2 + 1) {
-+			ibdev_dbg(ibdev, "CQE %d exceeding limit\n", attr->cqe);
-+			return -EINVAL;
+--- a/drivers/iommu/mtk_iommu_v1.c
++++ b/drivers/iommu/mtk_iommu_v1.c
+@@ -647,8 +647,10 @@ static int mtk_iommu_v1_probe(struct pla
+ 		struct platform_device *plarbdev;
+ 
+ 		larbnode = of_parse_phandle(dev->of_node, "mediatek,larbs", i);
+-		if (!larbnode)
+-			return -EINVAL;
++		if (!larbnode) {
++			ret = -EINVAL;
++			goto out_put_larbs;
 +		}
- 		buf_size = MANA_PAGE_ALIGN(roundup_pow_of_two(attr->cqe * COMP_ENTRY_SIZE));
- 		cq->cqe = buf_size / COMP_ENTRY_SIZE;
- 		err = mana_ib_create_kernel_queue(mdev, buf_size, GDMA_CQ, &cq->queue);
--- 
-2.51.0
-
+ 
+ 		if (!of_device_is_available(larbnode)) {
+ 			of_node_put(larbnode);
+@@ -658,11 +660,14 @@ static int mtk_iommu_v1_probe(struct pla
+ 		plarbdev = of_find_device_by_node(larbnode);
+ 		if (!plarbdev) {
+ 			of_node_put(larbnode);
+-			return -ENODEV;
++			ret = -ENODEV;
++			goto out_put_larbs;
+ 		}
+ 		if (!plarbdev->dev.driver) {
+ 			of_node_put(larbnode);
+-			return -EPROBE_DEFER;
++			put_device(&plarbdev->dev);
++			ret = -EPROBE_DEFER;
++			goto out_put_larbs;
+ 		}
+ 		data->larb_imu[i].dev = &plarbdev->dev;
+ 
+@@ -674,7 +679,7 @@ static int mtk_iommu_v1_probe(struct pla
+ 
+ 	ret = mtk_iommu_v1_hw_init(data);
+ 	if (ret)
+-		return ret;
++		goto out_put_larbs;
+ 
+ 	ret = iommu_device_sysfs_add(&data->iommu, &pdev->dev, NULL,
+ 				     dev_name(&pdev->dev));
+@@ -696,12 +701,17 @@ out_sysfs_remove:
+ 	iommu_device_sysfs_remove(&data->iommu);
+ out_clk_unprepare:
+ 	clk_disable_unprepare(data->bclk);
++out_put_larbs:
++	for (i = 0; i < MTK_LARB_NR_MAX; i++)
++		put_device(data->larb_imu[i].dev);
++
+ 	return ret;
+ }
+ 
+ static void mtk_iommu_v1_remove(struct platform_device *pdev)
+ {
+ 	struct mtk_iommu_v1_data *data = platform_get_drvdata(pdev);
++	int i;
+ 
+ 	iommu_device_sysfs_remove(&data->iommu);
+ 	iommu_device_unregister(&data->iommu);
+@@ -709,6 +719,9 @@ static void mtk_iommu_v1_remove(struct p
+ 	clk_disable_unprepare(data->bclk);
+ 	devm_free_irq(&pdev->dev, data->irq, data);
+ 	component_master_del(&pdev->dev, &mtk_iommu_v1_com_ops);
++
++	for (i = 0; i < MTK_LARB_NR_MAX; i++)
++		put_device(data->larb_imu[i].dev);
+ }
+ 
+ static int __maybe_unused mtk_iommu_v1_suspend(struct device *dev)
 
 
 
