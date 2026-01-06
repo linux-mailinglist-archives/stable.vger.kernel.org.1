@@ -1,55 +1,63 @@
-Return-Path: <stable+bounces-205641-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205919-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F705CFACBF
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:53:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D37A3CFAF0F
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 21:33:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1F235318C3D3
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 19:32:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8255030773A3
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 20:31:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFFEE2FB97B;
-	Tue,  6 Jan 2026 17:42:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 364B936C5B4;
+	Tue,  6 Jan 2026 17:58:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="135aoue3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bW7gfcL+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A1372F9C3D;
-	Tue,  6 Jan 2026 17:42:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E019036C5AA;
+	Tue,  6 Jan 2026 17:58:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721367; cv=none; b=QWe4b2rj8Wp3AZiiwjLhVUvMcHvHV0VI1JDP6BzLZaIhSb4RNYiUUmSf8xSCKllhpzZfPQZ5wgs8iFS21CJ1vfUKgcR58/NaNd+iiayXmguMocsMhEge3rr2aYSuZTBuaVukZI0pw99eX46NTKRcowniom7RV4zpKbi5gLq9nJY=
+	t=1767722302; cv=none; b=a2CLBjcGjtolOpSCdOub3r2YjEfeNq6k2tVE1diSeVChQiQqhXwa+QhgPgF54CQOntTMqRFcSY3gXSbFdNGGCLiziC06yKJfGHWMAwjz3wFsDj0eEgg+lyq8//JmuWolaxc0wAqqMpUmKzTk6379Ovfbf2NXuw6VPVIUDhLf9R4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721367; c=relaxed/simple;
-	bh=Si9HarTsBQilaJS9ihAFh2QifWIzCywOcJXDn7nznhw=;
+	s=arc-20240116; t=1767722302; c=relaxed/simple;
+	bh=om1sCYvusTwDbufdV3pPCBLOUQt89mZa6qfbbGhR0V8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SLBASfAmRYjYoX8A+vD+4H1tp9iwGGYZlD9bUsNdvu3T5cnLHtekJNuVyywJ0HUe/OIF/2WP52jaZAkKgZVlp4iESLjY+MGMaMhR7XHobdP1VIiDnWwePMfM3mhVLA2n1iEqAgVmUTBrSLfjs0nTDOxYRiUwQku/AZEZ9Mqp5Oo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=135aoue3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C98D6C116C6;
-	Tue,  6 Jan 2026 17:42:46 +0000 (UTC)
+	 MIME-Version; b=oPsTwiZ3V52LtKy4ZpIofPvH1Eff3z5b0+GqDLlEY587EMzFRY1FjG8pKn1QgJD2DIJpd0pfHxQMD5DSzei2lNszx2XvdLcg9EREwLYjt1NaU4/Bt3vk/iuc0XkIN1ZDW7Ur+Sdnzzu3q6U71XZr12BVGwMIgbs1/yax7rnf0qk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bW7gfcL+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8A22C16AAE;
+	Tue,  6 Jan 2026 17:58:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721367;
-	bh=Si9HarTsBQilaJS9ihAFh2QifWIzCywOcJXDn7nznhw=;
+	s=korg; t=1767722301;
+	bh=om1sCYvusTwDbufdV3pPCBLOUQt89mZa6qfbbGhR0V8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=135aoue3hxsYsPeXiT+3mWzu8cIVHd9jyNm0LOdbaIJOSr2ruC0ysSZcw3KpAjGmG
-	 XpZffqUL02xKcfWYpA+4qmmCfTswEZyGui9Nq4BtBs131uq1TommHLzt3MzWS6wdfg
-	 iOcmXIZKtSgDA6pA7E7Y4P1UF7d+TOi/9kb1p1xs=
+	b=bW7gfcL+Zmvxo5Y9oSNTZkB0MPacaSJMIHD3sy196/nTULfEshPQsayiZdWVQcy1A
+	 J7Ot6gjOBnZCUD+aOnSLqu38CUHc5K4Af6Iib0XD6QXbZDNwYp1TgcWpIxuN5r/D6x
+	 HTx1dWrmPnDkUoO8VhzuvU6j9TlKLixqEA3SHCFE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 515/567] f2fs: fix to propagate error from f2fs_enable_checkpoint()
+	Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Alexander Potapenko <glider@google.com>,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Dmitriy Vyukov <dvyukov@google.com>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Kees Cook <kees@kernel.org>,
+	Marco Elver <elver@google.com>,
+	"Uladzislau Rezki (Sony)" <urezki@gmail.com>,
+	Vincenzo Frascino <vincenzo.frascino@arm.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.18 223/312] kasan: refactor pcpu kasan vmalloc unpoison
 Date: Tue,  6 Jan 2026 18:04:57 +0100
-Message-ID: <20260106170510.429170220@linuxfoundation.org>
+Message-ID: <20260106170555.919175238@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
-References: <20260106170451.332875001@linuxfoundation.org>
+In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
+References: <20260106170547.832845344@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,101 +69,127 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
 
-[ Upstream commit be112e7449a6e1b54aa9feac618825d154b3a5c7 ]
+commit 6f13db031e27e88213381039032a9cc061578ea6 upstream.
 
-In order to let userspace detect such error rather than suffering
-silent failure.
+A KASAN tag mismatch, possibly causing a kernel panic, can be observed
+on systems with a tag-based KASAN enabled and with multiple NUMA nodes.
+It was reported on arm64 and reproduced on x86. It can be explained in
+the following points:
 
-Fixes: 4354994f097d ("f2fs: checkpoint disabling")
-Cc: stable@kernel.org
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+1. There can be more than one virtual memory chunk.
+2. Chunk's base address has a tag.
+3. The base address points at the first chunk and thus inherits
+   the tag of the first chunk.
+4. The subsequent chunks will be accessed with the tag from the
+   first chunk.
+5. Thus, the subsequent chunks need to have their tag set to
+   match that of the first chunk.
+
+Refactor code by reusing __kasan_unpoison_vmalloc in a new helper in
+preparation for the actual fix.
+
+Link: https://lkml.kernel.org/r/eb61d93b907e262eefcaa130261a08bcb6c5ce51.1764874575.git.m.wieczorretman@pm.me
+Fixes: 1d96320f8d53 ("kasan, vmalloc: add vmalloc tagging for SW_TAGS")
+Signed-off-by: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
+Reviewed-by: Andrey Konovalov <andreyknvl@gmail.com>
+Cc: Alexander Potapenko <glider@google.com>
+Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Cc: Danilo Krummrich <dakr@kernel.org>
+Cc: Dmitriy Vyukov <dvyukov@google.com>
+Cc: Jiayuan Chen <jiayuan.chen@linux.dev>
+Cc: Kees Cook <kees@kernel.org>
+Cc: Marco Elver <elver@google.com>
+Cc: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
+Cc: Vincenzo Frascino <vincenzo.frascino@arm.com>
+Cc: <stable@vger.kernel.org>	[6.1+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/super.c |   26 ++++++++++++++++----------
- 1 file changed, 16 insertions(+), 10 deletions(-)
+ include/linux/kasan.h |   15 +++++++++++++++
+ mm/kasan/common.c     |   17 +++++++++++++++++
+ mm/vmalloc.c          |    4 +---
+ 3 files changed, 33 insertions(+), 3 deletions(-)
 
---- a/fs/f2fs/super.c
-+++ b/fs/f2fs/super.c
-@@ -2282,10 +2282,11 @@ restore_flag:
- 	return err;
+--- a/include/linux/kasan.h
++++ b/include/linux/kasan.h
+@@ -615,6 +615,16 @@ static __always_inline void kasan_poison
+ 		__kasan_poison_vmalloc(start, size);
  }
  
--static void f2fs_enable_checkpoint(struct f2fs_sb_info *sbi)
-+static int f2fs_enable_checkpoint(struct f2fs_sb_info *sbi)
- {
- 	unsigned int nr_pages = get_pages(sbi, F2FS_DIRTY_DATA) / 16;
- 	long long start, writeback, end;
-+	int ret;
++void __kasan_unpoison_vmap_areas(struct vm_struct **vms, int nr_vms,
++				 kasan_vmalloc_flags_t flags);
++static __always_inline void
++kasan_unpoison_vmap_areas(struct vm_struct **vms, int nr_vms,
++			  kasan_vmalloc_flags_t flags)
++{
++	if (kasan_enabled())
++		__kasan_unpoison_vmap_areas(vms, nr_vms, flags);
++}
++
+ #else /* CONFIG_KASAN_VMALLOC */
  
- 	f2fs_info(sbi, "f2fs_enable_checkpoint() starts, meta: %lld, node: %lld, data: %lld",
- 					get_pages(sbi, F2FS_DIRTY_META),
-@@ -2319,7 +2320,9 @@ static void f2fs_enable_checkpoint(struc
- 	set_sbi_flag(sbi, SBI_IS_DIRTY);
- 	f2fs_up_write(&sbi->gc_lock);
+ static inline void kasan_populate_early_vm_area_shadow(void *start,
+@@ -639,6 +649,11 @@ static inline void *kasan_unpoison_vmall
+ static inline void kasan_poison_vmalloc(const void *start, unsigned long size)
+ { }
  
--	f2fs_sync_fs(sbi->sb, 1);
-+	ret = f2fs_sync_fs(sbi->sb, 1);
-+	if (ret)
-+		f2fs_err(sbi, "%s sync_fs failed, ret: %d", __func__, ret);
++static __always_inline void
++kasan_unpoison_vmap_areas(struct vm_struct **vms, int nr_vms,
++			  kasan_vmalloc_flags_t flags)
++{ }
++
+ #endif /* CONFIG_KASAN_VMALLOC */
  
- 	/* Let's ensure there's no pending checkpoint anymore */
- 	f2fs_flush_ckpt_thread(sbi);
-@@ -2329,6 +2332,7 @@ static void f2fs_enable_checkpoint(struc
- 	f2fs_info(sbi, "f2fs_enable_checkpoint() finishes, writeback:%llu, sync:%llu",
- 					ktime_ms_delta(writeback, start),
- 					ktime_ms_delta(end, writeback));
-+	return ret;
- }
+ #if (defined(CONFIG_KASAN_GENERIC) || defined(CONFIG_KASAN_SW_TAGS)) && \
+--- a/mm/kasan/common.c
++++ b/mm/kasan/common.c
+@@ -28,6 +28,7 @@
+ #include <linux/string.h>
+ #include <linux/types.h>
+ #include <linux/bug.h>
++#include <linux/vmalloc.h>
  
- static int f2fs_remount(struct super_block *sb, int *flags, char *data)
-@@ -2543,7 +2547,9 @@ static int f2fs_remount(struct super_blo
- 				goto restore_discard;
- 			need_enable_checkpoint = true;
- 		} else {
--			f2fs_enable_checkpoint(sbi);
-+			err = f2fs_enable_checkpoint(sbi);
-+			if (err)
-+				goto restore_discard;
- 			need_disable_checkpoint = true;
- 		}
+ #include "kasan.h"
+ #include "../slab.h"
+@@ -582,3 +583,19 @@ bool __kasan_check_byte(const void *addr
  	}
-@@ -2585,7 +2591,8 @@ skip:
- 	return 0;
- restore_checkpoint:
- 	if (need_enable_checkpoint) {
--		f2fs_enable_checkpoint(sbi);
-+		if (f2fs_enable_checkpoint(sbi))
-+			f2fs_warn(sbi, "checkpoint has not been enabled");
- 	} else if (need_disable_checkpoint) {
- 		if (f2fs_disable_checkpoint(sbi))
- 			f2fs_warn(sbi, "checkpoint has not been disabled");
-@@ -4836,13 +4843,12 @@ reset_checkpoint:
- 	if (err)
- 		goto sync_free_meta;
+ 	return true;
+ }
++
++#ifdef CONFIG_KASAN_VMALLOC
++void __kasan_unpoison_vmap_areas(struct vm_struct **vms, int nr_vms,
++				 kasan_vmalloc_flags_t flags)
++{
++	unsigned long size;
++	void *addr;
++	int area;
++
++	for (area = 0 ; area < nr_vms ; area++) {
++		size = vms[area]->size;
++		addr = vms[area]->addr;
++		vms[area]->addr = __kasan_unpoison_vmalloc(addr, size, flags);
++	}
++}
++#endif
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -4872,9 +4872,7 @@ retry:
+ 	 * With hardware tag-based KASAN, marking is skipped for
+ 	 * non-VM_ALLOC mappings, see __kasan_unpoison_vmalloc().
+ 	 */
+-	for (area = 0; area < nr_vms; area++)
+-		vms[area]->addr = kasan_unpoison_vmalloc(vms[area]->addr,
+-				vms[area]->size, KASAN_VMALLOC_PROT_NORMAL);
++	kasan_unpoison_vmap_areas(vms, nr_vms, KASAN_VMALLOC_PROT_NORMAL);
  
--	if (test_opt(sbi, DISABLE_CHECKPOINT)) {
-+	if (test_opt(sbi, DISABLE_CHECKPOINT))
- 		err = f2fs_disable_checkpoint(sbi);
--		if (err)
--			goto sync_free_meta;
--	} else if (is_set_ckpt_flags(sbi, CP_DISABLED_FLAG)) {
--		f2fs_enable_checkpoint(sbi);
--	}
-+	else if (is_set_ckpt_flags(sbi, CP_DISABLED_FLAG))
-+		err = f2fs_enable_checkpoint(sbi);
-+	if (err)
-+		goto sync_free_meta;
- 
- 	/*
- 	 * If filesystem is not mounted as read-only then
+ 	kfree(vas);
+ 	return vms;
 
 
 
