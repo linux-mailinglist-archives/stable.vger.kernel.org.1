@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-205473-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205776-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CACB5CFA215
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:27:44 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C65FCFA557
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:53:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6E4A832ADF47
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:40:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3013D325785B
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:07:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B58642D8DC4;
-	Tue,  6 Jan 2026 17:33:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C224B3612F9;
+	Tue,  6 Jan 2026 17:50:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wB/3eBUl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wE2WKO2m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 655682DE715;
-	Tue,  6 Jan 2026 17:33:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E2023612F7;
+	Tue,  6 Jan 2026 17:50:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767720811; cv=none; b=s1JDtic8xXl9tgxNkKhmTRZBHaOjW/okckcnVo64iBd2mDPyqifkvAAZKZxW0Xi8tAyhfQOW5ACWTq3E2s+bQ2v99k5ihjdNb4BHWVJAcXAcUh6HHO6eId1GrbNkJDN2fzJBvUF/7NWhrmBaOyz0pY4BBOyf3QT62N9vT9E7On0=
+	t=1767721823; cv=none; b=obh42oTpxNRVIzEw2E7ipoBivvMguEKzPHNZQFv8u3umbS/LltsHxSKmWNHx+MuOT8HGxUqSvHDKPQIYqpCQZ0Ns1E+PVa3/tRgVvW1YUfTNgTNzWe5U5t+uQGunffNYjjC30jln1SY4pnZv9Vo1+VOC/hl1dPSBFpKfY6P1nRM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767720811; c=relaxed/simple;
-	bh=eKXm1FAw+4gAgZoXmPAW+yH5HxRQw709yZaCOsfkGPY=;
+	s=arc-20240116; t=1767721823; c=relaxed/simple;
+	bh=eVqmPwSmZxJ0hqevvCWfPjNSSW2sbbz/ywSHcybxVH0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EetSePSw4WsaNjsVgJ3VyYlzGcLrr3r/L33InE8J77kR/RnfSc6BkrbeHRU7qX+ATu0IyksBVTCtFIr93GoGDuOSMIJDPZiakRvSw+EPw94E2I00PJ/EyffUQQutMCkqKBelpwdlW2JH9HAkjvLEXZZJLtxAFYowhlctNzW3niU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wB/3eBUl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEE8BC116C6;
-	Tue,  6 Jan 2026 17:33:30 +0000 (UTC)
+	 MIME-Version; b=gI1HCQRlX3mbEZ4NjhZy2mwPcM4G7VyUWouHqpqeCv4wvg7OJbvyKy6F1VKpk7+ANgw+t+1dMNP14Sl9qvY0X/vFQoyvwe0DFcCwb80M7q33byhvKmqK6vpMSl7frSS7RaebChMKNieekbbYOB8obLaSi59D5mUqR3TGIN9NpIA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wE2WKO2m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04F4AC116C6;
+	Tue,  6 Jan 2026 17:50:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767720811;
-	bh=eKXm1FAw+4gAgZoXmPAW+yH5HxRQw709yZaCOsfkGPY=;
+	s=korg; t=1767721823;
+	bh=eVqmPwSmZxJ0hqevvCWfPjNSSW2sbbz/ywSHcybxVH0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wB/3eBUlv6aT4vov2XWfEQVRfoVSLT4USx62SMlMe3TUpvJsikV7Uf1Fo7qgR4Fhs
-	 A2W0y6KJFnLbOfnCpmnKIb0c8YOTWyn5AYp16PjoDZqDLhhbniY5435SJiGXdKnz9u
-	 w/9jX82zJtff1W8cT4LeQGHcNC6VbpcSucxWUNvY=
+	b=wE2WKO2mW1GP/r+udN90Y3eTtB14JHHtPwDc+h/6+svQcw01k/BP0CPCdImUz4e0W
+	 yzXTbtyGJ5BwhbTGP2ijEnCG6vcVolmSKO31NBKK7tRxnh1zla/k68dtj+lH9IDtbX
+	 IKsuNw3yUT48aq/YT8Ei8L4knEN2Uuyg34h3Jibk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Olivier Moysan <olivier.moysan@st.com>,
-	Johan Hovold <johan@kernel.org>,
-	olivier moysan <olivier.moysan@foss.st.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.12 347/567] ASoC: stm32: sai: fix clk prepare imbalance on probe failure
+	Zilin Guan <zilin@seu.edu.cn>,
+	Alex Williamson <alex@shazbot.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 055/312] vfio/pds: Fix memory leak in pds_vfio_dirty_enable()
 Date: Tue,  6 Jan 2026 18:02:09 +0100
-Message-ID: <20260106170504.164723908@linuxfoundation.org>
+Message-ID: <20260106170549.842885203@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
-References: <20260106170451.332875001@linuxfoundation.org>
+In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
+References: <20260106170547.832845344@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,94 +60,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Zilin Guan <zilin@seu.edu.cn>
 
-commit 312ec2f0d9d1a5656f76d770bbf1d967e9289aa7 upstream.
+[ Upstream commit 665077d78dc7941ce6a330c02023a2b469cc8cc7 ]
 
-Make sure to unprepare the parent clock also on probe failures (e.g.
-probe deferral).
+pds_vfio_dirty_enable() allocates memory for region_info. If
+interval_tree_iter_first() returns NULL, the function returns -EINVAL
+immediately without freeing the allocated memory, causing a memory leak.
 
-Fixes: a14bf98c045b ("ASoC: stm32: sai: fix possible circular locking")
-Cc: stable@vger.kernel.org	# 5.5
-Cc: Olivier Moysan <olivier.moysan@st.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: olivier moysan <olivier.moysan@foss.st.com>
-Link: https://patch.msgid.link/20251124104908.15754-3-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix this by jumping to the out_free_region_info label to ensure
+region_info is freed.
+
+Fixes: 2e7c6feb4ef52 ("vfio/pds: Add multi-region support")
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Link: https://lore.kernel.org/r/20251225143150.1117366-1-zilin@seu.edu.cn
+Signed-off-by: Alex Williamson <alex@shazbot.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/stm/stm32_sai_sub.c |   28 +++++++++++++++++++++-------
- 1 file changed, 21 insertions(+), 7 deletions(-)
+ drivers/vfio/pci/pds/dirty.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/sound/soc/stm/stm32_sai_sub.c
-+++ b/sound/soc/stm/stm32_sai_sub.c
-@@ -1501,14 +1501,21 @@ static int stm32_sai_sub_parse_of(struct
- 	if (of_property_present(np, "#clock-cells")) {
- 		ret = stm32_sai_add_mclk_provider(sai);
- 		if (ret < 0)
--			return ret;
-+			goto err_unprepare_pclk;
- 	} else {
- 		sai->sai_mclk = devm_clk_get_optional(&pdev->dev, "MCLK");
--		if (IS_ERR(sai->sai_mclk))
--			return PTR_ERR(sai->sai_mclk);
-+		if (IS_ERR(sai->sai_mclk)) {
-+			ret = PTR_ERR(sai->sai_mclk);
-+			goto err_unprepare_pclk;
-+		}
- 	}
+diff --git a/drivers/vfio/pci/pds/dirty.c b/drivers/vfio/pci/pds/dirty.c
+index 481992142f79..4915a7c1c491 100644
+--- a/drivers/vfio/pci/pds/dirty.c
++++ b/drivers/vfio/pci/pds/dirty.c
+@@ -292,8 +292,11 @@ static int pds_vfio_dirty_enable(struct pds_vfio_pci_device *pds_vfio,
+ 	len = num_ranges * sizeof(*region_info);
  
- 	return 0;
-+
-+err_unprepare_pclk:
-+	clk_unprepare(sai->pdata->pclk);
-+
-+	return ret;
- }
- 
- static int stm32_sai_sub_probe(struct platform_device *pdev)
-@@ -1548,26 +1555,33 @@ static int stm32_sai_sub_probe(struct pl
- 			       IRQF_SHARED, dev_name(&pdev->dev), sai);
- 	if (ret) {
- 		dev_err(&pdev->dev, "IRQ request returned %d\n", ret);
--		return ret;
-+		goto err_unprepare_pclk;
- 	}
- 
- 	if (STM_SAI_PROTOCOL_IS_SPDIF(sai))
- 		conf = &stm32_sai_pcm_config_spdif;
- 
- 	ret = snd_dmaengine_pcm_register(&pdev->dev, conf, 0);
--	if (ret)
--		return dev_err_probe(&pdev->dev, ret, "Could not register pcm dma\n");
-+	if (ret) {
-+		ret = dev_err_probe(&pdev->dev, ret, "Could not register pcm dma\n");
-+		goto err_unprepare_pclk;
+ 	node = interval_tree_iter_first(ranges, 0, ULONG_MAX);
+-	if (!node)
+-		return -EINVAL;
++	if (!node) {
++		err = -EINVAL;
++		goto out_free_region_info;
 +	}
- 
- 	ret = snd_soc_register_component(&pdev->dev, &stm32_component,
- 					 &sai->cpu_dai_drv, 1);
- 	if (ret) {
- 		snd_dmaengine_pcm_unregister(&pdev->dev);
--		return ret;
-+		goto err_unprepare_pclk;
- 	}
- 
- 	pm_runtime_enable(&pdev->dev);
- 
- 	return 0;
 +
-+err_unprepare_pclk:
-+	clk_unprepare(sai->pdata->pclk);
-+
-+	return ret;
- }
- 
- static void stm32_sai_sub_remove(struct platform_device *pdev)
+ 	for (int i = 0; i < num_ranges; i++) {
+ 		struct pds_lm_dirty_region_info *ri = &region_info[i];
+ 		u64 region_size = node->last - node->start + 1;
+-- 
+2.51.0
+
 
 
 
