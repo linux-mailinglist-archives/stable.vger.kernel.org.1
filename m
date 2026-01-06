@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-205765-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205783-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CBA0CFAEF1
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 21:32:40 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D74C7CFAF00
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 21:33:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EA4FA30581C9
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 20:31:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D3B7F3067651
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 20:31:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1922D3612C4;
-	Tue,  6 Jan 2026 17:49:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7401D364036;
+	Tue,  6 Jan 2026 17:50:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xsN1Toaj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YI2vVS6W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C86B2355031;
-	Tue,  6 Jan 2026 17:49:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F9A036402C;
+	Tue,  6 Jan 2026 17:50:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721785; cv=none; b=Xq5jKVFOZV2cKfRQmoa7MIouU04o9zb8cB2Lrglx7gQ8STon0GHgjwmO6Gtjy7ijPw7971Q2PYfqTfoOE0UTOZijcBLUKWm5o7xCFfTN1QcPBKjPDS9Ci3o8O0MiEYq4OvZPlamOKUmx6/oiwxCwzAJAmbSYofBFczNTVq30x9U=
+	t=1767721848; cv=none; b=Hrhdm17QjuYMvaj/BXwD9NvMIXLb68gtc62/T0s4UVUWrH8IBs+yPqV4YFQr5Dx7prCTRfeckw0OF+vvzB+D0lq2HubBO+pZ5TLsP6GaYpliDYr1t8IHIyOcqPo/PKiks/lIjLjqtcwPIYel3oh1SDaVdqp0KwsJnLjYzZjcUlM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721785; c=relaxed/simple;
-	bh=0uO3C6lU6IIyxRbUcj29L3/vmcWqWoeSCopVN1cegio=;
+	s=arc-20240116; t=1767721848; c=relaxed/simple;
+	bh=jrSZAR8NMyDbL7w/AGgCNPdflJmV70ir90ioQhaqYkw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gf2RHiufyZl78UoRCv86Z36/UDXmeEhWDuq4qH8XTBXqlGXE6rLgwfTLQ84dqR2mSSMtFsdgdRx0N9NiFFV82JJ3PFxD3BfJYNoXWs+b6dyYkPYGVi/6lYq2vYAbmRlipTqwyzaNTxFLQPHMH/UC1PxNmzCt58tEUolvNv8xnvI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xsN1Toaj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 372B2C116C6;
-	Tue,  6 Jan 2026 17:49:45 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hboZNODpyS+axm1Z7rGQz4X9mf23aabyeh2TLx9mh7owPf82MlH7pZ2WZwTrpJiD+yZHMm2vo9+OQU5SPWJGxIjvChvQYbXcwdvmZ/nVHZDk5UANkYV9Jeka9tHP0gTh2wZgF8F2rQbgU77k5qjip6A8BUzdusfmDwfjeVuyvbM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YI2vVS6W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 469D0C116C6;
+	Tue,  6 Jan 2026 17:50:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721785;
-	bh=0uO3C6lU6IIyxRbUcj29L3/vmcWqWoeSCopVN1cegio=;
+	s=korg; t=1767721847;
+	bh=jrSZAR8NMyDbL7w/AGgCNPdflJmV70ir90ioQhaqYkw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xsN1ToajgvoE3MQivLRfjZ1i+TTpSqGvJ7aAuc3kDGjD1s31HIqurCqOODeRL1eg+
-	 ZhuweRPIlSGjQdVCdqunhtFrT+/jd9ZS6O0jkIPiqFvc6YruuD8CwWBq4SA5PAaH3l
-	 dS5vltsIjPAJ9yDcNzoCH0gMDKfw/HJAfKsGpWFs=
+	b=YI2vVS6WX0Ii+197xfoDfuj9AdklVj+W+V44X8a183WZ8njOOqBgBZXuxxq18MtBj
+	 Sn/g1/RW+lUZ6zGMGOnDlB041g8G6IPx4canLERpGA+mKKGjl4hlzZpAH1aWrrkGLV
+	 c04qq31Zh+YDEz0rl8HvExtoz5uLQI+gA4MbWA6U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kohei Enju <enjuk@amazon.com>,
-	Emil Tsalapatis <emil@etsalapatis.com>,
-	Tejun Heo <tj@kernel.org>,
+	Yuhao Jiang <danisjiang@gmail.com>,
+	Junrui Luo <moonafterrain@outlook.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 054/312] tools/sched_ext: fix scx_show_state.py for scx_root change
-Date: Tue,  6 Jan 2026 18:02:08 +0100
-Message-ID: <20260106170549.807342244@linuxfoundation.org>
+Subject: [PATCH 6.18 056/312] platform/x86: hp-bioscfg: Fix out-of-bounds array access in ACPI package parsing
+Date: Tue,  6 Jan 2026 18:02:10 +0100
+Message-ID: <20260106170549.878282344@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
 References: <20260106170547.832845344@linuxfoundation.org>
@@ -59,72 +59,130 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kohei Enju <enjuk@amazon.com>
+From: Junrui Luo <moonafterrain@outlook.com>
 
-[ Upstream commit f92ff79ba2640fc482bf2bfb5b42e33957f90caf ]
+[ Upstream commit e44c42c830b7ab36e3a3a86321c619f24def5206 ]
 
-Commit 48e126777386 ("sched_ext: Introduce scx_sched") introduced
-scx_root and removed scx_ops, causing scx_show_state.py to fail when
-searching for the 'scx_ops' object. [1]
+The hp_populate_*_elements_from_package() functions in the hp-bioscfg
+driver contain out-of-bounds array access vulnerabilities.
 
-Fix by using 'scx_root' instead, with NULL pointer handling.
+These functions parse ACPI packages into internal data structures using
+a for loop with index variable 'elem' that iterates through
+enum_obj/integer_obj/order_obj/password_obj/string_obj arrays.
 
-[1]
- # drgn -s vmlinux ./tools/sched_ext/scx_show_state.py
- Traceback (most recent call last):
-   File "/root/.venv/bin/drgn", line 8, in <module>
-     sys.exit(_main())
-              ~~~~~^^
-   File "/root/.venv/lib64/python3.14/site-packages/drgn/cli.py", line 625, in _main
-     runpy.run_path(
-     ~~~~~~~~~~~~~~^
-         script_path, init_globals={"prog": prog}, run_name="__main__"
-         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-     )
-     ^
-   File "<frozen runpy>", line 287, in run_path
-   File "<frozen runpy>", line 98, in _run_module_code
-   File "<frozen runpy>", line 88, in _run_code
-   File "./tools/sched_ext/scx_show_state.py", line 30, in <module>
-     ops = prog['scx_ops']
-           ~~~~^^^^^^^^^^^
- _drgn.ObjectNotFoundError: could not find 'scx_ops'
+When processing multi-element fields like PREREQUISITES and
+ENUM_POSSIBLE_VALUES, these functions read multiple consecutive array
+elements using expressions like 'enum_obj[elem + reqs]' and
+'enum_obj[elem + pos_values]' within nested loops.
 
-Fixes: 48e126777386 ("sched_ext: Introduce scx_sched")
-Signed-off-by: Kohei Enju <enjuk@amazon.com>
-Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
+The bug is that the bounds check only validated elem, but did not consider
+the additional offset when accessing elem + reqs or elem + pos_values.
+
+The fix changes the bounds check to validate the actual accessed index.
+
+Reported-by: Yuhao Jiang <danisjiang@gmail.com>
+Reported-by: Junrui Luo <moonafterrain@outlook.com>
+Fixes: e6c7b3e15559 ("platform/x86: hp-bioscfg: string-attributes")
+Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
+Link: https://patch.msgid.link/SYBPR01MB788173D7DD4EA2CB6383683DAFB0A@SYBPR01MB7881.ausprd01.prod.outlook.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/sched_ext/scx_show_state.py | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/platform/x86/hp/hp-bioscfg/enum-attributes.c       | 4 ++--
+ drivers/platform/x86/hp/hp-bioscfg/int-attributes.c        | 2 +-
+ drivers/platform/x86/hp/hp-bioscfg/order-list-attributes.c | 5 +++++
+ drivers/platform/x86/hp/hp-bioscfg/passwdobj-attributes.c  | 5 +++++
+ drivers/platform/x86/hp/hp-bioscfg/string-attributes.c     | 2 +-
+ 5 files changed, 14 insertions(+), 4 deletions(-)
 
-diff --git a/tools/sched_ext/scx_show_state.py b/tools/sched_ext/scx_show_state.py
-index 7cdcc6729ea4..aec4a4498140 100644
---- a/tools/sched_ext/scx_show_state.py
-+++ b/tools/sched_ext/scx_show_state.py
-@@ -27,10 +27,13 @@ def read_static_key(name):
- def state_str(state):
-     return prog['scx_enable_state_str'][state].string_().decode()
+diff --git a/drivers/platform/x86/hp/hp-bioscfg/enum-attributes.c b/drivers/platform/x86/hp/hp-bioscfg/enum-attributes.c
+index c50ad5880503..f346aad8e9d8 100644
+--- a/drivers/platform/x86/hp/hp-bioscfg/enum-attributes.c
++++ b/drivers/platform/x86/hp/hp-bioscfg/enum-attributes.c
+@@ -207,7 +207,7 @@ static int hp_populate_enumeration_elements_from_package(union acpi_object *enum
+ 		case PREREQUISITES:
+ 			size = min_t(u32, enum_data->common.prerequisites_size, MAX_PREREQUISITES_SIZE);
+ 			for (reqs = 0; reqs < size; reqs++) {
+-				if (elem >= enum_obj_count) {
++				if (elem + reqs >= enum_obj_count) {
+ 					pr_err("Error enum-objects package is too small\n");
+ 					return -EINVAL;
+ 				}
+@@ -255,7 +255,7 @@ static int hp_populate_enumeration_elements_from_package(union acpi_object *enum
  
--ops = prog['scx_ops']
-+root = prog['scx_root']
- enable_state = read_atomic("scx_enable_state_var")
+ 			for (pos_values = 0; pos_values < size && pos_values < MAX_VALUES_SIZE;
+ 			     pos_values++) {
+-				if (elem >= enum_obj_count) {
++				if (elem + pos_values >= enum_obj_count) {
+ 					pr_err("Error enum-objects package is too small\n");
+ 					return -EINVAL;
+ 				}
+diff --git a/drivers/platform/x86/hp/hp-bioscfg/int-attributes.c b/drivers/platform/x86/hp/hp-bioscfg/int-attributes.c
+index 6c7f4d5fa9cb..63b1fda2be4e 100644
+--- a/drivers/platform/x86/hp/hp-bioscfg/int-attributes.c
++++ b/drivers/platform/x86/hp/hp-bioscfg/int-attributes.c
+@@ -227,7 +227,7 @@ static int hp_populate_integer_elements_from_package(union acpi_object *integer_
+ 			size = min_t(u32, integer_data->common.prerequisites_size, MAX_PREREQUISITES_SIZE);
  
--print(f'ops           : {ops.name.string_().decode()}')
-+if root:
-+    print(f'ops           : {root.ops.name.string_().decode()}')
-+else:
-+    print('ops           : ')
- print(f'enabled       : {read_static_key("__scx_enabled")}')
- print(f'switching_all : {read_int("scx_switching_all")}')
- print(f'switched_all  : {read_static_key("__scx_switched_all")}')
+ 			for (reqs = 0; reqs < size; reqs++) {
+-				if (elem >= integer_obj_count) {
++				if (elem + reqs >= integer_obj_count) {
+ 					pr_err("Error elem-objects package is too small\n");
+ 					return -EINVAL;
+ 				}
+diff --git a/drivers/platform/x86/hp/hp-bioscfg/order-list-attributes.c b/drivers/platform/x86/hp/hp-bioscfg/order-list-attributes.c
+index c6e57bb9d8b7..6a31f47ce3f5 100644
+--- a/drivers/platform/x86/hp/hp-bioscfg/order-list-attributes.c
++++ b/drivers/platform/x86/hp/hp-bioscfg/order-list-attributes.c
+@@ -216,6 +216,11 @@ static int hp_populate_ordered_list_elements_from_package(union acpi_object *ord
+ 			size = min_t(u32, ordered_list_data->common.prerequisites_size,
+ 				     MAX_PREREQUISITES_SIZE);
+ 			for (reqs = 0; reqs < size; reqs++) {
++				if (elem + reqs >= order_obj_count) {
++					pr_err("Error elem-objects package is too small\n");
++					return -EINVAL;
++				}
++
+ 				ret = hp_convert_hexstr_to_str(order_obj[elem + reqs].string.pointer,
+ 							       order_obj[elem + reqs].string.length,
+ 							       &str_value, &value_len);
+diff --git a/drivers/platform/x86/hp/hp-bioscfg/passwdobj-attributes.c b/drivers/platform/x86/hp/hp-bioscfg/passwdobj-attributes.c
+index 187b372123ed..ec79d9d50377 100644
+--- a/drivers/platform/x86/hp/hp-bioscfg/passwdobj-attributes.c
++++ b/drivers/platform/x86/hp/hp-bioscfg/passwdobj-attributes.c
+@@ -303,6 +303,11 @@ static int hp_populate_password_elements_from_package(union acpi_object *passwor
+ 				     MAX_PREREQUISITES_SIZE);
+ 
+ 			for (reqs = 0; reqs < size; reqs++) {
++				if (elem + reqs >= password_obj_count) {
++					pr_err("Error elem-objects package is too small\n");
++					return -EINVAL;
++				}
++
+ 				ret = hp_convert_hexstr_to_str(password_obj[elem + reqs].string.pointer,
+ 							       password_obj[elem + reqs].string.length,
+ 							       &str_value, &value_len);
+diff --git a/drivers/platform/x86/hp/hp-bioscfg/string-attributes.c b/drivers/platform/x86/hp/hp-bioscfg/string-attributes.c
+index 27758b779b2d..7b885d25650c 100644
+--- a/drivers/platform/x86/hp/hp-bioscfg/string-attributes.c
++++ b/drivers/platform/x86/hp/hp-bioscfg/string-attributes.c
+@@ -217,7 +217,7 @@ static int hp_populate_string_elements_from_package(union acpi_object *string_ob
+ 				     MAX_PREREQUISITES_SIZE);
+ 
+ 			for (reqs = 0; reqs < size; reqs++) {
+-				if (elem >= string_obj_count) {
++				if (elem + reqs >= string_obj_count) {
+ 					pr_err("Error elem-objects package is too small\n");
+ 					return -EINVAL;
+ 				}
 -- 
 2.51.0
 
