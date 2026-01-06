@@ -1,51 +1,61 @@
-Return-Path: <stable+bounces-205957-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205963-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92107CFA3A2
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:38:20 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3688DCFA64F
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:58:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 939A53044843
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:38:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 233C5341D758
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:15:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 026DB376BF2;
-	Tue,  6 Jan 2026 18:00:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB291366559;
+	Tue,  6 Jan 2026 18:00:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z+HXyhUP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GBS/G5jW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3908376BFD;
-	Tue,  6 Jan 2026 18:00:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98A21366547;
+	Tue,  6 Jan 2026 18:00:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767722425; cv=none; b=duc/J5q6qQSuvqUZv7V3pKcS2ALgmTl9hU/273o11TkCBeJe4XtSpl10i3GS/0k+4Kgn25J3uZMiWqPKnwWUg/2SSJvieJSWrA1vKItihyyWdJhxAtDt/yJGyZlpwZD6gc1Whk9GPKwDCa5m+j1eoc4YsRtrl8FJFYAtmixwzHI=
+	t=1767722445; cv=none; b=dL8T6681j9HD2noENEg//K0YIIJQGtUDYDt9tE8j+QW9X7XUzkrBiPpMl1VwW6nSgwQZD02Olq4ghF9AITEmAjnU0Fliz+icCYWacvqtE/eMDqGiZyJv/P6j07AtKBnG+p2oIDyS1XCuMZRPlL3epcGW6Tz+0GrUYk5XvHLV+hg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767722425; c=relaxed/simple;
-	bh=GuEAsQQHza2ph64jAzU8/uYFIKSpqyn/VBuRebTaRrA=;
+	s=arc-20240116; t=1767722445; c=relaxed/simple;
+	bh=faMirbnbp2OFdmYjAj6DwcLp1cwBawYPqeqNTUIDCDw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TiZ7wvfzTC+WtaTlcGV/CWuAarK/+iglP4GJru8RpFJq8KBjIjyHVbUU+Tg9GpaKrHE4H032bVqqpTII2be6yjQAn6epyKmSz+C2QDA1xmPM9A0EMJ0bNQhuVNrWyqVb1zGD1ebQtekiDxgNWA1g33MaIVzfSCmjOXG/uzik0zg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z+HXyhUP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21CF5C116C6;
-	Tue,  6 Jan 2026 18:00:24 +0000 (UTC)
+	 MIME-Version; b=bcxdUuZjuh6T4lsbYz4/jVAkJou20sa5rRxTVzDLFUZ1pLN/Nw9jkqL3noazV/2AcE+rikq1Ut80XcjKcwncSEepVl3OpiY/zevVN+E4w2apkTTYdZQAM+ub6IZQwMPmELVEEv8uop3olNwsSRwraC4Pc7dKZDdRLg3K1sb3DkQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GBS/G5jW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C625C16AAE;
+	Tue,  6 Jan 2026 18:00:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767722425;
-	bh=GuEAsQQHza2ph64jAzU8/uYFIKSpqyn/VBuRebTaRrA=;
+	s=korg; t=1767722445;
+	bh=faMirbnbp2OFdmYjAj6DwcLp1cwBawYPqeqNTUIDCDw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z+HXyhUP2z9nqgLzPff50V5eOCw56zr3kz8cZNeWeClyg2DGL9Dg8JTxNzHGXsJ/F
-	 dE/cuEGnNWGGXvDm3OK969pEnrvZj5XxNnKLpn7v/uYk98ZeXJKOPoL0g67ww+4AwD
-	 VQsSw+Fg4rE3FIN1wQx/rW/zaupyJCWtK9UWb4t8=
+	b=GBS/G5jWY4LS5pGVFGBgbCPJNHPS8piKMUjQP0uNVbwdlnvte93YNxjB2TJCoKYDa
+	 Tb8Euv5b4P7iPskxTZu+h36WOlzFjwf8PEjlPa1evkxXFMg+wzkJ9jUkow6ZN/apZT
+	 E0WITYfkhVVFBdXv1y3DLApNxkPbfCTYFeTQOh3A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kaushlendra Kumar <kaushlendra.kumar@intel.com>,
-	Chongxi Zhao <zhaochongxi2019@email.szu.edu.cn>,
+	Wake Liu <wakel@google.com>,
+	Peter Xu <peterx@redhat.com>,
+	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Liam Howlett <liam.howlett@oracle.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.18 233/312] tools/mm/page_owner_sort: fix timestamp comparison for stable sorting
-Date: Tue,  6 Jan 2026 18:05:07 +0100
-Message-ID: <20260106170556.280239111@linuxfoundation.org>
+Subject: [PATCH 6.18 234/312] selftests/mm: fix thread state check in uffd-unit-tests
+Date: Tue,  6 Jan 2026 18:05:08 +0100
+Message-ID: <20260106170556.316818434@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
 References: <20260106170547.832845344@linuxfoundation.org>
@@ -64,41 +74,67 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
+From: Wake Liu <wakel@google.com>
 
-commit 7013803444dd3bbbe28fd3360c084cec3057c554 upstream.
+commit 632b874d59a36caf829ab5790dafb90f9b350fd6 upstream.
 
-The ternary operator in compare_ts() returns 1 when timestamps are equal,
-causing unstable sorting behavior. Replace with explicit three-way
-comparison that returns 0 for equal timestamps, ensuring stable qsort
-ordering and consistent output.
+In the thread_state_get() function, the logic to find the thread's state
+character was using `sizeof(header) - 1` to calculate the offset from the
+"State:\t" string.
 
-Link: https://lkml.kernel.org/r/20251209044552.3396468-1-kaushlendra.kumar@intel.com
-Fixes: 8f9c447e2e2b ("tools/vm/page_owner_sort.c: support sorting pid and time")
-Signed-off-by: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
-Cc: Chongxi Zhao <zhaochongxi2019@email.szu.edu.cn>
+The `header` variable is a `const char *` pointer.  `sizeof()` on a
+pointer returns the size of the pointer itself, not the length of the
+string literal it points to.  This makes the code's behavior dependent on
+the architecture's pointer size.
+
+This bug was identified on a 32-bit ARM build (`gsi_tv_arm`) for Android,
+running on an ARMv8-based device, compiled with Clang 19.0.1.
+
+On this 32-bit architecture, `sizeof(char *)` is 4.  The expression
+`sizeof(header) - 1` resulted in an incorrect offset of 3, causing the
+test to read the wrong character from `/proc/[tid]/status` and fail.
+
+On 64-bit architectures, `sizeof(char *)` is 8, so the expression
+coincidentally evaluates to 7, which matches the length of "State:\t".
+This is why the bug likely remained hidden on 64-bit builds.
+
+To fix this and make the code portable and correct across all
+architectures, this patch replaces `sizeof(header) - 1` with
+`strlen(header)`.  The `strlen()` function correctly calculates the
+string's length, ensuring the correct offset is always used.
+
+Link: https://lkml.kernel.org/r/20251210091408.3781445-1-wakel@google.com
+Fixes: f60b6634cd88 ("mm/selftests: add a test to verify mmap_changing race with -EAGAIN")
+Signed-off-by: Wake Liu <wakel@google.com>
+Acked-by: Peter Xu <peterx@redhat.com>
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Cc: Bill Wendling <morbo@google.com>
+Cc: Justin Stitt <justinstitt@google.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/mm/page_owner_sort.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ tools/testing/selftests/mm/uffd-unit-tests.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/tools/mm/page_owner_sort.c
-+++ b/tools/mm/page_owner_sort.c
-@@ -183,7 +183,11 @@ static int compare_ts(const void *p1, co
- {
- 	const struct block_list *l1 = p1, *l2 = p2;
- 
--	return l1->ts_nsec < l2->ts_nsec ? -1 : 1;
-+	if (l1->ts_nsec < l2->ts_nsec)
-+		return -1;
-+	if (l1->ts_nsec > l2->ts_nsec)
-+		return 1;
-+	return 0;
- }
- 
- static int compare_cull_condition(const void *p1, const void *p2)
+--- a/tools/testing/selftests/mm/uffd-unit-tests.c
++++ b/tools/testing/selftests/mm/uffd-unit-tests.c
+@@ -1317,7 +1317,7 @@ static thread_state thread_state_get(pid
+ 		p = strstr(tmp, header);
+ 		if (p) {
+ 			/* For example, "State:\tD (disk sleep)" */
+-			c = *(p + sizeof(header) - 1);
++			c = *(p + strlen(header));
+ 			return c == 'D' ?
+ 			    THR_STATE_UNINTERRUPTIBLE : THR_STATE_UNKNOWN;
+ 		}
 
 
 
