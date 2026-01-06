@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-205925-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205647-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06D46CFA14C
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:20:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B28A4CFA306
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:33:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E739F3063449
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:18:01 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BCD35301F7C9
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:33:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93A9E36CE10;
-	Tue,  6 Jan 2026 17:58:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 698172FE566;
+	Tue,  6 Jan 2026 17:43:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SI8VJyu0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qOaDUrmY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F1FC36CDEF;
-	Tue,  6 Jan 2026 17:58:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 233012FD69E;
+	Tue,  6 Jan 2026 17:43:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767722321; cv=none; b=Uo8jQK5xcYMzocbCQOqZAfl0TrrBb8KUtzUY8zeEHlVNvwpWYuOhvoG21jJpKDRn/BwlsrGu4tb2PIiMBhjBlZ7JSjmoFwuNlHDxvu+8v/q1yXiP+vRmVNniCeEC7Mzeh+Lo6d2ZVLiaCCmQqAJhIWrieHAB9oTIOOdAYWVAuO4=
+	t=1767721388; cv=none; b=P5oRnHcjHOMPUxoTQ3uMmMs5w6DqoK4Rt4yEAOqKV7HOb4sJWgJJz5saoviZyHddvx6pn5IrZRSQLd0uVo9cXvu9nfoJGOIc8c5SMPdh19cCPGatBEqhfI+N8Yogh1uxbCp33EuWiaPtWs6yldCeQXpfeOoWSZogYOVAeUGRtkE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767722321; c=relaxed/simple;
-	bh=ZZAPzfF0b7QoNN0LoQrwjCKSoUG4bfBTnz3WVOMxHSA=;
+	s=arc-20240116; t=1767721388; c=relaxed/simple;
+	bh=hWGmpzPhdW1Yo5uvJAJtwKJh6KT/AuHvPJEuDPeFTUI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EqMoogDmnunPpVc3lO1FSt1/MlEy6tfcDxLcAkb3xongXEfVNm4/tfAnruBZVH7rKE1lr6qoqCTnhTofoa98/ONt+CjldxA9WOH2/MNxm/zPvIrAs23K8pEnPZmqZgC4J3CdVrhI+Os6x/0d9DadIW9jPTmTOVzYfcA8SOcl6UM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SI8VJyu0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0133C116C6;
-	Tue,  6 Jan 2026 17:58:40 +0000 (UTC)
+	 MIME-Version; b=pBvgVLZ21HhnYPkGYQYw2odOrPRjOIO88dHPLx/wj7sMgTOOBBspV2R7P7fTbqMNxlrw9sfQuIjKi5I/ZPHZybU2wQyx0lb65z9YmLpk9dxJ3HFSzOOgqE/IacPdcPdgGPzxjUBnK/Losla64wQ3ohYVyJIv6SPsCmPCzUwu6gE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qOaDUrmY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C4C9C116C6;
+	Tue,  6 Jan 2026 17:43:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767722321;
-	bh=ZZAPzfF0b7QoNN0LoQrwjCKSoUG4bfBTnz3WVOMxHSA=;
+	s=korg; t=1767721388;
+	bh=hWGmpzPhdW1Yo5uvJAJtwKJh6KT/AuHvPJEuDPeFTUI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SI8VJyu0Ubs26HMRNwLXIh/gqoAS9dVZUXGnkzJJUg3QjsXwXKzZfocelHlCarfMr
-	 k85PU2N8wFaveCAGHSvenIk3yr7IKJf0tJA8hHRAnz+6l4wwsR0JYN6eIf0Po/lRjp
-	 tbszYxWvnh+rj6Y2nRR5VNzQ/IlCrHogGVv53ssg=
+	b=qOaDUrmYGSEZM394RiAtRsp66FNfV1PSuR4oNvdAlaGuhdIcmDkLOMxpjZZjjEYfs
+	 x0DDEqpERsCQD8mG8ykDxA9tXV8d1lReiKjaAX0Ey8+mYiGokEkTyB9L6FU8KXb7l0
+	 bkZVooaI44nzbcAmjz2BvnfGUdXGg+GC34imPMmU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Jan Sokolowski <jan.sokolowski@intel.com>,
-	Koen Koning <koen.koning@intel.com>,
-	Peter Senna Tschudin <peter.senna@linux.intel.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.18 228/312] idr: fix idr_alloc() returning an ID out of range
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Mika Westerberg <westeri@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 520/567] gpiolib: acpi: Add a quirk for Acer Nitro V15
 Date: Tue,  6 Jan 2026 18:05:02 +0100
-Message-ID: <20260106170556.101146394@linuxfoundation.org>
+Message-ID: <20260106170510.623724462@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
-References: <20260106170547.832845344@linuxfoundation.org>
+In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
+References: <20260106170451.332875001@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,85 +59,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Wilcox (Oracle) <willy@infradead.org>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit c6e8e595a0798ad67da0f7bebaf69c31ef70dfff upstream.
+[ Upstream commit 9ab29ed505557bd106e292184fa4917955eb8e6e ]
 
-If you use an IDR with a non-zero base, and specify a range that lies
-entirely below the base, 'max - base' becomes very large and
-idr_get_free() can return an ID that lies outside of the requested range.
+It is reported that on Acer Nitro V15 suspend only works properly if the
+keyboard backlight is turned off. In looking through the issue Acer Nitro
+V15 has a GPIO (#8) specified in _AEI but it has no matching notify device
+in _EVT. The values for GPIO #8 change as keyboard backlight is turned on
+and off.
 
-Link: https://lkml.kernel.org/r/20251128161853.3200058-1-willy@infradead.org
-Fixes: 6ce711f27500 ("idr: Make 1-based IDRs more efficient")
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Reported-by: Jan Sokolowski <jan.sokolowski@intel.com>
-Reported-by: Koen Koning <koen.koning@intel.com>
-Reported-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
-Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/6449
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+This makes it seem that GPIO #8 is actually supposed to be solely for
+keyboard backlight.  Turning off the interrupt for this GPIO fixes the issue.
+Add a quirk that does just that.
+
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4169
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Acked-by: Mika Westerberg <westeri@kernel.org>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Stable-dep-of: 2d967310c49e ("gpiolib: acpi: Add quirk for Dell Precision 7780")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- lib/idr.c                           |    2 ++
- tools/testing/radix-tree/idr-test.c |   21 +++++++++++++++++++++
- 2 files changed, 23 insertions(+)
+ drivers/gpio/gpiolib-acpi-quirks.c |   13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
---- a/lib/idr.c
-+++ b/lib/idr.c
-@@ -40,6 +40,8 @@ int idr_alloc_u32(struct idr *idr, void
+--- a/drivers/gpio/gpiolib-acpi-quirks.c
++++ b/drivers/gpio/gpiolib-acpi-quirks.c
+@@ -331,6 +331,19 @@ static const struct dmi_system_id gpioli
+ 			.ignore_interrupt = "AMDI0030:00@11",
+ 		},
+ 	},
++	{
++		/*
++		 * Wakeup only works when keyboard backlight is turned off
++		 * https://gitlab.freedesktop.org/drm/amd/-/issues/4169
++		 */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
++			DMI_MATCH(DMI_PRODUCT_FAMILY, "Acer Nitro V 15"),
++		},
++		.driver_data = &(struct acpi_gpiolib_dmi_quirk) {
++			.ignore_interrupt = "AMDI0030:00@8",
++		},
++	},
+ 	{} /* Terminating entry */
+ };
  
- 	if (WARN_ON_ONCE(!(idr->idr_rt.xa_flags & ROOT_IS_IDR)))
- 		idr->idr_rt.xa_flags |= IDR_RT_MARKER;
-+	if (max < base)
-+		return -ENOSPC;
- 
- 	id = (id < base) ? 0 : id - base;
- 	radix_tree_iter_init(&iter, id);
---- a/tools/testing/radix-tree/idr-test.c
-+++ b/tools/testing/radix-tree/idr-test.c
-@@ -57,6 +57,26 @@ void idr_alloc_test(void)
- 	idr_destroy(&idr);
- }
- 
-+void idr_alloc2_test(void)
-+{
-+	int id;
-+	struct idr idr = IDR_INIT_BASE(idr, 1);
-+
-+	id = idr_alloc(&idr, idr_alloc2_test, 0, 1, GFP_KERNEL);
-+	assert(id == -ENOSPC);
-+
-+	id = idr_alloc(&idr, idr_alloc2_test, 1, 2, GFP_KERNEL);
-+	assert(id == 1);
-+
-+	id = idr_alloc(&idr, idr_alloc2_test, 0, 1, GFP_KERNEL);
-+	assert(id == -ENOSPC);
-+
-+	id = idr_alloc(&idr, idr_alloc2_test, 0, 2, GFP_KERNEL);
-+	assert(id == -ENOSPC);
-+
-+	idr_destroy(&idr);
-+}
-+
- void idr_replace_test(void)
- {
- 	DEFINE_IDR(idr);
-@@ -409,6 +429,7 @@ void idr_checks(void)
- 
- 	idr_replace_test();
- 	idr_alloc_test();
-+	idr_alloc2_test();
- 	idr_null_test();
- 	idr_nowait_test();
- 	idr_get_next_test(0);
 
 
 
