@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-205596-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205598-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5120ECFAD2B
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:57:16 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4EC2CFAA2E
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:25:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 63A9D31D3987
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 19:42:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9CF47330A2F6
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:38:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C2A42D9EE7;
-	Tue,  6 Jan 2026 17:40:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0599D2DE6F1;
+	Tue,  6 Jan 2026 17:40:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cavIzn+T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2VCQolxR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49AD22D73B9;
-	Tue,  6 Jan 2026 17:40:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B38622D73B9;
+	Tue,  6 Jan 2026 17:40:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721216; cv=none; b=Y66u7T8u2/Dar3c1lRjqecVAfhTDkd84vVMuY9ql3sFW58wBlBqhhOoHykiDqAMGxkch6psckRMawzqBEg2KEMylefuMVLkjssLRy+yVcSaF5HhKEJkuSRRlYAMgrD1r5o+E9G4sfnp+4W4tidEia4HZlOfsF6q1B0+I4Zmzesw=
+	t=1767721222; cv=none; b=pt+CTzvDAHgnCZEoKA56vhkHV3N5D+F03djpLxjpRfRXMQV0un0K4/3Tp3mwICAYys/DHJkwJCr/7oejhu8ZubRbZxNmf8EDnUgTgpQkys2D6RFvZBM4kJQxqGFHkZpDTAaEZjbWtJ0ymnROnltADXQ02VzoVBy95nNMRkTLwRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721216; c=relaxed/simple;
-	bh=0wuhMG1OIY7x+Q/YzFEQXWE6XYDWMYlxd6BgrSlW6Ic=;
+	s=arc-20240116; t=1767721222; c=relaxed/simple;
+	bh=cVxB0Tfbjr7fd6wjyG0V2TkwmD5ZMYluyRb0B4olA7o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KexKW+wTqPMHeR6RnZ4axI8HXzM24MjDwCEJ91GPfM5TPmF0ymJEAApCUVH3GG5X8FEJoxRT1ljGDgdhVux9zn65J1SFZ5yvzfoEhY0sY+Ulu3lw4CXGTKbiqyFj6PJ7R5V/cuM7QP2uXfbyPaEEef0RIMGitvso0RCk45cG70U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cavIzn+T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59540C19423;
-	Tue,  6 Jan 2026 17:40:15 +0000 (UTC)
+	 MIME-Version:Content-Type; b=J64REHXV/84lJnb0Z/DMgCIY5cxIHLkY313qxK9AbWYwtCMxrh+KstNhBhSbn63i3Gry15Tuqxkbnd2M1MF4ETG4u+MNnSsJEoOGJRExRJL3PJMb3fhy2wB3OHaZoAUJdC3VQ8kaav5w6hORBPskQCVbqqGgGdTl0ca3nOTqe4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2VCQolxR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D695C116C6;
+	Tue,  6 Jan 2026 17:40:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721215;
-	bh=0wuhMG1OIY7x+Q/YzFEQXWE6XYDWMYlxd6BgrSlW6Ic=;
+	s=korg; t=1767721222;
+	bh=cVxB0Tfbjr7fd6wjyG0V2TkwmD5ZMYluyRb0B4olA7o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cavIzn+TJLKdvoUm4NBhU5RK3W37W/rGw5zFHe3scUx2IJjmzNezxSJenXJxPmTcp
-	 OuUddGgi82vzv66bIDUDs+/dayvM2WZx2fCVsDQvDaMS2HPspOEffim663E52HFfDo
-	 GNIuyy5ztahGmMb8hgEx2HwQ6wMfQs+mRDeSNZ+4=
+	b=2VCQolxRPj+TQ4Gv7wB6bRIXncUDRQEdle6oy0t+8Yu2eqgcwvyU3yeA4m0yAqeG3
+	 84zxpK+HsyoQgPXkDZrYmsuUra7JHUyYL7LK+B5EulCFLALKIYllDUXZzl/1VUpftL
+	 AX6dbGMzzFBIkv2DYEsUzKXjx1+rICRVsE9kDqjc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Kim <jonathan.kim@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.12 471/567] drm/amdkfd: bump minimum vgpr size for gfx1151
-Date: Tue,  6 Jan 2026 18:04:13 +0100
-Message-ID: <20260106170508.775781097@linuxfoundation.org>
+	Ard Biesheuvel <ardb@kernel.org>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
+	Jani Nikula <jani.nikula@intel.com>
+Subject: [PATCH 6.12 473/567] drm/i915: Fix format string truncation warning
+Date: Tue,  6 Jan 2026 18:04:15 +0100
+Message-ID: <20260106170508.849974633@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
 References: <20260106170451.332875001@linuxfoundation.org>
@@ -58,39 +58,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonathan Kim <jonathan.kim@amd.com>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-commit cf326449637a566ba98fb82c47d46cd479608c88 upstream.
+commit 1c7f9e528f8f488b060b786bfb90b40540854db3 upstream.
 
-GFX1151 has 1.5x the number of available physical VGPRs per SIMD.
-Bump total memory availability for acquire checks on queue creation.
+GCC notices that the 16-byte uabi_name field could theoretically be too
+small for the formatted string if the instance number exceeds 100.
 
-Signed-off-by: Jonathan Kim <jonathan.kim@amd.com>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit b42f3bf9536c9b710fd1d4deb7d1b0dc819dc72d)
-Cc: stable@vger.kernel.org
+So grow the field to 20 bytes.
+
+drivers/gpu/drm/i915/intel_memory_region.c: In function ‘intel_memory_region_create’:
+drivers/gpu/drm/i915/intel_memory_region.c:273:61: error: ‘%u’ directive output may be truncated writing between 1 and 5 bytes into a region of size between 3 and 11 [-Werror=format-truncation=]
+  273 |         snprintf(mem->uabi_name, sizeof(mem->uabi_name), "%s%u",
+      |                                                             ^~
+drivers/gpu/drm/i915/intel_memory_region.c:273:58: note: directive argument in the range [0, 65535]
+  273 |         snprintf(mem->uabi_name, sizeof(mem->uabi_name), "%s%u",
+      |                                                          ^~~~~~
+drivers/gpu/drm/i915/intel_memory_region.c:273:9: note: ‘snprintf’ output between 7 and 19 bytes into a destination of size 16
+  273 |         snprintf(mem->uabi_name, sizeof(mem->uabi_name), "%s%u",
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  274 |                  intel_memory_type_str(type), instance);
+      |                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Fixes: 3b38d3515753 ("drm/i915: Add stable memory region names")
+Cc: <stable@vger.kernel.org> # v6.8+
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
+Link: https://lore.kernel.org/r/20251205113500.684286-2-ardb@kernel.org
+(cherry picked from commit 18476087f1a18dc279d200d934ad94fba1fb51d5)
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_queue.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/i915/intel_memory_region.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/amdkfd/kfd_queue.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_queue.c
-@@ -408,6 +408,7 @@ static u32 kfd_get_vgpr_size_per_cu(u32
- 		vgpr_size = 0x80000;
- 	else if (gfxv == 110000 ||		/* GFX_VERSION_PLUM_BONITO */
- 		 gfxv == 110001 ||		/* GFX_VERSION_WHEAT_NAS */
-+		 gfxv == 110501 ||		/* GFX_VERSION_GFX1151 */
- 		 gfxv == 120000 ||		/* GFX_VERSION_GFX1200 */
- 		 gfxv == 120001)		/* GFX_VERSION_GFX1201 */
- 		vgpr_size = 0x60000;
+--- a/drivers/gpu/drm/i915/intel_memory_region.h
++++ b/drivers/gpu/drm/i915/intel_memory_region.h
+@@ -72,7 +72,7 @@ struct intel_memory_region {
+ 	u16 instance;
+ 	enum intel_region_id id;
+ 	char name[16];
+-	char uabi_name[16];
++	char uabi_name[20];
+ 	bool private; /* not for userspace */
+ 
+ 	struct {
 
 
 
