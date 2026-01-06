@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-205469-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205789-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9CBFCF9DBB
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 18:52:12 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C78BCF9F91
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:10:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 866E531F4EE9
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:40:03 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 50A33305BD53
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:07:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B4522D97BF;
-	Tue,  6 Jan 2026 17:33:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20329364042;
+	Tue,  6 Jan 2026 17:51:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dfb02SnD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GAsxvghp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDBB62D9484;
-	Tue,  6 Jan 2026 17:33:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D104F36402B;
+	Tue,  6 Jan 2026 17:51:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767720798; cv=none; b=YkywlnHGQttU06Q714R7slDAA5eiJsSJcrwHfaebrbdg3FC6HuMskcMM8JwkU3Dz3gACdwq5DkvGG1HUAkHA6Vm2ivZgyd41Zft5kuJFHIxtSAuEbiKvDh3YTkHDtoRBAJbXNmSe4XmVtD1/jZP6zQgmvv+01Nu7/n5FRQEUXZw=
+	t=1767721867; cv=none; b=O7cxFxWLaFx/w1RRDNHaR+SgMyXi8MmTGOW6vokgKL2gEvYieakucL4IfS2Z3nx9lVVGe5l9UOHu1zGNFt4Lb8X1aFj3zt+FiFDqlpxsM59Wb50cGmt9XWbyvgoCbfOq4ctTXg/GoSgWoMtXLWraUZxYQ1wQ+CyhnLrZMqyex7c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767720798; c=relaxed/simple;
-	bh=DxpDgCJUMyph5pKKRbi3xWme+4gd/+ssiaO3eqODCiI=;
+	s=arc-20240116; t=1767721867; c=relaxed/simple;
+	bh=lQJl3v2Dh2toGpOzd8+tln5521suTJPsHqysdEFDoKU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=asudzx38fdlqL/R5OL9NBtvo1DXPxtqP0gQhXxPa0OFD43Mf2qN9FMtS9p1Rfpk3NNnOWFUpCpShwa1QomFrPwIyUFYK0hVQO2TKZ1cTx6/QCzhwXr2q++Bgllg5uNDcpkSXcIIYWJ6xftZ0r19jtxiHOCZrevBRelTBcBlNXMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dfb02SnD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B416C116C6;
-	Tue,  6 Jan 2026 17:33:16 +0000 (UTC)
+	 MIME-Version; b=HC/OGMhg+ZQ2xXz9BVbzaDk64PmxNHpRqHJzAuL88f7ELr9amwQNmPDCv0TVCU4J/sZol1z82WpVDLBXj0G41BtygTxorr7qLpZDRKAwF9kRk771wtz6QQ/uOeOVH79LMIuCddD6euz4D/LehwXd3eISSH0QbeIy9Qwc8Wf+hAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GAsxvghp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F497C116C6;
+	Tue,  6 Jan 2026 17:51:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767720797;
-	bh=DxpDgCJUMyph5pKKRbi3xWme+4gd/+ssiaO3eqODCiI=;
+	s=korg; t=1767721867;
+	bh=lQJl3v2Dh2toGpOzd8+tln5521suTJPsHqysdEFDoKU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dfb02SnDlchKbn8QIGDMeXzD05bE6gpEjwXHMYUb7yAPaNscYc6QzoPnjVhaCRabx
-	 KwHOcP5YPD9Tm47UooK7irft9dAPHwYIxlIG74H3l57LZmXdGNB3w6d1r2Xub7limF
-	 dMgeN40BznaKGP8Je6dWQI67v2HVO2+p5Mdqy/Aw=
+	b=GAsxvghp4M3n/5L5qzvwjOrxpirFG8CgYILN0Ig37ly9bNKxCOHssMBGDHwd4e9Nk
+	 hL6DAz8w1WPaj8MnIYPLW7IwgOrwVQpvTg5dG939olvp6eEOLx1E1ZXkFlpdpKG0i8
+	 vg6zZhRrTJmLWwdyDNn8H7RkGSyo1CABPOUGCUzI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Yipeng Zou <zouyipeng@huawei.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	syzbot+3d43c9066a5b54902232@syzkaller.appspotmail.com,
+	Deepanshu Kartikey <kartikey406@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 343/567] selftests/ftrace: traceonoff_triggers: strip off names
-Date: Tue,  6 Jan 2026 18:02:05 +0100
-Message-ID: <20260106170504.015204722@linuxfoundation.org>
+Subject: [PATCH 6.18 052/312] net: usb: asix: validate PHY address before use
+Date: Tue,  6 Jan 2026 18:02:06 +0100
+Message-ID: <20260106170549.735541700@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
-References: <20260106170451.332875001@linuxfoundation.org>
+In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
+References: <20260106170547.832845344@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,95 +62,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yipeng Zou <zouyipeng@huawei.com>
+From: Deepanshu Kartikey <kartikey406@gmail.com>
 
-[ Upstream commit b889b4fb4cbea3ca7eb9814075d6a51936394bd9 ]
+[ Upstream commit a1e077a3f76eea0dc671ed6792e7d543946227e8 ]
 
-The func_traceonoff_triggers.tc sometimes goes to fail
-on my board, Kunpeng-920.
+The ASIX driver reads the PHY address from the USB device via
+asix_read_phy_addr(). A malicious or faulty device can return an
+invalid address (>= PHY_MAX_ADDR), which causes a warning in
+mdiobus_get_phy():
 
-[root@localhost]# ./ftracetest ./test.d/ftrace/func_traceonoff_triggers.tc -l fail.log
-=== Ftrace unit tests ===
-[1] ftrace - test for function traceon/off triggers     [FAIL]
-[2] (instance)  ftrace - test for function traceon/off triggers [UNSUPPORTED]
+  addr 207 out of range
+  WARNING: drivers/net/phy/mdio_bus.c:76
 
-I look up the log, and it shows that the md5sum is different between csum1 and csum2.
+Validate the PHY address in asix_read_phy_addr() and remove the
+now-redundant check in ax88172a.c.
 
-++ cnt=611
-++ sleep .1
-+++ cnt_trace
-+++ grep -v '^#' trace
-+++ wc -l
-++ cnt2=611
-++ '[' 611 -ne 611 ']'
-+++ cat tracing_on
-++ on=0
-++ '[' 0 '!=' 0 ']'
-+++ md5sum trace
-++ csum1='76896aa74362fff66a6a5f3cf8a8a500  trace'
-++ sleep .1
-+++ md5sum trace
-++ csum2='ee8625a21c058818fc26e45c1ed3f6de  trace'
-++ '[' '76896aa74362fff66a6a5f3cf8a8a500  trace' '!=' 'ee8625a21c058818fc26e45c1ed3f6de  trace' ']'
-++ fail 'Tracing file is still changing'
-++ echo Tracing file is still changing
-Tracing file is still changing
-++ exit_fail
-++ exit 1
-
-So I directly dump the trace file before md5sum, the diff shows that:
-
-[root@localhost]# diff trace_1.log trace_2.log -y --suppress-common-lines
-dockerd-12285   [036] d.... 18385.510290: sched_stat | <...>-12285   [036] d.... 18385.510290: sched_stat
-dockerd-12285   [036] d.... 18385.510291: sched_swit | <...>-12285   [036] d.... 18385.510291: sched_swit
-<...>-740       [044] d.... 18385.602859: sched_stat | kworker/44:1-740 [044] d.... 18385.602859: sched_stat
-<...>-740       [044] d.... 18385.602860: sched_swit | kworker/44:1-740 [044] d.... 18385.602860: sched_swit
-
-And we can see that <...> filed be filled with names.
-
-We can strip off the names there to fix that.
-
-After strip off the names:
-
-kworker/u257:0-12 [019] d..2.  2528.758910: sched_stat | -12 [019] d..2.  2528.758910: sched_stat_runtime: comm=k
-kworker/u257:0-12 [019] d..2.  2528.758912: sched_swit | -12 [019] d..2.  2528.758912: sched_switch: prev_comm=kw
-<idle>-0          [000] d.s5.  2528.762318: sched_waki | -0  [000] d.s5.  2528.762318: sched_waking: comm=sshd pi
-<idle>-0          [037] dNh2.  2528.762326: sched_wake | -0  [037] dNh2.  2528.762326: sched_wakeup: comm=sshd pi
-<idle>-0          [037] d..2.  2528.762334: sched_swit | -0  [037] d..2.  2528.762334: sched_switch: prev_comm=sw
-
-Link: https://lore.kernel.org/r/20230818013226.2182299-1-zouyipeng@huawei.com
-Fixes: d87b29179aa0 ("selftests: ftrace: Use md5sum to take less time of checking logs")
-Suggested-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Yipeng Zou <zouyipeng@huawei.com>
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Reported-by: syzbot+3d43c9066a5b54902232@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=3d43c9066a5b54902232
+Tested-by: syzbot+3d43c9066a5b54902232@syzkaller.appspotmail.com
+Fixes: 7e88b11a862a ("net: usb: asix: refactor asix_read_phy_addr() and handle errors on return")
+Link: https://lore.kernel.org/all/20251217085057.270704-1-kartikey406@gmail.com/T/ [v1]
+Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20251218011156.276824-1-kartikey406@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../ftrace/test.d/ftrace/func_traceonoff_triggers.tc         | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/net/usb/asix_common.c | 5 +++++
+ drivers/net/usb/ax88172a.c    | 6 +-----
+ 2 files changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/tools/testing/selftests/ftrace/test.d/ftrace/func_traceonoff_triggers.tc b/tools/testing/selftests/ftrace/test.d/ftrace/func_traceonoff_triggers.tc
-index aee22289536b..1b57771dbfdf 100644
---- a/tools/testing/selftests/ftrace/test.d/ftrace/func_traceonoff_triggers.tc
-+++ b/tools/testing/selftests/ftrace/test.d/ftrace/func_traceonoff_triggers.tc
-@@ -90,9 +90,10 @@ if [ $on != "0" ]; then
-     fail "Tracing is not off"
- fi
+diff --git a/drivers/net/usb/asix_common.c b/drivers/net/usb/asix_common.c
+index 7fd763917ae2..6ab3486072cb 100644
+--- a/drivers/net/usb/asix_common.c
++++ b/drivers/net/usb/asix_common.c
+@@ -335,6 +335,11 @@ int asix_read_phy_addr(struct usbnet *dev, bool internal)
+ 	offset = (internal ? 1 : 0);
+ 	ret = buf[offset];
  
--csum1=`md5sum trace`
-+# Cannot rely on names being around as they are only cached, strip them
-+csum1=`cat trace | sed -e 's/^ *[^ ]*\(-[0-9][0-9]*\)/\1/' | md5sum`
- sleep $SLEEP_TIME
--csum2=`md5sum trace`
-+csum2=`cat trace | sed -e 's/^ *[^ ]*\(-[0-9][0-9]*\)/\1/' | md5sum`
++	if (ret >= PHY_MAX_ADDR) {
++		netdev_err(dev->net, "invalid PHY address: %d\n", ret);
++		return -ENODEV;
++	}
++
+ 	netdev_dbg(dev->net, "%s PHY address 0x%x\n",
+ 		   internal ? "internal" : "external", ret);
  
- if [ "$csum1" != "$csum2" ]; then
-     fail "Tracing file is still changing"
+diff --git a/drivers/net/usb/ax88172a.c b/drivers/net/usb/ax88172a.c
+index f613e4bc68c8..758a423a459b 100644
+--- a/drivers/net/usb/ax88172a.c
++++ b/drivers/net/usb/ax88172a.c
+@@ -210,11 +210,7 @@ static int ax88172a_bind(struct usbnet *dev, struct usb_interface *intf)
+ 	ret = asix_read_phy_addr(dev, priv->use_embdphy);
+ 	if (ret < 0)
+ 		goto free;
+-	if (ret >= PHY_MAX_ADDR) {
+-		netdev_err(dev->net, "Invalid PHY address %#x\n", ret);
+-		ret = -ENODEV;
+-		goto free;
+-	}
++
+ 	priv->phy_addr = ret;
+ 
+ 	ax88172a_reset_phy(dev, priv->use_embdphy);
 -- 
 2.51.0
 
