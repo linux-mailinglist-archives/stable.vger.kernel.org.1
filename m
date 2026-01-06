@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-205800-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205524-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D70FCF9F97
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:10:52 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42FF2CFA2AF
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:31:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 238EA30631B4
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:07:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 600FC309D9E1
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:43:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 090282D7810;
-	Tue,  6 Jan 2026 17:51:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7363F33985D;
+	Tue,  6 Jan 2026 17:36:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SetPNhF8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fysCSjIb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B82B223F42D;
-	Tue,  6 Jan 2026 17:51:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3188929BD9A;
+	Tue,  6 Jan 2026 17:36:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721904; cv=none; b=ageJ3aQW3pJglDxroJt9teOyjByWu40kWO7IsGilYJe8U8gIxLj19vCLWkojNMg6kyIjvVJwhOi5IARx4R6zthHJ7Vsf6ZgEdsxvq39smC08nbnxNvjIZVlass4yYJf/GMBv54ps1whjJwKzsah2+QzPuAfhMGE8OKy42RJKmpk=
+	t=1767720979; cv=none; b=JVkOlw8dKa7MS3umxux/Xh1F1zW5E+uwLQMT2jl5YLFbwiRLuHG1NWWg1YCQzHf7NM7q1lATIarhP+Ygdp3ZhqFJP/fBA2K5xNCUSkbGxMZCcIGdSHdtvx0m/gv6r6zAabD/nbfnszI/eXxdcbZhiGR4FwxYwEPwwVRKnuDBnMo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721904; c=relaxed/simple;
-	bh=l968zDXxmHgTq6wiW/evkYnCSaE+IOA0FOkRUM0NvNg=;
+	s=arc-20240116; t=1767720979; c=relaxed/simple;
+	bh=kWdFU81tVCvLvRIjYByYa5xQqhm/3giYqN8+n3fk5BM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fiZZDmGzCccbYOtcEfwYkqvpUX4xkDwYe7l+BXiHbknfDq4/U0EQDyicF1X2Ezzjrj3zEfspGUJIt4ZzR0uqYJ/XLuI0p/JKxW5jiJP2aTcFgJAQetByHCNONCJgJOds+kadYkVNPvME+DYrthEp76zKjva5laEvFqsVe+XFzEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SetPNhF8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C541EC116C6;
-	Tue,  6 Jan 2026 17:51:43 +0000 (UTC)
+	 MIME-Version; b=CcBxBosyEsfdfa/ptrKay47HHBFe6CtTRuLopmEBkZRdX2WfDoUSglwvbnIv0Egi1lIOoinSEfqzh5BN8w2BsLeHxOrC4TZjMw9vr0tRu+K8tORdlHxifcT44o2EKOFaxMgTcGgcQxMa7cJ7ucEdDkZVLZEuWxwynu5A8TTAjMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fysCSjIb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 951CFC116C6;
+	Tue,  6 Jan 2026 17:36:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721904;
-	bh=l968zDXxmHgTq6wiW/evkYnCSaE+IOA0FOkRUM0NvNg=;
+	s=korg; t=1767720979;
+	bh=kWdFU81tVCvLvRIjYByYa5xQqhm/3giYqN8+n3fk5BM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SetPNhF8qapAePRZM327InO21n0u6jNbmnkiG6m00OOsSyaeEld7K+n//8Nlj6YHi
-	 xkt/cOtDJQSWbCkrvwpXtoo4MmpGXxhGxeTott5HRwdlPqjyj9lGoVmY0QpJIJRGww
-	 aT3EACdTXbadmLsPB60e7aNJpqMHnIr4MieEUREI=
+	b=fysCSjIbLLyRn11P3LBcWYgQVOZs/JGANhwXt0XuK4EUEyvNKXlck1Cq1WTeNlX0C
+	 ggjSGmbMlrbrr6egO99pLAz8QcglgMW3J+vQe/3sYpxsyHZZvnQ5xWioWhqUnuTfb4
+	 XdVWnk7EeSsWNl87jGs30qP5BoEoml9aegLd68+Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stable@vger.kernel.org,
-	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
-	Mark Brown <broonie@kernel.org>,
-	Alexey Klimov <alexey.klimov@linaro.org>
-Subject: [PATCH 6.18 107/312] ASoC: qcom: qdsp6: q6asm-dai: set 10 ms period and buffer alignment.
-Date: Tue,  6 Jan 2026 18:03:01 +0100
-Message-ID: <20260106170551.708605800@linuxfoundation.org>
+	Thorsten Blum <thorsten.blum@linux.dev>,
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 6.12 400/567] fbdev: pxafb: Fix multiple clamped values in pxafb_adjust_timing
+Date: Tue,  6 Jan 2026 18:03:02 +0100
+Message-ID: <20260106170506.139248445@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
-References: <20260106170547.832845344@linuxfoundation.org>
+In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
+References: <20260106170451.332875001@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +59,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+From: Thorsten Blum <thorsten.blum@linux.dev>
 
-commit 81c53b52de21b8d5a3de55ebd06b6bf188bf7efd upstream.
+commit 0155e868cbc111846cc2809c1546ea53810a56ae upstream.
 
-DSP expects the periods to be aligned to fragment sizes, currently
-setting up to hw constriants on periods bytes is not going to work
-correctly as we can endup with periods sizes aligned to 32 bytes however
-not aligned to fragment size.
+The variables were never clamped because the return value of clamp_val()
+was not used. Fix this by assigning the clamped values, and use clamp()
+instead of clamp_val().
 
-Update the constriants to use fragment size, and also set at step of
-10ms for period size to accommodate DSP requirements of 10ms latency.
-
-Fixes: 2a9e92d371db ("ASoC: qdsp6: q6asm: Add q6asm dai driver")
-Cc: Stable@vger.kernel.org
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
-Tested-by: Alexey Klimov <alexey.klimov@linaro.org> # RB5, RB3
-Link: https://patch.msgid.link/20251023102444.88158-4-srinivas.kandagatla@oss.qualcomm.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 3f16ff608a75 ("[ARM] pxafb: cleanup of the timing checking code")
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/qcom/qdsp6/q6asm-dai.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/video/fbdev/pxafb.c |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
---- a/sound/soc/qcom/qdsp6/q6asm-dai.c
-+++ b/sound/soc/qcom/qdsp6/q6asm-dai.c
-@@ -404,13 +404,13 @@ static int q6asm_dai_open(struct snd_soc
+--- a/drivers/video/fbdev/pxafb.c
++++ b/drivers/video/fbdev/pxafb.c
+@@ -418,12 +418,12 @@ static int pxafb_adjust_timing(struct px
+ 	var->yres = max_t(int, var->yres, MIN_YRES);
+ 
+ 	if (!(fbi->lccr0 & LCCR0_LCDT)) {
+-		clamp_val(var->hsync_len, 1, 64);
+-		clamp_val(var->vsync_len, 1, 64);
+-		clamp_val(var->left_margin,  1, 255);
+-		clamp_val(var->right_margin, 1, 255);
+-		clamp_val(var->upper_margin, 1, 255);
+-		clamp_val(var->lower_margin, 1, 255);
++		var->hsync_len = clamp(var->hsync_len, 1, 64);
++		var->vsync_len = clamp(var->vsync_len, 1, 64);
++		var->left_margin  = clamp(var->left_margin,  1, 255);
++		var->right_margin = clamp(var->right_margin, 1, 255);
++		var->upper_margin = clamp(var->upper_margin, 1, 255);
++		var->lower_margin = clamp(var->lower_margin, 1, 255);
  	}
  
- 	ret = snd_pcm_hw_constraint_step(runtime, 0,
--		SNDRV_PCM_HW_PARAM_PERIOD_BYTES, 32);
-+		SNDRV_PCM_HW_PARAM_PERIOD_SIZE, 480);
- 	if (ret < 0) {
- 		dev_err(dev, "constraint for period bytes step ret = %d\n",
- 								ret);
- 	}
- 	ret = snd_pcm_hw_constraint_step(runtime, 0,
--		SNDRV_PCM_HW_PARAM_BUFFER_BYTES, 32);
-+		SNDRV_PCM_HW_PARAM_BUFFER_SIZE, 480);
- 	if (ret < 0) {
- 		dev_err(dev, "constraint for buffer bytes step ret = %d\n",
- 								ret);
+ 	/* make sure each line is aligned on word boundary */
 
 
 
