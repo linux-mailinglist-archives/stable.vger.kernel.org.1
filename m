@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-205751-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205475-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E56DCFA4F1
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:51:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C67FACFA21B
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:27:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0DF693345BFF
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:07:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A280631FA558
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:40:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2AE835FF52;
-	Tue,  6 Jan 2026 17:48:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A72672DEA93;
+	Tue,  6 Jan 2026 17:33:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="odFBz9Hb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AumGM8vk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F45335FF4F;
-	Tue,  6 Jan 2026 17:48:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 643AC33993;
+	Tue,  6 Jan 2026 17:33:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721738; cv=none; b=LEwy0mSI3iw8t4BH/qDERAy0nnY/WBooAkS8jVZoM6tTFHN7HjcSg/iQzIYERk9N5x5TCkZKzajtHGldz4NyrMSYHkzPkOsOuaoyS7XnyGKjtpzbZTJWG+0V4OEse/oUKz1BOe8gxtCs2QpBYBCj+z55yB95KIRHCfNmprr7sQg=
+	t=1767720817; cv=none; b=UaAPNmQ6RXzZi9dIdqkVMU50IcbZL+c9lwanDZt2p9zb9dOP2EsUQM0KnEnJuxZWruG2CUO9TVvQYvLPP9BLxxll1gc4nAflJ69dVLWw138uGKygG3uj7yMp2boSPsq/8wF9NfYBxKaiFbo8Tp0J+B1WeiGKsK19HDxi3BHzle0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721738; c=relaxed/simple;
-	bh=VVQak6pMiqHhHXivTHzHwWLcP3gu9EGOaCQVMmU/NXQ=;
+	s=arc-20240116; t=1767720817; c=relaxed/simple;
+	bh=TsVxJMXKP8gvH6quXV+mExHAKZUwO6MKbuhIo05iJz8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MzeRSqYXTUAfnfRbrjO2/0mqyLQ9ecxy+m7LyBxTz64mdHEALz2SK1JSdxYSt1MyOG8iYvdz2lUd8QIUcdOWJg5sQvl25cBF05xe3ZUum7DU0JLaxZcJe9yF8CpDyEBnv1XVquE20ZSN/bKDmjTY7yYdjrZypW5o+tDsj3INkhM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=odFBz9Hb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1E15C116C6;
-	Tue,  6 Jan 2026 17:48:57 +0000 (UTC)
+	 MIME-Version; b=OTSl1+lhHPeoZqo12N7ncG/eMHde7fiAZPvBAVA0kA/564fPrUzHm4Bssev8zMyQiVU9iVqcUDhT+blD/mVeoG+qzZDd8Ke0TNMAANw42MuB6IWBCI04EjSvln1h+jxnuqaC2jS/OcLLlSS9JS0+Z8zMAOmAVrINoidPX1gnIWg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AumGM8vk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7284C116C6;
+	Tue,  6 Jan 2026 17:33:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721738;
-	bh=VVQak6pMiqHhHXivTHzHwWLcP3gu9EGOaCQVMmU/NXQ=;
+	s=korg; t=1767720817;
+	bh=TsVxJMXKP8gvH6quXV+mExHAKZUwO6MKbuhIo05iJz8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=odFBz9Hb9vKhPhd97gyMaSzyAWpfaQH20bZZCwdVn5zVRny6cFM/u54M7Xjukp7Pg
-	 oixTlwDlzG73rYo46XlJ4vmV0U03C7Z0CGXJxISiR+IDiaaqrltLymb0zlCTcUZaCt
-	 tFfzR/kn6Ng/97WEuTTU48p92e18zi7oU2WwbjTg=
+	b=AumGM8vkhhzqSpH9PZrnhyg6bvhSARoz85pbmUeIw0XjkHclSq2AbDoX/DDj2VdKY
+	 slWRayfQUwyD8kqSb6ft942YX5HcikdMEiB9gx/1le0XoC7B2HJ9Ys5vBRAHSXAUiJ
+	 bdcazZC9BH+w8djMHQr5GD465mk0wrEOWg9PQXWw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Raphael Pinsonneault-Thibeault <rpthibeault@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Jonas Gorski <jonas.gorski@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 025/312] Bluetooth: btusb: revert use of devm_kzalloc in btusb
-Date: Tue,  6 Jan 2026 18:01:39 +0100
-Message-ID: <20260106170548.766716896@linuxfoundation.org>
+Subject: [PATCH 6.12 318/567] net: dsa: b53: skip multicast entries for fdb_dump()
+Date: Tue,  6 Jan 2026 18:01:40 +0100
+Message-ID: <20260106170503.090830647@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
-References: <20260106170547.832845344@linuxfoundation.org>
+In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
+References: <20260106170451.332875001@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,91 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Raphael Pinsonneault-Thibeault <rpthibeault@gmail.com>
+From: Jonas Gorski <jonas.gorski@gmail.com>
 
-[ Upstream commit 252714f1e8bdd542025b16321c790458014d6880 ]
+[ Upstream commit d42bce414d1c5c0b536758466a1f63ac358e613c ]
 
-This reverts commit 98921dbd00c4e ("Bluetooth: Use devm_kzalloc in
-btusb.c file").
+port_fdb_dump() is supposed to only add fdb entries, but we iterate over
+the full ARL table, which also includes multicast entries.
 
-In btusb_probe(), we use devm_kzalloc() to allocate the btusb data. This
-ties the lifetime of all the btusb data to the binding of a driver to
-one interface, INTF. In a driver that binds to other interfaces, ISOC
-and DIAG, this is an accident waiting to happen.
+So check if the entry is a multicast entry before passing it on to the
+callback().
 
-The issue is revealed in btusb_disconnect(), where calling
-usb_driver_release_interface(&btusb_driver, data->intf) will have devm
-free the data that is also being used by the other interfaces of the
-driver that may not be released yet.
+Additionally, the port of those entries is a bitmask, not a port number,
+so any included entries would have even be for the wrong port.
 
-To fix this, revert the use of devm and go back to freeing memory
-explicitly.
-
-Fixes: 98921dbd00c4e ("Bluetooth: Use devm_kzalloc in btusb.c file")
-Signed-off-by: Raphael Pinsonneault-Thibeault <rpthibeault@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: 1da6df85c6fb ("net: dsa: b53: Implement ARL add/del/dump operations")
+Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://patch.msgid.link/20251217205756.172123-1-jonas.gorski@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btusb.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ drivers/net/dsa/b53/b53_common.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
-index b92bfd131567..3420f711f0f0 100644
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -4017,7 +4017,7 @@ static int btusb_probe(struct usb_interface *intf,
- 			return -ENODEV;
- 	}
+diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
+index 01eb62706412..0b666a77ea97 100644
+--- a/drivers/net/dsa/b53/b53_common.c
++++ b/drivers/net/dsa/b53/b53_common.c
+@@ -1972,6 +1972,9 @@ static int b53_fdb_copy(int port, const struct b53_arl_entry *ent,
+ 	if (!ent->is_valid)
+ 		return 0;
  
--	data = devm_kzalloc(&intf->dev, sizeof(*data), GFP_KERNEL);
-+	data = kzalloc(sizeof(*data), GFP_KERNEL);
- 	if (!data)
- 		return -ENOMEM;
++	if (is_multicast_ether_addr(ent->mac))
++		return 0;
++
+ 	if (port != ent->port)
+ 		return 0;
  
-@@ -4040,8 +4040,10 @@ static int btusb_probe(struct usb_interface *intf,
- 		}
- 	}
- 
--	if (!data->intr_ep || !data->bulk_tx_ep || !data->bulk_rx_ep)
-+	if (!data->intr_ep || !data->bulk_tx_ep || !data->bulk_rx_ep) {
-+		kfree(data);
- 		return -ENODEV;
-+	}
- 
- 	if (id->driver_info & BTUSB_AMP) {
- 		data->cmdreq_type = USB_TYPE_CLASS | 0x01;
-@@ -4096,8 +4098,10 @@ static int btusb_probe(struct usb_interface *intf,
- 	data->recv_acl = hci_recv_frame;
- 
- 	hdev = hci_alloc_dev_priv(priv_size);
--	if (!hdev)
-+	if (!hdev) {
-+		kfree(data);
- 		return -ENOMEM;
-+	}
- 
- 	hdev->bus = HCI_USB;
- 	hci_set_drvdata(hdev, data);
-@@ -4370,6 +4374,7 @@ static int btusb_probe(struct usb_interface *intf,
- 	if (data->reset_gpio)
- 		gpiod_put(data->reset_gpio);
- 	hci_free_dev(hdev);
-+	kfree(data);
- 	return err;
- }
- 
-@@ -4418,6 +4423,7 @@ static void btusb_disconnect(struct usb_interface *intf)
- 	}
- 
- 	hci_free_dev(hdev);
-+	kfree(data);
- }
- 
- #ifdef CONFIG_PM
 -- 
 2.51.0
 
