@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-205855-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205552-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A6FCCF9FE9
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:13:23 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 954B2CFA351
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:36:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0007732DEF6D
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:01:11 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D2DDB3012666
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:36:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D303366DB4;
-	Tue,  6 Jan 2026 17:54:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4C3B3431E4;
+	Tue,  6 Jan 2026 17:37:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PlcOZhMf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="psZl8XEU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18F9E366DAE;
-	Tue,  6 Jan 2026 17:54:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7008D342CA1;
+	Tue,  6 Jan 2026 17:37:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767722088; cv=none; b=adyvKi2IbmLT1uyHjpbvviBKPMYtqep3ZtOHFKnLsdufN93/Wi8Eu8t8PUFgS1CO06pzzsOtku6m1OpEKdKHInnmDg+2lQWzWm//7oqD3E8x3n+fG09d1GEa4vsvy2sfTNsdajmkYmjhEjJeCjpp+/9LQeuYDp+7m54abptRsnI=
+	t=1767721074; cv=none; b=pCtygDj8/LaQn0mJ9Ol8tiBekjw0Ktrgba0gXUlIRYmaZQedAeRr6WktZ4q0pPghos+2HsZ2zJ1wfS2VUA9HfhLS5Vj0stoaewLoqPA3BeDknrvW3r4gmsoAOWF8ofewztqPRpAw3iE5Y4SKIO7P9u+DCTqBjAzCW6y6Wnx1izI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767722088; c=relaxed/simple;
-	bh=S6J5zHc11sdMgfNTma1IiZa47mCKxKRJ4noGgqIMDVQ=;
+	s=arc-20240116; t=1767721074; c=relaxed/simple;
+	bh=KXQN3aj2MusNy+VxIakQ21eDNNWi+M8U7PYm81XfugM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EePDec4oAyrhuYv9n+mJmjoByfUbQJRe6V2MEcCoNQw7b+NQcHaY6pz1XmG74I8l+rfyQb/FfgObtj5gPwDVRcVw9tcLS5W1ULUM5bIBWuKQq5DMpjzQV8EO3yr1JPxNVwJPyx7X8MLIkA1IOuBSHEPorAag051yX+I+CbhhwBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PlcOZhMf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35656C116C6;
-	Tue,  6 Jan 2026 17:54:46 +0000 (UTC)
+	 MIME-Version; b=C3/oZ9UgcBfuwEcZqXFxkz5DNHtuJIJPFzEX7vjIDJsBlY+dARzaH6ZDY+J0Y9Vk9h4DYM6gz2mxickAmKjolPr/DkRy4OzYUtbCuviC2T3uDwyy2xfKiutYWMjNgECFfCa9DCbs2LhocIrLqSY0N0VLbfd30oCUtm/sZ8KYGlE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=psZl8XEU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8441DC116C6;
+	Tue,  6 Jan 2026 17:37:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767722087;
-	bh=S6J5zHc11sdMgfNTma1IiZa47mCKxKRJ4noGgqIMDVQ=;
+	s=korg; t=1767721074;
+	bh=KXQN3aj2MusNy+VxIakQ21eDNNWi+M8U7PYm81XfugM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PlcOZhMfqexsHOa5Qggz3nUVrHe4jSFk7QAirAlpP3nCOkFiT5yg5gCytIxDiSG6F
-	 fwbAhLi+Fc7k+dwVuKeWxQrfY9tT7B+WyI4o32f4J7wpRiDEmZOFPicyDKU79Xn5Xa
-	 QK8dzA88zzOiZZCIXL7K180umhjiR95Y+X1GSgP0=
+	b=psZl8XEUlewWBCGMeGUGjk8xYHjFaZO+4I7W8uRgQJZy43XtDTd8T155JzJAdVbBQ
+	 KBBj9bymWMyd7PksicqXJaLYmkRga79b2eZhS8SC+YyDFWBlIwqfZHjm3YlFzg1g2x
+	 tOXKgaXt+FRTgfN9riUM24x8K7qGxE6st+2/r7g8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Dave Vasilevsky <dave@vasilevsky.ca>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>
-Subject: [PATCH 6.18 128/312] powerpc, mm: Fix mprotect on book3s 32-bit
+	Tiezhu Yang <yangtiezhu@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.12 420/567] LoongArch: Use unsigned long for _end and _text
 Date: Tue,  6 Jan 2026 18:03:22 +0100
-Message-ID: <20260106170552.474535099@linuxfoundation.org>
+Message-ID: <20260106170506.877369363@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
-References: <20260106170547.832845344@linuxfoundation.org>
+In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
+References: <20260106170451.332875001@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,80 +59,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Vasilevsky <dave@vasilevsky.ca>
+From: Tiezhu Yang <yangtiezhu@loongson.cn>
 
-commit 78fc63ffa7813e33681839bb33826c24195f0eb7 upstream.
+commit a258a3cb1895e3acf5f2fe245d17426e894bc935 upstream.
 
-On 32-bit book3s with hash-MMUs, tlb_flush() was a no-op. This was
-unnoticed because all uses until recently were for unmaps, and thus
-handled by __tlb_remove_tlb_entry().
+It is better to use unsigned long rather than long for _end and _text to
+calculate the kernel length.
 
-After commit 4a18419f71cd ("mm/mprotect: use mmu_gather") in kernel 5.19,
-tlb_gather_mmu() started being used for mprotect as well. This caused
-mprotect to simply not work on these machines:
-
-  int *ptr = mmap(NULL, 4096, PROT_READ|PROT_WRITE,
-                  MAP_PRIVATE|MAP_ANONYMOUS, -1, 0);
-  *ptr = 1; // force HPTE to be created
-  mprotect(ptr, 4096, PROT_READ);
-  *ptr = 2; // should segfault, but succeeds
-
-Fixed by making tlb_flush() actually flush TLB pages. This finally
-agrees with the behaviour of boot3s64's tlb_flush().
-
-Fixes: 4a18419f71cd ("mm/mprotect: use mmu_gather")
-Cc: stable@vger.kernel.org
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Signed-off-by: Dave Vasilevsky <dave@vasilevsky.ca>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20251116-vasi-mprotect-g3-v3-1-59a9bd33ba00@vasilevsky.ca
+Cc: stable@vger.kernel.org # v6.3+
+Fixes: e5f02b51fa0c ("LoongArch: Add support for kernel address space layout randomization (KASLR)")
+Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/include/asm/book3s/32/tlbflush.h |    5 ++++-
- arch/powerpc/mm/book3s32/tlb.c                |    9 +++++++++
- 2 files changed, 13 insertions(+), 1 deletion(-)
+ arch/loongarch/kernel/relocate.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/powerpc/include/asm/book3s/32/tlbflush.h
-+++ b/arch/powerpc/include/asm/book3s/32/tlbflush.h
-@@ -11,6 +11,7 @@
- void hash__flush_tlb_mm(struct mm_struct *mm);
- void hash__flush_tlb_page(struct vm_area_struct *vma, unsigned long vmaddr);
- void hash__flush_range(struct mm_struct *mm, unsigned long start, unsigned long end);
-+void hash__flush_gather(struct mmu_gather *tlb);
+--- a/arch/loongarch/kernel/relocate.c
++++ b/arch/loongarch/kernel/relocate.c
+@@ -183,7 +183,7 @@ static inline void __init *determine_rel
+ 	if (kaslr_disabled())
+ 		return destination;
  
- #ifdef CONFIG_SMP
- void _tlbie(unsigned long address);
-@@ -29,7 +30,9 @@ void _tlbia(void);
- static inline void tlb_flush(struct mmu_gather *tlb)
- {
- 	/* 603 needs to flush the whole TLB here since it doesn't use a hash table. */
--	if (!mmu_has_feature(MMU_FTR_HPTE_TABLE))
-+	if (mmu_has_feature(MMU_FTR_HPTE_TABLE))
-+		hash__flush_gather(tlb);
-+	else
- 		_tlbia();
- }
+-	kernel_length = (long)_end - (long)_text;
++	kernel_length = (unsigned long)_end - (unsigned long)_text;
  
---- a/arch/powerpc/mm/book3s32/tlb.c
-+++ b/arch/powerpc/mm/book3s32/tlb.c
-@@ -105,3 +105,12 @@ void hash__flush_tlb_page(struct vm_area
- 		flush_hash_pages(mm->context.id, vmaddr, pmd_val(*pmd), 1);
- }
- EXPORT_SYMBOL(hash__flush_tlb_page);
-+
-+void hash__flush_gather(struct mmu_gather *tlb)
-+{
-+	if (tlb->fullmm || tlb->need_flush_all)
-+		hash__flush_tlb_mm(tlb->mm);
-+	else
-+		hash__flush_range(tlb->mm, tlb->start, tlb->end);
-+}
-+EXPORT_SYMBOL(hash__flush_gather);
+ 	random_offset = get_random_boot() << 16;
+ 	random_offset &= (CONFIG_RANDOMIZE_BASE_MAX_OFFSET - 1);
+@@ -232,7 +232,7 @@ unsigned long __init relocate_kernel(voi
+ 	early_memunmap(cmdline, COMMAND_LINE_SIZE);
+ 
+ 	if (random_offset) {
+-		kernel_length = (long)(_end) - (long)(_text);
++		kernel_length = (unsigned long)(_end) - (unsigned long)(_text);
+ 
+ 		/* Copy the kernel to it's new location */
+ 		memcpy(location_new, _text, kernel_length);
 
 
 
