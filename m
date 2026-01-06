@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-205483-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205760-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D027FCF9DCD
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 18:52:53 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5B9BCFA6DE
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:01:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 32B21314CA37
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:40:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9DB21353B901
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:34:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62B292E542C;
-	Tue,  6 Jan 2026 17:34:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BC6B35FF73;
+	Tue,  6 Jan 2026 17:49:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VopDnfuC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EVixW+ry"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D03F2DEA94;
-	Tue,  6 Jan 2026 17:34:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56F6935FF65;
+	Tue,  6 Jan 2026 17:49:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767720843; cv=none; b=jXceDEJhZuwFqGVv2ssPpq4V/aadgFKhjSFfqxgnpRXZLHnFwyEcIU+69Js6UznUoM+jFI+U+wxXUY7PnGPP1WAeubWsFlgoLrdTjylm9ZKjJf8B2afG/TQVosDJ3SORKU7ykA+U5wEDBDD1B87545OGJIe01yAG5ObKyAwyHoY=
+	t=1767721769; cv=none; b=qCxZqda21QYbgqs0I29TzXTIskKpPTGmwLYd94tsLSD2VpxGdevs2vSJtSIQaKAmWuFIl8xlwMXNLIPABgmIxGFBYK98KjZseNWT3/oTfsi/3CqhRk+tAsB7kk7K1jCvwXUuTm8BRVv+CGQkHRSwMgv5WYgmiNT7QRXgFjgM+hU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767720843; c=relaxed/simple;
-	bh=BcK+XKJES4hK6cBHlpPUqrHG7zhFORAbWoZ0Ks3qkWI=;
+	s=arc-20240116; t=1767721769; c=relaxed/simple;
+	bh=n2aQuoJ3TiQmYdpCZzsAT3WQCRuvjVdVGg9o66k+xCU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eYAx/4bPzTu1BseqbNBNnc3S7D0FZT/z+yf/xaV268QX8vt//UtrWEGL+IYGKoRW0r2vPw35hYWGLz9dqaDeX1dBZAoiYLTRQck3rd7wxIvWkipxAV7aoqoFqp0R9n74rCTpqeKdcIEF5Acpb0IwcezgmpOcPZ+gNyWQVWTkXr8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VopDnfuC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80958C116C6;
-	Tue,  6 Jan 2026 17:34:02 +0000 (UTC)
+	 MIME-Version; b=V1574oXSuCbbhhCqi2c398VqVnUkf93D4cFQcu/+6hyFL9kTZpjVdQeQpZU92QniS8hrnsZ65SiDdr0hAL96Mvgkb912zf+who+vuZoHJQ9gjHrd6tyLu4xQWUbxQo4rgF31xZg273WqJ/BNgzkchDo6VoTPDkhdCTVFWplgRMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EVixW+ry; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6648C116C6;
+	Tue,  6 Jan 2026 17:49:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767720843;
-	bh=BcK+XKJES4hK6cBHlpPUqrHG7zhFORAbWoZ0Ks3qkWI=;
+	s=korg; t=1767721769;
+	bh=n2aQuoJ3TiQmYdpCZzsAT3WQCRuvjVdVGg9o66k+xCU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VopDnfuCB5BboPtCGCrZzpu7e6811m1HYZGeG/1hwLtkkuCC/lEcS51jwVcCPJ07A
-	 9q3SoDDcy4pXDpu55Gjrd9aEtIxY30zWH1gEJqjMj0NUKbx2uGDHiLsTLou6O5F9p4
-	 +c9bS1PJIyM0LvHg+YcpA49qgBM/T1duvbgogs6c=
+	b=EVixW+ryPY7ik/TdZ7oTYIaYCe1xW4ujYpnBHQ45oOmVSIJzApRYYbgFic5pCxXRN
+	 b1+Asu5i6W8Grv0Ry3bNhpx2jPYEy8XUOxZxuKoAZ/8mHTcURp6JaXg8tmE00JjLXZ
+	 QSngPL1UXPdAS4hFCSj417izbH9Gts5ToglIEcj8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Honghui Zhang <honghui.zhang@mediatek.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Yong Wu <yong.wu@mediatek.com>,
-	Johan Hovold <johan@kernel.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Joerg Roedel <joerg.roedel@amd.com>
-Subject: [PATCH 6.12 359/567] iommu/mediatek-v1: fix device leak on probe_device()
+	Konstantin Taranov <kotaranov@microsoft.com>,
+	Long Li <longli@microsoft.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 067/312] RDMA/mana_ib: check cqe length for kernel CQs
 Date: Tue,  6 Jan 2026 18:02:21 +0100
-Message-ID: <20260106170504.615669082@linuxfoundation.org>
+Message-ID: <20260106170550.274104681@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
-References: <20260106170451.332875001@linuxfoundation.org>
+In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
+References: <20260106170547.832845344@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Konstantin Taranov <kotaranov@microsoft.com>
 
-commit c77ad28bfee0df9cbc719eb5adc9864462cfb65b upstream.
+[ Upstream commit 887bfe5986396aca908b7afd2d214471ba7d5544 ]
 
-Make sure to drop the reference taken to the iommu platform device when
-looking up its driver data during probe_device().
+Check queue size during kernel CQ creation to prevent overflow of u32.
 
-Fixes: b17336c55d89 ("iommu/mediatek: add support for mtk iommu generation one HW")
-Cc: stable@vger.kernel.org	# 4.8
-Cc: Honghui Zhang <honghui.zhang@mediatek.com>
-Acked-by: Robin Murphy <robin.murphy@arm.com>
-Reviewed-by: Yong Wu <yong.wu@mediatek.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: bec127e45d9f ("RDMA/mana_ib: create kernel-level CQs")
+Link: https://patch.msgid.link/r/1761213780-5457-1-git-send-email-kotaranov@linux.microsoft.com
+Signed-off-by: Konstantin Taranov <kotaranov@microsoft.com>
+Reviewed-by: Long Li <longli@microsoft.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/mtk_iommu_v1.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/infiniband/hw/mana/cq.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/iommu/mtk_iommu_v1.c
-+++ b/drivers/iommu/mtk_iommu_v1.c
-@@ -423,6 +423,8 @@ static int mtk_iommu_v1_create_mapping(s
- 			return -EINVAL;
- 
- 		dev_iommu_priv_set(dev, platform_get_drvdata(m4updev));
-+
-+		put_device(&m4updev->dev);
- 	}
- 
- 	ret = iommu_fwspec_add_ids(dev, args->args, 1);
+diff --git a/drivers/infiniband/hw/mana/cq.c b/drivers/infiniband/hw/mana/cq.c
+index 1becc8779123..7600412b0739 100644
+--- a/drivers/infiniband/hw/mana/cq.c
++++ b/drivers/infiniband/hw/mana/cq.c
+@@ -56,6 +56,10 @@ int mana_ib_create_cq(struct ib_cq *ibcq, const struct ib_cq_init_attr *attr,
+ 		doorbell = mana_ucontext->doorbell;
+ 	} else {
+ 		is_rnic_cq = true;
++		if (attr->cqe > U32_MAX / COMP_ENTRY_SIZE / 2 + 1) {
++			ibdev_dbg(ibdev, "CQE %d exceeding limit\n", attr->cqe);
++			return -EINVAL;
++		}
+ 		buf_size = MANA_PAGE_ALIGN(roundup_pow_of_two(attr->cqe * COMP_ENTRY_SIZE));
+ 		cq->cqe = buf_size / COMP_ENTRY_SIZE;
+ 		err = mana_ib_create_kernel_queue(mdev, buf_size, GDMA_CQ, &cq->queue);
+-- 
+2.51.0
+
 
 
 
