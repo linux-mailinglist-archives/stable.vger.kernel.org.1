@@ -1,105 +1,75 @@
-Return-Path: <stable+bounces-205085-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205086-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E5F5CF89E5
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 14:55:22 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 945A8CF8B2C
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 15:12:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id AC077300A3F3
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 13:55:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F3A5F3033D6A
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 14:05:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 886AF346FBC;
-	Tue,  6 Jan 2026 13:55:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="tcyMBuWX";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="3c8YBN/6";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="tcyMBuWX";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="3c8YBN/6"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B369F3358B6;
+	Tue,  6 Jan 2026 14:05:42 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from mail-ot1-f54.google.com (mail-ot1-f54.google.com [209.85.210.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFF74346FAA
-	for <stable@vger.kernel.org>; Tue,  6 Jan 2026 13:55:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7FEA33556D
+	for <stable@vger.kernel.org>; Tue,  6 Jan 2026 14:05:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767707719; cv=none; b=b17ct/4TZuXl88xAcChhcRMS9b3R9N8FaM+HCooG910eiMtehQihpmE0Ty7XMEiLUEf/TM4SJpZ2WTZkguIjAulWThqrFVNxTJZFpDH52nbiq/IdCU9Sq8e5AWFtqa+rTxClg7FcAbnYdWFdPLwOGvDRJM4gINK2lJ+B9ZA75t8=
+	t=1767708342; cv=none; b=pdlHYFC6tjxu04f6rATQovnYB4r2CbkAosnNQJv0GSWiUJ7tHZm4mhhf7+QpJQjNxqMUQ/9ZF+wWFFdcwXpZxwIaI1RIgRk5AMurwCWB3KtlU0gm94eRdhddaMwKp4a4r2luNTHWU7lQxeMmRKJ+PBkyGRzHz0Y+Q71dstEDiG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767707719; c=relaxed/simple;
-	bh=Gs89l7RKY9R/Q5ytEjKEGCSvbSwCGMqmqRbb2X8pgCk=;
+	s=arc-20240116; t=1767708342; c=relaxed/simple;
+	bh=jn+4SpWXKb7N3/U9AAui93xy+20kHsX2m1NThTyiOfE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fk460DU9Qz1KG64BDFNE8AaAQ3c7os1PmMR3SnlkAa5hL01nZIZbAPWY6ARuy9fGMXVZenxuUghUbZOxNFnf2Vp9Ud2NZLSYlY9EdFA0f1BOd+h1LqGx3k6tdsl88KoSRyBMkJVigulnDtC2IH0Q5Ef3dW87wTOdg9RMMzNmPio=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=tcyMBuWX; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=3c8YBN/6; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=tcyMBuWX; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=3c8YBN/6; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 8BE025BCC5;
-	Tue,  6 Jan 2026 13:55:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1767707715; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=cIw/7iDeeJQUH5x9q+0fNCZ0Q/TnxQ1hJVUlKln0ZLo=;
-	b=tcyMBuWX8hWQv13z3LUyYQsD86Ilvc4Aao09HiB970jJvieceja9F88yvaCWrCOdIjAdSa
-	bnCf/ODiRyGzInZmO/Fb9x/Qig6pgqV8IdYMYN6OQ73K5tdLq6t66HDa6Cmd7gKRHgTIfQ
-	EctBigC6IgsXHIBrg0BC3T7zMLTp+eI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1767707715;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=cIw/7iDeeJQUH5x9q+0fNCZ0Q/TnxQ1hJVUlKln0ZLo=;
-	b=3c8YBN/6rkpH9JqdIaUJbAaz+qzM51ymmHCezSjUOCSCBnPivoV2qkyXTuCdqSg6Sod22l
-	Sr6H8uVOBR64EbDw==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=tcyMBuWX;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="3c8YBN/6"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1767707715; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=cIw/7iDeeJQUH5x9q+0fNCZ0Q/TnxQ1hJVUlKln0ZLo=;
-	b=tcyMBuWX8hWQv13z3LUyYQsD86Ilvc4Aao09HiB970jJvieceja9F88yvaCWrCOdIjAdSa
-	bnCf/ODiRyGzInZmO/Fb9x/Qig6pgqV8IdYMYN6OQ73K5tdLq6t66HDa6Cmd7gKRHgTIfQ
-	EctBigC6IgsXHIBrg0BC3T7zMLTp+eI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1767707715;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=cIw/7iDeeJQUH5x9q+0fNCZ0Q/TnxQ1hJVUlKln0ZLo=;
-	b=3c8YBN/6rkpH9JqdIaUJbAaz+qzM51ymmHCezSjUOCSCBnPivoV2qkyXTuCdqSg6Sod22l
-	Sr6H8uVOBR64EbDw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 818C33EA63;
-	Tue,  6 Jan 2026 13:55:15 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 6XibH0MUXWnCVQAAD6G6ig
-	(envelope-from <jack@suse.cz>); Tue, 06 Jan 2026 13:55:15 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 2B8BEA0A4F; Tue,  6 Jan 2026 14:55:15 +0100 (CET)
-Date: Tue, 6 Jan 2026 14:55:15 +0100
-From: Jan Kara <jack@suse.cz>
-To: Miklos Szeredi <miklos@szeredi.hu>
-Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>, 
-	Jan Kara <jack@suse.cz>, Joanne Koong <joannelkoong@gmail.com>, akpm@linux-foundation.org, 
-	linux-mm@kvack.org, athul.krishna.kr@protonmail.com, j.neuschaefer@gmx.net, 
-	carnil@debian.org, linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/1] fs/writeback: skip AS_NO_DATA_INTEGRITY mappings
- in wait_sb_inodes()
-Message-ID: <pwq7yurznml7m73zge7zwp7sphdz4h54ulzwqrvvad2dl63wjx@y6xfnb7uzmoj>
-References: <20251215030043.1431306-1-joannelkoong@gmail.com>
- <20251215030043.1431306-2-joannelkoong@gmail.com>
- <ypyumqgv5p7dnxmq34q33keb6kzqnp66r33gtbm4pglgdmhma6@3oleltql2qgp>
- <616c2e51-ff69-4ef9-9637-41f3ff8691dd@kernel.org>
- <CAJfpeguBuHBGUq45bOFvypsyd8XXekLKycRBGO1eeqLxz3L0eA@mail.gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=IcD4e6WjKVrDRGkMSK1Q+08FpS7/+W1jTUS3qlt8rpiNJMrwEC+hS7At3quT57pxqfHAAx/boGEVyW+qr3hfNbkHJ6Mud8ZvWamJqnDwkO/5fiunG76eOZLZMLdd/1wao91egYn7YyVa3B2fGgPA/h79Jl6iMtVbD/wzrBNYM1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ot1-f54.google.com with SMTP id 46e09a7af769-7ce2b17a2e4so623549a34.3
+        for <stable@vger.kernel.org>; Tue, 06 Jan 2026 06:05:40 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767708340; x=1768313140;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Tu154TMX/+mXm3su25sIKI5TQFzYMOjfJ7G1hsxByO0=;
+        b=aI8dzoEobP7fvC5EXn0h7vG6C69FnsIzrImxclknffiYCkU7QSgSQGop1xe+gLoAst
+         H3bL4iod+j/xUkS3tLNcRP+0aJn8uHd/PSSCcoyrSHNvFvvfWe/ocFRCabAKOd+NI8jZ
+         Ij8B2++6g62WZinJH9xH22b+Euqvuzc+Ah8LAGdR6nNwjROcY6tji7CjDyCITBhEgYiC
+         3StPL9x4Zgx/448cr+hpYHS+LYAhbIXrtZp+uTFyqy7guvywgIz7nab4VsR+HZU41O9u
+         gO0B0AIvZ/b15KOXDFDMf8o+gsbKBOY6YQaclAeWYbQ/PDlVCug1770b3fh8mVWECIYK
+         yZqA==
+X-Forwarded-Encrypted: i=1; AJvYcCVJqbS4bEKt1ynBfbGHkcTgXUgHuGF7t1aCynQDP4N4c3/gxi0h2HygQDiJMLau5seQ/JnIp0Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywt/uT6R+gRj0au1f6eWraQAzTG6uYADc0/m9ihQEqouNNcmn4j
+	le6aNyV2M4eYoZKCbMDtO+XBq/ydmAmpWM4zdUXfj/fZkCQrz7IWBqe1
+X-Gm-Gg: AY/fxX7/3gnuDQ7mtAgD0/ZdhSVJ+WREADWM8SGjNfouWVFvp6sNO4ZU9Q8wL4Mt+Od
+	dKM6k9in28MAMGLOq2rWYuAkq/xiLYRIh50+4CWwEXkbw/FbT4zTheG17qdWqsOwK8sVUdj9duW
+	HHMoAtALDBRbwGctxQKZ19lm3mK8dLc0wCwwoBzol5qywk0khJf38Ank6vw30l9D5iR0jcNBPGn
+	1aftDfEqg9Zpz4uxdrlxvYHyJDVw5pGr1J5KdcvyJprh+LJISxF5mSdOgzCfMzrVqMpv/GPr3NJ
+	tGoGeYADFduXxpfzA1xRmSQO/6EYrRNTxHok9P2HLgzioNKvmNIVFwmuHbqo/xa0ikZJQDfjPVP
+	ALeppWa5Lfx1nGn1R3q/MXzqX99zw+AvyvwF913FlQLT0Zq6Q9+ZK1AE6qL6+W74Z2hTr3RKb6E
+	qBeokSS9EE7edgPg==
+X-Google-Smtp-Source: AGHT+IFAyCOognsDglACCwRtgGmfQBOzfISqmFQxoBN8Ni16ip7RMf//hSvC9Q3nMRwn6KHPU/PCow==
+X-Received: by 2002:a05:6830:439e:b0:7c7:827f:872b with SMTP id 46e09a7af769-7ce46767c8fmr2483407a34.37.1767708339811;
+        Tue, 06 Jan 2026 06:05:39 -0800 (PST)
+Received: from gmail.com ([2a03:2880:10ff:54::])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7ce47832780sm1459846a34.12.2026.01.06.06.05.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 06 Jan 2026 06:05:39 -0800 (PST)
+Date: Tue, 6 Jan 2026 06:05:37 -0800
+From: Breno Leitao <leitao@debian.org>
+To: Mark Rutland <mark.rutland@arm.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, Laura Abbott <labbott@redhat.com>, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
+	Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, kernel-team@meta.com, 
+	puranjay@kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2] arm64: Disable branch profiling for all arm64 code
+Message-ID: <tj43kozcibuidfzoqzrvk6gsxylddfpyftkdiy7xb2zm7yncx5@z33xu7tavuts>
+References: <20260106-annotated-v2-1-fb7600ebd47f@debian.org>
+ <aVz-NHMG7rSJ9u1N@J2N7QTR9R3>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -108,77 +78,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAJfpeguBuHBGUq45bOFvypsyd8XXekLKycRBGO1eeqLxz3L0eA@mail.gmail.com>
-X-Spamd-Result: default: False [-4.01 / 50.00];
-	BAYES_HAM(-3.00)[99.99%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ARC_NA(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	MIME_TRACE(0.00)[0:+];
-	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com,gmx.net,protonmail.com];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[kernel.org,suse.cz,gmail.com,linux-foundation.org,kvack.org,protonmail.com,gmx.net,debian.org,vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:dkim,suse.com:email,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns];
-	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[suse.cz:+]
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Spam-Level: 
-X-Rspamd-Queue-Id: 8BE025BCC5
-X-Spam-Flag: NO
-X-Spam-Score: -4.01
+In-Reply-To: <aVz-NHMG7rSJ9u1N@J2N7QTR9R3>
 
-On Tue 06-01-26 14:13:55, Miklos Szeredi wrote:
-> On Tue, 6 Jan 2026 at 11:05, David Hildenbrand (Red Hat)
-> <david@kernel.org> wrote:
+On Tue, Jan 06, 2026 at 12:21:47PM +0000, Mark Rutland wrote:
+> On Tue, Jan 06, 2026 at 02:16:35AM -0800, Breno Leitao wrote:
+> > The arm64 kernel doesn't boot with annotated branches
+> > (PROFILE_ANNOTATED_BRANCHES) enabled and CONFIG_DEBUG_VIRTUAL together.
+> > 
+> > Bisecting it, I found that disabling branch profiling in arch/arm64/mm
+> > solved the problem. Narrowing down a bit further, I found that
+> > physaddr.c is the file that needs to have branch profiling disabled to
+> > get the machine to boot.
+> > 
+> > I suspect that it might invoke some ftrace helper very early in the boot
+> > process and ftrace is still not enabled(!?).
+> > 
+> > Rather than playing whack-a-mole with individual files, disable branch
+> > profiling for the entire arch/arm64 tree, similar to what x86 already
+> > does in arch/x86/Kbuild.
+> > 
+> > Cc: stable@vger.kernel.org
+> > Fixes: ec6d06efb0bac ("arm64: Add support for CONFIG_DEBUG_VIRTUAL")
+> > Signed-off-by: Breno Leitao <leitao@debian.org>
 > 
-> > > So I understand your patch fixes the regression with suspend blocking but I
-> > > don't have a high confidence we are not just starting a whack-a-mole game
-> 
-> Joanne did a thorough analysis, so I still have hope.  Missing a case
-> in such a complex thing is not unexpected.
-> 
-> > Yes, I think so, and I think it is [1] not even only limited to
-> > writeback [2].
-> 
-> You are referring to DoS against compaction?
-> 
-> It is a much more benign issue, since compaction will just skip locked
-> pages, AFAIU (wasn't always so:
-> https://lore.kernel.org/all/1288817005.4235.11393.camel@nimitz/).
-> 
-> Not saying it shouldn't be fixed, but it should be a separate discussion.
-> 
-> > To handle the bigger picture (I raised another problematic instance in
-> > [4]): I don't know how to handle that without properly fixing fuse. Fuse
-> > folks should really invest some time to solve this problem for good.
-> 
-> Fixing it generically in fuse would necessarily involve bringing back
-> some sort of temp buffer.  The performance penalty could be minimized,
-> but complexity is what really hurts.
-> 
-> Maybe doing whack-a-mole results in less mess overall :-/
+> I don't think ec6d06efb0bac is to blame here, and CONFIG_DEBUG_VIRTUAL
+> is unsound in a number of places, so I'd prefer to remove that Fixes tag
+> and backport this for all stable trees.
 
-OK, I was wondering about the bigger picture and now I see there's none :)
-I can live with this workaround for now as its blast radius is relatively
-small and we can see if some other practical issues appear in the future
-(in which case I'll probably push for a more systemic solution).
+That is fair, thanks for the review.
 
-								Honza
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+Should I submit a new version without the fixes tag, or, do you guys do
+it while merging the patch?
+
+thanks
+--breno
 
