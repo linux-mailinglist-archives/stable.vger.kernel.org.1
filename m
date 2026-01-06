@@ -1,51 +1,52 @@
-Return-Path: <stable+bounces-205359-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205361-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 782E0CFA5B4
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:56:39 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5929ACF9E4B
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 18:57:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4A7B03047AC1
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:56:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1A7AE3270A49
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:44:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1181C34C81E;
-	Tue,  6 Jan 2026 17:27:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 530A134CFD2;
+	Tue,  6 Jan 2026 17:27:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S4X5V/4Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jk15JP8K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C060234B41E;
-	Tue,  6 Jan 2026 17:27:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2A5334C9AB;
+	Tue,  6 Jan 2026 17:27:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767720430; cv=none; b=CHBAU9KAUuqtCIVKQH9ob+0p6QrvfmUdxjiHNxkz63GjyKd+21LNKuQPcVwsk3D7zA5ZwyPqlYbCBfrZBY8YaLhOeb/h6hmcVJSfJaAau0HQzRkCZ82L2Q5vjgGGTVx+P20DT48JEhQ774O8DNgYNI8gkGB8obp4+XhVL9biZdk=
+	t=1767720437; cv=none; b=m5qxc5kbbPXoPK/1mkZcsjHG6XQSpr22v43SjiPKFA0J/KoBG6pWYSQHF6wxLNZ9KaveZQIubV6ukGpE8fuP56+uOqg4bGCDZBibut0PgkjfiWkn/E+OuSQN6gHX2MGrIXTx6M+lGK3NhUP9fWFVF16VEkCABudV43WIL2JF3Zw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767720430; c=relaxed/simple;
-	bh=DWs5oPl3VMppU7a7WtVIjtszQakfbZuJL1dHv66EZ5U=;
+	s=arc-20240116; t=1767720437; c=relaxed/simple;
+	bh=EWetHNAYKTNCelMA21YhVJUMg/C2IKg0NjwyiYt+/SQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uVZR7CDKVpBTVav66X+K87uETf7jl4Or8Bkh+hTZjLPgVgL820XHnuWT5iRlVe0+axOGx2AVmhm+oZ4Ij9uooNtxJsSfLN2OQGLt7iWcupTJmVyw3K9L+3tZGb3oFTdKtDI78HJxFLBihcWpiR29uYsX2ZQFPaMIdbwrTwwXbZ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S4X5V/4Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD5B9C116C6;
-	Tue,  6 Jan 2026 17:27:09 +0000 (UTC)
+	 MIME-Version; b=f0GyaiQBN0uh0o/6eNTjD5MCkePcg9lAtKaf2wTtDMkGwaRQe0QtPsidhcWz64naESfVhduLCV7PjEUl8Co7VYyLz/bGMvITLf7sk3gzPpc3NSFyEODIZLvY9GdvbR7KRE8pFad6/4FLTgWHI41xCW3tqbTbTW3mPUnKaS/xOLE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jk15JP8K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CD0FC116C6;
+	Tue,  6 Jan 2026 17:27:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767720430;
-	bh=DWs5oPl3VMppU7a7WtVIjtszQakfbZuJL1dHv66EZ5U=;
+	s=korg; t=1767720436;
+	bh=EWetHNAYKTNCelMA21YhVJUMg/C2IKg0NjwyiYt+/SQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S4X5V/4QpbTMNd27XTRz5tGvZegipqdh22EEacbLvTmGAHMVpZX8EwmSTMPPXswns
-	 KfLNFA9oMXGPdP89a1X/499TFDxD2dSgeFjhC/bnQgWKQGYhoTOEIIXalwK8VuFUro
-	 JPAQXRb200D0CCP8/lRySR4CtjJni+Woudjq01t0=
+	b=Jk15JP8KURPRfGv66fsjDTJFQEOszp17WRyjQawAqAUO6mwuyuW88SDv4qZIzijRY
+	 GG8oj3U8gKKeP4J6K1a/O/YlwrcyJzmn2uLL2pNDNrF2TnSBcovLC60rlwQmLH2Kjd
+	 FG0mBcQKUFz2CJRHqi4APBS+JDhsVl0Nf9LkU10s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ed Tsai <ed.tsai@mediatek.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.12 234/567] PM: runtime: Do not clear needs_force_resume with enabled runtime PM
-Date: Tue,  6 Jan 2026 18:00:16 +0100
-Message-ID: <20260106170459.976543835@linuxfoundation.org>
+	Thorsten Blum <thorsten.blum@linux.dev>,
+	Dimitri Fedrau <dima.fedrau@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 236/567] net: phy: marvell-88q2xxx: Fix clamped value in mv88q2xxx_hwmon_write
+Date: Tue,  6 Jan 2026 18:00:18 +0100
+Message-ID: <20260106170500.050501874@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
 References: <20260106170451.332875001@linuxfoundation.org>
@@ -64,64 +65,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Thorsten Blum <thorsten.blum@linux.dev>
 
-commit 359afc8eb02a518fbdd0cbd462c8c2827c6cbec2 upstream.
+commit c4cdf7376271bce5714c06d79ec67759b18910eb upstream.
 
-Commit 89d9cec3b1e9 ("PM: runtime: Clear power.needs_force_resume in
-pm_runtime_reinit()") added provisional clearing of power.needs_force_resume
-to pm_runtime_reinit(), but it is done unconditionally which is a
-mistake because pm_runtime_reinit() may race with driver probing
-and removal [1].
+The local variable 'val' was never clamped to -75000 or 180000 because
+the return value of clamp_val() was not used. Fix this by assigning the
+clamped value back to 'val', and use clamp() instead of clamp_val().
 
-To address this, notice that power.needs_force_resume should never
-be set when runtime PM is enabled and so it only needs to be cleared
-when runtime PM is disabled, and update pm_runtime_init() to only
-clear that flag when runtime PM is disabled.
-
-Fixes: 89d9cec3b1e9 ("PM: runtime: Clear power.needs_force_resume in pm_runtime_reinit()")
-Reported-by: Ed Tsai <ed.tsai@mediatek.com>
-Closes: https://lore.kernel.org/linux-pm/20251215122154.3180001-1-ed.tsai@mediatek.com/ [1]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Cc: 6.17+ <stable@vger.kernel.org> # 6.17+
-Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
-Link: https://patch.msgid.link/12807571.O9o76ZdvQC@rafael.j.wysocki
+Cc: stable@vger.kernel.org
+Fixes: a557a92e6881 ("net: phy: marvell-88q2xxx: add support for temperature sensor")
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+Reviewed-by: Dimitri Fedrau <dima.fedrau@gmail.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20251202172743.453055-3-thorsten.blum@linux.dev
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/base/power/runtime.c |   22 ++++++++++++----------
- 1 file changed, 12 insertions(+), 10 deletions(-)
+ drivers/net/phy/marvell-88q2xxx.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/base/power/runtime.c
-+++ b/drivers/base/power/runtime.c
-@@ -1829,16 +1829,18 @@ void pm_runtime_init(struct device *dev)
-  */
- void pm_runtime_reinit(struct device *dev)
- {
--	if (!pm_runtime_enabled(dev)) {
--		if (dev->power.runtime_status == RPM_ACTIVE)
--			pm_runtime_set_suspended(dev);
--		if (dev->power.irq_safe) {
--			spin_lock_irq(&dev->power.lock);
--			dev->power.irq_safe = 0;
--			spin_unlock_irq(&dev->power.lock);
--			if (dev->parent)
--				pm_runtime_put(dev->parent);
--		}
-+	if (pm_runtime_enabled(dev))
-+		return;
-+
-+	if (dev->power.runtime_status == RPM_ACTIVE)
-+		pm_runtime_set_suspended(dev);
-+
-+	if (dev->power.irq_safe) {
-+		spin_lock_irq(&dev->power.lock);
-+		dev->power.irq_safe = 0;
-+		spin_unlock_irq(&dev->power.lock);
-+		if (dev->parent)
-+			pm_runtime_put(dev->parent);
- 	}
- 	/*
- 	 * Clear power.needs_force_resume in case it has been set by
+--- a/drivers/net/phy/marvell-88q2xxx.c
++++ b/drivers/net/phy/marvell-88q2xxx.c
+@@ -647,7 +647,7 @@ static int mv88q2xxx_hwmon_write(struct
+ 
+ 	switch (attr) {
+ 	case hwmon_temp_max:
+-		clamp_val(val, -75000, 180000);
++		val = clamp(val, -75000, 180000);
+ 		val = (val / 1000) + 75;
+ 		val = FIELD_PREP(MDIO_MMD_PCS_MV_TEMP_SENSOR3_INT_THRESH_MASK,
+ 				 val);
 
 
 
