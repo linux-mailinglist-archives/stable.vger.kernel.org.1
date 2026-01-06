@@ -1,126 +1,204 @@
-Return-Path: <stable+bounces-206045-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206046-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B51FECFB4D0
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 23:56:44 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E151CFB529
+	for <lists+stable@lfdr.de>; Wed, 07 Jan 2026 00:07:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 63D9F301B2F6
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 22:56:26 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 39583304E5E4
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 23:07:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77AAF2D46A2;
-	Tue,  6 Jan 2026 22:56:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A79642E542C;
+	Tue,  6 Jan 2026 23:07:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jv8OEh6B"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qSYzroI2"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oa1-f65.google.com (mail-oa1-f65.google.com [209.85.160.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7534B29C351
-	for <stable@vger.kernel.org>; Tue,  6 Jan 2026 22:56:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67E752550BA
+	for <stable@vger.kernel.org>; Tue,  6 Jan 2026 23:07:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767740185; cv=none; b=ZaXK5ioXHpJJ6/XUqONVmeFVjIWfs71tBlGA6rydHH/KcfmTPhdeiNYLczsQpKYL/aWntDKjQfH8LUS2rKkZj6tYcR2NYkXCaUVz9y+R6zptJw5Cg/Scb+v8N6LDKAKRUBp+D7qagm/mFtLGXIy+dLb9bZ+ovBUBpieTO8iM/ro=
+	t=1767740874; cv=none; b=RCdV0UCSo12Itacq8kcN44DuOA1WJAET2w9+YdlryuLwYq7NtZHfzVXic+8UdSAwkWfxeuxVjgjDg3GFoHuef7agXA8JfqTcl5OxNAC0RmX93IsbsbyexX0Y7NPa7NdNDQE06+xqWPKwRwkcoIFRhCJHMKzWrf+6dQMY+d6ZIF4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767740185; c=relaxed/simple;
-	bh=A+XSURg7K9EwgUvytmexG4/kwwx+ACrDpqBOoY2K9QE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HXxJ/T2AqXpwlx4zcKPuqSrHXzPOrRSyO85QW2+YjQF/+5M7BghIV4WCP+TsvKeMyllFf+Ec02oack07/cHkmV9+PjOR2axcrMiHWL7G8CIbatQFU841OII3GZskSP8hRcpIb5G20FO8g74gXL64qnbsewWDmlrzcIdNfjiwY1U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jv8OEh6B; arc=none smtp.client-ip=209.85.160.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
-Received: by mail-oa1-f65.google.com with SMTP id 586e51a60fabf-3f584ab62c6so630953fac.1
-        for <stable@vger.kernel.org>; Tue, 06 Jan 2026 14:56:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1767740182; x=1768344982; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=rlEgTGvQwC//J0kCOTtW9TufRYi3qibIbd/C3rGyaPU=;
-        b=Jv8OEh6BH/j50hoej2fmiFmEOt1AR9yCRGEwOXEtXdqH40bnMX6suLSHhaclKHpzTY
-         4sTawX/148EBkzmMKTkc3ol8sZdIP7lVbs81a8Vb44en62m9AgB5wJbmIzlszFwLln/w
-         5TinHxuAI5gv7dfL7LGw+FMNQykfwnSKhgi+k=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767740182; x=1768344982;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=rlEgTGvQwC//J0kCOTtW9TufRYi3qibIbd/C3rGyaPU=;
-        b=DRvxSqUl9Y9klL/whgmpFwuzdgY38pAVhCs9TCt952BFwbxtYQSQiWS16RNxn7qLW9
-         hJijFXvO9vSThdyOc24BLbWjttX1Ik7ZvtRlOFVYXsNTCTbUCaxEilAiHb+YXYrbl/R6
-         YOUVCL9VApXfemIMGWzYGuOttST3/XYXKwXup0fOBCn2CDST/F0IoUmGz0nL1YHzUgG7
-         8RUA0olAggwEZ9INczLr28akr0Jo1Y7cYoQ70lyMGXmzDYRJhhMZvJQ3ueRnY9RcQne+
-         3z4AohnFWRGU2CcWN2XOIEQj9tRAaCeq4LktdcbT0rmiUUTjo6ZU7Dj3huf9WHVDP6OD
-         0Mtw==
-X-Forwarded-Encrypted: i=1; AJvYcCVTqeM4MxQ3+RhGS1dRY0edIVEiaNHyBM1ntus46ZIOpjEJPif1Hm3u6rVz38WvHTn+TdVCKEA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yym7nSXTvySzG7Lxj+LYZnIY07TQVa/QT9iUJYv+rWMOpeHeto4
-	R/gfTHNYxyFOMbTjw/vCz3SFfa5uZjHy4tkl6GFKmJ2CdOAMt1+7RYXD7erVFX/hXpuM0lKkusx
-	ZoL0G
-X-Gm-Gg: AY/fxX6oKDkcNelWjfw/eVOrZujikOn3wbP3HYajFHjV/bE0gQhIJjJRp1Xa8c8DQZo
-	Np5d3++ePR3LB1XLuL6wCymTbd6gve74q8jKYmCOTClTz/axwxTIexNeBfNtu3UbG+OGe8VpGmM
-	XRInNA/sEdh4IKEY7JwUrtqGA9Fm/7OcP8U2+CrG4MA+7WxPGONfXLLa1NvrtUXLEnnFaVN16f9
-	JJ2wTGTKlIU4nO+gjGU5x975jRHf44muyHlIm8OL2CgNTfgTaaP18GEcQ/YiO+09FtZLOh/Ut6j
-	imBO2M2sFnE1ISXSyIhl7Fg644ApIhO+gwBiEgE5d2Zg8wckonvGDPQbWxbzX/iiO69S/CHXQO4
-	1Kk9CnRrfBKHaM8Xvud1D1iKZJenoFL5AKlHTrFtCXlSX2fCbc6lDAnjczzAIytuqHHoGjx3thW
-	GpOfaO/jbQyKiIpAegk3sMkFw=
-X-Google-Smtp-Source: AGHT+IFAuV1BxuoZwVQSFSBXE5zpDFi9jBI42cEVmFxkFCru49vqQ7tHYN9dkhTgJRw8CjbAd0tKDQ==
-X-Received: by 2002:a05:6871:739c:b0:3f1:664f:e8db with SMTP id 586e51a60fabf-3ffc09fa492mr292992fac.23.1767740182243;
-        Tue, 06 Jan 2026 14:56:22 -0800 (PST)
-Received: from [192.168.1.14] ([38.175.187.108])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-3ffa50ecb58sm2056089fac.18.2026.01.06.14.56.21
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 06 Jan 2026 14:56:21 -0800 (PST)
-Message-ID: <51c18a00-2ac6-46b0-be9b-b7b1587a382b@linuxfoundation.org>
-Date: Tue, 6 Jan 2026 15:56:20 -0700
+	s=arc-20240116; t=1767740874; c=relaxed/simple;
+	bh=dY5jh0fDrczOegcNmRnB1RIq2GS0wAVKbPrg0jfyAuU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=RnLEgM9dZEnYMHc9m0rXMP7/4Qw93q+FyYX5tfXkEyWMPcNdTh1plEln1/xEXSphAH/fHddYLmg0WEKBuX9fs1M6AkQfcuL5cVMVIZwzwt/s8iXG0D5PB6lMJNWGm1Xi1cOsFHtQ7IzJswK1V5gtb/J/+Au2EqVa+eJfHgpzelA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qSYzroI2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 275D9C116C6;
+	Tue,  6 Jan 2026 23:07:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767740873;
+	bh=dY5jh0fDrczOegcNmRnB1RIq2GS0wAVKbPrg0jfyAuU=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=qSYzroI2nTCvIlKEYnq617VXkisFLgroUJ+jNaCgTKucVwuNB3Buf6j+JNyCmGgQA
+	 EQY9Axo7kFBmdTosxgD+9zcHh3u/PEHFN1xffS1ZT/WCjMyN5pwQhbNNTc55TRwaBg
+	 g/jxQdL5WzW2jX/mTFR3dnH799RiikHCVZC13Dn9hw3fL5g/eV5MIgbfBJ8VCLVG5X
+	 aNA7nACdtmnBj2PudmgRI3gfvz+AMGKl8jmJN8aSD9ij5mqvRZwa6quGJWyA9bQEVA
+	 nqQh8Zrv3GCbg9G6/GEFosAo+R4B86IgeGMmoEgTUi1Xq6rSBveAO96cmDutKJl1pS
+	 REct3cCTsJsjQ==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: David Hildenbrand <david@redhat.com>,
+	Zi Yan <ziy@nvidia.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Brendan Jackman <jackmanb@google.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	Christian Brauner <brauner@kernel.org>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	=?UTF-8?q?Eugenio=20P=C3=A9=20rez?= <eperezma@redhat.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Gregory Price <gourry@gourry.net>,
+	"Huang, Ying" <ying.huang@linux.alibaba.com>,
+	Jan Kara <jack@suse.cz>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Jason Wang <jasowang@redhat.com>,
+	Jerrin Shaji George <jerrin.shaji-george@broadcom.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>,
+	Liam Howlett <liam.howlett@oracle.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Mathew Brost <matthew.brost@intel.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Minchan Kim <minchan@kernel.org>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Peter Xu <peterx@redhat.com>,
+	Qi Zheng <zhengqi.arch@bytedance.com>,
+	Rakie Kim <rakie.kim@sk.com>,
+	Rik van Riel <riel@surriel.com>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	xu xin <xu.xin16@zte.com.cn>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12.y 1/2] mm: simplify folio_expected_ref_count()
+Date: Tue,  6 Jan 2026 18:07:46 -0500
+Message-ID: <20260106230747.3447947-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2026010544-pavestone-gloating-a829@gregkh>
+References: <2026010544-pavestone-gloating-a829@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.12 000/567] 6.12.64-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- achill@achill.org, sr@sladewatkins.com,
- Shuah Khan <skhan@linuxfoundation.org>
-References: <20260106170451.332875001@linuxfoundation.org>
-Content-Language: en-US
-From: Shuah Khan <skhan@linuxfoundation.org>
-In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On 1/6/26 09:56, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.12.64 release.
-> There are 567 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Thu, 08 Jan 2026 17:03:16 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.64-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
-> 
+From: David Hildenbrand <david@redhat.com>
 
-Compiled and booted on my test system. No dmesg regressions.
+[ Upstream commit 78cb1a13c42a6d843e21389f74d1edb90ed07288 ]
 
-Tested-by: Shuah Khan <skhan@linuxfoundation.org>
+Now that PAGE_MAPPING_MOVABLE is gone, we can simplify and rely on the
+folio_test_anon() test only.
 
-thanks,
--- Shuah
+... but staring at the users, this function should never even have been
+called on movable_ops pages. E.g.,
+* __buffer_migrate_folio() does not make sense for them
+* folio_migrate_mapping() does not make sense for them
+* migrate_huge_page_move_mapping() does not make sense for them
+* __migrate_folio() does not make sense for them
+* ... and khugepaged should never stumble over them
+
+Let's simply refuse typed pages (which includes slab) except hugetlb, and
+WARN.
+
+Link: https://lkml.kernel.org/r/20250704102524.326966-26-david@redhat.com
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Zi Yan <ziy@nvidia.com>
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+Cc: Alistair Popple <apopple@nvidia.com>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Brendan Jackman <jackmanb@google.com>
+Cc: Byungchul Park <byungchul@sk.com>
+Cc: Chengming Zhou <chengming.zhou@linux.dev>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Eugenio Pé rez <eperezma@redhat.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Gregory Price <gourry@gourry.net>
+Cc: "Huang, Ying" <ying.huang@linux.alibaba.com>
+Cc: Jan Kara <jack@suse.cz>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Jason Wang <jasowang@redhat.com>
+Cc: Jerrin Shaji George <jerrin.shaji-george@broadcom.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: John Hubbard <jhubbard@nvidia.com>
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Mathew Brost <matthew.brost@intel.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Miaohe Lin <linmiaohe@huawei.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Minchan Kim <minchan@kernel.org>
+Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Qi Zheng <zhengqi.arch@bytedance.com>
+Cc: Rakie Kim <rakie.kim@sk.com>
+Cc: Rik van Riel <riel@surriel.com>
+Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+Cc: xu xin <xu.xin16@zte.com.cn>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: f183663901f2 ("mm: consider non-anon swap cache folios in folio_expected_ref_count()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ include/linux/mm.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 13b4bd7355c1..bbea39a8d441 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -2238,13 +2238,13 @@ static inline int folio_expected_ref_count(const struct folio *folio)
+ 	const int order = folio_order(folio);
+ 	int ref_count = 0;
+ 
+-	if (WARN_ON_ONCE(folio_test_slab(folio)))
++	if (WARN_ON_ONCE(page_has_type(&folio->page) && !folio_test_hugetlb(folio)))
+ 		return 0;
+ 
+ 	if (folio_test_anon(folio)) {
+ 		/* One reference per page from the swapcache. */
+ 		ref_count += folio_test_swapcache(folio) << order;
+-	} else if (!((unsigned long)folio->mapping & PAGE_MAPPING_FLAGS)) {
++	} else {
+ 		/* One reference per page from the pagecache. */
+ 		ref_count += !!folio->mapping << order;
+ 		/* One reference from PG_private. */
+-- 
+2.51.0
+
 
