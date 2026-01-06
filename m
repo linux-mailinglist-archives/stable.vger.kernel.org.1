@@ -1,51 +1,53 @@
-Return-Path: <stable+bounces-205234-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205239-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E9A5CFA781
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:05:41 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10A73CFA8DE
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:17:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 30D1331157A8
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:14:43 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7BA3130019D3
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 19:17:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D8A634D388;
-	Tue,  6 Jan 2026 17:20:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ADAA34D3A6;
+	Tue,  6 Jan 2026 17:20:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c/KyXoZx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w+/E3SJI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 033D834CFD6;
-	Tue,  6 Jan 2026 17:20:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3888C34CFDC;
+	Tue,  6 Jan 2026 17:20:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767720021; cv=none; b=PMRw+HI6GTtFaXkLzlHoDdBOnsIsYfoSLNsMQkCykKpkvhtbNy3D0y2JU0JT2H5/+BC9WkNxAvZ9vBAKHyX2PEcBYHAMYXprG1o26kvrM7DqPeVWnyEqBwaqfrgaochehWKuLmurVNijLrXjj7LbJX2K5ZjrPrvv6t2sJrI4mow=
+	t=1767720037; cv=none; b=npNWHvuVMKSbT/jwZQpblatpSWJNyy6gUFTec1B8SUZ1WSQsD9BZYP8lBKvR5itf4BMgA6cHQeqhcoR5Joxivv5Q9fL2MVWn6XKPZozox/AWcmQPfflwpDd8JuADyrNag2WVuo0E7XcR62R8PlWU9NPkHbFdvtezQ6eYIywlSb4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767720021; c=relaxed/simple;
-	bh=dD3+Hs54T1oHQiGFq7qokp2Rpv1DcDqHYfE4rE1xNPM=;
+	s=arc-20240116; t=1767720037; c=relaxed/simple;
+	bh=9przQN2pB0TrG1X00+a89i66AnNtUwscAIcF2jifNLQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u0FxnQniVEQT6UBj51BDts1oUi1sY4MkPmZOh0poZ+hp+rEHbVrGuj6Rs9am0fHshpbx2uAs3gDbFnfbU28tjDazp2s+Jld1YR86iU4tji7Sk5Ky5IDNMSaJtfZIpHiAAo+TeC9VdGMaoqAOk19pEaG6H3vOiI4n30BpdnBdePA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c/KyXoZx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C603C116C6;
-	Tue,  6 Jan 2026 17:20:20 +0000 (UTC)
+	 MIME-Version; b=cvzFa2E09soaeUB1jl5WSvC4CpQxUPqlZfBFmvRrTpucFZBmsF5kvToZinkCDN4MI8f3jTZH5jSyESgb5hZ9Syrpn+oQzd0wHmQre30ZIHSjXUk3xuwf7Dl3Uz/bO1zT5eyu/kBlS57ikIxitDDi1GflU4NXpNeV5NlrKf74jWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w+/E3SJI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1C79C116C6;
+	Tue,  6 Jan 2026 17:20:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767720020;
-	bh=dD3+Hs54T1oHQiGFq7qokp2Rpv1DcDqHYfE4rE1xNPM=;
+	s=korg; t=1767720037;
+	bh=9przQN2pB0TrG1X00+a89i66AnNtUwscAIcF2jifNLQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c/KyXoZxPj4Cnw1J5ptY7GT6TCAl7u4KomSFDl8W52dVcOB3dfqN8ulW4bmyNnyc/
-	 8AuqLpIjKd6/4DnYxVOafntLN8jnkGxFsOAfIZtjPY4iQRgj6CSPPT9IC2tugXnbAK
-	 ZvfFUL/ZrL/HS3DaEJVD9X56RZeyGV40w+vV00Uk=
+	b=w+/E3SJI4wyevOFrmpIMCOnzpt8pZ+fK0bX7X/tDW0QuGJgXdLBAWbEn8u1bn/QeL
+	 dA7HG7dLmEyTjHSV7OKnkI0Mn3UjiUaDrTzcLonf9vAwFH4mGjWwflCCDgEcs0ey0s
+	 dWQwClBJfm94C0+Rv2TqE/g1ZbgNMGOTBsjeR/Ks=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yongxin Liu <yongxin.liu@windriver.com>,
-	Ingo Molnar <mingo@kernel.org>,
+	Mike Snitzer <snitzer@kernel.org>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 111/567] x86/fpu: Fix FPU state core dump truncation on CPUs with no extended xfeatures
-Date: Tue,  6 Jan 2026 17:58:13 +0100
-Message-ID: <20260106170455.435476784@linuxfoundation.org>
+Subject: [PATCH 6.12 116/567] nfsd: update percpu_ref to manage references on nfsd_net
+Date: Tue,  6 Jan 2026 17:58:18 +0100
+Message-ID: <20260106170455.622302218@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
 References: <20260106170451.332875001@linuxfoundation.org>
@@ -64,51 +66,67 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Yongxin Liu <yongxin.liu@windriver.com>
+From: Mike Snitzer <snitzer@kernel.org>
 
-[ Upstream commit c8161e5304abb26e6c0bec6efc947992500fa6c5 ]
+[ Upstream commit 39972494e318a21b3059287909fc090186dbe60a ]
 
-Zero can be a valid value of num_records. For example, on Intel Atom x6425RE,
-only x87 and SSE are supported (features 0, 1), and fpu_user_cfg.max_features
-is 3. The for_each_extended_xfeature() loop only iterates feature 2, which is
-not enabled, so num_records = 0. This is valid and should not cause core dump
-failure.
+Holding a reference on nfsd_net is what is required, it was never
+actually about ensuring nn->nfsd_serv available.
 
-The issue is that dump_xsave_layout_desc() returns 0 for both genuine errors
-(dump_emit() failure) and valid cases (no extended features). Use negative
-return values for errors and only abort on genuine failures.
+Move waiting for outstanding percpu references from
+nfsd_destroy_serv() to nfsd_shutdown_net().
 
-Fixes: ba386777a30b ("x86/elf: Add a new FPU buffer layout info to x86 core files")
-Signed-off-by: Yongxin Liu <yongxin.liu@windriver.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://patch.msgid.link/20251210000219.4094353-2-yongxin.liu@windriver.com
+By moving it later it will be possible to invalidate localio clients
+during nfsd_file_cache_shutdown_net() via __nfsd_file_cache_purge().
+
+Signed-off-by: Mike Snitzer <snitzer@kernel.org>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Acked-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+Stable-dep-of: df8d829bba3a ("nfsd: fix memory leak in nfsd_create_serv error paths")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/fpu/xstate.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/nfsd/nfssvc.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/arch/x86/kernel/fpu/xstate.c b/arch/x86/kernel/fpu/xstate.c
-index 22abb5ee0cf2..aacb59c4a35c 100644
---- a/arch/x86/kernel/fpu/xstate.c
-+++ b/arch/x86/kernel/fpu/xstate.c
-@@ -1879,7 +1879,7 @@ static int dump_xsave_layout_desc(struct coredump_params *cprm)
- 		};
+diff --git a/fs/nfsd/nfssvc.c b/fs/nfsd/nfssvc.c
+index 45f1bb2c6f13..f9bb408478dc 100644
+--- a/fs/nfsd/nfssvc.c
++++ b/fs/nfsd/nfssvc.c
+@@ -436,6 +436,10 @@ static void nfsd_shutdown_net(struct net *net)
  
- 		if (!dump_emit(cprm, &xc, sizeof(xc)))
--			return 0;
-+			return -1;
- 
- 		num_records++;
+ 	if (!nn->nfsd_net_up)
+ 		return;
++
++	percpu_ref_kill_and_confirm(&nn->nfsd_serv_ref, nfsd_serv_done);
++	wait_for_completion(&nn->nfsd_serv_confirm_done);
++
+ 	nfsd_export_flush(net);
+ 	nfs4_state_shutdown_net(net);
+ 	nfsd_reply_cache_shutdown(nn);
+@@ -444,7 +448,10 @@ static void nfsd_shutdown_net(struct net *net)
+ 		lockd_down(net);
+ 		nn->lockd_up = false;
  	}
-@@ -1917,7 +1917,7 @@ int elf_coredump_extra_notes_write(struct coredump_params *cprm)
- 		return 1;
++
++	wait_for_completion(&nn->nfsd_serv_free_done);
+ 	percpu_ref_exit(&nn->nfsd_serv_ref);
++
+ 	nn->nfsd_net_up = false;
+ 	nfsd_shutdown_generic();
+ }
+@@ -526,11 +533,6 @@ void nfsd_destroy_serv(struct net *net)
  
- 	num_records = dump_xsave_layout_desc(cprm);
--	if (!num_records)
-+	if (num_records < 0)
- 		return 1;
+ 	lockdep_assert_held(&nfsd_mutex);
  
- 	/* Total size should be equal to the number of records */
+-	percpu_ref_kill_and_confirm(&nn->nfsd_serv_ref, nfsd_serv_done);
+-	wait_for_completion(&nn->nfsd_serv_confirm_done);
+-	wait_for_completion(&nn->nfsd_serv_free_done);
+-	/* percpu_ref_exit is called in nfsd_shutdown_net */
+-
+ 	spin_lock(&nfsd_notifier_lock);
+ 	nn->nfsd_serv = NULL;
+ 	spin_unlock(&nfsd_notifier_lock);
 -- 
 2.51.0
 
