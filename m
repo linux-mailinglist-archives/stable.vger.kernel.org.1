@@ -1,52 +1,50 @@
-Return-Path: <stable+bounces-205197-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205191-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C12DCFB27A
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 22:49:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DEA8CCFB265
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 22:49:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 89B0A30C79D5
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 21:46:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 233C3307F218
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 21:46:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA252349AE0;
-	Tue,  6 Jan 2026 17:18:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 946E3347BD2;
+	Tue,  6 Jan 2026 17:17:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BJ/37OsP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0uGL/D4t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6729E3491F5;
-	Tue,  6 Jan 2026 17:18:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D26C7347FD1;
+	Tue,  6 Jan 2026 17:17:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767719897; cv=none; b=Ynr1iVi6wk2OLXCAd6RkgHJM3gQZpBWJke0NWa5zQpHM1pfTRBIs6svB5PQDymlARHWFxehZHReZpXOEG9o5sCm8gxrE4rC4O/hAzy1kvNA76mWk0F6Y9zcdM2Z1jwQPM4f0DnMnfrg5BUYoPGZwYswZmW+FgAEOqlejhuo2n0g=
+	t=1767719878; cv=none; b=tbTiYMCuJcqkWu+nrAjPk/GzShI56Dmw2N/ybJmN9gMzvny/idp3jKjUEoms+7M41xnAZoHkZOPVcK3ly37JTqeA/rkaZlrPKYgy2qrXvurT4+LkRS7TeF52qQXLdE0CgptpAw2mPrno7obr8a+q2j5Voy096fQiUUjR33t9HTI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767719897; c=relaxed/simple;
-	bh=Z/l/CVk3mglW/kuSdO5S2izJxApvLzKxlbL1tJiKDkY=;
+	s=arc-20240116; t=1767719878; c=relaxed/simple;
+	bh=4Yx0hI+ZMGaS/p9K12sk7E4W5UJMZE0Xu0EyuyaY95k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TMhPv5A17P/Qqcrm2jubYf+IDqmyPUnw5eMaRUlJTfuqHjHzASIKx8qatzYOc1fnYv1BZ7tPRH5O1aYufdyJT2Q/1xJPOkc1Ok9p5HKWyv0K2nIMDtwCouXxwDf+CxFWotJUfqs4vJ9t22mrIT1JZGHhsT7sXkv03AXXea3IH/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BJ/37OsP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E57A3C116C6;
-	Tue,  6 Jan 2026 17:18:16 +0000 (UTC)
+	 MIME-Version; b=ZRDbb3gfWq9eWn7JFiy1at6C4DnADy9gGwmGjf0YOQs2W+W9WDjn2SXmmiBOnr1iP/o89jOfPjB7ZIDOgh4Ee+2+dzlx7DG3eXHCknQRDcZOTJoOyRL07v+qgmYP7aJ3r5l65QQBYeQL3BQoNd2KuAY6a4njQUcW4novoiGv9E0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0uGL/D4t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 293EAC116C6;
+	Tue,  6 Jan 2026 17:17:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767719897;
-	bh=Z/l/CVk3mglW/kuSdO5S2izJxApvLzKxlbL1tJiKDkY=;
+	s=korg; t=1767719878;
+	bh=4Yx0hI+ZMGaS/p9K12sk7E4W5UJMZE0Xu0EyuyaY95k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BJ/37OsPwI5F008DRj4PcblqiTO6ICt3NTtyFCt0wkqZ2Ra9lReisx3WW3Q5yNRgi
-	 X8tR0lecGlkQ6utPnbAI5uIbVAergkcXimxscKewUR8PDYf77MHZehIYudqptbRETb
-	 hM+KdjrK7HHpzV9fXzF3s+OYcZHEY57umhihd/pc=
+	b=0uGL/D4ttfYdVJy9z7qM6L5IYcQPoubOLJhmWXrpPoIj6vpa4Pvxw8AAjhErQ4ogB
+	 WKG6+Ln8BWn4lEPDpqZl9HTIS7SWgYhDFrQXuxzHftZEUWKgFeQIhFAUiA6TXvDsAO
+	 vE9gjVM3TjzfYDfl7tGeeP3Px+Z9KF3qXSNEi9T4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Quan Zhou <quan.zhou@mediatek.com>,
-	druth@chromium.org,
-	Felix Fietkau <nbd@nbd.name>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 031/567] wifi: mt76: mt792x: fix wifi init fail by setting MCU_RUNNING after CLC load
-Date: Tue,  6 Jan 2026 17:56:53 +0100
-Message-ID: <20260106170452.493302835@linuxfoundation.org>
+Subject: [PATCH 6.12 035/567] gfs2: Fix "gfs2: Switch to wait_event in gfs2_quotad"
+Date: Tue,  6 Jan 2026 17:56:57 +0100
+Message-ID: <20260106170452.640634687@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
 References: <20260106170451.332875001@linuxfoundation.org>
@@ -65,59 +63,36 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Quan Zhou <quan.zhou@mediatek.com>
+From: Andreas Gruenbacher <agruenba@redhat.com>
 
-[ Upstream commit 066f417be5fd8c7fe581c5550206364735dad7a3 ]
+[ Upstream commit dff1fb6d8b7abe5b1119fa060f5d6b3370bf10ac ]
 
-Set the MT76_STATE_MCU_RUNNING bit only after mt7921_load_clc()
-has successfully completed. Previously, the MCU_RUNNING state
-was set before loading CLC, which could cause conflict between
-chip mcu_init retry and mac_reset flow, result in chip init fail
-and chip abnormal status. By moving the state set after CLC load,
-firmware initialization becomes robust and resolves init fail issue.
+Commit e4a8b5481c59a ("gfs2: Switch to wait_event in gfs2_quotad") broke
+cyclic statfs syncing, so the numbers reported by "df" could easily get
+completely out of sync with reality.  Fix this by reverting part of
+commit e4a8b5481c59a for now.
 
-Signed-off-by: Quan Zhou <quan.zhou@mediatek.com>
-Reviewed-by: druth@chromium.org
-Link: https://patch.msgid.link/19ec8e4465142e774f17801025accd0ae2214092.1763465933.git.quan.zhou@mediatek.com
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+A follow-up commit will clean this code up later.
+
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7921/mcu.c | 2 +-
- drivers/net/wireless/mediatek/mt76/mt7925/mcu.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ fs/gfs2/quota.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-index 02c1de8620a7f..8d3f3c8b1a889 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-@@ -637,10 +637,10 @@ int mt7921_run_firmware(struct mt792x_dev *dev)
- 	if (err)
- 		return err;
+diff --git a/fs/gfs2/quota.c b/fs/gfs2/quota.c
+index 2e6bc77f4f81c..642584265a6f4 100644
+--- a/fs/gfs2/quota.c
++++ b/fs/gfs2/quota.c
+@@ -1617,7 +1617,7 @@ int gfs2_quotad(void *data)
  
--	set_bit(MT76_STATE_MCU_RUNNING, &dev->mphy.state);
- 	err = mt7921_load_clc(dev, mt792x_ram_name(dev));
- 	if (err)
- 		return err;
-+	set_bit(MT76_STATE_MCU_RUNNING, &dev->mphy.state);
+ 		t = min(quotad_timeo, statfs_timeo);
  
- 	return mt7921_mcu_fw_log_2_host(dev, 1);
- }
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-index e42b4f0abbe7a..c42b3b376f77e 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-@@ -958,10 +958,10 @@ int mt7925_run_firmware(struct mt792x_dev *dev)
- 	if (err)
- 		return err;
- 
--	set_bit(MT76_STATE_MCU_RUNNING, &dev->mphy.state);
- 	err = mt7925_load_clc(dev, mt792x_ram_name(dev));
- 	if (err)
- 		return err;
-+	set_bit(MT76_STATE_MCU_RUNNING, &dev->mphy.state);
- 
- 	return mt7925_mcu_fw_log_2_host(dev, 1);
- }
+-		t = wait_event_freezable_timeout(sdp->sd_quota_wait,
++		t -= wait_event_freezable_timeout(sdp->sd_quota_wait,
+ 				sdp->sd_statfs_force_sync ||
+ 				gfs2_withdrawing_or_withdrawn(sdp) ||
+ 				kthread_should_stop(),
 -- 
 2.51.0
 
