@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-205835-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205558-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22F0ACFA78A
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:05:50 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F03ECFAA10
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:25:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 617053414452
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:14:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B59623312BBF
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:38:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EB45364E91;
-	Tue,  6 Jan 2026 17:53:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F34125CC6C;
+	Tue,  6 Jan 2026 17:38:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hEI2pUNr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ry+Oc6Zo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E99C1364E89;
-	Tue,  6 Jan 2026 17:53:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C3D61DF751;
+	Tue,  6 Jan 2026 17:38:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767722021; cv=none; b=RhZaXdmefbnNXmr770WvlawwFKqLREEEKiGFqGW5Zlg0Dc7ZGZXSXatJNjbkxP1PiM9j+HWJmn0gQ1Dwxs2fx5+RvAop/R2rBZcpeRvNMjw5OHaFiXq7IYpmVpNa46YFhefBb9Y1Chrj6K/1Tj2pUiwGgmYO9Cb/JJU+agM+3ZA=
+	t=1767721093; cv=none; b=nndRkNJzT5Xdb37ARrslXaQsvFPODeLKQpw2Stvl8V0o3Y3BC74DXAQA4Ot1rbkuDs/IDCjWMuTqiKt9UoSxBV331bPC+IBfmAsfEvV8RwSWMRsfW6IKBJfxXNF6fI1TQAN45MSCkubHtCD97PhCDKaQg5DoLRp5knDjgl/wLiU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767722021; c=relaxed/simple;
-	bh=MjkhwzmADecJFBFrgKe20EiSuyX85L14oVtepKkopws=;
+	s=arc-20240116; t=1767721093; c=relaxed/simple;
+	bh=jthzbdAAY8gCNj5FigBEyWafYsDgI+EfBvU9ggJksko=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=folKq7wuTRgnqxYsSZngNWyW6WwTyaR6GU24wHIaJfn4fiC9iuQ1RK6dEMAdOLm/tZpF6ve5AtQ1Weefa92HQo4QJNAgZAaHt6t+Sl/n4nmnfo3qG0H/Kkn0pNbbFQHSAU84btVp6UraLBSetaJ+y0PbUW5DB3Rs1LsvGnI6La0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hEI2pUNr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5506CC116C6;
-	Tue,  6 Jan 2026 17:53:40 +0000 (UTC)
+	 MIME-Version; b=OflqF82D9icOO/SbY66vEChN0jREY4mb3zcjxwjMq8VJKItbmJIkYKemXLVDbgJ5dV8SzCqotAe+4tu62kkkbvZFvw+93a4PIzYdV1NgIciH+gUxg/mSpzoDp9TdTpGiQvg2UWtWQr+cLopxEVi+wNRn6zDMt6dwUBRCDYFDNrc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ry+Oc6Zo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 914C2C116C6;
+	Tue,  6 Jan 2026 17:38:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767722020;
-	bh=MjkhwzmADecJFBFrgKe20EiSuyX85L14oVtepKkopws=;
+	s=korg; t=1767721093;
+	bh=jthzbdAAY8gCNj5FigBEyWafYsDgI+EfBvU9ggJksko=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hEI2pUNrQdg7FeIPS2SLrxA1+QK2yciaNUCeYkmfJDWeRFMx5SQHeoT4oFhvG5O3X
-	 9Ka9mFt3zP9nmyOt9tokMRCNcn0A/+C5CXiJ5B18sJ4wrzK9JxuYvDMQgSkeVhL6pV
-	 A33TRs+61C+utzqpgoIHu2YEJMn9K3Uxa5JVPo9s=
+	b=Ry+Oc6ZozezqCtG0LWM4J5RIwGBsgADUDLEHtCwhnkf9tVlYiM7XFwVnsXUqQs/QC
+	 j58XbVAjy58Emtst7SuTcjkD+fQvYFiyQxZCwRtadhC6vZEAuq8VBss8wE35QLmNeI
+	 nar9+6PAZ+v6Fd5O7CM4ufDqGTKb2X2cf5l5kytA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	Patrice Chotard <patrice.chotard@foss.st.com>,
-	Sean Young <sean@mess.org>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 6.18 142/312] media: rc: st_rc: Fix reset control resource leak
+	Wentao Liang <vulab@iscas.ac.cn>,
+	Frank Li <Frank.Li@nxp.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.12 434/567] pmdomain: imx: Fix reference count leak in imx_gpc_probe()
 Date: Tue,  6 Jan 2026 18:03:36 +0100
-Message-ID: <20260106170552.979508019@linuxfoundation.org>
+Message-ID: <20260106170507.407126503@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
-References: <20260106170547.832845344@linuxfoundation.org>
+In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
+References: <20260106170451.332875001@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +60,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Wentao Liang <vulab@iscas.ac.cn>
 
-commit 1240abf4b71f632f0117b056e22488e4d9808938 upstream.
+commit 73cb5f6eafb0ac7aea8cdeb8ff12981aa741d8fb upstream.
 
-The driver calls reset_control_get_optional_exclusive() but never calls
-reset_control_put() in error paths or in the remove function. This causes
-a resource leak when probe fails after successfully acquiring the reset
-control, or when the driver is unloaded.
+of_get_child_by_name() returns a node pointer with refcount incremented.
+Use the __free() attribute to manage the pgc_node reference, ensuring
+automatic of_node_put() cleanup when pgc_node goes out of scope.
 
-Switch to devm_reset_control_get_optional_exclusive() to automatically
-manage the reset control resource.
+This eliminates the need for explicit error handling paths and avoids
+reference count leaks.
 
-Fixes: a4b80242d046 ("media: st-rc: explicitly request exclusive reset control")
+Fixes: 721cabf6c660 ("soc: imx: move PGC handling to a new GPC driver")
 Cc: stable@vger.kernel.org
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Reviewed-by: Patrice Chotard <patrice.chotard@foss.st.com>
-Signed-off-by: Sean Young <sean@mess.org>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/rc/st_rc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pmdomain/imx/gpc.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/drivers/media/rc/st_rc.c
-+++ b/drivers/media/rc/st_rc.c
-@@ -284,7 +284,7 @@ static int st_rc_probe(struct platform_d
- 	else
- 		rc_dev->rx_base = rc_dev->base;
+--- a/drivers/pmdomain/imx/gpc.c
++++ b/drivers/pmdomain/imx/gpc.c
+@@ -403,13 +403,12 @@ clk_err:
+ static int imx_gpc_probe(struct platform_device *pdev)
+ {
+ 	const struct imx_gpc_dt_data *of_id_data = device_get_match_data(&pdev->dev);
+-	struct device_node *pgc_node;
++	struct device_node *pgc_node __free(device_node)
++		= of_get_child_by_name(pdev->dev.of_node, "pgc");
+ 	struct regmap *regmap;
+ 	void __iomem *base;
+ 	int ret;
  
--	rc_dev->rstc = reset_control_get_optional_exclusive(dev, NULL);
-+	rc_dev->rstc = devm_reset_control_get_optional_exclusive(dev, NULL);
- 	if (IS_ERR(rc_dev->rstc)) {
- 		ret = PTR_ERR(rc_dev->rstc);
- 		goto err;
+-	pgc_node = of_get_child_by_name(pdev->dev.of_node, "pgc");
+-
+ 	/* bail out if DT too old and doesn't provide the necessary info */
+ 	if (!of_property_read_bool(pdev->dev.of_node, "#power-domain-cells") &&
+ 	    !pgc_node)
 
 
 
