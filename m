@@ -1,53 +1,50 @@
-Return-Path: <stable+bounces-205602-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205604-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DD98CFABA5
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:42:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 60D53CFABC6
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:42:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0B73E30069BD
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 19:42:31 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 93704300EBB0
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 19:42:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DAB02DFA5A;
-	Tue,  6 Jan 2026 17:40:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1C852D060C;
+	Tue,  6 Jan 2026 17:40:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rvIE96R9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0GPKwwrr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B2CC2DF13B;
-	Tue,  6 Jan 2026 17:40:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B8BE2C326B;
+	Tue,  6 Jan 2026 17:40:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721236; cv=none; b=DLCfDw7+HUPYcb8bNMyx2lIE3hvJg+pyCOxPjtLoHehy0H0Yp1UPKXh/BISEhkho7BMLswOGmZDni+hMWtkxU6JHLmlozwKkpwmE7CwVopHYXt8m5gCwV3owPnGWwMkcDEL+Fkr4woxM/vj0+SXHPqIgFg6maft4ZzgudRKGF9s=
+	t=1767721243; cv=none; b=l83eVrYipdZCAVTc7Rd//mgcq+89Drl2S6uvTNflhA87pC6Qgyc6hCIR09f5wyNsJ4oPsMrAIdirjHiTXbwz1gIO8MjhLUgO0UnVoinDV7JM6qwehecX1PdMsuFivIhtPJ4J81PR3fvhwK4h521vBu23yBpvlZ1KFfDTU8uFVbs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721236; c=relaxed/simple;
-	bh=UYb3Zm361Qdg+NOJ+m0B93NrFA8iULcPDwAmAGupXy0=;
+	s=arc-20240116; t=1767721243; c=relaxed/simple;
+	bh=texQ4ROJjgk2M4EcZ0VUcPBg+Uf/6q0iAokoFzpHPX0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NSGIPeuLF7fBgeR+EPcQguDW7VozcLjPrTPfBTuxyjzT1qF1NTL+xo1XugoWN44jc2f7qmh5tjPzkce5EdfgCkFtaS0VWH0PToMwjAaN+c22TBVBrEkUkJnRIVUTUafkv+jUx6wNCRob4Z12Vo2v251rYC7vTvBPg9lInxBq4Qk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rvIE96R9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B687EC116C6;
-	Tue,  6 Jan 2026 17:40:35 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Ba3223mH6BwJl8nJ+42oDG07mic8fLQa1ET+bbVolafqoK/Sx0hsDCfwbwYzBWcUVUyUbGwucn/Bedg92ZOJfWarAC2olsWzl6DTnkQZZih9++wBgrqSppITIrRY+Sts8Qpeg18LKQyMhmt4Hx0jxLrMWAuiWCVZkiVMr12C+i0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0GPKwwrr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D8B5C19424;
+	Tue,  6 Jan 2026 17:40:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721236;
-	bh=UYb3Zm361Qdg+NOJ+m0B93NrFA8iULcPDwAmAGupXy0=;
+	s=korg; t=1767721243;
+	bh=texQ4ROJjgk2M4EcZ0VUcPBg+Uf/6q0iAokoFzpHPX0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rvIE96R9iIVYTEmPy4bpPARGz5sAB4jqohz2OGVukn29lYS2jf0jddD+gGgzWNEjB
-	 0NcZN5Xfhssek7RNsix4D4j/7XbjHevMKJ7hznPtf9v/svwu6cj7F+DO1x17YdUQNQ
-	 o/n/9qn6shdwUFTNrsEiPTRWgOxxFcv+oEIgFjpE=
+	b=0GPKwwrrgF2jW2f3AHRLroXfncvP/xQSFskWAsutQabwGqaART8K9t2GncE6LQ1hH
+	 gyktEXhLLJdvXTehyg91NBfrQ8UJmWkxuzn2WIk5RMSPIT0ISiQjDlqcUyf1bvrBGn
+	 /b3dZUxbXjl8bFJA3v3wpE27y27aG2yqIMDbDejY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
 	Matthew Brost <matthew.brost@intel.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Karol Wachowski <karol.wachowski@linux.intel.com>
-Subject: [PATCH 6.12 476/567] drm/xe/bo: Dont include the CCS metadata in the dma-buf sg-table
-Date: Tue,  6 Jan 2026 18:04:18 +0100
-Message-ID: <20260106170508.961587327@linuxfoundation.org>
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
+Subject: [PATCH 6.12 478/567] drm/xe: Adjust long-running workload timeslices to reasonable values
+Date: Tue,  6 Jan 2026 18:04:20 +0100
+Message-ID: <20260106170509.037374834@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
 References: <20260106170451.332875001@linuxfoundation.org>
@@ -67,42 +64,58 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+From: Matthew Brost <matthew.brost@intel.com>
 
-commit 449bcd5d45eb4ce26740f11f8601082fe734bed2 upstream.
+commit 6f0f404bd289d79a260b634c5b3f4d330b13472c upstream.
 
-Some Xe bos are allocated with extra backing-store for the CCS
-metadata. It's never been the intention to share the CCS metadata
-when exporting such bos as dma-buf. Don't include it in the
-dma-buf sg-table.
+A 10ms timeslice for long-running workloads is far too long and causes
+significant jitter in benchmarks when the system is shared. Adjust the
+value to 5ms for preempt-fencing VMs, as the resume step there is quite
+costly as memory is moved around, and set it to zero for pagefault VMs,
+since switching back to pagefault mode after dma-fence mode is
+relatively fast.
+
+Also change min_run_period_ms to 'unsiged int' type rather than 's64' as
+only positive values make sense.
 
 Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: <stable@vger.kernel.org> # v6.8+
-Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
-Reviewed-by: Karol Wachowski <karol.wachowski@linux.intel.com>
-Link: https://patch.msgid.link/20251209204920.224374-1-thomas.hellstrom@linux.intel.com
-(cherry picked from commit a4ebfb9d95d78a12512b435a698ee6886d712571)
+Cc: stable@vger.kernel.org
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+Reviewed-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Link: https://patch.msgid.link/20251212182847.1683222-2-matthew.brost@intel.com
+(cherry picked from commit 33a5abd9a68394aa67f9618b20eee65ee8702ff4)
 Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/xe_dma_buf.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/xe/xe_vm.c       |    5 ++++-
+ drivers/gpu/drm/xe/xe_vm_types.h |    2 +-
+ 2 files changed, 5 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/xe/xe_dma_buf.c
-+++ b/drivers/gpu/drm/xe/xe_dma_buf.c
-@@ -111,7 +111,7 @@ static struct sg_table *xe_dma_buf_map(s
- 	case XE_PL_TT:
- 		sgt = drm_prime_pages_to_sg(obj->dev,
- 					    bo->ttm.ttm->pages,
--					    bo->ttm.ttm->num_pages);
-+					    obj->size >> PAGE_SHIFT);
- 		if (IS_ERR(sgt))
- 			return sgt;
+--- a/drivers/gpu/drm/xe/xe_vm.c
++++ b/drivers/gpu/drm/xe/xe_vm.c
+@@ -1468,7 +1468,10 @@ struct xe_vm *xe_vm_create(struct xe_dev
+ 	INIT_WORK(&vm->destroy_work, vm_destroy_work_func);
  
+ 	INIT_LIST_HEAD(&vm->preempt.exec_queues);
+-	vm->preempt.min_run_period_ms = 10;	/* FIXME: Wire up to uAPI */
++	if (flags & XE_VM_FLAG_FAULT_MODE)
++		vm->preempt.min_run_period_ms = 0;
++	else
++		vm->preempt.min_run_period_ms = 5;
+ 
+ 	for_each_tile(tile, xe, id)
+ 		xe_range_fence_tree_init(&vm->rftree[id]);
+--- a/drivers/gpu/drm/xe/xe_vm_types.h
++++ b/drivers/gpu/drm/xe/xe_vm_types.h
+@@ -243,7 +243,7 @@ struct xe_vm {
+ 		 * @min_run_period_ms: The minimum run period before preempting
+ 		 * an engine again
+ 		 */
+-		s64 min_run_period_ms;
++		unsigned int min_run_period_ms;
+ 		/** @exec_queues: list of exec queues attached to this VM */
+ 		struct list_head exec_queues;
+ 		/** @num_exec_queues: number exec queues attached to this VM */
 
 
 
