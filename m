@@ -1,242 +1,139 @@
-Return-Path: <stable+bounces-205116-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205117-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF872CF9253
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 16:47:00 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36DCFCF928F
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 16:49:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 855C1304EDAE
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 15:40:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2AE5A30A05ED
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 15:43:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06AF2254849;
-	Tue,  6 Jan 2026 15:40:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47D4C1DE8BB;
+	Tue,  6 Jan 2026 15:41:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F+IlqTQX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g3oqSPRr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B17EC338934;
-	Tue,  6 Jan 2026 15:40:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9FE322F77B;
+	Tue,  6 Jan 2026 15:41:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767714027; cv=none; b=LyqQv5Px5TGcTxmkt3855Gv7RFa9Dtyqho5vKqnBJ+lAvf3O1sLpErxMV0eS5u/MGAaO43S6KXZuyuTyb1HLZ4ca9tKp/bG8MZY8zMgsaXigta4+OrhmuKWdXlOEiIq7DuwwxSxrXg0/AARV8PCOwf5vxEeg/7lU2Dzy4Kyj7RY=
+	t=1767714112; cv=none; b=mz9hKXfJ1kMqtlvv63VVOVu4+GzPsDsGVLzE5wn3REVq1MEU0eKpnb9WLX7Krx9sfUFiAMcGmC4fm8/xjUiYPbxGAccA1s03Ex4b6aRtul3dE1sbB7xUetKiGtj3o2R8QSYUc5D2Yt4eXXrSG0OjmIUvqyjIjPfOPO9TysgyT2k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767714027; c=relaxed/simple;
-	bh=e/Pd51QZJsB3AAH06hxHf84t4DaW0yiwh7A150JKxsw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bJewfQlO6YLeCgcb9jeVO5rqI2AhgIWub8wui8PIqDrGvAA2EgX6nmiLX/ZsdO2kB/2IIbjFIKFz4CGDIy8NRkGz+1GGSsV3xawyM16/IBFJwCJShQ/lFgHFwL1EcUqnanVsWKxNtPjM9m5BHi0jhQl4C9NSS0QNGdGvtS18DOM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F+IlqTQX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FD9BC116C6;
-	Tue,  6 Jan 2026 15:40:27 +0000 (UTC)
+	s=arc-20240116; t=1767714112; c=relaxed/simple;
+	bh=lLS8KmtOZp2zZZScnCqYpBIcm1XXF9y6DjF8nyQEl2k=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=fcaqhZf2xsc6NCCuXg3hv09tobVyTMFkx6hB5SsjU9/CsoaFdrw86Q6uI+dITQx+xJz0tJ54b2H4bY2yyRtqVveh5BYpLImHaAV1r4EIRyGfE3ZjqCOnhqOg67HIfBMmPRN6B417ykbaqTDbx1DEhMwdEpoaunWvKvoIHjrte0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g3oqSPRr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CC48C116C6;
+	Tue,  6 Jan 2026 15:41:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767714027;
-	bh=e/Pd51QZJsB3AAH06hxHf84t4DaW0yiwh7A150JKxsw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=F+IlqTQXZhRGr2PJvjJ82Sn9NPcodFHAneobNo28/vR1R5s9e0bdpNptKP+1Kl0b7
-	 HmxDOzsS/dsSJPotJVI/N1j/z9EXx9Nqquk970VVSMYY5UOy0V2XPSb1W7IXgz3F4a
-	 0Xe/mJMWvGtbA7L7o/TZ1Isdg/LuBdvVSaNbd3q0aaX/N3+NX+ata1eazN8mgLp944
-	 NPssXMAk8ExrhSqv7mo4KkREPseRSrETjJBbfjFWMAuPnuTSTx7BH7xD49DnCHxiDr
-	 5/QtkKaP5t1F6U7ef+3C51I1gN5xzDwx3er0aT+rWhsVKw0nlZbf0Mk5puVkGjWpEG
-	 Dnl0UnGOfnl5g==
-Date: Tue, 6 Jan 2026 07:40:26 -0800
-From: "Darrick J. Wong" <djwong@kernel.org>
-To: Christoph Hellwig <hch@infradead.org>
-Cc: Mark Tinguely <mark.tinguely@oracle.com>, linux-xfs@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] xfs: fix NULL ptr in xfs_attr_leaf_get
-Message-ID: <20260106154026.GA191501@frogsfrogsfrogs>
-References: <20251230190029.32684-1-mark.tinguely@oracle.com>
- <17cd5bef-e787-4dc9-9536-112d1e2cda2d@oracle.com>
- <aVzDNYiygzgjMAkA@infradead.org>
+	s=k20201202; t=1767714111;
+	bh=lLS8KmtOZp2zZZScnCqYpBIcm1XXF9y6DjF8nyQEl2k=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=g3oqSPRrkU8q7sONds5Cf2OqAY/lUYNmQljRgD2wu+PLkdCs7+5lpK02C3YF2wcOy
+	 KXpMmdJ+qc96quWHQW6pIOk+RWVePLuLHW0J3pxbMNeJFbT+mOv9a+cxksjTrGbIQ1
+	 H1E1dy1AmyLWTtQYUHnNq4LAG3CvOFHB8eUzN8J4/DrB6dL4c4ivpUZVHGUu9HZoQG
+	 O07TtVhyC4IXPUzFkblGph3FTi08R2Wr1y7Y3iBaaGO7zw13sCtFRdCWHwqq4yGt3/
+	 O73JmTX9H1tfnccCgB0x5C8t+Kxfxf6vDHGLp6wL/2X4ZUZy4RjBAI8S0g8++Tpbrh
+	 dqzGbcx8AkGYg==
+Message-ID: <c39232ea-8cf0-45e6-9a5a-e2abae60134c@kernel.org>
+Date: Tue, 6 Jan 2026 16:41:46 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aVzDNYiygzgjMAkA@infradead.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/1] fs/writeback: skip AS_NO_DATA_INTEGRITY mappings
+ in wait_sb_inodes()
+To: Miklos Szeredi <miklos@szeredi.hu>
+Cc: Jan Kara <jack@suse.cz>, Joanne Koong <joannelkoong@gmail.com>,
+ akpm@linux-foundation.org, linux-mm@kvack.org,
+ athul.krishna.kr@protonmail.com, j.neuschaefer@gmx.net, carnil@debian.org,
+ linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
+References: <20251215030043.1431306-1-joannelkoong@gmail.com>
+ <20251215030043.1431306-2-joannelkoong@gmail.com>
+ <ypyumqgv5p7dnxmq34q33keb6kzqnp66r33gtbm4pglgdmhma6@3oleltql2qgp>
+ <616c2e51-ff69-4ef9-9637-41f3ff8691dd@kernel.org>
+ <CAJfpeguBuHBGUq45bOFvypsyd8XXekLKycRBGO1eeqLxz3L0eA@mail.gmail.com>
+ <238ef4ab-7ea3-442a-a344-a683dd64f818@kernel.org>
+ <CAJfpegvUP5MK-xB2=djmGo4iYzmsn9LLWV3ZJXFbyyft_LsA_Q@mail.gmail.com>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+In-Reply-To: <CAJfpegvUP5MK-xB2=djmGo4iYzmsn9LLWV3ZJXFbyyft_LsA_Q@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, Jan 06, 2026 at 12:09:25AM -0800, Christoph Hellwig wrote:
-> On Tue, Dec 30, 2025 at 01:02:41PM -0600, Mark Tinguely wrote:
-> > 
-> > The error path of xfs_attr_leaf_hasname() can leave a NULL
-> > xfs_buf pointer. xfs_has_attr() checks for the NULL pointer but
-> > the other callers do not.
-> > 
-> > We tripped over the NULL pointer in xfs_attr_leaf_get() but fix
-> > the other callers too.
-> > 
-> > Fixes v5.8-rc4-95-g07120f1abdff ("xfs: Add xfs_has_attr and subroutines")
-> > No reproducer.
+On 1/6/26 16:21, Miklos Szeredi wrote:
+> On Tue, 6 Jan 2026 at 15:34, David Hildenbrand (Red Hat)
+> <david@kernel.org> wrote:
 > 
-> Eww, what a mess.  I think we're better off to always leave releasing
-> bp to the caller.  Something like the patch below.  Only compile tested
-> for now, but I'll kick off an xfstests run.
+>> I don't recall all the details, but I think that we might end up holding
+>> the folio lock forever while the fuse user space daemon is supposed to
+>> fill the page with data; anybody trying to lock the folio would
+>> similarly deadlock.
 > 
-> Or maybe we might just kill off xfs_attr_leaf_hasname entirely and open
-> code it in the three callers, which might end up being more readable?
-
-...unless this is yet another case of the block layer returning ENODATA,
-which is then mistaken for returning ENOATTR-but-here's-your-buffer by
-the xfs_attr code?
-
---D
-
-> diff --git a/fs/xfs/libxfs/xfs_attr.c b/fs/xfs/libxfs/xfs_attr.c
-> index 8c04acd30d48..c5259641dd97 100644
-> --- a/fs/xfs/libxfs/xfs_attr.c
-> +++ b/fs/xfs/libxfs/xfs_attr.c
-> @@ -50,7 +50,6 @@ STATIC int xfs_attr_shortform_addname(xfs_da_args_t *args);
->   */
->  STATIC int xfs_attr_leaf_get(xfs_da_args_t *args);
->  STATIC int xfs_attr_leaf_removename(xfs_da_args_t *args);
-> -STATIC int xfs_attr_leaf_hasname(struct xfs_da_args *args, struct xfs_buf **bp);
->  
->  /*
->   * Internal routines when attribute list is more than one block.
-> @@ -951,6 +950,22 @@ xfs_attr_set_iter(
->  	return error;
->  }
->  
-> +/*
-> + * Return EEXIST if attr is found, or ENOATTR if not.
-> + * Caller must relese @bp on error if non-NULL.
-> + */
-> +static int
-> +xfs_attr_leaf_hasname(
-> +	struct xfs_da_args	*args,
-> +	struct xfs_buf		**bp)
-> +{
-> +	int                     error;
-> +
-> +	error = xfs_attr3_leaf_read(args->trans, args->dp, args->owner, 0, bp);
-> +	if (error)
-> +		return error;
-> +	return xfs_attr3_leaf_lookup_int(*bp, args);
-> +}
->  
->  /*
->   * Return EEXIST if attr is found, or ENOATTR if not
-> @@ -980,10 +995,8 @@ xfs_attr_lookup(
->  
->  	if (xfs_attr_is_leaf(dp)) {
->  		error = xfs_attr_leaf_hasname(args, &bp);
-> -
->  		if (bp)
->  			xfs_trans_brelse(args->trans, bp);
-> -
->  		return error;
->  	}
->  
-> @@ -1222,27 +1235,6 @@ xfs_attr_shortform_addname(
->   * External routines when attribute list is one block
->   *========================================================================*/
->  
-> -/*
-> - * Return EEXIST if attr is found, or ENOATTR if not
-> - */
-> -STATIC int
-> -xfs_attr_leaf_hasname(
-> -	struct xfs_da_args	*args,
-> -	struct xfs_buf		**bp)
-> -{
-> -	int                     error = 0;
-> -
-> -	error = xfs_attr3_leaf_read(args->trans, args->dp, args->owner, 0, bp);
-> -	if (error)
-> -		return error;
-> -
-> -	error = xfs_attr3_leaf_lookup_int(*bp, args);
-> -	if (error != -ENOATTR && error != -EEXIST)
-> -		xfs_trans_brelse(args->trans, *bp);
-> -
-> -	return error;
-> -}
-> -
->  /*
->   * Remove a name from the leaf attribute list structure
->   *
-> @@ -1253,26 +1245,24 @@ STATIC int
->  xfs_attr_leaf_removename(
->  	struct xfs_da_args	*args)
->  {
-> -	struct xfs_inode	*dp;
-> -	struct xfs_buf		*bp;
-> +	struct xfs_inode	*dp = args->dp;
->  	int			error, forkoff;
-> +	struct xfs_buf		*bp;
->  
->  	trace_xfs_attr_leaf_removename(args);
->  
-> -	/*
-> -	 * Remove the attribute.
-> -	 */
-> -	dp = args->dp;
-> -
->  	error = xfs_attr_leaf_hasname(args, &bp);
-> -	if (error == -ENOATTR) {
-> -		xfs_trans_brelse(args->trans, bp);
-> -		if (args->op_flags & XFS_DA_OP_RECOVERY)
-> +	if (error != -EEXIST) {
-> +		if (bp)
-> +			xfs_trans_brelse(args->trans, bp);
-> +		if (error == -ENOATTR && (args->op_flags & XFS_DA_OP_RECOVERY))
->  			return 0;
->  		return error;
-> -	} else if (error != -EEXIST)
-> -		return error;
-> +	}
->  
-> +	/*
-> +	 * Remove the attribute.
-> +	 */
->  	xfs_attr3_leaf_remove(bp, args);
->  
->  	/*
-> @@ -1281,8 +1271,8 @@ xfs_attr_leaf_removename(
->  	forkoff = xfs_attr_shortform_allfit(bp, dp);
->  	if (forkoff)
->  		return xfs_attr3_leaf_to_shortform(bp, args, forkoff);
-> -		/* bp is gone due to xfs_da_shrink_inode */
->  
-> +	/* bp is gone due to xfs_da_shrink_inode */
->  	return 0;
->  }
->  
-> @@ -1295,24 +1285,19 @@ xfs_attr_leaf_removename(
->   * Returns 0 on successful retrieval, otherwise an error.
->   */
->  STATIC int
-> -xfs_attr_leaf_get(xfs_da_args_t *args)
-> +xfs_attr_leaf_get(
-> +	struct xfs_da_args	*args)
->  {
-> -	struct xfs_buf *bp;
-> -	int error;
-> +	struct xfs_buf		*bp;
-> +	int			error;
->  
->  	trace_xfs_attr_leaf_get(args);
->  
->  	error = xfs_attr_leaf_hasname(args, &bp);
-> -
-> -	if (error == -ENOATTR)  {
-> +	if (error == -EEXIST)
-> +		error = xfs_attr3_leaf_getvalue(bp, args);
-> +	if (bp)
->  		xfs_trans_brelse(args->trans, bp);
-> -		return error;
-> -	} else if (error != -EEXIST)
-> -		return error;
-> -
-> -
-> -	error = xfs_attr3_leaf_getvalue(bp, args);
-> -	xfs_trans_brelse(args->trans, bp);
->  	return error;
->  }
->  
+> Right.
 > 
+>> Maybe only compaction/migration is affected by that, hard to tell.
+> 
+> Can't imagine anything beyond actual I/O and folio logistics
+> (reclaim/compaction) that would want to touch the page lock.
+
+I assume the usual suspects, including mm/memory-failure.c.
+
+memory_failure() not only contains a folio_wait_writeback() but also a 
+folio_lock(), so twice the fun :)
+
+-- 
+Cheers
+
+David
 
