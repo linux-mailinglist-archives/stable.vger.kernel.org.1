@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-205924-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205648-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E816BCFA79A
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:06:12 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B34BCFAB2D
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:33:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 801F432CC315
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:15:23 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3AE1330727C5
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 19:32:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 999AF36CDFF;
-	Tue,  6 Jan 2026 17:58:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D5852FE560;
+	Tue,  6 Jan 2026 17:43:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sDd1nCGb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vB0aq7Ql"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54BAE36CDF1;
-	Tue,  6 Jan 2026 17:58:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59FC82FE079;
+	Tue,  6 Jan 2026 17:43:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767722318; cv=none; b=ZYq2uhuNInSQRNo9xwP+w42D0ZjS2bT/dUVzQwxkI++XjcGsrpQsCvI6sL2BnCq4HAXczWk3nGl3Q5M7tZTlC+bNxllzTan43Z+AcS1thL43E62zDvjDn1FPp56GQaq54xiGdaDFi3E5UqAlfTVuHmRhKXYAIffbp5qjrpBUtPk=
+	t=1767721391; cv=none; b=dgNJTrQCe/AqKOfTqWyUOLUA68U4adHdLxjny0dCMvUvbhTR/PaUf8ISfap+jUd9me18yBbZ+p1l7AsSApfDuSkp3SPdlwU+jxGqDMJMJV3rGBeRCJW4yJPdxdyuZnaqLtVr3T5jXQKup9/embH33tdkbcch3HGuhGopbuLAjno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767722318; c=relaxed/simple;
-	bh=qxQCE4NHX/hULlYrtX4ady8K+CVPfAgcjz5Z3XR+HXs=;
+	s=arc-20240116; t=1767721391; c=relaxed/simple;
+	bh=Rke1jB+d0i0h9x7k7OaNuYmtbik7DUikJyLgIrC7U0o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VUAhJLzUqp6OR/jRGlP8wwXjf4EQ9k4lnnw9YL2YNC1MH1lhdE/j7GhHoRiaHZuvjxVH1vQ4Vmi6JBAKgyCdTHTAq7K9H9iyIdZJGSbAWQWEjEUtrquZkSdgVzC/SaAMqyRcUjEod8atuFp51als7/wLIJVyh1K/333KFV0Fjt8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sDd1nCGb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF6B2C116C6;
-	Tue,  6 Jan 2026 17:58:37 +0000 (UTC)
+	 MIME-Version; b=KN++Fp2T/s20x2DmXPnLzyaoyBQYAlVaFRrTJhW9ZX9ma4s4Twbs5Br10BdfvCkWct+JjHi9XSVXhYE3MNessoWTGw0DsFY7nM3QgWQq9fKmFl5X6iCMnICzPsgHsLVhEwmEoD5lA6DE78myY0rqKidd9W2oxq1dkoL0SwClews=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vB0aq7Ql; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEF9BC16AAE;
+	Tue,  6 Jan 2026 17:43:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767722318;
-	bh=qxQCE4NHX/hULlYrtX4ady8K+CVPfAgcjz5Z3XR+HXs=;
+	s=korg; t=1767721391;
+	bh=Rke1jB+d0i0h9x7k7OaNuYmtbik7DUikJyLgIrC7U0o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sDd1nCGbCwCs5cnTG9IFBRqYKajCXHMXjeaazFDvrix9fEWZPSp9s0o0BEz9Rnxe0
-	 vxAb42lrPTze5YrJZPpxl0HOXXQOtYLDsLMbSwAjM0DJJQFtxGLmHeWfwSbbx/yCdf
-	 jtyX6BzUGl4gqksp2rqwoombg6zf4lrmrXUetawA=
+	b=vB0aq7QlxYx1ZdfOb07AuW6PyPszyyOLizbEVrjpKoHE2h3NiSUoKWqkIowfA+NnZ
+	 6fUk+spEyErdoc8FTknphZTDdGXUbR0sRnznxzeNZM8Zl14TenqbaIEYRedJ2ARVSk
+	 k3QD/WmJhuLgsDU7ytwce3C7UfARwYenHc760yCs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Olga Kornievskaia <okorniev@redhat.com>,
-	NeilBrown <neil@brown.name>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.18 227/312] lockd: fix vfs_test_lock() calls
-Date: Tue,  6 Jan 2026 18:05:01 +0100
-Message-ID: <20260106170556.065111220@linuxfoundation.org>
+	Amit Chaudhari <amitchaudhari@mac.com>,
+	"Mario Limonciello (AMD)" <superm1@kernel.org>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 521/567] gpiolib: acpi: Add quirk for ASUS ProArt PX13
+Date: Tue,  6 Jan 2026 18:05:03 +0100
+Message-ID: <20260106170510.661170997@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
-References: <20260106170547.832845344@linuxfoundation.org>
+In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
+References: <20260106170451.332875001@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,181 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: NeilBrown <neil@brown.name>
+From: "Mario Limonciello (AMD)" <superm1@kernel.org>
 
-commit a49a2a1baa0c553c3548a1c414b6a3c005a8deba upstream.
+[ Upstream commit 23800ad1265f10c2bc6f42154ce4d20e59f2900e ]
 
-Usage of vfs_test_lock() is somewhat confused.  Documentation suggests
-it is given a "lock" but this is not the case.  It is given a struct
-file_lock which contains some details of the sort of lock it should be
-looking for.
+The ASUS ProArt PX13 has a spurious wakeup event from the touchpad
+a few moments after entering hardware sleep.  This can be avoided
+by preventing the touchpad from being a wake source.
 
-In particular passing a "file_lock" containing fl_lmops or fl_ops is
-meaningless and possibly confusing.
+Add to the wakeup ignore list.
 
-This is particularly problematic in lockd.  nlmsvc_testlock() receives
-an initialised "file_lock" from xdr-decode, including manager ops and an
-owner.  It then mistakenly passes this to vfs_test_lock() which might
-replace the owner and the ops.  This can lead to confusion when freeing
-the lock.
-
-The primary role of the 'struct file_lock' passed to vfs_test_lock() is
-to report a conflicting lock that was found, so it makes more sense for
-nlmsvc_testlock() to pass "conflock", which it uses for returning the
-conflicting lock.
-
-With this change, freeing of the lock is not confused and code in
-__nlm4svc_proc_test() and __nlmsvc_proc_test() can be simplified.
-
-Documentation for vfs_test_lock() is improved to reflect its real
-purpose, and a WARN_ON_ONCE() is added to avoid a similar problem in the
-future.
-
-Reported-by: Olga Kornievskaia <okorniev@redhat.com>
-Closes: https://lore.kernel.org/all/20251021130506.45065-1-okorniev@redhat.com
-Signed-off-by: NeilBrown <neil@brown.name>
-Fixes: 20fa19027286 ("nfs: add export operations")
-Cc: stable@vger.kernel.org
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Reported-by: Amit Chaudhari <amitchaudhari@mac.com>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4482
+Tested-by: Amit Chaudhari <amitchaudhari@mac.com>
+Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Link: https://lore.kernel.org/20250814183430.3887973-1-superm1@kernel.org
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Stable-dep-of: 2d967310c49e ("gpiolib: acpi: Add quirk for Dell Precision 7780")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/lockd/svc4proc.c |    4 +---
- fs/lockd/svclock.c  |   21 ++++++++++++---------
- fs/lockd/svcproc.c  |    5 +----
- fs/locks.c          |   12 ++++++++++--
- 4 files changed, 24 insertions(+), 18 deletions(-)
+ drivers/gpio/gpiolib-acpi-quirks.c |   14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
---- a/fs/lockd/svc4proc.c
-+++ b/fs/lockd/svc4proc.c
-@@ -97,7 +97,6 @@ __nlm4svc_proc_test(struct svc_rqst *rqs
- 	struct nlm_args *argp = rqstp->rq_argp;
- 	struct nlm_host	*host;
- 	struct nlm_file	*file;
--	struct nlm_lockowner *test_owner;
- 	__be32 rc = rpc_success;
+--- a/drivers/gpio/gpiolib-acpi-quirks.c
++++ b/drivers/gpio/gpiolib-acpi-quirks.c
+@@ -344,6 +344,20 @@ static const struct dmi_system_id gpioli
+ 			.ignore_interrupt = "AMDI0030:00@8",
+ 		},
+ 	},
++	{
++		/*
++		 * Spurious wakeups from TP_ATTN# pin
++		 * Found in BIOS 5.35
++		 * https://gitlab.freedesktop.org/drm/amd/-/issues/4482
++		 */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
++			DMI_MATCH(DMI_PRODUCT_FAMILY, "ProArt PX13"),
++		},
++		.driver_data = &(struct acpi_gpiolib_dmi_quirk) {
++			.ignore_wake = "ASCP1A00:00@8",
++		},
++	},
+ 	{} /* Terminating entry */
+ };
  
- 	dprintk("lockd: TEST4        called\n");
-@@ -107,7 +106,6 @@ __nlm4svc_proc_test(struct svc_rqst *rqs
- 	if ((resp->status = nlm4svc_retrieve_args(rqstp, argp, &host, &file)))
- 		return resp->status == nlm_drop_reply ? rpc_drop_reply :rpc_success;
- 
--	test_owner = argp->lock.fl.c.flc_owner;
- 	/* Now check for conflicting locks */
- 	resp->status = nlmsvc_testlock(rqstp, file, host, &argp->lock,
- 				       &resp->lock);
-@@ -116,7 +114,7 @@ __nlm4svc_proc_test(struct svc_rqst *rqs
- 	else
- 		dprintk("lockd: TEST4        status %d\n", ntohl(resp->status));
- 
--	nlmsvc_put_lockowner(test_owner);
-+	nlmsvc_release_lockowner(&argp->lock);
- 	nlmsvc_release_host(host);
- 	nlm_release_file(file);
- 	return rc;
---- a/fs/lockd/svclock.c
-+++ b/fs/lockd/svclock.c
-@@ -627,7 +627,13 @@ nlmsvc_testlock(struct svc_rqst *rqstp,
- 	}
- 
- 	mode = lock_to_openmode(&lock->fl);
--	error = vfs_test_lock(file->f_file[mode], &lock->fl);
-+	locks_init_lock(&conflock->fl);
-+	/* vfs_test_lock only uses start, end, and owner, but tests flc_file */
-+	conflock->fl.c.flc_file = lock->fl.c.flc_file;
-+	conflock->fl.fl_start = lock->fl.fl_start;
-+	conflock->fl.fl_end = lock->fl.fl_end;
-+	conflock->fl.c.flc_owner = lock->fl.c.flc_owner;
-+	error = vfs_test_lock(file->f_file[mode], &conflock->fl);
- 	if (error) {
- 		/* We can't currently deal with deferred test requests */
- 		if (error == FILE_LOCK_DEFERRED)
-@@ -637,22 +643,19 @@ nlmsvc_testlock(struct svc_rqst *rqstp,
- 		goto out;
- 	}
- 
--	if (lock->fl.c.flc_type == F_UNLCK) {
-+	if (conflock->fl.c.flc_type == F_UNLCK) {
- 		ret = nlm_granted;
- 		goto out;
- 	}
- 
- 	dprintk("lockd: conflicting lock(ty=%d, %Ld-%Ld)\n",
--		lock->fl.c.flc_type, (long long)lock->fl.fl_start,
--		(long long)lock->fl.fl_end);
-+		conflock->fl.c.flc_type, (long long)conflock->fl.fl_start,
-+		(long long)conflock->fl.fl_end);
- 	conflock->caller = "somehost";	/* FIXME */
- 	conflock->len = strlen(conflock->caller);
- 	conflock->oh.len = 0;		/* don't return OH info */
--	conflock->svid = lock->fl.c.flc_pid;
--	conflock->fl.c.flc_type = lock->fl.c.flc_type;
--	conflock->fl.fl_start = lock->fl.fl_start;
--	conflock->fl.fl_end = lock->fl.fl_end;
--	locks_release_private(&lock->fl);
-+	conflock->svid = conflock->fl.c.flc_pid;
-+	locks_release_private(&conflock->fl);
- 
- 	ret = nlm_lck_denied;
- out:
---- a/fs/lockd/svcproc.c
-+++ b/fs/lockd/svcproc.c
-@@ -117,7 +117,6 @@ __nlmsvc_proc_test(struct svc_rqst *rqst
- 	struct nlm_args *argp = rqstp->rq_argp;
- 	struct nlm_host	*host;
- 	struct nlm_file	*file;
--	struct nlm_lockowner *test_owner;
- 	__be32 rc = rpc_success;
- 
- 	dprintk("lockd: TEST          called\n");
-@@ -127,8 +126,6 @@ __nlmsvc_proc_test(struct svc_rqst *rqst
- 	if ((resp->status = nlmsvc_retrieve_args(rqstp, argp, &host, &file)))
- 		return resp->status == nlm_drop_reply ? rpc_drop_reply :rpc_success;
- 
--	test_owner = argp->lock.fl.c.flc_owner;
--
- 	/* Now check for conflicting locks */
- 	resp->status = cast_status(nlmsvc_testlock(rqstp, file, host,
- 						   &argp->lock, &resp->lock));
-@@ -138,7 +135,7 @@ __nlmsvc_proc_test(struct svc_rqst *rqst
- 		dprintk("lockd: TEST          status %d vers %d\n",
- 			ntohl(resp->status), rqstp->rq_vers);
- 
--	nlmsvc_put_lockowner(test_owner);
-+	nlmsvc_release_lockowner(&argp->lock);
- 	nlmsvc_release_host(host);
- 	nlm_release_file(file);
- 	return rc;
---- a/fs/locks.c
-+++ b/fs/locks.c
-@@ -2185,13 +2185,21 @@ SYSCALL_DEFINE2(flock, unsigned int, fd,
- /**
-  * vfs_test_lock - test file byte range lock
-  * @filp: The file to test lock for
-- * @fl: The lock to test; also used to hold result
-+ * @fl: The byte-range in the file to test; also used to hold result
-  *
-+ * On entry, @fl does not contain a lock, but identifies a range (fl_start, fl_end)
-+ * in the file (c.flc_file), and an owner (c.flc_owner) for whom existing locks
-+ * should be ignored.  c.flc_type and c.flc_flags are ignored.
-+ * Both fl_lmops and fl_ops in @fl must be NULL.
-  * Returns -ERRNO on failure.  Indicates presence of conflicting lock by
-- * setting conf->fl_type to something other than F_UNLCK.
-+ * setting fl->fl_type to something other than F_UNLCK.
-+ *
-+ * If vfs_test_lock() does find a lock and return it, the caller must
-+ * use locks_free_lock() or locks_release_private() on the returned lock.
-  */
- int vfs_test_lock(struct file *filp, struct file_lock *fl)
- {
-+	WARN_ON_ONCE(fl->fl_ops || fl->fl_lmops);
- 	WARN_ON_ONCE(filp != fl->c.flc_file);
- 	if (filp->f_op->lock)
- 		return filp->f_op->lock(filp, F_GETLK, fl);
 
 
 
