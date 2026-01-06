@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-205844-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205567-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2975ECFA3E1
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:41:15 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C20DCFA2E8
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:32:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4491731673D5
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:54:20 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9C33B302B995
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:32:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A626C365A13;
-	Tue,  6 Jan 2026 17:54:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C84EA3385AA;
+	Tue,  6 Jan 2026 17:38:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="no73WBZm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zp9dXDaj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62F4C3491CF;
-	Tue,  6 Jan 2026 17:54:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87615200C2;
+	Tue,  6 Jan 2026 17:38:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767722050; cv=none; b=JYBsWJcU6Z1+LK68/2h+UtaZhxt0kFZ7bdCp3YQ4HdDxJ+a1ehHEG7B2uT1f8mNO6DNq/LRac0rC+oinLR4YXFfdNJDd9Wv41J+F6ICCRhrE6rnOKtBWSZAUCPTw2Us1UbcPCGmex6TYHimOoHIu0MvI936wV5QTb/45OoxKvU4=
+	t=1767721122; cv=none; b=UizNiFE9k0Nuz8CBEBIv+SXs1lOjTiBW/uwIk1R2WGOlVpymxM1YvaM4l1B5xXNx1UllYuyikg2kVIr3SOXfr+YnyVVLvw5+ogSgfD8IKWiL5JSnciA4dOXTNX+Jg/cByuCC878Ptcg31KaMOVnYVIK7tdjxuguM8qmiyfVeL10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767722050; c=relaxed/simple;
-	bh=yPUN1w/cZRX5d0MgtSePyaFyutWpp25vmv9Tby5INXk=;
+	s=arc-20240116; t=1767721122; c=relaxed/simple;
+	bh=fH2VY3SnH8lj8elrJ2byb6MnhfRl7Lgd0GnIklED/74=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ql9U2sRxG1wcQ58Ph77w3RlUl6Lby1RKSOTqHT5W8f//4Xo3PTmOymFdBdDAxAZFZVrYyAlFi4KXQWpQO9FtRfEvaFj7zNfrKWPzm6D5Gi0UnUCYEqXGW5Ajk6jsV/sv3ASdEbIXpsD3h5MtYFcJH+veNIFJRbo6idaXqBWA0A4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=no73WBZm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC460C116C6;
-	Tue,  6 Jan 2026 17:54:09 +0000 (UTC)
+	 MIME-Version; b=D5ykUTnbbJPKDCpnNV7Abt/OqRC7FVFQlfwSGqHiW3v0QSJw4sUgvbty9r4+HFn/CJuuFlKlhlP0IzjbxMXOSshlcT8UmqOAzGs3cDVmNX4RJg1OkNdGhlOTGiAm8+/HDnRWwQGGK+tZIPD6bKwyqDKfycpiD1ARGGrs4TE6h2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zp9dXDaj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08B22C116C6;
+	Tue,  6 Jan 2026 17:38:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767722050;
-	bh=yPUN1w/cZRX5d0MgtSePyaFyutWpp25vmv9Tby5INXk=;
+	s=korg; t=1767721122;
+	bh=fH2VY3SnH8lj8elrJ2byb6MnhfRl7Lgd0GnIklED/74=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=no73WBZmc0y4Wh9QjgGI5bcQ3h24m5/w0Wz00quDo1SY49391UugW2VMWrrxdpg1k
-	 Bkqz8/YXOGFAUw+ns4n6PL75r8AP+lAIts5e1cua+pvOcYatPokEX5yKSxSAD1ZJhf
-	 lUr6eqmF22/DQ+wteGn/19pOcZl+uOs56/ih1XpA=
+	b=zp9dXDaj5vhDlRWEBUbnyYChSgKwqPZvwe2eBrvyJEks7etFHbmGc+sBrzpwwmVq3
+	 Bu+ZnYTtpFDLx+jT4SZvhATZifZJG2+wXqAqSPTSYmnL2UHuMR71MmZUCsRTvB0Q1Z
+	 /8NnlTImSOup2t8adETDYTiITDZaQqMJAOM9ebu4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Michael Walle <mwalle@kernel.org>,
-	Pratyush Yadav <pratyush@kernel.org>
-Subject: [PATCH 6.18 150/312] mtd: spi-nor: winbond: Add support for W25Q01NWxxIM chips
+	Rong Zhang <i@rong.moe>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	stable@kernel.org
+Subject: [PATCH 6.12 442/567] x86/microcode/AMD: Fix Entrysign revision check for Zen5/Strix Halo
 Date: Tue,  6 Jan 2026 18:03:44 +0100
-Message-ID: <20260106170553.267230879@linuxfoundation.org>
+Message-ID: <20260106170507.702459250@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
-References: <20260106170547.832845344@linuxfoundation.org>
+In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
+References: <20260106170451.332875001@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,39 +60,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miquel Raynal <miquel.raynal@bootlin.com>
+From: Rong Zhang <i@rong.moe>
 
-commit a607e676c8b9258eabc3fc88f45bcd70ea178b41 upstream.
+commit 150b1b97e27513535dcd3795d5ecd28e61b6cb8c upstream.
 
-These chips must be described as none of the block protection
-information are discoverable. This chip supports 4 bits plus the
-top/bottom addressing capability to identify the protected blocks.
+Zen5 also contains family 1Ah, models 70h-7Fh, which are mistakenly missing
+from cpu_has_entrysign(). Add the missing range.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Reviewed-by: Michael Walle <mwalle@kernel.org>
-Signed-off-by: Pratyush Yadav <pratyush@kernel.org>
+Fixes: 8a9fb5129e8e ("x86/microcode/AMD: Limit Entrysign signature checking to known generations")
+Signed-off-by: Rong Zhang <i@rong.moe>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: stable@kernel.org
+Link: https://patch.msgid.link/20251229182245.152747-1-i@rong.moe
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/spi-nor/winbond.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ arch/x86/kernel/cpu/microcode/amd.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/mtd/spi-nor/winbond.c
-+++ b/drivers/mtd/spi-nor/winbond.c
-@@ -347,6 +347,10 @@ static const struct flash_info winbond_n
- 		/* W25Q01NWxxIQ */
- 		.id = SNOR_ID(0xef, 0x60, 0x21),
- 		.flags = SPI_NOR_HAS_LOCK | SPI_NOR_HAS_TB | SPI_NOR_TB_SR_BIT6 | SPI_NOR_4BIT_BP,
-+	}, {
-+		/* W25Q01NWxxIM */
-+		.id = SNOR_ID(0xef, 0x80, 0x21),
-+		.flags = SPI_NOR_HAS_LOCK | SPI_NOR_HAS_TB | SPI_NOR_TB_SR_BIT6 | SPI_NOR_4BIT_BP,
- 	},
- };
+--- a/arch/x86/kernel/cpu/microcode/amd.c
++++ b/arch/x86/kernel/cpu/microcode/amd.c
+@@ -235,7 +235,7 @@ static bool cpu_has_entrysign(void)
+ 	if (fam == 0x1a) {
+ 		if (model <= 0x2f ||
+ 		    (0x40 <= model && model <= 0x4f) ||
+-		    (0x60 <= model && model <= 0x6f))
++		    (0x60 <= model && model <= 0x7f))
+ 			return true;
+ 	}
  
 
 
