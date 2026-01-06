@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-205304-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205315-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37546CF9B1E
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 18:30:40 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E38DACF9B8E
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 18:34:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 48A90303EBAC
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:24:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 744413089CF9
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:25:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4677352F8F;
-	Tue,  6 Jan 2026 17:24:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81EB935505E;
+	Tue,  6 Jan 2026 17:24:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VPruJE+K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sS1p2pqt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 614C435503A;
-	Tue,  6 Jan 2026 17:24:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D5C735505D;
+	Tue,  6 Jan 2026 17:24:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767720249; cv=none; b=IaNGCVWekYfKyZX3F6b8Mhow128ply2y7QhKj5fbImk+4XVtpX5fP76ytnp4d2lH1E2VVv1LcZFZRPxDTfc92jQfZn+8Ewf3i45u+TW5Ung1UyzCK3qQL7hfZKfQ3IEcwFQGyO5NdVxjJ89+2JDbz/M96Qhss56P+xORqqwCZWE=
+	t=1767720286; cv=none; b=hVf/9lV/3PQ1wgcPLp9dcUVW1o8/JDUDEf3K5gMw7MR5G/mTkxFSoaVpNdw0JElI3BU1R9hHHoZHqB1DHANmj9uH3vlOviXP0bFHd12iHkzahnNgu6B++7mBb9ojNmPyJlozle0O+F+mDtQZBuNb4JrVbP5HSotU1uij0zG8Jnw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767720249; c=relaxed/simple;
-	bh=RD01njYhuik0L66G7iJqzlkicboBtzIHfud2VAPHk7s=;
+	s=arc-20240116; t=1767720286; c=relaxed/simple;
+	bh=EynU4uQVQyZnulAUEpHFirFl2Iho4VIt02sUOaqMgH8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p9B6H5xrguBd7vmvQzyWhUBkLkFgRLJ7oHlGn0hF4ZkbakE1eTj57S9ENVX55S/0ZWS2inYTSDzI/rSy8hLqYBU6cdELPMGFY7uxlfnhEl5JQCLJhixEiV9k9ArAuUeJWT9hgdo/bqX9v9G8kZSmR6/Ds5KEbK+9TC8FcX2xtno=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VPruJE+K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4E73C116C6;
-	Tue,  6 Jan 2026 17:24:08 +0000 (UTC)
+	 MIME-Version; b=fDt80AysW2OaLFVz/czoDOUJvk0iCedxmyP2UIToBfM4cltpkl8H1gnvW+e5Hl9J2rEF7ML93e5ljBrfeUxzZnseUy19cqqg6czHgWs2+et4beiHBFCiDfZZnC0yZDWMAhnlj06dBl4ygDVaScMpjoKlMfmkeU/XXWs4tyEF5Wk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sS1p2pqt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C288C116C6;
+	Tue,  6 Jan 2026 17:24:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767720249;
-	bh=RD01njYhuik0L66G7iJqzlkicboBtzIHfud2VAPHk7s=;
+	s=korg; t=1767720285;
+	bh=EynU4uQVQyZnulAUEpHFirFl2Iho4VIt02sUOaqMgH8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VPruJE+KPRhOOaL2I3lTTHx6bmWsH4mQ9GCy7l5EgyMU8AJcvZi8xoLDWEWFhpko5
-	 kT7GQz6KBssn6gcPdgmEwX2V7As868xQzjbzRbYGHLUZFBYnf7iHaK4CgE5/78yF+X
-	 5g9lf2Nh0Q+xcfSVlIY0QkNd7umsNNBaVropIr/U=
+	b=sS1p2pqtnYKFzKip3KuI27QbO7ine764sC05QtaQT8W/gDIKlRLg4WPK0NOfTxTyQ
+	 f6/vMZYDT87goo6NB4u2mVpu2nMj0i2y16B3/nsj/lPRAu5xBTF3OybC02an54T6aW
+	 90EoUhFkqH6K+QJFTHByl7R5Rhq/Z2drk1MfqZC4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+6e493c165d26d6fcbf72@syzkaller.appspotmail.com,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+	Byungchul Park <byungchul@sk.com>,
 	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 6.12 172/567] jbd2: use a per-journal lock_class_key for jbd2_trans_commit_key
-Date: Tue,  6 Jan 2026 17:59:14 +0100
-Message-ID: <20260106170457.688775041@linuxfoundation.org>
+	stable@kernel.org,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.12 173/567] jbd2: use a weaker annotation in journal handling
+Date: Tue,  6 Jan 2026 17:59:15 +0100
+Message-ID: <20260106170457.725408402@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
 References: <20260106170451.332875001@linuxfoundation.org>
@@ -66,86 +65,50 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: Byungchul Park <byungchul@sk.com>
 
-commit 524c3853831cf4f7e1db579e487c757c3065165c upstream.
+commit 40a71b53d5a6d4ea17e4d54b99b2ac03a7f5e783 upstream.
 
-syzbot is reporting possibility of deadlock due to sharing lock_class_key
-for jbd2_handle across ext4 and ocfs2. But this is a false positive, for
-one disk partition can't have two filesystems at the same time.
+jbd2 journal handling code doesn't want jbd2_might_wait_for_commit()
+to be placed between start_this_handle() and stop_this_handle().  So it
+marks the region with rwsem_acquire_read() and rwsem_release().
 
-Reported-by: syzbot+6e493c165d26d6fcbf72@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=6e493c165d26d6fcbf72
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Tested-by: syzbot+6e493c165d26d6fcbf72@syzkaller.appspotmail.com
+However, the annotation is too strong for that purpose.  We don't have
+to use more than try lock annotation for that.
+
+rwsem_acquire_read() implies:
+
+   1. might be a waiter on contention of the lock.
+   2. enter to the critical section of the lock.
+
+All we need in here is to act 2, not 1.  So trylock version of
+annotation is sufficient for that purpose.  Now that dept partially
+relies on lockdep annotaions, dept interpets rwsem_acquire_read() as a
+potential wait and might report a deadlock by the wait.
+
+Replace it with trylock version of annotation.
+
+Signed-off-by: Byungchul Park <byungchul@sk.com>
 Reviewed-by: Jan Kara <jack@suse.cz>
-Message-ID: <987110fc-5470-457a-a218-d286a09dd82f@I-love.SAKURA.ne.jp>
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Cc: stable@kernel.org
+Message-ID: <20251024073940.1063-1-byungchul@sk.com>
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/jbd2/journal.c    |    6 ++++--
- include/linux/jbd2.h |    6 ++++++
- 2 files changed, 10 insertions(+), 2 deletions(-)
+ fs/jbd2/transaction.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/jbd2/journal.c
-+++ b/fs/jbd2/journal.c
-@@ -1526,7 +1526,6 @@ static journal_t *journal_init_common(st
- 			struct block_device *fs_dev,
- 			unsigned long long start, int len, int blocksize)
- {
--	static struct lock_class_key jbd2_trans_commit_key;
- 	journal_t *journal;
- 	int err;
- 	int n;
-@@ -1535,6 +1534,7 @@ static journal_t *journal_init_common(st
- 	if (!journal)
- 		return ERR_PTR(-ENOMEM);
+--- a/fs/jbd2/transaction.c
++++ b/fs/jbd2/transaction.c
+@@ -445,7 +445,7 @@ repeat:
+ 	read_unlock(&journal->j_state_lock);
+ 	current->journal_info = handle;
  
-+	lockdep_register_key(&journal->jbd2_trans_commit_key);
- 	journal->j_blocksize = blocksize;
- 	journal->j_dev = bdev;
- 	journal->j_fs_dev = fs_dev;
-@@ -1565,7 +1565,7 @@ static journal_t *journal_init_common(st
- 	journal->j_max_batch_time = 15000; /* 15ms */
- 	atomic_set(&journal->j_reserved_credits, 0);
- 	lockdep_init_map(&journal->j_trans_commit_map, "jbd2_handle",
--			 &jbd2_trans_commit_key, 0);
-+			 &journal->jbd2_trans_commit_key, 0);
- 
- 	/* The journal is marked for error until we succeed with recovery! */
- 	journal->j_flags = JBD2_ABORT;
-@@ -1618,6 +1618,7 @@ err_cleanup:
- 	kfree(journal->j_wbuf);
- 	jbd2_journal_destroy_revoke(journal);
- 	journal_fail_superblock(journal);
-+	lockdep_unregister_key(&journal->jbd2_trans_commit_key);
- 	kfree(journal);
- 	return ERR_PTR(err);
- }
-@@ -2199,6 +2200,7 @@ int jbd2_journal_destroy(journal_t *jour
- 		crypto_free_shash(journal->j_chksum_driver);
- 	kfree(journal->j_fc_wbuf);
- 	kfree(journal->j_wbuf);
-+	lockdep_unregister_key(&journal->jbd2_trans_commit_key);
- 	kfree(journal);
- 
- 	return err;
---- a/include/linux/jbd2.h
-+++ b/include/linux/jbd2.h
-@@ -1268,6 +1268,12 @@ struct journal_s
- 	 */
- 	struct lockdep_map	j_trans_commit_map;
- #endif
-+	/**
-+	 * @jbd2_trans_commit_key:
-+	 *
-+	 * "struct lock_class_key" for @j_trans_commit_map
-+	 */
-+	struct lock_class_key	jbd2_trans_commit_key;
- 
- 	/**
- 	 * @j_fc_cleanup_callback:
+-	rwsem_acquire_read(&journal->j_trans_commit_map, 0, 0, _THIS_IP_);
++	rwsem_acquire_read(&journal->j_trans_commit_map, 0, 1, _THIS_IP_);
+ 	jbd2_journal_free_transaction(new_transaction);
+ 	/*
+ 	 * Ensure that no allocations done while the transaction is open are
 
 
 
