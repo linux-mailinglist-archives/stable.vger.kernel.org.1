@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-205727-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205451-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AC28CF9F55
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:09:14 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBF35CF9D88
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 18:51:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C02F1304862D
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:07:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 18EFE31313E2
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:39:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C91E935E543;
-	Tue,  6 Jan 2026 17:47:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAC122C326F;
+	Tue,  6 Jan 2026 17:32:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xen9ye/r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1/OcWM67"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 853E135E53C;
-	Tue,  6 Jan 2026 17:47:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 801A72BE7B2;
+	Tue,  6 Jan 2026 17:32:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721658; cv=none; b=BYhVLMZt4XLrbD1F1cbcDVWaZwZnAowO4Q4FqC8XO0ndfxE+7tJ7zmAg+1IVeY2uJpKuxpt+C6q30Cg5gdBMHDseWrI4I38MHeEm9m5eiS82wsJWaJwNJBunxRrMies/kLxMJODtitN3gbKAo9FmfvMQffyKtffgEAwtXRFTrVY=
+	t=1767720736; cv=none; b=fvp6tRAHmzdYDPF5C9dEfVID7OGDVGrAxqPEZEtSiDYhFIlnd/2J6Q55P1u1SdvWrcWfIDgpH3a8FFCrWGzSEPu6IuxIXQ2Iq0jpiMuPJziYFxZWwxDBrhBHeWxKOzGWylSf2yWmG+g12Mn0RyHCOjn0FtAeKA/mmJm/xuwQj40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721658; c=relaxed/simple;
-	bh=iFy+DIOQPCJBoZ6RczqvWuxi9/XB3zO3LT31K3x/mZo=;
+	s=arc-20240116; t=1767720736; c=relaxed/simple;
+	bh=6s1i5nMlv5sZhLBpl+CnmKtCxJuwP/mCq8p3s2nuN80=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h8hiojXUe4cx4rzymx37trCCkVTQzrvVe8rfGSyd7jKg+mgkGTgCgC+SiZmq/VkRNUTDeSElBhajHe+kDX+avsH7ICQNtWVDuldNYWuNsl5pkF3hZCNbdaKaag+OJgJ2zX3k+h0x97uD8omuzpwald67yZDANrGEAKH/nXq2YBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xen9ye/r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7D8AC116C6;
-	Tue,  6 Jan 2026 17:47:37 +0000 (UTC)
+	 MIME-Version; b=H2eIdBdHNCOiOmVIfP2Saluuq05IJ+MZI+voGhhZGDgipGx+cw8kvBE39rMItTz0/aU6qcF1wTfScPZSuvdfgi9mHRI1T9CXwQvMoWRfWPQCq4hYJ9dlOZJrxENf6J614qV5opAOVHvAdnZLf1494Xv5McQOGRL3sVgoED6rnhQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1/OcWM67; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E22C1C116C6;
+	Tue,  6 Jan 2026 17:32:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721658;
-	bh=iFy+DIOQPCJBoZ6RczqvWuxi9/XB3zO3LT31K3x/mZo=;
+	s=korg; t=1767720736;
+	bh=6s1i5nMlv5sZhLBpl+CnmKtCxJuwP/mCq8p3s2nuN80=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xen9ye/rx6tzFx9I4oNhuIxLUJusDlU7g1+XQx+HlWByrWicHwWeeF/SX/66SJEo1
-	 KUAOeymcKfKFCli5AMHoygaWHVkw5GIispirSuJGYZBna77SmS2WwsjXxBOGJItY4s
-	 Nq1due2BakjB5SZvGR8jKL8qIYwHey63kQAGmO6w=
+	b=1/OcWM67pb60z5o1xUzCWd4F+QOeFnHrdDVEJILvzxlaiM5E2rLWLekhWgczxhAmd
+	 ZWolNvnuf7kLiB2kXht01DYhiMlV86U3gDF1eoW0yrcX9FqD4D/lXuHsWHM7BHSV8p
+	 /NzCwwmEDZO0hMNZTmP/7hRfl6wykOm6nFsv0kYo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Simon Horman <horms@kernel.org>,
+	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+	syzbot+881d65229ca4f9ae8c84@syzkaller.appspotmail.com,
+	Ido Schimmel <idosch@nvidia.com>,
+	David Ahern <dsahern@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 034/312] net: airoha: Move net_devs registration in a dedicated routine
-Date: Tue,  6 Jan 2026 18:01:48 +0100
-Message-ID: <20260106170549.090604762@linuxfoundation.org>
+Subject: [PATCH 6.12 327/567] ipv4: Fix reference count leak when using error routes with nexthop objects
+Date: Tue,  6 Jan 2026 18:01:49 +0100
+Message-ID: <20260106170503.420716141@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
-References: <20260106170547.832845344@linuxfoundation.org>
+In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
+References: <20260106170451.332875001@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,100 +63,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lorenzo Bianconi <lorenzo@kernel.org>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit 5e7365b5a1ac8f517a7a84442289d7de242deb76 ]
+[ Upstream commit ac782f4e3bfcde145b8a7f8af31d9422d94d172a ]
 
-Since airoha_probe() is not executed under rtnl lock, there is small race
-where a given device is configured by user-space while the remaining ones
-are not completely loaded from the dts yet. This condition will allow a
-hw device misconfiguration since there are some conditions (e.g. GDM2 check
-in airoha_dev_init()) that require all device are properly loaded from the
-device tree. Fix the issue moving net_devices registration at the end of
-the airoha_probe routine.
+When a nexthop object is deleted, it is marked as dead and then
+fib_table_flush() is called to flush all the routes that are using the
+dead nexthop.
 
-Fixes: 9cd451d414f6e ("net: airoha: Add loopback support for GDM2")
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20251214-airoha-fix-dev-registration-v1-1-860e027ad4c6@kernel.org
+The current logic in fib_table_flush() is to only flush error routes
+(e.g., blackhole) when it is called as part of network namespace
+dismantle (i.e., with flush_all=true). Therefore, error routes are not
+flushed when their nexthop object is deleted:
+
+ # ip link add name dummy1 up type dummy
+ # ip nexthop add id 1 dev dummy1
+ # ip route add 198.51.100.1/32 nhid 1
+ # ip route add blackhole 198.51.100.2/32 nhid 1
+ # ip nexthop del id 1
+ # ip route show
+ blackhole 198.51.100.2 nhid 1 dev dummy1
+
+As such, they keep holding a reference on the nexthop object which in
+turn holds a reference on the nexthop device, resulting in a reference
+count leak:
+
+ # ip link del dev dummy1
+ [   70.516258] unregister_netdevice: waiting for dummy1 to become free. Usage count = 2
+
+Fix by flushing error routes when their nexthop is marked as dead.
+
+IPv6 does not suffer from this problem.
+
+Fixes: 493ced1ac47c ("ipv4: Allow routes to use nexthop objects")
+Reported-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Closes: https://lore.kernel.org/netdev/d943f806-4da6-4970-ac28-b9373b0e63ac@I-love.SAKURA.ne.jp/
+Reported-by: syzbot+881d65229ca4f9ae8c84@syzkaller.appspotmail.com
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/20251221144829.197694-1-idosch@nvidia.com
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/airoha/airoha_eth.c | 39 ++++++++++++++++--------
- 1 file changed, 26 insertions(+), 13 deletions(-)
+ net/ipv4/fib_trie.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ethernet/airoha/airoha_eth.c
-index 433a646e9831..0394ba6a90a9 100644
---- a/drivers/net/ethernet/airoha/airoha_eth.c
-+++ b/drivers/net/ethernet/airoha/airoha_eth.c
-@@ -2900,19 +2900,26 @@ static int airoha_alloc_gdm_port(struct airoha_eth *eth,
- 	port->id = id;
- 	eth->ports[p] = port;
+diff --git a/net/ipv4/fib_trie.c b/net/ipv4/fib_trie.c
+index cc86031d2050..658f26d9a9ec 100644
+--- a/net/ipv4/fib_trie.c
++++ b/net/ipv4/fib_trie.c
+@@ -2059,10 +2059,11 @@ int fib_table_flush(struct net *net, struct fib_table *tb, bool flush_all)
+ 				continue;
+ 			}
  
--	err = airoha_metadata_dst_alloc(port);
--	if (err)
--		return err;
-+	return airoha_metadata_dst_alloc(port);
-+}
- 
--	err = register_netdev(dev);
--	if (err)
--		goto free_metadata_dst;
-+static int airoha_register_gdm_devices(struct airoha_eth *eth)
-+{
-+	int i;
- 
--	return 0;
-+	for (i = 0; i < ARRAY_SIZE(eth->ports); i++) {
-+		struct airoha_gdm_port *port = eth->ports[i];
-+		int err;
- 
--free_metadata_dst:
--	airoha_metadata_dst_free(port);
--	return err;
-+		if (!port)
-+			continue;
-+
-+		err = register_netdev(port->dev);
-+		if (err)
-+			return err;
-+	}
-+
-+	return 0;
- }
- 
- static int airoha_probe(struct platform_device *pdev)
-@@ -2993,6 +3000,10 @@ static int airoha_probe(struct platform_device *pdev)
- 		}
- 	}
- 
-+	err = airoha_register_gdm_devices(eth);
-+	if (err)
-+		goto error_napi_stop;
-+
- 	return 0;
- 
- error_napi_stop:
-@@ -3006,10 +3017,12 @@ static int airoha_probe(struct platform_device *pdev)
- 	for (i = 0; i < ARRAY_SIZE(eth->ports); i++) {
- 		struct airoha_gdm_port *port = eth->ports[i];
- 
--		if (port && port->dev->reg_state == NETREG_REGISTERED) {
-+		if (!port)
-+			continue;
-+
-+		if (port->dev->reg_state == NETREG_REGISTERED)
- 			unregister_netdev(port->dev);
--			airoha_metadata_dst_free(port);
--		}
-+		airoha_metadata_dst_free(port);
- 	}
- 	free_netdev(eth->napi_dev);
- 	platform_set_drvdata(pdev, NULL);
+-			/* Do not flush error routes if network namespace is
+-			 * not being dismantled
++			/* When not flushing the entire table, skip error
++			 * routes that are not marked for deletion.
+ 			 */
+-			if (!flush_all && fib_props[fa->fa_type].error) {
++			if (!flush_all && fib_props[fa->fa_type].error &&
++			    !(fi->fib_flags & RTNH_F_DEAD)) {
+ 				slen = fa->fa_slen;
+ 				continue;
+ 			}
 -- 
 2.51.0
 
