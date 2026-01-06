@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-205810-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205533-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77A9FCFA97D
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:21:44 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D72A5CFA9ED
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:24:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5EA0B351DDDB
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:34:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F173932E8E91
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:36:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B8FC2F3C1D;
-	Tue,  6 Jan 2026 17:52:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D543F33A6F4;
+	Tue,  6 Jan 2026 17:36:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hISnecKr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qPDVrtJh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48D8423F42D;
-	Tue,  6 Jan 2026 17:52:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81F5F250BEC;
+	Tue,  6 Jan 2026 17:36:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721938; cv=none; b=eMRR6pnrgXsh2lv/K7C2BvYYJBCiTYzhu8/B5MnlMYb6n/CcS5S6liYfaLZ6zq87ao8dfIbUKeMv3RJ55Hz4eu47tsDns0j94jH8uk5xWAnEFd2kx2dpBKsdAp++XZHErnOZujcRKcWFdBz8mtMCurjDhZJ1qjx9YNDcX9vrNo0=
+	t=1767721009; cv=none; b=LzQxf9YM9IpqcbFgKTXbci9PIrA/B/7Qf5i3U1nKxNIJCd37Mwp5hfkOO6UZV0Pivsj2A1Nf/a3ANYWbahmSgiVIJvSLoGLyeVpH2h2SV2hPHQyTMGWV9SGYXcT6wSceGTZawu26zqUiKC0fJWn1Agh7QB0Me/dQHpG8o7MmmmA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721938; c=relaxed/simple;
-	bh=Qrudp/nnsAmuGG7YkTfBL8oUWw4E6LIULzkmUF2zNsQ=;
+	s=arc-20240116; t=1767721009; c=relaxed/simple;
+	bh=EJ4dAAOCZfQ32WT66H9SVujacPWzx7Pflr82yRvC1Dc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a/uJC2nfarnxLjyXnlmGvfX4YrMOwF6ht5MnpfBrxyb24NDg5zl5hc4ESf8uzZOSAYX9W4kLhtG1BLbfvziDc0ptktrtegmRojAo/EZ7il/WpMUifBE8pSOdxeNyiy8YSQKet4E4/4V6cJCrINowBgiL53ltJs5RF6yMehIgxrY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hISnecKr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE47DC16AAE;
-	Tue,  6 Jan 2026 17:52:17 +0000 (UTC)
+	 MIME-Version; b=UP5Ybs989sO5BpsPqnCp4Ko/g5W+wZIXZwSf1U+h8F285B61E3md/mQZhN1xgy4P/z0HxJLrvuMyIlclfGqQ5VuWOatjtcNzbZDRv6AZ4sG+XNjQxD4HB6JwsipknuRKczh12f5F80rTH0ODJp6ZtS03yHy18WZHLwjlcRdZSRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qPDVrtJh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E199BC116C6;
+	Tue,  6 Jan 2026 17:36:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721938;
-	bh=Qrudp/nnsAmuGG7YkTfBL8oUWw4E6LIULzkmUF2zNsQ=;
+	s=korg; t=1767721009;
+	bh=EJ4dAAOCZfQ32WT66H9SVujacPWzx7Pflr82yRvC1Dc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hISnecKr5xdD/J4RZ0WmUrEiySoOzjxkmPPMFsqo/jsyWiMLCo3Kw7OcaQiYp9eZ/
-	 hcEIc29Ndl1170Mh/0LjqB+9vfN96KpP3kLL5llG+Mae+t0rOmcKVX4r8S30+tsCTF
-	 g4KDO6uXu5uq6DwN9oTBXogAee3Bhb54ngNsQMuw=
+	b=qPDVrtJhQKAFIQfBznEfitf95gAobkeEKXra/IS12+ubnx8KyPRpPT7YoWQPa8vjh
+	 sY4bBR6tGbZBTPMxUG2xuMglfG8MmHe4TEDCrf63QgXsQ28tgSdGjCXjpiY8CkyyqP
+	 Yy6JlRxWCb1MVwTB/xEX96z9Sz3hXJEAeHxWvLJs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Suman Anna <s-anna@ti.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Johan Hovold <johan@kernel.org>,
-	Joerg Roedel <joerg.roedel@amd.com>
-Subject: [PATCH 6.18 116/312] iommu/omap: fix device leaks on probe_device()
+	Benjamin Gaignard <benjamin.gaignard@collabora.com>,
+	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 6.12 408/567] media: verisilicon: Protect G2 HEVC decoder against invalid DPB index
 Date: Tue,  6 Jan 2026 18:03:10 +0100
-Message-ID: <20260106170552.038096068@linuxfoundation.org>
+Message-ID: <20260106170506.435357019@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
-References: <20260106170547.832845344@linuxfoundation.org>
+In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
+References: <20260106170451.332875001@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,71 +60,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Nicolas Dufresne <nicolas.dufresne@collabora.com>
 
-commit b5870691065e6bbe6ba0650c0412636c6a239c5a upstream.
+commit 47825b1646a6a9eca0f90baa3d4f98947c2add96 upstream.
 
-Make sure to drop the references taken to the iommu platform devices
-when looking up their driver data during probe_device().
+Fix the Hantro G2 HEVC decoder so that we use DPB index 0 whenever a
+ninvalid index is received from user space. This protects the hardware
+from doing faulty memory access which then leads to bus errors.
 
-Note that the arch data device pointer added by commit 604629bcb505
-("iommu/omap: add support for late attachment of iommu devices") has
-never been used. Remove it to underline that the references are not
-needed.
+To be noted that when a reference is missing, userspace such as GStreamer
+passes an invalid DPB index of 255. This issue was found by seeking to a
+CRA picture using GStreamer. The framework is currently missing the code
+to skip over RASL pictures placed after the CRA. This situation can also
+occur while doing live streaming over lossy transport.
 
-Fixes: 9d5018deec86 ("iommu/omap: Add support to program multiple iommus")
-Fixes: 7d6827748d54 ("iommu/omap: Fix iommu archdata name for DT-based devices")
-Cc: stable@vger.kernel.org	# 3.18
-Cc: Suman Anna <s-anna@ti.com>
-Acked-by: Robin Murphy <robin.murphy@arm.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
+Fixes: cb5dd5a0fa518 ("media: hantro: Introduce G2/HEVC decoder")
+Cc: stable@vger.kernel.org
+Reviewed-by: Benjamin Gaignard <benjamin.gaignard@collabora.com>
+Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/omap-iommu.c |    2 +-
- drivers/iommu/omap-iommu.h |    2 --
- 2 files changed, 1 insertion(+), 3 deletions(-)
+ drivers/media/platform/verisilicon/hantro_g2_hevc_dec.c |   15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
---- a/drivers/iommu/omap-iommu.c
-+++ b/drivers/iommu/omap-iommu.c
-@@ -1675,6 +1675,7 @@ static struct iommu_device *omap_iommu_p
- 		}
+--- a/drivers/media/platform/verisilicon/hantro_g2_hevc_dec.c
++++ b/drivers/media/platform/verisilicon/hantro_g2_hevc_dec.c
+@@ -283,6 +283,15 @@ static void set_params(struct hantro_ctx
+ 	hantro_reg_write(vpu, &g2_apf_threshold, 8);
+ }
  
- 		oiommu = platform_get_drvdata(pdev);
-+		put_device(&pdev->dev);
- 		if (!oiommu) {
- 			of_node_put(np);
- 			kfree(arch_data);
-@@ -1682,7 +1683,6 @@ static struct iommu_device *omap_iommu_p
- 		}
++static u32 get_dpb_index(const struct v4l2_ctrl_hevc_decode_params *decode_params,
++			 const u32 index)
++{
++	if (index > decode_params->num_active_dpb_entries)
++		return 0;
++
++	return index;
++}
++
+ static void set_ref_pic_list(struct hantro_ctx *ctx)
+ {
+ 	const struct hantro_hevc_dec_ctrls *ctrls = &ctx->hevc_dec.ctrls;
+@@ -355,8 +364,10 @@ static void set_ref_pic_list(struct hant
+ 		list1[j++] = list1[i++];
  
- 		tmp->iommu_dev = oiommu;
--		tmp->dev = &pdev->dev;
- 
- 		of_node_put(np);
+ 	for (i = 0; i < V4L2_HEVC_DPB_ENTRIES_NUM_MAX; i++) {
+-		hantro_reg_write(vpu, &ref_pic_regs0[i], list0[i]);
+-		hantro_reg_write(vpu, &ref_pic_regs1[i], list1[i]);
++		hantro_reg_write(vpu, &ref_pic_regs0[i],
++				 get_dpb_index(decode_params, list0[i]));
++		hantro_reg_write(vpu, &ref_pic_regs1[i],
++				 get_dpb_index(decode_params, list1[i]));
  	}
---- a/drivers/iommu/omap-iommu.h
-+++ b/drivers/iommu/omap-iommu.h
-@@ -88,7 +88,6 @@ struct omap_iommu {
- /**
-  * struct omap_iommu_arch_data - omap iommu private data
-  * @iommu_dev: handle of the OMAP iommu device
-- * @dev: handle of the iommu device
-  *
-  * This is an omap iommu private data object, which binds an iommu user
-  * to its iommu device. This object should be placed at the iommu user's
-@@ -97,7 +96,6 @@ struct omap_iommu {
-  */
- struct omap_iommu_arch_data {
- 	struct omap_iommu *iommu_dev;
--	struct device *dev;
- };
+ }
  
- struct cr_regs {
 
 
 
