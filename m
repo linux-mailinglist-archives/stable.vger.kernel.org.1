@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-205198-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205209-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91C74CFA08F
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:17:44 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07FBACFA2B8
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:31:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 9BE3F302A0C1
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:17:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A8CAD30A4ED3
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:43:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13ABB349AE5;
-	Tue,  6 Jan 2026 17:18:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B70D434A79B;
+	Tue,  6 Jan 2026 17:18:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wUp/bB3Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wA3umiGF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2CD83491F5;
-	Tue,  6 Jan 2026 17:18:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72F7E34A789;
+	Tue,  6 Jan 2026 17:18:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767719900; cv=none; b=eSftbY2itnY2pkWrf8dOEG8eBpQGS0yTdtQKh0833dznFEjJgT3Vmn0Wo2FIIwm+OIT7e5KbgZyjFXb7epRlg5ey14DUA2TRr4NXmGC2926UjrNqi7d8+ZX/D63+P6toVmRhxICHvAO84YdrJ2YulYUZCi0nSGk0L1h+KzGOH40=
+	t=1767719936; cv=none; b=YHmUNplkYBjdOsektsYuHbmmtaMLPYnwLNv8KlaxkO2ArxiXeIvWbLsNv0hGa3UQoRclTjrnLQvp9IWwOFfwtjCYDv4UgWE8fVOFscHTXo2dYR/u3uAoJNdo0CQulaU4CLC2/WPfXbfxU2cOSLGipUfefkx98l/2x3zxRRSZIg4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767719900; c=relaxed/simple;
-	bh=ag3d2WH7sk/I/nNPtBUlZz0WbpV3z/fAQaTsdt7gCW4=;
+	s=arc-20240116; t=1767719936; c=relaxed/simple;
+	bh=JDaLb8lgKcJqbtyFq18/gG7IkVuFA4LLcOxdrDQZMQQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a08345/Qp2whKECh3AGpiHbRwzmqre0hczNaJDbMpx0/D0w+Ng0IcLxixVBAwlAMF+eFLrvv8DCoAQ2XRVjpBqyCflfTuXxFBwsSa7KKLk/K1bhi8O2vQlZouLy8v103VZjzz67pcglRmtoupHvnwKaZeTByVl044bckF56osKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wUp/bB3Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35C84C116C6;
-	Tue,  6 Jan 2026 17:18:19 +0000 (UTC)
+	 MIME-Version; b=aC3w3TnRVQne9TIE8AgzMzllivWMAAINyWqkJ+HzuqdWp+lwsnz3qPN/3vlpRfGOP26/t+1Qt5+6GhHPBhHkc9esmOOOhYVB7KlEvuKYHyQB2xk/NiaFundqwdsTdstOJU7wwH+hKun1UH6eSGq7fbHuXHuIE8gzv4z00BsRQK8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wA3umiGF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2053C116C6;
+	Tue,  6 Jan 2026 17:18:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767719900;
-	bh=ag3d2WH7sk/I/nNPtBUlZz0WbpV3z/fAQaTsdt7gCW4=;
+	s=korg; t=1767719936;
+	bh=JDaLb8lgKcJqbtyFq18/gG7IkVuFA4LLcOxdrDQZMQQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wUp/bB3QkQgtFArbbFUJUsoJSB+KoUXzdlmOed9vb6csu9gCYHlqrbf6U6bgCyLRo
-	 AUHh9uzOoYggd8inc1+aNX3dmT8+2b0xngeuLfpOJgMvG+UW+oOBXSmebwE9cfu95V
-	 wkgeT4JIMcH2bmA1nj1WY5h+m4eCSUGE/ec39n8o=
+	b=wA3umiGFVrBU2lS/TGLy7SQYNME3o7Ktb4Ef71X99Bo+N9mR6zeKhdito+4m2ThzN
+	 0AUCU+x80JR03S52ymDiYdLiL5sn6rUuBYrv3JpXcXHlI5KlmKMnBO2diPkasKvnHR
+	 CftPYKltBBUCcRLSEP8cz/ezlI8mErdGjuyTOf4o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dragos Tatulea <dtatulea@nvidia.com>,
+	Moshe Shemesh <moshe@nvidia.com>,
+	Shay Drori <shayd@nvidia.com>,
 	Tariq Toukan <tariqt@nvidia.com>,
-	Gal Pressman <gal@nvidia.com>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 067/567] ethtool: Avoid overflowing userspace buffer on stats query
-Date: Tue,  6 Jan 2026 17:57:29 +0100
-Message-ID: <20260106170453.815487534@linuxfoundation.org>
+Subject: [PATCH 6.12 068/567] net/mlx5: fw reset, clear reset requested on drain_fw_reset
+Date: Tue,  6 Jan 2026 17:57:30 +0100
+Message-ID: <20260106170453.851863957@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
 References: <20260106170451.332875001@linuxfoundation.org>
@@ -66,157 +66,43 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Gal Pressman <gal@nvidia.com>
+From: Moshe Shemesh <moshe@nvidia.com>
 
-[ Upstream commit 7b07be1ff1cb6c49869910518650e8d0abc7d25f ]
+[ Upstream commit 89a898d63f6f588acf5c104c65c94a38b68c69a6 ]
 
-The ethtool -S command operates across three ioctl calls:
-ETHTOOL_GSSET_INFO for the size, ETHTOOL_GSTRINGS for the names, and
-ETHTOOL_GSTATS for the values.
+drain_fw_reset() waits for ongoing firmware reset events and blocks new
+event handling, but does not clear the reset requested flag, and may
+keep sync reset polling.
 
-If the number of stats changes between these calls (e.g., due to device
-reconfiguration), userspace's buffer allocation will be incorrect,
-potentially leading to buffer overflow.
+To fix it, call mlx5_sync_reset_clear_reset_requested() to clear the
+flag, stop sync reset polling, and resume health polling, ensuring
+health issues are still detected after the firmware reset drain.
 
-Drivers are generally expected to maintain stable stat counts, but some
-drivers (e.g., mlx5, bnx2x, bna, ksz884x) use dynamic counters, making
-this scenario possible.
-
-Some drivers try to handle this internally:
-- bnad_get_ethtool_stats() returns early in case stats.n_stats is not
-  equal to the driver's stats count.
-- micrel/ksz884x also makes sure not to write anything beyond
-  stats.n_stats and overflow the buffer.
-
-However, both use stats.n_stats which is already assigned with the value
-returned from get_sset_count(), hence won't solve the issue described
-here.
-
-Change ethtool_get_strings(), ethtool_get_stats(),
-ethtool_get_phy_stats() to not return anything in case of a mismatch
-between userspace's size and get_sset_size(), to prevent buffer
-overflow.
-The returned n_stats value will be equal to zero, to reflect that
-nothing has been returned.
-
-This could result in one of two cases when using upstream ethtool,
-depending on when the size change is detected:
-1. When detected in ethtool_get_strings():
-    # ethtool -S eth2
-    no stats available
-
-2. When detected in get stats, all stats will be reported as zero.
-
-Both cases are presumably transient, and a subsequent ethtool call
-should succeed.
-
-Other than the overflow avoidance, these two cases are very evident (no
-output/cleared stats), which is arguably better than presenting
-incorrect/shifted stats.
-I also considered returning an error instead of a "silent" response, but
-that seems more destructive towards userspace apps.
-
-Notes:
-- This patch does not claim to fix the inherent race, it only makes sure
-  that we do not overflow the userspace buffer, and makes for a more
-  predictable behavior.
-
-- RTNL lock is held during each ioctl, the race window exists between
-  the separate ioctl calls when the lock is released.
-
-- Userspace ethtool always fills stats.n_stats, but it is likely that
-  these stats ioctls are implemented in other userspace applications
-  which might not fill it. The added code checks that it's not zero,
-  to prevent any regressions.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Signed-off-by: Gal Pressman <gal@nvidia.com>
-Link: https://patch.msgid.link/20251208121901.3203692-1-gal@nvidia.com
+Fixes: 16d42d313350 ("net/mlx5: Drain fw_reset when removing device")
+Signed-off-by: Moshe Shemesh <moshe@nvidia.com>
+Reviewed-by: Shay Drori <shayd@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/1765284977-1363052-2-git-send-email-tariqt@nvidia.com
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ethtool/ioctl.c | 30 ++++++++++++++++++++++++------
- 1 file changed, 24 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/ethtool/ioctl.c b/net/ethtool/ioctl.c
-index 8b9692c35e706..67fba88f60984 100644
---- a/net/ethtool/ioctl.c
-+++ b/net/ethtool/ioctl.c
-@@ -2231,7 +2231,10 @@ static int ethtool_get_strings(struct net_device *dev, void __user *useraddr)
- 		return -ENOMEM;
- 	WARN_ON_ONCE(!ret);
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c b/drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c
+index 35d2fe08c0fb5..ad4d17a243de9 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c
+@@ -832,7 +832,8 @@ void mlx5_drain_fw_reset(struct mlx5_core_dev *dev)
+ 	cancel_work_sync(&fw_reset->reset_reload_work);
+ 	cancel_work_sync(&fw_reset->reset_now_work);
+ 	cancel_work_sync(&fw_reset->reset_abort_work);
+-	cancel_delayed_work(&fw_reset->reset_timeout_work);
++	if (test_bit(MLX5_FW_RESET_FLAGS_RESET_REQUESTED, &fw_reset->reset_flags))
++		mlx5_sync_reset_clear_reset_requested(dev, true);
+ }
  
--	gstrings.len = ret;
-+	if (gstrings.len && gstrings.len != ret)
-+		gstrings.len = 0;
-+	else
-+		gstrings.len = ret;
- 
- 	if (gstrings.len) {
- 		data = vzalloc(array_size(gstrings.len, ETH_GSTRING_LEN));
-@@ -2353,10 +2356,13 @@ static int ethtool_get_stats(struct net_device *dev, void __user *useraddr)
- 	if (copy_from_user(&stats, useraddr, sizeof(stats)))
- 		return -EFAULT;
- 
--	stats.n_stats = n_stats;
-+	if (stats.n_stats && stats.n_stats != n_stats)
-+		stats.n_stats = 0;
-+	else
-+		stats.n_stats = n_stats;
- 
--	if (n_stats) {
--		data = vzalloc(array_size(n_stats, sizeof(u64)));
-+	if (stats.n_stats) {
-+		data = vzalloc(array_size(stats.n_stats, sizeof(u64)));
- 		if (!data)
- 			return -ENOMEM;
- 		ops->get_ethtool_stats(dev, &stats, data);
-@@ -2368,7 +2374,9 @@ static int ethtool_get_stats(struct net_device *dev, void __user *useraddr)
- 	if (copy_to_user(useraddr, &stats, sizeof(stats)))
- 		goto out;
- 	useraddr += sizeof(stats);
--	if (n_stats && copy_to_user(useraddr, data, array_size(n_stats, sizeof(u64))))
-+	if (stats.n_stats &&
-+	    copy_to_user(useraddr, data,
-+			 array_size(stats.n_stats, sizeof(u64))))
- 		goto out;
- 	ret = 0;
- 
-@@ -2404,6 +2412,10 @@ static int ethtool_get_phy_stats_phydev(struct phy_device *phydev,
- 		return -EOPNOTSUPP;
- 
- 	n_stats = phy_ops->get_sset_count(phydev);
-+	if (stats->n_stats && stats->n_stats != n_stats) {
-+		stats->n_stats = 0;
-+		return 0;
-+	}
- 
- 	ret = ethtool_vzalloc_stats_array(n_stats, data);
- 	if (ret)
-@@ -2424,6 +2436,10 @@ static int ethtool_get_phy_stats_ethtool(struct net_device *dev,
- 		return -EOPNOTSUPP;
- 
- 	n_stats = ops->get_sset_count(dev, ETH_SS_PHY_STATS);
-+	if (stats->n_stats && stats->n_stats != n_stats) {
-+		stats->n_stats = 0;
-+		return 0;
-+	}
- 
- 	ret = ethtool_vzalloc_stats_array(n_stats, data);
- 	if (ret)
-@@ -2460,7 +2476,9 @@ static int ethtool_get_phy_stats(struct net_device *dev, void __user *useraddr)
- 	}
- 
- 	useraddr += sizeof(stats);
--	if (copy_to_user(useraddr, data, array_size(stats.n_stats, sizeof(u64))))
-+	if (stats.n_stats &&
-+	    copy_to_user(useraddr, data,
-+			 array_size(stats.n_stats, sizeof(u64))))
- 		ret = -EFAULT;
- 
-  out:
+ static const struct devlink_param mlx5_fw_reset_devlink_params[] = {
 -- 
 2.51.0
 
