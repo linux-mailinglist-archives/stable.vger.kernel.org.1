@@ -1,51 +1,52 @@
-Return-Path: <stable+bounces-205290-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205292-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05A93CF9A32
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 18:23:29 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46D57CF9ADA
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 18:28:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A29C03020B76
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:23:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3B35330184F9
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:23:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C55D355038;
-	Tue,  6 Jan 2026 17:23:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC65E355034;
+	Tue,  6 Jan 2026 17:23:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CmNY0AZj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OWgB2aWR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECEAE355024;
-	Tue,  6 Jan 2026 17:23:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67880355024;
+	Tue,  6 Jan 2026 17:23:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767720204; cv=none; b=mHvwXbleDSsze3WhpSo5WlhpoPWoVicpCEub7MAKsJiHjq/OWrWQfraq/fcXQdzFPhiT6UOXlh6TaQqJMF0KM0Bbe3O2eLZN3pazfZo9iIH934YlCO0YbMSmudr8bSxqMMQn7AKkMfTGsF1Iiv09Fm3DJ1KR/J+fUnWLvHdQ8R0=
+	t=1767720210; cv=none; b=Pu8lKZbZYwMqIGKkCl0uI6LA1IgkUnvdYtddnlsMM8bdiPTLzJm95CJkxhe/DL65uWs7E9rYuXbGXyCGizDG9cLturxDy2k97yegTF47frzqtsItlxpVzcHoP9kAsYgwyLb7u9izys1BR2kEYFfePqI7RH2Xl/XHgR3aSgvA0U4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767720204; c=relaxed/simple;
-	bh=Pi9hcJv0k1or5uPPcVzbrs8ZKigoQTLIrFlQsKVREK0=;
+	s=arc-20240116; t=1767720210; c=relaxed/simple;
+	bh=XONHfJYZaf8ipkFMoPIZQ8rjxjedR+uUABysHMdPk58=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aS71Jz6iGhDaLvZi59F6RtaxdqCZhxRzYx3OyiHVS7Enj8lgX9iomV3SoYUipmnnUo7xU1tDQyBExhvZdgRFHLi/9ih8r7rXnqWnINRz4ODRzw+7CbcTP/sb+0ocOWtR/wakGP0DIxvsALPeoPGMUE1AszsMsuSAHQHQGvkcBJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CmNY0AZj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5215CC116C6;
-	Tue,  6 Jan 2026 17:23:23 +0000 (UTC)
+	 MIME-Version; b=P9pK8LkS6SMPvb126vmkgwzBIEf38WIs99b5n9MjvQRkNL/rjNcNn+a/4qx8dM2Su+0Rm5vVDnmVf1zpN1SyBCO8jyX+enoaNHKwalif5YQBYhgyQlgNANQG9tkCZUOlz3iHOiqs4cziLzeFzm22xu3slzgCk4An/OLaWpHAuWU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OWgB2aWR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DF43C19423;
+	Tue,  6 Jan 2026 17:23:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767720203;
-	bh=Pi9hcJv0k1or5uPPcVzbrs8ZKigoQTLIrFlQsKVREK0=;
+	s=korg; t=1767720209;
+	bh=XONHfJYZaf8ipkFMoPIZQ8rjxjedR+uUABysHMdPk58=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CmNY0AZjRjeCokprYcNs8IV9Cagg08afnZwiZgD6GG7jYQ4tqzRTswPOUySrdJ3zR
-	 NGXxNcV2tbYVpUIKIDWSygysYDoT9wJ5okquJHj6QodogBu3EDWiNZBgIjI7Fr51SI
-	 41/ycKpIJ5WJJ0y8U9pNFcVF4N6c78oV7zWKu2s8=
+	b=OWgB2aWRQKEW6cPTcAxnEzCID2TpWsKIhwnBJwrnksFznNXY3jxOWw5lgc4WhQ316
+	 cwCh7xnZ0SaOHthgL0ezvyD4xSZ1kHvDwJYLmV2ZeumiBdfE/ZAuezY18n3RwblzeJ
+	 yZgIFdN4oByLNDx9SIKWg0NGo4OWO/f3kUjWZMJ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Warthog9 Hawley <warthog9@kernel.org>,
-	"John W. Krahn" <jwkrahn@shaw.ca>,
-	Steven Rostedt <rostedt@goodmis.org>
-Subject: [PATCH 6.12 165/567] ktest.pl: Fix uninitialized var in config-bisect.pl
-Date: Tue,  6 Jan 2026 17:59:07 +0100
-Message-ID: <20260106170457.430043945@linuxfoundation.org>
+	Lai Yi <yi1.lai@linux.intel.com>,
+	Jonathan McDowell <noodles@meta.com>,
+	Roberto Sassu <roberto.sassu@huawei.com>,
+	Jarkko Sakkinen <jarkko.sakkinen@opinsys.com>
+Subject: [PATCH 6.12 166/567] tpm: Cap the number of PCR banks
+Date: Tue,  6 Jan 2026 17:59:08 +0100
+Message-ID: <20260106170457.466752035@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
 References: <20260106170451.332875001@linuxfoundation.org>
@@ -64,50 +65,100 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Jarkko Sakkinen <jarkko.sakkinen@opinsys.com>
 
-commit d3042cbe84a060b4df764eb6c5300bbe20d125ca upstream.
+commit faf07e611dfa464b201223a7253e9dc5ee0f3c9e upstream.
 
-The error path of copying the old config used the wrong variable in the
-error message:
+tpm2_get_pcr_allocation() does not cap any upper limit for the number of
+banks. Cap the limit to eight banks so that out of bounds values coming
+from external I/O cause on only limited harm.
 
- $ mkdir /tmp/build
- $ ./tools/testing/ktest/config-bisect.pl -b /tmp/build config-good /tmp/config-bad
- $ chmod 0 /tmp/build
- $ ./tools/testing/ktest/config-bisect.pl -b /tmp/build config-good /tmp/config-bad good
- cp /tmp/build//.config config-good.tmp ... [0 seconds] FAILED!
- Use of uninitialized value $config in concatenation (.) or string at ./tools/testing/ktest/config-bisect.pl line 744.
- failed to copy  to config-good.tmp
-
-When it should have shown:
-
- failed to copy /tmp/build//.config to config-good.tmp
-
-Cc: stable@vger.kernel.org
-Cc: John 'Warthog9' Hawley <warthog9@kernel.org>
-Fixes: 0f0db065999cf ("ktest: Add standalone config-bisect.pl program")
-Link: https://patch.msgid.link/20251203180924.6862bd26@gandalf.local.home
-Reported-by: "John W. Krahn" <jwkrahn@shaw.ca>
-Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
+Cc: stable@vger.kernel.org # v5.10+
+Fixes: bcfff8384f6c ("tpm: dynamically allocate the allocated_banks array")
+Tested-by: Lai Yi <yi1.lai@linux.intel.com>
+Reviewed-by: Jonathan McDowell <noodles@meta.com>
+Reviewed-by: Roberto Sassu <roberto.sassu@huawei.com>
+Signed-off-by: Jarkko Sakkinen <jarkko.sakkinen@opinsys.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/ktest/config-bisect.pl |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/char/tpm/tpm-chip.c |    1 -
+ drivers/char/tpm/tpm1-cmd.c |    5 -----
+ drivers/char/tpm/tpm2-cmd.c |    8 +++-----
+ include/linux/tpm.h         |    8 +++++---
+ 4 files changed, 8 insertions(+), 14 deletions(-)
 
---- a/tools/testing/ktest/config-bisect.pl
-+++ b/tools/testing/ktest/config-bisect.pl
-@@ -741,9 +741,9 @@ if ($start) {
- 	die "Can not find file $bad\n";
-     }
-     if ($val eq "good") {
--	run_command "cp $output_config $good" or die "failed to copy $config to $good\n";
-+	run_command "cp $output_config $good" or die "failed to copy $output_config to $good\n";
-     } elsif ($val eq "bad") {
--	run_command "cp $output_config $bad" or die "failed to copy $config to $bad\n";
-+	run_command "cp $output_config $bad" or die "failed to copy $output_config to $bad\n";
-     }
- }
+--- a/drivers/char/tpm/tpm-chip.c
++++ b/drivers/char/tpm/tpm-chip.c
+@@ -282,7 +282,6 @@ static void tpm_dev_release(struct devic
  
+ 	kfree(chip->work_space.context_buf);
+ 	kfree(chip->work_space.session_buf);
+-	kfree(chip->allocated_banks);
+ #ifdef CONFIG_TCG_TPM2_HMAC
+ 	kfree(chip->auth);
+ #endif
+--- a/drivers/char/tpm/tpm1-cmd.c
++++ b/drivers/char/tpm/tpm1-cmd.c
+@@ -799,11 +799,6 @@ int tpm1_pm_suspend(struct tpm_chip *chi
+  */
+ int tpm1_get_pcr_allocation(struct tpm_chip *chip)
+ {
+-	chip->allocated_banks = kcalloc(1, sizeof(*chip->allocated_banks),
+-					GFP_KERNEL);
+-	if (!chip->allocated_banks)
+-		return -ENOMEM;
+-
+ 	chip->allocated_banks[0].alg_id = TPM_ALG_SHA1;
+ 	chip->allocated_banks[0].digest_size = hash_digest_size[HASH_ALGO_SHA1];
+ 	chip->allocated_banks[0].crypto_id = HASH_ALGO_SHA1;
+--- a/drivers/char/tpm/tpm2-cmd.c
++++ b/drivers/char/tpm/tpm2-cmd.c
+@@ -602,11 +602,9 @@ ssize_t tpm2_get_pcr_allocation(struct t
+ 
+ 	nr_possible_banks = be32_to_cpup(
+ 		(__be32 *)&buf.data[TPM_HEADER_SIZE + 5]);
+-
+-	chip->allocated_banks = kcalloc(nr_possible_banks,
+-					sizeof(*chip->allocated_banks),
+-					GFP_KERNEL);
+-	if (!chip->allocated_banks) {
++	if (nr_possible_banks > TPM2_MAX_PCR_BANKS) {
++		pr_err("tpm: out of bank capacity: %u > %u\n",
++		       nr_possible_banks, TPM2_MAX_PCR_BANKS);
+ 		rc = -ENOMEM;
+ 		goto out;
+ 	}
+--- a/include/linux/tpm.h
++++ b/include/linux/tpm.h
+@@ -26,7 +26,9 @@
+ #include <crypto/aes.h>
+ 
+ #define TPM_DIGEST_SIZE 20	/* Max TPM v1.2 PCR size */
+-#define TPM_MAX_DIGEST_SIZE SHA512_DIGEST_SIZE
++
++#define TPM2_MAX_DIGEST_SIZE	SHA512_DIGEST_SIZE
++#define TPM2_MAX_PCR_BANKS	8
+ 
+ struct tpm_chip;
+ struct trusted_key_payload;
+@@ -68,7 +70,7 @@ enum tpm2_curves {
+ 
+ struct tpm_digest {
+ 	u16 alg_id;
+-	u8 digest[TPM_MAX_DIGEST_SIZE];
++	u8 digest[TPM2_MAX_DIGEST_SIZE];
+ } __packed;
+ 
+ struct tpm_bank_info {
+@@ -188,7 +190,7 @@ struct tpm_chip {
+ 	unsigned int groups_cnt;
+ 
+ 	u32 nr_allocated_banks;
+-	struct tpm_bank_info *allocated_banks;
++	struct tpm_bank_info allocated_banks[TPM2_MAX_PCR_BANKS];
+ #ifdef CONFIG_ACPI
+ 	acpi_handle acpi_dev_handle;
+ 	char ppi_version[TPM_PPI_VERSION_LEN + 1];
 
 
 
