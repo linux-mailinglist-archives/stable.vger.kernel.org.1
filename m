@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-205239-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205241-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10A73CFA8DE
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:17:42 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E7D4CFA784
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:05:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7BA3130019D3
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 19:17:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9F40F3411C4D
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:14:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ADAA34D3A6;
-	Tue,  6 Jan 2026 17:20:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4908434D3B6;
+	Tue,  6 Jan 2026 17:20:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w+/E3SJI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xbC+v7Kr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3888C34CFDC;
-	Tue,  6 Jan 2026 17:20:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0727A34D3B1;
+	Tue,  6 Jan 2026 17:20:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767720037; cv=none; b=npNWHvuVMKSbT/jwZQpblatpSWJNyy6gUFTec1B8SUZ1WSQsD9BZYP8lBKvR5itf4BMgA6cHQeqhcoR5Joxivv5Q9fL2MVWn6XKPZozox/AWcmQPfflwpDd8JuADyrNag2WVuo0E7XcR62R8PlWU9NPkHbFdvtezQ6eYIywlSb4=
+	t=1767720044; cv=none; b=kgzPOvgoDgxoIjZzBF5TXJhMSslM1MfPKDrqGqOm34+KS8b1A4U4hxZ5lpUx0TF7IyVMYasfFy6LD/i1Fckm22j7OJRJCe6qfuL4d6eriyEKrAtYSX0DGOwgoOZvWmtT2vLTlNcjQ9FsvDwdcOm4W2/yyjgaXi/chc6MWswozEc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767720037; c=relaxed/simple;
-	bh=9przQN2pB0TrG1X00+a89i66AnNtUwscAIcF2jifNLQ=;
+	s=arc-20240116; t=1767720044; c=relaxed/simple;
+	bh=qans7hAB2rWX44ZzffgppZbRAXmg+/5XLGsTX1NhCwg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cvzFa2E09soaeUB1jl5WSvC4CpQxUPqlZfBFmvRrTpucFZBmsF5kvToZinkCDN4MI8f3jTZH5jSyESgb5hZ9Syrpn+oQzd0wHmQre30ZIHSjXUk3xuwf7Dl3Uz/bO1zT5eyu/kBlS57ikIxitDDi1GflU4NXpNeV5NlrKf74jWc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w+/E3SJI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1C79C116C6;
-	Tue,  6 Jan 2026 17:20:36 +0000 (UTC)
+	 MIME-Version; b=c55Z7ZPVoY0BYcNHRTacrJ2cY0g1pxmPztKS53BdCIfTIqpPfyrZ+1ttkJMJbC1EImxeuMgJ/XRM+yA8eCf8NyzKPK+RJ1N4Uwx63m8C8R5uGHYREWJkgaj4n5uR3QbGarE7SehvUQWtK42/hwguwdBIa+jdPUOUHG5KzNPtjX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xbC+v7Kr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E7C6C116C6;
+	Tue,  6 Jan 2026 17:20:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767720037;
-	bh=9przQN2pB0TrG1X00+a89i66AnNtUwscAIcF2jifNLQ=;
+	s=korg; t=1767720043;
+	bh=qans7hAB2rWX44ZzffgppZbRAXmg+/5XLGsTX1NhCwg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w+/E3SJI4wyevOFrmpIMCOnzpt8pZ+fK0bX7X/tDW0QuGJgXdLBAWbEn8u1bn/QeL
-	 dA7HG7dLmEyTjHSV7OKnkI0Mn3UjiUaDrTzcLonf9vAwFH4mGjWwflCCDgEcs0ey0s
-	 dWQwClBJfm94C0+Rv2TqE/g1ZbgNMGOTBsjeR/Ks=
+	b=xbC+v7Kre8NWMgKjdrgXQ2yDfl5n+taTNSKe91eHbmQqJ1BIAh31btN00jeDPeMeK
+	 dwvzV3an45UmGPP6pLt2xadAf0HLY9xWWe5qQ3F9SZOw8BU7qqoGc8teao4rfKb136
+	 aeBhdmUenomUsGj3gFb7UOdMtcCmtgPhS+hOGK2g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mike Snitzer <snitzer@kernel.org>,
+	syzbot+099461f8558eb0a1f4f3@syzkaller.appspotmail.com,
+	Shardul Bankar <shardul.b@mpiricsoftware.com>,
 	Jeff Layton <jlayton@kernel.org>,
 	Chuck Lever <chuck.lever@oracle.com>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 116/567] nfsd: update percpu_ref to manage references on nfsd_net
-Date: Tue,  6 Jan 2026 17:58:18 +0100
-Message-ID: <20260106170455.622302218@linuxfoundation.org>
+Subject: [PATCH 6.12 118/567] nfsd: fix memory leak in nfsd_create_serv error paths
+Date: Tue,  6 Jan 2026 17:58:20 +0100
+Message-ID: <20260106170455.694088661@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
 References: <20260106170451.332875001@linuxfoundation.org>
@@ -66,67 +66,62 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Mike Snitzer <snitzer@kernel.org>
+From: Shardul Bankar <shardul.b@mpiricsoftware.com>
 
-[ Upstream commit 39972494e318a21b3059287909fc090186dbe60a ]
+[ Upstream commit df8d829bba3adcf3cc744c01d933b6fd7cf06e91 ]
 
-Holding a reference on nfsd_net is what is required, it was never
-actually about ensuring nn->nfsd_serv available.
+When nfsd_create_serv() calls percpu_ref_init() to initialize
+nn->nfsd_net_ref, it allocates both a percpu reference counter
+and a percpu_ref_data structure (64 bytes). However, if the
+function fails later due to svc_create_pooled() returning NULL
+or svc_bind() returning an error, these allocations are not
+cleaned up, resulting in a memory leak.
 
-Move waiting for outstanding percpu references from
-nfsd_destroy_serv() to nfsd_shutdown_net().
+The leak manifests as:
+- Unreferenced percpu allocation (8 bytes per CPU)
+- Unreferenced percpu_ref_data structure (64 bytes)
 
-By moving it later it will be possible to invalidate localio clients
-during nfsd_file_cache_shutdown_net() via __nfsd_file_cache_purge().
+Fix this by adding percpu_ref_exit() calls in both error paths
+to properly clean up the percpu_ref_init() allocations.
 
-Signed-off-by: Mike Snitzer <snitzer@kernel.org>
+This patch fixes the percpu_ref leak in nfsd_create_serv() seen
+as an auxiliary leak in syzbot report 099461f8558eb0a1f4f3; the
+prepare_creds() and vsock-related leaks in the same report
+remain to be addressed separately.
+
+Reported-by: syzbot+099461f8558eb0a1f4f3@syzkaller.appspotmail.com
+Link: https://syzkaller.appspot.com/bug?extid=099461f8558eb0a1f4f3
+Fixes: 47e988147f40 ("nfsd: add nfsd_serv_try_get and nfsd_serv_put")
+Signed-off-by: Shardul Bankar <shardul.b@mpiricsoftware.com>
 Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Acked-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
-Stable-dep-of: df8d829bba3a ("nfsd: fix memory leak in nfsd_create_serv error paths")
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfssvc.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ fs/nfsd/nfssvc.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
 diff --git a/fs/nfsd/nfssvc.c b/fs/nfsd/nfssvc.c
-index 45f1bb2c6f13..f9bb408478dc 100644
+index 571a6ae90833..cc185c00e309 100644
 --- a/fs/nfsd/nfssvc.c
 +++ b/fs/nfsd/nfssvc.c
-@@ -436,6 +436,10 @@ static void nfsd_shutdown_net(struct net *net)
+@@ -667,13 +667,16 @@ int nfsd_create_serv(struct net *net)
+ 	serv = svc_create_pooled(nfsd_programs, ARRAY_SIZE(nfsd_programs),
+ 				 &nn->nfsd_svcstats,
+ 				 nfsd_max_blksize, nfsd);
+-	if (serv == NULL)
++	if (serv == NULL) {
++		percpu_ref_exit(&nn->nfsd_net_ref);
+ 		return -ENOMEM;
++	}
  
- 	if (!nn->nfsd_net_up)
- 		return;
-+
-+	percpu_ref_kill_and_confirm(&nn->nfsd_serv_ref, nfsd_serv_done);
-+	wait_for_completion(&nn->nfsd_serv_confirm_done);
-+
- 	nfsd_export_flush(net);
- 	nfs4_state_shutdown_net(net);
- 	nfsd_reply_cache_shutdown(nn);
-@@ -444,7 +448,10 @@ static void nfsd_shutdown_net(struct net *net)
- 		lockd_down(net);
- 		nn->lockd_up = false;
+ 	serv->sv_maxconn = nn->max_connections;
+ 	error = svc_bind(serv, net);
+ 	if (error < 0) {
+ 		svc_destroy(&serv);
++		percpu_ref_exit(&nn->nfsd_net_ref);
+ 		return error;
  	}
-+
-+	wait_for_completion(&nn->nfsd_serv_free_done);
- 	percpu_ref_exit(&nn->nfsd_serv_ref);
-+
- 	nn->nfsd_net_up = false;
- 	nfsd_shutdown_generic();
- }
-@@ -526,11 +533,6 @@ void nfsd_destroy_serv(struct net *net)
- 
- 	lockdep_assert_held(&nfsd_mutex);
- 
--	percpu_ref_kill_and_confirm(&nn->nfsd_serv_ref, nfsd_serv_done);
--	wait_for_completion(&nn->nfsd_serv_confirm_done);
--	wait_for_completion(&nn->nfsd_serv_free_done);
--	/* percpu_ref_exit is called in nfsd_shutdown_net */
--
  	spin_lock(&nfsd_notifier_lock);
- 	nn->nfsd_serv = NULL;
- 	spin_unlock(&nfsd_notifier_lock);
 -- 
 2.51.0
 
