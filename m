@@ -1,50 +1,50 @@
-Return-Path: <stable+bounces-205604-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205606-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60D53CFABC6
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:42:58 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48CB5CFA99E
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:22:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 93704300EBB0
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 19:42:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 401E232EB3D5
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:36:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1C852D060C;
-	Tue,  6 Jan 2026 17:40:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD4B82D594B;
+	Tue,  6 Jan 2026 17:40:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0GPKwwrr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zyys5oN+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B8BE2C326B;
-	Tue,  6 Jan 2026 17:40:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99E3C29B77C;
+	Tue,  6 Jan 2026 17:40:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721243; cv=none; b=l83eVrYipdZCAVTc7Rd//mgcq+89Drl2S6uvTNflhA87pC6Qgyc6hCIR09f5wyNsJ4oPsMrAIdirjHiTXbwz1gIO8MjhLUgO0UnVoinDV7JM6qwehecX1PdMsuFivIhtPJ4J81PR3fvhwK4h521vBu23yBpvlZ1KFfDTU8uFVbs=
+	t=1767721249; cv=none; b=aMjsdQZVmG9fZJO48hCNBJGkAeXNG+b8k7WqYdAfdM7qtUJYobiT3/9gWyQf93klyTgKGZIXMgj9ph7CQslEqVCMeXqIsSWHVzW511efaOXodQGHHIWykwWTfau1cl/yWpqpjqhnGZB4LImdjBSXunEno9ROZ6xAw3pvZyYyCsw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721243; c=relaxed/simple;
-	bh=texQ4ROJjgk2M4EcZ0VUcPBg+Uf/6q0iAokoFzpHPX0=;
+	s=arc-20240116; t=1767721249; c=relaxed/simple;
+	bh=gUCcFPzjtCkWjnybB19KD1tmWNSqbq0kGup2E/RaWDo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ba3223mH6BwJl8nJ+42oDG07mic8fLQa1ET+bbVolafqoK/Sx0hsDCfwbwYzBWcUVUyUbGwucn/Bedg92ZOJfWarAC2olsWzl6DTnkQZZih9++wBgrqSppITIrRY+Sts8Qpeg18LKQyMhmt4Hx0jxLrMWAuiWCVZkiVMr12C+i0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0GPKwwrr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D8B5C19424;
-	Tue,  6 Jan 2026 17:40:42 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Kq+4AMG0+uSwY7EAxN2SEeqGdUNUQBy+YZtyRpvL4UVDkeXM/gtPK+xx9aHGFsb3lwsJ6iZp7R+b4cBZDggcXbw0WlZ5fW40+y8x+8vyjSbBydMFRNb32A8NtttsprQi40ediOZJoAcHPI9BTcKvNTlKGMasa8wtYFlpTI/V5nU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zyys5oN+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DB54C116C6;
+	Tue,  6 Jan 2026 17:40:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721243;
-	bh=texQ4ROJjgk2M4EcZ0VUcPBg+Uf/6q0iAokoFzpHPX0=;
+	s=korg; t=1767721249;
+	bh=gUCcFPzjtCkWjnybB19KD1tmWNSqbq0kGup2E/RaWDo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0GPKwwrrgF2jW2f3AHRLroXfncvP/xQSFskWAsutQabwGqaART8K9t2GncE6LQ1hH
-	 gyktEXhLLJdvXTehyg91NBfrQ8UJmWkxuzn2WIk5RMSPIT0ISiQjDlqcUyf1bvrBGn
-	 /b3dZUxbXjl8bFJA3v3wpE27y27aG2yqIMDbDejY=
+	b=Zyys5oN+eKYWwaY8K4MWKllmWcNsczNaSyKQgdd1e/IX5xhd9lfmM4OApek9kqeTe
+	 98bLj+ReVzZ4OshvD/quWQh1K9C7mtbkDO4DwlDImGKvy9xytGcDG846Z7ncEpqkAH
+	 /W9VsTU2mT/OhbvvrcprX1SD5G2XGycSJwVEkEMM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Matthew Brost <matthew.brost@intel.com>,
 	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
-Subject: [PATCH 6.12 478/567] drm/xe: Adjust long-running workload timeslices to reasonable values
-Date: Tue,  6 Jan 2026 18:04:20 +0100
-Message-ID: <20260106170509.037374834@linuxfoundation.org>
+Subject: [PATCH 6.12 480/567] drm/xe: Drop preempt-fences when destroying imported dma-bufs.
+Date: Tue,  6 Jan 2026 18:04:22 +0100
+Message-ID: <20260106170509.111241052@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
 References: <20260106170451.332875001@linuxfoundation.org>
@@ -64,58 +64,89 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Matthew Brost <matthew.brost@intel.com>
+From: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 
-commit 6f0f404bd289d79a260b634c5b3f4d330b13472c upstream.
+commit fe3ccd24138fd391ae8e32289d492c85f67770fc upstream.
 
-A 10ms timeslice for long-running workloads is far too long and causes
-significant jitter in benchmarks when the system is shared. Adjust the
-value to 5ms for preempt-fencing VMs, as the resume step there is quite
-costly as memory is moved around, and set it to zero for pagefault VMs,
-since switching back to pagefault mode after dma-fence mode is
-relatively fast.
+When imported dma-bufs are destroyed, TTM is not fully
+individualizing the dma-resv, but it *is* copying the fences that
+need to be waited for before declaring idle. So in the case where
+the bo->resv != bo->_resv we can still drop the preempt-fences, but
+make sure we do that on bo->_resv which contains the fence-pointer
+copy.
 
-Also change min_run_period_ms to 'unsiged int' type rather than 's64' as
-only positive values make sense.
+In the case where the copying fails, bo->_resv will typically not
+contain any fences pointers at all, so there will be nothing to
+drop. In that case, TTM would have ensured all fences that would
+have been copied are signaled, including any remaining preempt
+fences.
 
 Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
-Cc: stable@vger.kernel.org
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
-Reviewed-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Link: https://patch.msgid.link/20251212182847.1683222-2-matthew.brost@intel.com
-(cherry picked from commit 33a5abd9a68394aa67f9618b20eee65ee8702ff4)
+Fixes: fa0af721bd1f ("drm/ttm: test private resv obj on release/destroy")
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: <stable@vger.kernel.org> # v6.16+
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Tested-by: Matthew Brost <matthew.brost@intel.com>
+Reviewed-by: Matthew Brost <matthew.brost@intel.com>
+Link: https://patch.msgid.link/20251217093441.5073-1-thomas.hellstrom@linux.intel.com
+(cherry picked from commit 425fe550fb513b567bd6d01f397d274092a9c274)
 Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/xe_vm.c       |    5 ++++-
- drivers/gpu/drm/xe/xe_vm_types.h |    2 +-
- 2 files changed, 5 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/xe/xe_bo.c |   15 ++++-----------
+ 1 file changed, 4 insertions(+), 11 deletions(-)
 
---- a/drivers/gpu/drm/xe/xe_vm.c
-+++ b/drivers/gpu/drm/xe/xe_vm.c
-@@ -1468,7 +1468,10 @@ struct xe_vm *xe_vm_create(struct xe_dev
- 	INIT_WORK(&vm->destroy_work, vm_destroy_work_func);
+--- a/drivers/gpu/drm/xe/xe_bo.c
++++ b/drivers/gpu/drm/xe/xe_bo.c
+@@ -1041,7 +1041,7 @@ static bool xe_ttm_bo_lock_in_destructor
+ 	 * always succeed here, as long as we hold the lru lock.
+ 	 */
+ 	spin_lock(&ttm_bo->bdev->lru_lock);
+-	locked = dma_resv_trylock(ttm_bo->base.resv);
++	locked = dma_resv_trylock(&ttm_bo->base._resv);
+ 	spin_unlock(&ttm_bo->bdev->lru_lock);
+ 	xe_assert(xe, locked);
  
- 	INIT_LIST_HEAD(&vm->preempt.exec_queues);
--	vm->preempt.min_run_period_ms = 10;	/* FIXME: Wire up to uAPI */
-+	if (flags & XE_VM_FLAG_FAULT_MODE)
-+		vm->preempt.min_run_period_ms = 0;
-+	else
-+		vm->preempt.min_run_period_ms = 5;
+@@ -1061,13 +1061,6 @@ static void xe_ttm_bo_release_notify(str
+ 	bo = ttm_to_xe_bo(ttm_bo);
+ 	xe_assert(xe_bo_device(bo), !(bo->created && kref_read(&ttm_bo->base.refcount)));
  
- 	for_each_tile(tile, xe, id)
- 		xe_range_fence_tree_init(&vm->rftree[id]);
---- a/drivers/gpu/drm/xe/xe_vm_types.h
-+++ b/drivers/gpu/drm/xe/xe_vm_types.h
-@@ -243,7 +243,7 @@ struct xe_vm {
- 		 * @min_run_period_ms: The minimum run period before preempting
- 		 * an engine again
- 		 */
--		s64 min_run_period_ms;
-+		unsigned int min_run_period_ms;
- 		/** @exec_queues: list of exec queues attached to this VM */
- 		struct list_head exec_queues;
- 		/** @num_exec_queues: number exec queues attached to this VM */
+-	/*
+-	 * Corner case where TTM fails to allocate memory and this BOs resv
+-	 * still points the VMs resv
+-	 */
+-	if (ttm_bo->base.resv != &ttm_bo->base._resv)
+-		return;
+-
+ 	if (!xe_ttm_bo_lock_in_destructor(ttm_bo))
+ 		return;
+ 
+@@ -1077,14 +1070,14 @@ static void xe_ttm_bo_release_notify(str
+ 	 * TODO: Don't do this for external bos once we scrub them after
+ 	 * unbind.
+ 	 */
+-	dma_resv_for_each_fence(&cursor, ttm_bo->base.resv,
++	dma_resv_for_each_fence(&cursor, &ttm_bo->base._resv,
+ 				DMA_RESV_USAGE_BOOKKEEP, fence) {
+ 		if (xe_fence_is_xe_preempt(fence) &&
+ 		    !dma_fence_is_signaled(fence)) {
+ 			if (!replacement)
+ 				replacement = dma_fence_get_stub();
+ 
+-			dma_resv_replace_fences(ttm_bo->base.resv,
++			dma_resv_replace_fences(&ttm_bo->base._resv,
+ 						fence->context,
+ 						replacement,
+ 						DMA_RESV_USAGE_BOOKKEEP);
+@@ -1092,7 +1085,7 @@ static void xe_ttm_bo_release_notify(str
+ 	}
+ 	dma_fence_put(replacement);
+ 
+-	dma_resv_unlock(ttm_bo->base.resv);
++	dma_resv_unlock(&ttm_bo->base._resv);
+ }
+ 
+ static void xe_ttm_bo_delete_mem_notify(struct ttm_buffer_object *ttm_bo)
 
 
 
