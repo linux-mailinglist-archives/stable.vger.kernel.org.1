@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-205689-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205936-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56208CF9FCD
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:12:17 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2CAECFA0C2
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:18:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BAC3E30AFDDD
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:08:46 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 684853076291
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:16:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA28F3570B3;
-	Tue,  6 Jan 2026 17:45:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFA0736D51E;
+	Tue,  6 Jan 2026 17:59:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gh9JtCs8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zATKyLWd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A20473570AB;
-	Tue,  6 Jan 2026 17:45:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB85C36D4F3;
+	Tue,  6 Jan 2026 17:59:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721529; cv=none; b=teGrE4qGj9epfJoX5+KYI8OXW+oCMVHTwj+jFx1rrpgADn0HBzuw0pZQoNryY6kpBnj/8pOkNQ+Fo7M2Amz60mR1DKD/vQqNR/MIlLWFaZuFlW65RUSM53Lulz1qxik5OTfuOIxNN5VjdmzJU3K2upUJzWiPVz6fsHfqzGBsNec=
+	t=1767722353; cv=none; b=pfwIGlpDGHclMHYszTr/RxHkURupE7SWQyyxQYOaEC+eRZWs7ImcxLDeXi6KylxvXjxtdyMhkqPjzYbNyfm11W3PDsr/NE6l7+eGhzb7ojL4PfxiL59nP3jAw9ABDOcSQzB5G0gxCefk2YYGl/kn5ll4P2HdrVkjx5c9svBvh1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721529; c=relaxed/simple;
-	bh=widhpL04nxEoFVhuruKTjjeXOVXu1hBkcjX3zmPM4lg=;
+	s=arc-20240116; t=1767722353; c=relaxed/simple;
+	bh=NS6993T35nN7SdvJhOF5O/RKc+kiMT9eWCkJy/Xn1Lg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=V3Y0ohjPyvvRlLsM33U5Wt1Uu0jFZNk4b69vL0njjantPdgmVdv4ylkNIOZIgRaV9V6WcKmoDJC7Vdvdlq0+ugNvPUqU0mM54wrtE1kJV8AiLh22C8gm51olOt69hkBJBnkWhEEn11MUkVfbS9PEsQ0ZIuMeO5hNtXrSPhw7nrQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gh9JtCs8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05C76C16AAE;
-	Tue,  6 Jan 2026 17:45:28 +0000 (UTC)
+	 MIME-Version; b=KiVkQaysDU2YFMjF1/JtyQXix5O4+YeKVXo/czbFzm7C/fGkKBpFMrI2hGJ88guNovLlRip7u0Ai6OzLlZ7pl5sjpC20t8flctHsqtDVsHi6p14Rtigo2v7VTiDPBYDHWiRbP9iikB0qinLXtOg6uu+vgg40Vv0VhW+aSUGpgbM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zATKyLWd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0ACC1C116C6;
+	Tue,  6 Jan 2026 17:59:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721529;
-	bh=widhpL04nxEoFVhuruKTjjeXOVXu1hBkcjX3zmPM4lg=;
+	s=korg; t=1767722353;
+	bh=NS6993T35nN7SdvJhOF5O/RKc+kiMT9eWCkJy/Xn1Lg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gh9JtCs8BEKVubhXqTBK4qqLDQe1vQT0zyaTPbLjUuJcFn9Ms1UQEVcjeIPnB6Piy
-	 +kYwOKKU7OwHhNgeimLKkFXV+ELOpps6uTnQqtDZYyinQxpbvoT0reBpwE7sxjGGgx
-	 HvSmydyZjX05/SE5kFP5TF5N0DE283AMMUkTsBE4=
+	b=zATKyLWdeMZheZEmHUQpd2S3Jy0uOeUCNghzcAlEWn1TYzFmnEieCAeH6bUb+XDh/
+	 Hw96W/3ZZsvuEd9DyvrEeppRHgwmuzDiuDP0Lmo87RLqUO5994OByoHi5CRS8COY8L
+	 wmaG4qbN1aeOuYfNIf6+m3S/I0xaJILT4OxwurA8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	linux-doc@vger.kernel.org
-Subject: [PATCH 6.12 531/567] tty: fix tty_port_tty_*hangup() kernel-doc
-Date: Tue,  6 Jan 2026 18:05:13 +0100
-Message-ID: <20260106170511.039661203@linuxfoundation.org>
+	Jouni Malinen <jouni.malinen@oss.qualcomm.com>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 6.18 240/312] wifi: mac80211: Discard Beacon frames to non-broadcast address
+Date: Tue,  6 Jan 2026 18:05:14 +0100
+Message-ID: <20260106170556.533182937@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
-References: <20260106170451.332875001@linuxfoundation.org>
+In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
+References: <20260106170547.832845344@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,86 +57,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+From: Jouni Malinen <jouni.malinen@oss.qualcomm.com>
 
-commit 6241b49540a65a6d5274fa938fd3eb4cbfe2e076 upstream.
+commit 193d18f60588e95d62e0f82b6a53893e5f2f19f8 upstream.
 
-The commit below added a new helper, but omitted to move (and add) the
-corressponding kernel-doc. Do it now.
+Beacon frames are required to be sent to the broadcast address, see IEEE
+Std 802.11-2020, 11.1.3.1 ("The Address 1 field of the Beacon .. frame
+shall be set to the broadcast address"). A unicast Beacon frame might be
+used as a targeted attack to get one of the associated STAs to do
+something (e.g., using CSA to move it to another channel). As such, it
+is better have strict filtering for this on the received side and
+discard all Beacon frames that are sent to an unexpected address.
 
-Signed-off-by: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>
-Fixes: 2b5eac0f8c6e ("tty: introduce and use tty_port_tty_vhangup() helper")
-Link: https://lore.kernel.org/all/b23d566c-09dc-7374-cc87-0ad4660e8b2e@linux.intel.com/
-Reported-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Cc: Jonathan Corbet <corbet@lwn.net>
-Cc: linux-doc@vger.kernel.org
-Link: https://lore.kernel.org/r/20250624080641.509959-6-jirislaby@kernel.org
+This is even more important for cases where beacon protection is used.
+The current implementation in mac80211 is correctly discarding unicast
+Beacon frames if the Protected Frame bit in the Frame Control field is
+set to 0. However, if that bit is set to 1, the logic used for checking
+for configured BIGTK(s) does not actually work. If the driver does not
+have logic for dropping unicast Beacon frames with Protected Frame bit
+1, these frames would be accepted in mac80211 processing as valid Beacon
+frames even though they are not protected. This would allow beacon
+protection to be bypassed. While the logic for checking beacon
+protection could be extended to cover this corner case, a more generic
+check for discard all Beacon frames based on A1=unicast address covers
+this without needing additional changes.
+
+Address all these issues by dropping received Beacon frames if they are
+sent to a non-broadcast address.
+
+Cc: stable@vger.kernel.org
+Fixes: af2d14b01c32 ("mac80211: Beacon protection using the new BIGTK (STA)")
+Signed-off-by: Jouni Malinen <jouni.malinen@oss.qualcomm.com>
+Link: https://patch.msgid.link/20251215151134.104501-1-jouni.malinen@oss.qualcomm.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/driver-api/tty/tty_port.rst |    5 +++--
- drivers/tty/tty_port.c                    |    5 -----
- include/linux/tty_port.h                  |    9 +++++++++
- 3 files changed, 12 insertions(+), 7 deletions(-)
+ net/mac80211/rx.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/Documentation/driver-api/tty/tty_port.rst
-+++ b/Documentation/driver-api/tty/tty_port.rst
-@@ -42,9 +42,10 @@ TTY Refcounting
- TTY Helpers
- -----------
+--- a/net/mac80211/rx.c
++++ b/net/mac80211/rx.c
+@@ -3428,6 +3428,11 @@ ieee80211_rx_h_mgmt_check(struct ieee802
+ 	    rx->skb->len < IEEE80211_MIN_ACTION_SIZE)
+ 		return RX_DROP_U_RUNT_ACTION;
  
-+.. kernel-doc::  include/linux/tty_port.h
-+   :identifiers: tty_port_tty_hangup tty_port_tty_vhangup
- .. kernel-doc::  drivers/tty/tty_port.c
--   :identifiers: tty_port_tty_hangup tty_port_tty_wakeup
--
-+   :identifiers: tty_port_tty_wakeup
- 
- Modem Signals
- -------------
---- a/drivers/tty/tty_port.c
-+++ b/drivers/tty/tty_port.c
-@@ -411,11 +411,6 @@ void tty_port_hangup(struct tty_port *po
- }
- EXPORT_SYMBOL(tty_port_hangup);
- 
--/**
-- * tty_port_tty_hangup - helper to hang up a tty
-- * @port: tty port
-- * @check_clocal: hang only ttys with %CLOCAL unset?
-- */
- void __tty_port_tty_hangup(struct tty_port *port, bool check_clocal, bool async)
- {
- 	struct tty_struct *tty = tty_port_tty_get(port);
---- a/include/linux/tty_port.h
-+++ b/include/linux/tty_port.h
-@@ -254,11 +254,20 @@ static inline int tty_port_users(struct
- 	return port->count + port->blocked_open;
- }
- 
-+/**
-+ * tty_port_tty_hangup - helper to hang up a tty asynchronously
-+ * @port: tty port
-+ * @check_clocal: hang only ttys with %CLOCAL unset?
-+ */
- static inline void tty_port_tty_hangup(struct tty_port *port, bool check_clocal)
- {
- 	__tty_port_tty_hangup(port, check_clocal, true);
- }
- 
-+/**
-+ * tty_port_tty_vhangup - helper to hang up a tty synchronously
-+ * @port: tty port
-+ */
- static inline void tty_port_tty_vhangup(struct tty_port *port)
- {
- 	__tty_port_tty_hangup(port, false, false);
++	/* Drop non-broadcast Beacon frames */
++	if (ieee80211_is_beacon(mgmt->frame_control) &&
++	    !is_broadcast_ether_addr(mgmt->da))
++		return RX_DROP;
++
+ 	if (rx->sdata->vif.type == NL80211_IFTYPE_AP &&
+ 	    ieee80211_is_beacon(mgmt->frame_control) &&
+ 	    !(rx->flags & IEEE80211_RX_BEACON_REPORTED)) {
 
 
 
