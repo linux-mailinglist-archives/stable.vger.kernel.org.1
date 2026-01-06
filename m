@@ -1,92 +1,109 @@
-Return-Path: <stable+bounces-205048-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205049-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0A39CF7589
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 09:50:56 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59BA4CF75CC
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 09:53:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3219A306B763
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 08:50:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0A344306088E
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 08:53:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27F5327E7EC;
-	Tue,  6 Jan 2026 08:50:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEBDB2DCF67;
+	Tue,  6 Jan 2026 08:53:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AkP7Iw00"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="SXjLicC0";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="UaABfruY"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43C7B277C96
-	for <stable@vger.kernel.org>; Tue,  6 Jan 2026 08:50:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFF622874FA
+	for <stable@vger.kernel.org>; Tue,  6 Jan 2026 08:53:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767689411; cv=none; b=VjXr7NEC4/YBmPD1KRFBtDB879HatTHm6IBadG2yF9za4ZgB0EiEprcQvICAyA2f6ycyMSbrJVoAXoC2/dUF27agXeFcX4F5IJte795g0VY5VGmZqzPNFMHYQemXAjzcudpNkSgn5XGSXOQsF6CehGNvKOsbqVZbjDGhgB0J1Ns=
+	t=1767689585; cv=none; b=RQk6FTkcD70ApyIY3wzduhc1vpSCVDswimYhKjzh02yEFa0worEfje0nZ4yFBRdRJkfdLaczSZDlUDDtk8V0SLB9RuFdJ2O16uHWZi41tYniJVdzAOXKLKsVVv6lmiGpj5I3+r/uO5iU632Uu/qTMd/9aSS6zhYWeDGQn+AGLu0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767689411; c=relaxed/simple;
-	bh=Mfr8IanOt8jxU7vewSt4DV+aakgkKleTBni/LrpiBkc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JbaGHAetxlvr+wmo4BgKagittHF7sXL5b8Lb3oAmwbqpB/XnUty9ylDD7QWMqsaK05LCypMgLXP1QImj0hAUeGgCmIKMtSMSEvCsxsgkkumPfttMttWGWGxh4iAi+hqDpkNK/yHchnk0tTIe4KYAKbPjr655xD00fxl8HOMKX0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AkP7Iw00; arc=none smtp.client-ip=209.85.128.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4779c9109ceso821225e9.1
-        for <stable@vger.kernel.org>; Tue, 06 Jan 2026 00:50:07 -0800 (PST)
+	s=arc-20240116; t=1767689585; c=relaxed/simple;
+	bh=Ye6JVG814YK0VLq0FTCoKeYtppyAVBZhSr6sPWI2Kos=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tcqRWgVWiS0MDem1JbdLi3fi4zXfqFG+qiNmJvWSc9ZHng9y4pPoYWWg8RX1FrIbJ5QFxN/AiK9LZmVLj3tPIqkFVQ5xNtuUsgFeEJ1XQvbqesZm+QcShLsfSc1HRs+EyTer9Ch9IF2kGIRE5uVGrLRZ8PmFIv6eWvwXApQ79FA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=SXjLicC0; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=UaABfruY; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 606493ET2253898
+	for <stable@vger.kernel.org>; Tue, 6 Jan 2026 08:53:03 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=qcppdkim1; bh=XT7o+24nrLXW+Y1n/DARQ2Tlmwc67dIpMwD
+	shA9XlDU=; b=SXjLicC0Irkde822s/1KkHZ2zfXDNTJAWMzY7aDz6iVz4UDNNwF
+	dKnEmyagBgUXPuLiNcnklbfwZCKsdIsC1KLrMY8D81r2UgTXIIPZIQoLI0ip0hXz
+	BqlVL/aUbb10EtjPv8i78N04HwMwM3vRXogvKnj+/8EHz6Be4QmRFChy7lMQ5uSd
+	I5qJcpk35el2nT/tMD88mOY94kx7xNiWrRXsj1THPrYBImvLzpG+6NmU4/1/ajM2
+	h21yzNfSEuVmQpSNi1IQLhrRrJvrVrLX9FEBL3lMpd5uwe8glUkWhLFv6RrZ3ioK
+	JE9L3Fhz5e4D098CQeuXnbx1z/ISt0IL3XQ==
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com [209.85.222.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4bgu420sc0-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <stable@vger.kernel.org>; Tue, 06 Jan 2026 08:53:02 +0000 (GMT)
+Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-8b51396f3efso142697485a.1
+        for <stable@vger.kernel.org>; Tue, 06 Jan 2026 00:53:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767689406; x=1768294206; darn=vger.kernel.org;
+        d=oss.qualcomm.com; s=google; t=1767689582; x=1768294382; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=hV/GMcvRyLCr7DUYxLRLYti8UWuf7naTwJHZtiyzU+M=;
-        b=AkP7Iw00c1wFdlkYWq6yqgIF1CKlsR12fcDUPOL31p3kLkLR/ssOVsd7YqLz8P0+45
-         zPnNxxQf0culpGPdFzTrdJ5lTq3ZNWVJae7v49F4MuDkszzsCKItuT3JFtENQXFhq54c
-         RsXJjr5tniRMg5H6HZwfHq6PFDwQA9DlqyKM6P3sb0yDCLnHwwj7wtrx402r6om/OQbG
-         8PLPTw54DDVi8s1xRpQRTZ3JcpYRYt0PXwqvA1oAJ7++d5Z+5wJOBmG1exrCR+CGiNTc
-         SauophdfPBQPSecYWelhrr3sTf9MStySRg7m/DvfYpvEI6W0kZz4ozeBV3XnD1/5eimC
-         GfmA==
+        bh=XT7o+24nrLXW+Y1n/DARQ2Tlmwc67dIpMwDshA9XlDU=;
+        b=UaABfruYIN/1HsIm+qASRGc6cTXEQWviJ0q2CNkbZqI5+0uiciEMB7Edc6cXJI+1BJ
+         j9X6+b6aSHtS0t4aPTUR5FBj4VIImUPwUnUQONj0nz1nwD9V2X6xMaXPcYKEptps3XNq
+         dVVH+Md8Wgv5H4mwjDAryxPj8Nu/AMiJh63qRRDrvHQctlJL/nuT5CRLBp8EMofo/LPF
+         X3AC2npaClXSjVC0xx/sBmSIC5rZXdlVXZKaVwtusZ7/6i5xPglqyvo5yqtSXF9Q5lxn
+         wvKwTZRn8zleYgH7To7VdHkoDj/ec60UTTvXJWCYhrv77rvimFanOzrojTEbZs6My14v
+         5i/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767689406; x=1768294206;
+        d=1e100.net; s=20230601; t=1767689582; x=1768294382;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=hV/GMcvRyLCr7DUYxLRLYti8UWuf7naTwJHZtiyzU+M=;
-        b=m/QDLVL6wrhQVw5o9yrAkDsy7xrOXDe4MurYXSa4GLYC3oyTte/4hELWDwDijEICvC
-         kCgYqxUq2anyFskmqhGbX1bNKavH1ShFj4GDk2F2xaFAR/1oKa+TGFYRydvwFGWKQVIs
-         Spc1GC0lcRdKXcWRIIVa87PvTn2DWwe2FDO6w5zW2uLYpsbxwhl4SjdTmJlQcrQxd0Zd
-         HxrPLehosF5utSBIhI4QdUNrrPI7YT+GlGigysT8xMEQfMG26aza5K4Lu1dkJ3lulmhG
-         yIypXYQb0U9Zpldvfa8ooAehzEzgImHcdQoDqmdDFZs0dvJak+BjCDco16Jxdjx/KaPp
-         iaSg==
-X-Forwarded-Encrypted: i=1; AJvYcCXgF9uQ3hG43qxVtxtCHYjylvtMj0R189cly150mb1Ei9fI0BZ9cWZ72KNrv/Gh8f+HmK0OmA8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwQ5wWdRX3Rz8BDA4YHoHluf8yyJ2zJFUE35kVAK2xJ0lwG343E
-	XRhVaQeQBPVMZK+8beDQpw75531k9F9DpyoDkDR5lAJTivq7yHYOInbS
-X-Gm-Gg: AY/fxX7g61zF3RkHdxo8Hf5jlWRGsT/mdDr0IxsuGvL2D0cmDglEVXzYlwJW1rXrTLU
-	1j9S79uMecApDpmB4Huv0lKKlR5QSoKVFisBal3B5wOcX1kA7NgP9WNCGc1njwAVOsXy0IdkNxy
-	1dG99PNxr44VV2qidslMvxzpVu8KUIrOGXg22uIAemiS94G+Wn7MHFf4DoBp11hoBberqKFJME3
-	xV12JcIU7IEKj6wtSmhfdaEaaRYGWZGh1kMShHJqkYAuuLtee4+aGk1R3GUrgBdYoXSEQfyQzIX
-	rn/sTPJC52CbFhjYNdu7a14w0IYY+yAdlrkj4lTux2dDNSEK3oFLLdnTBYXLex5sk6HOlvZyqT1
-	QpY4Zbe5t9CmX81/y/W41Txhsn/+RcgrTbK2G6c45IODvQiSRqH/xFsoJcKApiWwHCnfKoA+hmT
-	lz6tdzqRrNpko+Bx+MEZax9rz8yZyKtvhLdzM0/hD/gexafakuliGSrGRUwDpqQsaDjfZMP9PrX
-	1VA2BY=
-X-Google-Smtp-Source: AGHT+IEbVRYctNc4A+yz5Gyy1tMc8wt0TvOceywuKntqSSYPrKkT3maN7meDceSemXFvcHnWFEclrQ==
-X-Received: by 2002:a05:600c:138b:b0:475:d7b8:8505 with SMTP id 5b1f17b1804b1-47d7f0a86f9mr14273175e9.7.1767689406312;
-        Tue, 06 Jan 2026 00:50:06 -0800 (PST)
-Received: from thomas-precision3591.paris.inria.fr (wifi-pro-83-215.paris.inria.fr. [128.93.83.215])
-        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-47d7fb35701sm12342695e9.11.2026.01.06.00.50.05
+        bh=XT7o+24nrLXW+Y1n/DARQ2Tlmwc67dIpMwDshA9XlDU=;
+        b=ABkTqMInpwnu6qxnRR4VUfQWsC/mCmSe2bfWlwIhOE6oU29OPmNlO3qhnret2Jl+5A
+         lh0pXZwjunC8PRPlEt+tjmmMEYA3HaEnXJBF2zCrLErhBrGeZDfzK0QAuam7E9XAxAmf
+         g4t8d4Cd94lCTUIEAf5wTSpCx14dkvyHv5uii4L7XdUR3ZKzvDQO9WcJu/71do5z0IIr
+         04+YZ+f3CtJIgbR0jGn/AQ2vD1GLhAnBrA7d0w8Bmq6ll957EuVk5zsIb9/+h1Cx7nO/
+         thbyMXysQu6du6ZdWc0Mwm5dtX1dColRIiJp/pAh4VQxylfYWpXZ2ylXt53jHTxnOVTP
+         hIRg==
+X-Forwarded-Encrypted: i=1; AJvYcCWKWWMM7Gp97Z1ldzZNfwFOpHjvH/O1lXT642ZTvLTrd8LKx4FwPTPcvelKmhVF1waB+H4ZF1o=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx910KZMbj7vfkoh+iOhVHwDc4U3ZQwOPAuj/qicuXnXNNqZRGS
+	rbHa7ylVyqLiQtgyBi3JpDBIQ1uQJH6ogk6t/ZI6qeD47YfWgByTCTmwYE++jRFjl5DrZLBoHB3
+	4HKA/MD+YJDifRrELpVXynpmlwjK2alvyRpOS2D1XcbUPtQ+VnsMrYpid7Kc=
+X-Gm-Gg: AY/fxX4aO3e1hLJObxEPRwyQhgT7z1yH+F/amtnAOuaLmpebder2zHuMtfVd0Ibwgfw
+	Spt3K9Q77s17vx23aZiau7H7qofH9yV/P7lZEYXrbgwxFro0UyGNg0nynP3INgDVYCECA7TZWmY
+	1rr9TYsg5pNHmiPar8x6IUCpjVDJkrdIe8ADd204kOXx3CgZVzz195Btg0LH9t3GXJHfYre7Jn/
+	z+9d3wNxJjWeLc4kaIJ392yJFWiY+J2y0kFGa6dsiyyYhQsEkCCRSWMqjdRiUJJ+H5aKV69m1S6
+	4eQ4TLDWlmjkxdpoEKQGL6EKc5izVGahFxDRhqvuMj+RrrTmZ/xzBqjKrhP/W+2weI3oHbKqhBH
+	zwy1lN/oLxbtC7SGVdMoAQVC0kq8+n3vMB7nc2Eg=
+X-Received: by 2002:a05:622a:4d98:b0:4f1:b398:551f with SMTP id d75a77b69052e-4ffa77f6136mr26528201cf.68.1767689582030;
+        Tue, 06 Jan 2026 00:53:02 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IH7E9Dd0gEbHGw/qwmI9Kg/hwl220mH23Q9cPSWqNcPBGofT1gZNovh8hqrkCtABFulpregOg==
+X-Received: by 2002:a05:622a:4d98:b0:4f1:b398:551f with SMTP id d75a77b69052e-4ffa77f6136mr26528171cf.68.1767689581612;
+        Tue, 06 Jan 2026 00:53:01 -0800 (PST)
+Received: from brgl-qcom.home ([2a01:cb1d:dc:7e00:a1e5:bc32:d004:3d67])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47d7fb1486csm13152255e9.5.2026.01.06.00.53.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Jan 2026 00:50:06 -0800 (PST)
-From: Thomas Fourier <fourier.thomas@gmail.com>
-To: 
-Cc: Thomas Fourier <fourier.thomas@gmail.com>,
-	stable@vger.kernel.org,
-	Jeff Johnson <jjohnson@kernel.org>,
-	Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>,
-	Sriram R <quic_srirrama@quicinc.com>,
-	Kalle Valo <kvalo@kernel.org>,
-	Wen Gong <quic_wgong@quicinc.com>,
-	linux-wireless@vger.kernel.org,
-	ath12k@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net] wifi: ath12k: fix dma_free_coherent() pointer
-Date: Tue,  6 Jan 2026 09:49:04 +0100
-Message-ID: <20260106084905.18622-2-fourier.thomas@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        Tue, 06 Jan 2026 00:53:01 -0800 (PST)
+From: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+To: Linus Walleij <linusw@kernel.org>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Kevin Hilman <khilman@baylibre.com>,
+        Jerome Brunet <jbrunet@baylibre.com>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        Bartosz Golaszewski <brgl@kernel.org>
+Cc: linux-gpio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
+        stable@vger.kernel.org
+Subject: [PATCH] pinctrl: meson: amlogic-a4: mark the GPIO controller as sleeping
+Date: Tue,  6 Jan 2026 09:52:53 +0100
+Message-ID: <20260106085253.20858-1-bartosz.golaszewski@oss.qualcomm.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -94,56 +111,58 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Authority-Analysis: v=2.4 cv=dYuNHHXe c=1 sm=1 tr=0 ts=695ccd6e cx=c_pps
+ a=hnmNkyzTK/kJ09Xio7VxxA==:117 a=xqWC_Br6kY4A:10 a=vUbySO9Y5rIA:10
+ a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=pGLkceISAAAA:8
+ a=mK_AVkanAAAA:8 a=EUspDBNiAAAA:8 a=qfAtFR7Ekgvq_9IDEGwA:9
+ a=PEH46H7Ffwr30OY-TuGO:22 a=3gWm3jAn84ENXaBijsEo:22
+X-Proofpoint-GUID: TVFe2FhvZwhSDRCkVZF2zoz04rO8Yopz
+X-Proofpoint-ORIG-GUID: TVFe2FhvZwhSDRCkVZF2zoz04rO8Yopz
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTA2MDA3NCBTYWx0ZWRfX+cntTXFKbMHo
+ gQxB566LC5mmFSsApGBGP6C9YCINfmaPnO2hYI9pMH13wEkLyb+HZWbUDSBMnHwD3KFz/5T7UtQ
+ mTFmlxF7DwcMeGnPX6qwJ0KUbSPwG+4PN7sgEr7ep8Mdpz6xl4E/T03EcT3XCZgAUVJqYB+TvEq
+ dx/RtfxMOgjwWvnYiy2X833yXqZFiE6mwH9p+YSDaE25+etEmDkmWK3+O/fBwgA44qN0uzy1mVU
+ f7I+ffbRbDPtnKGsIrNEcXsyi9ZFKLHZpOwU/tD57Ykjo32oUFi5yjSHA7ujqtdr4Ji36OesDRf
+ IvgdCIsQQZ7Nq6xkGD5UjJ+dfLBXdCKUl71ulXcBlSD72Yc6Pz2rLijiWz1OY+DeFW+pJP2SiBu
+ 3SDQ7zOexMEOo0QQDTjIzB8UWVArepY83UY+Ab326A1LgtoyObedHqVhmEKiHbZnHI+ZdZ3jDrJ
+ P0O9gAoR8JXRAOcJVdw==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2026-01-05_02,2026-01-05_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 adultscore=0 malwarescore=0 impostorscore=0 phishscore=0
+ clxscore=1015 spamscore=0 lowpriorityscore=0 suspectscore=0 bulkscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2512120000 definitions=main-2601060074
 
-dma_alloc_coherent() allocates a DMA mapped buffer and stores the
-addresses in XXX_unaligned fields.  Those should be reused when freeing
-the buffer rather than the aligned addresses.
+The GPIO controller is configured as non-sleeping but it uses generic
+pinctrl helpers which use a mutex for synchronization. This will cause
+lockdep splats when used together with shared GPIOs going through the
+GPIO shared proxy driver.
 
-Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Fixes: 6e9be3abb78c ("pinctrl: Add driver support for Amlogic SoCs")
+Cc: stable@vger.kernel.org
+Reported-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Closes: https://lore.kernel.org/all/CAFBinCAc7CO8gfNQakCu3LfkYXuyTd2iRpMRm8EKXSL0mwOnJw@mail.gmail.com/
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 ---
- drivers/net/wireless/ath/ath12k/ce.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/pinctrl/meson/pinctrl-amlogic-a4.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/ce.c b/drivers/net/wireless/ath/ath12k/ce.c
-index 9a63608838ac..4aea58446838 100644
---- a/drivers/net/wireless/ath/ath12k/ce.c
-+++ b/drivers/net/wireless/ath/ath12k/ce.c
-@@ -984,8 +984,8 @@ void ath12k_ce_free_pipes(struct ath12k_base *ab)
- 			dma_free_coherent(ab->dev,
- 					  pipe->src_ring->nentries * desc_sz +
- 					  CE_DESC_RING_ALIGN,
--					  pipe->src_ring->base_addr_owner_space,
--					  pipe->src_ring->base_addr_ce_space);
-+					  pipe->src_ring->base_addr_owner_space_unaligned,
-+					  pipe->src_ring->base_addr_ce_space_unaligned);
- 			kfree(pipe->src_ring);
- 			pipe->src_ring = NULL;
- 		}
-@@ -995,8 +995,8 @@ void ath12k_ce_free_pipes(struct ath12k_base *ab)
- 			dma_free_coherent(ab->dev,
- 					  pipe->dest_ring->nentries * desc_sz +
- 					  CE_DESC_RING_ALIGN,
--					  pipe->dest_ring->base_addr_owner_space,
--					  pipe->dest_ring->base_addr_ce_space);
-+					  pipe->dest_ring->base_addr_owner_space_unaligned,
-+					  pipe->dest_ring->base_addr_ce_space_unaligned);
- 			kfree(pipe->dest_ring);
- 			pipe->dest_ring = NULL;
- 		}
-@@ -1007,8 +1007,8 @@ void ath12k_ce_free_pipes(struct ath12k_base *ab)
- 			dma_free_coherent(ab->dev,
- 					  pipe->status_ring->nentries * desc_sz +
- 					  CE_DESC_RING_ALIGN,
--					  pipe->status_ring->base_addr_owner_space,
--					  pipe->status_ring->base_addr_ce_space);
-+					  pipe->status_ring->base_addr_owner_space_unaligned,
-+					  pipe->status_ring->base_addr_ce_space_unaligned);
- 			kfree(pipe->status_ring);
- 			pipe->status_ring = NULL;
- 		}
+diff --git a/drivers/pinctrl/meson/pinctrl-amlogic-a4.c b/drivers/pinctrl/meson/pinctrl-amlogic-a4.c
+index d9e3a8d5932a..ded7b218e2ec 100644
+--- a/drivers/pinctrl/meson/pinctrl-amlogic-a4.c
++++ b/drivers/pinctrl/meson/pinctrl-amlogic-a4.c
+@@ -893,7 +893,7 @@ static const struct gpio_chip aml_gpio_template = {
+ 	.direction_input	= aml_gpio_direction_input,
+ 	.direction_output	= aml_gpio_direction_output,
+ 	.get_direction		= aml_gpio_get_direction,
+-	.can_sleep		= false,
++	.can_sleep		= true,
+ };
+ 
+ static void init_bank_register_bit(struct aml_pinctrl *info,
 -- 
-2.43.0
+2.47.3
 
 
