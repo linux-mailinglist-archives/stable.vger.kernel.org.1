@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-205626-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205905-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D1B5CFAB05
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:32:11 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A859CFACB3
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:52:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1D2183060ED8
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 19:31:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5690D305E35A
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 19:27:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2350F2D47EF;
-	Tue,  6 Jan 2026 17:41:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64A3636C0B2;
+	Tue,  6 Jan 2026 17:57:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NCsEIb9/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MLAgWYHN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2E9525C818;
-	Tue,  6 Jan 2026 17:41:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EFD136657C;
+	Tue,  6 Jan 2026 17:57:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721316; cv=none; b=LTF+7D2urSyPEsb27w7VxjoHgxzsssr3Vzu6jjMRx1MsMDKjm/C5q8ivvTcC/FyADo5sgr0TkQdSQORjnTOlfJJ5f8f1T+z7tQjcqYD7bWRoZ/yuNAeoa7vZmnnX0ztstzcHdEJYis80NwGKgXtmn3meBwGELnPyDgg4GrVtOmk=
+	t=1767722255; cv=none; b=SY539HWIzY3yPH/b0b0nDp0GfPygGvs+nUFTD064tVTVjd/+C10BNtTJLmtmHCQP0BjJ//WEvPsjI1L7+xJ3o/KYSRooD5J6BbQvuTWdYa+V0C0RWwy62o3msmUXUteaxkrvDH1ecaZy4uyADK/bIAxmODZdAXBS/3xC6sguX6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721316; c=relaxed/simple;
-	bh=x9GaP8BJyWM27x/NTOFJ8JE0kMcsq7xB0sPlWRcMGLE=;
+	s=arc-20240116; t=1767722255; c=relaxed/simple;
+	bh=cTKqugXTuC0I1AIFXGBsudxs97JjQIHlOzd2IBDNRPI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rTfO7CdFFb+EbYXrorA2cv7HxOI59DpITwe9CGQS4eoKKh13kpWmUzBTp0vbmUouAqKebpgvtajYhY8HbtT+CCMuigFi0kgit3Y9oUnCaoUc679VS9nWRZ/NKbvRI0bMNxlISkuzeJe/2Ri2rMZ5NhnTNI31Zlqg+KHiyNeWcGk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NCsEIb9/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 548B3C116C6;
-	Tue,  6 Jan 2026 17:41:56 +0000 (UTC)
+	 MIME-Version; b=Y9CcQO18Og/JVnALF6FBxcGPBsPhI35zWV/ZN0R5H28eN/a+nN0OkfxqPKzj87912paMn331APTS/wH/yBObIhWQ8viWSA6QPlDDZMaMIHofY2EXp2AYf7gA15A6AcGI5U8oWQ+6veyofQVFhtqyjs/6Ec2es2+Sfrr3Uxq/RfE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MLAgWYHN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AFECC116C6;
+	Tue,  6 Jan 2026 17:57:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721316;
-	bh=x9GaP8BJyWM27x/NTOFJ8JE0kMcsq7xB0sPlWRcMGLE=;
+	s=korg; t=1767722255;
+	bh=cTKqugXTuC0I1AIFXGBsudxs97JjQIHlOzd2IBDNRPI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NCsEIb9/AgwX0izl7jSwwfajM13ZOhQjmz4xJusxtFSu1GPmv0d9CsVi7ixGXx4zZ
-	 0f0QPDkDMJv6K/HxlsfPTubDi4IxMqdIR78Q2lsqyouPdNtMMlJmxeo5LqQbfDOCBZ
-	 UCIilx+55jjwk+9VnXaQgTDmOxod+Qej4ziU0QfI=
+	b=MLAgWYHNAB7nQf+aLDZaYmlN5ZCSYxGrJaW+T2TgSBHrICdI51jBX7FsQHBlHInbi
+	 oJbIvv/s1oo0nOzRNDPFWLIjANQRwGdvfv78jZSMUwr4hzSU8voCNBxrtWM8lF6orH
+	 Lrg3GvWKuhkmeM7izH9Bffc8siBs7CWCl4IXJEjE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	xu xin <xu.xin16@zte.com.cn>,
-	Stefan Roesch <shr@devkernel.io>,
-	David Hildenbrand <david@redhat.com>,
-	Jinjiang Tu <tujinjiang@huawei.com>,
-	Wang Yaxin <wang.yaxin@zte.com.cn>,
-	Yang Yang <yang.yang29@zte.com.cn>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 501/567] mm/ksm: fix exec/fork inheritance support for prctl
-Date: Tue,  6 Jan 2026 18:04:43 +0100
-Message-ID: <20260106170509.901737096@linuxfoundation.org>
+	SeongJae Park <sj@kernel.org>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <davidgow@google.com>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.18 210/312] mm/damon/tests/core-kunit: handle alloc failures in damon_test_set_regions()
+Date: Tue,  6 Jan 2026 18:04:44 +0100
+Message-ID: <20260106170555.434514092@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
-References: <20260106170451.332875001@linuxfoundation.org>
+In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
+References: <20260106170547.832845344@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,123 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: xu xin <xu.xin16@zte.com.cn>
+From: SeongJae Park <sj@kernel.org>
 
-[ Upstream commit 590c03ca6a3fbb114396673314e2aa483839608b ]
+commit 74d5969995d129fd59dd93b9c7daa6669cb6810f upstream.
 
-Patch series "ksm: fix exec/fork inheritance", v2.
+damon_test_set_regions() is assuming all dynamic memory allocation in it
+will succeed.  Those are indeed likely in the real use cases since those
+allocations are too small to fail, but theoretically those could fail.  In
+the case, inappropriate memory access can happen.  Fix it by appropriately
+cleanup pre-allocated memory and skip the execution of the remaining tests
+in the failure cases.
 
-This series fixes exec/fork inheritance.  See the detailed description of
-the issue below.
-
-This patch (of 2):
-
-Background
-==========
-
-commit d7597f59d1d33 ("mm: add new api to enable ksm per process")
-introduced MMF_VM_MERGE_ANY for mm->flags, and allowed user to set it by
-prctl() so that the process's VMAs are forcibly scanned by ksmd.
-
-Subsequently, the 3c6f33b7273a ("mm/ksm: support fork/exec for prctl")
-supported inheriting the MMF_VM_MERGE_ANY flag when a task calls execve().
-
-Finally, commit 3a9e567ca45fb ("mm/ksm: fix ksm exec support for prctl")
-fixed the issue that ksmd doesn't scan the mm_struct with MMF_VM_MERGE_ANY
-by adding the mm_slot to ksm_mm_head in __bprm_mm_init().
-
-Problem
-=======
-
-In some extreme scenarios, however, this inheritance of MMF_VM_MERGE_ANY
-during exec/fork can fail.  For example, when the scanning frequency of
-ksmd is tuned extremely high, a process carrying MMF_VM_MERGE_ANY may
-still fail to pass it to the newly exec'd process.  This happens because
-ksm_execve() is executed too early in the do_execve flow (prematurely
-adding the new mm_struct to the ksm_mm_slot list).
-
-As a result, before do_execve completes, ksmd may have already performed a
-scan and found that this new mm_struct has no VM_MERGEABLE VMAs, thus
-clearing its MMF_VM_MERGE_ANY flag.  Consequently, when the new program
-executes, the flag MMF_VM_MERGE_ANY inheritance missed.
-
-Root reason
-===========
-
-commit d7597f59d1d33 ("mm: add new api to enable ksm per process") clear
-the flag MMF_VM_MERGE_ANY when ksmd found no VM_MERGEABLE VMAs.
-
-Solution
-========
-
-Firstly, Don't clear MMF_VM_MERGE_ANY when ksmd found no VM_MERGEABLE
-VMAs, because perhaps their mm_struct has just been added to ksm_mm_slot
-list, and its process has not yet officially started running or has not
-yet performed mmap/brk to allocate anonymous VMAS.
-
-Secondly, recheck MMF_VM_MERGEABLE again if a process takes
-MMF_VM_MERGE_ANY, and create a mm_slot and join it into ksm_scan_list
-again.
-
-Link: https://lkml.kernel.org/r/20251007182504440BJgK8VXRHh8TD7IGSUIY4@zte.com.cn
-Link: https://lkml.kernel.org/r/20251007182821572h_SoFqYZXEP1mvWI4n9VL@zte.com.cn
-Fixes: 3c6f33b7273a ("mm/ksm: support fork/exec for prctl")
-Fixes: d7597f59d1d3 ("mm: add new api to enable ksm per process")
-Signed-off-by: xu xin <xu.xin16@zte.com.cn>
-Cc: Stefan Roesch <shr@devkernel.io>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Jinjiang Tu <tujinjiang@huawei.com>
-Cc: Wang Yaxin <wang.yaxin@zte.com.cn>
-Cc: Yang Yang <yang.yang29@zte.com.cn>
-Cc: <stable@vger.kernel.org>
+Link: https://lkml.kernel.org/r/20251101182021.74868-11-sj@kernel.org
+Fixes: 62f409560eb2 ("mm/damon/core-test: test damon_set_regions")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: Brendan Higgins <brendan.higgins@linux.dev>
+Cc: David Gow <davidgow@google.com>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: <stable@vger.kernel.org>	[6.1+]
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-[ changed mm_flags_test() and mm_flags_clear() calls to test_bit() and clear_bit() ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/ksm.c |   18 ++++++++++++++++--
- 1 file changed, 16 insertions(+), 2 deletions(-)
+ mm/damon/tests/core-kunit.h |   17 +++++++++++++++--
+ 1 file changed, 15 insertions(+), 2 deletions(-)
 
---- a/mm/ksm.c
-+++ b/mm/ksm.c
-@@ -2704,8 +2704,14 @@ no_vmas:
- 		spin_unlock(&ksm_mmlist_lock);
- 
- 		mm_slot_free(mm_slot_cache, mm_slot);
-+		/*
-+		 * Only clear MMF_VM_MERGEABLE. We must not clear
-+		 * MMF_VM_MERGE_ANY, because for those MMF_VM_MERGE_ANY process,
-+		 * perhaps their mm_struct has just been added to ksm_mm_slot
-+		 * list, and its process has not yet officially started running
-+		 * or has not yet performed mmap/brk to allocate anonymous VMAS.
-+		 */
- 		clear_bit(MMF_VM_MERGEABLE, &mm->flags);
--		clear_bit(MMF_VM_MERGE_ANY, &mm->flags);
- 		mmap_read_unlock(mm);
- 		mmdrop(mm);
- 	} else {
-@@ -2820,8 +2826,16 @@ void ksm_add_vma(struct vm_area_struct *
+--- a/mm/damon/tests/core-kunit.h
++++ b/mm/damon/tests/core-kunit.h
+@@ -345,13 +345,26 @@ static void damon_test_ops_registration(
+ static void damon_test_set_regions(struct kunit *test)
  {
- 	struct mm_struct *mm = vma->vm_mm;
+ 	struct damon_target *t = damon_new_target();
+-	struct damon_region *r1 = damon_new_region(4, 16);
+-	struct damon_region *r2 = damon_new_region(24, 32);
++	struct damon_region *r1, *r2;
+ 	struct damon_addr_range range = {.start = 8, .end = 28};
+ 	unsigned long expects[] = {8, 16, 16, 24, 24, 28};
+ 	int expect_idx = 0;
+ 	struct damon_region *r;
  
--	if (test_bit(MMF_VM_MERGE_ANY, &mm->flags))
-+	if (test_bit(MMF_VM_MERGE_ANY, &mm->flags)) {
- 		__ksm_add_vma(vma);
-+		/*
-+		 * Generally, the flags here always include MMF_VM_MERGEABLE.
-+		 * However, in rare cases, this flag may be cleared by ksmd who
-+		 * scans a cycle without finding any mergeable vma.
-+		 */
-+		if (unlikely(!test_bit(MMF_VM_MERGEABLE, &mm->flags)))
-+			__ksm_enter(mm);
++	if (!t)
++		kunit_skip(test, "target alloc fail");
++	r1 = damon_new_region(4, 16);
++	if (!r1) {
++		damon_free_target(t);
++		kunit_skip(test, "region alloc fail");
 +	}
- }
- 
- static void ksm_add_vmas(struct mm_struct *mm)
++	r2 = damon_new_region(24, 32);
++	if (!r2) {
++		damon_free_target(t);
++		damon_free_region(r1);
++		kunit_skip(test, "second region alloc fail");
++	}
++
+ 	damon_add_region(r1, t);
+ 	damon_add_region(r2, t);
+ 	damon_set_regions(t, &range, 1, DAMON_MIN_REGION);
 
 
 
