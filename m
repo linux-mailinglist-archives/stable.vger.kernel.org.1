@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-205141-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205152-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40ABBCF995E
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 18:15:37 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FFD1CF9A4D
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 18:24:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DACCE3043D6E
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:15:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 20D9330AB4B8
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:16:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30AEC346E43;
-	Tue,  6 Jan 2026 17:15:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E7313469F0;
+	Tue,  6 Jan 2026 17:15:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jLrxYDqs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R3k2J0Z+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE0A8346A10;
-	Tue,  6 Jan 2026 17:15:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD791284694;
+	Tue,  6 Jan 2026 17:15:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767719721; cv=none; b=ZHAY4df3Fv5/1SLxaX4+Oc1rxDWNth2KB3UigssqdPpjCkDfqeEO6wMle/W/qnAiH+2REpvu0Jhc9jzxFlHtmFVLgI2VsHYypbhlLexjPfyIDO05Jrngiwc+slCFjQjB5SNbow+zV3uxtf8HBaxUFrSdUu5zz6jrR8NvQKqYjzI=
+	t=1767719756; cv=none; b=A5MpbsBkOg3BfF7eMRSg93r0n+lUKSCnl6sn096qq8EFQ7jvemkQSriJIOccdVxu+mD4b4by/UL4S31O6zgf1E5zxW0Elh1F1qeMxXuIBQFxDiAc7sIZK8cFVJhYnO2UDdjqgoHnP9he4nYR4TSoaRyuLB+dVBmXAjfJQHg/+OQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767719721; c=relaxed/simple;
-	bh=9zu4IQR3wN7/Xj47hUhuQImCBKREN8tnuY5gZfVbDnQ=;
+	s=arc-20240116; t=1767719756; c=relaxed/simple;
+	bh=ipV2Lxt7loP5oUsk6t8AnTlWi1eJZ7LlnLbHg0V/zDY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bIQrpZECBCFSQBTkaOFs+2dg7eK13a6Gq1Th9eRxE1D8vF4tYj+hWUQWC0Hq9P1OWiiQdJ598w/P4Lk726QGUAYBDOTabnlheHRw2nXvdEOeQnHhGkF0EV8n60JFh7L9Jiz6kKKoaShgTcUpoO+mrsAPMux1KH/DxGn3vI0wxVg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jLrxYDqs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3D9EC16AAE;
-	Tue,  6 Jan 2026 17:15:19 +0000 (UTC)
+	 MIME-Version; b=PSHSVXu5zdg27H0LQltxK6vx8CTwmJneoo+2ioIcsRZpqEeMqxjBNbURCc4QNsWacNFNapvKyyRYTbchFbE+9Cl79QfiUhwie4klykOj6xDbDzZGi1ANj6tMbT0xAChptlHpgrF5DDlJSA3R6Nu50Tk3iF0iIzX8StLWgyydnV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R3k2J0Z+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25204C116C6;
+	Tue,  6 Jan 2026 17:15:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767719720;
-	bh=9zu4IQR3wN7/Xj47hUhuQImCBKREN8tnuY5gZfVbDnQ=;
+	s=korg; t=1767719756;
+	bh=ipV2Lxt7loP5oUsk6t8AnTlWi1eJZ7LlnLbHg0V/zDY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jLrxYDqswuA6hyBOaLVjcReGiFulvMRjAOzBzJLaLkY3rQDjksKuUDn8+kpSTnBKP
-	 OzkL+RnqqQiup4aPjeviwpPP+WRiuUpVYxtOqDkdDqlEPRQv8BIAoe18k0xvBt5INI
-	 dc7pKfqZlasxZhhlqK1suGR48Xw1A7/oWpACue4A=
+	b=R3k2J0Z+UIuivf8SafLuffAHStdlim4k9zhazaPPwgKlJppE8z5sPSH0v+nj38M1b
+	 Y9RQWlpgIeS3MPQhTGTuYQhwJxZEiCAoYDWTr6h2PRHbVvlXfgfWUOSLRVJ7ISaPoH
+	 01AHAWTUm0o42V+k0RDFFvnnYCvoYz4J852wnjwI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	Ondrej Mosnacek <omosnace@redhat.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 002/567] btrfs: fix a potential path leak in print_data_reloc_error()
-Date: Tue,  6 Jan 2026 17:56:24 +0100
-Message-ID: <20260106170451.432906762@linuxfoundation.org>
+Subject: [PATCH 6.12 003/567] bpf, arm64: Do not audit capability check in do_jit()
+Date: Tue,  6 Jan 2026 17:56:25 +0100
+Message-ID: <20260106170451.468463022@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
 References: <20260106170451.332875001@linuxfoundation.org>
@@ -64,47 +64,54 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Ondrej Mosnacek <omosnace@redhat.com>
 
-[ Upstream commit 313ef70a9f0f637a09d9ef45222f5bdcf30a354b ]
+[ Upstream commit 189e5deb944a6f9c7992355d60bffd8ec2e54a9c ]
 
-Inside print_data_reloc_error(), if extent_from_logical() failed we
-return immediately.
+Analogically to the x86 commit 881a9c9cb785 ("bpf: Do not audit
+capability check in do_jit()"), change the capable() call to
+ns_capable_noaudit() in order to avoid spurious SELinux denials in audit
+log.
 
-However there are the following cases where extent_from_logical() can
-return error but still holds a path:
+The commit log from that commit applies here as well:
+"""
+The failure of this check only results in a security mitigation being
+applied, slightly affecting performance of the compiled BPF program. It
+doesn't result in a failed syscall, an thus auditing a failed LSM
+permission check for it is unwanted. For example with SELinux, it causes
+a denial to be reported for confined processes running as root, which
+tends to be flagged as a problem to be fixed in the policy. Yet
+dontauditing or allowing CAP_SYS_ADMIN to the domain may not be
+desirable, as it would allow/silence also other checks - either going
+against the principle of least privilege or making debugging potentially
+harder.
 
-- btrfs_search_slot() returned 0
+Fix it by changing it from capable() to ns_capable_noaudit(), which
+instructs the LSMs to not audit the resulting denials.
+"""
 
-- No backref item found in extent tree
-
-- No flags_ret provided
-  This is not possible in this call site though.
-
-So for the above two cases, we can return without releasing the path,
-causing extent buffer leaks.
-
-Fixes: b9a9a85059cd ("btrfs: output affected files when relocation fails")
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: f300769ead03 ("arm64: bpf: Only mitigate cBPF programs loaded by unprivileged users")
+Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
+Link: https://lore.kernel.org/r/20251204125916.441021-1-omosnace@redhat.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/inode.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/net/bpf_jit_comp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
-index 01a1b979b717f..ce13b0ec978ed 100644
---- a/fs/btrfs/inode.c
-+++ b/fs/btrfs/inode.c
-@@ -253,6 +253,7 @@ static void print_data_reloc_error(const struct btrfs_inode *inode, u64 file_off
- 	if (ret < 0) {
- 		btrfs_err_rl(fs_info, "failed to lookup extent item for logical %llu: %d",
- 			     logical, ret);
-+		btrfs_release_path(&path);
+diff --git a/arch/arm64/net/bpf_jit_comp.c b/arch/arm64/net/bpf_jit_comp.c
+index ca6d002a6f137..82b57436f2f10 100644
+--- a/arch/arm64/net/bpf_jit_comp.c
++++ b/arch/arm64/net/bpf_jit_comp.c
+@@ -871,7 +871,7 @@ static void __maybe_unused build_bhb_mitigation(struct jit_ctx *ctx)
+ 	    arm64_get_spectre_v2_state() == SPECTRE_VULNERABLE)
  		return;
- 	}
- 	eb = path.nodes[0];
+ 
+-	if (capable(CAP_SYS_ADMIN))
++	if (ns_capable_noaudit(&init_user_ns, CAP_SYS_ADMIN))
+ 		return;
+ 
+ 	if (supports_clearbhb(SCOPE_SYSTEM)) {
 -- 
 2.51.0
 
