@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-205569-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205846-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7422CCFA69E
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:00:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F5F6CF9FD6
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:12:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1692B32BEB22
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:33:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 37BB333FD9A1
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:00:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D06C288C2D;
-	Tue,  6 Jan 2026 17:38:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B5EE36654D;
+	Tue,  6 Jan 2026 17:54:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rYLXd1qD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GvzI7Dyu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C658621B196;
-	Tue,  6 Jan 2026 17:38:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05F43366546;
+	Tue,  6 Jan 2026 17:54:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721128; cv=none; b=jUJn8vAxbib0H6XyMa+gJ9ohLDXjJ22H50uZgwt7Z/zgrmijAgD8iBFdaG/nnvnDQ2SYxNgt1mVGYO9OPTB38a8yuIItOMVzX/D4H6ZaFI6HeCO+43VUZWzfpEpj+WK1AY99KCpZ5gDfxgDcffp8v3YKIVXwYGHxlCYJuKgu9Fc=
+	t=1767722057; cv=none; b=aD7eLdbWjzSyaYR7rubX7ir1VWQFtIAAs/wI/lD3W1ZK2Ct1L4uNJVv/VNsR5eU5ZJf5SHWQr3UQegxP8P6ndpLJcghPdZ8r1Ck+qUkxPo7+r4TnLsphYZfhS6e4+Sc30c9CiKCdLeboBm5UQoqJN7EjQ7xhV83DF7M7A8kxXVc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721128; c=relaxed/simple;
-	bh=y2qZBTBJ16kbZOtPZgHvzyNrGOnKpXYtKsaOudMDAeI=;
+	s=arc-20240116; t=1767722057; c=relaxed/simple;
+	bh=y6reuywCC2SkW7eE7Z6SDOIL7ZZ6xFbaEQR9AOUA9oI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W1EptRHXis7petSGiOlAC3wQ7s8qBM0Vb30bdNV9Sy1jfTcWH+O8yGTqOu52Vb+PdvrCZSNZ03H6vagxLCh6N8FAJwO+PuywMishUFykZME0qQjkq0KbH2zevJaq7eOXvaEPTeTnSdrF8IiGhB6fXMMjz9s2skbLdJLIC9b+Kzg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rYLXd1qD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35D3CC116C6;
-	Tue,  6 Jan 2026 17:38:48 +0000 (UTC)
+	 MIME-Version; b=MljsEBOTIo3neIWTLN9GTTEecw16Nzz/xD6ZLTBCbDglukHtzi8WVLneM4amhBEryK+YvQnrYpi3XH0WZx58UX7ER1lJPBbHb6VL02W3TQtOuugYWDezXt37RttMyGElNxqm9TDRP82vfAbds0xFHUfulfYlb0y4roRGFndDf4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GvzI7Dyu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C909C116C6;
+	Tue,  6 Jan 2026 17:54:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721128;
-	bh=y2qZBTBJ16kbZOtPZgHvzyNrGOnKpXYtKsaOudMDAeI=;
+	s=korg; t=1767722056;
+	bh=y6reuywCC2SkW7eE7Z6SDOIL7ZZ6xFbaEQR9AOUA9oI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rYLXd1qDninV6jTlQpwt+JAJ7SmJ4KwR5paBq1gxB4c3E1ePdtV0OH8ZIkZ0mlS9Z
-	 JdvNaBZni/v4so2zAMUktUqLjs0Ssob7YiYZLuMaZAdAbLfMkqEvo0r2CZAWnkoo4k
-	 XL7oziw1b/XvJrHU8OAP2dxm+S1uJ9SCa7YAmgyI=
+	b=GvzI7Dyul+FRGJFASJimhu3uxURuL0pTUe8brxDqentzz/5m5HrtWR0JVsEuHhGSv
+	 tFkr4k9cZmKqJUrRcvvzvUgCi3gnPG56yBJzS2C8arre47v9x7Jxkmrx8troqnYpuq
+	 HKmrXpnGDRWK6Gi9nGNG0rDGF0meDxzjuyih69cg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Youling Tang <tangyouling@kylinos.cn>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Chenghao Duan <duanchenghao@kylinos.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.12 444/567] samples/ftrace: Adjust LoongArch register restore order in direct calls
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Michael Walle <mwalle@kernel.org>,
+	Pratyush Yadav <pratyush@kernel.org>
+Subject: [PATCH 6.18 152/312] mtd: spi-nor: winbond: Add support for W25H512NWxxAM chips
 Date: Tue,  6 Jan 2026 18:03:46 +0100
-Message-ID: <20260106170507.775416706@linuxfoundation.org>
+Message-ID: <20260106170553.338388056@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
-References: <20260106170451.332875001@linuxfoundation.org>
+In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
+References: <20260106170547.832845344@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,122 +60,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chenghao Duan <duanchenghao@kylinos.cn>
+From: Miquel Raynal <miquel.raynal@bootlin.com>
 
-commit bb85d206be208bbf834883e948125a35ac59993a upstream.
+commit f21d2c7d37553b24825918f2f61df123e182b712 upstream.
 
-Ensure that in the ftrace direct call logic, the CPU register state
-(with ra = parent return address) is restored to the correct state after
-the execution of the custom trampoline function and before returning to
-the traced function. Additionally, guarantee the correctness of the jump
-logic for jr t0 (traced function address).
+These chips must be described as none of the block protection
+information are discoverable. This chip supports 4 bits plus the
+top/bottom addressing capability to identify the protected blocks.
 
 Cc: stable@vger.kernel.org
-Fixes: 9cdc3b6a299c ("LoongArch: ftrace: Add direct call support")
-Reported-by: Youling Tang <tangyouling@kylinos.cn>
-Acked-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Chenghao Duan <duanchenghao@kylinos.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Reviewed-by: Michael Walle <mwalle@kernel.org>
+Signed-off-by: Pratyush Yadav <pratyush@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- samples/ftrace/ftrace-direct-modify.c       |    8 ++++----
- samples/ftrace/ftrace-direct-multi-modify.c |    8 ++++----
- samples/ftrace/ftrace-direct-multi.c        |    4 ++--
- samples/ftrace/ftrace-direct-too.c          |    4 ++--
- samples/ftrace/ftrace-direct.c              |    4 ++--
- 5 files changed, 14 insertions(+), 14 deletions(-)
+ drivers/mtd/spi-nor/winbond.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/samples/ftrace/ftrace-direct-modify.c
-+++ b/samples/ftrace/ftrace-direct-modify.c
-@@ -176,8 +176,8 @@ asm (
- "	st.d	$t0, $sp, 0\n"
- "	st.d	$ra, $sp, 8\n"
- "	bl	my_direct_func1\n"
--"	ld.d	$t0, $sp, 0\n"
--"	ld.d	$ra, $sp, 8\n"
-+"	ld.d	$ra, $sp, 0\n"
-+"	ld.d	$t0, $sp, 8\n"
- "	addi.d	$sp, $sp, 16\n"
- "	jr	$t0\n"
- "	.size		my_tramp1, .-my_tramp1\n"
-@@ -189,8 +189,8 @@ asm (
- "	st.d	$t0, $sp, 0\n"
- "	st.d	$ra, $sp, 8\n"
- "	bl	my_direct_func2\n"
--"	ld.d	$t0, $sp, 0\n"
--"	ld.d	$ra, $sp, 8\n"
-+"	ld.d	$ra, $sp, 0\n"
-+"	ld.d	$t0, $sp, 8\n"
- "	addi.d	$sp, $sp, 16\n"
- "	jr	$t0\n"
- "	.size		my_tramp2, .-my_tramp2\n"
---- a/samples/ftrace/ftrace-direct-multi-modify.c
-+++ b/samples/ftrace/ftrace-direct-multi-modify.c
-@@ -199,8 +199,8 @@ asm (
- "	move	$a0, $t0\n"
- "	bl	my_direct_func1\n"
- "	ld.d	$a0, $sp, 0\n"
--"	ld.d	$t0, $sp, 8\n"
--"	ld.d	$ra, $sp, 16\n"
-+"	ld.d	$ra, $sp, 8\n"
-+"	ld.d	$t0, $sp, 16\n"
- "	addi.d	$sp, $sp, 32\n"
- "	jr	$t0\n"
- "	.size		my_tramp1, .-my_tramp1\n"
-@@ -215,8 +215,8 @@ asm (
- "	move	$a0, $t0\n"
- "	bl	my_direct_func2\n"
- "	ld.d	$a0, $sp, 0\n"
--"	ld.d	$t0, $sp, 8\n"
--"	ld.d	$ra, $sp, 16\n"
-+"	ld.d	$ra, $sp, 8\n"
-+"	ld.d	$t0, $sp, 16\n"
- "	addi.d	$sp, $sp, 32\n"
- "	jr	$t0\n"
- "	.size		my_tramp2, .-my_tramp2\n"
---- a/samples/ftrace/ftrace-direct-multi.c
-+++ b/samples/ftrace/ftrace-direct-multi.c
-@@ -131,8 +131,8 @@ asm (
- "	move	$a0, $t0\n"
- "	bl	my_direct_func\n"
- "	ld.d	$a0, $sp, 0\n"
--"	ld.d	$t0, $sp, 8\n"
--"	ld.d	$ra, $sp, 16\n"
-+"	ld.d	$ra, $sp, 8\n"
-+"	ld.d	$t0, $sp, 16\n"
- "	addi.d	$sp, $sp, 32\n"
- "	jr	$t0\n"
- "	.size		my_tramp, .-my_tramp\n"
---- a/samples/ftrace/ftrace-direct-too.c
-+++ b/samples/ftrace/ftrace-direct-too.c
-@@ -143,8 +143,8 @@ asm (
- "	ld.d	$a0, $sp, 0\n"
- "	ld.d	$a1, $sp, 8\n"
- "	ld.d	$a2, $sp, 16\n"
--"	ld.d	$t0, $sp, 24\n"
--"	ld.d	$ra, $sp, 32\n"
-+"	ld.d	$ra, $sp, 24\n"
-+"	ld.d	$t0, $sp, 32\n"
- "	addi.d	$sp, $sp, 48\n"
- "	jr	$t0\n"
- "	.size		my_tramp, .-my_tramp\n"
---- a/samples/ftrace/ftrace-direct.c
-+++ b/samples/ftrace/ftrace-direct.c
-@@ -124,8 +124,8 @@ asm (
- "	st.d	$ra, $sp, 16\n"
- "	bl	my_direct_func\n"
- "	ld.d	$a0, $sp, 0\n"
--"	ld.d	$t0, $sp, 8\n"
--"	ld.d	$ra, $sp, 16\n"
-+"	ld.d	$ra, $sp, 8\n"
-+"	ld.d	$t0, $sp, 16\n"
- "	addi.d	$sp, $sp, 32\n"
- "	jr	$t0\n"
- "	.size		my_tramp, .-my_tramp\n"
+--- a/drivers/mtd/spi-nor/winbond.c
++++ b/drivers/mtd/spi-nor/winbond.c
+@@ -355,6 +355,10 @@ static const struct flash_info winbond_n
+ 		/* W25Q02NWxxIM */
+ 		.id = SNOR_ID(0xef, 0x80, 0x22),
+ 		.flags = SPI_NOR_HAS_LOCK | SPI_NOR_HAS_TB | SPI_NOR_TB_SR_BIT6 | SPI_NOR_4BIT_BP,
++	}, {
++		/* W25H512NWxxAM */
++		.id = SNOR_ID(0xef, 0xa0, 0x20),
++		.flags = SPI_NOR_HAS_LOCK | SPI_NOR_HAS_TB | SPI_NOR_TB_SR_BIT6 | SPI_NOR_4BIT_BP,
+ 	},
+ };
+ 
 
 
 
