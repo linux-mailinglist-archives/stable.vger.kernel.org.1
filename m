@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-205474-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205751-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69FE5CFA218
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:27:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E56DCFA4F1
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:51:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1AC973148733
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:40:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0DF693345BFF
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:07:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0EEF2DE6F1;
-	Tue,  6 Jan 2026 17:33:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2AE835FF52;
+	Tue,  6 Jan 2026 17:48:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MQe3Hvsn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="odFBz9Hb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EE7233993;
-	Tue,  6 Jan 2026 17:33:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F45335FF4F;
+	Tue,  6 Jan 2026 17:48:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767720814; cv=none; b=psoGVnd9VX7nLa+0EI1SAFLzEQWiRBUkqG5Z03liW5qat3wolAcuvk3m6N08d4IF8HcIxaYHDA8UHUWF5ujF/RHsj1EaUHo9cpzawoAx/zQkHv2zqcDh2QEcewsOhdW77tc42DQO+vDFQH8lmUxVoTNI77fFX/8jQy9G+qFfA8E=
+	t=1767721738; cv=none; b=LEwy0mSI3iw8t4BH/qDERAy0nnY/WBooAkS8jVZoM6tTFHN7HjcSg/iQzIYERk9N5x5TCkZKzajtHGldz4NyrMSYHkzPkOsOuaoyS7XnyGKjtpzbZTJWG+0V4OEse/oUKz1BOe8gxtCs2QpBYBCj+z55yB95KIRHCfNmprr7sQg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767720814; c=relaxed/simple;
-	bh=xUB6/FKoh154t2px1AcmloxW/QAmae5ZStdCwuEPuAk=;
+	s=arc-20240116; t=1767721738; c=relaxed/simple;
+	bh=VVQak6pMiqHhHXivTHzHwWLcP3gu9EGOaCQVMmU/NXQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WKVHRuY1x0PoJ8qJvw5Hz74g6UDknrUZ5ESK7ZPVRskeWBtVnsMNx1qVoARgIY4JZyAPh8o/II6AjzlHQShKRGmaq66YfD/7s0HnSw6s8fCgDuNPpcjZyCg4qqGxLN06rSs18a3jo9dYGVg4IDPQHIzXY+LSpRoB9zEy8HDePV8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MQe3Hvsn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02B26C116C6;
-	Tue,  6 Jan 2026 17:33:33 +0000 (UTC)
+	 MIME-Version; b=MzeRSqYXTUAfnfRbrjO2/0mqyLQ9ecxy+m7LyBxTz64mdHEALz2SK1JSdxYSt1MyOG8iYvdz2lUd8QIUcdOWJg5sQvl25cBF05xe3ZUum7DU0JLaxZcJe9yF8CpDyEBnv1XVquE20ZSN/bKDmjTY7yYdjrZypW5o+tDsj3INkhM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=odFBz9Hb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1E15C116C6;
+	Tue,  6 Jan 2026 17:48:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767720814;
-	bh=xUB6/FKoh154t2px1AcmloxW/QAmae5ZStdCwuEPuAk=;
+	s=korg; t=1767721738;
+	bh=VVQak6pMiqHhHXivTHzHwWLcP3gu9EGOaCQVMmU/NXQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MQe3Hvsns65+/FZGhR7UXd81VKI+7suQN7itl9k6luubPS2m97RYl+BIcIHW/7bhA
-	 YhLCFHwdblHt3sHBbuVNXB8h72IS3ZQDa7jHIc4CKEZ2XyvfXqV6/lbSKdtxn+onSj
-	 2W+kGAIOXJnI7toxx13cbFXuV7qbda+JPC4yf9BA=
+	b=odFBz9Hb9vKhPhd97gyMaSzyAWpfaQH20bZZCwdVn5zVRny6cFM/u54M7Xjukp7Pg
+	 oixTlwDlzG73rYo46XlJ4vmV0U03C7Z0CGXJxISiR+IDiaaqrltLymb0zlCTcUZaCt
+	 tFfzR/kn6Ng/97WEuTTU48p92e18zi7oU2WwbjTg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
+	Raphael Pinsonneault-Thibeault <rpthibeault@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 317/567] firewire: nosy: Fix dma_free_coherent() size
+Subject: [PATCH 6.18 025/312] Bluetooth: btusb: revert use of devm_kzalloc in btusb
 Date: Tue,  6 Jan 2026 18:01:39 +0100
-Message-ID: <20260106170503.054994700@linuxfoundation.org>
+Message-ID: <20260106170548.766716896@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
-References: <20260106170451.332875001@linuxfoundation.org>
+In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
+References: <20260106170547.832845344@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,70 +60,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Raphael Pinsonneault-Thibeault <rpthibeault@gmail.com>
 
-[ Upstream commit c48c0fd0e19684b6ecdb4108a429e3a4e73f5e21 ]
+[ Upstream commit 252714f1e8bdd542025b16321c790458014d6880 ]
 
-It looks like the buffer allocated and mapped in add_card() is done
-with size RCV_BUFFER_SIZE which is 16 KB and 4KB.
+This reverts commit 98921dbd00c4e ("Bluetooth: Use devm_kzalloc in
+btusb.c file").
 
-Fixes: 286468210d83 ("firewire: new driver: nosy - IEEE 1394 traffic sniffer")
-Co-developed-by: Thomas Fourier <fourier.thomas@gmail.com>
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Co-developed-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Link: https://lore.kernel.org/r/20251216165420.38355-2-fourier.thomas@gmail.com
-Signed-off-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+In btusb_probe(), we use devm_kzalloc() to allocate the btusb data. This
+ties the lifetime of all the btusb data to the binding of a driver to
+one interface, INTF. In a driver that binds to other interfaces, ISOC
+and DIAG, this is an accident waiting to happen.
+
+The issue is revealed in btusb_disconnect(), where calling
+usb_driver_release_interface(&btusb_driver, data->intf) will have devm
+free the data that is also being used by the other interfaces of the
+driver that may not be released yet.
+
+To fix this, revert the use of devm and go back to freeing memory
+explicitly.
+
+Fixes: 98921dbd00c4e ("Bluetooth: Use devm_kzalloc in btusb.c file")
+Signed-off-by: Raphael Pinsonneault-Thibeault <rpthibeault@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firewire/nosy.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/bluetooth/btusb.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/firewire/nosy.c b/drivers/firewire/nosy.c
-index ea31ac7ac1ca..e59053738a43 100644
---- a/drivers/firewire/nosy.c
-+++ b/drivers/firewire/nosy.c
-@@ -36,6 +36,8 @@
+diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
+index b92bfd131567..3420f711f0f0 100644
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -4017,7 +4017,7 @@ static int btusb_probe(struct usb_interface *intf,
+ 			return -ENODEV;
+ 	}
  
- static char driver_name[] = KBUILD_MODNAME;
+-	data = devm_kzalloc(&intf->dev, sizeof(*data), GFP_KERNEL);
++	data = kzalloc(sizeof(*data), GFP_KERNEL);
+ 	if (!data)
+ 		return -ENOMEM;
  
-+#define RCV_BUFFER_SIZE (16 * 1024)
-+
- /* this is the physical layout of a PCL, its size is 128 bytes */
- struct pcl {
- 	__le32 next;
-@@ -517,16 +519,14 @@ remove_card(struct pci_dev *dev)
- 			  lynx->rcv_start_pcl, lynx->rcv_start_pcl_bus);
- 	dma_free_coherent(&lynx->pci_device->dev, sizeof(struct pcl),
- 			  lynx->rcv_pcl, lynx->rcv_pcl_bus);
--	dma_free_coherent(&lynx->pci_device->dev, PAGE_SIZE, lynx->rcv_buffer,
--			  lynx->rcv_buffer_bus);
-+	dma_free_coherent(&lynx->pci_device->dev, RCV_BUFFER_SIZE,
-+			  lynx->rcv_buffer, lynx->rcv_buffer_bus);
+@@ -4040,8 +4040,10 @@ static int btusb_probe(struct usb_interface *intf,
+ 		}
+ 	}
  
- 	iounmap(lynx->registers);
- 	pci_disable_device(dev);
- 	lynx_put(lynx);
+-	if (!data->intr_ep || !data->bulk_tx_ep || !data->bulk_rx_ep)
++	if (!data->intr_ep || !data->bulk_tx_ep || !data->bulk_rx_ep) {
++		kfree(data);
+ 		return -ENODEV;
++	}
+ 
+ 	if (id->driver_info & BTUSB_AMP) {
+ 		data->cmdreq_type = USB_TYPE_CLASS | 0x01;
+@@ -4096,8 +4098,10 @@ static int btusb_probe(struct usb_interface *intf,
+ 	data->recv_acl = hci_recv_frame;
+ 
+ 	hdev = hci_alloc_dev_priv(priv_size);
+-	if (!hdev)
++	if (!hdev) {
++		kfree(data);
+ 		return -ENOMEM;
++	}
+ 
+ 	hdev->bus = HCI_USB;
+ 	hci_set_drvdata(hdev, data);
+@@ -4370,6 +4374,7 @@ static int btusb_probe(struct usb_interface *intf,
+ 	if (data->reset_gpio)
+ 		gpiod_put(data->reset_gpio);
+ 	hci_free_dev(hdev);
++	kfree(data);
+ 	return err;
  }
  
--#define RCV_BUFFER_SIZE (16 * 1024)
--
- static int
- add_card(struct pci_dev *dev, const struct pci_device_id *unused)
- {
-@@ -680,7 +680,7 @@ add_card(struct pci_dev *dev, const struct pci_device_id *unused)
- 		dma_free_coherent(&lynx->pci_device->dev, sizeof(struct pcl),
- 				  lynx->rcv_pcl, lynx->rcv_pcl_bus);
- 	if (lynx->rcv_buffer)
--		dma_free_coherent(&lynx->pci_device->dev, PAGE_SIZE,
-+		dma_free_coherent(&lynx->pci_device->dev, RCV_BUFFER_SIZE,
- 				  lynx->rcv_buffer, lynx->rcv_buffer_bus);
- 	iounmap(lynx->registers);
+@@ -4418,6 +4423,7 @@ static void btusb_disconnect(struct usb_interface *intf)
+ 	}
  
+ 	hci_free_dev(hdev);
++	kfree(data);
+ }
+ 
+ #ifdef CONFIG_PM
 -- 
 2.51.0
 
