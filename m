@@ -1,52 +1,54 @@
-Return-Path: <stable+bounces-205189-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205226-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FD12CFA8A7
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:16:56 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC48ACFAE82
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 21:22:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 053823151670
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:28:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 142EF302A387
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 20:21:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3993C33B6E0;
-	Tue,  6 Jan 2026 17:17:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BB6634CFA8;
+	Tue,  6 Jan 2026 17:19:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UKU4QcEg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o5QLWwNG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9E9A2E8DE3;
-	Tue,  6 Jan 2026 17:17:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF8C734C99D;
+	Tue,  6 Jan 2026 17:19:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767719872; cv=none; b=L0HexlwXuh6T2Jws1dqWMJJ33b6ahIayr/zCQ7eaLMmg1YY3957rvsJiFPYbnXmzu6y71kaFxRP6+mMO9TT8wWOoyh4Rfn2oIBAgro2yYGuM7MupSZ0lOh76hgCxfupgVTTLpESmBDjsBpGBBtdmfFGoZaQoQwmjolQq4kvUdTg=
+	t=1767719995; cv=none; b=rZkzoINJwl2kJ9PKqpXjRJKAf4V/5WT6nPCH2AIng9+Ms5sEa6tCnGC3V4vPYWVTLM1fwuWUaVEkHSmx7+trQlI4vlzEhgaFqwPPrSU8hQTyPElPXgVTBB53OqQn54xDLCY0zVnF0wjV1e88E3hVHH9fQd5gKn168XOSy0NYGQs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767719872; c=relaxed/simple;
-	bh=L/oAB3yxGeYLasoxCa/RDFnAw0E3Icn1/kNGl9vf8cM=;
+	s=arc-20240116; t=1767719995; c=relaxed/simple;
+	bh=OgDF+uWy09tiNcaeevzcizWkyDU17m40Fe4FvEklC/0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rLyWNpJYUtZ1G4r8qJPND/ptimeu1n8v9bc7FfcsZ3ReRM9UgQhcCaOLX0jmJX233ipS8y2PA8Azf9eaNg9DM5rG+AsngfQ/gi05bgQQ7csjK0Q5EN1UjpFLT7wO3XXVnS3tLa/b5GpBqhCZwIxBA+RtD6IesQ/vNsnxrINv920=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UKU4QcEg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56739C116C6;
-	Tue,  6 Jan 2026 17:17:51 +0000 (UTC)
+	 MIME-Version; b=XdvOftYspE5hO+loo+BB7k2Sb7v7CkXfVWnup+paSRYAP5kOs+r45djKxISJEvYR/WHdi+J2tp8BuJ6DkC9JiLh5jq901TQGyrkuNmCeGI4yLW6huZtEGiQ6G9lesQyG4piQJcxmNzXW9n6zVwTarGLMdoD8Pn9kRwJ4AirEE6M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o5QLWwNG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25E16C116C6;
+	Tue,  6 Jan 2026 17:19:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767719871;
-	bh=L/oAB3yxGeYLasoxCa/RDFnAw0E3Icn1/kNGl9vf8cM=;
+	s=korg; t=1767719994;
+	bh=OgDF+uWy09tiNcaeevzcizWkyDU17m40Fe4FvEklC/0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UKU4QcEgpZ9Pi+rDet+f878Z2RVplVQD2HOa8OFaxlajSGLA0y+am7ynACNPuDBze
-	 YF0h6LIAvW+zRCiQwss2zGGWR6Shpt8z9qA9mWp8E3xya/XmETVCH78GeckvJR04/g
-	 cgwCCnDDOQwgBqDsDOQrJavw1JePmN0GmI36rVTw=
+	b=o5QLWwNGqzTU/NNOY22T5AJw6/cUFPekOJvxy7I0fZBzM0L9Q6Q9kpioRYQdUGSKQ
+	 MF3KMQSZHN7N3lRzRFKHsWZPQ+S2Ge1hg+vbRIR3imSGAWkE4j45gc6eOrUwsz5F8E
+	 nw+QesPAGSs32GDXB0GV5KClKPyU5syuqiRXYj30=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	Pranjal Shrivastava <praan@google.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
+	Shay Drory <shayd@nvidia.com>,
+	Moshe Shemesh <moshe@nvidia.com>,
+	Breno Leitao <leitao@debian.org>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 064/567] iommufd/selftest: Update hw_info coverage for an input data_type
-Date: Tue,  6 Jan 2026 17:57:26 +0100
-Message-ID: <20260106170453.705960037@linuxfoundation.org>
+Subject: [PATCH 6.12 070/567] net/mlx5: fw_tracer, Validate format string parameters
+Date: Tue,  6 Jan 2026 17:57:32 +0100
+Message-ID: <20260106170453.925122491@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
 References: <20260106170451.332875001@linuxfoundation.org>
@@ -65,176 +67,193 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Nicolin Chen <nicolinc@nvidia.com>
+From: Shay Drory <shayd@nvidia.com>
 
-[ Upstream commit 3a35f7d4a4673edf6f02422bb2d78b17c667e167 ]
+[ Upstream commit b35966042d20b14e2d83330049f77deec5229749 ]
 
-Test both IOMMU_HW_INFO_TYPE_DEFAULT and IOMMU_HW_INFO_TYPE_SELFTEST, and
-add a negative test for an unsupported type.
+Add validation for format string parameters in the firmware tracer to
+prevent potential security vulnerabilities and crashes from malformed
+format strings received from firmware.
 
-Also drop the unused mask in test_cmd_get_hw_capabilities() as checkpatch
-is complaining.
+The firmware tracer receives format strings from the device firmware and
+uses them to format trace messages. Without proper validation, bad
+firmware could provide format strings with invalid format specifiers
+(e.g., %s, %p, %n) that could lead to crashes, or other undefined
+behavior.
 
-Link: https://patch.msgid.link/r/f01a1e50cd7366f217cbf192ad0b2b79e0eb89f0.1752126748.git.nicolinc@nvidia.com
-Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
-Reviewed-by: Pranjal Shrivastava <praan@google.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Stable-dep-of: 5b244b077c0b ("iommufd/selftest: Make it clearer to gcc that the access is not out of bounds")
+Add mlx5_tracer_validate_params() to validate that all format specifiers
+in trace strings are limited to safe integer/hex formats (%x, %d, %i,
+%u, %llx, %lx, etc.). Reject strings containing other format types that
+could be used to access arbitrary memory or cause crashes.
+Invalid format strings are added to the trace output for visibility with
+"BAD_FORMAT: " prefix.
+
+Fixes: 70dd6fdb8987 ("net/mlx5: FW tracer, parse traces and kernel tracing support")
+Signed-off-by: Shay Drory <shayd@nvidia.com>
+Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
+Reported-by: Breno Leitao <leitao@debian.org>
+Closes: https://lore.kernel.org/netdev/hanz6rzrb2bqbplryjrakvkbmv4y5jlmtthnvi3thg5slqvelp@t3s3erottr6s/
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/1765284977-1363052-4-git-send-email-tariqt@nvidia.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/iommu/iommufd.c       | 32 +++++++++++++-----
- .../selftests/iommu/iommufd_fail_nth.c        |  4 +--
- tools/testing/selftests/iommu/iommufd_utils.h | 33 +++++++++++--------
- 3 files changed, 46 insertions(+), 23 deletions(-)
+ .../mellanox/mlx5/core/diag/fw_tracer.c       | 83 ++++++++++++++++---
+ .../mellanox/mlx5/core/diag/fw_tracer.h       |  1 +
+ 2 files changed, 74 insertions(+), 10 deletions(-)
 
-diff --git a/tools/testing/selftests/iommu/iommufd.c b/tools/testing/selftests/iommu/iommufd.c
-index 92c6020c15fa1..b678b24f5a142 100644
---- a/tools/testing/selftests/iommu/iommufd.c
-+++ b/tools/testing/selftests/iommu/iommufd.c
-@@ -614,19 +614,34 @@ TEST_F(iommufd_ioas, get_hw_info)
- 		uint8_t max_pasid = 0;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c b/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c
+index 080e7eab52c7e..9c86c8c72d049 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c
+@@ -33,6 +33,7 @@
+ #include "lib/eq.h"
+ #include "fw_tracer.h"
+ #include "fw_tracer_tracepoint.h"
++#include <linux/ctype.h>
  
- 		/* Provide a zero-size user_buffer */
--		test_cmd_get_hw_info(self->device_id, NULL, 0);
-+		test_cmd_get_hw_info(self->device_id,
-+				     IOMMU_HW_INFO_TYPE_DEFAULT, NULL, 0);
- 		/* Provide a user_buffer with exact size */
--		test_cmd_get_hw_info(self->device_id, &buffer_exact, sizeof(buffer_exact));
-+		test_cmd_get_hw_info(self->device_id,
-+				     IOMMU_HW_INFO_TYPE_DEFAULT, &buffer_exact,
-+				     sizeof(buffer_exact));
-+
-+		/* Request for a wrong data_type, and a correct one */
-+		test_err_get_hw_info(EOPNOTSUPP, self->device_id,
-+				     IOMMU_HW_INFO_TYPE_SELFTEST + 1,
-+				     &buffer_exact, sizeof(buffer_exact));
-+		test_cmd_get_hw_info(self->device_id,
-+				     IOMMU_HW_INFO_TYPE_SELFTEST, &buffer_exact,
-+				     sizeof(buffer_exact));
- 		/*
- 		 * Provide a user_buffer with size larger than the exact size to check if
- 		 * kernel zero the trailing bytes.
- 		 */
--		test_cmd_get_hw_info(self->device_id, &buffer_larger, sizeof(buffer_larger));
-+		test_cmd_get_hw_info(self->device_id,
-+				     IOMMU_HW_INFO_TYPE_DEFAULT, &buffer_larger,
-+				     sizeof(buffer_larger));
- 		/*
- 		 * Provide a user_buffer with size smaller than the exact size to check if
- 		 * the fields within the size range still gets updated.
- 		 */
--		test_cmd_get_hw_info(self->device_id, &buffer_smaller, sizeof(buffer_smaller));
-+		test_cmd_get_hw_info(self->device_id,
-+				     IOMMU_HW_INFO_TYPE_DEFAULT,
-+				     &buffer_smaller, sizeof(buffer_smaller));
- 		test_cmd_get_hw_info_pasid(self->device_id, &max_pasid);
- 		ASSERT_EQ(0, max_pasid);
- 		if (variant->pasid_capable) {
-@@ -636,9 +651,11 @@ TEST_F(iommufd_ioas, get_hw_info)
- 		}
- 	} else {
- 		test_err_get_hw_info(ENOENT, self->device_id,
--				     &buffer_exact, sizeof(buffer_exact));
-+				     IOMMU_HW_INFO_TYPE_DEFAULT, &buffer_exact,
-+				     sizeof(buffer_exact));
- 		test_err_get_hw_info(ENOENT, self->device_id,
--				     &buffer_larger, sizeof(buffer_larger));
-+				     IOMMU_HW_INFO_TYPE_DEFAULT, &buffer_larger,
-+				     sizeof(buffer_larger));
- 	}
- }
- 
-@@ -1945,8 +1962,7 @@ TEST_F(iommufd_dirty_tracking, device_dirty_capability)
- 
- 	test_cmd_hwpt_alloc(self->idev_id, self->ioas_id, 0, &hwpt_id);
- 	test_cmd_mock_domain(hwpt_id, &stddev_id, NULL, NULL);
--	test_cmd_get_hw_capabilities(self->idev_id, caps,
--				     IOMMU_HW_CAP_DIRTY_TRACKING);
-+	test_cmd_get_hw_capabilities(self->idev_id, caps);
- 	ASSERT_EQ(IOMMU_HW_CAP_DIRTY_TRACKING,
- 		  caps & IOMMU_HW_CAP_DIRTY_TRACKING);
- 
-diff --git a/tools/testing/selftests/iommu/iommufd_fail_nth.c b/tools/testing/selftests/iommu/iommufd_fail_nth.c
-index 62d02556b34cc..e2012d128e11b 100644
---- a/tools/testing/selftests/iommu/iommufd_fail_nth.c
-+++ b/tools/testing/selftests/iommu/iommufd_fail_nth.c
-@@ -612,8 +612,8 @@ TEST_FAIL_NTH(basic_fail_nth, device)
- 				  &idev_id))
- 		return -1;
- 
--	if (_test_cmd_get_hw_info(self->fd, idev_id, &info,
--				  sizeof(info), NULL, NULL))
-+	if (_test_cmd_get_hw_info(self->fd, idev_id, IOMMU_HW_INFO_TYPE_DEFAULT,
-+				  &info, sizeof(info), NULL, NULL))
- 		return -1;
- 
- 	if (_test_cmd_hwpt_alloc(self->fd, idev_id, ioas_id, 0, 0, &hwpt_id,
-diff --git a/tools/testing/selftests/iommu/iommufd_utils.h b/tools/testing/selftests/iommu/iommufd_utils.h
-index 8994b43e86f89..9668f2268bd9b 100644
---- a/tools/testing/selftests/iommu/iommufd_utils.h
-+++ b/tools/testing/selftests/iommu/iommufd_utils.h
-@@ -637,20 +637,24 @@ static void teardown_iommufd(int fd, struct __test_metadata *_metadata)
- #endif
- 
- /* @data can be NULL */
--static int _test_cmd_get_hw_info(int fd, __u32 device_id, void *data,
--				 size_t data_len, uint32_t *capabilities,
--				 uint8_t *max_pasid)
-+static int _test_cmd_get_hw_info(int fd, __u32 device_id, __u32 data_type,
-+				 void *data, size_t data_len,
-+				 uint32_t *capabilities, uint8_t *max_pasid)
+ static int mlx5_query_mtrc_caps(struct mlx5_fw_tracer *tracer)
  {
- 	struct iommu_test_hw_info *info = (struct iommu_test_hw_info *)data;
- 	struct iommu_hw_info cmd = {
- 		.size = sizeof(cmd),
- 		.dev_id = device_id,
- 		.data_len = data_len,
-+		.in_data_type = data_type,
- 		.data_uptr = (uint64_t)data,
- 		.out_capabilities = 0,
- 	};
- 	int ret;
+@@ -358,6 +359,43 @@ static const char *VAL_PARM		= "%llx";
+ static const char *REPLACE_64_VAL_PARM	= "%x%x";
+ static const char *PARAM_CHAR		= "%";
  
-+	if (data_type != IOMMU_HW_INFO_TYPE_DEFAULT)
-+		cmd.flags |= IOMMU_HW_INFO_FLAG_INPUT_TYPE;
++static bool mlx5_is_valid_spec(const char *str)
++{
++	/* Parse format specifiers to find the actual type.
++	 * Structure: %[flags][width][.precision][length]type
++	 * Skip flags, width, precision & length.
++	 */
++	while (isdigit(*str) || *str == '#' || *str == '.' || *str == 'l')
++		str++;
 +
- 	ret = ioctl(fd, IOMMU_GET_HW_INFO, &cmd);
- 	if (ret)
- 		return ret;
-@@ -693,20 +697,23 @@ static int _test_cmd_get_hw_info(int fd, __u32 device_id, void *data,
++	/* Check if it's a valid integer/hex specifier:
++	 * Valid formats: %x, %d, %i, %u, etc.
++	 */
++	if (*str != 'x' && *str != 'X' && *str != 'd' && *str != 'i' &&
++	    *str != 'u' && *str != 'c')
++		return false;
++
++	return true;
++}
++
++static bool mlx5_tracer_validate_params(const char *str)
++{
++	const char *substr = str;
++
++	if (!str)
++		return false;
++
++	substr = strstr(substr, PARAM_CHAR);
++	while (substr) {
++		if (!mlx5_is_valid_spec(substr + 1))
++			return false;
++
++		substr = strstr(substr + 1, PARAM_CHAR);
++	}
++
++	return true;
++}
++
+ static int mlx5_tracer_message_hash(u32 message_id)
+ {
+ 	return jhash_1word(message_id, 0) & (MESSAGE_HASH_SIZE - 1);
+@@ -419,6 +457,10 @@ static int mlx5_tracer_get_num_of_params(char *str)
+ 	char *substr, *pstr = str;
+ 	int num_of_params = 0;
+ 
++	/* Validate that all parameters are valid before processing */
++	if (!mlx5_tracer_validate_params(str))
++		return -EINVAL;
++
+ 	/* replace %llx with %x%x */
+ 	substr = strstr(pstr, VAL_PARM);
+ 	while (substr) {
+@@ -570,14 +612,17 @@ void mlx5_tracer_print_trace(struct tracer_string_format *str_frmt,
+ {
+ 	char	tmp[512];
+ 
+-	snprintf(tmp, sizeof(tmp), str_frmt->string,
+-		 str_frmt->params[0],
+-		 str_frmt->params[1],
+-		 str_frmt->params[2],
+-		 str_frmt->params[3],
+-		 str_frmt->params[4],
+-		 str_frmt->params[5],
+-		 str_frmt->params[6]);
++	if (str_frmt->invalid_string)
++		snprintf(tmp, sizeof(tmp), "BAD_FORMAT: %s", str_frmt->string);
++	else
++		snprintf(tmp, sizeof(tmp), str_frmt->string,
++			 str_frmt->params[0],
++			 str_frmt->params[1],
++			 str_frmt->params[2],
++			 str_frmt->params[3],
++			 str_frmt->params[4],
++			 str_frmt->params[5],
++			 str_frmt->params[6]);
+ 
+ 	trace_mlx5_fw(dev->tracer, trace_timestamp, str_frmt->lost,
+ 		      str_frmt->event_id, tmp);
+@@ -609,6 +654,13 @@ static int mlx5_tracer_handle_raw_string(struct mlx5_fw_tracer *tracer,
  	return 0;
  }
  
--#define test_cmd_get_hw_info(device_id, data, data_len)               \
--	ASSERT_EQ(0, _test_cmd_get_hw_info(self->fd, device_id, data, \
--					   data_len, NULL, NULL))
-+#define test_cmd_get_hw_info(device_id, data_type, data, data_len)         \
-+	ASSERT_EQ(0, _test_cmd_get_hw_info(self->fd, device_id, data_type, \
-+					   data, data_len, NULL, NULL))
++static void mlx5_tracer_handle_bad_format_string(struct mlx5_fw_tracer *tracer,
++						 struct tracer_string_format *cur_string)
++{
++	cur_string->invalid_string = true;
++	list_add_tail(&cur_string->list, &tracer->ready_strings_list);
++}
++
+ static int mlx5_tracer_handle_string_trace(struct mlx5_fw_tracer *tracer,
+ 					   struct tracer_event *tracer_event)
+ {
+@@ -619,12 +671,18 @@ static int mlx5_tracer_handle_string_trace(struct mlx5_fw_tracer *tracer,
+ 		if (!cur_string)
+ 			return mlx5_tracer_handle_raw_string(tracer, tracer_event);
  
--#define test_err_get_hw_info(_errno, device_id, data, data_len)               \
--	EXPECT_ERRNO(_errno, _test_cmd_get_hw_info(self->fd, device_id, data, \
--						   data_len, NULL, NULL))
-+#define test_err_get_hw_info(_errno, device_id, data_type, data, data_len) \
-+	EXPECT_ERRNO(_errno,                                               \
-+		     _test_cmd_get_hw_info(self->fd, device_id, data_type, \
-+					   data, data_len, NULL, NULL))
+-		cur_string->num_of_params = mlx5_tracer_get_num_of_params(cur_string->string);
+-		cur_string->last_param_num = 0;
+ 		cur_string->event_id = tracer_event->event_id;
+ 		cur_string->tmsn = tracer_event->string_event.tmsn;
+ 		cur_string->timestamp = tracer_event->string_event.timestamp;
+ 		cur_string->lost = tracer_event->lost_event;
++		cur_string->last_param_num = 0;
++		cur_string->num_of_params = mlx5_tracer_get_num_of_params(cur_string->string);
++		if (cur_string->num_of_params < 0) {
++			pr_debug("%s Invalid format string parameters\n",
++				 __func__);
++			mlx5_tracer_handle_bad_format_string(tracer, cur_string);
++			return 0;
++		}
+ 		if (cur_string->num_of_params == 0) /* trace with no params */
+ 			list_add_tail(&cur_string->list, &tracer->ready_strings_list);
+ 	} else {
+@@ -634,6 +692,11 @@ static int mlx5_tracer_handle_string_trace(struct mlx5_fw_tracer *tracer,
+ 				 __func__, tracer_event->string_event.tmsn);
+ 			return mlx5_tracer_handle_raw_string(tracer, tracer_event);
+ 		}
++		if (cur_string->num_of_params < 0) {
++			pr_debug("%s string parameter of invalid string, dumping\n",
++				 __func__);
++			return 0;
++		}
+ 		cur_string->last_param_num += 1;
+ 		if (cur_string->last_param_num > TRACER_MAX_PARAMS) {
+ 			pr_debug("%s Number of params exceeds the max (%d)\n",
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.h b/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.h
+index 5c548bb74f07b..30d0bcba88479 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.h
++++ b/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.h
+@@ -125,6 +125,7 @@ struct tracer_string_format {
+ 	struct list_head list;
+ 	u32 timestamp;
+ 	bool lost;
++	bool invalid_string;
+ };
  
--#define test_cmd_get_hw_capabilities(device_id, caps, mask) \
--	ASSERT_EQ(0, _test_cmd_get_hw_info(self->fd, device_id, NULL, \
-+#define test_cmd_get_hw_capabilities(device_id, caps)                        \
-+	ASSERT_EQ(0, _test_cmd_get_hw_info(self->fd, device_id,              \
-+					   IOMMU_HW_INFO_TYPE_DEFAULT, NULL, \
- 					   0, &caps, NULL))
- 
--#define test_cmd_get_hw_info_pasid(device_id, max_pasid)              \
--	ASSERT_EQ(0, _test_cmd_get_hw_info(self->fd, device_id, NULL, \
-+#define test_cmd_get_hw_info_pasid(device_id, max_pasid)                     \
-+	ASSERT_EQ(0, _test_cmd_get_hw_info(self->fd, device_id,              \
-+					   IOMMU_HW_INFO_TYPE_DEFAULT, NULL, \
- 					   0, NULL, max_pasid))
- 
- static int _test_ioctl_fault_alloc(int fd, __u32 *fault_id, __u32 *fault_fd)
+ enum mlx5_fw_tracer_ownership_state {
 -- 
 2.51.0
 
