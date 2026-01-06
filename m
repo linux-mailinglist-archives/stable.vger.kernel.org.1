@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-205530-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205808-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77ED4CF9E84
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:01:23 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 784AFCFA536
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:52:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 61FC930299FB
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:01:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CAC90321D7CD
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:06:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2C4518859B;
-	Tue,  6 Jan 2026 17:36:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B38B02F4A14;
+	Tue,  6 Jan 2026 17:52:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sAW/cBQi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wqP26Agt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90269846F;
-	Tue,  6 Jan 2026 17:36:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F56D2EFD95;
+	Tue,  6 Jan 2026 17:52:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767720999; cv=none; b=sqC7jzzLtWs2sD5YsKLf75kPI8Hf3F+IoAfumqAXhK79mEBraML9nhsyeJNzno5uzv2wgf+GW9ADzEbOCASUiv9IEBejKRwEi9EnkvNJCE5YIXuPY0X5B2vJbkUSE+0S+MhN8irmtQj0aKYET+TUEC9nRMnT9unZhEnf1D6xXzU=
+	t=1767721931; cv=none; b=mbv50y0Hk/YJrYeO828Bp2Uy4x8MS/x5lYG/e4i3kb54EsLERlARb/j21TkzpOSCPSrsG0EPJNG3zdwJJqYPSLREFksFw9DLckwH/oTX5iPKbTDtvcOwfJmnjwslUj6d/Zc7lhgty5zn0lgtzLWJ/OObbHFtVDd7TfZVdC79l5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767720999; c=relaxed/simple;
-	bh=k/6SnduiWUMW3qd5lItR6jV72y775RlLgay40QuviUI=;
+	s=arc-20240116; t=1767721931; c=relaxed/simple;
+	bh=wPPR93On35fJuItXKk2Eiop9NcqUVPNpdK0xwNE8jbY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dEkIN0SJrhTQQBC73NJMeya8AkH+QI0mEb2vNeuokVjWlCv2R8TSUgtVsiRcWukWmlpBhc5W0uYODcLmd+ZB/tnf8MYGi75Xx8PCIDJRKnxflVf9UzuLJBJzcN3TglqodDC//yp0MRAU4RTAehDQm38ScfEx87SIrpNPZoTT5fE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sAW/cBQi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 086D1C116C6;
-	Tue,  6 Jan 2026 17:36:38 +0000 (UTC)
+	 MIME-Version; b=XsgsKP46YNh6KF7yDlMJ7/ODPebLMo3BNB0smJCU1mlF8ekRroE5wlVAEy3v5e/qBB/Jy+e0Xea3eLs95Ye8bDWQ8RJ6/iYTUqqLeJ4o6YujTUEEiNcWkKM/X/hhGCDt9EJRebPo/R7ykm11X2JBc8SOChwEhpTsw9lVdULjrgw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wqP26Agt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFBBBC116C6;
+	Tue,  6 Jan 2026 17:52:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767720999;
-	bh=k/6SnduiWUMW3qd5lItR6jV72y775RlLgay40QuviUI=;
+	s=korg; t=1767721931;
+	bh=wPPR93On35fJuItXKk2Eiop9NcqUVPNpdK0xwNE8jbY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sAW/cBQiS7YmwLQ3T3Z2J9dB/alyuZIgenDSBKEnOEtZGKZ6WljSKKmpCgLf49uqD
-	 pmi85XBKJUiCRO22R23cLvoRiJAtDOwpQXw8Wi7VUroX0VHFwxt/lQSVq4ac/4CAa8
-	 Np1JpU6M0rB7Z+MC8aiICof5Hf7ZeRzdK0OxhSXs=
+	b=wqP26Agtms9pkJ0u+ZPMT4VLxMpBp4RX8rGw2IdnV4m1OYrNcq0iRgKGgdB3lM3qQ
+	 Ww+I27a7uQtajnlt8qgsavszTLLwYkaPqQ4wneC0gOghRus/5e50pJ8uHudexjlPuH
+	 JGFWH/FAXLj/6y7V/V0j8bJmgRZ89AeLUZtxihM4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miaoqian Lin <linmq006@gmail.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 6.12 405/567] media: renesas: rcar_drif: fix device node reference leak in rcar_drif_bond_enabled
-Date: Tue,  6 Jan 2026 18:03:07 +0100
-Message-ID: <20260106170506.325503933@linuxfoundation.org>
+	Honghui Zhang <honghui.zhang@mediatek.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Johan Hovold <johan@kernel.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Joerg Roedel <joerg.roedel@amd.com>
+Subject: [PATCH 6.18 114/312] iommu/mediatek-v1: fix device leaks on probe()
+Date: Tue,  6 Jan 2026 18:03:08 +0100
+Message-ID: <20260106170551.963916910@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
-References: <20260106170451.332875001@linuxfoundation.org>
+In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
+References: <20260106170547.832845344@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +62,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miaoqian Lin <linmq006@gmail.com>
+From: Johan Hovold <johan@kernel.org>
 
-commit 445e1658894fd74eab7e53071fa16233887574ed upstream.
+commit 46207625c9f33da0e43bb4ae1e91f0791b6ed633 upstream.
 
-The function calls of_parse_phandle() which returns
-a device node with an incremented reference count. When the bonded device
-is not available, the function
-returns NULL without releasing the reference, causing a reference leak.
+Make sure to drop the references taken to the larb devices during
+probe on probe failure (e.g. probe deferral) and on driver unbind.
 
-Add of_node_put(np) to release the device node reference.
-The of_node_put function handles NULL pointers.
-
-Found through static analysis by reviewing the doc of of_parse_phandle()
-and cross-checking its usage patterns across the codebase.
-
-Fixes: 7625ee981af1 ("[media] media: platform: rcar_drif: Add DRIF support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Fixes: b17336c55d89 ("iommu/mediatek: add support for mtk iommu generation one HW")
+Cc: stable@vger.kernel.org	# 4.8
+Cc: Honghui Zhang <honghui.zhang@mediatek.com>
+Acked-by: Robin Murphy <robin.murphy@arm.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/renesas/rcar_drif.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/iommu/mtk_iommu_v1.c |   23 ++++++++++++++++++-----
+ 1 file changed, 18 insertions(+), 5 deletions(-)
 
---- a/drivers/media/platform/renesas/rcar_drif.c
-+++ b/drivers/media/platform/renesas/rcar_drif.c
-@@ -1249,6 +1249,7 @@ static struct device_node *rcar_drif_bon
- 	if (np && of_device_is_available(np))
- 		return np;
+--- a/drivers/iommu/mtk_iommu_v1.c
++++ b/drivers/iommu/mtk_iommu_v1.c
+@@ -648,8 +648,10 @@ static int mtk_iommu_v1_probe(struct pla
+ 		struct platform_device *plarbdev;
  
-+	of_node_put(np);
- 	return NULL;
+ 		larbnode = of_parse_phandle(dev->of_node, "mediatek,larbs", i);
+-		if (!larbnode)
+-			return -EINVAL;
++		if (!larbnode) {
++			ret = -EINVAL;
++			goto out_put_larbs;
++		}
+ 
+ 		if (!of_device_is_available(larbnode)) {
+ 			of_node_put(larbnode);
+@@ -659,11 +661,14 @@ static int mtk_iommu_v1_probe(struct pla
+ 		plarbdev = of_find_device_by_node(larbnode);
+ 		if (!plarbdev) {
+ 			of_node_put(larbnode);
+-			return -ENODEV;
++			ret = -ENODEV;
++			goto out_put_larbs;
+ 		}
+ 		if (!plarbdev->dev.driver) {
+ 			of_node_put(larbnode);
+-			return -EPROBE_DEFER;
++			put_device(&plarbdev->dev);
++			ret = -EPROBE_DEFER;
++			goto out_put_larbs;
+ 		}
+ 		data->larb_imu[i].dev = &plarbdev->dev;
+ 
+@@ -675,7 +680,7 @@ static int mtk_iommu_v1_probe(struct pla
+ 
+ 	ret = mtk_iommu_v1_hw_init(data);
+ 	if (ret)
+-		return ret;
++		goto out_put_larbs;
+ 
+ 	ret = iommu_device_sysfs_add(&data->iommu, &pdev->dev, NULL,
+ 				     dev_name(&pdev->dev));
+@@ -697,12 +702,17 @@ out_sysfs_remove:
+ 	iommu_device_sysfs_remove(&data->iommu);
+ out_clk_unprepare:
+ 	clk_disable_unprepare(data->bclk);
++out_put_larbs:
++	for (i = 0; i < MTK_LARB_NR_MAX; i++)
++		put_device(data->larb_imu[i].dev);
++
+ 	return ret;
  }
  
+ static void mtk_iommu_v1_remove(struct platform_device *pdev)
+ {
+ 	struct mtk_iommu_v1_data *data = platform_get_drvdata(pdev);
++	int i;
+ 
+ 	iommu_device_sysfs_remove(&data->iommu);
+ 	iommu_device_unregister(&data->iommu);
+@@ -710,6 +720,9 @@ static void mtk_iommu_v1_remove(struct p
+ 	clk_disable_unprepare(data->bclk);
+ 	devm_free_irq(&pdev->dev, data->irq, data);
+ 	component_master_del(&pdev->dev, &mtk_iommu_v1_com_ops);
++
++	for (i = 0; i < MTK_LARB_NR_MAX; i++)
++		put_device(data->larb_imu[i].dev);
+ }
+ 
+ static int __maybe_unused mtk_iommu_v1_suspend(struct device *dev)
 
 
 
