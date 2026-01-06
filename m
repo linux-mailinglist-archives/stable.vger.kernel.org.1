@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-205476-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205721-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F456CFA21E
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:27:49 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63CCCCFA541
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:52:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D54BA314A7B9
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:40:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1BED732324F1
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:06:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6ABA2DECBF;
-	Tue,  6 Jan 2026 17:33:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BF0935CB9B;
+	Tue,  6 Jan 2026 17:47:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pCq3FYmL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q4W7Hehm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 734D533993;
-	Tue,  6 Jan 2026 17:33:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19FE835CB96;
+	Tue,  6 Jan 2026 17:47:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767720820; cv=none; b=imzCqB5Q+/gJw/Sgrldk1iX4iHgVWxIKgZExga2VwGLOYeyqwSVmbXgt49nzyQZO7hmCs1hB/8jcjpm5awZC1fzO2VBR6lgwDuwfS8+haNLwPWQAhadowNl9vSR8hHI3urpEEgslnmrPjBZPuq3DWo6J4Q/1oKf7id19IwwI618=
+	t=1767721638; cv=none; b=CHzovh77NnLXzLyRdDeKdDIe/23V+tk+4r/qJve/uSk6pLWZ11pecDfR056haqP6oYK2pgolIVHU1U8BDNWhccFWbqZF9AUBtIGfkQvLlcz0CTYHtD7Pd2t/gLGHa9WS+R7LV5VIcke2i3YghV3JmtmS8jzdq616qhyqlPFZlZY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767720820; c=relaxed/simple;
-	bh=fR2tI5DlXmvcpxAVOwbd38QmwmdbWTLt0HP4ALeDono=;
+	s=arc-20240116; t=1767721638; c=relaxed/simple;
+	bh=cs78gGvD7nhWZpbIw6fxL6Pie4zuustdWnOzck4NeY0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C+lzyosNREZfQFoY8dNyLdIz66Pk/QEr6NFlIQlQI7Ltayi2CF+ibm/6lDTJrQcm3RXmmV4TbwGruFvACHcQI+wCBc5OEb2OKmiuRdAwxuks+KIA0qwQMhg4QXgCUTvL5/Ie41ltzq1pQDxifOBvYyA/wMmTyak+zpHDZmkx/j4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pCq3FYmL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F277FC116C6;
-	Tue,  6 Jan 2026 17:33:39 +0000 (UTC)
+	 MIME-Version; b=Y6DY1e22w3sp9jaU8f+eFJ1OeWcAqmzRxueYgS/iarLHFAOpaMNwhDCT+lLn3miHn5hKam6pllEX7Aw/0czFElpenbmKpQYFlV6ZzOSqzSQAtZY7S6rqxpE5KRMpGPQj5vtKFG/E9c3V5g8tVHNQMQy/2fHmnZuFEn/DMU5aeVw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q4W7Hehm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72C4AC116C6;
+	Tue,  6 Jan 2026 17:47:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767720820;
-	bh=fR2tI5DlXmvcpxAVOwbd38QmwmdbWTLt0HP4ALeDono=;
+	s=korg; t=1767721637;
+	bh=cs78gGvD7nhWZpbIw6fxL6Pie4zuustdWnOzck4NeY0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pCq3FYmLzoGnsQd1lm01nKvMoSuUuI0Hi8lXU4fcd+97CfFLdOERynNH2NrpIsLiI
-	 45IP0eRFTmJjhSNYN3s4tq5W16ypzQhOWk4MWS+8m1w2ASskZtIlzPcWPn5mdf6Vw7
-	 WazDXBcciNwG9gfxcFZuz0TpRkwLs8OL2I7N58Zc=
+	b=q4W7Hehm2cLxOvhTtiw8CH1dtQzUCwU5h02maxpC9w71hUQSBuZsUJ+0FRAkbf7bo
+	 iiIfsJFmuwbPshx3FLgQFJ9ZAhlDyeRkU4siHHFPaaz1Mjzi1mdTweN1MQhQdYG3O6
+	 BxQOuCM/J+0DP0gA9QRIvBBtzlR9sx+blql8pIQk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas De Schampheleire <thomas.de_schampheleire@nokia.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	"Rob Herring (Arm)" <robh@kernel.org>,
-	Nicolas Schier <nsc@kernel.org>,
+	syzbot+43a2ebcf2a64b1102d64@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 319/567] kbuild: fix compilation of dtb specified on command-line without make rule
-Date: Tue,  6 Jan 2026 18:01:41 +0100
-Message-ID: <20260106170503.126178958@linuxfoundation.org>
+Subject: [PATCH 6.18 028/312] ip6_gre: make ip6gre_header() robust
+Date: Tue,  6 Jan 2026 18:01:42 +0100
+Message-ID: <20260106170548.874846664@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
-References: <20260106170451.332875001@linuxfoundation.org>
+In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
+References: <20260106170547.832845344@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,90 +61,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas De Schampheleire <thomas.de_schampheleire@nokia.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit b08fc4d0ec2466558f6d5511434efdfabbddf2a6 ]
+[ Upstream commit db5b4e39c4e63700c68a7e65fc4e1f1375273476 ]
 
-Since commit e7e2941300d2 ("kbuild: split device tree build rules into
-scripts/Makefile.dtbs"), it is no longer possible to compile a device tree
-blob that is not specified in a make rule
-like:
-    dtb-$(CONFIG_FOO) += foo.dtb
+Over the years, syzbot found many ways to crash the kernel
+in ip6gre_header() [1].
 
-Before the mentioned commit, one could copy a dts file to e.g.
-arch/arm64/boot/dts/ (or a new subdirectory) and then convert it to a dtb
-file using:
-    make ARCH=arm64 foo.dtb
+This involves team or bonding drivers ability to dynamically
+change their dev->needed_headroom and/or dev->hard_header_len
 
-In this scenario, both 'dtb-y' and 'dtb-' are empty, and the inclusion of
-scripts/Makefile.dtbs relies on 'targets' to contain the MAKECMDGOALS. The
-value of 'targets', however, is only final later in the code.
+In this particular crash mld_newpack() allocated an skb
+with a too small reserve/headroom, and by the time mld_sendpack()
+was called, syzbot managed to attach an ip6gre device.
 
-Move the conditional include of scripts/Makefile.dtbs down to where the
-value of 'targets' is final. Since Makefile.dtbs updates 'always-y' which is
-used as a prerequisite in the build rule, the build rule also needs to move
-down.
+[1]
+skbuff: skb_under_panic: text:ffffffff8a1d69a8 len:136 put:40 head:ffff888059bc7000 data:ffff888059bc6fe8 tail:0x70 end:0x6c0 dev:team0
+------------[ cut here ]------------
+ kernel BUG at net/core/skbuff.c:213 !
+ <TASK>
+  skb_under_panic net/core/skbuff.c:223 [inline]
+  skb_push+0xc3/0xe0 net/core/skbuff.c:2641
+  ip6gre_header+0xc8/0x790 net/ipv6/ip6_gre.c:1371
+  dev_hard_header include/linux/netdevice.h:3436 [inline]
+  neigh_connected_output+0x286/0x460 net/core/neighbour.c:1618
+  neigh_output include/net/neighbour.h:556 [inline]
+  ip6_finish_output2+0xfb3/0x1480 net/ipv6/ip6_output.c:136
+ __ip6_finish_output net/ipv6/ip6_output.c:-1 [inline]
+  ip6_finish_output+0x234/0x7d0 net/ipv6/ip6_output.c:220
+  NF_HOOK_COND include/linux/netfilter.h:307 [inline]
+  ip6_output+0x340/0x550 net/ipv6/ip6_output.c:247
+  NF_HOOK+0x9e/0x380 include/linux/netfilter.h:318
+  mld_sendpack+0x8d4/0xe60 net/ipv6/mcast.c:1855
+  mld_send_cr net/ipv6/mcast.c:2154 [inline]
+  mld_ifc_work+0x83e/0xd60 net/ipv6/mcast.c:2693
 
-Fixes: e7e2941300d2 ("kbuild: split device tree build rules into scripts/Makefile.dtbs")
-Signed-off-by: Thomas De Schampheleire <thomas.de_schampheleire@nokia.com>
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-Tested-by: Nathan Chancellor <nathan@kernel.org>
-Acked-by: Rob Herring (Arm) <robh@kernel.org>
-Link: https://patch.msgid.link/20251126100017.1162330-1-thomas.de_schampheleire@nokia.com
-Signed-off-by: Nicolas Schier <nsc@kernel.org>
+Fixes: c12b395a4664 ("gre: Support GRE over IPv6")
+Reported-by: syzbot+43a2ebcf2a64b1102d64@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/693b002c.a70a0220.33cd7b.0033.GAE@google.com/T/#u
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20251211173550.2032674-1-edumazet@google.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/Makefile.build | 26 ++++++++++++++------------
- 1 file changed, 14 insertions(+), 12 deletions(-)
+ net/ipv6/ip6_gre.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/scripts/Makefile.build b/scripts/Makefile.build
-index 2c5c1a214f3b..6e07023b5442 100644
---- a/scripts/Makefile.build
-+++ b/scripts/Makefile.build
-@@ -449,18 +449,6 @@ ifneq ($(userprogs),)
- include $(srctree)/scripts/Makefile.userprogs
- endif
+diff --git a/net/ipv6/ip6_gre.c b/net/ipv6/ip6_gre.c
+index c82a75510c0e..8bc3f05f594e 100644
+--- a/net/ipv6/ip6_gre.c
++++ b/net/ipv6/ip6_gre.c
+@@ -1366,9 +1366,16 @@ static int ip6gre_header(struct sk_buff *skb, struct net_device *dev,
+ {
+ 	struct ip6_tnl *t = netdev_priv(dev);
+ 	struct ipv6hdr *ipv6h;
++	int needed;
+ 	__be16 *p;
  
--ifneq ($(need-dtbslist)$(dtb-y)$(dtb-)$(filter %.dtb %.dtb.o %.dtbo.o,$(targets)),)
--include $(srctree)/scripts/Makefile.dtbs
--endif
--
--# Build
--# ---------------------------------------------------------------------------
--
--$(obj)/: $(if $(KBUILD_BUILTIN), $(targets-for-builtin)) \
--	 $(if $(KBUILD_MODULES), $(targets-for-modules)) \
--	 $(subdir-ym) $(always-y)
--	@:
--
- # Single targets
- # ---------------------------------------------------------------------------
- 
-@@ -490,6 +478,20 @@ FORCE:
- targets += $(filter-out $(single-subdir-goals), $(MAKECMDGOALS))
- targets := $(filter-out $(PHONY), $(targets))
- 
-+# Now that targets is fully known, include dtb rules if needed
-+ifneq ($(need-dtbslist)$(dtb-y)$(dtb-)$(filter %.dtb %.dtb.o %.dtbo.o,$(targets)),)
-+include $(srctree)/scripts/Makefile.dtbs
-+endif
+-	ipv6h = skb_push(skb, t->hlen + sizeof(*ipv6h));
++	needed = t->hlen + sizeof(*ipv6h);
++	if (skb_headroom(skb) < needed &&
++	    pskb_expand_head(skb, HH_DATA_ALIGN(needed - skb_headroom(skb)),
++			     0, GFP_ATOMIC))
++		return -needed;
 +
-+# Build
-+# Needs to be after the include of Makefile.dtbs, which updates always-y
-+# ---------------------------------------------------------------------------
-+
-+$(obj)/: $(if $(KBUILD_BUILTIN), $(targets-for-builtin)) \
-+	 $(if $(KBUILD_MODULES), $(targets-for-modules)) \
-+	 $(subdir-ym) $(always-y)
-+	@:
-+
- # Read all saved command lines and dependencies for the $(targets) we
- # may be building above, using $(if_changed{,_dep}). As an
- # optimization, we don't need to read them if the target does not
++	ipv6h = skb_push(skb, needed);
+ 	ip6_flow_hdr(ipv6h, 0, ip6_make_flowlabel(dev_net(dev), skb,
+ 						  t->fl.u.ip6.flowlabel,
+ 						  true, &t->fl.u.ip6));
 -- 
 2.51.0
 
