@@ -1,58 +1,51 @@
-Return-Path: <stable+bounces-205969-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205946-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D421BCFA06A
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:16:54 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8585CFA66F
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:59:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9245D305A47C
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:15:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5DC7C343232A
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:17:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40328366DAE;
-	Tue,  6 Jan 2026 18:01:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C681A34FF46;
+	Tue,  6 Jan 2026 17:59:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="La4pMcb8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rOxriuHM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0C40366DA5;
-	Tue,  6 Jan 2026 18:01:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EA4236D51C;
+	Tue,  6 Jan 2026 17:59:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767722465; cv=none; b=QYNdDNq1jnohk8jA+/AVSuAJLTWKNsE6VwEDmyXjPoT62DzxaCobEWv95gT89jOyoQAyjjKwwNY/IAqhscwy/z9qAqndhedgW1nx1Y6aTanxYurImE05buEBjNK9s36rdmouKuTqCxCijN/joiTm/xuidBgMN6ShWEkMnk8pAfo=
+	t=1767722388; cv=none; b=EV+266/Ap1ZpK1eRkmTPNLFw4pBUDHhLAigkZA9+uvT7Hdo1Mqou0L2xWVaQq8Yu4AYxrKr5I2avf4aa8S1HKs5uui6jElI/TfD5aq/MTd6486dKG3kJxtR2tDiA10eK2WIwJ/OSTYK1UNS0McYDV8PbcLjAzRswMSjejTPXgcU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767722465; c=relaxed/simple;
-	bh=jKeszfPuwpU6XzhYXckzDXCyeYl0EaFDg4xYSdAYhnE=;
+	s=arc-20240116; t=1767722388; c=relaxed/simple;
+	bh=kcvtB15/4dMETGjshNDk+d7StsIovOxiT/pZm/zQRrs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Orc3fQYEOcFjWrlKv7mL1O92K/tblnc47NyHABlRneX9AiIpZoNiggTb/4Hig6sJ1HrqU0bsSx1Q2fM3qvjZTQEudbP5ltUTqiWop2zukEo6ScDTJWOq/mrZOw8Oh8X1vaWKVd0NB9JJgxWtPyhWDX5BZXLJRvP0UhM8p074TZ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=La4pMcb8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59F77C116C6;
-	Tue,  6 Jan 2026 18:01:04 +0000 (UTC)
+	 MIME-Version; b=Jlr41mHpVB2I78URximA1kRjpcfG8AmAzSHCmvECaQPkruMmGg3gfvLrKdPGx+1GuabwIoHHVt3hEQ5zvfggFH8T7UMi7Eg9yQo3uQN0hnVB5ImBa+7ils73yZQnqRZC6Fb7tI2KD3sg7N+6Uw1ChWKqYmQG/ETWKXHui/XxTYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rOxriuHM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FF2EC116C6;
+	Tue,  6 Jan 2026 17:59:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767722464;
-	bh=jKeszfPuwpU6XzhYXckzDXCyeYl0EaFDg4xYSdAYhnE=;
+	s=korg; t=1767722388;
+	bh=kcvtB15/4dMETGjshNDk+d7StsIovOxiT/pZm/zQRrs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=La4pMcb8cJbsPCAjhomTzaoZpF9jpACC2upW8hWkr5422e9g4ENI50mzKHXGWYqxz
-	 Cf3VJ6hBH+UVBlsVunZye91UdhCcSmjyuz8otfwGaMFEsMB8KOPQ7qhyMMfUkwSB7+
-	 PSPGhMB0f1VTZbFqTQ3ASjMkM2Fh/svY3lyNF4Iw=
+	b=rOxriuHMEP0EG/TzGdkFPDBKM7e7kB/SQwgti3V11k7ZX/XwipNIyNBVyDEOcxSE/
+	 9Jqff4j4m5PYYNAPft/s2+bmE109tPaLE3d3yJe0KIvU1a/UDDnzCHyKkBuMCSkeRw
+	 tfdgFhcAzrJL+maS4s49myybEw7Wm5/INX+VjwR4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ran Xiaokai <ran.xiaokai@zte.com.cn>,
-	Michal Hocko <mhocko@suse.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Marco Elver <elver@google.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Zi Yan <ziy@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.18 230/312] mm/page_owner: fix memory leak in page_owner_stack_fops->release()
-Date: Tue,  6 Jan 2026 18:05:04 +0100
-Message-ID: <20260106170556.173097317@linuxfoundation.org>
+	Rong Zhang <i@rong.moe>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	stable@kernel.org
+Subject: [PATCH 6.18 232/312] x86/microcode/AMD: Fix Entrysign revision check for Zen5/Strix Halo
+Date: Tue,  6 Jan 2026 18:05:06 +0100
+Message-ID: <20260106170556.244463794@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
 References: <20260106170547.832845344@linuxfoundation.org>
@@ -71,44 +64,34 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+From: Rong Zhang <i@rong.moe>
 
-commit a76a5ae2c6c645005672c2caf2d49361c6f2500f upstream.
+commit 150b1b97e27513535dcd3795d5ecd28e61b6cb8c upstream.
 
-The page_owner_stack_fops->open() callback invokes seq_open_private(),
-therefore its corresponding ->release() callback must call
-seq_release_private().  Otherwise it will cause a memory leak of struct
-stack_print_ctx.
+Zen5 also contains family 1Ah, models 70h-7Fh, which are mistakenly missing
+from cpu_has_entrysign(). Add the missing range.
 
-Link: https://lkml.kernel.org/r/20251219074232.136482-1-ranxiaokai627@163.com
-Fixes: 765973a09803 ("mm,page_owner: display all stacks and their count")
-Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
-Acked-by: Michal Hocko <mhocko@suse.com>
-Acked-by: Vlastimil Babka <vbabka@suse.cz>
-Cc: Andrey Konovalov <andreyknvl@gmail.com>
-Cc: Brendan Jackman <jackmanb@google.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Marco Elver <elver@google.com>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Zi Yan <ziy@nvidia.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 8a9fb5129e8e ("x86/microcode/AMD: Limit Entrysign signature checking to known generations")
+Signed-off-by: Rong Zhang <i@rong.moe>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: stable@kernel.org
+Link: https://patch.msgid.link/20251229182245.152747-1-i@rong.moe
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/page_owner.c |    2 +-
+ arch/x86/kernel/cpu/microcode/amd.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/mm/page_owner.c
-+++ b/mm/page_owner.c
-@@ -936,7 +936,7 @@ static const struct file_operations page
- 	.open		= page_owner_stack_open,
- 	.read		= seq_read,
- 	.llseek		= seq_lseek,
--	.release	= seq_release,
-+	.release	= seq_release_private,
- };
+--- a/arch/x86/kernel/cpu/microcode/amd.c
++++ b/arch/x86/kernel/cpu/microcode/amd.c
+@@ -258,7 +258,7 @@ static bool cpu_has_entrysign(void)
+ 	if (fam == 0x1a) {
+ 		if (model <= 0x2f ||
+ 		    (0x40 <= model && model <= 0x4f) ||
+-		    (0x60 <= model && model <= 0x6f))
++		    (0x60 <= model && model <= 0x7f))
+ 			return true;
+ 	}
  
- static int page_owner_threshold_get(void *data, u64 *val)
 
 
 
