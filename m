@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-205916-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205638-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2ED8CFA0FB
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:19:08 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91E0CCFA33F
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:35:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4815F30848D2
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:16:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6456B304434F
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:35:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58EDC36C598;
-	Tue,  6 Jan 2026 17:58:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E40862F999F;
+	Tue,  6 Jan 2026 17:42:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Iydos4QZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vdj60hqb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1691636C0C9;
-	Tue,  6 Jan 2026 17:58:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C5902F83A2;
+	Tue,  6 Jan 2026 17:42:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767722292; cv=none; b=cmrWH2Dqh0Hn3yP22KKjR3o+wwym0UTwK/Z4+eyobUAtS9D2N8U1HF8SQJVUamtqg3Qy92x7qyTTrpTTPlC3byUZYJ+bH7d5mL262gVATPCks6eyg4HBBwdyUJyE4GCRv5B3CWGe/DE7AQetVZG2ZiYz6huWcdHbQhTk/eqoJKk=
+	t=1767721357; cv=none; b=CkNvtNqr3rrVfhNsza8y31lu55/y01jaGw4WEAYAb6vgdhUpMjUcdDI7t+7YusvMR3U6BEwEseU7Emi/RNahmHYiGg2gamqbjjgA4/6YKRLEzR9zsqanClppYxRm16lyOpXlWYHp5R5Od7p5X99VX2ckQ+hfGTXXzrZR3bZ8ue0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767722292; c=relaxed/simple;
-	bh=bEJxCyaaRy6F7sujwd+9QlYdSAwcmk2Ts73IEh0pmr4=;
+	s=arc-20240116; t=1767721357; c=relaxed/simple;
+	bh=KQ02eY+RLFz2DSultkds+L7HxM6p+WzWeeIVBda4/PA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HucvyOmb+icrp4faZD+7xYgEGVcvZNDxFulv9wRLPh2NLIfjjAsdcZJyZDetmOsWwAlfbiEnYvl3u6KHaKXBWGjCACACe8TfeYyDtENRlkEDfkEmKc4hsRFUWEHcNzGtbtEmOtrDtHtD/LzJn3GuVfAMvysyYJDpZel9N/4wVSg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Iydos4QZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ED5DC116C6;
-	Tue,  6 Jan 2026 17:58:11 +0000 (UTC)
+	 MIME-Version; b=sNkmFbdeAQqEA730syAJNQ/ByTcGiaQK3PyEmVNXIigw+mz+i2xXGnnkmVWakG+Q3A9H/WuwdS46IYixUJNil5PxFfVxK1lslOJ6n4VdZtFCyQuBfDvz/kfrjMdrSrgxZM4jIn9w9Lbjq7/Wa15a6qx2gcv992JuB0u6DTLHZX8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vdj60hqb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2A65C116C6;
+	Tue,  6 Jan 2026 17:42:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767722292;
-	bh=bEJxCyaaRy6F7sujwd+9QlYdSAwcmk2Ts73IEh0pmr4=;
+	s=korg; t=1767721357;
+	bh=KQ02eY+RLFz2DSultkds+L7HxM6p+WzWeeIVBda4/PA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Iydos4QZvx2doWvpL39yBLM0vZcP+++LH39sNqbFVvqLU2aOamIl0n1ERlRaw1WsU
-	 GV7Vldz6BOgDpyv0FUR/Yy3EeEu15AGr4y4x4WZjIwa4htSfiAQ4D+kx/dUlppenEk
-	 HbEHl68pnYRBrLBjdpp6sKBjV4Yc629R/axw/k94=
+	b=Vdj60hqbmOuWluTT8ItO15PdXly/aeW0cvAGPxoQjykdgeNDYvktqqrsvkGSUrP5e
+	 IyXUe+vFL19twR985/U8twE7AlM+9vyhZVXfOoFT3V1qgdwBLsyjr6JryfAIqjLjMu
+	 IENexlF9LtntF1AHOvdSoga8XNyXd7/N2SdyVXy0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"H. Peter Anvin (Intel)" <hpa@zytor.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	stable@kernel.org
-Subject: [PATCH 6.18 220/312] compiler_types.h: add "auto" as a macro for "__auto_type"
+	Song Feng <songfeng@oppo.com>,
+	Yongpeng Yang <yangyongpeng1@oppo.com>,
+	Sheng Yong <shengyong@oppo.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 512/567] f2fs: clear SBI_POR_DOING before initing inmem curseg
 Date: Tue,  6 Jan 2026 18:04:54 +0100
-Message-ID: <20260106170555.802158421@linuxfoundation.org>
+Message-ID: <20260106170510.316681873@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
-References: <20260106170547.832845344@linuxfoundation.org>
+In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
+References: <20260106170451.332875001@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,63 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: H. Peter Anvin <hpa@zytor.com>
+From: Sheng Yong <shengyong@oppo.com>
 
-commit 2fb6915fa22dc5524d704afba58a13305dd9f533 upstream.
+[ Upstream commit f88c7904b5c7e35ab8037e2a59e10d80adf6fd7e ]
 
-"auto" was defined as a keyword back in the K&R days, but as a storage
-type specifier.  No one ever used it, since it was and is the default
-storage type for local variables.
+SBI_POR_DOING can be cleared after recovery is completed, so that
+changes made before recovery can be persistent, and subsequent
+errors can be recorded into cp/sb.
 
-C++11 recycled the keyword to allow a type to be declared based on the
-type of an initializer.  This was finally adopted into standard C in
-C23.
-
-gcc and clang provide the "__auto_type" alias keyword as an extension
-for pre-C23, however, there is no reason to pollute the bulk of the
-source base with this temporary keyword; instead define "auto" as a
-macro unless the compiler is running in C23+ mode.
-
-This macro is added in <linux/compiler_types.h> because that header is
-included in some of the tools headers, wheres <linux/compiler.h> is
-not as it has a bunch of very kernel-specific things in it.
-
-[ Cc: stable to reduce potential backporting burden. ]
-
-Signed-off-by: H. Peter Anvin (Intel) <hpa@zytor.com>
-Acked-by: Miguel Ojeda <ojeda@kernel.org>
-Cc: <stable@kernel.org>
+Signed-off-by: Song Feng <songfeng@oppo.com>
+Signed-off-by: Yongpeng Yang <yangyongpeng1@oppo.com>
+Signed-off-by: Sheng Yong <shengyong@oppo.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Stable-dep-of: be112e7449a6 ("f2fs: fix to propagate error from f2fs_enable_checkpoint()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/compiler_types.h |   13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ fs/f2fs/super.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/include/linux/compiler_types.h
-+++ b/include/linux/compiler_types.h
-@@ -14,6 +14,19 @@
- #ifndef __ASSEMBLY__
+--- a/fs/f2fs/super.c
++++ b/fs/f2fs/super.c
+@@ -4804,13 +4804,13 @@ reset_checkpoint:
+ 	if (err)
+ 		goto free_meta;
  
- /*
-+ * C23 introduces "auto" as a standard way to define type-inferred
-+ * variables, but "auto" has been a (useless) keyword even since K&R C,
-+ * so it has always been "namespace reserved."
-+ *
-+ * Until at some future time we require C23 support, we need the gcc
-+ * extension __auto_type, but there is no reason to put that elsewhere
-+ * in the source code.
-+ */
-+#if __STDC_VERSION__ < 202311L
-+# define auto __auto_type
-+#endif
++	/* f2fs_recover_fsync_data() cleared this already */
++	clear_sbi_flag(sbi, SBI_POR_DOING);
 +
-+/*
-  * Skipped when running bindgen due to a libclang issue;
-  * see https://github.com/rust-lang/rust-bindgen/issues/2244.
-  */
+ 	err = f2fs_init_inmem_curseg(sbi);
+ 	if (err)
+ 		goto sync_free_meta;
+ 
+-	/* f2fs_recover_fsync_data() cleared this already */
+-	clear_sbi_flag(sbi, SBI_POR_DOING);
+-
+ 	if (test_opt(sbi, DISABLE_CHECKPOINT)) {
+ 		err = f2fs_disable_checkpoint(sbi);
+ 		if (err)
 
 
 
