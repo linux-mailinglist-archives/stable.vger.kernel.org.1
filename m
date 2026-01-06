@@ -1,156 +1,397 @@
-Return-Path: <stable+bounces-206030-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206031-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C3D8CFAA70
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:28:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CAF91CFAC9B
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:51:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B551C3332E7A
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:57:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4FF953108B34
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 19:26:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E22D6274FDF;
-	Tue,  6 Jan 2026 18:57:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDD5F33B6FC;
+	Tue,  6 Jan 2026 19:18:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="Waaw//hG"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="jJT/hYRp"
 X-Original-To: stable@vger.kernel.org
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE6F12367AC;
-	Tue,  6 Jan 2026 18:57:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.129.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B3CE3396F7;
+	Tue,  6 Jan 2026 19:18:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767725822; cv=none; b=vB/1g5fDKNOBoIHgZyXAWIxo1dS02BKyvlwl8kigsL+RZh4bPK4aMS09BMObXhlfksyM7q43+YcYvEAJQwT8zt+DaHoOp4F0k/iRklag3NiQMCd/35MeYBK6r3i0z5gOxvXCRljlcmJbmgk/2n/OQdnwDELQinkCrOyGtQUVikI=
+	t=1767727123; cv=none; b=dD4CdwBWMeo+ZvS3sIDWEdAUNtffKSEdbfIt/DKltPRLR+ebof4aBTkWDYrb3KojiDh59xEBnYcSUV5ATSRdBGkDAMMVOuybiaab3HUnUL6QmKb1661iAPvvq0gKXi2n3Qe8FvynmqDTwjrqpbSV9H0NuFolNc+zAI1HNIJdp+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767725822; c=relaxed/simple;
-	bh=meJWznmpisb4Z0tj5/BsgVG4zJyBnjMbDiLi5lcu3Rc=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=HhgMgBsjR7xVYVTPvOUxzam5JdqKYvt3jEoji3efECMzZk38G2Ie2atkRhmuymS2Z8s8RcMQ/8F8SGKX+LUdePN6r6XOfmuRPq0//dtJ5HrPh/zwo59Vx/X7rF1/OMCfMXbZwJ7HT/lhAhTHxqYf3cVl5de6t8NReUJzj3cxxNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=Waaw//hG; arc=none smtp.client-ip=148.163.129.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mail3.candelatech.com (mail.candelatech.com [208.74.158.173])
-	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 2E321AC00E2;
-	Tue,  6 Jan 2026 18:56:52 +0000 (UTC)
-Received: from [192.168.101.118] (firewall.candelatech.com [50.251.239.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by mail3.candelatech.com (Postfix) with ESMTPSA id 8479913C2B0;
-	Tue,  6 Jan 2026 10:56:49 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 8479913C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-	s=default; t=1767725809;
-	bh=meJWznmpisb4Z0tj5/BsgVG4zJyBnjMbDiLi5lcu3Rc=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=Waaw//hG/TyF6p7ucTuzVCWt0sB/c1bBOwzvPvXFFaqrOWX5OaI4iUxgMTnIK0tjT
-	 HSGT+l6t6n0WB5adf8kstK/WRwC4VBeXY+Le+U3dC4YDWOJObQFAEm3aL59WmsTFwQ
-	 IlZf5Zsqj1dZKpg3hFdSCWHoCHuNwi3fGnbwqJtM=
-Message-ID: <e5cba37b-2bb5-46fb-b414-5cc6b2e894cf@candelatech.com>
-Date: Tue, 6 Jan 2026 10:56:49 -0800
+	s=arc-20240116; t=1767727123; c=relaxed/simple;
+	bh=rbXyQXMkBBEvg5DAgUSRJAd4b1tBYpX+ExDUAysSWxY=;
+	h=Date:To:From:Subject:Message-Id; b=elAYle206GJN+PSRuf+lb2bYpXMeyIBZ3dD10mTXuI7bqdnZcbVQqSQ4++NadSPEQhDMHoYikMZTKwq1bSH9YF4YgmWl5wuTeO5EzyO1YGtnanQDuFDWeK4VdiYuiatsB8upvsrCGKfcUoQPgOMZdkQflo7hjLijlX/GalKKROg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=jJT/hYRp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23367C116C6;
+	Tue,  6 Jan 2026 19:18:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1767727123;
+	bh=rbXyQXMkBBEvg5DAgUSRJAd4b1tBYpX+ExDUAysSWxY=;
+	h=Date:To:From:Subject:From;
+	b=jJT/hYRp5DMZZjq2L6koXbU2xVBQekHyow/v9l42xz22l2h8Mw8rgvPudWfoGYG4l
+	 +Hufq/IxBW69PoHrBwXJyqVtUBB4u+wZvLN+4FpnDNDJOHUQY0hiHJoUyogbBLi7zu
+	 KVAeYrwGVgSLs6Q+r3MmYx2ZCr9zoMXZXhDzgl84=
+Date: Tue, 06 Jan 2026 11:18:42 -0800
+To: mm-commits@vger.kernel.org,zhengqi.arch@bytedance.com,yuanchu@google.com,weixugc@google.com,tj@kernel.org,stable@vger.kernel.org,shakeel.butt@linux.dev,roman.gushchin@linux.dev,muchun.song@linux.dev,mkoutny@suse.com,mhocko@kernel.org,lorenzo.stoakes@oracle.com,longman@redhat.com,hannes@cmpxchg.org,gourry@gourry.net,david@kernel.org,axelrasmussen@google.com,bingjiao@google.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-vmscan-fix-demotion-targets-checks-in-reclaim-demotion.patch added to mm-hotfixes-unstable branch
+Message-Id: <20260106191843.23367C116C6@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [BUG 6.18.2] Null Pointer Exception in Fair Scheduler
-From: "Dylan E." <dylan.eskew@candelatech.com>
-To: stable@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-wireless@vger.kernel.org
-Cc: gregkh@linuxfoundation.org, sashal@kernel.org, jjohnson@kernel.org
-References: <38b9cad8-1c17-4d89-9f17-44f89fb66ab8@candelatech.com>
-Content-Language: en-US
-In-Reply-To: <38b9cad8-1c17-4d89-9f17-44f89fb66ab8@candelatech.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-MDID: 1767725813-gyDGdEY0fzPW
-X-PPE-STACK: {"stack":"us5"}
-X-MDID-O:
- us5;ut7;1767725813;gyDGdEY0fzPW;<dylan.eskew@candelatech.com>;6d78aa1bc4c2468e9f5ce884163e871b
-X-PPE-TRUSTED: V=1;DIR=OUT;
 
-Hello again,
 
-On 6.18.3, I'm still seeing the scheduler NPE pop-up, though this one 
-happened at shutdown. Looks to be an identical location to the previous 
-stack trace.
+The patch titled
+     Subject: mm/vmscan: fix demotion targets checks in reclaim/demotion
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-vmscan-fix-demotion-targets-checks-in-reclaim-demotion.patch
 
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-vmscan-fix-demotion-targets-checks-in-reclaim-demotion.patch
+
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via various
+branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there most days
+
+------------------------------------------------------
+From: Bing Jiao <bingjiao@google.com>
+Subject: mm/vmscan: fix demotion targets checks in reclaim/demotion
+Date: Tue, 6 Jan 2026 07:56:54 +0000
+
+Fix two bugs in demote_folio_list() and can_demote() due to incorrect
+demotion target checks in reclaim/demotion.
+
+Commit 7d709f49babc ("vmscan,cgroup: apply mems_effective to reclaim")
+introduces the cpuset.mems_effective check and applies it to can_demote().
+However:
+
+  1. It does not apply this check in demote_folio_list(), which leads
+     to situations where pages are demoted to nodes that are
+     explicitly excluded from the task's cpuset.mems.
+
+  2. It checks only the nodes in the immediate next demotion hierarchy
+     and does not check all allowed demotion targets in can_demote().
+     This can cause pages to never be demoted if the nodes in the next
+     demotion hierarchy are not set in mems_effective.
+
+These bugs break resource isolation provided by cpuset.mems.  This is
+visible from userspace because pages can either fail to be demoted
+entirely or are demoted to nodes that are not allowed in multi-tier memory
+systems.
+
+To address these bugs, update cpuset_node_allowed() and
+mem_cgroup_node_allowed() to return effective_mems, allowing directly
+logic-and operation against demotion targets.  Also update can_demote()
+and demote_folio_list() accordingly.
+
+Bug 1 reproduction:
+  Assume a system with 4 nodes, where nodes 0-1 are top-tier and
+  nodes 2-3 are far-tier memory. All nodes have equal capacity.
+
+  Test script:
+    echo 1 > /sys/kernel/mm/numa/demotion_enabled
+    mkdir /sys/fs/cgroup/test
+    echo +cpuset > /sys/fs/cgroup/cgroup.subtree_control
+    echo "0-2" > /sys/fs/cgroup/test/cpuset.mems
+    echo $$ > /sys/fs/cgroup/test/cgroup.procs
+    swapoff -a
+    # Expectation: Should respect node 0-2 limit.
+    # Observation: Node 3 shows significant allocation (MemFree drops)
+    stress-ng --oomable --vm 1 --vm-bytes 150% --mbind 0,1
+
+Bug 2 reproduction:
+  Assume a system with 6 nodes, where nodes 0-2 are top-tier,
+  node 3 is a far-tier node, and nodes 4-5 are the farthest-tier nodes.
+  All nodes have equal capacity.
+
+  Test script:
+    echo 1 > /sys/kernel/mm/numa/demotion_enabled
+    mkdir /sys/fs/cgroup/test
+    echo +cpuset > /sys/fs/cgroup/cgroup.subtree_control
+    echo "0-2,4-5" > /sys/fs/cgroup/test/cpuset.mems
+    echo $$ > /sys/fs/cgroup/test/cgroup.procs
+    swapoff -a
+    # Expectation: Pages are demoted to Nodes 4-5
+    # Observation: No pages are demoted before oom.
+    stress-ng --oomable --vm 1 --vm-bytes 150% --mbind 0,1,2
+
+Link: https://lkml.kernel.org/r/20260106075703.1420072-1-bingjiao@google.com
+Fixes: 7d709f49babc ("vmscan,cgroup: apply mems_effective to reclaim")
+Signed-off-by: Bing Jiao <bingjiao@google.com>
+Reviewed-by: Gregory Price <gourry@gourry.net>
+Cc: Axel Rasmussen <axelrasmussen@google.com>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Michal Hocko <mhocko@kernel.org>
+Cc: "Michal Koutný" <mkoutny@suse.com>
+Cc: Michal Koutný <mkoutny@suse.com>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Qi Zheng <zhengqi.arch@bytedance.com>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Tejun Heo <tj@kernel.org>
+Cc: Waiman Long <longman@redhat.com>
+Cc: Wei Xu <weixugc@google.com>
+Cc: Yuanchu Xie <yuanchu@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
-BUG: kernel NULL pointer dereference, address: 0000000000000051
-#PF: supervisor read access in kernel mode
-#PF: error_code(0x0000) - not-present page
-PGD 0 P4D 0
-Oops: Oops: 0000 [#1] SMP
-CPU: 0 UID: 0 PID: 336 Comm: (udev-worker) Not tainted 6.18.3 #39 
-PREEMPT(full)
-Hardware name: Default string Default string/SKYBAY, BIOS 5.12 02/21/2023
-RIP: 0010:pick_task_fair+0x57/0x160
-Code: 66 90 66 90 48 8b 5d 50 48 85 db 74 10 48 8b 73 70 48 89 ef e8 3a 
-74 ff ff 85 c0 75 71 be 01 00 00 00 48 89 ef e8 29 a5 ff ff <80> 78 51 
-00 48 89 c3 0f 85 80 00 00 00 48 85 c0 0f 84 87 00 00 00
-RSP: 0018:ffffc9000091bca0 EFLAGS: 00010082
-RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000c00
-RDX: fffffa1b1b2acc00 RSI: 0000000000001000 RDI: 0000000000000400
-RBP: ffff8881255ef000 R08: 0000000000000400 R09: 0000000000000002
-R10: 00000000000003ae R11: ffff88812d2cc200 R12: ffff88845dc2cd00
-R13: 0000000000000000 R14: ffff88845dc2cd80 R15: ffffffff827c71e0
-FS:  00007fed68640980(0000) GS:ffff8884da723000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000000000051 CR3: 00000001244dd006 CR4: 00000000003706f0
-Call Trace:
-  <TASK>
-  pick_next_task_fair+0x1d/0x3d0
-  __schedule+0x1ee/0x10c0
-  ? sock_def_readable+0x3e/0xb0
-  ? sock_poll+0x4d/0xd0
-  schedule+0x23/0xc0
-  schedule_hrtimeout_range_clock+0xf4/0x100
-  do_epoll_wait+0x481/0x4b0
-  ? ep_destroy_wakeup_source+0x20/0x20
-  __x64_sys_epoll_wait+0x5a/0xf0
-  ? syscall_trace_enter+0x8d/0x1a0
-  do_syscall_64+0x50/0x3a0
-  entry_SYSCALL_64_after_hwframe+0x4b/0x53
-RIP: 0033:0x7fed69033ea7
-Code: 0c 00 f7 d8 64 89 02 b8 ff ff ff ff eb be 0f 1f 44 00 00 f3 0f 1e 
-fa 80 3d c5 a4 0c 00 00 41 89 ca 74 10 b8 e8 00 00 00 0f 05 <48> 3d 00 
-f0 ff ff 77 51 c3 55 48 89 e5 48 83 ec 20 89 55 f8 48 89
-RSP: 002b:00007ffd7c3b5508 EFLAGS: 00000202 ORIG_RAX: 00000000000000e8
-RAX: ffffffffffffffda RBX: 0000000000000006 RCX: 00007fed69033ea7
-RDX: 0000000000000006 RSI: 0000558994c733e0 RDI: 0000000000000003
-RBP: 00007ffd7c3b5620 R08: 0000558994c42010 R09: 0000000000000003
-R10: 00000000ffffffff R11: 0000000000000202 R12: 0000558994c733e0
-R13: 0000000000000002 R14: 0000558994c73060 R15: ffffffffffffffff
-  </TASK>
-Modules linked in: i915 drm_buddy intel_gtt drm_client_lib 
-drm_display_helper drm_kms_helper cec rc_core ttm agpgart ixgbe igb mdio 
-i2c_algo_bit libie_fwlog drm dca hwmon intel_oc_wdt i2c_core mei_wdt 
-video wmi
-CR2: 0000000000000051
----[ end trace 0000000000000000 ]---
-RIP: 0010:pick_task_fair+0x57/0x160
-Code: 66 90 66 90 48 8b 5d 50 48 85 db 74 10 48 8b 73 70 48 89 ef e8 3a 
-74 ff ff 85 c0 75 71 be 01 00 00 00 48 89 ef e8 29 a5 ff ff <80> 78 51 
-00 48 89 c3 0f 85 80 00 00 00 48 85 c0 0f 84 87 00 00 00
-RSP: 0018:ffffc9000091bca0 EFLAGS: 00010082
-RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000c00
-RDX: fffffa1b1b2acc00 RSI: 0000000000001000 RDI: 0000000000000400
-RBP: ffff8881255ef000 R08: 0000000000000400 R09: 0000000000000002
-R10: 00000000000003ae R11: ffff88812d2cc200 R12: ffff88845dc2cd00
-R13: 0000000000000000 R14: ffff88845dc2cd80 R15: ffffffff827c71e0
-FS:  00007fed68640980(0000) GS:ffff8884da723000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000000000051 CR3: 00000001244dd006 CR4: 00000000003706f0
-Kernel panic - not syncing: Fatal exception
-Shutting down cpus with NMI
-Kernel Offset: disabled
-Rebooting in 30 seconds..
----
 
-Let me know if I can provide anymore information!
+ include/linux/cpuset.h     |    6 +--
+ include/linux/memcontrol.h |    6 +--
+ kernel/cgroup/cpuset.c     |   54 +++++++++++++++++++++++------------
+ mm/memcontrol.c            |   16 +++++++++-
+ mm/vmscan.c                |   30 +++++++++++--------
+ 5 files changed, 74 insertions(+), 38 deletions(-)
 
--- Dylan
+--- a/include/linux/cpuset.h~mm-vmscan-fix-demotion-targets-checks-in-reclaim-demotion
++++ a/include/linux/cpuset.h
+@@ -174,7 +174,7 @@ static inline void set_mems_allowed(node
+ 	task_unlock(current);
+ }
+ 
+-extern bool cpuset_node_allowed(struct cgroup *cgroup, int nid);
++extern void cpuset_nodes_allowed(struct cgroup *cgroup, nodemask_t *mask);
+ #else /* !CONFIG_CPUSETS */
+ 
+ static inline bool cpusets_enabled(void) { return false; }
+@@ -301,9 +301,9 @@ static inline bool read_mems_allowed_ret
+ 	return false;
+ }
+ 
+-static inline bool cpuset_node_allowed(struct cgroup *cgroup, int nid)
++static inline void cpuset_nodes_allowed(struct cgroup *cgroup, nodemask_t *mask)
+ {
+-	return true;
++	nodes_copy(*mask, node_states[N_MEMORY]);
+ }
+ #endif /* !CONFIG_CPUSETS */
+ 
+--- a/include/linux/memcontrol.h~mm-vmscan-fix-demotion-targets-checks-in-reclaim-demotion
++++ a/include/linux/memcontrol.h
+@@ -1744,7 +1744,7 @@ static inline void count_objcg_events(st
+ 	rcu_read_unlock();
+ }
+ 
+-bool mem_cgroup_node_allowed(struct mem_cgroup *memcg, int nid);
++void mem_cgroup_node_filter_allowed(struct mem_cgroup *memcg, nodemask_t *mask);
+ 
+ void mem_cgroup_show_protected_memory(struct mem_cgroup *memcg);
+ 
+@@ -1815,9 +1815,9 @@ static inline ino_t page_cgroup_ino(stru
+ 	return 0;
+ }
+ 
+-static inline bool mem_cgroup_node_allowed(struct mem_cgroup *memcg, int nid)
++static inline void mem_cgroup_node_filter_allowed(struct mem_cgroup *memcg,
++						  nodemask_t *mask)
+ {
+-	return true;
+ }
+ 
+ static inline void mem_cgroup_show_protected_memory(struct mem_cgroup *memcg)
+--- a/kernel/cgroup/cpuset.c~mm-vmscan-fix-demotion-targets-checks-in-reclaim-demotion
++++ a/kernel/cgroup/cpuset.c
+@@ -4416,40 +4416,58 @@ bool cpuset_current_node_allowed(int nod
+ 	return allowed;
+ }
+ 
+-bool cpuset_node_allowed(struct cgroup *cgroup, int nid)
++/**
++ * cpuset_nodes_allowed - return effective_mems mask from a cgroup cpuset.
++ * @cgroup: pointer to struct cgroup.
++ * @mask: pointer to struct nodemask_t to be returned.
++ *
++ * Returns effective_mems mask from a cgroup cpuset if it is cgroup v2 and
++ * has cpuset subsys. Otherwise, returns node_states[N_MEMORY].
++ *
++ * This function intentionally avoids taking the cpuset_mutex or callback_lock
++ * when accessing effective_mems. This is because the obtained effective_mems
++ * is stale immediately after the query anyway (e.g., effective_mems is updated
++ * immediately after releasing the lock but before returning).
++ *
++ * As a result, returned @mask may be empty because cs->effective_mems can be
++ * rebound during this call. Besides, nodes in @mask are not guaranteed to be
++ * online due to hot plugins. Callers should check the mask for validity on
++ * return based on its subsequent use.
++ **/
++void cpuset_nodes_allowed(struct cgroup *cgroup, nodemask_t *mask)
+ {
+ 	struct cgroup_subsys_state *css;
+ 	struct cpuset *cs;
+-	bool allowed;
+ 
+ 	/*
+ 	 * In v1, mem_cgroup and cpuset are unlikely in the same hierarchy
+ 	 * and mems_allowed is likely to be empty even if we could get to it,
+-	 * so return true to avoid taking a global lock on the empty check.
++	 * so return directly to avoid taking a global lock on the empty check.
+ 	 */
+-	if (!cpuset_v2())
+-		return true;
++	if (!cgroup || !cpuset_v2()) {
++		nodes_copy(*mask, node_states[N_MEMORY]);
++		return;
++	}
+ 
+ 	css = cgroup_get_e_css(cgroup, &cpuset_cgrp_subsys);
+-	if (!css)
+-		return true;
++	if (!css) {
++		nodes_copy(*mask, node_states[N_MEMORY]);
++		return;
++	}
+ 
+ 	/*
+-	 * Normally, accessing effective_mems would require the cpuset_mutex
+-	 * or callback_lock - but node_isset is atomic and the reference
+-	 * taken via cgroup_get_e_css is sufficient to protect css.
+-	 *
+-	 * Since this interface is intended for use by migration paths, we
+-	 * relax locking here to avoid taking global locks - while accepting
+-	 * there may be rare scenarios where the result may be innaccurate.
++	 * The reference taken via cgroup_get_e_css is sufficient to
++	 * protect css, but it does not imply safe accesses to effective_mems.
+ 	 *
+-	 * Reclaim and migration are subject to these same race conditions, and
+-	 * cannot make strong isolation guarantees, so this is acceptable.
++	 * Normally, accessing effective_mems would require the cpuset_mutex
++	 * or callback_lock - but the correctness of this information is stale
++	 * immediately after the query anyway. We do not acquire the lock
++	 * during this process to save lock contention in exchange for racing
++	 * against mems_allowed rebinds.
+ 	 */
+ 	cs = container_of(css, struct cpuset, css);
+-	allowed = node_isset(nid, cs->effective_mems);
++	nodes_copy(*mask, cs->effective_mems);
+ 	css_put(css);
+-	return allowed;
+ }
+ 
+ /**
+--- a/mm/memcontrol.c~mm-vmscan-fix-demotion-targets-checks-in-reclaim-demotion
++++ a/mm/memcontrol.c
+@@ -5624,9 +5624,21 @@ subsys_initcall(mem_cgroup_swap_init);
+ 
+ #endif /* CONFIG_SWAP */
+ 
+-bool mem_cgroup_node_allowed(struct mem_cgroup *memcg, int nid)
++void mem_cgroup_node_filter_allowed(struct mem_cgroup *memcg, nodemask_t *mask)
+ {
+-	return memcg ? cpuset_node_allowed(memcg->css.cgroup, nid) : true;
++	nodemask_t allowed;
++
++	if (!memcg)
++		return;
++
++	/*
++	 * Since this interface is intended for use by migration paths, and
++	 * reclaim and migration are subject to race conditions such as changes
++	 * in effective_mems and hot-unpluging of nodes, inaccurate allowed
++	 * mask is acceptable.
++	 */
++	cpuset_nodes_allowed(memcg->css.cgroup, &allowed);
++	nodes_and(*mask, *mask, allowed);
+ }
+ 
+ void mem_cgroup_show_protected_memory(struct mem_cgroup *memcg)
+--- a/mm/vmscan.c~mm-vmscan-fix-demotion-targets-checks-in-reclaim-demotion
++++ a/mm/vmscan.c
+@@ -344,19 +344,21 @@ static void flush_reclaim_state(struct s
+ static bool can_demote(int nid, struct scan_control *sc,
+ 		       struct mem_cgroup *memcg)
+ {
+-	int demotion_nid;
++	struct pglist_data *pgdat = NODE_DATA(nid);
++	nodemask_t allowed_mask;
+ 
+-	if (!numa_demotion_enabled)
++	if (!pgdat || !numa_demotion_enabled)
+ 		return false;
+ 	if (sc && sc->no_demotion)
+ 		return false;
+ 
+-	demotion_nid = next_demotion_node(nid);
+-	if (demotion_nid == NUMA_NO_NODE)
++	node_get_allowed_targets(pgdat, &allowed_mask);
++	if (nodes_empty(allowed_mask))
+ 		return false;
+ 
+-	/* If demotion node isn't in the cgroup's mems_allowed, fall back */
+-	return mem_cgroup_node_allowed(memcg, demotion_nid);
++	/* Filter out nodes that are not in cgroup's mems_allowed. */
++	mem_cgroup_node_filter_allowed(memcg, &allowed_mask);
++	return !nodes_empty(allowed_mask);
+ }
+ 
+ static inline bool can_reclaim_anon_pages(struct mem_cgroup *memcg,
+@@ -1019,7 +1021,8 @@ static struct folio *alloc_demote_folio(
+  * Folios which are not demoted are left on @demote_folios.
+  */
+ static unsigned int demote_folio_list(struct list_head *demote_folios,
+-				     struct pglist_data *pgdat)
++				      struct pglist_data *pgdat,
++				      struct mem_cgroup *memcg)
+ {
+ 	int target_nid = next_demotion_node(pgdat->node_id);
+ 	unsigned int nr_succeeded;
+@@ -1033,7 +1036,6 @@ static unsigned int demote_folio_list(st
+ 		 */
+ 		.gfp_mask = (GFP_HIGHUSER_MOVABLE & ~__GFP_RECLAIM) |
+ 			__GFP_NOMEMALLOC | GFP_NOWAIT,
+-		.nid = target_nid,
+ 		.nmask = &allowed_mask,
+ 		.reason = MR_DEMOTION,
+ 	};
+@@ -1041,10 +1043,14 @@ static unsigned int demote_folio_list(st
+ 	if (list_empty(demote_folios))
+ 		return 0;
+ 
+-	if (target_nid == NUMA_NO_NODE)
+-		return 0;
+-
+ 	node_get_allowed_targets(pgdat, &allowed_mask);
++	mem_cgroup_node_filter_allowed(memcg, &allowed_mask);
++	if (nodes_empty(allowed_mask))
++		return false;
++
++	if (!node_isset(target_nid, allowed_mask))
++		target_nid = node_random(&allowed_mask);
++	mtc.nid = target_nid;
+ 
+ 	/* Demotion ignores all cpuset and mempolicy settings */
+ 	migrate_pages(demote_folios, alloc_demote_folio, NULL,
+@@ -1566,7 +1572,7 @@ keep:
+ 	/* 'folio_list' is always empty here */
+ 
+ 	/* Migrate folios selected for demotion */
+-	nr_demoted = demote_folio_list(&demote_folios, pgdat);
++	nr_demoted = demote_folio_list(&demote_folios, pgdat, memcg);
+ 	nr_reclaimed += nr_demoted;
+ 	stat->nr_demoted += nr_demoted;
+ 	/* Folios that could not be demoted are still in @demote_folios */
+_
+
+Patches currently in -mm which might be from bingjiao@google.com are
+
+mm-vmscan-fix-demotion-targets-checks-in-reclaim-demotion.patch
 
 
