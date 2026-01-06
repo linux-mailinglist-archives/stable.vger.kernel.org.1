@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-205797-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205520-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 368C4CF9EEE
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:06:47 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3684CF9E36
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 18:56:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 241D7302A0D9
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:06:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1E0A7319FCF2
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:43:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBBCD846F;
-	Tue,  6 Jan 2026 17:51:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F18A3358A7;
+	Tue,  6 Jan 2026 17:36:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gSvWjROg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xdwX2nQZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7583F1F8BD6;
-	Tue,  6 Jan 2026 17:51:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0145335559;
+	Tue,  6 Jan 2026 17:36:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721894; cv=none; b=FJQm40RX0parbIeiU3nBN7u6mDz4xvPdU1dgcbju/hSl8lELH351jrEOQUmvccYX7se5fCZEdXM/ecQnxKEgRZci5+fIgNM7/cmWrbVL5T2Ddmwdd5WSyxV6I0jzo2JpmxUi6gOgjNxfcmZSWm/NTjVFRUMlEfW0GApNJPmwhhU=
+	t=1767720965; cv=none; b=Ha7lDubSBNtlLxwM4RU9eBaUz2uVLDPSq50IzD+912YI6+bWgH7FIi8NZccSiqFIXtYdxj2Yv8hjWWT5UWnLiYpzryPU5AAqLXafHS9Rchzi+NXACFWkf4nnPPhlLzPCsfcAqJTkGzwYesDeb3Ax4SYEEcrluwk9JZPEKqDHSJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721894; c=relaxed/simple;
-	bh=shVoZCI5avjlqkvwPWcwL9e+5NKd4zBMAZwXy5vAIXw=;
+	s=arc-20240116; t=1767720965; c=relaxed/simple;
+	bh=4Ey8xn3Idk368EMUo0dHym4FL+A8OxXW+6qB+Cgw3GY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O4jV6KJ7JHrfaeHCzchocQVrD/Ih8KFcDlTqQkvznldHeGABhefQw3q8yIl6xtYf+RFPXTAUDuhyuufsjBwAlSsMY6dPbQdlXOtyUU4HzYkvgxnmx+KorMd06/kAn8mSBtBXCXvGY75qoCnDT0xPcd58K5g1Ip/T/bnkQrfhmko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gSvWjROg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D299AC19423;
-	Tue,  6 Jan 2026 17:51:33 +0000 (UTC)
+	 MIME-Version; b=APzhSVIWgIa19M5fSrXSKfhKcNIh35kVgZyVhLpfCJsq72PxmoX54RarSqGuo5EHTttaYUL1TvtfjKvpgVkgQXreWxq6MYZnDNk4+vv1QpukGZwdL/3JvL39drq1U1BGhsUDh8GPssje/aSekbPCQUJ7Jah4F08rFxhAWiRztA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xdwX2nQZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40573C116C6;
+	Tue,  6 Jan 2026 17:36:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721894;
-	bh=shVoZCI5avjlqkvwPWcwL9e+5NKd4zBMAZwXy5vAIXw=;
+	s=korg; t=1767720965;
+	bh=4Ey8xn3Idk368EMUo0dHym4FL+A8OxXW+6qB+Cgw3GY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gSvWjROgC+tHmCkTxXNMF7rasGyVnl6Gh2CJ0eqw3Gp++i0fzSwCy9DGSriRUl1WZ
-	 4xw8py94Y5P3oQykVzpiPia/kEqmVhRi3AFhO2Gp7uc6ICTutotaUHokxaI5L+q6qi
-	 gB7qbK2dm6mjJAQf92XI7bpRKaMl1vZjdKyKX3l8=
+	b=xdwX2nQZcxcLQdKwTs6C55oSVrXr0f8FCRarRh2SKa89NBkYv/7FmRVoNzxqtiitg
+	 ml7XDHY+8kUgkt0bDIHh6XpDrjb3+Vxf8acMWruLI+brQB9le/IW2/4MqngHgrBbTe
+	 1UqAU4f7DtN+MU3XccDlONFJ7oFpstcFVvNgSKTs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stable@vger.kernel.org,
-	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
-	Mark Brown <broonie@kernel.org>,
-	Alexey Klimov <alexey.klimov@linaro.org>
-Subject: [PATCH 6.18 104/312] ASoC: qcom: q6apm-dai: set flags to reflect correct operation of appl_ptr
+	Mahesh Rao <mahesh.rao@altera.com>,
+	Matthew Gerlach <matthew.gerlach@altera.com>,
+	Dinh Nguyen <dinguyen@kernel.org>
+Subject: [PATCH 6.12 396/567] firmware: stratix10-svc: Add mutex in stratix10 memory management
 Date: Tue,  6 Jan 2026 18:02:58 +0100
-Message-ID: <20260106170551.599415961@linuxfoundation.org>
+Message-ID: <20260106170505.989558760@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
-References: <20260106170547.832845344@linuxfoundation.org>
+In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
+References: <20260106170451.332875001@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +60,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+From: Mahesh Rao <mahesh.rao@altera.com>
 
-commit 950a4e5788fc7dc6e8e93614a7d4d0449c39fb8d upstream.
+commit 85f96cbbbc67b59652b2c1ec394b8ddc0ddf1b0b upstream.
 
-Driver does not expect the appl_ptr to move backward and requires
-explict sync. Make sure that the userspace does not do appl_ptr rewinds
-by specifying the correct flags in pcm_info.
+Add mutex lock to stratix10_svc_allocate_memory and
+stratix10_svc_free_memory for thread safety. This prevents race
+conditions and ensures proper synchronization during memory operations.
+This is required for parallel communication with the Stratix10 service
+channel.
 
-Without this patch, the result could be a forever loop as current logic assumes
-that appl_ptr can only move forward.
-
-Fixes: 3d4a4411aa8b ("ASoC: q6apm-dai: schedule all available frames to avoid dsp under-runs")
-Cc: Stable@vger.kernel.org
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
-Tested-by: Alexey Klimov <alexey.klimov@linaro.org> # RB5, RB3
-Link: https://patch.msgid.link/20251023102444.88158-2-srinivas.kandagatla@oss.qualcomm.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 7ca5ce896524f ("firmware: add Intel Stratix10 service layer driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Mahesh Rao <mahesh.rao@altera.com>
+Reviewed-by: Matthew Gerlach <matthew.gerlach@altera.com>
+Signed-off-by: Dinh Nguyen <dinguyen@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/qcom/qdsp6/q6apm-dai.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/firmware/stratix10-svc.c |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
---- a/sound/soc/qcom/qdsp6/q6apm-dai.c
-+++ b/sound/soc/qcom/qdsp6/q6apm-dai.c
-@@ -86,6 +86,7 @@ static const struct snd_pcm_hardware q6a
- 	.info =                 (SNDRV_PCM_INFO_MMAP | SNDRV_PCM_INFO_BLOCK_TRANSFER |
- 				 SNDRV_PCM_INFO_MMAP_VALID | SNDRV_PCM_INFO_INTERLEAVED |
- 				 SNDRV_PCM_INFO_PAUSE | SNDRV_PCM_INFO_RESUME |
-+				 SNDRV_PCM_INFO_NO_REWINDS | SNDRV_PCM_INFO_SYNC_APPLPTR |
- 				 SNDRV_PCM_INFO_BATCH),
- 	.formats =              (SNDRV_PCM_FMTBIT_S16_LE | SNDRV_PCM_FMTBIT_S24_LE),
- 	.rates =                SNDRV_PCM_RATE_8000_48000,
-@@ -105,6 +106,7 @@ static const struct snd_pcm_hardware q6a
- 	.info =                 (SNDRV_PCM_INFO_MMAP | SNDRV_PCM_INFO_BLOCK_TRANSFER |
- 				 SNDRV_PCM_INFO_MMAP_VALID | SNDRV_PCM_INFO_INTERLEAVED |
- 				 SNDRV_PCM_INFO_PAUSE | SNDRV_PCM_INFO_RESUME |
-+				 SNDRV_PCM_INFO_NO_REWINDS | SNDRV_PCM_INFO_SYNC_APPLPTR |
- 				 SNDRV_PCM_INFO_BATCH),
- 	.formats =              (SNDRV_PCM_FMTBIT_S16_LE | SNDRV_PCM_FMTBIT_S24_LE),
- 	.rates =                SNDRV_PCM_RATE_8000_192000,
+--- a/drivers/firmware/stratix10-svc.c
++++ b/drivers/firmware/stratix10-svc.c
+@@ -1,6 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0
+ /*
+  * Copyright (C) 2017-2018, Intel Corporation
++ * Copyright (C) 2025, Altera Corporation
+  */
+ 
+ #include <linux/completion.h>
+@@ -176,6 +177,12 @@ static LIST_HEAD(svc_ctrl);
+ static LIST_HEAD(svc_data_mem);
+ 
+ /**
++ * svc_mem_lock protects access to the svc_data_mem list for
++ * concurrent multi-client operations
++ */
++static DEFINE_MUTEX(svc_mem_lock);
++
++/**
+  * svc_pa_to_va() - translate physical address to virtual address
+  * @addr: to be translated physical address
+  *
+@@ -187,6 +194,7 @@ static void *svc_pa_to_va(unsigned long
+ 	struct stratix10_svc_data_mem *pmem;
+ 
+ 	pr_debug("claim back P-addr=0x%016x\n", (unsigned int)addr);
++	guard(mutex)(&svc_mem_lock);
+ 	list_for_each_entry(pmem, &svc_data_mem, node)
+ 		if (pmem->paddr == addr)
+ 			return pmem->vaddr;
+@@ -996,6 +1004,7 @@ int stratix10_svc_send(struct stratix10_
+ 			p_data->flag = ct->flags;
+ 		}
+ 	} else {
++		guard(mutex)(&svc_mem_lock);
+ 		list_for_each_entry(p_mem, &svc_data_mem, node)
+ 			if (p_mem->vaddr == p_msg->payload) {
+ 				p_data->paddr = p_mem->paddr;
+@@ -1078,6 +1087,7 @@ void *stratix10_svc_allocate_memory(stru
+ 	if (!pmem)
+ 		return ERR_PTR(-ENOMEM);
+ 
++	guard(mutex)(&svc_mem_lock);
+ 	va = gen_pool_alloc(genpool, s);
+ 	if (!va)
+ 		return ERR_PTR(-ENOMEM);
+@@ -1106,6 +1116,7 @@ EXPORT_SYMBOL_GPL(stratix10_svc_allocate
+ void stratix10_svc_free_memory(struct stratix10_svc_chan *chan, void *kaddr)
+ {
+ 	struct stratix10_svc_data_mem *pmem;
++	guard(mutex)(&svc_mem_lock);
+ 
+ 	list_for_each_entry(pmem, &svc_data_mem, node)
+ 		if (pmem->vaddr == kaddr) {
 
 
 
