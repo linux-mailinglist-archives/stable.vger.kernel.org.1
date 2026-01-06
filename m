@@ -1,51 +1,52 @@
-Return-Path: <stable+bounces-205269-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205280-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7DF1CF9C7A
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 18:42:37 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0CB9CFA155
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:21:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3AFD0317F440
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:32:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 716BA30B3708
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:33:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B109B350D4B;
-	Tue,  6 Jan 2026 17:22:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9053354AD0;
+	Tue,  6 Jan 2026 17:22:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A0h+Y5+S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g85A8zCN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F2B8350D46;
-	Tue,  6 Jan 2026 17:22:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C119354ACC;
+	Tue,  6 Jan 2026 17:22:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767720135; cv=none; b=groMyP0PVOzcmPr/Ri/KHTTPRzZothlF73FuvOTwtzixIL4eMi6DjsPy0IzncSgGOsTVrbUlTS1DCZ56qBR4aKeVhGps8g1/lOTaOxNqAnTGo5eYnkhaY74i79a7wa6VI++Mc2ICn4pFzqWFBWz9dO27hSxdFv/BybAX1DpEGlY=
+	t=1767720172; cv=none; b=p+MxcVAL2vvmyYht6x+ddBRttGmOvCGH1FMEtoBBObYpTisF8vJK1+5jSRIsKdMpkyI9nsCydB0ETgLhRKHbcy7TiWHCAZeALicDVKAdIAwLOm3UPrlXqHRKBpCXPGGyoOiLsh1AyUz+a5XCa//9LIvl5gEOsQsM4JsS0BkN0yA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767720135; c=relaxed/simple;
-	bh=m9GHbLSEtaN7y/EOoc7W1fbjFP2PUM0BFf+8hznNlcc=;
+	s=arc-20240116; t=1767720172; c=relaxed/simple;
+	bh=3rN71iMgzjzk4aVD0T10VdKAbkNRc0gjVTqO6pJm/gw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g3LVgZrhjT9DmQvZCFvbs8xQfs83OSIXovO+sHmiCGN6mbypEbijF1h9XBKL9uyN2q7Gy7LXenA0bAXuO9OkR7KY9WY57vKBde+d+MljTIPXqeqgP2/M55Qt/hA9Z3v+LM9EOTAoy6B11Xd+ITdJP03UKJeZ2PvkTe+qswNJDcs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A0h+Y5+S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C975FC116C6;
-	Tue,  6 Jan 2026 17:22:14 +0000 (UTC)
+	 MIME-Version; b=owZ7oabn49nh6cUmXtFBkoDYSsIL2c3ZN0iu73x84o3SGPdQLxBiMjeISngjYLTsR0HrBRHu8eIlUah1dPUIJLbyv2VujtRLzXJ1RVCSh6YzUr++JrjtcqTxmFQgExZ87YbZJ/Jsp+xCbhzwalgHRQg+QMCa5iBx/52UnoQlzHU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g85A8zCN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A79E1C116C6;
+	Tue,  6 Jan 2026 17:22:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767720135;
-	bh=m9GHbLSEtaN7y/EOoc7W1fbjFP2PUM0BFf+8hznNlcc=;
+	s=korg; t=1767720172;
+	bh=3rN71iMgzjzk4aVD0T10VdKAbkNRc0gjVTqO6pJm/gw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A0h+Y5+SodIyZuPtwtbr+DXj4MDhcZYrExI8B2NVjv0KLbXXl8PAKoDQ0XKCGndwR
-	 WzKdp8INBLfJC51sHTTafPYaoFD57xptezgMWCWYQIy+FedSynklLNL/541A3+tLRt
-	 9YuOtBxMLg4W5VdWykCTTNJtDJGHW/+iom26p+zE=
+	b=g85A8zCN6MYQaVWD8e8i6xFVf58beMpKtkZCDt9Zwpgf2ksLKpUOnmojRpCBItth+
+	 BJHQ8aO7fW0Dp4lBfqOMn8Hn30Ic67nDPsBbIpGHcMa5FrbtE4BaaQjbFYfnWhIdZ6
+	 Z5KSrtK5izFNeh58D9hVaqPqi/TcISalVBDvqQdI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Pearson <mpearson-lenovo@squebb.ca>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	kernel test robot <lkp@intel.com>,
+	Pei Xiao <xiaopei01@kylinos.cn>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 137/567] usb: typec: ucsi: Handle incorrect num_connectors capability
-Date: Tue,  6 Jan 2026 17:58:39 +0100
-Message-ID: <20260106170456.394323064@linuxfoundation.org>
+Subject: [PATCH 6.12 138/567] iio: adc: ti_am335x_adc: Limit step_avg to valid range for gcc complains
+Date: Tue,  6 Jan 2026 17:58:40 +0100
+Message-ID: <20260106170456.431832290@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
 References: <20260106170451.332875001@linuxfoundation.org>
@@ -64,47 +65,46 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Mark Pearson <mpearson-lenovo@squebb.ca>
+From: Pei Xiao <xiaopei01@kylinos.cn>
 
-[ Upstream commit 30cd2cb1abf4c4acdb1ddb468c946f68939819fb ]
+[ Upstream commit c9fb952360d0c78bbe98239bd6b702f05c2dbb31 ]
 
-The UCSI spec states that the num_connectors field is 7 bits, and the
-8th bit is reserved and should be set to zero.
-Some buggy FW has been known to set this bit, and it can lead to a
-system not booting.
-Flag that the FW is not behaving correctly, and auto-fix the value
-so that the system boots correctly.
+FIELD_PREP() checks that a value fits into the available bitfield, add a
+check for step_avg to fix gcc complains.
 
-Found on Lenovo P1 G8 during Linux enablement program. The FW will
-be fixed, but seemed worth addressing in case it hit platforms that
-aren't officially Linux supported.
+which gcc complains about:
+  drivers/iio/adc/ti_am335x_adc.c: In function 'tiadc_step_config':
+  include/linux/compiler_types.h:572:38: error: call to
+'__compiletime_assert_491' declared with attribute error: FIELD_PREP: value
+too large for the field include/linux/mfd/ti_am335x_tscadc.h:58:29: note:
+in expansion of macro 'FIELD_PREP'
+    #define STEPCONFIG_AVG(val) FIELD_PREP(GENMASK(4, 2), (val))
+                                ^~~~~~~~~~
+drivers/iio/adc/ti_am335x_adc.c:127:17: note: in expansion of macro 'STEPCONFIG_AVG'
+	stepconfig = STEPCONFIG_AVG(ffs(adc_dev->step_avg[i]) - 1)
 
-Signed-off-by: Mark Pearson <mpearson-lenovo@squebb.ca>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20250821185319.2585023-1-mpearson-lenovo@squebb.ca
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202510102117.Jqxrw1vF-lkp@intel.com/
+Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/ucsi/ucsi.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/iio/adc/ti_am335x_adc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/usb/typec/ucsi/ucsi.c b/drivers/usb/typec/ucsi/ucsi.c
-index 896e6bc1b5e2..9a0fb6a79b21 100644
---- a/drivers/usb/typec/ucsi/ucsi.c
-+++ b/drivers/usb/typec/ucsi/ucsi.c
-@@ -1772,6 +1772,12 @@ static int ucsi_init(struct ucsi *ucsi)
- 		ret = -ENODEV;
- 		goto err_reset;
- 	}
-+	/* Check if reserved bit set. This is out of spec but happens in buggy FW */
-+	if (ucsi->cap.num_connectors & 0x80) {
-+		dev_warn(ucsi->dev, "UCSI: Invalid num_connectors %d. Likely buggy FW\n",
-+			 ucsi->cap.num_connectors);
-+		ucsi->cap.num_connectors &= 0x7f; // clear bit and carry on
-+	}
+diff --git a/drivers/iio/adc/ti_am335x_adc.c b/drivers/iio/adc/ti_am335x_adc.c
+index 426e3c9f88a1..205d1f103b3c 100644
+--- a/drivers/iio/adc/ti_am335x_adc.c
++++ b/drivers/iio/adc/ti_am335x_adc.c
+@@ -123,7 +123,7 @@ static void tiadc_step_config(struct iio_dev *indio_dev)
  
- 	/* Allocate the connectors. Released in ucsi_unregister() */
- 	connector = kcalloc(ucsi->cap.num_connectors + 1, sizeof(*connector), GFP_KERNEL);
+ 		chan = adc_dev->channel_line[i];
+ 
+-		if (adc_dev->step_avg[i])
++		if (adc_dev->step_avg[i] && adc_dev->step_avg[i] <= STEPCONFIG_AVG_16)
+ 			stepconfig = STEPCONFIG_AVG(ffs(adc_dev->step_avg[i]) - 1) |
+ 				     STEPCONFIG_FIFO1;
+ 		else
 -- 
 2.51.0
 
