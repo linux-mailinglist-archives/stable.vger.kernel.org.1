@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-205357-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205359-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2CF0CFA53E
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:52:42 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 782E0CFA5B4
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:56:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 67B11317AFEF
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:06:46 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4A7B03047AC1
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:56:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 524CA34AAF0;
-	Tue,  6 Jan 2026 17:27:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1181C34C81E;
+	Tue,  6 Jan 2026 17:27:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qrfHpons"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S4X5V/4Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC7C134A793;
-	Tue,  6 Jan 2026 17:27:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C060234B41E;
+	Tue,  6 Jan 2026 17:27:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767720424; cv=none; b=po5+ATRKGGT0oWz6NLx377HsGHkcv+D/3L7igYSbaDTaBsMXmOiGOzh/6vsEnhAg3T640hG3ydMwDL6oWaiXQyFPRnOJsCl8imCMSBxpOMbtI681HjXDvForJDzpeHgrHwUacvKOFU4RnXFSzu2rNzInQC8tXb7ekyvRgFzqU8U=
+	t=1767720430; cv=none; b=CHBAU9KAUuqtCIVKQH9ob+0p6QrvfmUdxjiHNxkz63GjyKd+21LNKuQPcVwsk3D7zA5ZwyPqlYbCBfrZBY8YaLhOeb/h6hmcVJSfJaAau0HQzRkCZ82L2Q5vjgGGTVx+P20DT48JEhQ774O8DNgYNI8gkGB8obp4+XhVL9biZdk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767720424; c=relaxed/simple;
-	bh=sP3Ue+h1ZeH2SpphQp6JPH+JrlpmbHSlbIvZPeiW8cQ=;
+	s=arc-20240116; t=1767720430; c=relaxed/simple;
+	bh=DWs5oPl3VMppU7a7WtVIjtszQakfbZuJL1dHv66EZ5U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IR/y/HJACN1Npuz4Sz5dWyIvIftR5BsY+PRf51dUUW6NBctWyiUglHRGmdWzaghBMh9fUeMqXY/vnOyDhNjzkb//bYq9peNnPdqVA6Z4ZSCoeTK1SHKb5D5SpuqilCAPszlNgKYBwGOksXdJPi5Sy2SoJX/aj6y7gFESKRX/Yk8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qrfHpons; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F515C116C6;
-	Tue,  6 Jan 2026 17:27:03 +0000 (UTC)
+	 MIME-Version; b=uVZR7CDKVpBTVav66X+K87uETf7jl4Or8Bkh+hTZjLPgVgL820XHnuWT5iRlVe0+axOGx2AVmhm+oZ4Ij9uooNtxJsSfLN2OQGLt7iWcupTJmVyw3K9L+3tZGb3oFTdKtDI78HJxFLBihcWpiR29uYsX2ZQFPaMIdbwrTwwXbZ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S4X5V/4Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD5B9C116C6;
+	Tue,  6 Jan 2026 17:27:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767720423;
-	bh=sP3Ue+h1ZeH2SpphQp6JPH+JrlpmbHSlbIvZPeiW8cQ=;
+	s=korg; t=1767720430;
+	bh=DWs5oPl3VMppU7a7WtVIjtszQakfbZuJL1dHv66EZ5U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qrfHponsaR3GT3xLQdYQ7FEtnQRxdVnW5X1vveMpDotqpYzOZEjHlfp8r8FuMw/tZ
-	 IAw+qg7JNzVcpchnt+3G+96SYsrNYdNOxPeGq7/3grvja7YrKjEtE5c02hI5LzGR95
-	 0zlAeuoKznbdTEJljNv48T4znQbeZRyAvmKvRTDM=
+	b=S4X5V/4QpbTMNd27XTRz5tGvZegipqdh22EEacbLvTmGAHMVpZX8EwmSTMPPXswns
+	 KfLNFA9oMXGPdP89a1X/499TFDxD2dSgeFjhC/bnQgWKQGYhoTOEIIXalwK8VuFUro
+	 JPAQXRb200D0CCP8/lRySR4CtjJni+Woudjq01t0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Carlos Maiolino <cem@kernel.org>
-Subject: [PATCH 6.12 232/567] xfs: fix a UAF problem in xattr repair
-Date: Tue,  6 Jan 2026 18:00:14 +0100
-Message-ID: <20260106170459.895096287@linuxfoundation.org>
+	Ed Tsai <ed.tsai@mediatek.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.12 234/567] PM: runtime: Do not clear needs_force_resume with enabled runtime PM
+Date: Tue,  6 Jan 2026 18:00:16 +0100
+Message-ID: <20260106170459.976543835@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
 References: <20260106170451.332875001@linuxfoundation.org>
@@ -64,48 +64,64 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Darrick J. Wong <djwong@kernel.org>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-commit 5990fd756943836978ad184aac980e2b36ab7e01 upstream.
+commit 359afc8eb02a518fbdd0cbd462c8c2827c6cbec2 upstream.
 
-The xchk_setup_xattr_buf function can allocate a new value buffer, which
-means that any reference to ab->value before the call could become a
-dangling pointer.  Fix this by moving an assignment to after the buffer
-setup.
+Commit 89d9cec3b1e9 ("PM: runtime: Clear power.needs_force_resume in
+pm_runtime_reinit()") added provisional clearing of power.needs_force_resume
+to pm_runtime_reinit(), but it is done unconditionally which is a
+mistake because pm_runtime_reinit() may race with driver probing
+and removal [1].
 
-Cc: stable@vger.kernel.org # v6.10
-Fixes: e47dcf113ae348 ("xfs: repair extended attributes")
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Carlos Maiolino <cem@kernel.org>
+To address this, notice that power.needs_force_resume should never
+be set when runtime PM is enabled and so it only needs to be cleared
+when runtime PM is disabled, and update pm_runtime_init() to only
+clear that flag when runtime PM is disabled.
+
+Fixes: 89d9cec3b1e9 ("PM: runtime: Clear power.needs_force_resume in pm_runtime_reinit()")
+Reported-by: Ed Tsai <ed.tsai@mediatek.com>
+Closes: https://lore.kernel.org/linux-pm/20251215122154.3180001-1-ed.tsai@mediatek.com/ [1]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Cc: 6.17+ <stable@vger.kernel.org> # 6.17+
+Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
+Link: https://patch.msgid.link/12807571.O9o76ZdvQC@rafael.j.wysocki
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/scrub/attr_repair.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/base/power/runtime.c |   22 ++++++++++++----------
+ 1 file changed, 12 insertions(+), 10 deletions(-)
 
-diff --git a/fs/xfs/scrub/attr_repair.c b/fs/xfs/scrub/attr_repair.c
-index c7eb94069caf..09d63aa10314 100644
---- a/fs/xfs/scrub/attr_repair.c
-+++ b/fs/xfs/scrub/attr_repair.c
-@@ -333,7 +333,6 @@ xrep_xattr_salvage_remote_attr(
- 		.attr_filter		= ent->flags & XFS_ATTR_NSP_ONDISK_MASK,
- 		.namelen		= rentry->namelen,
- 		.name			= rentry->name,
--		.value			= ab->value,
- 		.valuelen		= be32_to_cpu(rentry->valuelen),
- 	};
- 	unsigned int			namesize;
-@@ -363,6 +362,7 @@ xrep_xattr_salvage_remote_attr(
- 		error = -EDEADLOCK;
- 	if (error)
- 		return error;
-+	args.value = ab->value;
- 
- 	/* Look up the remote value and stash it for reconstruction. */
- 	error = xfs_attr3_leaf_getvalue(leaf_bp, &args);
--- 
-2.52.0
-
+--- a/drivers/base/power/runtime.c
++++ b/drivers/base/power/runtime.c
+@@ -1829,16 +1829,18 @@ void pm_runtime_init(struct device *dev)
+  */
+ void pm_runtime_reinit(struct device *dev)
+ {
+-	if (!pm_runtime_enabled(dev)) {
+-		if (dev->power.runtime_status == RPM_ACTIVE)
+-			pm_runtime_set_suspended(dev);
+-		if (dev->power.irq_safe) {
+-			spin_lock_irq(&dev->power.lock);
+-			dev->power.irq_safe = 0;
+-			spin_unlock_irq(&dev->power.lock);
+-			if (dev->parent)
+-				pm_runtime_put(dev->parent);
+-		}
++	if (pm_runtime_enabled(dev))
++		return;
++
++	if (dev->power.runtime_status == RPM_ACTIVE)
++		pm_runtime_set_suspended(dev);
++
++	if (dev->power.irq_safe) {
++		spin_lock_irq(&dev->power.lock);
++		dev->power.irq_safe = 0;
++		spin_unlock_irq(&dev->power.lock);
++		if (dev->parent)
++			pm_runtime_put(dev->parent);
+ 	}
+ 	/*
+ 	 * Clear power.needs_force_resume in case it has been set by
 
 
 
