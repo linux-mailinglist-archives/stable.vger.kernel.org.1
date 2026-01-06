@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-205364-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205366-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A980CFB0D8
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 22:11:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46460CFB0CF
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 22:11:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 577983038974
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 21:11:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E4EDC3030FF0
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 21:11:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0115034DB5B;
-	Tue,  6 Jan 2026 17:27:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25D2234E74B;
+	Tue,  6 Jan 2026 17:27:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bhD0CCLT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZqNSBRRL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B231434DB4F;
-	Tue,  6 Jan 2026 17:27:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0B5134E747;
+	Tue,  6 Jan 2026 17:27:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767720447; cv=none; b=GW2aScf62Sl3eDG0SnBQFpheH7C30YIgIDsCavhOMH+cPc5CESZTa7+MRv/TkPLbVejSapumPz40BWL4yO4l2mXlSTBeYPwDcu1nNlcmvY1zwRB651OBBzJD5/+OABGJO6GYJQfY6ZTJQetHBmLbPBPdDTegXng3KIbYvX0WIgI=
+	t=1767720453; cv=none; b=hXR0kii/ur2iUqsK5a19IkiAYbKCORC6sQKqmYaHgSkI9wnsVeoDzrhKyxKObNFOoKhrUUaK/PWYB5+Y6VxjFJ8XbWYjVzZDsGMfsWTtpheXCOkaJSpJRm/wPuM1AfTvLewcQqB9gBiLUXndZbtNGs40jdLZfw4W2vWkUa8XaPg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767720447; c=relaxed/simple;
-	bh=U9OeWTFz+rqpc95rOAW+elB6zqpbkowl8YC3WEO7uUI=;
+	s=arc-20240116; t=1767720453; c=relaxed/simple;
+	bh=mjnD/iqAl6hR47feXgi1cnaCWXrcbrxkB7bekbm02Nw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T1GJOmcK8Ujxn+b6pgzmlYCJ8OFdK7IAdGtHv+Vlhq7y82LNSw8YzmgGn/+0DETQaN4pv8t/WrJSMK1vaRghUOgqlbVK+HXMTxCQD2Kn4a1qbiabM3v2wpa5mWif9dK+sk3VoGhUvnxEXhz5cs8iJtN6Wx8b2avj3BYSSYOJ09s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bhD0CCLT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD246C116C6;
-	Tue,  6 Jan 2026 17:27:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=RyKF5zG/R4bWK0rGI1bY5qDrqKYTXcUhR6pCmiUUtkFnscDQhduy6GCvewUPZxNrC/xeyYwa9c4TVBYWVwNs+RiaOS+6USbFnJH5XNDjBlHG0vCvU4sMgwKwcy8f8F88+fy991p5bflG7hhgUOcDKpNMDmcP6UTbnT/Vz82+J7E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZqNSBRRL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A660C116C6;
+	Tue,  6 Jan 2026 17:27:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767720447;
-	bh=U9OeWTFz+rqpc95rOAW+elB6zqpbkowl8YC3WEO7uUI=;
+	s=korg; t=1767720453;
+	bh=mjnD/iqAl6hR47feXgi1cnaCWXrcbrxkB7bekbm02Nw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bhD0CCLTf0PpKMAkW9SA076bAh5eqQIU23Udl/Rc7C+4BQQ6oaiQT3C87Lr7xhnA2
-	 ge1Zz20HU38anDgkV+enWd0HM3VyNaAfhYfvBVCvVV6mB67Bb98LGWblZF4fSDBZHf
-	 rwMgR6X15VMwqw1SxfnHVqRb4Fxc2+WCWhAexKic=
+	b=ZqNSBRRL/MVx/Y/h+oAv3lCirDcviKUFHhfkEs302rjxLygSt5cyGh9SLUfLV084K
+	 zE1OMyfdYsoc9DuMSbHNV5YJHkubPTaAtDkb4jN9qRTCB+Y+Vn+Ss0X/Ua5Eh2y56g
+	 nAfa4i736DjD6xYbh/ndHmJAVV1Zmth98HV/TDCw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chuck Lever <chuck.lever@oracle.com>,
-	caoping <caoping@cmss.chinamobile.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 238/567] net/handshake: restore destructor on submit failure
-Date: Tue,  6 Jan 2026 18:00:20 +0100
-Message-ID: <20260106170500.122100278@linuxfoundation.org>
+	=?UTF-8?q?Aur=C3=A9lien=20Couderc?= <aurelien.couderc2002@gmail.com>,
+	Roland Mainz <roland.mainz@nrubsig.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.12 240/567] NFSD: NFSv4 file creation neglects setting ACL
+Date: Tue,  6 Jan 2026 18:00:22 +0100
+Message-ID: <20260106170500.194832625@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
 References: <20260106170451.332875001@linuxfoundation.org>
@@ -58,43 +58,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: caoping <caoping@cmss.chinamobile.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-commit 6af2a01d65f89e73c1cbb9267f8880d83a88cee4 upstream.
+commit 913f7cf77bf14c13cfea70e89bcb6d0b22239562 upstream.
 
-handshake_req_submit() replaces sk->sk_destruct but never restores it when
-submission fails before the request is hashed. handshake_sk_destruct() then
-returns early and the original destructor never runs, leaking the socket.
-Restore sk_destruct on the error path.
+An NFSv4 client that sets an ACL with a named principal during file
+creation retrieves the ACL afterwards, and finds that it is only a
+default ACL (based on the mode bits) and not the ACL that was
+requested during file creation. This violates RFC 8881 section
+6.4.1.3: "the ACL attribute is set as given".
 
-Fixes: 3b3009ea8abb ("net/handshake: Create a NETLINK service for handling handshake requests")
-Reviewed-by: Chuck Lever <chuck.lever@oracle.com>
+The issue occurs in nfsd_create_setattr(), which calls
+nfsd_attrs_valid() to determine whether to call nfsd_setattr().
+However, nfsd_attrs_valid() checks only for iattr changes and
+security labels, but not POSIX ACLs. When only an ACL is present,
+the function returns false, nfsd_setattr() is skipped, and the
+POSIX ACL is never applied to the inode.
+
+Subsequently, when the client retrieves the ACL, the server finds
+no POSIX ACL on the inode and returns one generated from the file's
+mode bits rather than returning the originally-specified ACL.
+
+Reported-by: Aurélien Couderc <aurelien.couderc2002@gmail.com>
+Fixes: c0cbe70742f4 ("NFSD: add posix ACLs to struct nfsd_attrs")
+Cc: Roland Mainz <roland.mainz@nrubsig.org>
 Cc: stable@vger.kernel.org
-Signed-off-by: caoping <caoping@cmss.chinamobile.com>
-Link: https://patch.msgid.link/20251204091058.1545151-1-caoping@cmss.chinamobile.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/handshake/request.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/nfsd/vfs.h |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/net/handshake/request.c
-+++ b/net/handshake/request.c
-@@ -277,6 +277,8 @@ int handshake_req_submit(struct socket *
- out_unlock:
- 	spin_unlock(&hn->hn_lock);
- out_err:
-+	/* Restore original destructor so socket teardown still runs on failure */
-+	req->hr_sk->sk_destruct = req->hr_odestruct;
- 	trace_handshake_submit_err(net, req, req->hr_sk, ret);
- 	handshake_req_destroy(req);
- 	return ret;
+--- a/fs/nfsd/vfs.h
++++ b/fs/nfsd/vfs.h
+@@ -67,7 +67,8 @@ static inline bool nfsd_attrs_valid(stru
+ 	struct iattr *iap = attrs->na_iattr;
+ 
+ 	return (iap->ia_valid || (attrs->na_seclabel &&
+-		attrs->na_seclabel->len));
++		attrs->na_seclabel->len) ||
++		attrs->na_pacl || attrs->na_dpacl);
+ }
+ 
+ __be32		nfserrno (int errno);
 
 
 
