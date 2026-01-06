@@ -1,49 +1,51 @@
-Return-Path: <stable+bounces-205372-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205353-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76368CFB0D0
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 22:11:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 751DBCFB0CC
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 22:11:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 02B5F30361C3
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 21:11:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9C63A3032ABC
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 21:11:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8625A3557FC;
-	Tue,  6 Jan 2026 17:27:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24BDC346799;
+	Tue,  6 Jan 2026 17:26:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zV88tNDo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EUUve+hT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42B953557F9;
-	Tue,  6 Jan 2026 17:27:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 360A933CEAF;
+	Tue,  6 Jan 2026 17:26:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767720473; cv=none; b=CScpfvmoTF3xH/f00BfnjvRAu/JpAqtpDeJGvJ/2xWT5QuDzjUUzFy0228Ix8BTiUmejKa4cMnbGVdOgPZ/v9MaGGOheXpPniNRJDiP6XDfk3HVw5GT3xmR8fwx6KBUCXEUP0r0fmr2TEkAAp/ELXWBXBvUUkzpj+LnVxRbl1OI=
+	t=1767720410; cv=none; b=FwvF+fePeTWbB+OIVN6gVWnzYS9bZ0w7VOqgHznR/CcDQkjJMOzQ5kquFd70yW9lnpT7qLl1lqhGxeR7cl3TpzRRk/4UR+MRnO1f+HpV80DQtqYUXtmgaFceYe0jhzzP/tFvMQChmCkHc2vvqbrwDnmXWSX8SZZLFv16Y8cGhDg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767720473; c=relaxed/simple;
-	bh=AyuB7l9dARyy+yTf+bWRJSUZpD/TKtJg8zrDFL2hjL0=;
+	s=arc-20240116; t=1767720410; c=relaxed/simple;
+	bh=UGtO8HxBPaLkxq//2UVwFPoJvVSBXziCXDkfhuI7EJo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TGVyfM4g2EvW0IqOH4WnxKkXKJZVp0IW92iA6Yi6Jv/ivHHgTgT5/jpAWTw1h6NL4VNcw8gq5S+Dee4AK5X1BaESAgcxAbwDgevZBj5z8VBoqO4uF2F9VxGtUFY/+9kAUsQE2C6jjCUwXRUtYwDWNwY8UHvTycIced9DBy4ZoBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zV88tNDo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C24EEC116C6;
-	Tue,  6 Jan 2026 17:27:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=bWlVGA0fdbjFaaZJ+5MtaeLr5MussKT7c78ZjXxxELCPwZHLdtJO3thnQlKp1jFJVIsGfRa8096zW/qHBgdPc4eAgoGL6JWQHYueHG5Wv//QnB9XJrs064Nzmd0rTa0BxDo7LmcqKj/aDhSSb0YKhgJH4KZd/1QbMMpN7n8HOcs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EUUve+hT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BC19C19424;
+	Tue,  6 Jan 2026 17:26:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767720473;
-	bh=AyuB7l9dARyy+yTf+bWRJSUZpD/TKtJg8zrDFL2hjL0=;
+	s=korg; t=1767720410;
+	bh=UGtO8HxBPaLkxq//2UVwFPoJvVSBXziCXDkfhuI7EJo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zV88tNDoOOULfbveLnf13dK2HzUXSGV4+KEEpQOSlkRMJNeAE3frDDZgE4UIDFdS0
-	 GCkcVw5NjG/UGFIsm0IapExlcN1Mj2BIDlsmzZBbkH+aT1UrX9WTqPSDsYR6O9aaE9
-	 xd68Q4lflb1p8SNWixtws8ShifE2HJ/5NyqJ0oQs=
+	b=EUUve+hTl0xa0+JM9t/ZvrpvvPTsUniXjL1TicyX6dvQolNpOgiefT8lueI2uitlM
+	 FM3rXJbGyTZlvzYEo5F8YUbfR8uh7VB5sBDF3/Y2Fll/ojbVJ6NpS7abeJS14VsdFS
+	 3PiF5Brn5prwtGlyApB0K+XIVR2NZdw//KCAzvig=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tzung-Bi Shih <tzungbi@kernel.org>
-Subject: [PATCH 6.12 215/567] platform/chrome: cros_ec_ishtp: Fix UAF after unbinding driver
-Date: Tue,  6 Jan 2026 17:59:57 +0100
-Message-ID: <20260106170459.271541853@linuxfoundation.org>
+	Jim Mattson <jmattson@google.com>,
+	Yosry Ahmed <yosry.ahmed@linux.dev>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.12 228/567] KVM: nSVM: Set exit_code_hi to -1 when synthesizing SVM_EXIT_ERR (failed VMRUN)
+Date: Tue,  6 Jan 2026 18:00:10 +0100
+Message-ID: <20260106170459.747836175@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
 References: <20260106170451.332875001@linuxfoundation.org>
@@ -56,41 +58,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tzung-Bi Shih <tzungbi@kernel.org>
+From: Sean Christopherson <seanjc@google.com>
 
-commit 944edca81e7aea15f83cf9a13a6ab67f711e8abd upstream.
+commit f402ecd7a8b6446547076f4bd24bd5d4dcc94481 upstream.
 
-After unbinding the driver, another kthread `cros_ec_console_log_work`
-is still accessing the device, resulting an UAF and crash.
+Set exit_code_hi to -1u as a temporary band-aid to fix a long-standing
+(effectively since KVM's inception) bug where KVM treats the exit code as
+a 32-bit value, when in reality it's a 64-bit value.  Per the APM, offset
+0x70 is a single 64-bit value:
 
-The driver doesn't unregister the EC device in .remove() which should
-shutdown sub-devices synchronously.  Fix it.
+  070h 63:0 EXITCODE
 
-Fixes: 26a14267aff2 ("platform/chrome: Add ChromeOS EC ISHTP driver")
+And a sane reading of the error values defined in "Table C-1. SVM Intercept
+Codes" is that negative values use the full 64 bits:
+
+  –1 VMEXIT_INVALID Invalid guest state in VMCB.
+  –2 VMEXIT_BUSYBUSY bit was set in the VMSA
+  –3 VMEXIT_IDLE_REQUIREDThe sibling thread is not in an idle state
+  -4 VMEXIT_INVALID_PMC Invalid PMC state
+
+And that interpretation is confirmed by testing on Milan and Turin (by
+setting bits in CR0[63:32] to generate VMEXIT_INVALID on VMRUN).
+
+Furthermore, Xen has treated exitcode as a 64-bit value since HVM support
+was adding in 2006 (see Xen commit d1bd157fbc ("Big merge the HVM
+full-virtualisation abstractions.")).
+
+Cc: Jim Mattson <jmattson@google.com>
+Cc: Yosry Ahmed <yosry.ahmed@linux.dev>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20251031033900.3577394-1-tzungbi@kernel.org
-Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
+Reviewed-by: Yosry Ahmed <yosry.ahmed@linux.dev>
+Link: https://patch.msgid.link/20251113225621.1688428-3-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/chrome/cros_ec_ishtp.c |    1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/kvm/svm/nested.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/platform/chrome/cros_ec_ishtp.c
-+++ b/drivers/platform/chrome/cros_ec_ishtp.c
-@@ -671,6 +671,7 @@ static void cros_ec_ishtp_remove(struct
+--- a/arch/x86/kvm/svm/nested.c
++++ b/arch/x86/kvm/svm/nested.c
+@@ -883,7 +883,7 @@ int nested_svm_vmrun(struct kvm_vcpu *vc
+ 	if (!nested_vmcb_check_save(vcpu) ||
+ 	    !nested_vmcb_check_controls(vcpu)) {
+ 		vmcb12->control.exit_code    = SVM_EXIT_ERR;
+-		vmcb12->control.exit_code_hi = 0;
++		vmcb12->control.exit_code_hi = -1u;
+ 		vmcb12->control.exit_info_1  = 0;
+ 		vmcb12->control.exit_info_2  = 0;
+ 		goto out;
+@@ -916,7 +916,7 @@ out_exit_err:
+ 	svm->soft_int_injected = false;
  
- 	cancel_work_sync(&client_data->work_ishtp_reset);
- 	cancel_work_sync(&client_data->work_ec_evt);
-+	cros_ec_unregister(client_data->ec_dev);
- 	cros_ish_deinit(cros_ish_cl);
- 	ishtp_put_device(cl_device);
- }
+ 	svm->vmcb->control.exit_code    = SVM_EXIT_ERR;
+-	svm->vmcb->control.exit_code_hi = 0;
++	svm->vmcb->control.exit_code_hi = -1u;
+ 	svm->vmcb->control.exit_info_1  = 0;
+ 	svm->vmcb->control.exit_info_2  = 0;
+ 
 
 
 
