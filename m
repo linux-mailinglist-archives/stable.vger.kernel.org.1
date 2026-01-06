@@ -1,54 +1,58 @@
-Return-Path: <stable+bounces-205640-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205922-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2F58CFA6C1
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:00:45 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09038CFA5E2
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:56:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AC91B32CAF65
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:34:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0BE5D340ACB6
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:13:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57D192F9C37;
-	Tue,  6 Jan 2026 17:42:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09DED36CDF5;
+	Tue,  6 Jan 2026 17:58:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wFArCcqT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N/k9e7hu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AE462EFD95;
-	Tue,  6 Jan 2026 17:42:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B812036CDEF;
+	Tue,  6 Jan 2026 17:58:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721364; cv=none; b=Zp6ps+r+EY3F5s1ZhedZyxOZwzBjicPx3efWTS0kvTasiyVVCqAdS0zJlzb0s4gwf2NyVa5OF3GwhvDBf8HLTMr/78nDZ3GpXedKx7m2IEEsy3kRm/bWWaSd8wAFVuL92tF8K4sZIgUX9Z2gu0G5yRvyaqB2jEch9PAtwh4RF3s=
+	t=1767722311; cv=none; b=lLIMwtc6bC+NqaQkavmghsVDC72j1+66xaqFwKozpyF179pPlALyHGdIzZWCuFaAJi0KJN2+PD4aSbuf4xOEDQoIBNtIHOn7wfYzxcQBOO750Fe4E/mrTGukU6cx9t4lr6Hal3kKKN+nnPWDz8N8aCoudWsLyeLwzClKU8472D0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721364; c=relaxed/simple;
-	bh=JXFdKQraY6aCxwV9jqwiudGKrFeTKaqMhQ1PAIROh2U=;
+	s=arc-20240116; t=1767722311; c=relaxed/simple;
+	bh=F//olfWLEpSlAsWGzw48FNIS4x/yg/y80nOHLA/liOs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ylg1iDRFf4VOto1tTSjqqfNPXP6w98rBNidYfr7ux54O9auPYjhuceTb9sjxxzXbIkCs06pCcCpxH69ztsqCn7Fh8lMWz7AdZ+wEu3bcykTYZBzkMf4ARWSJ7Ym7kjT5cUiyO7nFBsQrJdHd4YYaPpsZhOMVO5kL9nRUZMPtgNU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wFArCcqT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C6C7C116C6;
-	Tue,  6 Jan 2026 17:42:43 +0000 (UTC)
+	 MIME-Version; b=E0ivJFDorfbsW4B8KXKbka3usCMN5bgWD9uknou/6gHnmNz9DR50n1LndgnP56FeANDr5tYkGiE1dp4N5NyADdYkLMpyZr7bsXY+rTZvT995XaP5b6fqQ7MqOhxXByCIo12MfScM6MCuLKSs8F2KKv+2keaHLufxjq+aseamIDQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N/k9e7hu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27A71C116C6;
+	Tue,  6 Jan 2026 17:58:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721363;
-	bh=JXFdKQraY6aCxwV9jqwiudGKrFeTKaqMhQ1PAIROh2U=;
+	s=korg; t=1767722311;
+	bh=F//olfWLEpSlAsWGzw48FNIS4x/yg/y80nOHLA/liOs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wFArCcqTyg5DrDkY9YF9KLEpCID8HUVcn7HvGDUchuwVWwDUbBymGpUwzFh6xoEn+
-	 wOC1wnbKiFqIqOSm57KEnlx5VAgjmLBVSL+hJuRYo6dhduUfblzCFQI0sZs8dlUk85
-	 hv5NBN7ToLxQxphZwcJjQbMoElPAJqBFpG0MnHvw=
+	b=N/k9e7huSOdu7bIJh6qf5XhgZY/but+llBHW3Z/VBkNNXmnu+I/+1O0vMZYVnQiJR
+	 NaWd74WXqS5HIbHBzt2e8zKq/ZMuc8VasrykifD/tSbA1o0SO2cX525xXBbKHfMaWV
+	 rRTMhU+sNe1GlZaN/41oNaT4mlQcem8bvehrc1/U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 514/567] f2fs: dump more information for f2fs_{enable,disable}_checkpoint()
-Date: Tue,  6 Jan 2026 18:04:56 +0100
-Message-ID: <20260106170510.392108172@linuxfoundation.org>
+	Pingfan Liu <piliu@redhat.com>,
+	Baoquan He <bhe@redhat.com>,
+	Mimi Zohar <zohar@linux.ibm.com>,
+	Roberto Sassu <roberto.sassu@huawei.com>,
+	Alexander Graf <graf@amazon.com>,
+	Steven Chen <chenste@linux.microsoft.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.18 225/312] kernel/kexec: change the prototype of kimage_map_segment()
+Date: Tue,  6 Jan 2026 18:04:59 +0100
+Message-ID: <20260106170555.993286416@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
-References: <20260106170451.332875001@linuxfoundation.org>
+In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
+References: <20260106170547.832845344@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,75 +64,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Pingfan Liu <piliu@redhat.com>
 
-[ Upstream commit 80b6d1d2535a343e43d658777a46f1ebce8f3413 ]
+commit fe55ea85939efcbf0e6baa234f0d70acb79e7b58 upstream.
 
-Changes as below:
-- print more logs for f2fs_{enable,disable}_checkpoint()
-- account and dump time stats for f2fs_enable_checkpoint()
+The kexec segment index will be required to extract the corresponding
+information for that segment in kimage_map_segment().  Additionally,
+kexec_segment already holds the kexec relocation destination address and
+size.  Therefore, the prototype of kimage_map_segment() can be changed.
 
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Stable-dep-of: be112e7449a6 ("f2fs: fix to propagate error from f2fs_enable_checkpoint()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20251216014852.8737-1-piliu@redhat.com
+Fixes: 07d24902977e ("kexec: enable CMA based contiguous allocation")
+Signed-off-by: Pingfan Liu <piliu@redhat.com>
+Acked-by: Baoquan He <bhe@redhat.com>
+Cc: Mimi Zohar <zohar@linux.ibm.com>
+Cc: Roberto Sassu <roberto.sassu@huawei.com>
+Cc: Alexander Graf <graf@amazon.com>
+Cc: Steven Chen <chenste@linux.microsoft.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/super.c |   16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ include/linux/kexec.h              |    4 ++--
+ kernel/kexec_core.c                |    9 ++++++---
+ security/integrity/ima/ima_kexec.c |    4 +---
+ 3 files changed, 9 insertions(+), 8 deletions(-)
 
---- a/fs/f2fs/super.c
-+++ b/fs/f2fs/super.c
-@@ -2278,15 +2278,24 @@ out_unlock:
- restore_flag:
- 	sbi->gc_mode = gc_mode;
- 	sbi->sb->s_flags = s_flags;	/* Restore SB_RDONLY status */
-+	f2fs_info(sbi, "f2fs_disable_checkpoint() finish, err:%d", err);
- 	return err;
+--- a/include/linux/kexec.h
++++ b/include/linux/kexec.h
+@@ -530,7 +530,7 @@ extern bool kexec_file_dbg_print;
+ #define kexec_dprintk(fmt, arg...) \
+         do { if (kexec_file_dbg_print) pr_info(fmt, ##arg); } while (0)
+ 
+-extern void *kimage_map_segment(struct kimage *image, unsigned long addr, unsigned long size);
++extern void *kimage_map_segment(struct kimage *image, int idx);
+ extern void kimage_unmap_segment(void *buffer);
+ #else /* !CONFIG_KEXEC_CORE */
+ struct pt_regs;
+@@ -540,7 +540,7 @@ static inline void __crash_kexec(struct
+ static inline void crash_kexec(struct pt_regs *regs) { }
+ static inline int kexec_should_crash(struct task_struct *p) { return 0; }
+ static inline int kexec_crash_loaded(void) { return 0; }
+-static inline void *kimage_map_segment(struct kimage *image, unsigned long addr, unsigned long size)
++static inline void *kimage_map_segment(struct kimage *image, int idx)
+ { return NULL; }
+ static inline void kimage_unmap_segment(void *buffer) { }
+ #define kexec_in_progress false
+--- a/kernel/kexec_core.c
++++ b/kernel/kexec_core.c
+@@ -960,17 +960,20 @@ int kimage_load_segment(struct kimage *i
+ 	return result;
  }
  
- static void f2fs_enable_checkpoint(struct f2fs_sb_info *sbi)
+-void *kimage_map_segment(struct kimage *image,
+-			 unsigned long addr, unsigned long size)
++void *kimage_map_segment(struct kimage *image, int idx)
  {
- 	unsigned int nr_pages = get_pages(sbi, F2FS_DIRTY_DATA) / 16;
-+	long long start, writeback, end;
++	unsigned long addr, size, eaddr;
+ 	unsigned long src_page_addr, dest_page_addr = 0;
+-	unsigned long eaddr = addr + size;
+ 	kimage_entry_t *ptr, entry;
+ 	struct page **src_pages;
+ 	unsigned int npages;
+ 	void *vaddr = NULL;
+ 	int i;
+ 
++	addr = image->segment[idx].mem;
++	size = image->segment[idx].memsz;
++	eaddr = addr + size;
 +
-+	f2fs_info(sbi, "f2fs_enable_checkpoint() starts, meta: %lld, node: %lld, data: %lld",
-+					get_pages(sbi, F2FS_DIRTY_META),
-+					get_pages(sbi, F2FS_DIRTY_NODES),
-+					get_pages(sbi, F2FS_DIRTY_DATA));
+ 	/*
+ 	 * Collect the source pages and map them in a contiguous VA range.
+ 	 */
+--- a/security/integrity/ima/ima_kexec.c
++++ b/security/integrity/ima/ima_kexec.c
+@@ -250,9 +250,7 @@ void ima_kexec_post_load(struct kimage *
+ 	if (!image->ima_buffer_addr)
+ 		return;
  
- 	f2fs_update_time(sbi, ENABLE_TIME);
- 
-+	start = ktime_get();
-+
- 	/* we should flush all the data to keep data consistency */
- 	while (get_pages(sbi, F2FS_DIRTY_DATA)) {
- 		writeback_inodes_sb_nr(sbi->sb, nr_pages, WB_REASON_SYNC);
-@@ -2295,6 +2304,7 @@ static void f2fs_enable_checkpoint(struc
- 		if (f2fs_time_over(sbi, ENABLE_TIME))
- 			break;
- 	}
-+	writeback = ktime_get();
- 
- 	sync_inodes_sb(sbi->sb);
- 
-@@ -2313,6 +2323,12 @@ static void f2fs_enable_checkpoint(struc
- 
- 	/* Let's ensure there's no pending checkpoint anymore */
- 	f2fs_flush_ckpt_thread(sbi);
-+
-+	end = ktime_get();
-+
-+	f2fs_info(sbi, "f2fs_enable_checkpoint() finishes, writeback:%llu, sync:%llu",
-+					ktime_ms_delta(writeback, start),
-+					ktime_ms_delta(end, writeback));
- }
- 
- static int f2fs_remount(struct super_block *sb, int *flags, char *data)
+-	ima_kexec_buffer = kimage_map_segment(image,
+-					      image->ima_buffer_addr,
+-					      image->ima_buffer_size);
++	ima_kexec_buffer = kimage_map_segment(image, image->ima_segment_index);
+ 	if (!ima_kexec_buffer) {
+ 		pr_err("Could not map measurements buffer.\n");
+ 		return;
 
 
 
