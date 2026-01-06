@@ -1,52 +1,51 @@
-Return-Path: <stable+bounces-205355-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205357-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC094CFA5B7
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:56:39 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2CF0CFA53E
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:52:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 90BED3048926
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:56:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 67B11317AFEF
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:06:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 188353491F1;
-	Tue,  6 Jan 2026 17:26:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 524CA34AAF0;
+	Tue,  6 Jan 2026 17:27:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dd5grY9j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qrfHpons"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C80133491C7;
-	Tue,  6 Jan 2026 17:26:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC7C134A793;
+	Tue,  6 Jan 2026 17:27:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767720416; cv=none; b=eoSw2rCiuCyzBLgraMTSoEHDlBWihXdER1O/1L4vTozCVDgqLr35objwbFVgz3x0CSU1IaZq0k61jYg/HXBv3Nyo2kCIHE9hxAe4hF2rnJGPkPJbRkg5ngOZ+o9Wtn5PzKYnWz+KtYv8Kbj0nap6GNxM01l4aOsNYmTBkqppWOI=
+	t=1767720424; cv=none; b=po5+ATRKGGT0oWz6NLx377HsGHkcv+D/3L7igYSbaDTaBsMXmOiGOzh/6vsEnhAg3T640hG3ydMwDL6oWaiXQyFPRnOJsCl8imCMSBxpOMbtI681HjXDvForJDzpeHgrHwUacvKOFU4RnXFSzu2rNzInQC8tXb7ekyvRgFzqU8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767720416; c=relaxed/simple;
-	bh=c75WQ9a30GuiMEYj9Wz7FWuK1Hg4WSBmTgxriwXFJ7Y=;
+	s=arc-20240116; t=1767720424; c=relaxed/simple;
+	bh=sP3Ue+h1ZeH2SpphQp6JPH+JrlpmbHSlbIvZPeiW8cQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l3YGpVt7To/wtfMezYGitaCd8S+HF226PJUA6nWS7P84UEBY4L0kUY6FueUUiGSKuWy8/VQXGQ87HxwITVrLSUQbLvXTtSejUeG/Umy8pN3V5NsBP1h1qRMyxhD31qwmBV2k/0+RYqlSlKY5YZhSCxJytL5+E2kzZ6HAOcXkQB8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dd5grY9j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 384E0C116C6;
-	Tue,  6 Jan 2026 17:26:56 +0000 (UTC)
+	 MIME-Version; b=IR/y/HJACN1Npuz4Sz5dWyIvIftR5BsY+PRf51dUUW6NBctWyiUglHRGmdWzaghBMh9fUeMqXY/vnOyDhNjzkb//bYq9peNnPdqVA6Z4ZSCoeTK1SHKb5D5SpuqilCAPszlNgKYBwGOksXdJPi5Sy2SoJX/aj6y7gFESKRX/Yk8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qrfHpons; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F515C116C6;
+	Tue,  6 Jan 2026 17:27:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767720416;
-	bh=c75WQ9a30GuiMEYj9Wz7FWuK1Hg4WSBmTgxriwXFJ7Y=;
+	s=korg; t=1767720423;
+	bh=sP3Ue+h1ZeH2SpphQp6JPH+JrlpmbHSlbIvZPeiW8cQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Dd5grY9jhJ08GPosM+u8bbKB8emLLSxBkWWwGJb30L3judySGcHOTWLCbHtfUcFcT
-	 qmfX7P0+Vrnqgo+YBX5N+kJPvEjjAWedSZQTy8XuUrbr2axrx4/sEKvgiI9tG7P6io
-	 vtJY850hppDOGo6zF/qpj5kJs23yzninOdLfsC94=
+	b=qrfHponsaR3GT3xLQdYQ7FEtnQRxdVnW5X1vveMpDotqpYzOZEjHlfp8r8FuMw/tZ
+	 IAw+qg7JNzVcpchnt+3G+96SYsrNYdNOxPeGq7/3grvja7YrKjEtE5c02hI5LzGR95
+	 0zlAeuoKznbdTEJljNv48T4znQbeZRyAvmKvRTDM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
+	"Darrick J. Wong" <djwong@kernel.org>,
 	Christoph Hellwig <hch@lst.de>,
-	Carlos Maiolino <cmaiolino@redhat.com>,
 	Carlos Maiolino <cem@kernel.org>
-Subject: [PATCH 6.12 230/567] xfs: fix a memory leak in xfs_buf_item_init()
-Date: Tue,  6 Jan 2026 18:00:12 +0100
-Message-ID: <20260106170459.821373307@linuxfoundation.org>
+Subject: [PATCH 6.12 232/567] xfs: fix a UAF problem in xattr repair
+Date: Tue,  6 Jan 2026 18:00:14 +0100
+Message-ID: <20260106170459.895096287@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
 References: <20260106170451.332875001@linuxfoundation.org>
@@ -65,34 +64,48 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+From: Darrick J. Wong <djwong@kernel.org>
 
-commit fc40459de82543b565ebc839dca8f7987f16f62e upstream.
+commit 5990fd756943836978ad184aac980e2b36ab7e01 upstream.
 
-xfs_buf_item_get_format() may allocate memory for bip->bli_formats,
-free the memory in the error path.
+The xchk_setup_xattr_buf function can allocate a new value buffer, which
+means that any reference to ab->value before the call could become a
+dangling pointer.  Fix this by moving an assignment to after the buffer
+setup.
 
-Fixes: c3d5f0c2fb85 ("xfs: complain if anyone tries to create a too-large buffer log item")
-Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+Cc: stable@vger.kernel.org # v6.10
+Fixes: e47dcf113ae348 ("xfs: repair extended attributes")
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
 Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Carlos Maiolino <cmaiolino@redhat.com>
 Signed-off-by: Carlos Maiolino <cem@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/xfs_buf_item.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/xfs/scrub/attr_repair.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/xfs/xfs_buf_item.c
-+++ b/fs/xfs/xfs_buf_item.c
-@@ -900,6 +900,7 @@ xfs_buf_item_init(
- 		map_size = DIV_ROUND_UP(chunks, NBWORD);
+diff --git a/fs/xfs/scrub/attr_repair.c b/fs/xfs/scrub/attr_repair.c
+index c7eb94069caf..09d63aa10314 100644
+--- a/fs/xfs/scrub/attr_repair.c
++++ b/fs/xfs/scrub/attr_repair.c
+@@ -333,7 +333,6 @@ xrep_xattr_salvage_remote_attr(
+ 		.attr_filter		= ent->flags & XFS_ATTR_NSP_ONDISK_MASK,
+ 		.namelen		= rentry->namelen,
+ 		.name			= rentry->name,
+-		.value			= ab->value,
+ 		.valuelen		= be32_to_cpu(rentry->valuelen),
+ 	};
+ 	unsigned int			namesize;
+@@ -363,6 +362,7 @@ xrep_xattr_salvage_remote_attr(
+ 		error = -EDEADLOCK;
+ 	if (error)
+ 		return error;
++	args.value = ab->value;
  
- 		if (map_size > XFS_BLF_DATAMAP_SIZE) {
-+			xfs_buf_item_free_format(bip);
- 			kmem_cache_free(xfs_buf_item_cache, bip);
- 			xfs_err(mp,
- 	"buffer item dirty bitmap (%u uints) too small to reflect %u bytes!",
+ 	/* Look up the remote value and stash it for reconstruction. */
+ 	error = xfs_attr3_leaf_getvalue(leaf_bp, &args);
+-- 
+2.52.0
+
 
 
 
