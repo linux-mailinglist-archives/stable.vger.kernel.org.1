@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-205424-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205716-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C47FECF9C41
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 18:41:02 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC5AECF9F85
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:10:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 71D4B315BE23
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:31:11 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 13A3E30574CA
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:07:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69B04229B38;
-	Tue,  6 Jan 2026 17:30:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBD0D350A28;
+	Tue,  6 Jan 2026 17:47:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d2locVYv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VPHa+ss4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27B861DA23;
-	Tue,  6 Jan 2026 17:30:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86F5E2D1F4E;
+	Tue,  6 Jan 2026 17:47:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767720646; cv=none; b=r+cdCG7Z1EeWy5ojJ9yo5w0Zz5E/w/ykucFMLo1G/9zRQf9OckWvfrobQjxxS8UzRbjdXcjkYALxQxKb2yt7KiyDJ8GAg0KLiU5c6eRaMmgK9oLtxRZ/KZbpHai9Y8PlmkkqyWdtCQ0idimGKQoTVxxageasNLidAwjX2j/o+Bk=
+	t=1767721620; cv=none; b=n42pe+GlFBABalB/W8ShiX/frUggs/5JhJDzW5EhpmdZ7Pz0lMdf0ipmtirhaOGy4TteeyvUfqlkb/yCQzv7NBW5Rol4RyTo+ivy5X/AII8bmcmCApmsct8KL/i6ySzxPXPJL//E68Eu+ktzq4/QYw1+5PD+fxRgSdPff2L0jUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767720646; c=relaxed/simple;
-	bh=AhyP0wd9kozF1Nz3NSDGm4g4nXUvTl0Kxm1SC1cBJVE=;
+	s=arc-20240116; t=1767721620; c=relaxed/simple;
+	bh=RByyTSiesJQXphUpfKVl+bKECoD2qOcU/CNzizwYm7w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=quPpcAeTrkjK8yScYEoprqEKdoIuml/26hsnaZ7acvrKxMFLacCGJM3amBJGrBFdcWJhGJKy4Qn6F6p0YM/G91jutD7E68tLMmqlPgzdzKPNcTDP5CwNOLc3fBwP2Hdx1G5Y2dhPk2Nx+awn+pwCledfnvLoRSbWOlEzDXLFCG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d2locVYv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95776C116C6;
-	Tue,  6 Jan 2026 17:30:45 +0000 (UTC)
+	 MIME-Version; b=YFd6MqsO5jgIxVbi7+i5/Jb9p+YJX2ZPkcwIAzkj2o3IRMrvcqWKe1xHqc3s8V1qa2nrJnB8hbRxBSSXMm0YzIRoOJJLYo3mFeLPWFjuJYCCqGktu74sI07iF9N3RLCVRq6uZflF1rVCJawUWMi1IkOTMUKk1YPtVE32Idy9k8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VPHa+ss4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9A6CC116C6;
+	Tue,  6 Jan 2026 17:46:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767720646;
-	bh=AhyP0wd9kozF1Nz3NSDGm4g4nXUvTl0Kxm1SC1cBJVE=;
+	s=korg; t=1767721620;
+	bh=RByyTSiesJQXphUpfKVl+bKECoD2qOcU/CNzizwYm7w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d2locVYv5Dwwg6mhY+9tk7w683ue0T8xCJHmmn7DqwaUL7KGrX3nILyY290vIajH+
-	 0io7Xm5BW9T3JkT4bpc+InRSFt4THMVSG9rvSuy5Vhakze21R+tHxbTa68TcC5eB8a
-	 IdBKWGL9EX8i17fgMyJzEiTnQxn5g335KPE0b+l0=
+	b=VPHa+ss4sOxIF+aemc0etUOb7vdoK+O6GUXat6aZh4oovO2rvoAnseoPsAe1Ot8jF
+	 AIZOpdZDDu6YkLx39Z512VG1Ng1kpWkFw1/oNz2T2DWZXudPz6uboVJHmmy+SWM7le
+	 CLkLaRefBLC5E/w1noxtH58CnSvNH93t+icwqkFc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gregory Herrero <gregory.herrero@oracle.com>,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Marc Hartmayer <mhartmay@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 299/567] i40e: validate ring_len parameter against hardware-specific values
-Date: Tue,  6 Jan 2026 18:01:21 +0100
-Message-ID: <20260106170502.393605503@linuxfoundation.org>
+Subject: [PATCH 6.18 008/312] KVM: s390: Fix gmap_helper_zap_one_page() again
+Date: Tue,  6 Jan 2026 18:01:22 +0100
+Message-ID: <20260106170548.152444548@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
-References: <20260106170451.332875001@linuxfoundation.org>
+In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
+References: <20260106170547.832845344@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,105 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gregory Herrero <gregory.herrero@oracle.com>
+From: Claudio Imbrenda <imbrenda@linux.ibm.com>
 
-[ Upstream commit 69942834215323cd9131db557091b4dec43f19c5 ]
+[ Upstream commit 2f393c228cc519ddf19b8c6c05bf15723241aa96 ]
 
-The maximum number of descriptors supported by the hardware is
-hardware-dependent and can be retrieved using
-i40e_get_max_num_descriptors(). Move this function to a shared header
-and use it when checking for valid ring_len parameter rather than using
-hardcoded value.
+A few checks were missing in gmap_helper_zap_one_page(), which can lead
+to memory corruption in the guest under specific circumstances.
 
-By fixing an over-acceptance issue, behavior change could be seen where
-ring_len could now be rejected while configuring rx and tx queues if its
-size is larger than the hardware-dependent maximum number of
-descriptors.
+Add the missing checks.
 
-Fixes: 55d225670def ("i40e: add validation for ring_len param")
-Signed-off-by: Gregory Herrero <gregory.herrero@oracle.com>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Fixes: 5deafa27d9ae ("KVM: s390: Fix to clear PTE when discarding a swapped page")
+Cc: stable@vger.kernel.org
+Reported-by: Marc Hartmayer <mhartmay@linux.ibm.com>
+Tested-by: Marc Hartmayer <mhartmay@linux.ibm.com>
+Acked-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+[ adapted ptep_zap_softleaf_entry() and softleaf_from_pte() calls to ptep_zap_swap_entry() and pte_to_swp_entry() ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e.h             | 11 +++++++++++
- drivers/net/ethernet/intel/i40e/i40e_ethtool.c     | 12 ------------
- drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c |  4 ++--
- 3 files changed, 13 insertions(+), 14 deletions(-)
+ arch/s390/mm/gmap_helpers.c |    9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e.h b/drivers/net/ethernet/intel/i40e/i40e.h
-index b8de97343ad3..de3d5e5b8306 100644
---- a/drivers/net/ethernet/intel/i40e/i40e.h
-+++ b/drivers/net/ethernet/intel/i40e/i40e.h
-@@ -1415,4 +1415,15 @@ static inline struct i40e_veb *i40e_pf_get_main_veb(struct i40e_pf *pf)
- 	return (pf->lan_veb != I40E_NO_VEB) ? pf->veb[pf->lan_veb] : NULL;
- }
+--- a/arch/s390/mm/gmap_helpers.c
++++ b/arch/s390/mm/gmap_helpers.c
+@@ -47,6 +47,7 @@ static void ptep_zap_swap_entry(struct m
+ void gmap_helper_zap_one_page(struct mm_struct *mm, unsigned long vmaddr)
+ {
+ 	struct vm_area_struct *vma;
++	unsigned long pgstev;
+ 	spinlock_t *ptl;
+ 	pgste_t pgste;
+ 	pte_t *ptep;
+@@ -65,9 +66,13 @@ void gmap_helper_zap_one_page(struct mm_
+ 	if (pte_swap(*ptep)) {
+ 		preempt_disable();
+ 		pgste = pgste_get_lock(ptep);
++		pgstev = pgste_val(pgste);
  
-+static inline u32 i40e_get_max_num_descriptors(const struct i40e_pf *pf)
-+{
-+	const struct i40e_hw *hw = &pf->hw;
-+
-+	switch (hw->mac.type) {
-+	case I40E_MAC_XL710:
-+		return I40E_MAX_NUM_DESCRIPTORS_XL710;
-+	default:
-+		return I40E_MAX_NUM_DESCRIPTORS;
-+	}
-+}
- #endif /* _I40E_H_ */
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_ethtool.c b/drivers/net/ethernet/intel/i40e/i40e_ethtool.c
-index bce5b76f1e7a..9a96f67fb648 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_ethtool.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_ethtool.c
-@@ -2010,18 +2010,6 @@ static void i40e_get_drvinfo(struct net_device *netdev,
- 		drvinfo->n_priv_flags += I40E_GL_PRIV_FLAGS_STR_LEN;
- }
+-		ptep_zap_swap_entry(mm, pte_to_swp_entry(*ptep));
+-		pte_clear(mm, vmaddr, ptep);
++		if ((pgstev & _PGSTE_GPS_USAGE_MASK) == _PGSTE_GPS_USAGE_UNUSED ||
++		    (pgstev & _PGSTE_GPS_ZERO)) {
++			ptep_zap_swap_entry(mm, pte_to_swp_entry(*ptep));
++			pte_clear(mm, vmaddr, ptep);
++		}
  
--static u32 i40e_get_max_num_descriptors(struct i40e_pf *pf)
--{
--	struct i40e_hw *hw = &pf->hw;
--
--	switch (hw->mac.type) {
--	case I40E_MAC_XL710:
--		return I40E_MAX_NUM_DESCRIPTORS_XL710;
--	default:
--		return I40E_MAX_NUM_DESCRIPTORS;
--	}
--}
--
- static void i40e_get_ringparam(struct net_device *netdev,
- 			       struct ethtool_ringparam *ring,
- 			       struct kernel_ethtool_ringparam *kernel_ring,
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-index 646e394f5190..3251ffa7d994 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-@@ -656,7 +656,7 @@ static int i40e_config_vsi_tx_queue(struct i40e_vf *vf, u16 vsi_id,
- 
- 	/* ring_len has to be multiple of 8 */
- 	if (!IS_ALIGNED(info->ring_len, 8) ||
--	    info->ring_len > I40E_MAX_NUM_DESCRIPTORS_XL710) {
-+	    info->ring_len > i40e_get_max_num_descriptors(pf)) {
- 		ret = -EINVAL;
- 		goto error_context;
- 	}
-@@ -726,7 +726,7 @@ static int i40e_config_vsi_rx_queue(struct i40e_vf *vf, u16 vsi_id,
- 
- 	/* ring_len has to be multiple of 32 */
- 	if (!IS_ALIGNED(info->ring_len, 32) ||
--	    info->ring_len > I40E_MAX_NUM_DESCRIPTORS_XL710) {
-+	    info->ring_len > i40e_get_max_num_descriptors(pf)) {
- 		ret = -EINVAL;
- 		goto error_param;
- 	}
--- 
-2.51.0
-
+ 		pgste_set_unlock(ptep, pgste);
+ 		preempt_enable();
 
 
 
