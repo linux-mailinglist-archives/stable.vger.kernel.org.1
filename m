@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-205622-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205589-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76002CFA986
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:21:59 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6E65CFA9DD
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:23:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3B8703534F40
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:34:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 32867329FD29
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:36:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44A7B1DA55;
-	Tue,  6 Jan 2026 17:41:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56E952C21DD;
+	Tue,  6 Jan 2026 17:39:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="miBv3tzM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xp5AGz84"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0297C217F24;
-	Tue,  6 Jan 2026 17:41:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE7A83446D2;
+	Tue,  6 Jan 2026 17:39:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721304; cv=none; b=BWYGunLqNfWnh8HWeBYiCYhtM7uRmc29djgjLeuLHKXO2GlB5ZD5OvgkykKNB1cx8ef50ES1KoF73vzI7TJtkLCJ+EfH+Or2bwNSa8e0E6jyE5Pf6te5tRrsn+0h/GM3mZp3Tsqxt11/6preO6zzPGbALYWWc7P0Y4JxhITXJf4=
+	t=1767721195; cv=none; b=In8gaz+5UHSOzNMjLQL1plP7TCTHbPlO8gIfW2JThO0x8L/FW78zAcW7Q+LLDvL+PpFZBNIR1EHfH+hgYlp5GvKP0EoMSGHQNSd0vJgmUp3d2jztDyw6hocmBw2G/AaHWjnqonxEBnNx3c67osPQGpPYv+UYVL6Gsiv/X1JPNtA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721304; c=relaxed/simple;
-	bh=mf8U1NfBisDY4raQgpnP/E8LElzoC0dXHyWs47rONw4=;
+	s=arc-20240116; t=1767721195; c=relaxed/simple;
+	bh=BL9LuOiDAjEEc11KjZ6M+cRcyPqyL01xya6YyQ6lkRI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=a4/ocVaxKZXgujkFNfgGfpVpNDvbjg0S7P/9pokaZzTAnBTKmmtaRLqZv8yMPEWKyuv/8hIgIXfQYVR/NwzEsK9r2TkhUJs2q4EIQTiMWJRw9iru1DSbxXNxTOXCzwsnKP99st/uWxRQtMqs6/VFYOk7OWYVicU+mAjmcK8lf3E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=miBv3tzM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 309DCC116C6;
-	Tue,  6 Jan 2026 17:41:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Erm/RYJV5ZUDk/UEhaUnjodX2Rm7TpTr36yMX+8NGfQhMqnuvG00lrZAGNPE5uwp+kAFvtos7tJ1wl3v9TdHg1yzJBp8avKqEGvBAU6YBq6Ij7bAncwuU2nnXWhfpy8zWkwFwbW4BIn8Q4uDwA9FyB7LeV0v8Vy55ZvDikVie5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xp5AGz84; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F25B7C116C6;
+	Tue,  6 Jan 2026 17:39:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721303;
-	bh=mf8U1NfBisDY4raQgpnP/E8LElzoC0dXHyWs47rONw4=;
+	s=korg; t=1767721195;
+	bh=BL9LuOiDAjEEc11KjZ6M+cRcyPqyL01xya6YyQ6lkRI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=miBv3tzMU+pnwwd8N66/P7Z2TVj3yjnno6PriI15L3r6pNQF+F8ZLwzZ3FIBTcVLL
-	 97VAVzfNUfOomykfO5UqahmRQuV+6/3m2EQgOyFfUprN1mxdw4x+Hebq+MFktdMjIB
-	 S7paW1Ta2zmjez/ecmPkqPKapOnhIPN6mlVsrw5U=
+	b=xp5AGz84U6g1DRhekuj3ihzgXigy9BMFs/gSHe2Xxij4rynfImzwXHJl979hIGi1t
+	 mHm24UYw2jKFwbk+iTd37ENw97Ant9nPXrmFXdt5KKqpiuDgketdUpgI2mn7zWY0CL
+	 Kz7EtP6rAqvf+va2ugWDrqXQU9VaVlIaXhl/NuPs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Tiago=20Martins=20Ara=C3=BAjo?= <tiago.martins.araujo@gmail.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Jani Nikula <jani.nikula@intel.com>
-Subject: [PATCH 6.12 464/567] drm/edid: add DRM_EDID_IDENT_INIT() to initialize struct drm_edid_ident
-Date: Tue,  6 Jan 2026 18:04:06 +0100
-Message-ID: <20260106170508.513090527@linuxfoundation.org>
+	Matthew Auld <matthew.auld@intel.com>,
+	Sanjay Yadav <sanjay.kumar.yadav@intel.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
+Subject: [PATCH 6.12 465/567] drm/xe/oa: Fix potential UAF in xe_oa_add_config_ioctl()
+Date: Tue,  6 Jan 2026 18:04:07 +0100
+Message-ID: <20260106170508.549988237@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
 References: <20260106170451.332875001@linuxfoundation.org>
@@ -65,38 +65,56 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jani Nikula <jani.nikula@intel.com>
+From: Sanjay Yadav <sanjay.kumar.yadav@intel.com>
 
-commit 8b61583f993589a64c061aa91b44f5bd350d90a5 upstream.
+commit dcb171931954c51a1a7250d558f02b8f36570783 upstream.
 
-Add a convenience helper for initializing struct drm_edid_ident.
+In xe_oa_add_config_ioctl(), we accessed oa_config->id after dropping
+metrics_lock. Since this lock protects the lifetime of oa_config, an
+attacker could guess the id and call xe_oa_remove_config_ioctl() with
+perfect timing, freeing oa_config before we dereference it, leading to
+a potential use-after-free.
 
-Cc: Tiago Martins Araújo <tiago.martins.araujo@gmail.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Tested-by: Tiago Martins Araújo <tiago.martins.araujo@gmail.com>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/710b2ac6a211606ec1f90afa57b79e8c7375a27e.1761681968.git.jani.nikula@intel.com
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Fix this by caching the id in a local variable while holding the lock.
+
+v2: (Matt A)
+- Dropped mutex_unlock(&oa->metrics_lock) ordering change from
+  xe_oa_remove_config_ioctl()
+
+Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/6614
+Fixes: cdf02fe1a94a7 ("drm/xe/oa/uapi: Add/remove OA config perf ops")
+Cc: <stable@vger.kernel.org> # v6.11+
+Suggested-by: Matthew Auld <matthew.auld@intel.com>
+Signed-off-by: Sanjay Yadav <sanjay.kumar.yadav@intel.com>
+Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Link: https://patch.msgid.link/20251118114859.3379952-2-sanjay.kumar.yadav@intel.com
+(cherry picked from commit 28aeaed130e8e587fd1b73b6d66ca41ccc5a1a31)
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/drm/drm_edid.h |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/gpu/drm/xe/xe_oa.c |    8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
---- a/include/drm/drm_edid.h
-+++ b/include/drm/drm_edid.h
-@@ -333,6 +333,12 @@ struct drm_edid_ident {
- 	const char *name;
- };
+--- a/drivers/gpu/drm/xe/xe_oa.c
++++ b/drivers/gpu/drm/xe/xe_oa.c
+@@ -2378,11 +2378,13 @@ int xe_oa_add_config_ioctl(struct drm_de
+ 		goto sysfs_err;
+ 	}
  
-+#define DRM_EDID_IDENT_INIT(_vend_chr_0, _vend_chr_1, _vend_chr_2, _product_id, _name) \
-+{ \
-+	.panel_id = drm_edid_encode_panel_id(_vend_chr_0, _vend_chr_1, _vend_chr_2, _product_id), \
-+	.name = _name, \
-+}
+-	mutex_unlock(&oa->metrics_lock);
++	id = oa_config->id;
 +
- #define EDID_PRODUCT_ID(e) ((e)->prod_code[0] | ((e)->prod_code[1] << 8))
++	drm_dbg(&oa->xe->drm, "Added config %s id=%i\n", oa_config->uuid, id);
  
- /* Short Audio Descriptor */
+-	drm_dbg(&oa->xe->drm, "Added config %s id=%i\n", oa_config->uuid, oa_config->id);
++	mutex_unlock(&oa->metrics_lock);
+ 
+-	return oa_config->id;
++	return id;
+ 
+ sysfs_err:
+ 	mutex_unlock(&oa->metrics_lock);
 
 
 
