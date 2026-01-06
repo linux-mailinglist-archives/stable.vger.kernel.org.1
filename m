@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-205929-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206019-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7861DCFA0D4
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:18:44 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A705CFA5EB
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:57:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D1CD3307C08C
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:16:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C00A3349FB96
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:14:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D137D36D4E2;
-	Tue,  6 Jan 2026 17:58:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8B05362120;
+	Tue,  6 Jan 2026 18:10:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ac0yOcVZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gXgdHYCM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FA7036CE1D
-	for <stable@vger.kernel.org>; Tue,  6 Jan 2026 17:58:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7CA1361DB7
+	for <stable@vger.kernel.org>; Tue,  6 Jan 2026 18:10:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767722334; cv=none; b=ehj+en+UAsUUqZvrb64AiV81BKzpJ15LnS4FoIv4PrSvEIsscvyxGlCZTSYXMdOq9/e8tRuh8iLUqJ6IavYDDD44xLJUG54fLtbSu57Rhdz8g3sWNFamEg/AJVNsuOJZJzg0YyKECTUmGNpu1fUvWkKURJG4Z5cXxQLS8B4yry0=
+	t=1767723025; cv=none; b=o3rFrLxCDjetb8OE08zH+6qwSfFo+VntJXdhBw0hazo2Zo/2trisNWVL6n7HfcGbnxuK5yB4m1dLOaxu4ZooiEFNAU+ko/9JJRpRWLeurh/y2LXE0J5dSVImZoip7Ep93N/zpsb2sy+XeFUwQTUrsIY1DNiDrcmGjHIy8tWnS5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767722334; c=relaxed/simple;
-	bh=65Ofsb5OFSAR5cJGax+2PFjG5onbpYQbytHwJsD/gXU=;
+	s=arc-20240116; t=1767723025; c=relaxed/simple;
+	bh=H8JY0sxXTdkK1XAL3E6igWsRDe7QVUUUxI/YceReXKg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J6BP5L8YjeKo9rO3Kf0RNIflhlulNrnlXAZUZ6l/R4m6RsU/3inQh8xyOmWKegQDAS9SgPQWiZQcuSBbNnviz09XhWDHaTsMDAsO0h/rQa58Vu4aBLzL0OieuRTgBFkoHdV/KRMqPGWnXuwV6ZzPRLRu4kiqFXY0xUPAsJ5G8ZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ac0yOcVZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98813C116C6;
-	Tue,  6 Jan 2026 17:58:53 +0000 (UTC)
+	 MIME-Version; b=OsWcnGAfgNAPNX67geMZKyAmi27KgFqccBXMW/S6tjgmWIaImP2mCXikIR8R83FPRRt8WshFPhZFrnYn4tldJxMxOD2IiacvJM3619+OkWHxvbPgTbR2nXSTYKR0MJ1X59uRwNgO9FJcbDAN/uD7c8dmnCARnKD1SWqxhJGhqDY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gXgdHYCM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 819EFC116C6;
+	Tue,  6 Jan 2026 18:10:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767722334;
-	bh=65Ofsb5OFSAR5cJGax+2PFjG5onbpYQbytHwJsD/gXU=;
+	s=k20201202; t=1767723025;
+	bh=H8JY0sxXTdkK1XAL3E6igWsRDe7QVUUUxI/YceReXKg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ac0yOcVZjOAzdgDK6h5DEHC/1Q9+HV/LtzMy3ED7H4IaP3soah8R4Zp+4IBrfQBxB
-	 GGTIfIkXNK2rG4iEf46LsOxAIJa3bvCRSfv0nke1PJIKo5zxHMVSgZzearYx6t/QhI
-	 SDMb3m6SmMSU9cM4HxfEDxjwhM4k5J0QDJmIinvmbE8KlR72Oa+ZoICm0A/7XyJO4t
-	 lprlpPw9372KKs3ESgow1DaUqk2CsBXisPRqF+NvRguRNVsdPJq0wI2KbXnxtsAKlq
-	 XB+KBxA4DIRT/y2/hYzuBxsUvayNN8qy6GU6w1ttW2FBGwRdhXAp42R6zA5sc8Ljwm
-	 NUXqzJ+V77u0A==
+	b=gXgdHYCMKnTtHfzkObzouJZRlUV353clnVNc80gNkOfx2lZLmB2ElffqNpVIhuoZf
+	 zmT1F3CmvwIrThugyG8m6QfQ1fBzwsq5fy3GqxfvfDxsUndJKPdUTVy9jzhBzIBVs6
+	 zvCxZx26q7TdqPZJOMxUAoWlJKTRRWLvLLoVm9pSS/xxBOJCqmwExSED6WkBnAAPbG
+	 2hfmXbMpBlJNZRJtJrBswoJ0W9RN53kX31ToSL9MT88BJ8VCkkwfR9QBdJ17RyUWiF
+	 kH24wrwN0ymI0yB2F4X47elf38gW96Iew+7xyu8IxqiK2oGdQVLy7LqjZqbf9hsArh
+	 nEZQTQbFJaDqA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Paolo Abeni <pabeni@redhat.com>,
-	syzbot+0ff6b771b4f7a5bce83b@syzkaller.appspotmail.com,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+Cc: Brian Norris <briannorris@chromium.org>,
+	Peter Geis <pgwipeout@gmail.com>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Chanwoo Choi <cw00.choi@samsung.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y] mptcp: fallback earlier on simult connection
-Date: Tue,  6 Jan 2026 12:58:52 -0500
-Message-ID: <20260106175852.3105095-1-sashal@kernel.org>
+Subject: [PATCH 5.15.y 1/3] soc: rockchip: power-domain: Manage resource conflicts with firmware
+Date: Tue,  6 Jan 2026 13:10:14 -0500
+Message-ID: <20260106181021.3109327-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026010540-smuggler-passably-11d2@gregkh>
-References: <2026010540-smuggler-passably-11d2@gregkh>
+In-Reply-To: <2026010515-dragonish-pelican-5b3c@gregkh>
+References: <2026010515-dragonish-pelican-5b3c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -59,152 +60,293 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Brian Norris <briannorris@chromium.org>
 
-[ Upstream commit 71154bbe49423128c1c8577b6576de1ed6836830 ]
+[ Upstream commit defec178df76e0caadd4e8ef68f3d655a2088198 ]
 
-Syzkaller reports a simult-connect race leading to inconsistent fallback
-status:
+On RK3399 platforms, power domains are managed mostly by the kernel
+(drivers/soc/rockchip/pm_domains.c), but there are a few exceptions
+where ARM Trusted Firmware has to be involved:
 
-  WARNING: CPU: 3 PID: 33 at net/mptcp/subflow.c:1515 subflow_data_ready+0x40b/0x7c0 net/mptcp/subflow.c:1515
-  Modules linked in:
-  CPU: 3 UID: 0 PID: 33 Comm: ksoftirqd/3 Not tainted syzkaller #0 PREEMPT(full)
-  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-  RIP: 0010:subflow_data_ready+0x40b/0x7c0 net/mptcp/subflow.c:1515
-  Code: 89 ee e8 78 61 3c f6 40 84 ed 75 21 e8 8e 66 3c f6 44 89 fe bf 07 00 00 00 e8 c1 61 3c f6 41 83 ff 07 74 09 e8 76 66 3c f6 90 <0f> 0b 90 e8 6d 66 3c f6 48 89 df e8 e5 ad ff ff 31 ff 89 c5 89 c6
-  RSP: 0018:ffffc900006cf338 EFLAGS: 00010246
-  RAX: 0000000000000000 RBX: ffff888031acd100 RCX: ffffffff8b7f2abf
-  RDX: ffff88801e6ea440 RSI: ffffffff8b7f2aca RDI: 0000000000000005
-  RBP: 0000000000000000 R08: 0000000000000005 R09: 0000000000000007
-  R10: 0000000000000004 R11: 0000000000002c10 R12: ffff88802ba69900
-  R13: 1ffff920000d9e67 R14: ffff888046f81800 R15: 0000000000000004
-  FS:  0000000000000000(0000) GS:ffff8880d69bc000(0000) knlGS:0000000000000000
-  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  CR2: 0000560fc0ca1670 CR3: 0000000032c3a000 CR4: 0000000000352ef0
-  Call Trace:
-   <TASK>
-   tcp_data_queue+0x13b0/0x4f90 net/ipv4/tcp_input.c:5197
-   tcp_rcv_state_process+0xfdf/0x4ec0 net/ipv4/tcp_input.c:6922
-   tcp_v6_do_rcv+0x492/0x1740 net/ipv6/tcp_ipv6.c:1672
-   tcp_v6_rcv+0x2976/0x41e0 net/ipv6/tcp_ipv6.c:1918
-   ip6_protocol_deliver_rcu+0x188/0x1520 net/ipv6/ip6_input.c:438
-   ip6_input_finish+0x1e4/0x4b0 net/ipv6/ip6_input.c:489
-   NF_HOOK include/linux/netfilter.h:318 [inline]
-   NF_HOOK include/linux/netfilter.h:312 [inline]
-   ip6_input+0x105/0x2f0 net/ipv6/ip6_input.c:500
-   dst_input include/net/dst.h:471 [inline]
-   ip6_rcv_finish net/ipv6/ip6_input.c:79 [inline]
-   NF_HOOK include/linux/netfilter.h:318 [inline]
-   NF_HOOK include/linux/netfilter.h:312 [inline]
-   ipv6_rcv+0x264/0x650 net/ipv6/ip6_input.c:311
-   __netif_receive_skb_one_core+0x12d/0x1e0 net/core/dev.c:5979
-   __netif_receive_skb+0x1d/0x160 net/core/dev.c:6092
-   process_backlog+0x442/0x15e0 net/core/dev.c:6444
-   __napi_poll.constprop.0+0xba/0x550 net/core/dev.c:7494
-   napi_poll net/core/dev.c:7557 [inline]
-   net_rx_action+0xa9f/0xfe0 net/core/dev.c:7684
-   handle_softirqs+0x216/0x8e0 kernel/softirq.c:579
-   run_ksoftirqd kernel/softirq.c:968 [inline]
-   run_ksoftirqd+0x3a/0x60 kernel/softirq.c:960
-   smpboot_thread_fn+0x3f7/0xae0 kernel/smpboot.c:160
-   kthread+0x3c2/0x780 kernel/kthread.c:463
-   ret_from_fork+0x5d7/0x6f0 arch/x86/kernel/process.c:148
-   ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
-   </TASK>
+(1) system suspend/resume
+(2) DRAM DVFS (a.k.a., "ddrfreq")
 
-The TCP subflow can process the simult-connect syn-ack packet after
-transitioning to TCP_FIN1 state, bypassing the MPTCP fallback check,
-as the sk_state_change() callback is not invoked for * -> FIN_WAIT1
-transitions.
+Exception (1) does not cause much conflict, since the kernel has
+quiesced itself by the time we make the relevant PSCI call.
 
-That will move the msk socket to an inconsistent status and the next
-incoming data will hit the reported splat.
+Exception (2) can cause conflict, because of two actions:
 
-Close the race moving the simult-fallback check at the earliest possible
-stage - that is at syn-ack generation time.
+(a) ARM Trusted Firmware needs to read/modify/write the PMU_BUS_IDLE_REQ
+    register to idle the memory controller domain; the kernel driver
+    also has to touch this register for other domains.
+(b) ARM Trusted Firmware needs to manage the clocks associated with
+    these domains.
 
-About the fixes tags: [2] was supposed to also fix this issue introduced
-by [3]. [1] is required as a dependence: it was not explicitly marked as
-a fix, but it is one and it has already been backported before [3]. In
-other words, this commit should be backported up to [3], including [2]
-and [1] if that's not already there.
+To elaborate on (b): idling a power domain has always required ungating
+an array of clocks; see this old explanation from Rockchip:
+https://lore.kernel.org/linux-arm-kernel/54503C19.9060607@rock-chips.com/
 
-Fixes: 23e89e8ee7be ("tcp: Don't drop SYN+ACK for simultaneous connect().") [1]
-Fixes: 4fd19a307016 ("mptcp: fix inconsistent state on fastopen race") [2]
-Fixes: 1e777f39b4d7 ("mptcp: add MSG_FASTOPEN sendmsg flag support") [3]
-Cc: stable@vger.kernel.org
-Reported-by: syzbot+0ff6b771b4f7a5bce83b@syzkaller.appspotmail.com
-Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/586
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20251212-net-mptcp-subflow_data_ready-warn-v1-1-d1f9fd1c36c8@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-[ adapted mptcp_try_fallback() call from two arguments to one argument ]
+Historically, ARM Trusted Firmware has avoided this issue by using a
+special PMU_CRU_GATEDIS_CON0 register -- this register ungates all the
+necessary clocks -- when idling the memory controller. Unfortunately,
+we've found that this register is not 100% sufficient; it does not turn
+the relevant PLLs on [0].
+
+So it's possible to trigger issues with something like the following:
+
+1. enable a power domain (e.g., RK3399_PD_VDU) -- kernel will
+   temporarily enable relevant clocks/PLLs, then turn them back off
+   2. a PLL (e.g., PLL_NPLL) is part of the clock tree for
+      RK3399_PD_VDU's clocks but otherwise unused; NPLL is disabled
+3. perform a ddrfreq transition (rk3399_dmcfreq_target() -> ...
+   drivers/clk/rockchip/clk-ddr.c / ROCKCHIP_SIP_DRAM_FREQ)
+   4. ARM Trusted Firmware unagates VDU clocks (via PMU_CRU_GATEDIS_CON0)
+   5. ARM Trusted firmware idles the memory controller domain
+   6. Step 5 waits on the VDU domain/clocks, but NPLL is still off
+
+i.e., we hang the system.
+
+So for (b), we need to at a minimum manage the relevant PLLs on behalf
+of firmware. It's easier to simply manage the whole clock tree, in a
+similar way we do in rockchip_pd_power().
+
+For (a), we need to provide mutual exclusion betwen rockchip_pd_power()
+and firmware. To resolve that, we simply grab the PMU mutex and release
+it when ddrfreq is done.
+
+The Chromium OS kernel has been carrying versions of part of this hack
+for a while, based on some new custom notifiers [1]. I've rewritten as a
+simple function call between the drivers, which is OK because:
+
+ * the PMU driver isn't enabled, and we don't have this problem at all
+   (the firmware should have left us in an OK state, and there are no
+   runtime conflicts); or
+ * the PMU driver is present, and is a single instance.
+
+And the power-domain driver cannot be removed, so there's no lifetime
+management to worry about.
+
+For completeness, there's a 'dmc_pmu_mutex' to guard (likely
+theoretical?) probe()-time races. It's OK for the memory controller
+driver to start running before the PMU, because the PMU will avoid any
+critical actions during the block() sequence.
+
+[0] The RK3399 TRM for PMU_CRU_GATEDIS_CON0 only talks about ungating
+    clocks. Based on experimentation, we've found that it does not power
+    up the necessary PLLs.
+
+[1] CHROMIUM: soc: rockchip: power-domain: Add notifier to dmc driver
+    https://chromium-review.googlesource.com/q/I242dbd706d352f74ff706f5cbf42ebb92f9bcc60
+    Notably, the Chromium solution only handled conflict (a), not (b).
+    In practice, item (b) wasn't a problem in many cases because we
+    never managed to fully power off PLLs. Now that the (upstream) video
+    decoder driver performs runtime clock management, we often power off
+    NPLL.
+
+Signed-off-by: Brian Norris <briannorris@chromium.org>
+Tested-by: Peter Geis <pgwipeout@gmail.com>
+Reviewed-by: Heiko Stuebner <heiko@sntech.de>
+Signed-off-by: Chanwoo Choi <cw00.choi@samsung.com>
+Stable-dep-of: 73cb5f6eafb0 ("pmdomain: imx: Fix reference count leak in imx_gpc_probe()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/options.c  | 10 ++++++++++
- net/mptcp/protocol.h |  5 ++---
- net/mptcp/subflow.c  |  9 ---------
- 3 files changed, 12 insertions(+), 12 deletions(-)
+ drivers/soc/rockchip/pm_domains.c | 118 ++++++++++++++++++++++++++++++
+ include/soc/rockchip/pm_domains.h |  25 +++++++
+ 2 files changed, 143 insertions(+)
+ create mode 100644 include/soc/rockchip/pm_domains.h
 
-diff --git a/net/mptcp/options.c b/net/mptcp/options.c
-index 56c502a66330..eab815d42ac6 100644
---- a/net/mptcp/options.c
-+++ b/net/mptcp/options.c
-@@ -403,6 +403,16 @@ bool mptcp_syn_options(struct sock *sk, const struct sk_buff *skb,
- 	 */
- 	subflow->snd_isn = TCP_SKB_CB(skb)->end_seq;
- 	if (subflow->request_mptcp) {
-+		if (unlikely(subflow_simultaneous_connect(sk))) {
-+			WARN_ON_ONCE(!mptcp_try_fallback(sk));
+diff --git a/drivers/soc/rockchip/pm_domains.c b/drivers/soc/rockchip/pm_domains.c
+index 0868b7d406fb..b1cf7d29dafd 100644
+--- a/drivers/soc/rockchip/pm_domains.c
++++ b/drivers/soc/rockchip/pm_domains.c
+@@ -8,6 +8,7 @@
+ #include <linux/io.h>
+ #include <linux/iopoll.h>
+ #include <linux/err.h>
++#include <linux/mutex.h>
+ #include <linux/pm_clock.h>
+ #include <linux/pm_domain.h>
+ #include <linux/of_address.h>
+@@ -16,6 +17,7 @@
+ #include <linux/clk.h>
+ #include <linux/regmap.h>
+ #include <linux/mfd/syscon.h>
++#include <soc/rockchip/pm_domains.h>
+ #include <dt-bindings/power/px30-power.h>
+ #include <dt-bindings/power/rk3036-power.h>
+ #include <dt-bindings/power/rk3066-power.h>
+@@ -139,6 +141,109 @@ struct rockchip_pmu {
+ #define DOMAIN_RK3568(name, pwr, req, wakeup)		\
+ 	DOMAIN_M(name, pwr, pwr, req, req, req, wakeup)
+ 
++/*
++ * Dynamic Memory Controller may need to coordinate with us -- see
++ * rockchip_pmu_block().
++ *
++ * dmc_pmu_mutex protects registration-time races, so DMC driver doesn't try to
++ * block() while we're initializing the PMU.
++ */
++static DEFINE_MUTEX(dmc_pmu_mutex);
++static struct rockchip_pmu *dmc_pmu;
 +
-+			/* Ensure mptcp_finish_connect() will not process the
-+			 * MPC handshake.
-+			 */
-+			subflow->request_mptcp = 0;
-+			return false;
++/*
++ * Block PMU transitions and make sure they don't interfere with ARM Trusted
++ * Firmware operations. There are two conflicts, noted in the comments below.
++ *
++ * Caller must unblock PMU transitions via rockchip_pmu_unblock().
++ */
++int rockchip_pmu_block(void)
++{
++	struct rockchip_pmu *pmu;
++	struct generic_pm_domain *genpd;
++	struct rockchip_pm_domain *pd;
++	int i, ret;
++
++	mutex_lock(&dmc_pmu_mutex);
++
++	/* No PMU (yet)? Then we just block rockchip_pmu_probe(). */
++	if (!dmc_pmu)
++		return 0;
++	pmu = dmc_pmu;
++
++	/*
++	 * mutex blocks all idle transitions: we can't touch the
++	 * PMU_BUS_IDLE_REQ (our ".idle_offset") register while ARM Trusted
++	 * Firmware might be using it.
++	 */
++	mutex_lock(&pmu->mutex);
++
++	/*
++	 * Power domain clocks: Per Rockchip, we *must* keep certain clocks
++	 * enabled for the duration of power-domain transitions. Most
++	 * transitions are handled by this driver, but some cases (in
++	 * particular, DRAM DVFS / memory-controller idle) must be handled by
++	 * firmware. Firmware can handle most clock management via a special
++	 * "ungate" register (PMU_CRU_GATEDIS_CON0), but unfortunately, this
++	 * doesn't handle PLLs. We can assist this transition by doing the
++	 * clock management on behalf of firmware.
++	 */
++	for (i = 0; i < pmu->genpd_data.num_domains; i++) {
++		genpd = pmu->genpd_data.domains[i];
++		if (genpd) {
++			pd = to_rockchip_pd(genpd);
++			ret = clk_bulk_enable(pd->num_clks, pd->clks);
++			if (ret < 0) {
++				dev_err(pmu->dev,
++					"failed to enable clks for domain '%s': %d\n",
++					genpd->name, ret);
++				goto err;
++			}
++		}
++	}
++
++	return 0;
++
++err:
++	for (i = i - 1; i >= 0; i--) {
++		genpd = pmu->genpd_data.domains[i];
++		if (genpd) {
++			pd = to_rockchip_pd(genpd);
++			clk_bulk_disable(pd->num_clks, pd->clks);
++		}
++	}
++	mutex_unlock(&pmu->mutex);
++	mutex_unlock(&dmc_pmu_mutex);
++
++	return ret;
++}
++EXPORT_SYMBOL_GPL(rockchip_pmu_block);
++
++/* Unblock PMU transitions. */
++void rockchip_pmu_unblock(void)
++{
++	struct rockchip_pmu *pmu;
++	struct generic_pm_domain *genpd;
++	struct rockchip_pm_domain *pd;
++	int i;
++
++	if (dmc_pmu) {
++		pmu = dmc_pmu;
++		for (i = 0; i < pmu->genpd_data.num_domains; i++) {
++			genpd = pmu->genpd_data.domains[i];
++			if (genpd) {
++				pd = to_rockchip_pd(genpd);
++				clk_bulk_disable(pd->num_clks, pd->clks);
++			}
 +		}
 +
- 		opts->suboptions = OPTION_MPTCP_MPC_SYN;
- 		opts->csum_reqd = mptcp_is_checksum_enabled(sock_net(sk));
- 		opts->allow_join_id0 = mptcp_allow_join_id0(sock_net(sk));
-diff --git a/net/mptcp/protocol.h b/net/mptcp/protocol.h
-index 375633719d23..6575712c789e 100644
---- a/net/mptcp/protocol.h
-+++ b/net/mptcp/protocol.h
-@@ -1053,9 +1053,8 @@ static inline bool subflow_simultaneous_connect(struct sock *sk)
++		mutex_unlock(&pmu->mutex);
++	}
++
++	mutex_unlock(&dmc_pmu_mutex);
++}
++EXPORT_SYMBOL_GPL(rockchip_pmu_unblock);
++
+ static bool rockchip_pmu_domain_is_idle(struct rockchip_pm_domain *pd)
  {
- 	struct mptcp_subflow_context *subflow = mptcp_subflow_ctx(sk);
+ 	struct rockchip_pmu *pmu = pd->pmu;
+@@ -690,6 +795,12 @@ static int rockchip_pm_domain_probe(struct platform_device *pdev)
  
--	return sk->sk_state == TCP_ESTABLISHED &&
--	       is_active_ssk(subflow) &&
--	       !subflow->conn_finished;
-+	/* Note that the sk state implies !subflow->conn_finished. */
-+	return sk->sk_state == TCP_SYN_RECV && is_active_ssk(subflow);
+ 	error = -ENODEV;
+ 
++	/*
++	 * Prevent any rockchip_pmu_block() from racing with the remainder of
++	 * setup (clocks, register initialization).
++	 */
++	mutex_lock(&dmc_pmu_mutex);
++
+ 	for_each_available_child_of_node(np, node) {
+ 		error = rockchip_pm_add_one_domain(pmu, node);
+ 		if (error) {
+@@ -719,10 +830,17 @@ static int rockchip_pm_domain_probe(struct platform_device *pdev)
+ 		goto err_out;
+ 	}
+ 
++	/* We only expect one PMU. */
++	if (!WARN_ON_ONCE(dmc_pmu))
++		dmc_pmu = pmu;
++
++	mutex_unlock(&dmc_pmu_mutex);
++
+ 	return 0;
+ 
+ err_out:
+ 	rockchip_pm_domain_cleanup(pmu);
++	mutex_unlock(&dmc_pmu_mutex);
+ 	return error;
  }
  
- #ifdef CONFIG_SYN_COOKIES
-diff --git a/net/mptcp/subflow.c b/net/mptcp/subflow.c
-index 263a5f817dd3..f9ebcfa1acad 100644
---- a/net/mptcp/subflow.c
-+++ b/net/mptcp/subflow.c
-@@ -1700,15 +1700,6 @@ static void subflow_state_change(struct sock *sk)
- 	__subflow_state_change(sk);
- 
- 	msk = mptcp_sk(parent);
--	if (subflow_simultaneous_connect(sk)) {
--		mptcp_propagate_sndbuf(parent, sk);
--		WARN_ON_ONCE(!mptcp_try_fallback(sk));
--		mptcp_rcv_space_init(msk, sk);
--		pr_fallback(msk);
--		subflow->conn_finished = 1;
--		mptcp_set_connected(parent);
--	}
--
- 	/* as recvmsg() does not acquire the subflow socket for ssk selection
- 	 * a fin packet carrying a DSS can be unnoticed if we don't trigger
- 	 * the data available machinery here.
+diff --git a/include/soc/rockchip/pm_domains.h b/include/soc/rockchip/pm_domains.h
+new file mode 100644
+index 000000000000..7dbd941fc937
+--- /dev/null
++++ b/include/soc/rockchip/pm_domains.h
+@@ -0,0 +1,25 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/*
++ * Copyright 2022, The Chromium OS Authors. All rights reserved.
++ */
++
++#ifndef __SOC_ROCKCHIP_PM_DOMAINS_H__
++#define __SOC_ROCKCHIP_PM_DOMAINS_H__
++
++#ifdef CONFIG_ROCKCHIP_PM_DOMAINS
++
++int rockchip_pmu_block(void);
++void rockchip_pmu_unblock(void);
++
++#else /* CONFIG_ROCKCHIP_PM_DOMAINS */
++
++static inline int rockchip_pmu_block(void)
++{
++	return 0;
++}
++
++static inline void rockchip_pmu_unblock(void) { }
++
++#endif /* CONFIG_ROCKCHIP_PM_DOMAINS */
++
++#endif /* __SOC_ROCKCHIP_PM_DOMAINS_H__ */
 -- 
 2.51.0
 
