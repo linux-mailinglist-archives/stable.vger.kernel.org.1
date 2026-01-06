@@ -1,51 +1,52 @@
-Return-Path: <stable+bounces-205988-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205991-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DBB8CFA710
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:02:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 68611CFA681
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:59:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CE82931EA09B
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:38:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 120F93343070
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:17:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0062D355055;
-	Tue,  6 Jan 2026 18:02:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1F2135580E;
+	Tue,  6 Jan 2026 18:02:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eBZAJX0C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oV8Vrwp3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B17E4350D77;
-	Tue,  6 Jan 2026 18:02:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FA75327C19;
+	Tue,  6 Jan 2026 18:02:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767722528; cv=none; b=GVIPI8jrhpAyr8u+F9X7q0ecPAnBQzFptz4dFbPsIpbhXzMeC7YWqVDOVPmtz3uYZCZPZvUupz+/HHx+FvL90+quCjQmuf3QbElxfl5mBe2f258L9k+lA1VNCuw2DRcpHHMYrBVrS1LFxXTWxzkfYzq2o6N6PzvmnOZjdx5jSHU=
+	t=1767722538; cv=none; b=bNdtdcipo4Zxk8dTjh57SKrg/qwVJzFRVt8bCXqbK8xgb6HU+8tELbgJhhWyWpu+ry2FwXKDIAGxXqTxfyph4lDkbylbkdtXKaK3FMdJN8XDp28Udoa9rp2wh1yWK3E3PYcD9CBwT6Sl0GE+yBSgwJl4rOpAHfmcTeguDaG4FjM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767722528; c=relaxed/simple;
-	bh=p5feBldq9LIsM25ejCf+pyl1nBsMJLxeoivn80I1OGQ=;
+	s=arc-20240116; t=1767722538; c=relaxed/simple;
+	bh=4Bg00wOdEOI5Oi3rbWlLIO1RqlV4Dx8lJP63q/XIe+c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Rc2+3LgLmdTmEb1FIIgRozXMBvwdveG2hBaRMJrS8t6Gyve7Us4XhMyEl/T0Bsbdu/ruNpsoQRAnxX22Pa01hxaffh4k4y1hE1iTDzQgoBJZJ8YT1NOhCgvE7Rb6p575XN0yepxttu85yHoH1UZqHOvIAgegUyuSv0UDKQvNMi8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eBZAJX0C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26BEBC116C6;
-	Tue,  6 Jan 2026 18:02:07 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ZWItPDz7kjpaX7qshFjrnXopEq0KSMfICFPhkS3aZPavIBxyq2l58D0Zge1Vaw9Wf+CSIpeHKS0N03EXCHRqORBrSH9QCfYhwAdoCjyYrcpigicKI/CUeqV9l6MtQ/skprBIf/9YrP4ROhHsL/PZfA4DElldAfHtxG3KscHObYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oV8Vrwp3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F163BC116C6;
+	Tue,  6 Jan 2026 18:02:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767722528;
-	bh=p5feBldq9LIsM25ejCf+pyl1nBsMJLxeoivn80I1OGQ=;
+	s=korg; t=1767722538;
+	bh=4Bg00wOdEOI5Oi3rbWlLIO1RqlV4Dx8lJP63q/XIe+c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eBZAJX0CaQMokf4sY5RdOGJbCek3LTNx3ubJ3wPGRcOSNUJbSs/bqeHh07hA/Gl9q
-	 IiWkvG3XISQtDH7/Jyv1/GZjj8fGPR5uh/o4wtISThOpjAjC9tE0mwhWJK0be8Nr4h
-	 8eg9N0gi6TUt4KC6nyFLy22igM00Sqr2MET/MXNk=
+	b=oV8Vrwp31z0ieDL7RxrZv2x6Wpqw1cQfUQLDoSg7ZCX5lmFcKlZ5udAWJqrWjtE7h
+	 CkAo/IDOHP5TNYN0bfbPKUWJ/g6ANJgupUSCtWSS7jGTYxLkcdlp4Z5JcyAS2JX0RA
+	 M7zEdlqn6SB2clnFxy8OAWP5SkHQX96IclOfXgzk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Karol Wachowski <karol.wachowski@linux.intel.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Maciej Falkowski <maciej.falkowski@linux.intel.com>
-Subject: [PATCH 6.18 291/312] drm: Fix object leak in DRM_IOCTL_GEM_CHANGE_HANDLE
-Date: Tue,  6 Jan 2026 18:06:05 +0100
-Message-ID: <20260106170558.380916256@linuxfoundation.org>
+	Peter Senna Tschudin <peter.senna@linux.intel.com>,
+	Ashutosh Dixit <ashutosh.dixit@intel.com>,
+	Harish Chegondi <harish.chegondi@intel.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
+Subject: [PATCH 6.18 294/312] drm/xe/eustall: Disallow 0 EU stall property values
+Date: Tue,  6 Jan 2026 18:06:08 +0100
+Message-ID: <20260106170558.491508407@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
 References: <20260106170547.832845344@linuxfoundation.org>
@@ -65,56 +66,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Karol Wachowski <karol.wachowski@linux.intel.com>
+From: Ashutosh Dixit <ashutosh.dixit@intel.com>
 
-commit 630efee9493cf64ff7b9a1652978807fef385fdd upstream.
+commit 3767ca4166ad42fa9e34269efeaf9f15995cd92d upstream.
 
-Add missing drm_gem_object_put() call when drm_gem_object_lookup()
-successfully returns an object. This fixes a GEM object reference
-leak that can prevent driver modules from unloading when using
-prime buffers.
+An EU stall property value of 0 is invalid and will cause a NPD.
 
-Fixes: 53096728b891 ("drm: Add DRM prime interface to reassign GEM handle")
-Cc: <stable@vger.kernel.org> # v6.18+
-Signed-off-by: Karol Wachowski <karol.wachowski@linux.intel.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Reviewed-by: Maciej Falkowski <maciej.falkowski@linux.intel.com>
-Signed-off-by: Christian König <christian.koenig@amd.com>
-Link: https://lore.kernel.org/r/20251212134133.475218-1-karol.wachowski@linux.intel.com
+Reported-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
+Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/6453
+Fixes: 1537ec85ebd7 ("drm/xe/uapi: Introduce API for EU stall sampling")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Reviewed-by: Harish Chegondi <harish.chegondi@intel.com>
+Link: https://patch.msgid.link/20251212061850.1565459-4-ashutosh.dixit@intel.com
+(cherry picked from commit 5bf763e908bf795da4ad538d21c1ec41f8021f76)
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/drm_gem.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/xe/xe_eu_stall.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/drm_gem.c b/drivers/gpu/drm/drm_gem.c
-index f884d155a832..3b9df655e837 100644
---- a/drivers/gpu/drm/drm_gem.c
-+++ b/drivers/gpu/drm/drm_gem.c
-@@ -979,8 +979,10 @@ int drm_gem_change_handle_ioctl(struct drm_device *dev, void *data,
- 	if (!obj)
- 		return -ENOENT;
+--- a/drivers/gpu/drm/xe/xe_eu_stall.c
++++ b/drivers/gpu/drm/xe/xe_eu_stall.c
+@@ -290,7 +290,7 @@ static int xe_eu_stall_user_ext_set_prop
+ 		return -EFAULT;
  
--	if (args->handle == args->new_handle)
--		return 0;
-+	if (args->handle == args->new_handle) {
-+		ret = 0;
-+		goto out;
-+	}
+ 	if (XE_IOCTL_DBG(xe, ext.property >= ARRAY_SIZE(xe_set_eu_stall_property_funcs)) ||
+-	    XE_IOCTL_DBG(xe, ext.pad))
++	    XE_IOCTL_DBG(xe, !ext.property) || XE_IOCTL_DBG(xe, ext.pad))
+ 		return -EINVAL;
  
- 	mutex_lock(&file_priv->prime.lock);
- 
-@@ -1012,6 +1014,8 @@ int drm_gem_change_handle_ioctl(struct drm_device *dev, void *data,
- 
- out_unlock:
- 	mutex_unlock(&file_priv->prime.lock);
-+out:
-+	drm_gem_object_put(obj);
- 
- 	return ret;
- }
--- 
-2.52.0
-
+ 	idx = array_index_nospec(ext.property, ARRAY_SIZE(xe_set_eu_stall_property_funcs));
 
 
 
