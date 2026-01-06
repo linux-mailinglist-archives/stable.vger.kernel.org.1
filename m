@@ -1,248 +1,247 @@
-Return-Path: <stable+bounces-206052-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206053-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1E29CFB57B
-	for <lists+stable@lfdr.de>; Wed, 07 Jan 2026 00:24:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22704CFB584
+	for <lists+stable@lfdr.de>; Wed, 07 Jan 2026 00:28:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CD3FB30380D6
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 23:24:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C2EA43044BB2
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 23:28:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EC992DE6FC;
-	Tue,  6 Jan 2026 23:24:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3E0B2DE6FC;
+	Tue,  6 Jan 2026 23:28:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Hxq82pJH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GEmSdtyp"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0181F265CA8;
-	Tue,  6 Jan 2026 23:24:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A441C2C15A0
+	for <stable@vger.kernel.org>; Tue,  6 Jan 2026 23:28:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767741885; cv=none; b=mi7kyZnXDBxLe1hlUkV7rBlejijEs6Pgxqdu3dMhDgsyimDQ6/6tfXcz63kZHoLvSdoxVLtJHpZFLpA55Yj65MhO0WgYh6/QzsPpSvt3dmWWNr5cQWYEGppK02wAZPzlttWQDIGGt6g+wdss7f9oSRGhB5KEs4JCqTtnYyQCImU=
+	t=1767742118; cv=none; b=J2Uoc+zaktwSHuQkaHhlIfmNDmynE3iJwRPWnKp3lsrKIWTiW12/y89DyFKwP+f1Nk0rbI6Xx6OpRknq+9cwSUYRLynXRvMIMZYS5YcFwG/UIM1RNEjPhNvX8W6dSIg1ufj/YBZkpk+GewROMca5NR7v+gPb0XjNtDbvnSYvny8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767741885; c=relaxed/simple;
-	bh=kbi25AN7J5KJOEyHPG4pOFTWqivq8V9VYd+c0YDMyg4=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=OXLlVCxEKfybeaib4TXNpRN6zzFo5nDqLFb2lXXlaTbPfOaxcdpaPaQFEWYrF0zRwm7b6tBN37LL1n7DuPXpf61L7GOce+kglEqjMW73gOLNR7g7OD75NWXhe/T1P72EubSP2Jr4hfA4P+8zoua3qFe58nZG3Kh+bs0NViCVwYM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Hxq82pJH; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1767741883; x=1799277883;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:content-transfer-encoding:mime-version;
-  bh=kbi25AN7J5KJOEyHPG4pOFTWqivq8V9VYd+c0YDMyg4=;
-  b=Hxq82pJHKeNpjWbi8WP44bidDHS0pkQ/+Ms9VBZMy8aUL0OoeMjKU5Zv
-   uSWa9k4C1+YutPJ8dnFHAbUEGekPf5M7XsmoX3GKLwVqkJ1F4IwZsZCTj
-   pM3ak4dya0jak8dgMqaIa4qomhsju6HdRGgyibm1DidgbNrFHcUtl7hP7
-   iuX1cJtneajGH/HkWDz44TV0sgQcm9+3afAEGksXGk1qD8OBDVC0C88Pf
-   z26Rh2HsEClADA4usew8eRKHOcpbiK2QpzqSUHAGECzJeMldkqS47i8gH
-   RmmhzxWVB48yuqoNM69lzfGQu3ULIiEbEravjwpJ1GWhyHN0Wm0L4phFS
-   Q==;
-X-CSE-ConnectionGUID: KHrg+4b+T8+6Z/FXq8+DpQ==
-X-CSE-MsgGUID: X5swP7GBTGOFxZLltlNwqA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11663"; a="56672321"
-X-IronPort-AV: E=Sophos;i="6.21,206,1763452800"; 
-   d="scan'208";a="56672321"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jan 2026 15:24:42 -0800
-X-CSE-ConnectionGUID: x30M/ogrRHajS00RnEcBug==
-X-CSE-MsgGUID: taV9jgqFRTyH7/TcTIPNSQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,206,1763452800"; 
-   d="scan'208";a="203028852"
-Received: from spandruv-mobl5.amr.corp.intel.com (HELO [10.247.173.62]) ([10.247.173.62])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jan 2026 15:24:40 -0800
-Message-ID: <e1d38d68f53302a150e11619b978d1b99d7590c2.camel@linux.intel.com>
-Subject: Re: [PATCH 2/2] platform/x86: ISST: Store and restore all domains
- data
-From: srinivas pandruvada <srinivas.pandruvada@linux.intel.com>
-To: Ilpo =?ISO-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Cc: Hans de Goede <hansg@kernel.org>, platform-driver-x86@vger.kernel.org,
- LKML	 <linux-kernel@vger.kernel.org>, stable@vger.kernel.org
-Date: Tue, 06 Jan 2026 15:24:36 -0800
-In-Reply-To: <39be18a6-d50e-e625-1347-7709cea78ea6@linux.intel.com>
-References: <20251229183450.823244-1-srinivas.pandruvada@linux.intel.com>
-		 <20251229183450.823244-3-srinivas.pandruvada@linux.intel.com>
-	 <39be18a6-d50e-e625-1347-7709cea78ea6@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.2 (3.58.2-1.fc43) 
+	s=arc-20240116; t=1767742118; c=relaxed/simple;
+	bh=PWuTjR+X4u7/k4uYH4ee6VjD1RedGNokjxA1Bkf4byI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=t3kUMKh9GL+CARQGcxgUvEroPz0ok/XZ0qef7Lu5V8MSsDwkuxiaNu9zfNyZqFABdadMvwUKxftvsu8NVqRkyJwfEgmyHADzuB/rJX53YcS8VYzyshGyhCKKC+4+wHyEIplXSYT1/BWoyscKc5D1UDL5avqcrmA09U0HnkFGS9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GEmSdtyp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C116C116C6;
+	Tue,  6 Jan 2026 23:28:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767742118;
+	bh=PWuTjR+X4u7/k4uYH4ee6VjD1RedGNokjxA1Bkf4byI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=GEmSdtypp4gJtj8DmpE18P0a4efMvekCNVkWlkqQ4yROXF6IbgyKuIeU9MuvsKyAe
+	 W+mQ8d/5eKXvqZUpWY331S0QzoYdmnYUlcAhkYIA8c5bdoIKPYpT+T0QD+cS+8GUut
+	 wlb1Tm1GfRcTW0sWVySyG2ddC8TemluLVsnRunYL0Sd2DcXpuleEKAsZSqFLvvr44n
+	 LjnqrHVVzBvs8O6PEIYww2nBmumPW7xzB5PCQTtooJT1FIprAeP3iHQRHLBXyZULn9
+	 naMnMKAB0+AbLhrUA9kZn1bDnw58LIni7wlMFe3r8gizfvsGmPyjEbUIHSWiY7O/DJ
+	 WlabsZbi3zB5g==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: NeilBrown <neil@brown.name>,
+	Olga Kornievskaia <okorniev@redhat.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15.y] lockd: fix vfs_test_lock() calls
+Date: Tue,  6 Jan 2026 18:28:35 -0500
+Message-ID: <20260106232835.3452850-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2026010500-dentist-busybody-6e8b@gregkh>
+References: <2026010500-dentist-busybody-6e8b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Tue, 2026-01-06 at 11:44 +0200, Ilpo J=C3=A4rvinen wrote:
-> On Mon, 29 Dec 2025, Srinivas Pandruvada wrote:
->=20
-> > The suspend/resume callbacks currently only store and restore the
-> > configuration for power domain 0. However, other power domains may
-> > also
-> > have modified configurations that need to be preserved across
-> > suspend/
-> > resume cycles.
-> >=20
-> > Extend the store/restore functionality to handle all power domains.
-> >=20
-> > Fixes: 91576acab020 ("platform/x86: ISST: Add suspend/resume
-> > callbacks")
-> > Signed-off-by: Srinivas Pandruvada
-> > <srinivas.pandruvada@linux.intel.com>
-> > CC: stable@vger.kernel.org
-> > ---
-> > =C2=A0.../intel/speed_select_if/isst_tpmi_core.c=C2=A0=C2=A0=C2=A0 | 53=
- ++++++++++++---
-> > ----
-> > =C2=A01 file changed, 33 insertions(+), 20 deletions(-)
-> >=20
-> > diff --git
-> > a/drivers/platform/x86/intel/speed_select_if/isst_tpmi_core.c
-> > b/drivers/platform/x86/intel/speed_select_if/isst_tpmi_core.c
-> > index f587709ddd47..47026bb3e1af 100644
-> > --- a/drivers/platform/x86/intel/speed_select_if/isst_tpmi_core.c
-> > +++ b/drivers/platform/x86/intel/speed_select_if/isst_tpmi_core.c
-> > @@ -1723,55 +1723,68 @@ EXPORT_SYMBOL_NS_GPL(tpmi_sst_dev_remove,
-> > "INTEL_TPMI_SST");
-> > =C2=A0void tpmi_sst_dev_suspend(struct auxiliary_device *auxdev)
-> > =C2=A0{
-> > =C2=A0	struct tpmi_sst_struct *tpmi_sst =3D
-> > auxiliary_get_drvdata(auxdev);
-> > -	struct tpmi_per_power_domain_info *power_domain_info;
-> > +	struct tpmi_per_power_domain_info *power_domain_info,
-> > *pd_info;
-> > =C2=A0	struct oobmsm_plat_info *plat_info;
-> > =C2=A0	void __iomem *cp_base;
-> > +	int num_resources, i;
-> > =C2=A0
-> > =C2=A0	plat_info =3D tpmi_get_platform_data(auxdev);
-> > =C2=A0	if (!plat_info)
-> > =C2=A0		return;
-> > =C2=A0
-> > =C2=A0	power_domain_info =3D tpmi_sst->power_domain_info[plat_info-
-> > >partition];
-> > +	num_resources =3D tpmi_sst-
-> > >number_of_power_domains[plat_info->partition];
-> > =C2=A0
-> > -	cp_base =3D power_domain_info->sst_base + power_domain_info-
-> > >sst_header.cp_offset;
-> > -	power_domain_info->saved_sst_cp_control =3D readq(cp_base +
-> > SST_CP_CONTROL_OFFSET);
-> > +	for (i =3D 0; i < num_resources; i++) {
-> > +		pd_info =3D &power_domain_info[i];
-> > +		if (!pd_info || !pd_info->sst_base)
-> > +			continue;
-> > =C2=A0
-> > -	memcpy_fromio(power_domain_info->saved_clos_configs,
-> > cp_base + SST_CLOS_CONFIG_0_OFFSET,
-> > -		=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 sizeof(power_domain_info-
-> > >saved_clos_configs));
-> > +		cp_base =3D pd_info->sst_base + pd_info-
-> > >sst_header.cp_offset;
-> > =C2=A0
-> > -	memcpy_fromio(power_domain_info->saved_clos_assocs,
-> > cp_base + SST_CLOS_ASSOC_0_OFFSET,
-> > -		=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 sizeof(power_domain_info-
-> > >saved_clos_assocs));
-> > +		pd_info->saved_sst_cp_control =3D readq(cp_base +
-> > SST_CP_CONTROL_OFFSET);
-> > +		memcpy_fromio(pd_info->saved_clos_configs, cp_base
-> > + SST_CLOS_CONFIG_0_OFFSET,
-> > +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 sizeof(pd_info-
-> > >saved_clos_configs));
-> > +		memcpy_fromio(pd_info->saved_clos_assocs, cp_base
-> > + SST_CLOS_ASSOC_0_OFFSET,
-> > +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 sizeof(pd_info->saved_clos_assocs));
-> > =C2=A0
-> > -	power_domain_info->saved_pp_control =3D
-> > readq(power_domain_info->sst_base +
-> > -						=C2=A0=C2=A0=C2=A0
-> > power_domain_info->sst_header.pp_offset +
-> > -						=C2=A0=C2=A0=C2=A0
-> > SST_PP_CONTROL_OFFSET);
-> > +		pd_info->saved_pp_control =3D readq(pd_info-
-> > >sst_base +
-> > +						=C2=A0 pd_info-
-> > >sst_header.pp_offset +
-> > +						=C2=A0
-> > SST_PP_CONTROL_OFFSET);
-> > +	}
-> > =C2=A0}
-> > =C2=A0EXPORT_SYMBOL_NS_GPL(tpmi_sst_dev_suspend, "INTEL_TPMI_SST");
-> > =C2=A0
-> > =C2=A0void tpmi_sst_dev_resume(struct auxiliary_device *auxdev)
-> > =C2=A0{
-> > =C2=A0	struct tpmi_sst_struct *tpmi_sst =3D
-> > auxiliary_get_drvdata(auxdev);
-> > -	struct tpmi_per_power_domain_info *power_domain_info;
-> > +	struct tpmi_per_power_domain_info *power_domain_info,
-> > *pd_info;
-> > =C2=A0	struct oobmsm_plat_info *plat_info;
-> > =C2=A0	void __iomem *cp_base;
-> > +	int num_resources, i;
-> > =C2=A0
-> > =C2=A0	plat_info =3D tpmi_get_platform_data(auxdev);
-> > =C2=A0	if (!plat_info)
-> > =C2=A0		return;
-> > =C2=A0
-> > =C2=A0	power_domain_info =3D tpmi_sst->power_domain_info[plat_info-
-> > >partition];
-> > +	num_resources =3D tpmi_sst-
-> > >number_of_power_domains[plat_info->partition];
-> > =C2=A0
-> > -	cp_base =3D power_domain_info->sst_base + power_domain_info-
-> > >sst_header.cp_offset;
-> > -	writeq(power_domain_info->saved_sst_cp_control, cp_base +
-> > SST_CP_CONTROL_OFFSET);
-> > -
-> > -	memcpy_toio(cp_base + SST_CLOS_CONFIG_0_OFFSET,
-> > power_domain_info->saved_clos_configs,
-> > -		=C2=A0=C2=A0=C2=A0 sizeof(power_domain_info-
-> > >saved_clos_configs));
-> > +	for (i =3D 0; i < num_resources; i++) {
-> > +		pd_info =3D &power_domain_info[i];
-> > +		if (!pd_info || !pd_info->sst_base)
-> > +			continue;
-> > =C2=A0
-> > -	memcpy_toio(cp_base + SST_CLOS_ASSOC_0_OFFSET,
-> > power_domain_info->saved_clos_assocs,
-> > -		=C2=A0=C2=A0=C2=A0 sizeof(power_domain_info->saved_clos_assocs));
-> > +		cp_base =3D pd_info->sst_base + pd_info-
-> > >sst_header.cp_offset;
-> > +		writeq(pd_info->saved_sst_cp_control, cp_base +
-> > SST_CP_CONTROL_OFFSET);
-> > +		memcpy_toio(cp_base + SST_CLOS_CONFIG_0_OFFSET,
-> > pd_info->saved_clos_configs,
-> > +			=C2=A0=C2=A0=C2=A0 sizeof(pd_info->saved_clos_configs));
-> > +		memcpy_toio(cp_base + SST_CLOS_ASSOC_0_OFFSET,
-> > pd_info->saved_clos_assocs,
-> > +			=C2=A0=C2=A0=C2=A0 sizeof(pd_info->saved_clos_assocs));
->=20
-> Why is the use of empty lines inconsistent between suspend and
-> resume?
+From: NeilBrown <neil@brown.name>
 
-I will fix that.
+[ Upstream commit a49a2a1baa0c553c3548a1c414b6a3c005a8deba ]
 
-Thanks,
-Srinivas
+Usage of vfs_test_lock() is somewhat confused.  Documentation suggests
+it is given a "lock" but this is not the case.  It is given a struct
+file_lock which contains some details of the sort of lock it should be
+looking for.
 
->=20
-> > -	writeq(power_domain_info->saved_pp_control,
-> > power_domain_info->sst_base +
-> > -				power_domain_info-
-> > >sst_header.pp_offset + SST_PP_CONTROL_OFFSET);
-> > +		writeq(pd_info->saved_pp_control,
-> > power_domain_info->sst_base +
-> > +		=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 pd_info->sst_header.pp_offset +
-> > SST_PP_CONTROL_OFFSET);
-> > +	}
-> > =C2=A0}
-> > =C2=A0EXPORT_SYMBOL_NS_GPL(tpmi_sst_dev_resume, "INTEL_TPMI_SST");
-> > =C2=A0
-> >=20
+In particular passing a "file_lock" containing fl_lmops or fl_ops is
+meaningless and possibly confusing.
+
+This is particularly problematic in lockd.  nlmsvc_testlock() receives
+an initialised "file_lock" from xdr-decode, including manager ops and an
+owner.  It then mistakenly passes this to vfs_test_lock() which might
+replace the owner and the ops.  This can lead to confusion when freeing
+the lock.
+
+The primary role of the 'struct file_lock' passed to vfs_test_lock() is
+to report a conflicting lock that was found, so it makes more sense for
+nlmsvc_testlock() to pass "conflock", which it uses for returning the
+conflicting lock.
+
+With this change, freeing of the lock is not confused and code in
+__nlm4svc_proc_test() and __nlmsvc_proc_test() can be simplified.
+
+Documentation for vfs_test_lock() is improved to reflect its real
+purpose, and a WARN_ON_ONCE() is added to avoid a similar problem in the
+future.
+
+Reported-by: Olga Kornievskaia <okorniev@redhat.com>
+Closes: https://lore.kernel.org/all/20251021130506.45065-1-okorniev@redhat.com
+Signed-off-by: NeilBrown <neil@brown.name>
+Fixes: 20fa19027286 ("nfs: add export operations")
+Cc: stable@vger.kernel.org
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+[ adapted c.flc_* field accesses to direct fl_* fields ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ fs/lockd/svc4proc.c |  4 +---
+ fs/lockd/svclock.c  | 21 ++++++++++++---------
+ fs/lockd/svcproc.c  |  5 +----
+ fs/locks.c          | 13 +++++++++++--
+ 4 files changed, 25 insertions(+), 18 deletions(-)
+
+diff --git a/fs/lockd/svc4proc.c b/fs/lockd/svc4proc.c
+index e318d55e4c0e..277d665937ae 100644
+--- a/fs/lockd/svc4proc.c
++++ b/fs/lockd/svc4proc.c
+@@ -96,7 +96,6 @@ __nlm4svc_proc_test(struct svc_rqst *rqstp, struct nlm_res *resp)
+ 	struct nlm_args *argp = rqstp->rq_argp;
+ 	struct nlm_host	*host;
+ 	struct nlm_file	*file;
+-	struct nlm_lockowner *test_owner;
+ 	__be32 rc = rpc_success;
+ 
+ 	dprintk("lockd: TEST4        called\n");
+@@ -106,7 +105,6 @@ __nlm4svc_proc_test(struct svc_rqst *rqstp, struct nlm_res *resp)
+ 	if ((resp->status = nlm4svc_retrieve_args(rqstp, argp, &host, &file)))
+ 		return resp->status == nlm_drop_reply ? rpc_drop_reply :rpc_success;
+ 
+-	test_owner = argp->lock.fl.fl_owner;
+ 	/* Now check for conflicting locks */
+ 	resp->status = nlmsvc_testlock(rqstp, file, host, &argp->lock, &resp->lock, &resp->cookie);
+ 	if (resp->status == nlm_drop_reply)
+@@ -114,7 +112,7 @@ __nlm4svc_proc_test(struct svc_rqst *rqstp, struct nlm_res *resp)
+ 	else
+ 		dprintk("lockd: TEST4        status %d\n", ntohl(resp->status));
+ 
+-	nlmsvc_put_lockowner(test_owner);
++	nlmsvc_release_lockowner(&argp->lock);
+ 	nlmsvc_release_host(host);
+ 	nlm_release_file(file);
+ 	return rc;
+diff --git a/fs/lockd/svclock.c b/fs/lockd/svclock.c
+index 4e30f3c50970..035f885809dd 100644
+--- a/fs/lockd/svclock.c
++++ b/fs/lockd/svclock.c
+@@ -604,7 +604,13 @@ nlmsvc_testlock(struct svc_rqst *rqstp, struct nlm_file *file,
+ 	}
+ 
+ 	mode = lock_to_openmode(&lock->fl);
+-	error = vfs_test_lock(file->f_file[mode], &lock->fl);
++	locks_init_lock(&conflock->fl);
++	/* vfs_test_lock only uses start, end, and owner, but tests fl_file */
++	conflock->fl.fl_file = lock->fl.fl_file;
++	conflock->fl.fl_start = lock->fl.fl_start;
++	conflock->fl.fl_end = lock->fl.fl_end;
++	conflock->fl.fl_owner = lock->fl.fl_owner;
++	error = vfs_test_lock(file->f_file[mode], &conflock->fl);
+ 	if (error) {
+ 		/* We can't currently deal with deferred test requests */
+ 		if (error == FILE_LOCK_DEFERRED)
+@@ -614,22 +620,19 @@ nlmsvc_testlock(struct svc_rqst *rqstp, struct nlm_file *file,
+ 		goto out;
+ 	}
+ 
+-	if (lock->fl.fl_type == F_UNLCK) {
++	if (conflock->fl.fl_type == F_UNLCK) {
+ 		ret = nlm_granted;
+ 		goto out;
+ 	}
+ 
+ 	dprintk("lockd: conflicting lock(ty=%d, %Ld-%Ld)\n",
+-		lock->fl.fl_type, (long long)lock->fl.fl_start,
+-		(long long)lock->fl.fl_end);
++		conflock->fl.fl_type, (long long)conflock->fl.fl_start,
++		(long long)conflock->fl.fl_end);
+ 	conflock->caller = "somehost";	/* FIXME */
+ 	conflock->len = strlen(conflock->caller);
+ 	conflock->oh.len = 0;		/* don't return OH info */
+-	conflock->svid = lock->fl.fl_pid;
+-	conflock->fl.fl_type = lock->fl.fl_type;
+-	conflock->fl.fl_start = lock->fl.fl_start;
+-	conflock->fl.fl_end = lock->fl.fl_end;
+-	locks_release_private(&lock->fl);
++	conflock->svid = conflock->fl.fl_pid;
++	locks_release_private(&conflock->fl);
+ 
+ 	ret = nlm_lck_denied;
+ out:
+diff --git a/fs/lockd/svcproc.c b/fs/lockd/svcproc.c
+index 2a615032f5d0..fdbe93accb86 100644
+--- a/fs/lockd/svcproc.c
++++ b/fs/lockd/svcproc.c
+@@ -117,7 +117,6 @@ __nlmsvc_proc_test(struct svc_rqst *rqstp, struct nlm_res *resp)
+ 	struct nlm_args *argp = rqstp->rq_argp;
+ 	struct nlm_host	*host;
+ 	struct nlm_file	*file;
+-	struct nlm_lockowner *test_owner;
+ 	__be32 rc = rpc_success;
+ 
+ 	dprintk("lockd: TEST          called\n");
+@@ -127,8 +126,6 @@ __nlmsvc_proc_test(struct svc_rqst *rqstp, struct nlm_res *resp)
+ 	if ((resp->status = nlmsvc_retrieve_args(rqstp, argp, &host, &file)))
+ 		return resp->status == nlm_drop_reply ? rpc_drop_reply :rpc_success;
+ 
+-	test_owner = argp->lock.fl.fl_owner;
+-
+ 	/* Now check for conflicting locks */
+ 	resp->status = cast_status(nlmsvc_testlock(rqstp, file, host, &argp->lock, &resp->lock, &resp->cookie));
+ 	if (resp->status == nlm_drop_reply)
+@@ -137,7 +134,7 @@ __nlmsvc_proc_test(struct svc_rqst *rqstp, struct nlm_res *resp)
+ 		dprintk("lockd: TEST          status %d vers %d\n",
+ 			ntohl(resp->status), rqstp->rq_vers);
+ 
+-	nlmsvc_put_lockowner(test_owner);
++	nlmsvc_release_lockowner(&argp->lock);
+ 	nlmsvc_release_host(host);
+ 	nlm_release_file(file);
+ 	return rc;
+diff --git a/fs/locks.c b/fs/locks.c
+index 250559af8064..d923a9edff66 100644
+--- a/fs/locks.c
++++ b/fs/locks.c
+@@ -2229,13 +2229,22 @@ SYSCALL_DEFINE2(flock, unsigned int, fd, unsigned int, cmd)
+ /**
+  * vfs_test_lock - test file byte range lock
+  * @filp: The file to test lock for
+- * @fl: The lock to test; also used to hold result
++ * @fl: The byte-range in the file to test; also used to hold result
+  *
++ * On entry, @fl does not contain a lock, but identifies a range (fl_start, fl_end)
++ * in the file (c.flc_file), and an owner (c.flc_owner) for whom existing locks
++ * should be ignored.  c.flc_type and c.flc_flags are ignored.
++ * Both fl_lmops and fl_ops in @fl must be NULL.
+  * Returns -ERRNO on failure.  Indicates presence of conflicting lock by
+- * setting conf->fl_type to something other than F_UNLCK.
++ * setting fl->fl_type to something other than F_UNLCK.
++ *
++ * If vfs_test_lock() does find a lock and return it, the caller must
++ * use locks_free_lock() or locks_release_private() on the returned lock.
+  */
+ int vfs_test_lock(struct file *filp, struct file_lock *fl)
+ {
++	WARN_ON_ONCE(fl->fl_ops || fl->fl_lmops);
++	WARN_ON_ONCE(filp != fl->fl_file);
+ 	if (filp->f_op->lock)
+ 		return filp->f_op->lock(filp, F_GETLK, fl);
+ 	posix_test_lock(filp, fl);
+-- 
+2.51.0
+
 
