@@ -1,119 +1,320 @@
-Return-Path: <stable+bounces-206054-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206055-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C846DCFB587
-	for <lists+stable@lfdr.de>; Wed, 07 Jan 2026 00:28:44 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62BE1CFB58A
+	for <lists+stable@lfdr.de>; Wed, 07 Jan 2026 00:30:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 02AAF3045CEB
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 23:28:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 631EF3046FBA
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 23:30:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38BDB2DE6FC;
-	Tue,  6 Jan 2026 23:28:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 650132D6E66;
+	Tue,  6 Jan 2026 23:30:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WDRS6o97"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dRy9pvD9"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED5DB2C15A0
-	for <stable@vger.kernel.org>; Tue,  6 Jan 2026 23:28:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 600038248B
+	for <stable@vger.kernel.org>; Tue,  6 Jan 2026 23:30:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767742122; cv=none; b=jzh5uQSR7aDJLbXN7DSYsItT2mkZeXhtt/NPdQCWr276xjT/5chbpByl/ldmD/W+gLk+aeeo1UooVRCsG6Qv92PC+Uk7f4RZBoKaxlcT5eEbqEwbb+hB09NyjJQ7z1K+p4c+up7GPzK5tfd4wDeV8QkqAS9FDc8yUvrSOFN5g7M=
+	t=1767742219; cv=none; b=iriU2fYYBEi4sh2RtvuCSPb9bYMbCj8B6zS1OW7DNqET5WfLRhlBpbUP+DM9WWzmobn+PU0UMSBlr9QkiW3EIGvqVsDdAR4+/aeWxYEyQmt542XmWV0ehyf/3gOK4Ru0gzMfZkisL02Frih0h2VWSoEiyt8exHLY8RjgznDSDbk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767742122; c=relaxed/simple;
-	bh=cGmwM5Zz7fUlcVZ8t/bvcO/X06pX09ahQg5VG9sn0+g=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lPSdEvtJFL3QqbZLafBPlast42k/gSP3jIIizplDSuEGMepIjeL20UGJ+gHJ07QgL3+8ZpTpjariPG7iBl27N7fUQ//CGQRS5u/6Eetqrh3Tmp9phFtmNuF2+OHAfKmE8WOQSknYugVE/GOdUns9yDg2MbymTm37wAsQbEyrduE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WDRS6o97; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10C41C116C6;
-	Tue,  6 Jan 2026 23:28:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767742121;
-	bh=cGmwM5Zz7fUlcVZ8t/bvcO/X06pX09ahQg5VG9sn0+g=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WDRS6o97JtGoHZwqrVMlaA6YxIUAdZrcJPYaBj9zQ1rj2IHZWMnj7wJj5eLQjy0HI
-	 E18z+0nwTYexxckFDMQKNnHQrjqA9A2fd64NQM2gNa1Z0Wwc/Mz92X/kNk410luGLh
-	 Rd31kOOcO4VMpjZeFrpdnDG96bLRYBAt3ZteZKDja5OkEOcJOJRdfdKRZ/U3a3VI3e
-	 Kksde+6JIRH2WRv4tXl/xvRbiZRLKU3UvpqCi8PvcQXnIX1nCa+Omn+me/MeTrpSxV
-	 g9N6aYtB+OvL1iBbzthS994MOkcJVN12NCrv81NOccFmm1grCuzZ36Je/qMnjLZReq
-	 xrZGfPk/mJ9bA==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Jouni Malinen <jouni.malinen@oss.qualcomm.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y] wifi: mac80211: Discard Beacon frames to non-broadcast address
-Date: Tue,  6 Jan 2026 18:28:39 -0500
-Message-ID: <20260106232839.3452928-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026010516-playmate-shorthand-2e97@gregkh>
-References: <2026010516-playmate-shorthand-2e97@gregkh>
+	s=arc-20240116; t=1767742219; c=relaxed/simple;
+	bh=sF9ATBDiQa2WJGuZ7B1rayFwvR917J2e+JTZh6nnnvY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Ugrt4JPIzSTYjS7sy8jIkkRbHd+DARCkl+sMV29x8Stts9JnubnIxmJtMD31lMDLkQEdeu5UEORgesgy14XrCqK0TvCb84CYG7l7spi4Q4vVdTvCQd8oxhBtlZ8oHaDRJn5CtwLP8/pLMTXpxyUgbxeVNB68TpKb5OoYJwidnnA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dRy9pvD9; arc=none smtp.client-ip=209.85.160.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-4ee0ce50b95so2258491cf.0
+        for <stable@vger.kernel.org>; Tue, 06 Jan 2026 15:30:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1767742216; x=1768347016; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=dMPrgVPAJkxzoSL+MjXhmJYJPrnZM80RIBzr/vd32Eo=;
+        b=dRy9pvD9kfnH01O33fEcWaBhpUK13X0eq2f0WK24W0P4CpDfCT8p4oB8wCvFMO+z4q
+         UKdSvpqtkDmAUUTRtut4Y0N4kNHT22qIRQJEqD0rEArTxpN8S0FIn8x3s5DRghaWHDSL
+         LlxX5jER9ZH+ptd8fUgSQn1lG3WKSOUbX+lAm3mzCY84aX2zUP3QRhkcatCVMlQb0ONQ
+         pCjKKsUZReZcvM+fKARSvooPhYMb154Fe7m26u9FDhTxonBXlHIeTw2GCFgttM4GcggS
+         rHJw2xRCzfK9DkwwaDRJ8UcpOQ6E/M45xi2K6v7oziY7H7nhzwE/kLfat5UY7Me0R6G+
+         50uw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767742216; x=1768347016;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=dMPrgVPAJkxzoSL+MjXhmJYJPrnZM80RIBzr/vd32Eo=;
+        b=ErmJ/cQh8uM5YkKCKx9MGYYjBPlP+6fnKGwXPOLwsadu4MQ4xI0FWXXbRzPT2tvix4
+         49FXebZZpB/7auDKUGvYrcIPI73aAF9aVzJPNXLTTiSBNqXwsSbbd5feQRR06d0JisZz
+         A1xMZGDIG/BQYblyZD7jxt4/n+Htb/JRQp/Bs//L9ZlLRacv27fyFxsvyg/YTuaN99JJ
+         JeATXnv8vhV7d2yeQQNUGHWikSBbJVTYSV4WfeSL0BFgStj9N0AhEAK5OC4VVcZJXf1N
+         ErNFuIzihgASCMOHIVgdp8gLlCVukg/lv5fBTtkJS7+uef7KuOAzN1AFZNuesfirt23I
+         XTkg==
+X-Forwarded-Encrypted: i=1; AJvYcCU6PwwuJckqYaqY2DgStdPo0lybGO5hXusL/jMUmhu+TW0g2ESkTB8Adh9b/d3ZlPLUQ0M8xiU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwVnFnM0cwjNp0kM1y2/euO5F/No5s4XCASzahTd6ybgjV/ikDc
+	3e2gcuE2l+VxaWu8Bf4BAb2D5zI2A2PMK9x3KKrI2AnMHWirq1zAObJpvrPxSwTFzcZtkbyYXGf
+	bwl28F+zh/v6OLN3WKqgomXWrgsz/h3U=
+X-Gm-Gg: AY/fxX5++do3Nnyw8VjWgQ2EsTiW5z+gCf96U8FG8B+T2UCOLNaROsHLGL0RItJ5diy
+	PU2JfYdPbWN6Ze7REfYxc293T4TL31hPKvsCY0vxdW02i9ZK6ZM14nClPI7wuWokIyZP7HNKtbY
+	jlKF+bncxjh/PnqKXxkjCBYpmOV1jnsbHwrI0Xxd5pNHqdwO+wc5Tv7RZDA7vmIhOdD3QpBTOnc
+	Wf39Zx3REv+bcDMC0cd89qn2wEu75F2CKfNvODkSPDNOHKFTWQu0+r630s0C9BzsGImEDhOBd8A
+	ONIZRUgRl8Kfd40it80rlw==
+X-Google-Smtp-Source: AGHT+IH4DdeN8NA/9bx7gypeth53pF4xCrOLbCSBRDkT68+39OMrQflzwe0faxz8RIiURIMpee/M6awa20lDfJJEDPM=
+X-Received: by 2002:a05:622a:2c2:b0:4ee:2721:9ed3 with SMTP id
+ d75a77b69052e-4ffb3f7c162mr10231181cf.26.1767742216040; Tue, 06 Jan 2026
+ 15:30:16 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20251215030043.1431306-1-joannelkoong@gmail.com>
+ <20251215030043.1431306-2-joannelkoong@gmail.com> <ypyumqgv5p7dnxmq34q33keb6kzqnp66r33gtbm4pglgdmhma6@3oleltql2qgp>
+In-Reply-To: <ypyumqgv5p7dnxmq34q33keb6kzqnp66r33gtbm4pglgdmhma6@3oleltql2qgp>
+From: Joanne Koong <joannelkoong@gmail.com>
+Date: Tue, 6 Jan 2026 15:30:05 -0800
+X-Gm-Features: AQt7F2pJlPO-7drumYMDtTF9-DOPHU0IjtOLLiFeDA2rNi5E_BAE0vn6n9y_GsM
+Message-ID: <CAJnrk1aYpcDpm8MpN5Emb8qNOn34-qEiARLH0RudySKFtEZVpA@mail.gmail.com>
+Subject: Re: [PATCH v2 1/1] fs/writeback: skip AS_NO_DATA_INTEGRITY mappings
+ in wait_sb_inodes()
+To: Jan Kara <jack@suse.cz>
+Cc: akpm@linux-foundation.org, david@redhat.com, miklos@szeredi.hu, 
+	linux-mm@kvack.org, athul.krishna.kr@protonmail.com, j.neuschaefer@gmx.net, 
+	carnil@debian.org, linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Jouni Malinen <jouni.malinen@oss.qualcomm.com>
+On Tue, Jan 6, 2026 at 1:34=E2=80=AFAM Jan Kara <jack@suse.cz> wrote:
+>
+Hi Jan,
 
-[ Upstream commit 193d18f60588e95d62e0f82b6a53893e5f2f19f8 ]
+> [Thanks to Andrew for CCing me on patch commit]
 
-Beacon frames are required to be sent to the broadcast address, see IEEE
-Std 802.11-2020, 11.1.3.1 ("The Address 1 field of the Beacon .. frame
-shall be set to the broadcast address"). A unicast Beacon frame might be
-used as a targeted attack to get one of the associated STAs to do
-something (e.g., using CSA to move it to another channel). As such, it
-is better have strict filtering for this on the received side and
-discard all Beacon frames that are sent to an unexpected address.
+Sorry, I didn't mean to exclude you. I hadn't realized the
+fs-writeback.c file had maintainers/reviewers listed for it. I'll make
+sure to cc you next time.
 
-This is even more important for cases where beacon protection is used.
-The current implementation in mac80211 is correctly discarding unicast
-Beacon frames if the Protected Frame bit in the Frame Control field is
-set to 0. However, if that bit is set to 1, the logic used for checking
-for configured BIGTK(s) does not actually work. If the driver does not
-have logic for dropping unicast Beacon frames with Protected Frame bit
-1, these frames would be accepted in mac80211 processing as valid Beacon
-frames even though they are not protected. This would allow beacon
-protection to be bypassed. While the logic for checking beacon
-protection could be extended to cover this corner case, a more generic
-check for discard all Beacon frames based on A1=unicast address covers
-this without needing additional changes.
+>
+> On Sun 14-12-25 19:00:43, Joanne Koong wrote:
+> > Skip waiting on writeback for inodes that belong to mappings that do no=
+t
+> > have data integrity guarantees (denoted by the AS_NO_DATA_INTEGRITY
+> > mapping flag).
+> >
+> > This restores fuse back to prior behavior where syncs are no-ops. This
+> > is needed because otherwise, if a system is running a faulty fuse
+> > server that does not reply to issued write requests, this will cause
+> > wait_sb_inodes() to wait forever.
+> >
+> > Fixes: 0c58a97f919c ("fuse: remove tmp folio for writebacks and interna=
+l rb tree")
+> > Reported-by: Athul Krishna <athul.krishna.kr@protonmail.com>
+> > Reported-by: J. Neusch=C3=A4fer <j.neuschaefer@gmx.net>
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
+>
+> OK, but the difference 0c58a97f919c introduced goes much further than jus=
+t
+> wait_sb_inodes(). Before 0c58a97f919c also filemap_fdatawait() (and all t=
+he
+> other variants waiting for folio_writeback() to clear) returned immediate=
+ly
+> because folio writeback was done as soon as we've copied the content into
+> the temporary page. Now they will block waiting for the server to finish
+> the IO. So e.g. fsync() will block waiting for the server in
+> file_write_and_wait_range() now, instead of blocking in fuse_fsync_common=
+()
+> -> fuse_simple_request(). Similarly e.g. truncate(2) will now block waiti=
+ng
+> for the server so that folio_writeback can be cleared.
+>
+> So I understand your patch fixes the regression with suspend blocking but=
+ I
+> don't have a high confidence we are not just starting a whack-a-mole game
+> catching all the places that previously hiddenly depended on
+> folio_writeback getting cleared without any involvement of untrusted fuse
+> server and now this changed. So do we have some higher-level idea what is=
+ /
+> is not guaranteed with stuck fuse server?
 
-Address all these issues by dropping received Beacon frames if they are
-sent to a non-broadcast address.
+The implications of 0c58a97f919c (eg clearing folio writeback only
+when the server has completed writeback instead of clearing writeback
+and returning immediately) had some analysis and discussion in this
+prior thread [1]. Copying/pasting a snippet from the cover letter:
 
-Cc: stable@vger.kernel.org
-Fixes: af2d14b01c32 ("mac80211: Beacon protection using the new BIGTK (STA)")
-Signed-off-by: Jouni Malinen <jouni.malinen@oss.qualcomm.com>
-Link: https://patch.msgid.link/20251215151134.104501-1-jouni.malinen@oss.qualcomm.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-[ changed RX_DROP to RX_DROP_MONITOR ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- net/mac80211/rx.c | 5 +++++
- 1 file changed, 5 insertions(+)
+"With removing the temp page, writeback state is now only cleared on the di=
+rty
+page after the server has written it back to disk. This may take an
+indeterminate amount of time. As well, there is also the possibility of
+malicious or well-intentioned but buggy servers where writeback may in the
+worst case scenario, never complete. This means that any
+folio_wait_writeback() on a dirty page belonging to a FUSE filesystem needs=
+ to
+be carefully audited.
 
-diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
-index e6a0a65d4d43..1303b15e2b29 100644
---- a/net/mac80211/rx.c
-+++ b/net/mac80211/rx.c
-@@ -3388,6 +3388,11 @@ ieee80211_rx_h_mgmt_check(struct ieee80211_rx_data *rx)
- 	    rx->skb->len < IEEE80211_MIN_ACTION_SIZE)
- 		return RX_DROP_UNUSABLE;
- 
-+	/* Drop non-broadcast Beacon frames */
-+	if (ieee80211_is_beacon(mgmt->frame_control) &&
-+	    !is_broadcast_ether_addr(mgmt->da))
-+		return RX_DROP_MONITOR;
-+
- 	if (rx->sdata->vif.type == NL80211_IFTYPE_AP &&
- 	    ieee80211_is_beacon(mgmt->frame_control) &&
- 	    !(rx->flags & IEEE80211_RX_BEACON_REPORTED)) {
--- 
-2.51.0
+In particular, these are the cases that need to be accounted for:
+* potentially deadlocking in reclaim, as mentioned above
+* potentially stalling sync(2)
+* potentially stalling page migration / compaction
 
+This patchset adds a new mapping flag, AS_WRITEBACK_INDETERMINATE, which
+filesystems may set on its inode mappings to indicate that writeback
+operations may take an indeterminate amount of time to complete. FUSE will =
+set
+this flag on its mappings. This patchset adds checks to the critical parts =
+of
+reclaim, sync, and page migration logic where writeback may be waited on.
+
+Please note the following:
+* For sync(2), waiting on writeback will be skipped for FUSE, but this has =
+no
+  effect on existing behavior. Dirty FUSE pages are already not guaranteed =
+to
+  be written to disk by the time sync(2) returns (eg writeback is cleared o=
+n
+  the dirty page but the server may not have written out the temp page to d=
+isk
+  yet). If the caller wishes to ensure the data has actually been synced to
+  disk, they should use fsync(2)/fdatasync(2) instead.
+* AS_WRITEBACK_INDETERMINATE does not indicate that the folios should never=
+ be
+  waited on when in writeback. There are some cases where the wait is
+  desirable. For example, for the sync_file_range() syscall, it is fine to
+  wait on the writeback since the caller passes in a fd for the operation."
+
+That was from v6 of the patchset and some things were changed between
+that and the final version landed in v8 [2] (most notably, changing
+AS_WRITEBACK_INDETERMINATE to AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM and
+dropping the sync + page migration skips), but I think that analysis
+of what cases need to be accounted for / audited remains the same. I
+don't think there are any places beyond those 3 listed above that have
+a core intrinsic dependency on folio writeback being cleared cleanly
+(eg without any involvement of an untrusted fuse server).
+
+For the fsync() and truncate() examples you mentioned, I don't think
+it's an issue that these now wait for the server to finish the I/O and
+hang if the server doesn't. I think it's actually more correct
+behavior than what we had with temp pages, eg imo these actually ought
+to wait for the writeback to have been completed by the server. If the
+server is malicious / buggy and fsync/truncate hangs, I think that's
+fine given that fsync/truncate is initiated by the user on a specific
+file descriptor (as opposed to the generic sync()) (and imo it should
+hang if it can't actually be executed correctly because the server is
+malfunctioning).
+
+As for why this sync user regression has surfaced and now needs to be
+addressed, I don't think it's because there's a whack-a-mole game
+where we're ad-hoc having to patch up places we didn't realize could
+be broken by folio writeback potentially hanging. The original
+patchset [1] contained patches that addressed the sync and compaction
+case (eg maintaining the original behavior that the temp pages had),
+so I don't think this is something that was missed. These patches were
+dropped because in the discussion in [1], they seemed pointless to
+mitigate / guard against when there already exists other ways
+migration/sync could be stalled by a malicious/buggy fuse server. What
+I missed was that it's more common than I had thought for
+well-intentioned servers to not correctly implement writeback
+handling, and that even if it's userspace's "fault", it's still
+considered a kernel regression if buggy code previously sufficed but
+now doesn't.
+
+Thanks,
+Joanne
+
+[1] https://lore.kernel.org/linux-fsdevel/20241122232359.429647-1-joannelko=
+ong@gmail.com/T/#u
+[2] https://lore.kernel.org/linux-fsdevel/CAJfpegveOFoL-XzDKQZZ4U6UF_AetNwT=
+UDbfmf7rdJasRFm3xA@mail.gmail.com/T/#m56255519bf9af421ae07014208ccd68a96e72=
+d52
+
+>
+>                                                                 Honza
+>
+> > ---
+> >  fs/fs-writeback.c       |  3 ++-
+> >  fs/fuse/file.c          |  4 +++-
+> >  include/linux/pagemap.h | 11 +++++++++++
+> >  3 files changed, 16 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/fs/fs-writeback.c b/fs/fs-writeback.c
+> > index 6800886c4d10..ab2e279ed3c2 100644
+> > --- a/fs/fs-writeback.c
+> > +++ b/fs/fs-writeback.c
+> > @@ -2751,7 +2751,8 @@ static void wait_sb_inodes(struct super_block *sb=
+)
+> >                * do not have the mapping lock. Skip it here, wb complet=
+ion
+> >                * will remove it.
+> >                */
+> > -             if (!mapping_tagged(mapping, PAGECACHE_TAG_WRITEBACK))
+> > +             if (!mapping_tagged(mapping, PAGECACHE_TAG_WRITEBACK) ||
+> > +                 mapping_no_data_integrity(mapping))
+> >                       continue;
+> >
+> >               spin_unlock_irq(&sb->s_inode_wblist_lock);
+> > diff --git a/fs/fuse/file.c b/fs/fuse/file.c
+> > index 01bc894e9c2b..3b2a171e652f 100644
+> > --- a/fs/fuse/file.c
+> > +++ b/fs/fuse/file.c
+> > @@ -3200,8 +3200,10 @@ void fuse_init_file_inode(struct inode *inode, u=
+nsigned int flags)
+> >
+> >       inode->i_fop =3D &fuse_file_operations;
+> >       inode->i_data.a_ops =3D &fuse_file_aops;
+> > -     if (fc->writeback_cache)
+> > +     if (fc->writeback_cache) {
+> >               mapping_set_writeback_may_deadlock_on_reclaim(&inode->i_d=
+ata);
+> > +             mapping_set_no_data_integrity(&inode->i_data);
+> > +     }
+> >
+> >       INIT_LIST_HEAD(&fi->write_files);
+> >       INIT_LIST_HEAD(&fi->queued_writes);
+> > diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
+> > index 31a848485ad9..ec442af3f886 100644
+> > --- a/include/linux/pagemap.h
+> > +++ b/include/linux/pagemap.h
+> > @@ -210,6 +210,7 @@ enum mapping_flags {
+> >       AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM =3D 9,
+> >       AS_KERNEL_FILE =3D 10,    /* mapping for a fake kernel file that =
+shouldn't
+> >                                  account usage to user cgroups */
+> > +     AS_NO_DATA_INTEGRITY =3D 11, /* no data integrity guarantees */
+> >       /* Bits 16-25 are used for FOLIO_ORDER */
+> >       AS_FOLIO_ORDER_BITS =3D 5,
+> >       AS_FOLIO_ORDER_MIN =3D 16,
+> > @@ -345,6 +346,16 @@ static inline bool mapping_writeback_may_deadlock_=
+on_reclaim(const struct addres
+> >       return test_bit(AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM, &mapping->f=
+lags);
+> >  }
+> >
+> > +static inline void mapping_set_no_data_integrity(struct address_space =
+*mapping)
+> > +{
+> > +     set_bit(AS_NO_DATA_INTEGRITY, &mapping->flags);
+> > +}
+> > +
+> > +static inline bool mapping_no_data_integrity(const struct address_spac=
+e *mapping)
+> > +{
+> > +     return test_bit(AS_NO_DATA_INTEGRITY, &mapping->flags);
+> > +}
+> > +
+> >  static inline gfp_t mapping_gfp_mask(const struct address_space *mappi=
+ng)
+> >  {
+> >       return mapping->gfp_mask;
+> > --
+> > 2.47.3
+> >
+> --
+> Jan Kara <jack@suse.com>
+> SUSE Labs, CR
 
