@@ -1,134 +1,126 @@
-Return-Path: <stable+bounces-205109-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205110-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E68ACF90E0
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 16:27:17 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DF34CF9503
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 17:22:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id DFBD4300877B
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 15:27:16 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 26C0A307C9F0
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 16:16:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4608D341AD6;
-	Tue,  6 Jan 2026 15:21:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C0D03446CB;
+	Tue,  6 Jan 2026 15:22:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=szeredi.hu header.i=@szeredi.hu header.b="BDwIC1fs"
 X-Original-To: stable@vger.kernel.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 975441684B4;
-	Tue,  6 Jan 2026 15:21:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.40.44.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2E513446C9
+	for <stable@vger.kernel.org>; Tue,  6 Jan 2026 15:21:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767712864; cv=none; b=gTrabMaASJMRW5L8O6s9pI0d7PPp2pXgu7keQqm90lO2lYAtHb4RbGV3V0GM7bRGYxPUgqZW6XqpgLlA8J0A+qe5xvufhfZ7Zlov86ZWZKD+JPRQJU9t0Fd1hNlN+y+K3EaPjzXAFRJOO68XaaRTiplT3mRKFzEnNMulVcIv++M=
+	t=1767712922; cv=none; b=i4ZAFTHOGnkSpwqPR7aCSsN5hlVEPp1jEYREMvBODLI5NGC7XI+spQTKpa04Xqn5PeuXfsCWFvTraIP6WxldPB9HVhgnL1Dus161fGGUUEEM1Nwbq1FBuvdnPbnYrNViDDid92PrKFfuLKBJ/1m63UeIvQempUzmh6yGckZ1D4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767712864; c=relaxed/simple;
-	bh=KS1C9bAwlDhZvSLMwp9flwtHD0RxO1IUENqc9t4uHLI=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=L300JkI56f+J1YzSvX/JX1jYUDMgLu1rXeBO/+HzXm+ZOKWF29NQEKx+xOC2mAq0Nfix0DvymBEml+XmDyYpuaH07LF1OPpK/yWB9fFJM4cd+zHt0bbBaLz0fsXenHMi6TAKd8duQU+gEiQV0U/U6LUEmru0M1YsS8E8m9iFO5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org; spf=pass smtp.mailfrom=goodmis.org; arc=none smtp.client-ip=216.40.44.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=goodmis.org
-Received: from omf13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 384438ABED;
-	Tue,  6 Jan 2026 15:20:59 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf13.hostedemail.com (Postfix) with ESMTPA id ECE9C2000D;
-	Tue,  6 Jan 2026 15:20:55 +0000 (UTC)
-Date: Tue, 6 Jan 2026 10:21:20 -0500
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Suren Baghdasaryan
- <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Brendan Jackman
- <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan
- <ziy@nvidia.com>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Clark
- Williams <clrkwllms@kernel.org>, Mel Gorman <mgorman@techsingularity.net>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-rt-devel@lists.linux.dev, stable@vger.kernel.org, kernel test robot
- <oliver.sang@intel.com>, Matthew Wilcox <willy@infradead.org>
-Subject: Re: [PATCH mm-hotfixes] mm/page_alloc: prevent pcp corruption with
- SMP=n
-Message-ID: <20260106102120.4272260e@gandalf.local.home>
-In-Reply-To: <04624b16-40ea-42c6-b687-4013796e4779@suse.cz>
-References: <20260105-fix-pcp-up-v1-1-5579662d2071@suse.cz>
-	<20260105164036.32a22c2e@gandalf.local.home>
-	<04624b16-40ea-42c6-b687-4013796e4779@suse.cz>
-X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1767712922; c=relaxed/simple;
+	bh=chwd1Z9g7UHWnZKthUKUkKtm8anU6pxU07itOfmSx50=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=uTY5FbIEl6N1ftINvxf0oQjsy3YR8ZlHmcYdFvbjPWNJmE/+S7EV/Ggy94nCYKuUr3LCGdK0iY+Vo/w9f8uyloWEblza8T6F9Ir3XNTehWz0bs++u3YKE8KhTz/olbrxhMyLHj1iGHer2g6EBWMWgpBdw5pXrgP0wB5ReWSDHuM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szeredi.hu; spf=pass smtp.mailfrom=szeredi.hu; dkim=pass (1024-bit key) header.d=szeredi.hu header.i=@szeredi.hu header.b=BDwIC1fs; arc=none smtp.client-ip=209.85.160.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szeredi.hu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=szeredi.hu
+Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-4eda6c385c0so7009271cf.3
+        for <stable@vger.kernel.org>; Tue, 06 Jan 2026 07:21:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=szeredi.hu; s=google; t=1767712919; x=1768317719; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=kDrYuR7f2Pn0DSNXMOjTYToBLnsosSITGyOOy6cQwP4=;
+        b=BDwIC1fsoXbH92FjW0DvkOMMHZu26mvd4Gp+o9M5SqFYGsp01qbca+mOuW9bULpZan
+         3DBXGYv3cwypfk7VMi7xe6J3/b5qp7cJ2t/Zxde08zryUH23fBv2swhCsV53y//XQScu
+         M76s37GE8gU+HKqoNXEqXn8PzPe3sz41FPuyY=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767712919; x=1768317719;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=kDrYuR7f2Pn0DSNXMOjTYToBLnsosSITGyOOy6cQwP4=;
+        b=IvBqBCY5HpkmaMUct5fTo8+1C5S6osZc91OknoJ7md8rfZuYUd/Gip810VLHkLZ8qN
+         hlnK46b7l+2nvpT1rxS/bM5pklZg+wl/90F7PtaKt64MFzSMjVFJVJNOA7WJt6I9jXNh
+         mtx7uz/izVTb2Kn82Q9bOLtgoiFTGtY0m9p/so9OPHLTPRO9YdiXrElJcMruxewJdulS
+         KbCwWvP48SJhl1bB+A9FVID33ETzE2/OzoXUFZKtnMDQK42uHcJ8zSyn7R/ktQ6C49Bk
+         cJQItG+bleEPfMAZ7+eHACdanTpkZAo/pf7RCIY7AXN8xOJLBRImlbXKnp2e1Lxq2ZXk
+         Q+Aw==
+X-Forwarded-Encrypted: i=1; AJvYcCX6RV1CX0hLVWit1K+uD4XpK4LJnbFxRcR5NKLxziZu/FJjfoX+fc0j3j84w42ugEAVZO1LqOk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyulDRPrV/PwFw8Blf+e5SNkCUxPUF7257ZZxPIjk43poiAzfQc
+	X/v9TCFZ+XkkGVOBBB/HunDIiM/B20yYqjaSdBgNBSZBzv/OB3ljz9cJI3zNf6X5l9dF4G1WRzj
+	E8tMYAfsXR6ALgI8hQRTbvZysLNZC5ajXmiLSIPEsvw==
+X-Gm-Gg: AY/fxX5/M3Qp8EqzcPlnRl1asmboaWiiy/ln+N/wkDW1z7UmxECdoc5U+CH9TNEcb6k
+	RKxmEo6bJ6wcSMQnja5RmgnliiH0QlyGWXOaW/FYc2u0wOfsAYq1POk9FzinWbbFIsuHvoumrk+
+	J6L+T0WwDu4sKQuFV9vyCMXQ9NzDEGBsHYf23YGV+yFvvxtqXlyli4/B3b3j+4YK0gre0UEeAVH
+	nEs7dJsockIJ1DHi/9wn1qZCoVPgndjcCgxq8BzZ4StBAOJNJzKyjOPMh5TlIOeJ5mQmA==
+X-Google-Smtp-Source: AGHT+IG6x7TKsUXj3KNtvBJi28N3SPu+7OrwOmTZbCRv6Zs3ASMjrBAiIU9+/w94vT2g2n/bhHHtuQObAHsd0eFiQw8=
+X-Received: by 2002:a05:622a:4d9b:b0:4ed:698c:ef58 with SMTP id
+ d75a77b69052e-4ffa77ba942mr34208171cf.41.1767712918964; Tue, 06 Jan 2026
+ 07:21:58 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: kadyobb6jxgg53rrgr8pk5kiu7pjqpd4
-X-Rspamd-Server: rspamout03
-X-Rspamd-Queue-Id: ECE9C2000D
-X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
-X-Session-ID: U2FsdGVkX19Cnps0ORM9wOahzNOtx0DT319eAQmpInc=
-X-HE-Tag: 1767712855-198917
-X-HE-Meta: U2FsdGVkX18qn3xbopg0HXbkKioqQiII+KS+SESHqD4DmcTs87FqtTwlrJHklBpNtixlk38wVYTWl58BF19c+TgMm92szMg+VQcnCFJNRD4AHB5RYUf1fMNVhQROcMki6PZDC0Yr/gdYibD8NrC5wWG37/dIiBSLdagQmEYQCqe4JL5jxVSUPjcFfM05fbU3ts99MchYGe3AcRK+OZCbq7ODj7gIEfL2XaQLW0BDxwqvZlqdVSGAODffh/iEG18lJF8gLB7q7qfRDRhLXeXY2dl8zEBMD79afbk00Tj1xF5+SjEf+Sp0KISnnd++GCQG
+References: <20251215030043.1431306-1-joannelkoong@gmail.com>
+ <20251215030043.1431306-2-joannelkoong@gmail.com> <ypyumqgv5p7dnxmq34q33keb6kzqnp66r33gtbm4pglgdmhma6@3oleltql2qgp>
+ <616c2e51-ff69-4ef9-9637-41f3ff8691dd@kernel.org> <CAJfpeguBuHBGUq45bOFvypsyd8XXekLKycRBGO1eeqLxz3L0eA@mail.gmail.com>
+ <238ef4ab-7ea3-442a-a344-a683dd64f818@kernel.org>
+In-Reply-To: <238ef4ab-7ea3-442a-a344-a683dd64f818@kernel.org>
+From: Miklos Szeredi <miklos@szeredi.hu>
+Date: Tue, 6 Jan 2026 16:21:47 +0100
+X-Gm-Features: AQt7F2oAK8j14O2kOinzrAvBRjc34kIOHPAKtgLXconX1Vvn5FAQInffYN1YFNw
+Message-ID: <CAJfpegvUP5MK-xB2=djmGo4iYzmsn9LLWV3ZJXFbyyft_LsA_Q@mail.gmail.com>
+Subject: Re: [PATCH v2 1/1] fs/writeback: skip AS_NO_DATA_INTEGRITY mappings
+ in wait_sb_inodes()
+To: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Cc: Jan Kara <jack@suse.cz>, Joanne Koong <joannelkoong@gmail.com>, akpm@linux-foundation.org, 
+	linux-mm@kvack.org, athul.krishna.kr@protonmail.com, j.neuschaefer@gmx.net, 
+	carnil@debian.org, linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, 6 Jan 2026 09:28:29 +0100
-Vlastimil Babka <vbabka@suse.cz> wrote:
+On Tue, 6 Jan 2026 at 15:34, David Hildenbrand (Red Hat)
+<david@kernel.org> wrote:
 
-> >> + */
-> >> +#if defined(CONFIG_SMP) || defined(CONFIG_PREEMPT_RT)
-> >> +static inline void __flags_noop(unsigned long *flags) { }
-> >> +#define spin_lock_maybe_irqsave(lock, flags)		\
-> >> +({							\
-> >> +	 __flags_noop(&(flags));			\
-> >> +	 spin_lock(lock);				\
-> >> +})
-> >> +#define spin_unlock_maybe_irqrestore(lock, flags)	\
-> >> +({							\
-> >> +	 spin_unlock(lock);				\
-> >> +	 __flags_noop(&(flags));			\
-> >> +})
-> >> +#else
-> >> +#define spin_lock_maybe_irqsave(lock, flags)		spin_lock_irqsave(lock, flags)
-> >> +#define spin_unlock_maybe_irqrestore(lock, flags)	spin_unlock_irqrestore(lock, flags)
-> >> +#endif
-> >> +  
-> > 
-> > These are very generic looking names for something specific for
-> > page_alloc.c. Could you add a prefix of some kind to make it easy to see
-> > that these are specific to the mm code?
-> > 
-> >  mm_spin_lock_maybe_irqsave() ?  
-> OK, I think it's best like this:
+> I don't recall all the details, but I think that we might end up holding
+> the folio lock forever while the fuse user space daemon is supposed to
+> fill the page with data; anybody trying to lock the folio would
+> similarly deadlock.
 
-Yeah, thanks.
+Right.
 
--- Steve
+> Maybe only compaction/migration is affected by that, hard to tell.
 
-> 
-> ----8<----
-> >From a6da5d9e3db005a2f44f3196814d7253dce21d3e Mon Sep 17 00:00:00 2001  
-> From: Vlastimil Babka <vbabka@suse.cz>
-> Date: Tue, 6 Jan 2026 09:23:37 +0100
-> Subject: [PATCH] mm/page_alloc: prevent pcp corruption with SMP=n - fix
-> 
-> Add pcp_ prefix to the spin_lock_irqsave wrappers, per Steven.
-> With that make them also take pcp pointer and reference the lock
-> field themselves, to be like the existing pcp trylock wrappers.
-> 
-> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
-> ---
->  mm/page_alloc.c | 30 ++++++++++++++++--------------
->  1 file changed, 16 insertions(+), 14 deletions(-)
-> 
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index ec3551d56cde..dd72ff39da8c 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -177,19 +177,21 @@ static inline void __pcp_trylock_noop(unsigned long *flags) { }
->   */
->  #if defined(CONFIG_SMP) || defined(CONFIG_PREEMPT_RT)
->  static inline void __flags_noop(unsigned long *flags) { }
-> -#define spin_lock_maybe_irqsave(lock, flags)		\
-> +#define pcp_spin_lock_maybe_irqsave(ptr, flags)		\
->  ({							\
->  	 __flags_noop(&(flags));			\
-> -	 spin_lock(lock);				\
-> +	 spin_lock(&(ptr)->lock);			\
->  })
+Can't imagine anything beyond actual I/O and folio logistics
+(reclaim/compaction) that would want to touch the page lock.
+
+I/O has the right to wait forever on the folio if the server is stuck,
+that doesn't count as a deadlock.
+
+The logistics functions are careful to use folio_trylock(), but they
+could give a hint to fuse via a callback that they'd like to have this
+particular folio.  In that case fuse would be free to cancel the read
+and let the whole thing be retried with a new folio.
+
+What we really need is a failing test case, the rest should be easy ;-)
+
+> I'm not sure about temp buffers. During early discussions there were
+> ideas about canceling writeback and instead marking the folio dirty
+> again. I assume there is a non-trivial solution space left unexplored
+> for now.
+
+That might work combined with the suggested callback to fix the
+compaction issue.
+
+But I don't see how it would be a generic replacement for the tmp page code.
+
+Thanks,
+Miklos
 
