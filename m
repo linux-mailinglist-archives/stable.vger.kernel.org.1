@@ -1,100 +1,46 @@
-Return-Path: <stable+bounces-205063-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205064-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07D2BCF7AA9
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 11:05:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 05C26CF7AEB
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 11:09:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 818D730D159A
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 10:01:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1743F30B7557
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 10:05:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23F602DA762;
-	Tue,  6 Jan 2026 10:01:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 675EA30DEC0;
+	Tue,  6 Jan 2026 10:05:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="ciUsSU+h";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="kNcWIUq1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dp/tW1qp"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB2EF30DEB9
-	for <stable@vger.kernel.org>; Tue,  6 Jan 2026 10:01:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21D2F3A1E96;
+	Tue,  6 Jan 2026 10:05:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767693688; cv=none; b=CnwfGUacHWnR45rJho+5+9lNy2LsdazcAiSXxqk7vJ+06TiWU6gg/Hlf/RtXFAR9mI5EQTV1hMUfPSCoTApcog20fjzbudcWka2Y81Icd6R5Q/Dmb0WKI/tGNTI5Uupg1OmITkwoBjfXI95ZVEGne41z78Oamhyn7gY6P9qikjw=
+	t=1767693950; cv=none; b=Ua9zTF3Ez4+ajUTDs1Hw0Gm+S60RYUyedcwU9Qdy7bBIHNFT6Xa0O9LXG1uRrPjaMsno0vZxEnS+eYGyA1zXGWFV7wn77vU1W2FfXSRl6lakp2MfyHBFey30SiBQ01QKG8yr7L7Lb5TFcTMsGYAMOWBW2/FmUnuVqMcJOv+SZkE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767693688; c=relaxed/simple;
-	bh=TEtCtHsqRpP9qf3468gIVgZon8mhEIVv+VTFec6/RCM=;
+	s=arc-20240116; t=1767693950; c=relaxed/simple;
+	bh=9tJVBrC2RGcJNRIoSkZGDIElVh+JiC6ZoPPf3FqVOlM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CjqChBBgdcQeeaUkjzzOd6sKlbZ4nqY80nizkWul5PiHXDWRC/Wh/hr/tJ9r3mCWFbDso4P7+L1YAreCrI+OOkqI9g0MzNsYMYjsAD23UdoA8IM5N8xNuP+Y0GgzYIjQoQiulJzQXvRkvcN+9XqOXLJi3TIBe79cMu3vCZQi5cQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=ciUsSU+h; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=kNcWIUq1; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6063Q75N3442254
-	for <stable@vger.kernel.org>; Tue, 6 Jan 2026 10:01:24 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	j4HKFWWo6W7gPbfh2tN5wFUcJzGeLsVtA756B0bDLos=; b=ciUsSU+hN0+irebs
-	HeY9p2tv99RJ7fijeXMhdb03i+Pr8ewvCkXs3yXV4sN9eS/fXIAVIyqpJ/fcoDwI
-	hvLWFX3k+mHxSr5KTqhYp3UPut5BTfaoJ6Il0P44Koqb/tI2KjZTjcJs+2dsUUwD
-	qHmDN3LssnS3WyW3YyY/c5/jOtQ64UTMydaot83INJHV9LimEzroZIRDgvSWuJ4k
-	0VQ77N+VooGhc2G76dM2ycGCXSqQWZ7PeArFRApgaJG0Bu+banN8DacQp/aFt/UA
-	34oMH3DfjhmaA78rvZn74YwLg9aGtT/QlKymOrFakMClP+yT8Q3RLcrZjQEElecg
-	thYQdg==
-Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4bgmnh9yf5-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Tue, 06 Jan 2026 10:01:24 +0000 (GMT)
-Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-7aa9f595688so1290567b3a.2
-        for <stable@vger.kernel.org>; Tue, 06 Jan 2026 02:01:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1767693683; x=1768298483; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=j4HKFWWo6W7gPbfh2tN5wFUcJzGeLsVtA756B0bDLos=;
-        b=kNcWIUq1aO9O31ki7spyXE3Jte8gfE3vsa7NbMTOAhUNT3WOR3nehVd3n1tEY0fPjI
-         VAH6b08sZ/LXd//e/IKzsBRgnaP56/0bIZt2gEEDYl7rCKE+H/Tgq43rnf2aMh/uD0x8
-         hOgCCsxq9Mu+3ooJn4wJjCcyxX2bZIjLGwYjAwemcfRDGJc6x3B6faTEteCSmapqpcz6
-         QTIK+P8BovwHHUgnF7xKP+/ZOOWDTV5vVeOpVCBChAyqYv3qLxQ7Br9PvQ2YLx8axJaW
-         epYthPqDWcgrKAJxFex6kiY7mKHIN0MXe91OoZAzcaTaMrqTSujs95DRilJcXbTgrHDv
-         YrtQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767693683; x=1768298483;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=j4HKFWWo6W7gPbfh2tN5wFUcJzGeLsVtA756B0bDLos=;
-        b=c+UAUkeqNvWFsbsZvVZWl+cjUAGfTEjnHxUl0DjHPY/bmZRnAtKgYqUX5IZx+DmzeU
-         qtWQhD0Tuhrt/ajCA0/0MnkpJH7SL4oQdwPCNS3hCYiYD5+7fLPW3ywZQXowHfXQotqy
-         irmYFl78ZayltpiZqumLugXG6H9yQqDzl/saZBpGgNKnX8s16DvmrnbxCYk7Jov69IgK
-         OFQPsx1XSvJrj00l4+YUWHPAaMDTMoKKRM1bH4kRmO/uDRRt1n/0Kv1QZHB3cP4fhQSU
-         FxDW383nG0T+PI2ASvuUZZhhi6oOOXCQohmttyjn7lnZbavzn/L16ZT+ZsOnNHOmNc+i
-         moFQ==
-X-Gm-Message-State: AOJu0YwX8rsSOfmmxExK3luXE2nYEXnb9/F6YhPq67WytD7G3MsBAZEE
-	wnKogNA/Dbe2rhPcdeYQ7mBTF6IPAjmkS0shdl7KV/HjoJ8dZ0CcpXu7kQ8ogBOh5h+IPisoT8x
-	ownphXo1gPxiSCsvePZuEfzcVrG9t7AfHPV1450PtLPaubhY3rhWNL+pO6/Y=
-X-Gm-Gg: AY/fxX4VEfhO8ucu5ySTJg7fhjAGEEXfcaw4d5KP4RdLuU+05jpfo3QySgnAXcVbNOw
-	CDM9aoYlIjvUHw84yWCSLzt04GL4B8vf1naVwnRjYXdU5d1W5+XDZrFdaamSgI4Mbs7MmzwGqNG
-	jekOzuGWIAejE7Z8oJLGaTQlkuur1KbhaOLn3HMY/FXQF1t7wHN/AyjJ6zf+xZXirY010yjxD29
-	GbnGo6MnhqwfEzuCCFWrc7y7jA+c0welzTWn+rsNz8uSQ7LWO/LvlmXioIJv1AyA8L+MEppl+bf
-	uIJbeftL34z5ohKImw1iwB+RZZPugJ0x0pv5LYrXQz6I2SVeEVTXv1QKnrvtMXC3QjHleo8JlRC
-	Fea0jZWDPUO+u6Uxe1s5MVMb0Csvn1jEHQEwjJrP6bBorzVdKbs0MBz0IpC6Fq/EX6JuNYWtz4K
-	eagYB/mw==
-X-Received: by 2002:a05:6a00:1c97:b0:809:33e7:5d89 with SMTP id d2e1a72fcca58-818832c940dmr2279587b3a.64.1767693683515;
-        Tue, 06 Jan 2026 02:01:23 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFpJVZcGU/yMmbSm8cCO+VvvqV91A5JT4ce5P4ZY5G0vL39xcSvsOISQdH6C11AWWGi918cYA==
-X-Received: by 2002:a05:6a00:1c97:b0:809:33e7:5d89 with SMTP id d2e1a72fcca58-818832c940dmr2279545b3a.64.1767693682930;
-        Tue, 06 Jan 2026 02:01:22 -0800 (PST)
-Received: from [10.133.33.54] (tpe-colo-wan-fw-bordernet.qualcomm.com. [103.229.16.4])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-819c5301416sm1701367b3a.38.2026.01.06.02.01.20
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 06 Jan 2026 02:01:22 -0800 (PST)
-Message-ID: <ef342a0e-5f04-442c-aa4a-3375c6023547@oss.qualcomm.com>
-Date: Tue, 6 Jan 2026 18:01:18 +0800
+	 In-Reply-To:Content-Type; b=N8+aalbIEl3dos0ReEVv5SHVmkXMkErtHSwlkPIhI6AXwnJy4NBz7bYihRTErUKlP9oOoji0fry/W0+5lPq4KsYOT9tiiFjkNdwDC6ea+fU6Gp4sp45hWYdzvhIAnimD8pMQ1++pqgqJ9jB90ohmuRzgTJxtL86OFMyUy2mWkWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dp/tW1qp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6B24C116C6;
+	Tue,  6 Jan 2026 10:05:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767693948;
+	bh=9tJVBrC2RGcJNRIoSkZGDIElVh+JiC6ZoPPf3FqVOlM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=dp/tW1qp/Fn5nNEJxl3L2ALhHIsbH5fkOMhMgK13eS9JysC9cfo0Q2yVm4a/A3YYF
+	 N5Oaf4+GAH1Ixai+J1sG+GqmTa0PrjbHzA8aVAKBFZCkhfcbxi+aNMQopVmvcbJZm9
+	 ujT2abFFsoJANTNFADnywRjjq26Nlvut6CEccv79YBxRKzyI24GU/IXbuJBtdvoxOK
+	 As1ql9Ig58dZ/lTlkt89OkOFNXrp2tY2/W0X8xJaH4fW2G970DE5jL1JDBSPWgROy1
+	 QRrC1oc+T+0W7sDyeVQ+W3LCjfyzrzEIHJu6rVOGWmgHeWhac0AILBLCpZcUVp/LTk
+	 fI2hapOqqpJhA==
+Message-ID: <616c2e51-ff69-4ef9-9637-41f3ff8691dd@kernel.org>
+Date: Tue, 6 Jan 2026 11:05:43 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -102,95 +48,161 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] wifi: ath12k: fix dma_free_coherent() pointer
-To: Thomas Fourier <fourier.thomas@gmail.com>
-Cc: stable@vger.kernel.org, Jeff Johnson <jjohnson@kernel.org>,
-        Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>,
-        Sriram R <quic_srirrama@quicinc.com>, Kalle Valo <kvalo@kernel.org>,
-        Wen Gong <quic_wgong@quicinc.com>, linux-wireless@vger.kernel.org,
-        ath12k@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20260106084905.18622-2-fourier.thomas@gmail.com>
-From: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Subject: Re: [PATCH v2 1/1] fs/writeback: skip AS_NO_DATA_INTEGRITY mappings
+ in wait_sb_inodes()
+To: Jan Kara <jack@suse.cz>, Joanne Koong <joannelkoong@gmail.com>
+Cc: akpm@linux-foundation.org, miklos@szeredi.hu, linux-mm@kvack.org,
+ athul.krishna.kr@protonmail.com, j.neuschaefer@gmx.net, carnil@debian.org,
+ linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
+References: <20251215030043.1431306-1-joannelkoong@gmail.com>
+ <20251215030043.1431306-2-joannelkoong@gmail.com>
+ <ypyumqgv5p7dnxmq34q33keb6kzqnp66r33gtbm4pglgdmhma6@3oleltql2qgp>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
-In-Reply-To: <20260106084905.18622-2-fourier.thomas@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: 9vmyYrB1iyeHvweEM9vGtBwzWchdJ4wW
-X-Proofpoint-ORIG-GUID: 9vmyYrB1iyeHvweEM9vGtBwzWchdJ4wW
-X-Authority-Analysis: v=2.4 cv=Vscuwu2n c=1 sm=1 tr=0 ts=695cdd74 cx=c_pps
- a=mDZGXZTwRPZaeRUbqKGCBw==:117 a=nuhDOHQX5FNHPW3J6Bj6AA==:17
- a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=pGLkceISAAAA:8 a=EUspDBNiAAAA:8
- a=MvB9iNEEFr4mKuRVMNwA:9 a=QEXdDO2ut3YA:10 a=zc0IvFSfCIW2DFIPzwfm:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTA2MDA4NSBTYWx0ZWRfX28Ysent1F8mP
- lL4MpH2eP51ugdOx9TKxpBjhtHlnULkHeuTYGhoDBg38VVgJSX5jNX4gzCpsKzg4Fo7l1YG8okj
- 78WjifGVe/+rE73YpJ+yYzRnBPDC6dPtG5G31u0GeAyMzyTcSn4kkNI2vj/MPwSGGCzWgeOX7yv
- 4ENAr3HEAZHe/j3UQn4wQgEnTzR3ggsRBH0zhsH5HrTEjb4B4gHoGuiFg8ZRakdvCqcDscw7HCp
- /k0Ppy8ZuWX+ELkATPiRKTfauYs5Lhan/AirBDfPVFwJjEQZXSA51bfR1ZHhoi3RD+h2zOBhXCj
- uO77LcsDMVhWE9slGiyIB6IOW+o+OK+0Tfv4qLm5Jf25FuZ+03n1/grTQAUqROkbeglNrU+CmOi
- dpSqFcGmHTt1v7oIVoHPnqE7VVbxpGmTaugsjRPRf8LKjMtBQIl13MqspPZfBYKWZ2T/QI5Gnpp
- 7d2Ym1OyV9i/CyJeU+w==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2026-01-05_02,2026-01-06_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 bulkscore=0 phishscore=0 suspectscore=0 clxscore=1015
- lowpriorityscore=0 impostorscore=0 priorityscore=1501 spamscore=0
- malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2512120000
- definitions=main-2601060085
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+In-Reply-To: <ypyumqgv5p7dnxmq34q33keb6kzqnp66r33gtbm4pglgdmhma6@3oleltql2qgp>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-
-
-On 1/6/2026 4:49 PM, Thomas Fourier wrote:
-> dma_alloc_coherent() allocates a DMA mapped buffer and stores the
-> addresses in XXX_unaligned fields.  Those should be reused when freeing
-> the buffer rather than the aligned addresses.
+On 1/6/26 10:33, Jan Kara wrote:
+> [Thanks to Andrew for CCing me on patch commit]
 > 
-> Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-> ---
->  drivers/net/wireless/ath/ath12k/ce.c | 12 ++++++------
->  1 file changed, 6 insertions(+), 6 deletions(-)
+> On Sun 14-12-25 19:00:43, Joanne Koong wrote:
+>> Skip waiting on writeback for inodes that belong to mappings that do not
+>> have data integrity guarantees (denoted by the AS_NO_DATA_INTEGRITY
+>> mapping flag).
+>>
+>> This restores fuse back to prior behavior where syncs are no-ops. This
+>> is needed because otherwise, if a system is running a faulty fuse
+>> server that does not reply to issued write requests, this will cause
+>> wait_sb_inodes() to wait forever.
+>>
+>> Fixes: 0c58a97f919c ("fuse: remove tmp folio for writebacks and internal rb tree")
+>> Reported-by: Athul Krishna <athul.krishna.kr@protonmail.com>
+>> Reported-by: J. Neuschäfer <j.neuschaefer@gmx.net>
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
 > 
-> diff --git a/drivers/net/wireless/ath/ath12k/ce.c b/drivers/net/wireless/ath/ath12k/ce.c
-> index 9a63608838ac..4aea58446838 100644
-> --- a/drivers/net/wireless/ath/ath12k/ce.c
-> +++ b/drivers/net/wireless/ath/ath12k/ce.c
-> @@ -984,8 +984,8 @@ void ath12k_ce_free_pipes(struct ath12k_base *ab)
->  			dma_free_coherent(ab->dev,
->  					  pipe->src_ring->nentries * desc_sz +
->  					  CE_DESC_RING_ALIGN,
-> -					  pipe->src_ring->base_addr_owner_space,
-> -					  pipe->src_ring->base_addr_ce_space);
-> +					  pipe->src_ring->base_addr_owner_space_unaligned,
-> +					  pipe->src_ring->base_addr_ce_space_unaligned);
->  			kfree(pipe->src_ring);
->  			pipe->src_ring = NULL;
->  		}
-> @@ -995,8 +995,8 @@ void ath12k_ce_free_pipes(struct ath12k_base *ab)
->  			dma_free_coherent(ab->dev,
->  					  pipe->dest_ring->nentries * desc_sz +
->  					  CE_DESC_RING_ALIGN,
-> -					  pipe->dest_ring->base_addr_owner_space,
-> -					  pipe->dest_ring->base_addr_ce_space);
-> +					  pipe->dest_ring->base_addr_owner_space_unaligned,
-> +					  pipe->dest_ring->base_addr_ce_space_unaligned);
->  			kfree(pipe->dest_ring);
->  			pipe->dest_ring = NULL;
->  		}
-> @@ -1007,8 +1007,8 @@ void ath12k_ce_free_pipes(struct ath12k_base *ab)
->  			dma_free_coherent(ab->dev,
->  					  pipe->status_ring->nentries * desc_sz +
->  					  CE_DESC_RING_ALIGN,
-> -					  pipe->status_ring->base_addr_owner_space,
-> -					  pipe->status_ring->base_addr_ce_space);
-> +					  pipe->status_ring->base_addr_owner_space_unaligned,
-> +					  pipe->status_ring->base_addr_ce_space_unaligned);
->  			kfree(pipe->status_ring);
->  			pipe->status_ring = NULL;
->  		}
+> OK, but the difference 0c58a97f919c introduced goes much further than just
+> wait_sb_inodes(). Before 0c58a97f919c also filemap_fdatawait() (and all the
+> other variants waiting for folio_writeback() to clear) returned immediately
+> because folio writeback was done as soon as we've copied the content into
+> the temporary page. Now they will block waiting for the server to finish
+> the IO. So e.g. fsync() will block waiting for the server in
+> file_write_and_wait_range() now, instead of blocking in fuse_fsync_common()
+> -> fuse_simple_request(). Similarly e.g. truncate(2) will now block waiting
+> for the server so that folio_writeback can be cleared.
+> 
+> So I understand your patch fixes the regression with suspend blocking but I
+> don't have a high confidence we are not just starting a whack-a-mole game
 
-Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Yes, I think so, and I think it is [1] not even only limited to 
+writeback [2].
+
+> catching all the places that previously hiddenly depended on
+> folio_writeback getting cleared without any involvement of untrusted fuse
+> server and now this changed. 
+
+Even worse, it's not only untrusted fuse servers, but also 
+trusted-but-buggy fuse servers, unfortunately. As Joanne wrote in v1:
+
+"
+As reported by Athul upstream in [1], there is a userspace regression 
+caused by commit 0c58a97f919c ("fuse: remove tmp folio for writebacks 
+and internal rb tree") where if there is a bug in a fuse server that 
+causes the server to never complete writeback, it will make 
+wait_sb_inodes() wait forever, causing sync paths to hang.
+"
+
+> So do we have some higher-level idea what is /
+> is not guaranteed with stuck fuse server?
+
+Joanne first proposed AS_WRITEBACK_MAY_HANG, which I disliked [2] for 
+various reasons because the semantics are weird. I am strongly against 
+using such a flag to arbitrarily skip waiting for writeback on folios in 
+the tree.
+
+The patch here is at least logically the right thing to do when only 
+looking at the wait_sb_inodes() writeback situation [3] and why it is 
+even ok to skip waiting for writeback, and the fix Joanne originally 
+proposed.
+
+To handle the bigger picture (I raised another problematic instance in 
+[4]): I don't know how to handle that without properly fixing fuse. Fuse 
+folks should really invest some time to solve this problem for good.
+
+
+As a big temporary kernel hack, we could add a 
+AS_ANY_WAITING_UTTERLY_BROKEN and simply refuse to wait for writeback 
+directly inside folio_wait_writeback() -- not arbitrarily skipping it in 
+callers -- and possibly other places (readahead, not sure). That would 
+restore the old behavior.
+
+Well, not quite, because the semantics that folio_wait_writeback() 
+promises -- writeback flag at least cleared once, like required here for 
+data integrity -- are just not true anymore.
+
+And it would still break migration of folios that are under writeback 
+even though waiting for writeback even for migration even though in 
+99.9999% of all cases with trusted fuse server will do the right thing. 
+Just nasty.
+
+Of course, we could set AS_ANY_WAITING_UTTERLY_BROKEN in fuse only 
+conditionally, but the fact that buggy trusted fuse servers are now a 
+thing, it all stops making any sense because we would have to set that 
+flag always.
+
+There is no easy way to get back the old behavior without reverting to 
+the old way of using buffer pages I guess.
+[1] 
+https://lore.kernel.org/linux-mm/504d100d-b8f3-475b-b575-3adfd17627b5@kernel.org/[2] 
+https://lore.kernel.org/linux-mm/f8da9ee0-f136-4366-b63a-1812fda11304@kernel.org/[3] 
+https://lore.kernel.org/linux-mm/6d0948f5-e739-49f3-8e23-359ddbf3da8f@kernel.org/[4] 
+https://lore.kernel.org/linux-mm/504d100d-b8f3-475b-b575-3adfd17627b5@kernel.org/
+-- 
+Cheers
+
+David
 
