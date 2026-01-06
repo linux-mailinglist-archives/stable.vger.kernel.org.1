@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-205555-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205834-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DA59CFAA16
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:25:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DB4ACFA77B
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:05:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6C6F53313BF6
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:38:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B2608341033F
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:14:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 174B3344034;
-	Tue,  6 Jan 2026 17:38:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65E0F364E8C;
+	Tue,  6 Jan 2026 17:53:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QdfMpEEC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dv+dskxl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA1FF342169;
-	Tue,  6 Jan 2026 17:38:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCD3B364E8A;
+	Tue,  6 Jan 2026 17:53:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721083; cv=none; b=YWVX87cyem3jSlmr77fTucqOZYX8aJQJvy3yYjtYLYRVE53CtJPpwoOomwsVrshKVpIsh2e+7T3rlyfG40aFOpw494LQ6eOGAjGjCrfAgk/S0S/LxR3dPcwSa3/w+Fs98FnT98qnQJPZeEuEXnRU4rtsYnI4IRGXdnQLul1gs8Y=
+	t=1767722018; cv=none; b=AuGaC+BJUOB5TyZNOfy7Ih/AcO9+NqPURaLBxfba4UExayh6mSfQnoA/z1P2aqYAG4+zwTHQQ5iJmIlACsrjIRdpdFVQmSuQab5jSawO92WjAslDPuNC18cHM98T5DJXh4MKPAlGqY7NAnfsWzc3cH067hYp7EySqX/UCXdzWFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721083; c=relaxed/simple;
-	bh=tFTIEqbQoPjtCHnpfzW+EVnpsrFQbJgIq9QYAUEDVL0=;
+	s=arc-20240116; t=1767722018; c=relaxed/simple;
+	bh=LjqGYdtBmr44cS2zsVNxKOp7suAuwKxsgqRYhs2ogOk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IoDAt82Jx46rEscMyF1nQTa3R5kH7vSV+iNaX8nA1OqNFbSkoy5IrZi7Hr3kXrPvF0pxGdk7ymEtI1dNgrcFhSrtVG/DMERUe5KIv62J5raqtNfeWWKkRgRwqY4nCxOELsW34zf9OOcXAiOfXCDAfS5sdWFFkvlv5h3vHD8R6YM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QdfMpEEC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F89AC16AAE;
-	Tue,  6 Jan 2026 17:38:02 +0000 (UTC)
+	 MIME-Version; b=TzXsiF8JCVRFWnkxDTgLlaRSEW+eBj+A1XktIhSURKoRRnh9sbl1emN6aRRMLUdr4KyLlK0a+3ZX5+4eg8je/qskq9NGrjixE3h9Pd1tBFkVjNw/0v22v0ya8kEpYQIlq+JIC02036DmGCDSEpC6q3Z9j44Dnpkq5KyH4skrqds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dv+dskxl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11362C116C6;
+	Tue,  6 Jan 2026 17:53:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721083;
-	bh=tFTIEqbQoPjtCHnpfzW+EVnpsrFQbJgIq9QYAUEDVL0=;
+	s=korg; t=1767722017;
+	bh=LjqGYdtBmr44cS2zsVNxKOp7suAuwKxsgqRYhs2ogOk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QdfMpEECADIR6ypUqF9NRPmR0k9MsWh22i3QYdQoZOYoQZXLDKMIrZA7IrJRGEGH2
-	 ur7mWTEUpX9jOouKvHGE/IAquTiYmGq1xlzZ+gQ6+RMPy9p87+wCBDLK4UPZT9YUEh
-	 YYUaan19OQK/dm264v1eRDCQgzE15Q5irl2lstt0=
+	b=Dv+dskxltoEYnBA2WHkp3b0dxpbP2/fRHHKJffg+qstgdiLO8N0HoGJQLj8KytFJv
+	 /CvzKU+bJgrjOPVqIrBNNVOlkGM0OnTGkPuz8+VuXdLUzIr1QyucCWH7kTUxs1ToFc
+	 YZx6WyYQwCtA8y5SLMgp/Or2gbw+05yhHM0o7BSQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@google.com>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 431/567] mm/damon/tests/core-kunit: handle alloc failures in damon_test_update_monitoring_result()
-Date: Tue,  6 Jan 2026 18:03:33 +0100
-Message-ID: <20260106170507.294390016@linuxfoundation.org>
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Lee Jones <lee@kernel.org>
+Subject: [PATCH 6.18 141/312] mfd: max77620: Fix potential IRQ chip conflict when probing two devices
+Date: Tue,  6 Jan 2026 18:03:35 +0100
+Message-ID: <20260106170552.943475713@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
-References: <20260106170451.332875001@linuxfoundation.org>
+In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
+References: <20260106170547.832845344@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +59,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SeongJae Park <sj@kernel.org>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit 8cf298c01b7fdb08eef5b6b26d0fe98d48134d72 upstream.
+commit 2bac49bad1f3553cc3b3bfb22cc194e9bd9e8427 upstream.
 
-damon_test_update_monitoring_result() is assuming all dynamic memory
-allocation in it will succeed.  Those are indeed likely in the real use
-cases since those allocations are too small to fail, but theoretically
-those could fail.  In the case, inappropriate memory access can happen.
-Fix it by appropriately cleanup pre-allocated memory and skip the
-execution of the remaining tests in the failure cases.
+MAX77620 is most likely always a single device on the board, however
+nothing stops board designers to have two of them, thus same device
+driver could probe twice. Or user could manually try to probing second
+time.
 
-Link: https://lkml.kernel.org/r/20251101182021.74868-12-sj@kernel.org
-Fixes: f4c978b6594b ("mm/damon/core-test: add a test for damon_update_monitoring_results()")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: Brendan Higgins <brendan.higgins@linux.dev>
-Cc: David Gow <davidgow@google.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: <stable@vger.kernel.org>	[6.3+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Device driver is not ready for that case, because it allocates
+statically 'struct regmap_irq_chip' as non-const and stores during
+probe in 'irq_drv_data' member a pointer to per-probe state
+container ('struct max77620_chip').  devm_regmap_add_irq_chip() does not
+make a copy of 'struct regmap_irq_chip' but store the pointer.
+
+Second probe - either successful or failure - would overwrite the
+'irq_drv_data' from previous device probe, so interrupts would be
+executed in a wrong context.
+
+Cc: stable@vger.kernel.org
+Fixes: 3df140d11c6d ("mfd: max77620: Mask/unmask interrupt before/after servicing it")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://patch.msgid.link/20251023101939.67991-2-krzysztof.kozlowski@linaro.org
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/damon/tests/core-kunit.h |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/mfd/max77620.c |   15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
---- a/mm/damon/tests/core-kunit.h
-+++ b/mm/damon/tests/core-kunit.h
-@@ -406,6 +406,9 @@ static void damon_test_update_monitoring
- 	struct damon_attrs new_attrs;
- 	struct damon_region *r = damon_new_region(3, 7);
+--- a/drivers/mfd/max77620.c
++++ b/drivers/mfd/max77620.c
+@@ -254,7 +254,7 @@ static int max77620_irq_global_unmask(vo
+ 	return ret;
+ }
  
-+	if (!r)
-+		kunit_skip(test, "region alloc fail");
+-static struct regmap_irq_chip max77620_top_irq_chip = {
++static const struct regmap_irq_chip max77620_top_irq_chip = {
+ 	.name = "max77620-top",
+ 	.irqs = max77620_top_irqs,
+ 	.num_irqs = ARRAY_SIZE(max77620_top_irqs),
+@@ -498,6 +498,7 @@ static int max77620_probe(struct i2c_cli
+ 	const struct i2c_device_id *id = i2c_client_get_device_id(client);
+ 	const struct regmap_config *rmap_config;
+ 	struct max77620_chip *chip;
++	struct regmap_irq_chip *chip_desc;
+ 	const struct mfd_cell *mfd_cells;
+ 	int n_mfd_cells;
+ 	bool pm_off;
+@@ -508,6 +509,14 @@ static int max77620_probe(struct i2c_cli
+ 		return -ENOMEM;
+ 
+ 	i2c_set_clientdata(client, chip);
 +
- 	r->nr_accesses = 15;
- 	r->nr_accesses_bp = 150000;
- 	r->age = 20;
++	chip_desc = devm_kmemdup(&client->dev, &max77620_top_irq_chip,
++				 sizeof(max77620_top_irq_chip),
++				 GFP_KERNEL);
++	if (!chip_desc)
++		return -ENOMEM;
++	chip_desc->irq_drv_data = chip;
++
+ 	chip->dev = &client->dev;
+ 	chip->chip_irq = client->irq;
+ 	chip->chip_id = (enum max77620_chip_id)id->driver_data;
+@@ -544,11 +553,9 @@ static int max77620_probe(struct i2c_cli
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	max77620_top_irq_chip.irq_drv_data = chip;
+ 	ret = devm_regmap_add_irq_chip(chip->dev, chip->rmap, client->irq,
+ 				       IRQF_ONESHOT | IRQF_SHARED, 0,
+-				       &max77620_top_irq_chip,
+-				       &chip->top_irq_data);
++				       chip_desc, &chip->top_irq_data);
+ 	if (ret < 0) {
+ 		dev_err(chip->dev, "Failed to add regmap irq: %d\n", ret);
+ 		return ret;
 
 
 
