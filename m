@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-205213-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205218-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7F4BCF9E4E
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 18:57:34 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18F61CF9CD4
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 18:44:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1B7BD31A94B6
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:44:20 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 203A830052E7
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:44:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F3AC34AB05;
-	Tue,  6 Jan 2026 17:19:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0352B34B425;
+	Tue,  6 Jan 2026 17:19:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XDG1W8Y2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tkdvIXgy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1323034A78B;
-	Tue,  6 Jan 2026 17:19:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 948D034B414;
+	Tue,  6 Jan 2026 17:19:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767719952; cv=none; b=izykvyznGbLlBWGiilpjQgXiidb2AV786WE/4G8vpOhUz0o9m0UypFGer0WIUXwcTHrXMchjpgWNfCqj91/opKF8ixmC9wnS1xk3Q2DxbcDN3DDu0ZcfANCzLddbqBs56nlFHS6xw806sInEytkm37P1BgFqIzpwUZ8MtIq8CVY=
+	t=1767719968; cv=none; b=U4chTo4+u6bs4+8+VNUgk2AnA3v3J85fBBXqx8oA+93SrpPFG9BzDCBITXtCpy30p2evucCcngAdcxXR9OKF7AE40ahAwytW4uPA9v1oA54mdmv2nfkjXBCrshXFH8f4O9AiumXKJDN99hK5ujwG+VaGdmLBXGdU9FuEjLaICss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767719952; c=relaxed/simple;
-	bh=I/n3xfR0qv+Kj1Z2WeKbYI1ihNGp2i16BfAHzSzevyM=;
+	s=arc-20240116; t=1767719968; c=relaxed/simple;
+	bh=rqzJUACUjKXdC+n1lr6MqGo3omXmMqS4fuEk+rbpLBw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dAOQP2YLqrR2JHuikKYA1Lxk6n8UKd+etNeH8TWkEijI9+dqc82SciBtq8BAZl4pwv/893z0v2BZzsAU2J/DC2A7TECnIFd95XiDa8KaxojRmHcGkQnEbTnvV+2QQ3K0JJ2ogMipdwlWzNlWnGFV0MKpE3ZHlIIFZ0A15pt+SLs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XDG1W8Y2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DDADC116C6;
-	Tue,  6 Jan 2026 17:19:10 +0000 (UTC)
+	 MIME-Version; b=fEe32/zQaXcgXlqKLmhI8ST3uBOdwSYsdCu4Vu5flCHasHT1AhbD6EsbG9SdfF24SCSJVGGVMqeRWJrq0xCgNWJqOt+f3lQeIyXD+moytxWyMOgxuDRU09erfTATtT6F4FyfJ5yvzE7BPIDZqff4X+17l6wdn3TVenT2K1u7ckU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tkdvIXgy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 051EFC116C6;
+	Tue,  6 Jan 2026 17:19:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767719951;
-	bh=I/n3xfR0qv+Kj1Z2WeKbYI1ihNGp2i16BfAHzSzevyM=;
+	s=korg; t=1767719968;
+	bh=rqzJUACUjKXdC+n1lr6MqGo3omXmMqS4fuEk+rbpLBw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XDG1W8Y2xqB3UsVgCHeIWZLfMwAfexkux6sNEY8Izo2VGhVHwvhoWwst0iY2NKUvk
-	 mmUWeAmO2T92hsHlEuSxq4h2qCXEvzfVDbCiHpwKSaKQEi1uPcL/YAxnOM9geJKOJ8
-	 5ro0UntutzEHipHLhwDBLAcBA12GdT6b0qS8gaHI=
+	b=tkdvIXgyM0LcZWdPWcXpH6j5pFqjHOtAP9aCZVOm04qonFUBkSQeUkoWNUIqHvZAa
+	 O0hfOnhP8bXjiR9AArCYytj2pmTj5y8CXoCB/KLovEW0rzyYrT/OPOm+AtEz5L48b9
+	 ifL2n+Vs+PD3BKhTQ2KL8m+R0C6/gUS8dapZE3EA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Jack Wang <jinpu.wang@ionos.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 089/567] block: rnbd-clt: Fix leaked ID in init_dev()
-Date: Tue,  6 Jan 2026 17:57:51 +0100
-Message-ID: <20260106170454.622589614@linuxfoundation.org>
+	Alexandre <roger.andersen@protonmail.com>,
+	Stanislas Polu <spolu@dust.tt>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.12 094/567] ksmbd: Fix refcount leak when invalid session is found on session lookup
+Date: Tue,  6 Jan 2026 17:57:56 +0100
+Message-ID: <20260106170454.805421685@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
 References: <20260106170451.332875001@linuxfoundation.org>
@@ -65,64 +65,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit c9b5645fd8ca10f310e41b07540f98e6a9720f40 ]
+commit cafb57f7bdd57abba87725eb4e82bbdca4959644 upstream.
 
-If kstrdup() fails in init_dev(), then the newly allocated ID is lost.
+When a session is found but its state is not SMB2_SESSION_VALID, It
+indicates that no valid session was found, but it is missing to decrement
+the reference count acquired by the session lookup, which results in
+a reference count leak. This patch fixes the issue by explicitly calling
+ksmbd_user_session_put to release the reference to the session.
 
-Fixes: 64e8a6ece1a5 ("block/rnbd-clt: Dynamically alloc buffer for pathname & blk_symlink_name")
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Acked-by: Jack Wang <jinpu.wang@ionos.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Reported-by: Alexandre <roger.andersen@protonmail.com>
+Reported-by: Stanislas Polu <spolu@dust.tt>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/block/rnbd/rnbd-clt.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ fs/smb/server/mgmt/user_session.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/block/rnbd/rnbd-clt.c b/drivers/block/rnbd/rnbd-clt.c
-index c34695d2eea7..5be0581c3334 100644
---- a/drivers/block/rnbd/rnbd-clt.c
-+++ b/drivers/block/rnbd/rnbd-clt.c
-@@ -1424,9 +1424,11 @@ static struct rnbd_clt_dev *init_dev(struct rnbd_clt_session *sess,
- 		goto out_alloc;
- 	}
+--- a/fs/smb/server/mgmt/user_session.c
++++ b/fs/smb/server/mgmt/user_session.c
+@@ -325,8 +325,10 @@ struct ksmbd_session *ksmbd_session_look
+ 	sess = ksmbd_session_lookup(conn, id);
+ 	if (!sess && conn->binding)
+ 		sess = ksmbd_session_lookup_slowpath(id);
+-	if (sess && sess->state != SMB2_SESSION_VALID)
++	if (sess && sess->state != SMB2_SESSION_VALID) {
++		ksmbd_user_session_put(sess);
+ 		sess = NULL;
++	}
+ 	return sess;
+ }
  
--	ret = ida_alloc_max(&index_ida, (1 << (MINORBITS - RNBD_PART_BITS)) - 1,
--			    GFP_KERNEL);
--	if (ret < 0) {
-+	dev->clt_device_id = ida_alloc_max(&index_ida,
-+					   (1 << (MINORBITS - RNBD_PART_BITS)) - 1,
-+					   GFP_KERNEL);
-+	if (dev->clt_device_id < 0) {
-+		ret = dev->clt_device_id;
- 		pr_err("Failed to initialize device '%s' from session %s, allocating idr failed, err: %d\n",
- 		       pathname, sess->sessname, ret);
- 		goto out_queues;
-@@ -1435,10 +1437,9 @@ static struct rnbd_clt_dev *init_dev(struct rnbd_clt_session *sess,
- 	dev->pathname = kstrdup(pathname, GFP_KERNEL);
- 	if (!dev->pathname) {
- 		ret = -ENOMEM;
--		goto out_queues;
-+		goto out_ida;
- 	}
- 
--	dev->clt_device_id	= ret;
- 	dev->sess		= sess;
- 	dev->access_mode	= access_mode;
- 	dev->nr_poll_queues	= nr_poll_queues;
-@@ -1454,6 +1455,8 @@ static struct rnbd_clt_dev *init_dev(struct rnbd_clt_session *sess,
- 
- 	return dev;
- 
-+out_ida:
-+	ida_free(&index_ida, dev->clt_device_id);
- out_queues:
- 	kfree(dev->hw_queues);
- out_alloc:
--- 
-2.51.0
-
 
 
 
