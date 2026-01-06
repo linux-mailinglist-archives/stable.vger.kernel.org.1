@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-205687-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205966-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8065DCFAA02
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:24:51 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06006CFAF42
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 21:37:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 16F3432F728F
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:37:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4A5A830DB4A1
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 20:31:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DE7935581C;
-	Tue,  6 Jan 2026 17:45:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D4CB366566;
+	Tue,  6 Jan 2026 18:00:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gqk6TKPc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cD1YcXYj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEE75355817;
-	Tue,  6 Jan 2026 17:45:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A11036655B;
+	Tue,  6 Jan 2026 18:00:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721523; cv=none; b=oWOOu/FNT9BWqKqzs09ZiCLkuGUpjLt6/XmlRyD9P8S7JRaniuBiKwVJu6qK0ji5vNzhhspLdhnQ4mWMJxmYx5VssZawzQtMYt3hyytCuAwlt0Y8E+Q1c3vMOY1PyPueVWfCiusSWl43MelDotNNd59GHDL3A1EVzNz2dlTUTn8=
+	t=1767722455; cv=none; b=Dxm6lZhZg6c5AiQ4eE1hyb5M1kzbAeovM3OQHo/pEIFvSxhElDss1gunRq2SDwgDrPLacKlWXUyAWC4flnN4OTilLW0rSo1v709yZ6UvhgHQ3RJhJI/BXnsvKwykVWcltarK03B7lmm4ItofTN+okpkgkFxY+wGxqvur97URrGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721523; c=relaxed/simple;
-	bh=Y4u+EkoUASIgPTs36oyPfCQ3UuqYxRtIz+5oj24e5g0=;
+	s=arc-20240116; t=1767722455; c=relaxed/simple;
+	bh=nI61nyjJ5rk2KQOdpSL6qc+r/d1f1kHjYLJIUacobW4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SpHNoPGSqssMbh0fMJ6diJv4aqGn0c8FV4RY/1Enq+ntJaArwCJ20MupMg/FSdNZEwHZG7lOPMM1ahHXD7NMWF3dU8eH8ACBavbs8VYcZgQsCyIfhW/oiifUw2vp8/34laiEw09ZYu6P+XwxQoX1q0gXIiw3UnBXMkyxx7q5gXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gqk6TKPc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41B67C116C6;
-	Tue,  6 Jan 2026 17:45:22 +0000 (UTC)
+	 MIME-Version; b=qm6g+7f3aViu0Un7pTl/z2Q55SCCeMIF8w33MXHzzOqueZpjPt/iY9znbXaOP5PeowsXl/6c0aFB8eBBiq1u9eU9rAWLgjLZnl7Ht19xCqJ1x1DkMguxErs2R8Yjl9GaQoSoNdUdzjZAYLk37s34BiT8wHIu9d9Q/46HRV3F8ko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cD1YcXYj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A380C116C6;
+	Tue,  6 Jan 2026 18:00:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721522;
-	bh=Y4u+EkoUASIgPTs36oyPfCQ3UuqYxRtIz+5oj24e5g0=;
+	s=korg; t=1767722455;
+	bh=nI61nyjJ5rk2KQOdpSL6qc+r/d1f1kHjYLJIUacobW4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gqk6TKPc7dVRTqR4e949oc4ECwQwSRe8tdbZNcPlK4qpOMljmeenfgin+FusgeTAa
-	 /l1EXQU613XUsog/RK1BKZD5DXxJ4I9HwzOP0TkMeiWlNOl3It+8ClcDl06Ab/TzCv
-	 BdD+QePrxvDLfZBwXuayqmmY4Fe5kjBrlgDBXUVA=
+	b=cD1YcXYjQ2WTA0JoEYnuFzBZX3zl/Z4sFKGKFLPKmgEBWR8nzVyx6dgwHSSUmboqV
+	 1PpjQzPuqTMaj6MybLfstiFZZ5rFwnh8tpFVcmmpaXqO8Vy4c2FGAgq6uUVE0NV5yq
+	 TtVjqn5hnXFQPTY2ZCfPu6V3WPjY/157DRWHwUv0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
-	Zqiang <qiang.zhang@linux.dev>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Subject: [PATCH 6.12 529/567] usbnet: Fix using smp_processor_id() in preemptible code warnings
+	syzbot+938fcd548c303fe33c1a@syzkaller.appspotmail.com,
+	Jason Gunthorpe <jgg@nvidia.com>
+Subject: [PATCH 6.18 237/312] RDMA/core: Check for the presence of LS_NLA_TYPE_DGID correctly
 Date: Tue,  6 Jan 2026 18:05:11 +0100
-Message-ID: <20260106170510.964268694@linuxfoundation.org>
+Message-ID: <20260106170556.425901744@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
-References: <20260106170451.332875001@linuxfoundation.org>
+In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
+References: <20260106170547.832845344@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,80 +59,134 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zqiang <qiang.zhang@linux.dev>
+From: Jason Gunthorpe <jgg@nvidia.com>
 
-[ Upstream commit 327cd4b68b4398b6c24f10eb2b2533ffbfc10185 ]
+commit a7b8e876e0ef0232b8076972c57ce9a7286b47ca upstream.
 
-Syzbot reported the following warning:
+The netlink response for RDMA_NL_LS_OP_IP_RESOLVE should always have a
+LS_NLA_TYPE_DGID attribute, it is invalid if it does not.
 
-BUG: using smp_processor_id() in preemptible [00000000] code: dhcpcd/2879
-caller is usbnet_skb_return+0x74/0x490 drivers/net/usb/usbnet.c:331
-CPU: 1 UID: 0 PID: 2879 Comm: dhcpcd Not tainted 6.15.0-rc4-syzkaller-00098-g615dca38c2ea #0 PREEMPT(voluntary)
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x16c/0x1f0 lib/dump_stack.c:120
- check_preemption_disabled+0xd0/0xe0 lib/smp_processor_id.c:49
- usbnet_skb_return+0x74/0x490 drivers/net/usb/usbnet.c:331
- usbnet_resume_rx+0x4b/0x170 drivers/net/usb/usbnet.c:708
- usbnet_change_mtu+0x1be/0x220 drivers/net/usb/usbnet.c:417
- __dev_set_mtu net/core/dev.c:9443 [inline]
- netif_set_mtu_ext+0x369/0x5c0 net/core/dev.c:9496
- netif_set_mtu+0xb0/0x160 net/core/dev.c:9520
- dev_set_mtu+0xae/0x170 net/core/dev_api.c:247
- dev_ifsioc+0xa31/0x18d0 net/core/dev_ioctl.c:572
- dev_ioctl+0x223/0x10e0 net/core/dev_ioctl.c:821
- sock_do_ioctl+0x19d/0x280 net/socket.c:1204
- sock_ioctl+0x42f/0x6a0 net/socket.c:1311
- vfs_ioctl fs/ioctl.c:51 [inline]
- __do_sys_ioctl fs/ioctl.c:906 [inline]
- __se_sys_ioctl fs/ioctl.c:892 [inline]
- __x64_sys_ioctl+0x190/0x200 fs/ioctl.c:892
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xcd/0x260 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
+Use the nl parsing logic properly and call nla_parse_deprecated() to fill
+the nlattrs array and then directly index that array to get the data for
+the DGID. Just fail if it is NULL.
 
-For historical and portability reasons, the netif_rx() is usually
-run in the softirq or interrupt context, this commit therefore add
-local_bh_disable/enable() protection in the usbnet_resume_rx().
+Remove the for loop searching for the nla, and squash the validation and
+parsing into one function.
 
-Fixes: 43daa96b166c ("usbnet: Stop RX Q on MTU change")
-Link: https://syzkaller.appspot.com/bug?id=81f55dfa587ee544baaaa5a359a060512228c1e1
-Suggested-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Zqiang <qiang.zhang@linux.dev>
-Link: https://patch.msgid.link/20251011070518.7095-1-qiang.zhang@linux.dev
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-[Harshit: Resolved conflicts due to missing commit: 2c04d279e857 ("net:
-usb: Convert tasklet API to new bottom half workqueue mechanism") in
-6.12.y]
-Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Fixes an uninitialized read from the stack triggered by userspace if it
+does not provide the DGID to a kernel initiated RDMA_NL_LS_OP_IP_RESOLVE
+query.
+
+    BUG: KMSAN: uninit-value in hex_byte_pack include/linux/hex.h:13 [inline]
+    BUG: KMSAN: uninit-value in ip6_string+0xef4/0x13a0 lib/vsprintf.c:1490
+     hex_byte_pack include/linux/hex.h:13 [inline]
+     ip6_string+0xef4/0x13a0 lib/vsprintf.c:1490
+     ip6_addr_string+0x18a/0x3e0 lib/vsprintf.c:1509
+     ip_addr_string+0x245/0xee0 lib/vsprintf.c:1633
+     pointer+0xc09/0x1bd0 lib/vsprintf.c:2542
+     vsnprintf+0xf8a/0x1bd0 lib/vsprintf.c:2930
+     vprintk_store+0x3ae/0x1530 kernel/printk/printk.c:2279
+     vprintk_emit+0x307/0xcd0 kernel/printk/printk.c:2426
+     vprintk_default+0x3f/0x50 kernel/printk/printk.c:2465
+     vprintk+0x36/0x50 kernel/printk/printk_safe.c:82
+     _printk+0x17e/0x1b0 kernel/printk/printk.c:2475
+     ib_nl_process_good_ip_rsep drivers/infiniband/core/addr.c:128 [inline]
+     ib_nl_handle_ip_res_resp+0x963/0x9d0 drivers/infiniband/core/addr.c:141
+     rdma_nl_rcv_msg drivers/infiniband/core/netlink.c:-1 [inline]
+     rdma_nl_rcv_skb drivers/infiniband/core/netlink.c:239 [inline]
+     rdma_nl_rcv+0xefa/0x11c0 drivers/infiniband/core/netlink.c:259
+     netlink_unicast_kernel net/netlink/af_netlink.c:1320 [inline]
+     netlink_unicast+0xf04/0x12b0 net/netlink/af_netlink.c:1346
+     netlink_sendmsg+0x10b3/0x1250 net/netlink/af_netlink.c:1896
+     sock_sendmsg_nosec net/socket.c:714 [inline]
+     __sock_sendmsg+0x333/0x3d0 net/socket.c:729
+     ____sys_sendmsg+0x7e0/0xd80 net/socket.c:2617
+     ___sys_sendmsg+0x271/0x3b0 net/socket.c:2671
+     __sys_sendmsg+0x1aa/0x300 net/socket.c:2703
+     __compat_sys_sendmsg net/compat.c:346 [inline]
+     __do_compat_sys_sendmsg net/compat.c:353 [inline]
+     __se_compat_sys_sendmsg net/compat.c:350 [inline]
+     __ia32_compat_sys_sendmsg+0xa4/0x100 net/compat.c:350
+     ia32_sys_call+0x3f6c/0x4310 arch/x86/include/generated/asm/syscalls_32.h:371
+     do_syscall_32_irqs_on arch/x86/entry/syscall_32.c:83 [inline]
+     __do_fast_syscall_32+0xb0/0x150 arch/x86/entry/syscall_32.c:306
+     do_fast_syscall_32+0x38/0x80 arch/x86/entry/syscall_32.c:331
+     do_SYSENTER_32+0x1f/0x30 arch/x86/entry/syscall_32.c:3
+
+Link: https://patch.msgid.link/r/0-v1-3fbaef094271+2cf-rdma_op_ip_rslv_syz_jgg@nvidia.com
+Cc: stable@vger.kernel.org
+Fixes: ae43f8286730 ("IB/core: Add IP to GID netlink offload")
+Reported-by: syzbot+938fcd548c303fe33c1a@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/r/68dc3dac.a00a0220.102ee.004f.GAE@google.com
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/usbnet.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/infiniband/core/addr.c |   33 ++++++++++-----------------------
+ 1 file changed, 10 insertions(+), 23 deletions(-)
 
---- a/drivers/net/usb/usbnet.c
-+++ b/drivers/net/usb/usbnet.c
-@@ -702,6 +702,7 @@ void usbnet_resume_rx(struct usbnet *dev
- 	struct sk_buff *skb;
- 	int num = 0;
+--- a/drivers/infiniband/core/addr.c
++++ b/drivers/infiniband/core/addr.c
+@@ -80,37 +80,25 @@ static const struct nla_policy ib_nl_add
+ 		.min = sizeof(struct rdma_nla_ls_gid)},
+ };
  
-+	local_bh_disable();
- 	clear_bit(EVENT_RX_PAUSED, &dev->flags);
+-static inline bool ib_nl_is_good_ip_resp(const struct nlmsghdr *nlh)
++static void ib_nl_process_ip_rsep(const struct nlmsghdr *nlh)
+ {
+ 	struct nlattr *tb[LS_NLA_TYPE_MAX] = {};
++	union ib_gid gid;
++	struct addr_req *req;
++	int found = 0;
+ 	int ret;
  
- 	while ((skb = skb_dequeue(&dev->rxq_pause)) != NULL) {
-@@ -710,6 +711,7 @@ void usbnet_resume_rx(struct usbnet *dev
- 	}
+ 	if (nlh->nlmsg_flags & RDMA_NL_LS_F_ERR)
+-		return false;
++		return;
  
- 	tasklet_schedule(&dev->bh);
-+	local_bh_enable();
+ 	ret = nla_parse_deprecated(tb, LS_NLA_TYPE_MAX - 1, nlmsg_data(nlh),
+ 				   nlmsg_len(nlh), ib_nl_addr_policy, NULL);
+ 	if (ret)
+-		return false;
+-
+-	return true;
+-}
+-
+-static void ib_nl_process_good_ip_rsep(const struct nlmsghdr *nlh)
+-{
+-	const struct nlattr *head, *curr;
+-	union ib_gid gid;
+-	struct addr_req *req;
+-	int len, rem;
+-	int found = 0;
+-
+-	head = (const struct nlattr *)nlmsg_data(nlh);
+-	len = nlmsg_len(nlh);
++		return;
  
- 	netif_dbg(dev, rx_status, dev->net,
- 		  "paused rx queue disabled, %d skbs requeued\n", num);
+-	nla_for_each_attr(curr, head, len, rem) {
+-		if (curr->nla_type == LS_NLA_TYPE_DGID)
+-			memcpy(&gid, nla_data(curr), nla_len(curr));
+-	}
++	if (!tb[LS_NLA_TYPE_DGID])
++		return;
++	memcpy(&gid, nla_data(tb[LS_NLA_TYPE_DGID]), sizeof(gid));
+ 
+ 	spin_lock_bh(&lock);
+ 	list_for_each_entry(req, &req_list, list) {
+@@ -137,8 +125,7 @@ int ib_nl_handle_ip_res_resp(struct sk_b
+ 	    !(NETLINK_CB(skb).sk))
+ 		return -EPERM;
+ 
+-	if (ib_nl_is_good_ip_resp(nlh))
+-		ib_nl_process_good_ip_rsep(nlh);
++	ib_nl_process_ip_rsep(nlh);
+ 
+ 	return 0;
+ }
 
 
 
