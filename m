@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-205764-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205487-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68ECCCFA551
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:52:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6693DCFA239
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:28:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D1EBA324E572
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:06:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 03F3E3207BE3
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:40:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA5183612C0;
-	Tue,  6 Jan 2026 17:49:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 928612E719E;
+	Tue,  6 Jan 2026 17:34:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xI4h+ZdG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r1RaLhhT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8747F35FF65;
-	Tue,  6 Jan 2026 17:49:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 500121F1932;
+	Tue,  6 Jan 2026 17:34:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721782; cv=none; b=XDfE0qMxNJkp6T1JKkKzkCkTT9kYsJmrVpg5jWJe4O7qMpO1xsgsu1/NpXKfxSJPzb0bz+ia/d6ZsBsCeOZFr10R+f8BUBeaVN+7Un2zRJMU8h9CW4DAP8zYy+ZGgo0A2DdfHUNT4pJRztLbvtrNVYMRdYYk7d/cfnCcAfsSdwk=
+	t=1767720856; cv=none; b=OqqOMeyNZcfcS62+Ko/TaI/pF3wihLFZhnsEjycHBsBhbBOo6tFCMWq6AMllRy4+ova8JhWvaU1/FQzyi5LzX0HjFXHZ6NN5nutzIkXEQGT2/cTZO4J9Be9llNgJC+IMuyVoBORGyKvta1ruWj9ifdkf6SySqEW80YjIt/L4Qy0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721782; c=relaxed/simple;
-	bh=CV/VqDKdFgpkp5pJ4787weNAzq6SeriTPOAzEFqI0C8=;
+	s=arc-20240116; t=1767720856; c=relaxed/simple;
+	bh=7jTXY/5Q7rIGDs7n9tAlbqeTjMloojezi1z8j2AG3DM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M8EKA17RhsyTMq4K9P11566GDw8xsZEyXk+CVR0FgeNPS1FMRQy9OdP6umSs5xRBT4xMv37M1rtHZAM4fqqWvt0rsE7qO8nt8kLWOHn776X/i7M/XzSRJWlRGU1v08kBw/Mub2y9sFLOd8cH4Xqfffchqo5oBpmlE8/D7MRoMRg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xI4h+ZdG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB780C116C6;
-	Tue,  6 Jan 2026 17:49:41 +0000 (UTC)
+	 MIME-Version; b=BeBJ/HMEzgSoITsMoZGMg8tDbx4p7NlhOZ+CwrLS2IHr43HG7v5RQlD0tSEKk+oD1lE5WacajxBvG3obgMvfvDhQnA4l4ez4LxlpsLmj8lAJkZ6uO0kKhlWfwIY+YNOT41heew5mujALEB0SvydapE/hCzaFiLEyIHJTmPv1aOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r1RaLhhT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B33E7C116C6;
+	Tue,  6 Jan 2026 17:34:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721782;
-	bh=CV/VqDKdFgpkp5pJ4787weNAzq6SeriTPOAzEFqI0C8=;
+	s=korg; t=1767720856;
+	bh=7jTXY/5Q7rIGDs7n9tAlbqeTjMloojezi1z8j2AG3DM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xI4h+ZdGykGj7YyYsM1esC1nZZ3Bbnj4c3mf+yLxGKLeRX22PKsg2zAUPuzBs5nr2
-	 K1Hqq9QrUNXBSTz3hwuX7NDUlaORRUtfqyk00cZXNyKvKw84cjAuqzDRnvEeFoAtXY
-	 qZf+nb1fXzsySJQCr2BXUk//Jn7CZ5pjNDe1s8Ss=
+	b=r1RaLhhTvyA/3j84Xi+f426SI7RFo7ZvsogmrbKxUDPiWy9zhH7IA0TDcVPmA9E0r
+	 wSv59iTeag9qIkoyRD26eUM42Od/hbhLpl8xOn4PkjjdoMf95POaE98ePXmOJOEDlc
+	 +RSHYtAs06TwiAF1URbl0kiG0Xw003cnOmGkBdDY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 071/312] RDMA/bnxt_re: Fix incorrect BAR check in bnxt_qplib_map_creq_db()
+	Rob Clark <robin.clark@oss.qualcomm.com>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Johan Hovold <johan@kernel.org>,
+	Joerg Roedel <joerg.roedel@amd.com>
+Subject: [PATCH 6.12 363/567] iommu/qcom: fix device leak on of_xlate()
 Date: Tue,  6 Jan 2026 18:02:25 +0100
-Message-ID: <20260106170550.417147302@linuxfoundation.org>
+Message-ID: <20260106170504.766416100@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
-References: <20260106170547.832845344@linuxfoundation.org>
+In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
+References: <20260106170451.332875001@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 145a417a39d7efbc881f52e829817376972b278c ]
+commit 6a3908ce56e6879920b44ef136252b2f0c954194 upstream.
 
-RCFW_COMM_CONS_PCI_BAR_REGION is defined as BAR 2, so checking
-!creq_db->reg.bar_id is incorrect and always false.
+Make sure to drop the reference taken to the iommu platform device when
+looking up its driver data during of_xlate().
 
-pci_resource_start() returns the BAR base address, and a value of 0
-indicates that the BAR is unassigned. Update the condition to test
-bar_base == 0 instead.
+Note that commit e2eae09939a8 ("iommu/qcom: add missing put_device()
+call in qcom_iommu_of_xlate()") fixed the leak in a couple of error
+paths, but the reference is still leaking on success and late failures.
 
-This ensures the driver detects and logs an error for an unassigned
-RCFW communication BAR.
-
-Fixes: cee0c7bba486 ("RDMA/bnxt_re: Refactor command queue management code")
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Link: https://patch.msgid.link/20251217100158.752504-1-alok.a.tiwari@oracle.com
-Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 0ae349a0f33f ("iommu/qcom: Add qcom_iommu")
+Cc: stable@vger.kernel.org	# 4.14: e2eae09939a8
+Cc: Rob Clark <robin.clark@oss.qualcomm.com>
+Cc: Yu Kuai <yukuai3@huawei.com>
+Acked-by: Robin Murphy <robin.murphy@arm.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/bnxt_re/qplib_rcfw.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iommu/arm/arm-smmu/qcom_iommu.c |   10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c b/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c
-index 295a9610f3e6..4dad0cfcfa98 100644
---- a/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c
-+++ b/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c
-@@ -1112,7 +1112,7 @@ static int bnxt_qplib_map_creq_db(struct bnxt_qplib_rcfw *rcfw, u32 reg_offt)
- 	creq_db->dbinfo.flags = 0;
- 	creq_db->reg.bar_id = RCFW_COMM_CONS_PCI_BAR_REGION;
- 	creq_db->reg.bar_base = pci_resource_start(pdev, creq_db->reg.bar_id);
--	if (!creq_db->reg.bar_id)
-+	if (!creq_db->reg.bar_base)
- 		dev_err(&pdev->dev,
- 			"QPLIB: CREQ BAR region %d resc start is 0!",
- 			creq_db->reg.bar_id);
--- 
-2.51.0
-
+--- a/drivers/iommu/arm/arm-smmu/qcom_iommu.c
++++ b/drivers/iommu/arm/arm-smmu/qcom_iommu.c
+@@ -566,14 +566,14 @@ static int qcom_iommu_of_xlate(struct de
+ 
+ 	qcom_iommu = platform_get_drvdata(iommu_pdev);
+ 
++	put_device(&iommu_pdev->dev);
++
+ 	/* make sure the asid specified in dt is valid, so we don't have
+ 	 * to sanity check this elsewhere:
+ 	 */
+ 	if (WARN_ON(asid > qcom_iommu->max_asid) ||
+-	    WARN_ON(qcom_iommu->ctxs[asid] == NULL)) {
+-		put_device(&iommu_pdev->dev);
++	    WARN_ON(qcom_iommu->ctxs[asid] == NULL))
+ 		return -EINVAL;
+-	}
+ 
+ 	if (!dev_iommu_priv_get(dev)) {
+ 		dev_iommu_priv_set(dev, qcom_iommu);
+@@ -582,10 +582,8 @@ static int qcom_iommu_of_xlate(struct de
+ 		 * multiple different iommu devices.  Multiple context
+ 		 * banks are ok, but multiple devices are not:
+ 		 */
+-		if (WARN_ON(qcom_iommu != dev_iommu_priv_get(dev))) {
+-			put_device(&iommu_pdev->dev);
++		if (WARN_ON(qcom_iommu != dev_iommu_priv_get(dev)))
+ 			return -EINVAL;
+-		}
+ 	}
+ 
+ 	return iommu_fwspec_add_ids(dev, &asid, 1);
 
 
 
