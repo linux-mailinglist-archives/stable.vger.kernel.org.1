@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-205861-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205541-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62BE3CFA441
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:47:13 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71004CFA354
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:36:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BF9E434080D4
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:01:14 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8CA4E3047403
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:36:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDAF836A010;
-	Tue,  6 Jan 2026 17:55:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B35B233F397;
+	Tue,  6 Jan 2026 17:37:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bKq3Jkko"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SnNR3aZF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABB7936A011;
-	Tue,  6 Jan 2026 17:55:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EDFA33F388;
+	Tue,  6 Jan 2026 17:37:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767722104; cv=none; b=iPyjq5jGuq1xO7kGM0xdE6573j16dvJVgOJiCPpyCqdqQ4gnbd7AlDEBXDmZ36QgLFLA4Nz6HLYIYvRClri9CEkO/IG4c3FhHg0xSZXbKyUhBVtrleXcpQgW2PrQhO9H/pXw/k8Y6n+9mRAIntzTU1ESzQCLTu1WQhX42NPwt8c=
+	t=1767721036; cv=none; b=lU+MeAMFAGeH+t508lI4jPJC5KugJYlwS73Flgyq8fPPJD9AGmwS/NDP7D2Mz7+Zuy3TD0KwPwv94fX5dIX/F6dms7AHtdSN4PQh3w7uQ0XwGyomisDJNEU6csB2NQKEEqLyfKJir91JAF9W94muyPcHulN8b72y9JeSP/jLc04=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767722104; c=relaxed/simple;
-	bh=9ZFpmLIBHrveaPXzGSbiPDbstGxj9UXPbawZpFErsc4=;
+	s=arc-20240116; t=1767721036; c=relaxed/simple;
+	bh=rPBk9nskKMqgkhScC3RgEe33FgT9kxAVRGh5woqbUm8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SoglWUMzseZEl2htx2S7uWBwLit5HauJNXniJK1XRlmLrNu8Sd8SxYWFpS8QMgxCXz99zxYIqkgg6NWNbXGFm4kISlSP7jEEpSVet6JHBYEmml3CUQ14rlgosw4MptLJoWGl3eJte0USg1ukFZSh3fe7kgAu7gYQ89jk4W1FRho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bKq3Jkko; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A27DC16AAE;
-	Tue,  6 Jan 2026 17:55:03 +0000 (UTC)
+	 MIME-Version; b=c8N8KQ65AN8SwCBOntxJ33DZNtOcZOU6aEK0apspww6GecVAxcHT8vC8lZlY5YDPEwZAEuS6hA0HZVtfHpHpA6kir3mwitqMPYobeBTQA7KV0faoMU8GxNtPQjYKYgIGu/NUq48OtBTKOyv+P385a4RJQTHKQTtmR52SAGzyrQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SnNR3aZF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D54E7C116C6;
+	Tue,  6 Jan 2026 17:37:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767722104;
-	bh=9ZFpmLIBHrveaPXzGSbiPDbstGxj9UXPbawZpFErsc4=;
+	s=korg; t=1767721036;
+	bh=rPBk9nskKMqgkhScC3RgEe33FgT9kxAVRGh5woqbUm8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bKq3JkkorPQ4ffZJcSkgWa4uloNKmJtsLYMCRhZbkWj/MJXJufykWQ7znN4WqWfIY
-	 zcM2uJFyf2M3LEy8SxyLiZtgYmnnNg7yLMPb6pRqeEa7vWk/r7Tp1uJ0KwliO0NQyB
-	 FC/Ad8Q0ANrUCbvif6NrdTjfxUIspAKnnrlg0b6k=
+	b=SnNR3aZFMEYGw9/1i3nRW+eyAUvwDNKNkbqgtXvIi5JxKQP0uw7JO1NRKaKIuCfTX
+	 UlW+w6MrLkb1nNulcz5zIGvzMOb98NJrjsnXQZ+7/mD1Ml39kt5zk7PpMbg3pB9qiN
+	 keeRGQZml+YrjEvqIjlMlV7S5my+5B7uLgdaj5Bw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Longfang Liu <liulongfang@huawei.com>,
-	Raghavendra Rao Ananta <rananta@google.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Alex Williamson <alex@shazbot.org>
-Subject: [PATCH 6.18 123/312] hisi_acc_vfio_pci: Add .match_token_uuid callback in hisi_acc_vfio_pci_migrn_ops
+	Haoxiang Li <haoxiang_li2024@163.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Tzung-Bi Shih <tzungbi@kernel.org>,
+	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 6.12 415/567] media: mediatek: vcodec: Fix a reference leak in mtk_vcodec_fw_vpu_init()
 Date: Tue,  6 Jan 2026 18:03:17 +0100
-Message-ID: <20260106170552.294897717@linuxfoundation.org>
+Message-ID: <20260106170506.694812131@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
-References: <20260106170547.832845344@linuxfoundation.org>
+In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
+References: <20260106170451.332875001@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Raghavendra Rao Ananta <rananta@google.com>
+From: Haoxiang Li <haoxiang_li2024@163.com>
 
-commit 0ed3a30fd996cb0cac872432cf25185fda7e5316 upstream.
+commit cdd0f118ef87db8a664fb5ea366fd1766d2df1cd upstream.
 
-The commit, <86624ba3b522> ("vfio/pci: Do vf_token checks for
-VFIO_DEVICE_BIND_IOMMUFD") accidentally ignored including the
-.match_token_uuid callback in the hisi_acc_vfio_pci_migrn_ops struct.
-Introduce the missed callback here.
+vpu_get_plat_device() increases the reference count of the returned
+platform device. However, when devm_kzalloc() fails, the reference
+is not released, causing a reference leak.
 
-Fixes: 86624ba3b522 ("vfio/pci: Do vf_token checks for VFIO_DEVICE_BIND_IOMMUFD")
+Fix this by calling put_device() on fw_pdev->dev before returning
+on the error path.
+
+Fixes: e25a89f743b1 ("media: mtk-vcodec: potential dereference of null pointer")
 Cc: stable@vger.kernel.org
-Suggested-by: Longfang Liu <liulongfang@huawei.com>
-Signed-off-by: Raghavendra Rao Ananta <rananta@google.com>
-Reviewed-by: Longfang Liu <liulongfang@huawei.com>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Link: https://lore.kernel.org/r/20251031170603.2260022-3-rananta@google.com
-Signed-off-by: Alex Williamson <alex@shazbot.org>
+Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: Tzung-Bi Shih <tzungbi@kernel.org>
+Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/media/platform/mediatek/vcodec/common/mtk_vcodec_fw_vpu.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
-+++ b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
-@@ -1564,6 +1564,7 @@ static const struct vfio_device_ops hisi
- 	.mmap = hisi_acc_vfio_pci_mmap,
- 	.request = vfio_pci_core_request,
- 	.match = vfio_pci_core_match,
-+	.match_token_uuid = vfio_pci_core_match_token_uuid,
- 	.bind_iommufd = vfio_iommufd_physical_bind,
- 	.unbind_iommufd = vfio_iommufd_physical_unbind,
- 	.attach_ioas = vfio_iommufd_physical_attach_ioas,
+--- a/drivers/media/platform/mediatek/vcodec/common/mtk_vcodec_fw_vpu.c
++++ b/drivers/media/platform/mediatek/vcodec/common/mtk_vcodec_fw_vpu.c
+@@ -117,8 +117,10 @@ struct mtk_vcodec_fw *mtk_vcodec_fw_vpu_
+ 		vpu_wdt_reg_handler(fw_pdev, mtk_vcodec_vpu_reset_enc_handler, priv, rst_id);
+ 
+ 	fw = devm_kzalloc(&plat_dev->dev, sizeof(*fw), GFP_KERNEL);
+-	if (!fw)
++	if (!fw) {
++		put_device(&fw_pdev->dev);
+ 		return ERR_PTR(-ENOMEM);
++	}
+ 	fw->type = VPU;
+ 	fw->ops = &mtk_vcodec_vpu_msg;
+ 	fw->pdev = fw_pdev;
 
 
 
