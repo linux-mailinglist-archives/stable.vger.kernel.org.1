@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-205928-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205646-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDB3ECFAF45
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 21:37:02 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56B67CFA965
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:21:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 71D8B30DB5C6
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 20:31:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7FC23350FCAB
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:33:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76D3536CE0F;
-	Tue,  6 Jan 2026 17:58:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18A782FE076;
+	Tue,  6 Jan 2026 17:43:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JOD4ETP1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Raor8bd3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34AE236CE19;
-	Tue,  6 Jan 2026 17:58:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8C6D2FE060;
+	Tue,  6 Jan 2026 17:43:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767722331; cv=none; b=Tqojr4FVrazuSF9K8Gj/qn5Er2HTkF1vhyhPLEHYZc5PZg0R4FewFZkBnJKuXd2z2t3jrNsRnutZYTSe3syeZ8mmqzISOCwnJ1MFEtJIhIpzeK/hsmmDpKb/Tp1f+082Ue9Sx2awRYh3+EvpJzaikDlo5f1SVoFZiCQJjpy4GKo=
+	t=1767721384; cv=none; b=P2J9omE0KYNYMM8Y5/Oy8IIjW9IZXyvNk6FAd1OXhax4yE4k0rMdlZ54y2tvqnmGHCncgVM5cF/x059j+qkGFYUd+t6zgr1UPucFcUiyK0RFxJJU5j3SLzylOOK7qnIk9qUHqxmAef6uD/CnJR9QQmf2Oudb3MdzCU7t17LJpqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767722331; c=relaxed/simple;
-	bh=qmRwZYQBS2Idxu8j/2Y8VZCsQhw7EOn/7eOBDoAJ3Xc=;
+	s=arc-20240116; t=1767721384; c=relaxed/simple;
+	bh=I26dojZirt+Uflss8j45wiHWa77VSGlU1zlMwpWOKPM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BVABWypm3C1PIr0e/ekA3bB8Fig+nVDl5JIdvhKlRjOD6EgkKo2fpisAqI3kEQ7009ZtGaZg+WIYU0ZQdWGWJXTJJ0IgQBZ46NlosqRrO5XJIvTU5tTfcNFjloFklrBNJNGQAm9EeDJ5CFZbXBONGVxWXJbKpE2debwXNJwcam0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JOD4ETP1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABD61C116C6;
-	Tue,  6 Jan 2026 17:58:50 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Fb/DkHGs9JcEgVUw/I5SdCMkyNn9xgpuGW9RCXj3FfN0NZ7S9INxxYI8N5OiT/ftKQtZt5EU3wJng3QfWySw7/GY3GASOQCD4GdLM9LSdT4NrWm0DQbiXqc2ZsPvs/CFXT/SL3WfiX1IwgPeOILV3eSve3ZpnaKnwNA9jtiAD5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Raor8bd3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 503CFC116C6;
+	Tue,  6 Jan 2026 17:43:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767722331;
-	bh=qmRwZYQBS2Idxu8j/2Y8VZCsQhw7EOn/7eOBDoAJ3Xc=;
+	s=korg; t=1767721384;
+	bh=I26dojZirt+Uflss8j45wiHWa77VSGlU1zlMwpWOKPM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JOD4ETP1KNrnVRuRjO0IwV9Z4ftoebJY7I4sx2ZZ0Z1EUXxgGx/r1AigaV0QAjEeX
-	 aULaQpXn6YGhymFG0NdTreuVX9brTP9l9lq9dDRE6Kng3qrbuRnU2XKUFTSp55TU/r
-	 Ur5saOWvrPTmB+BLXAXjirsRNYpIihWkD45/z9Io=
+	b=Raor8bd3FNmI2VgF490Zf3BWyoZHz25dXnPrsNdzaw3JjUYuiOU6mp7ZGx8GHKptj
+	 cYpkmeASeGRLbAvkBoDnUBM3v7pmkt2zGZhli8TBBhKvdwss+6Fbm/hzUUG+Nv+hSX
+	 TeHwIjS26ZHBGnfQ++2b+dS+EwAjLMOi2I3yBPPw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@google.com>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.18 200/312] mm/damon/tests/vaddr-kunit: handle alloc failures in damon_test_split_evenly_fail()
-Date: Tue,  6 Jan 2026 18:04:34 +0100
-Message-ID: <20260106170555.064084882@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	=?UTF-8?q?=C5=81ukasz=20Bartosik?= <ukaszb@chromium.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 493/567] xhci: dbgtty: fix device unregister: fixup
+Date: Tue,  6 Jan 2026 18:04:35 +0100
+Message-ID: <20260106170509.599329945@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
-References: <20260106170547.832845344@linuxfoundation.org>
+In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
+References: <20260106170451.332875001@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,56 +58,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SeongJae Park <sj@kernel.org>
+From: Łukasz Bartosik <ukaszb@chromium.org>
 
-commit 7890e5b5bb6e386155c6e755fe70e0cdcc77f18e upstream.
+[ Upstream commit 74098cc06e753d3ffd8398b040a3a1dfb65260c0 ]
 
-damon_test_split_evenly_fail() is assuming all dynamic memory allocation
-in it will succeed.  Those are indeed likely in the real use cases since
-those allocations are too small to fail, but theoretically those could
-fail.  In the case, inappropriate memory access can happen.  Fix it by
-appropriately cleanup pre-allocated memory and skip the execution of the
-remaining tests in the failure cases.
+This fixup replaces tty_vhangup() call with call to
+tty_port_tty_vhangup(). Both calls hangup tty device
+synchronously however tty_port_tty_vhangup() increases
+reference count during the hangup operation using
+scoped_guard(tty_port_tty).
 
-Link: https://lkml.kernel.org/r/20251101182021.74868-19-sj@kernel.org
-Fixes: 17ccae8bb5c9 ("mm/damon: add kunit tests")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: Brendan Higgins <brendan.higgins@linux.dev>
-Cc: David Gow <davidgow@google.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: <stable@vger.kernel.org>	[5.15+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable <stable@kernel.org>
+Fixes: 1f73b8b56cf3 ("xhci: dbgtty: fix device unregister")
+Signed-off-by: Łukasz Bartosik <ukaszb@chromium.org>
+Link: https://patch.msgid.link/20251127111644.3161386-1-ukaszb@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/damon/tests/vaddr-kunit.h |   11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ drivers/usb/host/xhci-dbgtty.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/mm/damon/tests/vaddr-kunit.h
-+++ b/mm/damon/tests/vaddr-kunit.h
-@@ -256,7 +256,16 @@ static void damon_test_split_evenly_fail
- 		unsigned long start, unsigned long end, unsigned int nr_pieces)
- {
- 	struct damon_target *t = damon_new_target();
--	struct damon_region *r = damon_new_region(start, end);
-+	struct damon_region *r;
-+
-+	if (!t)
-+		kunit_skip(test, "target alloc fail");
-+
-+	r = damon_new_region(start, end);
-+	if (!r) {
-+		damon_free_target(t);
-+		kunit_skip(test, "region alloc fail");
-+	}
+--- a/drivers/usb/host/xhci-dbgtty.c
++++ b/drivers/usb/host/xhci-dbgtty.c
+@@ -522,7 +522,7 @@ static void xhci_dbc_tty_unregister_devi
+ 	 * Hang up the TTY. This wakes up any blocked
+ 	 * writers and causes subsequent writes to fail.
+ 	 */
+-	tty_vhangup(port->port.tty);
++	tty_port_tty_vhangup(&port->port);
  
- 	damon_add_region(r, t);
- 	KUNIT_EXPECT_EQ(test,
+ 	tty_unregister_device(dbc_tty_driver, port->minor);
+ 	xhci_dbc_tty_exit_port(port);
 
 
 
