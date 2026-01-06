@@ -1,51 +1,50 @@
-Return-Path: <stable+bounces-205366-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205375-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46460CFB0CF
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 22:11:42 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37564CFB0C7
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 22:11:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E4EDC3030FF0
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 21:11:35 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 73635300D415
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 21:11:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25D2234E74B;
-	Tue,  6 Jan 2026 17:27:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AF2A3557EF;
+	Tue,  6 Jan 2026 17:28:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZqNSBRRL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="znJCbD71"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0B5134E747;
-	Tue,  6 Jan 2026 17:27:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E89D134CFD6;
+	Tue,  6 Jan 2026 17:28:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767720453; cv=none; b=hXR0kii/ur2iUqsK5a19IkiAYbKCORC6sQKqmYaHgSkI9wnsVeoDzrhKyxKObNFOoKhrUUaK/PWYB5+Y6VxjFJ8XbWYjVzZDsGMfsWTtpheXCOkaJSpJRm/wPuM1AfTvLewcQqB9gBiLUXndZbtNGs40jdLZfw4W2vWkUa8XaPg=
+	t=1767720484; cv=none; b=KJciMJ5buXe+O9D5G1h8HC99kq1VTxEcIwVjPHCXBQuYkrX2dvmpRzOD8zqlUEFmb3wPWNOo0KhN+ZI0J4OtqLxx23I9zqvpRaAUYOGw16EtQec2T47kSiwvN5Tl6VYEhpaxFUkBhhOTpJSWJk560RPLR93zAYHPOtcciLi6AYo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767720453; c=relaxed/simple;
-	bh=mjnD/iqAl6hR47feXgi1cnaCWXrcbrxkB7bekbm02Nw=;
+	s=arc-20240116; t=1767720484; c=relaxed/simple;
+	bh=Ldt1GJ18TmkIoNIhTPPk6vmtYI0lvQLJ85IZ38UBNO4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RyKF5zG/R4bWK0rGI1bY5qDrqKYTXcUhR6pCmiUUtkFnscDQhduy6GCvewUPZxNrC/xeyYwa9c4TVBYWVwNs+RiaOS+6USbFnJH5XNDjBlHG0vCvU4sMgwKwcy8f8F88+fy991p5bflG7hhgUOcDKpNMDmcP6UTbnT/Vz82+J7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZqNSBRRL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A660C116C6;
-	Tue,  6 Jan 2026 17:27:33 +0000 (UTC)
+	 MIME-Version; b=TD1sU8c2LcDJZVZ2nSPRYQ+grGWVD4rE8lIcsiW6M2jyUEk+wLj3kCUgbcoxrvaVl0W5uccJPR9y6fsbcL/1A3DACdYVOPIF5W9o8xDMrTOfAp/gIjwsPecNT8gBZhfPqkybA2TBOO+dQLwpnleTSN1YfPDi+1x65CNHHVOZTVE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=znJCbD71; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48E32C116C6;
+	Tue,  6 Jan 2026 17:28:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767720453;
-	bh=mjnD/iqAl6hR47feXgi1cnaCWXrcbrxkB7bekbm02Nw=;
+	s=korg; t=1767720483;
+	bh=Ldt1GJ18TmkIoNIhTPPk6vmtYI0lvQLJ85IZ38UBNO4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZqNSBRRL/MVx/Y/h+oAv3lCirDcviKUFHhfkEs302rjxLygSt5cyGh9SLUfLV084K
-	 zE1OMyfdYsoc9DuMSbHNV5YJHkubPTaAtDkb4jN9qRTCB+Y+Vn+Ss0X/Ua5Eh2y56g
-	 nAfa4i736DjD6xYbh/ndHmJAVV1Zmth98HV/TDCw=
+	b=znJCbD71LeJq4RcvpDhz4VV565YQPRMnLMzxqj7FBFVTmylsRMcU5W4b2awo448C+
+	 0kgMLb/2fg+tbhfGecDxcj/mSEHs4V9hVVbnXrmeTes7RGIb0MPtT1bcEBLEDvjRdI
+	 t2EQvxmmhu+gE0UouUHbgboWxVP3blnb7skkUB18=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Aur=C3=A9lien=20Couderc?= <aurelien.couderc2002@gmail.com>,
-	Roland Mainz <roland.mainz@nrubsig.org>,
+	Joshua Rogers <linux@joshua.hu>,
 	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.12 240/567] NFSD: NFSv4 file creation neglects setting ACL
-Date: Tue,  6 Jan 2026 18:00:22 +0100
-Message-ID: <20260106170500.194832625@linuxfoundation.org>
+Subject: [PATCH 6.12 243/567] svcrdma: use rc_pageoff for memcpy byte offset
+Date: Tue,  6 Jan 2026 18:00:25 +0100
+Message-ID: <20260106170500.304811729@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
 References: <20260106170451.332875001@linuxfoundation.org>
@@ -58,56 +57,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Joshua Rogers <linux@joshua.hu>
 
-commit 913f7cf77bf14c13cfea70e89bcb6d0b22239562 upstream.
+commit a8ee9099f30654917aa68f55d707b5627e1dbf77 upstream.
 
-An NFSv4 client that sets an ACL with a named principal during file
-creation retrieves the ACL afterwards, and finds that it is only a
-default ACL (based on the mode bits) and not the ACL that was
-requested during file creation. This violates RFC 8881 section
-6.4.1.3: "the ACL attribute is set as given".
+svc_rdma_copy_inline_range added rc_curpage (page index) to the page
+base instead of the byte offset rc_pageoff. Use rc_pageoff so copies
+land within the current page.
 
-The issue occurs in nfsd_create_setattr(), which calls
-nfsd_attrs_valid() to determine whether to call nfsd_setattr().
-However, nfsd_attrs_valid() checks only for iattr changes and
-security labels, but not POSIX ACLs. When only an ACL is present,
-the function returns false, nfsd_setattr() is skipped, and the
-POSIX ACL is never applied to the inode.
+Found by ZeroPath (https://zeropath.com)
 
-Subsequently, when the client retrieves the ACL, the server finds
-no POSIX ACL on the inode and returns one generated from the file's
-mode bits rather than returning the originally-specified ACL.
-
-Reported-by: Aurélien Couderc <aurelien.couderc2002@gmail.com>
-Fixes: c0cbe70742f4 ("NFSD: add posix ACLs to struct nfsd_attrs")
-Cc: Roland Mainz <roland.mainz@nrubsig.org>
+Fixes: 8e122582680c ("svcrdma: Move svc_rdma_read_info::ri_pageno to struct svc_rdma_recv_ctxt")
 Cc: stable@vger.kernel.org
+Signed-off-by: Joshua Rogers <linux@joshua.hu>
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/vfs.h |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/sunrpc/xprtrdma/svc_rdma_rw.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/nfsd/vfs.h
-+++ b/fs/nfsd/vfs.h
-@@ -67,7 +67,8 @@ static inline bool nfsd_attrs_valid(stru
- 	struct iattr *iap = attrs->na_iattr;
+--- a/net/sunrpc/xprtrdma/svc_rdma_rw.c
++++ b/net/sunrpc/xprtrdma/svc_rdma_rw.c
+@@ -851,7 +851,7 @@ static int svc_rdma_copy_inline_range(st
+ 			head->rc_page_count++;
  
- 	return (iap->ia_valid || (attrs->na_seclabel &&
--		attrs->na_seclabel->len));
-+		attrs->na_seclabel->len) ||
-+		attrs->na_pacl || attrs->na_dpacl);
- }
+ 		dst = page_address(rqstp->rq_pages[head->rc_curpage]);
+-		memcpy(dst + head->rc_curpage, src + offset, page_len);
++		memcpy((unsigned char *)dst + head->rc_pageoff, src + offset, page_len);
  
- __be32		nfserrno (int errno);
+ 		head->rc_readbytes += page_len;
+ 		head->rc_pageoff += page_len;
 
 
 
