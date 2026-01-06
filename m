@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-205193-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205189-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DE86CFAA6D
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:27:51 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FD12CFA8A7
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:16:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0D5D2306DAB0
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 19:27:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 053823151670
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:28:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 207CB347FE1;
-	Tue,  6 Jan 2026 17:18:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3993C33B6E0;
+	Tue,  6 Jan 2026 17:17:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XRG/9XW/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UKU4QcEg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C66AA347FD0;
-	Tue,  6 Jan 2026 17:18:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9E9A2E8DE3;
+	Tue,  6 Jan 2026 17:17:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767719884; cv=none; b=N+nyqBgY5fbvGS+3Is+Teh6vNkjGOq0o+50hMFFiiza+5I7Pjao5xhhkEZkhWkwb4jKviREqco2etbIAXoyz+W9ps0Yc2MEGAX45fMEvvQ6v3D7EYD4n/dUiJCHX5MNgIF0ASlEs0xLintnxyYrtC/8FzeAotcvTAJqKvYaMqN4=
+	t=1767719872; cv=none; b=L0HexlwXuh6T2Jws1dqWMJJ33b6ahIayr/zCQ7eaLMmg1YY3957rvsJiFPYbnXmzu6y71kaFxRP6+mMO9TT8wWOoyh4Rfn2oIBAgro2yYGuM7MupSZ0lOh76hgCxfupgVTTLpESmBDjsBpGBBtdmfFGoZaQoQwmjolQq4kvUdTg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767719884; c=relaxed/simple;
-	bh=dDt7IDTu5F1hqNeCwPp0BATHDU4OavLjJ4O5+H4X3ec=;
+	s=arc-20240116; t=1767719872; c=relaxed/simple;
+	bh=L/oAB3yxGeYLasoxCa/RDFnAw0E3Icn1/kNGl9vf8cM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O5XzSJvi5DRiNi3pHg+1/eBAtPQY0Ro0a3CeQI+y3CgBnBuTNHd3WUTYfhbbhsAtToEpUgfSvOU89yu+u1RhqyMwgYcDTJD9Bg4SkOiFFXYbkwDK5hkoTi5Cr4TeyaQAAWjE1kON2NchzY+7r6qU96w6pris18SZG9XzMyKv8HY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XRG/9XW/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CB90C116C6;
-	Tue,  6 Jan 2026 17:18:04 +0000 (UTC)
+	 MIME-Version; b=rLyWNpJYUtZ1G4r8qJPND/ptimeu1n8v9bc7FfcsZ3ReRM9UgQhcCaOLX0jmJX233ipS8y2PA8Azf9eaNg9DM5rG+AsngfQ/gi05bgQQ7csjK0Q5EN1UjpFLT7wO3XXVnS3tLa/b5GpBqhCZwIxBA+RtD6IesQ/vNsnxrINv920=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UKU4QcEg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56739C116C6;
+	Tue,  6 Jan 2026 17:17:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767719884;
-	bh=dDt7IDTu5F1hqNeCwPp0BATHDU4OavLjJ4O5+H4X3ec=;
+	s=korg; t=1767719871;
+	bh=L/oAB3yxGeYLasoxCa/RDFnAw0E3Icn1/kNGl9vf8cM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XRG/9XW/OctSGv1Qg10BIEVO0I2qTkn8EQ3jJtrS2yFTqmvhI4k8YTf11C9z5TmX2
-	 m6yTqYTBOvUQGfxSvulv0oUR5ZMiqU/A5Ad8YKkYpflxQAp/S7Wly3BjJ36i2ffi9r
-	 oiczLN/eUIwycvQBKCZHaLRMaNSogIvg3NM9u9rU=
+	b=UKU4QcEgpZ9Pi+rDet+f878Z2RVplVQD2HOa8OFaxlajSGLA0y+am7ynACNPuDBze
+	 YF0h6LIAvW+zRCiQwss2zGGWR6Shpt8z9qA9mWp8E3xya/XmETVCH78GeckvJR04/g
+	 cgwCCnDDOQwgBqDsDOQrJavw1JePmN0GmI36rVTw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qianchang Zhao <pioooooooooip@gmail.com>,
-	Zhitong Liu <liuzhitong1993@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Nicolin Chen <nicolinc@nvidia.com>,
+	Pranjal Shrivastava <praan@google.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 037/567] ksmbd: fix use-after-free in ksmbd_tree_connect_put under concurrency
-Date: Tue,  6 Jan 2026 17:56:59 +0100
-Message-ID: <20260106170452.712061082@linuxfoundation.org>
+Subject: [PATCH 6.12 064/567] iommufd/selftest: Update hw_info coverage for an input data_type
+Date: Tue,  6 Jan 2026 17:57:26 +0100
+Message-ID: <20260106170453.705960037@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
 References: <20260106170451.332875001@linuxfoundation.org>
@@ -66,104 +65,176 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Nicolin Chen <nicolinc@nvidia.com>
 
-[ Upstream commit b39a1833cc4a2755b02603eec3a71a85e9dff926 ]
+[ Upstream commit 3a35f7d4a4673edf6f02422bb2d78b17c667e167 ]
 
-Under high concurrency, A tree-connection object (tcon) is freed on
-a disconnect path while another path still holds a reference and later
-executes *_put()/write on it.
+Test both IOMMU_HW_INFO_TYPE_DEFAULT and IOMMU_HW_INFO_TYPE_SELFTEST, and
+add a negative test for an unsupported type.
 
-Reported-by: Qianchang Zhao <pioooooooooip@gmail.com>
-Reported-by: Zhitong Liu <liuzhitong1993@gmail.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Also drop the unused mask in test_cmd_get_hw_capabilities() as checkpatch
+is complaining.
+
+Link: https://patch.msgid.link/r/f01a1e50cd7366f217cbf192ad0b2b79e0eb89f0.1752126748.git.nicolinc@nvidia.com
+Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
+Reviewed-by: Pranjal Shrivastava <praan@google.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Stable-dep-of: 5b244b077c0b ("iommufd/selftest: Make it clearer to gcc that the access is not out of bounds")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/mgmt/tree_connect.c | 18 ++++--------------
- fs/smb/server/mgmt/tree_connect.h |  1 -
- fs/smb/server/smb2pdu.c           |  3 ---
- 3 files changed, 4 insertions(+), 18 deletions(-)
+ tools/testing/selftests/iommu/iommufd.c       | 32 +++++++++++++-----
+ .../selftests/iommu/iommufd_fail_nth.c        |  4 +--
+ tools/testing/selftests/iommu/iommufd_utils.h | 33 +++++++++++--------
+ 3 files changed, 46 insertions(+), 23 deletions(-)
 
-diff --git a/fs/smb/server/mgmt/tree_connect.c b/fs/smb/server/mgmt/tree_connect.c
-index ecfc575086712..d3483d9c757c7 100644
---- a/fs/smb/server/mgmt/tree_connect.c
-+++ b/fs/smb/server/mgmt/tree_connect.c
-@@ -78,7 +78,6 @@ ksmbd_tree_conn_connect(struct ksmbd_work *work, const char *share_name)
- 	tree_conn->t_state = TREE_NEW;
- 	status.tree_conn = tree_conn;
- 	atomic_set(&tree_conn->refcount, 1);
--	init_waitqueue_head(&tree_conn->refcount_q);
+diff --git a/tools/testing/selftests/iommu/iommufd.c b/tools/testing/selftests/iommu/iommufd.c
+index 92c6020c15fa1..b678b24f5a142 100644
+--- a/tools/testing/selftests/iommu/iommufd.c
++++ b/tools/testing/selftests/iommu/iommufd.c
+@@ -614,19 +614,34 @@ TEST_F(iommufd_ioas, get_hw_info)
+ 		uint8_t max_pasid = 0;
  
- 	ret = xa_err(xa_store(&sess->tree_conns, tree_conn->id, tree_conn,
- 			      KSMBD_DEFAULT_GFP));
-@@ -100,14 +99,8 @@ ksmbd_tree_conn_connect(struct ksmbd_work *work, const char *share_name)
+ 		/* Provide a zero-size user_buffer */
+-		test_cmd_get_hw_info(self->device_id, NULL, 0);
++		test_cmd_get_hw_info(self->device_id,
++				     IOMMU_HW_INFO_TYPE_DEFAULT, NULL, 0);
+ 		/* Provide a user_buffer with exact size */
+-		test_cmd_get_hw_info(self->device_id, &buffer_exact, sizeof(buffer_exact));
++		test_cmd_get_hw_info(self->device_id,
++				     IOMMU_HW_INFO_TYPE_DEFAULT, &buffer_exact,
++				     sizeof(buffer_exact));
++
++		/* Request for a wrong data_type, and a correct one */
++		test_err_get_hw_info(EOPNOTSUPP, self->device_id,
++				     IOMMU_HW_INFO_TYPE_SELFTEST + 1,
++				     &buffer_exact, sizeof(buffer_exact));
++		test_cmd_get_hw_info(self->device_id,
++				     IOMMU_HW_INFO_TYPE_SELFTEST, &buffer_exact,
++				     sizeof(buffer_exact));
+ 		/*
+ 		 * Provide a user_buffer with size larger than the exact size to check if
+ 		 * kernel zero the trailing bytes.
+ 		 */
+-		test_cmd_get_hw_info(self->device_id, &buffer_larger, sizeof(buffer_larger));
++		test_cmd_get_hw_info(self->device_id,
++				     IOMMU_HW_INFO_TYPE_DEFAULT, &buffer_larger,
++				     sizeof(buffer_larger));
+ 		/*
+ 		 * Provide a user_buffer with size smaller than the exact size to check if
+ 		 * the fields within the size range still gets updated.
+ 		 */
+-		test_cmd_get_hw_info(self->device_id, &buffer_smaller, sizeof(buffer_smaller));
++		test_cmd_get_hw_info(self->device_id,
++				     IOMMU_HW_INFO_TYPE_DEFAULT,
++				     &buffer_smaller, sizeof(buffer_smaller));
+ 		test_cmd_get_hw_info_pasid(self->device_id, &max_pasid);
+ 		ASSERT_EQ(0, max_pasid);
+ 		if (variant->pasid_capable) {
+@@ -636,9 +651,11 @@ TEST_F(iommufd_ioas, get_hw_info)
+ 		}
+ 	} else {
+ 		test_err_get_hw_info(ENOENT, self->device_id,
+-				     &buffer_exact, sizeof(buffer_exact));
++				     IOMMU_HW_INFO_TYPE_DEFAULT, &buffer_exact,
++				     sizeof(buffer_exact));
+ 		test_err_get_hw_info(ENOENT, self->device_id,
+-				     &buffer_larger, sizeof(buffer_larger));
++				     IOMMU_HW_INFO_TYPE_DEFAULT, &buffer_larger,
++				     sizeof(buffer_larger));
+ 	}
+ }
  
- void ksmbd_tree_connect_put(struct ksmbd_tree_connect *tcon)
+@@ -1945,8 +1962,7 @@ TEST_F(iommufd_dirty_tracking, device_dirty_capability)
+ 
+ 	test_cmd_hwpt_alloc(self->idev_id, self->ioas_id, 0, &hwpt_id);
+ 	test_cmd_mock_domain(hwpt_id, &stddev_id, NULL, NULL);
+-	test_cmd_get_hw_capabilities(self->idev_id, caps,
+-				     IOMMU_HW_CAP_DIRTY_TRACKING);
++	test_cmd_get_hw_capabilities(self->idev_id, caps);
+ 	ASSERT_EQ(IOMMU_HW_CAP_DIRTY_TRACKING,
+ 		  caps & IOMMU_HW_CAP_DIRTY_TRACKING);
+ 
+diff --git a/tools/testing/selftests/iommu/iommufd_fail_nth.c b/tools/testing/selftests/iommu/iommufd_fail_nth.c
+index 62d02556b34cc..e2012d128e11b 100644
+--- a/tools/testing/selftests/iommu/iommufd_fail_nth.c
++++ b/tools/testing/selftests/iommu/iommufd_fail_nth.c
+@@ -612,8 +612,8 @@ TEST_FAIL_NTH(basic_fail_nth, device)
+ 				  &idev_id))
+ 		return -1;
+ 
+-	if (_test_cmd_get_hw_info(self->fd, idev_id, &info,
+-				  sizeof(info), NULL, NULL))
++	if (_test_cmd_get_hw_info(self->fd, idev_id, IOMMU_HW_INFO_TYPE_DEFAULT,
++				  &info, sizeof(info), NULL, NULL))
+ 		return -1;
+ 
+ 	if (_test_cmd_hwpt_alloc(self->fd, idev_id, ioas_id, 0, 0, &hwpt_id,
+diff --git a/tools/testing/selftests/iommu/iommufd_utils.h b/tools/testing/selftests/iommu/iommufd_utils.h
+index 8994b43e86f89..9668f2268bd9b 100644
+--- a/tools/testing/selftests/iommu/iommufd_utils.h
++++ b/tools/testing/selftests/iommu/iommufd_utils.h
+@@ -637,20 +637,24 @@ static void teardown_iommufd(int fd, struct __test_metadata *_metadata)
+ #endif
+ 
+ /* @data can be NULL */
+-static int _test_cmd_get_hw_info(int fd, __u32 device_id, void *data,
+-				 size_t data_len, uint32_t *capabilities,
+-				 uint8_t *max_pasid)
++static int _test_cmd_get_hw_info(int fd, __u32 device_id, __u32 data_type,
++				 void *data, size_t data_len,
++				 uint32_t *capabilities, uint8_t *max_pasid)
  {
--	/*
--	 * Checking waitqueue to releasing tree connect on
--	 * tree disconnect. waitqueue_active is safe because it
--	 * uses atomic operation for condition.
--	 */
--	if (!atomic_dec_return(&tcon->refcount) &&
--	    waitqueue_active(&tcon->refcount_q))
--		wake_up(&tcon->refcount_q);
-+	if (atomic_dec_and_test(&tcon->refcount))
-+		kfree(tcon);
+ 	struct iommu_test_hw_info *info = (struct iommu_test_hw_info *)data;
+ 	struct iommu_hw_info cmd = {
+ 		.size = sizeof(cmd),
+ 		.dev_id = device_id,
+ 		.data_len = data_len,
++		.in_data_type = data_type,
+ 		.data_uptr = (uint64_t)data,
+ 		.out_capabilities = 0,
+ 	};
+ 	int ret;
+ 
++	if (data_type != IOMMU_HW_INFO_TYPE_DEFAULT)
++		cmd.flags |= IOMMU_HW_INFO_FLAG_INPUT_TYPE;
++
+ 	ret = ioctl(fd, IOMMU_GET_HW_INFO, &cmd);
+ 	if (ret)
+ 		return ret;
+@@ -693,20 +697,23 @@ static int _test_cmd_get_hw_info(int fd, __u32 device_id, void *data,
+ 	return 0;
  }
  
- int ksmbd_tree_conn_disconnect(struct ksmbd_session *sess,
-@@ -119,14 +112,11 @@ int ksmbd_tree_conn_disconnect(struct ksmbd_session *sess,
- 	xa_erase(&sess->tree_conns, tree_conn->id);
- 	write_unlock(&sess->tree_conns_lock);
+-#define test_cmd_get_hw_info(device_id, data, data_len)               \
+-	ASSERT_EQ(0, _test_cmd_get_hw_info(self->fd, device_id, data, \
+-					   data_len, NULL, NULL))
++#define test_cmd_get_hw_info(device_id, data_type, data, data_len)         \
++	ASSERT_EQ(0, _test_cmd_get_hw_info(self->fd, device_id, data_type, \
++					   data, data_len, NULL, NULL))
  
--	if (!atomic_dec_and_test(&tree_conn->refcount))
--		wait_event(tree_conn->refcount_q,
--			   atomic_read(&tree_conn->refcount) == 0);
--
- 	ret = ksmbd_ipc_tree_disconnect_request(sess->id, tree_conn->id);
- 	ksmbd_release_tree_conn_id(sess, tree_conn->id);
- 	ksmbd_share_config_put(tree_conn->share_conf);
--	kfree(tree_conn);
-+	if (atomic_dec_and_test(&tree_conn->refcount))
-+		kfree(tree_conn);
- 	return ret;
- }
+-#define test_err_get_hw_info(_errno, device_id, data, data_len)               \
+-	EXPECT_ERRNO(_errno, _test_cmd_get_hw_info(self->fd, device_id, data, \
+-						   data_len, NULL, NULL))
++#define test_err_get_hw_info(_errno, device_id, data_type, data, data_len) \
++	EXPECT_ERRNO(_errno,                                               \
++		     _test_cmd_get_hw_info(self->fd, device_id, data_type, \
++					   data, data_len, NULL, NULL))
  
-diff --git a/fs/smb/server/mgmt/tree_connect.h b/fs/smb/server/mgmt/tree_connect.h
-index a42cdd0510411..f0023d86716f2 100644
---- a/fs/smb/server/mgmt/tree_connect.h
-+++ b/fs/smb/server/mgmt/tree_connect.h
-@@ -33,7 +33,6 @@ struct ksmbd_tree_connect {
- 	int				maximal_access;
- 	bool				posix_extensions;
- 	atomic_t			refcount;
--	wait_queue_head_t		refcount_q;
- 	unsigned int			t_state;
- };
+-#define test_cmd_get_hw_capabilities(device_id, caps, mask) \
+-	ASSERT_EQ(0, _test_cmd_get_hw_info(self->fd, device_id, NULL, \
++#define test_cmd_get_hw_capabilities(device_id, caps)                        \
++	ASSERT_EQ(0, _test_cmd_get_hw_info(self->fd, device_id,              \
++					   IOMMU_HW_INFO_TYPE_DEFAULT, NULL, \
+ 					   0, &caps, NULL))
  
-diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
-index d9e28191c267e..b32df37da70d4 100644
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -2190,7 +2190,6 @@ int smb2_tree_disconnect(struct ksmbd_work *work)
- 		goto err_out;
- 	}
+-#define test_cmd_get_hw_info_pasid(device_id, max_pasid)              \
+-	ASSERT_EQ(0, _test_cmd_get_hw_info(self->fd, device_id, NULL, \
++#define test_cmd_get_hw_info_pasid(device_id, max_pasid)                     \
++	ASSERT_EQ(0, _test_cmd_get_hw_info(self->fd, device_id,              \
++					   IOMMU_HW_INFO_TYPE_DEFAULT, NULL, \
+ 					   0, NULL, max_pasid))
  
--	WARN_ON_ONCE(atomic_dec_and_test(&tcon->refcount));
- 	tcon->t_state = TREE_DISCONNECTED;
- 	write_unlock(&sess->tree_conns_lock);
- 
-@@ -2200,8 +2199,6 @@ int smb2_tree_disconnect(struct ksmbd_work *work)
- 		goto err_out;
- 	}
- 
--	work->tcon = NULL;
--
- 	rsp->StructureSize = cpu_to_le16(4);
- 	err = ksmbd_iov_pin_rsp(work, rsp,
- 				sizeof(struct smb2_tree_disconnect_rsp));
+ static int _test_ioctl_fault_alloc(int fd, __u32 *fault_id, __u32 *fault_fd)
 -- 
 2.51.0
 
