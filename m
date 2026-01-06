@@ -1,189 +1,218 @@
-Return-Path: <stable+bounces-205066-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205069-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FC96CF7F6A
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 12:06:25 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04F42CF7FCA
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 12:14:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3FDC930FA45A
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 11:01:47 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 72DA4300103B
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 11:14:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EB70329E53;
-	Tue,  6 Jan 2026 10:23:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4570316919;
+	Tue,  6 Jan 2026 11:14:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Mcz3AnU2"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fuBQyE8V"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E94F8309F19;
-	Tue,  6 Jan 2026 10:23:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5AEE30F7E8
+	for <stable@vger.kernel.org>; Tue,  6 Jan 2026 11:14:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767694981; cv=none; b=Zn8wjN2XhgL953TgIodWDeEqlUPsOEhspl2dcCdL5rFaVyQbuwhRS/du6ZrCsOkG1MGcBewlin1a8HaYAX+nbp5q/zarMP05PVplWx7hm2Rt3Z87lpEnioz+xHeF49/iDrwqATn9aKHqKZdo7COoY/wMBxSXng8M4BdtAzAis8w=
+	t=1767698060; cv=none; b=dEAsB4xGkqdYsvnSHVpsThkzy2FAes5FUSsNp8DBDEXXgJv0ec766yq7F+WbJx0X2L1sZOoVAu5uTAuUG6yln474QVLRD8MFMIb3qU1B5bhJcqx+Av37TjI7eN5Xa2WyaqqnwzPrjsSq5lm6LYQnJND3CA2FpFm14sjLCRdRnpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767694981; c=relaxed/simple;
-	bh=coo59hx6eOu0vGs3Mvf5pYDqS+tTCWWQ6cQTmjAtPpY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=g6C/2X8PHQzwCVkfWeeYlwkji/Iuz4YSRGAWq6eKHgXEbFF4Uqlpxqm7Az3N4EiG8dLRvqHVwaJjxHn7hv3TEbXHMilcKQQe6Qs3PmaBuaHmVQ0Aosq4kuUy/6VKPuWkfm+BZjSKOP6Ug6gMfjk6VgAu/o210QqR1wh6xHMe1oU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Mcz3AnU2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAB1BC116C6;
-	Tue,  6 Jan 2026 10:22:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767694980;
-	bh=coo59hx6eOu0vGs3Mvf5pYDqS+tTCWWQ6cQTmjAtPpY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Mcz3AnU23rCd7g3gAAoHuH2oXu847Aljn2Lu4uQGu+fOUwY98XYRy56C4NQ2xr/6H
-	 n3fDnSqJiEiZTRkdxhwqdYAz7+f70bW/89W3L6qv6lHSXbZ/jSXNbb8zzzdGDhX8mg
-	 d+hwEDGyB4Psr9wOQEs3oB0le+O72YKBXNM75qXJrXXaTnZRkgoC7dlmZTSNFuJTo4
-	 FR7DSFp7QCbJSZEF2w83sGjnfzva4fij8UUB/Ds/Tx8PsEwbCl02XICAcwFwHB6tAa
-	 9h2RV1+kXH6cDZtyAy07bcKSF6827rsrcl0Bp1RybJHH+TBtyItACp4/+Cd7uYIkXE
-	 tOzIc1SD/c60w==
-Date: Tue, 6 Jan 2026 11:22:57 +0100
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
-To: Sean Nyekjaer <sean@geanix.com>
-Cc: Fabrice Gasnier <fabrice.gasnier@foss.st.com>, 
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
-	linux-pwm@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] pwm: stm32: handle polarity change when PWM is enabled
-Message-ID: <kemjjoyrhqglqq4p2j6kygspevq2mdbiujtnksw4rkdapoqcfy@zte2c7fhqvn3>
-References: <20260106-stm32-pwm-v1-1-33e9e8a9fc33@geanix.com>
+	s=arc-20240116; t=1767698060; c=relaxed/simple;
+	bh=QOLwE9yKsz5lnjMBwPThXPhLN/5p+dXW3dZqdcLvkU4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=s2NxlKrYqXcJ76CHBe0/tx0v+uMG5uapUnHvtnjbHx3asMQdHsEvT9xwywHQMlR2RJ+Jrs3suC1nnAklUJmG7Lto7UHLrY9ZO6FJGovoSHxFDtDq0RBWs8jPS9sZ49zngG2jXO9G6mlGC/qnvgFiCIkT0kfRjpcHuJvM0c14Suk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fuBQyE8V; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-47774d3536dso8036485e9.0
+        for <stable@vger.kernel.org>; Tue, 06 Jan 2026 03:14:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1767698057; x=1768302857; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=uVZKk5oU5K00jot4Bi+Ldjw0RUZal7DJ8vw00Z3l9Ao=;
+        b=fuBQyE8VFjI56nbGVn3kCau7Cao5nMoyrAyV4pPDEk2Nut/B2FqfMiLZwvwtA8tRGc
+         /6gSZnIqsmK0mfgUOGzq0qjEtiwxKncfGvQCB5qkmsn/LswzjtwKe6h3tCyK/Hgi6Mwi
+         ngRIm6pI4lj4ingwyO4btF2rmmD0mG7bN97Yy9lb2mvoZczzRDXmr15uoRk9MfbCeMEd
+         N9vwLkIVE5yXu5AfjEXMWTV/u4zjZjYQU7zracT2oMEiDZOJOVWo+QxB2W7p5+HXDBhZ
+         PE+l/Ej651nZBi9fptFOE2hMXq6XgjFPUmNYNZvd8uwSzbQwALPRTjJ6T/LovAPCCHSk
+         5fMw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767698057; x=1768302857;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=uVZKk5oU5K00jot4Bi+Ldjw0RUZal7DJ8vw00Z3l9Ao=;
+        b=qxDaSaS3rUktEhYr/LNvboRNhJNtcOgZYMrH3IJNTB3td5OeVcbIzL7NOFNG+FuNRL
+         mueFMBErS8cjQJt7aW5Hup5w1B6eB6GU09aoYomBtpgWDGUuG5OLvWSJ9EqIzIZ32Qbd
+         SEq7I183HrLdjr3NbGOY3HcA+FuFGNA/Q1TwrRBy1eN7mbH4A54FkbA9duXSqTxO6U5z
+         KzWd3Ngy9ON2Z5w/W3+fvH3aM/j1g06om88DNpywXOreF/SeTKaSanghAixkViJ0S/TW
+         0DmvBnbh1TtxDq9dgm26G6EmCrReyhUX/H8Kr6QmaEVUdL4FGzvgHwcx5EyBTF12nL9z
+         jdgQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUVs5BV50daC4NNd4ZX9gfppsljL1rQvRIj+zOHVCDXgVYfOgmXzBUno/dezi2OKpPjFNIvx5Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzfFa+GJ9NaFondRT1QzEtP6Up8fpfVmUF2v/fJk3bWH3hQIYYm
+	lyn+1UqbQoz+VU1j8LiKKQSFXoc8F2SGQC88o9n1i5TtVk1p+eUoJtnB
+X-Gm-Gg: AY/fxX5dUXq0F5n2PqnRJkB54It1P1o362QKduaTgbHgQ8p2g2cAeHGbGEIoF+6RnYf
+	MvEQuI0OJlVYeJcpZlA2d8QaJrgSX5NS6wj3DYJnr84XXiJbb5IRg/M2fJ3lGME2jMi9eVNxTq4
+	XMHpR+M9KwyBVv0cuPwaU70K9188ZChpcUumZsQHbjTzmN13Jxd2YfyK8fx27OeyatejMTJBJGR
+	tI41gVtXEaRweMWTRoDmjLmOqo5IJtDmX9f2BcxKo2Xutbqp6rzasi0e3sVGQgJ3PpQ2dP6YzV5
+	3tUruoxmtsW3LSIERBZyeNA15sdDZwZBhaMmvsCcGRHlfEUpFShYl9RnZmgQI/s9fWMHZvj3Hjl
+	dEUak+7tZNuteH+hkvJhKX+um79fG5tTxKM7PFwnZKvnDSC+fP4zjdy/n8gCzmkBMmfC+euBNbV
+	MT2EYKSH7b5d1vMUWJAD5VBnpVLdqcIR9cMi+vDIXW86jI
+X-Google-Smtp-Source: AGHT+IG/t9UJd68fz0l1BGBLOMyHx0xQkUDFtE4j/3hcbemCE6oPqV9gYdA6M3tFBxVd6A1XGZr8cQ==
+X-Received: by 2002:a05:600c:1f0f:b0:479:13e9:3d64 with SMTP id 5b1f17b1804b1-47d7f422387mr26901935e9.15.1767698056740;
+        Tue, 06 Jan 2026 03:14:16 -0800 (PST)
+Received: from ionutnechita-arz2022.local ([2a02:2f0e:ca09:7000:33fc:5cce:3767:6b22])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47d7f6f0e15sm35531705e9.10.2026.01.06.03.14.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 06 Jan 2026 03:14:15 -0800 (PST)
+From: djiony2011@gmail.com
+X-Google-Original-From: ionut.nechita@windriver.com
+To: ming.lei@redhat.com
+Cc: axboe@kernel.dk,
+	djiony2011@gmail.com,
+	gregkh@linuxfoundation.org,
+	ionut.nechita@windriver.com,
+	linux-block@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	muchun.song@linux.dev,
+	sashal@kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] block: Fix WARN_ON in blk_mq_run_hw_queue when called from interrupt context
+Date: Tue,  6 Jan 2026 13:14:11 +0200
+Message-ID: <20260106111411.6435-1-ionut.nechita@windriver.com>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <aUnu1HdMqQbksLeY@fedora>
+References: <aUnu1HdMqQbksLeY@fedora>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="adci6bclvlmizahh"
-Content-Disposition: inline
-In-Reply-To: <20260106-stm32-pwm-v1-1-33e9e8a9fc33@geanix.com>
+Content-Transfer-Encoding: 8bit
 
+From: Ionut Nechita <ionut.nechita@windriver.com>
 
---adci6bclvlmizahh
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH] pwm: stm32: handle polarity change when PWM is enabled
-MIME-Version: 1.0
+Hi Ming,
 
-Hello Sean,
+Thank you for the review. You're absolutely right to ask for clarification - I need to
+correct my commit message as it's misleading about the actual call path.
 
-On Tue, Jan 06, 2026 at 08:01:57AM +0100, Sean Nyekjaer wrote:
-> After commit 7346e7a058a2 ("pwm: stm32: Always do lazy disabling"),
-> polarity changes are ignored. Updates to the TIMx_CCER CCxP bits are
-> ignored by the hardware when the master output is enabled via the
-> TIMx_BDTR MOE bit.
->=20
-> Handle polarity changes by temporarily disabling the PWM when required,
-> in line with apply() implementations used by other PWM drivers.
->=20
-> Fixes: 7346e7a058a2 ("pwm: stm32: Always do lazy disabling")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Sean Nyekjaer <sean@geanix.com>
-> ---
-> This patch is only applicable for stable tree's <=3D 6.12
-> How to explicitly state that and what is the procedure?
+> Can you show the whole stack trace in the warning? The in-code doesn't
+> indicate that freeze queue can be called from scsi's interrupt context.
 
-I haven't checked in detail yet but I wonder if the problem also exists
-in newer kernels. Also I think that changing the polarity with the
-hardware on happend before 7346e7a058a2; in that case you blamed the
-wrong commit.
+Here's the complete stack trace from the WARNING at blk_mq_run_hw_queue:
 
-So even if we decide to apply a small targetted fix for the issue you
-report to stable without an equivalent commit in mainline (due to the
-rework the driver saw in v6.13-rc1~157^2~9^2~3 ("pwm: stm32:
-Implementation of the waveform callbacks")), I refuse to do that if the
-problem still exists in mainline.
+[Mon Dec 22 10:18:18 2025] WARNING: CPU: 190 PID: 2041 at block/blk-mq.c:2291 blk_mq_run_hw_queue+0x1fa/0x260
+[Mon Dec 22 10:18:18 2025] Modules linked in:
+[Mon Dec 22 10:18:18 2025] CPU: 190 PID: 2041 Comm: kworker/u385:1 Tainted: G        W          6.6.0-1-rt-amd64 #1  Debian 6.6.71-1
+[Mon Dec 22 10:18:18 2025] Hardware name: Dell Inc. PowerEdge R7615/09K9WP, BIOS 1.11.2 12/19/2024
+[Mon Dec 22 10:18:18 2025] Workqueue: events_unbound async_run_entry_fn
+[Mon Dec 22 10:18:18 2025] RIP: 0010:blk_mq_run_hw_queue+0x1fa/0x260
+[Mon Dec 22 10:18:18 2025] Code: ff 75 68 44 89 f6 e8 e5 45 c0 ff e9 ac fe ff ff e8 2b 70 c0 ff 48 89 ef e8 b3 a0 00 00 5b 5d 41 5c 41 5d 41 5e e9 26 9e c0 ff <0f> 0b e9 43 fe ff ff e8 0a 70 c0 ff 48 8b 85 d0 00 00 00 48 8b 80
+[Mon Dec 22 10:18:18 2025] RSP: 0018:ff630f098528fb98 EFLAGS: 00010206
+[Mon Dec 22 10:18:18 2025] RAX: 0000000000ff0000 RBX: 0000000000000000 RCX: 0000000000000000
+[Mon Dec 22 10:18:18 2025] RDX: 0000000000ff0000 RSI: 0000000000000000 RDI: ff3edc0247159400
+[Mon Dec 22 10:18:18 2025] RBP: ff3edc0247159400 R08: ff3edc0247159400 R09: ff630f098528fb60
+[Mon Dec 22 10:18:18 2025] R10: 0000000000000000 R11: 0000000045069ed3 R12: 0000000000000000
+[Mon Dec 22 10:18:18 2025] R13: ff3edc024715a828 R14: 0000000000000000 R15: 0000000000000000
+[Mon Dec 22 10:18:18 2025] FS:  0000000000000000(0000) GS:ff3edc10fd380000(0000) knlGS:0000000000000000
+[Mon Dec 22 10:18:18 2025] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[Mon Dec 22 10:18:18 2025] CR2: 0000000000000000 CR3: 000000073961a001 CR4: 0000000000771ee0
+[Mon Dec 22 10:18:18 2025] PKRU: 55555554
+[Mon Dec 22 10:18:18 2025] Call Trace:
+[Mon Dec 22 10:18:18 2025]  <TASK>
+[Mon Dec 22 10:18:18 2025]  ? __warn+0x89/0x140
+[Mon Dec 22 10:18:18 2025]  ? blk_mq_run_hw_queue+0x1fa/0x260
+[Mon Dec 22 10:18:18 2025]  ? report_bug+0x198/0x1b0
+[Mon Dec 22 10:18:18 2025]  ? handle_bug+0x53/0x90
+[Mon Dec 22 10:18:18 2025]  ? exc_invalid_op+0x18/0x70
+[Mon Dec 22 10:18:18 2025]  ? asm_exc_invalid_op+0x1a/0x20
+[Mon Dec 22 10:18:18 2025]  ? blk_mq_run_hw_queue+0x1fa/0x260
+[Mon Dec 22 10:18:18 2025]  blk_mq_run_hw_queues+0x6c/0x130
+[Mon Dec 22 10:18:18 2025]  blk_queue_start_drain+0x12/0x40
+[Mon Dec 22 10:18:18 2025]  blk_mq_destroy_queue+0x37/0x70
+[Mon Dec 22 10:18:18 2025]  __scsi_remove_device+0x6a/0x180
+[Mon Dec 22 10:18:18 2025]  scsi_alloc_sdev+0x357/0x360
+[Mon Dec 22 10:18:18 2025]  scsi_probe_and_add_lun+0x8ac/0xc00
+[Mon Dec 22 10:18:18 2025]  ? srso_alias_return_thunk+0x5/0xfbef5
+[Mon Dec 22 10:18:18 2025]  ? dev_set_name+0x57/0x80
+[Mon Dec 22 10:18:18 2025]  ? srso_alias_return_thunk+0x5/0xfbef5
+[Mon Dec 22 10:18:18 2025]  ? attribute_container_add_device+0x4d/0x130
+[Mon Dec 22 10:18:18 2025]  __scsi_scan_target+0xf0/0x520
+[Mon Dec 22 10:18:18 2025]  ? srso_alias_return_thunk+0x5/0xfbef5
+[Mon Dec 22 10:18:18 2025]  ? sched_clock_cpu+0x64/0x190
+[Mon Dec 22 10:18:18 2025]  scsi_scan_channel+0x57/0x90
+[Mon Dec 22 10:18:18 2025]  scsi_scan_host_selected+0xd4/0x110
+[Mon Dec 22 10:18:18 2025]  do_scan_async+0x1c/0x190
+[Mon Dec 22 10:18:18 2025]  async_run_entry_fn+0x2f/0x130
+[Mon Dec 22 10:18:18 2025]  process_one_work+0x175/0x370
+[Mon Dec 22 10:18:18 2025]  worker_thread+0x280/0x390
+[Mon Dec 22 10:18:18 2025]  ? __pfx_worker_thread+0x10/0x10
+[Mon Dec 22 10:18:18 2025]  kthread+0xdd/0x110
+[Mon Dec 22 10:18:18 2025]  ? __pfx_kthread+0x10/0x10
+[Mon Dec 22 10:18:18 2025]  ret_from_fork+0x31/0x50
+[Mon Dec 22 10:18:18 2025]  ? __pfx_kthread+0x10/0x10
+[Mon Dec 22 10:18:18 2025]  ret_from_fork_asm+0x1b/0x30
+[Mon Dec 22 10:18:18 2025]  </TASK>
+[Mon Dec 22 10:18:18 2025] ---[ end trace 0000000000000000 ]---
 
-> ---
->  drivers/pwm/pwm-stm32.c | 14 +++++++++++---
->  1 file changed, 11 insertions(+), 3 deletions(-)
->=20
-> diff --git a/drivers/pwm/pwm-stm32.c b/drivers/pwm/pwm-stm32.c
-> index eb24054f9729734da21eb96f2e37af03339e3440..d5f79e87a0653e1710d46e6bf=
-9268a59638943fe 100644
-> --- a/drivers/pwm/pwm-stm32.c
-> +++ b/drivers/pwm/pwm-stm32.c
-> @@ -452,15 +452,23 @@ static int stm32_pwm_apply(struct pwm_chip *chip, s=
-truct pwm_device *pwm,
-> =20
->  	enabled =3D pwm->state.enabled;
-> =20
-> +	if (state->polarity !=3D pwm->state.polarity) {
-> +		if (enabled) {
-> +			stm32_pwm_disable(priv, pwm->hwpwm);
-> +			enabled =3D false;
-> +		}
-> +
-> +		ret =3D stm32_pwm_set_polarity(priv, pwm->hwpwm, state->polarity);
-> +		if (ret)
-> +			return ret;
-> +	}
-> +
->  	if (!state->enabled) {
->  		if (enabled)
->  			stm32_pwm_disable(priv, pwm->hwpwm);
->  		return 0;
->  	}
-> =20
-> -	if (state->polarity !=3D pwm->state.polarity)
-> -		stm32_pwm_set_polarity(priv, pwm->hwpwm, state->polarity);
-> -
->  	ret =3D stm32_pwm_config(priv, pwm->hwpwm,
->  			       state->duty_cycle, state->period);
->  	if (ret)
+## Important clarifications:
 
-I would prefer the following change:
+1. **Not freeze queue, but drain during destroy**: My commit message was incorrect.
+   The call path is:
+   blk_mq_destroy_queue() -> blk_queue_start_drain() -> blk_mq_run_hw_queues(q, false)
 
-diff --git a/drivers/pwm/pwm-stm32.c b/drivers/pwm/pwm-stm32.c
-index eb24054f9729..5f118c20f1ca 100644
---- a/drivers/pwm/pwm-stm32.c
-+++ b/drivers/pwm/pwm-stm32.c
-@@ -452,12 +452,16 @@ static int stm32_pwm_apply(struct pwm_chip *chip, str=
-uct pwm_device *pwm,
-=20
- 	enabled =3D pwm->state.enabled;
-=20
--	if (!state->enabled) {
-+	/* The hardware must be disabled to honor polarity changes. */
-+	if (!state->enabled || state->polarity !=3D pwm->state.polarity) {
- 		if (enabled)
- 			stm32_pwm_disable(priv, pwm->hwpwm);
--		return 0;
-+		enabled =3D false;
- 	}
-=20
-+	if (!state->enabled)
-+		return 0;
-+
- 	if (state->polarity !=3D pwm->state.polarity)
- 		stm32_pwm_set_polarity(priv, pwm->hwpwm, state->polarity);
-=20
-Maybe it's just me, but I think the resulting code is simpler with this
-hunk.
+   This is NOT during blk_freeze_queue_start(), but during queue destruction when a
+   SCSI device probe fails and cleanup is triggered.
 
-I have hardware using this driver, will set it up later this week for
-testing.
+2. **Not true interrupt context**: You're correct that this isn't from an interrupt
+   handler. The workqueue context is process context, not interrupt context.
 
-Best regards
-Uwe
+3. **The actual problem on PREEMPT_RT**: There's a preceding "scheduling while atomic"
+   error that provides the real context:
 
---adci6bclvlmizahh
-Content-Type: application/pgp-signature; name="signature.asc"
+[Mon Dec 22 10:18:18 2025] BUG: scheduling while atomic: kworker/u385:1/2041/0x00000002
+[Mon Dec 22 10:18:18 2025] Call Trace:
+[Mon Dec 22 10:18:18 2025]  dump_stack_lvl+0x37/0x50
+[Mon Dec 22 10:18:18 2025]  __schedule_bug+0x52/0x60
+[Mon Dec 22 10:18:18 2025]  __schedule+0x87d/0xb10
+[Mon Dec 22 10:18:18 2025]  rt_mutex_schedule+0x21/0x40
+[Mon Dec 22 10:18:18 2025]  rt_mutex_slowlock_block.constprop.0+0x33/0x170
+[Mon Dec 22 10:18:18 2025]  __rt_mutex_slowlock_locked.constprop.0+0xc4/0x1e0
+[Mon Dec 22 10:18:18 2025]  mutex_lock+0x44/0x60
+[Mon Dec 22 10:18:18 2025]  __cpuhp_state_add_instance_cpuslocked+0x41/0x110
+[Mon Dec 22 10:18:18 2025]  __cpuhp_state_add_instance+0x48/0xd0
+[Mon Dec 22 10:18:18 2025]  blk_mq_realloc_hw_ctxs+0x405/0x420
+[Mon Dec 22 10:18:18 2025]  blk_mq_init_allocated_queue+0x10a/0x480
 
------BEGIN PGP SIGNATURE-----
+The context is atomic because on PREEMPT_RT, some spinlock earlier in the call chain has
+been converted to an rt_mutex, and the code is holding that lock. When blk_mq_run_hw_queues()
+is called with async=false, it triggers kblockd_mod_delayed_work_on(), which calls
+in_interrupt(), and this returns true because preempt_count() is non-zero due to the
+rt_mutex being held.
 
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmlc4n4ACgkQj4D7WH0S
-/k4PPQgAmawyHAcyv863JANknfAFeEAdQkQ06D1C/9LZyoVJJ7f5ozR8gwqQ+WDj
-MyfVx+Te/oM2rj8Hz94OPihbcEo2aM0VVmWPgcthdcHGBGGPf907/Emts0L9TZi9
-vWQIGys5Mc8DSJWB71krKZSngEEIup8AVQqoUxQIkLRTai7wPr5dH4P/BSe/eXRi
-OgD+EV4ToZQUQl2VnaHakcqKTiDsE5C1KFFCnKwKhHT0YfdYb89BbjT6U9uKL/kc
-BezmtEMe3rKH33czeKLwnKX0WXXCxY7zbHNgsA/Ukr5ZvrrUmlp/3Z+2n9xnnIGe
-qEl/4av0tDgRaS2c+bcGCpfoYo8BJA==
-=dPiB
------END PGP SIGNATURE-----
+## What this means:
 
---adci6bclvlmizahh--
+The issue is specific to PREEMPT_RT where:
+- Spinlocks become sleeping mutexes (rt_mutex)
+- Holding an rt_mutex sets preempt_count, making in_interrupt() return true
+- blk_mq_run_hw_queues() with async=false hits WARN_ON_ONCE(!async && in_interrupt())
+
+This is why the async parameter needs to be true when called in contexts that might
+hold spinlocks on RT kernels.
+
+I apologize for the confusion in my commit message. Should I:
+1. Revise the commit message to accurately describe the blk_queue_start_drain() path?
+2. Add details about the PREEMPT_RT context causing the atomic state?
+
+Best regards,
+Ionut
 
