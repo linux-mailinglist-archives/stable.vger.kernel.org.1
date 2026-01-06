@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-205208-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205214-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98519CFB241
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 22:48:11 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C72F6CFB217
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 22:46:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id ADE94303B1A9
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 21:46:35 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D36E130057DB
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 21:46:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8774934A795;
-	Tue,  6 Jan 2026 17:18:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3F2734AB07;
+	Tue,  6 Jan 2026 17:19:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tH18hY45"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CoFTkNKt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42C8234A785;
-	Tue,  6 Jan 2026 17:18:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC949344054;
+	Tue,  6 Jan 2026 17:19:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767719933; cv=none; b=Crg+xvUk1dmfVMvN56M5bm77FlrpaLh9A4xRQpDoiPv8VSuZ0GsrcJTVoW46kAssHAYIoLuIFfNCczk14j3grN5P8XBhtvt+bJ818juOf+fITUOrn5cQrgq5V817k3TCLstmwLTNZI2O6mYKEBinEY/FmY0M9k1ilPtxJ8WXXow=
+	t=1767719955; cv=none; b=HO5ITeF4uU60OTbxU+oWwzHdJDcpa/3W59ZnDDC8y3QHq92j6VDMS7zVr2PQtGLOpG+7kf0sYSi0fJmjAAl4fCvPbl63gqpDRH39dvOsuv6HTpcAoVNrV0+ECjQWQSlrbIANLnzXY8rGhXYVAMuSQpwQm4YY4gscceM4vui3q6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767719933; c=relaxed/simple;
-	bh=DRdZU67tRc3uH3d4zMNYcYIr9TWe1a48qlaEkWGi2j4=;
+	s=arc-20240116; t=1767719955; c=relaxed/simple;
+	bh=qxcshi6Nu77chSyfQgRkYepRm10OAaBBpXlwYbnTgZ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sdoSnnbP3Yk6un6RNKOESokSF+Al5g5fRIMA/PQYRQdyrjHGpl4opyvLRDQp5i4KyB6qPwhCorQvoTbx7V9xjX58qMNa71of1FrPucPIU0vF8VcY9nt1TR2oAbdsVt9C6HQ3U1aBALPyTzcd8wlkFKSsqpOmowIyEcsu7LrRBN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tH18hY45; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB7D9C116C6;
-	Tue,  6 Jan 2026 17:18:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=tk/2FaF0XfpjdcSTGegfzTzKpqXZCe8U6wn5scpoDSmFkQAk92111C7mtlJB9O5DHCPj+U7Kgqdr7DnvJ1HJ9GrsfyOiJC4fuT+B3bXWTa2djOrdMbfhmYLkoaNPWjrSqYCpz4OI60GwuuM/AOycd4eRy+rZpBv0dc7vb877fyg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CoFTkNKt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94913C116C6;
+	Tue,  6 Jan 2026 17:19:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767719933;
-	bh=DRdZU67tRc3uH3d4zMNYcYIr9TWe1a48qlaEkWGi2j4=;
+	s=korg; t=1767719955;
+	bh=qxcshi6Nu77chSyfQgRkYepRm10OAaBBpXlwYbnTgZ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tH18hY45FI6GGFiG1OjHyhMbAtDea4WrCwah8E7VGHFhi4T6Y8fBw5keeK6hatGYk
-	 rYKQgBH8Z3mM9d5EZprwpbmlY+Zbu62ua55ycTZX7TLCP6UF4QMuzoTnlfFOyvy7fa
-	 0tESdog69iJwsujX0Gh/2pBxIs73K4AQaly7zRcM=
+	b=CoFTkNKtV8baw35ILVYQVkNEdAFjufEqKZI71TbWWa5uT6g/YfvgldXGNfdn3pkP8
+	 eYDF1tbvH/+u9fwVXyA8lbOMrbB5wQ2tbahjpN6hPnzIOTJTZ+7E46SfAr7VLxM/RH
+	 irpyOyNsHlw7bLjkk1TLAFmhhqg/tDS4ddgQMksI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brian Gerst <brgerst@gmail.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Juergen Gross <jgross@suse.com>,
-	Sohil Mehta <sohil.mehta@intel.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Josh Poimboeuf <jpoimboe@redhat.com>,
+	Koen Koning <koen.koning@intel.com>,
+	Peter Senna Tschudin <peter.senna@linux.intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Michal Mrozek <michal.mrozek@intel.com>,
+	Carl Zhang <carl.zhang@intel.com>,
+	=?UTF-8?q?Jos=C3=A9=20Roberto=20de=20Souza?= <jose.souza@intel.com>,
+	Lionel Landwerlin <lionel.g.landwerlin@intel.com>,
+	Ivan Briano <ivan.briano@intel.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Ashutosh Dixit <ashutosh.dixit@intel.com>,
+	Shuicheng Lin <shuicheng.lin@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 085/567] x86/xen: Move Xen upcall handler
-Date: Tue,  6 Jan 2026 17:57:47 +0100
-Message-ID: <20260106170454.474273408@linuxfoundation.org>
+Subject: [PATCH 6.12 090/567] drm/xe: Limit num_syncs to prevent oversized allocations
+Date: Tue,  6 Jan 2026 17:57:52 +0100
+Message-ID: <20260106170454.658912087@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
 References: <20260106170451.332875001@linuxfoundation.org>
@@ -64,217 +67,124 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brian Gerst <brgerst@gmail.com>
+From: Shuicheng Lin <shuicheng.lin@intel.com>
 
-[ Upstream commit 1ab7b5ed44ba9bce581e225f40219b793bc779d6 ]
+[ Upstream commit 8e461304009135270e9ccf2d7e2dfe29daec9b60 ]
 
-Move the upcall handler to Xen-specific files.
+The exec and vm_bind ioctl allow userspace to specify an arbitrary
+num_syncs value. Without bounds checking, a very large num_syncs
+can force an excessively large allocation, leading to kernel warnings
+from the page allocator as below.
 
-No functional changes.
+Introduce DRM_XE_MAX_SYNCS (set to 1024) and reject any request
+exceeding this limit.
 
-Signed-off-by: Brian Gerst <brgerst@gmail.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Juergen Gross <jgross@suse.com>
-Reviewed-by: Sohil Mehta <sohil.mehta@intel.com>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: H. Peter Anvin <hpa@zytor.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Josh Poimboeuf <jpoimboe@redhat.com>
-Link: https://lore.kernel.org/r/20250314151220.862768-2-brgerst@gmail.com
-Stable-dep-of: e5aff444e3a7 ("x86/xen: Fix sparse warning in enlighten_pv.c")
+"
+------------[ cut here ]------------
+WARNING: CPU: 0 PID: 1217 at mm/page_alloc.c:5124 __alloc_frozen_pages_noprof+0x2f8/0x2180 mm/page_alloc.c:5124
+...
+Call Trace:
+ <TASK>
+ alloc_pages_mpol+0xe4/0x330 mm/mempolicy.c:2416
+ ___kmalloc_large_node+0xd8/0x110 mm/slub.c:4317
+ __kmalloc_large_node_noprof+0x18/0xe0 mm/slub.c:4348
+ __do_kmalloc_node mm/slub.c:4364 [inline]
+ __kmalloc_noprof+0x3d4/0x4b0 mm/slub.c:4388
+ kmalloc_noprof include/linux/slab.h:909 [inline]
+ kmalloc_array_noprof include/linux/slab.h:948 [inline]
+ xe_exec_ioctl+0xa47/0x1e70 drivers/gpu/drm/xe/xe_exec.c:158
+ drm_ioctl_kernel+0x1f1/0x3e0 drivers/gpu/drm/drm_ioctl.c:797
+ drm_ioctl+0x5e7/0xc50 drivers/gpu/drm/drm_ioctl.c:894
+ xe_drm_ioctl+0x10b/0x170 drivers/gpu/drm/xe/xe_device.c:224
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:598 [inline]
+ __se_sys_ioctl fs/ioctl.c:584 [inline]
+ __x64_sys_ioctl+0x18b/0x210 fs/ioctl.c:584
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xbb/0x380 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+...
+"
+
+v2: Add "Reported-by" and Cc stable kernels.
+v3: Change XE_MAX_SYNCS from 64 to 1024. (Matt & Ashutosh)
+v4: s/XE_MAX_SYNCS/DRM_XE_MAX_SYNCS/ (Matt)
+v5: Do the check at the top of the exec func. (Matt)
+
+Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
+Reported-by: Koen Koning <koen.koning@intel.com>
+Reported-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
+Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/6450
+Cc: <stable@vger.kernel.org> # v6.12+
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: Michal Mrozek <michal.mrozek@intel.com>
+Cc: Carl Zhang <carl.zhang@intel.com>
+Cc: José Roberto de Souza <jose.souza@intel.com>
+Cc: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+Cc: Ivan Briano <ivan.briano@intel.com>
+Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Signed-off-by: Shuicheng Lin <shuicheng.lin@intel.com>
+Reviewed-by: Matthew Brost <matthew.brost@intel.com>
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+Link: https://patch.msgid.link/20251205234715.2476561-5-shuicheng.lin@intel.com
+(cherry picked from commit b07bac9bd708ec468cd1b8a5fe70ae2ac9b0a11c)
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Stable-dep-of: f8dd66bfb4e1 ("drm/xe/oa: Limit num_syncs to prevent oversized allocations")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/entry/common.c     | 72 -------------------------------------
- arch/x86/xen/enlighten_pv.c | 69 +++++++++++++++++++++++++++++++++++
- 2 files changed, 69 insertions(+), 72 deletions(-)
+ drivers/gpu/drm/xe/xe_exec.c | 3 ++-
+ drivers/gpu/drm/xe/xe_vm.c   | 3 +++
+ include/uapi/drm/xe_drm.h    | 1 +
+ 3 files changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/entry/common.c b/arch/x86/entry/common.c
-index 51efd2da4d7f..7b9321c48a90 100644
---- a/arch/x86/entry/common.c
-+++ b/arch/x86/entry/common.c
-@@ -21,11 +21,6 @@
- #include <linux/uaccess.h>
- #include <linux/init.h>
+diff --git a/drivers/gpu/drm/xe/xe_exec.c b/drivers/gpu/drm/xe/xe_exec.c
+index 31cca938956f..886d03ccf744 100644
+--- a/drivers/gpu/drm/xe/xe_exec.c
++++ b/drivers/gpu/drm/xe/xe_exec.c
+@@ -125,7 +125,8 @@ int xe_exec_ioctl(struct drm_device *dev, void *data, struct drm_file *file)
  
--#ifdef CONFIG_XEN_PV
--#include <xen/xen-ops.h>
--#include <xen/events.h>
--#endif
--
- #include <asm/apic.h>
- #include <asm/desc.h>
- #include <asm/traps.h>
-@@ -454,70 +449,3 @@ SYSCALL_DEFINE0(ni_syscall)
- {
- 	return -ENOSYS;
- }
--
--#ifdef CONFIG_XEN_PV
--#ifndef CONFIG_PREEMPTION
--/*
-- * Some hypercalls issued by the toolstack can take many 10s of
-- * seconds. Allow tasks running hypercalls via the privcmd driver to
-- * be voluntarily preempted even if full kernel preemption is
-- * disabled.
-- *
-- * Such preemptible hypercalls are bracketed by
-- * xen_preemptible_hcall_begin() and xen_preemptible_hcall_end()
-- * calls.
-- */
--DEFINE_PER_CPU(bool, xen_in_preemptible_hcall);
--EXPORT_SYMBOL_GPL(xen_in_preemptible_hcall);
--
--/*
-- * In case of scheduling the flag must be cleared and restored after
-- * returning from schedule as the task might move to a different CPU.
-- */
--static __always_inline bool get_and_clear_inhcall(void)
--{
--	bool inhcall = __this_cpu_read(xen_in_preemptible_hcall);
--
--	__this_cpu_write(xen_in_preemptible_hcall, false);
--	return inhcall;
--}
--
--static __always_inline void restore_inhcall(bool inhcall)
--{
--	__this_cpu_write(xen_in_preemptible_hcall, inhcall);
--}
--#else
--static __always_inline bool get_and_clear_inhcall(void) { return false; }
--static __always_inline void restore_inhcall(bool inhcall) { }
--#endif
--
--static void __xen_pv_evtchn_do_upcall(struct pt_regs *regs)
--{
--	struct pt_regs *old_regs = set_irq_regs(regs);
--
--	inc_irq_stat(irq_hv_callback_count);
--
--	xen_evtchn_do_upcall();
--
--	set_irq_regs(old_regs);
--}
--
--__visible noinstr void xen_pv_evtchn_do_upcall(struct pt_regs *regs)
--{
--	irqentry_state_t state = irqentry_enter(regs);
--	bool inhcall;
--
--	instrumentation_begin();
--	run_sysvec_on_irqstack_cond(__xen_pv_evtchn_do_upcall, regs);
--
--	inhcall = get_and_clear_inhcall();
--	if (inhcall && !WARN_ON_ONCE(state.exit_rcu)) {
--		irqentry_exit_cond_resched();
--		instrumentation_end();
--		restore_inhcall(inhcall);
--	} else {
--		instrumentation_end();
--		irqentry_exit(regs, state);
--	}
--}
--#endif /* CONFIG_XEN_PV */
-diff --git a/arch/x86/xen/enlighten_pv.c b/arch/x86/xen/enlighten_pv.c
-index e033d5594265..6e9d1b287f8e 100644
---- a/arch/x86/xen/enlighten_pv.c
-+++ b/arch/x86/xen/enlighten_pv.c
-@@ -72,6 +72,7 @@
- #include <asm/mwait.h>
- #include <asm/pci_x86.h>
- #include <asm/cpu.h>
-+#include <asm/irq_stack.h>
- #ifdef CONFIG_X86_IOPL_IOPERM
- #include <asm/io_bitmap.h>
- #endif
-@@ -93,6 +94,44 @@ void *xen_initial_gdt;
- static int xen_cpu_up_prepare_pv(unsigned int cpu);
- static int xen_cpu_dead_pv(unsigned int cpu);
+ 	if (XE_IOCTL_DBG(xe, args->extensions) ||
+ 	    XE_IOCTL_DBG(xe, args->pad[0] || args->pad[1] || args->pad[2]) ||
+-	    XE_IOCTL_DBG(xe, args->reserved[0] || args->reserved[1]))
++	    XE_IOCTL_DBG(xe, args->reserved[0] || args->reserved[1]) ||
++	    XE_IOCTL_DBG(xe, args->num_syncs > DRM_XE_MAX_SYNCS))
+ 		return -EINVAL;
  
-+#ifndef CONFIG_PREEMPTION
-+/*
-+ * Some hypercalls issued by the toolstack can take many 10s of
-+ * seconds. Allow tasks running hypercalls via the privcmd driver to
-+ * be voluntarily preempted even if full kernel preemption is
-+ * disabled.
-+ *
-+ * Such preemptible hypercalls are bracketed by
-+ * xen_preemptible_hcall_begin() and xen_preemptible_hcall_end()
-+ * calls.
-+ */
-+DEFINE_PER_CPU(bool, xen_in_preemptible_hcall);
-+EXPORT_SYMBOL_GPL(xen_in_preemptible_hcall);
-+
-+/*
-+ * In case of scheduling the flag must be cleared and restored after
-+ * returning from schedule as the task might move to a different CPU.
-+ */
-+static __always_inline bool get_and_clear_inhcall(void)
-+{
-+	bool inhcall = __this_cpu_read(xen_in_preemptible_hcall);
-+
-+	__this_cpu_write(xen_in_preemptible_hcall, false);
-+	return inhcall;
-+}
-+
-+static __always_inline void restore_inhcall(bool inhcall)
-+{
-+	__this_cpu_write(xen_in_preemptible_hcall, inhcall);
-+}
-+
-+#else
-+
-+static __always_inline bool get_and_clear_inhcall(void) { return false; }
-+static __always_inline void restore_inhcall(bool inhcall) { }
-+
-+#endif
-+
- struct tls_descs {
- 	struct desc_struct desc[3];
- };
-@@ -686,6 +725,36 @@ DEFINE_IDTENTRY_RAW(xenpv_exc_machine_check)
- }
- #endif
+ 	q = xe_exec_queue_lookup(xef, args->exec_queue_id);
+diff --git a/drivers/gpu/drm/xe/xe_vm.c b/drivers/gpu/drm/xe/xe_vm.c
+index 30625ce691fa..79f08337cc27 100644
+--- a/drivers/gpu/drm/xe/xe_vm.c
++++ b/drivers/gpu/drm/xe/xe_vm.c
+@@ -2829,6 +2829,9 @@ static int vm_bind_ioctl_check_args(struct xe_device *xe,
+ 	if (XE_IOCTL_DBG(xe, args->extensions))
+ 		return -EINVAL;
  
-+static void __xen_pv_evtchn_do_upcall(struct pt_regs *regs)
-+{
-+	struct pt_regs *old_regs = set_irq_regs(regs);
++	if (XE_IOCTL_DBG(xe, args->num_syncs > DRM_XE_MAX_SYNCS))
++		return -EINVAL;
 +
-+	inc_irq_stat(irq_hv_callback_count);
-+
-+	xen_evtchn_do_upcall();
-+
-+	set_irq_regs(old_regs);
-+}
-+
-+__visible noinstr void xen_pv_evtchn_do_upcall(struct pt_regs *regs)
-+{
-+	irqentry_state_t state = irqentry_enter(regs);
-+	bool inhcall;
-+
-+	instrumentation_begin();
-+	run_sysvec_on_irqstack_cond(__xen_pv_evtchn_do_upcall, regs);
-+
-+	inhcall = get_and_clear_inhcall();
-+	if (inhcall && !WARN_ON_ONCE(state.exit_rcu)) {
-+		irqentry_exit_cond_resched();
-+		instrumentation_end();
-+		restore_inhcall(inhcall);
-+	} else {
-+		instrumentation_end();
-+		irqentry_exit(regs, state);
-+	}
-+}
-+
- struct trap_array_entry {
- 	void (*orig)(void);
- 	void (*xen)(void);
+ 	if (args->num_binds > 1) {
+ 		u64 __user *bind_user =
+ 			u64_to_user_ptr(args->vector_of_binds);
+diff --git a/include/uapi/drm/xe_drm.h b/include/uapi/drm/xe_drm.h
+index 4a8a4a63e99c..05f01ad0bfd9 100644
+--- a/include/uapi/drm/xe_drm.h
++++ b/include/uapi/drm/xe_drm.h
+@@ -1281,6 +1281,7 @@ struct drm_xe_exec {
+ 	/** @exec_queue_id: Exec queue ID for the batch buffer */
+ 	__u32 exec_queue_id;
+ 
++#define DRM_XE_MAX_SYNCS 1024
+ 	/** @num_syncs: Amount of struct drm_xe_sync in array. */
+ 	__u32 num_syncs;
+ 
 -- 
 2.51.0
 
