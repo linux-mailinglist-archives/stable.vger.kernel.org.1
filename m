@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-204985-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-204986-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17AF6CF63ED
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 02:25:33 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B455FCF644A
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 02:30:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id CF9B13007660
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 01:25:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 860D8305B597
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 01:28:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71DFF4AEE2;
-	Tue,  6 Jan 2026 01:25:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB58D1D5160;
+	Tue,  6 Jan 2026 01:28:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pcDvwU7K"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ot9GTP0L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32E5D2AD16
-	for <stable@vger.kernel.org>; Tue,  6 Jan 2026 01:25:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86F7419005E;
+	Tue,  6 Jan 2026 01:28:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767662729; cv=none; b=nB28T5lj8EUG8r9v/w7Fwo3Nbg5BXlQ4FLV2FAt+m1a0//b5qXs0cNlWBZVqUNo52SVlIesFmws9mrzdHHKE0pj4NOk5EQyaQHfCWRH0k7+ddC0UKT0vCWB7yKfoAHgN6qu7AnzODESnjRxvZZ150QZBx23gcs/kD49usYaYHS0=
+	t=1767662896; cv=none; b=jd9iUtWh2EZbKoiaAn54qLJYBXfISexzNX7E/PZC6X+7/YBJo2qTBf5ufsbkNn0M+Paj40T6YQBHkEJSG5TCKKcHDYfyTkaEU073XYwZrcQlfboCpAqaZV4QT6LAb1Xz4CL6/w4wkCBn39s/vwe0LvEYTPEWC1n4Jph7CotOhno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767662729; c=relaxed/simple;
-	bh=c8Ld0TNPX2MXWRBakdnMdX4KAWmxlJY4ds2bjsJwJxE=;
+	s=arc-20240116; t=1767662896; c=relaxed/simple;
+	bh=jRbLr/vFdmc7H7zJR5iEEpMCWfu8hjpCIOBnBCTpJjc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HIdD275t+oe9i7uD9pqvYR8VGtkcx5qVH7ONJiWjHN+M5P9yfQOUMUA8tPA8bMkE7m94mnzESSSpjKzjtGjrqyjiSrvWkQKuOaDPdHSr4MFvcK35mMZon6jlwEfOoyULiWQwMXVGKE/t275H/sLNpKF0pjh/D6rDAoS37ibr/DY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pcDvwU7K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CDB2C116D0;
-	Tue,  6 Jan 2026 01:25:28 +0000 (UTC)
+	 MIME-Version; b=pDbrlEK6oqFVbVIVmLXGnHHlABb7nsstgDw6uXQ8rBGun10Cj/DDkJNA+UOTzGMVMsWiOcsAqx5oLYbvHzJ/9brfOctNpHY5LL33XRAbX9vEiamG/l3u5FynG/851mgxV2+/+JaSwhABvIdcnVbt3dUmGPXtDDb2iJse5dPcjDY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ot9GTP0L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC80DC116D0;
+	Tue,  6 Jan 2026 01:28:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767662728;
-	bh=c8Ld0TNPX2MXWRBakdnMdX4KAWmxlJY4ds2bjsJwJxE=;
+	s=k20201202; t=1767662896;
+	bh=jRbLr/vFdmc7H7zJR5iEEpMCWfu8hjpCIOBnBCTpJjc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pcDvwU7KvnWVtE4Z78XHLcOuN5bEHmDWAi+96C7imrPj/hhn2uRe0HbdwPS1DPl7F
-	 LqSgTv+/ny41ujIJBQlNwPCKdopHpwRjj1G/UDEI+1awFZBcqpeLLbhQSaem+Xl2J9
-	 af3giYqv9VNhdsBCauJKVdjRSTJW6u6RO+MYca9Uznr6o5Vjk3oDN1oMdfmjURKek/
-	 iBDCZ9wjGcDDU9ZGrHRCSyZrxuEr7v2mDTolY/gBpOC86zO6SZppOWJRUENkDMwo/0
-	 e5v5j/UHxhopZGhSeZq1dPzb2Mtr+GSXUgJQ1vYst2BJ8/l2KpRX9KfEMZtG9T2EfG
-	 CHtIWi7qUyTDw==
+	b=Ot9GTP0L9kCiCXB16ciNs/3EmqNnhxZO0MHqi5iB1MnrxnSgHQDFMv07AlQzCgDta
+	 dvt8pWSp+leN/rBrWT/LIbLijDbEFpjRmU/Di54lnJuMPIovo9nyNoKfGPMByPJpgq
+	 J6wtI5s3Km8mlDC7K3CPb+DMY33wo+SrjC1E8ttDJdy6vvX3lFCU6+goYZJIo/fz8k
+	 +8XcIxzLk4MyCj01EzoZaM741KmpRGPa5iOYeB7Q95eBgnVWjQPccMEETdH+u8pMhC
+	 SbIbMICIbPzJE+mKl95qbZQoXeqOqn40XtjDaVv+WT3OOjuC70kB4Lez0qTVBeL1ZL
+	 ZC9tZtyaAxRqQ==
 From: SeongJae Park <sj@kernel.org>
-To: gregkh@linuxfoundation.org
-Cc: SeongJae Park <sj@kernel.org>,
-	akpm@linux-foundation.org,
-	brendan.higgins@linux.dev,
-	davidgow@google.com,
-	stable@vger.kernel.org,
-	wangkefeng.wang@huawei.com
-Subject: Re: FAILED: patch "[PATCH] mm/damon/tests/core-kunit: handle alloc failures on" failed to apply to 6.6-stable tree
-Date: Mon,  5 Jan 2026 17:25:20 -0800
-Message-ID: <20260106012521.269030-1-sj@kernel.org>
+To: stable@vger.kernel.org
+Cc: damon@lists.linux.dev,
+	SeongJae Park <sj@kernel.org>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <davidgow@google.com>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6.y] mm/damon/tests/core-kunit: handle alloc failures on damos_test_filter_out()
+Date: Mon,  5 Jan 2026 17:28:05 -0800
+Message-ID: <20260106012805.282751-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <2026010533-uncounted-stuffing-5fb6@gregkh>
-References: 
+In-Reply-To: <2026010525-threaten-recliner-cac7@gregkh>
+References: <2026010525-threaten-recliner-cac7@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,58 +61,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-On Mon, 05 Jan 2026 12:05:33 +0100 <gregkh@linuxfoundation.org> wrote:
+damon_test_filter_out() is assuming all dynamic memory allocation in it
+will succeed.  Those are indeed likely in the real use cases since those
+allocations are too small to fail, but theoretically those could fail.  In
+the case, inappropriate memory access can happen.  Fix it by appropriately
+cleanup pre-allocated memory and skip the execution of the remaining tests
+in the failure cases.
 
-> 
-> The patch below does not apply to the 6.6-stable tree.
-[...]
-> ------------------ original commit in Linus's tree ------------------
-> 
-> >From eded254cb69044bd4abde87394ea44909708d7c0 Mon Sep 17 00:00:00 2001
-> From: SeongJae Park <sj@kernel.org>
-> Date: Sat, 1 Nov 2025 11:20:02 -0700
-> Subject: [PATCH] mm/damon/tests/core-kunit: handle alloc failures on
->  damon_test_split_regions_of()
-> 
-> damon_test_split_regions_of() is assuming all dynamic memory allocation in
-> it will succeed.  Those are indeed likely in the real use cases since
-> those allocations are too small to fail, but theoretically those could
-> fail.  In the case, inappropriate memory access can happen.  Fix it by
-> appropriately cleanup pre-allocated memory and skip the execution of the
-> remaining tests in the failure cases.
-> 
-> Link: https://lkml.kernel.org/r/20251101182021.74868-9-sj@kernel.org
-> Fixes: 17ccae8bb5c9 ("mm/damon: add kunit tests")
-> Signed-off-by: SeongJae Park <sj@kernel.org>
-> Cc: Brendan Higgins <brendan.higgins@linux.dev>
-> Cc: David Gow <davidgow@google.com>
-> Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-> Cc: <stable@vger.kernel.org>	[5.15+]
-> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-> 
-> diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
-> index 98f2a3de7cea..10618cdd188e 100644
-> --- a/mm/damon/tests/core-kunit.h
-> +++ b/mm/damon/tests/core-kunit.h
-> @@ -278,15 +278,35 @@ static void damon_test_split_regions_of(struct kunit *test)
->  	struct damon_target *t;
->  	struct damon_region *r;
->  
-> +	if (!c)
-> +		kunit_skip("ctx alloc fail");
+Link: https://lkml.kernel.org/r/20251101182021.74868-16-sj@kernel.org
+Fixes: 26713c890875 ("mm/damon/core-test: add a unit test for __damos_filter_out()")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: Brendan Higgins <brendan.higgins@linux.dev>
+Cc: David Gow <davidgow@google.com>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: <stable@vger.kernel.org>	[6.6+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+(cherry picked from commit d14d5671e7c9cc788c5a1edfa94e6f9064275905)
+Signed-off-by: SeongJae Park <sj@kernel.org>
+---
+ mm/damon/core-test.h | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-FYI, the above diff breaks build because kunit_skip() receives two arguments.
-Yes, the upstreamed patch is broken.  But, it was not noticed because a patch
-[1] silently fixing the issue has merged into the mainline together, as a part
-of the same patch series.
+diff --git a/mm/damon/core-test.h b/mm/damon/core-test.h
+index 6cc8b245586d..7ed28bf9704a 100644
+--- a/mm/damon/core-test.h
++++ b/mm/damon/core-test.h
+@@ -360,11 +360,22 @@ static void damos_test_filter_out(struct kunit *test)
+ 	struct damos_filter *f;
+ 
+ 	f = damos_new_filter(DAMOS_FILTER_TYPE_ADDR, true);
++	if (!f)
++		kunit_skip(test, "filter alloc fail");
+ 	f->addr_range = (struct damon_addr_range){
+ 		.start = DAMON_MIN_REGION * 2, .end = DAMON_MIN_REGION * 6};
+ 
+ 	t = damon_new_target();
++	if (!t) {
++		damos_destroy_filter(f);
++		kunit_skip(test, "target alloc fail");
++	}
+ 	r = damon_new_region(DAMON_MIN_REGION * 3, DAMON_MIN_REGION * 5);
++	if (!r) {
++		damos_destroy_filter(f);
++		damon_free_target(t);
++		kunit_skip(test, "region alloc fail");
++	}
+ 	damon_add_region(r, t);
+ 
+ 	/* region in the range */
+-- 
+2.47.3
 
-My ported patch that just sent as a reply to this mail fixes this together.
-
-[1] 80d725f96c44 ("mm/damon/tests/core-kunit: remove unused ctx in damon_test_split_regions_of()")
-
-
-Thanks,
-SJ
-
-[...]
 
