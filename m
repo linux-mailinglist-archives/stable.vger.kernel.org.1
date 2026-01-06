@@ -1,138 +1,128 @@
-Return-Path: <stable+bounces-205035-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205036-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C858BCF6C50
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 06:25:51 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6703DCF6CB7
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 06:40:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2958C3004521
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 05:25:48 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 70EF43019E15
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 05:40:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37C602FFDEE;
-	Tue,  6 Jan 2026 05:25:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 782082D9792;
+	Tue,  6 Jan 2026 05:40:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="hm9fZ7aO"
+	dkim=pass (2048-bit key) header.d=richtek.com header.i=@richtek.com header.b="dPEwKXVa";
+	dkim=pass (2048-bit key) header.d=richtek.com header.i=@richtek.com header.b="XE3dY9hu"
 X-Original-To: stable@vger.kernel.org
-Received: from out30-124.freemail.mail.aliyun.com (out30-124.freemail.mail.aliyun.com [115.124.30.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 221702BD5A8;
-	Tue,  6 Jan 2026 05:25:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.124
+Received: from mg.richtek.com (mg.richtek.com [220.130.44.152])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9912A2DA77E;
+	Tue,  6 Jan 2026 05:40:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.130.44.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767677145; cv=none; b=g1vHzdkGULwDbV2uE86UYViTf8MUPxON9uBDMVgXq5ohNxmtU4eSunUNvkuBuL9rWTTp0nLa1bpavubV6TUbZ6jlegfNU0oH6v88RvfFD2kj1ivFGcZrHDrmtT71ZiKnlJ37dv64Mw6AInI607Saaax/+wsFECY3NX7kfWPetAM=
+	t=1767678021; cv=none; b=ZnS/uukvR6bhlhsZAIPGY6JfswuLY3J39nS2sTGjYxd1NwIRxO0kHCPF/2x+Q5fw+pBeN5RjzZVD6iOubLLc8UovRJDLcIC0zHeMS8pDC0Hk8RYAOkjA3E2q3zrsoCH8osY+SLtYMpIb/T8Un/D2LXVq8sqJpmbfsy2IJViV8Do=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767677145; c=relaxed/simple;
-	bh=ePAsxEhBS2WPW4tMMfOev1sOuNfD1Zy2tmgOi1F2lPY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SXZ3Hqwwb0E4VvFr7EV+3bdLmYb3prQ5q6oIhhGrXLUTX+Hy96243UYcRdI/91I29GxqLtqL+1fcHNP0QxfcfdPxPqt7MVcin46Qp5AbwSLH3IkERSLGqZLK9FzfPF1SxHiF4UNzdsJ4dtc661brBNEQj3XT/CX2fQqqkbDobZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=hm9fZ7aO; arc=none smtp.client-ip=115.124.30.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1767677138; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
-	bh=sqKHxsvRqvCMzBbXkJlIz5eLBsYjaU/14IDuOzVUkFo=;
-	b=hm9fZ7aOzDRyVlMa+7bxJCjZiCUHQJR+ZDAFvtyZzI9ehSUbrm08z8tZKRvSw2lOM4V02ugv4YhBQTe2K//4FrzTjGrZ2BfnKzeGoPzJrMYKNmIaFDUyfqy5FRU93QhPfaobWG13uzxuFNZ3woONzFLIROt1dlvouUxW0izAgOg=
-Received: from localhost(mailfrom:yaoyuan@linux.alibaba.com fp:SMTPD_---0WwUehPs_1767677137 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 06 Jan 2026 13:25:37 +0800
-Date: Tue, 6 Jan 2026 13:25:37 +0800
-From: Yao Yuan <yaoyuan@linux.alibaba.com>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Yao Yuan <yaoyuan0329os@gmail.com>, 
-	Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	x86@kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 1/4] x86/fpu: Clear XSTATE_BV[i] in save state whenever
- XFD[i]=1
-Message-ID: <jehglwyqu243ouotvrfy2cdml73fha23pglabopcskb3qjtsw4@b5spz5uw4suq>
-References: <20260101090516.316883-1-pbonzini@redhat.com>
- <20260101090516.316883-2-pbonzini@redhat.com>
- <aig6cfdj7vxmm5yt6lvfsyqwlnavrcl2n4z3gzomqydce5suxm@ydomfhhmwd7y>
- <aVv1WTR9Zsx2FpZ0@google.com>
+	s=arc-20240116; t=1767678021; c=relaxed/simple;
+	bh=nlZeKx/WsdUVRencZTnNcZrTLH/ONVDy/mFGibneVQE=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=i4xoYMhkLqMohTRFEUoBFmAoK8f4vAaYO9FKFMQacRJOMZETzu6WKOE4hSPz8Fr0dNM48jKivr2WLxLjVqoccasy4OHN24Iz8On2eJXdEyEj4pdtVu4k1WVZNhg8BhLyQpZ9SMauZbNVm9jzuBiv2qcKpZsvjQQCKWlvXRL5EEU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=richtek.com; spf=pass smtp.mailfrom=richtek.com; dkim=pass (2048-bit key) header.d=richtek.com header.i=@richtek.com header.b=dPEwKXVa; dkim=pass (2048-bit key) header.d=richtek.com header.i=@richtek.com header.b=XE3dY9hu; arc=none smtp.client-ip=220.130.44.152
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=richtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=richtek.com
+X-MailGates: (SIP:2,PASS,NONE)(compute_score:DELIVER,40,3)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=richtek.com;
+	s=richtek; t=1767678006;
+	bh=jAXQypJwkEBdsBc3burggqz+vq2Lgfm2waHWJh0qX4c=; l=1676;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=dPEwKXVaCmWDG1H4OFNnhaSeqO4HDLD4DB1/X7R+b7tquCSIkYOjdeE30BKCZvFon
+	 ahkD2Tob7CNNiKiMySlifjLvfyCTN4enbt3dRfoH0jve/VKQym1T6sXfCJYyYtMo7J
+	 96HaZiVA5LmXIVHkTSxVQc2hg3Dsj7eawFUtmR9l1me+JA1JU2/fb6DV32ofdMYK+D
+	 MFxL4uMc9YGwzRunpWTS1G72EsRI54qifnh/qIfaHq4yoJRFErcGhlvduvhH3FmD/b
+	 THqR+bg0G9RL07E10K5Irj9sSFgmzED4Iv5OelaxNkDaOCFoSqpEvIDVUOWV0w23uX
+	 BceGXMT2NR5zw==
+Received: from 192.168.8.21
+	by mg.richtek.com with MailGates ESMTP Server V3.0(1128079:0:AUTH_RELAY)
+	(envelope-from <prvs=1464629B15=cy_huang@richtek.com>); Tue, 06 Jan 2026 13:40:04 +0800 (CST)
+X-MailGates: (compute_score:DELIVER,40,3)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=richtek.com;
+	s=richtek; t=1767678004;
+	bh=jAXQypJwkEBdsBc3burggqz+vq2Lgfm2waHWJh0qX4c=; l=1676;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=XE3dY9huV1amArTOzVo1/bjGXctaqZK/i4k32D9VDoeTlt6IUQ7MIrNz+ZauCl5WB
+	 t+rq8ibcxbyfTONnLCcDzial0qEFYxV43rrN5qBUDHCBdu2QcQGuW8Ms2GoU4zw+V1
+	 bBRnxR7iqEC0fHu624vk/xgBcuRoidn8TYYgDihJvgfxStLWHHupds+bmfkmC77WEm
+	 YdQNz1bh9fgaNNSDCAb3w883/Y0KQ9evws+vQMjw18k8x2YkABxXRPQlBJC379j1Z8
+	 DJHfxquzv0Trd5SMxygW7tVXN5wKAkLVYTB6NNxl6L2QWwpuNjcGiUZuuZYUandwzb
+	 X9yoec/TNfOOg==
+Received: from 192.168.10.46
+	by mg.richtek.com with MailGates ESMTPS Server V6.0(2572460:1:AUTH_RELAY)
+	(envelope-from <cy_huang@richtek.com>)
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256/256); Tue, 06 Jan 2026 13:33:05 +0800 (CST)
+Received: from ex4.rt.l (192.168.10.47) by ex3.rt.l (192.168.10.46) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.26; Tue, 6 Jan
+ 2026 13:33:04 +0800
+Received: from git-send.richtek.com (192.168.10.154) by ex4.rt.l
+ (192.168.10.45) with Microsoft SMTP Server id 15.2.1748.26 via Frontend
+ Transport; Tue, 6 Jan 2026 13:33:04 +0800
+From: <cy_huang@richtek.com>
+To: Mauro Carvalho Chehab <mchehab@kernel.org>
+CC: ChiYuan Huang <cy_huang@richtek.com>, <linux-media@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>, Roger Wang
+	<roger-hy.wang@mediatek.com>
+Subject: [PATCH] media: v4l2-flash: Enter LED off state after file handle closed
+Date: Tue, 6 Jan 2026 13:32:59 +0800
+Message-ID: <0e7005f10222b57f100b442a8b48bb5bc2747e78.1767674614.git.cy_huang@richtek.com>
+X-Mailer: git-send-email 2.43.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aVv1WTR9Zsx2FpZ0@google.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-On Mon, Jan 05, 2026 at 09:31:05AM +0800, Sean Christopherson wrote:
-> On Sat, Jan 03, 2026, Yao Yuan wrote:
-> > On Thu, Jan 01, 2026 at 10:05:13AM +0100, Paolo Bonzini wrote:
-> > > diff --git a/arch/x86/kernel/fpu/core.c b/arch/x86/kernel/fpu/core.c
-> > > index da233f20ae6f..166c380b0161 100644
-> > > --- a/arch/x86/kernel/fpu/core.c
-> > > +++ b/arch/x86/kernel/fpu/core.c
-> > > @@ -319,10 +319,29 @@ EXPORT_SYMBOL_FOR_KVM(fpu_enable_guest_xfd_features);
-> > >  #ifdef CONFIG_X86_64
-> > >  void fpu_update_guest_xfd(struct fpu_guest *guest_fpu, u64 xfd)
-> > >  {
-> > > +	struct fpstate *fpstate = guest_fpu->fpstate;
-> > > +
-> > >  	fpregs_lock();
-> > > -	guest_fpu->fpstate->xfd = xfd;
-> > > -	if (guest_fpu->fpstate->in_use)
-> > > -		xfd_update_state(guest_fpu->fpstate);
-> > > +
-> > > +	/*
-> > > +	 * KVM's guest ABI is that setting XFD[i]=1 *can* immediately revert
-> > > +	 * the save state to initialized.  Likewise, KVM_GET_XSAVE does the
-> > > +	 * same as XSAVE and returns XSTATE_BV[i]=0 whenever XFD[i]=1.
-> > > +	 *
-> > > +	 * If the guest's FPU state is in hardware, just update XFD: the XSAVE
-> > > +	 * in fpu_swap_kvm_fpstate will clear XSTATE_BV[i] whenever XFD[i]=1.
-> > > +	 *
-> > > +	 * If however the guest's FPU state is NOT resident in hardware, clear
-> > > +	 * disabled components in XSTATE_BV now, or a subsequent XRSTOR will
-> > > +	 * attempt to load disabled components and generate #NM _in the host_.
-> > > +	 */
-> >
-> > Hi Sean and Paolo,
-> >
-> > > +	if (xfd && test_thread_flag(TIF_NEED_FPU_LOAD))
-> > > +		fpstate->regs.xsave.header.xfeatures &= ~xfd;
-> > > +
-> > > +	fpstate->xfd = xfd;
-> > > +	if (fpstate->in_use)
-> > > +		xfd_update_state(fpstate);
-> >
-> > I see a *small* window that the Host IRQ can happen just after above
-> > TIF_NEED_FPU_LOAD checking, which could set TIF_NEED_FPU_LOAD
->
-> Only if the code using FPU from IRQ context is buggy.  More below.
->
-> > but w/o clear the xfd from fpstate->regs.xsave.header.xfeatures.
-> >
-> > But there's WARN in in kernel_fpu_begin_mask():
-> >
-> > 	WARN_ON_FPU(!irq_fpu_usable());
-> >
-> > irq_fpu_usable()
-> > {
-> > 	...
-> > 	/*
-> > 	 * In hard interrupt context it's safe when soft interrupts
-> > 	 * are enabled, which means the interrupt did not hit in
-> > 	 * a fpregs_lock()'ed critical region.
-> > 	 */
-> > 	return !softirq_count();
-> > }
-> >
-> > Looks we are relying on this to catch the above *small* window
-> > yet, we're in fpregs_lock() region yet.
->
-> Kernel use of FPU from (soft) IRQ context is required to check irq_fpu_usable()
-> (e.g. via may_use_simd()), i.e. calling fpregs_lock() protects against the kernel
-> using the FPU and thus setting TIF_NEED_FPU_LOAD.
->
-> The WARN in kernel_fpu_begin_mask() is purely a sanity check to help detect and
-> debug buggy users.
+From: ChiYuan Huang <cy_huang@richtek.com>
 
-OK, I have same understanding w/ you, thanks.
+To make sure LED enter off state after file handle is closed, initiatively
+configure LED_MODE to NONE. This can guarantee whatever the previous state
+is torch or strobe mode, the final state will be off.
 
-Reviewed-by: Yuan Yao <yaoyuan@linux.alibaba.com>
+Cc: stable@vger.kernel.org
+Fixes : 42bd6f59ae90 ("media: Add registration helpers for V4L2 flash sub-devices")
+Reported-by: Roger Wang <roger-hy.wang@mediatek.com>
+Signed-off-by: ChiYuan Huang <cy_huang@richtek.com>
+---
+Hi,
+  We encounter an issue. When the upper layer camera process is crashed,
+if the new process did not reinit the LED,  it will keeps the previous
+state whatever it's in torch or strobe mode
+
+OS will handle the resource management. So when the process is crashed
+or terminated, the 'close' API will be called to release resources.
+That's why we add the initiative action to trigger LED off in file
+handle close is called.
+---
+ drivers/media/v4l2-core/v4l2-flash-led-class.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/drivers/media/v4l2-core/v4l2-flash-led-class.c b/drivers/media/v4l2-core/v4l2-flash-led-class.c
+index 355595a0fefa..347b37f3ef69 100644
+--- a/drivers/media/v4l2-core/v4l2-flash-led-class.c
++++ b/drivers/media/v4l2-core/v4l2-flash-led-class.c
+@@ -623,6 +623,12 @@ static int v4l2_flash_close(struct v4l2_subdev *sd, struct v4l2_subdev_fh *fh)
+ 		return 0;
+ 
+ 	if (led_cdev) {
++		/* If file handle is released, make sure LED enter off state */
++		ret = v4l2_ctrl_s_ctrl(v4l2_flash->ctrls[LED_MODE],
++			V4L2_FLASH_LED_MODE_NONE);
++		if (ret)
++			return ret;
++
+ 		mutex_lock(&led_cdev->led_access);
+ 
+ 		if (v4l2_flash->ctrls[STROBE_SOURCE])
+-- 
+2.34.1
+
 
