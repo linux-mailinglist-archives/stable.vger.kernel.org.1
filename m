@@ -1,150 +1,148 @@
-Return-Path: <stable+bounces-205030-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205031-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1287CF6890
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 03:58:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E6FF1CF6978
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 04:16:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2C049305E37C
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 02:57:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 318B43058A06
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 03:13:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D136224AF9;
-	Tue,  6 Jan 2026 02:57:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51999230264;
+	Tue,  6 Jan 2026 03:13:27 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49A4D1A256E
-	for <stable@vger.kernel.org>; Tue,  6 Jan 2026 02:57:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B1B42248BE;
+	Tue,  6 Jan 2026 03:13:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767668246; cv=none; b=EsVMSuCIcXh56K5rSPeDmNVtclP2t7rtu4hZeCXKDxLR1z2z2XzqqYSBEQIlrs1wWInY1kqwNk8ZT/D3oq2i4MBUXB2Hb9FVCtjMuLX4REoZASfC6N+gD2pXJw8pNT7SiwBKYCr/YBNLrh73Xdjq/PKyMt/jpq7yCLSmvuBDnF8=
+	t=1767669207; cv=none; b=YVNbmZM2+egLqvvvm1b3omWgLH2L3WpVK/lSkxv2/pSsEluJeS8dxNtpKz+vqmbTTUST6vZzyrdVoOfGpwRhaSycLkiE6RF+2u26YDElRW7RnDWDAcMDlUXs8o9HlTtZE11zNULlLEo4ZU43jia47XPBlg8sMv7aBgxozzLi14E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767668246; c=relaxed/simple;
-	bh=pAWR6c+Wtj1C5/ba++WSNguZNWAec+wwAMjTOunDUTA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
-	 MIME-Version:Message-ID; b=rs63Uu9Wg3Tqs3eG56Cf+7D09eJevtOuC7MRze5ipZCr03xif+OWrPuD43r+xqSE2fizapgMeqxK+3jsOEMxu52xy3TWaQlUXLeuQnQ2WK0O3Fa2fHBH/IPW92vd2VEA+8j3BqjACGGfE9bJ6wQS08EZPtMHEOklUxdynpx6rzA=
+	s=arc-20240116; t=1767669207; c=relaxed/simple;
+	bh=WI9UZWxA04U/g5yPV/L+10hhQRmlmtUSf/G89wej/Es=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=A0nYnqgsVwOjtNWNHHe848GDHVo2s0SLKAbjuSrxdF8XesNLpFqwyaaNMfi5U/FMXErFjJJ5wIrIJLYiM3hmjzCTzWlVH6dtQh62hvmolGJq7VmrsvcQk1re14BdBrdGF7yFd2CgBPe9UUSWlNvTtGOX3KrOTd/30bexMIa6fgQ=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
 Received: from loongson.cn (unknown [223.64.69.1])
-	by gateway (Coremail) with SMTP id _____8Cx68IOelxpddMFAA--.18216S3;
-	Tue, 06 Jan 2026 10:57:18 +0800 (CST)
-Received: from chenhuacai$loongson.cn ( [223.64.69.1] ) by
- ajax-webmail-front1 (Coremail) ; Tue, 6 Jan 2026 10:57:14 +0800 (GMT+08:00)
-Date: Tue, 6 Jan 2026 10:57:14 +0800 (GMT+08:00)
-X-CM-HeaderCharset: UTF-8
-From: =?UTF-8?B?6ZmI5Y2O5omN?= <chenhuacai@loongson.cn>
-To: gregkh@linuxfoundation.org
-Cc: duanchenghao@kylinos.cn, stable@vger.kernel.org
-Subject: Re: FAILED: patch "[PATCH] LoongArch: BPF: Enhance the
- bpf_arch_text_poke() function" failed to apply to 6.18-stable tree
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version 2024.3-cmXT6 build
- 20250609(354f7833) Copyright (c) 2002-2026 www.mailtech.cn loongson
-In-Reply-To: <2026010547-passenger-getting-5dde@gregkh>
-References: <2026010547-passenger-getting-5dde@gregkh>
-Content-Transfer-Encoding: base64
-X-CM-CTRLDATA: PR0vm2Zvb3Rlcl90eHQ9MzI0Mjo2MTg=
-Content-Type: text/plain; charset=UTF-8
+	by gateway (Coremail) with SMTP id _____8CxKMLJfVxpLtQFAA--.18210S3;
+	Tue, 06 Jan 2026 11:13:13 +0800 (CST)
+Received: from localhost.localdomain (unknown [223.64.69.1])
+	by front1 (Coremail) with SMTP id qMiowJAxIMPFfVxpW6MPAA--.7898S2;
+	Tue, 06 Jan 2026 11:13:12 +0800 (CST)
+From: Huacai Chen <chenhuacai@loongson.cn>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Huacai Chen <chenhuacai@kernel.org>
+Cc: Xuerui Wang <kernel@xen0n.name>,
+	stable@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	loongarch@lists.linux.dev,
+	Chenghao Duan <duanchenghao@kylinos.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.6] LoongArch: Refactor register restoration in ftrace_common_return
+Date: Tue,  6 Jan 2026 11:13:00 +0800
+Message-ID: <20260106031300.961198-1-chenhuacai@loongson.cn>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <4d3c6eae.3885a.19b913cb876.Coremail.chenhuacai@loongson.cn>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID:qMiowJCxusEKelxptJ4PAA--.3209W
-X-CM-SenderInfo: hfkh0x5xdftxo6or00hjvr0hdfq/1tbiAQETBmlbUrYSmwADsJ
-X-Coremail-Antispam: 1Uk129KBj93XoWxXFWkCr45KF4fJF4DGF48AFc_yoW5tr4Dp3
-	ZxCrs2kr4DWr1UA39Fyw409Fy5Xa9rXF17Wa1DKry8C3s8ZFn7W34fuw1fXa4qy348ur1r
-	Xayqg3srta1DAacCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowJAxIMPFfVxpW6MPAA--.7898S2
+X-CM-SenderInfo: hfkh0x5xdftxo6or00hjvr0hdfq/
+X-Coremail-Antispam: 1Uk129KBj93XoW7tF17XF17XryUKFW3Cr4xZrc_yoW8Kw18pr
+	ZrZ3Wqk3yj9Fs5KrWkWa1rWa45Za9rJayava42kFyrCan8Xrs2yw48KryDXFy3K3y8C34x
+	Zr18uFWFkF4kZacCm3ZEXasCq-sJn29KB7ZKAUJUUUUr529EdanIXcx71UUUUU7KY7ZEXa
 	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUBab4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	0xBIdaVrnRJUUU9Yb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
 	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv6xkF7I0E14v2
-	6r4UJVWxJr1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27w
-	Aqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jw0_WrylYx0Ex4A2jsIE
-	14v26r4j6F4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACY4xI67k042
-	43AVAKzVAKj4xxM4xvF2IEb7IF0Fy26I8I3I1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC
-	6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWw
-	C2zVAF1VAY17CE14v26r1Y6r17MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_JFI_
-	Gr1lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJV
-	WUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJwCE
-	64xvF2IEb7IF0Fy7YxBIdaVFxhVjvjDU0xZFpf9x07jFYL9UUUUU=
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv6xkF7I0E14v2
+	6r4UJVWxJr1ln4kS14v26r1Y6r17M2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12
+	xvs2x26I8E6xACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1Y
+	6r17McIj6I8E87Iv67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64
+	vIr41l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1l4IxYO2xFxVAFwI0_
+	Jrv_JF1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1V
+	AY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAI
+	cVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42
+	IY6I8E87Iv67AKxVW8JVWxJwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIev
+	Ja73UjIFyTuYvjxU4s2-UUUUU
 
-SGksIEdyZWcsCgpQbGVhc2UgdXNlOgpodHRwczovL2xvcmUua2VybmVsLm9yZy9sb29uZ2FyY2gv
-MjAyNjAxMDYwMjU1MDIuOTUxODY4LTEtY2hlbmh1YWNhaUBsb29uZ3Nvbi5jbi9ULyN1CgpIdWFj
-YWkKCgo+IC0tLS0t5Y6f5aeL6YKu5Lu2LS0tLS0KPiDlj5Hku7bkuro6IGdyZWdraEBsaW51eGZv
-dW5kYXRpb24ub3JnCj4g5Y+R6YCB5pe26Ze0OjIwMjYtMDEtMDUgMjA6NTk6NDggKOaYn+acn+S4
-gCkKPiDmlLbku7bkuro6IGR1YW5jaGVuZ2hhb0BreWxpbm9zLmNuLCBjaGVuaHVhY2FpQGxvb25n
-c29uLmNuCj4g5oqE6YCBOiBzdGFibGVAdmdlci5rZXJuZWwub3JnCj4g5Li76aKYOiBGQUlMRUQ6
-IHBhdGNoICJbUEFUQ0hdIExvb25nQXJjaDogQlBGOiBFbmhhbmNlIHRoZSBicGZfYXJjaF90ZXh0
-X3Bva2UoKSBmdW5jdGlvbiIgZmFpbGVkIHRvIGFwcGx5IHRvIDYuMTgtc3RhYmxlIHRyZWUKPiAK
-PiAKPiBUaGUgcGF0Y2ggYmVsb3cgZG9lcyBub3QgYXBwbHkgdG8gdGhlIDYuMTgtc3RhYmxlIHRy
-ZWUuCj4gSWYgc29tZW9uZSB3YW50cyBpdCBhcHBsaWVkIHRoZXJlLCBvciB0byBhbnkgb3RoZXIg
-c3RhYmxlIG9yIGxvbmd0ZXJtCj4gdHJlZSwgdGhlbiBwbGVhc2UgZW1haWwgdGhlIGJhY2twb3J0
-LCBpbmNsdWRpbmcgdGhlIG9yaWdpbmFsIGdpdCBjb21taXQKPiBpZCB0byA8c3RhYmxlQHZnZXIu
-a2VybmVsLm9yZz4uCj4gCj4gVG8gcmVwcm9kdWNlIHRoZSBjb25mbGljdCBhbmQgcmVzdWJtaXQs
-IHlvdSBtYXkgdXNlIHRoZSBmb2xsb3dpbmcgY29tbWFuZHM6Cj4gCj4gZ2l0IGZldGNoIGh0dHBz
-Oi8vZ2l0Lmtlcm5lbC5vcmcvcHViL3NjbS9saW51eC9rZXJuZWwvZ2l0L3N0YWJsZS9saW51eC5n
-aXQvIGxpbnV4LTYuMTgueQo+IGdpdCBjaGVja291dCBGRVRDSF9IRUFECj4gZ2l0IGNoZXJyeS1w
-aWNrIC14IDczNzIxZDg2NzY3NzFjNmM3YjA2ZDRlNjM2Y2MwNTNmYzc2YWZlZmQKPiAjIDxyZXNv
-bHZlIGNvbmZsaWN0cywgYnVpbGQsIHRlc3QsIGV0Yy4+Cj4gZ2l0IGNvbW1pdCAtcwo+IGdpdCBz
-ZW5kLWVtYWlsIC0tdG8gJzxzdGFibGVAdmdlci5rZXJuZWwub3JnPicgLS1pbi1yZXBseS10byAn
-MjAyNjAxMDU0Ny1wYXNzZW5nZXItZ2V0dGluZy01ZGRlQGdyZWdraCcgLS1zdWJqZWN0LXByZWZp
-eCAnUEFUQ0ggNi4xOC55JyBIRUFEXi4uCj4gCj4gUG9zc2libGUgZGVwZW5kZW5jaWVzOgo+IAo+
-IAo+IAo+IHRoYW5rcywKPiAKPiBncmVnIGstaAo+IAo+IC0tLS0tLS0tLS0tLS0tLS0tLSBvcmln
-aW5hbCBjb21taXQgaW4gTGludXMncyB0cmVlIC0tLS0tLS0tLS0tLS0tLS0tLQo+IAo+IEZyb20g
-NzM3MjFkODY3Njc3MWM2YzdiMDZkNGU2MzZjYzA1M2ZjNzZhZmVmZCBNb24gU2VwIDE3IDAwOjAw
-OjAwIDIwMDEKPiBGcm9tOiBDaGVuZ2hhbyBEdWFuIDxkdWFuY2hlbmdoYW9Aa3lsaW5vcy5jbj4K
-PiBEYXRlOiBXZWQsIDMxIERlYyAyMDI1IDE1OjE5OjIxICswODAwCj4gU3ViamVjdDogW1BBVENI
-XSBMb29uZ0FyY2g6IEJQRjogRW5oYW5jZSB0aGUgYnBmX2FyY2hfdGV4dF9wb2tlKCkgZnVuY3Rp
-b24KPiAKPiBFbmhhbmNlIHRoZSBicGZfYXJjaF90ZXh0X3Bva2UoKSBmdW5jdGlvbiB0byBlbmFi
-bGUgYWNjdXJhdGUgbG9jYXRpb24KPiBvZiBCUEYgcHJvZ3JhbSBlbnRyeSBwb2ludHMuCj4gCj4g
-V2hlbiBtb2RpZnlpbmcgdGhlIGVudHJ5IHBvaW50IG9mIGEgQlBGIHByb2dyYW0sIHNraXAgdGhl
-ICJtb3ZlIHQwLCByYSIKPiBpbnN0cnVjdGlvbiB0byBlbnN1cmUgdGhlIGNvcnJlY3QgbG9naWMg
-YW5kIGNvcHkgb2YgdGhlIGp1bXAgYWRkcmVzcy4KPiAKPiBDYzogc3RhYmxlQHZnZXIua2VybmVs
-Lm9yZwo+IEZpeGVzOiA2NzdlNjEyM2UzZDIgKCJMb29uZ0FyY2g6IEJQRjogRGlzYWJsZSB0cmFt
-cG9saW5lIGZvciBrZXJuZWwgbW9kdWxlIGZ1bmN0aW9uIHRyYWNlIikKPiBTaWduZWQtb2ZmLWJ5
-OiBDaGVuZ2hhbyBEdWFuIDxkdWFuY2hlbmdoYW9Aa3lsaW5vcy5jbj4KPiBTaWduZWQtb2ZmLWJ5
-OiBIdWFjYWkgQ2hlbiA8Y2hlbmh1YWNhaUBsb29uZ3Nvbi5jbj4KPiAKPiBkaWZmIC0tZ2l0IGEv
-YXJjaC9sb29uZ2FyY2gvbmV0L2JwZl9qaXQuYyBiL2FyY2gvbG9vbmdhcmNoL25ldC9icGZfaml0
-LmMKPiBpbmRleCA5ZjZlOTMzNDNiNmUuLmQxZDVhNjUzMDhiOSAxMDA2NDQKPiAtLS0gYS9hcmNo
-L2xvb25nYXJjaC9uZXQvYnBmX2ppdC5jCj4gKysrIGIvYXJjaC9sb29uZ2FyY2gvbmV0L2JwZl9q
-aXQuYwo+IEBAIC0xMzA5LDE1ICsxMzA5LDMwIEBAIGludCBicGZfYXJjaF90ZXh0X3Bva2Uodm9p
-ZCAqaXAsIGVudW0gYnBmX3RleHRfcG9rZV90eXBlIG9sZF90LAo+ICB7Cj4gIAlpbnQgcmV0Owo+
-ICAJYm9vbCBpc19jYWxsOwo+ICsJdW5zaWduZWQgbG9uZyBzaXplID0gMDsKPiArCXVuc2lnbmVk
-IGxvbmcgb2Zmc2V0ID0gMDsKPiArCXZvaWQgKmltYWdlID0gTlVMTDsKPiArCWNoYXIgbmFtZWJ1
-ZltLU1lNX05BTUVfTEVOXTsKPiAgCXUzMiBvbGRfaW5zbnNbTE9PTkdBUkNIX0xPTkdfSlVNUF9O
-SU5TTlNdID0ge1swIC4uLiA0XSA9IElOU05fTk9QfTsKPiAgCXUzMiBuZXdfaW5zbnNbTE9PTkdB
-UkNIX0xPTkdfSlVNUF9OSU5TTlNdID0ge1swIC4uLiA0XSA9IElOU05fTk9QfTsKPiAgCj4gIAkv
-KiBPbmx5IHBva2luZyBicGYgdGV4dCBpcyBzdXBwb3J0ZWQuIFNpbmNlIGtlcm5lbCBmdW5jdGlv
-biBlbnRyeQo+ICAJICogaXMgc2V0IHVwIGJ5IGZ0cmFjZSwgd2UgcmVseSBvbiBmdHJhY2UgdG8g
-cG9rZSBrZXJuZWwgZnVuY3Rpb25zLgo+ICAJICovCj4gLQlpZiAoIWlzX2JwZl90ZXh0X2FkZHJl
-c3MoKHVuc2lnbmVkIGxvbmcpaXApKQo+ICsJaWYgKCFfX2JwZl9hZGRyZXNzX2xvb2t1cCgodW5z
-aWduZWQgbG9uZylpcCwgJnNpemUsICZvZmZzZXQsIG5hbWVidWYpKQo+ICAJCXJldHVybiAtRU5P
-VFNVUFA7Cj4gIAo+ICsJaW1hZ2UgPSBpcCAtIG9mZnNldDsKPiArCj4gKwkvKiB6ZXJvIG9mZnNl
-dCBtZWFucyB3ZSdyZSBwb2tpbmcgYnBmIHByb2cgZW50cnkgKi8KPiArCWlmIChvZmZzZXQgPT0g
-MCkgewo+ICsJCS8qIHNraXAgdG8gdGhlIG5vcCBpbnN0cnVjdGlvbiBpbiBicGYgcHJvZyBlbnRy
-eToKPiArCQkgKiBtb3ZlIHQwLCByYQo+ICsJCSAqIG5vcAo+ICsJCSAqLwo+ICsJCWlwID0gaW1h
-Z2UgKyBMT09OR0FSQ0hfSU5TTl9TSVpFOwo+ICsJfQo+ICsKPiAgCWlzX2NhbGwgPSBvbGRfdCA9
-PSBCUEZfTU9EX0NBTEw7Cj4gIAlyZXQgPSBlbWl0X2p1bXBfb3Jfbm9wcyhvbGRfYWRkciwgaXAs
-IG9sZF9pbnNucywgaXNfY2FsbCk7Cj4gIAlpZiAocmV0KQoNCg0K5pys6YKu5Lu25Y+K5YW26ZmE
-5Lu25ZCr5pyJ6b6Z6Iqv5Lit56eR55qE5ZWG5Lia56eY5a+G5L+h5oGv77yM5LuF6ZmQ5LqO5Y+R
-6YCB57uZ5LiK6Z2i5Zyw5Z2A5Lit5YiX5Ye655qE5Liq5Lq65oiW576k57uE44CC56aB5q2i5Lu7
-5L2V5YW25LuW5Lq65Lul5Lu75L2V5b2i5byP5L2/55So77yI5YyF5ous5L2G5LiN6ZmQ5LqO5YWo
-6YOo5oiW6YOo5YiG5Zyw5rOE6Zyy44CB5aSN5Yi25oiW5pWj5Y+R77yJ5pys6YKu5Lu25Y+K5YW2
-6ZmE5Lu25Lit55qE5L+h5oGv44CC5aaC5p6c5oKo6ZSZ5pS25pys6YKu5Lu277yM6K+35oKo56uL
-5Y2z55S16K+d5oiW6YKu5Lu26YCa55+l5Y+R5Lu25Lq65bm25Yig6Zmk5pys6YKu5Lu244CCIA0K
-VGhpcyBlbWFpbCBhbmQgaXRzIGF0dGFjaG1lbnRzIGNvbnRhaW4gY29uZmlkZW50aWFsIGluZm9y
-bWF0aW9uIGZyb20gTG9vbmdzb24gVGVjaG5vbG9neSAsIHdoaWNoIGlzIGludGVuZGVkIG9ubHkg
-Zm9yIHRoZSBwZXJzb24gb3IgZW50aXR5IHdob3NlIGFkZHJlc3MgaXMgbGlzdGVkIGFib3ZlLiBB
-bnkgdXNlIG9mIHRoZSBpbmZvcm1hdGlvbiBjb250YWluZWQgaGVyZWluIGluIGFueSB3YXkgKGlu
-Y2x1ZGluZywgYnV0IG5vdCBsaW1pdGVkIHRvLCB0b3RhbCBvciBwYXJ0aWFsIGRpc2Nsb3N1cmUs
-IHJlcHJvZHVjdGlvbiBvciBkaXNzZW1pbmF0aW9uKSBieSBwZXJzb25zIG90aGVyIHRoYW4gdGhl
-IGludGVuZGVkIHJlY2lwaWVudChzKSBpcyBwcm9oaWJpdGVkLiBJZiB5b3UgcmVjZWl2ZSB0aGlz
-IGVtYWlsIGluIGVycm9yLCBwbGVhc2Ugbm90aWZ5IHRoZSBzZW5kZXIgYnkgcGhvbmUgb3IgZW1h
-aWwgaW1tZWRpYXRlbHkgYW5kIGRlbGV0ZSBpdC4gDQoNCg0K
+From: Chenghao Duan <duanchenghao@kylinos.cn>
+
+commit 45cb47c628dfbd1994c619f3eac271a780602826 upstream.
+
+Refactor the register restoration sequence in the ftrace_common_return
+function to clearly distinguish between the logic of normal returns and
+direct call returns in function tracing scenarios. The logic is as
+follows:
+
+1. In the case of a normal return, the execution flow returns to the
+traced function, and ftrace must ensure that the register data is
+consistent with the state when the function was entered.
+
+ra = parent return address; t0 = traced function return address.
+
+2. In the case of a direct call return, the execution flow jumps to the
+custom trampoline function, and ftrace must ensure that the register
+data is consistent with the state when ftrace was entered.
+
+ra = traced function return address; t0 = parent return address.
+
+Cc: stable@vger.kernel.org
+Fixes: 9cdc3b6a299c ("LoongArch: ftrace: Add direct call support")
+Signed-off-by: Chenghao Duan <duanchenghao@kylinos.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+---
+ arch/loongarch/kernel/mcount_dyn.S | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
+
+diff --git a/arch/loongarch/kernel/mcount_dyn.S b/arch/loongarch/kernel/mcount_dyn.S
+index 482aa553aa2d..5fb3a6e5e5c6 100644
+--- a/arch/loongarch/kernel/mcount_dyn.S
++++ b/arch/loongarch/kernel/mcount_dyn.S
+@@ -93,7 +93,6 @@ SYM_INNER_LABEL(ftrace_graph_call, SYM_L_GLOBAL)
+  * at the callsite, so there is no need to restore the T series regs.
+  */
+ ftrace_common_return:
+-	PTR_L		ra, sp, PT_R1
+ 	PTR_L		a0, sp, PT_R4
+ 	PTR_L		a1, sp, PT_R5
+ 	PTR_L		a2, sp, PT_R6
+@@ -103,12 +102,17 @@ ftrace_common_return:
+ 	PTR_L		a6, sp, PT_R10
+ 	PTR_L		a7, sp, PT_R11
+ 	PTR_L		fp, sp, PT_R22
+-	PTR_L		t0, sp, PT_ERA
+ 	PTR_L		t1, sp, PT_R13
+-	PTR_ADDI	sp, sp, PT_SIZE
+ 	bnez		t1, .Ldirect
++
++	PTR_L		ra, sp, PT_R1
++	PTR_L		t0, sp, PT_ERA
++	PTR_ADDI	sp, sp, PT_SIZE
+ 	jr		t0
+ .Ldirect:
++	PTR_L		t0, sp, PT_R1
++	PTR_L		ra, sp, PT_ERA
++	PTR_ADDI	sp, sp, PT_SIZE
+ 	jr		t1
+ SYM_CODE_END(ftrace_common)
+ 
+@@ -155,6 +159,8 @@ SYM_CODE_END(return_to_handler)
+ 
+ #ifdef CONFIG_DYNAMIC_FTRACE_WITH_DIRECT_CALLS
+ SYM_CODE_START(ftrace_stub_direct_tramp)
+-	jr		t0
++	move		t1, ra
++	move		ra, t0
++	jr		t1
+ SYM_CODE_END(ftrace_stub_direct_tramp)
+ #endif /* CONFIG_DYNAMIC_FTRACE_WITH_DIRECT_CALLS */
+-- 
+2.47.3
 
 
