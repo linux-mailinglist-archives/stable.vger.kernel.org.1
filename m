@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-205643-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205923-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B0D9CFA324
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:34:36 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C55ECFA743
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:03:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2659B3030230
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:34:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C31B233DFBD3
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:11:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42BB42FDC27;
-	Tue,  6 Jan 2026 17:42:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B288D36CDFD;
+	Tue,  6 Jan 2026 17:58:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KBKKhjU4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AI+m/kfG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F27902FD7C3;
-	Tue,  6 Jan 2026 17:42:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D47936CDFA;
+	Tue,  6 Jan 2026 17:58:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721374; cv=none; b=FlcIWrlHxAHXaroBfrIJnwxxol/tyH2WCUshBzVfFTINVBRHgJtMUWFznYqq/W+9CdXsparene+jDYve4qXCjaK4ea4EGhY5xhyvNCD3HubOY15+JaI0pFHbP+Ra8+wiGY8SjJaxL65+sX2pX0ganChVgfGvASh5m9v3TU4B1Ng=
+	t=1767722315; cv=none; b=V66fFG27GXejw7fksGfmsz2GUNZieptsDbNdUieARFqQfhnq/gQ+qIziD8a3dAJG6GB/TuiqEI2WEm9jCmaBDYryTEduKd9CXfDgSw08zTWQvjbwX1BuLbYZ+X4x67BTYHsOFAlJlOBoh+5BRSz41cYBPx56ByqxHvwzZOalGgU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721374; c=relaxed/simple;
-	bh=Qkmh3FBoey17/0Cn3R9A8zMdccy9DrwLtCfkunaSeUg=;
+	s=arc-20240116; t=1767722315; c=relaxed/simple;
+	bh=6LR1GE3IvUz4iB1EwrPzXDrRi1/sH4HN8ygkr/tmYYY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MhwLP/8la3W8qUYfQAJ+iDAQrc4ZV0P8tcbCwp911N2/D71A3V+8WlMGM0XZzunluyi6in9g5Y5mcRM0JbWL3Rh4D72VHchBMDD21ls19fI3cqllRPCXePjMCwvdq8TpQlI6zEnZ+E/AWosn/mIvLFRfFhAb+IMBxs56JTzv1m4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KBKKhjU4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 684CEC116C6;
-	Tue,  6 Jan 2026 17:42:53 +0000 (UTC)
+	 MIME-Version; b=PYmE3DKdwgbPQ3PROQjrQNDJPoubw7AQIx2YOZDN/uRnXDrc7tEltxQC25DdrskVW0B1KuGMZcc1YWCz04vGTijtZrRnSGxRJV4+V1kkOp7TVstLJnsfHtMLELQRDDRLmvgPCw79YNrsX4HzEANxRM/FhAU+A7OtQ4eprRl+Y3c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AI+m/kfG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85AB1C16AAE;
+	Tue,  6 Jan 2026 17:58:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721373;
-	bh=Qkmh3FBoey17/0Cn3R9A8zMdccy9DrwLtCfkunaSeUg=;
+	s=korg; t=1767722315;
+	bh=6LR1GE3IvUz4iB1EwrPzXDrRi1/sH4HN8ygkr/tmYYY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KBKKhjU4Na1qxzSwtPFUwHTKtWBjPtW3wb3mIC30E4O9f/DGtUBQU9rNyaKb/njC6
-	 7GT0TD6IBmgAdNdjfUCT9cn98dbf/BNEi1ha0jB63Cfm0u0BfJ/tY7WjHf16thiH2V
-	 ORIsh2pjA7wY1J7BLSHQUdKGbKLpZUbpIowtLUP8=
+	b=AI+m/kfGy1pHyc0NWsmGr967kouMb1ncYcdT1n6tJB9sbbDxl/WUKEnMl2qVCwt0p
+	 147oOrBpwyqR0jLG6y6NizAL7oAvZKoZcaW80iykHV5A/Qsn3DIMBJQ5nPzgYCfVdK
+	 KbsyKm59cz3DYTPnnJr8nF3rAoLDEXIDRlpB6Azk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 517/567] gpiolib: acpi: Handle deferred list via new API
-Date: Tue,  6 Jan 2026 18:04:59 +0100
-Message-ID: <20260106170510.505523653@linuxfoundation.org>
+	Pingfan Liu <piliu@redhat.com>,
+	Baoquan He <bhe@redhat.com>,
+	Alexander Graf <graf@amazon.com>,
+	Steven Chen <chenste@linux.microsoft.com>,
+	Mimi Zohar <zohar@linux.ibm.com>,
+	Roberto Sassu <roberto.sassu@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.18 226/312] kernel/kexec: fix IMA when allocation happens in CMA area
+Date: Tue,  6 Jan 2026 18:05:00 +0100
+Message-ID: <20260106170556.029162043@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
-References: <20260106170451.332875001@linuxfoundation.org>
+In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
+References: <20260106170547.832845344@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,142 +64,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Pingfan Liu <piliu@redhat.com>
 
-[ Upstream commit a594877663d1e3d5cf57ec8af739582fc5c47cec ]
+commit a3785ae5d334bb71d47a593d54c686a03fb9d136 upstream.
 
-Introduce a new API and handle deferred list via it which moves
-towards isolating the GPIO ACPI and quirk APIs. It will helps
-splitting them completely in the next changes.
+*** Bug description ***
 
-No functional changes.
+When I tested kexec with the latest kernel, I ran into the following warning:
 
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Stable-dep-of: 2d967310c49e ("gpiolib: acpi: Add quirk for Dell Precision 7780")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[   40.712410] ------------[ cut here ]------------
+[   40.712576] WARNING: CPU: 2 PID: 1562 at kernel/kexec_core.c:1001 kimage_map_segment+0x144/0x198
+[...]
+[   40.816047] Call trace:
+[   40.818498]  kimage_map_segment+0x144/0x198 (P)
+[   40.823221]  ima_kexec_post_load+0x58/0xc0
+[   40.827246]  __do_sys_kexec_file_load+0x29c/0x368
+[...]
+[   40.855423] ---[ end trace 0000000000000000 ]---
+
+*** How to reproduce ***
+
+This bug is only triggered when the kexec target address is allocated in
+the CMA area. If no CMA area is reserved in the kernel, use the "cma="
+option in the kernel command line to reserve one.
+
+*** Root cause ***
+The commit 07d24902977e ("kexec: enable CMA based contiguous
+allocation") allocates the kexec target address directly on the CMA area
+to avoid copying during the jump. In this case, there is no IND_SOURCE
+for the kexec segment.  But the current implementation of
+kimage_map_segment() assumes that IND_SOURCE pages exist and map them
+into a contiguous virtual address by vmap().
+
+*** Solution ***
+If IMA segment is allocated in the CMA area, use its page_address()
+directly.
+
+Link: https://lkml.kernel.org/r/20251216014852.8737-2-piliu@redhat.com
+Fixes: 07d24902977e ("kexec: enable CMA based contiguous allocation")
+Signed-off-by: Pingfan Liu <piliu@redhat.com>
+Acked-by: Baoquan He <bhe@redhat.com>
+Cc: Alexander Graf <graf@amazon.com>
+Cc: Steven Chen <chenste@linux.microsoft.com>
+Cc: Mimi Zohar <zohar@linux.ibm.com>
+Cc: Roberto Sassu <roberto.sassu@huawei.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpiolib-acpi.c |   52 +++++++++++++++++++++++++++-----------------
- drivers/gpio/gpiolib-acpi.h |    5 ++++
- 2 files changed, 37 insertions(+), 20 deletions(-)
+ kernel/kexec_core.c |    9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
---- a/drivers/gpio/gpiolib-acpi.c
-+++ b/drivers/gpio/gpiolib-acpi.c
-@@ -350,6 +350,27 @@ static struct gpio_desc *acpi_request_ow
- 	return desc;
+--- a/kernel/kexec_core.c
++++ b/kernel/kexec_core.c
+@@ -967,13 +967,17 @@ void *kimage_map_segment(struct kimage *
+ 	kimage_entry_t *ptr, entry;
+ 	struct page **src_pages;
+ 	unsigned int npages;
++	struct page *cma;
+ 	void *vaddr = NULL;
+ 	int i;
+ 
++	cma = image->segment_cma[idx];
++	if (cma)
++		return page_address(cma);
++
+ 	addr = image->segment[idx].mem;
+ 	size = image->segment[idx].memsz;
+ 	eaddr = addr + size;
+-
+ 	/*
+ 	 * Collect the source pages and map them in a contiguous VA range.
+ 	 */
+@@ -1014,7 +1018,8 @@ void *kimage_map_segment(struct kimage *
+ 
+ void kimage_unmap_segment(void *segment_buffer)
+ {
+-	vunmap(segment_buffer);
++	if (is_vmalloc_addr(segment_buffer))
++		vunmap(segment_buffer);
  }
  
-+bool acpi_gpio_add_to_deferred_list(struct list_head *list)
-+{
-+	bool defer;
-+
-+	mutex_lock(&acpi_gpio_deferred_req_irqs_lock);
-+	defer = !acpi_gpio_deferred_req_irqs_done;
-+	if (defer)
-+		list_add(list, &acpi_gpio_deferred_req_irqs_list);
-+	mutex_unlock(&acpi_gpio_deferred_req_irqs_lock);
-+
-+	return defer;
-+}
-+
-+void acpi_gpio_remove_from_deferred_list(struct list_head *list)
-+{
-+	mutex_lock(&acpi_gpio_deferred_req_irqs_lock);
-+	if (!list_empty(list))
-+		list_del_init(list);
-+	mutex_unlock(&acpi_gpio_deferred_req_irqs_lock);
-+}
-+
- bool acpi_gpio_in_ignore_list(enum acpi_gpio_ignore_list list, const char *controller_in,
- 			      unsigned int pin_in)
- {
-@@ -536,7 +557,6 @@ void acpi_gpiochip_request_interrupts(st
- 	struct acpi_gpio_chip *acpi_gpio;
- 	acpi_handle handle;
- 	acpi_status status;
--	bool defer;
- 
- 	if (!chip->parent || !chip->to_irq)
- 		return;
-@@ -555,14 +575,7 @@ void acpi_gpiochip_request_interrupts(st
- 	acpi_walk_resources(handle, METHOD_NAME__AEI,
- 			    acpi_gpiochip_alloc_event, acpi_gpio);
- 
--	mutex_lock(&acpi_gpio_deferred_req_irqs_lock);
--	defer = !acpi_gpio_deferred_req_irqs_done;
--	if (defer)
--		list_add(&acpi_gpio->deferred_req_irqs_list_entry,
--			 &acpi_gpio_deferred_req_irqs_list);
--	mutex_unlock(&acpi_gpio_deferred_req_irqs_lock);
--
--	if (defer)
-+	if (acpi_gpio_add_to_deferred_list(&acpi_gpio->deferred_req_irqs_list_entry))
- 		return;
- 
- 	acpi_gpiochip_request_irqs(acpi_gpio);
-@@ -594,10 +607,7 @@ void acpi_gpiochip_free_interrupts(struc
- 	if (ACPI_FAILURE(status))
- 		return;
- 
--	mutex_lock(&acpi_gpio_deferred_req_irqs_lock);
--	if (!list_empty(&acpi_gpio->deferred_req_irqs_list_entry))
--		list_del_init(&acpi_gpio->deferred_req_irqs_list_entry);
--	mutex_unlock(&acpi_gpio_deferred_req_irqs_lock);
-+	acpi_gpio_remove_from_deferred_list(&acpi_gpio->deferred_req_irqs_list_entry);
- 
- 	list_for_each_entry_safe_reverse(event, ep, &acpi_gpio->events, node) {
- 		if (event->irq_requested) {
-@@ -615,6 +625,14 @@ void acpi_gpiochip_free_interrupts(struc
- }
- EXPORT_SYMBOL_GPL(acpi_gpiochip_free_interrupts);
- 
-+void __init acpi_gpio_process_deferred_list(struct list_head *list)
-+{
-+	struct acpi_gpio_chip *acpi_gpio, *tmp;
-+
-+	list_for_each_entry_safe(acpi_gpio, tmp, list, deferred_req_irqs_list_entry)
-+		acpi_gpiochip_request_irqs(acpi_gpio);
-+}
-+
- int acpi_dev_add_driver_gpios(struct acpi_device *adev,
- 			      const struct acpi_gpio_mapping *gpios)
- {
-@@ -1505,14 +1523,8 @@ int acpi_gpio_count(const struct fwnode_
- /* Run deferred acpi_gpiochip_request_irqs() */
- static int __init acpi_gpio_handle_deferred_request_irqs(void)
- {
--	struct acpi_gpio_chip *acpi_gpio, *tmp;
--
- 	mutex_lock(&acpi_gpio_deferred_req_irqs_lock);
--	list_for_each_entry_safe(acpi_gpio, tmp,
--				 &acpi_gpio_deferred_req_irqs_list,
--				 deferred_req_irqs_list_entry)
--		acpi_gpiochip_request_irqs(acpi_gpio);
--
-+	acpi_gpio_process_deferred_list(&acpi_gpio_deferred_req_irqs_list);
- 	acpi_gpio_deferred_req_irqs_done = true;
- 	mutex_unlock(&acpi_gpio_deferred_req_irqs_lock);
- 
---- a/drivers/gpio/gpiolib-acpi.h
-+++ b/drivers/gpio/gpiolib-acpi.h
-@@ -58,6 +58,11 @@ static inline int acpi_gpio_count(const
- }
- #endif
- 
-+void acpi_gpio_process_deferred_list(struct list_head *list);
-+
-+bool acpi_gpio_add_to_deferred_list(struct list_head *list);
-+void acpi_gpio_remove_from_deferred_list(struct list_head *list);
-+
- enum acpi_gpio_ignore_list {
- 	ACPI_GPIO_IGNORE_WAKE,
- 	ACPI_GPIO_IGNORE_INTERRUPT,
+ struct kexec_load_limit {
 
 
 
