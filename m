@@ -1,51 +1,53 @@
-Return-Path: <stable+bounces-205224-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205268-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8571CF9CEC
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 18:44:37 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10068CF9D4F
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 18:48:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 638A2300EE6E
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:44:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C89A030E4A15
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:36:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C77A34C9A6;
-	Tue,  6 Jan 2026 17:19:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99EF1350A34;
+	Tue,  6 Jan 2026 17:22:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IU9PZvsK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uE5GKBMs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 288B834C9A1;
-	Tue,  6 Jan 2026 17:19:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56A5F350A30;
+	Tue,  6 Jan 2026 17:22:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767719988; cv=none; b=RuZbnuH/gIzdzPVOBaRbDtndsswtJkLfhMVyw1SwWDgDr8xPzCOkvi+Tye8A1CCqUp4G17rDPG42uxUzlp26PRs8ThRmf2w9WSqmFsGvThfZ5L19TT4XT1A2FbHq/X1QaDeu1pwxGIMr39yzVcVp5nkPlc3+tsyAski+pCDUOb4=
+	t=1767720132; cv=none; b=TeXsf90B8P6OAynD/0NruBTiA8xmVapjycsyBfABdimEZfJMC+RPYv5rEziDFIB1a+APWDVViKDQMhF7+MmrtgPvfmzQ2cnAfjvj88qbMt1uvFufsNerY1cP3/GNFurRZDOxiULiNOlMITUX978vlzS8CxM3WVtK0n0yuawooq8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767719988; c=relaxed/simple;
-	bh=zIbYNmd2fS4Y6UViDAur1tjKxrOlvXLeS9mZJkOIXdU=;
+	s=arc-20240116; t=1767720132; c=relaxed/simple;
+	bh=HMsbp7ukdJtTE/8th+CXtJFrvdtGeX3NvVFgmlreZpc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SOLjFq8rylhAS5dohm5AT5t0j+wG5uGbsCaCECkeiHF3EAb3gIYUPOVAiU369JrVNzWYE6QKVZrzlAnGerDpaIfjebzIEQ/ieqFRUgaYxlAWu01ARw7SNf1qZzaYavAWycU45V3fNu6JMAdHOuxlR2E6uZ/Z6FWPfzlCgwRiIBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IU9PZvsK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F19DC116C6;
-	Tue,  6 Jan 2026 17:19:47 +0000 (UTC)
+	 MIME-Version; b=RmODLTYmg+xsBYkz4JocLrN+t44gu7l9DK/B7YQz+SObbpZBiAFrx1Z3ikEXY9qiliXxvOd9pJ0GkjaNV5z4kmFLRitTEZr7Ndls85taJtUUGvmWjvYnPjVdQYhmZp/HFgL3T8RLg1plp16e+fGIl2zLvGzPOKVU4a55werhYRc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uE5GKBMs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D6BBC19424;
+	Tue,  6 Jan 2026 17:22:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767719988;
-	bh=zIbYNmd2fS4Y6UViDAur1tjKxrOlvXLeS9mZJkOIXdU=;
+	s=korg; t=1767720131;
+	bh=HMsbp7ukdJtTE/8th+CXtJFrvdtGeX3NvVFgmlreZpc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IU9PZvsK7dYhIQWYgG8Fk0LK3B8EZjHuLW54j+P3HJdBHJMTJhCKKPSaCXHYyQiRA
-	 TpttqK8G0SYtUtL6MTsDEFpDDQhVFoeIXmnQPunu8S8h1K36EprDmJSfnymExjQgJZ
-	 9WwYWuvEZ9AIVGev7Suv3RnbTxAgJJHAgu+YGyKQ=
+	b=uE5GKBMs4DH6G9yvZUiqVoD7CPlFdHbnjbAw57IxpLk96I9GcB9a3+lhAJwa0g1sH
+	 WspEF6pu25++BgFIYAkFlfiIUjTzZN1gBvcyWlN6CsG52yKQyN4omuomxlefgEiQDC
+	 tYOaakoKtNiFzwMgVkRtHK/6haK5l5v8oiMoWslc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Duoming Zhou <duoming@zju.edu.cn>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.12 099/567] Input: alps - fix use-after-free bugs caused by dev3_register_work
-Date: Tue,  6 Jan 2026 17:58:01 +0100
-Message-ID: <20260106170454.991275545@linuxfoundation.org>
+	kernel test robot <lkp@intel.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Christoph Hellwig <hch@lst.de>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Carlos Maiolino <cem@kernel.org>
+Subject: [PATCH 6.12 101/567] xfs: dont leak a locked dquot when xfs_dquot_attach_buf fails
+Date: Tue,  6 Jan 2026 17:58:03 +0100
+Message-ID: <20260106170455.064209851@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
 References: <20260106170451.332875001@linuxfoundation.org>
@@ -64,62 +66,48 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Duoming Zhou <duoming@zju.edu.cn>
+From: Christoph Hellwig <hch@lst.de>
 
-commit bf40644ef8c8a288742fa45580897ed0e0289474 upstream.
+commit 204c8f77e8d4a3006f8abe40331f221a597ce608 upstream.
 
-The dev3_register_work delayed work item is initialized within
-alps_reconnect() and scheduled upon receipt of the first bare
-PS/2 packet from an external PS/2 device connected to the ALPS
-touchpad. During device detachment, the original implementation
-calls flush_workqueue() in psmouse_disconnect() to ensure
-completion of dev3_register_work. However, the flush_workqueue()
-in psmouse_disconnect() only blocks and waits for work items that
-were already queued to the workqueue prior to its invocation. Any
-work items submitted after flush_workqueue() is called are not
-included in the set of tasks that the flush operation awaits.
-This means that after flush_workqueue() has finished executing,
-the dev3_register_work could still be scheduled. Although the
-psmouse state is set to PSMOUSE_CMD_MODE in psmouse_disconnect(),
-the scheduling of dev3_register_work remains unaffected.
+xfs_qm_quotacheck_dqadjust acquired the dquot through xfs_qm_dqget,
+which means it owns a reference and holds q_qlock.  Both need to
+be dropped on an error exit.
 
-The race condition can occur as follows:
-
-CPU 0 (cleanup path)     | CPU 1 (delayed work)
-psmouse_disconnect()     |
-  psmouse_set_state()    |
-  flush_workqueue()      | alps_report_bare_ps2_packet()
-  alps_disconnect()      |   psmouse_queue_work()
-    kfree(priv); // FREE | alps_register_bare_ps2_mouse()
-                         |   priv = container_of(work...); // USE
-                         |   priv->dev3 // USE
-
-Add disable_delayed_work_sync() in alps_disconnect() to ensure
-that dev3_register_work is properly canceled and prevented from
-executing after the alps_data structure has been deallocated.
-
-This bug is identified by static analysis.
-
-Fixes: 04aae283ba6a ("Input: ALPS - do not mix trackstick and external PS/2 mouse data")
-Cc: stable@kernel.org
-Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
-Link: https://patch.msgid.link/b57b0a9ccca51a3f06be141bfc02b9ffe69d1845.1765939397.git.duoming@zju.edu.cn
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc: <stable@vger.kernel.org> # v6.13
+Fixes: ca378189fdfa ("xfs: convert quotacheck to attach dquot buffers")
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Carlos Maiolino <cem@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/mouse/alps.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/xfs/xfs_qm.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/input/mouse/alps.c
-+++ b/drivers/input/mouse/alps.c
-@@ -2977,6 +2977,7 @@ static void alps_disconnect(struct psmou
+--- a/fs/xfs/xfs_qm.c
++++ b/fs/xfs/xfs_qm.c
+@@ -1134,7 +1134,7 @@ xfs_qm_quotacheck_dqadjust(
  
- 	psmouse_reset(psmouse);
- 	timer_shutdown_sync(&priv->timer);
-+	disable_delayed_work_sync(&priv->dev3_register_work);
- 	if (priv->dev2)
- 		input_unregister_device(priv->dev2);
- 	if (!IS_ERR_OR_NULL(priv->dev3))
+ 	error = xfs_dquot_attach_buf(NULL, dqp);
+ 	if (error)
+-		return error;
++		goto out_unlock;
+ 
+ 	trace_xfs_dqadjust(dqp);
+ 
+@@ -1164,8 +1164,9 @@ xfs_qm_quotacheck_dqadjust(
+ 	}
+ 
+ 	dqp->q_flags |= XFS_DQFLAG_DIRTY;
++out_unlock:
+ 	xfs_qm_dqput(dqp);
+-	return 0;
++	return error;
+ }
+ 
+ /*
 
 
 
