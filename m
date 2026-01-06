@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-206047-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206049-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E588CFB52F
-	for <lists+stable@lfdr.de>; Wed, 07 Jan 2026 00:08:30 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F820CFB532
+	for <lists+stable@lfdr.de>; Wed, 07 Jan 2026 00:08:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6E1C23024118
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 23:07:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1649E30351FC
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 23:08:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF3262550BA;
-	Tue,  6 Jan 2026 23:07:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DE852EB5B8;
+	Tue,  6 Jan 2026 23:08:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BzBBt49O"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UMdfx1F7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0FFE2EB5B8
-	for <stable@vger.kernel.org>; Tue,  6 Jan 2026 23:07:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1DFF2E542C
+	for <stable@vger.kernel.org>; Tue,  6 Jan 2026 23:08:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767740874; cv=none; b=s3FMLDSidnWHCz2BWtaQ0VFNUAvCCp4NMcQDkut40DQ8bPlw33+RxYVJfYcgfo5klUGwl4crfimDN/BKaezR7i22b2SZo/HmVZJgEMp9vEGaFrW8T34qgo5P7+I3pmVEZCZ82CWagWJMjRcX7uT04L973z/DC1iBFSTgQb9+IWU=
+	t=1767740899; cv=none; b=X1WUdiDJRDTF5vHZh5qN1lrawVY9j5j7ikmbUirm7mDw4ktE2rXyEHdxYQVmDk2iYsabVBhUuZ0kMwGu/N+FaPreqiQSpXu87dW6cM9eSg0vaGNWvqnIEYtXaxs3N6Kisf+rBRmHLNa23+X0YxfQMW9uJnEQAbMjzvc8wb03OyU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767740874; c=relaxed/simple;
-	bh=X6ROx7DZgQ3EirxbdHfO3RZvzn1Ve7AqdH2c6cYquXA=;
+	s=arc-20240116; t=1767740899; c=relaxed/simple;
+	bh=eXtl5JGAQMYkmUGW4D6pzdTeAAceMNpBe4SCh/9h+PQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FcF1qYtlQ0H0YjZ/ye6zgkNydT/12cmaY1NaJ0f2BNEstl7f3sCEw1pBGQCpk7r1MvQmVrO3UXdQVGJvWgBEFT7X/lIYgl6PlNKllGX0WZeBvKzXc5Lico3RvMWEgJ3+o8vo9CqGWQMhnuUnVBucSdaEkTYJFbaVfGfDsY1K/z0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BzBBt49O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7802C19421;
-	Tue,  6 Jan 2026 23:07:53 +0000 (UTC)
+	 MIME-Version; b=fPt7zqHj+78Oz7HgAsS6budc6vHtC1oqB9782+AEnn0mW1mrHP2wNTdbCMiVxKr6VeZ1h6BcGK0pz3vu2YjH1jybJc8V/SRWMvUwRVPIQfASHHPib2zrRPZyHdu3XoRRlc5BPvZHW57VoW+6St8HM52srUiqeg9oiFC8hUS835M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UMdfx1F7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8B53C116C6;
+	Tue,  6 Jan 2026 23:08:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767740874;
-	bh=X6ROx7DZgQ3EirxbdHfO3RZvzn1Ve7AqdH2c6cYquXA=;
+	s=k20201202; t=1767740899;
+	bh=eXtl5JGAQMYkmUGW4D6pzdTeAAceMNpBe4SCh/9h+PQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BzBBt49OMWzHOPU2q1ZcJWx4rMR0vMm5OWx/97xJp3A4txGO5jBxy8HC9oc4Hxcvk
-	 hI/IxKGEU7WBp/nuA1Zucq/94M4GehMe3eSVKaJoY1szbbSP/19EIsU95Eyy2MWPiZ
-	 ffQ9js49ZwKqszuSUguoglh5ZR6e2DjGmJXDHWyCuoVAkmlDUmbjRYw1ybclAgQ/AM
-	 iitminNwmhuRKGYyAbUEL+796p0ZvZG2eh9srM8wCA/cD3QWuQtZab9gcJevH43lRP
-	 wIg5BN3sJ4Vq6S2q1dyfb+uLaKt6dQJ4ffv2Bak6ojNzNsLUu8CxRg27E5rkCzkQv5
-	 A3xvuVK+ewk0A==
+	b=UMdfx1F72F34ej3EIBP07AHJ87ugGG0Mng9dJQi+PiOuRhuABHfblcFS+hIzL7TG7
+	 8sJlYG/uSEqo4lFjTZFK0gZAolU2+spaihnro1MKVxmVJw1MCm2j1qE1mfmLE5CYtR
+	 8kpr4KUw3kyrYmSvKYtIti8KBKZ0/s4HNQmQPkQH3i5SKU9TRA7bILAlMeUP3t4mVD
+	 mPeCHI4jjoMCRH/uYLYq0WuPb/GYqJpVI4YH5OZh82gWk3KsVJ3HjeZUs0ppIe1UWf
+	 5ojJgL/cOjhVRzmP2KCzt+Z0aSQ2aC19/xgXA6CV8WK+riJSo1OMZgLiHeUc27ocBC
+	 nto1uyRBLZoGg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Paolo Abeni <pabeni@redhat.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+Cc: NeilBrown <neil@brown.name>,
+	Olga Kornievskaia <okorniev@redhat.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y] mptcp: ensure context reset on disconnect()
-Date: Tue,  6 Jan 2026 18:07:52 -0500
-Message-ID: <20260106230752.3447994-1-sashal@kernel.org>
+Subject: [PATCH 6.1.y] lockd: fix vfs_test_lock() calls
+Date: Tue,  6 Jan 2026 18:08:16 -0500
+Message-ID: <20260106230816.3448854-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026010549-throwaway-structure-a291@gregkh>
-References: <2026010549-throwaway-structure-a291@gregkh>
+In-Reply-To: <2026010559-plaster-snowsuit-aa37@gregkh>
+References: <2026010559-plaster-snowsuit-aa37@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,123 +60,187 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: NeilBrown <neil@brown.name>
 
-[ Upstream commit 86730ac255b0497a272704de9a1df559f5d6602e ]
+[ Upstream commit a49a2a1baa0c553c3548a1c414b6a3c005a8deba ]
 
-After the blamed commit below, if the MPC subflow is already in TCP_CLOSE
-status or has fallback to TCP at mptcp_disconnect() time,
-mptcp_do_fastclose() skips setting the `send_fastclose flag` and the later
-__mptcp_close_ssk() does not reset anymore the related subflow context.
+Usage of vfs_test_lock() is somewhat confused.  Documentation suggests
+it is given a "lock" but this is not the case.  It is given a struct
+file_lock which contains some details of the sort of lock it should be
+looking for.
 
-Any later connection will be created with both the `request_mptcp` flag
-and the msk-level fallback status off (it is unconditionally cleared at
-MPTCP disconnect time), leading to a warning in subflow_data_ready():
+In particular passing a "file_lock" containing fl_lmops or fl_ops is
+meaningless and possibly confusing.
 
-  WARNING: CPU: 26 PID: 8996 at net/mptcp/subflow.c:1519 subflow_data_ready (net/mptcp/subflow.c:1519 (discriminator 13))
-  Modules linked in:
-  CPU: 26 UID: 0 PID: 8996 Comm: syz.22.39 Not tainted 6.18.0-rc7-05427-g11fc074f6c36 #1 PREEMPT(voluntary)
-  Hardware name: Bochs Bochs, BIOS Bochs 01/01/2011
-  RIP: 0010:subflow_data_ready (net/mptcp/subflow.c:1519 (discriminator 13))
-  Code: 90 0f 0b 90 90 e9 04 fe ff ff e8 b7 1e f5 fe 89 ee bf 07 00 00 00 e8 db 19 f5 fe 83 fd 07 0f 84 35 ff ff ff e8 9d 1e f5 fe 90 <0f> 0b 90 e9 27 ff ff ff e8 8f 1e f5 fe 4c 89 e7 48 89 de e8 14 09
-  RSP: 0018:ffffc9002646fb30 EFLAGS: 00010293
-  RAX: 0000000000000000 RBX: ffff88813b218000 RCX: ffffffff825c8435
-  RDX: ffff8881300b3580 RSI: ffffffff825c8443 RDI: 0000000000000005
-  RBP: 000000000000000b R08: ffffffff825c8435 R09: 000000000000000b
-  R10: 0000000000000005 R11: 0000000000000007 R12: ffff888131ac0000
-  R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
-  FS:  00007f88330af6c0(0000) GS:ffff888a93dd2000(0000) knlGS:0000000000000000
-  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  CR2: 00007f88330aefe8 CR3: 000000010ff59000 CR4: 0000000000350ef0
-  Call Trace:
-   <TASK>
-   tcp_data_ready (net/ipv4/tcp_input.c:5356)
-   tcp_data_queue (net/ipv4/tcp_input.c:5445)
-   tcp_rcv_state_process (net/ipv4/tcp_input.c:7165)
-   tcp_v4_do_rcv (net/ipv4/tcp_ipv4.c:1955)
-   __release_sock (include/net/sock.h:1158 (discriminator 6) net/core/sock.c:3180 (discriminator 6))
-   release_sock (net/core/sock.c:3737)
-   mptcp_sendmsg (net/mptcp/protocol.c:1763 net/mptcp/protocol.c:1857)
-   inet_sendmsg (net/ipv4/af_inet.c:853 (discriminator 7))
-   __sys_sendto (net/socket.c:727 (discriminator 15) net/socket.c:742 (discriminator 15) net/socket.c:2244 (discriminator 15))
-   __x64_sys_sendto (net/socket.c:2247)
-   do_syscall_64 (arch/x86/entry/syscall_64.c:63 (discriminator 1) arch/x86/entry/syscall_64.c:94 (discriminator 1))
-   entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
-  RIP: 0033:0x7f883326702d
+This is particularly problematic in lockd.  nlmsvc_testlock() receives
+an initialised "file_lock" from xdr-decode, including manager ops and an
+owner.  It then mistakenly passes this to vfs_test_lock() which might
+replace the owner and the ops.  This can lead to confusion when freeing
+the lock.
 
-Address the issue setting an explicit `fastclosing` flag at fastclose
-time, and checking such flag after mptcp_do_fastclose().
+The primary role of the 'struct file_lock' passed to vfs_test_lock() is
+to report a conflicting lock that was found, so it makes more sense for
+nlmsvc_testlock() to pass "conflock", which it uses for returning the
+conflicting lock.
 
-Fixes: ae155060247b ("mptcp: fix duplicate reset on fastclose")
+With this change, freeing of the lock is not confused and code in
+__nlm4svc_proc_test() and __nlmsvc_proc_test() can be simplified.
+
+Documentation for vfs_test_lock() is improved to reflect its real
+purpose, and a WARN_ON_ONCE() is added to avoid a similar problem in the
+future.
+
+Reported-by: Olga Kornievskaia <okorniev@redhat.com>
+Closes: https://lore.kernel.org/all/20251021130506.45065-1-okorniev@redhat.com
+Signed-off-by: NeilBrown <neil@brown.name>
+Fixes: 20fa19027286 ("nfs: add export operations")
 Cc: stable@vger.kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20251212-net-mptcp-subflow_data_ready-warn-v1-2-d1f9fd1c36c8@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-[ Adjust context ]
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+[ adapted c.flc_* field accesses to direct fl_* fields ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/protocol.c | 8 +++++---
- net/mptcp/protocol.h | 3 ++-
- 2 files changed, 7 insertions(+), 4 deletions(-)
+ fs/lockd/svc4proc.c |  4 +---
+ fs/lockd/svclock.c  | 21 ++++++++++++---------
+ fs/lockd/svcproc.c  |  5 +----
+ fs/locks.c          | 13 +++++++++++--
+ 4 files changed, 25 insertions(+), 18 deletions(-)
 
-diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index ed29132fd48e..37b50c6edf3b 100644
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -2475,10 +2475,10 @@ bool __mptcp_retransmit_pending_data(struct sock *sk)
-  */
- static void __mptcp_subflow_disconnect(struct sock *ssk,
- 				       struct mptcp_subflow_context *subflow,
--				       unsigned int flags)
-+				       bool fastclosing)
- {
- 	if (((1 << ssk->sk_state) & (TCPF_CLOSE | TCPF_LISTEN)) ||
--	    subflow->send_fastclose) {
-+	    fastclosing) {
- 		/* The MPTCP code never wait on the subflow sockets, TCP-level
- 		 * disconnect should never fail
- 		 */
-@@ -2530,7 +2530,7 @@ static void __mptcp_close_ssk(struct sock *sk, struct sock *ssk,
+diff --git a/fs/lockd/svc4proc.c b/fs/lockd/svc4proc.c
+index b72023a6b4c1..28ba7b1460aa 100644
+--- a/fs/lockd/svc4proc.c
++++ b/fs/lockd/svc4proc.c
+@@ -96,7 +96,6 @@ __nlm4svc_proc_test(struct svc_rqst *rqstp, struct nlm_res *resp)
+ 	struct nlm_args *argp = rqstp->rq_argp;
+ 	struct nlm_host	*host;
+ 	struct nlm_file	*file;
+-	struct nlm_lockowner *test_owner;
+ 	__be32 rc = rpc_success;
  
- 	need_push = (flags & MPTCP_CF_PUSH) && __mptcp_retransmit_pending_data(sk);
- 	if (!dispose_it) {
--		__mptcp_subflow_disconnect(ssk, subflow, flags);
-+		__mptcp_subflow_disconnect(ssk, subflow, msk->fastclosing);
- 		release_sock(ssk);
+ 	dprintk("lockd: TEST4        called\n");
+@@ -106,7 +105,6 @@ __nlm4svc_proc_test(struct svc_rqst *rqstp, struct nlm_res *resp)
+ 	if ((resp->status = nlm4svc_retrieve_args(rqstp, argp, &host, &file)))
+ 		return resp->status == nlm_drop_reply ? rpc_drop_reply :rpc_success;
  
+-	test_owner = argp->lock.fl.fl_owner;
+ 	/* Now check for conflicting locks */
+ 	resp->status = nlmsvc_testlock(rqstp, file, host, &argp->lock, &resp->lock, &resp->cookie);
+ 	if (resp->status == nlm_drop_reply)
+@@ -114,7 +112,7 @@ __nlm4svc_proc_test(struct svc_rqst *rqstp, struct nlm_res *resp)
+ 	else
+ 		dprintk("lockd: TEST4        status %d\n", ntohl(resp->status));
+ 
+-	nlmsvc_put_lockowner(test_owner);
++	nlmsvc_release_lockowner(&argp->lock);
+ 	nlmsvc_release_host(host);
+ 	nlm_release_file(file);
+ 	return rc;
+diff --git a/fs/lockd/svclock.c b/fs/lockd/svclock.c
+index 4e30f3c50970..035f885809dd 100644
+--- a/fs/lockd/svclock.c
++++ b/fs/lockd/svclock.c
+@@ -604,7 +604,13 @@ nlmsvc_testlock(struct svc_rqst *rqstp, struct nlm_file *file,
+ 	}
+ 
+ 	mode = lock_to_openmode(&lock->fl);
+-	error = vfs_test_lock(file->f_file[mode], &lock->fl);
++	locks_init_lock(&conflock->fl);
++	/* vfs_test_lock only uses start, end, and owner, but tests fl_file */
++	conflock->fl.fl_file = lock->fl.fl_file;
++	conflock->fl.fl_start = lock->fl.fl_start;
++	conflock->fl.fl_end = lock->fl.fl_end;
++	conflock->fl.fl_owner = lock->fl.fl_owner;
++	error = vfs_test_lock(file->f_file[mode], &conflock->fl);
+ 	if (error) {
+ 		/* We can't currently deal with deferred test requests */
+ 		if (error == FILE_LOCK_DEFERRED)
+@@ -614,22 +620,19 @@ nlmsvc_testlock(struct svc_rqst *rqstp, struct nlm_file *file,
  		goto out;
-@@ -2839,6 +2839,7 @@ static void mptcp_do_fastclose(struct sock *sk)
- 	struct mptcp_sock *msk = mptcp_sk(sk);
+ 	}
  
- 	mptcp_set_state(sk, TCP_CLOSE);
-+	msk->fastclosing = 1;
+-	if (lock->fl.fl_type == F_UNLCK) {
++	if (conflock->fl.fl_type == F_UNLCK) {
+ 		ret = nlm_granted;
+ 		goto out;
+ 	}
  
- 	/* Explicitly send the fastclose reset as need */
- 	if (__mptcp_check_fallback(msk))
-@@ -3356,6 +3357,7 @@ static int mptcp_disconnect(struct sock *sk, int flags)
- 	msk->bytes_sent = 0;
- 	msk->bytes_retrans = 0;
- 	msk->rcvspace_init = 0;
-+	msk->fastclosing = 0;
+ 	dprintk("lockd: conflicting lock(ty=%d, %Ld-%Ld)\n",
+-		lock->fl.fl_type, (long long)lock->fl.fl_start,
+-		(long long)lock->fl.fl_end);
++		conflock->fl.fl_type, (long long)conflock->fl.fl_start,
++		(long long)conflock->fl.fl_end);
+ 	conflock->caller = "somehost";	/* FIXME */
+ 	conflock->len = strlen(conflock->caller);
+ 	conflock->oh.len = 0;		/* don't return OH info */
+-	conflock->svid = lock->fl.fl_pid;
+-	conflock->fl.fl_type = lock->fl.fl_type;
+-	conflock->fl.fl_start = lock->fl.fl_start;
+-	conflock->fl.fl_end = lock->fl.fl_end;
+-	locks_release_private(&lock->fl);
++	conflock->svid = conflock->fl.fl_pid;
++	locks_release_private(&conflock->fl);
  
- 	WRITE_ONCE(sk->sk_shutdown, 0);
- 	sk_error_report(sk);
-diff --git a/net/mptcp/protocol.h b/net/mptcp/protocol.h
-index 73b842350677..c1c1bc19d61b 100644
---- a/net/mptcp/protocol.h
-+++ b/net/mptcp/protocol.h
-@@ -316,7 +316,8 @@ struct mptcp_sock {
- 			fastopening:1,
- 			in_accept_queue:1,
- 			free_first:1,
--			rcvspace_init:1;
-+			rcvspace_init:1,
-+			fastclosing:1;
- 	u32		notsent_lowat;
- 	int		keepalive_cnt;
- 	int		keepalive_idle;
+ 	ret = nlm_lck_denied;
+ out:
+diff --git a/fs/lockd/svcproc.c b/fs/lockd/svcproc.c
+index 32784f508c81..1a4459763644 100644
+--- a/fs/lockd/svcproc.c
++++ b/fs/lockd/svcproc.c
+@@ -117,7 +117,6 @@ __nlmsvc_proc_test(struct svc_rqst *rqstp, struct nlm_res *resp)
+ 	struct nlm_args *argp = rqstp->rq_argp;
+ 	struct nlm_host	*host;
+ 	struct nlm_file	*file;
+-	struct nlm_lockowner *test_owner;
+ 	__be32 rc = rpc_success;
+ 
+ 	dprintk("lockd: TEST          called\n");
+@@ -127,8 +126,6 @@ __nlmsvc_proc_test(struct svc_rqst *rqstp, struct nlm_res *resp)
+ 	if ((resp->status = nlmsvc_retrieve_args(rqstp, argp, &host, &file)))
+ 		return resp->status == nlm_drop_reply ? rpc_drop_reply :rpc_success;
+ 
+-	test_owner = argp->lock.fl.fl_owner;
+-
+ 	/* Now check for conflicting locks */
+ 	resp->status = cast_status(nlmsvc_testlock(rqstp, file, host, &argp->lock, &resp->lock, &resp->cookie));
+ 	if (resp->status == nlm_drop_reply)
+@@ -137,7 +134,7 @@ __nlmsvc_proc_test(struct svc_rqst *rqstp, struct nlm_res *resp)
+ 		dprintk("lockd: TEST          status %d vers %d\n",
+ 			ntohl(resp->status), rqstp->rq_vers);
+ 
+-	nlmsvc_put_lockowner(test_owner);
++	nlmsvc_release_lockowner(&argp->lock);
+ 	nlmsvc_release_host(host);
+ 	nlm_release_file(file);
+ 	return rc;
+diff --git a/fs/locks.c b/fs/locks.c
+index 9495a55f6347..a367588a2498 100644
+--- a/fs/locks.c
++++ b/fs/locks.c
+@@ -2140,13 +2140,22 @@ SYSCALL_DEFINE2(flock, unsigned int, fd, unsigned int, cmd)
+ /**
+  * vfs_test_lock - test file byte range lock
+  * @filp: The file to test lock for
+- * @fl: The lock to test; also used to hold result
++ * @fl: The byte-range in the file to test; also used to hold result
+  *
++ * On entry, @fl does not contain a lock, but identifies a range (fl_start, fl_end)
++ * in the file (c.flc_file), and an owner (c.flc_owner) for whom existing locks
++ * should be ignored.  c.flc_type and c.flc_flags are ignored.
++ * Both fl_lmops and fl_ops in @fl must be NULL.
+  * Returns -ERRNO on failure.  Indicates presence of conflicting lock by
+- * setting conf->fl_type to something other than F_UNLCK.
++ * setting fl->fl_type to something other than F_UNLCK.
++ *
++ * If vfs_test_lock() does find a lock and return it, the caller must
++ * use locks_free_lock() or locks_release_private() on the returned lock.
+  */
+ int vfs_test_lock(struct file *filp, struct file_lock *fl)
+ {
++	WARN_ON_ONCE(fl->fl_ops || fl->fl_lmops);
++	WARN_ON_ONCE(filp != fl->fl_file);
+ 	if (filp->f_op->lock)
+ 		return filp->f_op->lock(filp, F_GETLK, fl);
+ 	posix_test_lock(filp, fl);
 -- 
 2.51.0
 
