@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-205628-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205908-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A01A8CFA6A8
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:00:22 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33DD9CFA0A7
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:18:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 48D4431F7016
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:34:01 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C58C0306C488
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:16:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B28DF2E093B;
-	Tue,  6 Jan 2026 17:42:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B644E36C0B6;
+	Tue,  6 Jan 2026 17:57:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XakR0m+g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S/LSCkVC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6581328C037;
-	Tue,  6 Jan 2026 17:42:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73A3036657C;
+	Tue,  6 Jan 2026 17:57:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721323; cv=none; b=uqAqTioy7EFLf31w+0GvU7clyswQZpStL7RyMFVepS/SlcFOfd4GVQHL5w5WrA0Bvx7QGxfEyFfSl40vGt42UxmMY+cKh240lpWwbHo/4NxYYvucNNoCNmgcpJJwsh/mTpoS7rpD3ABZxPQFErmEgHSJPAllxAnrBaeiGiFuZME=
+	t=1767722264; cv=none; b=VTHaoE++0ZqzTC5DKR6G896FdORo1eb0jJP5Awxae6EY62SfcdRTvzeXJwEDU78Q7BanE7I1kfw3CT4oXtPoJf/S/bUtWxS4EEnUZ+4fVL5fmOjI7sMKQdc79lD2bg1yF2pgA1/eKSSAgpxou0oXy6kafjFy5uxgXFqh6XKteus=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721323; c=relaxed/simple;
-	bh=X0UsfF8F/2h3TKFj/HCivDTeH1aqGXFWepX6yZ7JtsQ=;
+	s=arc-20240116; t=1767722264; c=relaxed/simple;
+	bh=sunjJ9L2HhaeLmC7ubiTvvubGtboqn3U6hvazjCHNtY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=higsTPveODWKQaaox0fet2rHoMagwhTZyjEj3xyxEi1D6O06CqxeQJ2m4JL5ufT9Lp+2ii4/JtrXC3t8qUTYU/kbjyYW0gOxoTw0Sq1xap696UJBXoksckA6DRdkhCC9BjAE+F3hZW1BUTl/83E9ToPvr/v+3h2DXgctaIRLbVU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XakR0m+g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF993C116C6;
-	Tue,  6 Jan 2026 17:42:02 +0000 (UTC)
+	 MIME-Version; b=tS2aT+gqSaoEAXJdDdEDEw1nUdrVonOT5PqYGv4b3uphB/d0fgow6JaHgKHATfYONCWmzd9I1SshC2W8Ej2snnQSeAlx7JYT8w5s1/56M4FuY+DutQrHTOAH19+GoomNe/5TTofvJG/x6LBh+9j+97hTP9rTOWXZ9j/zSiPjzmU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S/LSCkVC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1521C116C6;
+	Tue,  6 Jan 2026 17:57:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721323;
-	bh=X0UsfF8F/2h3TKFj/HCivDTeH1aqGXFWepX6yZ7JtsQ=;
+	s=korg; t=1767722264;
+	bh=sunjJ9L2HhaeLmC7ubiTvvubGtboqn3U6hvazjCHNtY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XakR0m+gFcrsjHSUatg/hDgFFuNlRPK35aicOUKfrnyVpNQSXgD5Kyp5yh2mnxZac
-	 Koc1F8Q4wESKfCs23MrSRZmbZ6aiLFq5Sq+scFyVNHx2+YgzTcfZXvmGwsjYif16TW
-	 gG5qjQF28w7yfAVyhh+2S2B/wqzHWYIaUHKhUKbQ=
+	b=S/LSCkVCV4U7QirdsvKKwICmFi5P7AGrpD/qgi2sL8cv8YthdKDfQgeWtY66JwVNS
+	 0hs7otNoGGI3aTvIOzfTi8D1jZSULM95fF/R7DGH8rs0rbs5yyQVII31LsZsjbau5T
+	 g8jv58u1qPwR7LZE1tmu3Tny1G9Ev37QakaSUvW8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 503/567] ARM: dts: microchip: sama7g5: fix uart fifo size to 32
-Date: Tue,  6 Jan 2026 18:04:45 +0100
-Message-ID: <20260106170509.976967405@linuxfoundation.org>
+	SeongJae Park <sj@kernel.org>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <davidgow@google.com>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.18 213/312] mm/damon/tests/core-kunit: handle alloc failures on damos_test_filter_out()
+Date: Tue,  6 Jan 2026 18:04:47 +0100
+Message-ID: <20260106170555.545750438@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
-References: <20260106170451.332875001@linuxfoundation.org>
+In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
+References: <20260106170547.832845344@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,48 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolas Ferre <nicolas.ferre@microchip.com>
+From: SeongJae Park <sj@kernel.org>
 
-[ Upstream commit 5654889a94b0de5ad6ceae3793e7f5e0b61b50b6 ]
+commit d14d5671e7c9cc788c5a1edfa94e6f9064275905 upstream.
 
-On some flexcom nodes related to uart, the fifo sizes were wrong: fix
-them to 32 data.
+damon_test_filter_out() is assuming all dynamic memory allocation in it
+will succeed.  Those are indeed likely in the real use cases since those
+allocations are too small to fail, but theoretically those could fail.  In
+the case, inappropriate memory access can happen.  Fix it by appropriately
+cleanup pre-allocated memory and skip the execution of the remaining tests
+in the failure cases.
 
-Fixes: 7540629e2fc7 ("ARM: dts: at91: add sama7g5 SoC DT and sama7g5-ek")
-Cc: stable@vger.kernel.org # 5.15+
-Signed-off-by: Nicolas Ferre <nicolas.ferre@microchip.com>
-Link: https://lore.kernel.org/r/20251114103313.20220-2-nicolas.ferre@microchip.com
-Signed-off-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20251101182021.74868-16-sj@kernel.org
+Fixes: 26713c890875 ("mm/damon/core-test: add a unit test for __damos_filter_out()")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: Brendan Higgins <brendan.higgins@linux.dev>
+Cc: David Gow <davidgow@google.com>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: <stable@vger.kernel.org>	[6.6+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/boot/dts/microchip/sama7g5.dtsi |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ mm/damon/tests/core-kunit.h |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
---- a/arch/arm/boot/dts/microchip/sama7g5.dtsi
-+++ b/arch/arm/boot/dts/microchip/sama7g5.dtsi
-@@ -811,7 +811,7 @@
- 				dma-names = "tx", "rx";
- 				atmel,use-dma-rx;
- 				atmel,use-dma-tx;
--				atmel,fifo-size = <16>;
-+				atmel,fifo-size = <32>;
- 				status = "disabled";
- 			};
- 		};
-@@ -837,7 +837,7 @@
- 				dma-names = "tx", "rx";
- 				atmel,use-dma-rx;
- 				atmel,use-dma-tx;
--				atmel,fifo-size = <16>;
-+				atmel,fifo-size = <32>;
- 				status = "disabled";
- 			};
- 		};
+--- a/mm/damon/tests/core-kunit.h
++++ b/mm/damon/tests/core-kunit.h
+@@ -511,11 +511,22 @@ static void damos_test_filter_out(struct
+ 	struct damos_filter *f;
+ 
+ 	f = damos_new_filter(DAMOS_FILTER_TYPE_ADDR, true, false);
++	if (!f)
++		kunit_skip(test, "filter alloc fail");
+ 	f->addr_range = (struct damon_addr_range){
+ 		.start = DAMON_MIN_REGION * 2, .end = DAMON_MIN_REGION * 6};
+ 
+ 	t = damon_new_target();
++	if (!t) {
++		damos_destroy_filter(f);
++		kunit_skip(test, "target alloc fail");
++	}
+ 	r = damon_new_region(DAMON_MIN_REGION * 3, DAMON_MIN_REGION * 5);
++	if (!r) {
++		damos_destroy_filter(f);
++		damon_free_target(t);
++		kunit_skip(test, "region alloc fail");
++	}
+ 	damon_add_region(r, t);
+ 
+ 	/* region in the range */
 
 
 
