@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-205471-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205754-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC318CF9DBE
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 18:52:17 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE350CFA348
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:35:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BFCD032DA527
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:40:06 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 885703041CD3
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:35:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8028F2DC336;
-	Tue,  6 Jan 2026 17:33:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E62D635FF5A;
+	Tue,  6 Jan 2026 17:49:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZNqDy85g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SssXWqNi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C3B82D8DC4;
-	Tue,  6 Jan 2026 17:33:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A085D355031;
+	Tue,  6 Jan 2026 17:49:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767720805; cv=none; b=WHtGiWDUkBLacNFhIqwNvMb9obqWNJwNb8lpcz4v9dG6tTYaO5YGZb5ecjQBy/u7ie0OtdtO+oFiWkFsxeucJJ13fOz71no2TlyZsgx14gPXfyJtMiWZCODVaZO1V1Eittmu5AGThZ56owQV+XKUEO51afWl27SWMno++S0U75I=
+	t=1767721748; cv=none; b=QvG4/2visyEvaSNm1D27y0GjRZTGlcF5S9TFjI7/ol8YTRQ+RAJz0RLebIft6ZDyuKKxAB1uRH6c6LMPjFdwABu5dlLDjkNuwP8z3HCXtsJ0uFO7EG8BSnnvOJplNTwYrJF/TbGMrQnDDUzez8lpTH/KVD3Knlofk/VD1TvBD8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767720805; c=relaxed/simple;
-	bh=rG5GzRa4l1VWAaG2j8XwPpZ0PK7v+Y7x18cpSAerqls=;
+	s=arc-20240116; t=1767721748; c=relaxed/simple;
+	bh=Wq1l3GaHp2NxmU2LXnC7+f63NxvlbP9ehH2NFVZjL/0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QWYlDrQ3hqALseI2SWizUYOSm/SSOorubPnsZuT5nk+//AIqV83G/OxnkXARJdTQzcdTKEMh3DNVf7iCpcm1wNejUAwwgzvBHe3wjlrdGdsBVISoNv8u0bchAyrpUKO+T5/IUW6ZVrSsrnVq1npBI0mGu/Vvttp6r6jc3olDUW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZNqDy85g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 695DEC116C6;
-	Tue,  6 Jan 2026 17:33:24 +0000 (UTC)
+	 MIME-Version; b=VJpuLqqkzM6z1x8osKNs0i3oaK4nC/eI05H2uqA4SLaX+eCG27JQ7s3uSesLWL///nEjwbAmr0GeDYdtYjMdvT4ZEACClgV7x43HgAZ9Y1d1K15douJpM1cZ3Jb2OCNFt0P3PhAx9SEz38s5q/HpKqOzigDs6OXdjGnHOgc/Cpw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SssXWqNi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27F68C116C6;
+	Tue,  6 Jan 2026 17:49:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767720804;
-	bh=rG5GzRa4l1VWAaG2j8XwPpZ0PK7v+Y7x18cpSAerqls=;
+	s=korg; t=1767721748;
+	bh=Wq1l3GaHp2NxmU2LXnC7+f63NxvlbP9ehH2NFVZjL/0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZNqDy85gQh2XzB80096aM9Iwc4HucsFjIwqL31/1izzOd27qRogeBFktCiL4KJu+K
-	 XCdjYuWsd0XkgA4B+WsyAP5ZUvQJzBdnVRb5Rx81zKEg4SU3+Y/FPTxWV8XI9x7Qd3
-	 1IMBvURH0njJU4jpFUbtzzq9St6mYtB/X0uQzeXU=
+	b=SssXWqNiIq73WuFgDiZQ/ixmCHQ2b7FzQB+kF4kggs40yU9JgKK6alW90vxb3bSat
+	 nbSn62utMztzLcBsX5d8Wm49T+IeONHL4yKsXgpqx4HfjN1Se+gV67u2R+dojYfqOm
+	 jjPZ2Mus/nRLj/A308Z7g1TDK85OYwW0wdwngOlY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.12 345/567] ASoC: codecs: wcd939x: fix regmap leak on probe failure
+	Bagas Sanjaya <bagasdotme@gmail.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 053/312] net: bridge: Describe @tunnel_hash member in net_bridge_vlan_group struct
 Date: Tue,  6 Jan 2026 18:02:07 +0100
-Message-ID: <20260106170504.088466465@linuxfoundation.org>
+Message-ID: <20260106170549.771492477@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
-References: <20260106170451.332875001@linuxfoundation.org>
+In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
+References: <20260106170547.832845344@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,52 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Bagas Sanjaya <bagasdotme@gmail.com>
 
-commit 86dc090f737953f16f8dc60c546ae7854690d4f6 upstream.
+[ Upstream commit f79f9b7ace1713e4b83888c385f5f55519dfb687 ]
 
-The soundwire regmap that may be allocated during probe is not freed on
-late probe failures.
+Sphinx reports kernel-doc warning:
 
-Add the missing error handling.
+WARNING: ./net/bridge/br_private.h:267 struct member 'tunnel_hash' not described in 'net_bridge_vlan_group'
 
-Fixes: be2af391cea0 ("ASoC: codecs: Add WCD939x Soundwire devices driver")
-Cc: stable@vger.kernel.org	# 6.9
-Cc: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20251127135057.2216-1-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix it by describing @tunnel_hash member.
+
+Fixes: efa5356b0d9753 ("bridge: per vlan dst_metadata netlink support")
+Signed-off-by: Bagas Sanjaya <bagasdotme@gmail.com>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/20251218042936.24175-2-bagasdotme@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/wcd939x-sdw.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ net/bridge/br_private.h | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/sound/soc/codecs/wcd939x-sdw.c
-+++ b/sound/soc/codecs/wcd939x-sdw.c
-@@ -1480,12 +1480,18 @@ static int wcd9390_probe(struct sdw_slav
- 
- 	ret = component_add(dev, &wcd939x_sdw_component_ops);
- 	if (ret)
--		return ret;
-+		goto err_free_regmap;
- 
- 	/* Set suspended until aggregate device is bind */
- 	pm_runtime_set_suspended(dev);
- 
- 	return 0;
-+
-+err_free_regmap:
-+	if (wcd->regmap)
-+		regmap_exit(wcd->regmap);
-+
-+	return ret;
- }
- 
- static int wcd9390_remove(struct sdw_slave *pdev)
+diff --git a/net/bridge/br_private.h b/net/bridge/br_private.h
+index 7280c4e9305f..b9b2981c4841 100644
+--- a/net/bridge/br_private.h
++++ b/net/bridge/br_private.h
+@@ -247,6 +247,7 @@ struct net_bridge_vlan {
+  * struct net_bridge_vlan_group
+  *
+  * @vlan_hash: VLAN entry rhashtable
++ * @tunnel_hash: Hash table to map from tunnel key ID (e.g. VXLAN VNI) to VLAN
+  * @vlan_list: sorted VLAN entry list
+  * @num_vlans: number of total VLAN entries
+  * @pvid: PVID VLAN id
+-- 
+2.51.0
+
 
 
 
