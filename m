@@ -1,53 +1,56 @@
-Return-Path: <stable+bounces-205951-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205672-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9234BCFA7BA
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:07:03 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id B867DCFAFC6
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 21:47:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E4D0234296C0
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:16:39 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 574D230591E7
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 20:46:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8597282EB;
-	Tue,  6 Jan 2026 18:00:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94C2D34FF72;
+	Tue,  6 Jan 2026 17:44:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="km4BPgOw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LbxKWM8z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 732D5376BF0;
-	Tue,  6 Jan 2026 18:00:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4144D34FF60;
+	Tue,  6 Jan 2026 17:44:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767722405; cv=none; b=aQXCZ0RYEVNNh7KOGWtUa0V5XAnV3ky+lUdaS5weQ7DPDEzOOCL4uUUunOE+Wsxls37+Nmnw4uv1EYt7QB++nr1R3hBKDGBU2qn9XdEQZIiIxmY/M75hbre+xnAtc6JJtqs0rcv7V7zIaMRoIHhUTMvs3O1jfAKr46Px+O+kaSM=
+	t=1767721471; cv=none; b=EjDuXGJAwB/YPy0dTVOmxUrKB+xQVkfdcLOI/5FfyVKYWI82F8AzeFJpJrizbJF6D0an27K4DJwS4MPlbRq2/k7djQyGlBI8CV4Byvv1E6MOF0SCFFtyZmHjajYOQfJb3cOYcCpk1vS+wtBE110H5Ay9akUphB5/VKWxsk48HBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767722405; c=relaxed/simple;
-	bh=xeXn8aQlrMZd8s80clJJC8Z+fyxnHA3aXmGK7w0W+RI=;
+	s=arc-20240116; t=1767721471; c=relaxed/simple;
+	bh=GrKTFQ5x6n3xlZxWE977+f7C4gxn5wWA1lGVkaooEH8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IYPVCezzCtz1X0ac4MtWv01MM+/D0Oyt4iDIJ5wjnEF4CoJN1Ub6uXr5XtsmG0NVTf9APB69z0TgJ20TpWpTIENz02yYBpaB4n3SfHuEYHJwYZX5/gGmak5CfzZqaVFbFPyRS3VR1nCs4XERzN/G05evp2c7H9sbPInCEFZbD+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=km4BPgOw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3B34C16AAE;
-	Tue,  6 Jan 2026 18:00:04 +0000 (UTC)
+	 MIME-Version; b=ABhC7X77cQyQdMdBimmwWe5PQIG+ypVlQxGQO6CD7GtzhLRJDa9UYogvcAEhILxk5OCqwIEPRlEfHNV5XD7nWoWI5JKwuoNrp+Y+iMUa7gdrnaUNkll+R40hsD/wXPpO9G3Neyvfr6AYzCDR4cye+cic8OZ6o/yBXEz01Aw90rU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LbxKWM8z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F3BAC2BC86;
+	Tue,  6 Jan 2026 17:44:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767722405;
-	bh=xeXn8aQlrMZd8s80clJJC8Z+fyxnHA3aXmGK7w0W+RI=;
+	s=korg; t=1767721471;
+	bh=GrKTFQ5x6n3xlZxWE977+f7C4gxn5wWA1lGVkaooEH8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=km4BPgOwi8MBcKHZLHTe4nf65AZ64khepwfpMER1ETytobGMNaol/Lux+EmAH5RAp
-	 O/KWxQSZz7XlCg6IojkRCiNAmCG+fUbUrKKGuYN47a57Yp2jyMhDeeqFBzNzG7zj3B
-	 7sOSngsFQmDxYckQrZRdkJGXJS6E31stKJMBGXiU=
+	b=LbxKWM8ztm0+CEz7FCTtgV6V8XQCFbUJWctTmiNAMEZ2Ev+7XqtYHmo5k8YvNJxBQ
+	 tSOiuHQNQqW0QbLEJ5gjHleB4c4w9Vb1uBb1bTWqcSjvvvFOTaDeS5TUMt9Dvb4qw0
+	 x0LQwQMgb4nWbPmSgBBzvIVCq40/NHhEIbSXxRGM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ethan Nelson-Moore <enelsonmoore@gmail.com>,
+	Ankit Garg <nktgrg@google.com>,
+	Jordan Rhee <jordanrhee@google.com>,
+	Joshua Washington <joshwash@google.com>,
+	Harshitha Ramamurthy <hramamurthy@google.com>,
 	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.18 254/312] net: usb: sr9700: fix incorrect command used to write single register
+Subject: [PATCH 6.12 546/567] gve: defer interrupt enabling until NAPI registration
 Date: Tue,  6 Jan 2026 18:05:28 +0100
-Message-ID: <20260106170557.037573289@linuxfoundation.org>
+Message-ID: <20260106170511.608246489@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
-References: <20260106170547.832845344@linuxfoundation.org>
+In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
+References: <20260106170451.332875001@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,48 +62,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ethan Nelson-Moore <enelsonmoore@gmail.com>
+From: Ankit Garg <nktgrg@google.com>
 
-commit fa0b198be1c6775bc7804731a43be5d899d19e7a upstream.
+commit 3d970eda003441f66551a91fda16478ac0711617 upstream.
 
-This fixes the device failing to initialize with "error reading MAC
-address" for me, probably because the incorrect write of NCR_RST to
-SR_NCR is not actually resetting the device.
+Currently, interrupts are automatically enabled immediately upon
+request. This allows interrupt to fire before the associated NAPI
+context is fully initialized and cause failures like below:
 
-Fixes: c9b37458e95629b1d1171457afdcc1bf1eb7881d ("USB2NET : SR9700 : One chip USB 1.1 USB2NET SR9700Device Driver Support")
+[    0.946369] Call Trace:
+[    0.946369]  <IRQ>
+[    0.946369]  __napi_poll+0x2a/0x1e0
+[    0.946369]  net_rx_action+0x2f9/0x3f0
+[    0.946369]  handle_softirqs+0xd6/0x2c0
+[    0.946369]  ? handle_edge_irq+0xc1/0x1b0
+[    0.946369]  __irq_exit_rcu+0xc3/0xe0
+[    0.946369]  common_interrupt+0x81/0xa0
+[    0.946369]  </IRQ>
+[    0.946369]  <TASK>
+[    0.946369]  asm_common_interrupt+0x22/0x40
+[    0.946369] RIP: 0010:pv_native_safe_halt+0xb/0x10
+
+Use the `IRQF_NO_AUTOEN` flag when requesting interrupts to prevent auto
+enablement and explicitly enable the interrupt in NAPI initialization
+path (and disable it during NAPI teardown).
+
+This ensures that interrupt lifecycle is strictly coupled with
+readiness of NAPI context.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Ethan Nelson-Moore <enelsonmoore@gmail.com>
-Link: https://patch.msgid.link/20251221082400.50688-1-enelsonmoore@gmail.com
+Fixes: 1dfc2e46117e ("gve: Refactor napi add and remove functions")
+Signed-off-by: Ankit Garg <nktgrg@google.com>
+Reviewed-by: Jordan Rhee <jordanrhee@google.com>
+Reviewed-by: Joshua Washington <joshwash@google.com>
+Signed-off-by: Harshitha Ramamurthy <hramamurthy@google.com>
+Link: https://patch.msgid.link/20251219102945.2193617-1-hramamurthy@google.com
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/sr9700.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/google/gve/gve_main.c  |    2 +-
+ drivers/net/ethernet/google/gve/gve_utils.c |    2 ++
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/net/usb/sr9700.c
-+++ b/drivers/net/usb/sr9700.c
-@@ -52,7 +52,7 @@ static int sr_read_reg(struct usbnet *de
+--- a/drivers/net/ethernet/google/gve/gve_main.c
++++ b/drivers/net/ethernet/google/gve/gve_main.c
+@@ -500,7 +500,7 @@ static int gve_alloc_notify_blocks(struc
+ 		block->priv = priv;
+ 		err = request_irq(priv->msix_vectors[msix_idx].vector,
+ 				  gve_is_gqi(priv) ? gve_intr : gve_intr_dqo,
+-				  0, block->name, block);
++				  IRQF_NO_AUTOEN, block->name, block);
+ 		if (err) {
+ 			dev_err(&priv->pdev->dev,
+ 				"Failed to receive msix vector %d\n", i);
+--- a/drivers/net/ethernet/google/gve/gve_utils.c
++++ b/drivers/net/ethernet/google/gve/gve_utils.c
+@@ -111,11 +111,13 @@ void gve_add_napi(struct gve_priv *priv,
+ 	struct gve_notify_block *block = &priv->ntfy_blocks[ntfy_idx];
  
- static int sr_write_reg(struct usbnet *dev, u8 reg, u8 value)
- {
--	return usbnet_write_cmd(dev, SR_WR_REGS, SR_REQ_WR_REG,
-+	return usbnet_write_cmd(dev, SR_WR_REG, SR_REQ_WR_REG,
- 				value, reg, NULL, 0);
+ 	netif_napi_add(priv->dev, &block->napi, gve_poll);
++	enable_irq(block->irq);
  }
  
-@@ -65,7 +65,7 @@ static void sr_write_async(struct usbnet
- 
- static void sr_write_reg_async(struct usbnet *dev, u8 reg, u8 value)
+ void gve_remove_napi(struct gve_priv *priv, int ntfy_idx)
  {
--	usbnet_write_cmd_async(dev, SR_WR_REGS, SR_REQ_WR_REG,
-+	usbnet_write_cmd_async(dev, SR_WR_REG, SR_REQ_WR_REG,
- 			       value, reg, NULL, 0);
- }
+ 	struct gve_notify_block *block = &priv->ntfy_blocks[ntfy_idx];
  
++	disable_irq(block->irq);
+ 	netif_napi_del(&block->napi);
+ }
 
 
 
