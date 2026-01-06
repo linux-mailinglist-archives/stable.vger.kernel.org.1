@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-205614-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205899-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BF08CFA6AE
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:00:25 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 117B5CFA141
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:20:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 175FF31FF68F
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:34:06 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 66136304CAE6
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:17:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC23B2EA482;
-	Tue,  6 Jan 2026 17:41:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5D2436BCFC;
+	Tue,  6 Jan 2026 17:57:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BOas0PkR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UeKRoWHX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7911F1F1932;
-	Tue,  6 Jan 2026 17:41:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2F52357A50;
+	Tue,  6 Jan 2026 17:57:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721276; cv=none; b=fweNfg4dR5Sn2HAh3QDOlCqAC5doO2CmIW/vNTV6NGQGrqVOdM/E/J+l1F4fyduvNWsDLXkrksg42BMzbgko/bxfyvSdRRjB1tU/f4b3w6CWTQ9/2uRPo/JBVnCDFIIq59bB5r1HBIlwm/Ef1g21SqoAXtBF/KenbPEocZvO2gE=
+	t=1767722234; cv=none; b=hiltLfScGEfV+yAgcL5MqDbqUcih5w12bY57X4OK+VvLJH/N0xn/XU1tYjD9i0ExcZmKXU0nDln60H8JbuxWKG7dShOCYJgEvudiVg33arJjWt0xl20jJNE2Ydh5V7JCOX+grryNvcW99BE4qpVD+qADdPlBXG5ptF91SXqZ9/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721276; c=relaxed/simple;
-	bh=CmgLKdB93tm3Bnc5prh1Oo1AlKCPqb3USnCHATZS46c=;
+	s=arc-20240116; t=1767722234; c=relaxed/simple;
+	bh=2Py3HI+5NQqJ5uKNgm3CyXgSkH9oTjwf7YUDqdp9PIg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cGnWcOD/8VgD+Tk49FHjgVc54GPyw1Si/cJBzt36/e9IZFCGg6B0XNyTWjmBfKbrqZe09jvt+ZEBglviP86gLZTzTKoB5BQdL7tJOfn2u+h2DSSzu9YFlqtP/EvJIIafGRh72j1DgtK3FO1Z5QZa2XIHOh+vWHFXN/9vb7BlcA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BOas0PkR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4663C16AAE;
-	Tue,  6 Jan 2026 17:41:15 +0000 (UTC)
+	 MIME-Version:Content-Type; b=kPARvd2OXhYyvn5FzyywtAfrMMiZre348fCdSqko1lo5TqBavIcp8qprxc2bFuz1NEG17/rSuGlrhmSqSZQjj0W+y51q0Yv3l/qoUOoaXocSejYNcret7HI6qUJUkIXdvzsNpDMtEzWUjdK0rfvZ3m9Ck/o0m+XmrDvV52qNQyc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UeKRoWHX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C53DC116C6;
+	Tue,  6 Jan 2026 17:57:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721276;
-	bh=CmgLKdB93tm3Bnc5prh1Oo1AlKCPqb3USnCHATZS46c=;
+	s=korg; t=1767722234;
+	bh=2Py3HI+5NQqJ5uKNgm3CyXgSkH9oTjwf7YUDqdp9PIg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BOas0PkRLYcp4Apxhpk1BltXGY++h4s2UyURVoYlBwkkSatoJ47c5PRe2UvSCi6fo
-	 8+CQESsmUFuNMXzUkLk/+Qjf+oXv2r5Z6P2P0UxjkeCcfQCO/OfvUnEjoK/4awmC7l
-	 Rnsz79mWRj0Ovr+Q3bQRQSW1K6sztZr7Vq1mKUYc=
+	b=UeKRoWHXi1pjW32Vj2q+x1AqrgKLL5mxJAOG0zTOJR87uAFOFWDazrsB+6N0ANFos
+	 QhsstCw2TbOs3Y8vJxrF5yPZYU8yDZUlPFrhdfMaQukJ1XP1rXzbPRXCsZ6b0R4HU3
+	 zlTQINRwlloEyeju7Jw5KGrbpK9jALsOqN0dgyEw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Josef Bacik <josef@toxicpanda.com>,
-	Daniel Vacek <neelx@suse.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 487/567] btrfs: dont rewrite ret from inode_permission
-Date: Tue,  6 Jan 2026 18:04:29 +0100
-Message-ID: <20260106170509.375415662@linuxfoundation.org>
+	Yuli Wang <wangyl5933@chinaunicom.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.18 196/312] LoongArch: Use __pmd()/__pte() for swap entry conversions
+Date: Tue,  6 Jan 2026 18:04:30 +0100
+Message-ID: <20260106170554.915673978@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
-References: <20260106170451.332875001@linuxfoundation.org>
+In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
+References: <20260106170547.832845344@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,55 +57,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josef Bacik <josef@toxicpanda.com>
+From: WangYuli <wangyl5933@chinaunicom.cn>
 
-[ Upstream commit 0185c2292c600993199bc6b1f342ad47a9e8c678 ]
+commit 4a71df151e703b5e7e85b33369cee59ef2665e61 upstream.
 
-In our user safe ino resolve ioctl we'll just turn any ret into -EACCES
-from inode_permission().  This is redundant, and could potentially be
-wrong if we had an ENOMEM in the security layer or some such other
-error, so simply return the actual return value.
+The __pmd() and __pte() helper macros provide the correct initialization
+syntax and abstraction for the pmd_t and pte_t types.
 
-Note: The patch was taken from v5 of fscrypt patchset
-(https://lore.kernel.org/linux-btrfs/cover.1706116485.git.josef@toxicpanda.com/)
-which was handled over time by various people: Omar Sandoval, Sweet Tea
-Dorminy, Josef Bacik.
+Use __pmd() to fix follow warning about __swp_entry_to_pmd() with gcc-15
+under specific configs [1] :
 
-Fixes: 23d0b79dfaed ("btrfs: Add unprivileged version of ino_lookup ioctl")
-CC: stable@vger.kernel.org # 5.4+
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-Signed-off-by: Daniel Vacek <neelx@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-[ add note ]
-Signed-off-by: David Sterba <dsterba@suse.com>
-[ Adjust context ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  In file included from ./include/linux/pgtable.h:6,
+                   from ./include/linux/mm.h:31,
+                   from ./include/linux/pagemap.h:8,
+                   from arch/loongarch/mm/init.c:14:
+  ./include/linux/swapops.h: In function ‘swp_entry_to_pmd’:
+  ./arch/loongarch/include/asm/pgtable.h:302:34: error: missing braces around initializer [-Werror=missing-braces]
+    302 | #define __swp_entry_to_pmd(x)   ((pmd_t) { (x).val | _PAGE_HUGE })
+        |                                  ^
+  ./include/linux/swapops.h:559:16: note: in expansion of macro ‘__swp_entry_to_pmd’
+    559 |         return __swp_entry_to_pmd(arch_entry);
+        |                ^~~~~~~~~~~~~~~~~~
+  cc1: all warnings being treated as errors
+
+Also update __swp_entry_to_pte() to use __pte() for consistency.
+
+[1]. https://download.01.org/0day-ci/archive/20251119/202511190316.luI90kAo-lkp@intel.com/config
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Yuli Wang <wangyl5933@chinaunicom.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/ioctl.c |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ arch/loongarch/include/asm/pgtable.h |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/btrfs/ioctl.c
-+++ b/fs/btrfs/ioctl.c
-@@ -2012,10 +2012,8 @@ static int btrfs_search_path_in_tree_use
- 			ret = inode_permission(idmap, temp_inode,
- 					       MAY_READ | MAY_EXEC);
- 			iput(temp_inode);
--			if (ret) {
--				ret = -EACCES;
-+			if (ret)
- 				goto out_put;
--			}
+--- a/arch/loongarch/include/asm/pgtable.h
++++ b/arch/loongarch/include/asm/pgtable.h
+@@ -297,9 +297,9 @@ static inline pte_t mk_swap_pte(unsigned
+ #define __swp_offset(x)		((x).val >> 24)
+ #define __swp_entry(type, offset) ((swp_entry_t) { pte_val(mk_swap_pte((type), (offset))) })
+ #define __pte_to_swp_entry(pte) ((swp_entry_t) { pte_val(pte) })
+-#define __swp_entry_to_pte(x)	((pte_t) { (x).val })
++#define __swp_entry_to_pte(x)	__pte((x).val)
+ #define __pmd_to_swp_entry(pmd) ((swp_entry_t) { pmd_val(pmd) })
+-#define __swp_entry_to_pmd(x)	((pmd_t) { (x).val | _PAGE_HUGE })
++#define __swp_entry_to_pmd(x)	__pmd((x).val | _PAGE_HUGE)
  
- 			if (key.offset == upper_limit)
- 				break;
+ static inline bool pte_swp_exclusive(pte_t pte)
+ {
 
 
 
