@@ -1,53 +1,56 @@
-Return-Path: <stable+bounces-205673-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205675-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1C51CFA384
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:37:29 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B7FCCF9F12
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:07:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B8805305C414
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:37:03 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 598B03051B59
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:06:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5D4F350A29;
-	Tue,  6 Jan 2026 17:44:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBB0635292E;
+	Tue,  6 Jan 2026 17:44:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mE7Vi1Ug"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XpR3jMDM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9998F34B1AE;
-	Tue,  6 Jan 2026 17:44:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77F06352927;
+	Tue,  6 Jan 2026 17:44:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721474; cv=none; b=JV0lbLFPdonqhq58O3nJyef0gv1iFhJlLNnK63t5dW2oolxdyQtK3CtLqgc8WVPZ/xvNt5JtRsFldKu6ep8TLVTZXv/ZaBQFghuJtT+25Mqa4fuGiwSQLQNkoeXl6RBrtsewK4pf20NiqwO+vwAm9YIMWSe6A63fzGJJ9e8dIE4=
+	t=1767721481; cv=none; b=KPrE3HOshQI9GZXXRF0iJk1nCQ6hyd9NqXe7ZLEq9VK1IBEdtS9b0PuAhhNJqSIFPJepPrKWoBpFwOOxLVgVR6TOj9HtS34mcV61pboqZTa9dJZOYtnOxFs3h/uNRx5AnsRy6ZsvQVKyn4uvB07pESvGUWSFBXrAE9+ZDpgW7aE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721474; c=relaxed/simple;
-	bh=bEbXYMR5KNf/hVVoib16x6eEpxt9/EWDPgclT/na39A=;
+	s=arc-20240116; t=1767721481; c=relaxed/simple;
+	bh=osA5yX1bWY8l80jJOqNpCvDewHoWuMl2i7Ldrr4mlmU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GHq5ISciyaKN4iBLww4l/m595qD3sjXdYZh8TejYFs7T1kBSn7aoXFrrzrzqIxn7HBVXhlzCoayl654wzl6m7MPt9jFdcy53lP7OyYeN7L1nYBN6TH8AYlraSKtME+Rv/lRUT6s6AzBgBlXby5Q4UtFQkNAOpHdCELkHwyWTcQ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mE7Vi1Ug; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 088D8C19424;
-	Tue,  6 Jan 2026 17:44:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=gTRdPBHQlhOJ8BLi01zMkMjlp8NmUjZqro1tbfTx9A6hfI4WWpOnuq3HWQln8J4Wbw8C5i35a2Jbr7MH804ZuSyciRImmyQzWOmqpiHkp5ykTpjJ0qpxglY8E7DBpub8TX/oz2+uYOIllniKGUPqfMHayKIbQRnAmcsr2ZicOdk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XpR3jMDM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75470C19424;
+	Tue,  6 Jan 2026 17:44:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721474;
-	bh=bEbXYMR5KNf/hVVoib16x6eEpxt9/EWDPgclT/na39A=;
+	s=korg; t=1767721481;
+	bh=osA5yX1bWY8l80jJOqNpCvDewHoWuMl2i7Ldrr4mlmU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mE7Vi1UgeaHNb/FwRR7+3Nhhh8ObVenAZhmHgtxGZ+AasRxGvx4yy+NiF7XB8zQ2m
-	 O0BVUgE84bH+0Xi60dumx6MVCOORGZDgefzYZd31z7mJ7cigtfjtwPL8T9nG5m4hFe
-	 MU+YUp0Xh5Bx4vgrwCpso7BVd6KYsvmtHxMd80D8=
+	b=XpR3jMDMz5shYvdz82hl9JviaM/HsL0zGMFt68UBGUuOOAv7MG58YrOAbHXoHviZ0
+	 HP6yLfiluhWl9H/zd1BTTlp3IIHcRQxkv/GpZUrjr0XHXPucbJmVUHrRqFvEXY0n0t
+	 F94H7LvAnqN+BikqlK0m6fFUFExZD8Uo7N4XAAPo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Tony Tang <tony.tang.ks@renesas.com>,
-	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.12 547/567] ASoC: renesas: rz-ssi: Fix channel swap issue in full duplex mode
-Date: Tue,  6 Jan 2026 18:05:29 +0100
-Message-ID: <20260106170511.644759522@linuxfoundation.org>
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
+	Liam Girdwood <liam.r.girdwood@intel.com>,
+	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+	shumingf@realtek.com,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 549/567] soundwire: stream: extend sdw_alloc_stream() to take type parameter
+Date: Tue,  6 Jan 2026 18:05:31 +0100
+Message-ID: <20260106170511.719559355@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
 References: <20260106170451.332875001@linuxfoundation.org>
@@ -60,130 +63,108 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Biju Das <biju.das.jz@bp.renesas.com>
+From: Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>
 
-[ Upstream commit 52a525011cb8e293799a085436f026f2958403f9 ]
+[ Upstream commit dc90bbefa792031d89fe2af9ad4a6febd6be96a9 ]
 
-The full duplex audio starts with half duplex mode and then switch to
-full duplex mode (another FIFO reset) when both playback/capture
-streams available leading to random audio left/right channel swap
-issue. Fix this channel swap issue by detecting the full duplex
-condition by populating struct dup variable in startup() callback
-and synchronize starting both the play and capture at the same time
-in rz_ssi_start().
+In the existing definition of sdw_stream_runtime, the 'type' member is
+never set and defaults to PCM. To prepare for the BPT/BRA support, we
+need to special-case streams and make use of the 'type'.
 
-Cc: stable@kernel.org
-Fixes: 4f8cd05a4305 ("ASoC: sh: rz-ssi: Add full duplex support")
-Co-developed-by: Tony Tang <tony.tang.ks@renesas.com>
-Signed-off-by: Tony Tang <tony.tang.ks@renesas.com>
-Reviewed-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
-Link: https://patch.msgid.link/20251114073709.4376-2-biju.das.jz@bp.renesas.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+No functional change for now, the implicit PCM type is now explicit.
+
+Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>
+Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Reviewed-by: Liam Girdwood <liam.r.girdwood@intel.com>
+Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
+Tested-by: shumingf@realtek.com
+Link: https://lore.kernel.org/r/20250227140615.8147-5-yung-chuan.liao@linux.intel.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Stable-dep-of: bcba17279327 ("ASoC: qcom: sdw: fix memory leak for sdw_stream_runtime")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/sh/rz-ssi.c |   51 ++++++++++++++++++++++++++++++++++++++++++--------
- 1 file changed, 43 insertions(+), 8 deletions(-)
+ Documentation/driver-api/soundwire/stream.rst |    2 +-
+ drivers/soundwire/stream.c                    |    6 ++++--
+ include/linux/soundwire/sdw.h                 |    2 +-
+ sound/soc/qcom/sdw.c                          |    2 +-
+ 4 files changed, 7 insertions(+), 5 deletions(-)
 
---- a/sound/soc/sh/rz-ssi.c
-+++ b/sound/soc/sh/rz-ssi.c
-@@ -132,6 +132,12 @@ struct rz_ssi_priv {
- 	bool bckp_rise;	/* Bit clock polarity (SSICR.BCKP) */
- 	bool dma_rt;
+--- a/Documentation/driver-api/soundwire/stream.rst
++++ b/Documentation/driver-api/soundwire/stream.rst
+@@ -291,7 +291,7 @@ per stream. From ASoC DPCM framework, th
  
-+	struct {
-+		bool tx_active;
-+		bool rx_active;
-+		bool one_stream_triggered;
-+	} dup;
-+
- 	/* Full duplex communication support */
- 	struct {
- 		unsigned int rate;
-@@ -352,13 +358,12 @@ static int rz_ssi_start(struct rz_ssi_pr
- 	bool is_full_duplex;
- 	u32 ssicr, ssifcr;
+ .. code-block:: c
  
--	is_full_duplex = rz_ssi_is_stream_running(&ssi->playback) ||
--		rz_ssi_is_stream_running(&ssi->capture);
-+	is_full_duplex = ssi->dup.tx_active && ssi->dup.rx_active;
- 	ssicr = rz_ssi_reg_readl(ssi, SSICR);
- 	ssifcr = rz_ssi_reg_readl(ssi, SSIFCR);
- 	if (!is_full_duplex) {
- 		ssifcr &= ~0xF;
--	} else {
-+	} else if (ssi->dup.one_stream_triggered) {
- 		rz_ssi_reg_mask_setl(ssi, SSICR, SSICR_TEN | SSICR_REN, 0);
- 		rz_ssi_set_idle(ssi);
- 		ssifcr &= ~SSIFCR_FIFO_RST;
-@@ -394,12 +399,16 @@ static int rz_ssi_start(struct rz_ssi_pr
- 			      SSISR_RUIRQ), 0);
+-  int sdw_alloc_stream(char * stream_name);
++  int sdw_alloc_stream(char * stream_name, enum sdw_stream_type type);
  
- 	strm->running = 1;
--	if (is_full_duplex)
--		ssicr |= SSICR_TEN | SSICR_REN;
--	else
-+	if (!is_full_duplex) {
- 		ssicr |= is_play ? SSICR_TEN : SSICR_REN;
--
--	rz_ssi_reg_writel(ssi, SSICR, ssicr);
-+		rz_ssi_reg_writel(ssi, SSICR, ssicr);
-+	} else if (ssi->dup.one_stream_triggered) {
-+		ssicr |= SSICR_TEN | SSICR_REN;
-+		rz_ssi_reg_writel(ssi, SSICR, ssicr);
-+		ssi->dup.one_stream_triggered = false;
-+	} else {
-+		ssi->dup.one_stream_triggered = true;
-+	}
+ The SoundWire core provides a sdw_startup_stream() helper function,
+ typically called during a dailink .startup() callback, which performs
+--- a/drivers/soundwire/stream.c
++++ b/drivers/soundwire/stream.c
+@@ -1744,12 +1744,13 @@ static int set_stream(struct snd_pcm_sub
+  * sdw_alloc_stream() - Allocate and return stream runtime
+  *
+  * @stream_name: SoundWire stream name
++ * @type: stream type (could be PCM ,PDM or BPT)
+  *
+  * Allocates a SoundWire stream runtime instance.
+  * sdw_alloc_stream should be called only once per stream. Typically
+  * invoked from ALSA/ASoC machine/platform driver.
+  */
+-struct sdw_stream_runtime *sdw_alloc_stream(const char *stream_name)
++struct sdw_stream_runtime *sdw_alloc_stream(const char *stream_name, enum sdw_stream_type type)
+ {
+ 	struct sdw_stream_runtime *stream;
  
- 	return 0;
+@@ -1761,6 +1762,7 @@ struct sdw_stream_runtime *sdw_alloc_str
+ 	INIT_LIST_HEAD(&stream->master_list);
+ 	stream->state = SDW_STREAM_ALLOCATED;
+ 	stream->m_rt_count = 0;
++	stream->type = type;
+ 
+ 	return stream;
  }
-@@ -897,6 +906,30 @@ static int rz_ssi_dai_set_fmt(struct snd
- 	return 0;
- }
+@@ -1789,7 +1791,7 @@ int sdw_startup_stream(void *sdw_substre
+ 	if (!name)
+ 		return -ENOMEM;
  
-+static int rz_ssi_startup(struct snd_pcm_substream *substream,
-+			  struct snd_soc_dai *dai)
-+{
-+	struct rz_ssi_priv *ssi = snd_soc_dai_get_drvdata(dai);
-+
-+	if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK)
-+		ssi->dup.tx_active = true;
-+	else
-+		ssi->dup.rx_active = true;
-+
-+	return 0;
-+}
-+
-+static void rz_ssi_shutdown(struct snd_pcm_substream *substream,
-+			    struct snd_soc_dai *dai)
-+{
-+	struct rz_ssi_priv *ssi = snd_soc_dai_get_drvdata(dai);
-+
-+	if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK)
-+		ssi->dup.tx_active = false;
-+	else
-+		ssi->dup.rx_active = false;
-+}
-+
- static bool rz_ssi_is_valid_hw_params(struct rz_ssi_priv *ssi, unsigned int rate,
- 				      unsigned int channels,
- 				      unsigned int sample_width,
-@@ -962,6 +995,8 @@ static int rz_ssi_dai_hw_params(struct s
- }
+-	sdw_stream = sdw_alloc_stream(name);
++	sdw_stream = sdw_alloc_stream(name, SDW_STREAM_PCM);
+ 	if (!sdw_stream) {
+ 		dev_err(rtd->dev, "alloc stream failed for substream DAI %s\n", substream->name);
+ 		ret = -ENOMEM;
+--- a/include/linux/soundwire/sdw.h
++++ b/include/linux/soundwire/sdw.h
+@@ -1024,7 +1024,7 @@ struct sdw_stream_runtime {
+ 	int m_rt_count;
+ };
  
- static const struct snd_soc_dai_ops rz_ssi_dai_ops = {
-+	.startup	= rz_ssi_startup,
-+	.shutdown	= rz_ssi_shutdown,
- 	.trigger	= rz_ssi_dai_trigger,
- 	.set_fmt	= rz_ssi_dai_set_fmt,
- 	.hw_params	= rz_ssi_dai_hw_params,
+-struct sdw_stream_runtime *sdw_alloc_stream(const char *stream_name);
++struct sdw_stream_runtime *sdw_alloc_stream(const char *stream_name, enum sdw_stream_type type);
+ void sdw_release_stream(struct sdw_stream_runtime *stream);
+ 
+ int sdw_compute_params(struct sdw_bus *bus);
+--- a/sound/soc/qcom/sdw.c
++++ b/sound/soc/qcom/sdw.c
+@@ -27,7 +27,7 @@ int qcom_snd_sdw_startup(struct snd_pcm_
+ 	struct snd_soc_dai *codec_dai;
+ 	int ret, i;
+ 
+-	sruntime = sdw_alloc_stream(cpu_dai->name);
++	sruntime = sdw_alloc_stream(cpu_dai->name, SDW_STREAM_PCM);
+ 	if (!sruntime)
+ 		return -ENOMEM;
+ 
 
 
 
