@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-205742-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205465-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F8B7CFAC80
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:49:12 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E6F0CFA88F
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:16:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 208C1314A794
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 19:27:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AB1E030378A4
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:27:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 624B135F8CD;
-	Tue,  6 Jan 2026 17:48:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E17E2D8763;
+	Tue,  6 Jan 2026 17:33:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1bjnJ8uy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="03pb1/A5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2037035F8D3;
-	Tue,  6 Jan 2026 17:48:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AF3E26E6F2;
+	Tue,  6 Jan 2026 17:33:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721709; cv=none; b=Sbvsj8HnS7GgJ/w/33xOtd9M0uF7fkMDfEofEjoB3oYdPPHkQBtpYi2Z09TXnyBDvYR+xzWuVRO1jRgyqpl7yC+YFcSyMFgjDIP1JT8AL3aRnGVZqOmR3WDRtvzyEvNbxhyT2kubMr9lxfOFVmEloggP+VPmu190l2vlg4+6ScM=
+	t=1767720784; cv=none; b=URapCePbDyi9XXFjuPkiJr0j3MlxVA1mxvvGSB7iSkSGj+5SMKE9uiFv0WVl2JRi1NcW8feuLlt9z0WhVw4a31SR5wphxGtdyicUH3Wl1y1ubO8ICzVUgYwPY8aCIeZYGIuBm1fKoR03GRs17F028sPX1/m+0zz2bqXKcI1tUT8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721709; c=relaxed/simple;
-	bh=sajxAa95S3oQLraWLwCERTyVAYWDAoLajdSNmYCRK78=;
+	s=arc-20240116; t=1767720784; c=relaxed/simple;
+	bh=fY8wKI1QdO63+7/ICiV5wXuuNP0Ary/DzcaOrrfAPvM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JVcaaSYwmRV1EYZhkBlKDK5mig8BiIjm9Kiu7VVVhvKV5NvT0SWIo4z98lQ2tYpeHxpOrJkcC5nMFOiu6oeL2GIbEyq/dVd5omrxuvonviEsIoTetMeeRxDl/jUKfud9B5GtfUHQxfygCFa9s07sPxKpt21YzhgigrwfY1NzpP8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1bjnJ8uy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82AC2C116C6;
-	Tue,  6 Jan 2026 17:48:28 +0000 (UTC)
+	 MIME-Version; b=pYANevBEtdDzW1D0DnqhGB03gouKyh0zCY2mOAA2p0/UHIxq1W9oM/c4oSECHEupejtOG3DwfSVCLxKnQgIusnUsTGsqZZaBSWJU0Uo/KwIRGZuLUpxuFIqtsT/K7ubaCT6C8DbH8MBDHN/H8Z2/amY+APFSSmo/YbOhcg+aOQk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=03pb1/A5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC624C116C6;
+	Tue,  6 Jan 2026 17:33:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721709;
-	bh=sajxAa95S3oQLraWLwCERTyVAYWDAoLajdSNmYCRK78=;
+	s=korg; t=1767720784;
+	bh=fY8wKI1QdO63+7/ICiV5wXuuNP0Ary/DzcaOrrfAPvM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1bjnJ8uyuSxS2xDbHV2S+AbngrlSgLkcnBYMMZVXsBpKmRvdNbbAKJXlcVNbX6aV9
-	 fxpbS458s1M24fX6F729ZnroKSXM6M3MDeJVLLlwt/ICq3YkrpB4yaeqNiZdxpyWzp
-	 Llq8lQHmIPS80jse72nfAkkjsH++UIDaEY9YhDiY=
+	b=03pb1/A5jENX3QQ7684NFjHg2q39YaWKhHgn/xvoABVUHrhyHFbxtStx0yoTQhsxu
+	 GWksrRHk7HJW4NEuZcUba/Fo7W++zfgmaij0WwIrvvgGSlnolAdd0nH9fghYA5wMsz
+	 r8vFoFUpSNR0s7DynQpjrbeUNEveNtK/n5X3A4mE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rajashekar Hudumula <rajashekar.hudumula@broadcom.com>,
-	Vikas Gupta <vikas.gupta@broadcom.com>,
-	Bhargava Chenna Marreddy <bhargava.marreddy@broadcom.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Honggang LI <honggangli@163.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 047/312] bng_en: update module description
-Date: Tue,  6 Jan 2026 18:02:01 +0100
-Message-ID: <20260106170549.558220342@linuxfoundation.org>
+Subject: [PATCH 6.12 340/567] RDMA/rtrs: Fix clt_path::max_pages_per_mr calculation
+Date: Tue,  6 Jan 2026 18:02:02 +0100
+Message-ID: <20260106170503.905068198@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
-References: <20260106170547.832845344@linuxfoundation.org>
+In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
+References: <20260106170451.332875001@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,79 +60,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rajashekar Hudumula <rajashekar.hudumula@broadcom.com>
+From: Honggang LI <honggangli@163.com>
 
-[ Upstream commit d5dc28305143f126dc3d8da21e1ad75865b194e2 ]
+[ Upstream commit 43bd09d5b750f700499ae8ec45fd41a4c48673e6 ]
 
-The Broadcom BCM57708/800G NIC family is branded as ThorUltra.
-Update the driver description accordingly.
+If device max_mr_size bits in the range [mr_page_shift+31:mr_page_shift]
+are zero, the `min3` function will set clt_path::max_pages_per_mr to
+zero.
 
-Fixes: 74715c4ab0fa0 ("bng_en: Add PCI interface")
-Signed-off-by: Rajashekar Hudumula <rajashekar.hudumula@broadcom.com>
-Reviewed-by: Vikas Gupta <vikas.gupta@broadcom.com>
-Reviewed-by: Bhargava Chenna Marreddy <bhargava.marreddy@broadcom.com>
-Link: https://patch.msgid.link/20251217104748.3004706-1-rajashekar.hudumula@broadcom.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+`alloc_path_reqs` will pass zero, which is invalid, as the third parameter
+to `ib_alloc_mr`.
+
+Fixes: 6a98d71daea1 ("RDMA/rtrs: client: main functionality")
+Signed-off-by: Honggang LI <honggangli@163.com>
+Link: https://patch.msgid.link/20251229025617.13241-1-honggangli@163.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/Kconfig          | 8 ++++----
- drivers/net/ethernet/broadcom/bnge/bnge.h      | 2 +-
- drivers/net/ethernet/broadcom/bnge/bnge_core.c | 2 +-
- 3 files changed, 6 insertions(+), 6 deletions(-)
+ drivers/infiniband/ulp/rtrs/rtrs-clt.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/broadcom/Kconfig b/drivers/net/ethernet/broadcom/Kconfig
-index 9fdef874f5ca..fe15d684990f 100644
---- a/drivers/net/ethernet/broadcom/Kconfig
-+++ b/drivers/net/ethernet/broadcom/Kconfig
-@@ -254,14 +254,14 @@ config BNXT_HWMON
- 	  devices, via the hwmon sysfs interface.
- 
- config BNGE
--	tristate "Broadcom Ethernet device support"
-+	tristate "Broadcom ThorUltra Ethernet device support"
- 	depends on PCI
- 	select NET_DEVLINK
- 	select PAGE_POOL
- 	help
--	  This driver supports Broadcom 50/100/200/400/800 gigabit Ethernet cards.
--	  The module will be called bng_en. To compile this driver as a module,
--	  choose M here.
-+	  This driver supports Broadcom ThorUltra 50/100/200/400/800 gigabit
-+	  Ethernet cards. The module will be called bng_en. To compile this
-+	  driver as a module, choose M here.
- 
- config BCMASP
- 	tristate "Broadcom ASP 2.0 Ethernet support"
-diff --git a/drivers/net/ethernet/broadcom/bnge/bnge.h b/drivers/net/ethernet/broadcom/bnge/bnge.h
-index 7aed5f81cd51..0c154995d9ab 100644
---- a/drivers/net/ethernet/broadcom/bnge/bnge.h
-+++ b/drivers/net/ethernet/broadcom/bnge/bnge.h
-@@ -5,7 +5,7 @@
- #define _BNGE_H_
- 
- #define DRV_NAME	"bng_en"
--#define DRV_SUMMARY	"Broadcom 800G Ethernet Linux Driver"
-+#define DRV_SUMMARY	"Broadcom ThorUltra NIC Ethernet Driver"
- 
- #include <linux/etherdevice.h>
- #include <linux/bnxt/hsi.h>
-diff --git a/drivers/net/ethernet/broadcom/bnge/bnge_core.c b/drivers/net/ethernet/broadcom/bnge/bnge_core.c
-index 2c72dd34d50d..312a9db4d75d 100644
---- a/drivers/net/ethernet/broadcom/bnge/bnge_core.c
-+++ b/drivers/net/ethernet/broadcom/bnge/bnge_core.c
-@@ -19,7 +19,7 @@ char bnge_driver_name[] = DRV_NAME;
- static const struct {
- 	char *name;
- } board_info[] = {
--	[BCM57708] = { "Broadcom BCM57708 50Gb/100Gb/200Gb/400Gb/800Gb Ethernet" },
-+	[BCM57708] = { "Broadcom BCM57708 ThorUltra 50Gb/100Gb/200Gb/400Gb/800Gb Ethernet" },
- };
- 
- static const struct pci_device_id bnge_pci_tbl[] = {
+diff --git a/drivers/infiniband/ulp/rtrs/rtrs-clt.c b/drivers/infiniband/ulp/rtrs/rtrs-clt.c
+index 71387811b281..2b397a544cb9 100644
+--- a/drivers/infiniband/ulp/rtrs/rtrs-clt.c
++++ b/drivers/infiniband/ulp/rtrs/rtrs-clt.c
+@@ -1464,6 +1464,7 @@ static void query_fast_reg_mode(struct rtrs_clt_path *clt_path)
+ 	mr_page_shift      = max(12, ffs(ib_dev->attrs.page_size_cap) - 1);
+ 	max_pages_per_mr   = ib_dev->attrs.max_mr_size;
+ 	do_div(max_pages_per_mr, (1ull << mr_page_shift));
++	max_pages_per_mr = min_not_zero((u32)max_pages_per_mr, U32_MAX);
+ 	clt_path->max_pages_per_mr =
+ 		min3(clt_path->max_pages_per_mr, (u32)max_pages_per_mr,
+ 		     ib_dev->attrs.max_fast_reg_page_list_len);
 -- 
 2.51.0
 
