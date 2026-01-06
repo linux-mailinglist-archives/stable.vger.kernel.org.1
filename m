@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-205591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205869-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85F62CFA372
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:36:57 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CE96CFA46B
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:48:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A90F9302DF39
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:36:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 392B2341A956
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:02:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC6A92C21F1;
-	Tue,  6 Jan 2026 17:40:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 307D436BCC2;
+	Tue,  6 Jan 2026 17:55:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jARimdOe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G3hWcYY6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 886CD2222AC;
-	Tue,  6 Jan 2026 17:40:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D024B36B072;
+	Tue,  6 Jan 2026 17:55:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721202; cv=none; b=EA+RGM2mP+x8MYVjphIX82T74zEdVGyiFezsEUg+tJK35CGntqCxP8/YcmZ6T3CwNeLH80PCPd+DYZH5yU8VtRsmlEbAG5FdXwkGZrHIhD0/wkSa6H8MQf4f0UhUlfnMkD/+U7ueUSo5fOrABA2kPLP2GV5eFriebycRZkEPYJQ=
+	t=1767722130; cv=none; b=Ii8fiW9Xm4AeyH5G2lUUg8TqDyIsBhibPLSD0sLZmi69sYYYm31jbPI3cNsQsFk8wQW6FxJupZicCe/RWMO5vBAZCjnMX3XNKMhZ6PEu7aXYRlzuA68L0uuc920IJ5C2ugmAlkGFOTcwG64UPFFE/R961wMdgRfv8HPyN7Rs/bY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721202; c=relaxed/simple;
-	bh=LPswcb18Q3/Pi4RUF4BlwEr8loQN0TzNTW8nn6mmknc=;
+	s=arc-20240116; t=1767722130; c=relaxed/simple;
+	bh=wM/O6xrhMKz1vtQiBRO9isZl4BZYtvNeh3gsyN5gu8A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CXmos4gLGB6nIdRj/NQCtyLSuZvww1HQ0oc2Lh6FHT0lkANhFwwduX/zCzAWE9YxaOU9pScj2jMgQNHoQKQ9fqLzzizEeH933kIRiUZH8CfKbr1/py2SSICNw4EWg+zX4foWds9zNbk8+rT1AryDDahO9B+Jr2OGnnjNqjdkUq8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jARimdOe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9A03C116C6;
-	Tue,  6 Jan 2026 17:40:01 +0000 (UTC)
+	 MIME-Version; b=BWadhvcuZQu7iZZxw/ckixUA0hO04ptzUKqD9zhSTh+b1oCfCcDYFAGGEdAGvjEiTsgwYSgoVyemjXnFGYn1IR4bilMmsnXuN3M37CnQVBhLBV5mflni4xJGLY/pIUozf8nkLYXKEhjG/rUTIfyzv8JOt40cejroygxkYD9cc/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G3hWcYY6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 388D1C116C6;
+	Tue,  6 Jan 2026 17:55:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721202;
-	bh=LPswcb18Q3/Pi4RUF4BlwEr8loQN0TzNTW8nn6mmknc=;
+	s=korg; t=1767722130;
+	bh=wM/O6xrhMKz1vtQiBRO9isZl4BZYtvNeh3gsyN5gu8A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jARimdOeJ0I+Gqh8e+t+ItQXNVvWwZi4/yVxa077UDsjvxQZo24S2dt65irgdrebX
-	 0mn3NBmF3krWEE/lAKZBrX4lPWcTkiNPs3w8424tqQut9QkIcmZg8RB7kwOvSrR+DV
-	 UN2p9XKfTIylHai3Gt4v3RD41lrYZOJVMUUKXa7M=
+	b=G3hWcYY642LM53Avu2aEPzR8pqkdidJEZSb4+g2bu1VtBgjXaWbFp4jnlHptkCASN
+	 GJd3BTjrLy2Tdht1FQmqN6Xu3xU4Zf+eDBAFLo9yE+/CXqmPvcDVbnglVzsnmYLE5D
+	 wblM7RcNLiWLRc1QfHWKPNSDv4XycWBcTDZLga2k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	CK Hu <ck.hu@mediatek.com>,
-	Johan Hovold <johan@kernel.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Chun-Kuang Hu <chunkuang.hu@kernel.org>
-Subject: [PATCH 6.12 467/567] drm/mediatek: Fix probe resource leaks
+	Val Packett <val@packett.cool>,
+	Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>,
+	Vikash Garodia <vikash.garodia@oss.qualcomm.com>,
+	Bryan ODonoghue <bod@kernel.org>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 6.18 175/312] media: iris: Refine internal buffer reconfiguration logic for resolution change
 Date: Tue,  6 Jan 2026 18:04:09 +0100
-Message-ID: <20260106170508.624822699@linuxfoundation.org>
+Message-ID: <20260106170554.165118173@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
-References: <20260106170451.332875001@linuxfoundation.org>
+In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
+References: <20260106170547.832845344@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,111 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>
 
-commit 07c7c640a8eb9e196f357d15d88a59602a947197 upstream.
+commit aec75e355c633e4b0967c99580bd8ef93e0cdc98 upstream.
 
-Make sure to unmap and release the component iomap and clock on probe
-failure (e.g. probe deferral) and on driver unbind.
+Improve the condition used to determine when input internal buffers need
+to be reconfigured during streamon on the capture port. Previously, the
+check relied on the INPUT_PAUSE sub-state, which was also being set
+during seek operations. This led to input buffers being queued multiple
+times to the firmware, causing session errors due to duplicate buffer
+submissions.
 
-Note that unlike of_iomap(), devm_of_iomap() also checks whether the
-region is already mapped.
+This change introduces a more accurate check using the FIRST_IPSC and
+DRC sub-states to ensure that input buffer reconfiguration is triggered
+only during resolution change scenarios, such as streamoff/on on the
+capture port. This avoids duplicate buffer queuing during seek
+operations.
 
-Fixes: 119f5173628a ("drm/mediatek: Add DRM Driver for Mediatek SoC MT8173.")
-Cc: stable@vger.kernel.org	# 4.7
-Cc: CK Hu <ck.hu@mediatek.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://patchwork.kernel.org/project/dri-devel/patch/20250923152340.18234-2-johan@kernel.org/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+Fixes: c1f8b2cc72ec ("media: iris: handle streamoff/on from client in dynamic resolution change")
+Cc: stable@vger.kernel.org
+Reported-by: Val Packett <val@packett.cool>
+Closes: https://gitlab.freedesktop.org/gstreamer/gstreamer/-/issues/4700
+Signed-off-by: Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>
+Reviewed-by: Vikash Garodia <vikash.garodia@oss.qualcomm.com>
+Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/mediatek/mtk_ddp_comp.c |   20 ++++++++++++++++----
- drivers/gpu/drm/mediatek/mtk_ddp_comp.h |    2 +-
- drivers/gpu/drm/mediatek/mtk_drm_drv.c  |    4 ++--
- 3 files changed, 19 insertions(+), 7 deletions(-)
+ drivers/media/platform/qcom/iris/iris_common.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/mediatek/mtk_ddp_comp.c
-+++ b/drivers/gpu/drm/mediatek/mtk_ddp_comp.c
-@@ -621,15 +621,20 @@ int mtk_find_possible_crtcs(struct drm_d
- 	return ret;
- }
- 
--int mtk_ddp_comp_init(struct device_node *node, struct mtk_ddp_comp *comp,
-+static void mtk_ddp_comp_clk_put(void *_clk)
-+{
-+	struct clk *clk = _clk;
-+
-+	clk_put(clk);
-+}
-+
-+int mtk_ddp_comp_init(struct device *dev, struct device_node *node, struct mtk_ddp_comp *comp,
- 		      unsigned int comp_id)
+--- a/drivers/media/platform/qcom/iris/iris_common.c
++++ b/drivers/media/platform/qcom/iris/iris_common.c
+@@ -91,12 +91,14 @@ int iris_process_streamon_input(struct i
+ int iris_process_streamon_output(struct iris_inst *inst)
  {
- 	struct platform_device *comp_pdev;
- 	enum mtk_ddp_comp_type type;
- 	struct mtk_ddp_comp_dev *priv;
--#if IS_REACHABLE(CONFIG_MTK_CMDQ)
- 	int ret;
--#endif
+ 	const struct iris_hfi_command_ops *hfi_ops = inst->core->hfi_ops;
+-	bool drain_active = false, drc_active = false;
+ 	enum iris_inst_sub_state clear_sub_state = 0;
++	bool drain_active, drc_active, first_ipsc;
+ 	int ret = 0;
  
- 	if (comp_id >= DDP_COMPONENT_DRM_ID_MAX)
- 		return -EINVAL;
-@@ -670,11 +675,18 @@ int mtk_ddp_comp_init(struct device_node
- 	if (!priv)
- 		return -ENOMEM;
+ 	iris_scale_power(inst);
  
--	priv->regs = of_iomap(node, 0);
-+	priv->regs = devm_of_iomap(dev, node, 0, NULL);
-+	if (IS_ERR(priv->regs))
-+		return PTR_ERR(priv->regs);
++	first_ipsc = inst->sub_state & IRIS_INST_SUB_FIRST_IPSC;
 +
- 	priv->clk = of_clk_get(node, 0);
- 	if (IS_ERR(priv->clk))
- 		return PTR_ERR(priv->clk);
+ 	drain_active = inst->sub_state & IRIS_INST_SUB_DRAIN &&
+ 		inst->sub_state & IRIS_INST_SUB_DRAIN_LAST;
  
-+	ret = devm_add_action_or_reset(dev, mtk_ddp_comp_clk_put, priv->clk);
-+	if (ret)
-+		return ret;
-+
- #if IS_REACHABLE(CONFIG_MTK_CMDQ)
- 	ret = cmdq_dev_get_client_reg(comp->dev, &priv->cmdq_reg, 0);
- 	if (ret)
---- a/drivers/gpu/drm/mediatek/mtk_ddp_comp.h
-+++ b/drivers/gpu/drm/mediatek/mtk_ddp_comp.h
-@@ -350,7 +350,7 @@ static inline void mtk_ddp_comp_encoder_
- int mtk_ddp_comp_get_id(struct device_node *node,
- 			enum mtk_ddp_comp_type comp_type);
- int mtk_find_possible_crtcs(struct drm_device *drm, struct device *dev);
--int mtk_ddp_comp_init(struct device_node *comp_node, struct mtk_ddp_comp *comp,
-+int mtk_ddp_comp_init(struct device *dev, struct device_node *comp_node, struct mtk_ddp_comp *comp,
- 		      unsigned int comp_id);
- enum mtk_ddp_comp_type mtk_ddp_comp_get_type(unsigned int comp_id);
- void mtk_ddp_write(struct cmdq_pkt *cmdq_pkt, unsigned int value,
---- a/drivers/gpu/drm/mediatek/mtk_drm_drv.c
-+++ b/drivers/gpu/drm/mediatek/mtk_drm_drv.c
-@@ -874,7 +874,7 @@ static int mtk_drm_probe(struct platform
- 							    (void *)private->mmsys_dev,
- 							    sizeof(*private->mmsys_dev));
- 		private->ddp_comp[DDP_COMPONENT_DRM_OVL_ADAPTOR].dev = &ovl_adaptor->dev;
--		mtk_ddp_comp_init(NULL, &private->ddp_comp[DDP_COMPONENT_DRM_OVL_ADAPTOR],
-+		mtk_ddp_comp_init(dev, NULL, &private->ddp_comp[DDP_COMPONENT_DRM_OVL_ADAPTOR],
- 				  DDP_COMPONENT_DRM_OVL_ADAPTOR);
- 		component_match_add(dev, &match, compare_dev, &ovl_adaptor->dev);
- 	}
-@@ -943,7 +943,7 @@ static int mtk_drm_probe(struct platform
- 						   node);
- 		}
+@@ -108,7 +110,8 @@ int iris_process_streamon_output(struct
+ 	else if (drain_active)
+ 		clear_sub_state = IRIS_INST_SUB_DRAIN | IRIS_INST_SUB_DRAIN_LAST;
  
--		ret = mtk_ddp_comp_init(node, &private->ddp_comp[comp_id], comp_id);
-+		ret = mtk_ddp_comp_init(dev, node, &private->ddp_comp[comp_id], comp_id);
- 		if (ret) {
- 			of_node_put(node);
- 			goto err_node;
+-	if (inst->domain == DECODER && inst->sub_state & IRIS_INST_SUB_INPUT_PAUSE) {
++	/* Input internal buffer reconfiguration required in case of resolution change */
++	if (first_ipsc || drc_active) {
+ 		ret = iris_alloc_and_queue_input_int_bufs(inst);
+ 		if (ret)
+ 			return ret;
 
 
 
