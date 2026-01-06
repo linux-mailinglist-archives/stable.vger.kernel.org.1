@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-205528-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205822-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91268CFA2B5
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:31:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F92DCFA5AA
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 19:56:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 10FC831A0C95
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 17:43:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 172193407D05
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:13:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3623333C18E;
-	Tue,  6 Jan 2026 17:36:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D25D934F47B;
+	Tue,  6 Jan 2026 17:52:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RMHQE9Y7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V8WUzR0x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7AD833BBDF;
-	Tue,  6 Jan 2026 17:36:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C36634D386;
+	Tue,  6 Jan 2026 17:52:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767720993; cv=none; b=tzr8ZzvnceRNwfp0HqLm8ZRCdDP/KPu0KMD/qcWu7VvXcawkQf04M1Qx/gxl91+Fr4XJNUKk7mlScVd08wcIoOh9CmzVCJ/vxqOGgV94v/o4MJXM8kJYBKPcC4YccAm3ms+iiDxB2rCg7YMUeBmInSXL2X+siW5SKAAkyzA8qRE=
+	t=1767721978; cv=none; b=RrtG8prqchKohFdqpgWTdzyqXA/famSQQE5DTCFnggFEnShyxhzVTEyNoPnWwcc815jqk5eFknOsin6CpPM3yjlz8NNPD/wt/5TuhU+3cDBt/veLKFl79CQK0dDJbKnYY1u1f/1it8pS/+oWUYz1ZOdQ7rJv5f4hKrgLh3Eq8p0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767720993; c=relaxed/simple;
-	bh=VDUYqLUALCPDY7DM8HBmyK3IMnw7YEzIj2PCqpO3eCk=;
+	s=arc-20240116; t=1767721978; c=relaxed/simple;
+	bh=BMV9X3h26yNpzJmRb9CrF5PBu2mnqxvUrBk8eSt1vF0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EQB+nMTK2LhXRg6bfWYYyLzTy2JFsobvOs3vRegIj5NcxzwJ4YZJqujbcdvY0ujjipbfdWjmm+2EMnA83iDE+mnpjNnQwOx3ZUCLk06GFhv1eItiBvFfAAVEArdQ03vNTVDUdzVcw2GTYmFKSxtJnRKOOYf4PKjue+foOX+78jM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RMHQE9Y7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52FCFC116C6;
-	Tue,  6 Jan 2026 17:36:32 +0000 (UTC)
+	 MIME-Version; b=CLpDDVfo7IgqsXU+opUqjYedcZx5uUYFFCATFdgxpK6Mphl05BtTGQJii3YlmZn/vLzyWD9d1omEUbaXqOEmiFrBxkiQv1pjFgbfoGalRK8MfjHh41wO6sJD1X6TIl/2tRucMmtCMPOKIITeS+OC4u2wJhAn+T5ig4Xp22GaKts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V8WUzR0x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C636C16AAE;
+	Tue,  6 Jan 2026 17:52:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767720992;
-	bh=VDUYqLUALCPDY7DM8HBmyK3IMnw7YEzIj2PCqpO3eCk=;
+	s=korg; t=1767721978;
+	bh=BMV9X3h26yNpzJmRb9CrF5PBu2mnqxvUrBk8eSt1vF0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RMHQE9Y7ABm+kJJOG7D+Nxbf8yMYTuq4TX5DVrkNe0Cu12SMsc1OUm2ellUUuQ5PP
-	 mihbQ7FhmW3i39zLrZetl6/lotBnfb9BKWLKGF6ZSa7oxEYVUrWo6XQxA51cdlBJ4P
-	 SpCTTa0i+uI91kCzaO2X8husme2Vi9aWDa3spTd4=
+	b=V8WUzR0xmc8GOoJSrpbbyC82wnQqAfClqYFaOXGgD4IJGO5ygQ3y3nlylsnxnScjI
+	 1UOg/9bKGn2Ah95d0dKspL0qT/Gg5UDhj4f2SiGtJ7knzbW212E7Kgmpb9lhnY+mgP
+	 IwCFNasCnlaNBZbV872JZrlYeGIPKSOxhdgCj+EA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Michael Walle <mwalle@kernel.org>,
-	Pratyush Yadav <pratyush@kernel.org>
-Subject: [PATCH 6.12 386/567] mtd: spi-nor: winbond: Add support for W25Q01NWxxIM chips
-Date: Tue,  6 Jan 2026 18:02:48 +0100
-Message-ID: <20260106170505.621921123@linuxfoundation.org>
+	stable@kernel.org,
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.18 096/312] ASoC: renesas: rz-ssi: Fix rz_ssi_priv::hw_params_cache::sample_width
+Date: Tue,  6 Jan 2026 18:02:50 +0100
+Message-ID: <20260106170551.314249083@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
-References: <20260106170451.332875001@linuxfoundation.org>
+In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
+References: <20260106170547.832845344@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,40 +61,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miquel Raynal <miquel.raynal@bootlin.com>
+From: Biju Das <biju.das.jz@bp.renesas.com>
 
-commit a607e676c8b9258eabc3fc88f45bcd70ea178b41 upstream.
+commit 2bae7beda19f3b2dc6ab2062c94df19c27923712 upstream.
 
-These chips must be described as none of the block protection
-information are discoverable. This chip supports 4 bits plus the
-top/bottom addressing capability to identify the protected blocks.
+The strm->sample_width is not filled during rz_ssi_dai_hw_params(). This
+wrong value is used for caching sample_width in struct hw_params_cache.
+Fix this issue by replacing 'strm->sample_width'->'params_width(params)'
+in rz_ssi_dai_hw_params(). After this drop the variable sample_width
+from struct rz_ssi_stream as it is unused.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Reviewed-by: Michael Walle <mwalle@kernel.org>
-Signed-off-by: Pratyush Yadav <pratyush@kernel.org>
+Cc: stable@kernel.org
+Fixes: 4f8cd05a4305 ("ASoC: sh: rz-ssi: Add full duplex support")
+Reviewed-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+Link: https://patch.msgid.link/20251114073709.4376-3-biju.das.jz@bp.renesas.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/spi-nor/winbond.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ sound/soc/renesas/rz-ssi.c |   13 ++++---------
+ 1 file changed, 4 insertions(+), 9 deletions(-)
 
---- a/drivers/mtd/spi-nor/winbond.c
-+++ b/drivers/mtd/spi-nor/winbond.c
-@@ -258,6 +258,10 @@ static const struct flash_info winbond_n
- 		/* W25Q01NWxxIQ */
- 		.id = SNOR_ID(0xef, 0x60, 0x21),
- 		.flags = SPI_NOR_HAS_LOCK | SPI_NOR_HAS_TB | SPI_NOR_TB_SR_BIT6 | SPI_NOR_4BIT_BP,
-+	}, {
-+		/* W25Q01NWxxIM */
-+		.id = SNOR_ID(0xef, 0x80, 0x21),
-+		.flags = SPI_NOR_HAS_LOCK | SPI_NOR_HAS_TB | SPI_NOR_TB_SR_BIT6 | SPI_NOR_4BIT_BP,
- 	},
- };
+--- a/sound/soc/renesas/rz-ssi.c
++++ b/sound/soc/renesas/rz-ssi.c
+@@ -13,6 +13,7 @@
+ #include <linux/module.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/reset.h>
++#include <sound/pcm_params.h>
+ #include <sound/soc.h>
  
+ /* REGISTER OFFSET */
+@@ -87,7 +88,6 @@ struct rz_ssi_stream {
+ 	int dma_buffer_pos;	/* The address for the next DMA descriptor */
+ 	int completed_dma_buf_pos; /* The address of the last completed DMA descriptor. */
+ 	int period_counter;	/* for keeping track of periods transferred */
+-	int sample_width;
+ 	int buffer_pos;		/* current frame position in the buffer */
+ 	int running;		/* 0=stopped, 1=running */
+ 
+@@ -217,10 +217,7 @@ static inline bool rz_ssi_is_stream_runn
+ static void rz_ssi_stream_init(struct rz_ssi_stream *strm,
+ 			       struct snd_pcm_substream *substream)
+ {
+-	struct snd_pcm_runtime *runtime = substream->runtime;
+-
+ 	rz_ssi_set_substream(strm, substream);
+-	strm->sample_width = samples_to_bytes(runtime, 1);
+ 	strm->dma_buffer_pos = 0;
+ 	strm->completed_dma_buf_pos = 0;
+ 	strm->period_counter = 0;
+@@ -978,9 +975,9 @@ static int rz_ssi_dai_hw_params(struct s
+ 				struct snd_soc_dai *dai)
+ {
+ 	struct rz_ssi_priv *ssi = snd_soc_dai_get_drvdata(dai);
+-	struct rz_ssi_stream *strm = rz_ssi_stream_get(ssi, substream);
+ 	unsigned int sample_bits = hw_param_interval(params,
+ 					SNDRV_PCM_HW_PARAM_SAMPLE_BITS)->min;
++	unsigned int sample_width = params_width(params);
+ 	unsigned int channels = params_channels(params);
+ 	unsigned int rate = params_rate(params);
+ 	int ret;
+@@ -999,16 +996,14 @@ static int rz_ssi_dai_hw_params(struct s
+ 
+ 	if (rz_ssi_is_stream_running(&ssi->playback) ||
+ 	    rz_ssi_is_stream_running(&ssi->capture)) {
+-		if (rz_ssi_is_valid_hw_params(ssi, rate, channels,
+-					      strm->sample_width, sample_bits))
++		if (rz_ssi_is_valid_hw_params(ssi, rate, channels, sample_width, sample_bits))
+ 			return 0;
+ 
+ 		dev_err(ssi->dev, "Full duplex needs same HW params\n");
+ 		return -EINVAL;
+ 	}
+ 
+-	rz_ssi_cache_hw_params(ssi, rate, channels, strm->sample_width,
+-			       sample_bits);
++	rz_ssi_cache_hw_params(ssi, rate, channels, sample_width, sample_bits);
+ 
+ 	ret = rz_ssi_swreset(ssi);
+ 	if (ret)
 
 
 
