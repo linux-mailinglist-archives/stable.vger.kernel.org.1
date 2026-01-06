@@ -1,51 +1,52 @@
-Return-Path: <stable+bounces-205242-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205247-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A84D4CFA77C
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:05:34 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4103CFA796
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:06:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B510A34106EA
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:14:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 34C92341851F
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:15:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69DA334D4C0;
-	Tue,  6 Jan 2026 17:20:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3FF734DB4D;
+	Tue,  6 Jan 2026 17:21:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G90tqYyU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jbAp+a7v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2507834D3B9;
-	Tue,  6 Jan 2026 17:20:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A0A834DB46;
+	Tue,  6 Jan 2026 17:21:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767720047; cv=none; b=s46N2NcIgh9RIP/NCOQYrtfG0HQ09gbDd6/VyW4MYpaIRCaGTd0Mt+y5sd76la1NQecj7zLnfa1i+eiI8PP1zHOOGBYqAemSXJs2T42s2TnZC/rmdALHtR/t3Nff5EB5YEKD69LCkN1oJeD/IbN98bU+MVQ3OaTt2Z5U35ARjcs=
+	t=1767720064; cv=none; b=hk/u/xN8PjIzt07tV9GxLkAEBulhQhdL9Ozs5/T/52VOCxU4+hdylAnSqtgnK/7xsgdJc/zlaR0Op4tQ5YtbtaKI3tj0QMoQLKkL1V64NE5z4LNouGzcIBk4Y4MXgoVTvmHo4Pe+18LXlQ5jpmu5oUyzta7A+5yskeKMG6AmMo8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767720047; c=relaxed/simple;
-	bh=z1PS1wS8GTkgGDyhpZtoHmygKqiD0TxuyBkwoK2DwNw=;
+	s=arc-20240116; t=1767720064; c=relaxed/simple;
+	bh=DcPvuEoB6K8eOkPQa+D8IjCPAPuULBtBmipdocwYDuY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Isdfpkv7h4ZenzHQNlzmzvwk+472f9QFNkMj4nJXoXW61lsA4SMkvnYFDXt59SMFuOkbHCW6UTxwfdArO56KOTaHsjsiF7XjQQ8cBonslC4cDyOMQOhdlcTMGoZxU871AdGFuxYeq/5oi2yaOCKI/sy7pF8HQd8JhQjMfO4ia8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G90tqYyU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2424C116C6;
-	Tue,  6 Jan 2026 17:20:46 +0000 (UTC)
+	 MIME-Version; b=doc+w9VN4OGCb71wEVayhYT1zJLnTbYqknlEYGKU2P3/JugIKeVpVj5EPrHx8BGfwTE74jO0hNP9HcRRrBEKw42gSoqxNbJfe+582H+C8K8w55+PS2Jw+EgkCk8bei/d7B8iKjpq9f9zVf5ib/j6zoiFXXMXuPLQKd3DcuPbi8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jbAp+a7v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D190BC116C6;
+	Tue,  6 Jan 2026 17:21:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767720047;
-	bh=z1PS1wS8GTkgGDyhpZtoHmygKqiD0TxuyBkwoK2DwNw=;
+	s=korg; t=1767720064;
+	bh=DcPvuEoB6K8eOkPQa+D8IjCPAPuULBtBmipdocwYDuY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G90tqYyUXoweDH3eJCNo26+fNFXit1KzHMNZgZxcACPVPGrGQwJEhLZx65PL3OUff
-	 NDU/HjWq9+5+iXH7la4yodIITZLFS+epbe047rOLzbXiFJb7uW/cZ5eJqTwcPUtFXk
-	 nNHSX5V7V415McN+qJ41piBRkDqhTC2CvyE+6Pkw=
+	b=jbAp+a7vnITAm9A/xPLQrxjSCVWgX1uojKJsRyy7czTGePxr7x8u6Y9wqALEhidyt
+	 i+qgEBOyC4//eoLoF5ZgrwGDygPhsd5p+i8vaNAVKW56GpROPRsTAOoxilIR/Ksxi3
+	 LCvOQBUWCx4D+gsnhjAZfFnM/5533KIdiNqXLnh4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinhui Guo <guojinhui.liam@bytedance.com>,
-	Corey Minyard <corey@minyard.net>,
+	Matthias Schiffer <matthias.schiffer@tq-group.com>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Kevin Hilman <khilman@baylibre.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 119/567] ipmi: Fix the race between __scan_channels() and deliver_response()
-Date: Tue,  6 Jan 2026 17:58:21 +0100
-Message-ID: <20260106170455.731795405@linuxfoundation.org>
+Subject: [PATCH 6.12 123/567] ti-sysc: allow OMAP2 and OMAP4 timers to be reserved on AM33xx
+Date: Tue,  6 Jan 2026 17:58:25 +0100
+Message-ID: <20260106170455.878041654@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
 References: <20260106170451.332875001@linuxfoundation.org>
@@ -64,88 +65,62 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jinhui Guo <guojinhui.liam@bytedance.com>
+From: Matthias Schiffer <matthias.schiffer@tq-group.com>
 
-[ Upstream commit 936750fdba4c45e13bbd17f261bb140dd55f5e93 ]
+[ Upstream commit 3f61783920504b2cf99330b372d82914bb004d8e ]
 
-The race window between __scan_channels() and deliver_response() causes
-the parameters of some channels to be set to 0.
+am33xx.dtsi has the same clock setup as am35xx.dtsi, setting
+ti,no-reset-on-init and ti,no-idle on timer1_target and timer2_target,
+so AM33 needs the same workaround as AM35 to avoid ti-sysc probe
+failing on certain target modules.
 
-1.[CPUA] __scan_channels() issues an IPMI request and waits with
-         wait_event() until all channels have been scanned.
-         wait_event() internally calls might_sleep(), which might
-         yield the CPU. (Moreover, an interrupt can preempt
-         wait_event() and force the task to yield the CPU.)
-2.[CPUB] deliver_response() is invoked when the CPU receives the
-         IPMI response. After processing a IPMI response,
-         deliver_response() directly assigns intf->wchannels to
-         intf->channel_list and sets intf->channels_ready to true.
-         However, not all channels are actually ready for use.
-3.[CPUA] Since intf->channels_ready is already true, wait_event()
-         never enters __wait_event(). __scan_channels() immediately
-         clears intf->null_user_handler and exits.
-4.[CPUB] Once intf->null_user_handler is set to NULL, deliver_response()
-         ignores further IPMI responses, leaving the remaining
-	 channels zero-initialized and unusable.
-
-CPUA                             CPUB
--------------------------------  -----------------------------
-__scan_channels()
- intf->null_user_handler
-       = channel_handler;
- send_channel_info_cmd(intf,
-       0);
- wait_event(intf->waitq,
-       intf->channels_ready);
-  do {
-   might_sleep();
-                                 deliver_response()
-                                  channel_handler()
-                                   intf->channel_list =
-				         intf->wchannels + set;
-                                   intf->channels_ready = true;
-                                   send_channel_info_cmd(intf,
-                                         intf->curr_channel);
-   if (condition)
-    break;
-   __wait_event(wq_head,
-          condition);
-  } while(0)
- intf->null_user_handler
-       = NULL;
-                                 deliver_response()
-                                  if (!msg->user)
-                                   if (intf->null_user_handler)
-                                    rv = -EINVAL;
-                                  return rv;
--------------------------------  -----------------------------
-
-Fix the race between __scan_channels() and deliver_response() by
-deferring both the assignment intf->channel_list = intf->wchannels
-and the flag intf->channels_ready = true until all channels have
-been successfully scanned or until the IPMI request has failed.
-
-Signed-off-by: Jinhui Guo <guojinhui.liam@bytedance.com>
-Message-ID: <20250930074239.2353-2-guojinhui.liam@bytedance.com>
-Signed-off-by: Corey Minyard <corey@minyard.net>
+Signed-off-by: Matthias Schiffer <matthias.schiffer@tq-group.com>
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Link: https://lore.kernel.org/r/20250825131114.2206804-1-alexander.stein@ew.tq-group.com
+Signed-off-by: Kevin Hilman <khilman@baylibre.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/ipmi/ipmi_msghandler.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/bus/ti-sysc.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/char/ipmi/ipmi_msghandler.c b/drivers/char/ipmi/ipmi_msghandler.c
-index 99fe01321971..29106325aba7 100644
---- a/drivers/char/ipmi/ipmi_msghandler.c
-+++ b/drivers/char/ipmi/ipmi_msghandler.c
-@@ -3414,8 +3414,6 @@ channel_handler(struct ipmi_smi *intf, struct ipmi_recv_msg *msg)
- 			intf->channels_ready = true;
- 			wake_up(&intf->waitq);
- 		} else {
--			intf->channel_list = intf->wchannels + set;
--			intf->channels_ready = true;
- 			rv = send_channel_info_cmd(intf, intf->curr_channel);
- 		}
+diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
+index f715c8d28129..27149eb29afb 100644
+--- a/drivers/bus/ti-sysc.c
++++ b/drivers/bus/ti-sysc.c
+@@ -48,6 +48,7 @@ enum sysc_soc {
+ 	SOC_UNKNOWN,
+ 	SOC_2420,
+ 	SOC_2430,
++	SOC_AM33,
+ 	SOC_3430,
+ 	SOC_AM35,
+ 	SOC_3630,
+@@ -2896,6 +2897,7 @@ static void ti_sysc_idle(struct work_struct *work)
+ static const struct soc_device_attribute sysc_soc_match[] = {
+ 	SOC_FLAG("OMAP242*", SOC_2420),
+ 	SOC_FLAG("OMAP243*", SOC_2430),
++	SOC_FLAG("AM33*", SOC_AM33),
+ 	SOC_FLAG("AM35*", SOC_AM35),
+ 	SOC_FLAG("OMAP3[45]*", SOC_3430),
+ 	SOC_FLAG("OMAP3[67]*", SOC_3630),
+@@ -3101,10 +3103,15 @@ static int sysc_check_active_timer(struct sysc *ddata)
+ 	 * can be dropped if we stop supporting old beagleboard revisions
+ 	 * A to B4 at some point.
+ 	 */
+-	if (sysc_soc->soc == SOC_3430 || sysc_soc->soc == SOC_AM35)
++	switch (sysc_soc->soc) {
++	case SOC_AM33:
++	case SOC_3430:
++	case SOC_AM35:
+ 		error = -ENXIO;
+-	else
++		break;
++	default:
+ 		error = -EBUSY;
++	}
  
+ 	if ((ddata->cfg.quirks & SYSC_QUIRK_NO_RESET_ON_INIT) &&
+ 	    (ddata->cfg.quirks & SYSC_QUIRK_NO_IDLE))
 -- 
 2.51.0
 
