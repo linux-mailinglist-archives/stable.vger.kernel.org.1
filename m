@@ -1,52 +1,51 @@
-Return-Path: <stable+bounces-205592-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205596-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1D37CFABCF
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:43:02 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5120ECFAD2B
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:57:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BEE22305A456
+	by sea.lore.kernel.org (Postfix) with ESMTP id 63A9D31D3987
 	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 19:42:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 880D72D641C;
-	Tue,  6 Jan 2026 17:40:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C2A42D9EE7;
+	Tue,  6 Jan 2026 17:40:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kVmIkiW5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cavIzn+T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 412242C21F0;
-	Tue,  6 Jan 2026 17:40:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49AD22D73B9;
+	Tue,  6 Jan 2026 17:40:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721208; cv=none; b=Suf1QO4DXQLPpjKHXVCrScUt/Kv70Mvzc68qGpfTerk3jLz+iadk09DzQqiOAtU0pgrdQaqQRfQYPhBeH2dcFMlXKYiOd8qn1cSv/oE6q/iRJj8p4fVZ728NCdYz7zyKMsZ/pQ+bMDyz7VBX+8uX+npLyypcNBjq/K091EKNUSY=
+	t=1767721216; cv=none; b=Y66u7T8u2/Dar3c1lRjqecVAfhTDkd84vVMuY9ql3sFW58wBlBqhhOoHykiDqAMGxkch6psckRMawzqBEg2KEMylefuMVLkjssLRy+yVcSaF5HhKEJkuSRRlYAMgrD1r5o+E9G4sfnp+4W4tidEia4HZlOfsF6q1B0+I4Zmzesw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721208; c=relaxed/simple;
-	bh=f1BmRVrgIfV4U7JMCOW1JoDJpQjytPXkTWdwrzVbB3c=;
+	s=arc-20240116; t=1767721216; c=relaxed/simple;
+	bh=0wuhMG1OIY7x+Q/YzFEQXWE6XYDWMYlxd6BgrSlW6Ic=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jmWc4TxdW/Am6OnB7PAfmqekOeNLckb752Tow3jYGtFNEMfEdfXVaiCsEmYkUM4UUuEWZzws9rm/6L0AOnvF6h6emmybvUX8oXMFCzPPHZ8VvjrTMQ/R85H3dkpnkx8Oh+JtvLdORldQtFphWCxiFNu0tPDWkExXMwTu0GogN/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kVmIkiW5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 526C6C116C6;
-	Tue,  6 Jan 2026 17:40:05 +0000 (UTC)
+	 MIME-Version; b=KexKW+wTqPMHeR6RnZ4axI8HXzM24MjDwCEJ91GPfM5TPmF0ymJEAApCUVH3GG5X8FEJoxRT1ljGDgdhVux9zn65J1SFZ5yvzfoEhY0sY+Ulu3lw4CXGTKbiqyFj6PJ7R5V/cuM7QP2uXfbyPaEEef0RIMGitvso0RCk45cG70U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cavIzn+T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59540C19423;
+	Tue,  6 Jan 2026 17:40:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721205;
-	bh=f1BmRVrgIfV4U7JMCOW1JoDJpQjytPXkTWdwrzVbB3c=;
+	s=korg; t=1767721215;
+	bh=0wuhMG1OIY7x+Q/YzFEQXWE6XYDWMYlxd6BgrSlW6Ic=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kVmIkiW5g+vmTULyVkK1jY6Z81Tjz9GZpasGJ3ZkTbNQdJVpEJ5bSK+LQLe8vF4jB
-	 M4g2kN69xgSOoozB7ALxoaQt1GhzbxRZJDyZp2MeoJFCj3zmQghctpEnyiimr1cy5g
-	 58POe+hZbttJY28iQO0M1kqrxe0TkSzjE5fvKW70=
+	b=cavIzn+TJLKdvoUm4NBhU5RK3W37W/rGw5zFHe3scUx2IJjmzNezxSJenXJxPmTcp
+	 OuUddGgi82vzv66bIDUDs+/dayvM2WZx2fCVsDQvDaMS2HPspOEffim663E52HFfDo
+	 GNIuyy5ztahGmMb8hgEx2HwQ6wMfQs+mRDeSNZ+4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	CK Hu <ck.hu@mediatek.com>,
-	Johan Hovold <johan@kernel.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Chun-Kuang Hu <chunkuang.hu@kernel.org>
-Subject: [PATCH 6.12 468/567] drm/mediatek: Fix probe memory leak
-Date: Tue,  6 Jan 2026 18:04:10 +0100
-Message-ID: <20260106170508.663354538@linuxfoundation.org>
+	Jonathan Kim <jonathan.kim@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.12 471/567] drm/amdkfd: bump minimum vgpr size for gfx1151
+Date: Tue,  6 Jan 2026 18:04:13 +0100
+Message-ID: <20260106170508.775781097@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
 References: <20260106170451.332875001@linuxfoundation.org>
@@ -65,41 +64,33 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Jonathan Kim <jonathan.kim@amd.com>
 
-commit 5e49200593f331cd0629b5376fab9192f698e8ef upstream.
+commit cf326449637a566ba98fb82c47d46cd479608c88 upstream.
 
-The Mediatek DRM driver allocates private data for components without a
-platform driver but as the lifetime is tied to each component device,
-the memory is never freed.
+GFX1151 has 1.5x the number of available physical VGPRs per SIMD.
+Bump total memory availability for acquire checks on queue creation.
 
-Tie the allocation lifetime to the DRM platform device so that the
-memory is released on probe failure (e.g. probe deferral) and when the
-driver is unbound.
-
-Fixes: c0d36de868a6 ("drm/mediatek: Move clk info from struct mtk_ddp_comp to sub driver private data")
-Cc: stable@vger.kernel.org	# 5.12
-Cc: CK Hu <ck.hu@mediatek.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://patchwork.kernel.org/project/dri-devel/patch/20250923152340.18234-3-johan@kernel.org/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+Signed-off-by: Jonathan Kim <jonathan.kim@amd.com>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit b42f3bf9536c9b710fd1d4deb7d1b0dc819dc72d)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/mediatek/mtk_ddp_comp.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_queue.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/gpu/drm/mediatek/mtk_ddp_comp.c
-+++ b/drivers/gpu/drm/mediatek/mtk_ddp_comp.c
-@@ -671,7 +671,7 @@ int mtk_ddp_comp_init(struct device *dev
- 	    type == MTK_DSI)
- 		return 0;
- 
--	priv = devm_kzalloc(comp->dev, sizeof(*priv), GFP_KERNEL);
-+	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
- 	if (!priv)
- 		return -ENOMEM;
- 
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_queue.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_queue.c
+@@ -408,6 +408,7 @@ static u32 kfd_get_vgpr_size_per_cu(u32
+ 		vgpr_size = 0x80000;
+ 	else if (gfxv == 110000 ||		/* GFX_VERSION_PLUM_BONITO */
+ 		 gfxv == 110001 ||		/* GFX_VERSION_WHEAT_NAS */
++		 gfxv == 110501 ||		/* GFX_VERSION_GFX1151 */
+ 		 gfxv == 120000 ||		/* GFX_VERSION_GFX1200 */
+ 		 gfxv == 120001)		/* GFX_VERSION_GFX1201 */
+ 		vgpr_size = 0x60000;
 
 
 
