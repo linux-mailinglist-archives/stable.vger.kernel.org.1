@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-205812-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-205551-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20E6DCFA974
-	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:21:39 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB4DECFAB8A
+	for <lists+stable@lfdr.de>; Tue, 06 Jan 2026 20:41:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CA16A32C72CB
-	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 18:34:11 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id BF8343006459
+	for <lists+stable@lfdr.de>; Tue,  6 Jan 2026 19:41:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81713330322;
-	Tue,  6 Jan 2026 17:52:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8761F34252B;
+	Tue,  6 Jan 2026 17:37:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vUPfX34e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T3z6+Gv3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FC462FB630;
-	Tue,  6 Jan 2026 17:52:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4181633C539;
+	Tue,  6 Jan 2026 17:37:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767721945; cv=none; b=gLR4yGKVSUwPIrpYqWX1yEh2qGhR9AnWBUfKrNa8+ANwLzaHV/xZZ6M/NyteVkn8E6Nk1STOieBEzAfPQIvbMel34Wrd23ToofRFSxFBJAiRvkMVRVusI1qgh7D+VrcwQgnRUWhxxw02XLcchDK3Mcly3ZSyTuULYyZWTEsrPN4=
+	t=1767721071; cv=none; b=QZgmKjAYyKwCzGg/Eprhcn8HmnfmhvDcw/ptomJ5VIa+d+ocoYr0E2Ol98jRKyXdZ78ELS/yzvhb6VVevUuahoy1/1wY/4cKaqW0EzUeRoIOJqPnLk82vBRacBy6JJE2KtiiQFo3LyaWVhCNF6yI1M1XuGWWthftBmfrhBntZPM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767721945; c=relaxed/simple;
-	bh=LuTewjhgpMj3o8wiAd4UqIQX+CbLjGEDfkGnNX1ku8U=;
+	s=arc-20240116; t=1767721071; c=relaxed/simple;
+	bh=epzQMZjj5EiVBA+KdCwdDIOus3sVn7fdVkKhDe9Uq88=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UYw4CM8cp1aM0ifgdQJnF/ZyC1aQ3yePQ2rUinEeJCz0EvNPN/AGutJjCIoVq6pQGhuikTgGCY2D7PWgr6hlnc0UoLharfG7p/L+AE2+2foKN8h+34Buhsks/ljIHKNm+cTtneCdGzCVh7re2rCh/hX73WOvu/Nu7vyix1fWdJo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vUPfX34e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4180C116C6;
-	Tue,  6 Jan 2026 17:52:24 +0000 (UTC)
+	 MIME-Version; b=L+vlV9HiqxUqvIofZ6Ec4hVyAD/1Sg07sJe2u27j4vpY/FKGj0trR6oPTnzVDseF2jhbcfI67jDCTAMpZL73LPqnbcE/lYZxsPtueq53+FE4Q1M005bRQm8q6z6GUN1HuiaWLcx87iVhHkkJa0QgUyk0RSEkUanVshLJGlWYNEU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T3z6+Gv3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A4F8C116C6;
+	Tue,  6 Jan 2026 17:37:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767721945;
-	bh=LuTewjhgpMj3o8wiAd4UqIQX+CbLjGEDfkGnNX1ku8U=;
+	s=korg; t=1767721070;
+	bh=epzQMZjj5EiVBA+KdCwdDIOus3sVn7fdVkKhDe9Uq88=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vUPfX34e3arn/27EZWnERyzXKq7m24EVutZ7lrMnry0cJf6JJPGaxXKdr1v/ee2wz
-	 EG2cv32pSMjwpip3g1DYZ4CVmBS8r4QH+v7osjGzK2v7dZtLpxkvaOmCZZIbAnJz7W
-	 KoQEOUbUjz/ckGe88ZdWI2zy7Ydam+Obxej/mvH4=
+	b=T3z6+Gv3z0oqjE80+0o/h0XQXfbJ75MbONOL/A28cXJwl04VI+5p77Jj5WoLFOm1u
+	 ZZKuHaa7gb2GDZB9OQ/Ub6bgtwyERC69a/zH9v76DEa3gERtpOgSi8o3TmIPA8cXRT
+	 Omfeap0l/jeULgW2+S3RrBI+1xUVwEUSrgzm+a8M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.18 091/312] ASoC: codecs: wcd939x: fix regmap leak on probe failure
-Date: Tue,  6 Jan 2026 18:02:45 +0100
-Message-ID: <20260106170551.125670690@linuxfoundation.org>
+	Christian Marangi <ansuelsmth@gmail.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 6.12 384/567] mtd: mtdpart: ignore error -ENOENT from parsers on subpartitions
+Date: Tue,  6 Jan 2026 18:02:46 +0100
+Message-ID: <20260106170505.547256658@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
-References: <20260106170547.832845344@linuxfoundation.org>
+In-Reply-To: <20260106170451.332875001@linuxfoundation.org>
+References: <20260106170451.332875001@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,52 +59,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Christian Marangi <ansuelsmth@gmail.com>
 
-commit 86dc090f737953f16f8dc60c546ae7854690d4f6 upstream.
+commit 64ef5f454e167bb66cf70104f033c3d71e6ef9c0 upstream.
 
-The soundwire regmap that may be allocated during probe is not freed on
-late probe failures.
+Commit 5c2f7727d437 ("mtd: mtdpart: check for subpartitions parsing
+result") introduced some kind of regression with parser on subpartitions
+where if a parser emits an error then the entire parsing process from the
+upper parser fails and partitions are deleted.
 
-Add the missing error handling.
+Not checking for error in subpartitions was originally intended as
+special parser can emit error also in the case of the partition not
+correctly init (for example a wiped partition) or special case where the
+partition should be skipped due to some ENV variables externally
+provided (from bootloader for example)
 
-Fixes: be2af391cea0 ("ASoC: codecs: Add WCD939x Soundwire devices driver")
-Cc: stable@vger.kernel.org	# 6.9
-Cc: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20251127135057.2216-1-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+One example case is the TRX partition where, in the context of a wiped
+partition, returns a -ENOENT as the trx_magic is not found in the
+expected TRX header (as the partition is wiped)
+
+To better handle this and still keep some kind of error tracking (for
+example to catch -ENOMEM errors or -EINVAL errors), permit parser on
+subpartition to emit -ENOENT error, print a debug log and skip them
+accordingly.
+
+This results in giving better tracking of the status of the parser
+(instead of returning just 0, dropping any kind of signal that there is
+something wrong with the parser) and to some degree restore the original
+logic of the subpartitions parse.
+
+(worth to notice that some special partition might have all the special
+header present for the parser and declare 0 partition in it, this is why
+it would be wrong to simply return 0 in the case of a special partition
+that is NOT init for the scanning parser)
+
+Cc: stable@vger.kernel.org
+Fixes: 5c2f7727d437 ("mtd: mtdpart: check for subpartitions parsing result")
+Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/wcd939x-sdw.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/mtd/mtdpart.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/sound/soc/codecs/wcd939x-sdw.c
-+++ b/sound/soc/codecs/wcd939x-sdw.c
-@@ -1400,12 +1400,18 @@ static int wcd9390_probe(struct sdw_slav
+--- a/drivers/mtd/mtdpart.c
++++ b/drivers/mtd/mtdpart.c
+@@ -425,9 +425,12 @@ int add_mtd_partitions(struct mtd_info *
  
- 	ret = component_add(dev, &wcd_sdw_component_ops);
- 	if (ret)
--		return ret;
-+		goto err_free_regmap;
+ 		mtd_add_partition_attrs(child);
  
- 	/* Set suspended until aggregate device is bind */
- 	pm_runtime_set_suspended(dev);
- 
- 	return 0;
-+
-+err_free_regmap:
-+	if (wcd->regmap)
-+		regmap_exit(wcd->regmap);
-+
-+	return ret;
- }
- 
- static int wcd9390_remove(struct sdw_slave *pdev)
+-		/* Look for subpartitions */
++		/* Look for subpartitions (skip if no maching parser found) */
+ 		ret = parse_mtd_partitions(child, parts[i].types, NULL);
+-		if (ret < 0) {
++		if (ret < 0 && ret == -ENOENT) {
++			pr_debug("Skip parsing subpartitions: %d\n", ret);
++			continue;
++		} else if (ret < 0) {
+ 			pr_err("Failed to parse subpartitions: %d\n", ret);
+ 			goto err_del_partitions;
+ 		}
 
 
 
