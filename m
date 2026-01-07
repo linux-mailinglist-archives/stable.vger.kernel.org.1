@@ -1,190 +1,181 @@
-Return-Path: <stable+bounces-206224-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206227-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA441D00265
-	for <lists+stable@lfdr.de>; Wed, 07 Jan 2026 22:23:00 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7947ED002E6
+	for <lists+stable@lfdr.de>; Wed, 07 Jan 2026 22:35:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AF8983094820
-	for <lists+stable@lfdr.de>; Wed,  7 Jan 2026 21:20:45 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 6C06C30039CC
+	for <lists+stable@lfdr.de>; Wed,  7 Jan 2026 21:35:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94A8B32D0EF;
-	Wed,  7 Jan 2026 21:20:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A8462868A7;
+	Wed,  7 Jan 2026 21:35:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="WXiwmQXu"
+	dkim=pass (1024-bit key) header.d=techsingularity.net header.i=@techsingularity.net header.b="GRT6GfwD"
 X-Original-To: stable@vger.kernel.org
-Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013053.outbound.protection.outlook.com [40.93.196.53])
+Received: from mail46.out.titan.email (mail46.out.titan.email [3.66.115.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D72F2DA749;
-	Wed,  7 Jan 2026 21:20:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.196.53
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767820843; cv=fail; b=cdtgqZ219lwY+RumWR/Zvbs5QRsNMivQVzs2m5fNpgwXnDegAxxrCKMA3haTsBFuer2xK8JSA5dk6RAlCNf1LgpSSmrYwbw7wIMcuMPJvo4ZCGoOYl4K0dumz/Ur+6NGmxE5by0p6/Nou64+QD4WxtjmHzC/O2B/IVHEhIXAjaI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767820843; c=relaxed/simple;
-	bh=54Yyim27TgwOSw0tIRwSiDmmOR6YJxep75cEDLPwbrs=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=UTAXegS83OmiDxsekPFgcGxQKZ+3GMTOg7Aif9DiZz5R2RRg7ByHYKlz7gr5rcsrVjNGgg6CjqahqVHcm0cqnhkQ2PJhzj/jIip1eTeGkZillABVmwRvzOGAkdb2WtxkHXMBdL/2+iomcHddyv5cRzZDqBM9K8XaivoikfmQC1w=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=WXiwmQXu; arc=fail smtp.client-ip=40.93.196.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=l995diGCDBbXj1J0vFFaOsykm4waQF/XhvLwH8j/V2rgteGjv2UWPZVlcFwlfirH1dYcv8pJ2NNSt3SfH8DmnjmFAXE3ZqkaYFEcHa4SqliFIM22whDYvh/wKzp49v++/xJkpj0U7ukNe1fUXnozWRtz3hVskr3aEUHJG2Oos/7uF1EHCzUoxR0EtbcNr9RY8xQS0pM7bqE/HZNCaIXKuOmgVmLzeZ6jh992/gmM7U0HIlwK2FeXZMxpcO2QTtDgKcwZ7YcIXAaO3EcOCgDsUVNnFzX0IKtcn8qFy9E/DgWgiDHRXjyzWgdXsUJ2tNvgzHb4mVoGsaVVxyGIhZ3ffw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=oEV5pPH7GZm+BYCzxv1h5lcM0m6NgG6SNMegf51A70Q=;
- b=xd2vedUzU0LD+RA2B2dnGhR/ZOd1VCZU/3oFgntqGVLXetFmQFR+6vHd5RIxLxaDI0MeoT0bwzk+SerkL34VUxu+5m2dHUrt66BTIEudqlo7FIIVCmyjd/6Iq+aQkkWPYBRz/24VPSYJdc6BGxhG80BRghgxc7+x6YcsKL3PeebifuzjJukOfBoIuxbLczRHz54XhslvvC6PmLZ3XISVUELPXK1OlV7cX/XH3m3LQmLJwcvWyF8LI6tjHF1lTmKGtfEmkoLd0LLADBDLJju+g+Mc6eCQkqyLE3K9gNP6JOPokmRiRulXeiT0ChMPMMpBck/LrlR4yUH5JYcbWU0Quw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=oEV5pPH7GZm+BYCzxv1h5lcM0m6NgG6SNMegf51A70Q=;
- b=WXiwmQXuxD7VcW5+nJjnDyv7PSni3QkjT9JKMUWRZn4MJepVvCzf0sQ2q4fQIrpEKTjcpLO4MO2iugeEHpUejhO0wkqjJo9sH/j60r8DWvdDeyfgd2Nr83Grippdiyj3ZHKEVy+sZJ0cJtTHLo6USIsis2jScje1VXbwiZNC1XM=
-Received: from PH7PR02CA0014.namprd02.prod.outlook.com (2603:10b6:510:33d::34)
- by IA1PR12MB6481.namprd12.prod.outlook.com (2603:10b6:208:3aa::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.2; Wed, 7 Jan
- 2026 21:20:33 +0000
-Received: from CY4PEPF0000EE30.namprd05.prod.outlook.com
- (2603:10b6:510:33d:cafe::a0) by PH7PR02CA0014.outlook.office365.com
- (2603:10b6:510:33d::34) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9499.2 via Frontend Transport; Wed, 7
- Jan 2026 21:20:33 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- CY4PEPF0000EE30.mail.protection.outlook.com (10.167.242.36) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9499.1 via Frontend Transport; Wed, 7 Jan 2026 21:20:32 +0000
-Received: from AUSJUANMART02.amd.com (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Wed, 7 Jan
- 2026 15:20:31 -0600
-From: Juan Martinez <juan.martinez@amd.com>
-To: <ray.huang@amd.com>, <gautham.shenoy@amd.com>, <mario.limonciello@amd.com>
-CC: <rafael@kernel.org>, <viresh.kumar@linaro.org>, <perry.yuan@amd.com>,
-	<linux-pm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<stable@vger.kernel.org>, Juan Martinez <juan.martinez@amd.com>, "Kaushik
- Reddy S" <kaushik.reddys@amd.com>
-Subject: [PATCH] cpufreq/amd-pstate: Fix MinPerf MSR value for performance policy
-Date: Wed, 7 Jan 2026 15:19:19 -0600
-Message-ID: <20260107211919.38010-1-juan.martinez@amd.com>
-X-Mailer: git-send-email 2.34.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A145C3246E8
+	for <stable@vger.kernel.org>; Wed,  7 Jan 2026 21:35:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=3.66.115.72
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1767821738; cv=none; b=glpSv3Cv7322eP3VmeXU5q1LQTyvSsQRQpklEDCGDHTigCOcJp1U7rj2GRLhPGb+arGD2zXpXbgziArzT5Vl4/WLfgsQ36rVspxsPRtPYUGRg0UC9q7705gpkNvJVDTBul0q84WvljfCIozbL8wNZtpQC0qdhwcIx8vTFHPUYJI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1767821738; c=relaxed/simple;
+	bh=f064EZ0dqGRVg3dkxlUTLTwy1SIOsSTpUSYzFm4tCpE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RxU0Qq1qxpwO7POXSzRpGMF+fVuXCq+xpdfvm8MVmzCK3AyMGkWw3VT1wgWOPJBPyky1KmWyc06K2nr99utNcVEi578eheiuqROPx1idT9kA9AIsHtYXjVmXveKNcQ/oaVeO9mgWYvrCg+UVfUyyuRO0Bwe3IWtUE+s0PBmf7RI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=techsingularity.net; spf=pass smtp.mailfrom=techsingularity.net; dkim=pass (1024-bit key) header.d=techsingularity.net header.i=@techsingularity.net header.b=GRT6GfwD; arc=none smtp.client-ip=3.66.115.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=techsingularity.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=techsingularity.net
+Received: from localhost (localhost [127.0.0.1])
+	by smtp-out0101.titan.email (Postfix) with ESMTP id 4dmgsD0gw6z4vxF;
+	Wed,  7 Jan 2026 21:19:28 +0000 (UTC)
+DKIM-Signature: a=rsa-sha256; bh=3Gsude5bCr/12iFzuhvBklS0UCcOFjMel4nHpQJlVUA=;
+	c=relaxed/relaxed; d=techsingularity.net;
+	h=date:cc:subject:references:from:to:message-id:mime-version:in-reply-to:from:to:cc:subject:date:message-id:in-reply-to:references:reply-to;
+	q=dns/txt; s=titan1; t=1767820768; v=1;
+	b=GRT6GfwDFe8MjeAHbU3WKrjHJH5MTG7P8YHkSbQMBx54D0v53MuQJdCG5+JS3kgyrGD8/SK4
+	0xIJuW6Q/2GJUf4qzG63maVHTQrzpMu5pRc9JTwzGkn0K8keeQZYXtRxc5kaz5DUiUGKzH0QJU5
+	uxSEYB1hDcy8bRcRj6eAeiQk=
+Received: from techsingularity.net (ip-84-203-20-110.broadband.digiweb.ie [84.203.20.110])
+	by smtp-out0101.titan.email (Postfix) with ESMTPA id 4dmgsB4LfWz4vxD;
+	Wed,  7 Jan 2026 21:19:26 +0000 (UTC)
+Date: Wed, 7 Jan 2026 21:19:20 +0000
+Feedback-ID: :mgorman@techsingularity.net:techsingularity.net:flockmailId
+From: Mel Gorman <mgorman@techsingularity.net>
+To: Vlastimil Babka <vbabka@suse.cz>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Clark Williams <clrkwllms@kernel.org>, 
+	Steven Rostedt <rostedt@goodmis.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-rt-devel@lists.linux.dev, stable@vger.kernel.org, 
+	kernel test robot <oliver.sang@intel.com>, Matthew Wilcox <willy@infradead.org>
+Subject: Re: [PATCH mm-hotfixes] mm/page_alloc: prevent pcp corruption with
+ SMP=n
+Message-ID: <h33pscn2orhpb5dapttmo4vy4s3drfsjaahmjp4arsjjfngzno@bzbacqjvfe6r>
+References: <20260105-fix-pcp-up-v1-1-5579662d2071@suse.cz>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF0000EE30:EE_|IA1PR12MB6481:EE_
-X-MS-Office365-Filtering-Correlation-Id: 35f35218-0cb3-4d26-2671-08de4e329762
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|36860700013|1800799024|376014|13003099007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?1iPTe9aii6uybnq5i7my2ZWh2yZmlLhbujxm3a6vU07OvUcNWoZHMlW49H5P?=
- =?us-ascii?Q?zTust7sMNVX00wMIlJG22KwpCl5Dz+uCGJUJnFlQJHbA/FqbAfiUffLBCxuI?=
- =?us-ascii?Q?lvO8FGVdVj2UYkOibeVHzkiG6CikUE/YJAm7scr3ppYJ23RCUaSo6+mp0oma?=
- =?us-ascii?Q?opi00NR/Od8IjtMOfsf3K7oGfwAc6fx+lXZgohP79wq6VZlW7SUAGwXrksfZ?=
- =?us-ascii?Q?Zsp7yVGF1ABLyj2Y/MLI6pZHmNDiLPl//oEigRYPttTvC9Y0kEtoyTRLelsq?=
- =?us-ascii?Q?VNyrK0XfdwAD3rYfYL2gcikuhVY7aau6FwLjRF3wCp9sjCPF4mp/nm0hNF1+?=
- =?us-ascii?Q?Yh3ob1fUM5mVKZ8p5Y4GWasS+ojIMmEHJdBFJ3rcIfRgHBzbG9mqn7wiqXVI?=
- =?us-ascii?Q?nL1A6XdcOXnXzgvLoKrUmcGZwkmG1zvpAAhEu2FOC6xE8fJZQia/LsawWzzq?=
- =?us-ascii?Q?GEx7M8chOYJhRxBblYLohgi1CISJfPHisXGAUuZu5gAh+5Lz9fBmrHI1bdg3?=
- =?us-ascii?Q?my6gF3JVUj64ZBaCwzYFK6K/gLgXRAczJQuVHnqPfBaXrO8fr8Vt/77f6SVt?=
- =?us-ascii?Q?YW4nHaZuKfnjNIGrpGCG3INWINrXSgIpVDsW+mlk+C/9hT6DwVaWKn3aLGu2?=
- =?us-ascii?Q?gW5x0KJjI58B4AcgAozlsHCE7P/thxW2wg9B9HLFV+YPPluHfm6GOlOj/x1F?=
- =?us-ascii?Q?R73EiHzncepGSjvdXLk8fN8JdCuEgVxfXY0TuNeRMRNJhZaX11aL/f4dbEE/?=
- =?us-ascii?Q?KoA0QznbzsmlccWo+vkg407F15F137EfMty/Vor0y70j+Vc7HN8K6ZxsvFmv?=
- =?us-ascii?Q?s6YPp9/sOszqywGwgdmZpxenWHtoHkAC/VbFc/zMtAmba56eljE4BuApT6ps?=
- =?us-ascii?Q?Bn1RzfNXzQvS7Jd0QDhEoYPg9H4IGQBgCOVS+M7Ybg9roB4GfAfP44ippA72?=
- =?us-ascii?Q?OYkrgRosd51rj0QYSRs52WnX7UC7QTOxFMvA7ZFtJfE3EfHoDqB6tBMkh2Hm?=
- =?us-ascii?Q?vrlA3NLuXG+m7XZLu26v11AG6Bz9aqzDP/Bt7yABEvtiC71ONhoZNBhiDtsA?=
- =?us-ascii?Q?BEgq0+Z/N7Qzyt3LganE54GBrGnCYWeAtvK86P2bMPrL0qWKbksfcn1A0YWj?=
- =?us-ascii?Q?JvBkX59xZzPNrK89+HDv8KH95DYTu8ApJWt88RLtWlsb27TdiL080YKj2i54?=
- =?us-ascii?Q?YQziQivd+kwJ0nWDqHFve/I0TjfSwKYtEE4EBKVa0T97uDoPlOA/cIs2Xth6?=
- =?us-ascii?Q?oC/j7fr+8cAxWseTvA9vPGG6aAHcE1aDoE45fQxW0ExkLjtcizgDs1l0qdVx?=
- =?us-ascii?Q?/bfrCTnO45detbACQhSPD4gqshQ53QsczL2OmfkS7YIsmSWJbLeW+Oku2fdH?=
- =?us-ascii?Q?2rcbzj4Zn/q3HsSldMNawh2Izxsztmd0D12MIfADqFBB7G1gjLJ3JCKzPBxr?=
- =?us-ascii?Q?bQdpSWqKhBtfan3gmQYavZvj6EeXamttfZxyESMOSPv/qoqEt2cJLGc3Nb32?=
- =?us-ascii?Q?WcCryoyVAi2V88cSZb45+25cUk4katLhup/WHvqy7tMW1cOYKhHCgVN68Qvb?=
- =?us-ascii?Q?vwuzPbbmQ8rqCQLqyRY=3D?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(36860700013)(1800799024)(376014)(13003099007);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jan 2026 21:20:32.7455
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 35f35218-0cb3-4d26-2671-08de4e329762
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CY4PEPF0000EE30.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6481
+Content-Type: text/plain; charset=iso-8859-15
+Content-Disposition: inline
+In-Reply-To: <20260105-fix-pcp-up-v1-1-5579662d2071@suse.cz>
+X-F-Verdict: SPFVALID
+X-Titan-Src-Out: 1767820767945683141.1240.1245684775781968541@prod-euc1-smtp-out1002.
+X-CMAE-Score: 0
+X-CMAE-Analysis: v=2.4 cv=d4QPyQjE c=1 sm=1 tr=0 ts=695ecddf
+	a=ycgmuL0lqxUANBz+XI9aLQ==:117 a=ycgmuL0lqxUANBz+XI9aLQ==:17
+	a=Q9fys5e9bTEA:10 a=CEWIc4RMnpUA:10 a=VwQbUJbxAAAA:8 a=QyXUC8HyAAAA:8
+	a=JfrnYn6hAAAA:8 a=R_Myd5XaAAAA:8 a=MC9sqzVPiPx8m3HZA18A:9
+	a=PUjeQqilurYA:10 a=1CNFftbPRP8L7MoqJWF3:22 a=L2g4Dz8VuBQ37YGmWQah:22
 
-When the CPU frequency policy is set to CPUFREQ_POLICY_PERFORMANCE
-(which occurs when EPP hint is set to "performance"), the driver
-incorrectly sets the MinPerf field in CPPC request MSR to nominal_perf
-instead of lowest_nonlinear_perf.
+On Mon, Jan 05, 2026 at 04:08:56PM +0100, Vlastimil Babka wrote:
+> The kernel test robot has reported:
+> 
+>  BUG: spinlock trylock failure on UP on CPU#0, kcompactd0/28
+>   lock: 0xffff888807e35ef0, .magic: dead4ead, .owner: kcompactd0/28, .owner_cpu: 0
+>  CPU: 0 UID: 0 PID: 28 Comm: kcompactd0 Not tainted 6.18.0-rc5-00127-ga06157804399 #1 PREEMPT  8cc09ef94dcec767faa911515ce9e609c45db470
+>  Call Trace:
+>   <IRQ>
+>   __dump_stack (lib/dump_stack.c:95)
+>   dump_stack_lvl (lib/dump_stack.c:123)
+>   dump_stack (lib/dump_stack.c:130)
+>   spin_dump (kernel/locking/spinlock_debug.c:71)
+>   do_raw_spin_trylock (kernel/locking/spinlock_debug.c:?)
+>   _raw_spin_trylock (include/linux/spinlock_api_smp.h:89 kernel/locking/spinlock.c:138)
+>   __free_frozen_pages (mm/page_alloc.c:2973)
+>   ___free_pages (mm/page_alloc.c:5295)
+>   __free_pages (mm/page_alloc.c:5334)
+>   tlb_remove_table_rcu (include/linux/mm.h:? include/linux/mm.h:3122 include/asm-generic/tlb.h:220 mm/mmu_gather.c:227 mm/mmu_gather.c:290)
+>   ? __cfi_tlb_remove_table_rcu (mm/mmu_gather.c:289)
+>   ? rcu_core (kernel/rcu/tree.c:?)
+>   rcu_core (include/linux/rcupdate.h:341 kernel/rcu/tree.c:2607 kernel/rcu/tree.c:2861)
+>   rcu_core_si (kernel/rcu/tree.c:2879)
+>   handle_softirqs (arch/x86/include/asm/jump_label.h:36 include/trace/events/irq.h:142 kernel/softirq.c:623)
+>   __irq_exit_rcu (arch/x86/include/asm/jump_label.h:36 kernel/softirq.c:725)
+>   irq_exit_rcu (kernel/softirq.c:741)
+>   sysvec_apic_timer_interrupt (arch/x86/kernel/apic/apic.c:1052)
+>   </IRQ>
+>   <TASK>
+>  RIP: 0010:_raw_spin_unlock_irqrestore (arch/x86/include/asm/preempt.h:95 include/linux/spinlock_api_smp.h:152 kernel/locking/spinlock.c:194)
+>   free_pcppages_bulk (mm/page_alloc.c:1494)
+>   drain_pages_zone (include/linux/spinlock.h:391 mm/page_alloc.c:2632)
+>   __drain_all_pages (mm/page_alloc.c:2731)
+>   drain_all_pages (mm/page_alloc.c:2747)
+>   kcompactd (mm/compaction.c:3115)
+>   kthread (kernel/kthread.c:465)
+>   ? __cfi_kcompactd (mm/compaction.c:3166)
+>   ? __cfi_kthread (kernel/kthread.c:412)
+>   ret_from_fork (arch/x86/kernel/process.c:164)
+>   ? __cfi_kthread (kernel/kthread.c:412)
+>   ret_from_fork_asm (arch/x86/entry/entry_64.S:255)
+>   </TASK>
+> 
+> Matthew has analyzed the report and identified that in drain_page_zone()
+> we are in a section protected by spin_lock(&pcp->lock) and then get an
+> interrupt that attempts spin_trylock() on the same lock. The code is
+> designed to work this way without disabling IRQs and occasionally fail
+> the trylock with a fallback. However, the SMP=n spinlock implementation
+> assumes spin_trylock() will always succeed, and thus it's normally a
+> no-op. Here the enabled lock debugging catches the problem, but
+> otherwise it could cause a corruption of the pcp structure.
+> 
+> The problem has been introduced by commit 574907741599 ("mm/page_alloc:
+> leave IRQs enabled for per-cpu page allocations"). The pcp locking
+> scheme recognizes the need for disabling IRQs to prevent nesting
+> spin_trylock() sections on SMP=n, but the need to prevent the nesting in
+> spin_lock() has not been recognized. Fix it by introducing local
+> wrappers that change the spin_lock() to spin_lock_iqsave() with SMP=n
+> and use them in all places that do spin_lock(&pcp->lock).
+> 
 
-According to the AMD architectural programmer's manual volume 2 [1],
-in section "17.6.4.1 CPPC_CAPABILITY_1", lowest_nonlinear_perf represents
-the most energy efficient performance level (in terms of performance per
-watt). The MinPerf field should be set to this value even in performance
-mode to maintain proper power/performance characteristics.
+Bah, correct.
 
-This fixes a regression introduced by commit 0c411b39e4f4c ("amd-pstate: Set
-min_perf to nominal_perf for active mode performance gov"), which correctly
-identified that highest_perf was too high but chose nominal_perf as an
-intermediate value instead of lowest_nonlinear_perf.
+> Fixes: 574907741599 ("mm/page_alloc: leave IRQs enabled for per-cpu page allocations")
+> Cc: stable@vger.kernel.org
+> Reported-by: kernel test robot <oliver.sang@intel.com>
+> Closes: https://lore.kernel.org/oe-lkp/202512101320.e2f2dd6f-lkp@intel.com
+> Analyzed-by: Matthew Wilcox <willy@infradead.org>
+> Link: https://lore.kernel.org/all/aUW05pyc9nZkvY-1@casper.infradead.org/
+> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+> ---
+> This fix is intentionally made self-contained and not trying to expand
+> upon the existing pcp[u]_spin() helpers. This is to make stable
+> backports easier due to recent cleanups to that helpers.
+> 
+> We could follow up with a proper helpers integration going forward.
+> However I think the assumptions SMP=n of the spinlock UP implementation
+> are just wrong. It should be valid to do a spin_lock() without disabling
+> irq's and rely on a nested spin_trylock() to fail. I will thus try
+> proposing the remove the UP implementation first. It should be within
+> the current trend of removing stuff that's optimized for a minority
+> configuration if it makes maintainability of the majority worse.
+> (c.f. recent scheduler SMP=n removal)
 
-The fix changes amd_pstate_update_min_max_limit() to use lowest_nonlinear_perf
-instead of nominal_perf when the policy is CPUFREQ_POLICY_PERFORMANCE.
+It would be fair. Maybe it'll take a performance hit because from a
+maintenance perspective, it would be preferable. It's true that
+spin_trylock within a lock protected region on UP is somewhat bogus, but
+not impossible either. Even if the resulting code is buggy anyway, it
+would be preferable to fail early than hide.
 
-[1] https://docs.amd.com/v/u/en-US/24593_3.43
-    AMD64 Architecture Programmer's Manual Volume 2: System Programming
-    Section 17.6.4.1 CPPC_CAPABILITY_1
-    (Referenced in commit 5d9a354cf839a)
+> ---
+>  mm/page_alloc.c | 45 +++++++++++++++++++++++++++++++++++++--------
+>  1 file changed, 37 insertions(+), 8 deletions(-)
+> 
 
-Fixes: 0c411b39e4f4c ("amd-pstate: Set min_perf to nominal_perf for active mode performance gov")
-Tested-by: Kaushik Reddy S <kaushik.reddys@amd.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Juan Martinez <juan.martinez@amd.com>
----
- drivers/cpufreq/amd-pstate.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+With or without the renaming on top;
 
-diff --git a/drivers/cpufreq/amd-pstate.c b/drivers/cpufreq/amd-pstate.c
-index e4f1933dd7d47..de0bb5b325502 100644
---- a/drivers/cpufreq/amd-pstate.c
-+++ b/drivers/cpufreq/amd-pstate.c
-@@ -634,8 +634,8 @@ static void amd_pstate_update_min_max_limit(struct cpufreq_policy *policy)
- 	WRITE_ONCE(cpudata->max_limit_freq, policy->max);
- 
- 	if (cpudata->policy == CPUFREQ_POLICY_PERFORMANCE) {
--		perf.min_limit_perf = min(perf.nominal_perf, perf.max_limit_perf);
--		WRITE_ONCE(cpudata->min_limit_freq, min(cpudata->nominal_freq, cpudata->max_limit_freq));
-+		perf.min_limit_perf = min(perf.lowest_nonlinear_perf, perf.max_limit_perf);
-+		WRITE_ONCE(cpudata->min_limit_freq, min(cpudata->lowest_nonlinear_freq, cpudata->max_limit_freq));
- 	} else {
- 		perf.min_limit_perf = freq_to_perf(perf, cpudata->nominal_freq, policy->min);
- 		WRITE_ONCE(cpudata->min_limit_freq, policy->min);
+Acked-by: Mel Gorman <mgorman@techsingularity.net>
+
+Thanks.
+
 -- 
-2.34.1
-
+Mel Gorman
+SUSE Labs
 
