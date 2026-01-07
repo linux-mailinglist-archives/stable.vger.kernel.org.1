@@ -1,189 +1,135 @@
-Return-Path: <stable+bounces-206070-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206071-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5D19CFB7CE
-	for <lists+stable@lfdr.de>; Wed, 07 Jan 2026 01:36:38 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36DB4CFB7D9
+	for <lists+stable@lfdr.de>; Wed, 07 Jan 2026 01:39:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BB9283028D5D
-	for <lists+stable@lfdr.de>; Wed,  7 Jan 2026 00:36:35 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1964B30034A4
+	for <lists+stable@lfdr.de>; Wed,  7 Jan 2026 00:39:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DD0819CD03;
-	Wed,  7 Jan 2026 00:36:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE2C114A4F9;
+	Wed,  7 Jan 2026 00:39:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EOGyfazt"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="dpwBANgZ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E8E04C97
-	for <stable@vger.kernel.org>; Wed,  7 Jan 2026 00:36:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0AE8168BD
+	for <stable@vger.kernel.org>; Wed,  7 Jan 2026 00:39:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767746195; cv=none; b=LNnjAkadR6GfbV1MZ21MHItEuQToO+08kCmJlB212Uz/uPOHXvkLVOlRfXElBsZJDP0cwI9aDLqmg+nQBBGMzidg4agQEkt0sIhXUvUjHVQ7yltHbWzIbRudflFSl8GuDd6brXkbemJK/Xz3l5Lyc6F8dRz7bCO41JI5brzSLy8=
+	t=1767746360; cv=none; b=VeD6PBQkEAN4xW6tDg3galyprXbvFbs8t5pYh4JhiEQEjl4jsUADLkWZGXQkIPM3izP7Q2MLrwebD2mLKirCk30TqlP/mv1bWLgQOQyxdV4yYskpFrAtTvidzlIJIFZSWl5FjbDbBeckUu7wUBiyzh/DwuLTWCOdbnYAlV4JwwM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767746195; c=relaxed/simple;
-	bh=OCPj0Lm08G+wa2GYA6pqzGeUSSX9SssDw9/arKk1D6k=;
+	s=arc-20240116; t=1767746360; c=relaxed/simple;
+	bh=wKbzeprCiCtQhv02wUlRgOm9/aXzpY6/H0Tl+PqtkOU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gX/04/gsT2jiEWKU/fhQGzbCdRxXATMRMEIWONK70FM69102kPr+NutIjyVZ4RiYzxQDhiE7akkuRk5USMX8kfEFzrgQI3CPwpw+1D1h89jPgveaZdRICr58o4FrPYmt3DNApIueO5UYv83lhqAHGG6WnfMD1T1tSBaa90ee9kM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EOGyfazt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58EA2C19421;
-	Wed,  7 Jan 2026 00:36:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767746194;
-	bh=OCPj0Lm08G+wa2GYA6pqzGeUSSX9SssDw9/arKk1D6k=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EOGyfaztDHDksnQbOLWXJ4mszK0tg2ug5zk/zsV8vHxHxyvfur0mDRsfmbb+5JeUe
-	 BQnF73JYMePdzLccHguk7hqyt4IbOQqHdD9G8CbXNGk+L7BrVCNx4Vah0SsEDHnOM3
-	 BZF77DAT+DwaRoX9ijXera51ysfJ1aNR+kgJg/pGozza5B2YdNqzoZR5TM83o7uUmr
-	 GzrE0URWiMYui37dO19+ho9Jc7X+xaM27WZ2IGcqqCqLx2z1jFO5YDq7SuBareVSZI
-	 mYcmzn5A++wpS8wxuJJYhvaA3Hs9uUfT4zJl0sb11bCwf89PAEuRJDpDOZaKK6Kega
-	 wQQkZTVdAR13A==
-From: Sasha Levin <sashal@kernel.org>
+	 MIME-Version:Content-Type; b=rBUo9YmI7dDZ+p9KVOL06Zsi88OVF5xiMLRBKT53iTAl9UuA6e3gGkQ0dmOhEVjJraOGN9PeSxCo45jJeTQONohJMW+ZIWvrmfC5tjC3bG6qak+v6PsVCRFqLKY0XOg5Wdzr2whGPIJr9SddzbjbNNMa+AgEeImTLiYE774HQ08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=dpwBANgZ; arc=none smtp.client-ip=209.85.208.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-6505d3adc3aso2319027a12.1
+        for <stable@vger.kernel.org>; Tue, 06 Jan 2026 16:39:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1767746356; x=1768351156; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vn10yLAa1QvhmLZdhlHfvIpuVo8jTNGcfirLqxvT0EM=;
+        b=dpwBANgZI/VYrLXIccIaaEVAyJhfGICjUxW8f1R24ovsIefRx0VITt0F8yK34EKyx4
+         LrcAcFHB4e6696iG1W3Ia70EuEpSnA4Mw0clyE+UL0iEc/QVugbAYEB2DSrPlzzy9644
+         b45C/eoAEE0yIMQ054v3HMA9bW196wyXuWDs0=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767746356; x=1768351156;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=vn10yLAa1QvhmLZdhlHfvIpuVo8jTNGcfirLqxvT0EM=;
+        b=at36vYZKWPx5OcHjUaIHjvitmQ60UJC6xKOJ4XVqqGqbcrij8DWfakwR3G2EmcCciI
+         /Oqwk2c3vvmXlqg/bom8wv4jl1nOQ8hGR4wqjzsNA/09NfbinNqGb8Fh3maLkwsNnnZq
+         IRSMGfpnbrWoXPRJV/82CFFx+SOkHzlpIkjsQCIrlSNDKzm3N2n8pY2eHyWTxsAdUPaz
+         UVqgt+ZI6zq7TRCXaP61tkAS7HiPwOEmqTrPaoa/UlIkYYWCSSPpjFv7Pf6mBkf7QKqf
+         l/80Ou9HA5G4UJ1qvY5gm1Y275p++A39ugjtqFLwldJ/dFXGUdohFUuCBHY5OuFEamIK
+         yfkQ==
+X-Gm-Message-State: AOJu0YwtNGc1SD+jnSWxjGhbLxbDMF2Zu8IsCqgoSY5alSfRSyR4s+PB
+	RthGhk/xk7Q4RoleDSIdNmqj4WqTZ7xjAVOTV77LV34by3E6yajH9IAG1Hocltq2v4Ae1HJLUTb
+	azo0Ny/U=
+X-Gm-Gg: AY/fxX4h2AAKHAVoydd840311mDxUbV77G54EaYJ8b+pDBonKb269pBG/seQS9M6pTI
+	WRl+x+h5moAfGnTaUtb/GDJKO7jeLCs8vAwuOaOGytV0pu6LxrfQX9bS19M1tZrPUHTOklNn/HU
+	ooyX/U+7pT9wBE2HZ0ug4Dv06XuHvgHWJPG8yX1+xBQyc00OxF0j9bcqYV1kHAn+jjfm9zpNSnI
+	x97BxJ0nIUvwLp0pRr9Xl+FPxxG2m4hxKOLo/pMho5Oi3J9NJI7gKfJ6baoYLnwIYiL4S/Y9OY8
+	lRyaTQU5kIetoGns5bWeJq3N+R6Wj4XMdtM9pFQRE9VghDIPUhU62yFxP+HHtG2IG6B164KEmDN
+	Y07tYuFu4eydoe6ILBGizBNt1jlyuoDXaEWAqsjJIuVRLkIy/BPFX2+tNPMII8eUxyPNvBwhNxR
+	OfQC+X4Yju1qKi8+PoM3q5dvpwLgZQpwhxYGr5GfloOgSAB6u4BTZ5PejVbEUBk3M=
+X-Google-Smtp-Source: AGHT+IGCDkNbVwPx05BfiZxz9KapcEItDV5PDtqZxAhmL3L/loYBq3BADmylLVZru23b7PSquvZICg==
+X-Received: by 2002:a05:6402:31ab:b0:64b:93f4:bf85 with SMTP id 4fb4d7f45d1cf-65097de5a90mr591771a12.10.1767746355783;
+        Tue, 06 Jan 2026 16:39:15 -0800 (PST)
+Received: from januszek.c.googlers.com.com (3.23.91.34.bc.googleusercontent.com. [34.91.23.3])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6507b8c4048sm3358198a12.2.2026.01.06.16.39.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 06 Jan 2026 16:39:15 -0800 (PST)
+From: =?UTF-8?q?=C5=81ukasz=20Bartosik?= <ukaszb@chromium.org>
 To: stable@vger.kernel.org
-Cc: Bijan Tabatabai <bijan311@gmail.com>,
-	"David Hildenbrand (Red Hat)" <david@kernel.org>,
-	Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Liam Howlett <liam.howlett@oracle.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Shivank Garg <shivankg@amd.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Kairui Song <ryncsn@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y 2/2] mm: consider non-anon swap cache folios in folio_expected_ref_count()
-Date: Tue,  6 Jan 2026 19:36:27 -0500
-Message-ID: <20260107003627.3469728-2-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260107003627.3469728-1-sashal@kernel.org>
-References: <2026010547-early-outnumber-a575@gregkh>
- <20260107003627.3469728-1-sashal@kernel.org>
+Cc: =?UTF-8?q?=C5=81ukasz=20Bartosik?= <ukaszb@chromium.org>,
+	stable <stable@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: [PATCH 6.1.y] xhci: dbgtty: fix device unregister: fixup
+Date: Wed,  7 Jan 2026 00:38:54 +0000
+Message-ID: <20260107003854.3458891-1-ukaszb@chromium.org>
+X-Mailer: git-send-email 2.52.0.351.gbe84eed79e-goog
+In-Reply-To: <2025122918-sagging-divisible-a4a4@gregkh>
+References: <2025122918-sagging-divisible-a4a4@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Bijan Tabatabai <bijan311@gmail.com>
+This fixup replaces tty_vhangup() call with call to
+tty_port_tty_vhangup(). Both calls hangup tty device
+synchronously however tty_port_tty_vhangup() increases
+reference count during the hangup operation using
+scoped_guard(tty_port_tty).
 
-[ Upstream commit f183663901f21fe0fba8bd31ae894bc529709ee0 ]
-
-Currently, folio_expected_ref_count() only adds references for the swap
-cache if the folio is anonymous.  However, according to the comment above
-the definition of PG_swapcache in enum pageflags, shmem folios can also
-have PG_swapcache set.  This patch makes sure references for the swap
-cache are added if folio_test_swapcache(folio) is true.
-
-This issue was found when trying to hot-unplug memory in a QEMU/KVM
-virtual machine.  When initiating hot-unplug when most of the guest memory
-is allocated, hot-unplug hangs partway through removal due to migration
-failures.  The following message would be printed several times, and would
-be printed again about every five seconds:
-
-[   49.641309] migrating pfn b12f25 failed ret:7
-[   49.641310] page: refcount:2 mapcount:0 mapping:0000000033bd8fe2 index:0x7f404d925 pfn:0xb12f25
-[   49.641311] aops:swap_aops
-[   49.641313] flags: 0x300000000030508(uptodate|active|owner_priv_1|reclaim|swapbacked|node=0|zone=3)
-[   49.641314] raw: 0300000000030508 ffffed312c4bc908 ffffed312c4bc9c8 0000000000000000
-[   49.641315] raw: 00000007f404d925 00000000000c823b 00000002ffffffff 0000000000000000
-[   49.641315] page dumped because: migration failure
-
-When debugging this, I found that these migration failures were due to
-__migrate_folio() returning -EAGAIN for a small set of folios because the
-expected reference count it calculates via folio_expected_ref_count() is
-one less than the actual reference count of the folios.  Furthermore, all
-of the affected folios were not anonymous, but had the PG_swapcache flag
-set, inspiring this patch.  After applying this patch, the memory
-hot-unplug behaves as expected.
-
-I tested this on a machine running Ubuntu 24.04 with kernel version
-6.8.0-90-generic and 64GB of memory.  The guest VM is managed by libvirt
-and runs Ubuntu 24.04 with kernel version 6.18 (though the head of the
-mm-unstable branch as a Dec 16, 2025 was also tested and behaves the same)
-and 48GB of memory.  The libvirt XML definition for the VM can be found at
-[1].  CONFIG_MHP_DEFAULT_ONLINE_TYPE_ONLINE_MOVABLE is set in the guest
-kernel so the hot-pluggable memory is automatically onlined.
-
-Below are the steps to reproduce this behavior:
-
-1) Define and start and virtual machine
-  host$ virsh -c qemu:///system define ./test_vm.xml # test_vm.xml from [1]
-  host$ virsh -c qemu:///system start test_vm
-
-2) Setup swap in the guest
-  guest$ sudo fallocate -l 32G /swapfile
-  guest$ sudo chmod 0600 /swapfile
-  guest$ sudo mkswap /swapfile
-  guest$ sudo swapon /swapfile
-
-3) Use alloc_data [2] to allocate most of the remaining guest memory
-  guest$ ./alloc_data 45
-
-4) In a separate guest terminal, monitor the amount of used memory
-  guest$ watch -n1 free -h
-
-5) When alloc_data has finished allocating, initiate the memory
-hot-unplug using the provided xml file [3]
-  host$ virsh -c qemu:///system detach-device test_vm ./remove.xml --live
-
-After initiating the memory hot-unplug, you should see the amount of
-available memory in the guest decrease, and the amount of used swap data
-increase.  If everything works as expected, when all of the memory is
-unplugged, there should be around 8.5-9GB of data in swap.  If the
-unplugging is unsuccessful, the amount of used swap data will settle below
-that.  If that happens, you should be able to see log messages in dmesg
-similar to the one posted above.
-
-Link: https://lkml.kernel.org/r/20251216200727.2360228-1-bijan311@gmail.com
-Link: https://github.com/BijanT/linux_patch_files/blob/main/test_vm.xml [1]
-Link: https://github.com/BijanT/linux_patch_files/blob/main/alloc_data.c [2]
-Link: https://github.com/BijanT/linux_patch_files/blob/main/remove.xml [3]
-Fixes: 86ebd50224c0 ("mm: add folio_expected_ref_count() for reference count calculation")
-Signed-off-by: Bijan Tabatabai <bijan311@gmail.com>
-Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
-Acked-by: Zi Yan <ziy@nvidia.com>
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Shivank Garg <shivankg@amd.com>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Kairui Song <ryncsn@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable <stable@kernel.org>
+Fixes: 1f73b8b56cf3 ("xhci: dbgtty: fix device unregister")
+Signed-off-by: Łukasz Bartosik <ukaszb@chromium.org>
+Link: https://patch.msgid.link/20251127111644.3161386-1-ukaszb@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/mm.h | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/usb/host/xhci-dbgtty.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 61efff50eb67..c5720c0b7b77 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -1823,10 +1823,10 @@ static inline int folio_expected_ref_count(struct folio *folio)
- 	if (WARN_ON_ONCE(page_has_type(&folio->page) && !folio_test_hugetlb(folio)))
- 		return 0;
+diff --git a/drivers/usb/host/xhci-dbgtty.c b/drivers/usb/host/xhci-dbgtty.c
+index d6652db4f7c1..d0b036603bcc 100644
+--- a/drivers/usb/host/xhci-dbgtty.c
++++ b/drivers/usb/host/xhci-dbgtty.c
+@@ -516,6 +516,7 @@ static int xhci_dbc_tty_register_device(struct xhci_dbc *dbc)
+ static void xhci_dbc_tty_unregister_device(struct xhci_dbc *dbc)
+ {
+ 	struct dbc_port		*port = dbc_to_port(dbc);
++	struct tty_struct	*tty;
  
--	if (folio_test_anon(folio)) {
--		/* One reference per page from the swapcache. */
--		ref_count += folio_test_swapcache(folio) << order;
--	} else {
-+	/* One reference per page from the swapcache. */
-+	ref_count += folio_test_swapcache(folio) << order;
-+
-+	if (!folio_test_anon(folio)) {
- 		/* One reference per page from the pagecache. */
- 		ref_count += !!folio->mapping << order;
- 		/* One reference from PG_private. */
+ 	if (!port->registered)
+ 		return;
+@@ -523,7 +524,11 @@ static void xhci_dbc_tty_unregister_device(struct xhci_dbc *dbc)
+ 	 * Hang up the TTY. This wakes up any blocked
+ 	 * writers and causes subsequent writes to fail.
+ 	 */
+-	tty_vhangup(port->port.tty);
++	tty = tty_port_tty_get(&port->port);
++	if (tty) {
++		tty_vhangup(tty);
++		tty_kref_put(tty);
++	}
+ 
+ 	tty_unregister_device(dbc_tty_driver, port->minor);
+ 	xhci_dbc_tty_exit_port(port);
 -- 
-2.51.0
+2.52.0.351.gbe84eed79e-goog
 
 
