@@ -1,89 +1,110 @@
-Return-Path: <stable+bounces-206095-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206096-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD3AACFC233
-	for <lists+stable@lfdr.de>; Wed, 07 Jan 2026 07:01:11 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A1B1CFC239
+	for <lists+stable@lfdr.de>; Wed, 07 Jan 2026 07:03:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7A02E3003B1D
-	for <lists+stable@lfdr.de>; Wed,  7 Jan 2026 06:01:09 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 501EF3002D18
+	for <lists+stable@lfdr.de>; Wed,  7 Jan 2026 06:03:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA49E1F239B;
-	Wed,  7 Jan 2026 06:01:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B01D26C385;
+	Wed,  7 Jan 2026 06:03:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="TpLo7KN4"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Dw6c7FNf"
 X-Original-To: stable@vger.kernel.org
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 296B719CD1D;
-	Wed,  7 Jan 2026 06:01:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3627E20468E;
+	Wed,  7 Jan 2026 06:03:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767765667; cv=none; b=NXNQZnOQlb+UMg854oQqpEKwpWeD+MzF7z4XleUDinKlK5pUiQHKvVrF3bqioZ7SnyJbMjGtEJPH/aGxIfYWd1/lbpbZiC/Y5Iu8c1SNSjlhi/P81dEfsOZdA1CU8jIGx//HHbn0pWPlYlCFBh8ADRGFlwIFfG31Q97Rz0jemnU=
+	t=1767765786; cv=none; b=fRw17bsmCauKiLv3VJ5FqhlUAceMPzeOY8CzYHIU6FOeikqhFTls+HuZiwfEsfjzc/u5P2k7P3yN0YTubFOyfsQXj0afbySHZMZ3/MVCYydMRPa/pzNrC2e9U23OWHC0N1Ygk5kj8moMwfWP9pcXs1QdeGOsqagUBfioB2Wfjfo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767765667; c=relaxed/simple;
-	bh=iNpHSrqM/YKGUxmGPvsJTfoCyukWxzgImYsjJ1yX85s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XwkquqVGV96BHNAiOyM8aYMCtWI7rdBz0jbxd+Yb2tRyWwzIZ1rqs58cEl9Wv/0/+A/+rol4J3Bp+MKJMSIPj4ZLy8C4T2UHmsZujRdue/eY5QhAFP8hYE3FoQQOW8d9mADCRAamBkLSXq9mIXcB34UO8P7zaw2QDi1K8MS5Sm0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=TpLo7KN4; arc=none smtp.client-ip=198.137.202.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=HX+RWCYcvyaGxDKA7PAvcLWAk3L5YhLDhSqHG6WWoBI=; b=TpLo7KN4Frey8UY+NrKMURiJ4C
-	F/FMXh/Z7EBYQapcK44342v/P0WmiXhDPhtnfldSOo2Ili5mtiCe5QXhZZYtcs6n81ZA746pTJuTq
-	jjm5yRE9heX99LKaK2t30JbClNKJ4EViv60ezp2b/v7C5RlM4hNJEV/0JNHLVPjUH4hky05Ndz7+9
-	6GMNOlnCkCBwYAa5TCqYV6K0YxAQteWPQRlBiq8gss2DbzdavdKXUrx7Y+jF7v9a4qzA/u45CiR4C
-	Z30Bmk6yj5S/pujjvrB1yxNGyB51pCEzacNIVnd66/RW0c6uEpZkRkRbXubp4CmmgH7ts2PEQ/ANJ
-	C6ycFX3w==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vdMbN-0000000EC84-17nD;
-	Wed, 07 Jan 2026 06:01:01 +0000
-Date: Tue, 6 Jan 2026 22:01:01 -0800
-From: Christoph Hellwig <hch@infradead.org>
-To: "Darrick J. Wong" <djwong@kernel.org>
-Cc: Christoph Hellwig <hch@infradead.org>,
-	Mark Tinguely <mark.tinguely@oracle.com>, linux-xfs@vger.kernel.org,
+	s=arc-20240116; t=1767765786; c=relaxed/simple;
+	bh=h3YP1/3kcOqfQtC9oDt/rAoWE1Mgnw0+zP1KLSf+690=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=V2wJrb9ui2WjLdLWdGbxDdtSgZM7N0ebspJHvrE7by5avbkN8aadLGh17zbl2TgR1o5L+RdoTq4lXv0EsA9w8iNESgC4H4gIpnJ5HF6BuPph5JGatJzX5nqFMYH6zwU5Axx7UfLpYSbIDsboTKvu+fC3Sb26ps7pOI6/8zWn6ao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Dw6c7FNf; arc=none smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1767765784; x=1799301784;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=h3YP1/3kcOqfQtC9oDt/rAoWE1Mgnw0+zP1KLSf+690=;
+  b=Dw6c7FNf/pQ/WgKAexH1/+C1ntrwPGnr0/vx6Vu0mhsfl1MAch8Jjnrt
+   USmq4MGBVKsqOVcJwgyCg75iZy3a5nf+PgGH0ozY6sYpKHlK+rv/+R164
+   3eCwQdmMZ776gWMLRG8e/38OIbJferpRtRDMUBNdG8FwWuE76SejLAne9
+   sj76f3dSaQrjilhECVpuAWAthJiPCz/BJlrkG6gxqJYYGGooV1/5q5V3w
+   tN+lSQU2GXqTn0rO5VjfnAGNfBV9A9mDOm8anU7Zcu+wICID6/6GpUOzW
+   s/EJm/6f7N+c/RXPqQP/rcM8Y8b2/LpTo8W61Y55l4eAzI0N7ahj0dv1s
+   g==;
+X-CSE-ConnectionGUID: cNG8ucfAQGCByH6jcOdkZg==
+X-CSE-MsgGUID: BoLCrRaeQmeJctlqRcNHHA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11663"; a="79434350"
+X-IronPort-AV: E=Sophos;i="6.21,207,1763452800"; 
+   d="scan'208";a="79434350"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jan 2026 22:03:02 -0800
+X-CSE-ConnectionGUID: E5p8ufV0TEeZTVOmevAMmA==
+X-CSE-MsgGUID: NT17D5qARpuFFZqbJVEv1w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,207,1763452800"; 
+   d="scan'208";a="202746873"
+Received: from spandruv-desk.jf.intel.com ([10.54.55.20])
+  by fmviesa006.fm.intel.com with ESMTP; 06 Jan 2026 22:03:02 -0800
+From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+To: hansg@kernel.org,
+	ilpo.jarvinen@linux.intel.com
+Cc: platform-driver-x86@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
 	stable@vger.kernel.org
-Subject: Re: [PATCH] xfs: fix NULL ptr in xfs_attr_leaf_get
-Message-ID: <aV32nTIWTacVXqIw@infradead.org>
-References: <20251230190029.32684-1-mark.tinguely@oracle.com>
- <17cd5bef-e787-4dc9-9536-112d1e2cda2d@oracle.com>
- <aVzDNYiygzgjMAkA@infradead.org>
- <20260106154026.GA191501@frogsfrogsfrogs>
+Subject: [PATCH v2 1/2] platform/x86: ISST: Add missing write block check
+Date: Tue,  6 Jan 2026 22:02:55 -0800
+Message-ID: <20260107060256.1634188-2-srinivas.pandruvada@linux.intel.com>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20260107060256.1634188-1-srinivas.pandruvada@linux.intel.com>
+References: <20260107060256.1634188-1-srinivas.pandruvada@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260106154026.GA191501@frogsfrogsfrogs>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+Content-Transfer-Encoding: 8bit
 
-On Tue, Jan 06, 2026 at 07:40:26AM -0800, Darrick J. Wong wrote:
-> > > Fixes v5.8-rc4-95-g07120f1abdff ("xfs: Add xfs_has_attr and subroutines")
-> > > No reproducer.
-> > 
-> > Eww, what a mess.  I think we're better off to always leave releasing
-> > bp to the caller.  Something like the patch below.  Only compile tested
-> > for now, but I'll kick off an xfstests run.
-> > 
-> > Or maybe we might just kill off xfs_attr_leaf_hasname entirely and open
-> > code it in the three callers, which might end up being more readable?
-> 
-> ...unless this is yet another case of the block layer returning ENODATA,
-> which is then mistaken for returning ENOATTR-but-here's-your-buffer by
-> the xfs_attr code?
+If writes are blocked, then return error during SST-CP enable command.
+Add missing write block check in this code path.
 
-Not really and unless.  This patch (and the full removal that I've
-prepared in the meantime) still fix the missing buffer release in that
-case and make the code easier to follow.  But yes, they would not fix
-the underlying issue, which is why I still think we should not blindly
-propagate block layer errors into b_error.
+Fixes: 8bed9ff7dbcc ("platform/x86: ISST: Process read/write blocked feature status")
+Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Cc: <stable@vger.kernel.org>
+---
+v2:
+- No change
+
+ drivers/platform/x86/intel/speed_select_if/isst_tpmi_core.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/drivers/platform/x86/intel/speed_select_if/isst_tpmi_core.c b/drivers/platform/x86/intel/speed_select_if/isst_tpmi_core.c
+index 34bff2f65a83..f587709ddd47 100644
+--- a/drivers/platform/x86/intel/speed_select_if/isst_tpmi_core.c
++++ b/drivers/platform/x86/intel/speed_select_if/isst_tpmi_core.c
+@@ -612,6 +612,9 @@ static long isst_if_core_power_state(void __user *argp)
+ 		return -EINVAL;
+ 
+ 	if (core_power.get_set) {
++		if (power_domain_info->write_blocked)
++			return -EPERM;
++
+ 		_write_cp_info("cp_enable", core_power.enable, SST_CP_CONTROL_OFFSET,
+ 			       SST_CP_ENABLE_START, SST_CP_ENABLE_WIDTH, SST_MUL_FACTOR_NONE)
+ 		_write_cp_info("cp_prio_type", core_power.priority_type, SST_CP_CONTROL_OFFSET,
+-- 
+2.52.0
 
 
