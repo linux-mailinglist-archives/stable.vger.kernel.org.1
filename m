@@ -1,138 +1,238 @@
-Return-Path: <stable+bounces-206062-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206063-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DED66CFB69A
-	for <lists+stable@lfdr.de>; Wed, 07 Jan 2026 01:04:55 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 946B0CFB6AF
+	for <lists+stable@lfdr.de>; Wed, 07 Jan 2026 01:05:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AC0B030262B7
-	for <lists+stable@lfdr.de>; Wed,  7 Jan 2026 00:04:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D9D403032724
+	for <lists+stable@lfdr.de>; Wed,  7 Jan 2026 00:05:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBB2117D6;
-	Wed,  7 Jan 2026 00:04:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD9709460;
+	Wed,  7 Jan 2026 00:05:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="m7jyeCar"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MLNBQEKS"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 057BFDDAB
-	for <stable@vger.kernel.org>; Wed,  7 Jan 2026 00:04:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A288E17D6
+	for <stable@vger.kernel.org>; Wed,  7 Jan 2026 00:05:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767744293; cv=none; b=U/k5mQpKxxQw/BXga2qc5zzGoiP2/5gtA+95qYxrwbIlkCRf9Wvny0GbZw7bngsL83fzUZPqTkHgDuqr8s7SXWjDehuC3+tXTvqfbwFeBsFzzyiakotNZdiZI0tmA6/X00rMXZ6vcibeOYWF20UnhiGMVxB+yPv1fMnHgbmU66g=
+	t=1767744324; cv=none; b=biyjzAsLuH76pBYrEmHQuiGpy2w7VlMt/RRFzj7ftO7IvNK58D09L9qiUsel8myVCNWboWjvEmZV/6kmaDy87hLMUcP1YSApn2ja1aRwTrTw7L58kh1dtgjAvkF18H2OyB01oI42ADrWt6l3da/Ed2vPwCmCZOuTPhs3GIRqqjE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767744293; c=relaxed/simple;
-	bh=8qJPx+kC5MLS3XV6h2sWuTOwf1eMrgy6GAS9eEFlKx0=;
+	s=arc-20240116; t=1767744324; c=relaxed/simple;
+	bh=FJCwgkNjSsKVRA4ZLLDhzoQEsKIk6rDv4zru2NkuR7Y=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=e93E4CGnqe/y1MCLAMy/6nnD5wKWKGHGVhPxv8yJ/uSIOkqFpyaJNhh+oXjlaBdAPxnhSCAor6X+K6hXvmZS+OI88nOBArLBCjNnNeBbFJk35Ddt2tCujCed6dBJdgYce0r0QFtfv3K17F/X5McuR+acRfoWFwFMlMZfhJwO6yg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=m7jyeCar; arc=none smtp.client-ip=209.85.167.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-59b6f52eea8so176633e87.3
-        for <stable@vger.kernel.org>; Tue, 06 Jan 2026 16:04:51 -0800 (PST)
+	 To:Cc:Content-Type; b=aX2afa6tw3NZ4tT1qi3vmwW4+QFTf6LibXlD2eV1h91K5TJ8nBAN1K+x9MS14IXUSbqv8iGR6IJk8k/1x263eMQ0XVUXmpYb1fRIJ76qxJuJuweISW+9omE9wpLUx6Ny1rr4o/IUrWdpxjAuKpUzQIDtJVloBl/q6Z84EA31bCE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MLNBQEKS; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-47a95efd2ceso13207685e9.2
+        for <stable@vger.kernel.org>; Tue, 06 Jan 2026 16:05:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1767744290; x=1768349090; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1767744321; x=1768349121; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=HKyvUh+QhrMURKxvdZgbCSxanf920aeudQdpSlc4NpA=;
-        b=m7jyeCar2XW6474ewzj23dhvhUSZZ5yi+Du+ZcJtRBHORqtXILfv5xvYytrrGWCqkD
-         P5+vk9389JMZGI6IbmrkSkkmVzuWTRmn7wwhpcoIqq4+6W/855SyFxlrHDdLxVBZxAPn
-         KMJhK/29GDBOK+7ySYNTsWTA1IfyzJ2b3Sa3I=
+        bh=Gav3Va1om+aE0DQogO7gh6heL0GSyo9snkPsIMFuKP0=;
+        b=MLNBQEKSRxUCivizoyAtuKPUkAS3Mu2GWuTNnw1Hi+jvxPOpzp0DdaA9YGNhqqWIQy
+         GqulxSnT59tESTrcLTegmd6+Ya3zqs6Y5G0jZ4sB7MZEUZRuEZbiLLxRpku98eqlNtA0
+         KQZHPWSP0zBZoVMrYJbnylqryOy82LubdK66vLf55Amxft+dYlNIER2fjkJWdzd+S5Te
+         rvs7sFPFdBUIuoZle7S4qbcZUYcmkjZMm02mZs8SmMKCbOTADG3eLzt+hlHq0rl3hbrj
+         dAObuq3Wyb8ibD0epo0dTiaouR9Pc9buBKA9+aAjYmB3hwap5HIPpgLBhWGf/J1YFG45
+         CQAw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767744290; x=1768349090;
+        d=1e100.net; s=20230601; t=1767744321; x=1768349121;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=HKyvUh+QhrMURKxvdZgbCSxanf920aeudQdpSlc4NpA=;
-        b=VVpdBiTPdIB8xAWJzmUb0euxzMOIIfSeHiP+JYupRoQCDu1PAFhRCRJBW8qcLoX3T9
-         V+iQeDGaImQ9fSL/jEVKKyutXabuYeax6/Eat3u0tgsmNHyS+nUotFr0ZFi/QaEgV2/G
-         /fZ9UG1bG0tUaTb5NDkfAkYQVUBcylupOPryoaQe8sI2z0MWILNHki3aVSEkUzEl1oP2
-         uO5iG0vKNFkG++yX3NnptHuXL3+4Ukfm8aGIcUElV08h4ut9BtU3Wra6abIbhlhYrjjZ
-         pYa7yz6Dhz4BOEHFqPagy9Fx/Us+K+THLgU7DXDwPddHaBna9yb/6hkAYVnbcqYv13iq
-         tgzg==
-X-Gm-Message-State: AOJu0YzxcDBggahMA4Pw5JD00RAT2T/55xC9PRsPcWW90CqdY6FSjrLE
-	4T4L/EgUCi4IjA+fDgNX/Z7eJjUUcAFBBsQ0GQBW2w2mNhR/Z+86+PTTzXo4LMsTox3x+NApk4+
-	ON/702tE7AZTziohk1f3hiVp1Uw8VGwIPZNDkxl4=
-X-Gm-Gg: AY/fxX5YBlG0imLL7FZU1ywlPcHxSHTgFvrPZ9AapsgiiplC2Aij9UGElluMQPrBBOF
-	lG4B+Q711XHVyP3pbdhHG8Ho/+hxZ6xNv2v/bYCgk+H5VLDxQ/bqTYpn50h2AlOBq88CXcvAUYN
-	nb8P3tXZvujDBeUwx8KacVBPW5yEc3j7qj7XkHlyoBkQMSvLR+4GpsOvGGK0h7NHNsfhkKtmgU7
-	ZVWtPkVjFIZgoK3dh215MAN0NZ3ng5+nWQ65NrvMf9XdI8/x1mK2fSKB3t3Ffxakuc=
-X-Google-Smtp-Source: AGHT+IFQdy/+2J9uOSYpxLDewV04a9J0eyKjqcf1U3V7EFffmr/5C+V3f6woXruTS5TnVHp7er13+RW98nO287n4HrI=
-X-Received: by 2002:a05:6512:3dac:b0:598:e8b7:665d with SMTP id
- 2adb3069b0e04-59b6ef0698bmr282600e87.3.1767744290137; Tue, 06 Jan 2026
- 16:04:50 -0800 (PST)
+        bh=Gav3Va1om+aE0DQogO7gh6heL0GSyo9snkPsIMFuKP0=;
+        b=LkdZaEcsUv4J9o3eYi4stsCZR0AUdpICPpREIVlqZwbmJg9jqRrGMlRiYN8NMQW8tN
+         LfsswiQxGarWrlhtfDETI2UX615Rkrq36aDmzsy4mWoEoZ3tzLUOYFTCj4LQWPbZhxVT
+         PIUyFKB4aIiYjVkJeq5x1GTGL3fjBrDJ/R6lP4cP+ocYN61evZAmlIsv6PzpXUaOiRHv
+         K1bYq190yxKR8GBtFvAnwUu5S3aBT3aWF1COCDgpwHok2xWsoC5ZfGhnybRZDg5Q6ZzK
+         Q/iOb8+riQojo59zgtfW0OdW+eb9zejsbJVIIaubxIrrpk5KKhfQX5qyvDN35cazZtaN
+         GG+A==
+X-Forwarded-Encrypted: i=1; AJvYcCXRCWYPxnsDu2SK/ywn0PT6bAAIAyihK6upw+y7NEfY2iSmGb2qePc/DwMkfm7hqs3HNjEkQ0s=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyXfO6JXCwPgUucGpjYsGk2CPk2Q+6X5HxrTc1xsP/JAq72d0zC
+	xkaVQ0xCStF4/T12eSRloGZ8/YKSP+TI/zhEIlEWBHTclQefCf+b+f6RdYTODjx58J+QKnNBX3n
+	4mJjxfRKcbOvxnV7SUmrj6oc8/A8mXlA=
+X-Gm-Gg: AY/fxX6zreSLNCZSUrW5PBxajcDNzUNEB4iTlh/+6aUrMlwqYbtiiEz+MR0jyws2iro
+	9mpRdzOyNA97fUYbelXj/NHR9v1p47SBvAUaQy/y/3KMZTUtvEbIhtze9u/Y9zfXU2q/nVMZE8M
+	1tw4N0J5Dqhp2hgTd3AgR1QLjWLLO3FFIVGf4KmbDQfuXUWEA0/xBHfMDmSiGyeFCHT0sVfDgFu
+	533xpSIKxtaqUYaBWsTSdcuB4YhPkQo90JMp2A+yhsrARL6z+nv+uWEuaTSiJr5n0wDKrVIxOjH
+	VCHpXheaQAMXNJolaiHULmOJlt6W
+X-Google-Smtp-Source: AGHT+IGl2Ii6lYtrStKwwrW4DV2MorC6fOx6oD73asUHq44HSHQEZizOb3DdjFMp1y8uMfGceIcrW7ZpeeEipzPFUxc=
+X-Received: by 2002:a05:600c:c0c7:b0:477:c478:46d7 with SMTP id
+ 5b1f17b1804b1-47d84b33bd7mr5422015e9.22.1767744320731; Tue, 06 Jan 2026
+ 16:05:20 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260106170451.332875001@linuxfoundation.org> <20260106170509.599329945@linuxfoundation.org>
-In-Reply-To: <20260106170509.599329945@linuxfoundation.org>
-From: =?UTF-8?Q?=C5=81ukasz_Bartosik?= <ukaszb@chromium.org>
-Date: Wed, 7 Jan 2026 01:04:37 +0100
-X-Gm-Features: AQt7F2oZgW6rINda_2dA-YwksISTYezoZCKXSbhdQxy3iradySpgB4CCqOninEU
-Message-ID: <CALwA+NZCSz26m96R0gjKP7=O3Z_kWmnt82SiaqvOukR9vFxv2A@mail.gmail.com>
-Subject: Re: [PATCH 6.12 493/567] xhci: dbgtty: fix device unregister: fixup
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	stable <stable@kernel.org>, Sasha Levin <sashal@kernel.org>
+References: <20251231024316.4643-1-CFSworks@gmail.com> <20251231024316.4643-6-CFSworks@gmail.com>
+ <912bf88ff3b77203c2df37aa4744139a2ea0a98c.camel@ibm.com> <CAH5Ym4j9Sgzng9SUB8ONcX1nLCcdRn7A9G1YbpZXOi3ctQT5BQ@mail.gmail.com>
+ <f8e9a246a6a47a100e022d837b5ffc3f9e864fd8.camel@ibm.com>
+In-Reply-To: <f8e9a246a6a47a100e022d837b5ffc3f9e864fd8.camel@ibm.com>
+From: Sam Edwards <cfsworks@gmail.com>
+Date: Tue, 6 Jan 2026 16:05:09 -0800
+X-Gm-Features: AQt7F2psWTlbRQ7Z6mrasZWFncIjjEh3ebIkKaATeNF5GViz3yWadmundV3id9k
+Message-ID: <CAH5Ym4j4SbR7DMOZaLWD4v5HOj6Eejv07pcyE3TsWb9R_jFLcA@mail.gmail.com>
+Subject: Re: [PATCH 5/5] ceph: Fix write storm on fscrypted files
+To: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
+Cc: Xiubo Li <xiubli@redhat.com>, "brauner@kernel.org" <brauner@kernel.org>, 
+	"ceph-devel@vger.kernel.org" <ceph-devel@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "jlayton@kernel.org" <jlayton@kernel.org>, 
+	Milind Changire <mchangir@redhat.com>, "idryomov@gmail.com" <idryomov@gmail.com>, 
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jan 6, 2026 at 6:43=E2=80=AFPM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
+On Tue, Jan 6, 2026 at 3:11=E2=80=AFPM Viacheslav Dubeyko <Slava.Dubeyko@ib=
+m.com> wrote:
 >
-> 6.12-stable review patch.  If anyone has any objections, please let me kn=
-ow.
+> On Mon, 2026-01-05 at 22:53 -0800, Sam Edwards wrote:
+> > On Mon, Jan 5, 2026 at 2:34=E2=80=AFPM Viacheslav Dubeyko <Slava.Dubeyk=
+o@ibm.com> wrote:
+> > >
+> > > On Tue, 2025-12-30 at 18:43 -0800, Sam Edwards wrote:
+> > > > CephFS stores file data across multiple RADOS objects. An object is=
+ the
+> > > > atomic unit of storage, so the writeback code must clean only folio=
+s
+> > > > that belong to the same object with each OSD request.
+> > > >
+> > > > CephFS also supports RAID0-style striping of file contents: if enab=
+led,
+> > > > each object stores multiple unbroken "stripe units" covering differ=
+ent
+> > > > portions of the file; if disabled, a "stripe unit" is simply the wh=
+ole
+> > > > object. The stripe unit is (usually) reported as the inode's block =
+size.
+> > > >
+> > > > Though the writeback logic could, in principle, lock all dirty foli=
+os
+> > > > belonging to the same object, its current design is to lock only a
+> > > > single stripe unit at a time. Ever since this code was first writte=
+n,
+> > > > it has determined this size by checking the inode's block size.
+> > > > However, the relatively-new fscrypt support needed to reduce the bl=
+ock
+> > > > size for encrypted inodes to the crypto block size (see 'fixes' com=
+mit),
+> > > > which causes an unnecessarily high number of write operations (~102=
+4x as
+> > > > many, with 4MiB objects) and grossly degraded performance.
+> >
+> > Hi Slava,
+> >
+> > > Do you have any benchmarking results that prove your point?
+> >
+> > I haven't done any "real" benchmarking for this change. On my setup
+> > (closer to a home server than a typical Ceph deployment), sequential
+> > write throughput increased from ~1.7 to ~66 MB/s with this patch
+> > applied. I don't consider this single datapoint representative, so
+> > rather than presenting it as a general benchmark in the commit
+> > message, I chose the qualitative wording "grossly degraded
+> > performance." Actual impact will vary depending on workload, disk
+> > type, OSD count, etc.
+> >
+> > Those curious about the bug's performance impact in their environment
+> > can find out without enabling fscrypt, using: mount -o wsize=3D4096
+> >
+> > However, the core rationale for my claim is based on principles, not
+> > on measurements: batching writes into fewer operations necessarily
+> > spreads per-operation overhead across more bytes. So this change
+> > removes an artificial per-op bottleneck on sequential write
+> > performance. The exact impact varies, but the patch does improve
+> > (fscrypt-enabled) write throughput in nearly every case.
+> >
 >
-> ------------------
->
-> From: =C5=81ukasz Bartosik <ukaszb@chromium.org>
->
-> [ Upstream commit 74098cc06e753d3ffd8398b040a3a1dfb65260c0 ]
->
-> This fixup replaces tty_vhangup() call with call to
-> tty_port_tty_vhangup(). Both calls hangup tty device
-> synchronously however tty_port_tty_vhangup() increases
-> reference count during the hangup operation using
-> scoped_guard(tty_port_tty).
->
-> Cc: stable <stable@kernel.org>
-> Fixes: 1f73b8b56cf3 ("xhci: dbgtty: fix device unregister")
-> Signed-off-by: =C5=81ukasz Bartosik <ukaszb@chromium.org>
-> Link: https://patch.msgid.link/20251127111644.3161386-1-ukaszb@google.com
-> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> ---
->  drivers/usb/host/xhci-dbgtty.c |    2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> --- a/drivers/usb/host/xhci-dbgtty.c
-> +++ b/drivers/usb/host/xhci-dbgtty.c
-> @@ -522,7 +522,7 @@ static void xhci_dbc_tty_unregister_devi
->          * Hang up the TTY. This wakes up any blocked
->          * writers and causes subsequent writes to fail.
->          */
-> -       tty_vhangup(port->port.tty);
-> +       tty_port_tty_vhangup(&port->port);
 
-The function tty_port_tty_vhangup does not exist in the 6.12 kernel.
-It was added later.
+Hi Slava,
 
-I sent updated patch
-https://lore.kernel.org/stable/20260106235820.2995848-1-ukaszb@chromium.org=
-/T/#mb46d870145474d04aaabeccc76aaf949b34bbf86
+> If you claim in commit message that "this patch fixes performance degrada=
+tion",
+> then you MUST share the evidence (benchmarking results). Otherwise, you c=
+annot
+> make such statements in commit message. Yes, it could be a good fix but p=
+lease
+> don't make a promise of performance improvement. Because, end-users have =
+very
+> different environments and workloads. And what could work on your side ma=
+y not
+> work for other use-cases and environments.
 
-Thanks,
-=C5=81ukasz
+I agree with the underlying concern: I do not have a representative
+environment, and it would be irresponsible to promise or quantify a
+specific speedup. For that reason, the commit message does not claim
+any particular improvement factor.
+
+What it does say is that this patch fixes a known performance
+degradation that artificially limits the write batch size. But that
+statement is about correctness relative to previous behavior, not
+about guaranteeing any specific performance outcome for end users.
+
+> Potentially, you could describe your
+> environment, workload and to share your estimation/expectation of potenti=
+al
+> performance improvement.
+
+I don=E2=80=99t think that would be useful here. As you pointed out, any su=
+ch
+numbers would be highly workload- and environment-specific and would
+not be representative or actionable. The purpose of this patch is
+simply to remove an unintentional limit, not to advertise or promise
+measurable gains.
+
+Best,
+Sam
 
 >
->         tty_unregister_device(dbc_tty_driver, port->minor);
->         xhci_dbc_tty_exit_port(port);
+> Thanks,
+> Slava.
 >
->
+> > Warm regards,
+> > Sam
+> >
+> >
+> > >
+> > > Thanks,
+> > > Slava.
+> > >
+> > > >
+> > > > Fix this (and clarify intent) by using i_layout.stripe_unit directl=
+y in
+> > > > ceph_define_write_size() so that encrypted inodes are written back =
+with
+> > > > the same number of operations as if they were unencrypted.
+> > > >
+> > > > Fixes: 94af0470924c ("ceph: add some fscrypt guardrails")
+> > > > Cc: stable@vger.kernel.org
+> > > > Signed-off-by: Sam Edwards <CFSworks@gmail.com>
+> > > > ---
+> > > >  fs/ceph/addr.c | 3 ++-
+> > > >  1 file changed, 2 insertions(+), 1 deletion(-)
+> > > >
+> > > > diff --git a/fs/ceph/addr.c b/fs/ceph/addr.c
+> > > > index b3569d44d510..cb1da8e27c2b 100644
+> > > > --- a/fs/ceph/addr.c
+> > > > +++ b/fs/ceph/addr.c
+> > > > @@ -1000,7 +1000,8 @@ unsigned int ceph_define_write_size(struct ad=
+dress_space *mapping)
+> > > >  {
+> > > >       struct inode *inode =3D mapping->host;
+> > > >       struct ceph_fs_client *fsc =3D ceph_inode_to_fs_client(inode)=
+;
+> > > > -     unsigned int wsize =3D i_blocksize(inode);
+> > > > +     struct ceph_inode_info *ci =3D ceph_inode(inode);
+> > > > +     unsigned int wsize =3D ci->i_layout.stripe_unit;
+> > > >
+> > > >       if (fsc->mount_options->wsize < wsize)
+> > > >               wsize =3D fsc->mount_options->wsize;
 
