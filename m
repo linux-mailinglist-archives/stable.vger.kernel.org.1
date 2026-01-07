@@ -1,290 +1,98 @@
-Return-Path: <stable+bounces-206121-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206122-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E0F9CFD5B6
-	for <lists+stable@lfdr.de>; Wed, 07 Jan 2026 12:16:20 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id E38E6CFD5C2
+	for <lists+stable@lfdr.de>; Wed, 07 Jan 2026 12:17:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DC47730133F0
-	for <lists+stable@lfdr.de>; Wed,  7 Jan 2026 11:16:18 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id EB5CD30133F9
+	for <lists+stable@lfdr.de>; Wed,  7 Jan 2026 11:16:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB3B2242D86;
-	Wed,  7 Jan 2026 11:16:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D2592FFF8F;
+	Wed,  7 Jan 2026 11:16:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="c6IUwuN+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MxK2TzVZ"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C9CE2D7DD5
-	for <stable@vger.kernel.org>; Wed,  7 Jan 2026 11:16:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAB2C2FFFB5;
+	Wed,  7 Jan 2026 11:16:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767784576; cv=none; b=Rf01bjp0F7tClnyuzVuXwUAXiPFvilYG5HvjCRyBAZcHAMm9CUVkXwIBIQuJ4HBUdwmgQ2q/nB58or2jZrMJEEtWCD6VbKYT+MP0kpvmRIHVuRHTeY8BZJ2Az8QJyiBOBPlf/7NVdSyMEi2j7CA1X4KXYV4MLiy2INrJkPFyKOg=
+	t=1767784617; cv=none; b=THUv/zORmPeBJvex3DD20F8HiCCvMdHOSfuCjpMJro0DOXfhaoqmr5IsHmzrSE8D8zSWHlJW4TxmCB7782oSy8q4qmD8f5pZIYfINE0Ew2hT2wmryh0fYgDsMJ4IqPzitOTQDmVaH4pwGmyYzBm0jqhFOboLI0eUziD3qb1D3Us=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767784576; c=relaxed/simple;
-	bh=YyWfqME+sP7DDgd4A3XL4QkJEjJsSudF61aazbrFWaw=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=WvRRizaB16RaD8gTpCs3b7YjKsDXyEeFKQJKosNEU2P3KUNNXdVv64HBMVYZgAkUrBOU4yPswv45B4g2bASQSBo7StKo6+fwSpHXuA28ibYHCprfAfcvLyGvpiJ4NqfgOEMcnV6HvrXDaoXR9e7dK1nE3CZA1Jb5/mJzV9toXT0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=c6IUwuN+; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1767784575; x=1799320575;
-  h=from:to:cc:subject:in-reply-to:references:date:
-   message-id:mime-version;
-  bh=YyWfqME+sP7DDgd4A3XL4QkJEjJsSudF61aazbrFWaw=;
-  b=c6IUwuN+enAoysZBJEVwscGBRmP7iZhULgPhhegvIIiALHlvTebHnJme
-   0hf1NnZ8IfOwm3R63WD2ylf1kWiFbiExrMNHb9YjQ+nanq9fZd3XXsAgB
-   2BmbCLBgqfcETcF4k1klR7R4gRJfyUbnzIiacXGAwOm9eRpDaLBOk+Qd1
-   9JRN3demIAEUYY5/zBYuUYNDRHRiUxmh/rA14sjVeh8rx0jZ7SUsom+ra
-   OPIa7lgCtJUFcsVuoZ/eaLmIRYAwdWMrICin8qX6A9984fkPSNrBUgMha
-   UkXAq6IsebBqkVIGJO3L2/+An3rnfvkBGAzbGzACp0fXdAPuaV6ohARlw
-   g==;
-X-CSE-ConnectionGUID: J5cYxi9RTbuC7UjRlVe4Vg==
-X-CSE-MsgGUID: NsDuYG0YRMGxhtceeLAViQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11663"; a="86568599"
-X-IronPort-AV: E=Sophos;i="6.21,207,1763452800"; 
-   d="scan'208";a="86568599"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jan 2026 03:16:15 -0800
-X-CSE-ConnectionGUID: DaqpCwtpTFedipQHu0R9Ew==
-X-CSE-MsgGUID: cIOcmcC9RX6ZeaUUFEbcIg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,207,1763452800"; 
-   d="scan'208";a="233607564"
-Received: from mjarzebo-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.246.60])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jan 2026 03:16:12 -0800
-From: Jani Nikula <jani.nikula@intel.com>
-To: imre.deak@intel.com
-Cc: intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
- Mohammed Thasleem <mohammed.thasleem@intel.com>, stable@vger.kernel.org
-Subject: Re: [PATCH] drm/i915/dmc: fix an unlikely NULL pointer deference at
- probe
-In-Reply-To: <aTGGThc98Il6FCTC@ideak-desk>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
- 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
-References: <20251202183950.2450315-1-jani.nikula@intel.com>
- <aS9ZGmXG_n0IXv-N@ideak-desk> <aS9bj8RRYYc01Rzs@ideak-desk>
- <43c4d7f0d9fe4ba6acac828306b41d612dd4f085@intel.com>
- <aTATMrp6oysYUecR@ideak-desk>
- <7bfb6dabe5bf83028f695d4d248597b721ce0e0c@intel.com>
- <aTGGThc98Il6FCTC@ideak-desk>
-Date: Wed, 07 Jan 2026 13:16:08 +0200
-Message-ID: <3626411dc9e556452c432d0919821b76d9991217@intel.com>
+	s=arc-20240116; t=1767784617; c=relaxed/simple;
+	bh=zyPxBaWuDO7JOrwUP6o2I5tEYFqYHwGqwUBBzMZkGv4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=POOr+RroJUxKJROzavhp2q/d9ONXywGfQeJXfu7M55wiDU2ANKBnNW92yqvvZfQKrH9gBXdC/5P5R6x44hEqQHlUiQ/h/r9q+BpDhv9yEu9tu+0DPnemPgyqaEGRpNfrVsCK5xK/FIqL7VfOob+dSmkTperI7MoMIvoasePOejw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MxK2TzVZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14CDEC4CEF7;
+	Wed,  7 Jan 2026 11:16:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767784617;
+	bh=zyPxBaWuDO7JOrwUP6o2I5tEYFqYHwGqwUBBzMZkGv4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=MxK2TzVZTIYZMDqcc4kb0/Ca4+yD6CrI/9MnM/ElVvwi7QPqAyZgXXKTD9DEsXiV3
+	 zIme9OFkV60UNE7U96PGOZgqhkI9HdUWMES7BtIo0zzhn6TdvoXEdMMrwT4UlO/SxA
+	 cqqIzVlnblf+5ml1Dh7q0D3GyhCv/9wLKMPW8zwvewcgSigfMCb+q6AV5lh3NDR8eh
+	 s916quFjjeTavXgpED028p41+W0LINPpSLUimZ8ZcEv6JjOLfdCCbCVA67RSe8+dqg
+	 Tktxdn275WueQOg7n/aHf41FZH6TxtjbsgEGAMVvTw+xBu/Dc1iv1rDLlFsGKvik34
+	 6OJ1Wiog4Cf7A==
+Date: Wed, 7 Jan 2026 06:16:55 -0500
+From: Sasha Levin <sashal@kernel.org>
+To: Askar Safin <safinaskar@gmail.com>
+Cc: patches@lists.linux.dev, stable@vger.kernel.org,
+	Takashi Iwai <tiwai@suse.de>,
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+	kai.vehmanen@linux.intel.com, cezary.rojewski@intel.com,
+	ranjani.sridharan@linux.intel.com, rf@opensource.cirrus.com,
+	bradynorander@gmail.com
+Subject: Re: [PATCH AUTOSEL 6.18-6.17] ALSA: hda: intel-dsp-config: Prefer
+ legacy driver as fallback
+Message-ID: <aV5Ap8TgMEDLucWR@laps>
+References: <20251215004145.2760442-1-sashal@kernel.org>
+ <20251215004145.2760442-3-sashal@kernel.org>
+ <CAPnZJGD0ifVdHTRcMzKBFX8UEf_me1KTrkbwezZrhzndcTx-3Q@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAPnZJGD0ifVdHTRcMzKBFX8UEf_me1KTrkbwezZrhzndcTx-3Q@mail.gmail.com>
 
-On Thu, 04 Dec 2025, Imre Deak <imre.deak@intel.com> wrote:
-> On Thu, Dec 04, 2025 at 01:30:27PM +0200, Jani Nikula wrote:
->> On Wed, 03 Dec 2025, Imre Deak <imre.deak@intel.com> wrote:
->> > On Wed, Dec 03, 2025 at 10:13:44AM +0200, Jani Nikula wrote:
->> >> On Tue, 02 Dec 2025, Imre Deak <imre.deak@intel.com> wrote:
->> >> > On Tue, Dec 02, 2025 at 11:24:42PM +0200, Imre Deak wrote:
->> >> >> On Tue, Dec 02, 2025 at 08:39:50PM +0200, Jani Nikula wrote:
->> >> >> > intel_dmc_update_dc6_allowed_count() oopses when DMC hasn't been
->> >> >> > initialized, and dmc is thus NULL.
->> >> >> > 
->> >> >> > That would be the case when the call path is
->> >> >> > intel_power_domains_init_hw() -> {skl,bxt,icl}_display_core_init() ->
->> >> >> > gen9_set_dc_state() -> intel_dmc_update_dc6_allowed_count(), as
->> >> >> > intel_power_domains_init_hw() is called *before* intel_dmc_init().
->> >> >> > 
->> >> >> > However, gen9_set_dc_state() calls intel_dmc_update_dc6_allowed_count()
->> >> >> > conditionally, depending on the current and target DC states. At probe,
->> >> >> > the target is disabled, but if DC6 is enabled, the function is called,
->> >> >> > and an oops follows. Apparently it's quite unlikely that DC6 is enabled
->> >> >> > at probe, as we haven't seen this failure mode before.
->> >> >> > 
->> >> >> > Add NULL checks and switch the dmc->display references to just display.
->> >> >> > 
->> >> >> > Fixes: 88c1f9a4d36d ("drm/i915/dmc: Create debugfs entry for dc6 counter")
->> >> >> > Cc: Mohammed Thasleem <mohammed.thasleem@intel.com>
->> >> >> > Cc: Imre Deak <imre.deak@intel.com>
->> >> >> > Cc: <stable@vger.kernel.org> # v6.16+
->> >> >> > Signed-off-by: Jani Nikula <jani.nikula@intel.com>
->> >> >> > 
->> >> >> > ---
->> >> >> > 
->> >> >> > Rare case, but this may also throw off the rc6 counting in debugfs when
->> >> >> > it does happen.
->> >> >> 
->> >> >> Yes, I missed the case where the driver is being loaded while DC6 is
->> >> >> enabled, this is what happens for the reporter:
->> >> >> 
->> >> >> i915 0000:00:04.0: [drm] *ERROR* DC state mismatch (0x0 -> 0x2)
->> >> >> 
->> >> >> That's odd, as DC6 requires the DMC firmware, which - if it's indeed
->> >> >> loaded by BIOS for instance - will be overwritten by the driver, not a
->> >> >> well specified sequence (even though the driver is trying to handle it
->> >> >> correctly by disabling any active firmware handler).
->> >> >> 
->> >> >> But as you pointed out this would also throw off the cooked-up DC6
->> >> >> counter tracking,
->> >> >
->> >> > Actually the patch would keep the counter working, as the counter
->> >> > wouldn't be updated in the dmc==NULL case. However I still think the
->> >> > correct fix would be to check the correct DC state, which from the POV
->> >> > of the counter tracking is the driver's version of the state, not the HW
->> >> > state.
->> >> 
->> >> One thing I failed to mention is that this happens in a KASAN run in
->> >> QEMU. So I'm kind of not surprised we haven't hit this before. And it
->> >> impacts the deductions about the DC state.
->> >
->> > Ok, it's strange why QEMU decides to initialize the DC_STATE_EN register
->> > to a non-zero value then. But in any case the driver should handle it.
->> >
->> >> I'm not quite sure what exactly you're suggesting, maybe a draft patch
->> >> would communicate the idea better than plain English? ;)
->> >
->> > intel_dmc_get_dc6_allowed_count() still needs to check for dmc==NULL, as
->> > the debugfs entry can be read at any point. With that, what I meant is:
->> >
->> > in gen9_set_dc_state():
->> > ...
->> > -       dc6_was_enabled = val & DC_STATE_EN_UPTO_DC6;
->> > +       dc6_was_enabled = power_domains->dc_state & DC_STATE_EN_UPTO_DC6;
->> 
->> I still don't understand why we can trust our own value rather than
->> what's in the hardware in this case.
+On Tue, Dec 16, 2025 at 02:29:14AM +0300, Askar Safin wrote:
+>On Mon, Dec 15, 2025 at 3:41 AM Sasha Levin <sashal@kernel.org> wrote:
+>>
+>> From: Takashi Iwai <tiwai@suse.de>
+>>
+>> [ Upstream commit 161a0c617ab172bbcda7ce61803addeb2124dbff ]
+>>
+>> When config table entries don't match with the device to be probed,
+>> currently we fall back to SND_INTEL_DSP_DRIVER_ANY, which means to
+>> allow any drivers to bind with it.
+>>
+>[...]
+>>
+>> Reported-by: Askar Safin <safinaskar@gmail.com>
+>> Closes: https://lore.kernel.org/all/20251014034156.4480-1-safinaskar@gmail.com/
+>> Tested-by: Askar Safin <safinaskar@gmail.com>
+>> Reviewed-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+>> Signed-off-by: Takashi Iwai <tiwai@suse.de>
+>> Link: https://patch.msgid.link/20251210131553.184404-1-tiwai@suse.de
+>> Signed-off-by: Sasha Levin <sashal@kernel.org>
+>> ---
 >
-> The BIOS/FW can set random flags in the register, as in the above case,
-> so it can't be trusted. The counter update ending the tracking of the
-> duration of a DC6 enabled state only works if the driver did in fact
-> enable DC6 previously and has started the tracking accordingly. This is
-> only guaranteed if the driver has set DC_STATE_EN_UPTO_DC6 in
-> power_domains->dc_state, the corrsponding HW flag doesn't guarantee it.
->
->> For resume, we even call gen9_sanitize_dc_state(), but not for probe.
->
-> After system suspend, the driver enabling DC9 by setting the
-> corrsponding DC9 flag in the DC_STATE_EN register, the HW/firmware will
-> disable DC9 while resuming. The SW version of the DC state will be
-> updated accordingly in the above function to reflect the disabled DC9
-> state.
->
->> > ...
->> >
->> > in intel_dmc_get_dc6_allowed_count():
->> > ...
->> >         if (DISPLAY_VER(display) < 14)
->> >                 return false;
->> >  
->> > +       if (!dmc) {
->> > +               *count = 0;
->> > +               return true;
->> > +       }
->> > +
->> 
->> This seems neat but is overkill. dmc is never NULL here, but I added the
->> check for completeness.
->
-> intel_dmc_get_dc6_allowed_count() shouldn't fall back on DISPLAY_VER>=14
-> to report the DC6 residency in a way that only works for older
-> platforms. Hence the function should return true for DISPLAY_VER>=14.
->
->> It's the intel_dmc_update_dc6_allowed_count() that's more fragile, and I
->> want that to have the !dmc check, instead of relying on the subtle
->> dependency on power_domains->dc_state.
->
-> The counter tracking should depend on the power_domians->dc_state SW
-> state as described above, so that's the correct thing to do there.
-> dmc==NULL in intel_dmc_update_dc6_allowed_count() would be only a bug in
-> the driver, if you wanted to check for that it should be a
-> WARN_ON(!dmc) check.
+>Please, backport this to 82d9d54a6c0e .
+>82d9d54a6c0e is commit, which introduced "intel-dsp-config.c".
 
-So we still have the NULL pointer dereference at probe, albeit very
-unlikely. I don't really know what to do here. Care to send a patch to
-fix it?
-
-
-BR,
-Jani.
-
-
-
->
->> >         mutex_lock(&power_domains->lock);
->> > -       dc6_enabled = intel_de_read(display, DC_STATE_EN) &
->> > -                     DC_STATE_EN_UPTO_DC6;
->> > +       dc6_enabled = power_domains->dc_state & DC_STATE_EN_UPTO_DC6;
->> > ...
->> >
->> >> Anyway, I think "not oopsing" is a lot better than "inaccurate DC
->> >> counters in debugfs".
->> >
->> > Agreed, the above would ensure both.
->> >
->> >> 
->> >> BR,
->> >> Jani.
->> >> 
->> >> 
->> >> >
->> >> >> so could instead the counter update depend on the
->> >> >> driver's DC state instead of the HW state? I.e. set
->> >> >> gen9_set_dc_state()/dc6_was_enabled,
->> >> >> intel_dmc_get_dc6_allowed_count()/dc6_enable if power_domains->dc_state
->> >> >> says that DC6 was indeed enabled by the driver (instead of checking the
->> >> >> HW state).
->> >> >> 
->> >> >> That would fix the reporter's oops when calling
->> >> >> intel_dmc_update_dc6_allowed_count(start_tracking=false), by not calling
->> >> >> it if the driver hasn't actually enabled DC6 and it would also keep the
->> >> >> DC6 counter tracking correct.
->> >> >> 
->> >> >> intel_dmc_update_dc6_allowed_count(start_tracking=true) would be also
->> >> >> guaranteed to be called only once the firmware is loaded, as until that
->> >> >> point enabling DC6 is blocked (by holding a reference on the DC_off
->> >> >> power well).
->> >> >> 
->> >> >> > ---
->> >> >> >  drivers/gpu/drm/i915/display/intel_dmc.c | 6 +++---
->> >> >> >  1 file changed, 3 insertions(+), 3 deletions(-)
->> >> >> > 
->> >> >> > diff --git a/drivers/gpu/drm/i915/display/intel_dmc.c b/drivers/gpu/drm/i915/display/intel_dmc.c
->> >> >> > index 2fb6fec6dc99..169bbbc91f6d 100644
->> >> >> > --- a/drivers/gpu/drm/i915/display/intel_dmc.c
->> >> >> > +++ b/drivers/gpu/drm/i915/display/intel_dmc.c
->> >> >> > @@ -1570,10 +1570,10 @@ void intel_dmc_update_dc6_allowed_count(struct intel_display *display,
->> >> >> >  	struct intel_dmc *dmc = display_to_dmc(display);
->> >> >> >  	u32 dc5_cur_count;
->> >> >> >  
->> >> >> > -	if (DISPLAY_VER(dmc->display) < 14)
->> >> >> > +	if (!dmc || DISPLAY_VER(display) < 14)
->> >> >> >  		return;
->> >> >> >  
->> >> >> > -	dc5_cur_count = intel_de_read(dmc->display, DG1_DMC_DEBUG_DC5_COUNT);
->> >> >> > +	dc5_cur_count = intel_de_read(display, DG1_DMC_DEBUG_DC5_COUNT);
->> >> >> >  
->> >> >> >  	if (!start_tracking)
->> >> >> >  		dmc->dc6_allowed.count += dc5_cur_count - dmc->dc6_allowed.dc5_start;
->> >> >> > @@ -1587,7 +1587,7 @@ static bool intel_dmc_get_dc6_allowed_count(struct intel_display *display, u32 *
->> >> >> >  	struct intel_dmc *dmc = display_to_dmc(display);
->> >> >> >  	bool dc6_enabled;
->> >> >> >  
->> >> >> > -	if (DISPLAY_VER(display) < 14)
->> >> >> > +	if (!dmc || DISPLAY_VER(display) < 14)
->> >> >> >  		return false;
->> >> >> >  
->> >> >> >  	mutex_lock(&power_domains->lock);
->> >> >> > -- 
->> >> >> > 2.47.3
->> >> >> > 
->> >> 
->> >> -- 
->> >> Jani Nikula, Intel
->> 
->> -- 
->> Jani Nikula, Intel
+Looks like that commit is already in all trees.
 
 -- 
-Jani Nikula, Intel
+Thanks,
+Sasha
 
