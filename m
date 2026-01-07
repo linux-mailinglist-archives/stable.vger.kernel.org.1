@@ -1,161 +1,136 @@
-Return-Path: <stable+bounces-206177-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206178-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEF1BCFEB9C
-	for <lists+stable@lfdr.de>; Wed, 07 Jan 2026 16:57:40 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3260FCFEE6D
+	for <lists+stable@lfdr.de>; Wed, 07 Jan 2026 17:36:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 47B7B30019FB
-	for <lists+stable@lfdr.de>; Wed,  7 Jan 2026 15:57:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D69373414115
+	for <lists+stable@lfdr.de>; Wed,  7 Jan 2026 16:16:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21DE0368277;
-	Wed,  7 Jan 2026 15:57:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66B9334845F;
+	Wed,  7 Jan 2026 16:06:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XingjCUr"
+	dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b="KziO1atL"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-06.mail-europe.com (mail-06.mail-europe.com [85.9.210.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A654838BF9F
-	for <stable@vger.kernel.org>; Wed,  7 Jan 2026 15:57:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4B90347BB5;
+	Wed,  7 Jan 2026 16:06:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.9.210.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767801456; cv=none; b=NKvm4QSrc8Lc+yPBaq55Cl72l92ns3T5c7eYW4YBTAhHlpwjMtredzjvOjervlpQbU6U7L49fAR49Mt9EAtAf2YstqCpG+ICVjNxBHn28S1Vc4eY7NTHY6v/lkBTGxnvTv0IOZp/dAInqcj/k2xYt1Vf6QpQ5AdxvjneqzUeZ/s=
+	t=1767801983; cv=none; b=m+dWkuTxqz8oxEPWNs+Avs//s3Zusu2JqdJ4BNEyxSvlBkO+Ke9GsHc9id8wltkr+ZdyBFV3qKBnbLg+aIARsVHekHoRO2tYcf+W4mWEaex2bBdqV60U6PBRIamLgNqrDSSyEK7YqjvvDWqvfhrlbrRLGPddbmSl0BGT0rxVoeo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767801456; c=relaxed/simple;
-	bh=DhY/D275TXFgMi4+MzvJcAdFNU59ETRlS5STN5M/d7Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nt1YtpEvYKVeXbkdJCHHb5d2QZTC5iMMmC4dNDnJeSOq6W1Me7FZRhsEYuxDYiidIuMnNbO8aZwP+JW4/7MLmIW/n2KrXQeXDZclQ8ZK2LGEEFzT5tcjNGGTLPtP5ZJYVuK0IU4nFCQTKL9ol/YXJOceui7tGBTtl+6Aetz0oHE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XingjCUr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D7DAC19422;
-	Wed,  7 Jan 2026 15:57:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767801455;
-	bh=DhY/D275TXFgMi4+MzvJcAdFNU59ETRlS5STN5M/d7Q=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XingjCUr67DVP5geOtXZkiv8MKNqPofQqrZ8FvQp5EvIEGfr66cAPDJ6g+dku43Cm
-	 BdvblHNDjufQ1ACDhEfd0KhtVaOJEI2ejZhDLiVo7xR7wAJ0BkoGjk1supYX4LQ6KV
-	 Cc8pfq0j850sZmKLvbbXCqHMiDPUj6xUbnBOJC96O+SWO68m3PInMFqPI96sB0kn48
-	 taCF4lFXqwNdEjkplkzqMrN8YvG62zoUFGtiMSAwvh/7rOdoW30AyYk/9i1bMVwXqp
-	 uWEdAxIS3ZWpW0EiMXTL+9IVi+ZNkO+DEuiR+5Wt9Bn2MuaAkEVbLBLUfODjyXFOSS
-	 Dcdy3ixRuPfyw==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Thomas Zimmermann <tzimmermann@suse.de>,
-	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>,
-	Stefan Christ <contact@stefanchrist.eu>,
-	Daniel Vetter <daniel.vetter@ffwll.ch>,
-	dri-devel@lists.freedesktop.org,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y] drm/gma500: Remove unused helper psb_fbdev_fb_setcolreg()
-Date: Wed,  7 Jan 2026 10:57:33 -0500
-Message-ID: <20260107155733.4065165-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026010530-sitcom-outdated-cc0f@gregkh>
-References: <2026010530-sitcom-outdated-cc0f@gregkh>
+	s=arc-20240116; t=1767801983; c=relaxed/simple;
+	bh=7OFNQcA6uqsXEiUwn5GUpmW7VKSRsWQTmn01vKNV7H0=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=HFUkFMzlmlD43iUfx+HCiESQsYOBaMmON++N4HEn8ddWSnBAjLe5ackObOUeD4Ql7dIws5UD239h4/sXx21kmUSSwdW7DoMczhsqmcJVT4evb/IMobVW+wX8JyD5F1kOfFNbWQ45b6z+2vIwPwzY/MKZKwMlDcfDf3/8dBXqn/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=geanix.com; spf=pass smtp.mailfrom=geanix.com; dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b=KziO1atL; arc=none smtp.client-ip=85.9.210.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=geanix.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=geanix.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=geanix.com;
+	s=protonmail2; t=1767801959; x=1768061159;
+	bh=3g3VrAehq1DtdyJEabqqf3fDXyycbpVTX+V8NEpPD+w=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=KziO1atL1h1acJHJ/nknbCs7ObEO1ICTzusYp85opcS3th6hdnJOb1o4kr0TijZCW
+	 gkhu7tFC8I7wgheAOzmlMPheEO3Vn+u63B2Cnp/yXsw6rQNg0wJb6BNYtc3uHZIWsL
+	 AaxXJS008BZ//21a/Gnj6s0FxhPv2f7lwd5eFndRSDdDpI2VSkakvsqplsOlIHikut
+	 B5ryQdmRlp1cJ0MAG5WuAAQQneDWMIj4OAPUenerwhgDyj8OIpbDJHEXgMW6CY3VWt
+	 JF0d4fK0d0qnlJGeqT3/pEwO8waDmIg8sXCwTJBRZ3lFc8G+qzAAnv8dcjiTbTzh5H
+	 vFaIwAf3sTkGw==
+Date: Wed, 07 Jan 2026 16:05:56 +0000
+To: =?utf-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
+From: Sean Nyekjaer <sean@geanix.com>
+Cc: Fabrice Gasnier <fabrice.gasnier@foss.st.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, linux-pwm@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] pwm: stm32: handle polarity change when PWM is enabled
+Message-ID: <fwaodg2ovh7j47ifwjhgeppxs3oiqht5ecbs7bmfbi7j6djejs@shwokpcmutr3>
+In-Reply-To: <nwhixocvhii27jvcyg7ex5emewntgfhyxa4ds5vo2dphe7xfe4@ibjsjdd5fgmn>
+References: <20260106-stm32-pwm-v1-1-33e9e8a9fc33@geanix.com> <kemjjoyrhqglqq4p2j6kygspevq2mdbiujtnksw4rkdapoqcfy@zte2c7fhqvn3> <2e2iahbzcepbzwgk7xeta2afxmycfjgv2zofzngqjvp4on46r2@mzpi4bz4uqie> <nwhixocvhii27jvcyg7ex5emewntgfhyxa4ds5vo2dphe7xfe4@ibjsjdd5fgmn>
+Feedback-ID: 134068486:user:proton
+X-Pm-Message-ID: 57d8dde4371b846314f7e2b8b867b714e4f3c48f
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+Hi Uwe,
 
-[ Upstream commit be729f9de6c64240645dc80a24162ac4d3fe00a8 ]
+On Wed, Jan 07, 2026 at 04:54:46PM +0100, Uwe Kleine-K=C3=B6nig wrote:
+> Hey Sean,
+>=20
+> On Tue, Jan 06, 2026 at 11:30:34AM +0000, Sean Nyekjaer wrote:
+> > On Tue, Jan 06, 2026 at 11:22:57AM +0100, Uwe Kleine-K=C3=B6nig wrote:
+> > > On Tue, Jan 06, 2026 at 08:01:57AM +0100, Sean Nyekjaer wrote:
+> > > > After commit 7346e7a058a2 ("pwm: stm32: Always do lazy disabling"),
+> > > > polarity changes are ignored. Updates to the TIMx_CCER CCxP bits ar=
+e
+> > > > ignored by the hardware when the master output is enabled via the
+> > > > TIMx_BDTR MOE bit.
+> > > [...]
+> > > I have hardware using this driver, will set it up later this week for
+> > > testing.
+> >=20
+> > Very cool, looking forward to hear if you can re-produce.
+>=20
+> I cannot. I have:
+>=20
+> =09# uname -r
+> =096.11.0-rc1-00028-geb18504ca5cf-dirty
+>=20
+> (the -dirty is only from enabling the pwm for my machine, no driver
+> changes)
+>=20
+> =09# cat /sys/kernel/debug/pwm
+> =090: platform/40001000.timer:pwm, 4 PWM devices
+> =09...
+> =09 pwm-3   (sysfs               ): requested enabled period: 313720 ns d=
+uty: 10000 ns polarity: normal
+>=20
+> and pulseview/sigrok detects 3.187251% with a period of 313.8 =C2=B5s.
+>=20
+> After
+>=20
+> =09echo inversed > /sys/class/pwm/pwmchip0/pwm3/polarity
+>=20
+> the output changes to
+>=20
+> =09# cat /sys/kernel/debug/pwm
+> =090: platform/40001000.timer:pwm, 4 PWM devices
+> =09...
+> =09 pwm-3   (sysfs               ): requested enabled period: 313720 ns d=
+uty: 10000 ns polarity: inverse
+>=20
+> and pulseview/sigrok claims 96.812749% with a period of 313.8 =C2=B5s.
+> So the polarity change happend as expected.
+>=20
+> This is on an st,stm32mp135f-dk board.
+>=20
+> Where is the difference to your observations?
+>=20
 
-Remove psb_fbdev_fb_setcolreg(), which hasn't been called in almost
-a decade.
+Thanks for taking a look!
+I'm using the PWM for a backlight. With this [0] in my dts:
 
-Gma500 commit 4d8d096e9ae8 ("gma500: introduce the framebuffer support
-code") added the helper psb_fbdev_fb_setcolreg() for setting the fbdev
-palette via fbdev's fb_setcolreg callback. Later
-commit 3da6c2f3b730 ("drm/gma500: use DRM_FB_HELPER_DEFAULT_OPS for
-fb_ops") set several default helpers for fbdev emulation, including
-fb_setcmap.
+[0]:
+=09backlight: backlight {
+=09=09compatible =3D "pwm-backlight";
+=09=09pwms =3D <&pwm4 0 125000 PWM_POLARITY_INVERTED>;
+=09=09brightness-levels =3D <102 235 255>;
+=09=09default-brightness-level =3D <80>;
+=09=09num-interpolated-steps =3D <100>;
+=09=09enable-gpios =3D <&gpiof 12 GPIO_ACTIVE_LOW>;
+=09status =3D "okay";
+=09};
 
-The fbdev subsystem always prefers fb_setcmap over fb_setcolreg. [1]
-Hence, the gma500 code is no longer in use and gma500 has been using
-drm_fb_helper_setcmap() for several years without issues.
+Maybe that is doing something differently.
 
-Fixes: 3da6c2f3b730 ("drm/gma500: use DRM_FB_HELPER_DEFAULT_OPS for fb_ops")
-Cc: Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
-Cc: Stefan Christ <contact@stefanchrist.eu>
-Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
-Cc: dri-devel@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v4.10+
-Link: https://elixir.bootlin.com/linux/v6.16.9/source/drivers/video/fbdev/core/fbcmap.c#L246 # [1]
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Acked-by: Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
-Link: https://lore.kernel.org/r/20250929082338.18845-1-tzimmermann@suse.de
-[ adapted patch from fbdev.c to framebuffer.c where the function was named psbfb_setcolreg() instead of psb_fbdev_fb_setcolreg() ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/gpu/drm/gma500/framebuffer.c | 42 ----------------------------
- 1 file changed, 42 deletions(-)
-
-diff --git a/drivers/gpu/drm/gma500/framebuffer.c b/drivers/gpu/drm/gma500/framebuffer.c
-index 0b8648396fb2..060771910374 100644
---- a/drivers/gpu/drm/gma500/framebuffer.c
-+++ b/drivers/gpu/drm/gma500/framebuffer.c
-@@ -35,47 +35,6 @@ static const struct drm_framebuffer_funcs psb_fb_funcs = {
- 	.create_handle = drm_gem_fb_create_handle,
- };
- 
--#define CMAP_TOHW(_val, _width) ((((_val) << (_width)) + 0x7FFF - (_val)) >> 16)
--
--static int psbfb_setcolreg(unsigned regno, unsigned red, unsigned green,
--			   unsigned blue, unsigned transp,
--			   struct fb_info *info)
--{
--	struct drm_fb_helper *fb_helper = info->par;
--	struct drm_framebuffer *fb = fb_helper->fb;
--	uint32_t v;
--
--	if (!fb)
--		return -ENOMEM;
--
--	if (regno > 255)
--		return 1;
--
--	red = CMAP_TOHW(red, info->var.red.length);
--	blue = CMAP_TOHW(blue, info->var.blue.length);
--	green = CMAP_TOHW(green, info->var.green.length);
--	transp = CMAP_TOHW(transp, info->var.transp.length);
--
--	v = (red << info->var.red.offset) |
--	    (green << info->var.green.offset) |
--	    (blue << info->var.blue.offset) |
--	    (transp << info->var.transp.offset);
--
--	if (regno < 16) {
--		switch (fb->format->cpp[0] * 8) {
--		case 16:
--			((uint32_t *) info->pseudo_palette)[regno] = v;
--			break;
--		case 24:
--		case 32:
--			((uint32_t *) info->pseudo_palette)[regno] = v;
--			break;
--		}
--	}
--
--	return 0;
--}
--
- static vm_fault_t psbfb_vm_fault(struct vm_fault *vmf)
- {
- 	struct vm_area_struct *vma = vmf->vma;
-@@ -147,7 +106,6 @@ static int psbfb_mmap(struct fb_info *info, struct vm_area_struct *vma)
- static const struct fb_ops psbfb_unaccel_ops = {
- 	.owner = THIS_MODULE,
- 	DRM_FB_HELPER_DEFAULT_OPS,
--	.fb_setcolreg = psbfb_setcolreg,
- 	.fb_fillrect = drm_fb_helper_cfb_fillrect,
- 	.fb_copyarea = drm_fb_helper_cfb_copyarea,
- 	.fb_imageblit = drm_fb_helper_cfb_imageblit,
--- 
-2.51.0
+/Sean
 
 
