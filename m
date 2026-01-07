@@ -1,240 +1,142 @@
-Return-Path: <stable+bounces-206174-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206175-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 005B4CFFCB5
-	for <lists+stable@lfdr.de>; Wed, 07 Jan 2026 20:39:58 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B21F9CFFDF9
+	for <lists+stable@lfdr.de>; Wed, 07 Jan 2026 20:57:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B1CF2307B527
-	for <lists+stable@lfdr.de>; Wed,  7 Jan 2026 19:37:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A3A2730D8AE2
+	for <lists+stable@lfdr.de>; Wed,  7 Jan 2026 19:26:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB9E237BE9D;
-	Wed,  7 Jan 2026 15:54:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 972C13A89D9;
+	Wed,  7 Jan 2026 15:54:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pazkUYrN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MzrWFiYr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3032F37BE8D;
-	Wed,  7 Jan 2026 15:54:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D118337998A;
+	Wed,  7 Jan 2026 15:54:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767801241; cv=none; b=qSjbE1JpfGtJD2Q8QMBmjkRkNLxcmNvpwk9RGuFEKTqf3G5r5eBtylRrkhZfJJJF1UjBnbrMfw+HoeuUbv07Ybxod7XrrSaK8zPJ45CF/cmFMb7R4Q0BnpzC3zGSP/eSn/I/lzCFqYwBQX2nukDB7yHkDO7wXoW1+ElU275Ha4U=
+	t=1767801289; cv=none; b=byDYoJRwGFXpB82ih9j47lLjD8sJhCqSPLdi7zDiB5rGh5DD2A63f0/jE9qzo8WUl6pPdRzU8jtYi7IWjJIwx5fcnUXj0/U99tHk0VXz7KpKpvJLesf8AkxYzBmQ3aqcD3+pp7uyNfo3M0Y7tI14qKDeo+hQJkIr2+sRqbke1RY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767801241; c=relaxed/simple;
-	bh=WKo4PZzhnHSlJTo/qquvidCwuvQQyg1xRs1qWr4gyqE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ROewWz+dXS7X0z/Lwo8II4cFyOAMO7vbzxzGsTWwBHXKDdM5fr7mscCvdrrPjZsXCkO5IE4cgdszI73j2IBIGB392nafYi3eLdtSry4/P+uny3va0QkCD5VohAzyHB24j9gnK/8RJnPuP4YrXdYz34ZyDyPSgI/jO6cljbnMrv4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pazkUYrN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 732EEC4CEF7;
-	Wed,  7 Jan 2026 15:53:59 +0000 (UTC)
+	s=arc-20240116; t=1767801289; c=relaxed/simple;
+	bh=dQHczuUO01yiJUoA4VVJbRjpUINgq/SBa7rpIL/696o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=M5+XIF9SghIEZcs/wPkKveae9u8ZTxjRZmrapuDQ6ndnWBY7GxWWLvKQxmfzBS8mYIoNQh7Bt0kyvoEQh1gPU9fyyr6bPb2JRH4wNtt1xtc7VwJ7JqRuTV8kyhpaLlxporW7l5ur57aRELAUL5OShxfcIRJLfy7RXDMZX7QEFm0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MzrWFiYr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8AFAC4CEF1;
+	Wed,  7 Jan 2026 15:54:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767801240;
-	bh=WKo4PZzhnHSlJTo/qquvidCwuvQQyg1xRs1qWr4gyqE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pazkUYrNRTR0YY30bpiau8gpKbJe8JVRXOiiv5jnHJsvwnKtGAW0oPMzZXJwyELQi
-	 C+oDITdK80D335g+Nbwh+xFvYWTCfOF8br4VvZ9HZ728AmveTUiDR62ODA1BeQGzYD
-	 HvRRXDjsjfMu2HGdJYTtHcnKP13ijPIiNrlhQ5qqpFctWLvZqjVOYveokfhCd9OMo+
-	 6Rq90nlNP3IHEZcf/XqL8IHRMI/YmfIn0hqwkhBe2C40TjQcJUwJKLunTnjwcKUS1k
-	 Wlie/h2HCyJrfYjnh2JCIcXxyshi91LSRLIVbkWkvY3EZCBpVDPu9m5TdUXBQYpFAM
-	 eLZqfMmHpqkcw==
-From: Sasha Levin <sashal@kernel.org>
-To: patches@lists.linux.dev,
-	stable@vger.kernel.org
-Cc: FengWei Shih <dannyshih@synology.com>,
-	Yu Kuai <yukuai@fnnas.com>,
-	Sasha Levin <sashal@kernel.org>,
-	song@kernel.org,
-	linux-raid@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.18-6.12] md: suspend array while updating raid_disks via sysfs
-Date: Wed,  7 Jan 2026 10:53:16 -0500
-Message-ID: <20260107155329.4063936-14-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260107155329.4063936-1-sashal@kernel.org>
-References: <20260107155329.4063936-1-sashal@kernel.org>
+	s=k20201202; t=1767801289;
+	bh=dQHczuUO01yiJUoA4VVJbRjpUINgq/SBa7rpIL/696o=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=MzrWFiYr1lLU7Zo+vJOoMuB6y3YJDu3ijrEKUJhEYVuiRKPCKpIOagB9YslXNI74o
+	 kUQAwTd18zutfYUw+fOkoRM7OsGpAMTNWYkm1jGXjzThQtvLO8eFhX2rq8lW1HUu6b
+	 h6fnQ0k89bBDzpAi/xaBxhfFQYlX6X6h0D6WOOhV9jN7zdwAL2udsBD6es5Qu5W6Pk
+	 TCIPhLiOQ9++Yz2mFrqZxrvtco6aXeu7+5le5mI01NGQgjOvsZocJA3MLPKut2rT67
+	 dvOA4/aegHqCtdG+3Msr/oH97Z4qJrKMCA/3aO4YXAKYqkBd0GeNFcroJmgaN1rC/f
+	 EtJJVfnO3/nVQ==
+Date: Wed, 7 Jan 2026 16:54:46 +0100
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
+To: Sean Nyekjaer <sean@geanix.com>
+Cc: Fabrice Gasnier <fabrice.gasnier@foss.st.com>, 
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+	linux-pwm@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] pwm: stm32: handle polarity change when PWM is enabled
+Message-ID: <nwhixocvhii27jvcyg7ex5emewntgfhyxa4ds5vo2dphe7xfe4@ibjsjdd5fgmn>
+References: <20260106-stm32-pwm-v1-1-33e9e8a9fc33@geanix.com>
+ <kemjjoyrhqglqq4p2j6kygspevq2mdbiujtnksw4rkdapoqcfy@zte2c7fhqvn3>
+ <2e2iahbzcepbzwgk7xeta2afxmycfjgv2zofzngqjvp4on46r2@mzpi4bz4uqie>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.18.3
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="64gye46smpsbdd4v"
+Content-Disposition: inline
+In-Reply-To: <2e2iahbzcepbzwgk7xeta2afxmycfjgv2zofzngqjvp4on46r2@mzpi4bz4uqie>
 
-From: FengWei Shih <dannyshih@synology.com>
 
-[ Upstream commit 2cc583653bbe050bacd1cadcc9776d39bf449740 ]
+--64gye46smpsbdd4v
+Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH] pwm: stm32: handle polarity change when PWM is enabled
+MIME-Version: 1.0
 
-In raid1_reshape(), freeze_array() is called before modifying the r1bio
-memory pool (conf->r1bio_pool) and conf->raid_disks, and
-unfreeze_array() is called after the update is completed.
+Hey Sean,
 
-However, freeze_array() only waits until nr_sync_pending and
-(nr_pending - nr_queued) of all buckets reaches zero. When an I/O error
-occurs, nr_queued is increased and the corresponding r1bio is queued to
-either retry_list or bio_end_io_list. As a result, freeze_array() may
-unblock before these r1bios are released.
+On Tue, Jan 06, 2026 at 11:30:34AM +0000, Sean Nyekjaer wrote:
+> On Tue, Jan 06, 2026 at 11:22:57AM +0100, Uwe Kleine-K=F6nig wrote:
+> > On Tue, Jan 06, 2026 at 08:01:57AM +0100, Sean Nyekjaer wrote:
+> > > After commit 7346e7a058a2 ("pwm: stm32: Always do lazy disabling"),
+> > > polarity changes are ignored. Updates to the TIMx_CCER CCxP bits are
+> > > ignored by the hardware when the master output is enabled via the
+> > > TIMx_BDTR MOE bit.
+> > [...]
+> > I have hardware using this driver, will set it up later this week for
+> > testing.
+>=20
+> Very cool, looking forward to hear if you can re-produce.
 
-This can lead to a situation where conf->raid_disks and the mempool have
-already been updated while queued r1bios, allocated with the old
-raid_disks value, are later released. Consequently, free_r1bio() may
-access memory out of bounds in put_all_bios() and release r1bios of the
-wrong size to the new mempool, potentially causing issues with the
-mempool as well.
+I cannot. I have:
 
-Since only normal I/O might increase nr_queued while an I/O error occurs,
-suspending the array avoids this issue.
+	# uname -r
+	6.11.0-rc1-00028-geb18504ca5cf-dirty
 
-Note: Updating raid_disks via ioctl SET_ARRAY_INFO already suspends
-the array. Therefore, we suspend the array when updating raid_disks
-via sysfs to avoid this issue too.
+(the -dirty is only from enabling the pwm for my machine, no driver
+changes)
 
-Signed-off-by: FengWei Shih <dannyshih@synology.com>
-Link: https://lore.kernel.org/linux-raid/20251226101816.4506-1-dannyshih@synology.com
-Signed-off-by: Yu Kuai <yukuai@fnnas.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
+	# cat /sys/kernel/debug/pwm
+	0: platform/40001000.timer:pwm, 4 PWM devices
+	...
+	 pwm-3   (sysfs               ): requested enabled period: 313720 ns duty:=
+ 10000 ns polarity: normal
 
-LLM Generated explanations, may be completely bogus:
+and pulseview/sigrok detects 3.187251% with a period of 313.8 =B5s.
 
-## Comprehensive Analysis
+After
 
-### 1. COMMIT MESSAGE ANALYSIS
+	echo inversed > /sys/class/pwm/pwmchip0/pwm3/polarity
 
-The commit clearly describes a **race condition bug** in the MD RAID
-subsystem:
-- When updating `raid_disks` via sysfs, `raid1_reshape()` calls
-  `freeze_array()` before modifying the memory pool
-- `freeze_array()` waits until `nr_pending - nr_queued` reaches a target
-  value
-- During I/O errors, `nr_queued` is incremented when r1bios are queued
-  to `retry_list` or `bio_end_io_list`
-- This allows `freeze_array()` to return while r1bios are still queued
-- When these queued r1bios (allocated with old `raid_disks` value) are
-  later freed after the mempool is resized, it causes:
-  - **Out-of-bounds memory access** in `put_all_bios()`
-  - **Mempool corruption** from releasing wrong-sized r1bios
+the output changes to
 
-### 2. CODE CHANGE ANALYSIS
+	# cat /sys/kernel/debug/pwm
+	0: platform/40001000.timer:pwm, 4 PWM devices
+	...
+	 pwm-3   (sysfs               ): requested enabled period: 313720 ns duty:=
+ 10000 ns polarity: inverse
 
-The fix is minimal - only **2 lines changed**:
-```c
-// Before:
-err = mddev_lock(mddev);
-...
-mddev_unlock(mddev);
+and pulseview/sigrok claims 96.812749% with a period of 313.8 =B5s.
+So the polarity change happend as expected.
 
-// After:
-err = mddev_suspend_and_lock(mddev);
-...
-mddev_unlock_and_resume(mddev);
-```
+This is on an st,stm32mp135f-dk board.
 
-This ensures the array is fully suspended during the reconfiguration,
-stopping ALL I/O (not just waiting for a counter condition). This is the
-**same approach the ioctl path already uses** (`SET_ARRAY_INFO`), making
-the fix clearly correct.
+Where is the difference to your observations?
 
-### 3. CLASSIFICATION
+Best regards
+Uwe
 
-- **Bug fix**: Memory safety issue (out-of-bounds access, memory
-  corruption)
-- **Not a feature**: No new functionality or APIs added
-- **Severity**: HIGH - memory corruption can cause kernel crashes and
-  potential data corruption
+--64gye46smpsbdd4v
+Content-Type: application/pgp-signature; name="signature.asc"
 
-### 4. SCOPE AND RISK ASSESSMENT
+-----BEGIN PGP SIGNATURE-----
 
-- **Lines changed**: 2
-- **Files affected**: 1 (`drivers/md/md.c`)
-- **Subsystem**: MD RAID - mature and widely used
-- **Risk**: VERY LOW - uses existing, well-tested suspend mechanism
-  already used by ioctl path
-- **Pattern**: Matches existing code pattern for similar operations
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmlegcMACgkQj4D7WH0S
+/k4fRwf+IoPI/fQOF4r4TdyNyj65K6n+ilKzhOPYzKYcI84BEcJY/rHKy5tCk9Un
+DB3fGdGsshoeaQtmX1qobV/wi6PFT27ecr9Li3lppUnc7ncvEKwKstDEY79THvf9
+laZNtq6+trpelYq4JQGCoXwgE+sJTjMpFtoJLFGko4LrJxXvhVZEuU8oYuelRaOe
+e7jMVbf/EdBMnLkI7TopaonJ+/FH+YDFED2h1AJPY9RbGU6VbJ+Y76pIFQwC5/Nz
+zfheLxXGMWT5G9eV6atq4rcrvRQDB3pr3fULyKSwb8q9vpObaJjyIiOkqCDK8zOF
+MIfKdXUl/rx9CggHjkGDcVN+AzBkEA==
+=Hapr
+-----END PGP SIGNATURE-----
 
-### 5. USER IMPACT
-
-- **Who is affected**: MD RAID (software RAID) users - common in servers
-  and enterprise deployments
-- **Trigger condition**: Resize array via sysfs while I/O errors are
-  occurring
-- **Consequence of bug**: Kernel crashes, potential data corruption
-- **Impact level**: HIGH for affected users (data integrity at risk)
-
-### 6. STABILITY INDICATORS
-
-- Signed-off by two developers
-- Has Link to mailing list discussion
-- Uses conservative approach matching existing ioctl behavior
-
-### 7. DEPENDENCY CHECK
-
-The helper functions `mddev_suspend_and_lock()` and
-`mddev_unlock_and_resume()` were added in commit f45461e24feb
-(v6.7-rc1). These are inline functions in `md.h` that simply combine
-`mddev_suspend()` + `mddev_lock()` and `mddev_unlock()` +
-`mddev_resume()`.
-
-For stable kernels **6.7+**: This patch should apply cleanly.
-
-For stable kernels **< 6.7** (6.6.y, 6.1.y, 5.15.y LTS): Would need
-either:
-1. Backport of f45461e24feb first, OR
-2. An adapted fix using direct calls to `mddev_suspend()` and
-   `mddev_resume()`
-
-The bug itself has existed since the `raid_disks_store()` function was
-introduced (very old), so all stable kernels are potentially affected.
-
-## Summary
-
-This commit fixes a real, serious memory safety bug in the MD RAID
-subsystem that can cause out-of-bounds memory access and mempool
-corruption. The fix is:
-- Small and surgical (2 lines)
-- Obviously correct (uses existing suspend mechanism)
-- Consistent with how the ioctl path already handles this
-- Low risk (well-tested pattern)
-
-The bug affects software RAID users who resize arrays via sysfs during
-I/O errors - a legitimate operational scenario. The consequences (memory
-corruption, potential crashes) are severe.
-
-The only consideration is that for pre-6.7 stable kernels, the fix needs
-adaptation or dependency backporting, but this is a standard stable
-maintenance consideration.
-
-**YES**
-
- drivers/md/md.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/md/md.c b/drivers/md/md.c
-index cef5b2954ac5..d72ce43f0ebc 100644
---- a/drivers/md/md.c
-+++ b/drivers/md/md.c
-@@ -4399,7 +4399,7 @@ raid_disks_store(struct mddev *mddev, const char *buf, size_t len)
- 	if (err < 0)
- 		return err;
- 
--	err = mddev_lock(mddev);
-+	err = mddev_suspend_and_lock(mddev);
- 	if (err)
- 		return err;
- 	if (mddev->pers)
-@@ -4424,7 +4424,7 @@ raid_disks_store(struct mddev *mddev, const char *buf, size_t len)
- 	} else
- 		mddev->raid_disks = n;
- out_unlock:
--	mddev_unlock(mddev);
-+	mddev_unlock_and_resume(mddev);
- 	return err ? err : len;
- }
- static struct md_sysfs_entry md_raid_disks =
--- 
-2.51.0
-
+--64gye46smpsbdd4v--
 
