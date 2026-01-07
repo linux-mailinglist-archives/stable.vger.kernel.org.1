@@ -1,131 +1,171 @@
-Return-Path: <stable+bounces-206183-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206184-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60334CFF866
-	for <lists+stable@lfdr.de>; Wed, 07 Jan 2026 19:44:38 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E580CFF54C
+	for <lists+stable@lfdr.de>; Wed, 07 Jan 2026 19:14:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4E5B932747D3
-	for <lists+stable@lfdr.de>; Wed,  7 Jan 2026 17:55:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3422E36D2429
+	for <lists+stable@lfdr.de>; Wed,  7 Jan 2026 17:06:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C230436BCD2;
-	Wed,  7 Jan 2026 16:21:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8722538A9CB;
+	Wed,  7 Jan 2026 16:23:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MrdJXSNs"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEA55369214;
-	Wed,  7 Jan 2026 16:21:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE38038A295;
+	Wed,  7 Jan 2026 16:22:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767802894; cv=none; b=j4fw7Rue8DbhTpIlh7bGnGJxKJUo2bhWXQtMTqwL7vuvQ0gY8ReT8y4NLjY4Y4cD0hmpXND8aLd4ca285FYe+5S84E5eISwX6LvfKscCQnhtiVn9L6d/bbJXXSGbMDoJQG5sTYos2laRPkvqhyy37CQ+/AOtKkL7lihzA0U8FTA=
+	t=1767802977; cv=none; b=Kx7XfhgAN+SKb10dDNYeFkNMtmmV5bty5trakbfaI6zlV1Ek/d1saxOyLiVP3r6RlDqh8ovaKSTO0NUeNquiekMyI+6/p2ywIzM/hdqZMuo1G9Mi2dLqv5Vm64HZOMXHiz/M+btsIrfmxUUs55rh+iPfNrlKecadlBL8jZyQExM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767802894; c=relaxed/simple;
-	bh=D2P6qwmfvCQQdX/xeZoS88qJgTGpJkMtP5WtyVZU4L0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=j0PSeWOp3t+ZMOCyxSc8f/khg6pWMLAyKUpjVmAxVZppogFsxH3P7a/cuibwz+Xu1/VSvN5JvvtP1MeLifBJrO2+p1sCL2lIWgDTIZ4kXy2bki8MwTBRT2BEN3uS0eaaeFC6zMrjb0BZUuBArqy7ZKMthDJ70XHQXozPh6w9x1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6C007497;
-	Wed,  7 Jan 2026 08:21:12 -0800 (PST)
-Received: from e129823.cambridge.arm.com (e129823.arm.com [10.1.197.6])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 4329D3F5A1;
-	Wed,  7 Jan 2026 08:21:17 -0800 (PST)
-From: Yeoreum Yun <yeoreum.yun@arm.com>
-To: linux-pm@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Cc: rafael@kernel.org,
-	pavel@kernel.org,
-	catalin.marinas@arm.com,
-	will@kernel.org,
-	anshuman.khandual@arm.com,
-	ryan.roberts@arm.com,
-	yang@os.amperecomputing.com,
-	joey.gouly@arm.com,
-	kevin.brodsky@arm.com,
-	Yeoreum Yun <yeoreum.yun@arm.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] arm64: fix cleared E0POE bit after cpu_suspend()/resume()
-Date: Wed,  7 Jan 2026 16:21:15 +0000
-Message-Id: <20260107162115.3292205-1-yeoreum.yun@arm.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1767802977; c=relaxed/simple;
+	bh=h/t0IMw2r1KOgVik7fGfiSYqStx+dX2QtV1GaNuybx0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Vwzr1RG0fHVat3PjAzaT0UXuF57rj+rawOZG2cd0O3djCDuJKcsZRshJL5Idjk+PBlRMJYPlcl8KZToa5Xs9Qq3I2cO6gblOb/t56zeCImNykkBHE8fNfuog3/VqUaALKqpQEYvvN0IYPb4JnJS1qm2PkHr4CQk5fjzrouD2Yn4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MrdJXSNs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E877C4CEF1;
+	Wed,  7 Jan 2026 16:22:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767802973;
+	bh=h/t0IMw2r1KOgVik7fGfiSYqStx+dX2QtV1GaNuybx0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=MrdJXSNsL5LUoWximIzD8J5mik0J7vkN/69IxB3kLi2JQbNzM0M/E7WmzHN2322L0
+	 pRMDF/eqoJIoeKMjxqqvTQXeaES6SGTonc+KJew1QcPNnAJtJ9HwMqY63Zq0NyMPsj
+	 lAQ7abZtSP2JXi7HwtrYj+GYAQlygFZBwgrqt3LJA748pA6bo/GE34QvQi/SuX/C0S
+	 RmFsOY/7yJSDH0+jwQK0oLHzmTs98488opQZfVTIoqEMQuOL/F+VqB1PVu37lGaruJ
+	 a+71pHzEWLylilQ3GIp4Q8SXkPANYZLge8Te+X9Wv/0qou7ZXCMQop2V6kj0DepxGe
+	 Nb3HTggQ9cFcQ==
+Date: Wed, 7 Jan 2026 16:22:48 +0000
+From: Will Deacon <will@kernel.org>
+To: Lucas Wei <lucaswei@google.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>,
+	Jonathan Corbet <corbet@lwn.net>, sjadavani@google.com,
+	kernel test robot <lkp@intel.com>, stable@vger.kernel.org,
+	kernel-team@android.com, linux-arm-kernel@lists.infradead.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	robin.murphy@arm.com
+Subject: Re: [PATCH v2] arm64: errata: Workaround for SI L1 downstream
+ coherency issue
+Message-ID: <aV6IWBtqp1dnOZuX@willie-the-truck>
+References: <20251229033621.996546-1-lucaswei@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251229033621.996546-1-lucaswei@google.com>
 
-TCR2_ELx.E0POE is set during smp_init().
-However, this bit is not reprogrammed when the CPU enters suspension and
-later resumes via cpu_resume(), as __cpu_setup() does not re-enable E0POE
-and there is no save/restore logic for the TCR2_ELx system register.
+[+Robin as he's been involved with this]
 
-As a result, the E0POE feature no longer works after cpu_resume().
+On Mon, Dec 29, 2025 at 03:36:19AM +0000, Lucas Wei wrote:
+> When software issues a Cache Maintenance Operation (CMO) targeting a
+> dirty cache line, the CPU and DSU cluster may optimize the operation by
+> combining the CopyBack Write and CMO into a single combined CopyBack
+> Write plus CMO transaction presented to the interconnect (MCN).
+> For these combined transactions, the MCN splits the operation into two
+> separate transactions, one Write and one CMO, and then propagates the
+> write and optionally the CMO to the downstream memory system or external
+> Point of Serialization (PoS).
+> However, the MCN may return an early CompCMO response to the DSU cluster
+> before the corresponding Write and CMO transactions have completed at
+> the external PoS or downstream memory. As a result, stale data may be
+> observed by external observers that are directly connected to the
+> external PoS or downstream memory.
+> 
+> This erratum affects any system topology in which the following
+> conditions apply:
+>  - The Point of Serialization (PoS) is located downstream of the
+>    interconnect.
+>  - A downstream observer accesses memory directly, bypassing the
+>    interconnect.
+> 
+> Conditions:
+> This erratum occurs only when all of the following conditions are met:
+>  1. Software executes a data cache maintenance operation, specifically,
+>     a clean or invalidate by virtual address (DC CVAC, DC CIVAC, or DC
+>     IVAC), that hits on unique dirty data in the CPU or DSU cache. This
+>     results in a combined CopyBack and CMO being issued to the
+>     interconnect.
 
-To address this, save and restore TCR2_EL1 in the cpu_suspend()/cpu_resume()
-path, rather than adding related logic to __cpu_setup(), taking into account
-possible future extensions of the TCR2_ELx feature.
+Why do we need to worry about IVAC here? Even though that might be
+upgraded to CIVAC and result in the erratum conditions, the DMA API
+shouldn't use IVAC on dirty lines so I don't think we need to worry
+about it.
 
-Cc: stable@vger.kernel.org
-Fixes: bf83dae90fbc ("arm64: enable the Permission Overlay Extension for EL0")
-Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
----
+> diff --git a/arch/arm64/include/asm/assembler.h b/arch/arm64/include/asm/assembler.h
+> index f0ca7196f6fa..d3d46e5f7188 100644
+> --- a/arch/arm64/include/asm/assembler.h
+> +++ b/arch/arm64/include/asm/assembler.h
+> @@ -381,6 +381,9 @@ alternative_endif
+>  	.macro dcache_by_myline_op op, domain, start, end, linesz, tmp, fixup
+>  	sub	\tmp, \linesz, #1
+>  	bic	\start, \start, \tmp
+> +alternative_if ARM64_WORKAROUND_4311569
+> +	mov	\tmp, \start
+> +alternative_else_nop_endif
+>  .Ldcache_op\@:
+>  	.ifc	\op, cvau
+>  	__dcache_op_workaround_clean_cache \op, \start
+> @@ -402,6 +405,13 @@ alternative_endif
+>  	add	\start, \start, \linesz
+>  	cmp	\start, \end
+>  	b.lo	.Ldcache_op\@
+> +alternative_if ARM64_WORKAROUND_4311569
+> +	.ifnc	\op, cvau
+> +	mov	\start, \tmp
+> +	mov	\tmp, xzr
+> +	cbnz	\start, .Ldcache_op\@
+> +	.endif
+> +alternative_else_nop_endif
 
-Patch History
-==============
-from v1 to v2:
-  - following @Kevin Brodsky suggestion.
-  - https://lore.kernel.org/all/20260105200707.2071169-1-yeoreum.yun@arm.com/
+So you could also avoid this for ivac, although it looks like this is
+only called for civac, cvau, cvac and cvap so perhaps not worth it.
 
-NOTE:
-  This patch based on v6.19-rc4
----
- arch/arm64/include/asm/suspend.h | 2 +-
- arch/arm64/mm/proc.S             | 8 ++++++++
- 2 files changed, 9 insertions(+), 1 deletion(-)
+> diff --git a/arch/arm64/mm/cache.S b/arch/arm64/mm/cache.S
+> index 503567c864fd..ddf0097624ed 100644
+> --- a/arch/arm64/mm/cache.S
+> +++ b/arch/arm64/mm/cache.S
+> @@ -143,9 +143,14 @@ SYM_FUNC_END(dcache_clean_pou)
+>   *	- end     - kernel end address of region
+>   */
+>  SYM_FUNC_START(__pi_dcache_inval_poc)
+> +alternative_if ARM64_WORKAROUND_4311569
+> +	mov	x4, x0
+> +	mov	x5, x1
+> +	mov	x6, #1
+> +alternative_else_nop_endif
+>  	dcache_line_size x2, x3
+>  	sub	x3, x2, #1
+> -	tst	x1, x3				// end cache line aligned?
+> +again:	tst	x1, x3				// end cache line aligned?
+>  	bic	x1, x1, x3
+>  	b.eq	1f
+>  	dc	civac, x1			// clean & invalidate D / U line
+> @@ -158,6 +163,12 @@ SYM_FUNC_START(__pi_dcache_inval_poc)
+>  3:	add	x0, x0, x2
+>  	cmp	x0, x1
+>  	b.lo	2b
+> +alternative_if ARM64_WORKAROUND_4311569
+> +	mov	x0, x4
+> +	mov	x1, x5
+> +	sub	x6, x6, #1
+> +	cbz	x6, again
+> +alternative_else_nop_endif
+>  	dsb	sy
+>  	ret
+>  SYM_FUNC_END(__pi_dcache_inval_poc)
 
-diff --git a/arch/arm64/include/asm/suspend.h b/arch/arm64/include/asm/suspend.h
-index e65f33edf9d6..e9ce68d50ba4 100644
---- a/arch/arm64/include/asm/suspend.h
-+++ b/arch/arm64/include/asm/suspend.h
-@@ -2,7 +2,7 @@
- #ifndef __ASM_SUSPEND_H
- #define __ASM_SUSPEND_H
+But this whole part could be dropped? The CIVACs are just for the
+unaligned parts at the ends of the buffer and we shouldn't need to worry
+about propagating them -- we just don't want to chuck them away with an
+invalidation!
 
--#define NR_CTX_REGS 13
-+#define NR_CTX_REGS 14
- #define NR_CALLEE_SAVED_REGS 12
-
- /*
-diff --git a/arch/arm64/mm/proc.S b/arch/arm64/mm/proc.S
-index 01e868116448..5d907ce3b6d3 100644
---- a/arch/arm64/mm/proc.S
-+++ b/arch/arm64/mm/proc.S
-@@ -110,6 +110,10 @@ SYM_FUNC_START(cpu_do_suspend)
- 	 * call stack.
- 	 */
- 	str	x18, [x0, #96]
-+alternative_if ARM64_HAS_TCR2
-+	mrs	x2, REG_TCR2_EL1
-+	str	x2, [x0, #104]
-+alternative_else_nop_endif
- 	ret
- SYM_FUNC_END(cpu_do_suspend)
-
-@@ -144,6 +148,10 @@ SYM_FUNC_START(cpu_do_resume)
- 	msr	tcr_el1, x8
- 	msr	vbar_el1, x9
- 	msr	mdscr_el1, x10
-+alternative_if ARM64_HAS_TCR2
-+	ldr	x2, [x0, #104]
-+	msr	REG_TCR2_EL1, x2
-+alternative_else_nop_endif
-
- 	msr	sctlr_el1, x12
- 	set_this_cpu_offset x13
---
-LEVI:{C3F47F37-75D8-414A-A8BA-3980EC8A46D7}
-
+Will
 
