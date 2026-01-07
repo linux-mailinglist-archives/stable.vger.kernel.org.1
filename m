@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-206162-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206165-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C51CCFF6DC
-	for <lists+stable@lfdr.de>; Wed, 07 Jan 2026 19:23:37 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E59DCFF207
+	for <lists+stable@lfdr.de>; Wed, 07 Jan 2026 18:34:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8E18630341BD
-	for <lists+stable@lfdr.de>; Wed,  7 Jan 2026 18:22:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3D1263208CEF
+	for <lists+stable@lfdr.de>; Wed,  7 Jan 2026 16:19:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31AEE393DD9;
-	Wed,  7 Jan 2026 15:53:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D75B739C638;
+	Wed,  7 Jan 2026 15:53:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SAJZ2nA8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jWsw4rN9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2B5A39C657;
-	Wed,  7 Jan 2026 15:53:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5888D39A7F9;
+	Wed,  7 Jan 2026 15:53:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767801214; cv=none; b=qVuWuvbvRNf22ZzCNQ2jlM4tUUjYNHicqlfNwzNY4SubdK2NvvwuZ8N0GvMuedyB6lgPReLVG2DBzMJhloGmfB6H1MqTPYeKOPSsL7C1Jv4NAIdAhmNtSff8WxKjOO1VKE8RwDW6TFfsowZ8cqqiTQ/YqfERtWU4rCylhf3Muhw=
+	t=1767801219; cv=none; b=BKH2FtRQxri0M5UQzryeBy7WS3Eu5FsNR07pxwJw92YKL7k9o6T5nnN6M1d0gEftR9Ia83JIni/M0RuBbcdQsc6BmLfF3AOXHBbj4Auqg2VdcPmJdyvss7r0CRBPIGWrP60R8ooVeh1YPfSYefeX71Uig57Q1H2yMOA8bLx6vFw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767801214; c=relaxed/simple;
-	bh=1l8gtyiVh89SnrAAKIoGglB35M8j8jbonFhl8c4Gh40=;
+	s=arc-20240116; t=1767801219; c=relaxed/simple;
+	bh=wdMvfSJWGFav7L/E7nCk3KbVSxk4Vh8tBkpPa3X7OJ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=L8cBEuTMuLslgGz771D6QAh5ZEX+mdMBt8QLAfG/mJsaluZxrOcad4TGsZgj0pj9IODRVZ50ykhVaU6USZL35zL2BWqkB7/6ORKGMrgR1yKuZeYv3/G4dl0Ckd4p9vkXnGEqiLko7N1dhcXcjE3eTqZxxXk7eaiuCH9/8CYLGdc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SAJZ2nA8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31618C19422;
-	Wed,  7 Jan 2026 15:53:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=jy9nOYul1IUcE6dLVxfDtCQeDN4UV9e5fdLPNADHcDrhQZhxykgK87vGPChd3s9U1cm1+8iaSLEivrg/SM3HnYrSzjPSpZezDwMioO1TWfJmPQGQBvP4TdNzGt7mHbdIPwcm86zjwMrQZHKMyEwlig68QOK1Veqyz/vqnNfG61Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jWsw4rN9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9466C4CEF1;
+	Wed,  7 Jan 2026 15:53:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767801212;
-	bh=1l8gtyiVh89SnrAAKIoGglB35M8j8jbonFhl8c4Gh40=;
+	s=k20201202; t=1767801217;
+	bh=wdMvfSJWGFav7L/E7nCk3KbVSxk4Vh8tBkpPa3X7OJ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SAJZ2nA8+w/T0cOLmRCYqOAYrDWeqoXUD+dqoDvMBAY1N9cSSUrxylOLn8mL8XGm/
-	 8EX1mAiA0+2Udxoug70GGvFuAyirph8wko39dCjnQj4s5n01Q9hEQ7tZce4Mj80Xwd
-	 jYSp4EeU9FBHlOMQCsCF4gQstibDzKAI/vsTmeN+nlQuxWTWT+Az/VSLts4B2EmnXC
-	 RFU8w4aPgDAlmOzQ7fTzXH+1YjUucC6/NqC1L5ICTCK8oHbrqpYtVHnkCQzu+9cxOv
-	 9Zr1KeD9ALy3VCl6x+UuLBL+gfOOWT4S2TDBHgeDi/UPmtSfftz/nw+DXoFGTOnwCJ
-	 1wSfEa8dI6JSQ==
+	b=jWsw4rN90FF58SpdPWPw351Zo29UHf1psFRMlL+voC1010tUq1lc9/zQxw0OZ2XB8
+	 BYDoXnPuDQekMHWokwWiwAQbS4vGLGmvVKVpoY80EwWn3ekZ0xQy0OMUT6ooDvwXme
+	 tbv1npfULPb8QYT2gQwT+GHpT6QeFwLnalTTTNP4n5tAgt/Dt0VwCHmFrkukyLiOas
+	 CvrVhCuQbfLjBE93S4b+eauk+WQt2a4/2LSmgSLyp/9bv5wnfMTTk+J5gTGqJFsDSf
+	 38ClIgiQqO6JjDakKM7pWD/+U5Aoalm0w9N3JdwX9HlpMCgsAiX/eZEL62qmAkwS/C
+	 pr7+xqj203U7Q==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Alexandre Negrel <alexandre@negrel.dev>,
-	Jens Axboe <axboe@kernel.dk>,
+Cc: Ethan Nelson-Moore <enelsonmoore@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>,
-	io-uring@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.18] io_uring: use GFP_NOWAIT for overflow CQEs on legacy rings
-Date: Wed,  7 Jan 2026 10:53:04 -0500
-Message-ID: <20260107155329.4063936-2-sashal@kernel.org>
+	linux-usb@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.18-5.10] net: usb: sr9700: support devices with virtual driver CD
+Date: Wed,  7 Jan 2026 10:53:07 -0500
+Message-ID: <20260107155329.4063936-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260107155329.4063936-1-sashal@kernel.org>
 References: <20260107155329.4063936-1-sashal@kernel.org>
@@ -64,152 +64,155 @@ X-stable-base: Linux 6.18.3
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Alexandre Negrel <alexandre@negrel.dev>
+From: Ethan Nelson-Moore <enelsonmoore@gmail.com>
 
-[ Upstream commit fc5ff2500976cd2710a7acecffd12d95ee4f98fc ]
+[ Upstream commit bf4172bd870c3a34d3065cbb39192c22cbd7b18d ]
 
-Allocate the overflowing CQE with GFP_NOWAIT instead of GFP_ATOMIC. This
-changes causes allocations to fail earlier in out-of-memory situations,
-rather than being deferred. Using GFP_ATOMIC allows a process to exceed
-memory limits.
+Some SR9700 devices have an SPI flash chip containing a virtual driver
+CD, in which case they appear as a device with two interfaces and
+product ID 0x9702. Interface 0 is the driver CD and interface 1 is the
+Ethernet device.
 
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220794
-Signed-off-by: Alexandre Negrel <alexandre@negrel.dev>
-Link: https://lore.kernel.org/io-uring/20251229201933.515797-1-alexandre@negrel.dev/
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Link: https://github.com/name-kurniawan/usb-lan
+Link: https://www.draisberghof.de/usb_modeswitch/bb/viewtopic.php?t=2185
+Signed-off-by: Ethan Nelson-Moore <enelsonmoore@gmail.com>
+Link: https://patch.msgid.link/20251211062451.139036-1-enelsonmoore@gmail.com
+[pabeni@redhat.com: fixes link tags]
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-## Analysis of io_uring GFP_NOWAIT Commit
+## Analysis of Commit: net: usb: sr9700: support devices with virtual
+driver CD
 
 ### 1. COMMIT MESSAGE ANALYSIS
 
-The commit message is clear and well-structured:
-- **Problem**: Using `GFP_ATOMIC` for overflow CQE allocations allows
-  processes to exceed memory limits
-- **Solution**: Change to `GFP_NOWAIT` which fails earlier in OOM
-  situations
-- **Bug Reference**: Links to kernel bugzilla (bug 220794) - indicates a
-  real user-reported issue
-- **Proper sign-offs**: Author and maintainer (Jens Axboe) signatures
-  present
+The commit adds support for SR9700 USB Ethernet devices that include a
+virtual driver CD-ROM. These devices use product ID 0x9702 (vs the
+standard 0x9700) and present two interfaces: interface 0 is the CD-ROM,
+interface 1 is the actual Ethernet device.
 
-The key insight is that `GFP_ATOMIC` can dip into emergency memory
-reserves, allowing allocations to succeed even when a process should be
-constrained by memory limits. This is a resource exhaustion / memory
-limit bypass issue.
+External links reference real-world user issues with these devices
+(usb_modeswitch discussions, GitHub repo), confirming this addresses
+actual hardware in the field.
 
 ### 2. CODE CHANGE ANALYSIS
 
-The change is minimal - a single line:
+The change is minimal and straightforward:
 ```c
-- ocqe = io_alloc_ocqe(ctx, cqe, big_cqe, GFP_ATOMIC);
-+       ocqe = io_alloc_ocqe(ctx, cqe, big_cqe, GFP_NOWAIT);
+{
+    /* SR9700 with virtual driver CD-ROM - interface 0 is the CD-ROM
+device */
+    USB_DEVICE_INTERFACE_NUMBER(0x0fe6, 0x9702, 1),
+    .driver_info = (unsigned long)&sr9700_driver_info,
+},
 ```
 
-**Technical mechanism of the bug:**
-- `io_cqe_overflow_locked()` is called when the completion queue is full
-  and entries must overflow
-- This function runs with `completion_lock` held, so it cannot sleep
-  (ruling out `GFP_KERNEL`)
-- `GFP_ATOMIC` can access emergency memory reserves, bypassing memory
-  limits
-- `GFP_NOWAIT` is also non-sleeping but respects memory limits by
-  failing instead of dipping into reserves
-
-**Why the fix works:**
-- Both flags are appropriate for the atomic context (holding spinlock)
-- `GFP_NOWAIT` is semantically correct: the allocation should fail
-  gracefully under memory pressure rather than bypass system memory
-  constraints
+This adds a single entry to the USB device ID table:
+- Same vendor ID (0x0fe6) as existing SR9700
+- New product ID (0x9702) for devices with virtual CD-ROM
+- Matches only interface 1 (the Ethernet interface, avoiding the CD-ROM
+  on interface 0)
+- Uses the exact same `sr9700_driver_info` - no driver code changes
 
 ### 3. CLASSIFICATION
 
-- **Bug fix**: Yes - fixes memory limit bypass
-- **Feature**: No - no new functionality added
-- **Security-relevant**: Yes - this could be exploited for resource
-  exhaustion/DoS, particularly in containerized or multi-tenant
-  environments with memory cgroups
+**This is a NEW DEVICE ID addition** - one of the explicitly allowed
+exceptions for stable backports.
+
+- NOT a new feature in the traditional sense
+- NOT adding a new driver
+- NOT changing any APIs or driver logic
+- Simply adding a USB ID to enable hardware on an existing, mature
+  driver
 
 ### 4. SCOPE AND RISK ASSESSMENT
 
-- **Lines changed**: 1
-- **Files touched**: 1 (io_uring/io_uring.c)
-- **Complexity**: Trivial
-- **Function context**: `__cold` path - not in hot path, used only
-  during overflow conditions
+| Metric | Assessment |
+|--------|------------|
+| Lines changed | +5 lines |
+| Files touched | 1 |
+| Code complexity | Trivial - USB ID table entry only |
+| Risk level | **Very Low** |
 
-**Risk analysis:**
-- Allocation may fail more readily under memory pressure - but that's
-  the *intended* behavior
-- If overflow allocation fails, the CQE won't be recorded - applications
-  relying on completion notifications might be affected, but this is
-  correct behavior when memory is exhausted
-- Very low risk of regression since this is the semantically correct
-  change
+The sr9700 driver is mature and unchanged. The only "new" aspect is
+using `USB_DEVICE_INTERFACE_NUMBER()` instead of `USB_DEVICE()` to
+specifically bind to interface 1, which is correct behavior for this
+dual-interface device.
 
 ### 5. USER IMPACT
 
-- **Who is affected**: Users running io_uring workloads (databases,
-  high-performance I/O applications)
-- **Severity of bug**: Medium-High - allows memory limit bypass which is
-  particularly problematic in:
-  - Container environments (Docker, Kubernetes)
-  - Systems with memory cgroups
-  - Multi-tenant systems
-- **Reported by users**: Yes - bugzilla link indicates real-world issue
+- **Affected users**: Anyone with SR9700 USB Ethernet adapters that have
+  the virtual CD-ROM feature (product ID 0x9702)
+- **Current state**: Device is completely non-functional without this
+  patch - the driver doesn't recognize it
+- **Severity**: Hardware unusable - users cannot access their network
+  adapter
+- **Evidence**: External links show real users encountering this issue
 
 ### 6. STABILITY INDICATORS
 
-- Accepted by Jens Axboe (io_uring maintainer)
-- Has proper Link: to mailing list discussion
-- Referenced bug report demonstrates real user impact
-- Simple, well-understood change
+- Signed-off-by Paolo Abeni (Red Hat networking maintainer)
+- Clean, follows established patterns for USB device ID additions
+- Uses standard kernel macros (`USB_DEVICE_INTERFACE_NUMBER`)
 
 ### 7. DEPENDENCY CHECK
 
 - No dependencies on other commits
-- `io_alloc_ocqe()` and `io_cqe_overflow_locked()` exist in stable
-  kernels
-- io_uring has been present since kernel 5.1
+- The sr9700 driver exists in all maintained stable kernels (driver
+  added in 2013)
+- Patch applies cleanly with no modifications needed
 
-### CONCLUSION
+---
+
+## Verdict
+
+This commit is a **textbook example** of what should be backported to
+stable:
 
 **Meets stable criteria:**
-- ✅ Obviously correct - semantically appropriate GFP flag
-- ✅ Fixes a real bug - memory limit bypass (resource exhaustion)
-- ✅ Small and contained - single line change
-- ✅ No new features or APIs
-- ✅ Tested in mainline
-- ✅ Referenced bug report shows real user impact
+- ✅ Obviously correct - simple USB ID table entry
+- ✅ Fixes real bug - hardware completely unusable without it
+- ✅ Small and contained - 5 lines, single file, no logic changes
+- ✅ No new features - enables existing driver for device variant
+- ✅ Falls into Device ID exception - explicitly allowed for stable
 
-**Risk vs Benefit:**
-- Risk: Minimal - well-understood change to allocation flags
-- Benefit: Fixes a memory limit bypass that could be used for DoS
+**Risk assessment:**
+- Minimal risk - cannot affect existing 0x9700 device users
+- Worst case if wrong: only affects users with 0x9702 devices who
+  already can't use them
 
-This is an ideal stable backport candidate: a tiny, surgical fix
-addressing a real security-relevant bug (memory limit bypass) with
-minimal risk of regression.
+**Benefit:**
+- Clear user benefit - enables hardware that otherwise doesn't work at
+  all
+
+**NO** concerns:
+- No backport adjustments needed
+- No dependencies
+- Driver code is identical across stable versions
 
 **YES**
 
- io_uring/io_uring.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/usb/sr9700.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
-index 60adab71ad2d..93b203205a16 100644
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -897,7 +897,7 @@ static __cold bool io_cqe_overflow_locked(struct io_ring_ctx *ctx,
- {
- 	struct io_overflow_cqe *ocqe;
- 
--	ocqe = io_alloc_ocqe(ctx, cqe, big_cqe, GFP_ATOMIC);
-+	ocqe = io_alloc_ocqe(ctx, cqe, big_cqe, GFP_NOWAIT);
- 	return io_cqring_add_overflow(ctx, ocqe);
- }
+diff --git a/drivers/net/usb/sr9700.c b/drivers/net/usb/sr9700.c
+index 091bc2aca7e8..d8ffb59eaf34 100644
+--- a/drivers/net/usb/sr9700.c
++++ b/drivers/net/usb/sr9700.c
+@@ -539,6 +539,11 @@ static const struct usb_device_id products[] = {
+ 		USB_DEVICE(0x0fe6, 0x9700),	/* SR9700 device */
+ 		.driver_info = (unsigned long)&sr9700_driver_info,
+ 	},
++	{
++		/* SR9700 with virtual driver CD-ROM - interface 0 is the CD-ROM device */
++		USB_DEVICE_INTERFACE_NUMBER(0x0fe6, 0x9702, 1),
++		.driver_info = (unsigned long)&sr9700_driver_info,
++	},
+ 	{},			/* END */
+ };
  
 -- 
 2.51.0
