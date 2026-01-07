@@ -1,146 +1,135 @@
-Return-Path: <stable+bounces-206228-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206229-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADCECD002EF
-	for <lists+stable@lfdr.de>; Wed, 07 Jan 2026 22:36:24 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32DF0D00331
+	for <lists+stable@lfdr.de>; Wed, 07 Jan 2026 22:42:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 232B53001013
-	for <lists+stable@lfdr.de>; Wed,  7 Jan 2026 21:36:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4194C309A6F2
+	for <lists+stable@lfdr.de>; Wed,  7 Jan 2026 21:37:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A36F33346A5;
-	Wed,  7 Jan 2026 21:36:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1868C3358C2;
+	Wed,  7 Jan 2026 21:37:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Lr8Ogtu/"
+	dkim=pass (1024-bit key) header.d=perex.cz header.i=@perex.cz header.b="HhraP5iT"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from mail1.perex.cz (mail1.perex.cz [77.48.224.245])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6327A23D7F5;
-	Wed,  7 Jan 2026 21:36:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 078C5332912;
+	Wed,  7 Jan 2026 21:37:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=77.48.224.245
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767821782; cv=none; b=tS6iYoiI5XI7m83471k86FvVBsexYeYWYNa9SP3tUxhYXSbg7o0dH3w21Y/wVwIYTg/vfUX4WkOAcsgbuopfhCSnERTjhJfYpPM50AZWxyU06YYu1qK/zZc4xUdSjIQLmz1vGYJ/aP0+thdd6C/UWUsLpE+TxMATryu3NZQIays=
+	t=1767821827; cv=none; b=BRnQCQjvMShwsM1KMA6s48NOidjrSGySJIrLxiQXNQcd3RLm0MpbdIem1kncEsku8IltniM7iWgwu23VCPUyM3Xxc13RdgjOwWxSAdkBCMzOL85mihjy1FkGXE+JtHQLXC/bRZrYj81cBJRdaBV7Vp5/24bNSFju6ybIy78e2Yc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767821782; c=relaxed/simple;
-	bh=Jv1QUG25wuai81VCP0AUr8gPDustG1rrgp1TER68Iok=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ofe3aPYWiDrdf6NuNs9lu7mq4sv8L74NMKxKFIAv9pvhEscwUro8OFN8lqcP3OgkHc6I2vJI1AOsH+H/UnIdebg9C2naN1z3yeFd4+bvpb1cnxr4Skv1mZrYdIziHz16GWcuARQ+ScpH0krZaQ36UMrmF6LByOdW08YGTNTz6HE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Lr8Ogtu/; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1767821780; x=1799357780;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Jv1QUG25wuai81VCP0AUr8gPDustG1rrgp1TER68Iok=;
-  b=Lr8Ogtu/qVbqFt5dZgJJe4YyF4Khy6M4T8bEax4zkdIzvUn1TtidAyJr
-   xun+YzV6DHIMOofwCHHhNuqbzy+9x+pAlHq4FvAgsby8RJmV4w83IV9Ip
-   8mvxRFIW6mz2MtX1WBDn8GY3LeGWlj4wgs7pFIrTVOval05aBPM//NJH3
-   IX6ufj2XvtBy/48ePPUunvbgEUzPIiEwyMaAn/ItlF8aEPBbM4AbPuaLI
-   irugGkM4GlENeuFORn4ygEsPxyrec6c62w5OQiYFIdrW9VL8VaNZu1Uml
-   TD+4voaIFGDhIoDkkF8slaIWTPEED/iyCQumqv2sW2p5mYH0oMaR11rwS
-   Q==;
-X-CSE-ConnectionGUID: NXQ9MyaaSRWzIkbxeKUiHg==
-X-CSE-MsgGUID: 67so7DLOTZCpnuaXH+D1LA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11664"; a="73054489"
-X-IronPort-AV: E=Sophos;i="6.21,209,1763452800"; 
-   d="scan'208";a="73054489"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jan 2026 13:36:19 -0800
-X-CSE-ConnectionGUID: tJRiHJN9RF6ZGDNPHDsqnA==
-X-CSE-MsgGUID: r+OdD+waT6aDR9PDgOay6w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,209,1763452800"; 
-   d="scan'208";a="202153770"
-Received: from vpanait-mobl.ger.corp.intel.com (HELO kekkonen.fi.intel.com) ([10.245.245.174])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jan 2026 13:36:18 -0800
-Received: from kekkonen.localdomain (localhost [IPv6:::1])
-	by kekkonen.fi.intel.com (Postfix) with SMTP id 3AB9C1203D1;
-	Wed, 07 Jan 2026 23:36:31 +0200 (EET)
-Date: Wed, 7 Jan 2026 23:36:31 +0200
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
-To: Hans de Goede <johannes.goede@oss.qualcomm.com>
-Cc: Hans Verkuil <hverkuil@kernel.org>, Bryan O'Donoghue <bod@kernel.org>,
-	Heimir Thor Sverrisson <heimir.sverrisson@gmail.com>,
-	Sebastian Reichel <sre@kernel.org>, linux-media@vger.kernel.org,
+	s=arc-20240116; t=1767821827; c=relaxed/simple;
+	bh=TN6p14zk4i2fdHlP0UHWZyCKlDsPZybqAunkuk5hWCk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HVMhT+0cm1nUXofYsWZAQZSAEUP6yseo31bDWvm7dRyOTTV6ml1WJIMSo68aioUTfPFcvRNGomscWo1FM6FPyZF2hm7PAeGsVjAUCZG11Flfd1NSh/UKEeI6gNvZco5CpvtRL9zigYaPlw/m/cykrbQ4NrGXg0s8PknDtFI8Vm8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=perex.cz; spf=pass smtp.mailfrom=perex.cz; dkim=pass (1024-bit key) header.d=perex.cz header.i=@perex.cz header.b=HhraP5iT; arc=none smtp.client-ip=77.48.224.245
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=perex.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=perex.cz
+Received: from mail1.perex.cz (localhost [127.0.0.1])
+	by smtp1.perex.cz (Perex's E-mail Delivery System) with ESMTP id 093AA3E13A;
+	Wed,  7 Jan 2026 22:36:52 +0100 (CET)
+DKIM-Filter: OpenDKIM Filter v2.11.0 smtp1.perex.cz 093AA3E13A
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=perex.cz; s=default;
+	t=1767821812; bh=1g5pCNyE2qpUqyl7rpB6YGkIsPLmOcYoaRMFsevthv4=;
+	h=From:To:Cc:Subject:Date:From;
+	b=HhraP5iTQ3fUS7dXccTK+6p/jO3xyVA6gExtvOoKeDwo+icLHXCfSM91Zs0nlPZZc
+	 0V7HP4DFDo5/B6TL8ko8Ix/+8Sn60YDfmmtp8qQH6Huika63b+fP0pTSRxXaicxrTm
+	 kOgTetd37NuZl0TfMc2AHC+YFW7IMSPr0JlPb1Sg=
+Received: from p1gen7.perex-int.cz (unknown [192.168.100.98])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: perex)
+	by mail1.perex.cz (Perex's E-mail Delivery System) with ESMTPSA;
+	Wed,  7 Jan 2026 22:36:47 +0100 (CET)
+From: Jaroslav Kysela <perex@perex.cz>
+To: Linux Sound ML <linux-sound@vger.kernel.org>
+Cc: Takashi Iwai <tiwai@suse.de>,
+	Jaroslav Kysela <perex@perex.cz>,
 	stable@vger.kernel.org
-Subject: Re: [PATCH v2 2/5] media: ov02c10: Adjust x-win/y-win when changing
- flipping to preserve bayer-pattern
-Message-ID: <aV7R30bSVxXRxCok@kekkonen.localdomain>
-References: <20251210112436.167212-1-johannes.goede@oss.qualcomm.com>
- <20251210112436.167212-3-johannes.goede@oss.qualcomm.com>
- <aV5IH7PIFnySHhYC@kekkonen.localdomain>
- <082db370-e6cb-45fd-aaf9-bcd9f80dc242@oss.qualcomm.com>
+Subject: [PATCH] ALSA: pcm: Improve the fix for race of buffer access at PCM OSS layer
+Date: Wed,  7 Jan 2026 22:36:42 +0100
+Message-ID: <20260107213642.332954-1-perex@perex.cz>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <082db370-e6cb-45fd-aaf9-bcd9f80dc242@oss.qualcomm.com>
+Content-Transfer-Encoding: 8bit
 
-Hi Hans,
+Handle the error code from snd_pcm_buffer_access_lock() in
+snd_pcm_runtime_buffer_set_silence() function.
 
-On Wed, Jan 07, 2026 at 02:45:18PM +0100, Hans de Goede wrote:
-> Hi Sakari,
-> 
-> On 7-Jan-26 12:48, Sakari Ailus wrote:
-> > Hi Hans,
-> > 
-> > On Wed, Dec 10, 2025 at 12:24:33PM +0100, Hans de Goede wrote:
-> >> The ov02c10 is capable of having its (crop) window shifted around with 1
-> >> pixel precision while streaming.
-> >>
-> >> This allows changing the x/y window coordinates when changing flipping to
-> >> preserve the bayer-pattern.
-> > 
-> > Ideally we'd use the crop selection to configure this, but given these
-> > sensors (and drivers) are generally what they are, I guess this is probably
-> > a reasonable way to go.
-> 
-> Even in sensor drivers where we allow setting the crop selection
-> to get arbritrary modes, we always round the coordinates to a multiple
-> of 2, to avoid changing the bayer-pattern seen by userspace when
-> userspace changes the crop. See e.g. ov2680_set_selection().
-> 
-> And then when doing flipping we might add 1 to either the x and/or y
-> coordinate to the userspace provided crop x, y before sending it to
-> the sensor to make flipping not change the bayer order, see e.g.
-> ov01a10_set_hflip() after the v2 series you've here:
-> 
-> https://git.retiisi.eu/?p=~sailus/linux.git;a=shortlog;h=refs/heads/ov01a10
-> 
-> which does (simplified):
-> 
->         offset = crop->left;
->         if (hflip)
->                 offset++;
-> 
->         cci_write(ov01a10->regmap, OV01A10_REG_X_WIN, offset, &ret);
-> 
-> IOW we are trying to not make userspace be able to affect the bayer-pattern
-> through setting the crop-selection and/or flip.
-> 
-> So I'm not sure what you mean with "Ideally we'd use the crop selection"
-> because we are actively trying to avoid to have the crop-selection change
-> the bayer order ?
-> 
-> Generally speaking I think we should avoid any settings change the bayer-order
-> whenever possible.
+Found by Alexandros Panagiotou <apanagio@redhat.com>
 
-That's up to the userspace. The UAPI allows to do either so why should the
-driver decide?
+Fixes: 93a81ca06577 ("ALSA: pcm: Fix race of buffer access at PCM OSS layer")
+Cc: stable@vger.kernel.org # 6.15
+Signed-off-by: Jaroslav Kysela <perex@perex.cz>
+---
+ include/sound/pcm.h      | 2 +-
+ sound/core/oss/pcm_oss.c | 4 +++-
+ sound/core/pcm_native.c  | 9 +++++++--
+ 3 files changed, 11 insertions(+), 4 deletions(-)
 
-As noted, in this case providing that flexibility probably causes more
-hassle than any benefits, so I guess this is fine.
-
+diff --git a/include/sound/pcm.h b/include/sound/pcm.h
+index 58fd6e84f961..a7860c047503 100644
+--- a/include/sound/pcm.h
++++ b/include/sound/pcm.h
+@@ -1402,7 +1402,7 @@ int snd_pcm_lib_mmap_iomem(struct snd_pcm_substream *substream, struct vm_area_s
+ #define snd_pcm_lib_mmap_iomem	NULL
+ #endif
+ 
+-void snd_pcm_runtime_buffer_set_silence(struct snd_pcm_runtime *runtime);
++int snd_pcm_runtime_buffer_set_silence(struct snd_pcm_runtime *runtime);
+ 
+ /**
+  * snd_pcm_limit_isa_dma_size - Get the max size fitting with ISA DMA transfer
+diff --git a/sound/core/oss/pcm_oss.c b/sound/core/oss/pcm_oss.c
+index a82dd155e1d3..b12df5b5ddfc 100644
+--- a/sound/core/oss/pcm_oss.c
++++ b/sound/core/oss/pcm_oss.c
+@@ -1074,7 +1074,9 @@ static int snd_pcm_oss_change_params_locked(struct snd_pcm_substream *substream)
+ 	runtime->oss.params = 0;
+ 	runtime->oss.prepare = 1;
+ 	runtime->oss.buffer_used = 0;
+-	snd_pcm_runtime_buffer_set_silence(runtime);
++	err = snd_pcm_runtime_buffer_set_silence(runtime);
++	if (err < 0)
++		goto failure;
+ 
+ 	runtime->oss.period_frames = snd_pcm_alsa_frames(substream, oss_period_size);
+ 
+diff --git a/sound/core/pcm_native.c b/sound/core/pcm_native.c
+index 68bee40c9ada..932a9bf98cbc 100644
+--- a/sound/core/pcm_native.c
++++ b/sound/core/pcm_native.c
+@@ -730,13 +730,18 @@ static void snd_pcm_buffer_access_unlock(struct snd_pcm_runtime *runtime)
+ }
+ 
+ /* fill the PCM buffer with the current silence format; called from pcm_oss.c */
+-void snd_pcm_runtime_buffer_set_silence(struct snd_pcm_runtime *runtime)
++int snd_pcm_runtime_buffer_set_silence(struct snd_pcm_runtime *runtime)
+ {
+-	snd_pcm_buffer_access_lock(runtime);
++	int err;
++
++	err = snd_pcm_buffer_access_lock(runtime);
++	if (err < 0)
++		return err;
+ 	if (runtime->dma_area)
+ 		snd_pcm_format_set_silence(runtime->format, runtime->dma_area,
+ 					   bytes_to_samples(runtime, runtime->dma_bytes));
+ 	snd_pcm_buffer_access_unlock(runtime);
++	return 0;
+ }
+ EXPORT_SYMBOL_GPL(snd_pcm_runtime_buffer_set_silence);
+ 
 -- 
-Kind regards,
+2.52.0
 
-Sakari Ailus
 
