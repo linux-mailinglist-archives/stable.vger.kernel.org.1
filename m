@@ -1,142 +1,136 @@
-Return-Path: <stable+bounces-206175-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206187-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B21F9CFFDF9
-	for <lists+stable@lfdr.de>; Wed, 07 Jan 2026 20:57:14 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D98BCFFB4A
+	for <lists+stable@lfdr.de>; Wed, 07 Jan 2026 20:20:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A3A2730D8AE2
-	for <lists+stable@lfdr.de>; Wed,  7 Jan 2026 19:26:06 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CE9C0301D942
+	for <lists+stable@lfdr.de>; Wed,  7 Jan 2026 19:20:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 972C13A89D9;
-	Wed,  7 Jan 2026 15:54:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MzrWFiYr"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 023C137515E;
+	Wed,  7 Jan 2026 16:54:32 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D118337998A;
-	Wed,  7 Jan 2026 15:54:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD5FB359718;
+	Wed,  7 Jan 2026 16:54:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767801289; cv=none; b=byDYoJRwGFXpB82ih9j47lLjD8sJhCqSPLdi7zDiB5rGh5DD2A63f0/jE9qzo8WUl6pPdRzU8jtYi7IWjJIwx5fcnUXj0/U99tHk0VXz7KpKpvJLesf8AkxYzBmQ3aqcD3+pp7uyNfo3M0Y7tI14qKDeo+hQJkIr2+sRqbke1RY=
+	t=1767804869; cv=none; b=Jefjha1NjnsT6JVOfDoLiBvWqXN0jsUmQ+LGNruN9gNpiUH2YYdLx6zW10eMhHGvGg2232xc/CdfgcYa4KyqpQ2brFxBpIztML5PISLs17X3FXRIR6ZBTyyBYq0bsgHsGdwLcChvZfpxB7x0dDw2uOmisLYvrTHkVmyZ+b9PlTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767801289; c=relaxed/simple;
-	bh=dQHczuUO01yiJUoA4VVJbRjpUINgq/SBa7rpIL/696o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=M5+XIF9SghIEZcs/wPkKveae9u8ZTxjRZmrapuDQ6ndnWBY7GxWWLvKQxmfzBS8mYIoNQh7Bt0kyvoEQh1gPU9fyyr6bPb2JRH4wNtt1xtc7VwJ7JqRuTV8kyhpaLlxporW7l5ur57aRELAUL5OShxfcIRJLfy7RXDMZX7QEFm0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MzrWFiYr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8AFAC4CEF1;
-	Wed,  7 Jan 2026 15:54:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767801289;
-	bh=dQHczuUO01yiJUoA4VVJbRjpUINgq/SBa7rpIL/696o=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=MzrWFiYr1lLU7Zo+vJOoMuB6y3YJDu3ijrEKUJhEYVuiRKPCKpIOagB9YslXNI74o
-	 kUQAwTd18zutfYUw+fOkoRM7OsGpAMTNWYkm1jGXjzThQtvLO8eFhX2rq8lW1HUu6b
-	 h6fnQ0k89bBDzpAi/xaBxhfFQYlX6X6h0D6WOOhV9jN7zdwAL2udsBD6es5Qu5W6Pk
-	 TCIPhLiOQ9++Yz2mFrqZxrvtco6aXeu7+5le5mI01NGQgjOvsZocJA3MLPKut2rT67
-	 dvOA4/aegHqCtdG+3Msr/oH97Z4qJrKMCA/3aO4YXAKYqkBd0GeNFcroJmgaN1rC/f
-	 EtJJVfnO3/nVQ==
-Date: Wed, 7 Jan 2026 16:54:46 +0100
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
-To: Sean Nyekjaer <sean@geanix.com>
-Cc: Fabrice Gasnier <fabrice.gasnier@foss.st.com>, 
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
-	linux-pwm@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] pwm: stm32: handle polarity change when PWM is enabled
-Message-ID: <nwhixocvhii27jvcyg7ex5emewntgfhyxa4ds5vo2dphe7xfe4@ibjsjdd5fgmn>
-References: <20260106-stm32-pwm-v1-1-33e9e8a9fc33@geanix.com>
- <kemjjoyrhqglqq4p2j6kygspevq2mdbiujtnksw4rkdapoqcfy@zte2c7fhqvn3>
- <2e2iahbzcepbzwgk7xeta2afxmycfjgv2zofzngqjvp4on46r2@mzpi4bz4uqie>
+	s=arc-20240116; t=1767804869; c=relaxed/simple;
+	bh=ytOH4rPaPYZtl6XKeTgWh8ZjUPJ51XZhSmtYTjSD9e4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=SAi5QXWHk+UYtjqnfnzKBOiormYOoGvtX6qRaQhmAgKhqPK4VJNsl9Puav8ToUqo6dgOK/xtSPvLtUjk5DTakB4wmK1ZhqVPL0QFFomc6S/uv0CpaNJ68X7kYSM17VZBKJURKgi3TzWDRJu1LerFYR/qmLdhq2sZgtpwEAX077I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 45325497;
+	Wed,  7 Jan 2026 08:54:08 -0800 (PST)
+Received: from [10.57.46.202] (unknown [10.57.46.202])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B76E33F6A8;
+	Wed,  7 Jan 2026 08:54:11 -0800 (PST)
+Message-ID: <846e1998-b508-4433-9db6-3a52ff23552f@arm.com>
+Date: Wed, 7 Jan 2026 17:54:09 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="64gye46smpsbdd4v"
-Content-Disposition: inline
-In-Reply-To: <2e2iahbzcepbzwgk7xeta2afxmycfjgv2zofzngqjvp4on46r2@mzpi4bz4uqie>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] arm64: fix cleared E0POE bit after
+ cpu_suspend()/resume()
+To: Yeoreum Yun <yeoreum.yun@arm.com>, linux-pm@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Cc: rafael@kernel.org, pavel@kernel.org, catalin.marinas@arm.com,
+ will@kernel.org, anshuman.khandual@arm.com, ryan.roberts@arm.com,
+ yang@os.amperecomputing.com, joey.gouly@arm.com, stable@vger.kernel.org
+References: <20260107162115.3292205-1-yeoreum.yun@arm.com>
+From: Kevin Brodsky <kevin.brodsky@arm.com>
+Content-Language: en-GB
+In-Reply-To: <20260107162115.3292205-1-yeoreum.yun@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
+On 07/01/2026 17:21, Yeoreum Yun wrote:
+> TCR2_ELx.E0POE is set during smp_init().
+> However, this bit is not reprogrammed when the CPU enters suspension and
+> later resumes via cpu_resume(), as __cpu_setup() does not re-enable E0POE
+> and there is no save/restore logic for the TCR2_ELx system register.
+>
+> As a result, the E0POE feature no longer works after cpu_resume().
+>
+> To address this, save and restore TCR2_EL1 in the cpu_suspend()/cpu_resume()
+> path, rather than adding related logic to __cpu_setup(), taking into account
+> possible future extensions of the TCR2_ELx feature.
+>
+> Cc: stable@vger.kernel.org
+> Fixes: bf83dae90fbc ("arm64: enable the Permission Overlay Extension for EL0")
+> Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+> ---
+>
+> Patch History
+> ==============
+> from v1 to v2:
+>   - following @Kevin Brodsky suggestion.
+>   - https://lore.kernel.org/all/20260105200707.2071169-1-yeoreum.yun@arm.com/
+>
+> NOTE:
+>   This patch based on v6.19-rc4
+> ---
+>  arch/arm64/include/asm/suspend.h | 2 +-
+>  arch/arm64/mm/proc.S             | 8 ++++++++
+>  2 files changed, 9 insertions(+), 1 deletion(-)
+>
+> diff --git a/arch/arm64/include/asm/suspend.h b/arch/arm64/include/asm/suspend.h
+> index e65f33edf9d6..e9ce68d50ba4 100644
+> --- a/arch/arm64/include/asm/suspend.h
+> +++ b/arch/arm64/include/asm/suspend.h
+> @@ -2,7 +2,7 @@
+>  #ifndef __ASM_SUSPEND_H
+>  #define __ASM_SUSPEND_H
+>
+> -#define NR_CTX_REGS 13
+> +#define NR_CTX_REGS 14
+>  #define NR_CALLEE_SAVED_REGS 12
+>
+>  /*
+> diff --git a/arch/arm64/mm/proc.S b/arch/arm64/mm/proc.S
+> index 01e868116448..5d907ce3b6d3 100644
+> --- a/arch/arm64/mm/proc.S
+> +++ b/arch/arm64/mm/proc.S
+> @@ -110,6 +110,10 @@ SYM_FUNC_START(cpu_do_suspend)
+>  	 * call stack.
+>  	 */
+>  	str	x18, [x0, #96]
+> +alternative_if ARM64_HAS_TCR2
+> +	mrs	x2, REG_TCR2_EL1
+> +	str	x2, [x0, #104]
+> +alternative_else_nop_endif
+>  	ret
+>  SYM_FUNC_END(cpu_do_suspend)
+>
+> @@ -144,6 +148,10 @@ SYM_FUNC_START(cpu_do_resume)
+>  	msr	tcr_el1, x8
+>  	msr	vbar_el1, x9
+>  	msr	mdscr_el1, x10
+> +alternative_if ARM64_HAS_TCR2
+> +	ldr	x2, [x0, #104]
+> +	msr	REG_TCR2_EL1, x2
+> +alternative_else_nop_endif
 
---64gye46smpsbdd4v
-Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH] pwm: stm32: handle polarity change when PWM is enabled
-MIME-Version: 1.0
+Maybe this could be pushed further down cpu_do_resume, next to DISR_EL1
+maybe (since it's also conditional)? Otherwise the diff LGTM:
 
-Hey Sean,
+Reviewed-by: Kevin Brodsky <kevin.brodsky@arm.com>
 
-On Tue, Jan 06, 2026 at 11:30:34AM +0000, Sean Nyekjaer wrote:
-> On Tue, Jan 06, 2026 at 11:22:57AM +0100, Uwe Kleine-K=F6nig wrote:
-> > On Tue, Jan 06, 2026 at 08:01:57AM +0100, Sean Nyekjaer wrote:
-> > > After commit 7346e7a058a2 ("pwm: stm32: Always do lazy disabling"),
-> > > polarity changes are ignored. Updates to the TIMx_CCER CCxP bits are
-> > > ignored by the hardware when the master output is enabled via the
-> > > TIMx_BDTR MOE bit.
-> > [...]
-> > I have hardware using this driver, will set it up later this week for
-> > testing.
->=20
-> Very cool, looking forward to hear if you can re-produce.
+- Kevin
 
-I cannot. I have:
-
-	# uname -r
-	6.11.0-rc1-00028-geb18504ca5cf-dirty
-
-(the -dirty is only from enabling the pwm for my machine, no driver
-changes)
-
-	# cat /sys/kernel/debug/pwm
-	0: platform/40001000.timer:pwm, 4 PWM devices
-	...
-	 pwm-3   (sysfs               ): requested enabled period: 313720 ns duty:=
- 10000 ns polarity: normal
-
-and pulseview/sigrok detects 3.187251% with a period of 313.8 =B5s.
-
-After
-
-	echo inversed > /sys/class/pwm/pwmchip0/pwm3/polarity
-
-the output changes to
-
-	# cat /sys/kernel/debug/pwm
-	0: platform/40001000.timer:pwm, 4 PWM devices
-	...
-	 pwm-3   (sysfs               ): requested enabled period: 313720 ns duty:=
- 10000 ns polarity: inverse
-
-and pulseview/sigrok claims 96.812749% with a period of 313.8 =B5s.
-So the polarity change happend as expected.
-
-This is on an st,stm32mp135f-dk board.
-
-Where is the difference to your observations?
-
-Best regards
-Uwe
-
---64gye46smpsbdd4v
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmlegcMACgkQj4D7WH0S
-/k4fRwf+IoPI/fQOF4r4TdyNyj65K6n+ilKzhOPYzKYcI84BEcJY/rHKy5tCk9Un
-DB3fGdGsshoeaQtmX1qobV/wi6PFT27ecr9Li3lppUnc7ncvEKwKstDEY79THvf9
-laZNtq6+trpelYq4JQGCoXwgE+sJTjMpFtoJLFGko4LrJxXvhVZEuU8oYuelRaOe
-e7jMVbf/EdBMnLkI7TopaonJ+/FH+YDFED2h1AJPY9RbGU6VbJ+Y76pIFQwC5/Nz
-zfheLxXGMWT5G9eV6atq4rcrvRQDB3pr3fULyKSwb8q9vpObaJjyIiOkqCDK8zOF
-MIfKdXUl/rx9CggHjkGDcVN+AzBkEA==
-=Hapr
------END PGP SIGNATURE-----
-
---64gye46smpsbdd4v--
+>  	msr	sctlr_el1, x12
+>  	set_this_cpu_offset x13
+> --
+> LEVI:{C3F47F37-75D8-414A-A8BA-3980EC8A46D7}
+>
 
