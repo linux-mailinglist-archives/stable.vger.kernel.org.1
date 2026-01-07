@@ -1,80 +1,77 @@
-Return-Path: <stable+bounces-206215-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206216-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 195A7D000B6
-	for <lists+stable@lfdr.de>; Wed, 07 Jan 2026 21:45:04 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEAFFD00125
+	for <lists+stable@lfdr.de>; Wed, 07 Jan 2026 21:55:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2B7F03016AE7
-	for <lists+stable@lfdr.de>; Wed,  7 Jan 2026 20:45:03 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id DA71C3003483
+	for <lists+stable@lfdr.de>; Wed,  7 Jan 2026 20:55:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2081332937D;
-	Wed,  7 Jan 2026 20:45:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 296AD31ED7F;
+	Wed,  7 Jan 2026 20:55:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="SDi7n22R"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="BevhwU23"
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B644D250BEC;
-	Wed,  7 Jan 2026 20:45:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EDBB23C8A0
+	for <stable@vger.kernel.org>; Wed,  7 Jan 2026 20:55:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767818701; cv=none; b=Q1YU3m8sC0nBheRGq8q62r1U2N11+mRq6X1i0DuGlR13VTENlp0v1oq1XWnEg4BX0vbgc9Xrum79MNgfJqRYl/dS0koi73c8mO9DVWu+Vj2AZHw9nV6ZApcybD0UBnXOHebC0XrhQ7PewwVtqDKQ1aTL26uFXLQlYkKns8gh3zw=
+	t=1767819336; cv=none; b=UZ4XdTHx8tqV61bgiXB2erVR7cHVYdU3nOs2Na3/hCyPUyccu0xW66Nfi/4+Bq3jsaWADcBYueZubsFQmhqEKPaYMbPZk3s6t/qCZM72NyawhSzVkp3ohx34hYnwlIdS0sFU/726K6ESxu9jNo9xeQfk6ULoPWCMT6YA5h7Ygjg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767818701; c=relaxed/simple;
-	bh=7O2rs2V0SHS1lxCQ9c2EQfNfzf7fRrm7jqw8rfYdgyU=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=EoyalqaJpnWN4jWNsoDlLNbR5bYKatb7Qie5sy7b76enu22C+0WHaTyqG4K1tcIqaPXihI0Yx6DalgTE3EXZFXck3lcYHQAiR7CkjKg4uOkEYQHd9gsY9IKIw1+YiffCBnWCOLe9LXvG8jjJC1A0t+3Azy/tihcgQxwMmSpdvrw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=SDi7n22R; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: by linux.microsoft.com (Postfix, from userid 1158)
-	id 42F042126883; Wed,  7 Jan 2026 12:45:00 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 42F042126883
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1767818700;
-	bh=7O2rs2V0SHS1lxCQ9c2EQfNfzf7fRrm7jqw8rfYdgyU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SDi7n22RTnqRwypLZHlAFDYbT3OyhwRM9pP5lnec2DtfHDvwRkX0kKo0xEIjvd6NW
-	 trEGql2yP2GNJj++pRiU1dlxHTZlm1CtvL/nipZPKop3xtj0pUou21jvtrrJ8SB+Mo
-	 /ir6PxyiLKBH8P30RScNbaNLEHP6d6WljOvKtQGA=
-From: Hardik Garg <hargar@linux.microsoft.com>
-To: gregkh@linuxfoundation.org
-Cc: achill@achill.org,
-	akpm@linux-foundation.org,
-	broonie@kernel.org,
-	conor@kernel.org,
-	f.fainelli@gmail.com,
-	hargar@microsoft.com,
-	jonathanh@nvidia.com,
-	linux-kernel@vger.kernel.org,
-	linux@roeck-us.net,
-	lkft-triage@lists.linaro.org,
-	patches@kernelci.org,
-	patches@lists.linux.dev,
-	pavel@denx.de,
-	rwarsow@gmx.de,
-	shuah@kernel.org,
-	sr@sladewatkins.com,
-	stable@vger.kernel.org,
-	sudipm.mukherjee@gmail.com,
-	torvalds@linux-foundation.org
-Subject: Re: [PATCH 6.18 000/312] 6.18.4-rc1 review
-Date: Wed,  7 Jan 2026 12:45:00 -0800
-Message-Id: <1767818700-14779-1-git-send-email-hargar@linux.microsoft.com>
-X-Mailer: git-send-email 1.8.3.1
-In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
-References: <20260106170547.832845344@linuxfoundation.org>
+	s=arc-20240116; t=1767819336; c=relaxed/simple;
+	bh=vVHa3TnuOM5oauFzlAYCt88CK+OK6reclmsP1Yo6fgs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=At8iERZO0gK2dK5dO2OdR79w6PFW+wshefr1i9eAuds5bSoKY3bYctYfjr//n+eBPLZnPQxUoMtC2DZjhm0FRCWvz1Q2L1R+iLi7ssHmNPDMQ8lgN3ts2N9yVHeRd6Bqn9ZYRt3KXVs7bl6eTMOiE34EwCXjA0+I0Ok5PU2F9io=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=BevhwU23; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=onCYdfBJPf4AnSBVwJ2/aEqS6jrss/1BLUDHPeErKyY=; b=BevhwU23jXy7xBnkUWiBMQhaqv
+	R6sPWMjAr+rKAe7A0FmmrwGQv87wr6BoDLHGWK8Nirt4cOJxD5bBnI35sVUwaPAYpEyAsuiNfb3R8
+	SqzrIjpgDFtsdRe2lfF8B9YclMUz2k1wbV8XvIsPjhpckjjnWI8WXoss9bqrZB9sFAvS3rNelehfw
+	wssT0vUTINtXtevh7HAcwg+ZgAhiXpPf/8xaaP1iZy7/QQQKySUM9ZTwKqbpkZ+XiNH7cvzF2RSFf
+	MSyWMP8oEPS4/pJTR5cK6CrokTWx04RcATzMyJd4Bzdn26Ap1tG7V7pSFRlASMD/kA9LL3FLizffP
+	YnMkACxw==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vdaYu-0000000DwPV-0E06;
+	Wed, 07 Jan 2026 20:55:24 +0000
+Date: Wed, 7 Jan 2026 20:55:23 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: Mikulas Patocka <mpatocka@redhat.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Pedro Falcato <pfalcato@suse.de>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	David Hildenbrand <david@redhat.com>, amd-gfx@lists.freedesktop.org,
+	linux-mm@kvack.org, Vlastimil Babka <vbabka@suse.cz>,
+	Jann Horn <jannh@google.com>, stable@vger.kernel.org
+Subject: Re: [PATCH v4 1/2] mm_take_all_locks: change -EINTR to -ERESTARTSYS
+Message-ID: <aV7IO8-trMSI1twA@casper.infradead.org>
+References: <20260107203113.690118053@debian4.vm>
+ <20260107203224.969740802@debian4.vm>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260107203224.969740802@debian4.vm>
 
-The kernel, bpf tool, perf tool, and kselftest builds fine for v6.18.4-rc1 on x86 and arm64 Azure VM.
+On Wed, Jan 07, 2026 at 09:31:14PM +0100, Mikulas Patocka wrote:
+> This commit changes -EINTR to -ERESTARTSYS, so that if the signal handler
+> was installed with the SA_RESTART flag, the operation is automatically
+> restarted.
 
-
-Tested-by: Hardik Garg <hargar@linux.microsoft.com>
-
-
-Thanks,
-Hardik
+No, this is bonkers.  If you get a signal, you return -EINTR.
 
