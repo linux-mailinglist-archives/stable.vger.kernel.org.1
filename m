@@ -1,171 +1,177 @@
-Return-Path: <stable+bounces-206184-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206185-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E580CFF54C
-	for <lists+stable@lfdr.de>; Wed, 07 Jan 2026 19:14:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A4CD7CFF874
+	for <lists+stable@lfdr.de>; Wed, 07 Jan 2026 19:45:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3422E36D2429
-	for <lists+stable@lfdr.de>; Wed,  7 Jan 2026 17:06:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 00B5E323A12F
+	for <lists+stable@lfdr.de>; Wed,  7 Jan 2026 17:56:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8722538A9CB;
-	Wed,  7 Jan 2026 16:23:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3EB738FEFD;
+	Wed,  7 Jan 2026 16:23:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MrdJXSNs"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MyjTRq2s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE38038A295;
-	Wed,  7 Jan 2026 16:22:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BABC337E2FC
+	for <stable@vger.kernel.org>; Wed,  7 Jan 2026 16:23:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767802977; cv=none; b=Kx7XfhgAN+SKb10dDNYeFkNMtmmV5bty5trakbfaI6zlV1Ek/d1saxOyLiVP3r6RlDqh8ovaKSTO0NUeNquiekMyI+6/p2ywIzM/hdqZMuo1G9Mi2dLqv5Vm64HZOMXHiz/M+btsIrfmxUUs55rh+iPfNrlKecadlBL8jZyQExM=
+	t=1767803012; cv=none; b=gldbY5en6yZwW8WgPGIH2uplMrxzr2KscA7ZHutdFfdpsTvVsqVkriOgokWlIeRukSTfNe5aAmX1uOTFCd2jE0Cusgj+nN/L6hM9gjL8WOlmw8/7Y2W81NJjhoTmG+LpLkIGfK+1mcFd1oJbBnVUuJWuvxJPpj9G6DS3WS9VorA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767802977; c=relaxed/simple;
-	bh=h/t0IMw2r1KOgVik7fGfiSYqStx+dX2QtV1GaNuybx0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Vwzr1RG0fHVat3PjAzaT0UXuF57rj+rawOZG2cd0O3djCDuJKcsZRshJL5Idjk+PBlRMJYPlcl8KZToa5Xs9Qq3I2cO6gblOb/t56zeCImNykkBHE8fNfuog3/VqUaALKqpQEYvvN0IYPb4JnJS1qm2PkHr4CQk5fjzrouD2Yn4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MrdJXSNs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E877C4CEF1;
-	Wed,  7 Jan 2026 16:22:51 +0000 (UTC)
+	s=arc-20240116; t=1767803012; c=relaxed/simple;
+	bh=k7AXjdlvSSY2GXbhosvmb93DQkkMFyru+9t+qiFbWVE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Eq4BKsyEvtL4x7l0ryvylWcCCgUoP7o0z0ZcAA6WqS2PrT3227NMvgxSons359j6PzWDcCGcHVl9OgrzS0DjEs5sQ1EDGvrkTc4Tmx87Sjaa6zX+s/jzD6Ob87PPRmh9bHmsn+6QNByC+x92xyEQYHuRJkImG+mdAh2WGHwAWfE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MyjTRq2s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53594C4AF09;
+	Wed,  7 Jan 2026 16:23:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767802973;
-	bh=h/t0IMw2r1KOgVik7fGfiSYqStx+dX2QtV1GaNuybx0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=MrdJXSNsL5LUoWximIzD8J5mik0J7vkN/69IxB3kLi2JQbNzM0M/E7WmzHN2322L0
-	 pRMDF/eqoJIoeKMjxqqvTQXeaES6SGTonc+KJew1QcPNnAJtJ9HwMqY63Zq0NyMPsj
-	 lAQ7abZtSP2JXi7HwtrYj+GYAQlygFZBwgrqt3LJA748pA6bo/GE34QvQi/SuX/C0S
-	 RmFsOY/7yJSDH0+jwQK0oLHzmTs98488opQZfVTIoqEMQuOL/F+VqB1PVu37lGaruJ
-	 a+71pHzEWLylilQ3GIp4Q8SXkPANYZLge8Te+X9Wv/0qou7ZXCMQop2V6kj0DepxGe
-	 Nb3HTggQ9cFcQ==
-Date: Wed, 7 Jan 2026 16:22:48 +0000
-From: Will Deacon <will@kernel.org>
-To: Lucas Wei <lucaswei@google.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>,
-	Jonathan Corbet <corbet@lwn.net>, sjadavani@google.com,
-	kernel test robot <lkp@intel.com>, stable@vger.kernel.org,
-	kernel-team@android.com, linux-arm-kernel@lists.infradead.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	robin.murphy@arm.com
-Subject: Re: [PATCH v2] arm64: errata: Workaround for SI L1 downstream
- coherency issue
-Message-ID: <aV6IWBtqp1dnOZuX@willie-the-truck>
-References: <20251229033621.996546-1-lucaswei@google.com>
+	s=k20201202; t=1767803011;
+	bh=k7AXjdlvSSY2GXbhosvmb93DQkkMFyru+9t+qiFbWVE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=MyjTRq2sBL1oUubK+Eyi5zfLNNdQ6YouKwzG0StBJpxHnoWzrwks9XaCP52P28Sep
+	 arLjT4uhUy2Eq7HhG1VED8zIdwrLRJSTl9ANMNkr3+/LJVP47UKsBlLptxXNL+PF4B
+	 FpmE4lrEgzyiySaDu3CAjYq18NCLgp31epfwt1fB3y4u/JbaZnIqO3oMflmRIzhzgD
+	 zib4wjuDZjU+qZ0zRU6cAXspS6EAA/0BzIqcCAwrmolQwWji1lUiQc4/FHvvnI1Awf
+	 J75lbARQteJ7YEr6wOFX5VvdRhmlsUMVmx24J3RkubV/Oceca4VNF5KUS3hacONeWZ
+	 MeAT0PV4ATYTQ==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Thomas Zimmermann <tzimmermann@suse.de>,
+	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>,
+	Stefan Christ <contact@stefanchrist.eu>,
+	Daniel Vetter <daniel.vetter@ffwll.ch>,
+	dri-devel@lists.freedesktop.org,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10.y] drm/gma500: Remove unused helper psb_fbdev_fb_setcolreg()
+Date: Wed,  7 Jan 2026 11:23:28 -0500
+Message-ID: <20260107162328.4079503-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2026010536-thwarting-rare-1984@gregkh>
+References: <2026010536-thwarting-rare-1984@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251229033621.996546-1-lucaswei@google.com>
+Content-Transfer-Encoding: 8bit
 
-[+Robin as he's been involved with this]
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-On Mon, Dec 29, 2025 at 03:36:19AM +0000, Lucas Wei wrote:
-> When software issues a Cache Maintenance Operation (CMO) targeting a
-> dirty cache line, the CPU and DSU cluster may optimize the operation by
-> combining the CopyBack Write and CMO into a single combined CopyBack
-> Write plus CMO transaction presented to the interconnect (MCN).
-> For these combined transactions, the MCN splits the operation into two
-> separate transactions, one Write and one CMO, and then propagates the
-> write and optionally the CMO to the downstream memory system or external
-> Point of Serialization (PoS).
-> However, the MCN may return an early CompCMO response to the DSU cluster
-> before the corresponding Write and CMO transactions have completed at
-> the external PoS or downstream memory. As a result, stale data may be
-> observed by external observers that are directly connected to the
-> external PoS or downstream memory.
-> 
-> This erratum affects any system topology in which the following
-> conditions apply:
->  - The Point of Serialization (PoS) is located downstream of the
->    interconnect.
->  - A downstream observer accesses memory directly, bypassing the
->    interconnect.
-> 
-> Conditions:
-> This erratum occurs only when all of the following conditions are met:
->  1. Software executes a data cache maintenance operation, specifically,
->     a clean or invalidate by virtual address (DC CVAC, DC CIVAC, or DC
->     IVAC), that hits on unique dirty data in the CPU or DSU cache. This
->     results in a combined CopyBack and CMO being issued to the
->     interconnect.
+[ Upstream commit be729f9de6c64240645dc80a24162ac4d3fe00a8 ]
 
-Why do we need to worry about IVAC here? Even though that might be
-upgraded to CIVAC and result in the erratum conditions, the DMA API
-shouldn't use IVAC on dirty lines so I don't think we need to worry
-about it.
+Remove psb_fbdev_fb_setcolreg(), which hasn't been called in almost
+a decade.
 
-> diff --git a/arch/arm64/include/asm/assembler.h b/arch/arm64/include/asm/assembler.h
-> index f0ca7196f6fa..d3d46e5f7188 100644
-> --- a/arch/arm64/include/asm/assembler.h
-> +++ b/arch/arm64/include/asm/assembler.h
-> @@ -381,6 +381,9 @@ alternative_endif
->  	.macro dcache_by_myline_op op, domain, start, end, linesz, tmp, fixup
->  	sub	\tmp, \linesz, #1
->  	bic	\start, \start, \tmp
-> +alternative_if ARM64_WORKAROUND_4311569
-> +	mov	\tmp, \start
-> +alternative_else_nop_endif
->  .Ldcache_op\@:
->  	.ifc	\op, cvau
->  	__dcache_op_workaround_clean_cache \op, \start
-> @@ -402,6 +405,13 @@ alternative_endif
->  	add	\start, \start, \linesz
->  	cmp	\start, \end
->  	b.lo	.Ldcache_op\@
-> +alternative_if ARM64_WORKAROUND_4311569
-> +	.ifnc	\op, cvau
-> +	mov	\start, \tmp
-> +	mov	\tmp, xzr
-> +	cbnz	\start, .Ldcache_op\@
-> +	.endif
-> +alternative_else_nop_endif
+Gma500 commit 4d8d096e9ae8 ("gma500: introduce the framebuffer support
+code") added the helper psb_fbdev_fb_setcolreg() for setting the fbdev
+palette via fbdev's fb_setcolreg callback. Later
+commit 3da6c2f3b730 ("drm/gma500: use DRM_FB_HELPER_DEFAULT_OPS for
+fb_ops") set several default helpers for fbdev emulation, including
+fb_setcmap.
 
-So you could also avoid this for ivac, although it looks like this is
-only called for civac, cvau, cvac and cvap so perhaps not worth it.
+The fbdev subsystem always prefers fb_setcmap over fb_setcolreg. [1]
+Hence, the gma500 code is no longer in use and gma500 has been using
+drm_fb_helper_setcmap() for several years without issues.
 
-> diff --git a/arch/arm64/mm/cache.S b/arch/arm64/mm/cache.S
-> index 503567c864fd..ddf0097624ed 100644
-> --- a/arch/arm64/mm/cache.S
-> +++ b/arch/arm64/mm/cache.S
-> @@ -143,9 +143,14 @@ SYM_FUNC_END(dcache_clean_pou)
->   *	- end     - kernel end address of region
->   */
->  SYM_FUNC_START(__pi_dcache_inval_poc)
-> +alternative_if ARM64_WORKAROUND_4311569
-> +	mov	x4, x0
-> +	mov	x5, x1
-> +	mov	x6, #1
-> +alternative_else_nop_endif
->  	dcache_line_size x2, x3
->  	sub	x3, x2, #1
-> -	tst	x1, x3				// end cache line aligned?
-> +again:	tst	x1, x3				// end cache line aligned?
->  	bic	x1, x1, x3
->  	b.eq	1f
->  	dc	civac, x1			// clean & invalidate D / U line
-> @@ -158,6 +163,12 @@ SYM_FUNC_START(__pi_dcache_inval_poc)
->  3:	add	x0, x0, x2
->  	cmp	x0, x1
->  	b.lo	2b
-> +alternative_if ARM64_WORKAROUND_4311569
-> +	mov	x0, x4
-> +	mov	x1, x5
-> +	sub	x6, x6, #1
-> +	cbz	x6, again
-> +alternative_else_nop_endif
->  	dsb	sy
->  	ret
->  SYM_FUNC_END(__pi_dcache_inval_poc)
+Fixes: 3da6c2f3b730 ("drm/gma500: use DRM_FB_HELPER_DEFAULT_OPS for fb_ops")
+Cc: Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
+Cc: Stefan Christ <contact@stefanchrist.eu>
+Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v4.10+
+Link: https://elixir.bootlin.com/linux/v6.16.9/source/drivers/video/fbdev/core/fbcmap.c#L246 # [1]
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Acked-by: Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
+Link: https://lore.kernel.org/r/20250929082338.18845-1-tzimmermann@suse.de
+[ adapted file path from fbdev.c to framebuffer.c and removed fb_setcolreg from three fb_ops structures ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/gpu/drm/gma500/framebuffer.c | 44 ----------------------------
+ 1 file changed, 44 deletions(-)
 
-But this whole part could be dropped? The CIVACs are just for the
-unaligned parts at the ends of the buffer and we shouldn't need to worry
-about propagating them -- we just don't want to chuck them away with an
-invalidation!
+diff --git a/drivers/gpu/drm/gma500/framebuffer.c b/drivers/gpu/drm/gma500/framebuffer.c
+index 6ef4ea07d1bb..c8db96b41dfa 100644
+--- a/drivers/gpu/drm/gma500/framebuffer.c
++++ b/drivers/gpu/drm/gma500/framebuffer.c
+@@ -34,47 +34,6 @@ static const struct drm_framebuffer_funcs psb_fb_funcs = {
+ 	.create_handle = drm_gem_fb_create_handle,
+ };
+ 
+-#define CMAP_TOHW(_val, _width) ((((_val) << (_width)) + 0x7FFF - (_val)) >> 16)
+-
+-static int psbfb_setcolreg(unsigned regno, unsigned red, unsigned green,
+-			   unsigned blue, unsigned transp,
+-			   struct fb_info *info)
+-{
+-	struct drm_fb_helper *fb_helper = info->par;
+-	struct drm_framebuffer *fb = fb_helper->fb;
+-	uint32_t v;
+-
+-	if (!fb)
+-		return -ENOMEM;
+-
+-	if (regno > 255)
+-		return 1;
+-
+-	red = CMAP_TOHW(red, info->var.red.length);
+-	blue = CMAP_TOHW(blue, info->var.blue.length);
+-	green = CMAP_TOHW(green, info->var.green.length);
+-	transp = CMAP_TOHW(transp, info->var.transp.length);
+-
+-	v = (red << info->var.red.offset) |
+-	    (green << info->var.green.offset) |
+-	    (blue << info->var.blue.offset) |
+-	    (transp << info->var.transp.offset);
+-
+-	if (regno < 16) {
+-		switch (fb->format->cpp[0] * 8) {
+-		case 16:
+-			((uint32_t *) info->pseudo_palette)[regno] = v;
+-			break;
+-		case 24:
+-		case 32:
+-			((uint32_t *) info->pseudo_palette)[regno] = v;
+-			break;
+-		}
+-	}
+-
+-	return 0;
+-}
+-
+ static int psbfb_pan(struct fb_var_screeninfo *var, struct fb_info *info)
+ {
+ 	struct drm_fb_helper *fb_helper = info->par;
+@@ -167,7 +126,6 @@ static int psbfb_mmap(struct fb_info *info, struct vm_area_struct *vma)
+ static const struct fb_ops psbfb_ops = {
+ 	.owner = THIS_MODULE,
+ 	DRM_FB_HELPER_DEFAULT_OPS,
+-	.fb_setcolreg = psbfb_setcolreg,
+ 	.fb_fillrect = drm_fb_helper_cfb_fillrect,
+ 	.fb_copyarea = psbfb_copyarea,
+ 	.fb_imageblit = drm_fb_helper_cfb_imageblit,
+@@ -178,7 +136,6 @@ static const struct fb_ops psbfb_ops = {
+ static const struct fb_ops psbfb_roll_ops = {
+ 	.owner = THIS_MODULE,
+ 	DRM_FB_HELPER_DEFAULT_OPS,
+-	.fb_setcolreg = psbfb_setcolreg,
+ 	.fb_fillrect = drm_fb_helper_cfb_fillrect,
+ 	.fb_copyarea = drm_fb_helper_cfb_copyarea,
+ 	.fb_imageblit = drm_fb_helper_cfb_imageblit,
+@@ -189,7 +146,6 @@ static const struct fb_ops psbfb_roll_ops = {
+ static const struct fb_ops psbfb_unaccel_ops = {
+ 	.owner = THIS_MODULE,
+ 	DRM_FB_HELPER_DEFAULT_OPS,
+-	.fb_setcolreg = psbfb_setcolreg,
+ 	.fb_fillrect = drm_fb_helper_cfb_fillrect,
+ 	.fb_copyarea = drm_fb_helper_cfb_copyarea,
+ 	.fb_imageblit = drm_fb_helper_cfb_imageblit,
+-- 
+2.51.0
 
-Will
 
