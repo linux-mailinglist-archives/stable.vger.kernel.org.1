@@ -1,146 +1,189 @@
-Return-Path: <stable+bounces-206230-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206231-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FB1FD003F1
-	for <lists+stable@lfdr.de>; Wed, 07 Jan 2026 22:53:40 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A0D1D004D9
+	for <lists+stable@lfdr.de>; Wed, 07 Jan 2026 23:26:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0614A3007C00
-	for <lists+stable@lfdr.de>; Wed,  7 Jan 2026 21:53:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2F8E8301B2C9
+	for <lists+stable@lfdr.de>; Wed,  7 Jan 2026 22:26:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AD60303C86;
-	Wed,  7 Jan 2026 21:53:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECC152BD597;
+	Wed,  7 Jan 2026 22:26:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="cbhRrnHI"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="F9XXCgPg"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85AA82F1FDD
-	for <stable@vger.kernel.org>; Wed,  7 Jan 2026 21:53:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27777227BB5;
+	Wed,  7 Jan 2026 22:26:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767822817; cv=none; b=NFjzcVDcXKlYxjCIpw6w9OfAyYuSGLBv0GPrqPJollfhjWOLcFqWET+3Ibcb4kiP8+wfRu8V1Yw6X13nK40wHdWWkPDlk2raXG45GgSYgvRQePA+WcixbVX9JAnO5LXEPlDz/9UxUpQlClUSaOl3/rOOcdunQ0obcckXRlCc/mY=
+	t=1767824766; cv=none; b=or2WH1u2xA999+w4fNIm/UBP1YW17OR7Bk+2B+rmbRUTgo/MLw3cCN0rJZpTWP8RLx41gcZyRXUv1jlrnKK2M53ST3ggfjXZKfD5rQx82dLfdlcsRgATyWExkqkLiRKaYHPJ83JU+Dh0MG/JY8rEmMv268bRZ30tyBR3CdllVLA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767822817; c=relaxed/simple;
-	bh=UHwqB3gjL3ptwXoinVWuZA+mO2tTt6i7X4c8KTM3w5I=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=X+kFljO8tImL1ltfMITEH10dJ8OdfyC78WXfhXaRgaR7RYh3UBRGJ8gIZE2Nbp7q8Staxek7RPqRFJZZucsivcyAb4nbd1FVziJFtuBFqAY+1awMaz6GJ8WWEIVPwJHMT2hgrW9dDK7o0Hfk6Pmb77KI8gBR4kG3jn1ywxQl6FM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=cbhRrnHI; arc=none smtp.client-ip=209.85.167.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-59b717b0f80so91951e87.1
-        for <stable@vger.kernel.org>; Wed, 07 Jan 2026 13:53:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1767822813; x=1768427613; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=KwYyN47XdExhmtpr22dRuy2KKRRsROowGgiRYq00HHY=;
-        b=cbhRrnHIwSxba8s0l+xIuvvGw1khORdElAWEc/iAYgbxmrtdVJ+/nl7MRtrVd4IgOX
-         QW171/Z65LOS1TUPgrNDNZrCbrdzUkB4I9QLNf3jKgNQT7WbitpncEEMKSH0bsH5ZkxN
-         uidK2ckuvLif3cjDxAcfF4me7fW/i9I1giLE9oY08+DI+KsCxNFzAeGxju9csKHUu0Ia
-         jzcm47lBRP/VGQshHncMq8T0K+yi7Y+owMZCZD3NNwA4qYW1nH/1N2IxArVZe6J8Lplz
-         Rocr4FByVMgCkcNlAPg93tmb92saOKZuz4Ah+RmQpYvm/a1yAqjwTDsMxAGqYDf8Xblh
-         QR2w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767822813; x=1768427613;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=KwYyN47XdExhmtpr22dRuy2KKRRsROowGgiRYq00HHY=;
-        b=XQAt1f9tcCovwTaVOi9OuRyN1fSjDn0v2vG78b7EC/1gHkeb+gd/T/8KSeWSlRY+nG
-         x7Rp/gOBF3wg0lAj3/CubX79vFY0Jyhoc7NCNhezcpZjqR5n0lkddJ0VzfcWUclzOmCi
-         xwzkZUNuHq8Eo+xlBcol7Qcq1m2V36d/0Ev5PcDyuPX3JOsCelIEH3FZzActA43ouzgX
-         0u7d8OWDZ9Wmbzy3pP0IWObVJ1mppJEI0LV271WqZLqwFTbqpk4Z4uIA8syHIx+QYdV6
-         j0ce+0Dl3ci3ijCkLW145m1Wq+EdJY7grTLAg/7JYPO+xhe0hgb6FcEgbA7TAmhgBHzD
-         0B4A==
-X-Forwarded-Encrypted: i=1; AJvYcCX61fvIto7Ttwd01J/DlNUugGTwDy/67D7XiwhEOYcAYSLf2vZgdF7UFfs1TlFOgMzxASd8wk0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxa2AFt/x+38NBr2DRbNEzuO9o+0kjsEY7T7qpySTb/dXUeKuCS
-	EuwZsY991TmovBx1U97261VqPa/hSnQDQPS+HrsgOT/Wbitu/OU5y1LSzB2+IEl5AoYVNJ2CVTY
-	9pJ++
-X-Gm-Gg: AY/fxX4KxzxI8Nj5y4W59quz4srt52jsl+RkOGDhuxC3jYme4Tu5PFlkYPicmBzCJVq
-	2nzYq1a7gDKmDEV7ybeXmhNhdHxwQdsm2uvIIqDyQBZNNFcJMQliiFLJIxIhIVbfIb2KGfFrHlw
-	5XT87AH5BHZAEh460RQVY9czL0Jm9cNgjQkQHfL1BWYmasQl9wvCFxpSsfUY/pxUzzbtCuMWFjc
-	v496x0bfvyRemKIbwQKEIABTRdqXcqJ8IYB+5UTk+oe+8gC0Zp3iNGXgxpYqBwA3PGje9HgbdVY
-	sgFbJMZuW0kVfoEF1eL//lkXSjTN5C6CwzoCV2+DMmluTyqnmNFDa3VSivLONptNkYeM8Tjy3ql
-	S4aycMGi+r+3k1lUk1xEjL71BxHxuAFANp+Q/VlprlhqlEgggqUS9NzrJhY5v34sRy9yvy/40AP
-	vldnYVx9vYeMYl8Wq0Y4GBai2nBiHvUdtZcepIWUYymCOiU0AAGi9r6er9Oe8FdLVo2BEc+Hmfw
-	P3U
-X-Google-Smtp-Source: AGHT+IEnE7TRgr0qgv5X/Q7XVeME7jEJg54IM1ntnuvOBQBuc3vf8rcsAvJ6z2UwtAWIpQusEkXc/Q==
-X-Received: by 2002:a05:6512:3d1c:b0:59b:1d24:7db7 with SMTP id 2adb3069b0e04-59b6ebd30d8mr766233e87.0.1767822813450;
-        Wed, 07 Jan 2026 13:53:33 -0800 (PST)
-Received: from [192.168.1.100] (91-159-24-186.elisa-laajakaista.fi. [91.159.24.186])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-59b65d6985csm1566062e87.78.2026.01.07.13.53.30
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 07 Jan 2026 13:53:31 -0800 (PST)
-Message-ID: <de0d0f9d-be70-490d-9cc0-53f017c69985@linaro.org>
-Date: Wed, 7 Jan 2026 23:53:29 +0200
+	s=arc-20240116; t=1767824766; c=relaxed/simple;
+	bh=9hOqLeKQfUMSYkkpTVWyJSzNqwKSLw0uBLxQwep2krQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=B4za5d3VEjBMCiX7lMeVLoGQiAkcrb23ZwQZQyWKFvv2Gv/gabkB4BLTAnr7LvURaS/PZ88xNeMyfjVqNCZ2qq0/MhokFHft6q8OzrhHR5Pizg5+6N83Ey3SwtcK5S5OPwpEBhe3N5LKFaxKaThi3127y06N0axciUGe9oWU38U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=F9XXCgPg; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1767824765; x=1799360765;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=9hOqLeKQfUMSYkkpTVWyJSzNqwKSLw0uBLxQwep2krQ=;
+  b=F9XXCgPguSIVmWM42N3zuO/kn2lLWDInlWuNL4kMmMS2KhNwhXyZpv2F
+   /onQNeCau//gJOJHgtuk7+k0UmxdHBbe2EameggVh8HocCkPNMLPxI7JM
+   X4b5t5D3Vj1GUTz8GLfdrr4RY18y2K/KzgcLVqPKDEIMhEj/1NZ6uQY80
+   e7mjyoFHMkbnNo6fRpI2GosxCQejFd28606EW8sFNyDEqUir4nE2AQIpx
+   aUzPQy/wsr8IPOdtPavWO0l07zc8DVCVEwnRvvlbqqsnhY1kNrBwwW0dv
+   hONl2e1BdTi7l2uEwWSZk5LO7865ED+pKW0MfGtKZFVMu6+ePrz3ZeJQC
+   Q==;
+X-CSE-ConnectionGUID: hjX5DlwJTs+yn1PTN81Xbg==
+X-CSE-MsgGUID: Lf7Yys3qSkSrn1a4RBVxuA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11664"; a="91861176"
+X-IronPort-AV: E=Sophos;i="6.21,209,1763452800"; 
+   d="scan'208";a="91861176"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jan 2026 14:26:04 -0800
+X-CSE-ConnectionGUID: yPETnroYRD6Zd3gHvp1mfA==
+X-CSE-MsgGUID: Pv0S92j0SW2lMmeidoZfJA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,209,1763452800"; 
+   d="scan'208";a="208103094"
+Received: from igk-lkp-server01.igk.intel.com (HELO 92b2e8bd97aa) ([10.211.93.152])
+  by orviesa005.jf.intel.com with ESMTP; 07 Jan 2026 14:26:02 -0800
+Received: from kbuild by 92b2e8bd97aa with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vdbyZ-000000001d6-2Awd;
+	Wed, 07 Jan 2026 22:25:59 +0000
+Date: Wed, 7 Jan 2026 23:25:14 +0100
+From: kernel test robot <lkp@intel.com>
+To: Kartik Rajput <kkartik@nvidia.com>, lenb@kernel.org,
+	sakari.ailus@linux.intel.com, mika.westerberg@linux.intel.com,
+	andriy.shevchenko@linux.intel.com, thierry.reding@gmail.com,
+	jonathanh@nvidia.com, linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, Kartik Rajput <kkartik@nvidia.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] ACPI: bus: Use OF match data for PRP0001 matched devices
+Message-ID: <202601072317.QNoPkgyy-lkp@intel.com>
+References: <20260107062453.10893-1-kkartik@nvidia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 4/5] media: ipu-bridge: Add DMI quirk for Dell XPS
- laptops with upside down sensors
-To: Hans de Goede <johannes.goede@oss.qualcomm.com>,
- Hans Verkuil <hverkuil@kernel.org>,
- Sakari Ailus <sakari.ailus@linux.intel.com>,
- Bryan O'Donoghue <bod@kernel.org>
-Cc: Heimir Thor Sverrisson <heimir.sverrisson@gmail.com>,
- Sebastian Reichel <sre@kernel.org>, linux-media@vger.kernel.org,
- stable@vger.kernel.org
-References: <20251210112436.167212-1-johannes.goede@oss.qualcomm.com>
- <20251210112436.167212-5-johannes.goede@oss.qualcomm.com>
-From: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
-In-Reply-To: <20251210112436.167212-5-johannes.goede@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260107062453.10893-1-kkartik@nvidia.com>
 
-On 12/10/25 13:24, Hans de Goede wrote:
-> The Dell XPS 13 9350 and XPS 16 9640 both have an upside-down mounted
-> OV02C10 sensor. This rotation of 180° is reported in neither the SSDB nor
-> the _PLD for the sensor (both report a rotation of 0°).
-> 
-> Add a DMI quirk mechanism for upside-down sensors and add 2 initial entries
-> to the DMI quirk list for these 2 laptops.
-> 
-> Note the OV02C10 driver was originally developed on a XPS 16 9640 which
-> resulted in inverted vflip + hflip settings making it look like the sensor
-> was upright on the XPS 16 9640 and upside down elsewhere this has been
-> fixed in commit 69fe27173396 ("media: ov02c10: Fix default vertical flip").
-> This makes this commit a regression fix since now the video is upside down
-> on these Dell XPS models where it was not before.
-> 
-> Fixes: d5ebe3f7d13d ("media: ov02c10: Fix default vertical flip")
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Bryan O'Donoghue <bod@kernel.org>
-> Signed-off-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
-> ---
-> Changes in v2:
-> - Fix fixes tag to use the correct commit hash
-> - Drop || COMPILE_TEST from Kconfig to fix compile errors when ACPI is disabled
-> ---
->   drivers/media/pci/intel/Kconfig      |  2 +-
->   drivers/media/pci/intel/ipu-bridge.c | 29 ++++++++++++++++++++++++++++
->   2 files changed, 30 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/media/pci/intel/Kconfig b/drivers/media/pci/intel/Kconfig
-> index d9fcddce028b..3f14ca110d06 100644
-> --- a/drivers/media/pci/intel/Kconfig
-> +++ b/drivers/media/pci/intel/Kconfig
-> @@ -6,7 +6,7 @@ source "drivers/media/pci/intel/ivsc/Kconfig"
->   
->   config IPU_BRIDGE
->   	tristate "Intel IPU Bridge"
-> -	depends on ACPI || COMPILE_TEST
-> +	depends on ACPI
+Hi Kartik,
 
-Why this change is done? Apparently there should be a new dependency on DMI.
+kernel test robot noticed the following build errors:
+
+[auto build test ERROR on rafael-pm/linux-next]
+[also build test ERROR on rafael-pm/bleeding-edge westeri-thunderbolt/next linus/master v6.19-rc4 next-20260107]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Kartik-Rajput/ACPI-bus-Use-OF-match-data-for-PRP0001-matched-devices/20260107-142543
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git linux-next
+patch link:    https://lore.kernel.org/r/20260107062453.10893-1-kkartik%40nvidia.com
+patch subject: [PATCH] ACPI: bus: Use OF match data for PRP0001 matched devices
+config: x86_64-rhel-9.4 (https://download.01.org/0day-ci/archive/20260107/202601072317.QNoPkgyy-lkp@intel.com/config)
+compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260107/202601072317.QNoPkgyy-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202601072317.QNoPkgyy-lkp@intel.com/
+
+All error/warnings (new ones prefixed by >>):
+
+   drivers/acpi/bus.c: In function 'acpi_device_get_match_data':
+>> drivers/acpi/bus.c:1034:28: error: expected identifier or '(' before '=' token
+    1034 |         struct acpi_device = ACPI_COMPANION(dev);
+         |                            ^
+   In file included from include/linux/acpi.h:38,
+                    from drivers/acpi/bus.c:19:
+>> include/acpi/acpi_bus.h:531:10: error: expected statement before ')' token
+     531 |         })
+         |          ^
+   include/linux/acpi.h:58:41: note: in expansion of macro 'to_acpi_device_node'
+      58 | #define ACPI_COMPANION(dev)             to_acpi_device_node((dev)->fwnode)
+         |                                         ^~~~~~~~~~~~~~~~~~~
+   drivers/acpi/bus.c:1034:30: note: in expansion of macro 'ACPI_COMPANION'
+    1034 |         struct acpi_device = ACPI_COMPANION(dev);
+         |                              ^~~~~~~~~~~~~~
+>> drivers/acpi/bus.c:1036:60: error: 'adev' undeclared (first use in this function); did you mean 'dev'?
+    1036 |         if (!strcmp(ACPI_DT_NAMESPACE_HID, acpi_device_hid(adev))
+         |                                                            ^~~~
+         |                                                            dev
+   drivers/acpi/bus.c:1036:60: note: each undeclared identifier is reported only once for each function it appears in
+>> drivers/acpi/bus.c:1036:66: error: expected ')' before 'return'
+    1036 |         if (!strcmp(ACPI_DT_NAMESPACE_HID, acpi_device_hid(adev))
+         |            ~                                                     ^
+         |                                                                  )
+    1037 |                 return acpi_of_device_get_match_data(dev);
+         |                 ~~~~~~                                            
+>> drivers/acpi/bus.c:1044:1: error: expected expression before '}' token
+    1044 | }
+         | ^
+>> drivers/acpi/bus.c:1033:38: warning: unused variable 'match' [-Wunused-variable]
+    1033 |         const struct acpi_device_id *match;
+         |                                      ^~~~~
+>> drivers/acpi/bus.c:1032:38: warning: unused variable 'acpi_ids' [-Wunused-variable]
+    1032 |         const struct acpi_device_id *acpi_ids = dev->driver->acpi_match_table;
+         |                                      ^~~~~~~~
+>> drivers/acpi/bus.c:1044:1: warning: control reaches end of non-void function [-Wreturn-type]
+    1044 | }
+         | ^
+   drivers/acpi/bus.c: At top level:
+>> drivers/acpi/bus.c:1019:20: warning: 'acpi_of_device_get_match_data' defined but not used [-Wunused-function]
+    1019 | static const void *acpi_of_device_get_match_data(const struct device *dev)
+         |                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+vim +1034 drivers/acpi/bus.c
+
+  1018	
+> 1019	static const void *acpi_of_device_get_match_data(const struct device *dev)
+  1020	{
+  1021		struct acpi_device *adev = ACPI_COMPANION(dev);
+  1022		const struct of_device_id *match = NULL;
+  1023	
+  1024		if (!acpi_of_match_device(adev, dev->driver->of_match_table, &match))
+  1025			return NULL;
+  1026	
+  1027		return match->data;
+  1028	}
+  1029	
+  1030	const void *acpi_device_get_match_data(const struct device *dev)
+  1031	{
+> 1032		const struct acpi_device_id *acpi_ids = dev->driver->acpi_match_table;
+> 1033		const struct acpi_device_id *match;
+> 1034		struct acpi_device = ACPI_COMPANION(dev);
+  1035	
+> 1036		if (!strcmp(ACPI_DT_NAMESPACE_HID, acpi_device_hid(adev))
+  1037			return acpi_of_device_get_match_data(dev);
+  1038	
+  1039		match = acpi_match_device(acpi_ids, dev);
+  1040		if (!match)
+  1041			return NULL;
+  1042	
+  1043		return (const void *)match->driver_data;
+> 1044	}
+  1045	EXPORT_SYMBOL_GPL(acpi_device_get_match_data);
+  1046	
 
 -- 
-Best wishes,
-Vladimir
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
