@@ -1,117 +1,173 @@
-Return-Path: <stable+bounces-206156-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206158-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56C66CFED14
-	for <lists+stable@lfdr.de>; Wed, 07 Jan 2026 17:18:30 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E217CCFEDA7
+	for <lists+stable@lfdr.de>; Wed, 07 Jan 2026 17:26:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5D12A30086DC
-	for <lists+stable@lfdr.de>; Wed,  7 Jan 2026 16:18:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9399B3159836
+	for <lists+stable@lfdr.de>; Wed,  7 Jan 2026 16:09:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29C0A33C519;
-	Wed,  7 Jan 2026 15:30:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 584A632C94A;
+	Wed,  7 Jan 2026 15:47:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YHYe90kO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PLFhq/rp"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABE14335567;
-	Wed,  7 Jan 2026 15:30:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17D48318EDC
+	for <stable@vger.kernel.org>; Wed,  7 Jan 2026 15:47:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767799857; cv=none; b=YPVvo9VRCppsMw1aFbyoOkkciP7Wgd5gK0VGJ/YRbn6akzTCjvEqN1RnK2pT3qlD7dNjDY5zeBvYxRq5+68FgIAcnDljGG9f4wmJhV2zjMLMWjYlnqTQ5wiKtcwm79rNAn+PvIfwS/TgOYb3BSw0S3m/be/X/fzQhkHSTkYlyWY=
+	t=1767800847; cv=none; b=UXnbC7k2Ds33ZjmkN5XAHElJvVoSRmnV6OZI8hJUjrm07ehHsP86vyfqiLe07ifAG/pGBLd2/k6zfoys/6YvxNVQjpFVYCSED/q+W8Fq2JTY+I8SIVj2yIiFBPjuNBocjf5F+1Bfz1QUHK/GnXJA0hTxWJxLzCny7R6IPrPAjwU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767799857; c=relaxed/simple;
-	bh=e8FKn11v79ssXsv0JerpySvSnmHmZncjqqH0AJm/f+I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OpVHIfkCnSsnEdvfn66Dt8SAD8Y/dv2zWDDN7vTs0PBbhGvM/J/uqIsedqzyQnLKmf0nFS+/JHd8gA5FUsTj8bL3kO6HLZ5DDtd9ZYff6gyBKTIILdfS4RuVXbm+GbHlnhTiutPag3PyuU7iRlbrFmtH8m1xHQnKZSZ4+Z2Gk9k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YHYe90kO; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1767799854; x=1799335854;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=e8FKn11v79ssXsv0JerpySvSnmHmZncjqqH0AJm/f+I=;
-  b=YHYe90kOvlx1Je6JKnwi0ZLZdhU3+cuznDzzyhIvgu3ZSAky8W1yEAk2
-   p2unS8Lc5Mz0fDH8olwgRWsaVgCfF7LYtG3FqEAlKTOX5Mj05ioT8O58S
-   FiyPesoOzy0pnushVwgXZ2ZIJa9g4ES0TUKP8K5TB5MoGFUah9el1h4O4
-   MzgKTLMdNXQeDgmt04xHBdw1FqY9ItJ0Gos/ioaeJrOhDjAQsaJbXjq9V
-   iEdRmJRn5yqazmIY0v8s/3tw1NjtKWKHKyqgFFm7OoqJHcK/Qn8GIWTCI
-   ksM/F/MxHidz5j7PWmdUuF54dGjmHB2rTPvZn4h3cwwy9cqubASrxf7WE
-   Q==;
-X-CSE-ConnectionGUID: 4vl9Qk7jTsuy5WLhVY09Wg==
-X-CSE-MsgGUID: nzG/lcV9QkCyTTZmU/cbkw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11664"; a="94639313"
-X-IronPort-AV: E=Sophos;i="6.21,208,1763452800"; 
-   d="scan'208";a="94639313"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jan 2026 07:30:52 -0800
-X-CSE-ConnectionGUID: 2Ig73mmiRQC9/YDa8EoXow==
-X-CSE-MsgGUID: t64rvZbTRtKmUQ6tZebOQQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,208,1763452800"; 
-   d="scan'208";a="202963615"
-Received: from egrumbac-mobl6.ger.corp.intel.com (HELO localhost) ([10.245.245.168])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jan 2026 07:30:51 -0800
-Date: Wed, 7 Jan 2026 17:30:48 +0200
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Miaoqian Lin <linmq006@gmail.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Angelo Dureghello <adureghello@baylibre.com>,
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2] iio: dac: ad3552r-hs: fix out-of-bound write in
- ad3552r_hs_write_data_source
-Message-ID: <aV58KPqNn9uYRMk6@smile.fi.intel.com>
-References: <20260107143550.34324-1-linmq006@gmail.com>
+	s=arc-20240116; t=1767800847; c=relaxed/simple;
+	bh=Uv7DxUC+v+h3aV5NQGnFazUnJ/i4iKWXe7NOhHnIcWY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=TTb6J4P+xW3q+dphtImDIBOoKA/vm9zF5BL1ZttPdvcHrhss3K1BcCMocq5u1rouu+OrRtO6+UkfEDgnXD2yarvxD0IIK7qAriqlPD1u1LPjjycBD/MyhHWYQmujG3u9MvfCjKtm2R14xkMal9jUk6JZtl7OwrB0zLZMDM1ZLV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PLFhq/rp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DABE2C4CEF1;
+	Wed,  7 Jan 2026 15:47:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767800846;
+	bh=Uv7DxUC+v+h3aV5NQGnFazUnJ/i4iKWXe7NOhHnIcWY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=PLFhq/rpf5cTeoPKz+IOa7fbOoH9Jyjp7AYI7Gy7obfW7mYw7Iux1TudJ0pB8qa06
+	 w2066FNIuCT981+F/IHTkj5DLxinGcafu5R7glec+zklWoicDeJW23wlPXImd7YtVc
+	 5uEJNsNlyXwfjNMLa0myfsUY3amIDD15upYQGIPre0VuvYwQYH+jjZHQmZVxjGYfKc
+	 Nsu8hdyotLpJyR0XNwhor5TseDFZZ0oCuzyUqC/vX/VOK5oHnRsbYsyo7mQv/qoPjw
+	 eFV7/u6s/hRdsh8eDDpsMMRcDhJf3TfOJXZyJatj6rj76ju0HtzIkh2aFAZpzkX9E3
+	 dLvCa7g+uCGhQ==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Johan Hovold <johan@kernel.org>,
+	CK Hu <ck.hu@mediatek.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6.y] drm/mediatek: Fix probe resource leaks
+Date: Wed,  7 Jan 2026 10:47:23 -0500
+Message-ID: <20260107154724.4055170-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2026010554-disliking-demeanor-118d@gregkh>
+References: <2026010554-disliking-demeanor-118d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260107143550.34324-1-linmq006@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+Content-Transfer-Encoding: 8bit
 
-On Wed, Jan 07, 2026 at 10:35:50PM +0800, Miaoqian Lin wrote:
-> When simple_write_to_buffer() succeeds, it returns the number of bytes
-> actually copied to the buffer. The code incorrectly uses 'count'
-> as the index for null termination instead of the actual bytes copied.
-> If count exceeds the buffer size, this leads to out-of-bounds write.
-> Add a check for the count and use the return value as the index.
-> 
-> The bug was validated using a demo module that mirrors the original
-> code and was tested under QEMU.
-> 
-> Pattern of the bug:
-> - A fixed 64-byte stack buffer is filled using count.
-> - If count > 64, the code still does buf[count] = '\0', causing an
-> - out-of-bounds write on the stack.
-> 
-> Steps for reproduce:
-> - Opens the device node.
-> - Writes 128 bytes of A to it.
-> - This overflows the 64-byte stack buffer and KASAN reports the OOB.
-> 
-> Found via static analysis. This is similar to the
-> commit da9374819eb3 ("iio: backend: fix out-of-bound write")
+From: Johan Hovold <johan@kernel.org>
 
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+[ Upstream commit 07c7c640a8eb9e196f357d15d88a59602a947197 ]
 
+Make sure to unmap and release the component iomap and clock on probe
+failure (e.g. probe deferral) and on driver unbind.
+
+Note that unlike of_iomap(), devm_of_iomap() also checks whether the
+region is already mapped.
+
+Fixes: 119f5173628a ("drm/mediatek: Add DRM Driver for Mediatek SoC MT8173.")
+Cc: stable@vger.kernel.org	# 4.7
+Cc: CK Hu <ck.hu@mediatek.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://patchwork.kernel.org/project/dri-devel/patch/20250923152340.18234-2-johan@kernel.org/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/gpu/drm/mediatek/mtk_drm_ddp_comp.c | 20 ++++++++++++++++----
+ drivers/gpu/drm/mediatek/mtk_drm_ddp_comp.h |  2 +-
+ drivers/gpu/drm/mediatek/mtk_drm_drv.c      |  4 ++--
+ 3 files changed, 19 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/gpu/drm/mediatek/mtk_drm_ddp_comp.c b/drivers/gpu/drm/mediatek/mtk_drm_ddp_comp.c
+index 66ccde966e3c..dba7026abc34 100644
+--- a/drivers/gpu/drm/mediatek/mtk_drm_ddp_comp.c
++++ b/drivers/gpu/drm/mediatek/mtk_drm_ddp_comp.c
+@@ -543,15 +543,20 @@ unsigned int mtk_drm_find_possible_crtc_by_comp(struct drm_device *drm,
+ 	return ret;
+ }
+ 
+-int mtk_ddp_comp_init(struct device_node *node, struct mtk_ddp_comp *comp,
++static void mtk_ddp_comp_clk_put(void *_clk)
++{
++	struct clk *clk = _clk;
++
++	clk_put(clk);
++}
++
++int mtk_ddp_comp_init(struct device *dev, struct device_node *node, struct mtk_ddp_comp *comp,
+ 		      unsigned int comp_id)
+ {
+ 	struct platform_device *comp_pdev;
+ 	enum mtk_ddp_comp_type type;
+ 	struct mtk_ddp_comp_dev *priv;
+-#if IS_REACHABLE(CONFIG_MTK_CMDQ)
+ 	int ret;
+-#endif
+ 
+ 	if (comp_id >= DDP_COMPONENT_DRM_ID_MAX)
+ 		return -EINVAL;
+@@ -592,11 +597,18 @@ int mtk_ddp_comp_init(struct device_node *node, struct mtk_ddp_comp *comp,
+ 	if (!priv)
+ 		return -ENOMEM;
+ 
+-	priv->regs = of_iomap(node, 0);
++	priv->regs = devm_of_iomap(dev, node, 0, NULL);
++	if (IS_ERR(priv->regs))
++		return PTR_ERR(priv->regs);
++
+ 	priv->clk = of_clk_get(node, 0);
+ 	if (IS_ERR(priv->clk))
+ 		return PTR_ERR(priv->clk);
+ 
++	ret = devm_add_action_or_reset(dev, mtk_ddp_comp_clk_put, priv->clk);
++	if (ret)
++		return ret;
++
+ #if IS_REACHABLE(CONFIG_MTK_CMDQ)
+ 	ret = cmdq_dev_get_client_reg(comp->dev, &priv->cmdq_reg, 0);
+ 	if (ret)
+diff --git a/drivers/gpu/drm/mediatek/mtk_drm_ddp_comp.h b/drivers/gpu/drm/mediatek/mtk_drm_ddp_comp.h
+index febcaeef16a1..a9e0661b3b43 100644
+--- a/drivers/gpu/drm/mediatek/mtk_drm_ddp_comp.h
++++ b/drivers/gpu/drm/mediatek/mtk_drm_ddp_comp.h
+@@ -279,7 +279,7 @@ int mtk_ddp_comp_get_id(struct device_node *node,
+ 			enum mtk_ddp_comp_type comp_type);
+ unsigned int mtk_drm_find_possible_crtc_by_comp(struct drm_device *drm,
+ 						struct device *dev);
+-int mtk_ddp_comp_init(struct device_node *comp_node, struct mtk_ddp_comp *comp,
++int mtk_ddp_comp_init(struct device *dev, struct device_node *comp_node, struct mtk_ddp_comp *comp,
+ 		      unsigned int comp_id);
+ enum mtk_ddp_comp_type mtk_ddp_comp_get_type(unsigned int comp_id);
+ void mtk_ddp_write(struct cmdq_pkt *cmdq_pkt, unsigned int value,
+diff --git a/drivers/gpu/drm/mediatek/mtk_drm_drv.c b/drivers/gpu/drm/mediatek/mtk_drm_drv.c
+index 83dcc475769b..ed6c650f081b 100644
+--- a/drivers/gpu/drm/mediatek/mtk_drm_drv.c
++++ b/drivers/gpu/drm/mediatek/mtk_drm_drv.c
+@@ -841,7 +841,7 @@ static int mtk_drm_probe(struct platform_device *pdev)
+ 							    (void *)private->mmsys_dev,
+ 							    sizeof(*private->mmsys_dev));
+ 		private->ddp_comp[DDP_COMPONENT_DRM_OVL_ADAPTOR].dev = &ovl_adaptor->dev;
+-		mtk_ddp_comp_init(NULL, &private->ddp_comp[DDP_COMPONENT_DRM_OVL_ADAPTOR],
++		mtk_ddp_comp_init(dev, NULL, &private->ddp_comp[DDP_COMPONENT_DRM_OVL_ADAPTOR],
+ 				  DDP_COMPONENT_DRM_OVL_ADAPTOR);
+ 		component_match_add(dev, &match, compare_dev, &ovl_adaptor->dev);
+ 	}
+@@ -910,7 +910,7 @@ static int mtk_drm_probe(struct platform_device *pdev)
+ 						   node);
+ 		}
+ 
+-		ret = mtk_ddp_comp_init(node, &private->ddp_comp[comp_id], comp_id);
++		ret = mtk_ddp_comp_init(dev, node, &private->ddp_comp[comp_id], comp_id);
+ 		if (ret) {
+ 			of_node_put(node);
+ 			goto err_node;
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.51.0
 
 
