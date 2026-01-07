@@ -1,79 +1,82 @@
-Return-Path: <stable+bounces-206196-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206198-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC23DCFF75F
-	for <lists+stable@lfdr.de>; Wed, 07 Jan 2026 19:32:27 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D89BFCFF774
+	for <lists+stable@lfdr.de>; Wed, 07 Jan 2026 19:32:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E05CE300DBA7
-	for <lists+stable@lfdr.de>; Wed,  7 Jan 2026 18:32:26 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E10E2300EA04
+	for <lists+stable@lfdr.de>; Wed,  7 Jan 2026 18:32:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23CAD33AD9E;
-	Wed,  7 Jan 2026 18:31:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FE3D34405C;
+	Wed,  7 Jan 2026 18:32:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="fho8rUMp"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="jCi4XjdG"
 X-Original-To: stable@vger.kernel.org
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3A2933CE91
-	for <stable@vger.kernel.org>; Wed,  7 Jan 2026 18:30:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AD43341055;
+	Wed,  7 Jan 2026 18:32:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767810667; cv=none; b=ZalNSkrjA4lYn8uWqh3llRyhXZYUe66ebYfFh7ibPA5WfCg46xjFJpF1stXmxf+Hi6v4b3gamywtXxCgnBXD0k8bQC90U1AHhlon/w+4dN2hDvHNfY+WgSL1AM4S/8l0p5blNqIaTnPHsZMCNfBT3KoxKo51za25OGomGsnKBFw=
+	t=1767810754; cv=none; b=oGPs5hfZVMQrDKA87h7MDcaZjz2E1oLLCgkXtgwPvI3YDVSFFfPF8t7yxjU7rMg0YhhqywyvSZx9jxNTMxkHKjaSx/Fph28DpR4+3kOk4EhBGCVltat9+o4xtsV+Su9bNv0SZfBlBelNDMWwFOctmtsoOw3KA/6GOhEenUe5Ypk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767810667; c=relaxed/simple;
+	s=arc-20240116; t=1767810754; c=relaxed/simple;
 	bh=eMeNFqR5Pctg3QbjgJQqiWaDgf3J7qEyQtRFeVHzVD0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N4wFFDuPUBoQkSNXSyZYmATegUHWS0LgMvjkgtmDe6KYlpvq0Xk/bpytxcLHGmn/Pib1uj1vbYqrpX++ClS3qyHJqHUEypT7ldJD0DbEavAh0oyoLOcki8X1OowybxMnEI2yidu/PsIKOFOyWP9uTZVgZ2kjcARDmGe+vGB5tnU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=fho8rUMp; arc=none smtp.client-ip=148.163.156.1
+	 MIME-Version; b=Xni9PFWbXsPQXClwZvxkgnL8bZH3tgDmitUpExSr1NgLzV3ThThMHa4CzdAfieb7WLFb/QdL6iQSEespLArlPrjtc3sDKGyk78StglUtVDKL/wN+6tLe/RedoVl3GjAUrtUFrzWNQ+lzulIQpVR8XIgEPNjjXxFFgcANIfO0aOA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=jCi4XjdG; arc=none smtp.client-ip=148.163.156.1
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 6079FHXg021887
-	for <stable@vger.kernel.org>; Wed, 7 Jan 2026 18:30:55 GMT
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 607A0qFe032439;
+	Wed, 7 Jan 2026 18:32:23 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:date:from:in-reply-to:message-id
 	:mime-version:references:subject:to; s=pp1; bh=VWfyabzJPuGaEH0aY
-	uPp8WCVg/+g9O0m7WdK+9+/FrQ=; b=fho8rUMpfOYZOUSBDGvnbZM/QFQVcV4Y4
-	GvscwtnaU545AaxBZofEsPTJDDw9+4Y3JUkGVAUly/jKQYQB8evNvnaBcsGAVHjr
-	GcCriVmyWsdq7X/M/O2lCItIDskPdFsBnPCmlrAdtrIBGSn9Pa8TGuDZzbwrA/jR
-	E42xZLKxZfu+JgoMkGFlJ6r9oEg33YAars/zp0o/JoFr63S+14uutfqpJkS0PGLl
-	xDIJ/ruVnN7cqtZ05AiwUn9Z3Z1vF2lbk486mk1tB2OOj7stlcqsAKSB6PrKCJhE
-	Wz8UxR5/7coy35iZGeXj9t0rwcKP3fUtwT1SgdXKbuml15k8Hp/Bg==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4betu6amq2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <stable@vger.kernel.org>; Wed, 07 Jan 2026 18:30:54 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 607H1Avw015202
-	for <stable@vger.kernel.org>; Wed, 7 Jan 2026 18:30:54 GMT
-Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4bfdesjvyr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <stable@vger.kernel.org>; Wed, 07 Jan 2026 18:30:54 +0000
-Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com [10.241.53.104])
-	by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 607IUrgL51970408
+	uPp8WCVg/+g9O0m7WdK+9+/FrQ=; b=jCi4XjdGt2hNoDquxmOTM1wUsRwiKKkbB
+	b6PixwqSAMQ/ndz75FblgvukR67V308TWzjBQTNMHK6lACXSMBSznvZ9ZjwtFVZc
+	Cx0z13XFKmy01Q9O3kiIPCHKPUtpnHrFxQ9fy7QOvEFlkCWoLEgKAKcUXbl4N9ie
+	EtIOagtFU59cMDGUdaMAKqBBd9zsJMpkL0+gw4EtwMP5YeL2oDNWs/PM6GNkgh6f
+	JDpgRHKuo4twwlvVy+aximeoxznLELgIv2ORXshtIxvXvhFW8oI4JgV0fGYieBRG
+	e0NkLNJQrZ4VkZ9uayLL9+ZTkCeGJZVoOWcNaDT1PjyiXtcs8u9DA==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4betu6amwe-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 07 Jan 2026 18:32:23 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 607I7mPe019166;
+	Wed, 7 Jan 2026 18:32:22 GMT
+Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4bfg51aeyf-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 07 Jan 2026 18:32:22 +0000
+Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
+	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 607IWK2K31720016
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 7 Jan 2026 18:30:53 GMT
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 158F05805D;
-	Wed,  7 Jan 2026 18:30:53 +0000 (GMT)
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C5C6258052;
-	Wed,  7 Jan 2026 18:30:52 +0000 (GMT)
+	Wed, 7 Jan 2026 18:32:20 GMT
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C11BA5805B;
+	Wed,  7 Jan 2026 18:32:20 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9DBB75804B;
+	Wed,  7 Jan 2026 18:32:19 +0000 (GMT)
 Received: from IBM-D32RQW3.ibm.com (unknown [9.61.241.168])
-	by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Wed,  7 Jan 2026 18:30:52 +0000 (GMT)
+	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Wed,  7 Jan 2026 18:32:19 +0000 (GMT)
 From: Farhan Ali <alifm@linux.ibm.com>
-To: alifm@linux.ibm.com
-Cc: stable@vger.kernel.org
+To: linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-pci@vger.kernel.org
+Cc: helgaas@kernel.org, lukas@wunner.de, alex@shazbot.org, clg@redhat.com,
+        stable@vger.kernel.org, alifm@linux.ibm.com, schnelle@linux.ibm.com,
+        mjrosato@linux.ibm.com
 Subject: [PATCH v7 1/9] PCI: Allow per function PCI slots
-Date: Wed,  7 Jan 2026 10:30:43 -0800
-Message-ID: <20260107183052.1333-2-alifm@linux.ibm.com>
+Date: Wed,  7 Jan 2026 10:32:09 -0800
+Message-ID: <20260107183217.1365-2-alifm@linux.ibm.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260107183052.1333-1-alifm@linux.ibm.com>
-References: <20260107183052.1333-1-alifm@linux.ibm.com>
+In-Reply-To: <20260107183217.1365-1-alifm@linux.ibm.com>
+References: <20260107183217.1365-1-alifm@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -82,20 +85,20 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=QbNrf8bv c=1 sm=1 tr=0 ts=695ea65f cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+X-Authority-Analysis: v=2.4 cv=QbNrf8bv c=1 sm=1 tr=0 ts=695ea6b7 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
  a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
  a=Oaqo05sdQjFGKWlA34QA:9
-X-Proofpoint-ORIG-GUID: k6GeW5UOUv5JDYoyObwgZAKSqCQU-zTo
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTA3MDE0NSBTYWx0ZWRfXzhT5XwSAHR+1
- fb22mBDW//b+sFdN7sHQBFlnhasiQ0aO5L7mZE3CAS5TLZOs/1CqJqd2e/2bRnzmHEKsAeorVaI
- 8+T2Awp7uhQot//nUOXY53AF9uFqvh/gF4q3S3x5i1ho5QDqGCqw0Bm3ST0uECSuVWRL3cWz/Lz
- KtsqmR0/DzQCPlR4O4yFvu7HV5j5y9q1TsCckHWnsGrZfLB+XtIW/wEKWl3cij0aJqFhjS3KcEB
- d/MrHBpPWP2l4ncaFl1GZyxlGBBVZX3LqHpv6yDrIagWPFfpEzprzdv3h0GibXL41hLxbR+pZSi
- SG/P2GhdX4kUNO2w6hGZLsZbi1EL6K1P5rtDeCoLvmtp+TxL3i4b7AHfyLaReB3dPBrviTGY/wS
- 3q06qOcJ/vITOaRs01SO3J6O4ytIZZsEc/iOUTpClIQJzMv+NHUIGqi1yLCm6xSrrTEJm9/0G2X
- ddy0WJYKEJjmY2xJ40g==
-X-Proofpoint-GUID: k6GeW5UOUv5JDYoyObwgZAKSqCQU-zTo
+X-Proofpoint-ORIG-GUID: 0H84Q_s2W3WUPp0c-RrHQpaEzW5_EG47
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTA3MDE0NSBTYWx0ZWRfX7D3kd4etrszp
+ mLZjTiYC3mwFIj9J0BjsQdFmGBXgzwoNPzywgQQF+gUqzpo1Z1ytlOztxfCt6gU/OsnaNOok172
+ uV3BTTXhTk2ktmOIpvJqa+08mk2xbGLdWJkfdaNPXWDthtMv8+sz1EBiDUIk4M1lqy2+uKyoJPW
+ aRDfueymfxtof0y/NKx18Kk72U39W8jpJkhknwL2K260bD+gG/GjuHuDfG8LNbX/J1QUcHRBhVu
+ CmKWx33LpWzm3aFXuwvtCLhqeLdpT1/AVAr69dwJLVbIVdh80ozqPulbdt4XfAEGQ+OJVIs57ax
+ fKTxVbbXuNNxNi3aNARakoz6qpDCP2udHX4IqC82MhGA/+ZuWPKUQDxerpGqgr4BeEwI0QBCzrj
+ ym7jBo0fDLU5RDv+csmk/ooozXAGEFznULvXe44o1jpU1+hQ16VyozFd4fSEXT1uMGofqWR6kxi
+ /8shcNa10ckC7RXd3iA==
+X-Proofpoint-GUID: 0H84Q_s2W3WUPp0c-RrHQpaEzW5_EG47
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
  definitions=2026-01-07_03,2026-01-06_01,2025-10-01_01
