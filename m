@@ -1,167 +1,131 @@
-Return-Path: <stable+bounces-206182-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206183-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17896CFF0EF
-	for <lists+stable@lfdr.de>; Wed, 07 Jan 2026 18:18:36 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60334CFF866
+	for <lists+stable@lfdr.de>; Wed, 07 Jan 2026 19:44:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DECEA35E052F
-	for <lists+stable@lfdr.de>; Wed,  7 Jan 2026 17:06:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4E5B932747D3
+	for <lists+stable@lfdr.de>; Wed,  7 Jan 2026 17:55:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 813B636656E;
-	Wed,  7 Jan 2026 16:16:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GxaXArPo"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C230436BCD2;
+	Wed,  7 Jan 2026 16:21:42 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 587D2355042;
-	Wed,  7 Jan 2026 16:16:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEA55369214;
+	Wed,  7 Jan 2026 16:21:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767802570; cv=none; b=mQhuodZI+nIGy1E8MrRTu3Q5QHf6nLQKoD9eKlOrUUYHQDIfMhwjdvm1AgPAFbdto5kxog/BrjyUJc2U5lzFlVuF2igxfvcFwsROVpA8oZ+39tQBMHY2lqxV0EuU91rSFrNqe9FGK32tuXMibjQzWtAnPOEhYhJsyrKJ/5jqGA4=
+	t=1767802894; cv=none; b=j4fw7Rue8DbhTpIlh7bGnGJxKJUo2bhWXQtMTqwL7vuvQ0gY8ReT8y4NLjY4Y4cD0hmpXND8aLd4ca285FYe+5S84E5eISwX6LvfKscCQnhtiVn9L6d/bbJXXSGbMDoJQG5sTYos2laRPkvqhyy37CQ+/AOtKkL7lihzA0U8FTA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767802570; c=relaxed/simple;
-	bh=10JTA/GF2GbzhsA7K1qACneMcHSQxQXMbTewSt7FuaM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Y/Er6z97PHkWOYeb7giwphgZptFzmy5fBsFo63jgYb6M8LbXK5M5uvVKjTxtocPW2DBUS1SCUJO9bZR9PK1qMSbBRCU0vUXz9i5VC9i3A8rD3EcdfWpHbO0trVdO4V1kQZI1ZrwXtqQHhy49PRi2a6ToBTtn3zYWFkda1dAmcRA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GxaXArPo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33306C4CEF1;
-	Wed,  7 Jan 2026 16:16:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767802568;
-	bh=10JTA/GF2GbzhsA7K1qACneMcHSQxQXMbTewSt7FuaM=;
-	h=From:To:Cc:Subject:Date:From;
-	b=GxaXArPoRxWT6qmCAHJ+c+bTwrWzvq7hEuqbxq8LF4zMfE9kgAm4jnDegqOX7nOdz
-	 WBWcdvx68HS8JA/73IiGDJU0nMIU76tN1oeubb6MAhNbaVsk99pZSTIweuABXrkwdY
-	 YQoBeBDX5wputixsAoa4feF8i0kS4ujjw4Lvd+9ejmEbsX8/2IDvmy6oA1LqHFgNoK
-	 jRo2vPEhRcQwTT2JmkMbk6zoxKiYUEGnuwW7/yiwbEhqN9RuQAVrpphXC9vSA9vXN5
-	 ANDm7kHOOaCstdYF7Tj61cNuHvSg15Q68umTpcWEMnc5nd+xKsArdOSIPn/Xy8atdo
-	 YT/a3lVaeCbOw==
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: stable@vger.kernel.org
-Cc: linux-integrity@vger.kernel.org,
-	Jarkko Sakkinen <jarkko.sakkinen@opinsys.com>,
-	Lai Yi <yi1.lai@linux.intel.com>,
-	Jonathan McDowell <noodles@meta.com>,
-	Roberto Sassu <roberto.sassu@huawei.com>
-Subject: [PATCH] tpm: Cap the number of PCR banks
-Date: Wed,  7 Jan 2026 18:15:51 +0200
-Message-ID: <20260107161551.53475-1-jarkko@kernel.org>
-X-Mailer: git-send-email 2.52.0
+	s=arc-20240116; t=1767802894; c=relaxed/simple;
+	bh=D2P6qwmfvCQQdX/xeZoS88qJgTGpJkMtP5WtyVZU4L0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=j0PSeWOp3t+ZMOCyxSc8f/khg6pWMLAyKUpjVmAxVZppogFsxH3P7a/cuibwz+Xu1/VSvN5JvvtP1MeLifBJrO2+p1sCL2lIWgDTIZ4kXy2bki8MwTBRT2BEN3uS0eaaeFC6zMrjb0BZUuBArqy7ZKMthDJ70XHQXozPh6w9x1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6C007497;
+	Wed,  7 Jan 2026 08:21:12 -0800 (PST)
+Received: from e129823.cambridge.arm.com (e129823.arm.com [10.1.197.6])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 4329D3F5A1;
+	Wed,  7 Jan 2026 08:21:17 -0800 (PST)
+From: Yeoreum Yun <yeoreum.yun@arm.com>
+To: linux-pm@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Cc: rafael@kernel.org,
+	pavel@kernel.org,
+	catalin.marinas@arm.com,
+	will@kernel.org,
+	anshuman.khandual@arm.com,
+	ryan.roberts@arm.com,
+	yang@os.amperecomputing.com,
+	joey.gouly@arm.com,
+	kevin.brodsky@arm.com,
+	Yeoreum Yun <yeoreum.yun@arm.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] arm64: fix cleared E0POE bit after cpu_suspend()/resume()
+Date: Wed,  7 Jan 2026 16:21:15 +0000
+Message-Id: <20260107162115.3292205-1-yeoreum.yun@arm.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Status: O
-Lines: 102
 Content-Transfer-Encoding: 8bit
 
-From: Jarkko Sakkinen <jarkko.sakkinen@opinsys.com>
+TCR2_ELx.E0POE is set during smp_init().
+However, this bit is not reprogrammed when the CPU enters suspension and
+later resumes via cpu_resume(), as __cpu_setup() does not re-enable E0POE
+and there is no save/restore logic for the TCR2_ELx system register.
 
-[ Upstream commit faf07e611dfa464b201223a7253e9dc5ee0f3c9e ]
+As a result, the E0POE feature no longer works after cpu_resume().
 
-tpm2_get_pcr_allocation() does not cap any upper limit for the number of
-banks. Cap the limit to eight banks so that out of bounds values coming
-from external I/O cause on only limited harm.
+To address this, save and restore TCR2_EL1 in the cpu_suspend()/cpu_resume()
+path, rather than adding related logic to __cpu_setup(), taking into account
+possible future extensions of the TCR2_ELx feature.
 
-Cc: stable@vger.kernel.org # v5.10+
-Fixes: bcfff8384f6c ("tpm: dynamically allocate the allocated_banks array")
-Tested-by: Lai Yi <yi1.lai@linux.intel.com>
-Reviewed-by: Jonathan McDowell <noodles@meta.com>
-Reviewed-by: Roberto Sassu <roberto.sassu@huawei.com>
-Signed-off-by: Jarkko Sakkinen <jarkko.sakkinen@opinsys.com>
+Cc: stable@vger.kernel.org
+Fixes: bf83dae90fbc ("arm64: enable the Permission Overlay Extension for EL0")
+Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
 ---
-Backport for v5.10, v5.15, v6.1 and v6.6
- drivers/char/tpm/tpm-chip.c | 1 -
- drivers/char/tpm/tpm1-cmd.c | 5 -----
- drivers/char/tpm/tpm2-cmd.c | 8 +++-----
- include/linux/tpm.h         | 8 +++++---
- 4 files changed, 8 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/char/tpm/tpm-chip.c b/drivers/char/tpm/tpm-chip.c
-index 70e3fe20fdcf..458a3e9ea73a 100644
---- a/drivers/char/tpm/tpm-chip.c
-+++ b/drivers/char/tpm/tpm-chip.c
-@@ -279,7 +279,6 @@ static void tpm_dev_release(struct device *dev)
+Patch History
+==============
+from v1 to v2:
+  - following @Kevin Brodsky suggestion.
+  - https://lore.kernel.org/all/20260105200707.2071169-1-yeoreum.yun@arm.com/
 
- 	kfree(chip->work_space.context_buf);
- 	kfree(chip->work_space.session_buf);
--	kfree(chip->allocated_banks);
- 	kfree(chip);
- }
+NOTE:
+  This patch based on v6.19-rc4
+---
+ arch/arm64/include/asm/suspend.h | 2 +-
+ arch/arm64/mm/proc.S             | 8 ++++++++
+ 2 files changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/char/tpm/tpm1-cmd.c b/drivers/char/tpm/tpm1-cmd.c
-index cf64c7385105..b49a790f1bd5 100644
---- a/drivers/char/tpm/tpm1-cmd.c
-+++ b/drivers/char/tpm/tpm1-cmd.c
-@@ -799,11 +799,6 @@ int tpm1_pm_suspend(struct tpm_chip *chip, u32 tpm_suspend_pcr)
-  */
- int tpm1_get_pcr_allocation(struct tpm_chip *chip)
- {
--	chip->allocated_banks = kcalloc(1, sizeof(*chip->allocated_banks),
--					GFP_KERNEL);
--	if (!chip->allocated_banks)
--		return -ENOMEM;
--
- 	chip->allocated_banks[0].alg_id = TPM_ALG_SHA1;
- 	chip->allocated_banks[0].digest_size = hash_digest_size[HASH_ALGO_SHA1];
- 	chip->allocated_banks[0].crypto_id = HASH_ALGO_SHA1;
-diff --git a/drivers/char/tpm/tpm2-cmd.c b/drivers/char/tpm/tpm2-cmd.c
-index 93545be190a5..57bb3e34b770 100644
---- a/drivers/char/tpm/tpm2-cmd.c
-+++ b/drivers/char/tpm/tpm2-cmd.c
-@@ -574,11 +574,9 @@ ssize_t tpm2_get_pcr_allocation(struct tpm_chip *chip)
+diff --git a/arch/arm64/include/asm/suspend.h b/arch/arm64/include/asm/suspend.h
+index e65f33edf9d6..e9ce68d50ba4 100644
+--- a/arch/arm64/include/asm/suspend.h
++++ b/arch/arm64/include/asm/suspend.h
+@@ -2,7 +2,7 @@
+ #ifndef __ASM_SUSPEND_H
+ #define __ASM_SUSPEND_H
 
- 	nr_possible_banks = be32_to_cpup(
- 		(__be32 *)&buf.data[TPM_HEADER_SIZE + 5]);
--
--	chip->allocated_banks = kcalloc(nr_possible_banks,
--					sizeof(*chip->allocated_banks),
--					GFP_KERNEL);
--	if (!chip->allocated_banks) {
-+	if (nr_possible_banks > TPM2_MAX_PCR_BANKS) {
-+		pr_err("tpm: out of bank capacity: %u > %u\n",
-+		       nr_possible_banks, TPM2_MAX_PCR_BANKS);
- 		rc = -ENOMEM;
- 		goto out;
- 	}
-diff --git a/include/linux/tpm.h b/include/linux/tpm.h
-index bf8a4ec8a01c..f5e7cca2f257 100644
---- a/include/linux/tpm.h
-+++ b/include/linux/tpm.h
-@@ -25,7 +25,9 @@
- #include <crypto/hash_info.h>
+-#define NR_CTX_REGS 13
++#define NR_CTX_REGS 14
+ #define NR_CALLEE_SAVED_REGS 12
 
- #define TPM_DIGEST_SIZE 20	/* Max TPM v1.2 PCR size */
--#define TPM_MAX_DIGEST_SIZE SHA512_DIGEST_SIZE
-+
-+#define TPM2_MAX_DIGEST_SIZE	SHA512_DIGEST_SIZE
-+#define TPM2_MAX_PCR_BANKS	8
+ /*
+diff --git a/arch/arm64/mm/proc.S b/arch/arm64/mm/proc.S
+index 01e868116448..5d907ce3b6d3 100644
+--- a/arch/arm64/mm/proc.S
++++ b/arch/arm64/mm/proc.S
+@@ -110,6 +110,10 @@ SYM_FUNC_START(cpu_do_suspend)
+ 	 * call stack.
+ 	 */
+ 	str	x18, [x0, #96]
++alternative_if ARM64_HAS_TCR2
++	mrs	x2, REG_TCR2_EL1
++	str	x2, [x0, #104]
++alternative_else_nop_endif
+ 	ret
+ SYM_FUNC_END(cpu_do_suspend)
 
- struct tpm_chip;
- struct trusted_key_payload;
-@@ -51,7 +53,7 @@ enum tpm_algorithms {
+@@ -144,6 +148,10 @@ SYM_FUNC_START(cpu_do_resume)
+ 	msr	tcr_el1, x8
+ 	msr	vbar_el1, x9
+ 	msr	mdscr_el1, x10
++alternative_if ARM64_HAS_TCR2
++	ldr	x2, [x0, #104]
++	msr	REG_TCR2_EL1, x2
++alternative_else_nop_endif
 
- struct tpm_digest {
- 	u16 alg_id;
--	u8 digest[TPM_MAX_DIGEST_SIZE];
-+	u8 digest[TPM2_MAX_DIGEST_SIZE];
- } __packed;
-
- struct tpm_bank_info {
-@@ -157,7 +159,7 @@ struct tpm_chip {
- 	unsigned int groups_cnt;
-
- 	u32 nr_allocated_banks;
--	struct tpm_bank_info *allocated_banks;
-+	struct tpm_bank_info allocated_banks[TPM2_MAX_PCR_BANKS];
- #ifdef CONFIG_ACPI
- 	acpi_handle acpi_dev_handle;
- 	char ppi_version[TPM_PPI_VERSION_LEN + 1];
+ 	msr	sctlr_el1, x12
+ 	set_this_cpu_offset x13
 --
-2.52.0
+LEVI:{C3F47F37-75D8-414A-A8BA-3980EC8A46D7}
 
 
