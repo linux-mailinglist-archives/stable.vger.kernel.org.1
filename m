@@ -1,82 +1,91 @@
-Return-Path: <stable+bounces-206201-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206152-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4642ACFF786
-	for <lists+stable@lfdr.de>; Wed, 07 Jan 2026 19:32:58 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51A93CFFE1A
+	for <lists+stable@lfdr.de>; Wed, 07 Jan 2026 20:58:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4A730300FA04
-	for <lists+stable@lfdr.de>; Wed,  7 Jan 2026 18:32:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B7D7630A8EBC
+	for <lists+stable@lfdr.de>; Wed,  7 Jan 2026 19:26:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF3E1346794;
-	Wed,  7 Jan 2026 18:32:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F21933F8B8;
+	Wed,  7 Jan 2026 14:36:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Niexm0U4"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jNJWSe+E"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 474C9342C94;
-	Wed,  7 Jan 2026 18:32:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE27433D51D
+	for <stable@vger.kernel.org>; Wed,  7 Jan 2026 14:36:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767810760; cv=none; b=mnrB0ZmJ0qOi86+KyHk8dXIDhKKWDwN7wpJa0TsWvBkx5K4r1YbMJuZSTMqFECghvUUdiu/FKitIYfszq7r3bysbp2GBaK4f5vNcHPTUDezcYUR3MLNE9feH5GAKMJndIE5Cor+kLvJJKfEGL0AOHYwKanDplZRLw0AHznVxWr0=
+	t=1767796564; cv=none; b=rE0EfaQRHRPq6pynF8BpDmobsqfW/a3UBl490gE8ZnpJZ7GzdaUpMCeVQaIidZJXl0EgNBTvz3gDXT9fJkt4eOyc348dIYe7wEwSwfFeIry50XXLM1N7JH8mVDmp+3gUPeqMv8IlhPB9EM4u9MhJIx/D6uiLdO0H0qaEcyeM8HM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767810760; c=relaxed/simple;
-	bh=YhMjb/UNnC49ZtdnrN3awZkC7cL4VLUUSXKJTq4yGLI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fDlNphb1nKmVmzChrmMwSQ/+bnLdDRBLGTOZVipfCEHyy07m4+gdWnoJLz9V1NyDsRu06w9icsuypjdPxlQibmL1uEKLvNrvogUr3+Wob/0yCg8/RqxQKNP4QWwbGy6SUNUA4bl1WzEQXcKzxDWM34kuN50IHKHKynu66EEuZkQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Niexm0U4; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 607I1Ml3004439;
-	Wed, 7 Jan 2026 18:32:28 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=c43eaOrCUMS978Urc
-	kknSWwXnr7+gE9biC3IcpIolDU=; b=Niexm0U4ZmLausRNpTSKNxEkz9YKAnadr
-	IM2WbtUrOofk3AHi/a8mQuidj9imz+UTs18g4eY1/FpEQTkAKzfgwPpBg5rb6Le/
-	Qb4RCEimxtIrw3lfWNYrsL+qWRanLbxzTqnt516u16AcPwOcW7W6JqbSkE94Vz97
-	gtbpNVnQeBwNSU2xb+gnegvYMqugGfJyK5whU2i1uRhYfvhLVp3+shsvYrsdXqXy
-	6QJuKIwquwA6Rl1ZI2w1A5gSZT0PcW/ww6PoYYfis4VWNaqgPN/EguWmmwGJqRL0
-	pELPFz4gUPDqYpaaxI4M7eMPzUK44ooviRBqh5PhFcbPMrO/85PCQ==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4betu6amwt-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 07 Jan 2026 18:32:28 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 607IPGVR019341;
-	Wed, 7 Jan 2026 18:32:27 GMT
-Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4bfg51af04-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 07 Jan 2026 18:32:27 +0000
-Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
-	by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 607IWQxu30999100
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 7 Jan 2026 18:32:26 GMT
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2D48F5804B;
-	Wed,  7 Jan 2026 18:32:26 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0A59158055;
-	Wed,  7 Jan 2026 18:32:25 +0000 (GMT)
-Received: from IBM-D32RQW3.ibm.com (unknown [9.61.241.168])
-	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Wed,  7 Jan 2026 18:32:24 +0000 (GMT)
-From: Farhan Ali <alifm@linux.ibm.com>
-To: linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-pci@vger.kernel.org
-Cc: helgaas@kernel.org, lukas@wunner.de, alex@shazbot.org, clg@redhat.com,
-        stable@vger.kernel.org, alifm@linux.ibm.com, schnelle@linux.ibm.com,
-        mjrosato@linux.ibm.com
-Subject: [PATCH v7 5/9] s390/pci: Update the logic for detecting passthrough device
-Date: Wed,  7 Jan 2026 10:32:13 -0800
-Message-ID: <20260107183217.1365-6-alifm@linux.ibm.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260107183217.1365-1-alifm@linux.ibm.com>
-References: <20260107183217.1365-1-alifm@linux.ibm.com>
+	s=arc-20240116; t=1767796564; c=relaxed/simple;
+	bh=D3eswSWoOxyW/MtHHWi4dF9Glhsucht+yuOuez2GrG0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=cb2C39fbIHm0UlKx/XDIW4a69LX4KBtvnOBX44jYPYLAo7dJjYuWF4Zm8OHi523HHVs1WbjIUSTvoB8e2i78eGHkVmvczdX3TuwSPQovBswdhYoPs0oquF4kUh4R5uCw0AFr+PM10UP2GGLS1/PRHiFdOahxebxVVCrc3LkZSQQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jNJWSe+E; arc=none smtp.client-ip=209.85.214.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2a09a3bd9c5so15487945ad.3
+        for <stable@vger.kernel.org>; Wed, 07 Jan 2026 06:36:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1767796562; x=1768401362; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=vhej7Rf7RQpGEQbQQS7DPInZNw0X028RqQb1HBJM1hQ=;
+        b=jNJWSe+EW6TUw67AtqHHX2vxIF+4cGrD2izAVDOuf0IQUHcxas+kPrDhI5UHH5jV2B
+         L3533IdyFBqY8tFApROHTIjqqutbduPiQ2pSqHZGdjbn1Mh1vCqA4B1geNXtxblKzYBO
+         YHGfQwjBGfP4ryU7mDhKUkC56EMqcfIyGwaAC9XRTU9KiAMYieWqOCdCBGShCBa3Xbbs
+         Hb1wiTrWgoRd600z4oWo0Zz1tvE3zznx6swXQjgM/ADyC9VtO+QEPeAxA3NQUjAxI/ag
+         3YW5bSyqln7qtCyWOQpNzAd6JaaU0Ye8kLMiEEsUOdLD7x2OdEtsi6XMuWXa3lXGyi5H
+         FsFg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767796562; x=1768401362;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vhej7Rf7RQpGEQbQQS7DPInZNw0X028RqQb1HBJM1hQ=;
+        b=SBIj7FVRyOcP7i/h83qskORvAOlRXqIl5M/9pIvER+2NU1KAXrJ7mQuzJ9bv8T/KM6
+         9Ok0R3obsH6eWBmAgNETZwB5T3pJNQPXRptlBKg0ZfCVFJw373libXvazeO2Jx3TqpHI
+         DMwmI1w0XuvPCKNFbpSqvArG5wrAL1gDkbprnz/FaHcKPECSBUeX3skQrcx5cgx8zL/w
+         HMFfhqilq3jORAhsDRRXiYypeoCoFByq1ViFqIx5BTKcAl3zztu5yzaKraBkdAGdGswI
+         2XMsody8dtc48vStN4ZqqETJlPoytEceah5TyvdVbLEuca2yoS0uuyoz2Guw3UkDcxAg
+         MGAg==
+X-Forwarded-Encrypted: i=1; AJvYcCWIC0uefy0bLhc8uLS7AgOhv6tL7cv/JDVvTQy8aFeD3EyOfp5h7bv+184OU8QjNEGQpMso41Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwLxv6PIZ9kRehI1rm+RBsoXE85S3aRE0q3W/VZTnOaBTyBgh52
+	fwNQn8KbRI4Pz7/huTd1zYShLGZs/1B35M7kssZSSjdI4itYQzFEFu+S
+X-Gm-Gg: AY/fxX7ZsaSz8wbMaa0wnog7G5UPgoi+I94SKZRsafI4yBZO6GH/gMBCXjjzGBuLq5j
+	erzyLL+uWtNwdVHKSne8lSaEaKPNmVOs/F/YkI71o7ss9oSowk92AyJ89k0AJNNb4QQGlBO5Gbp
+	hy5A1RQf9U8g301TXZlvEtwzVhiW+M8FlNiFGXESBQjh/AvsDDj6izdg+7TuB+9MJcn67pX67Pw
+	2HUVJ7I/ipc8IvAXEoEdGTKMfLzXhvIq07fVoy9tOypXf4krZQMi7EU43EIuTrJpDRF+KkJc6W6
+	Iet46ozGQfHbTj30PXuvpc03pZhhq2KfSY3EK8bm+FDdosZMnqUOu/nVmTjmtVlnZiH4y+tTR2Z
+	s7yUiL3j9Cbv/fekMfcplVnlthMYbD5A1di0a7aZiPXYEix/w4T5Z6j+l0UxL25qtI6Y8mXeCc0
+	YHbQ/D9PLkYGD+HIyaLk3fH2E=
+X-Google-Smtp-Source: AGHT+IEaSwwcYPYAXXYX2+w2EfGHMP4tkbOgZMmoW9pA20X6ClwZzMF/KCy891gVYWM2tLnEvyClKg==
+X-Received: by 2002:a17:903:354b:b0:2a0:af76:f8cf with SMTP id d9443c01a7336-2a3ee425182mr27341895ad.2.1767796562140;
+        Wed, 07 Jan 2026 06:36:02 -0800 (PST)
+Received: from localhost.localdomain ([202.120.237.35])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a3e3cc7912sm54058345ad.67.2026.01.07.06.35.57
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Wed, 07 Jan 2026 06:36:01 -0800 (PST)
+From: Miaoqian Lin <linmq006@gmail.com>
+To: Lars-Peter Clausen <lars@metafoo.de>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Angelo Dureghello <adureghello@baylibre.com>,
+	linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: linmq006@gmail.com,
+	stable@vger.kernel.org
+Subject: [PATCH v2] iio: dac: ad3552r-hs: fix out-of-bound write in ad3552r_hs_write_data_source
+Date: Wed,  7 Jan 2026 22:35:50 +0800
+Message-Id: <20260107143550.34324-1-linmq006@gmail.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -84,124 +93,62 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=QbNrf8bv c=1 sm=1 tr=0 ts=695ea6bc cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VnNF1IyMAAAA:8
- a=MtaQWmmsotiDqj5H3ecA:9
-X-Proofpoint-ORIG-GUID: EIfVRUK9TfqME_jVeX6ok70HccvnLmsF
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTA3MDE0NSBTYWx0ZWRfXyqymT7NVRAS4
- 6USwUbu3viKG98RLs1mwZpC5WZkQzAws7z2V4eq8o5RGGVLlLf1uvO21bRFIz8j0H2Ww52NETWA
- owgEHZApT8ui1X5xxufut49hvM9wOlhVlDZhb7dNzEQoOjrsEW5klmREHrRuuVIlg8UczRF196s
- 6zqYsk4+tekQQixl+EDfB3jQ9uepW3o6b/1P6tEiM8+Wbw0kUStDpMLgeWZusKdYoc8DuD1tHOf
- YiT1UcMSq3sQR4kh+JT3xG4yRqpSsuOKu4GIsxBbnKeHM4vwGj5+D8GaIK3ZKCuCbKzeLo1Rdqj
- zlLYbUlZojIEXD1MBjxh99ZeUK3bqRCIdeFpsK0ZS0IkoFyCw0hw/2uJL4Zoon3vCWKPAro3XpW
- sA5kCus9G7ckS7BGi8OLp9qa+SR/PethkUrwDmahWrzNDrOleM0e9aMkkl4R6fRp1qdbHxGSgwb
- ge1dGzmoStwZ81NFuAw==
-X-Proofpoint-GUID: EIfVRUK9TfqME_jVeX6ok70HccvnLmsF
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2026-01-07_03,2026-01-06_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 clxscore=1015 bulkscore=0 suspectscore=0 priorityscore=1501
- adultscore=0 lowpriorityscore=0 impostorscore=0 phishscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2512120000 definitions=main-2601070145
 
-We can now have userspace drivers (vfio-pci based) on s390x. The userspace
-drivers will not have any KVM fd and so no kzdev associated with them. So
-we need to update the logic for detecting passthrough devices to not depend
-on struct kvm_zdev.
+When simple_write_to_buffer() succeeds, it returns the number of bytes
+actually copied to the buffer. The code incorrectly uses 'count'
+as the index for null termination instead of the actual bytes copied.
+If count exceeds the buffer size, this leads to out-of-bounds write.
+Add a check for the count and use the return value as the index.
 
-Reviewed-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Signed-off-by: Farhan Ali <alifm@linux.ibm.com>
+The bug was validated using a demo module that mirrors the original
+code and was tested under QEMU.
+
+Pattern of the bug:
+- A fixed 64-byte stack buffer is filled using count.
+- If count > 64, the code still does buf[count] = '\0', causing an
+- out-of-bounds write on the stack.
+
+Steps for reproduce:
+- Opens the device node.
+- Writes 128 bytes of A to it.
+- This overflows the 64-byte stack buffer and KASAN reports the OOB.
+
+Found via static analysis. This is similar to the
+commit da9374819eb3 ("iio: backend: fix out-of-bound write")
+
+Fixes: b1c5d68ea66e ("iio: dac: ad3552r-hs: add support for internal ramp")
+Cc: stable@vger.kernel.org
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
 ---
- arch/s390/include/asm/pci.h      |  1 +
- arch/s390/pci/pci_event.c        | 14 ++++----------
- drivers/vfio/pci/vfio_pci_zdev.c |  9 ++++++++-
- 3 files changed, 13 insertions(+), 11 deletions(-)
+changes in v2:
+- update commit message
+- v1 link: https://lore.kernel.org/all/20251027150713.59067-1-linmq006@gmail.com/
+---
+ drivers/iio/dac/ad3552r-hs.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/arch/s390/include/asm/pci.h b/arch/s390/include/asm/pci.h
-index c0ff19dab580..ec8a772bf526 100644
---- a/arch/s390/include/asm/pci.h
-+++ b/arch/s390/include/asm/pci.h
-@@ -171,6 +171,7 @@ struct zpci_dev {
+diff --git a/drivers/iio/dac/ad3552r-hs.c b/drivers/iio/dac/ad3552r-hs.c
+index 41b96b48ba98..a9578afa7015 100644
+--- a/drivers/iio/dac/ad3552r-hs.c
++++ b/drivers/iio/dac/ad3552r-hs.c
+@@ -549,12 +549,15 @@ static ssize_t ad3552r_hs_write_data_source(struct file *f,
  
- 	char res_name[16];
- 	bool mio_capable;
-+	bool mediated_recovery;
- 	struct zpci_bar_struct bars[PCI_STD_NUM_BARS];
+ 	guard(mutex)(&st->lock);
  
- 	u64		start_dma;	/* Start of available DMA addresses */
-diff --git a/arch/s390/pci/pci_event.c b/arch/s390/pci/pci_event.c
-index 839bd91c056e..de504925f709 100644
---- a/arch/s390/pci/pci_event.c
-+++ b/arch/s390/pci/pci_event.c
-@@ -60,16 +60,10 @@ static inline bool ers_result_indicates_abort(pci_ers_result_t ers_res)
- 	}
- }
- 
--static bool is_passed_through(struct pci_dev *pdev)
-+static bool needs_mediated_recovery(struct pci_dev *pdev)
- {
- 	struct zpci_dev *zdev = to_zpci(pdev);
--	bool ret;
--
--	mutex_lock(&zdev->kzdev_lock);
--	ret = !!zdev->kzdev;
--	mutex_unlock(&zdev->kzdev_lock);
--
--	return ret;
-+	return zdev->mediated_recovery;
- }
- 
- static bool is_driver_supported(struct pci_driver *driver)
-@@ -194,7 +188,7 @@ static pci_ers_result_t zpci_event_attempt_error_recovery(struct pci_dev *pdev)
- 	}
- 	pdev->error_state = pci_channel_io_frozen;
- 
--	if (is_passed_through(pdev)) {
-+	if (needs_mediated_recovery(pdev)) {
- 		pr_info("%s: Cannot be recovered in the host because it is a pass-through device\n",
- 			pci_name(pdev));
- 		status_str = "failed (pass-through)";
-@@ -279,7 +273,7 @@ static void zpci_event_io_failure(struct pci_dev *pdev, pci_channel_state_t es)
- 	 * we will inject the error event and let the guest recover the device
- 	 * itself.
- 	 */
--	if (is_passed_through(pdev))
-+	if (needs_mediated_recovery(pdev))
- 		goto out;
- 	driver = to_pci_driver(pdev->dev.driver);
- 	if (driver && driver->err_handler && driver->err_handler->error_detected)
-diff --git a/drivers/vfio/pci/vfio_pci_zdev.c b/drivers/vfio/pci/vfio_pci_zdev.c
-index 0990fdb146b7..a7bc23ce8483 100644
---- a/drivers/vfio/pci/vfio_pci_zdev.c
-+++ b/drivers/vfio/pci/vfio_pci_zdev.c
-@@ -148,6 +148,8 @@ int vfio_pci_zdev_open_device(struct vfio_pci_core_device *vdev)
- 	if (!zdev)
- 		return -ENODEV;
- 
-+	zdev->mediated_recovery = true;
++	if (count >= sizeof(buf))
++		return -ENOSPC;
 +
- 	if (!vdev->vdev.kvm)
- 		return 0;
+ 	ret = simple_write_to_buffer(buf, sizeof(buf) - 1, ppos, userbuf,
+ 				     count);
+ 	if (ret < 0)
+ 		return ret;
  
-@@ -161,7 +163,12 @@ void vfio_pci_zdev_close_device(struct vfio_pci_core_device *vdev)
- {
- 	struct zpci_dev *zdev = to_zpci(vdev->pdev);
+-	buf[count] = '\0';
++	buf[ret] = '\0';
  
--	if (!zdev || !vdev->vdev.kvm)
-+	if (!zdev)
-+		return;
-+
-+	zdev->mediated_recovery = false;
-+
-+	if (!vdev->vdev.kvm)
- 		return;
- 
- 	if (zpci_kvm_hook.kvm_unregister)
+ 	ret = match_string(dbgfs_attr_source, ARRAY_SIZE(dbgfs_attr_source),
+ 			   buf);
 -- 
-2.43.0
+2.39.5 (Apple Git-154)
 
 
