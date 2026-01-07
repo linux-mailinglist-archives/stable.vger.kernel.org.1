@@ -1,113 +1,119 @@
-Return-Path: <stable+bounces-206117-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206118-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A7DCCFD486
-	for <lists+stable@lfdr.de>; Wed, 07 Jan 2026 11:56:27 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F14A0CFD44B
+	for <lists+stable@lfdr.de>; Wed, 07 Jan 2026 11:52:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3CC113067477
-	for <lists+stable@lfdr.de>; Wed,  7 Jan 2026 10:55:46 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E6E9130010C1
+	for <lists+stable@lfdr.de>; Wed,  7 Jan 2026 10:52:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEE1A32A3D4;
-	Wed,  7 Jan 2026 10:39:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A8373019BA;
+	Wed,  7 Jan 2026 10:52:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="s9tumf4m";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="IAxv8oCv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZTV3HuoD"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3576C325713;
-	Wed,  7 Jan 2026 10:39:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B91E2DE6FC
+	for <stable@vger.kernel.org>; Wed,  7 Jan 2026 10:52:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767782372; cv=none; b=XllHyvDbCwrvk3L3tCnkBwhRkMXDAuXX/8v0/dj+g2HDVghzS1VYFTQ5aZ2Ot+VE4HEnxUZVOp1EXxvKruGqUbZ1lu5TtfuYulV9LIicG7SRrfApS0WzHB5Ly4nYdZIrwhW/ZGNYR6xR7NmRHje05dIHJIb75OLkGekMjLgMV8o=
+	t=1767783137; cv=none; b=q98x+7aKLo6yfTFchd86EtPOadejSzmPSWAhi8Lar3hxBaXzmcBBXfvOlL4qeaE3MYeuSYEWdWPajU2TXRpGhwwjVgXP6/trNcsA/LWtHMS9BfxOdsAX2IUdcxJ0sGo6XZDn3xmiRYlisLzdw/ihHl2/zQoNvrDu2q3WaWxNhJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767782372; c=relaxed/simple;
-	bh=fbxLThsdhcTtUl50liW5oJUBAkgsYCcubStwZ+W+O+s=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=lcR7Cyu7Q1w0RJ6fylVl7pqLR1xi7J+K3cp+F/MbRsl0DS5sS4J17OBsiTtP0wHXdWAq3oVtBQuYEObyAQdu0isYntQDfyw2TPgv7wvaP17Ym/qI+LZG/cridDkVvLR4ocSpn1J2zZnScV1N84fJ8U7rXyUf4F5ZAiYVNHdpGLk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=s9tumf4m; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=IAxv8oCv; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1767782368;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=eAE5uWC1VmcBBMF9C80qj8qv0snhl0xWlSFXc8wT0/4=;
-	b=s9tumf4miLgZ5VorGyXX3ZbtqXdn1cp25fTrqfyoC4ndf6erW5+Eqg+8rsLo/QBxID6nLS
-	C0TJE8PSWGRfvh124OTPafAl0Ld/6Sk9Or47gX5ypwZ7ZNy9uA7X+xOu+UIZ7Ap7JtjO5m
-	WqVjiPt+72TFkCBIWIm9jZVTqVTezYUyN3pSnW7QHJlLGvvvzgkQyuk0yzYnnIF754H6Zl
-	et9VB+wKlLbi3Q3ztcYPx0Cx1bjL8SoIYTxsFAO+yQbw/VDdkK7KxRZrfoUD/LZTMDH2F9
-	D9mCI8hoImOpm3FbR18wvMGLHUZFQrORcxWzboGg2oMdmO/KF1AEAErYtcIG3A==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1767782368;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=eAE5uWC1VmcBBMF9C80qj8qv0snhl0xWlSFXc8wT0/4=;
-	b=IAxv8oCvcXCIrd/lHXVbJD5ymuoiY7B3R8WD7l5sRLaOFlilbOdhcJz+NTHs7bT5MaVRR8
-	Z9XgbrxDD2okloAQ==
-Date: Wed, 07 Jan 2026 11:39:24 +0100
-Subject: [PATCH] hrtimer: Fix softirq base check in update_needs_ipi()
+	s=arc-20240116; t=1767783137; c=relaxed/simple;
+	bh=C7sZi7MOCWGh94RgbSCl7FFE0j95LVFvy68owKwfWN8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Bn+INEHeih7ZmY+AbAXoZyjcyGdlB4CCN2Z1HATdM89HwBqH12g2gIE+ZLpBcj1e/duk30bVgWsH+JDUJBfc4oAgrweCxS1yVmpRt0STovJ4SNlu1mzNsd6HE4H6cQVumji5WEBmF2nlMSAa1b5ejYEjghLXKpbCl1e6/8w1LZk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZTV3HuoD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F68CC16AAE;
+	Wed,  7 Jan 2026 10:52:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767783136;
+	bh=C7sZi7MOCWGh94RgbSCl7FFE0j95LVFvy68owKwfWN8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=ZTV3HuoDKy3nq22jk1HiYZeeHnf1tbN/AHZHBimKPlhsuR0Envh2HnaYXKzPQYvsp
+	 U8fcAt6uylr/mu9P3hmn5zzRGBeHgbynY2P7j1/Bg8/5DSiPG3VsiZYZJgYsPJHmBI
+	 ay3rFe2Z7pV9ETHnwTIVZ0qmAfWgSyelYh94gvQkScpAfompI1cDziuirq5O3tva3d
+	 dGzQKoh5YN3hcatKERRbWtBZ0gL0LSt3jrRB49G7euu9BD+ErVxUNnkL9FtLMYfjX7
+	 NrOU9LVyfAEuGSQOcdrDhnzxSMfGmg09aebDmMfY9B6z752zVih++aRfg/vr/I6ENB
+	 pjyT5aY2vtVAg==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Jouni Malinen <jouni.malinen@oss.qualcomm.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15.y] wifi: mac80211: Discard Beacon frames to non-broadcast address
+Date: Wed,  7 Jan 2026 05:52:14 -0500
+Message-ID: <20260107105214.3609231-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2026010523-fifty-navigator-ec96@gregkh>
+References: <2026010523-fifty-navigator-ec96@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260107-hrtimer-clock-base-check-v1-1-afb5dbce94a1@linutronix.de>
-X-B4-Tracking: v=1; b=H4sIANs3XmkC/x2MSQqAMAwAvyI5G2gF6/IV8aBttMGVVEQQ/271N
- nOYuSGQMAWokxuETg68rVF0moD13ToSsosOmcqM0ipHLwcvJGjnzU7Yd4HQevqw0i4vTV+ooYC
- Y70IDX/+6aZ/nBUTUdexqAAAA
-X-Change-ID: 20260105-hrtimer-clock-base-check-b91d586b70f7
-To: Anna-Maria Behnsen <anna-maria@linutronix.de>, 
- Frederic Weisbecker <frederic@kernel.org>, 
- Thomas Gleixner <tglx@linutronix.de>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
- =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1767782367; l=1094;
- i=thomas.weissschuh@linutronix.de; s=20240209; h=from:subject:message-id;
- bh=fbxLThsdhcTtUl50liW5oJUBAkgsYCcubStwZ+W+O+s=;
- b=hB8KqEwgMCBQkaXRxvkZfEgDJ0zomsaTUKbNe8EzWKu8ZCTelpM+fQR15s6zmVUeT1sW8pMIa
- YHvMcsm0oGgBbzPcugh7LZ84YVwgtNI1ag9XaxiE9qEpSYSazcxtRfs
-X-Developer-Key: i=thomas.weissschuh@linutronix.de; a=ed25519;
- pk=pfvxvpFUDJV2h2nY0FidLUml22uGLSjByFbM6aqQQws=
 
-The 'clockid' field is not the correct way to check for a softirq base.
+From: Jouni Malinen <jouni.malinen@oss.qualcomm.com>
 
-Fix the check to correctly compare the base type instead of the clockid.
+[ Upstream commit 193d18f60588e95d62e0f82b6a53893e5f2f19f8 ]
 
-Fixes: 1e7f7fbcd40c ("hrtimer: Avoid more SMP function calls in clock_was_set()")
+Beacon frames are required to be sent to the broadcast address, see IEEE
+Std 802.11-2020, 11.1.3.1 ("The Address 1 field of the Beacon .. frame
+shall be set to the broadcast address"). A unicast Beacon frame might be
+used as a targeted attack to get one of the associated STAs to do
+something (e.g., using CSA to move it to another channel). As such, it
+is better have strict filtering for this on the received side and
+discard all Beacon frames that are sent to an unexpected address.
+
+This is even more important for cases where beacon protection is used.
+The current implementation in mac80211 is correctly discarding unicast
+Beacon frames if the Protected Frame bit in the Frame Control field is
+set to 0. However, if that bit is set to 1, the logic used for checking
+for configured BIGTK(s) does not actually work. If the driver does not
+have logic for dropping unicast Beacon frames with Protected Frame bit
+1, these frames would be accepted in mac80211 processing as valid Beacon
+frames even though they are not protected. This would allow beacon
+protection to be bypassed. While the logic for checking beacon
+protection could be extended to cover this corner case, a more generic
+check for discard all Beacon frames based on A1=unicast address covers
+this without needing additional changes.
+
+Address all these issues by dropping received Beacon frames if they are
+sent to a non-broadcast address.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Fixes: af2d14b01c32 ("mac80211: Beacon protection using the new BIGTK (STA)")
+Signed-off-by: Jouni Malinen <jouni.malinen@oss.qualcomm.com>
+Link: https://patch.msgid.link/20251215151134.104501-1-jouni.malinen@oss.qualcomm.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+[ adapted RX_DROP return value to RX_DROP_MONITOR ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/time/hrtimer.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/mac80211/rx.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/kernel/time/hrtimer.c b/kernel/time/hrtimer.c
-index f8ea8c8fc895..d0c59fc0beb4 100644
---- a/kernel/time/hrtimer.c
-+++ b/kernel/time/hrtimer.c
-@@ -913,7 +913,7 @@ static bool update_needs_ipi(struct hrtimer_cpu_base *cpu_base,
- 			return true;
+diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
+index aa3442761ad0..1c1660160787 100644
+--- a/net/mac80211/rx.c
++++ b/net/mac80211/rx.c
+@@ -3193,6 +3193,11 @@ ieee80211_rx_h_mgmt_check(struct ieee80211_rx_data *rx)
+ 	if (!ieee80211_is_mgmt(mgmt->frame_control))
+ 		return RX_DROP_MONITOR;
  
- 		/* Extra check for softirq clock bases */
--		if (base->clockid < HRTIMER_BASE_MONOTONIC_SOFT)
-+		if (base->index < HRTIMER_BASE_MONOTONIC_SOFT)
- 			continue;
- 		if (cpu_base->softirq_activated)
- 			continue;
-
----
-base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
-change-id: 20260105-hrtimer-clock-base-check-b91d586b70f7
-
-Best regards,
++	/* Drop non-broadcast Beacon frames */
++	if (ieee80211_is_beacon(mgmt->frame_control) &&
++	    !is_broadcast_ether_addr(mgmt->da))
++		return RX_DROP_MONITOR;
++
+ 	if (rx->sdata->vif.type == NL80211_IFTYPE_AP &&
+ 	    ieee80211_is_beacon(mgmt->frame_control) &&
+ 	    !(rx->flags & IEEE80211_RX_BEACON_REPORTED)) {
 -- 
-Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+2.51.0
 
 
