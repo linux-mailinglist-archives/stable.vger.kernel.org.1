@@ -1,121 +1,185 @@
-Return-Path: <stable+bounces-206112-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206113-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74CFECFD1D0
-	for <lists+stable@lfdr.de>; Wed, 07 Jan 2026 11:09:00 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB4D2CFD297
+	for <lists+stable@lfdr.de>; Wed, 07 Jan 2026 11:27:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 788893055035
-	for <lists+stable@lfdr.de>; Wed,  7 Jan 2026 10:08:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4F5FD31138F5
+	for <lists+stable@lfdr.de>; Wed,  7 Jan 2026 10:21:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D71B130DD2C;
-	Wed,  7 Jan 2026 10:08:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04269331A42;
+	Wed,  7 Jan 2026 10:12:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=hale.at header.i=@hale.at header.b="PrwA6QEc"
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="QFDq+39C";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="1xIkwc0J";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="QFDq+39C";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="1xIkwc0J"
 X-Original-To: stable@vger.kernel.org
-Received: from gw.hale.at (gw.hale.at [89.26.116.210])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E1762DF703;
-	Wed,  7 Jan 2026 10:08:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.26.116.210
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DB013314DE
+	for <stable@vger.kernel.org>; Wed,  7 Jan 2026 10:12:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767780505; cv=none; b=jNplvITDpYysXHSBw/CReDtNU6Kox+LoCjMP8ghLbUagmhPrivbRXLpTMvIHhDpQxTeXdZ7VORrGNAHa+p3nrGpYgPKyeEUvE1shEfHas8QRrO2/01WkRnk3r3IgJAdG2FP8+GWOw5bN1AHoc829TwyEE1mullM41Ek+gIgpc5o=
+	t=1767780745; cv=none; b=obdfu5pnA21FX4E70xtVP17urBGPKItMD0rR4IWnCh8PS7DQC9hmaVrzKo9Nw/3ViS+30F2BCnjWuZwiyBk0JlDFZGcigTYcWvWwd9y3dr1b00gwvDFfd6JtZVKl0yz6+q73uHVFo9ZY7cc3IdPy+jDhz2jaPMZ2pvhSUemwv/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767780505; c=relaxed/simple;
-	bh=2FtAYjtwemC6AXNTTViR1w+x3CC1AkWt/hYVTMmYfqQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=He4+1+qQ2PuFDH+NzeNoqs/F4myCSzdrd8aeGM4Z4OCr7Oe38MW26+a5iYSLKh94YZBBfnBADhxmbghfZ5I3SN7LuFs2Gvj01jg0YQIaAKFJ+3O+fCwsOX4mGEMyTpf8mmjjmBWtopGyooPReNuPHPIVM1OJOEyGyCg23xmaxno=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hale.at; spf=pass smtp.mailfrom=hale.at; dkim=pass (2048-bit key) header.d=hale.at header.i=@hale.at header.b=PrwA6QEc; arc=none smtp.client-ip=89.26.116.210
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hale.at
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hale.at
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=hale.at; i=@hale.at; q=dns/txt; s=mail;
-  t=1767780502; x=1799316502;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=2FtAYjtwemC6AXNTTViR1w+x3CC1AkWt/hYVTMmYfqQ=;
-  b=PrwA6QEcmyFISlZV5FmZNU7uKxSDi3DNKJpNgMm/+FspMEDyPL6dmQPL
-   jX+5N8B1gzDV4P08zTg4PhrSpHkplBjNVWQhFf50nF2Ot6FWYWI/QGFKJ
-   fm5e78Z7KMPRQDNbfeilXdFC1TninWsFIzjyjZ5SycON7f4tpxBy7E82v
-   tS4LEpoRgqTWNqqUlG5bfWcHbSJkBpMT5ogQQibDtzeLU+VpvwG9t1Jzy
-   nFtJ8td+vL9el7eoCfyNJ09RtEGhJd1WwBml8Y7FPufH9Mbzy/Whcn7F6
-   ql4ENp1Ksbrr4E7tNBRGhr8ijXV3QaNN9D+ZEdhqtSJMWSkK0XpV0BQMj
-   Q==;
-X-CSE-ConnectionGUID: LdtWPZbVQvO0uTSQwb7yYQ==
-X-CSE-MsgGUID: svEX99OOT/a8GRfQ24yBsw==
-IronPort-SDR: 695e3037_3PYCAJZ3HiCULLLbcMYzfxrEQYTB1dBTRFUN863/7JAaQbV
- 1yktmv3B+lTOWmGAuned9dMEh0ysexRIYhA1lHg==
-X-IronPort-AV: E=Sophos;i="6.21,207,1763420400"; 
-   d="scan'208";a="1570736"
-Received: from unknown (HELO mail4.hale.at) ([192.168.100.5])
-  by mgmt.hale.at with ESMTP; 07 Jan 2026 11:06:48 +0100
-Received: from mail4.hale.at (localhost.localdomain [127.0.0.1])
-	by mail4.hale.at (Postfix) with ESMTPS id B4ABD1300675;
-	Wed,  7 Jan 2026 11:06:27 +0100 (CET)
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail4.hale.at (Postfix) with ESMTP id 9CE26130074F;
-	Wed,  7 Jan 2026 11:06:27 +0100 (CET)
-X-Virus-Scanned: amavis at mail4.hale.at
-Received: from mail4.hale.at ([127.0.0.1])
- by localhost (mail4.hale.at [127.0.0.1]) (amavis, port 10026) with ESMTP
- id vztAj6aZBBhO; Wed,  7 Jan 2026 11:06:27 +0100 (CET)
-Received: from [192.168.100.117] (entw47 [192.168.100.117])
-	by mail4.hale.at (Postfix) with ESMTPSA id 7BE701300675;
-	Wed,  7 Jan 2026 11:06:27 +0100 (CET)
-Message-ID: <4d6a1f0b-946e-4acb-bfe4-1e9317fd144e@hale.at>
-Date: Wed, 7 Jan 2026 11:06:27 +0100
+	s=arc-20240116; t=1767780745; c=relaxed/simple;
+	bh=l+PDwA+2NM+D3BHAPC7CtcIt4FSJI2OMX3/1kzk1nJ4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JJABKz1vMzP+J9WKJ0+7o/y0myn3L7tD4c4KMaN1TDRY+w1Jvcf/AMw/OJwCvcDfuSuZhYojEJxKi7YIOs+QiC7L+vOWeyjHWdbCnTXAm6Wwx2ttg3wUPbA+T60uNZATxGYXwfzYi4pYptQuhamenQDDFi+YNmCChzQaQomeV0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=QFDq+39C; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=1xIkwc0J; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=QFDq+39C; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=1xIkwc0J; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 73F8C5BD4B;
+	Wed,  7 Jan 2026 10:12:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1767780742; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QyjOnRY6tYvp1SLKJ5JK+KsRA6c7bJH9ig4viKI2uqE=;
+	b=QFDq+39Cc7oo8MwJC5X9kvzdCAs7F5gTkXwgDDInSioh8QXQXlDb1qgFSYSvwBtauL8ArC
+	QsQD+xenkJ81NoU+vDAFF111htE7lk4tIz3upqa4dYT/nByhjztWJFH3hbN75DTkIaIlFX
+	OxpJ8Bgm3iodG9WIcNEGtH8cZ1UnkwM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1767780742;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QyjOnRY6tYvp1SLKJ5JK+KsRA6c7bJH9ig4viKI2uqE=;
+	b=1xIkwc0Jq/RwWecfl7uotKiHHKwTnzT3D1ecK3Ds2roqaVuBqa0GpxNyu2ET6nRwqeEMjh
+	3rOgLBlVdLtCW7DQ==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1767780742; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QyjOnRY6tYvp1SLKJ5JK+KsRA6c7bJH9ig4viKI2uqE=;
+	b=QFDq+39Cc7oo8MwJC5X9kvzdCAs7F5gTkXwgDDInSioh8QXQXlDb1qgFSYSvwBtauL8ArC
+	QsQD+xenkJ81NoU+vDAFF111htE7lk4tIz3upqa4dYT/nByhjztWJFH3hbN75DTkIaIlFX
+	OxpJ8Bgm3iodG9WIcNEGtH8cZ1UnkwM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1767780742;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QyjOnRY6tYvp1SLKJ5JK+KsRA6c7bJH9ig4viKI2uqE=;
+	b=1xIkwc0Jq/RwWecfl7uotKiHHKwTnzT3D1ecK3Ds2roqaVuBqa0GpxNyu2ET6nRwqeEMjh
+	3rOgLBlVdLtCW7DQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 628923EA63;
+	Wed,  7 Jan 2026 10:12:22 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id fAwLGIYxXmm1RwAAD6G6ig
+	(envelope-from <jack@suse.cz>); Wed, 07 Jan 2026 10:12:22 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 12E80A09E9; Wed,  7 Jan 2026 11:12:18 +0100 (CET)
+Date: Wed, 7 Jan 2026 11:12:18 +0100
+From: Jan Kara <jack@suse.cz>
+To: Joanne Koong <joannelkoong@gmail.com>
+Cc: Jan Kara <jack@suse.cz>, akpm@linux-foundation.org, david@redhat.com, 
+	miklos@szeredi.hu, linux-mm@kvack.org, athul.krishna.kr@protonmail.com, 
+	j.neuschaefer@gmx.net, carnil@debian.org, linux-fsdevel@vger.kernel.org, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/1] fs/writeback: skip AS_NO_DATA_INTEGRITY mappings
+ in wait_sb_inodes()
+Message-ID: <ucnvcqbmxsiszobzzkjrgekle2nabf3w5omnfbitmotgujas4e@4f5ct4ot4mup>
+References: <20251215030043.1431306-1-joannelkoong@gmail.com>
+ <20251215030043.1431306-2-joannelkoong@gmail.com>
+ <ypyumqgv5p7dnxmq34q33keb6kzqnp66r33gtbm4pglgdmhma6@3oleltql2qgp>
+ <CAJnrk1aYpcDpm8MpN5Emb8qNOn34-qEiARLH0RudySKFtEZVpA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v4] net: nfc: nci: Fix parameter validation for packet
- data
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Deepak Sharma <deepak.sharma.472935@gmail.com>,
- Krzysztof Kozlowski <krzk@kernel.org>,
- Vadim Fedorenko <vadim.fedorenko@linux.dev>, Simon Horman
- <horms@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
- Michael Thalmeier <michael@thalmeier.at>, stable@vger.kernel.org
-References: <20251223072552.297922-1-michael.thalmeier@hale.at>
- <20260104101323.1ac8b478@kernel.org>
-From: Michael Thalmeier <michael.thalmeier@hale.at>
-Content-Language: en-US
-In-Reply-To: <20260104101323.1ac8b478@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJnrk1aYpcDpm8MpN5Emb8qNOn34-qEiARLH0RudySKFtEZVpA@mail.gmail.com>
+X-Spamd-Result: default: False [-3.80 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_RHS_NOT_FQDN(0.50)[];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ARC_NA(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com,gmx.net,protonmail.com];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[suse.cz,linux-foundation.org,redhat.com,szeredi.hu,kvack.org,protonmail.com,gmx.net,debian.org,vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[3];
+	FROM_EQ_ENVFROM(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email]
+X-Spam-Level: 
+X-Spam-Flag: NO
+X-Spam-Score: -3.80
 
-Am 04.01.26 um 19:13 schrieb Jakub Kicinski:
-> On Tue, 23 Dec 2025 08:25:52 +0100 Michael Thalmeier wrote:
->> diff --git a/net/nfc/nci/ntf.c b/net/nfc/nci/ntf.c
->> index 418b84e2b260..a5cafcd10cc3 100644
->> --- a/net/nfc/nci/ntf.c
->> +++ b/net/nfc/nci/ntf.c
+On Tue 06-01-26 15:30:05, Joanne Koong wrote:
+> On Tue, Jan 6, 2026 at 1:34 AM Jan Kara <jack@suse.cz> wrote:
+> > [Thanks to Andrew for CCing me on patch commit]
 > 
->> @@ -380,6 +384,10 @@ static int nci_rf_discover_ntf_packet(struct nci_dev *ndev,
->>   	pr_debug("rf_tech_specific_params_len %d\n",
->>   		 ntf.rf_tech_specific_params_len);
->>   
->> +	if (skb->len < (data - skb->data) +
->> +			ntf.rf_tech_specific_params_len + sizeof(ntf.ntf_type))
->> +		return -EINVAL;
-> 
-> Are we validating ntf.rf_tech_specific_params_len against the
-> extraction logic in nci_extract_rf_params_nfca_passive_poll()
-> and friends?
+> Sorry, I didn't mean to exclude you. I hadn't realized the
+> fs-writeback.c file had maintainers/reviewers listed for it. I'll make
+> sure to cc you next time.
 
-You are right. The current patch is only validating that the received 
-packet is consistent in the way that the rf_tech_specific_params_len 
-number of bytes is also contained in the buffer.
+No problem, I don't think it's formally spelled out anywhere. It's just
+that for changes in fs/*.c people tend to CC VFS maintainers / reviewers.
 
-There is currently no code that validates that 
-nci_extract_rf_params_nfca_passive_poll and friends only access the 
-given number of bytes in their logic.
-And to be frank, I do not know how to implement this without either 
-cluttering the code with validation logic or re-implementing half the 
-parsing logic for length validation.
+Thanks for the historical perspective, it does put some more peace into my
+mind that things were considered :)
+
+> For the fsync() and truncate() examples you mentioned, I don't think
+> it's an issue that these now wait for the server to finish the I/O and
+> hang if the server doesn't. I think it's actually more correct
+> behavior than what we had with temp pages, eg imo these actually ought
+> to wait for the writeback to have been completed by the server. If the
+> server is malicious / buggy and fsync/truncate hangs, I think that's
+> fine given that fsync/truncate is initiated by the user on a specific
+> file descriptor (as opposed to the generic sync()) (and imo it should
+> hang if it can't actually be executed correctly because the server is
+> malfunctioning).
+
+Here, I have a comment. The hang in truncate is not as innocent as you
+might think. It will happen in truncate_inode_pages() and as such it will
+also end up hanging inode reclaim. Thus kswapd (or other arbitrary process
+entering direct reclaim) may hang in inode reclaim waiting for
+truncate_inode_pages() to finish. And at that point you are between a rock
+and a hard place - truncate_inode_pages() cannot fail because the inode is
+at the point of no return. You cannot just detach the folio under writeback
+from the mapping because if the writeback ever completes, the IO end
+handlers will get seriously confused - at least in the generic case, maybe
+specifically for FUSE there would be some solution possible - like a
+special handler in fuse_evict_inode() walking all the pages under writeback
+and tearing them down in a clean way (properly synchronizing with IO
+completion) before truncate_inode_pages() is called.
+
+								Honza
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
