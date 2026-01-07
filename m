@@ -1,159 +1,236 @@
-Return-Path: <stable+bounces-206195-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206196-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63190CFF901
-	for <lists+stable@lfdr.de>; Wed, 07 Jan 2026 19:53:30 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC23DCFF75F
+	for <lists+stable@lfdr.de>; Wed, 07 Jan 2026 19:32:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CA78131C2791
-	for <lists+stable@lfdr.de>; Wed,  7 Jan 2026 18:05:30 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E05CE300DBA7
+	for <lists+stable@lfdr.de>; Wed,  7 Jan 2026 18:32:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B712E33A9D5;
-	Wed,  7 Jan 2026 17:55:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23CAD33AD9E;
+	Wed,  7 Jan 2026 18:31:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="fho8rUMp"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81B1C33BBB8;
-	Wed,  7 Jan 2026 17:55:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3A2933CE91
+	for <stable@vger.kernel.org>; Wed,  7 Jan 2026 18:30:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767808554; cv=none; b=ch8V0N178Rbgg6LMF8DhO6e9C3a+UZckxxBq+GO9MLuu6bHAqXACGszAzY9KWFjzBKbvFaRTEzRwXMkoZ43KokBUE+rxzvck3vd0u/XRRWWarlU4jxnPx7oDZnNaGWlLqCiWq/Z8GEoVbGw/eapgI6FC6HLk20jPu7QQIGmjxUM=
+	t=1767810667; cv=none; b=ZalNSkrjA4lYn8uWqh3llRyhXZYUe66ebYfFh7ibPA5WfCg46xjFJpF1stXmxf+Hi6v4b3gamywtXxCgnBXD0k8bQC90U1AHhlon/w+4dN2hDvHNfY+WgSL1AM4S/8l0p5blNqIaTnPHsZMCNfBT3KoxKo51za25OGomGsnKBFw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767808554; c=relaxed/simple;
-	bh=1lRn2piInez3ev2oqRjOMUDIpyzbE0FPizQmQSR2JQY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ElIVBdrhrcLaQuRNJLlrWCiTFQ45cfEZ70i0QesoW88PV4M+gCvpSphLc9iV2ilsOR8ZdkoN/oy1yyzcanGUjUW6GrdeOkT1CXakFSmjckM5WVqUdNg9/5eoOOlovCRPgQXws9XxllVmHwMtE5Dq8glyUVuD1IQEuo+YQi6mgws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1F046497;
-	Wed,  7 Jan 2026 09:55:38 -0800 (PST)
-Received: from [10.57.48.49] (unknown [10.57.48.49])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A1A763F5A1;
-	Wed,  7 Jan 2026 09:55:42 -0800 (PST)
-Message-ID: <7cd7b4f0-7aa5-4ca0-adc6-44d968c1ed48@arm.com>
-Date: Wed, 7 Jan 2026 17:55:40 +0000
+	s=arc-20240116; t=1767810667; c=relaxed/simple;
+	bh=eMeNFqR5Pctg3QbjgJQqiWaDgf3J7qEyQtRFeVHzVD0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=N4wFFDuPUBoQkSNXSyZYmATegUHWS0LgMvjkgtmDe6KYlpvq0Xk/bpytxcLHGmn/Pib1uj1vbYqrpX++ClS3qyHJqHUEypT7ldJD0DbEavAh0oyoLOcki8X1OowybxMnEI2yidu/PsIKOFOyWP9uTZVgZ2kjcARDmGe+vGB5tnU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=fho8rUMp; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 6079FHXg021887
+	for <stable@vger.kernel.org>; Wed, 7 Jan 2026 18:30:55 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=VWfyabzJPuGaEH0aY
+	uPp8WCVg/+g9O0m7WdK+9+/FrQ=; b=fho8rUMpfOYZOUSBDGvnbZM/QFQVcV4Y4
+	GvscwtnaU545AaxBZofEsPTJDDw9+4Y3JUkGVAUly/jKQYQB8evNvnaBcsGAVHjr
+	GcCriVmyWsdq7X/M/O2lCItIDskPdFsBnPCmlrAdtrIBGSn9Pa8TGuDZzbwrA/jR
+	E42xZLKxZfu+JgoMkGFlJ6r9oEg33YAars/zp0o/JoFr63S+14uutfqpJkS0PGLl
+	xDIJ/ruVnN7cqtZ05AiwUn9Z3Z1vF2lbk486mk1tB2OOj7stlcqsAKSB6PrKCJhE
+	Wz8UxR5/7coy35iZGeXj9t0rwcKP3fUtwT1SgdXKbuml15k8Hp/Bg==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4betu6amq2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <stable@vger.kernel.org>; Wed, 07 Jan 2026 18:30:54 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 607H1Avw015202
+	for <stable@vger.kernel.org>; Wed, 7 Jan 2026 18:30:54 GMT
+Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4bfdesjvyr-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <stable@vger.kernel.org>; Wed, 07 Jan 2026 18:30:54 +0000
+Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com [10.241.53.104])
+	by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 607IUrgL51970408
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 7 Jan 2026 18:30:53 GMT
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 158F05805D;
+	Wed,  7 Jan 2026 18:30:53 +0000 (GMT)
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C5C6258052;
+	Wed,  7 Jan 2026 18:30:52 +0000 (GMT)
+Received: from IBM-D32RQW3.ibm.com (unknown [9.61.241.168])
+	by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Wed,  7 Jan 2026 18:30:52 +0000 (GMT)
+From: Farhan Ali <alifm@linux.ibm.com>
+To: alifm@linux.ibm.com
+Cc: stable@vger.kernel.org
+Subject: [PATCH v7 1/9] PCI: Allow per function PCI slots
+Date: Wed,  7 Jan 2026 10:30:43 -0800
+Message-ID: <20260107183052.1333-2-alifm@linux.ibm.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260107183052.1333-1-alifm@linux.ibm.com>
+References: <20260107183052.1333-1-alifm@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] arm64: errata: Workaround for SI L1 downstream
- coherency issue
-To: Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>
-Cc: Lucas Wei <lucaswei@google.com>, Catalin Marinas
- <catalin.marinas@arm.com>, Jonathan Corbet <corbet@lwn.net>,
- sjadavani@google.com, kernel test robot <lkp@intel.com>,
- stable@vger.kernel.org, kernel-team@android.com,
- linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, smostafa@google.com
-References: <20251229033621.996546-1-lucaswei@google.com>
- <87o6ndduye.wl-maz@kernel.org> <aV6K7QnUa7jDpKw-@willie-the-truck>
-From: Robin Murphy <robin.murphy@arm.com>
-Content-Language: en-GB
-In-Reply-To: <aV6K7QnUa7jDpKw-@willie-the-truck>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=QbNrf8bv c=1 sm=1 tr=0 ts=695ea65f cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
+ a=Oaqo05sdQjFGKWlA34QA:9
+X-Proofpoint-ORIG-GUID: k6GeW5UOUv5JDYoyObwgZAKSqCQU-zTo
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTA3MDE0NSBTYWx0ZWRfXzhT5XwSAHR+1
+ fb22mBDW//b+sFdN7sHQBFlnhasiQ0aO5L7mZE3CAS5TLZOs/1CqJqd2e/2bRnzmHEKsAeorVaI
+ 8+T2Awp7uhQot//nUOXY53AF9uFqvh/gF4q3S3x5i1ho5QDqGCqw0Bm3ST0uECSuVWRL3cWz/Lz
+ KtsqmR0/DzQCPlR4O4yFvu7HV5j5y9q1TsCckHWnsGrZfLB+XtIW/wEKWl3cij0aJqFhjS3KcEB
+ d/MrHBpPWP2l4ncaFl1GZyxlGBBVZX3LqHpv6yDrIagWPFfpEzprzdv3h0GibXL41hLxbR+pZSi
+ SG/P2GhdX4kUNO2w6hGZLsZbi1EL6K1P5rtDeCoLvmtp+TxL3i4b7AHfyLaReB3dPBrviTGY/wS
+ 3q06qOcJ/vITOaRs01SO3J6O4ytIZZsEc/iOUTpClIQJzMv+NHUIGqi1yLCm6xSrrTEJm9/0G2X
+ ddy0WJYKEJjmY2xJ40g==
+X-Proofpoint-GUID: k6GeW5UOUv5JDYoyObwgZAKSqCQU-zTo
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2026-01-07_03,2026-01-06_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 clxscore=1015 bulkscore=0 suspectscore=0 priorityscore=1501
+ adultscore=0 lowpriorityscore=0 impostorscore=0 phishscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2512120000 definitions=main-2601070145
 
-On 2026-01-07 4:33 pm, Will Deacon wrote:
-> Hey Marc,
-> 
-> On Thu, Jan 01, 2026 at 06:55:05PM +0000, Marc Zyngier wrote:
->> On Mon, 29 Dec 2025 03:36:19 +0000,
->> Lucas Wei <lucaswei@google.com> wrote:
->>> diff --git a/arch/arm64/kernel/cpu_errata.c b/arch/arm64/kernel/cpu_errata.c
->>> index 8cb3b575a031..5c0ab6bfd44a 100644
->>> --- a/arch/arm64/kernel/cpu_errata.c
->>> +++ b/arch/arm64/kernel/cpu_errata.c
->>> @@ -141,6 +141,30 @@ has_mismatched_cache_type(const struct arm64_cpu_capabilities *entry,
->>>   	return (ctr_real != sys) && (ctr_raw != sys);
->>>   }
->>>   
->>> +#ifdef CONFIG_ARM64_ERRATUM_4311569
->>> +static DEFINE_STATIC_KEY_FALSE(arm_si_l1_workaround_4311569);
->>> +static int __init early_arm_si_l1_workaround_4311569_cfg(char *arg)
->>> +{
->>> +	static_branch_enable(&arm_si_l1_workaround_4311569);
->>> +	pr_info("Enabling cache maintenance workaround for ARM SI-L1 erratum 4311569\n");
->>> +
->>> +	return 0;
->>> +}
->>> +early_param("arm_si_l1_workaround_4311569", early_arm_si_l1_workaround_4311569_cfg);
->>> +
->>> +/*
->>> + * We have some earlier use cases to call cache maintenance operation functions, for example,
->>> + * dcache_inval_poc() and dcache_clean_poc() in head.S, before making decision to turn on this
->>> + * workaround. Since the scope of this workaround is limited to non-coherent DMA agents, its
->>> + * safe to have the workaround off by default.
->>> + */
->>> +static bool
->>> +need_arm_si_l1_workaround_4311569(const struct arm64_cpu_capabilities *entry, int scope)
->>> +{
->>> +	return static_branch_unlikely(&arm_si_l1_workaround_4311569);
->>> +}
->>> +#endif
->>
->> But this isn't a detection mechanism. That's relying on the user
->> knowing they are dealing with broken hardware. How do they find out?
-> 
-> Sadly, I'm not aware of a mechanism to detect this reliably at runtime
-> but adding Robin in case he knows of one. Linux generally doesn't need
-> to worry about the SLC, so we'd have to add something to DT to detect
-> it and even then I don't know whether it's something that is typically
-> exposed to non-secure...
-> 
-> We also need the workaround to be up early enough that drivers don't
-> run into issues, so that would probably involve invasive surgery in the
-> DT parsing code.
+On s390 systems, which use a machine level hypervisor, PCI devices are
+always accessed through a form of PCI pass-through which fundamentally
+operates on a per PCI function granularity. This is also reflected in the
+s390 PCI hotplug driver which creates hotplug slots for individual PCI
+functions. Its reset_slot() function, which is a wrapper for
+zpci_hot_reset_device(), thus also resets individual functions.
 
-Indeed even if we did happen to know where the interconnect registers 
-are, I'm not sure there's any ID bit for the relevant configuration 
-option, plus that still wouldn't be accurate anyway - it's fine to have 
-a downstream cache/PoS *without* any back-door observers, so the actual 
-problematic condition we need to detect is outside the SI IP altogether. 
-It's a matter of SoC-level integration, so AFAICS the realistic options 
-are likely to be:
+Currently, the kernel's PCI_SLOT() macro assigns the same pci_slot object
+to multifunction devices. This approach worked fine on s390 systems that
+only exposed virtual functions as individual PCI domains to the operating
+system.  Since commit 44510d6fa0c0 ("s390/pci: Handling multifunctions")
+s390 supports exposing the topology of multifunction PCI devices by
+grouping them in a shared PCI domain. When attempting to reset a function
+through the hotplug driver, the shared slot assignment causes the wrong
+function to be reset instead of the intended one. It also leaks memory as
+we do create a pci_slot object for the function, but don't correctly free
+it in pci_slot_release().
 
-  - SMCCC SOC_ID (if available early enough)
-  - Match a top-level SoC/platform compatible out of the flat DT
-  - Just trust that affected platforms' bootloaders will know to add the 
-command-line option :/
+Add a flag for struct pci_slot to allow per function PCI slots for
+functions managed through a hypervisor, which exposes individual PCI
+functions while retaining the topology.
 
->> You don't even call out what platform is actually affected...
-> 
-> Well, it's an Android phone :)
-> 
-> More generally, it's going to be anything with an Arm "SI L1" configured
-> to work with non-coherent DMA agents below it. Christ knows whose bright
-> idea it was to put "L1" in the name of the thing containing the system
-> cache.
+Fixes: 44510d6fa0c0 ("s390/pci: Handling multifunctions")
+Cc: stable@vger.kernel.org
+Suggested-by: Niklas Schnelle <schnelle@linux.ibm.com>
+Reviewed-by: Niklas Schnelle <schnelle@linux.ibm.com>
+Signed-off-by: Farhan Ali <alifm@linux.ibm.com>
+---
+ drivers/pci/pci.c   |  5 +++--
+ drivers/pci/slot.c  | 25 ++++++++++++++++++++++---
+ include/linux/pci.h |  1 +
+ 3 files changed, 26 insertions(+), 5 deletions(-)
 
-I'm still thankful the Neoverse product line skipped "MMU S1" and "MMU 
-S2"...
+diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+index 13dbb405dc31..c105e285cff8 100644
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -4832,8 +4832,9 @@ static int pci_reset_hotplug_slot(struct hotplug_slot *hotplug, bool probe)
+ 
+ static int pci_dev_reset_slot_function(struct pci_dev *dev, bool probe)
+ {
+-	if (dev->multifunction || dev->subordinate || !dev->slot ||
+-	    dev->dev_flags & PCI_DEV_FLAGS_NO_BUS_RESET)
++	if (dev->subordinate || !dev->slot ||
++	    dev->dev_flags & PCI_DEV_FLAGS_NO_BUS_RESET ||
++	    (dev->multifunction && !dev->slot->per_func_slot))
+ 		return -ENOTTY;
+ 
+ 	return pci_reset_hotplug_slot(dev->slot->hotplug, probe);
+diff --git a/drivers/pci/slot.c b/drivers/pci/slot.c
+index 50fb3eb595fe..ed10fa3ae727 100644
+--- a/drivers/pci/slot.c
++++ b/drivers/pci/slot.c
+@@ -63,6 +63,22 @@ static ssize_t cur_speed_read_file(struct pci_slot *slot, char *buf)
+ 	return bus_speed_read(slot->bus->cur_bus_speed, buf);
+ }
+ 
++static bool pci_dev_matches_slot(struct pci_dev *dev, struct pci_slot *slot)
++{
++	if (slot->per_func_slot)
++		return dev->devfn == slot->number;
++
++	return PCI_SLOT(dev->devfn) == slot->number;
++}
++
++static bool pci_slot_enabled_per_func(void)
++{
++	if (IS_ENABLED(CONFIG_S390))
++		return true;
++
++	return false;
++}
++
+ static void pci_slot_release(struct kobject *kobj)
+ {
+ 	struct pci_dev *dev;
+@@ -73,7 +89,7 @@ static void pci_slot_release(struct kobject *kobj)
+ 
+ 	down_read(&pci_bus_sem);
+ 	list_for_each_entry(dev, &slot->bus->devices, bus_list)
+-		if (PCI_SLOT(dev->devfn) == slot->number)
++		if (pci_dev_matches_slot(dev, slot))
+ 			dev->slot = NULL;
+ 	up_read(&pci_bus_sem);
+ 
+@@ -166,7 +182,7 @@ void pci_dev_assign_slot(struct pci_dev *dev)
+ 
+ 	mutex_lock(&pci_slot_mutex);
+ 	list_for_each_entry(slot, &dev->bus->slots, list)
+-		if (PCI_SLOT(dev->devfn) == slot->number)
++		if (pci_dev_matches_slot(dev, slot))
+ 			dev->slot = slot;
+ 	mutex_unlock(&pci_slot_mutex);
+ }
+@@ -265,6 +281,9 @@ struct pci_slot *pci_create_slot(struct pci_bus *parent, int slot_nr,
+ 	slot->bus = pci_bus_get(parent);
+ 	slot->number = slot_nr;
+ 
++	if (pci_slot_enabled_per_func())
++		slot->per_func_slot = 1;
++
+ 	slot->kobj.kset = pci_slots_kset;
+ 
+ 	slot_name = make_slot_name(name);
+@@ -285,7 +304,7 @@ struct pci_slot *pci_create_slot(struct pci_bus *parent, int slot_nr,
+ 
+ 	down_read(&pci_bus_sem);
+ 	list_for_each_entry(dev, &parent->devices, bus_list)
+-		if (PCI_SLOT(dev->devfn) == slot_nr)
++		if (pci_dev_matches_slot(dev, slot))
+ 			dev->slot = slot;
+ 	up_read(&pci_bus_sem);
+ 
+diff --git a/include/linux/pci.h b/include/linux/pci.h
+index 864775651c6f..08fa57beb7b2 100644
+--- a/include/linux/pci.h
++++ b/include/linux/pci.h
+@@ -78,6 +78,7 @@ struct pci_slot {
+ 	struct list_head	list;		/* Node in list of slots */
+ 	struct hotplug_slot	*hotplug;	/* Hotplug info (move here) */
+ 	unsigned char		number;		/* PCI_SLOT(pci_dev->devfn) */
++	unsigned int		per_func_slot:1; /* Allow per function slot */
+ 	struct kobject		kobj;
+ };
+ 
+-- 
+2.43.0
 
->> The other elephant in the room is virtualisation: how does a guest
->> performing CMOs deals with this? How does it discover the that the
->> host is broken? I also don't see any attempt to make KVM handle the
->> erratum on behalf of the guest...
-> 
-> A guest shouldn't have to worry about the problem, as it only affects
-> clean to PoC for non-coherent DMA agents that reside downstream of the
-> SLC in the interconnect. Since VFIO doesn't permit assigning
-> non-coherent devices to a guest, guests shouldn't ever need to push
-> writes that far (and FWB would cause bigger problems if that was
-> something we wanted to support)
-> 
-> +Mostafa to keep me honest on the VFIO front.
-
-I don't think we actually prevent non-coherent devices being assigned, 
-we just rely on the IOMMU supporting IOMMU_CAP_CACHE_COHERENCY. Thus if 
-there's an I/O-coherent SMMU then it could end up being permitted, 
-however I would hope that either the affected devices are not behind 
-such an SMMU, or at least that if the SMMU imposes cacheable attributes 
-then that prevents traffic from taking the back-door path to RAM.
-
-Thanks,
-Robin.
 
