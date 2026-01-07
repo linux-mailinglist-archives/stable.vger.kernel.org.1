@@ -1,372 +1,235 @@
-Return-Path: <stable+bounces-206190-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206193-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24AEBCFF6E5
-	for <lists+stable@lfdr.de>; Wed, 07 Jan 2026 19:24:00 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D362CCFF71A
+	for <lists+stable@lfdr.de>; Wed, 07 Jan 2026 19:28:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 84C3130012F5
-	for <lists+stable@lfdr.de>; Wed,  7 Jan 2026 18:23:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DB49431BB48C
+	for <lists+stable@lfdr.de>; Wed,  7 Jan 2026 17:31:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A36FA33A9FD;
-	Wed,  7 Jan 2026 17:21:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A2B0357728;
+	Wed,  7 Jan 2026 17:31:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="SKLF45Pf"
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="Ku9ayUmy";
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="Ku9ayUmy"
 X-Original-To: stable@vger.kernel.org
-Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011034.outbound.protection.outlook.com [52.101.70.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F01C1534EC
-	for <stable@vger.kernel.org>; Wed,  7 Jan 2026 17:21:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.97.179.56
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767806504; cv=none; b=t1TM71PAmVABstAgmUQYl54Qt2nEkGCG2x6BeSpYh1cWSCbtmavJCQBym0Jad4135neYAQL+8YWpaxTuzQyv+QIQmDdpJHNsw1McNAiAPmpoPzpGEAnrlEUaPz6qZ1ZCAaFwGEHID7+LSqMW/1zv89vJ6utttgtxkJz4oRVLHQ4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767806504; c=relaxed/simple;
-	bh=vKsNRka7i79ps83X2Nt+cx1Nofoiqab4riN1GKcx228=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=h5zuhvzHlBgE7tMEMihX/pfe8cyEWO8hYOpyW90RJw/9eWnPeEZgoWQAvazIyrOXFEBTihHOKD9SBmm2KOyc5JSYxd3bHNVLg9eXSsB11+r4FDvt4lzRxz6l24TAmgOIXCtKpYhzsT/g44IGVzidY5bZTvwuHkEZJYZLLdgREQM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=SKLF45Pf; arc=none smtp.client-ip=213.97.179.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:
-	Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=ou7XktXAt0FvfdnbLR5nYNVufhM+RaG85A5nCIAdK04=; b=SKLF45Pf67NBB1xdJsWMAmKK/D
-	hWpxEgdlZvcrGwitWp8BhqufzvFvTqpDeSMEkt3MJjW7HpAixKFwkFii0qKfC5rUlSAX6UY+3h03v
-	fkln8wlbnLrLMdQ4gGDXmbrT8ZmG9ieuui/SjeTdDXInh1aC+DtspliOuQl3+l7a6ExexkoSj7GYl
-	ldP9te1fu3TESXVom9+1I2HOn6Dtyfp+ISgmR69OmUJDyJID00CBepsg0MKCorKnyAtSTP1yJH1tk
-	+suIjYz7OdTD4HEUa8O08phnGqJ70YfU7HSuhhRvMb+IM7VMn/GS1WA96yJOx08ULfTSUhl940Kzz
-	Dmx5oThg==;
-Received: from 179-125-75-246-dinamico.pombonet.net.br ([179.125.75.246] helo=quatroqueijos.lan)
-	by fanzine2.igalia.com with esmtpsa 
-	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-	id 1vdXDo-002eKw-Qx; Wed, 07 Jan 2026 18:21:25 +0100
-From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-To: stable@vger.kernel.org
-Cc: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
-	syzkaller <syzkaller@googlegroups.com>,
-	yan kang <kangyan91@outlook.com>,
-	yue sun <samsun1006219@gmail.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.1] net: Remove RTNL dance for SIOCBRADDIF and SIOCBRDELIF.
-Date: Wed,  7 Jan 2026 14:21:16 -0300
-Message-ID: <20260107172116.2488542-1-cascardo@igalia.com>
-X-Mailer: git-send-email 2.47.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E7F2357A37;
+	Wed,  7 Jan 2026 17:31:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.34
+ARC-Seal:i=3; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1767807113; cv=fail; b=ngxnNdZEXDuwMBnRg0C4xknzCmo1ZDfO6IDT/Axmz7o2NHcrxeyycVFjrIgZ3xaF+r+k21D3S6FV3sqNNUa8+FHWMNvmmFJd99Ivknz0jxKA8yJc+tyQILCGWfnbxoDlN/WyBp++QJOvQkprv3S1HTrehNsrP8nVaTfTFSbcGYQ=
+ARC-Message-Signature:i=3; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1767807113; c=relaxed/simple;
+	bh=2jEz98P0K4ZC+OwiIPVhm9BbuBX13r5M4Q1Ofse1gp4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=BhKEurOTtSeM+qfelPh9Ps8bxw7KCqS95jBhq3/2MBsuWcI5H1UNDWzbM8f/0t5rU+tBiseWSof0nu73SAS6b7eqBntq7hq9wXIuISeicYzbGEnC7MHLpos+k8WfLi18coWFFgXLfTreWa7ICRhNqa6MYCX12s0Kpk1I8NDJZQo=
+ARC-Authentication-Results:i=3; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=Ku9ayUmy; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=Ku9ayUmy; arc=fail smtp.client-ip=52.101.70.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
+ b=AhLH75Wqn/MrOtCprXI1Ibz3NcsaeHYYxrpJCTzsdIYEeVwdbBX3yD0crVqm7XPxRZ0a+NFJu3uRNIaqL6AYgxm6p99WmeB7AeNEk2ggGD3XCyQNX5aOvVjvxQtqzegy/EY+9Vhq0+0kPZeU6RGXo/K2BsE9ZHWqkmtuVRozjvnJ88HkHsB7lzGSZA2LBLmhh2jHbFT/8DJCOY7VyQ5WjMTY1eqJxjM2Qfpe6oIHCXje52DfZmTLkOONdxkQ2Gw0AXyOQWGblWhZJA/Xt3fCePo71sZ7viYw1QY7rOU4CTpeAmIaREBcQl4ftLM7y0NS94vUa099kjvbNSB2dhp+hg==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=fusSCnYT1RF9D6fDmeqsWRt/pruCzRTAS3NTH3aM5Sc=;
+ b=ALSrWE9SOjggeU5ZPuA3GUMjJRZ7JpG4Fmpn+APd5ebfDxCJuLCsRPQFWLw+WAu0IFKdeU/6UL9twBNVKRhSni/OpzIIjIvX0r/tof8Yi1OATCTCHNy8nKHfzAFAyi5tz4Dv0nzm1ggrtpc9jqw3LFxhMAsREBErXBgwdxLxJbF17jJtK/un/VKOok2LEMPK0DiCuInMyqzCrViTcLuZo3cfl11F74eVMXdiB1HYxhJq7W5u6HZCrUHIuyEP422krmJvLBGzvioEUB+Uu/q0cNgYqQHZNPcbEOWTWCi3YYDSbR5s83dNugZ91/VqM7cxAtHg3GlaZNYf9eL1TBjrng==
+ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
+ 4.158.2.129) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=arm.com;
+ dmarc=pass (p=none sp=none pct=100) action=none header.from=arm.com;
+ dkim=pass (signature was verified) header.d=arm.com; arc=pass (0 oda=1 ltdi=1
+ spf=[1,1,smtp.mailfrom=arm.com] dkim=[1,1,header.d=arm.com]
+ dmarc=[1,1,header.from=arm.com])
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=fusSCnYT1RF9D6fDmeqsWRt/pruCzRTAS3NTH3aM5Sc=;
+ b=Ku9ayUmyxrq7lgNyvtdE1bLkKybl7rhPgek3Nl3TbaizSYqyR3gKPNncFjJ0sJ0eSybGXnKPW10au/kCUo16c0u4go8a8Is8NX/oAlFgd3SzobDIhHqK4pK88b2yiQxLmM9D0c0A86kA0nRUqAAoN0FEhAU/TjvVKMl1MDNp5vE=
+Received: from DU6P191CA0002.EURP191.PROD.OUTLOOK.COM (2603:10a6:10:540::19)
+ by VI1PR08MB10007.eurprd08.prod.outlook.com (2603:10a6:800:1cc::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9478.4; Wed, 7 Jan
+ 2026 17:31:45 +0000
+Received: from DU2PEPF00028D08.eurprd03.prod.outlook.com
+ (2603:10a6:10:540:cafe::96) by DU6P191CA0002.outlook.office365.com
+ (2603:10a6:10:540::19) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9499.2 via Frontend Transport; Wed, 7
+ Jan 2026 17:31:45 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 4.158.2.129)
+ smtp.mailfrom=arm.com; dkim=pass (signature was verified)
+ header.d=arm.com;dmarc=pass action=none header.from=arm.com;
+Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
+ 4.158.2.129 as permitted sender) receiver=protection.outlook.com;
+ client-ip=4.158.2.129; helo=outbound-uk1.az.dlp.m.darktrace.com; pr=C
+Received: from outbound-uk1.az.dlp.m.darktrace.com (4.158.2.129) by
+ DU2PEPF00028D08.mail.protection.outlook.com (10.167.242.168) with Microsoft
+ SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.20.9499.1
+ via Frontend Transport; Wed, 7 Jan 2026 17:31:44 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=lvSSK4XifAFKo9NWsmHL1Bl6b7OrZZx7whOl1O10pXyxnw3XDXsIZWY3vl1/51bN7DV5TrUGZ3KvPDLxU2IMDzDv0ctg6CSmn+AE+LWbj+xQRKtDD+SYEoyrVwje1/8qgFO0hBXykwavtRz+5xcWWkgWOtbX8jjYxC/9J9HYTLQGrLp4Wh9KROa6ptkbUo17L4ZFesoreMjfOaRzk0gK/Nel0rEiIGr3IS/CdNMZoayTAM4DpSFHbuDORaU3ONRJ/yTmZmHaHFxT5bugumD3vHGMGsBTm5JfUbya86MbmWEWJulT4UHvRH+XleSWXZtWTZ41dtEEgRq6PWGjHhIwBA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=fusSCnYT1RF9D6fDmeqsWRt/pruCzRTAS3NTH3aM5Sc=;
+ b=t3yto9oISK2s/ro/SqJCXyUtHKGam1gs2BHyJxgJWGsIVuSJ7fXRanty4JPpdBcpwIWI+saCbS2CbfwMRCOP3YpfMkrVGILwmDb/j6O3/TTaxbqexGykFwBXr+YR0V+iDl6nl6T/Plt7+LKQ369QlPKVpfHpClTN3V8575tSznA3s7+Pis79LoSi7guwxRA70IlbWGOnv92VwudWEk61rvgOzUXgQDI9N9/Jk3+triEa3J1VlyGgeVdxkjY/8EduB3LStLgEKzwxKS+XQ7tL0tO+m8uFMo5B91uQpAB2fqwxVRDiXZ5lUQHMnbrR8+Nc0zeAvk6PRg0b3JVC4NJl/Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
+ header.d=arm.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=fusSCnYT1RF9D6fDmeqsWRt/pruCzRTAS3NTH3aM5Sc=;
+ b=Ku9ayUmyxrq7lgNyvtdE1bLkKybl7rhPgek3Nl3TbaizSYqyR3gKPNncFjJ0sJ0eSybGXnKPW10au/kCUo16c0u4go8a8Is8NX/oAlFgd3SzobDIhHqK4pK88b2yiQxLmM9D0c0A86kA0nRUqAAoN0FEhAU/TjvVKMl1MDNp5vE=
+Authentication-Results-Original: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=arm.com;
+Received: from GV1PR08MB10521.eurprd08.prod.outlook.com
+ (2603:10a6:150:163::20) by PAWPR08MB8959.eurprd08.prod.outlook.com
+ (2603:10a6:102:33f::15) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.2; Wed, 7 Jan
+ 2026 17:30:42 +0000
+Received: from GV1PR08MB10521.eurprd08.prod.outlook.com
+ ([fe80::d430:4ef9:b30b:c739]) by GV1PR08MB10521.eurprd08.prod.outlook.com
+ ([fe80::d430:4ef9:b30b:c739%3]) with mapi id 15.20.9478.004; Wed, 7 Jan 2026
+ 17:30:42 +0000
+Date: Wed, 7 Jan 2026 17:30:39 +0000
+From: Yeoreum Yun <yeoreum.yun@arm.com>
+To: Kevin Brodsky <kevin.brodsky@arm.com>
+Cc: linux-pm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, rafael@kernel.org, pavel@kernel.org,
+	catalin.marinas@arm.com, will@kernel.org, anshuman.khandual@arm.com,
+	ryan.roberts@arm.com, yang@os.amperecomputing.com,
+	joey.gouly@arm.com, stable@vger.kernel.org
+Subject: Re: [PATCH v2] arm64: fix cleared E0POE bit after
+ cpu_suspend()/resume()
+Message-ID: <aV6YPyLV1quaOkyw@e129823.arm.com>
+References: <20260107162115.3292205-1-yeoreum.yun@arm.com>
+ <846e1998-b508-4433-9db6-3a52ff23552f@arm.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <846e1998-b508-4433-9db6-3a52ff23552f@arm.com>
+X-ClientProxiedBy: LO4P265CA0074.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:2bd::13) To GV1PR08MB10521.eurprd08.prod.outlook.com
+ (2603:10a6:150:163::20)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-TrafficTypeDiagnostic:
+	GV1PR08MB10521:EE_|PAWPR08MB8959:EE_|DU2PEPF00028D08:EE_|VI1PR08MB10007:EE_
+X-MS-Office365-Filtering-Correlation-Id: e745cb87-37a0-4b51-bb6c-08de4e12a0f3
+x-checkrecipientrouted: true
+NoDisclaimer: true
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam-Untrusted: BCL:0;ARA:13230040|1800799024|366016|376014;
+X-Microsoft-Antispam-Message-Info-Original:
+ =?us-ascii?Q?uM2+7ZPzZDru0Aa3lBqphMa+erGdw/dDWPCcOgPkZ1llyHBcZ46GvHiXU0yz?=
+ =?us-ascii?Q?QtRXfBRib0dQoeS9mWEpW7EUIV3kQwsUpy83cx345YLa90nK1S4vWLTw4xO3?=
+ =?us-ascii?Q?W1tur9BxpD8B/jYvTIF0uMFTI9VwdCdUoS81FkO3PhMA/7dgYqi6Dmljn0ba?=
+ =?us-ascii?Q?lZR/pY6Cmv5O815+e4dm9dGrwBJ4pWf0kF+YL85wNJ9+ZzbY/QxD9fBPYv0j?=
+ =?us-ascii?Q?cET150Ts+1nyszZEwnl0C6gC0Xb3okcfy3tr1IzFoPq1/BuOAGan//kHBzww?=
+ =?us-ascii?Q?nDMSxOjUD3AKxEa5gyw5s9ezFoTNs6U7o7iGJh77zphlxMsQY4DIBDZg6bYW?=
+ =?us-ascii?Q?n9i+sbROOMu0QDHMHEvECZxdRQaVQpeHda3Tlc0OdZ+XGln4NqU72ZJyBkSK?=
+ =?us-ascii?Q?jUDWW7PVDBlCfkzoPzUpV8zKKTe8HsgMAkHDfrfT7LbsUV7z5neCm+rXltER?=
+ =?us-ascii?Q?NvCFveNtavj5s9kd1o0T/KeJ9R13lrPVD3uZtJSibRhPBR3hr2H4Qnt5uQBF?=
+ =?us-ascii?Q?NMY3xMpCwqphER5i130EGQMaJw3BZ5sc4SqnQ9qZYIdYWH/hciNynbuUVSiZ?=
+ =?us-ascii?Q?0siuyo7Yq4nszOZc3QqvsxOebHzrkxUL/HZT86ZrnTTdkQTo61IoX75NG96i?=
+ =?us-ascii?Q?sMtiBOT3lk29r71oTMt+Igs8h/E5XbPlZ8lulWnlrhfVeVgLIrXkU2/yVk7D?=
+ =?us-ascii?Q?JyGa1h1QKU7mLqSnqL4cLJuNpULDLs72QDpby9H/9GZii/qtHaWcuneOZ4P4?=
+ =?us-ascii?Q?LEimXPvI8WGkq6j66anglzoSKq2cN2KlfmT+2zUZCnDG1G7KOy87ngu3KwCu?=
+ =?us-ascii?Q?QgOGnqJXH7pOdS+M9SJzn+ygIAwFPx1W8lYV6QCOJPJm0vh0ZyOkOPyfmxD0?=
+ =?us-ascii?Q?hMdcETzfn66aFtn6Hp7Djux10r9Fsxg8a4HX5pd0O/a5n9yy+eyoj6TXZc+H?=
+ =?us-ascii?Q?PVgKUgpz15Jnb282IT9mqurgCi6mWes4Egv9O6e+8nO0OkY661NSQWScvtqZ?=
+ =?us-ascii?Q?+Pc+3bc7xMTXMy41wWDnpbFTaTOyKFIXaf1KCx0OykBkFb5BPXAJM+Ec6j5j?=
+ =?us-ascii?Q?P0exGJheeXTP1RUzbGZG3UbO4+Cosxu0AnKypGruawdwYtJ6VQUEjdHbAdRS?=
+ =?us-ascii?Q?u9wUCLIe01YNkNsgHpY9xb24ppRUgsQvqm7Fj5uYlae++FbI/bm6hbPdFHJt?=
+ =?us-ascii?Q?HXdGHpOdDTpZJpXruN0Op4M5gwE3dPYz/3L9Gs1yd2pkX0U1ii5PGsYEFFa6?=
+ =?us-ascii?Q?woLozxFo7wDs8woGHZLNV8+C3g/16v9owWqJsRYH04g1XUQJxnOcjc5LKXbo?=
+ =?us-ascii?Q?Jb8honyt8LRSpsdRGfcUFj1ye2X06qv0F8AwMJjKCxwmF3xb5PSD5uZn6f/W?=
+ =?us-ascii?Q?RBanF45/nylj5P8OMfHd9SZ9VdRAB+FtEje9th5GD01G/AUIWsOokeM8cnYb?=
+ =?us-ascii?Q?INKZtzycIH7nkcxZ9scDb4w8GOyJhIFY?=
+X-Forefront-Antispam-Report-Untrusted:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV1PR08MB10521.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAWPR08MB8959
+X-EOPAttributedMessage: 0
+X-MS-Exchange-Transport-CrossTenantHeadersStripped:
+ DU2PEPF00028D08.eurprd03.prod.outlook.com
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id-Prvs:
+	fdc1d1ec-3b39-4a72-77b3-08de4e127b96
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|14060799003|82310400026|376014|35042699022|1800799024|36860700013;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?lcE5xTGuUmSFGf9n7lTJ+HuLCiwGASVeYsHTZyMMA7rYoCcXnySlDASkP9TF?=
+ =?us-ascii?Q?IKUu3JnqD10j/kOGFPhs+SD3JmG7hJmUUNXnelTTQs+cfxC++YbLZ+rPmMSi?=
+ =?us-ascii?Q?buANVtTYJqVMh8e4UenZETyDoAXnv0HyAtGzI5CWeU7/fit1o+GcXP1SWT2O?=
+ =?us-ascii?Q?J+RCq6Xb3ak0BanXIkNvJioWD8OfHPp+IteLtq9G51zYbdl79QLv6QuJAPmH?=
+ =?us-ascii?Q?YqIOxuePqWyKaLHzLdYFc08WElWbVw2UtuUhMcQXku0v3xe4LfA/XSU/la6F?=
+ =?us-ascii?Q?M9yL0be9otFC45ZAsLMyVy8p1JwWvqmznyC2JszqF38JEGXTfcTcKCRWWnbS?=
+ =?us-ascii?Q?SC1OtaqK/dI19EZztn0gUw21OCkoNF3y9V+yiZJpdoRZCEC5EyNOTncUmhTi?=
+ =?us-ascii?Q?NW82jSaNRoCILu4mpEET8Cz+pFtLYJXukmjewHaV6Hgr34F0x3vK84eDUHVd?=
+ =?us-ascii?Q?cjzEtmXixZvhLnvPBBund1rFElBHR5XHYGQMoVhk4svjVW7cHRVIJeebg1e4?=
+ =?us-ascii?Q?zyiR4YilJYcq785qVUAlm++wJFcaUlQLdfFSa0NgtJ0YiMS+D8nplStYtBl8?=
+ =?us-ascii?Q?km8EUrQq8vtkvfXaEvTJUFjh0zwzjNGuZ93qlNlUgBK/rl9s5UZYFmdlDIbW?=
+ =?us-ascii?Q?uvBXn8vSYEbbKGoXAW0/ypvhj4N/cA/Y7y8OPdPLwRKjPlCCVvqRxXpOKqXC?=
+ =?us-ascii?Q?K50qGgeJKRgjH1IkWh/sRGGNcxpDJwXIO4lwFPDQsl0/j91l1ib7eUoC1GFG?=
+ =?us-ascii?Q?CfDix2tSsnvjHlkA/SDMT/s5Yhtw0b72m8b9g0jEKnCq2BTD9eR20cKoa6Ox?=
+ =?us-ascii?Q?/IrVhzytaLNE2fewTrPcGx6r21dUjoQHODzb40tK1J4UatA7VbJmK3eBOarB?=
+ =?us-ascii?Q?kv2EcWpOWvG9ybnm4Gc6GYtuVSX9CpMqZ/u9pmS9P8494S7IxWuKjeAavFIE?=
+ =?us-ascii?Q?b2RhlVWqJkleTzjQF3aYv1MSY+dluFFNm0pFRtWXl1b0KZReVqRmBPUEu9CR?=
+ =?us-ascii?Q?C/esox4L0TYFCVUv50EhyzCx1mKkgsuzBuFudNyhN08QGrB7gVSPhB/5BbM4?=
+ =?us-ascii?Q?MOx/CqikewdbI/YAQNfL8fjtCVi40zX4AzxEzF/oyME7GpO9yp/WTEXZbW5j?=
+ =?us-ascii?Q?KJtJuy3vXbsuRlJsHivChaJdmavz4ZovHYcDt2QBV2P9dRn6WOw6CQ3CAZl4?=
+ =?us-ascii?Q?8w4CJ7pzYFNFqiIFWCBLJNQ7zbZcs3I/HkOre/9Nb9CBUMpTSNWIb485uw8H?=
+ =?us-ascii?Q?RdRlo6Z9tz3vi/+85FIz/q1tH+P3iIDx57ynaS2Qa7R3Fcbtg8pfnk6tNe/K?=
+ =?us-ascii?Q?T56ZFOvtozX062nB3MugESVGRgXrU+uNQW4ipztWozW6Koxr7bHCJcxfh/aX?=
+ =?us-ascii?Q?hNyjg9byCO23OODoDcfzElVi78Gqi6merBVlzrjIFYYhfZsEllj1J++Y6kZy?=
+ =?us-ascii?Q?I9PNSvHMt4d/HQ5w2wlKhp3QK8+fMJKc9W9J/KXEzQ5Ux0AZGcOD1/lPa/eD?=
+ =?us-ascii?Q?TJiRlu4JCqfxshZsFC6OMyqPRMhSAIu8i/yNhbO3yO4N9wPGvT6ePMFahoB1?=
+ =?us-ascii?Q?4m81+YWQVA8SNKVbKIE=3D?=
+X-Forefront-Antispam-Report:
+	CIP:4.158.2.129;CTRY:GB;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:outbound-uk1.az.dlp.m.darktrace.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(14060799003)(82310400026)(376014)(35042699022)(1800799024)(36860700013);DIR:OUT;SFP:1101;
+X-OriginatorOrg: arm.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jan 2026 17:31:44.8896
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: e745cb87-37a0-4b51-bb6c-08de4e12a0f3
+X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[4.158.2.129];Helo=[outbound-uk1.az.dlp.m.darktrace.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DU2PEPF00028D08.eurprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR08MB10007
 
-commit ed3ba9b6e280e14cc3148c1b226ba453f02fa76c upstream.
+Hi Kevin,
 
-SIOCBRDELIF is passed to dev_ioctl() first and later forwarded to
-br_ioctl_call(), which causes unnecessary RTNL dance and the splat
-below [0] under RTNL pressure.
+[...]
 
-Let's say Thread A is trying to detach a device from a bridge and
-Thread B is trying to remove the bridge.
+> > @@ -144,6 +148,10 @@ SYM_FUNC_START(cpu_do_resume)
+> >  	msr	tcr_el1, x8
+> >  	msr	vbar_el1, x9
+> >  	msr	mdscr_el1, x10
+> > +alternative_if ARM64_HAS_TCR2
+> > +	ldr	x2, [x0, #104]
+> > +	msr	REG_TCR2_EL1, x2
+> > +alternative_else_nop_endif
+>
+> Maybe this could be pushed further down cpu_do_resume, next to DISR_EL1
+> maybe (since it's also conditional)? Otherwise the diff LGTM:
 
-In dev_ioctl(), Thread A bumps the bridge device's refcnt by
-netdev_hold() and releases RTNL because the following br_ioctl_call()
-also re-acquires RTNL.
+Sorry but IIUC, currently there is no DISR_EL1 save/restore not yet?
+and I think current place is good where before restore SCTLR_EL1 which
+before MMU enabled.
 
-In the race window, Thread B could acquire RTNL and try to remove
-the bridge device.  Then, rtnl_unlock() by Thread B will release RTNL
-and wait for netdev_put() by Thread A.
+Am I missing something?
 
-Thread A, however, must hold RTNL after the unlock in dev_ifsioc(),
-which may take long under RTNL pressure, resulting in the splat by
-Thread B.
+Thanks.
 
-  Thread A (SIOCBRDELIF)           Thread B (SIOCBRDELBR)
-  ----------------------           ----------------------
-  sock_ioctl                       sock_ioctl
-  `- sock_do_ioctl                 `- br_ioctl_call
-     `- dev_ioctl                     `- br_ioctl_stub
-        |- rtnl_lock                     |
-        |- dev_ifsioc                    '
-        '  |- dev = __dev_get_by_name(...)
-           |- netdev_hold(dev, ...)      .
-       /   |- rtnl_unlock  ------.       |
-       |   |- br_ioctl_call       `--->  |- rtnl_lock
-  Race |   |  `- br_ioctl_stub           |- br_del_bridge
-  Window   |     |                       |  |- dev = __dev_get_by_name(...)
-       |   |     |  May take long        |  `- br_dev_delete(dev, ...)
-       |   |     |  under RTNL pressure  |     `- unregister_netdevice_queue(dev, ...)
-       |   |     |               |       `- rtnl_unlock
-       \   |     |- rtnl_lock  <-'          `- netdev_run_todo
-           |     |- ...                        `- netdev_run_todo
-           |     `- rtnl_unlock                   |- __rtnl_unlock
-           |                                      |- netdev_wait_allrefs_any
-           |- netdev_put(dev, ...)  <----------------'
-                                                Wait refcnt decrement
-                                                and log splat below
 
-To avoid blocking SIOCBRDELBR unnecessarily, let's not call
-dev_ioctl() for SIOCBRADDIF and SIOCBRDELIF.
-
-In the dev_ioctl() path, we do the following:
-
-  1. Copy struct ifreq by get_user_ifreq in sock_do_ioctl()
-  2. Check CAP_NET_ADMIN in dev_ioctl()
-  3. Call dev_load() in dev_ioctl()
-  4. Fetch the master dev from ifr.ifr_name in dev_ifsioc()
-
-3. can be done by request_module() in br_ioctl_call(), so we move
-1., 2., and 4. to br_ioctl_stub().
-
-Note that 2. is also checked later in add_del_if(), but it's better
-performed before RTNL.
-
-SIOCBRADDIF and SIOCBRDELIF have been processed in dev_ioctl() since
-the pre-git era, and there seems to be no specific reason to process
-them there.
-
-[0]:
-unregister_netdevice: waiting for wpan3 to become free. Usage count = 2
-ref_tracker: wpan3@ffff8880662d8608 has 1/1 users at
-     __netdev_tracker_alloc include/linux/netdevice.h:4282 [inline]
-     netdev_hold include/linux/netdevice.h:4311 [inline]
-     dev_ifsioc+0xc6a/0x1160 net/core/dev_ioctl.c:624
-     dev_ioctl+0x255/0x10c0 net/core/dev_ioctl.c:826
-     sock_do_ioctl+0x1ca/0x260 net/socket.c:1213
-     sock_ioctl+0x23a/0x6c0 net/socket.c:1318
-     vfs_ioctl fs/ioctl.c:51 [inline]
-     __do_sys_ioctl fs/ioctl.c:906 [inline]
-     __se_sys_ioctl fs/ioctl.c:892 [inline]
-     __x64_sys_ioctl+0x1a4/0x210 fs/ioctl.c:892
-     do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-     do_syscall_64+0xcb/0x250 arch/x86/entry/common.c:83
-     entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Fixes: 893b19587534 ("net: bridge: fix ioctl locking")
-Reported-by: syzkaller <syzkaller@googlegroups.com>
-Reported-by: yan kang <kangyan91@outlook.com>
-Reported-by: yue sun <samsun1006219@gmail.com>
-Closes: https://lore.kernel.org/netdev/SY8P300MB0421225D54EB92762AE8F0F2A1D32@SY8P300MB0421.AUSP300.PROD.OUTLOOK.COM/
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Acked-by: Stanislav Fomichev <sdf@fomichev.me>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://patch.msgid.link/20250316192851.19781-1-kuniyu@amazon.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-[cascardo: fixed conflict at dev_ifsioc]
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
----
- include/linux/if_bridge.h |  6 ++----
- net/bridge/br_ioctl.c     | 36 +++++++++++++++++++++++++++++++++---
- net/bridge/br_private.h   |  3 +--
- net/core/dev_ioctl.c      | 16 ----------------
- net/socket.c              | 19 +++++++++----------
- 5 files changed, 45 insertions(+), 35 deletions(-)
-
-diff --git a/include/linux/if_bridge.h b/include/linux/if_bridge.h
-index d62ef428e3aa..3963f0af4dad 100644
---- a/include/linux/if_bridge.h
-+++ b/include/linux/if_bridge.h
-@@ -63,11 +63,9 @@ struct br_ip_list {
- #define BR_DEFAULT_AGEING_TIME	(300 * HZ)
- 
- struct net_bridge;
--void brioctl_set(int (*hook)(struct net *net, struct net_bridge *br,
--			     unsigned int cmd, struct ifreq *ifr,
-+void brioctl_set(int (*hook)(struct net *net, unsigned int cmd,
- 			     void __user *uarg));
--int br_ioctl_call(struct net *net, struct net_bridge *br, unsigned int cmd,
--		  struct ifreq *ifr, void __user *uarg);
-+int br_ioctl_call(struct net *net, unsigned int cmd, void __user *uarg);
- 
- #if IS_ENABLED(CONFIG_BRIDGE) && IS_ENABLED(CONFIG_BRIDGE_IGMP_SNOOPING)
- int br_multicast_list_adjacent(struct net_device *dev,
-diff --git a/net/bridge/br_ioctl.c b/net/bridge/br_ioctl.c
-index f213ed108361..6bc0a11f2ed3 100644
---- a/net/bridge/br_ioctl.c
-+++ b/net/bridge/br_ioctl.c
-@@ -394,10 +394,26 @@ static int old_deviceless(struct net *net, void __user *data)
- 	return -EOPNOTSUPP;
- }
- 
--int br_ioctl_stub(struct net *net, struct net_bridge *br, unsigned int cmd,
--		  struct ifreq *ifr, void __user *uarg)
-+int br_ioctl_stub(struct net *net, unsigned int cmd, void __user *uarg)
- {
- 	int ret = -EOPNOTSUPP;
-+	struct ifreq ifr;
-+
-+	if (cmd == SIOCBRADDIF || cmd == SIOCBRDELIF) {
-+		void __user *data;
-+		char *colon;
-+
-+		if (!ns_capable(net->user_ns, CAP_NET_ADMIN))
-+			return -EPERM;
-+
-+		if (get_user_ifreq(&ifr, &data, uarg))
-+			return -EFAULT;
-+
-+		ifr.ifr_name[IFNAMSIZ - 1] = 0;
-+		colon = strchr(ifr.ifr_name, ':');
-+		if (colon)
-+			*colon = 0;
-+	}
- 
- 	rtnl_lock();
- 
-@@ -430,7 +446,21 @@ int br_ioctl_stub(struct net *net, struct net_bridge *br, unsigned int cmd,
- 		break;
- 	case SIOCBRADDIF:
- 	case SIOCBRDELIF:
--		ret = add_del_if(br, ifr->ifr_ifindex, cmd == SIOCBRADDIF);
-+	{
-+		struct net_device *dev;
-+
-+		dev = __dev_get_by_name(net, ifr.ifr_name);
-+		if (!dev || !netif_device_present(dev)) {
-+			ret = -ENODEV;
-+			break;
-+		}
-+		if (!netif_is_bridge_master(dev)) {
-+			ret = -EOPNOTSUPP;
-+			break;
-+		}
-+
-+		ret = add_del_if(netdev_priv(dev), ifr.ifr_ifindex, cmd == SIOCBRADDIF);
-+	}
- 		break;
- 	}
- 
-diff --git a/net/bridge/br_private.h b/net/bridge/br_private.h
-index 901b9f609b0c..2d3859c2979a 100644
---- a/net/bridge/br_private.h
-+++ b/net/bridge/br_private.h
-@@ -894,8 +894,7 @@ br_port_get_check_rtnl(const struct net_device *dev)
- /* br_ioctl.c */
- int br_dev_siocdevprivate(struct net_device *dev, struct ifreq *rq,
- 			  void __user *data, int cmd);
--int br_ioctl_stub(struct net *net, struct net_bridge *br, unsigned int cmd,
--		  struct ifreq *ifr, void __user *uarg);
-+int br_ioctl_stub(struct net *net, unsigned int cmd, void __user *uarg);
- 
- /* br_multicast.c */
- #ifdef CONFIG_BRIDGE_IGMP_SNOOPING
-diff --git a/net/core/dev_ioctl.c b/net/core/dev_ioctl.c
-index 5cdbfbf9a7dc..def973eb496a 100644
---- a/net/core/dev_ioctl.c
-+++ b/net/core/dev_ioctl.c
-@@ -315,7 +315,6 @@ static int dev_ifsioc(struct net *net, struct ifreq *ifr, void __user *data,
- 	int err;
- 	struct net_device *dev = __dev_get_by_name(net, ifr->ifr_name);
- 	const struct net_device_ops *ops;
--	netdevice_tracker dev_tracker;
- 
- 	if (!dev)
- 		return -ENODEV;
-@@ -378,19 +377,6 @@ static int dev_ifsioc(struct net *net, struct ifreq *ifr, void __user *data,
- 	case SIOCWANDEV:
- 		return dev_siocwandev(dev, &ifr->ifr_settings);
- 
--	case SIOCBRADDIF:
--	case SIOCBRDELIF:
--		if (!netif_device_present(dev))
--			return -ENODEV;
--		if (!netif_is_bridge_master(dev))
--			return -EOPNOTSUPP;
--		netdev_hold(dev, &dev_tracker, GFP_KERNEL);
--		rtnl_unlock();
--		err = br_ioctl_call(net, netdev_priv(dev), cmd, ifr, NULL);
--		netdev_put(dev, &dev_tracker);
--		rtnl_lock();
--		return err;
--
- 	case SIOCSHWTSTAMP:
- 		err = net_hwtstamp_validate(ifr);
- 		if (err)
-@@ -575,8 +561,6 @@ int dev_ioctl(struct net *net, unsigned int cmd, struct ifreq *ifr,
- 	case SIOCBONDRELEASE:
- 	case SIOCBONDSETHWADDR:
- 	case SIOCBONDCHANGEACTIVE:
--	case SIOCBRADDIF:
--	case SIOCBRDELIF:
- 	case SIOCSHWTSTAMP:
- 		if (!ns_capable(net->user_ns, CAP_NET_ADMIN))
- 			return -EPERM;
-diff --git a/net/socket.c b/net/socket.c
-index bd438b89e698..701389e2f22b 100644
---- a/net/socket.c
-+++ b/net/socket.c
-@@ -1151,12 +1151,10 @@ static ssize_t sock_write_iter(struct kiocb *iocb, struct iov_iter *from)
-  */
- 
- static DEFINE_MUTEX(br_ioctl_mutex);
--static int (*br_ioctl_hook)(struct net *net, struct net_bridge *br,
--			    unsigned int cmd, struct ifreq *ifr,
-+static int (*br_ioctl_hook)(struct net *net, unsigned int cmd,
- 			    void __user *uarg);
- 
--void brioctl_set(int (*hook)(struct net *net, struct net_bridge *br,
--			     unsigned int cmd, struct ifreq *ifr,
-+void brioctl_set(int (*hook)(struct net *net, unsigned int cmd,
- 			     void __user *uarg))
- {
- 	mutex_lock(&br_ioctl_mutex);
-@@ -1165,8 +1163,7 @@ void brioctl_set(int (*hook)(struct net *net, struct net_bridge *br,
- }
- EXPORT_SYMBOL(brioctl_set);
- 
--int br_ioctl_call(struct net *net, struct net_bridge *br, unsigned int cmd,
--		  struct ifreq *ifr, void __user *uarg)
-+int br_ioctl_call(struct net *net, unsigned int cmd, void __user *uarg)
- {
- 	int err = -ENOPKG;
- 
-@@ -1175,7 +1172,7 @@ int br_ioctl_call(struct net *net, struct net_bridge *br, unsigned int cmd,
- 
- 	mutex_lock(&br_ioctl_mutex);
- 	if (br_ioctl_hook)
--		err = br_ioctl_hook(net, br, cmd, ifr, uarg);
-+		err = br_ioctl_hook(net, cmd, uarg);
- 	mutex_unlock(&br_ioctl_mutex);
- 
- 	return err;
-@@ -1272,7 +1269,9 @@ static long sock_ioctl(struct file *file, unsigned cmd, unsigned long arg)
- 		case SIOCSIFBR:
- 		case SIOCBRADDBR:
- 		case SIOCBRDELBR:
--			err = br_ioctl_call(net, NULL, cmd, NULL, argp);
-+		case SIOCBRADDIF:
-+		case SIOCBRDELIF:
-+			err = br_ioctl_call(net, cmd, argp);
- 			break;
- 		case SIOCGIFVLAN:
- 		case SIOCSIFVLAN:
-@@ -3376,6 +3375,8 @@ static int compat_sock_ioctl_trans(struct file *file, struct socket *sock,
- 	case SIOCGPGRP:
- 	case SIOCBRADDBR:
- 	case SIOCBRDELBR:
-+	case SIOCBRADDIF:
-+	case SIOCBRDELIF:
- 	case SIOCGIFVLAN:
- 	case SIOCSIFVLAN:
- 	case SIOCGSKNS:
-@@ -3415,8 +3416,6 @@ static int compat_sock_ioctl_trans(struct file *file, struct socket *sock,
- 	case SIOCGIFPFLAGS:
- 	case SIOCGIFTXQLEN:
- 	case SIOCSIFTXQLEN:
--	case SIOCBRADDIF:
--	case SIOCBRDELIF:
- 	case SIOCGIFNAME:
- 	case SIOCSIFNAME:
- 	case SIOCGMIIPHY:
--- 
-2.47.3
-
+--
+Sincerely,
+Yeoreum Yun
 
