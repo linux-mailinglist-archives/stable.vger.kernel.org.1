@@ -1,77 +1,77 @@
-Return-Path: <stable+bounces-206218-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206219-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5C21D00171
-	for <lists+stable@lfdr.de>; Wed, 07 Jan 2026 22:04:46 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09C2FD00180
+	for <lists+stable@lfdr.de>; Wed, 07 Jan 2026 22:06:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5E9913082EB0
-	for <lists+stable@lfdr.de>; Wed,  7 Jan 2026 21:02:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3634630B42BA
+	for <lists+stable@lfdr.de>; Wed,  7 Jan 2026 21:03:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BABEE2D130B;
-	Wed,  7 Jan 2026 21:02:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FC502DC337;
+	Wed,  7 Jan 2026 21:02:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ci4kyi3z"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J53VGxvM"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dy1-f179.google.com (mail-dy1-f179.google.com [74.125.82.179])
+Received: from mail-dy1-f178.google.com (mail-dy1-f178.google.com [74.125.82.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8E5D29E101
-	for <stable@vger.kernel.org>; Wed,  7 Jan 2026 21:02:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E826C2D73A8
+	for <stable@vger.kernel.org>; Wed,  7 Jan 2026 21:02:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767819731; cv=none; b=nQf1WO037OJOHdj07wlNRWtMw2cHyY445XRpoe651xmMWN0P/z9zCwXioRm10DmPXFJaUzr8vxDfj9e1X82d/p/HJ7HIP37iOu6qpyZ9Qcoinq2asJRxqLDBuRNc2IigMzotK1p1p/Sd8/z/ghktR+7GjCRH44YLcALsAkLFidM=
+	t=1767819736; cv=none; b=KrofHC9Vt/B2sIuWFY48DUO6vFAX1B6YotVeg9wV6uTeSic4XdeFL+RrB7Z0pMv6+dF2UXFMyWpmHiifGCKVcp+RWET1kdvJEdW/xSWXSRaVGEvHEBQ4dS+x8US7qnELbNafBA1yTuMCNPWrpjP8jShWpOnL8o2U9A1iNPh9i6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767819731; c=relaxed/simple;
-	bh=MH9ItMzBcZTluvZqALSZ1F57m7cvQEt2yG0/5jKRRIU=;
+	s=arc-20240116; t=1767819736; c=relaxed/simple;
+	bh=OToRqjvmUYJ/hQ/uywMC5tHsYvK3gXP3yNUZuoCsk/k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z6JQzob7FNiJAfjP6/M7aHpOenMQQ5McfvZZu+YIWR2pFJS6OFhjDGqXQlOAVjYXikO2NV4bUoPTITyguI6q2/zs6FVudWuUXo9R/fjWdEzzV9TyfmzMhLPgTKV33BquG/eiKkin3pIfd/2yjBmtXhi86lJa46nTfv8uDWHFy+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ci4kyi3z; arc=none smtp.client-ip=74.125.82.179
+	 MIME-Version; b=N50pf0P10t5953hSpHRbw1iPAUEcNEFYDVUJ6INs3AGBn5xwuXyBtxLlXOqFE8TIKYYPqBByWVnahUbAWf5KzZQ/s0ymMn+i6yJoXzD78o5QGXoh4gYFc5SstPShNebJ1FaQorZZwTjUxXKK9Zr0XQUbPsVnUW5Malas/xxHaz0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=J53VGxvM; arc=none smtp.client-ip=74.125.82.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dy1-f179.google.com with SMTP id 5a478bee46e88-2ae5af476e1so724931eec.1
-        for <stable@vger.kernel.org>; Wed, 07 Jan 2026 13:02:08 -0800 (PST)
+Received: by mail-dy1-f178.google.com with SMTP id 5a478bee46e88-2b05fe2bf14so2530481eec.1
+        for <stable@vger.kernel.org>; Wed, 07 Jan 2026 13:02:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767819728; x=1768424528; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1767819732; x=1768424532; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=rI9ht6zLDnTdHsEUK/2YLyBXC/hQ/zyK3ZFH+/rd3ZU=;
-        b=ci4kyi3zD2j7KiLUjQkIcDU7vuOsX6S4mJZQ4AVy+npgOrbsZh/gpA6dORUo6X6ds9
-         Tw8napnxETN5al9CCa2jPUtv+17djSqaDZqFicacXROVkiQlgyo6Vp4M1aXCupq0tRUQ
-         vJVtuOlv6CEzy3AIwBCADL6oDk2iqiIGlzCNaat5/llGCRur5W7Wm4narV0IDWbTOz1Y
-         Y9ne0NH9h9fdsqH9bQh0aeKxp5rp8DPdnIQP+9Qqs+VPUcNxVQNN+RN89Fk47Y7QNU6Z
-         laBqZktA3/2NYT/Bi993LIQGBXVsEnfVQVXNXJO+9OhYjWN/fhPDLGQfeb+xo0vTxV/K
-         Z3Hw==
+        bh=StC5RRMJpz+kQrLWAhYbYP3HFYIHTdt3vEQL2gvPaOI=;
+        b=J53VGxvMIZxqirtQX3wYHg+/odvWOpaJHAskxJ3YBshcYnKwwF3R4WbljGmaRUg+Qs
+         /xM/QUDAH2e4UOswRlUSenqeRQHu9du25kCP8hgxpxODXi+BCkpSLQ6SqFg425Uc3h/h
+         FvT75zjj1BcV2WJ0n3YOWALK11q/QXQXdrkarHvM9KjaW+OmVv4BSNpY3JzubrEcPwbc
+         myhm6x5d3G3GaVDNxgHulCWD37Uh0mcDQFfjgC47Giq4JtqmVCyNjFKHe4zio9wqD/lm
+         TS3qlJpzAhkku6vYjEHjy3j9CKPkdJ0Bo0iu34g73a5cVVd1STbIUpHtOub7fNjfbiEo
+         VeIw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767819728; x=1768424528;
+        d=1e100.net; s=20230601; t=1767819732; x=1768424532;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=rI9ht6zLDnTdHsEUK/2YLyBXC/hQ/zyK3ZFH+/rd3ZU=;
-        b=n7jjCYr4cg3g9L0EdcP2ls77rVbeaj3zkjCW23BsQooF+31wqObeui7O6k2IPsBai9
-         xjPykzLIa42QSNGD3GcI6JKFTIfUeWs4MYYhFE2dbrVgiVGeikfslzyf+3UVkzR49OC5
-         Z8butJtVtOyChcz9zoL4nSJo7DoQLJgHl4aDkNihIAN2f66jkUi8nNYfqSzBdXIF36PM
-         C3DtKZI0KLK9e8As2v10HS23NTE40btk3pQCkMPevhr45ClJ7xGcfYtKvj51z5r1njsZ
-         z3DAK4mbHTrLPl2hMdiUx/GzJtvTVcDHfium9EaPn9skB+NlkeN25ARt3eX5E+4+9/Re
-         nNfg==
-X-Forwarded-Encrypted: i=1; AJvYcCU4ACHk23ZEyKsFsfmjryoKpX/6NUSfoOELpboKVB6Fet0KSCQdU7kDJWxLMfupOYEoWBvhmno=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyXBbT6cny8dOBFmtaapf629dipx/Ljx7lnjI1Xphs+KckdiF8Z
-	+COELBWSXW4WtH89SzmGi6Sv2vIpxjdkCZ8eZutev3m5+azlcjDwgbTG
-X-Gm-Gg: AY/fxX6jWeO6rngLxmcxAi1IjVnhcMfV2abbQ9wqS6wc+ti5/kcS/fR+qbABtC6m843
-	PpWeX6+RaabENo/XK33x4w4uulpwFQkVEWVN5Y/XFaZSC/YYBa9IORRpRWPsIIblLMB0SrJSowD
-	hEDKUQKSejFILCrYM91BfMvoFXeO7dE0Sc42Twq6LI6Wp/+I6F3vZgZnbycRzbvShNOSebWYS6z
-	HePnT9F8mBuMId0Sl8aGEW9LcslcG9Se/ed8U2XU6d6Sn6JoqONrv22s5yTgJjWIXOp81WxvVmc
-	LBdkZn7IL6STUqerOhbu1lNaSYtfhtyG9/nFCMst+BV3qn7VjVk934iKCTRFgd/aGxPqtl/jyWP
-	X6KWtBadvdwOoPLw5x4gHB0EVt94KLN3igTjNafSopHQsg9mTnIkyZmYyCN55dZmEVJga5BJMm1
-	pI9MTcvHPOARAT/G7zI9cDN1BYW9FA+vqcINvVwNZCLBRuypBj9YW+wnPO3Gjm
-X-Google-Smtp-Source: AGHT+IGz/j2Ai3L0sVPhta32pFiq7xX5jIWUYZAFCkfFw3N2nVApKTu2oj9sPXVOchzP/JfTY8hCxQ==
-X-Received: by 2002:a05:7301:700e:b0:2ae:4c10:138c with SMTP id 5a478bee46e88-2b16fe5a43bmr3571639eec.11.1767819727866;
-        Wed, 07 Jan 2026 13:02:07 -0800 (PST)
+        bh=StC5RRMJpz+kQrLWAhYbYP3HFYIHTdt3vEQL2gvPaOI=;
+        b=IL7spTCu0CRexWeb4LFoa00S2mhs9M6F8CDqTUn/zfZ/Nmrgcq+ljIC6wMEsVBSvCi
+         diu0em6WN0XQwthUg2Ja7vH4+ybWibuPTgX9utDd8H4T01DstVBClcwq4PZPQ/IXDPGu
+         o/Ern1qg3RdHs1jiiJhscHMFnka8MAmwzpu0UZnCo68a1/hKUltjLuZ5zETW/hD96Ivr
+         GqHc0JYA4cBMlcsMJA6OryNkQ8jw5wbYOqndyvAbZ18TDUs7bPrecCderjwV9Sej3ife
+         gbesbUhi9WxEPIlnlNm4VlG/JMXSuItorvM61we358M46GfS08ly/TU9+OQfnrviYQ01
+         3JzA==
+X-Forwarded-Encrypted: i=1; AJvYcCXr8y965t+bi9hSOag+zhoOuBBFLzuEpbjJ2XG7nP3sWsZtbkagx2Xu0aw1Zj7h77K9tPJFiYE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzTX3dB0yeK47dxIZYxn1t6THWCGK5DD9eMaTNJte+uYkWCnwt8
+	Mxdw6OISPDhCYoPZ8TRPqX7hNGrsAww+RuTP+BuhwsSrvzYeEnuEnx9Revcdmg==
+X-Gm-Gg: AY/fxX5Ju4oESVcgw4HGzRRvFMXrVK8qVeqk7nH7g/EajJUieAG0ltqzPUe3dNx6HNs
+	r820vHsnUejmeRSXToM+8/+3Mpb6Y2SvAFo4xi7vo0ROQsQbMSyNmlfc9Xt3qE+wXSmXCcwZh2X
+	seH3U2OoAW3Ow4fO6Y7n1rJb73kUaavfUdrGb3Abny5wDFDl3PaQgO4Bia+BuwV82brwJKQB1m3
+	9TzUMlEz223q400N0cL2tgrdmN+Dw7vgl/5C8+Eco3eW25vnTSKwKENv17OibNBuG8I10RdpJtj
+	XIq+Aej+Vh8cI1E+nT1HBLE6cH9l26n2oJAO5dLZpvzM6pMx9bh18cfD1ogX/aBRwyAOvi4AWuo
+	y68PBD0VGZk8s94tAszXhHT4dCbCcWsot8+fBFkQCeXXjri5B0eI6gJ3cWPRPtBvj3wv9gi+eTS
+	kZAb0sXedJfZYMQfTVP6S3WvwogxeTFSOpYB3qpD5XUXHsNVzJ2B2Va/sVtcfX
+X-Google-Smtp-Source: AGHT+IHsusTxGdP1PS4z/IoCh9itAIP1JdP4x5wJw6BXtiBXvisAnQNe01ae9GbbYPWzAyzvMWqFZw==
+X-Received: by 2002:a05:7301:e2b:b0:2ae:5ffa:8daa with SMTP id 5a478bee46e88-2b17d200bc3mr2817972eec.5.1767819731857;
+        Wed, 07 Jan 2026 13:02:11 -0800 (PST)
 Received: from celestia.turtle.lan (static-23-234-115-121.cust.tzulo.com. [23.234.115.121])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b170673b2esm7730320eec.6.2026.01.07.13.02.06
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b170673b2esm7730320eec.6.2026.01.07.13.02.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 Jan 2026 13:02:07 -0800 (PST)
+        Wed, 07 Jan 2026 13:02:11 -0800 (PST)
 From: Sam Edwards <cfsworks@gmail.com>
 X-Google-Original-From: Sam Edwards <CFSworks@gmail.com>
 To: Xiubo Li <xiubli@redhat.com>,
@@ -84,9 +84,9 @@ Cc: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
 	linux-kernel@vger.kernel.org,
 	Sam Edwards <CFSworks@gmail.com>,
 	stable@vger.kernel.org
-Subject: [PATCH v2 1/6] ceph: Do not propagate page array emplacement errors as batch errors
-Date: Wed,  7 Jan 2026 13:01:34 -0800
-Message-ID: <20260107210139.40554-2-CFSworks@gmail.com>
+Subject: [PATCH v2 3/6] ceph: Free page array when ceph_submit_write fails
+Date: Wed,  7 Jan 2026 13:01:36 -0800
+Message-ID: <20260107210139.40554-4-CFSworks@gmail.com>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20260107210139.40554-1-CFSworks@gmail.com>
 References: <20260107210139.40554-1-CFSworks@gmail.com>
@@ -98,53 +98,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-When fscrypt is enabled, move_dirty_folio_in_page_array() may fail
-because it needs to allocate bounce buffers to store the encrypted
-versions of each folio. Each folio beyond the first allocates its bounce
-buffer with GFP_NOWAIT. Failures are common (and expected) under this
-allocation mode; they should flush (not abort) the batch.
+If `locked_pages` is zero, the page array must not be allocated:
+ceph_process_folio_batch() uses `locked_pages` to decide when to
+allocate `pages`, and redundant allocations trigger
+ceph_allocate_page_array()'s BUG_ON(), resulting in a worker oops (and
+writeback stall) or even a kernel panic. Consequently, the main loop in
+ceph_writepages_start() assumes that the lifetime of `pages` is confined
+to a single iteration.
 
-However, ceph_process_folio_batch() uses the same `rc` variable for its
-own return code and for capturing the return codes of its routine calls;
-failing to reset `rc` back to 0 results in the error being propagated
-out to the main writeback loop, which cannot actually tolerate any
-errors here: once `ceph_wbc.pages` is allocated, it must be passed to
-ceph_submit_write() to be freed. If it survives until the next iteration
-(e.g. due to the goto being followed), ceph_allocate_page_array()'s
-BUG_ON() will oops the worker. (Subsequent patches in this series make
-the loop more robust.)
+The ceph_submit_write() function claims ownership of the page array on
+success. But failures only redirty/unlock the pages and fail to free the
+array, making the failure case in ceph_submit_write() fatal.
 
-Note that this failure mode is currently masked due to another bug
-(addressed later in this series) that prevents multiple encrypted folios
-from being selected for the same write.
+Free the page array (and reset locked_pages) in ceph_submit_write()'s
+error-handling 'if' block so that the caller's invariant (that the array
+does not outlive the iteration) is maintained unconditionally, making
+failures in ceph_submit_write() recoverable as originally intended.
 
-For now, just reset `rc` when redirtying the folio to prevent errors in
-move_dirty_folio_in_page_array() from propagating. (Note that
-move_dirty_folio_in_page_array() is careful never to return errors on
-the first folio, so there is no need to check for that.) After this
-change, ceph_process_folio_batch() no longer returns errors; its only
-remaining failure indicator is `locked_pages == 0`, which the caller
-already handles correctly. The next patch in this series addresses this.
-
-Fixes: ce80b76dd327 ("ceph: introduce ceph_process_folio_batch() method")
+Fixes: 1551ec61dc55 ("ceph: introduce ceph_submit_write() method")
 Cc: stable@vger.kernel.org
 Signed-off-by: Sam Edwards <CFSworks@gmail.com>
 ---
- fs/ceph/addr.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/ceph/addr.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
 diff --git a/fs/ceph/addr.c b/fs/ceph/addr.c
-index 63b75d214210..3462df35d245 100644
+index 2b722916fb9b..467aa7242b49 100644
 --- a/fs/ceph/addr.c
 +++ b/fs/ceph/addr.c
-@@ -1369,6 +1369,7 @@ int ceph_process_folio_batch(struct address_space *mapping,
- 		rc = move_dirty_folio_in_page_array(mapping, wbc, ceph_wbc,
- 				folio);
- 		if (rc) {
-+			rc = 0;
- 			folio_redirty_for_writepage(wbc, folio);
- 			folio_unlock(folio);
- 			break;
+@@ -1466,6 +1466,14 @@ int ceph_submit_write(struct address_space *mapping,
+ 			unlock_page(page);
+ 		}
+ 
++		if (ceph_wbc->from_pool) {
++			mempool_free(ceph_wbc->pages, ceph_wb_pagevec_pool);
++			ceph_wbc->from_pool = false;
++		} else
++			kfree(ceph_wbc->pages);
++		ceph_wbc->pages = NULL;
++		ceph_wbc->locked_pages = 0;
++
+ 		ceph_osdc_put_request(req);
+ 		return -EIO;
+ 	}
 -- 
 2.51.2
 
