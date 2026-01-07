@@ -1,160 +1,123 @@
-Return-Path: <stable+bounces-206235-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206236-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C495D00614
-	for <lists+stable@lfdr.de>; Thu, 08 Jan 2026 00:21:06 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A4C0D0065C
+	for <lists+stable@lfdr.de>; Thu, 08 Jan 2026 00:32:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1CE113017215
-	for <lists+stable@lfdr.de>; Wed,  7 Jan 2026 23:21:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E3B073015848
+	for <lists+stable@lfdr.de>; Wed,  7 Jan 2026 23:32:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3685E2E7165;
-	Wed,  7 Jan 2026 23:21:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C29A676025;
+	Wed,  7 Jan 2026 23:32:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PLHpiCmM"
+	dkim=pass (2048-bit key) header.d=ciq.com header.i=@ciq.com header.b="oajd+i9C"
 X-Original-To: stable@vger.kernel.org
 Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 790732E03F3
-	for <stable@vger.kernel.org>; Wed,  7 Jan 2026 23:21:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 083813A0B31
+	for <stable@vger.kernel.org>; Wed,  7 Jan 2026 23:32:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767828063; cv=none; b=ip+OcN1CNRT/UF42+PaSd/C6MQlPy21XVTDsn06g91BhRLRlVot1ZHWm43LOhLGN3W7nTMe7MGXLYoU+pydENFXH1yWnNj3vnmcdqp1CQTfv3j8J+8lY9lvUoSEXckla8ZSqGl0vfEtGmZ1wLMJuyuSKkwPfSN4MIFLP9qnuugA=
+	t=1767828751; cv=none; b=t5XWRIsxgXJzuKRsmz4tfceFlxFqMDeSi2DKQETFiLK45UQ6rYQrloOmnK5ZKnbJiz3Q1cUSkYd3laXkRHFqvgeZdFLgst2gSvGcPbuxhKq6gp7i8ZHlxcYrB9RxVcLxFaRbN/KHKOuoONIBJCTml13pCXjQXbhW/ip4Ut8R324=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767828063; c=relaxed/simple;
-	bh=+IiIYk6tyq8dn+kFWd93D1ClEiKTPKlKcVrqsM5QbR8=;
+	s=arc-20240116; t=1767828751; c=relaxed/simple;
+	bh=uEbRyNx4dbnk3va4dkb6nQGKaRtW5j4AqrcIBxjnGe0=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nELZM6dZYxZ2/QsOaXGxVXqJtCJ3mMXB3Ts1WlxR+GuI2YOGIl0keFSd/pV+aR8XTQfGr2iH5K0kCt0FpFibSt1gAQgbRHlSWBgfe+m399JDXEUXqVFOBefEMBvXNx3lnNK3rcWrPSmd17bSzID0F4xKnjaEUpR2tKvlkV4zQhQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PLHpiCmM; arc=none smtp.client-ip=209.85.160.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-4eda6a8cc12so28076391cf.0
-        for <stable@vger.kernel.org>; Wed, 07 Jan 2026 15:21:00 -0800 (PST)
+	 To:Cc:Content-Type; b=spWs56Mgy5CDhW7ARI8mmXdT0IHx9wNkgGSwRFWN+9vzbXXZaPoMH/qFA4LCESaOiNAKEnbTGnKwxx/PzdvhGF5uT5JmItVPm/bSfhRBkY1f4HiN2sRrUpDdzdaFeDCJlGLleuq0wyUWw6IM0BZgFJRxg+IflJF135yvhjKT5RQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ciq.com; spf=pass smtp.mailfrom=ciq.com; dkim=pass (2048-bit key) header.d=ciq.com header.i=@ciq.com header.b=oajd+i9C; arc=none smtp.client-ip=209.85.160.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ciq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ciq.com
+Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-4f1b4bb40aaso13814941cf.3
+        for <stable@vger.kernel.org>; Wed, 07 Jan 2026 15:32:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767828059; x=1768432859; darn=vger.kernel.org;
+        d=ciq.com; s=s1; t=1767828749; x=1768433549; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=dCrjzEZQwv01G+U0WIfJQs+VO9PryBUCb3CgwRj0lP0=;
-        b=PLHpiCmMD6n85Yj0HEKJuT7fWVqqEfnp0pqwBnJCS3F/EdmGfjdcPv3AxeqgppxXPx
-         Qb43t8sSmr5xtt/K4UJmgAJMbkb5qBvvhdj1ImLDxs2qRnRJ4p7bnwqmg9AXiysx9qIR
-         yXsPK3yd71Q3Bkkergyd6dS9eKkHCi6gWD4xHO+LULNHOzp3+ksok8vWqg7/8njbNDjX
-         TmYURQCDCQn1m0MO/KOF1VKpS1PMGt9foJcIkJsad26LLC7/zLrTlofQ/feeah7J0fpd
-         R/jBgBXnS/LEbFO3G+3+S1Ok6jJ8hT7sLAzjZTQyYyu7OLB5CxnULF/o5Ig1CYIe3ghi
-         SiNw==
+        bh=rXU7HG4DiGW9EYR6wyIKez8sdkatjxPlrKyEoeiugvI=;
+        b=oajd+i9CT+gSHbIgGsLbInIep3W4lVKFDNWvkqztM1EGnANlAAWzlNGmR3ZnqJAXmO
+         dQXOKociMN95lyde7WPnOJrvvhkwxybQeIWGfUD+7sXM9M3pjjShR0IAZYxHBqBaLUDa
+         OwS4sAwFUwzISQIP8sn5oOyd1HnV82XpsNa9AiJmSWkhIer/Ca1Wd7C4I6QX3M+dQdX7
+         iW7XfHBfBlczQSisFlioXwhGgouuJDj1n4gUNXEQJKcQHfl3cHrqnHmI2Ojysge8EiJi
+         j6y6Blx2UxX4CgrLVNK2kV0NSlLT+8uIkNeMO5cI0AJVrLxmNsIYzjyEVCFEE9s6zXFN
+         xh2w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767828059; x=1768432859;
+        d=1e100.net; s=20230601; t=1767828749; x=1768433549;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=dCrjzEZQwv01G+U0WIfJQs+VO9PryBUCb3CgwRj0lP0=;
-        b=gDdbAcooZDSWLinhGpG7wgFdQXVN8ysdlOlB/cp5nnb7iJaWmmhRkiIcNncBUvCLQo
-         yXMzHvxn1hs9V855vA4FxKYGiCDVjJqQ86c4HvzIt4K81zl+QqiJGkH/U0O9bW3kRV+Q
-         KDna1xVJq5aZfzjCz8B5TalboEG+8QrLNstd5W+fXs4oJHfgla9AYvf6ZJ6Ug404UyAe
-         9xe+SL+yWoaPhINWjgu+JjgHVwZBSOjGZ50+cJZ2VLFJQtTYMiZzxw7ZZJNAS7OdDa/1
-         HTfV0hOE7Pg3Fm/87bMXFY8ivxXCO2vDvif2O1KFxMke2EKDmx3SVOqDbB7i8k6UJa2R
-         sR1Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXc+QdurzkeuTm8XdbtjaOTVvmFFtj9/BbkBIdDjGQg2c+g8yCbx9hEQEGWMv94LhMpB4rhRBA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxWafFnD7eGAMl/d/72sDQRA3t3GLJwOOxonQNHJ/KWiYR1hcSH
-	uRX3mKmjBnN28PpmIo/pifo/P9IeGTGBtfNsyTwHgzwGIVKz8bbKF04T5FueqonWOO/zSluu4PI
-	vVequRtuoz2/lPRo+QB0aHCbuDO14uDk=
-X-Gm-Gg: AY/fxX6axHs/CBOeWV21gYNGHVQPiU3hrZ8XIWuyhvSDKdrClkt3baOXyHv82rvcuVF
-	iH77YVuxaDkNNnHOu3A55B+05IL2mmQoUl8C1WfSyNGCjirrZLtc1nz2WE5+JpH8UGfX30IuAgK
-	GsiEbLsgjRhb6lBhb26zQxvAHTJfuk5tCTUXt89CSkXQ0mhTSS+bzBXBKGVbTFTpmQ6X396l+4a
-	C+dinNJVrX0uPJGQKx8jPUk2KVta0M1LJysZ1lt845WpRKCAbyu7A98GsVGU4pBR0HJwQ==
-X-Google-Smtp-Source: AGHT+IEiFeqiqTBVau2o0UwF1CseRs5J2I2K15YUqe72E1rmIA/k0t28m+0gQwUsMjLpxytNmWX8UDtYFxSJ2+hi2Ac=
-X-Received: by 2002:a05:622a:64a:b0:4ee:1f5b:73bc with SMTP id
- d75a77b69052e-4ffb4a76ceemr59244041cf.66.1767828059316; Wed, 07 Jan 2026
- 15:20:59 -0800 (PST)
+        bh=rXU7HG4DiGW9EYR6wyIKez8sdkatjxPlrKyEoeiugvI=;
+        b=RmjUfLtFbhzkg15jj2pn5EanqyC0WcwKv/d247CC3aY6Re/d9HDUM+RHyUcA4yx+5i
+         NIHAbSdbkYW1xMIeq9kE/5DspHJIgF4MOzpjgMTQ9meAw2bJ7MyGGVaW9Ak/i9rNu0op
+         X6kC6j8Ono0n6nNVHVXxgaEfdNp/2my3MmJLgq0oB/hHh1eWe1Ep9cRoq8cDI1XBQfvJ
+         G8iuQph45ObhVFTUaT80F/K1uZdOAKDNDzMSZrX76HfpcR5qrMeU6bKvgFwR3ff0/UO3
+         VexG+jN/xyc122CgjQFGdeddA6L4/V7zdgimTL9mpLchr9SP08RpANBFuzsrROZMMYi/
+         mEpw==
+X-Gm-Message-State: AOJu0YxE/RPHsvhnD2TyGcBU8H2oGyGArtCc3WdWi3l+V8k4KyJaq2Xx
+	soAFW5S+eTyN/qxWtFwdFQeCKqK6P3FetSVaccQy+C3oZvzO2s8IiC5EK63W+kh4N9Q7oR6nQpd
+	mWWZCd18/yTHZWlfcRQgARerbbe+otVRpfBGl5xS1SQQ8j+sLCf2lnbDaWw==
+X-Gm-Gg: AY/fxX4qVdNx+MkJoCJCxa8O91/zaYu/58eYOyuPKeGfPTDTJ3YH+l3DBik7aLQOqGg
+	b8Z8veT4aqQUMv0xjaikJ+OQwvsn3S0VtEJA5rL7FXq0nBHp4gfYjkEIg7I4jWs5GDdcLLt+sCz
+	Z+dKlYaHbG7RkSsJmqJimzYq8upmsI+ev/KpPjBQnN9+1hme+AXai2nM+ZqzKgccevAEmjLdsYD
+	hsgYdHacs518W8udx4awoItubIr8ADiX8F7/Zy5j5Wmrf+quLUJIf+/hG4sCGz+sAezp47g
+X-Google-Smtp-Source: AGHT+IH1LByqW7ZLrFp7glgjZt3g2J6ITYVw4T9fJNyN01hTZ7xZ2tadzEjfLG1sesulQCTiO3En4id7s6uBsJYgxU0=
+X-Received: by 2002:a05:622a:1b8c:b0:4ec:f6d5:ee46 with SMTP id
+ d75a77b69052e-4ffb4af497fmr48506811cf.78.1767828748846; Wed, 07 Jan 2026
+ 15:32:28 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251215030043.1431306-1-joannelkoong@gmail.com>
- <20251215030043.1431306-2-joannelkoong@gmail.com> <ypyumqgv5p7dnxmq34q33keb6kzqnp66r33gtbm4pglgdmhma6@3oleltql2qgp>
- <CAJnrk1aYpcDpm8MpN5Emb8qNOn34-qEiARLH0RudySKFtEZVpA@mail.gmail.com> <ucnvcqbmxsiszobzzkjrgekle2nabf3w5omnfbitmotgujas4e@4f5ct4ot4mup>
-In-Reply-To: <ucnvcqbmxsiszobzzkjrgekle2nabf3w5omnfbitmotgujas4e@4f5ct4ot4mup>
-From: Joanne Koong <joannelkoong@gmail.com>
-Date: Wed, 7 Jan 2026 15:20:48 -0800
-X-Gm-Features: AQt7F2rD2bYE74fC-BJPB9hchw_T0Hhn5OrF8uZDPNCgSz0wuN8d7B-9zslHZs4
-Message-ID: <CAJnrk1b-77uK2JuQaHz8KUCBnZfnQZ6M_nQQqFNWLvPDDdy4+Q@mail.gmail.com>
-Subject: Re: [PATCH v2 1/1] fs/writeback: skip AS_NO_DATA_INTEGRITY mappings
- in wait_sb_inodes()
-To: Jan Kara <jack@suse.cz>
-Cc: akpm@linux-foundation.org, david@redhat.com, miklos@szeredi.hu, 
-	linux-mm@kvack.org, athul.krishna.kr@protonmail.com, j.neuschaefer@gmx.net, 
-	carnil@debian.org, linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
+References: <20260106170547.832845344@linuxfoundation.org>
+In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
+From: Brett Mastbergen <bmastbergen@ciq.com>
+Date: Wed, 7 Jan 2026 18:32:17 -0500
+X-Gm-Features: AQt7F2rjHXXS4VwdsUEM_LyelKMet1mu2lb_KbzqRAyBq5WcDAPhpkZeVFckzz8
+Message-ID: <CAOBMUviKjNiTkgvipUTVwzwnKO2-1RoAc+uxM+uwyRSceeQHHA@mail.gmail.com>
+Subject: Re: [PATCH 6.18 000/312] 6.18.4-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
+	achill@achill.org, sr@sladewatkins.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jan 7, 2026 at 2:12=E2=80=AFAM Jan Kara <jack@suse.cz> wrote:
+On Tue, Jan 6, 2026 at 1:41=E2=80=AFPM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
 >
-> On Tue 06-01-26 15:30:05, Joanne Koong wrote:
-> > On Tue, Jan 6, 2026 at 1:34=E2=80=AFAM Jan Kara <jack@suse.cz> wrote:
-> > > [Thanks to Andrew for CCing me on patch commit]
-> >
-> > Sorry, I didn't mean to exclude you. I hadn't realized the
-> > fs-writeback.c file had maintainers/reviewers listed for it. I'll make
-> > sure to cc you next time.
+> This is the start of the stable review cycle for the 6.18.4 release.
+> There are 312 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 >
-> No problem, I don't think it's formally spelled out anywhere. It's just
-> that for changes in fs/*.c people tend to CC VFS maintainers / reviewers.
+> Responses should be made by Thu, 08 Jan 2026 17:04:53 +0000.
+> Anything received after that time might be too late.
 >
-> Thanks for the historical perspective, it does put some more peace into m=
-y
-> mind that things were considered :)
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.18.4-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.18.y
+> and the diffstat can be found below.
 >
-> > For the fsync() and truncate() examples you mentioned, I don't think
-> > it's an issue that these now wait for the server to finish the I/O and
-> > hang if the server doesn't. I think it's actually more correct
-> > behavior than what we had with temp pages, eg imo these actually ought
-> > to wait for the writeback to have been completed by the server. If the
-> > server is malicious / buggy and fsync/truncate hangs, I think that's
-> > fine given that fsync/truncate is initiated by the user on a specific
-> > file descriptor (as opposed to the generic sync()) (and imo it should
-> > hang if it can't actually be executed correctly because the server is
-> > malfunctioning).
+> thanks,
 >
-> Here, I have a comment. The hang in truncate is not as innocent as you
-> might think. It will happen in truncate_inode_pages() and as such it will
-> also end up hanging inode reclaim. Thus kswapd (or other arbitrary proces=
-s
-> entering direct reclaim) may hang in inode reclaim waiting for
-> truncate_inode_pages() to finish. And at that point you are between a roc=
-k
-> and a hard place - truncate_inode_pages() cannot fail because the inode i=
-s
-> at the point of no return. You cannot just detach the folio under writeba=
-ck
-> from the mapping because if the writeback ever completes, the IO end
-> handlers will get seriously confused - at least in the generic case, mayb=
-e
-> specifically for FUSE there would be some solution possible - like a
-> special handler in fuse_evict_inode() walking all the pages under writeba=
-ck
-> and tearing them down in a clean way (properly synchronizing with IO
-> completion) before truncate_inode_pages() is called.
+> greg k-h
+>
 
-Hmm... I looked into this path a bit when I was investigating a
-deadlock that was unrelated to this. The ->evict_inode() callback gets
-invoked only if the ref count on an inode has dropped to zero. In
-fuse, in the .release() callback (fuse_release()), if writeback
-caching is enabled, write_inode_now() is called on the inode with
-sync=3D1 (WB_SYNC_ALL). This does synchronous writeback and returns (and
-drops the inode ref) only after all the dirty pages have been written
-out. When ->evict_inode() -> fuse_evict_inode() is called, I don't
-think there can be any lingering dirty pages to write out in
-trunate_inode_pages().
+Builds successfully.  Boots and works on qemu and Intel Core i7-10810U
+
+Tested-by: Brett Mastbergen <bmastbergen@ciq.com>
 
 Thanks,
-Joanne
-
->
->                                                                 Honza
-> --
-> Jan Kara <jack@suse.com>
-> SUSE Labs, CR
+Brett
 
