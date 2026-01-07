@@ -1,181 +1,231 @@
-Return-Path: <stable+bounces-206227-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206225-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7947ED002E6
-	for <lists+stable@lfdr.de>; Wed, 07 Jan 2026 22:35:43 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36113D00280
+	for <lists+stable@lfdr.de>; Wed, 07 Jan 2026 22:24:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 6C06C30039CC
-	for <lists+stable@lfdr.de>; Wed,  7 Jan 2026 21:35:40 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 861C43008187
+	for <lists+stable@lfdr.de>; Wed,  7 Jan 2026 21:24:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A8462868A7;
-	Wed,  7 Jan 2026 21:35:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0246A32AABC;
+	Wed,  7 Jan 2026 21:24:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=techsingularity.net header.i=@techsingularity.net header.b="GRT6GfwD"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="KaTlZxt8"
 X-Original-To: stable@vger.kernel.org
-Received: from mail46.out.titan.email (mail46.out.titan.email [3.66.115.72])
+Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011031.outbound.protection.outlook.com [52.101.62.31])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A145C3246E8
-	for <stable@vger.kernel.org>; Wed,  7 Jan 2026 21:35:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=3.66.115.72
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767821738; cv=none; b=glpSv3Cv7322eP3VmeXU5q1LQTyvSsQRQpklEDCGDHTigCOcJp1U7rj2GRLhPGb+arGD2zXpXbgziArzT5Vl4/WLfgsQ36rVspxsPRtPYUGRg0UC9q7705gpkNvJVDTBul0q84WvljfCIozbL8wNZtpQC0qdhwcIx8vTFHPUYJI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767821738; c=relaxed/simple;
-	bh=f064EZ0dqGRVg3dkxlUTLTwy1SIOsSTpUSYzFm4tCpE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RxU0Qq1qxpwO7POXSzRpGMF+fVuXCq+xpdfvm8MVmzCK3AyMGkWw3VT1wgWOPJBPyky1KmWyc06K2nr99utNcVEi578eheiuqROPx1idT9kA9AIsHtYXjVmXveKNcQ/oaVeO9mgWYvrCg+UVfUyyuRO0Bwe3IWtUE+s0PBmf7RI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=techsingularity.net; spf=pass smtp.mailfrom=techsingularity.net; dkim=pass (1024-bit key) header.d=techsingularity.net header.i=@techsingularity.net header.b=GRT6GfwD; arc=none smtp.client-ip=3.66.115.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=techsingularity.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=techsingularity.net
-Received: from localhost (localhost [127.0.0.1])
-	by smtp-out0101.titan.email (Postfix) with ESMTP id 4dmgsD0gw6z4vxF;
-	Wed,  7 Jan 2026 21:19:28 +0000 (UTC)
-DKIM-Signature: a=rsa-sha256; bh=3Gsude5bCr/12iFzuhvBklS0UCcOFjMel4nHpQJlVUA=;
-	c=relaxed/relaxed; d=techsingularity.net;
-	h=date:cc:subject:references:from:to:message-id:mime-version:in-reply-to:from:to:cc:subject:date:message-id:in-reply-to:references:reply-to;
-	q=dns/txt; s=titan1; t=1767820768; v=1;
-	b=GRT6GfwDFe8MjeAHbU3WKrjHJH5MTG7P8YHkSbQMBx54D0v53MuQJdCG5+JS3kgyrGD8/SK4
-	0xIJuW6Q/2GJUf4qzG63maVHTQrzpMu5pRc9JTwzGkn0K8keeQZYXtRxc5kaz5DUiUGKzH0QJU5
-	uxSEYB1hDcy8bRcRj6eAeiQk=
-Received: from techsingularity.net (ip-84-203-20-110.broadband.digiweb.ie [84.203.20.110])
-	by smtp-out0101.titan.email (Postfix) with ESMTPA id 4dmgsB4LfWz4vxD;
-	Wed,  7 Jan 2026 21:19:26 +0000 (UTC)
-Date: Wed, 7 Jan 2026 21:19:20 +0000
-Feedback-ID: :mgorman@techsingularity.net:techsingularity.net:flockmailId
-From: Mel Gorman <mgorman@techsingularity.net>
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Clark Williams <clrkwllms@kernel.org>, 
-	Steven Rostedt <rostedt@goodmis.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-rt-devel@lists.linux.dev, stable@vger.kernel.org, 
-	kernel test robot <oliver.sang@intel.com>, Matthew Wilcox <willy@infradead.org>
-Subject: Re: [PATCH mm-hotfixes] mm/page_alloc: prevent pcp corruption with
- SMP=n
-Message-ID: <h33pscn2orhpb5dapttmo4vy4s3drfsjaahmjp4arsjjfngzno@bzbacqjvfe6r>
-References: <20260105-fix-pcp-up-v1-1-5579662d2071@suse.cz>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C1F7277CBF;
+	Wed,  7 Jan 2026 21:24:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.31
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1767821085; cv=fail; b=nz79K1qUTEgfISX1TF0XDECXNpvmf++6vV13dXewxIueU0NwMkZoHxq5QLi5zQWQlUdXzI4nKgid+oKFEaUHnWv2qoUScyeJ46EqzOG876Q1ikRhCUIhZMT2YuY32ADIQRrAVycDBAYOkshBq1q8pVStFvrHkaCNmfioxJSGj9Y=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1767821085; c=relaxed/simple;
+	bh=TfD/CUwM+LVPPKPdu+oyT8Pafca13rNjZdunn2CvCs4=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=MpPZSEWXO+lUpfybllls936AQk70CIHxL0TS7RH+DWQuiJziT03x/5y98XPrFN5PDDgmYCIT5YpPNlvAvg50Rn1fZ7TsmhwlC/UMoiktlrI9TQ2v6DoeZkBFhOl7qi2Iqaj1NAEECFho3WhvtPvWsz1h7t50sNSFwwm38nv3ldU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=KaTlZxt8; arc=fail smtp.client-ip=52.101.62.31
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=bwmGbEzqh7fGWQ7O0t9qwc8ZTwcYcNe1paKXLEzydOZkdwpkXSiVsxMI22WuT72gUeQO1GoJYycaL+1IFT52Bp6DIgvsupvNsenYgQM27UF+hn/FeXMdsRKkBVnNEzfxbAgPzdqGedJ4XnVVSOdO/btFAusqnHpYzOduJdUX4JUMg0xJbZuw+LfZcmVPGJFm/zOD65ZeyrVxEUlrxWE3mBGK7rqn6FlpobngRmdrcdE0DwIDMspbzFQavpI6JHX2fnWiPWLvZ/fqvsSDKr8JIb71oZqM8UUrtvgNGTJhzAEjlKEeSuXwGODb+gaFTiG8B3iCSVLwSz8Dl4QpT8BpIQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=FIOPMt5EsSW1aN0qrxvTMnID1VCvbGEnXpSetHVLI2E=;
+ b=Owx/R0beI+oV7OKpmurf4aszB7xLrNJmThOW02+gTf965/LXw9FwjWawfBa/5COjQpeqfsID0gpv9ivKuE9VzOmWBaBk0VxEatYEH7dfHpUA2br8sTxZ93B1zK8jINOPCzQruHrar47j9JgMVL0Le02KVTWZ9jVhOna1LzgHAESAADazazfln5/Prw7D7oLzLerk96MqdF1Kgig3IRFQfGFOdBvi7Pera/LLJeUnWvbIwTstQ0GIaqobphA9GukRtR92k9ACZm8/3UogWRxuy2aNE9Bsyj7plTEZYCzRcXy3+Qf6cPNfkDuPfyriCiICGSN+rIE9ltzidV9xuDFLsA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=FIOPMt5EsSW1aN0qrxvTMnID1VCvbGEnXpSetHVLI2E=;
+ b=KaTlZxt8I/0O7QaEs5DmjZw1fbcn+JfXvTpG851xWOITL1LOYgHWATwufy58ceSTP0KNC6Tzw9tjx8OBqDaI4mxvjEX8MSQET+ctsF5RLVBL4ob6GF0hC8uBgNYYZ//uwziZavbVea25VZsk+gb/am2rT2p1irxcGE9j++g0zBc=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
+ by IA0PPF64A94D5DF.namprd12.prod.outlook.com (2603:10b6:20f:fc04::bd0) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.2; Wed, 7 Jan
+ 2026 21:24:39 +0000
+Received: from MN0PR12MB6101.namprd12.prod.outlook.com
+ ([fe80::37ee:a763:6d04:81ca]) by MN0PR12MB6101.namprd12.prod.outlook.com
+ ([fe80::37ee:a763:6d04:81ca%7]) with mapi id 15.20.9478.004; Wed, 7 Jan 2026
+ 21:24:39 +0000
+Message-ID: <25a4653c-4d95-44c7-a957-c3ac9da214ad@amd.com>
+Date: Wed, 7 Jan 2026 15:24:31 -0600
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] cpufreq/amd-pstate: Fix MinPerf MSR value for performance
+ policy
+To: Juan Martinez <juan.martinez@amd.com>, gautham.shenoy@amd.com
+Cc: rafael@kernel.org, viresh.kumar@linaro.org, perry.yuan@amd.com,
+ linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, Kaushik Reddy S <kaushik.reddys@amd.com>,
+ Huang Rui <ray.huang@amd.com>
+References: <20260107211919.38010-1-juan.martinez@amd.com>
+Content-Language: en-US
+From: Mario Limonciello <mario.limonciello@amd.com>
+In-Reply-To: <20260107211919.38010-1-juan.martinez@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SA9PR13CA0076.namprd13.prod.outlook.com
+ (2603:10b6:806:23::21) To MN0PR12MB6101.namprd12.prod.outlook.com
+ (2603:10b6:208:3cb::10)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-15
-Content-Disposition: inline
-In-Reply-To: <20260105-fix-pcp-up-v1-1-5579662d2071@suse.cz>
-X-F-Verdict: SPFVALID
-X-Titan-Src-Out: 1767820767945683141.1240.1245684775781968541@prod-euc1-smtp-out1002.
-X-CMAE-Score: 0
-X-CMAE-Analysis: v=2.4 cv=d4QPyQjE c=1 sm=1 tr=0 ts=695ecddf
-	a=ycgmuL0lqxUANBz+XI9aLQ==:117 a=ycgmuL0lqxUANBz+XI9aLQ==:17
-	a=Q9fys5e9bTEA:10 a=CEWIc4RMnpUA:10 a=VwQbUJbxAAAA:8 a=QyXUC8HyAAAA:8
-	a=JfrnYn6hAAAA:8 a=R_Myd5XaAAAA:8 a=MC9sqzVPiPx8m3HZA18A:9
-	a=PUjeQqilurYA:10 a=1CNFftbPRP8L7MoqJWF3:22 a=L2g4Dz8VuBQ37YGmWQah:22
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MN0PR12MB6101:EE_|IA0PPF64A94D5DF:EE_
+X-MS-Office365-Filtering-Correlation-Id: 65b862c3-fe0e-4a48-545b-08de4e332a34
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?YkNEZUxDdVVhQTZPajA4VDJnSWdYTHlST0RRVGNja3UwZHBGNTYwM21XbjhN?=
+ =?utf-8?B?MUtXcTgzamZLT0MwVGI1YytCS0RGbC96dThBaDZmcm5CRjVkbmlNUlFlcTJC?=
+ =?utf-8?B?ZXZQQ3NpM1RrRG9vR2ZxTXpiak5wNVhVSTFTQmF1dXdjZUM4Sm1UZi93ODh4?=
+ =?utf-8?B?NjdqY1BoMGkyeVdkYjNlZmVlR1ZXTW9BcGpEUXdTMlVERGxTblRTR2REanZN?=
+ =?utf-8?B?S0FTeXBPTHlsdTF6TUpOSzdESld0cXpTeEQvcGR6aXZWNG1tYWdlTUE5UlRE?=
+ =?utf-8?B?Y21FenJoWjlMZ3oxL3F1QlIxZkg4UzN1QnJ4N1NBYVdFZEZkVm5reDlGYkQv?=
+ =?utf-8?B?NVlhTUFmZjhsZXh4d0ZQb2ppYUtrUklzaU1hK3ZxMm9ESllQQ01Vb0E1Wk1W?=
+ =?utf-8?B?WGo3ZkdUR0t1NmZ3RjhWKzE0cDdaeFlrcFlPQ2pGY3Q1QUJwMDc5UkFiQU1j?=
+ =?utf-8?B?MGtnK3RBazF1bzZWUGFGSW5hTURGUWpnZlk2YXVYb25qUExtT0JjZkowbWk1?=
+ =?utf-8?B?SnlUbWxraUs4V29LUzNqcjkzWGV0RTdkbXNPb3pqdzFLVjdXb09iZ3FDSkhN?=
+ =?utf-8?B?bmdhWFJvQTFuWmdGVWg2d3BsV0w2eVVONlFBY2gyTU1hUkRSK3ZnMXllRGJV?=
+ =?utf-8?B?cFhoVEl5TFJuT3dQckhoc2lWaElLUVFJNzlRV1krVWh4RVhRbjc4SHFzN1BQ?=
+ =?utf-8?B?RFFMN0wxYmpBMDgyVVU1TSs0SFViQTZYemtldWN0WEVXYmloclRzMnFlVHMw?=
+ =?utf-8?B?cjdIZzRJZjdGYVNPSCtKeEx4VHpKaHVsME9QOS9OemxVandTZ3BoWFBsMjdF?=
+ =?utf-8?B?bUp6M3docDNoN2RaSnkzNFFGTDdqdVcwWERMT1BLNW0rbmluUEdGMjU5cEx1?=
+ =?utf-8?B?aENWTzlGRHJBVkMwZjJnTy93VTFHSUFtUVFLWG1WVzNHKytocVBMMGFWSkMv?=
+ =?utf-8?B?YjZyRC9HY3YxclducDRPMWlQcFlteWZjOVd4Q1BPSURyQVdZUmdGL2pHZWJ6?=
+ =?utf-8?B?WnRTZUlOY2ROYVU5Q2ZxQytSVWd2MWR6UHhqb05PZElBaVdWQVNSQi8yNmEw?=
+ =?utf-8?B?ZjhFQTdtMGMvWnZsYWJQT05LSG1JTG1QY1gxN1VFbXR2b1EvTmNVMXhzQjRB?=
+ =?utf-8?B?QnJ6ZUVGTXJNMjcwSjdaSDJPTktMY3NxRFVGUi94M1dQbXRSNXlOOUR3bHFE?=
+ =?utf-8?B?YjgvYWoxS0NxbzAyMDJwSHMrRU9YTE92ajF2cWcxTUg0VGt3UldpRnVCdWQz?=
+ =?utf-8?B?NW5EZXhlSUUwdEdTNVltT2VXckxMakxXbGNZeWVlZlJCNi9GYS92dmJnVGtU?=
+ =?utf-8?B?cy9GNmRQREZoZGRVWGFHT0tSNDRGbEVKcTlRamZ6YlNoN1l2V3o0clo4V0hm?=
+ =?utf-8?B?aE1yRkdkRDFPWXRWYVppSHMzNHZvenVTT2RmTGFJWklTOU5mL3BPTytvUllm?=
+ =?utf-8?B?alFuUWV4VDNOS2VPVjR0WDlNQ3JMWCtLUGJiaFpLMlUwR0EyUTIzc3pEZzVz?=
+ =?utf-8?B?Yk9jaktRZTdRbDRlZ2t1OWx0bFg2bEhCRXFFYkMxNW9lTStyVWQ1ODZIK1VY?=
+ =?utf-8?B?SFVNV0FTWThHOW5UMStWT1I1VDZPV1NzcEphVXFHWThsWmRuN1JlUU13N3Vo?=
+ =?utf-8?B?VXpONXlUUHArY0NUdjlnVXFLOElMWkpWRDNPY3p3NHVzZ3FYbmljVU1wa3Fs?=
+ =?utf-8?B?bUJtREFGYTVsQVAvN3RlWlhYRlVJRU1wTjRvL1ZZUGlHdGFEQytBZEhxbnBo?=
+ =?utf-8?B?Wi9ublc3TWgrNzRzdjFsY2R4cGVLbURlS2NHQkI3TXo3dGZDYVI4TkptbThR?=
+ =?utf-8?B?UlF4TElxcGdxbG56aFpHei96alNtUzRKa1NUY1p2bVlyQk9neG4ydW8yb3Aw?=
+ =?utf-8?B?OW9LYzc1UklvMjJuVlFSZnNZaHI3NnlSVDJCY3hPWmY0c3czYkxxcDFEKzQz?=
+ =?utf-8?B?aS8rT0VyaTFHb21Xck5HUnZXZHpwbEg5YjZJaVBEek5iSE5LVlN0UWFoZ2Nw?=
+ =?utf-8?B?cjZXeklzd1Z3PT0=?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?Z2MrTk9qYXZVdFcxZEdhOEhnZGREbVhYZ2drZnZjYm01dUVkUS9nMkdHcjQ5?=
+ =?utf-8?B?SkdnOW9aT01QZjJ5NFJUMk1ZcENVU1JWQ3VZRWNiMzlLaG93Y3RWUXlGQ1R1?=
+ =?utf-8?B?Wk9XNW5FSDNvdUlGMnlUeTVKZ21nUFY1SjFiVHkyYmN3QVFMRGZvZE5Eclls?=
+ =?utf-8?B?M3k3QU1sOHBZVU1hOVlJRndWSmI2SkcwWDh0ZEd2YkpLMHJYN0dEaEs0SlVJ?=
+ =?utf-8?B?cUxVUjdHNzR2V0ZrSUQ5THI1NjVWdksvWWdURXA5SDd5dXFtdFMvbVhKRDUv?=
+ =?utf-8?B?eElRUGdBcFc3VVBDUlhBL0srN09rN2Urb1BiakJKRHpVNGMwbCtYUmI1TDAx?=
+ =?utf-8?B?dlNra09NcmZ3RS9rdzVJajhRb1E3QUR3ZmxaS1RrQ1IyUGo2N3hHRW92RTNw?=
+ =?utf-8?B?TXhTdXMrSzJuVUtNa2VVa2plSDZtOU41dzlnbnVjRlhCalMwYW1hWVZqZmY4?=
+ =?utf-8?B?VFJPejdhSDBuS2EwNWpOWlgvV1VrNXVhYkRiSFhaNlBIVDRkQ2FVU1VGbTEv?=
+ =?utf-8?B?bGpxNXlWZFJOeWhqOGdFd3JrTk1SOERmTWVEUUxQRVZpV005Rm5TQjZJTXpW?=
+ =?utf-8?B?MmZaVVY3ZVRsbkV0ankzempmbm9oVFRjQWJnWmd2OWtOUHVld3Q3YlQ4TDhr?=
+ =?utf-8?B?VkhreDg2QU9QUk9DcGRXWVQvdmwwSGIwc0RGQzFvcnlhM2Rlc2dXQnh4Wkpw?=
+ =?utf-8?B?SE43VHluaUJyVVVZL1l1cFJ4R2ZhV3dkR3g4aGUvOEhIeU1NdnJycktPZVd1?=
+ =?utf-8?B?YksyZlNFVkxBajkrT1JqSlpxTHdDNXF3QkVHZzVhZDlzNEp6VEdxSFUrRm0y?=
+ =?utf-8?B?MlpqMWNVcjRTTGN5bGc0Z2RkRUowZ3JSOGlGWGgvM2FuR2hIL0VnNmJPQ1kz?=
+ =?utf-8?B?TjBaVTIzRm9xeUNQZXB2aklJSnVBOEdBS3JlNW0wRkNsSW5vYU1Zc1Z3dkNv?=
+ =?utf-8?B?cytwV00xNjNHNDFwRjUwS0JVL29neExwMURlUXN2blM2anRQa3lUMk8yUVNS?=
+ =?utf-8?B?N3R3K1lTRE5ZRUcyQVpnL1FCSm1EYnIyQi84bGZOVmR0OVFDSjExeHNXaVFG?=
+ =?utf-8?B?aVk5bk1XTUNsTTFEY3E2QkZoK3JXOGJyRDNMZEhzMVVPQ2Z2RXFEa2hRMEda?=
+ =?utf-8?B?MlJlN2pDL1dqZjRyUjhXbWpldTdPajZkL2tUV1BGODRMTUovU2d4YlhTN2RK?=
+ =?utf-8?B?RFp0ejRPVllZbWFTWEJ1aEdQY3A3am5VTHd1cEYzcEhQL1ZCeTQwaDJKYjFm?=
+ =?utf-8?B?dlZhNFJFZjBNcWFOOTZJQ3plWlVzR0FwTnprTEFOYWN5RHlteFBJVlBvVEpa?=
+ =?utf-8?B?c3M3WmpMZzRQc2hYQ3V2ZzBxTEdXUlJKV295bHErS3E0Rk1RR3hzMlhtMEUw?=
+ =?utf-8?B?TG0yTVhXQWMvU0MvOGxrWDZRSGlZZmNwYVBFTDQ5OFZJa3dwZ242NTc0amdi?=
+ =?utf-8?B?c0E1YmVBaTF2aEdieTIyais5VmNNcVdROVdYdDZ0RlhXcGJjeXgvUFVFVEZH?=
+ =?utf-8?B?OWJMVi9JQkN3YURueUZyM1VnN2RLOHF6QmtSM2czQU1uM1RBQXRtWUM5TkRJ?=
+ =?utf-8?B?bUNFcmZpNHFadlpOd1h0aFhad1lJaDJBcmg4OEtCK2RjUXA5YS9QVVR6T1VF?=
+ =?utf-8?B?WXA4UE9uMTNtd0d5VE5kVVlUVDJsVjVNU2FFSXZxRU56NExKUkFIRStXWU55?=
+ =?utf-8?B?NTFydFEvaUJqOXpQR3pqUEJkWFl3MmZOajhsU3Urb1FsMkZ6SVhCdTBpRkk0?=
+ =?utf-8?B?VjU4YWExMktBSmI4T01KdzNKT0FSRHNia2g5Qmh5L0h2NEVCaWRKVzY1SXhm?=
+ =?utf-8?B?WXR4TEdHdjh5dDhFNkZWME1BejhHaTJuQ2x5cGpVNVp2ZVAvMVlET1ZQTVFW?=
+ =?utf-8?B?QnlwUDhmUmN4VFo5MzBUVTRoa1VHUSs5SzhWZFBENHk5Ny8ydW83QnEyWlRS?=
+ =?utf-8?B?bUprYVBmWmRrQ0tVeTkxZUg1Y2xYZGkzdm1vSVBmTkRoSVZ0MVFzRWVNK1N3?=
+ =?utf-8?B?QVk1NFR4VEtBRGp0T0FWL0dWUGlpUFN4NklCT0p2SHFZbElNRDFBcUY3eDNm?=
+ =?utf-8?B?cHgwNGFyZkptbW1LdG5Cb1RzSFFVZzhVek9uZU4yOFhsY3VoSnUvb3JTWlhE?=
+ =?utf-8?B?R0o5bFk5T2lFWk1OQStnOCs5bi91TXpENWxyczZ3Uk11OGZGSlp2anp5d203?=
+ =?utf-8?B?MFZ5anlmTmlMbytqanBIQWU2dEtIMm05RlViN1R2TUZmVUNSYi91MkY0aE0y?=
+ =?utf-8?B?SzYyMEsxTUE1Qms2UTlnM1p1dklmTG5NZDhlYzZmekFvTkhVZklpQkd4V29P?=
+ =?utf-8?B?dFdXQnczZ0ZOVUs5UmZlRndqcHovcjRlM3QyYlY3QnZROC9IV2h6QT09?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 65b862c3-fe0e-4a48-545b-08de4e332a34
+X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jan 2026 21:24:39.6598
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: b+LhzKv13EETqVj96HRs1b7r+Pq6lLwWyuOaPcPQ0X7vk1yNob2iBevAb8gO3fYhi0kTFQuvYMo9veHGIcUuDg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PPF64A94D5DF
 
-On Mon, Jan 05, 2026 at 04:08:56PM +0100, Vlastimil Babka wrote:
-> The kernel test robot has reported:
+On 1/7/26 3:19 PM, Juan Martinez wrote:
+> When the CPU frequency policy is set to CPUFREQ_POLICY_PERFORMANCE
+> (which occurs when EPP hint is set to "performance"), the driver
+> incorrectly sets the MinPerf field in CPPC request MSR to nominal_perf
+> instead of lowest_nonlinear_perf.
 > 
->  BUG: spinlock trylock failure on UP on CPU#0, kcompactd0/28
->   lock: 0xffff888807e35ef0, .magic: dead4ead, .owner: kcompactd0/28, .owner_cpu: 0
->  CPU: 0 UID: 0 PID: 28 Comm: kcompactd0 Not tainted 6.18.0-rc5-00127-ga06157804399 #1 PREEMPT  8cc09ef94dcec767faa911515ce9e609c45db470
->  Call Trace:
->   <IRQ>
->   __dump_stack (lib/dump_stack.c:95)
->   dump_stack_lvl (lib/dump_stack.c:123)
->   dump_stack (lib/dump_stack.c:130)
->   spin_dump (kernel/locking/spinlock_debug.c:71)
->   do_raw_spin_trylock (kernel/locking/spinlock_debug.c:?)
->   _raw_spin_trylock (include/linux/spinlock_api_smp.h:89 kernel/locking/spinlock.c:138)
->   __free_frozen_pages (mm/page_alloc.c:2973)
->   ___free_pages (mm/page_alloc.c:5295)
->   __free_pages (mm/page_alloc.c:5334)
->   tlb_remove_table_rcu (include/linux/mm.h:? include/linux/mm.h:3122 include/asm-generic/tlb.h:220 mm/mmu_gather.c:227 mm/mmu_gather.c:290)
->   ? __cfi_tlb_remove_table_rcu (mm/mmu_gather.c:289)
->   ? rcu_core (kernel/rcu/tree.c:?)
->   rcu_core (include/linux/rcupdate.h:341 kernel/rcu/tree.c:2607 kernel/rcu/tree.c:2861)
->   rcu_core_si (kernel/rcu/tree.c:2879)
->   handle_softirqs (arch/x86/include/asm/jump_label.h:36 include/trace/events/irq.h:142 kernel/softirq.c:623)
->   __irq_exit_rcu (arch/x86/include/asm/jump_label.h:36 kernel/softirq.c:725)
->   irq_exit_rcu (kernel/softirq.c:741)
->   sysvec_apic_timer_interrupt (arch/x86/kernel/apic/apic.c:1052)
->   </IRQ>
->   <TASK>
->  RIP: 0010:_raw_spin_unlock_irqrestore (arch/x86/include/asm/preempt.h:95 include/linux/spinlock_api_smp.h:152 kernel/locking/spinlock.c:194)
->   free_pcppages_bulk (mm/page_alloc.c:1494)
->   drain_pages_zone (include/linux/spinlock.h:391 mm/page_alloc.c:2632)
->   __drain_all_pages (mm/page_alloc.c:2731)
->   drain_all_pages (mm/page_alloc.c:2747)
->   kcompactd (mm/compaction.c:3115)
->   kthread (kernel/kthread.c:465)
->   ? __cfi_kcompactd (mm/compaction.c:3166)
->   ? __cfi_kthread (kernel/kthread.c:412)
->   ret_from_fork (arch/x86/kernel/process.c:164)
->   ? __cfi_kthread (kernel/kthread.c:412)
->   ret_from_fork_asm (arch/x86/entry/entry_64.S:255)
->   </TASK>
+> According to the AMD architectural programmer's manual volume 2 [1],
+> in section "17.6.4.1 CPPC_CAPABILITY_1", lowest_nonlinear_perf represents
+> the most energy efficient performance level (in terms of performance per
+> watt). The MinPerf field should be set to this value even in performance
+> mode to maintain proper power/performance characteristics.
 > 
-> Matthew has analyzed the report and identified that in drain_page_zone()
-> we are in a section protected by spin_lock(&pcp->lock) and then get an
-> interrupt that attempts spin_trylock() on the same lock. The code is
-> designed to work this way without disabling IRQs and occasionally fail
-> the trylock with a fallback. However, the SMP=n spinlock implementation
-> assumes spin_trylock() will always succeed, and thus it's normally a
-> no-op. Here the enabled lock debugging catches the problem, but
-> otherwise it could cause a corruption of the pcp structure.
+> This fixes a regression introduced by commit 0c411b39e4f4c ("amd-pstate: Set
+> min_perf to nominal_perf for active mode performance gov"), which correctly
+> identified that highest_perf was too high but chose nominal_perf as an
+> intermediate value instead of lowest_nonlinear_perf.
 > 
-> The problem has been introduced by commit 574907741599 ("mm/page_alloc:
-> leave IRQs enabled for per-cpu page allocations"). The pcp locking
-> scheme recognizes the need for disabling IRQs to prevent nesting
-> spin_trylock() sections on SMP=n, but the need to prevent the nesting in
-> spin_lock() has not been recognized. Fix it by introducing local
-> wrappers that change the spin_lock() to spin_lock_iqsave() with SMP=n
-> and use them in all places that do spin_lock(&pcp->lock).
+> The fix changes amd_pstate_update_min_max_limit() to use lowest_nonlinear_perf
+> instead of nominal_perf when the policy is CPUFREQ_POLICY_PERFORMANCE.
 > 
-
-Bah, correct.
-
-> Fixes: 574907741599 ("mm/page_alloc: leave IRQs enabled for per-cpu page allocations")
+> [1] https://docs.amd.com/v/u/en-US/24593_3.43
+>      AMD64 Architecture Programmer's Manual Volume 2: System Programming
+>      Section 17.6.4.1 CPPC_CAPABILITY_1
+>      (Referenced in commit 5d9a354cf839a)
+> 
+> Fixes: 0c411b39e4f4c ("amd-pstate: Set min_perf to nominal_perf for active mode performance gov")
+> Tested-by: Kaushik Reddy S <kaushik.reddys@amd.com>
 > Cc: stable@vger.kernel.org
-> Reported-by: kernel test robot <oliver.sang@intel.com>
-> Closes: https://lore.kernel.org/oe-lkp/202512101320.e2f2dd6f-lkp@intel.com
-> Analyzed-by: Matthew Wilcox <willy@infradead.org>
-> Link: https://lore.kernel.org/all/aUW05pyc9nZkvY-1@casper.infradead.org/
-> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
-> ---
-> This fix is intentionally made self-contained and not trying to expand
-> upon the existing pcp[u]_spin() helpers. This is to make stable
-> backports easier due to recent cleanups to that helpers.
-> 
-> We could follow up with a proper helpers integration going forward.
-> However I think the assumptions SMP=n of the spinlock UP implementation
-> are just wrong. It should be valid to do a spin_lock() without disabling
-> irq's and rely on a nested spin_trylock() to fail. I will thus try
-> proposing the remove the UP implementation first. It should be within
-> the current trend of removing stuff that's optimized for a minority
-> configuration if it makes maintainability of the majority worse.
-> (c.f. recent scheduler SMP=n removal)
+> Signed-off-by: Juan Martinez <juan.martinez@amd.com>
 
-It would be fair. Maybe it'll take a performance hit because from a
-maintenance perspective, it would be preferable. It's true that
-spin_trylock within a lock protected region on UP is somewhat bogus, but
-not impossible either. Even if the resulting code is buggy anyway, it
-would be preferable to fail early than hide.
+I think this change is reasonable, but I'd like to get Gautham's 
+comments as the original author of 0c411b39e4f4c.
 
 > ---
->  mm/page_alloc.c | 45 +++++++++++++++++++++++++++++++++++++--------
->  1 file changed, 37 insertions(+), 8 deletions(-)
+>   drivers/cpufreq/amd-pstate.c | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
 > 
+> diff --git a/drivers/cpufreq/amd-pstate.c b/drivers/cpufreq/amd-pstate.c
+> index e4f1933dd7d47..de0bb5b325502 100644
+> --- a/drivers/cpufreq/amd-pstate.c
+> +++ b/drivers/cpufreq/amd-pstate.c
+> @@ -634,8 +634,8 @@ static void amd_pstate_update_min_max_limit(struct cpufreq_policy *policy)
+>   	WRITE_ONCE(cpudata->max_limit_freq, policy->max);
+>   
+>   	if (cpudata->policy == CPUFREQ_POLICY_PERFORMANCE) {
+> -		perf.min_limit_perf = min(perf.nominal_perf, perf.max_limit_perf);
+> -		WRITE_ONCE(cpudata->min_limit_freq, min(cpudata->nominal_freq, cpudata->max_limit_freq));
+> +		perf.min_limit_perf = min(perf.lowest_nonlinear_perf, perf.max_limit_perf);
+> +		WRITE_ONCE(cpudata->min_limit_freq, min(cpudata->lowest_nonlinear_freq, cpudata->max_limit_freq));
+>   	} else {
+>   		perf.min_limit_perf = freq_to_perf(perf, cpudata->nominal_freq, policy->min);
+>   		WRITE_ONCE(cpudata->min_limit_freq, policy->min);
 
-With or without the renaming on top;
-
-Acked-by: Mel Gorman <mgorman@techsingularity.net>
-
-Thanks.
-
--- 
-Mel Gorman
-SUSE Labs
 
