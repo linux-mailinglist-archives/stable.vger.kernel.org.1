@@ -1,260 +1,117 @@
-Return-Path: <stable+bounces-206157-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206156-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2500ACFEAB8
-	for <lists+stable@lfdr.de>; Wed, 07 Jan 2026 16:48:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 56C66CFED14
+	for <lists+stable@lfdr.de>; Wed, 07 Jan 2026 17:18:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 59D09306C99D
-	for <lists+stable@lfdr.de>; Wed,  7 Jan 2026 15:45:32 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5D12A30086DC
+	for <lists+stable@lfdr.de>; Wed,  7 Jan 2026 16:18:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0306393DEE;
-	Wed,  7 Jan 2026 15:33:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29C0A33C519;
+	Wed,  7 Jan 2026 15:30:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=aol.com header.i=@aol.com header.b="Z698EdrR"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YHYe90kO"
 X-Original-To: stable@vger.kernel.org
-Received: from sonic304-24.consmr.mail.gq1.yahoo.com (sonic304-24.consmr.mail.gq1.yahoo.com [98.137.68.205])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68FA136C5AE
-	for <stable@vger.kernel.org>; Wed,  7 Jan 2026 15:33:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=98.137.68.205
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABE14335567;
+	Wed,  7 Jan 2026 15:30:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767800000; cv=none; b=XBbn+EH8EelXV/7JNNErb1H8DMyPBbI8LT8d13mK+7R0Yn3PsQ9+7gcDVtOollfGcT0CESqe0mCTI9ZI7+beUWvtSieN9o05/cBGgjMs4oPXLas5XHIXW2ckki+TELVMRIEQf6g9UaMAtDUb52X/sbfwZ0SKEdPcsQxccjKiBOY=
+	t=1767799857; cv=none; b=YPVvo9VRCppsMw1aFbyoOkkciP7Wgd5gK0VGJ/YRbn6akzTCjvEqN1RnK2pT3qlD7dNjDY5zeBvYxRq5+68FgIAcnDljGG9f4wmJhV2zjMLMWjYlnqTQ5wiKtcwm79rNAn+PvIfwS/TgOYb3BSw0S3m/be/X/fzQhkHSTkYlyWY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767800000; c=relaxed/simple;
-	bh=vNwzqdwzeZ1ouTkXeK/m9OuTAQr1uXmPgBEXNPz8g20=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=aAV+2WIwXw1sJFgmURJQftzIpqT8+K/EK1j0Xl9zOJASyIi/qcjaPT8bdxXYaIJwHkXDHkWsbyzNt90zm0Q2aO6QO1r06OtdZH5tg70Gusq2rDhv1NfnBdXmZ7H+5DCHQuH9iyp0KMojkZTXJeyvZiBZmKnqgXDUnDjAuf2W+F4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=aol.com; spf=pass smtp.mailfrom=aol.com; dkim=pass (2048-bit key) header.d=aol.com header.i=@aol.com header.b=Z698EdrR; arc=none smtp.client-ip=98.137.68.205
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=aol.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aol.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aol.com; s=a2048; t=1767799997; bh=U1kjft9FnfgOthNmEaDaBmsqBC4lDNW5o4IYMMkhgqA=; h=Subject:From:To:Cc:Date:In-Reply-To:References:From:Subject:Reply-To; b=Z698EdrRWKB+WpZ/Z1scLSqfIPhrOYRvlpmYByHP00DdQ2Bjmg1eRBEsfWS6RMThBzSbSJyWRZusoSsfT1CdREAqtIM9WuSr+pKHhcq0bmlInhr1N1uxMkn8gSGYERfTCs26JVkEx1V6A4cPnbz3ZoK05OgyzwphLgVpCkjB4WDaDvIyWVEhoj9HCbrSisf/e29cDYDFKkmaakqYWyAyG4095R6hfwA2uNhEInFmDj8HvbyJcs+IiTg8Cc/2y8UOYBpZe/tfw3OeAeDpMaJy9rrSGCVTQDj7JrW2LTPvfC4nblQ11w6m/LFgNf8PQrFIuXrTo6gXXrh6i4rdfusaag==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1767799997; bh=y/QiECGKzBhKZ6BKkwVlpOm467vdqnBZn2u0WXLXXoX=; h=X-Sonic-MF:Subject:From:To:Date:From:Subject; b=K/bHMOxbX+nmvqy3PhPZn7hibbSI++5ZV8EfboFanzuZZHCslNy2bVX8w5q+v1JL5kphog6RnN4r5lF7bnYsaAC6jgVlVqjyFWWRMonvqX0PW4GkzKctQcqNWT3sa0VU19x98Cs1IHfnLYsbmwvaM9uQiB0Z0Qj5C/K6XfAZk2sCB2ly0HLu0bzhar5IJDy1LEAbssHEFX/FAtNaDJyhG2MpcoQxPC4BSxH8nWQFVr18jpC/VrnlvCKKERdQUd5JooGuyMsZJK3X2Tm6RIyMOU7bTs8hS+SPSETiTzPy23X33GNG7mGbF+S9R54YdEY1Pz+Omor82WFEJrgJw4ZYUQ==
-X-YMail-OSG: Jx0Dho0VM1lSRskcvlbFdrHONNkI2KISNRxHKxVQRDsnPYFoQj8VbFdY.N7aC_J
- ezOrj4OuiM9L.hXfAG2btXoh4RVuA75an5fFM7amvGlf5NKKZTz8s4GUeRZLgjaFwM_FirZjVb6P
- paYOXIWIB6BJu73oWN7jCdcT3O1HFJogwyS1VHdzVZW8L50DcYsxRWP0xjbkZOkXsoGE.HsVFMSn
- 59KkVmfVU3sTItDzPdM8lNcI6hpLXNT3Em7YSoT9QlRdVEHS4x0.vu10n3tuLhz1rTfdFghyOQar
- T1PRMBGM30sRbBcSzTkX1hUSj4I15liepL.52_ziq1QMfy6dOBvSmLJxL2uOnb9h.fSd9AH5zNEm
- 8PJeiYeARLK1YYU2_tZn1M2uESVWGcfkHzluj9SxH5DcsjaPq1w6hSLyPMQGMzHQ34z4yrWyJcLA
- .ROQMZeAFfffay6QYqNh6b4c.J8hmUs0ZO8zSbgDoDHl.d_mMBTYSFMuoyTrOp2smxPfZilhGAUB
- 2EYJgmwpKXW3iOtTW7O_mCWaFnQ5T4fj2lYxfdrcrs2KRYaR_m8lYcBV.ZQHrXTChizI3pBpzUay
- si6H6yxuGn99c1_0bMCPlZO105M4ROlMKuAyLCRolyTSKWoecVY2ov7RVtrD_WPO48_aSg2Dp_Nd
- 04O1viH986wgE.npYqQuuRpjZqmToMbFILhbx4.rqGa0UzjBsWOycZCo_NGAXIP5mcZHA7wvENXU
- U_zdCf1ohDJw88fM6_Wi108B7Scc3I4_elnfw1EziFreUWo6X3te_itgNMSEenX193g9LQjHEZJF
- O4o44zus8NdL_XKvjR_Zw6hx1PYfmJtk3qwNvUqm4HL55NPvydNFQjrFE3exr205ejf0Mp4S8205
- gm260jtO9yT.f3.FQ0SyvtowpOCwfZwZD.RoNrP6GMRmnaGbSzBt6ZdpQYlv_9v_fkNRmUiZza52
- 2ku4PhDbOQTqzXJVIa6XCrs8Nj1m7HvsqGMju4Ep49QlnykLK_y7Njs4KUK4AxPf05tI8G92UiCk
- drFpAZVh7mvW9d6w3dHDCG4xbrKwxeYB6Tb7.CKVhEtB6FgMEvm.MkdDy73JkF6nlEfTLKyqAGgk
- AuZnPqMPAwU_ZUMAutOXEXGmBNMtMNNwpupBWc4FW8cn0fNXLbnVW4vHjWNAWd79Jw6b9Rbk0Uwh
- 6DfWWbvaLV4XipsPGUS.yWNoVM5VBwqQIVs6iViCuqSbjeCUnucySnEvOWFkY1YfDl1aP2Kl5Oth
- rRFzNzDuiVfF5XFn3duvRa1GgYN_9n_D6yLG339tlH1xIaQbwThYTnvGE7nPkv2OMGElnblgMiiM
- Z_Rc8Db6QJAcWWV6n50.3u8Fmt5lpLvWvjjm_wo5m7K7cowXs1go.7hvriW.4V4m404sV3.krRI3
- 82NVrup.rdOgRHck1utWZPytUSQMQq_9eQ7Rw2e0YXi2anL9KN84xDahWNx6WhIZCa7IjaIKIzNZ
- QVHfTaMJVI_HguZfmrJt9voehlTHs5e17dAWWTo8m3GI3MYltZjUcPwFnZH8gtMZjKyBagN0ShF6
- SAuzBwAo5IdSU.3n8ojn.4LbBB7B0J3gihIfMe55jrQ8au9LFnhUYCJ2dF0RSIe1AlWoXY3qd.Nj
- BWQCwhiJBQk3FWfFLP2YTT3amf_5ewMDctUXYLZYuDnwLyhDW2Lhcnos34q7t2pvahWeMW4Mgfco
- XrYjirYBCGQ7QsklBzkb5tON3cwGtiFFUIXZN6tOaNOgwNxkubR_an.q9KwUjEZsNiGYEALl6MLu
- jKOZoPTW0vqeMHw1Dgu4KVmzBROnzmoWIxpbuciFGbNUIfGFJ..4rL3yFb9OIlQWAsVgoMhiP_MB
- dpz3xKeZ23838bUAB7Ex6Tm.ueGIf0KHhDjkeiv6KX.GRM0eBOHvUgBjWsJEpTXUlL6c_EFSSY3a
- Dv5HnX8BeICTNeQLQ_dVgADOvo8A0bH7IHPuOVLlvUve8FBlfkB6bsC.vdUrh4pe3ddH7EeJQ_US
- tOSkOCgxKDygG0LBEZWGPWxJp62y5gNut5oU2g_v.oeG01iikZ_avHKWPPusz5axToU_Bm50mZz9
- V1fgt0F8F9h3S6_GZV11PD6PnUbJHMSeaDenPFB1LWCFM6i15B1XkCDY54FHPY7iJmSwhvvA8grR
- pWUR6ebenVBqGZh56wYsL8qqeNKwQHH9b4UZQGalKLHFPDleth0XoRt7c9pbgsTPsXRr_O5ZAGLy
- LvbqG6.FoGRQvdaH8CwFaL9Mq0BmPxCR8f.5S4J9Cny0RHNBRiXLgyAOz
-X-Sonic-MF: <rubenru09@aol.com>
-X-Sonic-ID: f670a66f-4849-4ccb-89c2-ddb5330717ee
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic304.consmr.mail.gq1.yahoo.com with HTTP; Wed, 7 Jan 2026 15:33:17 +0000
-Received: by hermes--production-ir2-7679c5bc-8rzzp (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 03667c1c1dc7f148bf5263a946f54531;
-          Wed, 07 Jan 2026 15:02:54 +0000 (UTC)
-Message-ID: <229b5608222595bc69e7ca86509086a14501b2f7.camel@aol.com>
-Subject: Re: [PATCH] drm/gud: fix NULL fb and crtc dereferences on USB
- disconnect
-From: Ruben Wauters <rubenru09@aol.com>
-To: Thomas Zimmermann <tzimmermann@suse.de>, Shenghao Yang	
- <me@shenghaoyang.info>, Maarten Lankhorst
- <maarten.lankhorst@linux.intel.com>,  Maxime Ripard <mripard@kernel.org>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
-Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
+	s=arc-20240116; t=1767799857; c=relaxed/simple;
+	bh=e8FKn11v79ssXsv0JerpySvSnmHmZncjqqH0AJm/f+I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OpVHIfkCnSsnEdvfn66Dt8SAD8Y/dv2zWDDN7vTs0PBbhGvM/J/uqIsedqzyQnLKmf0nFS+/JHd8gA5FUsTj8bL3kO6HLZ5DDtd9ZYff6gyBKTIILdfS4RuVXbm+GbHlnhTiutPag3PyuU7iRlbrFmtH8m1xHQnKZSZ4+Z2Gk9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YHYe90kO; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1767799854; x=1799335854;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=e8FKn11v79ssXsv0JerpySvSnmHmZncjqqH0AJm/f+I=;
+  b=YHYe90kOvlx1Je6JKnwi0ZLZdhU3+cuznDzzyhIvgu3ZSAky8W1yEAk2
+   p2unS8Lc5Mz0fDH8olwgRWsaVgCfF7LYtG3FqEAlKTOX5Mj05ioT8O58S
+   FiyPesoOzy0pnushVwgXZ2ZIJa9g4ES0TUKP8K5TB5MoGFUah9el1h4O4
+   MzgKTLMdNXQeDgmt04xHBdw1FqY9ItJ0Gos/ioaeJrOhDjAQsaJbXjq9V
+   iEdRmJRn5yqazmIY0v8s/3tw1NjtKWKHKyqgFFm7OoqJHcK/Qn8GIWTCI
+   ksM/F/MxHidz5j7PWmdUuF54dGjmHB2rTPvZn4h3cwwy9cqubASrxf7WE
+   Q==;
+X-CSE-ConnectionGUID: 4vl9Qk7jTsuy5WLhVY09Wg==
+X-CSE-MsgGUID: nzG/lcV9QkCyTTZmU/cbkw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11664"; a="94639313"
+X-IronPort-AV: E=Sophos;i="6.21,208,1763452800"; 
+   d="scan'208";a="94639313"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jan 2026 07:30:52 -0800
+X-CSE-ConnectionGUID: 2Ig73mmiRQC9/YDa8EoXow==
+X-CSE-MsgGUID: t64rvZbTRtKmUQ6tZebOQQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,208,1763452800"; 
+   d="scan'208";a="202963615"
+Received: from egrumbac-mobl6.ger.corp.intel.com (HELO localhost) ([10.245.245.168])
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jan 2026 07:30:51 -0800
+Date: Wed, 7 Jan 2026 17:30:48 +0200
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Miaoqian Lin <linmq006@gmail.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Angelo Dureghello <adureghello@baylibre.com>,
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Date: Wed, 07 Jan 2026 15:02:46 +0000
-In-Reply-To: <c6324a66-5886-4fbb-ba7b-fc7782c0f790@suse.de>
-References: <20251231055039.44266-1-me@shenghaoyang.info>
-	 <28c39f1979452b24ddde4de97e60ca721334eb49.camel@aol.com>
-	 <938b5e8e-b849-4d12-8ee2-98312094fc1e@shenghaoyang.info>
-	 <571d40f4d3150e61dfb5d2beccdf5c40f3b5be2c.camel@aol.com>
-	 <c6324a66-5886-4fbb-ba7b-fc7782c0f790@suse.de>
-Autocrypt: addr=rubenru09@aol.com; prefer-encrypt=mutual;
- keydata=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
- eIvzsqg==
-Content-Type: multipart/signed; micalg="pgp-sha256";
-	protocol="application/pgp-signature"; boundary="=-QPSVR4cZj5IOIvv+tsrU"
-User-Agent: Evolution 3.56.2 
+Subject: Re: [PATCH v2] iio: dac: ad3552r-hs: fix out-of-bound write in
+ ad3552r_hs_write_data_source
+Message-ID: <aV58KPqNn9uYRMk6@smile.fi.intel.com>
+References: <20260107143550.34324-1-linmq006@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Mailer: WebService/1.1.24866 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.aol
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260107143550.34324-1-linmq006@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
+
+On Wed, Jan 07, 2026 at 10:35:50PM +0800, Miaoqian Lin wrote:
+> When simple_write_to_buffer() succeeds, it returns the number of bytes
+> actually copied to the buffer. The code incorrectly uses 'count'
+> as the index for null termination instead of the actual bytes copied.
+> If count exceeds the buffer size, this leads to out-of-bounds write.
+> Add a check for the count and use the return value as the index.
+> 
+> The bug was validated using a demo module that mirrors the original
+> code and was tested under QEMU.
+> 
+> Pattern of the bug:
+> - A fixed 64-byte stack buffer is filled using count.
+> - If count > 64, the code still does buf[count] = '\0', causing an
+> - out-of-bounds write on the stack.
+> 
+> Steps for reproduce:
+> - Opens the device node.
+> - Writes 128 bytes of A to it.
+> - This overflows the 64-byte stack buffer and KASAN reports the OOB.
+> 
+> Found via static analysis. This is similar to the
+> commit da9374819eb3 ("iio: backend: fix out-of-bound write")
+
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+
+-- 
+With Best Regards,
+Andy Shevchenko
 
 
---=-QPSVR4cZj5IOIvv+tsrU
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-Hi,
-
-On Wed, 2026-01-07 at 08:46 +0100, Thomas Zimmermann wrote:
-> Hi Ruben
->=20
-> Am 03.01.26 um 20:18 schrieb Ruben Wauters:
-> > Hi
-> >=20
-> > On Sun, 2026-01-04 at 01:47 +0800, Shenghao Yang wrote:
-> > > Hi Ruben,
-> > >=20
-> > > On 4/1/26 01:23, Ruben Wauters wrote:
-> > >=20
-> > > > With the elimination of these two WARN_ON_ONCEs, it's possible that
-> > > > crtc_state may not be assigned below, and therefore may be read/pas=
-sed
-> > > > to functions when it is NULL (e.g. line 488). Either protection for=
- a
-> > > > null crtc_state should be added to the rest of the function, or the
-> > > > function shouldn't continue if crtc is NULL.
-> > > >=20
-> > > > Ruben
-> > > > > -	crtc_state =3D drm_atomic_get_new_crtc_state(state, crtc);
-> > > > > -
-> > > > > -	mode =3D &crtc_state->mode;
-> > > > > +	if (crtc)
-> > > > > +		crtc_state =3D drm_atomic_get_new_crtc_state(state, crtc);
-> > > > >  =20
-> > > > >   	ret =3D drm_atomic_helper_check_plane_state(new_plane_state, c=
-rtc_state,
-> > > > >   						  DRM_PLANE_NO_SCALING,
-> > > > > @@ -492,6 +485,9 @@ int gud_plane_atomic_check(struct drm_plane *=
-plane,
-> > > > >   	if (old_plane_state->rotation !=3D new_plane_state->rotation)
-> > > > >   		crtc_state->mode_changed =3D true;
-> > > > >  =20
-> > > > > +	mode =3D &crtc_state->mode;
-> > > > > +	format =3D fb->format;
-> > > Yup - in this case I'm relying on drm_atomic_helper_check_plane_state=
-()
-> > > bailing out early after seeing that fb is NULL (since a NULL crtc sho=
-uld
-> > > imply no fb) and setting plane_state->visible to false.
->=20
-> This is correct behavior.
->=20
-> > >=20
-> > > That would cause an early return in gud_plane_atomic_check() without
-> > > dereferencing crtc_state.
-> > This does work, however this ends up returning 0, which implies that
-> > the atomic check succeded. In my opinion in this case, -EINVAL should
-> > be returned, as both the crtc and fb don't exist, therefore the check
-> > should not succeed. I would personally prefer a more explicit check
-> > that does return -EINVAL instead of 0 from
-> > drm_atomic_helper_check_planes()
->=20
-> If the plane has been disbabled, fb and crtc are NULL. So this is=20
-> correct. drm_atomic_helper_check_plane_state() is the place to do this=
-=20
-> testing before doing much else in the atomic_check handler. If=20
-> drm_atomic_helper_check_plane_state() gives an error, the error should=
-=20
-> be returns. But if it returns 0 and sets ->visible to false, the=20
-> atomic_check should return 0.=C2=A0 That means that the plane can=20
-> successfully be disabled.
->=20
-> >=20
-> > As a side note, I'm not sure if there's a reasoning as to why
-> > drm_atomic_helper_check_planes() returns 0 if fb is NULL instead of
-> > -EINVAL, I'm assuming it's not designed to come across this specific
-> > case. Either way it's not too much of an issue but maybe one of the drm
-> > maintainers can clarify why it's this way.
->=20
-> Disabling a plane is not an error, but a common operation.
-
-I think I may have misunderstood the drm docs on this, if having crtc
-and fb be null and returning 0 then is ok, I am happy for this patch to
-be applied. I have tested it and it indeed works, and removes the oops
-present in the driver before this.
->=20
-> I think the patch is fine and IIRC we have similar logic in other drivers=
-.
-
-Reviewed-by: Ruben Wauters <rubenru09@aol.com>
-
-I believe Shenghao mentioned another oops that is present? if so it may
-be best to submit that in a separate patch rather than a v2 of this
-one.
-
-Ruben
->=20
-> Best regards
-> Thomas
->=20
-> >=20
-> > Ruben
-> > > Would a more explicit check be preferred?
-> > >=20
-> > > Thanks,
-> > >=20
-> > > Shenghao
-
---=-QPSVR4cZj5IOIvv+tsrU
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEE3obNNdPQ9V5CQi2Y0n5QwFCuDOEFAmledZcACgkQ0n5QwFCu
-DOGRIg//dVH48MOqm/PCntGsr61X08EN7vG3M6BU6GLJIWp3DckhYn+cdh4ql2oo
-KOVuR60lTN1P48+brui4OUl/jy/AWo41rVnamFPWG4xKvuNiaoypZjrZ+ivfZsRQ
-QLAYqplqN903moluMOpeWmK3cc5vNoIf9mqSKqNfDm1oVBVJc5illc/0zgYEyh5+
-S5w6HQGDubK6aNK0SBoBrj7836dVeCIgf9tCaIw/a1qpf17s4RWva/pOwiFwVLsj
-aDPdKdfP7+i+xBUdXIZvGTYF0GaKwm+F7NidMscdRtXwp9KTDqLGLXfesVwLcuX+
-Yq8BGeRlXTunEMGwhmyelf9WASTLyYABVfmzTXLV/Tu4yeH2M0WdAf7EvaIraF/W
-eLOtdiDE6RKM+qgFAfbm/b2AHmeQhD9Vrl4uwp80T6SVjP8wSylLhrdblaoOye9E
-OHhP/7CWIWP58HnNlNJFW2ELMCTH6ZWmrV7ROqcjKGD+TtuNTgzsSijOTpjznF9z
-6U00pZm3blh9DG3dfpm3S5SoFCn+dh4gPoYpZHjTkYfGCX67mgnp9cA1QgcUPRVA
-rAM1Dr4pH6vF7Vb8AaPUF79dLAQx6pnVcAkLr+06viKZ+F/nvRRt51Y7EmeCjkWL
-AmD739DPainYbtobfmGU7oirFVl0In5FZf6UadctTaFJI6LqxP4=
-=loWw
------END PGP SIGNATURE-----
-
---=-QPSVR4cZj5IOIvv+tsrU--
 
