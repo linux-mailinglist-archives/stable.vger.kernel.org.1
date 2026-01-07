@@ -1,31 +1,31 @@
-Return-Path: <stable+bounces-206189-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206190-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5381BCFF2CD
-	for <lists+stable@lfdr.de>; Wed, 07 Jan 2026 18:45:37 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24AEBCFF6E5
+	for <lists+stable@lfdr.de>; Wed, 07 Jan 2026 19:24:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1137830021C6
-	for <lists+stable@lfdr.de>; Wed,  7 Jan 2026 17:45:33 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 84C3130012F5
+	for <lists+stable@lfdr.de>; Wed,  7 Jan 2026 18:23:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB3C935028E;
-	Wed,  7 Jan 2026 17:21:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A36FA33A9FD;
+	Wed,  7 Jan 2026 17:21:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="dig1CKB7"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="SKLF45Pf"
 X-Original-To: stable@vger.kernel.org
 Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F225934DCC6
-	for <stable@vger.kernel.org>; Wed,  7 Jan 2026 17:21:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F01C1534EC
+	for <stable@vger.kernel.org>; Wed,  7 Jan 2026 17:21:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.97.179.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767806483; cv=none; b=t5GidGhqKnPBc0Tf1e078trf2U2Y1R9oOQCaXUfEIaXH0hVIkFQhCgnJGULYE0XJyBYNt4iK37lRB2avQhaffvHUwtUonmG9uviGte7gq5BMmPcAu/xo3JWoKC6g0fq9pQ0lQuKiMJWJQFMm6c4B9kRHFkrmDVz5eq7AhS5wqJU=
+	t=1767806504; cv=none; b=t1TM71PAmVABstAgmUQYl54Qt2nEkGCG2x6BeSpYh1cWSCbtmavJCQBym0Jad4135neYAQL+8YWpaxTuzQyv+QIQmDdpJHNsw1McNAiAPmpoPzpGEAnrlEUaPz6qZ1ZCAaFwGEHID7+LSqMW/1zv89vJ6utttgtxkJz4oRVLHQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767806483; c=relaxed/simple;
-	bh=n5r8pLPaDjmHCfyVZhHRlqqJhLjjBScHRGV4DWEhQ1o=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=oDwZ55wYxHmNWEcOvpOh9olUOUAiarW3XGTFvAQ836MGW+lZaeBZsC1AV/kHg12mkqULZ9TMn3EiRNBC+OyKA3PLjIT2GpKDEVZq7XH8i1QfoQRp2+8omxUVkTgSC1ZLk8VwE5x4t2wtG0gq7oZjpVOWDa5vgpQu9kCz1of3/nA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=dig1CKB7; arc=none smtp.client-ip=213.97.179.56
+	s=arc-20240116; t=1767806504; c=relaxed/simple;
+	bh=vKsNRka7i79ps83X2Nt+cx1Nofoiqab4riN1GKcx228=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=h5zuhvzHlBgE7tMEMihX/pfe8cyEWO8hYOpyW90RJw/9eWnPeEZgoWQAvazIyrOXFEBTihHOKD9SBmm2KOyc5JSYxd3bHNVLg9eXSsB11+r4FDvt4lzRxz6l24TAmgOIXCtKpYhzsT/g44IGVzidY5bZTvwuHkEZJYZLLdgREQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=SKLF45Pf; arc=none smtp.client-ip=213.97.179.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
@@ -34,16 +34,16 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
 	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=nLR81jX/txJzS14cwKnVPy2uytM7YFO9HFOutn7S/7k=; b=dig1CKB7LxgP9sXcYgPf1y3M0L
-	QgOgBYM91VRfp3JgOUXkJIHqqJTeoyKcmrjbablUCyV4+aoOYl/VaolgA4/jwz4ed/fTdd8juR7Ry
-	JfKCivFRa2x3Mlu6ta6zykkbKx7nMqeEY4ZFxbLkTcNadIHBaUnAyvjgBlOFpO4l5k0UPjlAUBlhv
-	GWHNgxFSKdrVS7GMlEO4JTRNptKCKawABmRLIoilLRmtWngc//Gx9Azu+g4xIunLvrORuNdSW+yCu
-	YsMvW+i9DYDSgon4FgJMx3Rm0QxftEDZyJ6uKkRrXX5ZEwYNX8Q3lUAKW3pYP6LfLg5CH5L02e74h
-	cvhzw6uw==;
+	bh=ou7XktXAt0FvfdnbLR5nYNVufhM+RaG85A5nCIAdK04=; b=SKLF45Pf67NBB1xdJsWMAmKK/D
+	hWpxEgdlZvcrGwitWp8BhqufzvFvTqpDeSMEkt3MJjW7HpAixKFwkFii0qKfC5rUlSAX6UY+3h03v
+	fkln8wlbnLrLMdQ4gGDXmbrT8ZmG9ieuui/SjeTdDXInh1aC+DtspliOuQl3+l7a6ExexkoSj7GYl
+	ldP9te1fu3TESXVom9+1I2HOn6Dtyfp+ISgmR69OmUJDyJID00CBepsg0MKCorKnyAtSTP1yJH1tk
+	+suIjYz7OdTD4HEUa8O08phnGqJ70YfU7HSuhhRvMb+IM7VMn/GS1WA96yJOx08ULfTSUhl940Kzz
+	Dmx5oThg==;
 Received: from 179-125-75-246-dinamico.pombonet.net.br ([179.125.75.246] helo=quatroqueijos.lan)
 	by fanzine2.igalia.com with esmtpsa 
 	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-	id 1vdXDb-002eKP-BB; Wed, 07 Jan 2026 18:21:11 +0100
+	id 1vdXDo-002eKw-Qx; Wed, 07 Jan 2026 18:21:25 +0100
 From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 To: stable@vger.kernel.org
 Cc: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
@@ -55,9 +55,9 @@ Cc: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
 	Ido Schimmel <idosch@nvidia.com>,
 	Nikolay Aleksandrov <razor@blackwall.org>,
 	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.6] net: Remove RTNL dance for SIOCBRADDIF and SIOCBRDELIF.
-Date: Wed,  7 Jan 2026 14:21:02 -0300
-Message-ID: <20260107172102.2488465-1-cascardo@igalia.com>
+Subject: [PATCH 6.1] net: Remove RTNL dance for SIOCBRADDIF and SIOCBRDELIF.
+Date: Wed,  7 Jan 2026 14:21:16 -0300
+Message-ID: <20260107172116.2488542-1-cascardo@igalia.com>
 X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -171,10 +171,10 @@ Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
  5 files changed, 45 insertions(+), 35 deletions(-)
 
 diff --git a/include/linux/if_bridge.h b/include/linux/if_bridge.h
-index 3ff96ae31bf6..c5fe3b2a53e8 100644
+index d62ef428e3aa..3963f0af4dad 100644
 --- a/include/linux/if_bridge.h
 +++ b/include/linux/if_bridge.h
-@@ -65,11 +65,9 @@ struct br_ip_list {
+@@ -63,11 +63,9 @@ struct br_ip_list {
  #define BR_DEFAULT_AGEING_TIME	(300 * HZ)
  
  struct net_bridge;
@@ -245,10 +245,10 @@ index f213ed108361..6bc0a11f2ed3 100644
  	}
  
 diff --git a/net/bridge/br_private.h b/net/bridge/br_private.h
-index c8a4e3b39b0e..7427ee6264b4 100644
+index 901b9f609b0c..2d3859c2979a 100644
 --- a/net/bridge/br_private.h
 +++ b/net/bridge/br_private.h
-@@ -947,8 +947,7 @@ br_port_get_check_rtnl(const struct net_device *dev)
+@@ -894,8 +894,7 @@ br_port_get_check_rtnl(const struct net_device *dev)
  /* br_ioctl.c */
  int br_dev_siocdevprivate(struct net_device *dev, struct ifreq *rq,
  			  void __user *data, int cmd);
@@ -259,10 +259,10 @@ index c8a4e3b39b0e..7427ee6264b4 100644
  /* br_multicast.c */
  #ifdef CONFIG_BRIDGE_IGMP_SNOOPING
 diff --git a/net/core/dev_ioctl.c b/net/core/dev_ioctl.c
-index b46aedc36939..541d42bf1e40 100644
+index 5cdbfbf9a7dc..def973eb496a 100644
 --- a/net/core/dev_ioctl.c
 +++ b/net/core/dev_ioctl.c
-@@ -517,7 +517,6 @@ static int dev_ifsioc(struct net *net, struct ifreq *ifr, void __user *data,
+@@ -315,7 +315,6 @@ static int dev_ifsioc(struct net *net, struct ifreq *ifr, void __user *data,
  	int err;
  	struct net_device *dev = __dev_get_by_name(net, ifr->ifr_name);
  	const struct net_device_ops *ops;
@@ -270,7 +270,7 @@ index b46aedc36939..541d42bf1e40 100644
  
  	if (!dev)
  		return -ENODEV;
-@@ -580,19 +579,6 @@ static int dev_ifsioc(struct net *net, struct ifreq *ifr, void __user *data,
+@@ -378,19 +377,6 @@ static int dev_ifsioc(struct net *net, struct ifreq *ifr, void __user *data,
  	case SIOCWANDEV:
  		return dev_siocwandev(dev, &ifr->ifr_settings);
  
@@ -287,10 +287,10 @@ index b46aedc36939..541d42bf1e40 100644
 -		rtnl_lock();
 -		return err;
 -
- 	case SIOCDEVPRIVATE ... SIOCDEVPRIVATE + 15:
- 		return dev_siocdevprivate(dev, ifr, data, cmd);
- 
-@@ -773,8 +759,6 @@ int dev_ioctl(struct net *net, unsigned int cmd, struct ifreq *ifr,
+ 	case SIOCSHWTSTAMP:
+ 		err = net_hwtstamp_validate(ifr);
+ 		if (err)
+@@ -575,8 +561,6 @@ int dev_ioctl(struct net *net, unsigned int cmd, struct ifreq *ifr,
  	case SIOCBONDRELEASE:
  	case SIOCBONDSETHWADDR:
  	case SIOCBONDCHANGEACTIVE:
@@ -300,10 +300,10 @@ index b46aedc36939..541d42bf1e40 100644
  		if (!ns_capable(net->user_ns, CAP_NET_ADMIN))
  			return -EPERM;
 diff --git a/net/socket.c b/net/socket.c
-index bad58f23f307..94c38c73fc69 100644
+index bd438b89e698..701389e2f22b 100644
 --- a/net/socket.c
 +++ b/net/socket.c
-@@ -1168,12 +1168,10 @@ static ssize_t sock_write_iter(struct kiocb *iocb, struct iov_iter *from)
+@@ -1151,12 +1151,10 @@ static ssize_t sock_write_iter(struct kiocb *iocb, struct iov_iter *from)
   */
  
  static DEFINE_MUTEX(br_ioctl_mutex);
@@ -318,7 +318,7 @@ index bad58f23f307..94c38c73fc69 100644
  			     void __user *uarg))
  {
  	mutex_lock(&br_ioctl_mutex);
-@@ -1182,8 +1180,7 @@ void brioctl_set(int (*hook)(struct net *net, struct net_bridge *br,
+@@ -1165,8 +1163,7 @@ void brioctl_set(int (*hook)(struct net *net, struct net_bridge *br,
  }
  EXPORT_SYMBOL(brioctl_set);
  
@@ -328,7 +328,7 @@ index bad58f23f307..94c38c73fc69 100644
  {
  	int err = -ENOPKG;
  
-@@ -1192,7 +1189,7 @@ int br_ioctl_call(struct net *net, struct net_bridge *br, unsigned int cmd,
+@@ -1175,7 +1172,7 @@ int br_ioctl_call(struct net *net, struct net_bridge *br, unsigned int cmd,
  
  	mutex_lock(&br_ioctl_mutex);
  	if (br_ioctl_hook)
@@ -337,7 +337,7 @@ index bad58f23f307..94c38c73fc69 100644
  	mutex_unlock(&br_ioctl_mutex);
  
  	return err;
-@@ -1292,7 +1289,9 @@ static long sock_ioctl(struct file *file, unsigned cmd, unsigned long arg)
+@@ -1272,7 +1269,9 @@ static long sock_ioctl(struct file *file, unsigned cmd, unsigned long arg)
  		case SIOCSIFBR:
  		case SIOCBRADDBR:
  		case SIOCBRDELBR:
@@ -348,7 +348,7 @@ index bad58f23f307..94c38c73fc69 100644
  			break;
  		case SIOCGIFVLAN:
  		case SIOCSIFVLAN:
-@@ -3454,6 +3453,8 @@ static int compat_sock_ioctl_trans(struct file *file, struct socket *sock,
+@@ -3376,6 +3375,8 @@ static int compat_sock_ioctl_trans(struct file *file, struct socket *sock,
  	case SIOCGPGRP:
  	case SIOCBRADDBR:
  	case SIOCBRDELBR:
@@ -357,7 +357,7 @@ index bad58f23f307..94c38c73fc69 100644
  	case SIOCGIFVLAN:
  	case SIOCSIFVLAN:
  	case SIOCGSKNS:
-@@ -3493,8 +3494,6 @@ static int compat_sock_ioctl_trans(struct file *file, struct socket *sock,
+@@ -3415,8 +3416,6 @@ static int compat_sock_ioctl_trans(struct file *file, struct socket *sock,
  	case SIOCGIFPFLAGS:
  	case SIOCGIFTXQLEN:
  	case SIOCSIFTXQLEN:
