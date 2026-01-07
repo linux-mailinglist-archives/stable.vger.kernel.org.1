@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-206166-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206168-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1911CCFF3A2
-	for <lists+stable@lfdr.de>; Wed, 07 Jan 2026 18:56:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CCF57CFF20A
+	for <lists+stable@lfdr.de>; Wed, 07 Jan 2026 18:34:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9F53F34F30A5
-	for <lists+stable@lfdr.de>; Wed,  7 Jan 2026 16:45:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5600B32110A7
+	for <lists+stable@lfdr.de>; Wed,  7 Jan 2026 16:20:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD5EA3A89DA;
-	Wed,  7 Jan 2026 15:53:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5E3D37998D;
+	Wed,  7 Jan 2026 15:53:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R9RdXJ7/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Yrk2GE4S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBC4F3A1CF4;
-	Wed,  7 Jan 2026 15:53:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21C3E379964;
+	Wed,  7 Jan 2026 15:53:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767801221; cv=none; b=D2fm5fyJoVwfrQWoPVOBnQqtNWsI1roTeGLP2lIpmiaIGs+l70w278tg7JW5QOJt0iZVNJJrFn8snhyZW8avlbl8GvBDIvJ3RyYL1Tpitpn4zJE2FoaxXYrkboRecTS+HuMTzabg3RyPyk5g5QpemI8qVXd7abLDhfOzWBoJxoE=
+	t=1767801224; cv=none; b=qPli+UCFgHBMBzlJNFXmdMRDyP2zeRJo4prjam8SynID8exQQIxExayKW5xJiykWlenYHnIE46Neb9mmJTD5XCjegXcFgtm3m4eX/Cug6tHiX8+h3LheFwm4qou06HI0sVWxy6uYNQcZhQ2rm8fyBfpY8GeKal7wnsF/Lfo4gjc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767801221; c=relaxed/simple;
-	bh=CO5+tSdOQc0WuSROBg3qtnQEPnHZ8ivRvTUTNMMwSTY=;
+	s=arc-20240116; t=1767801224; c=relaxed/simple;
+	bh=kiB2gOT8X8qjTaO897jfEtwY7RIgIUHodFtaqLh0MkU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pIjTb03ztTYyeoABnCK/aq24cYPGA/1AqWkXhEZzlDUgg2E78pUlIggnjfbke5wVQJ5yOpPg9fO+wwwpTQpYXqricIQDaRsSe51VEx8w9AQqgSJSd/WU88nP0lyHEXFDpIj54hSLPwG28soYMPVIFlVEumjbWtXgmdHADxUJs+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R9RdXJ7/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C6D5C4CEF7;
-	Wed,  7 Jan 2026 15:53:38 +0000 (UTC)
+	 MIME-Version:Content-Type; b=a6bZb3o44OoKGL1EccougiBk/3gEtYx1H7Vmm598KFdX1/a13oZHLbqyXItTuZoBaCVtQ1OcvLod+mk67FdyNIsOjY7+KN5mbYFqDasnil46HMoG1UJgaSdDEjgvMI9qp6LgL94agQqaSBVPRp91MUpaVCoTfAACS4JhxGapviE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Yrk2GE4S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7922EC4CEF1;
+	Wed,  7 Jan 2026 15:53:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767801218;
-	bh=CO5+tSdOQc0WuSROBg3qtnQEPnHZ8ivRvTUTNMMwSTY=;
+	s=k20201202; t=1767801223;
+	bh=kiB2gOT8X8qjTaO897jfEtwY7RIgIUHodFtaqLh0MkU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R9RdXJ7/PYTDjlYtYoFRlHcnJW6xSn38hZZgW+RIXlhYcG7KdtO9Potmyi4ZCDH+r
-	 Y+ttzlCx5Ib14ZIwYfu/Zl3MvlUDENzR3L3jw/K7Oz2583vGtWp2ndIIBsneh79Myr
-	 OSZEYjagZ2wPNtu+ckxLhhvZRkm8moqDV0bZc3Yi+t2juuk/iY9gg8WHV9OMaUy1U3
-	 bpLyGXdGbbqFr+d32F9Dvy6zrP3N9km6AphYlJ3frEosXEFnDNC2rwI2C+h2wiW3/h
-	 es/a5sLDuYF2JjcSPgfGfNVi4Sn50XFIkQY6vFGqM/KicLqUUbBz7Q/qh086Hyl57I
-	 LzbgHe8gfcuYg==
+	b=Yrk2GE4SvXEPWCiXJGPJSpRVmh/LnXn0fN/pRgnoPW2syYkYjLgB6DVwZ5h3HknPj
+	 C34wBkVI8GuRDHQz23mkKc2azM3MmILfc6HwGePREMpWA3pZSxvPLO3YguXOaxRN3g
+	 3YiZr1EkjEj9uyRnUgkiev9O4pdYWgZJ8g/K60K9dmfdF5dKKbxYeyihFXOBDXyX3H
+	 FPk/FgRZ7GO5opraC+zYx+CgIKYcHH9uL3Wm8HyAyyQ+4GkeT0wjYImY6gvMCieqJr
+	 kMT4oVEFU9a0MUldry/ciGrrnU/JgnrLp6Psl+uPy4yMIRDKrTIX5YSdRaQOzwaS37
+	 +uuwlP8c8aaSQ==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Moon Hee Lee <moonhee.lee.ca@gmail.com>,
-	syzbot+b364457b2d1d4e4a3054@syzkaller.appspotmail.com,
-	Johannes Berg <johannes.berg@intel.com>,
+Cc: Dmytro Bagrii <dimich.dmb@gmail.com>,
+	Hans de Goede <johannes.goede@oss.qualcomm.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	johannes@sipsolutions.net,
-	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.18-5.10] wifi: mac80211: ocb: skip rx_no_sta when interface is not joined
-Date: Wed,  7 Jan 2026 10:53:08 -0500
-Message-ID: <20260107155329.4063936-6-sashal@kernel.org>
+	hansg@kernel.org,
+	pmenzel@molgen.mpg.de,
+	setotau@mainlining.org,
+	kernel@aiyionpri.me
+Subject: [PATCH AUTOSEL 6.18] platform/x86: dell-lis3lv02d: Add Latitude 5400
+Date: Wed,  7 Jan 2026 10:53:10 -0500
+Message-ID: <20260107155329.4063936-8-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260107155329.4063936-1-sashal@kernel.org>
 References: <20260107155329.4063936-1-sashal@kernel.org>
@@ -60,114 +62,171 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.18.3
 Content-Transfer-Encoding: 8bit
 
-From: Moon Hee Lee <moonhee.lee.ca@gmail.com>
+From: Dmytro Bagrii <dimich.dmb@gmail.com>
 
-[ Upstream commit ff4071c60018a668249dc6a2df7d16330543540e ]
+[ Upstream commit a5b9fdd33c59a964a26d12c39b636ef85a25b074 ]
 
-ieee80211_ocb_rx_no_sta() assumes a valid channel context, which is only
-present after JOIN_OCB.
+Add accelerometer address 0x29 for Dell Latitude 5400.
 
-RX may run before JOIN_OCB is executed, in which case the OCB interface
-is not operational. Skip RX peer handling when the interface is not
-joined to avoid warnings in the RX path.
+The address is verified as below:
 
-Reported-by: syzbot+b364457b2d1d4e4a3054@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=b364457b2d1d4e4a3054
-Tested-by: syzbot+b364457b2d1d4e4a3054@syzkaller.appspotmail.com
-Signed-off-by: Moon Hee Lee <moonhee.lee.ca@gmail.com>
-Link: https://patch.msgid.link/20251216035932.18332-1-moonhee.lee.ca@gmail.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+    $ cat /sys/class/dmi/id/product_name
+    Latitude 5400
+
+    $ grep -H '' /sys/bus/pci/drivers/i801_smbus/0000\:00*/i2c-*/name
+    /sys/bus/pci/drivers/i801_smbus/0000:00:1f.4/i2c-10/name:SMBus I801 adapter at 0000:00:1f.4
+
+    $ i2cdetect 10
+    WARNING! This program can confuse your I2C bus, cause data loss and worse!
+    I will probe file /dev/i2c-10.
+    I will probe address range 0x08-0x77.
+    Continue? [Y/n] Y
+         0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f
+    00:                         08 -- -- -- -- -- -- --
+    10: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    20: -- -- -- -- -- -- -- -- -- UU -- -- -- -- -- --
+    30: 30 -- -- -- -- 35 UU UU -- -- -- -- -- -- -- --
+    40: -- -- -- -- 44 -- -- -- -- -- -- -- -- -- -- --
+    50: UU -- 52 -- -- -- -- -- -- -- -- -- -- -- -- --
+    60: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    70: -- -- -- -- -- -- -- --
+
+    $ xargs -n1 -a /proc/cmdline | grep ^dell_lis3lv02d
+    dell_lis3lv02d.probe_i2c_addr=1
+
+    $ dmesg | grep lis3lv02d
+    ...
+    [  206.012411] i2c i2c-10: Probing for lis3lv02d on address 0x29
+    [  206.013727] i2c i2c-10: Detected lis3lv02d on address 0x29, please report this upstream to platform-driver-x86@vger.kernel.org so that a quirk can be added
+    [  206.240841] lis3lv02d_i2c 10-0029: supply Vdd not found, using dummy regulator
+    [  206.240868] lis3lv02d_i2c 10-0029: supply Vdd_IO not found, using dummy regulator
+    [  206.261258] lis3lv02d: 8 bits 3DC sensor found
+    [  206.346722] input: ST LIS3LV02DL Accelerometer as /devices/faux/lis3lv02d/input/input17
+
+    $ cat /sys/class/input/input17/name
+    ST LIS3LV02DL Accelerometer
+
+Signed-off-by: Dmytro Bagrii <dimich.dmb@gmail.com>
+Reviewed-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
+Link: https://patch.msgid.link/20251128161523.6224-1-dimich.dmb@gmail.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-OCB support has been in the kernel since 2014 - it exists in all
-supported stable trees.
+## Analysis: platform/x86: dell-lis3lv02d: Add Latitude 5400
 
-## 3. CLASSIFICATION
+### 1. COMMIT MESSAGE ANALYSIS
 
-- **Type:** Bug fix - fixes kernel warnings triggered by a race
-  condition
-- **Category:** Not an exception category - straightforward bug fix
-- **Security:** Not directly security-related, but the WARN_ON_ONCE
-  could trigger panic on systems with `panic_on_warn=1`
+The commit adds DMI-based accelerometer support for Dell Latitude 5400
+laptops. The commit message is exemplary:
+- Shows detailed hardware verification using i2cdetect
+- Demonstrates the driver itself detected the hardware and prompted the
+  user to report it upstream
+- Has proper Reviewed-by tags from experienced maintainers (Hans de
+  Goede, Ilpo Järvinen)
 
-## 4. SCOPE AND RISK ASSESSMENT
+### 2. CODE CHANGE ANALYSIS
 
-- **Size:** Minimal - 3 lines added (one check + early return)
-- **Files:** 1 file (net/mac80211/ocb.c)
-- **Complexity:** Very low - simple flag check before proceeding
-- **Risk:** Extremely low
-  - Uses existing `joined` flag already used elsewhere in the same file
-  - Follows established pattern (identical check exists at line 126)
-  - Cannot break existing functionality - before join, nothing should
-    happen anyway
+The change is minimal:
+```c
++       DELL_LIS3LV02D_DMI_ENTRY("Latitude 5400",      0x29),
+```
 
-## 5. USER IMPACT
+This adds a single entry to an existing DMI table, mapping the product
+name "Latitude 5400" to I2C address 0x29. The macro
+`DELL_LIS3LV02D_DMI_ENTRY` is already defined and used extensively for
+other Dell models. The I2C address 0x29 is consistent with other
+Latitude models in the list.
 
-- **Affected users:** OCB mode users (vehicle-to-vehicle communications,
-  IEEE 802.11p)
-- **Severity:** Medium - causes kernel warnings in RX path
-- **Systems with `panic_on_warn=1`:** This could cause system crashes
-- **Reproducibility:** Confirmed reproducible by syzkaller
+### 3. CLASSIFICATION
 
-## 6. STABILITY INDICATORS
+This falls squarely into the **NEW DEVICE IDs** exception category that
+IS appropriate for stable:
+- Adds a DMI entry to an existing, working driver
+- Analogous to adding PCI IDs or USB IDs
+- The driver infrastructure already exists; only the hardware
+  identification is new
+- This is NOT a new feature - it enables existing functionality on
+  additional hardware
 
-- **Tested-by: syzbot** - Fix verified by the same fuzzer that found the
-  bug
-- **Maintainer sign-off:** Johannes Berg (mac80211 maintainer)
-- **Pattern established:** Same check pattern already used in
-  `ieee80211_ocb_work()`
+### 4. SCOPE AND RISK ASSESSMENT
 
-## 7. DEPENDENCY CHECK
+- **Lines changed**: 1
+- **Files touched**: 1
+- **Complexity**: Trivial - adding an entry to a static const table
+- **Risk**: Extremely low
+  - Only affects Dell Latitude 5400 systems
+  - Uses identical mechanism as all other supported models
+  - Even if wrong, impact is isolated to one hardware model
+  - Hardware verified by submitter with actual device
+
+### 5. USER IMPACT
+
+- Users with Dell Latitude 5400 laptops get accelerometer support
+- The dmesg output shows the driver detected the hardware and explicitly
+  asked for an upstream quirk to be added
+- Without this entry, the accelerometer is non-functional on this laptop
+  model
+
+### 6. STABILITY INDICATORS
+
+- **Reviewed-by**: Hans de Goede (prominent x86 platform maintainer)
+- **Reviewed-by**: Ilpo Järvinen (Intel kernel maintainer)
+- Follows established pattern used by 15+ other entries in the same
+  table
+- Hardware verified on actual Dell Latitude 5400
+
+### 7. DEPENDENCY CHECK
 
 - No dependencies on other commits
-- Uses existing `joined` flag (in kernel since 2014)
-- Will apply cleanly to any stable tree with OCB support
+- The driver, macro, and infrastructure all exist in stable trees
+- Self-contained, atomic change
 
-## SUMMARY
+### CONCLUSION
 
-This is an ideal stable backport candidate:
+This is a textbook example of a commit that **should** be backported to
+stable:
 
-1. **Obviously correct:** Simple early-return check using existing flag,
-   follows pattern already in the code
-2. **Fixes real bug:** Syzbot-reported, reproducible kernel warnings
-3. **Small and contained:** 3 lines, single file, no side effects
-4. **No new features:** Just adds a defensive check
-5. **Low risk:** Cannot break anything - OCB shouldn't process RX before
-   joining anyway
-6. **Tested:** Verified by syzbot
+1. **Obviously correct**: Single-line addition following an established
+   pattern
+2. **Tested**: Verified on actual hardware
+3. **Fixes a real issue**: Enables accelerometer on hardware that has
+   one
+4. **Small and contained**: One line, minimal risk
+5. **Exception category**: This is exactly the type of device ID/DMI
+   entry addition that stable rules explicitly allow
 
-The fix prevents kernel warnings (and potential crashes on
-`panic_on_warn` systems) when RX frames arrive on an OCB interface
-before it has finished the join operation. It's a simple, surgical fix
-with no risk of regression.
+The risk is near-zero (only affects one specific laptop model), and the
+benefit is real (enables hardware functionality for Latitude 5400
+users). This type of trivial hardware enablement is routinely and
+appropriately backported to stable trees.
 
 **YES**
 
- net/mac80211/ocb.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/platform/x86/dell/dell-lis3lv02d.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/mac80211/ocb.c b/net/mac80211/ocb.c
-index a5d4358f122a..ebb4f4d88c23 100644
---- a/net/mac80211/ocb.c
-+++ b/net/mac80211/ocb.c
-@@ -47,6 +47,9 @@ void ieee80211_ocb_rx_no_sta(struct ieee80211_sub_if_data *sdata,
- 	struct sta_info *sta;
- 	int band;
- 
-+	if (!ifocb->joined)
-+		return;
-+
- 	/* XXX: Consider removing the least recently used entry and
- 	 *      allow new one to be added.
+diff --git a/drivers/platform/x86/dell/dell-lis3lv02d.c b/drivers/platform/x86/dell/dell-lis3lv02d.c
+index 77905a9ddde9..fe52bcd896f7 100644
+--- a/drivers/platform/x86/dell/dell-lis3lv02d.c
++++ b/drivers/platform/x86/dell/dell-lis3lv02d.c
+@@ -44,6 +44,7 @@ static const struct dmi_system_id lis3lv02d_devices[] __initconst = {
+ 	/*
+ 	 * Additional individual entries were added after verification.
  	 */
++	DELL_LIS3LV02D_DMI_ENTRY("Latitude 5400",      0x29),
+ 	DELL_LIS3LV02D_DMI_ENTRY("Latitude 5480",      0x29),
+ 	DELL_LIS3LV02D_DMI_ENTRY("Latitude 5500",      0x29),
+ 	DELL_LIS3LV02D_DMI_ENTRY("Latitude E6330",     0x29),
 -- 
 2.51.0
 
