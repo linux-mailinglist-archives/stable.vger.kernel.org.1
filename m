@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-206163-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206167-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33345CFFCBB
-	for <lists+stable@lfdr.de>; Wed, 07 Jan 2026 20:41:00 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0827CFFBE2
+	for <lists+stable@lfdr.de>; Wed, 07 Jan 2026 20:26:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8EF77308CA8A
-	for <lists+stable@lfdr.de>; Wed,  7 Jan 2026 19:37:43 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2929730319FC
+	for <lists+stable@lfdr.de>; Wed,  7 Jan 2026 19:25:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7959C3A89D0;
-	Wed,  7 Jan 2026 15:53:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FDDB379976;
+	Wed,  7 Jan 2026 15:53:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PWJzcG55"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O2Md2+Sb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C57A39A811;
-	Wed,  7 Jan 2026 15:53:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BE7C3A1E8A;
+	Wed,  7 Jan 2026 15:53:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767801216; cv=none; b=JvQyITFbxIP+zt0lS2bttKwwMZw3EOi/3IUhyvyf9dSXesooTrveEUnovXqfwf0PH2Zlfpl/MJ/OZkk9prP+uYhVF/pOy2psDy8/cTopRQyyknDlL6pZA4xfK6zOZ1PCrC2PHPuknngDa7sisNx6Earrr4Yr7s2aM+60oWnDMao=
+	t=1767801222; cv=none; b=iPOuC2ZR1305UWwbQACoyrTjV3+4Xu5t+fQqnoSDvg3sEZCGuDcuiO5LOpdQ3hHl+PwrAUGXCDQn0EejdIah7M/kcMDH7IefSLdbeEiMNNsBkzhin3Ndkb3pJ3Pq5qjj4wrOEGW3eG7lSFB2gYVsWoXjC0onhYzg4sAVgCYnHgE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767801216; c=relaxed/simple;
-	bh=baIElWLGbbT3EEa9pR+TKV01vRMQoodNknv6twf9pyk=;
+	s=arc-20240116; t=1767801222; c=relaxed/simple;
+	bh=qQGX8sJg7E+NIZxbnSahNhBWSN94VZt80XshswfflZw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZzVv7SQx8ZlG3k+ZipJZVwpHRDUC2NV/Rb1dWrsgS1AjO2r6+FrXQTyQu7MV0KoN9DwKSazHppnz2H745DOt5yb3WwMDvyWl0nIqZZ7JY15ArazHsAvS28FCgJ365cDFcfUe77t6rVhVmlCtjMMmTGn3Vo8TJAd7IwTbuT8O6is=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PWJzcG55; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6058C4CEF1;
-	Wed,  7 Jan 2026 15:53:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=oiNsa8TYWtnRFYlzQAspNBwJkSLHS+qQ6h1f43Yb4o8YDWRNYvkGHBXBHwrBpGHCBeAbaz4nrcEkWeNgT2qbUtv562s3TBs+/A5oZsBpoYd/AuyO3IWK5qhnJdyxnYknPG3J5WBQwKQJXuky0h98+Vx5RHVcOhOeJCEt9fuEOBE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O2Md2+Sb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96A06C19422;
+	Wed,  7 Jan 2026 15:53:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767801215;
-	bh=baIElWLGbbT3EEa9pR+TKV01vRMQoodNknv6twf9pyk=;
+	s=k20201202; t=1767801220;
+	bh=qQGX8sJg7E+NIZxbnSahNhBWSN94VZt80XshswfflZw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PWJzcG55gxymAqeMGzhVHpTRopNX3X2YBX7qVW9SFLnmkb+isaKQo8av+gwZhcFDe
-	 Qqrsp8Sa4+XGGpzMH6NkxRUwjFlE7duzs0Yaxa4YnuSk+mWtyRGU1I8tyulI/u4xXj
-	 bQZa4NwCKNS/HwjC7D2VvYeKLcNeHGCp/2QjI6gS08gdiuPDU81ihDpVVbNxgcNQ/D
-	 /2ItXEYUaLBZBh6C6vvhEkcjy6Ef5MpISrz84s2OJLcGTUQsNqcEN9Qja8L8lB/YGU
-	 VoxBL6NUJSqokstPZTkxXB61PfjcGCEKTbqi1d9DLnPE3CvXxFngcIzwicCFuZw9HR
-	 2pycSkR+hIa8g==
+	b=O2Md2+SbVS2RYfE0WhtZbDgiq7LKhj2JQ1Le19TWForiKAyMcc9CpiJITOBAUqYan
+	 YCQsGNvLB8saf300p63M7B4trx25YiD+G6i5YqLueLmasEORHdXi79bH7EakFSc9Hk
+	 NlmtyzYMEGUGBgGzA1AYP5xQhnjECVs2LbURr18vJCWwpvwvQZJiuqWR3vXWsUuuPb
+	 gPllsy074hzDxaQhFX0FnX6opSh1gZldjiRQhenM/MV0S5FkQcU4YXKH0C6ksHlRaA
+	 SB9sggfXYs7lMfGNQnlMOYUSgxh2CfPda/NHanb01mpA3766XND2x3jTBxzJOfArJq
+	 3B87/HxVGBjdw==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Johannes Berg <johannes.berg@intel.com>,
-	syzbot+639af5aa411f2581ad38@syzkaller.appspotmail.com,
+Cc: shechenglong <shechenglong@xfusion.com>,
+	Yu Kuai <yukuai@fnnas.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>,
-	johannes@sipsolutions.net,
-	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.18] wifi: mac80211: don't WARN for connections on invalid channels
-Date: Wed,  7 Jan 2026 10:53:06 -0500
-Message-ID: <20260107155329.4063936-4-sashal@kernel.org>
+	tj@kernel.org,
+	josef@toxicpanda.com,
+	linux-block@vger.kernel.org,
+	cgroups@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.18-5.10] block,bfq: fix aux stat accumulation destination
+Date: Wed,  7 Jan 2026 10:53:09 -0500
+Message-ID: <20260107155329.4063936-7-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260107155329.4063936-1-sashal@kernel.org>
 References: <20260107155329.4063936-1-sashal@kernel.org>
@@ -65,180 +68,147 @@ X-stable-base: Linux 6.18.3
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: shechenglong <shechenglong@xfusion.com>
 
-[ Upstream commit 99067b58a408a384d2a45c105eb3dce980a862ce ]
+[ Upstream commit 04bdb1a04d8a2a89df504c1e34250cd3c6e31a1c ]
 
-It's not clear (to me) how exactly syzbot managed to hit this,
-but it seems conceivable that e.g. regulatory changed and has
-disabled a channel between scanning (channel is checked to be
-usable by cfg80211_get_ies_channel_number) and connecting on
-the channel later.
+Route bfqg_stats_add_aux() time accumulation into the destination
+stats object instead of the source, aligning with other stat fields.
 
-With one scenario that isn't covered elsewhere described above,
-the warning isn't good, replace it with a (more informative)
-error message.
-
-Reported-by: syzbot+639af5aa411f2581ad38@syzkaller.appspotmail.com
-Link: https://patch.msgid.link/20251202102511.5a8fb5184fa3.I961ee41b8f10538a54b8565dbf03ec1696e80e03@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Reviewed-by: Yu Kuai <yukuai@fnnas.com>
+Signed-off-by: shechenglong <shechenglong@xfusion.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-## Analysis of Commit: wifi: mac80211: don't WARN for connections on
-invalid channels
+## Analysis of Commit: block,bfq: fix aux stat accumulation destination
 
 ### 1. COMMIT MESSAGE ANALYSIS
 
-**Subject:** Indicates removal of a WARN for a legitimate condition in
-WiFi channel handling.
+The commit message clearly indicates this is a bug fix: "fix aux stat
+accumulation destination". It describes that `bfqg_stats_add_aux()` was
+routing time accumulation into the wrong destination (source instead of
+destination). The fix aligns this field with all other stat fields in
+the same function.
 
-**Key details from message:**
-- **Reported by syzbot** - demonstrates this is a reproducible, real-
-  world triggerable issue
-- **Author:** Johannes Berg - the mac80211 maintainer and highly trusted
-  kernel developer
-- **Scenario explained:** Regulatory changes can disable a channel
-  between scanning and connecting, making this condition legitimately
-  reachable (not a kernel bug)
-- The WARN_ON was inappropriate because it treats a recoverable
-  condition as a programming error
+- Has `Reviewed-by: Yu Kuai` - BFQ subsystem expertise
+- Signed off by Jens Axboe (block subsystem maintainer)
 
 ### 2. CODE CHANGE ANALYSIS
 
-The change is in `ieee80211_determine_chan_mode()` in
-`net/mac80211/mlme.c`:
+The change is a single-line fix in `block/bfq-cgroup.c`:
 
-**Before:**
 ```c
-if (WARN_ON(chanreq->oper.width == NL80211_CHAN_WIDTH_20_NOHT)) {
-    ret = -EINVAL;
-    goto free;
-}
+- bfq_stat_add_aux(&from->time, &from->time);
++       bfq_stat_add_aux(&to->time, &from->time);
 ```
 
-**After:**
-```c
-if (chanreq->oper.width == NL80211_CHAN_WIDTH_20_NOHT) {
-    link_id_info(sdata, link_id,
-                 "unusable channel (%d MHz) for connection\n",
-                 chanreq->oper.chan->center_freq);
-    ret = -EINVAL;
-    goto free;
-}
-```
+**The Bug:** The function `bfqg_stats_add_aux()` is documented with `/*
+@to += @from */` - it should add stats FROM source TO destination. The
+buggy line was adding `from->time` to itself (`&from->time,
+&from->time`), which is clearly wrong.
 
-**Technical explanation:**
-- The loop tries to downgrade channel width when a channel is not usable
-- When it reaches minimum width (20MHz NOHT) and channel is still
-  unusable, connection fails
-- **The bug:** `WARN_ON()` was used, but this condition CAN happen
-  legitimately (e.g., regulatory DB change between scan and connect)
-- **The fix:** Replaces WARN_ON with an informative log message; same
-  functional behavior (-EINVAL return)
+**Root Cause:** A simple typo - `from` was used instead of `to` for the
+first argument.
+
+**Pattern Evidence:** Looking at surrounding code, every other line
+follows the correct pattern:
+- `blkg_rwstat_add_aux(&to->merged, &from->merged)`
+- `blkg_rwstat_add_aux(&to->service_time, &from->service_time)`
+- `bfq_stat_add_aux(&to->avg_queue_size_sum, &from->avg_queue_size_sum)`
+- etc.
+
+Only `time` had the incorrect `&from` as the first argument.
 
 ### 3. CLASSIFICATION
 
-- **Type:** Bug fix - inappropriate WARN removal
-- **NOT a feature addition:** Same functional behavior, just better
-  error handling
-- **Security-adjacent:** On systems with `panic_on_warn=1`, this could
-  cause a kernel crash from a user-triggerable condition
+- **Bug type:** Logic error (typo) causing incorrect stat accumulation
+- **Category:** Clear bug fix - not a feature, not a cleanup
+- **Subsystem:** BFQ I/O scheduler cgroup support (debug statistics)
 
 ### 4. SCOPE AND RISK ASSESSMENT
 
-- **Lines changed:** ~5 lines net change
+- **Lines changed:** 1 line, essentially a single character change
+  (`from` → `to`)
 - **Files touched:** 1 file
-- **Risk:** **VERY LOW**
-  - Functional behavior unchanged (returns -EINVAL in same conditions)
-  - Only changes logging output
-  - Cannot introduce regression
+- **Risk level:** Extremely LOW
+- **Code location:** Under `CONFIG_BFQ_CGROUP_DEBUG` - debug statistics
+  only
+
+This is about as surgical as a fix can get. Even if the fix were somehow
+wrong (which it clearly isn't), it only affects debug statistics output,
+not actual I/O scheduling behavior.
 
 ### 5. USER IMPACT
 
-**Affected users:**
-- **panic_on_warn systems:** Could crash from this legitimate condition
-  - HIGH impact
-- **All WiFi users:** Reduces log noise from false warnings - MEDIUM
-  impact
-- **Production environments:** Many use panic_on_warn, making this
-  important
-
-**Severity:** This is syzbot-triggerable, meaning attackers could
-potentially trigger crashes on panic_on_warn systems.
+- **Affected users:** Those using BFQ I/O scheduler with cgroup
+  debugging enabled
+- **Symptom:** The `time` statistic would be lost (not transferred to
+  parent) when a BFQ cgroup is destroyed, causing inaccurate cumulative
+  statistics
+- **Severity:** Low to moderate - affects accuracy of debug/monitoring
+  data, not data integrity or system stability
 
 ### 6. STABILITY INDICATORS
 
-- ✅ Reported-by: syzbot (confirmed reproducible)
-- ✅ Johannes Berg is the mac80211 maintainer
-- ✅ Fix is trivially correct
-- ✅ No complex logic changes
+- Reviewed by Yu Kuai (BFQ expert)
+- Accepted by Jens Axboe (block maintainer)
+- Trivially correct fix - the pattern is obvious from surrounding code
 
 ### 7. DEPENDENCY CHECK
 
-- **Standalone fix:** No dependencies on other commits
-- **Code path existence:** `ieee80211_determine_chan_mode()` is core
-  mac80211 code that exists in stable trees
+- **Dependencies:** None - this is a self-contained fix
+- **Affected code existence:** BFQ cgroup code has existed in stable
+  trees for years
+- **Clean backport:** Should apply cleanly to any kernel with BFQ cgroup
+  support
 
-### STABLE KERNEL CRITERIA EVALUATION
+### VERDICT
 
-| Criterion | Met? | Notes |
-|-----------|------|-------|
-| Obviously correct | ✅ | Simple WARN_ON removal |
-| Fixes real bug | ✅ | syzbot reported, crashes on panic_on_warn |
-| Important issue | ✅ | Potential crashes in production |
-| Small and contained | ✅ | ~5 lines, 1 file |
-| No new features | ✅ | Same behavior, better logging |
-| Applies cleanly | ✅ | Standard pattern |
+**Pros:**
+- Obviously correct fix (typo/copy-paste error)
+- Minimal change (1 line)
+- Zero regression risk
+- Fixes incorrect behavior in statistics accumulation
+- Well-reviewed and accepted by maintainers
+- No dependencies on other commits
 
-### RISK VS BENEFIT
+**Cons:**
+- Only affects debug code (`CONFIG_BFQ_CGROUP_DEBUG`)
+- Low-impact bug (statistics accuracy, not data/system integrity)
 
-**Benefits:**
-- Prevents crashes on panic_on_warn systems
-- Fixes syzbot-reported issue
-- Provides better diagnostic information
-- Zero functional change to normal operation
+This commit meets all stable kernel criteria:
+1. ✅ Obviously correct - trivially evident typo fix
+2. ✅ Fixes a real bug - stats were accumulated to wrong destination
+3. ✅ Small and contained - single line change
+4. ✅ No new features - pure bug fix
+5. ✅ Should apply cleanly to stable
 
-**Risks:**
-- Essentially none - the change is purely about removing an
-  inappropriate warning and adding informational logging
-
-### CONCLUSION
-
-This is a textbook example of a good stable backport candidate:
-1. Small, surgical fix (few lines, one file)
-2. Fixes a real bug that syzbot can trigger
-3. From the subsystem maintainer
-4. Zero risk of regression (same functional behavior)
-5. Important for panic_on_warn systems which are common in production
-
-The fix correctly recognizes that a channel becoming unusable between
-scan and connect is a legitimate condition (e.g., due to regulatory
-changes), not a kernel bug that warrants WARN_ON.
+While the impact is limited to debug statistics users, the fix is so
+trivially correct and low-risk that there's no reason not to backport
+it. Users relying on BFQ cgroup statistics for monitoring or debugging
+would benefit from accurate data.
 
 **YES**
 
- net/mac80211/mlme.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ block/bfq-cgroup.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index f3138d158535..c8b588f4e494 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -1126,7 +1126,10 @@ ieee80211_determine_chan_mode(struct ieee80211_sub_if_data *sdata,
- 
- 	while (!ieee80211_chandef_usable(sdata, &chanreq->oper,
- 					 IEEE80211_CHAN_DISABLED)) {
--		if (WARN_ON(chanreq->oper.width == NL80211_CHAN_WIDTH_20_NOHT)) {
-+		if (chanreq->oper.width == NL80211_CHAN_WIDTH_20_NOHT) {
-+			link_id_info(sdata, link_id,
-+				     "unusable channel (%d MHz) for connection\n",
-+				     chanreq->oper.chan->center_freq);
- 			ret = -EINVAL;
- 			goto free;
- 		}
+diff --git a/block/bfq-cgroup.c b/block/bfq-cgroup.c
+index 9fb9f3533150..6a75fe1c7a5c 100644
+--- a/block/bfq-cgroup.c
++++ b/block/bfq-cgroup.c
+@@ -380,7 +380,7 @@ static void bfqg_stats_add_aux(struct bfqg_stats *to, struct bfqg_stats *from)
+ 	blkg_rwstat_add_aux(&to->merged, &from->merged);
+ 	blkg_rwstat_add_aux(&to->service_time, &from->service_time);
+ 	blkg_rwstat_add_aux(&to->wait_time, &from->wait_time);
+-	bfq_stat_add_aux(&from->time, &from->time);
++	bfq_stat_add_aux(&to->time, &from->time);
+ 	bfq_stat_add_aux(&to->avg_queue_size_sum, &from->avg_queue_size_sum);
+ 	bfq_stat_add_aux(&to->avg_queue_size_samples,
+ 			  &from->avg_queue_size_samples);
 -- 
 2.51.0
 
