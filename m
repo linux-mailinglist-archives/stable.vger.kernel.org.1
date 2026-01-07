@@ -1,119 +1,125 @@
-Return-Path: <stable+bounces-206123-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206124-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83722CFD663
-	for <lists+stable@lfdr.de>; Wed, 07 Jan 2026 12:31:26 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B0F4CFD71D
+	for <lists+stable@lfdr.de>; Wed, 07 Jan 2026 12:42:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4B61430469A5
-	for <lists+stable@lfdr.de>; Wed,  7 Jan 2026 11:29:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2921A30191B8
+	for <lists+stable@lfdr.de>; Wed,  7 Jan 2026 11:42:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DA1B30F543;
-	Wed,  7 Jan 2026 11:29:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BD08308F07;
+	Wed,  7 Jan 2026 11:42:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="t7B8QgSm"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VvhM0YMM"
 X-Original-To: stable@vger.kernel.org
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88CDA30276A;
-	Wed,  7 Jan 2026 11:29:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 314D527FD75;
+	Wed,  7 Jan 2026 11:42:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767785368; cv=none; b=ETzwbRSlLsFeWfoHfSiqEk5DHunfpLD+jSD6yMSUR6/kK/ZjdM2Wbn7Cpm89/OdzUd947LbHFvn478giEAD2xxO1IKQchimmSkf1gdfL1SViPI5W0dQOY0kX8+NHLIz33vNW4Cp3Fq5NXgvmjWa1IjC/GPN0ZNgHrvO5hLBTlgU=
+	t=1767786167; cv=none; b=TND1vYT015PCi2syiYTQWWexIv9gQwmEmwJFiU+utE4JGsE9SBS+K7mW0byH3kUH7hBoqvwo/5qZb6Gw9Hd73CtvqBnXahfDiEFpr2sQrCJnBm4GNxDJ53I3CDOYwS647kxILYx7AUw/m7Li+j86C5H5TvWK9ph5SY6FFDNLQlA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767785368; c=relaxed/simple;
-	bh=i1yo2t54coFzK3rbZvyf0Jb3hljZY56To9lo5lRmA/0=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=RPEHaVgvks2keFJ/iTN2H1iHwaMjGBCNHHPhxYAGkYQpad4x3C8OfHQGXu7L60CXvIJqWhUkCZYm2EFE7pByUzp699x/yc9TsJxEUqiaQApEi1Jt9BT0HF5Z8KN+LCRSGDVHahajdBMdFt8GvCnggl8iD9719rSkxcbomeGSTBg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=t7B8QgSm; arc=none smtp.client-ip=60.244.123.138
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-X-UUID: 1c6e8e56ebbc11f0942a039f3f28ce95-20260107
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=FFpEL9NcSyNwFOdBNUyHmSYnBxBxO+PAWBfQ2Qv2ozs=;
-	b=t7B8QgSmgoAeQx87QOqBVhGzN4bRJIy88/WK/5DJA5Ydr0SFX4U/ax1U5XkQJ+bCwTkEjV1yLsWfWz7AYrvqZPxLLc22A+J4WRmGHXwagN8ZEZ6W+cU+VAVVyb+dBykVM2+QD9GHpIXObcsYxkyuTPVIbDnigbireQHci3I9ojI=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.9,REQID:815aec23-fa90-4a52-a056-a6b17772bbfd,IP:0,UR
-	L:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-	:release,TS:-25
-X-CID-META: VersionHash:5047765,CLOUDID:69617c26-5093-468b-b7e7-d8195251fc6e,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102|836|888|898,TC:-5,Content:0|15|5
-	0,EDM:-3,IP:nil,URL:0,File:130,RT:0,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OS
-	A:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 1c6e8e56ebbc11f0942a039f3f28ce95-20260107
-Received: from mtkmbs11n2.mediatek.inc [(172.21.101.187)] by mailgw01.mediatek.com
-	(envelope-from <macpaul.lin@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 1712382546; Wed, 07 Jan 2026 19:29:21 +0800
-Received: from mtkmbs13n1.mediatek.inc (172.21.101.193) by
- mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Wed, 7 Jan 2026 19:29:19 +0800
-Received: from mtksitap99.mediatek.inc (10.233.130.16) by
- mtkmbs13n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.2562.29 via Frontend Transport; Wed, 7 Jan 2026 19:29:19 +0800
-From: Macpaul Lin <macpaul.lin@mediatek.com>
-To: Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
-	<sboyd@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Macpaul
- Lin <macpaul.lin@mediatek.com>, "Garmin . Chang" <Garmin.Chang@mediatek.com>,
-	<linux-clk@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-mediatek@lists.infradead.org>
-CC: Jian Hui Lee <jianhui.lee@canonical.com>, "Andy . Hsieh"
-	<andy.hsieh@mediatek.com>, Zoran Zhan <zoran.zhan@mediatek.com>, Cyril Chao
-	<Cyril.Chao@mediatek.com>, Chris-QJ Chen <chris-qj.chen@mediatek.com>, Ann
- Cheng <ann.cheng@arm.com>, Bear Wang <bear.wang@mediatek.com>, Pablo Sun
-	<pablo.sun@mediatek.com>, Ramax Lo <ramax.lo@mediatek.com>, Macpaul Lin
-	<macpaul@gmail.com>, MediaTek Chromebook Upstream
-	<Project_Global_Chrome_Upstream_Group@mediatek.com>, <Stable@vger.kernel.org>
-Subject: [PATCH RESEND] clk: mediatek: set CLK_IGNORE_UNUSED to clock mt8188 adsp audio26m
-Date: Wed, 7 Jan 2026 19:29:02 +0800
-Message-ID: <20260107112902.3080554-1-macpaul.lin@mediatek.com>
-X-Mailer: git-send-email 2.45.2
+	s=arc-20240116; t=1767786167; c=relaxed/simple;
+	bh=MVqEnOOJ5e5jVvhedg90e4x9k6H6hPXWjU1gBBjZSVg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DV6bp9d8M0MEJSlKxe5ksqR/0ErbTX0O+EMfs/G0qrtL1Tuhxgj45FS+ycCubs65ASNCZFV1/KKaP3tedI5cRcYl+vym1WA55bYQOIabSq3VhMMK5b2jR3NFlzVLmboCkBPHL3CapzLt0en+ISVzptci1St2t5ytdjqa41aZDtQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VvhM0YMM; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1767786166; x=1799322166;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=MVqEnOOJ5e5jVvhedg90e4x9k6H6hPXWjU1gBBjZSVg=;
+  b=VvhM0YMMxrodM/Sg3SeneIFlxVeX6yvKx5+Y8LfkyfRj/xAbTrbhtVwA
+   tT9z1bBZgbx1eS3ZhOCT1kXFMKe0dUvOh/ORqsg5OFffTFv+/ZlabbO7+
+   Ypz7zVK+4vq3PZKwSz3OoyTZo146fjyp+tY5zys6SstOk2CsOvLf5CBs/
+   p1UCtTU7RjvJ84ltykN4HoL9H1RcZ3p3B1MLk5xrs8ZwkEaD8xV9jskfv
+   FeuYb7+ZBOGkj/yRvmN42DkkYx9RU72qRortuEsDhhqDcFtdc76UioVVg
+   +OIjDPk2g1pUa6p/Eebt9kAWAhLVx1X5m9Iw78jG9MqhxDpvCfmrlAeyl
+   Q==;
+X-CSE-ConnectionGUID: JIYgNXYKQ/mD8pFhHFOIvw==
+X-CSE-MsgGUID: 9jYLHGYUSxajIEY9caND8Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11663"; a="69068030"
+X-IronPort-AV: E=Sophos;i="6.21,207,1763452800"; 
+   d="scan'208";a="69068030"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jan 2026 03:42:45 -0800
+X-CSE-ConnectionGUID: gzNNsmA1Qu2ffQwz4agg9Q==
+X-CSE-MsgGUID: o5i0lWjYS5SoWc3GbOlgOQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,207,1763452800"; 
+   d="scan'208";a="202034800"
+Received: from smoticic-mobl1.ger.corp.intel.com (HELO kekkonen.fi.intel.com) ([10.245.245.143])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jan 2026 03:42:43 -0800
+Received: from kekkonen.localdomain (localhost [IPv6:::1])
+	by kekkonen.fi.intel.com (Postfix) with SMTP id 80D37121D80;
+	Wed, 07 Jan 2026 13:42:56 +0200 (EET)
+Date: Wed, 7 Jan 2026 13:42:56 +0200
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
+To: Kartik Rajput <kkartik@nvidia.com>
+Cc: lenb@kernel.org, mika.westerberg@linux.intel.com,
+	andriy.shevchenko@linux.intel.com, thierry.reding@gmail.com,
+	jonathanh@nvidia.com, linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] ACPI: bus: Use OF match data for PRP0001 matched devices
+Message-ID: <aV5GwEzOLtgIEnYp@kekkonen.localdomain>
+References: <20260107062453.10893-1-kkartik@nvidia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-MTK: N
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260107062453.10893-1-kkartik@nvidia.com>
 
-Set CLK_IGNORE_UNUSED flag to clock adsp audio26m to prevent disabling
-this clock during early boot, as turning it off causes other modules
-to fail probing and leads to boot failures in ARM SystemReady test cases
-and the EFI boot process (on Linux Distributions, for example, debian,
-openSuse, etc.). Without this flag, disabling unused clocks cannot
-complete properly after adsp_audio26m is turned off.
+Hi Kartik,
 
-Fixes: 0d2f2cefba64 ("clk: mediatek: Add MT8188 adsp clock support")
-Cc: Stable@vger.kernel.org
-Signed-off-by: Macpaul Lin <macpaul.lin@mediatek.com>
----
- drivers/clk/mediatek/clk-mt8188-adsp_audio26m.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+On Wed, Jan 07, 2026 at 11:54:52AM +0530, Kartik Rajput wrote:
+> When a device is matched via PRP0001, the driver's OF (DT) match table
+> must be used to obtain the device match data. If a driver provides both
+> an acpi_match_table and an of_match_table, the current
+> acpi_device_get_match_data() path consults the driver's acpi_match_table
+> and returns NULL (no ACPI ID matches).
+> 
+> Explicitly detect PRP0001 and fetch match data from the driver's
+> of_match_table via acpi_of_device_get_match_data().
+> 
+> Fixes: 886ca88be6b3 ("ACPI / bus: Respect PRP0001 when retrieving device match data")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Kartik Rajput <kkartik@nvidia.com>
+> ---
+>  drivers/acpi/bus.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
+> index 5e110badac7b..4cd425fffa97 100644
+> --- a/drivers/acpi/bus.c
+> +++ b/drivers/acpi/bus.c
+> @@ -1031,8 +1031,9 @@ const void *acpi_device_get_match_data(const struct device *dev)
+>  {
+>  	const struct acpi_device_id *acpi_ids = dev->driver->acpi_match_table;
+>  	const struct acpi_device_id *match;
+> +	struct acpi_device = ACPI_COMPANION(dev);
 
-diff --git a/drivers/clk/mediatek/clk-mt8188-adsp_audio26m.c b/drivers/clk/mediatek/clk-mt8188-adsp_audio26m.c
-index dcde2187d24a..b9fe66ef4f2e 100644
---- a/drivers/clk/mediatek/clk-mt8188-adsp_audio26m.c
-+++ b/drivers/clk/mediatek/clk-mt8188-adsp_audio26m.c
-@@ -20,8 +20,8 @@ static const struct mtk_gate_regs adsp_audio26m_cg_regs = {
- };
- 
- #define GATE_ADSP_FLAGS(_id, _name, _parent, _shift)		\
--	GATE_MTK(_id, _name, _parent, &adsp_audio26m_cg_regs, _shift,		\
--		&mtk_clk_gate_ops_no_setclr)
-+	GATE_MTK_FLAGS(_id, _name, _parent, &adsp_audio26m_cg_regs, _shift,	\
-+		&mtk_clk_gate_ops_no_setclr, CLK_IGNORE_UNUSED)
- 
- static const struct mtk_gate adsp_audio26m_clks[] = {
- 	GATE_ADSP_FLAGS(CLK_AUDIODSP_AUDIO26M, "audiodsp_audio26m", "clk26m", 3),
+Oops!
+
+>  
+> -	if (!acpi_ids)
+> +	if (!strcmp(ACPI_DT_NAMESPACE_HID, acpi_device_hid(adev))
+>  		return acpi_of_device_get_match_data(dev);
+>  
+>  	match = acpi_match_device(acpi_ids, dev);
+
 -- 
-2.45.2
+Regards,
 
+Sakari Ailus
 
