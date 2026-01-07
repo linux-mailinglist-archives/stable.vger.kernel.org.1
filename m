@@ -1,189 +1,160 @@
-Return-Path: <stable+bounces-206234-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206235-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB921D0060B
-	for <lists+stable@lfdr.de>; Thu, 08 Jan 2026 00:18:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C495D00614
+	for <lists+stable@lfdr.de>; Thu, 08 Jan 2026 00:21:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id ECC4030164F7
-	for <lists+stable@lfdr.de>; Wed,  7 Jan 2026 23:18:57 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1CE113017215
+	for <lists+stable@lfdr.de>; Wed,  7 Jan 2026 23:21:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFD082E03F3;
-	Wed,  7 Jan 2026 23:18:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3685E2E7165;
+	Wed,  7 Jan 2026 23:21:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="kB0Cyi7X"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PLHpiCmM"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71DF22139C9;
-	Wed,  7 Jan 2026 23:18:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 790732E03F3
+	for <stable@vger.kernel.org>; Wed,  7 Jan 2026 23:21:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767827936; cv=none; b=eX3jXCpEhLif6q14N/kkpChOHxdlVS5rZ2wFSpjzKm+3jF6Y8Oj4yo6AsdpAmByWz0uTcmHhV5rx+32BJDKvHJAx3+jMDGg0ZjsvGhlFFoe4loze2+LxAHUQjRmxi64OePXvIbwk+lSG1qC22prmOVVyx5EHtmJukz9TjEYVr8Q=
+	t=1767828063; cv=none; b=ip+OcN1CNRT/UF42+PaSd/C6MQlPy21XVTDsn06g91BhRLRlVot1ZHWm43LOhLGN3W7nTMe7MGXLYoU+pydENFXH1yWnNj3vnmcdqp1CQTfv3j8J+8lY9lvUoSEXckla8ZSqGl0vfEtGmZ1wLMJuyuSKkwPfSN4MIFLP9qnuugA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767827936; c=relaxed/simple;
-	bh=z57Jayz3v9ph2kvEjlRmZ4N1dGGUBo9Jvl/eDn98Rao=;
-	h=Date:To:From:Subject:Message-Id; b=Gm49lBD2ll/WbWbNTamVTjpdgZQ+6NZjQj/K+L75872g5CmKoWPLo+PxBU1OlMCTA1x8mSDKsspMKkj3Jrt/JGh7PD8QzEbOG81gW+M8FFueu1jwtJ2asslzSF4mWLmAxMJ0lVN3Ah3xCE584LqiG74dW8nMAfJeYyC93EaWqk8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=kB0Cyi7X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1378DC4CEF1;
-	Wed,  7 Jan 2026 23:18:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1767827936;
-	bh=z57Jayz3v9ph2kvEjlRmZ4N1dGGUBo9Jvl/eDn98Rao=;
-	h=Date:To:From:Subject:From;
-	b=kB0Cyi7Xw5tsDiImlVmbNhYQbnf5wtfnFMhCxAaHoaYNluOb8mJVfUAXuYT4zpO3W
-	 nFxJJ4Bwn8Ef1FOiSEoUDJXsvVMmUqn/J+79k8nuu/EhMIU4gF9ofLG3pDaVd1nPnc
-	 Ia61GCjrSXD7Bqvd0bukkW1xjC4ybEWGBXVQbDuw=
-Date: Wed, 07 Jan 2026 15:18:55 -0800
-To: mm-commits@vger.kernel.org,tglx@linutronix.de,stable@vger.kernel.org,mingo@redhat.com,jannh@google.com,hpa@zytor.com,glider@google.com,elver@google.com,dvyukov@google.com,dave.hansen@linux.intel.com,bp@alien8.de,andrew.cooper3@citrix.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + x86-kfence-avoid-writing-l1tf-vulnerable-ptes.patch added to mm-hotfixes-unstable branch
-Message-Id: <20260107231856.1378DC4CEF1@smtp.kernel.org>
+	s=arc-20240116; t=1767828063; c=relaxed/simple;
+	bh=+IiIYk6tyq8dn+kFWd93D1ClEiKTPKlKcVrqsM5QbR8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=nELZM6dZYxZ2/QsOaXGxVXqJtCJ3mMXB3Ts1WlxR+GuI2YOGIl0keFSd/pV+aR8XTQfGr2iH5K0kCt0FpFibSt1gAQgbRHlSWBgfe+m399JDXEUXqVFOBefEMBvXNx3lnNK3rcWrPSmd17bSzID0F4xKnjaEUpR2tKvlkV4zQhQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PLHpiCmM; arc=none smtp.client-ip=209.85.160.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-4eda6a8cc12so28076391cf.0
+        for <stable@vger.kernel.org>; Wed, 07 Jan 2026 15:21:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1767828059; x=1768432859; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=dCrjzEZQwv01G+U0WIfJQs+VO9PryBUCb3CgwRj0lP0=;
+        b=PLHpiCmMD6n85Yj0HEKJuT7fWVqqEfnp0pqwBnJCS3F/EdmGfjdcPv3AxeqgppxXPx
+         Qb43t8sSmr5xtt/K4UJmgAJMbkb5qBvvhdj1ImLDxs2qRnRJ4p7bnwqmg9AXiysx9qIR
+         yXsPK3yd71Q3Bkkergyd6dS9eKkHCi6gWD4xHO+LULNHOzp3+ksok8vWqg7/8njbNDjX
+         TmYURQCDCQn1m0MO/KOF1VKpS1PMGt9foJcIkJsad26LLC7/zLrTlofQ/feeah7J0fpd
+         R/jBgBXnS/LEbFO3G+3+S1Ok6jJ8hT7sLAzjZTQyYyu7OLB5CxnULF/o5Ig1CYIe3ghi
+         SiNw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767828059; x=1768432859;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=dCrjzEZQwv01G+U0WIfJQs+VO9PryBUCb3CgwRj0lP0=;
+        b=gDdbAcooZDSWLinhGpG7wgFdQXVN8ysdlOlB/cp5nnb7iJaWmmhRkiIcNncBUvCLQo
+         yXMzHvxn1hs9V855vA4FxKYGiCDVjJqQ86c4HvzIt4K81zl+QqiJGkH/U0O9bW3kRV+Q
+         KDna1xVJq5aZfzjCz8B5TalboEG+8QrLNstd5W+fXs4oJHfgla9AYvf6ZJ6Ug404UyAe
+         9xe+SL+yWoaPhINWjgu+JjgHVwZBSOjGZ50+cJZ2VLFJQtTYMiZzxw7ZZJNAS7OdDa/1
+         HTfV0hOE7Pg3Fm/87bMXFY8ivxXCO2vDvif2O1KFxMke2EKDmx3SVOqDbB7i8k6UJa2R
+         sR1Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXc+QdurzkeuTm8XdbtjaOTVvmFFtj9/BbkBIdDjGQg2c+g8yCbx9hEQEGWMv94LhMpB4rhRBA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxWafFnD7eGAMl/d/72sDQRA3t3GLJwOOxonQNHJ/KWiYR1hcSH
+	uRX3mKmjBnN28PpmIo/pifo/P9IeGTGBtfNsyTwHgzwGIVKz8bbKF04T5FueqonWOO/zSluu4PI
+	vVequRtuoz2/lPRo+QB0aHCbuDO14uDk=
+X-Gm-Gg: AY/fxX6axHs/CBOeWV21gYNGHVQPiU3hrZ8XIWuyhvSDKdrClkt3baOXyHv82rvcuVF
+	iH77YVuxaDkNNnHOu3A55B+05IL2mmQoUl8C1WfSyNGCjirrZLtc1nz2WE5+JpH8UGfX30IuAgK
+	GsiEbLsgjRhb6lBhb26zQxvAHTJfuk5tCTUXt89CSkXQ0mhTSS+bzBXBKGVbTFTpmQ6X396l+4a
+	C+dinNJVrX0uPJGQKx8jPUk2KVta0M1LJysZ1lt845WpRKCAbyu7A98GsVGU4pBR0HJwQ==
+X-Google-Smtp-Source: AGHT+IEiFeqiqTBVau2o0UwF1CseRs5J2I2K15YUqe72E1rmIA/k0t28m+0gQwUsMjLpxytNmWX8UDtYFxSJ2+hi2Ac=
+X-Received: by 2002:a05:622a:64a:b0:4ee:1f5b:73bc with SMTP id
+ d75a77b69052e-4ffb4a76ceemr59244041cf.66.1767828059316; Wed, 07 Jan 2026
+ 15:20:59 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+References: <20251215030043.1431306-1-joannelkoong@gmail.com>
+ <20251215030043.1431306-2-joannelkoong@gmail.com> <ypyumqgv5p7dnxmq34q33keb6kzqnp66r33gtbm4pglgdmhma6@3oleltql2qgp>
+ <CAJnrk1aYpcDpm8MpN5Emb8qNOn34-qEiARLH0RudySKFtEZVpA@mail.gmail.com> <ucnvcqbmxsiszobzzkjrgekle2nabf3w5omnfbitmotgujas4e@4f5ct4ot4mup>
+In-Reply-To: <ucnvcqbmxsiszobzzkjrgekle2nabf3w5omnfbitmotgujas4e@4f5ct4ot4mup>
+From: Joanne Koong <joannelkoong@gmail.com>
+Date: Wed, 7 Jan 2026 15:20:48 -0800
+X-Gm-Features: AQt7F2rD2bYE74fC-BJPB9hchw_T0Hhn5OrF8uZDPNCgSz0wuN8d7B-9zslHZs4
+Message-ID: <CAJnrk1b-77uK2JuQaHz8KUCBnZfnQZ6M_nQQqFNWLvPDDdy4+Q@mail.gmail.com>
+Subject: Re: [PATCH v2 1/1] fs/writeback: skip AS_NO_DATA_INTEGRITY mappings
+ in wait_sb_inodes()
+To: Jan Kara <jack@suse.cz>
+Cc: akpm@linux-foundation.org, david@redhat.com, miklos@szeredi.hu, 
+	linux-mm@kvack.org, athul.krishna.kr@protonmail.com, j.neuschaefer@gmx.net, 
+	carnil@debian.org, linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Wed, Jan 7, 2026 at 2:12=E2=80=AFAM Jan Kara <jack@suse.cz> wrote:
+>
+> On Tue 06-01-26 15:30:05, Joanne Koong wrote:
+> > On Tue, Jan 6, 2026 at 1:34=E2=80=AFAM Jan Kara <jack@suse.cz> wrote:
+> > > [Thanks to Andrew for CCing me on patch commit]
+> >
+> > Sorry, I didn't mean to exclude you. I hadn't realized the
+> > fs-writeback.c file had maintainers/reviewers listed for it. I'll make
+> > sure to cc you next time.
+>
+> No problem, I don't think it's formally spelled out anywhere. It's just
+> that for changes in fs/*.c people tend to CC VFS maintainers / reviewers.
+>
+> Thanks for the historical perspective, it does put some more peace into m=
+y
+> mind that things were considered :)
+>
+> > For the fsync() and truncate() examples you mentioned, I don't think
+> > it's an issue that these now wait for the server to finish the I/O and
+> > hang if the server doesn't. I think it's actually more correct
+> > behavior than what we had with temp pages, eg imo these actually ought
+> > to wait for the writeback to have been completed by the server. If the
+> > server is malicious / buggy and fsync/truncate hangs, I think that's
+> > fine given that fsync/truncate is initiated by the user on a specific
+> > file descriptor (as opposed to the generic sync()) (and imo it should
+> > hang if it can't actually be executed correctly because the server is
+> > malfunctioning).
+>
+> Here, I have a comment. The hang in truncate is not as innocent as you
+> might think. It will happen in truncate_inode_pages() and as such it will
+> also end up hanging inode reclaim. Thus kswapd (or other arbitrary proces=
+s
+> entering direct reclaim) may hang in inode reclaim waiting for
+> truncate_inode_pages() to finish. And at that point you are between a roc=
+k
+> and a hard place - truncate_inode_pages() cannot fail because the inode i=
+s
+> at the point of no return. You cannot just detach the folio under writeba=
+ck
+> from the mapping because if the writeback ever completes, the IO end
+> handlers will get seriously confused - at least in the generic case, mayb=
+e
+> specifically for FUSE there would be some solution possible - like a
+> special handler in fuse_evict_inode() walking all the pages under writeba=
+ck
+> and tearing them down in a clean way (properly synchronizing with IO
+> completion) before truncate_inode_pages() is called.
 
-The patch titled
-     Subject: x86/kfence: avoid writing L1TF-vulnerable PTEs
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     x86-kfence-avoid-writing-l1tf-vulnerable-ptes.patch
+Hmm... I looked into this path a bit when I was investigating a
+deadlock that was unrelated to this. The ->evict_inode() callback gets
+invoked only if the ref count on an inode has dropped to zero. In
+fuse, in the .release() callback (fuse_release()), if writeback
+caching is enabled, write_inode_now() is called on the inode with
+sync=3D1 (WB_SYNC_ALL). This does synchronous writeback and returns (and
+drops the inode ref) only after all the dirty pages have been written
+out. When ->evict_inode() -> fuse_evict_inode() is called, I don't
+think there can be any lingering dirty pages to write out in
+trunate_inode_pages().
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/x86-kfence-avoid-writing-l1tf-vulnerable-ptes.patch
+Thanks,
+Joanne
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via various
-branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there most days
-
-------------------------------------------------------
-From: Andrew Cooper <andrew.cooper3@citrix.com>
-Subject: x86/kfence: avoid writing L1TF-vulnerable PTEs
-Date: Tue, 6 Jan 2026 18:04:26 +0000
-
-For native, the choice of PTE is fine.  There's real memory backing the
-non-present PTE.  However, for XenPV, Xen complains:
-
-  (XEN) d1 L1TF-vulnerable L1e 8010000018200066 - Shadowing
-
-To explain, some background on XenPV pagetables:
-
-  Xen PV guests are control their own pagetables; they choose the new
-  PTE value, and use hypercalls to make changes so Xen can audit for
-  safety.
-
-  In addition to a regular reference count, Xen also maintains a type
-  reference count.  e.g.  SegDesc (referenced by vGDT/vLDT), Writable
-  (referenced with _PAGE_RW) or L{1..4} (referenced by vCR3 or a lower
-  pagetable level).  This is in order to prevent e.g.  a page being
-  inserted into the pagetables for which the guest has a writable mapping.
-
-  For non-present mappings, all other bits become software accessible,
-  and typically contain metadata rather a real frame address.  There is
-  nothing that a reference count could sensibly be tied to.  As such, even
-  if Xen could recognise the address as currently safe, nothing would
-  prevent that frame from changing owner to another VM in the future.
-
-  When Xen detects a PV guest writing a L1TF-PTE, it responds by
-  activating shadow paging.  This is normally only used for the live phase
-  of migration, and comes with a reasonable overhead.
-
-KFENCE only cares about getting #PF to catch wild accesses; it doesn't
-care about the value for non-present mappings.  Use a fully inverted PTE,
-to avoid hitting the slow path when running under Xen.
-
-While adjusting the logic, take the opportunity to skip all actions if the
-PTE is already in the right state, half the number PVOps callouts, and
-skip TLB maintenance on a !P -> P transition which benefits non-Xen cases
-too.
-
-Link: https://lkml.kernel.org/r/20260106180426.710013-1-andrew.cooper3@citrix.com
-Fixes: 1dc0da6e9ec0 ("x86, kfence: enable KFENCE for x86")
-Signed-off-by: Andrew Cooper <andrew.cooper3@citrix.com>
-Tested-by: Marco Elver <elver@google.com>
-Cc: Alexander Potapenko <glider@google.com>
-Cc: Marco Elver <elver@google.com>
-Cc: Dmitry Vyukov <dvyukov@google.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Jann Horn <jannh@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- arch/x86/include/asm/kfence.h |   29 ++++++++++++++++++++++++-----
- 1 file changed, 24 insertions(+), 5 deletions(-)
-
---- a/arch/x86/include/asm/kfence.h~x86-kfence-avoid-writing-l1tf-vulnerable-ptes
-+++ a/arch/x86/include/asm/kfence.h
-@@ -42,10 +42,34 @@ static inline bool kfence_protect_page(u
- {
- 	unsigned int level;
- 	pte_t *pte = lookup_address(addr, &level);
-+	pteval_t val;
- 
- 	if (WARN_ON(!pte || level != PG_LEVEL_4K))
- 		return false;
- 
-+	val = pte_val(*pte);
-+
-+	/*
-+	 * protect requires making the page not-present.  If the PTE is
-+	 * already in the right state, there's nothing to do.
-+	 */
-+	if (protect != !!(val & _PAGE_PRESENT))
-+		return true;
-+
-+	/*
-+	 * Otherwise, invert the entire PTE.  This avoids writing out an
-+	 * L1TF-vulnerable PTE (not present, without the high address bits
-+	 * set).
-+	 */
-+	set_pte(pte, __pte(~val));
-+
-+	/*
-+	 * If the page was protected (non-present) and we're making it
-+	 * present, there is no need to flush the TLB at all.
-+	 */
-+	if (!protect)
-+		return true;
-+
- 	/*
- 	 * We need to avoid IPIs, as we may get KFENCE allocations or faults
- 	 * with interrupts disabled. Therefore, the below is best-effort, and
-@@ -53,11 +77,6 @@ static inline bool kfence_protect_page(u
- 	 * lazy fault handling takes care of faults after the page is PRESENT.
- 	 */
- 
--	if (protect)
--		set_pte(pte, __pte(pte_val(*pte) & ~_PAGE_PRESENT));
--	else
--		set_pte(pte, __pte(pte_val(*pte) | _PAGE_PRESENT));
--
- 	/*
- 	 * Flush this CPU's TLB, assuming whoever did the allocation/free is
- 	 * likely to continue running on this CPU.
-_
-
-Patches currently in -mm which might be from andrew.cooper3@citrix.com are
-
-x86-kfence-avoid-writing-l1tf-vulnerable-ptes.patch
-
+>
+>                                                                 Honza
+> --
+> Jan Kara <jack@suse.com>
+> SUSE Labs, CR
 
