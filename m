@@ -1,102 +1,77 @@
-Return-Path: <stable+bounces-206108-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206109-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D9ECCFCC8E
-	for <lists+stable@lfdr.de>; Wed, 07 Jan 2026 10:14:56 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09B6ACFD119
+	for <lists+stable@lfdr.de>; Wed, 07 Jan 2026 11:01:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7C58430274F1
-	for <lists+stable@lfdr.de>; Wed,  7 Jan 2026 09:06:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 014763070AAE
+	for <lists+stable@lfdr.de>; Wed,  7 Jan 2026 10:00:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B83922F5A10;
-	Wed,  7 Jan 2026 09:06:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="ceHkUQX5";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="gcFxzme5"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2659330AD15;
+	Wed,  7 Jan 2026 09:37:42 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from fout-b7-smtp.messagingengine.com (fout-b7-smtp.messagingengine.com [202.12.124.150])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f169.google.com (mail-oi1-f169.google.com [209.85.167.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C6EE139579;
-	Wed,  7 Jan 2026 09:06:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.150
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE681309DDB
+	for <stable@vger.kernel.org>; Wed,  7 Jan 2026 09:37:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767776809; cv=none; b=X0QhLBYtv9tw5NUb1AZZYZLjY96wFx4EW8dwZGWh/7uATyEiI6DoL+HIwlfNyLNXxt43zQfvvKcF2Cok2q4Yoat2iUljpCuj4yYW7wTOl4ichaZTby1B2lJbMEAyrMWHEOTRxqBjsKGPeL65a1Go1Q6baywX9v5EbzbT6Mg79Fc=
+	t=1767778662; cv=none; b=YPoSPVOlz35hbNVRL6b1mvRAGTosoWReMRj72YRH9Z0cROqJe1tR+yTId70eF4cI7eVqUS+NyQOoIGiHbiaHw79DfHLIldGA1EnKavaLQeCUy5icf85XqqFw0A5LSZMc7VwZa62a1CJP6Yv2RCs8PoVVs2eGutqzMiHtZ3sbz2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767776809; c=relaxed/simple;
-	bh=xfbP3iiQiTvylfEBBsP/tGgAzqlIRaiPQDG0x9eR+R4=;
+	s=arc-20240116; t=1767778662; c=relaxed/simple;
+	bh=P3bmIaKbj4dlQJDQsd4YExNB4f0vddu/W5Umr6N15ZQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eOpcGB+UDoEJ6+eD/Ma9AmkSe/V5qMqYStZ1SeqR/aoUj1bD0tPVWFKNx0vHpFalJjI2gdoSQGjXL/csutvIM8Q97LXu7Qksy/DAaL+J8kETTRwwJRhSVd8LO09d3N6db6KU4cB8bbTdIwK1fLOyt20AuC3+LqpvCR443iewIlY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=ceHkUQX5; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=gcFxzme5; arc=none smtp.client-ip=202.12.124.150
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfout.stl.internal (Postfix) with ESMTP id 9E0061D000C9;
-	Wed,  7 Jan 2026 04:06:45 -0500 (EST)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-01.internal (MEProxy); Wed, 07 Jan 2026 04:06:46 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm2; t=1767776805; x=1767863205; bh=Y+BmCaPEds
-	vR0QuU5EbuvJUcLSLZqO/lUAQ6j2+r1Hw=; b=ceHkUQX5dLJ5cQ9jqtn5T3Tvjd
-	M24oU2yLU+32njrWQjHfoTELVU1Q+CRAIOCmLI/yT/ngKOcbkVU9rDb58Un+8T6v
-	P6dqkAOTuTLktw9omt2KNdNS9AAgf7GLBij/FCVhg5Dpttp8loEDHcYCffO6PcaH
-	waKN8zwxZzXcXMWrCu4OL7xMS4PcCjDqiC82yQlFiQ9w6J0GbotZov4Ktd6qKCU0
-	EAh/FI2onwD8Pe6Co+qQJHEToRn8xCeV96OeeD4K+9YAwpBJnpEWlupqDJ2INYJP
-	sHQDGUKdCQhGc39lMkfJS1KRvGmJ2d9Z9umbP8p3qUoyBxu7j7rmW85FQkiw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1767776805; x=1767863205; bh=Y+BmCaPEdsvR0QuU5EbuvJUcLSLZqO/lUAQ
-	6j2+r1Hw=; b=gcFxzme5bdk0oIjLg9PVeVzDGGNEsI7igadjKIekyFqu40CyCj9
-	fhoxCLtom4S5eQGRMUx04ZIOL07CRZV3CxRO1FZnj0rttqMTHBtBe3O75LWyBDTw
-	7bajhDMURzkhy9BQkY8cmkV+b+mih2lw63vOddJe0Guuibplyo3jXrfTnOcQDp3W
-	OsO3K+WZctAZAdto5s/yOAVbIZT2hrqjMkvaIca54Dh1TIEzceeoS9yirkxEy7Z1
-	g5remq2OZzGd1JNxlxWJZCaYWevlUOyhEDI6rUxpQ0sZuXUnC+Ey29Zun/PB3OvT
-	oIB4fRaXRIy5ODZHydyvc0DiPJZn+fWgLgQ==
-X-ME-Sender: <xms:JCJeac7bMAJSffiv5rk5QNXmQNkxPN314a0bYstXnOKFgx_YIDEgFA>
-    <xme:JCJeaSyegRyFBUha3KvtvCT1JSU6w97xBVWaVGZJc4xDYiX29jZaKFfZGqa5AIKtv
-    cIwNguPlMMLCnn86V-9XhwvGeW17964GLYTWL_gztkb-uEd>
-X-ME-Received: <xmr:JCJeaZDxB-iuJpyg_KztSVhoviI43YvbRCuFAxRwgrJ5almZU_xiWtVZr-f-6VQvPQ9g4vZN-40cMqqGzCH-eAOWIudBXejkXNtgng>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddutddvieejucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepifhrvghgucfm
-    jfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepheegvdevvd
-    eljeeugfdtudduhfekledtiefhveejkeejuefhtdeufefhgfehkeetnecuvehluhhsthgv
-    rhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepghhrvghgsehkrhhorghhrd
-    gtohhmpdhnsggprhgtphhtthhopedvtddpmhhouggvpehsmhhtphhouhhtpdhrtghpthht
-    oheplhhihhgrohigihgrnhhgsehishhrtgdrihhstggrshdrrggtrdgtnhdprhgtphhtth
-    hopehjrghmvghsrdgsohhtthhomhhlvgihsehhrghnshgvnhhprghrthhnvghrshhhihhp
-    rdgtohhmpdhrtghpthhtohepughonhdrsghrrggtvgesmhhitghrohgthhhiphdrtghomh
-    dprhgtphhtthhopehmrghrthhinhdrphgvthgvrhhsvghnsehorhgrtghlvgdrtghomhdp
-    rhgtphhtthhopehjsghothhtohhmlhgvhiesphgrrhgrlhhlvghlshdrtghomhdprhgtph
-    htthhopehstggrmhgvrhhonhessggvrghrughoghdrtggtvgdrhhhprdgtohhmpdhrtghp
-    thhtohepshhtohhrrghgvgguvghvsehmihgtrhhotghhihhprdgtohhmpdhrtghpthhtoh
-    eplhhinhhugidqshgtshhisehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohep
-    lhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:JCJeaTMKzIvz6KtMCIpc3xN-vlHABGBViaU-PPL52h8W_GB_1aIybA>
-    <xmx:JCJeafSCVhReE0uiwOy9y_TT7cy5Oum3kbKtNJv6YrCR7znWevGL3g>
-    <xmx:JCJeaUtBl4E87nN6z0OFbo-VH0SgiJYHMbNhP5fNADvqqnxQiacx3g>
-    <xmx:JCJeadVu8ZXRDiJx7lhu3CGTKbGfovDV5lKZmAcc9a0uOjk-KvnFug>
-    <xmx:JSJeaa6cNecK3iYch-UPgzVjSXhCflJFcScXbku52LpbFJhqQSCLEMkO>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 7 Jan 2026 04:06:44 -0500 (EST)
-Date: Wed, 7 Jan 2026 10:06:41 +0100
-From: Greg KH <greg@kroah.com>
-To: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
-Cc: James.Bottomley@hansenpartnership.com, don.brace@microchip.com,
-	martin.petersen@oracle.com, jbottomley@parallels.com,
-	scameron@beardog.cce.hp.com, storagedev@microchip.com,
-	linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	 Content-Type:Content-Disposition:In-Reply-To; b=BOg+JV4p0Y3N3sIYMG3xJO1t5a8lqrZdLlfbiYFoDrY4c02qkp8zknrJu3MFByWNMwXq+NMs6wqoWA/hkrabgHqXrwEDSUnYSkoZrVp5iDhXxIBUaC1K38nK0v5kq99U9SUxJHPiFiHNazoV4PLY3aAcFFu7VTcjeRbk4nhXhvg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.167.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oi1-f169.google.com with SMTP id 5614622812f47-4557e6303a5so623767b6e.3
+        for <stable@vger.kernel.org>; Wed, 07 Jan 2026 01:37:39 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767778659; x=1768383459;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=WSOFVzjnYNB1d5rrdzoosTOvprcgQBQWb0G+083URhQ=;
+        b=rp/zD0kdBbi829IDRvHTPhsS7JsjjPocEYcS8NLtKzDpSofOMz3Tuf2UocAA3FQX98
+         YmBxxaeJXUmFPVV4iCQt1bhut4V60AK2KwluSRUHdzAkasEikT7lYWdpfY8LqwxRBbbO
+         xvEqpoWO68++fmt5ZpK18JdQlNG0KWuZgpV00HvU0KEnVBHOuNOLMXh32iGWqsoKTFE0
+         Cp4J9HdZFlthXS1xXtnwr/M8ifl0ZSC2G59Eu3jhbvPcbPWQtNiQebUxIlEd+52/q7BW
+         risNzLMXkKuMAcgpPknv2BeDKqjJaTJhnAug1xqoc7pXLgWyB7HH8W8nzLzUvrMemVb6
+         lY+A==
+X-Forwarded-Encrypted: i=1; AJvYcCXmpfIEoLbWG2JuWPJqZLux3FGiCo+0BKuowg0ZL+bErftzH+C0IaB79wZcyLeYnpL2aHcqcrw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxxb4PcZSF3EzELerEPdTpyvA3/IM72stqpA5D6vVeOltOGeSVh
+	6Ew5xsgffh65YI2wvWyTseui2WFpyEdcYxExKCAL75bCBSyAC5oZKIQ8
+X-Gm-Gg: AY/fxX41FYBoXPLFIMp28wBim770E99WbTT9QicK37X9ueGu3/DhZQwLrQJB/YaTCkp
+	doEozPERF1inhpRuAICAxA1XkuNGEqe4tSR4Kqw+iKt/TcGMvZH6LqFZlSPnqxHFfbixeQ4UdPW
+	JF6BreimP/A769Zv8yNoB1n7A5q5H+sNXzv70GZKIfJTMNn8Qzu9gYWriAgIXBNYqdKJObRKfMq
+	GuiocV0c6JjD8VO/RvmUfEBWQnqJEStjHMmFYjINBVTYoSBEldG6pERKRAZpst9LqACZ4PI9NHU
+	jdUqG7o0WJDmvpKoSeZATloKRiT3SDopW/1etMEYG01R8AbGDFnIJwEmvLe4GhRYpapL5rQObSz
+	w2oYzkOsPKdB+IhDOqSIhjGnoRoEvr5dypbL4lQIKTdBMTi78AELUswX4YToIeqECDE+KuB5En8
+	lWtujUNZ0rOxL52g==
+X-Google-Smtp-Source: AGHT+IE6mzfvESbk566yQV8NURTCe+ARwpNwZIV2RSmTygG0udCgbDFLYujQwW54LSoVrkMmFxWFbA==
+X-Received: by 2002:a05:6808:120a:b0:455:d817:513f with SMTP id 5614622812f47-45a6bcc87f7mr802717b6e.14.1767778658722;
+        Wed, 07 Jan 2026 01:37:38 -0800 (PST)
+Received: from gmail.com ([2a03:2880:10ff:40::])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-45a5e288d5fsm2230196b6e.14.2026.01.07.01.37.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 07 Jan 2026 01:37:38 -0800 (PST)
+Date: Wed, 7 Jan 2026 01:37:36 -0800
+From: Breno Leitao <leitao@debian.org>
+To: Steven Rostedt <rostedt@goodmis.org>
+Cc: Mark Rutland <mark.rutland@arm.com>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Laura Abbott <labbott@redhat.com>, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
+	Masami Hiramatsu <mhiramat@kernel.org>, kernel-team@meta.com, puranjay@kernel.org, 
 	stable@vger.kernel.org
-Subject: Re: [PATCH] hpsa: fix a memory leak in hpsa_find_cfgtables()
-Message-ID: <2026010718-upchuck-nimbly-6ffb@gregkh>
-References: <20260107085617.3391860-1-lihaoxiang@isrc.iscas.ac.cn>
+Subject: Re: [PATCH v2] arm64: Disable branch profiling for all arm64 code
+Message-ID: <frfmxk2ifpf5shcws42q3eeykb3xyflxocbic6junm7mzvmqik@vktwefe2zmw7>
+References: <20260106-annotated-v2-1-fb7600ebd47f@debian.org>
+ <aVz-NHMG7rSJ9u1N@J2N7QTR9R3>
+ <aVz-6WozGIxGiTUR@J2N7QTR9R3>
+ <20260106111142.1c123f12@gandalf.local.home>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -105,39 +80,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260107085617.3391860-1-lihaoxiang@isrc.iscas.ac.cn>
+In-Reply-To: <20260106111142.1c123f12@gandalf.local.home>
 
-On Wed, Jan 07, 2026 at 04:56:17PM +0800, Haoxiang Li wrote:
-> If write_driver_ver_to_cfgtable() fails, add iounmap() to
-> release the memory allocated by remap_pci_mem().
+Hello Steven,
 
-How did you find this bug?  You always need to document the tool you are
-using.
-
+On Tue, Jan 06, 2026 at 11:11:42AM -0500, Steven Rostedt wrote:
+> On Tue, 6 Jan 2026 12:24:09 +0000
+> Mark Rutland <mark.rutland@arm.com> wrote:
 > 
-> Fixes: 580ada3c1e2f ("[SCSI] hpsa: do a better job of detecting controller reset failure")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
-> ---
->  drivers/scsi/hpsa.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
 > 
-> diff --git a/drivers/scsi/hpsa.c b/drivers/scsi/hpsa.c
-> index 3654b12c5d5a..4cc129d2d6f2 100644
-> --- a/drivers/scsi/hpsa.c
-> +++ b/drivers/scsi/hpsa.c
-> @@ -7646,8 +7646,11 @@ static int hpsa_find_cfgtables(struct ctlr_info *h)
->  		return -ENOMEM;
->  	}
->  	rc = write_driver_ver_to_cfgtable(h->cfgtable);
-> -	if (rc)
-> +	if (rc) {
-> +		iounmap(h->cfgtable);
-> +		h->cfgtable = NULL;
+> > Whoops; s/CONFIG_DEBUG_VIRTUAL/PROFILE_ANNOTATED_BRANCHES/ in both
+> > places in my reply.
+> 
+> Note, it could still be useful ;-) 
+> 
+> I've been running my yearly branch profiling build on both my main
+> workstation and my server. I post the results from my server publicly (this
+> is updated every night):
+> 
+>    https://rostedt.org/branches/current
+> 
+> If you check out the branch_annotated file, you can see there's still quite
+> a bit that gets it wrong. Some of these is because of bad assumptions by
+> the developer, others is because the code moved around causing new branches
+> to make later annotated branches go the opposite way.
 
-Shouldn't you just call hpsa_free_cfgtables() instead?
+I am starting to look and remove some of these likely/unlikely hint that
+are 100% wrong on some very sane configuration (arm64 baremetal hosts
+running a webserver).
 
-thanks,
+So far, these are the fixes I have in flight now.
 
-greg k-h
+ * https://lore.kernel.org/all/20260105-dcache-v1-1-f0d904b4a7c2@debian.org/
+ * https://lore.kernel.org/all/20260106-blk_unlikely-v1-1-90fb556a6776@debian.org/
+ * https://lore.kernel.org/all/20260105-annotated_idle-v1-1-10ddf0771b58@debian.org/
 
