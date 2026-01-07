@@ -1,101 +1,80 @@
-Return-Path: <stable+bounces-206149-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206150-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49926CFE137
-	for <lists+stable@lfdr.de>; Wed, 07 Jan 2026 14:52:07 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D765CFE5B6
+	for <lists+stable@lfdr.de>; Wed, 07 Jan 2026 15:44:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D9BEE30FF4A7
-	for <lists+stable@lfdr.de>; Wed,  7 Jan 2026 13:45:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4B0EC3081E77
+	for <lists+stable@lfdr.de>; Wed,  7 Jan 2026 14:36:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 602E0330666;
-	Wed,  7 Jan 2026 13:45:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAFF234A3CB;
+	Wed,  7 Jan 2026 14:26:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="jCc7Z91m";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="YC0z4Dk8"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="OxiffGlr"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81AD532D0F9
-	for <stable@vger.kernel.org>; Wed,  7 Jan 2026 13:45:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0669134A3B1;
+	Wed,  7 Jan 2026 14:26:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767793524; cv=none; b=hfPjy9TOl07PP9q13+CvDxdsv+AHc+Io0JURbflaLs9S1+lR849Kq6W4VnK7Z7QYSKLnu44AiZvKtHBMv6EbeaV3CMrXiyjehyZVGf9W3/eTlFjn9ZWKgGUyzwYrR1sFExA+q9SRFw+jIz0ZhlcuuAsC1d6uhzOdcT7nbLJfmG4=
+	t=1767795974; cv=none; b=GmcH71OrrfUF8tbwwkWMhO/MhT49I+LbRjBBO0KcgXjbppVICi1i/Q9bleX7PAwBrONmZ3IjlQC5ZOw2r0v/XqaamRI/Spm3sNeMbgdbRUefHSed98wkEHluK125wPnzuoDTBoJF7yA/iQYrgTq2BCCksnMR+H4oZZywolU0tC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767793524; c=relaxed/simple;
-	bh=aGCwiMjQucIVEWY0xQeLko/RXdpi58+4bzprc6n0/A8=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=nhdEXHFrQzXOec+YxcsF9qp1HmQs9lxfY4aNJH8OdI+INUNAhEKgD3sngV4j7MtE1S9sKCzbycpFiW4v1JX5UsDIMIHi8NA8U4X5OWVbvUPbQqKlGT0gvENnXlPh76/hN92LPe2lM2GG8VKJloZFEMif0/q9ENkx0s6biu9el+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=jCc7Z91m; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=YC0z4Dk8; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6077ZmbP849477
-	for <stable@vger.kernel.org>; Wed, 7 Jan 2026 13:45:21 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	reb7P+Z4F9Rso1KjoO5FFqyUpm285MI8JPuG1ZEw77Y=; b=jCc7Z91mv6uUGycu
-	yyi6xxGoeqVIOjqiJooPhO25kxGXMufeqjiWYKU4uUgOJM870+bEbEB4gGu4oUkM
-	s9cRqg9HjHYtrwBuwU0BkeCUeao60RUSG9c55XxeT6QEIqKswDcXXpPKlhjTZsvw
-	At42zgByjTwllwd5LCa7lcHWKSyh94ysBIZc6xO2F9wavuEg5bqRiOA+BUWCkjzH
-	A1+IoJ8O2epuzNbXkO6HvSRLs8me6kH4XOPyDzp9ahDsKccGYGyC8ATc8yZhxOSF
-	qVnwFBn0rATjbBENesTBJsDybHDXb6vpasw8qvPYn8GM1tXkwxRIQ/23V1TnZ434
-	CsTPzw==
-Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com [209.85.219.71])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4bh66e3f9k-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Wed, 07 Jan 2026 13:45:21 +0000 (GMT)
-Received: by mail-qv1-f71.google.com with SMTP id 6a1803df08f44-88a360b8096so55609646d6.0
-        for <stable@vger.kernel.org>; Wed, 07 Jan 2026 05:45:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1767793520; x=1768398320; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:from:user-agent:mime-version:date:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=reb7P+Z4F9Rso1KjoO5FFqyUpm285MI8JPuG1ZEw77Y=;
-        b=YC0z4Dk8onwzWXo3iUqKgG7tDXkIE8/xNkIxtTuCouEUwxTM+bLPrle85lZYnvNF0E
-         n4WFUoGMNexhwAn8mALEbHmA0p0B9OWE6mIeraRyolIkVtfIY+kMLJUf4Qsqg8d/15xd
-         vnIf3IL1vSKLS5t6YcIT52DTPXR5faa6eVqqL9/U/oOZZ8gvBu2mc/4QYyM5Isfiv+oK
-         kn8sTS/92ouc6xuVf/i0DNOIbjopOoB4a+HPA8O8xy9n6ZGqBklXT8974l4pVhbuoVZl
-         WGBAY7t3X2ek3Y03U2esNq5qv9nypJgEG4U3ZCJObSBIH39LID0c9GNF7YPvICUssqJD
-         5FlA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767793520; x=1768398320;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:from:user-agent:mime-version:date:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=reb7P+Z4F9Rso1KjoO5FFqyUpm285MI8JPuG1ZEw77Y=;
-        b=FbHXNemhP05j3YCKV0w7ID9p+9C1OV3tQTxQW4EiM4N7SKLpXfST2npCl++wu932ff
-         BhZsh4qFQrjXgAnsTemrnZy1MwPeKhJ5iyU1480hp/qAZ6PfXksyaIxrWsbVAMZbGQlm
-         NW+wu0qnRf1bMrznnhZI2gUIN0FeLc/AxzTEqa/mD02QNOrIf6z26ghp4EMS98ZVdMkO
-         cmQdDhcZ1H8H445KJFRmqP6mVo898RzoD13q1pnobqjUA51d7dU4qjCML5TSCf0odQIw
-         fJS2SSITCWc99E1KxVkq19lZcEFBfkgmIchPu/kjIwqqQCsFVyz0ph4B3UFSda4UscGb
-         nS4Q==
-X-Forwarded-Encrypted: i=1; AJvYcCV8yPOO3rWx4RIN9jndUQfVtcRd4AbtaUPzvQW+DeW7VKRj7KfskyJjrK5dUUle186pHeGanvU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzSEEgde2xp7PJ7vrdXuQJfNkyc7lqJQqsdBuVM9TIKsT9pYQZH
-	DHJfhfyAn2pR7sUiJLC2wyV1o+OdYHwO9+w2+5f1Q5fQdOV3nZQy/QBXYp1vjvjPLQLkFhlRDBO
-	6Y4HEjpIe3CzzCvSecgkIHEc5tpWfU6v4vcCRGGASRO6wRpWzVPIV52gLboqcZTgVUQ4=
-X-Gm-Gg: AY/fxX4Q8ZC6vlIHgh++Tg+3iR4Hz1sTT2H0zURCPEoRUhihZL8VKQPrrXXirUGEaC4
-	OTKOnFO28z5iABXTi9VOcm4RWWEaMbFqFyT8+z0hkhJn8xoA03LIpYPEYbZKwg/Mz9z4NbLNI6q
-	NTM+ELcvRlXh+TYsuDgly0CZNrmTotZ06y9ffQuQD3O/7E7fsq8bIsd7Xy1/qKkOZy8gWw9ptMj
-	PmKFhQ5WkiSwPzM9K4Tvg/vBM87J0+cBhciwFIAuioQl8rImVl5T3wqhC0+Fz8j4qISXWdbQEIe
-	4eGDyDByED3z3ez0XKA8Blqq4Uh3Vv5/A1ho83gqs3Qo2A/b11G4JPw9P4lU2/gHTs86auJz1Vr
-	eNS+eXOGg+A1x7p4KvY1E932NmzBldNdObLv0al8ZccrMvCEDK0j8o1IEJjOXJN7wDiRgCfv/bF
-	aBDsXUXuB6vYb96xo7k3d1+QWuH5dWm4kbMVX6fI8TmMkl8OWAQvcSTiFBw2ABUiE8a0OBeou8y
-	tTd
-X-Received: by 2002:ac8:5789:0:b0:4ef:c5cf:ec0e with SMTP id d75a77b69052e-4ffb4a2e169mr31482971cf.55.1767793520426;
-        Wed, 07 Jan 2026 05:45:20 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHGMKq0mnAStTW1LnpwiTNhIj2O2iuqd6K21QnslKXLwdTmgSebkevhEPXoAvVXGMXqS4aslg==
-X-Received: by 2002:ac8:5789:0:b0:4ef:c5cf:ec0e with SMTP id d75a77b69052e-4ffb4a2e169mr31482481cf.55.1767793519817;
-        Wed, 07 Jan 2026 05:45:19 -0800 (PST)
-Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b842a51183asm524113466b.49.2026.01.07.05.45.19
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 07 Jan 2026 05:45:19 -0800 (PST)
-Message-ID: <082db370-e6cb-45fd-aaf9-bcd9f80dc242@oss.qualcomm.com>
-Date: Wed, 7 Jan 2026 14:45:18 +0100
+	s=arc-20240116; t=1767795974; c=relaxed/simple;
+	bh=dQ4CMqeJrzP/9taAHssRr0hqqLzpP6FlnL0p8NKYkVA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=LERwORAhAkYvfiyNzFRNfqOsqG1fd+2fz1MxoX9lA2wjzWjxxtDyaGquH9qfjvgynWwHiIeHME0cTlXC9fPNrcd74fjWFlJTLQ80fowHfn64flYJLAR1WwfGKx1nqOrh5SgDox01Tp0kvDfFfOefOR+Bj1D4lD7E4VtNrUx6XQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=OxiffGlr; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 607EKEbd016642;
+	Wed, 7 Jan 2026 14:25:46 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=JWyHqh
+	0cbDpqwkYQwJwz2YOUGHQ98e9j1ks+F+GVVmM=; b=OxiffGlr0ulcQeNaRhIB5I
+	KJevXDrykTyGvGb8oh7u3TMqxrO8wSojZkzOeLZwQp3qy8P/icyzmxIGairK6aHT
+	DKULFawFfxSAypdsubTAYNreOnoxaeUqG+e8ESzSrtB0wdQ7tNntotOx1/CBcFOR
+	inlziGFIy/VairHPQE7pqCJ/TlN5v7rg/AYfEVpfLuJkxZtEnCyzFBJJMIE23IX2
+	+1RvEifLn1nAerEzfl5c30QHDTb2FpED7VHsz6QIMWDVARD0an9dHluO4g01LfDb
+	JnmyPZjXAGKhNVjP1xBx7H7DawQZnMsSZIoWtAHYsoRnbuP5s5HbU66JiTHE03Bg
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4berhk8fb3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 07 Jan 2026 14:25:46 +0000 (GMT)
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 607EBFoh011138;
+	Wed, 7 Jan 2026 14:25:45 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4berhk8fb1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 07 Jan 2026 14:25:45 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 607C09WP005264;
+	Wed, 7 Jan 2026 14:25:45 GMT
+Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4bfexk9e1c-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 07 Jan 2026 14:25:45 +0000
+Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com [10.39.53.232])
+	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 607EPhDD30081540
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 7 Jan 2026 14:25:43 GMT
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 710FD58043;
+	Wed,  7 Jan 2026 14:25:43 +0000 (GMT)
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 02CE058053;
+	Wed,  7 Jan 2026 14:25:38 +0000 (GMT)
+Received: from [9.111.20.18] (unknown [9.111.20.18])
+	by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Wed,  7 Jan 2026 14:25:37 +0000 (GMT)
+Message-ID: <1fda7021-ec31-40ed-bfd8-e0e9b657662f@linux.ibm.com>
+Date: Wed, 7 Jan 2026 19:55:35 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -103,99 +82,206 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-From: Hans de Goede <johannes.goede@oss.qualcomm.com>
-Subject: Re: [PATCH v2 2/5] media: ov02c10: Adjust x-win/y-win when changing
- flipping to preserve bayer-pattern
-To: Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc: Hans Verkuil <hverkuil@kernel.org>, Bryan O'Donoghue <bod@kernel.org>,
-        Heimir Thor Sverrisson <heimir.sverrisson@gmail.com>,
-        Sebastian Reichel <sre@kernel.org>, linux-media@vger.kernel.org,
-        stable@vger.kernel.org
-References: <20251210112436.167212-1-johannes.goede@oss.qualcomm.com>
- <20251210112436.167212-3-johannes.goede@oss.qualcomm.com>
- <aV5IH7PIFnySHhYC@kekkonen.localdomain>
-Content-Language: en-US, nl
-In-Reply-To: <aV5IH7PIFnySHhYC@kekkonen.localdomain>
+Subject: Re: [PATCH v2] powerpc/pseries: Fix MSI-X allocation failure when
+ quota is exceeded
+To: Nam Cao <namcao@linutronix.de>, Madhavan Srinivasan
+ <maddy@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Thomas Gleixner <tglx@linutronix.de>, maz@kernel.org,
+        gautam@linux.ibm.com, Gregory Joyce <gjoyce@ibm.com>,
+        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org
+References: <20260107100230.1466093-1-namcao@linutronix.de>
+Content-Language: en-US
+From: Nilay Shroff <nilay@linux.ibm.com>
+In-Reply-To: <20260107100230.1466093-1-namcao@linutronix.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTA3MDEwMyBTYWx0ZWRfX2WgucRC4azMB
- 3X/uGsYqMrlQDt8HATLxK83wOc5KCsdThm6CCigQ38RrMQyaxzWYAOI62UAdvtZaDg+vVsR4Z6f
- Trtusplj6gt1jqpBg2roKuyZ8rkaSiuo+h5Up7m6+HFFNbxizbnajEQwpoih9u010PaoZmOca0W
- ZByGJSRAY1vhzEDchgMPse9e5/pP7Yx2LvSeBjuFjaniJK5D+6asoFGCJkzB/QQOUt3ebMd6I9F
- R+OtIzO3gTCN2fbxPxm/bvR6p9LfpuD17nX8u/iPv+XhUPZr8Pbdb/jCRcR9w8iKeOwddW2Wk4h
- 5FoVJXSdh+bAOMVkTayYPjB6yiMnFQY2G7E8RS6l3JRWhkHSXeITk4OknIszYbewZ3CeW15Gqp3
- vrj6I6f63nWDLjij2MdXlIFKrubm2uDsfxg06E8trW6CKiyxlCBGZ97fqgft/kSm7+bFB9IPzm1
- ZJ0q6oCwAQiORvA2o4A==
-X-Proofpoint-GUID: EUgf0IF60muH4nKPDrwd70ouYGvy8axX
-X-Proofpoint-ORIG-GUID: EUgf0IF60muH4nKPDrwd70ouYGvy8axX
-X-Authority-Analysis: v=2.4 cv=evHSD4pX c=1 sm=1 tr=0 ts=695e6371 cx=c_pps
- a=UgVkIMxJMSkC9lv97toC5g==:117 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=vUbySO9Y5rIA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=0plRyFmWAAAA:8 a=ZF_BEzhm7KkGSk9pD-0A:9 a=QEXdDO2ut3YA:10
- a=1HOtulTD9v-eNWfpl4qZ:22 a=4tO_KGIOfzmgBqjB6OKc:22
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=P4s3RyAu c=1 sm=1 tr=0 ts=695e6cea cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=zwuvnbuwBpirbEp69l4A:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: r-9MBfHGL3XoHCVF5R9Qs5_jkm7TC-BC
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTA3MDExMCBTYWx0ZWRfXztqz+xZmX+/C
+ D+TIHiCmy25+0M4v9ObRPDf15giyJ4ZxQxF2Lo/xWzRf2HoUV2So33ToOIUiop3pHbks+hJM44R
+ 4eNRNvUURtR67HSFCXcLHNvOC8GoB/liLxWcKV8tc3c09bkoDuJXSLuCfYEzuO2zufl9fzL20xU
+ W2S12lOrQppMrKq1ah44xPu6wNOatqeq7pnWltYwjm7OFPsTVLXx/K5vVkRiilLir+lzuI8ZRJm
+ d3kYWHZMIhnCFM0lR1H2AdCG96s2XAgfGJQa9Pwgauzf1vNhiNXxu2QbGkZ6U1KBnrZU2e22VGz
+ WXp4B80vFsK0P97FzZYpsTYWKYeF6/pjFWzWO6AUms2zG+p8T/19gEEVsAbPMqJ7Ca496vgovMA
+ pUEn8mZa8JLtYtG6ArS92OP0BrnY9G92ADQgXPKQ+oiduCK0Mq7/iB5m54ylIDtZEYsimjhGNFI
+ plbWtpo7u98dS1TCVKA==
+X-Proofpoint-GUID: ZiQACeOSl4pDbMqbBy8nv-oApTDhYEly
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2026-01-07_01,2026-01-06_01,2025-10-01_01
+ definitions=2026-01-07_02,2026-01-06_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 lowpriorityscore=0 clxscore=1015 spamscore=0 priorityscore=1501
- impostorscore=0 bulkscore=0 suspectscore=0 malwarescore=0 adultscore=0
+ malwarescore=0 bulkscore=0 priorityscore=1501 clxscore=1015 suspectscore=0
+ phishscore=0 adultscore=0 spamscore=0 impostorscore=0 lowpriorityscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2512120000 definitions=main-2601070103
+ reason=mlx scancount=1 engine=8.19.0-2512120000 definitions=main-2601070110
 
-Hi Sakari,
 
-On 7-Jan-26 12:48, Sakari Ailus wrote:
-> Hi Hans,
+
+On 1/7/26 3:32 PM, Nam Cao wrote:
+> Nilay reported that since commit daaa574aba6f ("powerpc/pseries/msi: Switch
+> to msi_create_parent_irq_domain()"), the NVMe driver cannot enable MSI-X
+> when the device's MSI-X table size is larger than the firmware's MSI quota
+> for the device.
 > 
-> On Wed, Dec 10, 2025 at 12:24:33PM +0100, Hans de Goede wrote:
->> The ov02c10 is capable of having its (crop) window shifted around with 1
->> pixel precision while streaming.
->>
->> This allows changing the x/y window coordinates when changing flipping to
->> preserve the bayer-pattern.
+> This is because the commit changes how rtas_prepare_msi_irqs() is called:
 > 
-> Ideally we'd use the crop selection to configure this, but given these
-> sensors (and drivers) are generally what they are, I guess this is probably
-> a reasonable way to go.
+>   - Before, it is called when interrupts are allocated at the global
+>     interrupt domain with nvec_in being the number of allocated interrupts.
+>     rtas_prepare_msi_irqs() can return a positive number and the allocation
+>     will be retried.
+> 
+>   - Now, it is called at the creation of per-device interrupt domain with
+>     nvec_in being the number of interrupts that the device supports. If
+>     rtas_prepare_msi_irqs() returns positive, domain creation just fails.
+> 
+> For Nilay's NVMe driver case, rtas_prepare_msi_irqs() returns a positive
+> number (the quota). This causes per-device interrupt domain creation to
+> fail and thus the NVMe driver cannot enable MSI-X.
+> 
+> Rework to make this scenario works again:
+> 
+>   - pseries_msi_ops_prepare() only prepares as many interrupts as the quota
+>     permit.
+> 
+>   - pseries_irq_domain_alloc() fails if the device's quota is exceeded.
+> 
+> Now, if the quota is exceeded, pseries_msi_ops_prepare() will only prepare
+> as allowed by the quota. If device drivers attempt to allocate more
+> interrupts than the quota permits, pseries_irq_domain_alloc() will return
+> an error code and msi_handle_pci_fail() will allow device drivers a retry.
+> 
+> Reported-by: Nilay Shroff <nilay@linux.ibm.com>
+> Closes: https://lore.kernel.org/linuxppc-dev/6af2c4c2-97f6-4758-be33-256638ef39e5@linux.ibm.com/
+> Fixes: daaa574aba6f ("powerpc/pseries/msi: Switch to msi_create_parent_irq_domain()")
+> Signed-off-by: Nam Cao <namcao@linutronix.de>
+> Acked-by: Nilay Shroff <nilay@linux.ibm.com>
+> Cc: stable@vger.kernel.org
+> ---
+> v2:
+>   - change pseries_msi_ops_prepare()'s allocation logic to match the
+>     original logic in __pci_enable_msix_range()
+> 
+>   - fix up Nilay's email address
+> ---
+>  arch/powerpc/platforms/pseries/msi.c | 44 ++++++++++++++++++++++++++--
+>  1 file changed, 41 insertions(+), 3 deletions(-)
+> 
+> diff --git a/arch/powerpc/platforms/pseries/msi.c b/arch/powerpc/platforms/pseries/msi.c
+> index a82aaa786e9e..edc30cda5dbc 100644
+> --- a/arch/powerpc/platforms/pseries/msi.c
+> +++ b/arch/powerpc/platforms/pseries/msi.c
+> @@ -19,6 +19,11 @@
+>  
+>  #include "pseries.h"
+>  
+> +struct pseries_msi_device {
+> +	unsigned int msi_quota;
+> +	unsigned int msi_used;
+> +};
+> +
+>  static int query_token, change_token;
+>  
+>  #define RTAS_QUERY_FN		0
+> @@ -433,8 +438,28 @@ static int pseries_msi_ops_prepare(struct irq_domain *domain, struct device *dev
+>  	struct msi_domain_info *info = domain->host_data;
+>  	struct pci_dev *pdev = to_pci_dev(dev);
+>  	int type = (info->flags & MSI_FLAG_PCI_MSIX) ? PCI_CAP_ID_MSIX : PCI_CAP_ID_MSI;
+> +	int ret;
+> +
+> +	struct pseries_msi_device *pseries_dev __free(kfree)
+> +		= kmalloc(sizeof(*pseries_dev), GFP_KERNEL);
+> +	if (!pseries_dev)
+> +		return -ENOMEM;
+> +
+> +	while (1) {
+> +		ret = rtas_prepare_msi_irqs(pdev, nvec, type, arg);
+> +		if (!ret)
+> +			break;
+> +		else if (ret > 0)
+> +			nvec = ret;
+> +		else
+> +			return ret;
+> +	}
+>  
+> -	return rtas_prepare_msi_irqs(pdev, nvec, type, arg);
+> +	pseries_dev->msi_quota = nvec;
+> +	pseries_dev->msi_used = 0;
+> +
+> +	arg->scratchpad[0].ptr = no_free_ptr(pseries_dev);
+> +	return 0;
+>  }
+>  
+>  /*
+> @@ -443,9 +468,13 @@ static int pseries_msi_ops_prepare(struct irq_domain *domain, struct device *dev
+>   */
+>  static void pseries_msi_ops_teardown(struct irq_domain *domain, msi_alloc_info_t *arg)
+>  {
+> +	struct pseries_msi_device *pseries_dev = arg->scratchpad[0].ptr;
+>  	struct pci_dev *pdev = to_pci_dev(domain->dev);
+>  
+>  	rtas_disable_msi(pdev);
+> +
+> +	WARN_ON(pseries_dev->msi_used);
+> +	kfree(pseries_dev);
+>  }
+>  
+>  static void pseries_msi_shutdown(struct irq_data *d)
+> @@ -546,12 +575,18 @@ static int pseries_irq_domain_alloc(struct irq_domain *domain, unsigned int virq
+>  				    unsigned int nr_irqs, void *arg)
+>  {
+>  	struct pci_controller *phb = domain->host_data;
+> +	struct pseries_msi_device *pseries_dev;
+>  	msi_alloc_info_t *info = arg;
+>  	struct msi_desc *desc = info->desc;
+>  	struct pci_dev *pdev = msi_desc_to_pci_dev(desc);
+>  	int hwirq;
+>  	int i, ret;
+>  
+> +	pseries_dev = info->scratchpad[0].ptr;
+> +
+> +	if (pseries_dev->msi_used + nr_irqs > pseries_dev->msi_quota)
+> +		return -ENOSPC;
+> +
+>  	hwirq = rtas_query_irq_number(pci_get_pdn(pdev), desc->msi_index);
+>  	if (hwirq < 0) {
+>  		dev_err(&pdev->dev, "Failed to query HW IRQ: %d\n", hwirq);
+> @@ -567,9 +602,10 @@ static int pseries_irq_domain_alloc(struct irq_domain *domain, unsigned int virq
+>  			goto out;
+>  
+>  		irq_domain_set_hwirq_and_chip(domain, virq + i, hwirq + i,
+> -					      &pseries_msi_irq_chip, domain->host_data);
+> +					      &pseries_msi_irq_chip, pseries_dev);
+>  	}
+>  
+> +	pseries_dev->msi_used++;
+>  	return 0;
+>  
+>  out:
+> @@ -582,9 +618,11 @@ static void pseries_irq_domain_free(struct irq_domain *domain, unsigned int virq
+>  				    unsigned int nr_irqs)
+>  {
+>  	struct irq_data *d = irq_domain_get_irq_data(domain, virq);
+> -	struct pci_controller *phb = irq_data_get_irq_chip_data(d);
+> +	struct pseries_msi_device *pseries_dev = irq_data_get_irq_chip_data(d);
+> +	struct pci_controller *phb = domain->host_data;
+>  
+>  	pr_debug("%s bridge %pOF %d #%d\n", __func__, phb->dn, virq, nr_irqs);
+> +	pseries_dev->msi_used -= nr_irqs;
+>  	irq_domain_free_irqs_parent(domain, virq, nr_irqs);
+>  }
+>  
 
-Even in sensor drivers where we allow setting the crop selection
-to get arbritrary modes, we always round the coordinates to a multiple
-of 2, to avoid changing the bayer-pattern seen by userspace when
-userspace changes the crop. See e.g. ov2680_set_selection().
+I just tested this change on my system using the latest mainline kernel and it works
+well for me. So with that, please fell free to add,
 
-And then when doing flipping we might add 1 to either the x and/or y
-coordinate to the userspace provided crop x, y before sending it to
-the sensor to make flipping not change the bayer order, see e.g.
-ov01a10_set_hflip() after the v2 series you've here:
-
-https://git.retiisi.eu/?p=~sailus/linux.git;a=shortlog;h=refs/heads/ov01a10
-
-which does (simplified):
-
-        offset = crop->left;
-        if (hflip)
-                offset++;
-
-        cci_write(ov01a10->regmap, OV01A10_REG_X_WIN, offset, &ret);
-
-IOW we are trying to not make userspace be able to affect the bayer-pattern
-through setting the crop-selection and/or flip.
-
-So I'm not sure what you mean with "Ideally we'd use the crop selection"
-because we are actively trying to avoid to have the crop-selection change
-the bayer order ?
-
-Generally speaking I think we should avoid any settings change the bayer-order
-whenever possible.
-
-Regards,
-
-Hans
-
-
-here?
-
-
-
+Tested-by: Nilay Shroff <nilay@linux.ibm.com>
 
 
