@@ -1,257 +1,138 @@
-Return-Path: <stable+bounces-206102-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206103-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30F79CFC738
-	for <lists+stable@lfdr.de>; Wed, 07 Jan 2026 08:51:12 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FE9BCFC964
+	for <lists+stable@lfdr.de>; Wed, 07 Jan 2026 09:24:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5BF2D300FFBE
-	for <lists+stable@lfdr.de>; Wed,  7 Jan 2026 07:46:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8873E3014BE6
+	for <lists+stable@lfdr.de>; Wed,  7 Jan 2026 08:19:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADF8627FD76;
-	Wed,  7 Jan 2026 07:46:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31BD026ED5C;
+	Wed,  7 Jan 2026 08:19:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="iueJ/Nd6";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="M8Y7xvAe";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="iueJ/Nd6";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="M8Y7xvAe"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="gRC3d85/"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6913E250BEC
-	for <stable@vger.kernel.org>; Wed,  7 Jan 2026 07:46:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C136134AB;
+	Wed,  7 Jan 2026 08:19:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.2
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767772009; cv=none; b=NePX+fs4MsyiJZDdcxRNaWx5pb6hEZziJYFmCU5FyWdChzXASaEAScVrunXtHGpsZgGP5x1TSCoJ9pn+FGb7wn7EyKTqlvMfD1uwfn04chAIiIk1vzx4ipsPecBkFZGQib8GWOWuPhTRM11A65i5lpAx4rKV/X8MCWPCbauJWP0=
+	t=1767773987; cv=none; b=i4d3bTPhXTUoRkVr1WwZuM/PO4tkNHjd9v9Xh7PCJjOl3aMoXvazyy/F1g7CPqGJ0dQd8I+S+jOIcQmHaRmFO6g5iGDSl3aDXTjZMjfNt9r04Z67s/yaZlrb0MlUZzHG2JNAjuL8brMwHAjAYFnKWf+CaY5QkJsbWtflYlcHkC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767772009; c=relaxed/simple;
-	bh=fL5mX2xhV9xaihCIglpVOR70G2yB9KjfVzLSmVi/wa0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=j9yZTbzrtvgqSk6dnJefZduiw3mxL9whDW2Tuyf3OeP2mvjo5j1DT4Op0N/fpb43DvqKlQSGNvAspNN4juoIbdAAnf7Ed4UAj7moBZMHQujw08jto8EhjgdduHCYx9QT+hXprt1FnUahzK5y9mH+F14tZuLsOI2JW6AhRdWmCvI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=iueJ/Nd6; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=M8Y7xvAe; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=iueJ/Nd6; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=M8Y7xvAe; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 578BF5BCD9;
-	Wed,  7 Jan 2026 07:46:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1767772005; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=N5+m3PUvDq1vrSCKYqFRL5OSEOuJdWqtxNxJ+r648F0=;
-	b=iueJ/Nd649+q8gDuqVTinERI8Ud3ZRWMSdduU6mTR2J6Jg3pVCw76Agf0QM24UlOYD25LC
-	srgn1lMMyd1/qrmJV85Iyk+zzYvIieCKfFhBygmxaLlLeoakFQjZBtzAGYPn9geabQ1YPk
-	5wfo8dYfGAUB/KzA5xFnjuF93M10K4E=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1767772005;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=N5+m3PUvDq1vrSCKYqFRL5OSEOuJdWqtxNxJ+r648F0=;
-	b=M8Y7xvAevHHPKMhehVr2BAjJdj2lensZkolalkgwl4BJXryqlStNDDuYnit56LJ3NYvtSt
-	bnP68at65iW901Bw==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="iueJ/Nd6";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=M8Y7xvAe
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1767772005; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=N5+m3PUvDq1vrSCKYqFRL5OSEOuJdWqtxNxJ+r648F0=;
-	b=iueJ/Nd649+q8gDuqVTinERI8Ud3ZRWMSdduU6mTR2J6Jg3pVCw76Agf0QM24UlOYD25LC
-	srgn1lMMyd1/qrmJV85Iyk+zzYvIieCKfFhBygmxaLlLeoakFQjZBtzAGYPn9geabQ1YPk
-	5wfo8dYfGAUB/KzA5xFnjuF93M10K4E=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1767772005;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=N5+m3PUvDq1vrSCKYqFRL5OSEOuJdWqtxNxJ+r648F0=;
-	b=M8Y7xvAevHHPKMhehVr2BAjJdj2lensZkolalkgwl4BJXryqlStNDDuYnit56LJ3NYvtSt
-	bnP68at65iW901Bw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 1B77A3EA63;
-	Wed,  7 Jan 2026 07:46:45 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id ofE4BWUPXmm3NwAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Wed, 07 Jan 2026 07:46:45 +0000
-Message-ID: <c6324a66-5886-4fbb-ba7b-fc7782c0f790@suse.de>
-Date: Wed, 7 Jan 2026 08:46:44 +0100
+	s=arc-20240116; t=1767773987; c=relaxed/simple;
+	bh=IvCEtho0O9kuXpdyfbZBZFONDWNDcw8gmh9MD+01lvI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=MjgBmJLybTUpCc7qGaf5nw8TEuBGx84HARLn82NIEsQFn9SyohLyEHTnbJYI4qaYSurSVsxQAA435ZOsIdk+MFnWKa0cIGhMlB7pqijnrFVXDqmmqLcldkOABkv3HMTNimG8W8WhSnx7j9TRtR92tvchREyjmzNoSDa+X13isC8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=gRC3d85/; arc=none smtp.client-ip=117.135.210.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=Wa
+	PQgA6aGdmy7Odxcjdef8WEYfdq0uZrtdsL+YqTeYM=; b=gRC3d85/x2yhZ7nuPA
+	DreQRGdwca0h0n8Up8qBxUHeXF52tlhyQdOkTwE4F7+dr/J3zbKfcrrNYya0AKcQ
+	LMHygKXKaNDmce+t3TAl9fMS7TLMX4UVFXWtBKmIxmH11Q/92aYtQ3lPy9xBsep2
+	oAkPHTGThAmaBJKqBaqoKPXc8=
+Received: from pek-lpg-core6.wrs.com (unknown [])
+	by gzsmtp2 (Coremail) with SMTP id PSgvCgBHzMbyFl5pOqdLLw--.34436S2;
+	Wed, 07 Jan 2026 16:18:59 +0800 (CST)
+From: Rahul Sharma <black.hawk@163.com>
+To: gregkh@linuxfoundation.org,
+	stable@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	Zqiang <qiang.zhang@linux.dev>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Rahul Sharma <black.hawk@163.com>
+Subject: [PATCH v6.12] usbnet: Fix using smp_processor_id() in preemptible code warnings
+Date: Wed,  7 Jan 2026 16:18:55 +0800
+Message-Id: <20260107081855.743357-1-black.hawk@163.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] drm/gud: fix NULL fb and crtc dereferences on USB
- disconnect
-To: Ruben Wauters <rubenru09@aol.com>, Shenghao Yang <me@shenghaoyang.info>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>
-Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20251231055039.44266-1-me@shenghaoyang.info>
- <28c39f1979452b24ddde4de97e60ca721334eb49.camel@aol.com>
- <938b5e8e-b849-4d12-8ee2-98312094fc1e@shenghaoyang.info>
- <571d40f4d3150e61dfb5d2beccdf5c40f3b5be2c.camel@aol.com>
-Content-Language: en-US
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
- AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
- AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
- lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
- U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
- vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
- 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
- j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
- T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
- 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
- GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
- hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
- EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
- C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
- yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
- SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
- Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
- 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <571d40f4d3150e61dfb5d2beccdf5c40f3b5be2c.camel@aol.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Flag: NO
-X-Spam-Score: -4.51
-X-Rspamd-Queue-Id: 578BF5BCD9
-X-Spamd-Result: default: False [-4.51 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	FREEMAIL_TO(0.00)[aol.com,shenghaoyang.info,linux.intel.com,kernel.org,gmail.com,ffwll.ch];
-	FREEMAIL_ENVRCPT(0.00)[aol.com,gmail.com];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:url];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DKIM_TRACE(0.00)[suse.de:+]
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Rspamd-Action: no action
-X-Spam-Level: 
+X-CM-TRANSID:PSgvCgBHzMbyFl5pOqdLLw--.34436S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxCF4Dtr45Zryxur13CrykXwb_yoW5CF43pF
+	WrGr47Ar4UWF4vqayfta1IqFyrZa1DtrZrGrWS93s8ZF9xA34UZF1F93Wxur1jkr48WFyj
+	qF1qv3y5Xw1rZa7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0piByxAUUUUU=
+X-CM-SenderInfo: 5eoduy4okd4yi6rwjhhfrp/xtbC3RS0TmleFvSFZQAA3G
 
-Hi Ruben
+From: Zqiang <qiang.zhang@linux.dev>
 
-Am 03.01.26 um 20:18 schrieb Ruben Wauters:
-> Hi
->
-> On Sun, 2026-01-04 at 01:47 +0800, Shenghao Yang wrote:
->> Hi Ruben,
->>
->> On 4/1/26 01:23, Ruben Wauters wrote:
->>
->>> With the elimination of these two WARN_ON_ONCEs, it's possible that
->>> crtc_state may not be assigned below, and therefore may be read/passed
->>> to functions when it is NULL (e.g. line 488). Either protection for a
->>> null crtc_state should be added to the rest of the function, or the
->>> function shouldn't continue if crtc is NULL.
->>>
->>> Ruben
->>>> -	crtc_state = drm_atomic_get_new_crtc_state(state, crtc);
->>>> -
->>>> -	mode = &crtc_state->mode;
->>>> +	if (crtc)
->>>> +		crtc_state = drm_atomic_get_new_crtc_state(state, crtc);
->>>>   
->>>>   	ret = drm_atomic_helper_check_plane_state(new_plane_state, crtc_state,
->>>>   						  DRM_PLANE_NO_SCALING,
->>>> @@ -492,6 +485,9 @@ int gud_plane_atomic_check(struct drm_plane *plane,
->>>>   	if (old_plane_state->rotation != new_plane_state->rotation)
->>>>   		crtc_state->mode_changed = true;
->>>>   
->>>> +	mode = &crtc_state->mode;
->>>> +	format = fb->format;
->> Yup - in this case I'm relying on drm_atomic_helper_check_plane_state()
->> bailing out early after seeing that fb is NULL (since a NULL crtc should
->> imply no fb) and setting plane_state->visible to false.
+Syzbot reported the following warning:
 
-This is correct behavior.
+BUG: using smp_processor_id() in preemptible [00000000] code: dhcpcd/2879
+caller is usbnet_skb_return+0x74/0x490 drivers/net/usb/usbnet.c:331
+CPU: 1 UID: 0 PID: 2879 Comm: dhcpcd Not tainted 6.15.0-rc4-syzkaller-00098-g615dca38c2ea #0 PREEMPT(voluntary)
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x16c/0x1f0 lib/dump_stack.c:120
+ check_preemption_disabled+0xd0/0xe0 lib/smp_processor_id.c:49
+ usbnet_skb_return+0x74/0x490 drivers/net/usb/usbnet.c:331
+ usbnet_resume_rx+0x4b/0x170 drivers/net/usb/usbnet.c:708
+ usbnet_change_mtu+0x1be/0x220 drivers/net/usb/usbnet.c:417
+ __dev_set_mtu net/core/dev.c:9443 [inline]
+ netif_set_mtu_ext+0x369/0x5c0 net/core/dev.c:9496
+ netif_set_mtu+0xb0/0x160 net/core/dev.c:9520
+ dev_set_mtu+0xae/0x170 net/core/dev_api.c:247
+ dev_ifsioc+0xa31/0x18d0 net/core/dev_ioctl.c:572
+ dev_ioctl+0x223/0x10e0 net/core/dev_ioctl.c:821
+ sock_do_ioctl+0x19d/0x280 net/socket.c:1204
+ sock_ioctl+0x42f/0x6a0 net/socket.c:1311
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:906 [inline]
+ __se_sys_ioctl fs/ioctl.c:892 [inline]
+ __x64_sys_ioctl+0x190/0x200 fs/ioctl.c:892
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xcd/0x260 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
->>
->> That would cause an early return in gud_plane_atomic_check() without
->> dereferencing crtc_state.
-> This does work, however this ends up returning 0, which implies that
-> the atomic check succeded. In my opinion in this case, -EINVAL should
-> be returned, as both the crtc and fb don't exist, therefore the check
-> should not succeed. I would personally prefer a more explicit check
-> that does return -EINVAL instead of 0 from
-> drm_atomic_helper_check_planes()
+For historical and portability reasons, the netif_rx() is usually
+run in the softirq or interrupt context, this commit therefore add
+local_bh_disable/enable() protection in the usbnet_resume_rx().
 
-If the plane has been disbabled, fb and crtc are NULL. So this is 
-correct. drm_atomic_helper_check_plane_state() is the place to do this 
-testing before doing much else in the atomic_check handler. If 
-drm_atomic_helper_check_plane_state() gives an error, the error should 
-be returns. But if it returns 0 and sets ->visible to false, the 
-atomic_check should return 0.  That means that the plane can 
-successfully be disabled.
+Fixes: 43daa96b166c ("usbnet: Stop RX Q on MTU change")
+Link: https://syzkaller.appspot.com/bug?id=81f55dfa587ee544baaaa5a359a060512228c1e1
+Suggested-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Zqiang <qiang.zhang@linux.dev>
+Link: https://patch.msgid.link/20251011070518.7095-1-qiang.zhang@linux.dev
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+[ The context change is due to the commit 2c04d279e857
+("net: usb: Convert tasklet API to new bottom half workqueue mechanism")
+in v6.17 which is irrelevant to the logic of this patch.]
+Signed-off-by: Rahul Sharma <black.hawk@163.com>
+---
+ drivers/net/usb/usbnet.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
->
-> As a side note, I'm not sure if there's a reasoning as to why
-> drm_atomic_helper_check_planes() returns 0 if fb is NULL instead of
-> -EINVAL, I'm assuming it's not designed to come across this specific
-> case. Either way it's not too much of an issue but maybe one of the drm
-> maintainers can clarify why it's this way.
-
-Disabling a plane is not an error, but a common operation.
-
-I think the patch is fine and IIRC we have similar logic in other drivers.
-
-Best regards
-Thomas
-
->
-> Ruben
->> Would a more explicit check be preferred?
->>
->> Thanks,
->>
->> Shenghao
-
+diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
+index 0ff7357c3c91..f1f61d85d949 100644
+--- a/drivers/net/usb/usbnet.c
++++ b/drivers/net/usb/usbnet.c
+@@ -702,6 +702,7 @@ void usbnet_resume_rx(struct usbnet *dev)
+ 	struct sk_buff *skb;
+ 	int num = 0;
+ 
++	local_bh_disable();
+ 	clear_bit(EVENT_RX_PAUSED, &dev->flags);
+ 
+ 	while ((skb = skb_dequeue(&dev->rxq_pause)) != NULL) {
+@@ -710,6 +711,7 @@ void usbnet_resume_rx(struct usbnet *dev)
+ 	}
+ 
+ 	tasklet_schedule(&dev->bh);
++	local_bh_enable();
+ 
+ 	netif_dbg(dev, rx_status, dev->net,
+ 		  "paused rx queue disabled, %d skbs requeued\n", num);
 -- 
---
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Frankenstr. 146, 90461 Nürnberg, Germany, www.suse.com
-GF: Jochen Jaser, Andrew McDonald, Werner Knoblich, (HRB 36809, AG Nürnberg)
-
+2.34.1
 
 
