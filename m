@@ -1,124 +1,103 @@
-Return-Path: <stable+bounces-206105-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206106-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76E6DCFCA96
-	for <lists+stable@lfdr.de>; Wed, 07 Jan 2026 09:44:58 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91447CFCB12
+	for <lists+stable@lfdr.de>; Wed, 07 Jan 2026 09:56:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7B90C300AFC2
-	for <lists+stable@lfdr.de>; Wed,  7 Jan 2026 08:44:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 876B23025165
+	for <lists+stable@lfdr.de>; Wed,  7 Jan 2026 08:56:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADAA22D6E64;
-	Wed,  7 Jan 2026 08:44:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5B122E5B27;
+	Wed,  7 Jan 2026 08:56:37 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vk1-f172.google.com (mail-vk1-f172.google.com [209.85.221.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25BE0284663
-	for <stable@vger.kernel.org>; Wed,  7 Jan 2026 08:44:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F7FF27FD6E;
+	Wed,  7 Jan 2026 08:56:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767775495; cv=none; b=XOuTFhyhIc3oYN0EeIQJVwscUE+R3gfYcQuUqMfoiY3qxefr7SMKLH363HAzidpURpaI3Fjmambs2fLUDT9FIXRotJieuueJ6cfPuPBA0Kji5yOafJW4ks5/UMGL3tgvcPrnEI0HdwZJPwYtPmgXw208sUYvumBjZ4cWUZ43HaI=
+	t=1767776197; cv=none; b=hoiJYns4+f+T8lhHdgxUDerS+jFczoqGEreiOiacJi15AcOZMTnjLN0G/tntG2SQVYZ54F8dVVb0S2FdNXuJeIqMdmwSg/YvAJxmcO3eV1nCRx6O8pgLcUDjU1WiYyvbIyhiBiMm5mO1xAbtU+oCG1dixhlAtEvRlp2gani0u+0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767775495; c=relaxed/simple;
-	bh=Z/Cp4F0ZBq+W2m+DW/28XQxAMadBOYzvQ9QpYNbTJ1I=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=WcO7uzmxJ+q7aXOWJeB4zHNEOg8HgROz14VLMkGyDcYzo88T84zUHdqEApF1vBwMT+yp5HGmylS+gcTOm6WOKYwrKOB7DpLC3N0PepahWQgdik4s8c4MIFWXrHVwDenEd/WFmdOuHQeZ0+Ofcw4tc9lNPeKf3fU9A7vGYDDH8pM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vk1-f172.google.com with SMTP id 71dfb90a1353d-5634d866615so131285e0c.2
-        for <stable@vger.kernel.org>; Wed, 07 Jan 2026 00:44:54 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767775493; x=1768380293;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=N1vgOPEez9FRp6KWJKirWJAqRTlbTZlVkOJqMPd6HmQ=;
-        b=eTMO3z/2XhdJ7cmckUJ5yhgQc6FbJ9mQbco/LAHjAvjG1KIRwgCBdtMl4LVg9UTn5D
-         iCPR3u+2pNuiXqbMXZ7UQK3nAiUe8uB+UKO+Sb6/MTcOKO1EPCaz3H7LT385Iau9hLGm
-         wRjrTwds5yxmAAvxCsOg+XMAJ/+nnXRRSKyXOIxgKXkqne0FkRfNnsZxryYDSoC3E1pE
-         WKqjaUXOztxOyrn1wUlykSddqcM7p5HbyyVcy6ADrE+wbkYMxGhzgK6DTAgBxG5SUx/9
-         N6AJyQP9joFntaKTxXsDFQ6xSSEjPrud3wFDV5knIlFyWMEl99C/HIjCpaZ7OvDgYUKU
-         jwGw==
-X-Forwarded-Encrypted: i=1; AJvYcCVOpG09nVqUPF+GEdLfzh6T7bpLb4iDIm+ljwkq+KVMOxITUthLbEpxxqM6vxgALypUG7cgbCE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwWl9cEpDoeVKpDcg+nvL68h8EYN44VXMjoNcmEEj+4bw520STw
-	i6poB47VZPFgrNyvQCpN+4PJbXHrKAO2c5Y5veIk9jozWT5JB1YLu6cDeqYCWhQN
-X-Gm-Gg: AY/fxX4ZnFcxxiazGwL6bGfCkFvo43mVXBNeyp7tLAmr534H/4rY6SiE5dAAA28XtVt
-	rK446kLizPu3V9+p1oN0gakcv9QfYMZ6+N3sF2tMod8vTyDjdL6ZXdTGWWzet8SyUopzVdc07xx
-	3cg84yV+nsWz2tJeTHECyHsvPcb3OTCLTJeAbSoMkqWG5g7JVioYC6gE26JMPvXs4HCUjxy1YRg
-	JRp/+UzurD8irZ3qpdtgeo4UXjozK2EE0p6ItclylhPsilaPop4EApLR8AzGzMDrZyGzKvM5ZFo
-	8gw3xv71L75iE55mIdd6j9VBHyLoaE/RXxX48lkelnWkJJ9fClMm9TIVA3gdilDWud1dSDlWw/I
-	0pA7eiQc5me7zQBTRKD6CGOTX/ke7mxuCi/+sUApsNKPiTIsXT16JECNNKAkfDxUz0PV9+Y+6nv
-	hSg8TGyoKRe2lHDaCSMee8P9t3a/HKAxc5T7vHUQ2RENyvbCc8
-X-Google-Smtp-Source: AGHT+IH6qDKborJ2jJyPLQ3dclJG9o+mkr9DMaaUBq6mvU/IXa2GMgz6egdIGcUEPOsM/37DxqzVKQ==
-X-Received: by 2002:a05:6122:421b:b0:55a:ba0d:d84d with SMTP id 71dfb90a1353d-56347d709d7mr593523e0c.7.1767775493101;
-        Wed, 07 Jan 2026 00:44:53 -0800 (PST)
-Received: from mail-ua1-f51.google.com (mail-ua1-f51.google.com. [209.85.222.51])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5633a074d30sm2366633e0c.0.2026.01.07.00.44.51
-        for <stable@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 07 Jan 2026 00:44:52 -0800 (PST)
-Received: by mail-ua1-f51.google.com with SMTP id a1e0cc1a2514c-944168e8c5fso710900241.2
-        for <stable@vger.kernel.org>; Wed, 07 Jan 2026 00:44:51 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVl8iOgjLGTLi/Nyure9t7oUay8X1O4KxX2nPTbXxDZqWXJwwlKH5jZge2dqs0mpGfwhM7oScs=@vger.kernel.org
-X-Received: by 2002:a05:6102:4b11:b0:530:f657:c40 with SMTP id
- ada2fe7eead31-5ecb6932feemr583997137.22.1767775491732; Wed, 07 Jan 2026
- 00:44:51 -0800 (PST)
+	s=arc-20240116; t=1767776197; c=relaxed/simple;
+	bh=JLqRU1DM9H+puKoxb8n2kIdFSelfKpssm+ZS8jbKKc0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=AfEkaGNso9K+/tuSIROfZ2oOVU1wIBbEC/ClbrCYVbBmc0cMZVREu76L0BqKjox5kQtsSUFXcbWgWBgB59jl8uJo+n0pjaYfAFeoYSZbo2TC3a8mNvdWQScgyxxV2HYz8wvr6Fc+IVKEAazE5/vGet1qmYC1Opjk+l+laXRTdcg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=isrc.iscas.ac.cn; spf=pass smtp.mailfrom=isrc.iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=isrc.iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=isrc.iscas.ac.cn
+Received: from localhost.localdomain (unknown [36.112.3.223])
+	by APP-03 (Coremail) with SMTP id rQCowABXWsGzH15pO+vyAw--.10449S2;
+	Wed, 07 Jan 2026 16:56:19 +0800 (CST)
+From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+To: James.Bottomley@HansenPartnership.com,
+	don.brace@microchip.com,
+	martin.petersen@oracle.com,
+	jbottomley@parallels.com,
+	scameron@beardog.cce.hp.com
+Cc: storagedev@microchip.com,
+	linux-scsi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] hpsa: fix a memory leak in hpsa_find_cfgtables()
+Date: Wed,  7 Jan 2026 16:56:17 +0800
+Message-Id: <20260107085617.3391860-1-lihaoxiang@isrc.iscas.ac.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251217135759.402015-1-claudiu.beznea.uj@bp.renesas.com>
-In-Reply-To: <20251217135759.402015-1-claudiu.beznea.uj@bp.renesas.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Wed, 7 Jan 2026 09:44:40 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdV=kCg62C06jMSdse0QZacKn4R2EqmW2BZuZ+cBwr5tmQ@mail.gmail.com>
-X-Gm-Features: AQt7F2qmnFtghLvjGfXih1A7aLAlQHCFX_w3g17kIVrnEuB-I-dOz0canJODDr4
-Message-ID: <CAMuHMdV=kCg62C06jMSdse0QZacKn4R2EqmW2BZuZ+cBwr5tmQ@mail.gmail.com>
-Subject: Re: [PATCH] serial: sh-sci: Check that the DMA cookie is valid
-To: Claudiu <claudiu.beznea@tuxon.dev>
-Cc: gregkh@linuxfoundation.org, jirislaby@kernel.org, 
-	prabhakar.mahadev-lad.rj@bp.renesas.com, wsa+renesas@sang-engineering.com, 
-	namcao@linutronix.de, linux-serial@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, 
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:rQCowABXWsGzH15pO+vyAw--.10449S2
+X-Coremail-Antispam: 1UD129KBjvdXoW7Jw17ZFy8GFWxCF4fGF1rJFb_yoWfKrc_ua
+	yjvr9Fq3yDKFsrKw13J3s5ZFyY9FyUXF109rnIqa4avw1rXr1YyFWDZFn5Zr48WF48Xw1D
+	Wwnrt3yS9a1UZjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUbVAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Jr0_
+	Gr1l84ACjcxK6I8E87Iv67AKxVWUJVW8JwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Jr0_Gr
+	1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0
+	cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8Jw
+	ACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2Y2ka
+	0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7
+	v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF
+	1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIx
+	AIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI
+	42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxh
+	VjvjDU0xZFpf9x0JUd-B_UUUUU=
+X-CM-SenderInfo: 5olkt0x0ld0ww6lv2u4olvutnvoduhdfq/1tbiBwsAE2ld-ed4twAAs+
 
-On Thu, 18 Dec 2025 at 08:40, Claudiu <claudiu.beznea@tuxon.dev> wrote:
-> From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
->
-> The driver updates struct sci_port::tx_cookie to zero right before the TX
-> work is scheduled, or to -EINVAL when DMA is disabled.
-> dma_async_is_complete(), called through dma_cookie_status() (and possibly
-> through dmaengine_tx_status()), considers cookies valid only if they have
-> values greater than or equal to 1.
->
-> Passing zero or -EINVAL to dmaengine_tx_status() before any TX DMA
-> transfer has started leads to an incorrect TX status being reported, as the
-> cookie is invalid for the DMA subsystem. This may cause long wait times
-> when the serial device is opened for configuration before any TX activity
-> has occurred.
->
-> Check that the TX cookie is valid before passing it to
-> dmaengine_tx_status().
->
-> Fixes: 7cc0e0a43a91 ("serial: sh-sci: Check if TX data was written to device in .tx_empty()")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+If write_driver_ver_to_cfgtable() fails, add iounmap() to
+release the memory allocated by remap_pci_mem().
 
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Fixes: 580ada3c1e2f ("[SCSI] hpsa: do a better job of detecting controller reset failure")
+Cc: stable@vger.kernel.org
+Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+---
+ drivers/scsi/hpsa.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-Gr{oetje,eeting}s,
-
-                        Geert
-
+diff --git a/drivers/scsi/hpsa.c b/drivers/scsi/hpsa.c
+index 3654b12c5d5a..4cc129d2d6f2 100644
+--- a/drivers/scsi/hpsa.c
++++ b/drivers/scsi/hpsa.c
+@@ -7646,8 +7646,11 @@ static int hpsa_find_cfgtables(struct ctlr_info *h)
+ 		return -ENOMEM;
+ 	}
+ 	rc = write_driver_ver_to_cfgtable(h->cfgtable);
+-	if (rc)
++	if (rc) {
++		iounmap(h->cfgtable);
++		h->cfgtable = NULL;
+ 		return rc;
++	}
+ 	/* Find performant mode table. */
+ 	trans_offset = readl(&h->cfgtable->TransMethodOffset);
+ 	h->transtable = remap_pci_mem(pci_resource_start(h->pdev,
 -- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+2.25.1
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
 
