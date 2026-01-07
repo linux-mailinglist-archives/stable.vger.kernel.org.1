@@ -1,102 +1,96 @@
-Return-Path: <stable+bounces-206126-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206127-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3119DCFD792
-	for <lists+stable@lfdr.de>; Wed, 07 Jan 2026 12:48:40 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D550CFD7F5
+	for <lists+stable@lfdr.de>; Wed, 07 Jan 2026 12:52:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 375F8301399F
-	for <lists+stable@lfdr.de>; Wed,  7 Jan 2026 11:48:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C47513061166
+	for <lists+stable@lfdr.de>; Wed,  7 Jan 2026 11:49:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2CE730BF62;
-	Wed,  7 Jan 2026 11:48:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50AAF22370A;
+	Wed,  7 Jan 2026 11:49:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NX7vzuNw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KrduwfSp"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7D1B189BB6;
-	Wed,  7 Jan 2026 11:48:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 095FB312813;
+	Wed,  7 Jan 2026 11:49:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767786517; cv=none; b=cS7C5F5t3IWML59Vh0+Svp4RCBJR2okDgD47ngp7EPv2r2c77OkupVqA0YAMJCRqNi5FYwvNya+jV3r4OwM7DLsyQ4j02BX/ETGXu+FtZwQBWSp5PrLnT24nhCXZWC6komJ+iVEBZbAmKEehmeDgQjcyQMDYhVsbTSmXDsLELP4=
+	t=1767786553; cv=none; b=iraaBxdH3rFzJsXgvk87nnDHnvbalYKmF3HdDGG0r0O72jRN4kAtLyaYhlBr+oeRMzQrgGL1wfVsguvKc1EWzPty846lNMtyPPyvFLrhZU3WHuWsKKRWY3pAYmc5KU38oIXA534D3+nSDuMxxW0NFb6QM5xYF5rLhlygUEuZIY8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767786517; c=relaxed/simple;
-	bh=ZToniWAp35sk8rm5uVKrMMQORpt4RMkaD9UDQfZgs+g=;
+	s=arc-20240116; t=1767786553; c=relaxed/simple;
+	bh=kvpeqtawFEK/EuYBcNVEmXhrnGGkIfTmpwMaRq4TS7Q=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EdazBR65aCMDQw4oMc8fEkXao7D5GXvCa1bWTbQwL9gJnjV2Ps9rWPU+8wVSZdKLE9rQLuX7nzzhXmYY1+LKxkPwYSOHVnIZ8OcBuN6oo40Hals4MWAKQ0koWLp5m1Wo7ata/m/Fa35iTLIsd2J5HobgeZxH0CqfRIn/opCKjVs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NX7vzuNw; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1767786516; x=1799322516;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=ZToniWAp35sk8rm5uVKrMMQORpt4RMkaD9UDQfZgs+g=;
-  b=NX7vzuNw2xVymrclhGkKR2Jwyy0iMi8PsBs9oZM2cU3n9UvWUq3Yw6LV
-   /9cz9a8ZtEeb2Uzo9jxh6Q/h1NuVugKkMDpDlhjoEQyNJcaCczxsdHoqW
-   DWDcpPASrjZbDvC3v63VrbcpGCMq7RckGViC8hR1LcddIZ8bG/62/VzJI
-   zGmwmBmbo89o1QOJph0MaTMbsJ5Ih6KwawyKQZHVjMgns0ldd6ZBtHGvk
-   DqMgYdkBJlRs8np2PoUP8FYsfxIxP5ik1fAsqkKTt6HgKsWoI22gryG0M
-   rwv1qikn9VBOSMas8Bf5kqID6Bl6UXQltvClaDUPAAVvH59mxPEsdQjBM
-   Q==;
-X-CSE-ConnectionGUID: 2r3TkMLUSdyBfKe0TVry0Q==
-X-CSE-MsgGUID: 9eMl4+hYQhiPtoQGmMnL8A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11663"; a="73001829"
-X-IronPort-AV: E=Sophos;i="6.21,208,1763452800"; 
-   d="scan'208";a="73001829"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jan 2026 03:48:36 -0800
-X-CSE-ConnectionGUID: YsnEqYNUQISZeHQPxuHdpw==
-X-CSE-MsgGUID: rsAdJWyzSKy16qmRda/0jA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,208,1763452800"; 
-   d="scan'208";a="207384585"
-Received: from smoticic-mobl1.ger.corp.intel.com (HELO kekkonen.fi.intel.com) ([10.245.245.143])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jan 2026 03:48:34 -0800
-Received: from kekkonen.localdomain (localhost [IPv6:::1])
-	by kekkonen.fi.intel.com (Postfix) with SMTP id AB4BA121D80;
-	Wed, 07 Jan 2026 13:48:47 +0200 (EET)
-Date: Wed, 7 Jan 2026 13:48:47 +0200
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
-To: Hans de Goede <johannes.goede@oss.qualcomm.com>
-Cc: Hans Verkuil <hverkuil@kernel.org>, Bryan O'Donoghue <bod@kernel.org>,
-	Heimir Thor Sverrisson <heimir.sverrisson@gmail.com>,
-	Sebastian Reichel <sre@kernel.org>, linux-media@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2 2/5] media: ov02c10: Adjust x-win/y-win when changing
- flipping to preserve bayer-pattern
-Message-ID: <aV5IH7PIFnySHhYC@kekkonen.localdomain>
-References: <20251210112436.167212-1-johannes.goede@oss.qualcomm.com>
- <20251210112436.167212-3-johannes.goede@oss.qualcomm.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=tz2vhGwOtZI7Eak77PlReA3kfMMakzK41ogUxDwSCuCV39saBUoNazEM/hcslbka/4duLIAO5ccqMLqVUwTd3ieXhe1cwEBiyoK2phpx0hoVIrMS13kqLOpCKjQ1hLIh09RtC6abUPsfEkYZJIOisiN1tIQT2jNeGPrVNtn7wy4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KrduwfSp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F0CFC4CEF7;
+	Wed,  7 Jan 2026 11:49:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767786552;
+	bh=kvpeqtawFEK/EuYBcNVEmXhrnGGkIfTmpwMaRq4TS7Q=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=KrduwfSpqYzatkhOauszyAK8CBtX85s6wARQ6yipuqpfl4m5oKOYLaPl1SD/tBR1u
+	 csDMSmRabsyax1JvM0NK6eIgrbpWnIKoDOdlukpmvCL4TIZRAFPA+xHZs0r/JbVujZ
+	 M7WFHyvKSds7dxzC9C8HnaMZmOHIvC4IcE4gplm2nRa4QW3qxbzLt9kX8PQqJ+SQnO
+	 OGVMNxyWM8HdP7QEbB/V2t5D3iJ/SjZ0ML1mLN4ky8m6Y57Pnq7PyCmH/64mnVhT7S
+	 vH8ika+egE3U+pyOrxX9n2P4819lF1Joe/rxcw9tzuOzsn6CAzMaRZBqteUe95AnFm
+	 SHuoMQvCd3OMQ==
+Date: Wed, 7 Jan 2026 11:49:06 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
+	hargar@microsoft.com, achill@achill.org, sr@sladewatkins.com
+Subject: Re: [PATCH 6.18 000/312] 6.18.4-rc1 review
+Message-ID: <72f8479a-13cd-406e-973c-b75e2557e4a4@sirena.org.uk>
+References: <20260106170547.832845344@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="fvtC6PS2P6l4ADwd"
+Content-Disposition: inline
+In-Reply-To: <20260106170547.832845344@linuxfoundation.org>
+X-Cookie: Is there life before breakfast?
+
+
+--fvtC6PS2P6l4ADwd
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251210112436.167212-3-johannes.goede@oss.qualcomm.com>
 
-Hi Hans,
+On Tue, Jan 06, 2026 at 06:01:14PM +0100, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.18.4 release.
+> There are 312 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-On Wed, Dec 10, 2025 at 12:24:33PM +0100, Hans de Goede wrote:
-> The ov02c10 is capable of having its (crop) window shifted around with 1
-> pixel precision while streaming.
-> 
-> This allows changing the x/y window coordinates when changing flipping to
-> preserve the bayer-pattern.
+Tested-by: Mark Brown <broonie@kernel.org>
 
-Ideally we'd use the crop selection to configure this, but given these
-sensors (and drivers) are generally what they are, I guess this is probably
-a reasonable way to go.
+--fvtC6PS2P6l4ADwd
+Content-Type: application/pgp-signature; name="signature.asc"
 
--- 
-Regards,
+-----BEGIN PGP SIGNATURE-----
 
-Sakari Ailus
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmleSDEACgkQJNaLcl1U
+h9DWggf/fkeZPvRaTKlYqLJ1FG9av4s2g53sXVUHkJrNjTnqvTeq3Xt1Ry2A7aKD
+G41GrlC8BvrPamyRak4jjAwQzFqvG309Xcu8oZnIMsd2jqyh42hitJ1Zz+wh8+wb
+U/eMcAuucZbu8mf6du1DhPj08Iw1Ar65A/z0UfKCdkZwgsMpBic3wm729sRD1SOi
+elfiSeIi7955tAq9fTuD7pOk4HIH7qy66lENlWfjp7enkACoh+zM7e9J4sw1tPO3
+LGNuucddr7Z4N++JiPsSEHMzohOIVk/J2vQ1LphvTF8R1P9iwZatzogfK9kyTros
+np42POPe92pbonGHja2bF3rzxCcrZQ==
+=Knpa
+-----END PGP SIGNATURE-----
+
+--fvtC6PS2P6l4ADwd--
 
