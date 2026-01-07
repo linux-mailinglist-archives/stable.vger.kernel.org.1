@@ -1,104 +1,89 @@
-Return-Path: <stable+bounces-206094-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206095-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59456CFC1B8
-	for <lists+stable@lfdr.de>; Wed, 07 Jan 2026 06:46:37 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD3AACFC233
+	for <lists+stable@lfdr.de>; Wed, 07 Jan 2026 07:01:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2C539304ED80
-	for <lists+stable@lfdr.de>; Wed,  7 Jan 2026 05:43:57 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7A02E3003B1D
+	for <lists+stable@lfdr.de>; Wed,  7 Jan 2026 06:01:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D62F626B973;
-	Wed,  7 Jan 2026 05:43:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA49E1F239B;
+	Wed,  7 Jan 2026 06:01:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Vh0pEi6d"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="TpLo7KN4"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2952D263C8F
-	for <stable@vger.kernel.org>; Wed,  7 Jan 2026 05:43:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 296B719CD1D;
+	Wed,  7 Jan 2026 06:01:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767764636; cv=none; b=eHc97jK63jXLtvF0gIrRZqcBMApjCh1bwnMnymZYh6Cz562shcEAcXGG9z9xolnw+Yx/mUpvc8n7ztoM2lDeSHW9DD+0BpULGjKjpBj7sF0PQOaTS2lhuGFh27BI9D1tTUleiT9vZ1aULx1LlXJ08yyW4cPeLxM/K0Rvn1V1BLg=
+	t=1767765667; cv=none; b=NXNQZnOQlb+UMg854oQqpEKwpWeD+MzF7z4XleUDinKlK5pUiQHKvVrF3bqioZ7SnyJbMjGtEJPH/aGxIfYWd1/lbpbZiC/Y5Iu8c1SNSjlhi/P81dEfsOZdA1CU8jIGx//HHbn0pWPlYlCFBh8ADRGFlwIFfG31Q97Rz0jemnU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767764636; c=relaxed/simple;
-	bh=ilwm9UoEr/zAs5TApLrlxVW06QYijo4n5ZBr0zo2bds=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ek4wiein4OIwS/oChFVE854E/MJ9JNKCFQGxNHNSyUKJuajWiYAGH77kzZz6sLU7JCu87MDJFvt8xrW/Kz7RoU2X16+BbyIzWqoQNrQFecHsS1SaHuY+hiv5dSJdSnpApH8tcW1cRPbtbDwOtTiCxQSjaGVzvk3Z5preAvgLa3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Vh0pEi6d; arc=none smtp.client-ip=209.85.128.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-78e7ba9fc29so19565417b3.2
-        for <stable@vger.kernel.org>; Tue, 06 Jan 2026 21:43:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767764634; x=1768369434; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=ilwm9UoEr/zAs5TApLrlxVW06QYijo4n5ZBr0zo2bds=;
-        b=Vh0pEi6d3mmQiNZQPVS6J7r7wYfKF6krfC/IjM2zAZ34EC6qOnKX8wqmMy6apqKK2Y
-         l3U+9FoprnE7aZYYOMcVX1rsV/xJoW7O3hbHThhy7ixyAuzqjArekFt6lBzIBv3dUFc0
-         Hm5zWaXQKIvXz8TBUaCKvPa7kESxrw4U2sHP3yXTZ3+crTGbCUa0nOXkqNJtpV6z6vrn
-         iDRWwYE3U/hPt2mpbeYI5OpVYmzKf0rKV65p6z+xJyJ2yCqfzghhgB5/J028mIF2HDeo
-         7gnlAgWcyqCYzkOs6rDb+H7+ALtV2qol+2OJeY5kghUo1LR1+Au1WJv7ayhVKpT/IaaV
-         nhlg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767764634; x=1768369434;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ilwm9UoEr/zAs5TApLrlxVW06QYijo4n5ZBr0zo2bds=;
-        b=c200SYctrG5RdjDIgOqqIN6tUHuXVsrlsUEhsjhCVaex9Ct3Cve4/zZZL4EQi7diPt
-         f933DdPKd9Oz1Z+U9AhUL/+Nf+oixWDoWnE07hxEcauVg/ar6k691+tDQj6oZb5M34kh
-         DVAq7VGMg6GnjX3zSD1k4rQ+rKt9sde4+0LuinROt4BQBrgujcU24ThxiA4ujPnphelq
-         aC/VDwEU+u2kJ5uHU2Az/ReAr+P05834bPu9COHHon7l/KIqng3uZ4MJqp8cio2lCsmc
-         9RXRZk40Vh0D40e6VzdYNBficcryktpqH9pepSBDIlwd2Qx4qAut+TT+5pI1jte30ZaR
-         xK4g==
-X-Gm-Message-State: AOJu0YzeUat9YBwdkWREKIbmxrIQnP5pQPlluMeBVrS4XeyR6jb96OZW
-	zF2VtAwg0nIpxzJ1ZOOOWOBgP0gdF/8ZA0GbMqe2BK86qMX+lqZhnYwAk521dzLpfuTKibG+97V
-	ZGrHeBQyT+tVDqlSlTfgYwPe3a6fSyg==
-X-Gm-Gg: AY/fxX4vksbvI+06UNAQObaSW7dbx9dq0RBo33Q77SLjtQq9FOO33sEuNauf2UFMtCU
-	7TOjOIRp+5ybiLxENNHzCNbbYEhZdUSpUTRe4UHTaMVolXeAa5nu87TbrGdyHpHaXAyl1kujkgx
-	Z9+mrC+Pl0QB/I7iO1JoRUz3Pgi2+lEH7dX31pLTM6P8yRKg28zW1PPGb2NplDqoQdTq4Wv58Ju
-	HaUV8n72p4KN0ReXa1jLmulA6+h+c7L6oIXyD0A+a0ms6oMqFZjD2WGzl3ShSspmzjzWgqAfEPl
-	PWznSg==
-X-Google-Smtp-Source: AGHT+IHPyS7cnQbFk2dpqpf4xYKgzJUt6buQAkcCCGcy+LI+T803p0BL15uNAflcsBI/eDZKoXp1mP7ZaY4SeTC08xg=
-X-Received: by 2002:a05:690e:130a:b0:644:60d9:867c with SMTP id
- 956f58d0204a3-64716cdfa51mr1182042d50.97.1767764634050; Tue, 06 Jan 2026
- 21:43:54 -0800 (PST)
+	s=arc-20240116; t=1767765667; c=relaxed/simple;
+	bh=iNpHSrqM/YKGUxmGPvsJTfoCyukWxzgImYsjJ1yX85s=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XwkquqVGV96BHNAiOyM8aYMCtWI7rdBz0jbxd+Yb2tRyWwzIZ1rqs58cEl9Wv/0/+A/+rol4J3Bp+MKJMSIPj4ZLy8C4T2UHmsZujRdue/eY5QhAFP8hYE3FoQQOW8d9mADCRAamBkLSXq9mIXcB34UO8P7zaw2QDi1K8MS5Sm0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=TpLo7KN4; arc=none smtp.client-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=HX+RWCYcvyaGxDKA7PAvcLWAk3L5YhLDhSqHG6WWoBI=; b=TpLo7KN4Frey8UY+NrKMURiJ4C
+	F/FMXh/Z7EBYQapcK44342v/P0WmiXhDPhtnfldSOo2Ili5mtiCe5QXhZZYtcs6n81ZA746pTJuTq
+	jjm5yRE9heX99LKaK2t30JbClNKJ4EViv60ezp2b/v7C5RlM4hNJEV/0JNHLVPjUH4hky05Ndz7+9
+	6GMNOlnCkCBwYAa5TCqYV6K0YxAQteWPQRlBiq8gss2DbzdavdKXUrx7Y+jF7v9a4qzA/u45CiR4C
+	Z30Bmk6yj5S/pujjvrB1yxNGyB51pCEzacNIVnd66/RW0c6uEpZkRkRbXubp4CmmgH7ts2PEQ/ANJ
+	C6ycFX3w==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vdMbN-0000000EC84-17nD;
+	Wed, 07 Jan 2026 06:01:01 +0000
+Date: Tue, 6 Jan 2026 22:01:01 -0800
+From: Christoph Hellwig <hch@infradead.org>
+To: "Darrick J. Wong" <djwong@kernel.org>
+Cc: Christoph Hellwig <hch@infradead.org>,
+	Mark Tinguely <mark.tinguely@oracle.com>, linux-xfs@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] xfs: fix NULL ptr in xfs_attr_leaf_get
+Message-ID: <aV32nTIWTacVXqIw@infradead.org>
+References: <20251230190029.32684-1-mark.tinguely@oracle.com>
+ <17cd5bef-e787-4dc9-9536-112d1e2cda2d@oracle.com>
+ <aVzDNYiygzgjMAkA@infradead.org>
+ <20260106154026.GA191501@frogsfrogsfrogs>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAH1aAjJkf0iDxNPwPqXBUN2Bj7+KaRXCFxUOYx9yrrt2DCeE_g@mail.gmail.com>
- <2025122303-widget-treachery-89d6@gregkh> <ME6PR01MB1055749AAAC6F2982C0718687AAB5A@ME6PR01MB10557.ausprd01.prod.outlook.com>
- <CAH1aAjJjxq-A2Oc_-7sQm6MzUDmBPcw5yycD1=8ey1gEr7YaxQ@mail.gmail.com> <2026010604-craftsman-uniformed-029c@gregkh>
-In-Reply-To: <2026010604-craftsman-uniformed-029c@gregkh>
-From: JP Dehollain <jpdehollain@gmail.com>
-Date: Wed, 7 Jan 2026 16:43:42 +1100
-X-Gm-Features: AQt7F2oMVCMLM7uk4ILOE25aOZ1wpcKcWwXnMVQCt-2TBXBRhlDqjNyiy3T2KMM
-Message-ID: <CAH1aAj+myyuXniX9JAo5fQzHUyqtrGobhNPizc-Of8=OPgOAjw@mail.gmail.com>
-Subject: Re: Fwd: Request to add mainline merged patch to stable kernels
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260106154026.GA191501@frogsfrogsfrogs>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 
-Apologies greg, I just realised that there is a prior commit
-587d1c3c2550abd5592e1f0dc0030538c9ed9216 that needs to be merged
-before the 807221d can pass the build.
+On Tue, Jan 06, 2026 at 07:40:26AM -0800, Darrick J. Wong wrote:
+> > > Fixes v5.8-rc4-95-g07120f1abdff ("xfs: Add xfs_has_attr and subroutines")
+> > > No reproducer.
+> > 
+> > Eww, what a mess.  I think we're better off to always leave releasing
+> > bp to the caller.  Something like the patch below.  Only compile tested
+> > for now, but I'll kick off an xfstests run.
+> > 
+> > Or maybe we might just kill off xfs_attr_leaf_hasname entirely and open
+> > code it in the three callers, which might end up being more readable?
+> 
+> ...unless this is yet another case of the block layer returning ENODATA,
+> which is then mistaken for returning ENOATTR-but-here's-your-buffer by
+> the xfs_attr code?
 
-On Wed, 7 Jan 2026 at 01:57, Greg KH <gregkh@linuxfoundation.org> wrote:
->
-> On Thu, Dec 25, 2025 at 08:55:30AM +1100, JP Dehollain wrote:
-> > Hi Greg, thanks for looking into this..
-> > The full commit hash is 807221d3c5ff6e3c91ff57bc82a0b7a541462e20
->
-> That commit fails to build on the 6.12.y kernel tree, so how was this
-> tested?
->
-> thanks,
->
-> greg k-h
+Not really and unless.  This patch (and the full removal that I've
+prepared in the meantime) still fix the missing buffer release in that
+case and make the code easier to follow.  But yes, they would not fix
+the underlying issue, which is why I still think we should not blindly
+propagate block layer errors into b_error.
+
 
