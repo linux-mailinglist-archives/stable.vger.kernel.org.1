@@ -1,557 +1,408 @@
-Return-Path: <stable+bounces-206303-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206296-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C54C8D030E9
-	for <lists+stable@lfdr.de>; Thu, 08 Jan 2026 14:34:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE4C1D038F2
+	for <lists+stable@lfdr.de>; Thu, 08 Jan 2026 15:52:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7F02C301198C
-	for <lists+stable@lfdr.de>; Thu,  8 Jan 2026 13:33:43 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0DE44301667A
+	for <lists+stable@lfdr.de>; Thu,  8 Jan 2026 14:50:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF67F3A4AC6;
-	Thu,  8 Jan 2026 10:27:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEE9436212B;
+	Thu,  8 Jan 2026 10:07:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="Sp0DxZ3M"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="AYbLrce4";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="KvOkjyEn"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f225.google.com (mail-qk1-f225.google.com [209.85.222.225])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 950A548E8D1
-	for <stable@vger.kernel.org>; Thu,  8 Jan 2026 10:26:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.225
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F82B3557F2
+	for <stable@vger.kernel.org>; Thu,  8 Jan 2026 10:07:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767868019; cv=none; b=Ou9MPjHd9DG121vPFLyHH094DudIy7VK9+0VkE4J63/Je9ezo84WthtNjVz7Q1GZOyKArx2EeDreHzAgdYf7NhOjpdaoMnZvLViLXU40BAXPPMg1c3BcmEjxSBXdPOGpb0tXqYpfEiGZiabHhHNGl1icPEsEqu3yB/Xw6u8tJqU=
+	t=1767866859; cv=none; b=HTQr8+EivDXOAFEH2jfnbkXvxefA7vGIzfrmee1ngb0gaCZEZztuN2PPsQQAsAY3wKHlp/a2OvUdMsXE34UIzhs7bK0uuOSO/KR6OpqSCcWOiJJ/40tekH7S1p1Dsb655fm7ip7gk2fF/usiNpz1aTtD07FP0dNYvR6OydoB/bg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767868019; c=relaxed/simple;
-	bh=zXlIp14bGuRNzKmm8Dku8f9Yb6RD5C9Q9gIjSx8ABmM=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=n2C5tMrMG8HopWWvSi+rLej+GrJIiiDfiMG6oIVUBTE8y++3lcWlP0iCkwpLNrQrG//xCrR5wwB7BxaXCp+tdKv0qpY2Oa8ibRAtDmAyXK6M4HPw7bXMqkAVrb9V6hr4iC+inh5Yt/p/Pvitq1PO1nhTJUulhbD+kMeSp8mjJCw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=Sp0DxZ3M; arc=none smtp.client-ip=209.85.222.225
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-qk1-f225.google.com with SMTP id af79cd13be357-8b2d56eaaceso328388185a.0
-        for <stable@vger.kernel.org>; Thu, 08 Jan 2026 02:26:50 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767868007; x=1768472807;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:dkim-signature:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=tY2+t0l557GSsjMoRko+cZX+m7SpHKP0G/1LAwo4WgE=;
-        b=NOWXJ6t8gZ9ELmGK5Qz7AWSp+cCSgkIGK8HQ0ZtLnyqvzHi7oJ8LTWJl6Ru+O3rHYw
-         LIFxwNLe/R25ayObEshi0Vyh+JLDyyXTr9ESPjBHd7uqWKDUfhcyrpG3mDLtwk8aiGpr
-         8HS9ougYUd9WYpakXqMvGqZ4RyGxQ0uB/jfkrVy/EG1k+05F2SC6iZl/yDeb1aA9AqhB
-         IvFKMzP3XxEGhiXvpRYRxw/IaBPdtbZIpuDWDk/DvXGxhrowBh/0fqJaE94KiEviB782
-         DdUND9sKRzeuxi4yM4f6WeUYlTfAgc4PUWiO91SKSDixLwphqAqGiwcbi07jbhB7SrNg
-         MxbQ==
-X-Gm-Message-State: AOJu0YxtXHCEtTRODtpVkNaidKuTGAGlggp6Ig5n87C2nwtaoc3Y1GVR
-	SBzJ5gIDWnQBcSu7U8n3EvTVw1BO+OxJO7sxbZ2bufI66+2Vv7mAL+Vx52JqEp49UQUflvg2dVJ
-	zUsGhJNk0eiwc+73KVwJnaGSmj0PAfc/0GD7+/2jUpeV66K5Rggwn28hnw7BpioH5MRRWlaGBqk
-	gbZFKOb+KGs/xEE9lW4h6NBqkKOQnmXdAbK2zWspzbxiGmkmgPB8Kcksg8rgqJp1pJaJLsD/DaW
-	OUuEvD6TZn57U2APA==
-X-Gm-Gg: AY/fxX6lGa1/DCmMXIHWWfk2ofXjy5ILx6SU45Nczyq5pmghAHNwKMaemrR22rqdn34
-	JNVAtRyCE+iEQlZ+FtvqxNHHcejlqeWfFImKTIYq9lm6OZZh+FK3OP+XfnW1bIR2SjWwzCHBfFC
-	537PWjpv5ok/m3hloFR+910CLubh+aN6BWNeMm4Ltn+Ae3c1Tt6gXRzr+CxrNs34cXO51YitVjq
-	x9TuDOvRH73G/WQy/iXIHOeGffIu0Y2A3/LhCUD0uQXHzD2DKGYaTI8teARaMoQd3Du0VZ1e9Rs
-	8XtgEhIQSqaBWIVZAuNS4NMnogTD+xVRHfoRWEXp2NX8qYe3EmJ/r6a9LoOUNxgQuxmAeoAngFc
-	E/SaAcFQ5Y7uc0XKNYuFrEvt2rZZOdxjvQLDIrVpBnjSxQUL6Di5vZJrXyLT64hv2Mcok+Qxmjt
-	zpnPoGhx3uYdLuL7VL3k1p9OarkDq7EhzsIsICFByuPPiSxw==
-X-Google-Smtp-Source: AGHT+IFtHq2V9dU7LZQ+uS1lbtUic+LlnTMsSi0J/hvx8tvpuzQ13OBEvGp/WvhtsbeOL7W6KNkHHbY+50oL
-X-Received: by 2002:a05:6214:43c8:b0:880:5279:98eb with SMTP id 6a1803df08f44-8908424f969mr72018536d6.44.1767868006971;
-        Thu, 08 Jan 2026 02:26:46 -0800 (PST)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-1.dlp.protect.broadcom.com. [144.49.247.1])
-        by smtp-relay.gmail.com with ESMTPS id 6a1803df08f44-89077179352sm9429776d6.32.2026.01.08.02.26.46
-        for <stable@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 08 Jan 2026 02:26:46 -0800 (PST)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-4ed782d4c7dso54241501cf.2
-        for <stable@vger.kernel.org>; Thu, 08 Jan 2026 02:26:46 -0800 (PST)
+	s=arc-20240116; t=1767866859; c=relaxed/simple;
+	bh=yvqinyUzXQd7X5CCIhbDZyiZA88+JODgsd7PoFoUBMI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FbZDGmDh7JiNPqMV2f5eRk6yWWO6/UF0619BSwoNt9sBzsetnkuNLBUgabht5ebgw8M4ZU/LLpNbNVPoZ4FgnXmUpPmr8DLtg/iuF6N1wAfTLNeAlylLJcqjkHbPKE0Y3kxcBZ3pvxZjkwi13OBv2BzqDUEo4bzGDOW/0LIu3vk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=AYbLrce4; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=KvOkjyEn; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6088w9YH1570538
+	for <stable@vger.kernel.org>; Thu, 8 Jan 2026 10:07:32 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=qcppdkim1; bh=39a62VzRdxF89ha6pJCS9vnseatLJUZxk3s
+	8xV2rVgg=; b=AYbLrce4PzFvull3b5Hw8LKJioCqIfkeQyzB3b604n1vEikcbM9
+	XJEoR2eIEyBlpPQ9QRdv8dWNpjm8BrxKr244FRagmv4pfc8NkPcjp2xV53XstyxJ
+	URf8+hPD66HP/j7FUqfPICSgskX2dOSheR2+Wa8Sa1cymJ5Yo2v+aGLQQAiMLYql
+	PbYkIUhLg09iihyG43wAUQeRZPd23hiC0d/XrCSeDxIb2KOCPywzCaPktmyGqT5M
+	pBonyf5IEnkVv2AavnyBI6hkLe0hdbb4oVGVgWwX+RoHv/SXRL7Fv+T4eBaEMN1Y
+	E/49E029UHmzP+KZul0aQZXXMjxGuyh1TiQ==
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com [209.85.222.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4bj9hqr88d-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <stable@vger.kernel.org>; Thu, 08 Jan 2026 10:07:32 +0000 (GMT)
+Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-8b51396f3efso575731085a.1
+        for <stable@vger.kernel.org>; Thu, 08 Jan 2026 02:07:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1767868006; x=1768472806; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=oss.qualcomm.com; s=google; t=1767866851; x=1768471651; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=39a62VzRdxF89ha6pJCS9vnseatLJUZxk3s8xV2rVgg=;
+        b=KvOkjyEnPcCpXhrb1vyq8gXtNFL6V5HNN6C24L3+ONA910jeuSTtA40fKDQajicgMB
+         koMFXtUM5YdLm19EbSo1z1XVG1hZTSb4ChyGt9044w170zExckNHEojid1fY/qetHsCa
+         1oLR1hMvg9T7DvkisIQFeLk9RnyA+ouBdqWJVySoJwYwbLzM3+z3wm+V0OzsZ/2AmIov
+         Dd2FODp3XZOxtkSdhxxL9B8fvopEAquwMhkAwKTNHm34MG2WjF9AN2+Cs3Q2wUJkvENr
+         BQyehVZnYvPnP8XnLUTqtWRM+7/1MOlgYXCcbzCdqYlDorAV3SdXhHeDRpZWwu5ApKxy
+         iTDA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767866851; x=1768471651;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=tY2+t0l557GSsjMoRko+cZX+m7SpHKP0G/1LAwo4WgE=;
-        b=Sp0DxZ3McFmgShx9No+V6z1tNltN4ThZO5AWF2jXJTL0jR+Ll1YjO63erxg6g83PcM
-         NBDKvH4W0N7FNk8zho62rqD7VEuqQBx315unlwOIomOIaqoskYRloVAaLGIEynHDbPMq
-         js7JMgGBQe3YJW0r4hLegzflSudBUougMq5Uo=
-X-Received: by 2002:a05:622a:188d:b0:4ee:2721:9ec9 with SMTP id d75a77b69052e-4ffb4b201b8mr74017261cf.73.1767868005797;
-        Thu, 08 Jan 2026 02:26:45 -0800 (PST)
-X-Received: by 2002:a05:622a:188d:b0:4ee:2721:9ec9 with SMTP id d75a77b69052e-4ffb4b201b8mr74016801cf.73.1767868005138;
-        Thu, 08 Jan 2026 02:26:45 -0800 (PST)
-Received: from shivania.lvn.broadcom.net ([192.19.161.250])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4ffa8e362fdsm45124721cf.21.2026.01.08.02.26.41
+        bh=39a62VzRdxF89ha6pJCS9vnseatLJUZxk3s8xV2rVgg=;
+        b=bXguoMhQiMaT+C3+uI3Q59UDpRg3MRCkgDfgiVVWAkk8fYwwoVNKcp5AEYWs0al7BH
+         Mj5n8/WxIK3Sh+MM656UMIfuMFNHuJc2B2UGavyZ8hLnZfvezGsQdYaLz861euKWfmdf
+         cRpJMi5I239yvW/tnwaMRerEDWQlp6nnbtBoQmH/SidKXyIFrL24Meb2ZUzUJEeR1ADk
+         tWdWKkHgem76irF3czTUunklL1AIeqw3UgCxTipHCtljo4m7v+98iH/B9w/2oxy7dEaH
+         42TaKaxuzD5eS3tLbzwcItGMbOLyFN0KVuVU2qlDGAyBragGN0ch9TXhFHaca0QDRU+t
+         uazg==
+X-Forwarded-Encrypted: i=1; AJvYcCWgrvESB4Ygq8kZaMc5gboTP/jP0+DHXguaELPoyxjMRsQ0rxeGT9Tz1Xmk/bveCRNyEi06Qpo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyFCJ9iQdU31T8HgJD4H5iZUSgYrCs61xlTyjuf5HE49Nsbd6sY
+	5TUT0/zjAzdV8BHnSr/kz5i6cZvbF/4dOt6OJubAHD9BUv0l3hWXdHN1tJ/F601YzzPSiCFzvVK
+	SDWHSkgSzcmPRMwjyx30XsfLlGADBwZuqJ86Dy7zsXoPXnYKgerzjTWA6r3I=
+X-Gm-Gg: AY/fxX4zMiIg26kqgfWwE4v07QZp4FfgUIp76DW6xdTFQedTGQCgDv2D5burkJRLrf0
+	Uqv+pZdmQCKlhpzNFyJoOdE5V8VDarAXWzEDhPqLTm6H+mSMKiJxeYlHLIFZ9SdoMeZM1NtPq9W
+	91AnyBmvLzVT4gEKURz+OWQQao9KjCxS1IcEZDgBWjYh9+0zA1k7WvteTCPimPw56YRmzD4V3Hh
+	7ezh1UXbW37gYLQO/RMMLUp+CtqGtT2KDE+tEe4Hj0drqkPOaBKkZ1F5TIvaSOy34ElWUynvgsu
+	FqGlCcc8ucKGA1vQd830E7dKX7H1MVmP0aQcxA/bDVs8we7l/5XrSgxNK2GlVES0MYeG2RCPOhL
+	UiH2WAzqH0Im7rhZBuySQfnkCbQ==
+X-Received: by 2002:a05:620a:414c:b0:8b2:76c6:a7ae with SMTP id af79cd13be357-8c3893dcad4mr738177585a.50.1767866851043;
+        Thu, 08 Jan 2026 02:07:31 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFczhop98haNpUo61W3RNeVKOMLBsfQZ97cltaA6nrFBVodrsiJoR4GeKj9RTMu7Q4kw62smA==
+X-Received: by 2002:a05:620a:414c:b0:8b2:76c6:a7ae with SMTP id af79cd13be357-8c3893dcad4mr738174185a.50.1767866850466;
+        Thu, 08 Jan 2026 02:07:30 -0800 (PST)
+Received: from quoll ([178.197.218.229])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-432bd0e16d2sm16170362f8f.13.2026.01.08.02.07.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Jan 2026 02:26:44 -0800 (PST)
-From: Shivani Agarwal <shivani.agarwal@broadcom.com>
-To: stable@vger.kernel.org,
-	gregkh@linuxfoundation.org
-Cc: jgg@ziepe.ca,
-	leon@kernel.org,
-	zyjzyj2000@gmail.com,
-	mbloch@nvidia.com,
-	parav@nvidia.com,
-	mrgolin@amazon.com,
-	roman.gushchin@linux.dev,
-	wangliang74@huawei.com,
-	marco.crivellari@suse.com,
-	zhao.xichao@vivo.com,
-	haggaie@mellanox.com,
-	monis@mellanox.com,
-	dledford@redhat.com,
-	amirv@mellanox.com,
-	kamalh@mellanox.com,
-	linux-rdma@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	ajay.kaher@broadcom.com,
-	alexey.makhalov@broadcom.com,
-	vamsi-krishna.brahmajosyula@broadcom.com,
-	yin.ding@broadcom.com,
-	tapas.kundu@broadcom.com,
-	Zhu Yanjun <yanjun.zhu@linux.dev>,
-	syzbot+4b87489410b4efd181bf@syzkaller.appspotmail.com,
-	Sasha Levin <sashal@kernel.org>,
-	Shivani Agarwal <shivani.agarwal@broadcom.com>
-Subject: [PATCH 1/2 v6.6] RDMA/rxe: Remove the direct link to net_device
-Date: Thu,  8 Jan 2026 02:05:39 -0800
-Message-Id: <20260108100540.672666-2-shivani.agarwal@broadcom.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20260108100540.672666-1-shivani.agarwal@broadcom.com>
-References: <20260108100540.672666-1-shivani.agarwal@broadcom.com>
+        Thu, 08 Jan 2026 02:07:29 -0800 (PST)
+From: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+To: Bjorn Andersson <andersson@kernel.org>, Linus Walleij <linusw@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>, linux-kernel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, linux-gpio@vger.kernel.org
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
+        stable@vger.kernel.org
+Subject: [PATCH] pinctrl: qcom: sm8350-lpass-lpi: Merge with SC7280 to fix I2S2 and SWR TX pins
+Date: Thu,  8 Jan 2026 11:07:22 +0100
+Message-ID: <20260108100721.43777-2-krzysztof.kozlowski@oss.qualcomm.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=10371; i=krzysztof.kozlowski@oss.qualcomm.com;
+ h=from:subject; bh=yvqinyUzXQd7X5CCIhbDZyiZA88+JODgsd7PoFoUBMI=;
+ b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBpX4HaHTVNl0JgyERX+Z/UXuphZtBcGqg8SA7mn
+ mKuYXk0jU2JAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCaV+B2gAKCRDBN2bmhouD
+ 11rMD/wP898T8qxcQKWOozXG+kkrcZZX3WOPwmDj6/GXkGV7TbjqX4ZSwxKbMj6vYyz9WdRbleu
+ yfhnC+wGUI7AteXcz/QMVX5basV4Es17upd5sMX2qr/990+yGTSgU8zxctShtx18AIuI5xDnPF7
+ obvxZ3d/V4PqOmPXsgMD805DSPyIYLxVOmcfONflUyMv3Zjud4bi8YChyMj8bEmHsslqDE9g8Z+
+ wCG4/LxQAXFoGz/8mMeJxnpfsFcxGCRzKEaT/bxV6qQjjBPCAPcE3c1wmSbtsA5o6QibmPCH9ml
+ UJk++C3tXbT+stryH6265fgrzf9TOXMLUV+ggckkqaKcK4pNIlRCohpnBxq7a7OY8P4Mv39wV7J
+ sCVYdcRdbraGWziSS65UrxdsVGM4lpiztphDEb82DZQ2T/00fSzllHSaytQCuSMdMWQtTkiaXbW
+ ayp9owHiH6ljzOKxNUSoj2mXw9XunhSNgk0srqReNm8Vj6cQGft0NhM13cavmeFh+DI2P4qwQsS
+ ykxTX5P45/5RXGw+0L09JaLcHUc47JQKTCV+8zSJfAfXEhTAVpAIkVUuHz8KCykvQDGAXYGjHzi
+ /9knDlNmlV1BDbapbAvUeSeblUFbjrzdxVxmsal3xzAXFcfsn+CGekRrJpe+tRjW4n1Sg1IJX7o 1Ef3WZG4LrhAauA==
+X-Developer-Key: i=krzysztof.kozlowski@oss.qualcomm.com; a=openpgp; fpr=9BD07E0E0C51F8D59677B7541B93437D3B41629B
 Content-Transfer-Encoding: 8bit
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
+X-Authority-Analysis: v=2.4 cv=GN8F0+NK c=1 sm=1 tr=0 ts=695f81e4 cx=c_pps
+ a=HLyN3IcIa5EE8TELMZ618Q==:117 a=Eb9f15NH/cHKzfGOmZSO4Q==:17
+ a=vUbySO9Y5rIA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=KKAkSRfTAAAA:8 a=KFTTux-ZETee2Mjt2O4A:9
+ a=bTQJ7kPSJx9SKPbeHEYW:22 a=cvBusfyB2V15izCimMoJ:22
+X-Proofpoint-GUID: wyqvZO16-SdbwQLLwVsAwffff2FtoJ1E
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTA4MDA2NyBTYWx0ZWRfX2pM/FjD27GQx
+ 0cjW66TFgtsLLuLP5h9CRVuK1Vsb0RWH7bn8AH7ZfNO7CK3xjSHdbDkcCYg0LkicXa0aHo/7aNn
+ sAWJgZ3pxlt0w5LNChUzj23XNfF2X0zw9oIUcecvpXxhob0/pe1uVRyu2PXvfWYjcQOJY9IwS3T
+ HsjQ/xN1AGqoCeyN8FiZRWCNO6TEobZJHGgGU6LJlq2Vr5/TJ2pBNJn0ReSUs1xBvX7ZdUaH+ev
+ 7lh+Uy/JTdlvb5rHyT8U3fuPzM1hdkERXgEKDoAl+Nuh6dAVDhjv3YGbTPhpKKgT4ykCv4hACK7
+ czy+Z1UgqEhJWz6++9hx4z0K9+90A5qL68nhBUfyXv2j92j9+baSHG/XerSO/1jlwmdwKXHiiyl
+ tLAvG0kbsdgE4ka/xmJf3OVVgRONCDet47EEQHzpAr2SNF6hIkad8Skt1U4lY4HMVULhWG68AkA
+ m8p5HFh+KUcDyz2GIcA==
+X-Proofpoint-ORIG-GUID: wyqvZO16-SdbwQLLwVsAwffff2FtoJ1E
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2026-01-08_02,2026-01-07_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 priorityscore=1501 clxscore=1015 phishscore=0 lowpriorityscore=0
+ bulkscore=0 spamscore=0 malwarescore=0 impostorscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2512120000 definitions=main-2601080067
 
-From: Zhu Yanjun <yanjun.zhu@linux.dev>
+Qualcomm SC7280 and SM8350 SoCs have slightly different LPASS audio
+blocks (v9.4.5 and v9.2), however the LPASS LPI pin controllers are
+exactly the same.  The driver for SM8350 has two issues, which can be
+fixed by simply moving over to SC7280 driver which has them correct:
 
-[ Upstream commit 2ac5415022d16d63d912a39a06f32f1f51140261 ]
+1. "i2s2_data_groups" listed twice GPIO12, but should have both GPIO12
+   and GPIO13,
 
-The similar patch in siw is in the link:
-https://git.kernel.org/rdma/rdma/c/16b87037b48889
+2. "swr_tx_data_groups" contained GPIO5 for "swr_tx_data2" function, but
+   that function is also available on GPIO14, thus listing it twice is
+   not necessary.  OTOH, GPIO5 has also "swr_rx_data1", so selecting
+   swr_rx_data function should not block  the TX one.
 
-This problem also occurred in RXE. The following analyze this problem.
-In the following Call Traces:
-"
-BUG: KASAN: slab-use-after-free in dev_get_flags+0x188/0x1d0 net/core/dev.c:8782
-Read of size 4 at addr ffff8880554640b0 by task kworker/1:4/5295
-
-CPU: 1 UID: 0 PID: 5295 Comm: kworker/1:4 Not tainted
-6.12.0-rc3-syzkaller-00399-g9197b73fd7bb #0
-Hardware name: Google Compute Engine/Google Compute Engine,
-BIOS Google 09/13/2024
-Workqueue: infiniband ib_cache_event_task
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
- print_address_description mm/kasan/report.c:377 [inline]
- print_report+0x169/0x550 mm/kasan/report.c:488
- kasan_report+0x143/0x180 mm/kasan/report.c:601
- dev_get_flags+0x188/0x1d0 net/core/dev.c:8782
- rxe_query_port+0x12d/0x260 drivers/infiniband/sw/rxe/rxe_verbs.c:60
- __ib_query_port drivers/infiniband/core/device.c:2111 [inline]
- ib_query_port+0x168/0x7d0 drivers/infiniband/core/device.c:2143
- ib_cache_update+0x1a9/0xb80 drivers/infiniband/core/cache.c:1494
- ib_cache_event_task+0xf3/0x1e0 drivers/infiniband/core/cache.c:1568
- process_one_work kernel/workqueue.c:3229 [inline]
- process_scheduled_works+0xa65/0x1850 kernel/workqueue.c:3310
- worker_thread+0x870/0xd30 kernel/workqueue.c:3391
- kthread+0x2f2/0x390 kernel/kthread.c:389
- ret_from_fork+0x4d/0x80 arch/x86/kernel/process.c:147
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
- </TASK>
-"
-
-1). In the link [1],
-
-"
- infiniband syz2: set down
-"
-
-This means that on 839.350575, the event ib_cache_event_task was sent andi
-queued in ib_wq.
-
-2). In the link [1],
-
-"
- team0 (unregistering): Port device team_slave_0 removed
-"
-
-It indicates that before 843.251853, the net device should be freed.
-
-3). In the link [1],
-
-"
- BUG: KASAN: slab-use-after-free in dev_get_flags+0x188/0x1d0
-"
-
-This means that on 850.559070, this slab-use-after-free problem occurred.
-
-In all, on 839.350575, the event ib_cache_event_task was sent and queued
-in ib_wq,
-
-before 843.251853, the net device veth was freed.
-
-on 850.559070, this event was executed, and the mentioned freed net device
-was called. Thus, the above call trace occurred.
-
-[1] https://syzkaller.appspot.com/x/log.txt?x=12e7025f980000
-
-Reported-by: syzbot+4b87489410b4efd181bf@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=4b87489410b4efd181bf
-Fixes: 8700e3e7c485 ("Soft RoCE driver")
-Signed-off-by: Zhu Yanjun <yanjun.zhu@linux.dev>
-Link: https://patch.msgid.link/20241220222325.2487767-1-yanjun.zhu@linux.dev
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-[Shivani: - exported ib_device_get_netdev() function.
-          - added ib_device_get_netdev() to ib_verbs.h.]
-Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
+Fixes: be9f6d56381d ("pinctrl: qcom: sm8350-lpass-lpi: add SM8350 LPASS TLMM")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 ---
- drivers/infiniband/core/device.c      |  1 +
- drivers/infiniband/sw/rxe/rxe.c       | 23 +++++++++++++++++++----
- drivers/infiniband/sw/rxe/rxe.h       |  3 ++-
- drivers/infiniband/sw/rxe/rxe_mcast.c | 22 ++++++++++++++++++++--
- drivers/infiniband/sw/rxe/rxe_net.c   | 25 ++++++++++++++++++++-----
- drivers/infiniband/sw/rxe/rxe_verbs.c | 26 +++++++++++++++++++++-----
- drivers/infiniband/sw/rxe/rxe_verbs.h | 11 ++++++++---
- include/rdma/ib_verbs.h               |  2 ++
- 8 files changed, 93 insertions(+), 20 deletions(-)
+ arch/arm64/configs/defconfig                  |   1 -
+ drivers/pinctrl/qcom/Kconfig                  |  15 +-
+ drivers/pinctrl/qcom/Makefile                 |   1 -
+ .../pinctrl/qcom/pinctrl-sc7280-lpass-lpi.c   |   3 +
+ .../pinctrl/qcom/pinctrl-sm8350-lpass-lpi.c   | 151 ------------------
+ 5 files changed, 6 insertions(+), 165 deletions(-)
+ delete mode 100644 drivers/pinctrl/qcom/pinctrl-sm8350-lpass-lpi.c
 
-diff --git a/drivers/infiniband/core/device.c b/drivers/infiniband/core/device.c
-index 6769c42e46d4..976a771b1f31 100644
---- a/drivers/infiniband/core/device.c
-+++ b/drivers/infiniband/core/device.c
-@@ -2254,6 +2254,7 @@ struct net_device *ib_device_get_netdev(struct ib_device *ib_dev,
+diff --git a/arch/arm64/configs/defconfig b/arch/arm64/configs/defconfig
+index e43ee9735e98..40a29616180f 100644
+--- a/arch/arm64/configs/defconfig
++++ b/arch/arm64/configs/defconfig
+@@ -685,7 +685,6 @@ CONFIG_PINCTRL_LPASS_LPI=m
+ CONFIG_PINCTRL_SC7280_LPASS_LPI=m
+ CONFIG_PINCTRL_SM6115_LPASS_LPI=m
+ CONFIG_PINCTRL_SM8250_LPASS_LPI=m
+-CONFIG_PINCTRL_SM8350_LPASS_LPI=m
+ CONFIG_PINCTRL_SM8450_LPASS_LPI=m
+ CONFIG_PINCTRL_SC8280XP_LPASS_LPI=m
+ CONFIG_PINCTRL_SM8550_LPASS_LPI=m
+diff --git a/drivers/pinctrl/qcom/Kconfig b/drivers/pinctrl/qcom/Kconfig
+index c480e8b78503..f56592411cf6 100644
+--- a/drivers/pinctrl/qcom/Kconfig
++++ b/drivers/pinctrl/qcom/Kconfig
+@@ -61,13 +61,14 @@ config PINCTRL_LPASS_LPI
+ 	  (Low Power Island) found on the Qualcomm Technologies Inc SoCs.
  
- 	return res;
- }
-+EXPORT_SYMBOL(ib_device_get_netdev);
+ config PINCTRL_SC7280_LPASS_LPI
+-	tristate "Qualcomm Technologies Inc SC7280 LPASS LPI pin controller driver"
++	tristate "Qualcomm Technologies Inc SC7280 and SM8350 LPASS LPI pin controller driver"
+ 	depends on ARM64 || COMPILE_TEST
+ 	depends on PINCTRL_LPASS_LPI
+ 	help
+ 	  This is the pinctrl, pinmux, pinconf and gpiolib driver for the
+ 	  Qualcomm Technologies Inc LPASS (Low Power Audio SubSystem) LPI
+-	  (Low Power Island) found on the Qualcomm Technologies Inc SC7280 platform.
++	  (Low Power Island) found on the Qualcomm Technologies Inc SC7280
++	  and SM8350 platforms.
  
- /**
-  * ib_device_get_by_netdev - Find an IB device associated with a netdev
-diff --git a/drivers/infiniband/sw/rxe/rxe.c b/drivers/infiniband/sw/rxe/rxe.c
-index 0f8356cea293..1fb4fa4514bf 100644
---- a/drivers/infiniband/sw/rxe/rxe.c
-+++ b/drivers/infiniband/sw/rxe/rxe.c
-@@ -40,6 +40,8 @@ void rxe_dealloc(struct ib_device *ib_dev)
- /* initialize rxe device parameters */
- static void rxe_init_device_param(struct rxe_dev *rxe)
- {
-+	struct net_device *ndev;
-+
- 	rxe->max_inline_data			= RXE_MAX_INLINE_DATA;
+ config PINCTRL_SDM660_LPASS_LPI
+ 	tristate "Qualcomm Technologies Inc SDM660 LPASS LPI pin controller driver"
+@@ -106,16 +107,6 @@ config PINCTRL_SM8250_LPASS_LPI
+ 	  Qualcomm Technologies Inc LPASS (Low Power Audio SubSystem) LPI
+ 	  (Low Power Island) found on the Qualcomm Technologies Inc SM8250 platform.
  
- 	rxe->attr.vendor_id			= RXE_VENDOR_ID;
-@@ -71,8 +73,15 @@ static void rxe_init_device_param(struct rxe_dev *rxe)
- 	rxe->attr.max_fast_reg_page_list_len	= RXE_MAX_FMR_PAGE_LIST_LEN;
- 	rxe->attr.max_pkeys			= RXE_MAX_PKEYS;
- 	rxe->attr.local_ca_ack_delay		= RXE_LOCAL_CA_ACK_DELAY;
-+
-+	ndev = rxe_ib_device_get_netdev(&rxe->ib_dev);
-+	if (!ndev)
-+		return;
-+
- 	addrconf_addr_eui48((unsigned char *)&rxe->attr.sys_image_guid,
--			rxe->ndev->dev_addr);
-+			ndev->dev_addr);
-+
-+	dev_put(ndev);
- 
- 	rxe->max_ucontext			= RXE_MAX_UCONTEXT;
- }
-@@ -109,10 +118,15 @@ static void rxe_init_port_param(struct rxe_port *port)
- static void rxe_init_ports(struct rxe_dev *rxe)
- {
- 	struct rxe_port *port = &rxe->port;
-+	struct net_device *ndev;
- 
- 	rxe_init_port_param(port);
-+	ndev = rxe_ib_device_get_netdev(&rxe->ib_dev);
-+	if (!ndev)
-+		return;
- 	addrconf_addr_eui48((unsigned char *)&port->port_guid,
--			    rxe->ndev->dev_addr);
-+			    ndev->dev_addr);
-+	dev_put(ndev);
- 	spin_lock_init(&port->port_lock);
- }
- 
-@@ -169,12 +183,13 @@ void rxe_set_mtu(struct rxe_dev *rxe, unsigned int ndev_mtu)
- /* called by ifc layer to create new rxe device.
-  * The caller should allocate memory for rxe by calling ib_alloc_device.
-  */
--int rxe_add(struct rxe_dev *rxe, unsigned int mtu, const char *ibdev_name)
-+int rxe_add(struct rxe_dev *rxe, unsigned int mtu, const char *ibdev_name,
-+			struct net_device *ndev)
- {
- 	rxe_init(rxe);
- 	rxe_set_mtu(rxe, mtu);
- 
--	return rxe_register_device(rxe, ibdev_name);
-+	return rxe_register_device(rxe, ibdev_name, ndev);
- }
- 
- static int rxe_newlink(const char *ibdev_name, struct net_device *ndev)
-diff --git a/drivers/infiniband/sw/rxe/rxe.h b/drivers/infiniband/sw/rxe/rxe.h
-index d8fb2c7af30a..fe7f97066732 100644
---- a/drivers/infiniband/sw/rxe/rxe.h
-+++ b/drivers/infiniband/sw/rxe/rxe.h
-@@ -139,7 +139,8 @@ enum resp_states {
- 
- void rxe_set_mtu(struct rxe_dev *rxe, unsigned int dev_mtu);
- 
--int rxe_add(struct rxe_dev *rxe, unsigned int mtu, const char *ibdev_name);
-+int rxe_add(struct rxe_dev *rxe, unsigned int mtu, const char *ibdev_name,
-+			struct net_device *ndev);
- 
- void rxe_rcv(struct sk_buff *skb);
- 
-diff --git a/drivers/infiniband/sw/rxe/rxe_mcast.c b/drivers/infiniband/sw/rxe/rxe_mcast.c
-index 86cc2e18a7fd..07ff47bae31d 100644
---- a/drivers/infiniband/sw/rxe/rxe_mcast.c
-+++ b/drivers/infiniband/sw/rxe/rxe_mcast.c
-@@ -31,10 +31,19 @@
- static int rxe_mcast_add(struct rxe_dev *rxe, union ib_gid *mgid)
- {
- 	unsigned char ll_addr[ETH_ALEN];
-+	struct net_device *ndev;
-+	int ret;
-+
-+	ndev = rxe_ib_device_get_netdev(&rxe->ib_dev);
-+	if (!ndev)
-+		return -ENODEV;
- 
- 	ipv6_eth_mc_map((struct in6_addr *)mgid->raw, ll_addr);
- 
--	return dev_mc_add(rxe->ndev, ll_addr);
-+	ret = dev_mc_add(ndev, ll_addr);
-+	dev_put(ndev);
-+
-+	return ret;
- }
- 
- /**
-@@ -47,10 +56,19 @@ static int rxe_mcast_add(struct rxe_dev *rxe, union ib_gid *mgid)
- static int rxe_mcast_del(struct rxe_dev *rxe, union ib_gid *mgid)
- {
- 	unsigned char ll_addr[ETH_ALEN];
-+	struct net_device *ndev;
-+	int ret;
-+
-+	ndev = rxe_ib_device_get_netdev(&rxe->ib_dev);
-+	if (!ndev)
-+		return -ENODEV;
- 
- 	ipv6_eth_mc_map((struct in6_addr *)mgid->raw, ll_addr);
- 
--	return dev_mc_del(rxe->ndev, ll_addr);
-+	ret = dev_mc_del(ndev, ll_addr);
-+	dev_put(ndev);
-+
-+	return ret;
- }
- 
- /**
-diff --git a/drivers/infiniband/sw/rxe/rxe_net.c b/drivers/infiniband/sw/rxe/rxe_net.c
-index e5827064ab1e..e2859bbc9a71 100644
---- a/drivers/infiniband/sw/rxe/rxe_net.c
-+++ b/drivers/infiniband/sw/rxe/rxe_net.c
-@@ -509,7 +509,16 @@ struct sk_buff *rxe_init_packet(struct rxe_dev *rxe, struct rxe_av *av,
-  */
- const char *rxe_parent_name(struct rxe_dev *rxe, unsigned int port_num)
- {
--	return rxe->ndev->name;
-+	struct net_device *ndev;
-+	char *ndev_name;
-+
-+	ndev = rxe_ib_device_get_netdev(&rxe->ib_dev);
-+	if (!ndev)
-+		return NULL;
-+	ndev_name = ndev->name;
-+	dev_put(ndev);
-+
-+	return ndev_name;
- }
- 
- int rxe_net_add(const char *ibdev_name, struct net_device *ndev)
-@@ -521,9 +530,7 @@ int rxe_net_add(const char *ibdev_name, struct net_device *ndev)
- 	if (!rxe)
- 		return -ENOMEM;
- 
--	rxe->ndev = ndev;
+-config PINCTRL_SM8350_LPASS_LPI
+-	tristate "Qualcomm Technologies Inc SM8350 LPASS LPI pin controller driver"
+-	depends on ARM64 || COMPILE_TEST
+-	depends on PINCTRL_LPASS_LPI
+-	help
+-	  This is the pinctrl, pinmux, pinconf and gpiolib driver for the
+-	  Qualcomm Technologies Inc LPASS (Low Power Audio SubSystem) LPI
+-	  (Low Power Island) found on the Qualcomm Technologies Inc SM8350
+-	  platform.
 -
--	err = rxe_add(rxe, ndev->mtu, ibdev_name);
-+	err = rxe_add(rxe, ndev->mtu, ibdev_name, ndev);
- 	if (err) {
- 		ib_dealloc_device(&rxe->ib_dev);
- 		return err;
-@@ -571,10 +578,18 @@ void rxe_port_down(struct rxe_dev *rxe)
- 
- void rxe_set_port_state(struct rxe_dev *rxe)
- {
--	if (netif_running(rxe->ndev) && netif_carrier_ok(rxe->ndev))
-+	struct net_device *ndev;
-+
-+	ndev = rxe_ib_device_get_netdev(&rxe->ib_dev);
-+	if (!ndev)
-+		return;
-+
-+	if (netif_running(ndev) && netif_carrier_ok(ndev))
- 		rxe_port_up(rxe);
- 	else
- 		rxe_port_down(rxe);
-+
-+	dev_put(ndev);
- }
- 
- static int rxe_notify(struct notifier_block *not_blk,
-diff --git a/drivers/infiniband/sw/rxe/rxe_verbs.c b/drivers/infiniband/sw/rxe/rxe_verbs.c
-index dbb9baa4ffd0..102fc5f56ca7 100644
---- a/drivers/infiniband/sw/rxe/rxe_verbs.c
-+++ b/drivers/infiniband/sw/rxe/rxe_verbs.c
-@@ -41,6 +41,7 @@ static int rxe_query_port(struct ib_device *ibdev,
- 			  u32 port_num, struct ib_port_attr *attr)
- {
- 	struct rxe_dev *rxe = to_rdev(ibdev);
-+	struct net_device *ndev;
- 	int err, ret;
- 
- 	if (port_num != 1) {
-@@ -51,19 +52,26 @@ static int rxe_query_port(struct ib_device *ibdev,
- 
- 	memcpy(attr, &rxe->port.attr, sizeof(*attr));
- 
-+	ndev = rxe_ib_device_get_netdev(ibdev);
-+	if (!ndev) {
-+		err = -ENODEV;
-+		goto err_out;
-+	}
-+
- 	mutex_lock(&rxe->usdev_lock);
- 	ret = ib_get_eth_speed(ibdev, port_num, &attr->active_speed,
- 			       &attr->active_width);
- 
- 	if (attr->state == IB_PORT_ACTIVE)
- 		attr->phys_state = IB_PORT_PHYS_STATE_LINK_UP;
--	else if (dev_get_flags(rxe->ndev) & IFF_UP)
-+	else if (dev_get_flags(ndev) & IFF_UP)
- 		attr->phys_state = IB_PORT_PHYS_STATE_POLLING;
- 	else
- 		attr->phys_state = IB_PORT_PHYS_STATE_DISABLED;
- 
- 	mutex_unlock(&rxe->usdev_lock);
- 
-+	dev_put(ndev);
- 	return ret;
- 
- err_out:
-@@ -1428,9 +1436,16 @@ static const struct attribute_group rxe_attr_group = {
- static int rxe_enable_driver(struct ib_device *ib_dev)
- {
- 	struct rxe_dev *rxe = container_of(ib_dev, struct rxe_dev, ib_dev);
-+	struct net_device *ndev;
-+
-+	ndev = rxe_ib_device_get_netdev(ib_dev);
-+	if (!ndev)
-+		return -ENODEV;
- 
- 	rxe_set_port_state(rxe);
--	dev_info(&rxe->ib_dev.dev, "added %s\n", netdev_name(rxe->ndev));
-+	dev_info(&rxe->ib_dev.dev, "added %s\n", netdev_name(ndev));
-+
-+	dev_put(ndev);
- 	return 0;
- }
- 
-@@ -1498,7 +1513,8 @@ static const struct ib_device_ops rxe_dev_ops = {
- 	INIT_RDMA_OBJ_SIZE(ib_mw, rxe_mw, ibmw),
+ config PINCTRL_SM8450_LPASS_LPI
+ 	tristate "Qualcomm Technologies Inc SM8450 LPASS LPI pin controller driver"
+ 	depends on ARM64 || COMPILE_TEST
+diff --git a/drivers/pinctrl/qcom/Makefile b/drivers/pinctrl/qcom/Makefile
+index 748b17a77b2c..4269d1781015 100644
+--- a/drivers/pinctrl/qcom/Makefile
++++ b/drivers/pinctrl/qcom/Makefile
+@@ -64,7 +64,6 @@ obj-$(CONFIG_PINCTRL_SM8150) += pinctrl-sm8150.o
+ obj-$(CONFIG_PINCTRL_SM8250) += pinctrl-sm8250.o
+ obj-$(CONFIG_PINCTRL_SM8250_LPASS_LPI) += pinctrl-sm8250-lpass-lpi.o
+ obj-$(CONFIG_PINCTRL_SM8350) += pinctrl-sm8350.o
+-obj-$(CONFIG_PINCTRL_SM8350_LPASS_LPI) += pinctrl-sm8350-lpass-lpi.o
+ obj-$(CONFIG_PINCTRL_SM8450) += pinctrl-sm8450.o
+ obj-$(CONFIG_PINCTRL_SM8450_LPASS_LPI) += pinctrl-sm8450-lpass-lpi.o
+ obj-$(CONFIG_PINCTRL_SM8550) += pinctrl-sm8550.o
+diff --git a/drivers/pinctrl/qcom/pinctrl-sc7280-lpass-lpi.c b/drivers/pinctrl/qcom/pinctrl-sc7280-lpass-lpi.c
+index 1161f0a91a00..750f410311a8 100644
+--- a/drivers/pinctrl/qcom/pinctrl-sc7280-lpass-lpi.c
++++ b/drivers/pinctrl/qcom/pinctrl-sc7280-lpass-lpi.c
+@@ -131,6 +131,9 @@ static const struct of_device_id lpi_pinctrl_of_match[] = {
+ 	{
+ 	       .compatible = "qcom,sc7280-lpass-lpi-pinctrl",
+ 	       .data = &sc7280_lpi_data,
++	}, {
++	       .compatible = "qcom,sm8350-lpass-lpi-pinctrl",
++	       .data = &sc7280_lpi_data,
+ 	},
+ 	{ }
  };
- 
--int rxe_register_device(struct rxe_dev *rxe, const char *ibdev_name)
-+int rxe_register_device(struct rxe_dev *rxe, const char *ibdev_name,
-+						struct net_device *ndev)
- {
- 	int err;
- 	struct ib_device *dev = &rxe->ib_dev;
-@@ -1510,13 +1526,13 @@ int rxe_register_device(struct rxe_dev *rxe, const char *ibdev_name)
- 	dev->num_comp_vectors = num_possible_cpus();
- 	dev->local_dma_lkey = 0;
- 	addrconf_addr_eui48((unsigned char *)&dev->node_guid,
--			    rxe->ndev->dev_addr);
-+			    ndev->dev_addr);
- 
- 	dev->uverbs_cmd_mask |= BIT_ULL(IB_USER_VERBS_CMD_POST_SEND) |
- 				BIT_ULL(IB_USER_VERBS_CMD_REQ_NOTIFY_CQ);
- 
- 	ib_set_device_ops(dev, &rxe_dev_ops);
--	err = ib_device_set_netdev(&rxe->ib_dev, rxe->ndev, 1);
-+	err = ib_device_set_netdev(&rxe->ib_dev, ndev, 1);
- 	if (err)
- 		return err;
- 
-diff --git a/drivers/infiniband/sw/rxe/rxe_verbs.h b/drivers/infiniband/sw/rxe/rxe_verbs.h
-index ccb9d19ffe8a..4242b24a47da 100644
---- a/drivers/infiniband/sw/rxe/rxe_verbs.h
-+++ b/drivers/infiniband/sw/rxe/rxe_verbs.h
-@@ -369,6 +369,7 @@ struct rxe_port {
- 	u32			qp_gsi_index;
- };
- 
-+#define	RXE_PORT	1
- struct rxe_dev {
- 	struct ib_device	ib_dev;
- 	struct ib_device_attr	attr;
-@@ -376,8 +377,6 @@ struct rxe_dev {
- 	int			max_inline_data;
- 	struct mutex	usdev_lock;
- 
--	struct net_device	*ndev;
+diff --git a/drivers/pinctrl/qcom/pinctrl-sm8350-lpass-lpi.c b/drivers/pinctrl/qcom/pinctrl-sm8350-lpass-lpi.c
+deleted file mode 100644
+index 7b146b4acfdf..000000000000
+--- a/drivers/pinctrl/qcom/pinctrl-sm8350-lpass-lpi.c
++++ /dev/null
+@@ -1,151 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-only
+-/*
+- * Copyright (c) 2016-2019, The Linux Foundation. All rights reserved.
+- * Copyright (c) 2020-2023 Linaro Ltd.
+- */
 -
- 	struct rxe_pool		uc_pool;
- 	struct rxe_pool		pd_pool;
- 	struct rxe_pool		ah_pool;
-@@ -405,6 +404,11 @@ struct rxe_dev {
- 	struct crypto_shash	*tfm;
- };
- 
-+static inline struct net_device *rxe_ib_device_get_netdev(struct ib_device *dev)
-+{
-+	return ib_device_get_netdev(dev, RXE_PORT);
-+}
-+
- static inline void rxe_counter_inc(struct rxe_dev *rxe, enum rxe_counters index)
- {
- 	atomic64_inc(&rxe->stats_counters[index]);
-@@ -470,6 +474,7 @@ static inline struct rxe_pd *rxe_mw_pd(struct rxe_mw *mw)
- 	return to_rpd(mw->ibmw.pd);
- }
- 
--int rxe_register_device(struct rxe_dev *rxe, const char *ibdev_name);
-+int rxe_register_device(struct rxe_dev *rxe, const char *ibdev_name,
-+						struct net_device *ndev);
- 
- #endif /* RXE_VERBS_H */
-diff --git a/include/rdma/ib_verbs.h b/include/rdma/ib_verbs.h
-index c7e9ec9e9a80..de1d88d41270 100644
---- a/include/rdma/ib_verbs.h
-+++ b/include/rdma/ib_verbs.h
-@@ -4444,6 +4444,8 @@ struct net_device *ib_get_net_dev_by_params(struct ib_device *dev, u32 port,
- 					    const struct sockaddr *addr);
- int ib_device_set_netdev(struct ib_device *ib_dev, struct net_device *ndev,
- 			 unsigned int port);
-+struct net_device *ib_device_get_netdev(struct ib_device *ib_dev,
-+					u32 port);
- struct ib_wq *ib_create_wq(struct ib_pd *pd,
- 			   struct ib_wq_init_attr *init_attr);
- int ib_destroy_wq_user(struct ib_wq *wq, struct ib_udata *udata);
+-#include <linux/gpio/driver.h>
+-#include <linux/module.h>
+-#include <linux/platform_device.h>
+-
+-#include "pinctrl-lpass-lpi.h"
+-
+-enum lpass_lpi_functions {
+-	LPI_MUX_dmic1_clk,
+-	LPI_MUX_dmic1_data,
+-	LPI_MUX_dmic2_clk,
+-	LPI_MUX_dmic2_data,
+-	LPI_MUX_dmic3_clk,
+-	LPI_MUX_dmic3_data,
+-	LPI_MUX_i2s1_clk,
+-	LPI_MUX_i2s1_data,
+-	LPI_MUX_i2s1_ws,
+-	LPI_MUX_i2s2_clk,
+-	LPI_MUX_i2s2_data,
+-	LPI_MUX_i2s2_ws,
+-	LPI_MUX_qua_mi2s_data,
+-	LPI_MUX_qua_mi2s_sclk,
+-	LPI_MUX_qua_mi2s_ws,
+-	LPI_MUX_swr_rx_clk,
+-	LPI_MUX_swr_rx_data,
+-	LPI_MUX_swr_tx_clk,
+-	LPI_MUX_swr_tx_data,
+-	LPI_MUX_wsa_swr_clk,
+-	LPI_MUX_wsa_swr_data,
+-	LPI_MUX_gpio,
+-	LPI_MUX__,
+-};
+-
+-static const struct pinctrl_pin_desc sm8350_lpi_pins[] = {
+-	PINCTRL_PIN(0, "gpio0"),
+-	PINCTRL_PIN(1, "gpio1"),
+-	PINCTRL_PIN(2, "gpio2"),
+-	PINCTRL_PIN(3, "gpio3"),
+-	PINCTRL_PIN(4, "gpio4"),
+-	PINCTRL_PIN(5, "gpio5"),
+-	PINCTRL_PIN(6, "gpio6"),
+-	PINCTRL_PIN(7, "gpio7"),
+-	PINCTRL_PIN(8, "gpio8"),
+-	PINCTRL_PIN(9, "gpio9"),
+-	PINCTRL_PIN(10, "gpio10"),
+-	PINCTRL_PIN(11, "gpio11"),
+-	PINCTRL_PIN(12, "gpio12"),
+-	PINCTRL_PIN(13, "gpio13"),
+-	PINCTRL_PIN(14, "gpio14"),
+-};
+-
+-static const char * const swr_tx_clk_groups[] = { "gpio0" };
+-static const char * const swr_tx_data_groups[] = { "gpio1", "gpio2", "gpio5", "gpio14" };
+-static const char * const swr_rx_clk_groups[] = { "gpio3" };
+-static const char * const swr_rx_data_groups[] = { "gpio4", "gpio5" };
+-static const char * const dmic1_clk_groups[] = { "gpio6" };
+-static const char * const dmic1_data_groups[] = { "gpio7" };
+-static const char * const dmic2_clk_groups[] = { "gpio8" };
+-static const char * const dmic2_data_groups[] = { "gpio9" };
+-static const char * const i2s2_clk_groups[] = { "gpio10" };
+-static const char * const i2s2_ws_groups[] = { "gpio11" };
+-static const char * const dmic3_clk_groups[] = { "gpio12" };
+-static const char * const dmic3_data_groups[] = { "gpio13" };
+-static const char * const qua_mi2s_sclk_groups[] = { "gpio0" };
+-static const char * const qua_mi2s_ws_groups[] = { "gpio1" };
+-static const char * const qua_mi2s_data_groups[] = { "gpio2", "gpio3", "gpio4" };
+-static const char * const i2s1_clk_groups[] = { "gpio6" };
+-static const char * const i2s1_ws_groups[] = { "gpio7" };
+-static const char * const i2s1_data_groups[] = { "gpio8", "gpio9" };
+-static const char * const wsa_swr_clk_groups[] = { "gpio10" };
+-static const char * const wsa_swr_data_groups[] = { "gpio11" };
+-static const char * const i2s2_data_groups[] = { "gpio12", "gpio12" };
+-
+-static const struct lpi_pingroup sm8350_groups[] = {
+-	LPI_PINGROUP(0, 0, swr_tx_clk, qua_mi2s_sclk, _, _),
+-	LPI_PINGROUP(1, 2, swr_tx_data, qua_mi2s_ws, _, _),
+-	LPI_PINGROUP(2, 4, swr_tx_data, qua_mi2s_data, _, _),
+-	LPI_PINGROUP(3, 8, swr_rx_clk, qua_mi2s_data, _, _),
+-	LPI_PINGROUP(4, 10, swr_rx_data, qua_mi2s_data, _, _),
+-	LPI_PINGROUP(5, 12, swr_tx_data, swr_rx_data, _, _),
+-	LPI_PINGROUP(6, LPI_NO_SLEW, dmic1_clk, i2s1_clk, _,  _),
+-	LPI_PINGROUP(7, LPI_NO_SLEW, dmic1_data, i2s1_ws, _, _),
+-	LPI_PINGROUP(8, LPI_NO_SLEW, dmic2_clk, i2s1_data, _, _),
+-	LPI_PINGROUP(9, LPI_NO_SLEW, dmic2_data, i2s1_data, _, _),
+-	LPI_PINGROUP(10, 16, i2s2_clk, wsa_swr_clk, _, _),
+-	LPI_PINGROUP(11, 18, i2s2_ws, wsa_swr_data, _, _),
+-	LPI_PINGROUP(12, LPI_NO_SLEW, dmic3_clk, i2s2_data, _, _),
+-	LPI_PINGROUP(13, LPI_NO_SLEW, dmic3_data, i2s2_data, _, _),
+-	LPI_PINGROUP(14, 6, swr_tx_data, _, _, _),
+-};
+-
+-static const struct lpi_function sm8350_functions[] = {
+-	LPI_FUNCTION(dmic1_clk),
+-	LPI_FUNCTION(dmic1_data),
+-	LPI_FUNCTION(dmic2_clk),
+-	LPI_FUNCTION(dmic2_data),
+-	LPI_FUNCTION(dmic3_clk),
+-	LPI_FUNCTION(dmic3_data),
+-	LPI_FUNCTION(i2s1_clk),
+-	LPI_FUNCTION(i2s1_data),
+-	LPI_FUNCTION(i2s1_ws),
+-	LPI_FUNCTION(i2s2_clk),
+-	LPI_FUNCTION(i2s2_data),
+-	LPI_FUNCTION(i2s2_ws),
+-	LPI_FUNCTION(qua_mi2s_data),
+-	LPI_FUNCTION(qua_mi2s_sclk),
+-	LPI_FUNCTION(qua_mi2s_ws),
+-	LPI_FUNCTION(swr_rx_clk),
+-	LPI_FUNCTION(swr_rx_data),
+-	LPI_FUNCTION(swr_tx_clk),
+-	LPI_FUNCTION(swr_tx_data),
+-	LPI_FUNCTION(wsa_swr_clk),
+-	LPI_FUNCTION(wsa_swr_data),
+-};
+-
+-static const struct lpi_pinctrl_variant_data sm8350_lpi_data = {
+-	.pins = sm8350_lpi_pins,
+-	.npins = ARRAY_SIZE(sm8350_lpi_pins),
+-	.groups = sm8350_groups,
+-	.ngroups = ARRAY_SIZE(sm8350_groups),
+-	.functions = sm8350_functions,
+-	.nfunctions = ARRAY_SIZE(sm8350_functions),
+-};
+-
+-static const struct of_device_id lpi_pinctrl_of_match[] = {
+-	{
+-	       .compatible = "qcom,sm8350-lpass-lpi-pinctrl",
+-	       .data = &sm8350_lpi_data,
+-	},
+-	{ }
+-};
+-MODULE_DEVICE_TABLE(of, lpi_pinctrl_of_match);
+-
+-static struct platform_driver lpi_pinctrl_driver = {
+-	.driver = {
+-		   .name = "qcom-sm8350-lpass-lpi-pinctrl",
+-		   .of_match_table = lpi_pinctrl_of_match,
+-	},
+-	.probe = lpi_pinctrl_probe,
+-	.remove = lpi_pinctrl_remove,
+-};
+-module_platform_driver(lpi_pinctrl_driver);
+-
+-MODULE_AUTHOR("Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>");
+-MODULE_DESCRIPTION("QTI SM8350 LPI GPIO pin control driver");
+-MODULE_LICENSE("GPL");
 -- 
-2.43.7
+2.51.0
 
 
