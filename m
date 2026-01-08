@@ -1,114 +1,198 @@
-Return-Path: <stable+bounces-206297-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206299-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4717D03470
-	for <lists+stable@lfdr.de>; Thu, 08 Jan 2026 15:19:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BAEE5D037C3
+	for <lists+stable@lfdr.de>; Thu, 08 Jan 2026 15:48:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C5665301D5F8
-	for <lists+stable@lfdr.de>; Thu,  8 Jan 2026 14:16:40 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 051D8307B53B
+	for <lists+stable@lfdr.de>; Thu,  8 Jan 2026 14:44:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE00F3D6488;
-	Thu,  8 Jan 2026 10:08:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A28FA44D02A;
+	Thu,  8 Jan 2026 10:16:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1f9RFGao"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="VT20jLL6"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51AB93D605C;
-	Thu,  8 Jan 2026 10:08:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 572DC44D699
+	for <stable@vger.kernel.org>; Thu,  8 Jan 2026 10:15:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.97.179.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767866937; cv=none; b=hH7JYwoECs03GYXr3g+kreRqE1SAA3Hz9IztPE1qgEuegxDZDJUcUjtofuHqUeVUzVykX16snYxnFfptfK6hiypibqxhucDAbft/Dvr2BDjo2Jw0it/wRzPRqF3ANITDbtKRpOj85z81aP0QzESiyss9v7wJgVaEHCGqIgBPnVY=
+	t=1767867364; cv=none; b=ttapnZtJP4i03M/8xhUWbmsZ/yCVemzZISLwLKxExoTxzExkSgrjgPxzwt1dnhZMLlMsCgPpLzmkqnP+rgkMHH+esycMr1Ah/JVPmLfnbfEuy8CtJvPXtwAzPbdF931yK8fzF//xEn/pMv3hA2JShFl4wt15mbBzS7qn/zIlSVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767866937; c=relaxed/simple;
-	bh=kWBrEl9Yf0lKqjUjkxR3fjkBSItC7QpKJFB09llNT8E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MKLa9lfVGXZePIC6gQ3jjOs8719JNeVGX4lFdptj4Joje+KgRMZbl4n+S4WXygSgCFDwUAgcp7uQdehU+22b7jBtcX5sTugeFp46n0Vdz6ANm2dh7ng2arTUG8hkYUDq+JNorJXknOCa9gfOZ2P/CFfs4G13DLgFaQ0AWEhzn5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1f9RFGao; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 284D8C116C6;
-	Thu,  8 Jan 2026 10:08:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767866936;
-	bh=kWBrEl9Yf0lKqjUjkxR3fjkBSItC7QpKJFB09llNT8E=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=1f9RFGaoEe8i0zFCsDza2R7t5/gIkIoPSSIs4zW3RRPN9QEpnYjcD8OzH8QieE3Ie
-	 S54AfUUDc6skvLMJAgy8aNXAsbdj3x5+H9qLC/ol36x38qAPrVdeWjt+dIHql7oDZl
-	 Sp6fk+r8VuZGLJo3ieLppusgdp3Dn0YljqqpsJAo=
-Date: Thu, 8 Jan 2026 11:08:53 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Rahul Sharma <black.hawk@163.com>
-Cc: stable@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Zqiang <qiang.zhang@linux.dev>, Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: Re: [PATCH v6.12] usbnet: Fix using smp_processor_id() in
- preemptible code warnings
-Message-ID: <2026010838-epidural-reflex-d9e7@gregkh>
-References: <20260107081855.743357-1-black.hawk@163.com>
+	s=arc-20240116; t=1767867364; c=relaxed/simple;
+	bh=fj1FBkh7W+PEQibJwDFOmX8Obsz2clEaCmmdzKNnPiE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RMfZDtyPflbiRe867GPoR0vqSeG4lbhg7v590TV42W6X74WUG/idVg17wDmzx0kS32Zeyo7ELu2jtfstJiS/mhpSj60t6BpUpXfqlGdan1A2lHsQwtDIg3iiSQK1IYBTnp2ZeMkK51vrLqzDYn9s7LJK5E0I+iS2G6EAH+dnju4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=VT20jLL6; arc=none smtp.client-ip=213.97.179.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:
+	Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=JMbkyDAgPtB4zqdiXuZ7+Dzb6wYBlHTRTXDmKyclHgs=; b=VT20jLL6qedEYId2eTh1xfw9q7
+	Dory1cctc5/w7mQ6zvykOEHYmS8+/9MB4qMnRHgj47Vy34DlNGrkcN47LbBZ9AZN+aJeoKzLgXv6g
+	uWjXe5QddGcnKkV83ohuCgYJ8ZzeMP8ZcWDEl8rolQL6OuA6Is86VussAjwRv8GWWwPNuclgJEL4h
+	osph8y0/tdvKYVBp4ziykHHWVZchBtynbD2FAMjzI1bdbW51+V9A3YBbnhrDe2D1mTCvMjTZvizYe
+	kLcQunMfPMdnw3kjjCTDw89KjYleZVe/QkduW/89NzIhqbDZeYpDmLhFPEvHAGWpX4RC5Nkqeres+
+	1k/kE14Q==;
+Received: from 179-125-75-246-dinamico.pombonet.net.br ([179.125.75.246] helo=quatroqueijos.lan)
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+	id 1vdn3Z-002vo2-C0; Thu, 08 Jan 2026 11:15:53 +0100
+From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+To: stable@vger.kernel.org
+Cc: Kees Cook <kees@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Christoph Hellwig <hch@infradead.org>,
+	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Subject: [PATCH 5.15 1/2] x86: remove __range_not_ok()
+Date: Thu,  8 Jan 2026 07:15:44 -0300
+Message-ID: <20260108101545.2982626-1-cascardo@igalia.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260107081855.743357-1-black.hawk@163.com>
+Content-Transfer-Encoding: 8bit
 
-On Wed, Jan 07, 2026 at 04:18:55PM +0800, Rahul Sharma wrote:
-> From: Zqiang <qiang.zhang@linux.dev>
-> 
-> Syzbot reported the following warning:
-> 
-> BUG: using smp_processor_id() in preemptible [00000000] code: dhcpcd/2879
-> caller is usbnet_skb_return+0x74/0x490 drivers/net/usb/usbnet.c:331
-> CPU: 1 UID: 0 PID: 2879 Comm: dhcpcd Not tainted 6.15.0-rc4-syzkaller-00098-g615dca38c2ea #0 PREEMPT(voluntary)
-> Call Trace:
->  <TASK>
->  __dump_stack lib/dump_stack.c:94 [inline]
->  dump_stack_lvl+0x16c/0x1f0 lib/dump_stack.c:120
->  check_preemption_disabled+0xd0/0xe0 lib/smp_processor_id.c:49
->  usbnet_skb_return+0x74/0x490 drivers/net/usb/usbnet.c:331
->  usbnet_resume_rx+0x4b/0x170 drivers/net/usb/usbnet.c:708
->  usbnet_change_mtu+0x1be/0x220 drivers/net/usb/usbnet.c:417
->  __dev_set_mtu net/core/dev.c:9443 [inline]
->  netif_set_mtu_ext+0x369/0x5c0 net/core/dev.c:9496
->  netif_set_mtu+0xb0/0x160 net/core/dev.c:9520
->  dev_set_mtu+0xae/0x170 net/core/dev_api.c:247
->  dev_ifsioc+0xa31/0x18d0 net/core/dev_ioctl.c:572
->  dev_ioctl+0x223/0x10e0 net/core/dev_ioctl.c:821
->  sock_do_ioctl+0x19d/0x280 net/socket.c:1204
->  sock_ioctl+0x42f/0x6a0 net/socket.c:1311
->  vfs_ioctl fs/ioctl.c:51 [inline]
->  __do_sys_ioctl fs/ioctl.c:906 [inline]
->  __se_sys_ioctl fs/ioctl.c:892 [inline]
->  __x64_sys_ioctl+0x190/0x200 fs/ioctl.c:892
->  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
->  do_syscall_64+0xcd/0x260 arch/x86/entry/syscall_64.c:94
->  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-> 
-> For historical and portability reasons, the netif_rx() is usually
-> run in the softirq or interrupt context, this commit therefore add
-> local_bh_disable/enable() protection in the usbnet_resume_rx().
-> 
-> Fixes: 43daa96b166c ("usbnet: Stop RX Q on MTU change")
-> Link: https://syzkaller.appspot.com/bug?id=81f55dfa587ee544baaaa5a359a060512228c1e1
-> Suggested-by: Jakub Kicinski <kuba@kernel.org>
-> Signed-off-by: Zqiang <qiang.zhang@linux.dev>
-> Link: https://patch.msgid.link/20251011070518.7095-1-qiang.zhang@linux.dev
-> Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-> [ The context change is due to the commit 2c04d279e857
-> ("net: usb: Convert tasklet API to new bottom half workqueue mechanism")
-> in v6.17 which is irrelevant to the logic of this patch.]
-> Signed-off-by: Rahul Sharma <black.hawk@163.com>
-> ---
->  drivers/net/usb/usbnet.c | 2 ++
->  1 file changed, 2 insertions(+)
+From: Arnd Bergmann <arnd@arndb.de>
 
-What is the git id of this commit in Linus's tree?
+commit 36903abedfe8d419e90ce349b2b4ce6dc2883e17 upstream.
 
-thanks,
+The __range_not_ok() helper is an x86 (and sparc64) specific interface
+that does roughly the same thing as __access_ok(), but with different
+calling conventions.
 
-greg k-h
+Change this to use the normal interface in order for consistency as we
+clean up all access_ok() implementations.
+
+This changes the limit from TASK_SIZE to TASK_SIZE_MAX, which Al points
+out is the right thing do do here anyway.
+
+The callers have to use __access_ok() instead of the normal access_ok()
+though, because on x86 that contains a WARN_ON_IN_IRQ() check that cannot
+be used inside of NMI context while tracing.
+
+The check in copy_code() is not needed any more, because this one is
+already done by copy_from_user_nmi().
+
+Suggested-by: Al Viro <viro@zeniv.linux.org.uk>
+Suggested-by: Christoph Hellwig <hch@infradead.org>
+Link: https://lore.kernel.org/lkml/YgsUKcXGR7r4nINj@zeniv-ca.linux.org.uk/
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Stable-dep-of: d319f344561d ("mm: Fix copy_from_user_nofault().")
+Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+---
+ arch/x86/events/core.c         |  2 +-
+ arch/x86/include/asm/uaccess.h | 10 ++++++----
+ arch/x86/kernel/dumpstack.c    |  6 ------
+ arch/x86/kernel/stacktrace.c   |  2 +-
+ arch/x86/lib/usercopy.c        |  2 +-
+ 5 files changed, 9 insertions(+), 13 deletions(-)
+
+diff --git a/arch/x86/events/core.c b/arch/x86/events/core.c
+index 9a77c6062c24..fdf1e2aaa5ed 100644
+--- a/arch/x86/events/core.c
++++ b/arch/x86/events/core.c
+@@ -2790,7 +2790,7 @@ perf_callchain_kernel(struct perf_callchain_entry_ctx *entry, struct pt_regs *re
+ static inline int
+ valid_user_frame(const void __user *fp, unsigned long size)
+ {
+-	return (__range_not_ok(fp, size, TASK_SIZE) == 0);
++	return __access_ok(fp, size);
+ }
+ 
+ static unsigned long get_segment_base(unsigned int segment)
+diff --git a/arch/x86/include/asm/uaccess.h b/arch/x86/include/asm/uaccess.h
+index 3616fd4ba395..66284ac86076 100644
+--- a/arch/x86/include/asm/uaccess.h
++++ b/arch/x86/include/asm/uaccess.h
+@@ -16,8 +16,10 @@
+  * Test whether a block of memory is a valid user space address.
+  * Returns 0 if the range is valid, nonzero otherwise.
+  */
+-static inline bool __chk_range_not_ok(unsigned long addr, unsigned long size, unsigned long limit)
++static inline bool __chk_range_not_ok(unsigned long addr, unsigned long size)
+ {
++	unsigned long limit = TASK_SIZE_MAX;
++
+ 	/*
+ 	 * If we have used "sizeof()" for the size,
+ 	 * we know it won't overflow the limit (but
+@@ -35,10 +37,10 @@ static inline bool __chk_range_not_ok(unsigned long addr, unsigned long size, un
+ 	return unlikely(addr > limit);
+ }
+ 
+-#define __range_not_ok(addr, size, limit)				\
++#define __access_ok(addr, size)						\
+ ({									\
+ 	__chk_user_ptr(addr);						\
+-	__chk_range_not_ok((unsigned long __force)(addr), size, limit); \
++	!__chk_range_not_ok((unsigned long __force)(addr), size);	\
+ })
+ 
+ #ifdef CONFIG_DEBUG_ATOMIC_SLEEP
+@@ -69,7 +71,7 @@ static inline bool pagefault_disabled(void);
+ #define access_ok(addr, size)					\
+ ({									\
+ 	WARN_ON_IN_IRQ();						\
+-	likely(!__range_not_ok(addr, size, TASK_SIZE_MAX));		\
++	likely(__access_ok(addr, size));				\
+ })
+ 
+ extern int __get_user_1(void);
+diff --git a/arch/x86/kernel/dumpstack.c b/arch/x86/kernel/dumpstack.c
+index 8a8660074284..bf73dbfb2355 100644
+--- a/arch/x86/kernel/dumpstack.c
++++ b/arch/x86/kernel/dumpstack.c
+@@ -81,12 +81,6 @@ static int copy_code(struct pt_regs *regs, u8 *buf, unsigned long src,
+ 	/* The user space code from other tasks cannot be accessed. */
+ 	if (regs != task_pt_regs(current))
+ 		return -EPERM;
+-	/*
+-	 * Make sure userspace isn't trying to trick us into dumping kernel
+-	 * memory by pointing the userspace instruction pointer at it.
+-	 */
+-	if (__chk_range_not_ok(src, nbytes, TASK_SIZE_MAX))
+-		return -EINVAL;
+ 
+ 	/*
+ 	 * Even if named copy_from_user_nmi() this can be invoked from
+diff --git a/arch/x86/kernel/stacktrace.c b/arch/x86/kernel/stacktrace.c
+index 15b058eefc4e..ee117fcf46ed 100644
+--- a/arch/x86/kernel/stacktrace.c
++++ b/arch/x86/kernel/stacktrace.c
+@@ -90,7 +90,7 @@ copy_stack_frame(const struct stack_frame_user __user *fp,
+ {
+ 	int ret;
+ 
+-	if (__range_not_ok(fp, sizeof(*frame), TASK_SIZE))
++	if (!__access_ok(fp, sizeof(*frame)))
+ 		return 0;
+ 
+ 	ret = 1;
+diff --git a/arch/x86/lib/usercopy.c b/arch/x86/lib/usercopy.c
+index c3e8a62ca561..ad0139d25401 100644
+--- a/arch/x86/lib/usercopy.c
++++ b/arch/x86/lib/usercopy.c
+@@ -32,7 +32,7 @@ copy_from_user_nmi(void *to, const void __user *from, unsigned long n)
+ {
+ 	unsigned long ret;
+ 
+-	if (__range_not_ok(from, n, TASK_SIZE))
++	if (!__access_ok(from, n))
+ 		return n;
+ 
+ 	if (!nmi_uaccess_okay())
+-- 
+2.47.3
+
 
