@@ -1,48 +1,110 @@
-Return-Path: <stable+bounces-206356-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206359-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDE3CD03BC3
-	for <lists+stable@lfdr.de>; Thu, 08 Jan 2026 16:18:08 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33BD3D03E38
+	for <lists+stable@lfdr.de>; Thu, 08 Jan 2026 16:34:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 61DDE301645B
-	for <lists+stable@lfdr.de>; Thu,  8 Jan 2026 15:15:58 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 637D630260DA
+	for <lists+stable@lfdr.de>; Thu,  8 Jan 2026 15:30:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED8B53FB6A3;
-	Thu,  8 Jan 2026 14:11:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B787E271A94;
+	Thu,  8 Jan 2026 14:51:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="KgKpB/Pf"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Lxm2xQv6";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="lcGaH30D";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Lxm2xQv6";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="lcGaH30D"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-m49198.qiye.163.com (mail-m49198.qiye.163.com [45.254.49.198])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 978BE38B64A;
-	Thu,  8 Jan 2026 14:11:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E271A286413
+	for <stable@vger.kernel.org>; Thu,  8 Jan 2026 14:51:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767881513; cv=none; b=kr1fYf1rJ+mdBzTzcMFWKQg/fk7ZBfrfRWNyDPxknOj6k0l+QVE81eVbi66PBDzdkGYi0sB1CjgnbkjdsrOUgW7MbXeA84KquMGZcGESAlADFLzV/s+cH6wqdlFyUdQay1wuYANOgnTFLx4gwYPlHqNAuOZEjj4WbaaAoWyE1SM=
+	t=1767883867; cv=none; b=dfxWc0HtT08Liaeeqq/taONxEaEhG/tYuBgLC2rguWLNy0PEBMgi8Mc3a01GOWiXcQDwvKlZ2k4Z9vtz09rekdla35hK2hx9ApcSNNHZAyUspHjGbPco7Vw0tmpd/dCQjdigoxAcrrunflKSS8LtGCiTM9ycFHiXmdzDDKY4M7U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767881513; c=relaxed/simple;
-	bh=63BLbX4Plq2/EoFvz8zb+tWo03NKo44kWXDptCA17gM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=WUD+HeCqUMpbCIGB00dKGgCbV0Zdu2dS6Kqd5fW3+oIYcd+L2ZcPoiwYH8DWCPhJIn4CVZ6/rVHAbI3R57Ssyjt5vpTrNE7bEPPCKsnFBEYHYRVKJtIwKH4Ob2x7VOBS8VsPEyvB2Ih5C47rhE1AvektYaOX9rKSAkOXIaNXGBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=KgKpB/Pf; arc=none smtp.client-ip=45.254.49.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
-Received: from LAPTOP-N070L597.localdomain (unknown [58.241.16.34])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 2ff7b45d9;
-	Thu, 8 Jan 2026 22:11:43 +0800 (GMT+08:00)
-From: Zilin Guan <zilin@seu.edu.cn>
-To: mathias.nyman@intel.com
-Cc: gregkh@linuxfoundation.org,
-	linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	jianhao.xu@seu.edu.cn,
-	Zilin Guan <zilin@seu.edu.cn>,
+	s=arc-20240116; t=1767883867; c=relaxed/simple;
+	bh=szWIRjA44F5yCoF0VJz3jjcFqRXx+j+iggZPZiQUoeM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=WqC4HS/YvC4tlXE1jpmTT6sj7TlFzUIGXh5hTQ0X/Kja85SN64bFBeSINN82Shvh5PKd82Xm+OZiWp0rkl0NE5HxcyHTeFcFF3gxJAKgv/q35QpjPJevukTR/8oFwG5reQdIB7uTUlEQWuTw3/8Wo52FGUU3pqDI38425+mu/M8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Lxm2xQv6; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=lcGaH30D; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Lxm2xQv6; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=lcGaH30D; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 1DF603430B;
+	Thu,  8 Jan 2026 14:51:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1767883864; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=EtWuYnCgoXawm8oOJ8vQ3oljrjDp+noC1pUoDivs/Hs=;
+	b=Lxm2xQv61wkLDdZOsORv2qraVdoxrLeJK0wuom7FOlivmp/+VD7ENjb3imF6IP8GyTTMOQ
+	4YdhnjJNfzHNcDH+Fh2JOySKD7q0sKmpZ9FYWTUDCfkS9Qkd0IYRcgJ7KUkEeqo6jBQ01r
+	ZYvPgMA4ItFQGWfqqQCdrS7XeRnEFb0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1767883864;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=EtWuYnCgoXawm8oOJ8vQ3oljrjDp+noC1pUoDivs/Hs=;
+	b=lcGaH30D0QJggYrzchMKnO+eqMDLzh/m12RULWO1eHA0FPcooUV+2Q1sKN8tGeNlQzREPn
+	et/3uSJTs5dP8kAQ==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1767883864; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=EtWuYnCgoXawm8oOJ8vQ3oljrjDp+noC1pUoDivs/Hs=;
+	b=Lxm2xQv61wkLDdZOsORv2qraVdoxrLeJK0wuom7FOlivmp/+VD7ENjb3imF6IP8GyTTMOQ
+	4YdhnjJNfzHNcDH+Fh2JOySKD7q0sKmpZ9FYWTUDCfkS9Qkd0IYRcgJ7KUkEeqo6jBQ01r
+	ZYvPgMA4ItFQGWfqqQCdrS7XeRnEFb0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1767883864;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=EtWuYnCgoXawm8oOJ8vQ3oljrjDp+noC1pUoDivs/Hs=;
+	b=lcGaH30D0QJggYrzchMKnO+eqMDLzh/m12RULWO1eHA0FPcooUV+2Q1sKN8tGeNlQzREPn
+	et/3uSJTs5dP8kAQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C28C73EA63;
+	Thu,  8 Jan 2026 14:51:03 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 0BRMLlfEX2n0WQAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Thu, 08 Jan 2026 14:51:03 +0000
+From: Thomas Zimmermann <tzimmermann@suse.de>
+To: tzungbi@kernel.org,
+	briannorris@chromium.org,
+	jwerner@chromium.org,
+	javierm@redhat.com,
+	maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	airlied@gmail.com,
+	simona@ffwll.ch
+Cc: chrome-platform@lists.linux.dev,
+	dri-devel@lists.freedesktop.org,
+	Thomas Zimmermann <tzimmermann@suse.de>,
 	stable@vger.kernel.org
-Subject: [PATCH v2] usb: xhci: Fix memory leak in xhci_disable_slot()
-Date: Thu,  8 Jan 2026 14:11:08 +0000
-Message-Id: <20260108141108.993684-1-zilin@seu.edu.cn>
-X-Mailer: git-send-email 2.34.1
+Subject: [PATCH 6/8] drm/sysfb: Remove duplicate declarations
+Date: Thu,  8 Jan 2026 15:19:46 +0100
+Message-ID: <20260108145058.56943-7-tzimmermann@suse.de>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260108145058.56943-1-tzimmermann@suse.de>
+References: <20260108145058.56943-1-tzimmermann@suse.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,76 +112,70 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9b9df2f1a703a1kunm81227c6d52c34
-X-HM-MType: 10
-X-HM-Spam-Status: e1kfGhgUHx5ZQUtXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWS1ZQUlXWQ8JGhUIEh9ZQVkZQk1PVk9KShkZSkoYGUJNT1YeHw5VEwETFhoSFy
-	QUDg9ZV1kYEgtZQVlOQ1VJT0pVSk1VSE9ZV1kWGg8SFR0UWUFZS1VLVUtVS1kG
-DKIM-Signature: a=rsa-sha256;
-	b=KgKpB/Pf7S9fd9+WOIE4BnsgJSgYzEsE8a5PRbMyuV+rYoMLfO/DbUhoYxYRyaxGl044t24ouS06eE90sOJG9HPg3w3FUc0ZouxWWJpw7+e6+QotVKzaamSFuGeXwhlYE1Hzt0+8r4yHrmI3l991RSva+ghEdaYj6tVjoq+lSww=; s=default; c=relaxed/relaxed; d=seu.edu.cn; v=1;
-	bh=ixRZVjyZrDEhNBUX5yAM8i5b7jaDl0sh3mEew4zg5b4=;
-	h=date:mime-version:subject:message-id:from;
+X-Spamd-Result: default: False [-6.80 / 50.00];
+	REPLY(-4.00)[];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	NEURAL_HAM_SHORT(-0.20)[-0.997];
+	MIME_GOOD(-0.10)[text/plain];
+	ARC_NA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:email,imap1.dmz-prg2.suse.org:helo];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_TO(0.00)[kernel.org,chromium.org,redhat.com,linux.intel.com,gmail.com,ffwll.ch];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	R_RATELIMIT(0.00)[to_ip_from(RLf8s8spogujn9h9roxabhn3pd)];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com]
+X-Spam-Flag: NO
+X-Spam-Score: -6.80
+X-Spam-Level: 
 
-xhci_alloc_command() allocates a command structure and, when the
-second argument is true, also allocates a completion structure.
-Currently, the error handling path in xhci_disable_slot() only frees
-the command structure using kfree(), causing the completion structure
-to leak.
+Commit 6046b49bafff ("drm/sysfb: Share helpers for integer validation")
+and commit e8c086880b2b ("drm/sysfb: Share helpers for screen_info
+validation") added duplicate function declarations. Remove the latter
+ones.
 
-Use xhci_free_command() instead of kfree(). xhci_free_command() correctly
-frees both the command structure and the associated completion structure.
-Since the command structure is allocated with zero-initialization,
-command->in_ctx is NULL and will not be erroneously freed by
-xhci_free_command().
-
-This bug was found using an experimental static analysis tool we are
-developing. The tool is based on the LLVM framework and is specifically
-designed to detect memory management issues. It is currently under
-active development and not yet publicly available, but we plan to
-open-source it after our research is published.
-
-The analysis was performed on Linux kernel v6.13-rc1.
-
-We performed build testing on x86_64 with allyesconfig using GCC=11.4.0.
-Since triggering these error paths in xhci_disable_slot() requires specific
-hardware conditions or abnormal state, we were unable to construct a test
-case to reliably trigger these specific error paths at runtime.
-
-Fixes: 7faac1953ed1 ("xhci: avoid race between disable slot command and host runtime suspend")
-CC: stable@vger.kernel.org
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Fixes: e8c086880b2b ("drm/sysfb: Share helpers for screen_info validation")
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Javier Martinez Canillas <javierm@redhat.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v6.16+
 ---
-Changes in v2:
-- Add detailed information required by researcher guidelines.
-- Clarify the safety of using xhci_free_command() in this context.
-- Correct the Fixes tag to point to the commit that introduced this issue.
+ drivers/gpu/drm/sysfb/drm_sysfb_helper.h | 9 ---------
+ 1 file changed, 9 deletions(-)
 
- drivers/usb/host/xhci.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/usb/host/xhci.c b/drivers/usb/host/xhci.c
-index 02c9bfe21ae2..f0beed054954 100644
---- a/drivers/usb/host/xhci.c
-+++ b/drivers/usb/host/xhci.c
-@@ -4137,7 +4137,7 @@ int xhci_disable_slot(struct xhci_hcd *xhci, u32 slot_id)
- 	if (state == 0xffffffff || (xhci->xhc_state & XHCI_STATE_DYING) ||
- 			(xhci->xhc_state & XHCI_STATE_HALTED)) {
- 		spin_unlock_irqrestore(&xhci->lock, flags);
--		kfree(command);
-+		xhci_free_command(xhci, command);
- 		return -ENODEV;
- 	}
+diff --git a/drivers/gpu/drm/sysfb/drm_sysfb_helper.h b/drivers/gpu/drm/sysfb/drm_sysfb_helper.h
+index da670d7eeb2e..de96bfe7562c 100644
+--- a/drivers/gpu/drm/sysfb/drm_sysfb_helper.h
++++ b/drivers/gpu/drm/sysfb/drm_sysfb_helper.h
+@@ -54,15 +54,6 @@ const struct drm_format_info *drm_sysfb_get_format_si(struct drm_device *dev,
+ 						      const struct screen_info *si);
+ #endif
  
-@@ -4145,7 +4145,7 @@ int xhci_disable_slot(struct xhci_hcd *xhci, u32 slot_id)
- 				slot_id);
- 	if (ret) {
- 		spin_unlock_irqrestore(&xhci->lock, flags);
--		kfree(command);
-+		xhci_free_command(xhci, command);
- 		return ret;
- 	}
- 	xhci_ring_cmd_db(xhci);
+-/*
+- * Input parsing
+- */
+-
+-int drm_sysfb_get_validated_int(struct drm_device *dev, const char *name,
+-				u64 value, u32 max);
+-int drm_sysfb_get_validated_int0(struct drm_device *dev, const char *name,
+-				 u64 value, u32 max);
+-
+ /*
+  * Display modes
+  */
 -- 
-2.34.1
+2.52.0
 
 
