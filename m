@@ -1,102 +1,105 @@
-Return-Path: <stable+bounces-206358-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206360-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9B58D03D4B
-	for <lists+stable@lfdr.de>; Thu, 08 Jan 2026 16:27:53 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22A8CD03E98
+	for <lists+stable@lfdr.de>; Thu, 08 Jan 2026 16:37:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 46BAD3090B10
-	for <lists+stable@lfdr.de>; Thu,  8 Jan 2026 15:17:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E347B3131C1F
+	for <lists+stable@lfdr.de>; Thu,  8 Jan 2026 15:07:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28E66508348;
-	Thu,  8 Jan 2026 14:25:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A78F25C838;
+	Thu,  8 Jan 2026 15:04:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pTaUP8Az"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="h2O2G+JP"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6A7A50833A;
-	Thu,  8 Jan 2026 14:25:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3A4B50095E
+	for <stable@vger.kernel.org>; Thu,  8 Jan 2026 15:04:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.97.179.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767882358; cv=none; b=uPoZiomsEZDajo0suye3kRjZKptPKozKuYfDs8O+58o9f6ATFjjjoZ0YFLsNxcA/lu4WrYDU4veMj3m0/PVY6I9gxwxwDf3y3XWzcpKBgzmo6SCaNpDp8GGfADjl3POmhVq2mCAY/vLHKwK9fLiRxVgrOVJZfoT08c34Ru7C09Y=
+	t=1767884649; cv=none; b=qimyIubJlk2/CSi2aqu/R3Pw9pWgwI3dgrBKceSj+iWn+yFOrlJjjKvX6p1BIcV53N5BfqSJtppCz5ZwzGWzOMeB+Xet52fYFp2nJ1yTbZFARIb18c2d9QmmqDFGrDgwoo0oZxy5+eGi6rJs20Fn5Hneg5rLerlR7PJiCg7F3+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767882358; c=relaxed/simple;
-	bh=NRKSjfeKxnpLmERNVN4nrPDXNns3sLlBpJndOnpYE9A=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SQqgI1b/5RdngOfp1q1x/lLWDkI7IbbtMC+1G/jPZhwE/fCMihdSkcTv4k/kD86V+I0AkpmZptxfWi9dbnZelArMWHAijTNVgLhVg0xlFYJe/SLCoXU0/c2xN3lApIJ6UzWiLZtmTycHaEjDsfDhotvFgVJrn5GZ4KLgRTVDrIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pTaUP8Az; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04410C116C6;
-	Thu,  8 Jan 2026 14:25:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767882358;
-	bh=NRKSjfeKxnpLmERNVN4nrPDXNns3sLlBpJndOnpYE9A=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=pTaUP8Az8/EIcpthQlP6N7+Tx5crWVO8KQ1mCD/wRQeDQ/JfIrazkNdJlWe0F1J/j
-	 sZLzd4n8+KjUo/dDUFkJSVBRsWWJsA/oC5MQzjoXhIEB0Cvv08d5E+EtReRajuuxdv
-	 ZhurRSk3/Mdg/KOdG0nzLXntADgBIE4ZarnO7rtjvXh6U/6XFRbXIUOLfJIbDWcPXo
-	 Jg4ezniSL5nxt/lYR2vty8PJqYmY+5c+K3oZyZSPryIuUHfJgETTpUsGDbLMf1yZNl
-	 tN+jPOwVzHdXfjyEYgEUwPbkD4z3VS4CIDDekxOPhJpj2EK9+Hk6lUZaAOEMS0E9A+
-	 IZPT1KYt6muyA==
-Message-ID: <ff54b6fb-6c82-4994-b9ff-715f9645d75c@kernel.org>
-Date: Thu, 8 Jan 2026 09:25:57 -0500
+	s=arc-20240116; t=1767884649; c=relaxed/simple;
+	bh=aIeZj7FHtbxdzph25ngB/9ziEtu19V2t/Njz4xdKc60=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hf0NhZDDcoveCrSQnKPO+vuMeT1Y2egxAUR6MrDTcFVEl4gsGzuor2yulK8QsX78WK6PVZTVB0ofwAOPadewA83V5ismPcJMqP/DqH6ZEIS1HUHxFkmwySq6/5lBlHZZpjGtRGGYxnTHu654eD9xeO2G6d3JQ0MsIjgMOpt5VVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=h2O2G+JP; arc=none smtp.client-ip=213.97.179.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:
+	Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=lHDRmwVEsgzzw/QKYymhE2pfsoJh+WR5uOm5cGdNlu0=; b=h2O2G+JPHsXJwWVjWWGIFTu8tE
+	q3tE1BU8fbOlUoScuZWEe/35uvrOWkhx+KUTip/xnPSF4hacJngXiRAkxgLsP6L9uwSBWt1NQz3QI
+	mas62LsaqOf3IXP1+uwmWMFqlFh9wB4ZOdfwDhienm/q2uJDPPjSaFHhNqxBTYbp2uFarPuqNklDV
+	y3lUcQRYpBP5ZVBdh9CQ8oH9BhU5hX8FT7K+2PiIKGYFB+ILiakPgLJlR9py3CJLTTdJLEAo9F10G
+	EmOM4sXQk4Nqbw2N/6DrsE+Bt5de21SyaPxG/d2JysD6yoXyfwOTsg43hoRfPzYNwQPcRqtbVnTnP
+	4w/llJNw==;
+Received: from 179-125-75-246-dinamico.pombonet.net.br ([179.125.75.246] helo=quatroqueijos.lan)
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+	id 1vdrYP-00338f-6u; Thu, 08 Jan 2026 16:04:01 +0100
+From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+To: stable@vger.kernel.org
+Cc: Gabriel Krisman Bertazi <krisman@suse.de>,
+	Lizhi Xu <lizhi.xu@windriver.com>,
+	syzbot+340581ba9dceb7e06fb3@syzkaller.appspotmail.com,
+	Theodore Ts'o <tytso@mit.edu>,
+	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Subject: [PATCH 6.6 1/2] ext4: filesystems without casefold feature cannot be mounted with siphash
+Date: Thu,  8 Jan 2026 12:03:49 -0300
+Message-ID: <20260108150350.3354622-1-cascardo@igalia.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.6.y 1/4] nfsd: convert to new timestamp accessors
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, linux-nfs@vger.kernel.org,
- Sasha Levin <sashal@kernel.org>, Chuck Lever <chuck.lever@oracle.com>
-References: <20260103193854.2954342-1-cel@kernel.org>
- <20260103193854.2954342-2-cel@kernel.org>
- <2026010808-subwoofer-diabetic-e54e@gregkh>
-From: Chuck Lever <cel@kernel.org>
-Content-Language: en-US
-Organization: kernel.org
-In-Reply-To: <2026010808-subwoofer-diabetic-e54e@gregkh>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 1/8/26 6:03 AM, Greg Kroah-Hartman wrote:
-> On Sat, Jan 03, 2026 at 02:38:51PM -0500, Chuck Lever wrote:
->> From: Chuck Lever <chuck.lever@oracle.com>
->>
->> [ Upstream commit 335a7be84b526861f3deb4fdd5d5c2a48cf1feef ]
-> 
-> I don't see this git id anywhere in Linus's tree, are you sure it is
-> correct?
-> 
-> thanks,
-> 
-> greg k-h
+From: Lizhi Xu <lizhi.xu@windriver.com>
 
-If I start from the current upstream master, I find this instead:
+commit 985b67cd86392310d9e9326de941c22fc9340eec upstream.
 
-commit 11fec9b9fb04fd1b3330a3b91ab9dcfa81ad5ad3
-Author:     Jeff Layton <jlayton@kernel.org>
-AuthorDate: Wed Oct 4 14:52:37 2023 -0400
-Commit:     Christian Brauner <brauner@kernel.org>
-CommitDate: Wed Oct 18 14:08:24 2023 +0200
+When mounting the ext4 filesystem, if the default hash version is set to
+DX_HASH_SIPHASH but the casefold feature is not set, exit the mounting.
 
-    nfsd: convert to new timestamp accessors
+Reported-by: syzbot+340581ba9dceb7e06fb3@syzkaller.appspotmail.com
+Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
+Link: https://patch.msgid.link/20240605012335.44086-1-lizhi.xu@windriver.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+[cascardo: small conflict fixup]
+Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+---
+ fs/ext4/super.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-    Convert to using the new inode timestamp accessor functions.
-
-    Signed-off-by: Jeff Layton <jlayton@kernel.org>
-    Link:
-https://lore.kernel.org/r/20231004185347.80880-50-jlayton@kernel.org
-    Signed-off-by: Christian Brauner <brauner@kernel.org>
-
-I picked up 335a7be84b526861f3deb4fdd5d5c2a48cf1feef from an
-nfsd-related tag by mistake. Do you want to drop this series and I can
-rework it properly?
-
-
+diff --git a/fs/ext4/super.c b/fs/ext4/super.c
+index 16a6c249580e..5a1e1f7e6124 100644
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -3630,6 +3630,14 @@ int ext4_feature_set_ok(struct super_block *sb, int readonly)
+ 	}
+ #endif
+ 
++	if (EXT4_SB(sb)->s_es->s_def_hash_version == DX_HASH_SIPHASH &&
++	    !ext4_has_feature_casefold(sb)) {
++		ext4_msg(sb, KERN_ERR,
++			 "Filesystem without casefold feature cannot be "
++			 "mounted with siphash");
++		return 0;
++	}
++
+ 	if (readonly)
+ 		return 1;
+ 
 -- 
-Chuck Lever
+2.47.3
+
 
