@@ -1,200 +1,122 @@
-Return-Path: <stable+bounces-206237-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206238-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 794C7D006B0
-	for <lists+stable@lfdr.de>; Thu, 08 Jan 2026 00:48:57 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E9BBD00818
+	for <lists+stable@lfdr.de>; Thu, 08 Jan 2026 01:58:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 99B693029D17
-	for <lists+stable@lfdr.de>; Wed,  7 Jan 2026 23:48:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 90BED3020CD7
+	for <lists+stable@lfdr.de>; Thu,  8 Jan 2026 00:58:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1FFA22DFA4;
-	Wed,  7 Jan 2026 23:48:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCAA81E3DF2;
+	Thu,  8 Jan 2026 00:58:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="ZcRbrUwE"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="g/EIAGGA"
 X-Original-To: stable@vger.kernel.org
-Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 407452F7AB1
-	for <stable@vger.kernel.org>; Wed,  7 Jan 2026 23:48:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E1D41D5ADE
+	for <stable@vger.kernel.org>; Thu,  8 Jan 2026 00:58:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767829722; cv=none; b=We5RkT+l8NN0eIW2CPjnBJ/fVGdG0jUk5/8APRZpGpebM8RYJuYX01eZEPGNdYaCWPWBlPMBBmBe6GA7n3IzkDDsRrQXPP7eVCE8ZZuvQiLSsZJKc29v0McAdsqAgM9Vln2IwZN6EBk6lw6vTtV+hGPDKM+X23WFGvPSzPMf64o=
+	t=1767833892; cv=none; b=PyENXVNHaUQ3u+H2ZQGQb4l83/qMsAwdT9dpmp9Z8ux+92+v6H6aChGl/eIgUme0qpE0K2hDPnCbm6lehEUvXyI6rGX8bkruNsuMzpxzJ2bHhGZAA/Zqf7oPpWfb/lPZS0FnTMLhHkSWqkyLgJM/ezVaF9m4P0HNdSo7qPT9A48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767829722; c=relaxed/simple;
-	bh=IBdssBqJKoYD0WUOz99qEmTZBGFUz6xCIAU0jUt02Rs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
-	 Content-Type:References; b=gWJufMqAd0EkZLOIbNJWrEjqGTPc3dtK5EfMcU2ySGSWu/j93WV5vbGOGjiGPeKR1qr20RG2/9IYfI3ajOOeNpbQMMzyPa7zC9oO6h0uQVwgScVD1HYfszqWmRkmvrWlp3+2KqRV2DP5r8H5BcDn+xtB/yksgcY7ly0zxFRylrc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=ZcRbrUwE; arc=none smtp.client-ip=210.118.77.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
-Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
-	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20260107234828euoutp02b9e6e9baf5477f7b81401446c3399b52~Il8EAj8Ta1570915709euoutp025
-	for <stable@vger.kernel.org>; Wed,  7 Jan 2026 23:48:28 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20260107234828euoutp02b9e6e9baf5477f7b81401446c3399b52~Il8EAj8Ta1570915709euoutp025
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1767829708;
-	bh=TYCzIUiOEy3kP/HiVQ2wZRrRPpZ4XZI8gw9kTIvwkig=;
-	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
-	b=ZcRbrUwE0aCSm07m0ZAGZxJqi+smXR6sOaSkQNGRA/aaVVXXra1EA26P9OVZXHgoM
-	 aGEhVYVOd3cGxnnM9aKFvNxes9G4ULczGDrTrEa1JxXTa/SmBbzJIT9RCMK9VIrcKZ
-	 UFzKdI1lMTHP5Czb15+QUV6lIyPeYK3iCwEMt8FE=
-Received: from eusmtip2.samsung.com (unknown [203.254.199.222]) by
-	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
-	20260107234827eucas1p27fbd224b2f588f92989d2f7bfa08ab37~Il8C276YY0130501305eucas1p2E;
-	Wed,  7 Jan 2026 23:48:27 +0000 (GMT)
-Received: from [106.210.134.192] (unknown [106.210.134.192]) by
-	eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
-	20260107234825eusmtip2ddfb2c42a8a3442eed7670b1dee474df~Il8AyfPoH0345103451eusmtip2c;
-	Wed,  7 Jan 2026 23:48:25 +0000 (GMT)
-Message-ID: <77c70d7b-23bc-4f74-9a13-d10f4af132dd@samsung.com>
-Date: Thu, 8 Jan 2026 00:48:24 +0100
+	s=arc-20240116; t=1767833892; c=relaxed/simple;
+	bh=DOF/Tt4P+IDAmL5JEu3WdnhqLfRy4vGwq61c0MdHSwE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=fdpbkFI67/6PbB/7N0iY+fS++wdoS14d572PVhF2gige2SAmHwGxWpc1ra8dtZEV6+T10jhdGBM9FmN65OeHJ0lMxo6qRU++VMiOD2r988x1wimBcPVji9Gijj2X1uRwMUBx/0LGU/e4/xDgkBAdBkcsprJiN6Q6THxnbgESmZs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=g/EIAGGA; arc=none smtp.client-ip=209.85.128.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-79045634f45so31419357b3.1
+        for <stable@vger.kernel.org>; Wed, 07 Jan 2026 16:58:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1767833890; x=1768438690; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=DOF/Tt4P+IDAmL5JEu3WdnhqLfRy4vGwq61c0MdHSwE=;
+        b=g/EIAGGAEk6fpC9ZmBihYhvElvewZ2RDSHHZWjvo1bgrGkDAPx0SE181gFEQTZMmQt
+         EdxRrqCm3VSZfUc9w2Z+9ksMYv0zOdIbQxNv5ndTu/HmoZKVlC+A+ET5hktr6KGmlVcT
+         Ks2+mU34d3ZdIjiHkhIN9Op0/uqM775VFYsWuCVq3dSyYsCqm5s14Mmhdl+27oUVuXip
+         sbYmDSoqVeuf+3QLvixNFUGlh/S9/opR/MOj+9y4BmEhFnCbv9laAMObypPMKBvDRWwd
+         pelacNPqHZcHP6Wdr9v9Jiif3w5Rpg5WWflfBe/rA0Fx5ESfd7OVwT82FHdRlMcYFRCN
+         J5BQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767833890; x=1768438690;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=DOF/Tt4P+IDAmL5JEu3WdnhqLfRy4vGwq61c0MdHSwE=;
+        b=AmB5IzY3RyzNy81eOpPacaR1Sf3roR7ykHGcCenicAebVqnz7JTAQpJixYzfOf66IE
+         cVZl85rQ64I0uolF0rmwOHr5fKAu+4SSqzN2Y4CR29CrLRQhWq/hA7aiUGqPtzutzMC3
+         3/JkACJRGChPKD+SDsyCL77HHDeTfKCrBW1y/PCwb74nOeI/vELzVzbDn/F7vYC7OuYW
+         v8Ylw5Ol6QadNQ8IoClIVIt5l4mOlEBOMIkKmqtCCSA/TstMIKenfjgrH1WwtEm0KZzV
+         grN7SkTWFTaikoyVT+pNaF3nc3c7GppvVgr3i+TnPzeEbSF7eK3fFC8QBygJeuF1BSiu
+         qb+A==
+X-Gm-Message-State: AOJu0Yz0VHEjCBVRzak6VPqBRbXKL0MMiqFEY601qMKeh9+t6c3FQsgv
+	NDBITEzzwfnMsc2Q2eD6Slb7JPQKfWNspOMgVdw7n3FGJp2QCzjsYPoi9V53kMJ4AeTpqAjN6gT
+	C7Wvxr+gEMJuu0Aq8rwFseKz3eW1/nJI9cZRN6Q==
+X-Gm-Gg: AY/fxX7hk5OxXiveUfm6d88UP39dUhKet0vGsLvIxV3ZxJtnNUZXVMPIxEp7c09zp2s
+	SZAur8R5567ooO8G4FotImfm9MC3JIjWRUopzlQWtzF3SoOAdO/3rzfz8xtIu8QQWHOwaWLO+4Y
+	I5W8T8NOGcotZ3iqol5aD8N9Qaq9/bMPMZqEV4cjNMbb2oDbJgvjHOQsHheER1hL9MlVjwTycQz
+	RArxT6Vmn9sbjh86UN4Oq8bO8Ls5EY6ozsfNhcFUBR7ySEwzu43duM2nNpjeLqADqCr4kOFBpsx
+	ASFITw==
+X-Google-Smtp-Source: AGHT+IHjO7Yt06Vwyr6K7B/OD1oALmlvcXG49eNIHZVxIZBbag9yyp3yIw/jAqCI9MTrtoDSdPzEo9JUZfRWr7wlfkw=
+X-Received: by 2002:a05:690e:1404:b0:644:fc4b:6fad with SMTP id
+ 956f58d0204a3-64716c1979fmr4332222d50.58.1767833890005; Wed, 07 Jan 2026
+ 16:58:10 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH 00/12] drm/bridge: convert users of
- of_drm_find_bridge(), part 2
-To: Luca Ceresoli <luca.ceresoli@bootlin.com>, Maarten Lankhorst
-	<maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>, Philippe Cornu <philippe.cornu@st.com>,
-	benjamin.gaignard@linaro.org, Andrzej Hajda <andrzej.hajda@intel.com>, Neil
-	Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>,
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, Jonas Karlman
-	<jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, Adrien
-	Grassein <adrien.grassein@gmail.com>, Liu Ying <victor.liu@nxp.com>, Shawn
-	Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam
-	<festevam@gmail.com>, Inki Dae <inki.dae@samsung.com>, Jagan Teki
-	<jagan@amarulasolutions.com>
-Cc: Hui Pu <Hui.Pu@gehealthcare.com>, Thomas Petazzoni
-	<thomas.petazzoni@bootlin.com>, dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
-Content-Language: en-US
-From: Marek Szyprowski <m.szyprowski@samsung.com>
-In-Reply-To: <20260107-drm-bridge-alloc-getput-drm_of_find_bridge-2-v1-0-283d7bba061a@bootlin.com>
-Content-Transfer-Encoding: 8bit
-X-CMS-MailID: 20260107234827eucas1p27fbd224b2f588f92989d2f7bfa08ab37
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20260107131333eucas1p2ee0b7afe47dc2fafa29e893e4283962b
-X-EPHeader: CA
-X-CMS-RootMailID: 20260107131333eucas1p2ee0b7afe47dc2fafa29e893e4283962b
-References: <CGME20260107131333eucas1p2ee0b7afe47dc2fafa29e893e4283962b@eucas1p2.samsung.com>
-	<20260107-drm-bridge-alloc-getput-drm_of_find_bridge-2-v1-0-283d7bba061a@bootlin.com>
+References: <CAH1aAjJkf0iDxNPwPqXBUN2Bj7+KaRXCFxUOYx9yrrt2DCeE_g@mail.gmail.com>
+ <2025122303-widget-treachery-89d6@gregkh> <ME6PR01MB1055749AAAC6F2982C0718687AAB5A@ME6PR01MB10557.ausprd01.prod.outlook.com>
+ <CAH1aAjJjxq-A2Oc_-7sQm6MzUDmBPcw5yycD1=8ey1gEr7YaxQ@mail.gmail.com>
+ <2026010604-craftsman-uniformed-029c@gregkh> <CAH1aAj+myyuXniX9JAo5fQzHUyqtrGobhNPizc-Of8=OPgOAjw@mail.gmail.com>
+ <2026010748-seventeen-daylight-2568@gregkh>
+In-Reply-To: <2026010748-seventeen-daylight-2568@gregkh>
+From: JP Dehollain <jpdehollain@gmail.com>
+Date: Thu, 8 Jan 2026 11:57:58 +1100
+X-Gm-Features: AQt7F2pKZawDn7HZct-AwFi3NL1M3BdQvriHW_smipJUrM_H64x5lhxGSn-ZgOc
+Message-ID: <CAH1aAjK=GLKQvi6MaJsv2vANTc-f4FNX4ePUCk8AwLwGO7oPqQ@mail.gmail.com>
+Subject: Re: Fwd: Request to add mainline merged patch to stable kernels
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On 07.01.2026 14:12, Luca Ceresoli wrote:
-> This series converts all DRM bridge drivers (*) from the now deprecated
-> of_drm_find_bridge() to its replacement of_drm_find_and_get_bridge() which
-> allows correct bridge refcounting. It also converts per-driver
-> "next_bridge" pointers to the unified drm_bridge::next_bridge which puts
-> the reference automatically on bridge deallocation.
->
-> This is part of the work to support hotplug of DRM bridges. The grand plan
-> was discussed in [0].
+Thanks, I can do that, just note that these patches had already been
+previously submitted and merged into mainline:
 
-This patchset breaks Exynos DSI (Samsung-DSIM) driver operation on all 
-my test boards. I will try to debug it and provide more information 
-tomorrow though.
+1/2 - [PATCH] misc: rtsx: Add support for RTS5264 Version B and
+optimize init flow - Ricky Wu
+Link: https://lore.kernel.org/all/20250620071325.1887017-1-ricky_wu@realtek.com/
 
+2/2 - [PATCH] misc: rtsx_pci: Add separate CD/WP pin polarity reversal
+support - Ricky Wu
+Link: https://lore.kernel.org/all/20250812063521.2427696-1-ricky_wu@realtek.com/
 
-> Here's the work breakdown (➜ marks the current series):
->
->   1. ➜ add refcounting to DRM bridges struct drm_bridge,
->        based on devm_drm_bridge_alloc()
->      A. ✔ add new alloc API and refcounting (v6.16)
->      B. ✔ convert all bridge drivers to new API (v6.17)
->      C. ✔ kunit tests (v6.17)
->      D. ✔ add get/put to drm_bridge_add/remove() + attach/detach()
->           and warn on old allocation pattern (v6.17)
->      E. ➜ add get/put on drm_bridge accessors
->         1. ✔ drm_bridge_chain_get_first_bridge(), add cleanup action (v6.18)
->         2. ✔ drm_bridge_get_prev_bridge() (v6.18)
->         3. ✔ drm_bridge_get_next_bridge() (v6.19)
->         4. ✔ drm_for_each_bridge_in_chain() (v6.19)
->         5. ✔ drm_bridge_connector_init (v6.19)
->         6. … protect encoder bridge chain with a mutex
->         7. ➜ of_drm_find_bridge
->            a. ✔… add of_drm_get_bridge(), convert basic direct users
-> 	        (v6.20?, one driver still pending)
-> 	  b. ➜ convert direct of_drm_get_bridge() users, part 2
-> 	  c.   convert direct of_drm_get_bridge() users, part 3
-> 	  d.   convert direct of_drm_get_bridge() users, part 4
-> 	  e.   convert bridge-only drm_of_find_panel_or_bridge() users
->         8. drm_of_find_panel_or_bridge, *_of_get_bridge
->         9. ✔ enforce drm_bridge_add before drm_bridge_attach (v6.19)
->      F. ✔ debugfs improvements
->         1. ✔ add top-level 'bridges' file (v6.16)
->         2. ✔ show refcount and list lingering bridges (v6.19)
->   2. … handle gracefully atomic updates during bridge removal
->      A. ✔ Add drm_dev_enter/exit() to protect device resources (v6.20?)
->      B. … protect private_obj removal from list
->   3. … DSI host-device driver interaction
->   4. ✔ removing the need for the "always-disconnected" connector
->   5. finish the hotplug bridge work, moving code to the core and potentially
->      removing the hotplug-bridge itself (this needs to be clarified as
->      points 1-3 are developed)
->
-> [0] https://lore.kernel.org/lkml/20250206-hotplug-drm-bridge-v6-0-9d6f2c9c3058@bootlin.com/#t
->
-> This work is a continuation of the work to correctly handle bridge
-> refcounting for existing of_drm_find_bridge(). The ground work is in:
->
->    - commit 293a8fd7721a ("drm/bridge: add of_drm_find_and_get_bridge()")
->    - commit 9da0e06abda8 ("drm/bridge: deprecate of_drm_find_bridge()")
->    - commit 3fdeae134ba9 ("drm/bridge: add next_bridge pointer to struct drm_bridge")
->
-> The whole conversion is split in multiple series to make the review process
-> a bit smoother. Parts 3 and 4 are converting non-bridge drivers (mostly
-> encoders).
->
-> (*) One bridge driver (synopsys/dw-hdmi) is converted in another series,
->      together with its (non-bridge) users. Additionally this series converts
->      drm_of_panel_bridge_remove() which is a special case, and has a bugfix
->      for it too.
->
-> Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-> ---
-> Luca Ceresoli (12):
->        drm: of: drm_of_panel_bridge_remove(): fix device_node leak
->        drm: of: drm_of_panel_bridge_remove(): convert to of_drm_find_and_get_bridge()
->        drm/bridge: sii902x: convert to of_drm_find_and_get_bridge()
->        drm/bridge: thc63lvd1024: convert to of_drm_find_and_get_bridge()
->        drm/bridge: tfp410: convert to of_drm_find_and_get_bridge()
->        drm/bridge: tpd12s015: convert to of_drm_find_and_get_bridge()
->        drm/bridge: lt8912b: convert to of_drm_find_and_get_bridge()
->        drm/bridge: imx8mp-hdmi-pvi: convert to of_drm_find_and_get_bridge()
->        drm/bridge: imx8qxp-ldb: convert to of_drm_find_and_get_bridge()
->        drm/bridge: samsung-dsim: samsung_dsim_host_attach: use a temporary variable for the next bridge
->        drm/bridge: samsung-dsim: samsung_dsim_host_attach: don't use the bridge pointer as an error indicator
->        drm/bridge: samsung-dsim: samsung_dsim_host_attach: convert to of_drm_find_and_get_bridge()
->
->   drivers/gpu/drm/bridge/imx/imx8mp-hdmi-pvi.c | 15 +++++++-------
->   drivers/gpu/drm/bridge/imx/imx8qxp-ldb.c     |  3 ++-
->   drivers/gpu/drm/bridge/lontium-lt8912b.c     | 31 ++++++++++++++--------------
->   drivers/gpu/drm/bridge/samsung-dsim.c        | 28 ++++++++++++++++---------
->   drivers/gpu/drm/bridge/sii902x.c             |  7 +++----
->   drivers/gpu/drm/bridge/thc63lvd1024.c        |  7 +++----
->   drivers/gpu/drm/bridge/ti-tfp410.c           | 27 ++++++++++++------------
->   drivers/gpu/drm/bridge/ti-tpd12s015.c        |  8 +++----
->   include/drm/bridge/samsung-dsim.h            |  1 -
->   include/drm/drm_of.h                         |  6 +++++-
->   10 files changed, 69 insertions(+), 64 deletions(-)
-> ---
-> base-commit: 2bcba510a612cea32b8a536eedeabd7fcb413cd0
-> change-id: 20251223-drm-bridge-alloc-getput-drm_of_find_bridge-2-12c6bbcb6896
->
-> Best regards,
+The request is to also get them merged into all previous stable
+versions. Apologies if I'm missing some trivial context, I'm just
+learning about the kernel development process and I'm not across this
+process of porting patches across kernel versions.
 
-Best regards
--- 
-Marek Szyprowski, PhD
-Samsung R&D Institute Poland
+Cheers,
+JP
 
+On Wed, 7 Jan 2026 at 17:41, Greg KH <gregkh@linuxfoundation.org> wrote:
+>
+> On Wed, Jan 07, 2026 at 04:43:42PM +1100, JP Dehollain wrote:
+> > Apologies greg, I just realised that there is a prior commit
+> > 587d1c3c2550abd5592e1f0dc0030538c9ed9216 that needs to be merged
+> > before the 807221d can pass the build.
+>
+> Great, please submit a patch series of this, that are properly tested,
+> so we know exactly what to do here.
+>
+> thanks,
+>
+> greg k-h
 
