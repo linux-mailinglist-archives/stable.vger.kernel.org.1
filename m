@@ -1,291 +1,244 @@
-Return-Path: <stable+bounces-206320-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206322-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9BEAD031B2
-	for <lists+stable@lfdr.de>; Thu, 08 Jan 2026 14:42:44 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B739D0314C
+	for <lists+stable@lfdr.de>; Thu, 08 Jan 2026 14:37:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 06D683008F80
-	for <lists+stable@lfdr.de>; Thu,  8 Jan 2026 13:32:33 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0240B30953F5
+	for <lists+stable@lfdr.de>; Thu,  8 Jan 2026 13:26:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C76CE426EC9;
-	Thu,  8 Jan 2026 11:14:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC93C4A33ED;
+	Thu,  8 Jan 2026 11:19:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="QJmEf5xa"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="c0TLReBb"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012002.outbound.protection.outlook.com [52.101.53.2])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B17AE3D667E;
-	Thu,  8 Jan 2026 11:14:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767870883; cv=none; b=KbhoLnHZWyFB5euZjzb0bmbI+K3qyPusdxnpVghnlmaPL626ZN/c+xU5IOyaNvvBDUorPLhPDoLF3uHqkHDl6Im+veDDmS86eBSiFQ97kiz8oeMw481I+n3V+/R1xKwPiRUtX2ud24DRkYKAONOkpihB3SfaNU/F/448RpVZu4k=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767870883; c=relaxed/simple;
-	bh=ywgoonqrHEulCSTxd2vQbUsmE3aTMGyUzZCUyxMj/qg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SaWdMXUoR7sCTqSUduPOOgWQPfE5Q4xIBGQDIuByBTcsFfaN+KxwDVlwavCQTsS2VYHL9oWnUS2JkAe070Tpx6Sby4TKUOgCmcZ87uuLzyWEMu6jtHJxI8Yjc1DJIu73JdtyU7I2RBZHS1l0MIJoMq2CJHnxuYcVN5qMDxiNNOU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=QJmEf5xa; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 6089xbdW011316;
-	Thu, 8 Jan 2026 11:14:07 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=VOrHBz
-	WPYvLqCnour3T5CPii1OlReIp2gg08NbPqsxE=; b=QJmEf5xaNI8LhBXQvy3vtP
-	vNGW0kjNlbKIEuBxeWI/pLwt7RCnHdoB+vA2rNDnzbAoYiBoWExjlz9U75w821lX
-	B5Ot5PhTfeisSuN2huPFJVW5CKBMMnj++JK6sQeGu5UhYyA98jVllZwgjl9rMQjA
-	/ri8glSjsv/g4B0lIIyXdWgT/6GmgDnKZGGCy2nOpwxlL6vVGoD7yPNdyh51+MD+
-	DprwiaAuEbSH+8nx+uxniwMEq7AblOXepw4QGG/kMYCqZEeKA6MBoxfBij+TnNIo
-	GQ3Fo0xBQTu6NtroXspW+9dgyHlUHqVAHXQ6MApbj7MAKr4+E88JOZbHRJJJoofw
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4berhkcr1t-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 08 Jan 2026 11:14:06 +0000 (GMT)
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 608BE64b013346;
-	Thu, 8 Jan 2026 11:14:06 GMT
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4berhkcr1r-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 08 Jan 2026 11:14:06 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 6088DhBb015242;
-	Thu, 8 Jan 2026 11:14:05 GMT
-Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4bfdespn14-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 08 Jan 2026 11:14:05 +0000
-Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com [10.39.53.229])
-	by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 608BE3j827722362
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 8 Jan 2026 11:14:03 GMT
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BA0C658059;
-	Thu,  8 Jan 2026 11:14:03 +0000 (GMT)
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9D84F58058;
-	Thu,  8 Jan 2026 11:13:59 +0000 (GMT)
-Received: from [9.109.209.83] (unknown [9.109.209.83])
-	by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Thu,  8 Jan 2026 11:13:59 +0000 (GMT)
-Message-ID: <ebbc7ae7-2eb5-4b92-99e9-549c289b995c@linux.ibm.com>
-Date: Thu, 8 Jan 2026 16:43:57 +0530
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 912994A2E03;
+	Thu,  8 Jan 2026 11:19:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.53.2
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1767871156; cv=fail; b=SrHWgSHkA2A5NYyQfTelbONSLR96e3swu0vVstjaCpcUrXPuVtL4a4thIvRj9HKN4INny4OJsQL6ifnl0DY+WeMOZrx+C7XdN8axJltXTxFUst9fwd4HdWdMW6kPn+iohFmPsFu/N6jLRdo09qOWoRzXCejV/66p6bXB3eu65YM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1767871156; c=relaxed/simple;
+	bh=3y3cHGZIPruYkshcFxlI8m0jGo6dbXoVVtxquqUjbzc=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=BXw7G8TS4+RjWpJUo8Y3Go/HjI8EdcoKPzaU0NiBcWanviHFpAwKdL7S8LO+pYLbEzDNGOjEddGtIgch/xLmI2Y59ZCMieBgeRhwULFr8yYBmgecakQUcAuf/sj1/73hKCCIDyQ14QYBTR4muKelpRVQHY4A5W7j9m06rsCa+Hk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=c0TLReBb; arc=fail smtp.client-ip=52.101.53.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=jFGdhu8SiZuOZh4XLoxtrxK+QTOHo5b04rhGpyFg2TIlxZeHuXPdAGNN9mRLJEyFcjjwZf/I+AaP0O8K/T6/yOq39Y07SOGe1VG0YRplOt9JAC4hh/9R3rGvkbWIc23P1AHptgKzj225S8ox2IWkJx3zSEahcekwGfIVqxCLY3jpqPaEpdfV8+SsOtrorZPgErOeX7DnSodoGazHEs/8T+83HBdlCdld+rPwfq1foCn29MQDwOcpnwgV3KsGshqqakoysmQKubtdPQUIiAq8rxxHOpmQOxGR9hqeqRv/ItkqYKG/nTPYD+ZE73LKnSA5lqGSEhJ/1EupUyzNCe9Y0g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=FAQLH2zBK29S218lvi7G0mEI6QXCHdZcZDlA9DttlL4=;
+ b=RTiO18ulth5L1WjWigm+H6DX9l6jaLPMc2Ireh7l9LeR21KJ8fJiIkoACv6j4lWaObUoimIANnw/4wnSWP7vIfLGK3s1GUFJkx209KLXt3cktovBlHV+ZhcPQAayVplG+dLb7/5pUGcxciKgQmfcyEMHgG4ZaW43unTcPD5LWHj1KBsIBD73bRJgNVLwHIQtLlSnxDBUWVEE+ccI+XddiyXoXPypHgJ9WylarmbxZjkzuwRT/XHSmdPtvecy0qzTBipBfyzQdFMoSiJ7MU7NMqHIsAVpsPYgWCZRdiiyq0T4dH8roK0dGVnLyIjRbUCy4yZlzVDt77n6dPNhjmmkkg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=FAQLH2zBK29S218lvi7G0mEI6QXCHdZcZDlA9DttlL4=;
+ b=c0TLReBbpsUE3scu8cXh1AMWWQFN0pzkrfyjUfU5A9nz2rsZIZHAOHiLpdv9a+slSHSTduXlkJYrnR8+XWDCugs3DBmcPDyh2TNmr7mesSXIhB9sLE90xtVl0k787RueRBwf58yN8EE9JncqaHOGPAUUVdZgthMCFmxQmV2Dwk6q8kV8xPhobMOpMa6WnDa03PwGGDMQzom0kRLdPWZlpVkALk6efNuIS/yPAzpcLvQlAq+I1ivf6aZODM/1PPpsKNbhIR1d57KblmN3uA754HmDw7V8N5mTaNWoYpKevmIujOjmwZKxNTNbwjeUgJhld+d0fu+Q6atvXST04x+kQw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from MN0PR12MB5716.namprd12.prod.outlook.com (2603:10b6:208:373::14)
+ by SN7PR12MB6862.namprd12.prod.outlook.com (2603:10b6:806:265::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.4; Thu, 8 Jan
+ 2026 11:19:04 +0000
+Received: from MN0PR12MB5716.namprd12.prod.outlook.com
+ ([fe80::bac8:2b43:2a64:4c76]) by MN0PR12MB5716.namprd12.prod.outlook.com
+ ([fe80::bac8:2b43:2a64:4c76%6]) with mapi id 15.20.9499.003; Thu, 8 Jan 2026
+ 11:19:04 +0000
+Message-ID: <3207ed15-cdaa-40d4-bce2-9add6a7bc3e8@nvidia.com>
+Date: Thu, 8 Jan 2026 16:48:14 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] ACPI: bus: Use OF match data for PRP0001 matched
+ devices
+To: Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc: lenb@kernel.org, mika.westerberg@linux.intel.com,
+ andriy.shevchenko@linux.intel.com, thierry.reding@gmail.com,
+ jonathanh@nvidia.com, linux-acpi@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20260107120318.13130-1-kkartik@nvidia.com>
+ <aV5T3Lh4TxvpOZi4@kekkonen.localdomain>
+Content-Language: en-US
+From: Kartik Rajput <kkartik@nvidia.com>
+In-Reply-To: <aV5T3Lh4TxvpOZi4@kekkonen.localdomain>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: PN2PR01CA0183.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:c01:e8::9) To MN0PR12MB5716.namprd12.prod.outlook.com
+ (2603:10b6:208:373::14)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] powerpc/pseries: Fix MSI-X allocation failure when
- quota is exceeded
-To: Nilay Shroff <nilay@linux.ibm.com>, Nam Cao <namcao@linutronix.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Thomas Gleixner <tglx@linutronix.de>, maz@kernel.org,
-        gautam@linux.ibm.com, Gregory Joyce <gjoyce@ibm.com>,
-        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org
-References: <20260107100230.1466093-1-namcao@linutronix.de>
- <1fda7021-ec31-40ed-bfd8-e0e9b657662f@linux.ibm.com>
-Content-Language: en-US
-From: Madhavan Srinivasan <maddy@linux.ibm.com>
-In-Reply-To: <1fda7021-ec31-40ed-bfd8-e0e9b657662f@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=P4s3RyAu c=1 sm=1 tr=0 ts=695f917e cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=LTgroE_r0Rx6dzEudaAA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: z2DVWXM9WqHD0m2emh8IGzZxxO4ughpL
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTA4MDA3MyBTYWx0ZWRfX/kKWLhLK2qmZ
- Y/83TiBiyihaKZVf6Tip3PbKjUKMLLblw+b/l06NPydiH8WSgHh9TmjlW0zIq4KdJjwSF7xjCeC
- 0mkzDL0ivyc6CzfJizZT68gBEUOSHy6SrpWHmgko+i+bpb2ZyAcMUQhnVig5Vu/gjDdvfrb5tGG
- MRAc9u2D4nAzEsPCSIAhdSH0yCO3AjVYDnxY4c/LzakoT6I/P6+cx2nScP0a2r8I2lAliAh2VYK
- 1GQTIeYGhZJaieuxROrXMSgD5zZJjhnVFtxvdMwECYE3oEgDpoPSUN/YEr9DN03YHPCKKhmREXG
- nQCl8Aa4OqyDwXdluH+Su2OsdKvoTnHe3owj/XHXaKcztBk9hfkMMV+eNOHM3Kfemin7k86rnka
- XZ4H0vqV+HO1iLgm/AknnYz5iF3U4erOob4i0fKHI5rnxnkjnAeTrZwa+4Kt/Rrtrw3CyeuDIla
- N2HRHFcDeH7NhG/Q39A==
-X-Proofpoint-GUID: 7PQIpYKgEczd8DbcgUQj5Dfwg4HDregf
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2026-01-08_02,2026-01-07_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 bulkscore=0 priorityscore=1501 clxscore=1015 suspectscore=0
- phishscore=0 adultscore=0 spamscore=0 impostorscore=0 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2512120000 definitions=main-2601080073
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MN0PR12MB5716:EE_|SN7PR12MB6862:EE_
+X-MS-Office365-Filtering-Correlation-Id: d62a29d5-3c62-454c-ea39-08de4ea7bb29
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?eFpJeXI3N3Q1ZVZBbDJ5Z0IxbVVzNm9BVzM3ZWNOMUt6YytnMTRTWTRGR3VV?=
+ =?utf-8?B?NUI5VTQ1V0t2dnZKdFphZncvVlN4VWVBUjFDNnNKYnU5OThhaE95SktIMEh1?=
+ =?utf-8?B?elFiWm9QeVkwLzRlbHBpM2JtOElPOUNxZStGa2haRmVBR015UmpWR0tpWWRE?=
+ =?utf-8?B?UWN5OXB5RVZHenNUSHBrVVBFeDF2RWt1a0h2QWh5K1loWk5RQzdybVdsMW1x?=
+ =?utf-8?B?MEUvQUFWcnhKUWQ5dnpJbDk1SHlGREMwbzl4Sy9TNEtLVjhqcG1XTm02Mm96?=
+ =?utf-8?B?alJDaVV1bXdnSUtjM3dWVkpzYnkvZGM4YW1HbDRhazRtM2VFTXk1c3dZb3BY?=
+ =?utf-8?B?VGRNQXNBVUNwclA4V21oT1phVXFISlNKV1BPV1pObExsbEVkaTJ0a3BhWnk2?=
+ =?utf-8?B?a3ZBajBDMTR3bkJxaitETjNaTWJXUFZWd2IyZmU5cStQMmFiUnF0K2VhZDNZ?=
+ =?utf-8?B?WUkxZHBjRjJ4V29JbitxemxGQ2hva0Z5MHBNdHVUSUQ3YWxESDZPSm0vQTNr?=
+ =?utf-8?B?QnJxRERXWDhWMUNOZGxjTW1yM2liemNhZGFtaXFhRWp3d3lUd2dPdXBSUVJG?=
+ =?utf-8?B?Y1pOajFiS04vbTMrTG9PMFRpVXpiRlZiMWo4bWFkaVFtRC9hNlhPSmZyckVC?=
+ =?utf-8?B?S3B6Skp6dE04ekZndTNKRDhEMCs5aEJkUldIbDNaMVA3cDQ5dTMvZWZBQysx?=
+ =?utf-8?B?cG5rbjlZRmVpcktaM2NCR09HUGNGY1NHbXBzU3dpT3o0WUVQbGI0cVErMThz?=
+ =?utf-8?B?dkp5T05uUU9jRU1iUXBOWmJuY2g5elZDRWRRMWNySGhUMFRHVHo4d1pEaVkw?=
+ =?utf-8?B?bzI2ckpwNUVWRXJITEZjTTM3eis4UmFhMlhvKy9vNzdzQ3B6VjRpaGMwMC9L?=
+ =?utf-8?B?QVl3QnlUWGFZZXpwa3RxWTBkbkt6WGQybzlMbHBnYVpJWGtTMlh6MVM0cjlp?=
+ =?utf-8?B?SVNLWWZVUUdTMndNYWNnaThVY3A4cTVGY093c0FhVUJQZ2h2K3g2cHhhWmpH?=
+ =?utf-8?B?MExFS0ZCMnR3a2NLQktrdklUbkFYUStWY0pEWjh3ZG5pWm5rdWYxaXNwTUJE?=
+ =?utf-8?B?bGxYN0QzTEkwaWpCT3ZEVUxJT2JmOW9CdlFxMmxWOGFhVHZaTjRsZ2ZuaFZL?=
+ =?utf-8?B?ZzhrVnBRUnIvaHg0VG10Zzc2UklhR1krUHBhdnJGSkszb3hydUkva1h3Z3p5?=
+ =?utf-8?B?TU1jWlB4QURnK1lUUG9HeUxoWnhvRjREWFlwSWx4MkZaNlg3VkJZVEhHU0Rt?=
+ =?utf-8?B?aml3b2c2Z2dTWXlydzV0NEhBVUZhaU90K1Z2TUw4b2dTNXVCU1pjaHRUVW43?=
+ =?utf-8?B?UlNkSEc5QmNBZnhsK3ljaDQ4YXlzYmd4MHlMTU4zaUhRdXhaNmJ1Q1U5Z2pB?=
+ =?utf-8?B?eVcyczZDL2hlZldscTlmcm01ZnVxR3NKVjJIWlpvam1YUExZanpzNWhmbzdu?=
+ =?utf-8?B?NVJMMXRVZzg0TUE3c0xRbVdsanN2a0VxTjNMdEg3UUFEL0l5bzNpSnBiU0tl?=
+ =?utf-8?B?YU5ZV2x3THByWWxFVk5NOUNMZWxWQTRYNCtqSGRrTVNPSU1rcThpS3k0SnY5?=
+ =?utf-8?B?d0FheUxEQlNuNFZlaHlETTN2Z2Y2V21YQTlYNm5iT09TVFpTVjZZTlpBcGUx?=
+ =?utf-8?B?YTErN3NmRXJicitBVkx3YlBiVkFNTk43eVdlZ0lIOXUzVUE4eE82NVhxc05h?=
+ =?utf-8?B?eE1xOVV0YlIxb0V4TTJ1Vm5HN0RZaUZOeG9jZ0g2NG1Yb1YwalQrVEhUSnlZ?=
+ =?utf-8?B?Qk5UMGg0UGhOa3IyUGwxVWJzYmlleWlGUnVUR01NSTRtQzNBVks3M1dUZkp5?=
+ =?utf-8?B?QUNCSjgycWpnNDltZ3dwZURpQW8xVFRDR2FubzZLNDVpalg2aUpXMWpWcWQz?=
+ =?utf-8?B?emVmWm5GMVdUcWxpK2JCQlRhaUMrU0pRKzNIQ3RDRFIydnVnVXR5VTBpOG5v?=
+ =?utf-8?Q?gZ/an/Q13s6NOQnfhyMcyPapjhDz/VNC?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB5716.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?cDJ0bk1PWUdkMDdlMFA0V0tmc295Njd1WFgzU0Qxb1cwQU5wbDM5WUJESjhB?=
+ =?utf-8?B?T3hUb0phUVJMZFVFdUZtSU41WDlJeFJseHRxZjdoWHFOQ0lYeWVtcXV6bEx6?=
+ =?utf-8?B?WjU2ZGo4THhPR0x2Sm5ZT0ZXK1BIYWtYT3N0TVcrdGRLS3pUaWhDN2I4Zk5p?=
+ =?utf-8?B?RUhnMm9EaWJMUWVDVEFJS0pqN2tWd1VmYUxoQlRnVjlRdDJYemV3eWtud1Nx?=
+ =?utf-8?B?Mjkwdm1jQ2NHMnhkOXB1MUxlTlFxT0RYNzhHd3hGS3ZXQ3dnS3JjUWhqTHc5?=
+ =?utf-8?B?M3c3WmJBNzh3ZHU4SUZqUStIV21xSmZWNGdNbnlHbGpnRFBFVlhsWXJDY0xH?=
+ =?utf-8?B?YVF4eFd6REExcnRjSXlBZ3h3VnN1ZWVGVzlYTjE5VklIdndMVXRYSGJOMkZ3?=
+ =?utf-8?B?VzNYOTA0TUJCUk5VMTR1OTE1MkZQcGdEek9EQ0RobzhZVkNJUmJCRzVGQVpG?=
+ =?utf-8?B?U2djelk1UUJjeWRBUlFXVWVweVZTWkR5VDdsYThEVVBhQW1QelZTVHc4Q1du?=
+ =?utf-8?B?VXkyUmN2cVVMNHBkUDZ4MnczRjhvcWQ4UWVaNjYxZ21OMWFLYWxpbTd2SUhX?=
+ =?utf-8?B?Q1hGb1BHeDAwR3RKZVJRbjVOdWNONnlXQXVIam1MYUdrRGdkenQyNXdFa2kx?=
+ =?utf-8?B?cnFxTGJUeHU3Z01zeTFnUUk1VHh0STNhdHhBZlVDMFNuL1QrWkJDczI5Rk9o?=
+ =?utf-8?B?VThSTlFFVitybWZ1aEIrcUEwbFlDd0t2Skw3eUNxTnBtakRRbVhxdHl3Ymxk?=
+ =?utf-8?B?U2hzTzhySXczcWNaTFc0Vkgzb09seTRkejNrNTBTS0owT0dzNm5XMXpNak5Y?=
+ =?utf-8?B?bzZ2WE1HQncxelFBVU83Myt2TlloWnZQakxqNmE4d2pCOXE3NERJdGcydE1I?=
+ =?utf-8?B?aC9HS1N3RmxXdWlWdzR2TXZ1MHpIQWFJMkw5NGdHMXhXemU0bGtzWTREdDZx?=
+ =?utf-8?B?VUJLOXpxRzNWYSt2bEVoQzZOeXpJZlJNMlhzVk1tK0JHY1I1Q3NtKzF0QTJZ?=
+ =?utf-8?B?V0pseUh5M1AxSDgvTEJDQkI3K0RIY01hUE9nbzJ5ak1NYXNmNnNhNnVmeE5p?=
+ =?utf-8?B?TWFKZElFSHJlUHl0ZFpvd3lxT1h6TVdSTXlyQmVBOENxaFhFbGl5N1UzTllG?=
+ =?utf-8?B?SDI0K28xRE5EM1FrWjFXdDA3cGtsaEc0eFlhUlZPMmVlZmFtV1pIRWhlWGdM?=
+ =?utf-8?B?OFcvdHpCR2J5WWVuS2FqUHlHYWlDdVk3VThDM3V0VUJGazIvY3FpOG1xZWsw?=
+ =?utf-8?B?QmxUdUUyMVQxOXdUK1BVYmtIT0UwZkppeHZhZ2UvV1JmTHlpMEo4aHJCWEdv?=
+ =?utf-8?B?V21wZkw4SHBFckpCVzVqdmc4ME14bXRwQWFkS1VXb0szWFNkb2k5WW4xek5p?=
+ =?utf-8?B?MGVObFdlV09oOSs5azNkNDAyc3ZjOFV6U0xvbVlxSWtjRU1Sa3RHcjVjeEJV?=
+ =?utf-8?B?MVlVeWpBSEgxMklqWXhkYlFZNjFoNHZqOEtiTUdpcmJQY3hVcFdNdEt3cGZp?=
+ =?utf-8?B?K2ZhdFRldUN2NmR1dFBLTTNxUEYzQkNMMURsTTFhb3ZhK2tnV0N2bXB1V0Y5?=
+ =?utf-8?B?SE9xZThZdEdZN1FpQzBacWFqWXhZZGhGaEpxUHFNM2lkNkpldWJKRGhiaGU5?=
+ =?utf-8?B?SGVWOW91bml4bUZmT3g0aGF3ZDdkVHYyS29QK3hMdkRJbitCejJ3ckRpOC9h?=
+ =?utf-8?B?Wm5YUDlDTzFCck9vcUlnbWZaNjByMzNBMzdPSXp5MDZOT3RaTmpaRmY3SEo3?=
+ =?utf-8?B?QUcyVmd0ZGhaTVJKVXV5bzFYMW1kZjlYellUUFovVUZYYW5Vb1gyb1JIenI2?=
+ =?utf-8?B?NSsralhUc3N6RFU3NXNwRSt0NW1FRFU2NTFreWxrWEVlQTFtRlRJM2RUbll6?=
+ =?utf-8?B?MGV2MkFFcW9HZU8zTVpWak95cEQ2ckVOalZlOGtpUmpFMmdkVlc4TmNWUUo2?=
+ =?utf-8?B?UWhDbDk3S1ozVTlCbFo5MGhLSVVVUGpEQjh6ZXJvbGZIWXBhcjh0TDlsMjlm?=
+ =?utf-8?B?Z0xDQk85QlhQS29MQ25ZQm4yOGhaT2s5aWs3TGNKMzJVM1EvYkp1VStkZ3JS?=
+ =?utf-8?B?WDRlRkRFU3RWVkh0SkNvVlcwcTBlaEE5R0h5QjFUb1crcUd1R1QwU0hmNnF5?=
+ =?utf-8?B?UEFKN0ZpdnNnYWlaNkYxQ1NjZXphSlJlZ1RhODNPZXRLSWJrZEJkVEt6RXVk?=
+ =?utf-8?B?bmVKaGVQZHhCN09SZnBJa2VNTE5DaFp6SEROZlVLM0x1aDNoRmVjQkV5Mzln?=
+ =?utf-8?B?eTVqMTVpbloxeHRXZ0ZUN2tucXdGREoyT2M2NXc2Mm1mZGNVd0cyRFZoKzhq?=
+ =?utf-8?B?ekR3YVdZRTB2SWg1Vlh5bmoxbEtrODYweGZnOWs4OE82TUtmRlE4dz09?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d62a29d5-3c62-454c-ea39-08de4ea7bb29
+X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB5716.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jan 2026 11:19:04.3238
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 28TuDQyfSTPGmOnhClHx8uBmFlzKtOqytj2JapRf+R+NLdK8E38acmdfmX1mnrzcMDgWUY0rRu+HDaq2LkYgAA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB6862
 
-
-On 1/7/26 7:55 PM, Nilay Shroff wrote:
->
-> On 1/7/26 3:32 PM, Nam Cao wrote:
->> Nilay reported that since commit daaa574aba6f ("powerpc/pseries/msi: Switch
->> to msi_create_parent_irq_domain()"), the NVMe driver cannot enable MSI-X
->> when the device's MSI-X table size is larger than the firmware's MSI quota
->> for the device.
+On 07/01/26 18:08, Sakari Ailus wrote:
+> External email: Use caution opening links or attachments
+> 
+> 
+> Hi Kartik,
+> 
+> On Wed, Jan 07, 2026 at 05:33:18PM +0530, Kartik Rajput wrote:
+>> When a device is matched via PRP0001, the driver's OF (DT) match table
+>> must be used to obtain the device match data. If a driver provides both
+>> an acpi_match_table and an of_match_table, the current
+>> acpi_device_get_match_data() path consults the driver's acpi_match_table
+>> and returns NULL (no ACPI ID matches).
 >>
->> This is because the commit changes how rtas_prepare_msi_irqs() is called:
+>> Explicitly detect PRP0001 and fetch match data from the driver's
+>> of_match_table via acpi_of_device_get_match_data().
 >>
->>    - Before, it is called when interrupts are allocated at the global
->>      interrupt domain with nvec_in being the number of allocated interrupts.
->>      rtas_prepare_msi_irqs() can return a positive number and the allocation
->>      will be retried.
->>
->>    - Now, it is called at the creation of per-device interrupt domain with
->>      nvec_in being the number of interrupts that the device supports. If
->>      rtas_prepare_msi_irqs() returns positive, domain creation just fails.
->>
->> For Nilay's NVMe driver case, rtas_prepare_msi_irqs() returns a positive
->> number (the quota). This causes per-device interrupt domain creation to
->> fail and thus the NVMe driver cannot enable MSI-X.
->>
->> Rework to make this scenario works again:
->>
->>    - pseries_msi_ops_prepare() only prepares as many interrupts as the quota
->>      permit.
->>
->>    - pseries_irq_domain_alloc() fails if the device's quota is exceeded.
->>
->> Now, if the quota is exceeded, pseries_msi_ops_prepare() will only prepare
->> as allowed by the quota. If device drivers attempt to allocate more
->> interrupts than the quota permits, pseries_irq_domain_alloc() will return
->> an error code and msi_handle_pci_fail() will allow device drivers a retry.
->>
->> Reported-by: Nilay Shroff <nilay@linux.ibm.com>
->> Closes: https://lore.kernel.org/linuxppc-dev/6af2c4c2-97f6-4758-be33-256638ef39e5@linux.ibm.com/
->> Fixes: daaa574aba6f ("powerpc/pseries/msi: Switch to msi_create_parent_irq_domain()")
->> Signed-off-by: Nam Cao <namcao@linutronix.de>
->> Acked-by: Nilay Shroff <nilay@linux.ibm.com>
+>> Fixes: 886ca88be6b3 ("ACPI / bus: Respect PRP0001 when retrieving device match data")
 >> Cc: stable@vger.kernel.org
+>> Signed-off-by: Kartik Rajput <kkartik@nvidia.com>
 >> ---
->> v2:
->>    - change pseries_msi_ops_prepare()'s allocation logic to match the
->>      original logic in __pci_enable_msix_range()
->>
->>    - fix up Nilay's email address
+>> Changes in v2:
+>>        * Fix build errors.
+> 
+> Thanks for the update.
+> 
 >> ---
->>   arch/powerpc/platforms/pseries/msi.c | 44 ++++++++++++++++++++++++++--
->>   1 file changed, 41 insertions(+), 3 deletions(-)
+>>   drivers/acpi/bus.c | 3 ++-
+>>   1 file changed, 2 insertions(+), 1 deletion(-)
 >>
->> diff --git a/arch/powerpc/platforms/pseries/msi.c b/arch/powerpc/platforms/pseries/msi.c
->> index a82aaa786e9e..edc30cda5dbc 100644
->> --- a/arch/powerpc/platforms/pseries/msi.c
->> +++ b/arch/powerpc/platforms/pseries/msi.c
->> @@ -19,6 +19,11 @@
->>   
->>   #include "pseries.h"
->>   
->> +struct pseries_msi_device {
->> +	unsigned int msi_quota;
->> +	unsigned int msi_used;
->> +};
->> +
->>   static int query_token, change_token;
->>   
->>   #define RTAS_QUERY_FN		0
->> @@ -433,8 +438,28 @@ static int pseries_msi_ops_prepare(struct irq_domain *domain, struct device *dev
->>   	struct msi_domain_info *info = domain->host_data;
->>   	struct pci_dev *pdev = to_pci_dev(dev);
->>   	int type = (info->flags & MSI_FLAG_PCI_MSIX) ? PCI_CAP_ID_MSIX : PCI_CAP_ID_MSI;
->> +	int ret;
->> +
->> +	struct pseries_msi_device *pseries_dev __free(kfree)
->> +		= kmalloc(sizeof(*pseries_dev), GFP_KERNEL);
->> +	if (!pseries_dev)
->> +		return -ENOMEM;
->> +
->> +	while (1) {
->> +		ret = rtas_prepare_msi_irqs(pdev, nvec, type, arg);
->> +		if (!ret)
->> +			break;
->> +		else if (ret > 0)
->> +			nvec = ret;
->> +		else
->> +			return ret;
->> +	}
->>   
->> -	return rtas_prepare_msi_irqs(pdev, nvec, type, arg);
->> +	pseries_dev->msi_quota = nvec;
->> +	pseries_dev->msi_used = 0;
->> +
->> +	arg->scratchpad[0].ptr = no_free_ptr(pseries_dev);
->> +	return 0;
->>   }
->>   
->>   /*
->> @@ -443,9 +468,13 @@ static int pseries_msi_ops_prepare(struct irq_domain *domain, struct device *dev
->>    */
->>   static void pseries_msi_ops_teardown(struct irq_domain *domain, msi_alloc_info_t *arg)
+>> diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
+>> index 5e110badac7b..6658c4339656 100644
+>> --- a/drivers/acpi/bus.c
+>> +++ b/drivers/acpi/bus.c
+>> @@ -1031,8 +1031,9 @@ const void *acpi_device_get_match_data(const struct device *dev)
 >>   {
->> +	struct pseries_msi_device *pseries_dev = arg->scratchpad[0].ptr;
->>   	struct pci_dev *pdev = to_pci_dev(domain->dev);
->>   
->>   	rtas_disable_msi(pdev);
->> +
->> +	WARN_ON(pseries_dev->msi_used);
->> +	kfree(pseries_dev);
->>   }
->>   
->>   static void pseries_msi_shutdown(struct irq_data *d)
->> @@ -546,12 +575,18 @@ static int pseries_irq_domain_alloc(struct irq_domain *domain, unsigned int virq
->>   				    unsigned int nr_irqs, void *arg)
->>   {
->>   	struct pci_controller *phb = domain->host_data;
->> +	struct pseries_msi_device *pseries_dev;
->>   	msi_alloc_info_t *info = arg;
->>   	struct msi_desc *desc = info->desc;
->>   	struct pci_dev *pdev = msi_desc_to_pci_dev(desc);
->>   	int hwirq;
->>   	int i, ret;
->>   
->> +	pseries_dev = info->scratchpad[0].ptr;
->> +
->> +	if (pseries_dev->msi_used + nr_irqs > pseries_dev->msi_quota)
->> +		return -ENOSPC;
->> +
->>   	hwirq = rtas_query_irq_number(pci_get_pdn(pdev), desc->msi_index);
->>   	if (hwirq < 0) {
->>   		dev_err(&pdev->dev, "Failed to query HW IRQ: %d\n", hwirq);
->> @@ -567,9 +602,10 @@ static int pseries_irq_domain_alloc(struct irq_domain *domain, unsigned int virq
->>   			goto out;
->>   
->>   		irq_domain_set_hwirq_and_chip(domain, virq + i, hwirq + i,
->> -					      &pseries_msi_irq_chip, domain->host_data);
->> +					      &pseries_msi_irq_chip, pseries_dev);
->>   	}
->>   
->> +	pseries_dev->msi_used++;
->>   	return 0;
->>   
->>   out:
->> @@ -582,9 +618,11 @@ static void pseries_irq_domain_free(struct irq_domain *domain, unsigned int virq
->>   				    unsigned int nr_irqs)
->>   {
->>   	struct irq_data *d = irq_domain_get_irq_data(domain, virq);
->> -	struct pci_controller *phb = irq_data_get_irq_chip_data(d);
->> +	struct pseries_msi_device *pseries_dev = irq_data_get_irq_chip_data(d);
->> +	struct pci_controller *phb = domain->host_data;
->>   
->>   	pr_debug("%s bridge %pOF %d #%d\n", __func__, phb->dn, virq, nr_irqs);
->> +	pseries_dev->msi_used -= nr_irqs;
->>   	irq_domain_free_irqs_parent(domain, virq, nr_irqs);
->>   }
->>   
-> I just tested this change on my system using the latest mainline kernel and it works
-> well for me. So with that, please fell free to add,
->
-> Tested-by: Nilay Shroff <nilay@linux.ibm.com>
+>>        const struct acpi_device_id *acpi_ids = dev->driver->acpi_match_table;
+>>        const struct acpi_device_id *match;
+>> +     struct acpi_device *adev = ACPI_COMPANION(dev);
+>>
+>> -     if (!acpi_ids)
+>> +     if (!strcmp(ACPI_DT_NAMESPACE_HID, acpi_device_hid(adev)))
+> 
+> I'd swap the arguments to have the static one on the right, i.e.
+> 
+>          if (!strcmp(acpi_device_hid(adev), ACPI_DT_NAMESPACE_HID))
+> 
+> The patch looks good apart from that IMO.
+> 
+>>                return acpi_of_device_get_match_data(dev);
+>>
+>>        match = acpi_match_device(acpi_ids, dev);
+> 
+> --
+> Kind regards,
+> 
+> Sakari Ailus
 
-Thanks will pull this in.
-Maddy
+Hi Sakari,
 
->
+Thanks for reviewing the patch!
+
+I will make this change in the next version of this patch.
+
+Thanks,
+Kartik
 
