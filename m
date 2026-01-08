@@ -1,95 +1,225 @@
-Return-Path: <stable+bounces-206414-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206415-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80C57D066E0
-	for <lists+stable@lfdr.de>; Thu, 08 Jan 2026 23:30:17 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0FF0D0680B
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 00:02:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3D83B303898D
-	for <lists+stable@lfdr.de>; Thu,  8 Jan 2026 22:30:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 29B183020CC9
+	for <lists+stable@lfdr.de>; Thu,  8 Jan 2026 23:02:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80F6732ED34;
-	Thu,  8 Jan 2026 22:29:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 856AB2BE7D1;
+	Thu,  8 Jan 2026 23:02:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NWhbO4To"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="beeMRd7J"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012020.outbound.protection.outlook.com [40.107.200.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42A061B4223;
-	Thu,  8 Jan 2026 22:29:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767911399; cv=none; b=WDOvOZtn0NbqNPWzBmTD5HecUhO3nETild6CRkIUWcvfFG35WVqh775BdIlKcIG35T3ZnMDsF0Jj2j913gRtVS/TJpCrkgkKgXKLD8DTfqQQxetbCP5agEBs5d011HbplWINtNeH4Wi1OCo38NJlf0oxnJILRJzroopGBfruGWk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767911399; c=relaxed/simple;
-	bh=Zc539l3fQP67RQ3PA4+JN/sDBZn6/BFbAN/DKJlIfMA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aOYGlvxpw1zuHwmLNm6VossFjg+NMR+eru6bbv5iPM/9azhfQVgSQh4UEsC5w4Dr1i22WFTA8x9ddokushBvuXuLGjIGEEhR12832wIfL3JP1o1ViszWrFTztDwl3q5jCc9+3vrlIZNnb6yzKmEvOvYbV9c3ta2ufT3328zgSd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NWhbO4To; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B069C116C6;
-	Thu,  8 Jan 2026 22:29:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767911398;
-	bh=Zc539l3fQP67RQ3PA4+JN/sDBZn6/BFbAN/DKJlIfMA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NWhbO4Tojnk5cH5lfB6+pIVBs8X9zuvtraEkr/0Mxtw7iDgLp/WW9Q+0QewXqlD/f
-	 zE1XfXHgWzrqcVG8P6VkWYMLKgIP82SsKLKyvl0VVfUemMrXtQTHW0/dWmX0rh7Ts1
-	 6yOU90ivoSgw2xEhLwpTh0g3tawlLjNWerZGcQqCqlfBa7/MkvSgP5LSxgx4gs/75o
-	 vwsPS1ek9S4Fvd4wI3rn+Erw0no46eFmnfpwMG1+ouRAk73TiM2Sj1VhV/u407ne4c
-	 f4UJJ4qbi3YhgtQDn2CHLXwQ7/SzoJ6mQe3rmOszoWudR1CyNl+EKADxi/IEKFXQm0
-	 Mpbd/4Esxk3dw==
-From: Will Deacon <will@kernel.org>
-To: Catalin Marinas <catalin.marinas@arm.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Laura Abbott <labbott@redhat.com>,
-	Breno Leitao <leitao@debian.org>
-Cc: kernel-team@android.com,
-	Will Deacon <will@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	kernel-team@meta.com,
-	puranjay@kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2] arm64: Disable branch profiling for all arm64 code
-Date: Thu,  8 Jan 2026 22:29:46 +0000
-Message-ID: <176790876272.654154.10766231430439106278.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260106-annotated-v2-1-fb7600ebd47f@debian.org>
-References: <20260106-annotated-v2-1-fb7600ebd47f@debian.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBCF2247291;
+	Thu,  8 Jan 2026 23:02:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.200.20
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1767913331; cv=fail; b=cwcs9GnGwMBBmv5eQfEdIzQGmyxEYN2ALOkvkMh4RCROlhBbMGEiVT81hrkr97JZWmZ6Ua70UI5uIbdUSicZ7jHtTUXpveukIXWdw44gOWJzXtVb1B1YRII8ux61y2DYpFNe6KssNlcRI6WbMMCftBSZI8+QK5UeKLWHmdG4Ibw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1767913331; c=relaxed/simple;
+	bh=LKZlqC1xr8pawI1Su7pxmaA/+jCALjdkLr0S4xKHskE=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=AB5ck8G7wkhgb5OxgERKtk4jsCwXwn4BctlA/zR7tzE0xH28jx1Gr+4tkJOSLT76bApl1xB+2PN16vncmg4bdb+IhpK2iDgfA/x8TEnNACBDhaTU8AABtDUB9xj/jK7UUrcAnMJ4+effpb4wEeDLHPd6kkt7sxnbXT+dOpdNsqI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=beeMRd7J; arc=fail smtp.client-ip=40.107.200.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=a984aFkPILJNElM0L4QtYYji2qflgTdcw+dLT8DucGcARvSAbKEwx3wWTHGs+v3zoMktx0D9a4ARqC1cOB5CQq93s4hW3UQK3317NIGVZjMRZELgkA4O01jwshcy+0L0p2GkAwscebgCs6NW4mxCPLCQQXQhUFkb24qFA+NwCbx8Rue+gL2S8R0q81xZNSPjjD+i06OihHrGOepxTZbsJ1QPZIERgEWKae3Vdlyo8Ts1rTV2swXFrjDmIf+DZIb+bTwvZq+YJVnz/eWCoW2vu/hE/bs5h4oa/peDe16TndhcKNxHoyVMxJhrIstjWC1x+Jy60G/MFo33zQfxbseG7Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=5fUWKdMdcm0Oxo/nlaemBqHin5sKNBv7guG63OrvzD0=;
+ b=OMz4/wuZ6tRWaM+3LJq4tQCSEeev65U0UX6ktWdphYLWLeu+cLH+/n5y/jG684HRTgkvz9uQ1EIRSWOpe5s5cQkgHbo9kKh8NhTmKNZPzN3LZ7sFI1NzQdqi6OE2RnfUPmrpSqVNRRjCudZwsfhcPTuCKMDNYeBmxe26fwrla+E1JQZ0npofjUIK0iS1mSVdFreKmksxZzgHQXun+s9iEkOrvk3nsPUubsbxaTstGcmNdCKeOAdgUfpXB75ECwyCUHwycKTNFGEUZPKQ8h01bsp8KrlM10YvMw9osGFoPCq0lWV2XfBSq8ACYc2KYJQDiogqEVwcmuGAvbyk9L+K/Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=5fUWKdMdcm0Oxo/nlaemBqHin5sKNBv7guG63OrvzD0=;
+ b=beeMRd7JcIciKNSzgAPFnIcx38FgGw60JK/61p1fYBIO4MU9Ou8eSE8vA5Js+VwbzWHaUh1KJiEDdHHKFNJO/mvbONNh/ZwnL8y0j6Ak78AWecPxoHIiWi61Q8PfoWwIhxmB93pFrWUwjxWsSbkJybMpoC0cTuYeaAVu/YZDVg0=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from BN9PR12MB5115.namprd12.prod.outlook.com (2603:10b6:408:118::14)
+ by PH7PR12MB9103.namprd12.prod.outlook.com (2603:10b6:510:2f5::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9478.4; Thu, 8 Jan
+ 2026 23:02:06 +0000
+Received: from BN9PR12MB5115.namprd12.prod.outlook.com
+ ([fe80::9269:317f:e85:cf81]) by BN9PR12MB5115.namprd12.prod.outlook.com
+ ([fe80::9269:317f:e85:cf81%7]) with mapi id 15.20.9499.003; Thu, 8 Jan 2026
+ 23:02:05 +0000
+Message-ID: <cc24a955-f5b2-43e6-a4fd-ff446d699fce@amd.com>
+Date: Thu, 8 Jan 2026 18:02:04 -0500
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] drm/amdkfd: fix a memory leak in
+ device_queue_manager_init()
+To: Markus Elfring <Markus.Elfring@web.de>,
+ Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>, amd-gfx@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org, Alex Deucher <alexander.deucher@amd.com>,
+ =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ David Airlie <airlied@gmail.com>, Oak Zeng <ozeng@amd.com>,
+ Simona Vetter <simona@ffwll.ch>
+Cc: stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>
+References: <20260106015731.1906738-1-lihaoxiang@isrc.iscas.ac.cn>
+ <57a9f219-2612-4a64-a9fb-44b04e09ec15@web.de>
+Content-Language: en-US
+From: Felix Kuehling <felix.kuehling@amd.com>
+Organization: AMD Inc.
+In-Reply-To: <57a9f219-2612-4a64-a9fb-44b04e09ec15@web.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: YT4P288CA0015.CANP288.PROD.OUTLOOK.COM
+ (2603:10b6:b01:d4::15) To BN9PR12MB5115.namprd12.prod.outlook.com
+ (2603:10b6:408:118::14)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN9PR12MB5115:EE_|PH7PR12MB9103:EE_
+X-MS-Office365-Filtering-Correlation-Id: 327e0b50-e92c-4cbc-6156-08de4f09f175
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?UllMMS8yclhXQkZwR3lNQ3dqZmE0NTB2UXRZc3lJV2E0UXdqbFQ1WHM0aWJx?=
+ =?utf-8?B?dld4RFoxRGp3YnQ5T2FBVVZFUmFRdmk5NDZreDRYSDg0Q3lCL1VUd1hGeUU0?=
+ =?utf-8?B?aFExbTlwWEphYm1iZFE0TmRXM1RLOXJsU25CYlRwaDh0ZGxkOHc2RW9mUzAz?=
+ =?utf-8?B?OTh5RW5jbVpmbHhMbnFZaENiNHBXeVNwUUdmUUZOcmhraXU1Yy92Z1M0VkFP?=
+ =?utf-8?B?UmJKMmkvSG5iYTRudDVKR3FMTDRiWlhWNnRZUTNTaEdIQS9sWHRyVERvS0RQ?=
+ =?utf-8?B?RG81V0JMZklOaVdDclBuVHBML2hFZnFsenhVby83Tytra3U5aXdTUnlhc2VZ?=
+ =?utf-8?B?aXE5NTcvQUY3d1l4Z2VRbituQzRPcEYrYlZUNnpieTdNdTZGTFFwa2NzdjUx?=
+ =?utf-8?B?dktBNFpra3ZPMFFaaXZBQUZlSmQzVGdCZWRWZG5vY2loUlFIYi9USGVsZFhY?=
+ =?utf-8?B?eTV6aDBoVm1BRHhFMDdoNnNUNTdlVlJmQ0lKWDJZSlVUbis0NFUzSG9yc2dn?=
+ =?utf-8?B?VlVkSnRZSndkTFdwKzUxeWY0bkViNnhLS2ZQZFBNZ0RDTGZ3RmtVcWxCR3dX?=
+ =?utf-8?B?KytGeTlNN2JXV2V0WTV4TFFqZnZXdWVJcmd6ZHpzR2laOWVYekV1c3dVS2Z1?=
+ =?utf-8?B?ZWlEQ2dJeDZkTm9TVThQaUV0S09xM2FzVVNrcmFDVEcwZkkvV0hkZ0JMZDlC?=
+ =?utf-8?B?T0ZKQmxCRXY2OGMwYnpsT24vWVM3N3JYOXEzb3MzS2w1TndzamJIVHRWZzh3?=
+ =?utf-8?B?OTh2SlBvczUxU2NxK1cwbjVQRm9KQ0ZVcjNtMkVoRDFTN2JXdTlXQ0ZweTZa?=
+ =?utf-8?B?blYvS2dySEZ6bEtacnE1d21COFFjRU14RGNuYlluWEk3Y01Od1laSVdRbjRK?=
+ =?utf-8?B?eTgzcDNqdDB4c3JCcDZSNWZzQ2Q3NU9kTHBPNVVRK0hUQWNSUGJjc2MyMG1M?=
+ =?utf-8?B?blc1ZHBWbzB4M25Ha0lxVE1JUy9NN2hVcjlVQmFmSWc5YVg5YXZORzBLS08z?=
+ =?utf-8?B?d2NYVm9GZ3Y1U1hweVZDUEVjS2VLY0dNVitVaFhMNnkxTEU4bm5naVBjQ1NS?=
+ =?utf-8?B?NmQrQVNNN0RpOWVIQ1FSRFYvQ2xueDZscmxGSUlweXdnZXIzN2M3Z3BYS3ow?=
+ =?utf-8?B?Zk9XcVJjajZrcEtpb3l6SXFTOFExYk1vNnlNZTN2VXlKZmxTUnFibHVBQ0xL?=
+ =?utf-8?B?YlBTaDAxbGtZcjEyS0ZZb2hSK0VyQWhkTkZrajA3eEROTUpTMTg4MkNwUHFa?=
+ =?utf-8?B?ZVdtTnp5Q1pHQS91KzQzVTNCMHlJYTMzcCtKMUdEREo5VGRFcFNIeS9rb3dD?=
+ =?utf-8?B?andHNFVuZGFJZjY5QUVER21zNmhzbmFqOWFqQzI5UjBZUGQxOU4xMjBpb1Bx?=
+ =?utf-8?B?ckd3cXpKN3dNUWtPWHRxNTNDdVhRZ2FsTnNkVlMwcGcyYjhTNUFsQ3pjYXcz?=
+ =?utf-8?B?WEJMdjJLeUhMSitmdlpKcUtqUUFrWmwvYmo5YUlIMGlFZnhGbmVRS0FMSFli?=
+ =?utf-8?B?STBHZjJhbWpxSUxubjk1ZVljb21KTFRPK2NUWE5uUlZrOW5CZm5WV04vRC9R?=
+ =?utf-8?B?UThQcDlNMlN0aDNQcWpxK2d0ei85MWdPQzcyMFlSakVTdlJzbDdHM0k1NXhJ?=
+ =?utf-8?B?YmxCOUFEMVNsa1I3TzNMRUo3TWorVEp6eUVMejZrOGFjbjI5RW91T1M2WU1j?=
+ =?utf-8?B?a1ZzdlBtTE55R1dRVUNHL21Ea0RsdmMrOHNDeGprbTNCOExNT0lCeGgwUXBB?=
+ =?utf-8?B?VmxLUUxKMlRrRmtZM0sxMW4wcmw0aWpCL01rRmhSMDFrcFZ0RGxqVHFBekEy?=
+ =?utf-8?B?dmJCNXVwUzlSd0MwbGFRenk3N0ZjcEduQVRtTGF4UnVTbWwycytpbWNpQVRL?=
+ =?utf-8?B?V0E4ck9mbEdETTdldzZ6WWNUN08vT05ETEFac2diK2hEaWhPclMzL2dLbjc0?=
+ =?utf-8?Q?SDH1IH7R3kPlgPz24MaX0g264I/ovoCZ?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN9PR12MB5115.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?MFphSlRPVi9ET0JtdlJYSXczUFBabWFmb29aZkdxR0o3L2srRC9FUlk4RjRR?=
+ =?utf-8?B?dkFqVmRVdzZYaTdqeSt1VWcycmF6THlYSTA5MnQzNU9ITk8wR2lZcHovK2M0?=
+ =?utf-8?B?a05nTXdrYTRNN0hXZXB2VmRjclhTVXBZZ1drUW5odFdnN2FpbjUwcjQwY0Q4?=
+ =?utf-8?B?YzJJK3ljbWZ3V0dWc0tpWGNGekVuSFBlMU9jcHcyVmNKWXU1VTRqa0V1bzAv?=
+ =?utf-8?B?N0h6KzN2RDhiYUZtcWpRd214YXdSVFo4blhoczZ6Z3hOS2ZjSUJtZ2ZhaTdS?=
+ =?utf-8?B?R0dpT2xKaThTS0pLREZWV25NZmFkUncwcjlBSzZaaXpWaDVZSGVBMmw1cFFy?=
+ =?utf-8?B?N0gvalpxWHpUdVdDNTdwT043WHV4WHlzT1FDWVNTeUN3d3hDb1hNalFTc3o1?=
+ =?utf-8?B?Q2oreTVmcVJ0aGE2UHY1RmN4Y1JUbjJLejIrUExvL3NqMXQ1OFFjVjNOSXAw?=
+ =?utf-8?B?Nmx2cStkd2xVT3lpNy9ya1ZSYmVOcHFIZEZybXBGTXNNZkRIMzYyQzYvK2JH?=
+ =?utf-8?B?NlE2cGdPYUZyc3crUjFid1A2eW11cFhKZGJuRnNVOXdrcU1Rb3RjQWlhQjRE?=
+ =?utf-8?B?L1kxR0xnRWl0c0sxK29BU0U4a3p4NkUxdmtjdk8rZllDTVlTTzZNZy9ZR0Qv?=
+ =?utf-8?B?bTEwZDhKS0wrSnE5dGpnTVh6Snh5YVFObEI5RmEyYk9vZ1p5alIzeVd5M0dy?=
+ =?utf-8?B?NVBrQlFIR04yb2hXREVsWUIzdWhXQlcxNjM2VmxUeFl1T0N3cTFTMCt2M0JE?=
+ =?utf-8?B?WkxndVAwRVBQZEc2blF4MldlZndLc1ZjeGpST3g3UUM2TW8yeEdhbmtsUUQw?=
+ =?utf-8?B?aGF4aVg2K0JuaG1FK01XbmZ1OGdNa2JTZUljak9sM1paeFoxcTF4azFjdjVz?=
+ =?utf-8?B?Zk9ic2VjUkw3N0Jrb1l2bVJoQ281OE14bkJiUTQ4eGRYQVpPYVpoLzV3cjFB?=
+ =?utf-8?B?OFVYdzdUNitHclovZm81UUtvSXROZmt3aTZDeXczT1FOZmNOVTF6dnYzV09Y?=
+ =?utf-8?B?TlZXTjc1NDV4WFJtdG01WjBQZG1kOUJ0THlIRzVOMjRNR3RDTTMyZVpsekJn?=
+ =?utf-8?B?VVFISEVldHAwVkk4WFlxUURvdnNoY253SEFTYXltVXg5ZXVhaDI5SHNSeHM4?=
+ =?utf-8?B?eU4vVEVBRHJBZWlpYmJ2R080R0RiVnRzeHU2d2FJN3JGdmYxZFU0SG5LNWZL?=
+ =?utf-8?B?djFaYlZyZEhZdHFqNDgwaGlhMUJrb3p5YXRVczdaQ1pNK25FNzNUazNRamov?=
+ =?utf-8?B?S3lzWG1hUStkNzlkVkZwNTVCSmR1cHRnTjZQWTYzR0xEVTlGUzBMVHJDZS9V?=
+ =?utf-8?B?UzFpVE9WME9SZ0dFeGdvTFlSbkVGVlpSNWZWY3d1eHhvbngzL2J1WGxRYmkr?=
+ =?utf-8?B?SzM4ZlhtLzlVcE1tVExwTE5PbWhMeFN3bW1NYVdQcHBXMWpYTHdrc0hXckoz?=
+ =?utf-8?B?VzNDQmFRTTJWSmxYSmpiaHRQdkxwV3pyMWJ5Z1VlMnd4OVl6Z1E0WTFPM2NP?=
+ =?utf-8?B?Q0dBQXh2Y0xXdlV5cFI4SXRiWmpaTmJUTmNWYVAyNFhyaFVEZWRxNTVVZHZm?=
+ =?utf-8?B?QnArRzNyckl2NHBiVlpYa2dWNVpWQUtramkrNTdkVElJbHFCcHhtcFZWQ1Ay?=
+ =?utf-8?B?YVpMSWJJaGlNZWRpMFVtamhhRVJNWWNmOFpSaE9weUZIMm44ZTBWbkpMQysx?=
+ =?utf-8?B?MlNsUjU2NFBjR0h6b0pmeXRGNzg1RWttL09BWDJBSjVUS1dUZ25HWGtaRUND?=
+ =?utf-8?B?b2ttVUhoVm9vZnN3cndkdy9WOXpxVGxqZ1Zpcm9VUTMxd2ZYMWs4Qm54TEhT?=
+ =?utf-8?B?cDA4ekdPZk1wRk80Wm9VVTZFTmF0WHNvdHBiZG5CMDRYdGw3bDF6cytzWUY3?=
+ =?utf-8?B?OWE4c3MvR3R1OXlRL0owdk9FRUxsaTBNeGZzWFpCR1Y0NWZ3ejc2b0NEbVZp?=
+ =?utf-8?B?SVNMaVZlUm11UVp6QTVXbTdPdkZZZ3F4MUxOMFBWM1cxN2xwRHNTdmZSWTkv?=
+ =?utf-8?B?YkpUZVNSaktRR29ZVyt2Ym5KQWpvenJOUk1hcDR0Vmh3Z045VFFONGJIZHBL?=
+ =?utf-8?B?UTBzbWg2TFhCZWJLNlBRRFZXN0Vrakowc281VkwxU01zUHZ0TmFUeUdNMHZH?=
+ =?utf-8?B?UHVxbmVFa3R4VllPdFFiSzdRL1BBNFB0WGZiU2N5SFBhNmhYY0FRemRHd3N4?=
+ =?utf-8?B?SUtpVXhmU0RGMk5mRHN2UkdabEZ4K1k4RUVIV1JkNnFTcTNUZlBBUi9KeTQ2?=
+ =?utf-8?B?SVZrNXZLaEJ4U05UbmJSSjV5UHc5b2hRVS9QNlFWTHQvOE9pVWxSSEo1Mk13?=
+ =?utf-8?B?NGJ5VXlaUmw2eHBWL0ZUL080S1dkUzhjWFJrd0RiKzg0VUhlWWhaQT09?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 327e0b50-e92c-4cbc-6156-08de4f09f175
+X-MS-Exchange-CrossTenant-AuthSource: BN9PR12MB5115.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jan 2026 23:02:05.8804
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Q0QlFV0n/kdCWCU5GSTu75cSD2HFKUunkkpcc1tuqxojPNUT9OSv9OgS2PEJxCGWMDjeXjGx0Ga5/vlZIvpa0w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB9103
 
-On Tue, 06 Jan 2026 02:16:35 -0800, Breno Leitao wrote:
-> The arm64 kernel doesn't boot with annotated branches
-> (PROFILE_ANNOTATED_BRANCHES) enabled and CONFIG_DEBUG_VIRTUAL together.
-> 
-> Bisecting it, I found that disabling branch profiling in arch/arm64/mm
-> solved the problem. Narrowing down a bit further, I found that
-> physaddr.c is the file that needs to have branch profiling disabled to
-> get the machine to boot.
-> 
-> [...]
 
-Applied to arm64 (for-next/misc), thanks!
+On 2026-01-06 04:30, Markus Elfring wrote:
+> …
+>> Move deallocate_hiq_sdma_mqd() up to ensure proper function
+>> visibility at the point of use.
+> …
+>> +++ b/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c
+>> @@ -2919,6 +2919,14 @@ static int allocate_hiq_sdma_mqd(struct device_queue_manager *dqm)
+>>   	return retval;
+>>   }
+>>   
+>> +static void deallocate_hiq_sdma_mqd(struct kfd_node *dev,
+>> +				    struct kfd_mem_obj *mqd)
+>> +{
+>> +	WARN(!mqd, "No hiq sdma mqd trunk to free");
+>> +
+>> +	amdgpu_amdkfd_free_gtt_mem(dev->adev, &mqd->gtt_mem);
+>> +}
+> Is there also a need to reconsider the implementation of the applied
+> null pointer check here?
 
-[1/1] arm64: Disable branch profiling for all arm64 code
-      https://git.kernel.org/arm64/c/f22c81bebf8b
+Yeah, we have a WARN if mqd is NULL but then we still call 
+amdgpu_amdkfd_free_gtt_mem. There is a NULL pointer check in 
+amdgpu_amdkfd_free_gtt_mem, but &mqd->gtt_mem won't be NULL because it's 
+not at the start of struct kfd_mem_obj. So you'd get a kernel oops if 
+mqd is ever NULL here.
 
-Cheers,
--- 
-Will
+That said, I've never seen anyone complain about this WARN and a 
+subsequent kernel oops.
 
-https://fixes.arm64.dev
-https://next.arm64.dev
-https://will.arm64.dev
+The only other place that calls deallocate_hiq_sdma_mqd is 
+device_queue_manager_uninit (only if not using MES). It can only be 
+called with a valid dqm if device_queue_manager_init succeeded, which 
+always ends with a valid dqm->hiq_sdma_mqd if not using MES.
+
+My conclusion is that this WARN is just unnecessary. But it's also harmless.
+
+Regards,
+   Felix
+
+
+>
+> Regards,
+> Markus
 
