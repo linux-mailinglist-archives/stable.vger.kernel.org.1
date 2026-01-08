@@ -1,110 +1,67 @@
-Return-Path: <stable+bounces-206314-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206317-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B05CDD02F52
-	for <lists+stable@lfdr.de>; Thu, 08 Jan 2026 14:19:38 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D0D0D03946
+	for <lists+stable@lfdr.de>; Thu, 08 Jan 2026 15:56:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C820A304F146
-	for <lists+stable@lfdr.de>; Thu,  8 Jan 2026 13:06:35 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7510C3021958
+	for <lists+stable@lfdr.de>; Thu,  8 Jan 2026 14:52:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C66C12E8DE3;
-	Thu,  8 Jan 2026 11:01:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA8664A2E0B;
+	Thu,  8 Jan 2026 11:07:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="usZprcgd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="saRz9EMw"
 X-Original-To: stable@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADE8042846D;
-	Thu,  8 Jan 2026 11:01:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FF5648695D
+	for <stable@vger.kernel.org>; Thu,  8 Jan 2026 11:07:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767870095; cv=none; b=qKHw5uykK67S24zhYt6LupTIpAzz7zrXNOOw+RyRN/zOUh4ghhdPCbCbTADUlHiCPTYS7Yf8r8wXwCJvHJLKfYIPDlXEx1zCSZ8JqA0VILC8Z2sM9d/7zF7XTKsrhffiGA0Kw9NOP77ty/tTmkpH4JuqjAj7dF56Y37HHT6A4ao=
+	t=1767870444; cv=none; b=AZjdyTDSMTNCNwxUiHCtj4fy7knmap0QrMB9SJqZsb3qoSLhFa0yiF/0SnneOLdBewTYBBP/gaqbkk2DbIl0PvHpJTXbj7wMN6SbyWg0vWXFYPB0EcmKZhFNzTryT68rak6UcQCQpjPy0s0nFf19sW4HjDQJvBAExJUGPfyy2lU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767870095; c=relaxed/simple;
-	bh=kifWMDUcjyoNqnma7UqgQlLZbT3dPAVcD7eeu3dSDNg=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=XB7Kb5fTFw4RcgahAbUwHy6E9C+nKXez6rvRXH2FjwZY1Q9jK5XGvsYqg6ekf5IYWUZP1Xh7H1jPyZbaC+E7808UBy6LQoFAMWprByvq1zCqOFuoL5ko0YjksKkLMnSaZ2+Fl7QKXdOD980kZ2qlqmHrb+vWriwFAqXk26xKQBI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=usZprcgd; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=QXBd9eAoJBUhCI7owVszPAap9fsVDbLgy/vELqg02I8=;
-	t=1767870087; x=1769079687; b=usZprcgdYHAmiySm1ZuQiBSLSJM24eEwZSnb7cxWW35EIKC
-	eAWWfArgoGD12FBx9IBlkMAY6F7eyqUxrFjbugYdi7dSHguyUSn6cgHL35KrqVrtIokFsVhnVP5Vn
-	FuCwuMCvRBLbRVhHDLRRK9BYxBgwN3iItbU0y+rVw83q69Rrg8nz6arZSbi/ymK0PJHykIP+AdPDw
-	1yao9jvGZ9O98Uxd7BovHh075h+UktgXwvdKnUT3su+y0CH3pllQZVR/Nny2C+PyOsjHg4MXZWIL0
-	bZN6/nkefjSZvN5DIYfpWepcxF/aOe/jFVznPgeg8XEUBmKJ0RzxW0fWAJ/9Lraw==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1vdnlU-00000006SZl-25oB;
-	Thu, 08 Jan 2026 12:01:16 +0100
-Message-ID: <0e3af232f15f62f2540a307ccb967c1ae5fdadbf.camel@sipsolutions.net>
-Subject: Re: [PATCH net] wifi: avoid kernel-infoleak from struct iw_point
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Eric Dumazet <edumazet@google.com>, "David S . Miller"
- <davem@davemloft.net>,  Jakub Kicinski	 <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>
-Cc: linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
-	eric.dumazet@gmail.com,
- syzbot+bfc7323743ca6dbcc3d3@syzkaller.appspotmail.com, 
-	stable@vger.kernel.org
-Date: Thu, 08 Jan 2026 12:01:15 +0100
-In-Reply-To: <20260108101927.857582-1-edumazet@google.com> (sfid-20260108_112630_391137_9C1D2E9D)
-References: <20260108101927.857582-1-edumazet@google.com>
-	 (sfid-20260108_112630_391137_9C1D2E9D)
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
+	s=arc-20240116; t=1767870444; c=relaxed/simple;
+	bh=liq+GdjYI0by+wF9p0Fa+ty1m6hASgGa1b5yDXI+Pd4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jWS8GnZa67ZRyBvpDyi1zGIyVfCIZh2SuBCu7xfrhKoTWQtiuOfD1yzsgg2dX2OVVdpNwsCOEKLQ7pTsCT3XxXXSH6z/d0+zaMRvxsuGyNXebjvk1OPHbOieve2SYEL0vNXL6CjRBy2Oa6wYINkeU6t7DBwlGo/n/cryhrGTos4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=saRz9EMw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6226EC116C6;
+	Thu,  8 Jan 2026 11:07:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1767870443;
+	bh=liq+GdjYI0by+wF9p0Fa+ty1m6hASgGa1b5yDXI+Pd4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=saRz9EMw/LHtksXCEnkmUeXGIJS08Nfk2A0/kPZoaFpkJInGAxFuy9gjS51/IYp69
+	 6N1y9pBBIIyjTd+w55DgiNGi6h8jX0WcCgW16mIsmlsfyP6bPvzw1h9UQlQFky8aGB
+	 jX0+UvvepvM4q7lNKwF2pLVSSEkPEMdGi1+t2j30=
+Date: Thu, 8 Jan 2026 12:07:20 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Jingbo Xu <jefflexu@linux.alibaba.com>
+Cc: sashal@kernel.org, stable@vger.kernel.org
+Subject: Re: [6.6-stable 0/2] mm: two fixes for bdi min_ratio and max_ratio
+ knob
+Message-ID: <2026010849-omission-sublet-23e3@gregkh>
+References: <20251211023507.82177-1-jefflexu@linux.alibaba.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251211023507.82177-1-jefflexu@linux.alibaba.com>
 
-On Thu, 2026-01-08 at 10:19 +0000, Eric Dumazet wrote:
->=20
-> https://lore.kernel.org/netdev/695f83f3.050a0220.1c677c.0392.GAE@google.c=
-om/T/#u
+On Thu, Dec 11, 2025 at 10:35:05AM +0800, Jingbo Xu wrote:
+> Have no idea why stable branch missed the "fix" tag.
 
-That wasn't the easiest bit to follow (for me anyway), so for anyone
-else wanting to follow along, here's my interpretation of what happens:
+Because that does not guarantee a patch will ever be backported.  See:
+    https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
+for how to do this properly in the future.
 
-> +++ b/net/wireless/wext-core.c
-> @@ -1101,6 +1101,10 @@ static int compat_standard_call(struct net_device	=
-*dev,
->  		return ioctl_standard_call(dev, iwr, cmd, info, handler);
-> =20
->  	iwp_compat =3D (struct compat_iw_point *) &iwr->u.data;
-> +
-> +	/* struct iw_point has a 32bit hole on 64bit arches. */
-> +	memset(&iwp, 0, sizeof(iwp));
-> +
->  	iwp.pointer =3D compat_ptr(iwp_compat->pointer);
->  	iwp.length =3D iwp_compat->length;
->  	iwp.flags =3D iwp_compat->flags;
+thanks,
 
-This all looks mostly fine locally, even for the compat code, i.e. for a
-32-bit task on the 64-bit machine. The iwp is created here and is given
-to ioctl_standard_iw_point(), which crucially then for some requests
-(according to IW_DESCR_FLAG_EVENT) passes it to wireless_send_event().
-
-This then can creates _two_ events, one for 32-bit tasks and one for 64-
-bit tasks, and the 64-bit one will have the "struct iw_point" starting
-from "length", excluding "pointer" but including the padding at the
-end... The layout is further described in the "The problem for 64/32
-bit." comment in wext-core.c
-
-I don't think this can happen for the compat_private_call() part since
-no events are generated there, but fixing it there as well is definitely
-better (and who knows what random drivers might do in priv ioctls.)
-
-johannes
+greg k-h
 
