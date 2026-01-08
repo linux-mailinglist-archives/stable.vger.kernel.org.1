@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-206339-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206340-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A64BD0437B
-	for <lists+stable@lfdr.de>; Thu, 08 Jan 2026 17:12:33 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E07BBD04027
+	for <lists+stable@lfdr.de>; Thu, 08 Jan 2026 16:48:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E776430223C0
+	by tor.lore.kernel.org (Postfix) with ESMTP id D7006303E681
 	for <lists+stable@lfdr.de>; Thu,  8 Jan 2026 15:35:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A06E445BD53;
-	Thu,  8 Jan 2026 12:33:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD80C46524B;
+	Thu,  8 Jan 2026 12:33:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kt3d6w4N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WtBzGRd4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 491FC44B677;
-	Thu,  8 Jan 2026 12:33:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6685C461DC9;
+	Thu,  8 Jan 2026 12:33:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767875604; cv=none; b=htQnar1QFeLPi2vY+nu/hSYaiXmqnV1epmePSGge1OW2f3r3pjDLtLMeOe0xbI2aM8iXMVCmq90CvLnZMKjXL5MLGpTssrHilRzrkL2nRswJdQgaJdC7bvtMukxPQSCfp8SXJ0BnAnv3Id55kOpVzHExSN1zVQFFWw/JBMTysE0=
+	t=1767875621; cv=none; b=DOyGX9dGIObFwRNBbCcBsr5w4pKLeIDl5d37rlf785gNgcK7O0kVrgCJIuz8wFiT59BQ0kEuOv6VcJ6gnYzbDblzR/GQ6HJhzRMPP39gyQ0B1VKkiMGyfJ3e/ZHJAyX6MDE0LpTdhMTg6qKvDQqRyVHW75t1t9QusCTOx7zhbhw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767875604; c=relaxed/simple;
-	bh=8irjAoyU6Q3XVv5nSxgjPfVJ753zDB/rHE+Sm4lpPp4=;
+	s=arc-20240116; t=1767875621; c=relaxed/simple;
+	bh=cJFaIr4HGB3WP3VVwcBCTmnx7s1FJJHpbeS1/rfSLpQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=i1XxiaAk6fLaSmh7sUWvi2wIO6rDcnILoTK3iK1ovzo0sXsgx34uEk5TCtQ6kbLZnbvc5ylKgG8mgC9gP1CkOahW4qij2HH2l7YH2kVsfyF+oJX9pv67rITZooPLdlBl2LkcATcTFqiFJYj/abCCY5igrN/8DgpUU+3ArzCmYVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kt3d6w4N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50283C116C6;
-	Thu,  8 Jan 2026 12:33:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767875603;
-	bh=8irjAoyU6Q3XVv5nSxgjPfVJ753zDB/rHE+Sm4lpPp4=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=Tx+Dav6rriS1/VrmD6p12tU4yuof4J71K7SmXlyuGakFXtdgD/BQ+g5tL7NMfzvzcezqBoPG1/18EKHMBMJ0f2Ub7abxpOaZ4yaAWNsAMRHhlyfkq2k1bwA9NVFBRoWkrM8jvSbf27zHaiui7S7R/ud25n3e115E0IicNh++/jw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WtBzGRd4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5091C116C6;
+	Thu,  8 Jan 2026 12:33:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1767875621;
+	bh=cJFaIr4HGB3WP3VVwcBCTmnx7s1FJJHpbeS1/rfSLpQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=kt3d6w4NWVxSLbLHjeurILo3vitrE/Zbt2VL/6xlzG1EQzOPOe0Xg3TP7Nnl4Iszf
-	 i9qPl1zvi6QMrJLQHk5YMapdK4+rditOFAHeZXDP2Rhj5CSjYAkL2Ia/qTxW5rIpXu
-	 eIemY0mUMmkjnJ4Y9t73Ges0KCqCE4Sg12etLpJoDxCyNm1U1f+hh//FA2DWso5hcL
-	 mtugiwRCxRvzXzHuXPmRaJ79oaXnK0sVws0lhAUm1K6Eo0vGPpYUNcNHUGnXroQQL8
-	 G8KaX+l4BBo8NI2ZUwL9PhpUKhZs3M25Zd5Igh1c6d9E8zYtx0WSBE02f7s3O8TcoH
-	 P6MpgR4lQ22QQ==
-Date: Thu, 8 Jan 2026 14:33:19 +0200
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: stable@vger.kernel.org
-Cc: linux-integrity@vger.kernel.org, Jonathan McDowell <noodles@meta.com>
-Subject: Re: [PATCH] tpm2-sessions: Fix out of range indexing in name_size
-Message-ID: <aV-kD5iKi9fwluU0@kernel.org>
-References: <20260108123159.1008858-1-jarkko@kernel.org>
+	b=WtBzGRd4GkpAfxa0Ap64aeGxR6W3E95s+gm86vHz5c9Ded+kZCwFgqtyKhuOhglwg
+	 4IUO8llzJxZXXRWB12Ve+Z65OmOteDKaJ354a1V6uLxA7VIHwyJne1I5aJ8uYkM9i1
+	 W5zwQSOd2VuqUAkKIHxLVDVD6THFrzQGZW6LlMv8=
+Date: Thu, 8 Jan 2026 13:33:38 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Chuck Lever <cel@kernel.org>
+Cc: stable@vger.kernel.org, linux-nfs@vger.kernel.org,
+	Sasha Levin <sashal@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: Re: [PATCH 6.6.y 1/4] nfsd: convert to new timestamp accessors
+Message-ID: <2026010810-obsessed-superior-9b56@gregkh>
+References: <20260103193854.2954342-1-cel@kernel.org>
+ <20260103193854.2954342-2-cel@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,30 +54,23 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260108123159.1008858-1-jarkko@kernel.org>
+In-Reply-To: <20260103193854.2954342-2-cel@kernel.org>
 
-On Thu, Jan 08, 2026 at 02:31:59PM +0200, Jarkko Sakkinen wrote:
-> [ Upstream commit 6e9722e9a7bfe1bbad649937c811076acf86e1fd ]
+On Sat, Jan 03, 2026 at 02:38:51PM -0500, Chuck Lever wrote:
+> From: Chuck Lever <chuck.lever@oracle.com>
 > 
-> 'name_size' does not have any range checks, and it just directly indexes
-> with TPM_ALG_ID, which could lead into memory corruption at worst.
+> [ Upstream commit 335a7be84b526861f3deb4fdd5d5c2a48cf1feef ]
 > 
-> Address the issue by only processing known values and returning -EINVAL for
-> unrecognized values.
-> 
-> Make also 'tpm_buf_append_name' and 'tpm_buf_fill_hmac_session' fallible so
-> that errors are detected before causing any spurious TPM traffic.
-> 
-> End also the authorization session on failure in both of the functions, as
-> the session state would be then by definition corrupted.
-> 
-> Cc: stable@vger.kernel.org # v6.10+
-> Fixes: 1085b8276bb4 ("tpm: Add the rest of the session HMAC API")
-> Reviewed-by: Jonathan McDowell <noodles@meta.com>
-> Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+> [ cel: adjust to the 6.6.y version of fs/nfsd/blocklayout.c ]
+> Stable-dep-of: 24d92de9186e ("nfsd: Fix NFSv3 atomicity bugs in nfsd_setattr()")
+> Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 > ---
 
-This is for v6.12.
+Is this really commit 11fec9b9fb04 ("nfsd: convert to new timestamp
+accessors")?  if so, what happened to the original authorship and other
+signed-off-by lines?
 
-BR, Jarkko
+thanks,
+
+greg k-h
 
