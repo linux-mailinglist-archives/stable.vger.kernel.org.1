@@ -1,241 +1,179 @@
-Return-Path: <stable+bounces-206334-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206335-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B768D03EB6
-	for <lists+stable@lfdr.de>; Thu, 08 Jan 2026 16:38:27 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EE94D03C6D
+	for <lists+stable@lfdr.de>; Thu, 08 Jan 2026 16:22:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 692133079A15
-	for <lists+stable@lfdr.de>; Thu,  8 Jan 2026 15:25:02 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4E354305AEDB
+	for <lists+stable@lfdr.de>; Thu,  8 Jan 2026 15:18:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 885F2221FC6;
-	Thu,  8 Jan 2026 12:17:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E52A44B690;
+	Thu,  8 Jan 2026 12:18:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="X3RCdc2o";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="RBs3eTJq"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Mjb/dMyk"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E87C9428FD1
-	for <stable@vger.kernel.org>; Thu,  8 Jan 2026 12:17:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0599F43E9CC;
+	Thu,  8 Jan 2026 12:18:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767874677; cv=none; b=UMZOkk2IWVJYO7Bx7LD0norJUAuH4sj9PN/3gkvtcWAXgSfZ/q5RN18tgs/0SmCarkXyfCxyzigXCIj+2u7T6O5YKRMyK2ImrgCbV2o53L+A26GaOn13y+AeuFDuwQNcx5/UrPOEq6ezJYCP47mm8yiKpZuMvfav78AjjjU7a+I=
+	t=1767874718; cv=none; b=tnp1YZVA/oHIuGB4TPRWt3DysPVF3qdOGAl2XCiKFYU5HSl8tXOQvX8CVffPXWLbsPk4ro8OXPT9iAzpQEiRuLEXu8/vrbWTOoI0/BarugNyqCyI73URqtxuxK4Wr7IV13liRwC+YHIOHjjoIG1uv9z13nU9b70OPU4DwQrc2hY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767874677; c=relaxed/simple;
-	bh=1pHvKlOYiy9SKGzq7KPw0xXxRRfQtJO5PVfa/nYKtyo=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=mQ4/78lDrqL/CfT9aKc89xP6opkWt/4DvKfIXeFtDx3dQ2zfeqi7it2+RnxVhwP29zfhp6CFh0Kc5HA5fMpI1e5ZxJ+agjJUe6I2RowWhB6NUT3yP8A9dadtRtMdCSMaTREIkKCobMXDSEe8zga87B106Qc4Vj5qXfwLzsdpgEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=X3RCdc2o; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=RBs3eTJq; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6088w9qJ1570538
-	for <stable@vger.kernel.org>; Thu, 8 Jan 2026 12:17:53 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	8od0IsNeOtwCXTsb2g4r9h9Tj23xYKtLy14bmRisIsA=; b=X3RCdc2oErpUYx7/
-	Da2TFSnk7wNdmuvNmR8r/zyZ+g0prUBfcge/y9OZGzlro6y2EYzPY8k34wccUIK5
-	bafFSW+WyxeZvOjMHMbK9a8O14WLQghNlzaBsqox7zxQSm9D4frBCrqb0Lh54sk1
-	x+Ny08nJCHVPDfOkjOmBSVDC06ypkUgx+CuFNix8Dvh8uiIsW7Skxw08g9NRMp+t
-	4xiTpUivRSMXoVdiF3UzuVNdhklgQONFb83v7XHsGeaS55Hn4FIa8vtHaXOvCliI
-	13xl6ev3EggomSJVdI4MUTrlMsES1SduIxctfQRwKZzceVL1AV+Zq3Uzwl6cD5Cn
-	osTamA==
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com [209.85.222.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4bj9hqrm0c-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Thu, 08 Jan 2026 12:17:53 +0000 (GMT)
-Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-8bb9f029f31so811779785a.2
-        for <stable@vger.kernel.org>; Thu, 08 Jan 2026 04:17:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1767874672; x=1768479472; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:from:user-agent:mime-version:date:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=8od0IsNeOtwCXTsb2g4r9h9Tj23xYKtLy14bmRisIsA=;
-        b=RBs3eTJqmRC+aBPsanBZUIRAC2N7i0Epv4YVOBhmhJme1+S9lJ0xm5MWJW63XKDe5z
-         Y/9EeVm/buyYBg4mV1LpMU9HnvmRmSdWpNU/8AWeT/eBSczEFqpW2M3OKGylgvsNHEnc
-         jN9SI8ToXV/LhJ3ZoHlWxgRWAjCgsQi+6sRIaMkL9OC1hNriXrQjdUE/XrmQjAt1ywRl
-         MrW4niiWGrnoSXqznM3EfEEyOE/hygFjGp/LEpBgYsTJTHNA1/IBbpS/Yz2AjlR9zJ6q
-         rL7gruM/diPnSnr8J0E0pEoAGfajIrKlWTNC6rTKE/c85UMQhB28ME0jU/Rknlh9vldP
-         eFLQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767874672; x=1768479472;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:from:user-agent:mime-version:date:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=8od0IsNeOtwCXTsb2g4r9h9Tj23xYKtLy14bmRisIsA=;
-        b=ce930aS4tUFLjrkXZS3lcx2Kj2tvwTWZkmK8mHI3rtAn92x4k1O200xibFZEadWejB
-         9oxvw6IJfvb/WynjrmgEN1XFV3oXEO4HjpJ1GeMl68/2Czz0iNfqj5V4DPnnhTY59by6
-         Jrwin36L1aKDKESAP9heORvo2ApxWKIlH67jb9XUWIbb3kyx37hOcraAFCScyDSmUiVn
-         pD77b3BKbZBoazydZPu5oIjEGk99p5P2hiZippQE15YS2KnkjJD8gaPZ2JksDUORHapd
-         k75aCXmGLwIkNrlG0NEMeAnjzh/BFoJ7KLib0q28m8o0Q5beH/A2uJpueb7X2b1G4yoA
-         guJA==
-X-Forwarded-Encrypted: i=1; AJvYcCVlL+GAhS10ZHJfj53W7BJcVSew3eJGuC+8AMjcmpxfIqGeevNibpcIsKfPdjTOxHBDVZnGces=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw1hukp6KSLzSb697nk685GP6jw2Q1yPitEYU9ju5jhWdNLL+9D
-	nvZrwaJW3toWI5Ngge1xC5t+Vcak69V3S6iN3bH0ZCo+ScSSR9rUB8H9DWf76UsM/WdYOTpl7HJ
-	xPOQiZC2Au0WCd8EhqpRNXya2v8IJNZrerGERRSQS0H0IhXmneB+vz4022mw=
-X-Gm-Gg: AY/fxX4zVitvCWabkrtTeozccWO/fmoqsvy4jMKezQwCjAAW9LBsN757BSEr+VzJb+v
-	+/SROWPHapKk70AJ7VRk9Et5WUOtabq1S8VncjemPkY3pt3+AEHvsqgV5KL8Lfq8hL3QbGCPqO7
-	YK4r+AmcJyro9IWdYAmbY9lTN7wwErWrWeq1Umx1Yv1MxGFHUdJdvSRkXEYKfXaGhWQvrNiTZj5
-	v+pXxR2/8WnOCkMU3sPyzYmlXJKHkMtZZ4rHTR+NyKb+7THS5fH8P97sswcoOVvtRBsvE6Alifg
-	HKEL6QzM/nSvlKtKE19lDCihAgFEDdhh5dUuwOi+YNXtlvbsoCbSBxjimm6D+lPo1nuKLM6+I6x
-	YLRXLD/ii909F8mRG62eMMk1nY5mJvwx5V5gJXZQRDAEeyAg7G5Vju/k2hPyZwvWj4Vle+Lx8+j
-	eISZNcU46b/e2h56CiA0R4XVEGDI2aDJZT2jtKkrB/Q0H2o5Wrc/3B4tzUzl/3na/fdW7kRaO/3
-	teL
-X-Received: by 2002:a05:620a:7014:b0:88f:ee0a:3d55 with SMTP id af79cd13be357-8c3893f987amr725046185a.66.1767874672416;
-        Thu, 08 Jan 2026 04:17:52 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFDEaC5ONEYTYXI/3fNxaIJxPaP5dsxNP7eaPyiNM0TOCVXA4tLR68/+kJPAZOln/4RgPRrcQ==
-X-Received: by 2002:a05:620a:7014:b0:88f:ee0a:3d55 with SMTP id af79cd13be357-8c3893f987amr725042485a.66.1767874671901;
-        Thu, 08 Jan 2026 04:17:51 -0800 (PST)
-Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6507bf661fesm8134751a12.25.2026.01.08.04.17.51
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 08 Jan 2026 04:17:51 -0800 (PST)
-Message-ID: <70e4dec3-e4d9-409d-9ac3-aec814aec3bb@oss.qualcomm.com>
-Date: Thu, 8 Jan 2026 13:17:50 +0100
+	s=arc-20240116; t=1767874718; c=relaxed/simple;
+	bh=BhDIqv5aHXpqeQr55/QjCCZ17IKzkEFSbgL2vEw2bqk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cmVrO2PxY4rNK6qmASHVEdCTgc7OV6JdGZvj3MVkbS0RL7HqHE4FJRu1954RAvzDQqNB5X1JHLVUCF1l90eDYwlWgODSPrsqm+P0ifOb8X1Z8O86cDIJkByM88Nc0v1dISL+bCaXuwyGLeaq1hHffioJpKRyDK078PiuXBQx93s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Mjb/dMyk; arc=none smtp.client-ip=198.175.65.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1767874716; x=1799410716;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=BhDIqv5aHXpqeQr55/QjCCZ17IKzkEFSbgL2vEw2bqk=;
+  b=Mjb/dMykfcRX9adifWjtiC2oDLyj6hAMuN5bsxADScInQ0H56Sa2HA4G
+   5xx8j4f7FRTKoZiA5l0hDj3RcrtV2S4XYnmwCPiIA/Mb9PSDIoNYm+WpL
+   KciZPrGXn0BeU75fZWmmry8WsdQn22TxUii0adeofIK4O/dlitFl8Nc82
+   1M4Gzxo8fLAK3r7bAmHSTBfwV6IwaDmIzOEZ/tMZi02SjePocjLC18IFO
+   HnQEYDDie5mkeweZXfQwPHMg3Qm1qxJWLCZMOSBBWGr2mvhnuMKzsMhLZ
+   2TuHtzwE9D+n93QZyrO2srU4iu3aRGzLIUlAN5BMLdS+9ZuXoa+/Rku6B
+   A==;
+X-CSE-ConnectionGUID: Lhry2anwQtiHRCAYh7K/kA==
+X-CSE-MsgGUID: 9jLRierBRZK7NPGLXEa/SQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11665"; a="69411186"
+X-IronPort-AV: E=Sophos;i="6.21,210,1763452800"; 
+   d="scan'208";a="69411186"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jan 2026 04:18:35 -0800
+X-CSE-ConnectionGUID: v4QeXbkzTgyYryjNUgAqzw==
+X-CSE-MsgGUID: 8jRKzGRXRa6oTiERmuKzug==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,210,1763452800"; 
+   d="scan'208";a="202973184"
+Received: from egrumbac-mobl6.ger.corp.intel.com (HELO kekkonen.fi.intel.com) ([10.245.245.211])
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jan 2026 04:18:34 -0800
+Received: from kekkonen.localdomain (localhost [IPv6:::1])
+	by kekkonen.fi.intel.com (Postfix) with SMTP id 5A5F311F72F;
+	Thu, 08 Jan 2026 14:18:45 +0200 (EET)
+Date: Thu, 8 Jan 2026 14:18:45 +0200
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
+To: Hans de Goede <johannes.goede@oss.qualcomm.com>
+Cc: Hans Verkuil <hverkuil@kernel.org>, Bryan O'Donoghue <bod@kernel.org>,
+	Heimir Thor Sverrisson <heimir.sverrisson@gmail.com>,
+	Sebastian Reichel <sre@kernel.org>, linux-media@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2 2/5] media: ov02c10: Adjust x-win/y-win when changing
+ flipping to preserve bayer-pattern
+Message-ID: <aV-gpYg4NqniNP5_@kekkonen.localdomain>
+References: <20251210112436.167212-1-johannes.goede@oss.qualcomm.com>
+ <20251210112436.167212-3-johannes.goede@oss.qualcomm.com>
+ <aV5IH7PIFnySHhYC@kekkonen.localdomain>
+ <082db370-e6cb-45fd-aaf9-bcd9f80dc242@oss.qualcomm.com>
+ <aV7R30bSVxXRxCok@kekkonen.localdomain>
+ <4f42d0e4-6595-4838-bfc2-e690eb9e046f@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Hans de Goede <johannes.goede@oss.qualcomm.com>
-Subject: Re: [PATCH] leds: led-class: Only Add LED to leds_list when it is
- fully ready
-To: Lee Jones <lee@kernel.org>
-Cc: Sebastian Reichel <sre@kernel.org>, Pavel Machek <pavel@kernel.org>,
-        linux-leds@vger.kernel.org, stable@vger.kernel.org
-References: <20251211163727.366441-1-johannes.goede@oss.qualcomm.com>
- <2bbtf7out2t52pge4hezfc7dryu6te2qstfm5kzez7zrw3dvqq@wxvqnjbulxc4>
- <585dc6a5-64e3-4f54-8ff3-9b9f1fc3d54d@oss.qualcomm.com>
- <20260108121142.GI302752@google.com>
-Content-Language: en-US, nl
-In-Reply-To: <20260108121142.GI302752@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Authority-Analysis: v=2.4 cv=GN8F0+NK c=1 sm=1 tr=0 ts=695fa071 cx=c_pps
- a=hnmNkyzTK/kJ09Xio7VxxA==:117 a=zz-1Wuj_SYMfJuCV:21 a=xqWC_Br6kY4A:10
- a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8
- a=3zLez3-RG3cE2hjYFfUA:9 a=QEXdDO2ut3YA:10 a=PEH46H7Ffwr30OY-TuGO:22
-X-Proofpoint-GUID: X_ipZM1oWvgRqv_17mnE95mtkLFY9ssA
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTA4MDA4NiBTYWx0ZWRfX0k4u7+92Ujjo
- 1CuT6Xa8bMuyUqoy5rSlaGgGM1PjMLGDkZwcUERFVuKunb/c/neA9bmq/WCaqqx6K+t8yrO7EfE
- FAvvsIYgSpmWjb3w1z3e08Jcf0dMxKg9zTTDIx/AnMOmbZIXw2XJt2R+s92wpR+X5C7ETxh/W8G
- wv18TtO/v9MN5P13Ye5vDRliwiCwYFF63qoR1LsQbMH6q4aIk6d7HTTPmuTd8o9aMEN1Yqdz07i
- eqAE2AkfNayevbxRBfan54spqYSWUH/Vi3/X61ExbZB7jxhu6hFSqo0eQDAJRFZGPq4I8v5mbS9
- giNNFDV1xGwRu4+mjlcfn9EfJFQTcy63FXJkQyjMKw87tzkjbekHZXDj/IazWI6UFzUrkCswRpU
- gpfs/BHiOSw0FSr3xP5c4lWuazxOrwyczj9zMgtmIEAEFMEf0d0P58exdMYO0Otpvn63OkHmeD2
- v5ken4PzxKrfv9CWm/w==
-X-Proofpoint-ORIG-GUID: X_ipZM1oWvgRqv_17mnE95mtkLFY9ssA
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2026-01-08_02,2026-01-07_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 priorityscore=1501 clxscore=1015 phishscore=0 lowpriorityscore=0
- bulkscore=0 spamscore=0 malwarescore=0 impostorscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2512120000 definitions=main-2601080086
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4f42d0e4-6595-4838-bfc2-e690eb9e046f@oss.qualcomm.com>
 
-Hi Lee,
+Hi Hans,
 
-On 8-Jan-26 13:11, Lee Jones wrote:
-> On Fri, 12 Dec 2025, Hans de Goede wrote:
+On Thu, Jan 08, 2026 at 09:38:16AM +0100, Hans de Goede wrote:
+> Hi,
 > 
->> Hi,
->>
->> On 12-Dec-25 07:49, Sebastian Reichel wrote:
->>> Hi,
->>>
->>> On Thu, Dec 11, 2025 at 05:37:27PM +0100, Hans de Goede wrote:
->>>> Before this change the LED was added to leds_list before led_init_core()
->>>> gets called adding it the list before led_classdev.set_brightness_work gets
->>>> initialized.
->>>>
->>>> This leaves a window where led_trigger_register() of a LED's default
->>>> trigger will call led_trigger_set() which calls led_set_brightness()
->>>> which in turn will end up queueing the *uninitialized*
->>>> led_classdev.set_brightness_work.
->>>>
->>>> This race gets hit by the lenovo-thinkpad-t14s EC driver which registers
->>>> 2 LEDs with a default trigger provided by snd_ctl_led.ko in quick
->>>> succession. The first led_classdev_register() causes an async modprobe of
->>>> snd_ctl_led to run and that async modprobe manages to exactly hit
->>>> the window where the second LED is on the leds_list without led_init_core()
->>>> being called for it, resulting in:
->>>>
->>>>  ------------[ cut here ]------------
->>>>  WARNING: CPU: 11 PID: 5608 at kernel/workqueue.c:4234 __flush_work+0x344/0x390
->>>>  Hardware name: LENOVO 21N2S01F0B/21N2S01F0B, BIOS N42ET93W (2.23 ) 09/01/2025
->>>>  ...
->>>>  Call trace:
->>>>   __flush_work+0x344/0x390 (P)
->>>>   flush_work+0x2c/0x50
->>>>   led_trigger_set+0x1c8/0x340
->>>>   led_trigger_register+0x17c/0x1c0
->>>>   led_trigger_register_simple+0x84/0xe8
->>>>   snd_ctl_led_init+0x40/0xf88 [snd_ctl_led]
->>>>   do_one_initcall+0x5c/0x318
->>>>   do_init_module+0x9c/0x2b8
->>>>   load_module+0x7e0/0x998
->>>>
->>>> Close the race window by moving the adding of the LED to leds_list to
->>>> after the led_init_core() call.
->>>>
->>>> Cc: Sebastian Reichel <sre@kernel.org>
->>>> Cc: stable@vger.kernel.org
->>>> Signed-off-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
->>>> ---
->>>
->>> heh, I've never hit this. But I guess that is not too surprising
->>> considering it is a race condition. The change looks good to me:
->>>
->>> Reviewed-by: Sebastian Reichel <sre@kernel.org>
->>
->> Thx.
->>  
->>>> Note no Fixes tag as this problem has been around for a long long time,
->>>> so I could not really find a good commit for the Fixes tag.
->>>
->>> My suggestion would be:
->>>
->>> Fixes: d23a22a74fde ("leds: delay led_set_brightness if stopping soft-blink")
->>
->> Ack, that works for me.
->>
->> Lee can you add this Fixes tag while merging ?
->>
->> Also (in case it is not obvious) this is a bugfix so it would be
->> nice if this could go in a fixes pull-request for 6.19.
+> On 7-Jan-26 22:36, Sakari Ailus wrote:
+> > Hi Hans,
+> > 
+> > On Wed, Jan 07, 2026 at 02:45:18PM +0100, Hans de Goede wrote:
+> >> Hi Sakari,
+> >>
+> >> On 7-Jan-26 12:48, Sakari Ailus wrote:
+> >>> Hi Hans,
+> >>>
+> >>> On Wed, Dec 10, 2025 at 12:24:33PM +0100, Hans de Goede wrote:
+> >>>> The ov02c10 is capable of having its (crop) window shifted around with 1
+> >>>> pixel precision while streaming.
+> >>>>
+> >>>> This allows changing the x/y window coordinates when changing flipping to
+> >>>> preserve the bayer-pattern.
+> >>>
+> >>> Ideally we'd use the crop selection to configure this, but given these
+> >>> sensors (and drivers) are generally what they are, I guess this is probably
+> >>> a reasonable way to go.
+> >>
+> >> Even in sensor drivers where we allow setting the crop selection
+> >> to get arbritrary modes, we always round the coordinates to a multiple
+> >> of 2, to avoid changing the bayer-pattern seen by userspace when
+> >> userspace changes the crop. See e.g. ov2680_set_selection().
+> >>
+> >> And then when doing flipping we might add 1 to either the x and/or y
+> >> coordinate to the userspace provided crop x, y before sending it to
+> >> the sensor to make flipping not change the bayer order, see e.g.
+> >> ov01a10_set_hflip() after the v2 series you've here:
+> >>
+> >> https://git.retiisi.eu/?p=~sailus/linux.git;a=shortlog;h=refs/heads/ov01a10
+> >>
+> >> which does (simplified):
+> >>
+> >>         offset = crop->left;
+> >>         if (hflip)
+> >>                 offset++;
+> >>
+> >>         cci_write(ov01a10->regmap, OV01A10_REG_X_WIN, offset, &ret);
+> >>
+> >> IOW we are trying to not make userspace be able to affect the bayer-pattern
+> >> through setting the crop-selection and/or flip.
+> >>
+> >> So I'm not sure what you mean with "Ideally we'd use the crop selection"
+> >> because we are actively trying to avoid to have the crop-selection change
+> >> the bayer order ?
+> >>
+> >> Generally speaking I think we should avoid any settings change the bayer-order
+> >> whenever possible.
+> > 
+> > That's up to the userspace. The UAPI allows to do either so why should the
+> > driver decide?
+> > 
+> > As noted, in this case providing that flexibility probably causes more
+> > hassle than any benefits, so I guess this is fine.
 > 
-> Yes, I can add the Fixes: tag and no, I have no plans to send this for
-> -fixes.  As you rightly mentioned, this issue has been around for a long
-> time already.  I tend to only send -fixes pull-requests for things that
-> broke in -rc1 of the same release.
+> If we allow setting the crop selection with a 1 pixel precision drivers
+> need some equivalent of V4L2_CTRL_FLAG_MODIFY_LAYOUT for userspace, so IMHO
+> the UAPI does not allow this at the moment.
 
-Even though this has been around for a long time, it would be good
-to get this in as a fix for 6.19-rc# because as described in the commit
-msg the lenovo-thinkpad-t14s embedded-controller driver, which is new in
-6.19-rc1 manages to reliably trigger the race (for me, with a Fedora
-kernel distconfig).
+I'm not quite sure why you'd say that. The user space needs to be (and is)
+aware of the colour filter array pattern in use.
 
-I was surprised I could hit the race pretty reliably, but it did make
-debugging this easier.
+> 
+> Also drivers would get extra complicated by needing to figure out which
+> bayer order to report as being active based on the crop selection.
 
-Hitting the race also leads to a crash due to a NULL ptr deref after
-the WARN(). I did not elaborate on this in the commit msg, because
-the WARN() is the first sign of trying to use uninitialized mem.
+This isn't really different from the effects of flipping in general and
+will change with the generic raw formats in any case.
 
-IMHO having a reproducable race which causes a crash is
-a good reason to submit this as a fix for 6.19 .
+> 
+> I really so no use-case where we need the single precision crop selection.
+> 
+> So when you say "in this case providing that flexibility probably causes more
+> hassle than any benefits" I believe that statement applies more general then
+> just in this case.
 
+I have to disagree with that in a general case. This is exactly the kind of
+design that has lead us into trouble when it has been applied, especially
+when it comes to UAPI.
+
+-- 
 Regards,
 
-Hans
-
-
+Sakari Ailus
 
