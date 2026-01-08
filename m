@@ -1,178 +1,161 @@
-Return-Path: <stable+bounces-206410-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206411-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF71CD062B9
-	for <lists+stable@lfdr.de>; Thu, 08 Jan 2026 21:53:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BA50D0632F
+	for <lists+stable@lfdr.de>; Thu, 08 Jan 2026 22:05:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 803C3300E3DB
-	for <lists+stable@lfdr.de>; Thu,  8 Jan 2026 20:53:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DCFF7302D29F
+	for <lists+stable@lfdr.de>; Thu,  8 Jan 2026 21:04:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5243331203;
-	Thu,  8 Jan 2026 20:53:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64BAA3321BE;
+	Thu,  8 Jan 2026 21:04:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="w+nl6nbR"
+	dkim=pass (2048-bit key) header.d=jannau.net header.i=@jannau.net header.b="dyPX3adZ";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="RjIJoAcL"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com [209.85.128.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fhigh-a4-smtp.messagingengine.com (fhigh-a4-smtp.messagingengine.com [103.168.172.155])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 428CF330D34
-	for <stable@vger.kernel.org>; Thu,  8 Jan 2026 20:53:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3F162EC0B3;
+	Thu,  8 Jan 2026 21:04:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.155
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767905607; cv=none; b=QEWdoZMtuZ1agHTdh4aUGrTrT0hL1Z50rHPkCQ6Oj0vq9NHKXnby1WyscuZAZ3E34R6Rbhao9ntX+WCS2ZASDnMJnwv3JSPGQXqaqAfhlGSkVX5rDpZ7fvTkmaFG1IPNz6kKanCxZro9TiNQ9GCMG3LHKHYWHeSEnR2YEaEVx0c=
+	t=1767906277; cv=none; b=l/fqmLDyOBYjQOU5u0REO2usYvIrLb1i02StAtuhcs9yWtsyJZd0eBVFXkc13qp2NyPw89OGevR6lrSsHW9nJaI0EhMGam2Uh4MedAT0vSGE7vnLw6mY4rzaji9U8PwYlnIM875qwDlH04UATO0fAUSiLCRFERtiz4jcXCVO3Zo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767905607; c=relaxed/simple;
-	bh=fgATqevtP3BM94zxoNaA4simYmqtdH2O6vZFv5ELDsM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BoV7oVnxiwRwOp3sJosnxa36eHb6kOWkl/bdCy/QcbikJaom6WOBZ8VnR8hSssbad+etQ+/bJVpJQwpACgwSe1shm2PYA0zKQlUY7h/4eyDl6skUHYR+4nhydUkDJWVpHHNNu8iLDgEZXLN6F3CYTqsGB22l/yhX/OJe6btD4Hs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=w+nl6nbR; arc=none smtp.client-ip=209.85.128.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-7904a401d5cso40290967b3.3
-        for <stable@vger.kernel.org>; Thu, 08 Jan 2026 12:53:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1767905605; x=1768510405; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9G7wPuVfMUEu+XU77xIHXJuSU5P9IBRqFiZrRft7fD4=;
-        b=w+nl6nbRebUTEMJKer3iHAJb6oBB8pRb/ag0oE2ZJjSusxGrqJ2C8CScZLAe9Aa7uG
-         vx9XD8RnpA3HNcHC5900TW5vKKcHqeQS04fV+ldhNeiZMFCSeg388tihjlGBBwzx2Qfs
-         6TXd1VnIEGvoQ6G5REEuxOqc/PQnK6XmoaWai+3DSZUSIrk/93ujMGYItl7744d1C+Mn
-         fcOxXVhhOcFJV5PFfONdtRbMTyQ273P+z7G2xuWuAWtpiI4JypNJ7FqnseS8g5v/041y
-         d/L3cYKGV96cIAM2Xt/Ch9bhSzmmOYj2zmQm8QoycVa+USzGORXr2R7m8i+vZAExAoEu
-         tCbw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767905605; x=1768510405;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=9G7wPuVfMUEu+XU77xIHXJuSU5P9IBRqFiZrRft7fD4=;
-        b=fusAV0KqYC5XssC9xJ9H4QawbhfHKpOISqMo4gstFNDvFBkKEfGLuFFFdvEPavK30y
-         iLnnPX7lXRTaNPV3/UR7LgX1R4gAgbylvmSM7QSX1KrqxsZDo0fSSxIe5jHp42UF+kQJ
-         PbYoLnE7QI7Wj2kJ+E3AvDFOuxWzLXIW7gJgrKV6NV/usqEVoDjp0MDVvw4xtb0ECIAh
-         kYnFj7pM4IrYC6NHTszk/xUULQ4QiMlnE8ZLWiAKq257y13sFCAYeR7ZUSJI/c2TWLJe
-         ZGst+pL6+Jh33qySWS5OphevpqC8Xy4JkTYKMNMho77UsBUebfWbTOoT+G32YAGWXOqz
-         2AuQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWgdHNMmZKF930sf5Gw3huyTAXyExkKqMSvNGaICiP6E9e1nwInVJAhH6oOsiC008L+MTK7BVk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywft4I+gmH/2EX2XNd2/dpiZGuArMrMwGA32p/inzKbuPzkHSRx
-	YHVZRwgs/fEMrzniHVErbqVIAH4kB3ugE9y/icaKUC3nILYVfB+5n06cJUYdXZk2zHXiD/PRo8x
-	AcO6tKHdPrAAIsgIpJjqrJ4c7B+YOiirXzM5pqkq7
-X-Gm-Gg: AY/fxX7Z8wL51TS6AWTkvRYf4lADKAttawqIsEuioyonRFK0t+BtQNeDi8SXdP0lX7A
-	QLWnLZ7k6BC/BRVu0YDItU1fNauZpsJjhk7Qepk0ZiJH78BECBVvxv7MJTjBtF5eMt//m0vX7gp
-	LunJczIdi2iIFUuFLfl/vFvAMzMsa0qHndwIGNH9ORtpByl2kb1hdbXlC/UKmk7wSCpFHg+H46g
-	izy0JGvyLvdzfYOB7XUFnVUNtGPkf8Ili/Wrz8dWzEqOQQWEWdeG+427pbdq7khaLAf/d5XDXYb
-	uzLKkOHL
-X-Google-Smtp-Source: AGHT+IFfsXLIOQoowsK4hd0ehUg1Ov8vdpWioepVx3d4dhbTTVXSJg1Tj9/T3e3FGQHetVwrMtOEOfIKvteUHmVMjjg=
-X-Received: by 2002:a05:690e:1c1d:b0:646:bb17:1515 with SMTP id
- 956f58d0204a3-64716abe6afmr6611764d50.19.1767905604924; Thu, 08 Jan 2026
- 12:53:24 -0800 (PST)
+	s=arc-20240116; t=1767906277; c=relaxed/simple;
+	bh=UEe2GBpmdFannk+xLx6SfquIM4myIvY07R/tNzyF4Pk=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=qmncw3HajAZMhclWdimg6fPb5cNnnDPY43H8nHxNk79WMFdULdYRfiBVh+HBaWPHTfRFAi6O8qZNgf+7Lnv+KafZbhhpftDXLKMhFqpBhcLOL0Z7KjVJ/Viiu/SMIzgfY4QDRQJ46jJuBp/CtkNw5EdblMODPRZAOwKbNX0kPCs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jannau.net; spf=pass smtp.mailfrom=jannau.net; dkim=pass (2048-bit key) header.d=jannau.net header.i=@jannau.net header.b=dyPX3adZ; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=RjIJoAcL; arc=none smtp.client-ip=103.168.172.155
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jannau.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jannau.net
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id E6B7714000BE;
+	Thu,  8 Jan 2026 16:04:33 -0500 (EST)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-06.internal (MEProxy); Thu, 08 Jan 2026 16:04:33 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jannau.net; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:message-id:mime-version:reply-to
+	:subject:subject:to:to; s=fm1; t=1767906273; x=1767992673; bh=W9
+	6A5mcg05fjBbNAtxHc0fLKwlj7SwmDpRTKq/eAKgE=; b=dyPX3adZgfLbchr98P
+	Ul7MIm3M8JssszyuYFO3k8Y5r+UMTZcArDepG3rPixHowrhJoh+ZycBNPmK1j7tX
+	Yf4gjuj/H1aeNP+XSgLqblFpYQMUlXZeTtNgD50CP8W076D5F3Wi1tsg6R41TYwC
+	kSvmrYadVUT4k3COLmHIWNDa2nwKNMIGjIZy0+YItzBYNoMISHpkmesUEg3GZrEA
+	8McOi128SA7OKGnYW+eFE2QqQjWLPCi8LBe1+dmkhjCDItkgI2tELm0USXsHtdW5
+	GcmEY/kxjBqQ17GZdFCLJEs6j69Pf+1tDx3vjk6jy8tEICfeF5rs/x8Uq01absEI
+	l7qg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:message-id:mime-version:reply-to:subject
+	:subject:to:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm2; t=1767906273; x=1767992673; bh=W96A5mcg05fjBbNAtxHc0fLKwlj7
+	SwmDpRTKq/eAKgE=; b=RjIJoAcLcl5RPNQ2M+ORnhwi2bNYcjR15ZaoJZkZH6mx
+	PmdWsWfnnxtXm0SLHOPt5YwDUBmkMO0ARnp18x7DBR0VNOtn8fqn2YFLOHxGTT4s
+	lDUSxW8a/qpjzU8KV8Xwn0smlGV4h+olI77NBK6p+xL185u0yHjQZL56bEHQRnjU
+	IIMZYkYaIYeyacLTBmwmxk+ENj14bJxE8HdesNsHnXlG8yRfYFCgdbb5OMbeBtgD
+	WK0A5UY82F2pX1fxA/sHxIHwnBtZU4sQTgOrfZYkuAyD/sd7MNkDo26Ojjjcd/p2
+	zbLDRhO+lJ1+qqf9xC8IL5ubFX2TnX5OZ2RqnZG01A==
+X-ME-Sender: <xms:4BtgaYRyPVgcJGnsjgG-duJinFTdfM41y-nbUQez6AFN8fMnKBEQdA>
+    <xme:4BtgacT5KTbRI2R1O5YRUWP6MvtgTdTIxtA9Odz51q-LtJor-t8jCYqWqh3yLxBlt
+    x9NzpKWiUJ32y74wMWRMRu3qeQdpGUPAKeTp670l_vI5AQEYxAKHw>
+X-ME-Received: <xmr:4BtgaT1735cg4KmX5GiyOTj5YDKzwH8dGssqoDE6RadOs7BK1jzMpJW5ujxrZBSNzyc2bJvakOqDHt5cRtowqrxNBenw1yeS4l5BMg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddutdeileekucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhephffufffkgggtgffvvefosehtjeertdertdejnecuhfhrohhmpeflrghnnhgvucfi
+    rhhunhgruhcuoehjsehjrghnnhgruhdrnhgvtheqnecuggftrfgrthhtvghrnhephfdtue
+    duleejffduvdehkeeutdefhfdtvdeiieegheffleefvedvhfeggeegffefnecuvehluhhs
+    thgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepjhesjhgrnhhnrghurd
+    hnvghtpdhnsggprhgtphhtthhopeduvddpmhhouggvpehsmhhtphhouhhtpdhrtghpthht
+    ohepkhhriihkodgutheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghsrghhiheslh
+    hishhtshdrlhhinhhugidruggvvhdprhgtphhtthhopehmrghrtggrnhesmhgrrhgtrghn
+    rdhsthdprhgtphhtthhopehsvhgvnheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepnh
+    gvrghlsehgohhmphgrrdguvghvpdhrtghpthhtoheplhhinhhugidqrghrmhdqkhgvrhhn
+    vghlsehlihhsthhsrdhinhhfrhgruggvrggurdhorhhgpdhrtghpthhtoheptghonhhorh
+    doughtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhes
+    vhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehrohgshheskhgvrhhnvghlrd
+    horhhg
+X-ME-Proxy: <xmx:4BtgaeySxgJD3WNuhBlsMmkfJKF1KmNx5I59yNgdAb9n1xgFFzmY8Q>
+    <xmx:4BtgaXx5CioNL8x3TWO6STlkWfw0PcMZuKeJPMXJqLJqrPN0A0Z9Qg>
+    <xmx:4BtgaS8VsXPVJc6tjiL8282t3kK6Bz6Mxs0E74Ctij3iBsXe5IWnyQ>
+    <xmx:4BtgaZ-MOWxuvK4qiifNe6m1YIQp5xqwQkhn_zy-v1AQymxFgRpTMA>
+    <xmx:4RtgaQvob1Vbt0UsOpRleF2HpumRcbO3Aw1hMzG1yaO0RKsjqv4NnJqA>
+Feedback-ID: i47b949f6:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 8 Jan 2026 16:04:31 -0500 (EST)
+From: Janne Grunau <j@jannau.net>
+Subject: [PATCH 0/3] arm64: dts: apple: Small pmgr fixes
+Date: Thu, 08 Jan 2026 22:04:00 +0100
+Message-Id: <20260108-apple-dt-pmgr-fixes-v1-0-cfdce629c0a8@jannau.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260105232504.3791806-1-joshwash@google.com> <20260106182244.7188a8f6@kernel.org>
- <CAJcM6BGWGLrS=7b5Hq6RVZTD9ZHn7HyFssU6FDW4=-U8HD0+bw@mail.gmail.com> <CANn89iK_=W8JT6WGb17ARnqqSgKkt5=GUaTMB6CbPfYuPNS7vA@mail.gmail.com>
-In-Reply-To: <CANn89iK_=W8JT6WGb17ARnqqSgKkt5=GUaTMB6CbPfYuPNS7vA@mail.gmail.com>
-From: Ankit Garg <nktgrg@google.com>
-Date: Thu, 8 Jan 2026 12:53:09 -0800
-X-Gm-Features: AQt7F2paXYKlCmGeTnuQcEGigGANcGPgcSVsAVj8JM63TEpsjULC0t9r9-C1EyU
-Message-ID: <CAJcM6BH11e4Cs3=7B3Uu-JxPeq4BAnQ3VDLfCAN_JcfnPLtOaw@mail.gmail.com>
-Subject: Re: [PATCH net 0/2] gve: fix crashes on invalid TX queue indices
-To: Eric Dumazet <edumazet@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>, Joshua Washington <joshwash@google.com>, netdev@vger.kernel.org, 
-	Harshitha Ramamurthy <hramamurthy@google.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>, 
-	Willem de Bruijn <willemb@google.com>, Praveen Kaligineedi <pkaligineedi@google.com>, 
-	Catherine Sullivan <csully@google.com>, Luigi Rizzo <lrizzo@google.com>, Jon Olson <jonolson@google.com>, 
-	Sagi Shahar <sagis@google.com>, Bailey Forrest <bcf@google.com>, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAMAbYGkC/x3LQQqAIBBA0avErBtQIZGuEi1EJxsoE40IxLsnL
+ R+fX6FQZiowDxUyPVz4ih1yHMDtNgZC9t2ghNJCCoM2pYPQ35jOkHHjlwp6p7U1ejKWPPQzZfp
+ DH5e1tQ+e96CIZQAAAA==
+X-Change-ID: 20260108-apple-dt-pmgr-fixes-dc66a8658aed
+To: Sven Peter <sven@kernel.org>, Neal Gompa <neal@gompa.dev>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: asahi@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Janne Grunau <j@jannau.net>, stable@vger.kernel.org, 
+ Hector Martin <marcan@marcan.st>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1540; i=j@jannau.net;
+ s=yk2025; h=from:subject:message-id;
+ bh=UEe2GBpmdFannk+xLx6SfquIM4myIvY07R/tNzyF4Pk=;
+ b=owGbwMvMwCW2UNrmdq9+ahrjabUkhswE6TucWyZYyJ88H191ouFzrYu2wWTm6RWPevWS1808b
+ CqjYxHUUcrCIMbFICumyJKk/bKDYXWNYkztgzCYOaxMIEMYuDgFYCJqCQz/M5U3yn7J9H45hZMn
+ 5ZSwzxmupkffLVaEXBNQTN214HCNEyPDubnfGBzttwcHy+559rrmdHp+wqJ5PI+2bCtJbT3364o
+ zLwA=
+X-Developer-Key: i=j@jannau.net; a=openpgp;
+ fpr=8B336A6BE4E5695E89B8532B81E806F586338419
 
-On Thu, Jan 8, 2026 at 8:37=E2=80=AFAM Eric Dumazet <edumazet@google.com> w=
-rote:
->
-> On Thu, Jan 8, 2026 at 4:36=E2=80=AFPM Ankit Garg <nktgrg@google.com> wro=
-te:
-> >
-> > On Tue, Jan 6, 2026 at 6:22=E2=80=AFPM Jakub Kicinski <kuba@kernel.org>=
- wrote:
-> > >
-> > > On Mon,  5 Jan 2026 15:25:02 -0800 Joshua Washington wrote:
-> > > > This series fixes a kernel panic in the GVE driver caused by
-> > > > out-of-bounds array access when the network stack provides an inval=
-id
-> > > > TX queue index.
-> > >
-> > > Do you know how? I seem to recall we had such issues due to bugs
-> > > in the qdisc layer, most of which were fixed.
-> > >
-> > > Fixing this at the source, if possible, would be far preferable
-> > > to sprinkling this condition to all the drivers.
-> > That matches our observation=E2=80=94we have encountered this panic on =
-older
-> > kernels (specifically Rocky Linux 8) but have not been able to
-> > reproduce it on recent upstream kernels.
->
-> What is the kernel version used in Rocky Linux 8 ?
->
-The kernel version where we observed this is 4.18.0 (full version
-4.18.0-553.81.1+2.1.el8_10_ciq)
+This series contains 3 small pmgr related fixes for Apple silicon
+devices with M1 and M2.
 
-> Note that the test against real_num_tx_queues is done before reaching
-> the Qdisc layer.
->
-> It might help to give a stack trace of a panic.
->
-Crash happens in the sch_direct_xmit path per the trace.
+1. Prevent the display controller and DPTX phy from powered down after
+   initial boot on the M2 Mac mini. This is the only fix worthwhile for
+   stable kernels. Given how long it has been broken and that it's not a
+   regression I think it can wait to the next merge window and get
+   backported from there into stable kernels.
 
-I wonder if sch_direct_xmit is acting as an optimization to bypass the
-queueing layer, and if that is somehow bypassing the queue index
-checks you mentioned?
+2. Mark ps_atc?_usb_aon as always-on. This is required to keep the soon
+   to be suported USB type-c working across suspend an resume. The later
+   submitted devicetrees for M1 Pro/Max/Ultra, M2 and M2 Pro/Max/Ultra
+   already have this property since the initial change. Only the
+   separate for M1 was forgotten.
 
-I'll try to dig a bit deeper into that specific flow, but here is the
-trace in the meantime:
+3. Model the hidden dependency between GPU and pmp as power-domain
+   dependency. This is required to avoid crashing the GPU firmware
+   immediately after booting.
 
-Call Trace:
-? __warn+0x94/0xe0
-? gve_tx+0xa9f/0xc30 [gve]
-? gve_tx+0xa9f/0xc30 [gve]
-? report_bug+0xb1/0xe0
-? do_error_trap+0x9e/0xd0
-? do_invalid_op+0x36/0x40
-? gve_tx+0xa9f/0xc30 [gve]
-? invalid_op+0x14/0x20
-? gve_tx+0xa9f/0xc30 [gve]
-? netif_skb_features+0xcf/0x2a0
-dev_hard_start_xmit+0xd7/0x240
-sch_direct_xmit+0x9f/0x370
-__dev_queue_xmit+0xa04/0xc50
-ip_finish_output2+0x26d/0x430
-? __ip_finish_output+0xdf/0x1d0
-ip_output+0x70/0xf0
-__ip_queue_xmit+0x165/0x400
-__tcp_transmit_skb+0xa6b/0xb90
-tcp_connect+0xae3/0xd40
-tcp_v4_connect+0x476/0x4f0
-__inet_stream_connect+0xda/0x380
-> >
-> > Could you point us to the specific qdisc fixes you recall? We'd like
-> > to verify if the issue we are seeing on the older kernel is indeed one
-> > of those known/fixed bugs.
-> >
-> > If it turns out this is fully resolved in the core network stack
-> > upstream, we can drop this patch for the mainline driver. However, if
-> > there is ambiguity, do you think there is value in keeping this check
-> > to prevent the driver from crashing on invalid input?
->
-> We already have many costly checks, and netdev_core_pick_tx() should
-> already prevent such panic.
->
-> >
-> > Thanks,
-> > Ankit Garg
+Signed-off-by: Janne Grunau <j@jannau.net>
+---
+Hector Martin (1):
+      arm64: dts: apple: t8103: Mark ATC USB AON domains as always-on
+
+Janne Grunau (2):
+      arm64: dts: apple: t8112-j473: Keep the HDMI port powered on
+      arm64: dts: apple: t8103: Add ps_pmp dependency to ps_gfx
+
+ arch/arm64/boot/dts/apple/t8103-pmgr.dtsi |  3 +++
+ arch/arm64/boot/dts/apple/t8112-j473.dts  | 19 +++++++++++++++++++
+ 2 files changed, 22 insertions(+)
+---
+base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
+change-id: 20260108-apple-dt-pmgr-fixes-dc66a8658aed
+
+Best regards,
+-- 
+Janne Grunau <j@jannau.net>
+
 
