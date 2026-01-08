@@ -1,207 +1,218 @@
-Return-Path: <stable+bounces-206252-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206251-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A84ABD01517
-	for <lists+stable@lfdr.de>; Thu, 08 Jan 2026 07:57:57 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AEDED014A6
+	for <lists+stable@lfdr.de>; Thu, 08 Jan 2026 07:48:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D3CF43029EA3
-	for <lists+stable@lfdr.de>; Thu,  8 Jan 2026 06:54:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5A4683044B9C
+	for <lists+stable@lfdr.de>; Thu,  8 Jan 2026 06:44:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30A50325714;
-	Thu,  8 Jan 2026 06:54:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E10933E36B;
+	Thu,  8 Jan 2026 06:44:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="AcNgBLns"
+	dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b="e5KrIPDz"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ot1-f97.google.com (mail-ot1-f97.google.com [209.85.210.97])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-4323.protonmail.ch (mail-4323.protonmail.ch [185.70.43.23])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 626242D6401
-	for <stable@vger.kernel.org>; Thu,  8 Jan 2026 06:54:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.97
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22F1225F99F;
+	Thu,  8 Jan 2026 06:44:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.23
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767855244; cv=none; b=FQADoj0niVgBknK/0buZrOAepaMoISD6FD4lz+s/8cKuX0Jsdtr0V6XM/jNHF8bT0+wf9zyUWvTIJr9Ba4YmCzDTXPPdbcblffLXnwkNjnbS5qHqeqTA34jFsIKfSJpMkQivcfWC9MERFCYDQ4LtaHneXNGUj9BStebPHVJY07o=
+	t=1767854662; cv=none; b=cXf4JXXRP0LGK0HHEVPgPrMkS3trBupIm/aWNc1oAjFjlIfF5KgBW92lR3JgX1UJgDFHB4N2rF+QDHtmZCorPk25Hk/npvB4Jht0V/Ce+mel9FQtHmsg0/7HgRv7aPA0jYCyD2QdM4IR1FNgoy+s92lWckcan/UMvbDqQQcFNI8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767855244; c=relaxed/simple;
-	bh=QTCHsVNO16iQZrixVaQuQTrLrmA3Roxcubh4/31nZXk=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=pZyaMcfe7VW4I9Yk+Qz8F289LB7PrfDXKuBmCh4VaJ9hxHh2Ib8LTwdKcqGoP0a0W5G68tP35pgWki4EfehpN6jJtV57XhGZOwsEQq3+ZDk67a459GSEMzZlos+7tGoqLp1UOXinEF3AG36gdiXRQ0ob8u+GziCUv+wLu7VolVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=AcNgBLns; arc=none smtp.client-ip=209.85.210.97
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-ot1-f97.google.com with SMTP id 46e09a7af769-7c7533dbd87so2085124a34.2
-        for <stable@vger.kernel.org>; Wed, 07 Jan 2026 22:54:02 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767855241; x=1768460041;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:dkim-signature:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=yzc6jMotlPlOBqmj2BzruiYM6jJIxp4NUV9AgKZ5VJ8=;
-        b=i32vZWTim7THkmTX692EYGxU2DRaqIu7elNKZL52ruA/IGCfLoCDpNJhfwlWAVr55/
-         gOavwPa7SGXunD4rcT+SKSiEQ5mBPuVNpMk3ksFPlarOdK6ObEY4qBSqGdJB9ZdcrX+3
-         V0SbZK6vqwP4TlqHgcMPg3EMujPD09fgUdatl00n7Ki+Ml99P7omFLc2pfVGiRdEMyhM
-         qnAgDbB2oU4QadEl7Uhz440l/iywildm4qrK72DkP8EwhZrMrRu+Bwxcm/q80Uon84sx
-         OVfe7cXVDEo95X+kIfZbs9Pofg1DF2oHR02mLs6dc1/Tk3ywFBO1HGXyxSwWvxACySb+
-         MhRA==
-X-Gm-Message-State: AOJu0YzV1maLPQUR+qcgRoET/78+Ln9p5ur/Q+quIHXa4HmdzhHD8Wmx
-	d1Q4YwJTxri36JhFAWV9JliuC0FzmdAuccjN3osjLvF02huoSe2ILT5ew9iRMLFwDfjdMFMikIz
-	6Ud9r+GaWAXCS0EK4bCVS18MqTx1bEAwfSqGr5gqxmROG76M+h5S/p0Lkze6n05BxulAVibxTJi
-	8XmZOgB7qv8D1dEofsIyJV/KG61mITzs2+j68lMWcyG331H8aps5BUMk58u6UF9VMknnsj4Ht6O
-	sts3m7FbPSw8DaGQA==
-X-Gm-Gg: AY/fxX7mWUOtVguj4ILtKw9zPGRBWe6eYBq+764FjSwXuV3BAeR/fN+/KHXcJa/W0c/
-	dbNo+M1+h7Mrx6guU01Qpx7SNLFQ4r6z1VhXp+ldrlCBEwG2/tQdm/zLicoLXEGnZSfe4zk4xKw
-	UDMYYsPOSiOb7zc3GXujz/sbIn8MctmUuNwUmDrKqCNJMbTLa6FQ7+UUcQH6W+lSTXG7izvc7cQ
-	PGEUwrVp2VQJ6J/XTsGQ0dU9bouSzbWaIL2UVl5++rULf8lFnnIR/a3htMvlFI8lJLPx3onf8e2
-	ux865IHOUTI05cPegLKULXp7J+cpvRXAz/XlrikBMq2ibWZDi4F7WvssnX4xXfa6ZEoWLaf/0iq
-	pc17gTggggLigfhuQphCwUXNRx1XUy7ij/XGITXcv3VFyvVfeP8UP8MuWbIPiSWWEw0MmTQwD4z
-	CMlGvhvtxPjW76gaaKuSPxvLsHb+DYs5SLmVX6dCFXnuvHx+jTMIM=
-X-Google-Smtp-Source: AGHT+IHc8/G8XH7UDskD74xwHXrjYRmPbJnWA6Blbv3FZop4ZE610ZRn0B7Q77Z3ZR/VQHQmc82pmCN5ZztQ
-X-Received: by 2002:a05:6830:469b:b0:7c7:6043:dd8f with SMTP id 46e09a7af769-7ce50a98a3fmr1927658a34.15.1767855241068;
-        Wed, 07 Jan 2026 22:54:01 -0800 (PST)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-120.dlp.protect.broadcom.com. [144.49.247.120])
-        by smtp-relay.gmail.com with ESMTPS id 46e09a7af769-7ce4789e847sm1133595a34.6.2026.01.07.22.54.00
-        for <stable@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 07 Jan 2026 22:54:01 -0800 (PST)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-dl1-f71.google.com with SMTP id a92af1059eb24-11f44c1b352so11109303c88.0
-        for <stable@vger.kernel.org>; Wed, 07 Jan 2026 22:54:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1767855239; x=1768460039; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=yzc6jMotlPlOBqmj2BzruiYM6jJIxp4NUV9AgKZ5VJ8=;
-        b=AcNgBLnsXF8blkFI+S3hVadeuJ4TOCpqx71LQuYX4o9n/O/l15uwb3GYdRDfVic1o9
-         7Y27q6BpYx9+T2RfDh+MLn15g1/z56sVk1SX0nQEF2yf7vYaxQ2sMJ4TJYnJILS1AVAE
-         DIJnIBwsAvLtcBqskeMKY9NLMiQDd4wWLI48c=
-X-Received: by 2002:a05:7022:79b:b0:11d:f44c:afbc with SMTP id a92af1059eb24-121f8b5fb5cmr4806120c88.37.1767855239182;
-        Wed, 07 Jan 2026 22:53:59 -0800 (PST)
-X-Received: by 2002:a05:7022:79b:b0:11d:f44c:afbc with SMTP id a92af1059eb24-121f8b5fb5cmr4806050c88.37.1767855238207;
-        Wed, 07 Jan 2026 22:53:58 -0800 (PST)
-Received: from shivania.lvn.broadcom.net ([192.19.161.250])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-121f248bb6esm12592287c88.12.2026.01.07.22.53.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 Jan 2026 22:53:57 -0800 (PST)
-From: Shivani Agarwal <shivani.agarwal@broadcom.com>
-To: stable@vger.kernel.org,
-	gregkh@linuxfoundation.org
-Cc: jgg@ziepe.ca,
-	leon@kernel.org,
-	mbloch@nvidia.com,
-	parav@nvidia.com,
-	roman.gushchin@linux.dev,
-	markzhang@nvidia.com,
-	zhao.xichao@vivo.com,
-	wangliang74@huawei.com,
-	yanjun.zhu@linux.dev,
-	marco.crivellari@suse.com,
-	jackm@dev.mellanox.co.il,
-	linux-rdma@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	ajay.kaher@broadcom.com,
-	alexey.makhalov@broadcom.com,
-	vamsi-krishna.brahmajosyula@broadcom.com,
-	yin.ding@broadcom.com,
-	tapas.kundu@broadcom.com,
-	syzbot+e2ce9e275ecc70a30b72@syzkaller.appspotmail.com,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Shivani Agarwal <shivani.agarwal@broadcom.com>
-Subject: [PATCH v5.10-v6.6] RDMA/core: Fix "KASAN: slab-use-after-free Read in ib_register_device" problem
-Date: Wed,  7 Jan 2026 22:33:00 -0800
-Message-Id: <20260108063300.670981-1-shivani.agarwal@broadcom.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1767854662; c=relaxed/simple;
+	bh=YoLFn32Xw+uftb+RucH5H8d09ERQBdftmuXlOIqVMpA=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=PTq0Dmc5HF7+EpyI65DohuYhkQoRRnS8OWlU+mdSgxNEycM0hHJ+X7JiolrI4S8AT7tAh3fgm6F63R51Fq3jM6fTD7pFA6KjcTA2gIqtUhqnaH7cK6NroyuRPVbCvAXF1jB2iQ8fGOMUi0knsaIXk2OYSO8eHpr3HLztm4J2A0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=geanix.com; spf=pass smtp.mailfrom=geanix.com; dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b=e5KrIPDz; arc=none smtp.client-ip=185.70.43.23
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=geanix.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=geanix.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=geanix.com;
+	s=protonmail2; t=1767854649; x=1768113849;
+	bh=JvbqfdE84s/Q3OOhKk+KWzNYUT7BCFUTKaN5MZ+iwW8=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=e5KrIPDzjg1eSWFaPCAMJbQZi9QV6uXXbAp8JUNHoExGxRVbZYfPic5fG1Stk+ety
+	 UglMdcOOJzCoJhMUgZm9hviKfZl3fGbI9RWfijo6ADEua7tzieJTcJ1tEbJcQUAzWH
+	 EkQlM+nAIari9yZuVeKSy6NK1iDvyruNab0gvzuqy+QJiQknsoen5KM5UmFhnc5oPh
+	 CugkPCSuozE+CMdPaeCodhQ4SfuqaPLyya41H1JmE0W7kDRrhYFAX8uOLS2JarTlBF
+	 xV1cyBCoyVEQbwNblQZBlFLihg+w/3mJAMR61vodMHj/+FsiTqZIjZZVXH+ju+oUtf
+	 Aw5U8tsJUWdKA==
+Date: Thu, 08 Jan 2026 06:44:06 +0000
+To: =?utf-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
+From: Sean Nyekjaer <sean@geanix.com>
+Cc: Fabrice Gasnier <fabrice.gasnier@foss.st.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, linux-pwm@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] pwm: stm32: handle polarity change when PWM is enabled
+Message-ID: <paj3uf6apunonvfz2w2anqmddivjrofmfo5wktygz4r6l7diqf@7gen7gjgyuar>
+In-Reply-To: <zj2vpruzoeyvyyzxiqcffajyhpmem4q75l6gzgxd4jgaizhrdq@bxuudn4kyvr3>
+References: <20260106-stm32-pwm-v1-1-33e9e8a9fc33@geanix.com> <kemjjoyrhqglqq4p2j6kygspevq2mdbiujtnksw4rkdapoqcfy@zte2c7fhqvn3> <2e2iahbzcepbzwgk7xeta2afxmycfjgv2zofzngqjvp4on46r2@mzpi4bz4uqie> <nwhixocvhii27jvcyg7ex5emewntgfhyxa4ds5vo2dphe7xfe4@ibjsjdd5fgmn> <fwaodg2ovh7j47ifwjhgeppxs3oiqht5ecbs7bmfbi7j6djejs@shwokpcmutr3> <zj2vpruzoeyvyyzxiqcffajyhpmem4q75l6gzgxd4jgaizhrdq@bxuudn4kyvr3>
+Feedback-ID: 134068486:user:proton
+X-Pm-Message-ID: 014263d0e98d319b81f8ce02eec1a63633eddc36
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-From: Zhu Yanjun <yanjun.zhu@linux.dev>
+Hi Uwe,
 
-[ Upstream commit d0706bfd3ee40923c001c6827b786a309e2a8713 ]
+On Thu, Jan 08, 2026 at 07:05:15AM +0100, Uwe Kleine-K=C3=B6nig wrote:
+> On Wed, Jan 07, 2026 at 04:05:56PM +0000, Sean Nyekjaer wrote:
+> > On Wed, Jan 07, 2026 at 04:54:46PM +0100, Uwe Kleine-K=C3=B6nig wrote:
+> > > On Tue, Jan 06, 2026 at 11:30:34AM +0000, Sean Nyekjaer wrote:
+> > > > On Tue, Jan 06, 2026 at 11:22:57AM +0100, Uwe Kleine-K=C3=B6nig wro=
+te:
+> > > > > On Tue, Jan 06, 2026 at 08:01:57AM +0100, Sean Nyekjaer wrote:
+> > > > > > After commit 7346e7a058a2 ("pwm: stm32: Always do lazy disablin=
+g"),
+> > > > > > polarity changes are ignored. Updates to the TIMx_CCER CCxP bit=
+s are
+> > > > > > ignored by the hardware when the master output is enabled via t=
+he
+> > > > > > TIMx_BDTR MOE bit.
+> > > > > [...]
+> > > > > I have hardware using this driver, will set it up later this week=
+ for
+> > > > > testing.
+> > > >=20
+> > > > Very cool, looking forward to hear if you can re-produce.
+> > >=20
+> > > I cannot. I have:
+> > >=20
+> > > =09# uname -r
+> > > =096.11.0-rc1-00028-geb18504ca5cf-dirty
+> > >=20
+> > > (the -dirty is only from enabling the pwm for my machine, no driver
+> > > changes)
+> > >=20
+> > > =09# cat /sys/kernel/debug/pwm
+> > > =090: platform/40001000.timer:pwm, 4 PWM devices
+> > > =09...
+> > > =09 pwm-3   (sysfs               ): requested enabled period: 313720 =
+ns duty: 10000 ns polarity: normal
+> > >=20
+> > > and pulseview/sigrok detects 3.187251% with a period of 313.8 =C2=
+=B5s.
+> > >=20
+> > > After
+> > >=20
+> > > =09echo inversed > /sys/class/pwm/pwmchip0/pwm3/polarity
+> > >=20
+> > > the output changes to
+> > >=20
+> > > =09# cat /sys/kernel/debug/pwm
+> > > =090: platform/40001000.timer:pwm, 4 PWM devices
+> > > =09...
+> > > =09 pwm-3   (sysfs               ): requested enabled period: 313720 =
+ns duty: 10000 ns polarity: inverse
+> > >=20
+> > > and pulseview/sigrok claims 96.812749% with a period of 313.8 =C2=
+=B5s.
+> > > So the polarity change happend as expected.
+> > >=20
+> > > This is on an st,stm32mp135f-dk board.
+> > >=20
+> > > Where is the difference to your observations?
+> > >=20
+> >=20
+> > Thanks for taking a look!
+> > I'm using the PWM for a backlight. With this [0] in my dts:
+> >=20
+> > [0]:
+> > =09backlight: backlight {
+> > =09=09compatible =3D "pwm-backlight";
+> > =09=09pwms =3D <&pwm4 0 125000 PWM_POLARITY_INVERTED>;
+> > =09=09brightness-levels =3D <102 235 255>;
+> > =09=09default-brightness-level =3D <80>;
+> > =09=09num-interpolated-steps =3D <100>;
+> > =09=09enable-gpios =3D <&gpiof 12 GPIO_ACTIVE_LOW>;
+> > =09status =3D "okay";
+> > =09};
+> >=20
+> > Maybe that is doing something differently.
+>=20
+> What is the actual problem you have? I assume it's the backlight being
+> off after boot? Does it start working if you disable and reenable?
 
-Call Trace:
+Yes, no backlight at default brightness. But the range is inverted so a low=
+ brightness
+setting i get maximum brightness.
+No, it never enters stm32_pwm_set_polarity().
 
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:120
- print_address_description mm/kasan/report.c:408 [inline]
- print_report+0xc3/0x670 mm/kasan/report.c:521
- kasan_report+0xe0/0x110 mm/kasan/report.c:634
- strlen+0x93/0xa0 lib/string.c:420
- __fortify_strlen include/linux/fortify-string.h:268 [inline]
- get_kobj_path_length lib/kobject.c:118 [inline]
- kobject_get_path+0x3f/0x2a0 lib/kobject.c:158
- kobject_uevent_env+0x289/0x1870 lib/kobject_uevent.c:545
- ib_register_device drivers/infiniband/core/device.c:1472 [inline]
- ib_register_device+0x8cf/0xe00 drivers/infiniband/core/device.c:1393
- rxe_register_device+0x275/0x320 drivers/infiniband/sw/rxe/rxe_verbs.c:1552
- rxe_net_add+0x8e/0xe0 drivers/infiniband/sw/rxe/rxe_net.c:550
- rxe_newlink+0x70/0x190 drivers/infiniband/sw/rxe/rxe.c:225
- nldev_newlink+0x3a3/0x680 drivers/infiniband/core/nldev.c:1796
- rdma_nl_rcv_msg+0x387/0x6e0 drivers/infiniband/core/netlink.c:195
- rdma_nl_rcv_skb.constprop.0.isra.0+0x2e5/0x450
- netlink_unicast_kernel net/netlink/af_netlink.c:1313 [inline]
- netlink_unicast+0x53a/0x7f0 net/netlink/af_netlink.c:1339
- netlink_sendmsg+0x8d1/0xdd0 net/netlink/af_netlink.c:1883
- sock_sendmsg_nosec net/socket.c:712 [inline]
- __sock_sendmsg net/socket.c:727 [inline]
- ____sys_sendmsg+0xa95/0xc70 net/socket.c:2566
- ___sys_sendmsg+0x134/0x1d0 net/socket.c:2620
- __sys_sendmsg+0x16d/0x220 net/socket.c:2652
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xcd/0x260 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
+>=20
+> Can you please boot with
+>=20
+> =09trace_event=3Dpwm
+>=20
+> on the command line and provide /sys/kernel/debug/tracing/trace from
+> after the problem happend?
 
-This problem is similar to the problem that the
-commit 1d6a9e7449e2 ("RDMA/core: Fix use-after-free when rename device name")
-fixes.
+Tracing output is the same before and after this patch:
+# tracer: nop
+#
+# entries-in-buffer/entries-written: 2/2   #P:2
+#
+#                                _-----=3D> irqs-off/BH-disabled
+#                               / _----=3D> need-resched
+#                              | / _---=3D> hardirq/softirq
+#                              || / _--=3D> preempt-depth
+#                              ||| / _-=3D> migrate-disable
+#                              |||| /     delay
+#           TASK-PID     CPU#  |||||  TIMESTAMP  FUNCTION
+#              | |         |   |||||     |         |
+    kworker/u5:0-24      [000] .....     1.867389: pwm_apply: 482f1c0e: per=
+iod=3D125000 duty_cycle=3D0 polarity=3D1 enabled=3D0 err=3D0
+     kworker/1:0-22      [001] .....     1.984044: pwm_apply: 482f1c0e: per=
+iod=3D125000 duty_cycle=3D101960 polarity=3D1 enabled=3D1 err=3D0
 
-The root cause is: the function ib_device_rename() renames the name with
-lock. But in the function kobject_uevent(), this name is accessed without
-lock protection at the same time.
+I have added this diff to the kernel to show what happens:
+diff --git a/drivers/pwm/pwm-stm32.c b/drivers/pwm/pwm-stm32.c
+index 67414b97ef4d..94f6d0f33365 100644
+--- a/drivers/pwm/pwm-stm32.c
++++ b/drivers/pwm/pwm-stm32.c
+@@ -394,6 +394,7 @@ static int stm32_pwm_set_polarity(struct stm32_pwm *pri=
+v, int ch,
+ {
+ =09u32 mask;
 
-The solution is to add the lock protection when this name is accessed in
-the function kobject_uevent().
++=09printk("stm32_pwm_set_polarity: %d\n", polarity);
+ =09mask =3D TIM_CCER_CC1P << (ch * 4);
+ =09if (priv->have_complementary_output)
+ =09=09mask |=3D TIM_CCER_CC1NP << (ch * 4);
+@@ -455,6 +456,7 @@ static int stm32_pwm_apply(struct pwm_chip *chip, struc=
+t pwm_device *pwm,
+ =09int ret;
 
-Fixes: 779e0bf47632 ("RDMA/core: Do not indicate device ready when device enablement fails")
-Link: https://patch.msgid.link/r/20250506151008.75701-1-yanjun.zhu@linux.dev
-Reported-by: syzbot+e2ce9e275ecc70a30b72@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=e2ce9e275ecc70a30b72
-Signed-off-by: Zhu Yanjun <yanjun.zhu@linux.dev>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-[ Ajay: Modified to apply on v5.10.y-v6.6.y
-        ib_device_notify_register() not present in v5.10.y-v6.6.y,
-        so directly added lock for kobject_uevent() ]
-Signed-off-by: Ajay Kaher <ajay.kaher@broadcom.com>
-Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
----
- drivers/infiniband/core/device.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ =09enabled =3D pwm->state.enabled;
++=09printk("stm32_pwm_apply: enabled %d, state->polarity %d, pwm->state.pol=
+arity %d\n", enabled, state->polarity, pwm->state.polarity);
 
-diff --git a/drivers/infiniband/core/device.c b/drivers/infiniband/core/device.c
-index 26f1d2f29..ea9b48108 100644
---- a/drivers/infiniband/core/device.c
-+++ b/drivers/infiniband/core/device.c
-@@ -1396,8 +1396,13 @@ int ib_register_device(struct ib_device *device, const char *name,
- 		return ret;
- 	}
- 	dev_set_uevent_suppress(&device->dev, false);
-+
-+	down_read(&devices_rwsem);
-+
- 	/* Mark for userspace that device is ready */
- 	kobject_uevent(&device->dev.kobj, KOBJ_ADD);
-+
-+	up_read(&devices_rwsem);
- 	ib_device_put(device);
- 
- 	return 0;
--- 
-2.40.4
+ =09if (!state->enabled) {
+ =09=09if (enabled)
+
+Before this patch:
+root@localhost:~# journalctl -k | grep pwm
+Jan 8 7:30:33 localhost kernel: stm32_pwm_apply: enabled 0, state->polarity=
+ 1, pwm->state.polarity 0
+Jan 8 7:30:33 localhost kernel: stm32_pwm_apply: enabled 0, state->polarity=
+ 1, pwm->state.polarity 1
+
+After this patch:
+root@localhost:~# journalctl -k | grep pwm
+Jan 8 7:38:33 localhost kernel: stm32_pwm_apply: enabled 0, state->polarity=
+ 1, pwm->state.polarity 0
+Jan 8 7:38:33 localhost kernel: stm32_pwm_set_polarity: 1
+Jan 8 7:38:33 localhost kernel: stm32_pwm_apply: enabled 0, state->polarity=
+ 1, pwm->state.polarity 1
+
+I hope that clarifies things :)
+
+/Sean
 
 
