@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-206389-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206390-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 111A1D04B2D
-	for <lists+stable@lfdr.de>; Thu, 08 Jan 2026 18:07:01 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F64BD04C2B
+	for <lists+stable@lfdr.de>; Thu, 08 Jan 2026 18:13:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 89858306EC11
-	for <lists+stable@lfdr.de>; Thu,  8 Jan 2026 16:53:57 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 99146304713A
+	for <lists+stable@lfdr.de>; Thu,  8 Jan 2026 16:54:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68F252E7F11;
-	Thu,  8 Jan 2026 16:53:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0C282ECEAE;
+	Thu,  8 Jan 2026 16:53:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EZl9RrpT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l0hTXkKg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01FA02DCF4C;
-	Thu,  8 Jan 2026 16:53:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AFE92DCF46;
+	Thu,  8 Jan 2026 16:53:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767891224; cv=none; b=YXAb+J74RmXdHdHhYIZtSQFx4u3DwPjp7FnCrLMftgtbMijWftskoz+iXQ0ZlC8YhJ5aGWgj4nHrtDzqxM45Di+iMP/KYB77Z8lwMWqhS+94CxA4S2kpr8i00i4+iC35HOB7TjOaSdWZ/npRzEJklvDrdAAdK6o1cENwEk6HH00=
+	t=1767891226; cv=none; b=M4i9D1iCHb+KBzjuCAqLL8+oNHKVx8CZDGpAfoLBq5J7oFpn9pWbr8q3yJK9IKpuJhYYy9NJhcRtqOuVE09zHPyrmujvGpOhHPV+gA5+rDZA9GwCDBFNgAr0w52qglBHjCw64n8vTKSgk9Cont+ORneugvvPcPmGt6CmZ/J1alA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767891224; c=relaxed/simple;
-	bh=Lm0bNIIANsCc10sqZgEPoU/LxqooOlG+OUV8XDM3Clc=;
+	s=arc-20240116; t=1767891226; c=relaxed/simple;
+	bh=m4uIYf7XRXQ4HudqrctBnnMhYPZl+6Vzv/7NAPsBjHk=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=A7ZFgblr7+bmty5EljBzWuyyJGmJKyQHLN0Ebqq+/YydaquNiksv3zb4m2Cxk2U+LRPunPYXPRuq5MVd7zm7EyD9JWJ/mAraESXvC/nxh6ScMPhzn6nw3E54fWDRG7tJhUyij0pL7h/zx3k8TUQPe+e4TDYGGRmu8MQ+65iljII=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EZl9RrpT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 875BAC19424;
-	Thu,  8 Jan 2026 16:53:43 +0000 (UTC)
+	 In-Reply-To:To:Cc; b=cCsyZJPxFZBbrYMOtfzKJPWzid+fQunTMi26/pziBxvpOTE3RJ14uMCTmFmlkc8ZOc+dfkKGRA2xnyCd6HUF3suNDfY9BsHFj3r5J43IjBLfplEkcYDHxGIbZixXzPi0VKF7yIzOFCf+V6qX8u1C7klAhD43AzDDNROlswaj8Rk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l0hTXkKg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4700BC4AF0B;
+	Thu,  8 Jan 2026 16:53:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767891223;
-	bh=Lm0bNIIANsCc10sqZgEPoU/LxqooOlG+OUV8XDM3Clc=;
+	s=k20201202; t=1767891226;
+	bh=m4uIYf7XRXQ4HudqrctBnnMhYPZl+6Vzv/7NAPsBjHk=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=EZl9RrpTucSK5CIN6OgVG7qF8KC+0gPHNTj7A2MNARt2oyx0A1DsLMFdiPjVT4C7s
-	 34tWC8lAYlj0bR13sHwHqbQfwutBhsvlT6LE/0DNmH8Cl7l+QvNXAXI1lx0eNLmdOv
-	 5b9B7LDIcN27Zk1U8t0PF3LLg44jDByu+fCwl33wdvdU4/M298Cs7WejhHP/VziF1N
-	 GfIOJ8P65nOlSPepqg8DU2cEhV1BR+7FM8+Llp8miQHfX/V0d+5MBzDG82WqBf5tXD
-	 ZZc36PQiNuKbPJ4hMGLL7uj678g11Fj5PVotw382B8TDJ9FZZF4O52Y3tnbFnUIBE8
-	 VZtjW1YcV1EXg==
+	b=l0hTXkKgc3KwpLWgIVq7oGmjDHOZr4MG+7HMUv4DfkcYra9NqnqwXw0MSKvU08aJ0
+	 dikv8LqWrsxtqImw7MwVyDBx13DnT0VznwHhpzJrAdd3ivhtaPOCqzrRa/fwQGUTFU
+	 rF2M9tB32+VvHOytIBZp80uGHSXDAl9BphphbE6Ii27xfQvo+VDfvCt0DU5e8OmOEZ
+	 Gm46OUjYNsTZWg5vmFjqWskXX6M9YEXGIkC0Us5KxIclJvFX0ikjzoQYPZBCNDHEP3
+	 bFdXnvSdCObY3rPChJQz9E7NdWzbzftl+CeBSLJvjeoQlJ1r8dLLjsfGFgpQaAO6ZE
+	 jXKUJSxN8L42g==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3BB9A3A54A3D;
-	Thu,  8 Jan 2026 16:50:21 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id F2AC23A54A3D;
+	Thu,  8 Jan 2026 16:50:23 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -50,45 +50,37 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v3] bnxt_en: Fix NULL pointer crash in bnxt_ptp_enable
- during error cleanup
+Subject: Re: [PATCH NET v2 1/1] net: usb: pegasus: fix memory leak in
+ update_eth_regs_async()
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <176789101978.3716059.8052841246224375399.git-patchwork-notify@kernel.org>
-Date: Thu, 08 Jan 2026 16:50:19 +0000
-References: <20260106-bnxt-v3-1-71f37e11446a@debian.org>
-In-Reply-To: <20260106-bnxt-v3-1-71f37e11446a@debian.org>
-To: Breno Leitao <leitao@debian.org>
-Cc: michael.chan@broadcom.com, pavan.chebbi@broadcom.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, richardcochran@gmail.com,
- rmk+kernel@armlinux.org.uk, vadim.fedorenko@linux.dev,
- vladimir.oltean@nxp.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, kernel-team@meta.com, stable@vger.kernel.org
+ <176789102277.3716059.3717751225941024809.git-patchwork-notify@kernel.org>
+Date: Thu, 08 Jan 2026 16:50:22 +0000
+References: <20260106084821.3746677-1-petko.manolov@konsulko.com>
+In-Reply-To: <20260106084821.3746677-1-petko.manolov@konsulko.com>
+To: Petko Manolov <petko.manolov@konsulko.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, stable@vger.kernel.org,
+ pabeni@redhat.com, andrew@lunn.ch, petkan@nucleusys.com
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Tue, 06 Jan 2026 06:31:14 -0800 you wrote:
-> When bnxt_init_one() fails during initialization (e.g.,
-> bnxt_init_int_mode returns -ENODEV), the error path calls
-> bnxt_free_hwrm_resources() which destroys the DMA pool and sets
-> bp->hwrm_dma_pool to NULL. Subsequently, bnxt_ptp_clear() is called,
-> which invokes ptp_clock_unregister().
+On Tue,  6 Jan 2026 10:48:21 +0200 you wrote:
+> From: Petko Manolov <petkan@nucleusys.com>
 > 
-> Since commit a60fc3294a37 ("ptp: rework ptp_clock_unregister() to
-> disable events"), ptp_clock_unregister() now calls
-> ptp_disable_all_events(), which in turn invokes the driver's .enable()
-> callback (bnxt_ptp_enable()) to disable PTP events before completing the
-> unregistration.
+> When asynchronously writing to the device registers and if usb_submit_urb()
+> fail, the code fail to release allocated to this point resources.
+> 
+> Fixes: 323b34963d11 ("drivers: net: usb: pegasus: fix control urb submission")
+> Signed-off-by: Petko Manolov <petkan@nucleusys.com>
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,v3] bnxt_en: Fix NULL pointer crash in bnxt_ptp_enable during error cleanup
-    https://git.kernel.org/netdev/net/c/3358995b1a7f
+  - [NET,v2,1/1] net: usb: pegasus: fix memory leak in update_eth_regs_async()
+    https://git.kernel.org/netdev/net/c/afa27621a28a
 
 You are awesome, thank you!
 -- 
