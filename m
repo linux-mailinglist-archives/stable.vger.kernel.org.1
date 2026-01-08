@@ -1,93 +1,149 @@
-Return-Path: <stable+bounces-206319-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206324-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF6D7D03DFC
-	for <lists+stable@lfdr.de>; Thu, 08 Jan 2026 16:32:43 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97BFDD03ABA
+	for <lists+stable@lfdr.de>; Thu, 08 Jan 2026 16:09:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 89D6930AA3BC
-	for <lists+stable@lfdr.de>; Thu,  8 Jan 2026 15:26:36 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 85BE6302E63A
+	for <lists+stable@lfdr.de>; Thu,  8 Jan 2026 15:02:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D67A4ADDB6;
-	Thu,  8 Jan 2026 11:11:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 744DB410D15;
+	Thu,  8 Jan 2026 11:33:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vZNvIQ77"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S7SrnItk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42A292DF153;
-	Thu,  8 Jan 2026 11:11:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DE7D3FB6B1;
+	Thu,  8 Jan 2026 11:33:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767870697; cv=none; b=fExB6ySCk4QzGAFGcKlwvl9ijp3uLO94DhgdcFSAzSP8dMZfWLsKX0bcc+ivLsRExrmErRdD8MOXlBG9ERbqlnlqAIEgTJMYGwQMKX8tjo3HUbxIiXUv6PNkAi78X5VXCVuH4BJHLh1ZuwWFDDYox8pDrCAS6LGzLV9QRMeP/PI=
+	t=1767871994; cv=none; b=py5f+C6MNOaWWG+NUNYMoQs24TVgWldZp8fs4ZTGGVhUnxABhtOrD+Be9EWY2KIztIGhp43ZmYYHw70X79NgaZVCcdD0xplP7lcj8Z//9Wa1OuWPOqGxJzga9gqM0SpdF68Q+sYAGozAq4Lnw6FwUG0p0ajIMKePkpVfuO9/7f4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767870697; c=relaxed/simple;
-	bh=8CGN48JNNgwKs+LFLKHS2Kg9Tyylj9zBMrAZ2Ix4NqM=;
+	s=arc-20240116; t=1767871994; c=relaxed/simple;
+	bh=eN+QfHQIO7Pse9zFJrI5udW/vP/pjvyOhr608oKx/xE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CawS+jJllwqjF2fZ1FJtitI6tCGacHW9PJh0NG5wFXfqbGmgFRw9S4zcuDbmHB0x5fjAU5tSJuiCW6jilr8qlM5//H6oDrGpmvxONrF5Hz4rAzR96Y/m5N9e23o0MpLczSQ2Y3c6IERrOx1plqCsJgHv8rC6j+dV8mKvHhThIow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vZNvIQ77; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 504BAC116C6;
-	Thu,  8 Jan 2026 11:11:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767870696;
-	bh=8CGN48JNNgwKs+LFLKHS2Kg9Tyylj9zBMrAZ2Ix4NqM=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=Q1efUls6Ekkf8tmTJZ+Ljc+ZzdntuMSP+PCrslCPMf+pFwKxWv5gla9uMEMtPHxRWbNnxfigjx+PmpQCatYjyxHaiOSlaSeZp+MHGIRaa1zchPVKngyC5qtXs6iWOn1gk9xIQ7b57NE3wzxR65RqBUjEqOds5q0iny9DzSSC4l4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S7SrnItk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 314D1C116C6;
+	Thu,  8 Jan 2026 11:33:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767871993;
+	bh=eN+QfHQIO7Pse9zFJrI5udW/vP/pjvyOhr608oKx/xE=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=vZNvIQ77mok7jNAwIkIYd8+X0QzJ7gnG94/r/jd+BvcjzkwUA5kzRpUwhcaUNYJ+V
-	 z21s4u8JmKM8/UUcN8VI9P5qo7ydIgBCHlMjLti+kle92Oc4JaccFiW2PgSiP/ms6c
-	 atjUINLa/TW39k3436xld2zKjHngf3oRD6aM29r0=
-Date: Thu, 8 Jan 2026 12:11:32 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Leon Hwang <leon.hwang@linux.dev>
-Cc: stable@vger.kernel.org, Andrii Nakryiko <andrii@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Jiri Olsa <jolsa@kernel.org>, Namhyung Kim <namhyung@kernel.org>,
-	Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H . Peter Anvin" <hpa@zytor.com>, linux-perf-users@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 6.6.y 0/4] perf/x86/amd: add LBR capture support outside
- of hardware events
-Message-ID: <2026010809-matchless-reporter-3129@gregkh>
-References: <20260102090320.32843-1-leon.hwang@linux.dev>
+	b=S7SrnItkrXMW/9y7kgKPBTdzC3zvrTpBlT+uGAUUqkdczSAZtVWZDNYG+HFEjN1hC
+	 i6yasWk5CBt7/D7lXRUzRnpKnVS1QY9xThGc6+2MRr1+cCxOImMlevNXp+Bdv1LJ8l
+	 VrBhumfkttUS27cxjIm4SUBaXqdw8tORe3AEtYRxJ46tFH19SG4RLAaWp9vgyANBBE
+	 8dRZ59FLmfrpDoswZz2Fiy3mr4Q+y6a8QouPbuCMjfRMqLJHCcdih2LVEYvy0sRhIQ
+	 o3sjRJUi4s6wHL1WL0Ydozt3QqEg1wgZqeXMOZLqjfgGs3zn+yIv6RxxD93cLBTKCQ
+	 Bj/UTHltTnI4Q==
+Date: Thu, 8 Jan 2026 12:33:10 +0100
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
+To: Sean Nyekjaer <sean@geanix.com>
+Cc: Fabrice Gasnier <fabrice.gasnier@foss.st.com>, 
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+	linux-pwm@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] pwm: stm32: handle polarity change when PWM is enabled
+Message-ID: <r2jq72u3hfxrl4slgvuei2eobke37apebf67naxrvuabtcvaxe@pamwe3nejqge>
+References: <20260106-stm32-pwm-v1-1-33e9e8a9fc33@geanix.com>
+ <kemjjoyrhqglqq4p2j6kygspevq2mdbiujtnksw4rkdapoqcfy@zte2c7fhqvn3>
+ <2e2iahbzcepbzwgk7xeta2afxmycfjgv2zofzngqjvp4on46r2@mzpi4bz4uqie>
+ <nwhixocvhii27jvcyg7ex5emewntgfhyxa4ds5vo2dphe7xfe4@ibjsjdd5fgmn>
+ <fwaodg2ovh7j47ifwjhgeppxs3oiqht5ecbs7bmfbi7j6djejs@shwokpcmutr3>
+ <zj2vpruzoeyvyyzxiqcffajyhpmem4q75l6gzgxd4jgaizhrdq@bxuudn4kyvr3>
+ <paj3uf6apunonvfz2w2anqmddivjrofmfo5wktygz4r6l7diqf@7gen7gjgyuar>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="ljhznkytnrzlaroq"
 Content-Disposition: inline
-In-Reply-To: <20260102090320.32843-1-leon.hwang@linux.dev>
-
-On Fri, Jan 02, 2026 at 05:03:16PM +0800, Leon Hwang wrote:
-> Hi all,
-> 
-> This backport wires up AMD perfmon v2 so BPF and other software clients
-> can snapshot LBR stacks on demand, similar to the Intel support
-> upstream. The series keeps the LBR-freeze path branchless, adds the
-> perf_snapshot_branch_stack callback for AMD, and drops the
-> sampling-only restriction now that snapshots can be taken from software
-> contexts.
-> 
-> Leon Hwang (4):
->   perf/x86/amd: Ensure amd_pmu_core_disable_all() is always inlined
->   perf/x86/amd: Avoid taking branches before disabling LBR
->   perf/x86/amd: Support capturing LBR from software events
->   perf/x86/amd: Don't reject non-sampling events with configured LBR
+In-Reply-To: <paj3uf6apunonvfz2w2anqmddivjrofmfo5wktygz4r6l7diqf@7gen7gjgyuar>
 
 
-Why is this for a stable kernel?  Isn't it a new feature?  If you need
-this feature, why not use a newer kernel tree?
+--ljhznkytnrzlaroq
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH] pwm: stm32: handle polarity change when PWM is enabled
+MIME-Version: 1.0
 
-thanks,
+Hello Sean,
 
-greg k-h
+On Thu, Jan 08, 2026 at 06:44:06AM +0000, Sean Nyekjaer wrote:
+> I hope that clarifies things :)
+
+It does. I'm convinced the following patch implements a simpler fix:
+
+diff --git a/drivers/pwm/pwm-stm32.c b/drivers/pwm/pwm-stm32.c
+index eb24054f9729..86e6eb7396f6 100644
+--- a/drivers/pwm/pwm-stm32.c
++++ b/drivers/pwm/pwm-stm32.c
+@@ -458,8 +458,7 @@ static int stm32_pwm_apply(struct pwm_chip *chip, struc=
+t pwm_device *pwm,
+ 		return 0;
+ 	}
+=20
+-	if (state->polarity !=3D pwm->state.polarity)
+-		stm32_pwm_set_polarity(priv, pwm->hwpwm, state->polarity);
++	stm32_pwm_set_polarity(priv, pwm->hwpwm, state->polarity);
+=20
+ 	ret =3D stm32_pwm_config(priv, pwm->hwpwm,
+ 			       state->duty_cycle, state->period);
+
+While is isn't optimal as it might write the polarity into hardware when
+it's not necessary, the same holds true for the values for duty_cycle
+and period. Compared to your patch this is simple enough to make me ok
+with applying it to 6.12.x (and older stable kernels) without an
+equivalent commit in mainline. (Backporting the waveform stuff is out of
+the question IMNSHO.)
+
+Also I'm still convinced that 7edf7369205b isn't the correct commit to
+blame. This one changes the preconditions for the problem to occur (and
+thus it's plausible that it's the result of your bisection), but even
+before 7edf7369205b the problem can happen with:
+
+	pwm_apply(mypwm, &(struct pwm_state){ .enabled =3D true, .polarity =3D PWM=
+_POLARITY_NORMAL, .period =3D DC, .duty_cycle =3D DC });
+	pwm_apply(mypwm, &(struct pwm_state){ .enabled =3D false, .polarity =3D PW=
+M_POLARITY_INVERSED, .period =3D DC, .duty_cycle =3D DC });
+	pwm_apply(mypwm, &(struct pwm_state){ .enabled =3D true, .polarity =3D PWM=
+_POLARITY_INVERSED, .period =3D DC, .duty_cycle =3D DC });
+
+After the 1st call polarity is configured to normal (unless the bug
+happens already earlier :-), the 2nd disables the hardware without
+configuration of the polarity (before and after 7edf7369205b), and the
+third skips setting of the polarity because state->polarity already
+matches pwm->state.polarity. The original problem exists since=20
+7edf7369205b ("pwm: Add driver for STM32 plaftorm").
+
+Are you able to create an improved patch with these insights in a timely
+manner? (Grab authorship for yourself and honoring my part with a
+Co-developed-by is fine for me.)
+
+Best regards
+Uwe
+
+--ljhznkytnrzlaroq
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmlflfQACgkQj4D7WH0S
+/k4B2gf+PoC8z8k72vsHufO9Z7qQK5OMzg07sEh4DjJoeiewN8LS7MctFtQ7J7Ks
+zt9/t+w7ZAqegx3cgW46IDW661WTZ8OJujP6dTP/O/AYf/FoCdp1K626zZyzHlti
+bue/YEiVrIcoG5H4ZzOdPukpcYnSUymzaOfbN/+LaBfCVZXnc5y1jbzvHX/7lyMs
+s3+O6tnUw0f1IK4wIvmT49+IJLG727SJwE0isdneut6AERJSumdOM3JnGkciS7yW
+49EZ23jWg+FwM+N68mtMXU4EN75utI2oV9N0aKapEUFv7cCSLVC5H6v5Mwpt9pPx
+mSZNakd34IxbYeawv5NZ96J/OmAPcg==
+=Gl20
+-----END PGP SIGNATURE-----
+
+--ljhznkytnrzlaroq--
 
