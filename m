@@ -1,86 +1,79 @@
-Return-Path: <stable+bounces-206329-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206330-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C08BD0413E
-	for <lists+stable@lfdr.de>; Thu, 08 Jan 2026 16:56:22 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A572DD040E4
+	for <lists+stable@lfdr.de>; Thu, 08 Jan 2026 16:53:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 767043553C64
-	for <lists+stable@lfdr.de>; Thu,  8 Jan 2026 15:34:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 54F1532D8D1C
+	for <lists+stable@lfdr.de>; Thu,  8 Jan 2026 15:31:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC4F3497B1F;
-	Thu,  8 Jan 2026 12:03:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F9354A4D67;
+	Thu,  8 Jan 2026 12:06:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ULBBF+Rk"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="Y7UFxxMc"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D43A6497B01;
-	Thu,  8 Jan 2026 12:03:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FFE14A4D72;
+	Thu,  8 Jan 2026 12:06:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767873834; cv=none; b=XUUcZo0FaYmhPDOXJ2gtY+SmA+55Si1RWN0GLOv5CJ+k4fHtr4K4yt470mWIxqWMyCO0wOsmzkRpGHy3umoWP43/l2D33aqxFTw1PS2rF+PHNXqifPCvncNYJwCK88ofxCknZcNdrDtHpty3ieGL0hTvmhL2ArC8iQtpnnTMRo0=
+	t=1767873980; cv=none; b=nk4tAGv6DoTasg/pketUz4tDAMWQpGh9UbzwnCdnvJVBccRLp+PnxkAsCpga9lTMMjWhyeOkYsm9SIf6Na3UP6utQ/qjQAYnOcuaKbJcORD/vUuQyPSYGnIO7IDHY1uqplSvniS8ijN2G88jRXu3X8z7utAHkAMNMeAQ2SFUFvc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767873834; c=relaxed/simple;
-	bh=u2r8N2OwYkdIs2X7oZS9cb7zrnE1BVN4o5d8/Elza4Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Yv3al0ZPs9EGg5CC+OSSVg3or0jqQ/eaxKA1RxLh83b0Ry0Q/kc+uPeb1NBplvnESytVZbCDLOP/B2TDsemuXd8P2z6Q5hQbkhRrmLZY8OWg2Zz5gI51YeQANxXFknaZrtXHXN/XhMCBt8qSj5Hcf4/jtGvJRM4j3lZYxzbo6SA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ULBBF+Rk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 753E7C116C6;
-	Thu,  8 Jan 2026 12:03:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767873833;
-	bh=u2r8N2OwYkdIs2X7oZS9cb7zrnE1BVN4o5d8/Elza4Q=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ULBBF+RkZQ0BZFIH2YGVK6wKvx+jVayuzZ04LMX7wPwpmwR9wI73OA/ybp5F1Vq2S
-	 0JAnpBBW+wiJx5sYOSKqIUz+a/6Hj+m6MF1n+9fjw3knG2VPZXRpg6MJQu6wS1VI2F
-	 2iQRl0s/pCnTT7zZdhuMJG11iQ8jFFWiRu983AGq9/CWp5E/TCScaIJDKl6617JGjk
-	 /9YNeINNIVDbMVMEo31RjsklPVzZYWY2e1Q7qUG84kAIwcquKhXC0inwwhHV56frrX
-	 +3hEPet9F4Q9GWoxCAfLWVYqt6zn/oClS+MzQ9NWpKIKf39LW11S5Fb+o2OepglH7H
-	 GwxTJvX/nJPXA==
-Date: Thu, 8 Jan 2026 12:03:48 +0000
-From: Lee Jones <lee@kernel.org>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Tiffany Yang <ynaffit@google.com>, stable@vger.kernel.org,
-	pchelkin@ispras.ru, linux-kernel@vger.kernel.org,
-	kernel-team@android.com, Pavel Machek <pavel@ucw.cz>,
-	linux-leds@vger.kernel.org
-Subject: Re: [PATCH 5.10,5.15,6.1,6.6 RESEND] leds: spi-byte: Initialize
- device node before access
-Message-ID: <20260108120348.GH302752@google.com>
-References: <20251231004510.1732543-2-ynaffit@google.com>
- <aVe7_7Jf_FWkBhqH@smile.fi.intel.com>
+	s=arc-20240116; t=1767873980; c=relaxed/simple;
+	bh=Wr73RokSiv/yECX5WjG/LPaS+/F2DTG8cG8IcbGay5A=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=e8+098UazTous4w4s02vCFVShP2qZlwjFkIFHRVcVOvUh9/xIaIkMRYNK5G6z2sT5eO2cb1q0LdOaRtlKrhwKu8NQ8nOuOw0Q8l0MjzCCgsTLXxBOWoQYOVyLvE1HAiiSSJgHmJxpz3m+3QWieIuHHvwDc0ez8HamsP/aPdXGBM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=Y7UFxxMc; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=Wr73RokSiv/yECX5WjG/LPaS+/F2DTG8cG8IcbGay5A=;
+	t=1767873977; x=1769083577; b=Y7UFxxMcR6PYwG+8tr3mf9iq7deKKA8a4H5E3OSw7SYVZG/
+	Azlt3JtUBeH7UIoXrl+GWRRKhzZf8B3wo6PN1LLMK7QBjOFogLx3hNuvmeDdBpsIjdoHxiKWbQH/j
+	7SHBOGFmzTIl46UKmURiZypZ9GFlx4R1qC2h0VUrOR23LtJr9Wn4h8cb9jGLotyU1b/5k7J0r2Go1
+	9N3Tzed4Tr6qSd/0g71Jn0brrug9fMTNUjEGkU3vYVg1iR1xN5JJkyX3mrv6HX4LP8BkKJ6cwatTy
+	vI4UaVkP8eng3RUGHdYWV3mTH/fXnhXgu7KQAhcjHRN76OKtE4j+oN88d79SVb4w==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1vdomH-00000006U8p-1BSs;
+	Thu, 08 Jan 2026 13:06:09 +0100
+Message-ID: <2411c0044b97dbab4183c03c18fb3f487f6b8f9f.camel@sipsolutions.net>
+Subject: Re: [PATCH] wifi: cfg80211: Fix use-after-free in
+ cfg80211_shutdown_all_interfaces
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Daniil Dulov <d.dulov@aladdin.ru>
+Cc: "John W. Linville" <linville@tuxdriver.com>, 
+	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	lvc-project@linuxtesting.org, stable@vger.kernel.org
+Date: Thu, 08 Jan 2026 13:06:08 +0100
+In-Reply-To: <20251223170452.75358-1-d.dulov@aladdin.ru>
+References: <20251223170452.75358-1-d.dulov@aladdin.ru>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aVe7_7Jf_FWkBhqH@smile.fi.intel.com>
+X-malware-bazaar: not-scanned
 
-On Fri, 02 Jan 2026, Andy Shevchenko wrote:
 
-> On Tue, Dec 30, 2025 at 04:45:11PM -0800, Tiffany Yang wrote:
-> > Commit 7f9ab862e05c ("leds: spi-byte: Call of_node_put() on error path")
-> > was merged in 6.11 and then backported to stable trees through 5.10. It
-> > relocates the line that initializes the variable 'child' to a later
-> > point in spi_byte_probe().
-> > 
-> > Versions < 6.9 do not have commit ccc35ff2fd29 ("leds: spi-byte: Use
-> > devm_led_classdev_register_ext()"), which removes a line that reads a
-> > property from 'child' before its new initialization point. Consequently,
-> > spi_byte_probe() reads from an uninitialized device node in stable
-> > kernels 6.6-5.10.
-> 
-> I'm wondering if in long term the easier maintenance will be with that patch
-> also being backported rather than this being applied.
+Hi,
 
-Works for me.
+Not sure why you CC John these days.
 
--- 
-Lee Jones [李琼斯]
+Please fix the subject to be more specific. I also think the cancel
+should be during unregister, because drivers would not otherwise expect
+callbacks any more.
+
+johannes
 
