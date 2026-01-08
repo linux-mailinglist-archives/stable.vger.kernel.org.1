@@ -1,103 +1,92 @@
-Return-Path: <stable+bounces-206384-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206387-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 449A9D0486E
-	for <lists+stable@lfdr.de>; Thu, 08 Jan 2026 17:47:46 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A07BD04908
+	for <lists+stable@lfdr.de>; Thu, 08 Jan 2026 17:54:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E1F0D307CF3C
-	for <lists+stable@lfdr.de>; Thu,  8 Jan 2026 16:31:35 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 185D430133F6
+	for <lists+stable@lfdr.de>; Thu,  8 Jan 2026 16:43:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB138279DC3;
-	Thu,  8 Jan 2026 16:31:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE0192D3ECF;
+	Thu,  8 Jan 2026 16:43:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b4dBgIzs"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VWUC7Dqo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F14952D6E5C;
-	Thu,  8 Jan 2026 16:31:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02C652DA75B;
+	Thu,  8 Jan 2026 16:43:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767889894; cv=none; b=J3swJQexdLlMlCFyvwwPXNYjIq9M8JzFQA30zr6LzZJD7K3n8R7y/qopaNEDdJoofFxYt8LG2MjuFr2k2sHy7GzsRGPV0k7q9nb0o0bExTg3Y2WmpdhUr8L13W6Eeu2jJmy/q4bgsaPI7LdB/Ag8dgyfKU+lIoxBD+QE0eciR6I=
+	t=1767890610; cv=none; b=F/TW5CuJ+mhJUDhzUgXHaDbUIy5uNtqyVafZKyafl7dcoF3LyndGH3pFA7KY1tIt8eK5JhoxQYofGlXYphcpeZQWKJOn2gedsCGBNWH7yGNr6GR7P0AJvlmZ9HZFc6tq6KVz4cYpszJsRjL2JjqEYJdLCW8fdixJ9Wuya+dFknU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767889894; c=relaxed/simple;
-	bh=OKbOz5X6AkPAnx8KYzWSY3erzfMgj/8GczL3yBWrCBY=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dHlCdJnRfcMbZB8j25rWurqP5Vdjd5MLX8xc+yEDWzc7Xrfu3kwXvZMpWkJkMIt5RBIVoBuFHNWrNO/dxL/u+30++X5bucscegD/6lyrF62HmfoQqC/mlH0T2pk80GPAHhaKrLFGVPVH116/fsRpz63YzkQdwRE9nqyeVln5gyE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b4dBgIzs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9987BC116C6;
-	Thu,  8 Jan 2026 16:31:32 +0000 (UTC)
+	s=arc-20240116; t=1767890610; c=relaxed/simple;
+	bh=5epKMpOb+l/EFgcm7Vcn5gz1FO+42Bit832PgR6kcHw=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=RxmfPs3RHhI7H2SqQA0Vly0DzHvl0DO3xwEzRFevfdOHeoVHwySPaOPraHTO1kD7VIPj8wcpatdlcpBy1Ot9GT31+qTOKHwfU5NsNP/4vK5Eo7NHsVO3M9ft7z4M3y8i3czkD0xWhK8b/4nnFEBsylvkiTCj3pCfmraLwj7GV3c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VWUC7Dqo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C308C116C6;
+	Thu,  8 Jan 2026 16:43:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767889893;
-	bh=OKbOz5X6AkPAnx8KYzWSY3erzfMgj/8GczL3yBWrCBY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=b4dBgIzsoHiHUVQEH7RE+cisjoSymIAC32bzOZD1SbsMiI08Be9BPY3RvfCiKuYgc
-	 O8b2PJoCiZU7jgzF+3j7s34y/5xOwKN+QfGHDL5zUvuNod2ZMV8+Dru+zwbmvgOP+S
-	 qGNl7Y72Ucek6iGn0RXcNmPAD8E2U0218SRVgeax77C1c88jULsrTwYsrUE992a8Gj
-	 XEWxDO2Z1pAgE+JUGeliuAcLzhF5dACQeRuvqdzsNMl6d6OsMrOGksQPn11HKusMWS
-	 tHe5QbnVgrV8aXrcDxMN+8UuaEHf6eppjdcibTyJgqI1637XUOlrpNv9P0QJ3YGHd7
-	 euGrtOFCD2mZw==
-Date: Thu, 8 Jan 2026 08:31:31 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Ankit Garg <nktgrg@google.com>
-Cc: Joshua Washington <joshwash@google.com>, netdev@vger.kernel.org,
- Harshitha Ramamurthy <hramamurthy@google.com>, Andrew Lunn
- <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Willem de
- Bruijn <willemb@google.com>, Praveen Kaligineedi <pkaligineedi@google.com>,
- Catherine Sullivan <csully@google.com>, Luigi Rizzo <lrizzo@google.com>,
- Jon Olson <jonolson@google.com>, Sagi Shahar <sagis@google.com>, Bailey
- Forrest <bcf@google.com>, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Subject: Re: [PATCH net 0/2] gve: fix crashes on invalid TX queue indices
-Message-ID: <20260108083131.6e090e86@kernel.org>
-In-Reply-To: <CAJcM6BGWGLrS=7b5Hq6RVZTD9ZHn7HyFssU6FDW4=-U8HD0+bw@mail.gmail.com>
-References: <20260105232504.3791806-1-joshwash@google.com>
-	<20260106182244.7188a8f6@kernel.org>
-	<CAJcM6BGWGLrS=7b5Hq6RVZTD9ZHn7HyFssU6FDW4=-U8HD0+bw@mail.gmail.com>
+	s=k20201202; t=1767890609;
+	bh=5epKMpOb+l/EFgcm7Vcn5gz1FO+42Bit832PgR6kcHw=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=VWUC7DqozPvifhhNrDZ2gcqXFvjjjhkQdFAuT9onLmonDcLNNU6+4G0SE/4XCB2oV
+	 v/j2R8frVYPuC4dKZRmpTDlnLjufYcSENIKgErjdC6fnpbsLW8vlbtTOpiN8dRNFHo
+	 i0JoIUW81jE63PRzC5l8cA55v0i81KI8S9L/a0AJcvJZgltmgWvbnTForZKdB7Xdlv
+	 wuCCT0j0odn1uJ+CVqfS2VAB4IJnoK7F6cemnGHuKEyhsmQi1NfwTkrqE3QmvCQG2j
+	 Cs14OQq+1D5Kj7hF89os27vnPw/LDvIvZImmq8uhZ1lsHxnxKz6yUrKVlDGtTNtBjt
+	 TS4FHQWkQypOg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3BA7F3A54A35;
+	Thu,  8 Jan 2026 16:40:07 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net] net: 3com: 3c59x: fix possible null dereference in
+ vortex_probe1()
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <176789040604.3712290.6082999624158344701.git-patchwork-notify@kernel.org>
+Date: Thu, 08 Jan 2026 16:40:06 +0000
+References: <20260106094731.25819-2-fourier.thomas@gmail.com>
+In-Reply-To: <20260106094731.25819-2-fourier.thomas@gmail.com>
+To: Thomas Fourier <fourier.thomas@gmail.com>
+Cc: stable@vger.kernel.org, klassert@kernel.org, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ mingo@kernel.org, tglx@linutronix.de, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
 
-On Thu, 8 Jan 2026 07:35:59 -0800 Ankit Garg wrote:
-> On Tue, Jan 6, 2026 at 6:22=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> w=
-rote:
-> > On Mon,  5 Jan 2026 15:25:02 -0800 Joshua Washington wrote: =20
-> > > This series fixes a kernel panic in the GVE driver caused by
-> > > out-of-bounds array access when the network stack provides an invalid
-> > > TX queue index. =20
-> >
-> > Do you know how? I seem to recall we had such issues due to bugs
-> > in the qdisc layer, most of which were fixed.
-> >
-> > Fixing this at the source, if possible, would be far preferable
-> > to sprinkling this condition to all the drivers. =20
->=20
-> That matches our observation=E2=80=94we have encountered this panic on ol=
-der
-> kernels (specifically Rocky Linux 8) but have not been able to
-> reproduce it on recent upstream kernels.
->=20
-> Could you point us to the specific qdisc fixes you recall? We'd like
-> to verify if the issue we are seeing on the older kernel is indeed one
-> of those known/fixed bugs.
+Hello:
 
-Very old - ac5b70198adc25
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-> If it turns out this is fully resolved in the core network stack
-> upstream, we can drop this patch for the mainline driver. However, if
-> there is ambiguity, do you think there is value in keeping this check
-> to prevent the driver from crashing on invalid input?
+On Tue,  6 Jan 2026 10:47:21 +0100 you wrote:
+> pdev can be null and free_ring: can be called in 1297 with a null
+> pdev.
+> 
+> Fixes: 55c82617c3e8 ("3c59x: convert to generic DMA API")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+> 
+> [...]
 
-The API contract is that the stack does not send frames for queues
-which don't exist (> real_num_tx_queues) down to the drivers.
-There's no ambiguity, IMO, if the stack sends such frames its a bug
-in the stack.
+Here is the summary with links:
+  - [net] net: 3com: 3c59x: fix possible null dereference in vortex_probe1()
+    https://git.kernel.org/netdev/net/c/a4e305ed60f7
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
 
