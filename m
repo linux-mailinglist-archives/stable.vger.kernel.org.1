@@ -1,97 +1,127 @@
-Return-Path: <stable+bounces-206350-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206351-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20137D031D0
-	for <lists+stable@lfdr.de>; Thu, 08 Jan 2026 14:43:16 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A3DDD03215
+	for <lists+stable@lfdr.de>; Thu, 08 Jan 2026 14:46:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D355330DF70F
-	for <lists+stable@lfdr.de>; Thu,  8 Jan 2026 13:32:50 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B5CFD30019C4
+	for <lists+stable@lfdr.de>; Thu,  8 Jan 2026 13:46:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4F813FB560;
-	Thu,  8 Jan 2026 13:23:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A75AE4D2AED;
+	Thu,  8 Jan 2026 13:39:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IZ/0c41F"
+	dkim=pass (2048-bit key) header.d=shenghaoyang.info header.i=@shenghaoyang.info header.b="eZX9Gh7+"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF408364E97
-	for <stable@vger.kernel.org>; Thu,  8 Jan 2026 13:23:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9EDA4CB3B3
+	for <stable@vger.kernel.org>; Thu,  8 Jan 2026 13:39:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767878619; cv=none; b=dXeMtgzDmVvA/cGyHSo0MCTWGKiVs1YewZ2sxEP7Da4dszWgZU8QvGzeEmfBceq0QEFFBcPjVuZ799Bnlf9XNq22Qg80hqbQad3fgpg2+KRKHneRugFGjt33fNnFI6Sxsu4wPKj8EIUO7nm2qLZoE+ZTLLwp+2En574PKWymqkQ=
+	t=1767879581; cv=none; b=QD98A4SQMIEitxcV9Zx5gI9oYNfWE86OT3sXeADn4D5KUGFRxWPjyIr4SX7ng/lE92ta80gQ8vj3rHv8FCQebmEgv+LhCULVi2Tuu4F0GXbBW4ygyZz/R9PPIbSceUPgO7OFlcE6J/dkgYOBRmEuSUTk/nrhoZkjXJP8wGjaYLA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767878619; c=relaxed/simple;
-	bh=C3MYVjlASBlxLSn6cDz/BHDVbmrPqUXxhqPL3kfs1Hw=;
-	h=From:In-Reply-To:MIME-Version:References:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lRpl/GrtZaXu54cB+GL1/YKDvWiRCW8i799WSFf2uepwO3f+aQXsTewoQMFkBQ4/2ZZJ8uWWtw4qwLEQjfJu5cJUJOWLurGBIsSFA4lN1nc4MxpbPmi9jiPWcBGRKhnz9fxOaC9dEyIhNnw449UnU62NHOqNIuFxjybhYC5naVY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IZ/0c41F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 412A0C4AF09
-	for <stable@vger.kernel.org>; Thu,  8 Jan 2026 13:23:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767878619;
-	bh=C3MYVjlASBlxLSn6cDz/BHDVbmrPqUXxhqPL3kfs1Hw=;
-	h=From:In-Reply-To:References:Date:Subject:To:Cc:From;
-	b=IZ/0c41FWu263HLjVjWo6uSNBixa4Umfzjp5nJrLMZ88mDJIJrGTtiuaiN7Xif2wO
-	 +tuQ/M8i6ezlOl4oQCoDpwaggDT2okmGbGa6vOyIxdV59pAuRpezPISdNnC5o6BcNN
-	 1AQZRH/LGr6nCeiaKjPv8iCstmTiUJsFIYJkql3SvDdLCREgK+u2Aj+bYPybBQwW34
-	 99J60nWxE6GZAsv84WkR+/aGV1OAF3RW1UhUih5URCHUPFb51BXK+uAUjuPp1fcMrB
-	 nO8WvbzYc+ws159OVCyl5YAGnHCVkADVDaj8aNSW2JPGBhNGnaPR0l9HwTk/ZSuLh3
-	 Xi6QIzNpzbqnw==
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-59b6f04cae6so1660636e87.2
-        for <stable@vger.kernel.org>; Thu, 08 Jan 2026 05:23:39 -0800 (PST)
-X-Gm-Message-State: AOJu0Ywstin/SWR2pfU8vXhkDSHNfzqOQ3TnpCzhyEVnOwGCy01w/TyI
-	pBMfSlOrO+CmfmYgIaoK0j7kzV4K3aCytnFqW8YumjsXcS8zcdrH5AKKk3f7bmf1yalLyvadjvb
-	RkbC2UoZq7vzozTV9vAGLfEo5I6zYqKnOTWXDttfz6A==
-X-Google-Smtp-Source: AGHT+IF1DpptA4OTHU5XkDs4QBBLXeLim/j482m62b24s771RAQT9uNANFIx67liV08AFdh2MVosBoRHiTKv8zeAf8g=
-X-Received: by 2002:a05:6512:318f:b0:59b:7c0d:14d7 with SMTP id
- 2adb3069b0e04-59b7c0d3c11mr41150e87.52.1767878617868; Thu, 08 Jan 2026
- 05:23:37 -0800 (PST)
-Received: from 969154062570 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 8 Jan 2026 05:23:36 -0800
-Received: from 969154062570 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 8 Jan 2026 05:23:36 -0800
-From: Bartosz Golaszewski <brgl@kernel.org>
-In-Reply-To: <20260108100721.43777-2-krzysztof.kozlowski@oss.qualcomm.com>
+	s=arc-20240116; t=1767879581; c=relaxed/simple;
+	bh=UNMSDhsW/egOUAldbBDtMDmEjuNG0Edocj6N0SSmz0E=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=jUjSfzjJWZ4J/8ZKQRtpw3+Il2QXNSzwOiG+xePjs1q/s/N/BM6l8j8ojNokBNUhHmyO9ASoQC5drM3hRswvHfksnYBBmwdeBWPr5xEMl1EgaVv7N/4fUf+StyGFxCLYi0OS/DSf0ok5ptnVpKH2W2It706mrVWKeB0vUZu6Mrk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=shenghaoyang.info; spf=pass smtp.mailfrom=shenghaoyang.info; dkim=pass (2048-bit key) header.d=shenghaoyang.info header.i=@shenghaoyang.info header.b=eZX9Gh7+; arc=none smtp.client-ip=209.85.214.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=shenghaoyang.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shenghaoyang.info
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2a2bff5f774so8615775ad.2
+        for <stable@vger.kernel.org>; Thu, 08 Jan 2026 05:39:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=shenghaoyang.info; s=google; t=1767879579; x=1768484379; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:mime-version:date:message-id:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=/GHhYdpR7V8zZlwM3eTsC01NbGzT6JFmZY6i1ixPREY=;
+        b=eZX9Gh7+w49FSF81vkrr7tXNcDn+NuL0jmoBQy1YNQMZj06KWJrjsbV1uTW1e9ok9V
+         3zbYw/Zi7YED9rRrojIL3bRumUhGnddxSME/T2uxKhnb8dbBU+zoY1QyGyJi5Q2jjKZX
+         sS5IQg2o//395/WGItwiN11awlVCpvq1f3W25RUqy7veuSnYp6+nZT2tGrzPndw9rQ9c
+         oRHFYhrJaGg9DFOF9aw5LhOxOLWN1VxXbvSFmlwo88eimDy2Hm+yoivnwQi9nr8JtlQO
+         UCFZIyuta64SL0zdw5pH9Rn6mpL7PGrYHHtPFIzW0R1Xpn81zpGHN9Go8KcpnWQV8zf5
+         R1ow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767879579; x=1768484379;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:mime-version:date:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=/GHhYdpR7V8zZlwM3eTsC01NbGzT6JFmZY6i1ixPREY=;
+        b=nXdMshrh4Zwex7mZ3voW7nvjn/QyYqM7HsTH1OOUBWWlYJvqdf69lOhVj9qhuICF5I
+         f/a8ULQF5bc1yCDtTZu+8SLN9fd2WJWi2HE8UvnNiDbaRGJRucquU1k27/GTC2tETs67
+         lAyeoBE0WF43H1h+B5W7yUmVGT81C9hCzmZhyeZL111Dgrybtkvxyyo2myKDK1kK7a2R
+         XQqvmsoIlUWbhmkAst5WHAWjUDaWuLRJgQLRy2DfEScFjv2d8zFsO5/wsUDDjahQhcTa
+         fRd60aHufVSbT+I78G05646c+YW/NS8zs3xV9kenNtZ3yLAxZEj03UB4houETD0P+XUF
+         1IhA==
+X-Forwarded-Encrypted: i=1; AJvYcCUFm+6S8iwPbq9+INgqRt+tbZ77GaLD+0qhI1zrxeVKjjBYWx1Vk1MJNrpD52fGE6KuV9bh7Uk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy06N/VWnEyUdLH2+Ryc4cleC3BD5N0KAFyH8wWpGfwilzAxpO0
+	Bm+Nd9uDDR0d6+hM3owpKjhJxXEhD14bTRloOXCG2P5GUC2GhrHa9wXWqMYzGXQIYpw=
+X-Gm-Gg: AY/fxX4Q7hu7Dr1wiBW1ullqBmyfAQ2QhpMwd1S0taL1EBOqjoTSCjtOGJGThsjHVHV
+	uXb/YRiKIa7BBRiycjzb+6a/0P1wMFZ+B5X59cmHSWtZ72GRQEPioJLzl22NHT6UASN8pAKxejp
+	rez/UhHak/lmwNIlYXg+p7VOitGdUSEWhpvq97IMlZQhWyq/0eEy0obipxBhL4yPbu4peBooAD+
+	rG9Wc9dNF998kpAHbaqaaWH4mh4L9gejDnRJhwBMDLU7SfohgLqx2L9ije4+4Wln+pv2X3oLNyy
+	gvu5LbUfrqZcbgJInKmcUyYFIGFyWc09O5gyoCjYcHQA1IQG06hihLyw3bRw4TMzNn2laIZIUKq
+	KNnXfDScziqvMgxiDDgE+eK8jN2E6FREii1EZu3MbIhw8Eh9pdwqOT46msZwCHMr5dxSi0/aP9i
+	wn8HhrfepPz/c1
+X-Google-Smtp-Source: AGHT+IFY5CMv9JNbTut+rJZkqAvSsXhd9YTo4o2zYmRo3eELWLHqTa8Gz4ZgjeXAHX7j+60ZKHIcsA==
+X-Received: by 2002:a17:903:4b24:b0:295:745a:800a with SMTP id d9443c01a7336-2a3ee42589amr43889185ad.2.1767879579058;
+        Thu, 08 Jan 2026 05:39:39 -0800 (PST)
+Received: from [10.0.0.178] ([132.147.84.99])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a3e3c47390sm80110855ad.25.2026.01.08.05.39.36
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 08 Jan 2026 05:39:38 -0800 (PST)
+Message-ID: <65110c51-1f47-4382-ac92-518c7f157a06@shenghaoyang.info>
+Date: Thu, 8 Jan 2026 21:39:27 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260108100721.43777-2-krzysztof.kozlowski@oss.qualcomm.com>
-Date: Thu, 8 Jan 2026 05:23:36 -0800
-X-Gmail-Original-Message-ID: <CAMRc=Mf6hBOYkq=qyp-A=GdvFs+DB5QGANB3N158Tdzn4doFkw@mail.gmail.com>
-X-Gm-Features: AQt7F2rOkxYItL7jhScjBqqwemmAm_zECSTzfc62p8N4_bbRkpCJhLIpsDoKOm4
-Message-ID: <CAMRc=Mf6hBOYkq=qyp-A=GdvFs+DB5QGANB3N158Tdzn4doFkw@mail.gmail.com>
-Subject: Re: [PATCH] pinctrl: qcom: sm8350-lpass-lpi: Merge with SC7280 to fix
- I2S2 and SWR TX pins
-To: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Cc: stable@vger.kernel.org, Bjorn Andersson <andersson@kernel.org>, 
-	Linus Walleij <linusw@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>, linux-kernel@vger.kernel.org, 
-	linux-arm-msm@vger.kernel.org, linux-gpio@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [PATCH] drm/gud: fix NULL fb and crtc dereferences on USB
+ disconnect
+To: Thomas Zimmermann <tzimmermann@suse.de>, Ruben Wauters
+ <rubenru09@aol.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>
+Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20251231055039.44266-1-me@shenghaoyang.info>
+ <28c39f1979452b24ddde4de97e60ca721334eb49.camel@aol.com>
+ <938b5e8e-b849-4d12-8ee2-98312094fc1e@shenghaoyang.info>
+ <571d40f4d3150e61dfb5d2beccdf5c40f3b5be2c.camel@aol.com>
+ <c6324a66-5886-4fbb-ba7b-fc7782c0f790@suse.de>
+ <229b5608222595bc69e7ca86509086a14501b2f7.camel@aol.com>
+ <8929ff0f-c2e0-49e6-a0ce-c4b0dcebae99@suse.de>
+Content-Language: en-US
+From: Shenghao Yang <me@shenghaoyang.info>
+In-Reply-To: <8929ff0f-c2e0-49e6-a0ce-c4b0dcebae99@suse.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, 8 Jan 2026 11:07:22 +0100, Krzysztof Kozlowski
-<krzysztof.kozlowski@oss.qualcomm.com> said:
-> Qualcomm SC7280 and SM8350 SoCs have slightly different LPASS audio
-> blocks (v9.4.5 and v9.2), however the LPASS LPI pin controllers are
-> exactly the same.  The driver for SM8350 has two issues, which can be
-> fixed by simply moving over to SC7280 driver which has them correct:
->
-> 1. "i2s2_data_groups" listed twice GPIO12, but should have both GPIO12
->    and GPIO13,
->
-> 2. "swr_tx_data_groups" contained GPIO5 for "swr_tx_data2" function, but
->    that function is also available on GPIO14, thus listing it twice is
->    not necessary.  OTOH, GPIO5 has also "swr_rx_data1", so selecting
->    swr_rx_data function should not block  the TX one.
->
-> Fixes: be9f6d56381d ("pinctrl: qcom: sm8350-lpass-lpi: add SM8350 LPASS TLMM")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-> ---
+Hi Ruben, Thomas,
 
-Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+On 7/1/26 23:56, Thomas Zimmermann wrote:
+
+> 
+> No worries, DRM semantics can be murky. This is one of the cases that is impossible to know unless you came across a patch like this one.
+> 
+> Best regards
+> Thomas
+> 
+>>> I think the patch is fine and IIRC we have similar logic in other drivers.
+>> Reviewed-by: Ruben Wauters <rubenru09@aol.com>
+>>
+>> I believe Shenghao mentioned another oops that is present? if so it may
+>> be best to submit that in a separate patch rather than a v2 of this
+>> one.
+>>
+>> Ruben
+
+
+Thanks both! I'll split the patch for the second oops.
+
+Shenghao
 
