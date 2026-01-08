@@ -1,149 +1,152 @@
-Return-Path: <stable+bounces-206324-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206326-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97BFDD03ABA
-	for <lists+stable@lfdr.de>; Thu, 08 Jan 2026 16:09:34 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30BDED03FAC
+	for <lists+stable@lfdr.de>; Thu, 08 Jan 2026 16:45:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 85BE6302E63A
-	for <lists+stable@lfdr.de>; Thu,  8 Jan 2026 15:02:25 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E69ED3030E13
+	for <lists+stable@lfdr.de>; Thu,  8 Jan 2026 15:26:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 744DB410D15;
-	Thu,  8 Jan 2026 11:33:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DB1347203C;
+	Thu,  8 Jan 2026 11:40:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S7SrnItk"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YawHteLV"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DE7D3FB6B1;
-	Thu,  8 Jan 2026 11:33:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DE1A4735D5
+	for <stable@vger.kernel.org>; Thu,  8 Jan 2026 11:40:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767871994; cv=none; b=py5f+C6MNOaWWG+NUNYMoQs24TVgWldZp8fs4ZTGGVhUnxABhtOrD+Be9EWY2KIztIGhp43ZmYYHw70X79NgaZVCcdD0xplP7lcj8Z//9Wa1OuWPOqGxJzga9gqM0SpdF68Q+sYAGozAq4Lnw6FwUG0p0ajIMKePkpVfuO9/7f4=
+	t=1767872407; cv=none; b=Eil1yFPBWAYAoeZPMnj83TqPbjvRTDNvjObcx3JPymVwrx/cJVQyBB2+1VLE4UqI2RPAIhK9u0geRpE1UpNoSsBGIbLvb+GR0kDGfRlCSQsGcPGUB6WpuIdG1/8rETnfC+GD4DIQlfpEdfvcCD+u2uDoxEOC3AtztXQO/rRxRrQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767871994; c=relaxed/simple;
-	bh=eN+QfHQIO7Pse9zFJrI5udW/vP/pjvyOhr608oKx/xE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Q1efUls6Ekkf8tmTJZ+Ljc+ZzdntuMSP+PCrslCPMf+pFwKxWv5gla9uMEMtPHxRWbNnxfigjx+PmpQCatYjyxHaiOSlaSeZp+MHGIRaa1zchPVKngyC5qtXs6iWOn1gk9xIQ7b57NE3wzxR65RqBUjEqOds5q0iny9DzSSC4l4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S7SrnItk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 314D1C116C6;
-	Thu,  8 Jan 2026 11:33:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767871993;
-	bh=eN+QfHQIO7Pse9zFJrI5udW/vP/pjvyOhr608oKx/xE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=S7SrnItkrXMW/9y7kgKPBTdzC3zvrTpBlT+uGAUUqkdczSAZtVWZDNYG+HFEjN1hC
-	 i6yasWk5CBt7/D7lXRUzRnpKnVS1QY9xThGc6+2MRr1+cCxOImMlevNXp+Bdv1LJ8l
-	 VrBhumfkttUS27cxjIm4SUBaXqdw8tORe3AEtYRxJ46tFH19SG4RLAaWp9vgyANBBE
-	 8dRZ59FLmfrpDoswZz2Fiy3mr4Q+y6a8QouPbuCMjfRMqLJHCcdih2LVEYvy0sRhIQ
-	 o3sjRJUi4s6wHL1WL0Ydozt3QqEg1wgZqeXMOZLqjfgGs3zn+yIv6RxxD93cLBTKCQ
-	 Bj/UTHltTnI4Q==
-Date: Thu, 8 Jan 2026 12:33:10 +0100
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
-To: Sean Nyekjaer <sean@geanix.com>
-Cc: Fabrice Gasnier <fabrice.gasnier@foss.st.com>, 
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
-	linux-pwm@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] pwm: stm32: handle polarity change when PWM is enabled
-Message-ID: <r2jq72u3hfxrl4slgvuei2eobke37apebf67naxrvuabtcvaxe@pamwe3nejqge>
-References: <20260106-stm32-pwm-v1-1-33e9e8a9fc33@geanix.com>
- <kemjjoyrhqglqq4p2j6kygspevq2mdbiujtnksw4rkdapoqcfy@zte2c7fhqvn3>
- <2e2iahbzcepbzwgk7xeta2afxmycfjgv2zofzngqjvp4on46r2@mzpi4bz4uqie>
- <nwhixocvhii27jvcyg7ex5emewntgfhyxa4ds5vo2dphe7xfe4@ibjsjdd5fgmn>
- <fwaodg2ovh7j47ifwjhgeppxs3oiqht5ecbs7bmfbi7j6djejs@shwokpcmutr3>
- <zj2vpruzoeyvyyzxiqcffajyhpmem4q75l6gzgxd4jgaizhrdq@bxuudn4kyvr3>
- <paj3uf6apunonvfz2w2anqmddivjrofmfo5wktygz4r6l7diqf@7gen7gjgyuar>
+	s=arc-20240116; t=1767872407; c=relaxed/simple;
+	bh=ezvnqHz57gvkldOznzeZCMww1jUfcQ7xappaEfnvzZE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=nxTvoEWOr99SYoMrQ2RyphORkPxiL2tQsHAsDfsolFcBfMEtUhCFoLH6sOhOGRnqydwalMmmnpZcBNkieqClaGFgukQ5eDYbZp6tJzSBAg7yIyiwd5z5IfocAD1qVPJzK+5nb5gCqUloBDtXfLjiKOTTUKhKxB8mcSGyc52ooiE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YawHteLV; arc=none smtp.client-ip=209.85.219.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-8907ec50855so32942536d6.3
+        for <stable@vger.kernel.org>; Thu, 08 Jan 2026 03:40:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1767872400; x=1768477200; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=De/F7GrZ3a7XQW11zwFhVMyznAHPN5+HCcRNv17+1Go=;
+        b=YawHteLVrnHK3lXXOFIIgMvlqbUWb1l2jMcI7SZhdlee5Hk49JnqZPZHuqm+TVpzZz
+         4RicRRov650HZEdbMMi3ueF/cXYISxpVbPE3M4WZVRsxHM53TZnDdoRJiva3rFqsnjTV
+         GwOZxFVa5V0hxW/DDbqvAXSnvAQLvH1evxeMNUpFshLrEWEsFXmo+o29w3mve3mIjfPW
+         lBrdOYalCBklb+kcFbqrC1c0jeb6nOYkmKKQMNaEkoWGHs070V9YKA7TKkSYwaBRL/b5
+         e+ky/HkNZclcQoKMLxzmqhmjvq57wXiaiGu2KK7noDOY9rdvSGbmVPMYab+QmIgXiGUT
+         zHSg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767872400; x=1768477200;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=De/F7GrZ3a7XQW11zwFhVMyznAHPN5+HCcRNv17+1Go=;
+        b=fyYr3PfZi97gLk3DjfkqB+TTz1BRLpMTCACtNAg4MJz4osxHZkv8GW8i5aSwwgMxNx
+         IS/gzmKZKyOhgiiU8iePrtDExFXr3nh88dr7AkOtlP0OUBbIqwZot25LcOskG1nOxNxI
+         P11bAlAdX+cr3vHiHHRRpqpFaL5+AI7JZm6uh3kwJTaLgOQQwZfDGIWDqf40jMIHWudb
+         F9pp5/BqIq6JxvOh1sFVRyICNUKIXpsrdIFipgII/zKB3vB9DZo6Z042cqrhG5oUUtx2
+         qPbfhuqKe3cu2Xyp7oHayBcParPv4duv06I4nvsNilKMU3mxsGqK0Qkp9L9UoNidXlrp
+         EJcg==
+X-Forwarded-Encrypted: i=1; AJvYcCUK6PW/dUNBcfMwCk19yCmQ6UFrTY4xLje/scDKn5JQsFXv7OOSbACqsElZ3wAP16oBXlLz3Fw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwcrupVz99PMqMWJP7E+m7EVfXiy5CWh9h5MD8SKOeDA2lIYd0p
+	NpkUjlIFSwRSu4DmaVsCZdfEhICKO7Fc8ciIGe1CBGKsWoEhukOfzebIR1km4LF54iKoFp/dSzQ
+	xjYUa6dPSBlVCFemm56+SxnYmTLtLbJbMG6vm8gxw
+X-Gm-Gg: AY/fxX4IUhtcX2d8TUbg6fcHfaqQBRFPcRElY27l/iy19gkVfD1jeGZw03UlBxJhpT1
+	+GOOgty1d9bgTIh/pTDWybjkStWu9RUBQJEkj1c17rGPzkFtXvx5GlivZpEE8N7nANg3+pOkN8s
+	bbS8QAZkfbiJX+4eIn/keWlm7RXrbVIxczgRPsMx7eYH36WDqHhX5UPaaVnlI0ynea4S/+yt60L
+	4e+QlhU6lZRxH0sw/s0XkUm9HhPuGQ/2jPrxVd6fbyvi4M/amii+IW1kRxt5IrbTrLFHJt5uyqa
+	zGUSZ8lVr1MLur5SrzkmlD0yyQ057SR9PCGu
+X-Google-Smtp-Source: AGHT+IEtTsutQpO25KKJJxkwWclrV1NkoOFyJBOS1res7lIatKk2McpUxH3uFSbvGt+LR+VAYJv6MCV9dzQjj1c4j+4=
+X-Received: by 2002:a05:6214:20c4:b0:87c:152c:7b25 with SMTP id
+ 6a1803df08f44-8908417a83emr85986576d6.13.1767872399549; Thu, 08 Jan 2026
+ 03:39:59 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="ljhznkytnrzlaroq"
-Content-Disposition: inline
-In-Reply-To: <paj3uf6apunonvfz2w2anqmddivjrofmfo5wktygz4r6l7diqf@7gen7gjgyuar>
-
-
---ljhznkytnrzlaroq
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
+References: <20260105080230.13171-1-harry.yoo@oracle.com> <20260105080230.13171-2-harry.yoo@oracle.com>
+In-Reply-To: <20260105080230.13171-2-harry.yoo@oracle.com>
+From: Alexander Potapenko <glider@google.com>
+Date: Thu, 8 Jan 2026 12:39:22 +0100
+X-Gm-Features: AQt7F2p4_VUyRgHz6qqEM5-JBZ5E2KV2nkrPg5vKNyZeCt2rwmq1SfsxSID667s
+Message-ID: <CAG_fn=XCx9-uYOhRQXTde7ud=H9kwM_Sf3ZjHQd9hfYDspzeOA@mail.gmail.com>
+Subject: Re: [PATCH V5 1/8] mm/slab: use unsigned long for orig_size to ensure
+ proper metadata align
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: akpm@linux-foundation.org, vbabka@suse.cz, andreyknvl@gmail.com, 
+	cl@gentwo.org, dvyukov@google.com, hannes@cmpxchg.org, linux-mm@kvack.org, 
+	mhocko@kernel.org, muchun.song@linux.dev, rientjes@google.com, 
+	roman.gushchin@linux.dev, ryabinin.a.a@gmail.com, shakeel.butt@linux.dev, 
+	surenb@google.com, vincenzo.frascino@arm.com, yeoreum.yun@arm.com, 
+	tytso@mit.edu, adilger.kernel@dilger.ca, linux-ext4@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, hao.li@linux.dev, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH] pwm: stm32: handle polarity change when PWM is enabled
-MIME-Version: 1.0
 
-Hello Sean,
+On Mon, Jan 5, 2026 at 9:02=E2=80=AFAM Harry Yoo <harry.yoo@oracle.com> wro=
+te:
+>
+> When both KASAN and SLAB_STORE_USER are enabled, accesses to
+> struct kasan_alloc_meta fields can be misaligned on 64-bit architectures.
+> This occurs because orig_size is currently defined as unsigned int,
+> which only guarantees 4-byte alignment. When struct kasan_alloc_meta is
+> placed after orig_size, it may end up at a 4-byte boundary rather than
+> the required 8-byte boundary on 64-bit systems.
+>
+> Note that 64-bit architectures without HAVE_EFFICIENT_UNALIGNED_ACCESS
+> are assumed to require 64-bit accesses to be 64-bit aligned.
+> See HAVE_64BIT_ALIGNED_ACCESS and commit adab66b71abf ("Revert:
+> "ring-buffer: Remove HAVE_64BIT_ALIGNED_ACCESS"") for more details.
+>
+> Change orig_size from unsigned int to unsigned long to ensure proper
+> alignment for any subsequent metadata. This should not waste additional
+> memory because kmalloc objects are already aligned to at least
+> ARCH_KMALLOC_MINALIGN.
+>
+> Suggested-by: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+> Cc: stable@vger.kernel.org
+> Fixes: 6edf2576a6cc ("mm/slub: enable debugging memory wasting of kmalloc=
+")
+> Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
+> ---
+>  mm/slub.c | 14 +++++++-------
+>  1 file changed, 7 insertions(+), 7 deletions(-)
+>
+> diff --git a/mm/slub.c b/mm/slub.c
+> index ad71f01571f0..1c747435a6ab 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -857,7 +857,7 @@ static inline bool slab_update_freelist(struct kmem_c=
+ache *s, struct slab *slab,
+>   * request size in the meta data area, for better debug and sanity check=
+.
+>   */
+>  static inline void set_orig_size(struct kmem_cache *s,
+> -                               void *object, unsigned int orig_size)
+> +                               void *object, unsigned long orig_size)
+>  {
+>         void *p =3D kasan_reset_tag(object);
+>
+> @@ -867,10 +867,10 @@ static inline void set_orig_size(struct kmem_cache =
+*s,
+>         p +=3D get_info_end(s);
+>         p +=3D sizeof(struct track) * 2;
+>
+> -       *(unsigned int *)p =3D orig_size;
+> +       *(unsigned long *)p =3D orig_size;
 
-On Thu, Jan 08, 2026 at 06:44:06AM +0000, Sean Nyekjaer wrote:
-> I hope that clarifies things :)
-
-It does. I'm convinced the following patch implements a simpler fix:
-
-diff --git a/drivers/pwm/pwm-stm32.c b/drivers/pwm/pwm-stm32.c
-index eb24054f9729..86e6eb7396f6 100644
---- a/drivers/pwm/pwm-stm32.c
-+++ b/drivers/pwm/pwm-stm32.c
-@@ -458,8 +458,7 @@ static int stm32_pwm_apply(struct pwm_chip *chip, struc=
-t pwm_device *pwm,
- 		return 0;
- 	}
-=20
--	if (state->polarity !=3D pwm->state.polarity)
--		stm32_pwm_set_polarity(priv, pwm->hwpwm, state->polarity);
-+	stm32_pwm_set_polarity(priv, pwm->hwpwm, state->polarity);
-=20
- 	ret =3D stm32_pwm_config(priv, pwm->hwpwm,
- 			       state->duty_cycle, state->period);
-
-While is isn't optimal as it might write the polarity into hardware when
-it's not necessary, the same holds true for the values for duty_cycle
-and period. Compared to your patch this is simple enough to make me ok
-with applying it to 6.12.x (and older stable kernels) without an
-equivalent commit in mainline. (Backporting the waveform stuff is out of
-the question IMNSHO.)
-
-Also I'm still convinced that 7edf7369205b isn't the correct commit to
-blame. This one changes the preconditions for the problem to occur (and
-thus it's plausible that it's the result of your bisection), but even
-before 7edf7369205b the problem can happen with:
-
-	pwm_apply(mypwm, &(struct pwm_state){ .enabled =3D true, .polarity =3D PWM=
-_POLARITY_NORMAL, .period =3D DC, .duty_cycle =3D DC });
-	pwm_apply(mypwm, &(struct pwm_state){ .enabled =3D false, .polarity =3D PW=
-M_POLARITY_INVERSED, .period =3D DC, .duty_cycle =3D DC });
-	pwm_apply(mypwm, &(struct pwm_state){ .enabled =3D true, .polarity =3D PWM=
-_POLARITY_INVERSED, .period =3D DC, .duty_cycle =3D DC });
-
-After the 1st call polarity is configured to normal (unless the bug
-happens already earlier :-), the 2nd disables the hardware without
-configuration of the polarity (before and after 7edf7369205b), and the
-third skips setting of the polarity because state->polarity already
-matches pwm->state.polarity. The original problem exists since=20
-7edf7369205b ("pwm: Add driver for STM32 plaftorm").
-
-Are you able to create an improved patch with these insights in a timely
-manner? (Grab authorship for yourself and honoring my part with a
-Co-developed-by is fine for me.)
-
-Best regards
-Uwe
-
---ljhznkytnrzlaroq
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmlflfQACgkQj4D7WH0S
-/k4B2gf+PoC8z8k72vsHufO9Z7qQK5OMzg07sEh4DjJoeiewN8LS7MctFtQ7J7Ks
-zt9/t+w7ZAqegx3cgW46IDW661WTZ8OJujP6dTP/O/AYf/FoCdp1K626zZyzHlti
-bue/YEiVrIcoG5H4ZzOdPukpcYnSUymzaOfbN/+LaBfCVZXnc5y1jbzvHX/7lyMs
-s3+O6tnUw0f1IK4wIvmT49+IJLG727SJwE0isdneut6AERJSumdOM3JnGkciS7yW
-49EZ23jWg+FwM+N68mtMXU4EN75utI2oV9N0aKapEUFv7cCSLVC5H6v5Mwpt9pPx
-mSZNakd34IxbYeawv5NZ96J/OmAPcg==
-=Gl20
------END PGP SIGNATURE-----
-
---ljhznkytnrzlaroq--
+Instead of calculating the offset of the original size in several
+places, should we maybe introduce a function that returns a pointer to
+it?
 
