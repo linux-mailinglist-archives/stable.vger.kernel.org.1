@@ -1,57 +1,94 @@
-Return-Path: <stable+bounces-206393-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206394-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED96FD05011
-	for <lists+stable@lfdr.de>; Thu, 08 Jan 2026 18:34:00 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23C87D055D7
+	for <lists+stable@lfdr.de>; Thu, 08 Jan 2026 19:08:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id CABFF3027E72
-	for <lists+stable@lfdr.de>; Thu,  8 Jan 2026 17:25:59 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 361AB30E605A
+	for <lists+stable@lfdr.de>; Thu,  8 Jan 2026 18:02:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEEBC500962;
-	Thu,  8 Jan 2026 17:17:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D07C2F8BF0;
+	Thu,  8 Jan 2026 18:02:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C9oCBfUp"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="BDIMng67"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f65.google.com (mail-wm1-f65.google.com [209.85.128.65])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8129229BD95
-	for <stable@vger.kernel.org>; Thu,  8 Jan 2026 17:17:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 715C62F6560
+	for <stable@vger.kernel.org>; Thu,  8 Jan 2026 18:02:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767892624; cv=none; b=gnGLNlayBqKfLvmIT/Xll+w9vWEU73rhTmAo+XD9+EJulI4Re9+PYJydRZ/uAqvsoIQL1wJt+b2wkHOOxUPcxwb3LDI7shyLZ9cZc0HEfrkMF1ZafUOmEK3ohNA5FzP0wawZFMsfv4t+v7G4nG/EKqkPgejYkstIGO0kqB7FKAQ=
+	t=1767895330; cv=none; b=Rs/aCT/jOSBeIrEG7h/suQvZovxekKayZxqIdkdrwegsc5u/nn5RkNGlUEvsMygmST9DcetP/wuCDGvuKIeAazf00SKTA843ZG2rBQIVLhuEz1aDDiCRLKEFBeRCkdXE8WRshSBdoSmrB7ZEWe0qWiSCBUhHaA1HMP6bNfdj7dg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767892624; c=relaxed/simple;
-	bh=6vq0SXBRUS62FP3sy2JE5TxatsPmBg3OXFU7384/lfo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZbQ/awcmuRw3pOo+k3mmPXMI3y+bsEG4kRvFX9wowOdH0N3YZb7S42E0CFYmcn6cQ7OktvbsGNuUd9FKwShvBIjveM1zuP25EMTanaKbzvDXEJunxgZA9XqmU6CjSCmg8pB6C7sPLVGYjE02aaK7trzRDSG5ieAandRgflH3CB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C9oCBfUp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5821C116D0;
-	Thu,  8 Jan 2026 17:17:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767892624;
-	bh=6vq0SXBRUS62FP3sy2JE5TxatsPmBg3OXFU7384/lfo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C9oCBfUpk/PAHhE8fPc4/dCQW89YevTkNax4FzcxYbgPbTZ1MuQnIy8LuEWLTE7Kh
-	 9laL7Is2qfSkBnG9JFnE/vT0KnI/GLRdYihMNLUmVBlLQT3OT3KGHr5EB+tv37xlna
-	 MTxJNnQfkh7EBAoFi3uaZ1FvyaXAxf26GLRcN4wwsJMZEFudD5zaSQSMTwo7OE7bCm
-	 TlrvgpX4WaeWWuA7ZfXQ735Gz7SFsoPtTPttXXHAFs6MLo4y+ieVVLDBWFMys7JFn5
-	 WKZ4ro0WZnaPREQoHiTRX0sp4vEevrFJtS36uEGk7nPT9kxFl6HTrGQtLmuZ5rmVZX
-	 ZY3Rn9BZ9IWVw==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Jarkko Sakkinen <jarkko.sakkinen@opinsys.com>,
-	Lai Yi <yi1.lai@linux.intel.com>,
-	Jonathan McDowell <noodles@meta.com>,
-	Roberto Sassu <roberto.sassu@huawei.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y] tpm: Cap the number of PCR banks
-Date: Thu,  8 Jan 2026 12:17:00 -0500
-Message-ID: <20260108171700.1555668-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026010816-security-maimed-0bb1@gregkh>
-References: <2026010816-security-maimed-0bb1@gregkh>
+	s=arc-20240116; t=1767895330; c=relaxed/simple;
+	bh=tgpjDr+PX4dmyNKbxxVa6k3si4+mMDRfvxNWc2c1oEk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pqXJRebqvqlJlaIZBtEoG667qDLIINtTxV7aoWd5JqBaFxngARagDFkU1DVtq4fnip8U7qlrwvu+XlB+gDzq+3T7dQVJ4AUDyjQPgNfBb4KUcc03yHp6YwlQok8CYbS/oNX8Q+kjYrwlSlT2laPetyvOC5KRo48qG15mUCg0FSg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=BDIMng67; arc=none smtp.client-ip=209.85.128.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: by mail-wm1-f65.google.com with SMTP id 5b1f17b1804b1-4775895d69cso17530735e9.0
+        for <stable@vger.kernel.org>; Thu, 08 Jan 2026 10:02:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1767895327; x=1768500127; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ofstAZxnHRW0myvgwQHd5VmIucA9twRraLf9vJfmRbE=;
+        b=BDIMng67zsrCVG4RFxUqHOPbNbgXrcJAf6rFzeTxxgpGbChxsBnwkDlLX5UiSON6Mw
+         qOIcyMHBi90mFa16Hs/SbD2gI9S3btu46InQSbXNoShuWUxaA1Pbo0unte9f1FUtUSvO
+         4Q8k34MkLXoyi5N+H8CwbRpN6sL6is2JaPHnpiZJ1l1muzKS0cAQDoj6AcIoDXjwptQC
+         fuJbvsFHTLvbX178lAGM1rTc+vLsTi8P0jEShIfS+SSoaVAONQh1N5JUue+XHGhZndTZ
+         CaMqujrxQm52d1W8ztZE+T3S9T75WVK7+j1Mz9Ey9CXZZ1lUSjByT6VrKdOohg8/Awx5
+         cOSA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767895327; x=1768500127;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ofstAZxnHRW0myvgwQHd5VmIucA9twRraLf9vJfmRbE=;
+        b=aDkZni0ElD7NJlrnYyzKHl/AJobhBJ11rO1xaYdvV27RLrh0zOSE6MjUVe3u0AmmhM
+         4J0jQPu+QheDYIIiHPV8XKexJc93+HGCIGqNytjFQXqNr05hkxpjOKQXAOH2X/qINSV2
+         N/+zjLXZFhzPNGI5JRPwTiorFY30NpCenK9Ewi1O5ZeIy+yhpnVavaCiWjCZp0NuFj6h
+         Ri0Qky37mgt3CorFmJxMecgJX6CheoSzNL3JL7/F8i/E0KhcjGou4js80XqXDIor9ly8
+         GI5aIPWxAN2Iv6YKriPRpA9YMte8Vn1mqZ3RaxE5mIQ9dn9maUsfRtXqRYrhqdw3dx0T
+         fVFg==
+X-Forwarded-Encrypted: i=1; AJvYcCXUmbs39LrMA1dFYBuohn+pBfmddWHL/Mg1Gv5KU6mU2rhMqALM6oc+5q+mQuTJc15CiDznlz0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyIfaatZI7B6rfjQ/mJNGtZk6dB0ezebFZSyQ2XKiG4dXnz4Vbu
+	nMrXfXak3l/O8LPb7MAIL8tO2DOf5LyQptqWmjxCNTpEHRqvOoLvU7k/vhWCZOt0XNQ=
+X-Gm-Gg: AY/fxX65LUYts9L99jOU2VIFhUWGJkhJIMc0lQFP++sdXwRtKwtApYb6b3vWnrf9lPs
+	QNK460vRmNi7P3benqCePLgUg1DbbKMIAVRyHxaK+B9V0XZ2F+L9CsV4tYNfXe/dtZzv2NCinNr
+	heDuA39y2XMebV7qrwQBqqFpPDy50Yzd7D1XSEp392wpawkmjATpKXio94k9YFM4QJXv5uu5uwd
+	gSPEaArdOK1D5/tuaH/AIoEjGFjY79cJEPbwi4F252BQgyrk5lyMPxhYN1l59XD7Y99hSknBL3P
+	oQIzIUaszPX9edzeuSNxPWQasFCb0Y/2/xpSQ1NqS0kgU7axNmtlR2bHMbLx0PyUW1WdeuEmRmd
+	z24hr4dbtXAh2H70crurS4bzLbLSlxxJW8Oy0aqgiP7o05iviEVseBTLrYJlhl0EvdZhG3yHfgt
+	jq5xqhZRUyyhnl
+X-Google-Smtp-Source: AGHT+IHuJPs2pwNlk9eJ8NAkY60O93gd4KzJGgDlQPNgcPwE17tnxzmYkkPIJLWzyVbgAz7j3VGjLg==
+X-Received: by 2002:a05:600c:1392:b0:477:a9e:859a with SMTP id 5b1f17b1804b1-47d84b3b5f6mr81282245e9.22.1767895326008;
+        Thu, 08 Jan 2026 10:02:06 -0800 (PST)
+Received: from linux ([2a00:6d43:105:c401:e307:1a37:2e76:ce91])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47d7f6f0e15sm159929665e9.10.2026.01.08.10.02.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 08 Jan 2026 10:02:05 -0800 (PST)
+From: Marco Crivellari <marco.crivellari@suse.com>
+To: linux-kernel@vger.kernel.org,
+	intel-xe@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org
+Cc: Tejun Heo <tj@kernel.org>,
+	Lai Jiangshan <jiangshanlai@gmail.com>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Marco Crivellari <marco.crivellari@suse.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Thomas Hellstrom <thomas.hellstrom@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	stable@vger.kernel.org
+Subject: [PATCH] drm/xe: fix WQ_MEM_RECLAIM passed as max_active to alloc_workqueue()
+Date: Thu,  8 Jan 2026 19:01:48 +0100
+Message-ID: <20260108180148.423062-1-marco.crivellari@suse.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,111 +97,35 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Jarkko Sakkinen <jarkko.sakkinen@opinsys.com>
+Workqueue xe-ggtt-wq has been allocated using WQ_MEM_RECLAIM, but
+the flag has been passed as 3rd parameter (max_active) instead
+of 2nd (flags) creating the workqueue as per-cpu with max_active = 8
+(the WQ_MEM_RECLAIM value).
 
-[ Upstream commit faf07e611dfa464b201223a7253e9dc5ee0f3c9e ]
+So change this by set WQ_MEM_RECLAIM as the 2nd parameter with a
+default max_active.
 
-tpm2_get_pcr_allocation() does not cap any upper limit for the number of
-banks. Cap the limit to eight banks so that out of bounds values coming
-from external I/O cause on only limited harm.
-
-Cc: stable@vger.kernel.org # v5.10+
-Fixes: bcfff8384f6c ("tpm: dynamically allocate the allocated_banks array")
-Tested-by: Lai Yi <yi1.lai@linux.intel.com>
-Reviewed-by: Jonathan McDowell <noodles@meta.com>
-Reviewed-by: Roberto Sassu <roberto.sassu@huawei.com>
-Signed-off-by: Jarkko Sakkinen <jarkko.sakkinen@opinsys.com>
-[ add TPM_MAX_DIGEST_SIZE for backward compatibility and remove CONFIG_TCG_TPM2_HMAC block ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 60df57e496e4 ("drm/xe: Mark GGTT work queue with WQ_MEM_RECLAIM")
+Cc: stable@vger.kernel.org
+Signed-off-by: Marco Crivellari <marco.crivellari@suse.com>
 ---
- drivers/char/tpm/tpm-chip.c | 1 -
- drivers/char/tpm/tpm1-cmd.c | 5 -----
- drivers/char/tpm/tpm2-cmd.c | 8 +++-----
- include/linux/tpm.h         | 9 ++++++---
- 4 files changed, 9 insertions(+), 14 deletions(-)
+ drivers/gpu/drm/xe/xe_ggtt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/char/tpm/tpm-chip.c b/drivers/char/tpm/tpm-chip.c
-index a3459238ecb3..be9f9a003ce2 100644
---- a/drivers/char/tpm/tpm-chip.c
-+++ b/drivers/char/tpm/tpm-chip.c
-@@ -269,7 +269,6 @@ static void tpm_dev_release(struct device *dev)
+diff --git a/drivers/gpu/drm/xe/xe_ggtt.c b/drivers/gpu/drm/xe/xe_ggtt.c
+index ef481b334af4..793d7324a395 100644
+--- a/drivers/gpu/drm/xe/xe_ggtt.c
++++ b/drivers/gpu/drm/xe/xe_ggtt.c
+@@ -322,7 +322,7 @@ int xe_ggtt_init_early(struct xe_ggtt *ggtt)
+ 	else
+ 		ggtt->pt_ops = &xelp_pt_ops;
  
- 	kfree(chip->work_space.context_buf);
- 	kfree(chip->work_space.session_buf);
--	kfree(chip->allocated_banks);
- 	kfree(chip);
- }
+-	ggtt->wq = alloc_workqueue("xe-ggtt-wq", 0, WQ_MEM_RECLAIM);
++	ggtt->wq = alloc_workqueue("xe-ggtt-wq", WQ_MEM_RECLAIM, 0);
+ 	if (!ggtt->wq)
+ 		return -ENOMEM;
  
-diff --git a/drivers/char/tpm/tpm1-cmd.c b/drivers/char/tpm/tpm1-cmd.c
-index f7dc986fa4a0..0f1754a328cf 100644
---- a/drivers/char/tpm/tpm1-cmd.c
-+++ b/drivers/char/tpm/tpm1-cmd.c
-@@ -794,11 +794,6 @@ int tpm1_pm_suspend(struct tpm_chip *chip, u32 tpm_suspend_pcr)
-  */
- int tpm1_get_pcr_allocation(struct tpm_chip *chip)
- {
--	chip->allocated_banks = kcalloc(1, sizeof(*chip->allocated_banks),
--					GFP_KERNEL);
--	if (!chip->allocated_banks)
--		return -ENOMEM;
--
- 	chip->allocated_banks[0].alg_id = TPM_ALG_SHA1;
- 	chip->allocated_banks[0].digest_size = hash_digest_size[HASH_ALGO_SHA1];
- 	chip->allocated_banks[0].crypto_id = HASH_ALGO_SHA1;
-diff --git a/drivers/char/tpm/tpm2-cmd.c b/drivers/char/tpm/tpm2-cmd.c
-index de92065394be..440b703e29e5 100644
---- a/drivers/char/tpm/tpm2-cmd.c
-+++ b/drivers/char/tpm/tpm2-cmd.c
-@@ -574,11 +574,9 @@ ssize_t tpm2_get_pcr_allocation(struct tpm_chip *chip)
- 
- 	nr_possible_banks = be32_to_cpup(
- 		(__be32 *)&buf.data[TPM_HEADER_SIZE + 5]);
--
--	chip->allocated_banks = kcalloc(nr_possible_banks,
--					sizeof(*chip->allocated_banks),
--					GFP_KERNEL);
--	if (!chip->allocated_banks) {
-+	if (nr_possible_banks > TPM2_MAX_PCR_BANKS) {
-+		pr_err("tpm: out of bank capacity: %u > %u\n",
-+		       nr_possible_banks, TPM2_MAX_PCR_BANKS);
- 		rc = -ENOMEM;
- 		goto out;
- 	}
-diff --git a/include/linux/tpm.h b/include/linux/tpm.h
-index 2652de93e97b..28f2a31d7c98 100644
---- a/include/linux/tpm.h
-+++ b/include/linux/tpm.h
-@@ -25,7 +25,10 @@
- #include <crypto/hash_info.h>
- 
- #define TPM_DIGEST_SIZE 20	/* Max TPM v1.2 PCR size */
--#define TPM_MAX_DIGEST_SIZE SHA512_DIGEST_SIZE
-+
-+#define TPM2_MAX_DIGEST_SIZE	SHA512_DIGEST_SIZE
-+#define TPM_MAX_DIGEST_SIZE	TPM2_MAX_DIGEST_SIZE
-+#define TPM2_MAX_PCR_BANKS	8
- 
- struct tpm_chip;
- struct trusted_key_payload;
-@@ -51,7 +54,7 @@ enum tpm_algorithms {
- 
- struct tpm_digest {
- 	u16 alg_id;
--	u8 digest[TPM_MAX_DIGEST_SIZE];
-+	u8 digest[TPM2_MAX_DIGEST_SIZE];
- } __packed;
- 
- struct tpm_bank_info {
-@@ -157,7 +160,7 @@ struct tpm_chip {
- 	unsigned int groups_cnt;
- 
- 	u32 nr_allocated_banks;
--	struct tpm_bank_info *allocated_banks;
-+	struct tpm_bank_info allocated_banks[TPM2_MAX_PCR_BANKS];
- #ifdef CONFIG_ACPI
- 	acpi_handle acpi_dev_handle;
- 	char ppi_version[TPM_PPI_VERSION_LEN + 1];
 -- 
-2.51.0
+2.52.0
 
 
