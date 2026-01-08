@@ -1,163 +1,142 @@
-Return-Path: <stable+bounces-206345-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206346-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 011A9D0309E
-	for <lists+stable@lfdr.de>; Thu, 08 Jan 2026 14:31:45 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73333D02FF0
+	for <lists+stable@lfdr.de>; Thu, 08 Jan 2026 14:25:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 16BBC3032563
-	for <lists+stable@lfdr.de>; Thu,  8 Jan 2026 13:08:54 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E444B3009224
+	for <lists+stable@lfdr.de>; Thu,  8 Jan 2026 13:23:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8BBA44DB74;
-	Thu,  8 Jan 2026 13:08:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26B55461C39;
+	Thu,  8 Jan 2026 13:12:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="jOheDtZt";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="jl6ccoMn";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Eed7TkAk";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="Had/9hcw"
+	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="kg228EDs";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="NHnivJmx"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fout-b8-smtp.messagingengine.com (fout-b8-smtp.messagingengine.com [202.12.124.151])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF00844D01F
-	for <stable@vger.kernel.org>; Thu,  8 Jan 2026 13:08:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7021D4AACD6
+	for <stable@vger.kernel.org>; Thu,  8 Jan 2026 13:12:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767877731; cv=none; b=oThIxHrDmXndoaogSp73wzPkKlP9N8iD4/fH4cVAqI/0E+Qmtj/y87peASSfvHVaEMap2kBUTOt+5ivDL3MOcEWuX80mkEO7rnt3RybSWdMlTtK+/u0LS0WiDpXb4zAwG8qtqwRKsPbMfoSauQ3Z1ekUoRvFEBBHdVZ3X7xhVX4=
+	t=1767877933; cv=none; b=ZEDzmWNGYiyOK0qUKfB2XVyRU8TOfHyb5kMvlEX6N1WAG4u4T9kQVOVI2k1ovUXPZl9uUB061nLKRDCKYDDnJjRH9BG7t/JAUIxZPUVKuyPu8zrfJTpJaXP+xSs5ROHejaxiDCoC0SXgVyB9eGZYQzCU8SZJQOM5BYQFwTc34Ss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767877731; c=relaxed/simple;
-	bh=M5fkXb4jpJ8rj1F6FZ1XsOrkGaAmCzEFGh29iEjHbpM=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Mu7HJEE90hXz/e+H90i7RsZT+PsqvceXIVTDdeyk0uFr1gsrvnw7/1kKOiHUsl+yrKFhrd4zCpzGTvj0514sRfFIPxrzJGsqP8WzMXdp+0YHvM4MLExPelgDeJmXLTJksG4SrWTPmPGkMxZJshfsayaeN3W0Nfm/DD8QJoDdHB8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=jOheDtZt; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=jl6ccoMn; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Eed7TkAk; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=Had/9hcw; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 8C5C034104;
-	Thu,  8 Jan 2026 13:08:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1767877727; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=j+a5tqjnZEI1VmpIcUvU6Rry+vbHsGeFSZUrNaUm0IE=;
-	b=jOheDtZtct9louNYw4VKaxhVhROY8LltWQFWWpukipwcC1fibpGwZRnLfakN1ecdkaK7Li
-	xsi/IznJvq1k7JupIXZMQOlkLv3vyNWlfL9ojjKinLmMUX9JwZ7OS+f+RkbHcG8tsQDKX0
-	3YB4QRf65CuQ7s2xfqHAmcEGVjQt/3Q=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1767877727;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=j+a5tqjnZEI1VmpIcUvU6Rry+vbHsGeFSZUrNaUm0IE=;
-	b=jl6ccoMnzIWKD7MDZMXKJMT/TL/u3E6S0YXsyWZSM9grVtWLuYd4KqrhRxeLpzsAz5f82K
-	t0cZPh8tXWb2SbDg==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Eed7TkAk;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="Had/9hcw"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1767877726; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=j+a5tqjnZEI1VmpIcUvU6Rry+vbHsGeFSZUrNaUm0IE=;
-	b=Eed7TkAkYzobll2CqwmTLgy6kSftqG5jqk0QD3XLb0lWZezGa+TTZwRkUjmWTIqsdQ/xSH
-	K6TO0JQHrd4qKhBP3mPvQnoGveitN/FFZGp5EszcYRCgNrgKu3YepxOWPZUU/w1/2atGIq
-	8/2clkMi8cjQCoI2MrHsZZSFPQPiZDY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1767877726;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=j+a5tqjnZEI1VmpIcUvU6Rry+vbHsGeFSZUrNaUm0IE=;
-	b=Had/9hcwhEm5yQM3ZxkIM+v3TZ4KYtRX8vS6wLANG3DESnSRGU4+VmqBSDeCdltsrc/HbR
-	HaA09aDH33OIwkAQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6F6D53EA63;
-	Thu,  8 Jan 2026 13:08:46 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id YRSAGl6sX2kUdAAAD6G6ig
-	(envelope-from <tiwai@suse.de>); Thu, 08 Jan 2026 13:08:46 +0000
-Date: Thu, 08 Jan 2026 14:08:46 +0100
-Message-ID: <871pk0gskh.wl-tiwai@suse.de>
-From: Takashi Iwai <tiwai@suse.de>
-To: Matthew Schwartz <matthew.schwartz@linux.dev>
-Cc: Shenghao Ding <shenghao-ding@ti.com>,
-	Baojun Xu <baojun.xu@ti.com>,
-	tiwai@suse.de,
-	linux-sound@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Antheas Kapenekakis <lkml@antheas.dev>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2] ALSA: hda/tas2781: Skip UEFI calibration on ASUS ROG Xbox Ally X
-In-Reply-To: <20260108093650.1142176-1-matthew.schwartz@linux.dev>
-References: <20260108093650.1142176-1-matthew.schwartz@linux.dev>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/30.1 Mule/6.0
+	s=arc-20240116; t=1767877933; c=relaxed/simple;
+	bh=5BqUftiAInC6z8yK4F8kYOne6hBI9rAc20f0Jqo4TXM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ilvA5eRXiwSogPqXFu+2yRhPdqlhuCF8rYrcNYWmW2F7XcxTZVzCMNryrYqBG1sfGhWAkYzSY1G5ipOXA3sa8tSHT02xEBKVsy27pgiPIwfONQJAu2jxQqPRF9uD1PuDzNOPeRmeHEGeKOETfmuVUXnDY186sQxAKU03nUKK7ng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=kg228EDs; dkim=fail (0-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=NHnivJmx reason="key not found in DNS"; arc=none smtp.client-ip=202.12.124.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailfout.stl.internal (Postfix) with ESMTP id 72C961D0007E;
+	Thu,  8 Jan 2026 08:12:10 -0500 (EST)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-03.internal (MEProxy); Thu, 08 Jan 2026 08:12:10 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm2; t=1767877930; x=1767964330; bh=053wYUswXJ
+	WdwaRJ430RX3TD5tb2+oTK16L1R8ckTBU=; b=kg228EDs2iVjDOl5AwimkdZttD
+	NIyOJAHx0uBxOAas3nQHXQ/PPMG7IQCnpMkrFTi5+LlWnwR58/5T40pjjKmtTS65
+	5PtLkyBTYJSA7MJNXWbw5wpTXBb9PC3ulAkbUvanJwFMkOB9V+y5jGMYVINPRjPv
+	uMtCgXUgwr2yvf80ZD/AXSogfc6ZOWVlqOP0vb3Smo/FJHZJPppn442V2g/VGDT5
+	SyYZMhJ4mB7p9kO/T4KGx6xti53/pl15JZefJ9f95UnnLVTVjQ9Ij0QsrxRwdT4D
+	JDBlhwBc+0YhEoEKF7QcN0Xtr/XicX5XLLfcAphWRXc7p5k8SXWrRIp1YdiQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1767877930; x=1767964330; bh=053wYUswXJWdwaRJ430RX3TD5tb2+oTK16L
+	1R8ckTBU=; b=NHnivJmxpbSiRHNDtn3+ZnKcuifAtfVIQu0umaWyUBgAUOVqv9o
+	kAi3uyle3UZ/C/cLK1h1OKpUCxD2yt71+VSR1DK9FQ0f196FjsCxftDJ3gszctNf
+	UbowZcVJJ5AUzsmSMW7TK9q2a01IgQWzL7CmI2lHHtq35HFrHSEx9wjd1Rmc1HaG
+	jJiB4qc4ILnHih88JrSFNEGrme1p8WZBAyO5/BPd1+vz20P4+t8+R6Z8wSmtIBlI
+	tLpe3ObF9CMpLS2BT9dGb/yIc3M87fE0x7Yzp8XhsKMERqZGMNH56UHc1GqOlSqO
+	TTBzziOdckqnRGdA/bqWPY6ZuOe74qxGp1g==
+X-ME-Sender: <xms:Ka1faW_OSFZtlUTc8hzoCtOBRDTPTTiQ8VEh-YZp3vgNm84CXtlDDA>
+    <xme:Ka1faZR_f-mYduygoP_lvKSfGt95gLcyjllKTGqOylJepfzRwSLKUqJgwvqsjSv0S
+    sj5EVgd8qb8sHNTq-FgvsS4EL6SXvHQDIY8o-wgndOF64bL>
+X-ME-Received: <xmr:Ka1fafoednMKrN4eStaPSZ88MNWz1uL3JzA3o1uFsrpE6ZxncpsLUqa-UqbpTMBMARkwsoD1Q43pG8Zxhvx0BPQ92YfrOItb9JEJUw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddutdeitdegucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepifhrvghgucfm
+    jfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepheegvdevvd
+    eljeeugfdtudduhfekledtiefhveejkeejuefhtdeufefhgfehkeetnecuvehluhhsthgv
+    rhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepghhrvghgsehkrhhorghhrd
+    gtohhmpdhnsggprhgtphhtthhopeekpdhmohguvgepshhmthhpohhuthdprhgtphhtthho
+    pehlihhnuhigqdhkvghrnhgvlhdrsghfrhiisehmrghntghhmhgrlhdrihhnqdhulhhmrd
+    guvgdprhgtphhtthhopehsthgrsghlvgesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgt
+    phhtthhopehtfigvvghksehtfigvvghkrdgukhdprhgtphhtthhopehmrghsrghhihhroh
+    ihsehkvghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:Ka1faemBJLF3vwJOu97sCUUfUUJFJ_8Tv09so3WyHctQvi2R4s_kCA>
+    <xmx:Ka1faQfWjos_bNvIomJGWXD6AzcA1HC4QC7BZHA8D2ObpQfa3zlemw>
+    <xmx:Ka1faSohMTKSxKo5hV65SQqdN2gB3rbisKUo8nx2K1g-Ocm3PQZVJw>
+    <xmx:Ka1faSPXdUqTIdIJeizEGlm_PFvXnZK1iCcZs5vQ816ExWaJogyX8A>
+    <xmx:Kq1faXOF4jyUckvWBEbPjcPrHcDX39zNMV1e91Go3GM5vrs5fL1GWrk->
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 8 Jan 2026 08:12:09 -0500 (EST)
+Date: Thu, 8 Jan 2026 14:12:06 +0100
+From: Greg KH <greg@kroah.com>
+To: Christoph Biedl <linux-kernel.bfrz@manchmal.in-ulm.de>
+Cc: stable@vger.kernel.org, Martin Nybo Andersen <tweek@tweek.dk>,
+	Masahiro Yamada <masahiroy@kernel.org>
+Subject: Re: 6.1 Backport request: fbf5892df21a ("kbuild: Use CRC32 and a
+ 1MiB dictionary for XZ compressed modules")
+Message-ID: <2026010853-possible-guzzler-62d5@gregkh>
+References: <1766658651@msgid.manchmal.in-ulm.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-Spamd-Result: default: False [-3.51 / 50.00];
-	BAYES_HAM(-3.00)[99.99%];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	TO_DN_SOME(0.00)[];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	RCVD_TLS_ALL(0.00)[];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:mid,linux.dev:email,ti.com:email,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	DKIM_TRACE(0.00)[suse.de:+]
-X-Spam-Flag: NO
-X-Spam-Score: -3.51
-X-Rspamd-Queue-Id: 8C5C034104
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Spam-Level: 
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1766658651@msgid.manchmal.in-ulm.de>
 
-On Thu, 08 Jan 2026 10:36:50 +0100,
-Matthew Schwartz wrote:
+On Thu, Dec 25, 2025 at 11:48:03AM +0100, Christoph Biedl wrote:
+> Hello,
 > 
-> There is currently an issue with UEFI calibration data parsing for some
-> TAS devices, like the ASUS ROG Xbox Ally X (RC73XA), that causes audio
-> quality issues such as gaps in playback. Until the issue is root caused
-> and fixed, add a quirk to skip using the UEFI calibration data and fall
-> back to using the calibration data provided by the DSP firmware, which
-> restores full speaker functionality on affected devices.
+> please backport
 > 
-> Cc: stable@vger.kernel.org # 6.18
-> Link: https://lore.kernel.org/all/160aef32646c4d5498cbfd624fd683cc@ti.com/
-> Closes: https://lore.kernel.org/all/0ba100d0-9b6f-4a3b-bffa-61abe1b46cd5@linux.dev/
-> Suggested-by: Baojun Xu <baojun.xu@ti.com>
-> Signed-off-by: Matthew Schwartz <matthew.schwartz@linux.dev>
-> ---
-> v1->v2: drop wrong Fixes tag, amend commit to clarify suspected root cause
-> and workaround being used.
+> commit fbf5892df21a8ccfcb2fda0fd65bc3169c89ed28
+> Author: Martin Nybo Andersen <tweek@tweek.dk>
+> Date:   Fri Sep 15 12:15:39 2023 +0200
+> 
+>     kbuild: Use CRC32 and a 1MiB dictionary for XZ compressed modules
+> 
+>     Kmod is now (since kmod commit 09c9f8c5df04 ("libkmod: Use kernel
+>     decompression when available")) using the kernel decompressor, when
+>     loading compressed modules.
+> 
+>     However, the kernel XZ decompressor is XZ Embedded, which doesn't
+>     handle CRC64 and dictionaries larger than 1MiB.
+> 
+>     Use CRC32 and 1MiB dictionary when XZ compressing and installing
+>     kernel modules.
+> 
+> to the 6.1 stable kernel, and possibly older ones as well.
+> 
+> The commit message actually has it all, so just my story: There's a
+> hardware that has or had issues with never kernels (no time to check),
+> my kernel for this board is usually static. But after building a kernel
+> with xz-compressed modules, they wouldn't load but trigger
+> "decompression failed with status 6". Investigation led to a CRC64 check
+> for these files, and eventually to the above commit.
+> 
+> The commit applies (with an offset), the resulting modules work as
+> expected.
+> 
+> Kernel 6.6 and newer already have that commit. Older kernels could
+> possibly benefit from this as well, I haven't checked.
 
-Applied now.  Thanks.
+Now queued up, thanks.
 
-
-Takashi
+greg k-h
 
