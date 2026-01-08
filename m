@@ -1,228 +1,109 @@
-Return-Path: <stable+bounces-206279-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206280-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB7BFD03DC3
-	for <lists+stable@lfdr.de>; Thu, 08 Jan 2026 16:31:05 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D4BED0468D
+	for <lists+stable@lfdr.de>; Thu, 08 Jan 2026 17:33:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3D5EF302BA6B
-	for <lists+stable@lfdr.de>; Thu,  8 Jan 2026 15:23:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 53187359A210
+	for <lists+stable@lfdr.de>; Thu,  8 Jan 2026 15:23:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18C0D39B4BD;
-	Thu,  8 Jan 2026 09:11:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D7113314C5;
+	Thu,  8 Jan 2026 09:13:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="HC3mo+ep"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TKHAfeGX"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yx1-f99.google.com (mail-yx1-f99.google.com [74.125.224.99])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E8C740758A
-	for <stable@vger.kernel.org>; Thu,  8 Jan 2026 09:11:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A299A3BF30D;
+	Thu,  8 Jan 2026 09:12:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767863505; cv=none; b=JDW1OEKhp12TRG9yQcHZ70pEI2S4qtFFxoDrsqTSlMF+okfGU9Uqk2YwLDUMf3GbqGeT5sZksnCc94lpbJHYxF0NbwylSk6pw2FufwRHguqhTKbjjpQ7srYLiyqv1lD9LSGZ/2esmBPAJNDsmelb2Ef7fA8V0hXNFQae6nrCzWI=
+	t=1767863577; cv=none; b=qlm5++F8Y3UmuKY+WSGK9hlMpvHC8yiewaOUWozOVlVKWH7W089N1m7aST2fAEFUHwY7YvFptsl2jS7C6e8Bh4RcI6MuuoMKR6RZvFA5fKOu+QobPvDdQ+G/hbHiS2r3Qgs1R/YgBjKulvVZW2IF1WEDmal1bf0cIjYOTYh6Wag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767863505; c=relaxed/simple;
-	bh=HQp3oovGDQbXP4Dt+ZR8z/jnBwW7VqtTMHkFskxW8Gw=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=m0VhFyKJK3kXCcDrCq6hqaZDZlfo4Wh8aRBFo/m+1PPIGcg0pagCcn1yciVsd2wZ6PeilPQUgOP6b3DjRfwY+JE4WQ28d5E+pZpPudLo80W066WHx74rvK8BfoDbVyIux9Wrxy3Sx1klcLPsA24GNmVSzGHZ6sRR31+Q6UP0YaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=HC3mo+ep; arc=none smtp.client-ip=74.125.224.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-yx1-f99.google.com with SMTP id 956f58d0204a3-646fe7f70e2so2162947d50.0
-        for <stable@vger.kernel.org>; Thu, 08 Jan 2026 01:11:31 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767863488; x=1768468288;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:dkim-signature:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZIZ8jaVgH+Lp5oUnSioszXqfXxvQ8K6hRpZqt1TpuX4=;
-        b=QMX1urH2+eWElq3w+amdeftaKK49AKkSYyuiObDr99cTJ9U6Fa5ZKlQK1yM+3B+YMm
-         htOkasZhhNZv42A+l/kjBQwboAxcPNsv9mxNdppK5/7kqzxgb+3euDPp5ww2/C3PgDRQ
-         fWW0Tugy3wgXEDs+1S+C2TQ+Kl0/HCiRQxVetiPvrItle3WLHxTkEVSqnvrT+KJLQB7r
-         KA4lEbkV/7TKl2M80zoCHzIdoiCwQ+zsZCvFwJsNW4b4ZELjsdqD3+yMVElzJO9SKChn
-         yQDTjivuKYhrNvrtyNvjHmnBqe222ZJyAPGVKsNZeJC2wEki1tR7YgghA3mEGe7elm2h
-         lxmQ==
-X-Gm-Message-State: AOJu0YxGhKHyRzggl7aO7646MEzX4RyaIs09vLI8ZPUhcRrQFk/AMVM6
-	5lK2crjzXW5ICrbiWqRUEeUPlGjNX0kkI4rxS0vK/SAfJ3eMzG8+tjwV9oGWA3gmSy6rbNCZjWV
-	4hO3Jdbp/O3Zr+3LWviC0rkX+ahfilCWJxgLuGCoTa2cC4BEuR5UZRXJ/MwHbSAiR0UR9OdKJ/f
-	FQ50hoUYTEvajT+jtCioRZV+eWi/tyNILw4PrXSHSuNucboae3bYlL0FewslqZJW74JHE/76vVz
-	te/K6rSGtHGYKj46A==
-X-Gm-Gg: AY/fxX5KY4gPKvxseGBxshy2tjgvN28h4KIAxlhijWGb8zv1Qvuq1aspf+ke15aIt8X
-	PW9wz+cnBtZ2AIlgCdNDdAhtghOyIUv8wihlUPBcHCClsShrhE+//xgCmrfJKEXE8SFowXboRUh
-	AIIG9TSn0G+O4o3wehK4/Y3T/M9PXqz4Mk/cNZqbH5ZN8vfifrMm0eC6nGhqUnUv9n7b3I80XRF
-	JG3csKNzNEm6KTGkWQNQplb7K8Eomct+Hec4OfXQAkndbMxMWRmF6FLmeK15WYvwjqGErcEY+Jb
-	6wOsBcdR/Mjr48CuwbEqqZjCNRQn03rDrQux4+9aTRUKAZDhUdNV+Ei+M9CR6Kugyv+s95zY01j
-	+UQN8+NUDQrEUG6RmlmVKZsYlimf6+TT8Jb6+pMrMPtRwmgjvBQWRy+Y+4naKYuskSCZuFs9OnD
-	k7WPgCGwuvC5IQFrjDU0BcDzOvOINrkkpQBp1NsQBWfdQLwg==
-X-Google-Smtp-Source: AGHT+IEznl2F9Qn2/wNdEbUoMMFfBJpXY9QjDrZs1+8xGDjd7h6E6xWFkd6t1MBDVcHkqu/V6gTX1KcJiO4W
-X-Received: by 2002:a05:690e:4192:b0:63f:b0c7:849b with SMTP id 956f58d0204a3-64716bd6e0emr4423043d50.36.1767863487708;
-        Thu, 08 Jan 2026 01:11:27 -0800 (PST)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-2.dlp.protect.broadcom.com. [144.49.247.2])
-        by smtp-relay.gmail.com with ESMTPS id 00721157ae682-790aa6dc78bsm5519527b3.23.2026.01.08.01.11.27
-        for <stable@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 08 Jan 2026 01:11:27 -0800 (PST)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-dl1-f72.google.com with SMTP id a92af1059eb24-11f3d181ef2so12148572c88.1
-        for <stable@vger.kernel.org>; Thu, 08 Jan 2026 01:11:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1767863486; x=1768468286; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZIZ8jaVgH+Lp5oUnSioszXqfXxvQ8K6hRpZqt1TpuX4=;
-        b=HC3mo+ep76S+GusBvsFX1GjWxRu5Knf0MdWuyy+p+GYHkIoOEnWE5I9UsiwHAVe5rJ
-         XVeHrcpO6Z4EUURtrJArJfo2oJBMiMOx2sTgwvIV4C8P6BKIzOoUMEGQUVPRlV7ttM6o
-         lARoBU/dhmn0XLdlO9ZW0jOl+obc31w1csXso=
-X-Received: by 2002:a05:7022:2522:b0:11e:354:32cb with SMTP id a92af1059eb24-121f8b75fcemr5874340c88.49.1767863485681;
-        Thu, 08 Jan 2026 01:11:25 -0800 (PST)
-X-Received: by 2002:a05:7022:2522:b0:11e:354:32cb with SMTP id a92af1059eb24-121f8b75fcemr5874296c88.49.1767863484796;
-        Thu, 08 Jan 2026 01:11:24 -0800 (PST)
-Received: from shivania.lvn.broadcom.net ([192.19.161.250])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b1706c503csm10623374eec.15.2026.01.08.01.11.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Jan 2026 01:11:24 -0800 (PST)
-From: Shivani Agarwal <shivani.agarwal@broadcom.com>
-To: stable@vger.kernel.org,
-	gregkh@linuxfoundation.org
-Cc: mathias.nyman@intel.com,
-	linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	ajay.kaher@broadcom.com,
-	alexey.makhalov@broadcom.com,
-	vamsi-krishna.brahmajosyula@broadcom.com,
-	yin.ding@broadcom.com,
-	tapas.kundu@broadcom.com,
-	Michal Pecio <michal.pecio@gmail.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>,
-	Shivani Agarwal <shivani.agarwal@broadcom.com>
-Subject: [PATCH 2/2 v6.6] usb: xhci: Apply the link chain quirk on NEC isoc endpoints
-Date: Thu,  8 Jan 2026 00:50:21 -0800
-Message-Id: <20260108085021.671854-3-shivani.agarwal@broadcom.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20260108085021.671854-1-shivani.agarwal@broadcom.com>
-References: <20260108085021.671854-1-shivani.agarwal@broadcom.com>
+	s=arc-20240116; t=1767863577; c=relaxed/simple;
+	bh=9qlvP8EfY2nVe3SrDRFWWW/X4lQllrd7hIAYmtsxO1s=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WwuKpglYNTYMrLCsikK23LtfS6Wl+Xa4y2G6upk9xIchaVD+LuYIu2rzn7N3Eths5B8ZE9WcH1c2W4ZHCAFD2/tbo+Cr1zW33n5q5Ibaq0rLITi0aoghPMfJGkFYJ3rnYx3KXCuxEYXbgnqY4JwdsSGiblELmRVh59I3RylQlLo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TKHAfeGX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67EA9C16AAE;
+	Thu,  8 Jan 2026 09:12:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1767863576;
+	bh=9qlvP8EfY2nVe3SrDRFWWW/X4lQllrd7hIAYmtsxO1s=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=TKHAfeGXBbHu1CVrrltS4zgDgUihAo7aiNX6Pi9Bwt1SNufTZBgcELZzBX7lJmu+S
+	 M9D3vdgm8/q8JDvH9i+t70xyiEP0Gls50PiZk1hP735NtMdji4lxru7KFV0rWcqc5Z
+	 /0oEuk4yqMAtm+ZCRylMocP8vH4kBERjDo48eFuc=
+Date: Thu, 8 Jan 2026 10:12:48 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: =?utf-8?Q?=C5=81ukasz?= Bartosik <ukaszb@chromium.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	stable <stable@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.12 493/567] xhci: dbgtty: fix device unregister: fixup
+Message-ID: <2026010832-scrutiny-talisman-cdf9@gregkh>
+References: <20260106170451.332875001@linuxfoundation.org>
+ <20260106170509.599329945@linuxfoundation.org>
+ <CALwA+NZCSz26m96R0gjKP7=O3Z_kWmnt82SiaqvOukR9vFxv2A@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
+In-Reply-To: <CALwA+NZCSz26m96R0gjKP7=O3Z_kWmnt82SiaqvOukR9vFxv2A@mail.gmail.com>
 
-From: Michal Pecio <michal.pecio@gmail.com>
+On Wed, Jan 07, 2026 at 01:04:37AM +0100, Łukasz Bartosik wrote:
+> On Tue, Jan 6, 2026 at 6:43 PM Greg Kroah-Hartman
+> <gregkh@linuxfoundation.org> wrote:
+> >
+> > 6.12-stable review patch.  If anyone has any objections, please let me know.
+> >
+> > ------------------
+> >
+> > From: Łukasz Bartosik <ukaszb@chromium.org>
+> >
+> > [ Upstream commit 74098cc06e753d3ffd8398b040a3a1dfb65260c0 ]
+> >
+> > This fixup replaces tty_vhangup() call with call to
+> > tty_port_tty_vhangup(). Both calls hangup tty device
+> > synchronously however tty_port_tty_vhangup() increases
+> > reference count during the hangup operation using
+> > scoped_guard(tty_port_tty).
+> >
+> > Cc: stable <stable@kernel.org>
+> > Fixes: 1f73b8b56cf3 ("xhci: dbgtty: fix device unregister")
+> > Signed-off-by: Łukasz Bartosik <ukaszb@chromium.org>
+> > Link: https://patch.msgid.link/20251127111644.3161386-1-ukaszb@google.com
+> > Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> > Signed-off-by: Sasha Levin <sashal@kernel.org>
+> > Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> > ---
+> >  drivers/usb/host/xhci-dbgtty.c |    2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > --- a/drivers/usb/host/xhci-dbgtty.c
+> > +++ b/drivers/usb/host/xhci-dbgtty.c
+> > @@ -522,7 +522,7 @@ static void xhci_dbc_tty_unregister_devi
+> >          * Hang up the TTY. This wakes up any blocked
+> >          * writers and causes subsequent writes to fail.
+> >          */
+> > -       tty_vhangup(port->port.tty);
+> > +       tty_port_tty_vhangup(&port->port);
+> 
+> The function tty_port_tty_vhangup does not exist in the 6.12 kernel.
+> It was added later.
+> 
+> I sent updated patch
+> https://lore.kernel.org/stable/20260106235820.2995848-1-ukaszb@chromium.org/T/#mb46d870145474d04aaabeccc76aaf949b34bbf86
 
-commit bb0ba4cb1065e87f9cc75db1fa454e56d0894d01 upstream.
+The patch before this one added that new api, so all is fine here.
 
-Two clearly different specimens of NEC uPD720200 (one with start/stop
-bug, one without) were seen to cause IOMMU faults after some Missed
-Service Errors. Faulting address is immediately after a transfer ring
-segment and patched dynamic debug messages revealed that the MSE was
-received when waiting for a TD near the end of that segment:
+thanks,
 
-[ 1.041954] xhci_hcd: Miss service interval error for slot 1 ep 2 expected TD DMA ffa08fe0
-[ 1.042120] xhci_hcd: AMD-Vi: Event logged [IO_PAGE_FAULT domain=0x0005 address=0xffa09000 flags=0x0000]
-[ 1.042146] xhci_hcd: AMD-Vi: Event logged [IO_PAGE_FAULT domain=0x0005 address=0xffa09040 flags=0x0000]
-
-It gets even funnier if the next page is a ring segment accessible to
-the HC. Below, it reports MSE in segment at ff1e8000, plows through a
-zero-filled page at ff1e9000 and starts reporting events for TRBs in
-page at ff1ea000 every microframe, instead of jumping to seg ff1e6000.
-
-[ 7.041671] xhci_hcd: Miss service interval error for slot 1 ep 2 expected TD DMA ff1e8fe0
-[ 7.041999] xhci_hcd: Miss service interval error for slot 1 ep 2 expected TD DMA ff1e8fe0
-[ 7.042011] xhci_hcd: WARN: buffer overrun event for slot 1 ep 2 on endpoint
-[ 7.042028] xhci_hcd: All TDs skipped for slot 1 ep 2. Clear skip flag.
-[ 7.042134] xhci_hcd: WARN: buffer overrun event for slot 1 ep 2 on endpoint
-[ 7.042138] xhci_hcd: ERROR Transfer event TRB DMA ptr not part of current TD ep_index 2 comp_code 31
-[ 7.042144] xhci_hcd: Looking for event-dma 00000000ff1ea040 trb-start 00000000ff1e6820 trb-end 00000000ff1e6820
-[ 7.042259] xhci_hcd: WARN: buffer overrun event for slot 1 ep 2 on endpoint
-[ 7.042262] xhci_hcd: ERROR Transfer event TRB DMA ptr not part of current TD ep_index 2 comp_code 31
-[ 7.042266] xhci_hcd: Looking for event-dma 00000000ff1ea050 trb-start 00000000ff1e6820 trb-end 00000000ff1e6820
-
-At some point completion events change from Isoch Buffer Overrun to
-Short Packet and the HC finally finds cycle bit mismatch in ff1ec000.
-
-[ 7.098130] xhci_hcd: ERROR Transfer event TRB DMA ptr not part of current TD ep_index 2 comp_code 13
-[ 7.098132] xhci_hcd: Looking for event-dma 00000000ff1ecc50 trb-start 00000000ff1e6820 trb-end 00000000ff1e6820
-[ 7.098254] xhci_hcd: ERROR Transfer event TRB DMA ptr not part of current TD ep_index 2 comp_code 13
-[ 7.098256] xhci_hcd: Looking for event-dma 00000000ff1ecc60 trb-start 00000000ff1e6820 trb-end 00000000ff1e6820
-[ 7.098379] xhci_hcd: Overrun event on slot 1 ep 2
-
-It's possible that data from the isochronous device were written to
-random buffers of pending TDs on other endpoints (either IN or OUT),
-other devices or even other HCs in the same IOMMU domain.
-
-Lastly, an error from a different USB device on another HC. Was it
-caused by the above? I don't know, but it may have been. The disk
-was working without any other issues and generated PCIe traffic to
-starve the NEC of upstream BW and trigger those MSEs. The two HCs
-shared one x1 slot by means of a commercial "PCIe splitter" board.
-
-[ 7.162604] usb 10-2: reset SuperSpeed USB device number 3 using xhci_hcd
-[ 7.178990] sd 9:0:0:0: [sdb] tag#0 UNKNOWN(0x2003) Result: hostbyte=0x07 driverbyte=DRIVER_OK cmd_age=0s
-[ 7.179001] sd 9:0:0:0: [sdb] tag#0 CDB: opcode=0x28 28 00 04 02 ae 00 00 02 00 00
-[ 7.179004] I/O error, dev sdb, sector 67284480 op 0x0:(READ) flags 0x80700 phys_seg 5 prio class 0
-
-Fortunately, it appears that this ridiculous bug is avoided by setting
-the chain bit of Link TRBs on isochronous rings. Other ancient HCs are
-known which also expect the bit to be set and they ignore Link TRBs if
-it's not. Reportedly, 0.95 spec guaranteed that the bit is set.
-
-The bandwidth-starved NEC HC running a 32KB/uframe UVC endpoint reports
-tens of MSEs per second and runs into the bug within seconds. Chaining
-Link TRBs allows the same workload to run for many minutes, many times.
-
-No negative side effects seen in UVC recording and UAC playback with a
-few devices at full speed, high speed and SuperSpeed.
-
-The problem doesn't reproduce on the newer Renesas uPD720201/uPD720202
-and on old Etron EJ168 and VIA VL805 (but the VL805 has other bug).
-
-[shorten line length of log snippets in commit messge -Mathias]
-
-Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20250306144954.3507700-14-mathias.nyman@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-[Shivani: Modified to apply on 6.6.y]
-Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
----
- drivers/usb/host/xhci.h | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/usb/host/xhci.h b/drivers/usb/host/xhci.h
-index cbd8ef1c8db6..849a83e4013c 100644
---- a/drivers/usb/host/xhci.h
-+++ b/drivers/usb/host/xhci.h
-@@ -1785,11 +1785,20 @@ static inline void xhci_write_64(struct xhci_hcd *xhci,
- }
- 
- 
--/* Link TRB chain should always be set on 0.95 hosts, and AMD 0.96 ISOC rings */
-+/*
-+ * Reportedly, some chapters of v0.95 spec said that Link TRB always has its chain bit set.
-+ * Other chapters and later specs say that it should only be set if the link is inside a TD
-+ * which continues from the end of one segment to the next segment.
-+ *
-+ * Some 0.95 hardware was found to misbehave if any link TRB doesn't have the chain bit set.
-+ *
-+ * 0.96 hardware from AMD and NEC was found to ignore unchained isochronous link TRBs when
-+ * "resynchronizing the pipe" after a Missed Service Error.
-+ */
- static inline bool xhci_link_chain_quirk(struct xhci_hcd *xhci, enum xhci_ring_type type)
- {
- 	return (xhci->quirks & XHCI_LINK_TRB_QUIRK) ||
--	       (type == TYPE_ISOC && (xhci->quirks & XHCI_AMD_0x96_HOST));
-+	       (type == TYPE_ISOC && (xhci->quirks & (XHCI_AMD_0x96_HOST | XHCI_NEC_HOST)));
- }
- 
- /* xHCI debugging */
--- 
-2.43.7
-
+greg k-h
 
