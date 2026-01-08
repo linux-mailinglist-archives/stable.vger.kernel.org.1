@@ -1,79 +1,126 @@
-Return-Path: <stable+bounces-206330-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206331-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A572DD040E4
-	for <lists+stable@lfdr.de>; Thu, 08 Jan 2026 16:53:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E1C49D04387
+	for <lists+stable@lfdr.de>; Thu, 08 Jan 2026 17:12:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 54F1532D8D1C
-	for <lists+stable@lfdr.de>; Thu,  8 Jan 2026 15:31:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B6037332A740
+	for <lists+stable@lfdr.de>; Thu,  8 Jan 2026 15:56:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F9354A4D67;
-	Thu,  8 Jan 2026 12:06:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F4C3498496;
+	Thu,  8 Jan 2026 12:10:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="Y7UFxxMc"
+	dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b="M4oCYYR0"
 X-Original-To: stable@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from mail-06.mail-europe.com (mail-06.mail-europe.com [85.9.210.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FFE14A4D72;
-	Thu,  8 Jan 2026 12:06:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2DAF4A1E39
+	for <stable@vger.kernel.org>; Thu,  8 Jan 2026 12:10:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.9.210.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767873980; cv=none; b=nk4tAGv6DoTasg/pketUz4tDAMWQpGh9UbzwnCdnvJVBccRLp+PnxkAsCpga9lTMMjWhyeOkYsm9SIf6Na3UP6utQ/qjQAYnOcuaKbJcORD/vUuQyPSYGnIO7IDHY1uqplSvniS8ijN2G88jRXu3X8z7utAHkAMNMeAQ2SFUFvc=
+	t=1767874241; cv=none; b=t556kjpAm0OqgSJnuvttKNUswZEgcVW2YgrS0CBBPk+J1o5mk8RcHj+c+bv2N9BSTRColoezDCdSITl8rRtCNm90KLbYD0CYr5NSCXNvvn+Eo6pr76QF6TPKPV38kv8r1FBOVeCO+/kLSFOtX22qN9MzvzwMHtiBthm5O3ig0Bw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767873980; c=relaxed/simple;
-	bh=Wr73RokSiv/yECX5WjG/LPaS+/F2DTG8cG8IcbGay5A=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=e8+098UazTous4w4s02vCFVShP2qZlwjFkIFHRVcVOvUh9/xIaIkMRYNK5G6z2sT5eO2cb1q0LdOaRtlKrhwKu8NQ8nOuOw0Q8l0MjzCCgsTLXxBOWoQYOVyLvE1HAiiSSJgHmJxpz3m+3QWieIuHHvwDc0ez8HamsP/aPdXGBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=Y7UFxxMc; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=Wr73RokSiv/yECX5WjG/LPaS+/F2DTG8cG8IcbGay5A=;
-	t=1767873977; x=1769083577; b=Y7UFxxMcR6PYwG+8tr3mf9iq7deKKA8a4H5E3OSw7SYVZG/
-	Azlt3JtUBeH7UIoXrl+GWRRKhzZf8B3wo6PN1LLMK7QBjOFogLx3hNuvmeDdBpsIjdoHxiKWbQH/j
-	7SHBOGFmzTIl46UKmURiZypZ9GFlx4R1qC2h0VUrOR23LtJr9Wn4h8cb9jGLotyU1b/5k7J0r2Go1
-	9N3Tzed4Tr6qSd/0g71Jn0brrug9fMTNUjEGkU3vYVg1iR1xN5JJkyX3mrv6HX4LP8BkKJ6cwatTy
-	vI4UaVkP8eng3RUGHdYWV3mTH/fXnhXgu7KQAhcjHRN76OKtE4j+oN88d79SVb4w==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1vdomH-00000006U8p-1BSs;
-	Thu, 08 Jan 2026 13:06:09 +0100
-Message-ID: <2411c0044b97dbab4183c03c18fb3f487f6b8f9f.camel@sipsolutions.net>
-Subject: Re: [PATCH] wifi: cfg80211: Fix use-after-free in
- cfg80211_shutdown_all_interfaces
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Daniil Dulov <d.dulov@aladdin.ru>
-Cc: "John W. Linville" <linville@tuxdriver.com>, 
-	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	lvc-project@linuxtesting.org, stable@vger.kernel.org
-Date: Thu, 08 Jan 2026 13:06:08 +0100
-In-Reply-To: <20251223170452.75358-1-d.dulov@aladdin.ru>
-References: <20251223170452.75358-1-d.dulov@aladdin.ru>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
+	s=arc-20240116; t=1767874241; c=relaxed/simple;
+	bh=FE5f+QneiLfkB+gsfq9DOycQ8EkGDZ8mWOYLDEug3U8=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=qHrfKlIM0+W/5RQZ3Wy/4K0Mjm6ybtBlE6B77tPzDBdSyo4pi0mCUNQb7x9Kap3xy8YQ1AzhGqunPq0OUnA2X4OAuz22VxPR8F+r3HRdWeqT85dHZAL19W/b9xaLDIZXwLUCQd3oe3XUuOjsIymQiai0ni+ox6YnutAUnLyci2w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=geanix.com; spf=pass smtp.mailfrom=geanix.com; dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b=M4oCYYR0; arc=none smtp.client-ip=85.9.210.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=geanix.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=geanix.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=geanix.com;
+	s=protonmail2; t=1767874226; x=1768133426;
+	bh=e9Gn14IpojzvUVrHWdXmzVkyL12/O34BYkSCNxkLXBk=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=M4oCYYR05LjR1zuWmGDLY2NUDmgqoA0Gs7RIIA+jsPfvKLSztQWtPWNrCFHINJfCA
+	 HFXOvt9td6Rtbae2jI34iZADjK26DfHt8wMZYngw2WqA3QgjgtfA19ixm0AiMX/5nA
+	 GspzkdlI2oqkssw84nB6a2pxOpT2syKFjRd0aJl9DbkXW7oyDKLBpLkG6GSnJQdLvd
+	 msN4snaag7B79uKVpGOK3aKfLCmTgMGoX7I7FpmPlQQkcc6S9udkPEMDy/cBtMjrhQ
+	 1mg2gUajN4kAVQonHK1UpGoTOzGMTbko1kMlPnvL+3RYZaFymnmkO+XYQJ9Sr1ye5u
+	 Mtj7TEkdLVBMA==
+Date: Thu, 08 Jan 2026 12:10:22 +0000
+To: =?utf-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
+From: Sean Nyekjaer <sean@geanix.com>
+Cc: Fabrice Gasnier <fabrice.gasnier@foss.st.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, linux-pwm@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] pwm: stm32: handle polarity change when PWM is enabled
+Message-ID: <scu6yj7say5bnhbgyns4xrjbrzdayckk2ghn2a4xsgg4dswakv@6ushlcfw4dju>
+In-Reply-To: <r2jq72u3hfxrl4slgvuei2eobke37apebf67naxrvuabtcvaxe@pamwe3nejqge>
+References: <20260106-stm32-pwm-v1-1-33e9e8a9fc33@geanix.com> <kemjjoyrhqglqq4p2j6kygspevq2mdbiujtnksw4rkdapoqcfy@zte2c7fhqvn3> <2e2iahbzcepbzwgk7xeta2afxmycfjgv2zofzngqjvp4on46r2@mzpi4bz4uqie> <nwhixocvhii27jvcyg7ex5emewntgfhyxa4ds5vo2dphe7xfe4@ibjsjdd5fgmn> <fwaodg2ovh7j47ifwjhgeppxs3oiqht5ecbs7bmfbi7j6djejs@shwokpcmutr3> <zj2vpruzoeyvyyzxiqcffajyhpmem4q75l6gzgxd4jgaizhrdq@bxuudn4kyvr3> <paj3uf6apunonvfz2w2anqmddivjrofmfo5wktygz4r6l7diqf@7gen7gjgyuar> <r2jq72u3hfxrl4slgvuei2eobke37apebf67naxrvuabtcvaxe@pamwe3nejqge>
+Feedback-ID: 134068486:user:proton
+X-Pm-Message-ID: 65182a408632275be51d6c5397e4a1b9201fdc8e
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
 Hi,
+On Thu, Jan 08, 2026 at 12:33:10PM +0100, Uwe Kleine-K=C3=B6nig wrote:
+> On Thu, Jan 08, 2026 at 06:44:06AM +0000, Sean Nyekjaer wrote:
+> > I hope that clarifies things :)
+>=20
+> It does. I'm convinced the following patch implements a simpler fix:
+>=20
+> diff --git a/drivers/pwm/pwm-stm32.c b/drivers/pwm/pwm-stm32.c
+> index eb24054f9729..86e6eb7396f6 100644
+> --- a/drivers/pwm/pwm-stm32.c
+> +++ b/drivers/pwm/pwm-stm32.c
+> @@ -458,8 +458,7 @@ static int stm32_pwm_apply(struct pwm_chip *chip, str=
+uct pwm_device *pwm,
+>  =09=09return 0;
+>  =09}
+> =20
+> -=09if (state->polarity !=3D pwm->state.polarity)
+> -=09=09stm32_pwm_set_polarity(priv, pwm->hwpwm, state->polarity);
+> +=09stm32_pwm_set_polarity(priv, pwm->hwpwm, state->polarity);
+> =20
+>  =09ret =3D stm32_pwm_config(priv, pwm->hwpwm,
+>  =09=09=09       state->duty_cycle, state->period);
+>=20
+> While is isn't optimal as it might write the polarity into hardware when
+> it's not necessary, the same holds true for the values for duty_cycle
+> and period. Compared to your patch this is simple enough to make me ok
+> with applying it to 6.12.x (and older stable kernels) without an
+> equivalent commit in mainline. (Backporting the waveform stuff is out of
+> the question IMNSHO.)
 
-Not sure why you CC John these days.
+The above does work, I have also checked that it doesn't write the
+polarity if the PWM is active.
+Agree, with the backporting part :)
 
-Please fix the subject to be more specific. I also think the cancel
-should be during unregister, because drivers would not otherwise expect
-callbacks any more.
+>=20
+> Also I'm still convinced that 7edf7369205b isn't the correct commit to
+> blame. This one changes the preconditions for the problem to occur (and
+> thus it's plausible that it's the result of your bisection), but even
+> before 7edf7369205b the problem can happen with:
+>=20
+> =09pwm_apply(mypwm, &(struct pwm_state){ .enabled =3D true, .polarity =3D=
+ PWM_POLARITY_NORMAL, .period =3D DC, .duty_cycle =3D DC });
+> =09pwm_apply(mypwm, &(struct pwm_state){ .enabled =3D false, .polarity =
+=3D PWM_POLARITY_INVERSED, .period =3D DC, .duty_cycle =3D DC });
+> =09pwm_apply(mypwm, &(struct pwm_state){ .enabled =3D true, .polarity =3D=
+ PWM_POLARITY_INVERSED, .period =3D DC, .duty_cycle =3D DC });
+>=20
+> After the 1st call polarity is configured to normal (unless the bug
+> happens already earlier :-), the 2nd disables the hardware without
+> configuration of the polarity (before and after 7edf7369205b), and the
+> third skips setting of the polarity because state->polarity already
+> matches pwm->state.polarity. The original problem exists since=20
+> 7edf7369205b ("pwm: Add driver for STM32 plaftorm").
+>=20
+I will move the fixes tag.
 
-johannes
+> Are you able to create an improved patch with these insights in a timely
+> manner? (Grab authorship for yourself and honoring my part with a
+> Co-developed-by is fine for me.)
+I'll do it now and add the Co-developd-by tag
+
+/Sean
+
 
