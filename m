@@ -1,126 +1,83 @@
-Return-Path: <stable+bounces-206331-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206333-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1C49D04387
-	for <lists+stable@lfdr.de>; Thu, 08 Jan 2026 17:12:51 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 118A6D044E5
+	for <lists+stable@lfdr.de>; Thu, 08 Jan 2026 17:21:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B6037332A740
-	for <lists+stable@lfdr.de>; Thu,  8 Jan 2026 15:56:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8F6FD3050582
+	for <lists+stable@lfdr.de>; Thu,  8 Jan 2026 15:11:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F4C3498496;
-	Thu,  8 Jan 2026 12:10:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4972A48C3F8;
+	Thu,  8 Jan 2026 12:14:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b="M4oCYYR0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bScyhRw+"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-06.mail-europe.com (mail-06.mail-europe.com [85.9.210.45])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2DAF4A1E39
-	for <stable@vger.kernel.org>; Thu,  8 Jan 2026 12:10:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.9.210.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB3833ECBF7;
+	Thu,  8 Jan 2026 12:14:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767874241; cv=none; b=t556kjpAm0OqgSJnuvttKNUswZEgcVW2YgrS0CBBPk+J1o5mk8RcHj+c+bv2N9BSTRColoezDCdSITl8rRtCNm90KLbYD0CYr5NSCXNvvn+Eo6pr76QF6TPKPV38kv8r1FBOVeCO+/kLSFOtX22qN9MzvzwMHtiBthm5O3ig0Bw=
+	t=1767874466; cv=none; b=q5Qs/PGwTjvTjBgQOgZ06ib/c+M7KlQdJl7FuXlxBCxL8W3krURWYX3Heam+r6m602C/w8fBXYzrWdq5HvjxzDOI7vGycvPoAhgyLmIzRzZaV3QPoLDrc8//ckECbj5saPPdY1/2I5yIp1LqT5f3MhiCvP9XzyKCZGNUxsYYbEY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767874241; c=relaxed/simple;
-	bh=FE5f+QneiLfkB+gsfq9DOycQ8EkGDZ8mWOYLDEug3U8=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qHrfKlIM0+W/5RQZ3Wy/4K0Mjm6ybtBlE6B77tPzDBdSyo4pi0mCUNQb7x9Kap3xy8YQ1AzhGqunPq0OUnA2X4OAuz22VxPR8F+r3HRdWeqT85dHZAL19W/b9xaLDIZXwLUCQd3oe3XUuOjsIymQiai0ni+ox6YnutAUnLyci2w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=geanix.com; spf=pass smtp.mailfrom=geanix.com; dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b=M4oCYYR0; arc=none smtp.client-ip=85.9.210.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=geanix.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=geanix.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=geanix.com;
-	s=protonmail2; t=1767874226; x=1768133426;
-	bh=e9Gn14IpojzvUVrHWdXmzVkyL12/O34BYkSCNxkLXBk=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=M4oCYYR05LjR1zuWmGDLY2NUDmgqoA0Gs7RIIA+jsPfvKLSztQWtPWNrCFHINJfCA
-	 HFXOvt9td6Rtbae2jI34iZADjK26DfHt8wMZYngw2WqA3QgjgtfA19ixm0AiMX/5nA
-	 GspzkdlI2oqkssw84nB6a2pxOpT2syKFjRd0aJl9DbkXW7oyDKLBpLkG6GSnJQdLvd
-	 msN4snaag7B79uKVpGOK3aKfLCmTgMGoX7I7FpmPlQQkcc6S9udkPEMDy/cBtMjrhQ
-	 1mg2gUajN4kAVQonHK1UpGoTOzGMTbko1kMlPnvL+3RYZaFymnmkO+XYQJ9Sr1ye5u
-	 Mtj7TEkdLVBMA==
-Date: Thu, 08 Jan 2026 12:10:22 +0000
-To: =?utf-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
-From: Sean Nyekjaer <sean@geanix.com>
-Cc: Fabrice Gasnier <fabrice.gasnier@foss.st.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, linux-pwm@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] pwm: stm32: handle polarity change when PWM is enabled
-Message-ID: <scu6yj7say5bnhbgyns4xrjbrzdayckk2ghn2a4xsgg4dswakv@6ushlcfw4dju>
-In-Reply-To: <r2jq72u3hfxrl4slgvuei2eobke37apebf67naxrvuabtcvaxe@pamwe3nejqge>
-References: <20260106-stm32-pwm-v1-1-33e9e8a9fc33@geanix.com> <kemjjoyrhqglqq4p2j6kygspevq2mdbiujtnksw4rkdapoqcfy@zte2c7fhqvn3> <2e2iahbzcepbzwgk7xeta2afxmycfjgv2zofzngqjvp4on46r2@mzpi4bz4uqie> <nwhixocvhii27jvcyg7ex5emewntgfhyxa4ds5vo2dphe7xfe4@ibjsjdd5fgmn> <fwaodg2ovh7j47ifwjhgeppxs3oiqht5ecbs7bmfbi7j6djejs@shwokpcmutr3> <zj2vpruzoeyvyyzxiqcffajyhpmem4q75l6gzgxd4jgaizhrdq@bxuudn4kyvr3> <paj3uf6apunonvfz2w2anqmddivjrofmfo5wktygz4r6l7diqf@7gen7gjgyuar> <r2jq72u3hfxrl4slgvuei2eobke37apebf67naxrvuabtcvaxe@pamwe3nejqge>
-Feedback-ID: 134068486:user:proton
-X-Pm-Message-ID: 65182a408632275be51d6c5397e4a1b9201fdc8e
+	s=arc-20240116; t=1767874466; c=relaxed/simple;
+	bh=5cTbQKOHlYtzkTwsrHmBHCppSyKVkBrAAr06mK9QF9I=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=NQnwQNeIH2T9s2nsu1Wa1DIH9+W1JbHDR+rJwtS2fgNKBuqCvMrVJ29FASpJNbAz5kcCmA+n45bQpyPP1rg/6MU6UHrm9HSLzDsEiEZEWRVvxNOZmFSG2IEFzFvdEu4+xf5pj8fDfJ1p2yBXdFcy5Aunj70ymvmco20clxUyelU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bScyhRw+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7745EC116C6;
+	Thu,  8 Jan 2026 12:14:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767874464;
+	bh=5cTbQKOHlYtzkTwsrHmBHCppSyKVkBrAAr06mK9QF9I=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=bScyhRw+UXHyKl1Vhv6iix4O8WNkE18B2uXb1I5lUxNHeLQm/oNa/iUh+69T7BrS5
+	 rNx/w/5nO8jlWC8cjeXc2XibgZCYxoUl1Puzz09shmeK6YOBTM8eAPu3NOfziwCxSL
+	 xJRlqSFZd596D06FuIATXveX8cgfTlOonAS/DYWeYqh8RagPIm869zNjiRPj7f0wkp
+	 ieem7CPUjDBFu3/N7dQOFsXdyRL0axQM0OWkWhP9px2+NqUOCo11bRnFOovF+7yZ8c
+	 vFrR34lGa1fUXyrl6dqbcFPPoqjWcSB1EdNMd8EjmuXqQHwaUWzL9Wi1/ic4WAYgct
+	 alEaPuNLdHrGA==
+From: Lee Jones <lee@kernel.org>
+To: Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>, 
+ Hans de Goede <johannes.goede@oss.qualcomm.com>
+Cc: linux-leds@vger.kernel.org, Sebastian Reichel <sre@kernel.org>, 
+ stable@vger.kernel.org
+In-Reply-To: <20251211163727.366441-1-johannes.goede@oss.qualcomm.com>
+References: <20251211163727.366441-1-johannes.goede@oss.qualcomm.com>
+Subject: Re: (subset) [PATCH] leds: led-class: Only Add LED to leds_list
+ when it is fully ready
+Message-Id: <176787446317.914194.18032642254997811373.b4-ty@kernel.org>
+Date: Thu, 08 Jan 2026 12:14:23 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Mailer: b4 0.15-dev-52d38
 
-Hi,
-On Thu, Jan 08, 2026 at 12:33:10PM +0100, Uwe Kleine-K=C3=B6nig wrote:
-> On Thu, Jan 08, 2026 at 06:44:06AM +0000, Sean Nyekjaer wrote:
-> > I hope that clarifies things :)
->=20
-> It does. I'm convinced the following patch implements a simpler fix:
->=20
-> diff --git a/drivers/pwm/pwm-stm32.c b/drivers/pwm/pwm-stm32.c
-> index eb24054f9729..86e6eb7396f6 100644
-> --- a/drivers/pwm/pwm-stm32.c
-> +++ b/drivers/pwm/pwm-stm32.c
-> @@ -458,8 +458,7 @@ static int stm32_pwm_apply(struct pwm_chip *chip, str=
-uct pwm_device *pwm,
->  =09=09return 0;
->  =09}
-> =20
-> -=09if (state->polarity !=3D pwm->state.polarity)
-> -=09=09stm32_pwm_set_polarity(priv, pwm->hwpwm, state->polarity);
-> +=09stm32_pwm_set_polarity(priv, pwm->hwpwm, state->polarity);
-> =20
->  =09ret =3D stm32_pwm_config(priv, pwm->hwpwm,
->  =09=09=09       state->duty_cycle, state->period);
->=20
-> While is isn't optimal as it might write the polarity into hardware when
-> it's not necessary, the same holds true for the values for duty_cycle
-> and period. Compared to your patch this is simple enough to make me ok
-> with applying it to 6.12.x (and older stable kernels) without an
-> equivalent commit in mainline. (Backporting the waveform stuff is out of
-> the question IMNSHO.)
+On Thu, 11 Dec 2025 17:37:27 +0100, Hans de Goede wrote:
+> Before this change the LED was added to leds_list before led_init_core()
+> gets called adding it the list before led_classdev.set_brightness_work gets
+> initialized.
+> 
+> This leaves a window where led_trigger_register() of a LED's default
+> trigger will call led_trigger_set() which calls led_set_brightness()
+> which in turn will end up queueing the *uninitialized*
+> led_classdev.set_brightness_work.
+> 
+> [...]
 
-The above does work, I have also checked that it doesn't write the
-polarity if the PWM is active.
-Agree, with the backporting part :)
+Applied, thanks!
 
->=20
-> Also I'm still convinced that 7edf7369205b isn't the correct commit to
-> blame. This one changes the preconditions for the problem to occur (and
-> thus it's plausible that it's the result of your bisection), but even
-> before 7edf7369205b the problem can happen with:
->=20
-> =09pwm_apply(mypwm, &(struct pwm_state){ .enabled =3D true, .polarity =3D=
- PWM_POLARITY_NORMAL, .period =3D DC, .duty_cycle =3D DC });
-> =09pwm_apply(mypwm, &(struct pwm_state){ .enabled =3D false, .polarity =
-=3D PWM_POLARITY_INVERSED, .period =3D DC, .duty_cycle =3D DC });
-> =09pwm_apply(mypwm, &(struct pwm_state){ .enabled =3D true, .polarity =3D=
- PWM_POLARITY_INVERSED, .period =3D DC, .duty_cycle =3D DC });
->=20
-> After the 1st call polarity is configured to normal (unless the bug
-> happens already earlier :-), the 2nd disables the hardware without
-> configuration of the polarity (before and after 7edf7369205b), and the
-> third skips setting of the polarity because state->polarity already
-> matches pwm->state.polarity. The original problem exists since=20
-> 7edf7369205b ("pwm: Add driver for STM32 plaftorm").
->=20
-I will move the fixes tag.
+[1/1] leds: led-class: Only Add LED to leds_list when it is fully ready
+      commit: bbe55e436524c99549e05d61371fac0806718a86
 
-> Are you able to create an improved patch with these insights in a timely
-> manner? (Grab authorship for yourself and honoring my part with a
-> Co-developed-by is fine for me.)
-I'll do it now and add the Co-developd-by tag
-
-/Sean
+--
+Lee Jones [李琼斯]
 
 
