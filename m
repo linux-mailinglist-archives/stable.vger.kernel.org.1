@@ -1,101 +1,101 @@
-Return-Path: <stable+bounces-206272-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206273-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1323D03EEC
-	for <lists+stable@lfdr.de>; Thu, 08 Jan 2026 16:40:27 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D580D03D09
+	for <lists+stable@lfdr.de>; Thu, 08 Jan 2026 16:26:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5441430B8A4A
-	for <lists+stable@lfdr.de>; Thu,  8 Jan 2026 15:34:10 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4755A3079D61
+	for <lists+stable@lfdr.de>; Thu,  8 Jan 2026 15:20:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1FCC34D4DA;
-	Thu,  8 Jan 2026 08:38:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ECD0348468;
+	Thu,  8 Jan 2026 08:41:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="muJlowqL";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="E1zvan0o"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="OPve4reT";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="F7eD2iLG"
 X-Original-To: stable@vger.kernel.org
 Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B5C234D4EF
-	for <stable@vger.kernel.org>; Thu,  8 Jan 2026 08:38:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53C78340D91
+	for <stable@vger.kernel.org>; Thu,  8 Jan 2026 08:41:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767861510; cv=none; b=R441e8ZVqW84EcVb3s/xI89E0vuvWMGfZisiw19IOC4ztPjJsvHo0RT+m/8scmhD6/ugcwQVO8JIt+Ace+Yk6YFGf2FFJv+Y4fEiiODQ1MEPjMeW8gBKx9Aby/qpWShQuFIQ7CxEt7/XJfNQ5RFprneoZFtHw266b+ltfS++7QY=
+	t=1767861673; cv=none; b=FdVvQjVYd7z6uHpYZI2HxspEvZlUxbk2Bigm9FPplJaxBR7f0xSjthFtFjW8R5IteCXIaKm0YurrOhKE5onE1v8gtnV+X3T5jwrkidCi6h2L5YQV5ewkjOUkCdNI03Cw/NiV863UCOaXO6BKC5zaldoqDMQNa/2XFzgOW8qrBQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767861510; c=relaxed/simple;
-	bh=dnxiXQYK80rSiXRNHY/VGckOGY1aglKhHVXjrY71uj4=;
+	s=arc-20240116; t=1767861673; c=relaxed/simple;
+	bh=xjHglDM/JW2NmeVeyAr0+dj+UOkaL7HkzdzU4RxRwmk=;
 	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=r1D/jqtungk7dNwcl6KrBzdj5yJDtLpD8rWxAG5Vd46Z+0jYmGRv2UL5XMBZhOlrmw992YxlWLThQDH12ffKw3rdV9VIbjXxdxupKn6XaVWXOjWgbvqRRXo5jLKuJGQL99ujUHimVljnwZT+St+Q5UrG1sxBa3nlxwdh0ky3qlk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=muJlowqL; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=E1zvan0o; arc=none smtp.client-ip=205.220.168.131
+	 In-Reply-To:Content-Type; b=OZjJXe/ZwJVfhyAs06mpONJkpZHQr5tkcNSUFlxx+Pec2MdCYhbI62Y2R8l4GtCg1XOvRbEOvQwGgMAfql06tdr7334kB7s1vsWV3w56C1B8Xl7Pd4WzMYuyfXW4gRW9s5I3ePWwT+dioeq+ygjh8kqKaEruXAabYWuH/kaVSew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=OPve4reT; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=F7eD2iLG; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6087VNT81837902
-	for <stable@vger.kernel.org>; Thu, 8 Jan 2026 08:38:19 GMT
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6084RKX82593336
+	for <stable@vger.kernel.org>; Thu, 8 Jan 2026 08:41:02 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	W2QAqBe4+df3ACm1vz0AjqspTh3AnoBx6LJBN1OW9aA=; b=muJlowqLr2D2Uq0e
-	uDLhom7zbbM1Bq1fUSXJARL0tYzzpZJdYFGc0qDp1tjkpZDM1IxuFlyqfFYnXUNi
-	hhayzUrGVXBPGbN5HCLHYj6yKVNaqUt8wmX+vm6R04B9exfCz2Hh8CTMPtLMbNoW
-	swCiTwz+rlZWgFh4ssfH7OsmRp6pM2OcvcCwVl1UUAkhWHi6y0eXYrLSd5dY3Rgc
-	O9BL8XP9KBQl1SFfAzVntqA2k8VbMnXIYje0lSSvy1cLZXaKmEyNzuBi2pf54iwd
-	WX03pWZaBOQvu8IujDdHKiJRsuFETQS6gaC7xxMJd/KXuOArlxtIwZaK5+BaVAww
-	nSSj5g==
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com [209.85.222.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4bj89205yu-1
+	rJGaMaxcuDZkeMl5qtNbvmW1qLM20Z6W7DUk5Nd+ylo=; b=OPve4reTFeGDugdT
+	7nHIJNmjpV1vNAhlkyOidifyNZDah4vhB3qKCbdF/u6nyX7tthRY+adja4iTljJK
+	FFAsrQzIOnXyaPaC8CZYS4sj7TwsD+0+ppfWl6/MHbFhLtpCNvzfxOCX9jye8rnb
+	nWocUNcr+liTaAen+b+mfcjYa1NBqbaijRHNSSaRhRR8IvA2jbvrB5sOHFIDtkKd
+	ao18FdyN1FbZX+HaiJ8QoLy8rqaLAEDXPQz8F/zkwsVgIWmkNy3ev/NKwWmFV6Q9
+	6rxrYZTpj6I3G3bQsbqXdy7YVVc6F0egYHMJLfUWvLgNJ4lcD59s3gssMaveVSNL
+	t8s5TQ==
+Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com [209.85.160.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4bhn293yfy-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Thu, 08 Jan 2026 08:38:19 +0000 (GMT)
-Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-8b2dbd36752so763590485a.0
-        for <stable@vger.kernel.org>; Thu, 08 Jan 2026 00:38:19 -0800 (PST)
+	for <stable@vger.kernel.org>; Thu, 08 Jan 2026 08:41:02 +0000 (GMT)
+Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-4f4ab58098eso80481701cf.1
+        for <stable@vger.kernel.org>; Thu, 08 Jan 2026 00:41:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1767861498; x=1768466298; darn=vger.kernel.org;
+        d=oss.qualcomm.com; s=google; t=1767861661; x=1768466461; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:content-language:references
          :cc:to:subject:from:user-agent:mime-version:date:message-id:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=W2QAqBe4+df3ACm1vz0AjqspTh3AnoBx6LJBN1OW9aA=;
-        b=E1zvan0oyR8DRxHXwbzSLJXvyetZmsHfWSQCdybYyvH7TFpvz+OO+fIIfC88UECIEG
-         p9Ik40+/myoPDwozPf9V+MYFBnj45fl7Fi31T9xunTV2j9HpY7BJPkfvC+Ya8S675CC2
-         xnwwOlLHWfFgFDTgJ5pzAxH8TySCCXDXq+GhWhxMTyJFlJHcAyV0AH5wwFHz0dDnYcFF
-         vITwzClNvawA8g18+pZhU1ZL8MhySpmkoXaxEqEqyilD3BjSWMmDxp7VqFvGQaIaQepX
-         uxclUp/ExWf7vDhezBr+cz6J385jdVq5BCnpbYs6BA/Zem7Rs8pkDPOJbTlIUHRLs3Bj
-         GcNg==
+        bh=rJGaMaxcuDZkeMl5qtNbvmW1qLM20Z6W7DUk5Nd+ylo=;
+        b=F7eD2iLGUwekbHg5a/0NWXq2ruRw64zVEYhn/43Zu0zY7byjOeUuIaYMUnitQGpWRN
+         QSdzZEvr0V3oq+AhfZ7Pc7FJ2rucrbDeDlKG4xm2zMfQTohwPZ7dTMHLwBrd4KnrFUFE
+         Ufy1JDKgButOGF1WZKTW1XuUx0tH2/LwNgmqtQ7dIfgP4OIoT0swpGWRfftKuU5EP62+
+         Qd+p41pUvdJqIzkJgkGIq0e2t2+4NKWn5LXONfV3vKcOFmJger4HZE/NFgcntkPXdEVA
+         z32nOpekxhgOq/okc7BhUNB8RMZ/vHP6DnAuFt56X69FxacGTmGDFCa3cIu7jJniNdiL
+         RozA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767861498; x=1768466298;
+        d=1e100.net; s=20230601; t=1767861661; x=1768466461;
         h=content-transfer-encoding:in-reply-to:content-language:references
          :cc:to:subject:from:user-agent:mime-version:date:message-id:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=W2QAqBe4+df3ACm1vz0AjqspTh3AnoBx6LJBN1OW9aA=;
-        b=Dxpi0d+4gP7tBFjFw3Z7EoWiUTFTiN53ixZds1Nht6sF+4snQwoYKkNRYsnwnfkQYR
-         coy5fu/PaSZnk7BWUcMRObF2pX714rVE+E1d0n/1+cP7Y8seXa3gMKXLqioUcy6HKf88
-         3oYYWZhn3i74BErnRMhzKasr8we685UnNe8a0sLjws2Hn4C/bxGL27vtFa9uNlDrIqim
-         Oe35vEIwRUeAJZ4Nf+DDJIZT186dpAaqO1eJXvAWqsMZRwE6zi2EZf7yWLZnZv/H6c2T
-         8Ye2FIeI+SQk8dV9qfo+g877Fg8wX/6kcVgaZ50zEXHJ4ctoWexEu00Bl2bhOLuu8Lku
-         0OwA==
-X-Forwarded-Encrypted: i=1; AJvYcCUBhel2KjGoM2KDkxfv98516E+kDozajS6LINMBIwCOzaj4+B48oadrcj6r4NKtMJLzdo/coc0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyHTkWZgFag657YjrbKTTukro/xN6q9PZ2/OXNF9Z0aO+BI6fcA
-	VaQ+5FyRFH4ij+JP8PJjWjfchZ+JS6oD+IFLyrRwrqQcK+DwoSbg5G+qIbicSJAFDB0T6IVGahu
-	EYvasD1w42Cs3uh1EUFg6n6R5yF96HN3eWrKKcz8iDIrCxcGtC6LBihVhZHo=
-X-Gm-Gg: AY/fxX4Kyp28IT/xcnZMSVr3TnCwV9TlQO2qIK/3PXXoHd1D6JP/8ddZ+adVOr+p5MH
-	eILFbitak+nQVnwlHKaip9FxS0rN6/sG9vzyLrltyUErtKl1sMAsgS5yA8rMg/nA6Y78wDch/1N
-	c5XUKmP44J45+MfBe8rF3n3FZerWA1B4SVRDXzpCp1dOZ265PhlpQ7JDyw2z3YNoqxpRsMXxwgu
-	bRImCnqFZJucs5/fBtBtxQC3PnChBey4Jivu7CMXfwajMWeASejt4y1WzdFQyzEBJFVFMd0aCJo
-	2ltIUX3618GedUYnpS91IF0887yrhoDi+9+y7BBD7y/YOYGgfwcrlZiwBc3qrR/di0vW16HsyOi
-	wk5qCF7KeJY6cG6xAbJqqQpom4VofoIdCGQQWt9pZeGk1613oUt+rni0tvmIB2r77WKWwQH8A3f
-	/lU7+t7YXwcPCMqcQwNCEw+V0o8RhAHf/gOLRZh2FOiDeeN+S7Csy2o3Xarl/Ut9/ydMQqfFqxw
-	7RA
-X-Received: by 2002:a05:620a:1a13:b0:8b2:da84:7810 with SMTP id af79cd13be357-8c3893eb539mr681308485a.45.1767861498448;
-        Thu, 08 Jan 2026 00:38:18 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFUNx8Wpqvm/m8SkAAORxgp3y2mSrLPAiDvqPTKidErTtjL1Oa9i8NOTlt39F66vk9wrhfc7g==
-X-Received: by 2002:a05:620a:1a13:b0:8b2:da84:7810 with SMTP id af79cd13be357-8c3893eb539mr681306885a.45.1767861497998;
-        Thu, 08 Jan 2026 00:38:17 -0800 (PST)
+        bh=rJGaMaxcuDZkeMl5qtNbvmW1qLM20Z6W7DUk5Nd+ylo=;
+        b=nWbVZqzTzsyXJZcg4Vyf3IfaSMVnhEbN3rw5TI2AdIay9Ghf0Zev10QRf8AJ38/Oks
+         cRHgjtavPr+CSeaKYe+C6Rx9ruRIBKVHENJyiQpkRYwsgcIgST/P99z1cIw0zwH0m1Ej
+         Y8XB8kSuD2ElGUfcSgErQSlqwutljEMel9MSJCY22gwAUaSJKp3Fz/U9kYUg4pzas0bo
+         8qAzlOEljJ8UUZuFerVFvB49VY0l5ZkJLXAk4fOYrHsbTEy4q+P3z9uJxuRAN3aW8xPa
+         x83WOUnbBEJcd/HbgfB2A5rTtN+pd+Dj93wjyMMt02PcM9CkmC0VFMoDTIxQ7hU8s0qh
+         lFMw==
+X-Forwarded-Encrypted: i=1; AJvYcCW7ZuLs40ZNFERhnTb8YGMyuhNmEPxAjMbtPgaVX1R6s8Yftl7j1yqnHq+6pg+CqJcRelQ2rac=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwkimnvVxGT/LgqNsmV3fDkecJv61RN6lQnn04dbVQ/0Q5BL8tD
+	dX7IELdM8tLXJa9cx/dFn8yRN4cxDJVlAV06F0p0iSles78wzC+wCqKM2pWfPu7/hoyxREhitCL
+	ZJm5S8tYLRKJ4APU9u9yg7Jix0wxIW3QmAFC+S+7KlGpjoPvf4O2Y6aJOrGE=
+X-Gm-Gg: AY/fxX790OgPpskhNGIfbIGKTfHUwpXuz2I7f6U2A0TYhqeZpL3cIGqfXo/5D8p0kTC
+	cs4XcAQqVorLAYX0ZfcxdJXhMWlMIQaqW5DRc+TK5ZG7VxG2MFHRNLKg+afGSScf6UDg2yPJZnL
+	9jP4kKvw8E6dySVZIhH+lhh581woKwOFSkvd3rCnLz5ujxaUJrko67hK7MJsxIcyBNdeoWwvGR3
+	8P/7WuwR4nR6UCpQr6sACwYPG0gJVRzBthkhHrHRhWy11R3Dvn9yvyQmRyzFM/OHJbDOIHXsjRO
+	IVqOJGaAaA9155DqLmrnRAwQTa4F9QQo75UZLDqFv6qdHQJ5GxlNjk5bk9UliMfwGMDcUj84R5H
+	5IANxL05SZ4NnEPBPf+y5QQN777rfqm07P4mHQf6jL3D5j3Pd6RkArHiwoLNEENpHZZW1FxKdWA
+	jYFuJjfYjRSbs6Lv3iYRBSgnGwot9FyN6brxD5mHT+w4n86TfWP9QLT0jXzUdrDJChefClOfAS6
+	dvy
+X-Received: by 2002:a05:622a:229e:b0:4ee:18b8:2ddf with SMTP id d75a77b69052e-4ffb48c7dccmr72101101cf.37.1767861660735;
+        Thu, 08 Jan 2026 00:41:00 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IE+8iWsWKz3GaphD0sGgOVLN5BUK3qaL4MHY1YyUeBUAd9hOKS8/HEl0W/5EmvI/dSudEq58A==
+X-Received: by 2002:a05:622a:229e:b0:4ee:18b8:2ddf with SMTP id d75a77b69052e-4ffb48c7dccmr72100991cf.37.1767861660324;
+        Thu, 08 Jan 2026 00:41:00 -0800 (PST)
 Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b84591b6240sm202995366b.10.2026.01.08.00.38.17
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6507bf66214sm6946786a12.27.2026.01.08.00.40.59
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 08 Jan 2026 00:38:17 -0800 (PST)
-Message-ID: <4f42d0e4-6595-4838-bfc2-e690eb9e046f@oss.qualcomm.com>
-Date: Thu, 8 Jan 2026 09:38:16 +0100
+        Thu, 08 Jan 2026 00:40:59 -0800 (PST)
+Message-ID: <7e96da9f-5e48-436d-8e19-d8bb124ab106@oss.qualcomm.com>
+Date: Thu, 8 Jan 2026 09:40:58 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -104,120 +104,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 From: Hans de Goede <johannes.goede@oss.qualcomm.com>
-Subject: Re: [PATCH v2 2/5] media: ov02c10: Adjust x-win/y-win when changing
- flipping to preserve bayer-pattern
-To: Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc: Hans Verkuil <hverkuil@kernel.org>, Bryan O'Donoghue <bod@kernel.org>,
-        Heimir Thor Sverrisson <heimir.sverrisson@gmail.com>,
+Subject: Re: [PATCH v2 4/5] media: ipu-bridge: Add DMI quirk for Dell XPS
+ laptops with upside down sensors
+To: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+        Hans Verkuil <hverkuil@kernel.org>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Bryan O'Donoghue <bod@kernel.org>
+Cc: Heimir Thor Sverrisson <heimir.sverrisson@gmail.com>,
         Sebastian Reichel <sre@kernel.org>, linux-media@vger.kernel.org,
         stable@vger.kernel.org
 References: <20251210112436.167212-1-johannes.goede@oss.qualcomm.com>
- <20251210112436.167212-3-johannes.goede@oss.qualcomm.com>
- <aV5IH7PIFnySHhYC@kekkonen.localdomain>
- <082db370-e6cb-45fd-aaf9-bcd9f80dc242@oss.qualcomm.com>
- <aV7R30bSVxXRxCok@kekkonen.localdomain>
+ <20251210112436.167212-5-johannes.goede@oss.qualcomm.com>
+ <de0d0f9d-be70-490d-9cc0-53f017c69985@linaro.org>
 Content-Language: en-US, nl
-In-Reply-To: <aV7R30bSVxXRxCok@kekkonen.localdomain>
+In-Reply-To: <de0d0f9d-be70-490d-9cc0-53f017c69985@linaro.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Authority-Analysis: v=2.4 cv=M45A6iws c=1 sm=1 tr=0 ts=695f6cfb cx=c_pps
- a=50t2pK5VMbmlHzFWWp8p/g==:117 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-ORIG-GUID: -4UWr5BgGrzt07LXutO7U-ZO7cNO_aha
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTA4MDA1OCBTYWx0ZWRfXx83XlnEqhmUR
+ w0bpwgjZbBZBVhgT6qnXODeeqgy5DMhR0p1/M7tSWh9C51U4L0oLycaMq/mKG8mCDCCUppBIpwh
+ XLyKsvJ4EQNdokH6HLJc6/s7TvI4miag5vjdT0HU7jRik7u2uzpCXnP5hXt/Y1xsM+k+SlhBT0N
+ oBJ4YeCPJUYPytcYrXdb9WsKcaPFm0I/StqWtzWZ3YG07ddS/WlgMps+HimeosuBMxVXIzERX1W
+ TMOPBs19DcgxFRz8NWwypRmjUCube7KcCes+/dfP4D18aBpeI5BIrRPxCAYKmobQa4ssoNjPqIb
+ Ets0wmP01aBTuckxB+5qTjrH6y+EVsBB53/mozgwb8ZiOj+33DTAiLHHv8fd53nTuJtREp7v0e/
+ xyg0bpejoNZDT8+P9NYu1l9HTY8sUFaKE9ioYQgaQsCboEe/itUNNi5VQTCq/XN4E6fDOEhJJH9
+ nzAiGVnqYhxWPc8yQtA==
+X-Authority-Analysis: v=2.4 cv=P7k3RyAu c=1 sm=1 tr=0 ts=695f6d9e cx=c_pps
+ a=mPf7EqFMSY9/WdsSgAYMbA==:117 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
  a=vUbySO9Y5rIA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=0plRyFmWAAAA:8 a=j7Eb9WoC1qn-KjlAcRMA:9 a=QEXdDO2ut3YA:10
- a=IoWCM6iH3mJn3m4BftBB:22 a=4tO_KGIOfzmgBqjB6OKc:22
-X-Proofpoint-ORIG-GUID: liexWJ_qFmvsK4q4R4_N-0Ogn9xOgGWc
-X-Proofpoint-GUID: liexWJ_qFmvsK4q4R4_N-0Ogn9xOgGWc
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTA4MDA1OCBTYWx0ZWRfX04rZuzVgjUay
- JtCV9JSPqEYlwkc0qOmBRzlPX+whC6jS9oCdmZ7OjOC9ilICKUGiyJQ0gzkcfw2tcBduDHAUrAL
- trsBK6R7uIRohegHCxF0X5jGkwL79cvbW+nkwlLhvHP7um3wGasH4N6cN/QB9qpVeqLYGjDgYL0
- RnCDIvMyvJdnkNTmnY6ckDT5vs2H1W5HPNfQhHIMnKcovS7hrAPXhw6xnAZeYpY60ng5kLGEyz3
- fbcNeTrry5zE3d66QFy30yXDF8t80xyWujxzS54r+t9HUNfiCZzoSLpHIHqCxrYInDgBRAl1qOG
- qFehOtynWJh451vvQyKzm7VZHKJvvSDBeXQ/MdkI0UWNVRNS207y/juhFi35IYWh3ZD1c0tLrrA
- /fS3pKLnJavzHHKRlUJ0GKjCgwTBMUcT4zTm8TGrOgYoKRWp90LNGmsxZ3emk5CtTfCMGjWMQaf
- svOTQE35hwBul5AvpSw==
+ a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=XBQUi1Y4SS8Vamh7PKcA:9 a=3ZKOabzyN94A:10
+ a=QEXdDO2ut3YA:10 a=dawVfQjAaf238kedN5IG:22
+X-Proofpoint-GUID: -4UWr5BgGrzt07LXutO7U-ZO7cNO_aha
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
  definitions=2026-01-08_01,2026-01-07_03,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 impostorscore=0 lowpriorityscore=0 bulkscore=0
- phishscore=0 suspectscore=0 clxscore=1015 spamscore=0 malwarescore=0
- adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2512120000
+ suspectscore=0 spamscore=0 phishscore=0 clxscore=1015 malwarescore=0
+ lowpriorityscore=0 impostorscore=0 adultscore=0 priorityscore=1501
+ bulkscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.22.0-2512120000
  definitions=main-2601080058
 
-Hi,
+HI,
 
-On 7-Jan-26 22:36, Sakari Ailus wrote:
-> Hi Hans,
+On 7-Jan-26 22:53, Vladimir Zapolskiy wrote:
+> On 12/10/25 13:24, Hans de Goede wrote:
+>> The Dell XPS 13 9350 and XPS 16 9640 both have an upside-down mounted
+>> OV02C10 sensor. This rotation of 180° is reported in neither the SSDB nor
+>> the _PLD for the sensor (both report a rotation of 0°).
+>>
+>> Add a DMI quirk mechanism for upside-down sensors and add 2 initial entries
+>> to the DMI quirk list for these 2 laptops.
+>>
+>> Note the OV02C10 driver was originally developed on a XPS 16 9640 which
+>> resulted in inverted vflip + hflip settings making it look like the sensor
+>> was upright on the XPS 16 9640 and upside down elsewhere this has been
+>> fixed in commit 69fe27173396 ("media: ov02c10: Fix default vertical flip").
+>> This makes this commit a regression fix since now the video is upside down
+>> on these Dell XPS models where it was not before.
+>>
+>> Fixes: d5ebe3f7d13d ("media: ov02c10: Fix default vertical flip")
+>> Cc: stable@vger.kernel.org
+>> Reviewed-by: Bryan O'Donoghue <bod@kernel.org>
+>> Signed-off-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
+>> ---
+>> Changes in v2:
+>> - Fix fixes tag to use the correct commit hash
+>> - Drop || COMPILE_TEST from Kconfig to fix compile errors when ACPI is disabled
+>> ---
+>>   drivers/media/pci/intel/Kconfig      |  2 +-
+>>   drivers/media/pci/intel/ipu-bridge.c | 29 ++++++++++++++++++++++++++++
+>>   2 files changed, 30 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/media/pci/intel/Kconfig b/drivers/media/pci/intel/Kconfig
+>> index d9fcddce028b..3f14ca110d06 100644
+>> --- a/drivers/media/pci/intel/Kconfig
+>> +++ b/drivers/media/pci/intel/Kconfig
+>> @@ -6,7 +6,7 @@ source "drivers/media/pci/intel/ivsc/Kconfig"
+>>     config IPU_BRIDGE
+>>       tristate "Intel IPU Bridge"
+>> -    depends on ACPI || COMPILE_TEST
+>> +    depends on ACPI
 > 
-> On Wed, Jan 07, 2026 at 02:45:18PM +0100, Hans de Goede wrote:
->> Hi Sakari,
->>
->> On 7-Jan-26 12:48, Sakari Ailus wrote:
->>> Hi Hans,
->>>
->>> On Wed, Dec 10, 2025 at 12:24:33PM +0100, Hans de Goede wrote:
->>>> The ov02c10 is capable of having its (crop) window shifted around with 1
->>>> pixel precision while streaming.
->>>>
->>>> This allows changing the x/y window coordinates when changing flipping to
->>>> preserve the bayer-pattern.
->>>
->>> Ideally we'd use the crop selection to configure this, but given these
->>> sensors (and drivers) are generally what they are, I guess this is probably
->>> a reasonable way to go.
->>
->> Even in sensor drivers where we allow setting the crop selection
->> to get arbritrary modes, we always round the coordinates to a multiple
->> of 2, to avoid changing the bayer-pattern seen by userspace when
->> userspace changes the crop. See e.g. ov2680_set_selection().
->>
->> And then when doing flipping we might add 1 to either the x and/or y
->> coordinate to the userspace provided crop x, y before sending it to
->> the sensor to make flipping not change the bayer order, see e.g.
->> ov01a10_set_hflip() after the v2 series you've here:
->>
->> https://git.retiisi.eu/?p=~sailus/linux.git;a=shortlog;h=refs/heads/ov01a10
->>
->> which does (simplified):
->>
->>         offset = crop->left;
->>         if (hflip)
->>                 offset++;
->>
->>         cci_write(ov01a10->regmap, OV01A10_REG_X_WIN, offset, &ret);
->>
->> IOW we are trying to not make userspace be able to affect the bayer-pattern
->> through setting the crop-selection and/or flip.
->>
->> So I'm not sure what you mean with "Ideally we'd use the crop selection"
->> because we are actively trying to avoid to have the crop-selection change
->> the bayer order ?
->>
->> Generally speaking I think we should avoid any settings change the bayer-order
->> whenever possible.
-> 
-> That's up to the userspace. The UAPI allows to do either so why should the
-> driver decide?
-> 
-> As noted, in this case providing that flexibility probably causes more
-> hassle than any benefits, so I guess this is fine.
+> Why this change is done? Apparently there should be a new dependency on DMI.
 
-If we allow setting the crop selection with a 1 pixel precision drivers
-need some equivalent of V4L2_CTRL_FLAG_MODIFY_LAYOUT for userspace, so IMHO
-the UAPI does not allow this at the moment.
+This patch introduces an acpi_dev_hid_match() call which requires config ACPI
+to be set.
 
-Also drivers would get extra complicated by needing to figure out which
-bayer order to report as being active based on the crop selection.
-
-I really so no use-case where we need the single precision crop selection.
-
-So when you say "in this case providing that flexibility probably causes more
-hassle than any benefits" I believe that statement applies more general then
-just in this case.
+And there is very little value in having COMPILE_TEST here since this driver
+only makes sense in combination with ACPI, as it works-around short-comings
+of the MIPI camera descriptions in ACPI tables.
 
 Regards,
 
 Hans
+
+
 
 
