@@ -1,131 +1,142 @@
-Return-Path: <stable+bounces-206321-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206332-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69E34D03158
-	for <lists+stable@lfdr.de>; Thu, 08 Jan 2026 14:38:38 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BAF1D03003
+	for <lists+stable@lfdr.de>; Thu, 08 Jan 2026 14:26:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 751C630A6EAB
-	for <lists+stable@lfdr.de>; Thu,  8 Jan 2026 13:27:05 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id AE8F6303A9F1
+	for <lists+stable@lfdr.de>; Thu,  8 Jan 2026 13:24:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB431487076;
-	Thu,  8 Jan 2026 11:18:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62AA33A640B;
+	Thu,  8 Jan 2026 12:11:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FKrFN2xD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kJ1JeUjb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 636F742548E
-	for <stable@vger.kernel.org>; Thu,  8 Jan 2026 11:18:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 779703A6415;
+	Thu,  8 Jan 2026 12:11:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767871109; cv=none; b=Lic1FEtXn+tOCCR9z0L3i6jnwsjV4RuuTbfaGeRCTRs7420CCuMLtVpKKi3pJYmld1Do/sgmtOpZv+Xx6YXVrXCxnekbCZCPzj2uCaYiXrK6tNKyXDrq/6nYZ9Ec/kbzfKgsRRKg7GXDo8yX8lFl/t6Z7qvwFDEbneArHr4zkXk=
+	t=1767874307; cv=none; b=OFSM+lHTlH8URxGiwvgXEE5gtTcJhdwGZwGZKIsKtCMp50me5NwggGblURk2GSl1Ah8B6ozBiFB/eRCxyI4qkTfSrGdATVeNj+LH24EPvA6M/9fX2tAux9Rt3pWeQWFXgKWUYZK3B0mE2/P85RNL4Kxv6in1WvbvMwvw1xZ+O6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767871109; c=relaxed/simple;
-	bh=VpDKvPaUx6cNZ4vYu7itFP8eZbOdqv/lfWhWVNX9fIs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=TuEc7uB8LNPOyn9Q9ZLkCYcnjW6z0cEZbllA4coMVW6ujmgqH6mIJLyUIH+MWkrMCYxaYi9XG9nMDK/43w8O49uEdtLLWFnn0Y5SIr2y/u6WWUDSUjtSZIWOYIy6wjKrj0WFYW/Gik69U13zpDEm/SzHkkmD7P4SjrqhAzE+o8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FKrFN2xD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89D01C116C6
-	for <stable@vger.kernel.org>; Thu,  8 Jan 2026 11:18:28 +0000 (UTC)
+	s=arc-20240116; t=1767874307; c=relaxed/simple;
+	bh=oWil5V5JKtcGYYnILpc+uSBX2TY01VMvZkh3e956rro=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=phVKBWfIq61z10QekeKKpxSms0BphZYLbepKCnbBCZDV7o8RHl6Kr3SIy8148hd6IAi4HD9kaZAx7rvbgP6zWRT0fsIj1MSB5eaCiQpSIdMZx89e3kMgNN4iFOdi8eL1+Co9Yh/VGFj1gfafCkzoNnF8ZO+fJV9B/ln37Zav4Pk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kJ1JeUjb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF038C116C6;
+	Thu,  8 Jan 2026 12:11:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767871108;
-	bh=VpDKvPaUx6cNZ4vYu7itFP8eZbOdqv/lfWhWVNX9fIs=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=FKrFN2xD2ADoANZ95fpEAwuMc7tCXesfeWHPmH04OC7rEd2MZQW2jT/xb2KR8zLgw
-	 0tm2GeyG6lnEEoQGOH2RjPfP0TnprZLL7YkO3PtGW/GtelIsuselBcb4O01F+uE8gj
-	 hYg3pWpa/Swf9xlmEN1Ix6o2DvG2BSqwG8LYKxeC2NU75vrXqJNkDp0+7jVZpxM2UD
-	 1GWiNDkDln0/kfnIuXxrZ29WwD7NVyhv0FbJXvNitrIgepOPKFJ3VzGzdvDjGkQcB5
-	 cLqi578mGu24fQpK3Z0PL/YKoewQ5tcmIoKsJ3uO27jt3/zPGxNVdE80vgFUgz59vH
-	 Ve1mTUk8LeN5g==
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2a0f3f74587so27336085ad.2
-        for <stable@vger.kernel.org>; Thu, 08 Jan 2026 03:18:28 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVhjC5Bvf5f4IL18vZSkJM9WHrDvP2phK+lRdgEzkEkSIBuMLfFk9zJBjJVesoCHdJvWYNlCHQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyh77FWfhMZOVFMVE/m97ubYWpYdgzgkQg2KEdEHvCbmTTEK0oC
-	HKGfdJ7sWIVWWRTZ1B6u6DMf1mKeDV3z4gUh21vfj8br8gGqqYTDQuOjb4ZuKxRhrGmn6VG/NZM
-	8ks8fW/YZsmWyCdyFg88JodE9WJcwoXU=
-X-Google-Smtp-Source: AGHT+IF1qiNf1y52mI5Zwar63TQL83t5OGZvo+C+hx6OKT6cTCR8dn+q3XVA2VQufc3U10kFhcBPlIyNYQSkqkyZ12U=
-X-Received: by 2002:a17:902:f54f:b0:298:29e0:5f32 with SMTP id
- d9443c01a7336-2a3ee451ec2mr52902105ad.15.1767871108173; Thu, 08 Jan 2026
- 03:18:28 -0800 (PST)
+	s=k20201202; t=1767874307;
+	bh=oWil5V5JKtcGYYnILpc+uSBX2TY01VMvZkh3e956rro=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=kJ1JeUjb6KGLz9Pq0Xgp8Uk06xQJae1zqfkFsjHU5KML23a/EtnpDgmTX+h4n8YfX
+	 x/1LmTofCDp3JyOgTSiP6oLHur8hj3NxA6MfSdFu+F4Pq1YBPu+8ttDf8WesSq7Td6
+	 PI692qUqkFSsTnZpvy/q1cGBPsWHShA9b97SyxbemauR0qnTqZiAQs3lGUfD2RroSy
+	 q2TyEgvT5Uzyx8kN02/nTHq6zhX2cog+bLw5B6BuuhVdOmFolX7yodWpEwMErxi1qD
+	 anVivMkD5wqf6WJsPwTq3ESHOnm6EUak35NfQzclplLGVCD67dwF44YBpEm1Bhh0r1
+	 v6HtiyVBWi08w==
+Date: Thu, 8 Jan 2026 12:11:42 +0000
+From: Lee Jones <lee@kernel.org>
+To: Hans de Goede <johannes.goede@oss.qualcomm.com>
+Cc: Sebastian Reichel <sre@kernel.org>, Pavel Machek <pavel@kernel.org>,
+	linux-leds@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] leds: led-class: Only Add LED to leds_list when it is
+ fully ready
+Message-ID: <20260108121142.GI302752@google.com>
+References: <20251211163727.366441-1-johannes.goede@oss.qualcomm.com>
+ <2bbtf7out2t52pge4hezfc7dryu6te2qstfm5kzez7zrw3dvqq@wxvqnjbulxc4>
+ <585dc6a5-64e3-4f54-8ff3-9b9f1fc3d54d@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260107052023.174620-1-ebiggers@kernel.org>
-In-Reply-To: <20260107052023.174620-1-ebiggers@kernel.org>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Thu, 8 Jan 2026 12:18:16 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXEXyDN+uZHuNKQ9YuaezHeQhp8+Hsu1n67zLk9MSv+L4g@mail.gmail.com>
-X-Gm-Features: AQt7F2o2V2O1M9W2awFPviAiDkbkrja1Wr6gBaYYf5jNLofZorvceIO4r_TtIS8
-Message-ID: <CAMj1kXEXyDN+uZHuNKQ9YuaezHeQhp8+Hsu1n67zLk9MSv+L4g@mail.gmail.com>
-Subject: Re: [PATCH] lib/crypto: aes: Fix missing MMU protection for AES S-box
-To: Eric Biggers <ebiggers@kernel.org>
-Cc: linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	"Jason A . Donenfeld" <Jason@zx2c4.com>, Herbert Xu <herbert@gondor.apana.org.au>, stable@vger.kernel.org, 
-	Qingfang Deng <dqfext@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <585dc6a5-64e3-4f54-8ff3-9b9f1fc3d54d@oss.qualcomm.com>
 
-On Wed, 7 Jan 2026 at 06:22, Eric Biggers <ebiggers@kernel.org> wrote:
->
-> __cacheline_aligned puts the data in the ".data..cacheline_aligned"
-> section, which isn't marked read-only i.e. it doesn't receive MMU
-> protection.  Replace it with ____cacheline_aligned which does the right
-> thing and just aligns the data while keeping it in ".rodata".
->
-> Fixes: b5e0b032b6c3 ("crypto: aes - add generic time invariant AES cipher")
-> Cc: stable@vger.kernel.org
-> Reported-by: Qingfang Deng <dqfext@gmail.com>
-> Closes: https://lore.kernel.org/r/20260105074712.498-1-dqfext@gmail.com/
-> Signed-off-by: Eric Biggers <ebiggers@kernel.org>
-> ---
->
-> This patch is targeting libcrypto-fixes
->
->  lib/crypto/aes.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
+On Fri, 12 Dec 2025, Hans de Goede wrote:
 
-Oops
+> Hi,
+> 
+> On 12-Dec-25 07:49, Sebastian Reichel wrote:
+> > Hi,
+> > 
+> > On Thu, Dec 11, 2025 at 05:37:27PM +0100, Hans de Goede wrote:
+> >> Before this change the LED was added to leds_list before led_init_core()
+> >> gets called adding it the list before led_classdev.set_brightness_work gets
+> >> initialized.
+> >>
+> >> This leaves a window where led_trigger_register() of a LED's default
+> >> trigger will call led_trigger_set() which calls led_set_brightness()
+> >> which in turn will end up queueing the *uninitialized*
+> >> led_classdev.set_brightness_work.
+> >>
+> >> This race gets hit by the lenovo-thinkpad-t14s EC driver which registers
+> >> 2 LEDs with a default trigger provided by snd_ctl_led.ko in quick
+> >> succession. The first led_classdev_register() causes an async modprobe of
+> >> snd_ctl_led to run and that async modprobe manages to exactly hit
+> >> the window where the second LED is on the leds_list without led_init_core()
+> >> being called for it, resulting in:
+> >>
+> >>  ------------[ cut here ]------------
+> >>  WARNING: CPU: 11 PID: 5608 at kernel/workqueue.c:4234 __flush_work+0x344/0x390
+> >>  Hardware name: LENOVO 21N2S01F0B/21N2S01F0B, BIOS N42ET93W (2.23 ) 09/01/2025
+> >>  ...
+> >>  Call trace:
+> >>   __flush_work+0x344/0x390 (P)
+> >>   flush_work+0x2c/0x50
+> >>   led_trigger_set+0x1c8/0x340
+> >>   led_trigger_register+0x17c/0x1c0
+> >>   led_trigger_register_simple+0x84/0xe8
+> >>   snd_ctl_led_init+0x40/0xf88 [snd_ctl_led]
+> >>   do_one_initcall+0x5c/0x318
+> >>   do_init_module+0x9c/0x2b8
+> >>   load_module+0x7e0/0x998
+> >>
+> >> Close the race window by moving the adding of the LED to leds_list to
+> >> after the led_init_core() call.
+> >>
+> >> Cc: Sebastian Reichel <sre@kernel.org>
+> >> Cc: stable@vger.kernel.org
+> >> Signed-off-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
+> >> ---
+> > 
+> > heh, I've never hit this. But I guess that is not too surprising
+> > considering it is a race condition. The change looks good to me:
+> > 
+> > Reviewed-by: Sebastian Reichel <sre@kernel.org>
+> 
+> Thx.
+>  
+> >> Note no Fixes tag as this problem has been around for a long long time,
+> >> so I could not really find a good commit for the Fixes tag.
+> > 
+> > My suggestion would be:
+> > 
+> > Fixes: d23a22a74fde ("leds: delay led_set_brightness if stopping soft-blink")
+> 
+> Ack, that works for me.
+> 
+> Lee can you add this Fixes tag while merging ?
+> 
+> Also (in case it is not obvious) this is a bugfix so it would be
+> nice if this could go in a fixes pull-request for 6.19.
 
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
+Yes, I can add the Fixes: tag and no, I have no plans to send this for
+-fixes.  As you rightly mentioned, this issue has been around for a long
+time already.  I tend to only send -fixes pull-requests for things that
+broke in -rc1 of the same release.
 
-> diff --git a/lib/crypto/aes.c b/lib/crypto/aes.c
-> index b57fda3460f1..102aaa76bc8d 100644
-> --- a/lib/crypto/aes.c
-> +++ b/lib/crypto/aes.c
-> @@ -11,11 +11,11 @@
->
->  /*
->   * Emit the sbox as volatile const to prevent the compiler from doing
->   * constant folding on sbox references involving fixed indexes.
->   */
-> -static volatile const u8 __cacheline_aligned aes_sbox[] = {
-> +static volatile const u8 ____cacheline_aligned aes_sbox[] = {
->         0x63, 0x7c, 0x77, 0x7b, 0xf2, 0x6b, 0x6f, 0xc5,
->         0x30, 0x01, 0x67, 0x2b, 0xfe, 0xd7, 0xab, 0x76,
->         0xca, 0x82, 0xc9, 0x7d, 0xfa, 0x59, 0x47, 0xf0,
->         0xad, 0xd4, 0xa2, 0xaf, 0x9c, 0xa4, 0x72, 0xc0,
->         0xb7, 0xfd, 0x93, 0x26, 0x36, 0x3f, 0xf7, 0xcc,
-> @@ -46,11 +46,11 @@ static volatile const u8 __cacheline_aligned aes_sbox[] = {
->         0x9b, 0x1e, 0x87, 0xe9, 0xce, 0x55, 0x28, 0xdf,
->         0x8c, 0xa1, 0x89, 0x0d, 0xbf, 0xe6, 0x42, 0x68,
->         0x41, 0x99, 0x2d, 0x0f, 0xb0, 0x54, 0xbb, 0x16,
->  };
->
-> -static volatile const u8 __cacheline_aligned aes_inv_sbox[] = {
-> +static volatile const u8 ____cacheline_aligned aes_inv_sbox[] = {
->         0x52, 0x09, 0x6a, 0xd5, 0x30, 0x36, 0xa5, 0x38,
->         0xbf, 0x40, 0xa3, 0x9e, 0x81, 0xf3, 0xd7, 0xfb,
->         0x7c, 0xe3, 0x39, 0x82, 0x9b, 0x2f, 0xff, 0x87,
->         0x34, 0x8e, 0x43, 0x44, 0xc4, 0xde, 0xe9, 0xcb,
->         0x54, 0x7b, 0x94, 0x32, 0xa6, 0xc2, 0x23, 0x3d,
->
-> base-commit: fdfa4339e805276a458a5df9d6caf0b43ad4c439
-> --
-> 2.52.0
->
+That said, however, if I end up sending one for something else, I will
+try to remember to add this one to it as well.
+
+-- 
+Lee Jones [李琼斯]
 
