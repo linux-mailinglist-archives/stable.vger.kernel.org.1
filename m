@@ -1,137 +1,91 @@
-Return-Path: <stable+bounces-206255-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206256-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D42CD01608
-	for <lists+stable@lfdr.de>; Thu, 08 Jan 2026 08:18:46 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 863B5D01614
+	for <lists+stable@lfdr.de>; Thu, 08 Jan 2026 08:20:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 014F63001BD0
-	for <lists+stable@lfdr.de>; Thu,  8 Jan 2026 07:18:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4D437300F896
+	for <lists+stable@lfdr.de>; Thu,  8 Jan 2026 07:20:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55E14275B15;
-	Thu,  8 Jan 2026 07:18:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50A8D275B15;
+	Thu,  8 Jan 2026 07:20:18 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
 	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1B431CBEB9;
-	Thu,  8 Jan 2026 07:18:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24BEA1CBEB9;
+	Thu,  8 Jan 2026 07:20:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767856723; cv=none; b=PbZeeeVX+IS1GjiUrYobo8hulsSM7yydcIHvAzGNoMRmIFaGT2wGoo6yx4h62zrA3+rVe8yN7E/BdLFHbE2QBPVEQRxiNLGPVfZzjUpL2/L0c65GMqNgQV2dPVLjhkLlQLnooCLXvLcL/Xr8PIJ9KudT3R2D2PECPftEmI47CJ4=
+	t=1767856818; cv=none; b=ILhxzNbytzTrucQB6qV+O2Ptin20QP9tRFowfGJWXpT5VE/lP8sQXB6hph0N78uALMdRx0i4MMmklpVDRTeoB1vKICoIa7Zm9zphYs8MkWA23iQ71/2dRruXL429y4uBfbUu/wIzHQbW2/B9c2Wy04nWFpK0Gzzey6FcU09WE40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767856723; c=relaxed/simple;
-	bh=8QuzmeNFhbL/VxHTcYfk1nMRykk78lEwqijmZZEgFpg=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Dn01qFhYcyPcER3eRUb/5CIF82+R6uVBrSMayCVRCb7rVKKivToGuXJ/PhbFJUFKk654j+NpOlmHG5Jw0SxLWmiuGxMrB5B+7qoCn49BxcNtZ1HqnAQZKmlLotcUrBCMLAhW4IhwsDAsOad+k0BTzJff/u3j6o3z9VpryjU/t3c=
+	s=arc-20240116; t=1767856818; c=relaxed/simple;
+	bh=NmMznqo4R1hvzUpYW4o9pke/Weh0wWD6Hth23nJsg80=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=phsmX/VPZT3QRT2Z05P02J8Dj4zmkD3giqRr92JlsVzqCUdCQe7w0rxjFvS75BJ9yW5+zZ4RommmMj2Bl8Mb9jtmfkwFkYXpHV+14zbGPdR2VInjbaMmPOvOkoji2Ak6rmUvG8Vqu7Phzp7r4fcGrCh+BzOWyBzb/ueDhx9BHFA=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=isrc.iscas.ac.cn; spf=pass smtp.mailfrom=isrc.iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=isrc.iscas.ac.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=isrc.iscas.ac.cn
 Received: from localhost.localdomain (unknown [36.112.3.223])
-	by APP-05 (Coremail) with SMTP id zQCowACHHRFAWl9pfor3Aw--.56272S2;
-	Thu, 08 Jan 2026 15:18:24 +0800 (CST)
+	by APP-05 (Coremail) with SMTP id zQCowAA3yQyoWl9p8pn3Aw--.46387S2;
+	Thu, 08 Jan 2026 15:20:08 +0800 (CST)
 From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
-To: Felix.Kuehling@amd.com,
-	alexander.deucher@amd.com,
-	christian.koenig@amd.com,
+To: oak.zeng@amd.com
+Cc: Alexander.Deucher@amd.com,
+	Christian.Koenig@amd.com,
+	Felix.Kuehling@amd.com,
 	airlied@gmail.com,
-	simona@ffwll.ch,
-	ozeng@amd.com
-Cc: amd-gfx@lists.freedesktop.org,
+	amd-gfx@lists.freedesktop.org,
 	dri-devel@lists.freedesktop.org,
+	lihaoxiang@isrc.iscas.ac.cn,
 	linux-kernel@vger.kernel.org,
-	Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
+	simona@ffwll.ch,
 	stable@vger.kernel.org
-Subject: [PATCH v3] drm/amdkfd: fix a memory leak in device_queue_manager_init()
-Date: Thu,  8 Jan 2026 15:18:22 +0800
-Message-Id: <20260108071822.297364-1-lihaoxiang@isrc.iscas.ac.cn>
+Subject: Re: [PATCH v2] drm/amdkfd: fix a memory leak in device_queue_manager_init()
+Date: Thu,  8 Jan 2026 15:20:07 +0800
+Message-Id: <20260108072007.299229-1-lihaoxiang@isrc.iscas.ac.cn>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <BYAPR12MB3176BA15327312EC21B8ED228085A@BYAPR12MB3176.namprd12.prod.outlook.com>
+References: <BYAPR12MB3176BA15327312EC21B8ED228085A@BYAPR12MB3176.namprd12.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowACHHRFAWl9pfor3Aw--.56272S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7CFyUKw1rXw1fAFy3try3XFb_yoW8Zw1kpF
-	Z3Ja45J348tr429asrZayUCa43Gw4fGr93WrWxK3s2gr4avr98Xrn5Xr4rW3yrKrWxCF4j
-	q3yrKFW5tr10yr7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9014x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_Jr0_Gr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r4j6r
-	4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
-	I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
-	4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628v
-	n2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7x
-	kEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E
-	67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCw
-	CI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1x
-	MIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIda
-	VFxhVjvjDU0xZFpf9x0JUd-B_UUUUU=
-X-CM-SenderInfo: 5olkt0x0ld0ww6lv2u4olvutnvoduhdfq/1tbiCQ4BE2le-Z5SAQABsT
+X-CM-TRANSID:zQCowAA3yQyoWl9p8pn3Aw--.46387S2
+X-Coremail-Antispam: 1UD129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
+	VFW2AGmfu7bjvjm3AaLaJ3UjIYCTnIWjp_UUUYB7AC8VAFwI0_Gr0_Xr1l1xkIjI8I6I8E
+	6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28Cjx
+	kF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVWUJVWUCwA2z4x0Y4vE2Ix0cI8I
+	cVCY1x0267AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIE14v26r1j6r4UM28EF7xvwVC2z280aV
+	CY1x0267AKxVW8JVW8Jr1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE
+	5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE14v26r1j6r4UMcvjeV
+	CFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1l
+	FIxGxcIEc7CjxVA2Y2ka0xkIwI1l42xK82IYc2Ij64vIr41l4c8EcI0Ec7CjxVAaw2AFwI
+	0_Jw0_GFyl4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s02
+	6x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0x
+	vE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE
+	42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6x
+	kF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUF9a9DUUUU
+X-CM-SenderInfo: 5olkt0x0ld0ww6lv2u4olvutnvoduhdfq/1tbiBgoBE2lfTzYmIQAAsW
 
-If dqm->ops.initialize() fails, add deallocate_hiq_sdma_mqd()
-to release the memory allocated by allocate_hiq_sdma_mqd().
-Move deallocate_hiq_sdma_mqd() up to ensure proper function
-visibility at the point of use.
+On Thu, 8 Jan 2026 02:15:12 +0000, Zeng wrote:
+> } in last line should be in a new line.
 
-Fixes: 11614c36bc8f ("drm/amdkfd: Allocate MQD trunk for HIQ and SDMA")
-Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
----
-Chnages in v3:
-- recheck the patch format.
-Changes in v2:
-- Move deallocate_hiq_sdma_mqd() up. Thanks, Felix!
-- Add a Fixes tag.
----
- .../drm/amd/amdkfd/kfd_device_queue_manager.c | 19 +++++++++++--------
- 1 file changed, 11 insertions(+), 8 deletions(-)
+Hi, Zeng! I rechecked my patch and found that this issue does not
+appear in the version I submitted. I’m not sure why this discrepancy
+occurred, but I’ve sent a v3 revision anyway and hope it now shows
+up correctly.
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c b/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c
-index d7a2e7178ea9..8af0929ca40a 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c
-@@ -2919,6 +2919,14 @@ static int allocate_hiq_sdma_mqd(struct device_queue_manager *dqm)
- 	return retval;
- }
- 
-+static void deallocate_hiq_sdma_mqd(struct kfd_node *dev,
-+				    struct kfd_mem_obj *mqd)
-+{
-+	WARN(!mqd, "No hiq sdma mqd trunk to free");
-+
-+	amdgpu_amdkfd_free_gtt_mem(dev->adev, &mqd->gtt_mem);
-+}
-+
- struct device_queue_manager *device_queue_manager_init(struct kfd_node *dev)
- {
- 	struct device_queue_manager *dqm;
-@@ -3042,19 +3050,14 @@ struct device_queue_manager *device_queue_manager_init(struct kfd_node *dev)
- 		return dqm;
- 	}
- 
-+	if (!dev->kfd->shared_resources.enable_mes)
-+		deallocate_hiq_sdma_mqd(dev, &dqm->hiq_sdma_mqd);
-+
- out_free:
- 	kfree(dqm);
- 	return NULL;
- }
- 
--static void deallocate_hiq_sdma_mqd(struct kfd_node *dev,
--				    struct kfd_mem_obj *mqd)
--{
--	WARN(!mqd, "No hiq sdma mqd trunk to free");
--
--	amdgpu_amdkfd_free_gtt_mem(dev->adev, &mqd->gtt_mem);
--}
--
- void device_queue_manager_uninit(struct device_queue_manager *dqm)
- {
- 	dqm->ops.stop(dqm);
--- 
-2.25.1
+> Other than that, patch lgtm. Reviewed-by: Oak.Zeng@amd.com
+
+Thanks for review!
+
+Thanks,
+Haoxiang Li  
 
 
