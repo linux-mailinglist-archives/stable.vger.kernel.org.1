@@ -1,89 +1,89 @@
-Return-Path: <stable+bounces-206278-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206279-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15382D03D63
-	for <lists+stable@lfdr.de>; Thu, 08 Jan 2026 16:28:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB7BFD03DC3
+	for <lists+stable@lfdr.de>; Thu, 08 Jan 2026 16:31:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 111BD30348B1
-	for <lists+stable@lfdr.de>; Thu,  8 Jan 2026 15:21:47 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3D5EF302BA6B
+	for <lists+stable@lfdr.de>; Thu,  8 Jan 2026 15:23:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 683E53EEFC1;
-	Thu,  8 Jan 2026 09:11:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18C0D39B4BD;
+	Thu,  8 Jan 2026 09:11:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="fLDMWLYI"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="HC3mo+ep"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ot1-f97.google.com (mail-ot1-f97.google.com [209.85.210.97])
+Received: from mail-yx1-f99.google.com (mail-yx1-f99.google.com [74.125.224.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38D23407575
-	for <stable@vger.kernel.org>; Thu,  8 Jan 2026 09:11:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.97
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E8C740758A
+	for <stable@vger.kernel.org>; Thu,  8 Jan 2026 09:11:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767863495; cv=none; b=JFSVn99Ev2BoWTTyycazqoAWp4h1VlChVJe0XANEf2YgBirHy5Aa2RQGOjJTggk1JPLNrlF3TcHukjD7L14kfbvgWqnymzmHe/rhWCkj3Fe9GD1Dhwe+kinzQSti9vJAHkgwNIZ08XteJ2gsbEqRfzISRTcKKej/KNw5iO0jWvE=
+	t=1767863505; cv=none; b=JDW1OEKhp12TRG9yQcHZ70pEI2S4qtFFxoDrsqTSlMF+okfGU9Uqk2YwLDUMf3GbqGeT5sZksnCc94lpbJHYxF0NbwylSk6pw2FufwRHguqhTKbjjpQ7srYLiyqv1lD9LSGZ/2esmBPAJNDsmelb2Ef7fA8V0hXNFQae6nrCzWI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767863495; c=relaxed/simple;
-	bh=B931oHIimqmsO10uO8Y+IrukZdrFt4h8LI0GgPLSxV4=;
+	s=arc-20240116; t=1767863505; c=relaxed/simple;
+	bh=HQp3oovGDQbXP4Dt+ZR8z/jnBwW7VqtTMHkFskxW8Gw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=qyflgjl/p47WyISFRGxLwDz/cc7OHqpya5GDoUG6w0XBZIzon7nLPKecHX95BYh9DWGivKLOpjZM5MC6oe9ZSK5yv56K0TiFtiO3weG4cOPLHs0L5jOS6Tsko3RAkVSM2MJFE3fIJiIiKtjdjxzp0jCCBH0jNr0pBw2DH7xiuQU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=fLDMWLYI; arc=none smtp.client-ip=209.85.210.97
+	 MIME-Version; b=m0VhFyKJK3kXCcDrCq6hqaZDZlfo4Wh8aRBFo/m+1PPIGcg0pagCcn1yciVsd2wZ6PeilPQUgOP6b3DjRfwY+JE4WQ28d5E+pZpPudLo80W066WHx74rvK8BfoDbVyIux9Wrxy3Sx1klcLPsA24GNmVSzGHZ6sRR31+Q6UP0YaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=HC3mo+ep; arc=none smtp.client-ip=74.125.224.99
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-ot1-f97.google.com with SMTP id 46e09a7af769-7cac8231d4eso1769978a34.2
-        for <stable@vger.kernel.org>; Thu, 08 Jan 2026 01:11:26 -0800 (PST)
+Received: by mail-yx1-f99.google.com with SMTP id 956f58d0204a3-646fe7f70e2so2162947d50.0
+        for <stable@vger.kernel.org>; Thu, 08 Jan 2026 01:11:31 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767863484; x=1768468284;
+        d=1e100.net; s=20230601; t=1767863488; x=1768468288;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:dkim-signature:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=afDNHqE+O/jMQ8GoDcichOsLE/NDeo2/4CdPT3q2YIY=;
-        b=A2O3jsDsZmebeEWN6e2+oShhjSNyxJad8jmXsFpLirvQ9mSMOKS7UbRsKV8Bd3Dp4g
-         qISqbMOI/TwnxdjaZeDNCiLlrLf0ttcOVrpDjLUul2ZW95YKIBAOlsCoVApKJdcTZzB6
-         MqHOlEO89IBMGOaxwR8wnMHr1xwzVI71QXrk7r4/JZ1NRdIJfjspr/dBILMi4toU813G
-         DaayZbvnYszi5WRDc4oTacX7Ipi0D30JhPFgg294KaOsmw0w5IqWU/iCEPQXmwdWhzAs
-         3K7yEDAyKnNfyTRrlZ0hU4q+qA8U46q7nUxfqVH28J6relxSC1yRWrTDIXI5OgeoVL1x
-         a4Dg==
-X-Gm-Message-State: AOJu0YyYhCd8HNEx2JdP3hF8VYjlUiol+QLMZGhERngfWGJOE579EMOK
-	velCW+BiQbJpaWSk4jg4N9+VHSnqS33hurvaq4En6xK5EJw0ldhFnJwI68+z8hDCZilRyoDQpN6
-	wQC7eq8NGJdJBdORHnZ7dBZNR155SaPKrRSRMFHGKZXkqiPHQobEpy2HbAcxwx8Lj4blJr0sfbv
-	EV1d7jcRNFWu53BNiNeorguTh9nBks7pCaEAJkDXiOgrqdcYPHfnC3vm4cvEmu+r0bd6GjfgUbF
-	Km/qzGGvZIQ4v4XQg==
-X-Gm-Gg: AY/fxX68SNdYcfHZTxG2gll92gn39sDcr7xiePY5AdbdjZn87spdXXMA6K4A2446eb0
-	W5a9iDtNsWZq4cmM/H5Wue0cXp0NuTSHbN+nPo6yDJsEUQm3cJicgewhrBO+FmiwIthTyQverTL
-	O1Xh+ZOp9VpDfLuesWrbvq8w/GpuKV1zpxzZnKQ5+sRXawh2hKPRUUWo5P1KKgSrYG0Gol2aold
-	eTHxeApPf7Kl6c707uIk9WMlQ7i0MfXpQYoTR74hue6idntpP1xtYa1ibXf5HNK0ZF3qEeO5JXQ
-	1OJ8aJVRjYGbDd5QAzUGvLLZYUvImG7VsuCOEYEONnIocIva/rRhEeI94T0FTFnzUunKG1+UChS
-	B1iepa1+a3bdRaECm/ADImmNLJujKnPHXUMCwo+nElGgXHDgYNj9La/Jql6afvWnBeOYBKFOdxO
-	Cbbv2n2RTQqkTjWLtF5gOfKUlybsx9vKtCXY9Y1x1u69QdYA==
-X-Google-Smtp-Source: AGHT+IGYv6id4/YfTiDn4FPn+bSDvVsmmF5y3O0CL5kKyogOPMZq3hx3+20dncvhCrbZkXqO/gpFKQ+hychx
-X-Received: by 2002:a05:6830:dc2:b0:7c6:d0b2:8eb6 with SMTP id 46e09a7af769-7ce50926cedmr2705947a34.15.1767863484451;
-        Thu, 08 Jan 2026 01:11:24 -0800 (PST)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-1.dlp.protect.broadcom.com. [144.49.247.1])
-        by smtp-relay.gmail.com with ESMTPS id 46e09a7af769-7ce47802f1bsm958992a34.2.2026.01.08.01.11.24
+        bh=ZIZ8jaVgH+Lp5oUnSioszXqfXxvQ8K6hRpZqt1TpuX4=;
+        b=QMX1urH2+eWElq3w+amdeftaKK49AKkSYyuiObDr99cTJ9U6Fa5ZKlQK1yM+3B+YMm
+         htOkasZhhNZv42A+l/kjBQwboAxcPNsv9mxNdppK5/7kqzxgb+3euDPp5ww2/C3PgDRQ
+         fWW0Tugy3wgXEDs+1S+C2TQ+Kl0/HCiRQxVetiPvrItle3WLHxTkEVSqnvrT+KJLQB7r
+         KA4lEbkV/7TKl2M80zoCHzIdoiCwQ+zsZCvFwJsNW4b4ZELjsdqD3+yMVElzJO9SKChn
+         yQDTjivuKYhrNvrtyNvjHmnBqe222ZJyAPGVKsNZeJC2wEki1tR7YgghA3mEGe7elm2h
+         lxmQ==
+X-Gm-Message-State: AOJu0YxGhKHyRzggl7aO7646MEzX4RyaIs09vLI8ZPUhcRrQFk/AMVM6
+	5lK2crjzXW5ICrbiWqRUEeUPlGjNX0kkI4rxS0vK/SAfJ3eMzG8+tjwV9oGWA3gmSy6rbNCZjWV
+	4hO3Jdbp/O3Zr+3LWviC0rkX+ahfilCWJxgLuGCoTa2cC4BEuR5UZRXJ/MwHbSAiR0UR9OdKJ/f
+	FQ50hoUYTEvajT+jtCioRZV+eWi/tyNILw4PrXSHSuNucboae3bYlL0FewslqZJW74JHE/76vVz
+	te/K6rSGtHGYKj46A==
+X-Gm-Gg: AY/fxX5KY4gPKvxseGBxshy2tjgvN28h4KIAxlhijWGb8zv1Qvuq1aspf+ke15aIt8X
+	PW9wz+cnBtZ2AIlgCdNDdAhtghOyIUv8wihlUPBcHCClsShrhE+//xgCmrfJKEXE8SFowXboRUh
+	AIIG9TSn0G+O4o3wehK4/Y3T/M9PXqz4Mk/cNZqbH5ZN8vfifrMm0eC6nGhqUnUv9n7b3I80XRF
+	JG3csKNzNEm6KTGkWQNQplb7K8Eomct+Hec4OfXQAkndbMxMWRmF6FLmeK15WYvwjqGErcEY+Jb
+	6wOsBcdR/Mjr48CuwbEqqZjCNRQn03rDrQux4+9aTRUKAZDhUdNV+Ei+M9CR6Kugyv+s95zY01j
+	+UQN8+NUDQrEUG6RmlmVKZsYlimf6+TT8Jb6+pMrMPtRwmgjvBQWRy+Y+4naKYuskSCZuFs9OnD
+	k7WPgCGwuvC5IQFrjDU0BcDzOvOINrkkpQBp1NsQBWfdQLwg==
+X-Google-Smtp-Source: AGHT+IEznl2F9Qn2/wNdEbUoMMFfBJpXY9QjDrZs1+8xGDjd7h6E6xWFkd6t1MBDVcHkqu/V6gTX1KcJiO4W
+X-Received: by 2002:a05:690e:4192:b0:63f:b0c7:849b with SMTP id 956f58d0204a3-64716bd6e0emr4423043d50.36.1767863487708;
+        Thu, 08 Jan 2026 01:11:27 -0800 (PST)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-2.dlp.protect.broadcom.com. [144.49.247.2])
+        by smtp-relay.gmail.com with ESMTPS id 00721157ae682-790aa6dc78bsm5519527b3.23.2026.01.08.01.11.27
         for <stable@vger.kernel.org>
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 08 Jan 2026 01:11:24 -0800 (PST)
+        Thu, 08 Jan 2026 01:11:27 -0800 (PST)
 X-Relaying-Domain: broadcom.com
 X-CFilter-Loop: Reflected
-Received: by mail-dy1-f198.google.com with SMTP id 5a478bee46e88-2b0751d8de7so3427167eec.1
-        for <stable@vger.kernel.org>; Thu, 08 Jan 2026 01:11:23 -0800 (PST)
+Received: by mail-dl1-f72.google.com with SMTP id a92af1059eb24-11f3d181ef2so12148572c88.1
+        for <stable@vger.kernel.org>; Thu, 08 Jan 2026 01:11:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1767863483; x=1768468283; darn=vger.kernel.org;
+        d=broadcom.com; s=google; t=1767863486; x=1768468286; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=afDNHqE+O/jMQ8GoDcichOsLE/NDeo2/4CdPT3q2YIY=;
-        b=fLDMWLYI51tengXQI/QbjJil1AUrnf1AW6lzkOfVgFVmkLumZfcby6vX/tsiemB28i
-         jxs7SjcsdOJKT4fE5Ips4dJZ1kAW+kcFa80y2x0wCRP0NEuohaZ5KJHLN/F4dld+h/lf
-         RGLGGlOCtVusNk3vbuSBHCeol55DY/pa9N3iE=
-X-Received: by 2002:a05:693c:4151:10b0:2a4:8576:abf5 with SMTP id 5a478bee46e88-2b17d2b0af0mr3151553eec.23.1767863482725;
-        Thu, 08 Jan 2026 01:11:22 -0800 (PST)
-X-Received: by 2002:a05:693c:4151:10b0:2a4:8576:abf5 with SMTP id 5a478bee46e88-2b17d2b0af0mr3151533eec.23.1767863482047;
-        Thu, 08 Jan 2026 01:11:22 -0800 (PST)
+        bh=ZIZ8jaVgH+Lp5oUnSioszXqfXxvQ8K6hRpZqt1TpuX4=;
+        b=HC3mo+ep76S+GusBvsFX1GjWxRu5Knf0MdWuyy+p+GYHkIoOEnWE5I9UsiwHAVe5rJ
+         XVeHrcpO6Z4EUURtrJArJfo2oJBMiMOx2sTgwvIV4C8P6BKIzOoUMEGQUVPRlV7ttM6o
+         lARoBU/dhmn0XLdlO9ZW0jOl+obc31w1csXso=
+X-Received: by 2002:a05:7022:2522:b0:11e:354:32cb with SMTP id a92af1059eb24-121f8b75fcemr5874340c88.49.1767863485681;
+        Thu, 08 Jan 2026 01:11:25 -0800 (PST)
+X-Received: by 2002:a05:7022:2522:b0:11e:354:32cb with SMTP id a92af1059eb24-121f8b75fcemr5874296c88.49.1767863484796;
+        Thu, 08 Jan 2026 01:11:24 -0800 (PST)
 Received: from shivania.lvn.broadcom.net ([192.19.161.250])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b1706c503csm10623374eec.15.2026.01.08.01.11.20
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b1706c503csm10623374eec.15.2026.01.08.01.11.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Jan 2026 01:11:21 -0800 (PST)
+        Thu, 08 Jan 2026 01:11:24 -0800 (PST)
 From: Shivani Agarwal <shivani.agarwal@broadcom.com>
 To: stable@vger.kernel.org,
 	gregkh@linuxfoundation.org
@@ -95,12 +95,12 @@ Cc: mathias.nyman@intel.com,
 	vamsi-krishna.brahmajosyula@broadcom.com,
 	yin.ding@broadcom.com,
 	tapas.kundu@broadcom.com,
-	Niklas Neronin <niklas.neronin@linux.intel.com>,
+	Michal Pecio <michal.pecio@gmail.com>,
 	Mathias Nyman <mathias.nyman@linux.intel.com>,
 	Shivani Agarwal <shivani.agarwal@broadcom.com>
-Subject: [PATCH 1/2 v6.6] usb: xhci: move link chain bit quirk checks into one helper function.
-Date: Thu,  8 Jan 2026 00:50:20 -0800
-Message-Id: <20260108085021.671854-2-shivani.agarwal@broadcom.com>
+Subject: [PATCH 2/2 v6.6] usb: xhci: Apply the link chain quirk on NEC isoc endpoints
+Date: Thu,  8 Jan 2026 00:50:21 -0800
+Message-Id: <20260108085021.671854-3-shivani.agarwal@broadcom.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20260108085021.671854-1-shivani.agarwal@broadcom.com>
 References: <20260108085021.671854-1-shivani.agarwal@broadcom.com>
@@ -113,103 +113,112 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-From: Niklas Neronin <niklas.neronin@linux.intel.com>
+From: Michal Pecio <michal.pecio@gmail.com>
 
-commit 7476a2215c07703db5e95efaa3fc5b9f957b9417 upstream.
+commit bb0ba4cb1065e87f9cc75db1fa454e56d0894d01 upstream.
 
-Older 0.95 xHCI hosts and some other specific newer hosts require the
-chain bit to be set for Link TRBs even if the link TRB is not in the
-middle of a transfer descriptor (TD).
+Two clearly different specimens of NEC uPD720200 (one with start/stop
+bug, one without) were seen to cause IOMMU faults after some Missed
+Service Errors. Faulting address is immediately after a transfer ring
+segment and patched dynamic debug messages revealed that the MSE was
+received when waiting for a TD near the end of that segment:
 
-move the checks for all those cases  into one xhci_link_chain_quirk()
-function to clean up and avoid code duplication.
+[ 1.041954] xhci_hcd: Miss service interval error for slot 1 ep 2 expected TD DMA ffa08fe0
+[ 1.042120] xhci_hcd: AMD-Vi: Event logged [IO_PAGE_FAULT domain=0x0005 address=0xffa09000 flags=0x0000]
+[ 1.042146] xhci_hcd: AMD-Vi: Event logged [IO_PAGE_FAULT domain=0x0005 address=0xffa09040 flags=0x0000]
 
-No functional changes.
+It gets even funnier if the next page is a ring segment accessible to
+the HC. Below, it reports MSE in segment at ff1e8000, plows through a
+zero-filled page at ff1e9000 and starts reporting events for TRBs in
+page at ff1ea000 every microframe, instead of jumping to seg ff1e6000.
 
-[skip renaming chain_links flag, reword commit message -Mathias]
+[ 7.041671] xhci_hcd: Miss service interval error for slot 1 ep 2 expected TD DMA ff1e8fe0
+[ 7.041999] xhci_hcd: Miss service interval error for slot 1 ep 2 expected TD DMA ff1e8fe0
+[ 7.042011] xhci_hcd: WARN: buffer overrun event for slot 1 ep 2 on endpoint
+[ 7.042028] xhci_hcd: All TDs skipped for slot 1 ep 2. Clear skip flag.
+[ 7.042134] xhci_hcd: WARN: buffer overrun event for slot 1 ep 2 on endpoint
+[ 7.042138] xhci_hcd: ERROR Transfer event TRB DMA ptr not part of current TD ep_index 2 comp_code 31
+[ 7.042144] xhci_hcd: Looking for event-dma 00000000ff1ea040 trb-start 00000000ff1e6820 trb-end 00000000ff1e6820
+[ 7.042259] xhci_hcd: WARN: buffer overrun event for slot 1 ep 2 on endpoint
+[ 7.042262] xhci_hcd: ERROR Transfer event TRB DMA ptr not part of current TD ep_index 2 comp_code 31
+[ 7.042266] xhci_hcd: Looking for event-dma 00000000ff1ea050 trb-start 00000000ff1e6820 trb-end 00000000ff1e6820
 
-Signed-off-by: Niklas Neronin <niklas.neronin@linux.intel.com>
+At some point completion events change from Isoch Buffer Overrun to
+Short Packet and the HC finally finds cycle bit mismatch in ff1ec000.
+
+[ 7.098130] xhci_hcd: ERROR Transfer event TRB DMA ptr not part of current TD ep_index 2 comp_code 13
+[ 7.098132] xhci_hcd: Looking for event-dma 00000000ff1ecc50 trb-start 00000000ff1e6820 trb-end 00000000ff1e6820
+[ 7.098254] xhci_hcd: ERROR Transfer event TRB DMA ptr not part of current TD ep_index 2 comp_code 13
+[ 7.098256] xhci_hcd: Looking for event-dma 00000000ff1ecc60 trb-start 00000000ff1e6820 trb-end 00000000ff1e6820
+[ 7.098379] xhci_hcd: Overrun event on slot 1 ep 2
+
+It's possible that data from the isochronous device were written to
+random buffers of pending TDs on other endpoints (either IN or OUT),
+other devices or even other HCs in the same IOMMU domain.
+
+Lastly, an error from a different USB device on another HC. Was it
+caused by the above? I don't know, but it may have been. The disk
+was working without any other issues and generated PCIe traffic to
+starve the NEC of upstream BW and trigger those MSEs. The two HCs
+shared one x1 slot by means of a commercial "PCIe splitter" board.
+
+[ 7.162604] usb 10-2: reset SuperSpeed USB device number 3 using xhci_hcd
+[ 7.178990] sd 9:0:0:0: [sdb] tag#0 UNKNOWN(0x2003) Result: hostbyte=0x07 driverbyte=DRIVER_OK cmd_age=0s
+[ 7.179001] sd 9:0:0:0: [sdb] tag#0 CDB: opcode=0x28 28 00 04 02 ae 00 00 02 00 00
+[ 7.179004] I/O error, dev sdb, sector 67284480 op 0x0:(READ) flags 0x80700 phys_seg 5 prio class 0
+
+Fortunately, it appears that this ridiculous bug is avoided by setting
+the chain bit of Link TRBs on isochronous rings. Other ancient HCs are
+known which also expect the bit to be set and they ignore Link TRBs if
+it's not. Reportedly, 0.95 spec guaranteed that the bit is set.
+
+The bandwidth-starved NEC HC running a 32KB/uframe UVC endpoint reports
+tens of MSEs per second and runs into the bug within seconds. Chaining
+Link TRBs allows the same workload to run for many minutes, many times.
+
+No negative side effects seen in UVC recording and UAC playback with a
+few devices at full speed, high speed and SuperSpeed.
+
+The problem doesn't reproduce on the newer Renesas uPD720201/uPD720202
+and on old Etron EJ168 and VIA VL805 (but the VL805 has other bug).
+
+[shorten line length of log snippets in commit messge -Mathias]
+
+Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
+Cc: stable@vger.kernel.org
 Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20240626124835.1023046-10-mathias.nyman@linux.intel.com
+Link: https://lore.kernel.org/r/20250306144954.3507700-14-mathias.nyman@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 [Shivani: Modified to apply on 6.6.y]
 Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
 ---
- drivers/usb/host/xhci-mem.c  | 10 ++--------
- drivers/usb/host/xhci-ring.c |  8 ++------
- drivers/usb/host/xhci.h      |  7 +++++--
- 3 files changed, 9 insertions(+), 16 deletions(-)
+ drivers/usb/host/xhci.h | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/usb/host/xhci-mem.c b/drivers/usb/host/xhci-mem.c
-index 621f12c11cbc..264f8bbe8f9e 100644
---- a/drivers/usb/host/xhci-mem.c
-+++ b/drivers/usb/host/xhci-mem.c
-@@ -136,10 +136,7 @@ static void xhci_link_rings(struct xhci_hcd *xhci, struct xhci_ring *ring,
- 	if (!ring || !first || !last)
- 		return;
- 
--	/* Set chain bit for 0.95 hosts, and for isoc rings on AMD 0.96 host */
--	chain_links = !!(xhci_link_trb_quirk(xhci) ||
--			 (ring->type == TYPE_ISOC &&
--			  (xhci->quirks & XHCI_AMD_0x96_HOST)));
-+	chain_links = xhci_link_chain_quirk(xhci, ring->type);
- 
- 	next = ring->enq_seg->next;
- 	xhci_link_segments(ring->enq_seg, first, ring->type, chain_links);
-@@ -330,10 +327,7 @@ static int xhci_alloc_segments_for_ring(struct xhci_hcd *xhci,
- 	unsigned int num = 0;
- 	bool chain_links;
- 
--	/* Set chain bit for 0.95 hosts, and for isoc rings on AMD 0.96 host */
--	chain_links = !!(xhci_link_trb_quirk(xhci) ||
--			 (type == TYPE_ISOC &&
--			  (xhci->quirks & XHCI_AMD_0x96_HOST)));
-+	chain_links = xhci_link_chain_quirk(xhci, type);
- 
- 	prev = xhci_segment_alloc(xhci, cycle_state, max_packet, num, flags);
- 	if (!prev)
-diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
-index 6443e11eaac0..cdb819e323b3 100644
---- a/drivers/usb/host/xhci-ring.c
-+++ b/drivers/usb/host/xhci-ring.c
-@@ -245,9 +245,7 @@ static void inc_enq(struct xhci_hcd *xhci, struct xhci_ring *ring,
- 		 * AMD 0.96 host, carry over the chain bit of the previous TRB
- 		 * (which may mean the chain bit is cleared).
- 		 */
--		if (!(ring->type == TYPE_ISOC &&
--		      (xhci->quirks & XHCI_AMD_0x96_HOST)) &&
--		    !xhci_link_trb_quirk(xhci)) {
-+		if (!xhci_link_chain_quirk(xhci, ring->type)) {
- 			next->link.control &= cpu_to_le32(~TRB_CHAIN);
- 			next->link.control |= cpu_to_le32(chain);
- 		}
-@@ -3381,9 +3379,7 @@ static int prepare_ring(struct xhci_hcd *xhci, struct xhci_ring *ep_ring,
- 		/* If we're not dealing with 0.95 hardware or isoc rings
- 		 * on AMD 0.96 host, clear the chain bit.
- 		 */
--		if (!xhci_link_trb_quirk(xhci) &&
--		    !(ep_ring->type == TYPE_ISOC &&
--		      (xhci->quirks & XHCI_AMD_0x96_HOST)))
-+		if (!xhci_link_chain_quirk(xhci, ep_ring->type))
- 			ep_ring->enqueue->link.control &=
- 				cpu_to_le32(~TRB_CHAIN);
- 		else
 diff --git a/drivers/usb/host/xhci.h b/drivers/usb/host/xhci.h
-index 808f2ee43b94..cbd8ef1c8db6 100644
+index cbd8ef1c8db6..849a83e4013c 100644
 --- a/drivers/usb/host/xhci.h
 +++ b/drivers/usb/host/xhci.h
-@@ -1784,9 +1784,12 @@ static inline void xhci_write_64(struct xhci_hcd *xhci,
- 	lo_hi_writeq(val, regs);
+@@ -1785,11 +1785,20 @@ static inline void xhci_write_64(struct xhci_hcd *xhci,
  }
  
--static inline int xhci_link_trb_quirk(struct xhci_hcd *xhci)
-+
-+/* Link TRB chain should always be set on 0.95 hosts, and AMD 0.96 ISOC rings */
-+static inline bool xhci_link_chain_quirk(struct xhci_hcd *xhci, enum xhci_ring_type type)
+ 
+-/* Link TRB chain should always be set on 0.95 hosts, and AMD 0.96 ISOC rings */
++/*
++ * Reportedly, some chapters of v0.95 spec said that Link TRB always has its chain bit set.
++ * Other chapters and later specs say that it should only be set if the link is inside a TD
++ * which continues from the end of one segment to the next segment.
++ *
++ * Some 0.95 hardware was found to misbehave if any link TRB doesn't have the chain bit set.
++ *
++ * 0.96 hardware from AMD and NEC was found to ignore unchained isochronous link TRBs when
++ * "resynchronizing the pipe" after a Missed Service Error.
++ */
+ static inline bool xhci_link_chain_quirk(struct xhci_hcd *xhci, enum xhci_ring_type type)
  {
--	return xhci->quirks & XHCI_LINK_TRB_QUIRK;
-+	return (xhci->quirks & XHCI_LINK_TRB_QUIRK) ||
-+	       (type == TYPE_ISOC && (xhci->quirks & XHCI_AMD_0x96_HOST));
+ 	return (xhci->quirks & XHCI_LINK_TRB_QUIRK) ||
+-	       (type == TYPE_ISOC && (xhci->quirks & XHCI_AMD_0x96_HOST));
++	       (type == TYPE_ISOC && (xhci->quirks & (XHCI_AMD_0x96_HOST | XHCI_NEC_HOST)));
  }
  
  /* xHCI debugging */
