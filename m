@@ -1,103 +1,123 @@
-Return-Path: <stable+bounces-206378-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206379-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8047D043C9
-	for <lists+stable@lfdr.de>; Thu, 08 Jan 2026 17:14:39 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61DBFD04633
+	for <lists+stable@lfdr.de>; Thu, 08 Jan 2026 17:31:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CF87633F87BB
-	for <lists+stable@lfdr.de>; Thu,  8 Jan 2026 15:59:03 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B47FA3025F80
+	for <lists+stable@lfdr.de>; Thu,  8 Jan 2026 16:01:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC4062D3A86;
-	Thu,  8 Jan 2026 15:55:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 495487261E;
+	Thu,  8 Jan 2026 16:01:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IGNwqNk0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="flWD6jlR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F7AB2C21F0
-	for <stable@vger.kernel.org>; Thu,  8 Jan 2026 15:55:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A628500969;
+	Thu,  8 Jan 2026 16:01:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767887754; cv=none; b=lmAJWIxQmSMmq6YcCzFW1hIJ2tbPoWHQGyw/DGbQH/x+fDIC+krrmpUDF7bUlBaDk3NizM/V1bavor/nHxA/lCnfPndcJa1PgG+jxeMJ0n4W+C+azWTYL4eGbvpwNkQuwUfbHImJpsZSWYr97R6XYsEdpxgWOWSTVnAgXaOPxbQ=
+	t=1767888104; cv=none; b=AEL4ZIGgSuS6RaA0eJ9F/vJwgjrV7LYYslgRRF7Rlf9/MRyjXLeWd+d10yu1E77a+Yd+gdiSKCuNiss9kZjjYeeinlarLVrjfW0MRRwUl4vEz0OpXXENwah+Twpa3WnaUtFCenUNeoaq5NrbqsAFb0rkGQiUGkk5YcKjFSggNsk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767887754; c=relaxed/simple;
-	bh=SD1JwZ9K/+i+ZNB0tLMhRfhQrjG8a9p/8HpMNFnk/1s=;
+	s=arc-20240116; t=1767888104; c=relaxed/simple;
+	bh=sxqTloeRRUJ6OTAy8ylqgLk5rTozFp8ZfC7yqvSuiZI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=seaSOka3tdmZPDnfh+zX9ZiZQZKnbYXDIfUNl0fk1lk0uZQX5m4npFz1XoVgfmciOpjhkDkMLDkN0DTsyF9S3RNaQjAthYy29s9tQ3kGggmKecr4Wq8o5b/Y7/wz+H+UrypGQLTFmGrLZHgdblN9lpUwtMdJqu69N2f58RL2goo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IGNwqNk0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE05BC116C6;
-	Thu,  8 Jan 2026 15:55:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767887753;
-	bh=SD1JwZ9K/+i+ZNB0tLMhRfhQrjG8a9p/8HpMNFnk/1s=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZwBUh55Q/jrZdlB+Gn+DTLeD5OqujtH3XOJMdiXvgWAGxVrs+7V/XXi3KnN+h0v9E0rC1FhfJ3MhGzm5r696qisiznZ/cNnhoKcz019gsR6jwgz/Q+GbFftyUQwiIAXT/DcsX+M8ic2QZ8BwMqIuQJ6KUFDxZKLwl5y+mbwyTcw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=flWD6jlR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71169C116C6;
+	Thu,  8 Jan 2026 16:01:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767888103;
+	bh=sxqTloeRRUJ6OTAy8ylqgLk5rTozFp8ZfC7yqvSuiZI=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=IGNwqNk03ZDQhBWC8QQc/5GnoqM9u/0J8woUQDBGfD/zR3vLEVgPvvXg2Lh1Xw6OG
-	 CAszaF6w0aG8HLpNQYqyQhQqiSR3c2N1dnPIf5uv93PenM38r2bW+VTkJaueYIOT/J
-	 4crbDNXdSma4m9Q/hs4QMf6uN5jMlBRWbJuw7tmw=
-Date: Thu, 8 Jan 2026 16:55:49 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: David =?iso-8859-1?Q?Nystr=F6m?= <david.nystrom@est.tech>
-Cc: stable@vger.kernel.org, Theodore Ts'o <tytso@mit.edu>,
-	Ye Bin <yebin10@huawei.com>, Sasha Levin <sashal@kernel.org>,
-	Jan Kara <jack@suse.cz>
-Subject: Re: [PATCH 5.10.y v2 0/2] Backport 2 commits to fix a KASAN ext4
- splat
-Message-ID: <2026010810-delusion-dividers-74f4@gregkh>
-References: <20251217-ext4_splat-v2-0-3c84bb2c1cd0@est.tech>
+	b=flWD6jlR1Z44zvUG/fL3f5FNu3EI/1cBSatqAL5XBmWvlKYlOi9c0pe35AK4vYMsd
+	 4lumye5+L76U5O9nywXUC+l6xYjFiW9WX0nUeDQ4ETPhbSI7kBEnnRrwoGhGVqTbXc
+	 TOQfNxtoAI634qY14nkDUQKKZEe6LIA0Ot6ncS0oUUZstX651CNuNWOmVRf/z7V6So
+	 O0hsgiB5CgKvWJfkuQWydML0rll3BwyNvU/r4+oljTNHHaj5oeECVrXJS2rcwmMHU2
+	 Gj1KDqk+MMdmKD1x+cTqJNzyZosjq4qxjqkCmUlv51VKwqolgrFaKKk17fE7CEh6aJ
+	 Dxw+C9qou+kNg==
+Date: Thu, 8 Jan 2026 17:01:41 +0100
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Sasha Levin <sashal@kernel.org>
+Cc: Sean Nyekjaer <sean@geanix.com>, 
+	Fabrice Gasnier <fabrice.gasnier@foss.st.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+	Alexandre Torgue <alexandre.torgue@foss.st.com>, linux-pwm@vger.kernel.org, 
+	linux-stm32@st-md-mailman.stormreply.com, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2] pwm: stm32: Always program polarity
+Message-ID: <j7qywnmejd4v2tez77hxmjnq7pavmaoed7z4aoelsbfdyt4qyx@7jawgsz2kfy7>
+References: <20260108-stm32-pwm-v2-1-ced582974f8b@geanix.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="6bapewmlqmprl67v"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251217-ext4_splat-v2-0-3c84bb2c1cd0@est.tech>
+In-Reply-To: <20260108-stm32-pwm-v2-1-ced582974f8b@geanix.com>
 
-On Wed, Dec 17, 2025 at 10:55:56AM +0100, David Nyström wrote:
-> Backport commit:5701875f9609 ("ext4: fix out-of-bound read in
-> ext4_xattr_inode_dec_ref_all()" to linux 5.10 branch.
-> The fix depends on commit:69f3a3039b0d ("ext4: introduce ITAIL helper")
-> In order to make a clean backport on stable kernel, backport 2 commits.
-> 
-> It has a single merge conflict where static inline int, which changed 
-> to static int.
-> 
-> Signed-off-by: David Nyström <david.nystrom@est.tech>
+
+--6bapewmlqmprl67v
+Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v2] pwm: stm32: Always program polarity
+MIME-Version: 1.0
+
+Hello Greg,
+
+On Thu, Jan 08, 2026 at 01:45:23PM +0100, Sean Nyekjaer wrote:
+> Commit 7346e7a058a2 ("pwm: stm32: Always do lazy disabling") triggered a
+> regression where PWM polarity changes could be ignored.
+>=20
+> stm32_pwm_set_polarity() was skipped due to a mismatch between the
+> cached pwm->state.polarity and the actual hardware state, leaving the
+> hardware polarity unchanged.
+>=20
+> Fixes: 7edf7369205b ("pwm: Add driver for STM32 plaftorm")
+> Cc: stable@vger.kernel.org # <=3D 6.12
+> Signed-off-by: Sean Nyekjaer <sean@geanix.com>
+> Co-developed-by: Uwe Kleine-K=F6nig <ukleinek@kernel.org>
+Signed-off-by: Uwe Kleine-K=F6nig <ukleinek@kernel.org>
+
 > ---
-> Changes in v2:
-> - Resend identical patchset with correct "Upstream commit" denotation.
-> - Link to v1: https://patch.msgid.link/20251216-ext4_splat-v1-0-b76fd8748f44@est.tech
-> 
-> ---
-> Ye Bin (2):
->       ext4: introduce ITAIL helper
->       ext4: fix out-of-bound read in ext4_xattr_inode_dec_ref_all()
-> 
->  fs/ext4/inode.c |  5 +++++
->  fs/ext4/xattr.c | 32 ++++----------------------------
->  fs/ext4/xattr.h | 10 ++++++++++
->  3 files changed, 19 insertions(+), 28 deletions(-)
-> ---
-> base-commit: f964b940099f9982d723d4c77988d4b0dda9c165
-> change-id: 20251215-ext4_splat-f59c1acd9e88
-> 
-> Best regards,
-> --  
-> David Nyström <david.nystrom@est.tech>
-> 
-> 
+> This patch is only applicable for stable tree's <=3D 6.12
 
-We can't take patches only for an older kernel tree, and not newer ones.
-Otherwise you will have a regression when upgrading.
+Can you please apply this patch to v6.12.x and older? The problem fixed
+here doesn't happen in mainline since commit deaba9cff809 ("pwm: stm32:
+Implementation of the waveform callbacks"). That mainline commit however
+is too intrusive to backport it to stable, not even considering its
+dependencies (e.g. 17e40c25158f ("pwm: New abstraction for PWM
+waveforms")).=20
 
-Please resend patches for all applicable kernel trees and we will be
-glad to queue them all up.
+I assume such an exception to the sable process is ok and the patch is
+simple enough to be easily reviewable? If not, tell me, then I can apply
+the patch and merge it (with `-s ours`) into my next PWM pull request to
+Linus :-)
 
-thanks
+Best regards
+Uwe
 
-greg k-h
+--6bapewmlqmprl67v
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmlf1NoACgkQj4D7WH0S
+/k6OqQf9FV+4wHydQ1d2QmXQkObz1Jz2DRvaFNGUHj2G6fyzrdXWZdOhetkguAQ9
+b/pP0M15fUph3X2jzWn9/ftG1C4xzCJFzDEbxu2nZAoQy3lhZwIKq0IfiueG7eHZ
+8jg1wcUZRgJPc3fVp3KFr0w8s+pAq5m4RCX+EAeG/3rZyLKV2zpPNOOXq2kVRm8Y
+VnevGuGZk/U1CkgI3wSpXmd8/ueQTPOHh3fO/an9mB6xjSPNHJ/NClILhzYHAR9i
+FyxIQm+py1G/cPfbmFNSfNKniIiDSNZHj2Z/bsv/R8SiHEn3pqThTGdZShy3z4uF
+jCCjRCfUrPQ+/OqPwN20f/16HMtR7g==
+=WGlv
+-----END PGP SIGNATURE-----
+
+--6bapewmlqmprl67v--
 
