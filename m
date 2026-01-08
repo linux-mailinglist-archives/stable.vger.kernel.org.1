@@ -1,231 +1,498 @@
-Return-Path: <stable+bounces-206337-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206338-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1ED4BD04669
-	for <lists+stable@lfdr.de>; Thu, 08 Jan 2026 17:32:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0103CD046CC
+	for <lists+stable@lfdr.de>; Thu, 08 Jan 2026 17:35:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A69883514E81
-	for <lists+stable@lfdr.de>; Thu,  8 Jan 2026 15:22:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 36A853219C9F
+	for <lists+stable@lfdr.de>; Thu,  8 Jan 2026 15:25:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61FA24AB640;
-	Thu,  8 Jan 2026 12:28:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 808073EDAC9;
+	Thu,  8 Jan 2026 12:32:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="iLCS8Wbd"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ACFIkApq"
 X-Original-To: stable@vger.kernel.org
-Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010020.outbound.protection.outlook.com [52.101.56.20])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C3CA4A15BF;
-	Thu,  8 Jan 2026 12:28:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.56.20
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767875306; cv=fail; b=Jqsu/JB37bpnzFteynqJbSOcFfIvQ+MmUM+KtUhNPICquyKCBqN5pkBnb1bQ7ILpnz/ApaX2kh/r6qYVPE0J97jbduAo0RSUzgZ4Zau5G3e23IIebKo+Do9u+JwreZXDSbcZ4TNpp4KJTMh7Q+kQv/rQ/d2OF4KssOsSe4EILG4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767875306; c=relaxed/simple;
-	bh=MSJ4edVYrDpWaARGsjXIcnkJmEbhcQbvFX0BFHB2H1k=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=bc77ltXus/6XS/btyXBgJ/U5bUzlHjI7tuustP4ygrfnbADZ0pAcMiH9SOf8Xsfjyb7stOCbtmB2gy7E1v6uXLNwb03zk9XBEVxspyYAu0Q8gkSCQKyCnrQ1FiK1FhxVdgJqBZltRA53D68KNRWSJYRq3Gc51jMJu65HwFrHkUI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=iLCS8Wbd; arc=fail smtp.client-ip=52.101.56.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=lFCPXAf1I6YiahXu7UnBd0Wg8Gl+HX5z4u+GxxMbttnzw3IMGFEGztaTjyaeIdbBdTze2DGDW/s5WaiaHhJDkqdNgY8X7xdTvOAc62UL8hHhD1dL3K2qgzXDwVOoVZLYGeV5o52hG3FkbXvxDiR+A7n9DggmmlSixkptil5bxHZYrQSbfzSaHK+QMdofcVWyk7nV7/UzjCCuJZnXMdrakzI+KvGQ2J2cSU++4zaVXwq91w7yP01DBpW1/Xga7jSDobCVsXD82jHdcLU74lOHOtrEzWMZpTyRB8MaQPVVGA171+Z9lnhm1fmmOv0z7fA/kJhrGpBEBVuXXKT/32ls8w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ZpMrbUjGDm/S9kIU85VX4xHpp+dv79h0yQ0hDw99zUs=;
- b=lQj13j64O2HjWgStkVCCnpjOgdynYezCUh3v2Q42bz6gOUBqAMJkHro4iWuE8I9Fr1shOAuTS9Xk+OXPgGFgAPrInphMMQjHbZEhs4eoAKTC+K832P+IdETYQpbeJd7LTA87ss5iRJR4e0zAYhBLJlHtkFvjz3DEcPZV7YIwLi4OKnsLHWUMFP6A8eas4GW82+ClYoY4oR4N85FTjuqUYwsfpCcy7ft1QiWY2w04NRmUXgy+nOQo0VELNwDqv0/0Zxc0mOMcAEGfyj4+S9Sm+Gau94dwETuq9T63yqjH8TA88I1PHG0bS2nMkuQ5CDXmlY2oS0CLTLuwugtILLhk9g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ZpMrbUjGDm/S9kIU85VX4xHpp+dv79h0yQ0hDw99zUs=;
- b=iLCS8WbdRi5Wvx9D9NJ0X/ugYVaN6a6vYpHVXUv54q4OLm5o14NXQuWqIhsj1Pny85wNHX9gDe7sBIMCj/VNB5aagwBKimqmlXSjkYtn7eKsADMVUTGA6nV5fynCUBXIHT8zSxIoAMJOYwIHnLG7kLtvadVVjh4IZGWT/XnznEAqIciMgLMAlbIj9fnFgMS9QpmWHvg4zVFcj7LC8/HK+N4U21wIsrYfi5QG6p4LwnCKICVIGwiFWwpgaOM7MTY08l0rWOg0fKznmhk+gTVUEYSNuXIyNaLYimEii50DqL52YzoWnbapkQXMqlscieAmKzefbEpXxN4ETdEoLco9MQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from MN0PR12MB5716.namprd12.prod.outlook.com (2603:10b6:208:373::14)
- by SA5PPFEC2853BA9.namprd12.prod.outlook.com (2603:10b6:80f:fc04::8e9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9478.4; Thu, 8 Jan
- 2026 12:28:20 +0000
-Received: from MN0PR12MB5716.namprd12.prod.outlook.com
- ([fe80::bac8:2b43:2a64:4c76]) by MN0PR12MB5716.namprd12.prod.outlook.com
- ([fe80::bac8:2b43:2a64:4c76%6]) with mapi id 15.20.9499.003; Thu, 8 Jan 2026
- 12:28:20 +0000
-Message-ID: <abfdb44d-108a-49d5-98ad-949d184f4f98@nvidia.com>
-Date: Thu, 8 Jan 2026 17:57:35 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] ACPI: bus: Use OF match data for PRP0001 matched
- devices
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: lenb@kernel.org, sakari.ailus@linux.intel.com,
- mika.westerberg@linux.intel.com, thierry.reding@gmail.com,
- jonathanh@nvidia.com, linux-acpi@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20260107120318.13130-1-kkartik@nvidia.com>
- <aV6ALdPCjaAYHM7-@smile.fi.intel.com>
-Content-Language: en-US
-From: Kartik Rajput <kkartik@nvidia.com>
-In-Reply-To: <aV6ALdPCjaAYHM7-@smile.fi.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MA5P287CA0097.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a01:1d4::12) To MN0PR12MB5716.namprd12.prod.outlook.com
- (2603:10b6:208:373::14)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DEC93A1A37;
+	Thu,  8 Jan 2026 12:32:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1767875534; cv=none; b=WRpiOTPVNo3ysFqEqiWaNINVmGIkhrDJWFW7wOaNUcy2D0EXFnOxSMoDgGMemLmihvahns2GuDVNLbVtQpk5b2He3qJA528bkDNGTqaO6n2pujD25Nn2RL4j3iIi7eXO+adOHIPrTkXI1X4WUqokLPsyX1riXcqvsfWdV99M1LA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1767875534; c=relaxed/simple;
+	bh=NGipQ+ltl3BfmRc8mAslsDCyZowJSv0FHRSZBA/HSw8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZhtmJ5zYUFWtyHDcs5oW3B+Cz/zXH8izc669wzTuDqlKYROKxicPRCrzzLhsnxJHohPFYtS7zPyu5CMkvrpjEjP5B927oeKgs210nCf/AMwFCVyNq5vIwuaJeljfid8Tw8A4S7LPapOYbkh/7y7WVTkleVbb7K8E1WSL+sXAN78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ACFIkApq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09712C16AAE;
+	Thu,  8 Jan 2026 12:32:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767875531;
+	bh=NGipQ+ltl3BfmRc8mAslsDCyZowJSv0FHRSZBA/HSw8=;
+	h=From:To:Cc:Subject:Date:From;
+	b=ACFIkApqhIgoMZ4R9uViaQfOckAGHAiRUoOviPHdQXenaWA5+EvfhQ4Qi6gr+dqcy
+	 tiUoPxkRJwXU9wIThgtu4T0fNaVfq75chZcHFvEiqw2nWw6Q/VEP918rtKkcO+i8Ps
+	 AK7GVqfehHD0ERTvkjXzienxm88mnlgjeNoE3RtY9B4irclqsx2p60B2rNoD6YnakS
+	 ZiqJ/XHhbDSAYmGg/FuihPpCu1tyP51j8IVQCRD3VGmAPHnT+87b0AlmDagd+/NpV6
+	 LZpPFAs7NQGUuB+JMrsYZsLQj/X8aHDmGhHvoN9sU5XzYqt5O8isHzgedJ/PtFKn73
+	 zVFsmpLPMbUrA==
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: stable@vger.kernel.org
+Cc: linux-integrity@vger.kernel.org,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Jonathan McDowell <noodles@meta.com>
+Subject: [PATCH] tpm2-sessions: Fix out of range indexing in name_size
+Date: Thu,  8 Jan 2026 14:31:59 +0200
+Message-ID: <20260108123159.1008858-1-jarkko@kernel.org>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN0PR12MB5716:EE_|SA5PPFEC2853BA9:EE_
-X-MS-Office365-Filtering-Correlation-Id: 05dee716-23e3-435f-8ce6-08de4eb1685c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?YTYrWjFBcmMyanVOYkhmZDUzbmpIS3dmU0UrY0JKUEh0MWtEZEN5VDBkd05r?=
- =?utf-8?B?U0duanNrcUM1UGRPRkF6VXJyd0N5R0VrUzl3Mk9wWXJVSkJmRzltUVYxRVdM?=
- =?utf-8?B?RktQWFFkTEV3RlRHMkduVGgrZHVPdmRGNitEcTZrZzk1V2V6ZlM4czZ3czAy?=
- =?utf-8?B?OVZDYzFaQXZsRDd5eDRWaThDc1kyY0RsdkZldWNXMTRMbmtHQ2hBWnNiR0Ro?=
- =?utf-8?B?VmRXZzFuNTM1T2hkSnZpUi9IRDE0YSthL2J3NVQ3ZHhVOXE3RUNUdncvZE5w?=
- =?utf-8?B?VTdXaE1Eb0R5ZlJ1SWpoeWJoeCtadDB1c1psKzJ0SE5OVDJuVUJIdXROeElU?=
- =?utf-8?B?Q2M2WFlTSmVKRXVnN0d2Z2Urd3Exb2s1NXk2UkRlSGdicnpkYTFVd210NGtI?=
- =?utf-8?B?VUZFWm96TGFHcDFLT29HTEcxeW1Yc2NMQWU2cHhTWGttdHFBb0hnMFFJcDk1?=
- =?utf-8?B?SHJhelp5V1M3K1FDeEE2V1p3NEFEWUpQTllPUjJRNVBWdmlkSjBXelpLbzRB?=
- =?utf-8?B?VDNiZURKRFVDTHdHYkh0NEErZEhIWFd3M1dxbk1odC9IVEVROFFrWnFiVkdI?=
- =?utf-8?B?WEJHNmNqQ01wZnFQK1JRaDFDbnFMZWVTSElsL0RtczdFOE9UUEJ5Z3FoN0p3?=
- =?utf-8?B?amEremNvQjRxbUpVTTh1b0VKQWlrUFhlSXB1MUNwU0dkMVlRblBGNW1CUnk5?=
- =?utf-8?B?Mk4xcnZoaWQ1aG5lb3FpWFRCcUFxcnFmeDFEVVIyS1hpSnpaUEpja1JqaEVw?=
- =?utf-8?B?bGd2T20xbmd1Unh2dlBWbzMveXE3YU9EVWszN2lNVmtEQjBTcGp1WlFYdHdi?=
- =?utf-8?B?YzByYjdhRy91V3M2OWtwNllnTHE3c1FLVFN1eWU3ZTJMNXhrVGhkZmU2QTdW?=
- =?utf-8?B?STFHbFR3TG1LV21EUkhDQmxYb242RUowenRTaXJmZ0ExcFo0aXo4SWNWR1Fv?=
- =?utf-8?B?Wk5jMzBlTS96MVM0bGNSQ3VTOFQ1THBGWHp3bWcxWm1mNUxpS0hVa1lSdmlI?=
- =?utf-8?B?MVUwcytadHJiMmlQQlFpcFZ3MURlWTQ1K3VDZlBsS3JLdjVEMzRzZDhtUzAy?=
- =?utf-8?B?NHoza0JHd2FTK3g3QVhOcWd4MXdiaE1ZZjJVU2l5aHV5ejRXaklPSUxVV2Nj?=
- =?utf-8?B?TUFrV1VPb2tVanBySHlJYVk0MkJVZGNxc3BOVE5VMURJYTVNYjdkLzBTcVNx?=
- =?utf-8?B?YTJRNlR5SnZMU2JpZGllWnJ0cnpEQ2tsKzFCTXQ1ZTRyRkR5L2RlblA1Y3g2?=
- =?utf-8?B?Ky9UMmpkS2lzY2luVmx5TndxUkprSnowc1F1d3J5YVNObWMxbnloUytGZHB0?=
- =?utf-8?B?Z2pNcE9WbHhuTHZNcXRGdFllcGUzRlNwVktiYWZZbDlQVDZ3OENuVTczSEFs?=
- =?utf-8?B?MzRUNmFkYm1wYmU0VGdENWFINWJ1RSszVVA2WHBRRUEyNDdmR2RlSVdBbHdN?=
- =?utf-8?B?aEtReGxVbEpVa04xWmFtTkxMYjlERytrU1hHWUVZdEJCRXNOdmF4U0lNWE9Z?=
- =?utf-8?B?ZHowamw4YlVFRVJZN05JbjRYZG16N29yWmRuWXpLSnF2dmVPc09YSnNwS01m?=
- =?utf-8?B?UzFMeHlWNnJmZEk1clNDM2NDTDNBWGZHMjQ2SXRzZnlHaXplV0FCckhuQUo4?=
- =?utf-8?B?ajU5NGNHTFU0U3l3MkdLelczbUplNkprSE5icUVsYUhwWlZDYkVSak82amsr?=
- =?utf-8?B?RW5TV3doUklvUnE4aU84SmpxQ2hlVXVWNEFDaEpBMnNCS0t4WGMyRzhNd2ZM?=
- =?utf-8?B?MCsyMmNwOHdOS2JRMitLaWdBWUtWWnE0a1l1czFRZ1U0dzZKUnJ2aG9NUUJF?=
- =?utf-8?B?TWJTdk9tcGY3UWpVOHBIbWdwQjRYS2VxYXk1V3lwcXVmcE04QitnSmdobGVu?=
- =?utf-8?B?YTBHQ2Nva1ZPRDc2UWNGR2xyOWlWN2FGeTdSQk9iaDJKVjBzM2JoRDA3a3FB?=
- =?utf-8?Q?jfOgamD9DwKusjw/j9USPzRM6klcDxo5?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB5716.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?cGRXaVh3T0kzZVA1anNyQ1pIOTYrTWlLNnB3R3NCN1BIdkRpa0YrNmR5OTlq?=
- =?utf-8?B?bFB4ZTQ0QXdUR3NicHJZMkJHUlFxY3A0Z3JRNGQzbnJXcVZGeDcxYnd6ZFlK?=
- =?utf-8?B?WHUrNEpFUFMrRzhub1kxSndsa3JadFlsNCs1VUpqVnJDaDlOTjc5VzZtcC9H?=
- =?utf-8?B?QjN5MG1CYjNYOGhid0hoUlRiQkZ6NHJid3IrSW1FOVJ6RXlrZkFTS3hJdmV4?=
- =?utf-8?B?MlpmMFdGSGhMYmpUd2dwSEY1b2VYNkRQWE8vSkFpMFA1U0lHOUUyVjRIaTdD?=
- =?utf-8?B?bkptbFVmT1BsV3phWFMvd3lBQUlvWFZjSklINzVyMVVKR3h3RE9IMDV5TnVS?=
- =?utf-8?B?RkQrQk1HUmhwQjF5R2R3RXJLMlE4QzFNYy9adVZZdE1DcXdPdHIyUnMrUlps?=
- =?utf-8?B?Nll3T3hlK1hyeGR4U2RiaDBKa0ZCUlBRWndtZ0p6UjAyOUxuY0hiNGZHdHNM?=
- =?utf-8?B?N3dJNnY3M0RhaDUzTFlhbm91V0Vxd01FYUFPWFJiNmNuWko2eUZ5dHROSU5B?=
- =?utf-8?B?UTBNUEtXSjRqa1BDZnhZdzVSRWJ2NHlMaGtxaE5VUGFwMFBWMjV3eS9HYi9n?=
- =?utf-8?B?T25oNEQ3UmVpdFZ4Z1F3YmRtWDJzbm5qQTVkRkM1K2pMcVJDUzVGMzdXQnl6?=
- =?utf-8?B?bkUzY0o4SzJpUm9OeW1KSG91NWIyK3FYaVNNQUl4eEQvRkphTDhwbjFzWEUv?=
- =?utf-8?B?UDRVY0hMN2lENFJZNytJYXZ4OHBaY2ZteEtURzRvbkNTMWNDbGR1eXF1aUZ5?=
- =?utf-8?B?Z0FXQVpxMHVvQW1Wc2NxUEpNcXl6bVFEWkdJOXR0eml6OVRPb1ViWDVRN0pD?=
- =?utf-8?B?bWE0L3N6V0Z5K2U1WTlGeHNyQWUwaUtKN3dNdzNKYmwwWUNGREo3UWRvMWxa?=
- =?utf-8?B?K29NQkdQbXdkV1JJbXJjTVp2YVNxelZPSkRFSUs3dFN1VnpuUTBpOXA3R24y?=
- =?utf-8?B?YUxpSEs0RWNXTTVwQ2tKMlRnbkxNNTcwdWpLeUR3S1d3T0RJUlJBSW1XcnJp?=
- =?utf-8?B?YVVuN291SndJTkRaTnZTSGhaL2VoMEdIQU5IVXRac0JqeXByZiszdzJBTTlB?=
- =?utf-8?B?eU9GTTZvWnFLcS9zZFk5VlhBeXRkd2RPMEJNVHdkUEZ4RVJSWEdJZEx4SnZU?=
- =?utf-8?B?UHJHMU9xOG1vRC9UUUVtQktsV0dzemxwK2g3KzlpWDNYR1BsRnlWYmFtckFq?=
- =?utf-8?B?UFVCY0t2V0k0QW9DMUtvTG9JMTRYZndyeHlIbXpzRXNkRGV5ZjlNUXN3WlVv?=
- =?utf-8?B?RDlIQ1I4U2dzczJyNHZCNDllclM1ZzJaVEtYU0o1RStIRFlHRWJ2N3l3SmZo?=
- =?utf-8?B?UUhzUGVmK216eVFaeE9rM081ZVBtN0ptZUlPQ2dMN1VVSWhsK1BiRnI0T0pU?=
- =?utf-8?B?cU14Z2RFNzRNcWhkRGFUYU9WMnFpeEZIOHU5cXR3N29mc0JkZnVYT1lSMGRV?=
- =?utf-8?B?WVEzOXhTYjhFOStkam9POXpKVWgwTFpNUloyTnRCbU1zQ1RQUWN1eC84YVJj?=
- =?utf-8?B?elVuSEJLb3kzcXpUcDhMcG1FRFVvM3BRVXlYQVc2ZUxCNjIzMVFuanJERGVt?=
- =?utf-8?B?L0hwU01BcndUNnNRYTlkSUVpelZqTXgxNy8zSERvWVdUMkg0ZDZLUFJ0UW55?=
- =?utf-8?B?OUhMcUt3clJVaU85VURHMWN0TkVrbW9YN3hLckdvZTdGRDZKbm1pYlhGa2NW?=
- =?utf-8?B?R3F6U1hPRFk3c1NsdXpPUlJaaWNncENuL2lBMjU5a25zT0xRVXBQMU5rU3V0?=
- =?utf-8?B?bzhrS2tvRExjRmlJNTVsVkdXdmhGd3JweFBDc0Z4eXRNS0U5RXRGckpBaXVy?=
- =?utf-8?B?RDVJUjZEZU1YYTRMeFc1WjROY1k2Mit0TUFtRGZ3a1FGSzNBb0ZWZEQvbnlF?=
- =?utf-8?B?cWxBeUovUnROWXo1VEdjWE94UWxLU1UxTDBGK3Z6disxZHhOV00rRzRmV0lZ?=
- =?utf-8?B?ZUx1UnNQYURnaGVKT2hZQnFoMXhrN0RqdURTd3ljazdsVm9QVkEyQUtqZTV4?=
- =?utf-8?B?MlZLbVJNYThDT1BGc1phSjRqdmdPVUtoNWdISHV4WmFnUGc4VGFUaXpDSm1L?=
- =?utf-8?B?MVJGdG4zOHcvL1RTVnZpNDRhU0pCYk85Y1VTMFlkN29oVzRJSXlIdnlaQlBW?=
- =?utf-8?B?d2Y3RHIyem96cHBRRXR0and1K3JNODZNckxya1VkZjkybUdLVlVQRUlIcXMy?=
- =?utf-8?B?Wnl4WmhzNkZ2bGxLVlhZbUpWRys0QTdZNWhxUUc3ZmtnRmRsbTBGTGN0NmZK?=
- =?utf-8?B?Zm91RXVRRGZWdjQ3anZkNFA1NlJPNXpNV0o3MnF3ZFlWcTVZOHEyQy9SODls?=
- =?utf-8?B?dTJtV0dMajIxOW0rTFhVK2Q3T25YSGFQS1M3QTAydGtwbTJSUzNGdz09?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 05dee716-23e3-435f-8ce6-08de4eb1685c
-X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB5716.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jan 2026 12:28:20.3664
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: b1Xv4041rinQVj4PGqLzVW+2FxTb51uIbh+Ldb6vPnjXfGF1/BRslDi8/JEGVT9b3nZTJRQnivPgyqMyGyvLjA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA5PPFEC2853BA9
+Content-Transfer-Encoding: 8bit
 
-Hi Andy,
+[ Upstream commit 6e9722e9a7bfe1bbad649937c811076acf86e1fd ]
 
-Thanks for reviewing the patch!
+'name_size' does not have any range checks, and it just directly indexes
+with TPM_ALG_ID, which could lead into memory corruption at worst.
 
-On 07/01/26 21:17, Andy Shevchenko wrote:
-> External email: Use caution opening links or attachments
-> 
-> 
-> On Wed, Jan 07, 2026 at 05:33:18PM +0530, Kartik Rajput wrote:
->> When a device is matched via PRP0001, the driver's OF (DT) match table
->> must be used to obtain the device match data. If a driver provides both
->> an acpi_match_table and an of_match_table, the current
->> acpi_device_get_match_data() path consults the driver's acpi_match_table
->> and returns NULL (no ACPI ID matches).
-> 
-> Since we have both tables, why the actual ACPI HID of the device in question
-> (actually which one?) can't be used?
-> 
->> Explicitly detect PRP0001 and fetch match data from the driver's
->> of_match_table via acpi_of_device_get_match_data().
-> 
-> In principle we can go this way, but can you tell a bit more of a story?
-> Why the device in question can't use existed or a newly allocated ACPI HID for
-> that?
-> 
+Address the issue by only processing known values and returning -EINVAL for
+unrecognized values.
 
-While testing PRP0001-based matching with the Tegra fuse driver on an SoC that does
-not yet have an allocated ACPI HID, device_get_match_data() returned NULL because
-the driver also provides an acpi_match_table.
+Make also 'tpm_buf_append_name' and 'tpm_buf_fill_hmac_session' fallible so
+that errors are detected before causing any spurious TPM traffic.
 
-Commit 886ca88be6b3 ("ACPI / bus: Respect PRP0001 when retrieving device match data")
-was intended to address this by honoring PRP0001 when retrieving match data. However,
-when a driver provides an ACPI match table, acpi_device_get_match_data() currently
-consults only that table, resulting in NULL match data despite a successful
-PRP0001 match.
+End also the authorization session on failure in both of the functions, as
+the session state would be then by definition corrupted.
 
-> ...
-> 
->> @@ -1031,8 +1031,9 @@ const void *acpi_device_get_match_data(const struct device *dev)
->>   {
->>        const struct acpi_device_id *acpi_ids = dev->driver->acpi_match_table;
->>        const struct acpi_device_id *match;
->> +     struct acpi_device *adev = ACPI_COMPANION(dev);
-> 
-> Please, keep it in reversed xmas tree order.
-> 
+Cc: stable@vger.kernel.org # v6.10+
+Fixes: 1085b8276bb4 ("tpm: Add the rest of the session HMAC API")
+Reviewed-by: Jonathan McDowell <noodles@meta.com>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+---
+ drivers/char/tpm/tpm2-cmd.c               |  23 +++-
+ drivers/char/tpm/tpm2-sessions.c          | 134 +++++++++++++++-------
+ include/linux/tpm.h                       |  13 ++-
+ security/keys/trusted-keys/trusted_tpm2.c |  29 ++++-
+ 4 files changed, 143 insertions(+), 56 deletions(-)
 
-Ack. I will update this in the next revision.
-
-Thanks,
-Kartik
+diff --git a/drivers/char/tpm/tpm2-cmd.c b/drivers/char/tpm/tpm2-cmd.c
+index dfdcbd009720..74764eae9f10 100644
+--- a/drivers/char/tpm/tpm2-cmd.c
++++ b/drivers/char/tpm/tpm2-cmd.c
+@@ -250,7 +250,11 @@ int tpm2_pcr_extend(struct tpm_chip *chip, u32 pcr_idx,
+ 	}
+ 
+ 	if (!disable_pcr_integrity) {
+-		tpm_buf_append_name(chip, &buf, pcr_idx, NULL);
++		rc = tpm_buf_append_name(chip, &buf, pcr_idx, NULL);
++		if (rc) {
++			tpm_buf_destroy(&buf);
++			return rc;
++		}
+ 		tpm_buf_append_hmac_session(chip, &buf, 0, NULL, 0);
+ 	} else {
+ 		tpm_buf_append_handle(chip, &buf, pcr_idx);
+@@ -265,8 +269,14 @@ int tpm2_pcr_extend(struct tpm_chip *chip, u32 pcr_idx,
+ 			       chip->allocated_banks[i].digest_size);
+ 	}
+ 
+-	if (!disable_pcr_integrity)
+-		tpm_buf_fill_hmac_session(chip, &buf);
++	if (!disable_pcr_integrity) {
++		rc = tpm_buf_fill_hmac_session(chip, &buf);
++		if (rc) {
++			tpm_buf_destroy(&buf);
++			return rc;
++		}
++	}
++
+ 	rc = tpm_transmit_cmd(chip, &buf, 0, "attempting extend a PCR value");
+ 	if (!disable_pcr_integrity)
+ 		rc = tpm_buf_check_hmac_response(chip, &buf, rc);
+@@ -324,7 +334,12 @@ int tpm2_get_random(struct tpm_chip *chip, u8 *dest, size_t max)
+ 						| TPM2_SA_CONTINUE_SESSION,
+ 						NULL, 0);
+ 		tpm_buf_append_u16(&buf, num_bytes);
+-		tpm_buf_fill_hmac_session(chip, &buf);
++		err = tpm_buf_fill_hmac_session(chip, &buf);
++		if (err) {
++			tpm_buf_destroy(&buf);
++			return err;
++		}
++
+ 		err = tpm_transmit_cmd(chip, &buf,
+ 				       offsetof(struct tpm2_get_random_out,
+ 						buffer),
+diff --git a/drivers/char/tpm/tpm2-sessions.c b/drivers/char/tpm/tpm2-sessions.c
+index cf0b83154044..d020b74ed23c 100644
+--- a/drivers/char/tpm/tpm2-sessions.c
++++ b/drivers/char/tpm/tpm2-sessions.c
+@@ -144,16 +144,23 @@ struct tpm2_auth {
+ /*
+  * Name Size based on TPM algorithm (assumes no hash bigger than 255)
+  */
+-static u8 name_size(const u8 *name)
++static int name_size(const u8 *name)
+ {
+-	static u8 size_map[] = {
+-		[TPM_ALG_SHA1] = SHA1_DIGEST_SIZE,
+-		[TPM_ALG_SHA256] = SHA256_DIGEST_SIZE,
+-		[TPM_ALG_SHA384] = SHA384_DIGEST_SIZE,
+-		[TPM_ALG_SHA512] = SHA512_DIGEST_SIZE,
+-	};
+-	u16 alg = get_unaligned_be16(name);
+-	return size_map[alg] + 2;
++	u16 hash_alg = get_unaligned_be16(name);
++
++	switch (hash_alg) {
++	case TPM_ALG_SHA1:
++		return SHA1_DIGEST_SIZE + 2;
++	case TPM_ALG_SHA256:
++		return SHA256_DIGEST_SIZE + 2;
++	case TPM_ALG_SHA384:
++		return SHA384_DIGEST_SIZE + 2;
++	case TPM_ALG_SHA512:
++		return SHA512_DIGEST_SIZE + 2;
++	default:
++		pr_warn("tpm: unsupported name algorithm: 0x%04x\n", hash_alg);
++		return -EINVAL;
++	}
+ }
+ 
+ static int tpm2_parse_read_public(char *name, struct tpm_buf *buf)
+@@ -161,6 +168,7 @@ static int tpm2_parse_read_public(char *name, struct tpm_buf *buf)
+ 	struct tpm_header *head = (struct tpm_header *)buf->data;
+ 	off_t offset = TPM_HEADER_SIZE;
+ 	u32 tot_len = be32_to_cpu(head->length);
++	int ret;
+ 	u32 val;
+ 
+ 	/* we're starting after the header so adjust the length */
+@@ -173,8 +181,13 @@ static int tpm2_parse_read_public(char *name, struct tpm_buf *buf)
+ 	offset += val;
+ 	/* name */
+ 	val = tpm_buf_read_u16(buf, &offset);
+-	if (val != name_size(&buf->data[offset]))
++	ret = name_size(&buf->data[offset]);
++	if (ret < 0)
++		return ret;
++
++	if (val != ret)
+ 		return -EINVAL;
++
+ 	memcpy(name, &buf->data[offset], val);
+ 	/* forget the rest */
+ 	return 0;
+@@ -221,46 +234,72 @@ static int tpm2_read_public(struct tpm_chip *chip, u32 handle, char *name)
+  * As with most tpm_buf operations, success is assumed because failure
+  * will be caused by an incorrect programming model and indicated by a
+  * kernel message.
++ *
++ * Ends the authorization session on failure.
+  */
+-void tpm_buf_append_name(struct tpm_chip *chip, struct tpm_buf *buf,
+-			 u32 handle, u8 *name)
++int tpm_buf_append_name(struct tpm_chip *chip, struct tpm_buf *buf,
++			u32 handle, u8 *name)
+ {
+ #ifdef CONFIG_TCG_TPM2_HMAC
+ 	enum tpm2_mso_type mso = tpm2_handle_mso(handle);
+ 	struct tpm2_auth *auth;
+ 	int slot;
++	int ret;
+ #endif
+ 
+ 	if (!tpm2_chip_auth(chip)) {
+ 		tpm_buf_append_handle(chip, buf, handle);
+-		return;
++		return 0;
+ 	}
+ 
+ #ifdef CONFIG_TCG_TPM2_HMAC
+ 	slot = (tpm_buf_length(buf) - TPM_HEADER_SIZE) / 4;
+ 	if (slot >= AUTH_MAX_NAMES) {
+-		dev_err(&chip->dev, "TPM: too many handles\n");
+-		return;
++		dev_err(&chip->dev, "too many handles\n");
++		ret = -EIO;
++		goto err;
+ 	}
+ 	auth = chip->auth;
+-	WARN(auth->session != tpm_buf_length(buf),
+-	     "name added in wrong place\n");
++	if (auth->session != tpm_buf_length(buf)) {
++		dev_err(&chip->dev, "session state malformed");
++		ret = -EIO;
++		goto err;
++	}
+ 	tpm_buf_append_u32(buf, handle);
+ 	auth->session += 4;
+ 
+ 	if (mso == TPM2_MSO_PERSISTENT ||
+ 	    mso == TPM2_MSO_VOLATILE ||
+ 	    mso == TPM2_MSO_NVRAM) {
+-		if (!name)
+-			tpm2_read_public(chip, handle, auth->name[slot]);
++		if (!name) {
++			ret = tpm2_read_public(chip, handle, auth->name[slot]);
++			if (ret)
++				goto err;
++		}
+ 	} else {
+-		if (name)
+-			dev_err(&chip->dev, "TPM: Handle does not require name but one is specified\n");
++		if (name) {
++			dev_err(&chip->dev, "handle 0x%08x does not use a name\n",
++				handle);
++			ret = -EIO;
++			goto err;
++		}
+ 	}
+ 
+ 	auth->name_h[slot] = handle;
+-	if (name)
+-		memcpy(auth->name[slot], name, name_size(name));
++	if (name) {
++		ret = name_size(name);
++		if (ret < 0)
++			goto err;
++
++		memcpy(auth->name[slot], name, ret);
++	}
++#endif
++	return 0;
++
++#ifdef CONFIG_TCG_TPM2_HMAC
++err:
++	tpm2_end_auth_session(chip);
++	return tpm_ret_to_err(ret);
+ #endif
+ }
+ EXPORT_SYMBOL_GPL(tpm_buf_append_name);
+@@ -578,11 +617,9 @@ static void tpm_buf_append_salt(struct tpm_buf *buf, struct tpm_chip *chip,
+  * encryption key and encrypts the first parameter of the command
+  * buffer with it.
+  *
+- * As with most tpm_buf operations, success is assumed because failure
+- * will be caused by an incorrect programming model and indicated by a
+- * kernel message.
++ * Ends the authorization session on failure.
+  */
+-void tpm_buf_fill_hmac_session(struct tpm_chip *chip, struct tpm_buf *buf)
++int tpm_buf_fill_hmac_session(struct tpm_chip *chip, struct tpm_buf *buf)
+ {
+ 	u32 cc, handles, val;
+ 	struct tpm2_auth *auth = chip->auth;
+@@ -592,10 +629,13 @@ void tpm_buf_fill_hmac_session(struct tpm_chip *chip, struct tpm_buf *buf)
+ 	u8 *hmac = NULL;
+ 	u32 attrs;
+ 	u8 cphash[SHA256_DIGEST_SIZE];
+-	struct sha256_state sctx;
++	struct sha256_ctx sctx;
++	int ret;
+ 
+-	if (!auth)
+-		return;
++	if (!auth) {
++		ret = -EIO;
++		goto err;
++	}
+ 
+ 	/* save the command code in BE format */
+ 	auth->ordinal = head->ordinal;
+@@ -604,9 +644,11 @@ void tpm_buf_fill_hmac_session(struct tpm_chip *chip, struct tpm_buf *buf)
+ 
+ 	i = tpm2_find_cc(chip, cc);
+ 	if (i < 0) {
+-		dev_err(&chip->dev, "Command 0x%x not found in TPM\n", cc);
+-		return;
++		dev_err(&chip->dev, "command 0x%08x not found\n", cc);
++		ret = -EIO;
++		goto err;
+ 	}
++
+ 	attrs = chip->cc_attrs_tbl[i];
+ 
+ 	handles = (attrs >> TPM2_CC_ATTR_CHANDLES) & GENMASK(2, 0);
+@@ -620,9 +662,9 @@ void tpm_buf_fill_hmac_session(struct tpm_chip *chip, struct tpm_buf *buf)
+ 		u32 handle = tpm_buf_read_u32(buf, &offset_s);
+ 
+ 		if (auth->name_h[i] != handle) {
+-			dev_err(&chip->dev, "TPM: handle %d wrong for name\n",
+-				  i);
+-			return;
++			dev_err(&chip->dev, "invalid handle 0x%08x\n", handle);
++			ret = -EIO;
++			goto err;
+ 		}
+ 	}
+ 	/* point offset_s to the start of the sessions */
+@@ -653,12 +695,14 @@ void tpm_buf_fill_hmac_session(struct tpm_chip *chip, struct tpm_buf *buf)
+ 		offset_s += len;
+ 	}
+ 	if (offset_s != offset_p) {
+-		dev_err(&chip->dev, "TPM session length is incorrect\n");
+-		return;
++		dev_err(&chip->dev, "session length is incorrect\n");
++		ret = -EIO;
++		goto err;
+ 	}
+ 	if (!hmac) {
+-		dev_err(&chip->dev, "TPM could not find HMAC session\n");
+-		return;
++		dev_err(&chip->dev, "could not find HMAC session\n");
++		ret = -EIO;
++		goto err;
+ 	}
+ 
+ 	/* encrypt before HMAC */
+@@ -690,8 +734,11 @@ void tpm_buf_fill_hmac_session(struct tpm_chip *chip, struct tpm_buf *buf)
+ 		if (mso == TPM2_MSO_PERSISTENT ||
+ 		    mso == TPM2_MSO_VOLATILE ||
+ 		    mso == TPM2_MSO_NVRAM) {
+-			sha256_update(&sctx, auth->name[i],
+-				      name_size(auth->name[i]));
++			ret = name_size(auth->name[i]);
++			if (ret < 0)
++				goto err;
++
++			sha256_update(&sctx, auth->name[i], ret);
+ 		} else {
+ 			__be32 h = cpu_to_be32(auth->name_h[i]);
+ 
+@@ -712,6 +759,11 @@ void tpm_buf_fill_hmac_session(struct tpm_chip *chip, struct tpm_buf *buf)
+ 	sha256_update(&sctx, &auth->attrs, 1);
+ 	tpm2_hmac_final(&sctx, auth->session_key, sizeof(auth->session_key)
+ 			+ auth->passphrase_len, hmac);
++	return 0;
++
++err:
++	tpm2_end_auth_session(chip);
++	return ret;
+ }
+ EXPORT_SYMBOL(tpm_buf_fill_hmac_session);
+ 
+diff --git a/include/linux/tpm.h b/include/linux/tpm.h
+index a3d8305e88a5..9472e13f33c2 100644
+--- a/include/linux/tpm.h
++++ b/include/linux/tpm.h
+@@ -521,8 +521,8 @@ static inline struct tpm2_auth *tpm2_chip_auth(struct tpm_chip *chip)
+ #endif
+ }
+ 
+-void tpm_buf_append_name(struct tpm_chip *chip, struct tpm_buf *buf,
+-			 u32 handle, u8 *name);
++int tpm_buf_append_name(struct tpm_chip *chip, struct tpm_buf *buf,
++			u32 handle, u8 *name);
+ void tpm_buf_append_hmac_session(struct tpm_chip *chip, struct tpm_buf *buf,
+ 				 u8 attributes, u8 *passphrase,
+ 				 int passphraselen);
+@@ -555,7 +555,7 @@ static inline void tpm_buf_append_hmac_session_opt(struct tpm_chip *chip,
+ #ifdef CONFIG_TCG_TPM2_HMAC
+ 
+ int tpm2_start_auth_session(struct tpm_chip *chip);
+-void tpm_buf_fill_hmac_session(struct tpm_chip *chip, struct tpm_buf *buf);
++int tpm_buf_fill_hmac_session(struct tpm_chip *chip, struct tpm_buf *buf);
+ int tpm_buf_check_hmac_response(struct tpm_chip *chip, struct tpm_buf *buf,
+ 				int rc);
+ void tpm2_end_auth_session(struct tpm_chip *chip);
+@@ -569,10 +569,13 @@ static inline int tpm2_start_auth_session(struct tpm_chip *chip)
+ static inline void tpm2_end_auth_session(struct tpm_chip *chip)
+ {
+ }
+-static inline void tpm_buf_fill_hmac_session(struct tpm_chip *chip,
+-					     struct tpm_buf *buf)
++
++static inline int tpm_buf_fill_hmac_session(struct tpm_chip *chip,
++					    struct tpm_buf *buf)
+ {
++	return 0;
+ }
++
+ static inline int tpm_buf_check_hmac_response(struct tpm_chip *chip,
+ 					      struct tpm_buf *buf,
+ 					      int rc)
+diff --git a/security/keys/trusted-keys/trusted_tpm2.c b/security/keys/trusted-keys/trusted_tpm2.c
+index 024be262702f..10d1201a33e4 100644
+--- a/security/keys/trusted-keys/trusted_tpm2.c
++++ b/security/keys/trusted-keys/trusted_tpm2.c
+@@ -283,7 +283,10 @@ int tpm2_seal_trusted(struct tpm_chip *chip,
+ 		goto out_put;
+ 	}
+ 
+-	tpm_buf_append_name(chip, &buf, options->keyhandle, NULL);
++	rc = tpm_buf_append_name(chip, &buf, options->keyhandle, NULL);
++	if (rc)
++		goto out;
++
+ 	tpm_buf_append_hmac_session(chip, &buf, TPM2_SA_DECRYPT,
+ 				    options->keyauth, TPM_DIGEST_SIZE);
+ 
+@@ -331,7 +334,10 @@ int tpm2_seal_trusted(struct tpm_chip *chip,
+ 		goto out;
+ 	}
+ 
+-	tpm_buf_fill_hmac_session(chip, &buf);
++	rc = tpm_buf_fill_hmac_session(chip, &buf);
++	if (rc)
++		goto out;
++
+ 	rc = tpm_transmit_cmd(chip, &buf, 4, "sealing data");
+ 	rc = tpm_buf_check_hmac_response(chip, &buf, rc);
+ 	if (rc)
+@@ -444,7 +450,10 @@ static int tpm2_load_cmd(struct tpm_chip *chip,
+ 		return rc;
+ 	}
+ 
+-	tpm_buf_append_name(chip, &buf, options->keyhandle, NULL);
++	rc = tpm_buf_append_name(chip, &buf, options->keyhandle, NULL);
++	if (rc)
++		goto out;
++
+ 	tpm_buf_append_hmac_session(chip, &buf, 0, options->keyauth,
+ 				    TPM_DIGEST_SIZE);
+ 
+@@ -456,7 +465,10 @@ static int tpm2_load_cmd(struct tpm_chip *chip,
+ 		goto out;
+ 	}
+ 
+-	tpm_buf_fill_hmac_session(chip, &buf);
++	rc = tpm_buf_fill_hmac_session(chip, &buf);
++	if (rc)
++		goto out;
++
+ 	rc = tpm_transmit_cmd(chip, &buf, 4, "loading blob");
+ 	rc = tpm_buf_check_hmac_response(chip, &buf, rc);
+ 	if (!rc)
+@@ -506,7 +518,9 @@ static int tpm2_unseal_cmd(struct tpm_chip *chip,
+ 		return rc;
+ 	}
+ 
+-	tpm_buf_append_name(chip, &buf, blob_handle, NULL);
++	rc = tpm_buf_append_name(chip, &buf, options->keyhandle, NULL);
++	if (rc)
++		goto out;
+ 
+ 	if (!options->policyhandle) {
+ 		tpm_buf_append_hmac_session(chip, &buf, TPM2_SA_ENCRYPT,
+@@ -531,7 +545,10 @@ static int tpm2_unseal_cmd(struct tpm_chip *chip,
+ 						NULL, 0);
+ 	}
+ 
+-	tpm_buf_fill_hmac_session(chip, &buf);
++	rc = tpm_buf_fill_hmac_session(chip, &buf);
++	if (rc)
++		goto out;
++
+ 	rc = tpm_transmit_cmd(chip, &buf, 6, "unsealing");
+ 	rc = tpm_buf_check_hmac_response(chip, &buf, rc);
+ 	if (rc > 0)
+-- 
+2.52.0
 
 
