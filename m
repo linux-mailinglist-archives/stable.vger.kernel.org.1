@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-207756-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207155-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9ADCD0A28F
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:03:37 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49E4DD09B6B
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:34:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id CDEF73084C06
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:50:24 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id ABAE9306EBA4
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:20:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8734635BDB2;
-	Fri,  9 Jan 2026 12:49:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F39C535A92E;
+	Fri,  9 Jan 2026 12:20:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GRAn5NZE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RiiS4/Lx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4125F35B12B;
-	Fri,  9 Jan 2026 12:49:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B45AC359FA0;
+	Fri,  9 Jan 2026 12:20:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962958; cv=none; b=X5DyPexX0z1IlkFarHQlQkLwAy5r4cTEHBzP0fIM9WevA0bqG/DQ2XjRH+VIQGoB2lecAANJ5Dbmon12JA9SgxOMtdMDiP19g7C0SxvDr4IIZShNd61CVeJ/GL/l99P8zCQhd7FZ6fYUgLBYZ5VMgQdsu/DMHkJ9CW2vVBUGhLs=
+	t=1767961247; cv=none; b=DeKzqXvDYrsbJWBOpMC/r9zEl6pfI+6sYCcxgJoxi0NrtiD3i844+AyumfpkM4jRMxbJSY102ZSeXfPU3Hv5VJafbDohN+aytJcixvyQN3Y3t4U1d5BwTH9PESRS0uVlc2bUUYbCvnKa2oO+hI4ax4ZjJwjS5dL7dsnKi8mJ9dQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962958; c=relaxed/simple;
-	bh=Smq8Lx8JCOWzCl2CBqr4boRraSmv1BN1xb3+GT9TOY4=;
+	s=arc-20240116; t=1767961247; c=relaxed/simple;
+	bh=dywb2hl2JwcGBnCzPJtNe9rV0RROg3riU1CgFT3myRI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mlPevA010QKQ4jdSd3/TUfeCV8yhNv+fFFtBDNJZZdSCAUaivkhczb9oitYuVww2i3Jp3Vs8c34pfHUve0+5InaEVmzaEb2OPIEZJYZ7FQ9OjueGfX1XPX53B5CG43eLZzuU1LsRwk9a7hYZ9n8FvAAGjkqa/0iLCk4+4nWcztE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GRAn5NZE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 859B9C4CEF1;
-	Fri,  9 Jan 2026 12:49:17 +0000 (UTC)
+	 MIME-Version; b=a7xCrbRoOCplNgLlbzuMJXWtfzT6HE/5P11qyx6dfd8gG8pdurU6nM7ZFQfIdnUX2gFE0hSUz1ijyRLkqovsLqT9r+vIyHz38AuGEVIOpeIZcsU4CobFeflE1yaxYQSnlGxd3Qhkp0LhD7rKRDRwu7mUAbELsf6Dw2EKuQoNDYw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RiiS4/Lx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A02EC4CEF1;
+	Fri,  9 Jan 2026 12:20:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962957;
-	bh=Smq8Lx8JCOWzCl2CBqr4boRraSmv1BN1xb3+GT9TOY4=;
+	s=korg; t=1767961247;
+	bh=dywb2hl2JwcGBnCzPJtNe9rV0RROg3riU1CgFT3myRI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GRAn5NZES+v0APc/J3PVIFYBaktujgR+EHSW0JIjmdGpCzBWxAzW6a5kdSnfGD+IH
-	 p2Nt+IzDJaGBuePcfW2lV20TN06VoVFV58EMnvN8+0qcseBwt/6809oUCngoxOVuaT
-	 GP7Qb3jZPiqloRjLkAIEkp/FY1hkpPSGNg2coK44=
+	b=RiiS4/Lx6QC4p/Y2IDQgxAQ4x9r4992xIVL86uMhl8f3GkP+iaGT21Bh9YkW6M4bZ
+	 Rke2cx8SjXL2A+lmjDxZyi/fYZ1j2EG9xdd/zQEIpTI0FBIkPj030DR5uoy69CFpWC
+	 DLtW1Iyl0leXvj+3kBrYgCE9meaFomGXoO5a4kgM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	Johan Hovold <johan@kernel.org>,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Vladimir Zapolskiy <vz@mleia.com>,
+	stable@kernel.org,
+	"Bai, Shuangpeng" <sjb7183@psu.edu>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 547/634] usb: ohci-nxp: fix device leak on probe failure
-Date: Fri,  9 Jan 2026 12:43:45 +0100
-Message-ID: <20260109112138.173333893@linuxfoundation.org>
+Subject: [PATCH 6.6 687/737] f2fs: fix to avoid updating compression context during writeback
+Date: Fri,  9 Jan 2026 12:43:46 +0100
+Message-ID: <20260109112159.904029253@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +62,166 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit b4c61e542faf8c9131d69ecfc3ad6de96d1b2ab8 ]
+[ Upstream commit 10b591e7fb7cdc8c1e53e9c000dc0ef7069aaa76 ]
 
-Make sure to drop the reference taken when looking up the PHY I2C device
-during probe on probe failure (e.g. probe deferral) and on driver
-unbind.
+Bai, Shuangpeng <sjb7183@psu.edu> reported a bug as below:
 
-Fixes: 73108aa90cbf ("USB: ohci-nxp: Use isp1301 driver")
-Cc: stable@vger.kernel.org	# 3.5
-Reported-by: Ma Ke <make24@iscas.ac.cn>
-Link: https://lore.kernel.org/lkml/20251117013428.21840-1-make24@iscas.ac.cn/
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Acked-by: Alan Stern <stern@rowland.harvard.edu>
-Reviewed-by: Vladimir Zapolskiy <vz@mleia.com>
-Link: https://patch.msgid.link/20251218153519.19453-4-johan@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Oops: divide error: 0000 [#1] SMP KASAN PTI
+CPU: 0 UID: 0 PID: 11441 Comm: syz.0.46 Not tainted 6.17.0 #1 PREEMPT(full)
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
+RIP: 0010:f2fs_all_cluster_page_ready+0x106/0x550 fs/f2fs/compress.c:857
+Call Trace:
+ <TASK>
+ f2fs_write_cache_pages fs/f2fs/data.c:3078 [inline]
+ __f2fs_write_data_pages fs/f2fs/data.c:3290 [inline]
+ f2fs_write_data_pages+0x1c19/0x3600 fs/f2fs/data.c:3317
+ do_writepages+0x38e/0x640 mm/page-writeback.c:2634
+ filemap_fdatawrite_wbc mm/filemap.c:386 [inline]
+ __filemap_fdatawrite_range mm/filemap.c:419 [inline]
+ file_write_and_wait_range+0x2ba/0x3e0 mm/filemap.c:794
+ f2fs_do_sync_file+0x6e6/0x1b00 fs/f2fs/file.c:294
+ generic_write_sync include/linux/fs.h:3043 [inline]
+ f2fs_file_write_iter+0x76e/0x2700 fs/f2fs/file.c:5259
+ new_sync_write fs/read_write.c:593 [inline]
+ vfs_write+0x7e9/0xe00 fs/read_write.c:686
+ ksys_write+0x19d/0x2d0 fs/read_write.c:738
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xf7/0x470 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+The bug was triggered w/ below race condition:
+
+fsync				setattr			ioctl
+- f2fs_do_sync_file
+ - file_write_and_wait_range
+  - f2fs_write_cache_pages
+  : inode is non-compressed
+  : cc.cluster_size =
+    F2FS_I(inode)->i_cluster_size = 0
+   - tag_pages_for_writeback
+				- f2fs_setattr
+				 - truncate_setsize
+				 - f2fs_truncate
+							- f2fs_fileattr_set
+							 - f2fs_setflags_common
+							  - set_compress_context
+							  : F2FS_I(inode)->i_cluster_size = 4
+							  : set_inode_flag(inode, FI_COMPRESSED_FILE)
+   - f2fs_compressed_file
+   : return true
+   - f2fs_all_cluster_page_ready
+   : "pgidx % cc->cluster_size" trigger dividing 0 issue
+
+Let's change as below to fix this issue:
+- introduce a new atomic type variable .writeback in structure f2fs_inode_info
+to track the number of threads which calling f2fs_write_cache_pages().
+- use .i_sem lock to protect .writeback update.
+- check .writeback before update compression context in f2fs_setflags_common()
+to avoid race w/ ->writepages.
+
+Fixes: 4c8ff7095bef ("f2fs: support data compression")
+Cc: stable@kernel.org
+Reported-by: Bai, Shuangpeng <sjb7183@psu.edu>
+Tested-by: Bai, Shuangpeng <sjb7183@psu.edu>
+Closes: https://lore.kernel.org/lkml/44D8F7B3-68AD-425F-9915-65D27591F93F@psu.edu
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+[ Adjust context ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/ohci-nxp.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/f2fs/data.c  |   17 +++++++++++++++++
+ fs/f2fs/f2fs.h  |    3 ++-
+ fs/f2fs/file.c  |    5 +++--
+ fs/f2fs/super.c |    1 +
+ 4 files changed, 23 insertions(+), 3 deletions(-)
 
---- a/drivers/usb/host/ohci-nxp.c
-+++ b/drivers/usb/host/ohci-nxp.c
-@@ -224,6 +224,7 @@ static int ohci_hcd_nxp_probe(struct pla
- fail_resource:
- 	usb_put_hcd(hcd);
- fail_disable:
-+	put_device(&isp1301_i2c_client->dev);
- 	isp1301_i2c_client = NULL;
- 	return ret;
+--- a/fs/f2fs/data.c
++++ b/fs/f2fs/data.c
+@@ -3233,6 +3233,19 @@ static inline bool __should_serialize_io
+ 	return false;
  }
-@@ -235,6 +236,7 @@ static int ohci_hcd_nxp_remove(struct pl
- 	usb_remove_hcd(hcd);
- 	ohci_nxp_stop_hc();
- 	usb_put_hcd(hcd);
-+	put_device(&isp1301_i2c_client->dev);
- 	isp1301_i2c_client = NULL;
  
- 	return 0;
++static inline void account_writeback(struct inode *inode, bool inc)
++{
++	if (!f2fs_sb_has_compression(F2FS_I_SB(inode)))
++		return;
++
++	f2fs_down_read(&F2FS_I(inode)->i_sem);
++	if (inc)
++		atomic_inc(&F2FS_I(inode)->writeback);
++	else
++		atomic_dec(&F2FS_I(inode)->writeback);
++	f2fs_up_read(&F2FS_I(inode)->i_sem);
++}
++
+ static int __f2fs_write_data_pages(struct address_space *mapping,
+ 						struct writeback_control *wbc,
+ 						enum iostat_type io_type)
+@@ -3282,10 +3295,14 @@ static int __f2fs_write_data_pages(struc
+ 		locked = true;
+ 	}
+ 
++	account_writeback(inode, true);
++
+ 	blk_start_plug(&plug);
+ 	ret = f2fs_write_cache_pages(mapping, wbc, io_type);
+ 	blk_finish_plug(&plug);
+ 
++	account_writeback(inode, false);
++
+ 	if (locked)
+ 		mutex_unlock(&sbi->writepages);
+ 
+--- a/fs/f2fs/f2fs.h
++++ b/fs/f2fs/f2fs.h
+@@ -869,6 +869,7 @@ struct f2fs_inode_info {
+ 	unsigned char i_compress_level;		/* compress level (lz4hc,zstd) */
+ 	unsigned char i_compress_flag;		/* compress flag */
+ 	unsigned int i_cluster_size;		/* cluster size */
++	atomic_t writeback;			/* count # of writeback thread */
+ 
+ 	unsigned int atomic_write_cnt;
+ 	loff_t original_i_size;		/* original i_size before atomic write */
+@@ -4485,7 +4486,7 @@ static inline bool f2fs_disable_compress
+ 		f2fs_up_write(&F2FS_I(inode)->i_sem);
+ 		return true;
+ 	}
+-	if (f2fs_is_mmap_file(inode) ||
++	if (f2fs_is_mmap_file(inode) || atomic_read(&fi->writeback) ||
+ 		(S_ISREG(inode->i_mode) && F2FS_HAS_BLOCKS(inode))) {
+ 		f2fs_up_write(&F2FS_I(inode)->i_sem);
+ 		return false;
+--- a/fs/f2fs/file.c
++++ b/fs/f2fs/file.c
+@@ -2045,8 +2045,9 @@ static int f2fs_setflags_common(struct i
+ 
+ 			f2fs_down_write(&F2FS_I(inode)->i_sem);
+ 			if (!f2fs_may_compress(inode) ||
+-					(S_ISREG(inode->i_mode) &&
+-					F2FS_HAS_BLOCKS(inode))) {
++				atomic_read(&fi->writeback) ||
++				(S_ISREG(inode->i_mode) &&
++				F2FS_HAS_BLOCKS(inode))) {
+ 				f2fs_up_write(&F2FS_I(inode)->i_sem);
+ 				return -EINVAL;
+ 			}
+--- a/fs/f2fs/super.c
++++ b/fs/f2fs/super.c
+@@ -1410,6 +1410,7 @@ static struct inode *f2fs_alloc_inode(st
+ 	atomic_set(&fi->dirty_pages, 0);
+ 	atomic_set(&fi->i_compr_blocks, 0);
+ 	atomic_set(&fi->open_count, 0);
++	atomic_set(&fi->writeback, 0);
+ 	init_f2fs_rwsem(&fi->i_sem);
+ 	spin_lock_init(&fi->i_size_lock);
+ 	INIT_LIST_HEAD(&fi->dirty_list);
 
 
 
