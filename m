@@ -1,54 +1,60 @@
-Return-Path: <stable+bounces-207434-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206832-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A37CD09D54
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:40:31 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C41C7D0959F
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:11:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9BA4030382BA
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:34:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E362C30FF48E
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:05:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B514359701;
-	Fri,  9 Jan 2026 12:34:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A431A359F99;
+	Fri,  9 Jan 2026 12:05:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PO9Dy0z+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AIL2PTD/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EC08336EDA;
-	Fri,  9 Jan 2026 12:34:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6825F1946C8;
+	Fri,  9 Jan 2026 12:05:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962044; cv=none; b=SFd3rOZrXBJJ8Y1xjf4V8G5o4Ljg0IttTWpXhy0JbHmcGL6LFMc24zhLH3p+VcVts29y9pkBQc3lGeCNaTLGJeyADaFF/XUqFyv8/vyk8VNbEwUvXrGYyu7bjeDXLsFVS9Foi5YegWhqXHwfEDnRY4gWgoZ0XZtBS9bbfl6GrYc=
+	t=1767960326; cv=none; b=PS1p9sg8xZ5N79+SHMdIc9IQJCKy1dT+/DKALvwHg/fKTDHOTEgmDiIHiJdHKmihN+NIImNSig04wMxvWD99qqkJ3jBUC106stt3Nnh+rfBK54Pdrbu000Hiul0cP8IC75tLgwwycmCTCDrlYg9G0/860/lILQiJDbyfzr4Bo8A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962044; c=relaxed/simple;
-	bh=p9POYlynfmVFn+n1lQ4wkJC+FlDd5bQVQD7/d4znnn8=;
+	s=arc-20240116; t=1767960326; c=relaxed/simple;
+	bh=SqtbeOFZTbhvRFgpgAVxSxSzdioa3mmrzZ2MNIXsUho=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ljH1xDaL2wHoc0gzSw8NUtDfIFhMqTDNmMebRO/MEmBdjiW4ym9pm/yB8hAh8Qtqp51LdE3NtmVihqoG+bETKN70Wjcwl8WwJkYoJwK2NfWhYoaBY/MabD4nnGZ6PGS64dk/clnrWrfophHzOxR+6zcZTNqTONP1jgQv2bodb8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PO9Dy0z+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F2BEC4CEF1;
-	Fri,  9 Jan 2026 12:34:03 +0000 (UTC)
+	 MIME-Version; b=GqTPcreMkn7290E7xqHnMUtizhrsYgxIfPsnfBAr30yAHzBfXIUlITgqA3vNAYWsULQTxDQYAM1jKLeUQKaeMaBgOICc3F6lUW4dvSWKwy4w+6rxhuZAmzCpxjt6+ls2TnpZ3M+RHgwkBbbY4ELv0gZqy+QdHvKd2qW7GoTZOF4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AIL2PTD/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0B1FC4CEF1;
+	Fri,  9 Jan 2026 12:05:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962043;
-	bh=p9POYlynfmVFn+n1lQ4wkJC+FlDd5bQVQD7/d4znnn8=;
+	s=korg; t=1767960326;
+	bh=SqtbeOFZTbhvRFgpgAVxSxSzdioa3mmrzZ2MNIXsUho=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PO9Dy0z+Pb0+cEqjFcgE9Wlmv4xR2h5eGkU0/5pcFNJwZbGmA48PXEBy8LBzg3Rx/
-	 8qwsVwcbACRo/7abQ0ciNvEeI4cbjcP92CMJhKiteAkL11iprQeh+S4q2/oAGu2nMH
-	 ca7nmfM7gH/Y2Myq3rXe120bGfliHlJn0ziEIl1E=
+	b=AIL2PTD/4BbqUYnSxFNfNEOtSOeM6PGID5J1LsGuZla2KVfW5ts7S68JATii9W0ff
+	 fRGTaeblv1sTPgIESxvVU2xM4r6rgeuYuEuotBdU74ynDV8acxTFI+JWEL8GqLSirs
+	 GVptB+NFIPKkvcyeNwrVW5h/uxDl8NwWttNkBTbQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ondrej Mosnacek <omosnace@redhat.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Brian Gerst <brgerst@gmail.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Juergen Gross <jgross@suse.com>,
+	Sohil Mehta <sohil.mehta@intel.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Josh Poimboeuf <jpoimboe@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 226/634] bpf, arm64: Do not audit capability check in do_jit()
+Subject: [PATCH 6.6 365/737] x86/xen: Move Xen upcall handler
 Date: Fri,  9 Jan 2026 12:38:24 +0100
-Message-ID: <20260109112125.935365439@linuxfoundation.org>
+Message-ID: <20260109112147.726879119@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,58 +66,215 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ondrej Mosnacek <omosnace@redhat.com>
+From: Brian Gerst <brgerst@gmail.com>
 
-[ Upstream commit 189e5deb944a6f9c7992355d60bffd8ec2e54a9c ]
+[ Upstream commit 1ab7b5ed44ba9bce581e225f40219b793bc779d6 ]
 
-Analogically to the x86 commit 881a9c9cb785 ("bpf: Do not audit
-capability check in do_jit()"), change the capable() call to
-ns_capable_noaudit() in order to avoid spurious SELinux denials in audit
-log.
+Move the upcall handler to Xen-specific files.
 
-The commit log from that commit applies here as well:
-"""
-The failure of this check only results in a security mitigation being
-applied, slightly affecting performance of the compiled BPF program. It
-doesn't result in a failed syscall, an thus auditing a failed LSM
-permission check for it is unwanted. For example with SELinux, it causes
-a denial to be reported for confined processes running as root, which
-tends to be flagged as a problem to be fixed in the policy. Yet
-dontauditing or allowing CAP_SYS_ADMIN to the domain may not be
-desirable, as it would allow/silence also other checks - either going
-against the principle of least privilege or making debugging potentially
-harder.
+No functional changes.
 
-Fix it by changing it from capable() to ns_capable_noaudit(), which
-instructs the LSMs to not audit the resulting denials.
-"""
-
-Fixes: f300769ead03 ("arm64: bpf: Only mitigate cBPF programs loaded by unprivileged users")
-Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
-Link: https://lore.kernel.org/r/20251204125916.441021-1-omosnace@redhat.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Brian Gerst <brgerst@gmail.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Reviewed-by: Sohil Mehta <sohil.mehta@intel.com>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: H. Peter Anvin <hpa@zytor.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Josh Poimboeuf <jpoimboe@redhat.com>
+Link: https://lore.kernel.org/r/20250314151220.862768-2-brgerst@gmail.com
+Stable-dep-of: e5aff444e3a7 ("x86/xen: Fix sparse warning in enlighten_pv.c")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/net/bpf_jit_comp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/entry/common.c     | 72 -------------------------------------
+ arch/x86/xen/enlighten_pv.c | 69 +++++++++++++++++++++++++++++++++++
+ 2 files changed, 69 insertions(+), 72 deletions(-)
 
-diff --git a/arch/arm64/net/bpf_jit_comp.c b/arch/arm64/net/bpf_jit_comp.c
-index 3dd23050a6c89..783883721aaf5 100644
---- a/arch/arm64/net/bpf_jit_comp.c
-+++ b/arch/arm64/net/bpf_jit_comp.c
-@@ -666,7 +666,7 @@ static void __maybe_unused build_bhb_mitigation(struct jit_ctx *ctx)
- 	    arm64_get_spectre_v2_state() == SPECTRE_VULNERABLE)
- 		return;
+diff --git a/arch/x86/entry/common.c b/arch/x86/entry/common.c
+index e72dac092245..3c88bdf96e7a 100644
+--- a/arch/x86/entry/common.c
++++ b/arch/x86/entry/common.c
+@@ -20,11 +20,6 @@
+ #include <linux/syscalls.h>
+ #include <linux/uaccess.h>
  
--	if (capable(CAP_SYS_ADMIN))
-+	if (ns_capable_noaudit(&init_user_ns, CAP_SYS_ADMIN))
- 		return;
+-#ifdef CONFIG_XEN_PV
+-#include <xen/xen-ops.h>
+-#include <xen/events.h>
+-#endif
+-
+ #include <asm/apic.h>
+ #include <asm/desc.h>
+ #include <asm/traps.h>
+@@ -346,70 +341,3 @@ SYSCALL_DEFINE0(ni_syscall)
+ {
+ 	return -ENOSYS;
+ }
+-
+-#ifdef CONFIG_XEN_PV
+-#ifndef CONFIG_PREEMPTION
+-/*
+- * Some hypercalls issued by the toolstack can take many 10s of
+- * seconds. Allow tasks running hypercalls via the privcmd driver to
+- * be voluntarily preempted even if full kernel preemption is
+- * disabled.
+- *
+- * Such preemptible hypercalls are bracketed by
+- * xen_preemptible_hcall_begin() and xen_preemptible_hcall_end()
+- * calls.
+- */
+-DEFINE_PER_CPU(bool, xen_in_preemptible_hcall);
+-EXPORT_SYMBOL_GPL(xen_in_preemptible_hcall);
+-
+-/*
+- * In case of scheduling the flag must be cleared and restored after
+- * returning from schedule as the task might move to a different CPU.
+- */
+-static __always_inline bool get_and_clear_inhcall(void)
+-{
+-	bool inhcall = __this_cpu_read(xen_in_preemptible_hcall);
+-
+-	__this_cpu_write(xen_in_preemptible_hcall, false);
+-	return inhcall;
+-}
+-
+-static __always_inline void restore_inhcall(bool inhcall)
+-{
+-	__this_cpu_write(xen_in_preemptible_hcall, inhcall);
+-}
+-#else
+-static __always_inline bool get_and_clear_inhcall(void) { return false; }
+-static __always_inline void restore_inhcall(bool inhcall) { }
+-#endif
+-
+-static void __xen_pv_evtchn_do_upcall(struct pt_regs *regs)
+-{
+-	struct pt_regs *old_regs = set_irq_regs(regs);
+-
+-	inc_irq_stat(irq_hv_callback_count);
+-
+-	xen_evtchn_do_upcall();
+-
+-	set_irq_regs(old_regs);
+-}
+-
+-__visible noinstr void xen_pv_evtchn_do_upcall(struct pt_regs *regs)
+-{
+-	irqentry_state_t state = irqentry_enter(regs);
+-	bool inhcall;
+-
+-	instrumentation_begin();
+-	run_sysvec_on_irqstack_cond(__xen_pv_evtchn_do_upcall, regs);
+-
+-	inhcall = get_and_clear_inhcall();
+-	if (inhcall && !WARN_ON_ONCE(state.exit_rcu)) {
+-		irqentry_exit_cond_resched();
+-		instrumentation_end();
+-		restore_inhcall(inhcall);
+-	} else {
+-		instrumentation_end();
+-		irqentry_exit(regs, state);
+-	}
+-}
+-#endif /* CONFIG_XEN_PV */
+diff --git a/arch/x86/xen/enlighten_pv.c b/arch/x86/xen/enlighten_pv.c
+index 3df7c96e7388..72b58fa4bc17 100644
+--- a/arch/x86/xen/enlighten_pv.c
++++ b/arch/x86/xen/enlighten_pv.c
+@@ -72,6 +72,7 @@
+ #include <asm/mwait.h>
+ #include <asm/pci_x86.h>
+ #include <asm/cpu.h>
++#include <asm/irq_stack.h>
+ #ifdef CONFIG_X86_IOPL_IOPERM
+ #include <asm/io_bitmap.h>
+ #endif
+@@ -97,6 +98,44 @@ void *xen_initial_gdt;
+ static int xen_cpu_up_prepare_pv(unsigned int cpu);
+ static int xen_cpu_dead_pv(unsigned int cpu);
  
- 	if (supports_clearbhb(SCOPE_SYSTEM)) {
++#ifndef CONFIG_PREEMPTION
++/*
++ * Some hypercalls issued by the toolstack can take many 10s of
++ * seconds. Allow tasks running hypercalls via the privcmd driver to
++ * be voluntarily preempted even if full kernel preemption is
++ * disabled.
++ *
++ * Such preemptible hypercalls are bracketed by
++ * xen_preemptible_hcall_begin() and xen_preemptible_hcall_end()
++ * calls.
++ */
++DEFINE_PER_CPU(bool, xen_in_preemptible_hcall);
++EXPORT_SYMBOL_GPL(xen_in_preemptible_hcall);
++
++/*
++ * In case of scheduling the flag must be cleared and restored after
++ * returning from schedule as the task might move to a different CPU.
++ */
++static __always_inline bool get_and_clear_inhcall(void)
++{
++	bool inhcall = __this_cpu_read(xen_in_preemptible_hcall);
++
++	__this_cpu_write(xen_in_preemptible_hcall, false);
++	return inhcall;
++}
++
++static __always_inline void restore_inhcall(bool inhcall)
++{
++	__this_cpu_write(xen_in_preemptible_hcall, inhcall);
++}
++
++#else
++
++static __always_inline bool get_and_clear_inhcall(void) { return false; }
++static __always_inline void restore_inhcall(bool inhcall) { }
++
++#endif
++
+ struct tls_descs {
+ 	struct desc_struct desc[3];
+ };
+@@ -678,6 +717,36 @@ DEFINE_IDTENTRY_RAW(xenpv_exc_machine_check)
+ }
+ #endif
+ 
++static void __xen_pv_evtchn_do_upcall(struct pt_regs *regs)
++{
++	struct pt_regs *old_regs = set_irq_regs(regs);
++
++	inc_irq_stat(irq_hv_callback_count);
++
++	xen_evtchn_do_upcall();
++
++	set_irq_regs(old_regs);
++}
++
++__visible noinstr void xen_pv_evtchn_do_upcall(struct pt_regs *regs)
++{
++	irqentry_state_t state = irqentry_enter(regs);
++	bool inhcall;
++
++	instrumentation_begin();
++	run_sysvec_on_irqstack_cond(__xen_pv_evtchn_do_upcall, regs);
++
++	inhcall = get_and_clear_inhcall();
++	if (inhcall && !WARN_ON_ONCE(state.exit_rcu)) {
++		irqentry_exit_cond_resched();
++		instrumentation_end();
++		restore_inhcall(inhcall);
++	} else {
++		instrumentation_end();
++		irqentry_exit(regs, state);
++	}
++}
++
+ struct trap_array_entry {
+ 	void (*orig)(void);
+ 	void (*xen)(void);
 -- 
 2.51.0
 
