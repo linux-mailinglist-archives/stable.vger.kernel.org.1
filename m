@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-207580-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206978-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA4AFD0A08B
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:53:01 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54640D0981C
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:21:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B1B08315F3EA
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:41:44 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 406B53094319
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:12:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0471235BDA7;
-	Fri,  9 Jan 2026 12:41:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E2AF320CB6;
+	Fri,  9 Jan 2026 12:12:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n6ZbEM6j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0kW+4c+4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB51F358D30;
-	Fri,  9 Jan 2026 12:40:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 008822EAD10;
+	Fri,  9 Jan 2026 12:12:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962459; cv=none; b=iq6oVxX8VQYDFi4Syi+FXNLOHx1D+29Fxacp7lL1aF7OphzwaPOwCftuFACAs5plDpS2mD6X0MzP20GKPb8QVpCmqum7uu+2vQaQwBt7WuaHdylb0ClERTV9XAVGxgtfMOhwxECCkUNAHh6/fpcBtR1lGhubRkDuR6lfoyHmsbE=
+	t=1767960746; cv=none; b=ZQ8QDe0xjUUQEldO6d3FXWN8FvmzBixEEhfqpdaybMKnTGz9HzfNG2aDwJ7cGewjuIwtK13BfkT3ebe5tsm6/O0kB4tptEB/b4px1FU0KtyyOLC7LlaS+Gi42PzBpqfg9YEeCB4/1vuZsz/Bl9M2+tMM2sAi/KxHg7vcu0HbD08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962459; c=relaxed/simple;
-	bh=xpezYi2BS88HboVLipVN4nDzzVzeMvuJK4SDuIzgj/M=;
+	s=arc-20240116; t=1767960746; c=relaxed/simple;
+	bh=UfrQXmYzbhPSBKJ0aJV+QUlwtAXAXVZZ/PI2QaaR0Ho=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jFk1ga5dKryAcyXCX5Y7dDOf4HcQz0CfsO/mIeIz7KP9C+VdvxVKn6/5LeRyMIaCjTApWkplCc2T7Ph350PhdwUD/NI6XjyI4fNgXDW4aCzZ7F0ZdbmgKDfTUlBWWTmHkYllL86ZUqE4npJMuPcpi1XIEU+q7ReQ89D2fn245eU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n6ZbEM6j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF092C4CEF1;
-	Fri,  9 Jan 2026 12:40:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=FAuGlV7EjuvR4C+UFIFazdV/nua61rRdtvcqnaXvZyK7dhw/c+pdrYmrgAFvLH4Hx8jSzqnmH3DEZSEnMla6wPKqRY2TRFgn1kMLCHNzaUPkZ+u0MdrV7IWoMu0C8H48GtRBAkLICO3YHF/eryGylp5cj0uXeCLd2EDb5n6TMxo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0kW+4c+4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80B69C4CEF1;
+	Fri,  9 Jan 2026 12:12:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962459;
-	bh=xpezYi2BS88HboVLipVN4nDzzVzeMvuJK4SDuIzgj/M=;
+	s=korg; t=1767960745;
+	bh=UfrQXmYzbhPSBKJ0aJV+QUlwtAXAXVZZ/PI2QaaR0Ho=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n6ZbEM6jyxrb4FOiD22YrwcSdHxkwUM3N4CXN3cT+EhDdMm9HCn8a5tKbE1GJZKMg
-	 +qbZ0OtIiXXx+iuO1mfcB+5JN57kiZf49QoxzIm7Pzg0oC3sp975tRcIdsBTmrf3B9
-	 q37dKeaJdHJrwxvhDVzvjgbFHj68mGYsd73cULPg=
+	b=0kW+4c+4NWMYqq95DC/VVzjLZtXx8iy5HIXDvyt5t1j4FrDtRgqosqK4ppNymItIc
+	 lQXJRlbJ/q4QHenC3omUMcjLYMedgDG2lA0fvw1BGeXhJWJqwQeEeHd+q0XZFyNH81
+	 l4VRUwzAmo7SE9Maa7ZaHD9M5cbyvaxhLOwVAC60=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sudheendra Raghav Neela <sneela@tugraz.at>,
-	Amir Goldstein <amir73il@gmail.com>,
-	Jan Kara <jack@suse.cz>
-Subject: [PATCH 6.1 372/634] fsnotify: do not generate ACCESS/MODIFY events on child for special files
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 511/737] platform/x86: msi-laptop: add missing sysfs_remove_group()
 Date: Fri,  9 Jan 2026 12:40:50 +0100
-Message-ID: <20260109112131.528052331@linuxfoundation.org>
+Message-ID: <20260109112153.220628444@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,65 +58,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amir Goldstein <amir73il@gmail.com>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-commit 635bc4def026a24e071436f4f356ea08c0eed6ff upstream.
+[ Upstream commit 1461209cf813b6ee6d40f29b96b544587df6d2b1 ]
 
-inotify/fanotify do not allow users with no read access to a file to
-subscribe to events (e.g. IN_ACCESS/IN_MODIFY), but they do allow the
-same user to subscribe for watching events on children when the user
-has access to the parent directory (e.g. /dev).
+A sysfs group is created in msi_init() when old_ec_model is enabled, but
+never removed. Remove the msipf_old_attribute_group in that case.
 
-Users with no read access to a file but with read access to its parent
-directory can still stat the file and see if it was accessed/modified
-via atime/mtime change.
-
-The same is not true for special files (e.g. /dev/null). Users will not
-generally observe atime/mtime changes when other users read/write to
-special files, only when someone sets atime/mtime via utimensat().
-
-Align fsnotify events with this stat behavior and do not generate
-ACCESS/MODIFY events to parent watchers on read/write of special files.
-The events are still generated to parent watchers on utimensat(). This
-closes some side-channels that could be possibly used for information
-exfiltration [1].
-
-[1] https://snee.la/pdf/pubs/file-notification-attacks.pdf
-
-Reported-by: Sudheendra Raghav Neela <sneela@tugraz.at>
-CC: stable@vger.kernel.org
-Signed-off-by: Amir Goldstein <amir73il@gmail.com>
-Signed-off-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 03696e51d75a ("msi-laptop: Disable brightness control for new EC")
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Link: https://patch.msgid.link/20251217103617.27668-2-fourier.thomas@gmail.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/notify/fsnotify.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/platform/x86/msi-laptop.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/fs/notify/fsnotify.c
-+++ b/fs/notify/fsnotify.c
-@@ -224,8 +224,15 @@ int __fsnotify_parent(struct dentry *den
- 	/*
- 	 * Include parent/name in notification either if some notification
- 	 * groups require parent info or the parent is interested in this event.
-+	 * The parent interest in ACCESS/MODIFY events does not apply to special
-+	 * files, where read/write are not on the filesystem of the parent and
-+	 * events can provide an undesirable side-channel for information
-+	 * exfiltration.
- 	 */
--	parent_interested = mask & p_mask & ALL_FSNOTIFY_EVENTS;
-+	parent_interested = mask & p_mask & ALL_FSNOTIFY_EVENTS &&
-+			    !(data_type == FSNOTIFY_EVENT_PATH &&
-+			      d_is_special(dentry) &&
-+			      (mask & (FS_ACCESS | FS_MODIFY)));
- 	if (parent_needed || parent_interested) {
- 		/* When notifying parent, child should be passed as data */
- 		WARN_ON_ONCE(inode != fsnotify_data_inode(data, data_type));
+diff --git a/drivers/platform/x86/msi-laptop.c b/drivers/platform/x86/msi-laptop.c
+index f4c6c36e05a5..2a8839135492 100644
+--- a/drivers/platform/x86/msi-laptop.c
++++ b/drivers/platform/x86/msi-laptop.c
+@@ -1130,6 +1130,9 @@ static void __exit msi_cleanup(void)
+ 	sysfs_remove_group(&msipf_device->dev.kobj, &msipf_attribute_group);
+ 	if (!quirks->old_ec_model && threeg_exists)
+ 		device_remove_file(&msipf_device->dev, &dev_attr_threeg);
++	if (quirks->old_ec_model)
++		sysfs_remove_group(&msipf_device->dev.kobj,
++				   &msipf_old_attribute_group);
+ 	platform_device_unregister(msipf_device);
+ 	platform_driver_unregister(&msipf_driver);
+ 	backlight_device_unregister(msibl_device);
+-- 
+2.51.0
+
 
 
 
