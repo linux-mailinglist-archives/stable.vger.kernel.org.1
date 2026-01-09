@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-206841-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207442-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95F79D0942E
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:06:57 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18024D09EB3
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:45:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 6DB20302475F
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:05:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 93DD8309F702
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:34:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3C4435A921;
-	Fri,  9 Jan 2026 12:05:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DFBE359701;
+	Fri,  9 Jan 2026 12:34:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IPuZVn/X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pWoxKp+C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A74DD1946C8;
-	Fri,  9 Jan 2026 12:05:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3141A336EDA;
+	Fri,  9 Jan 2026 12:34:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960351; cv=none; b=O82heRW6OOsXbGK7m05H3g2ND0jfCEFRTp+fZUtZKp04gDJa3ThSnTh/2WenPUhNONp2Tgpf2kpWAjKTwA/k7qjJRmxcwzuCPhTw6qacgrm6DspDx4FnUsDJ2C/mA4TGmo4z4b7ptm8azVmSVeRIXv3BcW/z2qE03/arZlbIZ18=
+	t=1767962066; cv=none; b=AkyBhhRoFfTpWdvwbPItvGxymKxe+3LqfND4Px+rDOXNXmfWRiFFkkP8gQdulHyuv13dQ0STfEJ1Bj8F0GgAt1laChdB+O6Yg9qPEho3xBcnLF4VpA69aLEcSyFSXWOCzN+6ao7014ppUpL2ecKH1oc7iDv4Krk9TjmhgRvqHSc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960351; c=relaxed/simple;
-	bh=ltTlgIGZhHEe1VLgRAlpU0lgLSC6j/vjPE/ACAd+/BM=;
+	s=arc-20240116; t=1767962066; c=relaxed/simple;
+	bh=H4q7bG+TgWJ2NY5tGzPM4954tiN8JVzvsYTSEjfiy80=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rFfIi1oJ8hlQ/dUJnk756YkyqvF1dBgO5DwTSQbJDhiTwboDV1KuQ9+WXFwKN7e7UCDCCgk7MM2Pa9hIIY7aM59KPPfPN6LP3mEj7AgRK9aacJnYNhcJeV8HeX2apfXHIvRcyI+UG164CpAny2Sc/UykPEK/rDCZyIA6CkotVxY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IPuZVn/X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 342AEC4CEF1;
-	Fri,  9 Jan 2026 12:05:51 +0000 (UTC)
+	 MIME-Version; b=HfR87DTZL4u0Gg3kAmuZY1aPVvir5gcSfp4H4c4veKgAVJHsBy8ICTPzJxuwJ4OYq2IPPMHFZBUIYcmK+hl9u0zbrl2uwteqvKqmaB7Vj3uhxwV90xCCbIcyOTE5z9Butan/mHR5ZB5lt/ElfcvNpmQSBbrUZOrgicJZdT10Lsk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pWoxKp+C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4648C4CEF1;
+	Fri,  9 Jan 2026 12:34:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960351;
-	bh=ltTlgIGZhHEe1VLgRAlpU0lgLSC6j/vjPE/ACAd+/BM=;
+	s=korg; t=1767962066;
+	bh=H4q7bG+TgWJ2NY5tGzPM4954tiN8JVzvsYTSEjfiy80=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IPuZVn/XMhsSH0fJUgyJbaicw+7Y6K2TNqjcgrmZf7tHX1FxzZ1THjZ9rednb5qeD
-	 rbEo51MFBqoEYq3j2MksquZpNsf4nNZtduL/h+e1G5nRjs2ygnvz16sAZnp8O+SVkM
-	 9zdmX5quLklC5NHvuGX6VFwD//x5EVQD4XVu6N+Q=
+	b=pWoxKp+CrnaZeP90uOw5SvXBcTcjWCjool4W3LUQkp9Xx0iTKSk7HbEB67WRZUGZc
+	 1MbMk4meq9DCa3Bxwi6kGbDbfquvmd4gCrD5WLkYy0hGmvgudH523TClnvjPULYNRX
+	 CiMEreyENMpFk3mc1Gh8dUdJnhqvPs+683Df0hqQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junjie Cao <junjie.cao@intel.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.6 373/737] Input: ti_am335x_tsc - fix off-by-one error in wire_order validation
+	Shuhao Fu <sfual@cse.ust.hk>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 234/634] cpufreq: s5pv210: fix refcount leak
 Date: Fri,  9 Jan 2026 12:38:32 +0100
-Message-ID: <20260109112148.025148173@linuxfoundation.org>
+Message-ID: <20260109112126.233304967@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,43 +60,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junjie Cao <junjie.cao@intel.com>
+From: Shuhao Fu <sfual@cse.ust.hk>
 
-commit 248d3a73a0167dce15ba100477c3e778c4787178 upstream.
+[ Upstream commit 2de5cb96060a1664880d65b120e59485a73588a8 ]
 
-The current validation 'wire_order[i] > ARRAY_SIZE(config_pins)' allows
-wire_order[i] to equal ARRAY_SIZE(config_pins), which causes out-of-bounds
-access when used as index in 'config_pins[wire_order[i]]'.
+In function `s5pv210_cpu_init`, a possible refcount inconsistency has
+been identified, causing a resource leak.
 
-Since config_pins has 4 elements (indices 0-3), the valid range for
-wire_order should be 0-3. Fix the off-by-one error by using >= instead
-of > in the validation check.
+Why it is a bug:
+1. For every clk_get, there should be a matching clk_put on every
+successive error handling path.
+2. After calling `clk_get(dmc1_clk)`, variable `dmc1_clk` will not be
+freed even if any error happens.
 
-Signed-off-by: Junjie Cao <junjie.cao@intel.com>
-Link: https://patch.msgid.link/20251114062817.852698-1-junjie.cao@intel.com
-Fixes: bb76dc09ddfc ("input: ti_am33x_tsc: Order of TSC wires, made configurable")
-Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+How it is fixed: For every failed path, an extra goto label is added to
+ensure `dmc1_clk` will be freed regardlessly.
+
+Signed-off-by: Shuhao Fu <sfual@cse.ust.hk>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/touchscreen/ti_am335x_tsc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/cpufreq/s5pv210-cpufreq.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/input/touchscreen/ti_am335x_tsc.c
-+++ b/drivers/input/touchscreen/ti_am335x_tsc.c
-@@ -85,7 +85,7 @@ static int titsc_config_wires(struct tit
- 		wire_order[i] = ts_dev->config_inp[i] & 0x0F;
- 		if (WARN_ON(analog_line[i] > 7))
- 			return -EINVAL;
--		if (WARN_ON(wire_order[i] > ARRAY_SIZE(config_pins)))
-+		if (WARN_ON(wire_order[i] >= ARRAY_SIZE(config_pins)))
- 			return -EINVAL;
+diff --git a/drivers/cpufreq/s5pv210-cpufreq.c b/drivers/cpufreq/s5pv210-cpufreq.c
+index 76c888ed8d160..d2fa42beae9c2 100644
+--- a/drivers/cpufreq/s5pv210-cpufreq.c
++++ b/drivers/cpufreq/s5pv210-cpufreq.c
+@@ -518,7 +518,7 @@ static int s5pv210_cpu_init(struct cpufreq_policy *policy)
+ 
+ 	if (policy->cpu != 0) {
+ 		ret = -EINVAL;
+-		goto out_dmc1;
++		goto out;
  	}
  
+ 	/*
+@@ -530,7 +530,7 @@ static int s5pv210_cpu_init(struct cpufreq_policy *policy)
+ 	if ((mem_type != LPDDR) && (mem_type != LPDDR2)) {
+ 		pr_err("CPUFreq doesn't support this memory type\n");
+ 		ret = -EINVAL;
+-		goto out_dmc1;
++		goto out;
+ 	}
+ 
+ 	/* Find current refresh counter and frequency each DMC */
+@@ -544,6 +544,8 @@ static int s5pv210_cpu_init(struct cpufreq_policy *policy)
+ 	cpufreq_generic_init(policy, s5pv210_freq_table, 40000);
+ 	return 0;
+ 
++out:
++	clk_put(dmc1_clk);
+ out_dmc1:
+ 	clk_put(dmc0_clk);
+ out_dmc0:
+-- 
+2.51.0
+
 
 
 
