@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-207576-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206974-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C51CBD0A14D
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:57:20 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id C627BD096D8
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:17:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7567630D69BB
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:41:40 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0FC7930436D9
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:12:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6735F35BDC8;
-	Fri,  9 Jan 2026 12:40:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 009C535A94E;
+	Fri,  9 Jan 2026 12:12:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g9FxnI8z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TCQ2z306"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29C9E35BDC9;
-	Fri,  9 Jan 2026 12:40:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B676C35A94B;
+	Fri,  9 Jan 2026 12:12:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962448; cv=none; b=ej6btty103pURHQwr7gEFIkwgvO/PQVYOwDl3uFTeZudeDsVCiTW0PxaRp9txjEy0St5etw9h3Yen/cJVYBc6Et2buDs7Q+mMirEmYimM6oWzD7Fy/I7YfRn44+kYPpHkyyCN7mg+F95KWNWSXHWRhQzcj/QN22NI8TDLgCjth4=
+	t=1767960734; cv=none; b=bN8cq21Al1PbWokwDiwWwmxP6lLb0Fpv1TfL6jsZrnUDtiGx9G6Tlqcvh1C7v+JwYjMcWgTAQeNrx+7BWCu0pl9pbt82T5tuGzXNYwbKjnJvKlLeJzNtOvEKF3yA68ol1+VsYjQr4aoPKu++wbwip5CJrOqllNGJ6ZJT55Pk9p8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962448; c=relaxed/simple;
-	bh=u9JH3aw8k9FfIT0jWqqz3pVcluseXNLHGjQU6caxWRM=;
+	s=arc-20240116; t=1767960734; c=relaxed/simple;
+	bh=SQVpbEnsu9z7qIsYj/iYabX2Tt/CbZ972ArZ3FHA6Ck=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tf5AdUgsCKcG8igpvBlma6T+/0N7S4uBDY+3lHsTWrOc1B2f8QbeBVqOfUpvXOym6HPdwRl7D0548e9rnIm1GVNE+88grgCj572cSx3j+t4E8OBOWHUWXV3YuPPiFiqsF+WyhG0e3VIrhjCKCYxwUPTrJTwCywp5cCrMzaAtYFs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g9FxnI8z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A79D4C4CEF1;
-	Fri,  9 Jan 2026 12:40:47 +0000 (UTC)
+	 MIME-Version; b=QkbLsAJJTM02gL0dnxMgxsRdTg94HRGhyFe5NA4tFUVG4DvBdnJUDYpMXEgm+iauoxTh2Ekvzbiyz9/YuB3ftCrrKXvxxvNS7YO39kF8BGj/qTb3LvihjCFlorhd6zVYEmmNMi3b+OcLwXx8K3GAGmvVtG8MuftE5R4pzGX0yg0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TCQ2z306; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47F5AC4CEF1;
+	Fri,  9 Jan 2026 12:12:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962448;
-	bh=u9JH3aw8k9FfIT0jWqqz3pVcluseXNLHGjQU6caxWRM=;
+	s=korg; t=1767960734;
+	bh=SQVpbEnsu9z7qIsYj/iYabX2Tt/CbZ972ArZ3FHA6Ck=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g9FxnI8zjWqkprZRFuHGYe4bj00Q6amaNN9U2+bUd4c8iPx1C8OQ7AftdGIs4Rk5Z
-	 qN8IAqLVro8WTJsQFUqGdW/9/mCOBMjyyJ/kFOwqD3K9NRdkQaBpXAp4PZH9qBpp14
-	 yVInLk+yUcsPls137bYf1+lH6Y7ReQwf3zeSZpTs=
+	b=TCQ2z306s7/NnCkpn3U19/uEJh2SzNKs1QbR0+euu1zi7CeZeXyCBoGBX0/dTD+i1
+	 3NufbuEAB7FS/zSYZd/u3LbKsWAH/jAk860Pd/5/AFnAKmLtcVtqf+SLEm8dEFh/nZ
+	 96Cnn+9HTelUGNyiBMTIxlgiZmqTmrfYU3e3Dte4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
-	Christoph Hellwig <hch@lst.de>,
-	Carlos Maiolino <cmaiolino@redhat.com>,
-	Carlos Maiolino <cem@kernel.org>
-Subject: [PATCH 6.1 368/634] xfs: fix a memory leak in xfs_buf_item_init()
+	Raphael Pinsonneault-Thibeault <rpthibeault@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 507/737] Bluetooth: btusb: revert use of devm_kzalloc in btusb
 Date: Fri,  9 Jan 2026 12:40:46 +0100
-Message-ID: <20260109112131.378124302@linuxfoundation.org>
+Message-ID: <20260109112153.066200135@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +60,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+From: Raphael Pinsonneault-Thibeault <rpthibeault@gmail.com>
 
-commit fc40459de82543b565ebc839dca8f7987f16f62e upstream.
+[ Upstream commit 252714f1e8bdd542025b16321c790458014d6880 ]
 
-xfs_buf_item_get_format() may allocate memory for bip->bli_formats,
-free the memory in the error path.
+This reverts commit 98921dbd00c4e ("Bluetooth: Use devm_kzalloc in
+btusb.c file").
 
-Fixes: c3d5f0c2fb85 ("xfs: complain if anyone tries to create a too-large buffer log item")
-Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Carlos Maiolino <cmaiolino@redhat.com>
-Signed-off-by: Carlos Maiolino <cem@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+In btusb_probe(), we use devm_kzalloc() to allocate the btusb data. This
+ties the lifetime of all the btusb data to the binding of a driver to
+one interface, INTF. In a driver that binds to other interfaces, ISOC
+and DIAG, this is an accident waiting to happen.
+
+The issue is revealed in btusb_disconnect(), where calling
+usb_driver_release_interface(&btusb_driver, data->intf) will have devm
+free the data that is also being used by the other interfaces of the
+driver that may not be released yet.
+
+To fix this, revert the use of devm and go back to freeing memory
+explicitly.
+
+Fixes: 98921dbd00c4e ("Bluetooth: Use devm_kzalloc in btusb.c file")
+Signed-off-by: Raphael Pinsonneault-Thibeault <rpthibeault@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/xfs_buf_item.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/bluetooth/btusb.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
---- a/fs/xfs/xfs_buf_item.c
-+++ b/fs/xfs/xfs_buf_item.c
-@@ -900,6 +900,7 @@ xfs_buf_item_init(
- 		map_size = DIV_ROUND_UP(chunks, NBWORD);
+diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
+index 7bc7ee4eebd3..1309e9318bdb 100644
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -4342,7 +4342,7 @@ static int btusb_probe(struct usb_interface *intf,
+ 			return -ENODEV;
+ 	}
  
- 		if (map_size > XFS_BLF_DATAMAP_SIZE) {
-+			xfs_buf_item_free_format(bip);
- 			kmem_cache_free(xfs_buf_item_cache, bip);
- 			xfs_err(mp,
- 	"buffer item dirty bitmap (%u uints) too small to reflect %u bytes!",
+-	data = devm_kzalloc(&intf->dev, sizeof(*data), GFP_KERNEL);
++	data = kzalloc(sizeof(*data), GFP_KERNEL);
+ 	if (!data)
+ 		return -ENOMEM;
+ 
+@@ -4365,8 +4365,10 @@ static int btusb_probe(struct usb_interface *intf,
+ 		}
+ 	}
+ 
+-	if (!data->intr_ep || !data->bulk_tx_ep || !data->bulk_rx_ep)
++	if (!data->intr_ep || !data->bulk_tx_ep || !data->bulk_rx_ep) {
++		kfree(data);
+ 		return -ENODEV;
++	}
+ 
+ 	if (id->driver_info & BTUSB_AMP) {
+ 		data->cmdreq_type = USB_TYPE_CLASS | 0x01;
+@@ -4421,8 +4423,10 @@ static int btusb_probe(struct usb_interface *intf,
+ 	data->recv_acl = hci_recv_frame;
+ 
+ 	hdev = hci_alloc_dev_priv(priv_size);
+-	if (!hdev)
++	if (!hdev) {
++		kfree(data);
+ 		return -ENOMEM;
++	}
+ 
+ 	hdev->bus = HCI_USB;
+ 	hci_set_drvdata(hdev, data);
+@@ -4690,6 +4694,7 @@ static int btusb_probe(struct usb_interface *intf,
+ 	if (data->reset_gpio)
+ 		gpiod_put(data->reset_gpio);
+ 	hci_free_dev(hdev);
++	kfree(data);
+ 	return err;
+ }
+ 
+@@ -4738,6 +4743,7 @@ static void btusb_disconnect(struct usb_interface *intf)
+ 	}
+ 
+ 	hci_free_dev(hdev);
++	kfree(data);
+ }
+ 
+ #ifdef CONFIG_PM
+-- 
+2.51.0
+
 
 
 
