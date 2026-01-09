@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-206615-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206581-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23031D09125
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 12:55:15 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69240D091F7
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 12:58:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0DD553007522
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:55:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2607430DA616
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:53:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32A19335561;
-	Fri,  9 Jan 2026 11:55:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01AFE32FA3D;
+	Fri,  9 Jan 2026 11:53:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0zqhhW23"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wuSwgXJ5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E83152F12D4;
-	Fri,  9 Jan 2026 11:55:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8B2222F77B;
+	Fri,  9 Jan 2026 11:53:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767959710; cv=none; b=CiIBQVAGJaY2rBUsEcIQZXgROKjlxFa7pPQkTuxittSDxzxcvnNWo8R2MyvY7zmANkO1sje9iYxp1aIfNzEPBd+fY7keMLb4iyn+V/EA+n82VC5h5emuYTcGBzRmCZ+RYl4uusCxmyx2rCZSs6d+RDjUTqIFsRwjezxqsUh9+8Q=
+	t=1767959612; cv=none; b=cUcUrHZ3ctGViksCRKf/N/9FNlDeE5QPhQ4KfXnsP+la60LD9vobIGLXTCSm4VNeAqzM641BTDEv14acNxv6xzuxmKjjXJorSgIXAuKQ2d4ifye9SVbMqwQbAyp9O7F2mwmjnZ300t2ygR7H7fTep9YrBoI0u0wWFT3RTWYRcxQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767959710; c=relaxed/simple;
-	bh=g3CCNelzcpfKP+AtJuhETzE7T4n7GSfFdb36DY94W+A=;
+	s=arc-20240116; t=1767959612; c=relaxed/simple;
+	bh=kehUzPxIDzcYMGMhQuDmPjdPZUE7vQI4PfarQeG+Cz4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e40vD7JOqmLU1kYH4c88zbBwpx+YG8lWIS+rwilohphMONJLTA0Laj/SlFSNCqLjcwBrAuEKlcu8nTlKwPCk10S29eWf6XhkU6KIyAMZ0z1x2S+/uCDUGp2v6Aq8kBeErbHpmWiJs73ow4Jda711qrpNdmCA8pKh3u/lmDhZaag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0zqhhW23; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7196DC4CEF1;
-	Fri,  9 Jan 2026 11:55:09 +0000 (UTC)
+	 MIME-Version; b=YGeRJFh0D/J2cmlcU+zkVvo2z/h4l7G3YV0QRYPeRwnhpMjwKZ8/PnJxTqys4JmqW+b7Opv8yupKIAVOy+3wxN6NbCUcPNCeM6YCF4HBUgwfCA9nwMnxV/cl10bmTYU8ABXKXF87rDk1PrHvhotCxm9J4wUSQ/4OTp1E5XKpKvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wuSwgXJ5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43824C4CEF1;
+	Fri,  9 Jan 2026 11:53:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767959709;
-	bh=g3CCNelzcpfKP+AtJuhETzE7T4n7GSfFdb36DY94W+A=;
+	s=korg; t=1767959612;
+	bh=kehUzPxIDzcYMGMhQuDmPjdPZUE7vQI4PfarQeG+Cz4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0zqhhW23somqUxO3t+/eOGkva63X2NTZ5UKoDeneJuPtqrFFhJh3Ov6DGJWG1exu5
-	 CXEBC0LxO0CX2q9vFyG/oBmRsSsnyZWRgy1L6j7SCIYCD9qA82X2mYmn75YUz+e1R3
-	 CM+tTuX+tZgDCipkHOGazeT0azNimF0OAjRYU0qg=
+	b=wuSwgXJ56/vIPu4fzfPv2tw9F2mDMyMlWOGe9EuW5NxpK6evzybQCmkiu96LD2rRU
+	 IQvqC0BrTC0+UM+JsqzbdcEXwexvSUohheZ2qpjTOXv8f85pGVJujJsw2NquYZRDPu
+	 aXdOMccICFh2/ISbOaFXezLGP9R3NCF4K4R8o8Ok=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stanley Chu <yschu@nuvoton.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Georgi Djakov <djakov@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 105/737] i3c: master: svc: Prevent incomplete IBI transaction
-Date: Fri,  9 Jan 2026 12:34:04 +0100
-Message-ID: <20260109112137.951913443@linuxfoundation.org>
+Subject: [PATCH 6.6 106/737] interconnect: qcom: msm8996: add missing link to SLAVE_USB_HS
+Date: Fri,  9 Jan 2026 12:34:05 +0100
+Message-ID: <20260109112137.989857717@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
 References: <20260109112133.973195406@linuxfoundation.org>
@@ -66,67 +65,36 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Stanley Chu <yschu@nuvoton.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 
-[ Upstream commit 3a36273e5a07dda0ccec193800f3b78c3c0380af ]
+[ Upstream commit 8cf9b43f6b4d90e19a9341edefdd46842d4adb55 ]
 
-If no free IBI slot is available, svc_i3c_master_handle_ibi returns
-immediately. This causes the STOP condition to be missed because the
-EmitStop request is sent when the transfer is not complete. To resolve
-this, svc_i3c_master_handle_ibi must wait for the transfer to complete
-before returning.
+>From the initial submission the interconnect driver missed the link from
+SNOC_PNOC to the USB 2 configuration space. Add missing link in order to
+let the platform configure and utilize this path.
 
-Fixes: dd3c52846d59 ("i3c: master: svc: Add Silvaco I3C master driver")
-Signed-off-by: Stanley Chu <yschu@nuvoton.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://patch.msgid.link/20251027034715.708243-1-yschu@nuvoton.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Fixes: 7add937f5222 ("interconnect: qcom: Add MSM8996 interconnect provider driver")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20251002-fix-msm8996-icc-v1-1-a36a05d1f869@oss.qualcomm.com
+Signed-off-by: Georgi Djakov <djakov@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i3c/master/svc-i3c-master.c | 22 ++++++++++++++--------
- 1 file changed, 14 insertions(+), 8 deletions(-)
+ drivers/interconnect/qcom/msm8996.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/i3c/master/svc-i3c-master.c b/drivers/i3c/master/svc-i3c-master.c
-index 277884b5e1ca4..3222b8f56a926 100644
---- a/drivers/i3c/master/svc-i3c-master.c
-+++ b/drivers/i3c/master/svc-i3c-master.c
-@@ -358,21 +358,27 @@ static int svc_i3c_master_handle_ibi(struct svc_i3c_master *master,
- 	int ret, val;
- 	u8 *buf;
- 
--	slot = i3c_generic_ibi_get_free_slot(data->ibi_pool);
--	if (!slot)
--		return -ENOSPC;
--
--	slot->len = 0;
--	buf = slot->data;
--
-+	/*
-+	 * Wait for transfer to complete before returning. Otherwise, the EmitStop
-+	 * request might be sent when the transfer is not complete.
-+	 */
- 	ret = readl_relaxed_poll_timeout(master->regs + SVC_I3C_MSTATUS, val,
- 						SVC_I3C_MSTATUS_COMPLETE(val), 0, 1000);
- 	if (ret) {
- 		dev_err(master->dev, "Timeout when polling for COMPLETE\n");
--		i3c_generic_ibi_recycle_slot(data->ibi_pool, slot);
- 		return ret;
- 	}
- 
-+	slot = i3c_generic_ibi_get_free_slot(data->ibi_pool);
-+	if (!slot) {
-+		dev_dbg(master->dev, "No free ibi slot, drop the data\n");
-+		writel(SVC_I3C_MDATACTRL_FLUSHRB, master->regs + SVC_I3C_MDATACTRL);
-+		return -ENOSPC;
-+	}
-+
-+	slot->len = 0;
-+	buf = slot->data;
-+
- 	while (SVC_I3C_MSTATUS_RXPEND(readl(master->regs + SVC_I3C_MSTATUS))  &&
- 	       slot->len < SVC_I3C_FIFO_SIZE) {
- 		mdatactrl = readl(master->regs + SVC_I3C_MDATACTRL);
+diff --git a/drivers/interconnect/qcom/msm8996.c b/drivers/interconnect/qcom/msm8996.c
+index 88683dfa468f6..84811fe32782f 100644
+--- a/drivers/interconnect/qcom/msm8996.c
++++ b/drivers/interconnect/qcom/msm8996.c
+@@ -550,6 +550,7 @@ static struct qcom_icc_node mas_venus_vmem = {
+ static const u16 mas_snoc_pnoc_links[] = {
+ 	MSM8996_SLAVE_BLSP_1,
+ 	MSM8996_SLAVE_BLSP_2,
++	MSM8996_SLAVE_USB_HS,
+ 	MSM8996_SLAVE_SDCC_1,
+ 	MSM8996_SLAVE_SDCC_2,
+ 	MSM8996_SLAVE_SDCC_4,
 -- 
 2.51.0
 
