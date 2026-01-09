@@ -1,53 +1,56 @@
-Return-Path: <stable+bounces-207588-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206986-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7424FD09F40
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:47:55 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F4ACD09920
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:25:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8A2A3302B93E
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:41:55 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 742A43092465
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:12:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0F5935C182;
-	Fri,  9 Jan 2026 12:41:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2FDB359FB0;
+	Fri,  9 Jan 2026 12:12:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vamn08Ud"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="afJrIw8g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 841FF35BDD6;
-	Fri,  9 Jan 2026 12:41:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6133359F9C;
+	Fri,  9 Jan 2026 12:12:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962482; cv=none; b=dY8q1LJGqp1JS1R0GNSxmh/xPaXoFwOrm9Jl0YSAEJq1vEv6hzZchJixZ7Co06RAE/Thg2suTSPzjHC5sVxbLNUqCZYhwTmHClcACaobjyGn5RBVAb+7z7HTppglNBsBk9h0NBX4sbf4f4IIWYmLzPgwhwpotjURJYpc04Wlf8o=
+	t=1767960768; cv=none; b=NrLw6RY91k6EeNjBjx4JE+uZdczKyBEeA9JYnYu06kwjDNo3TRlIX7+Cj2AWmxKaNTqR0moh9qdduX3Xe+oeF6C1zXPBDpwcEae3FYb2GJgyW8FWlCw9hIsZ/n96RdCouyXrTz2RwS7V5Iea1TO7hVz5cS+wqMKQEfl2+zcAE2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962482; c=relaxed/simple;
-	bh=3aDpk0rsv/2FNMZh7kuI6Pxr/JGX7M198hyhKtH7dBY=;
+	s=arc-20240116; t=1767960768; c=relaxed/simple;
+	bh=8wFMjN4tzUOqpRASMy5OmJani+TlatEMYCaS4U/hUXo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i17VRy/qUEDpyaWhWN0mQvP3LXIKEA3jQzXsqUgpLrdtcdgrUDPAq6oSmjrP5xlUUga7LBUDM6HgJgV3kI2dWn9WdCO/1fammQSQec5Pm4ZyOjMdWkkiWxpXmtgiaQhTV656aR23p9KWUnoFChzKEPgWXhrDbgtwwkUTP/D+Iro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vamn08Ud; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5728C19421;
-	Fri,  9 Jan 2026 12:41:21 +0000 (UTC)
+	 MIME-Version; b=tf5RJEdBOSxrfv84MNtqsGixOWcz6hLoddheBC92XcOKxFVmEfMoRleKm+VCXwCBt7Slxilg/WJdpSY4JvYNGza5FV/sN5efDSvFL8Mjy1XdmVjW+Ec9mg+hkhWJ3RtKu5RqiekTqBYz32+8Xne8VE11B06/B55TI7FcauAvECk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=afJrIw8g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3494BC4CEF1;
+	Fri,  9 Jan 2026 12:12:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962482;
-	bh=3aDpk0rsv/2FNMZh7kuI6Pxr/JGX7M198hyhKtH7dBY=;
+	s=korg; t=1767960768;
+	bh=8wFMjN4tzUOqpRASMy5OmJani+TlatEMYCaS4U/hUXo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vamn08UdqoMjJaEDpIEfIYyjiOIarVuxLP/K8rpXuEsB41kjiqEVEjXZQgDgjaSsT
-	 RzSAcpEkOmJVvloM5YIDdE9LjSryfaepVjDzhTSUgdmm2JChixS1yozSyhJ5oo00YI
-	 MbpET+1KlnUAUql+dkH/vip0LPWGBDiwfivHeDog=
+	b=afJrIw8gPyJkTJXhq06Fa2oe+xlXUhQy/tPI6h89K7P6l6SU8VKxMHGUq5yrblfHw
+	 ZbSt88iliPfJ4KCo6/CEo9ZgXSIcAyj7m7YJqu5bobWpegarHVydUbLNijNlzW0i79
+	 J/kRGsZhNc5wydTO2Tfc4NNQ7y2Kep5RJcRax5GM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>,
-	Thierry Reding <treding@nvidia.com>
-Subject: [PATCH 6.1 379/634] amba: tegra-ahb: Fix device leak on SMMU enable
+	Stephen Rothwell <sfr@canb.auug.org.au>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Alexey Skidanov <alexey.skidanov@intel.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 518/737] genalloc.h: fix htmldocs warning
 Date: Fri,  9 Jan 2026 12:40:57 +0100
-Message-ID: <20260109112131.790410489@linuxfoundation.org>
+Message-ID: <20260109112153.486190396@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,39 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Andrew Morton <akpm@linux-foundation.org>
 
-commit 500e1368e46928f4b2259612dcabb6999afae2a6 upstream.
+[ Upstream commit 5393802c94e0ab1295c04c94c57bcb00222d4674 ]
 
-Make sure to drop the reference taken to the AHB platform device when
-looking up its driver data while enabling the SMMU.
+WARNING: include/linux/genalloc.h:52 function parameter 'start_addr' not described in 'genpool_algo_t'
 
-Note that holding a reference to a device does not prevent its driver
-data from going away.
-
-Fixes: 89c788bab1f0 ("ARM: tegra: Add SMMU enabler in AHB")
-Cc: stable@vger.kernel.org	# 3.5
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Thierry Reding <treding@nvidia.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 52fbf1134d47 ("lib/genalloc.c: fix allocation of aligned buffer from non-aligned chunk")
+Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
+Closes: https://lkml.kernel.org/r/20251127130624.563597e3@canb.auug.org.au
+Acked-by: Randy Dunlap <rdunlap@infradead.org>
+Tested-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: Alexey Skidanov <alexey.skidanov@intel.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/amba/tegra-ahb.c |    1 +
+ include/linux/genalloc.h | 1 +
  1 file changed, 1 insertion(+)
 
---- a/drivers/amba/tegra-ahb.c
-+++ b/drivers/amba/tegra-ahb.c
-@@ -144,6 +144,7 @@ int tegra_ahb_enable_smmu(struct device_
- 	if (!dev)
- 		return -EPROBE_DEFER;
- 	ahb = dev_get_drvdata(dev);
-+	put_device(dev);
- 	val = gizmo_readl(ahb, AHB_ARBITRATION_XBAR_CTRL);
- 	val |= AHB_ARBITRATION_XBAR_CTRL_SMMU_INIT_DONE;
- 	gizmo_writel(ahb, val, AHB_ARBITRATION_XBAR_CTRL);
+diff --git a/include/linux/genalloc.h b/include/linux/genalloc.h
+index 0bd581003cd5..60de63e46b33 100644
+--- a/include/linux/genalloc.h
++++ b/include/linux/genalloc.h
+@@ -44,6 +44,7 @@ struct gen_pool;
+  * @nr: The number of zeroed bits we're looking for
+  * @data: optional additional data used by the callback
+  * @pool: the pool being allocated from
++ * @start_addr: start address of memory chunk
+  */
+ typedef unsigned long (*genpool_algo_t)(unsigned long *map,
+ 			unsigned long size,
+-- 
+2.51.0
+
 
 
 
