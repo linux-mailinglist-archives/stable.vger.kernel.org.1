@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-207484-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206853-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id E85B3D0A021
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:50:29 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B39B4D095CF
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:12:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id ACEAC308D09D
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:36:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8B1F6310B0E6
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:06:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 524F6358D38;
-	Fri,  9 Jan 2026 12:36:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43D77359F99;
+	Fri,  9 Jan 2026 12:06:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f9fzL5Pd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Y31f5QZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1464A352952;
-	Fri,  9 Jan 2026 12:36:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 080EB1946C8;
+	Fri,  9 Jan 2026 12:06:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962186; cv=none; b=MWt5VYef46mTCpISQy130jNEr7nWjottGjbE4bLUqLj9KffTik956/f0fMGVSNqq+FQkex2HWIadCY4j7OR4iyFhbDpM9fcHn7DjOT1YlYQUxvxl8gYiWCqAXZu1PvL4GMNCp2pY0UAMMbnNxAwS0zyo6k2u1IPNPqM3KQI4gW4=
+	t=1767960386; cv=none; b=VQFKEuUCmugA2VnNJMFGIqN0b4i2KOczrDt1U52ePvitcQd78z7MNsjBAGVrLsqhM30lMQFNRSy2xy2TswKGdMOWmegg+E1USdArYlbzXiYDnwlcmZYdCKCYn8Yzp1K6wCi/H1U8qQI89c+ufFX1+fIjJVsjHzA77AVO7h2V6pg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962186; c=relaxed/simple;
-	bh=LrD/j3FsbHOzG/XoZ3bD7bg1Sb5d3H4lU18Shnpg6zA=;
+	s=arc-20240116; t=1767960386; c=relaxed/simple;
+	bh=Lmg2KYA9IN7CeA9e97X7okti4DtqO4Xmwv6knAmlW8I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FWILg0OLtdfh2E72OIfeuRaHy1w1brjCCZvQoVUBEaETtUEUP90FrcvX/3drcF3g5fm0OGKnu0XnMCe6nEMY1OPhA8T007074tgc6qiAGgHRrGzevHtiJ/37oWctPUichmSTpZhd9qN2ukfV5rgcyPO6uXXHfPBKXMMDwSNn2l8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f9fzL5Pd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9449AC4CEF1;
-	Fri,  9 Jan 2026 12:36:25 +0000 (UTC)
+	 MIME-Version; b=I1OGuulOhQQeO0DRWBLlTOCRYEKslhL9/0UcEK6HcpubAKxfDCD7+wJFM/r/xCiZgAym05YpIwZcTmto/+1B3XOHf9N3cRh8Hj8nvQD4oIS/9ncs/1fEo2CtgwjJT+B6q0R0TsggkM9AJglwva5yTi10Kbgc2eU1ewa0MaXvDJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Y31f5QZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 827A3C16AAE;
+	Fri,  9 Jan 2026 12:06:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962186;
-	bh=LrD/j3FsbHOzG/XoZ3bD7bg1Sb5d3H4lU18Shnpg6zA=;
+	s=korg; t=1767960385;
+	bh=Lmg2KYA9IN7CeA9e97X7okti4DtqO4Xmwv6knAmlW8I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f9fzL5PdaY7MGwPPNnLA3VuqquVtsJmEZKstFTJHYxPOvNyQ8hczdFNgG7o/SP/t5
-	 RxK6t6ccXCMLPqkRJtlVX6HWCaUxDegLgEtUB02Lx5zOPChWQB8QqrmFxbWYr3mxZQ
-	 c5EiiDt/OTtX8TzR1cHQRRo/EgVXO9tIFa+pilAw=
+	b=0Y31f5QZdOxvJcSm3VH3CLElscnl60hnV4efBvKCqERoWIo0ADJ7zFH7i3rCVSPeC
+	 E4GyFwSof0TbxpPy7ZzfgDft4ZmTP4Mgdi9FnYH93CNdo31EwCPxRJfZK8coIDagSK
+	 iZKwDPCwDh+v63g6EtuwMobMuw2HoqeYC2A5JoBQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ChenXiaoSong <chenxiaosong@kylinos.cn>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	"DARKNAVY (@DarkNavyOrg)" <vr@darknavy.com>,
+	Shipei Qu <qu@darknavy.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 244/634] smb/server: fix return value of smb2_ioctl()
-Date: Fri,  9 Jan 2026 12:38:42 +0100
-Message-ID: <20260109112126.723945010@linuxfoundation.org>
+Subject: [PATCH 6.6 384/737] ALSA: usb-mixer: us16x08: validate meter packet indices
+Date: Fri,  9 Jan 2026 12:38:43 +0100
+Message-ID: <20260109112148.446008305@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,63 +61,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: ChenXiaoSong <chenxiaosong@kylinos.cn>
+From: Shipei Qu <qu@darknavy.com>
 
-[ Upstream commit 269df046c1e15ab34fa26fd90db9381f022a0963 ]
+[ Upstream commit 5526c1c6ba1d0913c7dfcbbd6fe1744ea7c55f1e ]
 
-__process_request() will not print error messages if smb2_ioctl()
-always returns 0.
+get_meter_levels_from_urb() parses the 64-byte meter packets sent by
+the device and fills the per-channel arrays meter_level[],
+comp_level[] and master_level[] in struct snd_us16x08_meter_store.
 
-Fix this by returning the correct value at the end of function.
+Currently the function derives the channel index directly from the
+meter packet (MUB2(meter_urb, s) - 1) and uses it to index those
+arrays without validating the range. If the packet contains a
+negative or out-of-range channel number, the driver may write past
+the end of these arrays.
 
-Signed-off-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Introduce a local channel variable and validate it before updating the
+arrays. We reject negative indices, limit meter_level[] and
+comp_level[] to SND_US16X08_MAX_CHANNELS, and guard master_level[]
+updates with ARRAY_SIZE(master_level).
+
+Fixes: d2bb390a2081 ("ALSA: usb-audio: Tascam US-16x08 DSP mixer quirk")
+Reported-by: DARKNAVY (@DarkNavyOrg) <vr@darknavy.com>
+Closes: https://lore.kernel.org/tencent_21C112743C44C1A2517FF219@qq.com
+Signed-off-by: Shipei Qu <qu@darknavy.com>
+Link: https://patch.msgid.link/20251217024630.59576-1-qu@darknavy.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/smb2pdu.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ sound/usb/mixer_us16x08.c | 20 ++++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
 
-diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
-index 5a405706694b3..c50dbbfc4cd62 100644
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -7727,7 +7727,7 @@ int smb2_ioctl(struct ksmbd_work *work)
- 		id = req->VolatileFileId;
- 
- 	if (req->Flags != cpu_to_le32(SMB2_0_IOCTL_IS_FSCTL)) {
--		rsp->hdr.Status = STATUS_NOT_SUPPORTED;
-+		ret = -EOPNOTSUPP;
- 		goto out;
- 	}
- 
-@@ -7747,8 +7747,9 @@ int smb2_ioctl(struct ksmbd_work *work)
- 	case FSCTL_DFS_GET_REFERRALS:
- 	case FSCTL_DFS_GET_REFERRALS_EX:
- 		/* Not support DFS yet */
-+		ret = -EOPNOTSUPP;
- 		rsp->hdr.Status = STATUS_FS_DRIVER_REQUIRED;
--		goto out;
-+		goto out2;
- 	case FSCTL_CREATE_OR_GET_OBJECT_ID:
- 	{
- 		struct file_object_buf_type1_ioctl_rsp *obj_buf;
-@@ -8038,8 +8039,10 @@ int smb2_ioctl(struct ksmbd_work *work)
- 		rsp->hdr.Status = STATUS_BUFFER_TOO_SMALL;
- 	else if (ret < 0 || rsp->hdr.Status == 0)
- 		rsp->hdr.Status = STATUS_INVALID_PARAMETER;
+diff --git a/sound/usb/mixer_us16x08.c b/sound/usb/mixer_us16x08.c
+index 20ac32635f1f..d05cb54de788 100644
+--- a/sound/usb/mixer_us16x08.c
++++ b/sound/usb/mixer_us16x08.c
+@@ -656,17 +656,25 @@ static void get_meter_levels_from_urb(int s,
+ 	u8 *meter_urb)
+ {
+ 	int val = MUC2(meter_urb, s) + (MUC3(meter_urb, s) << 8);
++	int ch = MUB2(meter_urb, s) - 1;
 +
-+out2:
- 	smb2_set_err_rsp(work);
--	return 0;
-+	return ret;
++	if (ch < 0)
++		return;
+ 
+ 	if (MUA0(meter_urb, s) == 0x61 && MUA1(meter_urb, s) == 0x02 &&
+ 		MUA2(meter_urb, s) == 0x04 && MUB0(meter_urb, s) == 0x62) {
+-		if (MUC0(meter_urb, s) == 0x72)
+-			store->meter_level[MUB2(meter_urb, s) - 1] = val;
+-		if (MUC0(meter_urb, s) == 0xb2)
+-			store->comp_level[MUB2(meter_urb, s) - 1] = val;
++		if (ch < SND_US16X08_MAX_CHANNELS) {
++			if (MUC0(meter_urb, s) == 0x72)
++				store->meter_level[ch] = val;
++			if (MUC0(meter_urb, s) == 0xb2)
++				store->comp_level[ch] = val;
++		}
+ 	}
+ 	if (MUA0(meter_urb, s) == 0x61 && MUA1(meter_urb, s) == 0x02 &&
+-		MUA2(meter_urb, s) == 0x02 && MUB0(meter_urb, s) == 0x62)
+-		store->master_level[MUB2(meter_urb, s) - 1] = val;
++		MUA2(meter_urb, s) == 0x02 && MUB0(meter_urb, s) == 0x62) {
++		if (ch < ARRAY_SIZE(store->master_level))
++			store->master_level[ch] = val;
++	}
  }
  
- /**
+ /* Function to retrieve current meter values from the device.
 -- 
 2.51.0
 
