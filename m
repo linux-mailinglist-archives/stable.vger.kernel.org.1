@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-207518-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206917-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB21FD0A00F
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:50:16 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5268CD095D2
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:12:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 49763301E14E
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:38:03 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6E382303278D
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:10:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44AAE35A95C;
-	Fri,  9 Jan 2026 12:38:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1101B359FB6;
+	Fri,  9 Jan 2026 12:09:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N1dZAqoe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ifEc3Mp/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF5DA335BCD;
-	Fri,  9 Jan 2026 12:38:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5EA8359FBE;
+	Fri,  9 Jan 2026 12:09:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962282; cv=none; b=Ity7fhQHHadZHi5p6vU7aqYSXBD5IFmf17OKtfw48YfCdP7svgzuYMeX/HcU+tIBIkcHtIvOEAxF94lnH/Ov8bOaFn1WVhhIYrUm+Rasz1hcr8V06wP5qGj1qZ6CkJqu91ra2eLvy3pcJIUeGksPASirpfnEgFVdALWdMuSYliw=
+	t=1767960567; cv=none; b=caXaLSH3pGnD6j1wq53bnw25sjuZr8kMEXhiNr7zZARp1NO2+5opFPh+VI4ZI5W60N4N509WrLkj4Whs5puJbU9D8ZN0kcaEcfdmjJ0ESlgSAvVRAQCVixkQEI/CcaWf/qgoXhs7Kxf7x1CkMRC31pjxeYjjtN3SLrjk2BStcLA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962282; c=relaxed/simple;
-	bh=c8xj2xrnAxnwWG5GiawebGrS/gqScoX5i6eM1SG8ekg=;
+	s=arc-20240116; t=1767960567; c=relaxed/simple;
+	bh=jVUB01N7MbAL74g/eqlxiydNmrvmwpgKgPt/tL3lGfE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nj7bdir/dCl0zCWVnTeIPHcB0zb+TVYmDvyVo0Dg9ov8otpKna7iTT5cqfGH67Hvb+DcKVszsnbuAilylX8PFbG7ehlaMiqfbScbLGlsBdpDDm4CRaHQwscw2p1QTNgmDSoovANUUPZhF5LwpNO9+Z7RQaldzxzseJrmBKRBA7c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N1dZAqoe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 776A0C16AAE;
-	Fri,  9 Jan 2026 12:38:01 +0000 (UTC)
+	 MIME-Version; b=qxc2+TjcIgPel1UNP3H76cgiEVaUDvtsieBdunTTcVMTp8N9geQmfznkJ8WRakHxffLl7QcMp0YQA7BbrgQ/0sQWz6bt/iN5nMQdLhw/pxJklW81ABtNO8NNjXqgSKjGeUmNYbboP0zU/8Arp+cTOdux+/bLqs8c3e2Ubm5gLDc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ifEc3Mp/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5470FC4CEF1;
+	Fri,  9 Jan 2026 12:09:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962281;
-	bh=c8xj2xrnAxnwWG5GiawebGrS/gqScoX5i6eM1SG8ekg=;
+	s=korg; t=1767960567;
+	bh=jVUB01N7MbAL74g/eqlxiydNmrvmwpgKgPt/tL3lGfE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N1dZAqoeUE3IX0e9jCCdw+5/iCGs3XaeUcjddGVzkwNCPETaL0hRbgl0xqXf5usri
-	 PMBmoU2ZvHj4iexyPLILenxoeqva5WlzSkbC8ACYV/OgtnSSp9P9luDDdMC5G9uGI1
-	 q8pG+g9Tqo4hhjXmsMMke17/45zV75OFHZFhpWw0=
+	b=ifEc3Mp/ZgXYM6I3k2iC1Uu2LWmSUZPhWwKnokf3ZoF9ThOBbT1RVn0Drc13Z8dZt
+	 U0GXfKTmaNAxZ5K07TrDZP1rC11TfOvgGYdrYGcPt+uVcZNMkocY5M0U91TiTbtuVV
+	 BTuH34Il/8nPUyLE1+06OLXFB4lwhgdrr98PMvng=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Pearson <mpearson-lenovo@squebb.ca>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 309/634] usb: typec: ucsi: Handle incorrect num_connectors capability
-Date: Fri,  9 Jan 2026 12:39:47 +0100
-Message-ID: <20260109112129.159751952@linuxfoundation.org>
+	stable@kernel.org,
+	Jan Prusakowski <jprusakowski@google.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>
+Subject: [PATCH 6.6 449/737] f2fs: ensure node page reads complete before f2fs_put_super() finishes
+Date: Fri,  9 Jan 2026 12:39:48 +0100
+Message-ID: <20260109112150.886150468@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,54 +61,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Pearson <mpearson-lenovo@squebb.ca>
+From: Jan Prusakowski <jprusakowski@google.com>
 
-[ Upstream commit 30cd2cb1abf4c4acdb1ddb468c946f68939819fb ]
+commit 297baa4aa263ff8f5b3d246ee16a660d76aa82c4 upstream.
 
-The UCSI spec states that the num_connectors field is 7 bits, and the
-8th bit is reserved and should be set to zero.
-Some buggy FW has been known to set this bit, and it can lead to a
-system not booting.
-Flag that the FW is not behaving correctly, and auto-fix the value
-so that the system boots correctly.
+Xfstests generic/335, generic/336 sometimes crash with the following message:
 
-Found on Lenovo P1 G8 during Linux enablement program. The FW will
-be fixed, but seemed worth addressing in case it hit platforms that
-aren't officially Linux supported.
+F2FS-fs (dm-0): detect filesystem reference count leak during umount, type: 9, count: 1
+------------[ cut here ]------------
+kernel BUG at fs/f2fs/super.c:1939!
+Oops: invalid opcode: 0000 [#1] SMP NOPTI
+CPU: 1 UID: 0 PID: 609351 Comm: umount Tainted: G        W           6.17.0-rc5-xfstests-g9dd1835ecda5 #1 PREEMPT(none)
+Tainted: [W]=WARN
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+RIP: 0010:f2fs_put_super+0x3b3/0x3c0
+Call Trace:
+ <TASK>
+ generic_shutdown_super+0x7e/0x190
+ kill_block_super+0x1a/0x40
+ kill_f2fs_super+0x9d/0x190
+ deactivate_locked_super+0x30/0xb0
+ cleanup_mnt+0xba/0x150
+ task_work_run+0x5c/0xa0
+ exit_to_user_mode_loop+0xb7/0xc0
+ do_syscall_64+0x1ae/0x1c0
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+ </TASK>
+---[ end trace 0000000000000000 ]---
 
-Signed-off-by: Mark Pearson <mpearson-lenovo@squebb.ca>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20250821185319.2585023-1-mpearson-lenovo@squebb.ca
+It appears that sometimes it is possible that f2fs_put_super() is called before
+all node page reads are completed.
+Adding a call to f2fs_wait_on_all_pages() for F2FS_RD_NODE fixes the problem.
+
+Cc: stable@kernel.org
+Fixes: 20872584b8c0b ("f2fs: fix to drop all dirty meta/node pages during umount()")
+Signed-off-by: Jan Prusakowski <jprusakowski@google.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/ucsi/ucsi.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ fs/f2fs/super.c |   17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/usb/typec/ucsi/ucsi.c b/drivers/usb/typec/ucsi/ucsi.c
-index c26b5aae11fb..5baa48213f1e 100644
---- a/drivers/usb/typec/ucsi/ucsi.c
-+++ b/drivers/usb/typec/ucsi/ucsi.c
-@@ -1276,6 +1276,12 @@ static int ucsi_init(struct ucsi *ucsi)
- 		ret = -ENODEV;
- 		goto err_reset;
+--- a/fs/f2fs/super.c
++++ b/fs/f2fs/super.c
+@@ -1637,14 +1637,6 @@ static void f2fs_put_super(struct super_
+ 		truncate_inode_pages_final(META_MAPPING(sbi));
  	}
-+	/* Check if reserved bit set. This is out of spec but happens in buggy FW */
-+	if (ucsi->cap.num_connectors & 0x80) {
-+		dev_warn(ucsi->dev, "UCSI: Invalid num_connectors %d. Likely buggy FW\n",
-+			 ucsi->cap.num_connectors);
-+		ucsi->cap.num_connectors &= 0x7f; // clear bit and carry on
-+	}
  
- 	/* Allocate the connectors. Released in ucsi_unregister() */
- 	connector = kcalloc(ucsi->cap.num_connectors + 1, sizeof(*connector), GFP_KERNEL);
--- 
-2.51.0
-
+-	for (i = 0; i < NR_COUNT_TYPE; i++) {
+-		if (!get_pages(sbi, i))
+-			continue;
+-		f2fs_err(sbi, "detect filesystem reference count leak during "
+-			"umount, type: %d, count: %lld", i, get_pages(sbi, i));
+-		f2fs_bug_on(sbi, 1);
+-	}
+-
+ 	f2fs_bug_on(sbi, sbi->fsync_node_num);
+ 
+ 	f2fs_destroy_compress_inode(sbi);
+@@ -1655,6 +1647,15 @@ static void f2fs_put_super(struct super_
+ 	iput(sbi->meta_inode);
+ 	sbi->meta_inode = NULL;
+ 
++	/* Should check the page counts after dropping all node/meta pages */
++	for (i = 0; i < NR_COUNT_TYPE; i++) {
++		if (!get_pages(sbi, i))
++			continue;
++		f2fs_err(sbi, "detect filesystem reference count leak during "
++			"umount, type: %d, count: %lld", i, get_pages(sbi, i));
++		f2fs_bug_on(sbi, 1);
++	}
++
+ 	/*
+ 	 * iput() can update stat information, if f2fs_write_checkpoint()
+ 	 * above failed with error.
 
 
 
