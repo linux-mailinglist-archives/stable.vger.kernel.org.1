@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-207497-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206930-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC0DAD09FAC
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:49:11 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2DA3D097BF
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:20:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DC5AD313DF28
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:37:03 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C659F30E4CDB
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:10:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E028835A95C;
-	Fri,  9 Jan 2026 12:37:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FDA535B138;
+	Fri,  9 Jan 2026 12:10:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sdwkeddG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bWGzBttV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A137D359701;
-	Fri,  9 Jan 2026 12:37:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AFC435A956;
+	Fri,  9 Jan 2026 12:10:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962222; cv=none; b=newM8ncmOEDBkGsO9o4i/DVREew0LNlshMgW+Og2E/ff1Qfl17wADF6YgouyQMm2r+H4qczgBI6Fha92MlDb7k/u25X+e3sUHXciXGqLZSVA1GAKpcj/gXjpH/NKr2xRdKQhNOfwsUBtni6OToW4iAWdKA5yCsNR3USxW4eB5aE=
+	t=1767960604; cv=none; b=B5sRk1qdqxWA8V6FkMyObSDFyG4mFOSBCoqE+bLSSowAmNTUj2Sb77/j1C9wSZ3L0kKyrqNKdPvwvUSG+9yVSmCUGCmupqc1IhpJc6Vu0Pl74iMTRBx0jU9PhLqoeNJg+ITpwWNUDAzHx6D1MklCZUU8uwye6Ybn4GQm5Xte3Xs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962222; c=relaxed/simple;
-	bh=1uqyp8IlEsiizIwuAFWLTKEQ4jHpljuAxGy6yBlV8VY=;
+	s=arc-20240116; t=1767960604; c=relaxed/simple;
+	bh=cN+gR7PTuac9GFQn5+3EuRPFJyJWegYvENdimQufgcU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QSVNU3rHqhhZzsaXy3/bjiRh2iqA+GEArTipiX01sdtMnKPEZMBEIzp8SIblYet2hkpE1ZBz1zdR6SGXn6gSWvfz/hc6eexOtCjldFHQuvUMuzOcScub8wgPmaHHIL0YkFTCO1f7s79mDbxff6YpBjRx1TwQA+PCZ+AxAdHIV/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sdwkeddG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24998C4CEF1;
-	Fri,  9 Jan 2026 12:37:01 +0000 (UTC)
+	 MIME-Version; b=kAKMz1wZ+8tVn0p+xiDJqBoyktKlQ1HMn6OjzhjZDczcGr14enHHxWaigUdLU5Z6gcaRfn9S7Biju48PD9qhWQA2DW0NPiqcF+4TTlYkCpcYRH4R9g9CaQE98kgsaeSLisgcPHcNMl4W+rFbIdDIA06M9xdQcWFtQDuIjWkZLZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bWGzBttV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D36DAC4CEF1;
+	Fri,  9 Jan 2026 12:10:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962222;
-	bh=1uqyp8IlEsiizIwuAFWLTKEQ4jHpljuAxGy6yBlV8VY=;
+	s=korg; t=1767960604;
+	bh=cN+gR7PTuac9GFQn5+3EuRPFJyJWegYvENdimQufgcU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sdwkeddGS9pu7ixjCc8epLnKvxdNEXhL9xD6g0D6dcxwGJZnyemlbUpi3knGSVQKG
-	 nrpxahHnr6qIPWlyNjoZI5S0AiSkOkSsjsl8qJwHfkOxWIVgDv6L+EMBHLZf1S5GGI
-	 dB5ee5u0r3Ah2TQHdp7FN7aFc9HJ2j4e0fkCuEcg=
+	b=bWGzBttV5h1QJJVctKER1IHpyeOMTLOgve/egBfp8HZ1/d60x0jYaofPOLwQHS5L6
+	 mlyjDnv7cr4NejltYUMRHmNkThUMu4ePSTt6bAAM6xMABH3D6Hn9UA2E7J5sD/kM3n
+	 a+HQ+pnclSpn10jhK/52MXqIdBdcpfDX4t+Aqu70=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Sverdlin Alexander <alexander.sverdlin@siemens.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.1 290/634] spi: fsl-cpm: Check length parity before switching to 16 bit mode
-Date: Fri,  9 Jan 2026 12:39:28 +0100
-Message-ID: <20260109112128.443700160@linuxfoundation.org>
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Subject: [PATCH 6.6 430/737] mptcp: avoid deadlock on fallback while reinjecting
+Date: Fri,  9 Jan 2026 12:39:29 +0100
+Message-ID: <20260109112150.171498247@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,51 +60,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: Paolo Abeni <pabeni@redhat.com>
 
-commit 1417927df8049a0194933861e9b098669a95c762 upstream.
+commit ffb8c27b0539dd90262d1021488e7817fae57c42 upstream.
 
-Commit fc96ec826bce ("spi: fsl-cpm: Use 16 bit mode for large transfers
-with even size") failed to make sure that the size is really even
-before switching to 16 bit mode. Until recently the problem went
-unnoticed because kernfs uses a pre-allocated bounce buffer of size
-PAGE_SIZE for reading EEPROM.
+Jakub reported an MPTCP deadlock at fallback time:
 
-But commit 8ad6249c51d0 ("eeprom: at25: convert to spi-mem API")
-introduced an additional dynamically allocated bounce buffer whose size
-is exactly the size of the transfer, leading to a buffer overrun in
-the fsl-cpm driver when that size is odd.
+ WARNING: possible recursive locking detected
+ 6.18.0-rc7-virtme #1 Not tainted
+ --------------------------------------------
+ mptcp_connect/20858 is trying to acquire lock:
+ ff1100001da18b60 (&msk->fallback_lock){+.-.}-{3:3}, at: __mptcp_try_fallback+0xd8/0x280
 
-Add the missing length parity verification and remain in 8 bit mode
-when the length is not even.
+ but task is already holding lock:
+ ff1100001da18b60 (&msk->fallback_lock){+.-.}-{3:3}, at: __mptcp_retrans+0x352/0xaa0
 
-Fixes: fc96ec826bce ("spi: fsl-cpm: Use 16 bit mode for large transfers with even size")
+ other info that might help us debug this:
+  Possible unsafe locking scenario:
+
+        CPU0
+        ----
+   lock(&msk->fallback_lock);
+   lock(&msk->fallback_lock);
+
+  *** DEADLOCK ***
+
+  May be due to missing lock nesting notation
+
+ 3 locks held by mptcp_connect/20858:
+  #0: ff1100001da18290 (sk_lock-AF_INET){+.+.}-{0:0}, at: mptcp_sendmsg+0x114/0x1bc0
+  #1: ff1100001db40fd0 (k-sk_lock-AF_INET#2){+.+.}-{0:0}, at: __mptcp_retrans+0x2cb/0xaa0
+  #2: ff1100001da18b60 (&msk->fallback_lock){+.-.}-{3:3}, at: __mptcp_retrans+0x352/0xaa0
+
+ stack backtrace:
+ CPU: 0 UID: 0 PID: 20858 Comm: mptcp_connect Not tainted 6.18.0-rc7-virtme #1 PREEMPT(full)
+ Hardware name: Bochs, BIOS Bochs 01/01/2011
+ Call Trace:
+  <TASK>
+  dump_stack_lvl+0x6f/0xa0
+  print_deadlock_bug.cold+0xc0/0xcd
+  validate_chain+0x2ff/0x5f0
+  __lock_acquire+0x34c/0x740
+  lock_acquire.part.0+0xbc/0x260
+  _raw_spin_lock_bh+0x38/0x50
+  __mptcp_try_fallback+0xd8/0x280
+  mptcp_sendmsg_frag+0x16c2/0x3050
+  __mptcp_retrans+0x421/0xaa0
+  mptcp_release_cb+0x5aa/0xa70
+  release_sock+0xab/0x1d0
+  mptcp_sendmsg+0xd5b/0x1bc0
+  sock_write_iter+0x281/0x4d0
+  new_sync_write+0x3c5/0x6f0
+  vfs_write+0x65e/0xbb0
+  ksys_write+0x17e/0x200
+  do_syscall_64+0xbb/0xfd0
+  entry_SYSCALL_64_after_hwframe+0x4b/0x53
+ RIP: 0033:0x7fa5627cbc5e
+ Code: 4d 89 d8 e8 14 bd 00 00 4c 8b 5d f8 41 8b 93 08 03 00 00 59 5e 48 83 f8 fc 74 11 c9 c3 0f 1f 80 00 00 00 00 48 8b 45 10 0f 05 <c9> c3 83 e2 39 83 fa 08 75 e7 e8 13 ff ff ff 0f 1f 00 f3 0f 1e fa
+ RSP: 002b:00007fff1fe14700 EFLAGS: 00000202 ORIG_RAX: 0000000000000001
+ RAX: ffffffffffffffda RBX: 0000000000000005 RCX: 00007fa5627cbc5e
+ RDX: 0000000000001f9c RSI: 00007fff1fe16984 RDI: 0000000000000005
+ RBP: 00007fff1fe14710 R08: 0000000000000000 R09: 0000000000000000
+ R10: 0000000000000000 R11: 0000000000000202 R12: 00007fff1fe16920
+ R13: 0000000000002000 R14: 0000000000001f9c R15: 0000000000001f9c
+
+The packet scheduler could attempt a reinjection after receiving an
+MP_FAIL and before the infinite map has been transmitted, causing a
+deadlock since MPTCP needs to do the reinjection atomically from WRT
+fallback.
+
+Address the issue explicitly avoiding the reinjection in the critical
+scenario. Note that this is the only fallback critical section that
+could potentially send packets and hit the double-lock.
+
+Reported-by: Jakub Kicinski <kuba@kernel.org>
+Closes: https://netdev-ctrl.bots.linux.dev/logs/vmksft/mptcp-dbg/results/412720/1-mptcp-join-sh/stderr
+Fixes: f8a1d9b18c5e ("mptcp: make fallback action and fallback decision atomic")
 Cc: stable@vger.kernel.org
-Closes: https://lore.kernel.org/all/638496dd-ec60-4e53-bad7-eb657f67d580@csgroup.eu/
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Reviewed-by: Sverdlin Alexander <alexander.sverdlin@siemens.com>
-Link: https://patch.msgid.link/3c4d81c3923c93f95ec56702a454744a4bad3cfc.1763627618.git.christophe.leroy@csgroup.eu
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20251205-net-mptcp-misc-fixes-6-19-rc1-v1-4-9e4781a6c1b8@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-fsl-spi.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/mptcp/protocol.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/drivers/spi/spi-fsl-spi.c
-+++ b/drivers/spi/spi-fsl-spi.c
-@@ -352,7 +352,7 @@ static int fsl_spi_prepare_message(struc
- 			if (t->bits_per_word == 16 || t->bits_per_word == 32)
- 				t->bits_per_word = 8; /* pretend its 8 bits */
- 			if (t->bits_per_word == 8 && t->len >= 256 &&
--			    (mpc8xxx_spi->flags & SPI_CPM1))
-+			    !(t->len & 1) && (mpc8xxx_spi->flags & SPI_CPM1))
- 				t->bits_per_word = 16;
- 		}
- 	}
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -2712,10 +2712,13 @@ static void __mptcp_retrans(struct sock
+ 
+ 			/*
+ 			 * make the whole retrans decision, xmit, disallow
+-			 * fallback atomic
++			 * fallback atomic, note that we can't retrans even
++			 * when an infinite fallback is in progress, i.e. new
++			 * subflows are disallowed.
+ 			 */
+ 			spin_lock_bh(&msk->fallback_lock);
+-			if (__mptcp_check_fallback(msk)) {
++			if (__mptcp_check_fallback(msk) ||
++			    !msk->allow_subflows) {
+ 				spin_unlock_bh(&msk->fallback_lock);
+ 				release_sock(ssk);
+ 				goto clear_scheduled;
 
 
 
