@@ -1,53 +1,56 @@
-Return-Path: <stable+bounces-207372-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206745-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65EF1D09E4D
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:44:01 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69530D092AE
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:01:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C22ED30C0B98
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:31:09 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 243E4301D1E3
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:01:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9025733C53C;
-	Fri,  9 Jan 2026 12:31:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1B9B359F99;
+	Fri,  9 Jan 2026 12:01:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J741Dagv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ziz9uBGe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53BA533372B;
-	Fri,  9 Jan 2026 12:31:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A52FA33032C;
+	Fri,  9 Jan 2026 12:01:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961868; cv=none; b=RWowT/8bl1XMSuKOtUQk16VUdHcJUdJis5YnRJdJcdWZM7v4Q7tnXlpZmYZBZBRIge7jOXOA1VYn/MticWX0259XWP2w3G+rWTrZJpH91p4vBtrUx/YkKkeh6FbVffsHBlKkdTrDvtAW1dMhw+DpLpJqv2ww9POELGLNpLmFhVk=
+	t=1767960078; cv=none; b=kLxmBMoWnpbGEd/qGjshGFjyuWgdr4DuJqxDzQXRtGkEN5V0iXTZOszob0ENjvvuAFHHnMKItnQuaqrygF1ye1vf8Aed17ciplfrokB0gMca9GeUtFMWFS2LbyqMKLH4u43iDa1027fZFRVkZ8qlK3iwQkdczmmY5zanvNbGgcw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961868; c=relaxed/simple;
-	bh=mC9MQlLy2du+praLu54r8wWBeFK1t/XodfWe/V9Dmks=;
+	s=arc-20240116; t=1767960078; c=relaxed/simple;
+	bh=kOfAXC/ScHT/Mg0nRkLSzVb+DMpJCOEkNet82ngGqXw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qKWA1gdA4BZh+zaKWge44d/EuM/eM6nt9sVzVP+NTTEc+AQHUXRbIOxZruxRDGt/LyP0IXwlNKSJPlJGSxQSxl+I5Rforhb0XWYJVcd6Z9Ujzd91dht0gzLWQ4VNI3wmEYMxHT1z4MrS/MJs2rqM93zhz88oVO7SwLgce0aoC6I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J741Dagv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5DE7C4CEF1;
-	Fri,  9 Jan 2026 12:31:07 +0000 (UTC)
+	 MIME-Version; b=qLFGhIscE1sCZtuiMyDGx0zhrYTRxgql+Z2DwSJSlhE1E5n3LxVIpkxkumlGuEMDu91PS3aIUMSnEJceuagQq148T3HqSH/xtYQDimGjQpPnFCXw4xYE8SWK/wPHkCCT20VH+3BW3x2Ker6lS662ZxrlOKY54sdbXq7q6ULvyzE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ziz9uBGe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F991C4CEF1;
+	Fri,  9 Jan 2026 12:01:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961868;
-	bh=mC9MQlLy2du+praLu54r8wWBeFK1t/XodfWe/V9Dmks=;
+	s=korg; t=1767960078;
+	bh=kOfAXC/ScHT/Mg0nRkLSzVb+DMpJCOEkNet82ngGqXw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J741Dagv7Sej5mc2wLm8fjE+gUe8hDyi8PIQWYJry7Wze0QlIOFJ62zbBPMt0qa7O
-	 mIivn1Cbh2VoighyKCp7mNqO7xdhEiUu/0NkNHKAM0EdaBt7k9mUTt2sf4HqeOE+Pv
-	 3t+CTx+zXX/+BZF3P6wYpbIdakvMF3cBB/KMsVd0=
+	b=ziz9uBGepVaEqpsg4jUdXYKfWhasDsAnzPW9dRJe7NCGIgCur0NRBBAxCdYoXrpqW
+	 3JPLhwzzLSiUHJYDl6S/7/Vwohtsk9F27SEfJFtSJUayAPOkOv1zYWilUQOdYcenLv
+	 yqOVb4MpFXEbtU/GQp5amWrAM8/laV/ZgSD0fdxk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jisheng Zhang <jszhang@kernel.org>,
+	shechenglong <shechenglong@xfusion.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 137/634] usb: dwc2: fix hang during shutdown if set as peripheral
+Subject: [PATCH 6.6 276/737] block: fix comment for op_is_zone_mgmt() to include RESET_ALL
 Date: Fri,  9 Jan 2026 12:36:55 +0100
-Message-ID: <20260109112122.610788855@linuxfoundation.org>
+Message-ID: <20260109112144.388778168@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,58 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jisheng Zhang <jszhang@kernel.org>
+From: shechenglong <shechenglong@xfusion.com>
 
-[ Upstream commit b6ebcfdcac40a27953f052e4269ce75a18825ffc ]
+[ Upstream commit 8a32282175c964eb15638e8dfe199fc13c060f67 ]
 
-dwc2 on most platforms needs phy controller, clock and power supply.
-All of them must be enabled/activated to properly operate. If dwc2
-is configured as peripheral mode, then all the above three hardware
-resources are disabled at the end of the probe:
+REQ_OP_ZONE_RESET_ALL is a zone management request, and op_is_zone_mgmt()
+has returned true for it.
 
-	/* Gadget code manages lowlevel hw on its own */
-	if (hsotg->dr_mode == USB_DR_MODE_PERIPHERAL)
-		dwc2_lowlevel_hw_disable(hsotg);
+Update the comment to remove the misleading exception note so
+the documentation matches the implementation.
 
-But dwc2_driver_shutdown() tries to disable the interrupts on HW IP
-level. This would result in hang during shutdown if dwc2 is configured
-as peripheral mode.
-
-Fix this hang by only disable and sync irq when lowlevel hw is enabled.
-
-Fixes: 4fdf228cdf69 ("usb: dwc2: Fix shutdown callback in platform")
-Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
-Link: https://patch.msgid.link/20251104002503.17158-2-jszhang@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 12a1c9353c47 ("block: fix op_is_zone_mgmt() to handle REQ_OP_ZONE_RESET_ALL")
+Signed-off-by: shechenglong <shechenglong@xfusion.com>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc2/platform.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ include/linux/blk_types.h | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/drivers/usb/dwc2/platform.c b/drivers/usb/dwc2/platform.c
-index 5e8c74e20bffa..8e80b20361e3a 100644
---- a/drivers/usb/dwc2/platform.c
-+++ b/drivers/usb/dwc2/platform.c
-@@ -338,11 +338,11 @@ static void dwc2_driver_shutdown(struct platform_device *dev)
- {
- 	struct dwc2_hsotg *hsotg = platform_get_drvdata(dev);
- 
--	dwc2_disable_global_interrupts(hsotg);
--	synchronize_irq(hsotg->irq);
--
--	if (hsotg->ll_hw_enabled)
-+	if (hsotg->ll_hw_enabled) {
-+		dwc2_disable_global_interrupts(hsotg);
-+		synchronize_irq(hsotg->irq);
- 		dwc2_lowlevel_hw_disable(hsotg);
-+	}
+diff --git a/include/linux/blk_types.h b/include/linux/blk_types.h
+index d328b318e44b1..b8ef39ca3d74f 100644
+--- a/include/linux/blk_types.h
++++ b/include/linux/blk_types.h
+@@ -508,10 +508,7 @@ static inline bool op_is_discard(blk_opf_t op)
  }
  
- /**
+ /*
+- * Check if a bio or request operation is a zone management operation, with
+- * the exception of REQ_OP_ZONE_RESET_ALL which is treated as a special case
+- * due to its different handling in the block layer and device response in
+- * case of command failure.
++ * Check if a bio or request operation is a zone management operation.
+  */
+ static inline bool op_is_zone_mgmt(enum req_op op)
+ {
 -- 
 2.51.0
 
