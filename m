@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-206690-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207292-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8D31D09388
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:04:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 80556D09BE9
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:35:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5DF9930ABCD8
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:58:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E92523131C79
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:27:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A99733A712;
-	Fri,  9 Jan 2026 11:58:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EC362737EE;
+	Fri,  9 Jan 2026 12:27:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xRMSU65c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TiFExBLO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F09C2C21E6;
-	Fri,  9 Jan 2026 11:58:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B1D735B147;
+	Fri,  9 Jan 2026 12:27:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767959922; cv=none; b=rOiDhwa5Q2Gt9cTnOs5ItFnLYtTwaE/zWzuIeA9tssdYgy5WgoTFq95CCiwJr7PUNHuzgPvj0QMtjZ1vD7Xv41KlN/oA9agGDD2uz6iflu692SLw2RylnhU9AjZeuhOFnM7Iywwp0U1MjsksanZ9qL9LEKUEWt5l3XvGtC1DiZo=
+	t=1767961639; cv=none; b=dSTaR+tE/25JZPDypUTXgKRUVsK4naeE0+KICZ1wuDmJC0LUl0XZ6Hj4RP7vlOOKyrumwotJ0vj/2xZv8DGgw/Gp2pM6EcYEiB7FLVmslQPCBsVGC1XSlXexI6j2UEQIumxjS4eM9sUBJMvTS+6PyzU2+TkoCrXq5bOiCh5TxHE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767959922; c=relaxed/simple;
-	bh=EV5L2FAiVkQOpRsDFAT+kFqZ5UmY+mOCEo6M7BB3FpM=;
+	s=arc-20240116; t=1767961639; c=relaxed/simple;
+	bh=pZJca6g01DrUA53l9d54aT9P5xj4K9f5qmY6T1bLmZo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XqXD1EWuDcPgJFKLqxTm+e2WW965uxngZeImBBznL6Ken/0GOA2qPHSN1MlfcE2rAQXEHYh6gbtUtiG28DLa6GButD/7rgyCKFJnEa8yBJNptWya325hZS4vHucmRVvRRY421DQcwhBfYjrRS63mefE+D5Lm5LOc4ay/g+OZ1sE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xRMSU65c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B029CC4CEF1;
-	Fri,  9 Jan 2026 11:58:41 +0000 (UTC)
+	 MIME-Version; b=uA9b6X5/L9eX/bZ038x/nMNvqeJ+zDR9q5eDdbv2/FPT22Lb7nqIKNlDaE4DXH2O2b1KmflQd+RpR0eL8mqu/aOq6Qon6Ze0i37rpMFp5boANKqXt0u4wyVau9BRZ09Ep7qJT22aO487bpJ6V6ZreQ5jKUla3iQi+2iPcCab7I0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TiFExBLO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9180C4CEF1;
+	Fri,  9 Jan 2026 12:27:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767959922;
-	bh=EV5L2FAiVkQOpRsDFAT+kFqZ5UmY+mOCEo6M7BB3FpM=;
+	s=korg; t=1767961639;
+	bh=pZJca6g01DrUA53l9d54aT9P5xj4K9f5qmY6T1bLmZo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xRMSU65cuHzU8fAaQUQOoZfUd08fwxpbfhZLJ3aepZBepGp4KVds2g9CdY2l7U///
-	 7JYDAWZtS+ote4D0lQtjWILboBKykfuCrEQP1p0xrbqk9YASaQhWhXKo/yvVdfo2Gu
-	 Uqkjf1R8OcjGH9enZ2Ex+5RbVQw5h/8+PcdEsMOQ=
+	b=TiFExBLOCji19qRC8WxczxSQ5RrVqFYlO3xgk8ZBqM83RWYeWBXhys3YGRZZbCrhx
+	 8rped0Kgnn9Qp6gNhwRanl8mgFr03Zgw8z/E6BANkkaBW/rVtJKdT1HAkb4Iys4pON
+	 vLP7TpVRK3hskEM3RBlaM04Hto9dcpgmssp3sh6Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
+	Michael van der Westhuizen <rmikey@meta.com>,
+	Tobias Fleig <tfleig@meta.com>,
+	Kiryl Shutsemau <kas@kernel.org>,
+	Usama Arif <usamaarif642@gmail.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Ard Biesheuvel <ardb@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 223/737] ext4: remove unused return value of __mb_check_buddy
+Subject: [PATCH 6.1 084/634] efi/libstub: Fix page table access in 5-level to 4-level paging transition
 Date: Fri,  9 Jan 2026 12:36:02 +0100
-Message-ID: <20260109112142.390547554@linuxfoundation.org>
+Message-ID: <20260109112120.598940837@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,65 +64,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kemeng Shi <shikemeng@huaweicloud.com>
+From: Usama Arif <usamaarif642@gmail.com>
 
-[ Upstream commit 133de5a0d8f8e32b34feaa8beae7a189482f1856 ]
+[ Upstream commit 84361123413efc84b06f3441c6c827b95d902732 ]
 
-Remove unused return value of __mb_check_buddy.
+When transitioning from 5-level to 4-level paging, the existing code
+incorrectly accesses page table entries by directly dereferencing CR3 and
+applying PAGE_MASK. This approach has several issues:
 
-Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20240105092102.496631-2-shikemeng@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Stable-dep-of: d9ee3ff810f1 ("ext4: improve integrity checking in __mb_check_buddy by enhancing order-0 validation")
+- __native_read_cr3() returns the raw CR3 register value, which on x86_64
+  includes not just the physical address but also flags Bits above the
+  physical address width of the system (i.e. above __PHYSICAL_MASK_SHIFT) are
+  also not masked.
+
+- The pgd value is masked by PAGE_SIZE which doesn't take into account the
+  higher bits such as _PAGE_BIT_NOPTISHADOW.
+
+Replace this with proper accessor functions:
+
+- native_read_cr3_pa(): Uses CR3_ADDR_MASK to additionally mask metadata out
+  of CR3 (like SME or LAM bits). All remaining bits are real address bits or
+  reserved and must be 0.
+
+- mask pgd value with PTE_PFN_MASK instead of PAGE_MASK, accounting for flags
+  above bit 51 (_PAGE_BIT_NOPTISHADOW in particular). Bits below 51, but above
+  the max physical address are reserved and must be 0.
+
+Fixes: cb1c9e02b0c1 ("x86/efistub: Perform 4/5 level paging switch from the stub")
+Reported-by: Michael van der Westhuizen <rmikey@meta.com>
+Reported-by: Tobias Fleig <tfleig@meta.com>
+Co-developed-by: Kiryl Shutsemau <kas@kernel.org>
+Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
+Signed-off-by: Usama Arif <usamaarif642@gmail.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
+Link: https://patch.msgid.link/20251103141002.2280812-3-usamaarif642@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/mballoc.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/firmware/efi/libstub/x86-5lvl.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
-index c5f642096ab4e..9721ae0ff92ed 100644
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -676,7 +676,7 @@ do {									\
- 	}								\
- } while (0)
+diff --git a/drivers/firmware/efi/libstub/x86-5lvl.c b/drivers/firmware/efi/libstub/x86-5lvl.c
+index 479dd445acdcf..267b1c5312540 100644
+--- a/drivers/firmware/efi/libstub/x86-5lvl.c
++++ b/drivers/firmware/efi/libstub/x86-5lvl.c
+@@ -66,7 +66,7 @@ void efi_5level_switch(void)
+ 	bool have_la57 = native_read_cr4() & X86_CR4_LA57;
+ 	bool need_toggle = want_la57 ^ have_la57;
+ 	u64 *pgt = (void *)la57_toggle + PAGE_SIZE;
+-	u64 *cr3 = (u64 *)__native_read_cr3();
++	pgd_t *cr3 = (pgd_t *)native_read_cr3_pa();
+ 	u64 *new_cr3;
  
--static int __mb_check_buddy(struct ext4_buddy *e4b, char *file,
-+static void __mb_check_buddy(struct ext4_buddy *e4b, char *file,
- 				const char *function, int line)
- {
- 	struct super_block *sb = e4b->bd_sb;
-@@ -695,7 +695,7 @@ static int __mb_check_buddy(struct ext4_buddy *e4b, char *file,
- 	void *buddy2;
+ 	if (!la57_toggle || !need_toggle)
+@@ -82,7 +82,7 @@ void efi_5level_switch(void)
+ 		new_cr3[0] = (u64)cr3 | _PAGE_TABLE_NOENC;
+ 	} else {
+ 		/* take the new root table pointer from the current entry #0 */
+-		new_cr3 = (u64 *)(cr3[0] & PAGE_MASK);
++		new_cr3 = (u64 *)(native_pgd_val(cr3[0]) & PTE_PFN_MASK);
  
- 	if (e4b->bd_info->bb_check_counter++ % 10)
--		return 0;
-+		return;
- 
- 	while (order > 1) {
- 		buddy = mb_find_buddy(e4b, order, &max);
-@@ -757,7 +757,7 @@ static int __mb_check_buddy(struct ext4_buddy *e4b, char *file,
- 
- 	grp = ext4_get_group_info(sb, e4b->bd_group);
- 	if (!grp)
--		return NULL;
-+		return;
- 	list_for_each(cur, &grp->bb_prealloc_list) {
- 		ext4_group_t groupnr;
- 		struct ext4_prealloc_space *pa;
-@@ -767,7 +767,6 @@ static int __mb_check_buddy(struct ext4_buddy *e4b, char *file,
- 		for (i = 0; i < pa->pa_len; i++)
- 			MB_CHECK_ASSERT(mb_test_bit(k + i, buddy));
- 	}
--	return 0;
- }
- #undef MB_CHECK_ASSERT
- #define mb_check_buddy(e4b) __mb_check_buddy(e4b,	\
+ 		/* copy the new root table if it is not 32-bit addressable */
+ 		if ((u64)new_cr3 > U32_MAX)
 -- 
 2.51.0
 
