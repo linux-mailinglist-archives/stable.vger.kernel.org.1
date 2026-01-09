@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-207508-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206906-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB9C5D09F2E
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:47:34 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25B27D09551
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:11:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id EAEBF308DBE1
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:37:40 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 74B9B303D349
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:09:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0539035B158;
-	Fri,  9 Jan 2026 12:37:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7AB235B122;
+	Fri,  9 Jan 2026 12:08:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="taSjdGbo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IQ/bvDjg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCED635B159;
-	Fri,  9 Jan 2026 12:37:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A79E359FBE;
+	Fri,  9 Jan 2026 12:08:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962253; cv=none; b=rXracz51fEolmnAMXk08NPh/Cm51GqRhRTIBVVtnZTfeFpfoPaYYD7RBr7K48JQVxvhxrHt+OvSmXSunzX0okhtAjTCUw9R9681SPJW1uXo10KkR9jUj9JPu0PSBrv8u+Vs0gtHV9WBKqL2shCDJz0AF0drENdPHvcOdHILeO6w=
+	t=1767960536; cv=none; b=o8dB9bbwO3HnXIXbgJBwBz1X16SEs8dk6BtWEDuA7voPhHIQcsttpomOAsUSxuHHgFZg5b6Y6n8QpMjAdkMzgHMbw6FOBj81r07boD/063V+snNUNXxqnjsgLQHYihYvYUUD1w4YXEg1+k3u47TYnUllXCyo/nVhJhl74HrdGTI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962253; c=relaxed/simple;
-	bh=bVNrPaOglMYv7qCT6aS42902K28cZMfIRx6ozidgF3g=;
+	s=arc-20240116; t=1767960536; c=relaxed/simple;
+	bh=CHFBoOUwdEMK6vRatCMLy+q5iHu07JFkn97DNw+RuN8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l8L0xMIK3wlbTBQxBjfUyN8gh6eYNEeqQ3LHjW2TjPm1Juf70eWrI5edx40GfjmsvNYYTod+tYBE6RZwXRxTcSd626QBDcJYdjPsSje8rZ8kZBVtWR4YupaO8LbakGQy+0aHLnOH1SY/TXkbmWnoQOYBfuzfz2XHDRC+8BOw5ko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=taSjdGbo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B70AC19422;
-	Fri,  9 Jan 2026 12:37:33 +0000 (UTC)
+	 MIME-Version; b=pmzOPhB10qACjHFlnh50INjXmaK3LMJJwoAbRlJaPCgLy8z4pd3AmJYzvl/5XxYsLNGvja/ZikWFs0Hl0JGkx9/lR3SLOkUyZtvB7uTtAbIVdrAcUmnMx8Vw1PI7q19bLS4ynj8aS6tgYqPYuxIruzCFENVbmTtgkELt86GVMd0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IQ/bvDjg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07BE1C16AAE;
+	Fri,  9 Jan 2026 12:08:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962253;
-	bh=bVNrPaOglMYv7qCT6aS42902K28cZMfIRx6ozidgF3g=;
+	s=korg; t=1767960536;
+	bh=CHFBoOUwdEMK6vRatCMLy+q5iHu07JFkn97DNw+RuN8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=taSjdGbo+Oz860N1A0HXkBfQgf1NeNAVSwXqRzeh1Q7Z0UwvQmCI6fp2r2mSE4xPZ
-	 3mWg7r97u8YE4Ed2NXzhiK2+OArzs4GWvCiwToCEbUxLhWEyXwunaZANFVcyFW4ecO
-	 94hPK9aCsF8+7n6XRMzc3QhVAthVVyqj9CBOEUQo=
+	b=IQ/bvDjg3sUzO7GNn5dO7oey7dJK+DLgE/aE+sSWe3iket+VhMmNkRonnCUbHfq3A
+	 OpPtymKLH6Wg+ysDwmx14cKPX2Jma+jJcrgZXRrJA036Ega9hJgI6PlqQ17j5sFBlL
+	 5bV3KZm1ekUXChlnu0aJhE5RBs0TcNPBdxrpSYgg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josua Mayer <josua@solid-run.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Gregory CLEMENT <gregory.clement@bootlin.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 300/634] clk: mvebu: cp110 add CLK_IGNORE_UNUSED to pcie_x10, pcie_x11 & pcie_x4
+	stable <stable@kernel.org>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+	Udipto Goswami <udipto.goswami@oss.qualcomm.com>
+Subject: [PATCH 6.6 439/737] usb: dwc3: keep susphy enabled during exit to avoid controller faults
 Date: Fri,  9 Jan 2026 12:39:38 +0100
-Message-ID: <20260109112128.822701718@linuxfoundation.org>
+Message-ID: <20260109112150.505078585@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,83 +60,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josua Mayer <josua@solid-run.com>
+From: Udipto Goswami <udipto.goswami@oss.qualcomm.com>
 
-[ Upstream commit f0e6bc0c3ef4b4afb299bd6912586cafd5d864e9 ]
+commit e1003aa7ec9eccdde4c926bd64ef42816ad55f25 upstream.
 
-CP110 based platforms rely on the bootloader for pci port
-initialization.
-TF-A actively prevents non-uboot re-configuration of pci lanes, and many
-boards do not have software control over the pci card reset.
+On some platforms, switching USB roles from host to device can trigger
+controller faults due to premature PHY power-down. This occurs when the
+PHY is disabled too early during teardown, causing synchronization
+issues between the PHY and controller.
 
-If a pci port had link at boot-time and the clock is stopped at a later
-point, the link fails and can not be recovered.
+Keep susphy enabled during dwc3_host_exit() and dwc3_gadget_exit()
+ensures the PHY remains in a low-power state capable of handling
+required commands during role switch.
 
-PCI controller driver probe - and by extension ownership of a driver for
-the pci clocks - may be delayed especially on large modular kernels,
-causing the clock core to start disabling unused clocks.
-
-Add the CLK_IGNORE_UNUSED flag to the three pci port's clocks to ensure
-they are not stopped before the pci controller driver has taken
-ownership and tested for an existing link.
-
-This fixes failed pci link detection when controller driver probes late,
-e.g. with arm64 defconfig and CONFIG_PHY_MVEBU_CP110_COMPHY=m.
-
-Closes: https://lore.kernel.org/r/b71596c7-461b-44b6-89ab-3cfbd492639f@solid-run.com
-Signed-off-by: Josua Mayer <josua@solid-run.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Gregory CLEMENT <gregory.clement@bootlin.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable <stable@kernel.org>
+Fixes: 6d735722063a ("usb: dwc3: core: Prevent phy suspend during init")
+Suggested-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Signed-off-by: Udipto Goswami <udipto.goswami@oss.qualcomm.com>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://patch.msgid.link/20251126054221.120638-1-udipto.goswami@oss.qualcomm.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/mvebu/cp110-system-controller.c | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+ drivers/usb/dwc3/gadget.c |    2 +-
+ drivers/usb/dwc3/host.c   |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/clk/mvebu/cp110-system-controller.c b/drivers/clk/mvebu/cp110-system-controller.c
-index 84c8900542e4..b477396917ad 100644
---- a/drivers/clk/mvebu/cp110-system-controller.c
-+++ b/drivers/clk/mvebu/cp110-system-controller.c
-@@ -110,6 +110,25 @@ static const char * const gate_base_names[] = {
- 	[CP110_GATE_EIP197]	= "eip197"
- };
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -4807,7 +4807,7 @@ void dwc3_gadget_exit(struct dwc3 *dwc)
+ 	if (!dwc->gadget)
+ 		return;
  
-+static unsigned long gate_flags(const u8 bit_idx)
-+{
-+	switch (bit_idx) {
-+	case CP110_GATE_PCIE_X1_0:
-+	case CP110_GATE_PCIE_X1_1:
-+	case CP110_GATE_PCIE_X4:
-+		/*
-+		 * If a port had an active link at boot time, stopping
-+		 * the clock creates a failed state from which controller
-+		 * driver can not recover.
-+		 * Prevent stopping this clock till after a driver has taken
-+		 * ownership.
-+		 */
-+		return CLK_IGNORE_UNUSED;
-+	default:
-+		return 0;
-+	}
-+};
-+
- struct cp110_gate_clk {
- 	struct clk_hw hw;
- 	struct regmap *regmap;
-@@ -171,6 +190,7 @@ static struct clk_hw *cp110_register_gate(const char *name,
- 	init.ops = &cp110_gate_ops;
- 	init.parent_names = &parent_name;
- 	init.num_parents = 1;
-+	init.flags = gate_flags(bit_idx);
+-	dwc3_enable_susphy(dwc, false);
++	dwc3_enable_susphy(dwc, true);
+ 	usb_del_gadget(dwc->gadget);
+ 	dwc3_gadget_free_endpoints(dwc);
+ 	usb_put_gadget(dwc->gadget);
+--- a/drivers/usb/dwc3/host.c
++++ b/drivers/usb/dwc3/host.c
+@@ -168,7 +168,7 @@ void dwc3_host_exit(struct dwc3 *dwc)
+ 	if (dwc->sys_wakeup)
+ 		device_init_wakeup(&dwc->xhci->dev, false);
  
- 	gate->regmap = regmap;
- 	gate->bit_idx = bit_idx;
--- 
-2.51.0
-
+-	dwc3_enable_susphy(dwc, false);
++	dwc3_enable_susphy(dwc, true);
+ 	platform_device_unregister(dwc->xhci);
+ 	dwc->xhci = NULL;
+ }
 
 
 
