@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-207514-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206912-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39275D09FEE
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:49:58 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4021D0982C
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:22:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id AC215307FD1B
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:37:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id ABC0530D9D5A
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:09:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB572359701;
-	Fri,  9 Jan 2026 12:37:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2E1935A956;
+	Fri,  9 Jan 2026 12:09:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gvpKliGc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A/ycVWQh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F726335BCD;
-	Fri,  9 Jan 2026 12:37:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51DD335A952;
+	Fri,  9 Jan 2026 12:09:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962270; cv=none; b=tdUGzbTTm6MSpoFx/tjbCP6W8kQ8bLriWxZlfikmztLDRcjQngTqeVcXQyOY62lmD3d4iPpYiY9UoCr1hGXcn9juEJBdjQDJvHmpUgFkwLOUs7iX5YtPAtBfJtjnY5inQEzNwKItKocJBE0gBa888DPRKYmeeKTjzm+AMLCeFHI=
+	t=1767960553; cv=none; b=Ue494VfZGFXut6hI377o8ObdXMNT7ChItpuXfnHUgsktbqXG00wGGrzdpXMGlQ/aLZ88cSUoAcQsOTDTr7j3B9mqfQpJeGNPHtOa+rsdlEm4ABrkm/AEjXDVGNmzSVUZYgTxZmhzrHichVFLcdaUNUKZWMz0CR3cchD2Yah0TrA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962270; c=relaxed/simple;
-	bh=cImV3KpHFohL2ihHr1x7KZZfm6QuqsxMFMzJ0RMPeZM=;
+	s=arc-20240116; t=1767960553; c=relaxed/simple;
+	bh=fMqT/7ljsmkqpwxNjYty9tVOIf/LgIdcJ87Jfzvx2Zs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GgHkmSSoDaLFr7xJrCmjq5fiE8tDFmvIjqdBoGh1i5iTCT+7ksWDPTdjaodtSCGd3t6o+YJ463VRtMgfpty6EchGMBK9C0MSjrtnKItnxnP98YsLBTvoxKM1m2OC02/nxWlDldweeJh8WdIVb7ApkkZ6LTeLonzMOm862rtF/Vs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gvpKliGc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B8D5C4CEF1;
-	Fri,  9 Jan 2026 12:37:49 +0000 (UTC)
+	 MIME-Version; b=KdvdbVNJew+ass6p3wY5eV9Dy4oefCFvKDIy2c9E558wPp/lS5dv24+fSIW6GQNgXCpbHIb7gQmlW9vjQR8cKhJMHjsF1paqwO3fuNoqJgIKrIGpVPDn5KiKhgcr2IXp6IVmSwFczAxMUsHDASgLJiiygzl+WHDC5578lMePd3Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A/ycVWQh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9F96C4CEF1;
+	Fri,  9 Jan 2026 12:09:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962270;
-	bh=cImV3KpHFohL2ihHr1x7KZZfm6QuqsxMFMzJ0RMPeZM=;
+	s=korg; t=1767960553;
+	bh=fMqT/7ljsmkqpwxNjYty9tVOIf/LgIdcJ87Jfzvx2Zs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gvpKliGceqMcpaF78WKWCQcW8oNEwA4ikzCYMSJuVjoBNrbyImmildu+ilk/r0T0c
-	 Qc1UMmJS+DN+aDh0rlH11iBRbu/g88nlAT53bZBb4Y32MXqOPfoWcihGHTlgsvRmet
-	 tA1gkfzHBpqaQTvE2UlF09tgvBDUtJrF8lMz17LQ=
+	b=A/ycVWQhZQsjPzj+Bg+Soom9oJsZR2EjLeVvM1n0ozT8UXJwXFYdphR34DL/GdiqC
+	 GlQWLCStKFHI7z6d8H0NF0BPRfYr1MCQzem1S3DCdiwYjcAmVknkMEHlc5fnZ/DgLv
+	 vO4co6z/yZ0pSI4asFdAfzxnByOxNschGaq5fKVs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Qiang <liqiang01@kylinos.cn>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 305/634] via_wdt: fix critical boot hang due to unnamed resource allocation
+	Miaoqian Lin <linmq006@gmail.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>
+Subject: [PATCH 6.6 444/737] cpufreq: nforce2: fix reference count leak in nforce2
 Date: Fri,  9 Jan 2026 12:39:43 +0100
-Message-ID: <20260109112129.011136625@linuxfoundation.org>
+Message-ID: <20260109112150.698958006@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +59,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Qiang <liqiang01@kylinos.cn>
+From: Miaoqian Lin <linmq006@gmail.com>
 
-[ Upstream commit 7aa31ee9ec92915926e74731378c009c9cc04928 ]
+commit 9600156bb99852c216a2128cdf9f114eb67c350f upstream.
 
-The VIA watchdog driver uses allocate_resource() to reserve a MMIO
-region for the watchdog control register. However, the allocated
-resource was not given a name, which causes the kernel resource tree
-to contain an entry marked as "<BAD>" under /proc/iomem on x86
-platforms.
+There are two reference count leaks in this driver:
 
-During boot, this unnamed resource can lead to a critical hang because
-subsequent resource lookups and conflict checks fail to handle the
-invalid entry properly.
+1. In nforce2_fsb_read(): pci_get_subsys() increases the reference count
+   of the PCI device, but pci_dev_put() is never called to release it,
+   thus leaking the reference.
 
-Signed-off-by: Li Qiang <liqiang01@kylinos.cn>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+2. In nforce2_detect_chipset(): pci_get_subsys() gets a reference to the
+   nforce2_dev which is stored in a global variable, but the reference
+   is never released when the module is unloaded.
+
+Fix both by:
+- Adding pci_dev_put(nforce2_sub5) in nforce2_fsb_read() after reading
+  the configuration.
+- Adding pci_dev_put(nforce2_dev) in nforce2_exit() to release the
+  global device reference.
+
+Found via static analysis.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/watchdog/via_wdt.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/cpufreq/cpufreq-nforce2.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/watchdog/via_wdt.c b/drivers/watchdog/via_wdt.c
-index eeb39f96e72e..c1ed3ce153cf 100644
---- a/drivers/watchdog/via_wdt.c
-+++ b/drivers/watchdog/via_wdt.c
-@@ -165,6 +165,7 @@ static int wdt_probe(struct pci_dev *pdev,
- 		dev_err(&pdev->dev, "cannot enable PCI device\n");
- 		return -ENODEV;
- 	}
-+	wdt_res.name = "via_wdt";
+--- a/drivers/cpufreq/cpufreq-nforce2.c
++++ b/drivers/cpufreq/cpufreq-nforce2.c
+@@ -145,6 +145,8 @@ static unsigned int nforce2_fsb_read(int
+ 	pci_read_config_dword(nforce2_sub5, NFORCE2_BOOTFSB, &fsb);
+ 	fsb /= 1000000;
  
- 	/*
- 	 * Allocate a MMIO region which contains watchdog control register
--- 
-2.51.0
-
++	pci_dev_put(nforce2_sub5);
++
+ 	/* Check if PLL register is already set */
+ 	pci_read_config_byte(nforce2_dev, NFORCE2_PLLENABLE, (u8 *)&temp);
+ 
+@@ -432,6 +434,7 @@ static int __init nforce2_init(void)
+ static void __exit nforce2_exit(void)
+ {
+ 	cpufreq_unregister_driver(&nforce2_driver);
++	pci_dev_put(nforce2_dev);
+ }
+ 
+ module_init(nforce2_init);
 
 
 
