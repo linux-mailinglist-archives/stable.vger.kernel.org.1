@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-207259-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206658-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB987D09D24
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:39:52 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43F05D092CA
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:01:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8ED4830A58FE
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:25:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9A045305CA11
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:57:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53F0B2E8B94;
-	Fri,  9 Jan 2026 12:25:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 770E32F12D4;
+	Fri,  9 Jan 2026 11:57:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bobypMZC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="neyguz2c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16E6A2737EE;
-	Fri,  9 Jan 2026 12:25:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B73531A7EA;
+	Fri,  9 Jan 2026 11:57:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961547; cv=none; b=RplJ+uz2CWWaPRQypktjhAKELr4cXEb9zPygE6A28gc+2AKAbPkddU9R5DLcv4h55rTU207lHUSSesh/T3TsPBG08yWxr+VLIEPY92xDaB2mne0dLryrCGkpuTqhCVqIPDeKmCPW+XQmwVm6X6Z15r3Ghjy9U6p8tLLRVSsHhOc=
+	t=1767959832; cv=none; b=IJI5kbeB73YyLV7SkpdCn0oO1YF9qtvUV8n0w8CDJ6UE2Jc69PMlIfCnOOBYFEphLxJ8VNkMk9hNxqgqTttfBE0YMGGhaS3UbpCG8oUNQRjgxpPe6a5Z9+w4pj2sK15eZwzdBiLaLgSSO+9XnHkmdDad4ee1gxnBXGU7Gxm1CZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961547; c=relaxed/simple;
-	bh=Mn1/MLBSHJ6eiVIxqOjADrv0c4cGHwSEiM2MpJJXKDM=;
+	s=arc-20240116; t=1767959832; c=relaxed/simple;
+	bh=JDK742nWLCOn+ZgLAUh2EVudwvRdPo61m58+l4Di4kU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aGn+hn8lY3L5MxRfNoBtn1JNr11RZhErjyLd4SvjkOpSa/YwY+DLUgEkEdv9+lTnZHT/sq19XW+khQXIsTiIvYUwWTqbweQjmYiDTrxgOqzosCJUIDTbI4JNATPvIvV90XVH370vZugcq9tnz5jZjFQCz8ZVbmO3QsJhuk3Hqcw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bobypMZC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C9D4C4CEF1;
-	Fri,  9 Jan 2026 12:25:46 +0000 (UTC)
+	 MIME-Version; b=SZyLjOiPrUGSA6u9utlAl9OGrcz2hGow6Npepves64QG+0CwIeO8LRkaR+n1DDtIhJwZ4AVDfvUIe5ccNjdrNTzrKi6qCJGBUXmAq35jD85+dvMzHntO8YPfRlEKFjDioCe7hp7MfTWOLV8Kzu6sz8VAuaiJqujuohSR0iGn6Ug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=neyguz2c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE0D0C16AAE;
+	Fri,  9 Jan 2026 11:57:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961546;
-	bh=Mn1/MLBSHJ6eiVIxqOjADrv0c4cGHwSEiM2MpJJXKDM=;
+	s=korg; t=1767959832;
+	bh=JDK742nWLCOn+ZgLAUh2EVudwvRdPo61m58+l4Di4kU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bobypMZC/Cy5ZdjsBHL2kPfrpremD1b0QzfKmrhNc1PS2TpzRJfk9OmTs5UXp9Jxj
-	 Z370pbauv0r/Anv19qSHTWtdGr1EDwLrEP8IMu1gpabiAlIMwm042wdchdHVlZlM4n
-	 CWzxO11Xqid7B2NKnEpTpAcavaq7q4hgjUUE1ugg=
+	b=neyguz2cMaMSghF1Heu1ZIkvO448lKMSc0wB2T7R199ZGPPGp6p4sKKiuTor2S9CH
+	 reZ+LX9IjZTCqUfsefJK1ndeVa4sGsnpFsrmdl9QiIP0JdnBiJIVqhOS81m70Khqcj
+	 kK28XUH6cU5c38o6hZLTSm5bQhi9nxt8XQe07t10=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
+	Jisheng Zhang <jszhang@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 052/634] irqchip/imx-mu-msi: Fix section mismatch
+Subject: [PATCH 6.6 191/737] usb: dwc2: fix hang during shutdown if set as peripheral
 Date: Fri,  9 Jan 2026 12:35:30 +0100
-Message-ID: <20260109112119.402992933@linuxfoundation.org>
+Message-ID: <20260109112141.180292624@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,65 +59,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Jisheng Zhang <jszhang@kernel.org>
 
-[ Upstream commit 64acfd8e680ff8992c101fe19aadb112ce551072 ]
+[ Upstream commit b6ebcfdcac40a27953f052e4269ce75a18825ffc ]
 
-Platform drivers can be probed after their init sections have been
-discarded so the irqchip init callbacks must not live in init.
+dwc2 on most platforms needs phy controller, clock and power supply.
+All of them must be enabled/activated to properly operate. If dwc2
+is configured as peripheral mode, then all the above three hardware
+resources are disabled at the end of the probe:
 
-Fixes: 70afdab904d2 ("irqchip: Add IMX MU MSI controller driver")
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+	/* Gadget code manages lowlevel hw on its own */
+	if (hsotg->dr_mode == USB_DR_MODE_PERIPHERAL)
+		dwc2_lowlevel_hw_disable(hsotg);
+
+But dwc2_driver_shutdown() tries to disable the interrupts on HW IP
+level. This would result in hang during shutdown if dwc2 is configured
+as peripheral mode.
+
+Fix this hang by only disable and sync irq when lowlevel hw is enabled.
+
+Fixes: 4fdf228cdf69 ("usb: dwc2: Fix shutdown callback in platform")
+Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
+Link: https://patch.msgid.link/20251104002503.17158-2-jszhang@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-imx-mu-msi.c | 14 +++++---------
- 1 file changed, 5 insertions(+), 9 deletions(-)
+ drivers/usb/dwc2/platform.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/irqchip/irq-imx-mu-msi.c b/drivers/irqchip/irq-imx-mu-msi.c
-index 229039eda1b1f..9b158d0043fb4 100644
---- a/drivers/irqchip/irq-imx-mu-msi.c
-+++ b/drivers/irqchip/irq-imx-mu-msi.c
-@@ -303,9 +303,8 @@ static const struct imx_mu_dcfg imx_mu_cfg_imx8ulp = {
- 		  },
- };
- 
--static int __init imx_mu_of_init(struct device_node *dn,
--				 struct device_node *parent,
--				 const struct imx_mu_dcfg *cfg)
-+static int imx_mu_of_init(struct device_node *dn, struct device_node *parent,
-+			  const struct imx_mu_dcfg *cfg)
+diff --git a/drivers/usb/dwc2/platform.c b/drivers/usb/dwc2/platform.c
+index 79ce88b5f07d9..fad6f68f86bd6 100644
+--- a/drivers/usb/dwc2/platform.c
++++ b/drivers/usb/dwc2/platform.c
+@@ -369,11 +369,11 @@ static void dwc2_driver_shutdown(struct platform_device *dev)
  {
- 	struct platform_device *pdev = of_find_device_by_node(dn);
- 	struct device_link *pd_link_a;
-@@ -423,20 +422,17 @@ static const struct dev_pm_ops imx_mu_pm_ops = {
- 			   imx_mu_runtime_resume, NULL)
- };
+ 	struct dwc2_hsotg *hsotg = platform_get_drvdata(dev);
  
--static int __init imx_mu_imx7ulp_of_init(struct device_node *dn,
--					 struct device_node *parent)
-+static int imx_mu_imx7ulp_of_init(struct device_node *dn, struct device_node *parent)
- {
- 	return imx_mu_of_init(dn, parent, &imx_mu_cfg_imx7ulp);
+-	dwc2_disable_global_interrupts(hsotg);
+-	synchronize_irq(hsotg->irq);
+-
+-	if (hsotg->ll_hw_enabled)
++	if (hsotg->ll_hw_enabled) {
++		dwc2_disable_global_interrupts(hsotg);
++		synchronize_irq(hsotg->irq);
+ 		dwc2_lowlevel_hw_disable(hsotg);
++	}
  }
  
--static int __init imx_mu_imx6sx_of_init(struct device_node *dn,
--					struct device_node *parent)
-+static int imx_mu_imx6sx_of_init(struct device_node *dn, struct device_node *parent)
- {
- 	return imx_mu_of_init(dn, parent, &imx_mu_cfg_imx6sx);
- }
- 
--static int __init imx_mu_imx8ulp_of_init(struct device_node *dn,
--					 struct device_node *parent)
-+static int imx_mu_imx8ulp_of_init(struct device_node *dn, struct device_node *parent)
- {
- 	return imx_mu_of_init(dn, parent, &imx_mu_cfg_imx8ulp);
- }
+ /**
 -- 
 2.51.0
 
