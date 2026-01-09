@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-207188-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207790-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DF5BD099D9
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:28:35 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E657BD0A274
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:02:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id CECE9302CA9E
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:22:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EF8FA3034A35
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:51:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8732233B6F0;
-	Fri,  9 Jan 2026 12:22:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0578435BDA6;
+	Fri,  9 Jan 2026 12:50:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R6hF/fSQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1aI1MLsV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AEBA303C87;
-	Fri,  9 Jan 2026 12:22:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BABDF359715;
+	Fri,  9 Jan 2026 12:50:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961343; cv=none; b=XBhvQwn9smbxQClRi9qNQZkEmsdHJ9W0E0G4sgYMF/t8grjriWX6SZ2qDKsl88EOrhz4CsGGLQLcRYNOpIENpvTbcSL20ivxApMz3pjGMe35QDXUH7M20I6kKkxbHQqovn7N+Hg4NmQv+nrhF1WZd0ucGeSRcBgf51suTDfERJI=
+	t=1767963056; cv=none; b=Z4k64hZjAnpAneH2BhEgziX5LqPJbTrOZvaTLvOV0xUswK7i9ljqP7wDiiGEDbnKWw8BhIyzzIXU9p51awM3+LLmILQBOQBwjO/gW/fHsDFlghqOzaEiDONi+HUatJokcvwPZneLYElnZRdmysAG4msawN3QQq2G3JM3N7DuGu8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961343; c=relaxed/simple;
-	bh=iTi1y8BYbn9CC6wtUH7Vv5CVlJyUudFznCMsTtGFCZI=;
+	s=arc-20240116; t=1767963056; c=relaxed/simple;
+	bh=eAnL1uocz9ghqw8Vpr7bhgIh9q9tMTIChE0JlHd+Y4k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AO5OLMLhOl4ATIjt72FmoHCvuVZIEpZ9W+BQyTbTWvSQis190OjHlOqC31uf8g1iZ7i9jdS1qff/AscL/H3oQrhbE9XTkII2IXSLp9GdvzCcsyhzGIpRuVovPVqIr2nOR8FIsj3xsrUDAq+UL76SWtm7zId/z1cBSh1pmPYtceQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R6hF/fSQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97D8DC4CEF1;
-	Fri,  9 Jan 2026 12:22:22 +0000 (UTC)
+	 MIME-Version; b=BbGYmktpjOa+L1XZOB5TBbwWnJ4UMh0YGz1hb0zGzc8L1qrbyihas4le/4Ml2NX4yEdviy0rfzr/hYwBbQYIjALWZfxLwj4pl8pPkT4BjehsGcKKGIbz7rFTXP0oN25d0CxZLaX/06WKUBt+OO/h6CUvzNXjGpXc06XE15lZJSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1aI1MLsV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8440C4CEF1;
+	Fri,  9 Jan 2026 12:50:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961343;
-	bh=iTi1y8BYbn9CC6wtUH7Vv5CVlJyUudFznCMsTtGFCZI=;
+	s=korg; t=1767963056;
+	bh=eAnL1uocz9ghqw8Vpr7bhgIh9q9tMTIChE0JlHd+Y4k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R6hF/fSQXNyNZKFy14gfPcxQX0PsoKb82MsVMTnFyyA4U4/9I9zQznxxk3coz0ojd
-	 WpRxanyhMV3OkH1qPyrOXPuv71mbifvNw7BnlXnNPimUpu5Ef1givpXLzgkw7E1A9l
-	 ZJq8k1n6ZwFNxtZDRpOP3Vn8HLATBFRD/oSGEF54=
+	b=1aI1MLsVdv5ILAvnIk8qhQvLKSNr2z1S0C92Bw8G7IfD4X7kmIDj7aIkDTzh+Ejp2
+	 ghMevNa0Rg8viP8QhuwlouC6UTpHi4nHrdOVI8eJXMCIndEUKC4glmeXEqcZvNuAxb
+	 hp/crIdg+X6zrvDbz059df4YSGTFDdysUOgFajFI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@google.com>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 720/737] mm/damon/tests/core-kunit: handle alloc failures on dasmon_test_merge_regions_of()
+	Ming Qian <ming.qian@oss.nxp.com>,
+	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+	Sebastian Fricke <sebastian.fricke@collabora.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 581/634] media: amphion: Add a frame flush mode for decoder
 Date: Fri,  9 Jan 2026 12:44:19 +0100
-Message-ID: <20260109112201.172340523@linuxfoundation.org>
+Message-ID: <20260109112139.474696932@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SeongJae Park <sj@kernel.org>
+From: Ming Qian <ming.qian@oss.nxp.com>
 
-commit 0998d2757218771c59d5ca59ccf13d1542a38f17 upstream.
+[ Upstream commit 9ea16ba6eaf93f25f61855751f71e2e701709ddf ]
 
-damon_test_merge_regions_of() is assuming all dynamic memory allocation in
-it will succeed.  Those are indeed likely in the real use cases since
-those allocations are too small to fail, but theoretically those could
-fail.  In the case, inappropriate memory access can happen.  Fix it by
-appropriately cleanup pre-allocated memory and skip the execution of the
-remaining tests in the failure cases.
+By default the amphion decoder will pre-parse 3 frames before starting
+to decode the first frame. Alternatively, a block of flush padding data
+can be appended to the frame, which will ensure that the decoder can
+start decoding immediately after parsing the flush padding data, thus
+potentially reducing decoding latency.
 
-Link: https://lkml.kernel.org/r/20251101182021.74868-8-sj@kernel.org
-Fixes: 17ccae8bb5c9 ("mm/damon: add kunit tests")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: Brendan Higgins <brendan.higgins@linux.dev>
-Cc: David Gow <davidgow@google.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: <stable@vger.kernel.org>	[5.15+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+This mode was previously only enabled, when the display delay was set to
+0. Allow the user to manually toggle the use of that mode via a module
+parameter called low_latency, which enables the mode without
+changing the display order.
+
+Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
+Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Sebastian Fricke <sebastian.fricke@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Stable-dep-of: 634c2cd17bd0 ("media: amphion: Remove vpu_vb_is_codecconfig")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/damon/core-test.h |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/media/platform/amphion/vpu_malone.c |   14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
---- a/mm/damon/core-test.h
-+++ b/mm/damon/core-test.h
-@@ -210,8 +210,14 @@ static void damon_test_merge_regions_of(
- 	int i;
+--- a/drivers/media/platform/amphion/vpu_malone.c
++++ b/drivers/media/platform/amphion/vpu_malone.c
+@@ -27,6 +27,10 @@
+ #include "vpu_imx8q.h"
+ #include "vpu_malone.h"
  
- 	t = damon_new_target();
-+	if (!t)
-+		kunit_skip(test, "target alloc fail");
- 	for (i = 0; i < ARRAY_SIZE(sa); i++) {
- 		r = damon_new_region(sa[i], ea[i]);
-+		if (!r) {
-+			damon_free_target(t);
-+			kunit_skip(test, "region alloc fail");
-+		}
- 		r->nr_accesses = nrs[i];
- 		damon_add_region(r, t);
- 	}
++static bool low_latency;
++module_param(low_latency, bool, 0644);
++MODULE_PARM_DESC(low_latency, "Set low latency frame flush mode: 0 (disable) or 1 (enable)");
++
+ #define CMD_SIZE			25600
+ #define MSG_SIZE			25600
+ #define CODEC_SIZE			0x1000
+@@ -1527,7 +1531,15 @@ static int vpu_malone_input_frame_data(s
+ 
+ 	vpu_malone_update_wptr(str_buf, wptr);
+ 
+-	if (disp_imm && !vpu_vb_is_codecconfig(vbuf)) {
++	/*
++	 * Enable the low latency flush mode if display delay is set to 0
++	 * or the low latency frame flush mode if it is set to 1.
++	 * The low latency flush mode requires some padding data to be appended to each frame,
++	 * but there must not be any padding data between the sequence header and the frame.
++	 * This module is currently only supported for the H264 and HEVC formats,
++	 * for other formats, vpu_malone_add_scode() will return 0.
++	 */
++	if ((disp_imm || low_latency) && !vpu_vb_is_codecconfig(vbuf)) {
+ 		ret = vpu_malone_add_scode(inst->core->iface,
+ 					   inst->id,
+ 					   &inst->stream_buffer,
 
 
 
