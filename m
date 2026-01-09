@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-207390-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206823-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3364AD09CCA
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:38:27 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB8D8D093EC
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:06:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6BFC2302ABBC
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:32:00 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 079843025C6D
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:05:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D822359701;
-	Fri,  9 Jan 2026 12:31:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FF8F359FBE;
+	Fri,  9 Jan 2026 12:05:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mcBMUyCM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Etgfm1y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4181631E107;
-	Fri,  9 Jan 2026 12:31:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6329E359F98;
+	Fri,  9 Jan 2026 12:05:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961919; cv=none; b=ind0318VBRJ/jyfteqc3s+/DQ2e9I975peZyiLsSV2CONSxzO71szyaPeF0adhRjZMvbA6bfYWLvvBG7OFJO+ENRdknkIixiEVaNN6wwa641GBvR+97xcA4EknDjr5t3+dRQRN5ASsU6A1Eb4VxfdLdl6Alqco9oWpaxGcNY2T4=
+	t=1767960300; cv=none; b=FZ1zguZMGptcX1wjnB40PL9+KSBEKKomVVD43gxp2YAHWRuJi1ZpJWZ/l1HtUTVPHJVzzJHr9QcCZ5OyC+/jTqIP/umTIxGxMye38pJLhdtBfL5xr5oj5/LhmA/yc+/jj7GYpUofRRLN1Oss21o5euiItP1nVImIiHabho4NchY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961919; c=relaxed/simple;
-	bh=REvPdTFikimdtVPW4cWz8/A2vFH0mfIqqPEeCrw8uUQ=;
+	s=arc-20240116; t=1767960300; c=relaxed/simple;
+	bh=NHN5YcBAXnzbnDnlDdADl89jQ7fjCIqnVD4OlKqGyls=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pNZ80w/bnxyMvWjwzx90XMT+j6aY6jxh7Q1RQptE2WvgW+D8V4XrGWlRA0fSWwSKklKmSYHNWtoAmhp6WRTeZqDkrwu7RqNpjSCNKcucC3NJJ8GczRroriH/wuv6+immkw3DZAb/Ruo1HvUdkiWyIViTJQLlZmZc0mIPFDeKe40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mcBMUyCM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C47A2C4CEF1;
-	Fri,  9 Jan 2026 12:31:58 +0000 (UTC)
+	 MIME-Version; b=VEKmhIQM1V1URNUaRxMxcf8ydVLu7hJl2lJ6VICaVvVjBmlHa819KUACTp/cM0CQOxXtdFut9zkwRl1D4qzmsGOS6rJ6WQShQKz8qfTQ4nNOh8okFjsxG6CB7jj3OhbrCN9XkBg6qkoKgEJy7hJH1IMAzxtJwB9GNoczQPHVaaY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Etgfm1y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D063EC4CEF1;
+	Fri,  9 Jan 2026 12:04:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961919;
-	bh=REvPdTFikimdtVPW4cWz8/A2vFH0mfIqqPEeCrw8uUQ=;
+	s=korg; t=1767960300;
+	bh=NHN5YcBAXnzbnDnlDdADl89jQ7fjCIqnVD4OlKqGyls=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mcBMUyCMX5fDmhXG7Bu0g8oyhBBu9CnBByjQ5v96i5OVY4yvzjdw8tvirbbr5hiFj
-	 Qy5m6MAnazeYq0lNuNtutrb/OiXk3mMVqSQWL1zVf8UBB78QeMvOH4Wu8lw6NmZTiK
-	 Wihqs/3yipE6J8FNadkZTqbBndz2GFwCE0YWwJDA=
+	b=0Etgfm1y6K7RyfmSzHQS8yEdh8Rb4JWGvvA8ASc0suqiH9G3nTcLRcRAVMU/AjjX+
+	 g1unhREoKWmyXodD5azJ9nQcw9lS0FywFIWt6yMPvp5ECzpuyH3x1ldTWojYWOnkdN
+	 1Zw4Zneq5Xj77k+NivS++rkwVbSIvHp3R3JD39a4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 183/634] perf tools: Fix split kallsyms DSO counting
-Date: Fri,  9 Jan 2026 12:37:41 +0100
-Message-ID: <20260109112124.327216561@linuxfoundation.org>
+Subject: [PATCH 6.6 323/737] btrfs: scrub: always update btrfs_scrub_progress::last_physical
+Date: Fri,  9 Jan 2026 12:37:42 +0100
+Message-ID: <20260109112146.149541716@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,43 +60,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namhyung Kim <namhyung@kernel.org>
+From: Qu Wenruo <wqu@suse.com>
 
-[ Upstream commit ad0b9c4865b98dc37f4d606d26b1c19808796805 ]
+[ Upstream commit 54df8b80cc63aa0f22c4590cad11542731ed43ff ]
 
-It's counted twice as it's increased after calling maps__insert().  I
-guess we want to increase it only after it's added properly.
+[BUG]
+When a scrub failed immediately without any byte scrubbed, the returned
+btrfs_scrub_progress::last_physical will always be 0, even if there is a
+non-zero @start passed into btrfs_scrub_dev() for resume cases.
 
-Reviewed-by: Ian Rogers <irogers@google.com>
-Fixes: 2e538c4a1847291cf ("perf tools: Improve kernel/modules symbol lookup")
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+This will reset the progress and make later scrub resume start from the
+beginning.
+
+[CAUSE]
+The function btrfs_scrub_dev() accepts a @progress parameter to copy its
+updated progress to the caller, there are cases where we either don't
+touch progress::last_physical at all or copy 0 into last_physical:
+
+- last_physical not updated at all
+  If some error happened before scrubbing any super block or chunk, we
+  will not copy the progress, leaving the @last_physical untouched.
+
+  E.g. failed to allocate @sctx, scrubbing a missing device or even
+  there is already a running scrub and so on.
+
+  All those cases won't touch @progress at all, resulting the
+  last_physical untouched and will be left as 0 for most cases.
+
+- Error out before scrubbing any bytes
+  In those case we allocated @sctx, and sctx->stat.last_physical is all
+  zero (initialized by kvzalloc()).
+  Unfortunately some critical errors happened during
+  scrub_enumerate_chunks() or scrub_supers() before any stripe is really
+  scrubbed.
+
+  In that case although we will copy sctx->stat back to @progress, since
+  no byte is really scrubbed, last_physical will be overwritten to 0.
+
+[FIX]
+Make sure the parameter @progress always has its @last_physical member
+updated to @start parameter inside btrfs_scrub_dev().
+
+At the very beginning of the function, set @progress->last_physical to
+@start, so that even if we error out without doing progress copying,
+last_physical is still at @start.
+
+Then after we got @sctx allocated, set sctx->stat.last_physical to
+@start, this will make sure even if we didn't get any byte scrubbed, at
+the progress copying stage the @last_physical is not left as zero.
+
+This should resolve the resume progress reset problem.
+
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/symbol.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/btrfs/scrub.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/tools/perf/util/symbol.c b/tools/perf/util/symbol.c
-index 98014f9375686..b434f2398df5a 100644
---- a/tools/perf/util/symbol.c
-+++ b/tools/perf/util/symbol.c
-@@ -904,11 +904,11 @@ static int maps__split_kallsyms(struct maps *kmaps, struct dso *dso, u64 delta,
- 			if (dso->kernel == DSO_SPACE__KERNEL_GUEST)
- 				snprintf(dso_name, sizeof(dso_name),
- 					"[guest.kernel].%d",
--					kernel_range++);
-+					kernel_range);
- 			else
- 				snprintf(dso_name, sizeof(dso_name),
- 					"[kernel].%d",
--					kernel_range++);
-+					kernel_range);
+diff --git a/fs/btrfs/scrub.c b/fs/btrfs/scrub.c
+index a69dce114c5ba..3338e2e7a9a02 100644
+--- a/fs/btrfs/scrub.c
++++ b/fs/btrfs/scrub.c
+@@ -2858,6 +2858,10 @@ int btrfs_scrub_dev(struct btrfs_fs_info *fs_info, u64 devid, u64 start,
+ 	unsigned int nofs_flag;
+ 	bool need_commit = false;
  
- 			ndso = dso__new(dso_name);
- 			if (ndso == NULL)
++	/* Set the basic fallback @last_physical before we got a sctx. */
++	if (progress)
++		progress->last_physical = start;
++
+ 	if (btrfs_fs_closing(fs_info))
+ 		return -EAGAIN;
+ 
+@@ -2876,6 +2880,7 @@ int btrfs_scrub_dev(struct btrfs_fs_info *fs_info, u64 devid, u64 start,
+ 	sctx = scrub_setup_ctx(fs_info, is_dev_replace);
+ 	if (IS_ERR(sctx))
+ 		return PTR_ERR(sctx);
++	sctx->stat.last_physical = start;
+ 
+ 	ret = scrub_workers_get(fs_info);
+ 	if (ret)
 -- 
 2.51.0
 
