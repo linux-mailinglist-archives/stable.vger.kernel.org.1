@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-206915-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207517-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C75BD0982F
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:22:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B807D0A1E7
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:00:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 68DDF307C5CC
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:09:52 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B3DB530885D8
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:37:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F6DB35A933;
-	Fri,  9 Jan 2026 12:09:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58B7A358D30;
+	Fri,  9 Jan 2026 12:37:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0QvaOTWC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I2p9b/L2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4200E359FB0;
-	Fri,  9 Jan 2026 12:09:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BB02335BCD;
+	Fri,  9 Jan 2026 12:37:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960562; cv=none; b=D2SSt1R0bynPcG6d0p62m3p8KCtTamfcdpcm4Q0gh7Mo/6pYJyK96hVhm+MQ50WUM5DohJV/O/E5HwrCPgubNGhecnFSw6o6rpNwxKrS4yX1tlKJ3G9IygnQOiBEVu+/8+b27kWVxV0Ypu4Nz5uIJjQjLZJ1/n+RbBvPQAaK1Wg=
+	t=1767962279; cv=none; b=hMOfF5RCtp6YASirS05aZTQc9PO+XnHS50EMzABzUy5vv9KuNoiwkO+GgPx1PkIfYMWzOwh+a3HMZDeMyWajrQI4U+mBVYcewiz3NWQ6bdjXqyJXf9IPXRTpAK79bqjmjlyj9TvvbmpGukCHHTZsQqjKd5yfWCluF3pbMWQOeZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960562; c=relaxed/simple;
-	bh=REK7oh1iMZBEWCQbTOtNhRRm19m89KSB2fM5BKyROhM=;
+	s=arc-20240116; t=1767962279; c=relaxed/simple;
+	bh=9/VUGkKWR+dSWCWqgzktkJ4PxzlQn43QIa0VsZTIHME=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SYTFwb+orf8Ud5fdMU/iCF3RYUobTRz+3aq0Op4O9r+Jqa6pS1RhMqF2NrskwT8VdEiqKX68ZCzuhG8gGYUTDHwHxK36yKKXCwFHPKO/OfaTNniOglsUlKhjwNiKbD0GMtIee13DVZnXQFW/P9T9HGSCy5vOJ0SLJud7zMDKx0A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0QvaOTWC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7CACC4CEF1;
-	Fri,  9 Jan 2026 12:09:21 +0000 (UTC)
+	 MIME-Version; b=KjxV1sglUFR/N2CnzqaiMe1bYnh39R2AVYviVE+MkIyq6PdcVjH14pW2ocF6izZYMOKzOQQmNowLPfvSMzkkyuM/jYLAJgkS6WrrXr3p4+GXy7qAhYkkxY1AlMNWoBIRMLmT1AmzFgLgzjCI+cqy2Kv2u9j1zlWRPYz6uBu6Htk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I2p9b/L2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DC26C4CEF1;
+	Fri,  9 Jan 2026 12:37:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960562;
-	bh=REK7oh1iMZBEWCQbTOtNhRRm19m89KSB2fM5BKyROhM=;
+	s=korg; t=1767962279;
+	bh=9/VUGkKWR+dSWCWqgzktkJ4PxzlQn43QIa0VsZTIHME=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0QvaOTWCd8UcvfOtlbfRnc1qnITGXdKQdp4i6HWnWowmO0qygJHCI8aeCsIdjGB+3
-	 5f+0kw1QIUCjU+SOLoYv3WVFSyIt0uC6r9tVsMlZMBtV+/7WxjpfP9/5snj5NCAbiK
-	 a1/FCEMAKgB5MDRlPDH3bAT8J/At3HvHf46hvqcI=
+	b=I2p9b/L2+TAm8OXI13c0LjzpEuwoCw61OgHT298fm0946HAPjSlK2KF/7kEKJbOcR
+	 zNhYiNhBOetr9F20sSe70lC6l85sBwsJdJP7BTJiElu0wSUt/5X1PEaTk/0wQ//J9N
+	 n2ZlVL7y1SJqo2xv5qzDw1ummJQLXmjPk81h5Yu0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dai Ngo <dai.ngo@oracle.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.6 447/737] NFSD: use correct reservation type in nfsd4_scsi_fence_client
+	syzbot+205ef33a3b636b4181fb@syzkaller.appspotmail.com,
+	Lizhi Xu <lizhi.xu@windriver.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 308/634] usbip: Fix locking bug in RT-enabled kernels
 Date: Fri,  9 Jan 2026 12:39:46 +0100
-Message-ID: <20260109112150.811887877@linuxfoundation.org>
+Message-ID: <20260109112129.123265517@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,39 +61,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dai Ngo <dai.ngo@oracle.com>
+From: Lizhi Xu <lizhi.xu@windriver.com>
 
-commit 6f52063db9aabdaabea929b1e998af98c2e8d917 upstream.
+[ Upstream commit 09bf21bf5249880f62fe759b53b14b4b52900c6c ]
 
-The reservation type argument for the pr_preempt call should match the
-one used in nfsd4_block_get_device_info_scsi.
+Interrupts are disabled before entering usb_hcd_giveback_urb().
+A spinlock_t becomes a sleeping lock on PREEMPT_RT, so it cannot be
+acquired with disabled interrupts.
 
-Fixes: f99d4fbdae67 ("nfsd: add SCSI layout support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Dai Ngo <dai.ngo@oracle.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Save the interrupt status and restore it after usb_hcd_giveback_urb().
+
+syz reported:
+BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
+Call Trace:
+ dump_stack_lvl+0x189/0x250 lib/dump_stack.c:120
+ rt_spin_lock+0xc7/0x2c0 kernel/locking/spinlock_rt.c:57
+ spin_lock include/linux/spinlock_rt.h:44 [inline]
+ mon_bus_complete drivers/usb/mon/mon_main.c:134 [inline]
+ mon_complete+0x5c/0x200 drivers/usb/mon/mon_main.c:147
+ usbmon_urb_complete include/linux/usb/hcd.h:738 [inline]
+ __usb_hcd_giveback_urb+0x254/0x5e0 drivers/usb/core/hcd.c:1647
+ vhci_urb_enqueue+0xb4f/0xe70 drivers/usb/usbip/vhci_hcd.c:818
+
+Reported-by: syzbot+205ef33a3b636b4181fb@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=205ef33a3b636b4181fb
+Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
+Acked-by: Shuah Khan <skhan@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20250916014143.1439759-1-lizhi.xu@windriver.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/blocklayout.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/usb/usbip/vhci_hcd.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/fs/nfsd/blocklayout.c
-+++ b/fs/nfsd/blocklayout.c
-@@ -334,7 +334,8 @@ nfsd4_scsi_fence_client(struct nfs4_layo
- 	struct block_device *bdev = ls->ls_file->nf_file->f_path.mnt->mnt_sb->s_bdev;
- 
- 	bdev->bd_disk->fops->pr_ops->pr_preempt(bdev, NFSD_MDS_PR_KEY,
--			nfsd4_scsi_pr_key(clp), 0, true);
-+			nfsd4_scsi_pr_key(clp),
-+			PR_EXCLUSIVE_ACCESS_REG_ONLY, true);
+diff --git a/drivers/usb/usbip/vhci_hcd.c b/drivers/usb/usbip/vhci_hcd.c
+index e3c8483d7ba4..cfe51672ca41 100644
+--- a/drivers/usb/usbip/vhci_hcd.c
++++ b/drivers/usb/usbip/vhci_hcd.c
+@@ -830,15 +830,15 @@ static int vhci_urb_enqueue(struct usb_hcd *hcd, struct urb *urb, gfp_t mem_flag
+ no_need_xmit:
+ 	usb_hcd_unlink_urb_from_ep(hcd, urb);
+ no_need_unlink:
+-	spin_unlock_irqrestore(&vhci->lock, flags);
+ 	if (!ret) {
+ 		/* usb_hcd_giveback_urb() should be called with
+ 		 * irqs disabled
+ 		 */
+-		local_irq_disable();
++		spin_unlock(&vhci->lock);
+ 		usb_hcd_giveback_urb(hcd, urb, urb->status);
+-		local_irq_enable();
++		spin_lock(&vhci->lock);
+ 	}
++	spin_unlock_irqrestore(&vhci->lock, flags);
+ 	return ret;
  }
  
- const struct nfsd4_layout_ops scsi_layout_ops = {
+-- 
+2.51.0
+
 
 
 
