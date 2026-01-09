@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-207187-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207789-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9160AD099D4
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:28:34 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7A74D0A18C
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:58:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 63498302CA88
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:22:21 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B882B30F8AAE
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:51:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6D46303C87;
-	Fri,  9 Jan 2026 12:22:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB4BE359FB5;
+	Fri,  9 Jan 2026 12:50:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y2j8Nzle"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hor/US4Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75CE1334C24;
-	Fri,  9 Jan 2026 12:22:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EA5333C1A3;
+	Fri,  9 Jan 2026 12:50:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961340; cv=none; b=itvRuANmpY19Ds0GWmWXPhCSFkzHxlyKNF+cKMBAC94m1dSjtnQGCT4V+LD877nQkggVwwGXws40QKpqWsp/l0NpyH6dq3Ai3wnGYmyFIGhSMZ2h9CBaYMnw0AR3UMJzLnn1B9/LH8LgD5wfX+6ImrfRV/JY6kGN0rvqtAXNHGM=
+	t=1767963053; cv=none; b=RrttkXyQbwCo4pLBnTMap1dCqhSr5nZuGYQHibCoYP26Mau967dgY1I914AaVMW70v6vM2J7RgWJUEMCAOmK/zXpWYnjyUzgJEmWyVhz3xz9st58lmiFKi0fZzR4tSaCw9R0epC5ocur14YM7vhkuO7B015dcizr69VmVkXDIJE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961340; c=relaxed/simple;
-	bh=BaXPHQw34HIx1+7K0KDlfwX2bi9FGq1vMMnuySKL/1o=;
+	s=arc-20240116; t=1767963053; c=relaxed/simple;
+	bh=eltkyTlJqzX4DH/+8TRBqCjsXAO7rKoinS5GKIzAYIM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RsNq/Ul4dbMRC33E1nzWJTQoAA4bb/Qx6//kS4NmUjBj17Wnc5j8924ySsYKF13c6UBbTb3GyUQWB0ITJLPVHQtrq0Ka2gp91ZX/m+j2JIb8xFN4Kiy+eRQz/bWv7RTrxn5MaRynTJi4cb2m7TjvAIzMnZKBNywgh2QirQkLZgA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y2j8Nzle; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAEEAC19421;
-	Fri,  9 Jan 2026 12:22:19 +0000 (UTC)
+	 MIME-Version; b=u8CCxNKccPHHvGJdsxIkDuQDNKP8bv4K6SY5m09G4MCGnwmjfuMN5GddgdnKIe7fZ0xVrwidl5XIyGf6/WZCVvK/Wt8sU+5xbMdLB7qZcd94bFZnsrBLv95/Rio0+RQf+qkjX08zPhE+Ywwy0uC4NVx9M4rLjyMtvr9wYtLIaZ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hor/US4Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09A0CC4CEF1;
+	Fri,  9 Jan 2026 12:50:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961340;
-	bh=BaXPHQw34HIx1+7K0KDlfwX2bi9FGq1vMMnuySKL/1o=;
+	s=korg; t=1767963053;
+	bh=eltkyTlJqzX4DH/+8TRBqCjsXAO7rKoinS5GKIzAYIM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y2j8Nzle+JBWqNGH1BnoTTGFBN7zC5s3t1MH3Wq8PVz/hTe3NbhuibTZve3ilRhOT
-	 cQnIKD3ESVg30cfgtV280Do25pOGCOLHwag3kufFcmto1+5MCUN6lAywsFc3skBFFp
-	 caDswOwNq/hble5inTFS5ECskMD1zN9RCMzp9TcQ=
+	b=Hor/US4Yy/7NEsNeVGL3Ku/7Smq6irulZtfbGITkzG3N5igSAXYMEiu16OhwJtoPI
+	 kPNEH4mEHst2K8h7K/ca55UZgP2kTMNvJ9vfmaypQYjj9MAvBwwS/3JF3iLiDzkIoa
+	 Jl5TzWVoOmel9kSHib9Zw0uZH9vGU//uoLqXRjHY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@google.com>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 719/737] mm/damon/tests/core-kunit: handle alloc failures on damon_test_split_at()
+	Chao Gao <chao.gao@intel.com>,
+	Dongli Zhang <dongli.zhang@oracle.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 580/634] KVM: nVMX: Immediately refresh APICv controls as needed on nested VM-Exit
 Date: Fri,  9 Jan 2026 12:44:18 +0100
-Message-ID: <20260109112201.133258497@linuxfoundation.org>
+Message-ID: <20260109112139.436824227@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +61,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SeongJae Park <sj@kernel.org>
+From: Dongli Zhang <dongli.zhang@oracle.com>
 
-commit 5e80d73f22043c59c8ad36452a3253937ed77955 upstream.
+[ Upstream commit 29763138830916f46daaa50e83e7f4f907a3236b ]
 
-damon_test_split_at() is assuming all dynamic memory allocation in it will
-succeed.  Those are indeed likely in the real use cases since those
-allocations are too small to fail, but theoretically those could fail.  In
-the case, inappropriate memory access can happen.  Fix it by appropriately
-cleanup pre-allocated memory and skip the execution of the remaining tests
-in the failure cases.
+If an APICv status updated was pended while L2 was active, immediately
+refresh vmcs01's controls instead of pending KVM_REQ_APICV_UPDATE as
+kvm_vcpu_update_apicv() only calls into vendor code if a change is
+necessary.
 
-Link: https://lkml.kernel.org/r/20251101182021.74868-6-sj@kernel.org
-Fixes: 17ccae8bb5c9 ("mm/damon: add kunit tests")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: Brendan Higgins <brendan.higgins@linux.dev>
-Cc: David Gow <davidgow@google.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: <stable@vger.kernel.org>	[5.15+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+E.g. if APICv is inhibited, and then activated while L2 is running:
+
+  kvm_vcpu_update_apicv()
+  |
+  -> __kvm_vcpu_update_apicv()
+     |
+     -> apic->apicv_active = true
+      |
+      -> vmx_refresh_apicv_exec_ctrl()
+         |
+         -> vmx->nested.update_vmcs01_apicv_status = true
+          |
+          -> return
+
+Then L2 exits to L1:
+
+  __nested_vmx_vmexit()
+  |
+  -> kvm_make_request(KVM_REQ_APICV_UPDATE)
+
+  vcpu_enter_guest(): KVM_REQ_APICV_UPDATE
+  -> kvm_vcpu_update_apicv()
+     |
+     -> __kvm_vcpu_update_apicv()
+        |
+        -> return // because if (apic->apicv_active == activate)
+
+Reported-by: Chao Gao <chao.gao@intel.com>
+Closes: https://lore.kernel.org/all/aQ2jmnN8wUYVEawF@intel.com
+Fixes: 7c69661e225c ("KVM: nVMX: Defer APICv updates while L2 is active until L1 is active")
+Cc: stable@vger.kernel.org
+Signed-off-by: Dongli Zhang <dongli.zhang@oracle.com>
+[sean: write changelog]
+Link: https://patch.msgid.link/20251205231913.441872-3-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+[ exported vmx_refresh_apicv_exec_ctrl() and added declaration in vmx.h ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/damon/core-test.h |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+ arch/x86/kvm/vmx/nested.c |    2 +-
+ arch/x86/kvm/vmx/vmx.c    |    2 +-
+ arch/x86/kvm/vmx/vmx.h    |    1 +
+ 3 files changed, 3 insertions(+), 2 deletions(-)
 
---- a/mm/damon/core-test.h
-+++ b/mm/damon/core-test.h
-@@ -129,8 +129,19 @@ static void damon_test_split_at(struct k
- 	struct damon_target *t;
- 	struct damon_region *r;
+--- a/arch/x86/kvm/vmx/nested.c
++++ b/arch/x86/kvm/vmx/nested.c
+@@ -4847,7 +4847,7 @@ void nested_vmx_vmexit(struct kvm_vcpu *
  
-+	if (!c)
-+		kunit_skip(test, "ctx alloc fail");
- 	t = damon_new_target();
-+	if (!t) {
-+		damon_destroy_ctx(c);
-+		kunit_skip(test, "target alloc fail");
-+	}
- 	r = damon_new_region(0, 100);
-+	if (!r) {
-+		damon_destroy_ctx(c);
-+		damon_free_target(t);
-+		kunit_skip(test, "region alloc fail");
-+	}
- 	damon_add_region(r, t);
- 	damon_split_region_at(t, r, 25);
- 	KUNIT_EXPECT_EQ(test, r->ar.start, 0ul);
+ 	if (vmx->nested.update_vmcs01_apicv_status) {
+ 		vmx->nested.update_vmcs01_apicv_status = false;
+-		kvm_make_request(KVM_REQ_APICV_UPDATE, vcpu);
++		vmx_refresh_apicv_exec_ctrl(vcpu);
+ 	}
+ 
+ 	if (vmx->nested.update_vmcs01_hwapic_isr) {
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -4387,7 +4387,7 @@ static u32 vmx_vmexit_ctrl(void)
+ 		~(VM_EXIT_LOAD_IA32_PERF_GLOBAL_CTRL | VM_EXIT_LOAD_IA32_EFER);
+ }
+ 
+-static void vmx_refresh_apicv_exec_ctrl(struct kvm_vcpu *vcpu)
++void vmx_refresh_apicv_exec_ctrl(struct kvm_vcpu *vcpu)
+ {
+ 	struct vcpu_vmx *vmx = to_vmx(vcpu);
+ 
+--- a/arch/x86/kvm/vmx/vmx.h
++++ b/arch/x86/kvm/vmx/vmx.h
+@@ -408,6 +408,7 @@ void __vmx_set_segment(struct kvm_vcpu *
+ u64 construct_eptp(struct kvm_vcpu *vcpu, hpa_t root_hpa, int root_level);
+ 
+ bool vmx_guest_inject_ac(struct kvm_vcpu *vcpu);
++void vmx_refresh_apicv_exec_ctrl(struct kvm_vcpu *vcpu);
+ void vmx_update_exception_bitmap(struct kvm_vcpu *vcpu);
+ bool vmx_nmi_blocked(struct kvm_vcpu *vcpu);
+ bool __vmx_interrupt_blocked(struct kvm_vcpu *vcpu);
 
 
 
