@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-206930-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207498-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2DA3D097BF
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:20:40 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35D74D09FBC
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:49:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C659F30E4CDB
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:10:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8773A30C666C
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:37:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FDA535B138;
-	Fri,  9 Jan 2026 12:10:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB05E35B150;
+	Fri,  9 Jan 2026 12:37:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bWGzBttV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k5KwBp+5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AFC435A956;
-	Fri,  9 Jan 2026 12:10:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B42F31ED6D;
+	Fri,  9 Jan 2026 12:37:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960604; cv=none; b=B5sRk1qdqxWA8V6FkMyObSDFyG4mFOSBCoqE+bLSSowAmNTUj2Sb77/j1C9wSZ3L0kKyrqNKdPvwvUSG+9yVSmCUGCmupqc1IhpJc6Vu0Pl74iMTRBx0jU9PhLqoeNJg+ITpwWNUDAzHx6D1MklCZUU8uwye6Ybn4GQm5Xte3Xs=
+	t=1767962225; cv=none; b=rPJj/TrS2sXUhZTTt/0eeC1VCekz9vK1hhpRnjVDhNPcvKIigk343/v+JtHB+F+cPGr9JY4n89NGLdqcu4G1baI/yniXou4GVNFbdSfS9F35FTsJiRvhGH4IJ6ye4pUXcrWG5htOmjHxzmuQVKsgPua+fhQbPR8NRM7EEf4fUI4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960604; c=relaxed/simple;
-	bh=cN+gR7PTuac9GFQn5+3EuRPFJyJWegYvENdimQufgcU=;
+	s=arc-20240116; t=1767962225; c=relaxed/simple;
+	bh=NvwEMaur0QTEdxa7PVc0LC/w0NO3ZJP9HtvLRMDUNoM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kAKMz1wZ+8tVn0p+xiDJqBoyktKlQ1HMn6OjzhjZDczcGr14enHHxWaigUdLU5Z6gcaRfn9S7Biju48PD9qhWQA2DW0NPiqcF+4TTlYkCpcYRH4R9g9CaQE98kgsaeSLisgcPHcNMl4W+rFbIdDIA06M9xdQcWFtQDuIjWkZLZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bWGzBttV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D36DAC4CEF1;
-	Fri,  9 Jan 2026 12:10:03 +0000 (UTC)
+	 MIME-Version; b=l/z8Dub2ZeXNjj+cbVIgAbqkrNJdvaM4H+Mg0VfQedZigjLGoo091JQmP7GNPsImcYTjVH/BUmgcT2hDLQT4XS2kpEb/bhnSoCqhoKxaS8oIhIEvnQJ1lpIgnEovE7cHuT7knnVWoc9xTJND2lMM46AIGmCBq3p/lVkpVH3JXDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k5KwBp+5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBC13C19421;
+	Fri,  9 Jan 2026 12:37:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960604;
-	bh=cN+gR7PTuac9GFQn5+3EuRPFJyJWegYvENdimQufgcU=;
+	s=korg; t=1767962225;
+	bh=NvwEMaur0QTEdxa7PVc0LC/w0NO3ZJP9HtvLRMDUNoM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bWGzBttV5h1QJJVctKER1IHpyeOMTLOgve/egBfp8HZ1/d60x0jYaofPOLwQHS5L6
-	 mlyjDnv7cr4NejltYUMRHmNkThUMu4ePSTt6bAAM6xMABH3D6Hn9UA2E7J5sD/kM3n
-	 a+HQ+pnclSpn10jhK/52MXqIdBdcpfDX4t+Aqu70=
+	b=k5KwBp+5HkT+Krdi2j6aVWKbitMB8zyWonMmJ4TB6bNTX+lwWWg8VOpJCocmrDuj+
+	 tGV/2z2bugnEZz+Y/trPv1hnRQNXQgt0vloJUmIBhjLo+i4j4QQiFWSsB1BnNo1uDR
+	 ivoGe5+QsvvtVSsPu06zyutRElUYiteVpojT5s8Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Subject: [PATCH 6.6 430/737] mptcp: avoid deadlock on fallback while reinjecting
+	stable@bvger.kernel.org,
+	Jared Kangas <jkangas@redhat.com>,
+	Haibo Chen <haibo.chen@nxp.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.1 291/634] mmc: sdhci-esdhc-imx: add alternate ARCH_S32 dependency to Kconfig
 Date: Fri,  9 Jan 2026 12:39:29 +0100
-Message-ID: <20260109112150.171498247@linuxfoundation.org>
+Message-ID: <20260109112128.480338273@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,115 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Jared Kangas <jkangas@redhat.com>
 
-commit ffb8c27b0539dd90262d1021488e7817fae57c42 upstream.
+commit d3ecb12e2e04ce53c95f933c462f2d8b150b965b upstream.
 
-Jakub reported an MPTCP deadlock at fallback time:
+MMC_SDHCI_ESDHC_IMX requires ARCH_MXC despite also being used on
+ARCH_S32, which results in unmet dependencies when compiling strictly
+for ARCH_S32. Resolve this by adding ARCH_S32 as an alternative to
+ARCH_MXC in the driver's dependencies.
 
- WARNING: possible recursive locking detected
- 6.18.0-rc7-virtme #1 Not tainted
- --------------------------------------------
- mptcp_connect/20858 is trying to acquire lock:
- ff1100001da18b60 (&msk->fallback_lock){+.-.}-{3:3}, at: __mptcp_try_fallback+0xd8/0x280
-
- but task is already holding lock:
- ff1100001da18b60 (&msk->fallback_lock){+.-.}-{3:3}, at: __mptcp_retrans+0x352/0xaa0
-
- other info that might help us debug this:
-  Possible unsafe locking scenario:
-
-        CPU0
-        ----
-   lock(&msk->fallback_lock);
-   lock(&msk->fallback_lock);
-
-  *** DEADLOCK ***
-
-  May be due to missing lock nesting notation
-
- 3 locks held by mptcp_connect/20858:
-  #0: ff1100001da18290 (sk_lock-AF_INET){+.+.}-{0:0}, at: mptcp_sendmsg+0x114/0x1bc0
-  #1: ff1100001db40fd0 (k-sk_lock-AF_INET#2){+.+.}-{0:0}, at: __mptcp_retrans+0x2cb/0xaa0
-  #2: ff1100001da18b60 (&msk->fallback_lock){+.-.}-{3:3}, at: __mptcp_retrans+0x352/0xaa0
-
- stack backtrace:
- CPU: 0 UID: 0 PID: 20858 Comm: mptcp_connect Not tainted 6.18.0-rc7-virtme #1 PREEMPT(full)
- Hardware name: Bochs, BIOS Bochs 01/01/2011
- Call Trace:
-  <TASK>
-  dump_stack_lvl+0x6f/0xa0
-  print_deadlock_bug.cold+0xc0/0xcd
-  validate_chain+0x2ff/0x5f0
-  __lock_acquire+0x34c/0x740
-  lock_acquire.part.0+0xbc/0x260
-  _raw_spin_lock_bh+0x38/0x50
-  __mptcp_try_fallback+0xd8/0x280
-  mptcp_sendmsg_frag+0x16c2/0x3050
-  __mptcp_retrans+0x421/0xaa0
-  mptcp_release_cb+0x5aa/0xa70
-  release_sock+0xab/0x1d0
-  mptcp_sendmsg+0xd5b/0x1bc0
-  sock_write_iter+0x281/0x4d0
-  new_sync_write+0x3c5/0x6f0
-  vfs_write+0x65e/0xbb0
-  ksys_write+0x17e/0x200
-  do_syscall_64+0xbb/0xfd0
-  entry_SYSCALL_64_after_hwframe+0x4b/0x53
- RIP: 0033:0x7fa5627cbc5e
- Code: 4d 89 d8 e8 14 bd 00 00 4c 8b 5d f8 41 8b 93 08 03 00 00 59 5e 48 83 f8 fc 74 11 c9 c3 0f 1f 80 00 00 00 00 48 8b 45 10 0f 05 <c9> c3 83 e2 39 83 fa 08 75 e7 e8 13 ff ff ff 0f 1f 00 f3 0f 1e fa
- RSP: 002b:00007fff1fe14700 EFLAGS: 00000202 ORIG_RAX: 0000000000000001
- RAX: ffffffffffffffda RBX: 0000000000000005 RCX: 00007fa5627cbc5e
- RDX: 0000000000001f9c RSI: 00007fff1fe16984 RDI: 0000000000000005
- RBP: 00007fff1fe14710 R08: 0000000000000000 R09: 0000000000000000
- R10: 0000000000000000 R11: 0000000000000202 R12: 00007fff1fe16920
- R13: 0000000000002000 R14: 0000000000001f9c R15: 0000000000001f9c
-
-The packet scheduler could attempt a reinjection after receiving an
-MP_FAIL and before the infinite map has been transmitted, causing a
-deadlock since MPTCP needs to do the reinjection atomically from WRT
-fallback.
-
-Address the issue explicitly avoiding the reinjection in the critical
-scenario. Note that this is the only fallback critical section that
-could potentially send packets and hit the double-lock.
-
-Reported-by: Jakub Kicinski <kuba@kernel.org>
-Closes: https://netdev-ctrl.bots.linux.dev/logs/vmksft/mptcp-dbg/results/412720/1-mptcp-join-sh/stderr
-Fixes: f8a1d9b18c5e ("mptcp: make fallback action and fallback decision atomic")
-Cc: stable@vger.kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20251205-net-mptcp-misc-fixes-6-19-rc1-v1-4-9e4781a6c1b8@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 5c4f00627c9a ("mmc: sdhci-esdhc-imx: add NXP S32G2 support")
+Cc: stable@bvger.kernel.org
+Signed-off-by: Jared Kangas <jkangas@redhat.com>
+Reviewed-by: Haibo Chen <haibo.chen@nxp.com>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/protocol.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/mmc/host/Kconfig |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -2712,10 +2712,13 @@ static void __mptcp_retrans(struct sock
+--- a/drivers/mmc/host/Kconfig
++++ b/drivers/mmc/host/Kconfig
+@@ -279,14 +279,14 @@ config MMC_SDHCI_ESDHC_MCF
  
- 			/*
- 			 * make the whole retrans decision, xmit, disallow
--			 * fallback atomic
-+			 * fallback atomic, note that we can't retrans even
-+			 * when an infinite fallback is in progress, i.e. new
-+			 * subflows are disallowed.
- 			 */
- 			spin_lock_bh(&msk->fallback_lock);
--			if (__mptcp_check_fallback(msk)) {
-+			if (__mptcp_check_fallback(msk) ||
-+			    !msk->allow_subflows) {
- 				spin_unlock_bh(&msk->fallback_lock);
- 				release_sock(ssk);
- 				goto clear_scheduled;
+ config MMC_SDHCI_ESDHC_IMX
+ 	tristate "SDHCI support for the Freescale eSDHC/uSDHC i.MX controller"
+-	depends on ARCH_MXC || COMPILE_TEST
++	depends on ARCH_MXC || ARCH_S32 || COMPILE_TEST
+ 	depends on MMC_SDHCI_PLTFM
+ 	depends on OF
+ 	select MMC_SDHCI_IO_ACCESSORS
+ 	select MMC_CQHCI
+ 	help
+ 	  This selects the Freescale eSDHC/uSDHC controller support
+-	  found on i.MX25, i.MX35 i.MX5x and i.MX6x.
++	  found on i.MX25, i.MX35, i.MX5x, i.MX6x, and S32G.
+ 
+ 	  If you have a controller with this interface, say Y or M here.
+ 
 
 
 
