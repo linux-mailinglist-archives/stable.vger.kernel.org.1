@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-207651-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207048-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94392D0A078
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:52:46 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5800D09877
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:23:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 174A130B0F65
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:44:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3DF423026514
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:15:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 603CA38FA3;
-	Fri,  9 Jan 2026 12:44:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 282C5359715;
+	Fri,  9 Jan 2026 12:15:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uWJqmiDs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OOOCZ02k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22920335BCD;
-	Fri,  9 Jan 2026 12:44:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BF1B359FA0;
+	Fri,  9 Jan 2026 12:15:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962657; cv=none; b=kgKFOWk6yD/PDGBUwRB1RARsGxpZeS5b5xsElQ9J00o4GmaV9BFauZAyqT5nqpdV4Oja7MVPV3aZh0/+Oi3zzM0SDu6+oHMWWXnQPi92+Fp1Kp1AUQ7QIeLW/R3opzBWtkiRYP86TjncHnwqPS9qAO1Aibzm8nnC5KTaQTl9aFY=
+	t=1767960947; cv=none; b=DDq4HKt/L8Chvivudc8eJDkCPMTojA5dN4IJlkTtldX9qxmq9IcGnRdHstO/P34ffmzS7ncekMRxwm9doY3kT1fQUewIBScwa1YClWJhzYs3bGECQq0a/HCmWwMkLA2pXvee46xp8ezwV0xBNXVtjZzZ+p/PW3Ip/tPkHdVZNGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962657; c=relaxed/simple;
-	bh=hhTOfYPqxpVptuoYN1V2c2PyBOhLQjUdRBkOu0MR6dg=;
+	s=arc-20240116; t=1767960947; c=relaxed/simple;
+	bh=IbEaz+Kto29xcLqFPvv9GblF+foZGqb9Fz9t8x59mOU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lq9VVzwJXDVYEx1ZpCVnbpEJYe5h1ST+ouQ1lWr4bGOjzMd+NVJ63XRZ6kFIXlJnir1fxGWjiOCR+Xa5qJRLfhvIryLf6RGDI5tbRzv+3XzAFftIFyyAAkIImtsl9ZOYyG57KBBYuGLEjIxNjyZ9U8ckMTOGMGML43EJSPM1cOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uWJqmiDs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DAB3C4CEF1;
-	Fri,  9 Jan 2026 12:44:16 +0000 (UTC)
+	 MIME-Version; b=dvDr3aoRJccgn6aeeoNpnqepIpuJbNyRr0rhbkV+eMEYIHdhMJWAG0z93tgPalWFp59BPOle0Zjy48WGCdxfIZbmZrmk39XKIw/7t7IAPy0UgcaSeLfdD38+e4V6cxNTets+f3IF5hJ+KrQPdAx8RNVxrFdGWErgV2TZoscb9a0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OOOCZ02k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 409F7C4CEF1;
+	Fri,  9 Jan 2026 12:15:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962657;
-	bh=hhTOfYPqxpVptuoYN1V2c2PyBOhLQjUdRBkOu0MR6dg=;
+	s=korg; t=1767960945;
+	bh=IbEaz+Kto29xcLqFPvv9GblF+foZGqb9Fz9t8x59mOU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uWJqmiDsuuYgYXDFk46jY5IFTaItZzrJ5iUsnoCy8nSoOPFoq9pLInV/uiTVB4fiy
-	 fKU345G5q0udZvRyWja+2GyP+bWQcvyt3GmF8qJU5AkmsrzfU/udwjEUS7pYB+FQ1p
-	 uDxr0bQBOw00HQbiLLf5jFGRTaGoIOtko48ZzWyI=
+	b=OOOCZ02kBUvb4BXmx4tlYSSsQuTq5IV0CCBIzw6oFB3PqwYjgarThqx7BV5nUH0i9
+	 Nfrb4W/4J8AH4Q0icAUJlw23VZDeBAxAUkChy29p9z0rSnc/J8wvIibrL/1LuGRY6h
+	 8DFeHqlidlPtUFjmLw3kyUHlVV7tO8maGvOp0Jvc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Yipeng Zou <zouyipeng@huawei.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 442/634] selftests/ftrace: traceonoff_triggers: strip off names
+	Thorsten Blum <thorsten.blum@linux.dev>,
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 6.6 581/737] fbdev: pxafb: Fix multiple clamped values in pxafb_adjust_timing
 Date: Fri,  9 Jan 2026 12:42:00 +0100
-Message-ID: <20260109112134.171528539@linuxfoundation.org>
+Message-ID: <20260109112155.856224501@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,98 +59,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yipeng Zou <zouyipeng@huawei.com>
+From: Thorsten Blum <thorsten.blum@linux.dev>
 
-[ Upstream commit b889b4fb4cbea3ca7eb9814075d6a51936394bd9 ]
+commit 0155e868cbc111846cc2809c1546ea53810a56ae upstream.
 
-The func_traceonoff_triggers.tc sometimes goes to fail
-on my board, Kunpeng-920.
+The variables were never clamped because the return value of clamp_val()
+was not used. Fix this by assigning the clamped values, and use clamp()
+instead of clamp_val().
 
-[root@localhost]# ./ftracetest ./test.d/ftrace/func_traceonoff_triggers.tc -l fail.log
-=== Ftrace unit tests ===
-[1] ftrace - test for function traceon/off triggers     [FAIL]
-[2] (instance)  ftrace - test for function traceon/off triggers [UNSUPPORTED]
-
-I look up the log, and it shows that the md5sum is different between csum1 and csum2.
-
-++ cnt=611
-++ sleep .1
-+++ cnt_trace
-+++ grep -v '^#' trace
-+++ wc -l
-++ cnt2=611
-++ '[' 611 -ne 611 ']'
-+++ cat tracing_on
-++ on=0
-++ '[' 0 '!=' 0 ']'
-+++ md5sum trace
-++ csum1='76896aa74362fff66a6a5f3cf8a8a500  trace'
-++ sleep .1
-+++ md5sum trace
-++ csum2='ee8625a21c058818fc26e45c1ed3f6de  trace'
-++ '[' '76896aa74362fff66a6a5f3cf8a8a500  trace' '!=' 'ee8625a21c058818fc26e45c1ed3f6de  trace' ']'
-++ fail 'Tracing file is still changing'
-++ echo Tracing file is still changing
-Tracing file is still changing
-++ exit_fail
-++ exit 1
-
-So I directly dump the trace file before md5sum, the diff shows that:
-
-[root@localhost]# diff trace_1.log trace_2.log -y --suppress-common-lines
-dockerd-12285   [036] d.... 18385.510290: sched_stat | <...>-12285   [036] d.... 18385.510290: sched_stat
-dockerd-12285   [036] d.... 18385.510291: sched_swit | <...>-12285   [036] d.... 18385.510291: sched_swit
-<...>-740       [044] d.... 18385.602859: sched_stat | kworker/44:1-740 [044] d.... 18385.602859: sched_stat
-<...>-740       [044] d.... 18385.602860: sched_swit | kworker/44:1-740 [044] d.... 18385.602860: sched_swit
-
-And we can see that <...> filed be filled with names.
-
-We can strip off the names there to fix that.
-
-After strip off the names:
-
-kworker/u257:0-12 [019] d..2.  2528.758910: sched_stat | -12 [019] d..2.  2528.758910: sched_stat_runtime: comm=k
-kworker/u257:0-12 [019] d..2.  2528.758912: sched_swit | -12 [019] d..2.  2528.758912: sched_switch: prev_comm=kw
-<idle>-0          [000] d.s5.  2528.762318: sched_waki | -0  [000] d.s5.  2528.762318: sched_waking: comm=sshd pi
-<idle>-0          [037] dNh2.  2528.762326: sched_wake | -0  [037] dNh2.  2528.762326: sched_wakeup: comm=sshd pi
-<idle>-0          [037] d..2.  2528.762334: sched_swit | -0  [037] d..2.  2528.762334: sched_switch: prev_comm=sw
-
-Link: https://lore.kernel.org/r/20230818013226.2182299-1-zouyipeng@huawei.com
-Fixes: d87b29179aa0 ("selftests: ftrace: Use md5sum to take less time of checking logs")
-Suggested-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Yipeng Zou <zouyipeng@huawei.com>
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 3f16ff608a75 ("[ARM] pxafb: cleanup of the timing checking code")
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../ftrace/test.d/ftrace/func_traceonoff_triggers.tc         | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/video/fbdev/pxafb.c |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/tools/testing/selftests/ftrace/test.d/ftrace/func_traceonoff_triggers.tc b/tools/testing/selftests/ftrace/test.d/ftrace/func_traceonoff_triggers.tc
-index aee22289536b..1b57771dbfdf 100644
---- a/tools/testing/selftests/ftrace/test.d/ftrace/func_traceonoff_triggers.tc
-+++ b/tools/testing/selftests/ftrace/test.d/ftrace/func_traceonoff_triggers.tc
-@@ -90,9 +90,10 @@ if [ $on != "0" ]; then
-     fail "Tracing is not off"
- fi
+--- a/drivers/video/fbdev/pxafb.c
++++ b/drivers/video/fbdev/pxafb.c
+@@ -418,12 +418,12 @@ static int pxafb_adjust_timing(struct px
+ 	var->yres = max_t(int, var->yres, MIN_YRES);
  
--csum1=`md5sum trace`
-+# Cannot rely on names being around as they are only cached, strip them
-+csum1=`cat trace | sed -e 's/^ *[^ ]*\(-[0-9][0-9]*\)/\1/' | md5sum`
- sleep $SLEEP_TIME
--csum2=`md5sum trace`
-+csum2=`cat trace | sed -e 's/^ *[^ ]*\(-[0-9][0-9]*\)/\1/' | md5sum`
+ 	if (!(fbi->lccr0 & LCCR0_LCDT)) {
+-		clamp_val(var->hsync_len, 1, 64);
+-		clamp_val(var->vsync_len, 1, 64);
+-		clamp_val(var->left_margin,  1, 255);
+-		clamp_val(var->right_margin, 1, 255);
+-		clamp_val(var->upper_margin, 1, 255);
+-		clamp_val(var->lower_margin, 1, 255);
++		var->hsync_len = clamp(var->hsync_len, 1, 64);
++		var->vsync_len = clamp(var->vsync_len, 1, 64);
++		var->left_margin  = clamp(var->left_margin,  1, 255);
++		var->right_margin = clamp(var->right_margin, 1, 255);
++		var->upper_margin = clamp(var->upper_margin, 1, 255);
++		var->lower_margin = clamp(var->lower_margin, 1, 255);
+ 	}
  
- if [ "$csum1" != "$csum2" ]; then
-     fail "Tracing file is still changing"
--- 
-2.51.0
-
+ 	/* make sure each line is aligned on word boundary */
 
 
 
