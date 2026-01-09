@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-207423-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206850-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96519D09D9F
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:41:58 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38113D0963E
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:14:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 697C231430BD
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:33:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 22B0E311E7E2
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:06:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E28B35A95C;
-	Fri,  9 Jan 2026 12:33:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4FCC359FB0;
+	Fri,  9 Jan 2026 12:06:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uMD8rF9T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HrekFRXl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4D6F31E107;
-	Fri,  9 Jan 2026 12:33:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84B851946C8;
+	Fri,  9 Jan 2026 12:06:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962012; cv=none; b=FXrdQuQRneLrIMFEfrp5bxJBHrd6d4q/uNxS5P7GrSo9MYzmU5oMI1bvOzDIlW+zfgmXFs3/z+EsYpo7D4e3jaYDSDvLVSFkRk9TTXPEjK0kGPlz70TPq2zNMwNbITCijvHP9qqnMwpCJVty/mNRrfzLaZBK+zl/AJNwDRe8BXg=
+	t=1767960377; cv=none; b=l1DJFLVFHWALSHRMbMlcvSRZHlSWYr+EtLTGY+dI9z1+udXW8Lq6A6VHMmGSzljJM9GOtSWKBIsRt7wfFil0XRnKCO8ZVoZsNQ94+9IhvIGvqqpNkbmJYW4WZothNAK6ocRnkVGuA+TKvp4NMyebr6LcOhc+MBwkHacVefGPybM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962012; c=relaxed/simple;
-	bh=yReMu81HZBKw6QfVKFTuRb8R3rFslGICqnYEcChYkYI=;
+	s=arc-20240116; t=1767960377; c=relaxed/simple;
+	bh=vfLLIn2NX6pPghGY8Sq7/nvXsHpxohd439WyFHSFe34=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FhGoYU8HlSQzt0g9OXupTZAY71n4OD2A+tXSYYD/kWEooOad8vVcNVY8l6Loa/mS2xIual39yQOWB4DXCkJkOjPzv+jOt5mtZxGufFz1WTVaU+cUBThq1YTiSXJCWg+FYhg0jXry8hRMgyszdRUZC45CN15druBiFBTOij7IjXQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uMD8rF9T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 103C2C4CEF1;
-	Fri,  9 Jan 2026 12:33:31 +0000 (UTC)
+	 MIME-Version; b=FWIT5zT5Sdh+qmR0lRbsVhyxa5F4plrJiep4KTiINrjWCGawOjTbpg60cy8sFbGM7K6OLqFexE5X/ffZ43eJFnkHQe7xSVz98KG/oiaKaDWGScijF7Rgu1695JyDH7PF9SUakhOmqa0s68XgznYCzNWgpUMSzKiayPhOB/c4jGM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HrekFRXl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 128A4C4CEF1;
+	Fri,  9 Jan 2026 12:06:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962012;
-	bh=yReMu81HZBKw6QfVKFTuRb8R3rFslGICqnYEcChYkYI=;
+	s=korg; t=1767960377;
+	bh=vfLLIn2NX6pPghGY8Sq7/nvXsHpxohd439WyFHSFe34=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uMD8rF9TSEc2NSjxKzxOq4Zary3MtzqB72KHx7sDchTIREHBTy2SETXAMV3cPleRO
-	 Ng6pKoAcUA6jP/6zRAhOF3wO0skwsgFgEIjYjpm/GCYXE+yYkn+ACAGg6wj+OF0NBA
-	 2/aswq2p229XWAp8cOSY76lQn/Oyhf4h+RpX/zV4=
+	b=HrekFRXlQpcHoE7DFJHE+OW0dgC8LY/lmhuJ5r7X41/DV0pQ69MaYBdvBSAsRJVYo
+	 lPl9ZB2QyLzwfGisxFLRrWSgr2oP4Xk7Vg1l0LoqqdMrRp/S9mU33PrD1cm4jkgXAY
+	 NCh02AdH08dRxP8PSBDcE33iI5oEtbJAiwKgOBGY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Ard Biesheuvel <ardb@kernel.org>,
+	Shay Drory <shayd@nvidia.com>,
+	Mateusz Berezecki <mberezecki@nvidia.com>,
+	Moshe Shemesh <moshe@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 216/634] efi/cper: align ARM CPER type with UEFI 2.9A/2.10 specs
+Subject: [PATCH 6.6 355/737] net/mlx5: Serialize firmware reset with devlink
 Date: Fri,  9 Jan 2026 12:38:14 +0100
-Message-ID: <20260109112125.562451416@linuxfoundation.org>
+Message-ID: <20260109112147.349627539@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,232 +63,211 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+From: Shay Drory <shayd@nvidia.com>
 
-[ Upstream commit 96b010536ee020e716d28d9b359a4bcd18800aeb ]
+[ Upstream commit 367e501f8b095eca08d2eb0ba4ccea5b5e82c169 ]
 
-Up to UEFI spec 2.9, the type byte of CPER struct for ARM processor
-was defined simply as:
+The firmware reset mechanism can be triggered by asynchronous events,
+which may race with other devlink operations like devlink reload or
+devlink dev eswitch set, potentially leading to inconsistent states.
 
-Type at byte offset 4:
+This patch addresses the race by using the devl_lock to serialize the
+firmware reset against other devlink operations. When a reset is
+requested, the driver attempts to acquire the lock. If successful, it
+sets a flag to block devlink reload or eswitch changes, ACKs the reset
+to firmware and then releases the lock. If the lock is already held by
+another operation, the driver NACKs the firmware reset request,
+indicating that the reset cannot proceed.
 
-	- Cache error
-	- TLB Error
-	- Bus Error
-	- Micro-architectural Error
-	All other values are reserved
+Firmware reset does not keep the devl_lock and instead uses an internal
+firmware reset bit. This is because firmware resets can be triggered by
+asynchronous events, and processed in different threads. It is illegal
+and unsafe to acquire a lock in one thread and attempt to release it in
+another, as lock ownership is intrinsically thread-specific.
 
-Yet, there was no information about how this would be encoded.
+This change ensures that firmware resets and other devlink operations
+are mutually exclusive during the critical reset request phase,
+preventing race conditions.
 
-Spec 2.9A errata corrected it by defining:
-
-	- Bit 1 - Cache Error
-	- Bit 2 - TLB Error
-	- Bit 3 - Bus Error
-	- Bit 4 - Micro-architectural Error
-	All other values are reserved
-
-That actually aligns with the values already defined on older
-versions at N.2.4.1. Generic Processor Error Section.
-
-Spec 2.10 also preserve the same encoding as 2.9A.
-
-Adjust CPER and GHES handling code for both generic and ARM
-processors to properly handle UEFI 2.9A and 2.10 encoding.
-
-Link: https://uefi.org/specs/UEFI/2.10/Apx_N_Common_Platform_Error_Record.html#arm-processor-error-information
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Fixes: 38b9f903f22b ("net/mlx5: Handle sync reset request event")
+Signed-off-by: Shay Drory <shayd@nvidia.com>
+Reviewed-by: Mateusz Berezecki <mberezecki@nvidia.com>
+Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/1765284977-1363052-6-git-send-email-tariqt@nvidia.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/apei/ghes.c        | 16 +++++++----
- drivers/firmware/efi/cper-arm.c | 50 ++++++++++++++++-----------------
- include/linux/cper.h            | 10 +++----
- 3 files changed, 39 insertions(+), 37 deletions(-)
+ .../net/ethernet/mellanox/mlx5/core/devlink.c |  5 +++
+ .../mellanox/mlx5/core/eswitch_offloads.c     |  6 +++
+ .../ethernet/mellanox/mlx5/core/fw_reset.c    | 45 +++++++++++++++++--
+ .../ethernet/mellanox/mlx5/core/fw_reset.h    |  1 +
+ 4 files changed, 53 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-index 3c862acaa28af..03344c2732220 100644
---- a/drivers/acpi/apei/ghes.c
-+++ b/drivers/acpi/apei/ghes.c
-@@ -22,6 +22,7 @@
- #include <linux/moduleparam.h>
- #include <linux/init.h>
- #include <linux/acpi.h>
-+#include <linux/bitfield.h>
- #include <linux/io.h>
- #include <linux/interrupt.h>
- #include <linux/timer.h>
-@@ -500,6 +501,7 @@ static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata,
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/devlink.c b/drivers/net/ethernet/mellanox/mlx5/core/devlink.c
+index 8489b5087d9c6..b2532b1c9565a 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/devlink.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/devlink.c
+@@ -144,6 +144,11 @@ static int mlx5_devlink_reload_down(struct devlink *devlink, bool netns_change,
+ 	bool sf_dev_allocated;
+ 	int ret = 0;
+ 
++	if (mlx5_fw_reset_in_progress(dev)) {
++		NL_SET_ERR_MSG_MOD(extack, "Can't reload during firmware reset");
++		return -EBUSY;
++	}
++
+ 	if (mlx5_dev_is_lightweight(dev)) {
+ 		if (action != DEVLINK_RELOAD_ACTION_DRIVER_REINIT)
+ 			return -EOPNOTSUPP;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c b/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
+index 86fb8197594f5..c218593dc40f4 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
+@@ -51,6 +51,7 @@
+ #include "devlink.h"
+ #include "lag/lag.h"
+ #include "en/tc/post_meter.h"
++#include "fw_reset.h"
+ 
+ /* There are two match-all miss flows, one for unicast dst mac and
+  * one for multicast.
+@@ -3716,6 +3717,11 @@ int mlx5_devlink_eswitch_mode_set(struct devlink *devlink, u16 mode,
+ 	if (IS_ERR(esw))
+ 		return PTR_ERR(esw);
+ 
++	if (mlx5_fw_reset_in_progress(esw->dev)) {
++		NL_SET_ERR_MSG_MOD(extack, "Can't change eswitch mode during firmware reset");
++		return -EBUSY;
++	}
++
+ 	if (esw_mode_from_devlink(mode, &mlx5_mode))
+ 		return -EINVAL;
+ 
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c b/drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c
+index bdcd9e5306331..f7e139279f5f8 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c
+@@ -15,6 +15,7 @@ enum {
+ 	MLX5_FW_RESET_FLAGS_DROP_NEW_REQUESTS,
+ 	MLX5_FW_RESET_FLAGS_RELOAD_REQUIRED,
+ 	MLX5_FW_RESET_FLAGS_UNLOAD_EVENT,
++	MLX5_FW_RESET_FLAGS_RESET_IN_PROGRESS,
+ };
+ 
+ struct mlx5_fw_reset {
+@@ -125,6 +126,16 @@ int mlx5_fw_reset_query(struct mlx5_core_dev *dev, u8 *reset_level, u8 *reset_ty
+ 	return mlx5_reg_mfrl_query(dev, reset_level, reset_type, NULL, NULL);
+ }
+ 
++bool mlx5_fw_reset_in_progress(struct mlx5_core_dev *dev)
++{
++	struct mlx5_fw_reset *fw_reset = dev->priv.fw_reset;
++
++	if (!fw_reset)
++		return false;
++
++	return test_bit(MLX5_FW_RESET_FLAGS_RESET_IN_PROGRESS, &fw_reset->reset_flags);
++}
++
+ static int mlx5_fw_reset_get_reset_method(struct mlx5_core_dev *dev,
+ 					  u8 *reset_method)
  {
- 	struct cper_sec_proc_arm *err = acpi_hest_get_payload(gdata);
- 	int flags = sync ? MF_ACTION_REQUIRED : 0;
-+	char error_type[120];
- 	bool queued = false;
- 	int sec_sev, i;
- 	char *p;
-@@ -513,9 +515,8 @@ static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata,
- 	p = (char *)(err + 1);
- 	for (i = 0; i < err->err_info_num; i++) {
- 		struct cper_arm_err_info *err_info = (struct cper_arm_err_info *)p;
--		bool is_cache = (err_info->type == CPER_ARM_CACHE_ERROR);
-+		bool is_cache = err_info->type & CPER_ARM_CACHE_ERROR;
- 		bool has_pa = (err_info->validation_bits & CPER_ARM_INFO_VALID_PHYSICAL_ADDR);
--		const char *error_type = "unknown error";
- 
- 		/*
- 		 * The field (err_info->error_info & BIT(26)) is fixed to set to
-@@ -529,12 +530,15 @@ static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata,
- 			continue;
- 		}
- 
--		if (err_info->type < ARRAY_SIZE(cper_proc_error_type_strs))
--			error_type = cper_proc_error_type_strs[err_info->type];
-+		cper_bits_to_str(error_type, sizeof(error_type),
-+				 FIELD_GET(CPER_ARM_ERR_TYPE_MASK, err_info->type),
-+				 cper_proc_error_type_strs,
-+				 ARRAY_SIZE(cper_proc_error_type_strs));
- 
- 		pr_warn_ratelimited(FW_WARN GHES_PFX
--				    "Unhandled processor error type: %s\n",
--				    error_type);
-+				    "Unhandled processor error type 0x%02x: %s%s\n",
-+				    err_info->type, error_type,
-+				    (err_info->type & ~CPER_ARM_ERR_TYPE_MASK) ? " with reserved bit(s)" : "");
- 		p += err_info->length;
+@@ -240,6 +251,8 @@ static void mlx5_fw_reset_complete_reload(struct mlx5_core_dev *dev)
+ 							BIT(DEVLINK_RELOAD_ACTION_FW_ACTIVATE));
+ 		devl_unlock(devlink);
  	}
++
++	clear_bit(MLX5_FW_RESET_FLAGS_RESET_IN_PROGRESS, &fw_reset->reset_flags);
+ }
  
-diff --git a/drivers/firmware/efi/cper-arm.c b/drivers/firmware/efi/cper-arm.c
-index f4b7a48327fbb..ea43589944ba5 100644
---- a/drivers/firmware/efi/cper-arm.c
-+++ b/drivers/firmware/efi/cper-arm.c
-@@ -94,15 +94,11 @@ static void cper_print_arm_err_info(const char *pfx, u32 type,
- 	bool proc_context_corrupt, corrected, precise_pc, restartable_pc;
- 	bool time_out, access_mode;
+ static void mlx5_stop_sync_reset_poll(struct mlx5_core_dev *dev)
+@@ -431,27 +444,48 @@ static void mlx5_sync_reset_request_event(struct work_struct *work)
+ 	struct mlx5_fw_reset *fw_reset = container_of(work, struct mlx5_fw_reset,
+ 						      reset_request_work);
+ 	struct mlx5_core_dev *dev = fw_reset->dev;
++	bool nack_request = false;
++	struct devlink *devlink;
+ 	int err;
  
--	/* If the type is unknown, bail. */
--	if (type > CPER_ARM_MAX_TYPE)
--		return;
--
- 	/*
- 	 * Vendor type errors have error information values that are vendor
- 	 * specific.
- 	 */
--	if (type == CPER_ARM_VENDOR_ERROR)
-+	if (type & CPER_ARM_VENDOR_ERROR)
+ 	err = mlx5_fw_reset_get_reset_method(dev, &fw_reset->reset_method);
+-	if (err)
++	if (err) {
++		nack_request = true;
+ 		mlx5_core_warn(dev, "Failed reading MFRL, err %d\n", err);
++	} else if (!mlx5_is_reset_now_capable(dev, fw_reset->reset_method) ||
++		   test_bit(MLX5_FW_RESET_FLAGS_NACK_RESET_REQUEST,
++			    &fw_reset->reset_flags)) {
++		nack_request = true;
++	}
+ 
+-	if (err || test_bit(MLX5_FW_RESET_FLAGS_NACK_RESET_REQUEST, &fw_reset->reset_flags) ||
+-	    !mlx5_is_reset_now_capable(dev, fw_reset->reset_method)) {
++	devlink = priv_to_devlink(dev);
++	/* For external resets, try to acquire devl_lock. Skip if devlink reset is
++	 * pending (lock already held)
++	 */
++	if (nack_request ||
++	    (!test_bit(MLX5_FW_RESET_FLAGS_PENDING_COMP,
++		       &fw_reset->reset_flags) &&
++	     !devl_trylock(devlink))) {
+ 		err = mlx5_fw_reset_set_reset_sync_nack(dev);
+ 		mlx5_core_warn(dev, "PCI Sync FW Update Reset Nack %s",
+ 			       err ? "Failed" : "Sent");
  		return;
- 
- 	if (error_info & CPER_ARM_ERR_VALID_TRANSACTION_TYPE) {
-@@ -117,43 +113,38 @@ static void cper_print_arm_err_info(const char *pfx, u32 type,
- 	if (error_info & CPER_ARM_ERR_VALID_OPERATION_TYPE) {
- 		op_type = ((error_info >> CPER_ARM_ERR_OPERATION_SHIFT)
- 			   & CPER_ARM_ERR_OPERATION_MASK);
--		switch (type) {
--		case CPER_ARM_CACHE_ERROR:
-+		if (type & CPER_ARM_CACHE_ERROR) {
- 			if (op_type < ARRAY_SIZE(arm_cache_err_op_strs)) {
--				printk("%soperation type: %s\n", pfx,
-+				printk("%scache error, operation type: %s\n", pfx,
- 				       arm_cache_err_op_strs[op_type]);
- 			}
--			break;
--		case CPER_ARM_TLB_ERROR:
-+		}
-+		if (type & CPER_ARM_TLB_ERROR) {
- 			if (op_type < ARRAY_SIZE(arm_tlb_err_op_strs)) {
--				printk("%soperation type: %s\n", pfx,
-+				printk("%sTLB error, operation type: %s\n", pfx,
- 				       arm_tlb_err_op_strs[op_type]);
- 			}
--			break;
--		case CPER_ARM_BUS_ERROR:
-+		}
-+		if (type & CPER_ARM_BUS_ERROR) {
- 			if (op_type < ARRAY_SIZE(arm_bus_err_op_strs)) {
--				printk("%soperation type: %s\n", pfx,
-+				printk("%sbus error, operation type: %s\n", pfx,
- 				       arm_bus_err_op_strs[op_type]);
- 			}
--			break;
- 		}
  	}
- 
- 	if (error_info & CPER_ARM_ERR_VALID_LEVEL) {
- 		level = ((error_info >> CPER_ARM_ERR_LEVEL_SHIFT)
- 			 & CPER_ARM_ERR_LEVEL_MASK);
--		switch (type) {
--		case CPER_ARM_CACHE_ERROR:
-+		if (type & CPER_ARM_CACHE_ERROR)
- 			printk("%scache level: %d\n", pfx, level);
--			break;
--		case CPER_ARM_TLB_ERROR:
 +
-+		if (type & CPER_ARM_TLB_ERROR)
- 			printk("%sTLB level: %d\n", pfx, level);
--			break;
--		case CPER_ARM_BUS_ERROR:
+ 	if (mlx5_sync_reset_set_reset_requested(dev))
+-		return;
++		goto unlock;
 +
-+		if (type & CPER_ARM_BUS_ERROR)
- 			printk("%saffinity level at which the bus error occurred: %d\n",
- 			       pfx, level);
--			break;
--		}
- 	}
++	set_bit(MLX5_FW_RESET_FLAGS_RESET_IN_PROGRESS, &fw_reset->reset_flags);
  
- 	if (error_info & CPER_ARM_ERR_VALID_PROC_CONTEXT_CORRUPT) {
-@@ -242,6 +233,7 @@ void cper_print_proc_arm(const char *pfx,
- 	struct cper_arm_err_info *err_info;
- 	struct cper_arm_ctx_info *ctx_info;
- 	char newpfx[64], infopfx[ARRAY_SIZE(newpfx) + 1];
-+	char error_type[120];
- 
- 	printk("%sMIDR: 0x%016llx\n", pfx, proc->midr);
- 
-@@ -290,9 +282,15 @@ void cper_print_proc_arm(const char *pfx,
- 				       newpfx);
- 		}
- 
--		printk("%serror_type: %d, %s\n", newpfx, err_info->type,
--			err_info->type < ARRAY_SIZE(cper_proc_error_type_strs) ?
--			cper_proc_error_type_strs[err_info->type] : "unknown");
-+		cper_bits_to_str(error_type, sizeof(error_type),
-+				 FIELD_GET(CPER_ARM_ERR_TYPE_MASK, err_info->type),
-+				 cper_proc_error_type_strs,
-+				 ARRAY_SIZE(cper_proc_error_type_strs));
+ 	err = mlx5_fw_reset_set_reset_sync_ack(dev);
+ 	if (err)
+ 		mlx5_core_warn(dev, "PCI Sync FW Update Reset Ack Failed. Error code: %d\n", err);
+ 	else
+ 		mlx5_core_warn(dev, "PCI Sync FW Update Reset Ack. Device reset is expected.\n");
 +
-+		printk("%serror_type: 0x%02x: %s%s\n", newpfx, err_info->type,
-+		       error_type,
-+		       (err_info->type & ~CPER_ARM_ERR_TYPE_MASK) ? " with reserved bit(s)" : "");
++unlock:
++	if (!test_bit(MLX5_FW_RESET_FLAGS_PENDING_COMP, &fw_reset->reset_flags))
++		devl_unlock(devlink);
+ }
+ 
+ static int mlx5_pci_link_toggle(struct mlx5_core_dev *dev, u16 dev_id)
+@@ -685,6 +719,8 @@ static void mlx5_sync_reset_abort_event(struct work_struct *work)
+ 
+ 	if (mlx5_sync_reset_clear_reset_requested(dev, true))
+ 		return;
 +
- 		if (err_info->validation_bits & CPER_ARM_INFO_VALID_ERR_INFO) {
- 			printk("%serror_info: 0x%016llx\n", newpfx,
- 			       err_info->error_info);
-diff --git a/include/linux/cper.h b/include/linux/cper.h
-index a15b7b9740344..ff84d72cdee82 100644
---- a/include/linux/cper.h
-+++ b/include/linux/cper.h
-@@ -270,11 +270,11 @@ enum {
- #define CPER_ARM_INFO_FLAGS_PROPAGATED		BIT(2)
- #define CPER_ARM_INFO_FLAGS_OVERFLOW		BIT(3)
++	clear_bit(MLX5_FW_RESET_FLAGS_RESET_IN_PROGRESS, &fw_reset->reset_flags);
+ 	mlx5_core_warn(dev, "PCI Sync FW Update Reset Aborted.\n");
+ }
  
--#define CPER_ARM_CACHE_ERROR			0
--#define CPER_ARM_TLB_ERROR			1
--#define CPER_ARM_BUS_ERROR			2
--#define CPER_ARM_VENDOR_ERROR			3
--#define CPER_ARM_MAX_TYPE			CPER_ARM_VENDOR_ERROR
-+#define CPER_ARM_ERR_TYPE_MASK			GENMASK(4,1)
-+#define CPER_ARM_CACHE_ERROR			BIT(1)
-+#define CPER_ARM_TLB_ERROR			BIT(2)
-+#define CPER_ARM_BUS_ERROR			BIT(3)
-+#define CPER_ARM_VENDOR_ERROR			BIT(4)
+@@ -721,6 +757,7 @@ static void mlx5_sync_reset_timeout_work(struct work_struct *work)
  
- #define CPER_ARM_ERR_VALID_TRANSACTION_TYPE	BIT(0)
- #define CPER_ARM_ERR_VALID_OPERATION_TYPE	BIT(1)
+ 	if (mlx5_sync_reset_clear_reset_requested(dev, true))
+ 		return;
++	clear_bit(MLX5_FW_RESET_FLAGS_RESET_IN_PROGRESS, &fw_reset->reset_flags);
+ 	mlx5_core_warn(dev, "PCI Sync FW Update Reset Timeout.\n");
+ }
+ 
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/fw_reset.h b/drivers/net/ethernet/mellanox/mlx5/core/fw_reset.h
+index d5b28525c960d..2d96b2adc1cdf 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/fw_reset.h
++++ b/drivers/net/ethernet/mellanox/mlx5/core/fw_reset.h
+@@ -10,6 +10,7 @@ int mlx5_fw_reset_query(struct mlx5_core_dev *dev, u8 *reset_level, u8 *reset_ty
+ int mlx5_fw_reset_set_reset_sync(struct mlx5_core_dev *dev, u8 reset_type_sel,
+ 				 struct netlink_ext_ack *extack);
+ int mlx5_fw_reset_set_live_patch(struct mlx5_core_dev *dev);
++bool mlx5_fw_reset_in_progress(struct mlx5_core_dev *dev);
+ 
+ int mlx5_fw_reset_wait_reset_done(struct mlx5_core_dev *dev);
+ void mlx5_sync_reset_unload_flow(struct mlx5_core_dev *dev, bool locked);
 -- 
 2.51.0
 
