@@ -1,58 +1,53 @@
-Return-Path: <stable+bounces-207093-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207695-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D77F6D09A2A
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:29:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 55729D0A126
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:56:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3BCB130AE420
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:17:53 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4494530E8D8B
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:48:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1916B33B97A;
-	Fri,  9 Jan 2026 12:17:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87F4035CB77;
+	Fri,  9 Jan 2026 12:46:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="viT9W+aa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GVDzsQ67"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D070D334C24;
-	Fri,  9 Jan 2026 12:17:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BA8E3590C6;
+	Fri,  9 Jan 2026 12:46:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961070; cv=none; b=nDjDqej38jBF8ApZoJzyAGsrWav9QkWG/Co6L/p3zjWtcjbFizFrt38F8osYXvHzuI8na7G88rNzapbpWfmMzCN+/1bHPJIYv2tA1W8qYFPTNeHzQuF9BBQLORdwkBxw5KCCzNqxsSxsIbBCWu6waRFVJGeawOQXW8l5N6bt7p8=
+	t=1767962784; cv=none; b=RsbvFJlHwSksDvr8KPU7FVYCxoWQYakTvovqy7lw8vKBwJK7fIbASMh5EfY9zh2ZbG7KEJKKNeMVqH2+HxsY0a8aKdIMjX8DzW4vAnwr94SH0n5DPTMcu4vLyI3Pt3q4eQptark/30tvSnTguZuYbt/k8h1clyFkTxjJUTlmQRQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961070; c=relaxed/simple;
-	bh=Wu4Z+d1SoLCOtr0RjVG9YvywNnKvtfrrauDKPwP90EE=;
+	s=arc-20240116; t=1767962784; c=relaxed/simple;
+	bh=UJ0bD7WVI4/ZRDDP3ObENUBCz9jbW0sAMewh5pVegOY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CMCXVvSX/BDqGBOmQUJIvgxA0bNJW2tYy62Hvhj8CCjAfMhGOPTd98SuNVtsd9eg+KVOpMtVxd/ZXnwx51V+VwfI5o9R5IC5wngQUwGG+eBkUrWfmJlj28poOcUcFFGkezushDWmPTeYLSYPAl1nLEdBmZ0mS1smuwy4RAGY6J4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=viT9W+aa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E091C4CEF1;
-	Fri,  9 Jan 2026 12:17:50 +0000 (UTC)
+	 MIME-Version; b=XKz+upF6Qdr4v/3TRtFvg8ZjENFKRZJngteSKA4OqUxOg4wBRl/+vDr1JhIYOjbOAgQUQuVJ8Kb3C7MGoC2uzHfa7VY4CmNKY9UblCezFn7bTm5uUHB8vC67ZFotoXd07XKMUcU1K5OsDVBUDVNZafWtFYVC4ZHr+e3O3vZy4Oo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GVDzsQ67; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE291C4CEF1;
+	Fri,  9 Jan 2026 12:46:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961070;
-	bh=Wu4Z+d1SoLCOtr0RjVG9YvywNnKvtfrrauDKPwP90EE=;
+	s=korg; t=1767962784;
+	bh=UJ0bD7WVI4/ZRDDP3ObENUBCz9jbW0sAMewh5pVegOY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=viT9W+aaEt7RDxp8aU1LGYUY2r4QzzNdDFNnpl4TqvG4UAuTRGXohIvRsUUJFuLbr
-	 OAb5USFWwuxEdohi988dZqx+U9pCINFVwSgBZik7a2lm+sfHR/LIFgpfgfUicdKaGF
-	 f0KtMKiYp0n32N5Vzn4TLv19kgd1c6wQkEQijVnw=
+	b=GVDzsQ67y8+/4qYpKotYuEKOADkGfGKUkRLzlFBfbDi4mOFiQpmR/D9v1+xuav3RM
+	 HtHeDxWmxcOJW8BGa9caJs+DeDgVN7PEnNiIUr1pOI6J+QzSHtbekvJLJ84h41Qs5h
+	 XZvRop//tMgHyCnGszyWlcGFx537QJ0ElmTAfKTg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gangmin Kim <km.kim1503@gmail.com>,
-	Krzysztof Niemiec <krzysztof.niemiec@intel.com>,
-	Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
-	Krzysztof Karas <krzysztof.karas@intel.com>,
-	Andi Shyti <andi.shyti@linux.intel.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Jani Nikula <jani.nikula@intel.com>
-Subject: [PATCH 6.6 624/737] drm/i915/gem: Zero-initialize the eb.vma array in i915_gem_do_execbuffer
+	Johan Hovold <johan@kernel.org>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 6.1 485/634] media: vpif_capture: fix section mismatch
 Date: Fri,  9 Jan 2026 12:42:43 +0100
-Message-ID: <20260109112157.474269825@linuxfoundation.org>
+Message-ID: <20260109112135.794929651@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,142 +59,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Niemiec <krzysztof.niemiec@intel.com>
+From: Johan Hovold <johan@kernel.org>
 
-commit 4fe2bd195435e71c117983d87f278112c5ab364c upstream.
+commit 0ef841113724166c3c484d0e9ae6db1eb5634fde upstream.
 
-Initialize the eb.vma array with values of 0 when the eb structure is
-first set up. In particular, this sets the eb->vma[i].vma pointers to
-NULL, simplifying cleanup and getting rid of the bug described below.
+Platform drivers can be probed after their init sections have been
+discarded (e.g. on probe deferral or manual rebind through sysfs) so the
+probe function must not live in init.
 
-During the execution of eb_lookup_vmas(), the eb->vma array is
-successively filled up with struct eb_vma objects. This process includes
-calling eb_add_vma(), which might fail; however, even in the event of
-failure, eb->vma[i].vma is set for the currently processed buffer.
+Note that commit ffa1b391c61b ("V4L/DVB: vpif_cap/disp: Removed section
+mismatch warning") incorrectly suppressed the modpost warning.
 
-If eb_add_vma() fails, eb_lookup_vmas() returns with an error, which
-prompts a call to eb_release_vmas() to clean up the mess. Since
-eb_lookup_vmas() might fail during processing any (possibly not first)
-buffer, eb_release_vmas() checks whether a buffer's vma is NULL to know
-at what point did the lookup function fail.
-
-In eb_lookup_vmas(), eb->vma[i].vma is set to NULL if either the helper
-function eb_lookup_vma() or eb_validate_vma() fails. eb->vma[i+1].vma is
-set to NULL in case i915_gem_object_userptr_submit_init() fails; the
-current one needs to be cleaned up by eb_release_vmas() at this point,
-so the next one is set. If eb_add_vma() fails, neither the current nor
-the next vma is set to NULL, which is a source of a NULL deref bug
-described in the issue linked in the Closes tag.
-
-When entering eb_lookup_vmas(), the vma pointers are set to the slab
-poison value, instead of NULL. This doesn't matter for the actual
-lookup, since it gets overwritten anyway, however the eb_release_vmas()
-function only recognizes NULL as the stopping value, hence the pointers
-are being set to NULL as they go in case of intermediate failure. This
-patch changes the approach to filling them all with NULL at the start
-instead, rather than handling that manually during failure.
-
-Reported-by: Gangmin Kim <km.kim1503@gmail.com>
-Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15062
-Fixes: 544460c33821 ("drm/i915: Multi-BB execbuf")
-Cc: stable@vger.kernel.org # 5.16.x
-Signed-off-by: Krzysztof Niemiec <krzysztof.niemiec@intel.com>
-Reviewed-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Reviewed-by: Krzysztof Karas <krzysztof.karas@intel.com>
-Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/20251216180900.54294-2-krzysztof.niemiec@intel.com
-(cherry picked from commit 08889b706d4f0b8d2352b7ca29c2d8df4d0787cd)
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Fixes: ffa1b391c61b ("V4L/DVB: vpif_cap/disp: Removed section mismatch warning")
+Fixes: 6ffefff5a9e7 ("V4L/DVB (12906c): V4L : vpif capture driver for DM6467")
+Cc: stable@vger.kernel.org	# 2.6.32
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c |   37 +++++++++++--------------
- 1 file changed, 17 insertions(+), 20 deletions(-)
+ drivers/media/platform/ti/davinci/vpif_capture.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
-+++ b/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c
-@@ -950,13 +950,13 @@ static int eb_lookup_vmas(struct i915_ex
- 		vma = eb_lookup_vma(eb, eb->exec[i].handle);
- 		if (IS_ERR(vma)) {
- 			err = PTR_ERR(vma);
--			goto err;
-+			return err;
- 		}
+--- a/drivers/media/platform/ti/davinci/vpif_capture.c
++++ b/drivers/media/platform/ti/davinci/vpif_capture.c
+@@ -1601,7 +1601,7 @@ err_cleanup:
+  * This creates device entries by register itself to the V4L2 driver and
+  * initializes fields of each channel objects
+  */
+-static __init int vpif_probe(struct platform_device *pdev)
++static int vpif_probe(struct platform_device *pdev)
+ {
+ 	struct vpif_subdev_info *subdevdata;
+ 	struct i2c_adapter *i2c_adap;
+@@ -1809,7 +1809,7 @@ static int vpif_resume(struct device *de
  
- 		err = eb_validate_vma(eb, &eb->exec[i], vma);
- 		if (unlikely(err)) {
- 			i915_vma_put(vma);
--			goto err;
-+			return err;
- 		}
+ static SIMPLE_DEV_PM_OPS(vpif_pm_ops, vpif_suspend, vpif_resume);
  
- 		err = eb_add_vma(eb, &current_batch, i, vma);
-@@ -965,19 +965,8 @@ static int eb_lookup_vmas(struct i915_ex
- 
- 		if (i915_gem_object_is_userptr(vma->obj)) {
- 			err = i915_gem_object_userptr_submit_init(vma->obj);
--			if (err) {
--				if (i + 1 < eb->buffer_count) {
--					/*
--					 * Execbuffer code expects last vma entry to be NULL,
--					 * since we already initialized this entry,
--					 * set the next value to NULL or we mess up
--					 * cleanup handling.
--					 */
--					eb->vma[i + 1].vma = NULL;
--				}
--
-+			if (err)
- 				return err;
--			}
- 
- 			eb->vma[i].flags |= __EXEC_OBJECT_USERPTR_INIT;
- 			eb->args->flags |= __EXEC_USERPTR_USED;
-@@ -985,10 +974,6 @@ static int eb_lookup_vmas(struct i915_ex
- 	}
- 
- 	return 0;
--
--err:
--	eb->vma[i].vma = NULL;
--	return err;
- }
- 
- static int eb_lock_vmas(struct i915_execbuffer *eb)
-@@ -3381,7 +3366,8 @@ i915_gem_do_execbuffer(struct drm_device
- 
- 	eb.exec = exec;
- 	eb.vma = (struct eb_vma *)(exec + args->buffer_count + 1);
--	eb.vma[0].vma = NULL;
-+	memset(eb.vma, 0, (args->buffer_count + 1) * sizeof(struct eb_vma));
-+
- 	eb.batch_pool = NULL;
- 
- 	eb.invalid_flags = __EXEC_OBJECT_UNKNOWN_FLAGS;
-@@ -3590,7 +3576,18 @@ i915_gem_execbuffer2_ioctl(struct drm_de
- 	if (err)
- 		return err;
- 
--	/* Allocate extra slots for use by the command parser */
-+	/*
-+	 * Allocate extra slots for use by the command parser.
-+	 *
-+	 * Note that this allocation handles two different arrays (the
-+	 * exec2_list array, and the eventual eb.vma array introduced in
-+	 * i915_gem_do_execbuffer()), that reside in virtually contiguous
-+	 * memory. Also note that the allocation intentionally doesn't fill the
-+	 * area with zeros, because the exec2_list part doesn't need to be, as
-+	 * it's immediately overwritten by user data a few lines below.
-+	 * However, the eb.vma part is explicitly zeroed later in
-+	 * i915_gem_do_execbuffer().
-+	 */
- 	exec2_list = kvmalloc_array(count + 2, eb_element_size(),
- 				    __GFP_NOWARN | GFP_KERNEL);
- 	if (exec2_list == NULL) {
+-static __refdata struct platform_driver vpif_driver = {
++static struct platform_driver vpif_driver = {
+ 	.driver	= {
+ 		.name	= VPIF_DRIVER_NAME,
+ 		.pm	= &vpif_pm_ops,
 
 
 
