@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-207440-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206838-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2635CD09D4E
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:40:30 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83D85D095AE
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:12:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 26CD2303CA86
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:34:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BF5C030B1C13
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:05:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E53CF35A95B;
-	Fri,  9 Jan 2026 12:34:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78C7635A940;
+	Fri,  9 Jan 2026 12:05:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nZ0nAbN8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yaImPy1h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7E74336EDA;
-	Fri,  9 Jan 2026 12:34:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C2B6359F98;
+	Fri,  9 Jan 2026 12:05:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962060; cv=none; b=F+k34pUYyT80xhyLZqpgZodEwS/J99eJYNWfNVVvx90Lw9RSKOAh17CqmtjXieQPQQpg9aFjTpiINyyiXH8Q4YUjbQDKUJaMztllawt7LVXOGPfrNPSbNt7uwUoS6as9Don7LexUDppq13Sa91l2imYLlOmPOcuz40Ze/B3JoSc=
+	t=1767960343; cv=none; b=uoOdOYN0j9PI5CGXT1vOhelX1ZRcgqWP1CjsZ79JRA00HRCKCczm3pS3zfKa9EF0n3xorWRMzxK2D4omd7plY26qjyHYhxAuhFC1/v7y6r0B2VWIEQBzLeofKe/DK5lUHgSANo5m6OlLE6X4elZ5Sko5Qi9amCWD+Xjwm+Cx6d8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962060; c=relaxed/simple;
-	bh=k7yKEOvFb52R7XsK065fwfK6Ffeg6CY5JKtOnv15zlY=;
+	s=arc-20240116; t=1767960343; c=relaxed/simple;
+	bh=aObbv1EmwtKXclyM9FiGivIO81dRYqL8/+4K/x7B/2s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pp5OHyuIitfSr09dO9bHUOY4spQXCS9QzhRedGvbZjmXS2YPDtEcI6NchvVL4AmjB3qceSZA8p5BgHkivhh88Vvcx4FQrKfKYjAhub7Rjk80OdgrUBlfMSC3UxQ8sVgGtWGYIm3HBXf5CgS/KWo2UX7h96DqZFHIq55Aw4ZFFcc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nZ0nAbN8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 335F0C4CEF1;
-	Fri,  9 Jan 2026 12:34:20 +0000 (UTC)
+	 MIME-Version; b=rjupwbveRyewcA2WEy5jUEvKBX9ZpTe/5Tf6m/SKXsL4ZL4k9LVoOLhseFtRw+KlRQ7qYFBczvaaWzzxiZ7+8Zm678/LDdnFjwEsMlLntHPg+SkEqmb/qVFNnTOqbGnW1TibPlqxKkKD7gU8QA6f+Y6f1JoqBoOD0Kmj/oPcsFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yaImPy1h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE239C4CEF1;
+	Fri,  9 Jan 2026 12:05:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962060;
-	bh=k7yKEOvFb52R7XsK065fwfK6Ffeg6CY5JKtOnv15zlY=;
+	s=korg; t=1767960343;
+	bh=aObbv1EmwtKXclyM9FiGivIO81dRYqL8/+4K/x7B/2s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nZ0nAbN8JFG+Esk0mRE0HVE3oeqrI9rHZ+bkg/Tb5LorHAg/+4szU7Hiy0F3DRC8V
-	 29GiypfmJ5VTmEGhpwRKAypa5pZA2aHPY6nH+A8xCOq4V99No7zRb4msceIwS+t4Gd
-	 lu0P0yZOi7vD8HIY0UtbQz+G8sEduoJ9BgWbGngs=
+	b=yaImPy1hSYy0puSzx+8+jvCYKUT36mcuqq4ucOFbNRI2FW15Vr7yW9GZpS7KR2GAR
+	 /ZdWXTBPfuneE2b3XZqB/ytmPVVOA8bwFkxDd12j3g3Dp0ShIbE2E5mVbdMxQWBWqR
+	 u1FUW0xh/allwRh6RhqJrd5MzH1Irwzkbef0o+n4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cryolitia PukNgae <cryolitia.pukngae@linux.dev>,
-	WangYuli <wangyl5933@chinaunicom.cn>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 232/634] ACPICA: Avoid walking the Namespace if start_node is NULL
+	Roger <roger.andersen@protonmail.com>,
+	Stanislas Polu <spolu@dust.tt>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 371/737] ksmbd: fix buffer validation by including null terminator size in EA length
 Date: Fri,  9 Jan 2026 12:38:30 +0100
-Message-ID: <20260109112126.159390795@linuxfoundation.org>
+Message-ID: <20260109112147.950563035@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,68 +61,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cryolitia PukNgae <cryolitia.pukngae@linux.dev>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit 9d6c58dae8f6590c746ac5d0012ffe14a77539f0 ]
+commit 95d7a890e4b03e198836d49d699408fd1867cb55 upstream.
 
-Although commit 0c9992315e73 ("ACPICA: Avoid walking the ACPI Namespace
-if it is not there") fixed the situation when both start_node and
-acpi_gbl_root_node are NULL, the Linux kernel mainline now still crashed
-on Honor Magicbook 14 Pro [1].
+The smb2_set_ea function, which handles Extended Attributes (EA),
+was performing buffer validation checks that incorrectly omitted the size
+of the null terminating character (+1 byte) for EA Name.
+This patch fixes the issue by explicitly adding '+ 1' to EaNameLength where
+the null terminator is expected to be present in the buffer, ensuring
+the validation accurately reflects the total required buffer size.
 
-That happens due to the access to the member of parent_node in
-acpi_ns_get_next_node().  The NULL pointer dereference will always
-happen, no matter whether or not the start_node is equal to
-ACPI_ROOT_OBJECT, so move the check of start_node being NULL
-out of the if block.
-
-Unfortunately, all the attempts to contact Honor have failed, they
-refused to provide any technical support for Linux.
-
-The bad DSDT table's dump could be found on GitHub [2].
-
-DMI: HONOR FMB-P/FMB-P-PCB, BIOS 1.13 05/08/2025
-
-Link: https://github.com/acpica/acpica/commit/1c1b57b9eba4554cb132ee658dd942c0210ed20d
-Link: https://gist.github.com/Cryolitia/a860ffc97437dcd2cd988371d5b73ed7 [1]
-Link: https://github.com/denis-bb/honor-fmb-p-dsdt [2]
-Signed-off-by: Cryolitia PukNgae <cryolitia.pukngae@linux.dev>
-Reviewed-by: WangYuli <wangyl5933@chinaunicom.cn>
-[ rjw: Subject adjustment, changelog edits ]
-Link: https://patch.msgid.link/20251125-acpica-v1-1-99e63b1b25f8@linux.dev
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Reported-by: Roger <roger.andersen@protonmail.com>
+Reported-by: Stanislas Polu <spolu@dust.tt>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/acpica/nswalk.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ fs/smb/server/smb2pdu.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/acpi/acpica/nswalk.c b/drivers/acpi/acpica/nswalk.c
-index 82a0dae349e2f..254b0ca0c1540 100644
---- a/drivers/acpi/acpica/nswalk.c
-+++ b/drivers/acpi/acpica/nswalk.c
-@@ -169,9 +169,12 @@ acpi_ns_walk_namespace(acpi_object_type type,
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -2356,7 +2356,7 @@ static int smb2_set_ea(struct smb2_ea_in
+ 	int rc = 0;
+ 	unsigned int next = 0;
  
- 	if (start_node == ACPI_ROOT_OBJECT) {
- 		start_node = acpi_gbl_root_node;
--		if (!start_node) {
--			return_ACPI_STATUS(AE_NO_NAMESPACE);
--		}
-+	}
-+
-+	/* Avoid walking the namespace if the StartNode is NULL */
-+
-+	if (!start_node) {
-+		return_ACPI_STATUS(AE_NO_NAMESPACE);
- 	}
+-	if (buf_len < sizeof(struct smb2_ea_info) + eabuf->EaNameLength +
++	if (buf_len < sizeof(struct smb2_ea_info) + eabuf->EaNameLength + 1 +
+ 			le16_to_cpu(eabuf->EaValueLength))
+ 		return -EINVAL;
  
- 	/* Null child means "get first node" */
--- 
-2.51.0
-
+@@ -2433,7 +2433,7 @@ next:
+ 			break;
+ 		}
+ 
+-		if (buf_len < sizeof(struct smb2_ea_info) + eabuf->EaNameLength +
++		if (buf_len < sizeof(struct smb2_ea_info) + eabuf->EaNameLength + 1 +
+ 				le16_to_cpu(eabuf->EaValueLength)) {
+ 			rc = -EINVAL;
+ 			break;
 
 
 
