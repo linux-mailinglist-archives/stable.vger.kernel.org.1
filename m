@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-207443-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206817-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3C61D09FA6
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:49:08 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 425DED095FC
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:13:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E98C2307B529
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:34:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E22DB30D59D7
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:04:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51BEA33B6E8;
-	Fri,  9 Jan 2026 12:34:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B020F359FBA;
+	Fri,  9 Jan 2026 12:04:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r3kp12ev"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="viAPAXuv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5A8335A95C;
-	Fri,  9 Jan 2026 12:34:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74047359F99;
+	Fri,  9 Jan 2026 12:04:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962070; cv=none; b=i4HcNqKOGiISYUV0awPBHStBODkR9pT75V8lxJy71jf/I9z5IQtRc26Lh2RNz72ALL1qJc7ctmE6SxOjDAX7kbcW0TiJW2P4cBmdbV+WPAbq0gOc8PLUwV5RN/6LIAZFqz/ucXx9HfHVIKB4TkGovq1zacCwUQGXQblZPnKPim4=
+	t=1767960283; cv=none; b=iyFEGbVpTlwLlrVeTVAjV7q68Lr9l4rHnqNe0ed3Sf1CGIWMFfP1wRxry9/8nowvXT2yaUaOwrf8BFEWncNPdpdh10yOYfoqH/rIr+REo4FPztiHLP4bdZrLqAfrl/SJIOT45O+T+pbaFR+NFp3/Vbi6rLIfMVeLZnKaYE8sslY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962070; c=relaxed/simple;
-	bh=zhPVLryAJw9Wt0LJGFGxc0BKDrIBgHr2nptmnVwCQK0=;
+	s=arc-20240116; t=1767960283; c=relaxed/simple;
+	bh=Hi7ahjfBYpHeag6nOrn28N/WfMHWkOxOey2xjzLiUoA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ci4CHZzWqdKIM4k+eEmvmxe5B3qSdjb3uJ4pBzVbKXW9HuD9mR3vKso596EwmQyQ3f5t5GLJ5DypFlkwLI+q4Hb2dzUTKhUAfC9t5nziMLfAguJ1Ad7q78CBafkp+DZs+If3S9gbP3SGwQ+kht0k+gA34ytZ8opBuHuJxUgcPqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r3kp12ev; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30BFEC4CEF1;
-	Fri,  9 Jan 2026 12:34:29 +0000 (UTC)
+	 MIME-Version; b=NaQX08UwbseS+KONEnDAOsuowqADmyMn/YOh/gfkpRv6sJxK/B15S2pKFDV3zKtZZ9N90y57DZdqIfocC/6zdeCAvs8pJBvTLlbnACc2fv3A6vtGWK60UQesCuCYI3Bfgk+M8VeUMMO42+QLxwUrlca8RkRn1VlT0hSi71T7kik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=viAPAXuv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4EFAC4CEF1;
+	Fri,  9 Jan 2026 12:04:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962069;
-	bh=zhPVLryAJw9Wt0LJGFGxc0BKDrIBgHr2nptmnVwCQK0=;
+	s=korg; t=1767960283;
+	bh=Hi7ahjfBYpHeag6nOrn28N/WfMHWkOxOey2xjzLiUoA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r3kp12ev+7QuZX48XazVJUG4hb5BJGS3h6tU7v0Y04Ff6LkF0ypUV6aBLBvN1iLqI
-	 IaIwMNsP25REjHlovlpdzwxsn6mNA5zAryBC/G5WjD0rUKg9/dY/DbhrQKtDFI+brs
-	 Zdx+uuYpkwuduH90IY3HQQHuGzKJYU+aComw+wUs=
+	b=viAPAXuvemkTheOjOByip8ajmLlp8AingVf8DjqVvZ6B/KIPp811jkQjy0H3mzRRj
+	 FV32042NMs5U7qDq4wK4PBn2YEfcR0pwx+S93Lo/eJof+6RK/LARzwVVneFdYjC7gr
+	 bP8cAwp5dHh83LvW+TSAqmztAGqooyCAEULHjaqI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andres J Rosa <andyrosa@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Samiullah Khawaja <skhawaja@google.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Yi Liu <yi.l.liu@intel.com>,
+	syzbot+57fdb0cf6a0c5d1f15a2@syzkaller.appspotmail.com,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 208/634] ALSA: uapi: Fix typo in asound.h comment
-Date: Fri,  9 Jan 2026 12:38:06 +0100
-Message-ID: <20260109112125.265090963@linuxfoundation.org>
+Subject: [PATCH 6.6 348/737] iommufd/selftest: Check for overflow in IOMMU_TEST_OP_ADD_RESERVED
+Date: Fri,  9 Jan 2026 12:38:07 +0100
+Message-ID: <20260109112147.076819523@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,38 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andres J Rosa <andyrosa@gmail.com>
+From: Jason Gunthorpe <jgg@nvidia.com>
 
-[ Upstream commit 9a97857db0c5655b8932f86b5d18bb959079b0ee ]
+[ Upstream commit e6a973af11135439de32ece3b9cbe3bfc043bea8 ]
 
-Fix 'level-shit' to 'level-shift' in struct snd_cea_861_aud_if comment.
+syzkaller found it could overflow math in the test infrastructure and
+cause a WARN_ON by corrupting the reserved interval tree. This only
+effects test kernels with CONFIG_IOMMUFD_TEST.
 
-Fixes: 7ba1c40b536e ("ALSA: Add definitions for CEA-861 Audio InfoFrames")
-Signed-off-by: Andres J Rosa <andyrosa@gmail.com>
-Link: https://patch.msgid.link/20251203162509.1822-1-andyrosa@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Validate the user input length in the test ioctl.
+
+Fixes: f4b20bb34c83 ("iommufd: Add kernel support for testing iommufd")
+Link: https://patch.msgid.link/r/0-v1-cd99f6049ba5+51-iommufd_syz_add_resv_jgg@nvidia.com
+Reviewed-by: Samiullah Khawaja <skhawaja@google.com>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Tested-by: Yi Liu <yi.l.liu@intel.com>
+Reported-by: syzbot+57fdb0cf6a0c5d1f15a2@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/69368129.a70a0220.38f243.008f.GAE@google.com
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/uapi/sound/asound.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iommu/iommufd/selftest.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/include/uapi/sound/asound.h b/include/uapi/sound/asound.h
-index de6810e94abed..02b6f8eb0e29a 100644
---- a/include/uapi/sound/asound.h
-+++ b/include/uapi/sound/asound.h
-@@ -60,7 +60,7 @@ struct snd_cea_861_aud_if {
- 	unsigned char db2_sf_ss; /* sample frequency and size */
- 	unsigned char db3; /* not used, all zeros */
- 	unsigned char db4_ca; /* channel allocation code */
--	unsigned char db5_dminh_lsv; /* downmix inhibit & level-shit values */
-+	unsigned char db5_dminh_lsv; /* downmix inhibit & level-shift values */
- };
+diff --git a/drivers/iommu/iommufd/selftest.c b/drivers/iommu/iommufd/selftest.c
+index 00b794d74e03b..8025ff65ed4de 100644
+--- a/drivers/iommu/iommufd/selftest.c
++++ b/drivers/iommu/iommufd/selftest.c
+@@ -512,14 +512,20 @@ static int iommufd_test_add_reserved(struct iommufd_ucmd *ucmd,
+ 				     unsigned int mockpt_id,
+ 				     unsigned long start, size_t length)
+ {
++	unsigned long last;
+ 	struct iommufd_ioas *ioas;
+ 	int rc;
  
- /****************************************************************************
++	if (!length)
++		return -EINVAL;
++	if (check_add_overflow(start, length - 1, &last))
++		return -EOVERFLOW;
++
+ 	ioas = iommufd_get_ioas(ucmd->ictx, mockpt_id);
+ 	if (IS_ERR(ioas))
+ 		return PTR_ERR(ioas);
+ 	down_write(&ioas->iopt.iova_rwsem);
+-	rc = iopt_reserve_iova(&ioas->iopt, start, start + length - 1, NULL);
++	rc = iopt_reserve_iova(&ioas->iopt, start, last, NULL);
+ 	up_write(&ioas->iopt.iova_rwsem);
+ 	iommufd_put_object(&ioas->obj);
+ 	return rc;
 -- 
 2.51.0
 
