@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-206937-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207539-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04B9FD0962F
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:14:30 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEA1FD0A224
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:01:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2C0F1301B765
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:10:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4328B30F3423
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:39:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC7B435A93E;
-	Fri,  9 Jan 2026 12:10:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AE1E35C192;
+	Fri,  9 Jan 2026 12:39:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FL8ztQfZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T9vybeMV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EF2B359708;
-	Fri,  9 Jan 2026 12:10:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1FFC35BDCC;
+	Fri,  9 Jan 2026 12:39:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960624; cv=none; b=SHFP2ZuIojeDmdm7sDbL3U2yjSr7xBLW24sJx/UKEZWFbpueV0l+UrQbpbJuylSa/CcjRaF4DZBi4X+RVTTlJxGDzuYDmfmrLHQQdPJX5rlZnjFp4LV9igEjDdOvenmQSQljDbC9jxoaPNeCmBejt9neS6TT6Qo+NKcH2C0gR2k=
+	t=1767962341; cv=none; b=LgBI8qBpPhH/SQgD/dVS9aijtiMjDQBJgZvEewkIdH3iSD/iifCxrdD5I2OL3r+ZwQbdM0gq41mXy6PmKuM39nC0EzQW3Hcv31MwcCDljpfTD7tTusIDYY8OgyKuASJxtCKFEOaQk0dgoGw7sFym3ToKjYmssJ4mhie8FAvtwN8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960624; c=relaxed/simple;
-	bh=qavE7+2Ri9B9DGXJj8SsJymcXVBbb3k5EONYNcxG8Bw=;
+	s=arc-20240116; t=1767962341; c=relaxed/simple;
+	bh=Z2LQ9abonvVOaVcQ2/JOhCMABcpyRy9iof58SvfPbn4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RFtUs0EZaSr6fwgwS022dUylPsAC9j+ej1l5I4M1hD25hrrRT0zatPJvE+bUefuxLPRI3jsHK2DVXPUg9jGhCw0CvEAakK9c+Yb0jj2Z1Tf2HlkmF0/vcr6E+n7edyPJrwTtpAZwNfXhuZJ0IKsxTt6ilhLmCnXUXzF0BwdFafs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FL8ztQfZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFFDEC4CEF1;
-	Fri,  9 Jan 2026 12:10:23 +0000 (UTC)
+	 MIME-Version; b=eXW314r+dZX1DUHKycQIL0Dkpc3Zrvnqdl/bQEbekBhB9r2nR4zSsneEtmbo7MUV+3ugO1zRYhH3yTTPJMKYe3ByQXVWytSeLrXdLade4seAjDy3IAoOf1FCK7o35fk45lhD8L29lNUlSs3dVzVXYFHByOXYo+J1vKTL0X1eZgA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T9vybeMV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AFE0C16AAE;
+	Fri,  9 Jan 2026 12:39:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960624;
-	bh=qavE7+2Ri9B9DGXJj8SsJymcXVBbb3k5EONYNcxG8Bw=;
+	s=korg; t=1767962341;
+	bh=Z2LQ9abonvVOaVcQ2/JOhCMABcpyRy9iof58SvfPbn4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FL8ztQfZ12EQyybkYvUxHIhHdQ6EpH4qbTJKcyauNN5HlzJeVYFBVDMeolbINvo3Y
-	 MxH/nha9t3jFVZvAfBWEKZmjmfe3zSAV48g+POgGQdJFw8DalG/kH0BjuDOTSmju1p
-	 xTk/x1mKJDiNs1OoNhX0qSiEnwGWrTuNccY9Ydso=
+	b=T9vybeMVIz0anVJOQPtm8HBR6qu8JCZTRscCnTT6EFBYB2/ya6oTI+Dkx8PP2rWSm
+	 12TLjyRmnghJ7Ark27ZyQbmEeHBQ7esVdoLJ3uIStdEgqe78aWC5jv3NkG1xfJl5d8
+	 bFH1l+2l38l2liFSzbIUfmk0j4wHDmaXv0TvAIzE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jim Mattson <jmattson@google.com>,
-	Yosry Ahmed <yosry.ahmed@linux.dev>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.6 470/737] KVM: nSVM: Clear exit_code_hi in VMCB when synthesizing nested VM-Exits
+	Byungchul Park <byungchul@sk.com>,
+	Jan Kara <jack@suse.cz>,
+	stable@kernel.org,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.1 331/634] jbd2: use a weaker annotation in journal handling
 Date: Fri,  9 Jan 2026 12:40:09 +0100
-Message-ID: <20260109112151.667811216@linuxfoundation.org>
+Message-ID: <20260109112129.981487557@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,64 +61,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Byungchul Park <byungchul@sk.com>
 
-commit da01f64e7470988f8607776aa7afa924208863fb upstream.
+commit 40a71b53d5a6d4ea17e4d54b99b2ac03a7f5e783 upstream.
 
-Explicitly clear exit_code_hi in the VMCB when synthesizing "normal"
-nested VM-Exits, as the full exit code is a 64-bit value (spoiler alert),
-and all exit codes for non-failing VMRUN use only bits 31:0.
+jbd2 journal handling code doesn't want jbd2_might_wait_for_commit()
+to be placed between start_this_handle() and stop_this_handle().  So it
+marks the region with rwsem_acquire_read() and rwsem_release().
 
-Cc: Jim Mattson <jmattson@google.com>
-Cc: Yosry Ahmed <yosry.ahmed@linux.dev>
-Cc: stable@vger.kernel.org
-Reviewed-by: Yosry Ahmed <yosry.ahmed@linux.dev>
-Link: https://patch.msgid.link/20251113225621.1688428-2-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+However, the annotation is too strong for that purpose.  We don't have
+to use more than try lock annotation for that.
+
+rwsem_acquire_read() implies:
+
+   1. might be a waiter on contention of the lock.
+   2. enter to the critical section of the lock.
+
+All we need in here is to act 2, not 1.  So trylock version of
+annotation is sufficient for that purpose.  Now that dept partially
+relies on lockdep annotaions, dept interpets rwsem_acquire_read() as a
+potential wait and might report a deadlock by the wait.
+
+Replace it with trylock version of annotation.
+
+Signed-off-by: Byungchul Park <byungchul@sk.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Cc: stable@kernel.org
+Message-ID: <20251024073940.1063-1-byungchul@sk.com>
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/svm/svm.c |    2 ++
- arch/x86/kvm/svm/svm.h |    7 ++++---
- 2 files changed, 6 insertions(+), 3 deletions(-)
+ fs/jbd2/transaction.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -2645,6 +2645,7 @@ static bool check_selective_cr0_intercep
+--- a/fs/jbd2/transaction.c
++++ b/fs/jbd2/transaction.c
+@@ -460,7 +460,7 @@ repeat:
+ 	read_unlock(&journal->j_state_lock);
+ 	current->journal_info = handle;
  
- 	if (cr0 ^ val) {
- 		svm->vmcb->control.exit_code = SVM_EXIT_CR0_SEL_WRITE;
-+		svm->vmcb->control.exit_code_hi = 0;
- 		ret = (nested_svm_exit_handled(svm) == NESTED_EXIT_DONE);
- 	}
- 
-@@ -4647,6 +4648,7 @@ static int svm_check_intercept(struct kv
- 	if (static_cpu_has(X86_FEATURE_NRIPS))
- 		vmcb->control.next_rip  = info->next_rip;
- 	vmcb->control.exit_code = icpt_info.exit_code;
-+	vmcb->control.exit_code_hi = 0;
- 	vmexit = nested_svm_exit_handled(svm);
- 
- 	ret = (vmexit == NESTED_EXIT_DONE) ? X86EMUL_INTERCEPTED
---- a/arch/x86/kvm/svm/svm.h
-+++ b/arch/x86/kvm/svm/svm.h
-@@ -601,9 +601,10 @@ int nested_svm_vmexit(struct vcpu_svm *s
- 
- static inline int nested_svm_simple_vmexit(struct vcpu_svm *svm, u32 exit_code)
- {
--	svm->vmcb->control.exit_code   = exit_code;
--	svm->vmcb->control.exit_info_1 = 0;
--	svm->vmcb->control.exit_info_2 = 0;
-+	svm->vmcb->control.exit_code	= exit_code;
-+	svm->vmcb->control.exit_code_hi	= 0;
-+	svm->vmcb->control.exit_info_1	= 0;
-+	svm->vmcb->control.exit_info_2	= 0;
- 	return nested_svm_vmexit(svm);
- }
- 
+-	rwsem_acquire_read(&journal->j_trans_commit_map, 0, 0, _THIS_IP_);
++	rwsem_acquire_read(&journal->j_trans_commit_map, 0, 1, _THIS_IP_);
+ 	jbd2_journal_free_transaction(new_transaction);
+ 	/*
+ 	 * Ensure that no allocations done while the transaction is open are
 
 
 
