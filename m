@@ -1,55 +1,52 @@
-Return-Path: <stable+bounces-207444-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206843-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76438D09EC2
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:46:10 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62165D0962B
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:14:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E0C2331304EC
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:34:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1BBA6311B7D2
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:05:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6E95359701;
-	Fri,  9 Jan 2026 12:34:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6FDF33CE9A;
+	Fri,  9 Jan 2026 12:05:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H4we3kim"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iicHg3jH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AE2A335BCD;
-	Fri,  9 Jan 2026 12:34:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DFDE359F98;
+	Fri,  9 Jan 2026 12:05:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962072; cv=none; b=exOjkMsGDlvr18TdwURURG1BGrDU4Iu1l2RCSKthMv9n+ctPXqOlG6pyJL5+BJyF1F+SFq408xzVEkd9hN00Wz03A7SJPPnzGCRLLPAG43LFn3jogBSqEi9UEoY/HjN6rnBDl+wiRluNP1KG3Ejpb6RNWUzPbOaMU2D7GCcWiGE=
+	t=1767960357; cv=none; b=seSaQkekqMKvEgvXdMvDP+YGRy6uMvHueAdAEk12DhHZxn0M+BZvI3kGBQMuYarfvlI+C9NW1NQy8f4lz9T5WyMwdAVoI6IsvNgVhFYlOQE1ThljP0ecMKCFLgNq41EjfmNHULeHjj8irVu/KPwIhzuW4/YxzkAexkRPh/4qQaA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962072; c=relaxed/simple;
-	bh=PeSlTEWBuvj6vtaANFAk7t8Jn7gyLN4CHxDQbg8syqI=;
+	s=arc-20240116; t=1767960357; c=relaxed/simple;
+	bh=WirWYWSV3FdmFE8RM+gK5qPPIrShijrsfZfDF6E794I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Am0GYtBucF9qW3DF7Wb/gYdqitkt4ggD6OS4mD69MLb+eZQ4j4TSzysGog+y4IlC7YXWiZI6bo2IuKRpcVRaCUKYaYXHTADRLXc+paLOvZQPSObZce06jgYw1gHtVLeYH1RQnaRgN0CzvY4PUymBwBZOBBpt6JJKoZo/xayGMzU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H4we3kim; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7712C4CEF1;
-	Fri,  9 Jan 2026 12:34:31 +0000 (UTC)
+	 MIME-Version; b=dBNQGnaawlGglnc9ovmSuMppr5INEztSYiq3sxUpXUxlPqYD3G5sMRDcsN7Wx3hLqEAztUUBSRqVaksFtkFUy15C6jP1b2J9DAd9gsShwFyNjsvLTBKTe9FZDU9EOZJtjoGcTPTQ5F4/oHZ0zfwaf/4nQzJ4wy7wT05y1Fuf3s4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iicHg3jH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DB41C4CEF1;
+	Fri,  9 Jan 2026 12:05:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962072;
-	bh=PeSlTEWBuvj6vtaANFAk7t8Jn7gyLN4CHxDQbg8syqI=;
+	s=korg; t=1767960357;
+	bh=WirWYWSV3FdmFE8RM+gK5qPPIrShijrsfZfDF6E794I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H4we3kimAzFYsU3ccGvjnfsugJU5Z3olit5LK1fDcSfEW1UmKL2OPZXz8uKzRA2q2
-	 e7N/3lHCjB+5JIsBSpPBf8rnmW9RWFqVCZFOKKmcdNbBttupPRSf8hnDDtXDXLuwB3
-	 tb9BNpAqMVh4Msodsm2/LQAdhZMuJMEFW6YnzrOA=
+	b=iicHg3jHzVw4QcrhHQJy1g5hBcTa/PiZjJ4xDzN8oDT8bD0JV4yNlJA9SzgNXj42b
+	 Z9AXyw7OAt0ndfxfDjKCw3vqw5OMIqd3O3CZOJ016euzQWYXbh5+WlFFLrgSRQ70Fy
+	 GXr3at0RyuGaxZM0XCUoPbAPeKYyaj71OJW+TtOs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Song Liu <song@kernel.org>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Petr Mladek <pmladek@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 235/634] livepatch: Match old_sympos 0 and 1 in klp_find_func()
-Date: Fri,  9 Jan 2026 12:38:33 +0100
-Message-ID: <20260109112126.270262898@linuxfoundation.org>
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 6.6 375/737] can: gs_usb: gs_can_open(): fix error handling
+Date: Fri,  9 Jan 2026 12:38:34 +0100
+Message-ID: <20260109112148.101795675@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,93 +58,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Song Liu <song@kernel.org>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 
-[ Upstream commit 139560e8b973402140cafeb68c656c1374bd4c20 ]
+commit 3e54d3b4a8437b6783d4145c86962a2aa51022f3 upstream.
 
-When there is only one function of the same name, old_sympos of 0 and 1
-are logically identical. Match them in klp_find_func().
+Commit 2603be9e8167 ("can: gs_usb: gs_can_open(): improve error handling")
+added missing error handling to the gs_can_open() function.
 
-This is to avoid a corner case with different toolchain behavior.
+The driver uses 2 USB anchors to track the allocated URBs: the TX URBs in
+struct gs_can::tx_submitted for each netdev and the RX URBs in struct
+gs_usb::rx_submitted for the USB device. gs_can_open() allocates the RX
+URBs, while TX URBs are allocated during gs_can_start_xmit().
 
-In this specific issue, two versions of kpatch-build were used to
-build livepatch for the same kernel. One assigns old_sympos == 0 for
-unique local functions, the other assigns old_sympos == 1 for unique
-local functions. Both versions work fine by themselves. (PS: This
-behavior change was introduced in a downstream version of kpatch-build.
-This change does not exist in upstream kpatch-build.)
+The cleanup in gs_can_open() kills all anchored dev->tx_submitted
+URBs (which is not necessary since the netdev is not yet registered), but
+misses the parent->rx_submitted URBs.
 
-However, during livepatch upgrade (with the replace flag set) from a
-patch built with one version of kpatch-build to the same fix built with
-the other version of kpatch-build, livepatching fails with errors like:
+Fix the problem by killing the rx_submitted instead of the tx_submitted.
 
-[   14.218706] sysfs: cannot create duplicate filename 'xxx/somefunc,1'
-...
-[   14.219466] Call Trace:
-[   14.219468]  <TASK>
-[   14.219469]  dump_stack_lvl+0x47/0x60
-[   14.219474]  sysfs_warn_dup.cold+0x17/0x27
-[   14.219476]  sysfs_create_dir_ns+0x95/0xb0
-[   14.219479]  kobject_add_internal+0x9e/0x260
-[   14.219483]  kobject_add+0x68/0x80
-[   14.219485]  ? kstrdup+0x3c/0xa0
-[   14.219486]  klp_enable_patch+0x320/0x830
-[   14.219488]  patch_init+0x443/0x1000 [ccc_0_6]
-[   14.219491]  ? 0xffffffffa05eb000
-[   14.219492]  do_one_initcall+0x2e/0x190
-[   14.219494]  do_init_module+0x67/0x270
-[   14.219496]  init_module_from_file+0x75/0xa0
-[   14.219499]  idempotent_init_module+0x15a/0x240
-[   14.219501]  __x64_sys_finit_module+0x61/0xc0
-[   14.219503]  do_syscall_64+0x5b/0x160
-[   14.219505]  entry_SYSCALL_64_after_hwframe+0x4b/0x53
-[   14.219507] RIP: 0033:0x7f545a4bd96d
-...
-[   14.219516] kobject: kobject_add_internal failed for somefunc,1 with
-    -EEXIST, don't try to register things with the same name ...
-
-This happens because klp_find_func() thinks somefunc with old_sympos==0
-is not the same as somefunc with old_sympos==1, and klp_add_object_nops
-adds another xxx/func,1 to the list of functions to patch.
-
-Signed-off-by: Song Liu <song@kernel.org>
-Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
-[pmladek@suse.com: Fixed some typos.]
-Reviewed-by: Petr Mladek <pmladek@suse.com>
-Tested-by: Petr Mladek <pmladek@suse.com>
-Signed-off-by: Petr Mladek <pmladek@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 2603be9e8167 ("can: gs_usb: gs_can_open(): improve error handling")
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20251210-gs_usb-fix-error-handling-v1-1-d6a5a03f10bb@pengutronix.de
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/livepatch/core.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/net/can/usb/gs_usb.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/livepatch/core.c b/kernel/livepatch/core.c
-index 0e651fd4cc9fc..e3f251ec1637f 100644
---- a/kernel/livepatch/core.c
-+++ b/kernel/livepatch/core.c
-@@ -89,8 +89,14 @@ static struct klp_func *klp_find_func(struct klp_object *obj,
- 	struct klp_func *func;
+--- a/drivers/net/can/usb/gs_usb.c
++++ b/drivers/net/can/usb/gs_usb.c
+@@ -1071,7 +1071,7 @@ out_usb_free_urb:
+ 	usb_free_urb(urb);
+ out_usb_kill_anchored_urbs:
+ 	if (!parent->active_channels) {
+-		usb_kill_anchored_urbs(&dev->tx_submitted);
++		usb_kill_anchored_urbs(&parent->rx_submitted);
  
- 	klp_for_each_func(obj, func) {
-+		/*
-+		 * Besides identical old_sympos, also consider old_sympos
-+		 * of 0 and 1 are identical.
-+		 */
- 		if ((strcmp(old_func->old_name, func->old_name) == 0) &&
--		    (old_func->old_sympos == func->old_sympos)) {
-+		    ((old_func->old_sympos == func->old_sympos) ||
-+		     (old_func->old_sympos == 0 && func->old_sympos == 1) ||
-+		     (old_func->old_sympos == 1 && func->old_sympos == 0))) {
- 			return func;
- 		}
- 	}
--- 
-2.51.0
-
+ 		if (dev->feature & GS_CAN_FEATURE_HW_TIMESTAMP)
+ 			gs_usb_timestamp_stop(parent);
 
 
 
