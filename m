@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-207271-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206640-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCF9BD09AC3
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:31:57 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id A527CD091C2
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 12:57:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 630F6305F408
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:26:36 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 281163013BE2
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:56:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C25835B12F;
-	Fri,  9 Jan 2026 12:26:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54DCE2F12D4;
+	Fri,  9 Jan 2026 11:56:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nx5MxiAp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D6PYEQ8z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DC4333C530;
-	Fri,  9 Jan 2026 12:26:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18DB731A7EA;
+	Fri,  9 Jan 2026 11:56:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961581; cv=none; b=mgpOMrcLRPPdDs1IcCXHNmTs6rf8VXmVrWp+EKnqWNhRNkcOusFRtBgvB318VTKZErPBBZ1KLV46jhqYVhs8y4zrVAw1ANnvFH8/yEe5y4FaWa60Q8MqnWQrLFv1VLSLczvbBqoDGWbhOAHrZLFMm/BzEfotIWpjbBa+AOvg7ig=
+	t=1767959780; cv=none; b=mdAiBmfjsoqoqPNsjCk1D89iUt5o7sBT5pVCKKX/agLpwRekUwLxZcQhXAfRXg4l+H5gPNC6mdDj5bK5PLn3IZQT9uSES2JklfSZjdag23zXWPK2ql+2QqtHpq0Iw7wgoJ+DGj8kxd81jOaInVptRSc2teeJI5SE6EaENJp9xEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961581; c=relaxed/simple;
-	bh=Dra3HMnWQVBi8pImP08BoHvEQBWB4m9RP8losg1chWE=;
+	s=arc-20240116; t=1767959780; c=relaxed/simple;
+	bh=tj5rUDRT4ye/n8TecM8TzzZRDqrY0TC+NJ+QSEBBw6Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=u3/YKd9KW5lrUBVexEmATK17uHbK7M1HxyJAlzgHDcB7TODjOmbC7V8Q5ZvXkpU5coLrLTjaw/zP6TeIfBqtPchbydWII8sA1lrBubY7pGFR1NsKmKXpCg5KmI5XoBJzYBWMonpAPGMxDPeCCYoZyyOl2mG9BxpomEanFb6QcqA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nx5MxiAp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5749C4CEF1;
-	Fri,  9 Jan 2026 12:26:20 +0000 (UTC)
+	 MIME-Version; b=AGQ11J3sjY45jMtyJ/2GV4cOBq54aL8D6B+0PIxdV0f6d7RyFFryiTl1lOAWEC9sFgO639onpKa51VSUZkWgqedtPCGimtQNJtoDL3SezKt8otQwBrvg0kNA1Duzn4IabZ4YuRLwRa8NyWaIZ12rxf88365uRelAAmbHnZvc3bY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D6PYEQ8z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 989A4C4CEF1;
+	Fri,  9 Jan 2026 11:56:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961581;
-	bh=Dra3HMnWQVBi8pImP08BoHvEQBWB4m9RP8losg1chWE=;
+	s=korg; t=1767959780;
+	bh=tj5rUDRT4ye/n8TecM8TzzZRDqrY0TC+NJ+QSEBBw6Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nx5MxiApKJwKiymuC55KASvVtiJGuJdqf+yl8njcEz7rNJITIH4mYkWJW52Ni4GjO
-	 +QjkhFty8kc7vaA4lQJfNBFf04sQ2WOzEESTiDzeX4qRvR7u8UC+LXn4xpjHOP6VzK
-	 kVq+2XP5/3UipRdExuawov5BWVtB1rgf7qAiDUGM=
+	b=D6PYEQ8zsdy4zrGFKRU6dYIzgKvIT1F31xujgSFLdofP59EmfV1YliLPdS7CiBS83
+	 Ma2ZndWLDpYbBUs6ueBphhv4jGg14dO2okkFjodZY/yOKIiqp4wqnqmcD93D3WiN/o
+	 YXjy2GgKxFEWeDOOd6fVEt1dL93PuUAgY3jYiUq4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ston Jia <ston.jia@outlook.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Edward Adam Davis <eadavis@qq.com>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 031/634] platform/x86: huawei-wmi: add keys for HONOR models
-Date: Fri,  9 Jan 2026 12:35:09 +0100
-Message-ID: <20260109112118.618621586@linuxfoundation.org>
+Subject: [PATCH 6.6 171/737] fs/ntfs3: out1 also needs to put mi
+Date: Fri,  9 Jan 2026 12:35:10 +0100
+Message-ID: <20260109112140.425751802@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,49 +58,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jia Ston <ston.jia@outlook.com>
+From: Edward Adam Davis <eadavis@qq.com>
 
-[ Upstream commit 5c72329716d0858621021193330594d5d26bf44d ]
+[ Upstream commit 4d78d1173a653acdaf7500a32b8dc530ca4ad075 ]
 
-HONOR MagicBook X16/X14 models produced in 2025 cannot use the Print
-Screen and YOYO keys properly, with the system reporting them as
-unknown key presses (codes: 0x028b and 0x028e).
+After ntfs_look_free_mft() executes successfully, all subsequent code
+that fails to execute must put mi.
 
-To resolve this, a key_entry is added for both the HONOR Print Screen
-key and the HONOR YOYO key, ensuring they function correctly on these
-models.
-
-Signed-off-by: Ston Jia <ston.jia@outlook.com>
-Link: https://patch.msgid.link/20251029051804.220111-1-ston.jia@outlook.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Fixes: 4342306f0f0d ("fs/ntfs3: Add file operations and implementation")
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/huawei-wmi.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ fs/ntfs3/frecord.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/huawei-wmi.c b/drivers/platform/x86/huawei-wmi.c
-index ae5daecff1771..201e1f2e2c2f0 100644
---- a/drivers/platform/x86/huawei-wmi.c
-+++ b/drivers/platform/x86/huawei-wmi.c
-@@ -82,6 +82,10 @@ static const struct key_entry huawei_wmi_keymap[] = {
- 	{ KE_KEY,    0x289, { KEY_WLAN } },
- 	// Huawei |M| key
- 	{ KE_KEY,    0x28a, { KEY_CONFIG } },
-+	// HONOR YOYO key
-+	{ KE_KEY,    0x28b, { KEY_NOTIFICATION_CENTER } },
-+	// HONOR print screen
-+	{ KE_KEY,    0x28e, { KEY_PRINT } },
- 	// Keyboard backlit
- 	{ KE_IGNORE, 0x293, { KEY_KBDILLUMTOGGLE } },
- 	{ KE_IGNORE, 0x294, { KEY_KBDILLUMUP } },
+diff --git a/fs/ntfs3/frecord.c b/fs/ntfs3/frecord.c
+index 5c45fec832b00..6ff10042a15f2 100644
+--- a/fs/ntfs3/frecord.c
++++ b/fs/ntfs3/frecord.c
+@@ -1067,9 +1067,9 @@ static int ni_ins_attr_ext(struct ntfs_inode *ni, struct ATTR_LIST_ENTRY *le,
+ 
+ out2:
+ 	ni_remove_mi(ni, mi);
+-	mi_put(mi);
+ 
+ out1:
++	mi_put(mi);
+ 	ntfs_mark_rec_free(sbi, rno, is_mft);
+ 
+ out:
 -- 
 2.51.0
 
