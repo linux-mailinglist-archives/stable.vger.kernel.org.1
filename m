@@ -1,50 +1,52 @@
-Return-Path: <stable+bounces-207737-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207706-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB42AD0A425
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:11:38 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B60AD0A441
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:12:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F003D30A23C7
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:49:51 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0713F31C40D9
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:49:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9597F35C1A8;
-	Fri,  9 Jan 2026 12:48:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A86E435CB94;
+	Fri,  9 Jan 2026 12:46:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FvBOQ94P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mPqJw5L+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57AD235C1B8;
-	Fri,  9 Jan 2026 12:48:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A59433032C;
+	Fri,  9 Jan 2026 12:46:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962903; cv=none; b=PrhJY4EP1YYbyTRAiBMdIsXYsnP8h4Me23z3cZXTxIxTKo+kzyrCyb9OTWf6Fdksse8NuingQJh40DiMgj7Ay8UkSIK5s26rXnfxeZbxgEQk9WE5gm3ERYduhLmsfMXPc0kGHxtmVQv9z/Chu9DrgdEkKNlmxDnk+OgIOME/pF8=
+	t=1767962815; cv=none; b=hiRb+IVMZrqtbyS/gQxTdSlTjXI1WNWm2hzwkW6nLANVr4a7ZDJx4JF5WVinjG0jCFJCgkYqtJtdda+1+hpdH8pQMzOiJBDP+7hbradEDAZjpjhi4zP7aa9VbpfH55AMf4Vo58+GjtxYsIbK+k358rP/iX5PQRTeF5sIyifgimM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962903; c=relaxed/simple;
-	bh=OQB5QMJLIq0dLtuPOTm3i2ecRSXZI8b/9bay4mGMEoE=;
+	s=arc-20240116; t=1767962815; c=relaxed/simple;
+	bh=xT7sqlZJy0ekU01djsJ1Mekt4sHjK+6US6VPm40HUnw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BKrMkVIoMHtkLWR2Kql05fQtGOGmZI0iZRONGfAu1jzaXE5jcn2t5jtb32OMaSQpgocMU/F1V5XbtzQ1FqHsgWce/ECZM7ymHLK7SRQJLtEZ6ru5yhN0Qr3XlGGi0oXrApSKPWKtJk1NoGAqky50L2M6JYp0m7B9CC6Uyjuo+CQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FvBOQ94P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8C22C4CEF1;
-	Fri,  9 Jan 2026 12:48:22 +0000 (UTC)
+	 MIME-Version; b=A9t5/GiGTqIzhLMZLHPP7+KzhhuYjy464HL/WzsN9qn+LoftyOOsclTMT096J3/sF+ZHb/ULRp1Ytl1wwWMkkasZTtm8t2gAw1eyxsspoxklN1cKVDVxYalhx4pSsgpk5ZkaMGB/5U7GST+mmE7X6p3N/JYkRRuEPg25En23nb4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mPqJw5L+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B98ECC4CEF1;
+	Fri,  9 Jan 2026 12:46:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962903;
-	bh=OQB5QMJLIq0dLtuPOTm3i2ecRSXZI8b/9bay4mGMEoE=;
+	s=korg; t=1767962815;
+	bh=xT7sqlZJy0ekU01djsJ1Mekt4sHjK+6US6VPm40HUnw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FvBOQ94PKvaZ42UgmZ56zxF7uONSWyOZrrbZVm0cd9oFoGixf96A99Bwm5foG7fq4
-	 dU6dAZgqhwR5o6WnfGzWoGloiizgvLOu5Ab++wNYACVtBpQqyZ+pfj/c+DBbTeY1LN
-	 sQ1m/13yw+GSEvQM9UI8P0WM5DBfB/YX41P7O55g=
+	b=mPqJw5L+/C+Pnmuc1EyUj7vBWtMg08vzXQlrX/HyLI6FGrKyJ/8jMx7iSxOUC2xc0
+	 kg5PiodnB6qsvWGoZscxa5BvoMXUdMKvxzzF3BOIVl+jSy2DSb1HC2bFbGzX1jrigA
+	 oTyo3tzxAudngxrwxh9tpLh5umzRleGnE+kq0v/Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+938fcd548c303fe33c1a@syzkaller.appspotmail.com,
-	Jason Gunthorpe <jgg@nvidia.com>
-Subject: [PATCH 6.1 496/634] RDMA/core: Check for the presence of LS_NLA_TYPE_DGID correctly
-Date: Fri,  9 Jan 2026 12:42:54 +0100
-Message-ID: <20260109112136.209768492@linuxfoundation.org>
+	Guangshuo Li <lgs201920130244@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>
+Subject: [PATCH 6.1 498/634] e1000: fix OOB in e1000_tbi_should_accept()
+Date: Fri,  9 Jan 2026 12:42:56 +0100
+Message-ID: <20260109112136.284705257@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
 References: <20260109112117.407257400@linuxfoundation.org>
@@ -63,130 +65,124 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jason Gunthorpe <jgg@nvidia.com>
+From: Guangshuo Li <lgs201920130244@gmail.com>
 
-commit a7b8e876e0ef0232b8076972c57ce9a7286b47ca upstream.
+commit 9c72a5182ed92904d01057f208c390a303f00a0f upstream.
 
-The netlink response for RDMA_NL_LS_OP_IP_RESOLVE should always have a
-LS_NLA_TYPE_DGID attribute, it is invalid if it does not.
+In e1000_tbi_should_accept() we read the last byte of the frame via
+'data[length - 1]' to evaluate the TBI workaround. If the descriptor-
+reported length is zero or larger than the actual RX buffer size, this
+read goes out of bounds and can hit unrelated slab objects. The issue
+is observed from the NAPI receive path (e1000_clean_rx_irq):
 
-Use the nl parsing logic properly and call nla_parse_deprecated() to fill
-the nlattrs array and then directly index that array to get the data for
-the DGID. Just fail if it is NULL.
+==================================================================
+BUG: KASAN: slab-out-of-bounds in e1000_tbi_should_accept+0x610/0x790
+Read of size 1 at addr ffff888014114e54 by task sshd/363
 
-Remove the for loop searching for the nla, and squash the validation and
-parsing into one function.
+CPU: 0 PID: 363 Comm: sshd Not tainted 5.18.0-rc1 #1
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.12.0-59-gc9ba5276e321-prebuilt.qemu.org 04/01/2014
+Call Trace:
+ <IRQ>
+ dump_stack_lvl+0x5a/0x74
+ print_address_description+0x7b/0x440
+ print_report+0x101/0x200
+ kasan_report+0xc1/0xf0
+ e1000_tbi_should_accept+0x610/0x790
+ e1000_clean_rx_irq+0xa8c/0x1110
+ e1000_clean+0xde2/0x3c10
+ __napi_poll+0x98/0x380
+ net_rx_action+0x491/0xa20
+ __do_softirq+0x2c9/0x61d
+ do_softirq+0xd1/0x120
+ </IRQ>
+ <TASK>
+ __local_bh_enable_ip+0xfe/0x130
+ ip_finish_output2+0x7d5/0xb00
+ __ip_queue_xmit+0xe24/0x1ab0
+ __tcp_transmit_skb+0x1bcb/0x3340
+ tcp_write_xmit+0x175d/0x6bd0
+ __tcp_push_pending_frames+0x7b/0x280
+ tcp_sendmsg_locked+0x2e4f/0x32d0
+ tcp_sendmsg+0x24/0x40
+ sock_write_iter+0x322/0x430
+ vfs_write+0x56c/0xa60
+ ksys_write+0xd1/0x190
+ do_syscall_64+0x43/0x90
+ entry_SYSCALL_64_after_hwframe+0x44/0xae
+RIP: 0033:0x7f511b476b10
+Code: 73 01 c3 48 8b 0d 88 d3 2b 00 f7 d8 64 89 01 48 83 c8 ff c3 66 0f 1f 44 00 00 83 3d f9 2b 2c 00 00 75 10 b8 01 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 31 c3 48 83 ec 08 e8 8e 9b 01 00 48 89 04 24
+RSP: 002b:00007ffc9211d4e8 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
+RAX: ffffffffffffffda RBX: 0000000000004024 RCX: 00007f511b476b10
+RDX: 0000000000004024 RSI: 0000559a9385962c RDI: 0000000000000003
+RBP: 0000559a9383a400 R08: fffffffffffffff0 R09: 0000000000004f00
+R10: 0000000000000070 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007ffc9211d57f R14: 0000559a9347bde7 R15: 0000000000000003
+ </TASK>
+Allocated by task 1:
+ __kasan_krealloc+0x131/0x1c0
+ krealloc+0x90/0xc0
+ add_sysfs_param+0xcb/0x8a0
+ kernel_add_sysfs_param+0x81/0xd4
+ param_sysfs_builtin+0x138/0x1a6
+ param_sysfs_init+0x57/0x5b
+ do_one_initcall+0x104/0x250
+ do_initcall_level+0x102/0x132
+ do_initcalls+0x46/0x74
+ kernel_init_freeable+0x28f/0x393
+ kernel_init+0x14/0x1a0
+ ret_from_fork+0x22/0x30
+The buggy address belongs to the object at ffff888014114000
+ which belongs to the cache kmalloc-2k of size 2048
+The buggy address is located 1620 bytes to the right of
+ 2048-byte region [ffff888014114000, ffff888014114800]
+The buggy address belongs to the physical page:
+page:ffffea0000504400 refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x14110
+head:ffffea0000504400 order:3 compound_mapcount:0 compound_pincount:0
+flags: 0x100000000010200(slab|head|node=0|zone=1)
+raw: 0100000000010200 0000000000000000 dead000000000001 ffff888013442000
+raw: 0000000000000000 0000000000080008 00000001ffffffff 0000000000000000
+page dumped because: kasan: bad access detected
+==================================================================
 
-Fixes an uninitialized read from the stack triggered by userspace if it
-does not provide the DGID to a kernel initiated RDMA_NL_LS_OP_IP_RESOLVE
-query.
+This happens because the TBI check unconditionally dereferences the last
+byte without validating the reported length first:
 
-    BUG: KMSAN: uninit-value in hex_byte_pack include/linux/hex.h:13 [inline]
-    BUG: KMSAN: uninit-value in ip6_string+0xef4/0x13a0 lib/vsprintf.c:1490
-     hex_byte_pack include/linux/hex.h:13 [inline]
-     ip6_string+0xef4/0x13a0 lib/vsprintf.c:1490
-     ip6_addr_string+0x18a/0x3e0 lib/vsprintf.c:1509
-     ip_addr_string+0x245/0xee0 lib/vsprintf.c:1633
-     pointer+0xc09/0x1bd0 lib/vsprintf.c:2542
-     vsnprintf+0xf8a/0x1bd0 lib/vsprintf.c:2930
-     vprintk_store+0x3ae/0x1530 kernel/printk/printk.c:2279
-     vprintk_emit+0x307/0xcd0 kernel/printk/printk.c:2426
-     vprintk_default+0x3f/0x50 kernel/printk/printk.c:2465
-     vprintk+0x36/0x50 kernel/printk/printk_safe.c:82
-     _printk+0x17e/0x1b0 kernel/printk/printk.c:2475
-     ib_nl_process_good_ip_rsep drivers/infiniband/core/addr.c:128 [inline]
-     ib_nl_handle_ip_res_resp+0x963/0x9d0 drivers/infiniband/core/addr.c:141
-     rdma_nl_rcv_msg drivers/infiniband/core/netlink.c:-1 [inline]
-     rdma_nl_rcv_skb drivers/infiniband/core/netlink.c:239 [inline]
-     rdma_nl_rcv+0xefa/0x11c0 drivers/infiniband/core/netlink.c:259
-     netlink_unicast_kernel net/netlink/af_netlink.c:1320 [inline]
-     netlink_unicast+0xf04/0x12b0 net/netlink/af_netlink.c:1346
-     netlink_sendmsg+0x10b3/0x1250 net/netlink/af_netlink.c:1896
-     sock_sendmsg_nosec net/socket.c:714 [inline]
-     __sock_sendmsg+0x333/0x3d0 net/socket.c:729
-     ____sys_sendmsg+0x7e0/0xd80 net/socket.c:2617
-     ___sys_sendmsg+0x271/0x3b0 net/socket.c:2671
-     __sys_sendmsg+0x1aa/0x300 net/socket.c:2703
-     __compat_sys_sendmsg net/compat.c:346 [inline]
-     __do_compat_sys_sendmsg net/compat.c:353 [inline]
-     __se_compat_sys_sendmsg net/compat.c:350 [inline]
-     __ia32_compat_sys_sendmsg+0xa4/0x100 net/compat.c:350
-     ia32_sys_call+0x3f6c/0x4310 arch/x86/include/generated/asm/syscalls_32.h:371
-     do_syscall_32_irqs_on arch/x86/entry/syscall_32.c:83 [inline]
-     __do_fast_syscall_32+0xb0/0x150 arch/x86/entry/syscall_32.c:306
-     do_fast_syscall_32+0x38/0x80 arch/x86/entry/syscall_32.c:331
-     do_SYSENTER_32+0x1f/0x30 arch/x86/entry/syscall_32.c:3
+	u8 last_byte = *(data + length - 1);
 
-Link: https://patch.msgid.link/r/0-v1-3fbaef094271+2cf-rdma_op_ip_rslv_syz_jgg@nvidia.com
+Fix by rejecting the frame early if the length is zero, or if it exceeds
+adapter->rx_buffer_len. This preserves the TBI workaround semantics for
+valid frames and prevents touching memory beyond the RX buffer.
+
+Fixes: 2037110c96d5 ("e1000: move tbi workaround code into helper function")
 Cc: stable@vger.kernel.org
-Fixes: ae43f8286730 ("IB/core: Add IP to GID netlink offload")
-Reported-by: syzbot+938fcd548c303fe33c1a@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/r/68dc3dac.a00a0220.102ee.004f.GAE@google.com
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/core/addr.c |   33 ++++++++++-----------------------
- 1 file changed, 10 insertions(+), 23 deletions(-)
+ drivers/net/ethernet/intel/e1000/e1000_main.c |   10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
---- a/drivers/infiniband/core/addr.c
-+++ b/drivers/infiniband/core/addr.c
-@@ -80,37 +80,25 @@ static const struct nla_policy ib_nl_add
- 		.min = sizeof(struct rdma_nla_ls_gid)},
- };
- 
--static inline bool ib_nl_is_good_ip_resp(const struct nlmsghdr *nlh)
-+static void ib_nl_process_ip_rsep(const struct nlmsghdr *nlh)
+--- a/drivers/net/ethernet/intel/e1000/e1000_main.c
++++ b/drivers/net/ethernet/intel/e1000/e1000_main.c
+@@ -4091,7 +4091,15 @@ static bool e1000_tbi_should_accept(stru
+ 				    u32 length, const u8 *data)
  {
- 	struct nlattr *tb[LS_NLA_TYPE_MAX] = {};
-+	union ib_gid gid;
-+	struct addr_req *req;
-+	int found = 0;
- 	int ret;
+ 	struct e1000_hw *hw = &adapter->hw;
+-	u8 last_byte = *(data + length - 1);
++	u8 last_byte;
++
++	/* Guard against OOB on data[length - 1] */
++	if (unlikely(!length))
++		return false;
++	/* Upper bound: length must not exceed rx_buffer_len */
++	if (unlikely(length > adapter->rx_buffer_len))
++		return false;
++	last_byte = *(data + length - 1);
  
- 	if (nlh->nlmsg_flags & RDMA_NL_LS_F_ERR)
--		return false;
-+		return;
- 
- 	ret = nla_parse_deprecated(tb, LS_NLA_TYPE_MAX - 1, nlmsg_data(nlh),
- 				   nlmsg_len(nlh), ib_nl_addr_policy, NULL);
- 	if (ret)
--		return false;
--
--	return true;
--}
--
--static void ib_nl_process_good_ip_rsep(const struct nlmsghdr *nlh)
--{
--	const struct nlattr *head, *curr;
--	union ib_gid gid;
--	struct addr_req *req;
--	int len, rem;
--	int found = 0;
--
--	head = (const struct nlattr *)nlmsg_data(nlh);
--	len = nlmsg_len(nlh);
-+		return;
- 
--	nla_for_each_attr(curr, head, len, rem) {
--		if (curr->nla_type == LS_NLA_TYPE_DGID)
--			memcpy(&gid, nla_data(curr), nla_len(curr));
--	}
-+	if (!tb[LS_NLA_TYPE_DGID])
-+		return;
-+	memcpy(&gid, nla_data(tb[LS_NLA_TYPE_DGID]), sizeof(gid));
- 
- 	spin_lock_bh(&lock);
- 	list_for_each_entry(req, &req_list, list) {
-@@ -137,8 +125,7 @@ int ib_nl_handle_ip_res_resp(struct sk_b
- 	    !(NETLINK_CB(skb).sk))
- 		return -EPERM;
- 
--	if (ib_nl_is_good_ip_resp(nlh))
--		ib_nl_process_good_ip_rsep(nlh);
-+	ib_nl_process_ip_rsep(nlh);
- 
- 	return 0;
- }
+ 	if (TBI_ACCEPT(hw, status, errors, length, last_byte)) {
+ 		unsigned long irq_flags;
 
 
 
