@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-207636-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207052-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53364D0A007
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:50:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B4BFCD097F8
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:21:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 286853046A3B
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:43:37 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4224B303DF50
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:15:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F24033C53A;
-	Fri,  9 Jan 2026 12:43:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA9E535A95A;
+	Fri,  9 Jan 2026 12:15:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TtueEfCh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HXI4ouVs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D702C33032C;
-	Fri,  9 Jan 2026 12:43:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A4E835A943;
+	Fri,  9 Jan 2026 12:15:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962614; cv=none; b=t8O7FsCsSUWN93lTD1giaRway14dHA9B5PfCqV9B1E8ZPe6y1Jy0c9nbHchIASZtwBA+SbRgvBGFg7draT8SWIriD1GClk0rtqSmZYrPPXtuyNCbO3ilxjSc06QXP2mMDuGhHK6BDtcVASytFEMgn84d/avdHqj23XpEjVCW7vM=
+	t=1767960957; cv=none; b=Ktu9pB/ntzP/48YL3k8o7n+Mm1Kd6o9C5wLKf3SZhWdsjcCM0DJzlsDi0cCSNcONZyll2gm3kYTNv0DFGnTQuAckCP8VXAdPEwCi1LRgJuG40uYa70et8Vex6lk64EdD3ISd+jHUQ5VnpBiGGdGL1Ozik0ZpEYJQc9+R5SjUSLY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962614; c=relaxed/simple;
-	bh=1AXxg+aCDeKmQsMXtoo8ZE4NkeUJ7txozuzpTSl4tMo=;
+	s=arc-20240116; t=1767960957; c=relaxed/simple;
+	bh=MLRzOcwe52rOz00AychhaKP/WI1J/UZhOGiTEdjhGR4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CnprT5UhKbpuyXaehhdbt+pRIiWf9+Mx0Mf00LyHe0d0MogSSp+EcpnQ22X8cglwIvbGG05f0dfWSz+XnP1SO0xigcMY7+ecSZPvobZ+t3jJOy+rmO61UxUKMTkYgEvlMozFIp7QB5U291WrdekbTnreiSQ/ScnrWTCJqgf0WJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TtueEfCh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F977C4CEF1;
-	Fri,  9 Jan 2026 12:43:34 +0000 (UTC)
+	 MIME-Version; b=K75BlrVw4kyEwpv1iR/4NGTGUmnEEVOPZjQzwfUCVZuDQ5wLwXfA5iX47+fwBo51ssIYIS5DRbAPDjLuhaljgkvj4lgpmtJ3MypxLPOV6UZHGgYeObVCphJTXUOCbQ4RMD3EVpYpC6xo9hSPxoV+YQO9ckX1rkJWjyLhNAd46js=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HXI4ouVs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 828E8C4CEF1;
+	Fri,  9 Jan 2026 12:15:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962614;
-	bh=1AXxg+aCDeKmQsMXtoo8ZE4NkeUJ7txozuzpTSl4tMo=;
+	s=korg; t=1767960956;
+	bh=MLRzOcwe52rOz00AychhaKP/WI1J/UZhOGiTEdjhGR4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TtueEfChMnGyk6ISsNakft6TRFl0SfOnFPdL4JKs7QavsB8IyMn7Ttv1RPVoeoOak
-	 yvSV8AUib47rPrbint83Xt0RCI+YvTH5bTW+bl4l4FMFTUwzFVe83ulzkI/lh1uC1x
-	 84FhIMHoIX4knQ0M28bg1DvtdiCz8Swe1mK1EFeE=
+	b=HXI4ouVs0ddKy3Qp2vs7QCpI8u2r1tJxJohNIiiGRyAJkB5OMkqwLGAuyPOtK2wfS
+	 YGitJJO1Aa1la5VXCGl06mank3H4fdvrHTQ2kRGGoYEMsMIQZDhUBMmFhwEHleTLlH
+	 hQ72giIhXc4G+PJ/c52iK8Ujv7g0gaO5cstFq95Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Moore <paul@paul-moore.com>,
-	Will Rosenberg <whrosenb@asu.edu>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 428/634] ipv6: BUG() in pskb_expand_head() as part of calipso_skbuff_setattr()
+	Christian Hitz <christian.hitz@bbv.ch>,
+	Lee Jones <lee@kernel.org>
+Subject: [PATCH 6.6 567/737] leds: leds-lp50xx: LP5009 supports 3 modules for a total of 9 LEDs
 Date: Fri,  9 Jan 2026 12:41:46 +0100
-Message-ID: <20260109112133.649559078@linuxfoundation.org>
+Message-ID: <20260109112155.330979030@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,102 +59,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Will Rosenberg <whrosenb@asu.edu>
+From: Christian Hitz <christian.hitz@bbv.ch>
 
-[ Upstream commit 58fc7342b529803d3c221101102fe913df7adb83 ]
+commit 5246e3673eeeccb4f5bf4f42375dd495d465ac15 upstream.
 
-There exists a kernel oops caused by a BUG_ON(nhead < 0) at
-net/core/skbuff.c:2232 in pskb_expand_head().
-This bug is triggered as part of the calipso_skbuff_setattr()
-routine when skb_cow() is passed headroom > INT_MAX
-(i.e. (int)(skb_headroom(skb) + len_delta) < 0).
+LP5009 supports 9 LED outputs that are grouped into 3 modules.
 
-The root cause of the bug is due to an implicit integer cast in
-__skb_cow(). The check (headroom > skb_headroom(skb)) is meant to ensure
-that delta = headroom - skb_headroom(skb) is never negative, otherwise
-we will trigger a BUG_ON in pskb_expand_head(). However, if
-headroom > INT_MAX and delta <= -NET_SKB_PAD, the check passes, delta
-becomes negative, and pskb_expand_head() is passed a negative value for
-nhead.
-
-Fix the trigger condition in calipso_skbuff_setattr(). Avoid passing
-"negative" headroom sizes to skb_cow() within calipso_skbuff_setattr()
-by only using skb_cow() to grow headroom.
-
-PoC:
-	Using `netlabelctl` tool:
-
-        netlabelctl map del default
-        netlabelctl calipso add pass doi:7
-        netlabelctl map add default address:0::1/128 protocol:calipso,7
-
-        Then run the following PoC:
-
-        int fd = socket(AF_INET6, SOCK_DGRAM, IPPROTO_UDP);
-
-        // setup msghdr
-        int cmsg_size = 2;
-        int cmsg_len = 0x60;
-        struct msghdr msg;
-        struct sockaddr_in6 dest_addr;
-        struct cmsghdr * cmsg = (struct cmsghdr *) calloc(1,
-                        sizeof(struct cmsghdr) + cmsg_len);
-        msg.msg_name = &dest_addr;
-        msg.msg_namelen = sizeof(dest_addr);
-        msg.msg_iov = NULL;
-        msg.msg_iovlen = 0;
-        msg.msg_control = cmsg;
-        msg.msg_controllen = cmsg_len;
-        msg.msg_flags = 0;
-
-        // setup sockaddr
-        dest_addr.sin6_family = AF_INET6;
-        dest_addr.sin6_port = htons(31337);
-        dest_addr.sin6_flowinfo = htonl(31337);
-        dest_addr.sin6_addr = in6addr_loopback;
-        dest_addr.sin6_scope_id = 31337;
-
-        // setup cmsghdr
-        cmsg->cmsg_len = cmsg_len;
-        cmsg->cmsg_level = IPPROTO_IPV6;
-        cmsg->cmsg_type = IPV6_HOPOPTS;
-        char * hop_hdr = (char *)cmsg + sizeof(struct cmsghdr);
-        hop_hdr[1] = 0x9; //set hop size - (0x9 + 1) * 8 = 80
-
-        sendmsg(fd, &msg, 0);
-
-Fixes: 2917f57b6bc1 ("calipso: Allow the lsm to label the skbuff directly.")
-Suggested-by: Paul Moore <paul@paul-moore.com>
-Signed-off-by: Will Rosenberg <whrosenb@asu.edu>
-Acked-by: Paul Moore <paul@paul-moore.com>
-Link: https://patch.msgid.link/20251219173637.797418-1-whrosenb@asu.edu
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 242b81170fb8 ("leds: lp50xx: Add the LP50XX family of the RGB LED driver")
+Signed-off-by: Christian Hitz <christian.hitz@bbv.ch>
+Link: https://patch.msgid.link/20251022063305.972190-1-christian@klarinett.li
+Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/calipso.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/leds/leds-lp50xx.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv6/calipso.c b/net/ipv6/calipso.c
-index 24666291c54a..72079ef2959b 100644
---- a/net/ipv6/calipso.c
-+++ b/net/ipv6/calipso.c
-@@ -1345,7 +1345,8 @@ static int calipso_skbuff_setattr(struct sk_buff *skb,
- 	/* At this point new_end aligns to 4n, so (new_end & 4) pads to 8n */
- 	pad = ((new_end & 4) + (end & 7)) & 7;
- 	len_delta = new_end - (int)end + pad;
--	ret_val = skb_cow(skb, skb_headroom(skb) + len_delta);
-+	ret_val = skb_cow(skb,
-+			  skb_headroom(skb) + (len_delta > 0 ? len_delta : 0));
- 	if (ret_val < 0)
- 		return ret_val;
+--- a/drivers/leds/leds-lp50xx.c
++++ b/drivers/leds/leds-lp50xx.c
+@@ -56,7 +56,7 @@
+ /* There are 3 LED outputs per bank */
+ #define LP50XX_LEDS_PER_MODULE	3
  
--- 
-2.51.0
-
+-#define LP5009_MAX_LED_MODULES	2
++#define LP5009_MAX_LED_MODULES	3
+ #define LP5012_MAX_LED_MODULES	4
+ #define LP5018_MAX_LED_MODULES	6
+ #define LP5024_MAX_LED_MODULES	8
 
 
 
