@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-207165-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207774-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8340AD09BDA
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:35:53 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EDB3D0A23E
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:02:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 504F530A552E
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:21:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 88555302628F
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:50:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EABC126ED41;
-	Fri,  9 Jan 2026 12:21:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D219B35BDD0;
+	Fri,  9 Jan 2026 12:50:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D23SPcSq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uFzT2Q6S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEDD432AAB5;
-	Fri,  9 Jan 2026 12:21:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95E8335BDB3;
+	Fri,  9 Jan 2026 12:50:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961277; cv=none; b=YelPWsUiWKUh+/JjPhe7jKTbyZM8Bz/qlGQ/RG5Mulr7IUq2cfmDgJkmv5PgAjGzHFCfnIahJjYyjICdELI/fv/bR4plCbvu7Kig6XvsKc94XXdifJ3zPNbsx9CS+JH+WD66TOtGGyusMe0fVgOUlY+NV11cfgUVtq/DM7Hrbho=
+	t=1767963009; cv=none; b=pi3Wm2rGihR2G7YVuFngkH9rTEknCoQunwyiNGtNgN/2CSXHLnsbOCdcgJc1CjE2dbZzjUfPvFMWKUmxcVAsZv8zDlPAAysCdRnBjygxCPgRoDI/TC8mJaXfnkWq8sExxc1+VlpTtbwbjHtJTanAdHzwSImkLxPG2PkNBkjCmBo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961277; c=relaxed/simple;
-	bh=e3oO4DMrVP3OkJFyrXlGA9q5vcj5DWR7WNggTL7oH4U=;
+	s=arc-20240116; t=1767963009; c=relaxed/simple;
+	bh=CXVgg4/vDhoIyqwJS1/Oir7TiI2nF3Z/FEwNS04areg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ocoG/jb2m50c2JLyhA0Vcg/mKVHvuU5u67l0I638YiT4UhbIHxQ4J4MDp3se2fgn66TmAhXiwowLryvzF8QUboErWm7api7xKeO/z3rOfH+F2Zsz92+wx+acDCTpT/OCduvfBL4ZypieDwjig4dpO12v72JI1an3ILba2HwSWoc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D23SPcSq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF870C19421;
-	Fri,  9 Jan 2026 12:21:16 +0000 (UTC)
+	 MIME-Version; b=nXCN2HiUtTfMVvyv3BpQAVMehQ1IZrU3vY/3o4r9FjCC3hbUBEBTiwm6eTOLYi164jXhO6j8654DdU7McaDWXS26MJw1z9YAdj7bYA2VX5kIjSX+UvfPzZLSyve08NZ6WpFLOhkPSvsXYu7mxNUiUtetY4G0FVsDUvXjdZSg3kg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uFzT2Q6S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 181F5C4CEF1;
+	Fri,  9 Jan 2026 12:50:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961277;
-	bh=e3oO4DMrVP3OkJFyrXlGA9q5vcj5DWR7WNggTL7oH4U=;
+	s=korg; t=1767963009;
+	bh=CXVgg4/vDhoIyqwJS1/Oir7TiI2nF3Z/FEwNS04areg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D23SPcSquR9tM8i/DfA3wzefT6up4QxK3s41DfjLftb0l8vh8tbC91Dnt/R9aqiVl
-	 mlOqGcIiWsIIJCV9His71HTLIhknE3/tGD1/E7Ckip0jfbABSCURoZoqsw7Oy1afD4
-	 uF9lWIaE04KRa0fzYZ0Pm9NNpIUELyOwmaYj0xPk=
+	b=uFzT2Q6ScpjoglJCduMgReIAKkCPaVphJnKzyxBSYs98DsHzsucdIaj/l3zZZhw7N
+	 r/NIV1kl072hoNq5ABBEOtltNWqZUbojlP2uB+isZuKKRuhNoZVdyLED28B4I+o5cr
+	 yl36FI28/uPKR1ptIHgtwMWrDHh/oghpYHzCrno0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Hildenbrand <david@redhat.com>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	stable@kernel.org,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 696/737] powerpc/pseries/cmm: adjust BALLOON_MIGRATE when migrating pages
-Date: Fri,  9 Jan 2026 12:43:55 +0100
-Message-ID: <20260109112200.250014574@linuxfoundation.org>
+Subject: [PATCH 6.1 558/634] f2fs: fix to detect recoverable inode during dryrun of find_fsync_dnodes()
+Date: Fri,  9 Jan 2026 12:43:56 +0100
+Message-ID: <20260109112138.594573198@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,47 +61,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Hildenbrand <david@redhat.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit 0da2ba35c0d532ca0fe7af698b17d74c4d084b9a ]
+[ Upstream commit 68d05693f8c031257a0822464366e1c2a239a512 ]
 
-Let's properly adjust BALLOON_MIGRATE like the other drivers.
+mkfs.f2fs -f /dev/vdd
+mount /dev/vdd /mnt/f2fs
+touch /mnt/f2fs/foo
+sync		# avoid CP_UMOUNT_FLAG in last f2fs_checkpoint.ckpt_flags
+touch /mnt/f2fs/bar
+f2fs_io fsync /mnt/f2fs/bar
+f2fs_io shutdown 2 /mnt/f2fs
+umount /mnt/f2fs
+blockdev --setro /dev/vdd
+mount /dev/vdd /mnt/f2fs
+mount: /mnt/f2fs: WARNING: source write-protected, mounted read-only.
 
-Note that the INFLATE/DEFLATE events are triggered from the core when
-enqueueing/dequeueing pages.
+For the case if we create and fsync a new inode before sudden power-cut,
+without norecovery or disable_roll_forward mount option, the following
+mount will succeed w/o recovering last fsynced inode.
 
-This was found by code inspection.
+The problem here is that we only check inode_list list after
+find_fsync_dnodes() in f2fs_recover_fsync_data() to find out whether
+there is recoverable data in the iamge, but there is a missed case, if
+last fsynced inode is not existing in last checkpoint, then, we will
+fail to get its inode due to nat of inode node is not existing in last
+checkpoint, so the inode won't be linked in inode_list.
 
-Link: https://lkml.kernel.org/r/20251021100606.148294-3-david@redhat.com
-Fixes: fe030c9b85e6 ("powerpc/pseries/cmm: Implement balloon compaction")
-Signed-off-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Let's detect such case in dyrun mode to fix this issue.
+
+After this change, mount will fail as expected below:
+mount: /mnt/f2fs: cannot mount /dev/vdd read-only.
+       dmesg(1) may have more information after failed mount system call.
+demsg:
+F2FS-fs (vdd): Need to recover fsync data, but write access unavailable, please try mount w/ disable_roll_forward or norecovery
+
+Cc: stable@kernel.org
+Fixes: 6781eabba1bd ("f2fs: give -EINVAL for norecovery and rw mount")
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+[ folio => page ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/platforms/pseries/cmm.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/f2fs/recovery.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
---- a/arch/powerpc/platforms/pseries/cmm.c
-+++ b/arch/powerpc/platforms/pseries/cmm.c
-@@ -532,6 +532,7 @@ static int cmm_migratepage(struct balloo
+--- a/fs/f2fs/recovery.c
++++ b/fs/f2fs/recovery.c
+@@ -360,7 +360,7 @@ static unsigned int adjust_por_ra_blocks
+ }
  
- 	spin_lock_irqsave(&b_dev_info->pages_lock, flags);
- 	balloon_page_insert(b_dev_info, newpage);
-+	__count_vm_event(BALLOON_MIGRATE);
- 	b_dev_info->isolated_pages--;
- 	spin_unlock_irqrestore(&b_dev_info->pages_lock, flags);
+ static int find_fsync_dnodes(struct f2fs_sb_info *sbi, struct list_head *head,
+-				bool check_only)
++				bool check_only, bool *new_inode)
+ {
+ 	struct curseg_info *curseg;
+ 	struct page *page = NULL;
+@@ -418,6 +418,8 @@ static int find_fsync_dnodes(struct f2fs
+ 			if (IS_ERR(entry)) {
+ 				err = PTR_ERR(entry);
+ 				if (err == -ENOENT) {
++					if (check_only)
++						*new_inode = true;
+ 					err = 0;
+ 					goto next;
+ 				}
+@@ -834,6 +836,7 @@ int f2fs_recover_fsync_data(struct f2fs_
+ 	unsigned long s_flags = sbi->sb->s_flags;
+ 	bool need_writecp = false;
+ 	bool fix_curseg_write_pointer = false;
++	bool new_inode = false;
+ #ifdef CONFIG_QUOTA
+ 	int quota_enabled;
+ #endif
+@@ -856,8 +859,8 @@ int f2fs_recover_fsync_data(struct f2fs_
+ 	f2fs_down_write(&sbi->cp_global_sem);
  
+ 	/* step #1: find fsynced inode numbers */
+-	err = find_fsync_dnodes(sbi, &inode_list, check_only);
+-	if (err || list_empty(&inode_list))
++	err = find_fsync_dnodes(sbi, &inode_list, check_only, &new_inode);
++	if (err < 0 || (list_empty(&inode_list) && (!check_only || !new_inode)))
+ 		goto skip;
+ 
+ 	if (check_only) {
 
 
 
