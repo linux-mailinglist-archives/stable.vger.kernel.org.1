@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-206729-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207332-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37024D0945E
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:07:36 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BCE3D09CA0
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:37:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B97443110C3F
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:00:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1B0D33053BD5
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:29:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E84533032C;
-	Fri,  9 Jan 2026 12:00:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E80235A933;
+	Fri,  9 Jan 2026 12:29:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sDpRDTkr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L6+Eacad"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31B1A359F99;
-	Fri,  9 Jan 2026 12:00:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FB232C21E6;
+	Fri,  9 Jan 2026 12:29:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960033; cv=none; b=iwcyqt/OZ+zakeWipkg9wCS9BQY4g+c13lKYbkp4DEiBkAFrif8gliP3Uff/BtlXTk6kPhNCyNIj67p20vqwor3TUGlf5HNFY8yMo3C+RozAARr5cZgr8EwjTuIBYmUVvF4ErSKZJJ1yz2PkJe1kCqCtuTg+ile4I7pj746KOCc=
+	t=1767961754; cv=none; b=ewaXwSDIydU7wXymkQXaQoRXAS7hvOeitL13h5/zBVRv0uwK76W80q4/Vw1De4w58QjPZaHxOs6bCEi2UMavvpuNnSXF5oBsrUFEQjc1CPd45AR4v3/Ki3/eYkBgVF9abO5yoR8sC47xoo6uqBceIJZl8vHm42/scxUCjfjU4eI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960033; c=relaxed/simple;
-	bh=YGiFDbTuK43Q7J8skr1lbpjz5ZJkJJprz1ddJq6SN2c=;
+	s=arc-20240116; t=1767961754; c=relaxed/simple;
+	bh=QudukGPPp24z2uzWNlHZeaBlU/x4go1EJijIuR503dM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M3yuEpRLlAyZwT4fEIummulMINvvKGS1ojdySqepZCU+hdAZhJkjqm8p04tNrbxqmJKZ6oxLSxX5WtGNQUcHrasXIhZaWfOjmOidM3dspgP9oRPh2lt/zQtiq0dCQb6mFbu5c2yZx7AtPcxiJ+fJnCNy89IFnFHr4b0S99AmkQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sDpRDTkr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B34FAC4CEF1;
-	Fri,  9 Jan 2026 12:00:32 +0000 (UTC)
+	 MIME-Version; b=YPcfLXXWjAwhG503gjbqJOFyN0/QAHmletyGTf+vtFR3glxGnAnh7VEg/iC39bQFu+NYUuNl96RkVMnmaFDFrvucMIRbS+piWbc2xuMI3zMZ0nRcGOGuH9hFBMTuYLXFs37ZGi7KkTgAEDOKbHJMvYPgPZlDV+SVfx8SPNp134s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L6+Eacad; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B16DBC4CEF1;
+	Fri,  9 Jan 2026 12:29:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960033;
-	bh=YGiFDbTuK43Q7J8skr1lbpjz5ZJkJJprz1ddJq6SN2c=;
+	s=korg; t=1767961754;
+	bh=QudukGPPp24z2uzWNlHZeaBlU/x4go1EJijIuR503dM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sDpRDTkrWbbONdzDOPE+hpIEhSy/kHWqtyQ1oY4RU9wfDN243SJQEfIBqUh//NQMG
-	 hu4Q9GJDHKTEMRv/ot+GcrvSCpIY9ezAGEXsYrK87eoAWdItLdZvyNSDFXRLmxqOkA
-	 WClNcpZgb2W72czOWJNjblX7ym/GbiG8BlGwb/CE=
+	b=L6+EacadkcW/wYMyeYsE0JUhUdG9l3YvW14cGR+/QRVbU5xopO7PO/nkgGIP1kFWa
+	 SqVcJ1CGtwi/lOv0shz6FkVse+hKQg9RQFsJhd1H3nKzTMrEcAevzDi32ogPmARTWx
+	 W/4cQuNh9wcwjCiIbsGJ5t9oLrq0TEgljM2/0XLg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Stoler <michael.stoler@vastdata.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Edward Adam Davis <eadavis@qq.com>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 262/737] NFS: Initialise verifiers for visible dentries in nfs_atomic_open()
-Date: Fri,  9 Jan 2026 12:36:41 +0100
-Message-ID: <20260109112143.847472346@linuxfoundation.org>
+Subject: [PATCH 6.1 124/634] fs/ntfs3: out1 also needs to put mi
+Date: Fri,  9 Jan 2026 12:36:42 +0100
+Message-ID: <20260109112122.110578846@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,43 +60,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Edward Adam Davis <eadavis@qq.com>
 
-[ Upstream commit 518c32a1bc4f8df1a8442ee8cdfea3e2fcff20a0 ]
+[ Upstream commit 4d78d1173a653acdaf7500a32b8dc530ca4ad075 ]
 
-Ensure that the verifiers are initialised before calling
-d_splice_alias() in nfs_atomic_open().
+After ntfs_look_free_mft() executes successfully, all subsequent code
+that fails to execute must put mi.
 
-Reported-by: Michael Stoler <michael.stoler@vastdata.com>
-Fixes: 809fd143de88 ("NFSv4: Ensure nfs_atomic_open set the dentry verifier on ENOENT")
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Fixes: 4342306f0f0d ("fs/ntfs3: Add file operations and implementation")
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/dir.c | 2 +-
+ fs/ntfs3/frecord.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/nfs/dir.c b/fs/nfs/dir.c
-index d47e908ef411c..32e922a20d0d4 100644
---- a/fs/nfs/dir.c
-+++ b/fs/nfs/dir.c
-@@ -2149,12 +2149,12 @@ int nfs_atomic_open(struct inode *dir, struct dentry *dentry,
- 		d_drop(dentry);
- 		switch (err) {
- 		case -ENOENT:
--			d_splice_alias(NULL, dentry);
- 			if (nfs_server_capable(dir, NFS_CAP_CASE_INSENSITIVE))
- 				dir_verifier = inode_peek_iversion_raw(dir);
- 			else
- 				dir_verifier = nfs_save_change_attribute(dir);
- 			nfs_set_verifier(dentry, dir_verifier);
-+			d_splice_alias(NULL, dentry);
- 			break;
- 		case -EISDIR:
- 		case -ENOTDIR:
+diff --git a/fs/ntfs3/frecord.c b/fs/ntfs3/frecord.c
+index fb572688f919f..f1f5b84e2ef17 100644
+--- a/fs/ntfs3/frecord.c
++++ b/fs/ntfs3/frecord.c
+@@ -1067,9 +1067,9 @@ static int ni_ins_attr_ext(struct ntfs_inode *ni, struct ATTR_LIST_ENTRY *le,
+ 
+ out2:
+ 	ni_remove_mi(ni, mi);
+-	mi_put(mi);
+ 
+ out1:
++	mi_put(mi);
+ 	ntfs_mark_rec_free(sbi, rno, is_mft);
+ 
+ out:
 -- 
 2.51.0
 
