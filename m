@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-206692-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207294-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 097DAD0938F
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:04:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DD94D09B7D
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:34:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B890130DB486
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:58:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1878930A15A7
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:27:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25ED3335561;
-	Fri,  9 Jan 2026 11:58:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8596A23F417;
+	Fri,  9 Jan 2026 12:27:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fyk0U5v+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="peWyrhjZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE7C62C21E6;
-	Fri,  9 Jan 2026 11:58:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3630E156CA;
+	Fri,  9 Jan 2026 12:27:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767959927; cv=none; b=la+jZ4Nvg7YQNWIV0AG1GLAvpLGS8aJbR5z+GpAT142NTnpNb/CcwY7ZavfiC8skg/oTHsZ/U4V0Hc7tFKS8nWYVylAKPAQUob9AgO2g1xVpoDdFSHlcNvh3PKz+EwHJLzObJAzTcyhmnDyDIa2odS3XYrXLjF8v6c+yMKU7WjI=
+	t=1767961646; cv=none; b=vGLmdhmTF3rik0xR3j5ysOAAzieWOpNgojcd4wHUpe9g5ub3Dmp/Hki5PdB7LJ+br6lounf1SYvMs/OJhcfyAzMk0AtBTDB19s88QmPgSxiMDg06R8XSdy632qW6n7LcCEi+0XYleKX7y2jaq9URBnj/pVKIkJjHDKhr3z29ie0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767959927; c=relaxed/simple;
-	bh=iAj7Zs4BpZc2mYo9N9qnJlVai5JyCZ4zMbZ38otFKAI=;
+	s=arc-20240116; t=1767961646; c=relaxed/simple;
+	bh=ukrWuhevP6XmMeIgU/1IeimDkaRR3X0zna277YwuQI4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LgtUwV2WNtmVdLC2I0yQ0jN4pn6RQDVVFqfbHWU2DGadi7x0bsjp2yuk//XBGeufSv96l65VGc/Bn+wPn3grmlIm8zGGjOZ3ES3X8vhrMGpWjiSUKhkkndXAzX6Hc170erg/MQO7icy5QhmByT8/GtvxL6Rw3rDE2i3bGrqal5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fyk0U5v+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60B3BC4CEF1;
-	Fri,  9 Jan 2026 11:58:47 +0000 (UTC)
+	 MIME-Version; b=PzXYZ2ATPgT1lMZD/xBcWg5qdnFXK4k1BQisHRq0n1N514OkyJBw1DIdet6UTen39YtBZqOgnXtjOh0XYZ1GAHa6mkqcy0E/tD7jKanPqlgMParV7aWdjPGrd6AY15uxAUr/QM5SBG1Y58gK6odilFLb0QD2Gd/e2O3vB6OLR0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=peWyrhjZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76B1BC19422;
+	Fri,  9 Jan 2026 12:27:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767959927;
-	bh=iAj7Zs4BpZc2mYo9N9qnJlVai5JyCZ4zMbZ38otFKAI=;
+	s=korg; t=1767961645;
+	bh=ukrWuhevP6XmMeIgU/1IeimDkaRR3X0zna277YwuQI4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fyk0U5v+QO3qHdmwOnoFeus/Drs4uwMNS8dG71yte7gwe6VfCkZ8pKB3rNLxHTVY9
-	 a3XdcHypZ2YDY5l5KIhdpeBNjz6xd3T/5t98LsQJu+orI6gpCdn0yxBY+8k9/Jstx4
-	 g6W22kr8A2MdGAJTNSKVTZh04HHokUxjaOZcSR14=
+	b=peWyrhjZT1icIU9835fwjO1pwQA8g2R80Eaz8hlWIVpT9gEQrpZ4fn6OQlWhTruqb
+	 zD/ypk9H6NU3UemFfOvuolN73aEkFPVGaHeO+POA4XJPltSMurqkRJskDVBhpnOFUV
+	 Nsqz23PmTVi5UGabG8qI+/Jw4kQfm0sngvkLpKa4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 225/737] virtio_vdpa: fix misleading return in void function
+Subject: [PATCH 6.1 086/634] ext4: correct the checking of quota files before moving extents
 Date: Fri,  9 Jan 2026 12:36:04 +0100
-Message-ID: <20260109112142.465821657@linuxfoundation.org>
+Message-ID: <20260109112120.672724350@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Zhang Yi <yi.zhang@huawei.com>
 
-[ Upstream commit e40b6abe0b1247d43bc61942aa7534fca7209e44 ]
+[ Upstream commit a2e5a3cea4b18f6e2575acc444a5e8cce1fc8260 ]
 
-virtio_vdpa_set_status() is declared as returning void, but it used
-"return vdpa_set_status()" Since vdpa_set_status() also returns
-void, the return statement is unnecessary and misleading.
-Remove it.
+The move extent operation should return -EOPNOTSUPP if any of the inodes
+is a quota inode, rather than requiring both to be quota inodes.
 
-Fixes: c043b4a8cf3b ("virtio: introduce a vDPA based transport")
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Message-Id: <20251001191653.1713923-1-alok.a.tiwari@oracle.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
+Fixes: 02749a4c2082 ("ext4: add ext4_is_quota_file()")
+Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Message-ID: <20251013015128.499308-2-yi.zhang@huaweicloud.com>
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/virtio/virtio_vdpa.c | 2 +-
+ fs/ext4/move_extent.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/virtio/virtio_vdpa.c b/drivers/virtio/virtio_vdpa.c
-index 06ce6d8c2e004..6855cc22ea96e 100644
---- a/drivers/virtio/virtio_vdpa.c
-+++ b/drivers/virtio/virtio_vdpa.c
-@@ -93,7 +93,7 @@ static void virtio_vdpa_set_status(struct virtio_device *vdev, u8 status)
- {
- 	struct vdpa_device *vdpa = vd_get_vdpa(vdev);
+diff --git a/fs/ext4/move_extent.c b/fs/ext4/move_extent.c
+index e8ec213b21443..e01632462db9f 100644
+--- a/fs/ext4/move_extent.c
++++ b/fs/ext4/move_extent.c
+@@ -481,7 +481,7 @@ mext_check_arguments(struct inode *orig_inode,
+ 		return -ETXTBSY;
+ 	}
  
--	return vdpa_set_status(vdpa, status);
-+	vdpa_set_status(vdpa, status);
- }
- 
- static void virtio_vdpa_reset(struct virtio_device *vdev)
+-	if (ext4_is_quota_file(orig_inode) && ext4_is_quota_file(donor_inode)) {
++	if (ext4_is_quota_file(orig_inode) || ext4_is_quota_file(donor_inode)) {
+ 		ext4_debug("ext4 move extent: The argument files should not be quota files [ino:orig %lu, donor %lu]\n",
+ 			orig_inode->i_ino, donor_inode->i_ino);
+ 		return -EOPNOTSUPP;
 -- 
 2.51.0
 
