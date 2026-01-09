@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-207170-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207175-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F919D09BD4
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:35:45 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AFA4D09B05
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:33:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 57A0A3112D13
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:21:32 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 69A9630F8AB8
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:21:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F14AF35A926;
-	Fri,  9 Jan 2026 12:21:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 011F435B120;
+	Fri,  9 Jan 2026 12:21:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gR6pfdLE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yY9M7Fii"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5980334C24;
-	Fri,  9 Jan 2026 12:21:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B554533B6F0;
+	Fri,  9 Jan 2026 12:21:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961291; cv=none; b=VIe4EfBCskAHvEhazhykS2Gv5NpaP05CxkKLfXv751Aikx/kpaBxNkSC0g3jxh+1cEQgNRE9w7ipUThPch5p2CZwZnLxhNDDNVB/rbri6vJB4z4kURJdBYdG68Ly64tQ8YXxK0qnMA4XcdZBemenX5bjXZE6hBKwYiRXF4/KQmI=
+	t=1767961305; cv=none; b=awVa2/ejhCBZvys4zG3VPQca9+0Fd5h3ka20LwBHck9OPuIy+1TLrR/H5dqLI/P34D4HEI0kYdA5DvHwPrDe2wosX0wGdEuiujOy8JuRvC7tVoE38avgoEMvhQxal0bCKCYVvtmeligM9MZ7Dd7gsyr/+wdWCFoAHTbXw1imv6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961291; c=relaxed/simple;
-	bh=ptvnAVmTw+R9jvS7SwT7HjcA3IudBNsHTKCJhvQzVnY=;
+	s=arc-20240116; t=1767961305; c=relaxed/simple;
+	bh=btnDQ4kge5eeAtX3YOogmvsmpnXwfvLsQcvvP2cg2Ds=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hm+P7ZtBlgQZnJZy2+uZxq4bcw+ywkXpCfd0tCYBqmsRASmSpFx74bJKjFc6H1xeynaodtAkVw2nMpCLfwS15NKLqnH04nNQY/VrVCiV+84ePwit9yBgvz/z59AyktqrIHmi+dzS9ELb5PashqjKTOh7RtDHQKTf4vxqZmcs9Zg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gR6pfdLE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C9BDC4CEF1;
-	Fri,  9 Jan 2026 12:21:30 +0000 (UTC)
+	 MIME-Version; b=ErYoMrYnZpB6co51ijD6F9A9t85UguyHeHu3UN91M6o9i4shClz0wDqzRKjz+z6xqYWm2+bZ/831n9uSEPxae1+g52vqkYg+QHCEVSEHo/37gdRPvSopunsZ0fPKIzhn0v8NNymEDIuCy9vpxjQgu2kvLWobTVmVVSXQBQGCKqQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yY9M7Fii; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 384DAC4CEF1;
+	Fri,  9 Jan 2026 12:21:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961291;
-	bh=ptvnAVmTw+R9jvS7SwT7HjcA3IudBNsHTKCJhvQzVnY=;
+	s=korg; t=1767961305;
+	bh=btnDQ4kge5eeAtX3YOogmvsmpnXwfvLsQcvvP2cg2Ds=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gR6pfdLEdIZ9rs1Jrg2yFvZAqPwC2WTSBPKtzpEbfCoLn2kclPcw5utYv75xR+7CB
-	 drbaF1z6RxCepMS3HbWmIGbA5zkEyHjTkJ3Oo8Ple7S+4bZHKvgkEZutuwpcUf0hL0
-	 dTMo9l20j9V6FKljOCUta/0IgpoCxabPKqfv6f0g=
+	b=yY9M7Fii9TKMJRZPGKj983SA1zoCf3s+0LQfEhu/uhhD22d09vOu5ZDKolLF7mw3f
+	 Vc3QD3h63I/fWJzTEZiKfTYQtk7W2aB4McBlzU8nqfagXwarpOmzRkPQMuShIIZn0M
+	 ppyyY509gT/ykqeqx/Iyd7uNWcZEjU7Dfx7nEvhI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hari Bathini <hbathini@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Aboorva Devarajan <aboorvad@linux.ibm.com>
-Subject: [PATCH 6.6 674/737] powerpc/64s/radix/kfence: map __kfence_pool at page granularity
-Date: Fri,  9 Jan 2026 12:43:33 +0100
-Message-ID: <20260109112159.406549872@linuxfoundation.org>
+	Gabriel Krisman Bertazi <krisman@suse.de>,
+	Theodore Tso <tytso@mit.edu>,
+	Ankan Biswas <spyjetfayed@gmail.com>
+Subject: [PATCH 6.6 675/737] ext4: fix error message when rejecting the default hash
+Date: Fri,  9 Jan 2026 12:43:34 +0100
+Message-ID: <20260109112159.443868142@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
 References: <20260109112133.973195406@linuxfoundation.org>
@@ -64,229 +64,93 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Hari Bathini <hbathini@linux.ibm.com>
+From: Gabriel Krisman Bertazi <krisman@suse.de>
 
-commit 353d7a84c214f184d5a6b62acdec8b4424159b7c upstream.
+[ Upstream commit a2187431c395cdfbf144e3536f25468c64fc7cfa ]
 
-When KFENCE is enabled, total system memory is mapped at page level
-granularity. But in radix MMU mode, ~3GB additional memory is needed
-to map 100GB of system memory at page level granularity when compared
-to using 2MB direct mapping.This is not desired considering KFENCE is
-designed to be enabled in production kernels [1].
+Commit 985b67cd8639 ("ext4: filesystems without casefold feature cannot
+be mounted with siphash") properly rejects volumes where
+s_def_hash_version is set to DX_HASH_SIPHASH, but the check and the
+error message should not look into casefold setup - a filesystem should
+never have DX_HASH_SIPHASH as the default hash.  Fix it and, since we
+are there, move the check to ext4_hash_info_init.
 
-Mapping only the memory allocated for KFENCE pool at page granularity is
-sufficient to enable KFENCE support. So, allocate __kfence_pool during
-bootup and map it at page granularity instead of mapping all system
-memory at page granularity.
+Fixes:985b67cd8639 ("ext4: filesystems without casefold feature cannot
+be mounted with siphash")
 
-Without patch:
-  # cat /proc/meminfo
-  MemTotal:       101201920 kB
-
-With patch:
-  # cat /proc/meminfo
-  MemTotal:       104483904 kB
-
-Note that enabling KFENCE at runtime is disabled for radix MMU for now,
-as it depends on the ability to split page table mappings and such APIs
-are not currently implemented for radix MMU.
-
-All kfence_test.c testcases passed with this patch.
-
-[1] https://lore.kernel.org/all/20201103175841.3495947-2-elver@google.com/
-
-Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20240701130021.578240-1-hbathini@linux.ibm.com
-Cc: Aboorva Devarajan <aboorvad@linux.ibm.com>
+Signed-off-by: Gabriel Krisman Bertazi <krisman@suse.de>
+Link: https://patch.msgid.link/87jzg1en6j.fsf_-_@mailhost.krisman.be
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+[ The commit a2187431c395 intended to remove the if-block which was used
+  for an old SIPHASH rejection check. ]
+Signed-off-by: Ankan Biswas <spyjetfayed@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/include/asm/kfence.h        |   11 +++-
- arch/powerpc/mm/book3s64/radix_pgtable.c |   84 +++++++++++++++++++++++++++++--
- arch/powerpc/mm/init-common.c            |    3 +
- 3 files changed, 93 insertions(+), 5 deletions(-)
+ fs/ext4/ext4.h  |    1 +
+ fs/ext4/super.c |   20 +++++++++++++++++---
+ 2 files changed, 18 insertions(+), 3 deletions(-)
 
---- a/arch/powerpc/include/asm/kfence.h
-+++ b/arch/powerpc/include/asm/kfence.h
-@@ -15,10 +15,19 @@
- #define ARCH_FUNC_PREFIX "."
+--- a/fs/ext4/ext4.h
++++ b/fs/ext4/ext4.h
+@@ -2459,6 +2459,7 @@ static inline __le16 ext4_rec_len_to_dis
+ #define DX_HASH_HALF_MD4_UNSIGNED	4
+ #define DX_HASH_TEA_UNSIGNED		5
+ #define DX_HASH_SIPHASH			6
++#define DX_HASH_LAST 			DX_HASH_SIPHASH
+ 
+ static inline u32 ext4_chksum(struct ext4_sb_info *sbi, u32 crc,
+ 			      const void *address, unsigned int length)
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -5140,16 +5140,27 @@ out:
+ 	return ret;
+ }
+ 
+-static void ext4_hash_info_init(struct super_block *sb)
++static int ext4_hash_info_init(struct super_block *sb)
+ {
+ 	struct ext4_sb_info *sbi = EXT4_SB(sb);
+ 	struct ext4_super_block *es = sbi->s_es;
+ 	unsigned int i;
+ 
++	sbi->s_def_hash_version = es->s_def_hash_version;
++
++	if (sbi->s_def_hash_version > DX_HASH_LAST) {
++		ext4_msg(sb, KERN_ERR,
++			 "Invalid default hash set in the superblock");
++		return -EINVAL;
++	} else if (sbi->s_def_hash_version == DX_HASH_SIPHASH) {
++		ext4_msg(sb, KERN_ERR,
++			 "SIPHASH is not a valid default hash value");
++		return -EINVAL;
++	}
++
+ 	for (i = 0; i < 4; i++)
+ 		sbi->s_hash_seed[i] = le32_to_cpu(es->s_hash_seed[i]);
+ 
+-	sbi->s_def_hash_version = es->s_def_hash_version;
+ 	if (ext4_has_feature_dir_index(sb)) {
+ 		i = le32_to_cpu(es->s_flags);
+ 		if (i & EXT2_FLAGS_UNSIGNED_HASH)
+@@ -5167,6 +5178,7 @@ static void ext4_hash_info_init(struct s
  #endif
- 
-+#ifdef CONFIG_KFENCE
-+extern bool kfence_disabled;
-+
-+static inline void disable_kfence(void)
-+{
-+	kfence_disabled = true;
-+}
-+
- static inline bool arch_kfence_init_pool(void)
- {
--	return true;
-+	return !kfence_disabled;
- }
-+#endif
- 
- #ifdef CONFIG_PPC64
- static inline bool kfence_protect_page(unsigned long addr, bool protect)
---- a/arch/powerpc/mm/book3s64/radix_pgtable.c
-+++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
-@@ -17,6 +17,7 @@
- #include <linux/hugetlb.h>
- #include <linux/string_helpers.h>
- #include <linux/memory.h>
-+#include <linux/kfence.h>
- 
- #include <asm/pgalloc.h>
- #include <asm/mmu_context.h>
-@@ -31,6 +32,7 @@
- #include <asm/uaccess.h>
- #include <asm/ultravisor.h>
- #include <asm/set_memory.h>
-+#include <asm/kfence.h>
- 
- #include <trace/events/thp.h>
- 
-@@ -293,7 +295,8 @@ static unsigned long next_boundary(unsig
- 
- static int __meminit create_physical_mapping(unsigned long start,
- 					     unsigned long end,
--					     int nid, pgprot_t _prot)
-+					     int nid, pgprot_t _prot,
-+					     unsigned long mapping_sz_limit)
- {
- 	unsigned long vaddr, addr, mapping_size = 0;
- 	bool prev_exec, exec = false;
-@@ -301,7 +304,10 @@ static int __meminit create_physical_map
- 	int psize;
- 	unsigned long max_mapping_size = memory_block_size;
- 
--	if (debug_pagealloc_enabled_or_kfence())
-+	if (mapping_sz_limit < max_mapping_size)
-+		max_mapping_size = mapping_sz_limit;
-+
-+	if (debug_pagealloc_enabled())
- 		max_mapping_size = PAGE_SIZE;
- 
- 	start = ALIGN(start, PAGE_SIZE);
-@@ -356,8 +362,74 @@ static int __meminit create_physical_map
- 	return 0;
- }
- 
-+#ifdef CONFIG_KFENCE
-+static bool __ro_after_init kfence_early_init = !!CONFIG_KFENCE_SAMPLE_INTERVAL;
-+
-+static int __init parse_kfence_early_init(char *arg)
-+{
-+	int val;
-+
-+	if (get_option(&arg, &val))
-+		kfence_early_init = !!val;
-+	return 0;
-+}
-+early_param("kfence.sample_interval", parse_kfence_early_init);
-+
-+static inline phys_addr_t alloc_kfence_pool(void)
-+{
-+	phys_addr_t kfence_pool;
-+
-+	/*
-+	 * TODO: Support to enable KFENCE after bootup depends on the ability to
-+	 *       split page table mappings. As such support is not currently
-+	 *       implemented for radix pagetables, support enabling KFENCE
-+	 *       only at system startup for now.
-+	 *
-+	 *       After support for splitting mappings is available on radix,
-+	 *       alloc_kfence_pool() & map_kfence_pool() can be dropped and
-+	 *       mapping for __kfence_pool memory can be
-+	 *       split during arch_kfence_init_pool().
-+	 */
-+	if (!kfence_early_init)
-+		goto no_kfence;
-+
-+	kfence_pool = memblock_phys_alloc(KFENCE_POOL_SIZE, PAGE_SIZE);
-+	if (!kfence_pool)
-+		goto no_kfence;
-+
-+	memblock_mark_nomap(kfence_pool, KFENCE_POOL_SIZE);
-+	return kfence_pool;
-+
-+no_kfence:
-+	disable_kfence();
-+	return 0;
-+}
-+
-+static inline void map_kfence_pool(phys_addr_t kfence_pool)
-+{
-+	if (!kfence_pool)
-+		return;
-+
-+	if (create_physical_mapping(kfence_pool, kfence_pool + KFENCE_POOL_SIZE,
-+				    -1, PAGE_KERNEL, PAGE_SIZE))
-+		goto err;
-+
-+	memblock_clear_nomap(kfence_pool, KFENCE_POOL_SIZE);
-+	__kfence_pool = __va(kfence_pool);
-+	return;
-+
-+err:
-+	memblock_phys_free(kfence_pool, KFENCE_POOL_SIZE);
-+	disable_kfence();
-+}
-+#else
-+static inline phys_addr_t alloc_kfence_pool(void) { return 0; }
-+static inline void map_kfence_pool(phys_addr_t kfence_pool) { }
-+#endif
-+
- static void __init radix_init_pgtable(void)
- {
-+	phys_addr_t kfence_pool;
- 	unsigned long rts_field;
- 	phys_addr_t start, end;
- 	u64 i;
-@@ -365,6 +437,8 @@ static void __init radix_init_pgtable(vo
- 	/* We don't support slb for radix */
- 	slb_set_size(0);
- 
-+	kfence_pool = alloc_kfence_pool();
-+
- 	/*
- 	 * Create the linear mapping
- 	 */
-@@ -381,9 +455,11 @@ static void __init radix_init_pgtable(vo
  		}
- 
- 		WARN_ON(create_physical_mapping(start, end,
--						-1, PAGE_KERNEL));
-+						-1, PAGE_KERNEL, ~0UL));
  	}
- 
-+	map_kfence_pool(kfence_pool);
-+
- 	if (!cpu_has_feature(CPU_FTR_HVMODE) &&
- 			cpu_has_feature(CPU_FTR_P9_RADIX_PREFETCH_BUG)) {
- 		/*
-@@ -875,7 +951,7 @@ int __meminit radix__create_section_mapp
- 	}
- 
- 	return create_physical_mapping(__pa(start), __pa(end),
--				       nid, prot);
-+				       nid, prot, ~0UL);
++	return 0;
  }
  
- int __meminit radix__remove_section_mapping(unsigned long start, unsigned long end)
---- a/arch/powerpc/mm/init-common.c
-+++ b/arch/powerpc/mm/init-common.c
-@@ -31,6 +31,9 @@ EXPORT_SYMBOL_GPL(kernstart_virt_addr);
+ static int ext4_block_group_meta_init(struct super_block *sb, int silent)
+@@ -5311,7 +5323,9 @@ static int __ext4_fill_super(struct fs_c
+ 	if (err)
+ 		goto failed_mount;
  
- bool disable_kuep = !IS_ENABLED(CONFIG_PPC_KUEP);
- bool disable_kuap = !IS_ENABLED(CONFIG_PPC_KUAP);
-+#ifdef CONFIG_KFENCE
-+bool __ro_after_init kfence_disabled;
-+#endif
+-	ext4_hash_info_init(sb);
++	err = ext4_hash_info_init(sb);
++	if (err)
++		goto failed_mount;
  
- static int __init parse_nosmep(char *p)
- {
+ 	err = ext4_handle_clustersize(sb);
+ 	if (err)
 
 
 
