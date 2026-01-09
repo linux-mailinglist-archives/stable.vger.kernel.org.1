@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-207761-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207133-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72751D0A223
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:01:42 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54A0FD09AF0
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:32:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3CE6630D6DE6
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:50:30 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 4B8AB3061F71
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:19:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB36333032C;
-	Fri,  9 Jan 2026 12:49:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB0C735A952;
+	Fri,  9 Jan 2026 12:19:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j8OgSzyv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ediiIg3Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ECD923F417;
-	Fri,  9 Jan 2026 12:49:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87B9E359FA0;
+	Fri,  9 Jan 2026 12:19:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962972; cv=none; b=WSTk1oo5m1DLrnpR/K/YYzmWaUFathK0AstH6+EL0lWQgygc38ygiLcgvyU0dSOAoc0GMFDXO6MA+4A7dGT2da1VNPqtJ2NXMArDn/Yla2h9NBGFMnsoDe+3WkFO13C3Yr1r77pWKJqF112w5v/SRr8ZKTRUnWZxCdEPdX7HjVc=
+	t=1767961185; cv=none; b=AoZHYiExD19EI44kg0U4/GPqjEjrLfoTAT1jISYTK0hcTXzlsMsc4pHuzjYvM0ea06S+ZouB2nEQO0fJIuQKC/ndcre+VoqZbhcZT/GqQ3ssRVWfIQ9tZOqISUC4UFcOgU4aObKeznMJWIeiz/aKDSAHMDEA0A75YiyR1NEz4bk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962972; c=relaxed/simple;
-	bh=12Ht3Co6Vwk5ER+gT2bvDsVZWsPPEZk7oJXFOofdt9s=;
+	s=arc-20240116; t=1767961185; c=relaxed/simple;
+	bh=+Z5N6BEiHyE7wGc2HnjPVaCeblq//h4fEQarawgYtjo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=panttehPlH7mdiSkkCcy1mVsToFVK52ntRS/kgCWFMblceZvXzSeen9koTqe+98D89Y362OogyRDBBdEKxQb0QyUhUTyif4ZXkP7A5Tn2r38nD/Hc2UlsxXnDbKVmQJBdXE0QDtF19RQ+o/PdYyA7fvhbtT4b1fsdI9i8bKSMVQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j8OgSzyv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C051CC4CEF1;
-	Fri,  9 Jan 2026 12:49:31 +0000 (UTC)
+	 MIME-Version; b=qcg2Fa3a2ODcdvKijWc7DdWt0xKYYLmioNeTsW5Ivm7w0FkMY1CxtuuTJ9NcgonTLdkQBEqlVrA+kY1Mu78h4T+9UPJz7o7DABHxEbRTxnNw3P/rl6lcSKThpKlPFMrtwlCn9JBwrjr/A96lZpx08qcW9/mii6fwiyDC2uaEvwY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ediiIg3Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D572CC4CEF1;
+	Fri,  9 Jan 2026 12:19:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962972;
-	bh=12Ht3Co6Vwk5ER+gT2bvDsVZWsPPEZk7oJXFOofdt9s=;
+	s=korg; t=1767961185;
+	bh=+Z5N6BEiHyE7wGc2HnjPVaCeblq//h4fEQarawgYtjo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j8OgSzyvkaAMmLHUonE6XvAvYnjg+IO7vmK7Bkm6b4Q2PLwFcu+d7xKsqjMnaklOJ
-	 xzJsmMo9M4cZoiR60PxrjZOXnBRYZWcQ9sRj+7P0qEBoQWWivXahqWrLEpeXYOqvQ8
-	 f+u6o2vDrzMtEoroUMI1Ubr+Y3W2/Rw3GfDBCEeo=
+	b=ediiIg3Q4uDsKhJ/o170mtARBqU/jVKa2HIweBolhj5Fb0A5eyanBO80KE6wrVcaq
+	 eOyq3SZrn8++AwWZly3621RXIlZxolULEi0J+dD0LfUAMLftIvxWWF18RzYQC+K58q
+	 jIxbP0vtJFUcmzkOByc3KMxtnsKL+2UJKENgf6NI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@google.com>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 525/634] mm/damon/tests/core-kunit: handle alloc failures in damon_test_set_regions()
+	CK Hu <ck.hu@mediatek.com>,
+	Johan Hovold <johan@kernel.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 664/737] drm/mediatek: Fix probe resource leaks
 Date: Fri,  9 Jan 2026 12:43:23 +0100
-Message-ID: <20260109112137.320829752@linuxfoundation.org>
+Message-ID: <20260109112159.020121146@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +62,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SeongJae Park <sj@kernel.org>
+From: Johan Hovold <johan@kernel.org>
 
-commit 74d5969995d129fd59dd93b9c7daa6669cb6810f upstream.
+[ Upstream commit 07c7c640a8eb9e196f357d15d88a59602a947197 ]
 
-damon_test_set_regions() is assuming all dynamic memory allocation in it
-will succeed.  Those are indeed likely in the real use cases since those
-allocations are too small to fail, but theoretically those could fail.  In
-the case, inappropriate memory access can happen.  Fix it by appropriately
-cleanup pre-allocated memory and skip the execution of the remaining tests
-in the failure cases.
+Make sure to unmap and release the component iomap and clock on probe
+failure (e.g. probe deferral) and on driver unbind.
 
-Link: https://lkml.kernel.org/r/20251101182021.74868-11-sj@kernel.org
-Fixes: 62f409560eb2 ("mm/damon/core-test: test damon_set_regions")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: Brendan Higgins <brendan.higgins@linux.dev>
-Cc: David Gow <davidgow@google.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: <stable@vger.kernel.org>	[6.1+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Note that unlike of_iomap(), devm_of_iomap() also checks whether the
+region is already mapped.
+
+Fixes: 119f5173628a ("drm/mediatek: Add DRM Driver for Mediatek SoC MT8173.")
+Cc: stable@vger.kernel.org	# 4.7
+Cc: CK Hu <ck.hu@mediatek.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://patchwork.kernel.org/project/dri-devel/patch/20250923152340.18234-2-johan@kernel.org/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/damon/core-test.h |   17 +++++++++++++++--
- 1 file changed, 15 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/mediatek/mtk_drm_ddp_comp.c |   20 ++++++++++++++++----
+ drivers/gpu/drm/mediatek/mtk_drm_ddp_comp.h |    2 +-
+ drivers/gpu/drm/mediatek/mtk_drm_drv.c      |    4 ++--
+ 3 files changed, 19 insertions(+), 7 deletions(-)
 
---- a/mm/damon/core-test.h
-+++ b/mm/damon/core-test.h
-@@ -341,13 +341,26 @@ static void damon_test_ops_registration(
- static void damon_test_set_regions(struct kunit *test)
- {
- 	struct damon_target *t = damon_new_target();
--	struct damon_region *r1 = damon_new_region(4, 16);
--	struct damon_region *r2 = damon_new_region(24, 32);
-+	struct damon_region *r1, *r2;
- 	struct damon_addr_range range = {.start = 8, .end = 28};
- 	unsigned long expects[] = {8, 16, 16, 24, 24, 28};
- 	int expect_idx = 0;
- 	struct damon_region *r;
+--- a/drivers/gpu/drm/mediatek/mtk_drm_ddp_comp.c
++++ b/drivers/gpu/drm/mediatek/mtk_drm_ddp_comp.c
+@@ -543,15 +543,20 @@ unsigned int mtk_drm_find_possible_crtc_
+ 	return ret;
+ }
  
-+	if (!t)
-+		kunit_skip(test, "target alloc fail");
-+	r1 = damon_new_region(4, 16);
-+	if (!r1) {
-+		damon_free_target(t);
-+		kunit_skip(test, "region alloc fail");
-+	}
-+	r2 = damon_new_region(24, 32);
-+	if (!r2) {
-+		damon_free_target(t);
-+		damon_free_region(r1);
-+		kunit_skip(test, "second region alloc fail");
-+	}
+-int mtk_ddp_comp_init(struct device_node *node, struct mtk_ddp_comp *comp,
++static void mtk_ddp_comp_clk_put(void *_clk)
++{
++	struct clk *clk = _clk;
 +
- 	damon_add_region(r1, t);
- 	damon_add_region(r2, t);
- 	damon_set_regions(t, &range, 1);
++	clk_put(clk);
++}
++
++int mtk_ddp_comp_init(struct device *dev, struct device_node *node, struct mtk_ddp_comp *comp,
+ 		      unsigned int comp_id)
+ {
+ 	struct platform_device *comp_pdev;
+ 	enum mtk_ddp_comp_type type;
+ 	struct mtk_ddp_comp_dev *priv;
+-#if IS_REACHABLE(CONFIG_MTK_CMDQ)
+ 	int ret;
+-#endif
+ 
+ 	if (comp_id >= DDP_COMPONENT_DRM_ID_MAX)
+ 		return -EINVAL;
+@@ -592,11 +597,18 @@ int mtk_ddp_comp_init(struct device_node
+ 	if (!priv)
+ 		return -ENOMEM;
+ 
+-	priv->regs = of_iomap(node, 0);
++	priv->regs = devm_of_iomap(dev, node, 0, NULL);
++	if (IS_ERR(priv->regs))
++		return PTR_ERR(priv->regs);
++
+ 	priv->clk = of_clk_get(node, 0);
+ 	if (IS_ERR(priv->clk))
+ 		return PTR_ERR(priv->clk);
+ 
++	ret = devm_add_action_or_reset(dev, mtk_ddp_comp_clk_put, priv->clk);
++	if (ret)
++		return ret;
++
+ #if IS_REACHABLE(CONFIG_MTK_CMDQ)
+ 	ret = cmdq_dev_get_client_reg(comp->dev, &priv->cmdq_reg, 0);
+ 	if (ret)
+--- a/drivers/gpu/drm/mediatek/mtk_drm_ddp_comp.h
++++ b/drivers/gpu/drm/mediatek/mtk_drm_ddp_comp.h
+@@ -279,7 +279,7 @@ int mtk_ddp_comp_get_id(struct device_no
+ 			enum mtk_ddp_comp_type comp_type);
+ unsigned int mtk_drm_find_possible_crtc_by_comp(struct drm_device *drm,
+ 						struct device *dev);
+-int mtk_ddp_comp_init(struct device_node *comp_node, struct mtk_ddp_comp *comp,
++int mtk_ddp_comp_init(struct device *dev, struct device_node *comp_node, struct mtk_ddp_comp *comp,
+ 		      unsigned int comp_id);
+ enum mtk_ddp_comp_type mtk_ddp_comp_get_type(unsigned int comp_id);
+ void mtk_ddp_write(struct cmdq_pkt *cmdq_pkt, unsigned int value,
+--- a/drivers/gpu/drm/mediatek/mtk_drm_drv.c
++++ b/drivers/gpu/drm/mediatek/mtk_drm_drv.c
+@@ -841,7 +841,7 @@ static int mtk_drm_probe(struct platform
+ 							    (void *)private->mmsys_dev,
+ 							    sizeof(*private->mmsys_dev));
+ 		private->ddp_comp[DDP_COMPONENT_DRM_OVL_ADAPTOR].dev = &ovl_adaptor->dev;
+-		mtk_ddp_comp_init(NULL, &private->ddp_comp[DDP_COMPONENT_DRM_OVL_ADAPTOR],
++		mtk_ddp_comp_init(dev, NULL, &private->ddp_comp[DDP_COMPONENT_DRM_OVL_ADAPTOR],
+ 				  DDP_COMPONENT_DRM_OVL_ADAPTOR);
+ 		component_match_add(dev, &match, compare_dev, &ovl_adaptor->dev);
+ 	}
+@@ -910,7 +910,7 @@ static int mtk_drm_probe(struct platform
+ 						   node);
+ 		}
+ 
+-		ret = mtk_ddp_comp_init(node, &private->ddp_comp[comp_id], comp_id);
++		ret = mtk_ddp_comp_init(dev, node, &private->ddp_comp[comp_id], comp_id);
+ 		if (ret) {
+ 			of_node_put(node);
+ 			goto err_node;
 
 
 
