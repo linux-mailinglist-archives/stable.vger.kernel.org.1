@@ -1,99 +1,55 @@
-Return-Path: <stable+bounces-207164-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206457-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2BBAD09AF1
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:32:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 14E30D08F99
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 12:44:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 61C7A30EC237
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:21:17 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6AA7E30038EB
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:44:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71A2435971B;
-	Fri,  9 Jan 2026 12:21:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFFDD33D50F;
+	Fri,  9 Jan 2026 11:44:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DvMpYGEs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HQTgoRyB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3581C32AAB5;
-	Fri,  9 Jan 2026 12:21:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BFB91DBB3A;
+	Fri,  9 Jan 2026 11:44:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961275; cv=none; b=qNCb9e4B4Q5GGo721MfCUtSM6TrI8ais3AjXBx5g6/bKB8aspYpK934R50xgU98NenjBQFKnpgCnb6xH4Y5m/hh7Vw9UdaLMmQpifIYIFxn7lAuZvtpadaRWae9Cew39dtCUvANnpmRnBNywI0OTSuSIry50pQ8c6Yf110mHNS4=
+	t=1767959070; cv=none; b=O16c2RZJoNWYMj2ciwLmVk4Gl85lFIAJA9101gPS/Oj7x3qVIy5fgEHZP0ZA8ttr72qXf7S6czAHojpndiBMRU+FarKKavaWTQO34Le28UwL9lWCKATbIM3rOmfRTAVd5NCLfwtIz6CDwMQomS3VvFxCproPPXeqhkdDUISwziM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961275; c=relaxed/simple;
-	bh=wJQTIdd/bAIQXWXUage5hLB7M/P0uHAgrDI0+4GoBo4=;
+	s=arc-20240116; t=1767959070; c=relaxed/simple;
+	bh=x2s/JfQPQf6ik9HW094ttCyOueYQjppz289DxffulMY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dplv66VrpRNsVULHGiDOx0zYj44zzllXaPW3BbIsEAkePx1Q5F9wxH8w2ay3WpTs/sDRGSjjfOO3Yyqls0vC0u0JEbpSvyJN1lKpNpUP0w2JpbW8vKk4vUfSOoAfP/woIark1OmrquO/iqAW6JklHFPjbBxwESrZ0DH6s3ZF+go=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DvMpYGEs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61DE9C4CEF1;
-	Fri,  9 Jan 2026 12:21:13 +0000 (UTC)
+	 MIME-Version; b=Lp5bXTWk0LsRVfHAwIZk7sPWS6Ma1rVuu3TvrA1nSGGA4oQ30Ncq+LwnIlPMaXEUUf1V/xRVv9PrBpL7p4cnbBk5LIFofWnAMilbophZz3vYiWF0w8j+sY/Riifr9c8QMTV7UQkIGiIZzW7apHtnhBKOXjBB8bdCv6d3iHJaxxo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HQTgoRyB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A529C4CEF1;
+	Fri,  9 Jan 2026 11:44:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961274;
-	bh=wJQTIdd/bAIQXWXUage5hLB7M/P0uHAgrDI0+4GoBo4=;
+	s=korg; t=1767959070;
+	bh=x2s/JfQPQf6ik9HW094ttCyOueYQjppz289DxffulMY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DvMpYGEsE4rKBqEqsRnIKLFRr9LUPsLZf/LeUJT79xAEqtMmIqQvusXKpYx/4S7UG
-	 m93OXJ1W0KMlcoDVBTpu+2YFkliYvwpSQleeVQ9EdHwWIRyrGn0KFcvXlrn0rsAj3U
-	 gq+D/jaPOe5TMJT8bmRuO0WCheg6c56CB/TiaD/Q=
+	b=HQTgoRyBMAOxAPk2szXdmzyLPBW37vtyX2lMyvxPoRS4ojB2g1bnhlf27gyjZFwp7
+	 f9H+aB7RkYLIKJodZruGT9raZiGliEfLKONLczFwRZmDYZSjS0zSUAE39fsAeA5HsN
+	 8PnPzrMYcxHx29ksYISYvGW1Ey8+Jc6euyq/NQPY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Hildenbrand <david@redhat.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Brendan Jackman <jackmanb@google.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	Christian Brauner <brauner@kernel.org>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	=?UTF-8?q?Eugenio=20P=C3=A9=20rez?= <eperezma@redhat.com>,
-	Gregory Price <gourry@gourry.net>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	"Huang, Ying" <ying.huang@linux.alibaba.com>,
-	Jan Kara <jack@suse.cz>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Jason Wang <jasowang@redhat.com>,
-	Jerrin Shaji George <jerrin.shaji-george@broadcom.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>,
-	Liam Howlett <liam.howlett@oracle.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Mathew Brost <matthew.brost@intel.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Minchan Kim <minchan@kernel.org>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Peter Xu <peterx@redhat.com>,
-	Qi Zheng <zhengqi.arch@bytedance.com>,
-	Rakie Kim <rakie.kim@sk.com>,
-	Rik van Riel <riel@surriel.com>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	xu xin <xu.xin16@zte.com.cn>,
-	Zi Yan <ziy@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 695/737] mm/balloon_compaction: convert balloon_page_delete() to balloon_page_finalize()
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Chris Mason <clm@meta.com>,
+	Ajay Kaher <ajay.kaher@broadcom.com>
+Subject: [PATCH 6.12 13/16] sched/fair: Proportional newidle balance
 Date: Fri,  9 Jan 2026 12:43:54 +0100
-Message-ID: <20260109112200.210536900@linuxfoundation.org>
+Message-ID: <20260109111951.922467193@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109111951.415522519@linuxfoundation.org>
+References: <20260109111951.415522519@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -103,230 +59,209 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Hildenbrand <david@redhat.com>
+From: Peter Zijlstra <peterz@infradead.org>
 
-[ Upstream commit 15504b1163007bbfbd9a63460d5c14737c16e96d ]
+commit 33cf66d88306663d16e4759e9d24766b0aaa2e17 upstream.
 
-Let's move the removal of the page from the balloon list into the single
-caller, to remove the dependency on the PG_isolated flag and clarify
-locking requirements.
+Add a randomized algorithm that runs newidle balancing proportional to
+its success rate.
 
-Note that for now, balloon_page_delete() was used on two paths:
+This improves schbench significantly:
 
-(1) Removing a page from the balloon for deflation through
-    balloon_page_list_dequeue()
-(2) Removing an isolated page from the balloon for migration in the
-    per-driver migration handlers. Isolated pages were already removed from
-    the balloon list during isolation.
+ 6.18-rc4:			2.22 Mrps/s
+ 6.18-rc4+revert:		2.04 Mrps/s
+ 6.18-rc4+revert+random:	2.18 Mrps/S
 
-So instead of relying on the flag, we can just distinguish both cases
-directly and handle it accordingly in the caller.
+Conversely, per Adam Li this affects SpecJBB slightly, reducing it by 1%:
 
-We'll shuffle the operations a bit such that they logically make more
-sense (e.g., remove from the list before clearing flags).
+ 6.17:			-6%
+ 6.17+revert:		 0%
+ 6.17+revert+random:	-1%
 
-In balloon migration functions we can now move the balloon_page_finalize()
-out of the balloon lock and perform the finalization just before dropping
-the balloon reference.
-
-Document that the page lock is currently required when modifying the
-movability aspects of a page; hopefully we can soon decouple this from the
-page lock.
-
-Link: https://lkml.kernel.org/r/20250704102524.326966-3-david@redhat.com
-Signed-off-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Alistair Popple <apopple@nvidia.com>
-Cc: Al Viro <viro@zeniv.linux.org.uk>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Brendan Jackman <jackmanb@google.com>
-Cc: Byungchul Park <byungchul@sk.com>
-Cc: Chengming Zhou <chengming.zhou@linux.dev>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Eugenio Pé rez <eperezma@redhat.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Gregory Price <gourry@gourry.net>
-Cc: Harry Yoo <harry.yoo@oracle.com>
-Cc: "Huang, Ying" <ying.huang@linux.alibaba.com>
-Cc: Jan Kara <jack@suse.cz>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Jason Wang <jasowang@redhat.com>
-Cc: Jerrin Shaji George <jerrin.shaji-george@broadcom.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: John Hubbard <jhubbard@nvidia.com>
-Cc: Jonathan Corbet <corbet@lwn.net>
-Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Mathew Brost <matthew.brost@intel.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Miaohe Lin <linmiaohe@huawei.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Minchan Kim <minchan@kernel.org>
-Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: Qi Zheng <zhengqi.arch@bytedance.com>
-Cc: Rakie Kim <rakie.kim@sk.com>
-Cc: Rik van Riel <riel@surriel.com>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-Cc: xu xin <xu.xin16@zte.com.cn>
-Cc: Zi Yan <ziy@nvidia.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Stable-dep-of: 0da2ba35c0d5 ("powerpc/pseries/cmm: adjust BALLOON_MIGRATE when migrating pages")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
+Tested-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
+Tested-by: Chris Mason <clm@meta.com>
+Link: https://lkml.kernel.org/r/6825c50d-7fa7-45d8-9b81-c6e7e25738e2@meta.com
+Link: https://patch.msgid.link/20251107161739.770122091@infradead.org
+[ Ajay: Modified to apply on v6.12 ]
+Signed-off-by: Ajay Kaher <ajay.kaher@broadcom.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/platforms/pseries/cmm.c |    2 -
- drivers/misc/vmw_balloon.c           |    3 --
- drivers/virtio/virtio_balloon.c      |    4 ---
- include/linux/balloon_compaction.h   |   43 +++++++++++++----------------------
- mm/balloon_compaction.c              |    3 +-
- 5 files changed, 21 insertions(+), 34 deletions(-)
+ include/linux/sched/topology.h |    3 ++
+ kernel/sched/core.c            |    3 ++
+ kernel/sched/fair.c            |   44 +++++++++++++++++++++++++++++++++++++----
+ kernel/sched/features.h        |    5 ++++
+ kernel/sched/sched.h           |    7 ++++++
+ kernel/sched/topology.c        |    6 +++++
+ 6 files changed, 64 insertions(+), 4 deletions(-)
 
---- a/arch/powerpc/platforms/pseries/cmm.c
-+++ b/arch/powerpc/platforms/pseries/cmm.c
-@@ -532,7 +532,6 @@ static int cmm_migratepage(struct balloo
+--- a/include/linux/sched/topology.h
++++ b/include/linux/sched/topology.h
+@@ -106,6 +106,9 @@ struct sched_domain {
+ 	unsigned int nr_balance_failed; /* initialise to 0 */
  
- 	spin_lock_irqsave(&b_dev_info->pages_lock, flags);
- 	balloon_page_insert(b_dev_info, newpage);
--	balloon_page_delete(page);
- 	b_dev_info->isolated_pages--;
- 	spin_unlock_irqrestore(&b_dev_info->pages_lock, flags);
+ 	/* idle_balance() stats */
++	unsigned int newidle_call;
++	unsigned int newidle_success;
++	unsigned int newidle_ratio;
+ 	u64 max_newidle_lb_cost;
+ 	unsigned long last_decay_max_lb_cost;
  
-@@ -542,6 +541,7 @@ static int cmm_migratepage(struct balloo
- 	 */
- 	plpar_page_set_active(page);
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -118,6 +118,7 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(sched_updat
+ EXPORT_TRACEPOINT_SYMBOL_GPL(sched_compute_energy_tp);
  
-+	balloon_page_finalize(page);
- 	/* balloon page list reference */
- 	put_page(page);
+ DEFINE_PER_CPU_SHARED_ALIGNED(struct rq, runqueues);
++DEFINE_PER_CPU(struct rnd_state, sched_rnd_state);
  
---- a/drivers/misc/vmw_balloon.c
-+++ b/drivers/misc/vmw_balloon.c
-@@ -1789,8 +1789,7 @@ static int vmballoon_migratepage(struct
- 	 * @pages_lock . We keep holding @comm_lock since we will need it in a
- 	 * second.
- 	 */
--	balloon_page_delete(page);
--
-+	balloon_page_finalize(page);
- 	put_page(page);
- 
- 	/* Inflate */
---- a/drivers/virtio/virtio_balloon.c
-+++ b/drivers/virtio/virtio_balloon.c
-@@ -789,15 +789,13 @@ static int virtballoon_migratepage(struc
- 	tell_host(vb, vb->inflate_vq);
- 
- 	/* balloon's page migration 2nd step -- deflate "page" */
--	spin_lock_irqsave(&vb_dev_info->pages_lock, flags);
--	balloon_page_delete(page);
--	spin_unlock_irqrestore(&vb_dev_info->pages_lock, flags);
- 	vb->num_pfns = VIRTIO_BALLOON_PAGES_PER_PAGE;
- 	set_page_pfns(vb, vb->pfns, page);
- 	tell_host(vb, vb->deflate_vq);
- 
- 	mutex_unlock(&vb->balloon_lock);
- 
-+	balloon_page_finalize(page);
- 	put_page(page); /* balloon reference */
- 
- 	return MIGRATEPAGE_SUCCESS;
---- a/include/linux/balloon_compaction.h
-+++ b/include/linux/balloon_compaction.h
-@@ -98,27 +98,6 @@ static inline void balloon_page_insert(s
- }
- 
+ #ifdef CONFIG_SCHED_DEBUG
  /*
-- * balloon_page_delete - delete a page from balloon's page list and clear
-- *			 the page->private assignement accordingly.
-- * @page    : page to be released from balloon's page list
-- *
-- * Caller must ensure the page is locked and the spin_lock protecting balloon
-- * pages list is held before deleting a page from the balloon device.
-- */
--static inline void balloon_page_delete(struct page *page)
--{
--	__ClearPageOffline(page);
--	__ClearPageMovable(page);
--	set_page_private(page, 0);
--	/*
--	 * No touch page.lru field once @page has been isolated
--	 * because VM is using the field.
--	 */
--	if (!PageIsolated(page))
--		list_del(&page->lru);
--}
--
--/*
-  * balloon_page_device - get the b_dev_info descriptor for the balloon device
-  *			 that enqueues the given page.
-  */
-@@ -141,12 +120,6 @@ static inline void balloon_page_insert(s
- 	list_add(&page->lru, &balloon->pages);
- }
- 
--static inline void balloon_page_delete(struct page *page)
--{
--	__ClearPageOffline(page);
--	list_del(&page->lru);
--}
--
- static inline gfp_t balloon_mapping_gfp_mask(void)
+@@ -8335,6 +8336,8 @@ void __init sched_init_smp(void)
  {
- 	return GFP_HIGHUSER;
-@@ -155,6 +128,22 @@ static inline gfp_t balloon_mapping_gfp_
- #endif /* CONFIG_BALLOON_COMPACTION */
+ 	sched_init_numa(NUMA_NO_NODE);
  
- /*
-+ * balloon_page_finalize - prepare a balloon page that was removed from the
-+ *			   balloon list for release to the page allocator
-+ * @page: page to be released to the page allocator
-+ *
-+ * Caller must ensure that the page is locked.
-+ */
-+static inline void balloon_page_finalize(struct page *page)
++	prandom_init_once(&sched_rnd_state);
++
+ 	/*
+ 	 * There's no userspace yet to cause hotplug operations; hence all the
+ 	 * CPU masks are stable and all blatant races in the below code cannot
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -12186,11 +12186,27 @@ void update_max_interval(void)
+ 	max_load_balance_interval = HZ*num_online_cpus()/10;
+ }
+ 
+-static inline bool update_newidle_cost(struct sched_domain *sd, u64 cost)
++static inline void update_newidle_stats(struct sched_domain *sd, unsigned int success)
 +{
-+	if (IS_ENABLED(CONFIG_BALLOON_COMPACTION)) {
-+		__ClearPageMovable(page);
-+		set_page_private(page, 0);
++	sd->newidle_call++;
++	sd->newidle_success += success;
++
++	if (sd->newidle_call >= 1024) {
++		sd->newidle_ratio = sd->newidle_success;
++		sd->newidle_call /= 2;
++		sd->newidle_success /= 2;
 +	}
-+	__ClearPageOffline(page);
 +}
 +
-+/*
-  * balloon_page_push - insert a page into a page list.
-  * @head : pointer to list
-  * @page : page to be added
---- a/mm/balloon_compaction.c
-+++ b/mm/balloon_compaction.c
-@@ -93,7 +93,8 @@ size_t balloon_page_list_dequeue(struct
- 		if (!trylock_page(page))
- 			continue;
++static inline bool
++update_newidle_cost(struct sched_domain *sd, u64 cost, unsigned int success)
+ {
+ 	unsigned long next_decay = sd->last_decay_max_lb_cost + HZ;
+ 	unsigned long now = jiffies;
  
--		balloon_page_delete(page);
-+		list_del(&page->lru);
-+		balloon_page_finalize(page);
- 		__count_vm_event(BALLOON_DEFLATE);
- 		list_add(&page->lru, pages);
- 		unlock_page(page);
++	if (cost)
++		update_newidle_stats(sd, success);
++
+ 	if (cost > sd->max_newidle_lb_cost) {
+ 		/*
+ 		 * Track max cost of a domain to make sure to not delay the
+@@ -12238,7 +12254,7 @@ static void sched_balance_domains(struct
+ 		 * Decay the newidle max times here because this is a regular
+ 		 * visit to all the domains.
+ 		 */
+-		need_decay = update_newidle_cost(sd, 0);
++		need_decay = update_newidle_cost(sd, 0, 0);
+ 		max_cost += sd->max_newidle_lb_cost;
+ 
+ 		/*
+@@ -12896,6 +12912,22 @@ static int sched_balance_newidle(struct
+ 			break;
+ 
+ 		if (sd->flags & SD_BALANCE_NEWIDLE) {
++			unsigned int weight = 1;
++
++			if (sched_feat(NI_RANDOM)) {
++				/*
++				 * Throw a 1k sided dice; and only run
++				 * newidle_balance according to the success
++				 * rate.
++				 */
++				u32 d1k = sched_rng() % 1024;
++				weight = 1 + sd->newidle_ratio;
++				if (d1k > weight) {
++					update_newidle_stats(sd, 0);
++					continue;
++				}
++				weight = (1024 + weight/2) / weight;
++			}
+ 
+ 			pulled_task = sched_balance_rq(this_cpu, this_rq,
+ 						   sd, CPU_NEWLY_IDLE,
+@@ -12903,10 +12935,14 @@ static int sched_balance_newidle(struct
+ 
+ 			t1 = sched_clock_cpu(this_cpu);
+ 			domain_cost = t1 - t0;
+-			update_newidle_cost(sd, domain_cost);
+-
+ 			curr_cost += domain_cost;
+ 			t0 = t1;
++
++			/*
++			 * Track max cost of a domain to make sure to not delay the
++			 * next wakeup on the CPU.
++			 */
++			update_newidle_cost(sd, domain_cost, weight * !!pulled_task);
+ 		}
+ 
+ 		/*
+--- a/kernel/sched/features.h
++++ b/kernel/sched/features.h
+@@ -122,3 +122,8 @@ SCHED_FEAT(WA_BIAS, true)
+ SCHED_FEAT(UTIL_EST, true)
+ 
+ SCHED_FEAT(LATENCY_WARN, false)
++
++/*
++ * Do newidle balancing proportional to its success rate using randomization.
++ */
++SCHED_FEAT(NI_RANDOM, true)
+--- a/kernel/sched/sched.h
++++ b/kernel/sched/sched.h
+@@ -5,6 +5,7 @@
+ #ifndef _KERNEL_SCHED_SCHED_H
+ #define _KERNEL_SCHED_SCHED_H
+ 
++#include <linux/prandom.h>
+ #include <linux/sched/affinity.h>
+ #include <linux/sched/autogroup.h>
+ #include <linux/sched/cpufreq.h>
+@@ -1348,6 +1349,12 @@ static inline bool is_migration_disabled
+ }
+ 
+ DECLARE_PER_CPU_SHARED_ALIGNED(struct rq, runqueues);
++DECLARE_PER_CPU(struct rnd_state, sched_rnd_state);
++
++static inline u32 sched_rng(void)
++{
++	return prandom_u32_state(this_cpu_ptr(&sched_rnd_state));
++}
+ 
+ #define cpu_rq(cpu)		(&per_cpu(runqueues, (cpu)))
+ #define this_rq()		this_cpu_ptr(&runqueues)
+--- a/kernel/sched/topology.c
++++ b/kernel/sched/topology.c
+@@ -1632,6 +1632,12 @@ sd_init(struct sched_domain_topology_lev
+ 
+ 		.last_balance		= jiffies,
+ 		.balance_interval	= sd_weight,
++
++		/* 50% success rate */
++		.newidle_call		= 512,
++		.newidle_success	= 256,
++		.newidle_ratio		= 512,
++
+ 		.max_newidle_lb_cost	= 0,
+ 		.last_decay_max_lb_cost	= jiffies,
+ 		.child			= child,
 
 
 
