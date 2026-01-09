@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-206820-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207452-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F383D09602
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:13:31 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 655E1D09E02
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:43:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9CA6630DA5F7
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:04:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C3DAC3137C55
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:34:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DAD2359FBA;
-	Fri,  9 Jan 2026 12:04:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A4E9359701;
+	Fri,  9 Jan 2026 12:34:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Evy+mKA4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Hli6Ns0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01AD31946C8;
-	Fri,  9 Jan 2026 12:04:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E2831E8836;
+	Fri,  9 Jan 2026 12:34:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960292; cv=none; b=EQJWVPk7NH1UfUXZojU6BKqcj08yKC44yKWBPYuTH3aMpUCMYlmUyZg8HJe770/SN4YhVb+1JshDKG53fwqfqFNFzgFPEbMnLWelgB0Ux1MvfOP1MNNGH2QL/cimdjFl6C6U/Thord/uGUJkVBgVxDAhfP03VEMlRTHHO4d0pk4=
+	t=1767962095; cv=none; b=byAPH4WqorkSDJNjxNO3A1NG7oCqeOXO7hkMvTEdW3YGqxdLeY93BNJSrRMynhuQDh+wkzsIWuLMKnLJBwjnqhGOiDArgODPPs7CsZvAjloU04HQx5BI/1zpsJva40zpSAxk4PZSzK2z+6PDaeKvEULsNm/v5i3PqSVcIfsOMiM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960292; c=relaxed/simple;
-	bh=oz2c9diQSf4cMvTS1NYwN2qLolIa3iuP+2hNQbfN67M=;
+	s=arc-20240116; t=1767962095; c=relaxed/simple;
+	bh=g5FZ5qnPNypIMd5cLRlndhj72L1DP5VCXk6Klrl5jIQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qeokHObRiLIveMD3h3r6frCp+8OvcP1wqX9yQBxodsNDVxPFgfswusBuetYpK7ZsYs+iYAJ18JMLzhxLjkw3Xk96zt+krlxPz5Tq5SKPd7ntQ+7x8PgAuwmCEk/M73KohIO84LfroscNNtVtIOqsNHVE82Tfrgw/LZvXwLXgCUg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Evy+mKA4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41F22C4CEF1;
-	Fri,  9 Jan 2026 12:04:51 +0000 (UTC)
+	 MIME-Version; b=gS/ai8joWn4zKOr6KpDdXdV8D2TmBjbByFMEP+1S4l7i/RH7lfC8V38k9wB6nPwbH+wYohmTvnJfTPCVSJcbxqy3le5SI2hIQkjt6L4ur1lj171uK/026oMXqZc8LsBKpQjhM1FeO8c1j3tbyduf+i0pdxN5qsWWiD8buF0rP8M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Hli6Ns0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A9D8C4CEF1;
+	Fri,  9 Jan 2026 12:34:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960291;
-	bh=oz2c9diQSf4cMvTS1NYwN2qLolIa3iuP+2hNQbfN67M=;
+	s=korg; t=1767962095;
+	bh=g5FZ5qnPNypIMd5cLRlndhj72L1DP5VCXk6Klrl5jIQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Evy+mKA4X23I1cnvcAdu8jhLei8U6xYC5sRNJxw/mEvF8eBXbNcotHvBahkuySr9T
-	 SDiKzmhDtg3LpK5LwgaUGtKW7ukKYa2poe6xdI7xmPTj0JQoSvScLBa/hbe6y4RZyZ
-	 YArMsuAGBXZZGdKkFr95kJmw2ZaVXa6ITarYnIT4=
+	b=2Hli6Ns0QDmLOA8DdJwvjBHsWUe/xqTuXrqYukKBRRXegbda0jl1xrkIcD/50xaDM
+	 aI5/U99pwQ4XFxXLrQ/Xmoh7byETUStoJcCZqTdotjiebh+W25X7Wln/cSGMnaASsB
+	 08fzWmoGj0HTxaNW+Bku9SHHvSWN11fjQKHOqFrM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Moshe Shemesh <moshe@nvidia.com>,
-	Shay Drori <shayd@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Alexey Simakov <bigalex934@gmail.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 351/737] net/mlx5: Drain firmware reset in shutdown callback
+Subject: [PATCH 6.1 212/634] dm-raid: fix possible NULL dereference with undefined raid type
 Date: Fri,  9 Jan 2026 12:38:10 +0100
-Message-ID: <20260109112147.190743216@linuxfoundation.org>
+Message-ID: <20260109112125.413605580@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +60,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Moshe Shemesh <moshe@nvidia.com>
+From: Alexey Simakov <bigalex934@gmail.com>
 
-[ Upstream commit 5846a365fc6476b02d6766963cf0985520f0385f ]
+[ Upstream commit 2f6cfd6d7cb165a7af8877b838a9f6aab4159324 ]
 
-Invoke drain_fw_reset() in the shutdown callback to ensure all
-firmware reset handling is completed before shutdown proceeds.
+rs->raid_type is assigned from get_raid_type_by_ll(), which may return
+NULL. This NULL value could be dereferenced later in the condition
+'if (!(rs_is_raid10(rs) && rt_is_raid0(rs->raid_type)))'.
 
-Fixes: 16d42d313350 ("net/mlx5: Drain fw_reset when removing device")
-Signed-off-by: Moshe Shemesh <moshe@nvidia.com>
-Reviewed-by: Shay Drori <shayd@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/1765284977-1363052-3-git-send-email-tariqt@nvidia.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Add a fail-fast check to return early with an error if raid_type is NULL,
+similar to other uses of this function.
+
+Found by Linux Verification Center (linuxtesting.org) with Svace.
+
+Fixes: 33e53f06850f ("dm raid: introduce extended superblock and new raid types to support takeover/reshaping")
+Signed-off-by: Alexey Simakov <bigalex934@gmail.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/main.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/md/dm-raid.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/main.c b/drivers/net/ethernet/mellanox/mlx5/core/main.c
-index 8a11e410f7c13..df6eeb0f57bcd 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/main.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/main.c
-@@ -2164,6 +2164,7 @@ static void shutdown(struct pci_dev *pdev)
+diff --git a/drivers/md/dm-raid.c b/drivers/md/dm-raid.c
+index 21a1586c69a7f..3d9be184d4606 100644
+--- a/drivers/md/dm-raid.c
++++ b/drivers/md/dm-raid.c
+@@ -2259,6 +2259,8 @@ static int super_init_validation(struct raid_set *rs, struct md_rdev *rdev)
  
- 	mlx5_core_info(dev, "Shutdown was called\n");
- 	set_bit(MLX5_BREAK_FW_WAIT, &dev->intf_state);
-+	mlx5_drain_fw_reset(dev);
- 	mlx5_drain_health_wq(dev);
- 	err = mlx5_try_fast_unload(dev);
- 	if (err)
+ 			mddev->reshape_position = le64_to_cpu(sb->reshape_position);
+ 			rs->raid_type = get_raid_type_by_ll(mddev->level, mddev->layout);
++			if (!rs->raid_type)
++				return -EINVAL;
+ 		}
+ 
+ 	} else {
 -- 
 2.51.0
 
