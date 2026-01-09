@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-207447-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206846-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7870BD09EBC
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:46:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 09A06D095BD
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:12:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0EA29314C24A
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:34:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B2972311C897
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:06:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1331235971B;
-	Fri,  9 Jan 2026 12:34:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 699E4359F98;
+	Fri,  9 Jan 2026 12:06:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WVcnwOl7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LyxyWFsA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5ABE335BCD;
-	Fri,  9 Jan 2026 12:34:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D9B61946C8;
+	Fri,  9 Jan 2026 12:06:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962080; cv=none; b=LulUPnqj2C7sFGLgYXsib+R9kPo9dPPVY/yz3U5MX/UYogdsXDDmNarjvf8FcMg5kJZrVs35tOJVXnw75W0nFNozQUYhVAJMkzn7A5aeO8axaHqlFvqaRkyaBkzzTtEycjxaXV2EXY4jIJozcS6b91ome8iVUVryc5bVNwoIMfQ=
+	t=1767960366; cv=none; b=cX0VVswFnVkMte9Nb7PqV7Ohrc8Yo+iFA6XRKwX5hHQwXWQNbjaCXjkfwWeWxK2Ysf6cOq10eA1fO7VlNgPZ76db0b3aD3mXsuqavZUHq5xjyhEeRDzRLRid9YxTKqywMn6h61r1ks1IFwI2AmK0wvObKiCe6abUQdPzLvzNygs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962080; c=relaxed/simple;
-	bh=JAx7wIdscb1g53Ooa7T5P+a2IGxebbGCWJlCxDsfkD0=;
+	s=arc-20240116; t=1767960366; c=relaxed/simple;
+	bh=WnwrqoGkLv3bLtQ7pKl/P+6nEK0cOPeKVYnwNL7W4Zg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C/GxmP7sgheqimM7MhQEW9d0mS3+ES3wuqJOxE831G8bpSmJLzW+jAqUBTCt45GoGKh1uWvAMGZGw8P74qdjcjKWZQwM3a7/YVFmU7UBwj8LzM7osBKVMKJEmLDMCAsX+7QnHncdIUDe4qFIEwz4h0OB2erp4Px7jdyMbeObMpw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WVcnwOl7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51F10C4CEF1;
-	Fri,  9 Jan 2026 12:34:40 +0000 (UTC)
+	 MIME-Version; b=NBd4eNtjnAQ3w7w0pjRPqGH2RPb35Ss+UR0pb0pXtQgQeG+1NVEiWEl4qqbr3Y5XyI+KEtL9XGCvpGR8xZCOLPiLhHTzK7sRrDGcvZ748EkDxnQyd5t9M2KJdfTa4V022vMjIl1Fbr8go3GKMwV9wVmXIOeEz7W8y8LVIvWT7pc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LyxyWFsA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A269DC4CEF1;
+	Fri,  9 Jan 2026 12:06:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962080;
-	bh=JAx7wIdscb1g53Ooa7T5P+a2IGxebbGCWJlCxDsfkD0=;
+	s=korg; t=1767960366;
+	bh=WnwrqoGkLv3bLtQ7pKl/P+6nEK0cOPeKVYnwNL7W4Zg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WVcnwOl7jr9ErIF+RE5vXPD6BmNAogaVdCX9u1y7myM9h8L5gTTMXyt5L4YAfe+Cr
-	 Y9D/QxrdftnnSmIR30ZZu0TW4FKOj/dJpBOso/2S0zRwxo6JvAuF6VJO+ct4FFAPMe
-	 RUmMfEBrJ72SG8OPXK/USbWRlhmhaBhmahuOAkYA=
+	b=LyxyWFsAOT+XV63mD/r8Fz5q4Ya3vopRUwT7xf4BQ5HfkJz1kld7cYEbQijntrhKu
+	 qrKpvb5+AyJAhdLOWa7/ceO1/JbcSGvV0AG7q0v5IRWDcoE7dehpGJrXW/W+flQ9gY
+	 J7s28sP4EfjySs87Fc1oQYqaEf1uaEXxW2ysfOBs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Viacheslav Dubeyko <slava@dubeyko.com>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	Yangtao Li <frank.li@vivo.com>,
-	linux-fsdevel@vger.kernel.org,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 238/634] hfsplus: fix volume corruption issue for generic/070
-Date: Fri,  9 Jan 2026 12:38:36 +0100
-Message-ID: <20260109112126.499280267@linuxfoundation.org>
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Sverdlin Alexander <alexander.sverdlin@siemens.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.6 378/737] spi: fsl-cpm: Check length parity before switching to 16 bit mode
+Date: Fri,  9 Jan 2026 12:38:37 +0100
+Message-ID: <20260109112148.218778555@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,127 +60,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Viacheslav Dubeyko <slava@dubeyko.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-[ Upstream commit ed490f36f439b877393c12a2113601e4145a5a56 ]
+commit 1417927df8049a0194933861e9b098669a95c762 upstream.
 
-The xfstests' test-case generic/070 leaves HFS+ volume
-in corrupted state:
+Commit fc96ec826bce ("spi: fsl-cpm: Use 16 bit mode for large transfers
+with even size") failed to make sure that the size is really even
+before switching to 16 bit mode. Until recently the problem went
+unnoticed because kernfs uses a pre-allocated bounce buffer of size
+PAGE_SIZE for reading EEPROM.
 
-sudo ./check generic/070
-FSTYP -- hfsplus
-PLATFORM -- Linux/x86_64 hfsplus-testing-0001 6.17.0-rc1+ #4 SMP PREEMPT_DYNAMIC Wed Oct 1 15:02:44 PDT 2025
-MKFS_OPTIONS -- /dev/loop51
-MOUNT_OPTIONS -- /dev/loop51 /mnt/scratch
+But commit 8ad6249c51d0 ("eeprom: at25: convert to spi-mem API")
+introduced an additional dynamically allocated bounce buffer whose size
+is exactly the size of the transfer, leading to a buffer overrun in
+the fsl-cpm driver when that size is odd.
 
-generic/070 _check_generic_filesystem: filesystem on /dev/loop50 is inconsistent
-(see xfstests-dev/results//generic/070.full for details)
+Add the missing length parity verification and remain in 8 bit mode
+when the length is not even.
 
-Ran: generic/070
-Failures: generic/070
-Failed 1 of 1 tests
-
-sudo fsck.hfsplus -d /dev/loop50
-** /dev/loop50
-Using cacheBlockSize=32K cacheTotalBlock=1024 cacheSize=32768K.
-Executing fsck_hfs (version 540.1-Linux).
-** Checking non-journaled HFS Plus Volume.
-The volume name is test
-** Checking extents overflow file.
-Unused node is not erased (node = 1)
-** Checking catalog file.
-** Checking multi-linked files.
-** Checking catalog hierarchy.
-** Checking extended attributes file.
-** Checking volume bitmap.
-** Checking volume information.
-Verify Status: VIStat = 0x0000, ABTStat = 0x0000 EBTStat = 0x0004
-CBTStat = 0x0000 CatStat = 0x00000000
-** Repairing volume.
-** Rechecking volume.
-** Checking non-journaled HFS Plus Volume.
-The volume name is test
-** Checking extents overflow file.
-** Checking catalog file.
-** Checking multi-linked files.
-** Checking catalog hierarchy.
-** Checking extended attributes file.
-** Checking volume bitmap.
-** Checking volume information.
-** The volume test was repaired successfully.
-
-It is possible to see that fsck.hfsplus detected not
-erased and unused node for the case of extents overflow file.
-The HFS+ logic has special method that defines if the node
-should be erased:
-
-bool hfs_bnode_need_zeroout(struct hfs_btree *tree)
-{
-	struct super_block *sb = tree->inode->i_sb;
-	struct hfsplus_sb_info *sbi = HFSPLUS_SB(sb);
-	const u32 volume_attr = be32_to_cpu(sbi->s_vhdr->attributes);
-
-	return tree->cnid == HFSPLUS_CAT_CNID &&
-		volume_attr & HFSPLUS_VOL_UNUSED_NODE_FIX;
-}
-
-However, it is possible to see that this method works
-only for the case of catalog file. But debugging of the issue
-has shown that HFSPLUS_VOL_UNUSED_NODE_FIX attribute has been
-requested for the extents overflow file too:
-
-catalog file
-kernel: hfsplus: node 4, num_recs 0, flags 0x10
-kernel: hfsplus: tree->cnid 4, volume_attr 0x80000800
-
-extents overflow file
-kernel: hfsplus: node 1, num_recs 0, flags 0x10
-kernel: hfsplus: tree->cnid 3, volume_attr 0x80000800
-
-This patch modifies the hfs_bnode_need_zeroout() by checking
-only volume_attr but not the b-tree ID because node zeroing
-can be requested for all HFS+ b-tree types.
-
-sudo ./check generic/070
-FSTYP         -- hfsplus
-PLATFORM      -- Linux/x86_64 hfsplus-testing-0001 6.18.0-rc3+ #79 SMP PREEMPT_DYNAMIC Fri Oct 31 16:07:42 PDT 2025
-MKFS_OPTIONS  -- /dev/loop51
-MOUNT_OPTIONS -- /dev/loop51 /mnt/scratch
-
-generic/070 33s ...  34s
-Ran: generic/070
-Passed all 1 tests
-
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
-cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-cc: Yangtao Li <frank.li@vivo.com>
-cc: linux-fsdevel@vger.kernel.org
-Link: https://lore.kernel.org/r/20251101001229.247432-1-slava@dubeyko.com
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: fc96ec826bce ("spi: fsl-cpm: Use 16 bit mode for large transfers with even size")
+Cc: stable@vger.kernel.org
+Closes: https://lore.kernel.org/all/638496dd-ec60-4e53-bad7-eb657f67d580@csgroup.eu/
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Reviewed-by: Sverdlin Alexander <alexander.sverdlin@siemens.com>
+Link: https://patch.msgid.link/3c4d81c3923c93f95ec56702a454744a4bad3cfc.1763627618.git.christophe.leroy@csgroup.eu
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/hfsplus/bnode.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/spi/spi-fsl-spi.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/hfsplus/bnode.c b/fs/hfsplus/bnode.c
-index 407d5152eb411..aa095e6fb20e8 100644
---- a/fs/hfsplus/bnode.c
-+++ b/fs/hfsplus/bnode.c
-@@ -704,6 +704,5 @@ bool hfs_bnode_need_zeroout(struct hfs_btree *tree)
- 	struct hfsplus_sb_info *sbi = HFSPLUS_SB(sb);
- 	const u32 volume_attr = be32_to_cpu(sbi->s_vhdr->attributes);
- 
--	return tree->cnid == HFSPLUS_CAT_CNID &&
--		volume_attr & HFSPLUS_VOL_UNUSED_NODE_FIX;
-+	return volume_attr & HFSPLUS_VOL_UNUSED_NODE_FIX;
- }
--- 
-2.51.0
-
+--- a/drivers/spi/spi-fsl-spi.c
++++ b/drivers/spi/spi-fsl-spi.c
+@@ -336,7 +336,7 @@ static int fsl_spi_prepare_message(struc
+ 			if (t->bits_per_word == 16 || t->bits_per_word == 32)
+ 				t->bits_per_word = 8; /* pretend its 8 bits */
+ 			if (t->bits_per_word == 8 && t->len >= 256 &&
+-			    (mpc8xxx_spi->flags & SPI_CPM1))
++			    !(t->len & 1) && (mpc8xxx_spi->flags & SPI_CPM1))
+ 				t->bits_per_word = 16;
+ 		}
+ 	}
 
 
 
