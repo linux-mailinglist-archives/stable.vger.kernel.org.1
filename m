@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-207533-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206966-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03631D0A03A
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:51:14 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B15F0D096D5
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:17:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E851E30921FC
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:39:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 89E09301F8F5
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:11:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0181435B15F;
-	Fri,  9 Jan 2026 12:38:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04B21320CB6;
+	Fri,  9 Jan 2026 12:11:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YTlNFw6X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P3RxoiHL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC32835B138;
-	Fri,  9 Jan 2026 12:38:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBDEC23ED5B;
+	Fri,  9 Jan 2026 12:11:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962324; cv=none; b=aBrojEzH/u6AN5Jj7Rvk0Ne4Jbc+Tt123EBGGV5hoHLWmp7zKVL6S0aigFdJvjSrJcjRpevKPfOmegSj95YSbt8jbLBOzorveLftPfMb78bVHXU0IGt03otUyyFsypxJDIGqjYUfduQ/OUEZZszFQIiREl4NHMIQrwGlx27GsCk=
+	t=1767960711; cv=none; b=BWwigR0WFtG4bzBA6K3kHZcc/N/NBsAeWsAkHmul0Z9hBjcTH5ZtOAgz6OrYIKb+S7Noa63AcnX15/xNQW355FCyCzsu4W3/kRtRXhIKmhXTmGjiKYrFed6lgMMLzpjEWIgVqTDgtxWhWSIrDsmIIdZwZIxA/vhsOtE8vRLia2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962324; c=relaxed/simple;
-	bh=uHYzwNcqIicwhevKUVKHGJLViNuovIXE+MU9QQbx2FI=;
+	s=arc-20240116; t=1767960711; c=relaxed/simple;
+	bh=xG2aK7NRNsMK5xPZ/IZAYe33mlAR7xY/u+hGhGV3eFg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oSvjBBONGR9PmWhw0dkRGsJImWzJv8L8iAB2hFG7NzrnYq9HeMyTF1q4qtLN95c2eQOCtUfwZxazuL8HmecqCZL80lDAzBNANbynVmVfKMjB6Mgq8f+Oh4docZ7pE5z1we1mvIGSKJSPuULCaPV9zDxr87ecFsMBLZVuI5YdVjE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YTlNFw6X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2966FC16AAE;
-	Fri,  9 Jan 2026 12:38:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=txPFu3lqCgFjJVXpz2lxWUzkGLSsQ/HdAh+DnkdLhrODKhmaEVarRSX1pV+JeEZZWAW1vQljjPM/RwiReXP9TxK5amEG/Ds1ZzvTgqJdDP5U0qdLhEylgQP1+INqOAMm0gd5ynIDKZyndXcjhdCvMIYf36Rt5nijY8re8ciGhE0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P3RxoiHL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44E8BC4CEF1;
+	Fri,  9 Jan 2026 12:11:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962324;
-	bh=uHYzwNcqIicwhevKUVKHGJLViNuovIXE+MU9QQbx2FI=;
+	s=korg; t=1767960711;
+	bh=xG2aK7NRNsMK5xPZ/IZAYe33mlAR7xY/u+hGhGV3eFg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YTlNFw6XpJNpqUI0zyuuUrKCdYR1KJ9/eLJKHsVFSWP+/Eud0q7QgrOQlWoQ5WdKn
-	 GzYPmsP4EYHbVzTMnp3xtoR/P4GQX13Oi3swjDRGF8HTwwA2anfLOtj0KoGxstoEY2
-	 l7vn625o0KfsAEEVUL2LbE3bakkSxbBA/r2/HvRw=
+	b=P3RxoiHLsxyS7Ob7Q5GcsgS+lO3VB+6tFHuOr7nnKTBLVKcz/iemkWkJRa9PwrAB+
+	 b2OC+ROearI2vMsRX8Eqxmq8OXCXCa7Ky0F1zQeUNEGZW0Iq3xbzTUtwHw368z+Orr
+	 RSf+cEbZF7PzwoTBjbHu8KQwwooyyXgt2VtkByx8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Warthog9 Hawley <warthog9@kernel.org>,
-	"John W. Krahn" <jwkrahn@shaw.ca>,
-	Steven Rostedt <rostedt@goodmis.org>
-Subject: [PATCH 6.1 326/634] ktest.pl: Fix uninitialized var in config-bisect.pl
+	Yosry Ahmed <yosry.ahmed@linux.dev>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.6 465/737] KVM: nSVM: Avoid incorrect injection of SVM_EXIT_CR0_SEL_WRITE
 Date: Fri,  9 Jan 2026 12:40:04 +0100
-Message-ID: <20260109112129.795391262@linuxfoundation.org>
+Message-ID: <20260109112151.481272890@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,56 +57,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Yosry Ahmed <yosry.ahmed@linux.dev>
 
-commit d3042cbe84a060b4df764eb6c5300bbe20d125ca upstream.
+commit 3d80f4c93d3d26d0f9a0dd2844961a632eeea634 upstream.
 
-The error path of copying the old config used the wrong variable in the
-error message:
+When emulating L2 instructions, svm_check_intercept() checks whether a
+write to CR0 should trigger a synthesized #VMEXIT with
+SVM_EXIT_CR0_SEL_WRITE. However, it does not check whether L1 enabled
+the intercept for SVM_EXIT_WRITE_CR0, which has higher priority
+according to the APM (24593—Rev.  3.42—March 2024, Table 15-7):
 
- $ mkdir /tmp/build
- $ ./tools/testing/ktest/config-bisect.pl -b /tmp/build config-good /tmp/config-bad
- $ chmod 0 /tmp/build
- $ ./tools/testing/ktest/config-bisect.pl -b /tmp/build config-good /tmp/config-bad good
- cp /tmp/build//.config config-good.tmp ... [0 seconds] FAILED!
- Use of uninitialized value $config in concatenation (.) or string at ./tools/testing/ktest/config-bisect.pl line 744.
- failed to copy  to config-good.tmp
+  When both selective and non-selective CR0-write intercepts are active at
+  the same time, the non-selective intercept takes priority. With respect
+  to exceptions, the priority of this intercept is the same as the generic
+  CR0-write intercept.
 
-When it should have shown:
+Make sure L1 does NOT intercept SVM_EXIT_WRITE_CR0 before checking if
+SVM_EXIT_CR0_SEL_WRITE needs to be injected.
 
- failed to copy /tmp/build//.config to config-good.tmp
+Opportunistically tweak the "not CR0" logic to explicitly bail early so
+that it's more obvious that only CR0 has a selective intercept, and that
+modifying icpt_info.exit_code is functionally necessary so that the call
+to nested_svm_exit_handled() checks the correct exit code.
 
+Fixes: cfec82cb7d31 ("KVM: SVM: Add intercept check for emulated cr accesses")
 Cc: stable@vger.kernel.org
-Cc: John 'Warthog9' Hawley <warthog9@kernel.org>
-Fixes: 0f0db065999cf ("ktest: Add standalone config-bisect.pl program")
-Link: https://patch.msgid.link/20251203180924.6862bd26@gandalf.local.home
-Reported-by: "John W. Krahn" <jwkrahn@shaw.ca>
-Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
+Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
+Link: https://patch.msgid.link/20251024192918.3191141-4-yosry.ahmed@linux.dev
+[sean: isolate non-CR0 write logic, tweak comments accordingly]
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/ktest/config-bisect.pl |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/kvm/svm/svm.c |   24 +++++++++++++++++++-----
+ 1 file changed, 19 insertions(+), 5 deletions(-)
 
---- a/tools/testing/ktest/config-bisect.pl
-+++ b/tools/testing/ktest/config-bisect.pl
-@@ -741,9 +741,9 @@ if ($start) {
- 	die "Can not find file $bad\n";
-     }
-     if ($val eq "good") {
--	run_command "cp $output_config $good" or die "failed to copy $config to $good\n";
-+	run_command "cp $output_config $good" or die "failed to copy $output_config to $good\n";
-     } elsif ($val eq "bad") {
--	run_command "cp $output_config $bad" or die "failed to copy $config to $bad\n";
-+	run_command "cp $output_config $bad" or die "failed to copy $output_config to $bad\n";
-     }
- }
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -4548,15 +4548,29 @@ static int svm_check_intercept(struct kv
+ 	case SVM_EXIT_WRITE_CR0: {
+ 		unsigned long cr0, val;
  
+-		if (info->intercept == x86_intercept_cr_write)
++		/*
++		 * Adjust the exit code accordingly if a CR other than CR0 is
++		 * being written, and skip straight to the common handling as
++		 * only CR0 has an additional selective intercept.
++		 */
++		if (info->intercept == x86_intercept_cr_write && info->modrm_reg) {
+ 			icpt_info.exit_code += info->modrm_reg;
++			break;
++		}
+ 
+-		if (icpt_info.exit_code != SVM_EXIT_WRITE_CR0 ||
+-		    info->intercept == x86_intercept_clts)
++		/*
++		 * Convert the exit_code to SVM_EXIT_CR0_SEL_WRITE if a
++		 * selective CR0 intercept is triggered (the common logic will
++		 * treat the selective intercept as being enabled).  Note, the
++		 * unconditional intercept has higher priority, i.e. this is
++		 * only relevant if *only* the selective intercept is enabled.
++		 */
++		if (vmcb12_is_intercept(&svm->nested.ctl, INTERCEPT_CR0_WRITE) ||
++		    !(vmcb12_is_intercept(&svm->nested.ctl, INTERCEPT_SELECTIVE_CR0)))
+ 			break;
+ 
+-		if (!(vmcb12_is_intercept(&svm->nested.ctl,
+-					INTERCEPT_SELECTIVE_CR0)))
++		/* CLTS never triggers INTERCEPT_SELECTIVE_CR0 */
++		if (info->intercept == x86_intercept_clts)
+ 			break;
+ 
+ 		cr0 = vcpu->arch.cr0 & ~SVM_CR0_SELECTIVE_MASK;
 
 
 
