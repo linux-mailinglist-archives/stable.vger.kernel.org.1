@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-206475-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207805-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F14CD0900B
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 12:48:54 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4205D0A295
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:03:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0E2CB30B88F6
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:45:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7FF5E31D4CE1
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:51:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79A88359F90;
-	Fri,  9 Jan 2026 11:45:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E68835BDA8;
+	Fri,  9 Jan 2026 12:51:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eJoPsaxu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0DAS380W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5952359FB6;
-	Fri,  9 Jan 2026 11:45:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D2F7328B5F;
+	Fri,  9 Jan 2026 12:51:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767959122; cv=none; b=GWfqRiYTXGi5kFfmlG716Z+c8kRUMqG69bXHE5pytTueFUUnSjz0Ttt3HKDc9Zuf+VZvLr7IQVoCK8pMfnBOhpKPYpTcd4spI8h+3UNXOVAexBiaBsLmuGRZTR45bVa7ObPoiB1tdERl8o36ac3XOzHfOK65+ZLsCNVGlGj5nkU=
+	t=1767963100; cv=none; b=n/Lyyq6h+PYqY2+2mgRWP4ZTtdyW7WyWLjWbPKh8L+SKQ/tU8DwSB43IUntiuXHo3KcA/dOfP7qzd/sB7q4qEF9hvP/9Hsqf91jKskZm1GwNQN/bI8loyt2vJlB6b3cfbYx/gUw1TjV0NwtlmSFoKA9jJarnc1IxQOh0Kp/oJDg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767959122; c=relaxed/simple;
-	bh=bgFHCyahtMA28aOpfEeXgN9fl3lAC8ZPzNW+7tiKRGs=;
+	s=arc-20240116; t=1767963100; c=relaxed/simple;
+	bh=ue2ezh0xts8HXVrp/edm+lx7tNZ2Ee3SFHgayXWUR0A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=myXawO7kBrFQYkIWf28iw+BhDMODXyWXcKKNbbGoACP1XmPi5ukNzVkpZVmudT1qg5Gu1ISMT1nL4Nh//TjgFmfisvaTXYm9+he0swh7enBwSKYQT9POs8KY0gCMPc8bbuFzo6z7yeFKt4n8wSpc4i4REe2FuGYziPN245ezfSs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eJoPsaxu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDD84C4CEF1;
-	Fri,  9 Jan 2026 11:45:21 +0000 (UTC)
+	 MIME-Version; b=rcNRUXZzE058T7GNqJJvSrAo/iFB50Y9aZ5td/HRZRL3Pvnc8jUIrQ6GC57cC4ClMjLqyo18kjDw6h4HPK6TQiKcSTQZwnH/M27dR9u7QdWg/B3/bEwDzUe9Ivf2cLgp8Qkq0tCvfa06TcCqiDZlaxyfeBwNSVKMBfSUp9+KlFo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0DAS380W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 098DCC16AAE;
+	Fri,  9 Jan 2026 12:51:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767959122;
-	bh=bgFHCyahtMA28aOpfEeXgN9fl3lAC8ZPzNW+7tiKRGs=;
+	s=korg; t=1767963099;
+	bh=ue2ezh0xts8HXVrp/edm+lx7tNZ2Ee3SFHgayXWUR0A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eJoPsaxuhG8iRqYiN+92qDiQPimfgD59P6OyrCDoXR2QRdMKvgWPEj3Dy0B7OXqKo
-	 lYNqnAymFj3yPd1a61zVP5kGROFa+va1p9543fDuN23A/iAnKx03xmHezR1IpldIRF
-	 mdVLFuVh8S1E/4IZmvVcxA44T7NCLrkIjjspH594=
+	b=0DAS380WutHIbfSRJhTg5+qCJPApn3VXX+igGe+WYyepZ8Xcu9DYm2Csd5kQY8m5A
+	 Uvam++GXHcoUY4h+RsChI18jPbyxc+ykNSWX0/sElLI3KMlamoEZhsHZqik2s/jCO0
+	 5Tt2xqvq77tDRPSAvd5T2yoUy8FtGkX0BmaYbDgY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Guenter Roeck <groeck@chromium.org>,
+	Yong Wu <yong.wu@mediatek.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	Joerg Roedel <jroedel@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 1/5] mptcp: ensure context reset on disconnect()
+Subject: [PATCH 6.1 565/634] iommu/mediatek: Improve safety for mediatek,smi property in larb nodes
 Date: Fri,  9 Jan 2026 12:44:03 +0100
-Message-ID: <20260109111950.401714051@linuxfoundation.org>
+Message-ID: <20260109112138.863326170@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109111950.344681501@linuxfoundation.org>
-References: <20260109111950.344681501@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,124 +63,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Yong Wu <yong.wu@mediatek.com>
 
-[ Upstream commit 86730ac255b0497a272704de9a1df559f5d6602e ]
+[ Upstream commit 6cde583d5352818a51985b32a960cdde85ab3821 ]
 
-After the blamed commit below, if the MPC subflow is already in TCP_CLOSE
-status or has fallback to TCP at mptcp_disconnect() time,
-mptcp_do_fastclose() skips setting the `send_fastclose flag` and the later
-__mptcp_close_ssk() does not reset anymore the related subflow context.
+No functional change. Just improve safety from dts.
 
-Any later connection will be created with both the `request_mptcp` flag
-and the msk-level fallback status off (it is unconditionally cleared at
-MPTCP disconnect time), leading to a warning in subflow_data_ready():
+All the larbs that connect to one IOMMU must connect with the same
+smi-common. This patch checks all the mediatek,smi property for each
+larb, If their mediatek,smi are different, it will return fails.
+Also avoid there is no available smi-larb nodes.
 
-  WARNING: CPU: 26 PID: 8996 at net/mptcp/subflow.c:1519 subflow_data_ready (net/mptcp/subflow.c:1519 (discriminator 13))
-  Modules linked in:
-  CPU: 26 UID: 0 PID: 8996 Comm: syz.22.39 Not tainted 6.18.0-rc7-05427-g11fc074f6c36 #1 PREEMPT(voluntary)
-  Hardware name: Bochs Bochs, BIOS Bochs 01/01/2011
-  RIP: 0010:subflow_data_ready (net/mptcp/subflow.c:1519 (discriminator 13))
-  Code: 90 0f 0b 90 90 e9 04 fe ff ff e8 b7 1e f5 fe 89 ee bf 07 00 00 00 e8 db 19 f5 fe 83 fd 07 0f 84 35 ff ff ff e8 9d 1e f5 fe 90 <0f> 0b 90 e9 27 ff ff ff e8 8f 1e f5 fe 4c 89 e7 48 89 de e8 14 09
-  RSP: 0018:ffffc9002646fb30 EFLAGS: 00010293
-  RAX: 0000000000000000 RBX: ffff88813b218000 RCX: ffffffff825c8435
-  RDX: ffff8881300b3580 RSI: ffffffff825c8443 RDI: 0000000000000005
-  RBP: 000000000000000b R08: ffffffff825c8435 R09: 000000000000000b
-  R10: 0000000000000005 R11: 0000000000000007 R12: ffff888131ac0000
-  R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
-  FS:  00007f88330af6c0(0000) GS:ffff888a93dd2000(0000) knlGS:0000000000000000
-  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  CR2: 00007f88330aefe8 CR3: 000000010ff59000 CR4: 0000000000350ef0
-  Call Trace:
-   <TASK>
-   tcp_data_ready (net/ipv4/tcp_input.c:5356)
-   tcp_data_queue (net/ipv4/tcp_input.c:5445)
-   tcp_rcv_state_process (net/ipv4/tcp_input.c:7165)
-   tcp_v4_do_rcv (net/ipv4/tcp_ipv4.c:1955)
-   __release_sock (include/net/sock.h:1158 (discriminator 6) net/core/sock.c:3180 (discriminator 6))
-   release_sock (net/core/sock.c:3737)
-   mptcp_sendmsg (net/mptcp/protocol.c:1763 net/mptcp/protocol.c:1857)
-   inet_sendmsg (net/ipv4/af_inet.c:853 (discriminator 7))
-   __sys_sendto (net/socket.c:727 (discriminator 15) net/socket.c:742 (discriminator 15) net/socket.c:2244 (discriminator 15))
-   __x64_sys_sendto (net/socket.c:2247)
-   do_syscall_64 (arch/x86/entry/syscall_64.c:63 (discriminator 1) arch/x86/entry/syscall_64.c:94 (discriminator 1))
-   entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
-  RIP: 0033:0x7f883326702d
-
-Address the issue setting an explicit `fastclosing` flag at fastclose
-time, and checking such flag after mptcp_do_fastclose().
-
-Fixes: ae155060247b ("mptcp: fix duplicate reset on fastclose")
-Cc: stable@vger.kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20251212-net-mptcp-subflow_data_ready-warn-v1-2-d1f9fd1c36c8@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-[ Adjust context ]
+Suggested-by: Guenter Roeck <groeck@chromium.org>
+Signed-off-by: Yong Wu <yong.wu@mediatek.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: Matthias Brugger <matthias.bgg@gmail.com>
+Link: https://lore.kernel.org/r/20221018024258.19073-6-yong.wu@mediatek.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Stable-dep-of: de83d4617f9f ("iommu/mediatek: fix use-after-free on probe deferral")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/protocol.c |    8 +++++---
- net/mptcp/protocol.h |    3 ++-
- 2 files changed, 7 insertions(+), 4 deletions(-)
+ drivers/iommu/mtk_iommu.c |   53 ++++++++++++++++++++++++++++++++--------------
+ 1 file changed, 37 insertions(+), 16 deletions(-)
 
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -2421,10 +2421,10 @@ bool __mptcp_retransmit_pending_data(str
-  */
- static void __mptcp_subflow_disconnect(struct sock *ssk,
- 				       struct mptcp_subflow_context *subflow,
--				       unsigned int flags)
-+				       bool fastclosing)
+--- a/drivers/iommu/mtk_iommu.c
++++ b/drivers/iommu/mtk_iommu.c
+@@ -1048,7 +1048,7 @@ static const struct component_master_ops
+ static int mtk_iommu_mm_dts_parse(struct device *dev, struct component_match **match,
+ 				  struct mtk_iommu_data *data)
  {
- 	if (((1 << ssk->sk_state) & (TCPF_CLOSE | TCPF_LISTEN)) ||
--	    subflow->send_fastclose) {
-+	    fastclosing) {
- 		/* The MPTCP code never wait on the subflow sockets, TCP-level
- 		 * disconnect should never fail
- 		 */
-@@ -2476,7 +2476,7 @@ static void __mptcp_close_ssk(struct soc
+-	struct device_node *larbnode, *smicomm_node, *smi_subcomm_node;
++	struct device_node *larbnode, *frst_avail_smicomm_node = NULL;
+ 	struct platform_device *plarbdev, *pcommdev;
+ 	struct device_link *link;
+ 	int i, larb_nr, ret;
+@@ -1060,6 +1060,7 @@ static int mtk_iommu_mm_dts_parse(struct
+ 		return -EINVAL;
  
- 	need_push = (flags & MPTCP_CF_PUSH) && __mptcp_retransmit_pending_data(sk);
- 	if (!dispose_it) {
--		__mptcp_subflow_disconnect(ssk, subflow, flags);
-+		__mptcp_subflow_disconnect(ssk, subflow, msk->fastclosing);
- 		release_sock(ssk);
+ 	for (i = 0; i < larb_nr; i++) {
++		struct device_node *smicomm_node, *smi_subcomm_node;
+ 		u32 id;
  
- 		goto out;
-@@ -2789,6 +2789,7 @@ static void mptcp_do_fastclose(struct so
- 	struct mptcp_sock *msk = mptcp_sk(sk);
+ 		larbnode = of_parse_phandle(dev->of_node, "mediatek,larbs", i);
+@@ -1100,27 +1101,47 @@ static int mtk_iommu_mm_dts_parse(struct
+ 			goto err_larbdev_put;
+ 		}
  
- 	mptcp_set_state(sk, TCP_CLOSE);
-+	msk->fastclosing = 1;
++		/* Get smi-(sub)-common dev from the last larb. */
++		smi_subcomm_node = of_parse_phandle(larbnode, "mediatek,smi", 0);
++		if (!smi_subcomm_node) {
++			ret = -EINVAL;
++			goto err_larbdev_put;
++		}
++
++		/*
++		 * It may have two level smi-common. the node is smi-sub-common if it
++		 * has a new mediatek,smi property. otherwise it is smi-commmon.
++		 */
++		smicomm_node = of_parse_phandle(smi_subcomm_node, "mediatek,smi", 0);
++		if (smicomm_node)
++			of_node_put(smi_subcomm_node);
++		else
++			smicomm_node = smi_subcomm_node;
++
++		/*
++		 * All the larbs that connect to one IOMMU must connect with the same
++		 * smi-common.
++		 */
++		if (!frst_avail_smicomm_node) {
++			frst_avail_smicomm_node = smicomm_node;
++		} else if (frst_avail_smicomm_node != smicomm_node) {
++			dev_err(dev, "mediatek,smi property is not right @larb%d.", id);
++			of_node_put(smicomm_node);
++			ret = -EINVAL;
++			goto err_larbdev_put;
++		} else {
++			of_node_put(smicomm_node);
++		}
++
+ 		component_match_add(dev, match, component_compare_dev, &plarbdev->dev);
+ 		platform_device_put(plarbdev);
+ 	}
  
- 	/* Explicitly send the fastclose reset as need */
- 	if (__mptcp_check_fallback(msk))
-@@ -3299,6 +3300,7 @@ static int mptcp_disconnect(struct sock
- 	msk->bytes_sent = 0;
- 	msk->bytes_retrans = 0;
- 	msk->rcvspace_init = 0;
-+	msk->fastclosing = 0;
+-	/* Get smi-(sub)-common dev from the last larb. */
+-	smi_subcomm_node = of_parse_phandle(larbnode, "mediatek,smi", 0);
+-	if (!smi_subcomm_node)
++	if (!frst_avail_smicomm_node)
+ 		return -EINVAL;
  
- 	WRITE_ONCE(sk->sk_shutdown, 0);
- 	sk_error_report(sk);
---- a/net/mptcp/protocol.h
-+++ b/net/mptcp/protocol.h
-@@ -321,7 +321,8 @@ struct mptcp_sock {
- 			fastopening:1,
- 			in_accept_queue:1,
- 			free_first:1,
--			rcvspace_init:1;
-+			rcvspace_init:1,
-+			fastclosing:1;
- 	u32		notsent_lowat;
- 	int		keepalive_cnt;
- 	int		keepalive_idle;
+-	/*
+-	 * It may have two level smi-common. the node is smi-sub-common if it
+-	 * has a new mediatek,smi property. otherwise it is smi-commmon.
+-	 */
+-	smicomm_node = of_parse_phandle(smi_subcomm_node, "mediatek,smi", 0);
+-	if (smicomm_node)
+-		of_node_put(smi_subcomm_node);
+-	else
+-		smicomm_node = smi_subcomm_node;
+-
+-	pcommdev = of_find_device_by_node(smicomm_node);
+-	of_node_put(smicomm_node);
++	pcommdev = of_find_device_by_node(frst_avail_smicomm_node);
++	of_node_put(frst_avail_smicomm_node);
+ 	if (!pcommdev)
+ 		return -ENODEV;
+ 	data->smicomm_dev = &pcommdev->dev;
 
 
 
