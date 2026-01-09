@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-207543-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206941-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCAA0D0A039
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:51:13 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD969D09820
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:21:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CC610312E5B3
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:39:34 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D91DD3079A3F
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:11:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D02935BDA5;
-	Fri,  9 Jan 2026 12:39:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1499835A95C;
+	Fri,  9 Jan 2026 12:10:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C25t2pP5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WwTnvrDb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4029235A95C;
-	Fri,  9 Jan 2026 12:39:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC2EC3346AF;
+	Fri,  9 Jan 2026 12:10:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962353; cv=none; b=PmmdIT1d7boG0gVmhs4ZM/5FTgOVSpSWYcb3LcgVUxZcVeAuL7QiLlQmJHTfQXJju2D3TpWT0dJeMg0fwrFOwhEhCsECNwRQV3n8uxJDtiO4xEotfDda67x0gWHP5DPn3qVr6GK9zmRhlJSYyy9xTO0IVwYa/vmDf4euDBhqY64=
+	t=1767960640; cv=none; b=Fb3dNDjSnBFjXAt3D21+LDzJ/3pv53HjMnHgxPPi3dG1kJ/HhP55GpjD8Inc5eTSOxfhOm7LomObAzIuIlt28j/LqnCS6EALBOvJ8YA1fTSeDDfWkarU20xDOuY/wBT4VDOACe7D2GgoaIjLyXAF8MSiGjUHJijGzN/dz87wgsU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962353; c=relaxed/simple;
-	bh=yPgFNXV8smKwdXm33l5vOZiedM+NpTufl5Kc/WD1mTk=;
+	s=arc-20240116; t=1767960640; c=relaxed/simple;
+	bh=bnRFepEBO2WP0OmhYO+MXFyoY/NNa67tLLwjgGC/mek=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hbqtxt/Jh0ib020F08p9b+9RE/UJ4VCf6QmKWSbBnWzqnfgStCjEcSl41Ev7QtfuSVVNYJ+K0tt4EGhjRO9NbqCJzlrqLTwV8uZ+gRA6HKR/LM8EDCw5d/Obw5xvSjSD9sqHLEhJ28EOiG5q78dUKxuGDm8FvmKUUTEO1nah4Pg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C25t2pP5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF75FC4CEF1;
-	Fri,  9 Jan 2026 12:39:12 +0000 (UTC)
+	 MIME-Version:Content-Type; b=dvC594Wm/VKFREaqbf4Aaahw9LUfGDl8lZpAcCxohxH6lw9T8xwgmNOncINl4c/emgtOt8Y4JmrzaMUU3f0Jei8AIhH8oECxJ++RwkVreun3CMLIu8HiAgKdXmr+vjfklHKydNFXiiutPOXivg+lMNiwy63hfF/JS2lLOg+9IEg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WwTnvrDb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C170C4CEF1;
+	Fri,  9 Jan 2026 12:10:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962353;
-	bh=yPgFNXV8smKwdXm33l5vOZiedM+NpTufl5Kc/WD1mTk=;
+	s=korg; t=1767960640;
+	bh=bnRFepEBO2WP0OmhYO+MXFyoY/NNa67tLLwjgGC/mek=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C25t2pP5u/0ZTwIzPhRh1MWd0O5ll0gegqq5RTXoQDtW3kiPVctYO0SBc/n0fjCeS
-	 OZhQO/qL650Eio/RneNhv/7KsTY4XiNrkZkKoB3ZZ+nbNzXSd8rBceaPIs3JoQImlN
-	 Xjc+f8E/TGQqk1vL7SKgxp8SjW+fZ1hM8ZDZRLi8=
+	b=WwTnvrDbDMgsHMSW2vvOB9x/H4pVZwdZw5PxU2+tJMbKoRsg4DfPuWo4KvWzFZqcQ
+	 6OH77Xd/0dZDmQI1N0+e/cMgmelY6WUOcV3zyFhFpdIfu/WXbdvwX4ChT9ijgnksU2
+	 NKBaqhnDCue84+iIA3C8SLSB0/XDw2N9DgOxaRVc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Colin Ian King <colin.i.king@gmail.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 6.1 335/634] media: pvrusb2: Fix incorrect variable used in trace message
+	=?UTF-8?q?Ren=C3=A9=20Rebe?= <rene@exactco.de>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 474/737] r8169: fix RTL8117 Wake-on-Lan in DASH mode
 Date: Fri,  9 Jan 2026 12:40:13 +0100
-Message-ID: <20260109112130.130880718@linuxfoundation.org>
+Message-ID: <20260109112151.818194324@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,41 +58,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Colin Ian King <colin.i.king@gmail.com>
+From: René Rebe <rene@exactco.de>
 
-commit be440980eace19c035a0745fd6b6e42707bc4f49 upstream.
+commit dd75c723ef566f7f009c047f47e0eee95fe348ab upstream.
 
-The pvr2_trace message is reporting an error about control read
-transfers, however it is using the incorrect variable write_len
-instead of read_lean. Fix this by using the correct variable
-read_len.
+Wake-on-Lan does currently not work for r8169 in DASH mode, e.g. the
+ASUS Pro WS X570-ACE with RTL8168fp/RTL8117.
 
-Fixes: d855497edbfb ("V4L/DVB (4228a): pvrusb2 to kernel 2.6.18")
+Fix by not returning early in rtl_prepare_power_down when dash_enabled.
+While this fixes WoL, it still kills the OOB RTL8117 remote management
+BMC connection. Fix by not calling rtl8168_driver_stop if WoL is enabled.
+
+Fixes: 065c27c184d6 ("r8169: phy power ops")
+Signed-off-by: René Rebe <rene@exactco.de>
 Cc: stable@vger.kernel.org
-Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Reviewed-by: Heiner Kallweit <hkallweit1@gmail.com>
+Link: https://patch.msgid.link/20251202.194137.1647877804487085954.rene@exactco.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/usb/pvrusb2/pvrusb2-hdw.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/realtek/r8169_main.c |    5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
---- a/drivers/media/usb/pvrusb2/pvrusb2-hdw.c
-+++ b/drivers/media/usb/pvrusb2/pvrusb2-hdw.c
-@@ -3620,7 +3620,7 @@ static int pvr2_send_request_ex(struct p
- 		pvr2_trace(
- 			PVR2_TRACE_ERROR_LEGS,
- 			"Attempted to execute %d byte control-read transfer (limit=%d)",
--			write_len,PVR2_CTL_BUFFSIZE);
-+			read_len, PVR2_CTL_BUFFSIZE);
- 		return -EINVAL;
- 	}
- 	if ((!write_len) && (!read_len)) {
+--- a/drivers/net/ethernet/realtek/r8169_main.c
++++ b/drivers/net/ethernet/realtek/r8169_main.c
+@@ -2581,9 +2581,6 @@ static void rtl_wol_enable_rx(struct rtl
+ 
+ static void rtl_prepare_power_down(struct rtl8169_private *tp)
+ {
+-	if (tp->dash_enabled)
+-		return;
+-
+ 	if (tp->mac_version == RTL_GIGA_MAC_VER_32 ||
+ 	    tp->mac_version == RTL_GIGA_MAC_VER_33)
+ 		rtl_ephy_write(tp, 0x19, 0xff64);
+@@ -4721,7 +4718,7 @@ static void rtl8169_down(struct rtl8169_
+ 	rtl_disable_exit_l1(tp);
+ 	rtl_prepare_power_down(tp);
+ 
+-	if (tp->dash_type != RTL_DASH_NONE)
++	if (tp->dash_type != RTL_DASH_NONE && !tp->saved_wolopts)
+ 		rtl8168_driver_stop(tp);
+ }
+ 
 
 
 
