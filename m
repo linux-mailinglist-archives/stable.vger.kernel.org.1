@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-207424-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206857-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41A29D09D42
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:40:19 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B644D09650
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:15:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BE16D306E59F
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:33:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D5A6831224D7
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:06:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8641335B12B;
-	Fri,  9 Jan 2026 12:33:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CA3C1946C8;
+	Fri,  9 Jan 2026 12:06:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V7Xda4FD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xHm1BjBY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A3AB3191D2;
-	Fri,  9 Jan 2026 12:33:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F748359F99;
+	Fri,  9 Jan 2026 12:06:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962015; cv=none; b=bRul9IcNDmDHzYm5gu1e461mgTDVi841BtPrKzdxDLpTpmtcQsT1BAyPGyo/IRNmJwz0xv1WJZwlUIiR3QLZtlAR5mK/wDFb1NOXd2CsE5cwI/hsFqsOmRfD0aXZeWL0Tu77mFlb38LX7X0lp5ljyJkN54Kd1RkC5rwJT1BtCG4=
+	t=1767960397; cv=none; b=PQfN7DsA7s5mTqQm9MYJA7pdQq11xG77cPcW1cW9csM5xp+FgjoemAb1khvR3QX2VbhtJI2u/6vr1m4gBIP6jcM89VGC5edqMKbCmHl/KFFJ+hRANerL4lDeOEOBLuGnhHOWXQsKUpm+Zg8eybsxYRVJGoDwTZlaiMt4iA5nULs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962015; c=relaxed/simple;
-	bh=bbrn08rqyMa28wHd/g4964CqtnXJdqk2uPrfiASJggk=;
+	s=arc-20240116; t=1767960397; c=relaxed/simple;
+	bh=GKnUI5ICdQ5/w5l68qXilXw9Z1TNyvfRN8tMDuKpjYE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hw1tVst5Py8TD1F7Iu2+Q8xIVZOk/qXGpIVn1BxZR69kmAVcoWTppy9309a/6182AqLvaMeBJHoaFgeyVP5SUUDMqAArhFLQT71PxyMKZRtUnGotOixgb9PitbzcFQr/omRwvG+I+86D70dBlLes+X6tfvfi7SQKkrwfS2lEFWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V7Xda4FD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE89EC19421;
-	Fri,  9 Jan 2026 12:33:34 +0000 (UTC)
+	 MIME-Version; b=nW9GdNahiQ3ImRdTJclKJASR3p/hNeO03VDy9uoGtprmJz4mgtFJQCbBRYBLswfQBrJ7BjO6i4/2WvdBI7Y9KWwPWaJhujZIvlZCMhIQljdd2q9Wo5nWO0jmUbJf771tD7pKBhCyRdvKyGC+BuCOsNAK8dI1D8SXoqn1Rysdd38=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xHm1BjBY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3227C4CEF1;
+	Fri,  9 Jan 2026 12:06:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962015;
-	bh=bbrn08rqyMa28wHd/g4964CqtnXJdqk2uPrfiASJggk=;
+	s=korg; t=1767960397;
+	bh=GKnUI5ICdQ5/w5l68qXilXw9Z1TNyvfRN8tMDuKpjYE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V7Xda4FD+p+/CL5Ha9xlEIhdrnQPEjouePy8d5L4rAq0tH4HFvanN75s9Opa0RwVq
-	 pt5do6qUZpgDqo2ojA7Tbc+7/6JcQJVXb77Sl7xXBg5yc2vPqCDfE4h1pUlj2Py0jC
-	 rrWoKtF/NKnCHZYfwSiDftvOWv2DU52poBON3mfs=
+	b=xHm1BjBYEydPj4ZbZQ3KTwx3FsbntyNH+7qBuGpJd+6CTKzZEh1Xq0POg0SZwRFjq
+	 bPTafFi7CXavHQtyPvweNqHLaYX9fcD3RX8FrTpExS0Vq9xbDs1fuASDi0BmIOG8Mu
+	 IbGYdoi67XvUpfBPVguyhJRzPvApD8pLtuHlNU7I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Scott Mayhew <smayhew@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 217/634] irqchip/mchp-eic: Fix error code in mchp_eic_domain_alloc()
+Subject: [PATCH 6.6 356/737] net/handshake: duplicate handshake cancellations leak socket
 Date: Fri,  9 Jan 2026 12:38:15 +0100
-Message-ID: <20260109112125.599334957@linuxfoundation.org>
+Message-ID: <20260109112147.387460494@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +61,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Scott Mayhew <smayhew@redhat.com>
 
-[ Upstream commit 7dbc0d40d8347bd9de55c904f59ea44bcc8dedb7 ]
+[ Upstream commit 15564bd67e2975002f2a8e9defee33e321d3183f ]
 
-If irq_domain_translate_twocell() sets "hwirq" to >= MCHP_EIC_NIRQ (2) then
-it results in an out of bounds access.
+When a handshake request is cancelled it is removed from the
+handshake_net->hn_requests list, but it is still present in the
+handshake_rhashtbl until it is destroyed.
 
-The code checks for invalid values, but doesn't set the error code.  Return
--EINVAL in that case, instead of returning success.
+If a second cancellation request arrives for the same handshake request,
+then remove_pending() will return false... and assuming
+HANDSHAKE_F_REQ_COMPLETED isn't set in req->hr_flags, we'll continue
+processing through the out_true label, where we put another reference on
+the sock and a refcount underflow occurs.
 
-Fixes: 00fa3461c86d ("irqchip/mchp-eic: Add support for the Microchip EIC")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
-Link: https://patch.msgid.link/aTfHmOz6IBpTIPU5@stanley.mountain
+This can happen for example if a handshake times out - particularly if
+the SUNRPC client sends the AUTH_TLS probe to the server but doesn't
+follow it up with the ClientHello due to a problem with tlshd.  When the
+timeout is hit on the server, the server will send a FIN, which triggers
+a cancellation request via xs_reset_transport().  When the timeout is
+hit on the client, another cancellation request happens via
+xs_tls_handshake_sync().
+
+Add a test_and_set_bit(HANDSHAKE_F_REQ_COMPLETED) in the pending cancel
+path so duplicate cancels can be detected.
+
+Fixes: 3b3009ea8abb ("net/handshake: Create a NETLINK service for handling handshake requests")
+Suggested-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Scott Mayhew <smayhew@redhat.com>
+Reviewed-by: Chuck Lever <chuck.lever@oracle.com>
+Link: https://patch.msgid.link/20251209193015.3032058-1-smayhew@redhat.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-mchp-eic.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/handshake/request.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/irqchip/irq-mchp-eic.c b/drivers/irqchip/irq-mchp-eic.c
-index c726a19837d29..7f84c736d2827 100644
---- a/drivers/irqchip/irq-mchp-eic.c
-+++ b/drivers/irqchip/irq-mchp-eic.c
-@@ -166,7 +166,7 @@ static int mchp_eic_domain_alloc(struct irq_domain *domain, unsigned int virq,
+diff --git a/net/handshake/request.c b/net/handshake/request.c
+index 94d5cef3e048b..0ac126b0add60 100644
+--- a/net/handshake/request.c
++++ b/net/handshake/request.c
+@@ -325,7 +325,11 @@ bool handshake_req_cancel(struct sock *sk)
  
- 	ret = irq_domain_translate_twocell(domain, fwspec, &hwirq, &type);
- 	if (ret || hwirq >= MCHP_EIC_NIRQ)
--		return ret;
-+		return ret ?: -EINVAL;
- 
- 	switch (type) {
- 	case IRQ_TYPE_EDGE_RISING:
+ 	hn = handshake_pernet(net);
+ 	if (hn && remove_pending(hn, req)) {
+-		/* Request hadn't been accepted */
++		/* Request hadn't been accepted - mark cancelled */
++		if (test_and_set_bit(HANDSHAKE_F_REQ_COMPLETED, &req->hr_flags)) {
++			trace_handshake_cancel_busy(net, req, sk);
++			return false;
++		}
+ 		goto out_true;
+ 	}
+ 	if (test_and_set_bit(HANDSHAKE_F_REQ_COMPLETED, &req->hr_flags)) {
 -- 
 2.51.0
 
