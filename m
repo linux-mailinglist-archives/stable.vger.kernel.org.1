@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-207321-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206755-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEB04D09E08
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:43:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A9DC3D0951B
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:10:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5FF8A307DE86
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:28:43 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9FA1730A087B
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:01:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0812D359709;
-	Fri,  9 Jan 2026 12:28:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FEC7359FB4;
+	Fri,  9 Jan 2026 12:01:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XIUbT0Tv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p57inx2b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEB7E38FA3;
-	Fri,  9 Jan 2026 12:28:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35E4733032C;
+	Fri,  9 Jan 2026 12:01:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961722; cv=none; b=sa45XyysXJCfT0bFAfAI+HCpKCrlqdkw739VsatuyF8yBiB94omJStQkyqVTqk8LxXUxubhva7ENoKJ693QH1BYJLn0U/+v6shx+ISI83uyjq7WbWxmBZV1Tf33Q2tKoCKSt73FZC65lEcnZgx1ACie0pwRnOpnsoUIGqUuYLPc=
+	t=1767960107; cv=none; b=Dq5u8cZ0BqSiFjaWDrVUy9cASmpgd9+8JQ1uWrc+LRekk7cHpRrGB4SeC4955kOQEGtmwfdOQNXJ/jA/v9Vf6tzbyX2gJ/qhiV7d16V8YjsRo0CRCkaTfeOYyfnyhhzX+AAHfyNpVqfaXjV0+0I4P/GVZrW+F5nldRnna1C7BUA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961722; c=relaxed/simple;
-	bh=RUFlViskqYxmWMiatZGV+X30SdBxgUKjFVyF70cUf2A=;
+	s=arc-20240116; t=1767960107; c=relaxed/simple;
+	bh=G8zuocPnfpz1JQRnoUwhr337jq4oxTeXepwP0HF2u+s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a9qY+YkLgqLgXQ/iRWULvjE1SpXZD1jgQtUgfo0a39sqcHz9o/ScH2x3Jsg7L7o28ygeWxZcj4veiMvjJc6qPvMCnZzgmxvpdl9KVrSJ9iw0uD5rFnUHLosEwxldcv12rBV+iVni4VyhlNf1MspFIWXYN/SdKuZODrKVbgHo0fY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XIUbT0Tv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FCF2C4CEF1;
-	Fri,  9 Jan 2026 12:28:42 +0000 (UTC)
+	 MIME-Version; b=EzGOKAKXI1scM5lwKHh6DZFYQ/5YbZcO6dWLezWO1Z3ubFT1lwuAoKmKOBJUDiCqjRun0pUKjnQClou2JsOny0nd2STAzSEaERF101Dh/ibonlXD0HFB8A+rbbSja9/AhmrnPjHTVNc9V+ektSesmHGeDqxleif1pR4O+haQv8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p57inx2b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 681BFC4CEF1;
+	Fri,  9 Jan 2026 12:01:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961722;
-	bh=RUFlViskqYxmWMiatZGV+X30SdBxgUKjFVyF70cUf2A=;
+	s=korg; t=1767960106;
+	bh=G8zuocPnfpz1JQRnoUwhr337jq4oxTeXepwP0HF2u+s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XIUbT0Tvmlx/RMZ3uTHal/W3SJ/xHBRtEuL64oCTEWvU9MJaipqTGloyN6DwYCtdO
-	 bh+xk2bscnlsRFj9qyajKRbMkrtYg+6vyZ13Tu0+JEzCaZU7gXr72h6stf22fc2103
-	 o1sRCOP8jEbfo6Id5SvOa4/eDwOU2puDrptJVvUA=
+	b=p57inx2b84z73PG/DYnSAWBWJExEC5eUoH6+M4Kc2RzK2ItNuvt4SvrP1WzRFhRkU
+	 vZzdb8LFvxEve8T1rHAdOMcQ2hrhjLieqGWxCaL6E8dPxb5M0JeLCuCTTk+pMvJSlj
+	 ks8+ycVVj/EkGQkuv/+XHbPHgfrFg05WrIf2vJX0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Siddharth Vadapalli <s-vadapalli@ti.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
+	Ian Rogers <irogers@google.com>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 114/634] PCI: keystone: Exit ks_pcie_probe() for invalid mode
-Date: Fri,  9 Jan 2026 12:36:32 +0100
-Message-ID: <20260109112121.723619623@linuxfoundation.org>
+Subject: [PATCH 6.6 254/737] perf tools: Fix split kallsyms DSO counting
+Date: Fri,  9 Jan 2026 12:36:33 +0100
+Message-ID: <20260109112143.546528814@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +60,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Siddharth Vadapalli <s-vadapalli@ti.com>
+From: Namhyung Kim <namhyung@kernel.org>
 
-[ Upstream commit 95d9c3f0e4546eaec0977f3b387549a8463cd49f ]
+[ Upstream commit ad0b9c4865b98dc37f4d606d26b1c19808796805 ]
 
-Commit under Fixes introduced support for PCIe EP mode on AM654x platforms.
-When the mode happens to be either "DW_PCIE_RC_TYPE" or "DW_PCIE_EP_TYPE",
-the PCIe Controller is configured accordingly. However, when the mode is
-neither of them, an error message is displayed, but the driver probe
-succeeds. Since this "invalid" mode is not associated with a functional
-PCIe Controller, the probe should fail.
+It's counted twice as it's increased after calling maps__insert().  I
+guess we want to increase it only after it's added properly.
 
-Fix the behavior by exiting "ks_pcie_probe()" with the return value of
-"-EINVAL" in addition to displaying the existing error message when the
-mode is invalid.
-
-Fixes: 23284ad677a9 ("PCI: keystone: Add support for PCIe EP in AM654x Platforms")
-Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Link: https://patch.msgid.link/20251029080547.1253757-4-s-vadapalli@ti.com
+Reviewed-by: Ian Rogers <irogers@google.com>
+Fixes: 2e538c4a1847291cf ("perf tools: Improve kernel/modules symbol lookup")
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pci-keystone.c | 2 ++
- 1 file changed, 2 insertions(+)
+ tools/perf/util/symbol.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pci/controller/dwc/pci-keystone.c b/drivers/pci/controller/dwc/pci-keystone.c
-index c868d36f1177b..35f807524f56f 100644
---- a/drivers/pci/controller/dwc/pci-keystone.c
-+++ b/drivers/pci/controller/dwc/pci-keystone.c
-@@ -1342,6 +1342,8 @@ static int ks_pcie_probe(struct platform_device *pdev)
- 		break;
- 	default:
- 		dev_err(dev, "INVALID device type %d\n", mode);
-+		ret = -EINVAL;
-+		goto err_get_sync;
- 	}
+diff --git a/tools/perf/util/symbol.c b/tools/perf/util/symbol.c
+index ea24f21aafc3e..18556b7a76563 100644
+--- a/tools/perf/util/symbol.c
++++ b/tools/perf/util/symbol.c
+@@ -905,11 +905,11 @@ static int maps__split_kallsyms(struct maps *kmaps, struct dso *dso, u64 delta,
+ 			if (dso->kernel == DSO_SPACE__KERNEL_GUEST)
+ 				snprintf(dso_name, sizeof(dso_name),
+ 					"[guest.kernel].%d",
+-					kernel_range++);
++					kernel_range);
+ 			else
+ 				snprintf(dso_name, sizeof(dso_name),
+ 					"[kernel].%d",
+-					kernel_range++);
++					kernel_range);
  
- 	ks_pcie_enable_error_irq(ks_pcie);
+ 			ndso = dso__new(dso_name);
+ 			if (ndso == NULL)
 -- 
 2.51.0
 
