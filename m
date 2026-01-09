@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-206472-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207776-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81DABD08FB1
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 12:45:24 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F35FD0A250
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:02:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0ABAC301D49C
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:45:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5A3A031BF1F9
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:50:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BA58359FB6;
-	Fri,  9 Jan 2026 11:45:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C27CD35C1AC;
+	Fri,  9 Jan 2026 12:50:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SQVJjlv5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="If8yk/9x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 446A3359FB5;
-	Fri,  9 Jan 2026 11:45:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8553235B149;
+	Fri,  9 Jan 2026 12:50:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767959114; cv=none; b=n+0aNB1l9yBXQUHggWzYEAZvePU8gA5PwwOqQpysDGXRjc6Dm5Tvc8cccK5cDNvvrzipZ2HlOV2BJiJ9LtA2RTq7Tt4dRinCC4y6WysEUB4oyn8mbu5LbuwEIGgDOvbFIYuRPRhwkYjqtxXqMi/o3xvpcxKqIIANBVr3mnGMw0E=
+	t=1767963015; cv=none; b=D9izkeFxDCxLEkiTxCDbJ8Hr+daNPy63o2xPi4Z7zja1T2/JhD87bzc1/Sjr+vs/d2QqNpvvakv0/8YgKSimCVPoSqMRr4bRGCB8zsgc7qSjauXncpXFbkVgX3H31fKoeQtezr/2xBVgTmpzrIZHxvMXVJeqp/zifUSmC35Dc6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767959114; c=relaxed/simple;
-	bh=wi07Mr0yh9S+hUsxli6RFtuu/4x5RVC3gVHHeVOwG/8=;
+	s=arc-20240116; t=1767963015; c=relaxed/simple;
+	bh=rFRV5mx/56tIrJ1FibLyb0YrCLs5kD5qBOc0EsACGHU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WZupJg8a+Kuwkq9+m6qD/20pvWu8MRX9KhvOLwjFhvlCz7mJ0tceGNG6sCuBCOUx4wzK/UMSSq71mAB2sZGCBNKsLZRi4HaoP+wSUOrY0xy+vsW1/dih/qjsPEJCGrya6IlZJZQ+X2t/7uWD6X42uZQphJPOcD2MZUxc4IGagOg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SQVJjlv5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 742EDC4CEF1;
-	Fri,  9 Jan 2026 11:45:13 +0000 (UTC)
+	 MIME-Version; b=P4qSklcRrn0V8rWVjmoUHgVmJThJHEigad0wcWM00KgEYIN0BQkvruIMmrYG6DeZsrWlzlp2RHPHB+ZIbPfXXWkMHzXCKQOqzNJMMVEBkYBOjrMiAidyLZrw6jd8HryL9iLCuwJilHngLsO5lJGD3l8Q6ZVlfwYma9qmj+bVdaA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=If8yk/9x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10C55C4CEF1;
+	Fri,  9 Jan 2026 12:50:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767959113;
-	bh=wi07Mr0yh9S+hUsxli6RFtuu/4x5RVC3gVHHeVOwG/8=;
+	s=korg; t=1767963015;
+	bh=rFRV5mx/56tIrJ1FibLyb0YrCLs5kD5qBOc0EsACGHU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SQVJjlv5TJzAQq16buZt3qmO4Mo3zJSPNAEobVGBcSexypFda6aVzLDk9Un+eeQKh
-	 1acfIhtJHQu2lCiadbsJ9lCet6JGZlySZ6rLbJ3E8ZAGojxbjr5rogIMGqjSjxkwut
-	 Lr2Q65W7eIdWao1i9ODWKBge70DrDnn+NMei8thg=
+	b=If8yk/9xezr/Gl9tY3qXWEqJ7lgfYUjxsNCdtTQMqNoTwyAfIWWnfG3M/IJEcQ4s2
+	 kYucsk4+5xd1pswscDuNab485uKzgN351gLp39ehQkw7PLKGNdBT9CqFCnRj3+Cqpe
+	 DAj+EL563VBjIAyIOqnB6wEFqCagBwLhDgMu8Uug=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Chris Mason <clm@meta.com>
-Subject: [PATCH 6.18 3/5] sched/fair: Small cleanup to update_newidle_cost()
-Date: Fri,  9 Jan 2026 12:44:05 +0100
-Message-ID: <20260109111950.476102220@linuxfoundation.org>
+	Honghui Zhang <honghui.zhang@mediatek.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Johan Hovold <johan@kernel.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Joerg Roedel <joerg.roedel@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 568/634] iommu/mediatek-v1: fix device leaks on probe()
+Date: Fri,  9 Jan 2026 12:44:06 +0100
+Message-ID: <20260109112138.978357413@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109111950.344681501@linuxfoundation.org>
-References: <20260109111950.344681501@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,58 +63,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Johan Hovold <johan@kernel.org>
 
-commit 08d473dd8718e4a4d698b1113a14a40ad64a909b upstream.
+[ Upstream commit 46207625c9f33da0e43bb4ae1e91f0791b6ed633 ]
 
-Simplify code by adding a few variables.
+Make sure to drop the references taken to the larb devices during
+probe on probe failure (e.g. probe deferral) and on driver unbind.
 
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
-Tested-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
-Tested-by: Chris Mason <clm@meta.com>
-Link: https://patch.msgid.link/20251107161739.655208666@infradead.org
+Fixes: b17336c55d89 ("iommu/mediatek: add support for mtk iommu generation one HW")
+Cc: stable@vger.kernel.org	# 4.8
+Cc: Honghui Zhang <honghui.zhang@mediatek.com>
+Acked-by: Robin Murphy <robin.murphy@arm.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/fair.c |   11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/iommu/mtk_iommu_v1.c |   23 ++++++++++++++++++-----
+ 1 file changed, 18 insertions(+), 5 deletions(-)
 
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -12124,22 +12124,25 @@ void update_max_interval(void)
+--- a/drivers/iommu/mtk_iommu_v1.c
++++ b/drivers/iommu/mtk_iommu_v1.c
+@@ -656,8 +656,10 @@ static int mtk_iommu_v1_probe(struct pla
+ 		struct platform_device *plarbdev;
  
- static inline bool update_newidle_cost(struct sched_domain *sd, u64 cost)
+ 		larbnode = of_parse_phandle(dev->of_node, "mediatek,larbs", i);
+-		if (!larbnode)
+-			return -EINVAL;
++		if (!larbnode) {
++			ret = -EINVAL;
++			goto out_put_larbs;
++		}
+ 
+ 		if (!of_device_is_available(larbnode)) {
+ 			of_node_put(larbnode);
+@@ -667,11 +669,14 @@ static int mtk_iommu_v1_probe(struct pla
+ 		plarbdev = of_find_device_by_node(larbnode);
+ 		if (!plarbdev) {
+ 			of_node_put(larbnode);
+-			return -ENODEV;
++			ret = -ENODEV;
++			goto out_put_larbs;
+ 		}
+ 		if (!plarbdev->dev.driver) {
+ 			of_node_put(larbnode);
+-			return -EPROBE_DEFER;
++			put_device(&plarbdev->dev);
++			ret = -EPROBE_DEFER;
++			goto out_put_larbs;
+ 		}
+ 		data->larb_imu[i].dev = &plarbdev->dev;
+ 
+@@ -683,7 +688,7 @@ static int mtk_iommu_v1_probe(struct pla
+ 
+ 	ret = mtk_iommu_v1_hw_init(data);
+ 	if (ret)
+-		return ret;
++		goto out_put_larbs;
+ 
+ 	ret = iommu_device_sysfs_add(&data->iommu, &pdev->dev, NULL,
+ 				     dev_name(&pdev->dev));
+@@ -705,12 +710,17 @@ out_sysfs_remove:
+ 	iommu_device_sysfs_remove(&data->iommu);
+ out_clk_unprepare:
+ 	clk_disable_unprepare(data->bclk);
++out_put_larbs:
++	for (i = 0; i < MTK_LARB_NR_MAX; i++)
++		put_device(data->larb_imu[i].dev);
++
+ 	return ret;
+ }
+ 
+ static void mtk_iommu_v1_remove(struct platform_device *pdev)
  {
-+	unsigned long next_decay = sd->last_decay_max_lb_cost + HZ;
-+	unsigned long now = jiffies;
-+
- 	if (cost > sd->max_newidle_lb_cost) {
- 		/*
- 		 * Track max cost of a domain to make sure to not delay the
- 		 * next wakeup on the CPU.
- 		 */
- 		sd->max_newidle_lb_cost = cost;
--		sd->last_decay_max_lb_cost = jiffies;
--	} else if (time_after(jiffies, sd->last_decay_max_lb_cost + HZ)) {
-+		sd->last_decay_max_lb_cost = now;
-+
-+	} else if (time_after(now, next_decay)) {
- 		/*
- 		 * Decay the newidle max times by ~1% per second to ensure that
- 		 * it is not outdated and the current max cost is actually
- 		 * shorter.
- 		 */
- 		sd->max_newidle_lb_cost = (sd->max_newidle_lb_cost * 253) / 256;
--		sd->last_decay_max_lb_cost = jiffies;
--
-+		sd->last_decay_max_lb_cost = now;
- 		return true;
- 	}
+ 	struct mtk_iommu_v1_data *data = platform_get_drvdata(pdev);
++	int i;
  
+ 	iommu_device_sysfs_remove(&data->iommu);
+ 	iommu_device_unregister(&data->iommu);
+@@ -718,6 +728,9 @@ static void mtk_iommu_v1_remove(struct p
+ 	clk_disable_unprepare(data->bclk);
+ 	devm_free_irq(&pdev->dev, data->irq, data);
+ 	component_master_del(&pdev->dev, &mtk_iommu_v1_com_ops);
++
++	for (i = 0; i < MTK_LARB_NR_MAX; i++)
++		put_device(data->larb_imu[i].dev);
+ }
+ 
+ static int __maybe_unused mtk_iommu_v1_suspend(struct device *dev)
 
 
 
