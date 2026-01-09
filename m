@@ -1,55 +1,61 @@
-Return-Path: <stable+bounces-207216-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206650-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 039C2D099C7
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:28:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 60173D09296
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:01:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7E8CA30BB65B
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:23:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9C8883030928
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:56:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB40315ADB4;
-	Fri,  9 Jan 2026 12:23:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D851F33290A;
+	Fri,  9 Jan 2026 11:56:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EdGq3n0y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pvHEUeVY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83841334C24;
-	Fri,  9 Jan 2026 12:23:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BF3832BF21;
+	Fri,  9 Jan 2026 11:56:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961423; cv=none; b=LQWjK8xio+DS5hORzf+ZB2d+iuooIjMFWIkCyh32wmjWlmSttXFRVLzrdsbfP2CXSbTqjz28Subr4QUfpb4WVqWQODmr6HdoRZKL9hMDWXDiWLxH0/KVeYeuebmEy1xU7lpDQmlngknz4HTSxitWE3x5V7GjCH9pxmwV1ofsSkU=
+	t=1767959809; cv=none; b=AjqKOcEMqX2FNxtNQCjbsuLc+w/BXemu4yVypoyAtpvfzrL5/0xwrLfQFFpEyEZAyD57RzgDM9cjP4p7Yk4b8Wx/a8A91px2R+FHyqkFWhXhBL8mZ2+GFw/kL+Kkn7aioZUNIVcIt0NDmh0I2QTe1O5L1E4mYwfc8HvM6/9wyK4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961423; c=relaxed/simple;
-	bh=cCwwqwdXMQ0j1tfCTuhCiAdD8k0bYoEgP+iMDcvsT54=;
+	s=arc-20240116; t=1767959809; c=relaxed/simple;
+	bh=Wt1igFejJT8ll9N3wVXfvLpXOASaKkSbx86bk/pEjmE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Oh7Ba9oJ02ufA5qOlUL9xHO8kr4RQpU41nCKxgncZBSuAGx7/y38ZDgHwIkQIrj3RPyaHjwaAuuLya5qZN1CUrrjfJ7nNud0b062/eI9nAnYcUKPCW3Ix2By3JyL6JQx9VSYlH0f0Q01c27GsFp93vxa4SuWRSRBBvQeLqJNgy4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EdGq3n0y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0106EC4CEF1;
-	Fri,  9 Jan 2026 12:23:42 +0000 (UTC)
+	 MIME-Version; b=saTHsgvu4205ujYyWMaxJqqL6CJm9Mqz4AfWr6eLf2L/ifvMt3utb1dfsxogX36LJZwiL87h8/y3Uji4YvdgkWjq8oejQFRzDXePmFFE2ulIV4EEq9KyuNdSru0hH8HUiw1Be5mx5c8TFV+7unq/kkZAUNuvTs/a2eCdNwhQy98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pvHEUeVY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03299C4CEF1;
+	Fri,  9 Jan 2026 11:56:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961423;
-	bh=cCwwqwdXMQ0j1tfCTuhCiAdD8k0bYoEgP+iMDcvsT54=;
+	s=korg; t=1767959809;
+	bh=Wt1igFejJT8ll9N3wVXfvLpXOASaKkSbx86bk/pEjmE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EdGq3n0y5zKHO0Kqagd5ZV46KljJuSOk20wXH8Pza2JWIlux7R/hLKa13pyJL0DYB
-	 iGJk+LsdNmW5Z0BY6v11/Pusx1eKzP97j3x1bXothDw/z660Ja5PLvyZKueTazWuRG
-	 21lZH8OvaUyFVbcmcLfgd89ugXVVZQUD7sTtFthI=
+	b=pvHEUeVYyqa6gjUJmQWyzo+/GE1mTPQngPC8kaOob+jxdveP2Vl72XCDQvOCI+aY9
+	 auouZcWHsv+FmbW7FL1B0oBiKQs83SBsMK7eWMA+GdIDswm1WfrT9bo/8RlkgleNOj
+	 H6zyQmyu89g8LiNTy+1tRZ+q9/KZ1OL5B1Nqz+u8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qianchang Zhao <pioooooooooip@gmail.com>,
-	Zhitong Liu <liuzhitong1993@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.1 010/634] ksmbd: ipc: fix use-after-free in ipc_msg_send_request
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	syzbot+727d161855d11d81e411@syzkaller.appspotmail.com,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Jun Piao <piaojun@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 149/737] ocfs2: relax BUG() to ocfs2_error() in __ocfs2_move_extent()
 Date: Fri,  9 Jan 2026 12:34:48 +0100
-Message-ID: <20260109112117.817079190@linuxfoundation.org>
+Message-ID: <20260109112139.603382322@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,85 +67,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qianchang Zhao <pioooooooooip@gmail.com>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-commit 1fab1fa091f5aa97265648b53ea031deedd26235 upstream.
+[ Upstream commit 8a7d58845fae061c62b50bc5eeb9bae4a1dedc3d ]
 
-ipc_msg_send_request() waits for a generic netlink reply using an
-ipc_msg_table_entry on the stack. The generic netlink handler
-(handle_generic_event()/handle_response()) fills entry->response under
-ipc_msg_table_lock, but ipc_msg_send_request() used to validate and free
-entry->response without holding the same lock.
+In '__ocfs2_move_extent()', relax 'BUG()' to 'ocfs2_error()' just
+to avoid crashing the whole kernel due to a filesystem corruption.
 
-Under high concurrency this allows a race where handle_response() is
-copying data into entry->response while ipc_msg_send_request() has just
-freed it, leading to a slab-use-after-free reported by KASAN in
-handle_generic_event():
-
-  BUG: KASAN: slab-use-after-free in handle_generic_event+0x3c4/0x5f0 [ksmbd]
-  Write of size 12 at addr ffff888198ee6e20 by task pool/109349
-  ...
-  Freed by task:
-    kvfree
-    ipc_msg_send_request [ksmbd]
-    ksmbd_rpc_open -> ksmbd_session_rpc_open [ksmbd]
-
-Fix by:
-- Taking ipc_msg_table_lock in ipc_msg_send_request() while validating
-  entry->response, freeing it when invalid, and removing the entry from
-  ipc_msg_table.
-- Returning the final entry->response pointer to the caller only after
-  the hash entry is removed under the lock.
-- Returning NULL in the error path, preserving the original API
-  semantics.
-
-This makes all accesses to entry->response consistent with
-handle_response(), which already updates and fills the response buffer
-under ipc_msg_table_lock, and closes the race that allowed the UAF.
-
-Cc: stable@vger.kernel.org
-Reported-by: Qianchang Zhao <pioooooooooip@gmail.com>
-Reported-by: Zhitong Liu <liuzhitong1993@gmail.com>
-Signed-off-by: Qianchang Zhao <pioooooooooip@gmail.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 8f603e567aa7 ("Ocfs2/move_extents: move a range of extent.")
+Link: https://lkml.kernel.org/r/20251009102349.181126-2-dmantipov@yandex.ru
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Closes: https://syzkaller.appspot.com/bug?extid=727d161855d11d81e411
+Reported-by: syzbot+727d161855d11d81e411@syzkaller.appspotmail.com
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/transport_ipc.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ fs/ocfs2/move_extents.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/fs/smb/server/transport_ipc.c
-+++ b/fs/smb/server/transport_ipc.c
-@@ -517,12 +517,16 @@ static void *ipc_msg_send_request(struct
- 	up_write(&ipc_msg_table_lock);
+diff --git a/fs/ocfs2/move_extents.c b/fs/ocfs2/move_extents.c
+index 2f34074f0078b..d97ec93ff4c26 100644
+--- a/fs/ocfs2/move_extents.c
++++ b/fs/ocfs2/move_extents.c
+@@ -98,7 +98,13 @@ static int __ocfs2_move_extent(handle_t *handle,
  
- 	ret = ipc_msg_send(msg);
--	if (ret)
-+	if (ret) {
-+		down_write(&ipc_msg_table_lock);
- 		goto out;
+ 	rec = &el->l_recs[index];
+ 
+-	BUG_ON(ext_flags != rec->e_flags);
++	if (ext_flags != rec->e_flags) {
++		ret = ocfs2_error(inode->i_sb,
++				  "Inode %llu has corrupted extent %d with flags 0x%x at cpos %u\n",
++				  (unsigned long long)ino, index, rec->e_flags, cpos);
++		goto out;
 +	}
- 
- 	ret = wait_event_interruptible_timeout(entry.wait,
- 					       entry.response != NULL,
- 					       IPC_WAIT_TIMEOUT);
 +
-+	down_write(&ipc_msg_table_lock);
- 	if (entry.response) {
- 		ret = ipc_validate_msg(&entry);
- 		if (ret) {
-@@ -531,7 +535,6 @@ static void *ipc_msg_send_request(struct
- 		}
- 	}
- out:
--	down_write(&ipc_msg_table_lock);
- 	hash_del(&entry.ipc_table_hlist);
- 	up_write(&ipc_msg_table_lock);
- 	return entry.response;
+ 	/*
+ 	 * after moving/defraging to new location, the extent is not going
+ 	 * to be refcounted anymore.
+-- 
+2.51.0
+
 
 
 
