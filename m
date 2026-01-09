@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-207741-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207148-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB7A0D0A1F7
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:00:38 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99D87D0995B
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:26:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3193C31A5C8F
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:49:56 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8F226303C7E7
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:20:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E94235E54D;
-	Fri,  9 Jan 2026 12:48:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5212E35A953;
+	Fri,  9 Jan 2026 12:20:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dI5BOaTz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ajlcOKCp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4ACC35C1B8;
-	Fri,  9 Jan 2026 12:48:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 132D126ED41;
+	Fri,  9 Jan 2026 12:20:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962914; cv=none; b=LR6RVeUnPy/cokJSl5hjXB5KDx5LjRCZArZQgulTyan0HUe1uX6TIyCdlIs8uIPgOz6eiARS5FfEQb3EfMKDyVCIaeKle7RLANma5zw6kZ3wC+qwrFfxd0tvxzZv6p/924OndjJjMplui3WnDXVSjKiBkFB62/7/E0+zZmT0tto=
+	t=1767961228; cv=none; b=ON/nBdAy7OxuKgfp1L8XMkQ4iQwas1rLIEYcuwu/3H8gVlQhURon2pnd63wjGb+v7fvywje9bSRKGFdq8pky50qF1n40s8MnPuPJZAt/OBPDnboXNKn2XmKyZzH1PVGCzemGoyNKJMu7pJoRij+m0zsGsgqrC73Db1ctuR4+tPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962914; c=relaxed/simple;
-	bh=+g+jK7t85J9CvAXSuvZ+BausVgKBimPP8fhZ0FXKcQg=;
+	s=arc-20240116; t=1767961228; c=relaxed/simple;
+	bh=QPf9kjo/KbZjFH9KBKFNFFhPNg4aoaRDi8ASGqvq8ME=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mCM4o6ttR0WeeMpR04a8QXRovQg5DZr+H7/Q5KkZHjQrIcIBTAOcX3qJqjj0e9Lj+ROtGXKghpn/9T5wxmUkCluG3dDaTOvCUHDmQeqcfJ1mFJ/MTX3fi7KMK0cc/JyjehhiqTDi0iJN+zf9SZbh+3xbTSoaq+pDtFEX9d7zYyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dI5BOaTz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30AFFC4CEF1;
-	Fri,  9 Jan 2026 12:48:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ZNHY215zfUaQ1ka1RFyRU2OfM+Ty6LiGOuvztT1tsamV9PPiqTrDq5Pr80L4C/P1QqHnilly1YhTzgftZNNOtnOmvP4+ZkqhHbL4c+5op9/rNj9bCDvocVA4aPOZun94U84a50kLUuay6TFiN0wZUy25TD7XCTX96uK6wpNrsGQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ajlcOKCp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 962E6C4CEF1;
+	Fri,  9 Jan 2026 12:20:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962914;
-	bh=+g+jK7t85J9CvAXSuvZ+BausVgKBimPP8fhZ0FXKcQg=;
+	s=korg; t=1767961228;
+	bh=QPf9kjo/KbZjFH9KBKFNFFhPNg4aoaRDi8ASGqvq8ME=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dI5BOaTz5WHCg17d/g9ltFG8Ch0CpkfF+pRrxAdJbaJEk+lwDErz1lKXw10bHVABi
-	 4s+eKW+5UsIv6ipjjarFTDXKuewQbjtKmwwIuUMuJ809jwdwTeJ5aMdrsoPiyBUelH
-	 GZ9tbfjDZAw7/HJN6ZHVbLeTK2N0MSe7pSW2yFb0=
+	b=ajlcOKCp54TlHP4WYXhiSiXzAAOptDHHezKt4kHG3PuE39QKLoAyvEQgCUPtR8gHu
+	 eWa28ECu/ND5DFPWAZ3TyAJkQiLwTRgveKLZfRPLTipz0TbVnLFlbVuumw0SRNoHPy
+	 FYr0IOEfUtaJKZxTCkRB28Cj+KuiF9HR0w2lmyGs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+3a92d359bc2ec6255a33@syzkaller.appspotmail.com,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 533/634] mptcp: Initialise rcv_mss before calling tcp_send_active_reset() in mptcp_do_fastclose().
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?David=20Nystr=C3=B6m?= <david.nystrom@est.tech>
+Subject: [PATCH 6.6 672/737] drm/amd/display: Fix null pointer deref in dcn20_resource.c
 Date: Fri,  9 Jan 2026 12:43:31 +0100
-Message-ID: <20260109112137.628030316@linuxfoundation.org>
+Message-ID: <20260109112159.330731622@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,99 +59,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Aurabindo Pillai <aurabindo.pillai@amd.com>
 
-[ Upstream commit f07f4ea53e22429c84b20832fa098b5ecc0d4e35 ]
+[ Upstream commit ecbf60782662f0a388493685b85a645a0ba1613c ]
 
-syzbot reported divide-by-zero in __tcp_select_window() by
-MPTCP socket. [0]
+Fixes a hang thats triggered when MPV is run on a DCN401 dGPU:
 
-We had a similar issue for the bare TCP and fixed in commit
-499350a5a6e7 ("tcp: initialize rcv_mss to TCP_MIN_MSS instead
-of 0").
+mpv --hwdec=vaapi --vo=gpu --hwdec-codecs=all
 
-Let's apply the same fix to mptcp_do_fastclose().
+and then enabling fullscreen playback (double click on the video)
 
-[0]:
-Oops: divide error: 0000 [#1] SMP KASAN PTI
-CPU: 0 UID: 0 PID: 6068 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full)
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/25/2025
-RIP: 0010:__tcp_select_window+0x824/0x1320 net/ipv4/tcp_output.c:3336
-Code: ff ff ff 44 89 f1 d3 e0 89 c1 f7 d1 41 01 cc 41 21 c4 e9 a9 00 00 00 e8 ca 49 01 f8 e9 9c 00 00 00 e8 c0 49 01 f8 44 89 e0 99 <f7> 7c 24 1c 41 29 d4 48 bb 00 00 00 00 00 fc ff df e9 80 00 00 00
-RSP: 0018:ffffc90003017640 EFLAGS: 00010293
-RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffff88807b469e40
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
-RBP: ffffc90003017730 R08: ffff888033268143 R09: 1ffff1100664d028
-R10: dffffc0000000000 R11: ffffed100664d029 R12: 0000000000000000
-R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
-FS:  000055557faa0500(0000) GS:ffff888126135000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f64a1912ff8 CR3: 0000000072122000 CR4: 00000000003526f0
-Call Trace:
- <TASK>
- tcp_select_window net/ipv4/tcp_output.c:281 [inline]
- __tcp_transmit_skb+0xbc7/0x3aa0 net/ipv4/tcp_output.c:1568
- tcp_transmit_skb net/ipv4/tcp_output.c:1649 [inline]
- tcp_send_active_reset+0x2d1/0x5b0 net/ipv4/tcp_output.c:3836
- mptcp_do_fastclose+0x27e/0x380 net/mptcp/protocol.c:2793
- mptcp_disconnect+0x238/0x710 net/mptcp/protocol.c:3253
- mptcp_sendmsg_fastopen+0x2f8/0x580 net/mptcp/protocol.c:1776
- mptcp_sendmsg+0x1774/0x1980 net/mptcp/protocol.c:1855
- sock_sendmsg_nosec net/socket.c:727 [inline]
- __sock_sendmsg+0xe5/0x270 net/socket.c:742
- __sys_sendto+0x3bd/0x520 net/socket.c:2244
- __do_sys_sendto net/socket.c:2251 [inline]
- __se_sys_sendto net/socket.c:2247 [inline]
- __x64_sys_sendto+0xde/0x100 net/socket.c:2247
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f66e998f749
-Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007ffff9acedb8 EFLAGS: 00000246 ORIG_RAX: 000000000000002c
-RAX: ffffffffffffffda RBX: 00007f66e9be5fa0 RCX: 00007f66e998f749
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000003
-RBP: 00007ffff9acee10 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000001
-R13: 00007f66e9be5fa0 R14: 00007f66e9be5fa0 R15: 0000000000000006
- </TASK>
+The following calltrace will be seen:
 
-Fixes: ae155060247b ("mptcp: fix duplicate reset on fastclose")
-Reported-by: syzbot+3a92d359bc2ec6255a33@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/69260882.a70a0220.d98e3.00b4.GAE@google.com/
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20251125195331.309558-1-kuniyu@google.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-[ Adjust context ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[  181.843989] BUG: kernel NULL pointer dereference, address: 0000000000000000
+[  181.843997] #PF: supervisor instruction fetch in kernel mode
+[  181.844003] #PF: error_code(0x0010) - not-present page
+[  181.844009] PGD 0 P4D 0
+[  181.844020] Oops: 0010 [#1] PREEMPT SMP NOPTI
+[  181.844028] CPU: 6 PID: 1892 Comm: gnome-shell Tainted: G        W  OE      6.5.0-41-generic #41~22.04.2-Ubuntu
+[  181.844038] Hardware name: System manufacturer System Product Name/CROSSHAIR VI HERO, BIOS 6302 10/23/2018
+[  181.844044] RIP: 0010:0x0
+[  181.844079] Code: Unable to access opcode bytes at 0xffffffffffffffd6.
+[  181.844084] RSP: 0018:ffffb593c2b8f7b0 EFLAGS: 00010246
+[  181.844093] RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000004
+[  181.844099] RDX: ffffb593c2b8f804 RSI: ffffb593c2b8f7e0 RDI: ffff9e3c8e758400
+[  181.844105] RBP: ffffb593c2b8f7b8 R08: ffffb593c2b8f9c8 R09: ffffb593c2b8f96c
+[  181.844110] R10: 0000000000000000 R11: 0000000000000000 R12: ffffb593c2b8f9c8
+[  181.844115] R13: 0000000000000001 R14: ffff9e3c88000000 R15: 0000000000000005
+[  181.844121] FS:  00007c6e323bb5c0(0000) GS:ffff9e3f85f80000(0000) knlGS:0000000000000000
+[  181.844128] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  181.844134] CR2: ffffffffffffffd6 CR3: 0000000140fbe000 CR4: 00000000003506e0
+[  181.844141] Call Trace:
+[  181.844146]  <TASK>
+[  181.844153]  ? show_regs+0x6d/0x80
+[  181.844167]  ? __die+0x24/0x80
+[  181.844179]  ? page_fault_oops+0x99/0x1b0
+[  181.844192]  ? do_user_addr_fault+0x31d/0x6b0
+[  181.844204]  ? exc_page_fault+0x83/0x1b0
+[  181.844216]  ? asm_exc_page_fault+0x27/0x30
+[  181.844237]  dcn20_get_dcc_compression_cap+0x23/0x30 [amdgpu]
+[  181.845115]  amdgpu_dm_plane_validate_dcc.constprop.0+0xe5/0x180 [amdgpu]
+[  181.845985]  amdgpu_dm_plane_fill_plane_buffer_attributes+0x300/0x580 [amdgpu]
+[  181.846848]  fill_dc_plane_info_and_addr+0x258/0x350 [amdgpu]
+[  181.847734]  fill_dc_plane_attributes+0x162/0x350 [amdgpu]
+[  181.848748]  dm_update_plane_state.constprop.0+0x4e3/0x6b0 [amdgpu]
+[  181.849791]  ? dm_update_plane_state.constprop.0+0x4e3/0x6b0 [amdgpu]
+[  181.850840]  amdgpu_dm_atomic_check+0xdfe/0x1760 [amdgpu]
+
+Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Reviewed-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: David Nyström <david.nystrom@est.tech>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/protocol.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/gpu/drm/amd/display/dc/dcn20/dcn20_resource.c |    9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -2806,6 +2806,12 @@ static void mptcp_do_fastclose(struct so
- 			goto unlock;
+--- a/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_resource.c
+@@ -2179,10 +2179,11 @@ bool dcn20_get_dcc_compression_cap(const
+ 		const struct dc_dcc_surface_param *input,
+ 		struct dc_surface_dcc_cap *output)
+ {
+-	return dc->res_pool->hubbub->funcs->get_dcc_compression_cap(
+-			dc->res_pool->hubbub,
+-			input,
+-			output);
++	if (dc->res_pool->hubbub->funcs->get_dcc_compression_cap)
++		return dc->res_pool->hubbub->funcs->get_dcc_compression_cap(
++			dc->res_pool->hubbub, input, output);
++
++	return false;
+ }
  
- 		subflow->send_fastclose = 1;
-+
-+		/* Initialize rcv_mss to TCP_MIN_MSS to avoid division by 0
-+		 * issue in __tcp_select_window(), see tcp_disconnect().
-+		 */
-+		inet_csk(ssk)->icsk_ack.rcv_mss = TCP_MIN_MSS;
-+
- 		tcp_send_active_reset(ssk, ssk->sk_allocation);
- unlock:
- 		release_sock(ssk);
+ static void dcn20_destroy_resource_pool(struct resource_pool **pool)
 
 
 
