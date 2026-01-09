@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-207516-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206914-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6D93D09D6F
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:41:07 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4644D09717
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:18:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 27400301D14E
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:37:58 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9BD32305F268
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:09:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89B7E359701;
-	Fri,  9 Jan 2026 12:37:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8CB8359FA9;
+	Fri,  9 Jan 2026 12:09:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iSjgiERT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CEbIJSmL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CD5833C53A;
-	Fri,  9 Jan 2026 12:37:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ECA1359F98;
+	Fri,  9 Jan 2026 12:09:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962276; cv=none; b=WU2ukfuzJuaU2zIkHDooJ9AIOehSsDFapfau/BzPev1g0H5AGmeiJP1wdp7SijNl0kK8Y8YvGbzOnYd1syHLL7lUNqFSP9BSn2xV09qBaOxv/kskrmRTp98eQypS14Bblmhc77qMCaQHcrnrFlnWGvMzwuTSgGsMFgT0CVGOTaA=
+	t=1767960559; cv=none; b=AzM9IBcR5kUjPHMijfHthke0rYp6ZWX2mEVmnZZ2J5fdMpJqCrTFLjleKuzoqJNY439CB/DokM40Pe4uudpk4jE0mi9S6GRWg75Y92SNCF3wwGNHdJfxk2PplvDqezd//UkBktayprRXsBhAaMSVQMZPa3/YP70S36peIgTL2VU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962276; c=relaxed/simple;
-	bh=TITbY8ppc0U8goMa6TmdhZr5cIev7bH0FTt5YweeWCM=;
+	s=arc-20240116; t=1767960559; c=relaxed/simple;
+	bh=qxRjGDQvWCnPCRPQR984fjmjYTfih7G1f3k7Tw4e6As=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NfeEwR+fqjq5cjmOLfFOgo/YQn6zpHgXeFcBawDxS6iq/sJPZMcURzc6DknumSf0CwkMrouiNcOQ4piVciBGUkXfIVv5WHtuFCNpac2lsGj/8Mq+0JLTqNl8AslBRHk1kVg51L9Ror8F+LRQgN4SA9lwzAnK+MfY66nGamcBOH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iSjgiERT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7042C4CEF1;
-	Fri,  9 Jan 2026 12:37:55 +0000 (UTC)
+	 MIME-Version; b=QTxKhVymDfEScDwMphzFimpisZ7aMNKEzvkPVNN9HzAeFdKUZu273eWCE3z+ltJE8d0wHd5n8JQbXTN0bTW3lsY3mI8Qy2JFiTzwY5FsNjiSFThgPRknS86pBn5cT5+DMtuh+6msHHrdUjdufZrg6fZWaVHD5NU2rCV4Lh33t/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CEbIJSmL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5545C4CEF1;
+	Fri,  9 Jan 2026 12:09:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962276;
-	bh=TITbY8ppc0U8goMa6TmdhZr5cIev7bH0FTt5YweeWCM=;
+	s=korg; t=1767960559;
+	bh=qxRjGDQvWCnPCRPQR984fjmjYTfih7G1f3k7Tw4e6As=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iSjgiERTeS9VPaDEDvCq4gV7HscS7qBEs1EwwoQt5hxG+vK8OGZ9wX35Dl0xRbgCU
-	 7vR0IMYi0HRKLt71DZSEhhw5qUhcPRoA+ZBudznbqHzq/DWa/8Yv/cuY+FcXelf6e0
-	 iyXzQpSGyxJYf6PrjeLPGWMo3/VVAIJnCxiA1XA4=
+	b=CEbIJSmL+1A836yjAjGvILa1o0wyRHejRVujTfgaKXXYy7PU+Lv72FReZOSytpRf+
+	 oPUjLJQOh+dgnDELSySMVpZzk1BwvXITF7PHbJmol9x/JCAFmqdkGICuiKMGXD+Mmt
+	 A4WSr1VyAkPAoikdQ0iacpwYeqvkobmr813Lf0Uc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <oliver.sang@intel.com>,
-	Yuezhang Mo <Yuezhang.Mo@sony.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 307/634] exfat: fix remount failure in different process environments
+	Yuhao Jiang <danisjiang@gmail.com>,
+	Junrui Luo <moonafterrain@outlook.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.6 446/737] scsi: aic94xx: fix use-after-free in device removal path
 Date: Fri,  9 Jan 2026 12:39:45 +0100
-Message-ID: <20260109112129.085796271@linuxfoundation.org>
+Message-ID: <20260109112150.773306897@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,65 +60,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuezhang Mo <Yuezhang.Mo@sony.com>
+From: Junrui Luo <moonafterrain@outlook.com>
 
-[ Upstream commit 51fc7b4ce10ccab8ea5e4876bcdc42cf5202a0ef ]
+commit f6ab594672d4cba08540919a4e6be2e202b60007 upstream.
 
-The kernel test robot reported that the exFAT remount operation
-failed. The reason for the failure was that the process's umask
-is different between mount and remount, causing fs_fmask and
-fs_dmask are changed.
+The asd_pci_remove() function fails to synchronize with pending tasklets
+before freeing the asd_ha structure, leading to a potential
+use-after-free vulnerability.
 
-Potentially, both gid and uid may also be changed. Therefore, when
-initializing fs_context for remount, inherit these mount options
-from the options used during mount.
+When a device removal is triggered (via hot-unplug or module unload),
+race condition can occur.
 
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Closes: https://lore.kernel.org/oe-lkp/202511251637.81670f5c-lkp@intel.com
-Signed-off-by: Yuezhang Mo <Yuezhang.Mo@sony.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The fix adds tasklet_kill() before freeing the asd_ha structure,
+ensuring all scheduled tasklets complete before cleanup proceeds.
+
+Reported-by: Yuhao Jiang <danisjiang@gmail.com>
+Reported-by: Junrui Luo <moonafterrain@outlook.com>
+Fixes: 2908d778ab3e ("[SCSI] aic94xx: new driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
+Link: https://patch.msgid.link/ME2PR01MB3156AB7DCACA206C845FC7E8AFFDA@ME2PR01MB3156.ausprd01.prod.outlook.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/exfat/super.c | 19 +++++++++++++++----
- 1 file changed, 15 insertions(+), 4 deletions(-)
+ drivers/scsi/aic94xx/aic94xx_init.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/exfat/super.c b/fs/exfat/super.c
-index 6cb7a11a3f62..52b852a4121b 100644
---- a/fs/exfat/super.c
-+++ b/fs/exfat/super.c
-@@ -763,10 +763,21 @@ static int exfat_init_fs_context(struct fs_context *fc)
- 	ratelimit_state_init(&sbi->ratelimit, DEFAULT_RATELIMIT_INTERVAL,
- 			DEFAULT_RATELIMIT_BURST);
+--- a/drivers/scsi/aic94xx/aic94xx_init.c
++++ b/drivers/scsi/aic94xx/aic94xx_init.c
+@@ -896,6 +896,9 @@ static void asd_pci_remove(struct pci_de
  
--	sbi->options.fs_uid = current_uid();
--	sbi->options.fs_gid = current_gid();
--	sbi->options.fs_fmask = current->fs->umask;
--	sbi->options.fs_dmask = current->fs->umask;
-+	if (fc->purpose == FS_CONTEXT_FOR_RECONFIGURE && fc->root) {
-+		struct super_block *sb = fc->root->d_sb;
-+		struct exfat_mount_options *cur_opts = &EXFAT_SB(sb)->options;
+ 	asd_disable_ints(asd_ha);
+ 
++	/* Ensure all scheduled tasklets complete before freeing resources */
++	tasklet_kill(&asd_ha->seq.dl_tasklet);
 +
-+		sbi->options.fs_uid = cur_opts->fs_uid;
-+		sbi->options.fs_gid = cur_opts->fs_gid;
-+		sbi->options.fs_fmask = cur_opts->fs_fmask;
-+		sbi->options.fs_dmask = cur_opts->fs_dmask;
-+	} else {
-+		sbi->options.fs_uid = current_uid();
-+		sbi->options.fs_gid = current_gid();
-+		sbi->options.fs_fmask = current->fs->umask;
-+		sbi->options.fs_dmask = current->fs->umask;
-+	}
-+
- 	sbi->options.allow_utime = -1;
- 	sbi->options.iocharset = exfat_default_iocharset;
- 	sbi->options.errors = EXFAT_ERRORS_RO;
--- 
-2.51.0
-
+ 	asd_remove_dev_attrs(asd_ha);
+ 
+ 	/* XXX more here as needed */
 
 
 
