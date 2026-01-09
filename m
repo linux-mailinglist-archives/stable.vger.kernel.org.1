@@ -1,52 +1,55 @@
-Return-Path: <stable+bounces-207225-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206625-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D842D09A15
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:29:27 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4488AD09341
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:03:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BAFE830169BE
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:24:09 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CF729308ED93
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:55:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F8BE2F4A19;
-	Fri,  9 Jan 2026 12:24:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E430D32FA3D;
+	Fri,  9 Jan 2026 11:55:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r9tY46fv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OufJMxnm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E627C26ED41;
-	Fri,  9 Jan 2026 12:24:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A841B2DEA6F;
+	Fri,  9 Jan 2026 11:55:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961449; cv=none; b=WUPCnazwHx/1bxsyYOsXxzyodyvZANKD3wObi5XEBcnvL/6D6ujrZn+4i3uutufBV6fRAK/nGjxL8f0g/EibIohdiZK1UilVnVjToXeRG3XPJvxMlROP2YEN51uWFiyu1FHt60rB4Yr2NGmJVSlKwuxQAMH9710IEQOOBs06sWU=
+	t=1767959737; cv=none; b=p6Ok+JYbpa+YGEkIKRTQMjW393SUBo/W7sBQW5wS2qDQzOxcn4U041nhAbkMgCTUnU2Xv/lsPbOjid4DnZx3rKkY3XIkoRBHOEyilvl9v/5EbpklXPJRL/Iryt0hrh52yPKZ7zpExb494SSYbiB5N1REb925UyBWHkABfI/73YE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961449; c=relaxed/simple;
-	bh=gmM5Gul3z4I4TdyIwS0zMNE8j7sLCDvVRcHbVPrFYCU=;
+	s=arc-20240116; t=1767959737; c=relaxed/simple;
+	bh=f6mLKU/x7vZJVf8K/Y1WBZ6fdAMvn+BtkZzilUihM/U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DC6gSyKW3lE44eoe9QX5yJgQxHKOUh55CB79auPnjLv6xEpNnuV6KOB1ZUAXOaNKwwyGs6X0eXBKtq3RPfoCT+lo8YfCZ9YnOkVSD80mcshiqqVuRLeGNQwdezVx/gGpvZnNZyKDfDjh/NCJLK0HeJ8QlLH1vVUdHiYFhu9K8+E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r9tY46fv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72C5FC4CEF1;
-	Fri,  9 Jan 2026 12:24:08 +0000 (UTC)
+	 MIME-Version; b=CBNNT5sRfkCra+3lhh0sOpgS0kUnSWxypM88DZPqX3WQJvjNah5uXFgSnD+HAnq29Hlk7FGm4mRO3abQD9tR9opuHxmtKmv4nE2WfjIJgDs7eyAv5xWN0utKxFZuz9wQT4BkLba/4EuwclajKi01yLSeb06bYt9ZNv70Nd/VUcs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OufJMxnm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36476C4CEF1;
+	Fri,  9 Jan 2026 11:55:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961448;
-	bh=gmM5Gul3z4I4TdyIwS0zMNE8j7sLCDvVRcHbVPrFYCU=;
+	s=korg; t=1767959737;
+	bh=f6mLKU/x7vZJVf8K/Y1WBZ6fdAMvn+BtkZzilUihM/U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r9tY46fvW1YG+VjHe72wbMk/I4iG9O2wEmlyZPQR9zhzAvvGhc0V5l+yyo6NJAE1/
-	 AsnnJN/yp4eFu/aZ0podSY5EIcIXk789tvpUDDq3uw/fgrGUwBpOsDkgVfiolDMWih
-	 szTmH40mmT6H3hkYmcKXrmm/yOJXR+X9KIfylmKE=
+	b=OufJMxnmKGUFUSbRih+PsgpYAWb+83koXgOEuw8WWaFtQqbaeBLb8EN4znuKpf8wI
+	 8gMRyaWRY0ETnXY5RSTfR+HgZGQAc4kYjFJ99ZYKxNchZcumjifRV1CiQ6sCbfWKLc
+	 GAvNYsqqMnHhasoo5sAJpatbmG4FHjkKXiUqozfE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.1 019/634] USB: serial: belkin_sa: fix TIOCMBIS and TIOCMBIC
+	Menglong Dong <dongml2@chinatelecom.cn>,
+	Song Liu <song@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 158/737] bpf: Handle return value of ftrace_set_filter_ip in register_fentry
 Date: Fri,  9 Jan 2026 12:34:57 +0100
-Message-ID: <20260109112118.158872014@linuxfoundation.org>
+Message-ID: <20260109112139.939506827@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,83 +61,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Menglong Dong <menglong8.dong@gmail.com>
 
-commit b6e0b3016187446ddef9edac03cd9d544ac63f11 upstream.
+[ Upstream commit fea3f5e83c5cd80a76d97343023a2f2e6bd862bf ]
 
-Asserting or deasserting a modem control line using TIOCMBIS or TIOCMBIC
-should not deassert any lines that are not in the mask.
+The error that returned by ftrace_set_filter_ip() in register_fentry() is
+not handled properly. Just fix it.
 
-Fix this long-standing regression dating back to 2003 when the
-tiocmset() callback was introduced.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 00963a2e75a8 ("bpf: Support bpf_trampoline on functions with IPMODIFY (e.g. livepatch)")
+Signed-off-by: Menglong Dong <dongml2@chinatelecom.cn>
+Acked-by: Song Liu <song@kernel.org>
+Link: https://lore.kernel.org/r/20251110120705.1553694-1-dongml2@chinatelecom.cn
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/belkin_sa.c |   28 +++++++++++++++++-----------
- 1 file changed, 17 insertions(+), 11 deletions(-)
+ kernel/bpf/trampoline.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/serial/belkin_sa.c
-+++ b/drivers/usb/serial/belkin_sa.c
-@@ -430,7 +430,7 @@ static int belkin_sa_tiocmset(struct tty
- 	struct belkin_sa_private *priv = usb_get_serial_port_data(port);
- 	unsigned long control_state;
- 	unsigned long flags;
--	int retval;
-+	int retval = 0;
- 	int rts = 0;
- 	int dtr = 0;
- 
-@@ -447,26 +447,32 @@ static int belkin_sa_tiocmset(struct tty
- 	}
- 	if (clear & TIOCM_RTS) {
- 		control_state &= ~TIOCM_RTS;
--		rts = 0;
-+		rts = 1;
- 	}
- 	if (clear & TIOCM_DTR) {
- 		control_state &= ~TIOCM_DTR;
--		dtr = 0;
-+		dtr = 1;
+diff --git a/kernel/bpf/trampoline.c b/kernel/bpf/trampoline.c
+index b6024fc903490..f8a58b4130701 100644
+--- a/kernel/bpf/trampoline.c
++++ b/kernel/bpf/trampoline.c
+@@ -216,7 +216,9 @@ static int register_fentry(struct bpf_trampoline *tr, void *new_addr)
  	}
  
- 	priv->control_state = control_state;
- 	spin_unlock_irqrestore(&priv->lock, flags);
- 
--	retval = BSA_USB_CMD(BELKIN_SA_SET_RTS_REQUEST, rts);
--	if (retval < 0) {
--		dev_err(&port->dev, "Set RTS error %d\n", retval);
--		goto exit;
-+	if (rts) {
-+		retval = BSA_USB_CMD(BELKIN_SA_SET_RTS_REQUEST,
-+					!!(control_state & TIOCM_RTS));
-+		if (retval < 0) {
-+			dev_err(&port->dev, "Set RTS error %d\n", retval);
-+			goto exit;
-+		}
- 	}
- 
--	retval = BSA_USB_CMD(BELKIN_SA_SET_DTR_REQUEST, dtr);
--	if (retval < 0) {
--		dev_err(&port->dev, "Set DTR error %d\n", retval);
--		goto exit;
-+	if (dtr) {
-+		retval = BSA_USB_CMD(BELKIN_SA_SET_DTR_REQUEST,
-+					!!(control_state & TIOCM_DTR));
-+		if (retval < 0) {
-+			dev_err(&port->dev, "Set DTR error %d\n", retval);
-+			goto exit;
-+		}
- 	}
- exit:
- 	return retval;
+ 	if (tr->func.ftrace_managed) {
+-		ftrace_set_filter_ip(tr->fops, (unsigned long)ip, 0, 1);
++		ret = ftrace_set_filter_ip(tr->fops, (unsigned long)ip, 0, 1);
++		if (ret)
++			return ret;
+ 		ret = register_ftrace_direct(tr->fops, (long)new_addr);
+ 	} else {
+ 		ret = bpf_arch_text_poke(ip, BPF_MOD_CALL, NULL, new_addr);
+-- 
+2.51.0
+
 
 
 
