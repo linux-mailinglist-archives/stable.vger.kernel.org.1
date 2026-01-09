@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-207373-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206772-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92A39D09E23
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:43:31 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 756C2D0959C
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:11:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D0DDC304F622
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:31:11 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 663E330A7919
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:02:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 742C61E8836;
-	Fri,  9 Jan 2026 12:31:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCEC5359F99;
+	Fri,  9 Jan 2026 12:02:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hCtmVexB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w8SbrQxw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35ABF336EDA;
-	Fri,  9 Jan 2026 12:31:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9113D1946C8;
+	Fri,  9 Jan 2026 12:02:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961871; cv=none; b=d39llprBTgAX504+YhAexoIiR6oHFk7pESqg1p/2MxLht2rvol/1a+VlsfeTS+MhDqOYNBykb3Qs++1+p9mckszl1yuu0dRiX2h6pLJDEhajqUOoZKeOQofZhJNj2aKXmt7CyU7aTeCSakS+rVh9U6Dxjos7dSNUw4zVEZjkx4o=
+	t=1767960155; cv=none; b=gGKFdr3zW0Yjw3YYVpEqbxkFB+7HJOg6mzZms9Zv0/lecYTm5kL5Bdk0fdqYuOGcdU7FtC8DhEOA/sq/lV+JJx7l96PTv/g8GZv22ZAVdnDU+XYgrh7vA1Rb4RLCXrrIS3Q+rhzp4Nlo9ZNrLSOHj4rAxIjSqrzwqhXmvt+hS94=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961871; c=relaxed/simple;
-	bh=HX/MO2qiNQ+dLvzCe6C3JMYU8tefDDfVLmAckJIy5Q8=;
+	s=arc-20240116; t=1767960155; c=relaxed/simple;
+	bh=RA6U0ctk1Dg5I5P2MVVnvJPxxFkPyaNscnFGF1DHs+E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TqJX4hC9GriAZWyTyx3HxJilV2rumJJko/FtfAXDLNpMPU2JWFgBxKvKvJBLSnE9gcQLK16D50PE+fYGEteFZuQweno1WqUH9BN2noswPfBBdC18XYTCVoLPhO2k6X4eIhTTvVIQqaMIqUL+uBsT01HmThPQQGq8TNVTL0kf7lk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hCtmVexB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2F49C4CEF1;
-	Fri,  9 Jan 2026 12:31:10 +0000 (UTC)
+	 MIME-Version; b=cVxIRDJqCakOvF9kjjL8oEerAc79BEQoTfj/xaSYDQs9dXbPl0HEk0L8zhZwDMwW1ma95+6uwVnqOWs2kcSobHt2Sa+EsVLbDQjcgft9HydxKLOOt++nlo5WTnzc4xswDe5Ic5XjQ8Sbb8PASRfYnqcgja7alhP4xkitO72RYPk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w8SbrQxw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1894C19422;
+	Fri,  9 Jan 2026 12:02:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961871;
-	bh=HX/MO2qiNQ+dLvzCe6C3JMYU8tefDDfVLmAckJIy5Q8=;
+	s=korg; t=1767960155;
+	bh=RA6U0ctk1Dg5I5P2MVVnvJPxxFkPyaNscnFGF1DHs+E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hCtmVexBMRYGUF/5SInuXR7k3yr/0U3CF3NuSP9VmEXfE3Juq9V84p2aWf0U1Usvj
-	 cF7zfrYd9HzisJeqCmG+Sm+U3OCZV0TOybO//4O8IUI8ToUSQBsz/Av7HWg1ogzUvm
-	 pMgO+76twogIP1oQdXK17iFaRoJqD5UYjRsGUJ64=
+	b=w8SbrQxw7or5ew1TP4AKj5FAzniVH7TM1UtOQV/X1lsd31QbGEcjFQnACG/rpiERe
+	 /LatztTt+T3GJWHBpcFdEh+6L3PRCPlcA3cYZy1U8OuYqCPkJh6XYsIfc5aMpHDYfA
+	 cyIvxNbPW1INYaxVMhnv7kYPuOvFxttsU9fNiv5o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Wang <jasowang@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
+	Joanne Koong <joannelkoong@gmail.com>,
+	Christoph Hellwig <hch@lst.de>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 164/634] virtio: fix typo in virtio_device_ready() comment
-Date: Fri,  9 Jan 2026 12:37:22 +0100
-Message-ID: <20260109112123.620170105@linuxfoundation.org>
+Subject: [PATCH 6.6 304/737] iomap: account for unaligned end offsets when truncating read range
+Date: Fri,  9 Jan 2026 12:37:23 +0100
+Message-ID: <20260109112145.442068374@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,38 +62,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael S. Tsirkin <mst@redhat.com>
+From: Joanne Koong <joannelkoong@gmail.com>
 
-[ Upstream commit 361173f95ae4b726ebbbf0bd594274f5576c4abc ]
+[ Upstream commit 9d875e0eef8ec15b6b1da0cb9a0f8ed13efee89e ]
 
-"coherenct" -> "coherent"
+The end position to start truncating from may be at an offset into a
+block, which under the current logic would result in overtruncation.
 
-Fixes: 8b4ec69d7e09 ("virtio: harden vring IRQ")
-Message-Id: <db286e9a65449347f6584e68c9960fd5ded2b4b0.1763026134.git.mst@redhat.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Adjust the calculation to account for unaligned end offsets.
+
+Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
+Link: https://patch.msgid.link/20251111193658.3495942-3-joannelkoong@gmail.com
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/virtio_config.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/iomap/buffered-io.c | 22 ++++++++++++++++++++--
+ 1 file changed, 20 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/virtio_config.h b/include/linux/virtio_config.h
-index 4b517649cfe84..eee145cfea6b5 100644
---- a/include/linux/virtio_config.h
-+++ b/include/linux/virtio_config.h
-@@ -286,7 +286,7 @@ void virtio_device_ready(struct virtio_device *dev)
- 	 * specific set_status() method.
- 	 *
- 	 * A well behaved device will only notify a virtqueue after
--	 * DRIVER_OK, this means the device should "see" the coherenct
-+	 * DRIVER_OK, this means the device should "see" the coherent
- 	 * memory write that set vq->broken as false which is done by
- 	 * the driver when it sees DRIVER_OK, then the following
- 	 * driver's vring_interrupt() will see vq->broken as false so
+diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
+index 13a5f4422c797..7e9480150d61e 100644
+--- a/fs/iomap/buffered-io.c
++++ b/fs/iomap/buffered-io.c
+@@ -188,6 +188,22 @@ static void ifs_free(struct folio *folio)
+ 	kfree(ifs);
+ }
+ 
++/*
++ * Calculate how many bytes to truncate based off the number of blocks to
++ * truncate and the end position to start truncating from.
++ */
++static size_t iomap_bytes_to_truncate(loff_t end_pos, unsigned block_bits,
++		unsigned blocks_truncated)
++{
++	unsigned block_size = 1 << block_bits;
++	unsigned block_offset = end_pos & (block_size - 1);
++
++	if (!block_offset)
++		return blocks_truncated << block_bits;
++
++	return ((blocks_truncated - 1) << block_bits) + block_offset;
++}
++
+ /*
+  * Calculate the range inside the folio that we actually need to read.
+  */
+@@ -233,7 +249,8 @@ static void iomap_adjust_read_range(struct inode *inode, struct folio *folio,
+ 		/* truncate len if we find any trailing uptodate block(s) */
+ 		while (++i <= last) {
+ 			if (ifs_block_is_uptodate(ifs, i)) {
+-				plen -= (last - i + 1) * block_size;
++				plen -= iomap_bytes_to_truncate(*pos + plen,
++						block_bits, last - i + 1);
+ 				last = i - 1;
+ 				break;
+ 			}
+@@ -249,7 +266,8 @@ static void iomap_adjust_read_range(struct inode *inode, struct folio *folio,
+ 		unsigned end = offset_in_folio(folio, isize - 1) >> block_bits;
+ 
+ 		if (first <= end && last > end)
+-			plen -= (last - end) * block_size;
++			plen -= iomap_bytes_to_truncate(*pos + plen, block_bits,
++					last - end);
+ 	}
+ 
+ 	*offp = poff;
 -- 
 2.51.0
 
