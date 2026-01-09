@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-206740-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207384-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B02FBD092C6
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:01:44 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12602D09E44
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:43:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id BCF52301BEBF
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:01:09 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9DFEC3013BEF
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:31:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3661233CE9A;
-	Fri,  9 Jan 2026 12:01:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A76F733C53C;
+	Fri,  9 Jan 2026 12:31:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GNyBQlPs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aQ7ClTEa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED75D335561;
-	Fri,  9 Jan 2026 12:01:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C37B33372B;
+	Fri,  9 Jan 2026 12:31:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960065; cv=none; b=RWE8X17dfhidkXxO5FqRN/XJPV5tIMJLIgFdxViXHkZe9tnZEjmfupvmrHHBocXAt2fmH8a1hT/6vdwUJ2DQAvfFL1lgzmQJq/b/fd3wxWC5cA4AiDHxZMButcLBM5RcxwdzapjBGRbNsdHGLiy6fRVwX9jqUKfas0RRwhkUZJ0=
+	t=1767961902; cv=none; b=mBCDWV+/AzTNpxT8wuRbz2cyD1KAAVfMhuBMnsPh3/WkHyL98lw1Yj41QzWZXFFgtDWjsoQHorcec1bRnjRC344o9na4vu6oXlmdxrIVCO3YURaSZ8H7cyloXAeyxRCOCSvsAz4rp/bGBhb4niV9mMQGY12BsjBu6znTVu79lEU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960065; c=relaxed/simple;
-	bh=v3IBwyJXk0QD/BF6EN6J4AoGaO/x4iJXsicAHxu/NB4=;
+	s=arc-20240116; t=1767961902; c=relaxed/simple;
+	bh=tjiRcUrATE8QibbY/fy6FOrY9O/uZePTMCGYUKSpoa4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bDLYSQhxPC4CZgdgvmgdWsdvfbzPmML9tvnhQobeVSE0QR0jOFxpS7frKZNEag0xQOIOtTXbsMeTrDkCOYVnGrgGqK8iA2W83aKP47LIyryVerlWq+ASmYcG3QjPOT4+mbaRLYxgPng5+Nn7Re/3qeFR/BAfCt/4uH/BoRbAYM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GNyBQlPs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E686FC4CEF1;
-	Fri,  9 Jan 2026 12:01:03 +0000 (UTC)
+	 MIME-Version; b=MN3gL81EBvrM5zvOD9B8lz0Gqc/kbQPno+oNOvUpKqa4U6E7FMXciZjCOjt2kR8NrdXR7oYkLcNncIdb7SdrgESC5ZYIkKY0OaZMQ2X+Kqx8iJIvIODyHw0JN4WFpHqc5P38oIBh4leeQ3PqNXGVQSWd+0Eh5MWksBSUQZNK5R0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aQ7ClTEa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC958C4CEF1;
+	Fri,  9 Jan 2026 12:31:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960064;
-	bh=v3IBwyJXk0QD/BF6EN6J4AoGaO/x4iJXsicAHxu/NB4=;
+	s=korg; t=1767961902;
+	bh=tjiRcUrATE8QibbY/fy6FOrY9O/uZePTMCGYUKSpoa4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GNyBQlPsG4gIFDwN6c+XamU0OeTpHx9mX0fXZNws4Ft/BJFAxF6OXvsLhAh1zzpBh
-	 Q2mm0C9oTpwBsNFWrH5vSZXfUWA7lwjxwBHDE+Dmr1I6lZqUSrJUIwmonqJWLA4q9i
-	 lk3Cg2TVMt3GCz9qIHIUrr3tZlDrGQs2festXKtc=
+	b=aQ7ClTEahqVOSsYeP0D9ParQIurFUYxowvS2uq9uh3DRkgbe/ZgxaDgC+GZc5vxdr
+	 tLjSl5eyZNuO6WZKI1Yd67YVIHGyrmwBomIJVpNpRis+NQRmWqCUNc0fM1UmSlxi3R
+	 kgKVmdezam6JZCuz80WMPaqTbEFzgu8tyQPcmE08=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	Mark Brown <broonie@kernel.org>,
+	Zhao Yipeng <zhaoyipeng5@huawei.com>,
+	Roberto Sassu <roberto.sassu@huawei.com>,
+	Mimi Zohar <zohar@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 272/737] ASoC: bcm: bcm63xx-pcm-whistler: Check return value of of_dma_configure()
-Date: Fri,  9 Jan 2026 12:36:51 +0100
-Message-ID: <20260109112144.231395063@linuxfoundation.org>
+Subject: [PATCH 6.1 134/634] ima: Handle error code returned by ima_filter_rule_match()
+Date: Fri,  9 Jan 2026 12:36:52 +0100
+Message-ID: <20260109112122.495685636@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,45 +61,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Zhao Yipeng <zhaoyipeng5@huawei.com>
 
-[ Upstream commit 0ebbd45c33d0049ebf5a22c1434567f0c420b333 ]
+[ Upstream commit 738c9738e690f5cea24a3ad6fd2d9a323cf614f6 ]
 
-bcm63xx_soc_pcm_new() does not check the return value of
-of_dma_configure(), which may fail with -EPROBE_DEFER or
-other errors, allowing PCM setup to continue with incomplete
-DMA configuration.
+In ima_match_rules(), if ima_filter_rule_match() returns -ENOENT due to
+the rule being NULL, the function incorrectly skips the 'if (!rc)' check
+and sets 'result = true'. The LSM rule is considered a match, causing
+extra files to be measured by IMA.
 
-Add error checking for of_dma_configure() and return on failure.
+This issue can be reproduced in the following scenario:
+After unloading the SELinux policy module via 'semodule -d', if an IMA
+measurement is triggered before ima_lsm_rules is updated,
+in ima_match_rules(), the first call to ima_filter_rule_match() returns
+-ESTALE. This causes the code to enter the 'if (rc == -ESTALE &&
+!rule_reinitialized)' block, perform ima_lsm_copy_rule() and retry. In
+ima_lsm_copy_rule(), since the SELinux module has been removed, the rule
+becomes NULL, and the second call to ima_filter_rule_match() returns
+-ENOENT. This bypasses the 'if (!rc)' check and results in a false match.
 
-Fixes: 88eb404ccc3e ("ASoC: brcm: Add DSL/PON SoC audio driver")
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Link: https://patch.msgid.link/20251202101642.492-1-vulab@iscas.ac.cn
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Call trace:
+  selinux_audit_rule_match+0x310/0x3b8
+  security_audit_rule_match+0x60/0xa0
+  ima_match_rules+0x2e4/0x4a0
+  ima_match_policy+0x9c/0x1e8
+  ima_get_action+0x48/0x60
+  process_measurement+0xf8/0xa98
+  ima_bprm_check+0x98/0xd8
+  security_bprm_check+0x5c/0x78
+  search_binary_handler+0x6c/0x318
+  exec_binprm+0x58/0x1b8
+  bprm_execve+0xb8/0x130
+  do_execveat_common.isra.0+0x1a8/0x258
+  __arm64_sys_execve+0x48/0x68
+  invoke_syscall+0x50/0x128
+  el0_svc_common.constprop.0+0xc8/0xf0
+  do_el0_svc+0x24/0x38
+  el0_svc+0x44/0x200
+  el0t_64_sync_handler+0x100/0x130
+  el0t_64_sync+0x3c8/0x3d0
+
+Fix this by changing 'if (!rc)' to 'if (rc <= 0)' to ensure that error
+codes like -ENOENT do not bypass the check and accidentally result in a
+successful match.
+
+Fixes: 4af4662fa4a9d ("integrity: IMA policy")
+Signed-off-by: Zhao Yipeng <zhaoyipeng5@huawei.com>
+Reviewed-by: Roberto Sassu <roberto.sassu@huawei.com>
+Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/bcm/bcm63xx-pcm-whistler.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ security/integrity/ima/ima_policy.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/bcm/bcm63xx-pcm-whistler.c b/sound/soc/bcm/bcm63xx-pcm-whistler.c
-index 2c600b017524f..760cb18870908 100644
---- a/sound/soc/bcm/bcm63xx-pcm-whistler.c
-+++ b/sound/soc/bcm/bcm63xx-pcm-whistler.c
-@@ -354,7 +354,9 @@ static int bcm63xx_soc_pcm_new(struct snd_soc_component *component,
- 
- 	i2s_priv = dev_get_drvdata(asoc_rtd_to_cpu(rtd, 0)->dev);
- 
--	of_dma_configure(pcm->card->dev, pcm->card->dev->of_node, 1);
-+	ret = of_dma_configure(pcm->card->dev, pcm->card->dev->of_node, 1);
-+	if (ret)
-+		return ret;
- 
- 	ret = dma_coerce_mask_and_coherent(pcm->card->dev, DMA_BIT_MASK(32));
- 	if (ret)
+diff --git a/security/integrity/ima/ima_policy.c b/security/integrity/ima/ima_policy.c
+index 1f930711db769..3eba0d27bc125 100644
+--- a/security/integrity/ima/ima_policy.c
++++ b/security/integrity/ima/ima_policy.c
+@@ -646,7 +646,7 @@ static bool ima_match_rules(struct ima_rule_entry *rule,
+ 				goto retry;
+ 			}
+ 		}
+-		if (!rc) {
++		if (rc <= 0) {
+ 			result = false;
+ 			goto out;
+ 		}
 -- 
 2.51.0
 
