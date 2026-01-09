@@ -1,60 +1,54 @@
-Return-Path: <stable+bounces-207181-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207740-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74E5ED09C22
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:36:41 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E5E8D0A1FC
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:00:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A3F6530FA5C5
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:22:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 26AAF31A53F4
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:49:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 161A035A93E;
-	Fri,  9 Jan 2026 12:22:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BE5635E548;
+	Fri,  9 Jan 2026 12:48:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W6lgU9Gg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EAoLBJ61"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD9CF26ED41;
-	Fri,  9 Jan 2026 12:22:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E268D33C53B;
+	Fri,  9 Jan 2026 12:48:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961322; cv=none; b=IDk3+Z/qQZJqG1kqE+b8h6nmYzSJ3omx847YRN5+z/O3hwebsGeXpYlMRngGzj1h4nVB/xuawaTmSdQqJqggnOd20jeBcE2T4SEMjUcZNYqb50czV/DtBelDQo6zDdCys3oQqLABuxkiG2igwUhin58ZvEXoYbgOtIPvOmYGKUo=
+	t=1767962912; cv=none; b=lN/1fPoL1F51YhjmaxS9vfqsV7fzgUtQzHbWlN1G/Q8d/CP1mUk9f1TnImd7Q1FpoEv3jfgGVB4TFrtAoTpGcDrSjuRHmT0b50oWzAG4qP/BpdTVD7ZjiS0bZsBcFJy6VUNWhCD3mAzRSY340rwcjNe2W78bIXw2ygdh1wDEa3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961322; c=relaxed/simple;
-	bh=vR4u7Oa47OhpisSw71E21q9yoGrCgDeGF6wj3BbBf2Q=;
+	s=arc-20240116; t=1767962912; c=relaxed/simple;
+	bh=pY95L0V1HCwqBpB+YGuYw8kMLVwas3LBTXsNf+j/fHg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d1HvcOHzIk1NHiT+P/M6pL24GTa/ipsSTFMHjfkyMQZhF47tEh++4OMBHXGejJSc+p2UIzQX63WH9cz4kTwBzFnGK2Ui7+yt+4m4+TCciMfBdUAPC3NM38JBqBVtuyRCKar1zF3ygxLoJeU3tvp/YCqgP0ZCbn1U+bfowBG2l2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W6lgU9Gg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 556D7C4CEF1;
-	Fri,  9 Jan 2026 12:22:02 +0000 (UTC)
+	 MIME-Version; b=HeVDW8F3ftCY49tVNSPCxB8TvBNwFwwG3eGWUE+iQkjjJV1sjWYFG7SW7nd7LIG8AjrQrp6Vp7FtIIIU2Om43KK8eSfg3r+2Z5vQAGCxtbx2BfHAgAwhSzWCIkKqd7WtJ890FxmUvSPnMMrYrMcbY09HeN1Rjtq2as49C9+t5Q0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EAoLBJ61; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67633C4CEF1;
+	Fri,  9 Jan 2026 12:48:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961322;
-	bh=vR4u7Oa47OhpisSw71E21q9yoGrCgDeGF6wj3BbBf2Q=;
+	s=korg; t=1767962911;
+	bh=pY95L0V1HCwqBpB+YGuYw8kMLVwas3LBTXsNf+j/fHg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W6lgU9Ggz1kpngva59TR5Q/LOz5d3f8sw8DXxm1CSxFfpI9/ZRyANuyaLGSoFWO1m
-	 uyUeXERDo49Hba+Upq8T9HoU3fBr78KHp6JF2+U4rqseGszgUuBRzz4KU2KK4KZaNY
-	 52fqTAodMm1pwhIXYhrDRgnDiB7QrLRNjY8wYym8=
+	b=EAoLBJ61TQlf7aeVZ8zcuwi1UUuurDl8MuGAprbWVs8kRP1kRC1yQarylTw1Kj4Lh
+	 2JWJpQxY0Bg2cWOCbGcOu8tkNIYfsueIISCfg4oZECDonlnh0jNUrOmeOmmTDVPMdr
+	 EqpmAgTFusoISGP7EMowsai13xkOkdywGPsmj+W0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzkaller <syzkaller@googlegroups.com>,
-	yan kang <kangyan91@outlook.com>,
-	yue sun <samsun1006219@gmail.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Subject: [PATCH 6.6 671/737] net: Remove RTNL dance for SIOCBRADDIF and SIOCBRDELIF.
+	Omar Sandoval <osandov@fb.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 532/634] KVM: SVM: Dont skip unrelated instruction if INT3/INTO is replaced
 Date: Fri,  9 Jan 2026 12:43:30 +0100
-Message-ID: <20260109112159.292432019@linuxfoundation.org>
+Message-ID: <20260109112137.590410180@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,302 +60,204 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+From: Omar Sandoval <osandov@fb.com>
 
-commit ed3ba9b6e280e14cc3148c1b226ba453f02fa76c upstream.
+[ Upstream commit 4da3768e1820cf15cced390242d8789aed34f54d ]
 
-SIOCBRDELIF is passed to dev_ioctl() first and later forwarded to
-br_ioctl_call(), which causes unnecessary RTNL dance and the splat
-below [0] under RTNL pressure.
+When re-injecting a soft interrupt from an INT3, INT0, or (select) INTn
+instruction, discard the exception and retry the instruction if the code
+stream is changed (e.g. by a different vCPU) between when the CPU
+executes the instruction and when KVM decodes the instruction to get the
+next RIP.
 
-Let's say Thread A is trying to detach a device from a bridge and
-Thread B is trying to remove the bridge.
+As effectively predicted by commit 6ef88d6e36c2 ("KVM: SVM: Re-inject
+INT3/INTO instead of retrying the instruction"), failure to verify that
+the correct INTn instruction was decoded can effectively clobber guest
+state due to decoding the wrong instruction and thus specifying the
+wrong next RIP.
 
-In dev_ioctl(), Thread A bumps the bridge device's refcnt by
-netdev_hold() and releases RTNL because the following br_ioctl_call()
-also re-acquires RTNL.
+The bug most often manifests as "Oops: int3" panics on static branch
+checks in Linux guests.  Enabling or disabling a static branch in Linux
+uses the kernel's "text poke" code patching mechanism.  To modify code
+while other CPUs may be executing that code, Linux (temporarily)
+replaces the first byte of the original instruction with an int3 (opcode
+0xcc), then patches in the new code stream except for the first byte,
+and finally replaces the int3 with the first byte of the new code
+stream.  If a CPU hits the int3, i.e. executes the code while it's being
+modified, then the guest kernel must look up the RIP to determine how to
+handle the #BP, e.g. by emulating the new instruction.  If the RIP is
+incorrect, then this lookup fails and the guest kernel panics.
 
-In the race window, Thread B could acquire RTNL and try to remove
-the bridge device.  Then, rtnl_unlock() by Thread B will release RTNL
-and wait for netdev_put() by Thread A.
+The bug reproduces almost instantly by hacking the guest kernel to
+repeatedly check a static branch[1] while running a drgn script[2] on
+the host to constantly swap out the memory containing the guest's TSS.
 
-Thread A, however, must hold RTNL after the unlock in dev_ifsioc(),
-which may take long under RTNL pressure, resulting in the splat by
-Thread B.
+[1]: https://gist.github.com/osandov/44d17c51c28c0ac998ea0334edf90b5a
+[2]: https://gist.github.com/osandov/10e45e45afa29b11e0c7209247afc00b
 
-  Thread A (SIOCBRDELIF)           Thread B (SIOCBRDELBR)
-  ----------------------           ----------------------
-  sock_ioctl                       sock_ioctl
-  `- sock_do_ioctl                 `- br_ioctl_call
-     `- dev_ioctl                     `- br_ioctl_stub
-        |- rtnl_lock                     |
-        |- dev_ifsioc                    '
-        '  |- dev = __dev_get_by_name(...)
-           |- netdev_hold(dev, ...)      .
-       /   |- rtnl_unlock  ------.       |
-       |   |- br_ioctl_call       `--->  |- rtnl_lock
-  Race |   |  `- br_ioctl_stub           |- br_del_bridge
-  Window   |     |                       |  |- dev = __dev_get_by_name(...)
-       |   |     |  May take long        |  `- br_dev_delete(dev, ...)
-       |   |     |  under RTNL pressure  |     `- unregister_netdevice_queue(dev, ...)
-       |   |     |               |       `- rtnl_unlock
-       \   |     |- rtnl_lock  <-'          `- netdev_run_todo
-           |     |- ...                        `- netdev_run_todo
-           |     `- rtnl_unlock                   |- __rtnl_unlock
-           |                                      |- netdev_wait_allrefs_any
-           |- netdev_put(dev, ...)  <----------------'
-                                                Wait refcnt decrement
-                                                and log splat below
-
-To avoid blocking SIOCBRDELBR unnecessarily, let's not call
-dev_ioctl() for SIOCBRADDIF and SIOCBRDELIF.
-
-In the dev_ioctl() path, we do the following:
-
-  1. Copy struct ifreq by get_user_ifreq in sock_do_ioctl()
-  2. Check CAP_NET_ADMIN in dev_ioctl()
-  3. Call dev_load() in dev_ioctl()
-  4. Fetch the master dev from ifr.ifr_name in dev_ifsioc()
-
-3. can be done by request_module() in br_ioctl_call(), so we move
-1., 2., and 4. to br_ioctl_stub().
-
-Note that 2. is also checked later in add_del_if(), but it's better
-performed before RTNL.
-
-SIOCBRADDIF and SIOCBRDELIF have been processed in dev_ioctl() since
-the pre-git era, and there seems to be no specific reason to process
-them there.
-
-[0]:
-unregister_netdevice: waiting for wpan3 to become free. Usage count = 2
-ref_tracker: wpan3@ffff8880662d8608 has 1/1 users at
-     __netdev_tracker_alloc include/linux/netdevice.h:4282 [inline]
-     netdev_hold include/linux/netdevice.h:4311 [inline]
-     dev_ifsioc+0xc6a/0x1160 net/core/dev_ioctl.c:624
-     dev_ioctl+0x255/0x10c0 net/core/dev_ioctl.c:826
-     sock_do_ioctl+0x1ca/0x260 net/socket.c:1213
-     sock_ioctl+0x23a/0x6c0 net/socket.c:1318
-     vfs_ioctl fs/ioctl.c:51 [inline]
-     __do_sys_ioctl fs/ioctl.c:906 [inline]
-     __se_sys_ioctl fs/ioctl.c:892 [inline]
-     __x64_sys_ioctl+0x1a4/0x210 fs/ioctl.c:892
-     do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-     do_syscall_64+0xcb/0x250 arch/x86/entry/common.c:83
-     entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Fixes: 893b19587534 ("net: bridge: fix ioctl locking")
-Reported-by: syzkaller <syzkaller@googlegroups.com>
-Reported-by: yan kang <kangyan91@outlook.com>
-Reported-by: yue sun <samsun1006219@gmail.com>
-Closes: https://lore.kernel.org/netdev/SY8P300MB0421225D54EB92762AE8F0F2A1D32@SY8P300MB0421.AUSP300.PROD.OUTLOOK.COM/
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Acked-by: Stanislav Fomichev <sdf@fomichev.me>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://patch.msgid.link/20250316192851.19781-1-kuniyu@amazon.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-[cascardo: fixed conflict at dev_ifsioc]
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Fixes: 6ef88d6e36c2 ("KVM: SVM: Re-inject INT3/INTO instead of retrying the instruction")
+Cc: stable@vger.kernel.org
+Co-developed-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Omar Sandoval <osandov@fb.com>
+Link: https://patch.msgid.link/1cc6dcdf36e3add7ee7c8d90ad58414eeb6c3d34.1762278762.git.osandov@fb.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/if_bridge.h |    6 ++----
- net/bridge/br_ioctl.c     |   36 +++++++++++++++++++++++++++++++++---
- net/bridge/br_private.h   |    3 +--
- net/core/dev_ioctl.c      |   16 ----------------
- net/socket.c              |   19 +++++++++----------
- 5 files changed, 45 insertions(+), 35 deletions(-)
+ arch/x86/include/asm/kvm_host.h |    9 +++++++++
+ arch/x86/kvm/svm/svm.c          |   24 +++++++++++++-----------
+ arch/x86/kvm/x86.c              |   21 +++++++++++++++++++++
+ 3 files changed, 43 insertions(+), 11 deletions(-)
 
---- a/include/linux/if_bridge.h
-+++ b/include/linux/if_bridge.h
-@@ -65,11 +65,9 @@ struct br_ip_list {
- #define BR_DEFAULT_AGEING_TIME	(300 * HZ)
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -1827,6 +1827,11 @@ u64 vcpu_tsc_khz(struct kvm_vcpu *vcpu);
+  *			     the gfn, i.e. retrying the instruction will hit a
+  *			     !PRESENT fault, which results in a new shadow page
+  *			     and sends KVM back to square one.
++ *
++ * EMULTYPE_SKIP_SOFT_INT - Set in combination with EMULTYPE_SKIP to only skip
++ *                          an instruction if it could generate a given software
++ *                          interrupt, which must be encoded via
++ *                          EMULTYPE_SET_SOFT_INT_VECTOR().
+  */
+ #define EMULTYPE_NO_DECODE	    (1 << 0)
+ #define EMULTYPE_TRAP_UD	    (1 << 1)
+@@ -1837,6 +1842,10 @@ u64 vcpu_tsc_khz(struct kvm_vcpu *vcpu);
+ #define EMULTYPE_PF		    (1 << 6)
+ #define EMULTYPE_COMPLETE_USER_EXIT (1 << 7)
+ #define EMULTYPE_WRITE_PF_TO_SP	    (1 << 8)
++#define EMULTYPE_SKIP_SOFT_INT	    (1 << 9)
++
++#define EMULTYPE_SET_SOFT_INT_VECTOR(v)	((u32)((v) & 0xff) << 16)
++#define EMULTYPE_GET_SOFT_INT_VECTOR(e)	(((e) >> 16) & 0xff)
  
- struct net_bridge;
--void brioctl_set(int (*hook)(struct net *net, struct net_bridge *br,
--			     unsigned int cmd, struct ifreq *ifr,
-+void brioctl_set(int (*hook)(struct net *net, unsigned int cmd,
- 			     void __user *uarg));
--int br_ioctl_call(struct net *net, struct net_bridge *br, unsigned int cmd,
--		  struct ifreq *ifr, void __user *uarg);
-+int br_ioctl_call(struct net *net, unsigned int cmd, void __user *uarg);
+ int kvm_emulate_instruction(struct kvm_vcpu *vcpu, int emulation_type);
+ int kvm_emulate_instruction_from_buffer(struct kvm_vcpu *vcpu,
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -370,6 +370,7 @@ static bool svm_can_emulate_instruction(
+ 					void *insn, int insn_len);
  
- #if IS_ENABLED(CONFIG_BRIDGE) && IS_ENABLED(CONFIG_BRIDGE_IGMP_SNOOPING)
- int br_multicast_list_adjacent(struct net_device *dev,
---- a/net/bridge/br_ioctl.c
-+++ b/net/bridge/br_ioctl.c
-@@ -394,10 +394,26 @@ static int old_deviceless(struct net *ne
- 	return -EOPNOTSUPP;
+ static int __svm_skip_emulated_instruction(struct kvm_vcpu *vcpu,
++					   int emul_type,
+ 					   bool commit_side_effects)
+ {
+ 	struct vcpu_svm *svm = to_svm(vcpu);
+@@ -399,7 +400,7 @@ static int __svm_skip_emulated_instructi
+ 		if (unlikely(!commit_side_effects))
+ 			old_rflags = svm->vmcb->save.rflags;
+ 
+-		if (!kvm_emulate_instruction(vcpu, EMULTYPE_SKIP))
++		if (!kvm_emulate_instruction(vcpu, emul_type))
+ 			return 0;
+ 
+ 		if (unlikely(!commit_side_effects))
+@@ -417,11 +418,13 @@ done:
+ 
+ static int svm_skip_emulated_instruction(struct kvm_vcpu *vcpu)
+ {
+-	return __svm_skip_emulated_instruction(vcpu, true);
++	return __svm_skip_emulated_instruction(vcpu, EMULTYPE_SKIP, true);
  }
  
--int br_ioctl_stub(struct net *net, struct net_bridge *br, unsigned int cmd,
--		  struct ifreq *ifr, void __user *uarg)
-+int br_ioctl_stub(struct net *net, unsigned int cmd, void __user *uarg)
+-static int svm_update_soft_interrupt_rip(struct kvm_vcpu *vcpu)
++static int svm_update_soft_interrupt_rip(struct kvm_vcpu *vcpu, u8 vector)
  {
- 	int ret = -EOPNOTSUPP;
-+	struct ifreq ifr;
-+
-+	if (cmd == SIOCBRADDIF || cmd == SIOCBRDELIF) {
-+		void __user *data;
-+		char *colon;
-+
-+		if (!ns_capable(net->user_ns, CAP_NET_ADMIN))
-+			return -EPERM;
-+
-+		if (get_user_ifreq(&ifr, &data, uarg))
-+			return -EFAULT;
-+
-+		ifr.ifr_name[IFNAMSIZ - 1] = 0;
-+		colon = strchr(ifr.ifr_name, ':');
-+		if (colon)
-+			*colon = 0;
-+	}
++	const int emul_type = EMULTYPE_SKIP | EMULTYPE_SKIP_SOFT_INT |
++			      EMULTYPE_SET_SOFT_INT_VECTOR(vector);
+ 	unsigned long rip, old_rip = kvm_rip_read(vcpu);
+ 	struct vcpu_svm *svm = to_svm(vcpu);
  
- 	rtnl_lock();
+@@ -437,7 +440,7 @@ static int svm_update_soft_interrupt_rip
+ 	 * in use, the skip must not commit any side effects such as clearing
+ 	 * the interrupt shadow or RFLAGS.RF.
+ 	 */
+-	if (!__svm_skip_emulated_instruction(vcpu, !nrips))
++	if (!__svm_skip_emulated_instruction(vcpu, emul_type, !nrips))
+ 		return -EIO;
  
-@@ -430,7 +446,21 @@ int br_ioctl_stub(struct net *net, struc
- 		break;
- 	case SIOCBRADDIF:
- 	case SIOCBRDELIF:
--		ret = add_del_if(br, ifr->ifr_ifindex, cmd == SIOCBRADDIF);
-+	{
-+		struct net_device *dev;
-+
-+		dev = __dev_get_by_name(net, ifr.ifr_name);
-+		if (!dev || !netif_device_present(dev)) {
-+			ret = -ENODEV;
-+			break;
-+		}
-+		if (!netif_is_bridge_master(dev)) {
-+			ret = -EOPNOTSUPP;
-+			break;
-+		}
-+
-+		ret = add_del_if(netdev_priv(dev), ifr.ifr_ifindex, cmd == SIOCBRADDIF);
-+	}
- 		break;
+ 	rip = kvm_rip_read(vcpu);
+@@ -473,7 +476,7 @@ static void svm_inject_exception(struct
+ 	kvm_deliver_exception_payload(vcpu, ex);
+ 
+ 	if (kvm_exception_is_soft(ex->vector) &&
+-	    svm_update_soft_interrupt_rip(vcpu))
++	    svm_update_soft_interrupt_rip(vcpu, ex->vector))
+ 		return;
+ 
+ 	svm->vmcb->control.event_inj = ex->vector
+@@ -3524,11 +3527,12 @@ static void svm_inject_nmi(struct kvm_vc
+ 
+ static void svm_inject_irq(struct kvm_vcpu *vcpu, bool reinjected)
+ {
++	struct kvm_queued_interrupt *intr = &vcpu->arch.interrupt;
+ 	struct vcpu_svm *svm = to_svm(vcpu);
+ 	u32 type;
+ 
+-	if (vcpu->arch.interrupt.soft) {
+-		if (svm_update_soft_interrupt_rip(vcpu))
++	if (intr->soft) {
++		if (svm_update_soft_interrupt_rip(vcpu, intr->nr))
+ 			return;
+ 
+ 		type = SVM_EVTINJ_TYPE_SOFT;
+@@ -3536,12 +3540,10 @@ static void svm_inject_irq(struct kvm_vc
+ 		type = SVM_EVTINJ_TYPE_INTR;
  	}
  
---- a/net/bridge/br_private.h
-+++ b/net/bridge/br_private.h
-@@ -948,8 +948,7 @@ br_port_get_check_rtnl(const struct net_
- /* br_ioctl.c */
- int br_dev_siocdevprivate(struct net_device *dev, struct ifreq *rq,
- 			  void __user *data, int cmd);
--int br_ioctl_stub(struct net *net, struct net_bridge *br, unsigned int cmd,
--		  struct ifreq *ifr, void __user *uarg);
-+int br_ioctl_stub(struct net *net, unsigned int cmd, void __user *uarg);
+-	trace_kvm_inj_virq(vcpu->arch.interrupt.nr,
+-			   vcpu->arch.interrupt.soft, reinjected);
++	trace_kvm_inj_virq(intr->nr, intr->soft, reinjected);
+ 	++vcpu->stat.irq_injections;
  
- /* br_multicast.c */
- #ifdef CONFIG_BRIDGE_IGMP_SNOOPING
---- a/net/core/dev_ioctl.c
-+++ b/net/core/dev_ioctl.c
-@@ -517,7 +517,6 @@ static int dev_ifsioc(struct net *net, s
- 	int err;
- 	struct net_device *dev = __dev_get_by_name(net, ifr->ifr_name);
- 	const struct net_device_ops *ops;
--	netdevice_tracker dev_tracker;
- 
- 	if (!dev)
- 		return -ENODEV;
-@@ -580,19 +579,6 @@ static int dev_ifsioc(struct net *net, s
- 	case SIOCWANDEV:
- 		return dev_siocwandev(dev, &ifr->ifr_settings);
- 
--	case SIOCBRADDIF:
--	case SIOCBRDELIF:
--		if (!netif_device_present(dev))
--			return -ENODEV;
--		if (!netif_is_bridge_master(dev))
--			return -EOPNOTSUPP;
--		netdev_hold(dev, &dev_tracker, GFP_KERNEL);
--		rtnl_unlock();
--		err = br_ioctl_call(net, netdev_priv(dev), cmd, ifr, NULL);
--		netdev_put(dev, &dev_tracker);
--		rtnl_lock();
--		return err;
--
- 	case SIOCDEVPRIVATE ... SIOCDEVPRIVATE + 15:
- 		return dev_siocdevprivate(dev, ifr, data, cmd);
- 
-@@ -773,8 +759,6 @@ int dev_ioctl(struct net *net, unsigned
- 	case SIOCBONDRELEASE:
- 	case SIOCBONDSETHWADDR:
- 	case SIOCBONDCHANGEACTIVE:
--	case SIOCBRADDIF:
--	case SIOCBRDELIF:
- 	case SIOCSHWTSTAMP:
- 		if (!ns_capable(net->user_ns, CAP_NET_ADMIN))
- 			return -EPERM;
---- a/net/socket.c
-+++ b/net/socket.c
-@@ -1168,12 +1168,10 @@ static ssize_t sock_write_iter(struct ki
-  */
- 
- static DEFINE_MUTEX(br_ioctl_mutex);
--static int (*br_ioctl_hook)(struct net *net, struct net_bridge *br,
--			    unsigned int cmd, struct ifreq *ifr,
-+static int (*br_ioctl_hook)(struct net *net, unsigned int cmd,
- 			    void __user *uarg);
- 
--void brioctl_set(int (*hook)(struct net *net, struct net_bridge *br,
--			     unsigned int cmd, struct ifreq *ifr,
-+void brioctl_set(int (*hook)(struct net *net, unsigned int cmd,
- 			     void __user *uarg))
- {
- 	mutex_lock(&br_ioctl_mutex);
-@@ -1182,8 +1180,7 @@ void brioctl_set(int (*hook)(struct net
+-	svm->vmcb->control.event_inj = vcpu->arch.interrupt.nr |
+-				       SVM_EVTINJ_VALID | type;
++	svm->vmcb->control.event_inj = intr->nr | SVM_EVTINJ_VALID | type;
  }
- EXPORT_SYMBOL(brioctl_set);
  
--int br_ioctl_call(struct net *net, struct net_bridge *br, unsigned int cmd,
--		  struct ifreq *ifr, void __user *uarg)
-+int br_ioctl_call(struct net *net, unsigned int cmd, void __user *uarg)
- {
- 	int err = -ENOPKG;
+ void svm_complete_interrupt_delivery(struct kvm_vcpu *vcpu, int delivery_mode,
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -8840,6 +8840,23 @@ static bool is_vmware_backdoor_opcode(st
+ 	return false;
+ }
  
-@@ -1192,7 +1189,7 @@ int br_ioctl_call(struct net *net, struc
- 
- 	mutex_lock(&br_ioctl_mutex);
- 	if (br_ioctl_hook)
--		err = br_ioctl_hook(net, br, cmd, ifr, uarg);
-+		err = br_ioctl_hook(net, cmd, uarg);
- 	mutex_unlock(&br_ioctl_mutex);
- 
- 	return err;
-@@ -1292,7 +1289,9 @@ static long sock_ioctl(struct file *file
- 		case SIOCSIFBR:
- 		case SIOCBRADDBR:
- 		case SIOCBRDELBR:
--			err = br_ioctl_call(net, NULL, cmd, NULL, argp);
-+		case SIOCBRADDIF:
-+		case SIOCBRDELIF:
-+			err = br_ioctl_call(net, cmd, argp);
- 			break;
- 		case SIOCGIFVLAN:
- 		case SIOCSIFVLAN:
-@@ -3454,6 +3453,8 @@ static int compat_sock_ioctl_trans(struc
- 	case SIOCGPGRP:
- 	case SIOCBRADDBR:
- 	case SIOCBRDELBR:
-+	case SIOCBRADDIF:
-+	case SIOCBRDELIF:
- 	case SIOCGIFVLAN:
- 	case SIOCSIFVLAN:
- 	case SIOCGSKNS:
-@@ -3493,8 +3494,6 @@ static int compat_sock_ioctl_trans(struc
- 	case SIOCGIFPFLAGS:
- 	case SIOCGIFTXQLEN:
- 	case SIOCSIFTXQLEN:
--	case SIOCBRADDIF:
--	case SIOCBRDELIF:
- 	case SIOCGIFNAME:
- 	case SIOCSIFNAME:
- 	case SIOCGMIIPHY:
++static bool is_soft_int_instruction(struct x86_emulate_ctxt *ctxt,
++				    int emulation_type)
++{
++	u8 vector = EMULTYPE_GET_SOFT_INT_VECTOR(emulation_type);
++
++	switch (ctxt->b) {
++	case 0xcc:
++		return vector == BP_VECTOR;
++	case 0xcd:
++		return vector == ctxt->src.val;
++	case 0xce:
++		return vector == OF_VECTOR;
++	default:
++		return false;
++	}
++}
++
+ /*
+  * Decode an instruction for emulation.  The caller is responsible for handling
+  * code breakpoints.  Note, manually detecting code breakpoints is unnecessary
+@@ -8930,6 +8947,10 @@ int x86_emulate_instruction(struct kvm_v
+ 	 * injecting single-step #DBs.
+ 	 */
+ 	if (emulation_type & EMULTYPE_SKIP) {
++		if (emulation_type & EMULTYPE_SKIP_SOFT_INT &&
++		    !is_soft_int_instruction(ctxt, emulation_type))
++			return 0;
++
+ 		if (ctxt->mode != X86EMUL_MODE_PROT64)
+ 			ctxt->eip = (u32)ctxt->_eip;
+ 		else
 
 
 
