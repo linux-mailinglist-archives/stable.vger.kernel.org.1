@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-207642-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207075-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90807D0A051
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:51:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6116CD098B4
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:24:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A37B3304DE25
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:43:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A0C9A3105157
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:17:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1973A33032C;
-	Fri,  9 Jan 2026 12:43:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 185A332AAB5;
+	Fri,  9 Jan 2026 12:17:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iDQ8Hdj8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IrTQxKGo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D17591A2545;
-	Fri,  9 Jan 2026 12:43:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF18F2737EE;
+	Fri,  9 Jan 2026 12:16:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962631; cv=none; b=aQjXnsGYQIdQWkDQdQLdoR7rRokw7sNR44bBqGczSpRRGdrH+ifw0VKWoYm7wLVDQMinwtc7NZUYjSs3Bqr2KUeM8crNmbYE/GdUqou1w7E/rr5y67Vlfy+/+568AqU58DIrXuMKqojDgXfhx9lmh66y402RNdcBygoSheE7yY0=
+	t=1767961019; cv=none; b=c2wlqywUpbZ1npWAKG86JE4a/GKgLWf/O5mi6sf/mGKTuMiBTDFE0kihV+Cj0u8dnpILHG2AYyvjCLKuQBhcZ4q4znXXaQ/SB6B6PRTNUK/ZiCyHIFwMzyWSTbocKt4J/I9q8eJnj8/Q07HMJfLdUr4p+ZbvRlMJNdpIdF5R47w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962631; c=relaxed/simple;
-	bh=7XrJnP3SrLldI1zBkKCi/CIRo0VJnQDXfR9lk0NZfjE=;
+	s=arc-20240116; t=1767961019; c=relaxed/simple;
+	bh=h1xebJKKkxMvbD8lBSQvdavr/ZTDZGh09Zem4l0MfMA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a+ya/fkAFAHM1N2Ry2GH2qmWAVfB8A5T2rykplNGxi8mA+Vz2bV0mT5CoqcIZwz1JNmMWKlokGqsUJ0dvvJwvNUCtdP+aXd86uREN6ad+WacgXKSzZkz02pkypur/feAx0Yr2VHhXNI8mUkTzKI9XMUh9oOVQE8HzqKy2y7SLjA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iDQ8Hdj8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B8B4C4CEF1;
-	Fri,  9 Jan 2026 12:43:51 +0000 (UTC)
+	 MIME-Version; b=OR7Oi9emOnXz2zSYma/U8H+OxONy0HOF4xanCC8caWOyfLo2P1pyTznQ+exyH20iOFqip1E029jGR86Ca2w5HYxUJLw6PROX29mooAygTZKU9BL+qJBDRmBbMUZ75AoW8MzjDpQScvD366rkfgc8fT6Imrd68PDIFTvM57Mt9XA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IrTQxKGo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF2A5C4CEF1;
+	Fri,  9 Jan 2026 12:16:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962631;
-	bh=7XrJnP3SrLldI1zBkKCi/CIRo0VJnQDXfR9lk0NZfjE=;
+	s=korg; t=1767961019;
+	bh=h1xebJKKkxMvbD8lBSQvdavr/ZTDZGh09Zem4l0MfMA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iDQ8Hdj86VO73PRlq6FBLjtsQlrvzGz0o4POlk8cbL7HJaYsHzFDSa8wXMLd+29yF
-	 IilAVAB5A6Yoyd1jCxVHiVVXAZXy41o/5UDMsGCgBQmbS8OCQuJrRRW6QUr0UKrNKs
-	 xHmVvZohgjjjeKI+tXmk/lHrMf/4jI8f2XnaTBLg=
+	b=IrTQxKGonzoQqgmlFn70nq18XZJmKlo45dQSATQQSh2L8qyfvYhEUsuBRny7Z9GBd
+	 +kFMwdhcd2km0eWDlLk+9Zbnn9LwA6o+Kxp9N0qDhAc4rS0u03FPUjk/ld9TKLVM3j
+	 CldOdCPa3X35a50GOCBN3j8OAHAmmvRqXaA9s3Gk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 434/634] RDMA/bnxt_re: Fix incorrect BAR check in bnxt_qplib_map_creq_db()
-Date: Fri,  9 Jan 2026 12:41:52 +0100
-Message-ID: <20260109112133.874546991@linuxfoundation.org>
+	Sven Schnelle <svens@stackframe.org>,
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 6.6 574/737] parisc: entry: set W bit for !compat tasks in syscall_restore_rfi()
+Date: Fri,  9 Jan 2026 12:41:53 +0100
+Message-ID: <20260109112155.595204664@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +59,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Sven Schnelle <svens@stackframe.org>
 
-[ Upstream commit 145a417a39d7efbc881f52e829817376972b278c ]
+commit 5fb1d3ce3e74a4530042795e1e065422295f1371 upstream.
 
-RCFW_COMM_CONS_PCI_BAR_REGION is defined as BAR 2, so checking
-!creq_db->reg.bar_id is incorrect and always false.
+When the kernel leaves to userspace via syscall_restore_rfi(), the
+W bit is not set in the new PSW. This doesn't cause any problems
+because there's no 64 bit userspace for parisc. Simple static binaries
+are usually loaded at addresses way below the 32 bit limit so the W bit
+doesn't matter.
 
-pci_resource_start() returns the BAR base address, and a value of 0
-indicates that the BAR is unassigned. Update the condition to test
-bar_base == 0 instead.
+Fix this by setting the W bit when TIF_32BIT is not set.
 
-This ensures the driver detects and logs an error for an unassigned
-RCFW communication BAR.
-
-Fixes: cee0c7bba486 ("RDMA/bnxt_re: Refactor command queue management code")
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Link: https://patch.msgid.link/20251217100158.752504-1-alok.a.tiwari@oracle.com
-Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Sven Schnelle <svens@stackframe.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/bnxt_re/qplib_rcfw.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/parisc/kernel/asm-offsets.c |    2 ++
+ arch/parisc/kernel/entry.S       |    5 ++++-
+ 2 files changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c b/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c
-index c03475b9fa28..69eb6408ce86 100644
---- a/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c
-+++ b/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c
-@@ -777,7 +777,7 @@ static int bnxt_qplib_map_creq_db(struct bnxt_qplib_rcfw *rcfw, u32 reg_offt)
+--- a/arch/parisc/kernel/asm-offsets.c
++++ b/arch/parisc/kernel/asm-offsets.c
+@@ -258,6 +258,8 @@ int main(void)
+ 	BLANK();
+ 	DEFINE(TIF_BLOCKSTEP_PA_BIT, 31-TIF_BLOCKSTEP);
+ 	DEFINE(TIF_SINGLESTEP_PA_BIT, 31-TIF_SINGLESTEP);
++	DEFINE(TIF_32BIT_PA_BIT, 31-TIF_32BIT);
++
+ 	BLANK();
+ 	DEFINE(ASM_PMD_SHIFT, PMD_SHIFT);
+ 	DEFINE(ASM_PGDIR_SHIFT, PGDIR_SHIFT);
+--- a/arch/parisc/kernel/entry.S
++++ b/arch/parisc/kernel/entry.S
+@@ -1846,6 +1846,10 @@ syscall_restore_rfi:
+ 	extru,= %r19,TIF_BLOCKSTEP_PA_BIT,1,%r0
+ 	depi	-1,7,1,%r20			   /* T bit */
  
- 	creq_db->reg.bar_id = RCFW_COMM_CONS_PCI_BAR_REGION;
- 	creq_db->reg.bar_base = pci_resource_start(pdev, creq_db->reg.bar_id);
--	if (!creq_db->reg.bar_id)
-+	if (!creq_db->reg.bar_base)
- 		dev_err(&pdev->dev,
- 			"QPLIB: CREQ BAR region %d resc start is 0!",
- 			creq_db->reg.bar_id);
--- 
-2.51.0
-
++#ifdef CONFIG_64BIT
++	extru,<> %r19,TIF_32BIT_PA_BIT,1,%r0
++	depi	-1,4,1,%r20			   /* W bit */
++#endif
+ 	STREG	%r20,TASK_PT_PSW(%r1)
+ 
+ 	/* Always store space registers, since sr3 can be changed (e.g. fork) */
+@@ -1859,7 +1863,6 @@ syscall_restore_rfi:
+ 	STREG   %r25,TASK_PT_IASQ0(%r1)
+ 	STREG   %r25,TASK_PT_IASQ1(%r1)
+ 
+-	/* XXX W bit??? */
+ 	/* Now if old D bit is clear, it means we didn't save all registers
+ 	 * on syscall entry, so do that now.  This only happens on TRACEME
+ 	 * calls, or if someone attached to us while we were on a syscall.
 
 
 
