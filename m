@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-206806-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207408-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5977D09395
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:04:37 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6538D09F34
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:47:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4A21B3024274
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:04:18 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D6CE130A9321
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:32:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDE951946C8;
-	Fri,  9 Jan 2026 12:04:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D6CF35A95B;
+	Fri,  9 Jan 2026 12:32:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ng8lhho7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cs82B2RF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A04DD35A922;
-	Fri,  9 Jan 2026 12:04:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FD6731E107;
+	Fri,  9 Jan 2026 12:32:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960251; cv=none; b=V1Gh6RXZPfjh0yHHa4OVG6MQdsfMKKpL51CmTzgKthPRLbq9GPChSL8kfdGJcr9eAEC68gSkCLon3KNfAUkyNkhua5efkm883Uyffbz6tq8okqE6nSI0PeIdZL+9W2O9AX7/5uZlHtiVdKlnop5EaPUa50wcwoopTIbOfYV71ws=
+	t=1767961970; cv=none; b=tDJNle1K/SRFNmE09eN1fABU0c3z1lMX975V2glQFDb5uLFjVUW+MGGaJl2+LJrbjoLUHgLF1vtIPRBrYkvBi8OB8ovM/dSp4eL8FMwysS8LKNpwGbGupOPz2PT0+w9Us/cDIdFcCQ6dHWJmPubSSyg44K/u97Yru9Id2pU2R88=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960251; c=relaxed/simple;
-	bh=+nTHMCUAILCD4PR5Mz9pmIzoL2MjkofxWU1LKjk9muY=;
+	s=arc-20240116; t=1767961970; c=relaxed/simple;
+	bh=XfkUsvOfmwf2GQJH+Ut7ClCzdau36x15dg0z5nD8ImY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ljkb8yidlJmTw3+Ztp9Iqq4M+k1veNfUX8udD3NGGd9vOYEgzfv6XpF6vAHFrqYAIoRosF58N1lQfwI3apRPk8IobxHjjawiCYtMhXR2AisrFq7sSfWrtdI9mFgvFmgbzmd1N8l2RLmflVynwAGnug75pVECaXQN77D2YDYwbes=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ng8lhho7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E438C16AAE;
-	Fri,  9 Jan 2026 12:04:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=b2nXQijmCCdBe3FNhm8CImkc8dyRg9ut6u1R/85yVq3Wo3906ABL0U59jdihc5tQfFx/VEvDFwz5x6i1xje5F0LDAWw/KJklNkVrpRlzCdqjzkzztlyTZmszdDLHZ03r1DTK/ajmL2maJSYJ2BbgwWHpFvW0qBxdUFPPTTemmFU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cs82B2RF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1570C4CEF1;
+	Fri,  9 Jan 2026 12:32:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960251;
-	bh=+nTHMCUAILCD4PR5Mz9pmIzoL2MjkofxWU1LKjk9muY=;
+	s=korg; t=1767961970;
+	bh=XfkUsvOfmwf2GQJH+Ut7ClCzdau36x15dg0z5nD8ImY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ng8lhho7r9ipPxhPSOewNfvs8rTTyHsh0rZ8MNNuCjAKG6cBHCsYIhVFZVnnxcixq
-	 jhG9b3lvDf0FpYAuv9b8wbCm4QMgrRgGYMMt1dWttNS4f2U2CcmA/NzIWRAQp+NxQZ
-	 D41zh8VM/YskeDERb51YcS+ORAlzJFE6eXxMl3bc=
+	b=cs82B2RFYxMCxziHs9mc8G1bcaCbEt55lS4e74YPqTEW+jD5YMLSJkTHMr9i8s8ll
+	 UFfPvgZH65ik8UKBsKO9s+iq88jcNbPB12iePh9ZgRi+Hy3RNYLKGlKvoZ0QZ/nNUg
+	 Gtm5uH168s7Y/32XkEAcwdoOFne2N6LW4w0ms0wk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junvy Yang <zhuque@tencent.com>,
-	Ilya Maximets <i.maximets@ovn.org>,
-	Aaron Conole <aconole@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
+	Armin Wolf <W_Armin@gmx.de>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 338/737] net: openvswitch: fix middle attribute validation in push_nsh() action
+Subject: [PATCH 6.1 199/634] fs/nls: Fix inconsistency between utf8_to_utf32() and utf32_to_utf8()
 Date: Fri,  9 Jan 2026 12:37:57 +0100
-Message-ID: <20260109112146.704813055@linuxfoundation.org>
+Message-ID: <20260109112124.922805770@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,114 +59,65 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilya Maximets <i.maximets@ovn.org>
+From: Armin Wolf <W_Armin@gmx.de>
 
-[ Upstream commit 5ace7ef87f059d68b5f50837ef3e8a1a4870c36e ]
+[ Upstream commit c36f9d7b2869a003a2f7d6ff2c6bac9e62fd7d68 ]
 
-The push_nsh() action structure looks like this:
+After commit 25524b619029 ("fs/nls: Fix utf16 to utf8 conversion"),
+the return values of utf8_to_utf32() and utf32_to_utf8() are
+inconsistent when encountering an error: utf8_to_utf32() returns -1,
+while utf32_to_utf8() returns errno codes. Fix this inconsistency
+by modifying utf8_to_utf32() to return errno codes as well.
 
- OVS_ACTION_ATTR_PUSH_NSH(OVS_KEY_ATTR_NSH(OVS_NSH_KEY_ATTR_BASE,...))
-
-The outermost OVS_ACTION_ATTR_PUSH_NSH attribute is OK'ed by the
-nla_for_each_nested() inside __ovs_nla_copy_actions().  The innermost
-OVS_NSH_KEY_ATTR_BASE/MD1/MD2 are OK'ed by the nla_for_each_nested()
-inside nsh_key_put_from_nlattr().  But nothing checks if the attribute
-in the middle is OK.  We don't even check that this attribute is the
-OVS_KEY_ATTR_NSH.  We just do a double unwrap with a pair of nla_data()
-calls - first time directly while calling validate_push_nsh() and the
-second time as part of the nla_for_each_nested() macro, which isn't
-safe, potentially causing invalid memory access if the size of this
-attribute is incorrect.  The failure may not be noticed during
-validation due to larger netlink buffer, but cause trouble later during
-action execution where the buffer is allocated exactly to the size:
-
- BUG: KASAN: slab-out-of-bounds in nsh_hdr_from_nlattr+0x1dd/0x6a0 [openvswitch]
- Read of size 184 at addr ffff88816459a634 by task a.out/22624
-
- CPU: 8 UID: 0 PID: 22624 6.18.0-rc7+ #115 PREEMPT(voluntary)
- Call Trace:
-  <TASK>
-  dump_stack_lvl+0x51/0x70
-  print_address_description.constprop.0+0x2c/0x390
-  kasan_report+0xdd/0x110
-  kasan_check_range+0x35/0x1b0
-  __asan_memcpy+0x20/0x60
-  nsh_hdr_from_nlattr+0x1dd/0x6a0 [openvswitch]
-  push_nsh+0x82/0x120 [openvswitch]
-  do_execute_actions+0x1405/0x2840 [openvswitch]
-  ovs_execute_actions+0xd5/0x3b0 [openvswitch]
-  ovs_packet_cmd_execute+0x949/0xdb0 [openvswitch]
-  genl_family_rcv_msg_doit+0x1d6/0x2b0
-  genl_family_rcv_msg+0x336/0x580
-  genl_rcv_msg+0x9f/0x130
-  netlink_rcv_skb+0x11f/0x370
-  genl_rcv+0x24/0x40
-  netlink_unicast+0x73e/0xaa0
-  netlink_sendmsg+0x744/0xbf0
-  __sys_sendto+0x3d6/0x450
-  do_syscall_64+0x79/0x2c0
-  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-  </TASK>
-
-Let's add some checks that the attribute is properly sized and it's
-the only one attribute inside the action.  Technically, there is no
-real reason for OVS_KEY_ATTR_NSH to be there, as we know that we're
-pushing an NSH header already, it just creates extra nesting, but
-that's how uAPI works today.  So, keeping as it is.
-
-Fixes: b2d0f5d5dc53 ("openvswitch: enable NSH support")
-Reported-by: Junvy Yang <zhuque@tencent.com>
-Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
-Acked-by: Eelco Chaudron echaudro@redhat.com
-Reviewed-by: Aaron Conole <aconole@redhat.com>
-Link: https://patch.msgid.link/20251204105334.900379-1-i.maximets@ovn.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 25524b619029 ("fs/nls: Fix utf16 to utf8 conversion")
+Suggested-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+Link: https://patch.msgid.link/20251129111535.8984-1-W_Armin@gmx.de
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/openvswitch/flow_netlink.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ fs/nls/nls_base.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/net/openvswitch/flow_netlink.c b/net/openvswitch/flow_netlink.c
-index 836e8e705d40e..1d9a44d6216af 100644
---- a/net/openvswitch/flow_netlink.c
-+++ b/net/openvswitch/flow_netlink.c
-@@ -2788,13 +2788,20 @@ static int validate_and_copy_set_tun(const struct nlattr *attr,
- 	return err;
- }
- 
--static bool validate_push_nsh(const struct nlattr *attr, bool log)
-+static bool validate_push_nsh(const struct nlattr *a, bool log)
- {
-+	struct nlattr *nsh_key = nla_data(a);
- 	struct sw_flow_match match;
- 	struct sw_flow_key key;
- 
-+	/* There must be one and only one NSH header. */
-+	if (!nla_ok(nsh_key, nla_len(a)) ||
-+	    nla_total_size(nla_len(nsh_key)) != nla_len(a) ||
-+	    nla_type(nsh_key) != OVS_KEY_ATTR_NSH)
-+		return false;
+diff --git a/fs/nls/nls_base.c b/fs/nls/nls_base.c
+index 7eacded3c17d1..f072eb6b563f6 100644
+--- a/fs/nls/nls_base.c
++++ b/fs/nls/nls_base.c
+@@ -67,19 +67,22 @@ int utf8_to_utf32(const u8 *s, int inlen, unicode_t *pu)
+ 			l &= t->lmask;
+ 			if (l < t->lval || l > UNICODE_MAX ||
+ 					(l & SURROGATE_MASK) == SURROGATE_PAIR)
+-				return -1;
++				return -EILSEQ;
 +
- 	ovs_match_init(&match, &key, true, NULL);
--	return !nsh_key_put_from_nlattr(attr, &match, false, true, log);
-+	return !nsh_key_put_from_nlattr(nsh_key, &match, false, true, log);
+ 			*pu = (unicode_t) l;
+ 			return nc;
+ 		}
+ 		if (inlen <= nc)
+-			return -1;
++			return -EOVERFLOW;
++
+ 		s++;
+ 		c = (*s ^ 0x80) & 0xFF;
+ 		if (c & 0xC0)
+-			return -1;
++			return -EILSEQ;
++
+ 		l = (l << 6) | c;
+ 	}
+-	return -1;
++	return -EILSEQ;
  }
- 
- /* Return false if there are any non-masked bits set.
-@@ -3351,7 +3358,7 @@ static int __ovs_nla_copy_actions(struct net *net, const struct nlattr *attr,
- 					return -EINVAL;
- 			}
- 			mac_proto = MAC_PROTO_NONE;
--			if (!validate_push_nsh(nla_data(a), log))
-+			if (!validate_push_nsh(a, log))
- 				return -EINVAL;
- 			break;
+ EXPORT_SYMBOL(utf8_to_utf32);
  
 -- 
 2.51.0
