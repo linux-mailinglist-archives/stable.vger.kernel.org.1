@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-206762-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207364-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8248CD09566
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:11:23 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BECA2D09C67
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:37:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 90BD0304C0D9
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:02:08 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 37CFA3022F09
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:31:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1526533CE9A;
-	Fri,  9 Jan 2026 12:02:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1006433372B;
+	Fri,  9 Jan 2026 12:30:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YMo9szF8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VZ1wl05A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD7531946C8;
-	Fri,  9 Jan 2026 12:02:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7B37359701;
+	Fri,  9 Jan 2026 12:30:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960126; cv=none; b=s5P5ACo0ML4W5AtqwIQN/BC9Caka9L/qFy7NSIkhEKMVFUm4RCY6lSfRXM29TW0uG0tDlb+2O68sNHO+5h5sc/b9v6JN0CmfPmWNgxSlwojyqF+wv937oel4DDZLco8fK09UXGmSvyRSMqTM4uap/oqK/LujJmUqQZyZIMT/xrg=
+	t=1767961845; cv=none; b=bRJUAtKF5hn1rey4K7kNUpi2U7rQGyx4Dd2UeR1sBM0jPQHUSTkqH5yFLNKfAner4DHZFEl5YpGYWQ2MJhJyCGcSYSL0g3a9+fHOgCpQ+Yolm6sW/XrNcDW1cSxUy3npuYve9OLQA2vxcuIzX4xVVpWyrBtNSun2SpmAD2tO+xA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960126; c=relaxed/simple;
-	bh=wwHFzI7MByfogAWWCDDmeZTKfMo6ro8vybiiCmilUOI=;
+	s=arc-20240116; t=1767961845; c=relaxed/simple;
+	bh=gdDBKN7dAZ31YE2eRcaODqXvTfovVXdLf5Icj/5kJw0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fr0tJFlpppRwVge/QBx1UkPm8U9ndcC/J6WUQWGMmTnRN7HGTOea3T68+zI/HONvGu0Qs7L2xNOJyaDy+iz7355BahNRxP6cMyVRdjCt69ITNsNhL4laPR4PhNChM0HiObTUWNTRLJPkO76xvP41HK9ILUrU6TYiAr8IJqd151I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YMo9szF8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57975C4CEF1;
-	Fri,  9 Jan 2026 12:02:06 +0000 (UTC)
+	 MIME-Version; b=D53YBAJgXjZ41SR1PjGOvYLXAoDdXi7frqYii1iDzAsxL4gBFDurikGu7bJpMoZKag1Wno8ewgTqs01ngBdbla/Zqg3+oMvp9fS5gRd2kdUlTAnNlv5q1CVtrZxEpoIjf+jjVtdpekqFIPRlkMFC1dZIJOdvER/RvSEmGhT1xII=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VZ1wl05A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53A0CC4CEF1;
+	Fri,  9 Jan 2026 12:30:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960126;
-	bh=wwHFzI7MByfogAWWCDDmeZTKfMo6ro8vybiiCmilUOI=;
+	s=korg; t=1767961845;
+	bh=gdDBKN7dAZ31YE2eRcaODqXvTfovVXdLf5Icj/5kJw0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YMo9szF8Ishy3t/hzQA6AgSGLZvtoVNwqGICJ2MlIRZ98z5uh/969O9U8exVaAHmn
-	 +QlpN82sj+UGrod5KoHnjTz3riVU4MEizcqVcNwHzUABuhbp0b7jRX/6rkG+2QO0k0
-	 +1wM9Y97pJ+y5WxdoIYS2nbCpQ/0u5FfrB9zvbbc=
+	b=VZ1wl05ANsebiBPDb0UkUGOFCfOaZTivhpBvXahdE00DTHd7djoTuYriAJ84Ce59w
+	 NmLVKW5n50LqSwN0Q/uCJ2X5cpEYrQRRkwPtnJBEsgj5iFrKUukYbjH+oZzcNGXtkO
+	 rkYvEA/SlNNPq4+OoJLzWSbzs6TBjxNHTDB5bEpI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>
-Subject: [PATCH 6.6 295/737] usb: phy: Initialize struct usb_phy list_head
+	Chancel Liu <chancel.liu@nxp.com>,
+	Shengjiu Wang <shengjiu.wang@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 156/634] ASoC: fsl_xcvr: Add support for i.MX93 platform
 Date: Fri,  9 Jan 2026 12:37:14 +0100
-Message-ID: <20260109112145.108140849@linuxfoundation.org>
+Message-ID: <20260109112123.321641021@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,64 +61,321 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>
+From: Chancel Liu <chancel.liu@nxp.com>
 
-commit c69ff68b097b0f53333114f1b2c3dc128f389596 upstream.
+[ Upstream commit e240b9329a300af7b7c1eba2ce0abbf19e6c540b ]
 
-As part of the registration of a new 'struct usb_phy' with the USB PHY core
-via either usb_add_phy(struct usb_phy *x, ...) or usb_add_phy_dev(struct
-usb_phy *x) these functions call list_add_tail(&x->head, phy_list) in
-order for the new instance x to be stored in phy_list, a static list
-kept internally by the core.
+Add compatible string and specific soc data to support XCVR on i.MX93
+platform. XCVR IP on i.MX93 is cut to SPDIF only by removing external
+PHY.
 
-After 7d21114dc6a2 ("usb: phy: Introduce one extcon device into usb phy")
-when executing either of the registration functions above it is possible
-that usb_add_extcon() fails, leading to either function returning before
-the call to list_add_tail(), leaving x->head uninitialized.
-
-Then, when a driver tries to undo the failed registration by calling
-usb_remove_phy(struct usb_phy *x) there will be an unconditional call to
-list_del(&x->head) acting on an uninitialized variable, and thus a
-possible NULL pointer dereference.
-
-Fix this by initializing x->head before usb_add_extcon() has a
-chance to fail. Note that this was not needed before 7d21114dc6a2 since
-list_add_phy() was executed unconditionally and it guaranteed that x->head
-was initialized.
-
-Fixes: 7d21114dc6a2 ("usb: phy: Introduce one extcon device into usb phy")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>
-Link: https://patch.msgid.link/20251121-diogo-smaug_typec-v2-1-5c37c1169d57@tecnico.ulisboa.pt
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Chancel Liu <chancel.liu@nxp.com>
+Acked-by: Shengjiu Wang <shengjiu.wang@gmail.com>
+Link: https://lore.kernel.org/r/20230104023953.2973362-3-chancel.liu@nxp.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 73b97d46dde6 ("ASoC: fsl_xcvr: clear the channel status control memory")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/phy/phy.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ sound/soc/fsl/fsl_xcvr.c | 143 ++++++++++++++++++++++++++-------------
+ sound/soc/fsl/fsl_xcvr.h |   7 ++
+ 2 files changed, 102 insertions(+), 48 deletions(-)
 
---- a/drivers/usb/phy/phy.c
-+++ b/drivers/usb/phy/phy.c
-@@ -672,6 +672,8 @@ int usb_add_phy(struct usb_phy *x, enum
- 		return -EINVAL;
+diff --git a/sound/soc/fsl/fsl_xcvr.c b/sound/soc/fsl/fsl_xcvr.c
+index 6c8a2519cc1bd..8f8ff0ff9765a 100644
+--- a/sound/soc/fsl/fsl_xcvr.c
++++ b/sound/soc/fsl/fsl_xcvr.c
+@@ -21,6 +21,7 @@
+ 
+ struct fsl_xcvr_soc_data {
+ 	const char *fw_name;
++	bool spdif_only;
+ };
+ 
+ struct fsl_xcvr {
+@@ -261,6 +262,9 @@ static int fsl_xcvr_en_phy_pll(struct fsl_xcvr *xcvr, u32 freq, bool tx)
+ 	u32 i, div = 0, log2;
+ 	int ret;
+ 
++	if (xcvr->soc_data->spdif_only)
++		return 0;
++
+ 	for (i = 0; i < ARRAY_SIZE(fsl_xcvr_pll_cfg); i++) {
+ 		if (fsl_xcvr_pll_cfg[i].fout % freq == 0) {
+ 			div = fsl_xcvr_pll_cfg[i].fout / freq;
+@@ -353,6 +357,7 @@ static int fsl_xcvr_en_aud_pll(struct fsl_xcvr *xcvr, u32 freq)
+ 	struct device *dev = &xcvr->pdev->dev;
+ 	int ret;
+ 
++	freq = xcvr->soc_data->spdif_only ? freq / 10 : freq;
+ 	clk_disable_unprepare(xcvr->phy_clk);
+ 	ret = clk_set_rate(xcvr->phy_clk, freq);
+ 	if (ret < 0) {
+@@ -365,6 +370,8 @@ static int fsl_xcvr_en_aud_pll(struct fsl_xcvr *xcvr, u32 freq)
+ 		return ret;
  	}
  
-+	INIT_LIST_HEAD(&x->head);
++	if (xcvr->soc_data->spdif_only)
++		return 0;
+ 	/* Release AI interface from reset */
+ 	ret = regmap_write(xcvr->regmap, FSL_XCVR_PHY_AI_CTRL_SET,
+ 			   FSL_XCVR_PHY_AI_CTRL_AI_RESETN);
+@@ -547,10 +554,12 @@ static int fsl_xcvr_startup(struct snd_pcm_substream *substream,
+ 
+ 	xcvr->streams |= BIT(substream->stream);
+ 
+-	/* Disable XCVR controls if there is stream started */
+-	fsl_xcvr_activate_ctl(dai, fsl_xcvr_mode_kctl.name, false);
+-	fsl_xcvr_activate_ctl(dai, fsl_xcvr_arc_mode_kctl.name, false);
+-	fsl_xcvr_activate_ctl(dai, fsl_xcvr_earc_capds_kctl.name, false);
++	if (!xcvr->soc_data->spdif_only) {
++		/* Disable XCVR controls if there is stream started */
++		fsl_xcvr_activate_ctl(dai, fsl_xcvr_mode_kctl.name, false);
++		fsl_xcvr_activate_ctl(dai, fsl_xcvr_arc_mode_kctl.name, false);
++		fsl_xcvr_activate_ctl(dai, fsl_xcvr_earc_capds_kctl.name, false);
++	}
+ 
+ 	return 0;
+ }
+@@ -567,12 +576,13 @@ static void fsl_xcvr_shutdown(struct snd_pcm_substream *substream,
+ 
+ 	/* Enable XCVR controls if there is no stream started */
+ 	if (!xcvr->streams) {
+-		fsl_xcvr_activate_ctl(dai, fsl_xcvr_mode_kctl.name, true);
+-		fsl_xcvr_activate_ctl(dai, fsl_xcvr_arc_mode_kctl.name,
+-				      (xcvr->mode == FSL_XCVR_MODE_ARC));
+-		fsl_xcvr_activate_ctl(dai, fsl_xcvr_earc_capds_kctl.name,
+-				      (xcvr->mode == FSL_XCVR_MODE_EARC));
+-
++		if (!xcvr->soc_data->spdif_only) {
++			fsl_xcvr_activate_ctl(dai, fsl_xcvr_mode_kctl.name, true);
++			fsl_xcvr_activate_ctl(dai, fsl_xcvr_arc_mode_kctl.name,
++						(xcvr->mode == FSL_XCVR_MODE_ARC));
++			fsl_xcvr_activate_ctl(dai, fsl_xcvr_earc_capds_kctl.name,
++						(xcvr->mode == FSL_XCVR_MODE_EARC));
++		}
+ 		ret = regmap_update_bits(xcvr->regmap, FSL_XCVR_EXT_IER0,
+ 					 FSL_XCVR_IRQ_EARC_ALL, 0);
+ 		if (ret < 0) {
+@@ -673,7 +683,10 @@ static int fsl_xcvr_trigger(struct snd_pcm_substream *substream, int cmd,
+ 					dev_err(dai->dev, "Failed to stop DATA_TX: %d\n", ret);
+ 					return ret;
+ 				}
+-				fallthrough;
++				if (xcvr->soc_data->spdif_only)
++					break;
++				else
++					fallthrough;
+ 			case FSL_XCVR_MODE_EARC:
+ 				/* clear ISR_CMDC_TX_EN, W1C */
+ 				ret = regmap_write(xcvr->regmap,
+@@ -870,9 +883,13 @@ static int fsl_xcvr_dai_probe(struct snd_soc_dai *dai)
+ 
+ 	snd_soc_dai_init_dma_data(dai, &xcvr->dma_prms_tx, &xcvr->dma_prms_rx);
+ 
+-	snd_soc_add_dai_controls(dai, &fsl_xcvr_mode_kctl, 1);
+-	snd_soc_add_dai_controls(dai, &fsl_xcvr_arc_mode_kctl, 1);
+-	snd_soc_add_dai_controls(dai, &fsl_xcvr_earc_capds_kctl, 1);
++	if (xcvr->soc_data->spdif_only)
++		xcvr->mode = FSL_XCVR_MODE_SPDIF;
++	else {
++		snd_soc_add_dai_controls(dai, &fsl_xcvr_mode_kctl, 1);
++		snd_soc_add_dai_controls(dai, &fsl_xcvr_arc_mode_kctl, 1);
++		snd_soc_add_dai_controls(dai, &fsl_xcvr_earc_capds_kctl, 1);
++	}
+ 	snd_soc_add_dai_controls(dai, fsl_xcvr_tx_ctls,
+ 				 ARRAY_SIZE(fsl_xcvr_tx_ctls));
+ 	snd_soc_add_dai_controls(dai, fsl_xcvr_rx_ctls,
+@@ -930,10 +947,11 @@ static const struct reg_default fsl_xcvr_reg_defaults[] = {
+ 	{ FSL_XCVR_ISR_SET,	0x00000000 },
+ 	{ FSL_XCVR_ISR_CLR,	0x00000000 },
+ 	{ FSL_XCVR_ISR_TOG,	0x00000000 },
+-	{ FSL_XCVR_RX_DPTH_CTRL,	0x00002C89 },
+-	{ FSL_XCVR_RX_DPTH_CTRL_SET,	0x00002C89 },
+-	{ FSL_XCVR_RX_DPTH_CTRL_CLR,	0x00002C89 },
+-	{ FSL_XCVR_RX_DPTH_CTRL_TOG,	0x00002C89 },
++	{ FSL_XCVR_CLK_CTRL,	0x0000018F },
++	{ FSL_XCVR_RX_DPTH_CTRL,	0x00040CC1 },
++	{ FSL_XCVR_RX_DPTH_CTRL_SET,	0x00040CC1 },
++	{ FSL_XCVR_RX_DPTH_CTRL_CLR,	0x00040CC1 },
++	{ FSL_XCVR_RX_DPTH_CTRL_TOG,	0x00040CC1 },
+ 	{ FSL_XCVR_RX_DPTH_CNTR_CTRL,	0x00000000 },
+ 	{ FSL_XCVR_RX_DPTH_CNTR_CTRL_SET, 0x00000000 },
+ 	{ FSL_XCVR_RX_DPTH_CNTR_CTRL_CLR, 0x00000000 },
+@@ -966,6 +984,12 @@ static const struct reg_default fsl_xcvr_reg_defaults[] = {
+ 
+ static bool fsl_xcvr_readable_reg(struct device *dev, unsigned int reg)
+ {
++	struct fsl_xcvr *xcvr = dev_get_drvdata(dev);
 +
- 	usb_charger_init(x);
- 	ret = usb_add_extcon(x);
- 	if (ret)
-@@ -722,6 +724,8 @@ int usb_add_phy_dev(struct usb_phy *x)
- 		return -EINVAL;
++	if (xcvr->soc_data->spdif_only)
++		if ((reg >= FSL_XCVR_IER && reg <= FSL_XCVR_PHY_AI_RDATA) ||
++		    reg > FSL_XCVR_TX_DPTH_BCRR)
++			return false;
+ 	switch (reg) {
+ 	case FSL_XCVR_VERSION:
+ 	case FSL_XCVR_EXT_CTRL:
+@@ -991,6 +1015,12 @@ static bool fsl_xcvr_readable_reg(struct device *dev, unsigned int reg)
+ 	case FSL_XCVR_RX_DPTH_CTRL_SET:
+ 	case FSL_XCVR_RX_DPTH_CTRL_CLR:
+ 	case FSL_XCVR_RX_DPTH_CTRL_TOG:
++	case FSL_XCVR_RX_CS_DATA_0:
++	case FSL_XCVR_RX_CS_DATA_1:
++	case FSL_XCVR_RX_CS_DATA_2:
++	case FSL_XCVR_RX_CS_DATA_3:
++	case FSL_XCVR_RX_CS_DATA_4:
++	case FSL_XCVR_RX_CS_DATA_5:
+ 	case FSL_XCVR_RX_DPTH_CNTR_CTRL:
+ 	case FSL_XCVR_RX_DPTH_CNTR_CTRL_SET:
+ 	case FSL_XCVR_RX_DPTH_CNTR_CTRL_CLR:
+@@ -1027,6 +1057,11 @@ static bool fsl_xcvr_readable_reg(struct device *dev, unsigned int reg)
+ 
+ static bool fsl_xcvr_writeable_reg(struct device *dev, unsigned int reg)
+ {
++	struct fsl_xcvr *xcvr = dev_get_drvdata(dev);
++
++	if (xcvr->soc_data->spdif_only)
++		if (reg >= FSL_XCVR_IER && reg <= FSL_XCVR_PHY_AI_RDATA)
++			return false;
+ 	switch (reg) {
+ 	case FSL_XCVR_EXT_CTRL:
+ 	case FSL_XCVR_EXT_IER0:
+@@ -1103,32 +1138,34 @@ static irqreturn_t irq0_isr(int irq, void *devid)
+ 	if (isr & FSL_XCVR_IRQ_NEW_CS) {
+ 		dev_dbg(dev, "Received new CS block\n");
+ 		isr_clr |= FSL_XCVR_IRQ_NEW_CS;
+-		/* Data RAM is 4KiB, last two pages: 8 and 9. Select page 8. */
+-		regmap_update_bits(xcvr->regmap, FSL_XCVR_EXT_CTRL,
+-				   FSL_XCVR_EXT_CTRL_PAGE_MASK,
+-				   FSL_XCVR_EXT_CTRL_PAGE(8));
+-
+-		/* Find updated CS buffer */
+-		reg_ctrl = xcvr->ram_addr + FSL_XCVR_RX_CS_CTRL_0;
+-		reg_buff = xcvr->ram_addr + FSL_XCVR_RX_CS_BUFF_0;
+-		memcpy_fromio(&val, reg_ctrl, sizeof(val));
+-		if (!val) {
+-			reg_ctrl = xcvr->ram_addr + FSL_XCVR_RX_CS_CTRL_1;
+-			reg_buff = xcvr->ram_addr + FSL_XCVR_RX_CS_BUFF_1;
++		if (!xcvr->soc_data->spdif_only) {
++			/* Data RAM is 4KiB, last two pages: 8 and 9. Select page 8. */
++			regmap_update_bits(xcvr->regmap, FSL_XCVR_EXT_CTRL,
++					   FSL_XCVR_EXT_CTRL_PAGE_MASK,
++					   FSL_XCVR_EXT_CTRL_PAGE(8));
++
++			/* Find updated CS buffer */
++			reg_ctrl = xcvr->ram_addr + FSL_XCVR_RX_CS_CTRL_0;
++			reg_buff = xcvr->ram_addr + FSL_XCVR_RX_CS_BUFF_0;
+ 			memcpy_fromio(&val, reg_ctrl, sizeof(val));
+-		}
++			if (!val) {
++				reg_ctrl = xcvr->ram_addr + FSL_XCVR_RX_CS_CTRL_1;
++				reg_buff = xcvr->ram_addr + FSL_XCVR_RX_CS_BUFF_1;
++				memcpy_fromio(&val, reg_ctrl, sizeof(val));
++			}
+ 
+-		if (val) {
+-			/* copy CS buffer */
+-			memcpy_fromio(&xcvr->rx_iec958.status, reg_buff,
+-				      sizeof(xcvr->rx_iec958.status));
+-			for (i = 0; i < 6; i++) {
+-				val = *(u32 *)(xcvr->rx_iec958.status + i*4);
+-				*(u32 *)(xcvr->rx_iec958.status + i*4) =
+-					bitrev32(val);
++			if (val) {
++				/* copy CS buffer */
++				memcpy_fromio(&xcvr->rx_iec958.status, reg_buff,
++					      sizeof(xcvr->rx_iec958.status));
++				for (i = 0; i < 6; i++) {
++					val = *(u32 *)(xcvr->rx_iec958.status + i*4);
++					*(u32 *)(xcvr->rx_iec958.status + i*4) =
++						bitrev32(val);
++				}
++				/* clear CS control register */
++				memset_io(reg_ctrl, 0, sizeof(val));
+ 			}
+-			/* clear CS control register */
+-			memset_io(reg_ctrl, 0, sizeof(val));
+ 		}
+ 	}
+ 	if (isr & FSL_XCVR_IRQ_NEW_UD) {
+@@ -1168,8 +1205,13 @@ static const struct fsl_xcvr_soc_data fsl_xcvr_imx8mp_data = {
+ 	.fw_name = "imx/xcvr/xcvr-imx8mp.bin",
+ };
+ 
++static const struct fsl_xcvr_soc_data fsl_xcvr_imx93_data = {
++	.spdif_only = true,
++};
++
+ static const struct of_device_id fsl_xcvr_dt_ids[] = {
+ 	{ .compatible = "fsl,imx8mp-xcvr", .data = &fsl_xcvr_imx8mp_data },
++	{ .compatible = "fsl,imx93-xcvr", .data = &fsl_xcvr_imx93_data},
+ 	{ /* sentinel */ }
+ };
+ MODULE_DEVICE_TABLE(of, fsl_xcvr_dt_ids);
+@@ -1229,7 +1271,7 @@ static int fsl_xcvr_probe(struct platform_device *pdev)
+ 		return PTR_ERR(xcvr->regmap);
  	}
  
-+	INIT_LIST_HEAD(&x->head);
+-	xcvr->reset = devm_reset_control_get_exclusive(dev, NULL);
++	xcvr->reset = devm_reset_control_get_optional_exclusive(dev, NULL);
+ 	if (IS_ERR(xcvr->reset)) {
+ 		dev_err(dev, "failed to get XCVR reset control\n");
+ 		return PTR_ERR(xcvr->reset);
+@@ -1306,12 +1348,14 @@ static __maybe_unused int fsl_xcvr_runtime_suspend(struct device *dev)
+ 	if (ret < 0)
+ 		dev_err(dev, "Failed to clear IER0: %d\n", ret);
+ 
+-	/* Assert M0+ reset */
+-	ret = regmap_update_bits(xcvr->regmap, FSL_XCVR_EXT_CTRL,
+-				 FSL_XCVR_EXT_CTRL_CORE_RESET,
+-				 FSL_XCVR_EXT_CTRL_CORE_RESET);
+-	if (ret < 0)
+-		dev_err(dev, "Failed to assert M0+ core: %d\n", ret);
++	if (!xcvr->soc_data->spdif_only) {
++		/* Assert M0+ reset */
++		ret = regmap_update_bits(xcvr->regmap, FSL_XCVR_EXT_CTRL,
++					FSL_XCVR_EXT_CTRL_CORE_RESET,
++					FSL_XCVR_EXT_CTRL_CORE_RESET);
++		if (ret < 0)
++			dev_err(dev, "Failed to assert M0+ core: %d\n", ret);
++	}
+ 
+ 	regcache_cache_only(xcvr->regmap, true);
+ 
+@@ -1367,6 +1411,9 @@ static __maybe_unused int fsl_xcvr_runtime_resume(struct device *dev)
+ 		goto stop_spba_clk;
+ 	}
+ 
++	if (xcvr->soc_data->spdif_only)
++		return 0;
 +
- 	usb_charger_init(x);
- 	ret = usb_add_extcon(x);
- 	if (ret)
+ 	ret = reset_control_deassert(xcvr->reset);
+ 	if (ret) {
+ 		dev_err(dev, "failed to deassert M0+ reset.\n");
+diff --git a/sound/soc/fsl/fsl_xcvr.h b/sound/soc/fsl/fsl_xcvr.h
+index 4769b0fca21de..044058fc6aa24 100644
+--- a/sound/soc/fsl/fsl_xcvr.h
++++ b/sound/soc/fsl/fsl_xcvr.h
+@@ -49,6 +49,13 @@
+ #define FSL_XCVR_RX_DPTH_CTRL_CLR	0x188
+ #define FSL_XCVR_RX_DPTH_CTRL_TOG	0x18c
+ 
++#define FSL_XCVR_RX_CS_DATA_0		0x190
++#define FSL_XCVR_RX_CS_DATA_1		0x194
++#define FSL_XCVR_RX_CS_DATA_2		0x198
++#define FSL_XCVR_RX_CS_DATA_3		0x19C
++#define FSL_XCVR_RX_CS_DATA_4		0x1A0
++#define FSL_XCVR_RX_CS_DATA_5		0x1A4
++
+ #define FSL_XCVR_RX_DPTH_CNTR_CTRL	0x1C0
+ #define FSL_XCVR_RX_DPTH_CNTR_CTRL_SET	0x1C4
+ #define FSL_XCVR_RX_DPTH_CNTR_CTRL_CLR	0x1C8
+-- 
+2.51.0
+
 
 
 
