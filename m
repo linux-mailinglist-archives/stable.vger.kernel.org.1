@@ -1,96 +1,51 @@
-Return-Path: <stable+bounces-207799-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207842-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12C9ED0A4C4
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:14:40 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D59B4D0A4F1
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:15:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 852D73095264
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:51:26 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 74C96318A788
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:53:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13FBE33C53B;
-	Fri,  9 Jan 2026 12:51:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 369CC35B157;
+	Fri,  9 Jan 2026 12:53:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TEpB/a+0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MPLkhXfG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB392328B5F;
-	Fri,  9 Jan 2026 12:51:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE4C13596FC;
+	Fri,  9 Jan 2026 12:53:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767963082; cv=none; b=Oace+aUHI+15M5MJyuYFM3B9g7Hjao1lf2gGQFlmxD0knXURCaLUw3e5k1eCOBfYEVkmEkkSe91x9cJzdgHTaQELMO5vR8MhAsRVe4Y2lR3vilz159RdYZicjRYgl+Q51u5KQF6KrmCEiEbA1O1tKtYPP8YA5qLl6gE5C4Nii18=
+	t=1767963204; cv=none; b=Itg5EY9iQ7/l0YCYuMywDRpm+l378EdBsZCO7sgS08SaQASD9ODBp+J2Rr9fZjgTa0tiAkeYJIEBmTC+hvcZUrr7KPCYO2/Gj3F/qQTh+MFHIiT+JnoHEVvh7XnQkgObzEa+45+FdPByZkw/mal9DBJSr3BrUiKjfV2KhJ4rm3w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767963082; c=relaxed/simple;
-	bh=UWzRAJYUPGz+7PFCxoRpxdGhKaWzC5cSuitwpwrva8E=;
+	s=arc-20240116; t=1767963204; c=relaxed/simple;
+	bh=Y7NFua6tuMkzoKLhll207Lba63B/eXxIp2A8SFbxjOA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gsia1Lq2lb77X3qYK/iLLXcPvVpLG0F0V+c3OsWqRFhG3zjZiLwQd+BSvXQPclJFIYka5HwIt53uU3nKV3cVFhqtOH+eTtxezuRGKYQuMomn9168b11XBTDNxmP812WC3K+jttLC7LqYe9blKCgQ2HcaSLzbKc06/ZsYhBmFzyc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TEpB/a+0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62925C4CEF1;
-	Fri,  9 Jan 2026 12:51:21 +0000 (UTC)
+	 MIME-Version; b=AxPAoQ8QuxbltYGBFlPK03k70xYeJNnYyWNbJzxC5WwooTKLBpyHA/WC0l21qzZ/C2eos9np2ic+EpKrOC/PqKiB0pDmT5m5lHYjY8D5W7lrenFVUWLVmdqmB4UGcCMS6fUJ1JVHNvTOjX+WVPTn/Qc3T61YYh6wRExXKziBIaQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MPLkhXfG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D067C4CEF1;
+	Fri,  9 Jan 2026 12:53:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767963082;
-	bh=UWzRAJYUPGz+7PFCxoRpxdGhKaWzC5cSuitwpwrva8E=;
+	s=korg; t=1767963203;
+	bh=Y7NFua6tuMkzoKLhll207Lba63B/eXxIp2A8SFbxjOA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TEpB/a+0oSe2CXjOtKfnY6ZQNLc/qT+06uk9cuKpiOv7UZyUd67MljPFBEn6W8zqf
-	 HKwgdQeO5kLqKddciK4MJt9RK9kXkV2cc/GqJrzsMyYrEPYQ+D3Ux+246N7RFpybv7
-	 h68MnlQU3lV8nsNa0LzULd0ae83gFjF0CSnV8pPY=
+	b=MPLkhXfGTVVKkXggKsH9NgRy0QgfAaIWWKTFWIvjqp/GGawOlLsz209LStfGyr9CM
+	 PxYjqoLfepjMGrWzaIbjVj7IHjKhz7IjQbe159JLZUZnXoQ7G9rUzCu6apMOmcWI/A
+	 sWRiuL8hAOw3fz6Zz0xno/OcWSrFm9R6/XL7S3mE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Hildenbrand <david@redhat.com>,
-	Zi Yan <ziy@nvidia.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Brendan Jackman <jackmanb@google.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	Christian Brauner <brauner@kernel.org>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	=?UTF-8?q?Eugenio=20P=C3=A9=20rez?= <eperezma@redhat.com>,
-	Gregory Price <gourry@gourry.net>,
-	"Huang, Ying" <ying.huang@linux.alibaba.com>,
-	Jan Kara <jack@suse.cz>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Jason Wang <jasowang@redhat.com>,
-	Jerrin Shaji George <jerrin.shaji-george@broadcom.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>,
-	Liam Howlett <liam.howlett@oracle.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Mathew Brost <matthew.brost@intel.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Minchan Kim <minchan@kernel.org>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Peter Xu <peterx@redhat.com>,
-	Qi Zheng <zhengqi.arch@bytedance.com>,
-	Rakie Kim <rakie.kim@sk.com>,
-	Rik van Riel <riel@surriel.com>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	xu xin <xu.xin16@zte.com.cn>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Jouni Malinen <jouni.malinen@oss.qualcomm.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 589/634] mm: simplify folio_expected_ref_count()
-Date: Fri,  9 Jan 2026 12:44:27 +0100
-Message-ID: <20260109112139.782958738@linuxfoundation.org>
+Subject: [PATCH 6.1 591/634] wifi: mac80211: Discard Beacon frames to non-broadcast address
+Date: Fri,  9 Jan 2026 12:44:29 +0100
+Message-ID: <20260109112139.860385224@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
 References: <20260109112117.407257400@linuxfoundation.org>
@@ -103,105 +58,66 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Hildenbrand <david@redhat.com>
+From: Jouni Malinen <jouni.malinen@oss.qualcomm.com>
 
-[ Upstream commit 78cb1a13c42a6d843e21389f74d1edb90ed07288 ]
+[ Upstream commit 193d18f60588e95d62e0f82b6a53893e5f2f19f8 ]
 
-Now that PAGE_MAPPING_MOVABLE is gone, we can simplify and rely on the
-folio_test_anon() test only.
+Beacon frames are required to be sent to the broadcast address, see IEEE
+Std 802.11-2020, 11.1.3.1 ("The Address 1 field of the Beacon .. frame
+shall be set to the broadcast address"). A unicast Beacon frame might be
+used as a targeted attack to get one of the associated STAs to do
+something (e.g., using CSA to move it to another channel). As such, it
+is better have strict filtering for this on the received side and
+discard all Beacon frames that are sent to an unexpected address.
 
-... but staring at the users, this function should never even have been
-called on movable_ops pages. E.g.,
-* __buffer_migrate_folio() does not make sense for them
-* folio_migrate_mapping() does not make sense for them
-* migrate_huge_page_move_mapping() does not make sense for them
-* __migrate_folio() does not make sense for them
-* ... and khugepaged should never stumble over them
+This is even more important for cases where beacon protection is used.
+The current implementation in mac80211 is correctly discarding unicast
+Beacon frames if the Protected Frame bit in the Frame Control field is
+set to 0. However, if that bit is set to 1, the logic used for checking
+for configured BIGTK(s) does not actually work. If the driver does not
+have logic for dropping unicast Beacon frames with Protected Frame bit
+1, these frames would be accepted in mac80211 processing as valid Beacon
+frames even though they are not protected. This would allow beacon
+protection to be bypassed. While the logic for checking beacon
+protection could be extended to cover this corner case, a more generic
+check for discard all Beacon frames based on A1=unicast address covers
+this without needing additional changes.
 
-Let's simply refuse typed pages (which includes slab) except hugetlb, and
-WARN.
+Address all these issues by dropping received Beacon frames if they are
+sent to a non-broadcast address.
 
-Link: https://lkml.kernel.org/r/20250704102524.326966-26-david@redhat.com
-Signed-off-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Zi Yan <ziy@nvidia.com>
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
-Cc: Alistair Popple <apopple@nvidia.com>
-Cc: Al Viro <viro@zeniv.linux.org.uk>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Brendan Jackman <jackmanb@google.com>
-Cc: Byungchul Park <byungchul@sk.com>
-Cc: Chengming Zhou <chengming.zhou@linux.dev>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Eugenio Pé rez <eperezma@redhat.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Gregory Price <gourry@gourry.net>
-Cc: "Huang, Ying" <ying.huang@linux.alibaba.com>
-Cc: Jan Kara <jack@suse.cz>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Jason Wang <jasowang@redhat.com>
-Cc: Jerrin Shaji George <jerrin.shaji-george@broadcom.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: John Hubbard <jhubbard@nvidia.com>
-Cc: Jonathan Corbet <corbet@lwn.net>
-Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Mathew Brost <matthew.brost@intel.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Miaohe Lin <linmiaohe@huawei.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Minchan Kim <minchan@kernel.org>
-Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: Qi Zheng <zhengqi.arch@bytedance.com>
-Cc: Rakie Kim <rakie.kim@sk.com>
-Cc: Rik van Riel <riel@surriel.com>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-Cc: xu xin <xu.xin16@zte.com.cn>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Stable-dep-of: f183663901f2 ("mm: consider non-anon swap cache folios in folio_expected_ref_count()")
+Cc: stable@vger.kernel.org
+Fixes: af2d14b01c32 ("mac80211: Beacon protection using the new BIGTK (STA)")
+Signed-off-by: Jouni Malinen <jouni.malinen@oss.qualcomm.com>
+Link: https://patch.msgid.link/20251215151134.104501-1-jouni.malinen@oss.qualcomm.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+[ adapted RX_DROP return value to RX_DROP_MONITOR ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/mm.h |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/mac80211/rx.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -1820,13 +1820,13 @@ static inline int folio_expected_ref_cou
- 	const int order = folio_order(folio);
- 	int ref_count = 0;
+--- a/net/mac80211/rx.c
++++ b/net/mac80211/rx.c
+@@ -3299,6 +3299,11 @@ ieee80211_rx_h_mgmt_check(struct ieee802
+ 	if (!ieee80211_is_mgmt(mgmt->frame_control))
+ 		return RX_DROP_MONITOR;
  
--	if (WARN_ON_ONCE(folio_test_slab(folio)))
-+	if (WARN_ON_ONCE(page_has_type(&folio->page) && !folio_test_hugetlb(folio)))
- 		return 0;
- 
- 	if (folio_test_anon(folio)) {
- 		/* One reference per page from the swapcache. */
- 		ref_count += folio_test_swapcache(folio) << order;
--	} else if (!((unsigned long)folio->mapping & PAGE_MAPPING_FLAGS)) {
-+	} else {
- 		/* One reference per page from the pagecache. */
- 		ref_count += !!folio->mapping << order;
- 		/* One reference from PG_private. */
++	/* Drop non-broadcast Beacon frames */
++	if (ieee80211_is_beacon(mgmt->frame_control) &&
++	    !is_broadcast_ether_addr(mgmt->da))
++		return RX_DROP_MONITOR;
++
+ 	if (rx->sdata->vif.type == NL80211_IFTYPE_AP &&
+ 	    ieee80211_is_beacon(mgmt->frame_control) &&
+ 	    !(rx->flags & IEEE80211_RX_BEACON_REPORTED)) {
 
 
 
