@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-207332-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206730-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BCE3D09CA0
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:37:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 407C0D09458
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:07:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1B0D33053BD5
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:29:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B0CED3111C1F
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:00:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E80235A933;
-	Fri,  9 Jan 2026 12:29:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 499D7359FB5;
+	Fri,  9 Jan 2026 12:00:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L6+Eacad"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nJSlz80b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FB232C21E6;
-	Fri,  9 Jan 2026 12:29:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CE4B359FAD;
+	Fri,  9 Jan 2026 12:00:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961754; cv=none; b=ewaXwSDIydU7wXymkQXaQoRXAS7hvOeitL13h5/zBVRv0uwK76W80q4/Vw1De4w58QjPZaHxOs6bCEi2UMavvpuNnSXF5oBsrUFEQjc1CPd45AR4v3/Ki3/eYkBgVF9abO5yoR8sC47xoo6uqBceIJZl8vHm42/scxUCjfjU4eI=
+	t=1767960036; cv=none; b=M6XaiC2LqzZJh772/R3tqi/lcckFzvbeVfZVshqmPsuv8aYqzESS5NjdQY0YV+FEOnI0Rz+oHs5EWlYYyZZDSkXNg+SkMcSR8F9u25hMCFBiR/XBhVFxyi428EXxludaI6BiTqTTUxodqiP08jIjBBQ0UrTw+/xwQesNStQ02DM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961754; c=relaxed/simple;
-	bh=QudukGPPp24z2uzWNlHZeaBlU/x4go1EJijIuR503dM=;
+	s=arc-20240116; t=1767960036; c=relaxed/simple;
+	bh=ctrJoTyIAumbzjwpUPkL2LBBzPWfv8lNhVf07uI79JM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YPcfLXXWjAwhG503gjbqJOFyN0/QAHmletyGTf+vtFR3glxGnAnh7VEg/iC39bQFu+NYUuNl96RkVMnmaFDFrvucMIRbS+piWbc2xuMI3zMZ0nRcGOGuH9hFBMTuYLXFs37ZGi7KkTgAEDOKbHJMvYPgPZlDV+SVfx8SPNp134s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L6+Eacad; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B16DBC4CEF1;
-	Fri,  9 Jan 2026 12:29:13 +0000 (UTC)
+	 MIME-Version; b=cIroDupd9UBVyd846lqhXkFKdQMoQ3JtrQqhnmdt2VZxYCXP+c8q74yZZv212h4xIJ6yr3x/2CbAJmu73T5LftjgRPvSQTySdRiqS0+RAmdWi2CwCJKgJXdbaOxARbvAzHSe9erDwETA8R/4pD4bu3FTaiHcFsjAHY5srt7XRRY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nJSlz80b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AAA4C4CEF1;
+	Fri,  9 Jan 2026 12:00:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961754;
-	bh=QudukGPPp24z2uzWNlHZeaBlU/x4go1EJijIuR503dM=;
+	s=korg; t=1767960035;
+	bh=ctrJoTyIAumbzjwpUPkL2LBBzPWfv8lNhVf07uI79JM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L6+EacadkcW/wYMyeYsE0JUhUdG9l3YvW14cGR+/QRVbU5xopO7PO/nkgGIP1kFWa
-	 SqVcJ1CGtwi/lOv0shz6FkVse+hKQg9RQFsJhd1H3nKzTMrEcAevzDi32ogPmARTWx
-	 W/4cQuNh9wcwjCiIbsGJ5t9oLrq0TEgljM2/0XLg=
+	b=nJSlz80br6kBcLxO36J0nT2wxlgG/MV8XcgwPGuNNUrcUnAC1/VbJFZoNiKuZNnXg
+	 rJMNNOyDncsNvyjd+65wZkqcQCxdGtcpMN7hNf7FFLE3XkFJAozqmWly7bQIjZmOQV
+	 AEpAe7IxuX8e/99OozBz0XTC+0a+V1cx+u4QEoRE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Edward Adam Davis <eadavis@qq.com>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Jonathan Curley <jcurley@purestorage.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 124/634] fs/ntfs3: out1 also needs to put mi
+Subject: [PATCH 6.6 263/737] NFSv4/pNFS: Clear NFS_INO_LAYOUTCOMMIT in pnfs_mark_layout_stateid_invalid
 Date: Fri,  9 Jan 2026 12:36:42 +0100
-Message-ID: <20260109112122.110578846@linuxfoundation.org>
+Message-ID: <20260109112143.884875804@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,40 +60,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Jonathan Curley <jcurley@purestorage.com>
 
-[ Upstream commit 4d78d1173a653acdaf7500a32b8dc530ca4ad075 ]
+[ Upstream commit e0f8058f2cb56de0b7572f51cd563ca5debce746 ]
 
-After ntfs_look_free_mft() executes successfully, all subsequent code
-that fails to execute must put mi.
+Fixes a crash when layout is null during this call stack:
 
-Fixes: 4342306f0f0d ("fs/ntfs3: Add file operations and implementation")
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+write_inode
+    -> nfs4_write_inode
+        -> pnfs_layoutcommit_inode
+
+pnfs_set_layoutcommit relies on the lseg refcount to keep the layout
+around. Need to clear NFS_INO_LAYOUTCOMMIT otherwise we might attempt
+to reference a null layout.
+
+Fixes: fe1cf9469d7bc ("pNFS: Clear all layout segment state in pnfs_mark_layout_stateid_invalid")
+Signed-off-by: Jonathan Curley <jcurley@purestorage.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/frecord.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nfs/pnfs.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/ntfs3/frecord.c b/fs/ntfs3/frecord.c
-index fb572688f919f..f1f5b84e2ef17 100644
---- a/fs/ntfs3/frecord.c
-+++ b/fs/ntfs3/frecord.c
-@@ -1067,9 +1067,9 @@ static int ni_ins_attr_ext(struct ntfs_inode *ni, struct ATTR_LIST_ENTRY *le,
+diff --git a/fs/nfs/pnfs.c b/fs/nfs/pnfs.c
+index b40c20bd364b0..0737d9a15d862 100644
+--- a/fs/nfs/pnfs.c
++++ b/fs/nfs/pnfs.c
+@@ -465,6 +465,7 @@ pnfs_mark_layout_stateid_invalid(struct pnfs_layout_hdr *lo,
+ 	struct pnfs_layout_segment *lseg, *next;
  
- out2:
- 	ni_remove_mi(ni, mi);
--	mi_put(mi);
- 
- out1:
-+	mi_put(mi);
- 	ntfs_mark_rec_free(sbi, rno, is_mft);
- 
- out:
+ 	set_bit(NFS_LAYOUT_INVALID_STID, &lo->plh_flags);
++	clear_bit(NFS_INO_LAYOUTCOMMIT, &NFS_I(lo->plh_inode)->flags);
+ 	list_for_each_entry_safe(lseg, next, &lo->plh_segs, pls_list)
+ 		pnfs_clear_lseg_state(lseg, lseg_list);
+ 	pnfs_clear_layoutreturn_info(lo);
 -- 
 2.51.0
 
