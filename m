@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-206650-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207217-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60173D09296
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:01:13 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C05F4D099FA
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:29:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9C8883030928
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:56:51 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 469F13026D9C
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:23:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D851F33290A;
-	Fri,  9 Jan 2026 11:56:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97D8F32AAB5;
+	Fri,  9 Jan 2026 12:23:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pvHEUeVY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GtWjt6zK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BF3832BF21;
-	Fri,  9 Jan 2026 11:56:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FB40303C87;
+	Fri,  9 Jan 2026 12:23:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767959809; cv=none; b=AjqKOcEMqX2FNxtNQCjbsuLc+w/BXemu4yVypoyAtpvfzrL5/0xwrLfQFFpEyEZAyD57RzgDM9cjP4p7Yk4b8Wx/a8A91px2R+FHyqkFWhXhBL8mZ2+GFw/kL+Kkn7aioZUNIVcIt0NDmh0I2QTe1O5L1E4mYwfc8HvM6/9wyK4=
+	t=1767961426; cv=none; b=YQz7QCSAS/2IkzoyNgARd0NzVDxxtbYN3uQABcMQM62+DmkCLA2dm+9IRH160Qx1DpDvwC2dq9mfVcSxBySt7cSyTpEAx48v59G7YdSmMRU7SVhWiF+qkRXl/VV8UPxF3pSG5umTURTor1oN7VhVXY1YJDzcGi/Lfi0kDPiZ8FI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767959809; c=relaxed/simple;
-	bh=Wt1igFejJT8ll9N3wVXfvLpXOASaKkSbx86bk/pEjmE=;
+	s=arc-20240116; t=1767961426; c=relaxed/simple;
+	bh=JLrr+f6EbzqsjGHrD7jMnAIQ+8J05MrCI/7rbDBorR8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=saTHsgvu4205ujYyWMaxJqqL6CJm9Mqz4AfWr6eLf2L/ifvMt3utb1dfsxogX36LJZwiL87h8/y3Uji4YvdgkWjq8oejQFRzDXePmFFE2ulIV4EEq9KyuNdSru0hH8HUiw1Be5mx5c8TFV+7unq/kkZAUNuvTs/a2eCdNwhQy98=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pvHEUeVY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03299C4CEF1;
-	Fri,  9 Jan 2026 11:56:49 +0000 (UTC)
+	 MIME-Version; b=PdI4cGP6qlw8vLxhH2CHNnZKfAruGTQMGG1F59yFxzKj3EaVgcKV+lUeI2a6F0ULnxvAfXkkiFTct4sMQUMjFI7Ja1i+9NuhVsQNaZLvvTVYfB8xycjdg0FQVBrUvgqT4Xr3DBsv39XtH/O7XEECDpqy7/OqCrNYsi5HnddM4K0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GtWjt6zK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD96DC4CEF1;
+	Fri,  9 Jan 2026 12:23:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767959809;
-	bh=Wt1igFejJT8ll9N3wVXfvLpXOASaKkSbx86bk/pEjmE=;
+	s=korg; t=1767961426;
+	bh=JLrr+f6EbzqsjGHrD7jMnAIQ+8J05MrCI/7rbDBorR8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pvHEUeVYyqa6gjUJmQWyzo+/GE1mTPQngPC8kaOob+jxdveP2Vl72XCDQvOCI+aY9
-	 auouZcWHsv+FmbW7FL1B0oBiKQs83SBsMK7eWMA+GdIDswm1WfrT9bo/8RlkgleNOj
-	 H6zyQmyu89g8LiNTy+1tRZ+q9/KZ1OL5B1Nqz+u8=
+	b=GtWjt6zKjLxlYFmZIsbkdKtiMhg8yNSeA7fLnnmrsTLWlANt0UXPWWhaEktlpyE2W
+	 rcFOPxmIZ8gp7iYM2zduLG7fKzt2RobK/lZWhyF7CK5BSFeXaJzTPhaxUixZIVI0kx
+	 PcrRHp/FF8gA1X8BSTRgBhBZSV3OyTQdgI5zvcsc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	syzbot+727d161855d11d81e411@syzkaller.appspotmail.com,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Jun Piao <piaojun@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 149/737] ocfs2: relax BUG() to ocfs2_error() in __ocfs2_move_extent()
-Date: Fri,  9 Jan 2026 12:34:48 +0100
-Message-ID: <20260109112139.603382322@linuxfoundation.org>
+	Adrian Freihofer <adrian.freihofer@siemens.com>,
+	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Waiman Long <longman@redhat.com>
+Subject: [PATCH 6.1 011/634] locking/spinlock/debug: Fix data-race in do_raw_write_lock
+Date: Fri,  9 Jan 2026 12:34:49 +0100
+Message-ID: <20260109112117.855601149@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,56 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
 
-[ Upstream commit 8a7d58845fae061c62b50bc5eeb9bae4a1dedc3d ]
+commit c14ecb555c3ee80eeb030a4e46d00e679537f03a upstream.
 
-In '__ocfs2_move_extent()', relax 'BUG()' to 'ocfs2_error()' just
-to avoid crashing the whole kernel due to a filesystem corruption.
+KCSAN reports:
 
-Fixes: 8f603e567aa7 ("Ocfs2/move_extents: move a range of extent.")
-Link: https://lkml.kernel.org/r/20251009102349.181126-2-dmantipov@yandex.ru
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Closes: https://syzkaller.appspot.com/bug?extid=727d161855d11d81e411
-Reported-by: syzbot+727d161855d11d81e411@syzkaller.appspotmail.com
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+BUG: KCSAN: data-race in do_raw_write_lock / do_raw_write_lock
+
+write (marked) to 0xffff800009cf504c of 4 bytes by task 1102 on cpu 1:
+ do_raw_write_lock+0x120/0x204
+ _raw_write_lock_irq
+ do_exit
+ call_usermodehelper_exec_async
+ ret_from_fork
+
+read to 0xffff800009cf504c of 4 bytes by task 1103 on cpu 0:
+ do_raw_write_lock+0x88/0x204
+ _raw_write_lock_irq
+ do_exit
+ call_usermodehelper_exec_async
+ ret_from_fork
+
+value changed: 0xffffffff -> 0x00000001
+
+Reported by Kernel Concurrency Sanitizer on:
+CPU: 0 PID: 1103 Comm: kworker/u4:1 6.1.111
+
+Commit 1a365e822372 ("locking/spinlock/debug: Fix various data races") has
+adressed most of these races, but seems to be not consistent/not complete.
+
+>From do_raw_write_lock() only debug_write_lock_after() part has been
+converted to WRITE_ONCE(), but not debug_write_lock_before() part.
+Do it now.
+
+Fixes: 1a365e822372 ("locking/spinlock/debug: Fix various data races")
+Reported-by: Adrian Freihofer <adrian.freihofer@siemens.com>
+Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
+Acked-by: Waiman Long <longman@redhat.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ocfs2/move_extents.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ kernel/locking/spinlock_debug.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/ocfs2/move_extents.c b/fs/ocfs2/move_extents.c
-index 2f34074f0078b..d97ec93ff4c26 100644
---- a/fs/ocfs2/move_extents.c
-+++ b/fs/ocfs2/move_extents.c
-@@ -98,7 +98,13 @@ static int __ocfs2_move_extent(handle_t *handle,
+--- a/kernel/locking/spinlock_debug.c
++++ b/kernel/locking/spinlock_debug.c
+@@ -183,8 +183,8 @@ void do_raw_read_unlock(rwlock_t *lock)
+ static inline void debug_write_lock_before(rwlock_t *lock)
+ {
+ 	RWLOCK_BUG_ON(lock->magic != RWLOCK_MAGIC, lock, "bad magic");
+-	RWLOCK_BUG_ON(lock->owner == current, lock, "recursion");
+-	RWLOCK_BUG_ON(lock->owner_cpu == raw_smp_processor_id(),
++	RWLOCK_BUG_ON(READ_ONCE(lock->owner) == current, lock, "recursion");
++	RWLOCK_BUG_ON(READ_ONCE(lock->owner_cpu) == raw_smp_processor_id(),
+ 							lock, "cpu recursion");
+ }
  
- 	rec = &el->l_recs[index];
- 
--	BUG_ON(ext_flags != rec->e_flags);
-+	if (ext_flags != rec->e_flags) {
-+		ret = ocfs2_error(inode->i_sb,
-+				  "Inode %llu has corrupted extent %d with flags 0x%x at cpos %u\n",
-+				  (unsigned long long)ino, index, rec->e_flags, cpos);
-+		goto out;
-+	}
-+
- 	/*
- 	 * after moving/defraging to new location, the extent is not going
- 	 * to be refcounted anymore.
--- 
-2.51.0
-
 
 
 
