@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-207628-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206995-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80AA5D0A000
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:50:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ADF59D09708
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:18:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3C91C30486A4
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:43:14 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id DA57730348AE
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:13:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CFA133C53A;
-	Fri,  9 Jan 2026 12:43:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6215D35A948;
+	Fri,  9 Jan 2026 12:13:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E+4cT17i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1mZWi5GB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 306DA42AA6;
-	Fri,  9 Jan 2026 12:43:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 230D235A940;
+	Fri,  9 Jan 2026 12:13:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962592; cv=none; b=NaPX3v3zxvLX9Ez9g83dEeJZxR/EuNEQk3vg9OJUC2SKORt7di7Lt/0nP7vqtDPKob8nII+5VARi5fnSQqLMG8eidL3KmxdvDsj/WQ9KPnXqHwPBRg+LOn+L961KcvC4ggkNN42WzvY0giCZRDP/OX9BDVotF88L0e4dBqWi6kw=
+	t=1767960794; cv=none; b=rDr93xwVy0IR/lJk4ju5fz1pWl8CmG2QznbQ3JZW/yTUHFNEmPFynKlXLSdHFc03P+YsmwWq6PtEImzLOYFNMh6GYQj+Op7UBAf6rDaZBgQSFVTN8Gw1IuZi4YauMoFKBsJPVtdBPTPBr/E/H8FilmvQYwJCToideNrj3qSHYEM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962592; c=relaxed/simple;
-	bh=jcvP4t6nxt7ZmDk5Tuk00ah1PBQU9b7ekuiAkk7P7po=;
+	s=arc-20240116; t=1767960794; c=relaxed/simple;
+	bh=nQKFHlQUg4heIRcmf3tumMEAuDTuOuYjYhdbumXZrTw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CHgx9LrRZXzpG6cSK2s/sTrFcSqB+opilbYlYh5F5zXf1aR4bWBtWUeKCgBAfD3FblrQEtXxpadShFiNhRK/b3YgcLFw5qFitviskWSUUvc4i0jacUeSqfsJ9mASfIRI1JaHPcIEtV7VL5JqySyk2b0y89B33oyxVmrkK5/VIhk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E+4cT17i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B33A1C16AAE;
-	Fri,  9 Jan 2026 12:43:11 +0000 (UTC)
+	 MIME-Version; b=oGa07A0llNRFkNm1z5x5VXvpJCdrCnRQBKcON6gqkpoimxMeiHC8tGBycx+EVqr+cJOlpwTPyGiOFNFPHEP/jgEqRN58nEKTCWZxREm8vyep8E/Fk7vmj7EFmVYh5wQl05eNXL4/zoUnNw91NwieLv5jG6XfGAnaUq9qaWZJNRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1mZWi5GB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 920EDC4CEF1;
+	Fri,  9 Jan 2026 12:13:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962592;
-	bh=jcvP4t6nxt7ZmDk5Tuk00ah1PBQU9b7ekuiAkk7P7po=;
+	s=korg; t=1767960793;
+	bh=nQKFHlQUg4heIRcmf3tumMEAuDTuOuYjYhdbumXZrTw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E+4cT17it0S7SDsR932Z4lA1V7FduNN9dYifyb9ceOZuX/uRwdEeq5cW9P3jczCgw
-	 B5dcrWM4iBZjmBY2r2feE1xaImivorfpwOxULbxh2+RaANhlVfP3ZK4AqGW/gcqZ7v
-	 8leChquiACm0qY3fPYM8FNzcMRiTj2HZDMCMDQls=
+	b=1mZWi5GBjJDTdHl4D6hgq1dZ3H9+Uta9FQGXOgkl3cxlqmMfgfGViKi5qTwedKcE3
+	 FKLJXvJ+WY/3p3x3ofInUlh4AJ4JgDGwKdwyXgEjhVyefJXBxi5dFnbG/l1cslqK9c
+	 n5kQtpkARsIR90SEH950xvN45G6LeOACQai1omJY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gui-Dong Han <hanguidong02@gmail.com>,
-	Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 6.1 387/634] hwmon: (w83l786ng) Convert macros to functions to avoid TOCTOU
+	Paul Moore <paul@paul-moore.com>,
+	Will Rosenberg <whrosenb@asu.edu>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 526/737] ipv6: BUG() in pskb_expand_head() as part of calipso_skbuff_setattr()
 Date: Fri,  9 Jan 2026 12:41:05 +0100
-Message-ID: <20260109112132.093828680@linuxfoundation.org>
+Message-ID: <20260109112153.784589531@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,98 +61,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gui-Dong Han <hanguidong02@gmail.com>
+From: Will Rosenberg <whrosenb@asu.edu>
 
-commit 07272e883fc61574b8367d44de48917f622cdd83 upstream.
+[ Upstream commit 58fc7342b529803d3c221101102fe913df7adb83 ]
 
-The macros FAN_FROM_REG and TEMP_FROM_REG evaluate their arguments
-multiple times. When used in lockless contexts involving shared driver
-data, this causes Time-of-Check to Time-of-Use (TOCTOU) race
-conditions.
+There exists a kernel oops caused by a BUG_ON(nhead < 0) at
+net/core/skbuff.c:2232 in pskb_expand_head().
+This bug is triggered as part of the calipso_skbuff_setattr()
+routine when skb_cow() is passed headroom > INT_MAX
+(i.e. (int)(skb_headroom(skb) + len_delta) < 0).
 
-Convert the macros to static functions. This guarantees that arguments
-are evaluated only once (pass-by-value), preventing the race
-conditions.
+The root cause of the bug is due to an implicit integer cast in
+__skb_cow(). The check (headroom > skb_headroom(skb)) is meant to ensure
+that delta = headroom - skb_headroom(skb) is never negative, otherwise
+we will trigger a BUG_ON in pskb_expand_head(). However, if
+headroom > INT_MAX and delta <= -NET_SKB_PAD, the check passes, delta
+becomes negative, and pskb_expand_head() is passed a negative value for
+nhead.
 
-Adhere to the principle of minimal changes by only converting macros
-that evaluate arguments multiple times and are used in lockless
-contexts.
+Fix the trigger condition in calipso_skbuff_setattr(). Avoid passing
+"negative" headroom sizes to skb_cow() within calipso_skbuff_setattr()
+by only using skb_cow() to grow headroom.
 
-Link: https://lore.kernel.org/all/CALbr=LYJ_ehtp53HXEVkSpYoub+XYSTU8Rg=o1xxMJ8=5z8B-g@mail.gmail.com/
-Fixes: 85f03bccd6e0 ("hwmon: Add support for Winbond W83L786NG/NR")
-Cc: stable@vger.kernel.org
-Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
-Link: https://lore.kernel.org/r/20251128123816.3670-1-hanguidong02@gmail.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+PoC:
+	Using `netlabelctl` tool:
+
+        netlabelctl map del default
+        netlabelctl calipso add pass doi:7
+        netlabelctl map add default address:0::1/128 protocol:calipso,7
+
+        Then run the following PoC:
+
+        int fd = socket(AF_INET6, SOCK_DGRAM, IPPROTO_UDP);
+
+        // setup msghdr
+        int cmsg_size = 2;
+        int cmsg_len = 0x60;
+        struct msghdr msg;
+        struct sockaddr_in6 dest_addr;
+        struct cmsghdr * cmsg = (struct cmsghdr *) calloc(1,
+                        sizeof(struct cmsghdr) + cmsg_len);
+        msg.msg_name = &dest_addr;
+        msg.msg_namelen = sizeof(dest_addr);
+        msg.msg_iov = NULL;
+        msg.msg_iovlen = 0;
+        msg.msg_control = cmsg;
+        msg.msg_controllen = cmsg_len;
+        msg.msg_flags = 0;
+
+        // setup sockaddr
+        dest_addr.sin6_family = AF_INET6;
+        dest_addr.sin6_port = htons(31337);
+        dest_addr.sin6_flowinfo = htonl(31337);
+        dest_addr.sin6_addr = in6addr_loopback;
+        dest_addr.sin6_scope_id = 31337;
+
+        // setup cmsghdr
+        cmsg->cmsg_len = cmsg_len;
+        cmsg->cmsg_level = IPPROTO_IPV6;
+        cmsg->cmsg_type = IPV6_HOPOPTS;
+        char * hop_hdr = (char *)cmsg + sizeof(struct cmsghdr);
+        hop_hdr[1] = 0x9; //set hop size - (0x9 + 1) * 8 = 80
+
+        sendmsg(fd, &msg, 0);
+
+Fixes: 2917f57b6bc1 ("calipso: Allow the lsm to label the skbuff directly.")
+Suggested-by: Paul Moore <paul@paul-moore.com>
+Signed-off-by: Will Rosenberg <whrosenb@asu.edu>
+Acked-by: Paul Moore <paul@paul-moore.com>
+Link: https://patch.msgid.link/20251219173637.797418-1-whrosenb@asu.edu
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/w83l786ng.c |   26 ++++++++++++++++++--------
- 1 file changed, 18 insertions(+), 8 deletions(-)
+ net/ipv6/calipso.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/hwmon/w83l786ng.c
-+++ b/drivers/hwmon/w83l786ng.c
-@@ -77,15 +77,25 @@ FAN_TO_REG(long rpm, int div)
- 	return clamp_val((1350000 + rpm * div / 2) / (rpm * div), 1, 254);
- }
+diff --git a/net/ipv6/calipso.c b/net/ipv6/calipso.c
+index 24666291c54a..72079ef2959b 100644
+--- a/net/ipv6/calipso.c
++++ b/net/ipv6/calipso.c
+@@ -1345,7 +1345,8 @@ static int calipso_skbuff_setattr(struct sk_buff *skb,
+ 	/* At this point new_end aligns to 4n, so (new_end & 4) pads to 8n */
+ 	pad = ((new_end & 4) + (end & 7)) & 7;
+ 	len_delta = new_end - (int)end + pad;
+-	ret_val = skb_cow(skb, skb_headroom(skb) + len_delta);
++	ret_val = skb_cow(skb,
++			  skb_headroom(skb) + (len_delta > 0 ? len_delta : 0));
+ 	if (ret_val < 0)
+ 		return ret_val;
  
--#define FAN_FROM_REG(val, div)	((val) == 0   ? -1 : \
--				((val) == 255 ? 0 : \
--				1350000 / ((val) * (div))))
-+static int fan_from_reg(int val, int div)
-+{
-+	if (val == 0)
-+		return -1;
-+	if (val == 255)
-+		return 0;
-+	return 1350000 / (val * div);
-+}
- 
- /* for temp */
- #define TEMP_TO_REG(val)	(clamp_val(((val) < 0 ? (val) + 0x100 * 1000 \
- 						      : (val)) / 1000, 0, 0xff))
--#define TEMP_FROM_REG(val)	(((val) & 0x80 ? \
--				  (val) - 0x100 : (val)) * 1000)
-+
-+static int temp_from_reg(int val)
-+{
-+	if (val & 0x80)
-+		return (val - 0x100) * 1000;
-+	return val * 1000;
-+}
- 
- /*
-  * The analog voltage inputs have 8mV LSB. Since the sysfs output is
-@@ -281,7 +291,7 @@ static ssize_t show_##reg(struct device
- 	int nr = to_sensor_dev_attr(attr)->index; \
- 	struct w83l786ng_data *data = w83l786ng_update_device(dev); \
- 	return sprintf(buf, "%d\n", \
--		FAN_FROM_REG(data->reg[nr], DIV_FROM_REG(data->fan_div[nr]))); \
-+		fan_from_reg(data->reg[nr], DIV_FROM_REG(data->fan_div[nr]))); \
- }
- 
- show_fan_reg(fan);
-@@ -348,7 +358,7 @@ store_fan_div(struct device *dev, struct
- 
- 	/* Save fan_min */
- 	mutex_lock(&data->update_lock);
--	min = FAN_FROM_REG(data->fan_min[nr], DIV_FROM_REG(data->fan_div[nr]));
-+	min = fan_from_reg(data->fan_min[nr], DIV_FROM_REG(data->fan_div[nr]));
- 
- 	data->fan_div[nr] = DIV_TO_REG(val);
- 
-@@ -410,7 +420,7 @@ show_temp(struct device *dev, struct dev
- 	int nr = sensor_attr->nr;
- 	int index = sensor_attr->index;
- 	struct w83l786ng_data *data = w83l786ng_update_device(dev);
--	return sprintf(buf, "%d\n", TEMP_FROM_REG(data->temp[nr][index]));
-+	return sprintf(buf, "%d\n", temp_from_reg(data->temp[nr][index]));
- }
- 
- static ssize_t
+-- 
+2.51.0
+
 
 
 
