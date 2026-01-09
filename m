@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-207549-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206922-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C371D09E41
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:43:53 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D631D09769
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:19:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A9FBD305A97C
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:39:41 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C820D3068F7B
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:10:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 056F135BDAB;
-	Fri,  9 Jan 2026 12:39:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D968535B121;
+	Fri,  9 Jan 2026 12:09:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J1bKLhXo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0IMBPoiq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCD4535B142;
-	Fri,  9 Jan 2026 12:39:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B83433BBBD;
+	Fri,  9 Jan 2026 12:09:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962370; cv=none; b=FzGwKHp+Tem2wVyDI2GB6hB4732tQ8aE453bxiBi6J580/A67MDMqH5cQEvli0eAsDHyFW9fvwEMfI7jkuTDOD6YkwrmVYGGON8Q2cVO3WR/wGKxiDzu30oDw/LzFvOjfTWhqIjVGoMb6XKB+G41n1DxB5M2z+ya9Lko8WxuwV8=
+	t=1767960581; cv=none; b=VOQlL1TDrBKND6gAznNOGUcpj5GOU+jW3VVNOCHy3NL29/EpE9ImBbIKe5sIFpFrIZGB8oZXzCpi2bVajFQO++/GEQYICRmaSPEoN9Nc0+frwZNzobZ1GVBlYyCAvcNzP9FAaFmDpVtdj2y2Jc325TjViDgVwJchFKj09fqL2Q4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962370; c=relaxed/simple;
-	bh=pW22243bXcnuFubO7JGwjBF8u6uC5DTjI3ZStWA7gTA=;
+	s=arc-20240116; t=1767960581; c=relaxed/simple;
+	bh=WCslTM6MsuBzeeCbstisTqvvrHcePYfa2wSbjvb8NOI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X3pj2mjUVgDng726hqNSVGoANLfV/j1Aus919bmdXxMbYiWgPnML4Wbr8PDpDZXIfgC+pfxyr7zTgfvGqhN8Ku9T7iU68wNh3cP+3YivTGh1+3pv1wtvpP2I12ugbAYkXblnRwbMQvEvhTH8q8VCMeNsOXsnhms+ru+69K9iz4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J1bKLhXo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 489C0C4CEF1;
-	Fri,  9 Jan 2026 12:39:30 +0000 (UTC)
+	 MIME-Version; b=lCDVBiUvGv5Y36c3uXGyjdpHVfHSHcF5p3wgDUh4EL9ADMVd8DoEO6pa4ZMB1wrr/f5rTW7e0ovChapGafiIDeHbOucrO+jGK5ZlAimVjolsCMpSaBddlO1GffSfcpw8aX1TAnrSYIClxCab+7heNewieSE0EPWS1Kz2DIF/FCA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0IMBPoiq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AA6BC4CEF1;
+	Fri,  9 Jan 2026 12:09:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962370;
-	bh=pW22243bXcnuFubO7JGwjBF8u6uC5DTjI3ZStWA7gTA=;
+	s=korg; t=1767960581;
+	bh=WCslTM6MsuBzeeCbstisTqvvrHcePYfa2wSbjvb8NOI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J1bKLhXoLl2swxeChgZ1B5X4HFGe2Id3DofLUJneYCqRC0En6GUMA/BbAh4+Mo1AK
-	 AXsTvbi6dR+ZTK8YpJGwLx0f7j0YUTikqw+Dg3idrYJfOs131o8UcHBzwUtNdvCAtz
-	 8pN4379VYfAIUelUPKHktUgZ94pNjzzAzgqfh6/A=
+	b=0IMBPoiqN0iZKG/c1DERRW9zB2hGt/KMWXd6jW153MbuXWUD4fRaop9fLrA78+g+Z
+	 bTULTI8rO7pjtwpq+RkJPpV5GR5ea8lbPvs8tXf7gr8w89S0m9K8mtuf+Pih38/yE/
+	 /2m6FChkv2lX8ZgB0rCGKlVUC6KcYf5CXGdMy6qU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Tee <justin.tee@broadcom.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Daniel Wagner <wagi@kernel.org>,
-	Keith Busch <kbusch@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 314/634] nvme-fc: dont hold rport lock when putting ctrl
+	stable@kernel.org,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>
+Subject: [PATCH 6.6 453/737] f2fs: fix return value of f2fs_recover_fsync_data()
 Date: Fri,  9 Jan 2026 12:39:52 +0100
-Message-ID: <20260109112129.347778472@linuxfoundation.org>
+Message-ID: <20260109112151.035154756@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +60,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Wagner <wagi@kernel.org>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit b71cbcf7d170e51148d5467820ae8a72febcb651 ]
+commit 01fba45deaddcce0d0b01c411435d1acf6feab7b upstream.
 
-nvme_fc_ctrl_put can acquire the rport lock when freeing the
-ctrl object:
+With below scripts, it will trigger panic in f2fs:
 
-nvme_fc_ctrl_put
-  nvme_fc_ctrl_free
-    spin_lock_irqsave(rport->lock)
+mkfs.f2fs -f /dev/vdd
+mount /dev/vdd /mnt/f2fs
+touch /mnt/f2fs/foo
+sync
+echo 111 >> /mnt/f2fs/foo
+f2fs_io fsync /mnt/f2fs/foo
+f2fs_io shutdown 2 /mnt/f2fs
+umount /mnt/f2fs
+mount -o ro,norecovery /dev/vdd /mnt/f2fs
+or
+mount -o ro,disable_roll_forward /dev/vdd /mnt/f2fs
 
-Thus we can't hold the rport lock when calling nvme_fc_ctrl_put.
+F2FS-fs (vdd): f2fs_recover_fsync_data: recovery fsync data, check_only: 0
+F2FS-fs (vdd): Mounted with checkpoint version = 7f5c361f
+F2FS-fs (vdd): Stopped filesystem due to reason: 0
+F2FS-fs (vdd): f2fs_recover_fsync_data: recovery fsync data, check_only: 1
+Filesystem f2fs get_tree() didn't set fc->root, returned 1
+------------[ cut here ]------------
+kernel BUG at fs/super.c:1761!
+Oops: invalid opcode: 0000 [#1] SMP PTI
+CPU: 3 UID: 0 PID: 722 Comm: mount Not tainted 6.18.0-rc2+ #721 PREEMPT(voluntary)
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+RIP: 0010:vfs_get_tree.cold+0x18/0x1a
+Call Trace:
+ <TASK>
+ fc_mount+0x13/0xa0
+ path_mount+0x34e/0xc50
+ __x64_sys_mount+0x121/0x150
+ do_syscall_64+0x84/0x800
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+RIP: 0033:0x7fa6cc126cfe
 
-Justin suggested use the safe list iterator variant because
-nvme_fc_ctrl_put will also modify the rport->list.
+The root cause is we missed to handle error number returned from
+f2fs_recover_fsync_data() when mounting image w/ ro,norecovery or
+ro,disable_roll_forward mount option, result in returning a positive
+error number to vfs_get_tree(), fix it.
 
-Cc: Justin Tee <justin.tee@broadcom.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Daniel Wagner <wagi@kernel.org>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@kernel.org
+Fixes: 6781eabba1bd ("f2fs: give -EINVAL for norecovery and rw mount")
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/host/fc.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ fs/f2fs/super.c |   14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/nvme/host/fc.c b/drivers/nvme/host/fc.c
-index f5b1378839a7..87a9801ac9f2 100644
---- a/drivers/nvme/host/fc.c
-+++ b/drivers/nvme/host/fc.c
-@@ -1501,14 +1501,14 @@ nvme_fc_match_disconn_ls(struct nvme_fc_rport *rport,
- {
- 	struct fcnvme_ls_disconnect_assoc_rqst *rqst =
- 					&lsop->rqstbuf->rq_dis_assoc;
--	struct nvme_fc_ctrl *ctrl, *ret = NULL;
-+	struct nvme_fc_ctrl *ctrl, *tmp, *ret = NULL;
- 	struct nvmefc_ls_rcv_op *oldls = NULL;
- 	u64 association_id = be64_to_cpu(rqst->associd.association_id);
- 	unsigned long flags;
- 
- 	spin_lock_irqsave(&rport->lock, flags);
- 
--	list_for_each_entry(ctrl, &rport->ctrl_list, ctrl_list) {
-+	list_for_each_entry_safe(ctrl, tmp, &rport->ctrl_list, ctrl_list) {
- 		if (!nvme_fc_ctrl_get(ctrl))
- 			continue;
- 		spin_lock(&ctrl->lock);
-@@ -1521,7 +1521,9 @@ nvme_fc_match_disconn_ls(struct nvme_fc_rport *rport,
- 		if (ret)
- 			/* leave the ctrl get reference */
- 			break;
-+		spin_unlock_irqrestore(&rport->lock, flags);
- 		nvme_fc_ctrl_put(ctrl);
-+		spin_lock_irqsave(&rport->lock, flags);
+--- a/fs/f2fs/super.c
++++ b/fs/f2fs/super.c
+@@ -4692,11 +4692,15 @@ try_onemore:
+ 		}
+ 	} else {
+ 		err = f2fs_recover_fsync_data(sbi, true);
+-
+-		if (!f2fs_readonly(sb) && err > 0) {
+-			err = -EINVAL;
+-			f2fs_err(sbi, "Need to recover fsync data");
+-			goto free_meta;
++		if (err > 0) {
++			if (!f2fs_readonly(sb)) {
++				f2fs_err(sbi, "Need to recover fsync data");
++				err = -EINVAL;
++				goto free_meta;
++			} else {
++				f2fs_info(sbi, "drop all fsynced data");
++				err = 0;
++			}
+ 		}
  	}
  
- 	spin_unlock_irqrestore(&rport->lock, flags);
--- 
-2.51.0
-
 
 
 
