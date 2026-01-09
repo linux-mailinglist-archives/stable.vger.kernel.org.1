@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-207171-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207802-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EE8AD09C01
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:36:14 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1742D0A27D
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:03:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0EE7730A53CE
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:21:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6EE7F31CEEBB
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:51:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A52E359FA0;
-	Fri,  9 Jan 2026 12:21:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A86B35A94E;
+	Fri,  9 Jan 2026 12:51:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bGy8+UO1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QdXtoJlF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4013833B6F0;
-	Fri,  9 Jan 2026 12:21:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E08B31A069;
+	Fri,  9 Jan 2026 12:51:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961294; cv=none; b=sLFq391rwbFkRkTGM7Z6cpeVYLzk/122yeJ+XAMKRqxTIPiEZHyAxdXaxgBKoyUjzhY5TqSJ1TTr52kXECNZXa9vvVHvYMVzRtgdJ1RcZv06hgZejsglfP2dq8NjU9essoBxFXxK0i0AUxYps/t/wtwUmiXAm+WBskxOWME68y8=
+	t=1767963091; cv=none; b=QUN66UddpFseHXUmvheXXvMFwRvumPHzLEvaEw1+Yp/hAVE5j7s6tH0Pmi0E3DqoK+GmKFUGvm0H2rMlUou7flgbKcJVjxiZNjioPqfrMGNyQ8E5SRpNZX7Bk324hoScSPtT4kv7zDUfpI0YyeSwKkIlGHAzCxzMDj+VHRnC+MU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961294; c=relaxed/simple;
-	bh=FpHsX85lqJn9OQE51ZOGLZC1ongNHG2HHg+z4q/5kys=;
+	s=arc-20240116; t=1767963091; c=relaxed/simple;
+	bh=BxxVOEo27+1QN3iWT/KHOsNC0K7SKLQ7qeqjzjiBTgo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VuTrwT8+EVjdNgfAcD1dFjH53VZKKfF7ea3/xOTae8dE0XiXZIawnbI7pzQSDKBsFjRBdMi8FjuLmdQm+Ng5Ejg4bvShyD3eBXJLt6GQp/lZNd7JythnwCvWfCnc8AivbJPQU0RCtiWGCxjkLfULFlw2zq+fwHMVPuO8vXUy26Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bGy8+UO1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDAFAC4CEF1;
-	Fri,  9 Jan 2026 12:21:33 +0000 (UTC)
+	 MIME-Version; b=LDrgdO3Isl6+e3dDQ4FhEBCVywFbTJARPsYKv+DQzfweklBk/bC4Syhfhx2vejQ28CV+zfLrhyCTJelLQrUZY3kUbS5vamqPdZ/e3UFUZyvrdsNil/hxoP6kq7J0ZiLY5zRXpvlwg2MISZDcSOmdByyVCG/sCBZYHoEnWKGySLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QdXtoJlF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0CF7C4CEF1;
+	Fri,  9 Jan 2026 12:51:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961294;
-	bh=FpHsX85lqJn9OQE51ZOGLZC1ongNHG2HHg+z4q/5kys=;
+	s=korg; t=1767963091;
+	bh=BxxVOEo27+1QN3iWT/KHOsNC0K7SKLQ7qeqjzjiBTgo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bGy8+UO1rn1QAfGYHtWereC9u6au+YPASUYZmlZbgNgFizKVhe2U9QtgSr9t4PQsJ
-	 +ucqCPUW64mWoBOU/dqvWopJTp58nxR5kqOW1pfy0+MbvBJYANQBIbaOGjl6Y+M9kA
-	 J5fSVPOT3hjvCUyXPQxJm1Cj8hFLFUiGQkkyqCjk=
+	b=QdXtoJlFao61/cmpUOPqGLjoclT2RO6NCdwyxZuE1oc4p1wnppmQ6SI0/Dt7yFALo
+	 /mVRPnYt7/v0CKMWxZIfIEIIpc3Fqr3Ejn4B9HTTDcY89kjJ85d6CmSH3J5glgA2P4
+	 p3LAuUJp+6/JHF37AasABplThmBWmcEPrDHT2fQ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yunfei Dong <yunfei.dong@mediatek.com>,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	Fei Shao <fshao@chromium.org>,
-	Tomasz Figa <tfiga@chromium.org>,
-	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	Shivani Agarwal <shivani.agarwal@broadcom.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 701/737] media: mediatek: vcodec: Use spinlock for context list protection lock
+Subject: [PATCH 6.1 562/634] crypto: af_alg - zero initialize memory allocated via sock_kmalloc
 Date: Fri,  9 Jan 2026 12:44:00 +0100
-Message-ID: <20260109112200.441986961@linuxfoundation.org>
+Message-ID: <20260109112138.746783509@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,258 +60,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen-Yu Tsai <wenst@chromium.org>
+From: Shivani Agarwal <shivani.agarwal@broadcom.com>
 
-[ Upstream commit a5844227e0f030d2af2d85d4aed10c5eca6ca176 ]
+[ Upstream commit 6f6e309328d53a10c0fe1f77dec2db73373179b6 ]
 
-Previously a mutex was added to protect the encoder and decoder context
-lists from unexpected changes originating from the SCP IP block, causing
-the context pointer to go invalid, resulting in a NULL pointer
-dereference in the IPI handler.
+Several crypto user API contexts and requests allocated with
+sock_kmalloc() were left uninitialized, relying on callers to
+set fields explicitly. This resulted in the use of uninitialized
+data in certain error paths or when new fields are added in the
+future.
 
-Turns out on the MT8173, the VPU IPI handler is called from hard IRQ
-context. This causes a big warning from the scheduler. This was first
-reported downstream on the ChromeOS kernels, but is also reproducible
-on mainline using Fluster with the FFmpeg v4l2m2m decoders. Even though
-the actual capture format is not supported, the affected code paths
-are triggered.
+The ACVP patches also contain two user-space interface files:
+algif_kpp.c and algif_akcipher.c. These too rely on proper
+initialization of their context structures.
 
-Since this lock just protects the context list and operations on it are
-very fast, it should be OK to switch to a spinlock.
+A particular issue has been observed with the newly added
+'inflight' variable introduced in af_alg_ctx by commit:
 
-Fixes: 6467cda18c9f ("media: mediatek: vcodec: adding lock to protect decoder context list")
-Fixes: afaaf3a0f647 ("media: mediatek: vcodec: adding lock to protect encoder context list")
-Cc: Yunfei Dong <yunfei.dong@mediatek.com>
+  67b164a871af ("crypto: af_alg - Disallow multiple in-flight AIO requests")
+
+Because the context is not memset to zero after allocation,
+the inflight variable has contained garbage values. As a result,
+af_alg_alloc_areq() has incorrectly returned -EBUSY randomly when
+the garbage value was interpreted as true:
+
+  https://github.com/gregkh/linux/blame/master/crypto/af_alg.c#L1209
+
+The check directly tests ctx->inflight without explicitly
+comparing against true/false. Since inflight is only ever set to
+true or false later, an uninitialized value has triggered
+-EBUSY failures. Zero-initializing memory allocated with
+sock_kmalloc() ensures inflight and other fields start in a known
+state, removing random issues caused by uninitialized data.
+
+Fixes: fe869cdb89c9 ("crypto: algif_hash - User-space interface for hash operations")
+Fixes: 5afdfd22e6ba ("crypto: algif_rng - add random number generator support")
+Fixes: 2d97591ef43d ("crypto: af_alg - consolidation of duplicate code")
+Fixes: 67b164a871af ("crypto: af_alg - Disallow multiple in-flight AIO requests")
 Cc: stable@vger.kernel.org
-Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
-Reviewed-by: Fei Shao <fshao@chromium.org>
-Reviewed-by: Tomasz Figa <tfiga@chromium.org>
-Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
-[ adapted file_to_dec_ctx() and file_to_enc_ctx() helper calls to equivalent fh_to_dec_ctx(file->private_data) and fh_to_enc_ctx(file->private_data) pattern ]
+Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+[ Adjust context ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/mediatek/vcodec/common/mtk_vcodec_fw_vpu.c   |   10 +++++---
- drivers/media/platform/mediatek/vcodec/decoder/mtk_vcodec_dec_drv.c |   12 +++++-----
- drivers/media/platform/mediatek/vcodec/decoder/mtk_vcodec_dec_drv.h |    2 -
- drivers/media/platform/mediatek/vcodec/decoder/vdec_vpu_if.c        |    5 ++--
- drivers/media/platform/mediatek/vcodec/encoder/mtk_vcodec_enc_drv.c |   12 +++++-----
- drivers/media/platform/mediatek/vcodec/encoder/mtk_vcodec_enc_drv.h |    2 -
- drivers/media/platform/mediatek/vcodec/encoder/venc_vpu_if.c        |    5 ++--
- 7 files changed, 28 insertions(+), 20 deletions(-)
+ crypto/af_alg.c     |    5 ++---
+ crypto/algif_hash.c |    3 +--
+ crypto/algif_rng.c  |    3 +--
+ 3 files changed, 4 insertions(+), 7 deletions(-)
 
---- a/drivers/media/platform/mediatek/vcodec/common/mtk_vcodec_fw_vpu.c
-+++ b/drivers/media/platform/mediatek/vcodec/common/mtk_vcodec_fw_vpu.c
-@@ -47,30 +47,32 @@ static void mtk_vcodec_vpu_reset_dec_han
- {
- 	struct mtk_vcodec_dec_dev *dev = priv;
- 	struct mtk_vcodec_dec_ctx *ctx;
-+	unsigned long flags;
+--- a/crypto/af_alg.c
++++ b/crypto/af_alg.c
+@@ -1108,14 +1108,13 @@ struct af_alg_async_req *af_alg_alloc_ar
+ 	if (unlikely(!areq))
+ 		return ERR_PTR(-ENOMEM);
  
- 	dev_err(&dev->plat_dev->dev, "Watchdog timeout!!");
++	memset(areq, 0, areqlen);
++
+ 	ctx->inflight = true;
  
--	mutex_lock(&dev->dev_ctx_lock);
-+	spin_lock_irqsave(&dev->dev_ctx_lock, flags);
- 	list_for_each_entry(ctx, &dev->ctx_list, list) {
- 		ctx->state = MTK_STATE_ABORT;
- 		mtk_v4l2_vdec_dbg(0, ctx, "[%d] Change to state MTK_STATE_ABORT", ctx->id);
- 	}
--	mutex_unlock(&dev->dev_ctx_lock);
-+	spin_unlock_irqrestore(&dev->dev_ctx_lock, flags);
+ 	areq->areqlen = areqlen;
+ 	areq->sk = sk;
+-	areq->last_rsgl = NULL;
+ 	INIT_LIST_HEAD(&areq->rsgl_list);
+-	areq->tsgl = NULL;
+-	areq->tsgl_entries = 0;
+ 
+ 	return areq;
  }
- 
- static void mtk_vcodec_vpu_reset_enc_handler(void *priv)
- {
- 	struct mtk_vcodec_enc_dev *dev = priv;
- 	struct mtk_vcodec_enc_ctx *ctx;
-+	unsigned long flags;
- 
- 	dev_err(&dev->plat_dev->dev, "Watchdog timeout!!");
- 
--	mutex_lock(&dev->dev_ctx_lock);
-+	spin_lock_irqsave(&dev->dev_ctx_lock, flags);
- 	list_for_each_entry(ctx, &dev->ctx_list, list) {
- 		ctx->state = MTK_STATE_ABORT;
- 		mtk_v4l2_vdec_dbg(0, ctx, "[%d] Change to state MTK_STATE_ABORT", ctx->id);
- 	}
--	mutex_unlock(&dev->dev_ctx_lock);
-+	spin_unlock_irqrestore(&dev->dev_ctx_lock, flags);
- }
- 
- static const struct mtk_vcodec_fw_ops mtk_vcodec_vpu_msg = {
---- a/drivers/media/platform/mediatek/vcodec/decoder/mtk_vcodec_dec_drv.c
-+++ b/drivers/media/platform/mediatek/vcodec/decoder/mtk_vcodec_dec_drv.c
-@@ -198,6 +198,7 @@ static int fops_vcodec_open(struct file
- 	struct mtk_vcodec_dec_ctx *ctx = NULL;
- 	int ret = 0, i, hw_count;
- 	struct vb2_queue *src_vq;
-+	unsigned long flags;
- 
- 	ctx = kzalloc(sizeof(*ctx), GFP_KERNEL);
+--- a/crypto/algif_hash.c
++++ b/crypto/algif_hash.c
+@@ -424,9 +424,8 @@ static int hash_accept_parent_nokey(void
  	if (!ctx)
-@@ -268,9 +269,9 @@ static int fops_vcodec_open(struct file
+ 		return -ENOMEM;
  
- 	ctx->dev->vdec_pdata->init_vdec_params(ctx);
+-	ctx->result = NULL;
++	memset(ctx, 0, len);
+ 	ctx->len = len;
+-	ctx->more = false;
+ 	crypto_init_wait(&ctx->wait);
  
--	mutex_lock(&dev->dev_ctx_lock);
-+	spin_lock_irqsave(&dev->dev_ctx_lock, flags);
- 	list_add(&ctx->list, &dev->ctx_list);
--	mutex_unlock(&dev->dev_ctx_lock);
-+	spin_unlock_irqrestore(&dev->dev_ctx_lock, flags);
- 	mtk_vcodec_dbgfs_create(ctx);
- 
- 	mutex_unlock(&dev->dev_mutex);
-@@ -295,6 +296,7 @@ static int fops_vcodec_release(struct fi
- {
- 	struct mtk_vcodec_dec_dev *dev = video_drvdata(file);
- 	struct mtk_vcodec_dec_ctx *ctx = fh_to_dec_ctx(file->private_data);
-+	unsigned long flags;
- 
- 	mtk_v4l2_vdec_dbg(0, ctx, "[%d] decoder", ctx->id);
- 	mutex_lock(&dev->dev_mutex);
-@@ -313,9 +315,9 @@ static int fops_vcodec_release(struct fi
- 	v4l2_ctrl_handler_free(&ctx->ctrl_hdl);
- 
- 	mtk_vcodec_dbgfs_remove(dev, ctx->id);
--	mutex_lock(&dev->dev_ctx_lock);
-+	spin_lock_irqsave(&dev->dev_ctx_lock, flags);
- 	list_del_init(&ctx->list);
--	mutex_unlock(&dev->dev_ctx_lock);
-+	spin_unlock_irqrestore(&dev->dev_ctx_lock, flags);
- 	kfree(ctx);
- 	mutex_unlock(&dev->dev_mutex);
- 	return 0;
-@@ -382,7 +384,7 @@ static int mtk_vcodec_probe(struct platf
- 	for (i = 0; i < MTK_VDEC_HW_MAX; i++)
- 		mutex_init(&dev->dec_mutex[i]);
- 	mutex_init(&dev->dev_mutex);
--	mutex_init(&dev->dev_ctx_lock);
-+	spin_lock_init(&dev->dev_ctx_lock);
- 	spin_lock_init(&dev->irqlock);
- 
- 	snprintf(dev->v4l2_dev.name, sizeof(dev->v4l2_dev.name), "%s",
---- a/drivers/media/platform/mediatek/vcodec/decoder/mtk_vcodec_dec_drv.h
-+++ b/drivers/media/platform/mediatek/vcodec/decoder/mtk_vcodec_dec_drv.h
-@@ -271,7 +271,7 @@ struct mtk_vcodec_dec_dev {
- 	/* decoder hardware mutex lock */
- 	struct mutex dec_mutex[MTK_VDEC_HW_MAX];
- 	struct mutex dev_mutex;
--	struct mutex dev_ctx_lock;
-+	spinlock_t dev_ctx_lock;
- 	struct workqueue_struct *decode_workqueue;
- 
- 	spinlock_t irqlock;
---- a/drivers/media/platform/mediatek/vcodec/decoder/vdec_vpu_if.c
-+++ b/drivers/media/platform/mediatek/vcodec/decoder/vdec_vpu_if.c
-@@ -75,16 +75,17 @@ static void handle_get_param_msg_ack(con
- static bool vpu_dec_check_ap_inst(struct mtk_vcodec_dec_dev *dec_dev, struct vdec_vpu_inst *vpu)
- {
- 	struct mtk_vcodec_dec_ctx *ctx;
-+	unsigned long flags;
- 	int ret = false;
- 
--	mutex_lock(&dec_dev->dev_ctx_lock);
-+	spin_lock_irqsave(&dec_dev->dev_ctx_lock, flags);
- 	list_for_each_entry(ctx, &dec_dev->ctx_list, list) {
- 		if (!IS_ERR_OR_NULL(ctx) && ctx->vpu_inst == vpu) {
- 			ret = true;
- 			break;
- 		}
- 	}
--	mutex_unlock(&dec_dev->dev_ctx_lock);
-+	spin_unlock_irqrestore(&dec_dev->dev_ctx_lock, flags);
- 
- 	return ret;
- }
---- a/drivers/media/platform/mediatek/vcodec/encoder/mtk_vcodec_enc_drv.c
-+++ b/drivers/media/platform/mediatek/vcodec/encoder/mtk_vcodec_enc_drv.c
-@@ -117,6 +117,7 @@ static int fops_vcodec_open(struct file
- 	struct mtk_vcodec_enc_ctx *ctx = NULL;
- 	int ret = 0;
- 	struct vb2_queue *src_vq;
-+	unsigned long flags;
- 
- 	ctx = kzalloc(sizeof(*ctx), GFP_KERNEL);
+ 	ask->private = ctx;
+--- a/crypto/algif_rng.c
++++ b/crypto/algif_rng.c
+@@ -250,9 +250,8 @@ static int rng_accept_parent(void *priva
  	if (!ctx)
-@@ -177,9 +178,9 @@ static int fops_vcodec_open(struct file
- 	mtk_v4l2_venc_dbg(2, ctx, "Create instance [%d]@%p m2m_ctx=%p ",
- 			  ctx->id, ctx, ctx->m2m_ctx);
+ 		return -ENOMEM;
  
--	mutex_lock(&dev->dev_ctx_lock);
-+	spin_lock_irqsave(&dev->dev_ctx_lock, flags);
- 	list_add(&ctx->list, &dev->ctx_list);
--	mutex_unlock(&dev->dev_ctx_lock);
-+	spin_unlock_irqrestore(&dev->dev_ctx_lock, flags);
++	memset(ctx, 0, len);
+ 	ctx->len = len;
+-	ctx->addtl = NULL;
+-	ctx->addtl_len = 0;
  
- 	mutex_unlock(&dev->dev_mutex);
- 	mtk_v4l2_venc_dbg(0, ctx, "%s encoder [%d]", dev_name(&dev->plat_dev->dev),
-@@ -204,6 +205,7 @@ static int fops_vcodec_release(struct fi
- {
- 	struct mtk_vcodec_enc_dev *dev = video_drvdata(file);
- 	struct mtk_vcodec_enc_ctx *ctx = fh_to_enc_ctx(file->private_data);
-+	unsigned long flags;
- 
- 	mtk_v4l2_venc_dbg(1, ctx, "[%d] encoder", ctx->id);
- 	mutex_lock(&dev->dev_mutex);
-@@ -214,9 +216,9 @@ static int fops_vcodec_release(struct fi
- 	v4l2_fh_exit(&ctx->fh);
- 	v4l2_ctrl_handler_free(&ctx->ctrl_hdl);
- 
--	mutex_lock(&dev->dev_ctx_lock);
-+	spin_lock_irqsave(&dev->dev_ctx_lock, flags);
- 	list_del_init(&ctx->list);
--	mutex_unlock(&dev->dev_ctx_lock);
-+	spin_unlock_irqrestore(&dev->dev_ctx_lock, flags);
- 	kfree(ctx);
- 	mutex_unlock(&dev->dev_mutex);
- 	return 0;
-@@ -298,7 +300,7 @@ static int mtk_vcodec_probe(struct platf
- 
- 	mutex_init(&dev->enc_mutex);
- 	mutex_init(&dev->dev_mutex);
--	mutex_init(&dev->dev_ctx_lock);
-+	spin_lock_init(&dev->dev_ctx_lock);
- 	spin_lock_init(&dev->irqlock);
- 
- 	snprintf(dev->v4l2_dev.name, sizeof(dev->v4l2_dev.name), "%s",
---- a/drivers/media/platform/mediatek/vcodec/encoder/mtk_vcodec_enc_drv.h
-+++ b/drivers/media/platform/mediatek/vcodec/encoder/mtk_vcodec_enc_drv.h
-@@ -206,7 +206,7 @@ struct mtk_vcodec_enc_dev {
- 	/* encoder hardware mutex lock */
- 	struct mutex enc_mutex;
- 	struct mutex dev_mutex;
--	struct mutex dev_ctx_lock;
-+	spinlock_t dev_ctx_lock;
- 	struct workqueue_struct *encode_workqueue;
- 
- 	int enc_irq;
---- a/drivers/media/platform/mediatek/vcodec/encoder/venc_vpu_if.c
-+++ b/drivers/media/platform/mediatek/vcodec/encoder/venc_vpu_if.c
-@@ -45,16 +45,17 @@ static void handle_enc_encode_msg(struct
- static bool vpu_enc_check_ap_inst(struct mtk_vcodec_enc_dev *enc_dev, struct venc_vpu_inst *vpu)
- {
- 	struct mtk_vcodec_enc_ctx *ctx;
-+	unsigned long flags;
- 	int ret = false;
- 
--	mutex_lock(&enc_dev->dev_ctx_lock);
-+	spin_lock_irqsave(&enc_dev->dev_ctx_lock, flags);
- 	list_for_each_entry(ctx, &enc_dev->ctx_list, list) {
- 		if (!IS_ERR_OR_NULL(ctx) && ctx->vpu_inst == vpu) {
- 			ret = true;
- 			break;
- 		}
- 	}
--	mutex_unlock(&enc_dev->dev_ctx_lock);
-+	spin_unlock_irqrestore(&enc_dev->dev_ctx_lock, flags);
- 
- 	return ret;
- }
+ 	/*
+ 	 * No seeding done at that point -- if multiple accepts are
 
 
 
