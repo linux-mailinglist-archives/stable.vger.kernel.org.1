@@ -1,115 +1,230 @@
-Return-Path: <stable+bounces-206448-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206449-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD70FD08C6A
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 12:00:30 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFB10D08D1C
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 12:09:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D58093008F61
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 10:59:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7A76E3049C4D
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:07:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DB0833B6CD;
-	Fri,  9 Jan 2026 10:59:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B05E833BBC0;
+	Fri,  9 Jan 2026 11:07:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hrZZHUD/"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="e6u/lY3j"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
+Received: from mail-qk1-f228.google.com (mail-qk1-f228.google.com [209.85.222.228])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F94A33B6ED
-	for <stable@vger.kernel.org>; Fri,  9 Jan 2026 10:59:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2F1D33A715
+	for <stable@vger.kernel.org>; Fri,  9 Jan 2026 11:07:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.228
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767956388; cv=none; b=JGMY78y1WougbpLeokZBu9b10ErbVZIqVKTBZYsvI34qDx4+ITXdpC3ePHntAuFGEo3LcekO50udMfSYibHCcWRfgO0pgQSeIpyP1pQ9VUh8EsE23VulMMyfP95jhbXAkyGgxK3Q2HxzoR8YaMMgedrsrnhKplnWJD7r1zH5dq4=
+	t=1767956860; cv=none; b=Sv+rlv5M53EesFJyP3YCj8s0WocIOZjQYcLX5TqSJ5Rkq3/sV65BSYqGG3+1gPn1P/7HSb3l1KJfAP0OD0o7O87+scJlbKf2LrHEiqTCsA666f74CB3YWueiui2vvO2cACWCHXr/vzn6M8jeKZse5Kzj2jSjL19oYrEYU53ah4k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767956388; c=relaxed/simple;
-	bh=aRGZ9qzbchOvsbf2Q4Kz7fpOm3YpF5AuousM35WA2qE=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=jxYlIWCGQYBoFPUWxR4BH/Dxh1IEK5iNEsAJv1SrcULGeWYHn9JQ6VYGRGJL43juJnqDA8zlf4UT/61Z0J1yzf0u7sllTHSNv1H3eizYzSZ+I4JyWcGp3jYuU3eEemTXhb6FCs9rqwR2Oe3tzd6JfyLX6gNxMEYHmPcBzp0N3UI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--gnoack.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hrZZHUD/; arc=none smtp.client-ip=209.85.221.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--gnoack.bounces.google.com
-Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-4325b182e3cso1966684f8f.2
-        for <stable@vger.kernel.org>; Fri, 09 Jan 2026 02:59:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1767956385; x=1768561185; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id
-         :mime-version:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=/BeYkiy+yrJYsuxPNsd+qFQLKTrLZTJuUBJuKTSPotM=;
-        b=hrZZHUD/mRo/76m2wjFXl3x9fHMpB2sBmmZcjU/RGUSqzSu43W2j90Jpkgfi0jRLKo
-         9PVMlm1oSjekeeyRqmUXLgpfXSZyKRjKHBuAfLE90OkuDzheAOLt83bW0f8vEmoL4TgO
-         YqCzPAQRcsMMMAt+L3QUw7dTNpJCA64HX2Ofi54QO88QOfy6wvLVOVGPW77e3So22PWJ
-         hRjtH7WZpb/UtDg+ByeDBW+TeOAbh8iQzgv6Y0t2EQEwibWPupo/fr61MooF1u81E+JV
-         YwDhJ1yMsZk0L9fouP7Ei95StPvGb3Y0Vz7JBI7ojdnUPTyju0vF4gRGid8twBZxxD7V
-         YGKw==
+	s=arc-20240116; t=1767956860; c=relaxed/simple;
+	bh=bClo26dKQKfmtH6wmORSjwie/4l4DK0i8SN38XFShIg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RbPhx7VPQoV9AuAg9f2iZ5TFnLuKSD5Yh7uC4wGG3XJBeMdNy1O6wbAgAeFObzrWrRgRNpK9H86y4Sogo6Urv82W/MSwJzKqNbYcGfOhFqxT3EXd6FYESbkV8uqqkO/hcyeNz/tngFrkPq8LHnK4OME+hN4rCat694tze1FZLEg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=e6u/lY3j; arc=none smtp.client-ip=209.85.222.228
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-qk1-f228.google.com with SMTP id af79cd13be357-8c0f13e4424so400142085a.1
+        for <stable@vger.kernel.org>; Fri, 09 Jan 2026 03:07:38 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767956385; x=1768561185;
-        h=content-transfer-encoding:cc:to:from:subject:message-id
-         :mime-version:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/BeYkiy+yrJYsuxPNsd+qFQLKTrLZTJuUBJuKTSPotM=;
-        b=Udjjo86LNTYfTaC5vTrZjW5CoUUgmahGyV4UIc4YF005h6aL/T2fEpLJcfakpEnt4K
-         M/26BrD3rr7EzQ+d3PUL1otPnmlBMAs6XNBRGV1oU35a/uSYwt5PcSK36XZ7ixKrON+A
-         JNb6z5NZifXdhclF3u0cdMZnub6O1e+O2qop1rYI8VzHIVCxaZb7lNAaqpbX59thQ9BZ
-         ir6veeyMr5WPY1P3+oCies3KtiuVW1LbTcgvlrDKPkvagndEfvJDqzUdYo+Bfiw7K56a
-         tXQxY88SAbh2946GhAV5m925BpTnXbdfIOZMJ2OBQaN+j5OG4RR5AfRtIbU/+OtMhTjC
-         ixRg==
-X-Forwarded-Encrypted: i=1; AJvYcCUctew9G7CcQM+EW8lqjAYumPwyNwc6gbGsswAApmpj5cR5xL6feTwJk8Jy29VyKbE24VdmIaQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxRlvM8mFRsSq1NsaEupfbxKfc0iVr/WU0uwCoxO8912LYAKw6c
-	Ay6wX8HXopy6xpwAMOVTQ7hOwW6O6fa5hAaRvU4qSjFnSi5j1BEzmvh04ddDp7SWVnk4QPTcmcn
-	G51wMJg==
-X-Google-Smtp-Source: AGHT+IEU/LfzdhagkXfQaGZDe5g5h6ujSqoTY9VNtMtwT5eRJQAkPQzFbBLfVz9mtXaqRNuODe+khiaU+4c=
-X-Received: from wrbch8.prod.google.com ([2002:a5d:5d08:0:b0:429:de3f:827d])
- (user=gnoack job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6000:40cd:b0:432:84ee:186f
- with SMTP id ffacd0b85a97d-432c379dc44mr11574766f8f.33.1767956384941; Fri, 09
- Jan 2026 02:59:44 -0800 (PST)
-Date: Fri,  9 Jan 2026 11:59:12 +0100
+        d=1e100.net; s=20230601; t=1767956858; x=1768561658;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:dkim-signature:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=eD5pHYGilsMyb5v5eXOJGZgBHsDewfP3AwzPbcKcT5s=;
+        b=TU9j/uh00oUvoSbKk1EpMWbOL9bMUXBoZ4jgrRKvemasoDSBZI/uNH1YvFaqsp7sWs
+         08FDorrvtvncicVydlLCeMm29UU5wenfnPHqFUUGc8Fb4cwSR5EU3CRgWbyGrwg/gMt2
+         U7NqhMNjmeEW8cd3KYJbPN+kGbP6QBRztjwiyN4PKFUFbmaujDy1bZvsaanzTPQDjLRl
+         PPzV7g+TfXQ5qhd3haaciWNgUBLKmJamH1j0o6zJlAFyPkzoViZSFWFkOlMyINmFthV0
+         VEhklDg3YfmhWhtWfyWJVYtl1VOdsOhg8SCg0XAtG7zMloe74XkYjMyieNrwDILPGqky
+         4xhw==
+X-Gm-Message-State: AOJu0YwViIvi2wN3uXmB7vipkes6eXSAOypzqiU/xGVsSx5oCK1BmdJ7
+	+U+n6JvlCOY5LlmwdhpyxdG3TW9MsrGX1aKKal2iVf+OxOQQHX2lzblvT40AOgQ75BqxVNVHQl7
+	jmxrv+bFn+mi1YwBN5RFiCzLazFjO+P0Wfu5GDoJvktkBVGduMLX0bWDIh+b9zRnMJ76W6eVEcK
+	iiFfWY+PIq2msqG8tMUNMESwbLt29TMlBlApzcChXylAEg2/4GjkAer6qM37KBHSBhIEvCxf8G5
+	WGM+faHNo0ai28tcJj7Gg==
+X-Gm-Gg: AY/fxX7D19bduYeU9sqUQDqpLUNJKwGbHELrsvRtmSz0/FmuyYusy3RzA3mITGjdYhH
+	nsYwv4am3NXsS5e4pH1D+CCyZ+YUajxdlVXE/uLpv+soci7bRkMUk1+ISfxsYdJbzPkQ1lWXIve
+	rlwyEuXBByWCO4/GMsTRDx4wR0ZQ00BCLnuHxlfOcgqBNgx+l0g3ldGqBNYr+XNz5YUKDBwskw9
+	2uPfLQtYdLeU9EBD/Gv7oEAiiCJT7m0KAg6PizVrBdklGZVQWvQc3eCwbSMqqXRmucAh+l/n7VD
+	Kp3kvEKqPuck9J/b9ldHGxpV+yvJg+fDZ6gvIWTFoPtmGADbISd1anXwwzzU1TVNuuYUreud13C
+	drYGKHt+3gYUnfGBrWCYrmt2JXzvzJ/3fQnaAyu+GwhW3oyxC047sd0uaaZNkU8nJJqNVO3tuJE
+	Sy7ISk4z4YtxfBJ4IH99uCsoaazhKXLuA7hwUO/AEVUkMQs0bTZQ==
+X-Google-Smtp-Source: AGHT+IE5G7j+YwjUIR2m5x3dqFyAwLupF7d7EyfN5P0unIS+muAYyB5i1G2JkD0LHu/yOFClmlEYUathzqDn
+X-Received: by 2002:a05:620a:410d:b0:85b:cd94:71fe with SMTP id af79cd13be357-8c38939d0b3mr1219417885a.33.1767956857557;
+        Fri, 09 Jan 2026 03:07:37 -0800 (PST)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-2.dlp.protect.broadcom.com. [144.49.247.2])
+        by smtp-relay.gmail.com with ESMTPS id af79cd13be357-8c37f4bf167sm117493685a.4.2026.01.09.03.07.37
+        for <stable@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 09 Jan 2026 03:07:37 -0800 (PST)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-dy1-f199.google.com with SMTP id 5a478bee46e88-2ae56205588so4697214eec.1
+        for <stable@vger.kernel.org>; Fri, 09 Jan 2026 03:07:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1767956856; x=1768561656; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=eD5pHYGilsMyb5v5eXOJGZgBHsDewfP3AwzPbcKcT5s=;
+        b=e6u/lY3jiyHaefD2gMMsIPSsetyln1ny1Vsbu96XaS/t3uXU5mJx/Y3BE/Iky4nuAY
+         UtQyGqLngUqAUmrqwPviYJrWPfxzG2YA5XCDj7DdZu9T+ws1CXYSjs5NA7spnr+eOXYY
+         09Q2GES7lXRiWZPf8YNJLcQqaE1fWiXgsVRbc=
+X-Received: by 2002:a05:7301:7214:b0:2ae:5d7d:4f1d with SMTP id 5a478bee46e88-2b17d238b33mr8081340eec.1.1767956856243;
+        Fri, 09 Jan 2026 03:07:36 -0800 (PST)
+X-Received: by 2002:a05:7301:7214:b0:2ae:5d7d:4f1d with SMTP id 5a478bee46e88-2b17d238b33mr8081297eec.1.1767956855605;
+        Fri, 09 Jan 2026 03:07:35 -0800 (PST)
+Received: from photon-big-dev.. ([192.19.161.250])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b1775fe27dsm8783818eec.29.2026.01.09.03.07.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 09 Jan 2026 03:07:35 -0800 (PST)
+From: HarinadhD <harinadh.dommaraju@broadcom.com>
+To: stable@vger.kernel.org,
+	gregkh@linuxfoundation.org
+Cc: john.fastabend@gmail.com,
+	daniel@iogearbox.net,
+	jakub@cloudflare.com,
+	lmb@cloudflare.com,
+	davem@davemloft.net,
+	kuba@kernel.org,
+	ast@kernel.org,
+	andrii@kernel.org,
+	kafai@fb.com,
+	songliubraving@fb.com,
+	yhs@fb.com,
+	kpsingh@kernel.org,
+	netdev@vger.kernel.org,
+	bpf@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	ajay.kaher@broadcom.com,
+	alexey.makhalov@broadcom.com,
+	vamsi-krishna.brahmajosyula@broadcom.com,
+	yin.ding@broadcom.com,
+	tapas.kundu@broadcom.com,
+	Eric Dumazet <edumazet@google.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Harinadh Dommaraju <Harinadh.Dommaraju@broadcom.com>
+Subject: [PATCH v2 v5.10.y] bpf, sockmap: Don't let sock_map_{close,destroy,unhash} call itself
+Date: Fri,  9 Jan 2026 10:20:11 +0000
+Message-ID: <20260109102011.3904861-1-harinadh.dommaraju@broadcom.com>
+X-Mailer: git-send-email 2.43.7
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.52.0.457.g6b5491de43-goog
-Message-ID: <20260109105912.3141960-2-gnoack@google.com>
-Subject: [PATCH] HID: logitech-hidpp: Check maxfield in hidpp_get_report_length()
-From: "=?UTF-8?q?G=C3=BCnther=20Noack?=" <gnoack@google.com>
-To: "=?UTF-8?q?Filipe=20La=C3=ADns?=" <lains@riseup.net>, Bastien Nocera <hadess@hadess.net>, Jiri Kosina <jikos@kernel.org>, 
-	Benjamin Tissoires <bentiss@kernel.org>
-Cc: "=?UTF-8?q?G=C3=BCnther=20Noack?=" <gnoack@google.com>, stable@vger.kernel.org, linux-input@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-Do not crash when a report has no fields.
+From: Jakub Sitnicki <jakub@cloudflare.com>
 
-Fake USB gadgets can send their own HID report descriptors and can define r=
-eport
-structures without valid fields.  This can be used to crash the kernel over=
- USB.
+[ Upstream commit 5b4a79ba65a1ab479903fff2e604865d229b70a9 ]
 
-Cc: stable@vger.kernel.org
-Signed-off-by: G=C3=BCnther Noack <gnoack@google.com>
+sock_map proto callbacks should never call themselves by design. Protect
+against bugs like [1] and break out of the recursive loop to avoid a stack
+overflow in favor of a resource leak.
+
+[1] https://lore.kernel.org/all/00000000000073b14905ef2e7401@google.com/
+
+Suggested-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Jakub Sitnicki <jakub@cloudflare.com>
+Acked-by: John Fastabend <john.fastabend@gmail.com>
+Link: https://lore.kernel.org/r/20230113-sockmap-fix-v2-1-1e0ee7ac2f90@cloudflare.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+[Harinadh: Modified to apply on v5.10.y ]
+Signed-off-by: Harinadh Dommaraju <Harinadh.Dommaraju@broadcom.com>
 ---
- drivers/hid/hid-logitech-hidpp.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/core/sock_map.c | 53 +++++++++++++++++++++++++--------------------
+ 1 file changed, 30 insertions(+), 23 deletions(-)
 
-diff --git a/drivers/hid/hid-logitech-hidpp.c b/drivers/hid/hid-logitech-hi=
-dpp.c
-index 9ced0e4d46ae..919ba9f50292 100644
---- a/drivers/hid/hid-logitech-hidpp.c
-+++ b/drivers/hid/hid-logitech-hidpp.c
-@@ -4316,6 +4316,9 @@ static int hidpp_get_report_length(struct hid_device =
-*hdev, int id)
- 	if (!report)
- 		return 0;
-=20
-+	if (!report->maxfield)
-+		return 0;
-+
- 	return report->field[0]->report_count + 1;
+diff --git a/net/core/sock_map.c b/net/core/sock_map.c
+index 3a9e0046a780..438bbef5ff75 100644
+--- a/net/core/sock_map.c
++++ b/net/core/sock_map.c
+@@ -1558,15 +1558,16 @@ void sock_map_unhash(struct sock *sk)
+ 	psock = sk_psock(sk);
+ 	if (unlikely(!psock)) {
+ 		rcu_read_unlock();
+-		if (sk->sk_prot->unhash)
+-			sk->sk_prot->unhash(sk);
+-		return;
++		saved_unhash = READ_ONCE(sk->sk_prot)->unhash;
++	} else {
++		saved_unhash = psock->saved_unhash;
++		sock_map_remove_links(sk, psock);
++		rcu_read_unlock();
+ 	}
+-
+-	saved_unhash = psock->saved_unhash;
+-	sock_map_remove_links(sk, psock);
+-	rcu_read_unlock();
+-	saved_unhash(sk);
++	if (WARN_ON_ONCE(saved_unhash == sock_map_unhash))
++		return;
++	if (saved_unhash)
++		saved_unhash(sk);
  }
-=20
---=20
-2.52.0.457.g6b5491de43-goog
+ 
+ void sock_map_destroy(struct sock *sk)
+@@ -1578,16 +1579,17 @@ void sock_map_destroy(struct sock *sk)
+ 	psock = sk_psock_get(sk);
+ 	if (unlikely(!psock)) {
+ 		rcu_read_unlock();
+-		if (sk->sk_prot->destroy)
+-			sk->sk_prot->destroy(sk);
+-		return;
++		saved_destroy = READ_ONCE(sk->sk_prot)->destroy;
++	} else {
++		saved_destroy = psock->saved_destroy;
++		sock_map_remove_links(sk, psock);
++		rcu_read_unlock();
++		sk_psock_put(sk, psock);
+ 	}
+-
+-	saved_destroy = psock->saved_destroy;
+-	sock_map_remove_links(sk, psock);
+-	rcu_read_unlock();
+-	sk_psock_put(sk, psock);
+-	saved_destroy(sk);
++	if (WARN_ON_ONCE(saved_destroy == sock_map_destroy))
++		return;
++	if (saved_destroy)
++		saved_destroy(sk);
+ }
+ EXPORT_SYMBOL_GPL(sock_map_destroy);
+ 
+@@ -1602,13 +1604,18 @@ void sock_map_close(struct sock *sk, long timeout)
+ 	if (unlikely(!psock)) {
+ 		rcu_read_unlock();
+ 		release_sock(sk);
+-		return sk->sk_prot->close(sk, timeout);
++		saved_close = READ_ONCE(sk->sk_prot)->close;
++	} else {
++		saved_close = psock->saved_close;
++		sock_map_remove_links(sk, psock);
++		rcu_read_unlock();
++		release_sock(sk);
+ 	}
+-
+-	saved_close = psock->saved_close;
+-	sock_map_remove_links(sk, psock);
+-	rcu_read_unlock();
+-	release_sock(sk);
++	/* Make sure we do not recurse. This is a bug.
++	 * Leak the socket instead of crashing on a stack overflow.
++	 */
++	if (WARN_ON_ONCE(saved_close == sock_map_close))
++		return;
+ 	saved_close(sk, timeout);
+ }
+ 
+-- 
+2.43.7
 
 
