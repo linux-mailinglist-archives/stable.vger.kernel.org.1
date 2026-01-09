@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-207760-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206467-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8883BD0A220
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:01:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ADE3CD08FE7
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 12:47:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 085A130D5C91
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:50:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E569C300E7AD
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:45:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D71035BDD9;
-	Fri,  9 Jan 2026 12:49:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86447359FA1;
+	Fri,  9 Jan 2026 11:45:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KfGIxaeA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v4qFnEvx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E74D35B135;
-	Fri,  9 Jan 2026 12:49:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07CA732AAB5;
+	Fri,  9 Jan 2026 11:45:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962969; cv=none; b=hTVFwH2WQ+3o+SLmD4FEZnITuS0+mLdL8OSYqROKFXlHwADEiOJtTChDk6RqruGST159GQLs84yNmfrbLR2yr4MkrBYV595MbXgtqo19W5gCPxNsMsE1NJxkKX8TAdvOVciXm2aZrPxlOaWEMBc78Mr0eYU0An/DJ9pIBKPZ1Co=
+	t=1767959101; cv=none; b=nO65PLS6YCTqp5mLksl/lnajKbf+FqtR1szgL19io8Ko+nIfrv8oPZ+QQFW+YBWQM/k42/onyUe0JeXnhKtxgQDkNEGqf1OZWIL2MChSGll+x+2awecs0svWG5mIz1Y/3HVoJc+/+EJKkpGto6YupkNxDoWXIucxdEUS03sP42A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962969; c=relaxed/simple;
-	bh=Vq9kN7IfR0bIwTuM+HfIL6IJHUHSo/fqGLqJx8lv8BM=;
+	s=arc-20240116; t=1767959101; c=relaxed/simple;
+	bh=ESAwJg5GC7gopkhc1sBp4OowaDlWKa9bQHBOTp2aonk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BLy137EcHsOarJz26dYbhIrMBAdJdWGwGrjEcxznQnTJd7e6DogoUNCCH64yJP0wSgerHOMMw5WJVxHRKOHxhpoPXevtAcIyuzbOtbq/a6o0dBUFA0l3aLRQoeMQ4nMQEfs6KhF+zfS5YgckJMaqr5F2TwYKlqPvNmSjBg4UDAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KfGIxaeA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEF0EC4CEF1;
-	Fri,  9 Jan 2026 12:49:28 +0000 (UTC)
+	 MIME-Version:Content-Type; b=aTGTPwEYhg9ub662o7AtANALYXsDwRsBu6hymictSRwIelN04J2efIoDWcpBW2AM83KFA7K5aCNyAlkjK846/4vwm6nkkIsr9TF48tXzVd2jFHbiQ7lK3l5cqTVPgwALpdLx2FM3q6DQOuXAVENlA0EYXos22lYCIMmM+U0vBWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v4qFnEvx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D05A3C4CEF1;
+	Fri,  9 Jan 2026 11:44:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962969;
-	bh=Vq9kN7IfR0bIwTuM+HfIL6IJHUHSo/fqGLqJx8lv8BM=;
+	s=korg; t=1767959099;
+	bh=ESAwJg5GC7gopkhc1sBp4OowaDlWKa9bQHBOTp2aonk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KfGIxaeAyoVQcY+yRp51IOh6PjGYVqXH2q5/rbZ/VMUxksI+0lM0Kec41NG4jwdr/
-	 pYerUL94+V38wCOKkaOz7N2Dda/ktJGDID+tNwMSUrCYzidGRXwCU2+oZGQepTGwET
-	 ujAw8FnHDT9mGumzc6QnKpGLObx7xmeGajq4Z5AU=
+	b=v4qFnEvxKTBKO4n69onVqOzU8D/E1XCN4iV65PqTb+3vybfnbMi0q9WLdIijjzPYn
+	 2b2mV6ZIzRVNCKXuhuYy1oUlG859/F5w3nFjjV1D4n3uJ0jnMQgNPuZPnk97jNen36
+	 1S88j/49PVUXS0LpxUG3eTLnuTVwQCUxdTk0yZaY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	syzbot+24124df3170c3638b35f@syzkaller.appspotmail.com,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Natalie Vock <natalie.vock@gmx.de>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 551/634] f2fs: fix to avoid updating zero-sized extent in extent cache
+Subject: [PATCH 6.12 08/16] drm/amdgpu: Forward VMID reservation errors
 Date: Fri,  9 Jan 2026 12:43:49 +0100
-Message-ID: <20260109112138.326139761@linuxfoundation.org>
+Message-ID: <20260109111951.736965048@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109111951.415522519@linuxfoundation.org>
+References: <20260109111951.415522519@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,71 +59,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Natalie Vock <natalie.vock@gmx.de>
 
-[ Upstream commit 7c37c79510329cd951a4dedf3f7bf7e2b18dccec ]
+[ Upstream commit 8defb4f081a5feccc3ea8372d0c7af3522124e1f ]
 
-As syzbot reported:
+Otherwise userspace may be fooled into believing it has a reserved VMID
+when in reality it doesn't, ultimately leading to GPU hangs when SPM is
+used.
 
-F2FS-fs (loop0): __update_extent_tree_range: extent len is zero, type: 0, extent [0, 0, 0], age [0, 0]
-------------[ cut here ]------------
-kernel BUG at fs/f2fs/extent_cache.c:678!
-Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
-CPU: 0 UID: 0 PID: 5336 Comm: syz.0.0 Not tainted syzkaller #0 PREEMPT(full)
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-RIP: 0010:__update_extent_tree_range+0x13bc/0x1500 fs/f2fs/extent_cache.c:678
-Call Trace:
- <TASK>
- f2fs_update_read_extent_cache_range+0x192/0x3e0 fs/f2fs/extent_cache.c:1085
- f2fs_do_zero_range fs/f2fs/file.c:1657 [inline]
- f2fs_zero_range+0x10c1/0x1580 fs/f2fs/file.c:1737
- f2fs_fallocate+0x583/0x990 fs/f2fs/file.c:2030
- vfs_fallocate+0x669/0x7e0 fs/open.c:342
- ioctl_preallocate fs/ioctl.c:289 [inline]
- file_ioctl+0x611/0x780 fs/ioctl.c:-1
- do_vfs_ioctl+0xb33/0x1430 fs/ioctl.c:576
- __do_sys_ioctl fs/ioctl.c:595 [inline]
- __se_sys_ioctl+0x82/0x170 fs/ioctl.c:583
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f07bc58eec9
-
-In error path of f2fs_zero_range(), it may add a zero-sized extent
-into extent cache, it should be avoided.
-
-Fixes: 6e9619499f53 ("f2fs: support in batch fzero in dnode page")
-Cc: stable@kernel.org
-Reported-by: syzbot+24124df3170c3638b35f@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-f2fs-devel/68e5d698.050a0220.256323.0032.GAE@google.com
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-[ adapted patch to only guard f2fs_update_read_extent_cache_range() ]
+Fixes: 80e709ee6ecc ("drm/amdgpu: add option params to enforce process isolation between graphics and compute")
+Cc: stable@vger.kernel.org
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Natalie Vock <natalie.vock@gmx.de>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+[ adapted 3-argument amdgpu_vmid_alloc_reserved(adev, vm, vmhub) call to 2-argument version and added separate error check to preserve reserved_vmid tracking logic. ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/file.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/fs/f2fs/file.c
-+++ b/fs/f2fs/file.c
-@@ -1552,7 +1552,9 @@ static int f2fs_do_zero_range(struct dno
- 		f2fs_set_data_blkaddr(dn, NEW_ADDR);
- 	}
- 
--	f2fs_update_read_extent_cache_range(dn, start, 0, index - start);
-+	if (index > start)
-+		f2fs_update_read_extent_cache_range(dn, start, 0,
-+							index - start);
- 
- 	return ret;
- }
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
+@@ -2747,10 +2747,12 @@ int amdgpu_vm_ioctl(struct drm_device *d
+ 	case AMDGPU_VM_OP_RESERVE_VMID:
+ 		/* We only have requirement to reserve vmid from gfxhub */
+ 		if (!fpriv->vm.reserved_vmid[AMDGPU_GFXHUB(0)]) {
+-			amdgpu_vmid_alloc_reserved(adev, AMDGPU_GFXHUB(0));
++			int r = amdgpu_vmid_alloc_reserved(adev, AMDGPU_GFXHUB(0));
++
++			if (r)
++				return r;
+ 			fpriv->vm.reserved_vmid[AMDGPU_GFXHUB(0)] = true;
+ 		}
+-
+ 		break;
+ 	case AMDGPU_VM_OP_UNRESERVE_VMID:
+ 		if (fpriv->vm.reserved_vmid[AMDGPU_GFXHUB(0)]) {
 
 
 
