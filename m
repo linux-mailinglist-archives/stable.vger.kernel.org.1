@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-207369-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206767-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AF29D09E1E
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:43:25 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCB5ED09314
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:02:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A7598304E44C
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:31:06 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4974E3008197
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:02:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61FAE35B13F;
-	Fri,  9 Jan 2026 12:31:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41D62359F99;
+	Fri,  9 Jan 2026 12:02:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J2JIJqM9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mZ3jMT7+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2177B35B133;
-	Fri,  9 Jan 2026 12:30:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 056AA335561;
+	Fri,  9 Jan 2026 12:02:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961860; cv=none; b=gv6Nzi3xcmUgaBFtQBEWlWFsWB1jJkTboCVacrkkdwpRnK48Jkd1UaA5uFJEBZCyAmOQ+RqmzJDS3Z4wzzmNsY67RGwNpUGltiZHuObngBLaOrny0E2MEWE5niEDdu90aFCB3TfveHG0ZNhDKNWQSrZ1/V/M8BujkCKnTpAUiEQ=
+	t=1767960141; cv=none; b=CPmyhObxAlC48eieIvDTaKp37gAhDHmYuQtZFKk8gKWBV5qfuB9GrayH+l4mJz6+7FlcnkEY3IkpIYO/2IP8BMWUd0RQpfinoN97/z86obL1SXse/xG2YJnCsDOIo/i+O3hSNtXhI6GSCJVZ1zBlJHo26vBczuMRcSBkBFzho+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961860; c=relaxed/simple;
-	bh=0ff8Z1SxuHFLkO80nLZMOPL11JOJx4xdc3ka3QTlcAQ=;
+	s=arc-20240116; t=1767960141; c=relaxed/simple;
+	bh=J4DNuhPJCa0qW3QgSIXGww0/522uNZ70xfkzt10tq3M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TiBcmIFwzaZe+vr5FjXzvliNnlIZtfztdDGdUV4ItxWHn+ba2YUJqJ22u4G5SK9y7R2w41vx3NEXeV4udae6xRduBrBR+uacYvtvPK1ES5zZ3MLTYS0e//UPFAyf9aATx3sUh6pMfRXJKC/vrZ32gpmQlGhHyuSk903g3+lD2HQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J2JIJqM9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 567B4C4CEF1;
-	Fri,  9 Jan 2026 12:30:59 +0000 (UTC)
+	 MIME-Version; b=Fzg8XHnaK++bzmN+UDbwFxQcpc7U55IZycN3bbPGC2IjWX+0PCRMQ4jJZqVfe8HkHTmDi6gKkiwr7lqpdgMmZHbhB4pJqPze9uD69T7Q0ArkrlwXXhMY1aqnuHTa7YjtrIVchywxvXbcSmCtJwIL4PvTEfuK/F9YIA8Gnj65xIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mZ3jMT7+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F6FDC4CEF1;
+	Fri,  9 Jan 2026 12:02:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961859;
-	bh=0ff8Z1SxuHFLkO80nLZMOPL11JOJx4xdc3ka3QTlcAQ=;
+	s=korg; t=1767960140;
+	bh=J4DNuhPJCa0qW3QgSIXGww0/522uNZ70xfkzt10tq3M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J2JIJqM9LiMhWj/poRFBBtoYLSEncYD2AB/2QtEsXxdx+Fz8+OELBfV8sBE7QwbNZ
-	 rwS69YK+DqrwUV/D9x4Uv/oJEY1S11HaRHlyP47S9hv07vBk8iDqytbyV8YGYhWg37
-	 rQCxQO1WPBdXAbYnaPLt0pw6myd+h87K7QS+lLIQ=
+	b=mZ3jMT7+SpOV2Gdd8Z0N8H9wPfFtI7Wsr5puIqOZc8mU/YIMTckFpBugnHPKGreyJ
+	 /lxUMcAo1CDHfwV0Yxnt3zIiGfoSgi/ELcNNPtWxN1T9CKotH03VD8AjJfU8G+nbiS
+	 mP3xpZKQFDMgVbIDR5nvHRdXrRp988hJzbyEMjpg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 161/634] ext4: remove unused return value of __mb_check_buddy
+Subject: [PATCH 6.6 300/737] btrfs: fix a potential path leak in print_data_reloc_error()
 Date: Fri,  9 Jan 2026 12:37:19 +0100
-Message-ID: <20260109112123.508303130@linuxfoundation.org>
+Message-ID: <20260109112145.293265355@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,65 +60,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kemeng Shi <shikemeng@huaweicloud.com>
+From: Qu Wenruo <wqu@suse.com>
 
-[ Upstream commit 133de5a0d8f8e32b34feaa8beae7a189482f1856 ]
+[ Upstream commit 313ef70a9f0f637a09d9ef45222f5bdcf30a354b ]
 
-Remove unused return value of __mb_check_buddy.
+Inside print_data_reloc_error(), if extent_from_logical() failed we
+return immediately.
 
-Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20240105092102.496631-2-shikemeng@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Stable-dep-of: d9ee3ff810f1 ("ext4: improve integrity checking in __mb_check_buddy by enhancing order-0 validation")
+However there are the following cases where extent_from_logical() can
+return error but still holds a path:
+
+- btrfs_search_slot() returned 0
+
+- No backref item found in extent tree
+
+- No flags_ret provided
+  This is not possible in this call site though.
+
+So for the above two cases, we can return without releasing the path,
+causing extent buffer leaks.
+
+Fixes: b9a9a85059cd ("btrfs: output affected files when relocation fails")
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/mballoc.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ fs/btrfs/inode.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
-index 1dc25e7b922ad..db302f617da72 100644
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -666,7 +666,7 @@ do {									\
- 	}								\
- } while (0)
- 
--static int __mb_check_buddy(struct ext4_buddy *e4b, char *file,
-+static void __mb_check_buddy(struct ext4_buddy *e4b, char *file,
- 				const char *function, int line)
- {
- 	struct super_block *sb = e4b->bd_sb;
-@@ -685,7 +685,7 @@ static int __mb_check_buddy(struct ext4_buddy *e4b, char *file,
- 	void *buddy2;
- 
- 	if (e4b->bd_info->bb_check_counter++ % 10)
--		return 0;
-+		return;
- 
- 	while (order > 1) {
- 		buddy = mb_find_buddy(e4b, order, &max);
-@@ -747,7 +747,7 @@ static int __mb_check_buddy(struct ext4_buddy *e4b, char *file,
- 
- 	grp = ext4_get_group_info(sb, e4b->bd_group);
- 	if (!grp)
--		return NULL;
-+		return;
- 	list_for_each(cur, &grp->bb_prealloc_list) {
- 		ext4_group_t groupnr;
- 		struct ext4_prealloc_space *pa;
-@@ -757,7 +757,6 @@ static int __mb_check_buddy(struct ext4_buddy *e4b, char *file,
- 		for (i = 0; i < pa->pa_len; i++)
- 			MB_CHECK_ASSERT(mb_test_bit(k + i, buddy));
+diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
+index b1be3e0fe7282..68bb5079aef74 100644
+--- a/fs/btrfs/inode.c
++++ b/fs/btrfs/inode.c
+@@ -266,6 +266,7 @@ static void print_data_reloc_error(const struct btrfs_inode *inode, u64 file_off
+ 	if (ret < 0) {
+ 		btrfs_err_rl(fs_info, "failed to lookup extent item for logical %llu: %d",
+ 			     logical, ret);
++		btrfs_release_path(&path);
+ 		return;
  	}
--	return 0;
- }
- #undef MB_CHECK_ASSERT
- #define mb_check_buddy(e4b) __mb_check_buddy(e4b,	\
+ 	eb = path.nodes[0];
 -- 
 2.51.0
 
