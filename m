@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-206668-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207269-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79C7BD093FE
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:06:27 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C91DAD09B1A
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:33:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BD6EE30146F2
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:57:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3DEB7304D8DE
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:26:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49AD1335561;
-	Fri,  9 Jan 2026 11:57:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEFF935BDA8;
+	Fri,  9 Jan 2026 12:26:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HkcogKvD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ipZog/ZG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C5D432FA3D;
-	Fri,  9 Jan 2026 11:57:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71F4435B158;
+	Fri,  9 Jan 2026 12:26:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767959860; cv=none; b=lqgn9M1XNH5UAKd06gMFIKTa+58n+bA8SziCNigjAHCNMYTFdqTDdF40hstC9rqftIbl/g6Qf47AR8LWiWajCp8yzBumuD4KSurHUtB3epvx4UK128+NeOTs0Z61Zh9s8N1ShO/g9YCqL8foWSAolhpWmHIOPSbbP15lqTWO9hk=
+	t=1767961575; cv=none; b=LjY2om37io/SHIBNCgy7LlrBZKUeuYP857cSBdSHJw18nypg70OB50OLKoTh++TcvfUDT8sgXdh1Mplk2D9NFPeLhCaKjdQlxL2ErdTVeqTjVXwcYoTuSfJFYrHjKU6MSCclpuf0HvhKM0RBGC8a5Ks88+L78v27M/l669Z7xOA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767959860; c=relaxed/simple;
-	bh=zcfEb7tqNsmN1kd9hRrjBR4naFhTrU+/ACovy1MVYfU=;
+	s=arc-20240116; t=1767961575; c=relaxed/simple;
+	bh=ytAoGJpU4SpwKtDHxhoZy3sXRYXe+NomoPGhF6hHIUk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sqxOUhiq/QRJ/lmukyi/WXy9dy5yF00gZ2PR51yQarLu/WKPdoJDmoRxVPjMipBnRYFnRV2b9ARC3RzClRTW+trPi3R15zNRcXave1i1YGssiyJB2pypTXhaR/qS98UQ0YnuLRqpSHaGGSN+ohfhJ8OAIc0TcwmurLHXg/mOm9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HkcogKvD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 879CFC4CEF1;
-	Fri,  9 Jan 2026 11:57:39 +0000 (UTC)
+	 MIME-Version; b=DCliGJhsQNZCaQsUcAeO8Umw4TiSU0JUoZhjdcAuBPXoWbTQqzEJ+edzm2xEb7b3LNaDIvL961IZMwbd0obxjj31FZGnKtuKO7BfkMsjieCiMyvBAyk3mDvje+FSNixRZWVFI2VMJp/ZmjVPtgLG0evSPK8MaCews3AGIqPOezw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ipZog/ZG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F332DC4CEF1;
+	Fri,  9 Jan 2026 12:26:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767959859;
-	bh=zcfEb7tqNsmN1kd9hRrjBR4naFhTrU+/ACovy1MVYfU=;
+	s=korg; t=1767961575;
+	bh=ytAoGJpU4SpwKtDHxhoZy3sXRYXe+NomoPGhF6hHIUk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HkcogKvDgbMfvPji7HtYaqM57Fqmkhg4GRypBT+FMZaprCAQEMrovri2mTxcAvwHi
-	 q9FL3JJIy20KbvEEpOejkYIU/bWNmyOMrxf/pVU45yE7TwPnyQ6xgvJ8cbQexVg6pP
-	 beQefON5X4m6tJVJ4h9zR55Y/nx+UDPyzOgxdc9Y=
+	b=ipZog/ZGxTcYfD+g310m8VUZG7HS/cV9OfxRCY7jqL6B3D6hGEQ9/1Md6VdK4fN0r
+	 h5BXFxPUZmcyx4ErSNei7PQbdx5ZR/rwtgzUy42QSFD5w7/qfCIQyJTlq7lWAEl3lP
+	 NRxkq34DKMkB152n6gOqJrbz7P7lQBDASA8kUXY0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zilin Guan <zilin@seu.edu.cn>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Felix Fietkau <nbd@nbd.name>,
+	nieweiqiang <nieweiqiang@huawei.com>,
+	Chenghai Huang <huangchenghai2@huawei.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 200/737] mt76: mt7615: Fix memory leak in mt7615_mcu_wtbl_sta_add()
+Subject: [PATCH 6.1 061/634] crypto: hisilicon/qm - restore original qos values
 Date: Fri,  9 Jan 2026 12:35:39 +0100
-Message-ID: <20260109112141.526400146@linuxfoundation.org>
+Message-ID: <20260109112119.739251929@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +61,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zilin Guan <zilin@seu.edu.cn>
+From: nieweiqiang <nieweiqiang@huawei.com>
 
-[ Upstream commit 53d1548612670aa8b5d89745116cc33d9d172863 ]
+[ Upstream commit e7066160f5b4187ad9869b712fa7a35d3d5be6b9 ]
 
-In mt7615_mcu_wtbl_sta_add(), an skb sskb is allocated. If the
-subsequent call to mt76_connac_mcu_alloc_wtbl_req() fails, the function
-returns an error without freeing sskb, leading to a memory leak.
+When the new qos valus setting fails, restore to
+the original qos values.
 
-Fix this by calling dev_kfree_skb() on sskb in the error handling path
-to ensure it is properly released.
-
-Fixes: 99c457d902cf9 ("mt76: mt7615: move mt7615_mcu_set_bmc to mt7615_mcu_ops")
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
-Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Link: https://patch.msgid.link/20251113062415.103611-1-zilin@seu.edu.cn
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Fixes: 72b010dc33b9 ("crypto: hisilicon/qm - supports writing QoS int the host")
+Signed-off-by: nieweiqiang <nieweiqiang@huawei.com>
+Signed-off-by: Chenghai Huang <huangchenghai2@huawei.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7615/mcu.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/crypto/hisilicon/qm.c | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-index e92040616a1f3..94adb22f8570f 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-@@ -870,8 +870,10 @@ mt7615_mcu_wtbl_sta_add(struct mt7615_phy *phy, struct ieee80211_vif *vif,
- 	wtbl_hdr = mt76_connac_mcu_alloc_wtbl_req(&dev->mt76, &msta->wcid,
- 						  WTBL_RESET_AND_SET, NULL,
- 						  &wskb);
--	if (IS_ERR(wtbl_hdr))
-+	if (IS_ERR(wtbl_hdr)) {
-+		dev_kfree_skb(sskb);
- 		return PTR_ERR(wtbl_hdr);
-+	}
+diff --git a/drivers/crypto/hisilicon/qm.c b/drivers/crypto/hisilicon/qm.c
+index 42f1e7d0023e1..23fff5de3325a 100644
+--- a/drivers/crypto/hisilicon/qm.c
++++ b/drivers/crypto/hisilicon/qm.c
+@@ -3450,6 +3450,7 @@ static int qm_clear_vft_config(struct hisi_qm *qm)
+ static int qm_func_shaper_enable(struct hisi_qm *qm, u32 fun_index, u32 qos)
+ {
+ 	struct device *dev = &qm->pdev->dev;
++	struct qm_shaper_factor t_factor;
+ 	u32 ir = qos * QM_QOS_RATE;
+ 	int ret, total_vfs, i;
  
- 	if (enable) {
- 		mt76_connac_mcu_wtbl_generic_tlv(&dev->mt76, wskb, vif, sta,
+@@ -3457,6 +3458,7 @@ static int qm_func_shaper_enable(struct hisi_qm *qm, u32 fun_index, u32 qos)
+ 	if (fun_index > total_vfs)
+ 		return -EINVAL;
+ 
++	memcpy(&t_factor, &qm->factor[fun_index], sizeof(t_factor));
+ 	qm->factor[fun_index].func_qos = qos;
+ 
+ 	ret = qm_get_shaper_para(ir, &qm->factor[fun_index]);
+@@ -3470,11 +3472,21 @@ static int qm_func_shaper_enable(struct hisi_qm *qm, u32 fun_index, u32 qos)
+ 		ret = qm_set_vft_common(qm, SHAPER_VFT, fun_index, i, 1);
+ 		if (ret) {
+ 			dev_err(dev, "type: %d, failed to set shaper vft!\n", i);
+-			return -EINVAL;
++			goto back_func_qos;
+ 		}
+ 	}
+ 
+ 	return 0;
++
++back_func_qos:
++	memcpy(&qm->factor[fun_index], &t_factor, sizeof(t_factor));
++	for (i--; i >= ALG_TYPE_0; i--) {
++		ret = qm_set_vft_common(qm, SHAPER_VFT, fun_index, i, 1);
++		if (ret)
++			dev_err(dev, "failed to restore shaper vft during rollback!\n");
++	}
++
++	return -EINVAL;
+ }
+ 
+ static u32 qm_get_shaper_vft_qos(struct hisi_qm *qm, u32 fun_index)
 -- 
 2.51.0
 
