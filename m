@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-206785-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207419-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E023D095C3
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:12:26 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23BA7D09D27
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:39:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 83182308F152
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:03:17 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D13CC309E68B
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:33:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A343535A925;
-	Fri,  9 Jan 2026 12:03:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3674F35A95C;
+	Fri,  9 Jan 2026 12:33:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wun6kpRk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2n7GWDRM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65703359F98;
-	Fri,  9 Jan 2026 12:03:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEF08336EDA;
+	Fri,  9 Jan 2026 12:33:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960192; cv=none; b=OSr31FS8J+hJ4FOaIukagbEsO3598+MK/5z/mN5YRDv80zOQBUHL21tSZ+B5Ol5xTpW5HNlHgRd2AsyjoC6yqF7PPqwtboKGdE6t15Tu9hBBdQBneSUAqycELpqaf3gN3pnLTznX5Ndh+HDqgvIc15bHotnmaAz9qnmFZbYOo34=
+	t=1767962001; cv=none; b=I06UlvAK0VGxAdrb2coag/H+ASZ9jidliZTd9lRm83PaWlAL9eV1PHrB9tHjPhNcyJlCFsp17mibYRDjtVCcfgExlmHzWs2Qy99dfLiC8SSRko/7Y9XhxUs8bHvYyzHY0l/2VBLhlZxLvATnqk3ZzUReHqJlwQxMJaN6fNLKlh8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960192; c=relaxed/simple;
-	bh=NmHApGR8+9V3afV5lPQJxmmrLiyqg6ZVNWXdU/e22So=;
+	s=arc-20240116; t=1767962001; c=relaxed/simple;
+	bh=ztB4m1A0+DqpJI07mmYlCjqI+oXX2M03lfZjMM7N4H8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B5bvROlCVE/jk2d7V+UVu9uJTArk122WV2C6uMU2FZNO+pS0Z135p0zXKGs3hfzB3fEV9KSVJ/U9hnqIaThInrSNABIB3sYCxdJhuUAjnueI/JN2JMNii5MjnduKdnC99AbDHBQNA+wWYSBzfB8RR5Z44uL0OmfkiAS+qj5/mas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wun6kpRk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6DEBC4CEF1;
-	Fri,  9 Jan 2026 12:03:11 +0000 (UTC)
+	 MIME-Version; b=WYa/OWHZrzKeg/D7Rjomuxwm1RXgKavJ6rq2tH1zrGV+gYnMugfaQu2fnF1wKriDhvhgFIrOGO0XrwY14qRMU2CORDSg2JxUXLJXvZmmkFe1gCaC5RFYkwrJlH3LEoGZyv9E4OceR4GM4KXLaEJT8OZTRqgZfRwn3g7zIsHqJc4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2n7GWDRM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D34DC4AF09;
+	Fri,  9 Jan 2026 12:33:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960192;
-	bh=NmHApGR8+9V3afV5lPQJxmmrLiyqg6ZVNWXdU/e22So=;
+	s=korg; t=1767962000;
+	bh=ztB4m1A0+DqpJI07mmYlCjqI+oXX2M03lfZjMM7N4H8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wun6kpRkAIrpDKYuLejqRhXez9tdeIy1FhIMfhpGCgOTbkNfWDtn+nI50qbrf49M9
-	 jYHY+qZiWDiTreCKvES7y71vokf/dF1I2wSFBb3jWXX88QfMQ0JHG9K8eP0/Q9+J5A
-	 a/EVI/ba7HAWQEhvVsY0Fd7PjwsLFETSpjumQvL0=
+	b=2n7GWDRMPd7AM5vv98JNQTW4a8C1t12VhKW2mDfjv5NkqXp6NCdf5rldTUyvcOApg
+	 9I0sU8BXctfVIfAGZ51gdx43FjZ/pG9ipUgLrEx0D5b2TYfMFzS25cE/TP7kH4GQhx
+	 FftYLKp1H7Y73bEbnXKNcLCKM6HP3nu+WX3+h4/E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikhail Malyshev <mike.malyshev@gmail.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nsc@kernel.org>,
+	Ivan Stepchenko <sid@itb.spb.ru>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 316/737] kbuild: Use objtree for module signing key path
-Date: Fri,  9 Jan 2026 12:37:35 +0100
-Message-ID: <20260109112145.888904269@linuxfoundation.org>
+Subject: [PATCH 6.1 178/634] mtd: lpddr_cmds: fix signed shifts in lpddr_cmds
+Date: Fri,  9 Jan 2026 12:37:36 +0100
+Message-ID: <20260109112124.141367985@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,60 +60,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikhail Malyshev <mike.malyshev@gmail.com>
+From: Ivan Stepchenko <sid@itb.spb.ru>
 
-[ Upstream commit af61da281f52aba0c5b090bafb3a31c5739850ff ]
+[ Upstream commit c909fec69f84b39e63876c69b9df2c178c6b76ba ]
 
-When building out-of-tree modules with CONFIG_MODULE_SIG_FORCE=y,
-module signing fails because the private key path uses $(srctree)
-while the public key path uses $(objtree). Since signing keys are
-generated in the build directory during kernel compilation, both
-paths should use $(objtree) for consistency.
+There are several places where a value of type 'int' is shifted by
+lpddr->chipshift. lpddr->chipshift is derived from QINFO geometry and
+might reach 31 when QINFO reports a 2 GiB size - the maximum supported by
+LPDDR(1) compliant chips. This may cause unexpected sign-extensions when
+casting the integer value to the type of 'unsigned long'.
 
-This causes SSL errors like:
-  SSL error:02001002:system library:fopen:No such file or directory
-  sign-file: /kernel-src/certs/signing_key.pem
+Use '1UL << lpddr->chipshift' and cast 'j' to unsigned long before
+shifting so the computation is performed at the destination width.
 
-The issue occurs because:
-- sig-key uses: $(srctree)/certs/signing_key.pem (source tree)
-- cmd_sign uses: $(objtree)/certs/signing_key.x509 (build tree)
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-But both keys are generated in $(objtree) during the build.
-
-This complements commit 25ff08aa43e37 ("kbuild: Fix signing issue for
-external modules") which fixed the scripts path and public key path,
-but missed the private key path inconsistency.
-
-Fixes out-of-tree module signing for configurations with separate
-source and build directories (e.g., O=/kernel-out).
-
-Signed-off-by: Mikhail Malyshev <mike.malyshev@gmail.com>
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-Tested-by: Nicolas Schier <nsc@kernel.org>
-Link: https://patch.msgid.link/20251015163452.3754286-1-mike.malyshev@gmail.com
-Signed-off-by: Nicolas Schier <nsc@kernel.org>
+Fixes: c68264711ca6 ("[MTD] LPDDR Command set driver")
+Signed-off-by: Ivan Stepchenko <sid@itb.spb.ru>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/Makefile.modinst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mtd/lpddr/lpddr_cmds.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/scripts/Makefile.modinst b/scripts/Makefile.modinst
-index 0afd75472679f..3e8b069a04ff0 100644
---- a/scripts/Makefile.modinst
-+++ b/scripts/Makefile.modinst
-@@ -96,7 +96,7 @@ endif
- # Don't stop modules_install even if we can't sign external modules.
- #
- ifeq ($(filter pkcs11:%, $(CONFIG_MODULE_SIG_KEY)),)
--sig-key := $(if $(wildcard $(CONFIG_MODULE_SIG_KEY)),,$(srctree)/)$(CONFIG_MODULE_SIG_KEY)
-+sig-key := $(if $(wildcard $(CONFIG_MODULE_SIG_KEY)),,$(objtree)/)$(CONFIG_MODULE_SIG_KEY)
- else
- sig-key := $(CONFIG_MODULE_SIG_KEY)
- endif
+diff --git a/drivers/mtd/lpddr/lpddr_cmds.c b/drivers/mtd/lpddr/lpddr_cmds.c
+index ee063baed136c..5c39c9c653233 100644
+--- a/drivers/mtd/lpddr/lpddr_cmds.c
++++ b/drivers/mtd/lpddr/lpddr_cmds.c
+@@ -79,7 +79,7 @@ struct mtd_info *lpddr_cmdset(struct map_info *map)
+ 		mutex_init(&shared[i].lock);
+ 		for (j = 0; j < lpddr->qinfo->HWPartsNum; j++) {
+ 			*chip = lpddr->chips[i];
+-			chip->start += j << lpddr->chipshift;
++			chip->start += (unsigned long)j << lpddr->chipshift;
+ 			chip->oldstate = chip->state = FL_READY;
+ 			chip->priv = &shared[i];
+ 			/* those should be reset too since
+@@ -562,7 +562,7 @@ static int lpddr_point(struct mtd_info *mtd, loff_t adr, size_t len,
+ 			break;
+ 
+ 		if ((len + ofs - 1) >> lpddr->chipshift)
+-			thislen = (1<<lpddr->chipshift) - ofs;
++			thislen = (1UL << lpddr->chipshift) - ofs;
+ 		else
+ 			thislen = len;
+ 		/* get the chip */
+@@ -578,7 +578,7 @@ static int lpddr_point(struct mtd_info *mtd, loff_t adr, size_t len,
+ 		len -= thislen;
+ 
+ 		ofs = 0;
+-		last_end += 1 << lpddr->chipshift;
++		last_end += 1UL << lpddr->chipshift;
+ 		chipnum++;
+ 		chip = &lpddr->chips[chipnum];
+ 	}
+@@ -604,7 +604,7 @@ static int lpddr_unpoint (struct mtd_info *mtd, loff_t adr, size_t len)
+ 			break;
+ 
+ 		if ((len + ofs - 1) >> lpddr->chipshift)
+-			thislen = (1<<lpddr->chipshift) - ofs;
++			thislen = (1UL << lpddr->chipshift) - ofs;
+ 		else
+ 			thislen = len;
+ 
 -- 
 2.51.0
 
