@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-207270-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206669-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E630D09D64
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:40:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7EEBD09407
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:06:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A064130E7842
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:26:35 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 415F530339A4
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:57:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3D8C35B129;
-	Fri,  9 Jan 2026 12:26:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E35CB33C53C;
+	Fri,  9 Jan 2026 11:57:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ClnhfxvU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1s5OCXUF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9755F1531E8;
-	Fri,  9 Jan 2026 12:26:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A679932FA3D;
+	Fri,  9 Jan 2026 11:57:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961578; cv=none; b=izgWeB3QlvCtZPkfAUXdaqvi7GR7yTyUewDnYKr4H7Vp+/fNLtYkBP+TzQE3ctTu5/0apt8lWQSiJFR68YE9scj33p2KBHAbzgiYugeZ66UebeiwC60I3+nqlROG4x9c1AongmzXxwiGztIPjGbah51cJMvWqGunzkMY22y+WW8=
+	t=1767959862; cv=none; b=Xsx1cRIjSOONxLBggYgs1u/XCtLB/P6XGyWJrgpcmgwFPt0NEAWwXjQ/upF3kAGp5cC0oSsMEpS0/kw2PHB42IByMYPyr0oilAe4nX1XMfhcpcaLp5GQ5o2JRHVQcCmZrkr/5wBS+tbJ3az35yMozrZLGWeMcN/XXVWDeUjxGYY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961578; c=relaxed/simple;
-	bh=wdoEo/Uf3Pggpa60Aw6Xl90PjrWywS13XfhiW42cr3k=;
+	s=arc-20240116; t=1767959862; c=relaxed/simple;
+	bh=5lHFbIYwX3repMEBFJrwENdkH7Aa7Ar/aedSuPMV7lo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PowmR5h/b5ecAz1SBqfKc8S4OUsAggMpsPAXUUNVT3BqYqbJ+qqz0p3Xsa9JCpilz01drxBkoiwSoF61B32IRoTkg8Da4LRtXT/amM9nT0i2HsjzMMfER2Gu7eGIJYRpv4bS7QzMgZLPnyRcGvLdRjWEGmMzoo8wEgJJFJept28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ClnhfxvU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE087C4CEF1;
-	Fri,  9 Jan 2026 12:26:17 +0000 (UTC)
+	 MIME-Version; b=L8fpEHFQMbWBfdhrt5E4Xo6V+U8puZoqkhHkxKAd3FDHUYmI8/iXh+XU8PAgvU1K6LgqUy/CH+3ymVnZUBjdFUaoVcGLqNGda6ULaNt7n6wm26YQGhJP+xLamkMfnzFnlvq9WLkt0QdoTtzFYm1j1izNw4XBv7RKEtESG9w5MyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1s5OCXUF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39F59C19421;
+	Fri,  9 Jan 2026 11:57:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961578;
-	bh=wdoEo/Uf3Pggpa60Aw6Xl90PjrWywS13XfhiW42cr3k=;
+	s=korg; t=1767959862;
+	bh=5lHFbIYwX3repMEBFJrwENdkH7Aa7Ar/aedSuPMV7lo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ClnhfxvUt6TIjzfBbjgKLCtiPd/0ARTRXFChzb5msUpj5clKwyVGEfHwelAIW4dlv
-	 Y+exkru57XXkSrU8ERQWjEFmVZ6DAdmKSmYHX8r/5oDM/K8Z9p0SEHJjOKap5FsZD0
-	 sJzLKgGDAa/S+EIyPVLhy6fTGgMQ9QXn4TKl9/50=
+	b=1s5OCXUFvKNyzK3R9x+dmEWPj6s62lXNcRPA2ops1nrOVR6+8LcTY3Y6JTbictSnI
+	 MHejTulJPatey2eHCcXWApURetzE+ThETGElbayvsMPDwADUOfYIkJ02P+C6fkVKsL
+	 BHI0TkmRvCylcZAo3By8cn7QOHtmn5CN7QWCzfCU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Stephen Rothwell <sfr@canb.auug.org.au>,
+	Dinh Nguyen <dinguyen@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 062/634] wifi: ath11k: fix peer HE MCS assignment
+Subject: [PATCH 6.6 201/737] firmware: stratix10-svc: fix make htmldocs warning for stratix10_svc
 Date: Fri,  9 Jan 2026 12:35:40 +0100
-Message-ID: <20260109112119.778971239@linuxfoundation.org>
+Message-ID: <20260109112141.563994113@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,96 +60,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+From: Dinh Nguyen <dinguyen@kernel.org>
 
-[ Upstream commit 4a013ca2d490c73c40588d62712ffaa432046a04 ]
+[ Upstream commit 377441d53a2df61b105e823b335010cd4f1a6e56 ]
 
-In ath11k_wmi_send_peer_assoc_cmd(), peer's transmit MCS is sent to
-firmware as receive MCS while peer's receive MCS sent as transmit MCS,
-which goes against firmwire's definition.
+Fix this warning that was generated from "make htmldocs":
 
-While connecting to a misbehaved AP that advertises 0xffff (meaning not
-supported) for 160 MHz transmit MCS map, firmware crashes due to 0xffff
-is assigned to he_mcs->rx_mcs_set field.
+WARNING: drivers/firmware/stratix10-svc.c:58 struct member 'intel_svc_fcs'
+not described in 'stratix10_svc'
 
-	Ext Tag: HE Capabilities
-	    [...]
-	    Supported HE-MCS and NSS Set
-		[...]
-	        Rx and Tx MCS Maps 160 MHz
-		    [...]
-	            Tx HE-MCS Map 160 MHz: 0xffff
-
-Swap the assignment to fix this issue.
-
-As the HE rate control mask is meant to limit our own transmit MCS, it
-needs to go via he_mcs->rx_mcs_set field. With the aforementioned swapping
-done, change is needed as well to apply it to the peer's receive MCS.
-
-Tested-on: WCN6855 hw2.1 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.41
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
-
-Fixes: 61fe43e7216d ("ath11k: add support for setting fixed HE rate/gi/ltf")
-Signed-off-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Link: https://patch.msgid.link/20251017-ath11k-mcs-assignment-v1-2-da40825c1783@oss.qualcomm.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Fixes: e6281c26674e ("firmware: stratix10-svc: Add support for FCS")
+Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
+Closes: https://lore.kernel.org/linux-next/20251106145941.37920e97@canb.auug.org.au/
+Signed-off-by: Dinh Nguyen <dinguyen@kernel.org>
+Link: https://patch.msgid.link/20251114185815.358423-1-dinguyen@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/mac.c | 4 ++--
- drivers/net/wireless/ath/ath11k/wmi.c | 7 +++++--
- 2 files changed, 7 insertions(+), 4 deletions(-)
+ drivers/firmware/stratix10-svc.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index 4cab480f85a8d..6a244f110dca6 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -2243,10 +2243,10 @@ static void ath11k_peer_assoc_h_he(struct ath11k *ar,
- 			he_tx_mcs = v;
- 		}
- 		v = le16_to_cpu(he_cap->he_mcs_nss_supp.rx_mcs_160);
-+		v = ath11k_peer_assoc_h_he_limit(v, he_mcs_mask);
- 		arg->peer_he_rx_mcs_set[WMI_HECAP_TXRX_MCS_NSS_IDX_160] = v;
- 
- 		v = le16_to_cpu(he_cap->he_mcs_nss_supp.tx_mcs_160);
--		v = ath11k_peer_assoc_h_he_limit(v, he_mcs_mask);
- 		arg->peer_he_tx_mcs_set[WMI_HECAP_TXRX_MCS_NSS_IDX_160] = v;
- 
- 		arg->peer_he_mcs_count++;
-@@ -2256,10 +2256,10 @@ static void ath11k_peer_assoc_h_he(struct ath11k *ar,
- 
- 	default:
- 		v = le16_to_cpu(he_cap->he_mcs_nss_supp.rx_mcs_80);
-+		v = ath11k_peer_assoc_h_he_limit(v, he_mcs_mask);
- 		arg->peer_he_rx_mcs_set[WMI_HECAP_TXRX_MCS_NSS_IDX_80] = v;
- 
- 		v = le16_to_cpu(he_cap->he_mcs_nss_supp.tx_mcs_80);
--		v = ath11k_peer_assoc_h_he_limit(v, he_mcs_mask);
- 		arg->peer_he_tx_mcs_set[WMI_HECAP_TXRX_MCS_NSS_IDX_80] = v;
- 
- 		arg->peer_he_mcs_count++;
-diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
-index ed12bbb11fe89..8b50dbc47300b 100644
---- a/drivers/net/wireless/ath/ath11k/wmi.c
-+++ b/drivers/net/wireless/ath/ath11k/wmi.c
-@@ -2013,8 +2013,11 @@ int ath11k_wmi_send_peer_assoc_cmd(struct ath11k *ar,
- 				     FIELD_PREP(WMI_TLV_LEN,
- 						sizeof(*he_mcs) - TLV_HDR_SIZE);
- 
--		he_mcs->rx_mcs_set = param->peer_he_tx_mcs_set[i];
--		he_mcs->tx_mcs_set = param->peer_he_rx_mcs_set[i];
-+		/* firmware interprets mcs->rx_mcs_set field as peer's
-+		 * RX capability
-+		 */
-+		he_mcs->rx_mcs_set = param->peer_he_rx_mcs_set[i];
-+		he_mcs->tx_mcs_set = param->peer_he_tx_mcs_set[i];
- 		ptr += sizeof(*he_mcs);
- 	}
- 
+diff --git a/drivers/firmware/stratix10-svc.c b/drivers/firmware/stratix10-svc.c
+index 766ced12345c3..a133ac5fb0373 100644
+--- a/drivers/firmware/stratix10-svc.c
++++ b/drivers/firmware/stratix10-svc.c
+@@ -52,6 +52,7 @@ struct stratix10_svc_chan;
+ /**
+  * struct stratix10_svc - svc private data
+  * @stratix10_svc_rsu: pointer to stratix10 RSU device
++ * @intel_svc_fcs: pointer to the FCS device
+  */
+ struct stratix10_svc {
+ 	struct platform_device *stratix10_svc_rsu;
 -- 
 2.51.0
 
