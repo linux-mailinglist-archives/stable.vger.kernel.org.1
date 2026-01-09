@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-207736-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207105-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C584AD0A1F0
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:00:28 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2240BD09A81
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:30:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C5EC43174407
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:49:50 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D198D30BCA01
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:18:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2E4835E545;
-	Fri,  9 Jan 2026 12:48:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 733AB2FD699;
+	Fri,  9 Jan 2026 12:18:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JxKr1raQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yk4gZj6d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96FD52E6CB8;
-	Fri,  9 Jan 2026 12:48:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36B8D224D6;
+	Fri,  9 Jan 2026 12:18:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962900; cv=none; b=fAklxbrVflFyMRmE3krkl6gf3Tiw/UXM5NAXgiAMhSPiGAIw8B9k/qR/Q83DFIZO9wWwqRWyAPWvtnU1MHbK0g/RY+lKFbsW+CmNkzfD6hsziBA/qzKDhzgLaGASHKBYgHABWK1df67Mec13l2VRjT8zT8Ccf6TnkhdWaAZtgh8=
+	t=1767961105; cv=none; b=gXOT3xzBKDhnh2Tw0ojVwYzrgBiguXtYG5w5EVHZNs4Vv96Mr5NazsOXZ6tcBC7TOWHiy8QvAGZOZ6IioyKfwpXNJ7IksVyb6LLlwsLZ6cVxvvFBYfjoYxG0ECa/pqv9Xo8tdgykIoB9C+cgl4RVQEx3Q30nhoENqJfnMTOXZMc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962900; c=relaxed/simple;
-	bh=RT3kikAOKVsPGiogK7phoyfZLkN/+V/elLrGJu3bP00=;
+	s=arc-20240116; t=1767961105; c=relaxed/simple;
+	bh=ATxUhTEYOe4TmbjMJ5YYjzr6H6/3/WASFlT5XYdcbXI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LChWGlsU1FucafS0xrqpczOKcrzyxrh8+H8Db/Wj4hpI+UcPaTlVYLRUG8UnUpJFVpMmJ0S2D7IHlzytQPmlalTr/qop/NCgLOYjufPPTxm35IUrFynD6KRmgGUR5N3dgngyitviy+xgZWlvjAXMt2b0Mv0HeTyZQ8UTgKB2WgY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JxKr1raQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 187A0C4CEF1;
-	Fri,  9 Jan 2026 12:48:19 +0000 (UTC)
+	 MIME-Version; b=MVy1widsmdq+ITZHFzitZpYh/WZDOgDsrNlOauWBeCUMffZd2Q3whw8GLWZMG+YU4SUtZxJa0yDqOpLtIH4g9etF2I19dVZ3OsrMWdEBT0kTciDV2JI+aA0hET9VLcr+1cFyqOGvjFCe9S8fKGHuJB4MeP3UxzJBigq/2EODb1s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yk4gZj6d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8565C4CEF1;
+	Fri,  9 Jan 2026 12:18:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962900;
-	bh=RT3kikAOKVsPGiogK7phoyfZLkN/+V/elLrGJu3bP00=;
+	s=korg; t=1767961105;
+	bh=ATxUhTEYOe4TmbjMJ5YYjzr6H6/3/WASFlT5XYdcbXI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JxKr1raQx7Outu8Q8htCNEa823eiPJa1QOSd74Og4XT5i/cyRSqSd66OO5403eLd+
-	 KXLLuj77BYXG39bL/jYSCJ5engqBFoYGddVI0/xmuUgO7uiXmRtjxl3GiUQ6EzPmKB
-	 hgE1zI+xJCDs5HMnx1ZE+j68Q6VeakxC5+JplJG4=
+	b=yk4gZj6dtOCAarv675ZvxQVxJgd6tv1M1MG0nwxoV32So3kqTufthZi1Ax8LkM62S
+	 MdB7WRbcQduNulH0rRTVIzdD6LWs3DWnOTAzQn7AuvVJaVoC5RnR7/44w6ruKAp6Cw
+	 yRv8j3SlOOhkuFMDaNfWrWOFVYhUdWqg3ipOuLIg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Jan Sokolowski <jan.sokolowski@intel.com>,
-	Koen Koning <koen.koning@intel.com>,
-	Peter Senna Tschudin <peter.senna@linux.intel.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 495/634] idr: fix idr_alloc() returning an ID out of range
-Date: Fri,  9 Jan 2026 12:42:53 +0100
-Message-ID: <20260109112136.170327720@linuxfoundation.org>
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	Baokun Li <libaokun1@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 635/737] ext4: fix string copying in parse_apply_sb_mount_options()
+Date: Fri,  9 Jan 2026 12:42:54 +0100
+Message-ID: <20260109112157.896008066@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,85 +60,90 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Wilcox (Oracle) <willy@infradead.org>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-commit c6e8e595a0798ad67da0f7bebaf69c31ef70dfff upstream.
+[ Upstream commit ee5a977b4e771cc181f39d504426dbd31ed701cc ]
 
-If you use an IDR with a non-zero base, and specify a range that lies
-entirely below the base, 'max - base' becomes very large and
-idr_get_free() can return an ID that lies outside of the requested range.
+strscpy_pad() can't be used to copy a non-NUL-term string into a NUL-term
+string of possibly bigger size.  Commit 0efc5990bca5 ("string.h: Introduce
+memtostr() and memtostr_pad()") provides additional information in that
+regard.  So if this happens, the following warning is observed:
 
-Link: https://lkml.kernel.org/r/20251128161853.3200058-1-willy@infradead.org
-Fixes: 6ce711f27500 ("idr: Make 1-based IDRs more efficient")
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Reported-by: Jan Sokolowski <jan.sokolowski@intel.com>
-Reported-by: Koen Koning <koen.koning@intel.com>
-Reported-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
-Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/6449
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+strnlen: detected buffer overflow: 65 byte read of buffer size 64
+WARNING: CPU: 0 PID: 28655 at lib/string_helpers.c:1032 __fortify_report+0x96/0xc0 lib/string_helpers.c:1032
+Modules linked in:
+CPU: 0 UID: 0 PID: 28655 Comm: syz-executor.3 Not tainted 6.12.54-syzkaller-00144-g5f0270f1ba00 #0
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+RIP: 0010:__fortify_report+0x96/0xc0 lib/string_helpers.c:1032
+Call Trace:
+ <TASK>
+ __fortify_panic+0x1f/0x30 lib/string_helpers.c:1039
+ strnlen include/linux/fortify-string.h:235 [inline]
+ sized_strscpy include/linux/fortify-string.h:309 [inline]
+ parse_apply_sb_mount_options fs/ext4/super.c:2504 [inline]
+ __ext4_fill_super fs/ext4/super.c:5261 [inline]
+ ext4_fill_super+0x3c35/0xad00 fs/ext4/super.c:5706
+ get_tree_bdev_flags+0x387/0x620 fs/super.c:1636
+ vfs_get_tree+0x93/0x380 fs/super.c:1814
+ do_new_mount fs/namespace.c:3553 [inline]
+ path_mount+0x6ae/0x1f70 fs/namespace.c:3880
+ do_mount fs/namespace.c:3893 [inline]
+ __do_sys_mount fs/namespace.c:4103 [inline]
+ __se_sys_mount fs/namespace.c:4080 [inline]
+ __x64_sys_mount+0x280/0x300 fs/namespace.c:4080
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0x64/0x140 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+Since userspace is expected to provide s_mount_opts field to be at most 63
+characters long with the ending byte being NUL-term, use a 64-byte buffer
+which matches the size of s_mount_opts, so that strscpy_pad() does its job
+properly.  Return with error if the user still managed to provide a
+non-NUL-term string here.
+
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+
+Fixes: 8ecb790ea8c3 ("ext4: avoid potential buffer over-read in parse_apply_sb_mount_options()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Reviewed-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Message-ID: <20251101160430.222297-1-pchelkin@ispras.ru>
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+[ adapted 2-argument strscpy_pad() call to 3-argument form with explicit sizeof() ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- lib/idr.c                           |    2 ++
- tools/testing/radix-tree/idr-test.c |   21 +++++++++++++++++++++
- 2 files changed, 23 insertions(+)
+ fs/ext4/super.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/lib/idr.c
-+++ b/lib/idr.c
-@@ -40,6 +40,8 @@ int idr_alloc_u32(struct idr *idr, void
- 
- 	if (WARN_ON_ONCE(!(idr->idr_rt.xa_flags & ROOT_IS_IDR)))
- 		idr->idr_rt.xa_flags |= IDR_RT_MARKER;
-+	if (max < base)
-+		return -ENOSPC;
- 
- 	id = (id < base) ? 0 : id - base;
- 	radix_tree_iter_init(&iter, id);
---- a/tools/testing/radix-tree/idr-test.c
-+++ b/tools/testing/radix-tree/idr-test.c
-@@ -57,6 +57,26 @@ void idr_alloc_test(void)
- 	idr_destroy(&idr);
- }
- 
-+void idr_alloc2_test(void)
-+{
-+	int id;
-+	struct idr idr = IDR_INIT_BASE(idr, 1);
-+
-+	id = idr_alloc(&idr, idr_alloc2_test, 0, 1, GFP_KERNEL);
-+	assert(id == -ENOSPC);
-+
-+	id = idr_alloc(&idr, idr_alloc2_test, 1, 2, GFP_KERNEL);
-+	assert(id == 1);
-+
-+	id = idr_alloc(&idr, idr_alloc2_test, 0, 1, GFP_KERNEL);
-+	assert(id == -ENOSPC);
-+
-+	id = idr_alloc(&idr, idr_alloc2_test, 0, 2, GFP_KERNEL);
-+	assert(id == -ENOSPC);
-+
-+	idr_destroy(&idr);
-+}
-+
- void idr_replace_test(void)
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -2507,7 +2507,7 @@ static int parse_apply_sb_mount_options(
+ 					struct ext4_fs_context *m_ctx)
  {
- 	DEFINE_IDR(idr);
-@@ -409,6 +429,7 @@ void idr_checks(void)
+ 	struct ext4_sb_info *sbi = EXT4_SB(sb);
+-	char s_mount_opts[65];
++	char s_mount_opts[64];
+ 	struct ext4_fs_context *s_ctx = NULL;
+ 	struct fs_context *fc = NULL;
+ 	int ret = -ENOMEM;
+@@ -2515,7 +2515,8 @@ static int parse_apply_sb_mount_options(
+ 	if (!sbi->s_es->s_mount_opts[0])
+ 		return 0;
  
- 	idr_replace_test();
- 	idr_alloc_test();
-+	idr_alloc2_test();
- 	idr_null_test();
- 	idr_nowait_test();
- 	idr_get_next_test(0);
+-	strscpy_pad(s_mount_opts, sbi->s_es->s_mount_opts, sizeof(s_mount_opts));
++	if (strscpy_pad(s_mount_opts, sbi->s_es->s_mount_opts, sizeof(s_mount_opts)) < 0)
++		return -E2BIG;
+ 
+ 	fc = kzalloc(sizeof(struct fs_context), GFP_KERNEL);
+ 	if (!fc)
 
 
 
