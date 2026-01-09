@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-206809-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207411-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97B2BD09563
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:11:22 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50A39D09D0F
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:39:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E229B30C9BB4
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:04:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 29CA63104AB2
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:33:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5D2535A92E;
-	Fri,  9 Jan 2026 12:04:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9CE935B133;
+	Fri,  9 Jan 2026 12:32:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a0IEj6rA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mihiGZ1K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79626359F99;
-	Fri,  9 Jan 2026 12:04:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D5943191D2;
+	Fri,  9 Jan 2026 12:32:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960260; cv=none; b=C/Qcj/hRJXP0+KF6cE3HkyYF8VnwjuIoq8rAP9mpMjDnzw0Ni0nCrb7j+CELk8XkjDkMyYbQFQ5XXpexags27Dd0mA7SlU63JewM+l2qZGUtf3wqcDO1t4LPfomvHSZ/2vV3Kz1XdKPGHqO+eKO0ThgKVj/l4vOGHqK6tCZ2jW4=
+	t=1767961978; cv=none; b=RStZcdhSN/Xte4npgt3MxjfYK718eyearbfUfk9laPCPVTqDOtrNXgSdyxfgaB4STJViYYMVmcsA4Jp/t3u5jQd3lowPb6CmAH8yIlo/jLJdhFRsF3yIKhK2SL8tVLjPmsjirbUC1Pr/CrP2tbeX7B7BJmAnJO1YeUJ223mn1V0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960260; c=relaxed/simple;
-	bh=mCpXVlMF2V757Z+6hOp+j1AxCs84vpZI1cQGm98mBRY=;
+	s=arc-20240116; t=1767961978; c=relaxed/simple;
+	bh=u867Rx7IrJXlNs5pJePJs0eXSmMyZYoMvK11wy61pBQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=i5GSkCde0Zk2phqvkH+DDd8DNSXXvk+cayCDiCdgVL3NpTocF8JEuu/rcwvp6QXcFzDSCF21gjVuOmB4IiVGtu8tmkJWdZgI7gsoJLck1/pzu80MZEj7qyl8JkXcS8nmw38hTWqBpqI/lF0DpL6Tax1JsF2SDJ7qSt7L0rNV1Ls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a0IEj6rA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF0B4C4CEF1;
-	Fri,  9 Jan 2026 12:04:19 +0000 (UTC)
+	 MIME-Version; b=BE9CYEBl/cTb0mIoJzdN+rYuZOaHzsy2p/dZ6FCf1XDMUn+SFDtHJdR2QB94/wjcdn7RXhd9/k+pXNXa3/czLDcfj7rmHYIrvDuyNE0k8ZcONF69HpT20Qatk8ZhmDfYR0AFKVDYlC+3Y34iVAsqjejhpHbYZVVzjdPhR4Czq8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mihiGZ1K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED765C4CEF1;
+	Fri,  9 Jan 2026 12:32:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960260;
-	bh=mCpXVlMF2V757Z+6hOp+j1AxCs84vpZI1cQGm98mBRY=;
+	s=korg; t=1767961978;
+	bh=u867Rx7IrJXlNs5pJePJs0eXSmMyZYoMvK11wy61pBQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a0IEj6rAOhl9hAjk3PN4oUgfed5dO/3i+ca5ic1fOz6py/H8/mwktUrDoVFCtE5ZY
-	 cWUjOEaPAQ4ze2psLxFuyrtowtSTfwr9sS7QJKh2Guf855AX5VJa98QSQgPjdubUKQ
-	 V+k/Pn6bEsHR65H3mUIytPdlLz8f+rgJpEAZhzd8=
+	b=mihiGZ1KtRSAxuLHtompBZLQSJbN34QOCuLC7duy/tEbn0aTUYCzEEqBR6i1FFzxn
+	 afn9d3UNGQ99YR+FiMAqZD2YFrlOfRI+1hmjsWslZRGWr3xlHdjrQo8EgK0wiHlNBB
+	 aB0yPmIGA3qWbyas3VGkAd8UeQxDRQKLl0Xtdd/w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Slavin Liu <slavin452@gmail.com>,
-	Julian Anastasov <ja@ssi.bg>,
-	Florian Westphal <fw@strlen.de>,
+	Shengjiu Wang <shengjiu.wang@nxp.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 341/737] ipvs: fix ipv4 null-ptr-deref in route error path
+Subject: [PATCH 6.1 202/634] ASoC: ak4458: Disable regulator when error happens
 Date: Fri,  9 Jan 2026 12:38:00 +0100
-Message-ID: <20260109112146.816575293@linuxfoundation.org>
+Message-ID: <20260109112125.033736041@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,82 +58,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Slavin Liu <slavin452@gmail.com>
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-[ Upstream commit ad891bb3d079a46a821bf2b8867854645191bab0 ]
+[ Upstream commit ae585fabb9713a43e358cf606451386757225c95 ]
 
-The IPv4 code path in __ip_vs_get_out_rt() calls dst_link_failure()
-without ensuring skb->dev is set, leading to a NULL pointer dereference
-in fib_compute_spec_dst() when ipv4_link_failure() attempts to send
-ICMP destination unreachable messages.
+Disable regulator in runtime resume when error happens to balance
+the reference count of regulator.
 
-The issue emerged after commit ed0de45a1008 ("ipv4: recompile ip options
-in ipv4_link_failure") started calling __ip_options_compile() from
-ipv4_link_failure(). This code path eventually calls fib_compute_spec_dst()
-which dereferences skb->dev. An attempt was made to fix the NULL skb->dev
-dereference in commit 0113d9c9d1cc ("ipv4: fix null-deref in
-ipv4_link_failure"), but it only addressed the immediate dev_net(skb->dev)
-dereference by using a fallback device. The fix was incomplete because
-fib_compute_spec_dst() later in the call chain still accesses skb->dev
-directly, which remains NULL when IPVS calls dst_link_failure().
-
-The crash occurs when:
-1. IPVS processes a packet in NAT mode with a misconfigured destination
-2. Route lookup fails in __ip_vs_get_out_rt() before establishing a route
-3. The error path calls dst_link_failure(skb) with skb->dev == NULL
-4. ipv4_link_failure() → ipv4_send_dest_unreach() →
-   __ip_options_compile() → fib_compute_spec_dst()
-5. fib_compute_spec_dst() dereferences NULL skb->dev
-
-Apply the same fix used for IPv6 in commit 326bf17ea5d4 ("ipvs: fix
-ipv6 route unreach panic"): set skb->dev from skb_dst(skb)->dev before
-calling dst_link_failure().
-
-KASAN: null-ptr-deref in range [0x0000000000000328-0x000000000000032f]
-CPU: 1 PID: 12732 Comm: syz.1.3469 Not tainted 6.6.114 #2
-RIP: 0010:__in_dev_get_rcu include/linux/inetdevice.h:233
-RIP: 0010:fib_compute_spec_dst+0x17a/0x9f0 net/ipv4/fib_frontend.c:285
-Call Trace:
-  <TASK>
-  spec_dst_fill net/ipv4/ip_options.c:232
-  spec_dst_fill net/ipv4/ip_options.c:229
-  __ip_options_compile+0x13a1/0x17d0 net/ipv4/ip_options.c:330
-  ipv4_send_dest_unreach net/ipv4/route.c:1252
-  ipv4_link_failure+0x702/0xb80 net/ipv4/route.c:1265
-  dst_link_failure include/net/dst.h:437
-  __ip_vs_get_out_rt+0x15fd/0x19e0 net/netfilter/ipvs/ip_vs_xmit.c:412
-  ip_vs_nat_xmit+0x1d8/0xc80 net/netfilter/ipvs/ip_vs_xmit.c:764
-
-Fixes: ed0de45a1008 ("ipv4: recompile ip options in ipv4_link_failure")
-Signed-off-by: Slavin Liu <slavin452@gmail.com>
-Acked-by: Julian Anastasov <ja@ssi.bg>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Fixes: 7e3096e8f823 ("ASoC: ak4458: Add regulator support")
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+Link: https://patch.msgid.link/20251203100529.3841203-2-shengjiu.wang@nxp.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/ipvs/ip_vs_xmit.c | 3 +++
- 1 file changed, 3 insertions(+)
+ sound/soc/codecs/ak4458.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/net/netfilter/ipvs/ip_vs_xmit.c b/net/netfilter/ipvs/ip_vs_xmit.c
-index 0103c4a4d10a5..2877706f0162f 100644
---- a/net/netfilter/ipvs/ip_vs_xmit.c
-+++ b/net/netfilter/ipvs/ip_vs_xmit.c
-@@ -409,6 +409,9 @@ __ip_vs_get_out_rt(struct netns_ipvs *ipvs, int skb_af, struct sk_buff *skb,
- 	return -1;
+diff --git a/sound/soc/codecs/ak4458.c b/sound/soc/codecs/ak4458.c
+index 1db73552c7466..fd7f2cc0abdc9 100644
+--- a/sound/soc/codecs/ak4458.c
++++ b/sound/soc/codecs/ak4458.c
+@@ -674,7 +674,15 @@ static int __maybe_unused ak4458_runtime_resume(struct device *dev)
+ 	regcache_cache_only(ak4458->regmap, false);
+ 	regcache_mark_dirty(ak4458->regmap);
  
- err_unreach:
-+	if (!skb->dev)
-+		skb->dev = skb_dst(skb)->dev;
+-	return regcache_sync(ak4458->regmap);
++	ret = regcache_sync(ak4458->regmap);
++	if (ret)
++		goto err;
 +
- 	dst_link_failure(skb);
- 	return -1;
++	return 0;
++err:
++	regcache_cache_only(ak4458->regmap, true);
++	regulator_bulk_disable(ARRAY_SIZE(ak4458->supplies), ak4458->supplies);
++	return ret;
  }
+ #endif /* CONFIG_PM */
+ 
 -- 
 2.51.0
 
