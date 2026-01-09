@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-207596-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206962-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5945D09F7C
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:48:41 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2018D096C9
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:17:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 253F63082E48
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:42:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1CB423019BBF
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:11:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5051D35B150;
-	Fri,  9 Jan 2026 12:41:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3B8B359F99;
+	Fri,  9 Jan 2026 12:11:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RwthOFYj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xQiQiqPb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11F7B2EBBB2;
-	Fri,  9 Jan 2026 12:41:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 868F533B6F1;
+	Fri,  9 Jan 2026 12:11:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962502; cv=none; b=oQee4RalC/2PXifMkoS36ur4/hqMsrcK5/woO+UVoGtc/BvVaSTRogojMbqQ/zTtkMyPpOVzvkqkNseXWbkXFnILJN7NQ26Z8/ej3lzG/QbxZ3KBCxDdLszAoUGEo57dHghx+RlBOzB6eZJui3ZCWjWkPfJSQ5F3Jb+MkMKF3nk=
+	t=1767960700; cv=none; b=dkAgl5jInibMSvc6sLnmTxoxd6zCDkFGS/4x5jp20dVGM6qCFZxVMu7pBJ8AMSx3gVPvVhyfpgK5sk/n3Mwv0pVZ+iSVmyTyGyGYbPK/0XfNjE41+vqOMyuwKwq97oMrb2lRjXUIDpt2RqoW7hqHvQpNXzKl4F2hvb5elxn4ab4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962502; c=relaxed/simple;
-	bh=lmz7HhhPO2Ke3rZtLSCXTLrw0eRwUa6prqYsENwuxl4=;
+	s=arc-20240116; t=1767960700; c=relaxed/simple;
+	bh=G9+eQ1To/Hljyti1BNCq3CNgyBZiYvohygudjsnx2Wc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UykxDhn4/VwRO77t5tAG1zVFLxke4tf8Sd+mwPDVI9b4M9Dxdos8YzWXO6EdCjh5i0hjkYI/9OQ1BS173BCKTErnnGISE7d4CNWUwucvH9Rgz5mTXxTq9ZXoRhuBqBqLNEU4edz5aOIQ0I9M+/zmOTD5uhKgy4lT8p9zJmJRG2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RwthOFYj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 922F3C16AAE;
-	Fri,  9 Jan 2026 12:41:41 +0000 (UTC)
+	 MIME-Version; b=NzDKKZtrb2Z5FPqP9lGgYg4MHunp9aKM1hzoLmGc2nYY42DZaE0naHlzsx3xrm/DBv1MMyDAwc/NXC9Pt7Qy2MfWYaG7LdNq/9PKZCfZ3LFFqU3PaWioPyi1Pq5amjdNP5IdafyeHiBLfU3GRdJBXHcgsDQZksI5LarCUB9tTao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xQiQiqPb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C62D3C4CEF1;
+	Fri,  9 Jan 2026 12:11:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962502;
-	bh=lmz7HhhPO2Ke3rZtLSCXTLrw0eRwUa6prqYsENwuxl4=;
+	s=korg; t=1767960700;
+	bh=G9+eQ1To/Hljyti1BNCq3CNgyBZiYvohygudjsnx2Wc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RwthOFYjBO2sF/Qs5qVw0tQmZdBuBktrIHPapg9a9+HNWNHAISQWc3XaACzIXa5UR
-	 J7jLuHt02iioaePQPajE6lZ3OwFhRSKr+UL0SrH5VPBZBnz38MfqwkXiE0xRbvApKX
-	 z0rwyR2C3fFpieVIV/s+HAiDUMOuvXH+PrXGzx9Y=
+	b=xQiQiqPb52RNcS4S7BhzKLnI/FBP835NSm7h2qEW5xIHKroCfw1ExM0Xu+/z818Wx
+	 WtbOtbpDLwtxztLact/3Resvi5lv50Zxei3eBT2UBM6HYR/LeaoUPXq9EdD/I/RAur
+	 AIbTN+/VUoZZmyYB5WMUmeqVYxTaB+9zPivSwbcg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxim Levitsky <mlevitsk@redhat.com>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.1 354/634] KVM: x86: Dont clear async #PF queue when CR0.PG is disabled (e.g. on #SMI)
+	Stable@vger.kernel.org,
+	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.6 493/737] rpmsg: glink: fix rpmsg device leak
 Date: Fri,  9 Jan 2026 12:40:32 +0100
-Message-ID: <20260109112130.845361114@linuxfoundation.org>
+Message-ID: <20260109112152.537991348@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,110 +61,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maxim Levitsky <mlevitsk@redhat.com>
+From: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
 
-commit ab4e41eb9fabd4607304fa7cfe8ec9c0bd8e1552 upstream.
+commit a53e356df548f6b0e82529ef3cc6070f42622189 upstream.
 
-Fix an interaction between SMM and PV asynchronous #PFs where an #SMI can
-cause KVM to drop an async #PF ready event, and thus result in guest tasks
-becoming permanently stuck due to the task that encountered the #PF never
-being resumed.  Specifically, don't clear the completion queue when paging
-is disabled, and re-check for completed async #PFs if/when paging is
-enabled.
+While testing rpmsg-char interface it was noticed that duplicate sysfs
+entries are getting created and below warning is noticed.
 
-Prior to commit 2635b5c4a0e4 ("KVM: x86: interrupt based APF 'page ready'
-event delivery"), flushing the APF queue without notifying the guest of
-completed APF requests when paging is disabled was "necessary", in that
-delivering a #PF to the guest when paging is disabled would likely confuse
-and/or crash the guest.  And presumably the original async #PF development
-assumed that a guest would only disable paging when there was no intent to
-ever re-enable paging.
+Reason for this is that we are leaking rpmsg device pointer, setting it
+null without actually unregistering device.
+Any further attempts to unregister fail because rpdev is NULL,
+resulting in a leak.
 
-That assumption fails in several scenarios, most visibly on an emulated
-SMI, as entering SMM always disables CR0.PG (i.e. initially runs with
-paging disabled).  When the SMM handler eventually executes RSM, the
-interrupted paging-enabled is restored, and the async #PF event is lost.
+Fix this by unregistering rpmsg device before removing its reference
+from rpmsg channel.
 
-Similarly, invoking firmware, e.g. via EFI runtime calls, might require a
-transition through paging modes and thus also disable paging with valid
-entries in the competion queue.
+sysfs: cannot create duplicate filename '/devices/platform/soc@0/3700000.remot
+eproc/remoteproc/remoteproc1/3700000.remoteproc:glink-edge/3700000.remoteproc:
+glink-edge.adsp_apps.-1.-1'
+[  114.115347] CPU: 0 UID: 0 PID: 9 Comm: kworker/0:0 Not
+ tainted 6.16.0-rc4 #7 PREEMPT
+[  114.115355] Hardware name: Qualcomm Technologies, Inc. Robotics RB3gen2 (DT)
+[  114.115358] Workqueue: events qcom_glink_work
+[  114.115371] Call trace:8
+[  114.115374]  show_stack+0x18/0x24 (C)
+[  114.115382]  dump_stack_lvl+0x60/0x80
+[  114.115388]  dump_stack+0x18/0x24
+[  114.115393]  sysfs_warn_dup+0x64/0x80
+[  114.115402]  sysfs_create_dir_ns+0xf4/0x120
+[  114.115409]  kobject_add_internal+0x98/0x260
+[  114.115416]  kobject_add+0x9c/0x108
+[  114.115421]  device_add+0xc4/0x7a0
+[  114.115429]  rpmsg_register_device+0x5c/0xb0
+[  114.115434]  qcom_glink_work+0x4bc/0x820
+[  114.115438]  process_one_work+0x148/0x284
+[  114.115446]  worker_thread+0x2c4/0x3e0
+[  114.115452]  kthread+0x12c/0x204
+[  114.115457]  ret_from_fork+0x10/0x20
+[  114.115464] kobject: kobject_add_internal failed for 3700000.remoteproc:
+glink-edge.adsp_apps.-1.-1 with -EEXIST, don't try to register things with
+the same name in the same directory.
+[  114.250045] rpmsg 3700000.remoteproc:glink-edge.adsp_apps.-1.-1:
+device_add failed: -17
 
-To avoid dropping completion events, drop the "clear" entirely, and handle
-paging-enable transitions in the same way KVM already handles APIC
-enable/disable events: if a vCPU's APIC is disabled, APF completion events
-are not kept pending and not injected while APIC is disabled.  Once a
-vCPU's APIC is re-enabled, KVM raises KVM_REQ_APF_READY so that the vCPU
-recognizes any pending pending #APF ready events.
-
-Signed-off-by: Maxim Levitsky <mlevitsk@redhat.com>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20251015033258.50974-4-mlevitsk@redhat.com
-[sean: rework changelog to call out #PF injection, drop "real mode"
-       references, expand the code comment]
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Fixes: 835764ddd9af ("rpmsg: glink: Move the common glink protocol implementation to glink_native.c")
+Cc: Stable@vger.kernel.org
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250822100043.2604794-2-srinivas.kandagatla@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/x86.c |   25 +++++++++++++++----------
- 1 file changed, 15 insertions(+), 10 deletions(-)
+ drivers/rpmsg/qcom_glink_native.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -853,6 +853,13 @@ bool kvm_require_dr(struct kvm_vcpu *vcp
- }
- EXPORT_SYMBOL_GPL(kvm_require_dr);
- 
-+static bool kvm_pv_async_pf_enabled(struct kvm_vcpu *vcpu)
-+{
-+	u64 mask = KVM_ASYNC_PF_ENABLED | KVM_ASYNC_PF_DELIVERY_AS_INT;
-+
-+	return (vcpu->arch.apf.msr_en_val & mask) == mask;
-+}
-+
- static inline u64 pdptr_rsvd_bits(struct kvm_vcpu *vcpu)
+--- a/drivers/rpmsg/qcom_glink_native.c
++++ b/drivers/rpmsg/qcom_glink_native.c
+@@ -1317,6 +1317,7 @@ static void qcom_glink_destroy_ept(struc
  {
- 	return vcpu->arch.reserved_gpa_bits | rsvd_bits(5, 8) | rsvd_bits(1, 2);
-@@ -939,15 +946,20 @@ void kvm_post_set_cr0(struct kvm_vcpu *v
- 	}
+ 	struct glink_channel *channel = to_glink_channel(ept);
+ 	struct qcom_glink *glink = channel->glink;
++	struct rpmsg_channel_info chinfo;
+ 	unsigned long flags;
  
- 	if ((cr0 ^ old_cr0) & X86_CR0_PG) {
--		kvm_clear_async_pf_completion_queue(vcpu);
--		kvm_async_pf_hash_reset(vcpu);
--
- 		/*
- 		 * Clearing CR0.PG is defined to flush the TLB from the guest's
- 		 * perspective.
- 		 */
- 		if (!(cr0 & X86_CR0_PG))
- 			kvm_make_request(KVM_REQ_TLB_FLUSH_GUEST, vcpu);
-+		/*
-+		 * Check for async #PF completion events when enabling paging,
-+		 * as the vCPU may have previously encountered async #PFs (it's
-+		 * entirely legal for the guest to toggle paging on/off without
-+		 * waiting for the async #PF queue to drain).
-+		 */
-+		else if (kvm_pv_async_pf_enabled(vcpu))
-+			kvm_make_request(KVM_REQ_APF_READY, vcpu);
- 	}
+ 	spin_lock_irqsave(&channel->recv_lock, flags);
+@@ -1324,6 +1325,13 @@ static void qcom_glink_destroy_ept(struc
+ 	spin_unlock_irqrestore(&channel->recv_lock, flags);
  
- 	if ((cr0 ^ old_cr0) & KVM_MMU_CR0_ROLE_BITS)
-@@ -3358,13 +3370,6 @@ static int set_msr_mce(struct kvm_vcpu *
- 	return 0;
- }
+ 	/* Decouple the potential rpdev from the channel */
++	if (channel->rpdev) {
++		strscpy_pad(chinfo.name, channel->name, sizeof(chinfo.name));
++		chinfo.src = RPMSG_ADDR_ANY;
++		chinfo.dst = RPMSG_ADDR_ANY;
++
++		rpmsg_unregister_device(glink->dev, &chinfo);
++	}
+ 	channel->rpdev = NULL;
  
--static inline bool kvm_pv_async_pf_enabled(struct kvm_vcpu *vcpu)
--{
--	u64 mask = KVM_ASYNC_PF_ENABLED | KVM_ASYNC_PF_DELIVERY_AS_INT;
--
--	return (vcpu->arch.apf.msr_en_val & mask) == mask;
--}
--
- static int kvm_pv_enable_async_pf(struct kvm_vcpu *vcpu, u64 data)
- {
- 	gpa_t gpa = data & ~0x3f;
+ 	qcom_glink_send_close_req(glink, channel);
 
 
 
