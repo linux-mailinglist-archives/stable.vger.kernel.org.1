@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-207318-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206751-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EC50D09C4C
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:37:04 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A3CCD09503
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:10:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BA5D330C2B64
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:28:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 18C7830829B8
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:01:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C5F2335083;
-	Fri,  9 Jan 2026 12:28:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2FDD33CE9A;
+	Fri,  9 Jan 2026 12:01:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zDsHSmHV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ktp7vrEF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FDDC23F417;
-	Fri,  9 Jan 2026 12:28:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3EA7359F98;
+	Fri,  9 Jan 2026 12:01:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961714; cv=none; b=pa48U1uQRlwWmsJu2tSMDgikgSNW95ojnQdFgQm448HWNHqxvwduHMf/oRZ3d7VlvZbe49d+G2aVaT9oZGg089eAFhet8qMadsWOZr1YNUpoZfP/IYW4Vhh63YnzvelLyimRouqhIJtAUGL54IUCb1WHVOZAumitYzNP4zBNHRI=
+	t=1767960095; cv=none; b=L7Tn0l71ieIiWVJS9IoW6YN+l5pnWEK0gICq/kS/ABgTE/VGyOIWrJNuBvQsopMKHlzLplyG+elpOb0rB16RTRuHUI5jkgRKjNNgC9twT30qBr9VsZHpYwpPysiQ0ULDzKR69ciWJ2JVy6u0Kj4pj+cCVJ6aY4R2DwF4B2av6gI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961714; c=relaxed/simple;
-	bh=Sf/omHDuY0f/JKwqeUQf/KcpxoiLeyCH+kBbXou54ag=;
+	s=arc-20240116; t=1767960095; c=relaxed/simple;
+	bh=kW2Otd302WO7atXV/DjLqqOWSpvdWPqqg2AdzAqaVTo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nK6EGurHl8J3ZzqHsmIlp5quni67sRoBYGDKQwnxJ+ycR1m0GKSM6ce0wj9R7mRjdRKo1xCR9V8WrmCX/yYExHbV9AEOjiFbUV5wcQ143FU258GwdDUzxA9Y/ePZZtYgw1rA7Bz7td5bgz7TsCpL6TTrzcSfrK1YhGRo7jHOcrU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zDsHSmHV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A00D4C4CEF1;
-	Fri,  9 Jan 2026 12:28:33 +0000 (UTC)
+	 MIME-Version; b=LyHGZxQZBFDM5lW8CmhQaUtNc31kFXpIM8PIwrmlQgJ0f5Bok5uqiVU6s3GDe6cbDHeaGDSPRwOy+pbAw0xvInI+Xg0MoFcNB5EBiu4uNZB7FnEOnoVGuuHRlD/IPmCAGAnYg3SLYGpFBM4TY72B3GxfFBjJNiD1RBgg/XYkzFI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ktp7vrEF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E7EAC4CEF1;
+	Fri,  9 Jan 2026 12:01:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961714;
-	bh=Sf/omHDuY0f/JKwqeUQf/KcpxoiLeyCH+kBbXou54ag=;
+	s=korg; t=1767960095;
+	bh=kW2Otd302WO7atXV/DjLqqOWSpvdWPqqg2AdzAqaVTo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zDsHSmHVOv5yBIKepf1ronQeOAkt2iMc9iFyN8IgfJXMNJX354TDsLc1WObBrh6cY
-	 +jWoVgV1Zakd560jWnVRwdAz6zO/vW1sGWiR9nvWwv/r5xgM70onrt3zn4oH469kZS
-	 3/rmVgN48HrNr7sfFIpD1vMbtfh2q2FlN2NLSzpY=
+	b=ktp7vrEF8TZJuX7adM3yEH0p4cGEhHqYvKk+Bf2ewc21v//cYzvJejHNWuEz3Ja5r
+	 VmYvHzEVMkgC+y0+DG8xplLoNrQtvMuchInpw9t7TDkV3FMToHD1qFTeoudyHnJUhu
+	 vZvXJnqWEW7M+k1RJy7cyk7GbRvj9D3/tDiglTsE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Alexandru Gagniuc <mr.nuke.me@gmail.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 111/634] ACPI: property: Fix fwnode refcount leak in acpi_fwnode_graph_parse_endpoint()
+Subject: [PATCH 6.6 250/737] remoteproc: qcom_q6v5_wcss: fix parsing of qcom,halt-regs
 Date: Fri,  9 Jan 2026 12:36:29 +0100
-Message-ID: <20260109112121.611092943@linuxfoundation.org>
+Message-ID: <20260109112143.396669493@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +60,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Alexandru Gagniuc <mr.nuke.me@gmail.com>
 
-[ Upstream commit 593ee49222a0d751062fd9a5e4a963ade4ec028a ]
+[ Upstream commit 7e81fa8d809ed1e67ae9ecd52d20a20c2c65d877 ]
 
-acpi_fwnode_graph_parse_endpoint() calls fwnode_get_parent() to obtain the
-parent fwnode but returns without calling fwnode_handle_put() on it. This
-potentially leads to a fwnode refcount leak and prevents the parent node
-from being released properly.
+The "qcom,halt-regs" consists of a phandle reference followed by the
+three offsets within syscon for halt registers. Thus, we need to
+request 4 integers from of_property_read_variable_u32_array(), with
+the halt_reg ofsets at indexes 1, 2, and 3. Offset 0 is the phandle.
 
-Call fwnode_handle_put() on the parent fwnode before returning to prevent
-the leak from occurring.
+With MAX_HALT_REG at 3, of_property_read_variable_u32_array() returns
+-EOVERFLOW, causing .probe() to fail.
 
-Fixes: 3b27d00e7b6d ("device property: Move fwnode graph ops to firmware specific locations")
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-[ rjw: Changelog edits ]
-Link: https://patch.msgid.link/20251111075000.1828-1-vulab@iscas.ac.cn
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Increase MAX_HALT_REG to 4, and update the indexes accordingly.
+
+Fixes: 0af65b9b915e ("remoteproc: qcom: wcss: Add non pas wcss Q6 support for QCS404")
+Signed-off-by: Alexandru Gagniuc <mr.nuke.me@gmail.com>
+Link: https://lore.kernel.org/r/20251129013207.3981517-1-mr.nuke.me@gmail.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/property.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/remoteproc/qcom_q6v5_wcss.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
-index 9f7880cc2bd8c..0ff1c3d2504d4 100644
---- a/drivers/acpi/property.c
-+++ b/drivers/acpi/property.c
-@@ -1634,6 +1634,7 @@ static int acpi_fwnode_graph_parse_endpoint(const struct fwnode_handle *fwnode,
- 	if (fwnode_property_read_u32(fwnode, "reg", &endpoint->id))
- 		fwnode_property_read_u32(fwnode, "endpoint", &endpoint->id);
+diff --git a/drivers/remoteproc/qcom_q6v5_wcss.c b/drivers/remoteproc/qcom_q6v5_wcss.c
+index cff1fa07d1def..f80d701225a18 100644
+--- a/drivers/remoteproc/qcom_q6v5_wcss.c
++++ b/drivers/remoteproc/qcom_q6v5_wcss.c
+@@ -85,7 +85,7 @@
+ #define TCSR_WCSS_CLK_MASK	0x1F
+ #define TCSR_WCSS_CLK_ENABLE	0x14
  
-+	fwnode_handle_put(port_fwnode);
+-#define MAX_HALT_REG		3
++#define MAX_HALT_REG		4
+ enum {
+ 	WCSS_IPQ8074,
+ 	WCSS_QCS404,
+@@ -863,9 +863,9 @@ static int q6v5_wcss_init_mmio(struct q6v5_wcss *wcss,
+ 		return -EINVAL;
+ 	}
+ 
+-	wcss->halt_q6 = halt_reg[0];
+-	wcss->halt_wcss = halt_reg[1];
+-	wcss->halt_nc = halt_reg[2];
++	wcss->halt_q6 = halt_reg[1];
++	wcss->halt_wcss = halt_reg[2];
++	wcss->halt_nc = halt_reg[3];
+ 
  	return 0;
  }
- 
 -- 
 2.51.0
 
