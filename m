@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-207207-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207822-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E332D09988
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:27:22 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EF35D0A2DE
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:05:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5F2FC30963C6
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:23:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 77D5731F7329
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:53:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3455135971B;
-	Fri,  9 Jan 2026 12:23:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 060A535BDDE;
+	Fri,  9 Jan 2026 12:52:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VW9xgJW/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UUqFn4cT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDA172EC54D;
-	Fri,  9 Jan 2026 12:23:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD810358D38;
+	Fri,  9 Jan 2026 12:52:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961397; cv=none; b=U+d6c1zTVula6T0ozJDxKrmq9ny+PDyc5YDmsYN4jUWomPU9PqSMTo8LdnEL9Uu1LkKogITV0rf2WGCxIFu6DUr3WGL5I48E3RL1mtOHx8T0iir4r0jt3L0c6lN8pnrW/MIrRSMHhaPpD50HVlihg0X9sQi/oeKYaAGi8yiYy8A=
+	t=1767963147; cv=none; b=iyJTq9f3zBNQ+/YBIW7uJtWPkzzjDC8KrgIji6GpSBxr0MJbhF4YXjEgS+zNaW8fcV9f6k8hTpBQVYLdYcta66/cIdy8WSlyYEvod7ZZfUHl0nlKWNHe/P+dxD/7fSQ6vOwJMF9rKJ3o73ISaq+lPXmPb7s3fKyIStm2GT8150Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961397; c=relaxed/simple;
-	bh=s9vJBTZtdOhHIRzUYPCK/ZjsolTsGXmCI17rqQ2YOUs=;
+	s=arc-20240116; t=1767963147; c=relaxed/simple;
+	bh=rd+9n76rlMh0W6Q3zREQWITePipR1VU9eMWIyGrkqJQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VwEuJomr+6ze8pMtqeG4JuXEsaYlU3si0PfpzuiRgDLg7W84MFDYYaff9fdW6oQl03V4LubH4A8qUmEL2zylOAQ0lGtFKBZuvHEWfLxCvlM7Drb4h3OYcxPZ4u/xN+jV8XmReJE57M1Pnid//5ftwo+mZkbX3etkFG7i0tvl528=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VW9xgJW/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66FD8C4CEF1;
-	Fri,  9 Jan 2026 12:23:17 +0000 (UTC)
+	 MIME-Version; b=j03MCnsGup4hqzr6OBR2SzkdtxQy9WR2lhc+AAF28jkF+R+OX80ANjhz2kXI1wdRs3qHwLzp5JJVf4xSA2Bbmu885/2mK9x73efCG2Cuwj5Fr7lhIgC3a4L2Fz3nyTBuXAPAOdNRlIm/1E5Ff8GIVUGxD0tNcNB9QbiiMJDCycU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UUqFn4cT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F000FC4CEF1;
+	Fri,  9 Jan 2026 12:52:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961397;
-	bh=s9vJBTZtdOhHIRzUYPCK/ZjsolTsGXmCI17rqQ2YOUs=;
+	s=korg; t=1767963147;
+	bh=rd+9n76rlMh0W6Q3zREQWITePipR1VU9eMWIyGrkqJQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VW9xgJW/h/yhjMojt2TjA9AmRSFK3peZm8c2FwECPvcla1dEfM3p4BGQbXTVaWur0
-	 ErAO+37udbFy/69xJ/EvfhPVd1uIk0MeaNaEDuWXEC7hgQzZ7ZJ3agUnuiMnw7Xuje
-	 V/uVFiez+9tmgM779Hmi0kX/maC3zPNtFFJBBRC8=
+	b=UUqFn4cTeyCNIoOLx2q8R9WxzROis8ogE64OSslRJ+pKwXSJoExuZEsCpzQdECExw
+	 4PuBHuR/bnARtJrg05vS85kQJenDMcffxbk8VlztVn2tf34T/cc0KPaM4xTasmtb4Y
+	 oFphDizxXEA4T9i58Et58KmdhC4hL7jF48nIrvSo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ashish Kalra <ashish.kalra@amd.com>,
-	Vasant Hegde <vasant.hegde@amd.com>,
-	Sairaj Kodilkar <sarunkod@amd.com>,
-	Joerg Roedel <joerg.roedel@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 737/737] Revert "iommu/amd: Skip enabling command/event buffers for kdump"
-Date: Fri,  9 Jan 2026 12:44:36 +0100
-Message-ID: <20260109112201.830855236@linuxfoundation.org>
+	Niklas Neronin <niklas.neronin@linux.intel.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>,
+	Shivani Agarwal <shivani.agarwal@broadcom.com>
+Subject: [PATCH 6.1 613/634] usb: xhci: move link chain bit quirk checks into one helper function.
+Date: Fri,  9 Jan 2026 12:44:51 +0100
+Message-ID: <20260109112140.700948028@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +60,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Niklas Neronin <niklas.neronin@linux.intel.com>
 
-This reverts commit 44a764aec64b3f3235b9cbac2525222f69685418 which is
-commit 9be15fbfc6c5c89c22cf6e209f66ea43ee0e58bb upstream.
+commit 7476a2215c07703db5e95efaa3fc5b9f957b9417 upstream.
 
-This causes problems in older kernel trees as SNP host kdump is not
-supported in them, so drop it from the stable branches.
+Older 0.95 xHCI hosts and some other specific newer hosts require the
+chain bit to be set for Link TRBs even if the link TRB is not in the
+middle of a transfer descriptor (TD).
 
-Reported-by: Ashish Kalra <ashish.kalra@amd.com>
-Link: https://lore.kernel.org/r/dacdff7f-0606-4ed5-b056-2de564404d51@amd.com
-Cc: Vasant Hegde <vasant.hegde@amd.com>
-Cc: Sairaj Kodilkar <sarunkod@amd.com>
-Cc: Joerg Roedel <joerg.roedel@amd.com>
-Cc: Sasha Levin <sashal@kernel.org>
+move the checks for all those cases  into one xhci_link_chain_quirk()
+function to clean up and avoid code duplication.
+
+No functional changes.
+
+[skip renaming chain_links flag, reword commit message -Mathias]
+
+Signed-off-by: Niklas Neronin <niklas.neronin@linux.intel.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20240626124835.1023046-10-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[Shivani: Modified to apply on v5.10.y-v6.1.y]
+Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/amd/init.c |   28 +++++++++-------------------
- 1 file changed, 9 insertions(+), 19 deletions(-)
+ drivers/usb/host/xhci-mem.c  |   10 ++--------
+ drivers/usb/host/xhci-ring.c |    8 ++------
+ drivers/usb/host/xhci.h      |    7 +++++--
+ 3 files changed, 9 insertions(+), 16 deletions(-)
 
---- a/drivers/iommu/amd/init.c
-+++ b/drivers/iommu/amd/init.c
-@@ -840,16 +840,11 @@ static void iommu_enable_command_buffer(
+--- a/drivers/usb/host/xhci-mem.c
++++ b/drivers/usb/host/xhci-mem.c
+@@ -133,10 +133,7 @@ static void xhci_link_rings(struct xhci_
+ 	if (!ring || !first || !last)
+ 		return;
  
- 	BUG_ON(iommu->cmd_buf == NULL);
+-	/* Set chain bit for 0.95 hosts, and for isoc rings on AMD 0.96 host */
+-	chain_links = !!(xhci_link_trb_quirk(xhci) ||
+-			 (ring->type == TYPE_ISOC &&
+-			  (xhci->quirks & XHCI_AMD_0x96_HOST)));
++	chain_links = xhci_link_chain_quirk(xhci, ring->type);
  
--	if (!is_kdump_kernel()) {
--		/*
--		 * Command buffer is re-used for kdump kernel and setting
--		 * of MMIO register is not required.
--		 */
--		entry = iommu_virt_to_phys(iommu->cmd_buf);
--		entry |= MMIO_CMD_SIZE_512;
--		memcpy_toio(iommu->mmio_base + MMIO_CMD_BUF_OFFSET,
--			    &entry, sizeof(entry));
--	}
-+	entry = iommu_virt_to_phys(iommu->cmd_buf);
-+	entry |= MMIO_CMD_SIZE_512;
-+
-+	memcpy_toio(iommu->mmio_base + MMIO_CMD_BUF_OFFSET,
-+		    &entry, sizeof(entry));
+ 	next = ring->enq_seg->next;
+ 	xhci_link_segments(ring->enq_seg, first, ring->type, chain_links);
+@@ -326,10 +323,7 @@ static int xhci_alloc_segments_for_ring(
+ 	struct xhci_segment *prev;
+ 	bool chain_links;
  
- 	amd_iommu_reset_cmd_buffer(iommu);
+-	/* Set chain bit for 0.95 hosts, and for isoc rings on AMD 0.96 host */
+-	chain_links = !!(xhci_link_trb_quirk(xhci) ||
+-			 (type == TYPE_ISOC &&
+-			  (xhci->quirks & XHCI_AMD_0x96_HOST)));
++	chain_links = xhci_link_chain_quirk(xhci, type);
+ 
+ 	prev = xhci_segment_alloc(xhci, cycle_state, max_packet, flags);
+ 	if (!prev)
+--- a/drivers/usb/host/xhci-ring.c
++++ b/drivers/usb/host/xhci-ring.c
+@@ -250,9 +250,7 @@ static void inc_enq(struct xhci_hcd *xhc
+ 		 * AMD 0.96 host, carry over the chain bit of the previous TRB
+ 		 * (which may mean the chain bit is cleared).
+ 		 */
+-		if (!(ring->type == TYPE_ISOC &&
+-		      (xhci->quirks & XHCI_AMD_0x96_HOST)) &&
+-		    !xhci_link_trb_quirk(xhci)) {
++		if (!xhci_link_chain_quirk(xhci, ring->type)) {
+ 			next->link.control &= cpu_to_le32(~TRB_CHAIN);
+ 			next->link.control |= cpu_to_le32(chain);
+ 		}
+@@ -3355,9 +3353,7 @@ static int prepare_ring(struct xhci_hcd
+ 		/* If we're not dealing with 0.95 hardware or isoc rings
+ 		 * on AMD 0.96 host, clear the chain bit.
+ 		 */
+-		if (!xhci_link_trb_quirk(xhci) &&
+-		    !(ep_ring->type == TYPE_ISOC &&
+-		      (xhci->quirks & XHCI_AMD_0x96_HOST)))
++		if (!xhci_link_chain_quirk(xhci, ep_ring->type))
+ 			ep_ring->enqueue->link.control &=
+ 				cpu_to_le32(~TRB_CHAIN);
+ 		else
+--- a/drivers/usb/host/xhci.h
++++ b/drivers/usb/host/xhci.h
+@@ -1788,9 +1788,12 @@ static inline void xhci_write_64(struct
+ 	lo_hi_writeq(val, regs);
  }
-@@ -898,15 +893,10 @@ static void iommu_enable_event_buffer(st
  
- 	BUG_ON(iommu->evt_buf == NULL);
- 
--	if (!is_kdump_kernel()) {
--		/*
--		 * Event buffer is re-used for kdump kernel and setting
--		 * of MMIO register is not required.
--		 */
--		entry = iommu_virt_to_phys(iommu->evt_buf) | EVT_LEN_MASK;
--		memcpy_toio(iommu->mmio_base + MMIO_EVT_BUF_OFFSET,
--			    &entry, sizeof(entry));
--	}
-+	entry = iommu_virt_to_phys(iommu->evt_buf) | EVT_LEN_MASK;
+-static inline int xhci_link_trb_quirk(struct xhci_hcd *xhci)
 +
-+	memcpy_toio(iommu->mmio_base + MMIO_EVT_BUF_OFFSET,
-+		    &entry, sizeof(entry));
++/* Link TRB chain should always be set on 0.95 hosts, and AMD 0.96 ISOC rings */
++static inline bool xhci_link_chain_quirk(struct xhci_hcd *xhci, enum xhci_ring_type type)
+ {
+-	return xhci->quirks & XHCI_LINK_TRB_QUIRK;
++	return (xhci->quirks & XHCI_LINK_TRB_QUIRK) ||
++	       (type == TYPE_ISOC && (xhci->quirks & XHCI_AMD_0x96_HOST));
+ }
  
- 	/* set head and tail to zero manually */
- 	writel(0x00, iommu->mmio_base + MMIO_EVT_HEAD_OFFSET);
+ /* xHCI debugging */
 
 
 
