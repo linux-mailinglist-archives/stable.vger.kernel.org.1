@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-206735-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207338-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86729D0928A
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:01:07 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 540A7D09CB2
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:38:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 922AF300D916
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:00:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7C10F30D6935
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:29:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 671AE33032C;
-	Fri,  9 Jan 2026 12:00:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0340035A953;
+	Fri,  9 Jan 2026 12:29:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="whvscLRH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ShSU9cU0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B24433CE9A;
-	Fri,  9 Jan 2026 12:00:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EFFC2737EE;
+	Fri,  9 Jan 2026 12:29:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960050; cv=none; b=Dy+ssEYfMywgEbKijFCqmypQrCN+eRKoyqCHLCuvsZlsU73196H2fCnQgvGTwohGuNDq4kdlEb6FMtpRSWly2HXPF2bcB0PUpMu2COysVbbbqQFWogOabEVjl4aI7rYWNkfQqcH+EVTdoOe8vIHTLqTgK/FnbnCsQ6/0p49PSDk=
+	t=1767961771; cv=none; b=g1pBrsi6L0t645aNeVSLDa9sbjbsNQnH46gOPQGKQSM+vL5vSdD4et7b+1mhey1xv7Zrcc9O3OxcZ7Zdmr3kE4tCsGy7JohByphYTzqmlRGG/dWYcNBZ/ff0+ESSisZY9ba6ratr6PWWLZ+Sx7uyRcnJDEIxj0kbcR1zmaMB6uU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960050; c=relaxed/simple;
-	bh=Ct9k5ogCQ54RdMFbhtWiA4rso0U3UX/SL64gAHHoh10=;
+	s=arc-20240116; t=1767961771; c=relaxed/simple;
+	bh=exdxAsvS6BIZnD3vXhfe0pBgFwV19GEaFetjv852xtU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hgM1lxCqqWebpqEBWJxEFH42Vt/AegXEszbvsri6bz5OAbByeEyyJgsBK5TysUk4M5syPMh6VVEUMKdRg9j1+sqzYRgjNdoWYR6IClsjKS5oJr6g8WzndKMg5530CIND3ynJHxe1l0zp7+JKWOWyhdliQqi29DoDraBr4J0B27U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=whvscLRH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABA83C4CEF1;
-	Fri,  9 Jan 2026 12:00:49 +0000 (UTC)
+	 MIME-Version; b=ilFWDXQROjv8PrZz9jszeuxQ5T1KE6eHJg+wBLf9hEJvnno659KwL1FnO1XBNC3m75IeQ/xLIhwdqDrEG/qIHVaPr1Gr8BTNPo5JyM0j5M3vCvs3szXpLu5dl+o7NcJt4AKHqwdXU3bVoFYtFIL0Z30eP3EgvnhfIy+k/F1fhPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ShSU9cU0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB8B4C4CEF1;
+	Fri,  9 Jan 2026 12:29:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960050;
-	bh=Ct9k5ogCQ54RdMFbhtWiA4rso0U3UX/SL64gAHHoh10=;
+	s=korg; t=1767961771;
+	bh=exdxAsvS6BIZnD3vXhfe0pBgFwV19GEaFetjv852xtU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=whvscLRHq8ZsT2cxq3palu/lcyWBE7wmpD6tjQzZhOrTv4U4OXrW76MwdSxVEkqLa
-	 RObg2JObiKECBr2BNGgluxpFg58BbSPA1eSbnE0rpkp18joiaJai/0DQ3LHQImIjeE
-	 yC9/8IQNWRo4mGaFWa8B/FZz0M7TqIA2bvdpPOao=
+	b=ShSU9cU0AlB5moXk5ravQq2DLvBm0QKXbFMgAlkNshaTZOw7fi4fKXtBVZyMgcv6H
+	 eZ6AbHhjJm5TQawF4MhtVjQRXgUR78vd1qiFjHs+VyfbAF8ifOp2p0fgy/9D5HOVYk
+	 LnJ2xTGqDFAviXhLVgoJ2YcIipAj9/saWUDL8Uxg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Lingfeng <lilingfeng3@huawei.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 267/737] NFS: Automounted filesystems should inherit ro,noexec,nodev,sync flags
-Date: Fri,  9 Jan 2026 12:36:46 +0100
-Message-ID: <20260109112144.037428595@linuxfoundation.org>
+Subject: [PATCH 6.1 129/634] mfd: mt6358-irq: Fix missing irq_domain_remove() in error path
+Date: Fri,  9 Jan 2026 12:36:47 +0100
+Message-ID: <20260109112122.303467499@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,66 +60,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-[ Upstream commit 8675c69816e4276b979ff475ee5fac4688f80125 ]
+[ Upstream commit 384bd58bf7095e4c4c8fcdbcede316ef342c630c ]
 
-When a filesystem is being automounted, it needs to preserve the
-user-set superblock mount options, such as the "ro" flag.
+If devm_request_threaded_irq() fails after irq_domain_add_linear()
+succeeds in mt6358_irq_init(), the function returns without removing
+the created IRQ domain, leading to a resource leak.
 
-Reported-by: Li Lingfeng <lilingfeng3@huawei.com>
-Link: https://lore.kernel.org/all/20240604112636.236517-3-lilingfeng@huaweicloud.com/
-Fixes: f2aedb713c28 ("NFS: Add fs_context support.")
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Call irq_domain_remove() in the error path after a successful
+irq_domain_add_linear() to properly release the IRQ domain.
+
+Fixes: 2b91c28f2abd ("mfd: Add support for the MediaTek MT6358 PMIC")
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Link: https://patch.msgid.link/20251118121427.583-1-vulab@iscas.ac.cn
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/namespace.c | 6 ++++++
- fs/nfs/super.c     | 4 ----
- 2 files changed, 6 insertions(+), 4 deletions(-)
+ drivers/mfd/mt6358-irq.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/nfs/namespace.c b/fs/nfs/namespace.c
-index e7494cdd957e5..40d7163bca870 100644
---- a/fs/nfs/namespace.c
-+++ b/fs/nfs/namespace.c
-@@ -149,6 +149,7 @@ struct vfsmount *nfs_d_automount(struct path *path)
- 	struct vfsmount *mnt = ERR_PTR(-ENOMEM);
- 	struct nfs_server *server = NFS_SB(path->dentry->d_sb);
- 	struct nfs_client *client = server->nfs_client;
-+	unsigned long s_flags = path->dentry->d_sb->s_flags;
- 	int timeout = READ_ONCE(nfs_mountpoint_expiry_timeout);
- 	int ret;
- 
-@@ -174,6 +175,11 @@ struct vfsmount *nfs_d_automount(struct path *path)
- 		fc->net_ns = get_net(client->cl_net);
+diff --git a/drivers/mfd/mt6358-irq.c b/drivers/mfd/mt6358-irq.c
+index 389756436af6c..d1e6e473c8e0a 100644
+--- a/drivers/mfd/mt6358-irq.c
++++ b/drivers/mfd/mt6358-irq.c
+@@ -287,6 +287,7 @@ int mt6358_irq_init(struct mt6397_chip *chip)
+ 	if (ret) {
+ 		dev_err(chip->dev, "Failed to register IRQ=%d, ret=%d\n",
+ 			chip->irq, ret);
++		irq_domain_remove(chip->irq_domain);
+ 		return ret;
  	}
  
-+	/* Inherit the flags covered by NFS_SB_MASK */
-+	fc->sb_flags_mask |= NFS_SB_MASK;
-+	fc->sb_flags &= ~NFS_SB_MASK;
-+	fc->sb_flags |= s_flags & NFS_SB_MASK;
-+
- 	/* for submounts we want the same server; referrals will reassign */
- 	memcpy(&ctx->nfs_server._address, &client->cl_addr, client->cl_addrlen);
- 	ctx->nfs_server.addrlen	= client->cl_addrlen;
-diff --git a/fs/nfs/super.c b/fs/nfs/super.c
-index e1bcad5906ae7..2115b0d8ccae7 100644
---- a/fs/nfs/super.c
-+++ b/fs/nfs/super.c
-@@ -1284,10 +1284,6 @@ int nfs_get_tree_common(struct fs_context *fc)
- 	if (server->flags & NFS_MOUNT_NOAC)
- 		fc->sb_flags |= SB_SYNCHRONOUS;
- 
--	if (ctx->clone_data.sb)
--		if (ctx->clone_data.sb->s_flags & SB_SYNCHRONOUS)
--			fc->sb_flags |= SB_SYNCHRONOUS;
--
- 	/* Get a superblock - note that we may end up sharing one that already exists */
- 	fc->s_fs_info = server;
- 	s = sget_fc(fc, compare_super, nfs_set_super);
 -- 
 2.51.0
 
