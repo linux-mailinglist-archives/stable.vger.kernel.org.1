@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-206982-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207585-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A208D096F6
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:17:36 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B994D0A099
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:53:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7385F302F6BA
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:12:39 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C10CC309A7C3
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:41:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8960F3346AF;
-	Fri,  9 Jan 2026 12:12:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BE05359FAC;
+	Fri,  9 Jan 2026 12:41:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H4C9T3XC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mR02Md+O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D1C31946C8;
-	Fri,  9 Jan 2026 12:12:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 440B21E515;
+	Fri,  9 Jan 2026 12:41:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960757; cv=none; b=sFvqtvSO7bXi/NT9giWmPSL4KxXWRk80Db7zDBjblrfLztvLXDG2MXJquBsCaBFLvC73DbUvbDUFKWah01SY51j8m56iz+7i4NDQbNGYsxGg9MYygm2B833GWuwVt8aeGfIV5Upze5u71top/Dmd3BLfGigsgtusAqZaOkYiPag=
+	t=1767962474; cv=none; b=W15KbPf0a15TYQmk55Is+UZGIs0GXYi60Zy3/hb4KYrHSq32wgryxPz1DVot16D/jlYYDAubni5xbmmgxVA31E/8b45eoWIXEEodWZdKe+pSu/d90wnM7147zRSGYI5+4Pclo2wce3ykEkufQy5+Jwh4EYcf441aaIB2+j2GGsM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960757; c=relaxed/simple;
-	bh=kq13Au0kcEuX995GN5KoJCQU/62UC9TuI0QGzHegaDA=;
+	s=arc-20240116; t=1767962474; c=relaxed/simple;
+	bh=Xuh+uYalqI8mV8T6vcO9rEkqwrIgMwJKBeTSH6bWSmc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ygih2suMiweZyrHj3eKFl3oaIP20bgB+qsxX60gbHNp3Hns2dOXJQ/A5u1yjWit1JmtZ032ZRNJehCICiVgIkDLyKzwcXu1prdhwes7g9NCvHSCNHHmj8ExPEG6mFZvd7W7f6EeERS+0iBAYv2Fc+bHUkDLJt0947UV6P25KDic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H4C9T3XC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0D8EC4CEF1;
-	Fri,  9 Jan 2026 12:12:36 +0000 (UTC)
+	 MIME-Version; b=UwPRDnFDZsCLhx73kpE6A+MX+6VoDhHuer7198TzRYcGafdweZAcKEibACwrcbmPwLLmFLbuUNXzUUdmHt8n3swktXpc8r5TeTUBwx7yMMLDPgLom7CnICOi4jgBDt6oEuYTWtnTjMKpKLb7pvSfXuCUGbFQmarnL2mw9WfizrU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mR02Md+O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47887C19423;
+	Fri,  9 Jan 2026 12:41:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960757;
-	bh=kq13Au0kcEuX995GN5KoJCQU/62UC9TuI0QGzHegaDA=;
+	s=korg; t=1767962473;
+	bh=Xuh+uYalqI8mV8T6vcO9rEkqwrIgMwJKBeTSH6bWSmc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H4C9T3XCCdCfWVT80bw6FYw7OzFMRqFX1xztgt1/yE+xfHSI05w/IEDkj8Tmxajv9
-	 WcZt4skT0vcPiBsuw+f9OvoOTFgOkQNu3tnvaMrUzirfvd+7VvYsrZKU6UpzYYf8VF
-	 kPUk3qnZ7Qda+S6Rg1f99PP4yONfav5FZnhgCHDk=
+	b=mR02Md+O62RHawdYwD1/PFuqeP1V+F7LVVi0xZRgq4Eodup3JEzijzurp4nVndweC
+	 ISU6K4kU8Yd5cdyaTSp3QYH2kRpw+Q4Kft1I4cNIUOJO0XxYYkXPmhNbfuK2a7lWnh
+	 HN5Qcar+Y0pkDKY5bvZkYt8UKHQMBCJdnDgJMft8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Raju Rangoju <Raju.Rangoju@amd.com>,
-	Simon Horman <horms@kernel.org>,
-	Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 514/737] amd-xgbe: reset retries and mode on RX adapt failures
-Date: Fri,  9 Jan 2026 12:40:53 +0100
-Message-ID: <20260109112153.335500559@linuxfoundation.org>
+	syzbot+641eec6b7af1f62f2b99@syzkaller.appspotmail.com,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.1 376/634] io_uring/poll: correctly handle io_poll_add() return value on update
+Date: Fri,  9 Jan 2026 12:40:54 +0100
+Message-ID: <20260109112131.679351598@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +59,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Raju Rangoju <Raju.Rangoju@amd.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-[ Upstream commit df60c332caf95d70f967aeace826e7e2f0847361 ]
+Commit 84230ad2d2afbf0c44c32967e525c0ad92e26b4e upstream.
 
-During the stress tests, early RX adaptation handshakes can fail, such
-as missing the RX_ADAPT ACK or not receiving a coefficient update before
-block lock is established. Continuing to retry RX adaptation in this
-state is often ineffective if the current mode selection is not viable.
+When the core of io_uring was updated to handle completions
+consistently and with fixed return codes, the POLL_REMOVE opcode
+with updates got slightly broken. If a POLL_ADD is pending and
+then POLL_REMOVE is used to update the events of that request, if that
+update causes the POLL_ADD to now trigger, then that completion is lost
+and a CQE is never posted.
 
-Resetting the RX adaptation retry counter when an RX_ADAPT request fails
-to receive ACK or a coefficient update prior to block lock, and clearing
-mode_set so the next bring-up performs a fresh mode selection rather
-than looping on a likely invalid configuration.
+Additionally, ensure that if an update does cause an existing POLL_ADD
+to complete, that the completion value isn't always overwritten with
+-ECANCELED. For that case, whatever io_poll_add() set the value to
+should just be retained.
 
-Fixes: 4f3b20bfbb75 ("amd-xgbe: add support for rx-adaptation")
-Signed-off-by: Raju Rangoju <Raju.Rangoju@amd.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
-Link: https://patch.msgid.link/20251215151728.311713-1-Raju.Rangoju@amd.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 97b388d70b53 ("io_uring: handle completions in the core")
+Reported-by: syzbot+641eec6b7af1f62f2b99@syzkaller.appspotmail.com
+Tested-by: syzbot+641eec6b7af1f62f2b99@syzkaller.appspotmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/amd/xgbe/xgbe-phy-v2.c | 2 ++
- 1 file changed, 2 insertions(+)
+ io_uring/poll.c |    9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-phy-v2.c b/drivers/net/ethernet/amd/xgbe/xgbe-phy-v2.c
-index 32e633d11348..6d2c401bb246 100644
---- a/drivers/net/ethernet/amd/xgbe/xgbe-phy-v2.c
-+++ b/drivers/net/ethernet/amd/xgbe/xgbe-phy-v2.c
-@@ -2036,6 +2036,7 @@ static void xgbe_set_rx_adap_mode(struct xgbe_prv_data *pdata,
- {
- 	if (pdata->rx_adapt_retries++ >= MAX_RX_ADAPT_RETRIES) {
- 		pdata->rx_adapt_retries = 0;
-+		pdata->mode_set = false;
- 		return;
+--- a/io_uring/poll.c
++++ b/io_uring/poll.c
+@@ -1038,12 +1038,17 @@ found:
+ 
+ 		ret2 = io_poll_add(preq, issue_flags & ~IO_URING_F_UNLOCKED);
+ 		/* successfully updated, don't complete poll request */
+-		if (!ret2 || ret2 == -EIOCBQUEUED)
++		if (ret2 == IOU_ISSUE_SKIP_COMPLETE)
+ 			goto out;
++		/* request completed as part of the update, complete it */
++		else if (ret2 == IOU_OK)
++			goto complete;
  	}
  
-@@ -2082,6 +2083,7 @@ static void xgbe_rx_adaptation(struct xgbe_prv_data *pdata)
- 		 */
- 		netif_dbg(pdata, link, pdata->netdev, "Block_lock done");
- 		pdata->rx_adapt_done = true;
-+		pdata->rx_adapt_retries = 0;
- 		pdata->mode_set = false;
- 		return;
- 	}
--- 
-2.51.0
-
+-	req_set_fail(preq);
+ 	io_req_set_res(preq, -ECANCELED, 0);
++complete:
++	if (preq->cqe.res < 0)
++		req_set_fail(preq);
+ 	io_req_task_complete(preq, &locked);
+ out:
+ 	io_ring_submit_unlock(ctx, issue_flags);
 
 
 
