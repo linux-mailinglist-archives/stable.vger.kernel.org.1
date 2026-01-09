@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-207008-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207612-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12102D09768
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:19:38 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78D5DD0A2B3
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:04:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BDD3230719E7
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:13:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 069BD3071A85
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:42:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 457EC2F0C7F;
-	Fri,  9 Jan 2026 12:13:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3BEE33C530;
+	Fri,  9 Jan 2026 12:42:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r6yKL4l0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kac/+BEF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0923D320CB6;
-	Fri,  9 Jan 2026 12:13:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66A9A1CAB3;
+	Fri,  9 Jan 2026 12:42:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960831; cv=none; b=jUDgALoRpGfWR5LQm4VkhdXVDRVUCJDJtLNM8x5/kjCPz0vB5N3FjtR19uy1yBR9Ey0AFM9+RyU2g6oXf9dy2wjk8hndB2SE00AbbhFto0HnhThrjDZ8V0UDi+dqlThhzas3Flx+pDXsFhoMmqzVTN6rf+sXSwiHEIYS42dqTYg=
+	t=1767962547; cv=none; b=Rg0JIZUjx53cz7pTDvDCwXxVw4LX2A4JsT3emq5pTDs1h64i/MSMdcNqAyMacNCIqSg+XqXOy3Z/1ar7JBMHP+DHP83jGuL4vzNM1fhMbhH2nyEZGgoVQfAIvRaPRPzyY3sDxoin2lMggcFYd81HKK/VM4+yWVYMSqj8C8mjoKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960831; c=relaxed/simple;
-	bh=qDdQtbfiICWoGW9Qty8ERHmf/ceeFJDfOI0Bhqq0oWo=;
+	s=arc-20240116; t=1767962547; c=relaxed/simple;
+	bh=VsBrcQ8OuXTGeSZpWw1SusvdGVGf2q1zvTSN4900wW0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cR7YZkS5zvPs8y3REzL34SA4AZNFuNty+QjtQPQiuGH76HBzBSMkd5FUbQ+WqiOW3GcLPrcC1/AVr9m6MH7+dhVC9BpKtBfbN89Zj8xJBd5oRmg/Hh3KewMrWUi4GpzENd/8KbR7xzQ3NqzxSRRw9o8fPGmoowJnrIXBTjSQ9sI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r6yKL4l0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BAB3C4CEF1;
-	Fri,  9 Jan 2026 12:13:50 +0000 (UTC)
+	 MIME-Version; b=gEpVNGMIXJC+qUyL7kQIIplp+Igenqtznqhb+aX63v9xEsd2G4rZ07BKQBWspEZHoCkkzLBeJWamL7dBBXbFQSa8qtEZuJDeLtTfF3jacGu1iAzVEPS1hBNsWjNbCDTd1/3KinwfnNMljN7Y1t9fe34p5jG5UmiLnGERMXgNkyQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kac/+BEF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9B6DC4CEF1;
+	Fri,  9 Jan 2026 12:42:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960830;
-	bh=qDdQtbfiICWoGW9Qty8ERHmf/ceeFJDfOI0Bhqq0oWo=;
+	s=korg; t=1767962547;
+	bh=VsBrcQ8OuXTGeSZpWw1SusvdGVGf2q1zvTSN4900wW0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r6yKL4l026BU4KppNR3PQY47G8bjiJMzZgiOWLHmpVJL6kRoMqu9eL5ir4B6Fx6Lr
-	 ueA3htdUQnFNJmHkTcWRgfuc0IGFRwWyOfC2tJuVrUcLQon7n22H6i+detYns7M48I
-	 ypanJ7gJN3itNsyAcWlhUU/ccFP3z9bWwHTLB6m8=
+	b=kac/+BEF7IDq7ej+YYfBqJq+L2Wzb7pE54eKUp5ddjL3RklsP6LcCh7JhUhZayaJ/
+	 TNtoHrcQcDASVfqKQ3Et5t2ZIzkeEMLnxnSOfwu0hDR17QZHGMcAPLMS3rcEbWAGDE
+	 nYmycAaj0nz3LnRwnlIrAZxM65hy7yoLkbIKeJR8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-Subject: [PATCH 6.6 541/737] ntfs: Do not overwrite uptodate pages
-Date: Fri,  9 Jan 2026 12:41:20 +0100
-Message-ID: <20260109112154.346082098@linuxfoundation.org>
+	Xiumei Mu <xmu@redhat.com>,
+	Xin Long <lucien.xin@gmail.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 403/634] crypto: seqiv - Do not use req->iv after crypto_aead_encrypt
+Date: Fri,  9 Jan 2026 12:41:21 +0100
+Message-ID: <20260109112132.693052327@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,101 +61,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Wilcox (Oracle) <willy@infradead.org>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-commit 68f6bd128e75a032432eda9d16676ed2969a1096 upstream.
+[ Upstream commit 50fdb78b7c0bcc550910ef69c0984e751cac72fa ]
 
-When reading a compressed file, we may read several pages in addition to
-the one requested.  The current code will overwrite pages in the page
-cache with the data from disc which can definitely result in changes
-that have been made being lost.
+As soon as crypto_aead_encrypt is called, the underlying request
+may be freed by an asynchronous completion.  Thus dereferencing
+req->iv after it returns is invalid.
 
-For example if we have four consecutie pages ABCD in the file compressed
-into a single extent, on first access, we'll bring in ABCD.  Then we
-write to page B.  Memory pressure results in the eviction of ACD.
-When we attempt to write to page C, we will overwrite the data in page
-B with the data currently on disk.
+Instead of checking req->iv against info, create a new variable
+unaligned_info and use it for that purpose instead.
 
-I haven't investigated the decompression code to check whether it's
-OK to overwrite a clean page or whether it might be possible to see
-corrupt data.  Out of an abundance of caution, decline to overwrite
-uptodate pages, not just dirty pages.
-
-Fixes: 4342306f0f0d (fs/ntfs3: Add file operations and implementation)
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 0a270321dbf9 ("[CRYPTO] seqiv: Add Sequence Number IV Generator")
+Reported-by: Xiumei Mu <xmu@redhat.com>
+Reported-by: Xin Long <lucien.xin@gmail.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/frecord.c |   35 +++++++++++++++++++++++++++++------
- 1 file changed, 29 insertions(+), 6 deletions(-)
+ crypto/seqiv.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
---- a/fs/ntfs3/frecord.c
-+++ b/fs/ntfs3/frecord.c
-@@ -2075,6 +2075,29 @@ out:
+diff --git a/crypto/seqiv.c b/crypto/seqiv.c
+index b1bcfe537daf..562ab102226a 100644
+--- a/crypto/seqiv.c
++++ b/crypto/seqiv.c
+@@ -51,6 +51,7 @@ static int seqiv_aead_encrypt(struct aead_request *req)
+ 	struct aead_geniv_ctx *ctx = crypto_aead_ctx(geniv);
+ 	struct aead_request *subreq = aead_request_ctx(req);
+ 	crypto_completion_t compl;
++	bool unaligned_info;
+ 	void *data;
+ 	u8 *info;
+ 	unsigned int ivsize = 8;
+@@ -80,8 +81,9 @@ static int seqiv_aead_encrypt(struct aead_request *req)
+ 			return err;
+ 	}
+ 
+-	if (unlikely(!IS_ALIGNED((unsigned long)info,
+-				 crypto_aead_alignmask(geniv) + 1))) {
++	unaligned_info = !IS_ALIGNED((unsigned long)info,
++				     crypto_aead_alignmask(geniv) + 1);
++	if (unlikely(unaligned_info)) {
+ 		info = kmemdup(req->iv, ivsize, req->base.flags &
+ 			       CRYPTO_TFM_REQ_MAY_SLEEP ? GFP_KERNEL :
+ 			       GFP_ATOMIC);
+@@ -101,7 +103,7 @@ static int seqiv_aead_encrypt(struct aead_request *req)
+ 	scatterwalk_map_and_copy(info, req->dst, req->assoclen, ivsize, 1);
+ 
+ 	err = crypto_aead_encrypt(subreq);
+-	if (unlikely(info != req->iv))
++	if (unlikely(unaligned_info))
+ 		seqiv_aead_encrypt_complete2(req, err);
  	return err;
  }
- 
-+static struct page *ntfs_lock_new_page(struct address_space *mapping,
-+		pgoff_t index, gfp_t gfp)
-+{
-+	struct folio *folio = __filemap_get_folio(mapping, index,
-+			FGP_LOCK | FGP_ACCESSED | FGP_CREAT, gfp);
-+	struct page *page;
-+
-+	if (IS_ERR(folio))
-+		return ERR_CAST(folio);
-+
-+	if (!folio_test_uptodate(folio))
-+		return folio_file_page(folio, index);
-+
-+	/* Use a temporary page to avoid data corruption */
-+	folio_unlock(folio);
-+	folio_put(folio);
-+	page = alloc_page(gfp);
-+	if (!page)
-+		return ERR_PTR(-ENOMEM);
-+	__SetPageLocked(page);
-+	return page;
-+}
-+
- /*
-  * ni_readpage_cmpr
-  *
-@@ -2128,9 +2151,9 @@ int ni_readpage_cmpr(struct ntfs_inode *
- 		if (i == idx)
- 			continue;
- 
--		pg = find_or_create_page(mapping, index, gfp_mask);
--		if (!pg) {
--			err = -ENOMEM;
-+		pg = ntfs_lock_new_page(mapping, index, gfp_mask);
-+		if (IS_ERR(pg)) {
-+			err = PTR_ERR(pg);
- 			goto out1;
- 		}
- 		pages[i] = pg;
-@@ -2232,13 +2255,13 @@ int ni_decompress_file(struct ntfs_inode
- 		for (i = 0; i < pages_per_frame; i++, index++) {
- 			struct page *pg;
- 
--			pg = find_or_create_page(mapping, index, gfp_mask);
--			if (!pg) {
-+			pg = ntfs_lock_new_page(mapping, index, gfp_mask);
-+			if (IS_ERR(pg)) {
- 				while (i--) {
- 					unlock_page(pages[i]);
- 					put_page(pages[i]);
- 				}
--				err = -ENOMEM;
-+				err = PTR_ERR(pg);
- 				goto out;
- 			}
- 			pages[i] = pg;
+-- 
+2.51.0
+
 
 
 
