@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-206669-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207313-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7EEBD09407
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:06:31 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 709A8D09CF1
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:39:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 415F530339A4
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:57:43 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 36BBC300766E
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:28:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E35CB33C53C;
-	Fri,  9 Jan 2026 11:57:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A9F32EC54D;
+	Fri,  9 Jan 2026 12:28:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1s5OCXUF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O4BALS87"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A679932FA3D;
-	Fri,  9 Jan 2026 11:57:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E41ED23F417;
+	Fri,  9 Jan 2026 12:28:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767959862; cv=none; b=Xsx1cRIjSOONxLBggYgs1u/XCtLB/P6XGyWJrgpcmgwFPt0NEAWwXjQ/upF3kAGp5cC0oSsMEpS0/kw2PHB42IByMYPyr0oilAe4nX1XMfhcpcaLp5GQ5o2JRHVQcCmZrkr/5wBS+tbJ3az35yMozrZLGWeMcN/XXVWDeUjxGYY=
+	t=1767961700; cv=none; b=b42cbiMQqZ0Uu1iVp7jEM5tQXfSeZ2af5flvL7pQVZ2yKeepsTeLg2HkRDgAOntl7FpoXjTAxAwIfKqfP0pqc/znMDlpNO3AsEDxmQ3ZYP12J6En7c9JtYOS3dGCg79ASfD13iA78C5CsCVbD9Ncj08u/yglSM4BG0BhsJX2SV0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767959862; c=relaxed/simple;
-	bh=5lHFbIYwX3repMEBFJrwENdkH7Aa7Ar/aedSuPMV7lo=;
+	s=arc-20240116; t=1767961700; c=relaxed/simple;
+	bh=Aa3cYXA+8jsVU/9YQneXAtrbSNCzaz1BE8bEV/Cqjk8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L8fpEHFQMbWBfdhrt5E4Xo6V+U8puZoqkhHkxKAd3FDHUYmI8/iXh+XU8PAgvU1K6LgqUy/CH+3ymVnZUBjdFUaoVcGLqNGda6ULaNt7n6wm26YQGhJP+xLamkMfnzFnlvq9WLkt0QdoTtzFYm1j1izNw4XBv7RKEtESG9w5MyE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1s5OCXUF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39F59C19421;
-	Fri,  9 Jan 2026 11:57:42 +0000 (UTC)
+	 MIME-Version; b=ZJHQpdq/ieuxKXIMpBYdHTv6s/l31F3KynTov1qNUGYOO8qdz66wE8oUd+K1t9y1NiUeYYXbh0xMm0qIXSncesJ0EVq7TNcaSqYKkKSRbHkifMyBUPurA1u50YKN7Us/H3nYev6hlHYTiOLlmwjohXerouW8qZdwmxVPeNdCiF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O4BALS87; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7079EC4CEF1;
+	Fri,  9 Jan 2026 12:28:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767959862;
-	bh=5lHFbIYwX3repMEBFJrwENdkH7Aa7Ar/aedSuPMV7lo=;
+	s=korg; t=1767961699;
+	bh=Aa3cYXA+8jsVU/9YQneXAtrbSNCzaz1BE8bEV/Cqjk8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1s5OCXUFvKNyzK3R9x+dmEWPj6s62lXNcRPA2ops1nrOVR6+8LcTY3Y6JTbictSnI
-	 MHejTulJPatey2eHCcXWApURetzE+ThETGElbayvsMPDwADUOfYIkJ02P+C6fkVKsL
-	 BHI0TkmRvCylcZAo3By8cn7QOHtmn5CN7QWCzfCU=
+	b=O4BALS87pLvd3cW/aak+kTk/HKGnNXEmiwPU+KJrAd8PL1/E5Ya+/uPqRtMnLs3hD
+	 qTyIB/l6Xc5hNDTJSvwavqiDt16sOx+T7+eLtacDkIYmAn3NwupfCai7ehUEc+FJyx
+	 YVvcpWfoOt4mZETG9g5YnRC0xbZi+87/IgZEba0Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephen Rothwell <sfr@canb.auug.org.au>,
-	Dinh Nguyen <dinguyen@kernel.org>,
+	Alexander Egorenkov <egorenar@linux.ibm.com>,
+	Mete Durlu <meted@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 201/737] firmware: stratix10-svc: fix make htmldocs warning for stratix10_svc
-Date: Fri,  9 Jan 2026 12:35:40 +0100
-Message-ID: <20260109112141.563994113@linuxfoundation.org>
+Subject: [PATCH 6.1 063/634] s390/smp: Fix fallback CPU detection
+Date: Fri,  9 Jan 2026 12:35:41 +0100
+Message-ID: <20260109112119.817365938@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,42 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dinh Nguyen <dinguyen@kernel.org>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-[ Upstream commit 377441d53a2df61b105e823b335010cd4f1a6e56 ]
+[ Upstream commit 07a75d08cfa1b883a6e1256666e5f0617ee99231 ]
 
-Fix this warning that was generated from "make htmldocs":
+In case SCLP CPU detection does not work a fallback mechanism using SIGP is
+in place. Since a cleanup this does not work correctly anymore: new CPUs
+are only considered if their type matches the boot CPU.
 
-WARNING: drivers/firmware/stratix10-svc.c:58 struct member 'intel_svc_fcs'
-not described in 'stratix10_svc'
+Before the cleanup the information if a CPU type should be considered was
+also part of a structure generated by the fallback mechanism and indicated
+that a CPU type should not be considered when adding CPUs.
 
-Fixes: e6281c26674e ("firmware: stratix10-svc: Add support for FCS")
-Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
-Closes: https://lore.kernel.org/linux-next/20251106145941.37920e97@canb.auug.org.au/
-Signed-off-by: Dinh Nguyen <dinguyen@kernel.org>
-Link: https://patch.msgid.link/20251114185815.358423-1-dinguyen@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Since the rework a global SCLP state is used instead. If the global SCLP
+state indicates that the CPU type should be considered and the fallback
+mechanism is used, there may be a mismatch with CPU types if CPUs are
+added. This can lead to a system with only a single CPU even tough there
+are many more CPUs.
+
+Address this by simply copying the boot cpu type into the generated data
+structure from the fallback mechanism.
+
+Reported-by: Alexander Egorenkov <egorenar@linux.ibm.com>
+Fixes: d08d94306e90 ("s390/smp: cleanup core vs. cpu in the SCLP interface")
+Reviewed-by: Mete Durlu <meted@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/stratix10-svc.c | 1 +
+ arch/s390/kernel/smp.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/firmware/stratix10-svc.c b/drivers/firmware/stratix10-svc.c
-index 766ced12345c3..a133ac5fb0373 100644
---- a/drivers/firmware/stratix10-svc.c
-+++ b/drivers/firmware/stratix10-svc.c
-@@ -52,6 +52,7 @@ struct stratix10_svc_chan;
- /**
-  * struct stratix10_svc - svc private data
-  * @stratix10_svc_rsu: pointer to stratix10 RSU device
-+ * @intel_svc_fcs: pointer to the FCS device
-  */
- struct stratix10_svc {
- 	struct platform_device *stratix10_svc_rsu;
+diff --git a/arch/s390/kernel/smp.c b/arch/s390/kernel/smp.c
+index 436dbf4d743d8..8346cb75643ca 100644
+--- a/arch/s390/kernel/smp.c
++++ b/arch/s390/kernel/smp.c
+@@ -758,6 +758,7 @@ static void __ref smp_get_core_info(struct sclp_core_info *info, int early)
+ 				continue;
+ 			info->core[info->configured].core_id =
+ 				address >> smp_cpu_mt_shift;
++			info->core[info->configured].type = boot_core_type;
+ 			info->configured++;
+ 		}
+ 		info->combined = info->configured;
 -- 
 2.51.0
 
