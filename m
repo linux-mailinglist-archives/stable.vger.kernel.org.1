@@ -1,63 +1,53 @@
-Return-Path: <stable+bounces-207088-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207671-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED0A4D09A24
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:29:33 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68618D0A2FE
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:05:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 6999D3035F27
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:17:39 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D8BD630E653C
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:45:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96FD132AAB5;
-	Fri,  9 Jan 2026 12:17:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4794835CB67;
+	Fri,  9 Jan 2026 12:45:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mv6IVEx6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nCr42Emf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B5002737EE;
-	Fri,  9 Jan 2026 12:17:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A33A35BDC3;
+	Fri,  9 Jan 2026 12:45:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961056; cv=none; b=M3bPagOXDwVe76GOHy8TVeSHevMq3ILfKK9kETR4HUn/em0JGOpiu6sg6KoiuOtcxjvRiVAurBGaPhB4aEBDq1yzqZa/wLH/lMCD9/Exzphgb56IsV8lpXACQ+JppBMZ2DipjiuPNGh08kFIHH5rCHKt+SdFFOFZZ8wBbV3uWig=
+	t=1767962716; cv=none; b=dtFZtC7HpIy80vsYJG0VAExiL8RzKvbRYRe2GLuSibuAxQ1U90c5ATXF8p4ckeuRchDHomyJbAaLCAcRstB5SZeZTOKs6qtFdx9+lR3Ac+P1JIndA63ICAcWHGO362AAAD48Ez7CDi0U5267xjCOislszgiCoXlXo+l/b86fzi4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961056; c=relaxed/simple;
-	bh=NN9++4CKKlSS/30E/SVUv/J68cvf2IRXzQ3ksfi5PPc=;
+	s=arc-20240116; t=1767962716; c=relaxed/simple;
+	bh=fEOeyCQOka/7qhR6XfrQq/Tno3EJV8gHo/5QN2PNri4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KnxHWZ3JYKsM93AeNL3r0ez39ZfN4Kv5TcfNUcanIJJUghnDft2hSPYi98XgKd5iTjIGotImsgx40nSQikkF50hphkREp/Z34ymHQcNG3WoWP4EhslmG4N5OwxEH2afF71EaaqYF2ff804loK2JB3HRSHRkQkLgr3NlGd6Yqa8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mv6IVEx6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3D56C4CEF1;
-	Fri,  9 Jan 2026 12:17:35 +0000 (UTC)
+	 MIME-Version; b=piTjwfZ4FtA3CojYcwVDRl3wWD+FOjXhJw/PT+oUd1b3AyBU80XpV9FfjRZiCncItKYZNMLoqlR4J+N2UP1AN1OJe+3IfQS2zELF4xWvavc+MAgLQz0mO8CMTGd/0f75AXa0RhcJrHmVaht6ygW/vicED6SkN+5jUJkgrn2zIP4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nCr42Emf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ADE4C4CEF1;
+	Fri,  9 Jan 2026 12:45:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961056;
-	bh=NN9++4CKKlSS/30E/SVUv/J68cvf2IRXzQ3ksfi5PPc=;
+	s=korg; t=1767962715;
+	bh=fEOeyCQOka/7qhR6XfrQq/Tno3EJV8gHo/5QN2PNri4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Mv6IVEx6cjtjK3V7tdyXvl/SRffxpSNMbO2U3hlk7b8jzWvmwK0mAKqBOPQc9PLsr
-	 AQsIor2rqzp1dtfVnNpa92k61+11q3JMDhe98dLRoRjxsbcIDIIDOJcjcbsS3x3rCq
-	 U4bC+i7OVk+TFO5b6mxqJCWw2/GNiO7kITLDRVQI=
+	b=nCr42EmfRBx/EJHWKgnMwLQw6AzTXszJGNgGHZEFxTQQNH2bc4IFWWRsZV1+HiC84
+	 3A/zAVdu6NH5K0YI3VwxH9Dc1a23iL199UOBgZpMEayKIjYdTdb/6wyyElq/IGlQyG
+	 S37bLaWg+TUk4FS5lf3bDqTrrCz95OharLTFtiLI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Alexander Potapenko <glider@google.com>,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Dmitriy Vyukov <dvyukov@google.com>,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Kees Cook <kees@kernel.org>,
-	Marco Elver <elver@google.com>,
-	"Uladzislau Rezki (Sony)" <urezki@gmail.com>,
-	Vincenzo Frascino <vincenzo.frascino@arm.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 602/737] kasan: refactor pcpu kasan vmalloc unpoison
+	Christian Hitz <christian.hitz@bbv.ch>,
+	Lee Jones <lee@kernel.org>
+Subject: [PATCH 6.1 463/634] leds: leds-lp50xx: LP5009 supports 3 modules for a total of 9 LEDs
 Date: Fri,  9 Jan 2026 12:42:21 +0100
-Message-ID: <20260109112156.653607346@linuxfoundation.org>
+Message-ID: <20260109112134.972419367@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,127 +59,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
+From: Christian Hitz <christian.hitz@bbv.ch>
 
-commit 6f13db031e27e88213381039032a9cc061578ea6 upstream.
+commit 5246e3673eeeccb4f5bf4f42375dd495d465ac15 upstream.
 
-A KASAN tag mismatch, possibly causing a kernel panic, can be observed
-on systems with a tag-based KASAN enabled and with multiple NUMA nodes.
-It was reported on arm64 and reproduced on x86. It can be explained in
-the following points:
+LP5009 supports 9 LED outputs that are grouped into 3 modules.
 
-1. There can be more than one virtual memory chunk.
-2. Chunk's base address has a tag.
-3. The base address points at the first chunk and thus inherits
-   the tag of the first chunk.
-4. The subsequent chunks will be accessed with the tag from the
-   first chunk.
-5. Thus, the subsequent chunks need to have their tag set to
-   match that of the first chunk.
-
-Refactor code by reusing __kasan_unpoison_vmalloc in a new helper in
-preparation for the actual fix.
-
-Link: https://lkml.kernel.org/r/eb61d93b907e262eefcaa130261a08bcb6c5ce51.1764874575.git.m.wieczorretman@pm.me
-Fixes: 1d96320f8d53 ("kasan, vmalloc: add vmalloc tagging for SW_TAGS")
-Signed-off-by: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
-Reviewed-by: Andrey Konovalov <andreyknvl@gmail.com>
-Cc: Alexander Potapenko <glider@google.com>
-Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Cc: Danilo Krummrich <dakr@kernel.org>
-Cc: Dmitriy Vyukov <dvyukov@google.com>
-Cc: Jiayuan Chen <jiayuan.chen@linux.dev>
-Cc: Kees Cook <kees@kernel.org>
-Cc: Marco Elver <elver@google.com>
-Cc: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
-Cc: Vincenzo Frascino <vincenzo.frascino@arm.com>
-Cc: <stable@vger.kernel.org>	[6.1+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Fixes: 242b81170fb8 ("leds: lp50xx: Add the LP50XX family of the RGB LED driver")
+Signed-off-by: Christian Hitz <christian.hitz@bbv.ch>
+Link: https://patch.msgid.link/20251022063305.972190-1-christian@klarinett.li
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/kasan.h |   15 +++++++++++++++
- mm/kasan/common.c     |   17 +++++++++++++++++
- mm/vmalloc.c          |    4 +---
- 3 files changed, 33 insertions(+), 3 deletions(-)
+ drivers/leds/leds-lp50xx.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/include/linux/kasan.h
-+++ b/include/linux/kasan.h
-@@ -423,6 +423,16 @@ static __always_inline void kasan_poison
- 		__kasan_poison_vmalloc(start, size);
- }
+--- a/drivers/leds/leds-lp50xx.c
++++ b/drivers/leds/leds-lp50xx.c
+@@ -56,7 +56,7 @@
+ /* There are 3 LED outputs per bank */
+ #define LP50XX_LEDS_PER_MODULE	3
  
-+void __kasan_unpoison_vmap_areas(struct vm_struct **vms, int nr_vms,
-+				 kasan_vmalloc_flags_t flags);
-+static __always_inline void
-+kasan_unpoison_vmap_areas(struct vm_struct **vms, int nr_vms,
-+			  kasan_vmalloc_flags_t flags)
-+{
-+	if (kasan_enabled())
-+		__kasan_unpoison_vmap_areas(vms, nr_vms, flags);
-+}
-+
- #else /* CONFIG_KASAN_VMALLOC */
- 
- static inline void kasan_populate_early_vm_area_shadow(void *start,
-@@ -446,6 +456,11 @@ static inline void *kasan_unpoison_vmall
- static inline void kasan_poison_vmalloc(const void *start, unsigned long size)
- { }
- 
-+static __always_inline void
-+kasan_unpoison_vmap_areas(struct vm_struct **vms, int nr_vms,
-+			  kasan_vmalloc_flags_t flags)
-+{ }
-+
- #endif /* CONFIG_KASAN_VMALLOC */
- 
- #if (defined(CONFIG_KASAN_GENERIC) || defined(CONFIG_KASAN_SW_TAGS)) && \
---- a/mm/kasan/common.c
-+++ b/mm/kasan/common.c
-@@ -26,6 +26,7 @@
- #include <linux/string.h>
- #include <linux/types.h>
- #include <linux/bug.h>
-+#include <linux/vmalloc.h>
- 
- #include "kasan.h"
- #include "../slab.h"
-@@ -450,3 +451,19 @@ bool __kasan_check_byte(const void *addr
- 	}
- 	return true;
- }
-+
-+#ifdef CONFIG_KASAN_VMALLOC
-+void __kasan_unpoison_vmap_areas(struct vm_struct **vms, int nr_vms,
-+				 kasan_vmalloc_flags_t flags)
-+{
-+	unsigned long size;
-+	void *addr;
-+	int area;
-+
-+	for (area = 0 ; area < nr_vms ; area++) {
-+		size = vms[area]->size;
-+		addr = vms[area]->addr;
-+		vms[area]->addr = __kasan_unpoison_vmalloc(addr, size, flags);
-+	}
-+}
-+#endif
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -4196,9 +4196,7 @@ retry:
- 	 * With hardware tag-based KASAN, marking is skipped for
- 	 * non-VM_ALLOC mappings, see __kasan_unpoison_vmalloc().
- 	 */
--	for (area = 0; area < nr_vms; area++)
--		vms[area]->addr = kasan_unpoison_vmalloc(vms[area]->addr,
--				vms[area]->size, KASAN_VMALLOC_PROT_NORMAL);
-+	kasan_unpoison_vmap_areas(vms, nr_vms, KASAN_VMALLOC_PROT_NORMAL);
- 
- 	kfree(vas);
- 	return vms;
+-#define LP5009_MAX_LED_MODULES	2
++#define LP5009_MAX_LED_MODULES	3
+ #define LP5012_MAX_LED_MODULES	4
+ #define LP5018_MAX_LED_MODULES	6
+ #define LP5024_MAX_LED_MODULES	8
 
 
 
