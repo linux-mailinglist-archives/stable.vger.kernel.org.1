@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-206618-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207218-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 280AFD0931A
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:02:42 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EDBCD09C8B
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:37:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 17D2030533CD
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:55:20 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 407CE307FD2D
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:23:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EFD7335561;
-	Fri,  9 Jan 2026 11:55:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F473359FA0;
+	Fri,  9 Jan 2026 12:23:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z0V3J5y3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JnxOpdDC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 425D631A7EA;
-	Fri,  9 Jan 2026 11:55:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C24032AAB5;
+	Fri,  9 Jan 2026 12:23:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767959718; cv=none; b=RbzcZf0p04PwUkwHDh6tuRFCj6BjjXgj7xXlGSNrQ7AwmFP/wczVKIm34iN8r0YpBk0Ems9BQBqPx+v7v5d9JKBQ1EkQalKICbjIgKGo+z5lVEniAqhiJ8fvKZ51Y3drNYhGluIF3xQBmD5x13lTY3udd3jTCNHzlVw5vht27hA=
+	t=1767961429; cv=none; b=MpEorEtufxXU7wrj5hCBfMt/NoAAVmd2CbSly4D1xtGH5vklUFoQIK/Nmvh22uBX5wCG1XOmNleruNnMJWd725V5tV0rnEblUgQjThBHc2Aod4OAvdHHXQRqugsnbTYVhjPTrYmobW//5OBkDs0U3sFANlFRx4jOPffzX3jYSAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767959718; c=relaxed/simple;
-	bh=Lzuw8P07qAwBmBdFElgSBP14cSoY/76iVN09HfLIiFo=;
+	s=arc-20240116; t=1767961429; c=relaxed/simple;
+	bh=KMEjTlrPggiWmVWqlCPhHDFl1lZbtgmnV8E5nAEqM2s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=irPuR4YMk7tnkTaplBh3IWvBaetWq0jBhfl7um+HFJzeubv1qMGg7DJXTHgcLLVzDvxB22fzoeGrTaLDM+9yfRnRCdbbOXSmSBm8SpVC64nBaSm5yaIG+wTrIxR5S7UBgEcetDMLy/+uaEQFLpWGwdj/YpvmREpbUVieTWYydDo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z0V3J5y3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEEE1C4CEF1;
-	Fri,  9 Jan 2026 11:55:17 +0000 (UTC)
+	 MIME-Version; b=d8IW9eDLTnZ2nzbWbsBbFBCJVT/V6ftCD2vgxDkDD8FELrZ8/Tox+NhlcCBYDQ4HqCc4phBAf/V4qrF3HJGaxH6dQp1AavBLZdXGTsN7qZYZq8nXn0DgsQKxAQXn0m1hIb5O+7AnRus2CYZHZr3n0kArOyc6VB0PnP7XZ6+31Qo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JnxOpdDC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC20EC4CEF1;
+	Fri,  9 Jan 2026 12:23:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767959718;
-	bh=Lzuw8P07qAwBmBdFElgSBP14cSoY/76iVN09HfLIiFo=;
+	s=korg; t=1767961429;
+	bh=KMEjTlrPggiWmVWqlCPhHDFl1lZbtgmnV8E5nAEqM2s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z0V3J5y3nCcY4wbryxf9RfinXWnfqeZ3Ok3Tl7hQTeEJjmWxHuk7OxYyC1EpC2VCr
-	 H7IfFaRPGIVXtJNGgDbfMb7dpOciy2qmZFW9T6JbpMUj9myy/JRy9CO5k6KWhvyrYT
-	 XDrCLDf8n4NxLpU2yLq5Z+bifhl7up3CX2a8jzTM=
+	b=JnxOpdDC8pFcKEALhwleSPZCdoFC9HgIV46oBflShtOMa+cKzPXc4E+WbxMvArkkN
+	 4jA1Ll+CNN8xLJK2JKZnMhVcEXY0NpcpnX1u8lpxbmL1MyduHNDOd0YhUSLevQGPWS
+	 B7Ork8xDtuSrh6y7d6JlyX8Rcy/zuEN1E58BconE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 151/737] scsi: sim710: Fix resource leak by adding missing ioport_unmap() calls
+	Alexey Nepomnyashih <sdl@nppct.ru>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.1 012/634] ext4: add i_data_sem protection in ext4_destroy_inline_data_nolock()
 Date: Fri,  9 Jan 2026 12:34:50 +0100
-Message-ID: <20260109112139.678303806@linuxfoundation.org>
+Message-ID: <20260109112117.894225306@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,54 +59,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Alexey Nepomnyashih <sdl@nppct.ru>
 
-[ Upstream commit acd194d9b5bac419e04968ffa44351afabb50bac ]
+commit 0cd8feea8777f8d9b9a862b89c688b049a5c8475 upstream.
 
-The driver calls ioport_map() to map I/O ports in sim710_probe_common()
-but never calls ioport_unmap() to release the mapping. This causes
-resource leaks in both the error path when request_irq() fails and in
-the normal device removal path via sim710_device_remove().
+Fix a race between inline data destruction and block mapping.
 
-Add ioport_unmap() calls in the out_release error path and in
-sim710_device_remove().
+The function ext4_destroy_inline_data_nolock() changes the inode data
+layout by clearing EXT4_INODE_INLINE_DATA and setting EXT4_INODE_EXTENTS.
+At the same time, another thread may execute ext4_map_blocks(), which
+tests EXT4_INODE_EXTENTS to decide whether to call ext4_ext_map_blocks()
+or ext4_ind_map_blocks().
 
-Fixes: 56fece20086e ("[PATCH] finally fix 53c700 to use the generic iomem infrastructure")
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Link: https://patch.msgid.link/20251029032555.1476-1-vulab@iscas.ac.cn
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Without i_data_sem protection, ext4_ind_map_blocks() may receive inode
+with EXT4_INODE_EXTENTS flag and triggering assert.
+
+kernel BUG at fs/ext4/indirect.c:546!
+EXT4-fs (loop2): unmounting filesystem.
+invalid opcode: 0000 [#1] PREEMPT SMP KASAN NOPTI
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.12.0-1 04/01/2014
+RIP: 0010:ext4_ind_map_blocks.cold+0x2b/0x5a fs/ext4/indirect.c:546
+
+Call Trace:
+ <TASK>
+ ext4_map_blocks+0xb9b/0x16f0 fs/ext4/inode.c:681
+ _ext4_get_block+0x242/0x590 fs/ext4/inode.c:822
+ ext4_block_write_begin+0x48b/0x12c0 fs/ext4/inode.c:1124
+ ext4_write_begin+0x598/0xef0 fs/ext4/inode.c:1255
+ ext4_da_write_begin+0x21e/0x9c0 fs/ext4/inode.c:3000
+ generic_perform_write+0x259/0x5d0 mm/filemap.c:3846
+ ext4_buffered_write_iter+0x15b/0x470 fs/ext4/file.c:285
+ ext4_file_write_iter+0x8e0/0x17f0 fs/ext4/file.c:679
+ call_write_iter include/linux/fs.h:2271 [inline]
+ do_iter_readv_writev+0x212/0x3c0 fs/read_write.c:735
+ do_iter_write+0x186/0x710 fs/read_write.c:861
+ vfs_iter_write+0x70/0xa0 fs/read_write.c:902
+ iter_file_splice_write+0x73b/0xc90 fs/splice.c:685
+ do_splice_from fs/splice.c:763 [inline]
+ direct_splice_actor+0x10f/0x170 fs/splice.c:950
+ splice_direct_to_actor+0x33a/0xa10 fs/splice.c:896
+ do_splice_direct+0x1a9/0x280 fs/splice.c:1002
+ do_sendfile+0xb13/0x12c0 fs/read_write.c:1255
+ __do_sys_sendfile64 fs/read_write.c:1323 [inline]
+ __se_sys_sendfile64 fs/read_write.c:1309 [inline]
+ __x64_sys_sendfile64+0x1cf/0x210 fs/read_write.c:1309
+ do_syscall_x64 arch/x86/entry/common.c:51 [inline]
+ do_syscall_64+0x35/0x80 arch/x86/entry/common.c:81
+ entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+
+Fixes: c755e251357a ("ext4: fix deadlock between inline_data and ext4_expand_extra_isize_ea()")
+Cc: stable@vger.kernel.org # v4.11+
+Signed-off-by: Alexey Nepomnyashih <sdl@nppct.ru>
+Message-ID: <20251104093326.697381-1-sdl@nppct.ru>
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/sim710.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/ext4/inline.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/sim710.c b/drivers/scsi/sim710.c
-index e519df68d603d..70c75ab1453a1 100644
---- a/drivers/scsi/sim710.c
-+++ b/drivers/scsi/sim710.c
-@@ -133,6 +133,7 @@ static int sim710_probe_common(struct device *dev, unsigned long base_addr,
-  out_put_host:
- 	scsi_host_put(host);
-  out_release:
-+	ioport_unmap(hostdata->base);
- 	release_region(base_addr, 64);
-  out_free:
- 	kfree(hostdata);
-@@ -148,6 +149,7 @@ static int sim710_device_remove(struct device *dev)
+--- a/fs/ext4/inline.c
++++ b/fs/ext4/inline.c
+@@ -447,9 +447,13 @@ static int ext4_destroy_inline_data_nolo
+ 	if (!ei->i_inline_off)
+ 		return 0;
  
- 	scsi_remove_host(host);
- 	NCR_700_release(host);
-+	ioport_unmap(hostdata->base);
- 	kfree(hostdata);
- 	free_irq(host->irq, host);
- 	release_region(host->base, 64);
--- 
-2.51.0
-
++	down_write(&ei->i_data_sem);
++
+ 	error = ext4_get_inode_loc(inode, &is.iloc);
+-	if (error)
++	if (error) {
++		up_write(&ei->i_data_sem);
+ 		return error;
++	}
+ 
+ 	error = ext4_xattr_ibody_find(inode, &i, &is);
+ 	if (error)
+@@ -488,6 +492,7 @@ out:
+ 	brelse(is.iloc.bh);
+ 	if (error == -ENODATA)
+ 		error = 0;
++	up_write(&ei->i_data_sem);
+ 	return error;
+ }
+ 
 
 
 
