@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-206751-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207319-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A3CCD09503
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:10:31 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1424D09C50
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:37:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 18C7830829B8
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:01:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EBB0230C4710
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:28:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2FDD33CE9A;
-	Fri,  9 Jan 2026 12:01:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4795C359708;
+	Fri,  9 Jan 2026 12:28:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ktp7vrEF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mnJrgDx+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3EA7359F98;
-	Fri,  9 Jan 2026 12:01:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 093A1359701;
+	Fri,  9 Jan 2026 12:28:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960095; cv=none; b=L7Tn0l71ieIiWVJS9IoW6YN+l5pnWEK0gICq/kS/ABgTE/VGyOIWrJNuBvQsopMKHlzLplyG+elpOb0rB16RTRuHUI5jkgRKjNNgC9twT30qBr9VsZHpYwpPysiQ0ULDzKR69ciWJ2JVy6u0Kj4pj+cCVJ6aY4R2DwF4B2av6gI=
+	t=1767961717; cv=none; b=DhJvi2aJqxiH556B32TCScbZQYGlppjSBrCmJM3iHodH2xcyWXTzdoWQNkfpGReMdvgLqMd7vBA7KE20A4uRk4ckoFjD5XITYPYosAca2zhQgae57zZDbd9levy7HiPJ7PoLHJknaoot9tpjZQU8SPV6DbAXoZv9PMkdHvtk8Ko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960095; c=relaxed/simple;
-	bh=kW2Otd302WO7atXV/DjLqqOWSpvdWPqqg2AdzAqaVTo=;
+	s=arc-20240116; t=1767961717; c=relaxed/simple;
+	bh=+FVqqwQ7SUIWPlBXsoo9cvC2rc8mU8/7+alCA9PKGww=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LyHGZxQZBFDM5lW8CmhQaUtNc31kFXpIM8PIwrmlQgJ0f5Bok5uqiVU6s3GDe6cbDHeaGDSPRwOy+pbAw0xvInI+Xg0MoFcNB5EBiu4uNZB7FnEOnoVGuuHRlD/IPmCAGAnYg3SLYGpFBM4TY72B3GxfFBjJNiD1RBgg/XYkzFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ktp7vrEF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E7EAC4CEF1;
-	Fri,  9 Jan 2026 12:01:35 +0000 (UTC)
+	 MIME-Version; b=Zj2/PIenh4qD6x2wkehJXqzw12mVRXErZm/UU2mBfHO3m5dGEzCFzuTJOMbwTHX+VSD+d3zuhY7Wc9+EEygRo4NKfpds/yDjRllfu72PylpAoGbJNB7MI9xDTiQ7mbsusqhwKKlUIjr9A7ifbc2/7k+S7F/zNV+rbv/cVGVlDZ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mnJrgDx+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88705C4CEF1;
+	Fri,  9 Jan 2026 12:28:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960095;
-	bh=kW2Otd302WO7atXV/DjLqqOWSpvdWPqqg2AdzAqaVTo=;
+	s=korg; t=1767961716;
+	bh=+FVqqwQ7SUIWPlBXsoo9cvC2rc8mU8/7+alCA9PKGww=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ktp7vrEF8TZJuX7adM3yEH0p4cGEhHqYvKk+Bf2ewc21v//cYzvJejHNWuEz3Ja5r
-	 VmYvHzEVMkgC+y0+DG8xplLoNrQtvMuchInpw9t7TDkV3FMToHD1qFTeoudyHnJUhu
-	 vZvXJnqWEW7M+k1RJy7cyk7GbRvj9D3/tDiglTsE=
+	b=mnJrgDx+G1yZX0q1Vzn3ox89ptBp7zkUHHLFedYcjcCuhkyq+CX2cfbX0FM9+nJUn
+	 hpEiYDp0KFdnqqq1s2Gq6ycpEoFlZleBpwMoWSPgfKnV/3oVg02mmZw8wm2nzAaYef
+	 x++G/+5iS9WUqLFaGVXD0AI1GDH8LwyNUrprfnAs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandru Gagniuc <mr.nuke.me@gmail.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 250/737] remoteproc: qcom_q6v5_wcss: fix parsing of qcom,halt-regs
-Date: Fri,  9 Jan 2026 12:36:29 +0100
-Message-ID: <20260109112143.396669493@linuxfoundation.org>
+Subject: [PATCH 6.1 112/634] scsi: sim710: Fix resource leak by adding missing ioport_unmap() calls
+Date: Fri,  9 Jan 2026 12:36:30 +0100
+Message-ID: <20260109112121.648443301@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,59 +60,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandru Gagniuc <mr.nuke.me@gmail.com>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-[ Upstream commit 7e81fa8d809ed1e67ae9ecd52d20a20c2c65d877 ]
+[ Upstream commit acd194d9b5bac419e04968ffa44351afabb50bac ]
 
-The "qcom,halt-regs" consists of a phandle reference followed by the
-three offsets within syscon for halt registers. Thus, we need to
-request 4 integers from of_property_read_variable_u32_array(), with
-the halt_reg ofsets at indexes 1, 2, and 3. Offset 0 is the phandle.
+The driver calls ioport_map() to map I/O ports in sim710_probe_common()
+but never calls ioport_unmap() to release the mapping. This causes
+resource leaks in both the error path when request_irq() fails and in
+the normal device removal path via sim710_device_remove().
 
-With MAX_HALT_REG at 3, of_property_read_variable_u32_array() returns
--EOVERFLOW, causing .probe() to fail.
+Add ioport_unmap() calls in the out_release error path and in
+sim710_device_remove().
 
-Increase MAX_HALT_REG to 4, and update the indexes accordingly.
-
-Fixes: 0af65b9b915e ("remoteproc: qcom: wcss: Add non pas wcss Q6 support for QCS404")
-Signed-off-by: Alexandru Gagniuc <mr.nuke.me@gmail.com>
-Link: https://lore.kernel.org/r/20251129013207.3981517-1-mr.nuke.me@gmail.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 56fece20086e ("[PATCH] finally fix 53c700 to use the generic iomem infrastructure")
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Link: https://patch.msgid.link/20251029032555.1476-1-vulab@iscas.ac.cn
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/remoteproc/qcom_q6v5_wcss.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/scsi/sim710.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/remoteproc/qcom_q6v5_wcss.c b/drivers/remoteproc/qcom_q6v5_wcss.c
-index cff1fa07d1def..f80d701225a18 100644
---- a/drivers/remoteproc/qcom_q6v5_wcss.c
-+++ b/drivers/remoteproc/qcom_q6v5_wcss.c
-@@ -85,7 +85,7 @@
- #define TCSR_WCSS_CLK_MASK	0x1F
- #define TCSR_WCSS_CLK_ENABLE	0x14
+diff --git a/drivers/scsi/sim710.c b/drivers/scsi/sim710.c
+index e519df68d603d..70c75ab1453a1 100644
+--- a/drivers/scsi/sim710.c
++++ b/drivers/scsi/sim710.c
+@@ -133,6 +133,7 @@ static int sim710_probe_common(struct device *dev, unsigned long base_addr,
+  out_put_host:
+ 	scsi_host_put(host);
+  out_release:
++	ioport_unmap(hostdata->base);
+ 	release_region(base_addr, 64);
+  out_free:
+ 	kfree(hostdata);
+@@ -148,6 +149,7 @@ static int sim710_device_remove(struct device *dev)
  
--#define MAX_HALT_REG		3
-+#define MAX_HALT_REG		4
- enum {
- 	WCSS_IPQ8074,
- 	WCSS_QCS404,
-@@ -863,9 +863,9 @@ static int q6v5_wcss_init_mmio(struct q6v5_wcss *wcss,
- 		return -EINVAL;
- 	}
- 
--	wcss->halt_q6 = halt_reg[0];
--	wcss->halt_wcss = halt_reg[1];
--	wcss->halt_nc = halt_reg[2];
-+	wcss->halt_q6 = halt_reg[1];
-+	wcss->halt_wcss = halt_reg[2];
-+	wcss->halt_nc = halt_reg[3];
- 
- 	return 0;
- }
+ 	scsi_remove_host(host);
+ 	NCR_700_release(host);
++	ioport_unmap(hostdata->base);
+ 	kfree(hostdata);
+ 	free_irq(host->irq, host);
+ 	release_region(host->base, 64);
 -- 
 2.51.0
 
