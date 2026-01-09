@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-207139-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207771-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2663BD09B11
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:33:06 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63C6DD0A235
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:01:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 43EC03062BEB
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:20:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CF6A231B9B4B
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:50:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E312D359FA0;
-	Fri,  9 Jan 2026 12:20:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6F0A3590C8;
+	Fri,  9 Jan 2026 12:50:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PySpDPwE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l6AQeaKU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A63F62737EE;
-	Fri,  9 Jan 2026 12:20:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7EFD336ED1;
+	Fri,  9 Jan 2026 12:50:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961202; cv=none; b=qPBnBHI4sTdSYt0AtNUZKwM0cIwmVfBqUqBrXmycFYqWO8iwrgVxzBcZYAXq48ds07RMLydcBwrnlOLYPGy9B59Lm4RV16exCgdrf5oGJBebDTD0uOFTqOsFi6enjzqFpBkZqZQqINfWmoK5YYTStKh74fOF9deE6yu8vf42GRs=
+	t=1767963001; cv=none; b=jED4HcMP/2HIi2G7xe/4gLBLP0DUV+j7HdHmo6Pn4Ylno6Z8fCxtWzg68+mCH0VlvnWgWjEBlWyuyJWHP6hOrjJt6sDuGcBjes5nPlMdJDSOq2Mho6KuGI9JRd/s7ILeiB85Gln7zbcasNhnDIC9vjuQPZnUlOOuV4jsxg6d8rY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961202; c=relaxed/simple;
-	bh=RPcDCtxt7mdMG7SaPuIgs61SOnlh8P6eBT18CDzeDec=;
+	s=arc-20240116; t=1767963001; c=relaxed/simple;
+	bh=IotgPHRlDXdNo+XvvJgiA+jQsAYR3z/HarR4UxVq82g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r4URwYD+ZrFckiIX/4isajeWtS6pRJyAa664Hu9l/57YRIv8zLWrj6GgnlMdafAx0BmMpX3s1HNxsCwKIJEDyt536nlV6B2pB1sYVPra30w9Hg7DFBw90usd+Aj9jS+v4s8UJMs2ctdF2db9jfMlrIx5FAmhWoppSI96WcGC7Vs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PySpDPwE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E423C4CEF1;
-	Fri,  9 Jan 2026 12:20:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=jnceMBMUcjIwbASVwD3P1zGaJvhh+UyVqbSEf3zQndGWsaluh7yLKk/YBnFtmGK9HOk4FZ4S6OVDYVDT2WJDMNoKoJN4daEMsPh90vgvCCWmBk6/byO8SnXiVf+/YOnqZaJgQF6vctWBOHRVTUJWFQBxKKxtyltXGjdaTcTMryc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l6AQeaKU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDBABC4CEF1;
+	Fri,  9 Jan 2026 12:50:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961202;
-	bh=RPcDCtxt7mdMG7SaPuIgs61SOnlh8P6eBT18CDzeDec=;
+	s=korg; t=1767963001;
+	bh=IotgPHRlDXdNo+XvvJgiA+jQsAYR3z/HarR4UxVq82g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PySpDPwEYRX0W12g8eWZW1tUD4oUSz5kjKwQpazx/1Qt6o06GPwFikfxCxC6PqDV7
-	 M1n1eNez3lSB64iUeF8kjd/1DTDZuksgQOgm8KXGrgo7eV/AxTYaJGN8vdIc5DH4cd
-	 /3vco5klOxT/piAhMUjeGDJB3ffzf2aIzSeiJegI=
+	b=l6AQeaKU/peq1g3Ga1ETkyZ5LiXZ+XvDTxFjQk4gnPhtLE13hR32NPwbDjQfQxZaD
+	 mkGREUtGdxEZVItzghHdJVPL19Rk6olSsw5lxG2CFhRufQAflhv4XSmB7RS864BSlv
+	 SMlpCzpQ+hr+qZn7yRxODaX1TPLgqT1nWbLFIfxY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niklas Neronin <niklas.neronin@linux.intel.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>,
-	Shivani Agarwal <shivani.agarwal@broadcom.com>
-Subject: [PATCH 6.6 669/737] usb: xhci: move link chain bit quirk checks into one helper function.
+	Jakub Kicinski <kuba@kernel.org>,
+	syzbot+204a4382fcb3311f3858@syzkaller.appspotmail.com,
+	Dong Chenchen <dongchenchen2@huawei.com>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+	Mina Almasry <almasrymina@google.com>,
+	Ruohan Lan <ruohanlan@aliyun.com>
+Subject: [PATCH 6.1 530/634] page_pool: Fix use-after-free in page_pool_recycle_in_ring
 Date: Fri,  9 Jan 2026 12:43:28 +0100
-Message-ID: <20260109112159.215601207@linuxfoundation.org>
+Message-ID: <20260109112137.512325358@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,107 +61,151 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Neronin <niklas.neronin@linux.intel.com>
+From: Dong Chenchen <dongchenchen2@huawei.com>
 
-commit 7476a2215c07703db5e95efaa3fc5b9f957b9417 upstream.
+[ Upstream commit 271683bb2cf32e5126c592b5d5e6a756fa374fd9 ]
 
-Older 0.95 xHCI hosts and some other specific newer hosts require the
-chain bit to be set for Link TRBs even if the link TRB is not in the
-middle of a transfer descriptor (TD).
+syzbot reported a uaf in page_pool_recycle_in_ring:
 
-move the checks for all those cases  into one xhci_link_chain_quirk()
-function to clean up and avoid code duplication.
+BUG: KASAN: slab-use-after-free in lock_release+0x151/0xa30 kernel/locking/lockdep.c:5862
+Read of size 8 at addr ffff8880286045a0 by task syz.0.284/6943
 
-No functional changes.
+CPU: 0 UID: 0 PID: 6943 Comm: syz.0.284 Not tainted 6.13.0-rc3-syzkaller-gdfa94ce54f41 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:378 [inline]
+ print_report+0x169/0x550 mm/kasan/report.c:489
+ kasan_report+0x143/0x180 mm/kasan/report.c:602
+ lock_release+0x151/0xa30 kernel/locking/lockdep.c:5862
+ __raw_spin_unlock_bh include/linux/spinlock_api_smp.h:165 [inline]
+ _raw_spin_unlock_bh+0x1b/0x40 kernel/locking/spinlock.c:210
+ spin_unlock_bh include/linux/spinlock.h:396 [inline]
+ ptr_ring_produce_bh include/linux/ptr_ring.h:164 [inline]
+ page_pool_recycle_in_ring net/core/page_pool.c:707 [inline]
+ page_pool_put_unrefed_netmem+0x748/0xb00 net/core/page_pool.c:826
+ page_pool_put_netmem include/net/page_pool/helpers.h:323 [inline]
+ page_pool_put_full_netmem include/net/page_pool/helpers.h:353 [inline]
+ napi_pp_put_page+0x149/0x2b0 net/core/skbuff.c:1036
+ skb_pp_recycle net/core/skbuff.c:1047 [inline]
+ skb_free_head net/core/skbuff.c:1094 [inline]
+ skb_release_data+0x6c4/0x8a0 net/core/skbuff.c:1125
+ skb_release_all net/core/skbuff.c:1190 [inline]
+ __kfree_skb net/core/skbuff.c:1204 [inline]
+ sk_skb_reason_drop+0x1c9/0x380 net/core/skbuff.c:1242
+ kfree_skb_reason include/linux/skbuff.h:1263 [inline]
+ __skb_queue_purge_reason include/linux/skbuff.h:3343 [inline]
 
-[skip renaming chain_links flag, reword commit message -Mathias]
+root cause is:
 
-Signed-off-by: Niklas Neronin <niklas.neronin@linux.intel.com>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20240626124835.1023046-10-mathias.nyman@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-[Shivani: Modified to apply on 6.6.y]
-Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
+page_pool_recycle_in_ring
+  ptr_ring_produce
+    spin_lock(&r->producer_lock);
+    WRITE_ONCE(r->queue[r->producer++], ptr)
+      //recycle last page to pool
+				page_pool_release
+				  page_pool_scrub
+				    page_pool_empty_ring
+				      ptr_ring_consume
+				      page_pool_return_page  //release all page
+				  __page_pool_destroy
+				     free_percpu(pool->recycle_stats);
+				     free(pool) //free
+
+     spin_unlock(&r->producer_lock); //pool->ring uaf read
+  recycle_stat_inc(pool, ring);
+
+page_pool can be free while page pool recycle the last page in ring.
+Add producer-lock barrier to page_pool_release to prevent the page
+pool from being free before all pages have been recycled.
+
+recycle_stat_inc() is empty when CONFIG_PAGE_POOL_STATS is not
+enabled, which will trigger Wempty-body build warning. Add definition
+for pool stat macro to fix warning.
+
+Suggested-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://lore.kernel.org/netdev/20250513083123.3514193-1-dongchenchen2@huawei.com
+Fixes: ff7d6b27f894 ("page_pool: refurbish version of page_pool code")
+Reported-by: syzbot+204a4382fcb3311f3858@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=204a4382fcb3311f3858
+Signed-off-by: Dong Chenchen <dongchenchen2@huawei.com>
+Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
+Reviewed-by: Mina Almasry <almasrymina@google.com>
+Link: https://patch.msgid.link/20250527114152.3119109-1-dongchenchen2@huawei.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ Minor context change fixed. ]
+Signed-off-by: Ruohan Lan <ruohanlan@aliyun.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/xhci-mem.c  |   10 ++--------
- drivers/usb/host/xhci-ring.c |    8 ++------
- drivers/usb/host/xhci.h      |    7 +++++--
- 3 files changed, 9 insertions(+), 16 deletions(-)
+ net/core/page_pool.c |   27 ++++++++++++++-------------
+ 1 file changed, 14 insertions(+), 13 deletions(-)
 
---- a/drivers/usb/host/xhci-mem.c
-+++ b/drivers/usb/host/xhci-mem.c
-@@ -136,10 +136,7 @@ static void xhci_link_rings(struct xhci_
- 	if (!ring || !first || !last)
- 		return;
+--- a/net/core/page_pool.c
++++ b/net/core/page_pool.c
+@@ -128,9 +128,9 @@ u64 *page_pool_ethtool_stats_get(u64 *da
+ EXPORT_SYMBOL(page_pool_ethtool_stats_get);
  
--	/* Set chain bit for 0.95 hosts, and for isoc rings on AMD 0.96 host */
--	chain_links = !!(xhci_link_trb_quirk(xhci) ||
--			 (ring->type == TYPE_ISOC &&
--			  (xhci->quirks & XHCI_AMD_0x96_HOST)));
-+	chain_links = xhci_link_chain_quirk(xhci, ring->type);
+ #else
+-#define alloc_stat_inc(pool, __stat)
+-#define recycle_stat_inc(pool, __stat)
+-#define recycle_stat_add(pool, __stat, val)
++#define alloc_stat_inc(...)	do { } while (0)
++#define recycle_stat_inc(...)	do { } while (0)
++#define recycle_stat_add(...)	do { } while (0)
+ #endif
  
- 	next = ring->enq_seg->next;
- 	xhci_link_segments(ring->enq_seg, first, ring->type, chain_links);
-@@ -330,10 +327,7 @@ static int xhci_alloc_segments_for_ring(
- 	unsigned int num = 0;
- 	bool chain_links;
+ static bool page_pool_producer_lock(struct page_pool *pool)
+@@ -539,19 +539,16 @@ static void page_pool_return_page(struct
  
--	/* Set chain bit for 0.95 hosts, and for isoc rings on AMD 0.96 host */
--	chain_links = !!(xhci_link_trb_quirk(xhci) ||
--			 (type == TYPE_ISOC &&
--			  (xhci->quirks & XHCI_AMD_0x96_HOST)));
-+	chain_links = xhci_link_chain_quirk(xhci, type);
- 
- 	prev = xhci_segment_alloc(xhci, cycle_state, max_packet, num, flags);
- 	if (!prev)
---- a/drivers/usb/host/xhci-ring.c
-+++ b/drivers/usb/host/xhci-ring.c
-@@ -245,9 +245,7 @@ static void inc_enq(struct xhci_hcd *xhc
- 		 * AMD 0.96 host, carry over the chain bit of the previous TRB
- 		 * (which may mean the chain bit is cleared).
- 		 */
--		if (!(ring->type == TYPE_ISOC &&
--		      (xhci->quirks & XHCI_AMD_0x96_HOST)) &&
--		    !xhci_link_trb_quirk(xhci)) {
-+		if (!xhci_link_chain_quirk(xhci, ring->type)) {
- 			next->link.control &= cpu_to_le32(~TRB_CHAIN);
- 			next->link.control |= cpu_to_le32(chain);
- 		}
-@@ -3381,9 +3379,7 @@ static int prepare_ring(struct xhci_hcd
- 		/* If we're not dealing with 0.95 hardware or isoc rings
- 		 * on AMD 0.96 host, clear the chain bit.
- 		 */
--		if (!xhci_link_trb_quirk(xhci) &&
--		    !(ep_ring->type == TYPE_ISOC &&
--		      (xhci->quirks & XHCI_AMD_0x96_HOST)))
-+		if (!xhci_link_chain_quirk(xhci, ep_ring->type))
- 			ep_ring->enqueue->link.control &=
- 				cpu_to_le32(~TRB_CHAIN);
- 		else
---- a/drivers/usb/host/xhci.h
-+++ b/drivers/usb/host/xhci.h
-@@ -1784,9 +1784,12 @@ static inline void xhci_write_64(struct
- 	lo_hi_writeq(val, regs);
- }
- 
--static inline int xhci_link_trb_quirk(struct xhci_hcd *xhci)
-+
-+/* Link TRB chain should always be set on 0.95 hosts, and AMD 0.96 ISOC rings */
-+static inline bool xhci_link_chain_quirk(struct xhci_hcd *xhci, enum xhci_ring_type type)
+ static bool page_pool_recycle_in_ring(struct page_pool *pool, struct page *page)
  {
--	return xhci->quirks & XHCI_LINK_TRB_QUIRK;
-+	return (xhci->quirks & XHCI_LINK_TRB_QUIRK) ||
-+	       (type == TYPE_ISOC && (xhci->quirks & XHCI_AMD_0x96_HOST));
+-	int ret;
+-	/* BH protection not needed if current is softirq */
+-	if (in_softirq())
+-		ret = ptr_ring_produce(&pool->ring, page);
+-	else
+-		ret = ptr_ring_produce_bh(&pool->ring, page);
++	bool in_softirq, ret;
+ 
+-	if (!ret) {
++	/* BH protection not needed if current is softirq */
++	in_softirq = page_pool_producer_lock(pool);
++	ret = !__ptr_ring_produce(&pool->ring, page);
++	if (ret)
+ 		recycle_stat_inc(pool, ring);
+-		return true;
+-	}
++	page_pool_producer_unlock(pool, in_softirq);
+ 
+-	return false;
++	return ret;
  }
  
- /* xHCI debugging */
+ /* Only allow direct recycling in special circumstances, into the
+@@ -826,10 +823,14 @@ static void page_pool_scrub(struct page_
+ 
+ static int page_pool_release(struct page_pool *pool)
+ {
++	bool in_softirq;
+ 	int inflight;
+ 
+ 	page_pool_scrub(pool);
+ 	inflight = page_pool_inflight(pool);
++	/* Acquire producer lock to make sure producers have exited. */
++	in_softirq = page_pool_producer_lock(pool);
++	page_pool_producer_unlock(pool, in_softirq);
+ 	if (!inflight)
+ 		page_pool_free(pool);
+ 
 
 
 
