@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-206819-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207451-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1BC9D095FF
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:13:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A104AD09EDA
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:46:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B62AB30D7AD4
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:04:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 13F2730AAD04
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:34:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DBAE359FBB;
-	Fri,  9 Jan 2026 12:04:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA72335971B;
+	Fri,  9 Jan 2026 12:34:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zi8XLwos"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yl7vFElB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E50D233CE9A;
-	Fri,  9 Jan 2026 12:04:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D4E5358D30;
+	Fri,  9 Jan 2026 12:34:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960289; cv=none; b=CsUEqH+Mcm7NfLpgLzy7zxOt6nQsMnasIPggXk8SHFpFk/xRdFfeCxOdzFdPlV/hd5kdPdbkmzQaz2lbyCqzdc1sdwm7mwVWIxZotZ+WMqJOkWhFGITEb2Qhlx0k2p/PAixwFAGsAVHnExy+MaPqFHZFK0z4ixv1jZenORL4Pac=
+	t=1767962092; cv=none; b=J4AWVqn4FipdQuVgJzk34LRxvev85mvBTW2n9GD8HaGc5hF95y5BwhWjhwC5mUIcuf4knWAKtkI8K5OXh1UevDyDejIHmkWHWqJjuRF9xvTJBv/JXkUely6fNhMeNlzbQ1tPmEYiRFOHK/ohLZOv3ovh9xpZtUMLS5hH9D16vrY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960289; c=relaxed/simple;
-	bh=z4hrqoHNXA2Ipb1x/qC3fdLJcO2Maj9G/mvBmku1vt8=;
+	s=arc-20240116; t=1767962092; c=relaxed/simple;
+	bh=+IdZJX1QPXfFiZLgIZdHvr8HGy+YwsrXi6n0GaF1R3M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UNJp4ZrLQCMAW6PVtTw48Jj+jkNp93lsaNY2fPWkK/2El9XTd0gXqmLWs88o6QvpuV2AfXQrx28LHmwejmF/HHKKosqYZSsvgwD2WECQXBq0iWuEzz2TKkBFOWvZgX3W6JzdInlVudpPPOMN2bFWGiHxCpHMjJShMwzWcOMx+x0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zi8XLwos; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65247C4CEF1;
-	Fri,  9 Jan 2026 12:04:48 +0000 (UTC)
+	 MIME-Version; b=uqMF88km2fTt0EDABbEL/9ud6/sOGtvjJ9G1iDFbN7Po4glR7FUg/lVtaOPU87Pcuyj0kIVLYmWpRNtjU5vWj4AHnpRUHmvVQsVk6dxtm+IC+d+DLCeU4yaRiwyWHRnYKbmrZWKd3mQfDUcsv0akpUuc2M7Nwso2gIPfxY6cOyo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yl7vFElB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B626AC4CEF1;
+	Fri,  9 Jan 2026 12:34:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960288;
-	bh=z4hrqoHNXA2Ipb1x/qC3fdLJcO2Maj9G/mvBmku1vt8=;
+	s=korg; t=1767962092;
+	bh=+IdZJX1QPXfFiZLgIZdHvr8HGy+YwsrXi6n0GaF1R3M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zi8XLwosRe8o7rnQ1BFgDddGWeye7nIQBtLlhT0AfNqGvR5H7u6x1eoJEB6X9tmf9
-	 Av3yezhOqVTFmGRJ8L6YJxSVtKzw6rGNc1UAhFmAW8X5pc1IstdBEA88X/ZAEN9Nlq
-	 lRlcttE5Jsh6eVuDcNHSAMgN0+OSqIeugGfVDN4I=
+	b=yl7vFElB4xF0I2UNMhG3xVO60kOsmBZRamkDD95kRiLEMdX+Ivua0oYvwpH9xfi4N
+	 xSiCydW+cKLIyZoipcjQMjE643TI3Avrsn9dBhJdCjQOia4CIPP12qB947xv4NDAZP
+	 De7FKBgBIF/tXzRJUeeu5wpHkeELMHjBlLYsZdYU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Moshe Shemesh <moshe@nvidia.com>,
-	Shay Drori <shayd@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Xie Yuanbin <xieyuanbin1@huawei.com>,
+	Liyuan Pang <pangliyuan1@huawei.com>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 350/737] net/mlx5: fw reset, clear reset requested on drain_fw_reset
+Subject: [PATCH 6.1 211/634] ARM: 9464/1: fix input-only operand modification in load_unaligned_zeropad()
 Date: Fri,  9 Jan 2026 12:38:09 +0100
-Message-ID: <20260109112147.152988099@linuxfoundation.org>
+Message-ID: <20260109112125.375902836@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +61,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Moshe Shemesh <moshe@nvidia.com>
+From: Liyuan Pang <pangliyuan1@huawei.com>
 
-[ Upstream commit 89a898d63f6f588acf5c104c65c94a38b68c69a6 ]
+[ Upstream commit edb924a7211c9aa7a4a415e03caee4d875e46b8e ]
 
-drain_fw_reset() waits for ongoing firmware reset events and blocks new
-event handling, but does not clear the reset requested flag, and may
-keep sync reset polling.
+In the inline assembly inside load_unaligned_zeropad(), the "addr" is
+constrained as input-only operand. The compiler assumes that on exit
+from the asm statement these operands contain the same values as they
+had before executing the statement, but when kernel page fault happened, the assembly fixup code "bic %2 %2, #0x3" modify the value of "addr", which may lead to an unexpected behavior.
 
-To fix it, call mlx5_sync_reset_clear_reset_requested() to clear the
-flag, stop sync reset polling, and resume health polling, ensuring
-health issues are still detected after the firmware reset drain.
+Use a temporary variable "tmp" to handle it, instead of modifying the
+input-only operand, just like what arm64's load_unaligned_zeropad()
+does.
 
-Fixes: 16d42d313350 ("net/mlx5: Drain fw_reset when removing device")
-Signed-off-by: Moshe Shemesh <moshe@nvidia.com>
-Reviewed-by: Shay Drori <shayd@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/1765284977-1363052-2-git-send-email-tariqt@nvidia.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: b9a50f74905a ("ARM: 7450/1: dcache: select DCACHE_WORD_ACCESS for little-endian ARMv6+ CPUs")
+Co-developed-by: Xie Yuanbin <xieyuanbin1@huawei.com>
+Signed-off-by: Xie Yuanbin <xieyuanbin1@huawei.com>
+Signed-off-by: Liyuan Pang <pangliyuan1@huawei.com>
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/arm/include/asm/word-at-a-time.h | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c b/drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c
-index 4d64d179b5dd7..dc7afc9e7777d 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c
-@@ -804,7 +804,8 @@ void mlx5_drain_fw_reset(struct mlx5_core_dev *dev)
- 	cancel_work_sync(&fw_reset->reset_reload_work);
- 	cancel_work_sync(&fw_reset->reset_now_work);
- 	cancel_work_sync(&fw_reset->reset_abort_work);
--	cancel_delayed_work(&fw_reset->reset_timeout_work);
-+	if (test_bit(MLX5_FW_RESET_FLAGS_RESET_REQUESTED, &fw_reset->reset_flags))
-+		mlx5_sync_reset_clear_reset_requested(dev, true);
- }
+diff --git a/arch/arm/include/asm/word-at-a-time.h b/arch/arm/include/asm/word-at-a-time.h
+index 352ab213520d2..2e6d0b4349f47 100644
+--- a/arch/arm/include/asm/word-at-a-time.h
++++ b/arch/arm/include/asm/word-at-a-time.h
+@@ -66,7 +66,7 @@ static inline unsigned long find_zero(unsigned long mask)
+  */
+ static inline unsigned long load_unaligned_zeropad(const void *addr)
+ {
+-	unsigned long ret, offset;
++	unsigned long ret, tmp;
  
- static const struct devlink_param mlx5_fw_reset_devlink_params[] = {
+ 	/* Load word from unaligned pointer addr */
+ 	asm(
+@@ -74,9 +74,9 @@ static inline unsigned long load_unaligned_zeropad(const void *addr)
+ 	"2:\n"
+ 	"	.pushsection .text.fixup,\"ax\"\n"
+ 	"	.align 2\n"
+-	"3:	and	%1, %2, #0x3\n"
+-	"	bic	%2, %2, #0x3\n"
+-	"	ldr	%0, [%2]\n"
++	"3:	bic	%1, %2, #0x3\n"
++	"	ldr	%0, [%1]\n"
++	"	and	%1, %2, #0x3\n"
+ 	"	lsl	%1, %1, #0x3\n"
+ #ifndef __ARMEB__
+ 	"	lsr	%0, %0, %1\n"
+@@ -89,7 +89,7 @@ static inline unsigned long load_unaligned_zeropad(const void *addr)
+ 	"	.align	3\n"
+ 	"	.long	1b, 3b\n"
+ 	"	.popsection"
+-	: "=&r" (ret), "=&r" (offset)
++	: "=&r" (ret), "=&r" (tmp)
+ 	: "r" (addr), "Qo" (*(unsigned long *)addr));
+ 
+ 	return ret;
 -- 
 2.51.0
 
