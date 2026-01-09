@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-207566-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206999-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5D83D09ED4
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:46:25 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E972DD0973B
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:18:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 617BB300530B
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:41:15 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id F41303056647
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:13:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D046835CB78;
-	Fri,  9 Jan 2026 12:40:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B52262EAD10;
+	Fri,  9 Jan 2026 12:13:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r0q4sRKw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hFETlv3T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9411735CB76;
-	Fri,  9 Jan 2026 12:40:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63ADA328B58;
+	Fri,  9 Jan 2026 12:13:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962419; cv=none; b=Nz80riDMqTB/47LSRXOonzlf1SFxtzJwiEwAuiY3C+Xsj6fghxldfA3cm0F95QehJ8k83PANVVuxPk3S630M2R2Hva9bMxTwgtIjEne3FN3nT/04cElgYMHIwDLkOleSmHOuUhyBK6Jn0QgTfx6mRlYBLKTKPR+a9I4RvS3dhLY=
+	t=1767960805; cv=none; b=uwLiiE1VD5+4PmF/AhKFsuMhEZGbpMTuitGOH4mt2Ce0Ch/YTemW80DsUg/tvGu2ABi0YmCqTcKT1D8vJi4ZdxB2+3uwOdIeXhJpnHeeYNPeUxcnTL1/4SQz0LwGoi/LMR3cZ6ntj2j1q50xrU27TSDrZaA5yDYUBYop0m77gDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962419; c=relaxed/simple;
-	bh=/MIgzFWKNe5V3mP0U+WMMaWlUud02uOil9AVEzu3C80=;
+	s=arc-20240116; t=1767960805; c=relaxed/simple;
+	bh=o+1mjU5EeZJXkgLKW0wptGAYD4C0vK+zeqNdDZyMNaM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sCf4RN4muiBo+RfPSrGcya1Ph4LjeRF01JC3J/7RI8ZMJSgrDkzeOQKQgUuS2fz8H251guPlsKTXXCCGiwJq8tpACvprteZkv63UxfDT6Z9xUUFSJBXfaqP1ZMECRRExXfKkfrbcYzjAXaY8uYq0GzB0cwJxJyzHwHhlLcIEIso=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r0q4sRKw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21652C4CEF1;
-	Fri,  9 Jan 2026 12:40:18 +0000 (UTC)
+	 MIME-Version; b=lzptH9qAcM3w3pJL5KrzviikRStGpKENER61295P55BqGiBKmsg2KUBATlKVMo2Q8X/kGQKkhLsY6OycFWHcPgc3g8DS/iSS/tBQ+6VulLAAE2ewfZERXPlra4dBjqgjeL31SsptHwBkjO5zadOJzTlHOJushUGmrQCiSUoLqNI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hFETlv3T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C632BC4CEF1;
+	Fri,  9 Jan 2026 12:13:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962419;
-	bh=/MIgzFWKNe5V3mP0U+WMMaWlUud02uOil9AVEzu3C80=;
+	s=korg; t=1767960805;
+	bh=o+1mjU5EeZJXkgLKW0wptGAYD4C0vK+zeqNdDZyMNaM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r0q4sRKwv+aPWBSuVPWRise48peDCzBEeksljdHti/lso//2yAKqV6BJrjvxVNhqz
-	 IQ4YQVu55cxM4N1P1bzb0UKxAG2E8P7r4GtGn+HBX9cduBshgtl1eHUv46r5GvdyeL
-	 KrpJ6lD1BRNph0tK2wEBitqIX60MJl/XjJyG9BIk=
+	b=hFETlv3T6Jm4XKKTR08WO/scuNKU9/P8QDUjC2gT6s96dHyN6/KOtt6gka0s1Zj6t
+	 nk9QsmfwSrTWiJMn/BWP48snWVuocsbuEWMpPD74NbCI5ae9tcYxZcB1wCEcKTa59R
+	 Wu2JpUz720+2dePvloTrWs1DR/0sz0IYkg4b5OgA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.1 359/634] KVM: x86: WARN if hrtimer callback for periodic APIC timer fires with period=0
-Date: Fri,  9 Jan 2026 12:40:37 +0100
-Message-ID: <20260109112131.032175444@linuxfoundation.org>
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>
+Subject: [PATCH 6.6 499/737] ARM: dts: microchip: sama5d2: fix spi flexcom fifo size to 32
+Date: Fri,  9 Jan 2026 12:40:38 +0100
+Message-ID: <20260109112152.764252776@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,41 +59,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Nicolas Ferre <nicolas.ferre@microchip.com>
 
-commit 0ea9494be9c931ddbc084ad5e11fda91b554cf47 upstream.
+commit 7d5864dc5d5ea6a35983dd05295fb17f2f2f44ce upstream.
 
-WARN and don't restart the hrtimer if KVM's callback runs with the guest's
-APIC timer in periodic mode but with a period of '0', as not advancing the
-hrtimer's deadline would put the CPU into an infinite loop of hrtimer
-events.  Observing a period of '0' should be impossible, even when the
-hrtimer is running on a different CPU than the vCPU, as KVM is supposed to
-cancel the hrtimer before changing (or zeroing) the period, e.g. when
-switching from periodic to one-shot.
+Unlike standalone spi peripherals, on sama5d2, the flexcom spi have fifo
+size of 32 data. Fix flexcom/spi nodes where this property is wrong.
 
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20251113205114.1647493-2-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Fixes: 6b9a3584c7ed ("ARM: dts: at91: sama5d2: Add missing flexcom definitions")
+Cc: stable@vger.kernel.org # 5.8+
+Signed-off-by: Nicolas Ferre <nicolas.ferre@microchip.com>
+Link: https://lore.kernel.org/r/20251114140225.30372-1-nicolas.ferre@microchip.com
+Signed-off-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/lapic.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/boot/dts/microchip/sama5d2.dtsi |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/arch/x86/kvm/lapic.c
-+++ b/arch/x86/kvm/lapic.c
-@@ -2637,7 +2637,7 @@ static enum hrtimer_restart apic_timer_f
+--- a/arch/arm/boot/dts/microchip/sama5d2.dtsi
++++ b/arch/arm/boot/dts/microchip/sama5d2.dtsi
+@@ -568,7 +568,7 @@
+ 						 AT91_XDMAC_DT_PER_IF(1) |
+ 						 AT91_XDMAC_DT_PERID(12))>;
+ 					dma-names = "tx", "rx";
+-					atmel,fifo-size = <16>;
++					atmel,fifo-size = <32>;
+ 					status = "disabled";
+ 				};
  
- 	apic_timer_expired(apic, true);
+@@ -639,7 +639,7 @@
+ 						 AT91_XDMAC_DT_PER_IF(1) |
+ 						 AT91_XDMAC_DT_PERID(14))>;
+ 					dma-names = "tx", "rx";
+-					atmel,fifo-size = <16>;
++					atmel,fifo-size = <32>;
+ 					status = "disabled";
+ 				};
  
--	if (lapic_is_periodic(apic)) {
-+	if (lapic_is_periodic(apic) && !WARN_ON_ONCE(!apic->lapic_timer.period)) {
- 		advance_periodic_target_expiration(apic);
- 		hrtimer_add_expires_ns(&ktimer->timer, ktimer->period);
- 		return HRTIMER_RESTART;
+@@ -851,7 +851,7 @@
+ 						 AT91_XDMAC_DT_PER_IF(1) |
+ 						 AT91_XDMAC_DT_PERID(16))>;
+ 					dma-names = "tx", "rx";
+-					atmel,fifo-size = <16>;
++					atmel,fifo-size = <32>;
+ 					status = "disabled";
+ 				};
+ 
+@@ -922,7 +922,7 @@
+ 						 AT91_XDMAC_DT_PER_IF(1) |
+ 						 AT91_XDMAC_DT_PERID(18))>;
+ 					dma-names = "tx", "rx";
+-					atmel,fifo-size = <16>;
++					atmel,fifo-size = <32>;
+ 					status = "disabled";
+ 				};
+ 
+@@ -994,7 +994,7 @@
+ 						 AT91_XDMAC_DT_PER_IF(1) |
+ 						 AT91_XDMAC_DT_PERID(20))>;
+ 					dma-names = "tx", "rx";
+-					atmel,fifo-size = <16>;
++					atmel,fifo-size = <32>;
+ 					status = "disabled";
+ 				};
+ 
 
 
 
