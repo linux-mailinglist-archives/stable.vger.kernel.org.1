@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-206947-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207550-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D40ED0983B
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:22:23 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10DB6D0A10B
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:55:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 0F7DB30245C3
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:11:12 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id BCD68309B344
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:39:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02DF435A95B;
-	Fri,  9 Jan 2026 12:10:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E4DA2EBBB2;
+	Fri,  9 Jan 2026 12:39:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GIrtqYXF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i7qtlWMo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B860B35A953;
-	Fri,  9 Jan 2026 12:10:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E615133372B;
+	Fri,  9 Jan 2026 12:39:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960657; cv=none; b=Khz+Nj47nkaWaGXeALle0HkV+NDAsHvxfw/y+UN+fBrO1vP6HFLmyxuMruSUSHzHJZRdNiLjdk+PvUSTlU8hTz9v4wtIcVcv6PKG+7UBx5IrkWYN9wANVa1cpyChb7xJg+x4jAwdIYGwsXKOrzpAvz9ZVeGYeswjPCJwicyY4+A=
+	t=1767962374; cv=none; b=vEGzHBjqCTSWK6TJOMZat1KhYyEQ/p6mDAXeDXCgBDObXmc7H95dBpTosANhMtpbkJliHdkTCesIxJTt4Sp0NpCN6rqN+uNWr0YsS3XcLd/0XdKfLEXSCb6bjMFm3J0A2i4TY+nLeaDT2r3AOZs1+OZxdElAn0evanPdkziKr4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960657; c=relaxed/simple;
-	bh=EtCqUqWLMi8+HjC78qX/nemPOTCP7Xp0NAQxCVrMEXA=;
+	s=arc-20240116; t=1767962374; c=relaxed/simple;
+	bh=0UeakuCLLBMCkkHGD291YES4ey8NKfNp+sR8fFIgJMA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V06NphP+QgXHROIspiWGwe2UCz6W8vyv71U5fYz8+fMe6znsn+8DAhT4gJym0x+iXetws1FTPanbR0CSZ+EMGjnL9kT7xt2+k302bwGgKL38fVyY96bxV0yWOXLKWGV309E1VnCeRYQ/d2mJQxa/ir7eMM1XhA42AfOd6i54quk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GIrtqYXF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42606C19421;
-	Fri,  9 Jan 2026 12:10:57 +0000 (UTC)
+	 MIME-Version; b=JTQx/FNG+o2NtTnlCxsUvBO16PH+mrf2V7A4lkVPbPKKmIPpAGIugtVHTdApv+hldpaBihAdvkjLUep1giqTsgnRoB7tkWA6HrpLFP4UlIgj8P6Tx1Dp5czVSYx/EpJlxECHGM9qqq23I0Pyz7ESGPRvwfZN7N7ixgqObTwJ6s4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i7qtlWMo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25C6BC4CEF1;
+	Fri,  9 Jan 2026 12:39:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960657;
-	bh=EtCqUqWLMi8+HjC78qX/nemPOTCP7Xp0NAQxCVrMEXA=;
+	s=korg; t=1767962373;
+	bh=0UeakuCLLBMCkkHGD291YES4ey8NKfNp+sR8fFIgJMA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GIrtqYXF5HhvDVYkTgfYMmaJINUKADMuDF31BwMYU3UvGCh1mn4pS5XLHvRN97XCU
-	 vewotd0Bf0bwKiYk48K23iQey58lVZF+j+ciFuZGxE2oYiaQCbzh4oJWOMUTM5dXGM
-	 Bl4awEntMp6GYn5suZwXySIJABSEjHeeO7kGSBtM=
+	b=i7qtlWMooGIehi6p2UCiYlrzcAF6KeUiMuH5k4ID/y/66PaShReYXvI0rjx5XqjCJ
+	 3ZaBTgXitvWrrdcoV6HkCfCZk7oi1hiqzAAHqORzV8Iy5E2ZZd7lrwTcEDR6AnWruv
+	 lgDWoRAoQ3ZWM7HTWNM/Ab4qq6ce2lqeXVbqYEmc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joshua Rogers <linux@joshua.hu>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.6 479/737] SUNRPC: svcauth_gss: avoid NULL deref on zero length gss_token in gss_read_proxy_verf
-Date: Fri,  9 Jan 2026 12:40:18 +0100
-Message-ID: <20260109112152.004365293@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Haoxiang Li <haoxiang_li2024@163.com>
+Subject: [PATCH 6.1 341/634] usb: renesas_usbhs: Fix a resource leak in usbhs_pipe_malloc()
+Date: Fri,  9 Jan 2026 12:40:19 +0100
+Message-ID: <20260109112130.355597242@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,41 +59,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joshua Rogers <linux@joshua.hu>
+From: Haoxiang Li <haoxiang_li2024@163.com>
 
-commit d4b69a6186b215d2dc1ebcab965ed88e8d41768d upstream.
+commit 36cc7e09df9e43db21b46519b740145410dd9f4a upstream.
 
-A zero length gss_token results in pages == 0 and in_token->pages[0]
-is NULL. The code unconditionally evaluates
-page_address(in_token->pages[0]) for the initial memcpy, which can
-dereference NULL even when the copy length is 0. Guard the first
-memcpy so it only runs when length > 0.
+usbhsp_get_pipe() set pipe's flags to IS_USED. In error paths,
+usbhsp_put_pipe() is required to clear pipe's flags to prevent
+pipe exhaustion.
 
-Fixes: 5866efa8cbfb ("SUNRPC: Fix svcauth_gss_proxy_init()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Joshua Rogers <linux@joshua.hu>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: f1407d5c6624 ("usb: renesas_usbhs: Add Renesas USBHS common code")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+Link: https://patch.msgid.link/20251204132129.109234-1-haoxiang_li2024@163.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sunrpc/auth_gss/svcauth_gss.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/usb/renesas_usbhs/pipe.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/net/sunrpc/auth_gss/svcauth_gss.c
-+++ b/net/sunrpc/auth_gss/svcauth_gss.c
-@@ -1093,7 +1093,8 @@ static int gss_read_proxy_verf(struct sv
+--- a/drivers/usb/renesas_usbhs/pipe.c
++++ b/drivers/usb/renesas_usbhs/pipe.c
+@@ -713,11 +713,13 @@ struct usbhs_pipe *usbhs_pipe_malloc(str
+ 	/* make sure pipe is not busy */
+ 	ret = usbhsp_pipe_barrier(pipe);
+ 	if (ret < 0) {
++		usbhsp_put_pipe(pipe);
+ 		dev_err(dev, "pipe setup failed %d\n", usbhs_pipe_number(pipe));
+ 		return NULL;
  	}
  
- 	length = min_t(unsigned int, inlen, (char *)xdr->end - (char *)xdr->p);
--	memcpy(page_address(in_token->pages[0]), xdr->p, length);
-+	if (length)
-+		memcpy(page_address(in_token->pages[0]), xdr->p, length);
- 	inlen -= length;
- 
- 	to_offs = length;
+ 	if (usbhsp_setup_pipecfg(pipe, is_host, dir_in, &pipecfg)) {
++		usbhsp_put_pipe(pipe);
+ 		dev_err(dev, "can't setup pipe\n");
+ 		return NULL;
+ 	}
 
 
 
