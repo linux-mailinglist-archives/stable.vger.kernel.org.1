@@ -1,185 +1,159 @@
-Return-Path: <stable+bounces-206469-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207752-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37541D08FEA
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 12:47:43 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7F08D0A156
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:57:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 790B33016CF0
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:45:10 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8D0B632F18FE
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:50:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B54531A7EA;
-	Fri,  9 Jan 2026 11:45:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F40D935BDDC;
+	Fri,  9 Jan 2026 12:49:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YOjvAzVD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2c3K1N6l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 604D333D50F;
-	Fri,  9 Jan 2026 11:45:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B667E35CB6D;
+	Fri,  9 Jan 2026 12:49:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767959106; cv=none; b=otgha7quV5cJixsMo2Sbzg4lfNmxUgl0jcWSAFVOiYHle3zid2+sSmJdfOeWha3ytz8MKeGOH6knxyCT6NW9egCwPm1ON2oVAlocUHEk5FWggP4Cd7EMrJ07uUNuuyzEExxD1UhAH3mR5NMJIJsIVSw0gFoClzH9uS22tjs8Yk4=
+	t=1767962946; cv=none; b=ggEYM33bjbQ9+apwnZcitoI/xFu8xCezlydL9GouMWge2UMniUzg/F8B+AEcWLQmD7551RCK287gDGCVbdS4sqDdOZk22tzlh9uHMyrlMwYIQz6FhAgTzjBCxnH6eUMWwSX1adbfsEj18BznyyDuw5anwFgiYnq+w44YV3E4DDE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767959106; c=relaxed/simple;
-	bh=Rra7MijX0lUdU37/9qu5zl47tGB6P3MdW7CaerQmW7w=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nDVB3oO5sNPUrAyIW+wCZP8GHYpAuU2OCDtWqbFe4c+3bG4ybtRhjUrd00nY9wlsPt417aL8jyV0QzvF5/6FfCSuCjCcZEvVtt8Z7on1yEoIAwEdHa/L3qVAZCgoUvjoyC0s8uFPX81kJM6oVNGDRg+6C2FM3LO6klnOCcnwKZw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YOjvAzVD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC059C4CEF1;
-	Fri,  9 Jan 2026 11:45:04 +0000 (UTC)
+	s=arc-20240116; t=1767962946; c=relaxed/simple;
+	bh=vP84XvXyNDq3vTcyK+4OQfWh8X9b3PW3OWgYiGPvbwA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Y1daJLj8YUxyUjFistUi2c90r2AtmeoMGk2usr5/fYVEbzPYemIgpIKvlK+l7lRRej7v5QVJbL3bVogKRoZ758OIaKRRjZhJSOD/5bFAxjOa1kv+m3iuD//ocItWuNDuqJ30Er7Ne2fhWX+T80f28LzV55BWMoW1rcAiTnR1ndE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2c3K1N6l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41D58C4CEF1;
+	Fri,  9 Jan 2026 12:49:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767959105;
-	bh=Rra7MijX0lUdU37/9qu5zl47tGB6P3MdW7CaerQmW7w=;
-	h=From:To:Cc:Subject:Date:From;
-	b=YOjvAzVDErIzU7DoixEnpA0abEBKloVQ5mGA55qPD+wOLRj249cH1+Qqzwgg8QKZH
-	 dXj29zRkT0RbXTQTzeQDA68cn5Kf5hX98p6go8epK+MfA91MjbDyYpRgCZs1CVIEFP
-	 pKe+BfkAJmJ9RlWe+MQKhMS/l4ii7zZ+51Zb29iU=
+	s=korg; t=1767962946;
+	bh=vP84XvXyNDq3vTcyK+4OQfWh8X9b3PW3OWgYiGPvbwA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=2c3K1N6lzv70jIFTarwpmjXRjGXo35Hzuuem3g3iHGoc5MqGwfO1c+B35UTuoU1b6
+	 39Zq6tJWQ95NNCjp+x3d8tc6upaiyqnDxMj+7pmsNnOtFCmgSrJKiAfz4idrFHgScj
+	 OuUVwsOfiKTjJ9ts0G3EQERBC1bCfkqNbB2o+eNg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org,
-	akpm@linux-foundation.org,
-	linux@roeck-us.net,
-	shuah@kernel.org,
-	patches@kernelci.org,
-	lkft-triage@lists.linaro.org,
-	pavel@denx.de,
-	jonathanh@nvidia.com,
-	f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com,
-	rwarsow@gmx.de,
-	conor@kernel.org,
-	hargar@microsoft.com,
-	broonie@kernel.org,
-	achill@achill.org,
-	sr@sladewatkins.com
-Subject: [PATCH 6.12 00/16] 6.12.65-rc1 review
+	Ye Bin <yebin10@huawei.com>,
+	Baokun Li <libaokun1@huawei.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
+	stable@kernel.org,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 543/634] jbd2: fix the inconsistency between checksum and data in memory for journal sb
 Date: Fri,  9 Jan 2026 12:43:41 +0100
-Message-ID: <20260109111951.415522519@linuxfoundation.org>
+Message-ID: <20260109112138.019469884@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
+User-Agent: quilt/0.69
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: quilt/0.69
-X-stable: review
-X-Patchwork-Hint: ignore
-X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.65-rc1.gz
-X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-X-KernelTest-Branch: linux-6.12.y
-X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
-X-KernelTest-Version: 6.12.65-rc1
-X-KernelTest-Deadline: 2026-01-11T11:19+00:00
 Content-Transfer-Encoding: 8bit
 
-This is the start of the stable review cycle for the 6.12.65 release.
-There are 16 patches in this series, all will be posted as a response
-to this one.  If anyone has any issues with these being applied, please
-let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
-Responses should be made by Sun, 11 Jan 2026 11:19:41 +0000.
-Anything received after that time might be too late.
+------------------
 
-The whole patch series can be found in one patch at:
-	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.65-rc1.gz
-or in the git tree and branch at:
-	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
-and the diffstat can be found below.
+From: Ye Bin <yebin10@huawei.com>
 
-thanks,
+[ Upstream commit 6abfe107894af7e8ce3a2e120c619d81ee764ad5 ]
 
-greg k-h
+Copying the file system while it is mounted as read-only results in
+a mount failure:
+[~]# mkfs.ext4 -F /dev/sdc
+[~]# mount /dev/sdc -o ro /mnt/test
+[~]# dd if=/dev/sdc of=/dev/sda bs=1M
+[~]# mount /dev/sda /mnt/test1
+[ 1094.849826] JBD2: journal checksum error
+[ 1094.850927] EXT4-fs (sda): Could not load journal inode
+mount: mount /dev/sda on /mnt/test1 failed: Bad message
 
--------------
-Pseudo-Shortlog of commits:
+The process described above is just an abstracted way I came up with to
+reproduce the issue. In the actual scenario, the file system was mounted
+read-only and then copied while it was still mounted. It was found that
+the mount operation failed. The user intended to verify the data or use
+it as a backup, and this action was performed during a version upgrade.
+Above issue may happen as follows:
+ext4_fill_super
+ set_journal_csum_feature_set(sb)
+  if (ext4_has_metadata_csum(sb))
+   incompat = JBD2_FEATURE_INCOMPAT_CSUM_V3;
+  if (test_opt(sb, JOURNAL_CHECKSUM)
+   jbd2_journal_set_features(sbi->s_journal, compat, 0, incompat);
+    lock_buffer(journal->j_sb_buffer);
+    sb->s_feature_incompat  |= cpu_to_be32(incompat);
+    //The data in the journal sb was modified, but the checksum was not
+      updated, so the data remaining in memory has a mismatch between the
+      data and the checksum.
+    unlock_buffer(journal->j_sb_buffer);
 
-Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    Linux 6.12.65-rc1
+In this case, the journal sb copied over is in a state where the checksum
+and data are inconsistent, so mounting fails.
+To solve the above issue, update the checksum in memory after modifying
+the journal sb.
 
-Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    Revert "iommu/amd: Skip enabling command/event buffers for kdump"
+Fixes: 4fd5ea43bc11 ("jbd2: checksum journal superblock")
+Signed-off-by: Ye Bin <yebin10@huawei.com>
+Reviewed-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Message-ID: <20251103010123.3753631-1-yebin@huaweicloud.com>
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
+[ Changed jbd2_superblock_csum(sb) to jbd2_superblock_csum(journal, sb) ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ fs/jbd2/journal.c |   14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-Sean Nyekjaer <sean@geanix.com>
-    pwm: stm32: Always program polarity
-
-Maximilian Immanuel Brandtner <maxbr@linux.ibm.com>
-    virtio_console: fix order of fields cols and rows
-
-Peter Zijlstra <peterz@infradead.org>
-    sched/fair: Proportional newidle balance
-
-Peter Zijlstra <peterz@infradead.org>
-    sched/fair: Small cleanup to update_newidle_cost()
-
-Peter Zijlstra <peterz@infradead.org>
-    sched/fair: Small cleanup to sched_balance_newidle()
-
-Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-    net: Remove RTNL dance for SIOCBRADDIF and SIOCBRDELIF.
-
-Richa Bharti <richa.bharti@siemens.com>
-    cpufreq: intel_pstate: Check IDA only before MSR_IA32_PERF_CTL writes
-
-Natalie Vock <natalie.vock@gmx.de>
-    drm/amdgpu: Forward VMID reservation errors
-
-Miaoqian Lin <linmq006@gmail.com>
-    net: phy: mediatek: fix nvmem cell reference leak in mt798x_phy_calibration
-
-Jouni Malinen <jouni.malinen@oss.qualcomm.com>
-    wifi: mac80211: Discard Beacon frames to non-broadcast address
-
-Paolo Abeni <pabeni@redhat.com>
-    mptcp: ensure context reset on disconnect()
-
-Bijan Tabatabai <bijan311@gmail.com>
-    mm: consider non-anon swap cache folios in folio_expected_ref_count()
-
-David Hildenbrand <david@redhat.com>
-    mm: simplify folio_expected_ref_count()
-
-Alexander Gordeev <agordeev@linux.ibm.com>
-    mm/page_alloc: change all pageblocks migrate type on coalescing
-
-Paolo Abeni <pabeni@redhat.com>
-    mptcp: fallback earlier on simult connection
-
-
--------------
-
-Diffstat:
-
- Makefile                               |  4 +--
- drivers/char/virtio_console.c          |  2 +-
- drivers/cpufreq/intel_pstate.c         |  9 +++--
- drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c |  6 ++--
- drivers/iommu/amd/init.c               | 28 +++++----------
- drivers/net/phy/mediatek-ge-soc.c      |  2 +-
- drivers/pwm/pwm-stm32.c                |  3 +-
- include/linux/if_bridge.h              |  6 ++--
- include/linux/mm.h                     | 10 +++---
- include/linux/sched/topology.h         |  3 ++
- kernel/sched/core.c                    |  3 ++
- kernel/sched/fair.c                    | 65 +++++++++++++++++++++++++++-------
- kernel/sched/features.h                |  5 +++
- kernel/sched/sched.h                   |  7 ++++
- kernel/sched/topology.c                |  6 ++++
- mm/page_alloc.c                        | 24 ++++++-------
- net/bridge/br_ioctl.c                  | 36 +++++++++++++++++--
- net/bridge/br_private.h                |  3 +-
- net/core/dev_ioctl.c                   | 16 ---------
- net/mac80211/rx.c                      |  5 +++
- net/mptcp/options.c                    | 10 ++++++
- net/mptcp/protocol.c                   |  8 +++--
- net/mptcp/protocol.h                   |  9 +++--
- net/mptcp/subflow.c                    | 10 +-----
- net/socket.c                           | 19 +++++-----
- 25 files changed, 186 insertions(+), 113 deletions(-)
+--- a/fs/jbd2/journal.c
++++ b/fs/jbd2/journal.c
+@@ -2393,6 +2393,12 @@ int jbd2_journal_set_features(journal_t
+ 	sb->s_feature_compat    |= cpu_to_be32(compat);
+ 	sb->s_feature_ro_compat |= cpu_to_be32(ro);
+ 	sb->s_feature_incompat  |= cpu_to_be32(incompat);
++	/*
++	 * Update the checksum now so that it is valid even for read-only
++	 * filesystems where jbd2_write_superblock() doesn't get called.
++	 */
++	if (jbd2_journal_has_csum_v2or3(journal))
++		sb->s_checksum = jbd2_superblock_csum(journal, sb);
+ 	unlock_buffer(journal->j_sb_buffer);
+ 	journal->j_revoke_records_per_block =
+ 				journal_revoke_records_per_block(journal);
+@@ -2423,9 +2429,17 @@ void jbd2_journal_clear_features(journal
+ 
+ 	sb = journal->j_superblock;
+ 
++	lock_buffer(journal->j_sb_buffer);
+ 	sb->s_feature_compat    &= ~cpu_to_be32(compat);
+ 	sb->s_feature_ro_compat &= ~cpu_to_be32(ro);
+ 	sb->s_feature_incompat  &= ~cpu_to_be32(incompat);
++	/*
++	 * Update the checksum now so that it is valid even for read-only
++	 * filesystems where jbd2_write_superblock() doesn't get called.
++	 */
++	if (jbd2_journal_has_csum_v2or3(journal))
++		sb->s_checksum = jbd2_superblock_csum(journal, sb);
++	unlock_buffer(journal->j_sb_buffer);
+ 	journal->j_revoke_records_per_block =
+ 				journal_revoke_records_per_block(journal);
+ }
 
 
 
