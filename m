@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-207238-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206647-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9459D09A1B
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:29:29 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18C9BD09287
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:01:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5A1E130340CE
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:24:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9B2EB301FB4A
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:56:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0F0D359FBB;
-	Fri,  9 Jan 2026 12:24:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 077D933C511;
+	Fri,  9 Jan 2026 11:56:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rVt91s8d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gomo8VqK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 744C915ADB4;
-	Fri,  9 Jan 2026 12:24:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF343335561;
+	Fri,  9 Jan 2026 11:56:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961486; cv=none; b=RRzS9DLd0uTYK1r/T/UuDAUYHRnsGPB66CETGkxgF1UF2DRl44QqvS5BHfGq66y+0Ncy/SnEjuBj7v4om8c+eeLw/6GMF8zG5eKN4BIdMmMvuwSsIkC/t/edYDUfbzJSJe2wPCKd9cwzRUIYIvoRe9+92LB45F/ta33d5KwspZo=
+	t=1767959800; cv=none; b=mL0o0iNYHvqYkzvuBAFRjW7V2NT0BrLEgJX/4RnUR5wH1kZcvVJzJUHKZDNpPQF7ngV2lKz6PQ1NIweqwrwinwIFlDT7aETyDi4T3COphjrorKW08yOfTH4K9ucorVY6cTJJlCYbGzsRVlM0bUi1nJFcdMQj2iniSIEbhAU1Qbw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961486; c=relaxed/simple;
-	bh=J/A+6SCiALMLnVxU/9uW6PyCA2ghaI056K72oITMquI=;
+	s=arc-20240116; t=1767959800; c=relaxed/simple;
+	bh=0Mfy+kL6EUfdC9/44fOugChKA91MpARCYg+WBq0k4f0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LRslqKlUgAsuHZNdILles2c4aoMbdrtLkucnKuwKZ1k+K/taKQN1stj7Z4WoiWttNXw6w4eMWkqJsv5hx6DE3SEkLO5Ayb7iahxZCsPZOCpr4D5S3JcoCeBPBOVNS0MXimRCncCtJ5AherrnQNkKYmRHOsTiUTGA4lmicvY3EiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rVt91s8d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05D0BC4CEF1;
-	Fri,  9 Jan 2026 12:24:45 +0000 (UTC)
+	 MIME-Version; b=XCrhZNViBZwKufCoH/Ly7Q4MmOqsgXogEOa2NwjURtWnNUnFqfaPPTfBGhYJE/WG1cY41g7EdqefOnnmjhLIb7HUbutFVTgFgH5YCt67MeR5qNIPsjLWcZ/grF5hOQKCF+lJQKPZwhPEkDgYI3+cxNP8imTcrGW9PNOu8O3MV6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gomo8VqK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AD04C4CEF1;
+	Fri,  9 Jan 2026 11:56:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961486;
-	bh=J/A+6SCiALMLnVxU/9uW6PyCA2ghaI056K72oITMquI=;
+	s=korg; t=1767959800;
+	bh=0Mfy+kL6EUfdC9/44fOugChKA91MpARCYg+WBq0k4f0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rVt91s8d1LadCP2wA3tTFf58b2EXnvk3fxHkX8naThgJSfm60gv67qhkZaxx81FSw
-	 YfO95DmWjAy3ylZrGwxKIw2rvArDEX21NIO45+D5R/OS7pEo3Yx/Mdm1hOZcPz1MPl
-	 A7F0XjnfjXk88TmxcoUPQXYY8BCg7Mcr8aguINo4=
+	b=Gomo8VqK7/Ft1L/f8VqcBEYuqDlbOWoqVazZYQoioORCFkG20dsdQIBbKdq20v3b8
+	 z+L8VB3ESbVfWiS31M5Ax9Wl5ZudD3C8PGkPXe+7fi6nC0HR/UUAUhiiONkiJ+vNSR
+	 1ng0IjMOM6JTJta6oDC1vKVCT7KuMw+rCWPlDRUw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bagas Sanjaya <bagasdotme@gmail.com>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Jonathan Corbet <corbet@lwn.net>
-Subject: [PATCH 6.1 007/634] Documentation: process: Also mention Sasha Levin as stable tree maintainer
+	Mike Leach <mike.leach@linaro.org>,
+	Yeoreun Yun <yeoreum.yun@arm.com>,
+	James Clark <james.clark@linaro.org>,
+	Leo Yan <leo.yan@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 146/737] coresight: etm4x: Add context synchronization before enabling trace
 Date: Fri,  9 Jan 2026 12:34:45 +0100
-Message-ID: <20260109112117.701129968@linuxfoundation.org>
+Message-ID: <20260109112139.490274164@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,44 +63,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bagas Sanjaya <bagasdotme@gmail.com>
+From: Leo Yan <leo.yan@arm.com>
 
-commit ba2457109d5b47a90fe565b39524f7225fc23e60 upstream.
+[ Upstream commit 64eb04ae545294e105ad91714dc3167a0b660731 ]
 
-Sasha has also maintaining stable branch in conjunction with Greg
-since cb5d21946d2a2f ("MAINTAINERS: Add Sasha as a stable branch
-maintainer"). Mention him in 2.Process.rst.
+According to the software usage PKLXF in Arm ARM (ARM DDI 0487 L.a), a
+Context synchronization event is required before enabling the trace
+unit.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Bagas Sanjaya <bagasdotme@gmail.com>
-Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Jonathan Corbet <corbet@lwn.net>
-Message-ID: <20251022034336.22839-1-bagasdotme@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+An ISB is added to meet this requirement, particularly for guarding the
+operations in the flow:
+
+  etm4x_allow_trace()
+   `> kvm_tracing_set_el1_configuration()
+	`> write_sysreg_s(trfcr_while_in_guest, SYS_TRFCR_EL12)
+
+Improved the barrier comments to provide more accurate information.
+
+Fixes: 1ab3bb9df5e3 ("coresight: etm4x: Add necessary synchronization for sysreg access")
+Reviewed-by: Mike Leach <mike.leach@linaro.org>
+Reviewed-by: Yeoreun Yun <yeoreum.yun@arm.com>
+Tested-by: James Clark <james.clark@linaro.org>
+Signed-off-by: Leo Yan <leo.yan@arm.com>
+Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+Link: https://lore.kernel.org/r/20251111-arm_coresight_power_management_fix-v6-5-f55553b6c8b3@arm.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/process/2.Process.rst |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ .../coresight/coresight-etm4x-core.c          | 27 ++++++++++++++++---
+ 1 file changed, 23 insertions(+), 4 deletions(-)
 
---- a/Documentation/process/2.Process.rst
-+++ b/Documentation/process/2.Process.rst
-@@ -104,8 +104,10 @@ kernels go out with a handful of known r
- of them are serious.
+diff --git a/drivers/hwtracing/coresight/coresight-etm4x-core.c b/drivers/hwtracing/coresight/coresight-etm4x-core.c
+index a53816f24cd94..c5928f63475a0 100644
+--- a/drivers/hwtracing/coresight/coresight-etm4x-core.c
++++ b/drivers/hwtracing/coresight/coresight-etm4x-core.c
+@@ -436,10 +436,24 @@ static int etm4_enable_trace_unit(struct etmv4_drvdata *drvdata)
+ 		etm4x_relaxed_write32(csa, TRCRSR_TA, TRCRSR);
  
- Once a stable release is made, its ongoing maintenance is passed off to the
--"stable team," currently Greg Kroah-Hartman. The stable team will release
--occasional updates to the stable release using the 5.x.y numbering scheme.
-+"stable team," currently consists of Greg Kroah-Hartman and Sasha Levin. The
-+stable team will release occasional updates to the stable release using the
-+5.x.y numbering scheme.
+ 	etm4x_allow_trace(drvdata);
 +
- To be considered for an update release, a patch must (1) fix a significant
- bug, and (2) already be merged into the mainline for the next development
- kernel. Kernels will typically receive stable updates for a little more
++	/*
++	 * According to software usage PKLXF in Arm ARM (ARM DDI 0487 L.a),
++	 * execute a Context synchronization event to guarantee the trace unit
++	 * will observe the new values of the System registers.
++	 */
++	if (!csa->io_mem)
++		isb();
++
+ 	/* Enable the trace unit */
+ 	etm4x_relaxed_write32(csa, 1, TRCPRGCTLR);
+ 
+-	/* Synchronize the register updates for sysreg access */
++	/*
++	 * As recommended by section 4.3.7 ("Synchronization when using system
++	 * instructions to progrom the trace unit") of ARM IHI 0064H.b, the
++	 * self-hosted trace analyzer must perform a Context synchronization
++	 * event between writing to the TRCPRGCTLR and reading the TRCSTATR.
++	 */
+ 	if (!csa->io_mem)
+ 		isb();
+ 
+@@ -916,11 +930,16 @@ static void etm4_disable_trace_unit(struct etmv4_drvdata *drvdata)
+ 	 */
+ 	etm4x_prohibit_trace(drvdata);
+ 	/*
+-	 * Make sure everything completes before disabling, as recommended
+-	 * by section 7.3.77 ("TRCVICTLR, ViewInst Main Control Register,
+-	 * SSTATUS") of ARM IHI 0064D
++	 * Prevent being speculative at the point of disabling the trace unit,
++	 * as recommended by section 7.3.77 ("TRCVICTLR, ViewInst Main Control
++	 * Register, SSTATUS") of ARM IHI 0064D
+ 	 */
+ 	dsb(sy);
++	/*
++	 * According to software usage VKHHY in Arm ARM (ARM DDI 0487 L.a),
++	 * execute a Context synchronization event to guarantee no new
++	 * program-flow trace is generated.
++	 */
+ 	isb();
+ 	/* Trace synchronization barrier, is a nop if not supported */
+ 	tsb_csync();
+-- 
+2.51.0
+
 
 
 
