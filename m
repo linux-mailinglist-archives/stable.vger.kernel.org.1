@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-207548-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206947-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B8A0D0A22D
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:01:52 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D40ED0983B
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:22:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 696C130FA028
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:39:40 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0F7DB30245C3
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:11:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A10BF35B135;
-	Fri,  9 Jan 2026 12:39:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02DF435A95B;
+	Fri,  9 Jan 2026 12:10:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UVtDub1i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GIrtqYXF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64E0A33032C;
-	Fri,  9 Jan 2026 12:39:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B860B35A953;
+	Fri,  9 Jan 2026 12:10:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962367; cv=none; b=gVyn52DXGZJa1WT/izburV3EyvOjRRwfu2C9nFHiEXkK/UHXEbdG8J8OOvXENSpCEBpmeimfrHbq/He06sG28kVgJdZeZDI5r1Eqph8hdD4JjQa98UIAOChI6guo0AObmAYga9ymusstp/0kYRO1KxSWlr3PEffJcld55l4lcYI=
+	t=1767960657; cv=none; b=Khz+Nj47nkaWaGXeALle0HkV+NDAsHvxfw/y+UN+fBrO1vP6HFLmyxuMruSUSHzHJZRdNiLjdk+PvUSTlU8hTz9v4wtIcVcv6PKG+7UBx5IrkWYN9wANVa1cpyChb7xJg+x4jAwdIYGwsXKOrzpAvz9ZVeGYeswjPCJwicyY4+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962367; c=relaxed/simple;
-	bh=hfKbMtHPOx0LDQwKBMmpdpXBLEhZ3AgsOmTMvWUz9Qk=;
+	s=arc-20240116; t=1767960657; c=relaxed/simple;
+	bh=EtCqUqWLMi8+HjC78qX/nemPOTCP7Xp0NAQxCVrMEXA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cJ4aKM1uYtlm59QVC43TO0NZdJY1dCwtG9ITgw/dPV0zFrFh2N9yXqgrGwXZqB41cE4gY2NMpKHga8mu3ou5FFJEgfOsnVJ9mNn4maTgvpjw4jYD4tJwGIksfvCBtU4EQUTQ2TAtaRUrstLOfWu6pTPXGUHejeRJ6CG4p/zHooY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UVtDub1i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4472C4CEF1;
-	Fri,  9 Jan 2026 12:39:26 +0000 (UTC)
+	 MIME-Version; b=V06NphP+QgXHROIspiWGwe2UCz6W8vyv71U5fYz8+fMe6znsn+8DAhT4gJym0x+iXetws1FTPanbR0CSZ+EMGjnL9kT7xt2+k302bwGgKL38fVyY96bxV0yWOXLKWGV309E1VnCeRYQ/d2mJQxa/ir7eMM1XhA42AfOd6i54quk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GIrtqYXF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42606C19421;
+	Fri,  9 Jan 2026 12:10:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962367;
-	bh=hfKbMtHPOx0LDQwKBMmpdpXBLEhZ3AgsOmTMvWUz9Qk=;
+	s=korg; t=1767960657;
+	bh=EtCqUqWLMi8+HjC78qX/nemPOTCP7Xp0NAQxCVrMEXA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UVtDub1iTrxRvc0NGgbtmI6cq6zF1F/YuhiMwbICFvV7y/ApOWrgrOlJDRUmJAMcm
-	 6CULZrDxo+5bMDDHpUAHmHFxHgAY9hHFobFAhBwterwTS2LVH6LudJa9Vlc6pUADAm
-	 ORw/K2+j3TErtkrL1V08Xch/iVA+MEQPMmSzijyY=
+	b=GIrtqYXF5HhvDVYkTgfYMmaJINUKADMuDF31BwMYU3UvGCh1mn4pS5XLHvRN97XCU
+	 vewotd0Bf0bwKiYk48K23iQey58lVZF+j+ciFuZGxE2oYiaQCbzh4oJWOMUTM5dXGM
+	 Bl4awEntMp6GYn5suZwXySIJABSEjHeeO7kGSBtM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Miaoqian Lin <linmq006@gmail.com>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Subject: [PATCH 6.1 340/634] usb: dwc3: of-simple: fix clock resource leak in dwc3_of_simple_probe
+	Joshua Rogers <linux@joshua.hu>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.6 479/737] SUNRPC: svcauth_gss: avoid NULL deref on zero length gss_token in gss_read_proxy_verf
 Date: Fri,  9 Jan 2026 12:40:18 +0100
-Message-ID: <20260109112130.318768650@linuxfoundation.org>
+Message-ID: <20260109112152.004365293@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,61 +59,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miaoqian Lin <linmq006@gmail.com>
+From: Joshua Rogers <linux@joshua.hu>
 
-commit 3b4961313d31e200c9e974bb1536cdea217f78b5 upstream.
+commit d4b69a6186b215d2dc1ebcab965ed88e8d41768d upstream.
 
-When clk_bulk_prepare_enable() fails, the error path jumps to
-err_resetc_assert, skipping clk_bulk_put_all() and leaking the
-clock references acquired by clk_bulk_get_all().
+A zero length gss_token results in pages == 0 and in_token->pages[0]
+is NULL. The code unconditionally evaluates
+page_address(in_token->pages[0]) for the initial memcpy, which can
+dereference NULL even when the copy length is 0. Guard the first
+memcpy so it only runs when length > 0.
 
-Add err_clk_put_all label to properly release clock resources
-in all error paths.
-
-Found via static analysis and code review.
-
-Fixes: c0c61471ef86 ("usb: dwc3: of-simple: Convert to bulk clk API")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://patch.msgid.link/20251211064937.2360510-1-linmq006@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 5866efa8cbfb ("SUNRPC: Fix svcauth_gss_proxy_init()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Joshua Rogers <linux@joshua.hu>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc3/dwc3-of-simple.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ net/sunrpc/auth_gss/svcauth_gss.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/dwc3/dwc3-of-simple.c
-+++ b/drivers/usb/dwc3/dwc3-of-simple.c
-@@ -71,11 +71,11 @@ static int dwc3_of_simple_probe(struct p
- 	simple->num_clocks = ret;
- 	ret = clk_bulk_prepare_enable(simple->num_clocks, simple->clks);
- 	if (ret)
--		goto err_resetc_assert;
-+		goto err_clk_put_all;
+--- a/net/sunrpc/auth_gss/svcauth_gss.c
++++ b/net/sunrpc/auth_gss/svcauth_gss.c
+@@ -1093,7 +1093,8 @@ static int gss_read_proxy_verf(struct sv
+ 	}
  
- 	ret = of_platform_populate(np, NULL, NULL, dev);
- 	if (ret)
--		goto err_clk_put;
-+		goto err_clk_disable;
+ 	length = min_t(unsigned int, inlen, (char *)xdr->end - (char *)xdr->p);
+-	memcpy(page_address(in_token->pages[0]), xdr->p, length);
++	if (length)
++		memcpy(page_address(in_token->pages[0]), xdr->p, length);
+ 	inlen -= length;
  
- 	pm_runtime_set_active(dev);
- 	pm_runtime_enable(dev);
-@@ -83,8 +83,9 @@ static int dwc3_of_simple_probe(struct p
- 
- 	return 0;
- 
--err_clk_put:
-+err_clk_disable:
- 	clk_bulk_disable_unprepare(simple->num_clocks, simple->clks);
-+err_clk_put_all:
- 	clk_bulk_put_all(simple->num_clocks, simple->clks);
- 
- err_resetc_assert:
+ 	to_offs = length;
 
 
 
