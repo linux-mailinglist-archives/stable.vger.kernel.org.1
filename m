@@ -1,54 +1,99 @@
-Return-Path: <stable+bounces-207153-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206462-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5A99D0997C
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:27:10 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2990DD08FCF
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 12:47:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A5657306574C
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:20:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6B55B308BA33
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:44:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59B1735A95A;
-	Fri,  9 Jan 2026 12:20:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F9A0359F88;
+	Fri,  9 Jan 2026 11:44:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PSoa9ZkY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JZNqBBGE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D453359FA0;
-	Fri,  9 Jan 2026 12:20:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A13D359716;
+	Fri,  9 Jan 2026 11:44:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961242; cv=none; b=qPleYCpSZKTIrjqSKO+za2rpzriUysrPA98fJQUyvLrTYwMR0368PF7gE0TCAlkSzH/Evk8J7tMkYPuzHPzQdlUqJ5piUhlcnG+5e2f6ZWEOEWkY21QWbw+YgEAoUQrGjYUuoxr3Pw2ZQ7Yfokj83Y20oytU0fJqbo4ftLqUnq4=
+	t=1767959085; cv=none; b=GNg4/Xs4o/bMe6EkpCpk4zjBJQWCGAdg919u5c83z5/oEtayA4XT1ZgiVPZD2P1TXnc1yfJarNOd6juGH/fzERVQayMMHnMSbUFSw/aoXZneq9HtJ2tM6ve8jkF4skDwY2hwPhKbGbrtLTUHhaMmhIJ80Cj5ICn27LDdnsq9fnI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961242; c=relaxed/simple;
-	bh=PkMQd5tNb7lXolBGKCAhmqNDg/2F/jnXVqntJm6WEbg=;
+	s=arc-20240116; t=1767959085; c=relaxed/simple;
+	bh=/xMBYw8rzxERxbETQfaB5mfH5phSHdpeBLUXYFzKsQQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QoltO991ZxersCZILrlyN6pboEDS70D4rCtrz+jC+mJPbNBfDaWGEKEtEwTM1Fpo/VTsZpRIAPFiwMczeTiwXFPXt3dvE+7o3BMoJ4Xrr69G2TP95C1FtBt0hWoXnncEqI5O4JKY5mAFeLvOPNv9imsDTOuXsfIbnMMLtJRIj80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PSoa9ZkY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A04A5C4CEF1;
-	Fri,  9 Jan 2026 12:20:41 +0000 (UTC)
+	 MIME-Version:Content-Type; b=EwGfsJgzZan286/ZX0D6VCYvRz5n0m4g/46PUVvvZPemXYCJlyLod20uGjETSXEzYz7LGYzCOmroQ4S6CPB1C9LSeVs5tIPW6nZXN8GhR2VrUOAUdhyLI84O6dhz9aiXSST2QA6xF455aEVsPTRQqoHknrBYGZUBMQeoDctNoEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JZNqBBGE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CD64C16AAE;
+	Fri,  9 Jan 2026 11:44:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961242;
-	bh=PkMQd5tNb7lXolBGKCAhmqNDg/2F/jnXVqntJm6WEbg=;
+	s=korg; t=1767959085;
+	bh=/xMBYw8rzxERxbETQfaB5mfH5phSHdpeBLUXYFzKsQQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PSoa9ZkYVustAywgX4+pCSBsLH8R5fD/NBwxWA1ByHZA/imjwWs9CrFltbqgOFFKi
-	 SPwGFp2vmYkPaC897Rvc1CSYlVDSLJlLVKn2irfAjzlphuMHUCd5kbomLRMe2tvGD5
-	 jSPYZPGpRXmpUXfxZEePFahEOOJS62MeUG7NqcuI=
+	b=JZNqBBGErQnt9/mv+MFZN50byQ2Z6hY7x+4q1Xe89Ab4e+tE0fe+88iDp9JZHvyBt
+	 +SmoCHeqyyzcXFY0DKnKeBnBWBZFLGgUgvq3tnnTwK6C3dJJw4TTvsrUWvHvcE/Yv2
+	 WG5B6YqFzAvaf4uUzhzaqCbLIVdRQ1Z7Ekr9yBOc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	David Hildenbrand <david@redhat.com>,
+	Zi Yan <ziy@nvidia.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Brendan Jackman <jackmanb@google.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	Christian Brauner <brauner@kernel.org>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	=?UTF-8?q?Eugenio=20P=C3=A9=20rez?= <eperezma@redhat.com>,
+	Gregory Price <gourry@gourry.net>,
+	"Huang, Ying" <ying.huang@linux.alibaba.com>,
+	Jan Kara <jack@suse.cz>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Jason Wang <jasowang@redhat.com>,
+	Jerrin Shaji George <jerrin.shaji-george@broadcom.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>,
+	Liam Howlett <liam.howlett@oracle.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Mathew Brost <matthew.brost@intel.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Minchan Kim <minchan@kernel.org>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Peter Xu <peterx@redhat.com>,
+	Qi Zheng <zhengqi.arch@bytedance.com>,
+	Rakie Kim <rakie.kim@sk.com>,
+	Rik van Riel <riel@surriel.com>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	xu xin <xu.xin16@zte.com.cn>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 685/737] f2fs: keep POSIX_FADV_NOREUSE ranges
+Subject: [PATCH 6.12 03/16] mm: simplify folio_expected_ref_count()
 Date: Fri,  9 Jan 2026 12:43:44 +0100
-Message-ID: <20260109112159.826654195@linuxfoundation.org>
+Message-ID: <20260109111951.548019950@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109111951.415522519@linuxfoundation.org>
+References: <20260109111951.415522519@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,210 +103,105 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jaegeuk Kim <jaegeuk@kernel.org>
+From: David Hildenbrand <david@redhat.com>
 
-[ Upstream commit ef0c333cad8d1940f132a7ce15f15920216a3bd5 ]
+[ Upstream commit 78cb1a13c42a6d843e21389f74d1edb90ed07288 ]
 
-This patch records POSIX_FADV_NOREUSE ranges for users to reclaim the caches
-instantly off from LRU.
+Now that PAGE_MAPPING_MOVABLE is gone, we can simplify and rely on the
+folio_test_anon() test only.
 
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Stable-dep-of: 10b591e7fb7c ("f2fs: fix to avoid updating compression context during writeback")
+... but staring at the users, this function should never even have been
+called on movable_ops pages. E.g.,
+* __buffer_migrate_folio() does not make sense for them
+* folio_migrate_mapping() does not make sense for them
+* migrate_huge_page_move_mapping() does not make sense for them
+* __migrate_folio() does not make sense for them
+* ... and khugepaged should never stumble over them
+
+Let's simply refuse typed pages (which includes slab) except hugetlb, and
+WARN.
+
+Link: https://lkml.kernel.org/r/20250704102524.326966-26-david@redhat.com
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Zi Yan <ziy@nvidia.com>
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+Cc: Alistair Popple <apopple@nvidia.com>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Brendan Jackman <jackmanb@google.com>
+Cc: Byungchul Park <byungchul@sk.com>
+Cc: Chengming Zhou <chengming.zhou@linux.dev>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Eugenio Pé rez <eperezma@redhat.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Gregory Price <gourry@gourry.net>
+Cc: "Huang, Ying" <ying.huang@linux.alibaba.com>
+Cc: Jan Kara <jack@suse.cz>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Jason Wang <jasowang@redhat.com>
+Cc: Jerrin Shaji George <jerrin.shaji-george@broadcom.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: John Hubbard <jhubbard@nvidia.com>
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Mathew Brost <matthew.brost@intel.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Miaohe Lin <linmiaohe@huawei.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Minchan Kim <minchan@kernel.org>
+Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Qi Zheng <zhengqi.arch@bytedance.com>
+Cc: Rakie Kim <rakie.kim@sk.com>
+Cc: Rik van Riel <riel@surriel.com>
+Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+Cc: xu xin <xu.xin16@zte.com.cn>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: f183663901f2 ("mm: consider non-anon swap cache folios in folio_expected_ref_count()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/debug.c |    3 ++
- fs/f2fs/f2fs.h  |   12 ++++++++++-
- fs/f2fs/file.c  |   60 +++++++++++++++++++++++++++++++++++++++++++++++++++-----
- fs/f2fs/inode.c |   14 +++++++++++++
- fs/f2fs/super.c |    1 
- 5 files changed, 84 insertions(+), 6 deletions(-)
+ include/linux/mm.h |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/f2fs/debug.c
-+++ b/fs/f2fs/debug.c
-@@ -100,6 +100,7 @@ static void update_general_status(struct
- 	si->ndirty_imeta = get_pages(sbi, F2FS_DIRTY_IMETA);
- 	si->ndirty_dirs = sbi->ndirty_inode[DIR_INODE];
- 	si->ndirty_files = sbi->ndirty_inode[FILE_INODE];
-+	si->ndonate_files = sbi->donate_files;
- 	si->nquota_files = sbi->nquota_files;
- 	si->ndirty_all = sbi->ndirty_inode[DIRTY_META];
- 	si->aw_cnt = atomic_read(&sbi->atomic_files);
-@@ -436,6 +437,8 @@ static int stat_show(struct seq_file *s,
- 			   si->compr_inode, si->compr_blocks);
- 		seq_printf(s, "  - Swapfile Inode: %u\n",
- 			   si->swapfile_inode);
-+		seq_printf(s, "  - Donate Inode: %u\n",
-+			   si->ndonate_files);
- 		seq_printf(s, "  - Orphan/Append/Update Inode: %u, %u, %u\n",
- 			   si->orphans, si->append, si->update);
- 		seq_printf(s, "\nMain area: %d segs, %d secs %d zones\n",
---- a/fs/f2fs/f2fs.h
-+++ b/fs/f2fs/f2fs.h
-@@ -837,6 +837,11 @@ struct f2fs_inode_info {
- #endif
- 	struct list_head dirty_list;	/* dirty list for dirs and files */
- 	struct list_head gdirty_list;	/* linked in global dirty list */
-+
-+	/* linked in global inode list for cache donation */
-+	struct list_head gdonate_list;
-+	pgoff_t donate_start, donate_end; /* inclusive */
-+
- 	struct task_struct *atomic_write_task;	/* store atomic write task */
- 	struct extent_tree *extent_tree[NR_EXTENT_CACHES];
- 					/* cached extent_tree entry */
-@@ -1261,6 +1266,7 @@ enum inode_type {
- 	DIR_INODE,			/* for dirty dir inode */
- 	FILE_INODE,			/* for dirty regular/symlink inode */
- 	DIRTY_META,			/* for all dirtied inode metadata */
-+	DONATE_INODE,			/* for all inode to donate pages */
- 	NR_INODE_TYPE,
- };
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -2238,13 +2238,13 @@ static inline int folio_expected_ref_cou
+ 	const int order = folio_order(folio);
+ 	int ref_count = 0;
  
-@@ -1613,6 +1619,9 @@ struct f2fs_sb_info {
- 	unsigned int warm_data_age_threshold;
- 	unsigned int last_age_weight;
+-	if (WARN_ON_ONCE(folio_test_slab(folio)))
++	if (WARN_ON_ONCE(page_has_type(&folio->page) && !folio_test_hugetlb(folio)))
+ 		return 0;
  
-+	/* control donate caches */
-+	unsigned int donate_files;
-+
- 	/* basic filesystem units */
- 	unsigned int log_sectors_per_block;	/* log2 sectors per block */
- 	unsigned int log_blocksize;		/* log2 block size */
-@@ -3948,7 +3957,8 @@ struct f2fs_stat_info {
- 	unsigned long long allocated_data_blocks;
- 	int ndirty_node, ndirty_dent, ndirty_meta, ndirty_imeta;
- 	int ndirty_data, ndirty_qdata;
--	unsigned int ndirty_dirs, ndirty_files, nquota_files, ndirty_all;
-+	unsigned int ndirty_dirs, ndirty_files, ndirty_all;
-+	unsigned int nquota_files, ndonate_files;
- 	int nats, dirty_nats, sits, dirty_sits;
- 	int free_nids, avail_nids, alloc_nids;
- 	int total_count, utilization;
---- a/fs/f2fs/file.c
-+++ b/fs/f2fs/file.c
-@@ -2435,6 +2435,52 @@ static int f2fs_ioc_shutdown(struct file
- 	return ret;
- }
- 
-+static void f2fs_keep_noreuse_range(struct inode *inode,
-+				loff_t offset, loff_t len)
-+{
-+	struct f2fs_sb_info *sbi = F2FS_I_SB(inode);
-+	u64 max_bytes = F2FS_BLK_TO_BYTES(max_file_blocks(inode));
-+	u64 start, end;
-+
-+	if (!S_ISREG(inode->i_mode))
-+		return;
-+
-+	if (offset >= max_bytes || len > max_bytes ||
-+	    (offset + len) > max_bytes)
-+		return;
-+
-+	start = offset >> PAGE_SHIFT;
-+	end = DIV_ROUND_UP(offset + len, PAGE_SIZE);
-+
-+	inode_lock(inode);
-+	if (f2fs_is_atomic_file(inode)) {
-+		inode_unlock(inode);
-+		return;
-+	}
-+
-+	spin_lock(&sbi->inode_lock[DONATE_INODE]);
-+	/* let's remove the range, if len = 0 */
-+	if (!len) {
-+		if (!list_empty(&F2FS_I(inode)->gdonate_list)) {
-+			list_del_init(&F2FS_I(inode)->gdonate_list);
-+			sbi->donate_files--;
-+		}
+ 	if (folio_test_anon(folio)) {
+ 		/* One reference per page from the swapcache. */
+ 		ref_count += folio_test_swapcache(folio) << order;
+-	} else if (!((unsigned long)folio->mapping & PAGE_MAPPING_FLAGS)) {
 +	} else {
-+		if (list_empty(&F2FS_I(inode)->gdonate_list)) {
-+			list_add_tail(&F2FS_I(inode)->gdonate_list,
-+					&sbi->inode_list[DONATE_INODE]);
-+			sbi->donate_files++;
-+		} else {
-+			list_move_tail(&F2FS_I(inode)->gdonate_list,
-+					&sbi->inode_list[DONATE_INODE]);
-+		}
-+		F2FS_I(inode)->donate_start = start;
-+		F2FS_I(inode)->donate_end = end - 1;
-+	}
-+	spin_unlock(&sbi->inode_lock[DONATE_INODE]);
-+	inode_unlock(inode);
-+}
-+
- static int f2fs_ioc_fitrim(struct file *filp, unsigned long arg)
- {
- 	struct inode *inode = file_inode(filp);
-@@ -5078,12 +5124,16 @@ static int f2fs_file_fadvise(struct file
- 	}
- 
- 	err = generic_fadvise(filp, offset, len, advice);
--	if (!err && advice == POSIX_FADV_DONTNEED &&
--		test_opt(F2FS_I_SB(inode), COMPRESS_CACHE) &&
--		f2fs_compressed_file(inode))
--		f2fs_invalidate_compress_pages(F2FS_I_SB(inode), inode->i_ino);
-+	if (err)
-+		return err;
- 
--	return err;
-+	if (advice == POSIX_FADV_DONTNEED &&
-+	    (test_opt(F2FS_I_SB(inode), COMPRESS_CACHE) &&
-+	     f2fs_compressed_file(inode)))
-+		f2fs_invalidate_compress_pages(F2FS_I_SB(inode), inode->i_ino);
-+	else if (advice == POSIX_FADV_NOREUSE)
-+		f2fs_keep_noreuse_range(inode, offset, len);
-+	return 0;
- }
- 
- #ifdef CONFIG_COMPAT
---- a/fs/f2fs/inode.c
-+++ b/fs/f2fs/inode.c
-@@ -811,6 +811,19 @@ int f2fs_write_inode(struct inode *inode
- 	return 0;
- }
- 
-+static void f2fs_remove_donate_inode(struct inode *inode)
-+{
-+	struct f2fs_sb_info *sbi = F2FS_I_SB(inode);
-+
-+	if (list_empty(&F2FS_I(inode)->gdonate_list))
-+		return;
-+
-+	spin_lock(&sbi->inode_lock[DONATE_INODE]);
-+	list_del_init(&F2FS_I(inode)->gdonate_list);
-+	sbi->donate_files--;
-+	spin_unlock(&sbi->inode_lock[DONATE_INODE]);
-+}
-+
- /*
-  * Called at the last iput() if i_nlink is zero
-  */
-@@ -844,6 +857,7 @@ void f2fs_evict_inode(struct inode *inod
- 
- 	f2fs_bug_on(sbi, get_dirty_pages(inode));
- 	f2fs_remove_dirty_inode(inode);
-+	f2fs_remove_donate_inode(inode);
- 
- 	f2fs_destroy_extent_tree(inode);
- 
---- a/fs/f2fs/super.c
-+++ b/fs/f2fs/super.c
-@@ -1413,6 +1413,7 @@ static struct inode *f2fs_alloc_inode(st
- 	spin_lock_init(&fi->i_size_lock);
- 	INIT_LIST_HEAD(&fi->dirty_list);
- 	INIT_LIST_HEAD(&fi->gdirty_list);
-+	INIT_LIST_HEAD(&fi->gdonate_list);
- 	init_f2fs_rwsem(&fi->i_gc_rwsem[READ]);
- 	init_f2fs_rwsem(&fi->i_gc_rwsem[WRITE]);
- 	init_f2fs_rwsem(&fi->i_xattr_sem);
+ 		/* One reference per page from the pagecache. */
+ 		ref_count += !!folio->mapping << order;
+ 		/* One reference from PG_private. */
 
 
 
