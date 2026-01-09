@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-207562-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206954-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9367ED0A06F
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:52:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 343AFD09859
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:22:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5EF0530C711A
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:40:52 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 31E61307F99D
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:11:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC10535CB60;
-	Fri,  9 Jan 2026 12:40:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0725235A940;
+	Fri,  9 Jan 2026 12:11:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j6q/lTSH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uP2Yr1GC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F48935BDD4;
-	Fri,  9 Jan 2026 12:40:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCCBA35A930;
+	Fri,  9 Jan 2026 12:11:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962408; cv=none; b=IHuNYGrgK16nOPZihseMTtcEh7uGx14k9IDWnPRE1Swdsqf6Q4lwqeokf+xCckuf4ZMUjvpXIqe3uAGE1sRcdUbj1rzPYQTkmlkeZfB1VS2xUnWXA14tCAQtUl6j7xym5h5a+pvZ61+X0uvtznRScBAc812twkdzsEMuRPS0P4g=
+	t=1767960677; cv=none; b=JNCndvCJFrgLM9w1WLMHKT4IIgEOEHuEQOpDKsVyYZn60ljSYSfehCfncWKOcI3HKrhH1AA8/+4Ze6k3SjsvGkJ3BBdAx5adnWnRQxRTF0un3jgRjwrdCCbPdyiIdXYfbqacER2WhZ97NKKt9/wwXi33PuxemVthpYGOu+/Oz98=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962408; c=relaxed/simple;
-	bh=JtR3ZuKpDvzJ7zR7gu75hCMsV1F5JzGFQP/my5a9ZsQ=;
+	s=arc-20240116; t=1767960677; c=relaxed/simple;
+	bh=JO0QKjxvHnQnF+7EgAJsbSGjkUdSAGFhBPhAPxnqrCI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mlO9aKmYBsWKenwLpa7IXg7oMS7NZWQZ9DU7P6/rujvf3zyhgm7mwEh7JgYBFXg/vLQrvSfvJMAR38jLpl84svd5O7cA58IL1k9gxF8NlvzTNJK2f20PMotSxyuIMO4MJOcQIH5lP7sO4+9mFDNTw+LNI/nKYLnCWG23nw8dTQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j6q/lTSH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4665C4CEF1;
-	Fri,  9 Jan 2026 12:40:07 +0000 (UTC)
+	 MIME-Version; b=U8pNPI+hof0xLIaAGWihodB5gdCZjMwuIWl/gG9Cdc2VcNYckHfquf1oWY9ndi/twvdIEpYF9C7YkMGWGxLxHilffyimI7kYhBpkx8TpjRGKsmebOfKkpL53RDaojphArQvR0uWIOaMxQIyG2a5iqDJgy/xoHmHATsC8L1gYwzE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uP2Yr1GC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A560C16AAE;
+	Fri,  9 Jan 2026 12:11:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962408;
-	bh=JtR3ZuKpDvzJ7zR7gu75hCMsV1F5JzGFQP/my5a9ZsQ=;
+	s=korg; t=1767960677;
+	bh=JO0QKjxvHnQnF+7EgAJsbSGjkUdSAGFhBPhAPxnqrCI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j6q/lTSHXCzorWE3+ws2KXrO3msaXwb/ZKx5B/Uxc6fiDfNCzdhJDBGc+Kvy5/Bax
-	 grMfDRQc0aR0uk+Z4+mricWItlk9ayQRf5v8oLNiRKtw9vrNoYuBjNQd/pIxzSyPeD
-	 DLX4v4IKzFB4C1lQ9738Vau/bDS2SjlwIFFUtzJA=
+	b=uP2Yr1GCOIdpPchUPxYbRvVkcJGpXGWXs5H8JNTL0p1eWc2/3mgbAC2F3Xtryeiw/
+	 ypPOJQlbx/KGLNif6crkFTXz0UzRHJMx+yvzs+7DUk9IjxNps2xuu1W6CYmgk4JNio
+	 z+6hJ29KhHT7In4UrHgeJuyEM1EsN/Lmdn3Ri7q4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dai Ngo <dai.ngo@oracle.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.1 347/634] NFSD: use correct reservation type in nfsd4_scsi_fence_client
+	Adrian Moreno <amorenoz@redhat.com>,
+	Aaron Conole <aconole@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Adrian Yip <adrian.ytw@gmail.com>
+Subject: [PATCH 6.6 486/737] selftests: openvswitch: Fix escape chars in regexp.
 Date: Fri,  9 Jan 2026 12:40:25 +0100
-Message-ID: <20260109112130.581683335@linuxfoundation.org>
+Message-ID: <20260109112152.268215539@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,39 +61,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dai Ngo <dai.ngo@oracle.com>
+From: Adrian Moreno <amorenoz@redhat.com>
 
-commit 6f52063db9aabdaabea929b1e998af98c2e8d917 upstream.
+commit 3fde60afe1f84746c1177861bd27b3ebb00cb8f5 upstream.
 
-The reservation type argument for the pr_preempt call should match the
-one used in nfsd4_block_get_device_info_scsi.
+Character sequences starting with `\` are interpreted by python as
+escaped Unicode characters. However, they have other meaning in
+regular expressions (e.g: "\d").
 
-Fixes: f99d4fbdae67 ("nfsd: add SCSI layout support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Dai Ngo <dai.ngo@oracle.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+It seems Python >= 3.12 starts emitting a SyntaxWarning when these
+escaped sequences are not recognized as valid Unicode characters.
+
+An example of these warnings:
+
+tools/testing/selftests/net/openvswitch/ovs-dpctl.py:505:
+SyntaxWarning: invalid escape sequence '\d'
+
+Fix all the warnings by flagging literals as raw strings.
+
+Signed-off-by: Adrian Moreno <amorenoz@redhat.com>
+Reviewed-by: Aaron Conole <aconole@redhat.com>
+Link: https://lore.kernel.org/r/20240416090913.2028475-1-amorenoz@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Adrian Yip <adrian.ytw@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/blocklayout.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ tools/testing/selftests/net/openvswitch/ovs-dpctl.py |   16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
---- a/fs/nfsd/blocklayout.c
-+++ b/fs/nfsd/blocklayout.c
-@@ -334,7 +334,8 @@ nfsd4_scsi_fence_client(struct nfs4_layo
- 	struct block_device *bdev = ls->ls_file->nf_file->f_path.mnt->mnt_sb->s_bdev;
+--- a/tools/testing/selftests/net/openvswitch/ovs-dpctl.py
++++ b/tools/testing/selftests/net/openvswitch/ovs-dpctl.py
+@@ -489,7 +489,7 @@ class ovsactions(nla):
+                     actstr, reason = parse_extract_field(
+                         actstr,
+                         "drop(",
+-                        "([0-9]+)",
++                        r"([0-9]+)",
+                         lambda x: int(x, 0),
+                         False,
+                         None,
+@@ -502,9 +502,9 @@ class ovsactions(nla):
+                     actstr = actstr[len("drop"): ]
+                     return (totallen - len(actstr))
  
- 	bdev->bd_disk->fops->pr_ops->pr_preempt(bdev, NFSD_MDS_PR_KEY,
--			nfsd4_scsi_pr_key(clp), 0, true);
-+			nfsd4_scsi_pr_key(clp),
-+			PR_EXCLUSIVE_ACCESS_REG_ONLY, true);
- }
+-            elif parse_starts_block(actstr, "^(\d+)", False, True):
++            elif parse_starts_block(actstr, r"^(\d+)", False, True):
+                 actstr, output = parse_extract_field(
+-                    actstr, None, "(\d+)", lambda x: int(x), False, "0"
++                    actstr, None, r"(\d+)", lambda x: int(x), False, "0"
+                 )
+                 self["attrs"].append(["OVS_ACTION_ATTR_OUTPUT", output])
+                 parsed = True
+@@ -512,7 +512,7 @@ class ovsactions(nla):
+                 actstr, recircid = parse_extract_field(
+                     actstr,
+                     "recirc(",
+-                    "([0-9a-fA-Fx]+)",
++                    r"([0-9a-fA-Fx]+)",
+                     lambda x: int(x, 0),
+                     False,
+                     0,
+@@ -588,17 +588,17 @@ class ovsactions(nla):
+                                 actstr = actstr[3:]
  
- const struct nfsd4_layout_ops scsi_layout_ops = {
+                             actstr, ip_block_min = parse_extract_field(
+-                                actstr, "=", "([0-9a-fA-F\.]+)", str, False
++                                actstr, "=", r"([0-9a-fA-F\.]+)", str, False
+                             )
+                             actstr, ip_block_max = parse_extract_field(
+-                                actstr, "-", "([0-9a-fA-F\.]+)", str, False
++                                actstr, "-", r"([0-9a-fA-F\.]+)", str, False
+                             )
+ 
+                             actstr, proto_min = parse_extract_field(
+-                                actstr, ":", "(\d+)", int, False
++                                actstr, ":", r"(\d+)", int, False
+                             )
+                             actstr, proto_max = parse_extract_field(
+-                                actstr, "-", "(\d+)", int, False
++                                actstr, "-", r"(\d+)", int, False
+                             )
+ 
+                             if t is not None:
 
 
 
