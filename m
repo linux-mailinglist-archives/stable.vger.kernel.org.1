@@ -1,52 +1,58 @@
-Return-Path: <stable+bounces-207541-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206939-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 788E3D0A229
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:01:45 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66830D09805
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:21:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CFDBB312DF49
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:39:32 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1F59B3076B12
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:10:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B31F635B159;
-	Fri,  9 Jan 2026 12:39:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58B9835A94E;
+	Fri,  9 Jan 2026 12:10:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ncGeBbWE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T68TatEE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 772D2358D30;
-	Fri,  9 Jan 2026 12:39:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B28635A941;
+	Fri,  9 Jan 2026 12:10:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962347; cv=none; b=Id4Qfp8TkapU4dxqmiW7mIEFuFZa0rYdYvrtQHyOnFNa4DB4PjE+ockRUZ1yIChou6sQejM/LKo8V/46paEqhomcPOL5hEULMkyXOIkc9P7ZwmUeeRinfdY4/z1PuDOBcFSNvdPePDnzudZVk/cvA4YAReG4ebCxEIci925OaLs=
+	t=1767960635; cv=none; b=BqU4Zv/f6hRSfGu80yQETuODp/vvowtx37taqj06w759ZTlETuDnqvrY+8fDSAWGdLrT7ykZNyGEEJ3268x6lEPj9Vy7kaxLWp8VN+b+Rj6eoRu7DDoixdV6wcqqdE84Tk5negayxaueH7krm2/kMh/JlwxSTQqB8vikeuIJUz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962347; c=relaxed/simple;
-	bh=NV7sEFkHT8HXiDwU7h7BDH+EiMEiybCW4vtd4KRltC0=;
+	s=arc-20240116; t=1767960635; c=relaxed/simple;
+	bh=gMALmwFy0yi14AMMIU1piwNkda3C01xE4+opbr2Fcu8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XmO+XQ4hP/bABAmyvngvnlC44unUq+eNVSeHGUBUkqXeHXH/pAn+M8wOYn8gGNKly0TdTColL5Q8tOq9vt7OpwWgQ0WHsfzJXD6yXBCOcIa18mkoDaRu0+PcvLvBHqAjmgFA4eCE3trZ5WD8nn7Jc9RXgbtjr6A3Vlk1hd83bCQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ncGeBbWE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 060ABC19421;
-	Fri,  9 Jan 2026 12:39:06 +0000 (UTC)
+	 MIME-Version; b=dGi9dy4usdESj8iBnnbQW9PWZp5gHeZKvFitKVpe4xKqG3bX/U33tskgvHAIvOJlaxf93Yq5ST/5U644bG+nKbkO3qaDEedOyDZ5lNCE/BTBDwTLMDT+YFhzpHP4Z5wQcOf2ICFFH8hh2YqVkHWjmKIAUtdRHYNU5nIQ9EC7TbA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T68TatEE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EC1BC2BCB3;
+	Fri,  9 Jan 2026 12:10:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962347;
-	bh=NV7sEFkHT8HXiDwU7h7BDH+EiMEiybCW4vtd4KRltC0=;
+	s=korg; t=1767960634;
+	bh=gMALmwFy0yi14AMMIU1piwNkda3C01xE4+opbr2Fcu8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ncGeBbWEk5e3Wh6pftkORhSLjY4V40yfkUKYnFWE/RGQcPJMavPqY0WcxyFa+Z6D1
-	 fBjVffIGJ7IILx7yu34m1Y3luj+EGIjAklYph8XorEtL7qGHpG3GROQatbEyGzvgtG
-	 ID1W7v2EmO+L6ahqD8hh+AidfPhbYCpOGCuMboHI=
+	b=T68TatEEQepke8oWVehTxC1MBDviWhxniga2ZxWrf8xEG+TVH8fw2TeOqn2Un3Go/
+	 5au3WPDL5lpbj4bbzptilSM0+WbQmCflmjUO4BwDpIHm8JO4d2yG6+VhXS2X3ZPu+4
+	 EwHlKdX6vZCbn26R/DqnMf7Y2wEmSZlaHMRGcTxU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Changcheng <chenchangcheng@kylinos.cn>
-Subject: [PATCH 6.1 333/634] usb: usb-storage: Maintain minimal modifications to the bcdDevice range.
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Ian Rogers <irogers@google.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.6 472/737] tracing: Do not register unsupported perf events
 Date: Fri,  9 Jan 2026 12:40:11 +0100
-Message-ID: <20260109112130.055971974@linuxfoundation.org>
+Message-ID: <20260109112151.742446334@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,36 +64,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Changcheng <chenchangcheng@kylinos.cn>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-commit 0831269b5f71594882accfceb02638124f88955d upstream.
+commit ef7f38df890f5dcd2ae62f8dbde191d72f3bebae upstream.
 
-We cannot determine which models require the NO_ATA_1X and
-IGNORE_RESIDUE quirks aside from the EL-R12 optical drive device.
+Synthetic events currently do not have a function to register perf events.
+This leads to calling the tracepoint register functions with a NULL
+function pointer which triggers:
 
-Fixes: 955a48a5353f ("usb: usb-storage: No additional quirks need to be added to the EL-R12 optical drive.")
-Signed-off-by: Chen Changcheng <chenchangcheng@kylinos.cn>
-Link: https://patch.msgid.link/20251218012318.15978-1-chenchangcheng@kylinos.cn
+ ------------[ cut here ]------------
+ WARNING: kernel/tracepoint.c:175 at tracepoint_add_func+0x357/0x370, CPU#2: perf/2272
+ Modules linked in: kvm_intel kvm irqbypass
+ CPU: 2 UID: 0 PID: 2272 Comm: perf Not tainted 6.18.0-ftest-11964-ge022764176fc-dirty #323 PREEMPTLAZY
+ Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.17.0-debian-1.17.0-1 04/01/2014
+ RIP: 0010:tracepoint_add_func+0x357/0x370
+ Code: 28 9c e8 4c 0b f5 ff eb 0f 4c 89 f7 48 c7 c6 80 4d 28 9c e8 ab 89 f4 ff 31 c0 5b 41 5c 41 5d 41 5e 41 5f 5d c3 cc cc cc cc cc <0f> 0b 49 c7 c6 ea ff ff ff e9 ee fe ff ff 0f 0b e9 f9 fe ff ff 0f
+ RSP: 0018:ffffabc0c44d3c40 EFLAGS: 00010246
+ RAX: 0000000000000001 RBX: ffff9380aa9e4060 RCX: 0000000000000000
+ RDX: 000000000000000a RSI: ffffffff9e1d4a98 RDI: ffff937fcf5fd6c8
+ RBP: 0000000000000001 R08: 0000000000000007 R09: ffff937fcf5fc780
+ R10: 0000000000000003 R11: ffffffff9c193910 R12: 000000000000000a
+ R13: ffffffff9e1e5888 R14: 0000000000000000 R15: ffffabc0c44d3c78
+ FS:  00007f6202f5f340(0000) GS:ffff93819f00f000(0000) knlGS:0000000000000000
+ CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ CR2: 000055d3162281a8 CR3: 0000000106a56003 CR4: 0000000000172ef0
+ Call Trace:
+  <TASK>
+  tracepoint_probe_register+0x5d/0x90
+  synth_event_reg+0x3c/0x60
+  perf_trace_event_init+0x204/0x340
+  perf_trace_init+0x85/0xd0
+  perf_tp_event_init+0x2e/0x50
+  perf_try_init_event+0x6f/0x230
+  ? perf_event_alloc+0x4bb/0xdc0
+  perf_event_alloc+0x65a/0xdc0
+  __se_sys_perf_event_open+0x290/0x9f0
+  do_syscall_64+0x93/0x7b0
+  ? entry_SYSCALL_64_after_hwframe+0x76/0x7e
+  ? trace_hardirqs_off+0x53/0xc0
+  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+Instead, have the code return -ENODEV, which doesn't warn and has perf
+error out with:
+
+ # perf record -e synthetic:futex_wait
+Error:
+The sys_perf_event_open() syscall returned with 19 (No such device) for event (synthetic:futex_wait).
+"dmesg | grep -i perf" may provide additional information.
+
+Ideally perf should support synthetic events, but for now just fix the
+warning. The support can come later.
+
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Arnaldo Carvalho de Melo <acme@kernel.org>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Link: https://patch.msgid.link/20251216182440.147e4453@gandalf.local.home
+Fixes: 4b147936fa509 ("tracing: Add support for 'synthetic' events")
+Reported-by: Ian Rogers <irogers@google.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/storage/unusual_uas.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/trace/trace_events.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/usb/storage/unusual_uas.h
-+++ b/drivers/usb/storage/unusual_uas.h
-@@ -98,7 +98,7 @@ UNUSUAL_DEV(0x125f, 0xa94a, 0x0160, 0x01
- 		US_FL_NO_ATA_1X),
+--- a/kernel/trace/trace_events.c
++++ b/kernel/trace/trace_events.c
+@@ -689,6 +689,8 @@ int trace_event_reg(struct trace_event_c
  
- /* Reported-by: Benjamin Tissoires <benjamin.tissoires@redhat.com> */
--UNUSUAL_DEV(0x13fd, 0x3940, 0x0309, 0x0309,
-+UNUSUAL_DEV(0x13fd, 0x3940, 0x0000, 0x0309,
- 		"Initio Corporation",
- 		"INIC-3069",
- 		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
+ #ifdef CONFIG_PERF_EVENTS
+ 	case TRACE_REG_PERF_REGISTER:
++		if (!call->class->perf_probe)
++			return -ENODEV;
+ 		return tracepoint_probe_register(call->tp,
+ 						 call->class->perf_probe,
+ 						 call);
 
 
 
