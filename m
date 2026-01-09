@@ -1,41 +1,41 @@
-Return-Path: <stable+bounces-206520-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206522-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A409D09065
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 12:51:38 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD7D7D091AC
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 12:57:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A1225302A3E1
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:50:41 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 821A23065B72
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:50:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14FCC358D22;
-	Fri,  9 Jan 2026 11:50:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AE5D32BF21;
+	Fri,  9 Jan 2026 11:50:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pWYlhbEC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CSLdNrIr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA0EF33D511;
-	Fri,  9 Jan 2026 11:50:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C162833C511;
+	Fri,  9 Jan 2026 11:50:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767959439; cv=none; b=StEE8xd7/UZys7watm6FBAjsP+MCSbaqbDkl3IoMQ/Nlj9LzBE8tWZs/F1Cf3D8j2E/uYwcZyrUWkEeonKJ09MssOD5Ts/ph04Raz5hJ8//FSj4SXL/pwDlhUY+qmIkik2moiftRtzYjWCP91/Tq+lrt9VBhDsoYOjIR/EPgfrA=
+	t=1767959445; cv=none; b=fyxOH+u2TNxQPtBpFIIp0zy1wYqj2tGuA6qJWavqXQQWUapQbf4d7z8w5Du1wuF8OsWg4dYtnbCilGwlyRaTf6JgNCQybbrylc3i82PUnJ8sYIyB9FTkryXosGRW7mHuURPRYDPnHbRd0itfbNd2X5/iL+0vQ0IBarGazSxGbNg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767959439; c=relaxed/simple;
-	bh=gnvamdzvBzDtpdqqdqg6F5rzYyGknDJ4Hz/WYoDcL2w=;
+	s=arc-20240116; t=1767959445; c=relaxed/simple;
+	bh=6FWEsecBrlucanM+mf+hMULc0Q02rnyFkMyqP0XHbDQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R5TjX/FGUFW6cw/PI3pu6rD3IZTuFI/USWTryOfSsFq5ED6gLxEa7VRB31ktfMwSwCsEGRcKkZ5fXk1MZ2CS2IouH5nNO1+guJ/6nWWMHfHsFW9zPLCvhmQwUL9P1vTS9ovSND2xdHeWuda2Y56+9LOwWT4/GzBgsYY+4eAMOUo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pWYlhbEC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53CD1C4CEF1;
-	Fri,  9 Jan 2026 11:50:39 +0000 (UTC)
+	 MIME-Version; b=ocOJtLdFFDolTM6Yo52blhunD31ycKSa+OmKaQbZzAeQ8ho6ZoQtB5MgksN9HiVR4yL667xjJsw7QtjHEXiKruWknSOWVJnsQBFKCMNuJpERLY+1ScEWkRAQ6xlRFI6vBGXKrnBBb4RCiuLOiNSvvjVJG7ZuXK55zLgofxQBHlE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CSLdNrIr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 144BEC4CEF1;
+	Fri,  9 Jan 2026 11:50:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767959439;
-	bh=gnvamdzvBzDtpdqqdqg6F5rzYyGknDJ4Hz/WYoDcL2w=;
+	s=korg; t=1767959445;
+	bh=6FWEsecBrlucanM+mf+hMULc0Q02rnyFkMyqP0XHbDQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pWYlhbECQy/3QVp/DvNPw30IO7swf4o7pUfGeYFNhxLc+DqCU2zymyloXMr8h2w/8
-	 5+nKPpEfx2Sv2WB5owD9aYXBvxp6kPfOPj4QLQyDYHQi1YAx4cLD4f/ZlFzzrUhudS
-	 6lGjkef2XNFarZ0QUdpWa4zwit+6JHH3P/uXDM48=
+	b=CSLdNrIrM8DHPpcfuxl8wlSRsCHCHI3XPJH94aTRsuaxlghISTu+sdQ1JpKQM+ZrP
+	 P52GXNif+73jWz6m9J8AqJuvDN7GL/ZL9tKhpcUSOqfAjwG6NZccRzlX/Ms9M+//6N
+	 F/St15q8TFbK/39LMtaLUjNJ5W//+M/5QwhDaZu0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -43,9 +43,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
 	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 053/737] clk: renesas: rzg2l: Simplify the logic in rzg2l_mod_clock_endisable()
-Date: Fri,  9 Jan 2026 12:33:12 +0100
-Message-ID: <20260109112135.988676160@linuxfoundation.org>
+Subject: [PATCH 6.6 054/737] clk: renesas: rzg2l: Remove critical area
+Date: Fri,  9 Jan 2026 12:33:13 +0100
+Message-ID: <20260109112136.026081958@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
 References: <20260109112133.973195406@linuxfoundation.org>
@@ -66,39 +66,52 @@ Content-Transfer-Encoding: 8bit
 
 From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-[ Upstream commit becf4a771a12b52dc5b3d2b089598d5603f3bbec ]
+[ Upstream commit 5f710e3bc5987373737470f98798bbd49134a2e0 ]
 
-The bitmask << 16 is anyway set on both branches of if thus move it
-before the if and set the lower bits of registers only in case clock is
-enabled.
+The spinlock in rzg2l_mod_clock_endisable() is intended to protect
+RMW-accesses to the hardware register.  There is no need to protect
+instructions that set temporary variables which will be written
+afterwards to a hardware register.  With this only one write to one
+clock register is executed thus locking/unlocking rmw_lock is removed.
 
 Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/20230912045157.177966-12-claudiu.beznea.uj@bp.renesas.com
+Link: https://lore.kernel.org/r/20230929053915.1530607-7-claudiu.beznea@bp.renesas.com
 Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Stable-dep-of: b91401af6c00 ("clk: renesas: cpg-mssr: Read back reset registers to assure values latched")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/renesas/rzg2l-cpg.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/clk/renesas/rzg2l-cpg.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
 diff --git a/drivers/clk/renesas/rzg2l-cpg.c b/drivers/clk/renesas/rzg2l-cpg.c
-index 77eefb6ee4538..0b3b6097b33a0 100644
+index 0b3b6097b33a0..b7fa4c7eb8016 100644
 --- a/drivers/clk/renesas/rzg2l-cpg.c
 +++ b/drivers/clk/renesas/rzg2l-cpg.c
-@@ -992,10 +992,9 @@ static int rzg2l_mod_clock_endisable(struct clk_hw *hw, bool enable)
+@@ -978,7 +978,6 @@ static int rzg2l_mod_clock_endisable(struct clk_hw *hw, bool enable)
+ 	struct rzg2l_cpg_priv *priv = clock->priv;
+ 	unsigned int reg = clock->off;
+ 	struct device *dev = priv->dev;
+-	unsigned long flags;
+ 	u32 bitmask = BIT(clock->bit);
+ 	u32 value;
+ 	int error;
+@@ -990,14 +989,12 @@ static int rzg2l_mod_clock_endisable(struct clk_hw *hw, bool enable)
+ 
+ 	dev_dbg(dev, "CLK_ON %u/%pC %s\n", CLK_ON_R(reg), hw->clk,
  		enable ? "ON" : "OFF");
- 	spin_lock_irqsave(&priv->rmw_lock, flags);
+-	spin_lock_irqsave(&priv->rmw_lock, flags);
  
-+	value = bitmask << 16;
+ 	value = bitmask << 16;
  	if (enable)
--		value = (bitmask << 16) | bitmask;
--	else
--		value = bitmask << 16;
-+		value |= bitmask;
- 	writel(value, priv->base + CLK_ON_R(reg));
+ 		value |= bitmask;
+-	writel(value, priv->base + CLK_ON_R(reg));
  
- 	spin_unlock_irqrestore(&priv->rmw_lock, flags);
+-	spin_unlock_irqrestore(&priv->rmw_lock, flags);
++	writel(value, priv->base + CLK_ON_R(reg));
+ 
+ 	if (!enable)
+ 		return 0;
 -- 
 2.51.0
 
