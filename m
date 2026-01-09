@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-206892-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207460-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6E2ED096B3
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:16:50 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 529B0D09E2C
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:43:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2D2E330C0294
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:08:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D21C231235FF
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:35:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AD2F35A939;
-	Fri,  9 Jan 2026 12:08:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC0791E8836;
+	Fri,  9 Jan 2026 12:35:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CEuJVhLl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xwgWH1HL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F160235A922;
-	Fri,  9 Jan 2026 12:08:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F8BF33C53A;
+	Fri,  9 Jan 2026 12:35:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960497; cv=none; b=lux/qWsNGrcHaWHk9qRDIzq4Xok2qju65Lc8cy/69PXrzJcQ6dAIGpRKN7E5czy7POif9WRSt8AfX3Uix3JcMa0lohmtf1fgH95GOsACN00qwHXMxmHGw492ZyiAjS8dtvx2a3hGWoyfL7eYXhOyBkW2oMWoz+iTA9oCHcPa+eE=
+	t=1767962118; cv=none; b=Z0AMrw5BbSYz/m6+F4+45xl3Y/EiakEckU/iTro2oKyyjLmR1GHXQdLXHR6XqfexEb4Q+AE3vaforP/joYmcmRxRPghxc5+bLCaND5w135Lk8iy12dboaAjDVWqwh7PbzCfz5uGGjEtHBhFe7Q84mfcHnnZyQckjo/xsjZ7Dy98=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960497; c=relaxed/simple;
-	bh=Ca3pPDM0ra7CRO53DwaqfJvb06Djj8OnJgG2ZMWwia0=;
+	s=arc-20240116; t=1767962118; c=relaxed/simple;
+	bh=SO05wA6/jxPOMZblAKetfmPfbV7HewcvGIRvuIWWWpc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RZ4FOnCDP5SId4KVNK1S4aI5Kk5D/g0r1/Ivfi6vRd/EY3e17E2DUFjcmRN6xmUT3I1NzPQb5PcfUNzSVzs5qGmcMfazZlOEt/NXU3LPG9NyZ4eBqTAjeVtdKcYnAr1GF1fl26/Qt3ZBmWVzZszvVpTAyeSU0L9Ceh5+tA/CEis=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CEuJVhLl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 819A4C4CEF1;
-	Fri,  9 Jan 2026 12:08:16 +0000 (UTC)
+	 MIME-Version; b=SGfNjY4UjszWy7UGYldUR4b1x9+SbFrx73uKtdsqNNXLOV56lcPYKEDoJBXvu/yUKy6620jbcaBAgGJ5F6zsMcqMAj2eEUW6Jt3ySheVnvM4PxHA1I9uC2JK/OZtQ7YuexZRshGC4x8nUZ0UmgagPwPRadeKG6W8BE5KDVkSRvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xwgWH1HL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4D9FC19421;
+	Fri,  9 Jan 2026 12:35:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960496;
-	bh=Ca3pPDM0ra7CRO53DwaqfJvb06Djj8OnJgG2ZMWwia0=;
+	s=korg; t=1767962118;
+	bh=SO05wA6/jxPOMZblAKetfmPfbV7HewcvGIRvuIWWWpc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CEuJVhLlR4nbf7HFMoHYecFsACewZqX3PK62RtUXNGyHARh88rSYRRzbi5poP+Df0
-	 rfpIlthLda+JneiBm8OONsin/PRbDpQ30oSC3WRuyxEnRWS6E7FEbWSoSFCV4YaGJX
-	 cWoV46WTesZCkVTbQjr6SIF9UMbFMbWkm/ha+2tg=
+	b=xwgWH1HLPxbZXOocE1ZAjuLdctziuHNXQuZhXgd863LJTQ1PbtnLKzJjurpPb73d1
+	 TSi/mHaiFT0FyCDDGPMwOr7DyynTQWYvmT78nt4X9b18apx0/T5bh5jkogg+qXIUrz
+	 LBaT/E1V1QetHA6HNLYNvJV5jIgO6TGLClyzIDHk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tony Battersby <tonyb@cybernetics.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Junvy Yang <zhuque@tencent.com>,
+	Ilya Maximets <i.maximets@ovn.org>,
+	Aaron Conole <aconole@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 392/737] scsi: qla2xxx: Fix initiator mode with qlini_mode=exclusive
+Subject: [PATCH 6.1 253/634] net: openvswitch: fix middle attribute validation in push_nsh() action
 Date: Fri,  9 Jan 2026 12:38:51 +0100
-Message-ID: <20260109112148.745013043@linuxfoundation.org>
+Message-ID: <20260109112127.059132478@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +62,113 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Battersby <tonyb@cybernetics.com>
+From: Ilya Maximets <i.maximets@ovn.org>
 
-[ Upstream commit 8f58fc64d559b5fda1b0a5e2a71422be61e79ab9 ]
+[ Upstream commit 5ace7ef87f059d68b5f50837ef3e8a1a4870c36e ]
 
-When given the module parameter qlini_mode=exclusive, qla2xxx in
-initiator mode is initially unable to successfully send SCSI commands to
-devices it finds while scanning, resulting in an escalating series of
-resets until an adapter reset clears the issue.  Fix by checking the
-active mode instead of the module parameter.
+The push_nsh() action structure looks like this:
 
-Signed-off-by: Tony Battersby <tonyb@cybernetics.com>
-Link: https://patch.msgid.link/1715ec14-ba9a-45dc-9cf2-d41aa6b81b5e@cybernetics.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+ OVS_ACTION_ATTR_PUSH_NSH(OVS_KEY_ATTR_NSH(OVS_NSH_KEY_ATTR_BASE,...))
+
+The outermost OVS_ACTION_ATTR_PUSH_NSH attribute is OK'ed by the
+nla_for_each_nested() inside __ovs_nla_copy_actions().  The innermost
+OVS_NSH_KEY_ATTR_BASE/MD1/MD2 are OK'ed by the nla_for_each_nested()
+inside nsh_key_put_from_nlattr().  But nothing checks if the attribute
+in the middle is OK.  We don't even check that this attribute is the
+OVS_KEY_ATTR_NSH.  We just do a double unwrap with a pair of nla_data()
+calls - first time directly while calling validate_push_nsh() and the
+second time as part of the nla_for_each_nested() macro, which isn't
+safe, potentially causing invalid memory access if the size of this
+attribute is incorrect.  The failure may not be noticed during
+validation due to larger netlink buffer, but cause trouble later during
+action execution where the buffer is allocated exactly to the size:
+
+ BUG: KASAN: slab-out-of-bounds in nsh_hdr_from_nlattr+0x1dd/0x6a0 [openvswitch]
+ Read of size 184 at addr ffff88816459a634 by task a.out/22624
+
+ CPU: 8 UID: 0 PID: 22624 6.18.0-rc7+ #115 PREEMPT(voluntary)
+ Call Trace:
+  <TASK>
+  dump_stack_lvl+0x51/0x70
+  print_address_description.constprop.0+0x2c/0x390
+  kasan_report+0xdd/0x110
+  kasan_check_range+0x35/0x1b0
+  __asan_memcpy+0x20/0x60
+  nsh_hdr_from_nlattr+0x1dd/0x6a0 [openvswitch]
+  push_nsh+0x82/0x120 [openvswitch]
+  do_execute_actions+0x1405/0x2840 [openvswitch]
+  ovs_execute_actions+0xd5/0x3b0 [openvswitch]
+  ovs_packet_cmd_execute+0x949/0xdb0 [openvswitch]
+  genl_family_rcv_msg_doit+0x1d6/0x2b0
+  genl_family_rcv_msg+0x336/0x580
+  genl_rcv_msg+0x9f/0x130
+  netlink_rcv_skb+0x11f/0x370
+  genl_rcv+0x24/0x40
+  netlink_unicast+0x73e/0xaa0
+  netlink_sendmsg+0x744/0xbf0
+  __sys_sendto+0x3d6/0x450
+  do_syscall_64+0x79/0x2c0
+  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+  </TASK>
+
+Let's add some checks that the attribute is properly sized and it's
+the only one attribute inside the action.  Technically, there is no
+real reason for OVS_KEY_ATTR_NSH to be there, as we know that we're
+pushing an NSH header already, it just creates extra nesting, but
+that's how uAPI works today.  So, keeping as it is.
+
+Fixes: b2d0f5d5dc53 ("openvswitch: enable NSH support")
+Reported-by: Junvy Yang <zhuque@tencent.com>
+Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
+Acked-by: Eelco Chaudron echaudro@redhat.com
+Reviewed-by: Aaron Conole <aconole@redhat.com>
+Link: https://patch.msgid.link/20251204105334.900379-1-i.maximets@ovn.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qla2xxx/qla_os.c | 8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
+ net/openvswitch/flow_netlink.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/scsi/qla2xxx/qla_os.c b/drivers/scsi/qla2xxx/qla_os.c
-index 0a3a5af67f0a..4c7cf581bc86 100644
---- a/drivers/scsi/qla2xxx/qla_os.c
-+++ b/drivers/scsi/qla2xxx/qla_os.c
-@@ -3459,13 +3459,7 @@ qla2x00_probe_one(struct pci_dev *pdev, const struct pci_device_id *id)
- 		ha->mqenable = 0;
+diff --git a/net/openvswitch/flow_netlink.c b/net/openvswitch/flow_netlink.c
+index d0b6e58720816..d4c8b4aa98b19 100644
+--- a/net/openvswitch/flow_netlink.c
++++ b/net/openvswitch/flow_netlink.c
+@@ -2786,13 +2786,20 @@ static int validate_and_copy_set_tun(const struct nlattr *attr,
+ 	return err;
+ }
  
- 	if (ha->mqenable) {
--		bool startit = false;
--
--		if (QLA_TGT_MODE_ENABLED())
--			startit = false;
--
--		if (ql2x_ini_mode == QLA2XXX_INI_MODE_ENABLED)
--			startit = true;
-+		bool startit = !!(host->active_mode & MODE_INITIATOR);
+-static bool validate_push_nsh(const struct nlattr *attr, bool log)
++static bool validate_push_nsh(const struct nlattr *a, bool log)
+ {
++	struct nlattr *nsh_key = nla_data(a);
+ 	struct sw_flow_match match;
+ 	struct sw_flow_key key;
  
- 		/* Create start of day qpairs for Block MQ */
- 		for (i = 0; i < ha->max_qpairs; i++)
++	/* There must be one and only one NSH header. */
++	if (!nla_ok(nsh_key, nla_len(a)) ||
++	    nla_total_size(nla_len(nsh_key)) != nla_len(a) ||
++	    nla_type(nsh_key) != OVS_KEY_ATTR_NSH)
++		return false;
++
+ 	ovs_match_init(&match, &key, true, NULL);
+-	return !nsh_key_put_from_nlattr(attr, &match, false, true, log);
++	return !nsh_key_put_from_nlattr(nsh_key, &match, false, true, log);
+ }
+ 
+ /* Return false if there are any non-masked bits set.
+@@ -3346,7 +3353,7 @@ static int __ovs_nla_copy_actions(struct net *net, const struct nlattr *attr,
+ 					return -EINVAL;
+ 			}
+ 			mac_proto = MAC_PROTO_NONE;
+-			if (!validate_push_nsh(nla_data(a), log))
++			if (!validate_push_nsh(a, log))
+ 				return -EINVAL;
+ 			break;
+ 
 -- 
 2.51.0
 
