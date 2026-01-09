@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-207261-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206661-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BA2ED09A5D
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:30:13 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22986D092D8
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:01:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 02A8B3039939
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:25:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E0D7C306D2B7
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:57:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F9ED321F5E;
-	Fri,  9 Jan 2026 12:25:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0F7F32BF21;
+	Fri,  9 Jan 2026 11:57:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1VH2e0uo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NplUO8eH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23A111A01C6;
-	Fri,  9 Jan 2026 12:25:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 650712DEA6F;
+	Fri,  9 Jan 2026 11:57:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961553; cv=none; b=Em5/1fT/alBaapKGgikJCmOpJ/vxiiAuXwtrOUujGctdSEQUjxIDwv6SAHiyCxevOlxlINwxDGzMPp+VAaFBaXcc7Giz9yFtUgE6c3HkLYBd9CPe7EjfzD35XOXQC4dSS2sAmCHW39GEiHPd/Nz+zL945KgbM7T3IE2J/XL+sCk=
+	t=1767959840; cv=none; b=kH2jYGBjcE8d9uSBsFqCjKlRy1IGGTQHuqlMK+PpJMdUUkZQNtgVlEF4dtYol3FEISivHQIhJfFSYxBp9ArmyXfmyH4hpUUxbXfL6pqN2hllB7tGAd9xqHPN6ObkgxvXj85ErQJSJy1IxNF7oyFbOsj5bzbq9ONv60Y4DmeHWHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961553; c=relaxed/simple;
-	bh=62zaWLtNuJtR1rHLp+vJRSKDHDzREvzydj5RH8J3KGw=;
+	s=arc-20240116; t=1767959840; c=relaxed/simple;
+	bh=ZLnXIlXetMbc1P26Dc+zbMdGqkQQTinDJPhj/2gh7Lo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sV5O/D5DMen59tC14PzWWpPBdiLE6ua97Mb4k7R452D/d1Phtl4WQc9P5YOmSshkYbH+eQ8+in9ZGxSK4Tg9acwuypxLSX/9F1+zhYzW40W9Gj7Y5bHksV2p/h3ARzcPRiYW7q6TSqGOFa0HWSYr/cVRcXYFnJeX3JiYf7tfdvc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1VH2e0uo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5635AC16AAE;
-	Fri,  9 Jan 2026 12:25:52 +0000 (UTC)
+	 MIME-Version; b=bGzF/mfD87sANLKB380LVAjzUQT4r41PNQ7WOquqUniuS/hAobRyJzTErbtQI4+aSy9RzmAH2EP2Fr09pjNqICxxgcFVqmt6lIb+SFUhi7mjN9EeLU/uM9ti29P+3eX3dQBz5Q9izfc50lbRHQ0XoCiirVJGqxmSQ8pckx434/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NplUO8eH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB157C4CEF1;
+	Fri,  9 Jan 2026 11:57:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961552;
-	bh=62zaWLtNuJtR1rHLp+vJRSKDHDzREvzydj5RH8J3KGw=;
+	s=korg; t=1767959840;
+	bh=ZLnXIlXetMbc1P26Dc+zbMdGqkQQTinDJPhj/2gh7Lo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1VH2e0uopx55YmAoHlskUqXBxGvV2rvstGB/oEc7SEJiZumpCHrHFYTGrBKgyRkkg
-	 S10PuoCufwrDHBU2wJ2vUpqcRUJFg8u7bOMv8ONtjCgfGGadx0fuOjX6ZwOPsP8Zqg
-	 NyTcX7wXpArhyzka3J3sQ8BHWp1lmkS5GqepfR2s=
+	b=NplUO8eHnwdQ4hGf45XPclB5aXbCmms/p5/thY5r4IqvlsMQ+tClvyCLeA1wXhD/v
+	 HhlrQYKMANP4DC4Pep4ayjYLo+EUrVpeAT2TrRXUflKpItY+aDBbMELSMhhA1+cQZ6
+	 53uabIjJEc53ytD/5icCMwkDz0+adBb2XZrvsLZ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+7a2ba6b7b66340cff225@syzkaller.appspotmail.com,
-	Raphael Pinsonneault-Thibeault <rpthibeault@gmail.com>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Matt Bobrowski <mattbobrowski@google.com>,
+	Song Liu <song@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 054/634] ntfs3: fix uninit memory after failed mi_read in mi_format_new
-Date: Fri,  9 Jan 2026 12:35:32 +0100
-Message-ID: <20260109112119.477927115@linuxfoundation.org>
+Subject: [PATCH 6.6 194/737] selftests/bpf: skip test_perf_branches_hw() on unsupported platforms
+Date: Fri,  9 Jan 2026 12:35:33 +0100
+Message-ID: <20260109112141.293016384@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,59 +59,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Raphael Pinsonneault-Thibeault <rpthibeault@gmail.com>
+From: Matt Bobrowski <mattbobrowski@google.com>
 
-[ Upstream commit 73e6b9dacf72a1e7a4265eacca46f8f33e0997d6 ]
+[ Upstream commit 27746aaf1b20172f0859546c4a3e82eca459f680 ]
 
-Fix a KMSAN un-init bug found by syzkaller.
+Gracefully skip the test_perf_branches_hw subtest on platforms that
+do not support LBR or require specialized perf event attributes
+to enable branch sampling.
 
-ntfs_get_bh() expects a buffer from sb_getblk(), that buffer may not be
-uptodate. We do not bring the buffer uptodate before setting it as
-uptodate. If the buffer were to not be uptodate, it could mean adding a
-buffer with un-init data to the mi record. Attempting to load that record
-will trigger KMSAN.
+For example, AMD's Milan (Zen 3) supports BRS rather than traditional
+LBR. This requires specific configurations (attr.type = PERF_TYPE_RAW,
+attr.config = RETIRED_TAKEN_BRANCH_INSTRUCTIONS) that differ from the
+generic setup used within this test. Notably, it also probably doesn't
+hold much value to special case perf event configurations for selected
+micro architectures.
 
-Avoid this by setting the buffer as uptodate, if it’s not already, by
-overwriting it.
-
-Reported-by: syzbot+7a2ba6b7b66340cff225@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=7a2ba6b7b66340cff225
-Tested-by: syzbot+7a2ba6b7b66340cff225@syzkaller.appspotmail.com
-Fixes: 4342306f0f0d5 ("fs/ntfs3: Add file operations and implementation")
-Signed-off-by: Raphael Pinsonneault-Thibeault <rpthibeault@gmail.com>
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Fixes: 67306f84ca78c ("selftests/bpf: Add bpf_read_branch_records() selftest")
+Signed-off-by: Matt Bobrowski <mattbobrowski@google.com>
+Acked-by: Song Liu <song@kernel.org>
+Link: https://lore.kernel.org/r/20251120142059.2836181-1-mattbobrowski@google.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/fsntfs.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ tools/testing/selftests/bpf/prog_tests/perf_branches.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/fs/ntfs3/fsntfs.c b/fs/ntfs3/fsntfs.c
-index a7e2009419c37..8c165b791a1c8 100644
---- a/fs/ntfs3/fsntfs.c
-+++ b/fs/ntfs3/fsntfs.c
-@@ -1338,7 +1338,14 @@ int ntfs_get_bh(struct ntfs_sb_info *sbi, const struct runs_tree *run, u64 vbo,
- 				}
- 				if (buffer_locked(bh))
- 					__wait_on_buffer(bh);
--				set_buffer_uptodate(bh);
-+
-+				lock_buffer(bh);
-+				if (!buffer_uptodate(bh))
-+				{
-+					memset(bh->b_data, 0, blocksize);
-+					set_buffer_uptodate(bh);
-+				}
-+				unlock_buffer(bh);
- 			} else {
- 				bh = ntfs_bread(sb, block);
- 				if (!bh) {
+diff --git a/tools/testing/selftests/bpf/prog_tests/perf_branches.c b/tools/testing/selftests/bpf/prog_tests/perf_branches.c
+index bc24f83339d64..06c7986131d96 100644
+--- a/tools/testing/selftests/bpf/prog_tests/perf_branches.c
++++ b/tools/testing/selftests/bpf/prog_tests/perf_branches.c
+@@ -116,11 +116,11 @@ static void test_perf_branches_hw(void)
+ 	pfd = syscall(__NR_perf_event_open, &attr, -1, 0, -1, PERF_FLAG_FD_CLOEXEC);
+ 
+ 	/*
+-	 * Some setups don't support branch records (virtual machines, !x86),
+-	 * so skip test in this case.
++	 * Some setups don't support LBR (virtual machines, !x86, AMD Milan Zen
++	 * 3 which only supports BRS), so skip test in this case.
+ 	 */
+ 	if (pfd < 0) {
+-		if (errno == ENOENT || errno == EOPNOTSUPP) {
++		if (errno == ENOENT || errno == EOPNOTSUPP || errno == EINVAL) {
+ 			printf("%s:SKIP:no PERF_SAMPLE_BRANCH_STACK\n",
+ 			       __func__);
+ 			test__skip();
 -- 
 2.51.0
 
