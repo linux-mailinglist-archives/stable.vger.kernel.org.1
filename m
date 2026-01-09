@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-207781-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207783-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72EE3D0A47F
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:13:04 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08C59D0A4B5
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:14:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 25A253305653
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:51:04 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D9087308F2AF
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:51:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23DD135BDAF;
-	Fri,  9 Jan 2026 12:50:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B53CF35BDBF;
+	Fri,  9 Jan 2026 12:50:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2L/gwHVG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fQGyv+pl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA98735B149;
-	Fri,  9 Jan 2026 12:50:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79701326D51;
+	Fri,  9 Jan 2026 12:50:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767963029; cv=none; b=Nfg98F6GrEBwNm3Y1bJlqNLVW0afpZWapUkq3iFVlCbsmBcxVioNQ80rxyFAmqucnuylmCN/YkqgJdXlRWh5vy6mSUqrzdF0MMgxM7U7qgR/kn9AYt+o1Qz86eDQ105ubuHZGRMJgQVtO+nzua/AuZoqnUUn9csJ3gY/mKh7EEo=
+	t=1767963035; cv=none; b=ZAA+RKVCaJkDwOJGUs3xz5n7fF2sKX3LqhS4IwmvNbddYR0x3aShSmVooE89Do80jp5F6w3FZsIpK9IsoGf/SEGi8AoCNCn7yIQgwsi6oKTjvaaBBfVg6kGd1wP5c2ypntugxqdyxVx61q/Mey6jGnXX3AUma8yfnOoxtkog/mY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767963029; c=relaxed/simple;
-	bh=2nfstkgvt3OpeGAff9SOASJp+fBPkfZlmN2ZO1BOy4E=;
+	s=arc-20240116; t=1767963035; c=relaxed/simple;
+	bh=vvYZzUWkoPTdoQ+xSCG+A+UqcZoPyyPpnF1lBWpf+mA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U3GYo2eugQ1V6bQD5gWSPBvgkjRek3aff0TQsrMvmcXKoNYGfzDZ9J6qZp4GKRtmSb5/f+B4i9hCeYJDhFI2CJ+Vu7h57FQ99b+Gc4+lhQ2aB473rMCQPB651jbwquy1i3e6dxl5xCWuutg5NQBXe44l9R9D7ogTg0lgeXADmTc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2L/gwHVG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CEEBC4CEF1;
-	Fri,  9 Jan 2026 12:50:29 +0000 (UTC)
+	 MIME-Version; b=MO90s+ZxBX1IEux7EHQzz8mS8VGe46n5dabFM+Z0myeGHzdIcfMUvTfhBpglX0wPiDv3DL3Die8W27lrlbgLYX1H3DzWrcoqZ0E0cvMvhemMUuWRw2upCGBesUIab0mlBJU05eC53YmttOGCsy2A7RynRrA5yuaBX7rxUfvyOjM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fQGyv+pl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05E4BC4CEF1;
+	Fri,  9 Jan 2026 12:50:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767963029;
-	bh=2nfstkgvt3OpeGAff9SOASJp+fBPkfZlmN2ZO1BOy4E=;
+	s=korg; t=1767963035;
+	bh=vvYZzUWkoPTdoQ+xSCG+A+UqcZoPyyPpnF1lBWpf+mA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2L/gwHVGvHI7p/jFZka5MSBmEmfA1STBDBVaqrAEQhF22wxAJYHdBxsf56Zr4aFUV
-	 /YtXPwKdnpKQLKaSpQWCuI7Yk/0Z+l5vgDIzh1cNNg+CZScd6ekDGU5QXDGrsBA4Ne
-	 wHDARMFEx9l7+dlg/WKQzJqZg+Syxoh73z623MGw=
+	b=fQGyv+plKFcBNOJJse0QxzWdEFc4FWU6Uxrqgb4zsa9yNou0P5WTD0fdHtBAAuFC5
+	 XG56Kqzda+2Z0nKADy20ja9rwepJc2YldUd36z5TR7LldM6jn5KVs7Yv7oLUcCStSI
+	 XMLZackz5eVJjxTEVmMOOLMU+jbnmL3zXeVV7was=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Olivier Moysan <olivier.moysan@st.com>,
-	Johan Hovold <johan@kernel.org>,
-	olivier moysan <olivier.moysan@foss.st.com>,
-	Mark Brown <broonie@kernel.org>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Yemike Abhilash Chandra <y-abhilashchandra@ti.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 573/634] ASoC: stm32: sai: fix OF node leak on probe
-Date: Fri,  9 Jan 2026 12:44:11 +0100
-Message-ID: <20260109112139.168490600@linuxfoundation.org>
+Subject: [PATCH 6.1 575/634] arm64: dts: ti: k3-j721e-sk: Fix pinmux for pin Y1 used by power regulator
+Date: Fri,  9 Jan 2026 12:44:13 +0100
+Message-ID: <20260109112139.244445387@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
 References: <20260109112117.407257400@linuxfoundation.org>
@@ -66,147 +65,65 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Siddharth Vadapalli <s-vadapalli@ti.com>
 
-[ Upstream commit 23261f0de09427367e99f39f588e31e2856a690e ]
+[ Upstream commit 51f89c488f2ecc020f82bfedd77482584ce8027a ]
 
-The reference taken to the sync provider OF node when probing the
-platform device is currently only dropped if the set_sync() callback
-fails during DAI probe.
+The SoC pin Y1 is incorrectly defined in the WKUP Pinmux device-tree node
+(pinctrl@4301c000) leading to the following silent failure:
 
-Make sure to drop the reference on platform probe failures (e.g. probe
-deferral) and on driver unbind.
+    pinctrl-single 4301c000.pinctrl: mux offset out of range: 0x1dc (0x178)
 
-This also avoids a potential use-after-free in case the DAI is ever
-reprobed without first rebinding the platform driver.
+According to the datasheet for the J721E SoC [0], the pin Y1 belongs to the
+MAIN Pinmux device-tree node (pinctrl@11c000). This is confirmed by the
+address of the pinmux register for it on page 142 of the datasheet which is
+0x00011C1DC.
 
-Fixes: 5914d285f6b7 ("ASoC: stm32: sai: Add synchronization support")
-Fixes: d4180b4c02e7 ("ASoC: stm32: sai: fix set_sync service")
-Cc: Olivier Moysan <olivier.moysan@st.com>
-Cc: stable@vger.kernel.org      # 4.16: d4180b4c02e7
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: olivier moysan <olivier.moysan@foss.st.com>
-Link: https://patch.msgid.link/20251124104908.15754-4-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Hence fix it.
+
+[0]: https://www.ti.com/lit/ds/symlink/tda4vm.pdf
+
+Fixes: 97b67cc102dc ("arm64: dts: ti: k3-j721e-sk: Add DT nodes for power regulators")
+Cc: stable@vger.kernel.org
+Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+Reviewed-by: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>
+Link: https://patch.msgid.link/20251119160148.2752616-1-s-vadapalli@ti.com
+Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
+[ Adjust context ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/stm/stm32_sai.c     |   12 +++---------
- sound/soc/stm/stm32_sai_sub.c |   23 ++++++++++++++++-------
- 2 files changed, 19 insertions(+), 16 deletions(-)
+ arch/arm64/boot/dts/ti/k3-j721e-sk.dts |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
---- a/sound/soc/stm/stm32_sai.c
-+++ b/sound/soc/stm/stm32_sai.c
-@@ -122,7 +122,6 @@ static int stm32_sai_set_sync(struct stm
- 	if (!pdev) {
- 		dev_err(&sai_client->pdev->dev,
- 			"Device not found for node %pOFn\n", np_provider);
--		of_node_put(np_provider);
- 		return -ENODEV;
- 	}
+--- a/arch/arm64/boot/dts/ti/k3-j721e-sk.dts
++++ b/arch/arm64/boot/dts/ti/k3-j721e-sk.dts
+@@ -425,6 +425,12 @@
+ 			J721E_IOPAD(0x124, PIN_INPUT, 7) /* (Y24) PRG0_PRU1_GPO9.GPIO0_72 */
+ 		>;
+ 	};
++
++	vdd_sd_dv_pins_default: vdd-sd-dv-default-pins {
++		pinctrl-single,pins = <
++			J721E_IOPAD(0x1dc, PIN_OUTPUT, 7) /* (Y1) SPI1_CLK.GPIO0_118 */
++		>;
++	};
+ };
  
-@@ -131,21 +130,16 @@ static int stm32_sai_set_sync(struct stm
- 	if (!sai_provider) {
- 		dev_err(&sai_client->pdev->dev,
- 			"SAI sync provider data not found\n");
--		ret = -EINVAL;
--		goto error;
-+		return -EINVAL;
- 	}
+ &wkup_pmx0 {
+@@ -480,12 +486,6 @@
+ 		>;
+ 	};
  
- 	/* Configure sync client */
- 	ret = stm32_sai_sync_conf_client(sai_client, synci);
- 	if (ret < 0)
--		goto error;
-+		return ret;
- 
- 	/* Configure sync provider */
--	ret = stm32_sai_sync_conf_provider(sai_provider, synco);
+-	vdd_sd_dv_pins_default: vdd-sd-dv-default-pins {
+-		pinctrl-single,pins = <
+-			J721E_IOPAD(0x1dc, PIN_OUTPUT, 7) /* (Y1) SPI1_CLK.GPIO0_118 */
+-		>;
+-	};
 -
--error:
--	of_node_put(np_provider);
--	return ret;
-+	return stm32_sai_sync_conf_provider(sai_provider, synco);
- }
- 
- static int stm32_sai_probe(struct platform_device *pdev)
---- a/sound/soc/stm/stm32_sai_sub.c
-+++ b/sound/soc/stm/stm32_sai_sub.c
-@@ -1435,7 +1435,8 @@ static int stm32_sai_sub_parse_of(struct
- 				dev_err(&pdev->dev,
- 					"External synchro not supported\n");
- 				of_node_put(args.np);
--				return -EINVAL;
-+				ret = -EINVAL;
-+				goto err_put_sync_provider;
- 			}
- 			sai->sync = SAI_SYNC_EXTERNAL;
- 
-@@ -1444,7 +1445,8 @@ static int stm32_sai_sub_parse_of(struct
- 			    (sai->synci > (SAI_GCR_SYNCIN_MAX + 1))) {
- 				dev_err(&pdev->dev, "Wrong SAI index\n");
- 				of_node_put(args.np);
--				return -EINVAL;
-+				ret = -EINVAL;
-+				goto err_put_sync_provider;
- 			}
- 
- 			if (of_property_match_string(args.np, "compatible",
-@@ -1458,7 +1460,8 @@ static int stm32_sai_sub_parse_of(struct
- 			if (!sai->synco) {
- 				dev_err(&pdev->dev, "Unknown SAI sub-block\n");
- 				of_node_put(args.np);
--				return -EINVAL;
-+				ret = -EINVAL;
-+				goto err_put_sync_provider;
- 			}
- 		}
- 
-@@ -1468,13 +1471,15 @@ static int stm32_sai_sub_parse_of(struct
- 
- 	of_node_put(args.np);
- 	sai->sai_ck = devm_clk_get(&pdev->dev, "sai_ck");
--	if (IS_ERR(sai->sai_ck))
--		return dev_err_probe(&pdev->dev, PTR_ERR(sai->sai_ck),
--				     "Missing kernel clock sai_ck\n");
-+	if (IS_ERR(sai->sai_ck)) {
-+		ret = dev_err_probe(&pdev->dev, PTR_ERR(sai->sai_ck),
-+				    "Missing kernel clock sai_ck\n");
-+		goto err_put_sync_provider;
-+	}
- 
- 	ret = clk_prepare(sai->pdata->pclk);
- 	if (ret < 0)
--		return ret;
-+		goto err_put_sync_provider;
- 
- 	if (STM_SAI_IS_F4(sai->pdata))
- 		return 0;
-@@ -1496,6 +1501,8 @@ static int stm32_sai_sub_parse_of(struct
- 
- err_unprepare_pclk:
- 	clk_unprepare(sai->pdata->pclk);
-+err_put_sync_provider:
-+	of_node_put(sai->np_sync_provider);
- 
- 	return ret;
- }
-@@ -1566,6 +1573,7 @@ static int stm32_sai_sub_probe(struct pl
- 
- err_unprepare_pclk:
- 	clk_unprepare(sai->pdata->pclk);
-+	of_node_put(sai->np_sync_provider);
- 
- 	return ret;
- }
-@@ -1578,6 +1586,7 @@ static void stm32_sai_sub_remove(struct
- 	snd_dmaengine_pcm_unregister(&pdev->dev);
- 	snd_soc_unregister_component(&pdev->dev);
- 	pm_runtime_disable(&pdev->dev);
-+	of_node_put(sai->np_sync_provider);
- }
- 
- #ifdef CONFIG_PM_SLEEP
+ 	wkup_i2c0_pins_default: wkup-i2c0-pins-default {
+ 		pinctrl-single,pins = <
+ 			J721E_WKUP_IOPAD(0xf8, PIN_INPUT_PULLUP, 0) /* (J25) WKUP_I2C0_SCL */
 
 
 
