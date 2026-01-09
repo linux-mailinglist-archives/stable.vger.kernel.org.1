@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-207155-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206464-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49E4DD09B6B
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:34:24 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC7B6D08FDB
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 12:47:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id ABAE9306EBA4
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:20:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A60323091F46
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:44:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F39C535A92E;
-	Fri,  9 Jan 2026 12:20:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 481EE335083;
+	Fri,  9 Jan 2026 11:44:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RiiS4/Lx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lve5JBNQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B45AC359FA0;
-	Fri,  9 Jan 2026 12:20:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A47AD31A7EA;
+	Fri,  9 Jan 2026 11:44:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961247; cv=none; b=DeKzqXvDYrsbJWBOpMC/r9zEl6pfI+6sYCcxgJoxi0NrtiD3i844+AyumfpkM4jRMxbJSY102ZSeXfPU3Hv5VJafbDohN+aytJcixvyQN3Y3t4U1d5BwTH9PESRS0uVlc2bUUYbCvnKa2oO+hI4ax4ZjJwjS5dL7dsnKi8mJ9dQ=
+	t=1767959091; cv=none; b=Y0NcHPd2Q0Jqfa36nOfWxnbbemVQZ8ikzI33w9PrFm0+98LrZSY4iAcuakemVRvZslzh4RF73S466sS+k8aP0TqBr2YsJSRsxfL9xlxCHNj/KXLecmXz5LaCVY8xvLw2rNTN4aO86RX8ujad5NFR1LqqQGoByxLOEGR0FsgnMd4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961247; c=relaxed/simple;
-	bh=dywb2hl2JwcGBnCzPJtNe9rV0RROg3riU1CgFT3myRI=;
+	s=arc-20240116; t=1767959091; c=relaxed/simple;
+	bh=Ji/QCT1SMJ4g452cQVeVk0XNBFhe1J6CTRCPC1854H8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a7xCrbRoOCplNgLlbzuMJXWtfzT6HE/5P11qyx6dfd8gG8pdurU6nM7ZFQfIdnUX2gFE0hSUz1ijyRLkqovsLqT9r+vIyHz38AuGEVIOpeIZcsU4CobFeflE1yaxYQSnlGxd3Qhkp0LhD7rKRDRwu7mUAbELsf6Dw2EKuQoNDYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RiiS4/Lx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A02EC4CEF1;
-	Fri,  9 Jan 2026 12:20:47 +0000 (UTC)
+	 MIME-Version; b=RVPV6h+EsP6Nyt7piZ8Jf+794lMGgCfG7UJtq6NId42pRk7IDa0OEbX0jeV7n6PUVK9CfaY6ucqx7M92DDRq2lIC3vVOwns5UJmpeEsZlq5JESuAy5e+wvK4afSu/CYSeRLtbp/wSRmntkMwfMPL4+dRXRDFYvfOObfcxtPnMSc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lve5JBNQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E207C4CEF1;
+	Fri,  9 Jan 2026 11:44:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961247;
-	bh=dywb2hl2JwcGBnCzPJtNe9rV0RROg3riU1CgFT3myRI=;
+	s=korg; t=1767959090;
+	bh=Ji/QCT1SMJ4g452cQVeVk0XNBFhe1J6CTRCPC1854H8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RiiS4/Lx6QC4p/Y2IDQgxAQ4x9r4992xIVL86uMhl8f3GkP+iaGT21Bh9YkW6M4bZ
-	 Rke2cx8SjXL2A+lmjDxZyi/fYZ1j2EG9xdd/zQEIpTI0FBIkPj030DR5uoy69CFpWC
-	 DLtW1Iyl0leXvj+3kBrYgCE9meaFomGXoO5a4kgM=
+	b=lve5JBNQsfZRHUW4EbmplA6b0hbngILB+36rrQzsVY8O2bQmIC0iKXvTsTYWDr/j+
+	 a5NKe8/nx4v94ZW1W77Luyu+Qotn2f2AqyaNZ+dfwKbcmv/Ehy9h21chOHmr9vnxJz
+	 A2e+xNo0KoBKJjrfzOjkmwTk/zBSGvKmE1LNNVFE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	"Bai, Shuangpeng" <sjb7183@psu.edu>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 687/737] f2fs: fix to avoid updating compression context during writeback
+Subject: [PATCH 6.12 05/16] mptcp: ensure context reset on disconnect()
 Date: Fri,  9 Jan 2026 12:43:46 +0100
-Message-ID: <20260109112159.904029253@linuxfoundation.org>
+Message-ID: <20260109111951.623802519@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109111951.415522519@linuxfoundation.org>
+References: <20260109111951.415522519@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,166 +60,124 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Paolo Abeni <pabeni@redhat.com>
 
-[ Upstream commit 10b591e7fb7cdc8c1e53e9c000dc0ef7069aaa76 ]
+[ Upstream commit 86730ac255b0497a272704de9a1df559f5d6602e ]
 
-Bai, Shuangpeng <sjb7183@psu.edu> reported a bug as below:
+After the blamed commit below, if the MPC subflow is already in TCP_CLOSE
+status or has fallback to TCP at mptcp_disconnect() time,
+mptcp_do_fastclose() skips setting the `send_fastclose flag` and the later
+__mptcp_close_ssk() does not reset anymore the related subflow context.
 
-Oops: divide error: 0000 [#1] SMP KASAN PTI
-CPU: 0 UID: 0 PID: 11441 Comm: syz.0.46 Not tainted 6.17.0 #1 PREEMPT(full)
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
-RIP: 0010:f2fs_all_cluster_page_ready+0x106/0x550 fs/f2fs/compress.c:857
-Call Trace:
- <TASK>
- f2fs_write_cache_pages fs/f2fs/data.c:3078 [inline]
- __f2fs_write_data_pages fs/f2fs/data.c:3290 [inline]
- f2fs_write_data_pages+0x1c19/0x3600 fs/f2fs/data.c:3317
- do_writepages+0x38e/0x640 mm/page-writeback.c:2634
- filemap_fdatawrite_wbc mm/filemap.c:386 [inline]
- __filemap_fdatawrite_range mm/filemap.c:419 [inline]
- file_write_and_wait_range+0x2ba/0x3e0 mm/filemap.c:794
- f2fs_do_sync_file+0x6e6/0x1b00 fs/f2fs/file.c:294
- generic_write_sync include/linux/fs.h:3043 [inline]
- f2fs_file_write_iter+0x76e/0x2700 fs/f2fs/file.c:5259
- new_sync_write fs/read_write.c:593 [inline]
- vfs_write+0x7e9/0xe00 fs/read_write.c:686
- ksys_write+0x19d/0x2d0 fs/read_write.c:738
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xf7/0x470 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
+Any later connection will be created with both the `request_mptcp` flag
+and the msk-level fallback status off (it is unconditionally cleared at
+MPTCP disconnect time), leading to a warning in subflow_data_ready():
 
-The bug was triggered w/ below race condition:
+  WARNING: CPU: 26 PID: 8996 at net/mptcp/subflow.c:1519 subflow_data_ready (net/mptcp/subflow.c:1519 (discriminator 13))
+  Modules linked in:
+  CPU: 26 UID: 0 PID: 8996 Comm: syz.22.39 Not tainted 6.18.0-rc7-05427-g11fc074f6c36 #1 PREEMPT(voluntary)
+  Hardware name: Bochs Bochs, BIOS Bochs 01/01/2011
+  RIP: 0010:subflow_data_ready (net/mptcp/subflow.c:1519 (discriminator 13))
+  Code: 90 0f 0b 90 90 e9 04 fe ff ff e8 b7 1e f5 fe 89 ee bf 07 00 00 00 e8 db 19 f5 fe 83 fd 07 0f 84 35 ff ff ff e8 9d 1e f5 fe 90 <0f> 0b 90 e9 27 ff ff ff e8 8f 1e f5 fe 4c 89 e7 48 89 de e8 14 09
+  RSP: 0018:ffffc9002646fb30 EFLAGS: 00010293
+  RAX: 0000000000000000 RBX: ffff88813b218000 RCX: ffffffff825c8435
+  RDX: ffff8881300b3580 RSI: ffffffff825c8443 RDI: 0000000000000005
+  RBP: 000000000000000b R08: ffffffff825c8435 R09: 000000000000000b
+  R10: 0000000000000005 R11: 0000000000000007 R12: ffff888131ac0000
+  R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
+  FS:  00007f88330af6c0(0000) GS:ffff888a93dd2000(0000) knlGS:0000000000000000
+  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  CR2: 00007f88330aefe8 CR3: 000000010ff59000 CR4: 0000000000350ef0
+  Call Trace:
+   <TASK>
+   tcp_data_ready (net/ipv4/tcp_input.c:5356)
+   tcp_data_queue (net/ipv4/tcp_input.c:5445)
+   tcp_rcv_state_process (net/ipv4/tcp_input.c:7165)
+   tcp_v4_do_rcv (net/ipv4/tcp_ipv4.c:1955)
+   __release_sock (include/net/sock.h:1158 (discriminator 6) net/core/sock.c:3180 (discriminator 6))
+   release_sock (net/core/sock.c:3737)
+   mptcp_sendmsg (net/mptcp/protocol.c:1763 net/mptcp/protocol.c:1857)
+   inet_sendmsg (net/ipv4/af_inet.c:853 (discriminator 7))
+   __sys_sendto (net/socket.c:727 (discriminator 15) net/socket.c:742 (discriminator 15) net/socket.c:2244 (discriminator 15))
+   __x64_sys_sendto (net/socket.c:2247)
+   do_syscall_64 (arch/x86/entry/syscall_64.c:63 (discriminator 1) arch/x86/entry/syscall_64.c:94 (discriminator 1))
+   entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
+  RIP: 0033:0x7f883326702d
 
-fsync				setattr			ioctl
-- f2fs_do_sync_file
- - file_write_and_wait_range
-  - f2fs_write_cache_pages
-  : inode is non-compressed
-  : cc.cluster_size =
-    F2FS_I(inode)->i_cluster_size = 0
-   - tag_pages_for_writeback
-				- f2fs_setattr
-				 - truncate_setsize
-				 - f2fs_truncate
-							- f2fs_fileattr_set
-							 - f2fs_setflags_common
-							  - set_compress_context
-							  : F2FS_I(inode)->i_cluster_size = 4
-							  : set_inode_flag(inode, FI_COMPRESSED_FILE)
-   - f2fs_compressed_file
-   : return true
-   - f2fs_all_cluster_page_ready
-   : "pgidx % cc->cluster_size" trigger dividing 0 issue
+Address the issue setting an explicit `fastclosing` flag at fastclose
+time, and checking such flag after mptcp_do_fastclose().
 
-Let's change as below to fix this issue:
-- introduce a new atomic type variable .writeback in structure f2fs_inode_info
-to track the number of threads which calling f2fs_write_cache_pages().
-- use .i_sem lock to protect .writeback update.
-- check .writeback before update compression context in f2fs_setflags_common()
-to avoid race w/ ->writepages.
-
-Fixes: 4c8ff7095bef ("f2fs: support data compression")
-Cc: stable@kernel.org
-Reported-by: Bai, Shuangpeng <sjb7183@psu.edu>
-Tested-by: Bai, Shuangpeng <sjb7183@psu.edu>
-Closes: https://lore.kernel.org/lkml/44D8F7B3-68AD-425F-9915-65D27591F93F@psu.edu
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Fixes: ae155060247b ("mptcp: fix duplicate reset on fastclose")
+Cc: stable@vger.kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20251212-net-mptcp-subflow_data_ready-warn-v1-2-d1f9fd1c36c8@kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 [ Adjust context ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/data.c  |   17 +++++++++++++++++
- fs/f2fs/f2fs.h  |    3 ++-
- fs/f2fs/file.c  |    5 +++--
- fs/f2fs/super.c |    1 +
- 4 files changed, 23 insertions(+), 3 deletions(-)
+ net/mptcp/protocol.c |    8 +++++---
+ net/mptcp/protocol.h |    3 ++-
+ 2 files changed, 7 insertions(+), 4 deletions(-)
 
---- a/fs/f2fs/data.c
-+++ b/fs/f2fs/data.c
-@@ -3233,6 +3233,19 @@ static inline bool __should_serialize_io
- 	return false;
- }
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -2478,10 +2478,10 @@ bool __mptcp_retransmit_pending_data(str
+  */
+ static void __mptcp_subflow_disconnect(struct sock *ssk,
+ 				       struct mptcp_subflow_context *subflow,
+-				       unsigned int flags)
++				       bool fastclosing)
+ {
+ 	if (((1 << ssk->sk_state) & (TCPF_CLOSE | TCPF_LISTEN)) ||
+-	    subflow->send_fastclose) {
++	    fastclosing) {
+ 		/* The MPTCP code never wait on the subflow sockets, TCP-level
+ 		 * disconnect should never fail
+ 		 */
+@@ -2533,7 +2533,7 @@ static void __mptcp_close_ssk(struct soc
  
-+static inline void account_writeback(struct inode *inode, bool inc)
-+{
-+	if (!f2fs_sb_has_compression(F2FS_I_SB(inode)))
-+		return;
-+
-+	f2fs_down_read(&F2FS_I(inode)->i_sem);
-+	if (inc)
-+		atomic_inc(&F2FS_I(inode)->writeback);
-+	else
-+		atomic_dec(&F2FS_I(inode)->writeback);
-+	f2fs_up_read(&F2FS_I(inode)->i_sem);
-+}
-+
- static int __f2fs_write_data_pages(struct address_space *mapping,
- 						struct writeback_control *wbc,
- 						enum iostat_type io_type)
-@@ -3282,10 +3295,14 @@ static int __f2fs_write_data_pages(struc
- 		locked = true;
- 	}
+ 	need_push = (flags & MPTCP_CF_PUSH) && __mptcp_retransmit_pending_data(sk);
+ 	if (!dispose_it) {
+-		__mptcp_subflow_disconnect(ssk, subflow, flags);
++		__mptcp_subflow_disconnect(ssk, subflow, msk->fastclosing);
+ 		release_sock(ssk);
  
-+	account_writeback(inode, true);
-+
- 	blk_start_plug(&plug);
- 	ret = f2fs_write_cache_pages(mapping, wbc, io_type);
- 	blk_finish_plug(&plug);
+ 		goto out;
+@@ -2845,6 +2845,7 @@ static void mptcp_do_fastclose(struct so
+ 	struct mptcp_sock *msk = mptcp_sk(sk);
  
-+	account_writeback(inode, false);
-+
- 	if (locked)
- 		mutex_unlock(&sbi->writepages);
+ 	mptcp_set_state(sk, TCP_CLOSE);
++	msk->fastclosing = 1;
  
---- a/fs/f2fs/f2fs.h
-+++ b/fs/f2fs/f2fs.h
-@@ -869,6 +869,7 @@ struct f2fs_inode_info {
- 	unsigned char i_compress_level;		/* compress level (lz4hc,zstd) */
- 	unsigned char i_compress_flag;		/* compress flag */
- 	unsigned int i_cluster_size;		/* cluster size */
-+	atomic_t writeback;			/* count # of writeback thread */
+ 	/* Explicitly send the fastclose reset as need */
+ 	if (__mptcp_check_fallback(msk))
+@@ -3362,6 +3363,7 @@ static int mptcp_disconnect(struct sock
+ 	msk->bytes_sent = 0;
+ 	msk->bytes_retrans = 0;
+ 	msk->rcvspace_init = 0;
++	msk->fastclosing = 0;
  
- 	unsigned int atomic_write_cnt;
- 	loff_t original_i_size;		/* original i_size before atomic write */
-@@ -4485,7 +4486,7 @@ static inline bool f2fs_disable_compress
- 		f2fs_up_write(&F2FS_I(inode)->i_sem);
- 		return true;
- 	}
--	if (f2fs_is_mmap_file(inode) ||
-+	if (f2fs_is_mmap_file(inode) || atomic_read(&fi->writeback) ||
- 		(S_ISREG(inode->i_mode) && F2FS_HAS_BLOCKS(inode))) {
- 		f2fs_up_write(&F2FS_I(inode)->i_sem);
- 		return false;
---- a/fs/f2fs/file.c
-+++ b/fs/f2fs/file.c
-@@ -2045,8 +2045,9 @@ static int f2fs_setflags_common(struct i
- 
- 			f2fs_down_write(&F2FS_I(inode)->i_sem);
- 			if (!f2fs_may_compress(inode) ||
--					(S_ISREG(inode->i_mode) &&
--					F2FS_HAS_BLOCKS(inode))) {
-+				atomic_read(&fi->writeback) ||
-+				(S_ISREG(inode->i_mode) &&
-+				F2FS_HAS_BLOCKS(inode))) {
- 				f2fs_up_write(&F2FS_I(inode)->i_sem);
- 				return -EINVAL;
- 			}
---- a/fs/f2fs/super.c
-+++ b/fs/f2fs/super.c
-@@ -1410,6 +1410,7 @@ static struct inode *f2fs_alloc_inode(st
- 	atomic_set(&fi->dirty_pages, 0);
- 	atomic_set(&fi->i_compr_blocks, 0);
- 	atomic_set(&fi->open_count, 0);
-+	atomic_set(&fi->writeback, 0);
- 	init_f2fs_rwsem(&fi->i_sem);
- 	spin_lock_init(&fi->i_size_lock);
- 	INIT_LIST_HEAD(&fi->dirty_list);
+ 	WRITE_ONCE(sk->sk_shutdown, 0);
+ 	sk_error_report(sk);
+--- a/net/mptcp/protocol.h
++++ b/net/mptcp/protocol.h
+@@ -316,7 +316,8 @@ struct mptcp_sock {
+ 			fastopening:1,
+ 			in_accept_queue:1,
+ 			free_first:1,
+-			rcvspace_init:1;
++			rcvspace_init:1,
++			fastclosing:1;
+ 	u32		notsent_lowat;
+ 	int		keepalive_cnt;
+ 	int		keepalive_idle;
 
 
 
