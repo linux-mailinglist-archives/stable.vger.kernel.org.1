@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-207410-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206808-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 501DFD09D78
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:41:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A39E2D09560
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:11:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3DAAD30605AE
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:32:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 948F430C6CBD
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:04:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1DF135B12B;
-	Fri,  9 Jan 2026 12:32:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1C2B35A948;
+	Fri,  9 Jan 2026 12:04:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fplulZw0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tG5uAibb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5592336EDA;
-	Fri,  9 Jan 2026 12:32:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94A4735A93F;
+	Fri,  9 Jan 2026 12:04:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961975; cv=none; b=mLgPoc6Qp+UwqyhwqOpFtKzmqNKaMm88RiBmeOg0VEOPp7k70LUBoAZeHopWJjZ850X53q/5MaMusv9tk/sYNWbJk+PktpHo3EV20mRv79uJjMzERGbrE2hOJqeMbsg+V/4hfQtA/hr3YxEkonMcPXEw1dFn2tGFVDsFGcmYdnU=
+	t=1767960257; cv=none; b=Z2xHZFsXAW+y5IbJ1X2r8sQuNukOd84WXwN4DqECCsBB5RzGrCpVzhdLhr2rSdtHzuA3gBVgo6gL9m8Q1Q+YzziFbd2Iilj3MehoUe8zZ/etoQb3b8l9V9Hn6wVS2KWv75sA3Lt3AmJLItlYeaNySw/ycHVAtuecHjjbGhGgxyo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961975; c=relaxed/simple;
-	bh=PZTT+6F8Mmx9ktoaloB2Zxw1nnqVCF4gkKGuNpp/iZY=;
+	s=arc-20240116; t=1767960257; c=relaxed/simple;
+	bh=fwp6BuLfsUJF7SEtSID0ym/DJKxCHE17KVUC+Z2a6rg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dyTjtK7dhLe5hnEUx2vGatS4DtzcfIZc+Cwqd47AH8A9qFikBS+aVYiKEtq86G5fvTuuaVL8g3SG+edUXvbcJJIYFcQvA+xLBtu/x+By3dAWuoRqVBdAHOmHjbiNdG/urRcXCfOtSelpsK7GS2SjysmC3vI8IDYv4zHuJS5SuTY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fplulZw0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29439C19423;
-	Fri,  9 Jan 2026 12:32:54 +0000 (UTC)
+	 MIME-Version; b=tPHV3FQnJX7GSMh9ChzQwWn/OPg+RH2j4cgSRQ0tS44cofvS04G9GvY6mFQg/rCaX44KjhyxCa769s9aXVETLqJLdoOPEQ9xnb8bthcEBoLjaEnZ3ANuxW9YqzKy6ceO/8N6J7PxKMT+rPvBM6Q7WToFxcN4Xz1G2AShgyTJHXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tG5uAibb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FF6BC16AAE;
+	Fri,  9 Jan 2026 12:04:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961975;
-	bh=PZTT+6F8Mmx9ktoaloB2Zxw1nnqVCF4gkKGuNpp/iZY=;
+	s=korg; t=1767960257;
+	bh=fwp6BuLfsUJF7SEtSID0ym/DJKxCHE17KVUC+Z2a6rg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fplulZw0Ckk/dn+e+DZpXzPp7eo+dUNPXrP7cThPIp2CnKSVA338kSSnQYk2c7SJ5
-	 msvkr79YzGakkMXwRKTaE5C5y3wawIDpLwKweuASgnPnWU8wzL+8DFV5Bwsedryz/z
-	 rDpFeTJF5hhvnLmMuxNVUszTVBlK3jVYbvcuUTYA=
+	b=tG5uAibbL8M+dCvSx4iWmyBskRj/CLZnPy2O/Vxrt9t+JXKjKTh/kLCIrdOSXJb4d
+	 C2xZG8s2Fclyrz+OZsiZHXZI/349koIpwO45Ikm9DBuuLaMDE7tbJ7YerQ9M5L7VgS
+	 vLPG7+c5ySK+hzYl/6JZo57/9l5eJSI0f4SW8c3U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	Mark Brown <broonie@kernel.org>,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	Florian Westphal <fw@strlen.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 201/634] ASoC: bcm: bcm63xx-pcm-whistler: Check return value of of_dma_configure()
+Subject: [PATCH 6.6 340/737] netfilter: nf_conncount: fix leaked ct in error paths
 Date: Fri,  9 Jan 2026 12:37:59 +0100
-Message-ID: <20260109112124.996778491@linuxfoundation.org>
+Message-ID: <20260109112146.778682778@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,45 +60,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Fernando Fernandez Mancera <fmancera@suse.de>
 
-[ Upstream commit 0ebbd45c33d0049ebf5a22c1434567f0c420b333 ]
+[ Upstream commit 2e2a720766886190a6d35c116794693aabd332b6 ]
 
-bcm63xx_soc_pcm_new() does not check the return value of
-of_dma_configure(), which may fail with -EPROBE_DEFER or
-other errors, allowing PCM setup to continue with incomplete
-DMA configuration.
+There are some situations where ct might be leaked as error paths are
+skipping the refcounted check and return immediately. In order to solve
+it make sure that the check is always called.
 
-Add error checking for of_dma_configure() and return on failure.
-
-Fixes: 88eb404ccc3e ("ASoC: brcm: Add DSL/PON SoC audio driver")
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Link: https://patch.msgid.link/20251202101642.492-1-vulab@iscas.ac.cn
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: be102eb6a0e7 ("netfilter: nf_conncount: rework API to use sk_buff directly")
+Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/bcm/bcm63xx-pcm-whistler.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/netfilter/nf_conncount.c | 25 ++++++++++++++-----------
+ 1 file changed, 14 insertions(+), 11 deletions(-)
 
-diff --git a/sound/soc/bcm/bcm63xx-pcm-whistler.c b/sound/soc/bcm/bcm63xx-pcm-whistler.c
-index 2c600b017524f..760cb18870908 100644
---- a/sound/soc/bcm/bcm63xx-pcm-whistler.c
-+++ b/sound/soc/bcm/bcm63xx-pcm-whistler.c
-@@ -354,7 +354,9 @@ static int bcm63xx_soc_pcm_new(struct snd_soc_component *component,
+diff --git a/net/netfilter/nf_conncount.c b/net/netfilter/nf_conncount.c
+index 97b631a81484d..c00b8e522c5a7 100644
+--- a/net/netfilter/nf_conncount.c
++++ b/net/netfilter/nf_conncount.c
+@@ -172,14 +172,14 @@ static int __nf_conncount_add(struct net *net,
+ 	struct nf_conn *found_ct;
+ 	unsigned int collect = 0;
+ 	bool refcounted = false;
++	int err = 0;
  
- 	i2s_priv = dev_get_drvdata(asoc_rtd_to_cpu(rtd, 0)->dev);
+ 	if (!get_ct_or_tuple_from_skb(net, skb, l3num, &ct, &tuple, &zone, &refcounted))
+ 		return -ENOENT;
  
--	of_dma_configure(pcm->card->dev, pcm->card->dev->of_node, 1);
-+	ret = of_dma_configure(pcm->card->dev, pcm->card->dev->of_node, 1);
-+	if (ret)
-+		return ret;
+ 	if (ct && nf_ct_is_confirmed(ct)) {
+-		if (refcounted)
+-			nf_ct_put(ct);
+-		return -EEXIST;
++		err = -EEXIST;
++		goto out_put;
+ 	}
  
- 	ret = dma_coerce_mask_and_coherent(pcm->card->dev, DMA_BIT_MASK(32));
- 	if (ret)
+ 	if ((u32)jiffies == list->last_gc)
+@@ -231,12 +231,16 @@ static int __nf_conncount_add(struct net *net,
+ 	}
+ 
+ add_new_node:
+-	if (WARN_ON_ONCE(list->count > INT_MAX))
+-		return -EOVERFLOW;
++	if (WARN_ON_ONCE(list->count > INT_MAX)) {
++		err = -EOVERFLOW;
++		goto out_put;
++	}
+ 
+ 	conn = kmem_cache_alloc(conncount_conn_cachep, GFP_ATOMIC);
+-	if (conn == NULL)
+-		return -ENOMEM;
++	if (conn == NULL) {
++		err = -ENOMEM;
++		goto out_put;
++	}
+ 
+ 	conn->tuple = tuple;
+ 	conn->zone = *zone;
+@@ -249,7 +253,7 @@ static int __nf_conncount_add(struct net *net,
+ out_put:
+ 	if (refcounted)
+ 		nf_ct_put(ct);
+-	return 0;
++	return err;
+ }
+ 
+ int nf_conncount_add_skb(struct net *net,
+@@ -446,11 +450,10 @@ insert_tree(struct net *net,
+ 
+ 		rb_link_node_rcu(&rbconn->node, parent, rbnode);
+ 		rb_insert_color(&rbconn->node, root);
+-
+-		if (refcounted)
+-			nf_ct_put(ct);
+ 	}
+ out_unlock:
++	if (refcounted)
++		nf_ct_put(ct);
+ 	spin_unlock_bh(&nf_conncount_locks[hash]);
+ 	return count;
+ }
 -- 
 2.51.0
 
