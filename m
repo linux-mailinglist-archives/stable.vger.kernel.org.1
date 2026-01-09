@@ -1,50 +1,50 @@
-Return-Path: <stable+bounces-207685-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207687-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3AA1D0A3D4
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:10:26 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB0BED0A420
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:11:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D122D30B5577
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:48:41 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A5D7831B2869
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:48:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E5A835C1BB;
-	Fri,  9 Jan 2026 12:45:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF8B635BDA8;
+	Fri,  9 Jan 2026 12:46:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GfdW0VMA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jXavtMxP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0173635BDD0;
-	Fri,  9 Jan 2026 12:45:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85CB035B149;
+	Fri,  9 Jan 2026 12:46:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962756; cv=none; b=qRO+ocInqAP+TjxSMc2o1CMCW5+dZWzfSCb2Lm81Phiz93hHvFRVjKX7iZ/chYNT/cOQWJ2qT0Cmo0cVJh6+X83MJBhWqlbGCGtSjVmK8hVJLVJ6fbh52Ijoiu/UCPfMCj/pl7UafYmueGSLiZMY4KQFXfaBHGlV659kdH5SZDo=
+	t=1767962761; cv=none; b=V9B2Wy2xrf+XUNSla18epmCYlfrmFwH8PnYz1KMarEqey5pQ1Bh2bVXrMkr4iMpB8Or0QgDCRPC3Xb+qbI7tZGxU/MZwih57aQH2IdFFRKaSIiXbLRh57HDLuYp22/iNFWbmncU5n/fH8g8aGNzEg+iIJYyPATPBWqNsx7Eyadk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962756; c=relaxed/simple;
-	bh=QhvDSUaL9wxt3TkXV1FL0SC6FVWqDOHNHbh1fqR5POU=;
+	s=arc-20240116; t=1767962761; c=relaxed/simple;
+	bh=AmXAJJztOZlUA6gOZcb2LEk414LF6DIN68EQZCINi1w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NbFqXqoC9zTSSIhdJlPy1kcFq1ovFGQGpQzH6XMtl0eBg+TqdYyte2IKekybxI/nlCjX6Smdofqopbmy2Ssoxh9feL2zmrIPjLQnSGvJzOFBmOjFZ5nfXXq1rm54/ODs+IBx2XgLYRIkMEbmzA+xFHA1lXXZzHl/l+1gh+l6cvU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GfdW0VMA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B555C4CEF1;
-	Fri,  9 Jan 2026 12:45:55 +0000 (UTC)
+	 MIME-Version; b=Id6juTus7fVPKNjPrz/ePotxw36NzqZB6hpmmvvwHYTwBQxai3MWGEsZfYO5QHls2anqeJYj91QkftDVF6l4ml4eAMqmNUUCGpKvq49vQxPqmY3HkfdoYxqg2RtLTnCGJZeK/3GTBOZB2EDorE+7wQKw9oCchzvGp9YBto42Kb4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jXavtMxP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 043D1C4CEF1;
+	Fri,  9 Jan 2026 12:46:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962755;
-	bh=QhvDSUaL9wxt3TkXV1FL0SC6FVWqDOHNHbh1fqR5POU=;
+	s=korg; t=1767962761;
+	bh=AmXAJJztOZlUA6gOZcb2LEk414LF6DIN68EQZCINi1w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GfdW0VMASbGqi2L/7tRsUA3sBmnKlfUz9KuIs1qf+3u0sf5bqhl9OZ51BIcSuSrwB
-	 3iSG1xC0OcORMtH2EC31R8P3gdSsv36NHXWt+UyRz0tmlphaM3PaCV2ilgH2XhUfGM
-	 Chn+CYSZWiRkFQPZjJtQrFip8RGtP1IOomCWf6SY=
+	b=jXavtMxPL4qrj7MsRm5EVFFDdlZxBlZdOxcn1p1TOGECLeX17SjienLSpMFS2QF/T
+	 7RY5P16RZGFMLtcJ0lU//DDXr4J+xbeqRZwds3QgVKZcikfQeCdbsVaxJsiluMbnZg
+	 lbXblMu1VAz5QwRHLHI/w8B4Y7et6EHvVC3VjmnQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thorsten Blum <thorsten.blum@linux.dev>,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.1 476/634] fbdev: pxafb: Fix multiple clamped values in pxafb_adjust_timing
-Date: Fri,  9 Jan 2026 12:42:34 +0100
-Message-ID: <20260109112135.459779240@linuxfoundation.org>
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 6.1 478/634] media: cec: Fix debugfs leak on bus_register() failure
+Date: Fri,  9 Jan 2026 12:42:36 +0100
+Message-ID: <20260109112135.534230918@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
 References: <20260109112117.407257400@linuxfoundation.org>
@@ -63,44 +63,36 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Thorsten Blum <thorsten.blum@linux.dev>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-commit 0155e868cbc111846cc2809c1546ea53810a56ae upstream.
+commit c43bcd2b2aa3c2ca9d2433c3990ecbc2c47d10eb upstream.
 
-The variables were never clamped because the return value of clamp_val()
-was not used. Fix this by assigning the clamped values, and use clamp()
-instead of clamp_val().
+In cec_devnode_init(), the debugfs directory created with
+debugfs_create_dir() is not removed if bus_register() fails.
+This leaves a stale "cec" entry in debugfs and prevents
+proper module reloading.
 
+Fix this by removing the debugfs directory in the error path.
+
+Fixes: a56960e8b406 ("[media] cec: add HDMI CEC framework (core)")
 Cc: stable@vger.kernel.org
-Fixes: 3f16ff608a75 ("[ARM] pxafb: cleanup of the timing checking code")
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/fbdev/pxafb.c |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/media/cec/core/cec-core.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/video/fbdev/pxafb.c
-+++ b/drivers/video/fbdev/pxafb.c
-@@ -418,12 +418,12 @@ static int pxafb_adjust_timing(struct px
- 	var->yres = max_t(int, var->yres, MIN_YRES);
+--- a/drivers/media/cec/core/cec-core.c
++++ b/drivers/media/cec/core/cec-core.c
+@@ -449,6 +449,7 @@ static int __init cec_devnode_init(void)
  
- 	if (!(fbi->lccr0 & LCCR0_LCDT)) {
--		clamp_val(var->hsync_len, 1, 64);
--		clamp_val(var->vsync_len, 1, 64);
--		clamp_val(var->left_margin,  1, 255);
--		clamp_val(var->right_margin, 1, 255);
--		clamp_val(var->upper_margin, 1, 255);
--		clamp_val(var->lower_margin, 1, 255);
-+		var->hsync_len = clamp(var->hsync_len, 1, 64);
-+		var->vsync_len = clamp(var->vsync_len, 1, 64);
-+		var->left_margin  = clamp(var->left_margin,  1, 255);
-+		var->right_margin = clamp(var->right_margin, 1, 255);
-+		var->upper_margin = clamp(var->upper_margin, 1, 255);
-+		var->lower_margin = clamp(var->lower_margin, 1, 255);
- 	}
- 
- 	/* make sure each line is aligned on word boundary */
+ 	ret = bus_register(&cec_bus_type);
+ 	if (ret < 0) {
++		debugfs_remove_recursive(top_cec_dir);
+ 		unregister_chrdev_region(cec_dev_t, CEC_NUM_DEVICES);
+ 		pr_warn("cec: bus_register failed\n");
+ 		return -EIO;
 
 
 
