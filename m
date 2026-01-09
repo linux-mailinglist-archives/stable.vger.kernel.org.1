@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-206940-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207542-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 994C7D097E3
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:21:08 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B2F6D09E2D
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:43:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C64903087457
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:10:59 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1E05E3055190
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:39:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FEEC35B13A;
-	Fri,  9 Jan 2026 12:10:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A01DF35B133;
+	Fri,  9 Jan 2026 12:39:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XYjtiGi5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I7jVi1/F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E73E833BBBD;
-	Fri,  9 Jan 2026 12:10:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63E7C33032C;
+	Fri,  9 Jan 2026 12:39:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960638; cv=none; b=WaTCKxlg60uRRNANbb4aLlkWZs5/gi+8NHGlYK1o4aDHQpc4u4+GHlQQLYRLmiEhApy8PBHmfopSHxKOHK5Bl8M202F9QGucgCJT+p6dg0JzwOEX1+NWo7uhdUHSHrXW5nYzopM+pFSyTKAgoHratKhp00bw1aNDK4JKKlybX3A=
+	t=1767962350; cv=none; b=XXSNGBBW3h/ICGIcAr8cxD6QEpPQQT3E187nR9Ymzt2OnpVpjcgI+CND5kDUc2CApgEtSXoObYwcIAL3LLSetZqbUeeboV5V37NZSHp3niMkYO/CNzHSpPInhgiv0DTkssaM9CpXJEtG4Vzd9tuiKl6V6UH+otzVQqydVZaf0GY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960638; c=relaxed/simple;
-	bh=xmVoVDfB23OJ5ZuaXeKu4Ibxj2cMt+V/M8T8aExnYQ0=;
+	s=arc-20240116; t=1767962350; c=relaxed/simple;
+	bh=5wwyXNYWIYB4N/OFHg4+kTOR1Q62taN9LSMME/FDdCQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B/iwXGJ/g8KDyY/cI4YIls7LKMDnbRGjjItVcgEtNYrV88CcA/ARsXLrhabzOo0E+gV5eUenpAJ/z1OzcNFHpvQbcVu7jJY5WLz0dn4eRHR2n80tXP7ZdAqz7REqMi7tjk7PwteQTLpLWqp5sDYk9xJfFKLSq4T+ADMOij+ZgCk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XYjtiGi5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 694E5C16AAE;
-	Fri,  9 Jan 2026 12:10:37 +0000 (UTC)
+	 MIME-Version; b=nyNu6AAk9Cag0/b4m0wd3SeZ4t7J0wjdkiG5jgass6i82bx8sx5KQpkQ90+iWAQjC0DN7RjoyLryfYJsd3LExvevFTybasemTi6nV058ASYu+gfyz07zIF38pYRKTNeSQG0v562J0ywSJXb0aHXX8ksbsiBEQ7yJqMKFibhOfCg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I7jVi1/F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCCFBC4CEF1;
+	Fri,  9 Jan 2026 12:39:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960637;
-	bh=xmVoVDfB23OJ5ZuaXeKu4Ibxj2cMt+V/M8T8aExnYQ0=;
+	s=korg; t=1767962350;
+	bh=5wwyXNYWIYB4N/OFHg4+kTOR1Q62taN9LSMME/FDdCQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XYjtiGi5aVSrIZ3umn7LJoPewqtPv0jSzZImuNoLmmMgQlTfxOH9XaBEp6rSIpqaF
-	 NBEo/4gjj3yT8NbB4gKxro4LxIQG333XE7GYrcYQn/Ew+4nCjaLOAiF0Eb8WBQJgOn
-	 1TnGixL87XzVzGOubV3eEWIChxy415rXFuW6H2ZE=
+	b=I7jVi1/F3kOrCbMUfLXHLFk3O63lmvl1NBsapW/P3LYwwRWIhXOzMsat9ZeYE2BOA
+	 +OiAjhTmGi+IGFlBE3v2TOG+LjSzzaKCYctoaLjmioep1DhdI0LxiR6pzowROWFQ0E
+	 4Ct4+BY0+4s++7yXq12GPsYxvqStzhOKyS8jIBH0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ed Tsai <ed.tsai@mediatek.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.6 473/737] PM: runtime: Do not clear needs_force_resume with enabled runtime PM
+	Jeongjun Park <aha310510@gmail.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 6.1 334/634] media: dvb-usb: dtv5100: fix out-of-bounds in dtv5100_i2c_msg()
 Date: Fri,  9 Jan 2026 12:40:12 +0100
-Message-ID: <20260109112151.779660534@linuxfoundation.org>
+Message-ID: <20260109112130.093514841@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,68 +59,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Jeongjun Park <aha310510@gmail.com>
 
-commit 359afc8eb02a518fbdd0cbd462c8c2827c6cbec2 upstream.
+commit b91e6aafe8d356086cc621bc03e35ba2299e4788 upstream.
 
-Commit 89d9cec3b1e9 ("PM: runtime: Clear power.needs_force_resume in
-pm_runtime_reinit()") added provisional clearing of power.needs_force_resume
-to pm_runtime_reinit(), but it is done unconditionally which is a
-mistake because pm_runtime_reinit() may race with driver probing
-and removal [1].
+rlen value is a user-controlled value, but dtv5100_i2c_msg() does not
+check the size of the rlen value. Therefore, if it is set to a value
+larger than sizeof(st->data), an out-of-bounds vuln occurs for st->data.
 
-To address this, notice that power.needs_force_resume should never
-be set when runtime PM is enabled and so it only needs to be cleared
-when runtime PM is disabled, and update pm_runtime_init() to only
-clear that flag when runtime PM is disabled.
+Therefore, we need to add proper range checking to prevent this vuln.
 
-Fixes: 89d9cec3b1e9 ("PM: runtime: Clear power.needs_force_resume in pm_runtime_reinit()")
-Reported-by: Ed Tsai <ed.tsai@mediatek.com>
-Closes: https://lore.kernel.org/linux-pm/20251215122154.3180001-1-ed.tsai@mediatek.com/ [1]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Cc: 6.17+ <stable@vger.kernel.org> # 6.17+
-Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
-Link: https://patch.msgid.link/12807571.O9o76ZdvQC@rafael.j.wysocki
+Fixes: 60688d5e6e6e ("V4L/DVB (8735): dtv5100: replace dummy frontend by zl10353")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/base/power/runtime.c |   22 ++++++++++++----------
- 1 file changed, 12 insertions(+), 10 deletions(-)
+ drivers/media/usb/dvb-usb/dtv5100.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/base/power/runtime.c
-+++ b/drivers/base/power/runtime.c
-@@ -1827,16 +1827,18 @@ void pm_runtime_init(struct device *dev)
-  */
- void pm_runtime_reinit(struct device *dev)
- {
--	if (!pm_runtime_enabled(dev)) {
--		if (dev->power.runtime_status == RPM_ACTIVE)
--			pm_runtime_set_suspended(dev);
--		if (dev->power.irq_safe) {
--			spin_lock_irq(&dev->power.lock);
--			dev->power.irq_safe = 0;
--			spin_unlock_irq(&dev->power.lock);
--			if (dev->parent)
--				pm_runtime_put(dev->parent);
--		}
-+	if (pm_runtime_enabled(dev))
-+		return;
-+
-+	if (dev->power.runtime_status == RPM_ACTIVE)
-+		pm_runtime_set_suspended(dev);
-+
-+	if (dev->power.irq_safe) {
-+		spin_lock_irq(&dev->power.lock);
-+		dev->power.irq_safe = 0;
-+		spin_unlock_irq(&dev->power.lock);
-+		if (dev->parent)
-+			pm_runtime_put(dev->parent);
+--- a/drivers/media/usb/dvb-usb/dtv5100.c
++++ b/drivers/media/usb/dvb-usb/dtv5100.c
+@@ -55,6 +55,11 @@ static int dtv5100_i2c_msg(struct dvb_us
  	}
- 	/*
- 	 * Clear power.needs_force_resume in case it has been set by
+ 	index = (addr << 8) + wbuf[0];
+ 
++	if (rlen > sizeof(st->data)) {
++		warn("rlen = %x is too big!\n", rlen);
++		return -EINVAL;
++	}
++
+ 	memcpy(st->data, rbuf, rlen);
+ 	msleep(1); /* avoid I2C errors */
+ 	return usb_control_msg(d->udev, pipe, request,
 
 
 
