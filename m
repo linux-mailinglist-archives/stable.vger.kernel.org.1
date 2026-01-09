@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-207520-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206888-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8303D0A1CE
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:59:32 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A40BBD09497
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:08:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6E542310C190
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:38:09 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 94F4C30213DB
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:08:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30506359703;
-	Fri,  9 Jan 2026 12:38:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA894359FBB;
+	Fri,  9 Jan 2026 12:08:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZjKHuGs1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QutXDjvH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3D1B335BCD;
-	Fri,  9 Jan 2026 12:38:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CF8C35A93D;
+	Fri,  9 Jan 2026 12:08:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962288; cv=none; b=fMN9/Ay0aT3CgdHdNODNycNuw26jZnKEKAH1uIAZRZ0BiRyq/ld/HiHFmjhqBTXYORNT9N80rQ45lAU2RkJpv0hudxd4kSaSifb9BHenxr6T91FcLEUGJ6/m/KiTv35bPO96VA/X4ZPY50pmxG/C2hb7Pq/B/PpV+UZXvdUmYis=
+	t=1767960485; cv=none; b=iow2nOl4Wz4TP+zdHUHCmcptiVmi5qdeq23VZgCAt0Q2cVKBcjnuqrcuNP/Jim6L5NdzIGLn3kCd96A36r/lPHSG2DwTLJDieggaPcMA3CXyTzSQCbYSCl2lwJ7bMZNA9Pjnb/2+h57Y0IukpPyXtBFtn8oe+/pQBwWbfuIJDtI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962288; c=relaxed/simple;
-	bh=47kEer+qvm2o+N771P7A5DOoYnEUXoyHsYWNappaaDE=;
+	s=arc-20240116; t=1767960485; c=relaxed/simple;
+	bh=cLznSSVGKgdSvxGvCTCiLVx834DyF5kpFNJml6mXs3g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aXFnhhrIuDRog7Oot4S16XgRc7IwK5wooDAtDYTxaZBVAs05AVrwd+VAC+Q28VrGwiOczvAXTVvk/5xk6Yrkfhnwfw03z96bGLjvNCq708C/PC0NLQ5IJcdSRjg//etSWL/ptjk4LNFYVT9fh+jdfVeu2t7j5Id1ja5owJALOqU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZjKHuGs1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F12BC4CEF1;
-	Fri,  9 Jan 2026 12:38:07 +0000 (UTC)
+	 MIME-Version; b=L9kBPIC6pYf/yMVx2gskuwASZZo6TTHKXW+reNxlXlWvbsnJ8jqkMeX2prcymWt+NWd0xg80U/4ZoqXC0Y/l88CNMTbcSnA3aAOlbCrK2f1V4cXLgf4F7A2SLg8u6++SZtrTa/J8lLjFBjaWTPo/vmD/sCUYNXevdY2wsseRXt4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QutXDjvH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28CDCC16AAE;
+	Fri,  9 Jan 2026 12:08:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962287;
-	bh=47kEer+qvm2o+N771P7A5DOoYnEUXoyHsYWNappaaDE=;
+	s=korg; t=1767960485;
+	bh=cLznSSVGKgdSvxGvCTCiLVx834DyF5kpFNJml6mXs3g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZjKHuGs1PXh8z3bkf7LzgfbT2e4676I0txcFOqrnw0LcrtnQ9xYygnCKQQKhwaWGe
-	 tqXo9RpDraurKlwZW+YgfQJzJ+nQV2ds6GrPY1i7McDKZhtsUZLy3Qny6fHwSPOedn
-	 FGPgRBqCCUEpRgNYNJ4n/XZoyCnqYy/HMHF20Fu8=
+	b=QutXDjvHz2/4ohCIi0mI/3LXMjIOAOxuZycFbuccAzBnK4KNcT8ve1BJWkc/KL6DR
+	 h+m8LxXIHpjtlI5UMBZywYNggSYWYd4K7+MYVsICwF118cV3OHwvjnywIXKVVvNAkz
+	 h25iB31Ofer5D1u5h6SG1+a5bXyWn753M5AtbWus=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	William Qiu <william.qiu@starfivetech.com>,
-	Hal Feng <hal.feng@starfivetech.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 279/634] spi: cadence-quadspi: Add clock configuration for StarFive JH7110 QSPI
-Date: Fri,  9 Jan 2026 12:39:17 +0100
-Message-ID: <20260109112128.032410556@linuxfoundation.org>
+	Zheng Yejian <zhengyejian@huaweicloud.com>,
+	Gary Guo <gary@garyguo.net>,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH 6.6 419/737] kallsyms: Fix wrong "big" kernel symbol type read from procfs
+Date: Fri,  9 Jan 2026 12:39:18 +0100
+Message-ID: <20260109112149.757568622@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,163 +60,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: William Qiu <william.qiu@starfivetech.com>
+From: Zheng Yejian <zhengyejian@huaweicloud.com>
 
-[ Upstream commit 33f1ef6d4eb6bca726608ed939c9fd94d96ceefd ]
+commit f3f9f42232dee596d15491ca3f611d02174db49c upstream.
 
-Add JH7110's clock initialization code to the driver.
+Currently when the length of a symbol is longer than 0x7f characters,
+its type shown in /proc/kallsyms can be incorrect.
 
-Signed-off-by: William Qiu <william.qiu@starfivetech.com>
-Reviewed-by: Hal Feng <hal.feng@starfivetech.com>
-Link: https://lore.kernel.org/r/20230804020254.291239-3-william.qiu@starfivetech.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: 1889dd208197 ("spi: cadence-quadspi: Fix clock disable on probe failure path")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+I found this issue when reading the code, but it can be reproduced by
+following steps:
+
+  1. Define a function which symbol length is 130 characters:
+
+    #define X13(x) x##x##x##x##x##x##x##x##x##x##x##x##x
+    static noinline void X13(x123456789)(void)
+    {
+        printk("hello world\n");
+    }
+
+  2. The type in vmlinux is 't':
+
+    $ nm vmlinux | grep x123456
+    ffffffff816290f0 t x123456789x123456789x123456789x12[...]
+
+  3. Then boot the kernel, the type shown in /proc/kallsyms becomes 'g'
+     instead of the expected 't':
+
+    # cat /proc/kallsyms | grep x123456
+    ffffffff816290f0 g x123456789x123456789x123456789x12[...]
+
+The root cause is that, after commit 73bbb94466fd ("kallsyms: support
+"big" kernel symbols"), ULEB128 was used to encode symbol name length.
+That is, for "big" kernel symbols of which name length is longer than
+0x7f characters, the length info is encoded into 2 bytes.
+
+kallsyms_get_symbol_type() expects to read the first char of the
+symbol name which indicates the symbol type. However, due to the
+"big" symbol case not being handled, the symbol type read from
+/proc/kallsyms may be wrong, so handle it properly.
+
+Cc: stable@vger.kernel.org
+Fixes: 73bbb94466fd ("kallsyms: support "big" kernel symbols")
+Signed-off-by: Zheng Yejian <zhengyejian@huaweicloud.com>
+Acked-by: Gary Guo <gary@garyguo.net>
+Link: https://patch.msgid.link/20241011143853.3022643-1-zhengyejian@huaweicloud.com
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-cadence-quadspi.c | 67 +++++++++++++++++++++++++++++++
- 1 file changed, 67 insertions(+)
+ kernel/kallsyms.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
-index ca393f3fcd90..af0ec2a8c647 100644
---- a/drivers/spi/spi-cadence-quadspi.c
-+++ b/drivers/spi/spi-cadence-quadspi.c
-@@ -47,6 +47,12 @@
- 
- #define CQSPI_OP_WIDTH(part) ((part).nbytes ? ilog2((part).buswidth) : 0)
- 
-+enum {
-+	CLK_QSPI_APB = 0,
-+	CLK_QSPI_AHB,
-+	CLK_QSPI_NUM,
-+};
-+
- struct cqspi_st;
- 
- struct cqspi_flash_pdata {
-@@ -64,6 +70,7 @@ struct cqspi_st {
- 	struct platform_device	*pdev;
- 	struct spi_master	*master;
- 	struct clk		*clk;
-+	struct clk		*clks[CLK_QSPI_NUM];
- 	unsigned int		sclk;
- 
- 	void __iomem		*iobase;
-@@ -91,6 +98,8 @@ struct cqspi_st {
- 	bool			wr_completion;
- 	bool			slow_sram;
- 	bool			apb_ahb_hazard;
-+
-+	bool			is_jh7110; /* Flag for StarFive JH7110 SoC */
- };
- 
- struct cqspi_driver_platdata {
-@@ -99,6 +108,8 @@ struct cqspi_driver_platdata {
- 	int (*indirect_read_dma)(struct cqspi_flash_pdata *f_pdata,
- 				 u_char *rxbuf, loff_t from_addr, size_t n_rx);
- 	u32 (*get_dma_status)(struct cqspi_st *cqspi);
-+	int (*jh7110_clk_init)(struct platform_device *pdev,
-+			       struct cqspi_st *cqspi);
- };
- 
- /* Operation timeout value */
-@@ -1592,6 +1603,51 @@ static int cqspi_setup_flash(struct cqspi_st *cqspi)
- 	return 0;
+--- a/kernel/kallsyms.c
++++ b/kernel/kallsyms.c
+@@ -103,8 +103,11 @@ static char kallsyms_get_symbol_type(uns
+ {
+ 	/*
+ 	 * Get just the first code, look it up in the token table,
+-	 * and return the first char from this token.
++	 * and return the first char from this token. If MSB of length
++	 * is 1, it is a "big" symbol, so needs an additional byte.
+ 	 */
++	if (kallsyms_names[off] & 0x80)
++		off++;
+ 	return kallsyms_token_table[kallsyms_token_index[kallsyms_names[off + 1]]];
  }
  
-+static int cqspi_jh7110_clk_init(struct platform_device *pdev, struct cqspi_st *cqspi)
-+{
-+	static struct clk_bulk_data qspiclk[] = {
-+		{ .id = "apb" },
-+		{ .id = "ahb" },
-+	};
-+
-+	int ret = 0;
-+
-+	ret = devm_clk_bulk_get(&pdev->dev, ARRAY_SIZE(qspiclk), qspiclk);
-+	if (ret) {
-+		dev_err(&pdev->dev, "%s: failed to get qspi clocks\n", __func__);
-+		return ret;
-+	}
-+
-+	cqspi->clks[CLK_QSPI_APB] = qspiclk[0].clk;
-+	cqspi->clks[CLK_QSPI_AHB] = qspiclk[1].clk;
-+
-+	ret = clk_prepare_enable(cqspi->clks[CLK_QSPI_APB]);
-+	if (ret) {
-+		dev_err(&pdev->dev, "%s: failed to enable CLK_QSPI_APB\n", __func__);
-+		return ret;
-+	}
-+
-+	ret = clk_prepare_enable(cqspi->clks[CLK_QSPI_AHB]);
-+	if (ret) {
-+		dev_err(&pdev->dev, "%s: failed to enable CLK_QSPI_AHB\n", __func__);
-+		goto disable_apb_clk;
-+	}
-+
-+	cqspi->is_jh7110 = true;
-+
-+	return 0;
-+
-+disable_apb_clk:
-+	clk_disable_unprepare(cqspi->clks[CLK_QSPI_APB]);
-+
-+	return ret;
-+}
-+
-+static void cqspi_jh7110_disable_clk(struct platform_device *pdev, struct cqspi_st *cqspi)
-+{
-+	clk_disable_unprepare(cqspi->clks[CLK_QSPI_AHB]);
-+	clk_disable_unprepare(cqspi->clks[CLK_QSPI_APB]);
-+}
- static int cqspi_probe(struct platform_device *pdev)
- {
- 	const struct cqspi_driver_platdata *ddata;
-@@ -1618,6 +1674,7 @@ static int cqspi_probe(struct platform_device *pdev)
- 
- 	cqspi->pdev = pdev;
- 	cqspi->master = master;
-+	cqspi->is_jh7110 = false;
- 	platform_set_drvdata(pdev, cqspi);
- 
- 	/* Obtain configuration from OF. */
-@@ -1729,6 +1786,12 @@ static int cqspi_probe(struct platform_device *pdev)
- 		if (ddata->quirks & CQSPI_NEEDS_APB_AHB_HAZARD_WAR)
- 			cqspi->apb_ahb_hazard = true;
- 
-+		if (ddata->jh7110_clk_init) {
-+			ret = cqspi_jh7110_clk_init(pdev, cqspi);
-+			if (ret)
-+				goto probe_clk_failed;
-+		}
-+
- 		if (of_device_is_compatible(pdev->dev.of_node,
- 					    "xlnx,versal-ospi-1.0")) {
- 			ret = dma_set_mask(&pdev->dev, DMA_BIT_MASK(64));
-@@ -1793,6 +1856,9 @@ static int cqspi_remove(struct platform_device *pdev)
- 
- 	clk_disable_unprepare(cqspi->clk);
- 
-+	if (cqspi->is_jh7110)
-+		cqspi_jh7110_disable_clk(pdev, cqspi);
-+
- 	pm_runtime_put_sync(&pdev->dev);
- 	pm_runtime_disable(&pdev->dev);
- 
-@@ -1860,6 +1926,7 @@ static const struct cqspi_driver_platdata versal_ospi = {
- 
- static const struct cqspi_driver_platdata jh7110_qspi = {
- 	.quirks = CQSPI_DISABLE_DAC_MODE,
-+	.jh7110_clk_init = cqspi_jh7110_clk_init,
- };
- 
- static const struct cqspi_driver_platdata pensando_cdns_qspi = {
--- 
-2.51.0
-
 
 
 
