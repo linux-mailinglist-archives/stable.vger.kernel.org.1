@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-207806-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207781-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 289D8D0A4B8
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:14:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 72EE3D0A47F
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:13:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8732330DDBFB
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:52:07 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 25A253305653
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:51:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F8BF33032C;
-	Fri,  9 Jan 2026 12:51:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23DD135BDAF;
+	Fri,  9 Jan 2026 12:50:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qmcwL900"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2L/gwHVG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0FF935BDD6;
-	Fri,  9 Jan 2026 12:51:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA98735B149;
+	Fri,  9 Jan 2026 12:50:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767963102; cv=none; b=msLiZN+4c76SM/dVZnaLvTBwkzdePTKRvrAkyDwFRL+uPDiDeO7ix8TPEJwpFeDYm3bSbD+TJFue2mPbSqTNViHJu3pWYL1QwvSJyNe6xsc+Qkqvexk8f37LmfDCtikC+xj0DKrTX+PZrcF7nMPUQ1/hTVjTHPXM7CUx1Uz9cJU=
+	t=1767963029; cv=none; b=Nfg98F6GrEBwNm3Y1bJlqNLVW0afpZWapUkq3iFVlCbsmBcxVioNQ80rxyFAmqucnuylmCN/YkqgJdXlRWh5vy6mSUqrzdF0MMgxM7U7qgR/kn9AYt+o1Qz86eDQ105ubuHZGRMJgQVtO+nzua/AuZoqnUUn9csJ3gY/mKh7EEo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767963102; c=relaxed/simple;
-	bh=wTvlXC+NQy2gU+gdEmLK9Y0L/GUpzGKnPBuqPSRt0Lw=;
+	s=arc-20240116; t=1767963029; c=relaxed/simple;
+	bh=2nfstkgvt3OpeGAff9SOASJp+fBPkfZlmN2ZO1BOy4E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NyoCTCxo0B3X0SAYvdJyk0IDIs1ni3WDE3JRvK9TzAyXr6yxTLzkrqg3O2/HljQa5LWWsrt3jUxa1ac8QFNzXznhumF7sb4CPYt9bXkHXDRXGx4Dk5/SOIGmvxE0fCaMzcTwxVfRHnZniQxbs/bwUSgHB3M8G5YR0JQh+BdQJyU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qmcwL900; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B95E8C4CEF1;
-	Fri,  9 Jan 2026 12:51:41 +0000 (UTC)
+	 MIME-Version; b=U3GYo2eugQ1V6bQD5gWSPBvgkjRek3aff0TQsrMvmcXKoNYGfzDZ9J6qZp4GKRtmSb5/f+B4i9hCeYJDhFI2CJ+Vu7h57FQ99b+Gc4+lhQ2aB473rMCQPB651jbwquy1i3e6dxl5xCWuutg5NQBXe44l9R9D7ogTg0lgeXADmTc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2L/gwHVG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CEEBC4CEF1;
+	Fri,  9 Jan 2026 12:50:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767963102;
-	bh=wTvlXC+NQy2gU+gdEmLK9Y0L/GUpzGKnPBuqPSRt0Lw=;
+	s=korg; t=1767963029;
+	bh=2nfstkgvt3OpeGAff9SOASJp+fBPkfZlmN2ZO1BOy4E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qmcwL900mw2nK+ovfqWCSgdyKem3pjt6mwvVB1+0hnKWlXP1uEfgaM29tAwpxaN1W
-	 l/TdeDX3JmpUerISyjXs5qOwSEAcu/7cUXHA4FtMAEhv2TJGdYKmZ9gFg87PL6ISYC
-	 UUGkpp4Nlu45qAExO/Pfqf34qAKPFvuzJAlVVk3o=
+	b=2L/gwHVGvHI7p/jFZka5MSBmEmfA1STBDBVaqrAEQhF22wxAJYHdBxsf56Zr4aFUV
+	 /YtXPwKdnpKQLKaSpQWCuI7Yk/0Z+l5vgDIzh1cNNg+CZScd6ekDGU5QXDGrsBA4Ne
+	 wHDARMFEx9l7+dlg/WKQzJqZg+Syxoh73z623MGw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yong Wu <yong.wu@mediatek.com>,
-	Robin Murphy <robin.murphy@arm.com>,
+	Olivier Moysan <olivier.moysan@st.com>,
 	Johan Hovold <johan@kernel.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Joerg Roedel <joerg.roedel@amd.com>,
+	olivier moysan <olivier.moysan@foss.st.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 566/634] iommu/mediatek: fix use-after-free on probe deferral
-Date: Fri,  9 Jan 2026 12:44:04 +0100
-Message-ID: <20260109112138.902496055@linuxfoundation.org>
+Subject: [PATCH 6.1 573/634] ASoC: stm32: sai: fix OF node leak on probe
+Date: Fri,  9 Jan 2026 12:44:11 +0100
+Message-ID: <20260109112139.168490600@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
 References: <20260109112117.407257400@linuxfoundation.org>
@@ -69,91 +68,145 @@ Content-Transfer-Encoding: 8bit
 
 From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit de83d4617f9fe059623e97acf7e1e10d209625b5 ]
+[ Upstream commit 23261f0de09427367e99f39f588e31e2856a690e ]
 
-The driver is dropping the references taken to the larb devices during
-probe after successful lookup as well as on errors. This can
-potentially lead to a use-after-free in case a larb device has not yet
-been bound to its driver so that the iommu driver probe defers.
+The reference taken to the sync provider OF node when probing the
+platform device is currently only dropped if the set_sync() callback
+fails during DAI probe.
 
-Fix this by keeping the references as expected while the iommu driver is
-bound.
+Make sure to drop the reference on platform probe failures (e.g. probe
+deferral) and on driver unbind.
 
-Fixes: 26593928564c ("iommu/mediatek: Add error path for loop of mm_dts_parse")
-Cc: stable@vger.kernel.org
-Cc: Yong Wu <yong.wu@mediatek.com>
-Acked-by: Robin Murphy <robin.murphy@arm.com>
+This also avoids a potential use-after-free in case the DAI is ever
+reprobed without first rebinding the platform driver.
+
+Fixes: 5914d285f6b7 ("ASoC: stm32: sai: Add synchronization support")
+Fixes: d4180b4c02e7 ("ASoC: stm32: sai: fix set_sync service")
+Cc: Olivier Moysan <olivier.moysan@st.com>
+Cc: stable@vger.kernel.org      # 4.16: d4180b4c02e7
 Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: Yong Wu <yong.wu@mediatek.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
+Reviewed-by: olivier moysan <olivier.moysan@foss.st.com>
+Link: https://patch.msgid.link/20251124104908.15754-4-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/mtk_iommu.c |   25 ++++++++++++++++++-------
- 1 file changed, 18 insertions(+), 7 deletions(-)
+ sound/soc/stm/stm32_sai.c     |   12 +++---------
+ sound/soc/stm/stm32_sai_sub.c |   23 ++++++++++++++++-------
+ 2 files changed, 19 insertions(+), 16 deletions(-)
 
---- a/drivers/iommu/mtk_iommu.c
-+++ b/drivers/iommu/mtk_iommu.c
-@@ -1134,16 +1134,19 @@ static int mtk_iommu_mm_dts_parse(struct
+--- a/sound/soc/stm/stm32_sai.c
++++ b/sound/soc/stm/stm32_sai.c
+@@ -122,7 +122,6 @@ static int stm32_sai_set_sync(struct stm
+ 	if (!pdev) {
+ 		dev_err(&sai_client->pdev->dev,
+ 			"Device not found for node %pOFn\n", np_provider);
+-		of_node_put(np_provider);
+ 		return -ENODEV;
+ 	}
+ 
+@@ -131,21 +130,16 @@ static int stm32_sai_set_sync(struct stm
+ 	if (!sai_provider) {
+ 		dev_err(&sai_client->pdev->dev,
+ 			"SAI sync provider data not found\n");
+-		ret = -EINVAL;
+-		goto error;
++		return -EINVAL;
+ 	}
+ 
+ 	/* Configure sync client */
+ 	ret = stm32_sai_sync_conf_client(sai_client, synci);
+ 	if (ret < 0)
+-		goto error;
++		return ret;
+ 
+ 	/* Configure sync provider */
+-	ret = stm32_sai_sync_conf_provider(sai_provider, synco);
+-
+-error:
+-	of_node_put(np_provider);
+-	return ret;
++	return stm32_sai_sync_conf_provider(sai_provider, synco);
+ }
+ 
+ static int stm32_sai_probe(struct platform_device *pdev)
+--- a/sound/soc/stm/stm32_sai_sub.c
++++ b/sound/soc/stm/stm32_sai_sub.c
+@@ -1435,7 +1435,8 @@ static int stm32_sai_sub_parse_of(struct
+ 				dev_err(&pdev->dev,
+ 					"External synchro not supported\n");
+ 				of_node_put(args.np);
+-				return -EINVAL;
++				ret = -EINVAL;
++				goto err_put_sync_provider;
+ 			}
+ 			sai->sync = SAI_SYNC_EXTERNAL;
+ 
+@@ -1444,7 +1445,8 @@ static int stm32_sai_sub_parse_of(struct
+ 			    (sai->synci > (SAI_GCR_SYNCIN_MAX + 1))) {
+ 				dev_err(&pdev->dev, "Wrong SAI index\n");
+ 				of_node_put(args.np);
+-				return -EINVAL;
++				ret = -EINVAL;
++				goto err_put_sync_provider;
+ 			}
+ 
+ 			if (of_property_match_string(args.np, "compatible",
+@@ -1458,7 +1460,8 @@ static int stm32_sai_sub_parse_of(struct
+ 			if (!sai->synco) {
+ 				dev_err(&pdev->dev, "Unknown SAI sub-block\n");
+ 				of_node_put(args.np);
+-				return -EINVAL;
++				ret = -EINVAL;
++				goto err_put_sync_provider;
+ 			}
  		}
  
- 		component_match_add(dev, match, component_compare_dev, &plarbdev->dev);
--		platform_device_put(plarbdev);
- 	}
+@@ -1468,13 +1471,15 @@ static int stm32_sai_sub_parse_of(struct
  
--	if (!frst_avail_smicomm_node)
--		return -EINVAL;
-+	if (!frst_avail_smicomm_node) {
-+		ret = -EINVAL;
-+		goto err_larbdev_put;
+ 	of_node_put(args.np);
+ 	sai->sai_ck = devm_clk_get(&pdev->dev, "sai_ck");
+-	if (IS_ERR(sai->sai_ck))
+-		return dev_err_probe(&pdev->dev, PTR_ERR(sai->sai_ck),
+-				     "Missing kernel clock sai_ck\n");
++	if (IS_ERR(sai->sai_ck)) {
++		ret = dev_err_probe(&pdev->dev, PTR_ERR(sai->sai_ck),
++				    "Missing kernel clock sai_ck\n");
++		goto err_put_sync_provider;
 +	}
  
- 	pcommdev = of_find_device_by_node(frst_avail_smicomm_node);
- 	of_node_put(frst_avail_smicomm_node);
--	if (!pcommdev)
--		return -ENODEV;
-+	if (!pcommdev) {
-+		ret = -ENODEV;
-+		goto err_larbdev_put;
-+	}
- 	data->smicomm_dev = &pcommdev->dev;
+ 	ret = clk_prepare(sai->pdata->pclk);
+ 	if (ret < 0)
+-		return ret;
++		goto err_put_sync_provider;
  
- 	link = device_link_add(data->smicomm_dev, dev,
-@@ -1151,7 +1154,8 @@ static int mtk_iommu_mm_dts_parse(struct
- 	platform_device_put(pcommdev);
- 	if (!link) {
- 		dev_err(dev, "Unable to link %s.\n", dev_name(data->smicomm_dev));
--		return -EINVAL;
-+		ret = -EINVAL;
-+		goto err_larbdev_put;
- 	}
- 	return 0;
+ 	if (STM_SAI_IS_F4(sai->pdata))
+ 		return 0;
+@@ -1496,6 +1501,8 @@ static int stm32_sai_sub_parse_of(struct
  
-@@ -1322,8 +1326,12 @@ out_sysfs_remove:
- 	iommu_device_sysfs_remove(&data->iommu);
- out_list_del:
- 	list_del(&data->list);
--	if (MTK_IOMMU_IS_TYPE(data->plat_data, MTK_IOMMU_TYPE_MM))
-+	if (MTK_IOMMU_IS_TYPE(data->plat_data, MTK_IOMMU_TYPE_MM)) {
- 		device_link_remove(data->smicomm_dev, dev);
-+
-+		for (i = 0; i < MTK_LARB_NR_MAX; i++)
-+			put_device(data->larb_imu[i].dev);
-+	}
- out_runtime_disable:
- 	pm_runtime_disable(dev);
+ err_unprepare_pclk:
+ 	clk_unprepare(sai->pdata->pclk);
++err_put_sync_provider:
++	of_node_put(sai->np_sync_provider);
+ 
  	return ret;
-@@ -1343,6 +1351,9 @@ static int mtk_iommu_remove(struct platf
- 	if (MTK_IOMMU_IS_TYPE(data->plat_data, MTK_IOMMU_TYPE_MM)) {
- 		device_link_remove(data->smicomm_dev, &pdev->dev);
- 		component_master_del(&pdev->dev, &mtk_iommu_com_ops);
-+
-+		for (i = 0; i < MTK_LARB_NR_MAX; i++)
-+			put_device(data->larb_imu[i].dev);
- 	}
+ }
+@@ -1566,6 +1573,7 @@ static int stm32_sai_sub_probe(struct pl
+ 
+ err_unprepare_pclk:
+ 	clk_unprepare(sai->pdata->pclk);
++	of_node_put(sai->np_sync_provider);
+ 
+ 	return ret;
+ }
+@@ -1578,6 +1586,7 @@ static void stm32_sai_sub_remove(struct
+ 	snd_dmaengine_pcm_unregister(&pdev->dev);
+ 	snd_soc_unregister_component(&pdev->dev);
  	pm_runtime_disable(&pdev->dev);
- 	for (i = 0; i < data->plat_data->banks_num; i++) {
++	of_node_put(sai->np_sync_provider);
+ }
+ 
+ #ifdef CONFIG_PM_SLEEP
 
 
 
