@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-206671-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207278-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA862D09327
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:02:51 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78F26D09B45
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:33:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5E16030C0F11
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:57:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 27F93307BF41
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:27:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E07A359F89;
-	Fri,  9 Jan 2026 11:57:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E76935A956;
+	Fri,  9 Jan 2026 12:26:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dJeXm0SH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JgNST/8A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 512BF35970A;
-	Fri,  9 Jan 2026 11:57:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 320D533C526;
+	Fri,  9 Jan 2026 12:26:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767959868; cv=none; b=rWHPEcqpWMY2dpYbPVQ51ARknka5MDcflB7TXCcfjwFKSZBngw4CJhix3ornfe1sxWNkWh+nC52iME0ZrGlWa/PAKrwAfHJjecp1XGwS81U/l0SGbUzbUOTSV9nv3J1kGTrHqiaQe5jdF8lHJvf61hfogvlCNKsBMuJV6Tr0ibo=
+	t=1767961601; cv=none; b=txooJxV8Vaud6a6V5oYwH0zJSjDoFhsL++js0gNTQPcv5EYwE4re+adROXkh4KASkijnMmNW2x39YPO73MKweTF3+AP/6PuViqHBlirlbHFc6xeqM6hBVNr1Fkv0ZBAJ3jFuzqigsim0qXC8UGvpPEgvtbqUv478gvSOYnLeJhw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767959868; c=relaxed/simple;
-	bh=spQehq4rM3khZ05vrSnf+l/cseA9GVDulkxkPD9fL4o=;
+	s=arc-20240116; t=1767961601; c=relaxed/simple;
+	bh=7tx1CkdMnp/hb3jQ9I7I/n+hlupeWMY84sSi9pFVUaE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R8jgGGnH8f9+FYvt2UElnTz3wvR7ic5GPh3fUYd9r4PSDVGOy74+jC+7rEHt2KzBqUbnkl4MuqRaRydLk4Ff/pcbjzO4xdnNarzjZZ+DjMIaai3/GfHIz78w7ideHIJvw0SIgvoet/XzFnq1sSzbX/x5H0zk+X+Ba3h4Xr5tWFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dJeXm0SH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2007C4CEF1;
-	Fri,  9 Jan 2026 11:57:47 +0000 (UTC)
+	 MIME-Version; b=b7IEW8yJf7oI8hk12n/MOLsecTCofP/d9u58wrLIms+3BYlln14CozZBvYWE9md3Mw8hl0SepoYUok556GSNc/OXhbmWxQaGS2JSk0UmjuoHkDVTuNXjvsDxJS3/0OJnSw7NCS6qG+Nc3btq5nwnHI6Mg9U0ZoEvB0gp6wjBvdQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JgNST/8A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3BF2C19421;
+	Fri,  9 Jan 2026 12:26:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767959868;
-	bh=spQehq4rM3khZ05vrSnf+l/cseA9GVDulkxkPD9fL4o=;
+	s=korg; t=1767961601;
+	bh=7tx1CkdMnp/hb3jQ9I7I/n+hlupeWMY84sSi9pFVUaE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dJeXm0SHIAdNC7vf86pN8q6riNX6a2krdH9PUjZi0gHFzLO2gJQqLyUbbsi1GLj/h
-	 hCWt5SbvG0QUSefAeTJBDOaDM3Xp+w6jAAuVPc7FbhDC49/tvlOJEo2whC0MuakXU4
-	 gIqtVjJ2tdp22IUsgQjtjfoeOchSuuHb4RwTrWOI=
+	b=JgNST/8A0MsXuzIc9Rj9BiiyYn7deYj+7eo+2n3ce+xcJ0tRKVE9Hr67xR6vLruM1
+	 +VK4oON9NjHjDOoXpS2Rin2GwKELpuCghQ/crKO7GR1lPPIwBZHPufCi7D2egdWgTo
+	 qCZSuxxabEey34h64cDXqjs4mMHuzUayp64JlYgs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	Harald Freudenberger <freude@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 203/737] btrfs: fix leaf leak in an error path in btrfs_del_items()
+Subject: [PATCH 6.1 064/634] s390/ap: Dont leak debug feature files if AP instructions are not available
 Date: Fri,  9 Jan 2026 12:35:42 +0100
-Message-ID: <20260109112141.638068535@linuxfoundation.org>
+Message-ID: <20260109112119.854922314@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +60,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-[ Upstream commit e7dd1182fcedee7c6097c9f49eba8de94a4364e3 ]
+[ Upstream commit 020d5dc57874e58d3ebae398f3fe258f029e3d06 ]
 
-If the call to btrfs_del_leaf() fails we return without decrementing the
-extra ref we took on the leaf, therefore leaking it. Fix this by ensuring
-we drop the ref count before returning the error.
+If no AP instructions are available the AP bus module leaks registered
+debug feature files. Change function call order to fix this.
 
-Fixes: 751a27615dda ("btrfs: do not BUG_ON() on tree mod log failures at btrfs_del_ptr()")
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: cccd85bfb7bf ("s390/zcrypt: Rework debug feature invocations.")
+Reviewed-by: Harald Freudenberger <freude@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/ctree.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/s390/crypto/ap_bus.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/fs/btrfs/ctree.c b/fs/btrfs/ctree.c
-index 31b1b448efc2e..a26c6e9d562d6 100644
---- a/fs/btrfs/ctree.c
-+++ b/fs/btrfs/ctree.c
-@@ -4743,9 +4743,9 @@ int btrfs_del_items(struct btrfs_trans_handle *trans, struct btrfs_root *root,
- 			if (btrfs_header_nritems(leaf) == 0) {
- 				path->slots[1] = slot;
- 				ret = btrfs_del_leaf(trans, root, path, leaf);
-+				free_extent_buffer(leaf);
- 				if (ret < 0)
- 					return ret;
--				free_extent_buffer(leaf);
- 				ret = 0;
- 			} else {
- 				/* if we're still in the path, make sure
+diff --git a/drivers/s390/crypto/ap_bus.c b/drivers/s390/crypto/ap_bus.c
+index c692b55dd1169..4bc5210df78a4 100644
+--- a/drivers/s390/crypto/ap_bus.c
++++ b/drivers/s390/crypto/ap_bus.c
+@@ -2196,15 +2196,15 @@ static int __init ap_module_init(void)
+ {
+ 	int rc;
+ 
+-	rc = ap_debug_init();
+-	if (rc)
+-		return rc;
+-
+ 	if (!ap_instructions_available()) {
+ 		pr_warn("The hardware system does not support AP instructions\n");
+ 		return -ENODEV;
+ 	}
+ 
++	rc = ap_debug_init();
++	if (rc)
++		return rc;
++
+ 	/* init ap_queue hashtable */
+ 	hash_init(ap_queues);
+ 
 -- 
 2.51.0
 
