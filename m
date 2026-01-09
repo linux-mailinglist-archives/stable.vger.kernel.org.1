@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-206771-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207373-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD41DD09360
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:03:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 92A39D09E23
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:43:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 715C7301BDF2
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:02:34 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D0DDC304F622
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:31:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8113C359F98;
-	Fri,  9 Jan 2026 12:02:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 742C61E8836;
+	Fri,  9 Jan 2026 12:31:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mEI/V0Tp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hCtmVexB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4504233375D;
-	Fri,  9 Jan 2026 12:02:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35ABF336EDA;
+	Fri,  9 Jan 2026 12:31:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960152; cv=none; b=rKfBJ0z0GbbQJ+wYTjMKPV6FkPi3UqSeJjXu/q09rbvRIRDWtvfVV2h9ippQQkE1LD0m3COgmSnuATCHGts2X3M12np2CmpKHvvAHEXvnt5CBJ1cxJQ6lncxjcZuhOG09An1TvlefwOcBvwU/0vcWMe5k44qRt9LwZjlcYdaY1E=
+	t=1767961871; cv=none; b=d39llprBTgAX504+YhAexoIiR6oHFk7pESqg1p/2MxLht2rvol/1a+VlsfeTS+MhDqOYNBykb3Qs++1+p9mckszl1yuu0dRiX2h6pLJDEhajqUOoZKeOQofZhJNj2aKXmt7CyU7aTeCSakS+rVh9U6Dxjos7dSNUw4zVEZjkx4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960152; c=relaxed/simple;
-	bh=Li9cNUEdhozLQZV3HklRIP/pJc3rkMj7meJCKzK0l+U=;
+	s=arc-20240116; t=1767961871; c=relaxed/simple;
+	bh=HX/MO2qiNQ+dLvzCe6C3JMYU8tefDDfVLmAckJIy5Q8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aI5m3oZpnauB5zA82kA5USzFhLZJwxwWYv3y6auZYnxsNJMAoXXo88rkUjI8pEBTqAUhifuo8CdaVBeUVK/5qN9ZmCVKsESjbne7O2SPq7cVwaTws1jmL5GOARiKJ5Us0D6aa/q2RkM++wB+sKRneCkqi3SVXhNyon4xUEaLcf8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mEI/V0Tp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1382C4CEF1;
-	Fri,  9 Jan 2026 12:02:31 +0000 (UTC)
+	 MIME-Version; b=TqJX4hC9GriAZWyTyx3HxJilV2rumJJko/FtfAXDLNpMPU2JWFgBxKvKvJBLSnE9gcQLK16D50PE+fYGEteFZuQweno1WqUH9BN2noswPfBBdC18XYTCVoLPhO2k6X4eIhTTvVIQqaMIqUL+uBsT01HmThPQQGq8TNVTL0kf7lk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hCtmVexB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2F49C4CEF1;
+	Fri,  9 Jan 2026 12:31:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960152;
-	bh=Li9cNUEdhozLQZV3HklRIP/pJc3rkMj7meJCKzK0l+U=;
+	s=korg; t=1767961871;
+	bh=HX/MO2qiNQ+dLvzCe6C3JMYU8tefDDfVLmAckJIy5Q8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mEI/V0TpyPwOYGij+LA2afoOdHNKtZLJPykcknnBYBKrjkwPyPMvw2eo5NfrlR3if
-	 7dCu0fYIgtepl7bNHxd2kEtUqr5Ud/aD/RF5sqFFZr+Wqurk0ckrS3jcCozkIAO57I
-	 urCd0Sm0+Znm3rTKQAOLmOa2SGNLr8DBF4X7tkAs=
+	b=hCtmVexBMRYGUF/5SInuXR7k3yr/0U3CF3NuSP9VmEXfE3Juq9V84p2aWf0U1Usvj
+	 cF7zfrYd9HzisJeqCmG+Sm+U3OCZV0TOybO//4O8IUI8ToUSQBsz/Av7HWg1ogzUvm
+	 pMgO+76twogIP1oQdXK17iFaRoJqD5UYjRsGUJ64=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joanne Koong <joannelkoong@gmail.com>,
-	syzbot@syzkaller.appspotmail.com,
-	Brian Foster <bfoster@redhat.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Christian Brauner <brauner@kernel.org>,
+	Jason Wang <jasowang@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 303/737] iomap: adjust read range correctly for non-block-aligned positions
+Subject: [PATCH 6.1 164/634] virtio: fix typo in virtio_device_ready() comment
 Date: Fri,  9 Jan 2026 12:37:22 +0100
-Message-ID: <20260109112145.404813465@linuxfoundation.org>
+Message-ID: <20260109112123.620170105@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,69 +60,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joanne Koong <joannelkoong@gmail.com>
+From: Michael S. Tsirkin <mst@redhat.com>
 
-[ Upstream commit 7aa6bc3e8766990824f66ca76c19596ce10daf3e ]
+[ Upstream commit 361173f95ae4b726ebbbf0bd594274f5576c4abc ]
 
-iomap_adjust_read_range() assumes that the position and length passed in
-are block-aligned. This is not always the case however, as shown in the
-syzbot generated case for erofs. This causes too many bytes to be
-skipped for uptodate blocks, which results in returning the incorrect
-position and length to read in. If all the blocks are uptodate, this
-underflows length and returns a position beyond the folio.
+"coherenct" -> "coherent"
 
-Fix the calculation to also take into account the block offset when
-calculating how many bytes can be skipped for uptodate blocks.
-
-Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
-Tested-by: syzbot@syzkaller.appspotmail.com
-Reviewed-by: Brian Foster <bfoster@redhat.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Fixes: 8b4ec69d7e09 ("virtio: harden vring IRQ")
+Message-Id: <db286e9a65449347f6584e68c9960fd5ded2b4b0.1763026134.git.mst@redhat.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/iomap/buffered-io.c | 19 +++++++++++++------
- 1 file changed, 13 insertions(+), 6 deletions(-)
+ include/linux/virtio_config.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
-index 7ffdf0d037fae..13a5f4422c797 100644
---- a/fs/iomap/buffered-io.c
-+++ b/fs/iomap/buffered-io.c
-@@ -211,17 +211,24 @@ static void iomap_adjust_read_range(struct inode *inode, struct folio *folio,
- 	 * to avoid reading in already uptodate ranges.
- 	 */
- 	if (ifs) {
--		unsigned int i;
-+		unsigned int i, blocks_skipped;
- 
- 		/* move forward for each leading block marked uptodate */
--		for (i = first; i <= last; i++) {
-+		for (i = first; i <= last; i++)
- 			if (!ifs_block_is_uptodate(ifs, i))
- 				break;
--			*pos += block_size;
--			poff += block_size;
--			plen -= block_size;
--			first++;
-+
-+		blocks_skipped = i - first;
-+		if (blocks_skipped) {
-+			unsigned long block_offset = *pos & (block_size - 1);
-+			unsigned bytes_skipped =
-+				(blocks_skipped << block_bits) - block_offset;
-+
-+			*pos += bytes_skipped;
-+			poff += bytes_skipped;
-+			plen -= bytes_skipped;
- 		}
-+		first = i;
- 
- 		/* truncate len if we find any trailing uptodate block(s) */
- 		while (++i <= last) {
+diff --git a/include/linux/virtio_config.h b/include/linux/virtio_config.h
+index 4b517649cfe84..eee145cfea6b5 100644
+--- a/include/linux/virtio_config.h
++++ b/include/linux/virtio_config.h
+@@ -286,7 +286,7 @@ void virtio_device_ready(struct virtio_device *dev)
+ 	 * specific set_status() method.
+ 	 *
+ 	 * A well behaved device will only notify a virtqueue after
+-	 * DRIVER_OK, this means the device should "see" the coherenct
++	 * DRIVER_OK, this means the device should "see" the coherent
+ 	 * memory write that set vq->broken as false which is done by
+ 	 * the driver when it sees DRIVER_OK, then the following
+ 	 * driver's vring_interrupt() will see vq->broken as false so
 -- 
 2.51.0
 
