@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-207210-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207780-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D531D099A0
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:27:32 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F380D0A181
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:58:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0BDE430A0D83
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:23:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1C654312B7CC
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:51:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C79A335567;
-	Fri,  9 Jan 2026 12:23:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58BA835C19A;
+	Fri,  9 Jan 2026 12:50:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K665yJFn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T0OdplOz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1A8D32AAB5;
-	Fri,  9 Jan 2026 12:23:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BE5335BDB2;
+	Fri,  9 Jan 2026 12:50:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961406; cv=none; b=HvMu6tXyGwL6QcXou1e9lvn0Ef1jsT9nceTjJb57JB+SpmQaGJCVs/P4KIp3aO8j+wZPQIKENtn5PJ/E8H+rlIwWPmeyHJst/JlswySMGoDjj5x+Wb2JMws5xrGPKG9qDgaP25Cu9MybZXuEccOyIr35tPsyfHPElbCKtDWD578=
+	t=1767963027; cv=none; b=u5bGByrBCcy5xa9ndrjyuXyvNdJdFj8LPdDyHS55lW6VWRHZ0cBkwF8SIv16hit1eV9eu43WY8ziRmguGWj9H8yfUrgFwAxzpn/Pjs+kESnomA3fKJPq6fV1wzbpIl25eUluOATnKH14OL8AWt5F9S/6iMYEYppHzYre40+EjBs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961406; c=relaxed/simple;
-	bh=pBG8xDzjFX7D52sb7k3los/pJsDflTCF8YS2niMyXqo=;
+	s=arc-20240116; t=1767963027; c=relaxed/simple;
+	bh=wAKz5j7jCuUv2k7V0ONEfPx0jdxvGxEtLsb5lttMAfI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nk29cPkK2Kpo4H35tARuFi9kZNMgZiZHrhBHwhiuqShNM6ahSCbtUVBvBHwwyq/Ql4NRyE1jfzvahyYyFt5GyRmmzrZTOcpmBp8y05pdCbq76c9v2tkbRBwQ3nqcD26r4pJFFZnFyi8BFxaFHPsXTG5ufwCR404vThEY2fOQIAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K665yJFn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7858C4CEF1;
-	Fri,  9 Jan 2026 12:23:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=kZtdz9EsTdD3vzvEiHjflcGp9kOVf0QTIcJDwS/NHlHBUL4HjUaHSG1CIOStPZxiObr2mckv7gFcFDHPinLstjr59/vNML7vrKRhzOuqGICBHN/jGLLi4ISsat0fn5ztX/7IbWKKZwSDYHcjNY7OIJldZiAL8hCjKJFltkIMsCo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T0OdplOz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 864BFC4CEF1;
+	Fri,  9 Jan 2026 12:50:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961406;
-	bh=pBG8xDzjFX7D52sb7k3los/pJsDflTCF8YS2niMyXqo=;
+	s=korg; t=1767963026;
+	bh=wAKz5j7jCuUv2k7V0ONEfPx0jdxvGxEtLsb5lttMAfI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K665yJFngsJ2qec7pUiQs5AAP3RPdoQk+JfpcR7+nLWC1xFJyns1VfiP7KxWObBNZ
-	 9LpIHFSBm8juATdOPaNEpLDjRdYnJd12zQbChmifmhICaGEw3uF8WW7EzevPOiK3aM
-	 rWwvhCmM3VucFvS1krTfpKWED85/CfLXFq7yycl0=
+	b=T0OdplOzOEdXLQB0ooVV+5fJZrTsdzkN9P5wqehn6eLeGHM4uEJ28KPCHXDdXT4sG
+	 G+4xDu5RdZPjybZHR7oYB6uR4rRyHW0PD2PoYynX7j/3e4pJmLDxjzM+LTkht49Fhb
+	 sbCfwNaocShMGoh2MbLtpzL6AvH3ahObJMebNLtw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com, vincent.guittot@linaro.org, dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com, mgorman@suse.de, vschneid@redhat.com, linux-kernel@vger.kernel.org, ajay.kaher@broadcom.com, alexey.makhalov@broadcom.com, yin.ding@broadcom.com, tapas.kundu@broadcom.com, Chris Mason" <clm@meta.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Ajay Kaher <ajay.kaher@broadcom.com>,
-	Chris Mason <clm@meta.com>
-Subject: [PATCH 6.6 711/737] sched/fair: Proportional newidle balance
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Takashi Iwai <tiwai@suse.de>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 572/634] ASoC: stm: stm32_sai_sub: Convert to platform remove callback returning void
 Date: Fri,  9 Jan 2026 12:44:10 +0100
-Message-ID: <20260109112200.822136645@linuxfoundation.org>
+Message-ID: <20260109112139.130729675@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,210 +60,69 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra (Intel) <peterz@infradead.org>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-commit 33cf66d88306663d16e4759e9d24766b0aaa2e17 upstream.
+[ Upstream commit a3bd37e2e2bce4fb1757a940fa985d556662ba80 ]
 
-Add a randomized algorithm that runs newidle balancing proportional to
-its success rate.
+The .remove() callback for a platform driver returns an int which makes
+many driver authors wrongly assume it's possible to do error handling by
+returning an error code. However the value returned is (mostly) ignored
+and this typically results in resource leaks. To improve here there is a
+quest to make the remove callback return void. In the first step of this
+quest all drivers are converted to .remove_new() which already returns
+void.
 
-This improves schbench significantly:
+Trivially convert this driver from always returning zero in the remove
+callback to the void returning variant.
 
- 6.18-rc4:			2.22 Mrps/s
- 6.18-rc4+revert:		2.04 Mrps/s
- 6.18-rc4+revert+random:	2.18 Mrps/S
-
-Conversely, per Adam Li this affects SpecJBB slightly, reducing it by 1%:
-
- 6.17:			-6%
- 6.17+revert:		 0%
- 6.17+revert+random:	-1%
-
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
-Tested-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
-Tested-by: Chris Mason <clm@meta.com>
-Link: https://lkml.kernel.org/r/6825c50d-7fa7-45d8-9b81-c6e7e25738e2@meta.com
-Link: https://patch.msgid.link/20251107161739.770122091@infradead.org
-[ Ajay: Modified to apply on v6.6 ]
-Signed-off-by: Ajay Kaher <ajay.kaher@broadcom.com>
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Acked-by: Takashi Iwai <tiwai@suse.de>
+Acked-by: Nicolas Ferre <nicolas.ferre@microchip.com>
+Link: https://lore.kernel.org/r/20230315150745.67084-139-u.kleine-koenig@pengutronix.de
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 23261f0de094 ("ASoC: stm32: sai: fix OF node leak on probe")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/sched/topology.h |    3 ++
- kernel/sched/core.c            |    3 ++
- kernel/sched/fair.c            |   44 +++++++++++++++++++++++++++++++++++++----
- kernel/sched/features.h        |    5 ++++
- kernel/sched/sched.h           |    7 ++++++
- kernel/sched/topology.c        |    6 +++++
- 6 files changed, 64 insertions(+), 4 deletions(-)
+ sound/soc/stm/stm32_sai_sub.c |    6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
---- a/include/linux/sched/topology.h
-+++ b/include/linux/sched/topology.h
-@@ -106,6 +106,9 @@ struct sched_domain {
- 	unsigned int nr_balance_failed; /* initialise to 0 */
- 
- 	/* idle_balance() stats */
-+	unsigned int newidle_call;
-+	unsigned int newidle_success;
-+	unsigned int newidle_ratio;
- 	u64 max_newidle_lb_cost;
- 	unsigned long last_decay_max_lb_cost;
- 
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -116,6 +116,7 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(sched_util_
- EXPORT_TRACEPOINT_SYMBOL_GPL(sched_update_nr_running_tp);
- 
- DEFINE_PER_CPU_SHARED_ALIGNED(struct rq, runqueues);
-+DEFINE_PER_CPU(struct rnd_state, sched_rnd_state);
- 
- #ifdef CONFIG_SCHED_DEBUG
- /*
-@@ -9872,6 +9873,8 @@ void __init sched_init_smp(void)
- {
- 	sched_init_numa(NUMA_NO_NODE);
- 
-+	prandom_init_once(&sched_rnd_state);
-+
- 	/*
- 	 * There's no userspace yet to cause hotplug operations; hence all the
- 	 * CPU masks are stable and all blatant races in the below code cannot
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -11716,11 +11716,27 @@ void update_max_interval(void)
- 	max_load_balance_interval = HZ*num_online_cpus()/10;
+--- a/sound/soc/stm/stm32_sai_sub.c
++++ b/sound/soc/stm/stm32_sai_sub.c
+@@ -1570,7 +1570,7 @@ err_unprepare_pclk:
+ 	return ret;
  }
  
--static inline bool update_newidle_cost(struct sched_domain *sd, u64 cost)
-+static inline void update_newidle_stats(struct sched_domain *sd, unsigned int success)
-+{
-+	sd->newidle_call++;
-+	sd->newidle_success += success;
-+
-+	if (sd->newidle_call >= 1024) {
-+		sd->newidle_ratio = sd->newidle_success;
-+		sd->newidle_call /= 2;
-+		sd->newidle_success /= 2;
-+	}
-+}
-+
-+static inline bool
-+update_newidle_cost(struct sched_domain *sd, u64 cost, unsigned int success)
+-static int stm32_sai_sub_remove(struct platform_device *pdev)
++static void stm32_sai_sub_remove(struct platform_device *pdev)
  {
- 	unsigned long next_decay = sd->last_decay_max_lb_cost + HZ;
- 	unsigned long now = jiffies;
+ 	struct stm32_sai_sub_data *sai = dev_get_drvdata(&pdev->dev);
  
-+	if (cost)
-+		update_newidle_stats(sd, success);
-+
- 	if (cost > sd->max_newidle_lb_cost) {
- 		/*
- 		 * Track max cost of a domain to make sure to not delay the
-@@ -11768,7 +11784,7 @@ static void rebalance_domains(struct rq
- 		 * Decay the newidle max times here because this is a regular
- 		 * visit to all the domains.
- 		 */
--		need_decay = update_newidle_cost(sd, 0);
-+		need_decay = update_newidle_cost(sd, 0, 0);
- 		max_cost += sd->max_newidle_lb_cost;
- 
- 		/*
-@@ -12406,6 +12422,22 @@ static int sched_balance_newidle(struct
- 			break;
- 
- 		if (sd->flags & SD_BALANCE_NEWIDLE) {
-+			unsigned int weight = 1;
-+
-+			if (sched_feat(NI_RANDOM)) {
-+				/*
-+				 * Throw a 1k sided dice; and only run
-+				 * newidle_balance according to the success
-+				 * rate.
-+				 */
-+				u32 d1k = sched_rng() % 1024;
-+				weight = 1 + sd->newidle_ratio;
-+				if (d1k > weight) {
-+					update_newidle_stats(sd, 0);
-+					continue;
-+				}
-+				weight = (1024 + weight/2) / weight;
-+			}
- 
- 			pulled_task = load_balance(this_cpu, this_rq,
- 						   sd, CPU_NEWLY_IDLE,
-@@ -12413,10 +12445,14 @@ static int sched_balance_newidle(struct
- 
- 			t1 = sched_clock_cpu(this_cpu);
- 			domain_cost = t1 - t0;
--			update_newidle_cost(sd, domain_cost);
+@@ -1578,8 +1578,6 @@ static int stm32_sai_sub_remove(struct p
+ 	snd_dmaengine_pcm_unregister(&pdev->dev);
+ 	snd_soc_unregister_component(&pdev->dev);
+ 	pm_runtime_disable(&pdev->dev);
 -
- 			curr_cost += domain_cost;
- 			t0 = t1;
-+
-+			/*
-+			 * Track max cost of a domain to make sure to not delay the
-+			 * next wakeup on the CPU.
-+			 */
-+			update_newidle_cost(sd, domain_cost, weight * !!pulled_task);
- 		}
- 
- 		/*
---- a/kernel/sched/features.h
-+++ b/kernel/sched/features.h
-@@ -88,4 +88,9 @@ SCHED_FEAT(UTIL_EST_FASTUP, true)
- 
- SCHED_FEAT(LATENCY_WARN, false)
- 
-+/*
-+ * Do newidle balancing proportional to its success rate using randomization.
-+ */
-+SCHED_FEAT(NI_RANDOM, true)
-+
- SCHED_FEAT(HZ_BW, true)
---- a/kernel/sched/sched.h
-+++ b/kernel/sched/sched.h
-@@ -5,6 +5,7 @@
- #ifndef _KERNEL_SCHED_SCHED_H
- #define _KERNEL_SCHED_SCHED_H
- 
-+#include <linux/prandom.h>
- #include <linux/sched/affinity.h>
- #include <linux/sched/autogroup.h>
- #include <linux/sched/cpufreq.h>
-@@ -1205,6 +1206,12 @@ static inline bool is_migration_disabled
+-	return 0;
  }
  
- DECLARE_PER_CPU_SHARED_ALIGNED(struct rq, runqueues);
-+DECLARE_PER_CPU(struct rnd_state, sched_rnd_state);
-+
-+static inline u32 sched_rng(void)
-+{
-+	return prandom_u32_state(this_cpu_ptr(&sched_rnd_state));
-+}
+ #ifdef CONFIG_PM_SLEEP
+@@ -1629,7 +1627,7 @@ static struct platform_driver stm32_sai_
+ 		.pm = &stm32_sai_sub_pm_ops,
+ 	},
+ 	.probe = stm32_sai_sub_probe,
+-	.remove = stm32_sai_sub_remove,
++	.remove_new = stm32_sai_sub_remove,
+ };
  
- #define cpu_rq(cpu)		(&per_cpu(runqueues, (cpu)))
- #define this_rq()		this_cpu_ptr(&runqueues)
---- a/kernel/sched/topology.c
-+++ b/kernel/sched/topology.c
-@@ -1600,6 +1600,12 @@ sd_init(struct sched_domain_topology_lev
- 
- 		.last_balance		= jiffies,
- 		.balance_interval	= sd_weight,
-+
-+		/* 50% success rate */
-+		.newidle_call		= 512,
-+		.newidle_success	= 256,
-+		.newidle_ratio		= 512,
-+
- 		.max_newidle_lb_cost	= 0,
- 		.last_decay_max_lb_cost	= jiffies,
- 		.child			= child,
+ module_platform_driver(stm32_sai_sub_driver);
 
 
 
