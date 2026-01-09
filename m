@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-207644-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207042-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B08DD0A060
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:52:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F06ED09847
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:22:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 25405305A769
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:43:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 496ED30DADF7
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:15:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2D8A335BCD;
-	Fri,  9 Jan 2026 12:43:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DADC035A940;
+	Fri,  9 Jan 2026 12:15:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tD5gr07q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uK3HkvWp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D46F33032C;
-	Fri,  9 Jan 2026 12:43:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D4901C3C08;
+	Fri,  9 Jan 2026 12:15:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962637; cv=none; b=FSlaukumiDgYR1+ZTGA5nm69vPZGQcmPXh3AmbKtl6LvbFS156d/PyXYAmH6rYxzZ1YjHCtBYqh8pLqVEIRUAlMiaOqmCbBxS5TJyXnYkw3kiArV8OdI88njrwkTiyhqcZ5msk3wR+uomwyZ6bdsYmRLAG0sO7wCME5GqrEyQtk=
+	t=1767960928; cv=none; b=S4p/v1fXq/autQ1vMaTIE0d0wOpYMxZXZzhpxgjskxq/EyKWC0mVN0WORDdiyd9V92VJI9hSEDaKt2rIudUCDG5UMmUBUFPqcw6Rt1SXxaZmtn8a6OQR2tDg+djeLGPlV7ahkz3UaSJB/hT0iMqwFQxtRaaHZK5YPfoyXRxHh6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962637; c=relaxed/simple;
-	bh=0r3RN/NlFybC5AR3L/JUeR/jP/426HuDkb8DNDrsrf4=;
+	s=arc-20240116; t=1767960928; c=relaxed/simple;
+	bh=cnbzHJfwiZJRLrwdDge86rzhJ4odSCJOldNkbGwzuJU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=me4o01ji34JWr1DiQsDvDGmuWOysW3XWfVdUSYN9GnUbazZhRc3D65Vni8yiQd2471Q+MMewrTRcSbTSos+5OEWakuTsLqAGi4Pbz8B0+sYzLpM5TrM43Qs6rlkuXvEIMZHzqqp14B34HilfhLWSnqXNx+aT2eOaGJyrm9MztFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tD5gr07q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19219C4CEF1;
-	Fri,  9 Jan 2026 12:43:56 +0000 (UTC)
+	 MIME-Version; b=YSAJ5iuUJUo+17lJm0Gv7GEk4B/2LxWSH+B3cha/pmcqxgXC140mDh77cSDlGX1U922A+gUM1V5bHe0L17BLnW4PLEC9nrvCHSxzjJTW1jhnY5c5kSPPX/Dt7JhnZkrhcYjY8yUaKGzF2ZSNJW4ptelN4Z8AtLgGJQAyqEGUlJ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uK3HkvWp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2872BC4CEF1;
+	Fri,  9 Jan 2026 12:15:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962637;
-	bh=0r3RN/NlFybC5AR3L/JUeR/jP/426HuDkb8DNDrsrf4=;
+	s=korg; t=1767960928;
+	bh=cnbzHJfwiZJRLrwdDge86rzhJ4odSCJOldNkbGwzuJU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tD5gr07qRI5B7di/aCZgwGTFBlA/cpdeYQNfObqB3id6VS6UFESywcf0L7cnvlCpq
-	 UoCxye9PSLaB1rAwqbm7IkJwmvjtSUMwX7QJEE4rEv50vSwZZEeXkpmuKpDmxiqbL+
-	 RBxqQGBAAuCkodmxkT+jqQ51WV72+cPg3s05ouqo=
+	b=uK3HkvWpgfzLdHTITukXQn7e3QUTK0uq9TSy/OLRg49V6f1tzg/EkXxKypqBp4IkJ
+	 KxLda5KMOxuHMD7sN3oWgpJuAjkFAouaRIF417qqB2tq9opSI4vVRKMiBCv+zswQg/
+	 kC+LoWBt29ELPatcmBq5jr/XXQFEvnxjLinstmIM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damodharam Ammepalli <damodharam.ammepalli@broadcom.com>,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Selvin Xavier <selvin.xavier@broadcom.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 436/634] RDMA/bnxt_re: Fix to use correct page size for PDE table
+	David Hildenbrand <david@redhat.com>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 575/737] powerpc/pseries/cmm: call balloon_devinfo_init() also without CONFIG_BALLOON_COMPACTION
 Date: Fri,  9 Jan 2026 12:41:54 +0100
-Message-ID: <20260109112133.948385603@linuxfoundation.org>
+Message-ID: <20260109112155.632606423@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +64,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+From: David Hildenbrand <david@redhat.com>
 
-[ Upstream commit 3d70e0fb0f289b0c778041c5bb04d099e1aa7c1c ]
+commit fc6bcf9ac4de76f5e7bcd020b3c0a86faff3f2d5 upstream.
 
-In bnxt_qplib_alloc_init_hwq(), while allocating memory for PDE table
-driver incorrectly is using the "pg_size" value passed to the function.
-Fixed to use the right value 4K. Also, fixed the allocation size for
-PBL table.
+Patch series "powerpc/pseries/cmm: two smaller fixes".
 
-Fixes: 0c4dcd602817 ("RDMA/bnxt_re: Refactor hardware queue memory allocation")
-Signed-off-by: Damodharam Ammepalli <damodharam.ammepalli@broadcom.com>
-Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Link: https://patch.msgid.link/20251223131855.145955-1-kalesh-anakkur.purayil@broadcom.com
-Reviewed-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Two smaller fixes identified while doing a bigger rework.
+
+
+This patch (of 2):
+
+We always have to initialize the balloon_dev_info, even when compaction is
+not configured in: otherwise the containing list and the lock are left
+uninitialized.
+
+Likely not many such configs exist in practice, but let's CC stable to
+be sure.
+
+This was found by code inspection.
+
+Link: https://lkml.kernel.org/r/20251021100606.148294-1-david@redhat.com
+Link: https://lkml.kernel.org/r/20251021100606.148294-2-david@redhat.com
+Fixes: fe030c9b85e6 ("powerpc/pseries/cmm: Implement balloon compaction")
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/bnxt_re/qplib_res.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/powerpc/platforms/pseries/cmm.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/qplib_res.c b/drivers/infiniband/hw/bnxt_re/qplib_res.c
-index 4962d68bf217..5edad6a5a112 100644
---- a/drivers/infiniband/hw/bnxt_re/qplib_res.c
-+++ b/drivers/infiniband/hw/bnxt_re/qplib_res.c
-@@ -243,7 +243,7 @@ int bnxt_qplib_alloc_init_hwq(struct bnxt_qplib_hwq *hwq,
- 			if (npbl % BIT(MAX_PDL_LVL_SHIFT))
- 				npde++;
- 			/* Alloc PDE pages */
--			sginfo.pgsize = npde * pg_size;
-+			sginfo.pgsize = npde * ROCE_PG_SIZE_4K;
- 			sginfo.npages = 1;
- 			rc = __alloc_pbl(res, &hwq->pbl[PBL_LVL_0], &sginfo);
- 			if (rc)
-@@ -251,7 +251,7 @@ int bnxt_qplib_alloc_init_hwq(struct bnxt_qplib_hwq *hwq,
+--- a/arch/powerpc/platforms/pseries/cmm.c
++++ b/arch/powerpc/platforms/pseries/cmm.c
+@@ -550,7 +550,6 @@ static int cmm_migratepage(struct balloo
  
- 			/* Alloc PBL pages */
- 			sginfo.npages = npbl;
--			sginfo.pgsize = PAGE_SIZE;
-+			sginfo.pgsize = ROCE_PG_SIZE_4K;
- 			rc = __alloc_pbl(res, &hwq->pbl[PBL_LVL_1], &sginfo);
- 			if (rc)
- 				goto fail;
--- 
-2.51.0
-
+ static void cmm_balloon_compaction_init(void)
+ {
+-	balloon_devinfo_init(&b_dev_info);
+ 	b_dev_info.migratepage = cmm_migratepage;
+ }
+ #else /* CONFIG_BALLOON_COMPACTION */
+@@ -572,6 +571,7 @@ static int cmm_init(void)
+ 	if (!firmware_has_feature(FW_FEATURE_CMO) && !simulate)
+ 		return -EOPNOTSUPP;
+ 
++	balloon_devinfo_init(&b_dev_info);
+ 	cmm_balloon_compaction_init();
+ 
+ 	rc = register_oom_notifier(&cmm_oom_nb);
 
 
 
