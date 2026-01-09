@@ -1,55 +1,52 @@
-Return-Path: <stable+bounces-206625-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207227-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4488AD09341
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:03:09 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47812D09C91
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:37:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CF729308ED93
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:55:38 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 38D49302CAD3
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:24:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E430D32FA3D;
-	Fri,  9 Jan 2026 11:55:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A38432AAB5;
+	Fri,  9 Jan 2026 12:24:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OufJMxnm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cUePwLlW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A841B2DEA6F;
-	Fri,  9 Jan 2026 11:55:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0AC315ADB4;
+	Fri,  9 Jan 2026 12:24:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767959737; cv=none; b=p6Ok+JYbpa+YGEkIKRTQMjW393SUBo/W7sBQW5wS2qDQzOxcn4U041nhAbkMgCTUnU2Xv/lsPbOjid4DnZx3rKkY3XIkoRBHOEyilvl9v/5EbpklXPJRL/Iryt0hrh52yPKZ7zpExb494SSYbiB5N1REb925UyBWHkABfI/73YE=
+	t=1767961454; cv=none; b=DbK2O4eyO4iGixavdIFw5tcAdjxH6u3I74p6oNTsLHzwrFcZrZNM1GwnOtZEUZT7tGyzM9Yx6LAFiXZc8o+760WkC4+Ij2Icf8XC0AMrHXWWnu0gEVwxfEp03BlFO5Ldf0y3n7Q4oy9UDYHZCCmYoHAjYSL0Lpb3JHTBZzqWnmg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767959737; c=relaxed/simple;
-	bh=f6mLKU/x7vZJVf8K/Y1WBZ6fdAMvn+BtkZzilUihM/U=;
+	s=arc-20240116; t=1767961454; c=relaxed/simple;
+	bh=lMfPRcRoaN9hqAj8dCoNt+yLWffxiAhyk9x9c51OYmM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CBNNT5sRfkCra+3lhh0sOpgS0kUnSWxypM88DZPqX3WQJvjNah5uXFgSnD+HAnq29Hlk7FGm4mRO3abQD9tR9opuHxmtKmv4nE2WfjIJgDs7eyAv5xWN0utKxFZuz9wQT4BkLba/4EuwclajKi01yLSeb06bYt9ZNv70Nd/VUcs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OufJMxnm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36476C4CEF1;
-	Fri,  9 Jan 2026 11:55:37 +0000 (UTC)
+	 MIME-Version; b=GdFr0mn3JOZ7n6GRz2JdhwrEZ+OV2G6i4nXLsSxRc5AagShCIkH2zgslnK1ZW4IEzEcPlfye2FTuCx/ZIZyMvhF+72Yfc7NpfEKFMPmoXKHqDGe4W2dGWcB3idWYdQ20HbR6NUAezEFPc64oR2P8EdTuM67yt3TQ+RDdN9u39vg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cUePwLlW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12000C4CEF1;
+	Fri,  9 Jan 2026 12:24:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767959737;
-	bh=f6mLKU/x7vZJVf8K/Y1WBZ6fdAMvn+BtkZzilUihM/U=;
+	s=korg; t=1767961454;
+	bh=lMfPRcRoaN9hqAj8dCoNt+yLWffxiAhyk9x9c51OYmM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OufJMxnmKGUFUSbRih+PsgpYAWb+83koXgOEuw8WWaFtQqbaeBLb8EN4znuKpf8wI
-	 8gMRyaWRY0ETnXY5RSTfR+HgZGQAc4kYjFJ99ZYKxNchZcumjifRV1CiQ6sCbfWKLc
-	 GAvNYsqqMnHhasoo5sAJpatbmG4FHjkKXiUqozfE=
+	b=cUePwLlWUciJUV57Q4ubwQfSsgKvQt/yEYE87xHtp3wLUiXJJPGv/jurUDvBaYSio
+	 DcZk98PvSDvc0E/B2BNkZ68770gF+qNhB1kf4GEzhrhOkgTR3uZAtdtxw6FOX+xSq7
+	 SkYgiBpQN4mTGNt/N45LxqchZpi4NmTQpOuYY5qc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Menglong Dong <dongml2@chinatelecom.cn>,
-	Song Liu <song@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 158/737] bpf: Handle return value of ftrace_set_filter_ip in register_fentry
-Date: Fri,  9 Jan 2026 12:34:57 +0100
-Message-ID: <20260109112139.939506827@linuxfoundation.org>
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.1 020/634] USB: serial: kobil_sct: fix TIOCMBIS and TIOCMBIC
+Date: Fri,  9 Jan 2026 12:34:58 +0100
+Message-ID: <20260109112118.195670035@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +58,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Menglong Dong <menglong8.dong@gmail.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit fea3f5e83c5cd80a76d97343023a2f2e6bd862bf ]
+commit d432df758f92c4c28aac409bc807fd1716167577 upstream.
 
-The error that returned by ftrace_set_filter_ip() in register_fentry() is
-not handled properly. Just fix it.
+Asserting or deasserting a modem control line using TIOCMBIS or TIOCMBIC
+should not deassert any lines that are not in the mask.
 
-Fixes: 00963a2e75a8 ("bpf: Support bpf_trampoline on functions with IPMODIFY (e.g. livepatch)")
-Signed-off-by: Menglong Dong <dongml2@chinatelecom.cn>
-Acked-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/r/20251110120705.1553694-1-dongml2@chinatelecom.cn
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix this long-standing issue dating back to 2003 when the support for
+these ioctls was added with the introduction of the tiocmset() callback.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/bpf/trampoline.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/usb/serial/kobil_sct.c |   18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/kernel/bpf/trampoline.c b/kernel/bpf/trampoline.c
-index b6024fc903490..f8a58b4130701 100644
---- a/kernel/bpf/trampoline.c
-+++ b/kernel/bpf/trampoline.c
-@@ -216,7 +216,9 @@ static int register_fentry(struct bpf_trampoline *tr, void *new_addr)
- 	}
+--- a/drivers/usb/serial/kobil_sct.c
++++ b/drivers/usb/serial/kobil_sct.c
+@@ -420,7 +420,7 @@ static int kobil_tiocmset(struct tty_str
+ 	struct usb_serial_port *port = tty->driver_data;
+ 	struct device *dev = &port->dev;
+ 	struct kobil_private *priv;
+-	int result;
++	int result = 0;
+ 	int dtr = 0;
+ 	int rts = 0;
  
- 	if (tr->func.ftrace_managed) {
--		ftrace_set_filter_ip(tr->fops, (unsigned long)ip, 0, 1);
-+		ret = ftrace_set_filter_ip(tr->fops, (unsigned long)ip, 0, 1);
-+		if (ret)
-+			return ret;
- 		ret = register_ftrace_direct(tr->fops, (long)new_addr);
- 	} else {
- 		ret = bpf_arch_text_poke(ip, BPF_MOD_CALL, NULL, new_addr);
--- 
-2.51.0
-
+@@ -437,12 +437,12 @@ static int kobil_tiocmset(struct tty_str
+ 	if (set & TIOCM_DTR)
+ 		dtr = 1;
+ 	if (clear & TIOCM_RTS)
+-		rts = 0;
++		rts = 1;
+ 	if (clear & TIOCM_DTR)
+-		dtr = 0;
++		dtr = 1;
+ 
+-	if (priv->device_type == KOBIL_ADAPTER_B_PRODUCT_ID) {
+-		if (dtr != 0)
++	if (dtr && priv->device_type == KOBIL_ADAPTER_B_PRODUCT_ID) {
++		if (set & TIOCM_DTR)
+ 			dev_dbg(dev, "%s - Setting DTR\n", __func__);
+ 		else
+ 			dev_dbg(dev, "%s - Clearing DTR\n", __func__);
+@@ -450,13 +450,13 @@ static int kobil_tiocmset(struct tty_str
+ 			  usb_sndctrlpipe(port->serial->dev, 0),
+ 			  SUSBCRequest_SetStatusLinesOrQueues,
+ 			  USB_TYPE_VENDOR | USB_RECIP_ENDPOINT | USB_DIR_OUT,
+-			  ((dtr != 0) ? SUSBCR_SSL_SETDTR : SUSBCR_SSL_CLRDTR),
++			  ((set & TIOCM_DTR) ? SUSBCR_SSL_SETDTR : SUSBCR_SSL_CLRDTR),
+ 			  0,
+ 			  NULL,
+ 			  0,
+ 			  KOBIL_TIMEOUT);
+-	} else {
+-		if (rts != 0)
++	} else if (rts) {
++		if (set & TIOCM_RTS)
+ 			dev_dbg(dev, "%s - Setting RTS\n", __func__);
+ 		else
+ 			dev_dbg(dev, "%s - Clearing RTS\n", __func__);
+@@ -464,7 +464,7 @@ static int kobil_tiocmset(struct tty_str
+ 			usb_sndctrlpipe(port->serial->dev, 0),
+ 			SUSBCRequest_SetStatusLinesOrQueues,
+ 			USB_TYPE_VENDOR | USB_RECIP_ENDPOINT | USB_DIR_OUT,
+-			((rts != 0) ? SUSBCR_SSL_SETRTS : SUSBCR_SSL_CLRRTS),
++			((set & TIOCM_RTS) ? SUSBCR_SSL_SETRTS : SUSBCR_SSL_CLRRTS),
+ 			0,
+ 			NULL,
+ 			0,
 
 
 
