@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-206810-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207412-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB02AD095F0
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:13:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 279C9D09D18
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:39:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3A06930CD3B8
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:04:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C51E2311021D
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:33:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97D8335A952;
-	Fri,  9 Jan 2026 12:04:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DF8E35B12B;
+	Fri,  9 Jan 2026 12:33:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cWyQfLCR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a5mwGSxx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A73335A942;
-	Fri,  9 Jan 2026 12:04:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FDB335BDAF;
+	Fri,  9 Jan 2026 12:33:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960263; cv=none; b=uypkZmn00eNsHKJKx472dF2zSTXra1D3w5fa8i/x7H5WdM1j/KY+uomuzSg1b3yG4XQSRArGvmepTdTxKWwwCyT/7D6+IX8qrfTJRM/zM1MkrA10oUFLydivfuiMb+taaV+5CVgvOpU5n7i8I4di7xKtbomYOiLdKHDf6HifCrc=
+	t=1767961981; cv=none; b=JpSIjr60+rs4Cnhm+qCaF+t1ifP7c4FCHVTBsmoC6USvMpV/mF1jLWPPLjPSdkP9nmbywiiviipOwkfW9p8QF7rHWSRE8q/7GpZxDXyAKEruc7ec4EF4GKFbJSQCiU332E57V0XVhW/sJwm1Iq+1WOKJbgIhQ8cxrQAg1kpVxRs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960263; c=relaxed/simple;
-	bh=kJIYUbEpwMpGrOZJ99MBjpYHI8iTG/qBr+RrieEvYlU=;
+	s=arc-20240116; t=1767961981; c=relaxed/simple;
+	bh=CWeHfkR833jG6WYv23we0G9DdIUzXxtG2NoDJ5Oo/b4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TRHX5Ut726ZfDnrOCgLtcVyVxTvCc9s6TQ8Xhx5IvWw10jyRqS5QgihQul8OCXE05W/TGzyX7R401yXnFKv7wWnirWoUh92uIZGmjAlCpqyRNpEW3yMEDMovt78uwHBHgTrTwBTx9MZm4IqIQR17w8ikcyDiEmLG78g2XFM7TNY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cWyQfLCR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8342C4CEF1;
-	Fri,  9 Jan 2026 12:04:22 +0000 (UTC)
+	 MIME-Version; b=l+D7ch4drWahLiWNc8Jh4kye1IfQa/E6fn+OOfbcD8A5qj3s0Q87VUGruMiS5Dr8NYR+vpAl1lDE812QOlZqRRVu4w0TuCFSKw8uz3hct0ih2HEZVJowdYwuF5zZIp+zIp1JTOeOWe7VbtAeMiTv1rAwJS2rqD2qB5fZX63/4cg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a5mwGSxx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD6D2C16AAE;
+	Fri,  9 Jan 2026 12:33:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960263;
-	bh=kJIYUbEpwMpGrOZJ99MBjpYHI8iTG/qBr+RrieEvYlU=;
+	s=korg; t=1767961981;
+	bh=CWeHfkR833jG6WYv23we0G9DdIUzXxtG2NoDJ5Oo/b4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cWyQfLCRIrljhBLj1O1Rmhc80+PHvIW1qnqmcYpt7iylgx57OeD3WjXQKkB6iUYie
-	 LhUpY1zmon31hPAJfi4xekkz9b0kvRfa2kn7b3Xzz5WHZ9082NajtmFMDBd2MyVmEC
-	 3qJXSm7a/hYgBo1kmJ0ipY4mhtVWMfDwIsdqxPzE=
+	b=a5mwGSxx63sLPRwBo95AvbOSTW1MYEZ4/0DwcZt2fqEO1xVxoMLYt489oSa7vSxqj
+	 VCH/s34rs1Q2JLWEtroaUjc79Fec+6JmBBZWQcbzcciYuHhpaKz83XmWgN4HXmymA6
+	 QZjCBqslhDfmkm8snHvxT1QbHEx1o7UmUXbNvKYM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuhao Jiang <danisjiang@gmail.com>,
-	Junrui Luo <moonafterrain@outlook.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Shengjiu Wang <shengjiu.wang@nxp.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 342/737] caif: fix integer underflow in cffrml_receive()
+Subject: [PATCH 6.1 203/634] ASoC: ak5558: Disable regulator when error happens
 Date: Fri,  9 Jan 2026 12:38:01 +0100
-Message-ID: <20260109112146.854387548@linuxfoundation.org>
+Message-ID: <20260109112125.078868550@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +60,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junrui Luo <moonafterrain@outlook.com>
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-[ Upstream commit 8a11ff0948b5ad09b71896b7ccc850625f9878d1 ]
+[ Upstream commit 1f8f726a2a29c28f65b30880335a1610c5e63594 ]
 
-The cffrml_receive() function extracts a length field from the packet
-header and, when FCS is disabled, subtracts 2 from this length without
-validating that len >= 2.
+Disable regulator in runtime resume when error happens to balance
+the reference count of regulator.
 
-If an attacker sends a malicious packet with a length field of 0 or 1
-to an interface with FCS disabled, the subtraction causes an integer
-underflow.
-
-This can lead to memory exhaustion and kernel instability, potential
-information disclosure if padding contains uninitialized kernel memory.
-
-Fix this by validating that len >= 2 before performing the subtraction.
-
-Reported-by: Yuhao Jiang <danisjiang@gmail.com>
-Reported-by: Junrui Luo <moonafterrain@outlook.com>
-Fixes: b482cd2053e3 ("net-caif: add CAIF core protocol stack")
-Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/SYBPR01MB7881511122BAFEA8212A1608AFA6A@SYBPR01MB7881.ausprd01.prod.outlook.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 2ff6d5a108c6 ("ASoC: ak5558: Add regulator support")
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+Link: https://patch.msgid.link/20251203100529.3841203-3-shengjiu.wang@nxp.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/caif/cffrml.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ sound/soc/codecs/ak5558.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/net/caif/cffrml.c b/net/caif/cffrml.c
-index 6651a8dc62e04..d4d63586053ad 100644
---- a/net/caif/cffrml.c
-+++ b/net/caif/cffrml.c
-@@ -92,8 +92,15 @@ static int cffrml_receive(struct cflayer *layr, struct cfpkt *pkt)
- 	len = le16_to_cpu(tmp);
+diff --git a/sound/soc/codecs/ak5558.c b/sound/soc/codecs/ak5558.c
+index 60abcffe6a0ce..1b6515fba91e0 100644
+--- a/sound/soc/codecs/ak5558.c
++++ b/sound/soc/codecs/ak5558.c
+@@ -372,7 +372,15 @@ static int __maybe_unused ak5558_runtime_resume(struct device *dev)
+ 	regcache_cache_only(ak5558->regmap, false);
+ 	regcache_mark_dirty(ak5558->regmap);
  
- 	/* Subtract for FCS on length if FCS is not used. */
--	if (!this->dofcs)
-+	if (!this->dofcs) {
-+		if (len < 2) {
-+			++cffrml_rcv_error;
-+			pr_err("Invalid frame length (%d)\n", len);
-+			cfpkt_destroy(pkt);
-+			return -EPROTO;
-+		}
- 		len -= 2;
-+	}
+-	return regcache_sync(ak5558->regmap);
++	ret = regcache_sync(ak5558->regmap);
++	if (ret)
++		goto err;
++
++	return 0;
++err:
++	regcache_cache_only(ak5558->regmap, true);
++	regulator_bulk_disable(ARRAY_SIZE(ak5558->supplies), ak5558->supplies);
++	return ret;
+ }
  
- 	if (cfpkt_setlen(pkt, len) < 0) {
- 		++cffrml_rcv_error;
+ static const struct dev_pm_ops ak5558_pm = {
 -- 
 2.51.0
 
