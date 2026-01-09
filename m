@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-206987-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207590-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D8BAD098B9
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:24:09 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FE24D0A162
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:57:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E0615301AAA5
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:12:53 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C50703042742
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:42:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCE1932F748;
-	Fri,  9 Jan 2026 12:12:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9DDC35C1B6;
+	Fri,  9 Jan 2026 12:41:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TrGx3sgq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FE2Ym3qg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FCC9320CB6;
-	Fri,  9 Jan 2026 12:12:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DD9835C18D;
+	Fri,  9 Jan 2026 12:41:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960771; cv=none; b=OnG8P+Gom8UkFJRps42goQgdrtZCd0bFJ1io+ff2kbOaB55l5QxMLC+RAf7+WW8g7McAgp82tihM7F2BbUYRc3ITCb+Px5r/zvFX0We6VsZVjl78XGPBRBB5QzTC2Mpz6W2MT+QfkcCagkF7Cqe230bti7QVa1IdbBTZ4JtlFLo=
+	t=1767962485; cv=none; b=XCnLm11Alc7lfk41/aIVio9tgKOsnqkXj7/Doyq+8VG7zWw0ur5EyaEIC5VNAOsvBlAmcIg0WnWwNC6fL3RaZPFvMN8AWTUsXZnb/JaC1m1jiFl4j4cpnr+we6H5ngeSeiFOAX7feBQ7wznmwT5afFKMfKRdzQKoPqIrXe8kTpM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960771; c=relaxed/simple;
-	bh=ssDBDHVd33TrGFjq8vK319ib6vs2lV9DSaEHwVum0o4=;
+	s=arc-20240116; t=1767962485; c=relaxed/simple;
+	bh=6BetIjwRBbBcjyM+zx2yLND1SfVz0bDGtzUskWb7A8A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V0Jofrwe5vJmSaQcg2JNIsjNawA4dwVlfiWZyXMy42pFU4oVEnoTI0jh5R8dgmnLKL66p57dP8nIzkHkfRgYkqxqxeBwqD5M6wHIN9fqzm21sHEvvy09GUD39uAJZc1AGNt97aRfNiCAr82JMOy1xl4iTZBicxX7n9WR0+7uMZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TrGx3sgq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BFA0C4CEF1;
-	Fri,  9 Jan 2026 12:12:50 +0000 (UTC)
+	 MIME-Version; b=Kle5XRAq3uYqobv8IWUZ1BFTnfaqwdgST9cpI5+aF/inGAZsicF02ZAbi2ZSwrPsYZgZG415792HVOa0hwjaTzMhjLge5xNNJ2MffK2zRlsfXlSmJ2/fM59Y4Hpu+AbtEF3emlfpHlgFBVR7V512oRkDhHh2LniF39CijhzTtJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FE2Ym3qg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7E34C19422;
+	Fri,  9 Jan 2026 12:41:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960771;
-	bh=ssDBDHVd33TrGFjq8vK319ib6vs2lV9DSaEHwVum0o4=;
+	s=korg; t=1767962485;
+	bh=6BetIjwRBbBcjyM+zx2yLND1SfVz0bDGtzUskWb7A8A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TrGx3sgqjfi19XK32VHxT7/qbvYzUCrTDuW0KdH/q3yyYiz0oGGGZIz2AyrMvXjsv
-	 ePMMkUP/nrKWqTIhQFSWH/tYtmqapf6PEf6j8UXr1V92A5f0xRtmCF75gpXDjd/jJ9
-	 s/MkHSTTJcaycuAKp/ppjyChEsYH1y04/wrWAIxA=
+	b=FE2Ym3qgVc+Ts35+2s030yDe/K3S4gh6Zxhzzafiw8VYKi03omqRgcqy8i/Mrq13U
+	 ZjEb0J0iYA1P6+t5TtLS+mLx9jbLWfpomUhXlPdtzdd8cpqvHNC0QJOOMI8of/ubi1
+	 yyXfNBMrIofNdmSjMK64XJfPBtpriO86fsje99UQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 519/737] firewire: nosy: Fix dma_free_coherent() size
+	Brian Masney <bmasney@redhat.com>,
+	Miaoqian Lin <linmq006@gmail.com>,
+	Johan Hovold <johan@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.1 380/634] soc: qcom: ocmem: fix device leak on lookup
 Date: Fri,  9 Jan 2026 12:40:58 +0100
-Message-ID: <20260109112153.523781903@linuxfoundation.org>
+Message-ID: <20260109112131.828900869@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,73 +61,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit c48c0fd0e19684b6ecdb4108a429e3a4e73f5e21 ]
+commit b5c16ea57b030b8e9428ec726e26219dfe05c3d9 upstream.
 
-It looks like the buffer allocated and mapped in add_card() is done
-with size RCV_BUFFER_SIZE which is 16 KB and 4KB.
+Make sure to drop the reference taken to the ocmem platform device when
+looking up its driver data.
 
-Fixes: 286468210d83 ("firewire: new driver: nosy - IEEE 1394 traffic sniffer")
-Co-developed-by: Thomas Fourier <fourier.thomas@gmail.com>
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Co-developed-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Link: https://lore.kernel.org/r/20251216165420.38355-2-fourier.thomas@gmail.com
-Signed-off-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Note that holding a reference to a device does not prevent its driver
+data from going away so there is no point in keeping the reference.
+
+Also note that commit 0ff027027e05 ("soc: qcom: ocmem: Fix missing
+put_device() call in of_get_ocmem") fixed the leak in a lookup error
+path, but the reference is still leaking on success.
+
+Fixes: 88c1e9404f1d ("soc: qcom: add OCMEM driver")
+Cc: stable@vger.kernel.org	# 5.5: 0ff027027e05
+Cc: Brian Masney <bmasney@redhat.com>
+Cc: Miaoqian Lin <linmq006@gmail.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: Brian Masney <bmasney@redhat.com>
+Link: https://lore.kernel.org/r/20250926143511.6715-2-johan@kernel.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firewire/nosy.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/soc/qcom/ocmem.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/firewire/nosy.c b/drivers/firewire/nosy.c
-index ea31ac7ac1ca..e59053738a43 100644
---- a/drivers/firewire/nosy.c
-+++ b/drivers/firewire/nosy.c
-@@ -36,6 +36,8 @@
+--- a/drivers/soc/qcom/ocmem.c
++++ b/drivers/soc/qcom/ocmem.c
+@@ -211,9 +211,9 @@ struct ocmem *of_get_ocmem(struct device
+ 	of_node_put(devnode);
  
- static char driver_name[] = KBUILD_MODNAME;
- 
-+#define RCV_BUFFER_SIZE (16 * 1024)
-+
- /* this is the physical layout of a PCL, its size is 128 bytes */
- struct pcl {
- 	__le32 next;
-@@ -517,16 +519,14 @@ remove_card(struct pci_dev *dev)
- 			  lynx->rcv_start_pcl, lynx->rcv_start_pcl_bus);
- 	dma_free_coherent(&lynx->pci_device->dev, sizeof(struct pcl),
- 			  lynx->rcv_pcl, lynx->rcv_pcl_bus);
--	dma_free_coherent(&lynx->pci_device->dev, PAGE_SIZE, lynx->rcv_buffer,
--			  lynx->rcv_buffer_bus);
-+	dma_free_coherent(&lynx->pci_device->dev, RCV_BUFFER_SIZE,
-+			  lynx->rcv_buffer, lynx->rcv_buffer_bus);
- 
- 	iounmap(lynx->registers);
- 	pci_disable_device(dev);
- 	lynx_put(lynx);
- }
- 
--#define RCV_BUFFER_SIZE (16 * 1024)
--
- static int
- add_card(struct pci_dev *dev, const struct pci_device_id *unused)
- {
-@@ -680,7 +680,7 @@ add_card(struct pci_dev *dev, const struct pci_device_id *unused)
- 		dma_free_coherent(&lynx->pci_device->dev, sizeof(struct pcl),
- 				  lynx->rcv_pcl, lynx->rcv_pcl_bus);
- 	if (lynx->rcv_buffer)
--		dma_free_coherent(&lynx->pci_device->dev, PAGE_SIZE,
-+		dma_free_coherent(&lynx->pci_device->dev, RCV_BUFFER_SIZE,
- 				  lynx->rcv_buffer, lynx->rcv_buffer_bus);
- 	iounmap(lynx->registers);
- 
--- 
-2.51.0
-
+ 	ocmem = platform_get_drvdata(pdev);
++	put_device(&pdev->dev);
+ 	if (!ocmem) {
+ 		dev_err(dev, "Cannot get ocmem\n");
+-		put_device(&pdev->dev);
+ 		return ERR_PTR(-ENODEV);
+ 	}
+ 	return ocmem;
 
 
 
