@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-206698-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207281-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FB61D093AA
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:04:56 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47C41D09D87
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:41:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C405530DF704
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:59:05 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DE51F302BF57
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:27:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66F4B350A37;
-	Fri,  9 Jan 2026 11:59:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3354B35BDA5;
+	Fri,  9 Jan 2026 12:26:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VVPoK/Vc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mznpttkS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29F9133C511;
-	Fri,  9 Jan 2026 11:59:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB81435C182;
+	Fri,  9 Jan 2026 12:26:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767959945; cv=none; b=l1qOUL35+L5kK1Mp9kajuwoUh6NK43NmwqLFqvgw4jDJCSSF6V5eE7f7eNGZP0ldqnNm1SY1oBtQ5jgREVD3CGL+UxGv/SxpXcOvYiPZV+33P8U00eKPaQDGkrWk7EsxODdrRRYmP+hmPiyYiSRxjC5Owl8yW4JAi17CBehu4Js=
+	t=1767961606; cv=none; b=HU8HvO2i1FSc5nrWBBCvMC3l+zq6ny8FZlw66V3ydizmoEY3QQx6sVj++JnHz2CgKyA2+GpfYVqS5+hViMhuJKFSX/mMJfvwHn2VdNxRoJk6qhrQBT3X479GFeeMj1jJ6VVD92SGtKqogQzWoROnnpQeOwJtEOfGOTi6S2fdXQ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767959945; c=relaxed/simple;
-	bh=Kn9zYqdwmTz0azL91VmRnBba7b2mDzUI2IjFPHU4mec=;
+	s=arc-20240116; t=1767961606; c=relaxed/simple;
+	bh=VM4df4C3FJ2n1HX4oEivgWyqyvy6IiefAfZL1jANFjM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ASqh45/V7IijJ+gK0Lse5/As0QzmCpTq7Fbxlr7qV3uDgW0GFC1jnkh8eghwUWYKZ3Ho0gukNcThLJgLfdvQ0731ZP6QQSdeicrb5cLZ6qvjDqHE09VY1jiWugxO3UxSKMHsBrkVzT8NrFE5XY62qLmISQerObZ8eAHYyZnRJN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VVPoK/Vc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6271CC4CEF1;
-	Fri,  9 Jan 2026 11:59:04 +0000 (UTC)
+	 MIME-Version; b=fzQPwhw0UsznsHqtrwPiUpZ2D53coLL1OAq4yUmZG+A3SXnFULxh4LJ4AvN4P6YJZtb9QVI5NYyZmWMCRTkYJKlkxdIv7Hfw6ztt2Vy0rQ6W0XpqRqhr05v48jN85gRcXjRyH2mVo1nCoehL/WuonamQqNGToKHphx6e7wwRKZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mznpttkS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69797C4CEF1;
+	Fri,  9 Jan 2026 12:26:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767959944;
-	bh=Kn9zYqdwmTz0azL91VmRnBba7b2mDzUI2IjFPHU4mec=;
+	s=korg; t=1767961606;
+	bh=VM4df4C3FJ2n1HX4oEivgWyqyvy6IiefAfZL1jANFjM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VVPoK/Vc+uCT80hcvXRF3wut+6bXj0ie4eqZtudCXE81HMUYz8oYtiNHQB7fH+drX
-	 C3E2rgeodfICBCdqEPTHT/Cir2Ebl//lN9pXzi+ulQby8uZmyfEl5BfxIvUk52G4JO
-	 zqFKUpq//fwBd0kBRPRbfN0kiKMHV6HWzpXeT+N4=
+	b=mznpttkSPkESVPqQVCrzLPPhCLAF5BJGOP9llCqNXfHaOamya+68dL4/qkyYijhPF
+	 3L7IxO6ralRaGBbB7780plh9Q2oVbEwbQBJKbwTHCoa9EhFez/akrZadmVSv6BACRz
+	 7yHHSAWplrCcK1rbHTtEHbRxMcFl8v+n7WGz2aFE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Czurylo <krzysztof.czurylo@intel.com>,
-	Tatyana Nikolova <tatyana.e.nikolova@intel.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Shuhao Fu <sfual@cse.ust.hk>,
+	Frank Li <Frank.Li@nxp.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 213/737] RDMA/irdma: Fix data race in irdma_free_pble
+Subject: [PATCH 6.1 074/634] i3c: fix refcount inconsistency in i3c_master_register
 Date: Fri,  9 Jan 2026 12:35:52 +0100
-Message-ID: <20260109112142.010034851@linuxfoundation.org>
+Message-ID: <20260109112120.226906911@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,82 +61,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Czurylo <krzysztof.czurylo@intel.com>
+From: Frank Li <Frank.Li@nxp.com>
 
-[ Upstream commit 81f44409fb4f027d1e6d54edbeba5156ad94b214 ]
+[ Upstream commit 9d4f219807d5ac11fb1d596e4ddb09336b040067 ]
 
-Protects pble_rsrc counters with mutex to prevent data race.
-Fixes the following data race in irdma_free_pble reported by KCSAN:
+In `i3c_master_register`, a possible refcount inconsistency has been
+identified, causing possible resource leak.
 
-BUG: KCSAN: data-race in irdma_free_pble [irdma] / irdma_free_pble [irdma]
+Function `of_node_get` increases the refcount of `parent->of_node`. If
+function `i3c_bus_init` fails, the function returns immediately without
+a corresponding decrease, resulting in an inconsistent refcounter.
 
-write to 0xffff91430baa0078 of 8 bytes by task 16956 on cpu 5:
- irdma_free_pble+0x3b/0xb0 [irdma]
- irdma_dereg_mr+0x108/0x110 [irdma]
- ib_dereg_mr_user+0x74/0x160 [ib_core]
- uverbs_free_mr+0x26/0x30 [ib_uverbs]
- destroy_hw_idr_uobject+0x4a/0x90 [ib_uverbs]
- uverbs_destroy_uobject+0x7b/0x330 [ib_uverbs]
- uobj_destroy+0x61/0xb0 [ib_uverbs]
- ib_uverbs_run_method+0x1f2/0x380 [ib_uverbs]
- ib_uverbs_cmd_verbs+0x365/0x440 [ib_uverbs]
- ib_uverbs_ioctl+0x111/0x190 [ib_uverbs]
- __x64_sys_ioctl+0xc9/0x100
- do_syscall_64+0x44/0xa0
- entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+Move call i3c_bus_init() after device_initialize() to let callback
+i3c_masterdev_release() release of_node.
 
-read to 0xffff91430baa0078 of 8 bytes by task 16953 on cpu 2:
- irdma_free_pble+0x23/0xb0 [irdma]
- irdma_dereg_mr+0x108/0x110 [irdma]
- ib_dereg_mr_user+0x74/0x160 [ib_core]
- uverbs_free_mr+0x26/0x30 [ib_uverbs]
- destroy_hw_idr_uobject+0x4a/0x90 [ib_uverbs]
- uverbs_destroy_uobject+0x7b/0x330 [ib_uverbs]
- uobj_destroy+0x61/0xb0 [ib_uverbs]
- ib_uverbs_run_method+0x1f2/0x380 [ib_uverbs]
- ib_uverbs_cmd_verbs+0x365/0x440 [ib_uverbs]
- ib_uverbs_ioctl+0x111/0x190 [ib_uverbs]
- __x64_sys_ioctl+0xc9/0x100
- do_syscall_64+0x44/0xa0
- entry_SYSCALL_64_after_hwframe+0x6e/0xd8
-
-value changed: 0x0000000000005a62 -> 0x0000000000005a68
-
-Fixes: e8c4dbc2fcac ("RDMA/irdma: Add PBLE resource manager")
-Signed-off-by: Krzysztof Czurylo <krzysztof.czurylo@intel.com>
-Signed-off-by: Tatyana Nikolova <tatyana.e.nikolova@intel.com>
-Link: https://patch.msgid.link/20251125025350.180-3-tatyana.e.nikolova@intel.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Reported-by: Shuhao Fu <sfual@cse.ust.hk>
+Closes: https://lore.kernel.org/linux-i3c/aO2tjp_FsV_WohPG@osx.local/T/#m2c05a982beeb14e7bf039c1d8db856734bf234c7
+Fixes: 3a379bbcea0a ("i3c: Add core I3C infrastructure")
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Link: https://patch.msgid.link/20251016143814.2551256-1-Frank.Li@nxp.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/irdma/pble.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/i3c/master.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/infiniband/hw/irdma/pble.c b/drivers/infiniband/hw/irdma/pble.c
-index fa096557adc83..c7bcdc1bf9319 100644
---- a/drivers/infiniband/hw/irdma/pble.c
-+++ b/drivers/infiniband/hw/irdma/pble.c
-@@ -498,12 +498,14 @@ int irdma_get_pble(struct irdma_hmc_pble_rsrc *pble_rsrc,
- void irdma_free_pble(struct irdma_hmc_pble_rsrc *pble_rsrc,
- 		     struct irdma_pble_alloc *palloc)
- {
--	pble_rsrc->freedpbles += palloc->total_cnt;
+diff --git a/drivers/i3c/master.c b/drivers/i3c/master.c
+index 60a61e39e2bb7..44574474bda35 100644
+--- a/drivers/i3c/master.c
++++ b/drivers/i3c/master.c
+@@ -2763,10 +2763,6 @@ int i3c_master_register(struct i3c_master_controller *master,
+ 	INIT_LIST_HEAD(&master->boardinfo.i2c);
+ 	INIT_LIST_HEAD(&master->boardinfo.i3c);
+ 
+-	ret = i3c_bus_init(i3cbus, master->dev.of_node);
+-	if (ret)
+-		return ret;
 -
- 	if (palloc->level == PBLE_LEVEL_2)
- 		free_lvl2(pble_rsrc, palloc);
- 	else
- 		irdma_prm_return_pbles(&pble_rsrc->pinfo,
- 				       &palloc->level1.chunkinfo);
+ 	device_initialize(&master->dev);
+ 	dev_set_name(&master->dev, "i3c-%d", i3cbus->id);
+ 
+@@ -2774,6 +2770,10 @@ int i3c_master_register(struct i3c_master_controller *master,
+ 	master->dev.coherent_dma_mask = parent->coherent_dma_mask;
+ 	master->dev.dma_parms = parent->dma_parms;
+ 
++	ret = i3c_bus_init(i3cbus, master->dev.of_node);
++	if (ret)
++		goto err_put_dev;
 +
-+	mutex_lock(&pble_rsrc->pble_mutex_lock);
-+	pble_rsrc->freedpbles += palloc->total_cnt;
- 	pble_rsrc->stats_alloc_freed++;
-+	mutex_unlock(&pble_rsrc->pble_mutex_lock);
- }
+ 	ret = of_populate_i3c_bus(master);
+ 	if (ret)
+ 		goto err_put_dev;
 -- 
 2.51.0
 
