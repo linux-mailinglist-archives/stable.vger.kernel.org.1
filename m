@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-207335-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206734-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57F34D09BAD
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:35:13 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id C81FDD09485
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:08:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0F9E33024A4F
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:29:24 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4D4F43039992
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:00:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8FCA35A945;
-	Fri,  9 Jan 2026 12:29:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EFDA32F748;
+	Fri,  9 Jan 2026 12:00:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LNBOmjP2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XWrN++lk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AE2E350D74;
-	Fri,  9 Jan 2026 12:29:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4046F33032C;
+	Fri,  9 Jan 2026 12:00:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961762; cv=none; b=DhSY47Qvi1N3LwvHlJ/pTxsvM1GTgwtybYx0Y1z1/iF6OdKLn8kHWDL2W+UIeIS2r1QHHMFf6VF0LnjsGQSi2RDGPoYSdgcfgKrhsn4YBXzY68JtrouJpkEb6fmi10Q63tJE3Eg/5glahUTO0+MIAe9CqL3x8YUROg5utrqxjYU=
+	t=1767960047; cv=none; b=cuKQeXkMybThHg2VHwDxYo3ZbYyrn+Qgl74wTpg1Wskr4K6n1ECJIGX2mtegwRJniEDM46ZH5CNk+S/JDbmpo0R9BeAg8/PK7nv4nqqKItlaSWgvHxc2vbeVBQazGLMDbXJbNmEb8G7LkwBGwgTOtS8cPMQG2a7rtAqUFxBmf/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961762; c=relaxed/simple;
-	bh=Qvf0ifPTtBgtDQX9pSuR2jjOvYpFuaNo3ekHeeoqRjk=;
+	s=arc-20240116; t=1767960047; c=relaxed/simple;
+	bh=V7TKtz5rX9QvdZXABNKzkfGBQXfuClrEh3faoeWr/g4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iUbcrDFhgJ7qLe7Q2V4wPBBcQkRnF8IApCda1/4oQilc8TWDju0RQLLTUbAa4H2QziQRL77bBgr4tLaEDkkLWIIQAoEfOa84127rgoFEmwybQOWajBH+7R3dpnaEyteybJ5XidQnas84NGl9DkboS6J2iTRwIbSsz0QNSLyohMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LNBOmjP2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 256BEC4CEF1;
-	Fri,  9 Jan 2026 12:29:21 +0000 (UTC)
+	 MIME-Version; b=byNG5eXC6LoSR9cC5DgK9rAF5U47aAeoBPfZOz6X7eE0fUDcLO/F6fHAa87MrqI+GQPuGg8cYn9FxCx0UtT3xu8/6j/c8jiuNcPQcxwGSr38BVBnLJK0GSR5xW8lNvHfhHggWRbe+6Ez0tQSC5XMTNYcObf8aufY1I1ycU929I0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XWrN++lk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1C64C4CEF1;
+	Fri,  9 Jan 2026 12:00:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961762;
-	bh=Qvf0ifPTtBgtDQX9pSuR2jjOvYpFuaNo3ekHeeoqRjk=;
+	s=korg; t=1767960047;
+	bh=V7TKtz5rX9QvdZXABNKzkfGBQXfuClrEh3faoeWr/g4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LNBOmjP27GwTBktnkq59bV/HcsP3fyKYfK3LBpr+wXtBEFxGont09+YVJ/816O+TD
-	 BiykWLqmFSBW8/Dhee6M+2TDeAKQX/CA9+6phtBML/Us3wXBwGgTU8zZV7NIMsp8az
-	 M5t6lWDWOQUwDhcLiXfIufSc9tfkrQZ7+fqoQDJg=
+	b=XWrN++lkYsoH+RikcJsyJjAYHk5cG7VoBQ9G3gt/Zc88w57GHs3xMqe9phayi085I
+	 C8DgUsQGH3209iQkoXmsZZfs48SS7QUcVWzNax7F3PnELdPbTwJA3Hn5THfvQwJYl3
+	 sHjUT9bwovVNqgExcaWe/ww+5iHyPVnCcaQL5hRE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
+	Alkis Georgopoulos <alkisg@gmail.com>,
+	Li Lingfeng <lilingfeng3@huawei.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 127/634] pwm: bcm2835: Make sure the channel is enabled after pwm_request()
+Subject: [PATCH 6.6 266/737] Revert "nfs: ignore SB_RDONLY when mounting nfs"
 Date: Fri,  9 Jan 2026 12:36:45 +0100
-Message-ID: <20260109112122.227064897@linuxfoundation.org>
+Message-ID: <20260109112144.000560143@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,89 +59,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit cda323dbda76600bf9761970d58517648f0de67d ]
+[ Upstream commit d4a26d34f1946142f9d32e540490e4926ae9a46b ]
 
-The .free callback cleared among others the enable bit PWENx in the
-control register. When the PWM is requested later again this bit isn't
-restored but the core assumes the PWM is enabled and thus skips a
-request to configure the same state as before.
+This reverts commit 52cb7f8f177878b4f22397b9c4d2c8f743766be3.
 
-To fix that don't touch the hardware configuration in .free(). For
-symmetry also drop .request() and configure the mode completely in
-.apply().
+Silently ignoring the "ro" and "rw" mount options causes user confusion,
+and regressions.
 
-Fixes: e5a06dc5ac1f ("pwm: Add BCM2835 PWM driver")
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20251118174303.1761577-2-u.kleine-koenig@baylibre.com
-Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
+Reported-by: Alkis Georgopoulos<alkisg@gmail.com>
+Cc: Li Lingfeng <lilingfeng3@huawei.com>
+Fixes: 52cb7f8f1778 ("nfs: ignore SB_RDONLY when mounting nfs")
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pwm/pwm-bcm2835.c | 28 +++-------------------------
- 1 file changed, 3 insertions(+), 25 deletions(-)
+ fs/nfs/internal.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pwm/pwm-bcm2835.c b/drivers/pwm/pwm-bcm2835.c
-index 50b8594be31d8..4541d63d57c40 100644
---- a/drivers/pwm/pwm-bcm2835.c
-+++ b/drivers/pwm/pwm-bcm2835.c
-@@ -35,29 +35,6 @@ static inline struct bcm2835_pwm *to_bcm2835_pwm(struct pwm_chip *chip)
- 	return container_of(chip, struct bcm2835_pwm, chip);
- }
+diff --git a/fs/nfs/internal.h b/fs/nfs/internal.h
+index bde81e0abf0ae..161c8fffbc1d9 100644
+--- a/fs/nfs/internal.h
++++ b/fs/nfs/internal.h
+@@ -12,7 +12,7 @@
+ #include <linux/nfs_page.h>
+ #include <linux/wait_bit.h>
  
--static int bcm2835_pwm_request(struct pwm_chip *chip, struct pwm_device *pwm)
--{
--	struct bcm2835_pwm *pc = to_bcm2835_pwm(chip);
--	u32 value;
--
--	value = readl(pc->base + PWM_CONTROL);
--	value &= ~(PWM_CONTROL_MASK << PWM_CONTROL_SHIFT(pwm->hwpwm));
--	value |= (PWM_MODE << PWM_CONTROL_SHIFT(pwm->hwpwm));
--	writel(value, pc->base + PWM_CONTROL);
--
--	return 0;
--}
--
--static void bcm2835_pwm_free(struct pwm_chip *chip, struct pwm_device *pwm)
--{
--	struct bcm2835_pwm *pc = to_bcm2835_pwm(chip);
--	u32 value;
--
--	value = readl(pc->base + PWM_CONTROL);
--	value &= ~(PWM_CONTROL_MASK << PWM_CONTROL_SHIFT(pwm->hwpwm));
--	writel(value, pc->base + PWM_CONTROL);
--}
--
- static int bcm2835_pwm_apply(struct pwm_chip *chip, struct pwm_device *pwm,
- 			     const struct pwm_state *state)
- {
-@@ -109,6 +86,9 @@ static int bcm2835_pwm_apply(struct pwm_chip *chip, struct pwm_device *pwm,
- 	/* set polarity */
- 	val = readl(pc->base + PWM_CONTROL);
+-#define NFS_SB_MASK (SB_NOSUID|SB_NODEV|SB_NOEXEC|SB_SYNCHRONOUS)
++#define NFS_SB_MASK (SB_RDONLY|SB_NOSUID|SB_NODEV|SB_NOEXEC|SB_SYNCHRONOUS)
  
-+	val &= ~(PWM_CONTROL_MASK << PWM_CONTROL_SHIFT(pwm->hwpwm));
-+	val |= PWM_MODE << PWM_CONTROL_SHIFT(pwm->hwpwm);
-+
- 	if (state->polarity == PWM_POLARITY_NORMAL)
- 		val &= ~(PWM_POLARITY << PWM_CONTROL_SHIFT(pwm->hwpwm));
- 	else
-@@ -126,8 +106,6 @@ static int bcm2835_pwm_apply(struct pwm_chip *chip, struct pwm_device *pwm,
- }
+ extern const struct export_operations nfs_export_ops;
  
- static const struct pwm_ops bcm2835_pwm_ops = {
--	.request = bcm2835_pwm_request,
--	.free = bcm2835_pwm_free,
- 	.apply = bcm2835_pwm_apply,
- 	.owner = THIS_MODULE,
- };
 -- 
 2.51.0
 
