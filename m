@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-206884-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207502-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FE97D09705
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:18:04 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88B7CD09FB8
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:49:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B32A230B611D
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:07:55 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 88FC23077FE6
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:37:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6237C334C24;
-	Fri,  9 Jan 2026 12:07:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CD0431ED6D;
+	Fri,  9 Jan 2026 12:37:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CMDAv0P0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SgC2a7l6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2572A1DE885;
-	Fri,  9 Jan 2026 12:07:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D708E335BCD;
+	Fri,  9 Jan 2026 12:37:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960474; cv=none; b=gcFlcl/1QlcaAwtAAiW6dhFYQ6CKS/tv0R/kOaYawDTJlMvoExyWYM2+HpPqaqoCDm0/4sejal7qWK3XSm95GkqwRfEeyPpnp4mh4l//HKaEhyg1FsAlq0betTTbSTfRBLCTjFd2Ho1xXz6RCWiH7Sq7cydRVhDxLIV65q/RPu8=
+	t=1767962236; cv=none; b=i02CLTo+mJkIfvb/1vrjC91B4EIEEgF9tVljXvazoJhxyKGWmNtCt1h9XDHpTfACIKrrtrSjq6ln7prrDz1OO0sCkkgNpBeBBi50BWDiGiZCUJbD1Cmh0xOQYcljZO14LLBQy9kpFjJ4JOSwg75slyrUEFDlXnl+Yd4weUFLexU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960474; c=relaxed/simple;
-	bh=yxRedM2uDTpIe22GUJFyRlofBCbv/3A8XsNOuY3DZPo=;
+	s=arc-20240116; t=1767962236; c=relaxed/simple;
+	bh=a4joI7te4bnLkDaO4R0pjh3SRwTGE3wC/2zVOr0B5oo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qQMaPyRkAHvtykMKRkDjxbiPX3yZOf5xMwd4tW0q2POehaXcGSmIrIHb50KJVwiBaiT1wZamXtcieIscFAiHFDMLp2Xy7Dt06MqnZ9sM1xaLUGJchT5R4yDxYWjhHj6jQOkzYbP6lurlhBGN5Ie56wiX8vvwQRs2Pa0TImadRrE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CMDAv0P0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3EC4C4CEF1;
-	Fri,  9 Jan 2026 12:07:53 +0000 (UTC)
+	 MIME-Version; b=tys78/20qi7oNZ1/X8oGgxyeshWSnpvMy/jCHZ5zGLU+ZuSJXAz8N9CTYmsY8sErLypR9FVqP+26rClXKUj4/Yrjm6ZEGEIfGfIK5C3vjyv3sCidKB5ug1aV5J5GkCXJBuO2rhthUxacYip22ZbGwNcYDnBRLEQAvITxxn92zG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SgC2a7l6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 635F5C4CEF1;
+	Fri,  9 Jan 2026 12:37:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960474;
-	bh=yxRedM2uDTpIe22GUJFyRlofBCbv/3A8XsNOuY3DZPo=;
+	s=korg; t=1767962236;
+	bh=a4joI7te4bnLkDaO4R0pjh3SRwTGE3wC/2zVOr0B5oo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CMDAv0P0QHkJA83teDSZL7NavY2aAquIkw1qvMSRqBf5ENUl8PqIqPmXceJlnioGg
-	 ByJP8w9QiarenvDcS/bI1+U4YjJfhXC3PZq0Vs8rI2/ZO7pp3MhAqNP8DX0MNNrpYl
-	 Fz2hEIRkVnjPSVhVVlZ/4fhz1vcTKvILm0UBj654=
+	b=SgC2a7l6R/HraUmRHzrgGyeIccLwcSvVhA1sbu8nwq+amQo7dAAgPidp4JBxakR8G
+	 373pEenCad/+fochQmy1DpalfOVQDJWud9n/lUeIGpxxUwBsmRHj6XHYq/SQOQXIWD
+	 G0dzI+XKdqNALI3fAp/YjLE4eLh/ia+kk7D/Vx+s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Hoeppner <hoeppner@linux.ibm.com>,
-	Stefan Haberland <sth@linux.ibm.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.6 416/737] s390/dasd: Fix gendisk parent after copy pair swap
+	Ziv Xu <ziv.xu@starfivetech.com>,
+	William Qiu <william.qiu@starfivetech.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 277/634] spi: cadence-quadspi: Add support for StarFive JH7110 QSPI
 Date: Fri,  9 Jan 2026 12:39:15 +0100
-Message-ID: <20260109112149.644333164@linuxfoundation.org>
+Message-ID: <20260109112127.955684085@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,55 +61,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Haberland <sth@linux.ibm.com>
+From: William Qiu <william.qiu@starfivetech.com>
 
-commit c943bfc6afb8d0e781b9b7406f36caa8bbf95cb9 upstream.
+[ Upstream commit 47fef94afeae2a125607b6b45145594713471320 ]
 
-After a copy pair swap the block device's "device" symlink points to
-the secondary CCW device, but the gendisk's parent remained the
-primary, leaving /sys/block/<dasdx> under the wrong parent.
+Add QSPI reset operation in device probe and add RISCV support to
+QUAD SPI Kconfig.
 
-Move the gendisk to the secondary's device with device_move(), keeping
-the sysfs topology consistent after the swap.
-
-Fixes: 413862caad6f ("s390/dasd: add copy pair swap capability")
-Cc: stable@vger.kernel.org #6.1
-Reviewed-by: Jan Hoeppner <hoeppner@linux.ibm.com>
-Signed-off-by: Stefan Haberland <sth@linux.ibm.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Co-developed-by: Ziv Xu <ziv.xu@starfivetech.com>
+Signed-off-by: Ziv Xu <ziv.xu@starfivetech.com>
+Signed-off-by: William Qiu <william.qiu@starfivetech.com>
+Link: https://lore.kernel.org/r/20230302105221.197421-3-william.qiu@starfivetech.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 1889dd208197 ("spi: cadence-quadspi: Fix clock disable on probe failure path")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/s390/block/dasd_eckd.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/spi/Kconfig               |  2 +-
+ drivers/spi/spi-cadence-quadspi.c | 21 ++++++++++++++++++++-
+ 2 files changed, 21 insertions(+), 2 deletions(-)
 
---- a/drivers/s390/block/dasd_eckd.c
-+++ b/drivers/s390/block/dasd_eckd.c
-@@ -6189,6 +6189,7 @@ static int dasd_eckd_copy_pair_swap(stru
- 	struct dasd_copy_relation *copy;
- 	struct dasd_block *block;
- 	struct gendisk *gdp;
-+	int rc;
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index 15ea11ebcbe0..834fc0b8e27e 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -230,7 +230,7 @@ config SPI_CADENCE
  
- 	copy = device->copy;
- 	if (!copy)
-@@ -6223,6 +6224,13 @@ static int dasd_eckd_copy_pair_swap(stru
- 	/* swap blocklayer device link */
- 	gdp = block->gdp;
- 	dasd_add_link_to_gendisk(gdp, secondary);
-+	rc = device_move(disk_to_dev(gdp), &secondary->cdev->dev, DPM_ORDER_NONE);
-+	if (rc) {
-+		dev_err(&primary->cdev->dev,
-+			"copy_pair_swap: moving blockdevice parent %s->%s failed (%d)\n",
-+			dev_name(&primary->cdev->dev),
-+			dev_name(&secondary->cdev->dev), rc);
+ config SPI_CADENCE_QUADSPI
+ 	tristate "Cadence Quad SPI controller"
+-	depends on OF && (ARM || ARM64 || X86 || COMPILE_TEST)
++	depends on OF && (ARM || ARM64 || X86 || RISCV || COMPILE_TEST)
+ 	help
+ 	  Enable support for the Cadence Quad SPI Flash controller.
+ 
+diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
+index 3200e55136cd..fe537b8d87e5 100644
+--- a/drivers/spi/spi-cadence-quadspi.c
++++ b/drivers/spi/spi-cadence-quadspi.c
+@@ -1586,7 +1586,7 @@ static int cqspi_setup_flash(struct cqspi_st *cqspi)
+ static int cqspi_probe(struct platform_device *pdev)
+ {
+ 	const struct cqspi_driver_platdata *ddata;
+-	struct reset_control *rstc, *rstc_ocp;
++	struct reset_control *rstc, *rstc_ocp, *rstc_ref;
+ 	struct device *dev = &pdev->dev;
+ 	struct spi_master *master;
+ 	struct resource *res_ahb;
+@@ -1679,6 +1679,17 @@ static int cqspi_probe(struct platform_device *pdev)
+ 		goto probe_reset_failed;
+ 	}
+ 
++	if (of_device_is_compatible(pdev->dev.of_node, "starfive,jh7110-qspi")) {
++		rstc_ref = devm_reset_control_get_optional_exclusive(dev, "rstc_ref");
++		if (IS_ERR(rstc_ref)) {
++			ret = PTR_ERR(rstc_ref);
++			dev_err(dev, "Cannot get QSPI REF reset.\n");
++			goto probe_reset_failed;
++		}
++		reset_control_assert(rstc_ref);
++		reset_control_deassert(rstc_ref);
 +	}
++
+ 	reset_control_assert(rstc);
+ 	reset_control_deassert(rstc);
  
- 	/* re-enable device */
- 	dasd_device_remove_stop_bits(primary, DASD_STOPPED_PPRC);
+@@ -1836,6 +1847,10 @@ static const struct cqspi_driver_platdata versal_ospi = {
+ 	.get_dma_status = cqspi_get_versal_dma_status,
+ };
+ 
++static const struct cqspi_driver_platdata jh7110_qspi = {
++	.quirks = CQSPI_DISABLE_DAC_MODE,
++};
++
+ static const struct of_device_id cqspi_dt_ids[] = {
+ 	{
+ 		.compatible = "cdns,qspi-nor",
+@@ -1861,6 +1876,10 @@ static const struct of_device_id cqspi_dt_ids[] = {
+ 		.compatible = "intel,socfpga-qspi",
+ 		.data = &socfpga_qspi,
+ 	},
++	{
++		.compatible = "starfive,jh7110-qspi",
++		.data = &jh7110_qspi,
++	},
+ 	{ /* end of table */ }
+ };
+ 
+-- 
+2.51.0
+
 
 
 
