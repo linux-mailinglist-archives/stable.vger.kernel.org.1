@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-207738-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207095-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97E55D0A1F3
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:00:31 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69F98D09A57
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:30:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EDC0E313E709
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:49:52 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 09287304D356
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:17:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F1D435E546;
-	Fri,  9 Jan 2026 12:48:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 031F626ED41;
+	Fri,  9 Jan 2026 12:17:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="owwpdWUq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jW9csi1w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3268835E53B;
-	Fri,  9 Jan 2026 12:48:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9AC72FD699;
+	Fri,  9 Jan 2026 12:17:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962906; cv=none; b=q+tWeFXzMzfqQm4rrM/x8tagInLppqjHtEdc8tkZafaqcS7ERsmXzSefenyUauKCiqa/kqLGtO1d4mkaO6ewUCO1h1+SUyYtHbnd4LOT/o+/J7Pf848NyG7MlkDEaaMus4JeM7vWMlRMWyRub/+bsEPg5td5IzBvzdaqRwftH/o=
+	t=1767961076; cv=none; b=Qob4J/XlvnS/L/VXw6x/31g73eC4giX1XGVMw3/EhxLq2lV+ERasi9+FEH+jNivfZTqSg/zfzwd+h4bY3q8URQZxpFcht9NwyadKbnDsPkBq2O8rz5RidJFGWUUw5D5phAWjdoaosZg1V1TRURnXO/wnPq8SWL6+jvyRO+aW2cw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962906; c=relaxed/simple;
-	bh=/VUiyfWTGp2fStGoma7xVHhFrOfX9YXd8Ly3kZBqr/8=;
+	s=arc-20240116; t=1767961076; c=relaxed/simple;
+	bh=dHHqIDZaScVBm9ibIIH55KrRRl2GkoncUzEyYwCvQWI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=olnlCIOmWNLSJFlIrBzq3eUR8NE9iYqZGj5uXfy/Gmg2DZR2PyChitS5a/DTp0pR3Qg8Kb6tq8ivLQXa1FowODJCZ1davxDMurp7DfzA/i+IC8U+T3D5F8b4ixU2GXNnvYn11OKBuTvN5cObCKs4PkplmGh3k/Vb1wRVEUKp6n4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=owwpdWUq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1EF2C4CEF1;
-	Fri,  9 Jan 2026 12:48:25 +0000 (UTC)
+	 MIME-Version; b=mYp3bQM19iWFvEl6vZGXS3j+BsqOqNwHL/1O3ruvjrhbf5rjNGKNEVYfjOhwRDoCHGj7VuTbbtUTyyBOsAW1mq/STWjoC+48Puxlx4rwVr76SC8UVios698vLDxcxCW8+oFemsQ5IxdenEe1E4DCQA9ftrLzsYJ8OLJdeBzpJUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jW9csi1w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11295C4CEF1;
+	Fri,  9 Jan 2026 12:17:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962906;
-	bh=/VUiyfWTGp2fStGoma7xVHhFrOfX9YXd8Ly3kZBqr/8=;
+	s=korg; t=1767961076;
+	bh=dHHqIDZaScVBm9ibIIH55KrRRl2GkoncUzEyYwCvQWI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=owwpdWUq7D1Kewcnf+/ImcoCGXu6QMBTBoeXEnS0AizfPJZiYiRdl76LRtTE5GSnV
-	 w9ERwVVGAc+OnGQWusfZr6wKTDCroTZPeisx45msP9FcKeWQWDpXI56CMt+CeSjpc3
-	 q2TNXE/3yzWEO9nCD4BjXJ5Yx7FB6vu1DwkBGm08=
+	b=jW9csi1wJsViwJ6X+bJVdrBeHfThxa5Fb77dD/08PbE0wypaQ0bDL1pLmbLEkN37b
+	 6O//6JG1Ughc9dJ2b1ECBUUDPBiMenXEvPGlGaNAkzLSGz+S4LomvzmqnRkYmbVQtE
+	 4ia/MT8QDQkxj/iZqWR2XtGozFkjo+C40Gkw8Cfk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming Qian <ming.qian@oss.nxp.com>,
-	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 6.1 487/634] media: amphion: Cancel message work before releasing the VPU core
+	Ma Ke <make24@iscas.ac.cn>,
+	Johan Hovold <johan@kernel.org>,
+	Vladimir Zapolskiy <vz@mleia.com>
+Subject: [PATCH 6.6 626/737] usb: gadget: lpc32xx_udc: fix clock imbalance in error path
 Date: Fri,  9 Jan 2026 12:42:45 +0100
-Message-ID: <20260109112135.871449314@linuxfoundation.org>
+Message-ID: <20260109112157.552470079@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,48 +60,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Qian <ming.qian@oss.nxp.com>
+From: Johan Hovold <johan@kernel.org>
 
-commit ae246b0032146e352c4c06a7bf03cd3d5bcb2ecd upstream.
+commit 782be79e4551550d7a82b1957fc0f7347e6d461f upstream.
 
-To avoid accessing the VPU register after release of the VPU core,
-cancel the message work and destroy the workqueue that handles the
-VPU message before release of the VPU core.
+A recent change fixing a device reference leak introduced a clock
+imbalance by reusing an error path so that the clock may be disabled
+before having been enabled.
 
-Fixes: 3cd084519c6f ("media: amphion: add vpu v4l2 m2m support")
+Note that the clock framework allows for passing in NULL clocks so there
+is no risk for a NULL pointer dereference.
+
+Also drop the bogus I2C client NULL check added by the offending commit
+as the pointer has already been verified to be non-NULL.
+
+Fixes: c84117912bdd ("USB: lpc32xx_udc: Fix error handling in probe")
 Cc: stable@vger.kernel.org
-Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
-Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Cc: Ma Ke <make24@iscas.ac.cn>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: Vladimir Zapolskiy <vz@mleia.com>
+Link: https://patch.msgid.link/20251218153519.19453-2-johan@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/amphion/vpu_v4l2.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/usb/gadget/udc/lpc32xx_udc.c |   20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
---- a/drivers/media/platform/amphion/vpu_v4l2.c
-+++ b/drivers/media/platform/amphion/vpu_v4l2.c
-@@ -597,15 +597,15 @@ static int vpu_v4l2_release(struct vpu_i
- {
- 	vpu_trace(inst->vpu->dev, "%p\n", inst);
+--- a/drivers/usb/gadget/udc/lpc32xx_udc.c
++++ b/drivers/usb/gadget/udc/lpc32xx_udc.c
+@@ -3027,7 +3027,7 @@ static int lpc32xx_udc_probe(struct plat
+ 	pdev->dev.dma_mask = &lpc32xx_usbd_dmamask;
+ 	retval = dma_set_coherent_mask(&pdev->dev, DMA_BIT_MASK(32));
+ 	if (retval)
+-		goto i2c_fail;
++		goto err_put_client;
  
--	vpu_release_core(inst->core);
--	put_device(inst->dev);
--
- 	if (inst->workqueue) {
- 		cancel_work_sync(&inst->msg_work);
- 		destroy_workqueue(inst->workqueue);
- 		inst->workqueue = NULL;
+ 	udc->board = &lpc32xx_usbddata;
+ 
+@@ -3047,7 +3047,7 @@ static int lpc32xx_udc_probe(struct plat
+ 		udc->udp_irq[i] = platform_get_irq(pdev, i);
+ 		if (udc->udp_irq[i] < 0) {
+ 			retval = udc->udp_irq[i];
+-			goto i2c_fail;
++			goto err_put_client;
+ 		}
  	}
  
-+	vpu_release_core(inst->core);
-+	put_device(inst->dev);
+@@ -3055,7 +3055,7 @@ static int lpc32xx_udc_probe(struct plat
+ 	if (IS_ERR(udc->udp_baseaddr)) {
+ 		dev_err(udc->dev, "IO map failure\n");
+ 		retval = PTR_ERR(udc->udp_baseaddr);
+-		goto i2c_fail;
++		goto err_put_client;
+ 	}
+ 
+ 	/* Get USB device clock */
+@@ -3063,14 +3063,14 @@ static int lpc32xx_udc_probe(struct plat
+ 	if (IS_ERR(udc->usb_slv_clk)) {
+ 		dev_err(udc->dev, "failed to acquire USB device clock\n");
+ 		retval = PTR_ERR(udc->usb_slv_clk);
+-		goto i2c_fail;
++		goto err_put_client;
+ 	}
+ 
+ 	/* Enable USB device clock */
+ 	retval = clk_prepare_enable(udc->usb_slv_clk);
+ 	if (retval < 0) {
+ 		dev_err(udc->dev, "failed to start USB device clock\n");
+-		goto i2c_fail;
++		goto err_put_client;
+ 	}
+ 
+ 	/* Setup deferred workqueue data */
+@@ -3172,9 +3172,10 @@ dma_alloc_fail:
+ 	dma_free_coherent(&pdev->dev, UDCA_BUFF_SIZE,
+ 			  udc->udca_v_base, udc->udca_p_base);
+ i2c_fail:
+-	if (udc->isp1301_i2c_client)
+-		put_device(&udc->isp1301_i2c_client->dev);
+ 	clk_disable_unprepare(udc->usb_slv_clk);
++err_put_client:
++	put_device(&udc->isp1301_i2c_client->dev);
 +
- 	v4l2_ctrl_handler_free(&inst->ctrl_handler);
- 	mutex_destroy(&inst->lock);
+ 	dev_err(udc->dev, "%s probe failed, %d\n", driver_name, retval);
+ 
+ 	return retval;
+@@ -3199,11 +3200,10 @@ static int lpc32xx_udc_remove(struct pla
+ 	dma_free_coherent(&pdev->dev, UDCA_BUFF_SIZE,
+ 			  udc->udca_v_base, udc->udca_p_base);
+ 
+-	if (udc->isp1301_i2c_client)
+-		put_device(&udc->isp1301_i2c_client->dev);
+-
+ 	clk_disable_unprepare(udc->usb_slv_clk);
+ 
++	put_device(&udc->isp1301_i2c_client->dev);
++
+ 	return 0;
+ }
  
 
 
