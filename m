@@ -1,50 +1,51 @@
-Return-Path: <stable+bounces-207112-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207077-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78FC6D09A9C
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:31:24 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 494D6D09871
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:23:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F137830C5A1D
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:18:48 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A283E3018824
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:17:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 910C4224D6;
-	Fri,  9 Jan 2026 12:18:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2C8332936C;
+	Fri,  9 Jan 2026 12:17:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ktpCIUTU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mvvngouk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5327535A92E;
-	Fri,  9 Jan 2026 12:18:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66DBF2737EE;
+	Fri,  9 Jan 2026 12:17:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961125; cv=none; b=qdTg9XbzOZW78K0eEM5upSPT4FLz6EGkLmzkslCcBHnGTxmRL6SaPfyWMcE0sDHD+1yt7vleeRV1U2CAejUL4PeFL1SeomgZCZDnx4CvHw5eJnINGYpbeStvWXYnfwO+KXLGG4b7i9PPefbs6eMRa1v79fIaCKLalVC+oboelkA=
+	t=1767961025; cv=none; b=tYj7synRFXrat0am8C2L/H0xK5V5pVqwge5Wf91Inh+DjIvAvFt/T8U0Ilsr5LfTfQJeZ5UNg3AuasRJCbp7LG2OerHK/u/CSSWfANCZlaCARjmBtHenFV7vO8HxBn4kzYKIOksu4o7nMOKVvcDzek5d9c2wvGBSdFLZ/C/mHiA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961125; c=relaxed/simple;
-	bh=8QbpwWBlRFOghThDDNlgM1fNnIdAyjqDwJ3ebaXiFn8=;
+	s=arc-20240116; t=1767961025; c=relaxed/simple;
+	bh=ZSFtCeLlBgnGlI8yWV/UiQMDWnTle2dK3RiLGDnlucY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ka1/zk2rqKTjmws88SEVu+dZglgg4JUv2kFhZSGerK7JQ27QNLMvGnZjbXrRY5gvS8vJOcLOBUtV+BNI4neVL9D+uN6w7poy7dlPQL9/IumKGyXOyUpNryzT5or5gh+3fZW8srVQ9KL9liJKvBquY4eO2p5K9+IZUA95DO/vDKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ktpCIUTU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D40F1C4CEF1;
-	Fri,  9 Jan 2026 12:18:44 +0000 (UTC)
+	 MIME-Version; b=BTKAkmgWkitsq9xj2cSWzIuojpIxswE0P3ZwfFB/6XUemR1KNoLTjfsJcAeECtiewKoGqEz/VOZh5LIhyof4nCQ5Oq88lJQ9pDgU46GeDP4n0TY+fw7Gg/dvbUztRyF+HhFfjxoeH5uWLik/AK8uQgO0oUKny8St7migsMDCPa8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mvvngouk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 990ABC4CEF1;
+	Fri,  9 Jan 2026 12:17:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961125;
-	bh=8QbpwWBlRFOghThDDNlgM1fNnIdAyjqDwJ3ebaXiFn8=;
+	s=korg; t=1767961025;
+	bh=ZSFtCeLlBgnGlI8yWV/UiQMDWnTle2dK3RiLGDnlucY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ktpCIUTUAA45gpWxlKjR4qTxKgJJpXbKtzO+OYXZosLluBXxaTC16/B1/Kbpv7TKs
-	 lLtTGfVp3euTb7OJoHRpkEyGuCvtFyCzJOr6LcqY67vb2ti01EGkKTv7+JnOT/W71+
-	 Mse5uUdxVp16AEBcf4fGQ0FwWdzEN5w2YPJSqlBk=
+	b=MvvngoukcbcXOEK8Ca1U/NAGAMdcgRuV31n3qLLh+yrVEA5xXftW/vDZtWFzoLfqd
+	 e2c2XDuNQQLLVr53k5TJo3x3U+fUY8fZXBNeCFn7DKXac8MUKLgx3H3crx7JLSyVSQ
+	 XQGmkIYnKYOhMerLHyWoZLaKcz76tALqV15Rfr6U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tiezhu Yang <yangtiezhu@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.6 600/737] LoongArch: Use unsigned long for _end and _text
-Date: Fri,  9 Jan 2026 12:42:19 +0100
-Message-ID: <20260109112156.579110936@linuxfoundation.org>
+	"H. Peter Anvin (Intel)" <hpa@zytor.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	stable@kernel.org
+Subject: [PATCH 6.6 601/737] compiler_types.h: add "auto" as a macro for "__auto_type"
+Date: Fri,  9 Jan 2026 12:42:20 +0100
+Message-ID: <20260109112156.616784203@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
 References: <20260109112133.973195406@linuxfoundation.org>
@@ -63,42 +64,59 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Tiezhu Yang <yangtiezhu@loongson.cn>
+From: H. Peter Anvin <hpa@zytor.com>
 
-commit a258a3cb1895e3acf5f2fe245d17426e894bc935 upstream.
+commit 2fb6915fa22dc5524d704afba58a13305dd9f533 upstream.
 
-It is better to use unsigned long rather than long for _end and _text to
-calculate the kernel length.
+"auto" was defined as a keyword back in the K&R days, but as a storage
+type specifier.  No one ever used it, since it was and is the default
+storage type for local variables.
 
-Cc: stable@vger.kernel.org # v6.3+
-Fixes: e5f02b51fa0c ("LoongArch: Add support for kernel address space layout randomization (KASLR)")
-Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+C++11 recycled the keyword to allow a type to be declared based on the
+type of an initializer.  This was finally adopted into standard C in
+C23.
+
+gcc and clang provide the "__auto_type" alias keyword as an extension
+for pre-C23, however, there is no reason to pollute the bulk of the
+source base with this temporary keyword; instead define "auto" as a
+macro unless the compiler is running in C23+ mode.
+
+This macro is added in <linux/compiler_types.h> because that header is
+included in some of the tools headers, wheres <linux/compiler.h> is
+not as it has a bunch of very kernel-specific things in it.
+
+[ Cc: stable to reduce potential backporting burden. ]
+
+Signed-off-by: H. Peter Anvin (Intel) <hpa@zytor.com>
+Acked-by: Miguel Ojeda <ojeda@kernel.org>
+Cc: <stable@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/kernel/relocate.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/linux/compiler_types.h |   13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
---- a/arch/loongarch/kernel/relocate.c
-+++ b/arch/loongarch/kernel/relocate.c
-@@ -141,7 +141,7 @@ static inline void __init *determine_rel
- 	if (kaslr_disabled())
- 		return destination;
+--- a/include/linux/compiler_types.h
++++ b/include/linux/compiler_types.h
+@@ -5,6 +5,19 @@
+ #ifndef __ASSEMBLY__
  
--	kernel_length = (long)_end - (long)_text;
-+	kernel_length = (unsigned long)_end - (unsigned long)_text;
- 
- 	random_offset = get_random_boot() << 16;
- 	random_offset &= (CONFIG_RANDOMIZE_BASE_MAX_OFFSET - 1);
-@@ -190,7 +190,7 @@ unsigned long __init relocate_kernel(voi
- 	early_memunmap(cmdline, COMMAND_LINE_SIZE);
- 
- 	if (random_offset) {
--		kernel_length = (long)(_end) - (long)(_text);
-+		kernel_length = (unsigned long)(_end) - (unsigned long)(_text);
- 
- 		/* Copy the kernel to it's new location */
- 		memcpy(location_new, _text, kernel_length);
+ /*
++ * C23 introduces "auto" as a standard way to define type-inferred
++ * variables, but "auto" has been a (useless) keyword even since K&R C,
++ * so it has always been "namespace reserved."
++ *
++ * Until at some future time we require C23 support, we need the gcc
++ * extension __auto_type, but there is no reason to put that elsewhere
++ * in the source code.
++ */
++#if __STDC_VERSION__ < 202311L
++# define auto __auto_type
++#endif
++
++/*
+  * Skipped when running bindgen due to a libclang issue;
+  * see https://github.com/rust-lang/rust-bindgen/issues/2244.
+  */
 
 
 
