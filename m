@@ -1,137 +1,137 @@
-Return-Path: <stable+bounces-207172-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206470-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52F56D099B2
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:27:55 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8526D08FAB
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 12:45:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5E7DA302B908
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:21:42 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1C3D13012C46
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:45:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 501B135B123;
-	Fri,  9 Jan 2026 12:21:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33CF0358D22;
+	Fri,  9 Jan 2026 11:45:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jSfH98V2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uAVMZ8Hq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12FCF35B121;
-	Fri,  9 Jan 2026 12:21:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4C273596F9;
+	Fri,  9 Jan 2026 11:45:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961297; cv=none; b=X9qkKTxiNkQsXSGDhpMaPWggc5gRN5Zd2TsmwrG7B+UrEV3snijlxLU5N/SKTrgW1fMFKsg9V7FhfLCrGfEFyYcqayCIW34RNpSijABoRReN1milPMxVZ0BHDV/Lp3pD2sM8RL9SXm2LSxeMQrUIj/eTue9KM3O0CX9pg5wj4tE=
+	t=1767959108; cv=none; b=NFx0fAbySajbbcedFCytG0TYIJ5DLIR+TbE8gwygxTNPJ19Gftk8dUQHeWO+Vp6/haYwHHb6hS2egvVrL+NPUZe20Q3MYxrBpf964ak3Cr2gvvT9lWQMuVhwX5Q6G1n5hbZsfNQBM0twgnIwqHuB8RHuSpGGfEl4m2RBk/9HRRk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961297; c=relaxed/simple;
-	bh=2O+9Dp055ZTrXa3Ub6joct0DmO0sgBj3Hp9oZUsIL8g=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pao0ke/ERWpGJPPvlM1RTg9TOyPAvF3TI6XKZWqVHaFcobVuQ/QfJQ0n37rulFJX+LLJO0a7BiZsvQXLZnqNxKJUDYrg82VtxbLZJHAyj1X1uNNhJ5tee9rcgRB9uNQmPtS/zudhuMKOx5YM8kPKOvAC1TJFTbUZVMftgb6VSnE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jSfH98V2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90BEAC16AAE;
-	Fri,  9 Jan 2026 12:21:36 +0000 (UTC)
+	s=arc-20240116; t=1767959108; c=relaxed/simple;
+	bh=Q2pvO5VZBfKY8Lsb8CgnM9zNbRX+1jq/sOynErnWHfI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gQ9KyQkXmm3oLh38YjVEaK3TnZQvTtxXem9mTrxxh9dfeFTINkDBCgawktnxV0R2lt/ruB4eqvb96wFATtmhyDHfFvfii3ZYqAszFwrPHWazTHiuMoRc3k+qAeCsbJw2G/oyoNCotQ870QHmty1f4xXkADkVP60lj+WLOKduXHA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uAVMZ8Hq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A657C4CEF1;
+	Fri,  9 Jan 2026 11:45:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961297;
-	bh=2O+9Dp055ZTrXa3Ub6joct0DmO0sgBj3Hp9oZUsIL8g=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jSfH98V2vqtljP/A9BsAOgTnhUq0SQk7gW0xQm0ApQpTAuwmKjmE8m9xZOl9zDmSC
-	 rUJbRNQOxsewHQWmFQ9umFrGVaXpM22vZU4pcn7M3cWFKCtS6phQtjEz4vho+9u7Tb
-	 oMzXIgZ2ywtJILJktZX014hN1K/5ZLFChd93/mLQ=
+	s=korg; t=1767959108;
+	bh=Q2pvO5VZBfKY8Lsb8CgnM9zNbRX+1jq/sOynErnWHfI=;
+	h=From:To:Cc:Subject:Date:From;
+	b=uAVMZ8Hq7VfTdoFl+wb/vBvRU2w88KNX1UlO4sMk1rqvxbCdWlAgf/rtd15WD9Vus
+	 Zj82MXy3KRzBDIswtTAKgyEm9o3X21lGn6eVccdclJXnere71hkRA06EYTKBPA9K8W
+	 6nRxBHKOUpPeja0sW3WTzNusApsZppjpO3QpSr4E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yosry Ahmed <yosry.ahmed@linux.dev>
-Subject: [PATCH 6.6 702/737] KVM: SVM: Introduce svm_recalc_lbr_msr_intercepts()
-Date: Fri,  9 Jan 2026 12:44:01 +0100
-Message-ID: <20260109112200.480485652@linuxfoundation.org>
+	linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org,
+	akpm@linux-foundation.org,
+	linux@roeck-us.net,
+	shuah@kernel.org,
+	patches@kernelci.org,
+	lkft-triage@lists.linaro.org,
+	pavel@denx.de,
+	jonathanh@nvidia.com,
+	f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com,
+	rwarsow@gmx.de,
+	conor@kernel.org,
+	hargar@microsoft.com,
+	broonie@kernel.org,
+	achill@achill.org,
+	sr@sladewatkins.com
+Subject: [PATCH 6.18 0/5] 6.18.5-rc1 review
+Date: Fri,  9 Jan 2026 12:44:02 +0100
+Message-ID: <20260109111950.344681501@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
-User-Agent: quilt/0.69
-X-stable: review
-X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: quilt/0.69
+X-stable: review
+X-Patchwork-Hint: ignore
+X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.18.5-rc1.gz
+X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+X-KernelTest-Branch: linux-6.18.y
+X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
+X-KernelTest-Version: 6.18.5-rc1
+X-KernelTest-Deadline: 2026-01-11T11:19+00:00
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+This is the start of the stable review cycle for the 6.18.5 release.
+There are 5 patches in this series, all will be posted as a response
+to this one.  If anyone has any issues with these being applied, please
+let me know.
 
-------------------
+Responses should be made by Sun, 11 Jan 2026 11:19:41 +0000.
+Anything received after that time might be too late.
 
-From: Yosry Ahmed <yosry.ahmed@linux.dev>
+The whole patch series can be found in one patch at:
+	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.18.5-rc1.gz
+or in the git tree and branch at:
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.18.y
+and the diffstat can be found below.
 
-Introduce a helper updating the intercepts for LBR MSRs, similar to the
-one introduced upstream by commit 160f143cc131 ("KVM: SVM: Manually
-recalc all MSR intercepts on userspace MSR filter change"). The main
-difference is that this version uses set_msr_interception(), which has
-inverted polarity compared to svm_set_intercept_for_msr().
+thanks,
 
-This is intended to simplify incoming backports. No functional changes
-intended.
+greg k-h
 
-Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- arch/x86/kvm/svm/svm.c |   32 +++++++++++++++++++++-----------
- 1 file changed, 21 insertions(+), 11 deletions(-)
+-------------
+Pseudo-Shortlog of commits:
 
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -1012,18 +1012,31 @@ void svm_copy_lbrs(struct vmcb *to_vmcb,
- 	vmcb_mark_dirty(to_vmcb, VMCB_LBR);
- }
- 
--void svm_enable_lbrv(struct kvm_vcpu *vcpu)
-+static void svm_recalc_lbr_msr_intercepts(struct kvm_vcpu *vcpu)
- {
- 	struct vcpu_svm *svm = to_svm(vcpu);
-+	bool intercept = !(svm->vmcb->control.virt_ext & LBR_CTL_ENABLE_MASK);
- 
--	svm->vmcb->control.virt_ext |= LBR_CTL_ENABLE_MASK;
--	set_msr_interception(vcpu, svm->msrpm, MSR_IA32_LASTBRANCHFROMIP, 1, 1);
--	set_msr_interception(vcpu, svm->msrpm, MSR_IA32_LASTBRANCHTOIP, 1, 1);
--	set_msr_interception(vcpu, svm->msrpm, MSR_IA32_LASTINTFROMIP, 1, 1);
--	set_msr_interception(vcpu, svm->msrpm, MSR_IA32_LASTINTTOIP, 1, 1);
-+	set_msr_interception(vcpu, svm->msrpm, MSR_IA32_LASTBRANCHFROMIP,
-+			     !intercept, !intercept);
-+	set_msr_interception(vcpu, svm->msrpm, MSR_IA32_LASTBRANCHTOIP,
-+			     !intercept, !intercept);
-+	set_msr_interception(vcpu, svm->msrpm, MSR_IA32_LASTINTFROMIP,
-+			     !intercept, !intercept);
-+	set_msr_interception(vcpu, svm->msrpm, MSR_IA32_LASTINTTOIP,
-+			     !intercept, !intercept);
- 
- 	if (sev_es_guest(vcpu->kvm))
--		set_msr_interception(vcpu, svm->msrpm, MSR_IA32_DEBUGCTLMSR, 1, 1);
-+		set_msr_interception(vcpu, svm->msrpm, MSR_IA32_DEBUGCTLMSR,
-+				     !intercept, !intercept);
-+}
-+
-+void svm_enable_lbrv(struct kvm_vcpu *vcpu)
-+{
-+	struct vcpu_svm *svm = to_svm(vcpu);
-+
-+	svm->vmcb->control.virt_ext |= LBR_CTL_ENABLE_MASK;
-+	svm_recalc_lbr_msr_intercepts(vcpu);
- 
- 	/* Move the LBR msrs to the vmcb02 so that the guest can see them. */
- 	if (is_guest_mode(vcpu))
-@@ -1037,10 +1050,7 @@ static void svm_disable_lbrv(struct kvm_
- 	KVM_BUG_ON(sev_es_guest(vcpu->kvm), vcpu->kvm);
- 
- 	svm->vmcb->control.virt_ext &= ~LBR_CTL_ENABLE_MASK;
--	set_msr_interception(vcpu, svm->msrpm, MSR_IA32_LASTBRANCHFROMIP, 0, 0);
--	set_msr_interception(vcpu, svm->msrpm, MSR_IA32_LASTBRANCHTOIP, 0, 0);
--	set_msr_interception(vcpu, svm->msrpm, MSR_IA32_LASTINTFROMIP, 0, 0);
--	set_msr_interception(vcpu, svm->msrpm, MSR_IA32_LASTINTTOIP, 0, 0);
-+	svm_recalc_lbr_msr_intercepts(vcpu);
- 
- 	/*
- 	 * Move the LBR msrs back to the vmcb01 to avoid copying them
+Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    Linux 6.18.5-rc1
+
+Mike Snitzer <snitzer@kernel.org>
+    nfs/localio: fix regression due to out-of-order __put_cred
+
+Peter Zijlstra <peterz@infradead.org>
+    sched/fair: Proportional newidle balance
+
+Peter Zijlstra <peterz@infradead.org>
+    sched/fair: Small cleanup to update_newidle_cost()
+
+Peter Zijlstra <peterz@infradead.org>
+    sched/fair: Small cleanup to sched_balance_newidle()
+
+Paolo Abeni <pabeni@redhat.com>
+    mptcp: ensure context reset on disconnect()
+
+
+-------------
+
+Diffstat:
+
+ Makefile                       |  4 +--
+ fs/nfs/localio.c               | 12 ++++----
+ include/linux/sched/topology.h |  3 ++
+ kernel/sched/core.c            |  3 ++
+ kernel/sched/fair.c            | 65 ++++++++++++++++++++++++++++++++++--------
+ kernel/sched/features.h        |  5 ++++
+ kernel/sched/sched.h           |  7 +++++
+ kernel/sched/topology.c        |  6 ++++
+ net/mptcp/protocol.c           |  8 ++++--
+ net/mptcp/protocol.h           |  3 +-
+ 10 files changed, 92 insertions(+), 24 deletions(-)
 
 
 
