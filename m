@@ -1,55 +1,99 @@
-Return-Path: <stable+bounces-206456-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207163-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F7E0D08F93
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 12:44:34 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31695D09BCE
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:35:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 3DC04300F678
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:44:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 115AA30879CE
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:21:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A306233C19E;
-	Fri,  9 Jan 2026 11:44:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E3E433B6F0;
+	Fri,  9 Jan 2026 12:21:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TJHcN4y2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MB4AEr+r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 656D131A7EA;
-	Fri,  9 Jan 2026 11:44:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3169D2737EE;
+	Fri,  9 Jan 2026 12:21:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767959067; cv=none; b=kYaBYQaTq0sy6eQLUVkQq3jY5Bnp8q6BEhKGJecY+HG95NkLeV+ygOWdiiXXZljdPUi5hLUwEJ2w8tzRrHOgLCTATRCgi+uI4hr83phnaSbmVW2nUJ6VOXWJOsShx7IG7B/GPe2JreAUraAMdZPFoNB/fPW7+u8+v6R/biHsePw=
+	t=1767961271; cv=none; b=mWDUXTA2t+ZgjsHF+d65+lDy7Wj4LL4+Xux6jTJCN7vS0fbwQUWQMDMEQ01116S8W/mWfNBg8eGfO80Gk+kbY9QaTNwEFc/OwK24QeLg+crpv0VY/wo3ZMzICkvlbM18TnUQDiGGEO3hshVsBWsKcMKkkXny0UkbcNcOCasyr6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767959067; c=relaxed/simple;
-	bh=+Y8zA8Qztjv2vQNYxql7OEic9/HyWDFCGGPb+B8uPvg=;
+	s=arc-20240116; t=1767961271; c=relaxed/simple;
+	bh=u7r/q1uXPPgKNoQqVGesuGLF3XAt0qyiyPQ7EDdici0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UtnB+sGmUCqlkQJPMCN6312raUNEdfojoRv4ji81cQfg8uZ3WjwXm1SlzFNJHDhVC/PLO6MIhI3VH0Hfb+e/ZhTfL2hXGWLWujs+EOm+SB5SV1DO6D5lC1IZ2Ax2NXF3hjEOmqLkhv89coFzbuVNWacYdX8IHgNa7hXjOn63i0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TJHcN4y2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A27A6C4CEF1;
-	Fri,  9 Jan 2026 11:44:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=o3biqc8BrTvb5F1qVDJHzma5upf6aROMMapvFPPTHeK7OsIkXyv8sy8/4magYfFbKxuFE9YSy86cl3z4le4L4vzllfYFEpyei0bQKSjXxkbUoB2W7ToAcCBlbq7hKqCnc9NcIPRRdPXp7Z93eECpRSAFkZClbqIi8wQuQsNsoNE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MB4AEr+r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00369C4CEF1;
+	Fri,  9 Jan 2026 12:21:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767959067;
-	bh=+Y8zA8Qztjv2vQNYxql7OEic9/HyWDFCGGPb+B8uPvg=;
+	s=korg; t=1767961271;
+	bh=u7r/q1uXPPgKNoQqVGesuGLF3XAt0qyiyPQ7EDdici0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TJHcN4y2a6hmYYB0NeBzevhYTnTMYufELzYuI8W69XTzsEHvcwWqvWG8wCsS0/0Ws
-	 YiTaKl1VbrEVTe2PGCjouzn7T9dNbq/GzmIs6JG9Q1S1xNtx/bEG+Bqz2v28QnJxKB
-	 snbKmYaG/9o3mlyRpVBy+T2aCUFhhoKbqFqQ1b0g=
+	b=MB4AEr+rVMBEg9xpf/xX/aYv30mBYWTgiFKeIP2oJ+HsPbcciLQMFxp0eN1jBzwEm
+	 4Jh0wMt2/m0RGqosq4OxFeaPO85oZTjoj+yUIorZpxcA/JA9L/5TJWk5zFsLmHl6g2
+	 K+wfRvQcakmrfjtX/+10u9rRyta69pFTtRr8BQxQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Chris Mason <clm@meta.com>,
-	Ajay Kaher <ajay.kaher@broadcom.com>
-Subject: [PATCH 6.12 12/16] sched/fair: Small cleanup to update_newidle_cost()
+	David Hildenbrand <david@redhat.com>,
+	Zi Yan <ziy@nvidia.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Brendan Jackman <jackmanb@google.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	Christian Brauner <brauner@kernel.org>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	=?UTF-8?q?Eugenio=20P=C3=A9=20rez?= <eperezma@redhat.com>,
+	Gregory Price <gourry@gourry.net>,
+	"Huang, Ying" <ying.huang@linux.alibaba.com>,
+	Jan Kara <jack@suse.cz>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Jason Wang <jasowang@redhat.com>,
+	Jerrin Shaji George <jerrin.shaji-george@broadcom.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>,
+	Liam Howlett <liam.howlett@oracle.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Mathew Brost <matthew.brost@intel.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Minchan Kim <minchan@kernel.org>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Peter Xu <peterx@redhat.com>,
+	Qi Zheng <zhengqi.arch@bytedance.com>,
+	Rakie Kim <rakie.kim@sk.com>,
+	Rik van Riel <riel@surriel.com>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	xu xin <xu.xin16@zte.com.cn>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 694/737] mm/balloon_compaction: we cannot have isolated pages in the balloon list
 Date: Fri,  9 Jan 2026 12:43:53 +0100
-Message-ID: <20260109111951.886539649@linuxfoundation.org>
+Message-ID: <20260109112200.172481106@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109111951.415522519@linuxfoundation.org>
-References: <20260109111951.415522519@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,62 +103,114 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: David Hildenbrand <david@redhat.com>
 
-commit 08d473dd8718e4a4d698b1113a14a40ad64a909b upstream.
+[ Upstream commit fb05f992b6bbb4702307d96f00703ee637b24dbf ]
 
-Simplify code by adding a few variables.
+Patch series "mm/migration: rework movable_ops page migration (part 1)",
+v2.
 
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
-Tested-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
-Tested-by: Chris Mason <clm@meta.com>
-Link: https://patch.msgid.link/20251107161739.655208666@infradead.org
-[ Ajay: Modified to apply on v6.12 ]
-Signed-off-by: Ajay Kaher <ajay.kaher@broadcom.com>
+In the future, as we decouple "struct page" from "struct folio", pages
+that support "non-lru page migration" -- movable_ops page migration such
+as memory balloons and zsmalloc -- will no longer be folios.  They will
+not have ->mapping, ->lru, and likely no refcount and no page lock.  But
+they will have a type and flags 🙂
+
+This is the first part (other parts not written yet) of decoupling
+movable_ops page migration from folio migration.
+
+In this series, we get rid of the ->mapping usage, and start cleaning up
+the code + separating it from folio migration.
+
+Migration core will have to be further reworked to not treat movable_ops
+pages like folios.  This is the first step into that direction.
+
+This patch (of 29):
+
+The core will set PG_isolated only after mops->isolate_page() was called.
+In case of the balloon, that is where we will remove it from the balloon
+list.  So we cannot have isolated pages in the balloon list.
+
+Let's drop this unnecessary check.
+
+Link: https://lkml.kernel.org/r/20250704102524.326966-2-david@redhat.com
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Acked-by: Zi Yan <ziy@nvidia.com>
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Alistair Popple <apopple@nvidia.com>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Brendan Jackman <jackmanb@google.com>
+Cc: Byungchul Park <byungchul@sk.com>
+Cc: Chengming Zhou <chengming.zhou@linux.dev>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Eugenio Pé rez <eperezma@redhat.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Gregory Price <gourry@gourry.net>
+Cc: "Huang, Ying" <ying.huang@linux.alibaba.com>
+Cc: Jan Kara <jack@suse.cz>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Jason Wang <jasowang@redhat.com>
+Cc: Jerrin Shaji George <jerrin.shaji-george@broadcom.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: John Hubbard <jhubbard@nvidia.com>
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Mathew Brost <matthew.brost@intel.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Miaohe Lin <linmiaohe@huawei.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Minchan Kim <minchan@kernel.org>
+Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Qi Zheng <zhengqi.arch@bytedance.com>
+Cc: Rakie Kim <rakie.kim@sk.com>
+Cc: Rik van Riel <riel@surriel.com>
+Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+Cc: xu xin <xu.xin16@zte.com.cn>
+Cc: Harry Yoo <harry.yoo@oracle.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: 0da2ba35c0d5 ("powerpc/pseries/cmm: adjust BALLOON_MIGRATE when migrating pages")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/fair.c |   11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ mm/balloon_compaction.c |    6 ------
+ 1 file changed, 6 deletions(-)
 
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -12188,22 +12188,25 @@ void update_max_interval(void)
+--- a/mm/balloon_compaction.c
++++ b/mm/balloon_compaction.c
+@@ -93,12 +93,6 @@ size_t balloon_page_list_dequeue(struct
+ 		if (!trylock_page(page))
+ 			continue;
  
- static inline bool update_newidle_cost(struct sched_domain *sd, u64 cost)
- {
-+	unsigned long next_decay = sd->last_decay_max_lb_cost + HZ;
-+	unsigned long now = jiffies;
-+
- 	if (cost > sd->max_newidle_lb_cost) {
- 		/*
- 		 * Track max cost of a domain to make sure to not delay the
- 		 * next wakeup on the CPU.
- 		 */
- 		sd->max_newidle_lb_cost = cost;
--		sd->last_decay_max_lb_cost = jiffies;
--	} else if (time_after(jiffies, sd->last_decay_max_lb_cost + HZ)) {
-+		sd->last_decay_max_lb_cost = now;
-+
-+	} else if (time_after(now, next_decay)) {
- 		/*
- 		 * Decay the newidle max times by ~1% per second to ensure that
- 		 * it is not outdated and the current max cost is actually
- 		 * shorter.
- 		 */
- 		sd->max_newidle_lb_cost = (sd->max_newidle_lb_cost * 253) / 256;
--		sd->last_decay_max_lb_cost = jiffies;
--
-+		sd->last_decay_max_lb_cost = now;
- 		return true;
- 	}
- 
+-		if (IS_ENABLED(CONFIG_BALLOON_COMPACTION) &&
+-		    PageIsolated(page)) {
+-			/* raced with isolation */
+-			unlock_page(page);
+-			continue;
+-		}
+ 		balloon_page_delete(page);
+ 		__count_vm_event(BALLOON_DEFLATE);
+ 		list_add(&page->lru, pages);
 
 
 
