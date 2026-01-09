@@ -1,57 +1,99 @@
-Return-Path: <stable+bounces-207725-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207125-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id C307ED0A13C
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:56:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69094D099B8
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:27:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 24D0732A2D7E
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:49:36 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 53B003071D34
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:19:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2F8735E526;
-	Fri,  9 Jan 2026 12:47:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E157A35A940;
+	Fri,  9 Jan 2026 12:19:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Shjmufeo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NhYDFkGz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 611B535CBD5;
-	Fri,  9 Jan 2026 12:47:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3DC5359FA0;
+	Fri,  9 Jan 2026 12:19:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962869; cv=none; b=IxPo5AV+kNUjihOwKDFc7oUq11PlDop8A4sffYvMEdyVnVDmzZhZMbxlth1ZyqYKV1Jmvz+OpgfL5sC9aP7CD9K7NWz2XRfyxJGwRYRe0TPP3yjcSnwxh8J5OVJfmUILmjnZNcXqOdlPeAVfOuSJXxRRPtifMVEyxCjZd9dFfNE=
+	t=1767961162; cv=none; b=PPH5xWmPNzvuJSIIBmh94taWskrW9ErLQZmH5pxGJgQTCWdaIXWJxAKvFs8sQ8UlhULxglB2V6S63l4Q1C7Yb+qswUQTYcZ/GAIV0vIAwxUfmnY0NOlYAUdqSf9/NuWbkE/5HT1DrYqPkgz9Hz8bIn1wvvOzqs0hMHWoKWoCZMg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962869; c=relaxed/simple;
-	bh=aAtAdb6jwz7Fvmt4sXZwQtpJVj4xZ0/Be/UA/4zhQN0=;
+	s=arc-20240116; t=1767961162; c=relaxed/simple;
+	bh=g0f1iTJDLtPOJcI3w7PqhrSMuh8OZx8iTiDBvaiWwHg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RjSbXQQ9s8nfe0y5Y1W4CbVNDhePj7Jea7evUf2AWuaJ0JgT6SOlgHzIxlFZkTG7r4LPATfVugKnqk8DodaDrIPGrWG3HaaHwPxSgBIoGHUcoZdg23k7d74k2Rg+/TIpY7BhX0e/rFxJNqpGWPnoeOZpKgvvgUjxJUYV3OCMT4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Shjmufeo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEE00C4CEF1;
-	Fri,  9 Jan 2026 12:47:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hlEv8kmoyPNriSVKLYOQLCiETAiOg+gWAQsZAlEbXsJpaL72JNwS+XpOp5UXjrhcTu6qb9mJgS70bZLV1RKcXBHMFazP/Rh6XG5l2sSwVpBqRZiy3TZ4Dk3IJX0HdSX22pn29o5Y9LciiblQrXuSSvqBJGR5hOihZCX/zroMnI4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NhYDFkGz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 552C0C4CEF1;
+	Fri,  9 Jan 2026 12:19:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962869;
-	bh=aAtAdb6jwz7Fvmt4sXZwQtpJVj4xZ0/Be/UA/4zhQN0=;
+	s=korg; t=1767961162;
+	bh=g0f1iTJDLtPOJcI3w7PqhrSMuh8OZx8iTiDBvaiWwHg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ShjmufeoZfi5q7YxqeWTRlebm1lMemOfUahWq+fi5eIwJPgEMM9X0nx7vaRHD9PNJ
-	 0jzam+w21eQf/6wK1oo4llDpMse3h2o4sWHQQZsW6FDwE1vL7JZ1mklHyeIDYMOmDQ
-	 r3kNgZf//CXg1+JF9qPuj0J0MtgBDLedLLUwudd4=
+	b=NhYDFkGziD61HUxTbIRFpjEjfPCIVLmroQ5w7EltZof8moxawDZk85m7DOA/c+e3M
+	 TjAaFeLs0MMwtZbmfILa+KyEdG366v7qfEi0X2yNRybhg8xsueblzMcF3vr6ir1zJ1
+	 1LYjs3kCw5k3novibzECZpYEelL8E/Cp1IAGDx4Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+e2ce9e275ecc70a30b72@syzkaller.appspotmail.com,
-	Zhu Yanjun <yanjun.zhu@linux.dev>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Ajay Kaher <ajay.kaher@broadcom.com>,
-	Shivani Agarwal <shivani.agarwal@broadcom.com>
-Subject: [PATCH 6.1 516/634] RDMA/core: Fix "KASAN: slab-use-after-free Read in ib_register_device" problem
-Date: Fri,  9 Jan 2026 12:43:14 +0100
-Message-ID: <20260109112136.971935634@linuxfoundation.org>
+	David Hildenbrand <david@redhat.com>,
+	Zi Yan <ziy@nvidia.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Brendan Jackman <jackmanb@google.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	Christian Brauner <brauner@kernel.org>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	=?UTF-8?q?Eugenio=20P=C3=A9=20rez?= <eperezma@redhat.com>,
+	Gregory Price <gourry@gourry.net>,
+	"Huang, Ying" <ying.huang@linux.alibaba.com>,
+	Jan Kara <jack@suse.cz>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Jason Wang <jasowang@redhat.com>,
+	Jerrin Shaji George <jerrin.shaji-george@broadcom.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>,
+	Liam Howlett <liam.howlett@oracle.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Mathew Brost <matthew.brost@intel.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Minchan Kim <minchan@kernel.org>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Peter Xu <peterx@redhat.com>,
+	Qi Zheng <zhengqi.arch@bytedance.com>,
+	Rakie Kim <rakie.kim@sk.com>,
+	Rik van Riel <riel@surriel.com>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	xu xin <xu.xin16@zte.com.cn>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 656/737] mm: simplify folio_expected_ref_count()
+Date: Fri,  9 Jan 2026 12:43:15 +0100
+Message-ID: <20260109112158.702661952@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,92 +103,105 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhu Yanjun <yanjun.zhu@linux.dev>
+From: David Hildenbrand <david@redhat.com>
 
-commit d0706bfd3ee40923c001c6827b786a309e2a8713 upstream.
+[ Upstream commit 78cb1a13c42a6d843e21389f74d1edb90ed07288 ]
 
-Call Trace:
+Now that PAGE_MAPPING_MOVABLE is gone, we can simplify and rely on the
+folio_test_anon() test only.
 
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:120
- print_address_description mm/kasan/report.c:408 [inline]
- print_report+0xc3/0x670 mm/kasan/report.c:521
- kasan_report+0xe0/0x110 mm/kasan/report.c:634
- strlen+0x93/0xa0 lib/string.c:420
- __fortify_strlen include/linux/fortify-string.h:268 [inline]
- get_kobj_path_length lib/kobject.c:118 [inline]
- kobject_get_path+0x3f/0x2a0 lib/kobject.c:158
- kobject_uevent_env+0x289/0x1870 lib/kobject_uevent.c:545
- ib_register_device drivers/infiniband/core/device.c:1472 [inline]
- ib_register_device+0x8cf/0xe00 drivers/infiniband/core/device.c:1393
- rxe_register_device+0x275/0x320 drivers/infiniband/sw/rxe/rxe_verbs.c:1552
- rxe_net_add+0x8e/0xe0 drivers/infiniband/sw/rxe/rxe_net.c:550
- rxe_newlink+0x70/0x190 drivers/infiniband/sw/rxe/rxe.c:225
- nldev_newlink+0x3a3/0x680 drivers/infiniband/core/nldev.c:1796
- rdma_nl_rcv_msg+0x387/0x6e0 drivers/infiniband/core/netlink.c:195
- rdma_nl_rcv_skb.constprop.0.isra.0+0x2e5/0x450
- netlink_unicast_kernel net/netlink/af_netlink.c:1313 [inline]
- netlink_unicast+0x53a/0x7f0 net/netlink/af_netlink.c:1339
- netlink_sendmsg+0x8d1/0xdd0 net/netlink/af_netlink.c:1883
- sock_sendmsg_nosec net/socket.c:712 [inline]
- __sock_sendmsg net/socket.c:727 [inline]
- ____sys_sendmsg+0xa95/0xc70 net/socket.c:2566
- ___sys_sendmsg+0x134/0x1d0 net/socket.c:2620
- __sys_sendmsg+0x16d/0x220 net/socket.c:2652
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xcd/0x260 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
+... but staring at the users, this function should never even have been
+called on movable_ops pages. E.g.,
+* __buffer_migrate_folio() does not make sense for them
+* folio_migrate_mapping() does not make sense for them
+* migrate_huge_page_move_mapping() does not make sense for them
+* __migrate_folio() does not make sense for them
+* ... and khugepaged should never stumble over them
 
-This problem is similar to the problem that the
-commit 1d6a9e7449e2 ("RDMA/core: Fix use-after-free when rename device name")
-fixes.
+Let's simply refuse typed pages (which includes slab) except hugetlb, and
+WARN.
 
-The root cause is: the function ib_device_rename() renames the name with
-lock. But in the function kobject_uevent(), this name is accessed without
-lock protection at the same time.
-
-The solution is to add the lock protection when this name is accessed in
-the function kobject_uevent().
-
-Fixes: 779e0bf47632 ("RDMA/core: Do not indicate device ready when device enablement fails")
-Link: https://patch.msgid.link/r/20250506151008.75701-1-yanjun.zhu@linux.dev
-Reported-by: syzbot+e2ce9e275ecc70a30b72@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=e2ce9e275ecc70a30b72
-Signed-off-by: Zhu Yanjun <yanjun.zhu@linux.dev>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Link: https://lkml.kernel.org/r/20250704102524.326966-26-david@redhat.com
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Zi Yan <ziy@nvidia.com>
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+Cc: Alistair Popple <apopple@nvidia.com>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Brendan Jackman <jackmanb@google.com>
+Cc: Byungchul Park <byungchul@sk.com>
+Cc: Chengming Zhou <chengming.zhou@linux.dev>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Eugenio Pé rez <eperezma@redhat.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Gregory Price <gourry@gourry.net>
+Cc: "Huang, Ying" <ying.huang@linux.alibaba.com>
+Cc: Jan Kara <jack@suse.cz>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Jason Wang <jasowang@redhat.com>
+Cc: Jerrin Shaji George <jerrin.shaji-george@broadcom.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: John Hubbard <jhubbard@nvidia.com>
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Mathew Brost <matthew.brost@intel.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Miaohe Lin <linmiaohe@huawei.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Minchan Kim <minchan@kernel.org>
+Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Qi Zheng <zhengqi.arch@bytedance.com>
+Cc: Rakie Kim <rakie.kim@sk.com>
+Cc: Rik van Riel <riel@surriel.com>
+Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+Cc: xu xin <xu.xin16@zte.com.cn>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: f183663901f2 ("mm: consider non-anon swap cache folios in folio_expected_ref_count()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-[ Ajay: Modified to apply on v5.10.y-v6.6.y
-        ib_device_notify_register() not present in v5.10.y-v6.6.y,
-        so directly added lock for kobject_uevent() ]
-Signed-off-by: Ajay Kaher <ajay.kaher@broadcom.com>
-Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/core/device.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ include/linux/mm.h |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/infiniband/core/device.c
-+++ b/drivers/infiniband/core/device.c
-@@ -1450,8 +1450,13 @@ int ib_register_device(struct ib_device
- 		return ret;
- 	}
- 	dev_set_uevent_suppress(&device->dev, false);
-+
-+	down_read(&devices_rwsem);
-+
- 	/* Mark for userspace that device is ready */
- 	kobject_uevent(&device->dev.kobj, KOBJ_ADD);
-+
-+	up_read(&devices_rwsem);
- 	ib_device_put(device);
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -2194,13 +2194,13 @@ static inline int folio_expected_ref_cou
+ 	const int order = folio_order(folio);
+ 	int ref_count = 0;
  
- 	return 0;
+-	if (WARN_ON_ONCE(folio_test_slab(folio)))
++	if (WARN_ON_ONCE(page_has_type(&folio->page) && !folio_test_hugetlb(folio)))
+ 		return 0;
+ 
+ 	if (folio_test_anon(folio)) {
+ 		/* One reference per page from the swapcache. */
+ 		ref_count += folio_test_swapcache(folio) << order;
+-	} else if (!((unsigned long)folio->mapping & PAGE_MAPPING_FLAGS)) {
++	} else {
+ 		/* One reference per page from the pagecache. */
+ 		ref_count += !!folio->mapping << order;
+ 		/* One reference from PG_private. */
 
 
 
