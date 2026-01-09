@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-206645-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207237-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2514AD091D6
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 12:57:39 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3808ED09CDC
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:38:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 71A833016A9F
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:56:36 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 52A1D30533DB
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:24:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6AD033C52A;
-	Fri,  9 Jan 2026 11:56:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB75D26ED41;
+	Fri,  9 Jan 2026 12:24:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="caJDD8fO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y8Bqg78s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A64A33290A;
-	Fri,  9 Jan 2026 11:56:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF0F62737EE;
+	Fri,  9 Jan 2026 12:24:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767959794; cv=none; b=CHbJe9OIXEiGAgZ/dofnch8Z+XIs2ANxhlQPEHId76ejs/PchBhARMHjEEJ2we4PzBBeNzUZnoH8v4EaH1qvftGAXPqGPkhKokJ9cQsA5W4x6RCbwqL1IDAS8ISpno02t9IWrZsVQjhdKBOJVcfwIcMH8o5BZGmF3RdLHx4Gzzg=
+	t=1767961483; cv=none; b=qXy5ZJPZDD290LnoNmO1oyxmtKBliLyPMM6siR1kMkFqNzGDNsszeCYA81Zr3fluBVifI71AMjgMAyuDJW3X+DZdwOdJMxtu0eF1muD7eNSksqaeZ11GpBOj1WtPjD5HTroDM9Bdc4vuzy4fqrOKIJUCRC2l6HyFm6mLq/WSvEc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767959794; c=relaxed/simple;
-	bh=/JEz22GyCjMPLMWECVksD3ve3sz+FKI3DyhMGccqpwg=;
+	s=arc-20240116; t=1767961483; c=relaxed/simple;
+	bh=F8K+mhDla6oCu39u3sW5m7WeBD12mkcztrmNHfTedsg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GL48XKV+E6YL4LR+Qgk1Bl/C70+Cgk0CXNIdq82+TwLRyflJ3nTdaof5JG1fiectMNsh+YdATqC9YEntnlTVk/C9pOw3Tu9jvc5sKQNHrEh1LmG73g6ulXdzudgwcJacOugZKpKezuudbzWdjFHDR0ZgO8VeOZNuDKUaXM/e7Ac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=caJDD8fO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 207B3C4CEF1;
-	Fri,  9 Jan 2026 11:56:33 +0000 (UTC)
+	 MIME-Version; b=SbWZb9o43wIm47BWfHRZaZPR2HhI47oQAxLyBcyPfBWqSVZIeCAL6T303gEafB1hoqJvGpX8txIKjqsv/1OxFVPD8wbf3V5l+kJeSR+rBxJfCGP6ZS5n6uF7G/3SDBx0O7zgwUMAgo7pmRtqgX079oT3C2MZo3OejMjF8q4IteY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y8Bqg78s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3617FC4CEF1;
+	Fri,  9 Jan 2026 12:24:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767959794;
-	bh=/JEz22GyCjMPLMWECVksD3ve3sz+FKI3DyhMGccqpwg=;
+	s=korg; t=1767961483;
+	bh=F8K+mhDla6oCu39u3sW5m7WeBD12mkcztrmNHfTedsg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=caJDD8fOs9JqwOWa1BqDkTZCPT7tryg5sxq5OjngM2C3IuHN92tUTwD75kDMmgYhR
-	 EseYfAF5YWsfBUJINMQuguDYji/rcJpPpe3WJxA+v5ZsHHQ99S+tdwD7+q4iEj9Dbe
-	 GJmLmrXy7NwxQljnkXA785v3vFtVqTkYaNpLftBQ=
+	b=Y8Bqg78saWgFlJvDE/NGbxTAObBacrThCuCfUIHdbv38DrRmMB4GHFEC27TbEk8IG
+	 5gggCgISo2kgoZezBFhGeY5a5PoaFetpqOtdKXB1KBADB9yz2V1apuvy0f2la1wP3d
+	 07SLCOR3VA6XS5Y9c8oUVPS8zAnhRzwlVt5fm5uA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yeoreum Yun <yeoreum.yun@arm.com>,
-	Mike Leach <mike.leach@linaro.org>,
-	James Clark <james.clark@linaro.org>,
-	Leo Yan <leo.yan@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Stefan Kalscheuer <stefan@stklcode.de>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 144/737] coresight: etm4x: Correct polling IDLE bit
-Date: Fri,  9 Jan 2026 12:34:43 +0100
-Message-ID: <20260109112139.415563977@linuxfoundation.org>
+Subject: [PATCH 6.1 006/634] leds: spi-byte: Use devm_led_classdev_register_ext()
+Date: Fri,  9 Jan 2026 12:34:44 +0100
+Message-ID: <20260109112117.663064395@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +60,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leo Yan <leo.yan@arm.com>
+From: Stefan Kalscheuer <stefan@stklcode.de>
 
-[ Upstream commit 4dc4e22f9536341255f5de6047977a80ff47eaef ]
+[ Upstream commit ccc35ff2fd2911986b716a87fe65e03fac2312c9 ]
 
-Since commit 4ff6039ffb79 ("coresight-etm4x: add isb() before reading
-the TRCSTATR"), the code has incorrectly been polling the PMSTABLE bit
-instead of the IDLE bit.
+Use extended classdev registration to generate generic device names from
+color and function enums instead of reading only the label from the
+device tree.
 
-This commit corrects the typo.
-
-Fixes: 4ff6039ffb79 ("coresight-etm4x: add isb() before reading the TRCSTATR")
-Reviewed-by: Yeoreum Yun <yeoreum.yun@arm.com>
-Reviewed-by: Mike Leach <mike.leach@linaro.org>
-Tested-by: James Clark <james.clark@linaro.org>
-Signed-off-by: Leo Yan <leo.yan@arm.com>
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Link: https://lore.kernel.org/r/20251111-arm_coresight_power_management_fix-v6-4-f55553b6c8b3@arm.com
+Signed-off-by: Stefan Kalscheuer <stefan@stklcode.de>
+Link: https://lore.kernel.org/r/20240204150726.29783-1-stefan@stklcode.de
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwtracing/coresight/coresight-etm4x-core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/leds/leds-spi-byte.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/hwtracing/coresight/coresight-etm4x-core.c b/drivers/hwtracing/coresight/coresight-etm4x-core.c
-index e4d8d446ea4d3..cc35175abd504 100644
---- a/drivers/hwtracing/coresight/coresight-etm4x-core.c
-+++ b/drivers/hwtracing/coresight/coresight-etm4x-core.c
-@@ -1805,7 +1805,7 @@ static int __etm4_cpu_save(struct etmv4_drvdata *drvdata)
- 		state->trcpdcr = etm4x_read32(csa, TRCPDCR);
+diff --git a/drivers/leds/leds-spi-byte.c b/drivers/leds/leds-spi-byte.c
+index 065a2bcb7c14b..eb6481df5997f 100644
+--- a/drivers/leds/leds-spi-byte.c
++++ b/drivers/leds/leds-spi-byte.c
+@@ -83,7 +83,7 @@ static int spi_byte_probe(struct spi_device *spi)
+ 	struct device_node *child;
+ 	struct device *dev = &spi->dev;
+ 	struct spi_byte_led *led;
+-	const char *name = "leds-spi-byte::";
++	struct led_init_data init_data = {};
+ 	const char *state;
+ 	int ret;
  
- 	/* wait for TRCSTATR.IDLE to go up */
--	if (etm4x_wait_status(csa, TRCSTATR_PMSTABLE_BIT, 1)) {
-+	if (etm4x_wait_status(csa, TRCSTATR_IDLE_BIT, 1)) {
- 		dev_err(etm_dev,
- 			"timeout while waiting for Idle Trace Status\n");
- 		etm4_os_unlock(drvdata);
+@@ -96,12 +96,9 @@ static int spi_byte_probe(struct spi_device *spi)
+ 	if (!led)
+ 		return -ENOMEM;
+ 
+-	of_property_read_string(child, "label", &name);
+-	strscpy(led->name, name, sizeof(led->name));
+ 	led->spi = spi;
+ 	mutex_init(&led->mutex);
+ 	led->cdef = device_get_match_data(dev);
+-	led->ldev.name = led->name;
+ 	led->ldev.brightness = LED_OFF;
+ 	led->ldev.max_brightness = led->cdef->max_value - led->cdef->off_value;
+ 	led->ldev.brightness_set_blocking = spi_byte_brightness_set_blocking;
+@@ -121,7 +118,11 @@ static int spi_byte_probe(struct spi_device *spi)
+ 	spi_byte_brightness_set_blocking(&led->ldev,
+ 					 led->ldev.brightness);
+ 
+-	ret = devm_led_classdev_register(&spi->dev, &led->ldev);
++	init_data.fwnode = of_fwnode_handle(child);
++	init_data.devicename = "leds-spi-byte";
++	init_data.default_label = ":";
++
++	ret = devm_led_classdev_register_ext(&spi->dev, &led->ldev, &init_data);
+ 	if (ret) {
+ 		of_node_put(child);
+ 		mutex_destroy(&led->mutex);
 -- 
 2.51.0
 
