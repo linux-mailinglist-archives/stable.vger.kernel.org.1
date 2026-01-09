@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-207114-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207716-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57741D099A3
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:27:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5634CD0A132
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:56:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 595BD30C7C39
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:18:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1DD7B30BF8B8
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:49:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FBAD334C24;
-	Fri,  9 Jan 2026 12:18:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28B7435CBB4;
+	Fri,  9 Jan 2026 12:47:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qo26C45F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fvLWhndA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6F9826ED41;
-	Fri,  9 Jan 2026 12:18:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFEFD15ADB4;
+	Fri,  9 Jan 2026 12:47:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961130; cv=none; b=tOapoDlxrGlOAhFrQ6TipYC1npd+RM7uvC4uU9Bk4C1Gs+ZRl91R3RgcTmcagcIjS3VT6TyJD8Ghb6bZGp3GJinskIzdwOoj7S5T7wcbRFFhBAtOSKWTErNqSGR/5f8qB4hNi/TB0Eo4hcjM3KlQL1bVivLsLNJApByUSxCz1t8=
+	t=1767962844; cv=none; b=dJM1mJUVKTpxeq7DEs8YfqmWR21QaZ8uAOQTtXG28l50V64ShLlu+94/K3U/8sA9c4Mh02kBOIRrsSebQtgFYaiMHlOyCUguYjtv01CJWkwFeGhCS8o3G6a87EipL9CaphP4DeWfXiBzqMpjkC+0ae2gAkikuplWTlUMflJEHIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961130; c=relaxed/simple;
-	bh=QPjP4FE38AmVBqUKf9DZifFYG4zaGOVCAhEc88I0U/k=;
+	s=arc-20240116; t=1767962844; c=relaxed/simple;
+	bh=Vau0oTqJM8YadnuhXj+B3MAkiArUn+MnZ+hsYnZKnb8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s0NouYnsR5Rco8QOnwNmqLMVbykv1eq4N3IPHX6xkiY1mGhbGDpWVgXem5gLTIjnErzBG0u/7rnIel7uwf60CyXE5smCF/aIKOcdWVkTnMAy8LsECrgJ7DENEtH3hLxl478HDPZ/UkM6OvGK73vw04v5gULwBrF0e2mmIrO/NYU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qo26C45F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6594BC16AAE;
-	Fri,  9 Jan 2026 12:18:50 +0000 (UTC)
+	 MIME-Version:Content-Type; b=iknMEFqis1quTKHcbyYGjZ3mw+nc3HKRP1FkXbs4hKq/sXMTDH77azQXVlOeXLrT04+m41pYHNwABmX2ORPAOcgLMwJbH4ztoZY28yeTp+OMkTUQ1GOt/g6bU4F7VRny48E4K7oFU+f8fmKt17dBaPvf34chaYdZcQmdbLgkeUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fvLWhndA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D796C16AAE;
+	Fri,  9 Jan 2026 12:47:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961130;
-	bh=QPjP4FE38AmVBqUKf9DZifFYG4zaGOVCAhEc88I0U/k=;
+	s=korg; t=1767962843;
+	bh=Vau0oTqJM8YadnuhXj+B3MAkiArUn+MnZ+hsYnZKnb8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qo26C45FdKbSOXHwYFoMIi87L7BC4rZoQPqzNz9mI/zhbDBJ63+SVqNkPVb9veLJ9
-	 L29PAs8eRF5gGXxslxsS/t9BVu6GDqj7l6xt7iZohEFTifLXW8+ht9lAlQMw/VD6cj
-	 RhV4egY5d8JSKCLTDrCUqHhsIB/6/41KTzhPWlK8=
+	b=fvLWhndAeIHZHh9HzvtSpUvagZbHeNhNaLiBCf+1lvzZEaA2IHjvwslEdqhCzbj+R
+	 JsetdkrCDHpYgRAYpzip804mWrsvY/rfZYTB53Amo8l4oVo8EgxxEy26XZ1jEsiO7F
+	 F4H7Z3vCGSBoHavd41KarFi9/xDxckXgUBeOIozQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	syzbot+14b90e1156b9f6fc1266@syzkaller.appspotmail.com,
-	Jiaming Zhang <r772577952@gmail.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 646/737] f2fs: fix to avoid potential deadlock
+	stable <stable@kernel.org>,
+	Simon Richter <Simon.Richter@hogyros.de>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Shuicheng Lin <shuicheng.lin@intel.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>
+Subject: [PATCH 6.1 507/634] drm/ttm: Avoid NULL pointer deref for evicted BOs
 Date: Fri,  9 Jan 2026 12:43:05 +0100
-Message-ID: <20260109112158.317317379@linuxfoundation.org>
+Message-ID: <20260109112136.629934643@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,225 +60,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Simon Richter <Simon.Richter@hogyros.de>
 
-[ Upstream commit ca8b201f28547e28343a6f00a6e91fa8c09572fe ]
+commit 491adc6a0f9903c32b05f284df1148de39e8e644 upstream.
 
-As Jiaming Zhang and syzbot reported, there is potential deadlock in
-f2fs as below:
+It is possible for a BO to exist that is not currently associated with a
+resource, e.g. because it has been evicted.
 
-Chain exists of:
-  &sbi->cp_rwsem --> fs_reclaim --> sb_internal#2
+When devcoredump tries to read the contents of all BOs for dumping, we need
+to expect this as well -- in this case, ENODATA is recorded instead of the
+buffer contents.
 
- Possible unsafe locking scenario:
-
-       CPU0                    CPU1
-       ----                    ----
-  rlock(sb_internal#2);
-                               lock(fs_reclaim);
-                               lock(sb_internal#2);
-  rlock(&sbi->cp_rwsem);
-
- *** DEADLOCK ***
-
-3 locks held by kswapd0/73:
- #0: ffffffff8e247a40 (fs_reclaim){+.+.}-{0:0}, at: balance_pgdat mm/vmscan.c:7015 [inline]
- #0: ffffffff8e247a40 (fs_reclaim){+.+.}-{0:0}, at: kswapd+0x951/0x2800 mm/vmscan.c:7389
- #1: ffff8880118400e0 (&type->s_umount_key#50){.+.+}-{4:4}, at: super_trylock_shared fs/super.c:562 [inline]
- #1: ffff8880118400e0 (&type->s_umount_key#50){.+.+}-{4:4}, at: super_cache_scan+0x91/0x4b0 fs/super.c:197
- #2: ffff888011840610 (sb_internal#2){.+.+}-{0:0}, at: f2fs_evict_inode+0x8d9/0x1b60 fs/f2fs/inode.c:890
-
-stack backtrace:
-CPU: 0 UID: 0 PID: 73 Comm: kswapd0 Not tainted syzkaller #0 PREEMPT(full)
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-Call Trace:
- <TASK>
- dump_stack_lvl+0x189/0x250 lib/dump_stack.c:120
- print_circular_bug+0x2ee/0x310 kernel/locking/lockdep.c:2043
- check_noncircular+0x134/0x160 kernel/locking/lockdep.c:2175
- check_prev_add kernel/locking/lockdep.c:3165 [inline]
- check_prevs_add kernel/locking/lockdep.c:3284 [inline]
- validate_chain+0xb9b/0x2140 kernel/locking/lockdep.c:3908
- __lock_acquire+0xab9/0xd20 kernel/locking/lockdep.c:5237
- lock_acquire+0x120/0x360 kernel/locking/lockdep.c:5868
- down_read+0x46/0x2e0 kernel/locking/rwsem.c:1537
- f2fs_down_read fs/f2fs/f2fs.h:2278 [inline]
- f2fs_lock_op fs/f2fs/f2fs.h:2357 [inline]
- f2fs_do_truncate_blocks+0x21c/0x10c0 fs/f2fs/file.c:791
- f2fs_truncate_blocks+0x10a/0x300 fs/f2fs/file.c:867
- f2fs_truncate+0x489/0x7c0 fs/f2fs/file.c:925
- f2fs_evict_inode+0x9f2/0x1b60 fs/f2fs/inode.c:897
- evict+0x504/0x9c0 fs/inode.c:810
- f2fs_evict_inode+0x1dc/0x1b60 fs/f2fs/inode.c:853
- evict+0x504/0x9c0 fs/inode.c:810
- dispose_list fs/inode.c:852 [inline]
- prune_icache_sb+0x21b/0x2c0 fs/inode.c:1000
- super_cache_scan+0x39b/0x4b0 fs/super.c:224
- do_shrink_slab+0x6ef/0x1110 mm/shrinker.c:437
- shrink_slab_memcg mm/shrinker.c:550 [inline]
- shrink_slab+0x7ef/0x10d0 mm/shrinker.c:628
- shrink_one+0x28a/0x7c0 mm/vmscan.c:4955
- shrink_many mm/vmscan.c:5016 [inline]
- lru_gen_shrink_node mm/vmscan.c:5094 [inline]
- shrink_node+0x315d/0x3780 mm/vmscan.c:6081
- kswapd_shrink_node mm/vmscan.c:6941 [inline]
- balance_pgdat mm/vmscan.c:7124 [inline]
- kswapd+0x147c/0x2800 mm/vmscan.c:7389
- kthread+0x70e/0x8a0 kernel/kthread.c:463
- ret_from_fork+0x4bc/0x870 arch/x86/kernel/process.c:158
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
-
-The root cause is deadlock among four locks as below:
-
-kswapd
-- fs_reclaim				--- Lock A
- - shrink_one
-  - evict
-   - f2fs_evict_inode
-    - sb_start_intwrite			--- Lock B
-
-- iput
- - evict
-  - f2fs_evict_inode
-   - sb_start_intwrite			--- Lock B
-   - f2fs_truncate
-    - f2fs_truncate_blocks
-     - f2fs_do_truncate_blocks
-      - f2fs_lock_op			--- Lock C
-
-ioctl
-- f2fs_ioc_commit_atomic_write
- - f2fs_lock_op				--- Lock C
-  - __f2fs_commit_atomic_write
-   - __replace_atomic_write_block
-    - f2fs_get_dnode_of_data
-     - __get_node_folio
-      - f2fs_check_nid_range
-       - f2fs_handle_error
-        - f2fs_record_errors
-         - f2fs_down_write		--- Lock D
-
-open
-- do_open
- - do_truncate
-  - security_inode_need_killpriv
-   - f2fs_getxattr
-    - lookup_all_xattrs
-     - f2fs_handle_error
-      - f2fs_record_errors
-       - f2fs_down_write		--- Lock D
-        - f2fs_commit_super
-         - read_mapping_folio
-          - filemap_alloc_folio_noprof
-           - prepare_alloc_pages
-            - fs_reclaim_acquire	--- Lock A
-
-In order to avoid such deadlock, we need to avoid grabbing sb_lock in
-f2fs_handle_error(), so, let's use asynchronous method instead:
-- remove f2fs_handle_error() implementation
-- rename f2fs_handle_error_async() to f2fs_handle_error()
-- spread f2fs_handle_error()
-
-Fixes: 95fa90c9e5a7 ("f2fs: support recording errors into superblock")
-Cc: stable@kernel.org
-Reported-by: syzbot+14b90e1156b9f6fc1266@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-f2fs-devel/68eae49b.050a0220.ac43.0001.GAE@google.com
-Reported-by: Jiaming Zhang <r772577952@gmail.com>
-Closes: https://lore.kernel.org/lkml/CANypQFa-Gy9sD-N35o3PC+FystOWkNuN8pv6S75HLT0ga-Tzgw@mail.gmail.com
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 7d08df5d0bd3 ("drm/ttm: Add ttm_bo_access")
+Fixes: 09ac4fcb3f25 ("drm/ttm: Implement vm_operations_struct.access v2")
+Cc: stable <stable@kernel.org>
+Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/6271
+Signed-off-by: Simon Richter <Simon.Richter@hogyros.de>
+Reviewed-by: Matthew Brost <matthew.brost@intel.com>
+Reviewed-by: Shuicheng Lin <shuicheng.lin@intel.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+Link: https://patch.msgid.link/20251013161241.709916-1-Simon.Richter@hogyros.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/compress.c |    5 +----
- fs/f2fs/f2fs.h     |    1 -
- fs/f2fs/super.c    |   41 -----------------------------------------
- 3 files changed, 1 insertion(+), 46 deletions(-)
+ drivers/gpu/drm/ttm/ttm_bo_vm.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/fs/f2fs/compress.c
-+++ b/fs/f2fs/compress.c
-@@ -754,10 +754,7 @@ void f2fs_decompress_cluster(struct deco
- 		ret = -EFSCORRUPTED;
+--- a/drivers/gpu/drm/ttm/ttm_bo_vm.c
++++ b/drivers/gpu/drm/ttm/ttm_bo_vm.c
+@@ -419,6 +419,11 @@ int ttm_bo_vm_access(struct vm_area_stru
+ 	if (ret)
+ 		return ret;
  
- 		/* Avoid f2fs_commit_super in irq context */
--		if (!in_task)
--			f2fs_handle_error_async(sbi, ERROR_FAIL_DECOMPRESSION);
--		else
--			f2fs_handle_error(sbi, ERROR_FAIL_DECOMPRESSION);
-+		f2fs_handle_error(sbi, ERROR_FAIL_DECOMPRESSION);
- 		goto out_release;
++	if (!bo->resource) {
++		ret = -ENODATA;
++		goto unlock;
++	}
++
+ 	switch (bo->resource->mem_type) {
+ 	case TTM_PL_SYSTEM:
+ 		fallthrough;
+@@ -433,6 +438,7 @@ int ttm_bo_vm_access(struct vm_area_stru
+ 			ret = -EIO;
  	}
  
---- a/fs/f2fs/f2fs.h
-+++ b/fs/f2fs/f2fs.h
-@@ -3638,7 +3638,6 @@ void f2fs_quota_off_umount(struct super_
- void f2fs_save_errors(struct f2fs_sb_info *sbi, unsigned char flag);
- void f2fs_handle_critical_error(struct f2fs_sb_info *sbi, unsigned char reason);
- void f2fs_handle_error(struct f2fs_sb_info *sbi, unsigned char error);
--void f2fs_handle_error_async(struct f2fs_sb_info *sbi, unsigned char error);
- int f2fs_commit_super(struct f2fs_sb_info *sbi, bool recover);
- int f2fs_sync_fs(struct super_block *sb, int sync);
- int f2fs_sanity_check_ckpt(struct f2fs_sb_info *sbi);
---- a/fs/f2fs/super.c
-+++ b/fs/f2fs/super.c
-@@ -4071,50 +4071,9 @@ void f2fs_save_errors(struct f2fs_sb_inf
- 	spin_unlock_irqrestore(&sbi->error_lock, flags);
- }
++unlock:
+ 	ttm_bo_unreserve(bo);
  
--static bool f2fs_update_errors(struct f2fs_sb_info *sbi)
--{
--	unsigned long flags;
--	bool need_update = false;
--
--	spin_lock_irqsave(&sbi->error_lock, flags);
--	if (sbi->error_dirty) {
--		memcpy(F2FS_RAW_SUPER(sbi)->s_errors, sbi->errors,
--							MAX_F2FS_ERRORS);
--		sbi->error_dirty = false;
--		need_update = true;
--	}
--	spin_unlock_irqrestore(&sbi->error_lock, flags);
--
--	return need_update;
--}
--
--static void f2fs_record_errors(struct f2fs_sb_info *sbi, unsigned char error)
--{
--	int err;
--
--	f2fs_down_write(&sbi->sb_lock);
--
--	if (!f2fs_update_errors(sbi))
--		goto out_unlock;
--
--	err = f2fs_commit_super(sbi, false);
--	if (err)
--		f2fs_err_ratelimited(sbi,
--			"f2fs_commit_super fails to record errors:%u, err:%d",
--			error, err);
--out_unlock:
--	f2fs_up_write(&sbi->sb_lock);
--}
--
- void f2fs_handle_error(struct f2fs_sb_info *sbi, unsigned char error)
- {
- 	f2fs_save_errors(sbi, error);
--	f2fs_record_errors(sbi, error);
--}
--
--void f2fs_handle_error_async(struct f2fs_sb_info *sbi, unsigned char error)
--{
--	f2fs_save_errors(sbi, error);
- 
- 	if (!sbi->error_dirty)
- 		return;
+ 	return ret;
 
 
 
