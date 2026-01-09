@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-206630-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207231-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C4AFD09375
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:04:04 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71426D09C8E
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:37:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4922C30BCA26
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:55:53 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id ABCE63088252
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:24:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3E9E350A37;
-	Fri,  9 Jan 2026 11:55:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C29F1531E8;
+	Fri,  9 Jan 2026 12:24:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RkBBhhxb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zB9F6UMl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC30633D50F;
-	Fri,  9 Jan 2026 11:55:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D27433C1B6;
+	Fri,  9 Jan 2026 12:24:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767959751; cv=none; b=Z6NKMH7abfvnaT5K62aUb8sh4GQjQPSv91TbVCi7v/ZpmUs9BiRXpi7loGp/cwGQSVr/BKKc1JM3T65lOZm2lObXAx2k7QlobbYss6mZn/DMTjGHL9x+nFrp0GBMALhZKe4GoqotnbH9mIqD3s88kAIUnYF5Jq+e0tm6dF1fHAw=
+	t=1767961466; cv=none; b=uqnmukt+XLtUaQBs/KgJ+6GvpMI8IAnuCIZaJvY1Gb22z+ZKaf5+TYg+8o/uOSxJXi9tqB0Nf3G22LzCIotnVN6aDh7Ejuv1uyy9BnqRgaTvYDU437IW7SDcKFTSAtoHYRkMAz4CQc1kVXSWY7KnLAoRrbbRzgMNjrFE7eDGw44=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767959751; c=relaxed/simple;
-	bh=cCpoHhWWvJ0WPuP7rZ8KhOdHw5wP/poofHSCQMgR+Ng=;
+	s=arc-20240116; t=1767961466; c=relaxed/simple;
+	bh=8+YgfyGY5RN+Y7MXBEa0FXJu99h3JNen6PDXwvdpegA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G7Me2FMgHPkq0QuJXwzHjRoHqaBXkExwHw600QC/1EvU8tqXMigs35R3CQOZQDqXd7tC3xwM1rbE9nRmzq8Fs6qPiMNbRfP/EF/DyluL8rtiibrPwaEDmE3E5MW665aQbz9GKNFx9HtUmXt1g5c7ChfXiEezATwKEqJr9CN1W9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RkBBhhxb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CEA1C4CEF1;
-	Fri,  9 Jan 2026 11:55:51 +0000 (UTC)
+	 MIME-Version; b=AxqZi68BsuNOc1rIZG3FOvPQ4zkYIqIyVninaiZEtcY0tmydjFzJVkcbjOCuHosAmSAReIDSqg5t88mzYUVtqKRtz8BAkk50rwlTfGw5Ic56X4uldM5q1OOGVP81DBMZPB4LDsbtNGHXhES11j5uTDG6ox6S+2ete/LH8L71Ejk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zB9F6UMl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE31DC4CEF1;
+	Fri,  9 Jan 2026 12:24:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767959751;
-	bh=cCpoHhWWvJ0WPuP7rZ8KhOdHw5wP/poofHSCQMgR+Ng=;
+	s=korg; t=1767961466;
+	bh=8+YgfyGY5RN+Y7MXBEa0FXJu99h3JNen6PDXwvdpegA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RkBBhhxbRH4INM6CZTT5o1qDxgYx43KomT+o1DIQvme3HihPLWlkp0pjCUEN+gJvu
-	 F8xqJbpJYTacWreOck3FL7Cd2C55q1KAEQK8RUDu9yzK5xm0WEQc4YxwIFLaFO5J3s
-	 EIHjiaOo77SRwnh2eQTfLpRKZ4kASuQt2AsDERd4=
+	b=zB9F6UMlY99AW5a4Awb9PB1yapKnGF2Y6v7BHok5oR+Ep72Yo2LnVUe9z3aL1ApBu
+	 t4iLDnpwXDytkNsseCuIlFdU1ceIjdF4om8sroBdEELkIqx3Rm17RYIl/ouRBtf+zf
+	 0gDzoWy7ldCD95By6zUoJpVTOm03HLOWQCu327ok=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Ian Forbes <ian.forbes@broadcom.com>,
+	Zack Rusin <zack.rusin@broadcom.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 162/737] watchdog: starfive: Fix resource leak in probe error path
-Date: Fri,  9 Jan 2026 12:35:01 +0100
-Message-ID: <20260109112140.088198056@linuxfoundation.org>
+Subject: [PATCH 6.1 024/634] drm/vmwgfx: Use kref in vmw_bo_dirty
+Date: Fri,  9 Jan 2026 12:35:02 +0100
+Message-ID: <20260109112118.355507757@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +60,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Ian Forbes <ian.forbes@broadcom.com>
 
-[ Upstream commit 5bcc5786a0cfa9249ccbe539833040a6285d0de3 ]
+[ Upstream commit c1962742ffff7e245f935903a4658eb6f94f6058 ]
 
-If pm_runtime_put_sync() fails after watchdog_register_device()
-succeeds, the probe function jumps to err_exit without
-unregistering the watchdog device. This leaves the watchdog
-registered in the subsystem while the driver fails to load,
-resulting in a resource leak.
+Rather than using an ad hoc reference count use kref which is atomic
+and has underflow warnings.
 
-Add a new error label err_unregister_wdt to properly unregister
-the watchdog device.
-
-Fixes: 8bc22a2f1bf0 ("watchdog: starfive: Check pm_runtime_enabled() before decrementing usage counter")
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Reviewed-by: Wim Van Sebroeck <wim@linux-watchdog.org>
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
+Signed-off-by: Ian Forbes <ian.forbes@broadcom.com>
+Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
+Link: https://patch.msgid.link/20251030193640.153697-1-ian.forbes@broadcom.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/watchdog/starfive-wdt.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/vmwgfx/vmwgfx_page_dirty.c | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/watchdog/starfive-wdt.c b/drivers/watchdog/starfive-wdt.c
-index e4b344db38030..0606142ffc5e2 100644
---- a/drivers/watchdog/starfive-wdt.c
-+++ b/drivers/watchdog/starfive-wdt.c
-@@ -498,12 +498,14 @@ static int starfive_wdt_probe(struct platform_device *pdev)
- 		if (pm_runtime_enabled(&pdev->dev)) {
- 			ret = pm_runtime_put_sync(&pdev->dev);
- 			if (ret)
--				goto err_exit;
-+				goto err_unregister_wdt;
- 		}
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_page_dirty.c b/drivers/gpu/drm/vmwgfx/vmwgfx_page_dirty.c
+index 7bc99b1279f7d..09e938498442c 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_page_dirty.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_page_dirty.c
+@@ -50,22 +50,22 @@ enum vmw_bo_dirty_method {
+ 
+ /**
+  * struct vmw_bo_dirty - Dirty information for buffer objects
++ * @ref_count: Reference count for this structure. Must be first member!
+  * @start: First currently dirty bit
+  * @end: Last currently dirty bit + 1
+  * @method: The currently used dirty method
+  * @change_count: Number of consecutive method change triggers
+- * @ref_count: Reference count for this structure
+  * @bitmap_size: The size of the bitmap in bits. Typically equal to the
+  * nuber of pages in the bo.
+  * @bitmap: A bitmap where each bit represents a page. A set bit means a
+  * dirty page.
+  */
+ struct vmw_bo_dirty {
++	struct   kref ref_count;
+ 	unsigned long start;
+ 	unsigned long end;
+ 	enum vmw_bo_dirty_method method;
+ 	unsigned int change_count;
+-	unsigned int ref_count;
+ 	unsigned long bitmap_size;
+ 	unsigned long bitmap[];
+ };
+@@ -235,7 +235,7 @@ int vmw_bo_dirty_add(struct vmw_buffer_object *vbo)
+ 	int ret;
+ 
+ 	if (dirty) {
+-		dirty->ref_count++;
++		kref_get(&dirty->ref_count);
+ 		return 0;
  	}
  
- 	return 0;
+@@ -249,7 +249,7 @@ int vmw_bo_dirty_add(struct vmw_buffer_object *vbo)
+ 	dirty->bitmap_size = num_pages;
+ 	dirty->start = dirty->bitmap_size;
+ 	dirty->end = 0;
+-	dirty->ref_count = 1;
++	kref_init(&dirty->ref_count);
+ 	if (num_pages < PAGE_SIZE / sizeof(pte_t)) {
+ 		dirty->method = VMW_BO_DIRTY_PAGETABLE;
+ 	} else {
+@@ -288,10 +288,8 @@ void vmw_bo_dirty_release(struct vmw_buffer_object *vbo)
+ {
+ 	struct vmw_bo_dirty *dirty = vbo->dirty;
  
-+err_unregister_wdt:
-+	watchdog_unregister_device(&wdt->wdd);
- err_exit:
- 	starfive_wdt_disable_clock(wdt);
- 	pm_runtime_disable(&pdev->dev);
+-	if (dirty && --dirty->ref_count == 0) {
+-		kvfree(dirty);
++	if (dirty && kref_put(&dirty->ref_count, (void *)kvfree))
+ 		vbo->dirty = NULL;
+-	}
+ }
+ 
+ /**
 -- 
 2.51.0
 
