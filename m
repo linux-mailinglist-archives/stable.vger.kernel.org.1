@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-207296-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206694-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 497B1D09B8C
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:34:45 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3B5ED09210
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 12:59:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 00E6B303F4DA
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:27:44 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 113FB3015AFA
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:58:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 510F335B135;
-	Fri,  9 Jan 2026 12:27:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E51C433ADB8;
+	Fri,  9 Jan 2026 11:58:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lCR7wm3B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O7QyZYIG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C65F359709;
-	Fri,  9 Jan 2026 12:27:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A94002DEA6F;
+	Fri,  9 Jan 2026 11:58:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961652; cv=none; b=kg7Dg/4Tx95xpR3cFZW0Mx3IDuVMMzuYbkwA4hNAZH2hYo5wd+lOFcXW8Vy1ylMbz53yLbEa45gQ7euNdLaYQu54sTlQn/WtIIZsJ0dubknN5JVB1DtGqAOiEZk1G+HaEFJKg/gvM2KTUZRjIERp/yKpreYONEEDtv17wekiwcA=
+	t=1767959933; cv=none; b=Hg71Z8PeXirY4z8QABq37Htu+lef0CCA1u3nzViUtMK2qg3Y+pX4SHU4oooO/I5IbWA4yqtHJA6R9NAwlqXs151GNsYeduCmaAuaZnmoDF2s9Bfxrl0uTodWf2phPguwcfgBABsJiS99wt3rWcJCi6XJGd2g9+Ij1qtwOH7TfyI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961652; c=relaxed/simple;
-	bh=PF00AUJ/MBJXMqdhnLBPOiJ+NaybHY8JqZvUXjO1gJY=;
+	s=arc-20240116; t=1767959933; c=relaxed/simple;
+	bh=mvaeSg5r0fD2mVTNHHltLlVnPsL7+vOPnl0+chKkCVM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aOEp1UD+3ym9MeKjljHerYZdQdNmGDAgwt33kYE3uS/U0pwXZTpcmjI+FjNzWvIBJdfDbXePYD7pRdBH2GvjmZsLYmkPgdolr9FxhxmcRqxOSQ3XmcZpyvbUydfYORNrn/zGGzqiq4A0lb6oKRRpoBByMpHyy6HysBzTohjGqsc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lCR7wm3B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88814C4CEF1;
-	Fri,  9 Jan 2026 12:27:31 +0000 (UTC)
+	 MIME-Version; b=d5Pgt389pJXvKev7TwOK2Iqzg73UjIC3FbN1aa+72SSaN14y4ocmpzfKgTmgoKqBKkgnKJ6Nx9U0EmRkW5ZhKPDjsH6ZOd5tET6Ob4tTtcHL6Zvs0Ff4/sI+9z8+f9Sdnag/m+AqqeShAeEba9nLiRdpj6AiVLeVnCG+mkDpye0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O7QyZYIG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED1BEC4CEF1;
+	Fri,  9 Jan 2026 11:58:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961651;
-	bh=PF00AUJ/MBJXMqdhnLBPOiJ+NaybHY8JqZvUXjO1gJY=;
+	s=korg; t=1767959933;
+	bh=mvaeSg5r0fD2mVTNHHltLlVnPsL7+vOPnl0+chKkCVM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lCR7wm3BJgOWQ/NOSAg0ogmqZzDqcCtxMjGZyUZcir4jmbPXCT0iTcUoTkkKqWno8
-	 KFpRU1IbqiVHLnbfD6IcoRdhlU9ORX7q82NT2I9r94PAFW4XIPA2cj3nK3BxhkeYQ7
-	 ZIxTQZkIMaf6X/evcpwN5GB1ZcMKMcxw78Le2AEA=
+	b=O7QyZYIGCn7ecePSIU+jeiAG42RTd16rHrZa+Ac9aAZmxLQA/7ERlzWTFpl8s91My
+	 5rTutwUjZUv8CvuY2BpvB1ZBBRO2m2krzRROaX+S/KgyxBAAj73c2tPp1LHUK9nJkA
+	 QEtEb/PNwO5I3o113IQbJwYPeEURpuhh/cdOT6LU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gabor Juhos <j4g8y7@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	Jason Wang <jasowang@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 088/634] regulator: core: disable supply if enabling main regulator fails
+Subject: [PATCH 6.6 227/737] virtio: fix whitespace in virtio_config_ops
 Date: Fri,  9 Jan 2026 12:36:06 +0100
-Message-ID: <20260109112120.746882478@linuxfoundation.org>
+Message-ID: <20260109112142.539881349@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,81 +60,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabor Juhos <j4g8y7@gmail.com>
+From: Michael S. Tsirkin <mst@redhat.com>
 
-[ Upstream commit fb1ebb10468da414d57153ddebaab29c38ef1a78 ]
+[ Upstream commit 7831791e77a1cd29528d4dc336ce14466aef5ba6 ]
 
-For 'always-on' and 'boot-on' regulators, the set_machine_constraints()
-may enable supply before enabling the main regulator, however if the
-latter fails, the function returns with an error but the supply remains
-enabled.
+The finalize_features documentation uses a tab between words.
+Use space instead.
 
-When this happens, the regulator_register() function continues on the
-error path where it puts the supply regulator. Since enabling the supply
-is not balanced with a disable call, a warning similar to the following
-gets issued from _regulator_put():
-
-    [    1.603889] WARNING: CPU: 2 PID: 44 at _regulator_put+0x8c/0xa0
-    [    1.603908] Modules linked in:
-    [    1.603926] CPU: 2 UID: 0 PID: 44 Comm: kworker/u16:3 Not tainted 6.18.0-rc4 #0 NONE
-    [    1.603938] Hardware name: Qualcomm Technologies, Inc. IPQ9574/AP-AL02-C7 (DT)
-    [    1.603945] Workqueue: async async_run_entry_fn
-    [    1.603958] pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-    [    1.603967] pc : _regulator_put+0x8c/0xa0
-    [    1.603976] lr : _regulator_put+0x7c/0xa0
-    ...
-    [    1.604140] Call trace:
-    [    1.604145]  _regulator_put+0x8c/0xa0 (P)
-    [    1.604156]  regulator_register+0x2ec/0xbf0
-    [    1.604166]  devm_regulator_register+0x60/0xb0
-    [    1.604178]  rpm_reg_probe+0x120/0x208
-    [    1.604187]  platform_probe+0x64/0xa8
-    ...
-
-In order to avoid this, change the set_machine_constraints() function to
-disable the supply if enabling the main regulator fails.
-
-Fixes: 05f224ca6693 ("regulator: core: Clean enabling always-on regulators + their supplies")
-Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
-Link: https://patch.msgid.link/20251107-regulator-disable-supply-v1-1-c95f0536f1b5@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: d16c0cd27331 ("docs: driver-api: virtio: virtio on Linux")
+Message-Id: <39d7685c82848dc6a876d175e33a1407f6ab3fc1.1763026134.git.mst@redhat.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/regulator/core.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ include/linux/virtio_config.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/regulator/core.c b/drivers/regulator/core.c
-index 7e6ff7e72784b..436764329f63b 100644
---- a/drivers/regulator/core.c
-+++ b/drivers/regulator/core.c
-@@ -1660,6 +1660,8 @@ static int set_machine_constraints(struct regulator_dev *rdev)
- 	 * and we have control then make sure it is enabled.
- 	 */
- 	if (rdev->constraints->always_on || rdev->constraints->boot_on) {
-+		bool supply_enabled = false;
-+
- 		/* If we want to enable this regulator, make sure that we know
- 		 * the supplying regulator.
- 		 */
-@@ -1679,11 +1681,14 @@ static int set_machine_constraints(struct regulator_dev *rdev)
- 				rdev->supply = NULL;
- 				return ret;
- 			}
-+			supply_enabled = true;
- 		}
- 
- 		ret = _regulator_do_enable(rdev);
- 		if (ret < 0 && ret != -EINVAL) {
- 			rdev_err(rdev, "failed to enable: %pe\n", ERR_PTR(ret));
-+			if (supply_enabled)
-+				regulator_disable(rdev->supply);
- 			return ret;
- 		}
- 
+diff --git a/include/linux/virtio_config.h b/include/linux/virtio_config.h
+index 84a9fd21df3e8..f106d3177476b 100644
+--- a/include/linux/virtio_config.h
++++ b/include/linux/virtio_config.h
+@@ -71,7 +71,7 @@ typedef void vq_callback_t(struct virtqueue *);
+  *	vdev: the virtio_device
+  *	This sends the driver feature bits to the device: it can change
+  *	the dev->feature bits if it wants.
+- *	Note that despite the name this	can be called any number of
++ *	Note that despite the name this can be called any number of
+  *	times.
+  *	Returns 0 on success or error status
+  * @bus_name: return the bus name associated with the device (optional)
 -- 
 2.51.0
 
