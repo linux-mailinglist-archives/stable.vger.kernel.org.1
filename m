@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-207456-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206849-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 957DFD09EE0
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:46:37 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B084D0963F
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:14:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 2CDFF3066742
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:35:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3ACFF3109720
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:06:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C491335B156;
-	Fri,  9 Jan 2026 12:35:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3FF8359FBA;
+	Fri,  9 Jan 2026 12:06:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nu4V9+Db"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nPIFNODz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A12D335BCD;
-	Fri,  9 Jan 2026 12:35:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A768A33CE9A;
+	Fri,  9 Jan 2026 12:06:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962107; cv=none; b=jR4LkBTJfBYeHHXBed151XWTcxVkZRXcsLhKT5aoKkf9AzTw8xmzSPtFN7KwNAdiBofM7vuiHzU4UWdT8ydVAHzsfqYxC4h/fgU6uzCAwoi4s/Js9jH9s6rfFPWV6s752MyL8Ts6l0toL6DOec6dMMe1LeIuk3iwGedMKv1Xhtk=
+	t=1767960374; cv=none; b=GtMLNExEgdb0xbyKNeuoVJboG3AT7lCVRGnxFp0kn2EV0YP+oZKqqmApFCgLetBOs6/1BLTngShEmrlR/w6DXXBAX6sBOgy5SIc7i4sNuSlJKY7KPCLWf1FaxKyLIW3yelymk0xYQbGRX6OUK5hD5K5IarqG92tfig3jwsVFtnA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962107; c=relaxed/simple;
-	bh=Ye0ZYHi7vG2cg6epoqHNqm3+qvgSxZMMkCaka+F5GDI=;
+	s=arc-20240116; t=1767960374; c=relaxed/simple;
+	bh=d3LX412CjF+ODhYMRje7pgyQocgZdQfSOx1IzzI2FBE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lgiVDHJnCiyZQPR0xj8XWtkPyulyuuNoPoKy86/dfRyVpPmdhzqK5zgqifPLfiJgCD8MuaiPau2cJs4kZ6CGEL5upm3nfG4VDTJcseQBx0xnui84/eYg5QNJqS8aMyGf4+f3DmBKEeD+rsjx1V5KgiAVR6CdTm0OUGEGFqDtP2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nu4V9+Db; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D562C4CEF1;
-	Fri,  9 Jan 2026 12:35:06 +0000 (UTC)
+	 MIME-Version; b=WLaDnUqBd+LJPtJ86jWwgIJe/T1R4LUj5//FWrpTXEnBwCw/H7yD2kY7KpV8oczeOA0/jL76FJlDj5V7y77UcnJk3N7Nau2Gn6E1FdcZSFXuEygxSUHCp7k8PCNeNcnLXyvfYKO6P5+LiILW6mRO2Yybvr0RYRNtRYpwLrNW4hY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nPIFNODz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33D31C4CEF1;
+	Fri,  9 Jan 2026 12:06:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962106;
-	bh=Ye0ZYHi7vG2cg6epoqHNqm3+qvgSxZMMkCaka+F5GDI=;
+	s=korg; t=1767960374;
+	bh=d3LX412CjF+ODhYMRje7pgyQocgZdQfSOx1IzzI2FBE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nu4V9+DbZwRELUcMLXtuKyuaWHSDbyGQWyZroo/3Y4wuOErm81H26PLsvkdFPcpkv
-	 RYFSO1yvsjmgozho4y5McJ63G7FfddjdQ4a/spHZ+rPYMKIfP3ehIGEIeyt3qFIXDk
-	 DF3O8uDKVLvYaf/TQRDDjAqnbTrSTOlMAurlsSaA=
+	b=nPIFNODzQjLOyynItPuwC9Jmt3xBloXxUu62b7seJNOagl5yreeRmwA8tMWmOmCoX
+	 2TM9DRjuaOQmi7fj9cl3zrDY6ODf9QZVHk5HkEvVHPlDX0giFJplFWSwbtYCd4AEsG
+	 ImpL8Azxx45Gg5n0d2PxIB7D8u+hzouAnvRvSgg8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Viacheslav Dubeyko <slava@dubeyko.com>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	Yangtao Li <frank.li@vivo.com>,
-	linux-fsdevel@vger.kernel.org,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 241/634] hfsplus: fix volume corruption issue for generic/073
-Date: Fri,  9 Jan 2026 12:38:39 +0100
-Message-ID: <20260109112126.610859245@linuxfoundation.org>
+	syzbot+2fa344348a579b779e05@syzkaller.appspotmail.com,
+	Shaurya Rane <ssrane_b23@ee.vjti.ac.in>,
+	Felix Maurer <fmaurer@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.6 381/737] net/hsr: fix NULL pointer dereference in prp_get_untagged_frame()
+Date: Fri,  9 Jan 2026 12:38:40 +0100
+Message-ID: <20260109112148.334779701@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,130 +61,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Viacheslav Dubeyko <slava@dubeyko.com>
+From: Shaurya Rane <ssrane_b23@ee.vjti.ac.in>
 
-[ Upstream commit 24e17a29cf7537f0947f26a50f85319abd723c6c ]
+commit 188e0fa5a679570ea35474575e724d8211423d17 upstream.
 
-The xfstests' test-case generic/073 leaves HFS+ volume
-in corrupted state:
+prp_get_untagged_frame() calls __pskb_copy() to create frame->skb_std
+but doesn't check if the allocation failed. If __pskb_copy() returns
+NULL, skb_clone() is called with a NULL pointer, causing a crash:
 
-sudo ./check generic/073
-FSTYP -- hfsplus
-PLATFORM -- Linux/x86_64 hfsplus-testing-0001 6.17.0-rc1+ #4 SMP PREEMPT_DYNAMIC Wed Oct 1 15:02:44 PDT 2025
-MKFS_OPTIONS -- /dev/loop51
-MOUNT_OPTIONS -- /dev/loop51 /mnt/scratch
+Oops: general protection fault, probably for non-canonical address 0xdffffc000000000f: 0000 [#1] SMP KASAN NOPTI
+KASAN: null-ptr-deref in range [0x0000000000000078-0x000000000000007f]
+CPU: 0 UID: 0 PID: 5625 Comm: syz.1.18 Not tainted syzkaller #0 PREEMPT(full)
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
+RIP: 0010:skb_clone+0xd7/0x3a0 net/core/skbuff.c:2041
+Code: 03 42 80 3c 20 00 74 08 4c 89 f7 e8 23 29 05 f9 49 83 3e 00 0f 85 a0 01 00 00 e8 94 dd 9d f8 48 8d 6b 7e 49 89 ee 49 c1 ee 03 <43> 0f b6 04 26 84 c0 0f 85 d1 01 00 00 44 0f b6 7d 00 41 83 e7 0c
+RSP: 0018:ffffc9000d00f200 EFLAGS: 00010207
+RAX: ffffffff892235a1 RBX: 0000000000000000 RCX: ffff88803372a480
+RDX: 0000000000000000 RSI: 0000000000000820 RDI: 0000000000000000
+RBP: 000000000000007e R08: ffffffff8f7d0f77 R09: 1ffffffff1efa1ee
+R10: dffffc0000000000 R11: fffffbfff1efa1ef R12: dffffc0000000000
+R13: 0000000000000820 R14: 000000000000000f R15: ffff88805144cc00
+FS:  0000555557f6d500(0000) GS:ffff88808d72f000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000555581d35808 CR3: 000000005040e000 CR4: 0000000000352ef0
+Call Trace:
+ <TASK>
+ hsr_forward_do net/hsr/hsr_forward.c:-1 [inline]
+ hsr_forward_skb+0x1013/0x2860 net/hsr/hsr_forward.c:741
+ hsr_handle_frame+0x6ce/0xa70 net/hsr/hsr_slave.c:84
+ __netif_receive_skb_core+0x10b9/0x4380 net/core/dev.c:5966
+ __netif_receive_skb_one_core net/core/dev.c:6077 [inline]
+ __netif_receive_skb+0x72/0x380 net/core/dev.c:6192
+ netif_receive_skb_internal net/core/dev.c:6278 [inline]
+ netif_receive_skb+0x1cb/0x790 net/core/dev.c:6337
+ tun_rx_batched+0x1b9/0x730 drivers/net/tun.c:1485
+ tun_get_user+0x2b65/0x3e90 drivers/net/tun.c:1953
+ tun_chr_write_iter+0x113/0x200 drivers/net/tun.c:1999
+ new_sync_write fs/read_write.c:593 [inline]
+ vfs_write+0x5c9/0xb30 fs/read_write.c:686
+ ksys_write+0x145/0x250 fs/read_write.c:738
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f0449f8e1ff
+Code: 89 54 24 18 48 89 74 24 10 89 7c 24 08 e8 f9 92 02 00 48 8b 54 24 18 48 8b 74 24 10 41 89 c0 8b 7c 24 08 b8 01 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 31 44 89 c7 48 89 44 24 08 e8 4c 93 02 00 48
+RSP: 002b:00007ffd7ad94c90 EFLAGS: 00000293 ORIG_RAX: 0000000000000001
+RAX: ffffffffffffffda RBX: 00007f044a1e5fa0 RCX: 00007f0449f8e1ff
+RDX: 000000000000003e RSI: 0000200000000500 RDI: 00000000000000c8
+RBP: 00007ffd7ad94d20 R08: 0000000000000000 R09: 0000000000000000
+R10: 000000000000003e R11: 0000000000000293 R12: 0000000000000001
+R13: 00007f044a1e5fa0 R14: 00007f044a1e5fa0 R15: 0000000000000003
+ </TASK>
 
-generic/073 _check_generic_filesystem: filesystem on /dev/loop51 is inconsistent
-(see XFSTESTS-2/xfstests-dev/results//generic/073.full for details)
+Add a NULL check immediately after __pskb_copy() to handle allocation
+failures gracefully.
 
-Ran: generic/073
-Failures: generic/073
-Failed 1 of 1 tests
-
-sudo fsck.hfsplus -d /dev/loop51
-** /dev/loop51
-Using cacheBlockSize=32K cacheTotalBlock=1024 cacheSize=32768K.
-Executing fsck_hfs (version 540.1-Linux).
-** Checking non-journaled HFS Plus Volume.
-The volume name is untitled
-** Checking extents overflow file.
-** Checking catalog file.
-** Checking multi-linked files.
-** Checking catalog hierarchy.
-Invalid directory item count
-(It should be 1 instead of 0)
-** Checking extended attributes file.
-** Checking volume bitmap.
-** Checking volume information.
-Verify Status: VIStat = 0x0000, ABTStat = 0x0000 EBTStat = 0x0000
-CBTStat = 0x0000 CatStat = 0x00004000
-** Repairing volume.
-** Rechecking volume.
-** Checking non-journaled HFS Plus Volume.
-The volume name is untitled
-** Checking extents overflow file.
-** Checking catalog file.
-** Checking multi-linked files.
-** Checking catalog hierarchy.
-** Checking extended attributes file.
-** Checking volume bitmap.
-** Checking volume information.
-** The volume untitled was repaired successfully.
-
-The test is doing these steps on final phase:
-
-mv $SCRATCH_MNT/testdir_1/bar $SCRATCH_MNT/testdir_2/bar
-$XFS_IO_PROG -c "fsync" $SCRATCH_MNT/testdir_1
-$XFS_IO_PROG -c "fsync" $SCRATCH_MNT/foo
-
-So, we move file bar from testdir_1 into testdir_2 folder. It means that HFS+
-logic decrements the number of entries in testdir_1 and increments number of
-entries in testdir_2. Finally, we do fsync only for testdir_1 and foo but not
-for testdir_2. As a result, this is the reason why fsck.hfsplus detects the
-volume corruption afterwards.
-
-This patch fixes the issue by means of adding the
-hfsplus_cat_write_inode() call for old_dir and new_dir in
-hfsplus_rename() after the successful ending of
-hfsplus_rename_cat(). This method makes modification of in-core
-inode objects for old_dir and new_dir but it doesn't save these
-modifications in Catalog File's entries. It was expected that
-hfsplus_write_inode() will save these modifications afterwards.
-However, because generic/073 does fsync only for testdir_1 and foo
-then testdir_2 modification hasn't beed saved into Catalog File's
-entry and it was flushed without this modification. And it was
-detected by fsck.hfsplus. Now, hfsplus_rename() stores in Catalog
-File all modified entries and correct state of Catalog File will
-be flushed during hfsplus_file_fsync() call. Finally, it makes
-fsck.hfsplus happy.
-
-sudo ./check generic/073
-FSTYP         -- hfsplus
-PLATFORM      -- Linux/x86_64 hfsplus-testing-0001 6.18.0-rc3+ #93 SMP PREEMPT_DYNAMIC Wed Nov 12 14:37:49 PST 2025
-MKFS_OPTIONS  -- /dev/loop51
-MOUNT_OPTIONS -- /dev/loop51 /mnt/scratch
-
-generic/073 32s ...  32s
-Ran: generic/073
-Passed all 1 tests
-
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
-cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-cc: Yangtao Li <frank.li@vivo.com>
-cc: linux-fsdevel@vger.kernel.org
-Link: https://lore.kernel.org/r/20251112232522.814038-1-slava@dubeyko.com
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: syzbot+2fa344348a579b779e05@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=2fa344348a579b779e05
+Fixes: f266a683a480 ("net/hsr: Better frame dispatch")
+Cc: stable@vger.kernel.org
+Signed-off-by: Shaurya Rane <ssrane_b23@ee.vjti.ac.in>
+Reviewed-by: Felix Maurer <fmaurer@redhat.com>
+Tested-by: Felix Maurer <fmaurer@redhat.com>
+Link: https://patch.msgid.link/20251129093718.25320-1-ssrane_b23@ee.vjti.ac.in
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/hfsplus/dir.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ net/hsr/hsr_forward.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/hfsplus/dir.c b/fs/hfsplus/dir.c
-index 84714bbccc123..98a30ca6354ce 100644
---- a/fs/hfsplus/dir.c
-+++ b/fs/hfsplus/dir.c
-@@ -552,8 +552,13 @@ static int hfsplus_rename(struct user_namespace *mnt_userns,
- 	res = hfsplus_rename_cat((u32)(unsigned long)old_dentry->d_fsdata,
- 				 old_dir, &old_dentry->d_name,
- 				 new_dir, &new_dentry->d_name);
--	if (!res)
-+	if (!res) {
- 		new_dentry->d_fsdata = old_dentry->d_fsdata;
-+
-+		res = hfsplus_cat_write_inode(old_dir);
-+		if (!res)
-+			res = hfsplus_cat_write_inode(new_dir);
-+	}
- 	return res;
- }
- 
--- 
-2.51.0
-
+--- a/net/hsr/hsr_forward.c
++++ b/net/hsr/hsr_forward.c
+@@ -176,6 +176,8 @@ struct sk_buff *prp_get_untagged_frame(s
+ 				__pskb_copy(frame->skb_prp,
+ 					    skb_headroom(frame->skb_prp),
+ 					    GFP_ATOMIC);
++			if (!frame->skb_std)
++				return NULL;
+ 		} else {
+ 			/* Unexpected */
+ 			WARN_ONCE(1, "%s:%d: Unexpected frame received (port_src %s)\n",
 
 
 
