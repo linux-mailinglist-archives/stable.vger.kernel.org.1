@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-206654-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207255-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFB0BD092B1
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:01:28 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4901D09C5E
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:37:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F36063042498
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:57:02 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A878A30A3995
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:25:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DCAF33C511;
-	Fri,  9 Jan 2026 11:57:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DEE5359F9C;
+	Fri,  9 Jan 2026 12:25:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P0mXcqwc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zpF6fvI8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E549C2F12D4;
-	Fri,  9 Jan 2026 11:57:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 814D835B12D;
+	Fri,  9 Jan 2026 12:25:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767959821; cv=none; b=eSW0kZfqTdhTOfua8M59l1R9BQ6/LGn/ryLy/9FyF71aw5FtpxDu7SZpfkmK14uVjkDoy3QAip1EYgw5OHgyGdITfPnM7FQdHt8DOz0YuwlpI4GofA82jJFC1xlmPlv/B2jk8au2b0B3UWS2xPNRRh8JEThyzvMdi3Cnw0in+aA=
+	t=1767961536; cv=none; b=oMfvRj4njNlWLNEX7ilNhwpXDbzU9cFM6cPTCL6nL0RtzmUL0e8xCivaxrBDOUqknDZoHxtVIkolGE05rE/1ohvCfibe3HfRw1nyoysyggxBp69swoFxG+3xRY8cXignleI5jxx0F+WjcKOO1LC8VCI+SUvH6yWgRyeySgUyeQU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767959821; c=relaxed/simple;
-	bh=YD8qDFJnlkPEqRLoKCYWrxgDAS5YohtVFEh5OkjRMps=;
+	s=arc-20240116; t=1767961536; c=relaxed/simple;
+	bh=XYg+aZu06euuWSqj7N7/yG1nCYrFe6jOvWTWnZzvuF0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=el9pwHlmZscQnCsiLaprCsUpaD1eGulkcUxgRheOXtkiA/x6iu/BCY+mxYa3tLB+lGuUam4b0nIJxPo91ab43iQtHq+ijK3F4OxQofY8xXyzDgi/Rlg9BABDJiKycXJmkZ9K+HQdOM5h5xBLac087OGdTYn4I7VLxbyOJR1S5To=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P0mXcqwc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73628C4CEF1;
-	Fri,  9 Jan 2026 11:57:00 +0000 (UTC)
+	 MIME-Version; b=sVL3A/fZqJrOV4aRo8t5U2WxNvyMGlzWWfVfJ7u/3+1s06JXdldYZwwHkNOYVBfTwn12fqzIwwxsmGxdbzo8wcsqVzIF8TADjQgQvxi/I1pH/NTFgjtwSKKzi5IUd9qHHVHOQyi6Cgg5R+Prjxm9P6UwUB2fKjXJlF5TQaJx7HI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zpF6fvI8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D346C4CEF1;
+	Fri,  9 Jan 2026 12:25:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767959820;
-	bh=YD8qDFJnlkPEqRLoKCYWrxgDAS5YohtVFEh5OkjRMps=;
+	s=korg; t=1767961535;
+	bh=XYg+aZu06euuWSqj7N7/yG1nCYrFe6jOvWTWnZzvuF0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P0mXcqwcbk0gUYwM+oMA/Y0Qmyi4RWNyj6c8nPziYFJHGayzSs+jGRe0sxdZ/CyBn
-	 IR6tvo9c2xAnuOMlKiQcJkXRloa1FCGgwhyPY2fSgCUfaMQbRTUcDF3IBlV+yuNzJk
-	 Sa71cSHNNVv+c0iVOtxLK9Aj2EzLUf2hAmHfoAEM=
+	b=zpF6fvI8d7NK5zCQpZCs9z8ToLMjzwq6qTdihNsOOMeBDV7BPMRxvIyzq6GZ+egby
+	 yuowN1i3M2tD2yjZ5mieHHYuaxXKbpgJpEuFQa0jACkk2zTFAK6mGGVmXYY/PlyrAX
+	 MpflTtkjkm+5wTC/GLfkonbOiMAUGPxiFWkHteEQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Seungjin Bae <eeodqql09@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	Petr Mladek <pmladek@suse.com>,
+	Joe Lawrence <joe.lawrence@redhat.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 187/737] wifi: rtl818x: rtl8187: Fix potential buffer underflow in rtl8187_rx_cb()
+Subject: [PATCH 6.1 048/634] objtool: Fix weak symbol detection
 Date: Fri,  9 Jan 2026 12:35:26 +0100
-Message-ID: <20260109112141.029904208@linuxfoundation.org>
+Message-ID: <20260109112119.253919730@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,91 +61,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Seungjin Bae <eeodqql09@gmail.com>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-[ Upstream commit b647d2574e4583c2e3b0ab35568f60c88e910840 ]
+[ Upstream commit 72567c630d32bc31f671977f78228c80937ed80e ]
 
-The rtl8187_rx_cb() calculates the rx descriptor header address
-by subtracting its size from the skb tail pointer.
-However, it does not validate if the received packet
-(skb->len from urb->actual_length) is large enough to contain this
-header.
+find_symbol_hole_containing() fails to find a symbol hole (aka stripped
+weak symbol) if its section has no symbols before the hole.  This breaks
+weak symbol detection if -ffunction-sections is enabled.
 
-If a truncated packet is received, this will lead to a buffer
-underflow, reading memory before the start of the skb data area,
-and causing a kernel panic.
+Fix that by allowing the interval tree to contain section symbols, which
+are always at offset zero for a given section.
 
-Add length checks for both rtl8187 and rtl8187b descriptor headers
-before attempting to access them, dropping the packet cleanly if the
-check fails.
+Fixes a bunch of (-ffunction-sections) warnings like:
 
-Fixes: 6f7853f3cbe4 ("rtl8187: change rtl8187_dev.c to support RTL8187B (part 2)")
-Signed-off-by: Seungjin Bae <eeodqql09@gmail.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20251118013258.1789949-2-eeodqql09@gmail.com
+  vmlinux.o: warning: objtool: .text.__x64_sys_io_setup+0x10: unreachable instruction
+
+Fixes: 4adb23686795 ("objtool: Ignore extra-symbol code")
+Acked-by: Petr Mladek <pmladek@suse.com>
+Tested-by: Joe Lawrence <joe.lawrence@redhat.com>
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../wireless/realtek/rtl818x/rtl8187/dev.c    | 27 +++++++++++++------
- 1 file changed, 19 insertions(+), 8 deletions(-)
+ tools/objtool/elf.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c b/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c
-index f6528469022bf..70df4c0b939ca 100644
---- a/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c
-+++ b/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c
-@@ -338,14 +338,16 @@ static void rtl8187_rx_cb(struct urb *urb)
- 	spin_unlock_irqrestore(&priv->rx_queue.lock, f);
- 	skb_put(skb, urb->actual_length);
+diff --git a/tools/objtool/elf.c b/tools/objtool/elf.c
+index 89b37cd4ab1dc..905253421e8c8 100644
+--- a/tools/objtool/elf.c
++++ b/tools/objtool/elf.c
+@@ -74,7 +74,7 @@ struct symbol_hole {
+ };
  
--	if (unlikely(urb->status)) {
--		dev_kfree_skb_irq(skb);
--		return;
--	}
-+	if (unlikely(urb->status))
-+		goto free_skb;
+ /*
+- * Find !section symbol where @offset is after it.
++ * Find the last symbol before @offset.
+  */
+ static int symbol_hole_by_offset(const void *key, const struct rb_node *node)
+ {
+@@ -85,8 +85,7 @@ static int symbol_hole_by_offset(const void *key, const struct rb_node *node)
+ 		return -1;
  
- 	if (!priv->is_rtl8187b) {
--		struct rtl8187_rx_hdr *hdr =
--			(typeof(hdr))(skb_tail_pointer(skb) - sizeof(*hdr));
-+		struct rtl8187_rx_hdr *hdr;
-+
-+		if (skb->len < sizeof(struct rtl8187_rx_hdr))
-+			goto free_skb;
-+
-+		hdr = (typeof(hdr))(skb_tail_pointer(skb) - sizeof(*hdr));
- 		flags = le32_to_cpu(hdr->flags);
- 		/* As with the RTL8187B below, the AGC is used to calculate
- 		 * signal strength. In this case, the scaling
-@@ -355,8 +357,12 @@ static void rtl8187_rx_cb(struct urb *urb)
- 		rx_status.antenna = (hdr->signal >> 7) & 1;
- 		rx_status.mactime = le64_to_cpu(hdr->mac_time);
- 	} else {
--		struct rtl8187b_rx_hdr *hdr =
--			(typeof(hdr))(skb_tail_pointer(skb) - sizeof(*hdr));
-+		struct rtl8187b_rx_hdr *hdr;
-+
-+		if (skb->len < sizeof(struct rtl8187b_rx_hdr))
-+			goto free_skb;
-+
-+		hdr = (typeof(hdr))(skb_tail_pointer(skb) - sizeof(*hdr));
- 		/* The Realtek datasheet for the RTL8187B shows that the RX
- 		 * header contains the following quantities: signal quality,
- 		 * RSSI, AGC, the received power in dB, and the measured SNR.
-@@ -409,6 +415,11 @@ static void rtl8187_rx_cb(struct urb *urb)
- 		skb_unlink(skb, &priv->rx_queue);
- 		dev_kfree_skb_irq(skb);
+ 	if (sh->key >= s->offset + s->len) {
+-		if (s->type != STT_SECTION)
+-			sh->sym = s;
++		sh->sym = s;
+ 		return 1;
  	}
-+	return;
-+
-+free_skb:
-+	dev_kfree_skb_irq(skb);
-+	return;
- }
  
- static int rtl8187_init_urbs(struct ieee80211_hw *dev)
+@@ -369,7 +368,8 @@ static void elf_add_symbol(struct elf *elf, struct symbol *sym)
+ 	sym->len = sym->sym.st_size;
+ 
+ 	__sym_for_each(iter, &sym->sec->symbol_tree, sym->offset, sym->offset) {
+-		if (iter->offset == sym->offset && iter->type == sym->type)
++		if (iter->offset == sym->offset && iter->type == sym->type &&
++		    iter->len == sym->len)
+ 			iter->alias = sym;
+ 	}
+ 
 -- 
 2.51.0
 
