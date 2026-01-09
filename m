@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-206695-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207298-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58FD8D0939B
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:04:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AC52D09BF0
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:36:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AD61030DBBF9
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:58:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 81F4430A565F
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:27:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 794B135970E;
-	Fri,  9 Jan 2026 11:58:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3699131A7EA;
+	Fri,  9 Jan 2026 12:27:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IUjqlKoN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GcZa18EC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B422359703;
-	Fri,  9 Jan 2026 11:58:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC4A3335083;
+	Fri,  9 Jan 2026 12:27:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767959936; cv=none; b=fn/vhM0TyMLKHNOxUdpiUywh3EcjT/KKHCieyicO/n2SKKKqHofhZ6yyHIeTzxh7KOmoC86grwsNzulY9dRn7s4jvwO3tCvn+oWluxOfwr3FMaozX9rd1AYIU94GVKyiqcH8WtyHsggcKpbpXwtyLk6bM9ylK05GnYbBTUIPcnI=
+	t=1767961658; cv=none; b=XVtqIyT66NJjCjyw44Z+p1CBnFR7/2wtJcVOnOYvtYYPO6Pp2lQ1Ams8gPaQAx5HO+uTmTRK5sRYKKOZjCFyLC4Amd4PvDJ5kgcC0uWJH2D8NIdKa2U3kY25DG9EY9qUeTWw/DPMMSYDg7NX2A7qjhoOxRVL3B4XUT84CIcVHBc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767959936; c=relaxed/simple;
-	bh=iTRsOwhOSAsMdDAQWBF15WODjZhdwNOe5gO5d5+nZys=;
+	s=arc-20240116; t=1767961658; c=relaxed/simple;
+	bh=CGx4QrCwVmcZvqWa4Q8hgfSde6tVRjti6np4rYPxsg8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q7tBEtCr9NCk1vNQAhkBXsf7OD9Ayq0PCuzA7ew+A8fvjcMssTb5+rAnh6kLen4lIsZcEQDLi0hl7k7DazD/UcN1g6vCdjaHqY7aozuyQKE3hpvS0sfqim8WXkl0myyVU61V/eg9FzBV8BZ/1zOhsUiHVhbSMtMQyfGzNXVTQM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IUjqlKoN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA13EC4CEF1;
-	Fri,  9 Jan 2026 11:58:55 +0000 (UTC)
+	 MIME-Version; b=WthHgud6wKECEp6+0I/SjHUqH9UGyGe7ik5ZwhLDjcJxMv8cA54inluVEzXA/j9aWEPc5N1rqmAnWOB8FmUDHL6fgokrsFmQInbm90wuXkhki/Czlzv/Ayrq1xKtx7KUm8bFMMa1zHS2n+HMi+/pFA4sUjynAERwyt9ApSb9W3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GcZa18EC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3211BC4CEF1;
+	Fri,  9 Jan 2026 12:27:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767959936;
-	bh=iTRsOwhOSAsMdDAQWBF15WODjZhdwNOe5gO5d5+nZys=;
+	s=korg; t=1767961657;
+	bh=CGx4QrCwVmcZvqWa4Q8hgfSde6tVRjti6np4rYPxsg8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IUjqlKoNubxpleCwWKm3k+FAmpYkA0HAl+C1edZ42ZufZhuAu5MdVwk1hELSVf3Y6
-	 z8WQsMgAP2S0EoK1Qi1HqFESHvpV1wIwFz8VaX6NHMM6787LTBeec74wl96YbqAzpq
-	 l45vhi56Cj2CC3eXBUtyZq8+oqEgN7S6PSqw6sZg=
+	b=GcZa18ECMQ3TeT2p82Ut+hKMGM/w8giNLywxxQTT2+cABLSJ4l6kgxiHlwDHctBKO
+	 dvH0NKFVRkKHWN3Q/2ZkDOnRpqns6E1OSkPcUs2+ssuHB6zsXhmvYYsHnJmNHDbVhr
+	 7gmkiDRSY0a1cwHHUbim85IQNdDgqNJH92fJ6sk8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Wang <jasowang@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 228/737] virtio: fix virtqueue_set_affinity() docs
-Date: Fri,  9 Jan 2026 12:36:07 +0100
-Message-ID: <20260109112142.576911619@linuxfoundation.org>
+Subject: [PATCH 6.1 090/634] scsi: stex: Fix reboot_notifier leak in probe error path
+Date: Fri,  9 Jan 2026 12:36:08 +0100
+Message-ID: <20260109112120.822036740@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,38 +60,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael S. Tsirkin <mst@redhat.com>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-[ Upstream commit 43236d8bbafff94b423afecc4a692dd90602d426 ]
+[ Upstream commit 20da637eb545b04753e20c675cfe97b04c7b600b ]
 
-Rewrite the comment for better grammar and clarity.
+In stex_probe(), register_reboot_notifier() is called at the beginning,
+but if any subsequent initialization step fails, the function returns
+without unregistering the notifier, resulting in a resource leak.
 
-Fixes: 75a0a52be3c2 ("virtio: introduce an API to set affinity for a virtqueue")
-Message-Id: <e317e91bd43b070e5eaec0ebbe60c5749d02e2dd.1763026134.git.mst@redhat.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Add unregister_reboot_notifier() in the out_disable error path to ensure
+proper cleanup on all failure paths.
+
+Fixes: 61b745fa63db ("scsi: stex: Add S6 support")
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Link: https://patch.msgid.link/20251104094847.270-1-vulab@iscas.ac.cn
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/virtio_config.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/stex.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/linux/virtio_config.h b/include/linux/virtio_config.h
-index f106d3177476b..7528255068fd8 100644
---- a/include/linux/virtio_config.h
-+++ b/include/linux/virtio_config.h
-@@ -310,7 +310,7 @@ const char *virtio_bus_name(struct virtio_device *vdev)
-  * @vq: the virtqueue
-  * @cpu_mask: the cpu mask
-  *
-- * Pay attention the function are best-effort: the affinity hint may not be set
-+ * Note that this function is best-effort: the affinity hint may not be set
-  * due to config support, irq type and sharing.
-  *
-  */
+diff --git a/drivers/scsi/stex.c b/drivers/scsi/stex.c
+index 6b07f367918ef..56b29b52fce71 100644
+--- a/drivers/scsi/stex.c
++++ b/drivers/scsi/stex.c
+@@ -1846,6 +1846,7 @@ static int stex_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ out_scsi_host_put:
+ 	scsi_host_put(host);
+ out_disable:
++	unregister_reboot_notifier(&stex_notifier);
+ 	pci_disable_device(pdev);
+ 
+ 	return err;
 -- 
 2.51.0
 
