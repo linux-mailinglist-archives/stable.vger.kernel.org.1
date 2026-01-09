@@ -1,125 +1,112 @@
-Return-Path: <stable+bounces-207860-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207862-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0437AD0A79E
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:46:17 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E65FD0A85B
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:58:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 18520307F22F
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 13:40:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DAECE30DB4AC
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 13:53:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 405A435CB93;
-	Fri,  9 Jan 2026 13:40:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="IMKAVE+W"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8906F33A9D4;
+	Fri,  9 Jan 2026 13:53:28 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD75735A952;
-	Fri,  9 Jan 2026 13:40:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.97.179.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B8F735CBA3
+	for <stable@vger.kernel.org>; Fri,  9 Jan 2026 13:53:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767966048; cv=none; b=qjFU/nCsYC/5l6Qo0Rg6dFkFzjZu3365WYmKx8BGLuVdIipSkmbVlGlQxw/bK5KXnbopfI2OSVH26KXOUv1H2PV+5toaluPj5bepnrH+kmGlZkvle5/DJyD4QUz3ReAAYE4+NYjrtNwcVdh8lR5k5FEoh9pde9lw/+88Bkp26aU=
+	t=1767966808; cv=none; b=tbac+DtMzoBvOd7rk+pSitV/FVhK6i7jJIEeCQ11qPK7jQC9cyZNuhle4BGcdM4x5tzfEPTFDM2cxjjC7pIuT59RaW06le1UulKA2H63izXz+NQLSl/bAHwg+3y7AWvBiNmDTzFY41SwIIjvM/nJxxgnzGPnm9G0UibAdO1sBuM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767966048; c=relaxed/simple;
-	bh=G/p1x2YBAJeOLuNkk8WAicrllcn4KYPv9RqNynVAaYI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=u82JUzgzQX3Ap8VMACbCDHFupkt6jrZn8na4QaSsqeOKeQQqMGOU+47OL4QvNBW03ncEGf/WwkWwZJcIgKcMPktWC+b1hcdzkEomwy0cgPL49sNr854Rml9xKqPUKP0yTpk/Szak3U3/lXxxt5vmn1gCZmFeXJpmC23gTZaQZ5U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=IMKAVE+W; arc=none smtp.client-ip=213.97.179.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
-	Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=mHMWYBgydm9Inr+rqCvfzF3QaGT77USiVccdvrYveKQ=; b=IMKAVE+WHBbsesk0CBNBlDP5op
-	aE6CrnkPMQwGU3ldknG/tscquJk+jYN/RJ/zwKBAO3ybAE8f0QJIQ8KBq7WArxjPsnOT45J6IrvJA
-	wjHdPt78XDQFZxlZ3iBhzcabMD2Amo4wv9i8/xeV/loSbmKbjWmIND4i5bOU3zfCETN4rgCUFo5ju
-	F3qr4o4mangv0akYDvrQ+xEtRbzQ08q17cKn1y80tchFxsc+YJ6OCBh0fpfXXeOBipGqQ1ZLMiZgz
-	1eeJ5l83u0PT6doNFkrHGkZ3/lLIDkCcLMK9IP/94IN8BxaA0eAh7tvR4pXwn4ncUhDJ8De6V9dte
-	WTfNEZpg==;
-Received: from 179-125-75-246-dinamico.pombonet.net.br ([179.125.75.246] helo=quatroqueijos.cascardo.eti.br)
-	by fanzine2.igalia.com with esmtpsa 
-	(Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-	id 1veCjH-003Qq7-Od; Fri, 09 Jan 2026 14:40:40 +0100
-Date: Fri, 9 Jan 2026 10:40:34 -0300
-From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	syzbot+340581ba9dceb7e06fb3@syzkaller.appspotmail.com,
-	Lizhi Xu <lizhi.xu@windriver.com>, Theodore Tso <tytso@mit.edu>
-Subject: Re: [PATCH 6.6 731/737] ext4: filesystems without casefold feature
- cannot be mounted with siphash
-Message-ID: <aWEFUlM6PsTMMXxr@quatroqueijos.cascardo.eti.br>
-References: <20260109112133.973195406@linuxfoundation.org>
- <20260109112201.603806562@linuxfoundation.org>
+	s=arc-20240116; t=1767966808; c=relaxed/simple;
+	bh=xxO6LHFL7C5BMdlh5Y9x3VEP5YtoU+wWGj1LCNfBhkQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=FyWNyxdL7n8TigAMmbiFup6nrh77cjASR/jsMiwpH2v57I9wuN4C7ui6qJSyE8jskGVy8JreSm67JWe1QSphgNjRUpCFE/LGlbMl1Eayrj0VWPgtQCATwlbTawS/+Kpg3SkOXD77AnevVcogY7iMYuDdT/ZvlBZ0JdZecloCPnI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1veCvU-0002ds-0y; Fri, 09 Jan 2026 14:53:16 +0100
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1veCvT-009r4P-2K;
+	Fri, 09 Jan 2026 14:53:15 +0100
+Received: from blackshift.org (unknown [IPv6:2a03:2260:2009::])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 25FB24C9998;
+	Fri, 09 Jan 2026 13:53:15 +0000 (UTC)
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	kuba@kernel.org,
+	linux-can@vger.kernel.org,
+	kernel@pengutronix.de,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	stable@vger.kernel.org
+Subject: [PATCH net 2/3] can: gs_usb: gs_usb_receive_bulk_callback(): fix URB memory leak
+Date: Fri,  9 Jan 2026 14:46:11 +0100
+Message-ID: <20260109135311.576033-3-mkl@pengutronix.de>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20260109135311.576033-1-mkl@pengutronix.de>
+References: <20260109135311.576033-1-mkl@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260109112201.603806562@linuxfoundation.org>
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: stable@vger.kernel.org
 
-Hi, Greg.
+In gs_can_open(), the URBs for USB-in transfers are allocated, added to the
+parent->rx_submitted anchor and submitted. In the complete callback
+gs_usb_receive_bulk_callback(), the URB is processed and resubmitted. In
+gs_can_close() the URBs are freed by calling
+usb_kill_anchored_urbs(parent->rx_submitted).
 
-The followup to 985b67cd86392310d9e9326de941c22fc9340eec, that I submitted
-in the same thread, has not been picked up.
+However, this does not take into account that the USB framework unanchors
+the URB before the complete function is called. This means that once an
+in-URB has been completed, it is no longer anchored and is ultimately not
+released in gs_can_close().
 
-20260108150350.3354622-2-cascardo@igalia.com
-https://lore.kernel.org/stable/20260108150350.3354622-2-cascardo@igalia.com/
-a2187431c395 ("ext4: fix error message when rejecting the default hash")
+Fix the memory leak by anchoring the URB in the
+gs_usb_receive_bulk_callback() to the parent->rx_submitted anchor.
 
-You picked it up for 6.1 and 5.15 though.
+Fixes: d08e973a77d1 ("can: gs_usb: Added support for the GS_USB CAN devices")
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20260105-gs_usb-fix-memory-leak-v2-1-cc6ed6438034@pengutronix.de
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+---
+ drivers/net/can/usb/gs_usb.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Regards.
-Cascardo.
+diff --git a/drivers/net/can/usb/gs_usb.c b/drivers/net/can/usb/gs_usb.c
+index a0233e550a5a..d093babbc320 100644
+--- a/drivers/net/can/usb/gs_usb.c
++++ b/drivers/net/can/usb/gs_usb.c
+@@ -751,6 +751,8 @@ static void gs_usb_receive_bulk_callback(struct urb *urb)
+ 			  hf, parent->hf_size_rx,
+ 			  gs_usb_receive_bulk_callback, parent);
+ 
++	usb_anchor_urb(urb, &parent->rx_submitted);
++
+ 	rc = usb_submit_urb(urb, GFP_ATOMIC);
+ 
+ 	/* USB failure take down all interfaces */
+-- 
+2.51.0
 
-On Fri, Jan 09, 2026 at 12:44:30PM +0100, Greg Kroah-Hartman wrote:
-> 6.6-stable review patch.  If anyone has any objections, please let me know.
-> 
-> ------------------
-> 
-> From: Lizhi Xu <lizhi.xu@windriver.com>
-> 
-> commit 985b67cd86392310d9e9326de941c22fc9340eec upstream.
-> 
-> When mounting the ext4 filesystem, if the default hash version is set to
-> DX_HASH_SIPHASH but the casefold feature is not set, exit the mounting.
-> 
-> Reported-by: syzbot+340581ba9dceb7e06fb3@syzkaller.appspotmail.com
-> Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
-> Link: https://patch.msgid.link/20240605012335.44086-1-lizhi.xu@windriver.com
-> Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-> [cascardo: small conflict fixup]
-> Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> ---
->  fs/ext4/super.c |    8 ++++++++
->  1 file changed, 8 insertions(+)
-> 
-> --- a/fs/ext4/super.c
-> +++ b/fs/ext4/super.c
-> @@ -3632,6 +3632,14 @@ int ext4_feature_set_ok(struct super_blo
->  	}
->  #endif
->  
-> +	if (EXT4_SB(sb)->s_es->s_def_hash_version == DX_HASH_SIPHASH &&
-> +	    !ext4_has_feature_casefold(sb)) {
-> +		ext4_msg(sb, KERN_ERR,
-> +			 "Filesystem without casefold feature cannot be "
-> +			 "mounted with siphash");
-> +		return 0;
-> +	}
-> +
->  	if (readonly)
->  		return 1;
->  
-> 
-> 
 
