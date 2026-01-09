@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-207441-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206841-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6BE2D09EB9
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:45:56 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95F79D0942E
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:06:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B1AE0309D9E4
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:34:24 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6DB20302475F
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:05:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F42E35B14C;
-	Fri,  9 Jan 2026 12:34:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3C4435A921;
+	Fri,  9 Jan 2026 12:05:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NSFNOKRu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IPuZVn/X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE0F735B13F;
-	Fri,  9 Jan 2026 12:34:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A74DD1946C8;
+	Fri,  9 Jan 2026 12:05:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962063; cv=none; b=VLL9LKf9ngR7GYgKq6QUyra5PGEsuXcxzqpggp20P7SuxN1+ng1yx6Jp5SD/yEkUEKgQ7mGMp1l+9NsnMFe3g7uNjUEN4Fecz076l1LwHNK5569uePEIqHH0A35dVUG1Ek6r5ior7H9UIfnOYYwqMXLSK+NJDS/kjZGt7WwoRI8=
+	t=1767960351; cv=none; b=O82heRW6OOsXbGK7m05H3g2ND0jfCEFRTp+fZUtZKp04gDJa3ThSnTh/2WenPUhNONp2Tgpf2kpWAjKTwA/k7qjJRmxcwzuCPhTw6qacgrm6DspDx4FnUsDJ2C/mA4TGmo4z4b7ptm8azVmSVeRIXv3BcW/z2qE03/arZlbIZ18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962063; c=relaxed/simple;
-	bh=+smaygD2mIOt8sI4Vhmj0DM7SFdmpt5Vxz0tGJhLXBo=;
+	s=arc-20240116; t=1767960351; c=relaxed/simple;
+	bh=ltTlgIGZhHEe1VLgRAlpU0lgLSC6j/vjPE/ACAd+/BM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YWMimhXAzcV42rq6roRAPKDpWAex/g0WzZQ+rASnfTcrFkr2jYgoabAi7MElkG5Qv7bR0gw9MMEY3c3Uyi5gO5WMV9SddKh2TJ+ck7K7HvUcX0r4dJ/a5oRVAYpjusMBt+L1j6AEscJXGX2ISOtju6Ohb8WDwUThRerAuvM0sP8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NSFNOKRu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F4230C4CEF1;
-	Fri,  9 Jan 2026 12:34:22 +0000 (UTC)
+	 MIME-Version; b=rFfIi1oJ8hlQ/dUJnk756YkyqvF1dBgO5DwTSQbJDhiTwboDV1KuQ9+WXFwKN7e7UCDCCgk7MM2Pa9hIIY7aM59KPPfPN6LP3mEj7AgRK9aacJnYNhcJeV8HeX2apfXHIvRcyI+UG164CpAny2Sc/UykPEK/rDCZyIA6CkotVxY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IPuZVn/X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 342AEC4CEF1;
+	Fri,  9 Jan 2026 12:05:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962063;
-	bh=+smaygD2mIOt8sI4Vhmj0DM7SFdmpt5Vxz0tGJhLXBo=;
+	s=korg; t=1767960351;
+	bh=ltTlgIGZhHEe1VLgRAlpU0lgLSC6j/vjPE/ACAd+/BM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NSFNOKRuzwsQTnr6DfT2YfIGKpCF1ydQKrhCNVqhfVLlchjqYlviGeTBq/HvEdiwU
-	 dZkqa6HuVKmWldp/mBcoTAaG9sjK04HtvrHlEc5WjksloSSbZWc8VtKnu5qNyXFjen
-	 dEx9TWxIGQvREecrplri/wVDPp4CHGthSXqQhbtk=
+	b=IPuZVn/XMhsSH0fJUgyJbaicw+7Y6K2TNqjcgrmZf7tHX1FxzZ1THjZ9rednb5qeD
+	 rbEo51MFBqoEYq3j2MksquZpNsf4nNZtduL/h+e1G5nRjs2ygnvz16sAZnp8O+SVkM
+	 9zdmX5quLklC5NHvuGX6VFwD//x5EVQD4XVu6N+Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 233/634] ACPI: property: Use ACPI functions in acpi_graph_get_next_endpoint() only
-Date: Fri,  9 Jan 2026 12:38:31 +0100
-Message-ID: <20260109112126.196258387@linuxfoundation.org>
+	Junjie Cao <junjie.cao@intel.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.6 373/737] Input: ti_am335x_tsc - fix off-by-one error in wire_order validation
+Date: Fri,  9 Jan 2026 12:38:32 +0100
+Message-ID: <20260109112148.025148173@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +59,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
+From: Junjie Cao <junjie.cao@intel.com>
 
-[ Upstream commit 5d010473cdeaabf6a2d3a9e2aed2186c1b73c213 ]
+commit 248d3a73a0167dce15ba100477c3e778c4787178 upstream.
 
-Calling fwnode_get_next_child_node() in ACPI implementation of the fwnode
-property API is somewhat problematic as the latter is used in the
-impelementation of the former. Instead of using
-fwnode_get_next_child_node() in acpi_graph_get_next_endpoint(), call
-acpi_get_next_subnode() directly instead.
+The current validation 'wire_order[i] > ARRAY_SIZE(config_pins)' allows
+wire_order[i] to equal ARRAY_SIZE(config_pins), which causes out-of-bounds
+access when used as index in 'config_pins[wire_order[i]]'.
 
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-Link: https://patch.msgid.link/20251001104320.1272752-3-sakari.ailus@linux.intel.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Since config_pins has 4 elements (indices 0-3), the valid range for
+wire_order should be 0-3. Fix the off-by-one error by using >= instead
+of > in the validation check.
+
+Signed-off-by: Junjie Cao <junjie.cao@intel.com>
+Link: https://patch.msgid.link/20251114062817.852698-1-junjie.cao@intel.com
+Fixes: bb76dc09ddfc ("input: ti_am33x_tsc: Order of TSC wires, made configurable")
+Cc: stable@vger.kernel.org
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/property.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/input/touchscreen/ti_am335x_tsc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
-index 0ff1c3d2504d4..577942d29d133 100644
---- a/drivers/acpi/property.c
-+++ b/drivers/acpi/property.c
-@@ -1382,7 +1382,7 @@ static struct fwnode_handle *acpi_graph_get_next_endpoint(
- 
- 	if (!prev) {
- 		do {
--			port = fwnode_get_next_child_node(fwnode, port);
-+			port = acpi_get_next_subnode(fwnode, port);
- 			/*
- 			 * The names of the port nodes begin with "port@"
- 			 * followed by the number of the port node and they also
-@@ -1400,13 +1400,13 @@ static struct fwnode_handle *acpi_graph_get_next_endpoint(
- 	if (!port)
- 		return NULL;
- 
--	endpoint = fwnode_get_next_child_node(port, prev);
-+	endpoint = acpi_get_next_subnode(port, prev);
- 	while (!endpoint) {
--		port = fwnode_get_next_child_node(fwnode, port);
-+		port = acpi_get_next_subnode(fwnode, port);
- 		if (!port)
- 			break;
- 		if (is_acpi_graph_node(port, "port"))
--			endpoint = fwnode_get_next_child_node(port, NULL);
-+			endpoint = acpi_get_next_subnode(port, NULL);
+--- a/drivers/input/touchscreen/ti_am335x_tsc.c
++++ b/drivers/input/touchscreen/ti_am335x_tsc.c
+@@ -85,7 +85,7 @@ static int titsc_config_wires(struct tit
+ 		wire_order[i] = ts_dev->config_inp[i] & 0x0F;
+ 		if (WARN_ON(analog_line[i] > 7))
+ 			return -EINVAL;
+-		if (WARN_ON(wire_order[i] > ARRAY_SIZE(config_pins)))
++		if (WARN_ON(wire_order[i] >= ARRAY_SIZE(config_pins)))
+ 			return -EINVAL;
  	}
  
- 	/*
--- 
-2.51.0
-
 
 
 
