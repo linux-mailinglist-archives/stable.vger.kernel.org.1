@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-206649-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207240-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8DA8D09293
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:01:09 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7313CD09A21
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:29:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 30044302C23B
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:56:48 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 598E13034F14
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:24:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BAC933B97F;
-	Fri,  9 Jan 2026 11:56:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D29E9335083;
+	Fri,  9 Jan 2026 12:24:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N1CX842N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vuBCiU5p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D43402F12D4;
-	Fri,  9 Jan 2026 11:56:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A2E435B129;
+	Fri,  9 Jan 2026 12:24:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767959806; cv=none; b=EVKC5ZeIfrRtrJz5LeiV7Ee8XKEmkCXsF0juMAmGzn1sbbU/t7gK5ZDeJmnsgFNJxYfhLwnGrFRbuz3SBohPKgkX6u6Vmtvl0zZPojsmH8zgCzE2cTkSXvnidhzZK+4hZZh5Hhk6uk/jOlGcJOIA7jOfLm5IIKyadKUFhAoLGi8=
+	t=1767961492; cv=none; b=maxnPtuvvQaExOaLCJmxugmrmQLhZ0cxlQegzsnYpCM6a8okJ5ig5TEl+EsaOTjD8aSFtMbRoWtefxjjpw6GqfmJfbcCP62nDA/UjnORRkyCc8P72WATxdcPUvQL+Ha5NGlnaMuV5AVRshOWOhWdmyKgkG4IfuVQNWi1LBT6vtM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767959806; c=relaxed/simple;
-	bh=iH2Dil4KB2t1QwrNkP5/l2cCzkcUOJW66R4gUafds+8=;
+	s=arc-20240116; t=1767961492; c=relaxed/simple;
+	bh=XopXMY9mOHx+QTQolsebtcJuZ00r/hTZXoHMn3hse9I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ROPXqH7DnxbEn0qJaioVJOXxoDrHqo71fewHFWFhO05lwhWzDmJifwL/5ugqNDOtyPZywRLCpnZuSTTN3T0aWXauhVER29wo9JyhrZIB86ziN2x3/fccRb3qFwSVuzfgC8gnAkVaLpjYBneE9fUNWaiiSJTUpk9kphV7gTdjsNY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N1CX842N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60FB5C4CEF1;
-	Fri,  9 Jan 2026 11:56:46 +0000 (UTC)
+	 MIME-Version; b=iZcP/Oi9Uf/E0f2JeJsOBBYNJTpVYuJU5qbgQB+z2NixClPnLBDQFTVcNcZdeAOLfQc6YmejSOMErMVFYnTB1HBR8+AhtgmrQjVmBe6FsJRRHVbAT3xYvAv6Xxv9mbGt5iPePPN4Sun1F/pVwnJ8pBwUi84QTxqQo6qaOq5ouyc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vuBCiU5p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CF34C4CEF1;
+	Fri,  9 Jan 2026 12:24:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767959806;
-	bh=iH2Dil4KB2t1QwrNkP5/l2cCzkcUOJW66R4gUafds+8=;
+	s=korg; t=1767961492;
+	bh=XopXMY9mOHx+QTQolsebtcJuZ00r/hTZXoHMn3hse9I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N1CX842NHG8gLFK50/bNRYtdDSVkcIEA/eAmbOvhum0RzhVpWtla36lYBg7JyhOUM
-	 9q4boW2PxkUexbdtFJaAmkebyfJMB1hdefpuYXZORrhKsUr3aklCTSdTemju4Rq4aW
-	 LzYINpb6SlCLSYnuCSSEeGvYpc96hYTxoeiVI1R8=
+	b=vuBCiU5pWjW+bRuxYIju9SHo9uRIuFObr9ro613C3w5tQaJmrg1h7NFmG2KhyG+BV
+	 tY6Kq+Jay9dYLl6mDWOfrZCwxz7OKRGQ2aOyJVHqMmZyYpvnxWltALtiSfshosKoYp
+	 obe8h89BCOPKHCsLA6awN0UaVC0rdgSsvEhM28RY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Petr Mladek <pmladek@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 148/737] lib/vsprintf: Check pointer before dereferencing in time_and_date()
+	syzbot+f3185be57d7e8dda32b8@syzkaller.appspotmail.com,
+	stable@kernel.org,
+	Deepanshu Kartikey <kartikey406@gmail.com>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.1 009/634] ext4: refresh inline data size before write operations
 Date: Fri,  9 Jan 2026 12:34:47 +0100
-Message-ID: <20260109112139.565580796@linuxfoundation.org>
+Message-ID: <20260109112117.778974018@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,56 +61,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Deepanshu Kartikey <kartikey406@gmail.com>
 
-[ Upstream commit 372a12bd5df0199aa234eaf8ef31ed7ecd61d40f ]
+commit 892e1cf17555735e9d021ab036c36bc7b58b0e3b upstream.
 
-The pointer may be invalid when gets to the printf(). In particular
-the time_and_date() dereferencing it in some cases without checking.
+The cached ei->i_inline_size can become stale between the initial size
+check and when ext4_update_inline_data()/ext4_create_inline_data() use
+it. Although ext4_get_max_inline_size() reads the correct value at the
+time of the check, concurrent xattr operations can modify i_inline_size
+before ext4_write_lock_xattr() is acquired.
 
-Move the check from rtc_str() to time_and_date() to cover all cases.
+This causes ext4_update_inline_data() and ext4_create_inline_data() to
+work with stale capacity values, leading to a BUG_ON() crash in
+ext4_write_inline_data():
 
-Fixes: 7daac5b2fdf8 ("lib/vsprintf: Print time64_t in human readable format")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Petr Mladek <pmladek@suse.com>
-Link: https://patch.msgid.link/20251110132118.4113976-1-andriy.shevchenko@linux.intel.com
-Signed-off-by: Petr Mladek <pmladek@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  kernel BUG at fs/ext4/inline.c:1331!
+  BUG_ON(pos + len > EXT4_I(inode)->i_inline_size);
+
+The race window:
+1. ext4_get_max_inline_size() reads i_inline_size = 60 (correct)
+2. Size check passes for 50-byte write
+3. [Another thread adds xattr, i_inline_size changes to 40]
+4. ext4_write_lock_xattr() acquires lock
+5. ext4_update_inline_data() uses stale i_inline_size = 60
+6. Attempts to write 50 bytes but only 40 bytes actually available
+7. BUG_ON() triggers
+
+Fix this by recalculating i_inline_size via ext4_find_inline_data_nolock()
+immediately after acquiring xattr_sem. This ensures ext4_update_inline_data()
+and ext4_create_inline_data() work with current values that are protected
+from concurrent modifications.
+
+This is similar to commit a54c4613dac1 ("ext4: fix race writing to an
+inline_data file while its xattrs are changing") which fixed i_inline_off
+staleness. This patch addresses the related i_inline_size staleness issue.
+
+Reported-by: syzbot+f3185be57d7e8dda32b8@syzkaller.appspotmail.com
+Link: https://syzkaller.appspot.com/bug?extid=f3185be57d7e8dda32b8
+Cc: stable@kernel.org
+Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+Message-ID: <20251020060936.474314-1-kartikey406@gmail.com>
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- lib/vsprintf.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/ext4/inline.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/lib/vsprintf.c b/lib/vsprintf.c
-index f4ab2750cfc12..fc5ffc1b16903 100644
---- a/lib/vsprintf.c
-+++ b/lib/vsprintf.c
-@@ -1859,9 +1859,6 @@ char *rtc_str(char *buf, char *end, const struct rtc_time *tm,
- 	bool found = true;
- 	int count = 2;
+--- a/fs/ext4/inline.c
++++ b/fs/ext4/inline.c
+@@ -414,7 +414,12 @@ static int ext4_prepare_inline_data(hand
+ 		return -ENOSPC;
  
--	if (check_pointer(&buf, end, tm, spec))
--		return buf;
+ 	ext4_write_lock_xattr(inode, &no_expand);
 -
- 	switch (fmt[count]) {
- 	case 'd':
- 		have_t = false;
-@@ -1927,6 +1924,9 @@ static noinline_for_stack
- char *time_and_date(char *buf, char *end, void *ptr, struct printf_spec spec,
- 		    const char *fmt)
- {
-+	if (check_pointer(&buf, end, ptr, spec))
-+		return buf;
-+
- 	switch (fmt[1]) {
- 	case 'R':
- 		return rtc_str(buf, end, (const struct rtc_time *)ptr, spec, fmt);
--- 
-2.51.0
-
++	/*
++	 * ei->i_inline_size may have changed since the initial check
++	 * if other xattrs were added. Recalculate to ensure
++	 * ext4_update_inline_data() validates against current capacity.
++	 */
++	(void) ext4_find_inline_data_nolock(inode);
+ 	if (ei->i_inline_off)
+ 		ret = ext4_update_inline_data(handle, inode, len);
+ 	else
 
 
 
