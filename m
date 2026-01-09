@@ -1,51 +1,52 @@
-Return-Path: <stable+bounces-207278-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207290-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78F26D09B45
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:33:52 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4ECED09DAB
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:42:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 27F93307BF41
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:27:01 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 695FE30CBA24
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:27:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E76935A956;
-	Fri,  9 Jan 2026 12:26:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38A7035B142;
+	Fri,  9 Jan 2026 12:27:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JgNST/8A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iZX/L27x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 320D533C526;
-	Fri,  9 Jan 2026 12:26:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEF7135A95C;
+	Fri,  9 Jan 2026 12:27:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961601; cv=none; b=txooJxV8Vaud6a6V5oYwH0zJSjDoFhsL++js0gNTQPcv5EYwE4re+adROXkh4KASkijnMmNW2x39YPO73MKweTF3+AP/6PuViqHBlirlbHFc6xeqM6hBVNr1Fkv0ZBAJ3jFuzqigsim0qXC8UGvpPEgvtbqUv478gvSOYnLeJhw=
+	t=1767961633; cv=none; b=LNjdtVpmaRbxwQduZ3ocksPeFOKIA+8rQrXvGRkzUE6Kx/vSC7tWqF3nrseZzL8S8R9hidZMw0LyIBNUuRkBjtkszDZoMYStBbf0h4TpgOulQxOJggCeRZxTogrsgxwROMpm5kdcnTqMAKjL3M2BybaMkLYQMrErAsHhAOce5cs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961601; c=relaxed/simple;
-	bh=7tx1CkdMnp/hb3jQ9I7I/n+hlupeWMY84sSi9pFVUaE=;
+	s=arc-20240116; t=1767961633; c=relaxed/simple;
+	bh=eK7xY2xeWXyR7MDisOJ/jNz5rJasFh20Cgf123w0aug=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b7IEW8yJf7oI8hk12n/MOLsecTCofP/d9u58wrLIms+3BYlln14CozZBvYWE9md3Mw8hl0SepoYUok556GSNc/OXhbmWxQaGS2JSk0UmjuoHkDVTuNXjvsDxJS3/0OJnSw7NCS6qG+Nc3btq5nwnHI6Mg9U0ZoEvB0gp6wjBvdQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JgNST/8A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3BF2C19421;
-	Fri,  9 Jan 2026 12:26:40 +0000 (UTC)
+	 MIME-Version; b=IAlSX7IFm9mJR+gy6qS86WPPFG4J4rD/mzW82RZACN2FVHPBwmbaHAVa8URkmaaq+EdvneBg3QvN+o0ekGQZEF6ocD7AYYPdqLxtSp2/ChhDnrj2tvgeGI6lSSw4togLE736ruVRtqjsXAQdEVX+vyRi1Ln/A/Gkv2Rupr73vpk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iZX/L27x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30A3DC4CEF1;
+	Fri,  9 Jan 2026 12:27:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961601;
-	bh=7tx1CkdMnp/hb3jQ9I7I/n+hlupeWMY84sSi9pFVUaE=;
+	s=korg; t=1767961632;
+	bh=eK7xY2xeWXyR7MDisOJ/jNz5rJasFh20Cgf123w0aug=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JgNST/8A0MsXuzIc9Rj9BiiyYn7deYj+7eo+2n3ce+xcJ0tRKVE9Hr67xR6vLruM1
-	 +VK4oON9NjHjDOoXpS2Rin2GwKELpuCghQ/crKO7GR1lPPIwBZHPufCi7D2egdWgTo
-	 qCZSuxxabEey34h64cDXqjs4mMHuzUayp64JlYgs=
+	b=iZX/L27x2a0lTf2k4cU14/GnyH/IvAsj/XNa6DjcpHrDIMhbnbnHgX6fodvJtKc2R
+	 +egDbmEhV0peM0L0PNrA62f2bLMo+zxHKJQVlvg+f4xwlGlJO4q8yPgst/cMsdAdKS
+	 Yg8TYrS/7Sm3Wgknv3EB8+1fM+wDQf6pOIgSlqEM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harald Freudenberger <freude@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 064/634] s390/ap: Dont leak debug feature files if AP instructions are not available
-Date: Fri,  9 Jan 2026 12:35:42 +0100
-Message-ID: <20260109112119.854922314@linuxfoundation.org>
+Subject: [PATCH 6.1 065/634] firmware: imx: scu-irq: fix OF node leak in
+Date: Fri,  9 Jan 2026 12:35:43 +0100
+Message-ID: <20260109112119.891686127@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
 References: <20260109112117.407257400@linuxfoundation.org>
@@ -64,45 +65,39 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: Peng Fan <peng.fan@nxp.com>
 
-[ Upstream commit 020d5dc57874e58d3ebae398f3fe258f029e3d06 ]
+[ Upstream commit ee67247843a2b62d1473cfa4df300e69b5190ccf ]
 
-If no AP instructions are available the AP bus module leaks registered
-debug feature files. Change function call order to fix this.
+imx_scu_enable_general_irq_channel() calls of_parse_phandle_with_args(),
+but does not release the OF node reference. Add a of_node_put() call
+to release the reference.
 
-Fixes: cccd85bfb7bf ("s390/zcrypt: Rework debug feature invocations.")
-Reviewed-by: Harald Freudenberger <freude@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Fixes: 851826c7566e ("firmware: imx: enable imx scu general irq function")
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/s390/crypto/ap_bus.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/firmware/imx/imx-scu-irq.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/s390/crypto/ap_bus.c b/drivers/s390/crypto/ap_bus.c
-index c692b55dd1169..4bc5210df78a4 100644
---- a/drivers/s390/crypto/ap_bus.c
-+++ b/drivers/s390/crypto/ap_bus.c
-@@ -2196,15 +2196,15 @@ static int __init ap_module_init(void)
- {
- 	int rc;
+diff --git a/drivers/firmware/imx/imx-scu-irq.c b/drivers/firmware/imx/imx-scu-irq.c
+index d9dcc20945c6a..32b1ca4e10508 100644
+--- a/drivers/firmware/imx/imx-scu-irq.c
++++ b/drivers/firmware/imx/imx-scu-irq.c
+@@ -160,8 +160,10 @@ int imx_scu_enable_general_irq_channel(struct device *dev)
+ 	INIT_WORK(&imx_sc_irq_work, imx_scu_irq_work_handler);
  
--	rc = ap_debug_init();
--	if (rc)
--		return rc;
--
- 	if (!ap_instructions_available()) {
- 		pr_warn("The hardware system does not support AP instructions\n");
- 		return -ENODEV;
- 	}
+ 	if (!of_parse_phandle_with_args(dev->of_node, "mboxes",
+-				       "#mbox-cells", 0, &spec))
++				       "#mbox-cells", 0, &spec)) {
+ 		i = of_alias_get_id(spec.np, "mu");
++		of_node_put(spec.np);
++	}
  
-+	rc = ap_debug_init();
-+	if (rc)
-+		return rc;
-+
- 	/* init ap_queue hashtable */
- 	hash_init(ap_queues);
- 
+ 	/* use mu1 as general mu irq channel if failed */
+ 	if (i < 0)
 -- 
 2.51.0
 
