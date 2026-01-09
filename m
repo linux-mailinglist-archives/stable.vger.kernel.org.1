@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-207074-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207642-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6ED43D0986B
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:23:00 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90807D0A051
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:51:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 781DB303E72D
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:16:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A37B3304DE25
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:43:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22B9D334C24;
-	Fri,  9 Jan 2026 12:16:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1973A33032C;
+	Fri,  9 Jan 2026 12:43:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JHx7Cn/A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iDQ8Hdj8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBFD92737EE;
-	Fri,  9 Jan 2026 12:16:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D17591A2545;
+	Fri,  9 Jan 2026 12:43:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961016; cv=none; b=DVG81uTzj+O+0Oh0tar0gZ+lWkTTas8VCwRL0DhUJiWm7LdOCdv6wFzQsJQT7qmQPROhkzF9JWXjzL0LKaxLXEaCoVMGCqKoEesT6l8w7RmFlObsn1VSa6wR3qcRtpkahsBW7TYdZy+2bPCWZqtPseyLq1Mj/Dl4dPRy+mKLOkw=
+	t=1767962631; cv=none; b=aQjXnsGYQIdQWkDQdQLdoR7rRokw7sNR44bBqGczSpRRGdrH+ifw0VKWoYm7wLVDQMinwtc7NZUYjSs3Bqr2KUeM8crNmbYE/GdUqou1w7E/rr5y67Vlfy+/+568AqU58DIrXuMKqojDgXfhx9lmh66y402RNdcBygoSheE7yY0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961016; c=relaxed/simple;
-	bh=nZt2vRq2NpJnuR6ZK20uDwHh1jZhy2eXI/XI4H/+mOw=;
+	s=arc-20240116; t=1767962631; c=relaxed/simple;
+	bh=7XrJnP3SrLldI1zBkKCi/CIRo0VJnQDXfR9lk0NZfjE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EMUfLuIE0HgGzmZuqBatkBl8TF5cqPcp7xhmCnLKssq57Rxsf7XQKFgh6JrDhSbKvKpjWJNDz+6jBOxfs6Z3ZxOd9NReGN512K4k19a7qdOemDR0DXqq8Vi/B7QokVOoelJPeRISyKlCb3IiAtPXfAN7SJnTCKBiwlq4y63xPY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JHx7Cn/A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FC84C4CEF1;
-	Fri,  9 Jan 2026 12:16:55 +0000 (UTC)
+	 MIME-Version; b=a+ya/fkAFAHM1N2Ry2GH2qmWAVfB8A5T2rykplNGxi8mA+Vz2bV0mT5CoqcIZwz1JNmMWKlokGqsUJ0dvvJwvNUCtdP+aXd86uREN6ad+WacgXKSzZkz02pkypur/feAx0Yr2VHhXNI8mUkTzKI9XMUh9oOVQE8HzqKy2y7SLjA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iDQ8Hdj8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B8B4C4CEF1;
+	Fri,  9 Jan 2026 12:43:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961016;
-	bh=nZt2vRq2NpJnuR6ZK20uDwHh1jZhy2eXI/XI4H/+mOw=;
+	s=korg; t=1767962631;
+	bh=7XrJnP3SrLldI1zBkKCi/CIRo0VJnQDXfR9lk0NZfjE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JHx7Cn/AgMwU+ktic7g2HoeNfkghlktolIde2VQIKgHXL7pye94SgfSfX/XpukJmv
-	 pgD+CfEzEGwPI4oCucM/y+I3MYo7wd0uiafUiV15Jtz/wmsIPypEfwK2y5s7EY9nOO
-	 MSGxJN+PzTyggdEs5JoPGZBxNxg20sFQVuX3rItE=
+	b=iDQ8Hdj86VO73PRlq6FBLjtsQlrvzGz0o4POlk8cbL7HJaYsHzFDSa8wXMLd+29yF
+	 IilAVAB5A6Yoyd1jCxVHiVVXAZXy41o/5UDMsGCgBQmbS8OCQuJrRRW6QUr0UKrNKs
+	 xHmVvZohgjjjeKI+tXmk/lHrMf/4jI8f2XnaTBLg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sven Schnelle <svens@stackframe.org>,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.6 573/737] parisc: entry.S: fix space adjustment on interruption for 64-bit userspace
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 434/634] RDMA/bnxt_re: Fix incorrect BAR check in bnxt_qplib_map_creq_db()
 Date: Fri,  9 Jan 2026 12:41:52 +0100
-Message-ID: <20260109112155.556403926@linuxfoundation.org>
+Message-ID: <20260109112133.874546991@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,66 +61,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Schnelle <svens@stackframe.org>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-commit 1aa4524c0c1b54842c4c0a370171d11b12d0709b upstream.
+[ Upstream commit 145a417a39d7efbc881f52e829817376972b278c ]
 
-In wide mode, the IASQ contain the upper part of the GVA
-during interruption. This needs to be reversed before
-the space is used - otherwise it contains parts of IAOQ.
-See Page 2-13 "Processing Resources / Interruption Instruction
-Address Queues" in the Parisc 2.0 Architecture Manual page 2-13
-for an explanation.
+RCFW_COMM_CONS_PCI_BAR_REGION is defined as BAR 2, so checking
+!creq_db->reg.bar_id is incorrect and always false.
 
-The IAOQ/IASQ space_adjust was skipped for other interruptions
-than itlb misses. However, the code in handle_interruption()
-checks whether iasq[0] contains a valid space. Due to the not
-masked out bits this match failed and the process was killed.
+pci_resource_start() returns the BAR base address, and a value of 0
+indicates that the BAR is unassigned. Update the condition to test
+bar_base == 0 instead.
 
-Also add space_adjust for IAOQ1/IASQ1 so ptregs contains sane values.
+This ensures the driver detects and logs an error for an unassigned
+RCFW communication BAR.
 
-Signed-off-by: Sven Schnelle <svens@stackframe.org>
-Cc: stable@vger.kernel.org # v6.0+
-Signed-off-by: Helge Deller <deller@gmx.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: cee0c7bba486 ("RDMA/bnxt_re: Refactor command queue management code")
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Link: https://patch.msgid.link/20251217100158.752504-1-alok.a.tiwari@oracle.com
+Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/parisc/kernel/entry.S |   11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ drivers/infiniband/hw/bnxt_re/qplib_rcfw.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/parisc/kernel/entry.S
-+++ b/arch/parisc/kernel/entry.S
-@@ -1059,8 +1059,6 @@ ENTRY_CFI(intr_save)		/* for os_hpmc */
- 	STREG           %r17, PT_IOR(%r29)
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c b/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c
+index c03475b9fa28..69eb6408ce86 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c
++++ b/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c
+@@ -777,7 +777,7 @@ static int bnxt_qplib_map_creq_db(struct bnxt_qplib_rcfw *rcfw, u32 reg_offt)
  
- #if defined(CONFIG_64BIT)
--	b,n		intr_save2
--
- skip_save_ior:
- 	/* We have a itlb miss, and when executing code above 4 Gb on ILP64, we
- 	 * need to adjust iasq/iaoq here in the same way we adjusted isr/ior
-@@ -1069,10 +1067,17 @@ skip_save_ior:
- 	bb,COND(>=),n	%r8,PSW_W_BIT,intr_save2
- 	LDREG		PT_IASQ0(%r29), %r16
- 	LDREG		PT_IAOQ0(%r29), %r17
--	/* adjust iasq/iaoq */
-+	/* adjust iasq0/iaoq0 */
- 	space_adjust	%r16,%r17,%r1
- 	STREG           %r16, PT_IASQ0(%r29)
- 	STREG           %r17, PT_IAOQ0(%r29)
-+
-+	LDREG		PT_IASQ1(%r29), %r16
-+	LDREG		PT_IAOQ1(%r29), %r17
-+	/* adjust iasq1/iaoq1 */
-+	space_adjust	%r16,%r17,%r1
-+	STREG           %r16, PT_IASQ1(%r29)
-+	STREG           %r17, PT_IAOQ1(%r29)
- #else
- skip_save_ior:
- #endif
+ 	creq_db->reg.bar_id = RCFW_COMM_CONS_PCI_BAR_REGION;
+ 	creq_db->reg.bar_base = pci_resource_start(pdev, creq_db->reg.bar_id);
+-	if (!creq_db->reg.bar_id)
++	if (!creq_db->reg.bar_base)
+ 		dev_err(&pdev->dev,
+ 			"QPLIB: CREQ BAR region %d resc start is 0!",
+ 			creq_db->reg.bar_id);
+-- 
+2.51.0
+
 
 
 
