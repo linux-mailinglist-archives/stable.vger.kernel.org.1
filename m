@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-207208-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207779-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E49AD09994
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:27:25 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 796F6D0A180
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:58:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CDCD1309B932
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:23:21 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D8FCC312B806
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:51:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59E2726ED41;
-	Fri,  9 Jan 2026 12:23:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A75B358D30;
+	Fri,  9 Jan 2026 12:50:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w8SaDoAo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vv7npEjA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ABFE35971B;
-	Fri,  9 Jan 2026 12:23:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E0F335BDDC;
+	Fri,  9 Jan 2026 12:50:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961401; cv=none; b=bSnslXMBhlv+BE7J9vUXrpYUGof4odaQ86c3rFDRzrhFUwqMfcRZV5oogXe3QoNtW+Sqb+EO5clPh/H6gAI5mPg5IGHjsQeEE9TABlLltKpk067DSySa098fuMbcRri42erGbV4kY1H59buanIyqaIfHsG/FsmwmXbr029KhOMc=
+	t=1767963024; cv=none; b=nipCLYaU5PIcrGQbNbNIkbTcFQl25KGJCgh2zleq/f18igC4WOhMSYp6KXATui/xasStjVQsIL4RrvoIQzKA3Uvx4sQCiT2MBnUJdgmHyvObO5zNESAWAkdxJnr7pG6dJ942Pq4zWwBQjw2lUdzZSzkx3YEUmnk3z29YeUVkjQY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961401; c=relaxed/simple;
-	bh=BwyG9s1E8OvDoPbozBNwizyMPdsDDseg4SbJsaNVBR4=;
+	s=arc-20240116; t=1767963024; c=relaxed/simple;
+	bh=XYxULsQvCpMPajA41VfgP36DTyAGJE2N6Xc7uFBlrQA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HXgn8qwVXmD8ZYgwgbNdGNaTA+dMK0/rw1nQPqQLyCN5lAk8O+mv7lNU/FP+ZJBe4Axg3n5x5xiVd7zsiYqvqxFJJjyQFoDQG9qaX4qeGlV6HLMyXBW5WDRI79TN03d61/pjxq5QZNODBlV+raUg/ZvRYyOE3yrCesDDs4jiMwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w8SaDoAo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 489E2C4CEF1;
-	Fri,  9 Jan 2026 12:23:20 +0000 (UTC)
+	 MIME-Version; b=oC1iUU36steU5XtbpTYMCOcWi+OCtiPVNhJOn5l66zRUKYPfGcjc8SOAC36LYQXwitGfiA/qlJ19Y9m2KAtRqqDQCi8whMQjLMrCOVbQx9lxrHL+TwqZwSBp1u0J6uArWXaYh8l97RsWZofU1U5hGEExHZ02ErFvazZMi7aLoBk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vv7npEjA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A145FC4CEF1;
+	Fri,  9 Jan 2026 12:50:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961400;
-	bh=BwyG9s1E8OvDoPbozBNwizyMPdsDDseg4SbJsaNVBR4=;
+	s=korg; t=1767963024;
+	bh=XYxULsQvCpMPajA41VfgP36DTyAGJE2N6Xc7uFBlrQA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w8SaDoAoe6oHLA9hxwYVA9UjevX+lwWBLj3P7MS7thCnMK5Rdk/WNyJpbXOUVTods
-	 HRLwwAq2C71Is3zmS484SYSF2JCg+KRe98NnKZCOHqw5AFxU33QSB+KCShpmtOFN1n
-	 eWYi/G/eTI21AqPakFCLC/czeycc3v2H6qpxvxQQ=
+	b=Vv7npEjATszqKTkRMUrbNjEeyPKSsgBd4scylaK45LlKkohX5tM/vLd5/54DC4Xbf
+	 VgEycZPJgcYCqek1QnSTfwXeKYEfby4dOt+iWW7DjHmVURSwSxg4F8gqSAhhsfxAtA
+	 BI24oy9pavJRs3sEv80YijiQJanWMgIio7t2RLyY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com, vincent.guittot@linaro.org, dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com, mgorman@suse.de, vschneid@redhat.com, linux-kernel@vger.kernel.org, ajay.kaher@broadcom.com, alexey.makhalov@broadcom.com, yin.ding@broadcom.com, tapas.kundu@broadcom.com, Chris Mason" <clm@meta.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Ajay Kaher <ajay.kaher@broadcom.com>,
-	Chris Mason <clm@meta.com>
-Subject: [PATCH 6.6 709/737] sched/fair: Small cleanup to sched_balance_newidle()
-Date: Fri,  9 Jan 2026 12:44:08 +0100
-Message-ID: <20260109112200.743794654@linuxfoundation.org>
+	Joanne Koong <joannelkoong@gmail.com>,
+	Omar Sandoval <osandov@fb.com>,
+	Miklos Szeredi <mszeredi@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 571/634] fuse: fix readahead reclaim deadlock
+Date: Fri,  9 Jan 2026 12:44:09 +0100
+Message-ID: <20260109112139.092941389@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +61,122 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Joanne Koong <joannelkoong@gmail.com>
 
-commit e78e70dbf603c1425f15f32b455ca148c932f6c1 upstream.
+[ Upstream commit bd5603eaae0aabf527bfb3ce1bb07e979ce5bd50 ]
 
-Pull out the !sd check to simplify code.
+Commit e26ee4efbc79 ("fuse: allocate ff->release_args only if release is
+needed") skips allocating ff->release_args if the server does not
+implement open. However in doing so, fuse_prepare_release() now skips
+grabbing the reference on the inode, which makes it possible for an
+inode to be evicted from the dcache while there are inflight readahead
+requests. This causes a deadlock if the server triggers reclaim while
+servicing the readahead request and reclaim attempts to evict the inode
+of the file being read ahead. Since the folio is locked during
+readahead, when reclaim evicts the fuse inode and fuse_evict_inode()
+attempts to remove all folios associated with the inode from the page
+cache (truncate_inode_pages_range()), reclaim will block forever waiting
+for the lock since readahead cannot relinquish the lock because it is
+itself blocked in reclaim:
 
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
-Tested-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
-Tested-by: Chris Mason <clm@meta.com>
-Link: https://patch.msgid.link/20251107161739.525916173@infradead.org
-[ Ajay: Modified to apply on v6.6 ]
-Signed-off-by: Ajay Kaher <ajay.kaher@broadcom.com>
+>>> stack_trace(1504735)
+ folio_wait_bit_common (mm/filemap.c:1308:4)
+ folio_lock (./include/linux/pagemap.h:1052:3)
+ truncate_inode_pages_range (mm/truncate.c:336:10)
+ fuse_evict_inode (fs/fuse/inode.c:161:2)
+ evict (fs/inode.c:704:3)
+ dentry_unlink_inode (fs/dcache.c:412:3)
+ __dentry_kill (fs/dcache.c:615:3)
+ shrink_kill (fs/dcache.c:1060:12)
+ shrink_dentry_list (fs/dcache.c:1087:3)
+ prune_dcache_sb (fs/dcache.c:1168:2)
+ super_cache_scan (fs/super.c:221:10)
+ do_shrink_slab (mm/shrinker.c:435:9)
+ shrink_slab (mm/shrinker.c:626:10)
+ shrink_node (mm/vmscan.c:5951:2)
+ shrink_zones (mm/vmscan.c:6195:3)
+ do_try_to_free_pages (mm/vmscan.c:6257:3)
+ do_swap_page (mm/memory.c:4136:11)
+ handle_pte_fault (mm/memory.c:5562:10)
+ handle_mm_fault (mm/memory.c:5870:9)
+ do_user_addr_fault (arch/x86/mm/fault.c:1338:10)
+ handle_page_fault (arch/x86/mm/fault.c:1481:3)
+ exc_page_fault (arch/x86/mm/fault.c:1539:2)
+ asm_exc_page_fault+0x22/0x27
+
+Fix this deadlock by allocating ff->release_args and grabbing the
+reference on the inode when preparing the file for release even if the
+server does not implement open. The inode reference will be dropped when
+the last reference on the fuse file is dropped (see fuse_file_put() ->
+fuse_release_end()).
+
+Fixes: e26ee4efbc79 ("fuse: allocate ff->release_args only if release is needed")
+Cc: stable@vger.kernel.org
+Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
+Reported-by: Omar Sandoval <osandov@fb.com>
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/fair.c |   11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ fs/fuse/file.c |   26 +++++++++++++++++++-------
+ 1 file changed, 19 insertions(+), 7 deletions(-)
 
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -12374,14 +12374,15 @@ static int sched_balance_newidle(struct
+--- a/fs/fuse/file.c
++++ b/fs/fuse/file.c
+@@ -112,7 +112,9 @@ static void fuse_file_put(struct fuse_fi
+ 		struct fuse_args *args = (ra ? &ra->args : NULL);
  
- 	rcu_read_lock();
- 	sd = rcu_dereference_check_sched_domain(this_rq->sd);
-+	if (!sd) {
-+		rcu_read_unlock();
-+		goto out;
-+	}
+ 		if (!args) {
+-			/* Do nothing when server does not implement 'open' */
++			/* Do nothing when server does not implement 'opendir' */
++		} else if (args->opcode == FUSE_RELEASE && ff->fm->fc->no_open) {
++			fuse_release_end(ff->fm, args, 0);
+ 		} else if (sync) {
+ 			fuse_simple_request(ff->fm, args);
+ 			fuse_release_end(ff->fm, args, 0);
+@@ -133,8 +135,17 @@ struct fuse_file *fuse_file_open(struct
+ 	struct fuse_file *ff;
+ 	int opcode = isdir ? FUSE_OPENDIR : FUSE_OPEN;
+ 	bool open = isdir ? !fc->no_opendir : !fc->no_open;
++	bool release = !isdir || open;
  
- 	if (!READ_ONCE(this_rq->rd->overload) ||
--	    (sd && this_rq->avg_idle < sd->max_newidle_lb_cost)) {
--
--		if (sd)
--			update_next_balance(sd, &next_balance);
-+	    this_rq->avg_idle < sd->max_newidle_lb_cost) {
-+		update_next_balance(sd, &next_balance);
- 		rcu_read_unlock();
--
- 		goto out;
+-	ff = fuse_file_alloc(fm, open);
++	/*
++	 * ff->args->release_args still needs to be allocated (so we can hold an
++	 * inode reference while there are pending inflight file operations when
++	 * ->release() is called, see fuse_prepare_release()) even if
++	 * fc->no_open is set else it becomes possible for reclaim to deadlock
++	 * if while servicing the readahead request the server triggers reclaim
++	 * and reclaim evicts the inode of the file being read ahead.
++	 */
++	ff = fuse_file_alloc(fm, release);
+ 	if (!ff)
+ 		return ERR_PTR(-ENOMEM);
+ 
+@@ -153,13 +164,14 @@ struct fuse_file *fuse_file_open(struct
+ 			fuse_file_free(ff);
+ 			return ERR_PTR(err);
+ 		} else {
+-			/* No release needed */
+-			kfree(ff->release_args);
+-			ff->release_args = NULL;
+-			if (isdir)
++			if (isdir) {
++				/* No release needed */
++				kfree(ff->release_args);
++				ff->release_args = NULL;
+ 				fc->no_opendir = 1;
+-			else
++			} else {
+ 				fc->no_open = 1;
++			}
+ 		}
  	}
- 	rcu_read_unlock();
+ 
 
 
 
