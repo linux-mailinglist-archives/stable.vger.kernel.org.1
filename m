@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-207312-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206721-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D33DAD09C2B
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:36:42 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC6E6D09428
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:06:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 95D2D30BA7C1
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:28:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 07BA9310CA4E
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:00:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58290335083;
-	Fri,  9 Jan 2026 12:28:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B917E359FAD;
+	Fri,  9 Jan 2026 12:00:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NgRJaO/o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="inAf2bpH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B37023F417;
-	Fri,  9 Jan 2026 12:28:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C166359F99;
+	Fri,  9 Jan 2026 12:00:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961697; cv=none; b=uXFgqqFT5xjwrxBjGrXaPJsSQUkH0lKaLK3dyad6YTr8uj0z7TFjGCoQgPzjvRXPQ57o1FGc4FFvcye1lBRYw8+puijiAOlttm66J7Zmlnkz5yi8YbUEROqwAWPlS/eSK2VGBYxuWluvvqC2XVgAH59+yFg9gOj6e7lmMgj7Vms=
+	t=1767960010; cv=none; b=FnGXin6qfFKme/e4n0k7qCuBEU2z8RZAHS8P7Ow4apov2qjJ8rb8Q28C3fqwG/GojYuApvG8HlZxMeslWSnhzaa+LxhvsnBPUAkXkE9ypJPZN41lcF3UvBFuRXrPppL+PJ+1MRUSmdyo1EFq55ymqcuGx4R9tZRt5Tkc1bjlHYg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961697; c=relaxed/simple;
-	bh=XTYgzxuYWXL1DcWj/fMifcpmDS5ZXRZV+nlTbKpnrgU=;
+	s=arc-20240116; t=1767960010; c=relaxed/simple;
+	bh=NfsLdxRemgBf7enV3mrJm833IQ2BX8Elh0RN3xdpn4g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SDpZHqIMSblFTOEdgI+XUf5KTx3EZyO2YeC4sRrIwspNw729kE228EGf6DvY89ASlgVeqvtNVYseO2E6/ZRfVAqMSfOrfYJpuMGrhWMqH3uhyec3Zt38ttXEnf8S27veyBbH1CQ74it1F1MyaTnt7M5Kp+H798AMQvN+qT8SPwU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NgRJaO/o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C196C4CEF1;
-	Fri,  9 Jan 2026 12:28:16 +0000 (UTC)
+	 MIME-Version; b=ej+yw9XDvFh8YkPLMKXZF7gtZTfSrmUh+yXXu7MxYC7LS/iIOjcWd3J8NsVgDKXVgUPEML2B0zzMXN3NniRnnKaCKbtoCztBsgGa+Gn+91xh0KU9A8jKAj/RXDXsU6J4PCB3pc64RTvStpl0qqu6/MRrzvTQcr+jnt+VCWmYMzM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=inAf2bpH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09419C4CEF1;
+	Fri,  9 Jan 2026 12:00:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961697;
-	bh=XTYgzxuYWXL1DcWj/fMifcpmDS5ZXRZV+nlTbKpnrgU=;
+	s=korg; t=1767960010;
+	bh=NfsLdxRemgBf7enV3mrJm833IQ2BX8Elh0RN3xdpn4g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NgRJaO/oad3Frdfj/6ZjLVtfJMcRhpHlgvvInO2eu/ryCdFJcmUV8GKQ+hfQ8D8cx
-	 Rye6Y+/x9HPF2lyXfvD2v/nXYwQhBtmOmPPQAnePnkhI2wmNRgdBc+n0Dj/HfJObMN
-	 MCeBkwh7oq+bRuMbfwER4QsJfNoXzVkpmRIUKluU=
+	b=inAf2bpHuoCwuykG3BzfT3zXPy8Q1NGk0lpzbp/Li2YXWnPQRCaXGZ6kCsCY/6tZN
+	 SPVPb30g7MDf3SOz2aIkdh4ejapxfmJwal/C7+ovCEjf0vUU5OcMOtobrW/1mtj8Iu
+	 hWJZQ9cU1JIKpoIFqfCIeqiXW6o46RMkfu4B0xkI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeremy Kerr <jk@codeconstruct.com.au>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Stephan Gerhold <stephan.gerhold@linaro.org>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 072/634] i3c: Allow OF-alias-based persistent bus numbering
+Subject: [PATCH 6.6 211/737] iommu/arm-smmu-qcom: Enable use of all SMR groups when running bare-metal
 Date: Fri,  9 Jan 2026 12:35:50 +0100
-Message-ID: <20260109112120.152261635@linuxfoundation.org>
+Message-ID: <20260109112141.935082915@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,123 +60,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeremy Kerr <jk@codeconstruct.com.au>
+From: Stephan Gerhold <stephan.gerhold@linaro.org>
 
-[ Upstream commit 7dc2e0a875645a79f5c1c063019397e8e94008f5 ]
+[ Upstream commit 5583a55e074b33ccd88ac0542fd7cd656a7e2c8c ]
 
-Parse the /aliases node to assign any fixed bus numbers, as is done with
-the i2c subsystem. Numbering for non-aliased busses will start after the
-highest fixed bus number.
+Some platforms (e.g. SC8280XP and X1E) support more than 128 stream
+matching groups. This is more than what is defined as maximum by the ARM
+SMMU architecture specification. Commit 122611347326 ("iommu/arm-smmu-qcom:
+Limit the SMR groups to 128") disabled use of the additional groups because
+they don't exhibit the same behavior as the architecture supported ones.
 
-This allows an alias node such as:
+It seems like this is just another quirk of the hypervisor: When running
+bare-metal without the hypervisor, the additional groups appear to behave
+just like all others. The boot firmware uses some of the additional groups,
+so ignoring them in this situation leads to stream match conflicts whenever
+we allocate a new SMR group for the same SID.
 
-    aliases {
-        i3c0 = &bus_a,
-	i3c4 = &bus_b,
-    };
+The workaround exists primarily because the bypass quirk detection fails
+when using a S2CR register from the additional matching groups, so let's
+perform the test with the last reliable S2CR (127) and then limit the
+number of SMR groups only if we detect that we are running below the
+hypervisor (because of the bypass quirk).
 
-to set the numbering for a set of i3c controllers:
-
-    /* fixed-numbered bus, assigned "i3c-0" */
-    bus_a: i3c-master {
-    };
-
-    /* another fixed-numbered bus, assigned "i3c-4" */
-    bus_b: i3c-master {
-    };
-
-    /* dynamic-numbered bus, likely assigned "i3c-5" */
-    bus_c: i3c-master {
-    };
-
-If no i3c device aliases are present, the numbering will stay as-is,
-starting from 0.
-
-Signed-off-by: Jeremy Kerr <jk@codeconstruct.com.au>
-Link: https://lore.kernel.org/r/20230405094149.1513209-1-jk@codeconstruct.com.au
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Stable-dep-of: 9d4f219807d5 ("i3c: fix refcount inconsistency in i3c_master_register")
+Fixes: 122611347326 ("iommu/arm-smmu-qcom: Limit the SMR groups to 128")
+Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i3c/master.c | 30 +++++++++++++++++++++++++-----
- 1 file changed, 25 insertions(+), 5 deletions(-)
+ drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c | 27 ++++++++++++++--------
+ 1 file changed, 17 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/i3c/master.c b/drivers/i3c/master.c
-index 019fd9bd928d0..2f5cef08e737e 100644
---- a/drivers/i3c/master.c
-+++ b/drivers/i3c/master.c
-@@ -21,6 +21,7 @@
+diff --git a/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c b/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
+index 3d03136697963..62e2ab488c1be 100644
+--- a/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
++++ b/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
+@@ -295,17 +295,19 @@ static int qcom_smmu_cfg_probe(struct arm_smmu_device *smmu)
  
- static DEFINE_IDR(i3c_bus_idr);
- static DEFINE_MUTEX(i3c_core_lock);
-+static int __i3c_first_dynamic_bus_num;
+ 	/*
+ 	 * Some platforms support more than the Arm SMMU architected maximum of
+-	 * 128 stream matching groups. For unknown reasons, the additional
+-	 * groups don't exhibit the same behavior as the architected registers,
+-	 * so limit the groups to 128 until the behavior is fixed for the other
+-	 * groups.
++	 * 128 stream matching groups. The additional registers appear to have
++	 * the same behavior as the architected registers in the hardware.
++	 * However, on some firmware versions, the hypervisor does not
++	 * correctly trap and emulate accesses to the additional registers,
++	 * resulting in unexpected behavior.
++	 *
++	 * If there are more than 128 groups, use the last reliable group to
++	 * detect if we need to apply the bypass quirk.
+ 	 */
+-	if (smmu->num_mapping_groups > 128) {
+-		dev_notice(smmu->dev, "\tLimiting the stream matching groups to 128\n");
+-		smmu->num_mapping_groups = 128;
+-	}
+-
+-	last_s2cr = ARM_SMMU_GR0_S2CR(smmu->num_mapping_groups - 1);
++	if (smmu->num_mapping_groups > 128)
++		last_s2cr = ARM_SMMU_GR0_S2CR(127);
++	else
++		last_s2cr = ARM_SMMU_GR0_S2CR(smmu->num_mapping_groups - 1);
  
- /**
-  * i3c_bus_maintenance_lock - Lock the bus for a maintenance operation
-@@ -462,9 +463,9 @@ static void i3c_bus_cleanup(struct i3c_bus *i3cbus)
- 	mutex_unlock(&i3c_core_lock);
- }
+ 	/*
+ 	 * With some firmware versions writes to S2CR of type FAULT are
+@@ -328,6 +330,11 @@ static int qcom_smmu_cfg_probe(struct arm_smmu_device *smmu)
  
--static int i3c_bus_init(struct i3c_bus *i3cbus)
-+static int i3c_bus_init(struct i3c_bus *i3cbus, struct device_node *np)
- {
--	int ret;
-+	int ret, start, end, id = -1;
- 
- 	init_rwsem(&i3cbus->lock);
- 	INIT_LIST_HEAD(&i3cbus->devs.i2c);
-@@ -472,8 +473,19 @@ static int i3c_bus_init(struct i3c_bus *i3cbus)
- 	i3c_bus_init_addrslots(i3cbus);
- 	i3cbus->mode = I3C_BUS_MODE_PURE;
- 
-+	if (np)
-+		id = of_alias_get_id(np, "i3c");
+ 		reg = FIELD_PREP(ARM_SMMU_CBAR_TYPE, CBAR_TYPE_S1_TRANS_S2_BYPASS);
+ 		arm_smmu_gr1_write(smmu, ARM_SMMU_GR1_CBAR(qsmmu->bypass_cbndx), reg);
 +
- 	mutex_lock(&i3c_core_lock);
--	ret = idr_alloc(&i3c_bus_idr, i3cbus, 0, 0, GFP_KERNEL);
-+	if (id >= 0) {
-+		start = id;
-+		end = start + 1;
-+	} else {
-+		start = __i3c_first_dynamic_bus_num;
-+		end = 0;
-+	}
-+
-+	ret = idr_alloc(&i3c_bus_idr, i3cbus, start, end, GFP_KERNEL);
- 	mutex_unlock(&i3c_core_lock);
++		if (smmu->num_mapping_groups > 128) {
++			dev_notice(smmu->dev, "\tLimiting the stream matching groups to 128\n");
++			smmu->num_mapping_groups = 128;
++		}
+ 	}
  
- 	if (ret < 0)
-@@ -2751,7 +2763,7 @@ int i3c_master_register(struct i3c_master_controller *master,
- 	INIT_LIST_HEAD(&master->boardinfo.i2c);
- 	INIT_LIST_HEAD(&master->boardinfo.i3c);
- 
--	ret = i3c_bus_init(i3cbus);
-+	ret = i3c_bus_init(i3cbus, master->dev.of_node);
- 	if (ret)
- 		return ret;
- 
-@@ -2956,8 +2968,16 @@ void i3c_dev_free_ibi_locked(struct i3c_dev_desc *dev)
- 
- static int __init i3c_init(void)
- {
--	int res = bus_register_notifier(&i2c_bus_type, &i2cdev_notifier);
-+	int res;
-+
-+	res = of_alias_get_highest_id("i3c");
-+	if (res >= 0) {
-+		mutex_lock(&i3c_core_lock);
-+		__i3c_first_dynamic_bus_num = res + 1;
-+		mutex_unlock(&i3c_core_lock);
-+	}
- 
-+	res = bus_register_notifier(&i2c_bus_type, &i2cdev_notifier);
- 	if (res)
- 		return res;
- 
+ 	for (i = 0; i < smmu->num_mapping_groups; i++) {
 -- 
 2.51.0
 
