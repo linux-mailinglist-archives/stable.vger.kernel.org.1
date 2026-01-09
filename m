@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-206799-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207402-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD595D094FA
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:10:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 55CC7D09D6C
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:41:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 22F01309BC15
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:03:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4C99630F6EEB
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:32:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBC53359FB0;
-	Fri,  9 Jan 2026 12:03:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7418F35B15C;
+	Fri,  9 Jan 2026 12:32:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tAonWfu+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WVXkl2vq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE688335561;
-	Fri,  9 Jan 2026 12:03:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22C4E31E107;
+	Fri,  9 Jan 2026 12:32:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960231; cv=none; b=ulFspC7YcmmSYmK9TYrYRM7Nyhpvnvkz7nZZSOPz9L8dDXILLa9OqESmwlapn8p+LpHRCjFXEVOPGlR2Wepzx2xEhXboCD9yRPNmG8lPLl+92GvdSAzzX7pNEGhoodFPBVPhyR4yZ0TVorTeoGx3hXEhCvyBAjYdAAJWd8yfe0k=
+	t=1767961953; cv=none; b=BgoGBy5cGRKaPs9OKP39uvpuq3jYNn6qXA99DN4GE/Tz/F4Jz7SBu9GkYVwdG4tKIYq5I2qaGjAba7xffD3z+35wfd6vRsO+9n/SHWjALjXJ53nCywcI7CzUOar9fNVdHXu2LlQZLf68QJ751KHJWaOomGoU2RtSSwrJ7TLHbTk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960231; c=relaxed/simple;
-	bh=zhytdTunbfFQr75MkTD9JwTYHlyyMSN4MTuOg1oxtbE=;
+	s=arc-20240116; t=1767961953; c=relaxed/simple;
+	bh=iLjjtIGZqkZdSWMjki8K9ihTPCiaLLIjhPPa8ee6O1U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eoLXy9OBP1dJCNgIZ/q4S/goWtRhIJmXtN1Jbip5lhf+IW4S7NQpcTjwoOcg0yTbEfULMT1TfAD6EJl5MryBuz1EiF0S/z/9iqWAQ37fOoJ/a/pNHlTIGcwWhxyCUTYDnGwpnAiB0s7nWKhZwvg+4Ie0jDmWFgd/Z3Husun33o4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tAonWfu+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DD16C4CEF1;
-	Fri,  9 Jan 2026 12:03:51 +0000 (UTC)
+	 MIME-Version; b=Jc64a+QUydlFlDjQden4Q9aVKqG7PHIUrxFQCyn/wqf5UswAoDDeJcSy3V5O3Wseoxj1XQ+M2iedX8nABhLDhY9i2O1Xaz35tu4G6cBAeU9rkNVklUbjMpcHT6l5pQ/IS+ulWafNGop+JYBAb8FsXEgGGqj7ofJATLYlPJ7kihM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WVXkl2vq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A26BEC4CEF1;
+	Fri,  9 Jan 2026 12:32:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960231;
-	bh=zhytdTunbfFQr75MkTD9JwTYHlyyMSN4MTuOg1oxtbE=;
+	s=korg; t=1767961953;
+	bh=iLjjtIGZqkZdSWMjki8K9ihTPCiaLLIjhPPa8ee6O1U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tAonWfu+Of7Q+3RWhbxH1ofGKhf0sdEBoIAPKIP7tccgOpTX4PuwL3wB9co9ywNoJ
-	 iXV/vHSXEnhkMSBI2+j8pva03XGLSdQp+S6LupgTlm3r7weMim773tFQheOwArD5hd
-	 crXnxjDF8qxai+vrxLUsS8/tOCcsbJvVDLz6M55U=
+	b=WVXkl2vq7in/PiHf60ZvIxKOcRVLOijvlwKTxxGUB9Zo0XYUSCiaZENCdY0LN8/ja
+	 VYy3ti8bAJyOZ3EH7Qh+SF893yuUxz8exrwMrxyGCTURqaGqTL9q4xhXNGLbTKxzUX
+	 Hx3UH0Zj1xOcDnqnuEjVAlmknco7YrPq3Nh+oYOQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+d7abc36bbbb6d7d40b58@syzkaller.appspotmail.com,
-	Wang Liang <wangliang74@huawei.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Alkis Georgopoulos <alkisg@gmail.com>,
+	Li Lingfeng <lilingfeng3@huawei.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 332/737] netrom: Fix memory leak in nr_sendmsg()
-Date: Fri,  9 Jan 2026 12:37:51 +0100
-Message-ID: <20260109112146.482639467@linuxfoundation.org>
+Subject: [PATCH 6.1 194/634] Revert "nfs: ignore SB_RDONLY when mounting nfs"
+Date: Fri,  9 Jan 2026 12:37:52 +0100
+Message-ID: <20260109112124.735982642@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,75 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang Liang <wangliang74@huawei.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit 613d12dd794e078be8ff3cf6b62a6b9acf7f4619 ]
+[ Upstream commit d4a26d34f1946142f9d32e540490e4926ae9a46b ]
 
-syzbot reported a memory leak [1].
+This reverts commit 52cb7f8f177878b4f22397b9c4d2c8f743766be3.
 
-When function sock_alloc_send_skb() return NULL in nr_output(), the
-original skb is not freed, which was allocated in nr_sendmsg(). Fix this
-by freeing it before return.
+Silently ignoring the "ro" and "rw" mount options causes user confusion,
+and regressions.
 
-[1]
-BUG: memory leak
-unreferenced object 0xffff888129f35500 (size 240):
-  comm "syz.0.17", pid 6119, jiffies 4294944652
-  hex dump (first 32 bytes):
-    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-    00 00 00 00 00 00 00 00 00 10 52 28 81 88 ff ff  ..........R(....
-  backtrace (crc 1456a3e4):
-    kmemleak_alloc_recursive include/linux/kmemleak.h:44 [inline]
-    slab_post_alloc_hook mm/slub.c:4983 [inline]
-    slab_alloc_node mm/slub.c:5288 [inline]
-    kmem_cache_alloc_node_noprof+0x36f/0x5e0 mm/slub.c:5340
-    __alloc_skb+0x203/0x240 net/core/skbuff.c:660
-    alloc_skb include/linux/skbuff.h:1383 [inline]
-    alloc_skb_with_frags+0x69/0x3f0 net/core/skbuff.c:6671
-    sock_alloc_send_pskb+0x379/0x3e0 net/core/sock.c:2965
-    sock_alloc_send_skb include/net/sock.h:1859 [inline]
-    nr_sendmsg+0x287/0x450 net/netrom/af_netrom.c:1105
-    sock_sendmsg_nosec net/socket.c:727 [inline]
-    __sock_sendmsg net/socket.c:742 [inline]
-    sock_write_iter+0x293/0x2a0 net/socket.c:1195
-    new_sync_write fs/read_write.c:593 [inline]
-    vfs_write+0x45d/0x710 fs/read_write.c:686
-    ksys_write+0x143/0x170 fs/read_write.c:738
-    do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
-    do_syscall_64+0xa4/0xfa0 arch/x86/entry/syscall_64.c:94
-    entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Reported-by: syzbot+d7abc36bbbb6d7d40b58@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=d7abc36bbbb6d7d40b58
-Tested-by: syzbot+d7abc36bbbb6d7d40b58@syzkaller.appspotmail.com
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Wang Liang <wangliang74@huawei.com>
-Link: https://patch.msgid.link/20251129041315.1550766-1-wangliang74@huawei.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reported-by: Alkis Georgopoulos<alkisg@gmail.com>
+Cc: Li Lingfeng <lilingfeng3@huawei.com>
+Fixes: 52cb7f8f1778 ("nfs: ignore SB_RDONLY when mounting nfs")
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netrom/nr_out.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/nfs/internal.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/netrom/nr_out.c b/net/netrom/nr_out.c
-index 5e531394a724b..2b3cbceb0b52d 100644
---- a/net/netrom/nr_out.c
-+++ b/net/netrom/nr_out.c
-@@ -43,8 +43,10 @@ void nr_output(struct sock *sk, struct sk_buff *skb)
- 		frontlen = skb_headroom(skb);
+diff --git a/fs/nfs/internal.h b/fs/nfs/internal.h
+index f6ed7113092e4..323f50962a786 100644
+--- a/fs/nfs/internal.h
++++ b/fs/nfs/internal.h
+@@ -11,7 +11,7 @@
+ #include <linux/nfs_page.h>
+ #include <linux/wait_bit.h>
  
- 		while (skb->len > 0) {
--			if ((skbn = sock_alloc_send_skb(sk, frontlen + NR_MAX_PACKET_SIZE, 0, &err)) == NULL)
-+			if ((skbn = sock_alloc_send_skb(sk, frontlen + NR_MAX_PACKET_SIZE, 0, &err)) == NULL) {
-+				kfree_skb(skb);
- 				return;
-+			}
+-#define NFS_SB_MASK (SB_NOSUID|SB_NODEV|SB_NOEXEC|SB_SYNCHRONOUS)
++#define NFS_SB_MASK (SB_RDONLY|SB_NOSUID|SB_NODEV|SB_NOEXEC|SB_SYNCHRONOUS)
  
- 			skb_reserve(skbn, frontlen);
+ extern const struct export_operations nfs_export_ops;
  
 -- 
 2.51.0
