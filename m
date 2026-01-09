@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-207629-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206996-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AF6ED0A1B3
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:59:13 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9471ED09711
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:18:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 474CC304D054
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:43:17 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0099B304D005
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:13:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B1E03596F1;
-	Fri,  9 Jan 2026 12:43:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 551CB2F0C7F;
+	Fri,  9 Jan 2026 12:13:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DpXdryf+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ra6GPWHP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2521335BCD;
-	Fri,  9 Jan 2026 12:43:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F34E41946C8;
+	Fri,  9 Jan 2026 12:13:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962595; cv=none; b=HRyM2QiTXExRrsaYb1T2Eo0btENFFAfOdKYR/2TVoivXtW5uA81ppB9LJNnhOxqMrgJ1X+GMxnG3hjwmhbU5ERnJFBEg2DAY1xqLpNH3CXORoI9cUtKUvyaBHnBcLaivdmN9UDsavUBbWWhO1Uc5vZfrea/xiCDHGW8+g+C6i3I=
+	t=1767960797; cv=none; b=OvMICihQ+YhEJzGNGZ7shkSsHwcsMetxU+1yL0PaO28FZfICtgd5TkvO8Z2l9apff/R0fGldDMSMwbMAFmq9jaX9vhYDHyLEAmRTtzDkJvVvjd/MfwS/naOLnEwfu6KR2MMYBYz0Zjw/l8fosSTSlOemh98xuVGfo98HQo6HlRI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962595; c=relaxed/simple;
-	bh=S5x2OWkZCYITmK50IL7q+OGF/CCIBUYBqxnCTbHnqyw=;
+	s=arc-20240116; t=1767960797; c=relaxed/simple;
+	bh=pa/8Qyd6rqIVsT2duT3PvqAzAgrEleqeS1upfmJkQDE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U3UD8RZ6sjB9SKZ4LC70oqb/XUYpQaasreHgo+Uto3dAOU9rNQEw0c4iKDc93OPtqJMwMABCMyW02XNo2wCl7PdsiJ0dpRNaPDV0H/4TjS9KgdSkk+Qk972MCqn4rJvs8Moql5XrXh2p2xBjrQPjwnsP8mhT49OYRnrjvWV5LRk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DpXdryf+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71FDBC4CEF1;
-	Fri,  9 Jan 2026 12:43:14 +0000 (UTC)
+	 MIME-Version; b=ecQqGOiNghDRuKgtSHyRTNX4qZsH1pTDt5kCJT8MYtbIEQ0shcYEpBJw2gpv3XLppyms8LLRnXcpk4CRQ40S69OA9RGj0gQQyFz5LdXiiuS/62K0Jq4ovwj1xY2BNYzt043W1QA6oyjRL935e/ZaWegkJLJ17BjHXQTPQbUZRDk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ra6GPWHP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BD38C16AAE;
+	Fri,  9 Jan 2026 12:13:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962594;
-	bh=S5x2OWkZCYITmK50IL7q+OGF/CCIBUYBqxnCTbHnqyw=;
+	s=korg; t=1767960796;
+	bh=pa/8Qyd6rqIVsT2duT3PvqAzAgrEleqeS1upfmJkQDE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DpXdryf+R0GqqOOw9ILoRCXiO7RwxI1hHs5BOP6ig6dRZuvdFNhTEPcH3M3iy0U98
-	 I52Q+cUUrcuQsR7XUbgGbcYX1TplCrwtH2+GnNE3H/UBhLYQ4FFKNoFthSmOGsAsPa
-	 Y/8xDPCnZplvf4NrJrDqBnjbDA4G7Vz/Dk8w+WMk=
+	b=ra6GPWHPhFLEI5lnicshqjR6dFqnbsEzU3lokTmcwMMp23F9fwMlO5g1bYbBKgarf
+	 fece6wYcTMRA30AMs2ildxbSDQQKYQG5ygiF92DjwPMM4psvxSWA1LC0CIh+9S/5Yu
+	 jpl/wWSLSCeWJ9nGQ2V73fAKnxW/9k2AslOmXrhY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+	syzbot+881d65229ca4f9ae8c84@syzkaller.appspotmail.com,
+	Ido Schimmel <idosch@nvidia.com>,
+	David Ahern <dsahern@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 388/634] wifi: cfg80211: sme: store capped length in __cfg80211_connect_result()
+Subject: [PATCH 6.6 527/737] ipv4: Fix reference count leak when using error routes with nexthop objects
 Date: Fri,  9 Jan 2026 12:41:06 +0100
-Message-ID: <20260109112132.131922992@linuxfoundation.org>
+Message-ID: <20260109112153.822023039@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,39 +63,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit 2b77b9551d1184cb5af8271ff350e6e2c1b3db0d ]
+[ Upstream commit ac782f4e3bfcde145b8a7f8af31d9422d94d172a ]
 
-The QGenie AI code review tool says we should store the capped length to
-wdev->u.client.ssid_len.  The AI is correct.
+When a nexthop object is deleted, it is marked as dead and then
+fib_table_flush() is called to flush all the routes that are using the
+dead nexthop.
 
-Fixes: 62b635dcd69c ("wifi: cfg80211: sme: cap SSID length in __cfg80211_connect_result()")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://patch.msgid.link/aTAbp5RleyH_lnZE@stanley.mountain
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+The current logic in fib_table_flush() is to only flush error routes
+(e.g., blackhole) when it is called as part of network namespace
+dismantle (i.e., with flush_all=true). Therefore, error routes are not
+flushed when their nexthop object is deleted:
+
+ # ip link add name dummy1 up type dummy
+ # ip nexthop add id 1 dev dummy1
+ # ip route add 198.51.100.1/32 nhid 1
+ # ip route add blackhole 198.51.100.2/32 nhid 1
+ # ip nexthop del id 1
+ # ip route show
+ blackhole 198.51.100.2 nhid 1 dev dummy1
+
+As such, they keep holding a reference on the nexthop object which in
+turn holds a reference on the nexthop device, resulting in a reference
+count leak:
+
+ # ip link del dev dummy1
+ [   70.516258] unregister_netdevice: waiting for dummy1 to become free. Usage count = 2
+
+Fix by flushing error routes when their nexthop is marked as dead.
+
+IPv6 does not suffer from this problem.
+
+Fixes: 493ced1ac47c ("ipv4: Allow routes to use nexthop objects")
+Reported-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Closes: https://lore.kernel.org/netdev/d943f806-4da6-4970-ac28-b9373b0e63ac@I-love.SAKURA.ne.jp/
+Reported-by: syzbot+881d65229ca4f9ae8c84@syzkaller.appspotmail.com
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/20251221144829.197694-1-idosch@nvidia.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/sme.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv4/fib_trie.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/net/wireless/sme.c b/net/wireless/sme.c
-index ed16e852133e..26106802b17b 100644
---- a/net/wireless/sme.c
-+++ b/net/wireless/sme.c
-@@ -896,7 +896,7 @@ void __cfg80211_connect_result(struct net_device *dev,
+diff --git a/net/ipv4/fib_trie.c b/net/ipv4/fib_trie.c
+index fa54b36b241a..4d148d089232 100644
+--- a/net/ipv4/fib_trie.c
++++ b/net/ipv4/fib_trie.c
+@@ -2059,10 +2059,11 @@ int fib_table_flush(struct net *net, struct fib_table *tb, bool flush_all)
+ 				continue;
+ 			}
  
- 			ssid_len = min(ssid->datalen, IEEE80211_MAX_SSID_LEN);
- 			memcpy(wdev->u.client.ssid, ssid->data, ssid_len);
--			wdev->u.client.ssid_len = ssid->datalen;
-+			wdev->u.client.ssid_len = ssid_len;
- 			break;
- 		}
- 		rcu_read_unlock();
+-			/* Do not flush error routes if network namespace is
+-			 * not being dismantled
++			/* When not flushing the entire table, skip error
++			 * routes that are not marked for deletion.
+ 			 */
+-			if (!flush_all && fib_props[fa->fa_type].error) {
++			if (!flush_all && fib_props[fa->fa_type].error &&
++			    !(fi->fib_flags & RTNH_F_DEAD)) {
+ 				slen = fa->fa_slen;
+ 				continue;
+ 			}
 -- 
 2.51.0
 
