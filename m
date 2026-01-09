@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-207419-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206827-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23BA7D09D27
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:39:58 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0DE1D094D7
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:09:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D13CC309E68B
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:33:27 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5C2BA3019480
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:05:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3674F35A95C;
-	Fri,  9 Jan 2026 12:33:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC21E359FB0;
+	Fri,  9 Jan 2026 12:05:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2n7GWDRM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hjIE50SH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEF08336EDA;
-	Fri,  9 Jan 2026 12:33:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F0B035A925;
+	Fri,  9 Jan 2026 12:05:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962001; cv=none; b=I06UlvAK0VGxAdrb2coag/H+ASZ9jidliZTd9lRm83PaWlAL9eV1PHrB9tHjPhNcyJlCFsp17mibYRDjtVCcfgExlmHzWs2Qy99dfLiC8SSRko/7Y9XhxUs8bHvYyzHY0l/2VBLhlZxLvATnqk3ZzUReHqJlwQxMJaN6fNLKlh8=
+	t=1767960311; cv=none; b=uAThQOT0gTcPUbdkFgBVxhXHCeukPqcWCTMQ8Bb83ff9b/9lYnBrMaheLCilY3C73HzKm4hkAFUc6nWC5vpa7HzuRlZJLfc/lN4jSfRmmKm8+0xmLXJAK641eBIPkLLkphSvAcFDIB6btEIjGyF5kLTy5XHvoyrgixZlQfncHD8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962001; c=relaxed/simple;
-	bh=ztB4m1A0+DqpJI07mmYlCjqI+oXX2M03lfZjMM7N4H8=;
+	s=arc-20240116; t=1767960311; c=relaxed/simple;
+	bh=++rBdbm1iRTlB4bpfCJUh8PFTLrJ3m6CoxvXMOAV17E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WYa/OWHZrzKeg/D7Rjomuxwm1RXgKavJ6rq2tH1zrGV+gYnMugfaQu2fnF1wKriDhvhgFIrOGO0XrwY14qRMU2CORDSg2JxUXLJXvZmmkFe1gCaC5RFYkwrJlH3LEoGZyv9E4OceR4GM4KXLaEJT8OZTRqgZfRwn3g7zIsHqJc4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2n7GWDRM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D34DC4AF09;
-	Fri,  9 Jan 2026 12:33:20 +0000 (UTC)
+	 MIME-Version; b=kwYiMiMMjc+EbfCMPMt6a5xIezObFPpwOnt6r+sBzUI7HdyOtrvz7sThdw9aY/+C+tn9VdEeI4QEWfjk2M5mcUNDGjp1EOaBv7lNRyrDFrMnxQUKnwSnUr6tJ4SnkeWzpziiK5yOIQU9eC/DFv4rclIBphg5Q0X2Ffpj0jW6PLg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hjIE50SH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C55FC16AAE;
+	Fri,  9 Jan 2026 12:05:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962000;
-	bh=ztB4m1A0+DqpJI07mmYlCjqI+oXX2M03lfZjMM7N4H8=;
+	s=korg; t=1767960311;
+	bh=++rBdbm1iRTlB4bpfCJUh8PFTLrJ3m6CoxvXMOAV17E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2n7GWDRMPd7AM5vv98JNQTW4a8C1t12VhKW2mDfjv5NkqXp6NCdf5rldTUyvcOApg
-	 9I0sU8BXctfVIfAGZ51gdx43FjZ/pG9ipUgLrEx0D5b2TYfMFzS25cE/TP7kH4GQhx
-	 FftYLKp1H7Y73bEbnXKNcLCKM6HP3nu+WX3+h4/E=
+	b=hjIE50SHJbAPjfV8USwQ8YpxjefG8qewrajopAj++7j/ag5jjeoQaCwdmRi5M4zj2
+	 qLsz2/ReF0SNMUTDwnhIsn6IT+EikXCqZW+3P4Ejb2VXPpheLzF7Bu9ukCf6zEHBas
+	 g85YYLmvEZ+aurbXYLw+XZNKlxK+/qUKo2MMZukY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ivan Stepchenko <sid@itb.spb.ru>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	syzbot+f4f84b57a01d6b8364ad@syzkaller.appspotmail.com,
+	Pedro Demarchi Gomes <pedrodemargomes@gmail.com>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 178/634] mtd: lpddr_cmds: fix signed shifts in lpddr_cmds
+Subject: [PATCH 6.6 317/737] ntfs: set dummy blocksize to read boot_block when mounting
 Date: Fri,  9 Jan 2026 12:37:36 +0100
-Message-ID: <20260109112124.141367985@linuxfoundation.org>
+Message-ID: <20260109112145.926826013@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,73 +61,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Stepchenko <sid@itb.spb.ru>
+From: Pedro Demarchi Gomes <pedrodemargomes@gmail.com>
 
-[ Upstream commit c909fec69f84b39e63876c69b9df2c178c6b76ba ]
+[ Upstream commit d1693a7d5a38acf6424235a6070bcf5b186a360d ]
 
-There are several places where a value of type 'int' is shifted by
-lpddr->chipshift. lpddr->chipshift is derived from QINFO geometry and
-might reach 31 when QINFO reports a 2 GiB size - the maximum supported by
-LPDDR(1) compliant chips. This may cause unexpected sign-extensions when
-casting the integer value to the type of 'unsigned long'.
+When mounting, sb->s_blocksize is used to read the boot_block without
+being defined or validated. Set a dummy blocksize before attempting to
+read the boot_block.
 
-Use '1UL << lpddr->chipshift' and cast 'j' to unsigned long before
-shifting so the computation is performed at the destination width.
+The issue can be triggered with the following syz reproducer:
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+  mkdirat(0xffffffffffffff9c, &(0x7f0000000080)='./file1\x00', 0x0)
+  r4 = openat$nullb(0xffffffffffffff9c, &(0x7f0000000040), 0x121403, 0x0)
+  ioctl$FS_IOC_SETFLAGS(r4, 0x40081271, &(0x7f0000000980)=0x4000)
+  mount(&(0x7f0000000140)=@nullb, &(0x7f0000000040)='./cgroup\x00',
+        &(0x7f0000000000)='ntfs3\x00', 0x2208004, 0x0)
+  syz_clone(0x88200200, 0x0, 0x0, 0x0, 0x0, 0x0)
 
-Fixes: c68264711ca6 ("[MTD] LPDDR Command set driver")
-Signed-off-by: Ivan Stepchenko <sid@itb.spb.ru>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Here, the ioctl sets the bdev block size to 16384. During mount,
+get_tree_bdev_flags() calls sb_set_blocksize(sb, block_size(bdev)),
+but since block_size(bdev) > PAGE_SIZE, sb_set_blocksize() leaves
+sb->s_blocksize at zero.
+
+Later, ntfs_init_from_boot() attempts to read the boot_block while
+sb->s_blocksize is still zero, which triggers the bug.
+
+Reported-by: syzbot+f4f84b57a01d6b8364ad@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=f4f84b57a01d6b8364ad
+Signed-off-by: Pedro Demarchi Gomes <pedrodemargomes@gmail.com>
+[almaz.alexandrovich@paragon-software.com: changed comment style, added
+return value handling]
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/lpddr/lpddr_cmds.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ fs/ntfs3/super.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/mtd/lpddr/lpddr_cmds.c b/drivers/mtd/lpddr/lpddr_cmds.c
-index ee063baed136c..5c39c9c653233 100644
---- a/drivers/mtd/lpddr/lpddr_cmds.c
-+++ b/drivers/mtd/lpddr/lpddr_cmds.c
-@@ -79,7 +79,7 @@ struct mtd_info *lpddr_cmdset(struct map_info *map)
- 		mutex_init(&shared[i].lock);
- 		for (j = 0; j < lpddr->qinfo->HWPartsNum; j++) {
- 			*chip = lpddr->chips[i];
--			chip->start += j << lpddr->chipshift;
-+			chip->start += (unsigned long)j << lpddr->chipshift;
- 			chip->oldstate = chip->state = FL_READY;
- 			chip->priv = &shared[i];
- 			/* those should be reset too since
-@@ -562,7 +562,7 @@ static int lpddr_point(struct mtd_info *mtd, loff_t adr, size_t len,
- 			break;
+diff --git a/fs/ntfs3/super.c b/fs/ntfs3/super.c
+index c14b55cdea85c..0b96d0f995c61 100644
+--- a/fs/ntfs3/super.c
++++ b/fs/ntfs3/super.c
+@@ -885,6 +885,11 @@ static int ntfs_init_from_boot(struct super_block *sb, u32 sector_size,
  
- 		if ((len + ofs - 1) >> lpddr->chipshift)
--			thislen = (1<<lpddr->chipshift) - ofs;
-+			thislen = (1UL << lpddr->chipshift) - ofs;
- 		else
- 			thislen = len;
- 		/* get the chip */
-@@ -578,7 +578,7 @@ static int lpddr_point(struct mtd_info *mtd, loff_t adr, size_t len,
- 		len -= thislen;
+ 	sbi->volume.blocks = dev_size >> PAGE_SHIFT;
  
- 		ofs = 0;
--		last_end += 1 << lpddr->chipshift;
-+		last_end += 1UL << lpddr->chipshift;
- 		chipnum++;
- 		chip = &lpddr->chips[chipnum];
- 	}
-@@ -604,7 +604,7 @@ static int lpddr_unpoint (struct mtd_info *mtd, loff_t adr, size_t len)
- 			break;
- 
- 		if ((len + ofs - 1) >> lpddr->chipshift)
--			thislen = (1<<lpddr->chipshift) - ofs;
-+			thislen = (1UL << lpddr->chipshift) - ofs;
- 		else
- 			thislen = len;
- 
++	/* Set dummy blocksize to read boot_block. */
++	if (!sb_min_blocksize(sb, PAGE_SIZE)) {
++		return -EINVAL;
++	}
++
+ read_boot:
+ 	bh = ntfs_bread(sb, boot_block);
+ 	if (!bh)
 -- 
 2.51.0
 
