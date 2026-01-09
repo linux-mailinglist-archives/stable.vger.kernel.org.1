@@ -1,59 +1,53 @@
-Return-Path: <stable+bounces-207141-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207710-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68DD4D09B4D
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:34:02 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D5DBD0A1C2
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:59:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D30CD30DD870
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:20:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B4CF83195FC9
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:49:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73CF635A92E;
-	Fri,  9 Jan 2026 12:20:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE65635C19C;
+	Fri,  9 Jan 2026 12:47:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bo6GsQYQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="15dXgtNz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36F652737EE;
-	Fri,  9 Jan 2026 12:20:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 984D235CB9A;
+	Fri,  9 Jan 2026 12:47:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961208; cv=none; b=L9we2eMLj9hmoTm9Mb0BPegTMxqfbO4kY5+3cd4hYXKIJbiqBNxnZNOpJGQx98fxxyGb+zTcMEoLjU1+Fk6j1oBQuwHMidnaWuBCJ2umbj5oTWHaSz/bz37Kfumru/eLAE3v+z0Ow8KEfSrybQNUz4j2z/NSqAilnCrvElvFoo8=
+	t=1767962826; cv=none; b=TZp58HapdFAD0nWP8WZ/xlWcs5Gc73JuLFWh3y3vQ3C3+/P5QyDbab1qUi1vfpI+cYyVpYnwTPOagl/8nX8strF3R2YDbIgbfyWWjgldr7jjv/SJ/Tiyg0vSfWINmMVt4FBTnIf1EuvZUzIozIQo0wfBUET8qzzYwLCG7JyvisY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961208; c=relaxed/simple;
-	bh=LwkaHipD2NWcfnMNjCih0zrEajvzuiV2d9mYFMvT9mo=;
+	s=arc-20240116; t=1767962826; c=relaxed/simple;
+	bh=wN3Q4OdQPhQzaqWbAu42cfOrBk4MpCRSpWoOoxakpQg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fOhXgbpx5x/fb2/suvOyiNpXJ0YvxHHXtw9WVDt7FWWPB3T3Xe/q0HX/TYZWhZJfOQxW+g2Yi+0T5ozKo+KwJiWNB3xh7FaWSHb/UjposhBiTJBT6AcHjTOU5t2wbhK1ZTMmvQ17Yyyytqgu+tkScJl9rp8X4twDT9Y/V/yyVTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bo6GsQYQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B80D8C4CEF1;
-	Fri,  9 Jan 2026 12:20:07 +0000 (UTC)
+	 MIME-Version; b=R+l1SIvic4YsMxz8FOqShIfigLF+6++Q/ilBkeR4DnPmoUCN27HrAXKCw09nkWTr9WsK5b4J9nO0Vdb+JB/brHzzV57k5/smcxUc/08vM22NwdKlJtPAFuz9i5nqR/o/yZhdvASl2STjnGt52jOYxnHUFpFzAW+CN8aylTrEQYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=15dXgtNz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 245B8C4CEF1;
+	Fri,  9 Jan 2026 12:47:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961208;
-	bh=LwkaHipD2NWcfnMNjCih0zrEajvzuiV2d9mYFMvT9mo=;
+	s=korg; t=1767962826;
+	bh=wN3Q4OdQPhQzaqWbAu42cfOrBk4MpCRSpWoOoxakpQg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bo6GsQYQz/ymla04opY5BCq7svQzFkAnP78nTFzPtJ3zsyKVXnNCq8YAQhybd1Wtc
-	 UV3ps50t+yZvj+3myWbhKl4zUtqgp+vGdp8YGBHmRXLEJAqxSK7ZU6KPfjZe+5Gcyb
-	 c3bZ+HvzbmjT/GnBuAuBmA2UMCqEuTOOqgFFkuJQ=
+	b=15dXgtNzkHCLOYNkKXShF7Y1zOmQGoAuyRIDyCcQYVkYnxLdQfpevwdkocJ7nZFh1
+	 EH1Rn56k1BU+jGj0e1uJUZ7WkpMVmx001cCaLdl4OMgSELVwdtNrWxbUIDJVMlfDKm
+	 xRRBV0C1uelVV9E2p1iuIynyaF5otcBvABRiquTc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	xu xin <xu.xin16@zte.com.cn>,
-	Stefan Roesch <shr@devkernel.io>,
-	David Hildenbrand <david@redhat.com>,
-	Jinjiang Tu <tujinjiang@huawei.com>,
-	Wang Yaxin <wang.yaxin@zte.com.cn>,
-	Yang Yang <yang.yang29@zte.com.cn>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 640/737] mm/ksm: fix exec/fork inheritance support for prctl
-Date: Fri,  9 Jan 2026 12:42:59 +0100
-Message-ID: <20260109112158.086767461@linuxfoundation.org>
+	Ethan Nelson-Moore <enelsonmoore@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.1 502/634] net: usb: sr9700: fix incorrect command used to write single register
+Date: Fri,  9 Jan 2026 12:43:00 +0100
+Message-ID: <20260109112136.442604366@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,123 +59,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: xu xin <xu.xin16@zte.com.cn>
+From: Ethan Nelson-Moore <enelsonmoore@gmail.com>
 
-[ Upstream commit 590c03ca6a3fbb114396673314e2aa483839608b ]
+commit fa0b198be1c6775bc7804731a43be5d899d19e7a upstream.
 
-Patch series "ksm: fix exec/fork inheritance", v2.
+This fixes the device failing to initialize with "error reading MAC
+address" for me, probably because the incorrect write of NCR_RST to
+SR_NCR is not actually resetting the device.
 
-This series fixes exec/fork inheritance.  See the detailed description of
-the issue below.
-
-This patch (of 2):
-
-Background
-==========
-
-commit d7597f59d1d33 ("mm: add new api to enable ksm per process")
-introduced MMF_VM_MERGE_ANY for mm->flags, and allowed user to set it by
-prctl() so that the process's VMAs are forcibly scanned by ksmd.
-
-Subsequently, the 3c6f33b7273a ("mm/ksm: support fork/exec for prctl")
-supported inheriting the MMF_VM_MERGE_ANY flag when a task calls execve().
-
-Finally, commit 3a9e567ca45fb ("mm/ksm: fix ksm exec support for prctl")
-fixed the issue that ksmd doesn't scan the mm_struct with MMF_VM_MERGE_ANY
-by adding the mm_slot to ksm_mm_head in __bprm_mm_init().
-
-Problem
-=======
-
-In some extreme scenarios, however, this inheritance of MMF_VM_MERGE_ANY
-during exec/fork can fail.  For example, when the scanning frequency of
-ksmd is tuned extremely high, a process carrying MMF_VM_MERGE_ANY may
-still fail to pass it to the newly exec'd process.  This happens because
-ksm_execve() is executed too early in the do_execve flow (prematurely
-adding the new mm_struct to the ksm_mm_slot list).
-
-As a result, before do_execve completes, ksmd may have already performed a
-scan and found that this new mm_struct has no VM_MERGEABLE VMAs, thus
-clearing its MMF_VM_MERGE_ANY flag.  Consequently, when the new program
-executes, the flag MMF_VM_MERGE_ANY inheritance missed.
-
-Root reason
-===========
-
-commit d7597f59d1d33 ("mm: add new api to enable ksm per process") clear
-the flag MMF_VM_MERGE_ANY when ksmd found no VM_MERGEABLE VMAs.
-
-Solution
-========
-
-Firstly, Don't clear MMF_VM_MERGE_ANY when ksmd found no VM_MERGEABLE
-VMAs, because perhaps their mm_struct has just been added to ksm_mm_slot
-list, and its process has not yet officially started running or has not
-yet performed mmap/brk to allocate anonymous VMAS.
-
-Secondly, recheck MMF_VM_MERGEABLE again if a process takes
-MMF_VM_MERGE_ANY, and create a mm_slot and join it into ksm_scan_list
-again.
-
-Link: https://lkml.kernel.org/r/20251007182504440BJgK8VXRHh8TD7IGSUIY4@zte.com.cn
-Link: https://lkml.kernel.org/r/20251007182821572h_SoFqYZXEP1mvWI4n9VL@zte.com.cn
-Fixes: 3c6f33b7273a ("mm/ksm: support fork/exec for prctl")
-Fixes: d7597f59d1d3 ("mm: add new api to enable ksm per process")
-Signed-off-by: xu xin <xu.xin16@zte.com.cn>
-Cc: Stefan Roesch <shr@devkernel.io>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Jinjiang Tu <tujinjiang@huawei.com>
-Cc: Wang Yaxin <wang.yaxin@zte.com.cn>
-Cc: Yang Yang <yang.yang29@zte.com.cn>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-[ changed mm_flags_test() and mm_flags_clear() calls to test_bit() and clear_bit() ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: c9b37458e95629b1d1171457afdcc1bf1eb7881d ("USB2NET : SR9700 : One chip USB 1.1 USB2NET SR9700Device Driver Support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ethan Nelson-Moore <enelsonmoore@gmail.com>
+Link: https://patch.msgid.link/20251221082400.50688-1-enelsonmoore@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/ksm.c |   18 ++++++++++++++++--
- 1 file changed, 16 insertions(+), 2 deletions(-)
+ drivers/net/usb/sr9700.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/mm/ksm.c
-+++ b/mm/ksm.c
-@@ -2451,8 +2451,14 @@ no_vmas:
- 		spin_unlock(&ksm_mmlist_lock);
+--- a/drivers/net/usb/sr9700.c
++++ b/drivers/net/usb/sr9700.c
+@@ -52,7 +52,7 @@ static int sr_read_reg(struct usbnet *de
  
- 		mm_slot_free(mm_slot_cache, mm_slot);
-+		/*
-+		 * Only clear MMF_VM_MERGEABLE. We must not clear
-+		 * MMF_VM_MERGE_ANY, because for those MMF_VM_MERGE_ANY process,
-+		 * perhaps their mm_struct has just been added to ksm_mm_slot
-+		 * list, and its process has not yet officially started running
-+		 * or has not yet performed mmap/brk to allocate anonymous VMAS.
-+		 */
- 		clear_bit(MMF_VM_MERGEABLE, &mm->flags);
--		clear_bit(MMF_VM_MERGE_ANY, &mm->flags);
- 		mmap_read_unlock(mm);
- 		mmdrop(mm);
- 	} else {
-@@ -2567,8 +2573,16 @@ void ksm_add_vma(struct vm_area_struct *
+ static int sr_write_reg(struct usbnet *dev, u8 reg, u8 value)
  {
- 	struct mm_struct *mm = vma->vm_mm;
- 
--	if (test_bit(MMF_VM_MERGE_ANY, &mm->flags))
-+	if (test_bit(MMF_VM_MERGE_ANY, &mm->flags)) {
- 		__ksm_add_vma(vma);
-+		/*
-+		 * Generally, the flags here always include MMF_VM_MERGEABLE.
-+		 * However, in rare cases, this flag may be cleared by ksmd who
-+		 * scans a cycle without finding any mergeable vma.
-+		 */
-+		if (unlikely(!test_bit(MMF_VM_MERGEABLE, &mm->flags)))
-+			__ksm_enter(mm);
-+	}
+-	return usbnet_write_cmd(dev, SR_WR_REGS, SR_REQ_WR_REG,
++	return usbnet_write_cmd(dev, SR_WR_REG, SR_REQ_WR_REG,
+ 				value, reg, NULL, 0);
  }
  
- static void ksm_add_vmas(struct mm_struct *mm)
+@@ -65,7 +65,7 @@ static void sr_write_async(struct usbnet
+ 
+ static void sr_write_reg_async(struct usbnet *dev, u8 reg, u8 value)
+ {
+-	usbnet_write_cmd_async(dev, SR_WR_REGS, SR_REQ_WR_REG,
++	usbnet_write_cmd_async(dev, SR_WR_REG, SR_REQ_WR_REG,
+ 			       value, reg, NULL, 0);
+ }
+ 
 
 
 
