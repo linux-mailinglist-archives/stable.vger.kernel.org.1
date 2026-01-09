@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-207485-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206854-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 492C4D09F76
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:48:40 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98D82D0963B
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:14:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0B88430B471B
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:36:37 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8D2293063187
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:06:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2249935BDA5;
-	Fri,  9 Jan 2026 12:36:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED3CB359FB0;
+	Fri,  9 Jan 2026 12:06:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i3HZQwhm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1ZLwJ2Py"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA40735B158;
-	Fri,  9 Jan 2026 12:36:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEFCB33CE9A;
+	Fri,  9 Jan 2026 12:06:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962188; cv=none; b=Ci6p0bVOw9K2LKi+wEyM2exdNmHtbG9rTphBgzkB7r1XrmoZDCxb/pFxvQkAp02ozr3hR5iZKzDfHfEHaMoqPA1ITkNTc1+LA4e/oXGVsS2ZIlcusfcVjON5HAnauylTjUXs0LLewAFgxyy2GwfvLJ3xkBj5txxK4017S3Xupn4=
+	t=1767960388; cv=none; b=OhHC4KZGfOPuxbKspZ7mBNU74iFiAlEWVKcruILSD8dhbDZTMoULzWuMbeofHYYlDqk66Br6Q5vMtbGPWEYPcgyssQqIGPeRWq0+rh6PeVjE6AqBB+AmIbl1kv9oc8bIChRU2NAM3qaAcqmW+SsAd5hVqo+gDZ4BroFAZTTDGAU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962188; c=relaxed/simple;
-	bh=H+ZfWNowBp+x7/SqDlLG8E8a4/ZEOPg/gt3O0fuPeRM=;
+	s=arc-20240116; t=1767960388; c=relaxed/simple;
+	bh=//O/ZgPhS9RjBRV7eq57+5/RgC6iq/5jRMRQhfNoRLI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OMDsae5eQY4u3ULxgRmlt8KK4TdQ9VJU6WcCXW7NAH1QMKRJogiyHG3sQBolpXhFcJWNXusibUvKkUNGm8rB9Zi9pk81bqCUDMA0qZ89CL9M0qQLkRAuHItxCFGG4FbFijx+4gcMus66chX8cj7dkfOL0btkLTfaAFZ15Ibwgqk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i3HZQwhm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6872AC19422;
-	Fri,  9 Jan 2026 12:36:28 +0000 (UTC)
+	 MIME-Version; b=t3zEb/Xrm2OnBvf8gonWkoyWGn71hC6B5EGQWz2fj6cZ+/6yJM8wMjIYW48JY5GaPmT3gRt4L5DStjRBaB75Dwv4Q6377by2dWC4GmGXVxCsPW0GGxSAGvgtDWEN30mYKkHBFSvgu6wz2rZynypld5KQXNLAii8tBf6yb9tCWW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1ZLwJ2Py; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41AF7C19421;
+	Fri,  9 Jan 2026 12:06:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962188;
-	bh=H+ZfWNowBp+x7/SqDlLG8E8a4/ZEOPg/gt3O0fuPeRM=;
+	s=korg; t=1767960388;
+	bh=//O/ZgPhS9RjBRV7eq57+5/RgC6iq/5jRMRQhfNoRLI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i3HZQwhmeTtyf1OOPMPRXMhK3fIO+sXjXYDs+ZgB0VSUp0KGyAEP9gHD7XLjmE+kR
-	 TEBGh/kjZi25rv7taDpyYai4QslR4D37n5GHnK1K3Ozd1KPu6lhbomJwHjZdsqz96b
-	 Bu52jZkvVF9kPWB9ptDV6l5u4un5kDbLIeNV37dw=
+	b=1ZLwJ2PylPvfJQdl6V9578Qo2FfRihJE1512WsjQPwBPcN1LFbEJBXM1wsc4VvY1K
+	 jDkdRIoPLcF8U5Yx17SDmRrNjHLnPo9iiJoYA5SXd+2343rI8L0m7pBjuxhUbEdLZR
+	 sAYQcyili3IQ07IOP8qqSmwZgCK+90SOa++Yte74=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qianchang Zhao <pioooooooooip@gmail.com>,
-	Zhitong Liu <liuzhitong1993@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Jinhui Guo <guojinhui.liam@bytedance.com>,
+	Corey Minyard <corey@minyard.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 245/634] ksmbd: fix use-after-free in ksmbd_tree_connect_put under concurrency
-Date: Fri,  9 Jan 2026 12:38:43 +0100
-Message-ID: <20260109112126.760866222@linuxfoundation.org>
+Subject: [PATCH 6.6 385/737] ipmi: Fix the race between __scan_channels() and deliver_response()
+Date: Fri,  9 Jan 2026 12:38:44 +0100
+Message-ID: <20260109112148.483120545@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,108 +60,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Jinhui Guo <guojinhui.liam@bytedance.com>
 
-[ Upstream commit b39a1833cc4a2755b02603eec3a71a85e9dff926 ]
+[ Upstream commit 936750fdba4c45e13bbd17f261bb140dd55f5e93 ]
 
-Under high concurrency, A tree-connection object (tcon) is freed on
-a disconnect path while another path still holds a reference and later
-executes *_put()/write on it.
+The race window between __scan_channels() and deliver_response() causes
+the parameters of some channels to be set to 0.
 
-Reported-by: Qianchang Zhao <pioooooooooip@gmail.com>
-Reported-by: Zhitong Liu <liuzhitong1993@gmail.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+1.[CPUA] __scan_channels() issues an IPMI request and waits with
+         wait_event() until all channels have been scanned.
+         wait_event() internally calls might_sleep(), which might
+         yield the CPU. (Moreover, an interrupt can preempt
+         wait_event() and force the task to yield the CPU.)
+2.[CPUB] deliver_response() is invoked when the CPU receives the
+         IPMI response. After processing a IPMI response,
+         deliver_response() directly assigns intf->wchannels to
+         intf->channel_list and sets intf->channels_ready to true.
+         However, not all channels are actually ready for use.
+3.[CPUA] Since intf->channels_ready is already true, wait_event()
+         never enters __wait_event(). __scan_channels() immediately
+         clears intf->null_user_handler and exits.
+4.[CPUB] Once intf->null_user_handler is set to NULL, deliver_response()
+         ignores further IPMI responses, leaving the remaining
+	 channels zero-initialized and unusable.
+
+CPUA                             CPUB
+-------------------------------  -----------------------------
+__scan_channels()
+ intf->null_user_handler
+       = channel_handler;
+ send_channel_info_cmd(intf,
+       0);
+ wait_event(intf->waitq,
+       intf->channels_ready);
+  do {
+   might_sleep();
+                                 deliver_response()
+                                  channel_handler()
+                                   intf->channel_list =
+				         intf->wchannels + set;
+                                   intf->channels_ready = true;
+                                   send_channel_info_cmd(intf,
+                                         intf->curr_channel);
+   if (condition)
+    break;
+   __wait_event(wq_head,
+          condition);
+  } while(0)
+ intf->null_user_handler
+       = NULL;
+                                 deliver_response()
+                                  if (!msg->user)
+                                   if (intf->null_user_handler)
+                                    rv = -EINVAL;
+                                  return rv;
+-------------------------------  -----------------------------
+
+Fix the race between __scan_channels() and deliver_response() by
+deferring both the assignment intf->channel_list = intf->wchannels
+and the flag intf->channels_ready = true until all channels have
+been successfully scanned or until the IPMI request has failed.
+
+Signed-off-by: Jinhui Guo <guojinhui.liam@bytedance.com>
+Message-ID: <20250930074239.2353-2-guojinhui.liam@bytedance.com>
+Signed-off-by: Corey Minyard <corey@minyard.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/mgmt/tree_connect.c | 18 ++++--------------
- fs/smb/server/mgmt/tree_connect.h |  1 -
- fs/smb/server/smb2pdu.c           |  3 ---
- 3 files changed, 4 insertions(+), 18 deletions(-)
+ drivers/char/ipmi/ipmi_msghandler.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/fs/smb/server/mgmt/tree_connect.c b/fs/smb/server/mgmt/tree_connect.c
-index 94a52a75014a4..9bde1b58f9c46 100644
---- a/fs/smb/server/mgmt/tree_connect.c
-+++ b/fs/smb/server/mgmt/tree_connect.c
-@@ -77,7 +77,6 @@ ksmbd_tree_conn_connect(struct ksmbd_work *work, const char *share_name)
- 	tree_conn->t_state = TREE_NEW;
- 	status.tree_conn = tree_conn;
- 	atomic_set(&tree_conn->refcount, 1);
--	init_waitqueue_head(&tree_conn->refcount_q);
+diff --git a/drivers/char/ipmi/ipmi_msghandler.c b/drivers/char/ipmi/ipmi_msghandler.c
+index b7d8bf202ed2..4619ee5c744c 100644
+--- a/drivers/char/ipmi/ipmi_msghandler.c
++++ b/drivers/char/ipmi/ipmi_msghandler.c
+@@ -3414,8 +3414,6 @@ channel_handler(struct ipmi_smi *intf, struct ipmi_recv_msg *msg)
+ 			intf->channels_ready = true;
+ 			wake_up(&intf->waitq);
+ 		} else {
+-			intf->channel_list = intf->wchannels + set;
+-			intf->channels_ready = true;
+ 			rv = send_channel_info_cmd(intf, intf->curr_channel);
+ 		}
  
- 	ret = xa_err(xa_store(&sess->tree_conns, tree_conn->id, tree_conn,
- 			      GFP_KERNEL));
-@@ -99,14 +98,8 @@ ksmbd_tree_conn_connect(struct ksmbd_work *work, const char *share_name)
- 
- void ksmbd_tree_connect_put(struct ksmbd_tree_connect *tcon)
- {
--	/*
--	 * Checking waitqueue to releasing tree connect on
--	 * tree disconnect. waitqueue_active is safe because it
--	 * uses atomic operation for condition.
--	 */
--	if (!atomic_dec_return(&tcon->refcount) &&
--	    waitqueue_active(&tcon->refcount_q))
--		wake_up(&tcon->refcount_q);
-+	if (atomic_dec_and_test(&tcon->refcount))
-+		kfree(tcon);
- }
- 
- int ksmbd_tree_conn_disconnect(struct ksmbd_session *sess,
-@@ -118,14 +111,11 @@ int ksmbd_tree_conn_disconnect(struct ksmbd_session *sess,
- 	xa_erase(&sess->tree_conns, tree_conn->id);
- 	write_unlock(&sess->tree_conns_lock);
- 
--	if (!atomic_dec_and_test(&tree_conn->refcount))
--		wait_event(tree_conn->refcount_q,
--			   atomic_read(&tree_conn->refcount) == 0);
--
- 	ret = ksmbd_ipc_tree_disconnect_request(sess->id, tree_conn->id);
- 	ksmbd_release_tree_conn_id(sess, tree_conn->id);
- 	ksmbd_share_config_put(tree_conn->share_conf);
--	kfree(tree_conn);
-+	if (atomic_dec_and_test(&tree_conn->refcount))
-+		kfree(tree_conn);
- 	return ret;
- }
- 
-diff --git a/fs/smb/server/mgmt/tree_connect.h b/fs/smb/server/mgmt/tree_connect.h
-index a42cdd0510411..f0023d86716f2 100644
---- a/fs/smb/server/mgmt/tree_connect.h
-+++ b/fs/smb/server/mgmt/tree_connect.h
-@@ -33,7 +33,6 @@ struct ksmbd_tree_connect {
- 	int				maximal_access;
- 	bool				posix_extensions;
- 	atomic_t			refcount;
--	wait_queue_head_t		refcount_q;
- 	unsigned int			t_state;
- };
- 
-diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
-index c50dbbfc4cd62..fe3d3d766719a 100644
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -2181,7 +2181,6 @@ int smb2_tree_disconnect(struct ksmbd_work *work)
- 		goto err_out;
- 	}
- 
--	WARN_ON_ONCE(atomic_dec_and_test(&tcon->refcount));
- 	tcon->t_state = TREE_DISCONNECTED;
- 	write_unlock(&sess->tree_conns_lock);
- 
-@@ -2191,8 +2190,6 @@ int smb2_tree_disconnect(struct ksmbd_work *work)
- 		goto err_out;
- 	}
- 
--	work->tcon = NULL;
--
- 	rsp->StructureSize = cpu_to_le16(4);
- 	err = ksmbd_iov_pin_rsp(work, rsp,
- 				sizeof(struct smb2_tree_disconnect_rsp));
 -- 
 2.51.0
 
