@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-207693-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207091-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 647B6D0A123
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:56:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DAB7FD09A4E
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:30:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3742530A53EC
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:48:55 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B4B9B30762AA
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:17:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED89C35BDBB;
-	Fri,  9 Jan 2026 12:46:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B3AD2FD699;
+	Fri,  9 Jan 2026 12:17:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xXSJV9eT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lyngal5q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B133635B14E;
-	Fri,  9 Jan 2026 12:46:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E9D33176E4;
+	Fri,  9 Jan 2026 12:17:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962778; cv=none; b=mkFjdxkpb++djPmlCBjqqj3yyxc/ZxT0Zbnuex2xzS95moVICxNmaJXL1KRkI9mmKMGciSMTsqfZGNcHJ7IzlOySvpM+5/Zy1gP1OV2HIvqjajSG2PYz5tZs5tpLtuPy1BSujzVFGt0iDcEaD2nb191bFgL3fN/6r9tqNylt3KU=
+	t=1767961065; cv=none; b=ZbeV5a7KJz+WNjAGUfxugCVSP4BE9sgigfkmdNaPyCBwmkYFA6JYaMX7O0KdIQ6CvP/mWi24WKQeyE25ok9fTIL5wJMAP4hi3P9hSLGB0GEaRR9y0YUJRRjI2cEUwEiF3+MhNhlMKB2VIkcz5B+1SU3s98OPMNGq8oOM5MRKusU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962778; c=relaxed/simple;
-	bh=IRifNHNGC59CgMRMled6RQoyGZmJnOPQTDwJmwcn5gI=;
+	s=arc-20240116; t=1767961065; c=relaxed/simple;
+	bh=boGJAPNZ7xtC0nAPw2coLm+GCLfb7JKuvmv2salNpy0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aKZRASOF8AXKSE/5jmHDygoUZ+61kGLOBEsA/xBTijTXL/oL18GtTUKMZNyAfwIAgq5nbs1oASysmZvQjlFHrxrUPh7gmMYFSFpbyW3xX3SZNhpXINv0Xsc5LZKTu2C794YLfwz812D0LVPWIIwGPRdeSCHSodTXwU1KYIHs1TM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xXSJV9eT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10037C4CEF1;
-	Fri,  9 Jan 2026 12:46:17 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ZFYLUiAKYMRCHLgGq/eiNu67/DdgM0H8qUOI4JO0jwLFk6j5+xiBaj9nenTK5EP9mr5aHbuXE+yIFNOPnpIvnyxg4vO7wwtvAK+eZq1XIzf/A42RsuDvIDMlIbzMQWWLBF9qYxlqNUji2lG3bkzTrAu03b5fggU4cItkL15ltt8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lyngal5q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F537C4CEF1;
+	Fri,  9 Jan 2026 12:17:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962778;
-	bh=IRifNHNGC59CgMRMled6RQoyGZmJnOPQTDwJmwcn5gI=;
+	s=korg; t=1767961065;
+	bh=boGJAPNZ7xtC0nAPw2coLm+GCLfb7JKuvmv2salNpy0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xXSJV9eTVsTQB/WjyAEFgV5W8PEeXGBgiZPH4RdLy5GkvtrcjqeXWXwU3/RV7/PNU
-	 +DnOKed07Yu75xBjEpCw5wRPs5T4rZvdFzmoEBWpiJZuz8124qL0qTmRuw/xWloskI
-	 CWVlQwObOYvZ8VSasirbDL2PFwD+8hSOHxaw9dHQ=
+	b=Lyngal5q310PijQ6t27blA9hQ3i6N+DKZz7oQwL+mj0fL9/khY4CXeT3J+wPPNn5A
+	 7dDJbjxwISGHyH510fnmGGd4Af33LFgWod2X8b6AbtuxODXc/tNNoxlit1grS490pA
+	 h4c/avgsTNAm4wLkEEgtNVlLpZEavRC9WKt+cfNk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Gaignard <benjamin.gaignard@collabora.com>,
-	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 6.1 483/634] media: verisilicon: Protect G2 HEVC decoder against invalid DPB index
+	=?UTF-8?q?Ren=C3=A9=20Rebe?= <rene@exactco.de>,
+	stable@kernel.org,
+	Thomas Zimmermann <tzimmermann@suse.de>
+Subject: [PATCH 6.6 622/737] drm/mgag200: Fix big-endian support
 Date: Fri,  9 Jan 2026 12:42:41 +0100
-Message-ID: <20260109112135.720174496@linuxfoundation.org>
+Message-ID: <20260109112157.400327792@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,67 +58,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+From: René Rebe <rene@exactco.de>
 
-commit 47825b1646a6a9eca0f90baa3d4f98947c2add96 upstream.
+commit 6cb31fba137d45e682ce455b8ea364f44d5d4f98 upstream.
 
-Fix the Hantro G2 HEVC decoder so that we use DPB index 0 whenever a
-ninvalid index is received from user space. This protects the hardware
-from doing faulty memory access which then leads to bus errors.
+Unlike the original, deleted Matrox mga driver, the new mgag200 driver
+has the XRGB frame-buffer byte swapped on big-endian "RISC"
+systems. Fix by enabling byte swapping "PowerPC" OPMODE for any
+__BIG_ENDIAN config.
 
-To be noted that when a reference is missing, userspace such as GStreamer
-passes an invalid DPB index of 255. This issue was found by seeking to a
-CRA picture using GStreamer. The framework is currently missing the code
-to skip over RASL pictures placed after the CRA. This situation can also
-occur while doing live streaming over lossy transport.
-
-Fixes: cb5dd5a0fa518 ("media: hantro: Introduce G2/HEVC decoder")
-Cc: stable@vger.kernel.org
-Reviewed-by: Benjamin Gaignard <benjamin.gaignard@collabora.com>
-Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Fixes: 414c45310625 ("mgag200: initial g200se driver (v2)")
+Signed-off-by: René Rebe <rene@exactco.de>
+Cc: stable@kernel.org
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Link: https://patch.msgid.link/20251208.141827.965103015954471168.rene@exactco.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/verisilicon/hantro_g2_hevc_dec.c |   15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/mgag200/mgag200_mode.c |   25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
 
---- a/drivers/media/platform/verisilicon/hantro_g2_hevc_dec.c
-+++ b/drivers/media/platform/verisilicon/hantro_g2_hevc_dec.c
-@@ -297,6 +297,15 @@ static void set_params(struct hantro_ctx
- 	hantro_reg_write(vpu, &g2_apf_threshold, 8);
+--- a/drivers/gpu/drm/mgag200/mgag200_mode.c
++++ b/drivers/gpu/drm/mgag200/mgag200_mode.c
+@@ -173,6 +173,30 @@ static void mgag200_set_startadd(struct
+ 	WREG_ECRT(0x00, crtcext0);
  }
  
-+static u32 get_dpb_index(const struct v4l2_ctrl_hevc_decode_params *decode_params,
-+			 const u32 index)
++/*
++ * Set the opmode for the hardware swapper for Big-Endian processor
++ * support for the frame buffer aperture and DMAWIN space.
++ */
++static void mgag200_set_datasiz(struct mga_device *mdev, u32 format)
 +{
-+	if (index > decode_params->num_active_dpb_entries)
-+		return 0;
++#if defined(__BIG_ENDIAN)
++	u32 opmode = RREG32(MGAREG_OPMODE);
 +
-+	return index;
++	opmode &= ~(GENMASK(17, 16) | GENMASK(9, 8) | GENMASK(3, 2));
++
++	/* Big-endian byte-swapping */
++	switch (format) {
++	case DRM_FORMAT_RGB565:
++		opmode |= 0x10100;
++		break;
++	case DRM_FORMAT_XRGB8888:
++		opmode |= 0x20200;
++		break;
++	}
++	WREG32(MGAREG_OPMODE, opmode);
++#endif
 +}
 +
- static void set_ref_pic_list(struct hantro_ctx *ctx)
+ void mgag200_init_registers(struct mga_device *mdev)
  {
- 	const struct hantro_hevc_dec_ctrls *ctrls = &ctx->hevc_dec.ctrls;
-@@ -369,8 +378,10 @@ static void set_ref_pic_list(struct hant
- 		list1[j++] = list1[i++];
+ 	u8 crtc11, misc;
+@@ -502,6 +526,7 @@ void mgag200_primary_plane_helper_atomic
+ 	struct drm_atomic_helper_damage_iter iter;
+ 	struct drm_rect damage;
  
- 	for (i = 0; i < V4L2_HEVC_DPB_ENTRIES_NUM_MAX; i++) {
--		hantro_reg_write(vpu, &ref_pic_regs0[i], list0[i]);
--		hantro_reg_write(vpu, &ref_pic_regs1[i], list1[i]);
-+		hantro_reg_write(vpu, &ref_pic_regs0[i],
-+				 get_dpb_index(decode_params, list0[i]));
-+		hantro_reg_write(vpu, &ref_pic_regs1[i],
-+				 get_dpb_index(decode_params, list1[i]));
- 	}
- }
- 
++	mgag200_set_datasiz(mdev, fb->format->format);
+ 	drm_atomic_helper_damage_iter_init(&iter, old_plane_state, plane_state);
+ 	drm_atomic_for_each_plane_damage(&iter, &damage) {
+ 		mgag200_handle_damage(mdev, shadow_plane_state->data, fb, &damage);
 
 
 
