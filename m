@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-206783-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207417-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7833D094BB
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:09:11 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 271F6D09D21
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:39:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 95CF33034A16
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:03:09 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 34E4D3097FA2
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:33:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2DCC35A92D;
-	Fri,  9 Jan 2026 12:03:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E31E635B14E;
+	Fri,  9 Jan 2026 12:33:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZRPSjZhj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LdLFgFK2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96195359FBB;
-	Fri,  9 Jan 2026 12:03:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5039336EDA;
+	Fri,  9 Jan 2026 12:33:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960186; cv=none; b=pcq0Z0FzEzZUggtRdLLqOrrFYRccO9GxphlMjXXiPuC+ODoU1Gu/GOfdNvqMkwxNbdlbiQZa+rbam3FmFaamtO0wWVGxIZ/UmW504sLD0OiNEEGNcQh+jp6zCzyF+mdekLi23l1NWDX3sEX5V9XvPKTd13On5nfK0bcEF/cGgvc=
+	t=1767961995; cv=none; b=EJzAxFfwuK102PbSf0QOZvQ3ibEbvvxtkVUiBLf4UYaaObBE/s/60xXdS39nT6mIkwv+j91nzSbPrtxcb2rp4d0U58+koEDQqC2wqZq9OptFBOKIIC36zRdue4AGXMNkbuji5PUKtEK73pvLBh4T3qH+IQ6NVMlMNYUzxxQnxK0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960186; c=relaxed/simple;
-	bh=+tQU/mkOQeDIE092eDUcV/8g/pNAGhaGFhnvlAX+A5o=;
+	s=arc-20240116; t=1767961995; c=relaxed/simple;
+	bh=xcdlSMEtU+1Z5/6d1QDxoNNdVmjoqKaXqm2DJXdjWc0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YDQZgr5mnG/16M0WLE6pwpjDm8A4UtpkZmBetMstEOpC2MfstehiqIb0/yVWq2Sh9ivUkf6QFwMINJcLNPAYWsPaXl+fKHm29UGjLfmuBP8VL15JWSZrSGZviJSgwPUOZTOis7jkDOVogPg2Xp92mql/35VdHhWx2fFlokEtacw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZRPSjZhj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2250EC4AF09;
-	Fri,  9 Jan 2026 12:03:05 +0000 (UTC)
+	 MIME-Version; b=AcK8G8acdGvNPQ41mrl/w8q21W1kuBPuURrdoIYhOaXLz9MygKlXys7yMUJOscZegXM4Xzya6o7icgGeX3GXV6IcLf8UYvCK8O58Ne8Za3Ipy5JXL1hUEAN0sF9EbcSCCYNBh4rLOHIEfSxOlZDuLpLvNngpeE1G8M5/P5BZXfk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LdLFgFK2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3459C4CEF1;
+	Fri,  9 Jan 2026 12:33:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960186;
-	bh=+tQU/mkOQeDIE092eDUcV/8g/pNAGhaGFhnvlAX+A5o=;
+	s=korg; t=1767961995;
+	bh=xcdlSMEtU+1Z5/6d1QDxoNNdVmjoqKaXqm2DJXdjWc0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZRPSjZhjQg9HyzKxTQnlr6MJAemi8J54M4HpUyCZtqp6jt9ZwgNvDh9joN8VcUmdB
-	 DEXx6N79Q8xOVLbkJr4TSLeLO73gyCXBSP1b7QZK8gT0q5ualCZy2dY3TX+jfJCzsH
-	 Fx02HqFwkbrz3wIhMqv5PmSEUWsVHJsfGDi4KrOQ=
+	b=LdLFgFK2Hey8sKSZAk+y4V54Bp9ElZ1RmD+DstN0qGOrJogREsAVMB4/yPRAcvKdU
+	 Q4lxE+ldWfvoJo7GhiqRbwFL6NPL1qLtlalk/1RRB+AaYIm4fWOMEhojU+SKf3VGNl
+	 ntwjrZcilwTcRi8qHHImKMlqY7zO2l//Xw/maIyM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Song Liu <song@kernel.org>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Petr Mladek <pmladek@suse.com>,
+	Alexey Kodanev <aleksei.kodanev@bell-sw.com>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 314/737] livepatch: Match old_sympos 0 and 1 in klp_find_func()
-Date: Fri,  9 Jan 2026 12:37:33 +0100
-Message-ID: <20260109112145.813978533@linuxfoundation.org>
+Subject: [PATCH 6.1 176/634] net: stmmac: fix rx limit check in stmmac_rx_zc()
+Date: Fri,  9 Jan 2026 12:37:34 +0100
+Message-ID: <20260109112124.066698229@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,90 +61,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Song Liu <song@kernel.org>
+From: Alexey Kodanev <aleksei.kodanev@bell-sw.com>
 
-[ Upstream commit 139560e8b973402140cafeb68c656c1374bd4c20 ]
+[ Upstream commit 8048168df56e225c94e50b04cb7b0514135d7a1c ]
 
-When there is only one function of the same name, old_sympos of 0 and 1
-are logically identical. Match them in klp_find_func().
+The extra "count >= limit" check in stmmac_rx_zc() is redundant and
+has no effect because the value of "count" doesn't change after the
+while condition at this point.
 
-This is to avoid a corner case with different toolchain behavior.
+However, it can change after "read_again:" label:
 
-In this specific issue, two versions of kpatch-build were used to
-build livepatch for the same kernel. One assigns old_sympos == 0 for
-unique local functions, the other assigns old_sympos == 1 for unique
-local functions. Both versions work fine by themselves. (PS: This
-behavior change was introduced in a downstream version of kpatch-build.
-This change does not exist in upstream kpatch-build.)
+        while (count < limit) {
+            ...
 
-However, during livepatch upgrade (with the replace flag set) from a
-patch built with one version of kpatch-build to the same fix built with
-the other version of kpatch-build, livepatching fails with errors like:
+            if (count >= limit)
+                break;
+    read_again:
+            ...
+            /* XSK pool expects RX frame 1:1 mapped to XSK buffer */
+            if (likely(status & rx_not_ls)) {
+                xsk_buff_free(buf->xdp);
+                buf->xdp = NULL;
+                dirty++;
+                count++;
+                goto read_again;
+            }
+            ...
 
-[   14.218706] sysfs: cannot create duplicate filename 'xxx/somefunc,1'
-...
-[   14.219466] Call Trace:
-[   14.219468]  <TASK>
-[   14.219469]  dump_stack_lvl+0x47/0x60
-[   14.219474]  sysfs_warn_dup.cold+0x17/0x27
-[   14.219476]  sysfs_create_dir_ns+0x95/0xb0
-[   14.219479]  kobject_add_internal+0x9e/0x260
-[   14.219483]  kobject_add+0x68/0x80
-[   14.219485]  ? kstrdup+0x3c/0xa0
-[   14.219486]  klp_enable_patch+0x320/0x830
-[   14.219488]  patch_init+0x443/0x1000 [ccc_0_6]
-[   14.219491]  ? 0xffffffffa05eb000
-[   14.219492]  do_one_initcall+0x2e/0x190
-[   14.219494]  do_init_module+0x67/0x270
-[   14.219496]  init_module_from_file+0x75/0xa0
-[   14.219499]  idempotent_init_module+0x15a/0x240
-[   14.219501]  __x64_sys_finit_module+0x61/0xc0
-[   14.219503]  do_syscall_64+0x5b/0x160
-[   14.219505]  entry_SYSCALL_64_after_hwframe+0x4b/0x53
-[   14.219507] RIP: 0033:0x7f545a4bd96d
-...
-[   14.219516] kobject: kobject_add_internal failed for somefunc,1 with
-    -EEXIST, don't try to register things with the same name ...
+This patch addresses the same issue previously resolved in stmmac_rx()
+by commit fa02de9e7588 ("net: stmmac: fix rx budget limit check").
+The fix is the same: move the check after the label to ensure that it
+bounds the goto loop.
 
-This happens because klp_find_func() thinks somefunc with old_sympos==0
-is not the same as somefunc with old_sympos==1, and klp_add_object_nops
-adds another xxx/func,1 to the list of functions to patch.
-
-Signed-off-by: Song Liu <song@kernel.org>
-Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
-[pmladek@suse.com: Fixed some typos.]
-Reviewed-by: Petr Mladek <pmladek@suse.com>
-Tested-by: Petr Mladek <pmladek@suse.com>
-Signed-off-by: Petr Mladek <pmladek@suse.com>
+Fixes: bba2556efad6 ("net: stmmac: Enable RX via AF_XDP zero-copy")
+Signed-off-by: Alexey Kodanev <aleksei.kodanev@bell-sw.com>
+Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Link: https://patch.msgid.link/20251126104327.175590-1-aleksei.kodanev@bell-sw.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/livepatch/core.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/livepatch/core.c b/kernel/livepatch/core.c
-index ecbc9b6aba3a1..81fd438697446 100644
---- a/kernel/livepatch/core.c
-+++ b/kernel/livepatch/core.c
-@@ -90,8 +90,14 @@ static struct klp_func *klp_find_func(struct klp_object *obj,
- 	struct klp_func *func;
- 
- 	klp_for_each_func(obj, func) {
-+		/*
-+		 * Besides identical old_sympos, also consider old_sympos
-+		 * of 0 and 1 are identical.
-+		 */
- 		if ((strcmp(old_func->old_name, func->old_name) == 0) &&
--		    (old_func->old_sympos == func->old_sympos)) {
-+		    ((old_func->old_sympos == func->old_sympos) ||
-+		     (old_func->old_sympos == 0 && func->old_sympos == 1) ||
-+		     (old_func->old_sympos == 1 && func->old_sympos == 0))) {
- 			return func;
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index 03fbb611b2a67..202c43d73a2bd 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -5065,10 +5065,10 @@ static int stmmac_rx_zc(struct stmmac_priv *priv, int limit, u32 queue)
+ 			len = 0;
  		}
- 	}
+ 
++read_again:
+ 		if (count >= limit)
+ 			break;
+ 
+-read_again:
+ 		buf1_len = 0;
+ 		entry = next_entry;
+ 		buf = &rx_q->buf_pool[entry];
 -- 
 2.51.0
 
