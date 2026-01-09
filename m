@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-206948-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207551-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3F15D0985F
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:22:54 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57220D09E47
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:43:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 87FFC307F239
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:11:17 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D00C8305C69C
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:39:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24A7035B12D;
-	Fri,  9 Jan 2026 12:11:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB63F35BDAF;
+	Fri,  9 Jan 2026 12:39:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AcM//fsv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cJRWTqp0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCD0635A945;
-	Fri,  9 Jan 2026 12:11:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C83D35B142;
+	Fri,  9 Jan 2026 12:39:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960660; cv=none; b=S6+9w+t5j3Z/DTn9gYhCn2B3YgP/cc/aXRVULUClVcDqtBo4IwMZEnGLjk5mEjYVweoOHa7lwg0dT10mevLxAZEcDTUmIgWwVAxA8tB4Lpd4L7Q9m3WkwcZQyw54Qd09OwWCqfV7RqWCcknEVSwii8RJ6VZEJ1mi9SZlJYgpmwM=
+	t=1767962376; cv=none; b=MWe4OBaLmKpiqI1GzMAFjy4fxEP8PKN01to55Ku9mGfpVZmRBOyhyy0xoKvbJvZkGlmskE5xLfHPruloBw1VSXoL3t+krXcG4sljRR/vhOrFy4TedaSpGF9wZp0ANCcf39kTZi4gdz9R8+ZS6tbbD7mSqmsBXYYSnhr+LeiNWSc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960660; c=relaxed/simple;
-	bh=sEqsc98JqXSh+fwC0lcoldW9AL6/TajEpbXu/hZYwX4=;
+	s=arc-20240116; t=1767962376; c=relaxed/simple;
+	bh=J84TDmOUqzwtMKRr5KALRUcT/adCKddMTx4Gd6hNEzQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yosxudtyuitj9UAZBs8T3n9zIAgcifSQ0xVVjGQKdkTVhUA2/32y2ip1xpwJGc3wb8vIxkQwRP3Jd+EL1Ii4qPAJF5tzx2oEEC9/ad4NAKtg5dqvgSj1VZTpHIBIgU7p+P6ZNfXQvUzf6ImZNITsAXkghMl0XyeqEH4YcRtjpQ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AcM//fsv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3037EC19422;
-	Fri,  9 Jan 2026 12:11:00 +0000 (UTC)
+	 MIME-Version; b=Z1kIcldRNJjYhZyj1OXcCoVqXlDhEk5VD2QD4YGM7SH9dQ/4kDiS2d+9FlirW4QTXVNXgEvIsoVm4uoHv8nFmK7uRCF+k6bnt7Vj2rfMFmbBOKpdeM9NhRYjGAAC8igLCBYS9x/hwtjL/N3TOYYTW+9T5peu7/VHiobmRmrkBD0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cJRWTqp0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A9D6C4CEF1;
+	Fri,  9 Jan 2026 12:39:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960660;
-	bh=sEqsc98JqXSh+fwC0lcoldW9AL6/TajEpbXu/hZYwX4=;
+	s=korg; t=1767962376;
+	bh=J84TDmOUqzwtMKRr5KALRUcT/adCKddMTx4Gd6hNEzQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AcM//fsvRWyyU+wAQp8Q6jz367+76N2tDKdEKPlgij84f08GxSCCJrvwfGCy1eRx9
-	 XMu7mI0DoR2QTHNyr5x3B38HZW86rohR46uKx7ntHUZfPcLL7SfjrQQjJUL99eSTLQ
-	 HThGHI7nWw+5+JWd/jt3I3SBtkm3y/tDimz/sDQw=
+	b=cJRWTqp03Qe2+M5J8/Vs9Ka5hNuZ9vlJ1YCIuQVR1C1D799Y6GUWFXLjOX6UQlLH8
+	 kFSrbgj3cEXvSGwnHkOK/R8EvTdDQbHnO7KfPzoM29jzo3fgoKdouof5/ISLOqQk12
+	 UNz+rdSKLlm7vTx5MyMWvvnkcT0gF3hWT2++Dzis=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sachin P Bappalige <sachinpb@linux.ibm.com>,
-	Srikar Dronamraju <srikar@linux.ibm.com>,
-	"Nysal Jan K.A." <nysal@linux.ibm.com>,
-	Samir M <samir@linux.ibm.com>,
-	Sourabh Jain <sourabhjain@linux.ibm.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>
-Subject: [PATCH 6.6 480/737] powerpc/kexec: Enable SMT before waking offline CPUs
-Date: Fri,  9 Jan 2026 12:40:19 +0100
-Message-ID: <20260109112152.041327436@linuxfoundation.org>
+	Tianchu Chen <flynnnchen@tencent.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	stable <stable@kernel.org>
+Subject: [PATCH 6.1 342/634] char: applicom: fix NULL pointer dereference in ac_ioctl
+Date: Fri,  9 Jan 2026 12:40:20 +0100
+Message-ID: <20260109112130.393155329@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +60,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nysal Jan K.A. <nysal@linux.ibm.com>
+From: Tianchu Chen <flynnnchen@tencent.com>
 
-commit c2296a1e42418556efbeb5636c4fa6aa6106713a upstream.
+commit 82d12088c297fa1cef670e1718b3d24f414c23f7 upstream.
 
-If SMT is disabled or a partial SMT state is enabled, when a new kernel
-image is loaded for kexec, on reboot the following warning is observed:
+Discovered by Atuin - Automated Vulnerability Discovery Engine.
 
-kexec: Waking offline cpu 228.
-WARNING: CPU: 0 PID: 9062 at arch/powerpc/kexec/core_64.c:223 kexec_prepare_cpus+0x1b0/0x1bc
-[snip]
- NIP kexec_prepare_cpus+0x1b0/0x1bc
- LR  kexec_prepare_cpus+0x1a0/0x1bc
- Call Trace:
-  kexec_prepare_cpus+0x1a0/0x1bc (unreliable)
-  default_machine_kexec+0x160/0x19c
-  machine_kexec+0x80/0x88
-  kernel_kexec+0xd0/0x118
-  __do_sys_reboot+0x210/0x2c4
-  system_call_exception+0x124/0x320
-  system_call_vectored_common+0x15c/0x2ec
+In ac_ioctl, the validation of IndexCard and the check for a valid
+RamIO pointer are skipped when cmd is 6. However, the function
+unconditionally executes readb(apbs[IndexCard].RamIO + VERS) at the
+end.
 
-This occurs as add_cpu() fails due to cpu_bootable() returning false for
-CPUs that fail the cpu_smt_thread_allowed() check or non primary
-threads if SMT is disabled.
+If cmd is 6, IndexCard may reference a board that does not exist
+(where RamIO is NULL), leading to a NULL pointer dereference.
 
-Fix the issue by enabling SMT and resetting the number of SMT threads to
-the number of threads per core, before attempting to wake up all present
-CPUs.
+Fix this by skipping the readb access when cmd is 6, as this
+command is a global information query and does not target a specific
+board context.
 
-Fixes: 38253464bc82 ("cpu/SMT: Create topology_smt_thread_allowed()")
-Reported-by: Sachin P Bappalige <sachinpb@linux.ibm.com>
-Cc: stable@vger.kernel.org # v6.6+
-Reviewed-by: Srikar Dronamraju <srikar@linux.ibm.com>
-Signed-off-by: Nysal Jan K.A. <nysal@linux.ibm.com>
-Tested-by: Samir M <samir@linux.ibm.com>
-Reviewed-by: Sourabh Jain <sourabhjain@linux.ibm.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20251028105516.26258-1-nysal@linux.ibm.com
+Signed-off-by: Tianchu Chen <flynnnchen@tencent.com>
+Acked-by: Arnd Bergmann <arnd@arndb.de>
+Cc: stable <stable@kernel.org>
+Link: https://patch.msgid.link/20251128155323.a786fde92ebb926cbe96fcb1@linux.dev
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/kexec/core_64.c |   19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ drivers/char/applicom.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/arch/powerpc/kexec/core_64.c
-+++ b/arch/powerpc/kexec/core_64.c
-@@ -200,6 +200,23 @@ static void kexec_prepare_cpus_wait(int
- 	mb();
- }
- 
+--- a/drivers/char/applicom.c
++++ b/drivers/char/applicom.c
+@@ -836,7 +836,10 @@ static long ac_ioctl(struct file *file,
+ 		ret = -ENOTTY;
+ 		break;
+ 	}
+-	Dummy = readb(apbs[IndexCard].RamIO + VERS);
 +
-+/*
-+ * The add_cpu() call in wake_offline_cpus() can fail as cpu_bootable()
-+ * returns false for CPUs that fail the cpu_smt_thread_allowed() check
-+ * or non primary threads if SMT is disabled. Re-enable SMT and set the
-+ * number of SMT threads to threads per core.
-+ */
-+static void kexec_smt_reenable(void)
-+{
-+#if defined(CONFIG_SMP) && defined(CONFIG_HOTPLUG_SMT)
-+	lock_device_hotplug();
-+	cpu_smt_num_threads = threads_per_core;
-+	cpu_smt_control = CPU_SMT_ENABLED;
-+	unlock_device_hotplug();
-+#endif
-+}
++	if (cmd != 6)
++		Dummy = readb(apbs[IndexCard].RamIO + VERS);
 +
- /*
-  * We need to make sure each present CPU is online.  The next kernel will scan
-  * the device tree and assume primary threads are online and query secondary
-@@ -214,6 +231,8 @@ static void wake_offline_cpus(void)
- {
- 	int cpu = 0;
- 
-+	kexec_smt_reenable();
-+
- 	for_each_present_cpu(cpu) {
- 		if (!cpu_online(cpu)) {
- 			printk(KERN_INFO "kexec: Waking offline cpu %d.\n",
+ 	kfree(adgl);
+ 	mutex_unlock(&ac_mutex);
+ 	return ret;
 
 
 
