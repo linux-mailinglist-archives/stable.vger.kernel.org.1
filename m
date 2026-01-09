@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-207289-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206688-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C3B4D09B65
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:34:22 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id ABBF4D09380
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:04:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A11C830A6D6E
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:27:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 88F4A30D80C4
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:58:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4304B2EC54D;
-	Fri,  9 Jan 2026 12:27:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12B7E33C511;
+	Fri,  9 Jan 2026 11:58:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="it2+c4dS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VmdLkvnI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE1E235A95C;
-	Fri,  9 Jan 2026 12:27:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB77D32FA3D;
+	Fri,  9 Jan 2026 11:58:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961630; cv=none; b=LJL7yjIiFOVtnNkll8kJKixFBCctPyYTKkqfsgw6V5JnvriQKzkmqhmo2YOJzwIqJ+MMMHrl+OPBDslVTrRsLv/sZ2shfsVshS/5jlM2mzCNqZ31P5FV1jTEb1ufbQUqpEDHYWHBotLt/dfM0jwTG0aUrGpUZVI3wnOF6LQJMEM=
+	t=1767959916; cv=none; b=qbCbBsHlMxHZkqHR1dplguS+yVqggvk1SMZ8HVZE1CuPj7nAUCBhToASvWSQKPnyI23Xh9TUG1OjxFRW4k+i51BdtzbMdsRb7ZTjAvl7sX4K/wPFhkTflHHU4KeOVa4W0rtVjMrJGoeScu0KiuAMoJYw5Q24uoGrPLfqNntPjR8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961630; c=relaxed/simple;
-	bh=8XmB4iG27hH+8Ew5cbl8xQLDhn+B6hAM8zHg4twSgFY=;
+	s=arc-20240116; t=1767959916; c=relaxed/simple;
+	bh=468pLwhaowFwz6WlUoAWHCe2hQv8fwmxNEaD/8UZGhQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QPylxHspb9Vl0EOB5uyN6y3Vf2ZV8MvjRsjKUx/iVIHke4wVSdoT6Q8Edv/mpVaMQZdT9vIrALyXBYet3oRDHooMD/ijKDSIcSeAjsuAxQBTw4IDyoQjWhf80z/YSPLDRDEkHC/alClxdUnyHkPmTTLx4/dsUoYrGBh8zitF/Xc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=it2+c4dS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24BECC4CEF1;
-	Fri,  9 Jan 2026 12:27:08 +0000 (UTC)
+	 MIME-Version; b=STLvTPwaBPXoeNdHqhyyighUT3nTLr1SPSwHoLJQxJrHlAeayPMckuFeLevY4b74+abfBTuVJX27k/etF6qUWqWbzzYekGZy55OuiYHrDrUIzdb82l403dkqQnb8T3m/bW8hbCb6ZYtLE54MJv7Jh8K/bi148vRMGY+PXplff7U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VmdLkvnI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16047C4CEF1;
+	Fri,  9 Jan 2026 11:58:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961629;
-	bh=8XmB4iG27hH+8Ew5cbl8xQLDhn+B6hAM8zHg4twSgFY=;
+	s=korg; t=1767959916;
+	bh=468pLwhaowFwz6WlUoAWHCe2hQv8fwmxNEaD/8UZGhQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=it2+c4dSvpmhg0PgAcnGn0lraOnT16ird8CRiBUE/6RAtZX58MTZBI9CLu4O8tjL+
-	 zbupkDH4YcetdmNgPjz3qknjv/I+fvI3rLYM5dxBDqXv7wYKVu5rSlbf03cDavcQAs
-	 6XzvZgZjIDvduFZDMxlItmeEEXwpfuiZn9B7AbH4=
+	b=VmdLkvnIwN93mrp3axWi7f++L5NIC7cvMyos853I2Km0Buw4vv13YmDSxgNLSlxJL
+	 O9/Y/fPR2YlLowWiK67ZysItZ4rFsLW4byBD/S/51ZnKi5I6cRKYr+MTmK7nbKhRGB
+	 dQdBAYR4smbZodgWXQ/o+cnp+bNVZJW4qFHhCdig=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thierry Reding <treding@nvidia.com>,
-	Vishwaroop A <va@nvidia.com>,
-	Mark Brown <broonie@kernel.org>,
+	Caleb Sander Mateos <csander@purestorage.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	Keith Busch <kbusch@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 082/634] spi: tegra210-quad: Fix timeout handling
+Subject: [PATCH 6.6 221/737] ublk: complete command synchronously on error
 Date: Fri,  9 Jan 2026 12:36:00 +0100
-Message-ID: <20260109112120.524192302@linuxfoundation.org>
+Message-ID: <20260109112142.316242694@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,119 +62,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vishwaroop A <va@nvidia.com>
+From: Caleb Sander Mateos <csander@purestorage.com>
 
-[ Upstream commit b4e002d8a7cee3b1d70efad0e222567f92a73000 ]
+[ Upstream commit 603f9be21c1894e462416e3324962d6c9c2b95f8 ]
 
-When the CPU that the QSPI interrupt handler runs on (typically CPU 0)
-is excessively busy, it can lead to rare cases of the IRQ thread not
-running before the transfer timeout is reached.
+In case of an error, ublk's ->uring_cmd() functions currently return
+-EIOCBQUEUED and immediately call io_uring_cmd_done(). -EIOCBQUEUED and
+io_uring_cmd_done() are intended for asynchronous completions. For
+synchronous completions, the ->uring_cmd() function can just return the
+negative return code directly. This skips io_uring_cmd_del_cancelable(),
+and deferring the completion to task work. So return the error code
+directly from __ublk_ch_uring_cmd() and ublk_ctrl_uring_cmd().
 
-While handling the timeouts, any pending transfers are cleaned up and
-the message that they correspond to is marked as failed, which leaves
-the curr_xfer field pointing at stale memory.
+Update ublk_ch_uring_cmd_cb(), which currently ignores the return value
+from __ublk_ch_uring_cmd(), to call io_uring_cmd_done() for synchronous
+completions.
 
-To avoid this, clear curr_xfer to NULL upon timeout and check for this
-condition when the IRQ thread is finally run.
-
-While at it, also make sure to clear interrupts on failure so that new
-interrupts can be run.
-
-A better, more involved, fix would move the interrupt clearing into a
-hard IRQ handler. Ideally we would also want to signal that the IRQ
-thread no longer needs to be run after the timeout is hit to avoid the
-extra check for a valid transfer.
-
-Fixes: 921fc1838fb0 ("spi: tegra210-quad: Add support for Tegra210 QSPI controller")
-Signed-off-by: Thierry Reding <treding@nvidia.com>
-Signed-off-by: Vishwaroop A <va@nvidia.com>
-Link: https://patch.msgid.link/20251028155703.4151791-2-va@nvidia.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Caleb Sander Mateos <csander@purestorage.com>
+Reviewed-by: Ming Lei <ming.lei@redhat.com>
+Reviewed-by: Keith Busch <kbusch@kernel.org>
+Link: https://lore.kernel.org/r/20250225212456.2902549-1-csander@purestorage.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Stable-dep-of: c6a45ee7607d ("ublk: prevent invalid access with DEBUG")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-tegra210-quad.c | 22 ++++++++++++++++++++--
- 1 file changed, 20 insertions(+), 2 deletions(-)
+ drivers/block/ublk_drv.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/spi/spi-tegra210-quad.c b/drivers/spi/spi-tegra210-quad.c
-index f2a4743efcb47..2e4d1b2f2a273 100644
---- a/drivers/spi/spi-tegra210-quad.c
-+++ b/drivers/spi/spi-tegra210-quad.c
-@@ -998,8 +998,10 @@ static void tegra_qspi_handle_error(struct tegra_qspi *tqspi)
- 	dev_err(tqspi->dev, "error in transfer, fifo status 0x%08x\n", tqspi->status_reg);
- 	tegra_qspi_dump_regs(tqspi);
- 	tegra_qspi_flush_fifos(tqspi, true);
--	if (device_reset(tqspi->dev) < 0)
-+	if (device_reset(tqspi->dev) < 0) {
- 		dev_warn_once(tqspi->dev, "device reset failed\n");
-+		tegra_qspi_mask_clear_irq(tqspi);
-+	}
+diff --git a/drivers/block/ublk_drv.c b/drivers/block/ublk_drv.c
+index 6419f304fa5e2..88d566f0ffa64 100644
+--- a/drivers/block/ublk_drv.c
++++ b/drivers/block/ublk_drv.c
+@@ -1821,10 +1821,9 @@ static int __ublk_ch_uring_cmd(struct io_uring_cmd *cmd,
+ 	return -EIOCBQUEUED;
+ 
+  out:
+-	io_uring_cmd_done(cmd, ret, 0, issue_flags);
+ 	pr_devel("%s: complete: cmd op %d, tag %d ret %x io_flags %x\n",
+ 			__func__, cmd_op, tag, ret, io->flags);
+-	return -EIOCBQUEUED;
++	return ret;
  }
  
- static void tegra_qspi_transfer_end(struct spi_device *spi)
-@@ -1138,9 +1140,11 @@ static int tegra_qspi_combined_seq_xfer(struct tegra_qspi *tqspi,
- 				}
- 
- 				/* Reset controller if timeout happens */
--				if (device_reset(tqspi->dev) < 0)
-+				if (device_reset(tqspi->dev) < 0) {
- 					dev_warn_once(tqspi->dev,
- 						      "device reset failed\n");
-+					tegra_qspi_mask_clear_irq(tqspi);
-+				}
- 				ret = -EIO;
- 				goto exit;
- 			}
-@@ -1162,11 +1166,13 @@ static int tegra_qspi_combined_seq_xfer(struct tegra_qspi *tqspi,
- 			tegra_qspi_transfer_end(spi);
- 			spi_transfer_delay_exec(xfer);
- 		}
-+		tqspi->curr_xfer = NULL;
- 		transfer_phase++;
- 	}
- 	ret = 0;
- 
- exit:
-+	tqspi->curr_xfer = NULL;
- 	msg->status = ret;
- 
- 	return ret;
-@@ -1248,6 +1254,8 @@ static int tegra_qspi_non_combined_seq_xfer(struct tegra_qspi *tqspi,
- 		msg->actual_length += xfer->len + dummy_bytes;
- 
- complete_xfer:
-+		tqspi->curr_xfer = NULL;
-+
- 		if (ret < 0) {
- 			tegra_qspi_transfer_end(spi);
- 			spi_transfer_delay_exec(xfer);
-@@ -1344,6 +1352,7 @@ static irqreturn_t handle_cpu_based_xfer(struct tegra_qspi *tqspi)
- 	tegra_qspi_calculate_curr_xfer_param(tqspi, t);
- 	tegra_qspi_start_cpu_based_transfer(tqspi, t);
- exit:
-+	tqspi->curr_xfer = NULL;
- 	spin_unlock_irqrestore(&tqspi->lock, flags);
- 	return IRQ_HANDLED;
- }
-@@ -1427,6 +1436,15 @@ static irqreturn_t tegra_qspi_isr_thread(int irq, void *context_data)
+ static inline struct request *__ublk_check_and_get_req(struct ublk_device *ub,
+@@ -1880,7 +1879,10 @@ static inline int ublk_ch_uring_cmd_local(struct io_uring_cmd *cmd,
+ static void ublk_ch_uring_cmd_cb(struct io_uring_cmd *cmd,
+ 		unsigned int issue_flags)
  {
- 	struct tegra_qspi *tqspi = context_data;
- 
-+	/*
-+	 * Occasionally the IRQ thread takes a long time to wake up (usually
-+	 * when the CPU that it's running on is excessively busy) and we have
-+	 * already reached the timeout before and cleaned up the timed out
-+	 * transfer. Avoid any processing in that case and bail out early.
-+	 */
-+	if (!tqspi->curr_xfer)
-+		return IRQ_NONE;
+-	ublk_ch_uring_cmd_local(cmd, issue_flags);
++	int ret = ublk_ch_uring_cmd_local(cmd, issue_flags);
 +
- 	tqspi->status_reg = tegra_qspi_readl(tqspi, QSPI_FIFO_STATUS);
++	if (ret != -EIOCBQUEUED)
++		io_uring_cmd_done(cmd, ret, 0, issue_flags);
+ }
  
- 	if (tqspi->cur_direction & DATA_DIR_TX)
+ static int ublk_ch_uring_cmd(struct io_uring_cmd *cmd, unsigned int issue_flags)
+@@ -2948,10 +2950,9 @@ static int ublk_ctrl_uring_cmd(struct io_uring_cmd *cmd,
+ 	if (ub)
+ 		ublk_put_device(ub);
+  out:
+-	io_uring_cmd_done(cmd, ret, 0, issue_flags);
+ 	pr_devel("%s: cmd done ret %d cmd_op %x, dev id %d qid %d\n",
+ 			__func__, ret, cmd->cmd_op, header->dev_id, header->queue_id);
+-	return -EIOCBQUEUED;
++	return ret;
+ }
+ 
+ static const struct file_operations ublk_ctl_fops = {
 -- 
 2.51.0
 
