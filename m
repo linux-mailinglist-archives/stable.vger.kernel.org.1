@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-207218-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206619-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EDBCD09C8B
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:37:32 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71EE2D09320
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:02:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 407CE307FD2D
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:23:52 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9B66C308C086
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:55:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F473359FA0;
-	Fri,  9 Jan 2026 12:23:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4452C335561;
+	Fri,  9 Jan 2026 11:55:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JnxOpdDC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IvXzc2+P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C24032AAB5;
-	Fri,  9 Jan 2026 12:23:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0695E31A7EA;
+	Fri,  9 Jan 2026 11:55:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961429; cv=none; b=MpEorEtufxXU7wrj5hCBfMt/NoAAVmd2CbSly4D1xtGH5vklUFoQIK/Nmvh22uBX5wCG1XOmNleruNnMJWd725V5tV0rnEblUgQjThBHc2Aod4OAvdHHXQRqugsnbTYVhjPTrYmobW//5OBkDs0U3sFANlFRx4jOPffzX3jYSAQ=
+	t=1767959721; cv=none; b=TYy3CXHIjHw/ZOGZXeVlerdYDY38ubkTx8OxTruWyiQJDZXxhaH/d3prpWvz9EubXjBoBExKI0hfG1nKagUyFGAltWBMTAAVfW+Ao9HFgFijCkzPlN8Rjt75rhNXlvtWUHKfZRb5si/sdGeOhYhp64XC/8prpcGyVnfZJ6CNKLE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961429; c=relaxed/simple;
-	bh=KMEjTlrPggiWmVWqlCPhHDFl1lZbtgmnV8E5nAEqM2s=;
+	s=arc-20240116; t=1767959721; c=relaxed/simple;
+	bh=K3sv4FxOxBx/Dzvqyf5Ovy47LEDkmc8KWOvdMUpTwJQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d8IW9eDLTnZ2nzbWbsBbFBCJVT/V6ftCD2vgxDkDD8FELrZ8/Tox+NhlcCBYDQ4HqCc4phBAf/V4qrF3HJGaxH6dQp1AavBLZdXGTsN7qZYZq8nXn0DgsQKxAQXn0m1hIb5O+7AnRus2CYZHZr3n0kArOyc6VB0PnP7XZ6+31Qo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JnxOpdDC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC20EC4CEF1;
-	Fri,  9 Jan 2026 12:23:48 +0000 (UTC)
+	 MIME-Version; b=bofoACqAn7rpEx+Kf9QMi25LLePHbSZEplQ/sLk7E4zNhGeZBxcg9VPRvmbrsZgY+JoUwtIscLz4GRr2yzgb9/mYe/edrbCe1CFheKLmmtjo/xKRSM7E5E7mEu8oCMvd0jLcMIn1XcDSYdLR89afrwtbmnTs8C5L8CJTkWD6DQA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IvXzc2+P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8273FC4CEF1;
+	Fri,  9 Jan 2026 11:55:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961429;
-	bh=KMEjTlrPggiWmVWqlCPhHDFl1lZbtgmnV8E5nAEqM2s=;
+	s=korg; t=1767959720;
+	bh=K3sv4FxOxBx/Dzvqyf5Ovy47LEDkmc8KWOvdMUpTwJQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JnxOpdDC8pFcKEALhwleSPZCdoFC9HgIV46oBflShtOMa+cKzPXc4E+WbxMvArkkN
-	 4jA1Ll+CNN8xLJK2JKZnMhVcEXY0NpcpnX1u8lpxbmL1MyduHNDOd0YhUSLevQGPWS
-	 B7Ork8xDtuSrh6y7d6JlyX8Rcy/zuEN1E58BconE=
+	b=IvXzc2+PUjPmurpD/W6aFKveK7WEcDHIkTn0rnwq9GO9YoAMMstw6ZPN9PKVkpLKP
+	 ByCkF+dAsUpX+oSU6DdOB/xgS/Sdd7lNYmnK5OwBPF0aOfkZqM6u+c0L3mQRgOPvy6
+	 A+o8rL/ajJEwEUNvP9/MCLmHBk/qEowCn6NcI3s8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexey Nepomnyashih <sdl@nppct.ru>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.1 012/634] ext4: add i_data_sem protection in ext4_destroy_inline_data_nolock()
-Date: Fri,  9 Jan 2026 12:34:50 +0100
-Message-ID: <20260109112117.894225306@linuxfoundation.org>
+	Markus Elfring <Markus.Elfring@web.de>,
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Lee Jones <lee@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 152/737] leds: netxbig: Fix GPIO descriptor leak in error paths
+Date: Fri,  9 Jan 2026 12:34:51 +0100
+Message-ID: <20260109112139.715639815@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,93 +61,118 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexey Nepomnyashih <sdl@nppct.ru>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-commit 0cd8feea8777f8d9b9a862b89c688b049a5c8475 upstream.
+[ Upstream commit 03865dd8af52eb16c38062df2ed30a91b604780e ]
 
-Fix a race between inline data destruction and block mapping.
+The function netxbig_gpio_ext_get() acquires GPIO descriptors but
+fails to release them when errors occur mid-way through initialization.
+The cleanup callback registered by devm_add_action_or_reset() only
+runs on success, leaving acquired GPIOs leaked on error paths.
 
-The function ext4_destroy_inline_data_nolock() changes the inode data
-layout by clearing EXT4_INODE_INLINE_DATA and setting EXT4_INODE_EXTENTS.
-At the same time, another thread may execute ext4_map_blocks(), which
-tests EXT4_INODE_EXTENTS to decide whether to call ext4_ext_map_blocks()
-or ext4_ind_map_blocks().
+Add goto-based error handling to release all acquired GPIOs before
+returning errors.
 
-Without i_data_sem protection, ext4_ind_map_blocks() may receive inode
-with EXT4_INODE_EXTENTS flag and triggering assert.
-
-kernel BUG at fs/ext4/indirect.c:546!
-EXT4-fs (loop2): unmounting filesystem.
-invalid opcode: 0000 [#1] PREEMPT SMP KASAN NOPTI
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.12.0-1 04/01/2014
-RIP: 0010:ext4_ind_map_blocks.cold+0x2b/0x5a fs/ext4/indirect.c:546
-
-Call Trace:
- <TASK>
- ext4_map_blocks+0xb9b/0x16f0 fs/ext4/inode.c:681
- _ext4_get_block+0x242/0x590 fs/ext4/inode.c:822
- ext4_block_write_begin+0x48b/0x12c0 fs/ext4/inode.c:1124
- ext4_write_begin+0x598/0xef0 fs/ext4/inode.c:1255
- ext4_da_write_begin+0x21e/0x9c0 fs/ext4/inode.c:3000
- generic_perform_write+0x259/0x5d0 mm/filemap.c:3846
- ext4_buffered_write_iter+0x15b/0x470 fs/ext4/file.c:285
- ext4_file_write_iter+0x8e0/0x17f0 fs/ext4/file.c:679
- call_write_iter include/linux/fs.h:2271 [inline]
- do_iter_readv_writev+0x212/0x3c0 fs/read_write.c:735
- do_iter_write+0x186/0x710 fs/read_write.c:861
- vfs_iter_write+0x70/0xa0 fs/read_write.c:902
- iter_file_splice_write+0x73b/0xc90 fs/splice.c:685
- do_splice_from fs/splice.c:763 [inline]
- direct_splice_actor+0x10f/0x170 fs/splice.c:950
- splice_direct_to_actor+0x33a/0xa10 fs/splice.c:896
- do_splice_direct+0x1a9/0x280 fs/splice.c:1002
- do_sendfile+0xb13/0x12c0 fs/read_write.c:1255
- __do_sys_sendfile64 fs/read_write.c:1323 [inline]
- __se_sys_sendfile64 fs/read_write.c:1309 [inline]
- __x64_sys_sendfile64+0x1cf/0x210 fs/read_write.c:1309
- do_syscall_x64 arch/x86/entry/common.c:51 [inline]
- do_syscall_64+0x35/0x80 arch/x86/entry/common.c:81
- entry_SYSCALL_64_after_hwframe+0x6e/0xd8
-
-Fixes: c755e251357a ("ext4: fix deadlock between inline_data and ext4_expand_extra_isize_ea()")
-Cc: stable@vger.kernel.org # v4.11+
-Signed-off-by: Alexey Nepomnyashih <sdl@nppct.ru>
-Message-ID: <20251104093326.697381-1-sdl@nppct.ru>
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 9af512e81964 ("leds: netxbig: Convert to use GPIO descriptors")
+Suggested-by: Markus Elfring <Markus.Elfring@web.de>
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Link: https://patch.msgid.link/20251031021620.781-1-vulab@iscas.ac.cn
+Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/inline.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/leds/leds-netxbig.c | 36 ++++++++++++++++++++++++++----------
+ 1 file changed, 26 insertions(+), 10 deletions(-)
 
---- a/fs/ext4/inline.c
-+++ b/fs/ext4/inline.c
-@@ -447,9 +447,13 @@ static int ext4_destroy_inline_data_nolo
- 	if (!ei->i_inline_off)
- 		return 0;
+diff --git a/drivers/leds/leds-netxbig.c b/drivers/leds/leds-netxbig.c
+index 6692de0af68f1..ea0801b9cb010 100644
+--- a/drivers/leds/leds-netxbig.c
++++ b/drivers/leds/leds-netxbig.c
+@@ -364,6 +364,9 @@ static int netxbig_gpio_ext_get(struct device *dev,
+ 	if (!addr)
+ 		return -ENOMEM;
  
-+	down_write(&ei->i_data_sem);
++	gpio_ext->addr = addr;
++	gpio_ext->num_addr = 0;
 +
- 	error = ext4_get_inode_loc(inode, &is.iloc);
--	if (error)
-+	if (error) {
-+		up_write(&ei->i_data_sem);
- 		return error;
-+	}
+ 	/*
+ 	 * We cannot use devm_ managed resources with these GPIO descriptors
+ 	 * since they are associated with the "GPIO extension device" which
+@@ -375,45 +378,58 @@ static int netxbig_gpio_ext_get(struct device *dev,
+ 		gpiod = gpiod_get_index(gpio_ext_dev, "addr", i,
+ 					GPIOD_OUT_LOW);
+ 		if (IS_ERR(gpiod))
+-			return PTR_ERR(gpiod);
++			goto err_set_code;
+ 		gpiod_set_consumer_name(gpiod, "GPIO extension addr");
+ 		addr[i] = gpiod;
++		gpio_ext->num_addr++;
+ 	}
+-	gpio_ext->addr = addr;
+-	gpio_ext->num_addr = num_addr;
  
- 	error = ext4_xattr_ibody_find(inode, &i, &is);
- 	if (error)
-@@ -488,6 +492,7 @@ out:
- 	brelse(is.iloc.bh);
- 	if (error == -ENODATA)
- 		error = 0;
-+	up_write(&ei->i_data_sem);
- 	return error;
+ 	ret = gpiod_count(gpio_ext_dev, "data");
+ 	if (ret < 0) {
+ 		dev_err(dev,
+ 			"Failed to count GPIOs in DT property data-gpios\n");
+-		return ret;
++		goto err_free_addr;
+ 	}
+ 	num_data = ret;
+ 	data = devm_kcalloc(dev, num_data, sizeof(*data), GFP_KERNEL);
+-	if (!data)
+-		return -ENOMEM;
++	if (!data) {
++		ret = -ENOMEM;
++		goto err_free_addr;
++	}
++
++	gpio_ext->data = data;
++	gpio_ext->num_data = 0;
+ 
+ 	for (i = 0; i < num_data; i++) {
+ 		gpiod = gpiod_get_index(gpio_ext_dev, "data", i,
+ 					GPIOD_OUT_LOW);
+ 		if (IS_ERR(gpiod))
+-			return PTR_ERR(gpiod);
++			goto err_free_data;
+ 		gpiod_set_consumer_name(gpiod, "GPIO extension data");
+ 		data[i] = gpiod;
++		gpio_ext->num_data++;
+ 	}
+-	gpio_ext->data = data;
+-	gpio_ext->num_data = num_data;
+ 
+ 	gpiod = gpiod_get(gpio_ext_dev, "enable", GPIOD_OUT_LOW);
+ 	if (IS_ERR(gpiod)) {
+ 		dev_err(dev,
+ 			"Failed to get GPIO from DT property enable-gpio\n");
+-		return PTR_ERR(gpiod);
++		goto err_free_data;
+ 	}
+ 	gpiod_set_consumer_name(gpiod, "GPIO extension enable");
+ 	gpio_ext->enable = gpiod;
+ 
+ 	return devm_add_action_or_reset(dev, netxbig_gpio_ext_remove, gpio_ext);
++
++err_free_data:
++	for (i = 0; i < gpio_ext->num_data; i++)
++		gpiod_put(gpio_ext->data[i]);
++err_set_code:
++	ret = PTR_ERR(gpiod);
++err_free_addr:
++	for (i = 0; i < gpio_ext->num_addr; i++)
++		gpiod_put(gpio_ext->addr[i]);
++	return ret;
  }
  
+ static int netxbig_leds_get_of_pdata(struct device *dev,
+-- 
+2.51.0
+
 
 
 
