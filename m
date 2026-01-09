@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-206725-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207327-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF28FD09473
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:08:03 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57EC1D09BA1
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:35:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id AF58B30242A4
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:00:22 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5F91E301FD99
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:29:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4728A359FB0;
-	Fri,  9 Jan 2026 12:00:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39055359708;
+	Fri,  9 Jan 2026 12:29:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="plbxZ3Q5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ykFL+8Lw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ACBE359F98;
-	Fri,  9 Jan 2026 12:00:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5478306483;
+	Fri,  9 Jan 2026 12:28:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960022; cv=none; b=cQij+SkW1ZkGJXdEi2HQulBYWfcbi411PXmOgfMBSOfDNSMtjNVYPSIe2behXNS6r7pRRPNnJC0zx4jcgutXtx1rNsH5tt6fHiiYXZXLGVIElRei0EVvK/VudQEQISvD0Cj4cSQOkOcaVWdUVZ+9h87On8mqjzT8HsFqPfjQWhE=
+	t=1767961740; cv=none; b=JHeQJH7tDyTRJ2SSnLufShe4SF5VqomkFleJ2f+12zYnKhE++o6XsbxG7O0kQzsZFt5DN8DuHqDct3mAsBNBK6ecMTBbZO0RVnzgqiwl/0cjDnVqDorafxcSdcA4SSSmCaY2PQLe1iD/PRN30Y3QUzInjh2hk+jH8Wege7uibGo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960022; c=relaxed/simple;
-	bh=hyilYcFRoF7CAFTo/oAdgHlTO9BzNTO0ovFC3CtTKXM=;
+	s=arc-20240116; t=1767961740; c=relaxed/simple;
+	bh=79xUYWUI6rgdd5jOMdCZVzzChM/dydsgg0JC/cKEk+I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cFSPWsont9tXSpvIpeHfK2Jb8NRS7jdrJERvn8k5S0Ty45gPqwUeF2T9B4//MlyQXn5vJaqSgPOwqQ2uhuoIyDOG16wDGp+jNzMkJK6eFB/JjXJn0gQ8n52YxllSyCw1cJ6u7UMxovzoYbkwo/8QwLfu8KgPd6VTh7yEs1H/Bqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=plbxZ3Q5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8588AC4CEF1;
-	Fri,  9 Jan 2026 12:00:21 +0000 (UTC)
+	 MIME-Version; b=Ukz0v977qiocaBCIliaXhTba7uO9B323XInxJwOv2jWvJKCeKj6YbaVXqQX3fyfMVPsdT7BKyRpXalmhZ/lsEAoKCfLHRGyDjwimpqMWBydK+FhZpv3cM9TuslQEcrtBNpr0YNgpNeTWT/DmbOkDKtkD9ZmCl/23j3U4isaRf8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ykFL+8Lw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E77CC4CEF1;
+	Fri,  9 Jan 2026 12:28:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960021;
-	bh=hyilYcFRoF7CAFTo/oAdgHlTO9BzNTO0ovFC3CtTKXM=;
+	s=korg; t=1767961739;
+	bh=79xUYWUI6rgdd5jOMdCZVzzChM/dydsgg0JC/cKEk+I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=plbxZ3Q5qB+/8gaLuu6PdSZs9A0Q7xRoj2QpBADm6XHsBL6d069jw6QRMilbbSeWR
-	 Tlu+LZXtEnThCvh542kH8QH6QWVg1Ks8eTovOxqSeG1JQrgSZU2RJUM7WTK8ae7VZP
-	 2dot1cF+WhivGoaJzyuSidGgkiwMwfxTfypWmopo=
+	b=ykFL+8LwhQk+Jbsvj0qSTU0+H49yqFa0h83XA2YJkf/KJBzStTrtIlNMVfhQv3vpi
+	 17syJjPEW07uGwCE5wap4pthERICeMmBKik46tnHuovKFIyJBJQvskaAwMgrTlMGXp
+	 HjxokxxhTxL/tDy93dKUw4H+A/KjHTE+erHM4xcg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Sandeen <sandeen@redhat.com>,
-	Remi Pommarel <repk@triplefau.lt>,
-	Dominique Martinet <asmadeus@codewreck.org>,
+	Sergey Bashirov <sergeybashirov@gmail.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 258/737] 9p: fix cache/debug options printing in v9fs_show_options
+Subject: [PATCH 6.1 119/634] NFSD/blocklayout: Fix minlength check in proc_layoutget
 Date: Fri,  9 Jan 2026 12:36:37 +0100
-Message-ID: <20260109112143.697706704@linuxfoundation.org>
+Message-ID: <20260109112121.915138704@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,62 +61,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Sandeen <sandeen@redhat.com>
+From: Sergey Bashirov <sergeybashirov@gmail.com>
 
-[ Upstream commit f0445613314f474c1a0ec6fa8a5cd153a618f1b6 ]
+[ Upstream commit 3524b021b0ec620a76c89aee78e9d4b4130fb711 ]
 
-commit 4eb3117888a92 changed the cache= option to accept either string
-shortcuts or bitfield values. It also changed /proc/mounts to emit the
-option as the hexadecimal numeric value rather than the shortcut string.
+The extent returned by the file system may have a smaller offset than
+the segment offset requested by the client. In this case, the minimum
+segment length must be checked against the requested range. Otherwise,
+the client may not be able to continue the read/write operation.
 
-However, by printing "cache=%x" without the leading 0x, shortcuts such
-as "cache=loose" will emit "cache=f" and 'f' is not a string that is
-parseable by kstrtoint(), so remounting may fail if a remount with
-"cache=f" is attempted.
-
-debug=%x has had the same problem since options have been displayed in
-c4fac9100456 ("9p: Implement show_options")
-
-Fix these by adding the 0x prefix to the hexadecimal value shown in
-/proc/mounts.
-
-Fixes: 4eb3117888a92 ("fs/9p: Rework cache modes and add new options to Documentation")
-Signed-off-by: Eric Sandeen <sandeen@redhat.com>
-Message-ID: <54b93378-dcf1-4b04-922d-c8b4393da299@redhat.com>
-[Dominique: use %#x at Al Viro's suggestion, also handle debug]
-Tested-by: Remi Pommarel <repk@triplefau.lt>
-Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
+Fixes: 8650b8a05850 ("nfsd: pNFS block layout driver")
+Signed-off-by: Sergey Bashirov <sergeybashirov@gmail.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/9p/v9fs.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/nfsd/blocklayout.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/fs/9p/v9fs.c b/fs/9p/v9fs.c
-index be61810cb7798..159a2aae849b9 100644
---- a/fs/9p/v9fs.c
-+++ b/fs/9p/v9fs.c
-@@ -101,7 +101,7 @@ int v9fs_show_options(struct seq_file *m, struct dentry *root)
- 	struct v9fs_session_info *v9ses = root->d_sb->s_fs_info;
+diff --git a/fs/nfsd/blocklayout.c b/fs/nfsd/blocklayout.c
+index 59f119cce3dc6..3a9415fd77546 100644
+--- a/fs/nfsd/blocklayout.c
++++ b/fs/nfsd/blocklayout.c
+@@ -23,6 +23,7 @@ nfsd4_block_proc_layoutget(struct inode *inode, const struct svc_fh *fhp,
+ {
+ 	struct nfsd4_layout_seg *seg = &args->lg_seg;
+ 	struct super_block *sb = inode->i_sb;
++	u64 length;
+ 	u32 block_size = i_blocksize(inode);
+ 	struct pnfs_block_extent *bex;
+ 	struct iomap iomap;
+@@ -53,7 +54,8 @@ nfsd4_block_proc_layoutget(struct inode *inode, const struct svc_fh *fhp,
+ 		goto out_error;
+ 	}
  
- 	if (v9ses->debug)
--		seq_printf(m, ",debug=%x", v9ses->debug);
-+		seq_printf(m, ",debug=%#x", v9ses->debug);
- 	if (!uid_eq(v9ses->dfltuid, V9FS_DEFUID))
- 		seq_printf(m, ",dfltuid=%u",
- 			   from_kuid_munged(&init_user_ns, v9ses->dfltuid));
-@@ -117,7 +117,7 @@ int v9fs_show_options(struct seq_file *m, struct dentry *root)
- 	if (v9ses->nodev)
- 		seq_puts(m, ",nodevmap");
- 	if (v9ses->cache)
--		seq_printf(m, ",cache=%x", v9ses->cache);
-+		seq_printf(m, ",cache=%#x", v9ses->cache);
- #ifdef CONFIG_9P_FSCACHE
- 	if (v9ses->cachetag && (v9ses->cache & CACHE_FSCACHE))
- 		seq_printf(m, ",cachetag=%s", v9ses->cachetag);
+-	if (iomap.length < args->lg_minlength) {
++	length = iomap.offset + iomap.length - seg->offset;
++	if (length < args->lg_minlength) {
+ 		dprintk("pnfsd: extent smaller than minlength\n");
+ 		goto out_layoutunavailable;
+ 	}
 -- 
 2.51.0
 
