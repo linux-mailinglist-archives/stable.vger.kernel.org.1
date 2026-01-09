@@ -1,96 +1,106 @@
-Return-Path: <stable+bounces-207887-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207888-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3DDFD0B502
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 17:41:41 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9347ED0B50E
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 17:42:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 6CE833020C0F
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 16:33:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8DF2D305D901
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 16:37:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CE11364054;
-	Fri,  9 Jan 2026 16:33:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9ECF036403C;
+	Fri,  9 Jan 2026 16:37:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=achill.org header.i=@achill.org header.b="J3S9Z/kK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jP/yVYKq"
 X-Original-To: stable@vger.kernel.org
-Received: from mailout02.platinum-mail.de (mx02.platinum-mail.de [89.58.18.167])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CF793385BC
-	for <stable@vger.kernel.org>; Fri,  9 Jan 2026 16:33:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.18.167
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 608D430FF23;
+	Fri,  9 Jan 2026 16:37:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767976419; cv=none; b=U4rPXY96RCSlJaivZqSTg93/lBoYM30/vHoTLrCxKzZDJ3xKtC2H8j+M2Ghyxjro6xLBKL4XtplaxZ0FAaSuydTcm2aGoC/oUS7I57/28K4U+ccngCsBWEtm/j+1GvBAzzRdURvFlnfuLe74S0zXiZYjTpfAdUwic57pYt4CuXc=
+	t=1767976650; cv=none; b=BYNDzYor1pIHDgUNnAV4AvhBBaXrA+gOGYZ1IIyquPDU1WuorChGiEFnWZDYBOYA7+pkZdVx1zcx0xRiHy+oPGdPk09J/2A29mnJNbRxECsLy5jl47tCa/vhQBYbnaL5+scJhHx7OjjFEyi/xWaOUif4W4otyhmivP8oSOm/bo0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767976419; c=relaxed/simple;
-	bh=J556trm/0nvnUnXTnYYJdZLUYJ8kDq6PBKeOWmSkCQU=;
-	h=Mime-Version:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:Content-Type; b=dYz9dILXxbAf1CMweigXxUpQ8sN5bnA6QQ/9KENda3H3CQCS3bxOQ2tRTpO636l0HlKBM3kKkxG4GqgH4b+KBwpQw4+WgzPbtYdNEyE8s1J6kCHauYFBgNDjO+HLPyBqtJLFZoNLOG+DrCk8DE5pXOyY++ZpGRMsJc099sanOYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=achill.org; spf=pass smtp.mailfrom=achill.org; dkim=pass (2048-bit key) header.d=achill.org header.i=@achill.org header.b=J3S9Z/kK; arc=none smtp.client-ip=89.58.18.167
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=achill.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=achill.org
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mailout02.platinum-mail.de (Mail Service) with ESMTPS id E74E89A2A03
-	for <stable@vger.kernel.org>; Fri,  9 Jan 2026 16:26:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; d=achill.org; s=mail; c=relaxed/simple;
-	t=1767976008; h=date:message-id:subject:from:to;
-	bh=J556trm/0nvnUnXTnYYJdZLUYJ8kDq6PBKeOWmSkCQU=;
-	b=J3S9Z/kKIIzUGOBikKAil0E6gXTL/tsMZahFCMdoSTSvwaF2S7k2dvgQRVj2CqPXsaMYZq+2Zr8
-	rgl+xnY5dwOKiEZEnxOeC70iZ/hOTmm396ovS5ac+ljkYiEoSojDvwLPKdNojny8+K5nD2E90buoe
-	kcRukT3FlwbSdB0RxoSJZHxtL4gYwEWzqoKyvBpx3KxKOFb6JKPJ+B/vHq9inSzmWEbfYpdydzJcg
-	7aAQOHhB9Oc2idTmsBnztQaPjMqTlKf/kxWUXcbfcQ3ZcNsu+ar3PDv7NIx2mOLZmxvjqD5fWbSDt
-	FPljtwLOWUzNLz4KKd7P4Cbf5yRD6K8tcueg==
+	s=arc-20240116; t=1767976650; c=relaxed/simple;
+	bh=0dtgcgDCM4HTCVi/Oc9lrnWcXzHiq0gGhWKqr5iKGh0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Q4pa/Wir2HQfpRCCSMD5YRBezhs1z90AgDQ51/ijiTuoMpgYwqBQEp54VKqn8nvbP6CV2Aa3SCHo0K/QnNQvFw4jOjIKRsgd8dAwlB/rfYD5q2NXL8qURJ2x9l2YIT4vKxZjcsxK4ecm2PFP0diCuQdv5hpgtWjBY8EMXMX6UOg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jP/yVYKq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3812C4CEF1;
+	Fri,  9 Jan 2026 16:37:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767976650;
+	bh=0dtgcgDCM4HTCVi/Oc9lrnWcXzHiq0gGhWKqr5iKGh0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=jP/yVYKqSXvJ41w1AmxoWZgFMiCYdTrrMEgso6ss7jorxKTq7L1pYO0hom4WnGPiO
+	 iLbNFtDGEDeidOMXCGTjd1vQlGx0tbn9rL/2/pzO2CiAD/YUB2Q/8ULbLIoIgV0y7v
+	 RNaCR8Oz6ovq/6sHGnQL93NnTmbjJpzFzEDg3LRpxQpUhOU/bPtRB+QNE/8wt1o9/e
+	 Ddxkeh61eL3tfo61QxD0CzeV/4IIWetSdDOI9E6nC2gquQAQaqEKR4LmqmQvjJveEJ
+	 JGKvhgqVYGCct0/BYbHHwRRrFMvRGvUGQedDTZ8y8gIpmrFbsc3Luz/s0AkCeFFcpD
+	 SbWpvHOiGkr6Q==
+Date: Fri, 9 Jan 2026 16:37:25 +0000
+From: Lee Jones <lee@kernel.org>
+To: Johan Hovold <johan@kernel.org>
+Cc: Aaro Koskinen <aaro.koskinen@iki.fi>,
+	Andreas Kemnade <andreas@kemnade.info>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Roger Quadros <rogerq@kernel.org>, Tony Lindgren <tony@atomide.com>,
+	linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] mfd: omap-usb-host: fix OF populate on driver rebind
+Message-ID: <20260109163725.GB1808297@google.com>
+References: <20251219110714.23919-1-johan@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 09 Jan 2026 17:26:36 +0100
-Message-Id: <DFK76OBVZWDO.14E27I3UHXSWO@achill.org>
-Cc: <patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
- <torvalds@linux-foundation.org>, <akpm@linux-foundation.org>,
- <linux@roeck-us.net>, <shuah@kernel.org>, <patches@kernelci.org>,
- <lkft-triage@lists.linaro.org>, <pavel@denx.de>, <jonathanh@nvidia.com>,
- <f.fainelli@gmail.com>, <sudipm.mukherjee@gmail.com>, <rwarsow@gmx.de>,
- <conor@kernel.org>, <hargar@microsoft.com>, <broonie@kernel.org>,
- <achill@achill.org>, <sr@sladewatkins.com>
-Subject: Re: [PATCH 6.18 0/5] 6.18.5-rc1 review
-From: "Achill Gilgenast" <achill@achill.org>
-To: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
- <stable@vger.kernel.org>
-X-Greeting: Hi mom! Look, I'm in somebodys mail client!
-X-Mailer: aerc 0.21.0
-References: <20260109111950.344681501@linuxfoundation.org>
-In-Reply-To: <20260109111950.344681501@linuxfoundation.org>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20251219110714.23919-1-johan@kernel.org>
 
-On Fri Jan 9, 2026 at 12:44 PM CET, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.18.5 release.
-> There are 5 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Sun, 11 Jan 2026 11:19:41 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.18.5-=
-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git=
- linux-6.18.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+On Fri, 19 Dec 2025, Johan Hovold wrote:
 
-Thanked. Build tested on all Alpine architectures.
+> Since commit c6e126de43e7 ("of: Keep track of populated platform
+> devices") child devices will not be created by of_platform_populate()
+> if the devices had previously been deregistered individually so that the
+> OF_POPULATED flag is still set in the corresponding OF nodes.
+> 
+> Switch to using of_platform_depopulate() instead of open coding so that
+> the child devices are created if the driver is rebound.
+> 
+> Fixes: c6e126de43e7 ("of: Keep track of populated platform devices")
+> Cc: stable@vger.kernel.org	# 3.16
+> Signed-off-by: Johan Hovold <johan@kernel.org>
+> ---
+>  drivers/mfd/omap-usb-host.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/mfd/omap-usb-host.c b/drivers/mfd/omap-usb-host.c
+> index a77b6fc790f2..4d29a6e2ed87 100644
+> --- a/drivers/mfd/omap-usb-host.c
+> +++ b/drivers/mfd/omap-usb-host.c
+> @@ -819,8 +819,10 @@ static void usbhs_omap_remove(struct platform_device *pdev)
+>  {
+>  	pm_runtime_disable(&pdev->dev);
+>  
+> -	/* remove children */
+> -	device_for_each_child(&pdev->dev, NULL, usbhs_omap_remove_child);
+> +	if (pdev->dev.of_node)
+> +		of_platform_depopulate(&pdev->dev);
 
-Tested-by: Achill Gilgenast <achill@achill.org>=
+devm_of_platform_populate()?
+
+> +	else
+> +		device_for_each_child(&pdev->dev, NULL, usbhs_omap_remove_child);
+
+What on earth is this driver even doing in MFD?
+
+Nightmare - quick dig, bury it!
+
+-- 
+Lee Jones [李琼斯]
 
