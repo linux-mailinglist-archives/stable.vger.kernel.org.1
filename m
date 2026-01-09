@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-206458-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207807-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04F4FD08F9C
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 12:44:47 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B7E6D0A2CE
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:04:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 02A48300698D
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:44:34 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 40BA43030E08
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:52:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 317DA33A9DD;
-	Fri,  9 Jan 2026 11:44:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E836D35CB97;
+	Fri,  9 Jan 2026 12:51:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Ky9Nda/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P2jWtAYT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7ACF32AAB5;
-	Fri,  9 Jan 2026 11:44:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1483631A069;
+	Fri,  9 Jan 2026 12:51:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767959073; cv=none; b=fF4guB9SL4kalyGbHGVhZckL6xkwgMH3BTRhoN6yQ+ZfDesfR7DKb7aejNFdi9kf4Bca1NFGv+F9iBjNYfswe94bQ4N/Vy/CSp3LEe4c9XdxgJi0VmlFOLZ6ozsLhcgAqAICJPosEfhX6SQ/U8gSQmLGkk4bmnNmZglFoPd7VXI=
+	t=1767963106; cv=none; b=nVYeZ2kRMczgil36HVV0mnhWrOQ5sJj15D+Cs9hJKUcpaoMP27ppdDeY1EKDUlTU8yd+4NrjWlppxOKWb0XnWj1By9CflesivPCufiB5D+LyfN2NzZHvn7FfFXcUqIl/Gp3Wbujj4Q6gqn+XfZVEx4fpbA85gse0WFEKxSp7uRM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767959073; c=relaxed/simple;
-	bh=ClcuMyxAjsKIxo+NQtJsY/E9QjvXGXtqtMxAcDF8t9U=;
+	s=arc-20240116; t=1767963106; c=relaxed/simple;
+	bh=U6iHvCQS/cVXOUNI1DzJ5yBPX8cgysBu1YnzH3HCabc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kE3HbNzHOAYq2G/hvVLDM1SHY7xkV6V2QiFr/ycV8ofX1KZnqfrrw3Ys5YC/6Ogvwe9MRDCMxF7jQyS/hiexV50mal9yuzNt4H8BqoIrf7Bva14kQlQTNlX5dlXYM4oyP62oRoWNrj2kUp6MvoeZZcQ9hg5vdTPxvrUd8bcIrzk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Ky9Nda/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 754A6C4CEF1;
-	Fri,  9 Jan 2026 11:44:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=FNIqHkRTRXv//uc08qUW8H1zsZsDvUwhU2DGnFoPLbO8t/2nnHgJdNu2Ye48eW1U8mr29YIqt/H1VXG5jBhTXg6rUvAG2Y+nxHWttHnQweeV2x4otRlOgYKMgh+cVUwhaOo+4JWrRiOWUZ4Ep0ACuY0uPt99FyGvkYRCGfPN3b8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P2jWtAYT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B14DC4CEF1;
+	Fri,  9 Jan 2026 12:51:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767959072;
-	bh=ClcuMyxAjsKIxo+NQtJsY/E9QjvXGXtqtMxAcDF8t9U=;
+	s=korg; t=1767963105;
+	bh=U6iHvCQS/cVXOUNI1DzJ5yBPX8cgysBu1YnzH3HCabc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2Ky9Nda/JNkL+3k2C9pE/bHnXLN4iG0bdlSnR+k66OhHLqugLtm2Ac0/h+wdbr1S3
-	 IrjN8v/2TxZP8Ad8DObqEoHiQtK7nUkLzPsKZmjHjcIGIlGU1HJYME6wlo5BItq3KW
-	 rrB1EU3HgRKmJ4o5r/Qk+V7ztPZ1hTOlxmkGMFno=
+	b=P2jWtAYTmWz/XbLzRcvE6tqufpUn22VrPRhvudsCq6xK5x8MN/7xuILOfD305RC08
+	 /G/BpkgBOWyb+Wf7JNbJdGcknbo4fso+G7LIz5/KWu4+X9ixvImd57+mIm2LN8IoFh
+	 7d95eLQsCNDtj989sMw1HJf5N4aVMNF3s6uKGUMw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maximilian Immanuel Brandtner <maxbr@linux.ibm.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Filip Hejsek <filip.hejsek@gmail.com>
-Subject: [PATCH 6.12 14/16] virtio_console: fix order of fields cols and rows
+	stable@kernel.org,
+	Hong Yun <yhong@link.cuhk.edu.hk>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 557/634] f2fs: use global inline_xattr_slab instead of per-sb slab cache
 Date: Fri,  9 Jan 2026 12:43:55 +0100
-Message-ID: <20260109111951.959613197@linuxfoundation.org>
+Message-ID: <20260109112138.556554864@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109111951.415522519@linuxfoundation.org>
-References: <20260109111951.415522519@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,43 +60,240 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maximilian Immanuel Brandtner <maxbr@linux.ibm.com>
+From: Chao Yu <chao@kernel.org>
 
-commit 5326ab737a47278dbd16ed3ee7380b26c7056ddd upstream.
+[ Upstream commit 1f27ef42bb0b7c0740c5616ec577ec188b8a1d05 ]
 
-According to section 5.3.6.2 (Multiport Device Operation) of the virtio
-spec(version 1.2) a control buffer with the event VIRTIO_CONSOLE_RESIZE
-is followed by a virtio_console_resize struct containing cols then rows.
-The kernel implements this the wrong way around (rows then cols) resulting
-in the two values being swapped.
+As Hong Yun reported in mailing list:
 
-Signed-off-by: Maximilian Immanuel Brandtner <maxbr@linux.ibm.com>
-Message-Id: <20250324144300.905535-1-maxbr@linux.ibm.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Cc: Filip Hejsek <filip.hejsek@gmail.com>
+loop7: detected capacity change from 0 to 131072
+------------[ cut here ]------------
+kmem_cache of name 'f2fs_xattr_entry-7:7' already exists
+WARNING: CPU: 0 PID: 24426 at mm/slab_common.c:110 kmem_cache_sanity_check mm/slab_common.c:109 [inline]
+WARNING: CPU: 0 PID: 24426 at mm/slab_common.c:110 __kmem_cache_create_args+0xa6/0x320 mm/slab_common.c:307
+CPU: 0 UID: 0 PID: 24426 Comm: syz.7.1370 Not tainted 6.17.0-rc4 #1 PREEMPT(full)
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
+RIP: 0010:kmem_cache_sanity_check mm/slab_common.c:109 [inline]
+RIP: 0010:__kmem_cache_create_args+0xa6/0x320 mm/slab_common.c:307
+Call Trace:
+ __kmem_cache_create include/linux/slab.h:353 [inline]
+ f2fs_kmem_cache_create fs/f2fs/f2fs.h:2943 [inline]
+ f2fs_init_xattr_caches+0xa5/0xe0 fs/f2fs/xattr.c:843
+ f2fs_fill_super+0x1645/0x2620 fs/f2fs/super.c:4918
+ get_tree_bdev_flags+0x1fb/0x260 fs/super.c:1692
+ vfs_get_tree+0x43/0x140 fs/super.c:1815
+ do_new_mount+0x201/0x550 fs/namespace.c:3808
+ do_mount fs/namespace.c:4136 [inline]
+ __do_sys_mount fs/namespace.c:4347 [inline]
+ __se_sys_mount+0x298/0x2f0 fs/namespace.c:4324
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x8e/0x3a0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+The bug can be reproduced w/ below scripts:
+- mount /dev/vdb /mnt1
+- mount /dev/vdc /mnt2
+- umount /mnt1
+- mounnt /dev/vdb /mnt1
+
+The reason is if we created two slab caches, named f2fs_xattr_entry-7:3
+and f2fs_xattr_entry-7:7, and they have the same slab size. Actually,
+slab system will only create one slab cache core structure which has
+slab name of "f2fs_xattr_entry-7:3", and two slab caches share the same
+structure and cache address.
+
+So, if we destroy f2fs_xattr_entry-7:3 cache w/ cache address, it will
+decrease reference count of slab cache, rather than release slab cache
+entirely, since there is one more user has referenced the cache.
+
+Then, if we try to create slab cache w/ name "f2fs_xattr_entry-7:3" again,
+slab system will find that there is existed cache which has the same name
+and trigger the warning.
+
+Let's changes to use global inline_xattr_slab instead of per-sb slab cache
+for fixing.
+
+Fixes: a999150f4fe3 ("f2fs: use kmem_cache pool during inline xattr lookups")
+Cc: stable@kernel.org
+Reported-by: Hong Yun <yhong@link.cuhk.edu.hk>
+Tested-by: Hong Yun <yhong@link.cuhk.edu.hk>
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+[ folio => page , context ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/char/virtio_console.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/f2fs/f2fs.h  |    3 ---
+ fs/f2fs/super.c |   15 +++++++--------
+ fs/f2fs/xattr.c |   30 ++++++++++--------------------
+ fs/f2fs/xattr.h |   10 ++++++----
+ 4 files changed, 23 insertions(+), 35 deletions(-)
 
---- a/drivers/char/virtio_console.c
-+++ b/drivers/char/virtio_console.c
-@@ -1579,8 +1579,8 @@ static void handle_control_message(struc
- 		break;
- 	case VIRTIO_CONSOLE_RESIZE: {
- 		struct {
--			__virtio16 rows;
- 			__virtio16 cols;
-+			__virtio16 rows;
- 		} size;
+--- a/fs/f2fs/f2fs.h
++++ b/fs/f2fs/f2fs.h
+@@ -1807,9 +1807,6 @@ struct f2fs_sb_info {
+ 	spinlock_t error_lock;			/* protect errors array */
+ 	bool error_dirty;			/* errors of sb is dirty */
  
- 		if (!is_console_port(port))
+-	struct kmem_cache *inline_xattr_slab;	/* inline xattr entry */
+-	unsigned int inline_xattr_slab_size;	/* default inline xattr slab size */
+-
+ 	/* For reclaimed segs statistics per each GC mode */
+ 	unsigned int gc_segment_mode;		/* GC state for reclaimed segments */
+ 	unsigned int gc_reclaimed_segs[MAX_GC_MODE];	/* Reclaimed segs for each mode */
+--- a/fs/f2fs/super.c
++++ b/fs/f2fs/super.c
+@@ -1674,7 +1674,6 @@ static void f2fs_put_super(struct super_
+ 
+ 	destroy_device_list(sbi);
+ 	f2fs_destroy_page_array_cache(sbi);
+-	f2fs_destroy_xattr_caches(sbi);
+ 	mempool_destroy(sbi->write_io_dummy);
+ #ifdef CONFIG_QUOTA
+ 	for (i = 0; i < MAXQUOTAS; i++)
+@@ -4305,13 +4304,9 @@ try_onemore:
+ 		}
+ 	}
+ 
+-	/* init per sbi slab cache */
+-	err = f2fs_init_xattr_caches(sbi);
+-	if (err)
+-		goto free_io_dummy;
+ 	err = f2fs_init_page_array_cache(sbi);
+ 	if (err)
+-		goto free_xattr_cache;
++		goto free_io_dummy;
+ 
+ 	/* get an inode for meta space */
+ 	sbi->meta_inode = f2fs_iget(sb, F2FS_META_INO(sbi));
+@@ -4624,8 +4619,6 @@ free_meta_inode:
+ 	sbi->meta_inode = NULL;
+ free_page_array_cache:
+ 	f2fs_destroy_page_array_cache(sbi);
+-free_xattr_cache:
+-	f2fs_destroy_xattr_caches(sbi);
+ free_io_dummy:
+ 	mempool_destroy(sbi->write_io_dummy);
+ free_percpu:
+@@ -4792,7 +4785,12 @@ static int __init init_f2fs_fs(void)
+ 	err = f2fs_create_casefold_cache();
+ 	if (err)
+ 		goto free_compress_cache;
++	err = f2fs_init_xattr_cache();
++	if (err)
++		goto free_casefold_cache;
+ 	return 0;
++free_casefold_cache:
++	f2fs_destroy_casefold_cache();
+ free_compress_cache:
+ 	f2fs_destroy_compress_cache();
+ free_compress_mempool:
+@@ -4832,6 +4830,7 @@ fail:
+ 
+ static void __exit exit_f2fs_fs(void)
+ {
++	f2fs_destroy_xattr_cache();
+ 	f2fs_destroy_casefold_cache();
+ 	f2fs_destroy_compress_cache();
+ 	f2fs_destroy_compress_mempool();
+--- a/fs/f2fs/xattr.c
++++ b/fs/f2fs/xattr.c
+@@ -23,11 +23,12 @@
+ #include "xattr.h"
+ #include "segment.h"
+ 
++static struct kmem_cache *inline_xattr_slab;
+ static void *xattr_alloc(struct f2fs_sb_info *sbi, int size, bool *is_inline)
+ {
+-	if (likely(size == sbi->inline_xattr_slab_size)) {
++	if (likely(size == DEFAULT_XATTR_SLAB_SIZE)) {
+ 		*is_inline = true;
+-		return f2fs_kmem_cache_alloc(sbi->inline_xattr_slab,
++		return f2fs_kmem_cache_alloc(inline_xattr_slab,
+ 					GFP_F2FS_ZERO, false, sbi);
+ 	}
+ 	*is_inline = false;
+@@ -38,7 +39,7 @@ static void xattr_free(struct f2fs_sb_in
+ 							bool is_inline)
+ {
+ 	if (is_inline)
+-		kmem_cache_free(sbi->inline_xattr_slab, xattr_addr);
++		kmem_cache_free(inline_xattr_slab, xattr_addr);
+ 	else
+ 		kfree(xattr_addr);
+ }
+@@ -830,25 +831,14 @@ int f2fs_setxattr(struct inode *inode, i
+ 	return err;
+ }
+ 
+-int f2fs_init_xattr_caches(struct f2fs_sb_info *sbi)
++int __init f2fs_init_xattr_cache(void)
+ {
+-	dev_t dev = sbi->sb->s_bdev->bd_dev;
+-	char slab_name[32];
+-
+-	sprintf(slab_name, "f2fs_xattr_entry-%u:%u", MAJOR(dev), MINOR(dev));
+-
+-	sbi->inline_xattr_slab_size = F2FS_OPTION(sbi).inline_xattr_size *
+-					sizeof(__le32) + XATTR_PADDING_SIZE;
+-
+-	sbi->inline_xattr_slab = f2fs_kmem_cache_create(slab_name,
+-					sbi->inline_xattr_slab_size);
+-	if (!sbi->inline_xattr_slab)
+-		return -ENOMEM;
+-
+-	return 0;
++	inline_xattr_slab = f2fs_kmem_cache_create("f2fs_xattr_entry",
++					DEFAULT_XATTR_SLAB_SIZE);
++	return inline_xattr_slab ? 0 : -ENOMEM;
+ }
+ 
+-void f2fs_destroy_xattr_caches(struct f2fs_sb_info *sbi)
++void f2fs_destroy_xattr_cache(void)
+ {
+-	kmem_cache_destroy(sbi->inline_xattr_slab);
++	kmem_cache_destroy(inline_xattr_slab);
+ }
+--- a/fs/f2fs/xattr.h
++++ b/fs/f2fs/xattr.h
+@@ -88,6 +88,8 @@ struct f2fs_xattr_entry {
+ 			F2FS_TOTAL_EXTRA_ATTR_SIZE / sizeof(__le32) -	\
+ 			DEF_INLINE_RESERVED_SIZE -			\
+ 			MIN_INLINE_DENTRY_SIZE / sizeof(__le32))
++#define DEFAULT_XATTR_SLAB_SIZE	(DEFAULT_INLINE_XATTR_ADDRS *		\
++				sizeof(__le32) + XATTR_PADDING_SIZE)
+ 
+ /*
+  * On-disk structure of f2fs_xattr
+@@ -131,8 +133,8 @@ extern int f2fs_setxattr(struct inode *,
+ extern int f2fs_getxattr(struct inode *, int, const char *, void *,
+ 						size_t, struct page *);
+ extern ssize_t f2fs_listxattr(struct dentry *, char *, size_t);
+-extern int f2fs_init_xattr_caches(struct f2fs_sb_info *);
+-extern void f2fs_destroy_xattr_caches(struct f2fs_sb_info *);
++int __init f2fs_init_xattr_cache(void);
++void f2fs_destroy_xattr_cache(void);
+ #else
+ 
+ #define f2fs_xattr_handlers	NULL
+@@ -149,8 +151,8 @@ static inline int f2fs_getxattr(struct i
+ {
+ 	return -EOPNOTSUPP;
+ }
+-static inline int f2fs_init_xattr_caches(struct f2fs_sb_info *sbi) { return 0; }
+-static inline void f2fs_destroy_xattr_caches(struct f2fs_sb_info *sbi) { }
++static inline int __init f2fs_init_xattr_cache(void) { return 0; }
++static inline void f2fs_destroy_xattr_cache(void) { }
+ #endif
+ 
+ #ifdef CONFIG_F2FS_FS_SECURITY
 
 
 
