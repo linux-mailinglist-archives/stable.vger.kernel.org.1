@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-206902-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207504-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6293ED096ED
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:17:28 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C18E4D09E98
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:45:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 02DFC303C118
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:09:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0D21530CB125
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:37:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EBC635B13B;
-	Fri,  9 Jan 2026 12:08:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B677F358D30;
+	Fri,  9 Jan 2026 12:37:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PQFw4/gQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mg8AXWtH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5255035A94E;
-	Fri,  9 Jan 2026 12:08:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AD5C31ED6D;
+	Fri,  9 Jan 2026 12:37:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960525; cv=none; b=pSL5whUbVnQlugoTLsc2zfbUMNOKgOccYmj/U17onCtsgu5uSgdoIaepc7BSag60Mfks/GIahWjjF6XK1Pw7fJRN/wRY962ttjWKDdXKigSTQY/r5pU2XofBBB0bdjbq/+AAACn0xVfBSjiBKpF5PUDF9+Bn22P4BaY8SxNNAEo=
+	t=1767962242; cv=none; b=UXdINKq/GFBfZGDHdUwNHQ9oQ+g7jvlLi+7paOtfhwmsnvK2k/RzXCKr3Fi0PKsTvfHrSexIbBmSZcWCd81IJ2r1VNYPv2sutOfS/82qjxVCcMR6KxbyJIvEqV/ayZQ2IerZBj5o2fpajTchBuRQtBPD22mu3zcUpm8YLKHDImI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960525; c=relaxed/simple;
-	bh=ObPUqdK0LvRAzGXWezvTUBSX1SaP7XqeWCl7x7UhILU=;
+	s=arc-20240116; t=1767962242; c=relaxed/simple;
+	bh=TeTzPO/y7FWQR4TCun4kwtu+/R1ie08SWa42wbJHMU4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WyL5gQj+q1Q+24yH4pkGWnLxlSErsnZKt/nBiEBEkxA5pBspaAT+FFS/SGJl0bTf5Y4sSv8BnlcPENe9jACiBgCt95ezOW8UVpsM5q/qBWr+8AQP4qZdXrUb1mJkKDaiPoBsOIQNej8MSNdetJyuxzFk9WNq/eSYX0nO6Ubl3BM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PQFw4/gQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 925CAC19422;
-	Fri,  9 Jan 2026 12:08:44 +0000 (UTC)
+	 MIME-Version; b=pCBu+cPYqQnYQRwwz6VCHfAVLuPh/T1eDQqMzEPHFzaG9S3cthrBDJBiCYYyOFkXyEo+d9u1ytAWzfLbd/AF/aVMFWFZIytLzLr9RdoJwqKUgFQrQBeNSH7pXj9TxMDnysLCYU6pSyHINbzD0MT3D4a/mAcjUI0VILlnFEUaYMw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mg8AXWtH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 046C5C4CEF1;
+	Fri,  9 Jan 2026 12:37:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960525;
-	bh=ObPUqdK0LvRAzGXWezvTUBSX1SaP7XqeWCl7x7UhILU=;
+	s=korg; t=1767962242;
+	bh=TeTzPO/y7FWQR4TCun4kwtu+/R1ie08SWa42wbJHMU4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PQFw4/gQNId9RhHhWbwVQHLW2cT6+09orKPH3EYlHOTbpANUSTpqTHYHIvwce1MgE
-	 IYZurmi0gQgYaqaOWbRgop7hqzbuduuZVGX0i8gJ7OE4ywwZYoMD/Qzb1orr2kejW0
-	 v+uIFc6d3Cz8yhLSYu4JwvF5vMstwd8U19UZ+UzY=
+	b=Mg8AXWtHh43nAGn92eMvaU/l8DoxnpTffeahjtArH5yp0RaZhcYLMOfWhsY1XDKAP
+	 OrKIay+DyAXbXKQnHlc+1qmRwYONXqqH4oMoCDtJyCyGW7SBDb6pC4VhDCeD9LJnq5
+	 U8Yos96w6ZhIHZWVZgqalhoMAPeuLjQB5+thOCyk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Ma Ke <make24@iscas.ac.cn>
-Subject: [PATCH 6.6 435/737] USB: lpc32xx_udc: Fix error handling in probe
+	Jinhui Guo <guojinhui.liam@bytedance.com>,
+	Corey Minyard <corey@minyard.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 296/634] ipmi: Fix the race between __scan_channels() and deliver_response()
 Date: Fri,  9 Jan 2026 12:39:34 +0100
-Message-ID: <20260109112150.357282268@linuxfoundation.org>
+Message-ID: <20260109112128.669285846@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,105 +60,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: Jinhui Guo <guojinhui.liam@bytedance.com>
 
-commit c84117912bddd9e5d87e68daf182410c98181407 upstream.
+[ Upstream commit 936750fdba4c45e13bbd17f261bb140dd55f5e93 ]
 
-lpc32xx_udc_probe() acquires an i2c_client reference through
-isp1301_get_client() but fails to release it in both error handling
-paths and the normal removal path. This could result in a reference
-count leak for the I2C device, preventing proper cleanup and potentially
-leading to resource exhaustion. Add put_device() to release the
-reference in the probe failure path and in the remove function.
+The race window between __scan_channels() and deliver_response() causes
+the parameters of some channels to be set to 0.
 
-Calling path: isp1301_get_client() -> of_find_i2c_device_by_node() ->
-i2c_find_device_by_fwnode(). As comments of i2c_find_device_by_fwnode()
-says, 'The user must call put_device(&client->dev) once done with the
-i2c client.'
+1.[CPUA] __scan_channels() issues an IPMI request and waits with
+         wait_event() until all channels have been scanned.
+         wait_event() internally calls might_sleep(), which might
+         yield the CPU. (Moreover, an interrupt can preempt
+         wait_event() and force the task to yield the CPU.)
+2.[CPUB] deliver_response() is invoked when the CPU receives the
+         IPMI response. After processing a IPMI response,
+         deliver_response() directly assigns intf->wchannels to
+         intf->channel_list and sets intf->channels_ready to true.
+         However, not all channels are actually ready for use.
+3.[CPUA] Since intf->channels_ready is already true, wait_event()
+         never enters __wait_event(). __scan_channels() immediately
+         clears intf->null_user_handler and exits.
+4.[CPUB] Once intf->null_user_handler is set to NULL, deliver_response()
+         ignores further IPMI responses, leaving the remaining
+	 channels zero-initialized and unusable.
 
-Found by code review.
+CPUA                             CPUB
+-------------------------------  -----------------------------
+__scan_channels()
+ intf->null_user_handler
+       = channel_handler;
+ send_channel_info_cmd(intf,
+       0);
+ wait_event(intf->waitq,
+       intf->channels_ready);
+  do {
+   might_sleep();
+                                 deliver_response()
+                                  channel_handler()
+                                   intf->channel_list =
+				         intf->wchannels + set;
+                                   intf->channels_ready = true;
+                                   send_channel_info_cmd(intf,
+                                         intf->curr_channel);
+   if (condition)
+    break;
+   __wait_event(wq_head,
+          condition);
+  } while(0)
+ intf->null_user_handler
+       = NULL;
+                                 deliver_response()
+                                  if (!msg->user)
+                                   if (intf->null_user_handler)
+                                    rv = -EINVAL;
+                                  return rv;
+-------------------------------  -----------------------------
 
-Cc: stable <stable@kernel.org>
-Fixes: 24a28e428351 ("USB: gadget driver for LPC32xx")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Link: https://patch.msgid.link/20251215020931.15324-1-make24@iscas.ac.cn
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix the race between __scan_channels() and deliver_response() by
+deferring both the assignment intf->channel_list = intf->wchannels
+and the flag intf->channels_ready = true until all channels have
+been successfully scanned or until the IPMI request has failed.
+
+Signed-off-by: Jinhui Guo <guojinhui.liam@bytedance.com>
+Message-ID: <20250930074239.2353-2-guojinhui.liam@bytedance.com>
+Signed-off-by: Corey Minyard <corey@minyard.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/udc/lpc32xx_udc.c |   21 +++++++++++++++------
- 1 file changed, 15 insertions(+), 6 deletions(-)
+ drivers/char/ipmi/ipmi_msghandler.c | 2 --
+ 1 file changed, 2 deletions(-)
 
---- a/drivers/usb/gadget/udc/lpc32xx_udc.c
-+++ b/drivers/usb/gadget/udc/lpc32xx_udc.c
-@@ -3027,7 +3027,7 @@ static int lpc32xx_udc_probe(struct plat
- 	pdev->dev.dma_mask = &lpc32xx_usbd_dmamask;
- 	retval = dma_set_coherent_mask(&pdev->dev, DMA_BIT_MASK(32));
- 	if (retval)
--		return retval;
-+		goto i2c_fail;
+diff --git a/drivers/char/ipmi/ipmi_msghandler.c b/drivers/char/ipmi/ipmi_msghandler.c
+index a475d0bd2685..b7f6cec0383f 100644
+--- a/drivers/char/ipmi/ipmi_msghandler.c
++++ b/drivers/char/ipmi/ipmi_msghandler.c
+@@ -3414,8 +3414,6 @@ channel_handler(struct ipmi_smi *intf, struct ipmi_recv_msg *msg)
+ 			intf->channels_ready = true;
+ 			wake_up(&intf->waitq);
+ 		} else {
+-			intf->channel_list = intf->wchannels + set;
+-			intf->channels_ready = true;
+ 			rv = send_channel_info_cmd(intf, intf->curr_channel);
+ 		}
  
- 	udc->board = &lpc32xx_usbddata;
- 
-@@ -3045,28 +3045,32 @@ static int lpc32xx_udc_probe(struct plat
- 	/* Get IRQs */
- 	for (i = 0; i < 4; i++) {
- 		udc->udp_irq[i] = platform_get_irq(pdev, i);
--		if (udc->udp_irq[i] < 0)
--			return udc->udp_irq[i];
-+		if (udc->udp_irq[i] < 0) {
-+			retval = udc->udp_irq[i];
-+			goto i2c_fail;
-+		}
- 	}
- 
- 	udc->udp_baseaddr = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(udc->udp_baseaddr)) {
- 		dev_err(udc->dev, "IO map failure\n");
--		return PTR_ERR(udc->udp_baseaddr);
-+		retval = PTR_ERR(udc->udp_baseaddr);
-+		goto i2c_fail;
- 	}
- 
- 	/* Get USB device clock */
- 	udc->usb_slv_clk = devm_clk_get(&pdev->dev, NULL);
- 	if (IS_ERR(udc->usb_slv_clk)) {
- 		dev_err(udc->dev, "failed to acquire USB device clock\n");
--		return PTR_ERR(udc->usb_slv_clk);
-+		retval = PTR_ERR(udc->usb_slv_clk);
-+		goto i2c_fail;
- 	}
- 
- 	/* Enable USB device clock */
- 	retval = clk_prepare_enable(udc->usb_slv_clk);
- 	if (retval < 0) {
- 		dev_err(udc->dev, "failed to start USB device clock\n");
--		return retval;
-+		goto i2c_fail;
- 	}
- 
- 	/* Setup deferred workqueue data */
-@@ -3168,6 +3172,8 @@ dma_alloc_fail:
- 	dma_free_coherent(&pdev->dev, UDCA_BUFF_SIZE,
- 			  udc->udca_v_base, udc->udca_p_base);
- i2c_fail:
-+	if (udc->isp1301_i2c_client)
-+		put_device(&udc->isp1301_i2c_client->dev);
- 	clk_disable_unprepare(udc->usb_slv_clk);
- 	dev_err(udc->dev, "%s probe failed, %d\n", driver_name, retval);
- 
-@@ -3193,6 +3199,9 @@ static int lpc32xx_udc_remove(struct pla
- 	dma_free_coherent(&pdev->dev, UDCA_BUFF_SIZE,
- 			  udc->udca_v_base, udc->udca_p_base);
- 
-+	if (udc->isp1301_i2c_client)
-+		put_device(&udc->isp1301_i2c_client->dev);
-+
- 	clk_disable_unprepare(udc->usb_slv_clk);
- 
- 	return 0;
+-- 
+2.51.0
+
 
 
 
