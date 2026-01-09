@@ -1,52 +1,51 @@
-Return-Path: <stable+bounces-207467-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207478-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C378D09F0D
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:47:14 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCAE8D09F4C
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:48:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 3ED3D302354A
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:35:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2B8E33133843
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:36:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5876F358D30;
-	Fri,  9 Jan 2026 12:35:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70133359701;
+	Fri,  9 Jan 2026 12:36:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZS8Pxy6d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hrNruMXN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B23D358D38;
-	Fri,  9 Jan 2026 12:35:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32328352952;
+	Fri,  9 Jan 2026 12:36:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962138; cv=none; b=qIncy+3tkN+xKVAwiklMezCEBjVt3E9phkIN8D8g9a1LOrUw5iXPp9OBiA2qbv3K/asADiQgDiBNxVFQNTukQ3q+FrZi4H7OFp3jkF3ngEozsD1vW3MfOKoV6GyU41klkMDYUARsrGROy7RWytG3mNiRe91w/Wn79JstiQRFidI=
+	t=1767962169; cv=none; b=OJpPKpXEAQbodK8HMdmVL/hZxqjW7zFwLiWfihsv9vL6gE7O+y2ja0T2Q9gJe6cFN7g5QXA7E157Qdl0pqNwwmG4WkVN4lyCN5vEHqOScGBqhxaLZ+wVTsuRUpVnSHHi2EJe4fy5Vv9hXi6Jc4sECx3TveztOz5o36zfv0vm/A0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962138; c=relaxed/simple;
-	bh=6d+YU5o8WGbvQQruxRNVAcwCjez/GOZvS3iNKsBFGK0=;
+	s=arc-20240116; t=1767962169; c=relaxed/simple;
+	bh=lXsqlU4ianSQ91voobz7S62tAkvPdlMcj5XMZN58nVo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f4MqUinT1ibVowc/ry8OWV6OZdpNZE2xwwO8A8nyCdkzETKIL7ZugMLNzZMvGxTiEDCpf+QM3lqBJMFTX5gZtIRl9agBGJkn1zf/6/D2WvYrwbEs5+6DFGSQVCG2TM0LfAeoNFL25WoW3reHUuyuAdvZAMRGEOpWEnaD4HsEPEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZS8Pxy6d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98C81C4CEF1;
-	Fri,  9 Jan 2026 12:35:37 +0000 (UTC)
+	 MIME-Version; b=exFJqG+89cs70vsENn3iONtYWdpZ/JY/xtaHqPJYb9eWgI5mNoEHLEZ1XVstYn9/X53f8OXRjF2EvpsXo2Xuty42CnzWFbiiZJZ39uhC+voz9vXEKfcP1Vv5Zee6ORl9Q3jQVPZFo/4eP56tOGIFOMFLMdPxsioffcVe4GOid1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hrNruMXN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0EF7C4CEF1;
+	Fri,  9 Jan 2026 12:36:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962138;
-	bh=6d+YU5o8WGbvQQruxRNVAcwCjez/GOZvS3iNKsBFGK0=;
+	s=korg; t=1767962169;
+	bh=lXsqlU4ianSQ91voobz7S62tAkvPdlMcj5XMZN58nVo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZS8Pxy6diCghe5kn4eB0mqPC5uY56AHifHHofPU+hyeHg0elgITQ1dnCo9yo0P2JP
-	 mJMUIG9dG0AQYFtc1eCQ6lDERCsuvdRYCnzf+bWG5VWYTRM0eVk+hY+N/obTt1dQa0
-	 Opz2ZJ4KemXhD3cbhbDsHVWSju9Hek/JZQHZI1fg=
+	b=hrNruMXNXAG6KkdUJlqXB6ElqHSrIxuC+ZEP4cJfVONv9Y3KlY1beuXUWF/FHwTXm
+	 PvgxCfGmz+c8d668vfMh+Xi6AYtHAab8ABD6O4Ws4Wuc82rGHEA9ZV2FLEpk/jH8oI
+	 orCHiUOnMmktSYq56C3Vh8JEsO+DYw4XNzrj0q2g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arend van Spriel <arend.vanspriel@broadcom.com>,
-	Hans de Goede <hansg@kernel.org>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 242/634] wifi: brcmfmac: Add DMI nvram filename quirk for Acer A1 840 tablet
-Date: Fri,  9 Jan 2026 12:38:40 +0100
-Message-ID: <20260109112126.648151863@linuxfoundation.org>
+Subject: [PATCH 6.1 243/634] btrfs: scrub: always update btrfs_scrub_progress::last_physical
+Date: Fri,  9 Jan 2026 12:38:41 +0100
+Message-ID: <20260109112126.686013897@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
 References: <20260109112117.407257400@linuxfoundation.org>
@@ -65,59 +64,88 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Hans de Goede <hansg@kernel.org>
+From: Qu Wenruo <wqu@suse.com>
 
-[ Upstream commit a8e5a110c0c38e08e5dd66356cd1156e91cf88e1 ]
+[ Upstream commit 54df8b80cc63aa0f22c4590cad11542731ed43ff ]
 
-The Acer A1 840 tablet contains quite generic names in the sys_vendor and
-product_name DMI strings, without this patch brcmfmac will try to load:
-brcmfmac43340-sdio.Insyde-BayTrail.txt as nvram file which is a bit
-too generic.
+[BUG]
+When a scrub failed immediately without any byte scrubbed, the returned
+btrfs_scrub_progress::last_physical will always be 0, even if there is a
+non-zero @start passed into btrfs_scrub_dev() for resume cases.
 
-Add a DMI quirk so that a unique and clearly identifiable nvram file name
-is used on the Acer A1 840 tablet.
+This will reset the progress and make later scrub resume start from the
+beginning.
 
-Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-Signed-off-by: Hans de Goede <hansg@kernel.org>
-Link: https://patch.msgid.link/20251103100314.353826-1-hansg@kernel.org
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+[CAUSE]
+The function btrfs_scrub_dev() accepts a @progress parameter to copy its
+updated progress to the caller, there are cases where we either don't
+touch progress::last_physical at all or copy 0 into last_physical:
+
+- last_physical not updated at all
+  If some error happened before scrubbing any super block or chunk, we
+  will not copy the progress, leaving the @last_physical untouched.
+
+  E.g. failed to allocate @sctx, scrubbing a missing device or even
+  there is already a running scrub and so on.
+
+  All those cases won't touch @progress at all, resulting the
+  last_physical untouched and will be left as 0 for most cases.
+
+- Error out before scrubbing any bytes
+  In those case we allocated @sctx, and sctx->stat.last_physical is all
+  zero (initialized by kvzalloc()).
+  Unfortunately some critical errors happened during
+  scrub_enumerate_chunks() or scrub_supers() before any stripe is really
+  scrubbed.
+
+  In that case although we will copy sctx->stat back to @progress, since
+  no byte is really scrubbed, last_physical will be overwritten to 0.
+
+[FIX]
+Make sure the parameter @progress always has its @last_physical member
+updated to @start parameter inside btrfs_scrub_dev().
+
+At the very beginning of the function, set @progress->last_physical to
+@start, so that even if we error out without doing progress copying,
+last_physical is still at @start.
+
+Then after we got @sctx allocated, set sctx->stat.last_physical to
+@start, this will make sure even if we didn't get any byte scrubbed, at
+the progress copying stage the @last_physical is not left as zero.
+
+This should resolve the resume progress reset problem.
+
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/wireless/broadcom/brcm80211/brcmfmac/dmi.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ fs/btrfs/scrub.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/dmi.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/dmi.c
-index c3a602197662b..abe7f6501e5ed 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/dmi.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/dmi.c
-@@ -24,6 +24,10 @@ static const struct brcmf_dmi_data acepc_t8_data = {
- 	BRCM_CC_4345_CHIP_ID, 6, "acepc-t8"
- };
+diff --git a/fs/btrfs/scrub.c b/fs/btrfs/scrub.c
+index ce8a9c226534f..8cae31edc68d7 100644
+--- a/fs/btrfs/scrub.c
++++ b/fs/btrfs/scrub.c
+@@ -4294,6 +4294,10 @@ int btrfs_scrub_dev(struct btrfs_fs_info *fs_info, u64 devid, u64 start,
+ 	unsigned int nofs_flag;
+ 	bool need_commit = false;
  
-+static const struct brcmf_dmi_data acer_a1_840_data = {
-+	BRCM_CC_43340_CHIP_ID, 2, "acer-a1-840"
-+};
++	/* Set the basic fallback @last_physical before we got a sctx. */
++	if (progress)
++		progress->last_physical = start;
 +
- /* The Chuwi Hi8 Pro uses the same Ampak AP6212 module as the Chuwi Vi8 Plus
-  * and the nvram for the Vi8 Plus is already in linux-firmware, so use that.
-  */
-@@ -91,6 +95,16 @@ static const struct dmi_system_id dmi_platform_data[] = {
- 		},
- 		.driver_data = (void *)&acepc_t8_data,
- 	},
-+	{
-+		/* Acer Iconia One 8 A1-840 (non FHD version) */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Insyde"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "BayTrail"),
-+			/* Above strings are too generic also match BIOS date */
-+			DMI_MATCH(DMI_BIOS_DATE, "04/01/2014"),
-+		},
-+		.driver_data = (void *)&acer_a1_840_data,
-+	},
- 	{
- 		/* Chuwi Hi8 Pro with D2D3_Hi8Pro.233 BIOS */
- 		.matches = {
+ 	if (btrfs_fs_closing(fs_info))
+ 		return -EAGAIN;
+ 
+@@ -4312,6 +4316,7 @@ int btrfs_scrub_dev(struct btrfs_fs_info *fs_info, u64 devid, u64 start,
+ 	sctx = scrub_setup_ctx(fs_info, is_dev_replace);
+ 	if (IS_ERR(sctx))
+ 		return PTR_ERR(sctx);
++	sctx->stat.last_physical = start;
+ 
+ 	ret = scrub_workers_get(fs_info, is_dev_replace);
+ 	if (ret)
 -- 
 2.51.0
 
