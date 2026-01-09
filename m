@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-207546-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206944-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5692D09E36
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:43:45 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DF2FD0964D
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:15:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 54EE73058621
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:39:38 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 86DEE302ABBD
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:11:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 032C235A95C;
-	Fri,  9 Jan 2026 12:39:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DFEE35A94D;
+	Fri,  9 Jan 2026 12:10:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d/vAM0vq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HDlpAlAt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAB2B335BCD;
-	Fri,  9 Jan 2026 12:39:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3241D2EAD10;
+	Fri,  9 Jan 2026 12:10:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962361; cv=none; b=A1YmmmPKFg9vsMxrygtB2LkfRIi843Zp47urbad82zVx/E1KMpzcP8HMux36hnT1lNOxh8Z6RyhQhDIOIRAxBjGc8vCyn+cJNpY5s7zgzwdcxwktu6VSerkcAhYeCSmMeQjNqgoWQWac0ZIOZCASGQBysanhZ0O6RWihOL3mXv8=
+	t=1767960649; cv=none; b=LcQRqPoQRjX/WhXgYcwvMmbTE5+mc5y47oKDzPSdK/kDQG1d8ANPFc2zL0Nj7Tuls1FJjwXfFJyuAOKnriDpdbR/FPnsZR0B2Ua3KS0LfnOipz7Ns9jYv8prJ1SgCYk7zXyZKNieUXtXHn7Fsvhs00pNm/jEra7T+jZfQZwn7IY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962361; c=relaxed/simple;
-	bh=qbbfF/B0BRrhCrYcXRdi4MmUT4GRgrf0cHDwBqJM+2o=;
+	s=arc-20240116; t=1767960649; c=relaxed/simple;
+	bh=zles2RY4EwDni0zE8aLcEoAimXvygg0HCB/BE5Bn8qg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mSpsDWIpS/sGrIK4BB24JMw4odERul30zXKZOqJJfySABRYh2LOGGkcqRiIi6BR3XV7jip1lil2B/zs05DMBWSyeyTdRS2VCIHznQteWDY89lxXuECPKK5rMJvw3QpqnkiytuqVbviOrIJQJN815tVihqNP0mkD+SGgrdgpNxtk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d/vAM0vq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C4F7C4CEF1;
-	Fri,  9 Jan 2026 12:39:21 +0000 (UTC)
+	 MIME-Version; b=rgWaXAl/QjZMAr3THdymwrS1GzskUSkhZ+hIw3YLbeuHy820vGLuB0P/oYAoifLKy//4XgcPv9iNtfjkkexa43UmSifH/A5NlDj4EKXduB/Cd3f2YgTvbKkSBL/qygwoRzzYJ6+aNUicd6ZL6UsjLjsTk4Y/nYiy7+BfJwSCU3E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HDlpAlAt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE208C4CEF1;
+	Fri,  9 Jan 2026 12:10:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962361;
-	bh=qbbfF/B0BRrhCrYcXRdi4MmUT4GRgrf0cHDwBqJM+2o=;
+	s=korg; t=1767960649;
+	bh=zles2RY4EwDni0zE8aLcEoAimXvygg0HCB/BE5Bn8qg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d/vAM0vqX6dL6MO7TyoUyOdGA3ltimV+IsTH23JKul0j8EVBrr4FMneHTwdkCsmNn
-	 dMiJlUBalk1OgSa6+99gpWJPOfqlN3pzTr57nsNrs97w3h1dTjn5NwL1nhQwRMqYDq
-	 NTa8/+pZfl7WAVAmPcmMPS4w77amxyqLHJOgfeQo=
+	b=HDlpAlAt2sK/xapYzYGNSL9pwO4HGfRVWgjwGyeF0A4rjQuKWc+e662KNLCtwZ1J1
+	 zf0CShJRmtchm2neeIU+wVGAio8AN8+XtzpGtRcFrsplk8+3UcLNjcv/i7TpZeayjh
+	 kpQ0wdLF6oEaEY0B6QeAHTg8+7Un9tdunOQqBEcw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Duoming Zhou <duoming@zju.edu.cn>
-Subject: [PATCH 6.1 338/634] usb: phy: fsl-usb: Fix use-after-free in delayed work during device removal
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.6 477/737] nfsd: Mark variable __maybe_unused to avoid W=1 build break
 Date: Fri,  9 Jan 2026 12:40:16 +0100
-Message-ID: <20260109112130.244896878@linuxfoundation.org>
+Message-ID: <20260109112151.929427958@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,57 +59,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Duoming Zhou <duoming@zju.edu.cn>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-commit 41ca62e3e21e48c2903b3b45e232cf4f2ff7434f upstream.
+commit ebae102897e760e9e6bc625f701dd666b2163bd1 upstream.
 
-The delayed work item otg_event is initialized in fsl_otg_conf() and
-scheduled under two conditions:
-1. When a host controller binds to the OTG controller.
-2. When the USB ID pin state changes (cable insertion/removal).
+Clang is not happy about set but (in some cases) unused variable:
 
-A race condition occurs when the device is removed via fsl_otg_remove():
-the fsl_otg instance may be freed while the delayed work is still pending
-or executing. This leads to use-after-free when the work function
-fsl_otg_event() accesses the already freed memory.
+fs/nfsd/export.c:1027:17: error: variable 'inode' set but not used [-Werror,-Wunused-but-set-variable]
 
-The problematic scenario:
+since it's used as a parameter to dprintk() which might be configured
+a no-op. To avoid uglifying code with the specific ifdeffery just mark
+the variable __maybe_unused.
 
-(detach thread)            | (delayed work)
-fsl_otg_remove()           |
-  kfree(fsl_otg_dev) //FREE| fsl_otg_event()
-                           |   og = container_of(...) //USE
-                           |   og-> //USE
+The commit [1], which introduced this behaviour, is quite old and hence
+the Fixes tag points to the first of the Git era.
 
-Fix this by calling disable_delayed_work_sync() in fsl_otg_remove()
-before deallocating the fsl_otg structure. This ensures the delayed work
-is properly canceled and completes execution prior to memory deallocation.
-
-This bug was identified through static analysis.
-
-Fixes: 0807c500a1a6 ("USB: add Freescale USB OTG Transceiver driver")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
-Link: https://patch.msgid.link/20251205034831.12846-1-duoming@zju.edu.cn
+Link: https://git.kernel.org/pub/scm/linux/kernel/git/history/history.git/commit/?id=0431923fb7a1 [1]
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/phy/phy-fsl-usb.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/nfsd/export.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/phy/phy-fsl-usb.c
-+++ b/drivers/usb/phy/phy-fsl-usb.c
-@@ -987,6 +987,7 @@ static int fsl_otg_remove(struct platfor
+--- a/fs/nfsd/export.c
++++ b/fs/nfsd/export.c
+@@ -1014,7 +1014,7 @@ exp_rootfh(struct net *net, struct auth_
  {
- 	struct fsl_usb2_platform_data *pdata = dev_get_platdata(&pdev->dev);
- 
-+	disable_delayed_work_sync(&fsl_otg_dev->otg_event);
- 	usb_remove_phy(&fsl_otg_dev->phy);
- 	free_irq(fsl_otg_dev->irq, fsl_otg_dev);
- 
+ 	struct svc_export	*exp;
+ 	struct path		path;
+-	struct inode		*inode;
++	struct inode		*inode __maybe_unused;
+ 	struct svc_fh		fh;
+ 	int			err;
+ 	struct nfsd_net		*nn = net_generic(net, nfsd_net_id);
 
 
 
