@@ -1,52 +1,54 @@
-Return-Path: <stable+bounces-206545-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206556-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7D62D091D3
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 12:57:37 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2B14D090AA
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 12:53:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B4AC830802AB
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:51:56 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E73E2301476F
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:52:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28CD1359F8C;
-	Fri,  9 Jan 2026 11:51:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 678FF32FA3D;
+	Fri,  9 Jan 2026 11:52:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aXmvctJr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="blZ1ot1A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFEEB359F8A;
-	Fri,  9 Jan 2026 11:51:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AA8B31A7EA;
+	Fri,  9 Jan 2026 11:52:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767959510; cv=none; b=SGb5znTHBWkpQrII1fnAoACFppivMFGlsvLx6+2RfFYPQDDRPhY5d+tIVLWzfYu+KoB429EUkjPFoF/myqsGqr3XTD8yK81Uc0nRC5gSq/0K4gjHa8px3Cp+HL4IJ8jw9cdbAH09GQ3rn+pfRqFRXVkBpyl7mSznCw1CFdpHCvo=
+	t=1767959542; cv=none; b=ZBvTijiAvtnnnLldD305WfAbfqSbtez0MH+AMJyb7TobSdOZ1WFGY2wbuZK3ela/GFJMoMbRoe7HLPtZErVa/MNd6X59l1+HoyPjcDyOGKs1rHPDk4eqEJd2aE0O3meD8UPKUoTVexLeGhHBNeigRvAa5+LS4rMJdXnAIViAgY4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767959510; c=relaxed/simple;
-	bh=J/4yaW6wGxetNHvdkI+DtOfWrzaAeulqew3h/0aSJ7o=;
+	s=arc-20240116; t=1767959542; c=relaxed/simple;
+	bh=vOJ4c9CWTt/Yuublaf1I5OtwqavY7umaD4QSmz571MM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EiKyMjBzBOG92wxjrDhyZZgs79e0ojWq6e1l9fBVQJGZHl9/9avRKcmnCPcsEkIM0xI3F6v9IJd0N4kTLKhqNX5amxxDJ2aKtYAuYolYsd4NYKZs/9loo50B2HV6H6QVph6pKeSFw6qprZ7IzLJXhddIOjozenKDWdFMt3hzbPU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aXmvctJr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71E6BC16AAE;
-	Fri,  9 Jan 2026 11:51:50 +0000 (UTC)
+	 MIME-Version; b=LLgkmzOoC4IufjDBlwVaVzCYkSt3QHEXgR2WJZa+RgfUFHzW+i61pqsTh3yZYVVzu/PTZL3f1XeCYXLDIo7hF580E8NJA5PVwF7fHNLDHoDFZmIoJxzXcN47q9pTG/eJaiTPyb0+VQOPhFe0bzFspXqanPFX56Vuv0DDJllTI5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=blZ1ot1A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9024C19423;
+	Fri,  9 Jan 2026 11:52:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767959510;
-	bh=J/4yaW6wGxetNHvdkI+DtOfWrzaAeulqew3h/0aSJ7o=;
+	s=korg; t=1767959542;
+	bh=vOJ4c9CWTt/Yuublaf1I5OtwqavY7umaD4QSmz571MM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aXmvctJrl1MJo0kaVkc/ujDqJlaPBXdCHQRH7orB6+iLrq7rUIAbdGTaJ6nNlC8jQ
-	 igE6ud1agJeybtEYAbgmAhH51illeppMa/lL3SsiT9rsktm57naZ4INtHWGLB0eeHO
-	 vh/eTEHrjoBRxKYtlpwCEXuDuHz1tZa2tf3lst38=
+	b=blZ1ot1AJhu1QamyMMeeeiYGKtxa0AaLWwlGl+bR17v7Eh1bvcWi9VLH01fpwtW8L
+	 nWi4uBXhc6gbpFvBrJW86h6bJFhpu62E33S7y8IGDsrvtL8aeWbHB24KG+xsIDWTG7
+	 l4BQiASln+QcDIEkUver6XtdPCVVJWXdYhxIZyvM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+332bd4e9d148f11a87dc@syzkaller.appspotmail.com,
-	Sidharth Seela <sidharthseela@gmail.com>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Xuanqiang Luo <luoxuanqiang@kylinos.cn>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 070/737] ntfs3: Fix uninit buffer allocated by __getname()
-Date: Fri,  9 Jan 2026 12:33:29 +0100
-Message-ID: <20260109112136.630459529@linuxfoundation.org>
+Subject: [PATCH 6.6 071/737] rculist: Add hlist_nulls_replace_rcu() and hlist_nulls_replace_init_rcu()
+Date: Fri,  9 Jan 2026 12:33:30 +0100
+Message-ID: <20260109112136.667582229@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
 References: <20260109112133.973195406@linuxfoundation.org>
@@ -65,34 +67,108 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Sidharth Seela <sidharthseela@gmail.com>
+From: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
 
-[ Upstream commit 9948dcb2f7b5a1bf8e8710eafaf6016e00be3ad6 ]
+[ Upstream commit 9c4609225ec1cb551006d6a03c7c4ad8cb5584c0 ]
 
-Fix uninit errors caused after buffer allocation given to 'de'; by
-initializing the buffer with zeroes. The fix was found by using KMSAN.
+Add two functions to atomically replace RCU-protected hlist_nulls entries.
 
-Reported-by: syzbot+332bd4e9d148f11a87dc@syzkaller.appspotmail.com
-Fixes: 78ab59fee07f2 ("fs/ntfs3: Rework file operations")
-Signed-off-by: Sidharth Seela <sidharthseela@gmail.com>
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Keep using WRITE_ONCE() to assign values to ->next and ->pprev, as
+mentioned in the patch below:
+commit efd04f8a8b45 ("rcu: Use WRITE_ONCE() for assignments to ->next for
+rculist_nulls")
+commit 860c8802ace1 ("rcu: Use WRITE_ONCE() for assignments to ->pprev for
+hlist_nulls")
+
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+Link: https://patch.msgid.link/20251015020236.431822-2-xuanqiang.luo@linux.dev
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 1532ed0d0753 ("inet: Avoid ehash lookup race in inet_ehash_insert()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/inode.c | 1 +
- 1 file changed, 1 insertion(+)
+ include/linux/rculist_nulls.h | 59 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 59 insertions(+)
 
-diff --git a/fs/ntfs3/inode.c b/fs/ntfs3/inode.c
-index a967babea8a59..f27e25776b730 100644
---- a/fs/ntfs3/inode.c
-+++ b/fs/ntfs3/inode.c
-@@ -1758,6 +1758,7 @@ int ntfs_link_inode(struct inode *inode, struct dentry *dentry)
- 	de = __getname();
- 	if (!de)
- 		return -ENOMEM;
-+	memset(de, 0, PATH_MAX);
+diff --git a/include/linux/rculist_nulls.h b/include/linux/rculist_nulls.h
+index 89186c499dd47..c26cb83ca0711 100644
+--- a/include/linux/rculist_nulls.h
++++ b/include/linux/rculist_nulls.h
+@@ -52,6 +52,13 @@ static inline void hlist_nulls_del_init_rcu(struct hlist_nulls_node *n)
+ #define hlist_nulls_next_rcu(node) \
+ 	(*((struct hlist_nulls_node __rcu __force **)&(node)->next))
  
- 	/* Mark rw ntfs as dirty. It will be cleared at umount. */
- 	ntfs_set_state(sbi, NTFS_DIRTY_DIRTY);
++/**
++ * hlist_nulls_pprev_rcu - returns the dereferenced pprev of @node.
++ * @node: element of the list.
++ */
++#define hlist_nulls_pprev_rcu(node) \
++	(*((struct hlist_nulls_node __rcu __force **)(node)->pprev))
++
+ /**
+  * hlist_nulls_del_rcu - deletes entry from hash list without re-initialization
+  * @n: the element to delete from the hash list.
+@@ -152,6 +159,58 @@ static inline void hlist_nulls_add_fake(struct hlist_nulls_node *n)
+ 	n->next = (struct hlist_nulls_node *)NULLS_MARKER(NULL);
+ }
+ 
++/**
++ * hlist_nulls_replace_rcu - replace an old entry by a new one
++ * @old: the element to be replaced
++ * @new: the new element to insert
++ *
++ * Description:
++ * Replace the old entry with the new one in a RCU-protected hlist_nulls, while
++ * permitting racing traversals.
++ *
++ * The caller must take whatever precautions are necessary (such as holding
++ * appropriate locks) to avoid racing with another list-mutation primitive, such
++ * as hlist_nulls_add_head_rcu() or hlist_nulls_del_rcu(), running on this same
++ * list.  However, it is perfectly legal to run concurrently with the _rcu
++ * list-traversal primitives, such as hlist_nulls_for_each_entry_rcu().
++ */
++static inline void hlist_nulls_replace_rcu(struct hlist_nulls_node *old,
++					   struct hlist_nulls_node *new)
++{
++	struct hlist_nulls_node *next = old->next;
++
++	WRITE_ONCE(new->next, next);
++	WRITE_ONCE(new->pprev, old->pprev);
++	rcu_assign_pointer(hlist_nulls_pprev_rcu(new), new);
++	if (!is_a_nulls(next))
++		WRITE_ONCE(next->pprev, &new->next);
++}
++
++/**
++ * hlist_nulls_replace_init_rcu - replace an old entry by a new one and
++ * initialize the old
++ * @old: the element to be replaced
++ * @new: the new element to insert
++ *
++ * Description:
++ * Replace the old entry with the new one in a RCU-protected hlist_nulls, while
++ * permitting racing traversals, and reinitialize the old entry.
++ *
++ * Note: @old must be hashed.
++ *
++ * The caller must take whatever precautions are necessary (such as holding
++ * appropriate locks) to avoid racing with another list-mutation primitive, such
++ * as hlist_nulls_add_head_rcu() or hlist_nulls_del_rcu(), running on this same
++ * list. However, it is perfectly legal to run concurrently with the _rcu
++ * list-traversal primitives, such as hlist_nulls_for_each_entry_rcu().
++ */
++static inline void hlist_nulls_replace_init_rcu(struct hlist_nulls_node *old,
++						struct hlist_nulls_node *new)
++{
++	hlist_nulls_replace_rcu(old, new);
++	WRITE_ONCE(old->pprev, NULL);
++}
++
+ /**
+  * hlist_nulls_for_each_entry_rcu - iterate over rcu list of given type
+  * @tpos:	the type * to use as a loop cursor.
 -- 
 2.51.0
 
