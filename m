@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-206849-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207467-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B084D0963F
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:14:43 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C378D09F0D
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:47:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3ACFF3109720
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:06:15 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 3ED3D302354A
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:35:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3FF8359FBA;
-	Fri,  9 Jan 2026 12:06:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5876F358D30;
+	Fri,  9 Jan 2026 12:35:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nPIFNODz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZS8Pxy6d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A768A33CE9A;
-	Fri,  9 Jan 2026 12:06:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B23D358D38;
+	Fri,  9 Jan 2026 12:35:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960374; cv=none; b=GtMLNExEgdb0xbyKNeuoVJboG3AT7lCVRGnxFp0kn2EV0YP+oZKqqmApFCgLetBOs6/1BLTngShEmrlR/w6DXXBAX6sBOgy5SIc7i4sNuSlJKY7KPCLWf1FaxKyLIW3yelymk0xYQbGRX6OUK5hD5K5IarqG92tfig3jwsVFtnA=
+	t=1767962138; cv=none; b=qIncy+3tkN+xKVAwiklMezCEBjVt3E9phkIN8D8g9a1LOrUw5iXPp9OBiA2qbv3K/asADiQgDiBNxVFQNTukQ3q+FrZi4H7OFp3jkF3ngEozsD1vW3MfOKoV6GyU41klkMDYUARsrGROy7RWytG3mNiRe91w/Wn79JstiQRFidI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960374; c=relaxed/simple;
-	bh=d3LX412CjF+ODhYMRje7pgyQocgZdQfSOx1IzzI2FBE=;
+	s=arc-20240116; t=1767962138; c=relaxed/simple;
+	bh=6d+YU5o8WGbvQQruxRNVAcwCjez/GOZvS3iNKsBFGK0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WLaDnUqBd+LJPtJ86jWwgIJe/T1R4LUj5//FWrpTXEnBwCw/H7yD2kY7KpV8oczeOA0/jL76FJlDj5V7y77UcnJk3N7Nau2Gn6E1FdcZSFXuEygxSUHCp7k8PCNeNcnLXyvfYKO6P5+LiILW6mRO2Yybvr0RYRNtRYpwLrNW4hY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nPIFNODz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33D31C4CEF1;
-	Fri,  9 Jan 2026 12:06:14 +0000 (UTC)
+	 MIME-Version; b=f4MqUinT1ibVowc/ry8OWV6OZdpNZE2xwwO8A8nyCdkzETKIL7ZugMLNzZMvGxTiEDCpf+QM3lqBJMFTX5gZtIRl9agBGJkn1zf/6/D2WvYrwbEs5+6DFGSQVCG2TM0LfAeoNFL25WoW3reHUuyuAdvZAMRGEOpWEnaD4HsEPEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZS8Pxy6d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98C81C4CEF1;
+	Fri,  9 Jan 2026 12:35:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960374;
-	bh=d3LX412CjF+ODhYMRje7pgyQocgZdQfSOx1IzzI2FBE=;
+	s=korg; t=1767962138;
+	bh=6d+YU5o8WGbvQQruxRNVAcwCjez/GOZvS3iNKsBFGK0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nPIFNODzQjLOyynItPuwC9Jmt3xBloXxUu62b7seJNOagl5yreeRmwA8tMWmOmCoX
-	 2TM9DRjuaOQmi7fj9cl3zrDY6ODf9QZVHk5HkEvVHPlDX0giFJplFWSwbtYCd4AEsG
-	 ImpL8Azxx45Gg5n0d2PxIB7D8u+hzouAnvRvSgg8=
+	b=ZS8Pxy6diCghe5kn4eB0mqPC5uY56AHifHHofPU+hyeHg0elgITQ1dnCo9yo0P2JP
+	 mJMUIG9dG0AQYFtc1eCQ6lDERCsuvdRYCnzf+bWG5VWYTRM0eVk+hY+N/obTt1dQa0
+	 Opz2ZJ4KemXhD3cbhbDsHVWSju9Hek/JZQHZI1fg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+2fa344348a579b779e05@syzkaller.appspotmail.com,
-	Shaurya Rane <ssrane_b23@ee.vjti.ac.in>,
-	Felix Maurer <fmaurer@redhat.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.6 381/737] net/hsr: fix NULL pointer dereference in prp_get_untagged_frame()
+	Arend van Spriel <arend.vanspriel@broadcom.com>,
+	Hans de Goede <hansg@kernel.org>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 242/634] wifi: brcmfmac: Add DMI nvram filename quirk for Acer A1 840 tablet
 Date: Fri,  9 Jan 2026 12:38:40 +0100
-Message-ID: <20260109112148.334779701@linuxfoundation.org>
+Message-ID: <20260109112126.648151863@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,90 +61,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shaurya Rane <ssrane_b23@ee.vjti.ac.in>
+From: Hans de Goede <hansg@kernel.org>
 
-commit 188e0fa5a679570ea35474575e724d8211423d17 upstream.
+[ Upstream commit a8e5a110c0c38e08e5dd66356cd1156e91cf88e1 ]
 
-prp_get_untagged_frame() calls __pskb_copy() to create frame->skb_std
-but doesn't check if the allocation failed. If __pskb_copy() returns
-NULL, skb_clone() is called with a NULL pointer, causing a crash:
+The Acer A1 840 tablet contains quite generic names in the sys_vendor and
+product_name DMI strings, without this patch brcmfmac will try to load:
+brcmfmac43340-sdio.Insyde-BayTrail.txt as nvram file which is a bit
+too generic.
 
-Oops: general protection fault, probably for non-canonical address 0xdffffc000000000f: 0000 [#1] SMP KASAN NOPTI
-KASAN: null-ptr-deref in range [0x0000000000000078-0x000000000000007f]
-CPU: 0 UID: 0 PID: 5625 Comm: syz.1.18 Not tainted syzkaller #0 PREEMPT(full)
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-RIP: 0010:skb_clone+0xd7/0x3a0 net/core/skbuff.c:2041
-Code: 03 42 80 3c 20 00 74 08 4c 89 f7 e8 23 29 05 f9 49 83 3e 00 0f 85 a0 01 00 00 e8 94 dd 9d f8 48 8d 6b 7e 49 89 ee 49 c1 ee 03 <43> 0f b6 04 26 84 c0 0f 85 d1 01 00 00 44 0f b6 7d 00 41 83 e7 0c
-RSP: 0018:ffffc9000d00f200 EFLAGS: 00010207
-RAX: ffffffff892235a1 RBX: 0000000000000000 RCX: ffff88803372a480
-RDX: 0000000000000000 RSI: 0000000000000820 RDI: 0000000000000000
-RBP: 000000000000007e R08: ffffffff8f7d0f77 R09: 1ffffffff1efa1ee
-R10: dffffc0000000000 R11: fffffbfff1efa1ef R12: dffffc0000000000
-R13: 0000000000000820 R14: 000000000000000f R15: ffff88805144cc00
-FS:  0000555557f6d500(0000) GS:ffff88808d72f000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000555581d35808 CR3: 000000005040e000 CR4: 0000000000352ef0
-Call Trace:
- <TASK>
- hsr_forward_do net/hsr/hsr_forward.c:-1 [inline]
- hsr_forward_skb+0x1013/0x2860 net/hsr/hsr_forward.c:741
- hsr_handle_frame+0x6ce/0xa70 net/hsr/hsr_slave.c:84
- __netif_receive_skb_core+0x10b9/0x4380 net/core/dev.c:5966
- __netif_receive_skb_one_core net/core/dev.c:6077 [inline]
- __netif_receive_skb+0x72/0x380 net/core/dev.c:6192
- netif_receive_skb_internal net/core/dev.c:6278 [inline]
- netif_receive_skb+0x1cb/0x790 net/core/dev.c:6337
- tun_rx_batched+0x1b9/0x730 drivers/net/tun.c:1485
- tun_get_user+0x2b65/0x3e90 drivers/net/tun.c:1953
- tun_chr_write_iter+0x113/0x200 drivers/net/tun.c:1999
- new_sync_write fs/read_write.c:593 [inline]
- vfs_write+0x5c9/0xb30 fs/read_write.c:686
- ksys_write+0x145/0x250 fs/read_write.c:738
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f0449f8e1ff
-Code: 89 54 24 18 48 89 74 24 10 89 7c 24 08 e8 f9 92 02 00 48 8b 54 24 18 48 8b 74 24 10 41 89 c0 8b 7c 24 08 b8 01 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 31 44 89 c7 48 89 44 24 08 e8 4c 93 02 00 48
-RSP: 002b:00007ffd7ad94c90 EFLAGS: 00000293 ORIG_RAX: 0000000000000001
-RAX: ffffffffffffffda RBX: 00007f044a1e5fa0 RCX: 00007f0449f8e1ff
-RDX: 000000000000003e RSI: 0000200000000500 RDI: 00000000000000c8
-RBP: 00007ffd7ad94d20 R08: 0000000000000000 R09: 0000000000000000
-R10: 000000000000003e R11: 0000000000000293 R12: 0000000000000001
-R13: 00007f044a1e5fa0 R14: 00007f044a1e5fa0 R15: 0000000000000003
- </TASK>
+Add a DMI quirk so that a unique and clearly identifiable nvram file name
+is used on the Acer A1 840 tablet.
 
-Add a NULL check immediately after __pskb_copy() to handle allocation
-failures gracefully.
-
-Reported-by: syzbot+2fa344348a579b779e05@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=2fa344348a579b779e05
-Fixes: f266a683a480 ("net/hsr: Better frame dispatch")
-Cc: stable@vger.kernel.org
-Signed-off-by: Shaurya Rane <ssrane_b23@ee.vjti.ac.in>
-Reviewed-by: Felix Maurer <fmaurer@redhat.com>
-Tested-by: Felix Maurer <fmaurer@redhat.com>
-Link: https://patch.msgid.link/20251129093718.25320-1-ssrane_b23@ee.vjti.ac.in
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+Signed-off-by: Hans de Goede <hansg@kernel.org>
+Link: https://patch.msgid.link/20251103100314.353826-1-hansg@kernel.org
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/hsr/hsr_forward.c |    2 ++
- 1 file changed, 2 insertions(+)
+ .../net/wireless/broadcom/brcm80211/brcmfmac/dmi.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
---- a/net/hsr/hsr_forward.c
-+++ b/net/hsr/hsr_forward.c
-@@ -176,6 +176,8 @@ struct sk_buff *prp_get_untagged_frame(s
- 				__pskb_copy(frame->skb_prp,
- 					    skb_headroom(frame->skb_prp),
- 					    GFP_ATOMIC);
-+			if (!frame->skb_std)
-+				return NULL;
- 		} else {
- 			/* Unexpected */
- 			WARN_ONCE(1, "%s:%d: Unexpected frame received (port_src %s)\n",
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/dmi.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/dmi.c
+index c3a602197662b..abe7f6501e5ed 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/dmi.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/dmi.c
+@@ -24,6 +24,10 @@ static const struct brcmf_dmi_data acepc_t8_data = {
+ 	BRCM_CC_4345_CHIP_ID, 6, "acepc-t8"
+ };
+ 
++static const struct brcmf_dmi_data acer_a1_840_data = {
++	BRCM_CC_43340_CHIP_ID, 2, "acer-a1-840"
++};
++
+ /* The Chuwi Hi8 Pro uses the same Ampak AP6212 module as the Chuwi Vi8 Plus
+  * and the nvram for the Vi8 Plus is already in linux-firmware, so use that.
+  */
+@@ -91,6 +95,16 @@ static const struct dmi_system_id dmi_platform_data[] = {
+ 		},
+ 		.driver_data = (void *)&acepc_t8_data,
+ 	},
++	{
++		/* Acer Iconia One 8 A1-840 (non FHD version) */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Insyde"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "BayTrail"),
++			/* Above strings are too generic also match BIOS date */
++			DMI_MATCH(DMI_BIOS_DATE, "04/01/2014"),
++		},
++		.driver_data = (void *)&acer_a1_840_data,
++	},
+ 	{
+ 		/* Chuwi Hi8 Pro with D2D3_Hi8Pro.233 BIOS */
+ 		.matches = {
+-- 
+2.51.0
+
 
 
 
