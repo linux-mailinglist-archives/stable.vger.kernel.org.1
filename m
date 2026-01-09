@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-207392-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206824-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96668D09F0A
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:47:09 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 785E5D09605
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:13:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9A8B53041AC4
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:32:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 17A7730DF725
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:05:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEA9A359701;
-	Fri,  9 Jan 2026 12:32:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9127333CE9A;
+	Fri,  9 Jan 2026 12:05:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zfb0jyYj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IXDbux7R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2ACF31E107;
-	Fri,  9 Jan 2026 12:32:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5485C33D50F;
+	Fri,  9 Jan 2026 12:05:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961924; cv=none; b=g+SgGe577hrJGuYoITaLD+kqXG7E0cIfm0dlmweMNmRGnBYXT8bKDmyfSJot/7yeMRqDMDNObgks08s5Ik6zZLGDqmUFih9CVsTDrW3yx4rXL5EXKncYzRLjaY5qIov1zOTCQ7OjYfk5UeNbpm2lFFKAC9xKJwjsvfVffqjxvBk=
+	t=1767960303; cv=none; b=m7DHThrAfuk1zLswoYUOR+zakdzN/R0p8tl2Ih2tREN1KMXYBcpevHi91LXcZHOHp/PnlI6pSrM8uWuJRF4+SEx7fFDh5mFUJvu8ftVkahoxBRuiCkhmsHa8bsPv1vscXjkrqjV2OmFYtWjCsgin/8KsaU2MAXEaiZwDWFs74aY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961924; c=relaxed/simple;
-	bh=9Ms++ED5PMM1Lj191fgAoM3Ik0mKegbehxLIa+rGy3E=;
+	s=arc-20240116; t=1767960303; c=relaxed/simple;
+	bh=5KBJt7nqAMNDchb4528VJHS9YCD5x9/STsK/vttw8RY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RfjtalV03VU0FCYSEL7iDF3rc3g0MXcGdUIEn8YFbH3DupZYfP/t7Mvav+ZrBBv4dZp4XA+BITSQjMkYIKIowoOI84y1kwNqfEKgBPrhlkaqMaj0GZqVSEAI2HpQWweSc0HiAjDMmdy8U1VaiL96CA2axAsohuzoofIM6MZ7vJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zfb0jyYj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 458D2C4CEF1;
-	Fri,  9 Jan 2026 12:32:04 +0000 (UTC)
+	 MIME-Version; b=bDq3KbqMCdMd4T+rB1m3hWYu/1FJW0VQMbwAxAdQKCtUQD0SclhJPPK83McLImsuYYBavjB7x/t0gSFn0V17kq7h9v4LREtCoNBiIZ6K/GaTmIYKnclmTs3a4piyevWRXedLTULQhUctqI93F61JPqzSKzjt0+Xzpkg4PoqDBS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IXDbux7R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1DF2C4CEF1;
+	Fri,  9 Jan 2026 12:05:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961924;
-	bh=9Ms++ED5PMM1Lj191fgAoM3Ik0mKegbehxLIa+rGy3E=;
+	s=korg; t=1767960303;
+	bh=5KBJt7nqAMNDchb4528VJHS9YCD5x9/STsK/vttw8RY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zfb0jyYjdSXd4y1wHghQLdRISKd4oqHbwnYLPXdvcZOV9BneRUXcMU5JWvbpcKTFv
-	 OVlORSIdUlZhvpWj/7ipnoAN2J6Nuwi2VHqHyaD+fVDApSE++UNMvN6FPqB3KrmZB7
-	 d724O9WAvafb055bq0lOVYPeu2B9u8iMP14CFTtU=
+	b=IXDbux7R3Yg/9YX4LprlBW6s3h82npVoQ//1Fu8c/QzC7hfNo48yPRlvVJ7aXVfxG
+	 DpPu7cpnKC4Aw/JHtqiH0bZQtouhvJbi+hcy58DCEYxJ8c11GRh6e1/ArEmh3IS489
+	 wcEffm1nb6noWbh4k/RKnMdOATY0avxPntrB1XK0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	Linus Walleij <linusw@kernel.org>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 185/634] pinctrl: single: Fix incorrect type for error return variable
+Subject: [PATCH 6.6 324/737] gfs2: fix remote evict for read-only filesystems
 Date: Fri,  9 Jan 2026 12:37:43 +0100
-Message-ID: <20260109112124.401593899@linuxfoundation.org>
+Message-ID: <20260109112146.186162760@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,55 +59,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Andreas Gruenbacher <agruenba@redhat.com>
 
-[ Upstream commit 61d1bb53547d42c6bdaec9da4496beb3a1a05264 ]
+[ Upstream commit 64c10ed9274bc46416f502afea48b4ae11279669 ]
 
-pcs_pinconf_get() and pcs_pinconf_set() declare ret as unsigned int,
-but assign it the return values of pcs_get_function() that may return
-negative error codes. This causes negative error codes to be
-converted to large positive values.
+When a node tries to delete an inode, it first requests exclusive access
+to the iopen glock.  This triggers demote requests on all remote nodes
+currently holding the iopen glock.  To satisfy those requests, the
+remote nodes evict the inode in question, or they poke the corresponding
+inode glock to signal that the inode is still in active use.
 
-Change ret from unsigned int to int in both functions.
+This behavior doesn't depend on whether or not a filesystem is
+read-only, so remove the incorrect read-only check.
 
-Fixes: 9dddb4df90d1 ("pinctrl: single: support generic pinconf")
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Signed-off-by: Linus Walleij <linusw@kernel.org>
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/pinctrl-single.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ fs/gfs2/glops.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/pinctrl/pinctrl-single.c b/drivers/pinctrl/pinctrl-single.c
-index b81297084f097..0659cd3aa3a5a 100644
---- a/drivers/pinctrl/pinctrl-single.c
-+++ b/drivers/pinctrl/pinctrl-single.c
-@@ -490,7 +490,8 @@ static int pcs_pinconf_get(struct pinctrl_dev *pctldev,
- 	struct pcs_device *pcs = pinctrl_dev_get_drvdata(pctldev);
- 	struct pcs_function *func;
- 	enum pin_config_param param;
--	unsigned offset = 0, data = 0, i, j, ret;
-+	unsigned offset = 0, data = 0, i, j;
-+	int ret;
+diff --git a/fs/gfs2/glops.c b/fs/gfs2/glops.c
+index 1c854d4e2d491..4a169c60bce65 100644
+--- a/fs/gfs2/glops.c
++++ b/fs/gfs2/glops.c
+@@ -640,8 +640,7 @@ static void iopen_go_callback(struct gfs2_glock *gl, bool remote)
+ 	struct gfs2_inode *ip = gl->gl_object;
+ 	struct gfs2_sbd *sdp = gl->gl_name.ln_sbd;
  
- 	ret = pcs_get_function(pctldev, pin, &func);
- 	if (ret)
-@@ -554,9 +555,9 @@ static int pcs_pinconf_set(struct pinctrl_dev *pctldev,
- {
- 	struct pcs_device *pcs = pinctrl_dev_get_drvdata(pctldev);
- 	struct pcs_function *func;
--	unsigned offset = 0, shift = 0, i, data, ret;
-+	unsigned offset = 0, shift = 0, i, data;
- 	u32 arg;
--	int j;
-+	int j, ret;
- 	enum pin_config_param param;
+-	if (!remote || sb_rdonly(sdp->sd_vfs) ||
+-	    test_bit(SDF_KILL, &sdp->sd_flags))
++	if (!remote || test_bit(SDF_KILL, &sdp->sd_flags))
+ 		return;
  
- 	ret = pcs_get_function(pctldev, pin, &func);
+ 	if (gl->gl_demote_state == LM_ST_UNLOCKED &&
 -- 
 2.51.0
 
