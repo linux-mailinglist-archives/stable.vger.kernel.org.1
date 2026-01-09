@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-207466-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206865-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1263D09FE8
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:49:54 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0941D0966B
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:15:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id EB09B30E2BBA
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:35:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D39BF30EDFD7
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:07:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9282235B133;
-	Fri,  9 Jan 2026 12:35:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E10F35A92E;
+	Fri,  9 Jan 2026 12:07:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TtzMJtcu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C9CaqvSO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4043335B12B;
-	Fri,  9 Jan 2026 12:35:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FA7435A921;
+	Fri,  9 Jan 2026 12:07:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962135; cv=none; b=IW0jusgjitvsycHrYqVidk4jbJBkJ8l+fXadEl8lz0uP+oq1v5+3k236cp4OKkcVy7SFV9xmyKkZryc27VagvwWsNorB2qiJjYWjuDzgDanKqy3egnaULJdHbs592dIqc151MGfQcPkrVrFMq/2iJmzJ3z3df5+/1geGeRfMq00=
+	t=1767960420; cv=none; b=eZaAyp07rBXNWTsjNAiAsBFI1o19W77YhbUSMsWM6QBp2s4iyt6dfb5hiWFUv0rFRCIz9gmEMAOdKf8E12pPGxhTD6wxHF2sa0ojoGi9uD+FOTW0EKeejwxWWTR8J8cTeEkMFAoGKOwNqQopq4X5PEZfyQf2emyHX96fNITxI0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962135; c=relaxed/simple;
-	bh=Yts/9m779TfRRQF2NWtm8A8r/BdZx+R4BWLwEWFGzX0=;
+	s=arc-20240116; t=1767960420; c=relaxed/simple;
+	bh=iqmtGdfTpzvaNxQwEqE26j3tNFi/RN/WyZc7ru//Kyc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OSM5Y0MpzD2rzIiNoz2fLkUuwIIwQq1KifuBvvXH6lDZ5FHu3WagdW9aHhussBFqlGbPXpm2Z6ti7GgMJ1CXqTlnU58MAhmsSa3/969HHzTuNPau0EpQly9poTDJjFyC9YMx2i6Zp6ER/TtQFFKuEjorwrz558KXkLiz+umSjuo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TtzMJtcu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5B6DC4CEF1;
-	Fri,  9 Jan 2026 12:35:34 +0000 (UTC)
+	 MIME-Version; b=fvgBaJKhTNoOJ4ZN7dgLUAZ+X2WTxv9aL5GbiDhSiUVxyd+D03tvgZz4mxpSUJ1tN+1u3hgY6olxcXAwWJTVNqklVFpHRh317+Yggl/na2nZoddpYTn9akpdYD+zH30TWra1OvnXN+1LvK7iZt5sGU4q1wkNakzdpoy/IgQBpDg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C9CaqvSO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2C36C4CEF1;
+	Fri,  9 Jan 2026 12:06:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962135;
-	bh=Yts/9m779TfRRQF2NWtm8A8r/BdZx+R4BWLwEWFGzX0=;
+	s=korg; t=1767960420;
+	bh=iqmtGdfTpzvaNxQwEqE26j3tNFi/RN/WyZc7ru//Kyc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TtzMJtcuKBrkFfY9miXW2fxRYMhstxuyt6MkmlTRB0GF2lXmo99pq8brDUN9Y6S9O
-	 y79wEBZV+qujo1BTenRH8FK8Awsl2Rvc01sk1LGdbZh5v5sSUpiw862zkVth4vraik
-	 QmB5kf9kXDaySK7Oc7cXg1WLajPkk4VrdJSu+ZW8=
+	b=C9CaqvSOVsERjLcrrbbzTUEsPid6L3HiQVfKWFlNf40B1miDHme9sOfq8AVk0Sa0p
+	 qvbS6tEeZ/5ljV0l6e7K2VHP8+w3xJdii2x6XJbH87dlzdxTJkaA55c8pIFFAJyAEl
+	 wC5YCsIwKMjKsVPfi3JIMAVDaNYhuzWgJcr4gkjE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	kernel test robot <oliver.sang@intel.com>,
+	Yuezhang Mo <Yuezhang.Mo@sony.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 259/634] nfc: pn533: Fix error code in pn533_acr122_poweron_rdr()
+Subject: [PATCH 6.6 398/737] exfat: fix remount failure in different process environments
 Date: Fri,  9 Jan 2026 12:38:57 +0100
-Message-ID: <20260109112127.283699562@linuxfoundation.org>
+Message-ID: <20260109112148.973193606@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,39 +61,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Yuezhang Mo <Yuezhang.Mo@sony.com>
 
-[ Upstream commit 885bebac9909994050bbbeed0829c727e42bd1b7 ]
+[ Upstream commit 51fc7b4ce10ccab8ea5e4876bcdc42cf5202a0ef ]
 
-Set the error code if "transferred != sizeof(cmd)" instead of
-returning success.
+The kernel test robot reported that the exFAT remount operation
+failed. The reason for the failure was that the process's umask
+is different between mount and remount, causing fs_fmask and
+fs_dmask are changed.
 
-Fixes: dbafc28955fa ("NFC: pn533: don't send USB data off of the stack")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://patch.msgid.link/aTfIJ9tZPmeUF4W1@stanley.mountain
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Potentially, both gid and uid may also be changed. Therefore, when
+initializing fs_context for remount, inherit these mount options
+from the options used during mount.
+
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Closes: https://lore.kernel.org/oe-lkp/202511251637.81670f5c-lkp@intel.com
+Signed-off-by: Yuezhang Mo <Yuezhang.Mo@sony.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nfc/pn533/usb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/exfat/super.c | 19 +++++++++++++++----
+ 1 file changed, 15 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/nfc/pn533/usb.c b/drivers/nfc/pn533/usb.c
-index a187f0e0b0f7d..9e079be43583e 100644
---- a/drivers/nfc/pn533/usb.c
-+++ b/drivers/nfc/pn533/usb.c
-@@ -407,7 +407,7 @@ static int pn533_acr122_poweron_rdr(struct pn533_usb_phy *phy)
- 	if (rc || (transferred != sizeof(cmd))) {
- 		nfc_err(&phy->udev->dev,
- 			"Reader power on cmd error %d\n", rc);
--		return rc;
-+		return rc ?: -EINVAL;
- 	}
+diff --git a/fs/exfat/super.c b/fs/exfat/super.c
+index 957135f20cb6..da3e03b059cf 100644
+--- a/fs/exfat/super.c
++++ b/fs/exfat/super.c
+@@ -764,10 +764,21 @@ static int exfat_init_fs_context(struct fs_context *fc)
+ 	ratelimit_state_init(&sbi->ratelimit, DEFAULT_RATELIMIT_INTERVAL,
+ 			DEFAULT_RATELIMIT_BURST);
  
- 	rc =  usb_submit_urb(phy->in_urb, GFP_KERNEL);
+-	sbi->options.fs_uid = current_uid();
+-	sbi->options.fs_gid = current_gid();
+-	sbi->options.fs_fmask = current->fs->umask;
+-	sbi->options.fs_dmask = current->fs->umask;
++	if (fc->purpose == FS_CONTEXT_FOR_RECONFIGURE && fc->root) {
++		struct super_block *sb = fc->root->d_sb;
++		struct exfat_mount_options *cur_opts = &EXFAT_SB(sb)->options;
++
++		sbi->options.fs_uid = cur_opts->fs_uid;
++		sbi->options.fs_gid = cur_opts->fs_gid;
++		sbi->options.fs_fmask = cur_opts->fs_fmask;
++		sbi->options.fs_dmask = cur_opts->fs_dmask;
++	} else {
++		sbi->options.fs_uid = current_uid();
++		sbi->options.fs_gid = current_gid();
++		sbi->options.fs_fmask = current->fs->umask;
++		sbi->options.fs_dmask = current->fs->umask;
++	}
++
+ 	sbi->options.allow_utime = -1;
+ 	sbi->options.iocharset = exfat_default_iocharset;
+ 	sbi->options.errors = EXFAT_ERRORS_RO;
 -- 
 2.51.0
 
