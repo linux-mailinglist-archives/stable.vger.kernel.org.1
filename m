@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-207300-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206699-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62920D09B83
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:34:42 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBC2BD093AD
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:05:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id BAEF4300D833
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:27:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1662830E00E6
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:59:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 894E0359FA1;
-	Fri,  9 Jan 2026 12:27:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCEBE33C53C;
+	Fri,  9 Jan 2026 11:59:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gh+D/I7+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WNSu6yrX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BE66329E7B;
-	Fri,  9 Jan 2026 12:27:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 904C633A712;
+	Fri,  9 Jan 2026 11:59:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961663; cv=none; b=etzROxTDDPXUOnu2wjC6WFwgodiD2YSXOip53K9ncFwOIT+lZqo7GY+2wMw/GDLRnLodLGeNBpyatbNoH15+UjzjL6bgFAcDZgcYO8Ixt7ECRbJJ7KnxV1foLXxlmWJ0hZvTW2uQQpWwjQtOAuvJ4gxLJk1QciqAE5aPPlu9Qpg=
+	t=1767959947; cv=none; b=W+ia+GxfdoRkKg9hFg6/FlybkA2LOrDsUkt50EPb6WL27IuuFasyY+q/ihYSbjvDgyqof5maiCAouptTiOR6jzBGszZS1+9ZjXoMVa9NKBiEcf1gRT81agbKnfXEb6K2ytKap3tk2NdgVLMBr3bgAnFVDoHIDJZGZXOlDAqtDS4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961663; c=relaxed/simple;
-	bh=zg00ZlERC87N8xsCdU+rORLe+xPcHgFIX0qg3vAICGw=;
+	s=arc-20240116; t=1767959947; c=relaxed/simple;
+	bh=zPF9QLU/7iHGsO+6ZTVzmQ0jA/sORvMBcWwMVpo1K80=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hQqmfUAJYAjJ4dZqoej4h0gYBD3uUEgOvsk5dTx0LmHihvKoP/mYS1tBIH4IjZ4QD0jOKm7pWmzPdLWhJOgIp2rG2rNmG0UTv7ei1WLaoI+FNLV+kB+fw1/5Lz3Bt/R7a/pRIb2B+VserkVJTNpwzJiDzw6GuMQdMR5vtRoDXS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gh+D/I7+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9B06C4CEF1;
-	Fri,  9 Jan 2026 12:27:42 +0000 (UTC)
+	 MIME-Version; b=GG2vs/15sX/3ud7PrXEIpstlP76OBBD31MKtiVwYnS42VkWntU+cLQP96WS3O2UEddjciSQZte8CeQKDjGwApMiEON7mlY7EWa7mx55ZULFic7WdCkAHx0n+R42Pnn7I0GPYrvPmU55SaTe+4krqD0riEiPXVD9OuRd674tK4L0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WNSu6yrX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 218F7C4CEF1;
+	Fri,  9 Jan 2026 11:59:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961663;
-	bh=zg00ZlERC87N8xsCdU+rORLe+xPcHgFIX0qg3vAICGw=;
+	s=korg; t=1767959947;
+	bh=zPF9QLU/7iHGsO+6ZTVzmQ0jA/sORvMBcWwMVpo1K80=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gh+D/I7+MVcFSIG0DYIqk69G0uhuS/GZddXZqQ7k2DjWqp5CmTfpjE/XPpFjA/oly
-	 jHBjDzE7bpoSjLYpUoBcJn9QI5dszUu1jtG5/yEz5Ct/tNhh3JTP3sRbdg0HOxYxZ7
-	 Dh2248RNP3VyCYjrizZsjl77djjPqqqhbQtFYStA=
+	b=WNSu6yrX3G0ATvbeCyyHlnULowlkuSeUp18MUYP56wwFNtRECuwBaaGJJHwCl/rM1
+	 3EsJ4BSsUYqPW7AEDBYHu1HWTkC1+nk/YEU/xcgqNHO8BxXEJdJ6Ijffe0FjzKfqZj
+	 ERd2B92jSo6byzTV4FpVeBZuxF58192oZ50ydgTM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Scott Benesh <scott.benesh@microchip.com>,
-	Scott Teel <scott.teel@microchip.com>,
-	Kevin Barnett <kevin.barnett@microchip.com>,
-	Mike McGowen <mike.mcgowen@microchip.com>,
-	Don Brace <don.brace@microchip.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 092/634] scsi: smartpqi: Remove contention for raid_bypass_cnt
+Subject: [PATCH 6.6 231/737] ARM: dts: samsung: universal_c210: turn off SDIO WLAN chip during system suspend
 Date: Fri,  9 Jan 2026 12:36:10 +0100
-Message-ID: <20260109112120.896964993@linuxfoundation.org>
+Message-ID: <20260109112142.689087485@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,78 +60,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mike McGowen <mike.mcgowen@microchip.com>
+From: Marek Szyprowski <m.szyprowski@samsung.com>
 
-[ Upstream commit 80d560d94fa9b28069c62e1a64ae4a03d5f43fbc ]
+[ Upstream commit 97aee67e2406ea381408915e606c5f86448f3949 ]
 
-Reduce CPU contention when incrementing variable raid_bypass_cnt.
+Commit 8c3170628a9c ("wifi: brcmfmac: keep power during suspend if board
+requires it") changed default behavior of the BRCMFMAC driver, which now
+keeps SDIO card powered during system suspend to enable optional support
+for WOWL. This feature is not supported by the legacy Exynos4 based
+boards and leads to WLAN disfunction after system suspend/resume cycle.
+Fix this by annotating SDIO host used by WLAN chip with
+'cap-power-off-card' property, which should have been there from the
+beginning.
 
-Remove the atomic operations for this variable by changing the atomic to an
-unsigned int and replace atomic operations with standard operations. The
-value is only checked that it is increasing and accuracy is not required.
-
-Reviewed-by: Scott Benesh <scott.benesh@microchip.com>
-Reviewed-by: Scott Teel <scott.teel@microchip.com>
-Reviewed-by: Kevin Barnett <kevin.barnett@microchip.com>
-Signed-off-by: Mike McGowen <mike.mcgowen@microchip.com>
-Signed-off-by: Don Brace <don.brace@microchip.com>
-Link: https://lore.kernel.org/r/20230428153712.297638-6-don.brace@microchip.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Stable-dep-of: b518e86d1a70 ("scsi: smartpqi: Fix device resources accessed after device removal")
+Fixes: f1b0ffaa686f ("ARM: dts: exynos: Enable WLAN support for the UniversalC210 board")
+Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Link: https://patch.msgid.link/20251126102618.3103517-2-m.szyprowski@samsung.com
+Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/smartpqi/smartpqi.h      | 2 +-
- drivers/scsi/smartpqi/smartpqi_init.c | 6 +++---
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ arch/arm/boot/dts/samsung/exynos4210-universal_c210.dts | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/scsi/smartpqi/smartpqi.h b/drivers/scsi/smartpqi/smartpqi.h
-index af27bb0f3133e..6e2f08ac68166 100644
---- a/drivers/scsi/smartpqi/smartpqi.h
-+++ b/drivers/scsi/smartpqi/smartpqi.h
-@@ -1147,7 +1147,7 @@ struct pqi_scsi_dev {
+diff --git a/arch/arm/boot/dts/samsung/exynos4210-universal_c210.dts b/arch/arm/boot/dts/samsung/exynos4210-universal_c210.dts
+index bdc30f8cf748f..91490693432b6 100644
+--- a/arch/arm/boot/dts/samsung/exynos4210-universal_c210.dts
++++ b/arch/arm/boot/dts/samsung/exynos4210-universal_c210.dts
+@@ -610,6 +610,7 @@ &sdhci_3 {
+ 	#size-cells = <0>;
  
- 	struct pqi_stream_data stream_data[NUM_STREAMS_PER_LUN];
- 	atomic_t scsi_cmds_outstanding[PQI_MAX_LUNS_PER_DEVICE];
--	atomic_t raid_bypass_cnt;
-+	unsigned int raid_bypass_cnt;
- };
- 
- /* VPD inquiry pages */
-diff --git a/drivers/scsi/smartpqi/smartpqi_init.c b/drivers/scsi/smartpqi/smartpqi_init.c
-index d97946a09f646..4822b830ea371 100644
---- a/drivers/scsi/smartpqi/smartpqi_init.c
-+++ b/drivers/scsi/smartpqi/smartpqi_init.c
-@@ -6035,7 +6035,7 @@ static int pqi_scsi_queue_command(struct Scsi_Host *shost, struct scsi_cmnd *scm
- 			rc = pqi_raid_bypass_submit_scsi_cmd(ctrl_info, device, scmd, queue_group);
- 			if (rc == 0 || rc == SCSI_MLQUEUE_HOST_BUSY) {
- 				raid_bypassed = true;
--				atomic_inc(&device->raid_bypass_cnt);
-+				device->raid_bypass_cnt++;
- 			}
- 		}
- 		if (!raid_bypassed)
-@@ -7274,7 +7274,7 @@ static ssize_t pqi_raid_bypass_cnt_show(struct device *dev,
- 	struct scsi_device *sdev;
- 	struct pqi_scsi_dev *device;
- 	unsigned long flags;
--	int raid_bypass_cnt;
-+	unsigned int raid_bypass_cnt;
- 
- 	sdev = to_scsi_device(dev);
- 	ctrl_info = shost_to_hba(sdev->host);
-@@ -7290,7 +7290,7 @@ static ssize_t pqi_raid_bypass_cnt_show(struct device *dev,
- 		return -ENODEV;
- 	}
- 
--	raid_bypass_cnt = atomic_read(&device->raid_bypass_cnt);
-+	raid_bypass_cnt = device->raid_bypass_cnt;
- 
- 	spin_unlock_irqrestore(&ctrl_info->scsi_device_list_lock, flags);
- 
+ 	non-removable;
++	cap-power-off-card;
+ 	bus-width = <4>;
+ 	mmc-pwrseq = <&wlan_pwrseq>;
+ 	vmmc-supply = <&ldo5_reg>;
 -- 
 2.51.0
 
