@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-206768-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207370-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E06ED09356
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:03:31 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56C31D09E17
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:43:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 81C1B301AB3B
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:02:24 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C025E304EF6C
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:31:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01553359FB6;
-	Fri,  9 Jan 2026 12:02:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F174935B134;
+	Fri,  9 Jan 2026 12:31:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i9hS4mb9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m4S5zSTz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B962E1946C8;
-	Fri,  9 Jan 2026 12:02:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B35F833372B;
+	Fri,  9 Jan 2026 12:31:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960143; cv=none; b=o3NVzNlw2DXbTfkbImlUA5yWU0nR6hpswjuKpcYvhmnGWvut3pQcBKj3H9tKwU6mVIOQHsldStlP8OXEZcqq0RVg8ZZGpgzOmjYON2pA1HY9hk7baX6373BuLT2bxsHW+TPfs8afZLGjMAGngXzqXetqK5T32I6QDM0FAYaHZr4=
+	t=1767961862; cv=none; b=Aoid9YQQUX/7SSOxOFYhW94ZuLKrmytc5gHGcdqqTyjECa2YNracjcNwTQ9EjqK6bZCDtRdijWg15Zji7YlOeR2stHi+zx8gs9Aq2aFUHgeeyGQUHhoEZevNUA7BJo4vy522IrWWlNiR4qtyJdKm/BteAWfp1WbCRw4buOajd/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960143; c=relaxed/simple;
-	bh=7DpjxilBHNKzm1AH2MuBE1exnxu1Aw6mkqYgWoUKKaU=;
+	s=arc-20240116; t=1767961862; c=relaxed/simple;
+	bh=lD1+DHXijMiTEq7gKlHPgh54DhKpMvoGPQgMl5LsjVU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fdc1qlkkhK+nqgbRtc+MqxjXPj3gJS3v3vse9bi+Ag41oP/hukN65+Pw4Th6PCBQSSOkvL4F77D7/l85pQqYkjWcitbZhLl7bBufLVNrV2C8bYv08Wvz5/JEKZMHwYHj9BG4nfix4lkBmNOTjJqco9HDEvp8MUUvnr4woBTyboA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i9hS4mb9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46FD0C4CEF1;
-	Fri,  9 Jan 2026 12:02:23 +0000 (UTC)
+	 MIME-Version; b=aMNu52TXp0KI3/zeWdoKGsdiVzT4RiHef4r+NGVU/e0DcKxN5P4UAWhtK8OyrSH9hhxY6ny0mLDVwwBnzcsXybSTtu5+yXEMhlORMbfswjdFja+op30YA5wuFC8jpvR000YdE8YaYbjIDt8lPc5bTV6GeInoiZ3ENf7/USjLITw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m4S5zSTz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 326A3C4CEF1;
+	Fri,  9 Jan 2026 12:31:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960143;
-	bh=7DpjxilBHNKzm1AH2MuBE1exnxu1Aw6mkqYgWoUKKaU=;
+	s=korg; t=1767961862;
+	bh=lD1+DHXijMiTEq7gKlHPgh54DhKpMvoGPQgMl5LsjVU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i9hS4mb9RgyIBQFp3kpAv/+ULlFI24ORrZOWRVTb4OYDIxOQhm9oog/fRMrIGysdf
-	 aYcbDMAoaSARHVdZ1Fczsi1Y3ahlBdzu8kGqSyZt8gBInDQpcVpPxwGge0NS55ZdZV
-	 iOGZ6JEQJ6vBJnz24/aPaScibjzLE5Zr1djS40Ss=
+	b=m4S5zSTzqEaTgpfeMhWIe6qqbCicZXrCpsYmxxfFxEbl8okMqApWAh3WPb1KVnwrF
+	 H3UjiUbrby8uRsbDsTAjU0i38mS/dWY/PnSItRj0T+gqCd32brA2ft3bhbCDdC3NFa
+	 b/dQp5q5A8cQ/+05/OWO0RpNZ+90TqzMITSnAeqc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ondrej Mosnacek <omosnace@redhat.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Yongjian Sun <sunyongjian1@huawei.com>,
+	Baokun Li <libaokun1@huawei.com>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 301/737] bpf, arm64: Do not audit capability check in do_jit()
+Subject: [PATCH 6.1 162/634] ext4: improve integrity checking in __mb_check_buddy by enhancing order-0 validation
 Date: Fri,  9 Jan 2026 12:37:20 +0100
-Message-ID: <20260109112145.330398426@linuxfoundation.org>
+Message-ID: <20260109112123.545591999@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,58 +62,149 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ondrej Mosnacek <omosnace@redhat.com>
+From: Yongjian Sun <sunyongjian1@huawei.com>
 
-[ Upstream commit 189e5deb944a6f9c7992355d60bffd8ec2e54a9c ]
+[ Upstream commit d9ee3ff810f1cc0e253c9f2b17b668b973cb0e06 ]
 
-Analogically to the x86 commit 881a9c9cb785 ("bpf: Do not audit
-capability check in do_jit()"), change the capable() call to
-ns_capable_noaudit() in order to avoid spurious SELinux denials in audit
-log.
+When the MB_CHECK_ASSERT macro is enabled, we found that the
+current validation logic in __mb_check_buddy has a gap in
+detecting certain invalid buddy states, particularly related
+to order-0 (bitmap) bits.
 
-The commit log from that commit applies here as well:
-"""
-The failure of this check only results in a security mitigation being
-applied, slightly affecting performance of the compiled BPF program. It
-doesn't result in a failed syscall, an thus auditing a failed LSM
-permission check for it is unwanted. For example with SELinux, it causes
-a denial to be reported for confined processes running as root, which
-tends to be flagged as a problem to be fixed in the policy. Yet
-dontauditing or allowing CAP_SYS_ADMIN to the domain may not be
-desirable, as it would allow/silence also other checks - either going
-against the principle of least privilege or making debugging potentially
-harder.
+The original logic consists of three steps:
+1. Validates higher-order buddies: if a higher-order bit is
+set, at most one of the two corresponding lower-order bits
+may be free; if a higher-order bit is clear, both lower-order
+bits must be allocated (and their bitmap bits must be 0).
+2. For any set bit in order-0, ensures all corresponding
+higher-order bits are not free.
+3. Verifies that all preallocated blocks (pa) in the group
+have pa_pstart within bounds and their bitmap bits marked as
+allocated.
 
-Fix it by changing it from capable() to ns_capable_noaudit(), which
-instructs the LSMs to not audit the resulting denials.
-"""
+However, this approach fails to properly validate cases where
+order-0 bits are incorrectly cleared (0), allowing some invalid
+configurations to pass:
 
-Fixes: f300769ead03 ("arm64: bpf: Only mitigate cBPF programs loaded by unprivileged users")
-Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
-Link: https://lore.kernel.org/r/20251204125916.441021-1-omosnace@redhat.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+               corrupt            integral
+
+order 3           1                  1
+order 2       1       1          1       1
+order 1     1   1   1   1      1   1   1   1
+order 0    0 0 1 1 1 1 1 1    1 1 1 1 1 1 1 1
+
+Here we get two adjacent free blocks at order-0 with inconsistent
+higher-order state, and the right one shows the correct scenario.
+
+The root cause is insufficient validation of order-0 zero bits.
+To fix this and improve completeness without significant performance
+cost, we refine the logic:
+
+1. Maintain the top-down higher-order validation, but we no longer
+check the cases where the higher-order bit is 0, as this case will
+be covered in step 2.
+2. Enhance order-0 checking by examining pairs of bits:
+   - If either bit in a pair is set (1), all corresponding
+     higher-order bits must not be free.
+   - If both bits are clear (0), then exactly one of the
+     corresponding higher-order bits must be free
+3. Keep the preallocation (pa) validation unchanged.
+
+This change closes the validation gap, ensuring illegal buddy states
+involving order-0 are correctly detected, while removing redundant
+checks and maintaining efficiency.
+
+Fixes: c9de560ded61f ("ext4: Add multi block allocator for ext4")
+Suggested-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Yongjian Sun <sunyongjian1@huawei.com>
+Reviewed-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Message-ID: <20251106060614.631382-3-sunyongjian@huaweicloud.com>
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/net/bpf_jit_comp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ext4/mballoc.c | 49 +++++++++++++++++++++++++++++++----------------
+ 1 file changed, 32 insertions(+), 17 deletions(-)
 
-diff --git a/arch/arm64/net/bpf_jit_comp.c b/arch/arm64/net/bpf_jit_comp.c
-index d8012d1a2e152..f11de7484ced8 100644
---- a/arch/arm64/net/bpf_jit_comp.c
-+++ b/arch/arm64/net/bpf_jit_comp.c
-@@ -666,7 +666,7 @@ static void __maybe_unused build_bhb_mitigation(struct jit_ctx *ctx)
- 	    arm64_get_spectre_v2_state() == SPECTRE_VULNERABLE)
- 		return;
+diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
+index db302f617da72..8282fbc1a6892 100644
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -666,6 +666,24 @@ do {									\
+ 	}								\
+ } while (0)
  
--	if (capable(CAP_SYS_ADMIN))
-+	if (ns_capable_noaudit(&init_user_ns, CAP_SYS_ADMIN))
- 		return;
++/*
++ * Perform buddy integrity check with the following steps:
++ *
++ * 1. Top-down validation (from highest order down to order 1, excluding order-0 bitmap):
++ *    For each pair of adjacent orders, if a higher-order bit is set (indicating a free block),
++ *    at most one of the two corresponding lower-order bits may be clear (free).
++ *
++ * 2. Order-0 (bitmap) validation, performed on bit pairs:
++ *    - If either bit in a pair is set (1, allocated), then all corresponding higher-order bits
++ *      must not be free (0).
++ *    - If both bits in a pair are clear (0, free), then exactly one of the corresponding
++ *      higher-order bits must be free (0).
++ *
++ * 3. Preallocation (pa) list validation:
++ *    For each preallocated block (pa) in the group:
++ *    - Verify that pa_pstart falls within the bounds of this block group.
++ *    - Ensure the corresponding bit(s) in the order-0 bitmap are marked as allocated (1).
++ */
+ static void __mb_check_buddy(struct ext4_buddy *e4b, char *file,
+ 				const char *function, int line)
+ {
+@@ -707,15 +725,6 @@ static void __mb_check_buddy(struct ext4_buddy *e4b, char *file,
+ 				continue;
+ 			}
  
- 	if (supports_clearbhb(SCOPE_SYSTEM)) {
+-			/* both bits in buddy2 must be 1 */
+-			MB_CHECK_ASSERT(mb_test_bit(i << 1, buddy2));
+-			MB_CHECK_ASSERT(mb_test_bit((i << 1) + 1, buddy2));
+-
+-			for (j = 0; j < (1 << order); j++) {
+-				k = (i * (1 << order)) + j;
+-				MB_CHECK_ASSERT(
+-					!mb_test_bit(k, e4b->bd_bitmap));
+-			}
+ 			count++;
+ 		}
+ 		MB_CHECK_ASSERT(e4b->bd_info->bb_counters[order] == count);
+@@ -731,15 +740,21 @@ static void __mb_check_buddy(struct ext4_buddy *e4b, char *file,
+ 				fragments++;
+ 				fstart = i;
+ 			}
+-			continue;
++		} else {
++			fstart = -1;
+ 		}
+-		fstart = -1;
+-		/* check used bits only */
+-		for (j = 0; j < e4b->bd_blkbits + 1; j++) {
+-			buddy2 = mb_find_buddy(e4b, j, &max2);
+-			k = i >> j;
+-			MB_CHECK_ASSERT(k < max2);
+-			MB_CHECK_ASSERT(mb_test_bit(k, buddy2));
++		if (!(i & 1)) {
++			int in_use, zero_bit_count = 0;
++
++			in_use = mb_test_bit(i, buddy) || mb_test_bit(i + 1, buddy);
++			for (j = 1; j < e4b->bd_blkbits + 2; j++) {
++				buddy2 = mb_find_buddy(e4b, j, &max2);
++				k = i >> j;
++				MB_CHECK_ASSERT(k < max2);
++				if (!mb_test_bit(k, buddy2))
++					zero_bit_count++;
++			}
++			MB_CHECK_ASSERT(zero_bit_count == !in_use);
+ 		}
+ 	}
+ 	MB_CHECK_ASSERT(!EXT4_MB_GRP_NEED_INIT(e4b->bd_info));
 -- 
 2.51.0
 
