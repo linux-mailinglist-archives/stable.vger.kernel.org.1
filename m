@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-207310-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206678-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55703D09C1C
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:36:36 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB338D09359
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:03:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7F57930B40FB
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:28:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D6BFC30C8598
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:58:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0E2D329E7B;
-	Fri,  9 Jan 2026 12:28:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BF9433290A;
+	Fri,  9 Jan 2026 11:58:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rhbMnXvJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mWAxfvSC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74CE023F417;
-	Fri,  9 Jan 2026 12:28:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E77033A712;
+	Fri,  9 Jan 2026 11:58:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961691; cv=none; b=RYQQQzuM4IGXGzOiJG7j5uQvDsbaUwqXMRMReSxlLO+QG79CblXNNwl8OMI+TzF6CLdosNOk0AkSH7gW9sqO70ZVw502HPbXwL5wb0PKmi674LYx5MxedQYHoEPOAEGFak6+bLgCt/bGFOpNo64tSaz4czcqtO42/hkX/kjwSv8=
+	t=1767959888; cv=none; b=QV23C8sHPR/yhrK/Ny8Ysj3xdPEefMUDreY7Zq/TGPrvhKGBb9ssdCYBFl5NyJKB3Mb7NSFiLH7+qGs59WziKSYKaBuuKQ9cvpjchYGr9enppx96yALhtOM344GgOWCW33+TS39ecT+N9Tqv7kSHwRiOjLndrBC5q+OoEXdMipY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961691; c=relaxed/simple;
-	bh=yI64JihuP2h9PgVOtQ3BLRljZTkJSflKwOJ/cbJT3oU=;
+	s=arc-20240116; t=1767959888; c=relaxed/simple;
+	bh=j7tbZT8TEuU79UVmRPlPQlktZzGqo/k8abP4bDLS8QI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XbqWuCRrVb3n8b7OD/vamqADRTYw2Upi0t3Yyd5TVf81bk0Vy5jeBRWq0/8XebNPFuHPHV4XcFzKp5HcmEh58C/5jeGPsFueANFCRRZ5zu0rasysSHl9cvu6/q45TmppKsGBqI6GAwKBMYiJyrdSHmfjOyLMWQvks6bLGNZM+7I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rhbMnXvJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04ECBC4CEF1;
-	Fri,  9 Jan 2026 12:28:10 +0000 (UTC)
+	 MIME-Version; b=uchfZDU632QfoIM1jYzlPtnZq2aZbEbpvPxPz0k0hgOVLz4xfpaTu7lC1iy31ICZMu3k+XweCNa7tcVRpbF0UZvJ7qjw103xIiIkyTxPBcRtxf+N2FPuG2mN7fVeQHBrSemIhTQ9zF5aAsEjn/dUFx2EGAUS9jjgVkTad5XNdLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mWAxfvSC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF124C4CEF1;
+	Fri,  9 Jan 2026 11:58:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961691;
-	bh=yI64JihuP2h9PgVOtQ3BLRljZTkJSflKwOJ/cbJT3oU=;
+	s=korg; t=1767959888;
+	bh=j7tbZT8TEuU79UVmRPlPQlktZzGqo/k8abP4bDLS8QI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rhbMnXvJiwGB6fPaVAMuAM9yI+GebhiH+dQ33ym7d2QtqFyiRSqDs4pI2RPkBowA9
-	 FHhb9vOAbsaVaeKiwDa9kq59C7Tv4oCwtOG/2P6AQW+Cmu7y6kvUAstOGsiHYNQOBo
-	 rHe6jpS5B2Uhu2QD/eApgOy0x9GSP+5aAzhKn84Q=
+	b=mWAxfvSCEnxFYPKCOh9tATqOa7RWCDJH9oZYuERqZw/1wufmYC1A5fPfJRnvmkBZV
+	 AselIMbeIoIKSXJnOslkHpLVDbSgDvN0JhZloKAIspoVnF1RPxFoy3gKxj0gCllwWB
+	 fI3kji/uHoEs3OM3Q/kWzBcA6yuy8E2SIEmNa5w0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	"Daniel Thompson (RISCstar)" <danielt@kernel.org>,
+	Herve Codina <herve.codina@bootlin.com>,
+	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 070/634] soc: qcom: smem: fix hwspinlock resource leak in probe error paths
+Subject: [PATCH 6.6 209/737] backlight: led-bl: Add devlink to supplier LEDs
 Date: Fri,  9 Jan 2026 12:35:48 +0100
-Message-ID: <20260109112120.078486273@linuxfoundation.org>
+Message-ID: <20260109112141.861259282@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +63,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
 
-[ Upstream commit dc5db35073a19f6d3c30bea367b551c1a784ef8f ]
+[ Upstream commit 9341d6698f4cfdfc374fb6944158d111ebe16a9d ]
 
-The hwspinlock acquired via hwspin_lock_request_specific() is not
-released on several error paths. This results in resource leakage
-when probe fails.
+LED Backlight is a consumer of one or multiple LED class devices, but
+devlink is currently unable to create correct supplier-producer links when
+the supplier is a class device. It creates instead a link where the
+supplier is the parent of the expected device.
 
-Switch to devm_hwspin_lock_request_specific() to automatically
-handle cleanup on probe failure. Remove the manual hwspin_lock_free()
-in qcom_smem_remove() as devm handles it automatically.
+One consequence is that removal order is not correctly enforced.
 
-Fixes: 20bb6c9de1b7 ("soc: qcom: smem: map only partitions used by local HOST")
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20251029022733.255-1-vulab@iscas.ac.cn
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Issues happen for example with the following sections in a device tree
+overlay:
+
+    // An LED driver chip
+    pca9632@62 {
+        compatible = "nxp,pca9632";
+        reg = <0x62>;
+
+	// ...
+
+        addon_led_pwm: led-pwm@3 {
+            reg = <3>;
+            label = "addon:led:pwm";
+        };
+    };
+
+    backlight-addon {
+        compatible = "led-backlight";
+        leds = <&addon_led_pwm>;
+        brightness-levels = <255>;
+        default-brightness-level = <255>;
+    };
+
+In this example, the devlink should be created between the backlight-addon
+(consumer) and the pca9632@62 (supplier). Instead it is created between the
+backlight-addon (consumer) and the parent of the pca9632@62, which is
+typically the I2C bus adapter.
+
+On removal of the above overlay, the LED driver can be removed before the
+backlight device, resulting in:
+
+    Unable to handle kernel NULL pointer dereference at virtual address 0000000000000010
+    ...
+    Call trace:
+     led_put+0xe0/0x140
+     devm_led_release+0x6c/0x98
+
+Another way to reproduce the bug without any device tree overlays is
+unbinding the LED class device (pca9632@62) before unbinding the consumer
+(backlight-addon):
+
+  echo 11-0062 >/sys/bus/i2c/drivers/leds-pca963x/unbind
+  echo ...backlight-dock >/sys/bus/platform/drivers/led-backlight/unbind
+
+Fix by adding a devlink between the consuming led-backlight device and the
+supplying LED device, as other drivers and subsystems do as well.
+
+Fixes: ae232e45acf9 ("backlight: add led-backlight driver")
+Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Reviewed-by: Daniel Thompson (RISCstar) <danielt@kernel.org>
+Reviewed-by: Herve Codina <herve.codina@bootlin.com>
+Tested-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+Link: https://patch.msgid.link/20250519-led-backlight-add-devlink-to-supplier-class-device-v6-1-845224aeb2ce@bootlin.com
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/qcom/smem.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/video/backlight/led_bl.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/drivers/soc/qcom/smem.c b/drivers/soc/qcom/smem.c
-index e4e6c6d69bf55..06958de43f8ca 100644
---- a/drivers/soc/qcom/smem.c
-+++ b/drivers/soc/qcom/smem.c
-@@ -1105,7 +1105,7 @@ static int qcom_smem_probe(struct platform_device *pdev)
- 		return hwlock_id;
+diff --git a/drivers/video/backlight/led_bl.c b/drivers/video/backlight/led_bl.c
+index 0e53e427a91dc..9089d17200ec7 100644
+--- a/drivers/video/backlight/led_bl.c
++++ b/drivers/video/backlight/led_bl.c
+@@ -209,6 +209,19 @@ static int led_bl_probe(struct platform_device *pdev)
+ 		return PTR_ERR(priv->bl_dev);
  	}
  
--	smem->hwlock = hwspin_lock_request_specific(hwlock_id);
-+	smem->hwlock = devm_hwspin_lock_request_specific(&pdev->dev, hwlock_id);
- 	if (!smem->hwlock)
- 		return -ENXIO;
- 
-@@ -1158,7 +1158,6 @@ static int qcom_smem_remove(struct platform_device *pdev)
- {
- 	platform_device_unregister(__smem->socinfo);
- 
--	hwspin_lock_free(__smem->hwlock);
- 	__smem = NULL;
- 
- 	return 0;
++	for (i = 0; i < priv->nb_leds; i++) {
++		struct device_link *link;
++
++		link = device_link_add(&pdev->dev, priv->leds[i]->dev->parent,
++				       DL_FLAG_AUTOREMOVE_CONSUMER);
++		if (!link) {
++			dev_err(&pdev->dev, "Failed to add devlink (consumer %s, supplier %s)\n",
++				dev_name(&pdev->dev), dev_name(priv->leds[i]->dev->parent));
++			backlight_device_unregister(priv->bl_dev);
++			return -EINVAL;
++		}
++	}
++
+ 	for (i = 0; i < priv->nb_leds; i++) {
+ 		mutex_lock(&priv->leds[i]->led_access);
+ 		led_sysfs_disable(priv->leds[i]);
 -- 
 2.51.0
 
