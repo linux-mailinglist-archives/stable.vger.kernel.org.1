@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-207382-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206750-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24E4CD09E83
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:44:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7729DD09500
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:10:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8B83F311FA9E
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:31:38 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0828F3081820
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:01:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA584359701;
-	Fri,  9 Jan 2026 12:31:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 188A0359F99;
+	Fri,  9 Jan 2026 12:01:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0i7ovPPM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TLcwsI+p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE30E33372B;
-	Fri,  9 Jan 2026 12:31:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF9D7359F98;
+	Fri,  9 Jan 2026 12:01:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961896; cv=none; b=raswSbrIZIRDITifFqvfS9ItKzfwo5tQCAWZb2bK1EwKDAtLbiPHAI10ji29fneueRyFOFcCaC/i3XEqRQywiG+yloAnGtZQXARijN/e6fneRGnggfVNWmCNH9da+2Sx/TFo13P/Az7A/YIEMngLw3G1griG3aj7mJaTyTDwOlo=
+	t=1767960092; cv=none; b=qLiSFpIzWN7FX2yn+exT+j0ww3nQ+54LlQm4qmTvCd9ZVa5vBUjz1/MIaThlUvDIkF/FHkcxT8wDQNfQo04wSaAWaJld8HZviWkysg5nZuaIHISfQQzv11qzKoLJJZ3edox12nmRz4kL9rlZQ0GNeR+JgC1o4LnF4A8uU9NTjEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961896; c=relaxed/simple;
-	bh=3emql+mksBW5cLKfVFfF6DJS6YbiDowiMK6TsqSK5sI=;
+	s=arc-20240116; t=1767960092; c=relaxed/simple;
+	bh=DeWfbSu6gY2FUA3B+YePQruStgJ9LAH3x/9//mt+nTs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cQ3eNB0UiS+RUeI9aUdfZiifa23XVvOCfw4reMATFqu0unZa9plagv94qEGvlLtxNi2M6XqFaO6UlHyuoJyAEcwLVGYcHpH1860JdiMMJv6E7lJqAuBWANev5Ar6NpJ6heC+gVk+yQDWGdwVkpvHR3JBM0xwrvw1aewOnceOKeE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0i7ovPPM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BCA0C4CEF1;
-	Fri,  9 Jan 2026 12:31:36 +0000 (UTC)
+	 MIME-Version; b=uni/lvIMqCFe+y8oU3TKC1eMnXlkH31gSyzdyXCK7jWWwa96NtF+gQhSpg3RzJNkVZYuzDOwSNVrD+g1/oXLlxFKIj3Eokj9i+Cxhpg2inOgtMyxinSV4BziifVLNMVb3ANnSboPSX9exUCGmR2wQ3XPzxwOOPsow3StsFqXMvI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TLcwsI+p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F9BAC4CEF1;
+	Fri,  9 Jan 2026 12:01:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961896;
-	bh=3emql+mksBW5cLKfVFfF6DJS6YbiDowiMK6TsqSK5sI=;
+	s=korg; t=1767960092;
+	bh=DeWfbSu6gY2FUA3B+YePQruStgJ9LAH3x/9//mt+nTs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0i7ovPPM58+pwHOxc+nR8V0rJKFDwfHfEwRNFNie2WDLVE6Cxo2X+y8i1e2/LULpY
-	 nTxTXXEq5h2oea/t93bwg7VKZ/CiMlsvFrW4fBAepfS1sANEGm9CbE67c+Wn6bmCsr
-	 fLKp3zEYnMz4QW3sX9PtjAXzH1KZujIvC7Q1MAtY=
+	b=TLcwsI+pBORI5h5DYS2VuDxKZAIUzR1RB1J74JQZ+R7w7WEaqLsMpkly6V1qODhim
+	 yZu/pRDC+yWX2c1gOUz5e4wM9HxXyCEVlGqlKJ23oi0NHWaJMDENoKe9FMQ6IibV1t
+	 yBrnga2d1sq6E9kq8ukLnO3STR1zvRyPu9nM9raA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Haotian Zhang <vulab@iscas.ac.cn>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Link Mauve <kernel@linkmauve.fr>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 142/634] crypto: ccree - Correctly handle return of sg_nents_for_len
+Subject: [PATCH 6.6 281/737] rtc: gamecube: Check the return value of ioremap()
 Date: Fri,  9 Jan 2026 12:37:00 +0100
-Message-ID: <20260109112122.798786824@linuxfoundation.org>
+Message-ID: <20260109112144.583753979@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,53 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Haotian Zhang <vulab@iscas.ac.cn>
 
-[ Upstream commit 8700ce07c5c6bf27afa7b59a8d9cf58d783a7d5c ]
+[ Upstream commit d1220e47e4bd2be8b84bc158f4dea44f2f88b226 ]
 
-Fix error handling in cc_map_hash_request_update where sg_nents_for_len
-return value was assigned to u32, converting negative errors to large
-positive values before passing to sg_copy_to_buffer.
+The function ioremap() in gamecube_rtc_read_offset_from_sram() can fail
+and return NULL, which is dereferenced without checking, leading to a
+NULL pointer dereference.
 
-Check sg_nents_for_len return value and propagate errors before
-assigning to areq_ctx->in_nents.
+Add a check for the return value of ioremap() and return -ENOMEM on
+failure.
 
-Fixes: b7ec8530687a ("crypto: ccree - use std api when possible")
+Fixes: 86559400b3ef ("rtc: gamecube: Add a RTC driver for the GameCube, Wii and Wii U")
 Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Reviewed-by: Link Mauve <kernel@linkmauve.fr>
+Link: https://patch.msgid.link/20251126080625.1752-1-vulab@iscas.ac.cn
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/ccree/cc_buffer_mgr.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/rtc/rtc-gamecube.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/crypto/ccree/cc_buffer_mgr.c b/drivers/crypto/ccree/cc_buffer_mgr.c
-index 9efd88f871d12..9ae2873219587 100644
---- a/drivers/crypto/ccree/cc_buffer_mgr.c
-+++ b/drivers/crypto/ccree/cc_buffer_mgr.c
-@@ -1235,6 +1235,7 @@ int cc_map_hash_request_update(struct cc_drvdata *drvdata, void *ctx,
- 	int rc = 0;
- 	u32 dummy = 0;
- 	u32 mapped_nents = 0;
-+	int sg_nents;
+diff --git a/drivers/rtc/rtc-gamecube.c b/drivers/rtc/rtc-gamecube.c
+index c828bc8e05b9c..045d5d45ab4b0 100644
+--- a/drivers/rtc/rtc-gamecube.c
++++ b/drivers/rtc/rtc-gamecube.c
+@@ -242,6 +242,10 @@ static int gamecube_rtc_read_offset_from_sram(struct priv *d)
+ 	}
  
- 	dev_dbg(dev, " update params : curr_buff=%pK curr_buff_cnt=0x%X nbytes=0x%X src=%pK curr_index=%u\n",
- 		curr_buff, *curr_buff_cnt, nbytes, src, areq_ctx->buff_index);
-@@ -1248,7 +1249,10 @@ int cc_map_hash_request_update(struct cc_drvdata *drvdata, void *ctx,
- 	if (total_in_len < block_size) {
- 		dev_dbg(dev, " less than one block: curr_buff=%pK *curr_buff_cnt=0x%X copy_to=%pK\n",
- 			curr_buff, *curr_buff_cnt, &curr_buff[*curr_buff_cnt]);
--		areq_ctx->in_nents = sg_nents_for_len(src, nbytes);
-+		sg_nents = sg_nents_for_len(src, nbytes);
-+		if (sg_nents < 0)
-+			return sg_nents;
-+		areq_ctx->in_nents = sg_nents;
- 		sg_copy_to_buffer(src, areq_ctx->in_nents,
- 				  &curr_buff[*curr_buff_cnt], nbytes);
- 		*curr_buff_cnt += nbytes;
+ 	hw_srnprot = ioremap(res.start, resource_size(&res));
++	if (!hw_srnprot) {
++		pr_err("failed to ioremap hw_srnprot\n");
++		return -ENOMEM;
++	}
+ 	old = ioread32be(hw_srnprot);
+ 
+ 	/* TODO: figure out why we use this magic constant.  I obtained it by
 -- 
 2.51.0
 
