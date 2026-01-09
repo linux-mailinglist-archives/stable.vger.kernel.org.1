@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-206641-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207273-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9188AD093C2
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:05:18 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22459D09AF9
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:32:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8DC4B30C2C7F
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:56:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2A342311B320
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:26:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3314E33C511;
-	Fri,  9 Jan 2026 11:56:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3414235B133;
+	Fri,  9 Jan 2026 12:26:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ikuiNVQs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jXD7YT53"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAD762DEA6F;
-	Fri,  9 Jan 2026 11:56:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8A8835B125;
+	Fri,  9 Jan 2026 12:26:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767959783; cv=none; b=SutGXrJmNMdzPusgJPJ0rlQI+Mlo3yfRsWHIN3oG7N92Jbff5huvYIEUs0XiyPuG102XfOQ/cUhfdJvnpPgfPqOdJiJocXjdbICtZeqK8lkrYqO9kFyD1uywQhlYHq64N0gYq5yqCpJdkM2XZ1Ms0Cg2ZEfqenHOJ4pzY+jOr50=
+	t=1767961587; cv=none; b=Y0ezmczA6ked04zJwhcmM4a7PckXqd2BjOzvf+ZB+L//RmsaTrO/oW1sVcLFQb2V/ACPEFPhnhPdTAomLHsLPHf/DHjBS+Ci8cf57tw8KeBOYQfJOV0KhWuX0dDjIB+PASzQWaN0kerdnjcJ7BSyIUta/Cg3+0a31I1bE9EZ8go=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767959783; c=relaxed/simple;
-	bh=jcj7hKsgLPsTtRDACpjBub5zPrjDu0G+bvfl29pv1lU=;
+	s=arc-20240116; t=1767961587; c=relaxed/simple;
+	bh=3FsuxU+NyZlky4uBTKOU6PJQeaZeZzOTUgLI2XjdsjA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LdDfuJ3Nwe23uDGO7RA/qKWKoljrfYQZ6hMZ74v2iOGqLbFretYiV4aLnBkzXn7edtKf0kZ2NE+EMb1lcpDN5IMoL6R/FZtOklNjWl4JYmay9pX+nnB2sCJwejehoYj8i0CE8IfbDD9FQzkbRGGjWbgWx93zn+9XRxOtQHoLl7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ikuiNVQs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73781C4CEF1;
-	Fri,  9 Jan 2026 11:56:22 +0000 (UTC)
+	 MIME-Version; b=akkd7HT3OyvhFbtN8OuXBZFW3/vgDeVkJUTG6FW9trLAjyHysbTMG+S+ecKrY028/dbbmv5fjmrrEDf9bsQmcsCguBOEevo+drt1WxjvNVOVJhBSgGK06wtdDthMY6I9obYUxdNh8c/VTXWw8PatErkhaRTLfmoDWSAlSRuS+TI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jXD7YT53; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74ED9C4CEF1;
+	Fri,  9 Jan 2026 12:26:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767959782;
-	bh=jcj7hKsgLPsTtRDACpjBub5zPrjDu0G+bvfl29pv1lU=;
+	s=korg; t=1767961586;
+	bh=3FsuxU+NyZlky4uBTKOU6PJQeaZeZzOTUgLI2XjdsjA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ikuiNVQs3Hsgws8/epV6HjAUDwc1Ym+9jQ2GmAsCzG5Hb1OYak7nMMZoGOhCGStr6
-	 4GeeSyv+wZm39T8Addmm51MJ6l4rc/1Hh0YajSa1aWxP90FwbkuwKWhBfRd0yakzU0
-	 nhu5yN+aC9NK7laGADOV6vpHIKDagGw1dCVVeaNU=
+	b=jXD7YT53OOYn7Q4MbaD1Xk5NhGt97u6ueqdm0TEHBTErlz+IxH70nMe1UFcpMrXHz
+	 UOwepUzXY29xHuunbd6Ec+bHUihByn68vk8jNMhMO3+msOj6ukhJjDmx9sLhxn/MaP
+	 qI5Cwhjdwz/dMuzHbkVOj+VBS2dGFrMrtvm6JRes=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+3932ccb896e06f7414c9@syzkaller.appspotmail.com,
-	Edward Adam Davis <eadavis@qq.com>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Tianyang Zhang <zhangtianyang@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 172/737] fs/ntfs3: Prevent memory leaks in add sub record
+Subject: [PATCH 6.1 033/634] LoongArch: Mask all interrupts during kexec/kdump
 Date: Fri,  9 Jan 2026 12:35:11 +0100
-Message-ID: <20260109112140.462907852@linuxfoundation.org>
+Message-ID: <20260109112118.693877447@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +60,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-[ Upstream commit ccc4e86d1c24260c18ae94541198c3711c140da6 ]
+[ Upstream commit 863a320dc6fd7c855f47da4bb82a8de2d9102ea2 ]
 
-If a rb node with the same ino already exists in the rb tree, the newly
-alloced mft_inode in ni_add_subrecord() will not have its memory cleaned
-up, which leads to the memory leak issue reported by syzbot.
+If the default state of the interrupt controllers in the first kernel
+don't mask any interrupts, it may cause the second kernel to potentially
+receive interrupts (which were previously allocated by the first kernel)
+immediately after a CPU becomes online during its boot process. These
+interrupts cannot be properly routed, leading to bad IRQ issues.
 
-The best option to avoid this issue is to put the newly alloced mft node
-when a rb node with the same ino already exists in the rb tree and return
-the rb node found in the rb tree to the parent layer.
+This patch calls machine_kexec_mask_interrupts() to mask all interrupts
+during the kexec/kdump process.
 
-syzbot reported:
-BUG: memory leak
-unreferenced object 0xffff888110bef280 (size 128):
-  backtrace (crc 126a088f):
-    ni_add_subrecord+0x31/0x180 fs/ntfs3/frecord.c:317
-    ntfs_look_free_mft+0xf0/0x790 fs/ntfs3/fsntfs.c:715
-
-BUG: memory leak
-unreferenced object 0xffff888109093400 (size 1024):
-  backtrace (crc 7197c55e):
-    mi_init+0x2b/0x50 fs/ntfs3/record.c:105
-    mi_format_new+0x40/0x220 fs/ntfs3/record.c:422
-
-Fixes: 4342306f0f0d ("fs/ntfs3: Add file operations and implementation")
-Reported-by: syzbot+3932ccb896e06f7414c9@syzkaller.appspotmail.com
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Signed-off-by: Tianyang Zhang <zhangtianyang@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/frecord.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ arch/loongarch/kernel/machine_kexec.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/ntfs3/frecord.c b/fs/ntfs3/frecord.c
-index 6ff10042a15f2..18e41faef8e68 100644
---- a/fs/ntfs3/frecord.c
-+++ b/fs/ntfs3/frecord.c
-@@ -378,8 +378,10 @@ bool ni_add_subrecord(struct ntfs_inode *ni, CLST rno, struct mft_inode **mi)
+diff --git a/arch/loongarch/kernel/machine_kexec.c b/arch/loongarch/kernel/machine_kexec.c
+index 30aa420610a06..e50c9a81ff1aa 100644
+--- a/arch/loongarch/kernel/machine_kexec.c
++++ b/arch/loongarch/kernel/machine_kexec.c
+@@ -249,6 +249,7 @@ void machine_crash_shutdown(struct pt_regs *regs)
+ #ifdef CONFIG_SMP
+ 	crash_smp_send_stop();
+ #endif
++	machine_kexec_mask_interrupts();
+ 	cpumask_set_cpu(crashing_cpu, &cpus_in_crash);
  
- 	mi_get_ref(&ni->mi, &m->mrec->parent_ref);
+ 	pr_info("Starting crashdump kernel...\n");
+@@ -286,6 +287,7 @@ void machine_kexec(struct kimage *image)
  
--	ni_add_mi(ni, m);
--	*mi = m;
-+	*mi = ni_ins_mi(ni, &ni->mi_tree, m->rno, &m->node);
-+	if (*mi != m)
-+		mi_put(m);
-+
- 	return true;
- }
+ 	/* We do not want to be bothered. */
+ 	local_irq_disable();
++	machine_kexec_mask_interrupts();
  
+ 	pr_notice("EFI boot flag 0x%lx\n", efi_boot);
+ 	pr_notice("Command line at 0x%lx\n", cmdline_ptr);
 -- 
 2.51.0
 
