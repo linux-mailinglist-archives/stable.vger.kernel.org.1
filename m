@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-207348-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206722-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8F5CD09BDB
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:35:53 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5970ED09419
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:06:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 17061303279C
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:30:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C52F030F3C10
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:00:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4513235B158;
-	Fri,  9 Jan 2026 12:30:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DFF9359FB4;
+	Fri,  9 Jan 2026 12:00:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="peZB6sKk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D285CqQi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2F9F35B153;
-	Fri,  9 Jan 2026 12:29:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5915733032C;
+	Fri,  9 Jan 2026 12:00:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961800; cv=none; b=sWaxGySdKMf0N6xAzNDFgeLAbJuGyLx+cs+KQ2LNKXNKJ8w4LUa9zNKWpcsBt61Eu9pAaON5EcRqaA39Tuby2SptF8pkzhPegNc98a5kgqhMr4rzGAZBAiwgGphePDb/RdLkYTaiIAVq4spZ/Td/dx/fYSUn+EQYTE8Git+icGM=
+	t=1767960013; cv=none; b=ftflkfJbeugbQcaPVUN05AWdq5O1HeS8QduPulDwq5opFagUZSj6wHI85FxFTsdSS9o3CNj2AhXOkUjnQ2dZqi5CAtfICKNNN3TDycAYkD7pZ7k9iHvt+GH+IqcgAuedIP8QjGebVDzJRifwU3CbK48cocXFXlNBb53OAebmUhs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961800; c=relaxed/simple;
-	bh=F41EzkFY3/wE0GOEjXoo2n6raNlOMtO+HG0PWOC4N2s=;
+	s=arc-20240116; t=1767960013; c=relaxed/simple;
+	bh=cExxKnbZg34lL484MMgl1A2lxgt0ui9X0ADxM8/5bls=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pxye/c8n4yek9OnQX0MC0JJDXjH9sJR+9ri1SWHX6V9NzT/ypTLA69yq7dO7ePnTzGnwK3Jj/GXBXKrk5IyRRZVKw6q7aYh2mgTwCKtRIYw4TNuDcdILSMYvlkRMf6XmShDPJhgmVpwK++2dapq3+TpvN5wfYdzZGt3WCqh0QEk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=peZB6sKk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FA57C19423;
-	Fri,  9 Jan 2026 12:29:59 +0000 (UTC)
+	 MIME-Version; b=gciwCojQK5uwpplbgZACPsIzkGt0Ja7v7tHseyXbQxzDVsMhvnnv8wzet1ilAHy8L8R+uRbfU0+GZAoISFXhcVdVfxF8IpAb6/5OJxLUD994rjUaLs1i9YaEld+CMeNtHJR/Zh9lXRj8hz5LGwTybSGsH/gifY120w/TOzgilE0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D285CqQi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5837C4CEF1;
+	Fri,  9 Jan 2026 12:00:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961799;
-	bh=F41EzkFY3/wE0GOEjXoo2n6raNlOMtO+HG0PWOC4N2s=;
+	s=korg; t=1767960013;
+	bh=cExxKnbZg34lL484MMgl1A2lxgt0ui9X0ADxM8/5bls=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=peZB6sKkG2qCM/Ch7/L+8Ck7OEc8QE7kPEJH3uSWszqaLSAD5YdFE0bbPWOcRAO4z
-	 kRcI3GQpAlflDUoESn0vgPfm+1KDgNQX8STp78kj8tNsQmtkwEmqYd5sdRCWpk/Bdb
-	 cyDIXela5Ve6sA3jOMIb6XfT8uHDF4DZ07INjnO0=
+	b=D285CqQiyrUj6xHVhtDJZbyVYjHg8QaN75f9oQzSJxNLzXqy+LHspm7gTIocedD/F
+	 rG9aeX0A+0K5rhL8AQGUUaAP+TOd74dUOlJL5nqKgsk83G81qP+sYzkHHMtfWABqK4
+	 SZ9QzNM0SWqM7rKZ5EChIv3xf/lOtxJzB1eN3FTY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Herve Codina <herve.codina@bootlin.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Etienne Champetier <champetier.etienne@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 107/634] soc: renesas: r9a06g032-sysctrl: Handle h2mode setting based on USBF presence
-Date: Fri,  9 Jan 2026 12:36:25 +0100
-Message-ID: <20260109112121.460660311@linuxfoundation.org>
+Subject: [PATCH 6.6 247/737] selftests: bonding: add ipvlan over bond testing
+Date: Fri,  9 Jan 2026 12:36:26 +0100
+Message-ID: <20260109112143.285433391@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,86 +60,277 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herve Codina <herve.codina@bootlin.com>
+From: Etienne Champetier <champetier.etienne@gmail.com>
 
-[ Upstream commit e9fee814b054e4f6f2faf3d9c1944869fe41c9dd ]
+[ Upstream commit 08ac69b24507ab06871c18adc421c9d4f1008c61 ]
 
-The CFG_USB[H2MODE] allows to switch the USB configuration. The
-configuration supported are:
-  - One host and one device
-or
-  - Two hosts
+This rework bond_macvlan.sh into bond_macvlan_ipvlan.sh
+We only test bridge mode for macvlan and l2 mode
 
-Set CFG_USB[H2MODE] based on the USBF controller (USB device)
-availability.
+]# ./bond_macvlan_ipvlan.sh
+TEST: active-backup/macvlan_bridge: IPv4: client->server            [ OK ]
+...
+TEST: active-backup/ipvlan_l2: IPv4: client->server                 [ OK ]
+...
+TEST: balance-tlb/macvlan_bridge: IPv4: client->server              [ OK ]
+...
+TEST: balance-tlb/ipvlan_l2: IPv4: client->server                   [ OK ]
+...
+TEST: balance-alb/macvlan_bridge: IPv4: client->server              [ OK ]
+...
+TEST: balance-alb/ipvlan_l2: IPv4: client->server                   [ OK ]
+...
 
-Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/20230105152257.310642-3-herve.codina@bootlin.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: f8def051bbcf ("clk: renesas: r9a06g032: Fix memory leak in error path")
+Signed-off-by: Etienne Champetier <champetier.etienne@gmail.com>
+Link: https://patch.msgid.link/20250109032819.326528-3-champetier.etienne@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 2c28ee720ad1 ("selftests: bonding: add delay before each xvlan_over_bond connectivity check")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/renesas/r9a06g032-clocks.c | 28 ++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+ .../selftests/drivers/net/bonding/Makefile    |  2 +-
+ .../drivers/net/bonding/bond_macvlan.sh       | 99 -------------------
+ .../net/bonding/bond_macvlan_ipvlan.sh        | 96 ++++++++++++++++++
+ .../selftests/drivers/net/bonding/config      |  1 +
+ 4 files changed, 98 insertions(+), 100 deletions(-)
+ delete mode 100755 tools/testing/selftests/drivers/net/bonding/bond_macvlan.sh
+ create mode 100755 tools/testing/selftests/drivers/net/bonding/bond_macvlan_ipvlan.sh
 
-diff --git a/drivers/clk/renesas/r9a06g032-clocks.c b/drivers/clk/renesas/r9a06g032-clocks.c
-index 983faa5707b9c..087146f2ee068 100644
---- a/drivers/clk/renesas/r9a06g032-clocks.c
-+++ b/drivers/clk/renesas/r9a06g032-clocks.c
-@@ -25,6 +25,8 @@
- #include <linux/spinlock.h>
- #include <dt-bindings/clock/r9a06g032-sysctrl.h>
+diff --git a/tools/testing/selftests/drivers/net/bonding/Makefile b/tools/testing/selftests/drivers/net/bonding/Makefile
+index 8a72bb7de70f4..770aa7345aacd 100644
+--- a/tools/testing/selftests/drivers/net/bonding/Makefile
++++ b/tools/testing/selftests/drivers/net/bonding/Makefile
+@@ -10,7 +10,7 @@ TEST_PROGS := \
+ 	mode-2-recovery-updelay.sh \
+ 	bond_options.sh \
+ 	bond-eth-type-change.sh \
+-	bond_macvlan.sh
++	bond_macvlan_ipvlan.sh
  
-+#define R9A06G032_SYSCTRL_USB    0x00
-+#define R9A06G032_SYSCTRL_USB_H2MODE  (1<<1)
- #define R9A06G032_SYSCTRL_DMAMUX 0xA0
- 
- struct r9a06g032_gate {
-@@ -918,6 +920,29 @@ static void r9a06g032_clocks_del_clk_provider(void *data)
- 	of_clk_del_provider(data);
- }
- 
-+static void __init r9a06g032_init_h2mode(struct r9a06g032_priv *clocks)
+ TEST_FILES := \
+ 	lag_lib.sh \
+diff --git a/tools/testing/selftests/drivers/net/bonding/bond_macvlan.sh b/tools/testing/selftests/drivers/net/bonding/bond_macvlan.sh
+deleted file mode 100755
+index b609fb6231f48..0000000000000
+--- a/tools/testing/selftests/drivers/net/bonding/bond_macvlan.sh
++++ /dev/null
+@@ -1,99 +0,0 @@
+-#!/bin/bash
+-# SPDX-License-Identifier: GPL-2.0
+-#
+-# Test macvlan over balance-alb
+-
+-lib_dir=$(dirname "$0")
+-source ${lib_dir}/bond_topo_2d1c.sh
+-
+-m1_ns="m1-$(mktemp -u XXXXXX)"
+-m2_ns="m1-$(mktemp -u XXXXXX)"
+-m1_ip4="192.0.2.11"
+-m1_ip6="2001:db8::11"
+-m2_ip4="192.0.2.12"
+-m2_ip6="2001:db8::12"
+-
+-cleanup()
+-{
+-	ip -n ${m1_ns} link del macv0
+-	ip netns del ${m1_ns}
+-	ip -n ${m2_ns} link del macv0
+-	ip netns del ${m2_ns}
+-
+-	client_destroy
+-	server_destroy
+-	gateway_destroy
+-}
+-
+-check_connection()
+-{
+-	local ns=${1}
+-	local target=${2}
+-	local message=${3:-"macvlan_over_bond"}
+-	RET=0
+-
+-
+-	ip netns exec ${ns} ping ${target} -c 4 -i 0.1 &>/dev/null
+-	check_err $? "ping failed"
+-	log_test "$mode: $message"
+-}
+-
+-macvlan_over_bond()
+-{
+-	local param="$1"
+-	RET=0
+-
+-	# setup new bond mode
+-	bond_reset "${param}"
+-
+-	ip -n ${s_ns} link add link bond0 name macv0 type macvlan mode bridge
+-	ip -n ${s_ns} link set macv0 netns ${m1_ns}
+-	ip -n ${m1_ns} link set dev macv0 up
+-	ip -n ${m1_ns} addr add ${m1_ip4}/24 dev macv0
+-	ip -n ${m1_ns} addr add ${m1_ip6}/24 dev macv0
+-
+-	ip -n ${s_ns} link add link bond0 name macv0 type macvlan mode bridge
+-	ip -n ${s_ns} link set macv0 netns ${m2_ns}
+-	ip -n ${m2_ns} link set dev macv0 up
+-	ip -n ${m2_ns} addr add ${m2_ip4}/24 dev macv0
+-	ip -n ${m2_ns} addr add ${m2_ip6}/24 dev macv0
+-
+-	sleep 2
+-
+-	check_connection "${c_ns}" "${s_ip4}" "IPv4: client->server"
+-	check_connection "${c_ns}" "${s_ip6}" "IPv6: client->server"
+-	check_connection "${c_ns}" "${m1_ip4}" "IPv4: client->macvlan_1"
+-	check_connection "${c_ns}" "${m1_ip6}" "IPv6: client->macvlan_1"
+-	check_connection "${c_ns}" "${m2_ip4}" "IPv4: client->macvlan_2"
+-	check_connection "${c_ns}" "${m2_ip6}" "IPv6: client->macvlan_2"
+-	check_connection "${m1_ns}" "${m2_ip4}" "IPv4: macvlan_1->macvlan_2"
+-	check_connection "${m1_ns}" "${m2_ip6}" "IPv6: macvlan_1->macvlan_2"
+-
+-
+-	sleep 5
+-
+-	check_connection "${s_ns}" "${c_ip4}" "IPv4: server->client"
+-	check_connection "${s_ns}" "${c_ip6}" "IPv6: server->client"
+-	check_connection "${m1_ns}" "${c_ip4}" "IPv4: macvlan_1->client"
+-	check_connection "${m1_ns}" "${c_ip6}" "IPv6: macvlan_1->client"
+-	check_connection "${m2_ns}" "${c_ip4}" "IPv4: macvlan_2->client"
+-	check_connection "${m2_ns}" "${c_ip6}" "IPv6: macvlan_2->client"
+-	check_connection "${m2_ns}" "${m1_ip4}" "IPv4: macvlan_2->macvlan_2"
+-	check_connection "${m2_ns}" "${m1_ip6}" "IPv6: macvlan_2->macvlan_2"
+-
+-	ip -n ${c_ns} neigh flush dev eth0
+-}
+-
+-trap cleanup EXIT
+-
+-setup_prepare
+-ip netns add ${m1_ns}
+-ip netns add ${m2_ns}
+-
+-modes="active-backup balance-tlb balance-alb"
+-
+-for mode in $modes; do
+-	macvlan_over_bond "mode $mode"
+-done
+-
+-exit $EXIT_STATUS
+diff --git a/tools/testing/selftests/drivers/net/bonding/bond_macvlan_ipvlan.sh b/tools/testing/selftests/drivers/net/bonding/bond_macvlan_ipvlan.sh
+new file mode 100755
+index 0000000000000..c4711272fe45d
+--- /dev/null
++++ b/tools/testing/selftests/drivers/net/bonding/bond_macvlan_ipvlan.sh
+@@ -0,0 +1,96 @@
++#!/bin/bash
++# SPDX-License-Identifier: GPL-2.0
++#
++# Test macvlan/ipvlan over bond
++
++lib_dir=$(dirname "$0")
++source ${lib_dir}/bond_topo_2d1c.sh
++
++xvlan1_ns="xvlan1-$(mktemp -u XXXXXX)"
++xvlan2_ns="xvlan2-$(mktemp -u XXXXXX)"
++xvlan1_ip4="192.0.2.11"
++xvlan1_ip6="2001:db8::11"
++xvlan2_ip4="192.0.2.12"
++xvlan2_ip6="2001:db8::12"
++
++cleanup()
 +{
-+	struct device_node *usbf_np = NULL;
-+	u32 usb;
++	client_destroy
++	server_destroy
++	gateway_destroy
 +
-+	while ((usbf_np = of_find_compatible_node(usbf_np, NULL,
-+						  "renesas,rzn1-usbf"))) {
-+		if (of_device_is_available(usbf_np))
-+			break;
-+	}
-+
-+	usb = readl(clocks->reg + R9A06G032_SYSCTRL_USB);
-+	if (usbf_np) {
-+		/* 1 host and 1 device mode */
-+		usb &= ~R9A06G032_SYSCTRL_USB_H2MODE;
-+		of_node_put(usbf_np);
-+	} else {
-+		/* 2 hosts mode */
-+		usb |= R9A06G032_SYSCTRL_USB_H2MODE;
-+	}
-+	writel(usb, clocks->reg + R9A06G032_SYSCTRL_USB);
++	ip netns del ${xvlan1_ns}
++	ip netns del ${xvlan2_ns}
 +}
 +
- static int __init r9a06g032_clocks_probe(struct platform_device *pdev)
- {
- 	struct device *dev = &pdev->dev;
-@@ -947,6 +972,9 @@ static int __init r9a06g032_clocks_probe(struct platform_device *pdev)
- 	clocks->reg = of_iomap(np, 0);
- 	if (WARN_ON(!clocks->reg))
- 		return -ENOMEM;
++check_connection()
++{
++	local ns=${1}
++	local target=${2}
++	local message=${3}
++	RET=0
 +
-+	r9a06g032_init_h2mode(clocks);
++	ip netns exec ${ns} ping ${target} -c 4 -i 0.1 &>/dev/null
++	check_err $? "ping failed"
++	log_test "${bond_mode}/${xvlan_type}_${xvlan_mode}: ${message}"
++}
 +
- 	for (i = 0; i < ARRAY_SIZE(r9a06g032_clocks); ++i) {
- 		const struct r9a06g032_clkdesc *d = &r9a06g032_clocks[i];
- 		const char *parent_name = d->source ?
++xvlan_over_bond()
++{
++	local param="$1"
++	local xvlan_type="$2"
++	local xvlan_mode="$3"
++	RET=0
++
++	# setup new bond mode
++	bond_reset "${param}"
++
++	ip -n ${s_ns} link add link bond0 name ${xvlan_type}0 type ${xvlan_type} mode ${xvlan_mode}
++	ip -n ${s_ns} link set ${xvlan_type}0 netns ${xvlan1_ns}
++	ip -n ${xvlan1_ns} link set dev ${xvlan_type}0 up
++	ip -n ${xvlan1_ns} addr add ${xvlan1_ip4}/24 dev ${xvlan_type}0
++	ip -n ${xvlan1_ns} addr add ${xvlan1_ip6}/24 dev ${xvlan_type}0
++
++	ip -n ${s_ns} link add link bond0 name ${xvlan_type}0 type ${xvlan_type} mode ${xvlan_mode}
++	ip -n ${s_ns} link set ${xvlan_type}0 netns ${xvlan2_ns}
++	ip -n ${xvlan2_ns} link set dev ${xvlan_type}0 up
++	ip -n ${xvlan2_ns} addr add ${xvlan2_ip4}/24 dev ${xvlan_type}0
++	ip -n ${xvlan2_ns} addr add ${xvlan2_ip6}/24 dev ${xvlan_type}0
++
++	sleep 2
++
++	check_connection "${c_ns}" "${s_ip4}" "IPv4: client->server"
++	check_connection "${c_ns}" "${s_ip6}" "IPv6: client->server"
++	check_connection "${c_ns}" "${xvlan1_ip4}" "IPv4: client->${xvlan_type}_1"
++	check_connection "${c_ns}" "${xvlan1_ip6}" "IPv6: client->${xvlan_type}_1"
++	check_connection "${c_ns}" "${xvlan2_ip4}" "IPv4: client->${xvlan_type}_2"
++	check_connection "${c_ns}" "${xvlan2_ip6}" "IPv6: client->${xvlan_type}_2"
++	check_connection "${xvlan1_ns}" "${xvlan2_ip4}" "IPv4: ${xvlan_type}_1->${xvlan_type}_2"
++	check_connection "${xvlan1_ns}" "${xvlan2_ip6}" "IPv6: ${xvlan_type}_1->${xvlan_type}_2"
++
++	check_connection "${s_ns}" "${c_ip4}" "IPv4: server->client"
++	check_connection "${s_ns}" "${c_ip6}" "IPv6: server->client"
++	check_connection "${xvlan1_ns}" "${c_ip4}" "IPv4: ${xvlan_type}_1->client"
++	check_connection "${xvlan1_ns}" "${c_ip6}" "IPv6: ${xvlan_type}_1->client"
++	check_connection "${xvlan2_ns}" "${c_ip4}" "IPv4: ${xvlan_type}_2->client"
++	check_connection "${xvlan2_ns}" "${c_ip6}" "IPv6: ${xvlan_type}_2->client"
++	check_connection "${xvlan2_ns}" "${xvlan1_ip4}" "IPv4: ${xvlan_type}_2->${xvlan_type}_1"
++	check_connection "${xvlan2_ns}" "${xvlan1_ip6}" "IPv6: ${xvlan_type}_2->${xvlan_type}_1"
++
++	ip -n ${c_ns} neigh flush dev eth0
++}
++
++trap cleanup EXIT
++
++setup_prepare
++ip netns add ${xvlan1_ns}
++ip netns add ${xvlan2_ns}
++
++bond_modes="active-backup balance-tlb balance-alb"
++
++for bond_mode in ${bond_modes}; do
++	xvlan_over_bond "mode ${bond_mode}" macvlan bridge
++	xvlan_over_bond "mode ${bond_mode}" ipvlan  l2
++done
++
++exit $EXIT_STATUS
+diff --git a/tools/testing/selftests/drivers/net/bonding/config b/tools/testing/selftests/drivers/net/bonding/config
+index 899d7fb6ea8e9..dad4e5fda4db3 100644
+--- a/tools/testing/selftests/drivers/net/bonding/config
++++ b/tools/testing/selftests/drivers/net/bonding/config
+@@ -3,6 +3,7 @@ CONFIG_BRIDGE=y
+ CONFIG_DUMMY=y
+ CONFIG_IPV6=y
+ CONFIG_MACVLAN=y
++CONFIG_IPVLAN=y
+ CONFIG_NET_ACT_GACT=y
+ CONFIG_NET_CLS_FLOWER=y
+ CONFIG_NET_SCH_INGRESS=y
 -- 
 2.51.0
 
