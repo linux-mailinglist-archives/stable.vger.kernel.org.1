@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-207371-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206771-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5BBBD09C88
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:37:29 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD41DD09360
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:03:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A9C2F30BE9AA
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:31:08 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 715C7301BDF2
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:02:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0CBA3596FE;
-	Fri,  9 Jan 2026 12:31:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8113C359F98;
+	Fri,  9 Jan 2026 12:02:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nwTHZ7KC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mEI/V0Tp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84AFB33372B;
-	Fri,  9 Jan 2026 12:31:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4504233375D;
+	Fri,  9 Jan 2026 12:02:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961865; cv=none; b=qV08nL3SrChxXmZJveQq5EinYPHgjrZg4Y0oNIQBQiAqJzRW4yyfVMuVJZslaK51n85a/ErvR4WcFV8ee7FawqVS6Hz4Az0zmCa+4qXC5ehUz3VASf8Y2V08vEdDv3z1vgIn8VX00lu8xOQrYMV1dPdwocXWokuFjqeEq8m2E5M=
+	t=1767960152; cv=none; b=rKfBJ0z0GbbQJ+wYTjMKPV6FkPi3UqSeJjXu/q09rbvRIRDWtvfVV2h9ippQQkE1LD0m3COgmSnuATCHGts2X3M12np2CmpKHvvAHEXvnt5CBJ1cxJQ6lncxjcZuhOG09An1TvlefwOcBvwU/0vcWMe5k44qRt9LwZjlcYdaY1E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961865; c=relaxed/simple;
-	bh=nrgrcTJRa3QZfHtFdPnXknk+BduDYzLUvYMdYHZQqfc=;
+	s=arc-20240116; t=1767960152; c=relaxed/simple;
+	bh=Li9cNUEdhozLQZV3HklRIP/pJc3rkMj7meJCKzK0l+U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kNnPvC7UUSELf0YOzwZPrAu8s3eIR1O7iDWPZmFiz2dTSQ+kN2ykYPn8XjwKIvwRHaqiRm+T4+n60nm82nrydyZMzJB0khVPtEfjEbFHDl0wIcxjH/RwNquY69MygtK9Q+lHfqScm96NGRZqWErkmhMIzw9VxSM+o1vGYeX9D9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nwTHZ7KC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 110DBC4CEF1;
-	Fri,  9 Jan 2026 12:31:04 +0000 (UTC)
+	 MIME-Version; b=aI5m3oZpnauB5zA82kA5USzFhLZJwxwWYv3y6auZYnxsNJMAoXXo88rkUjI8pEBTqAUhifuo8CdaVBeUVK/5qN9ZmCVKsESjbne7O2SPq7cVwaTws1jmL5GOARiKJ5Us0D6aa/q2RkM++wB+sKRneCkqi3SVXhNyon4xUEaLcf8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mEI/V0Tp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1382C4CEF1;
+	Fri,  9 Jan 2026 12:02:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961865;
-	bh=nrgrcTJRa3QZfHtFdPnXknk+BduDYzLUvYMdYHZQqfc=;
+	s=korg; t=1767960152;
+	bh=Li9cNUEdhozLQZV3HklRIP/pJc3rkMj7meJCKzK0l+U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nwTHZ7KCJVXWFuujf6cyGPU4oR667ubXqhC5Zw+QcgiREeQNLkqMbe5ncfsEZRgoJ
-	 RgV+3v3quOy+vxyEfTGBpVpT+5CthSHtgln17Z+x8Iygfb25WNlu4p6gVOWvoTsEFt
-	 4R+XrG12eoaJ2mkw7pgtM4o5k3BEez709zxdeWt4=
+	b=mEI/V0TpyPwOYGij+LA2afoOdHNKtZLJPykcknnBYBKrjkwPyPMvw2eo5NfrlR3if
+	 7dCu0fYIgtepl7bNHxd2kEtUqr5Ud/aD/RF5sqFFZr+Wqurk0ckrS3jcCozkIAO57I
+	 urCd0Sm0+Znm3rTKQAOLmOa2SGNLr8DBF4X7tkAs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
+	Joanne Koong <joannelkoong@gmail.com>,
+	syzbot@syzkaller.appspotmail.com,
+	Brian Foster <bfoster@redhat.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 163/634] virtio_vdpa: fix misleading return in void function
-Date: Fri,  9 Jan 2026 12:37:21 +0100
-Message-ID: <20260109112123.583272394@linuxfoundation.org>
+Subject: [PATCH 6.6 303/737] iomap: adjust read range correctly for non-block-aligned positions
+Date: Fri,  9 Jan 2026 12:37:22 +0100
+Message-ID: <20260109112145.404813465@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +63,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Joanne Koong <joannelkoong@gmail.com>
 
-[ Upstream commit e40b6abe0b1247d43bc61942aa7534fca7209e44 ]
+[ Upstream commit 7aa6bc3e8766990824f66ca76c19596ce10daf3e ]
 
-virtio_vdpa_set_status() is declared as returning void, but it used
-"return vdpa_set_status()" Since vdpa_set_status() also returns
-void, the return statement is unnecessary and misleading.
-Remove it.
+iomap_adjust_read_range() assumes that the position and length passed in
+are block-aligned. This is not always the case however, as shown in the
+syzbot generated case for erofs. This causes too many bytes to be
+skipped for uptodate blocks, which results in returning the incorrect
+position and length to read in. If all the blocks are uptodate, this
+underflows length and returns a position beyond the folio.
 
-Fixes: c043b4a8cf3b ("virtio: introduce a vDPA based transport")
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Message-Id: <20251001191653.1713923-1-alok.a.tiwari@oracle.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
+Fix the calculation to also take into account the block offset when
+calculating how many bytes can be skipped for uptodate blocks.
+
+Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
+Tested-by: syzbot@syzkaller.appspotmail.com
+Reviewed-by: Brian Foster <bfoster@redhat.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/virtio/virtio_vdpa.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/iomap/buffered-io.c | 19 +++++++++++++------
+ 1 file changed, 13 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/virtio/virtio_vdpa.c b/drivers/virtio/virtio_vdpa.c
-index 056ba6c5bb083..0d596609e1571 100644
---- a/drivers/virtio/virtio_vdpa.c
-+++ b/drivers/virtio/virtio_vdpa.c
-@@ -92,7 +92,7 @@ static void virtio_vdpa_set_status(struct virtio_device *vdev, u8 status)
- {
- 	struct vdpa_device *vdpa = vd_get_vdpa(vdev);
+diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
+index 7ffdf0d037fae..13a5f4422c797 100644
+--- a/fs/iomap/buffered-io.c
++++ b/fs/iomap/buffered-io.c
+@@ -211,17 +211,24 @@ static void iomap_adjust_read_range(struct inode *inode, struct folio *folio,
+ 	 * to avoid reading in already uptodate ranges.
+ 	 */
+ 	if (ifs) {
+-		unsigned int i;
++		unsigned int i, blocks_skipped;
  
--	return vdpa_set_status(vdpa, status);
-+	vdpa_set_status(vdpa, status);
- }
+ 		/* move forward for each leading block marked uptodate */
+-		for (i = first; i <= last; i++) {
++		for (i = first; i <= last; i++)
+ 			if (!ifs_block_is_uptodate(ifs, i))
+ 				break;
+-			*pos += block_size;
+-			poff += block_size;
+-			plen -= block_size;
+-			first++;
++
++		blocks_skipped = i - first;
++		if (blocks_skipped) {
++			unsigned long block_offset = *pos & (block_size - 1);
++			unsigned bytes_skipped =
++				(blocks_skipped << block_bits) - block_offset;
++
++			*pos += bytes_skipped;
++			poff += bytes_skipped;
++			plen -= bytes_skipped;
+ 		}
++		first = i;
  
- static void virtio_vdpa_reset(struct virtio_device *vdev)
+ 		/* truncate len if we find any trailing uptodate block(s) */
+ 		while (++i <= last) {
 -- 
 2.51.0
 
