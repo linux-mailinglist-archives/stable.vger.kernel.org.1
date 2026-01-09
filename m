@@ -1,54 +1,52 @@
-Return-Path: <stable+bounces-207802-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207172-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1742D0A27D
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:03:23 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52F56D099B2
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:27:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6EE7F31CEEBB
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:51:39 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5E7DA302B908
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:21:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A86B35A94E;
-	Fri,  9 Jan 2026 12:51:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 501B135B123;
+	Fri,  9 Jan 2026 12:21:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QdXtoJlF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jSfH98V2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E08B31A069;
-	Fri,  9 Jan 2026 12:51:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12FCF35B121;
+	Fri,  9 Jan 2026 12:21:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767963091; cv=none; b=QUN66UddpFseHXUmvheXXvMFwRvumPHzLEvaEw1+Yp/hAVE5j7s6tH0Pmi0E3DqoK+GmKFUGvm0H2rMlUou7flgbKcJVjxiZNjioPqfrMGNyQ8E5SRpNZX7Bk324hoScSPtT4kv7zDUfpI0YyeSwKkIlGHAzCxzMDj+VHRnC+MU=
+	t=1767961297; cv=none; b=X9qkKTxiNkQsXSGDhpMaPWggc5gRN5Zd2TsmwrG7B+UrEV3snijlxLU5N/SKTrgW1fMFKsg9V7FhfLCrGfEFyYcqayCIW34RNpSijABoRReN1milPMxVZ0BHDV/Lp3pD2sM8RL9SXm2LSxeMQrUIj/eTue9KM3O0CX9pg5wj4tE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767963091; c=relaxed/simple;
-	bh=BxxVOEo27+1QN3iWT/KHOsNC0K7SKLQ7qeqjzjiBTgo=;
+	s=arc-20240116; t=1767961297; c=relaxed/simple;
+	bh=2O+9Dp055ZTrXa3Ub6joct0DmO0sgBj3Hp9oZUsIL8g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LDrgdO3Isl6+e3dDQ4FhEBCVywFbTJARPsYKv+DQzfweklBk/bC4Syhfhx2vejQ28CV+zfLrhyCTJelLQrUZY3kUbS5vamqPdZ/e3UFUZyvrdsNil/hxoP6kq7J0ZiLY5zRXpvlwg2MISZDcSOmdByyVCG/sCBZYHoEnWKGySLA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QdXtoJlF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0CF7C4CEF1;
-	Fri,  9 Jan 2026 12:51:30 +0000 (UTC)
+	 MIME-Version; b=Pao0ke/ERWpGJPPvlM1RTg9TOyPAvF3TI6XKZWqVHaFcobVuQ/QfJQ0n37rulFJX+LLJO0a7BiZsvQXLZnqNxKJUDYrg82VtxbLZJHAyj1X1uNNhJ5tee9rcgRB9uNQmPtS/zudhuMKOx5YM8kPKOvAC1TJFTbUZVMftgb6VSnE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jSfH98V2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90BEAC16AAE;
+	Fri,  9 Jan 2026 12:21:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767963091;
-	bh=BxxVOEo27+1QN3iWT/KHOsNC0K7SKLQ7qeqjzjiBTgo=;
+	s=korg; t=1767961297;
+	bh=2O+9Dp055ZTrXa3Ub6joct0DmO0sgBj3Hp9oZUsIL8g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QdXtoJlFao61/cmpUOPqGLjoclT2RO6NCdwyxZuE1oc4p1wnppmQ6SI0/Dt7yFALo
-	 /mVRPnYt7/v0CKMWxZIfIEIIpc3Fqr3Ejn4B9HTTDcY89kjJ85d6CmSH3J5glgA2P4
-	 p3LAuUJp+6/JHF37AasABplThmBWmcEPrDHT2fQ0=
+	b=jSfH98V2vqtljP/A9BsAOgTnhUq0SQk7gW0xQm0ApQpTAuwmKjmE8m9xZOl9zDmSC
+	 rUJbRNQOxsewHQWmFQ9umFrGVaXpM22vZU4pcn7M3cWFKCtS6phQtjEz4vho+9u7Tb
+	 oMzXIgZ2ywtJILJktZX014hN1K/5ZLFChd93/mLQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shivani Agarwal <shivani.agarwal@broadcom.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 562/634] crypto: af_alg - zero initialize memory allocated via sock_kmalloc
-Date: Fri,  9 Jan 2026 12:44:00 +0100
-Message-ID: <20260109112138.746783509@linuxfoundation.org>
+	Yosry Ahmed <yosry.ahmed@linux.dev>
+Subject: [PATCH 6.6 702/737] KVM: SVM: Introduce svm_recalc_lbr_msr_intercepts()
+Date: Fri,  9 Jan 2026 12:44:01 +0100
+Message-ID: <20260109112200.480485652@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,104 +58,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shivani Agarwal <shivani.agarwal@broadcom.com>
+From: Yosry Ahmed <yosry.ahmed@linux.dev>
 
-[ Upstream commit 6f6e309328d53a10c0fe1f77dec2db73373179b6 ]
+Introduce a helper updating the intercepts for LBR MSRs, similar to the
+one introduced upstream by commit 160f143cc131 ("KVM: SVM: Manually
+recalc all MSR intercepts on userspace MSR filter change"). The main
+difference is that this version uses set_msr_interception(), which has
+inverted polarity compared to svm_set_intercept_for_msr().
 
-Several crypto user API contexts and requests allocated with
-sock_kmalloc() were left uninitialized, relying on callers to
-set fields explicitly. This resulted in the use of uninitialized
-data in certain error paths or when new fields are added in the
-future.
+This is intended to simplify incoming backports. No functional changes
+intended.
 
-The ACVP patches also contain two user-space interface files:
-algif_kpp.c and algif_akcipher.c. These too rely on proper
-initialization of their context structures.
-
-A particular issue has been observed with the newly added
-'inflight' variable introduced in af_alg_ctx by commit:
-
-  67b164a871af ("crypto: af_alg - Disallow multiple in-flight AIO requests")
-
-Because the context is not memset to zero after allocation,
-the inflight variable has contained garbage values. As a result,
-af_alg_alloc_areq() has incorrectly returned -EBUSY randomly when
-the garbage value was interpreted as true:
-
-  https://github.com/gregkh/linux/blame/master/crypto/af_alg.c#L1209
-
-The check directly tests ctx->inflight without explicitly
-comparing against true/false. Since inflight is only ever set to
-true or false later, an uninitialized value has triggered
--EBUSY failures. Zero-initializing memory allocated with
-sock_kmalloc() ensures inflight and other fields start in a known
-state, removing random issues caused by uninitialized data.
-
-Fixes: fe869cdb89c9 ("crypto: algif_hash - User-space interface for hash operations")
-Fixes: 5afdfd22e6ba ("crypto: algif_rng - add random number generator support")
-Fixes: 2d97591ef43d ("crypto: af_alg - consolidation of duplicate code")
-Fixes: 67b164a871af ("crypto: af_alg - Disallow multiple in-flight AIO requests")
-Cc: stable@vger.kernel.org
-Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-[ Adjust context ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- crypto/af_alg.c     |    5 ++---
- crypto/algif_hash.c |    3 +--
- crypto/algif_rng.c  |    3 +--
- 3 files changed, 4 insertions(+), 7 deletions(-)
+ arch/x86/kvm/svm/svm.c |   32 +++++++++++++++++++++-----------
+ 1 file changed, 21 insertions(+), 11 deletions(-)
 
---- a/crypto/af_alg.c
-+++ b/crypto/af_alg.c
-@@ -1108,14 +1108,13 @@ struct af_alg_async_req *af_alg_alloc_ar
- 	if (unlikely(!areq))
- 		return ERR_PTR(-ENOMEM);
- 
-+	memset(areq, 0, areqlen);
-+
- 	ctx->inflight = true;
- 
- 	areq->areqlen = areqlen;
- 	areq->sk = sk;
--	areq->last_rsgl = NULL;
- 	INIT_LIST_HEAD(&areq->rsgl_list);
--	areq->tsgl = NULL;
--	areq->tsgl_entries = 0;
- 
- 	return areq;
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -1012,18 +1012,31 @@ void svm_copy_lbrs(struct vmcb *to_vmcb,
+ 	vmcb_mark_dirty(to_vmcb, VMCB_LBR);
  }
---- a/crypto/algif_hash.c
-+++ b/crypto/algif_hash.c
-@@ -424,9 +424,8 @@ static int hash_accept_parent_nokey(void
- 	if (!ctx)
- 		return -ENOMEM;
  
--	ctx->result = NULL;
-+	memset(ctx, 0, len);
- 	ctx->len = len;
--	ctx->more = false;
- 	crypto_init_wait(&ctx->wait);
+-void svm_enable_lbrv(struct kvm_vcpu *vcpu)
++static void svm_recalc_lbr_msr_intercepts(struct kvm_vcpu *vcpu)
+ {
+ 	struct vcpu_svm *svm = to_svm(vcpu);
++	bool intercept = !(svm->vmcb->control.virt_ext & LBR_CTL_ENABLE_MASK);
  
- 	ask->private = ctx;
---- a/crypto/algif_rng.c
-+++ b/crypto/algif_rng.c
-@@ -250,9 +250,8 @@ static int rng_accept_parent(void *priva
- 	if (!ctx)
- 		return -ENOMEM;
+-	svm->vmcb->control.virt_ext |= LBR_CTL_ENABLE_MASK;
+-	set_msr_interception(vcpu, svm->msrpm, MSR_IA32_LASTBRANCHFROMIP, 1, 1);
+-	set_msr_interception(vcpu, svm->msrpm, MSR_IA32_LASTBRANCHTOIP, 1, 1);
+-	set_msr_interception(vcpu, svm->msrpm, MSR_IA32_LASTINTFROMIP, 1, 1);
+-	set_msr_interception(vcpu, svm->msrpm, MSR_IA32_LASTINTTOIP, 1, 1);
++	set_msr_interception(vcpu, svm->msrpm, MSR_IA32_LASTBRANCHFROMIP,
++			     !intercept, !intercept);
++	set_msr_interception(vcpu, svm->msrpm, MSR_IA32_LASTBRANCHTOIP,
++			     !intercept, !intercept);
++	set_msr_interception(vcpu, svm->msrpm, MSR_IA32_LASTINTFROMIP,
++			     !intercept, !intercept);
++	set_msr_interception(vcpu, svm->msrpm, MSR_IA32_LASTINTTOIP,
++			     !intercept, !intercept);
  
-+	memset(ctx, 0, len);
- 	ctx->len = len;
--	ctx->addtl = NULL;
--	ctx->addtl_len = 0;
+ 	if (sev_es_guest(vcpu->kvm))
+-		set_msr_interception(vcpu, svm->msrpm, MSR_IA32_DEBUGCTLMSR, 1, 1);
++		set_msr_interception(vcpu, svm->msrpm, MSR_IA32_DEBUGCTLMSR,
++				     !intercept, !intercept);
++}
++
++void svm_enable_lbrv(struct kvm_vcpu *vcpu)
++{
++	struct vcpu_svm *svm = to_svm(vcpu);
++
++	svm->vmcb->control.virt_ext |= LBR_CTL_ENABLE_MASK;
++	svm_recalc_lbr_msr_intercepts(vcpu);
+ 
+ 	/* Move the LBR msrs to the vmcb02 so that the guest can see them. */
+ 	if (is_guest_mode(vcpu))
+@@ -1037,10 +1050,7 @@ static void svm_disable_lbrv(struct kvm_
+ 	KVM_BUG_ON(sev_es_guest(vcpu->kvm), vcpu->kvm);
+ 
+ 	svm->vmcb->control.virt_ext &= ~LBR_CTL_ENABLE_MASK;
+-	set_msr_interception(vcpu, svm->msrpm, MSR_IA32_LASTBRANCHFROMIP, 0, 0);
+-	set_msr_interception(vcpu, svm->msrpm, MSR_IA32_LASTBRANCHTOIP, 0, 0);
+-	set_msr_interception(vcpu, svm->msrpm, MSR_IA32_LASTINTFROMIP, 0, 0);
+-	set_msr_interception(vcpu, svm->msrpm, MSR_IA32_LASTINTTOIP, 0, 0);
++	svm_recalc_lbr_msr_intercepts(vcpu);
  
  	/*
- 	 * No seeding done at that point -- if multiple accepts are
+ 	 * Move the LBR msrs back to the vmcb01 to avoid copying them
 
 
 
