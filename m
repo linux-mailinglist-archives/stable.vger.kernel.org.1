@@ -1,131 +1,90 @@
-Return-Path: <stable+bounces-206439-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206440-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58996D08521
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 10:49:57 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93ED2D085C8
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 10:55:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id AEBF43032CDE
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 09:46:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6BC3D300C0D7
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 09:55:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40E57332EB3;
-	Fri,  9 Jan 2026 09:45:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5590F334C1B;
+	Fri,  9 Jan 2026 09:55:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="C9cBmZre";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="w7NtLStg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UIheB3C+"
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh-b5-smtp.messagingengine.com (fhigh-b5-smtp.messagingengine.com [202.12.124.156])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2571731AF3B;
-	Fri,  9 Jan 2026 09:45:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.156
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1069B330B0E;
+	Fri,  9 Jan 2026 09:55:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767951956; cv=none; b=kHFSSsxxehjFljvRWmOfXArmVZm0dY8aKM7s6yXJmNUTheMrt1Qjn5sFlfxaZzf0bL86vcfPOHEwwJtMyxEZk3UcqVYd5CtQBDlWGjoaXGpPemPevrlgLjUj/6uIr2j1+Rr7XGdnO9O64/jNjNte8HKaZ3mE1mAaAza8t1MPCnQ=
+	t=1767952534; cv=none; b=SGGycxzeSKycpVQtZDdnPID9OL0zCdcAL6ZE6LnQLaMFHKrgEsBbfgM/US+L9k8Nd5nrxLt3ntMTXnwAsx92z+oo5ZSL0Sw9Sv0Qmi6GyZ9cBZPLJPHMCeXED/kjsARtYCUE65+OQCM0h+E0d5R6Ga6VqKD5vHseDmPEMELe40c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767951956; c=relaxed/simple;
-	bh=SsYD3QEytlHofVainY1hPLvxemAtvue2KCkzQisHHYA=;
+	s=arc-20240116; t=1767952534; c=relaxed/simple;
+	bh=j5axSlwHet7l1SGYJ4MCQ3nwMWXjXkvA11ZCaTJdiIU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rDopf0bYEUuai/HNaCxMVRU9h0d/4dHCumAyN+zr06Osjds/3shVBQBMURLpi4YrL6U+P5cujq2NVe7MWnn2xZQhHOLbsDXDYG118nmJ6+I9qPzpKmkmyDQCEs/y0SMqhZIYYEhVDf8jXrzmk8ITbN5/Zzhc4WePQQfs5vLNDhs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=C9cBmZre; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=w7NtLStg; arc=none smtp.client-ip=202.12.124.156
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
-Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 3DE077A016C;
-	Fri,  9 Jan 2026 04:45:54 -0500 (EST)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-10.internal (MEProxy); Fri, 09 Jan 2026 04:45:54 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm2; t=1767951954; x=1768038354; bh=XIphJwKG8O
-	JfNJKxIfDOIqHkckpXgGk9iR++X16ez9I=; b=C9cBmZreQfHssqqoZEk9MF7Qf0
-	fJV+cAFihILTrAhfDbMWXSfJ98aA2Q4mqXmu7WtvG6letUGXFYlbrgPm+s8EJ7Uj
-	Y1lgPnew069TuEq7FhwOJzVPG+yqqH77R3TpbDHQ/bdwSYMZ8oPD8Wedv1KGptVd
-	/bC43BIhxos8stabM4ChE5PjrjOTUmP5osR859fxVdF0Kt5oKk08h1AoUBXmoOcE
-	G7tJv8a7o1xtUKe8cRi7neTF0LORnYvZ8Zf+EeJPPM+nhCopzsXW2OGgdc7J0/mK
-	YnZonrZuhtyfE2qN9tbRM0UdFHXro3xQUNWpTWQyKsHxf58STBQ+++GaTBWQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1767951954; x=1768038354; bh=XIphJwKG8OJfNJKxIfDOIqHkckpXgGk9iR+
-	+X16ez9I=; b=w7NtLStgBWtibQGVuGAzX1NGpN3hNj6dmisvK504cpD/+UAhAHw
-	k5Y3hHEtXSJu7BFWeXdu4ShO3Cp4TLfSODI/FG4K5hlfkrJVz49Go8lCB8WlX2fB
-	5v1m3wdKEClibUHTdDlh3yhCKUoE4k+QPart/bBGhriI5GenfsagPQSKlWRqbKNu
-	BPEkWm1uUyI62bMGlLJRlVBdGtdmRGA1QUJiWKWe+xS7t9tWkRJdSbvG9ME0+Ncz
-	vXvKXTTYypg4maACwUBqPaIdyDomNAN5nXjUWXW/2fB5HX3Av/f5vqsn6HU0uSAN
-	pZkAb2tQmiKJ52ILbN/IIaQJoxeWzAxhWdQ==
-X-ME-Sender: <xms:Uc5gacJMfYDJ1Sok6URJIe7TX6hO9-JjXa4D-jKklVTBLKLVowAHbw>
-    <xme:Uc5gaeva23mjpY_PHyxYZyoZMJ6xM2d400U5SpiSdNTE4nlE3Lm8sqZX5Msssqmx_
-    IrHz5sC7PqEIVGIbxFr7DIuvzRyO2z0BQZobFVaj5VMx2-cNw>
-X-ME-Received: <xmr:Uc5gaQUtDYtCayh3qWQRRTL9J9-l0pVhgb3sJ52_Eh-ExVnGmGVmTYeT6_5gMikojODNLmdPsaPWNvGSJXNe_nduGZJ1VsmX9jM9Gg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddutdekgeelucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepifhrvghgucfm
-    jfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepheegvdevvd
-    eljeeugfdtudduhfekledtiefhveejkeejuefhtdeufefhgfehkeetnecuvehluhhsthgv
-    rhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepghhrvghgsehkrhhorghhrd
-    gtohhmpdhnsggprhgtphhtthhopeekpdhmohguvgepshhmthhpohhuthdprhgtphhtthho
-    pehjrghrkhhkoheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshhtrggslhgvsehvgh
-    gvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqihhnthgvghhrihht
-    hiesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehnohhoughlvghssehmvg
-    htrgdrtghomh
-X-ME-Proxy: <xmx:Uc5gaZheN-_V02vYZEzjkszgxFjLttt7gUTMGeSJ6rdF_nKoNX_UpA>
-    <xmx:Uc5gaYoGMB-W2ZvDIDEhiYVdljH2ECTd8SjI2of1miMuDo4EoaDy0g>
-    <xmx:Uc5gafF6LDIkNrGBGZR2kRbazh-bS8BVSzIJdoJUbUdWvjO1KDCNzg>
-    <xmx:Uc5gad7al3B1_XHi0zYFxdNuertTVwz442_Uj5wymLsVPrgIVh3YAw>
-    <xmx:Us5gaV81lT3zYr5RFMxWROYDtnr1JuIrDOAMa4gAnn5ex8oZe-DJDNQ1>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 9 Jan 2026 04:45:53 -0500 (EST)
-Date: Fri, 9 Jan 2026 10:45:51 +0100
-From: Greg KH <greg@kroah.com>
-To: Jarkko Sakkinen <jarkko@kernel.org>
-Cc: stable@vger.kernel.org, linux-integrity@vger.kernel.org,
-	Jonathan McDowell <noodles@meta.com>
-Subject: Re: [PATCH] tpm2-sessions: Fix out of range indexing in name_size
-Message-ID: <2026010931-cling-enjoyer-9ce6@gregkh>
-References: <20260108123159.1008858-1-jarkko@kernel.org>
- <aV-kD5iKi9fwluU0@kernel.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=soGXRnCsLDAL1zBT9cnidFAv45UhQ/T+zJwXSAv70lCVdaIUZRduEloNX+18+4L6e9yIGTdMj+Wgn2unCcqK20z6ZRX2IYVSI4dqGGZei9BtOSeYG5pp23fA+K9t52Pu/rQD71j4FgX7N/aBwaRKBj132/RV1/TnFnk8pjz02jU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UIheB3C+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 635AEC4CEF1;
+	Fri,  9 Jan 2026 09:55:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1767952533;
+	bh=j5axSlwHet7l1SGYJ4MCQ3nwMWXjXkvA11ZCaTJdiIU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=UIheB3C+njgPnw+CYupC2VyTmym9XJDWy2176O4VigfDPebfpqBczN/KsGZrOnbhW
+	 lnAtSf/d03qCC04hWlL6a0A4L5dpt0oYNyoJ+sAUCmc6tSe4ciAd69wl2Mjpkdm/97
+	 +6yrBeSf4ODqcKWfKj8rnpCC+J6k404bmSasG4Wc=
+Date: Fri, 9 Jan 2026 10:55:30 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Chuck Lever <cel@kernel.org>
+Cc: stable@vger.kernel.org, Sasha Levin <sashal@kernel.org>,
+	linux-nfs@vger.kernel.org, Jeff Layton <jlayton@kernel.org>
+Subject: Re: [PATCH 6.6.y v2 1/4] nfsd: convert to new timestamp accessors
+Message-ID: <2026010958-defiance-equate-955f@gregkh>
+References: <2025122941-civic-revered-b250@gregkh>
+ <20260108191002.4071603-2-cel@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <aV-kD5iKi9fwluU0@kernel.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260108191002.4071603-2-cel@kernel.org>
 
-On Thu, Jan 08, 2026 at 02:33:19PM +0200, Jarkko Sakkinen wrote:
-> On Thu, Jan 08, 2026 at 02:31:59PM +0200, Jarkko Sakkinen wrote:
-> > [ Upstream commit 6e9722e9a7bfe1bbad649937c811076acf86e1fd ]
-> > 
-> > 'name_size' does not have any range checks, and it just directly indexes
-> > with TPM_ALG_ID, which could lead into memory corruption at worst.
-> > 
-> > Address the issue by only processing known values and returning -EINVAL for
-> > unrecognized values.
-> > 
-> > Make also 'tpm_buf_append_name' and 'tpm_buf_fill_hmac_session' fallible so
-> > that errors are detected before causing any spurious TPM traffic.
-> > 
-> > End also the authorization session on failure in both of the functions, as
-> > the session state would be then by definition corrupted.
-> > 
-> > Cc: stable@vger.kernel.org # v6.10+
-> > Fixes: 1085b8276bb4 ("tpm: Add the rest of the session HMAC API")
-> > Reviewed-by: Jonathan McDowell <noodles@meta.com>
-> > Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-> > ---
+On Thu, Jan 08, 2026 at 02:09:59PM -0500, Chuck Lever wrote:
+> From: Jeff Layton <jlayton@kernel.org>
 > 
-> This is for v6.12.
+> [ Upstream commit 11fec9b9fb04fd1b3330a3b91ab9dcfa81ad5ad3 ]
+> 
+> Convert to using the new inode timestamp accessor functions.
+> 
+> Signed-off-by: Jeff Layton <jlayton@kernel.org>
+> Link: https://lore.kernel.org/r/20231004185347.80880-50-jlayton@kernel.org
+> Stable-dep-of: 24d92de9186e ("nfsd: Fix NFSv3 atomicity bugs in nfsd_setattr()")
+> Signed-off-by: Christian Brauner <brauner@kernel.org>
+> Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+> ---
+>  fs/nfsd/blocklayout.c | 4 +++-
+>  fs/nfsd/nfs3proc.c    | 4 ++--
+>  fs/nfsd/nfs4proc.c    | 8 ++++----
+>  fs/nfsd/nfsctl.c      | 2 +-
+>  fs/nfsd/vfs.c         | 2 +-
+>  5 files changed, 11 insertions(+), 9 deletions(-)
 
-Does not apply anymore to the latest 6.12.y release, can you rebase and
-resend?
+Adds a build warning, which breaks the build:
+
+fs/nfsd/blocklayout.c: In function ‘nfsd4_block_commit_blocks’:
+fs/nfsd/blocklayout.c:123:16: error: unused variable ‘new_size’ [-Werror=unused-variable]
+  123 |         loff_t new_size = lcp->lc_last_wr + 1;
+      |                ^~~~~~~~
+cc1: all warnings being treated as errors
+
+try a 3rd version?
 
 thanks,
 
