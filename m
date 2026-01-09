@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-207149-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207751-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11E66D09B77
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:34:33 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 948ABD0A20E
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:01:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 72B11310C44C
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:20:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 99FAD3005FCE
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:50:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E39335A92E;
-	Fri,  9 Jan 2026 12:20:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A96935BDDD;
+	Fri,  9 Jan 2026 12:49:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yqeaWEJY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KqkMNVYs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0214A32AAB5;
-	Fri,  9 Jan 2026 12:20:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E096F35BDC3;
+	Fri,  9 Jan 2026 12:49:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961231; cv=none; b=C+1wImDZjz7Ve4lNm74ivZGr/ppUtkESkBPvjVtdpyjmXTjF4008DnVXaaLcihQt5CF9yoQijF9yunaFGlJSaNAPHHIdcvDTy/H7lY/B13f9q8jYJsV3Rm8/k+tXLYMFQDdXg8MtYUyLlzaMF+DSeZh9UkPw2Eb/W6AuBuycknY=
+	t=1767962944; cv=none; b=h25jj8EkNStk4L88ijCmqsL61Y6WzHf/0MZiKCF3KdSxSRYxi3HJ9Vi+CcOtPKqdIXgqldwoowhH70v8mkSiEfHFsjDiTdeJcibmuU7cGR1Oaq6LIxyHDfQVrI1GJoC1aWoImwxuU5/NX3CEkozREgJ1ZLjUxdVhyr5ywssVCdY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961231; c=relaxed/simple;
-	bh=wouDCOrxsWLOgQjLWg0n19PCQ7Uye3Y6aqEdWm8EcL0=;
+	s=arc-20240116; t=1767962944; c=relaxed/simple;
+	bh=TZ6feuEtM4r0xkaqzwUGFIOhpwTQN466Xjlt8LlftiI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MTQweIJXZBboS7W+zNLXzg7EhskollZXf/3ibv0X4eUn1kU8AmfBd99GFCqTijYau+kQuIC711PAETaW+9yidfJ6lQZssaSJ8KGWmFkQxzSUCkr1Zqt9Q3eJFRrdYqaePTJoQFrvhNTHUNMZf0EGd+pVD7LIuQ0V6eNRHGvHAwc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yqeaWEJY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7923CC4CEF1;
-	Fri,  9 Jan 2026 12:20:30 +0000 (UTC)
+	 MIME-Version; b=pU88lWXV3WmpB3liGsOFaH9ZX8kRtFdgBJpE4Xh9uo2GcXx4/CWPN2XK7+s2d0CADB4rpHjJ+doIV+tevZWRwmyHd+mVy8eSQZrM7MHSsYzf16BNXi4VrxQvy6YxVM9nwTM3aOe1TZvk81G1EvlvDcpRN82kPhU7Hz3/u0yw0gI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KqkMNVYs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E59EC4CEF1;
+	Fri,  9 Jan 2026 12:49:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961230;
-	bh=wouDCOrxsWLOgQjLWg0n19PCQ7Uye3Y6aqEdWm8EcL0=;
+	s=korg; t=1767962943;
+	bh=TZ6feuEtM4r0xkaqzwUGFIOhpwTQN466Xjlt8LlftiI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yqeaWEJY3uirT2vOU1EAxFgziwV9+0wDvyGxNhw/JovnmQtCUGD3Qe45x5GbWkYAc
-	 x5fx8o5yIwIiJIo1yM6/lR0HdQF2FIRQTEkB/01QRVAUXUhO+JbFvKH2qPDUxasixL
-	 bhz1tkDeG03JyOrNillvoEaTikO456Q70zQlarbs=
+	b=KqkMNVYsgqeoM1tS8JDuN2eWlxqRYmAZ2keJBjF+f4IsWzfCxdubrYgVea+mH+NoH
+	 Tbrisvhqynt2WG7GXk7k0EjnPuzRKEtCXmg7Cd4zxg1bFWc7tt3p+t+LEsLI4UBWia
+	 Q/tbtpg+OuyHfSDT58WMc6eHiP42T8pEocAkJtNY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	jefflexu@linux.alibaba.com,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Stefan Roesch <shr@devkernel.io>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 681/737] mm: fix arithmetic for bdi min_ratio
+	Alexey Velichayshiy <a.velichayshiy@ispras.ru>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 542/634] gfs2: fix freeze error handling
 Date: Fri,  9 Jan 2026 12:43:40 +0100
-Message-ID: <20260109112159.673905192@linuxfoundation.org>
+Message-ID: <20260109112137.981035974@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +60,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jingbo Xu <jefflexu@linux.alibaba.com>
+From: Alexey Velichayshiy <a.velichayshiy@ispras.ru>
 
-commit e0646b7590084a5bf3b056d3ad871d9379d2c25a upstream.
+[ Upstream commit 4cfc7d5a4a01d2133b278cdbb1371fba1b419174 ]
 
-Since now bdi->min_ratio is part per million, fix the wrong arithmetic.
-Otherwise it will fail with -EINVAL when setting a reasonable min_ratio,
-as it tries to set min_ratio to (min_ratio * BDI_RATIO_SCALE) in
-percentage unit, which exceeds 100% anyway.
+After commit b77b4a4815a9 ("gfs2: Rework freeze / thaw logic"),
+the freeze error handling is broken because gfs2_do_thaw()
+overwrites the 'error' variable, causing incorrect processing
+of the original freeze error.
 
-    # cat /sys/class/bdi/253\:0/min_ratio
-    0
-    # cat /sys/class/bdi/253\:0/max_ratio
-    100
-    # echo 1 > /sys/class/bdi/253\:0/min_ratio
-    -bash: echo: write error: Invalid argument
+Fix this by calling gfs2_do_thaw() when gfs2_lock_fs_check_clean()
+fails but ignoring its return value to preserve the original
+freeze error for proper reporting.
 
-Link: https://lkml.kernel.org/r/20231219142508.86265-2-jefflexu@linux.alibaba.com
-Fixes: 8021fb3232f2 ("mm: split off __bdi_set_min_ratio() function")
-Signed-off-by: Jingbo Xu <jefflexu@linux.alibaba.com>
-Reported-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Stefan Roesch <shr@devkernel.io>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: b77b4a4815a9 ("gfs2: Rework freeze / thaw logic")
+Cc: stable@vger.kernel.org # v6.5+
+Signed-off-by: Alexey Velichayshiy <a.velichayshiy@ispras.ru>
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+[ gfs2_do_thaw() only takes one param ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/page-writeback.c |    1 -
- 1 file changed, 1 deletion(-)
+ fs/gfs2/super.c |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/mm/page-writeback.c
-+++ b/mm/page-writeback.c
-@@ -714,7 +714,6 @@ static int __bdi_set_min_ratio(struct ba
+--- a/fs/gfs2/super.c
++++ b/fs/gfs2/super.c
+@@ -771,9 +771,7 @@ static int gfs2_freeze_super(struct supe
+ 		if (!error)
+ 			break;  /* success */
  
- 	if (min_ratio > 100 * BDI_RATIO_SCALE)
- 		return -EINVAL;
--	min_ratio *= BDI_RATIO_SCALE;
+-		error = gfs2_do_thaw(sdp);
+-		if (error)
+-			goto out;
++		(void)gfs2_do_thaw(sdp);
  
- 	spin_lock_bh(&bdi_lock);
- 	if (min_ratio > bdi->max_ratio) {
+ 		if (error == -EBUSY)
+ 			fs_err(sdp, "waiting for recovery before freeze\n");
 
 
 
