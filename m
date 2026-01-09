@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-207739-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207769-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C8A6D0A41F
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:11:37 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id D31CDD0A466
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:12:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 123473174DFC
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:49:54 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 087D132FA065
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:50:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5080135E52C;
-	Fri,  9 Jan 2026 12:48:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B890D35C1A8;
+	Fri,  9 Jan 2026 12:49:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NnIfrYcP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kF1+vP52"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 132CC35E548;
-	Fri,  9 Jan 2026 12:48:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 703B235C1AE;
+	Fri,  9 Jan 2026 12:49:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962909; cv=none; b=AkwGEKaCR/FPrGIOuifW2XvJt4eipew1g/qb9dnUDhxCa0Pv1R3IaB1qgsUlOv94Oean6nvcvCoZWxt7hou5Dzc5sfliKVdPA3n1amDHJr0dmkpiekTxp92/k6EduRbzscwRuxbIW9NTrA5JvL8pxAUUD/ZC3GIDFu7fjSaicis=
+	t=1767962995; cv=none; b=kcOfB0fZEYNEeeCpygeJGZgA3i3m6eXzcCWXWp8rjlKVjpPP45mojWJQH/ikrvcNBbOub5GjpdiPraXuzqeVV+twfvi3+rgipkT7RLjCYdfVp2p7VjjmgUY1iAAz1DxMapbVBbwXPnnHK0gWOJU64lXZ4tuyJb29DdZ4BZ3LQrQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962909; c=relaxed/simple;
-	bh=HdowSssH3JJqPgGnCA4XuMs1UL+djEDPKtQjOAvq9A4=;
+	s=arc-20240116; t=1767962995; c=relaxed/simple;
+	bh=/9VL1ZNkA3lAfLjE39x1Ah0Cq2gjCc83pAe3erkgyfo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uGGCI1dHHlD/lbJ5rMloeA6B6dx0iilSHTNvwmTgq52GYNMCkzKDOjNLUoEMGn6cpD1FAoCn7vxpY8w5YGj2pJTlEtLVzV7iu4GdkU+D0UKmUkx/nDdrMEpJfDaN7JutstTIjo3WtgAie2xtHZ3iJMJKlMiTZNuPn2QqDckcJ8M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NnIfrYcP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90BA1C4CEF1;
-	Fri,  9 Jan 2026 12:48:28 +0000 (UTC)
+	 MIME-Version; b=Wmm70jvSgbryrYy7+g+R0O6/1NK1AY3nSEBh91o9wMqJskO3N9KkMh9cTx+utLunAO56dlqN2ke7IG3cZhql0OZhIuW8+Cb3m7dXrPsUdg8K/4glF1ucnPjND3lMBrcOGbp2r3XkX9UJ/lebG9JROtht3A5yGYYdL0AOo+I8FSw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kF1+vP52; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1817C19422;
+	Fri,  9 Jan 2026 12:49:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962909;
-	bh=HdowSssH3JJqPgGnCA4XuMs1UL+djEDPKtQjOAvq9A4=;
+	s=korg; t=1767962995;
+	bh=/9VL1ZNkA3lAfLjE39x1Ah0Cq2gjCc83pAe3erkgyfo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NnIfrYcP2XZTYjUADzsJJM67jz1WWm7rNfz3qG91AJBijKjNUI0OPjQ57SxChsmaG
-	 QmcCEZsbvsTZxBseeRDTdel7hlU7JGMM+jaKAomE504EaPIS9YDbegYmO7o1YaFAM1
-	 lYw8+yrzKLUWVBvgRXbBDQgzJ+iNfE6Fuv+Xq6uk=
+	b=kF1+vP52FzhjhYRhmWpJJFhcMfG0604pV7npvF9TgypenSUaZ926RGFtbCp4cMsD4
+	 lqAdfcMIx3V7nKTB99A3N2JsfIhONIvsI3koxmPgE3or9TnkhiD7IKzz8gKG1OglHh
+	 rFYnyLANQTiMdqD88WH3gsqT8FUin1iWwfa2cVXU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@google.com>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 523/634] mm/damon/tests/core-kunit: handle alloc failures on damon_test_split_regions_of()
-Date: Fri,  9 Jan 2026 12:43:21 +0100
-Message-ID: <20260109112137.244008522@linuxfoundation.org>
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Chen Yu <xnguchen@sina.cn>
+Subject: [PATCH 6.1 528/634] net: dsa: sja1105: fix kasan out-of-bounds warning in sja1105_table_delete_entry()
+Date: Fri,  9 Jan 2026 12:43:26 +0100
+Message-ID: <20260109112137.434508105@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
 References: <20260109112117.407257400@linuxfoundation.org>
@@ -66,68 +65,47 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: SeongJae Park <sj@kernel.org>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-commit eded254cb69044bd4abde87394ea44909708d7c0 upstream.
+[ Upstream commit 5f2b28b79d2d1946ee36ad8b3dc0066f73c90481 ]
 
-damon_test_split_regions_of() is assuming all dynamic memory allocation in
-it will succeed.  Those are indeed likely in the real use cases since
-those allocations are too small to fail, but theoretically those could
-fail.  In the case, inappropriate memory access can happen.  Fix it by
-appropriately cleanup pre-allocated memory and skip the execution of the
-remaining tests in the failure cases.
+There are actually 2 problems:
+- deleting the last element doesn't require the memmove of elements
+  [i + 1, end) over it. Actually, element i+1 is out of bounds.
+- The memmove itself should move size - i - 1 elements, because the last
+  element is out of bounds.
 
-Link: https://lkml.kernel.org/r/20251101182021.74868-9-sj@kernel.org
-Fixes: 17ccae8bb5c9 ("mm/damon: add kunit tests")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: Brendan Higgins <brendan.higgins@linux.dev>
-Cc: David Gow <davidgow@google.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: <stable@vger.kernel.org>	[5.15+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+The out-of-bounds element still remains out of bounds after being
+accessed, so the problem is only that we touch it, not that it becomes
+in active use. But I suppose it can lead to issues if the out-of-bounds
+element is part of an unmapped page.
+
+Fixes: 6666cebc5e30 ("net: dsa: sja1105: Add support for VLAN operations")
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250318115716.2124395-4-vladimir.oltean@nxp.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Chen Yu <xnguchen@sina.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/damon/core-test.h |   20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+ drivers/net/dsa/sja1105/sja1105_static_config.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/mm/damon/core-test.h
-+++ b/mm/damon/core-test.h
-@@ -256,15 +256,35 @@ static void damon_test_split_regions_of(
- 	struct damon_target *t;
- 	struct damon_region *r;
+--- a/drivers/net/dsa/sja1105/sja1105_static_config.c
++++ b/drivers/net/dsa/sja1105/sja1105_static_config.c
+@@ -1921,8 +1921,10 @@ int sja1105_table_delete_entry(struct sj
+ 	if (i > table->entry_count)
+ 		return -ERANGE;
  
-+	if (!c)
-+		kunit_skip(test, "ctx alloc fail");
- 	t = damon_new_target();
-+	if (!t) {
-+		damon_destroy_ctx(c);
-+		kunit_skip(test, "target alloc fail");
+-	memmove(entries + i * entry_size, entries + (i + 1) * entry_size,
+-		(table->entry_count - i) * entry_size);
++	if (i + 1 < table->entry_count) {
++		memmove(entries + i * entry_size, entries + (i + 1) * entry_size,
++			(table->entry_count - i - 1) * entry_size);
 +	}
- 	r = damon_new_region(0, 22);
-+	if (!r) {
-+		damon_destroy_ctx(c);
-+		damon_free_target(t);
-+		kunit_skip(test, "region alloc fail");
-+	}
- 	damon_add_region(r, t);
- 	damon_split_regions_of(t, 2);
- 	KUNIT_EXPECT_LE(test, damon_nr_regions(t), 2u);
- 	damon_free_target(t);
  
- 	t = damon_new_target();
-+	if (!t) {
-+		damon_destroy_ctx(c);
-+		kunit_skip(test, "second target alloc fail");
-+	}
- 	r = damon_new_region(0, 220);
-+	if (!r) {
-+		damon_destroy_ctx(c);
-+		damon_free_target(t);
-+		kunit_skip(test, "second region alloc fail");
-+	}
- 	damon_add_region(r, t);
- 	damon_split_regions_of(t, 4);
- 	KUNIT_EXPECT_LE(test, damon_nr_regions(t), 4u);
+ 	table->entry_count--;
+ 
 
 
 
