@@ -1,50 +1,53 @@
-Return-Path: <stable+bounces-207831-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207835-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD7DCD0A564
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:17:10 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D4F1D0A301
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:05:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D9024334A0E3
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:53:17 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 4C38C30B2ADA
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:53:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AC3333C1A3;
-	Fri,  9 Jan 2026 12:52:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F97235C1AC;
+	Fri,  9 Jan 2026 12:53:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iGssxQfP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sRiIMI2g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C294633A712;
-	Fri,  9 Jan 2026 12:52:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2346333A712;
+	Fri,  9 Jan 2026 12:53:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767963172; cv=none; b=HrZY9ZpwZ63d+j3PGjlmKoaXPsT6fgru5aHUe/FP23xcbvXw55PjRtW81D8pP5f4scc5FnXv53aMR7YfsLJfLlTTC4n6rUnqFmhwU1YRSELWgvZUkQFzn1bacH7QFMKATIjlmq27XpEVrCY8BYjD9Mdr/qqlQpvCJUB/XxbgJko=
+	t=1767963184; cv=none; b=Vf1JLziG2uJT/AKgwDPDalcChfDNHDHjjT3jPOhkGBv7EbR2KBQtZEyDhgWqyE+9nfd9rYl4k8ZfVJ3NDxjKRyjjnPRJJKg1G/iW4XsjVTieP6FkGBScoXZbVPr6lMXayaFh/sQacGrFpwvg7pF6ehg36136Ove5ILh15Ynqb7s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767963172; c=relaxed/simple;
-	bh=oh/MSMg4NcHfvbPtxalSt2MRsU23vUR8YDahwlsvpTs=;
+	s=arc-20240116; t=1767963184; c=relaxed/simple;
+	bh=45skOZP3E1FMp4vNKY8mPQiOaIh2HirSP5nOvofdglQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Qeh/MxP8Z6QuZgBQharB6aCV+HMHfY0ewur4IpRKRR73ILvXYRqVQ3ZYAYpDOPjITe9rotVXX2h6uGdGMfNQ2L1OQqiHX8NdwrteFAe7rS9wuRLeEVp3fhPJ/tLw50csJmJNCR0V1gYEqpscwz2OoipJFr1QiyAFb8+rV37ZDUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iGssxQfP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E67DC4CEF1;
-	Fri,  9 Jan 2026 12:52:52 +0000 (UTC)
+	 MIME-Version; b=amhob2gN4ymGglbdR16ELLrYtoCUcGBbUn5Twm/SneI+uHVVcUxXEz19Szxy7fDoGXpnvK+SB8VU13b8Rgfe2b2CZo6Z8591CJ0tpiLBqz7rqKfxGBdgyNrBmN2CyoZFDF8L690XSlWl0Z/GZDkoRgP8PiHB8p0SSjg/T/qg798=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sRiIMI2g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4202C4CEF1;
+	Fri,  9 Jan 2026 12:53:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767963172;
-	bh=oh/MSMg4NcHfvbPtxalSt2MRsU23vUR8YDahwlsvpTs=;
+	s=korg; t=1767963184;
+	bh=45skOZP3E1FMp4vNKY8mPQiOaIh2HirSP5nOvofdglQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iGssxQfPthVmM15kv7RHkwBkmTo0ZjiFjWcXTYBLgVM2lSf1kbvPgSyI+5GkEYpbC
-	 RxzT5ZVYz4deMkUIXPKy10E6BN6qwKjTNomwSAW0v/94yKYvDiCZpfLCOPetyuMR8y
-	 31B73IkfiMuGRsTmAUoEBUAbQ/oTsqloF1yKVF7E=
+	b=sRiIMI2gniy3YGuy1UiUXX2ytOPWHprsUMETsjb7daRNOQ9avkmLiRfk2XIg9FlEh
+	 0bzS7wgEUziIBs5998U0p3FPtLK3JdfQodAMDSCLR5YPvaP1TKRX/P9VJRsqF0QKVm
+	 lTIRwEQ+31OFwL3RkubD7Kxpe8CSWQLwdxJf+iWU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Nyekjaer <sean@geanix.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=F6nig?= <ukleinek@kernel.org>
-Subject: [PATCH 6.1 621/634] pwm: stm32: Always program polarity
-Date: Fri,  9 Jan 2026 12:44:59 +0100
-Message-ID: <20260109112141.005224573@linuxfoundation.org>
+	Ashish Kalra <ashish.kalra@amd.com>,
+	Vasant Hegde <vasant.hegde@amd.com>,
+	Sairaj Kodilkar <sarunkod@amd.com>,
+	Joerg Roedel <joerg.roedel@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 625/634] Revert "iommu/amd: Skip enabling command/event buffers for kdump"
+Date: Fri,  9 Jan 2026 12:45:03 +0100
+Message-ID: <20260109112141.155967308@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
 References: <20260109112117.407257400@linuxfoundation.org>
@@ -57,43 +60,75 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Nyekjaer <sean@geanix.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-Commit 7346e7a058a2 ("pwm: stm32: Always do lazy disabling") triggered a
-regression where PWM polarity changes could be ignored.
+This reverts commit f33890f95140660923003ba1e2f114dee20e691b which is
+commit 9be15fbfc6c5c89c22cf6e209f66ea43ee0e58bb upstream.
 
-stm32_pwm_set_polarity() was skipped due to a mismatch between the
-cached pwm->state.polarity and the actual hardware state, leaving the
-hardware polarity unchanged.
+This causes problems in older kernel trees as SNP host kdump is not
+supported in them, so drop it from the stable branches.
 
-Fixes: 7edf7369205b ("pwm: Add driver for STM32 plaftorm")
-Cc: stable@vger.kernel.org # <= 6.12
-Signed-off-by: Sean Nyekjaer <sean@geanix.com>
-Co-developed-by: Uwe Kleine-König <ukleinek@kernel.org>
-Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
+Reported-by: Ashish Kalra <ashish.kalra@amd.com>
+Link: https://lore.kernel.org/r/dacdff7f-0606-4ed5-b056-2de564404d51@amd.com
+Cc: Vasant Hegde <vasant.hegde@amd.com>
+Cc: Sairaj Kodilkar <sarunkod@amd.com>
+Cc: Joerg Roedel <joerg.roedel@amd.com>
+Cc: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pwm/pwm-stm32.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/iommu/amd/init.c |   28 +++++++++-------------------
+ 1 file changed, 9 insertions(+), 19 deletions(-)
 
---- a/drivers/pwm/pwm-stm32.c
-+++ b/drivers/pwm/pwm-stm32.c
-@@ -458,8 +458,7 @@ static int stm32_pwm_apply(struct pwm_ch
- 		return 0;
- 	}
+--- a/drivers/iommu/amd/init.c
++++ b/drivers/iommu/amd/init.c
+@@ -805,16 +805,11 @@ static void iommu_enable_command_buffer(
  
--	if (state->polarity != pwm->state.polarity)
--		stm32_pwm_set_polarity(priv, pwm->hwpwm, state->polarity);
-+	stm32_pwm_set_polarity(priv, pwm->hwpwm, state->polarity);
+ 	BUG_ON(iommu->cmd_buf == NULL);
  
- 	ret = stm32_pwm_config(priv, pwm->hwpwm,
- 			       state->duty_cycle, state->period);
+-	if (!is_kdump_kernel()) {
+-		/*
+-		 * Command buffer is re-used for kdump kernel and setting
+-		 * of MMIO register is not required.
+-		 */
+-		entry = iommu_virt_to_phys(iommu->cmd_buf);
+-		entry |= MMIO_CMD_SIZE_512;
+-		memcpy_toio(iommu->mmio_base + MMIO_CMD_BUF_OFFSET,
+-			    &entry, sizeof(entry));
+-	}
++	entry = iommu_virt_to_phys(iommu->cmd_buf);
++	entry |= MMIO_CMD_SIZE_512;
++
++	memcpy_toio(iommu->mmio_base + MMIO_CMD_BUF_OFFSET,
++		    &entry, sizeof(entry));
+ 
+ 	amd_iommu_reset_cmd_buffer(iommu);
+ }
+@@ -863,15 +858,10 @@ static void iommu_enable_event_buffer(st
+ 
+ 	BUG_ON(iommu->evt_buf == NULL);
+ 
+-	if (!is_kdump_kernel()) {
+-		/*
+-		 * Event buffer is re-used for kdump kernel and setting
+-		 * of MMIO register is not required.
+-		 */
+-		entry = iommu_virt_to_phys(iommu->evt_buf) | EVT_LEN_MASK;
+-		memcpy_toio(iommu->mmio_base + MMIO_EVT_BUF_OFFSET,
+-			    &entry, sizeof(entry));
+-	}
++	entry = iommu_virt_to_phys(iommu->evt_buf) | EVT_LEN_MASK;
++
++	memcpy_toio(iommu->mmio_base + MMIO_EVT_BUF_OFFSET,
++		    &entry, sizeof(entry));
+ 
+ 	/* set head and tail to zero manually */
+ 	writel(0x00, iommu->mmio_base + MMIO_EVT_HEAD_OFFSET);
 
 
 
