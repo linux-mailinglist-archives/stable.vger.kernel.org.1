@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-207011-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207614-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBF92D097D7
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:20:53 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF88ED0A2B9
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:04:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6E28C307D451
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:14:00 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CEF9130BBB1E
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:42:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEF7C3346AF;
-	Fri,  9 Jan 2026 12:13:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D4371CAB3;
+	Fri,  9 Jan 2026 12:42:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Oi6tdP0O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cNVG/RxG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1BD72EAD10;
-	Fri,  9 Jan 2026 12:13:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04ED033032C;
+	Fri,  9 Jan 2026 12:42:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960839; cv=none; b=SA8g3EYEGDneUptkyl7ilFqdrGd0znVwhJA2fdEcZKm5dnuQ/5YvyX4YQ6k+6GS7ZOLY46WBnN1u/i160O/LoAu43IfecWM+VFEWPPAyZ7mqG432IuBXKDeKuxyKr3tKpO91QrmgG/2150pUjc+nxBKPJ2xzYCMXKB+6+42Na84=
+	t=1767962553; cv=none; b=fx24w1rIztnHtq8NbdNfTgTyWaINNgJvtM+Wfqlw2jnggOK0BXohhu8DPz5eK70EtrCpup9vU66YlYQGx7e5/Za1S6xDHh7o8UoUi8NrGH01Slsw8WZh+nsKage8JZJXIkinWm0nMyxIyaSWO9Ohf4DgNPuvDr1j5Y72TAXUN6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960839; c=relaxed/simple;
-	bh=dyY8vaxmKc0NC5vVCucTc58QwsHkY5Wl0+a0BwTNYI0=;
+	s=arc-20240116; t=1767962553; c=relaxed/simple;
+	bh=KkBVA5Cp3AyWmRjy2JbeEACP8KJSNVvDeXZ/YOCxnDo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VzWRUss3Iq2Ekc2Ll3p2m6936OrHL7Xf25NDb4uMBvG/BJiLd5NFaSNaurH4dyjMs9pCvXkQIZj1TGPXaTWpFiSCjIVdBcRhHOIS85Cy4jcGKYKf6XaFmrwhFY0UjcIfclEtM6DjTmkCv84JG/+MOR1eMp5SIkZBiAFqP524/cU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Oi6tdP0O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E8EFC4CEF1;
-	Fri,  9 Jan 2026 12:13:59 +0000 (UTC)
+	 MIME-Version; b=Z1caa77ru4in3nfwBGRmlNmMAB8z71lUhEHes8FISF20oOZTl6E056XInqbefxcQ3ItIQ9rhdGRC4nCnUzGSah5ela9O7nmFFhTU0on1I6suTEL6wiwRmXu3LgKs6OQ91518IhQD9aTr8PtHCBRZtt1Hj53KrBoSZGb0Wn51L7c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cNVG/RxG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85231C4CEF1;
+	Fri,  9 Jan 2026 12:42:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960839;
-	bh=dyY8vaxmKc0NC5vVCucTc58QwsHkY5Wl0+a0BwTNYI0=;
+	s=korg; t=1767962552;
+	bh=KkBVA5Cp3AyWmRjy2JbeEACP8KJSNVvDeXZ/YOCxnDo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Oi6tdP0OXwlVOwHxNqmx7KejchRvnPaIeCwE5Qe7UvOcmYBo7nfqtDWpwO93kGk4B
-	 yiYOZTmivJFq6uoREcStAE1zHEWWOVqtBOmfvRXXyqYH/cq69+HQ0mASTDnZkZKi9f
-	 iMYzVif7iVoM/E4vQTpoJgcFrBLwwyfnV029SdRk=
+	b=cNVG/RxGWXh+H/uFo2WMCGuTycBmb1o3Vf0c+I3dp+UJKrMDArtkWpj0uaWZAWbuR
+	 busau1gAIbvz8Wz7ywBL/hA/c6nGzd6gFH+pvUvhpbl/w9CNfzO0hAepBijuY84/m0
+	 bChfWUu6WZ2GoGfz3hYAtzFPfLQCugk0G5WBvsJE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Olivier Moysan <olivier.moysan@st.com>,
-	Johan Hovold <johan@kernel.org>,
-	olivier moysan <olivier.moysan@foss.st.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.6 544/737] ASoC: stm32: sai: fix OF node leak on probe
+	Jacky Chou <jacky_chou@aspeedtech.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 405/634] net: mdio: aspeed: add dummy read to avoid read-after-write issue
 Date: Fri,  9 Jan 2026 12:41:23 +0100
-Message-ID: <20260109112154.459086658@linuxfoundation.org>
+Message-ID: <20260109112132.767987791@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,150 +61,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Jacky Chou <jacky_chou@aspeedtech.com>
 
-commit 23261f0de09427367e99f39f588e31e2856a690e upstream.
+[ Upstream commit d1a1a4bade4b20c0858d0b2f81d2611de055f675 ]
 
-The reference taken to the sync provider OF node when probing the
-platform device is currently only dropped if the set_sync() callback
-fails during DAI probe.
+The Aspeed MDIO controller may return incorrect data when a read operation
+follows immediately after a write. Due to a controller bug, the subsequent
+read can latch stale data, causing the polling logic to terminate earlier
+than expected.
 
-Make sure to drop the reference on platform probe failures (e.g. probe
-deferral) and on driver unbind.
+To work around this hardware issue, insert a dummy read after each write
+operation. This ensures that the next actual read returns the correct
+data and prevents premature polling exit.
 
-This also avoids a potential use-after-free in case the DAI is ever
-reprobed without first rebinding the platform driver.
+This workaround has been verified to stabilize MDIO transactions on
+affected Aspeed platforms.
 
-Fixes: 5914d285f6b7 ("ASoC: stm32: sai: Add synchronization support")
-Fixes: d4180b4c02e7 ("ASoC: stm32: sai: fix set_sync service")
-Cc: Olivier Moysan <olivier.moysan@st.com>
-Cc: stable@vger.kernel.org      # 4.16: d4180b4c02e7
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: olivier moysan <olivier.moysan@foss.st.com>
-Link: https://patch.msgid.link/20251124104908.15754-4-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f160e99462c6 ("net: phy: Add mdio-aspeed")
+Signed-off-by: Jacky Chou <jacky_chou@aspeedtech.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20251211-aspeed_mdio_add_dummy_read-v3-1-382868869004@aspeedtech.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/stm/stm32_sai.c     |   12 +++---------
- sound/soc/stm/stm32_sai_sub.c |   23 ++++++++++++++++-------
- 2 files changed, 19 insertions(+), 16 deletions(-)
+ drivers/net/mdio/mdio-aspeed.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/sound/soc/stm/stm32_sai.c
-+++ b/sound/soc/stm/stm32_sai.c
-@@ -122,7 +122,6 @@ static int stm32_sai_set_sync(struct stm
- 	if (!pdev) {
- 		dev_err(&sai_client->pdev->dev,
- 			"Device not found for node %pOFn\n", np_provider);
--		of_node_put(np_provider);
- 		return -ENODEV;
- 	}
+diff --git a/drivers/net/mdio/mdio-aspeed.c b/drivers/net/mdio/mdio-aspeed.c
+index 944d005d2bd1..77fccb903718 100644
+--- a/drivers/net/mdio/mdio-aspeed.c
++++ b/drivers/net/mdio/mdio-aspeed.c
+@@ -63,6 +63,13 @@ static int aspeed_mdio_op(struct mii_bus *bus, u8 st, u8 op, u8 phyad, u8 regad,
  
-@@ -131,21 +130,16 @@ static int stm32_sai_set_sync(struct stm
- 	if (!sai_provider) {
- 		dev_err(&sai_client->pdev->dev,
- 			"SAI sync provider data not found\n");
--		ret = -EINVAL;
--		goto error;
-+		return -EINVAL;
- 	}
+ 	iowrite32(ctrl, ctx->base + ASPEED_MDIO_CTRL);
  
- 	/* Configure sync client */
- 	ret = stm32_sai_sync_conf_client(sai_client, synci);
- 	if (ret < 0)
--		goto error;
-+		return ret;
- 
- 	/* Configure sync provider */
--	ret = stm32_sai_sync_conf_provider(sai_provider, synco);
--
--error:
--	of_node_put(np_provider);
--	return ret;
-+	return stm32_sai_sync_conf_provider(sai_provider, synco);
- }
- 
- static int stm32_sai_probe(struct platform_device *pdev)
---- a/sound/soc/stm/stm32_sai_sub.c
-+++ b/sound/soc/stm/stm32_sai_sub.c
-@@ -1453,7 +1453,8 @@ static int stm32_sai_sub_parse_of(struct
- 				dev_err(&pdev->dev,
- 					"External synchro not supported\n");
- 				of_node_put(args.np);
--				return -EINVAL;
-+				ret = -EINVAL;
-+				goto err_put_sync_provider;
- 			}
- 			sai->sync = SAI_SYNC_EXTERNAL;
- 
-@@ -1462,7 +1463,8 @@ static int stm32_sai_sub_parse_of(struct
- 			    (sai->synci > (SAI_GCR_SYNCIN_MAX + 1))) {
- 				dev_err(&pdev->dev, "Wrong SAI index\n");
- 				of_node_put(args.np);
--				return -EINVAL;
-+				ret = -EINVAL;
-+				goto err_put_sync_provider;
- 			}
- 
- 			if (of_property_match_string(args.np, "compatible",
-@@ -1476,7 +1478,8 @@ static int stm32_sai_sub_parse_of(struct
- 			if (!sai->synco) {
- 				dev_err(&pdev->dev, "Unknown SAI sub-block\n");
- 				of_node_put(args.np);
--				return -EINVAL;
-+				ret = -EINVAL;
-+				goto err_put_sync_provider;
- 			}
- 		}
- 
-@@ -1486,13 +1489,15 @@ static int stm32_sai_sub_parse_of(struct
- 
- 	of_node_put(args.np);
- 	sai->sai_ck = devm_clk_get(&pdev->dev, "sai_ck");
--	if (IS_ERR(sai->sai_ck))
--		return dev_err_probe(&pdev->dev, PTR_ERR(sai->sai_ck),
--				     "Missing kernel clock sai_ck\n");
-+	if (IS_ERR(sai->sai_ck)) {
-+		ret = dev_err_probe(&pdev->dev, PTR_ERR(sai->sai_ck),
-+				    "Missing kernel clock sai_ck\n");
-+		goto err_put_sync_provider;
-+	}
- 
- 	ret = clk_prepare(sai->pdata->pclk);
- 	if (ret < 0)
--		return ret;
-+		goto err_put_sync_provider;
- 
- 	if (STM_SAI_IS_F4(sai->pdata))
- 		return 0;
-@@ -1514,6 +1519,8 @@ static int stm32_sai_sub_parse_of(struct
- 
- err_unprepare_pclk:
- 	clk_unprepare(sai->pdata->pclk);
-+err_put_sync_provider:
-+	of_node_put(sai->np_sync_provider);
- 
- 	return ret;
- }
-@@ -1584,6 +1591,7 @@ static int stm32_sai_sub_probe(struct pl
- 
- err_unprepare_pclk:
- 	clk_unprepare(sai->pdata->pclk);
-+	of_node_put(sai->np_sync_provider);
- 
- 	return ret;
- }
-@@ -1596,6 +1604,7 @@ static void stm32_sai_sub_remove(struct
- 	snd_dmaengine_pcm_unregister(&pdev->dev);
- 	snd_soc_unregister_component(&pdev->dev);
- 	pm_runtime_disable(&pdev->dev);
-+	of_node_put(sai->np_sync_provider);
- }
- 
- #ifdef CONFIG_PM_SLEEP
++	/* Workaround for read-after-write issue.
++	 * The controller may return stale data if a read follows immediately
++	 * after a write. A dummy read forces the hardware to update its
++	 * internal state, ensuring that the next real read returns correct data.
++	 */
++	ioread32(ctx->base + ASPEED_MDIO_CTRL);
++
+ 	return readl_poll_timeout(ctx->base + ASPEED_MDIO_CTRL, ctrl,
+ 				!(ctrl & ASPEED_MDIO_CTRL_FIRE),
+ 				ASPEED_MDIO_INTERVAL_US,
+-- 
+2.51.0
+
 
 
 
