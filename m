@@ -1,60 +1,53 @@
-Return-Path: <stable+bounces-207563-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206970-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF52FD0A26C
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:02:47 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 825F2D098E6
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:24:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E0742314B574
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:40:57 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 40C92308C056
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:12:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 534E235BDD9;
-	Fri,  9 Jan 2026 12:40:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 166D33346AF;
+	Fri,  9 Jan 2026 12:12:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="alA1IqOM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fblr/JDA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15DF235CB6A;
-	Fri,  9 Jan 2026 12:40:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF02123ED5B;
+	Fri,  9 Jan 2026 12:12:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962411; cv=none; b=QA5ShYUYaXwMk2odQlIB82g57ttk1BBiGJ4CUdYdEfdM2SaQmx8IKE2uGiBY33y0+ZR5P5rrRKa8x31HoLMWYs3YUfhpQndbB+h6Uo3dPZgnw/GZQPoMijB7LCiAgWFD5xCZZyEDOabs5W2CITpGLO0x/uL6yH+/W2eqtucSdmQ=
+	t=1767960723; cv=none; b=Ves42dTxFGRfPM6noBTzmqmzXbRwPlnvaZgOnxnXAMji6J/V0p660013HVF6so2vNIo4unzZ/rLkWSkZWzNYHEBQnl0W0gIrUIBfeoRQq71Wa6DdIsu3WV8z/0JTzV48JqA4qXVrI57b2+hJPBbNCxMqcpi79a+QrpKDbbz73j8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962411; c=relaxed/simple;
-	bh=BTVXlOKYxI3PVxRl5suoE73R9JS1yNXhsrQ3JMZOwyY=;
+	s=arc-20240116; t=1767960723; c=relaxed/simple;
+	bh=3hRexHjOCjLhnnOFEZ3PiaJx/OnhO86SBtKRH8Pyy9I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FwCqyBgQuQN5YpmATswPjXBxAAY2ocCbkjFMFWuTRpOIllH4Na+gP0SuGy8v+Ae2AMa+K11JqYzoY64dQbSu7Pkxkmhyu3LOEMMBjmAnbA4kX9GMimPkCzCPtnltD867lVadMcm2HKdwJdE0mH+Fwk2ltgOUvKAVxlXnofZU3Zg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=alA1IqOM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96E6CC4CEF1;
-	Fri,  9 Jan 2026 12:40:10 +0000 (UTC)
+	 MIME-Version; b=DM49x0DDi7nTvGxo3W4kC2TzwKzzdqXaap+5hZHnonsyWNLwBQnjqJsj6+LcX2TsYtnradDsPzN/6Ru0MbuR2c2rqoyQpWlef7hKQ/lQ39iW/HIpopmPv/EKgRmTRJg8mOpeivfcctSvrsqb8GHuTGM6L92NS6I3CEiss90CkAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fblr/JDA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27252C4CEF1;
+	Fri,  9 Jan 2026 12:12:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962411;
-	bh=BTVXlOKYxI3PVxRl5suoE73R9JS1yNXhsrQ3JMZOwyY=;
+	s=korg; t=1767960723;
+	bh=3hRexHjOCjLhnnOFEZ3PiaJx/OnhO86SBtKRH8Pyy9I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=alA1IqOM1Rb2jRniHlEI5I+7je75qqtjuPuenPw7y8cAJy/W9O/n1avNxAw+1VtKE
-	 P4RKYdX5hcIfmvB2uvE+ccpG2vVMFvZDE96f5l42Q1kcjxdUG+uaSKXT1CJ500/Nyg
-	 vWDdW445+W4bqkCfWGBSNM2CMjkCi1iz4vwTceDw=
+	b=Fblr/JDAPCY8DHbpa7Dk01tySqNNOgZWE7lz+qiaqckNjlHe8G+NaY+BakSY7V3CM
+	 qzSyZ1pikmJoZhsH6i6SzFIbg0bnSmdOhdb4x/bONynp4zfWhDyKlJI21GZlWFQYKO
+	 C18lwERRT7c5HVaLa1PPW99J6Y0xrdZAUUZ7UksI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiyuan Xie <xiejiyuan@vivo.com>,
-	Zhichi Lin <zhichi.lin@vivo.com>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Will Deacon <will@kernel.org>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Kees Cook <keescook@chromium.org>,
-	Marco Elver <elver@google.com>,
-	Yee Lee <yee.lee@mediatek.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 356/634] scs: fix a wrong parameter in __scs_magic
+	Ma Ke <make24@iscas.ac.cn>,
+	Andi Shyti <andi.shyti@kernel.org>
+Subject: [PATCH 6.6 495/737] i2c: amd-mp2: fix reference leak in MP2 PCI device
 Date: Fri,  9 Jan 2026 12:40:34 +0100
-Message-ID: <20260109112130.920007481@linuxfoundation.org>
+Message-ID: <20260109112152.612248820@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,70 +59,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhichi Lin <zhichi.lin@vivo.com>
+From: Ma Ke <make24@iscas.ac.cn>
 
-commit 08bd4c46d5e63b78e77f2605283874bbe868ab19 upstream.
+commit a6ee6aac66fb394b7f6e6187c73bdcd873f2d139 upstream.
 
-__scs_magic() needs a 'void *' variable, but a 'struct task_struct *' is
-given.  'task_scs(tsk)' is the starting address of the task's shadow call
-stack, and '__scs_magic(task_scs(tsk))' is the end address of the task's
-shadow call stack.  Here should be '__scs_magic(task_scs(tsk))'.
+In i2c_amd_probe(), amd_mp2_find_device() utilizes
+driver_find_next_device() which internally calls driver_find_device()
+to locate the matching device. driver_find_device() increments the
+reference count of the found device by calling get_device(), but
+amd_mp2_find_device() fails to call put_device() to decrement the
+reference count before returning. This results in a reference count
+leak of the PCI device each time i2c_amd_probe() is executed, which
+may prevent the device from being properly released and cause a memory
+leak.
 
-The user-visible effect of this bug is that when CONFIG_DEBUG_STACK_USAGE
-is enabled, the shadow call stack usage checking function
-(scs_check_usage) would scan an incorrect memory range.  This could lead
-to:
+Found by code review.
 
-1. **Inaccurate stack usage reporting**: The function would calculate
-   wrong usage statistics for the shadow call stack, potentially showing
-   incorrect value in kmsg.
-
-2. **Potential kernel crash**: If the value of __scs_magic(tsk)is
-   greater than that of __scs_magic(task_scs(tsk)), the for loop may
-   access unmapped memory, potentially causing a kernel panic.  However,
-   this scenario is unlikely because task_struct is allocated via the slab
-   allocator (which typically returns lower addresses), while the shadow
-   call stack returned by task_scs(tsk) is allocated via vmalloc(which
-   typically returns higher addresses).
-
-However, since this is purely a debugging feature
-(CONFIG_DEBUG_STACK_USAGE), normal production systems should be not
-unaffected.  The bug only impacts developers and testers who are actively
-debugging stack usage with this configuration enabled.
-
-Link: https://lkml.kernel.org/r/20251011082222.12965-1-zhichi.lin@vivo.com
-Fixes: 5bbaf9d1fcb9 ("scs: Add support for stack usage debugging")
-Signed-off-by: Jiyuan Xie <xiejiyuan@vivo.com>
-Signed-off-by: Zhichi Lin <zhichi.lin@vivo.com>
-Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
-Acked-by: Will Deacon <will@kernel.org>
-Cc: Andrey Konovalov <andreyknvl@gmail.com>
-Cc: Kees Cook <keescook@chromium.org>
-Cc: Marco Elver <elver@google.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Yee Lee <yee.lee@mediatek.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Fixes: 529766e0a011 ("i2c: Add drivers for the AMD PCIe MP2 I2C controller")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://lore.kernel.org/r/20251022095402.8846-1-make24@iscas.ac.cn
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/scs.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/i2c/busses/i2c-amd-mp2-pci.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/kernel/scs.c
-+++ b/kernel/scs.c
-@@ -125,7 +125,7 @@ static void scs_check_usage(struct task_
- 	if (!IS_ENABLED(CONFIG_DEBUG_STACK_USAGE))
- 		return;
+--- a/drivers/i2c/busses/i2c-amd-mp2-pci.c
++++ b/drivers/i2c/busses/i2c-amd-mp2-pci.c
+@@ -461,13 +461,16 @@ struct amd_mp2_dev *amd_mp2_find_device(
+ {
+ 	struct device *dev;
+ 	struct pci_dev *pci_dev;
++	struct amd_mp2_dev *mp2_dev;
  
--	for (p = task_scs(tsk); p < __scs_magic(tsk); ++p) {
-+	for (p = task_scs(tsk); p < __scs_magic(task_scs(tsk)); ++p) {
- 		if (!READ_ONCE_NOCHECK(*p))
- 			break;
- 		used += sizeof(*p);
+ 	dev = driver_find_next_device(&amd_mp2_pci_driver.driver, NULL);
+ 	if (!dev)
+ 		return NULL;
+ 
+ 	pci_dev = to_pci_dev(dev);
+-	return (struct amd_mp2_dev *)pci_get_drvdata(pci_dev);
++	mp2_dev = (struct amd_mp2_dev *)pci_get_drvdata(pci_dev);
++	put_device(dev);
++	return mp2_dev;
+ }
+ EXPORT_SYMBOL_GPL(amd_mp2_find_device);
+ 
 
 
 
