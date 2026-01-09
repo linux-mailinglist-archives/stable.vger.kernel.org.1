@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-206975-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207577-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CD91D098FE
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:25:18 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3A74D0A16B
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:57:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id EEB8630F67B7
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:12:27 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 76E81303D7F4
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:41:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3E2E35A955;
-	Fri,  9 Jan 2026 12:12:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36F8435B15F;
+	Fri,  9 Jan 2026 12:40:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="alLgB10d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mQKwvPLa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76CC6320CB6;
-	Fri,  9 Jan 2026 12:12:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC3E1358D30;
+	Fri,  9 Jan 2026 12:40:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960737; cv=none; b=rMvF9b4qUcUy0uR/4/0bI4plKkdye134BQil/sMGPLCn8Nbougmu5DLLxzBKzjGv4qZN51tl+9cztz5IrgCWBnWcesKPhURt091gXl00Ql711KDl50QhOQtEQxItBKzig6NZ0f7q6ZTeF/e6029ZnrTOm7IS+MY8WdDfT8zSxQE=
+	t=1767962451; cv=none; b=R1c/42J72HxtdpYuEn16ObyQP81qE1/kJZKmV4JKeTrxLerUckUsBXI9l54du92vHwzVV23dMGgoOnfJgsKuvbbQIilgqbjR7j/y7HoWvFA3zEXYOkgJ4icl1DRFWGUhmj61ZxT3bML7oTK+X8QgORtiweWLdUWtcnPfXfisrVs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960737; c=relaxed/simple;
-	bh=5AB6rgfgWGIyDKD8nXeAB9a6Ue3hvlbghoS1UxeRsew=;
+	s=arc-20240116; t=1767962451; c=relaxed/simple;
+	bh=d80z+J8ksOY3ARx7yHBHj546TPz3UlUoYXCFxaJyCHw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l/ixPImkI/DiY5kU2zOpNSbPBSfeTFy3WdcsZcZbUfcCCgIcWdP5TPr9L42xO++HFtO7KCsEpTORFWmYuxmt1gNO0dzk5q0epXd34qLFO4eWXDb4/MuflAbJPmtECyyv+EeE75sbzDX5Xxdz7pVZVYbCj3H7zsmXdsc5gsdCUa4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=alLgB10d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05E29C4CEF1;
-	Fri,  9 Jan 2026 12:12:16 +0000 (UTC)
+	 MIME-Version; b=ONF6VgosUL13FNjrKjcFkzVyEyAV3XZO9YxaSRSBL8T4JDIWl1L+cdwUVqc3bOUYLuPxQahcn+g3g6ByUytOlnK2b3DkT4HNomM9f+2dLbNPf9Hl9V+F317MO1V4v8Gu0nDAGyM2HHcfoQO01cESH23ZamCuWSNh/7dDEGCHfZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mQKwvPLa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BA78C4CEF1;
+	Fri,  9 Jan 2026 12:40:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960737;
-	bh=5AB6rgfgWGIyDKD8nXeAB9a6Ue3hvlbghoS1UxeRsew=;
+	s=korg; t=1767962450;
+	bh=d80z+J8ksOY3ARx7yHBHj546TPz3UlUoYXCFxaJyCHw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=alLgB10dwV8VEZEa8hIG24BnlN0MoaLOwoAyYPLNt1zerqMtpk3RIwU5bUV4AVhqW
-	 DLeDwU+hKirzXBicLcKoVz6LR7LluYSxMW7OD2wh98tangiJwqv+2fADoxQ9VLdRSS
-	 haeJcM4nHONv4iAzQkQ2mfj8SAkt+0mup7dhVU54=
+	b=mQKwvPLaR0KXFkb0RG7mtP8UDFJDnD5qWTDaHgs08Swdt4YeQmn9UJRc2wY0NvWZw
+	 ESJplVjZb3ebfge9glx3uOBp2Q66Ebr+/gLlaJNzKghAnjBwS5YcyLnb8KyDFjJSFr
+	 81YDsXJbXuFaZRLyUvO3uVC1AzyLXWmBdCyx2T28=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacky Chou <jacky_chou@aspeedtech.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 508/737] net: mdio: aspeed: add dummy read to avoid read-after-write issue
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Ian Rogers <irogers@google.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.1 369/634] tracing: Do not register unsupported perf events
 Date: Fri,  9 Jan 2026 12:40:47 +0100
-Message-ID: <20260109112153.107783702@linuxfoundation.org>
+Message-ID: <20260109112131.414996124@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +64,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacky Chou <jacky_chou@aspeedtech.com>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-[ Upstream commit d1a1a4bade4b20c0858d0b2f81d2611de055f675 ]
+commit ef7f38df890f5dcd2ae62f8dbde191d72f3bebae upstream.
 
-The Aspeed MDIO controller may return incorrect data when a read operation
-follows immediately after a write. Due to a controller bug, the subsequent
-read can latch stale data, causing the polling logic to terminate earlier
-than expected.
+Synthetic events currently do not have a function to register perf events.
+This leads to calling the tracepoint register functions with a NULL
+function pointer which triggers:
 
-To work around this hardware issue, insert a dummy read after each write
-operation. This ensures that the next actual read returns the correct
-data and prevents premature polling exit.
+ ------------[ cut here ]------------
+ WARNING: kernel/tracepoint.c:175 at tracepoint_add_func+0x357/0x370, CPU#2: perf/2272
+ Modules linked in: kvm_intel kvm irqbypass
+ CPU: 2 UID: 0 PID: 2272 Comm: perf Not tainted 6.18.0-ftest-11964-ge022764176fc-dirty #323 PREEMPTLAZY
+ Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.17.0-debian-1.17.0-1 04/01/2014
+ RIP: 0010:tracepoint_add_func+0x357/0x370
+ Code: 28 9c e8 4c 0b f5 ff eb 0f 4c 89 f7 48 c7 c6 80 4d 28 9c e8 ab 89 f4 ff 31 c0 5b 41 5c 41 5d 41 5e 41 5f 5d c3 cc cc cc cc cc <0f> 0b 49 c7 c6 ea ff ff ff e9 ee fe ff ff 0f 0b e9 f9 fe ff ff 0f
+ RSP: 0018:ffffabc0c44d3c40 EFLAGS: 00010246
+ RAX: 0000000000000001 RBX: ffff9380aa9e4060 RCX: 0000000000000000
+ RDX: 000000000000000a RSI: ffffffff9e1d4a98 RDI: ffff937fcf5fd6c8
+ RBP: 0000000000000001 R08: 0000000000000007 R09: ffff937fcf5fc780
+ R10: 0000000000000003 R11: ffffffff9c193910 R12: 000000000000000a
+ R13: ffffffff9e1e5888 R14: 0000000000000000 R15: ffffabc0c44d3c78
+ FS:  00007f6202f5f340(0000) GS:ffff93819f00f000(0000) knlGS:0000000000000000
+ CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ CR2: 000055d3162281a8 CR3: 0000000106a56003 CR4: 0000000000172ef0
+ Call Trace:
+  <TASK>
+  tracepoint_probe_register+0x5d/0x90
+  synth_event_reg+0x3c/0x60
+  perf_trace_event_init+0x204/0x340
+  perf_trace_init+0x85/0xd0
+  perf_tp_event_init+0x2e/0x50
+  perf_try_init_event+0x6f/0x230
+  ? perf_event_alloc+0x4bb/0xdc0
+  perf_event_alloc+0x65a/0xdc0
+  __se_sys_perf_event_open+0x290/0x9f0
+  do_syscall_64+0x93/0x7b0
+  ? entry_SYSCALL_64_after_hwframe+0x76/0x7e
+  ? trace_hardirqs_off+0x53/0xc0
+  entry_SYSCALL_64_after_hwframe+0x76/0x7e
 
-This workaround has been verified to stabilize MDIO transactions on
-affected Aspeed platforms.
+Instead, have the code return -ENODEV, which doesn't warn and has perf
+error out with:
 
-Fixes: f160e99462c6 ("net: phy: Add mdio-aspeed")
-Signed-off-by: Jacky Chou <jacky_chou@aspeedtech.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20251211-aspeed_mdio_add_dummy_read-v3-1-382868869004@aspeedtech.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ # perf record -e synthetic:futex_wait
+Error:
+The sys_perf_event_open() syscall returned with 19 (No such device) for event (synthetic:futex_wait).
+"dmesg | grep -i perf" may provide additional information.
+
+Ideally perf should support synthetic events, but for now just fix the
+warning. The support can come later.
+
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Arnaldo Carvalho de Melo <acme@kernel.org>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Link: https://patch.msgid.link/20251216182440.147e4453@gandalf.local.home
+Fixes: 4b147936fa509 ("tracing: Add support for 'synthetic' events")
+Reported-by: Ian Rogers <irogers@google.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/mdio/mdio-aspeed.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ kernel/trace/trace_events.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/mdio/mdio-aspeed.c b/drivers/net/mdio/mdio-aspeed.c
-index c727103c8b05..339198a4dbc0 100644
---- a/drivers/net/mdio/mdio-aspeed.c
-+++ b/drivers/net/mdio/mdio-aspeed.c
-@@ -63,6 +63,13 @@ static int aspeed_mdio_op(struct mii_bus *bus, u8 st, u8 op, u8 phyad, u8 regad,
+--- a/kernel/trace/trace_events.c
++++ b/kernel/trace/trace_events.c
+@@ -675,6 +675,8 @@ int trace_event_reg(struct trace_event_c
  
- 	iowrite32(ctrl, ctx->base + ASPEED_MDIO_CTRL);
- 
-+	/* Workaround for read-after-write issue.
-+	 * The controller may return stale data if a read follows immediately
-+	 * after a write. A dummy read forces the hardware to update its
-+	 * internal state, ensuring that the next real read returns correct data.
-+	 */
-+	ioread32(ctx->base + ASPEED_MDIO_CTRL);
-+
- 	return readl_poll_timeout(ctx->base + ASPEED_MDIO_CTRL, ctrl,
- 				!(ctrl & ASPEED_MDIO_CTRL_FIRE),
- 				ASPEED_MDIO_INTERVAL_US,
--- 
-2.51.0
-
+ #ifdef CONFIG_PERF_EVENTS
+ 	case TRACE_REG_PERF_REGISTER:
++		if (!call->class->perf_probe)
++			return -ENODEV;
+ 		return tracepoint_probe_register(call->tp,
+ 						 call->class->perf_probe,
+ 						 call);
 
 
 
