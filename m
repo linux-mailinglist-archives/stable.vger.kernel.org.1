@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-206955-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207573-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA214D09686
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:16:00 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2965D0A0A5
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:53:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4A388306E875
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:11:25 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1389530D4E42
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:41:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D2CD359708;
-	Fri,  9 Jan 2026 12:11:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACE9435A955;
+	Fri,  9 Jan 2026 12:40:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="umqKn6QP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h722fuuX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4AB0328B58;
-	Fri,  9 Jan 2026 12:11:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 571A535BDBA;
+	Fri,  9 Jan 2026 12:40:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960680; cv=none; b=eQg/7fIJzA+FeweEBN8x7u8iBixkOHwcJrVfU/dXl8eDDRp0OXmILWngigWLJqo3+ZF7L7lEUHHWmRENcspdRTabrfslXm5V7dR4dG0gE2Ni4Oc0kaS3H6Nw41qP861M2nuvMhqO0eVjaBqGepW8zs4YacvyD/s3GJ/Mktkniu0=
+	t=1767962439; cv=none; b=juNdd+64BHz3C980J2ne5iAjlCaTq3aFenZ/XaS1Yp36O5ql+bQXy+thvhZ1spgkm2gdCgrJCFCAasZDx5OQRRNPKK+Cscum7gUO6WTVjn5a1MGgQRtpHi54fqenV18/I/KsdqXHQ+1Ijm6i5k9edmXH9a27zGcYDZoYCtua0iE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960680; c=relaxed/simple;
-	bh=NePNGBNDNWXR6jeSvnchpzToth8WdoySmttOUi0D8N8=;
+	s=arc-20240116; t=1767962439; c=relaxed/simple;
+	bh=IHCrzyyubZGUL8O29g7HTQ3KWDAxWdNZW2HjsW3BgWI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uZEd7WbCy6VDKALGepnGpNM+pdt7DfFHAAw6L0CB7XOUmzCQPAPb6qwmBiqimORSTzYZbtVJEoYBLKF+2KzpdHtW89bwmApt1xNWCtWWw0QQMRqM4etFKIs1OkIHWYSlVtmVhMMNhve16XXbo1J9xE9FD5Ajva2+i7R+glIKfeU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=umqKn6QP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F532C19423;
-	Fri,  9 Jan 2026 12:11:19 +0000 (UTC)
+	 MIME-Version; b=d35cLF0lo6oQ/uZaAB2qI+mIE77MmXQklPRwBbiriIU4sLKbC0/8K6VyQ7NiEhGcHQck21npm+WWuXuFcqieRbI9R7hDLVWET3pkdlfoBeU+fj1jrrU2g0NksHTAtYRKhcoGMAJrVi6yK6EPkWHP+OmfkbtoreooXnKfYEcgSzw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h722fuuX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8282C4CEF1;
+	Fri,  9 Jan 2026 12:40:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960680;
-	bh=NePNGBNDNWXR6jeSvnchpzToth8WdoySmttOUi0D8N8=;
+	s=korg; t=1767962439;
+	bh=IHCrzyyubZGUL8O29g7HTQ3KWDAxWdNZW2HjsW3BgWI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=umqKn6QPhQTpXdvtDfSX6Up9fb33yAeHu7rzqkU9kLqUmMPn8eYStg3gyvBH08RJw
-	 aUL4ANMcZ+neYNtIJEaEPNk97oaWTWCFTsbJxuO2wZi2TRRrGvJj8X5cIYcCk0CC55
-	 PYnvvf9LfAlTkpcBdgGcUhqPAleLhKaNjRAD3yAg=
+	b=h722fuuXxQNNsKNTjHEXsjbk81QPCoOZv+n+wLrpeCsAuNaKQbumf8+N6u1mu+pRt
+	 zdzmn+OFaiYmPJlKCIEcFlIriCQ/Yq5TyrmqIuYRufI+QoYR5VODfefgZXdPXT+54A
+	 lSFxzjzXgoEvCMCr46o+MFoOmUHNybVke2Kbi84U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shivani Agarwal <shivani.agarwal@broadcom.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 6.6 487/737] crypto: af_alg - zero initialize memory allocated via sock_kmalloc
+	Andrey Vatoropin <a.vatoropin@crpt.ru>,
+	Mike Christie <michael.christie@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.1 348/634] scsi: target: Reset t_task_cdb pointer in error case
 Date: Fri,  9 Jan 2026 12:40:26 +0100
-Message-ID: <20260109112152.306276622@linuxfoundation.org>
+Message-ID: <20260109112130.619091422@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,103 +60,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shivani Agarwal <shivani.agarwal@broadcom.com>
+From: Andrey Vatoropin <a.vatoropin@crpt.ru>
 
-commit 6f6e309328d53a10c0fe1f77dec2db73373179b6 upstream.
+commit 5053eab38a4c4543522d0c320c639c56a8b59908 upstream.
 
-Several crypto user API contexts and requests allocated with
-sock_kmalloc() were left uninitialized, relying on callers to
-set fields explicitly. This resulted in the use of uninitialized
-data in certain error paths or when new fields are added in the
-future.
+If allocation of cmd->t_task_cdb fails, it remains NULL but is later
+dereferenced in the 'err' path.
 
-The ACVP patches also contain two user-space interface files:
-algif_kpp.c and algif_akcipher.c. These too rely on proper
-initialization of their context structures.
+In case of error, reset NULL t_task_cdb value to point at the default
+fixed-size buffer.
 
-A particular issue has been observed with the newly added
-'inflight' variable introduced in af_alg_ctx by commit:
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-  67b164a871af ("crypto: af_alg - Disallow multiple in-flight AIO requests")
-
-Because the context is not memset to zero after allocation,
-the inflight variable has contained garbage values. As a result,
-af_alg_alloc_areq() has incorrectly returned -EBUSY randomly when
-the garbage value was interpreted as true:
-
-  https://github.com/gregkh/linux/blame/master/crypto/af_alg.c#L1209
-
-The check directly tests ctx->inflight without explicitly
-comparing against true/false. Since inflight is only ever set to
-true or false later, an uninitialized value has triggered
--EBUSY failures. Zero-initializing memory allocated with
-sock_kmalloc() ensures inflight and other fields start in a known
-state, removing random issues caused by uninitialized data.
-
-Fixes: fe869cdb89c9 ("crypto: algif_hash - User-space interface for hash operations")
-Fixes: 5afdfd22e6ba ("crypto: algif_rng - add random number generator support")
-Fixes: 2d97591ef43d ("crypto: af_alg - consolidation of duplicate code")
-Fixes: 67b164a871af ("crypto: af_alg - Disallow multiple in-flight AIO requests")
+Fixes: 9e95fb805dc0 ("scsi: target: Fix NULL pointer dereference")
 Cc: stable@vger.kernel.org
-Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Andrey Vatoropin <a.vatoropin@crpt.ru>
+Reviewed-by: Mike Christie <michael.christie@oracle.com>
+Link: https://patch.msgid.link/20251118084014.324940-1-a.vatoropin@crpt.ru
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- crypto/af_alg.c     |    5 ++---
- crypto/algif_hash.c |    3 +--
- crypto/algif_rng.c  |    3 +--
- 3 files changed, 4 insertions(+), 7 deletions(-)
+ drivers/target/target_core_transport.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/crypto/af_alg.c
-+++ b/crypto/af_alg.c
-@@ -1211,15 +1211,14 @@ struct af_alg_async_req *af_alg_alloc_ar
- 	if (unlikely(!areq))
- 		return ERR_PTR(-ENOMEM);
- 
-+	memset(areq, 0, areqlen);
-+
- 	ctx->inflight = true;
- 
- 	areq->areqlen = areqlen;
- 	areq->sk = sk;
- 	areq->first_rsgl.sgl.sgt.sgl = areq->first_rsgl.sgl.sgl;
--	areq->last_rsgl = NULL;
- 	INIT_LIST_HEAD(&areq->rsgl_list);
--	areq->tsgl = NULL;
--	areq->tsgl_entries = 0;
- 
- 	return areq;
- }
---- a/crypto/algif_hash.c
-+++ b/crypto/algif_hash.c
-@@ -416,9 +416,8 @@ static int hash_accept_parent_nokey(void
- 	if (!ctx)
- 		return -ENOMEM;
- 
--	ctx->result = NULL;
-+	memset(ctx, 0, len);
- 	ctx->len = len;
--	ctx->more = false;
- 	crypto_init_wait(&ctx->wait);
- 
- 	ask->private = ctx;
---- a/crypto/algif_rng.c
-+++ b/crypto/algif_rng.c
-@@ -248,9 +248,8 @@ static int rng_accept_parent(void *priva
- 	if (!ctx)
- 		return -ENOMEM;
- 
-+	memset(ctx, 0, len);
- 	ctx->len = len;
--	ctx->addtl = NULL;
--	ctx->addtl_len = 0;
- 
- 	/*
- 	 * No seeding done at that point -- if multiple accepts are
+--- a/drivers/target/target_core_transport.c
++++ b/drivers/target/target_core_transport.c
+@@ -1524,6 +1524,7 @@ target_cmd_init_cdb(struct se_cmd *cmd,
+ 	if (scsi_command_size(cdb) > sizeof(cmd->__t_task_cdb)) {
+ 		cmd->t_task_cdb = kzalloc(scsi_command_size(cdb), gfp);
+ 		if (!cmd->t_task_cdb) {
++			cmd->t_task_cdb = &cmd->__t_task_cdb[0];
+ 			pr_err("Unable to allocate cmd->t_task_cdb"
+ 				" %u > sizeof(cmd->__t_task_cdb): %lu ops\n",
+ 				scsi_command_size(cdb),
 
 
 
