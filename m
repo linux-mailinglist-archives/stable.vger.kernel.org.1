@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-206846-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207448-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09A06D095BD
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:12:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 01CFCD09DF0
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:43:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B2972311C897
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:06:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B1558314CA1C
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:34:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 699E4359F98;
-	Fri,  9 Jan 2026 12:06:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 283F1358D30;
+	Fri,  9 Jan 2026 12:34:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LyxyWFsA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QaJok9p7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D9B61946C8;
-	Fri,  9 Jan 2026 12:06:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E02E4335BCD;
+	Fri,  9 Jan 2026 12:34:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960366; cv=none; b=cX0VVswFnVkMte9Nb7PqV7Ohrc8Yo+iFA6XRKwX5hHQwXWQNbjaCXjkfwWeWxK2Ysf6cOq10eA1fO7VlNgPZ76db0b3aD3mXsuqavZUHq5xjyhEeRDzRLRid9YxTKqywMn6h61r1ks1IFwI2AmK0wvObKiCe6abUQdPzLvzNygs=
+	t=1767962083; cv=none; b=uriSa5icAyg/6tqMUJhsPMLdsAJVYaW9SDFlK/KD1siiRtoGQPyF3Fz6N+iQ7VQxv42JB3MLN0je9ZF96NlRgysfsqYLQW5j2JGpc7lUhzClvUD0GEioNHiGC+k+fl9rtn1cT7aoh3WkQct6VZjuUooqW36o1OTM7klapCaQ/bg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960366; c=relaxed/simple;
-	bh=WnwrqoGkLv3bLtQ7pKl/P+6nEK0cOPeKVYnwNL7W4Zg=;
+	s=arc-20240116; t=1767962083; c=relaxed/simple;
+	bh=j8HnNCtiHQYgejtSwIdZATdk1aKqZrzWs/UFhHTVjA4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NBd4eNtjnAQ3w7w0pjRPqGH2RPb35Ss+UR0pb0pXtQgQeG+1NVEiWEl4qqbr3Y5XyI+KEtL9XGCvpGR8xZCOLPiLhHTzK7sRrDGcvZ748EkDxnQyd5t9M2KJdfTa4V022vMjIl1Fbr8go3GKMwV9wVmXIOeEz7W8y8LVIvWT7pc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LyxyWFsA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A269DC4CEF1;
-	Fri,  9 Jan 2026 12:06:05 +0000 (UTC)
+	 MIME-Version; b=Bhx/NgA5l7Qlv6Py4DLJZnhJRAzNuH7dGwUA9pVqxczblUr/biL5LGmdevZtkc3DmvJYUiUL9/rfI9ft/gi1ja43ze/X44UIEKfNnr98TeVPMF4uybHCMM3RqgxfZ0szAbfYXjSz5GCxlrwZWe+uu72i5VEQIuHNNcnV1eB8s6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QaJok9p7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35D18C4CEF1;
+	Fri,  9 Jan 2026 12:34:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960366;
-	bh=WnwrqoGkLv3bLtQ7pKl/P+6nEK0cOPeKVYnwNL7W4Zg=;
+	s=korg; t=1767962083;
+	bh=j8HnNCtiHQYgejtSwIdZATdk1aKqZrzWs/UFhHTVjA4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LyxyWFsAOT+XV63mD/r8Fz5q4Ya3vopRUwT7xf4BQ5HfkJz1kld7cYEbQijntrhKu
-	 qrKpvb5+AyJAhdLOWa7/ceO1/JbcSGvV0AG7q0v5IRWDcoE7dehpGJrXW/W+flQ9gY
-	 J7s28sP4EfjySs87Fc1oQYqaEf1uaEXxW2ysfOBs=
+	b=QaJok9p7uzhoJo2SDb9c/x+pFxcXsANRX+mIBwiXz2YC80KLQnRl71ELWVI1e/jdE
+	 TxVIerpo9RvptKGZegglzH2eDn4UcpFlMJVRQgc/ddn06CEIwro/GiZrpeZmPcdvU+
+	 nqiyBIKtgVgBpWbCtJuefrSHFoabMoLGiN9dlgFA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Sverdlin Alexander <alexander.sverdlin@siemens.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.6 378/737] spi: fsl-cpm: Check length parity before switching to 16 bit mode
+	syzbot+005d2a9ecd9fbf525f6a@syzkaller.appspotmail.com,
+	Yang Chenzhi <yang.chenzhi@vivo.com>,
+	Viacheslav Dubeyko <slava@dubeyko.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 239/634] hfsplus: fix missing hfs_bnode_get() in __hfs_bnode_create
 Date: Fri,  9 Jan 2026 12:38:37 +0100
-Message-ID: <20260109112148.218778555@linuxfoundation.org>
+Message-ID: <20260109112126.535816872@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,51 +61,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: Yang Chenzhi <yang.chenzhi@vivo.com>
 
-commit 1417927df8049a0194933861e9b098669a95c762 upstream.
+[ Upstream commit 152af114287851583cf7e0abc10129941f19466a ]
 
-Commit fc96ec826bce ("spi: fsl-cpm: Use 16 bit mode for large transfers
-with even size") failed to make sure that the size is really even
-before switching to 16 bit mode. Until recently the problem went
-unnoticed because kernfs uses a pre-allocated bounce buffer of size
-PAGE_SIZE for reading EEPROM.
+When sync() and link() are called concurrently, both threads may
+enter hfs_bnode_find() without finding the node in the hash table
+and proceed to create it.
 
-But commit 8ad6249c51d0 ("eeprom: at25: convert to spi-mem API")
-introduced an additional dynamically allocated bounce buffer whose size
-is exactly the size of the transfer, leading to a buffer overrun in
-the fsl-cpm driver when that size is odd.
+Thread A:
+  hfsplus_write_inode()
+    -> hfsplus_write_system_inode()
+      -> hfs_btree_write()
+        -> hfs_bnode_find(tree, 0)
+          -> __hfs_bnode_create(tree, 0)
 
-Add the missing length parity verification and remain in 8 bit mode
-when the length is not even.
+Thread B:
+  hfsplus_create_cat()
+    -> hfs_brec_insert()
+      -> hfs_bnode_split()
+        -> hfs_bmap_alloc()
+          -> hfs_bnode_find(tree, 0)
+            -> __hfs_bnode_create(tree, 0)
 
-Fixes: fc96ec826bce ("spi: fsl-cpm: Use 16 bit mode for large transfers with even size")
-Cc: stable@vger.kernel.org
-Closes: https://lore.kernel.org/all/638496dd-ec60-4e53-bad7-eb657f67d580@csgroup.eu/
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Reviewed-by: Sverdlin Alexander <alexander.sverdlin@siemens.com>
-Link: https://patch.msgid.link/3c4d81c3923c93f95ec56702a454744a4bad3cfc.1763627618.git.christophe.leroy@csgroup.eu
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+In this case, thread A creates the bnode, sets refcnt=1, and hashes it.
+Thread B also tries to create the same bnode, notices it has already
+been inserted, drops its own instance, and uses the hashed one without
+getting the node.
+
+```
+
+	node2 = hfs_bnode_findhash(tree, cnid);
+	if (!node2) {                                 <- Thread A
+		hash = hfs_bnode_hash(cnid);
+		node->next_hash = tree->node_hash[hash];
+		tree->node_hash[hash] = node;
+		tree->node_hash_cnt++;
+	} else {                                      <- Thread B
+		spin_unlock(&tree->hash_lock);
+		kfree(node);
+		wait_event(node2->lock_wq,
+			!test_bit(HFS_BNODE_NEW, &node2->flags));
+		return node2;
+	}
+```
+
+However, hfs_bnode_find() requires each call to take a reference.
+Here both threads end up setting refcnt=1. When they later put the node,
+this triggers:
+
+BUG_ON(!atomic_read(&node->refcnt))
+
+In this scenario, Thread B in fact finds the node in the hash table
+rather than creating a new one, and thus must take a reference.
+
+Fix this by calling hfs_bnode_get() when reusing a bnode newly created by
+another thread to ensure the refcount is updated correctly.
+
+A similar bug was fixed in HFS long ago in commit
+a9dc087fd3c4 ("fix missing hfs_bnode_get() in __hfs_bnode_create")
+but the same issue remained in HFS+ until now.
+
+Reported-by: syzbot+005d2a9ecd9fbf525f6a@syzkaller.appspotmail.com
+Signed-off-by: Yang Chenzhi <yang.chenzhi@vivo.com>
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Link: https://lore.kernel.org/r/20250829093912.611853-1-yang.chenzhi@vivo.com
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-fsl-spi.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/hfsplus/bnode.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/spi/spi-fsl-spi.c
-+++ b/drivers/spi/spi-fsl-spi.c
-@@ -336,7 +336,7 @@ static int fsl_spi_prepare_message(struc
- 			if (t->bits_per_word == 16 || t->bits_per_word == 32)
- 				t->bits_per_word = 8; /* pretend its 8 bits */
- 			if (t->bits_per_word == 8 && t->len >= 256 &&
--			    (mpc8xxx_spi->flags & SPI_CPM1))
-+			    !(t->len & 1) && (mpc8xxx_spi->flags & SPI_CPM1))
- 				t->bits_per_word = 16;
- 		}
- 	}
+diff --git a/fs/hfsplus/bnode.c b/fs/hfsplus/bnode.c
+index aa095e6fb20e8..c0089849be50e 100644
+--- a/fs/hfsplus/bnode.c
++++ b/fs/hfsplus/bnode.c
+@@ -481,6 +481,7 @@ static struct hfs_bnode *__hfs_bnode_create(struct hfs_btree *tree, u32 cnid)
+ 		tree->node_hash[hash] = node;
+ 		tree->node_hash_cnt++;
+ 	} else {
++		hfs_bnode_get(node2);
+ 		spin_unlock(&tree->hash_lock);
+ 		kfree(node);
+ 		wait_event(node2->lock_wq,
+-- 
+2.51.0
+
 
 
 
