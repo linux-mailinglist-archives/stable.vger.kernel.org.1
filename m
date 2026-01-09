@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-207436-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206834-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EB32D09D4B
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:40:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C439D09410
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:06:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2E766303D5C5
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:34:10 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 217EC302386A
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:05:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B05FE31E107;
-	Fri,  9 Jan 2026 12:34:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BE6F359FBB;
+	Fri,  9 Jan 2026 12:05:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qjBNYn7x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QlwDt+7u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72DA833B6E8;
-	Fri,  9 Jan 2026 12:34:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E369E359F98;
+	Fri,  9 Jan 2026 12:05:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962049; cv=none; b=P29+gmk+Qr0YVpRdmxaCelKFk6BcoqZRuTy4GWEDMUAM0Bdkoo+Pqwz7qNxoWh0zQp/jtpUoJeQSHljWmsh5yKQLOIJuHNizcujPQHZ31i1hxu9Gi8clUeu/jUAV/VGTxKcl9abW98PxjHCLgCIH9rCTXXyI/zkLXZ4EuKgALWo=
+	t=1767960332; cv=none; b=hVx3imNrIPy/ErGjuWRIhrRrR6xVSlKJFx6v1pBWApulheMig7s71DJnvycJKcCWL6d5sFHGY/SHvn7YFcOhWS+s0CcGoPWLiU5zfRpRWHt+2zJx9Kl/op88+gJJS4cRnugKRsCrpludV9DcLI7OZKkkzX8RQsp9B87deaJ8wpY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962049; c=relaxed/simple;
-	bh=8e/HEqs7/WHWCfme1v/QvmJsR6mEUYkL4oTuKTkTt0Q=;
+	s=arc-20240116; t=1767960332; c=relaxed/simple;
+	bh=9a4yQRaLNWxEUZ/8cMWCjhvNd6c5Zmpf8lq5+X4jFLs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gNC4zE8yw4oy4zGLpKr33QZuWiXZAi8x5CU8xSom46lmQmZdnljddRqxt5p/T58IvUFxPeKnnejkRYttl0OhOQkpdl4zwW1m239zPfr1T8tDn0zwclNYs3+6t/Hv6zYPT9Dx+bSZu2Xgdg7hGbJHJ7Gd2FIvG7ZIYTTK/DyTnK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qjBNYn7x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3CD0C4CEF1;
-	Fri,  9 Jan 2026 12:34:08 +0000 (UTC)
+	 MIME-Version; b=iMzSdm+x/jMsjP8iIglxkawyJF1U0+nzlci1c/jS4gcinv4tFmNhgST0Jnzhk+k5rHtt1kozW1Xv/shYZcYASPPdo8/eApbmVoElBqeAV2n20Qc1qtKhTGPKdM61kBlPnVMQzIr2+Jbmx1WHlvmhge0hHKKshliE8bP2FOU72j4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QlwDt+7u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DE29C4CEF1;
+	Fri,  9 Jan 2026 12:05:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962049;
-	bh=8e/HEqs7/WHWCfme1v/QvmJsR6mEUYkL4oTuKTkTt0Q=;
+	s=korg; t=1767960331;
+	bh=9a4yQRaLNWxEUZ/8cMWCjhvNd6c5Zmpf8lq5+X4jFLs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qjBNYn7xjA00S4F+NltWfGqLM8HA0ol7iWX+cgGvhlnZvCd4Rae7rnbLAL5Q9kWup
-	 DWSO23LzcDjeWyHue/+mF1Ze778mfln+Entmz/zJxBZ8Dj+tWsC1x/V/dlhgA+Fccc
-	 revBSOdTFJ716WbcB14NlHzNF2AxNLZybiWBRa2Q=
+	b=QlwDt+7u0p/Vy8XLGT5yicKVXIQ60fj0lzEbLQ8B5t6aM78VB+b11JvofsGs98emX
+	 nccKYU5TPZeZbDCT7wAfpXOgXCAXN1yiJgQYk0FNG7b7Ana60NjTpIa/WNqcDZRHn0
+	 z3UxJpGclpeXcjvHCdRvet3byBZIsnbCfzZ0UP3Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzkaller <syzkaller@googlegroups.com>,
-	George Kennedy <george.kennedy@oracle.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Anurag Dutta <a-dutta@ti.com>,
+	Nishanth Menon <nm@ti.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 228/634] perf/x86/amd: Check event before enable to avoid GPF
+Subject: [PATCH 6.6 367/737] spi: cadence-quadspi: Fix clock disable on probe failure path
 Date: Fri,  9 Jan 2026 12:38:26 +0100
-Message-ID: <20260109112126.009563977@linuxfoundation.org>
+Message-ID: <20260109112147.801963633@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,85 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: George Kennedy <george.kennedy@oracle.com>
+From: Anurag Dutta <a-dutta@ti.com>
 
-[ Upstream commit 866cf36bfee4fba6a492d2dcc5133f857e3446b0 ]
+[ Upstream commit 1889dd2081975ce1f6275b06cdebaa8d154847a9 ]
 
-On AMD machines cpuc->events[idx] can become NULL in a subtle race
-condition with NMI->throttle->x86_pmu_stop().
+When cqspi_request_mmap_dma() returns -EPROBE_DEFER after runtime PM
+is enabled, the error path calls clk_disable_unprepare() on an already
+disabled clock, causing an imbalance.
 
-Check event for NULL in amd_pmu_enable_all() before enable to avoid a GPF.
-This appears to be an AMD only issue.
+Use pm_runtime_get_sync() to increment the usage counter and resume the
+device. This prevents runtime_suspend() from being invoked and causing
+a double clock disable.
 
-Syzkaller reported a GPF in amd_pmu_enable_all.
-
-INFO: NMI handler (perf_event_nmi_handler) took too long to run: 13.143
-    msecs
-Oops: general protection fault, probably for non-canonical address
-    0xdffffc0000000034: 0000  PREEMPT SMP KASAN NOPTI
-KASAN: null-ptr-deref in range [0x00000000000001a0-0x00000000000001a7]
-CPU: 0 UID: 0 PID: 328415 Comm: repro_36674776 Not tainted 6.12.0-rc1-syzk
-RIP: 0010:x86_pmu_enable_event (arch/x86/events/perf_event.h:1195
-    arch/x86/events/core.c:1430)
-RSP: 0018:ffff888118009d60 EFLAGS: 00010012
-RAX: dffffc0000000000 RBX: 0000000000000000 RCX: 0000000000000000
-RDX: 0000000000000034 RSI: 0000000000000000 RDI: 00000000000001a0
-RBP: 0000000000000001 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000002
-R13: ffff88811802a440 R14: ffff88811802a240 R15: ffff8881132d8601
-FS:  00007f097dfaa700(0000) GS:ffff888118000000(0000) GS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00000000200001c0 CR3: 0000000103d56000 CR4: 00000000000006f0
-Call Trace:
- <IRQ>
-amd_pmu_enable_all (arch/x86/events/amd/core.c:760 (discriminator 2))
-x86_pmu_enable (arch/x86/events/core.c:1360)
-event_sched_out (kernel/events/core.c:1191 kernel/events/core.c:1186
-    kernel/events/core.c:2346)
-__perf_remove_from_context (kernel/events/core.c:2435)
-event_function (kernel/events/core.c:259)
-remote_function (kernel/events/core.c:92 (discriminator 1)
-    kernel/events/core.c:72 (discriminator 1))
-__flush_smp_call_function_queue (./arch/x86/include/asm/jump_label.h:27
-    ./include/linux/jump_label.h:207 ./include/trace/events/csd.h:64
-    kernel/smp.c:135 kernel/smp.c:540)
-__sysvec_call_function_single (./arch/x86/include/asm/jump_label.h:27
-    ./include/linux/jump_label.h:207
-    ./arch/x86/include/asm/trace/irq_vectors.h:99 arch/x86/kernel/smp.c:272)
-sysvec_call_function_single (arch/x86/kernel/smp.c:266 (discriminator 47)
-    arch/x86/kernel/smp.c:266 (discriminator 47))
- </IRQ>
-
-Reported-by: syzkaller <syzkaller@googlegroups.com>
-Signed-off-by: George Kennedy <george.kennedy@oracle.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Fixes: 140623410536 ("mtd: spi-nor: Add driver for Cadence Quad SPI Flash Controller")
+Signed-off-by: Anurag Dutta <a-dutta@ti.com>
+Tested-by: Nishanth Menon <nm@ti.com>
+Link: https://patch.msgid.link/20251212072312.2711806-3-a-dutta@ti.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/events/amd/core.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/spi/spi-cadence-quadspi.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/events/amd/core.c b/arch/x86/events/amd/core.c
-index 1282f1a702139..5a6ef45dc9b68 100644
---- a/arch/x86/events/amd/core.c
-+++ b/arch/x86/events/amd/core.c
-@@ -731,7 +731,12 @@ static void amd_pmu_enable_all(int added)
- 		if (!test_bit(idx, cpuc->active_mask))
- 			continue;
- 
--		amd_pmu_enable_event(cpuc->events[idx]);
-+		/*
-+		 * FIXME: cpuc->events[idx] can become NULL in a subtle race
-+		 * condition with NMI->throttle->x86_pmu_stop().
-+		 */
-+		if (cpuc->events[idx])
-+			amd_pmu_enable_event(cpuc->events[idx]);
- 	}
- }
- 
+diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
+index 7b809644436e..eed88aba2cfe 100644
+--- a/drivers/spi/spi-cadence-quadspi.c
++++ b/drivers/spi/spi-cadence-quadspi.c
+@@ -1885,7 +1885,9 @@ static int cqspi_probe(struct platform_device *pdev)
+ probe_reset_failed:
+ 	if (cqspi->is_jh7110)
+ 		cqspi_jh7110_disable_clk(pdev, cqspi);
+-	clk_disable_unprepare(cqspi->clk);
++
++	if (pm_runtime_get_sync(&pdev->dev) >= 0)
++		clk_disable_unprepare(cqspi->clk);
+ probe_clk_failed:
+ 	pm_runtime_put_sync(dev);
+ probe_pm_failed:
 -- 
 2.51.0
 
