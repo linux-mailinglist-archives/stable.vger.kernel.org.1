@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-207272-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206641-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EFF0D09B24
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:33:21 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9188AD093C2
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:05:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 24C9B311A7AE
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:26:37 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8DC4B30C2C7F
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:56:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61F1233C526;
-	Fri,  9 Jan 2026 12:26:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3314E33C511;
+	Fri,  9 Jan 2026 11:56:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KL/WA+Cb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ikuiNVQs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 238C02EC54D;
-	Fri,  9 Jan 2026 12:26:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAD762DEA6F;
+	Fri,  9 Jan 2026 11:56:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961584; cv=none; b=Ywv6fWpcBvIHsiJsxQcVPj1861Vt5BMCEk3quxdprt32U7S/6CLxQgb//a+mc8Ivh867HNcpM7YPKRPLDP+octqlMPO24ErgHuQcf2dfpE5jJ6J80Ocs8KxR0qpjOuuWmoWYgQ/hVcrhmgAQtdRkTk8r8bLQG1Gv1B9Jngnd5+o=
+	t=1767959783; cv=none; b=SutGXrJmNMdzPusgJPJ0rlQI+Mlo3yfRsWHIN3oG7N92Jbff5huvYIEUs0XiyPuG102XfOQ/cUhfdJvnpPgfPqOdJiJocXjdbICtZeqK8lkrYqO9kFyD1uywQhlYHq64N0gYq5yqCpJdkM2XZ1Ms0Cg2ZEfqenHOJ4pzY+jOr50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961584; c=relaxed/simple;
-	bh=ISfaUyIvSXuMU6oCwvIL/hsMMTomoN3MiB+wfo/yahg=;
+	s=arc-20240116; t=1767959783; c=relaxed/simple;
+	bh=jcj7hKsgLPsTtRDACpjBub5zPrjDu0G+bvfl29pv1lU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j7Z1S1TiOVx4wHqYhsaJggeBaHOS66lanitJOcuxrDuLNuxH3RN1eF3+RLmDmxKEmidVN1DqjWLj2hzDR3v8In6I8xMKWlEZBYKQCZSsYKCte5iHkgP+vDgRxKLwBTMgo1zRCoHd3EzJKc7wbhxyyGxoPru+xT2vwx5Td3w64Zs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KL/WA+Cb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3D34C4CEF1;
-	Fri,  9 Jan 2026 12:26:23 +0000 (UTC)
+	 MIME-Version; b=LdDfuJ3Nwe23uDGO7RA/qKWKoljrfYQZ6hMZ74v2iOGqLbFretYiV4aLnBkzXn7edtKf0kZ2NE+EMb1lcpDN5IMoL6R/FZtOklNjWl4JYmay9pX+nnB2sCJwejehoYj8i0CE8IfbDD9FQzkbRGGjWbgWx93zn+9XRxOtQHoLl7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ikuiNVQs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73781C4CEF1;
+	Fri,  9 Jan 2026 11:56:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961584;
-	bh=ISfaUyIvSXuMU6oCwvIL/hsMMTomoN3MiB+wfo/yahg=;
+	s=korg; t=1767959782;
+	bh=jcj7hKsgLPsTtRDACpjBub5zPrjDu0G+bvfl29pv1lU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KL/WA+CbP6jElkDhshYD9x7615F7A27X0UStc5fj8+w4TcPGPjTf2nU0ToUzeWbDH
-	 8jBxnzrnb3qYtolTAtUtljr3yU/gWykht0bqErMdq0MByPFmU6vk9r52JwWCLgGkUb
-	 Vz34EqKT5sr0r9q2HTbS+PgCNPBu0cFxiqVTauEM=
+	b=ikuiNVQs3Hsgws8/epV6HjAUDwc1Ym+9jQ2GmAsCzG5Hb1OYak7nMMZoGOhCGStr6
+	 4GeeSyv+wZm39T8Addmm51MJ6l4rc/1Hh0YajSa1aWxP90FwbkuwKWhBfRd0yakzU0
+	 nhu5yN+aC9NK7laGADOV6vpHIKDagGw1dCVVeaNU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Naoki Ueki <naoki25519@gmail.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	syzbot+3932ccb896e06f7414c9@syzkaller.appspotmail.com,
+	Edward Adam Davis <eadavis@qq.com>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 032/634] HID: elecom: Add support for ELECOM M-XT3URBK (018F)
-Date: Fri,  9 Jan 2026 12:35:10 +0100
-Message-ID: <20260109112118.656271491@linuxfoundation.org>
+Subject: [PATCH 6.6 172/737] fs/ntfs3: Prevent memory leaks in add sub record
+Date: Fri,  9 Jan 2026 12:35:11 +0100
+Message-ID: <20260109112140.462907852@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,82 +61,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Naoki Ueki <naoki25519@gmail.com>
+From: Edward Adam Davis <eadavis@qq.com>
 
-[ Upstream commit cdcbb8e8d10f656642380ee13516290437b52b36 ]
+[ Upstream commit ccc4e86d1c24260c18ae94541198c3711c140da6 ]
 
-The ELECOM M-XT3URBK trackball has an additional device ID (0x018F), which
-shares the same report descriptor as the existing device (0x00FB). However,
-the driver does not currently recognize this new ID, resulting in only five
-buttons being functional.
+If a rb node with the same ino already exists in the rb tree, the newly
+alloced mft_inode in ni_add_subrecord() will not have its memory cleaned
+up, which leads to the memory leak issue reported by syzbot.
 
-This patch adds the new device ID so that all six buttons work properly.
+The best option to avoid this issue is to put the newly alloced mft node
+when a rb node with the same ino already exists in the rb tree and return
+the rb node found in the rb tree to the parent layer.
 
-Signed-off-by: Naoki Ueki <naoki25519@gmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+syzbot reported:
+BUG: memory leak
+unreferenced object 0xffff888110bef280 (size 128):
+  backtrace (crc 126a088f):
+    ni_add_subrecord+0x31/0x180 fs/ntfs3/frecord.c:317
+    ntfs_look_free_mft+0xf0/0x790 fs/ntfs3/fsntfs.c:715
+
+BUG: memory leak
+unreferenced object 0xffff888109093400 (size 1024):
+  backtrace (crc 7197c55e):
+    mi_init+0x2b/0x50 fs/ntfs3/record.c:105
+    mi_format_new+0x40/0x220 fs/ntfs3/record.c:422
+
+Fixes: 4342306f0f0d ("fs/ntfs3: Add file operations and implementation")
+Reported-by: syzbot+3932ccb896e06f7414c9@syzkaller.appspotmail.com
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-elecom.c | 6 ++++--
- drivers/hid/hid-ids.h    | 3 ++-
- drivers/hid/hid-quirks.c | 3 ++-
- 3 files changed, 8 insertions(+), 4 deletions(-)
+ fs/ntfs3/frecord.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hid/hid-elecom.c b/drivers/hid/hid-elecom.c
-index 4fa45ee77503b..f76fec79e8903 100644
---- a/drivers/hid/hid-elecom.c
-+++ b/drivers/hid/hid-elecom.c
-@@ -75,7 +75,8 @@ static __u8 *elecom_report_fixup(struct hid_device *hdev, __u8 *rdesc,
- 		 */
- 		mouse_button_fixup(hdev, rdesc, *rsize, 20, 28, 22, 14, 8);
- 		break;
--	case USB_DEVICE_ID_ELECOM_M_XT3URBK:
-+	case USB_DEVICE_ID_ELECOM_M_XT3URBK_00FB:
-+	case USB_DEVICE_ID_ELECOM_M_XT3URBK_018F:
- 	case USB_DEVICE_ID_ELECOM_M_XT3DRBK:
- 	case USB_DEVICE_ID_ELECOM_M_XT4DRBK:
- 		/*
-@@ -117,7 +118,8 @@ static __u8 *elecom_report_fixup(struct hid_device *hdev, __u8 *rdesc,
- static const struct hid_device_id elecom_devices[] = {
- 	{ HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_BM084) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_XGL20DLBK) },
--	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_XT3URBK) },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_XT3URBK_00FB) },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_XT3URBK_018F) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_XT3DRBK) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_XT4DRBK) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_DT1URBK) },
-diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
-index a91208c83e46b..524edddd84895 100644
---- a/drivers/hid/hid-ids.h
-+++ b/drivers/hid/hid-ids.h
-@@ -439,7 +439,8 @@
- #define USB_VENDOR_ID_ELECOM		0x056e
- #define USB_DEVICE_ID_ELECOM_BM084	0x0061
- #define USB_DEVICE_ID_ELECOM_M_XGL20DLBK	0x00e6
--#define USB_DEVICE_ID_ELECOM_M_XT3URBK	0x00fb
-+#define USB_DEVICE_ID_ELECOM_M_XT3URBK_00FB	0x00fb
-+#define USB_DEVICE_ID_ELECOM_M_XT3URBK_018F	0x018f
- #define USB_DEVICE_ID_ELECOM_M_XT3DRBK	0x00fc
- #define USB_DEVICE_ID_ELECOM_M_XT4DRBK	0x00fd
- #define USB_DEVICE_ID_ELECOM_M_DT1URBK	0x00fe
-diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
-index 960392125ceac..249e626d1c6a3 100644
---- a/drivers/hid/hid-quirks.c
-+++ b/drivers/hid/hid-quirks.c
-@@ -393,7 +393,8 @@ static const struct hid_device_id hid_have_special_driver[] = {
- #if IS_ENABLED(CONFIG_HID_ELECOM)
- 	{ HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_BM084) },
- 	{ HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_XGL20DLBK) },
--	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_XT3URBK) },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_XT3URBK_00FB) },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_XT3URBK_018F) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_XT3DRBK) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_XT4DRBK) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_DT1URBK) },
+diff --git a/fs/ntfs3/frecord.c b/fs/ntfs3/frecord.c
+index 6ff10042a15f2..18e41faef8e68 100644
+--- a/fs/ntfs3/frecord.c
++++ b/fs/ntfs3/frecord.c
+@@ -378,8 +378,10 @@ bool ni_add_subrecord(struct ntfs_inode *ni, CLST rno, struct mft_inode **mi)
+ 
+ 	mi_get_ref(&ni->mi, &m->mrec->parent_ref);
+ 
+-	ni_add_mi(ni, m);
+-	*mi = m;
++	*mi = ni_ins_mi(ni, &ni->mi_tree, m->rno, &m->node);
++	if (*mi != m)
++		mi_put(m);
++
+ 	return true;
+ }
+ 
 -- 
 2.51.0
 
