@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-207043-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207646-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3D82D09850
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:22:42 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C92C7D0A01B
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:50:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3271730DB545
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:15:32 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0B2593022CAF
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:44:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B21DE359F8C;
-	Fri,  9 Jan 2026 12:15:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EC35359703;
+	Fri,  9 Jan 2026 12:44:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J/w9SRM5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r78hMEDW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7411C335083;
-	Fri,  9 Jan 2026 12:15:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32D68335BCD;
+	Fri,  9 Jan 2026 12:44:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960931; cv=none; b=XULTvsGxTnfU08oZ3zbiGbiFLMZDy5bcqdX2+wTnCsbBpbMrAhF6BFpAfhUj0WmXzVkeQbBFq7XCHkjrXJfRrwhos/cPeIYrCCnqebCs/K+FPbX0Zp5z1WaJGti0UIWmS4NVDdtiVrAFmd9G8GZhU6F5VN4EjVgaUGqLua8TmpA=
+	t=1767962643; cv=none; b=TLpN48EqUoxra/PWcoWoQe8JQa4nAh3AnAq/NtN/xbYx0SSy9IeSiS9cPlaaxs8lu5+OkQyfYs99rXpd34a3RjE7EEItcKr3NQbAZBUeKthGm7P/mN5VVq2LYCtZE+R9q8U27iVKgveMCIUY83WYZRestaJDroy6dDCKlAsBVAk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960931; c=relaxed/simple;
-	bh=C7iuL/XCQWYdjAM/y83eUQPnDtyDdTEad7pJrG4JXZo=;
+	s=arc-20240116; t=1767962643; c=relaxed/simple;
+	bh=ZftGsgRNAPAGNTEGYOFpd9AyJolWjDY3hsnCmXBNTls=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FwqBLFYHmWI/Y99EMhZWsolwjStTDya+hgsCALHxZWzGpSvKndWocq6RpMhmqEXqAqcWSzJrEzfWn1C59OZ1RAW/9pRiCrk1c2xmiIBH+N7UfPSOiM45kG7mvsNTHCbsWNDg4exRxwq5cxH03ydXjCCTJaCr39yAcNgsnAN7aQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J/w9SRM5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F270CC4CEF1;
-	Fri,  9 Jan 2026 12:15:30 +0000 (UTC)
+	 MIME-Version; b=sTTBij8lXV+5RA9QzGX1FBoxFy+RqVGHgs6mLCg5lGvOJxNOk2X5uQ0H1pzDp3Y+qg2HwYijjJxEhPE/Gf+6bzi+vbxW5Bk921hC5kFcX3VNYQZSBEP2AcuR/K3DdVsFD9cm0CmOXcfvCG5mvU/zetz84Mco8usDErZa/5mfkIY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r78hMEDW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B24F7C4CEF1;
+	Fri,  9 Jan 2026 12:44:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960931;
-	bh=C7iuL/XCQWYdjAM/y83eUQPnDtyDdTEad7pJrG4JXZo=;
+	s=korg; t=1767962643;
+	bh=ZftGsgRNAPAGNTEGYOFpd9AyJolWjDY3hsnCmXBNTls=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J/w9SRM5xMpDfHy+hrn6l3FDQvKYFc/n/RASOuCLm7+wys+NDlQmZSRtoG8b5V5VN
-	 CIBRGYnJ7m4MZPa2VfxAcsjwA/nOqKAEDlLWfhJ/V8JC5pS/crntu4mN0NVg/qoaPS
-	 T47pH67MrgPECd/f2Oz7uXxkloh0qcuXn+rCv8yg=
+	b=r78hMEDWYOwm/EsILHVpR0KioVZ15gmwdGyfkO0Aqp1pkk5d1oicZ3MuBvW2MEeOe
+	 A0rq9jOB7FTeowhkSKvPHf/LXS1yuqIhg5XmJ/VoyNcZttckspU4jrwzjHvW8PoeWA
+	 djlgX21ko5EIwmo3pXF94aT18/j7h0gWeVJUvXmw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ivan Abramov <i.abramov@mt-integration.ru>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 6.6 576/737] media: adv7842: Avoid possible out-of-bounds array accesses in adv7842_cp_log_status()
+	Honggang LI <honggangli@163.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 437/634] RDMA/rtrs: Fix clt_path::max_pages_per_mr calculation
 Date: Fri,  9 Jan 2026 12:41:55 +0100
-Message-ID: <20260109112155.670433518@linuxfoundation.org>
+Message-ID: <20260109112133.985209456@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,62 +60,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Abramov <i.abramov@mt-integration.ru>
+From: Honggang LI <honggangli@163.com>
 
-commit 8163419e3e05d71dcfa8fb49c8fdf8d76908fe51 upstream.
+[ Upstream commit 43bd09d5b750f700499ae8ec45fd41a4c48673e6 ]
 
-It's possible for cp_read() and hdmi_read() to return -EIO. Those
-values are further used as indexes for accessing arrays.
+If device max_mr_size bits in the range [mr_page_shift+31:mr_page_shift]
+are zero, the `min3` function will set clt_path::max_pages_per_mr to
+zero.
 
-Fix that by checking return values where it's needed.
+`alloc_path_reqs` will pass zero, which is invalid, as the third parameter
+to `ib_alloc_mr`.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: a89bcd4c6c20 ("[media] adv7842: add new video decoder driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ivan Abramov <i.abramov@mt-integration.ru>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 6a98d71daea1 ("RDMA/rtrs: client: main functionality")
+Signed-off-by: Honggang LI <honggangli@163.com>
+Link: https://patch.msgid.link/20251229025617.13241-1-honggangli@163.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/adv7842.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/infiniband/ulp/rtrs/rtrs-clt.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/media/i2c/adv7842.c
-+++ b/drivers/media/i2c/adv7842.c
-@@ -2680,6 +2680,7 @@ static int adv7842_cp_log_status(struct
- 	/* CP block */
- 	struct adv7842_state *state = to_state(sd);
- 	struct v4l2_dv_timings timings;
-+	int temp;
- 	u8 reg_io_0x02 = io_read(sd, 0x02);
- 	u8 reg_io_0x21 = io_read(sd, 0x21);
- 	u8 reg_rep_0x77 = rep_read(sd, 0x77);
-@@ -2802,8 +2803,9 @@ static int adv7842_cp_log_status(struct
- 		  (((reg_io_0x02 >> 2) & 0x01) ^ (reg_io_0x02 & 0x01)) ?
- 			"(16-235)" : "(0-255)",
- 		  (reg_io_0x02 & 0x08) ? "enabled" : "disabled");
-+	temp = cp_read(sd, 0xf4) >> 4;
- 	v4l2_info(sd, "Color space conversion: %s\n",
--		  csc_coeff_sel_rb[cp_read(sd, 0xf4) >> 4]);
-+		  temp < 0 ? "" : csc_coeff_sel_rb[temp]);
- 
- 	if (!is_digital_input(sd))
- 		return 0;
-@@ -2833,8 +2835,9 @@ static int adv7842_cp_log_status(struct
- 			hdmi_read(sd, 0x5f));
- 	v4l2_info(sd, "AV Mute: %s\n",
- 			(hdmi_read(sd, 0x04) & 0x40) ? "on" : "off");
-+	temp = hdmi_read(sd, 0x0b) >> 6;
- 	v4l2_info(sd, "Deep color mode: %s\n",
--			deep_color_mode_txt[hdmi_read(sd, 0x0b) >> 6]);
-+			temp < 0 ? "" : deep_color_mode_txt[temp]);
- 
- 	adv7842_log_infoframes(sd);
- 
+diff --git a/drivers/infiniband/ulp/rtrs/rtrs-clt.c b/drivers/infiniband/ulp/rtrs/rtrs-clt.c
+index dac8ddfc89e7..7c81452d73cf 100644
+--- a/drivers/infiniband/ulp/rtrs/rtrs-clt.c
++++ b/drivers/infiniband/ulp/rtrs/rtrs-clt.c
+@@ -1465,6 +1465,7 @@ static void query_fast_reg_mode(struct rtrs_clt_path *clt_path)
+ 	mr_page_shift      = max(12, ffs(ib_dev->attrs.page_size_cap) - 1);
+ 	max_pages_per_mr   = ib_dev->attrs.max_mr_size;
+ 	do_div(max_pages_per_mr, (1ull << mr_page_shift));
++	max_pages_per_mr = min_not_zero((u32)max_pages_per_mr, U32_MAX);
+ 	clt_path->max_pages_per_mr =
+ 		min3(clt_path->max_pages_per_mr, (u32)max_pages_per_mr,
+ 		     ib_dev->attrs.max_fast_reg_page_list_len);
+-- 
+2.51.0
+
 
 
 
