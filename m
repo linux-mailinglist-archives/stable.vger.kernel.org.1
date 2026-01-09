@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-206638-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207235-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39381D093B3
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:05:06 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 494C9D09A12
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:29:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2D828302D88F
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:56:16 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 189B130256B0
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:24:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 961C033290A;
-	Fri,  9 Jan 2026 11:56:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B07432AAB5;
+	Fri,  9 Jan 2026 12:24:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pp9ArP0c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1j8FDeir"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59B5A2DEA6F;
-	Fri,  9 Jan 2026 11:56:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2B0C26ED41;
+	Fri,  9 Jan 2026 12:24:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767959774; cv=none; b=TDvqh9yQZ0c9YwcRYXpR6UrhBPFIU00L1XnHXO3CVsEqHPZJna4+LrwN8YsxYXXJcJsWX4UZ5ALAeiP4dJU1AP9chWS/oswLhB8EpJzJjBuoK+IB9627l236lIBF3mbJQbj/U++xgj57TzSyGFpixLlHdEPWyL6ctNG2EsGnM4I=
+	t=1767961477; cv=none; b=uNQWb/VWqmYexcZngUoM2cNi9B7D0DGNUGnw9RwnQvAx2X1i8pWtHa2iURgNpPx0xfjwJL3JGvGJ2jb+XhHzaR6iotKHO6Ja6LhK8y9P5n261Lr8DFtSGOIKNqH6L3ZEZJ1PCOpSpZKzLsqk9gbKp7vhaqsPYJ8rk6qoQ98W6oQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767959774; c=relaxed/simple;
-	bh=o+8/dVG6sANh43FjfixBnJ3erT/rVpnkUB77FQZWZsc=;
+	s=arc-20240116; t=1767961477; c=relaxed/simple;
+	bh=XFEgtAfYJCneZMMmVItKySKisnJtBD9+aivPMJfdDoQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sa/0NTICH/FBRE80PpultW8etmZ0s5McNzDB2pPHJuALnZF5RLkqjM744tRBxfntgp7goVsDtT9SIgNJtvAtC1PCV0Rh9AySh1ES0TXp+qsrbVFxQooLSSBn7F/IZuFzQgLKu7bT0TI6sK/Awe7ZZFokORurPM6pVeYgWG9aEzs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pp9ArP0c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD38FC4CEF1;
-	Fri,  9 Jan 2026 11:56:13 +0000 (UTC)
+	 MIME-Version; b=R5Qa+mPfDnB0/ITSuQTSqxonKqASjxdj0ehTOh7Pq7S0E/AFouITuzL6q298SmziuI06Qjj6IldxTR9fT4usu/galct6ljOtsmTibH9oxrS1PAY32kUtZY8wrqFoEia86R3H3C8pWl97eCvphD8GJdHgXjdSxAi05HCL3aTp7Go=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1j8FDeir; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46BEFC4CEF1;
+	Fri,  9 Jan 2026 12:24:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767959774;
-	bh=o+8/dVG6sANh43FjfixBnJ3erT/rVpnkUB77FQZWZsc=;
+	s=korg; t=1767961477;
+	bh=XFEgtAfYJCneZMMmVItKySKisnJtBD9+aivPMJfdDoQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Pp9ArP0cPq0ax460/d2Sh48jKOLQSWspY52u/W9oHlExljYj3QUtLMt9zNma4gXTV
-	 zMnK6NzNYtPOkrBhYHikS+sRp2vD1sLZcqjFZ/Y+1EQPAPHdrEhB1lYuC7lR9y3hdH
-	 j1C2QEn96ofEISQeNBOUfyuN01T+4L+6P5qWknTg=
+	b=1j8FDeir8vK3rldvl5MN8eTfKV2WPrPiYYL7xWOx++motmwBNV/tq3hU02u9mzEpU
+	 j+2+5uVggvDCSm3mSla648LBKqy9X/0nBmITguYn1woqIdPep5NHWeNylV9m8WHGt8
+	 yYcc5cIiw1h3f0KWRttu+dMld1gLObUMYcNBdciU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zheng Qixing <zhengqixing@huawei.com>,
-	Yu Kuai <yukuai@fnnas.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	syzbot+6641a61fe0e2e89ae8c5@syzkaller.appspotmail.com,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Simon Horman <horms@kernel.org>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 143/737] nbd: defer config unlock in nbd_genl_connect
+Subject: [PATCH 6.1 004/634] xfrm: flush all states in xfrm_state_fini
 Date: Fri,  9 Jan 2026 12:34:42 +0100
-Message-ID: <20260109112139.378112719@linuxfoundation.org>
+Message-ID: <20260109112117.586052638@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,74 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zheng Qixing <zhengqixing@huawei.com>
+From: Sabrina Dubroca <sd@queasysnail.net>
 
-[ Upstream commit 1649714b930f9ea6233ce0810ba885999da3b5d4 ]
+[ Upstream commit 42e42562c9cfcdacf000f1b42284a4fad24f8546 ]
 
-There is one use-after-free warning when running NBD_CMD_CONNECT and
-NBD_CLEAR_SOCK:
+While reverting commit f75a2804da39 ("xfrm: destroy xfrm_state
+synchronously on net exit path"), I incorrectly changed
+xfrm_state_flush's "proto" argument back to IPSEC_PROTO_ANY. This
+reverts some of the changes in commit dbb2483b2a46 ("xfrm: clean up
+xfrm protocol checks"), and leads to some states not being removed
+when we exit the netns.
 
-nbd_genl_connect
-  nbd_alloc_and_init_config // config_refs=1
-  nbd_start_device // config_refs=2
-  set NBD_RT_HAS_CONFIG_REF			open nbd // config_refs=3
-  recv_work done // config_refs=2
-						NBD_CLEAR_SOCK // config_refs=1
-						close nbd // config_refs=0
-  refcount_inc -> uaf
+Pass 0 instead of IPSEC_PROTO_ANY from both xfrm_state_fini
+xfrm6_tunnel_net_exit, so that xfrm_state_flush deletes all states.
 
-------------[ cut here ]------------
-refcount_t: addition on 0; use-after-free.
-WARNING: CPU: 24 PID: 1014 at lib/refcount.c:25 refcount_warn_saturate+0x12e/0x290
- nbd_genl_connect+0x16d0/0x1ab0
- genl_family_rcv_msg_doit+0x1f3/0x310
- genl_rcv_msg+0x44a/0x790
-
-The issue can be easily reproduced by adding a small delay before
-refcount_inc(&nbd->config_refs) in nbd_genl_connect():
-
-        mutex_unlock(&nbd->config_lock);
-        if (!ret) {
-                set_bit(NBD_RT_HAS_CONFIG_REF, &config->runtime_flags);
-+               printk("before sleep\n");
-+               mdelay(5 * 1000);
-+               printk("after sleep\n");
-                refcount_inc(&nbd->config_refs);
-                nbd_connect_reply(info, nbd->index);
-        }
-
-Fixes: e46c7287b1c2 ("nbd: add a basic netlink interface")
-Signed-off-by: Zheng Qixing <zhengqixing@huawei.com>
-Reviewed-by: Yu Kuai <yukuai@fnnas.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: 2a198bbec691 ("Revert "xfrm: destroy xfrm_state synchronously on net exit path"")
+Reported-by: syzbot+6641a61fe0e2e89ae8c5@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=6641a61fe0e2e89ae8c5
+Tested-by: syzbot+6641a61fe0e2e89ae8c5@syzkaller.appspotmail.com
+Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/nbd.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/ipv6/xfrm6_tunnel.c | 2 +-
+ net/xfrm/xfrm_state.c   | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/block/nbd.c b/drivers/block/nbd.c
-index 9e190d220e98f..8b7f306ec976f 100644
---- a/drivers/block/nbd.c
-+++ b/drivers/block/nbd.c
-@@ -2147,12 +2147,13 @@ static int nbd_genl_connect(struct sk_buff *skb, struct genl_info *info)
+diff --git a/net/ipv6/xfrm6_tunnel.c b/net/ipv6/xfrm6_tunnel.c
+index 3645ab427e128..775ae1171ef89 100644
+--- a/net/ipv6/xfrm6_tunnel.c
++++ b/net/ipv6/xfrm6_tunnel.c
+@@ -334,7 +334,7 @@ static void __net_exit xfrm6_tunnel_net_exit(struct net *net)
+ 	struct xfrm6_tunnel_net *xfrm6_tn = xfrm6_tunnel_pernet(net);
+ 	unsigned int i;
  
- 	ret = nbd_start_device(nbd);
- out:
--	mutex_unlock(&nbd->config_lock);
- 	if (!ret) {
- 		set_bit(NBD_RT_HAS_CONFIG_REF, &config->runtime_flags);
- 		refcount_inc(&nbd->config_refs);
- 		nbd_connect_reply(info, nbd->index);
- 	}
-+	mutex_unlock(&nbd->config_lock);
-+
- 	nbd_config_put(nbd);
- 	if (put_dev)
- 		nbd_put(nbd);
+-	xfrm_state_flush(net, IPSEC_PROTO_ANY, false);
++	xfrm_state_flush(net, 0, false);
+ 	xfrm_flush_gc();
+ 
+ 	for (i = 0; i < XFRM6_TUNNEL_SPI_BYADDR_HSIZE; i++)
+diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
+index 78d9900db4387..38d9b0b5cc5db 100644
+--- a/net/xfrm/xfrm_state.c
++++ b/net/xfrm/xfrm_state.c
+@@ -2747,7 +2747,7 @@ void xfrm_state_fini(struct net *net)
+ 	unsigned int sz;
+ 
+ 	flush_work(&net->xfrm.state_hash_work);
+-	xfrm_state_flush(net, IPSEC_PROTO_ANY, false);
++	xfrm_state_flush(net, 0, false);
+ 	flush_work(&xfrm_state_gc_work);
+ 
+ 	WARN_ON(!list_empty(&net->xfrm.state_all));
 -- 
 2.51.0
 
