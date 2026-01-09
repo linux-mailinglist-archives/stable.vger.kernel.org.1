@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-206667-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207268-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF782D093F8
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:06:23 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71815D09D39
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:40:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C0A6E306A0B9
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:57:38 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 50AA4306C4BA
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:26:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E20133290A;
-	Fri,  9 Jan 2026 11:57:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D07735B120;
+	Fri,  9 Jan 2026 12:26:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HCNehZxX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BnvuNsuY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EFFA31A7EA;
-	Fri,  9 Jan 2026 11:57:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 027D733C530;
+	Fri,  9 Jan 2026 12:26:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767959857; cv=none; b=FdMh5FonDFL14KVaVb1YGS0ioiRn8IMnvv2w57yMyxV20ls10SQXTaLwtunawDIR4f/uh1/ybSCW1/GCAdP/UPTW7doCgRmiOcgJMdRVvYWQuP106Rri/ASYHUcj+9I9/bkeq9iiSGLZ/17e2zFCacAw14PrbTK6gtJULfesz3w=
+	t=1767961573; cv=none; b=Y4wDf2h3UuZ16piJZjLJyLR83DYV+prpvSokS+jQJVfJkQgVQOCnqGLv427fSe98BWd8GHl9UzQLK7KL/oSXXeqWsyPOC5lnORDe9cs6Rf0jvFWNgq1VMh7XfBOhmXb21gZqtFMsA4Uy0ehL1uhvQC+2N30QLyHc+vxQyuAW8d0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767959857; c=relaxed/simple;
-	bh=Aud7brorSkkvXky/sf3Pr50ZimX10brVgFtc3iq6qAg=;
+	s=arc-20240116; t=1767961573; c=relaxed/simple;
+	bh=62zMm0a7MfqpSWySnZvDRt17Id0HOnq7Cujx4NkKaR8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gZd3z7L3gjDt+87WY7iO5SHOJsX7oWP9MxEYixCA6GxOeTHrBYOBO1YPbfwDzFjFhQROEHsPctZ4/aIWHWm4bSIyN3nXvkwi4rH7Wv24y1UufL70FuDqtdBAQE3NtBryMpSx1gXDtTmSjMk0F2zCRBjELdZECzg89wVwaRgVQtw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HCNehZxX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B07AFC4CEF1;
-	Fri,  9 Jan 2026 11:57:36 +0000 (UTC)
+	 MIME-Version; b=k4mob55tEeKU3B0jxSnpXyadl6QxAhNHy49eVXjKMDPWe8O4LzXhrIV3Ou3KqV48zD9ABjBSIo79W64sARTFWB7KRfFVo3L9GiaYzbsTTbA7igWaDiHfwP5+Ft7bsi6k1uMllFiC+9sbVXyvFp/b2SMi7nCTP7fi5Cu36olNwWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BnvuNsuY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 200A8C19422;
+	Fri,  9 Jan 2026 12:26:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767959857;
-	bh=Aud7brorSkkvXky/sf3Pr50ZimX10brVgFtc3iq6qAg=;
+	s=korg; t=1767961572;
+	bh=62zMm0a7MfqpSWySnZvDRt17Id0HOnq7Cujx4NkKaR8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HCNehZxXw2BINaQFTR6hWw3UCGwTHqlETa41eHlDO8Yng6845NwtWj2GLgqJ7eOki
-	 gnA+OPFLaFxap4xzjUQpEOX8eBxQu9FYhUz1Xfe1C8ThARMeMdfodajEykETrCK+Mx
-	 CMAbSoFcDwJzGlFIYHh+lXvhNs/ub8ja1iqzJgWo=
+	b=BnvuNsuYiTZDQgCwJTrTzcjHfM05fEtLYQE3z15vD7Qe3rc4FSgD0DKFCDzGrBDbT
+	 dXVUWup+57rCKqXi1tcxfmq5Ktc5P/AsRGQT+CdBDIRm3V9WI0EgQ2ehFACrHDYUHg
+	 70mJYgy1GN3Pdq9Vmq6fggB+5kMqZ1JmuGuyPLlk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kashyap Desai <kashyap.desai@broadcom.com>,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Selvin Xavier <selvin.xavier@broadcom.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Thorsten Blum <thorsten.blum@linux.dev>,
+	Lukas Wunner <lukas@wunner.de>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 199/737] RDMA/bnxt_re: Fix the inline size for GenP7 devices
+Subject: [PATCH 6.1 060/634] crypto: asymmetric_keys - prevent overflow in asymmetric_key_generate_id
 Date: Fri,  9 Jan 2026 12:35:38 +0100
-Message-ID: <20260109112141.489069977@linuxfoundation.org>
+Message-ID: <20260109112119.701948071@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +61,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Selvin Xavier <selvin.xavier@broadcom.com>
+From: Thorsten Blum <thorsten.blum@linux.dev>
 
-[ Upstream commit 6afe40ff484a1155b71158b911c65299496e35c3 ]
+[ Upstream commit df0845cf447ae1556c3440b8b155de0926cbaa56 ]
 
-Inline size supported by the device is based on the number
-of SGEs supported by the adapter. Change the inline
-size calculation based on that.
+Use check_add_overflow() to guard against potential integer overflows
+when adding the binary blob lengths and the size of an asymmetric_key_id
+structure and return ERR_PTR(-EOVERFLOW) accordingly. This prevents a
+possible buffer overflow when copying data from potentially malicious
+X.509 certificate fields that can be arbitrarily large, such as ASN.1
+INTEGER serial numbers, issuer names, etc.
 
-Fixes: de1d364c3815 ("RDMA/bnxt_re: Add support for Variable WQE in Genp7 adapters")
-Reviewed-by: Kashyap Desai <kashyap.desai@broadcom.com>
-Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Link: https://patch.msgid.link/1763624215-10382-1-git-send-email-selvin.xavier@broadcom.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: 7901c1a8effb ("KEYS: Implement binary asymmetric key ID handling")
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+Reviewed-by: Lukas Wunner <lukas@wunner.de>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/bnxt_re/qplib_sp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ crypto/asymmetric_keys/asymmetric_type.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/qplib_sp.c b/drivers/infiniband/hw/bnxt_re/qplib_sp.c
-index 74c3f6b26c4d3..0b713c1821c3b 100644
---- a/drivers/infiniband/hw/bnxt_re/qplib_sp.c
-+++ b/drivers/infiniband/hw/bnxt_re/qplib_sp.c
-@@ -161,7 +161,7 @@ int bnxt_qplib_get_dev_attr(struct bnxt_qplib_rcfw *rcfw,
- 	attr->max_srq_wqes = le32_to_cpu(sb->max_srq_wr) - 1;
- 	attr->max_srq_sges = sb->max_srq_sge;
- 	attr->max_pkey = 1;
--	attr->max_inline_data = le32_to_cpu(sb->max_inline_data);
-+	attr->max_inline_data = attr->max_qp_sges * sizeof(struct sq_sge);
- 	if (!bnxt_qplib_is_chip_gen_p7(rcfw->res->cctx))
- 		attr->l2_db_size = (sb->l2_db_space_size + 1) *
- 				    (0x01 << RCFW_DBR_BASE_PAGE_SHIFT);
+diff --git a/crypto/asymmetric_keys/asymmetric_type.c b/crypto/asymmetric_keys/asymmetric_type.c
+index 3e4f5a361612d..9d144142e88e2 100644
+--- a/crypto/asymmetric_keys/asymmetric_type.c
++++ b/crypto/asymmetric_keys/asymmetric_type.c
+@@ -11,6 +11,7 @@
+ #include <crypto/public_key.h>
+ #include <linux/seq_file.h>
+ #include <linux/module.h>
++#include <linux/overflow.h>
+ #include <linux/slab.h>
+ #include <linux/ctype.h>
+ #include <keys/system_keyring.h>
+@@ -152,12 +153,17 @@ struct asymmetric_key_id *asymmetric_key_generate_id(const void *val_1,
+ 						     size_t len_2)
+ {
+ 	struct asymmetric_key_id *kid;
+-
+-	kid = kmalloc(sizeof(struct asymmetric_key_id) + len_1 + len_2,
+-		      GFP_KERNEL);
++	size_t kid_sz;
++	size_t len;
++
++	if (check_add_overflow(len_1, len_2, &len))
++		return ERR_PTR(-EOVERFLOW);
++	if (check_add_overflow(sizeof(struct asymmetric_key_id), len, &kid_sz))
++		return ERR_PTR(-EOVERFLOW);
++	kid = kmalloc(kid_sz, GFP_KERNEL);
+ 	if (!kid)
+ 		return ERR_PTR(-ENOMEM);
+-	kid->len = len_1 + len_2;
++	kid->len = len;
+ 	memcpy(kid->data, val_1, len_1);
+ 	memcpy(kid->data + len_1, val_2, len_2);
+ 	return kid;
 -- 
 2.51.0
 
