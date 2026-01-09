@@ -1,53 +1,56 @@
-Return-Path: <stable+bounces-207378-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206746-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C5A7D09ED7
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:46:28 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD743D092B4
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:01:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id AA0DA30C6A83
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:31:27 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E0770301E177
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:01:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CECA733B6E8;
-	Fri,  9 Jan 2026 12:31:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6363359FBA;
+	Fri,  9 Jan 2026 12:01:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PRYux1cr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1T/I5eai"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82B9E359701;
-	Fri,  9 Jan 2026 12:31:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89B60359F98;
+	Fri,  9 Jan 2026 12:01:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961885; cv=none; b=ktyPLLItUlHVqt5K18nX8hecN5jpr6aeLefD7SzO9o1yqQfqfVS0+EpP+70iI2Xp5oU/rRimWVMWvqWsCWWv48MzaiVQJ5hNupiX0HcG8rycWKGtz08eQq9Oyv1OGwDtQxM2Trh/+uu9eweDPj9m8/3aIADASfGJDuZ1//j0o+w=
+	t=1767960081; cv=none; b=M5zIkWCxhdztX2rnbHNGAR8Q5lR78vVgNXX9YGIihoFCI0Q+ysT0keOsH99FS/hCfod620TsmHTnQ8WMGJNTgVYF+YRnv/hUK4eMxYN74O6A8MQDF9xFSdJFwoeuqxY3pNd7MKKkkEnKIoMeYvRkNmQws6FCKB/MTqwg87AJx00=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961885; c=relaxed/simple;
-	bh=n199HlC7jjOqGM3rwVqU6HjuzbV6TRaHMLaRpfwZTas=;
+	s=arc-20240116; t=1767960081; c=relaxed/simple;
+	bh=wybHX70yiGLBPHze8xthcSXHx5VCkZaHu/5twCwJFEQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OtlDkeI+RQXemK6uN/+8LXB1F7hmq610NfnbVt1Gzt0VdKnw/VP9tX6fXVr4oroVVBzdqgdHsTbTJRfIuW13LchHL4QpknRGpESG3k3F6xH5XUa6fl7XoXJPO/me1K2qnyGeAx33eBnWgG7pjUMWUZFiZH/PqHBsqJ+AOw1CVRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PRYux1cr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB7F2C4CEF1;
-	Fri,  9 Jan 2026 12:31:24 +0000 (UTC)
+	 MIME-Version; b=tOts+8uOrKohRaOzy5yoRunYrh5Oy96Eng7PALPdetFzz0CicnefT+V2WGyOzkRkOMAU+eTGwdWBBYppsUbmarff+IlmMgiS2iqPv5ZSngJ5weYMyd8hLooyhbqrXgXziuNpyoHFk1VUn6l5kb0mlyePUrw+SKYfRBTEct5HVEc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1T/I5eai; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1283FC4CEF1;
+	Fri,  9 Jan 2026 12:01:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961885;
-	bh=n199HlC7jjOqGM3rwVqU6HjuzbV6TRaHMLaRpfwZTas=;
+	s=korg; t=1767960081;
+	bh=wybHX70yiGLBPHze8xthcSXHx5VCkZaHu/5twCwJFEQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PRYux1crIAx6kj/XnDQ26cEeA3/H7+Yw6XPZz2L7SSuBEYn1m+t5HJmqvDpNz29/r
-	 pQBxkBrDAqV3NhW1BdKSJznpGQCV0hfXgM3b7CEypiplHpL8IPpn0Qg/K0+rDsNB+h
-	 ENH37ws+rgHOwsLH6pEzH6FEKDFAkb2l2e2EmnQw=
+	b=1T/I5eai/qTRkvi1x+BoLBCFvuiv8kGvoxW+haXQi/cL7fGAxspAI4YXAvf658dQZ
+	 HkEoE7P/Nn3wKcnIXUtQX9kRZV9lEBlKH5hVJiNN5Lkyb+wCrYu6asrD/9zLXBv0p+
+	 rt0NBXUJxso6jAwpdCPwCfnYkZu5T3g8wlPd8VJI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jisheng Zhang <jszhang@kernel.org>,
+	Israel Rukshin <israelr@nvidia.com>,
+	Max Gurtovoy <mgurtovoy@nvidia.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 138/634] usb: dwc2: fix hang during suspend if set as peripheral
+Subject: [PATCH 6.6 277/737] nvme-auth: use kvfree() for memory allocated with kvcalloc()
 Date: Fri,  9 Jan 2026 12:36:56 +0100
-Message-ID: <20260109112122.648230842@linuxfoundation.org>
+Message-ID: <20260109112144.428629229@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,68 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jisheng Zhang <jszhang@kernel.org>
+From: Israel Rukshin <israelr@nvidia.com>
 
-[ Upstream commit 2b94b054ac4974ad2f89f7f7461840c851933adb ]
+[ Upstream commit bb9f4cca7c031de6f0e85f7ba24abf0172829f85 ]
 
-dwc2 on most platforms needs phy controller, clock and power supply.
-All of them must be enabled/activated to properly operate. If dwc2
-is configured as peripheral mode, then all the above three hardware
-resources are disabled at the end of the probe:
+Memory allocated by kvcalloc() may come from vmalloc or kmalloc,
+so use kvfree() instead of kfree() for proper deallocation.
 
-	/* Gadget code manages lowlevel hw on its own */
-	if (hsotg->dr_mode == USB_DR_MODE_PERIPHERAL)
-		dwc2_lowlevel_hw_disable(hsotg);
-
-But the dwc2_suspend() tries to read the dwc2's reg to check whether
-is_device_mode or not, this would result in hang during suspend if dwc2
-is configured as peripheral mode.
-
-Fix this hang by bypassing suspend/resume if lowlevel hw isn't
-enabled.
-
-Fixes: 09a75e857790 ("usb: dwc2: refactor common low-level hw code to platform.c")
-Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
-Link: https://patch.msgid.link/20251104002503.17158-3-jszhang@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: aa36d711e945 ("nvme-auth: convert dhchap_auth_list to an array")
+Signed-off-by: Israel Rukshin <israelr@nvidia.com>
+Reviewed-by: Max Gurtovoy <mgurtovoy@nvidia.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc2/platform.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/nvme/host/auth.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/usb/dwc2/platform.c b/drivers/usb/dwc2/platform.c
-index 8e80b20361e3a..4464c7b1f0cf1 100644
---- a/drivers/usb/dwc2/platform.c
-+++ b/drivers/usb/dwc2/platform.c
-@@ -618,9 +618,13 @@ static int dwc2_driver_probe(struct platform_device *dev)
- static int __maybe_unused dwc2_suspend(struct device *dev)
- {
- 	struct dwc2_hsotg *dwc2 = dev_get_drvdata(dev);
--	bool is_device_mode = dwc2_is_device_mode(dwc2);
-+	bool is_device_mode;
- 	int ret = 0;
- 
-+	if (!dwc2->ll_hw_enabled)
-+		return 0;
-+
-+	is_device_mode = dwc2_is_device_mode(dwc2);
- 	if (is_device_mode)
- 		dwc2_hsotg_suspend(dwc2);
- 
-@@ -671,6 +675,9 @@ static int __maybe_unused dwc2_resume(struct device *dev)
- 	struct dwc2_hsotg *dwc2 = dev_get_drvdata(dev);
- 	int ret = 0;
- 
-+	if (!dwc2->ll_hw_enabled)
-+		return 0;
-+
- 	if (dwc2->phy_off_for_suspend && dwc2->ll_hw_enabled) {
- 		ret = __dwc2_lowlevel_hw_enable(dwc2);
- 		if (ret)
+diff --git a/drivers/nvme/host/auth.c b/drivers/nvme/host/auth.c
+index 811541ce206bf..f1b0a8e7af896 100644
+--- a/drivers/nvme/host/auth.c
++++ b/drivers/nvme/host/auth.c
+@@ -997,7 +997,7 @@ void nvme_auth_free(struct nvme_ctrl *ctrl)
+ 	if (ctrl->dhchap_ctxs) {
+ 		for (i = 0; i < ctrl_max_dhchaps(ctrl); i++)
+ 			nvme_auth_free_dhchap(&ctrl->dhchap_ctxs[i]);
+-		kfree(ctrl->dhchap_ctxs);
++		kvfree(ctrl->dhchap_ctxs);
+ 	}
+ 	if (ctrl->host_key) {
+ 		nvme_auth_free_key(ctrl->host_key);
 -- 
 2.51.0
 
