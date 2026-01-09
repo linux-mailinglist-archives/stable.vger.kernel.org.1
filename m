@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-206714-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207347-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7491DD09401
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:06:29 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EAD9D09BC5
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:35:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3D59A30EEC23
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:59:51 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B06CF3027A0D
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:29:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C07033B97F;
-	Fri,  9 Jan 2026 11:59:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F17135B12D;
+	Fri,  9 Jan 2026 12:29:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PuT1x3yJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AncBjVyi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FDD32DEA6F;
-	Fri,  9 Jan 2026 11:59:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D57B435A95C;
+	Fri,  9 Jan 2026 12:29:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767959990; cv=none; b=N4MuO8qVuKr8tExCI2TgFC9AMQYtbYRbMo726IYnBI1+wLYcEHIv3QRd1PORIDOI6/FEwBLQ3fM29BjPkJFBSZrCA2Af4g68lNwb8tU08PbTKTd684z3ft9PKh0YeQ3KAlwr+g2gzCwEIGJNTKbP3koslO9KrajR7Mb1QOBN3iU=
+	t=1767961796; cv=none; b=mT8Lvm6zrzb2rsT2N4Dpzd4o0lSjkJTTYfKVx33sjDZnZym2OYLSXd8ph5Y5ocC+q33a9TWKkpz6uF1GgAaPW7eqA2rJHhflZ/yqiOq5H92XtHusPZtsEbES+3UMGCXCajn5S60ar3SW9+TsALao2pM0v3f3azmLpMDvsuKayFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767959990; c=relaxed/simple;
-	bh=AA7BCjBN6AkNpyDS1MidjW12S/l2GwI7KEnocXqElSU=;
+	s=arc-20240116; t=1767961796; c=relaxed/simple;
+	bh=pFPKfMUpxLIpX2NVOtbniwogmyhShftWNyfP4H0pQJ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hanQjDNs1JS2BNW7h/FNnkKkYmr7m1uz2T7OjPTjRTsLmTrsDuuna2iQgy1eCPJIvpDh79P8Put4V+dVw2WyjHuJBP06AVrvyYUXZ2ayN7uw0k6UArl1MvP/jIsWOYkeEyZwFMj5OYdZAcjMCCxtwfrwl9kyV7aruVEgJ8Yp8n4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PuT1x3yJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E3B6C4CEF1;
-	Fri,  9 Jan 2026 11:59:49 +0000 (UTC)
+	 MIME-Version; b=VblQqzOQfmjMWub1YvSFhpw8N7yzvOl8SrztUkGptXhpyduOr/gOFYs/KXtxhaw35SY+8g2WWtV1sYoQ79LfvakuXS646y2c4iftA8HmAf9XBnFvvePC0NgOnqDSD3aC7YavaMgtr5spRjkHco8FdI48DZpZZVmaSlLaa9UfK8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AncBjVyi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 509ECC16AAE;
+	Fri,  9 Jan 2026 12:29:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767959990;
-	bh=AA7BCjBN6AkNpyDS1MidjW12S/l2GwI7KEnocXqElSU=;
+	s=korg; t=1767961796;
+	bh=pFPKfMUpxLIpX2NVOtbniwogmyhShftWNyfP4H0pQJ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PuT1x3yJ6RHCn5giQBnIQZS42ih8vwI7ss2gmRdRBIaQGUfMIHy+ihMBuWik33zM6
-	 4OxnyyvegfLdqpsXoNIOPGCbm9amBsmQrZWkgjp42EPRshWXYdvrow7xu55HRo/UYP
-	 YEUZZj2urCpdFns3FtyklQPd5jEZNVbn3k1LUPi4=
+	b=AncBjVyiYGlSPIof8FZba96zd+vY8kC94r/VE7rWmBASjQsScZubv+GNosnvOiPBM
+	 sfItDZ6MW3c/NujaqJI65IfRlMqovvW3FVCPGRAuqDdMSTwwD52lJDxjd0I8zDz/SW
+	 GD/TYUvtvH/OPhRcyMc6GsuJUg9wPzsBhB85ZQmo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Muhammad Usama Anjum <usama.anjum@collabora.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Mike Leach <mike.leach@linaro.org>,
+	Yeoreun Yun <yeoreum.yun@arm.com>,
+	James Clark <james.clark@linaro.org>,
+	Leo Yan <leo.yan@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 245/737] selftests: bonding: add missing build configs
+Subject: [PATCH 6.1 106/634] coresight: etm4x: Add context synchronization before enabling trace
 Date: Fri,  9 Jan 2026 12:36:24 +0100
-Message-ID: <20260109112143.210861763@linuxfoundation.org>
+Message-ID: <20260109112121.422489379@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,38 +63,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Leo Yan <leo.yan@arm.com>
 
-[ Upstream commit 03fb8565c880d57952d9b4ba0b36468bae52b554 ]
+[ Upstream commit 64eb04ae545294e105ad91714dc3167a0b660731 ]
 
-bonding tests also try to create bridge, veth and dummy
-interfaces. These are not currently listed in config.
+According to the software usage PKLXF in Arm ARM (ARM DDI 0487 L.a), a
+Context synchronization event is required before enabling the trace
+unit.
 
-Fixes: bbb774d921e2 ("net: Add tests for bonding and team address list management")
-Fixes: c078290a2b76 ("selftests: include bonding tests into the kselftest infra")
-Acked-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Link: https://lore.kernel.org/r/20240116020201.1883023-1-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 2c28ee720ad1 ("selftests: bonding: add delay before each xvlan_over_bond connectivity check")
+An ISB is added to meet this requirement, particularly for guarding the
+operations in the flow:
+
+  etm4x_allow_trace()
+   `> kvm_tracing_set_el1_configuration()
+	`> write_sysreg_s(trfcr_while_in_guest, SYS_TRFCR_EL12)
+
+Improved the barrier comments to provide more accurate information.
+
+Fixes: 1ab3bb9df5e3 ("coresight: etm4x: Add necessary synchronization for sysreg access")
+Reviewed-by: Mike Leach <mike.leach@linaro.org>
+Reviewed-by: Yeoreun Yun <yeoreum.yun@arm.com>
+Tested-by: James Clark <james.clark@linaro.org>
+Signed-off-by: Leo Yan <leo.yan@arm.com>
+Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+Link: https://lore.kernel.org/r/20251111-arm_coresight_power_management_fix-v6-5-f55553b6c8b3@arm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/drivers/net/bonding/config | 3 +++
- 1 file changed, 3 insertions(+)
+ .../coresight/coresight-etm4x-core.c          | 27 ++++++++++++++++---
+ 1 file changed, 23 insertions(+), 4 deletions(-)
 
-diff --git a/tools/testing/selftests/drivers/net/bonding/config b/tools/testing/selftests/drivers/net/bonding/config
-index 70638fa50b2cc..f85b16fc5128c 100644
---- a/tools/testing/selftests/drivers/net/bonding/config
-+++ b/tools/testing/selftests/drivers/net/bonding/config
-@@ -1,2 +1,5 @@
- CONFIG_BONDING=y
-+CONFIG_BRIDGE=y
-+CONFIG_DUMMY=y
- CONFIG_MACVLAN=y
-+CONFIG_VETH=y
+diff --git a/drivers/hwtracing/coresight/coresight-etm4x-core.c b/drivers/hwtracing/coresight/coresight-etm4x-core.c
+index b0185b4331523..0616efc7cb198 100644
+--- a/drivers/hwtracing/coresight/coresight-etm4x-core.c
++++ b/drivers/hwtracing/coresight/coresight-etm4x-core.c
+@@ -406,10 +406,24 @@ static int etm4_enable_trace_unit(struct etmv4_drvdata *drvdata)
+ 		etm4x_relaxed_write32(csa, TRCRSR_TA, TRCRSR);
+ 
+ 	etm4x_allow_trace(drvdata);
++
++	/*
++	 * According to software usage PKLXF in Arm ARM (ARM DDI 0487 L.a),
++	 * execute a Context synchronization event to guarantee the trace unit
++	 * will observe the new values of the System registers.
++	 */
++	if (!csa->io_mem)
++		isb();
++
+ 	/* Enable the trace unit */
+ 	etm4x_relaxed_write32(csa, 1, TRCPRGCTLR);
+ 
+-	/* Synchronize the register updates for sysreg access */
++	/*
++	 * As recommended by section 4.3.7 ("Synchronization when using system
++	 * instructions to progrom the trace unit") of ARM IHI 0064H.b, the
++	 * self-hosted trace analyzer must perform a Context synchronization
++	 * event between writing to the TRCPRGCTLR and reading the TRCSTATR.
++	 */
+ 	if (!csa->io_mem)
+ 		isb();
+ 
+@@ -858,11 +872,16 @@ static void etm4_disable_trace_unit(struct etmv4_drvdata *drvdata)
+ 	 */
+ 	etm4x_prohibit_trace(drvdata);
+ 	/*
+-	 * Make sure everything completes before disabling, as recommended
+-	 * by section 7.3.77 ("TRCVICTLR, ViewInst Main Control Register,
+-	 * SSTATUS") of ARM IHI 0064D
++	 * Prevent being speculative at the point of disabling the trace unit,
++	 * as recommended by section 7.3.77 ("TRCVICTLR, ViewInst Main Control
++	 * Register, SSTATUS") of ARM IHI 0064D
+ 	 */
+ 	dsb(sy);
++	/*
++	 * According to software usage VKHHY in Arm ARM (ARM DDI 0487 L.a),
++	 * execute a Context synchronization event to guarantee no new
++	 * program-flow trace is generated.
++	 */
+ 	isb();
+ 	/* Trace synchronization barrier, is a nop if not supported */
+ 	tsb_csync();
 -- 
 2.51.0
 
