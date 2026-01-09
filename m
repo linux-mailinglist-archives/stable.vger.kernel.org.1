@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-207584-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206957-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EE24D0A094
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:53:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5194BD098A7
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:23:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 786E531619C9
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:41:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 24E2230F1598
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:11:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3674735B142;
-	Fri,  9 Jan 2026 12:41:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C55F53346AF;
+	Fri,  9 Jan 2026 12:11:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IBwQ1w2K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g/blZzwc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA93035BDAB;
-	Fri,  9 Jan 2026 12:41:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 885E223ED5B;
+	Fri,  9 Jan 2026 12:11:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962470; cv=none; b=jY9q+/XaUBLcftWe3ERagL5vD5BZxehLO9iz1V0sg0gQqQLJYDdmVE2XnYt8TqiUOEhiHDYpTjH2K7ooWEDYXjfGjEUdyXHE5tElvqrvLuO+Fx/8XF3RqyflcavILoIDBsYSozlcdNz3wATRIR/4BZP0Ra+IV5/JVHkfdQPBLo0=
+	t=1767960686; cv=none; b=jwJlT9La0Ejp8CLFOUj0dXtTTzDA/oc4SRaR4k25GjzVbBuAFbzBuEPHZh5Rtjndm7IhQiCN2KOtbCDzbY07YzqVz+HQ1rwWO7cfSyT7zDqQAwvXvjmRZXtbExKi76o9gdY4oKWgpjdwQxSAupKl95AFU41gQqybmbXbmQ/qGwM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962470; c=relaxed/simple;
-	bh=Htxq+vCHFmiJcmsABreXXBoCsSS534GChM4WvVTErj4=;
+	s=arc-20240116; t=1767960686; c=relaxed/simple;
+	bh=OMjRsb6yrLYg7LqI4jdwyTXI3JrJrnc0IlSw/XP9mTw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OWQtsjiGyWrd3KINuGe+sB1irhphZ+daTq9Qqo+SKQ8wv+0I2CS7WAV7EDRYSfxDDR/MOOMB7EEBRDzm8Bd4CwxU5s5MZNaz1Q3PWWbBO9ltr1JXJt43jbvWv72cD0y1PIzeqJFTApXJCEMNyTcNSVz7tZ2hOT4O4ZoWN3cvPaw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IBwQ1w2K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 614B1C4CEF1;
-	Fri,  9 Jan 2026 12:41:10 +0000 (UTC)
+	 MIME-Version; b=fgwHOd+EJQn4LpJ/xc08iMveQNAQYovlr+YqOs+UXNt6BFuLPlrdeYs7nr3eXSpSLeWFVTRWzb12jQw5GHr9KPYrfqk9UWqltujqYgPnWitbqwVm96EBLQucQSr1TyTTOQ5uEv5UXeud8SS9oELTHiqMxgbcX4pG6mBipNtE2v0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g/blZzwc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1EC2C4CEF1;
+	Fri,  9 Jan 2026 12:11:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962470;
-	bh=Htxq+vCHFmiJcmsABreXXBoCsSS534GChM4WvVTErj4=;
+	s=korg; t=1767960686;
+	bh=OMjRsb6yrLYg7LqI4jdwyTXI3JrJrnc0IlSw/XP9mTw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IBwQ1w2KkGQAAl9PktbE4b02PkWbjQ5GQWjvoOBj+pCHTN1O4JkhfSNDjoAmVv0sg
-	 coM+LDMfqcLFeEcb5+exAbHVvQl6TJirciUI0KHhg/hSmXUQfPG/wiUmm4koi76b4E
-	 G0iUUA8eruj/WTuCftR1xrMa+D3i5rDhz4Vxygr4=
+	b=g/blZzwc21e0CbtRrf5Tpb6gduF98cLFhLRl52m8aP2ShpOgpqrzEpCxOI2aZVGs1
+	 c/U8RrfPbjOqBF8wHPYPKHJyAiNtamzOo8sb1qQ6lMeopeE3zU9waHSsNETOu6fy3+
+	 PaW7omfZJBpqjg+A3zjhmMnb+gYqPOlkaF3k7crU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+632cf32276a9a564188d@syzkaller.appspotmail.com,
-	Chao Yu <chao@kernel.org>,
-	Deepanshu Kartikey <kartikey406@gmail.com>,
-	Jaegeuk Kim <jaegeuk@kernel.org>
-Subject: [PATCH 6.1 349/634] f2fs: invalidate dentry cache on failed whiteout creation
+	Guangshuo Li <lgs201920130244@gmail.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 6.6 488/737] crypto: caam - Add check for kcalloc() in test_len()
 Date: Fri,  9 Jan 2026 12:40:27 +0100
-Message-ID: <20260109112130.656816357@linuxfoundation.org>
+Message-ID: <20260109112152.344961451@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,96 +57,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Deepanshu Kartikey <kartikey406@gmail.com>
+From: Guangshuo Li <lgs201920130244@gmail.com>
 
-commit d33f89b34aa313f50f9a512d58dd288999f246b0 upstream.
+commit 7cf6e0b69b0d90ab042163e5bbddda0dfcf8b6a7 upstream.
 
-F2FS can mount filesystems with corrupted directory depth values that
-get runtime-clamped to MAX_DIR_HASH_DEPTH. When RENAME_WHITEOUT
-operations are performed on such directories, f2fs_rename performs
-directory modifications (updating target entry and deleting source
-entry) before attempting to add the whiteout entry via f2fs_add_link.
+As kcalloc() may fail, check its return value to avoid a NULL pointer
+dereference when passing the buffer to rng->read(). On allocation
+failure, log the error and return since test_len() returns void.
 
-If f2fs_add_link fails due to the corrupted directory structure, the
-function returns an error to VFS, but the partial directory
-modifications have already been committed to disk. VFS assumes the
-entire rename operation failed and does not update the dentry cache,
-leaving stale mappings.
-
-In the error path, VFS does not call d_move() to update the dentry
-cache. This results in new_dentry still pointing to the old inode
-(new_inode) which has already had its i_nlink decremented to zero.
-The stale cache causes subsequent operations to incorrectly reference
-the freed inode.
-
-This causes subsequent operations to use cached dentry information that
-no longer matches the on-disk state. When a second rename targets the
-same entry, VFS attempts to decrement i_nlink on the stale inode, which
-may already have i_nlink=0, triggering a WARNING in drop_nlink().
-
-Example sequence:
-1. First rename (RENAME_WHITEOUT): file2 → file1
-   - f2fs updates file1 entry on disk (points to inode 8)
-   - f2fs deletes file2 entry on disk
-   - f2fs_add_link(whiteout) fails (corrupted directory)
-   - Returns error to VFS
-   - VFS does not call d_move() due to error
-   - VFS cache still has: file1 → inode 7 (stale!)
-   - inode 7 has i_nlink=0 (already decremented)
-
-2. Second rename: file3 → file1
-   - VFS uses stale cache: file1 → inode 7
-   - Tries to drop_nlink on inode 7 (i_nlink already 0)
-   - WARNING in drop_nlink()
-
-Fix this by explicitly invalidating old_dentry and new_dentry when
-f2fs_add_link fails during whiteout creation. This forces VFS to
-refresh from disk on subsequent operations, ensuring cache consistency
-even when the rename partially succeeds.
-
-Reproducer:
-1. Mount F2FS image with corrupted i_current_depth
-2. renameat2(file2, file1, RENAME_WHITEOUT)
-3. renameat2(file3, file1, 0)
-4. System triggers WARNING in drop_nlink()
-
-Fixes: 7e01e7ad746b ("f2fs: support RENAME_WHITEOUT")
-Reported-by: syzbot+632cf32276a9a564188d@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=632cf32276a9a564188d
-Suggested-by: Chao Yu <chao@kernel.org>
-Link: https://lore.kernel.org/all/20251022233349.102728-1-kartikey406@gmail.com/ [v1]
+Fixes: 2be0d806e25e ("crypto: caam - add a test for the RNG")
 Cc: stable@vger.kernel.org
-Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/namei.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/crypto/caam/caamrng.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/fs/f2fs/namei.c
-+++ b/fs/f2fs/namei.c
-@@ -1028,9 +1028,11 @@ static int f2fs_rename(struct user_names
- 	if (whiteout) {
- 		set_inode_flag(whiteout, FI_INC_LINK);
- 		err = f2fs_add_link(old_dentry, whiteout);
--		if (err)
-+		if (err) {
-+			d_invalidate(old_dentry);
-+			d_invalidate(new_dentry);
- 			goto put_out_dir;
+diff --git a/drivers/crypto/caam/caamrng.c b/drivers/crypto/caam/caamrng.c
+index b3d14a7f4dd1..0eb43c862516 100644
+--- a/drivers/crypto/caam/caamrng.c
++++ b/drivers/crypto/caam/caamrng.c
+@@ -181,7 +181,9 @@ static inline void test_len(struct hwrng *rng, size_t len, bool wait)
+ 	struct device *dev = ctx->ctrldev;
+ 
+ 	buf = kcalloc(CAAM_RNG_MAX_FIFO_STORE_SIZE, sizeof(u8), GFP_KERNEL);
 -
-+		}
- 		spin_lock(&whiteout->i_lock);
- 		whiteout->i_state &= ~I_LINKABLE;
- 		spin_unlock(&whiteout->i_lock);
++	if (!buf) {
++		return;
++	}
+ 	while (len > 0) {
+ 		read_len = rng->read(rng, buf, len, wait);
+ 
+-- 
+2.52.0
+
 
 
 
