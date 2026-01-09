@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-207316-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206733-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60F60D09D00
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:39:15 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 057EBD0947F
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:08:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 47C423015DDE
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:28:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1D0E63034906
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:00:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7DDB350D74;
-	Fri,  9 Jan 2026 12:28:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 771AB35A931;
+	Fri,  9 Jan 2026 12:00:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DwiRDQJe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eslOGCjw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AFD92EC54D;
-	Fri,  9 Jan 2026 12:28:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA69635A92E;
+	Fri,  9 Jan 2026 12:00:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961708; cv=none; b=G3PnaE7fFXU6DWgZUAsi8BO2XL+rz2BttMmeUs1yxv7m/6q8gyUePUeC5LjKF/MkVa+b2FRo2L2ll0W93XgK4gmmxR1SsmI0jkUgeKTVMzMQw8d4HDhNFMbN1l7jX266azTM8epS/RdI3xKiLKxWcdfSCJEJrN8HlwBMSowAhuA=
+	t=1767960044; cv=none; b=HGfgizDrrq6pb1sJGKfsmcOg3hP9QoM0l6x9CUmn8n7xFwzaq6PRTCZyxdvvUuhccXDvJYRrPVLSp/yO7+cs+c3u8ZiyodFM090TMGd9Q0tXzprqjuFYuS4M94yictvzzcCPHjgIVBtpsjaLw/AxmgQtfGUgLvInt+2TJjsdJo4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961708; c=relaxed/simple;
-	bh=Gj5lYa/mpeX2UWvwo1WkS05B+FbYkxZUla7TkmpcDcg=;
+	s=arc-20240116; t=1767960044; c=relaxed/simple;
+	bh=nz/rg1jh2Qal1ffsEPjy1Rpuhk//FAyjBj3m1/bxykM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WdAr1VsWN2zaVWO+291lmSuysZPNt0U3Uf4eYlaLGPj4JvtC0fYFAWoeV1GCYIhTjZqMsvNmPOSF+1YFEVtCEbhf8WCIMPjLcWMwrcBn7/LGKjl8f3ji3aLI+cghaDMeL65h72hesi7AKuyNYqe40kBfesBHAcZXZk4g0iTV1I8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DwiRDQJe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08AB7C4CEF1;
-	Fri,  9 Jan 2026 12:28:27 +0000 (UTC)
+	 MIME-Version; b=HejnbgBBH7YcrRCOpQvnH/CArzY5qxbGN09ybtxYt+POzZJqqlWXWn5fQwsL1lXrQNrL8zBOlQ44bgXmWAXq/0kMaM7jbjM32T+11ogiNj4tDxswdmKqfGUe/MnQDQAUt2u9Gh1XN9tTUL3fThdZDdTt5y/i9B3pLQw5NoAt1u8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eslOGCjw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 033F3C4CEF1;
+	Fri,  9 Jan 2026 12:00:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961708;
-	bh=Gj5lYa/mpeX2UWvwo1WkS05B+FbYkxZUla7TkmpcDcg=;
+	s=korg; t=1767960044;
+	bh=nz/rg1jh2Qal1ffsEPjy1Rpuhk//FAyjBj3m1/bxykM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DwiRDQJekdwqLcARCszy24cPHNK9kyf17Myk3N5GP80OIuC9Z8VZ7pbFAWHThYWny
-	 LtiQU24mNk1MvC0g5Kk9DnVtxwPLeB+9G0QxedR3/iduWXm7EB1q7lRS+2xzlqtHbD
-	 xYzEEsbyKHY4hkxB5YxU4Gm59rG8wu1V8Px/kOiI=
+	b=eslOGCjwxj9c3GkYQ69Rn8RY4qPiWS4gdV61VuvKXhzJZ/EtdiEmho/muVH8gEmz5
+	 Xttc9q0DMBaBjXjMvJpkaoKA1Ps3GNCfrkZbrrYn5Q2QBjQHmx9+bTosJIqWOZBbTS
+	 vreArJHJzXhXjieKohJadMFM5m544WWNtOH5aipQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Petr Mladek <pmladek@suse.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Hangbin Liu <liuhangbin@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 109/634] lib/vsprintf: Check pointer before dereferencing in time_and_date()
+Subject: [PATCH 6.6 248/737] selftests: bonding: add delay before each xvlan_over_bond connectivity check
 Date: Fri,  9 Jan 2026 12:36:27 +0100
-Message-ID: <20260109112121.535843162@linuxfoundation.org>
+Message-ID: <20260109112143.322698770@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,53 +60,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-[ Upstream commit 372a12bd5df0199aa234eaf8ef31ed7ecd61d40f ]
+[ Upstream commit 2c28ee720ad14f58eb88a97ec3efe7c5c315ea5d ]
 
-The pointer may be invalid when gets to the printf(). In particular
-the time_and_date() dereferencing it in some cases without checking.
+Jakub reported increased flakiness in bond_macvlan_ipvlan.sh on regular
+kernel, while the tests consistently pass on a debug kernel. This suggests
+a timing-sensitive issue.
 
-Move the check from rtc_str() to time_and_date() to cover all cases.
+To mitigate this, introduce a short sleep before each xvlan_over_bond
+connectivity check. The delay helps ensure neighbor and route cache
+have fully converged before verifying connectivity.
 
-Fixes: 7daac5b2fdf8 ("lib/vsprintf: Print time64_t in human readable format")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Petr Mladek <pmladek@suse.com>
-Link: https://patch.msgid.link/20251110132118.4113976-1-andriy.shevchenko@linux.intel.com
-Signed-off-by: Petr Mladek <pmladek@suse.com>
+The sleep interval is kept minimal since check_connection() is invoked
+nearly 100 times during the test.
+
+Fixes: 246af950b940 ("selftests: bonding: add macvlan over bond testing")
+Reported-by: Jakub Kicinski <kuba@kernel.org>
+Closes: https://lore.kernel.org/netdev/20251114082014.750edfad@kernel.org
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Link: https://patch.msgid.link/20251127143310.47740-1-liuhangbin@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/vsprintf.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ .../testing/selftests/drivers/net/bonding/bond_macvlan_ipvlan.sh | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/lib/vsprintf.c b/lib/vsprintf.c
-index 2b0b5f08b8fc0..f039d5cae3756 100644
---- a/lib/vsprintf.c
-+++ b/lib/vsprintf.c
-@@ -1862,9 +1862,6 @@ char *rtc_str(char *buf, char *end, const struct rtc_time *tm,
- 	bool found = true;
- 	int count = 2;
+diff --git a/tools/testing/selftests/drivers/net/bonding/bond_macvlan_ipvlan.sh b/tools/testing/selftests/drivers/net/bonding/bond_macvlan_ipvlan.sh
+index c4711272fe45d..559f300f965aa 100755
+--- a/tools/testing/selftests/drivers/net/bonding/bond_macvlan_ipvlan.sh
++++ b/tools/testing/selftests/drivers/net/bonding/bond_macvlan_ipvlan.sh
+@@ -30,6 +30,7 @@ check_connection()
+ 	local message=${3}
+ 	RET=0
  
--	if (check_pointer(&buf, end, tm, spec))
--		return buf;
--
- 	switch (fmt[count]) {
- 	case 'd':
- 		have_t = false;
-@@ -1930,6 +1927,9 @@ static noinline_for_stack
- char *time_and_date(char *buf, char *end, void *ptr, struct printf_spec spec,
- 		    const char *fmt)
- {
-+	if (check_pointer(&buf, end, ptr, spec))
-+		return buf;
-+
- 	switch (fmt[1]) {
- 	case 'R':
- 		return rtc_str(buf, end, (const struct rtc_time *)ptr, spec, fmt);
++	sleep 0.25
+ 	ip netns exec ${ns} ping ${target} -c 4 -i 0.1 &>/dev/null
+ 	check_err $? "ping failed"
+ 	log_test "${bond_mode}/${xvlan_type}_${xvlan_mode}: ${message}"
 -- 
 2.51.0
 
