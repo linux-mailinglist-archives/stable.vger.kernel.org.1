@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-207772-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207140-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id F22A7D0A236
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:01:59 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id D34AAD09B12
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:33:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DF98831B9B56
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:50:43 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 8169530631E2
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:20:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 351A3359FB5;
-	Fri,  9 Jan 2026 12:50:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA7D935A92E;
+	Fri,  9 Jan 2026 12:20:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wmJQMyq7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZUMvdyIc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC5E3336ED1;
-	Fri,  9 Jan 2026 12:50:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D81F2737EE;
+	Fri,  9 Jan 2026 12:20:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767963004; cv=none; b=KPHPY4t2W7lXj1U+zWu3osgcGtvUTxKVFJKK/KM1SAq0lwb5Ds2gcaHryVUs4ONBjh2dKdWnHAatmUcc8kiIpzcS3bhh4uvVeUsTv3h9rYFD/it4YTxgVJz6rfSRH6wva91M325ZKAgmxurfx75FpPmtFetRVw6GDFpOl9iKK6U=
+	t=1767961205; cv=none; b=XVJjPDnOrHATh8KtHCFIWY04kH5SiTRQsZa7uKXGH1PqfxTimdLbKBm2IeLlPCk18UTyqPgwqhq+wcsi5/BWc3rfkR7RYrbrrO5F+VY6fPbC+jToNqOg7SqeqbzT/eEk6veTlcjXjObiyKC8YzP8IcSpCjLdPZ9QvDLpmUq3IfY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767963004; c=relaxed/simple;
-	bh=jFcbHAucQ9nnxv92ZUJxTiW99o8G6mmL2Pxqn7ZwhXw=;
+	s=arc-20240116; t=1767961205; c=relaxed/simple;
+	bh=Iay4Xb187A9KPhOr9pnOVSXo9pFp91o4ghom94FInTQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uKKndHUpbl75phJWvo48KTEJ1ZjM2tbNgBsTc83ChUBlIpobmBbCGm296mPH/n78BRV+krPX0l5T/aZ0QF/2MNbgIovFDXDax/Zn+lReR3yQi48IbZcl+kdzm1yFyKzxho05t8GkZpc3Q5oPoKeGK1Jadv0cj0l0w0eLwxCk/BU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wmJQMyq7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E393C4CEF1;
-	Fri,  9 Jan 2026 12:50:03 +0000 (UTC)
+	 MIME-Version; b=FkXg9VvPOnkEKHB7lw0BJlc/KKviUm05Fs4byBTMzzY1b3hJtO4G8nQodBdy/4ZDs3TMddIhckMz3PZJxInc3uAGUq7Sh2fLKPO+pHrYTQMHekG5yv+GER622E2aWZWcS8kViuxEUOKCi0Bv8DUwmileOERCO2Tp6txUReIFSrI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZUMvdyIc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9A4DC4CEF1;
+	Fri,  9 Jan 2026 12:20:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767963003;
-	bh=jFcbHAucQ9nnxv92ZUJxTiW99o8G6mmL2Pxqn7ZwhXw=;
+	s=korg; t=1767961205;
+	bh=Iay4Xb187A9KPhOr9pnOVSXo9pFp91o4ghom94FInTQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wmJQMyq7bTVxj/wY3Z3W4e5+Tm5sYsTM2hQqjC259NkCHLJpkwu3gL6GpoC99cJM8
-	 TWQm6BET/g9D1ZFScBwTvu1W7dJbeSHWcw0w40BfVLzvAGddS0LU6/eiUIlCY5MNJx
-	 4BSmsR4MaAPGeSYGe0bootTIUwWOctM9tAFI4qtk=
+	b=ZUMvdyIceX3uLSwO40UQLisof96+e6bws0tPpMqWYUSMxU78Y6slWIiJEM7KdmYXX
+	 PGkJjs23J1YBTHsapZCgiZhUi4x3jSMUCpF9AHmFbkbfY5/DNvHyfpXkWg2kW+poNC
+	 Hxz1dNhiFAEfjkMXyajKOqBdNBXMMicprXXawn2A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 531/634] KVM: x86/mmu: Use EMULTYPE flag to track write #PFs to shadow pages
+	Michal Pecio <michal.pecio@gmail.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>,
+	Shivani Agarwal <shivani.agarwal@broadcom.com>
+Subject: [PATCH 6.6 670/737] usb: xhci: Apply the link chain quirk on NEC isoc endpoints
 Date: Fri,  9 Jan 2026 12:43:29 +0100
-Message-ID: <20260109112137.551861710@linuxfoundation.org>
+Message-ID: <20260109112159.253552002@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,232 +60,118 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Michal Pecio <michal.pecio@gmail.com>
 
-[ Upstream commit 258d985f6eb360c9c7aacd025d0dbc080a59423f ]
+commit bb0ba4cb1065e87f9cc75db1fa454e56d0894d01 upstream.
 
-Use a new EMULTYPE flag, EMULTYPE_WRITE_PF_TO_SP, to track page faults
-on self-changing writes to shadowed page tables instead of propagating
-that information to the emulator via a semi-persistent vCPU flag.  Using
-a flag in "struct kvm_vcpu_arch" is confusing, especially as implemented,
-as it's not at all obvious that clearing the flag only when emulation
-actually occurs is correct.
+Two clearly different specimens of NEC uPD720200 (one with start/stop
+bug, one without) were seen to cause IOMMU faults after some Missed
+Service Errors. Faulting address is immediately after a transfer ring
+segment and patched dynamic debug messages revealed that the MSE was
+received when waiting for a TD near the end of that segment:
 
-E.g. if KVM sets the flag and then retries the fault without ever getting
-to the emulator, the flag will be left set for future calls into the
-emulator.  But because the flag is consumed if and only if both
-EMULTYPE_PF and EMULTYPE_ALLOW_RETRY_PF are set, and because
-EMULTYPE_ALLOW_RETRY_PF is deliberately not set for direct MMUs, emulated
-MMIO, or while L2 is active, KVM avoids false positives on a stale flag
-since FNAME(page_fault) is guaranteed to be run and refresh the flag
-before it's ultimately consumed by the tail end of reexecute_instruction().
+[ 1.041954] xhci_hcd: Miss service interval error for slot 1 ep 2 expected TD DMA ffa08fe0
+[ 1.042120] xhci_hcd: AMD-Vi: Event logged [IO_PAGE_FAULT domain=0x0005 address=0xffa09000 flags=0x0000]
+[ 1.042146] xhci_hcd: AMD-Vi: Event logged [IO_PAGE_FAULT domain=0x0005 address=0xffa09040 flags=0x0000]
 
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Message-Id: <20230202182817.407394-2-seanjc@google.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Stable-dep-of: 4da3768e1820 ("KVM: SVM: Don't skip unrelated instruction if INT3/INTO is replaced")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+It gets even funnier if the next page is a ring segment accessible to
+the HC. Below, it reports MSE in segment at ff1e8000, plows through a
+zero-filled page at ff1e9000 and starts reporting events for TRBs in
+page at ff1ea000 every microframe, instead of jumping to seg ff1e6000.
+
+[ 7.041671] xhci_hcd: Miss service interval error for slot 1 ep 2 expected TD DMA ff1e8fe0
+[ 7.041999] xhci_hcd: Miss service interval error for slot 1 ep 2 expected TD DMA ff1e8fe0
+[ 7.042011] xhci_hcd: WARN: buffer overrun event for slot 1 ep 2 on endpoint
+[ 7.042028] xhci_hcd: All TDs skipped for slot 1 ep 2. Clear skip flag.
+[ 7.042134] xhci_hcd: WARN: buffer overrun event for slot 1 ep 2 on endpoint
+[ 7.042138] xhci_hcd: ERROR Transfer event TRB DMA ptr not part of current TD ep_index 2 comp_code 31
+[ 7.042144] xhci_hcd: Looking for event-dma 00000000ff1ea040 trb-start 00000000ff1e6820 trb-end 00000000ff1e6820
+[ 7.042259] xhci_hcd: WARN: buffer overrun event for slot 1 ep 2 on endpoint
+[ 7.042262] xhci_hcd: ERROR Transfer event TRB DMA ptr not part of current TD ep_index 2 comp_code 31
+[ 7.042266] xhci_hcd: Looking for event-dma 00000000ff1ea050 trb-start 00000000ff1e6820 trb-end 00000000ff1e6820
+
+At some point completion events change from Isoch Buffer Overrun to
+Short Packet and the HC finally finds cycle bit mismatch in ff1ec000.
+
+[ 7.098130] xhci_hcd: ERROR Transfer event TRB DMA ptr not part of current TD ep_index 2 comp_code 13
+[ 7.098132] xhci_hcd: Looking for event-dma 00000000ff1ecc50 trb-start 00000000ff1e6820 trb-end 00000000ff1e6820
+[ 7.098254] xhci_hcd: ERROR Transfer event TRB DMA ptr not part of current TD ep_index 2 comp_code 13
+[ 7.098256] xhci_hcd: Looking for event-dma 00000000ff1ecc60 trb-start 00000000ff1e6820 trb-end 00000000ff1e6820
+[ 7.098379] xhci_hcd: Overrun event on slot 1 ep 2
+
+It's possible that data from the isochronous device were written to
+random buffers of pending TDs on other endpoints (either IN or OUT),
+other devices or even other HCs in the same IOMMU domain.
+
+Lastly, an error from a different USB device on another HC. Was it
+caused by the above? I don't know, but it may have been. The disk
+was working without any other issues and generated PCIe traffic to
+starve the NEC of upstream BW and trigger those MSEs. The two HCs
+shared one x1 slot by means of a commercial "PCIe splitter" board.
+
+[ 7.162604] usb 10-2: reset SuperSpeed USB device number 3 using xhci_hcd
+[ 7.178990] sd 9:0:0:0: [sdb] tag#0 UNKNOWN(0x2003) Result: hostbyte=0x07 driverbyte=DRIVER_OK cmd_age=0s
+[ 7.179001] sd 9:0:0:0: [sdb] tag#0 CDB: opcode=0x28 28 00 04 02 ae 00 00 02 00 00
+[ 7.179004] I/O error, dev sdb, sector 67284480 op 0x0:(READ) flags 0x80700 phys_seg 5 prio class 0
+
+Fortunately, it appears that this ridiculous bug is avoided by setting
+the chain bit of Link TRBs on isochronous rings. Other ancient HCs are
+known which also expect the bit to be set and they ignore Link TRBs if
+it's not. Reportedly, 0.95 spec guaranteed that the bit is set.
+
+The bandwidth-starved NEC HC running a 32KB/uframe UVC endpoint reports
+tens of MSEs per second and runs into the bug within seconds. Chaining
+Link TRBs allows the same workload to run for many minutes, many times.
+
+No negative side effects seen in UVC recording and UAC playback with a
+few devices at full speed, high speed and SuperSpeed.
+
+The problem doesn't reproduce on the newer Renesas uPD720201/uPD720202
+and on old Etron EJ168 and VIA VL805 (but the VL805 has other bug).
+
+[shorten line length of log snippets in commit messge -Mathias]
+
+Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20250306144954.3507700-14-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[Shivani: Modified to apply on 6.6.y]
+Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/include/asm/kvm_host.h |   37 ++++++++++++++++++++-----------------
- arch/x86/kvm/mmu/mmu.c          |    5 +++--
- arch/x86/kvm/mmu/mmu_internal.h |   12 +++++++++++-
- arch/x86/kvm/mmu/paging_tmpl.h  |    4 +---
- arch/x86/kvm/x86.c              |   15 ++-------------
- 5 files changed, 37 insertions(+), 36 deletions(-)
+ drivers/usb/host/xhci.h |   13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -890,23 +890,6 @@ struct kvm_vcpu_arch {
+--- a/drivers/usb/host/xhci.h
++++ b/drivers/usb/host/xhci.h
+@@ -1785,11 +1785,20 @@ static inline void xhci_write_64(struct
+ }
  
- 	u64 msr_kvm_poll_control;
  
--	/*
--	 * Indicates the guest is trying to write a gfn that contains one or
--	 * more of the PTEs used to translate the write itself, i.e. the access
--	 * is changing its own translation in the guest page tables.  KVM exits
--	 * to userspace if emulation of the faulting instruction fails and this
--	 * flag is set, as KVM cannot make forward progress.
--	 *
--	 * If emulation fails for a write to guest page tables, KVM unprotects
--	 * (zaps) the shadow page for the target gfn and resumes the guest to
--	 * retry the non-emulatable instruction (on hardware).  Unprotecting the
--	 * gfn doesn't allow forward progress for a self-changing access because
--	 * doing so also zaps the translation for the gfn, i.e. retrying the
--	 * instruction will hit a !PRESENT fault, which results in a new shadow
--	 * page and sends KVM back to square one.
--	 */
--	bool write_fault_to_shadow_pgtable;
--
- 	/* set at EPT violation at this point */
- 	unsigned long exit_qualification;
- 
-@@ -1825,6 +1808,25 @@ u64 vcpu_tsc_khz(struct kvm_vcpu *vcpu);
-  * EMULTYPE_COMPLETE_USER_EXIT - Set when the emulator should update interruptibility
-  *				 state and inject single-step #DBs after skipping
-  *				 an instruction (after completing userspace I/O).
+-/* Link TRB chain should always be set on 0.95 hosts, and AMD 0.96 ISOC rings */
++/*
++ * Reportedly, some chapters of v0.95 spec said that Link TRB always has its chain bit set.
++ * Other chapters and later specs say that it should only be set if the link is inside a TD
++ * which continues from the end of one segment to the next segment.
 + *
-+ * EMULTYPE_WRITE_PF_TO_SP - Set when emulating an intercepted page fault that
-+ *			     is attempting to write a gfn that contains one or
-+ *			     more of the PTEs used to translate the write itself,
-+ *			     and the owning page table is being shadowed by KVM.
-+ *			     If emulation of the faulting instruction fails and
-+ *			     this flag is set, KVM will exit to userspace instead
-+ *			     of retrying emulation as KVM cannot make forward
-+ *			     progress.
++ * Some 0.95 hardware was found to misbehave if any link TRB doesn't have the chain bit set.
 + *
-+ *			     If emulation fails for a write to guest page tables,
-+ *			     KVM unprotects (zaps) the shadow page for the target
-+ *			     gfn and resumes the guest to retry the non-emulatable
-+ *			     instruction (on hardware).  Unprotecting the gfn
-+ *			     doesn't allow forward progress for a self-changing
-+ *			     access because doing so also zaps the translation for
-+ *			     the gfn, i.e. retrying the instruction will hit a
-+ *			     !PRESENT fault, which results in a new shadow page
-+ *			     and sends KVM back to square one.
-  */
- #define EMULTYPE_NO_DECODE	    (1 << 0)
- #define EMULTYPE_TRAP_UD	    (1 << 1)
-@@ -1834,6 +1836,7 @@ u64 vcpu_tsc_khz(struct kvm_vcpu *vcpu);
- #define EMULTYPE_VMWARE_GP	    (1 << 5)
- #define EMULTYPE_PF		    (1 << 6)
- #define EMULTYPE_COMPLETE_USER_EXIT (1 << 7)
-+#define EMULTYPE_WRITE_PF_TO_SP	    (1 << 8)
- 
- int kvm_emulate_instruction(struct kvm_vcpu *vcpu, int emulation_type);
- int kvm_emulate_instruction_from_buffer(struct kvm_vcpu *vcpu,
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -4152,7 +4152,7 @@ void kvm_arch_async_page_ready(struct kv
- 	      work->arch.cr3 != kvm_mmu_get_guest_pgd(vcpu, vcpu->arch.mmu))
- 		return;
- 
--	kvm_mmu_do_page_fault(vcpu, work->cr2_or_gpa, 0, true);
-+	kvm_mmu_do_page_fault(vcpu, work->cr2_or_gpa, 0, true, NULL);
- }
- 
- static int kvm_faultin_pfn(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault)
-@@ -5580,7 +5580,8 @@ int noinline kvm_mmu_page_fault(struct k
- 
- 	if (r == RET_PF_INVALID) {
- 		r = kvm_mmu_do_page_fault(vcpu, cr2_or_gpa,
--					  lower_32_bits(error_code), false);
-+					  lower_32_bits(error_code), false,
-+					  &emulation_type);
- 		if (KVM_BUG_ON(r == RET_PF_INVALID, vcpu->kvm))
- 			return -EIO;
- 	}
---- a/arch/x86/kvm/mmu/mmu_internal.h
-+++ b/arch/x86/kvm/mmu/mmu_internal.h
-@@ -223,6 +223,13 @@ struct kvm_page_fault {
- 	kvm_pfn_t pfn;
- 	hva_t hva;
- 	bool map_writable;
-+
-+	/*
-+	 * Indicates the guest is trying to write a gfn that contains one or
-+	 * more of the PTEs used to translate the write itself, i.e. the access
-+	 * is changing its own translation in the guest page tables.
-+	 */
-+	bool write_fault_to_shadow_pgtable;
- };
- 
- int kvm_tdp_page_fault(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault);
-@@ -256,7 +263,7 @@ enum {
- };
- 
- static inline int kvm_mmu_do_page_fault(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa,
--					u32 err, bool prefetch)
-+					u32 err, bool prefetch, int *emulation_type)
++ * 0.96 hardware from AMD and NEC was found to ignore unchained isochronous link TRBs when
++ * "resynchronizing the pipe" after a Missed Service Error.
++ */
+ static inline bool xhci_link_chain_quirk(struct xhci_hcd *xhci, enum xhci_ring_type type)
  {
- 	struct kvm_page_fault fault = {
- 		.addr = cr2_or_gpa,
-@@ -290,6 +297,9 @@ static inline int kvm_mmu_do_page_fault(
- 	else
- 		r = vcpu->arch.mmu->page_fault(vcpu, &fault);
- 
-+	if (fault.write_fault_to_shadow_pgtable && emulation_type)
-+		*emulation_type |= EMULTYPE_WRITE_PF_TO_SP;
-+
- 	/*
- 	 * Similar to above, prefetch faults aren't truly spurious, and the
- 	 * async #PF path doesn't do emulation.  Do count faults that are fixed
---- a/arch/x86/kvm/mmu/paging_tmpl.h
-+++ b/arch/x86/kvm/mmu/paging_tmpl.h
-@@ -829,10 +829,8 @@ static int FNAME(page_fault)(struct kvm_
- 	if (r)
- 		return r;
- 
--	vcpu->arch.write_fault_to_shadow_pgtable = false;
--
- 	is_self_change_mapping = FNAME(is_self_change_mapping)(vcpu,
--	      &walker, fault->user, &vcpu->arch.write_fault_to_shadow_pgtable);
-+	      &walker, fault->user, &fault->write_fault_to_shadow_pgtable);
- 
- 	if (is_self_change_mapping)
- 		fault->max_level = PG_LEVEL_4K;
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -8532,7 +8532,6 @@ static int handle_emulation_failure(stru
+ 	return (xhci->quirks & XHCI_LINK_TRB_QUIRK) ||
+-	       (type == TYPE_ISOC && (xhci->quirks & XHCI_AMD_0x96_HOST));
++	       (type == TYPE_ISOC && (xhci->quirks & (XHCI_AMD_0x96_HOST | XHCI_NEC_HOST)));
  }
  
- static bool reexecute_instruction(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa,
--				  bool write_fault_to_shadow_pgtable,
- 				  int emulation_type)
- {
- 	gpa_t gpa = cr2_or_gpa;
-@@ -8603,7 +8602,7 @@ static bool reexecute_instruction(struct
- 	 * be fixed by unprotecting shadow page and it should
- 	 * be reported to userspace.
- 	 */
--	return !write_fault_to_shadow_pgtable;
-+	return !(emulation_type & EMULTYPE_WRITE_PF_TO_SP);
- }
- 
- static bool retry_instruction(struct x86_emulate_ctxt *ctxt,
-@@ -8874,20 +8873,12 @@ int x86_emulate_instruction(struct kvm_v
- 	int r;
- 	struct x86_emulate_ctxt *ctxt = vcpu->arch.emulate_ctxt;
- 	bool writeback = true;
--	bool write_fault_to_spt;
- 
- 	if (unlikely(!kvm_can_emulate_insn(vcpu, emulation_type, insn, insn_len)))
- 		return 1;
- 
- 	vcpu->arch.l1tf_flush_l1d = true;
- 
--	/*
--	 * Clear write_fault_to_shadow_pgtable here to ensure it is
--	 * never reused.
--	 */
--	write_fault_to_spt = vcpu->arch.write_fault_to_shadow_pgtable;
--	vcpu->arch.write_fault_to_shadow_pgtable = false;
--
- 	if (!(emulation_type & EMULTYPE_NO_DECODE)) {
- 		kvm_clear_exception_queue(vcpu);
- 
-@@ -8908,7 +8899,6 @@ int x86_emulate_instruction(struct kvm_v
- 				return 1;
- 			}
- 			if (reexecute_instruction(vcpu, cr2_or_gpa,
--						  write_fault_to_spt,
- 						  emulation_type))
- 				return 1;
- 
-@@ -8994,8 +8984,7 @@ restart:
- 		return 1;
- 
- 	if (r == EMULATION_FAILED) {
--		if (reexecute_instruction(vcpu, cr2_or_gpa, write_fault_to_spt,
--					emulation_type))
-+		if (reexecute_instruction(vcpu, cr2_or_gpa, emulation_type))
- 			return 1;
- 
- 		return handle_emulation_failure(vcpu, emulation_type);
+ /* xHCI debugging */
 
 
 
