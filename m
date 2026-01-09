@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-207503-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206902-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C67CD09F79
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:48:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6293ED096ED
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:17:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 85A00306EC1C
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:37:20 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 02DFC303C118
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:09:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1FDB358D30;
-	Fri,  9 Jan 2026 12:37:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EBC635B13B;
+	Fri,  9 Jan 2026 12:08:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ecsJPcFr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PQFw4/gQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96465335BCD;
-	Fri,  9 Jan 2026 12:37:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5255035A94E;
+	Fri,  9 Jan 2026 12:08:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962239; cv=none; b=kC6criStwCScwDm/3gExpl89mammXTF/Hqg3M0n2Pp2MWHCGi6ajK+layNuNIBOcHvJlOH7QMXoLljeKwG7PokYSA9gA2RFnrtYCkHNzP83zV0foPY+cAtEGThy2gOOZy7sq5gs27X9Xb6Ohwmf1ClRQLOIqukU9r5FICoGty9w=
+	t=1767960525; cv=none; b=pSL5whUbVnQlugoTLsc2zfbUMNOKgOccYmj/U17onCtsgu5uSgdoIaepc7BSag60Mfks/GIahWjjF6XK1Pw7fJRN/wRY962ttjWKDdXKigSTQY/r5pU2XofBBB0bdjbq/+AAACn0xVfBSjiBKpF5PUDF9+Bn22P4BaY8SxNNAEo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962239; c=relaxed/simple;
-	bh=KGrGollUQbb2Few+W3xAeJG7UqOVLoE/hz+NMtPE5UM=;
+	s=arc-20240116; t=1767960525; c=relaxed/simple;
+	bh=ObPUqdK0LvRAzGXWezvTUBSX1SaP7XqeWCl7x7UhILU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jLS8taVBR+Wasaf7rNFxc1ljm2C8JdmtkPkbtvQ2N2nqslS3u6WDARU7996yZ1py1JEPmV3qFRpmnvJvys4G3IN5eGNl/mXjfCe6h9VXNVDkjXFMv8iQRC0F6tRjKQ9y4vZCZ5wBRX3LtWNtdvntWBX9RXHj9JuHOXcQCncBAjQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ecsJPcFr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 289DBC4CEF1;
-	Fri,  9 Jan 2026 12:37:18 +0000 (UTC)
+	 MIME-Version; b=WyL5gQj+q1Q+24yH4pkGWnLxlSErsnZKt/nBiEBEkxA5pBspaAT+FFS/SGJl0bTf5Y4sSv8BnlcPENe9jACiBgCt95ezOW8UVpsM5q/qBWr+8AQP4qZdXrUb1mJkKDaiPoBsOIQNej8MSNdetJyuxzFk9WNq/eSYX0nO6Ubl3BM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PQFw4/gQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 925CAC19422;
+	Fri,  9 Jan 2026 12:08:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962239;
-	bh=KGrGollUQbb2Few+W3xAeJG7UqOVLoE/hz+NMtPE5UM=;
+	s=korg; t=1767960525;
+	bh=ObPUqdK0LvRAzGXWezvTUBSX1SaP7XqeWCl7x7UhILU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ecsJPcFrAox5SXOmWdYUNAb2bEWk5IEFZ5MFGB25Xgf5v+Z7JgzScP/utF/YfYA4H
-	 3p/9f7Jf4mTdofM57TTe9vlToYqsbTGHNyOdJ2YHT1SrwN38ShfmZCNw2l3WRMqy71
-	 kPWxXl9OHt8fmx9/QuTzQLdkclNnKnuJewY6mMGE=
+	b=PQFw4/gQNId9RhHhWbwVQHLW2cT6+09orKPH3EYlHOTbpANUSTpqTHYHIvwce1MgE
+	 IYZurmi0gQgYaqaOWbRgop7hqzbuduuZVGX0i8gJ7OE4ywwZYoMD/Qzb1orr2kejW0
+	 v+uIFc6d3Cz8yhLSYu4JwvF5vMstwd8U19UZ+UzY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"DARKNAVY (@DarkNavyOrg)" <vr@darknavy.com>,
-	Shipei Qu <qu@darknavy.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 295/634] ALSA: usb-mixer: us16x08: validate meter packet indices
-Date: Fri,  9 Jan 2026 12:39:33 +0100
-Message-ID: <20260109112128.631767980@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Ma Ke <make24@iscas.ac.cn>
+Subject: [PATCH 6.6 435/737] USB: lpc32xx_udc: Fix error handling in probe
+Date: Fri,  9 Jan 2026 12:39:34 +0100
+Message-ID: <20260109112150.357282268@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,79 +59,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shipei Qu <qu@darknavy.com>
+From: Ma Ke <make24@iscas.ac.cn>
 
-[ Upstream commit 5526c1c6ba1d0913c7dfcbbd6fe1744ea7c55f1e ]
+commit c84117912bddd9e5d87e68daf182410c98181407 upstream.
 
-get_meter_levels_from_urb() parses the 64-byte meter packets sent by
-the device and fills the per-channel arrays meter_level[],
-comp_level[] and master_level[] in struct snd_us16x08_meter_store.
+lpc32xx_udc_probe() acquires an i2c_client reference through
+isp1301_get_client() but fails to release it in both error handling
+paths and the normal removal path. This could result in a reference
+count leak for the I2C device, preventing proper cleanup and potentially
+leading to resource exhaustion. Add put_device() to release the
+reference in the probe failure path and in the remove function.
 
-Currently the function derives the channel index directly from the
-meter packet (MUB2(meter_urb, s) - 1) and uses it to index those
-arrays without validating the range. If the packet contains a
-negative or out-of-range channel number, the driver may write past
-the end of these arrays.
+Calling path: isp1301_get_client() -> of_find_i2c_device_by_node() ->
+i2c_find_device_by_fwnode(). As comments of i2c_find_device_by_fwnode()
+says, 'The user must call put_device(&client->dev) once done with the
+i2c client.'
 
-Introduce a local channel variable and validate it before updating the
-arrays. We reject negative indices, limit meter_level[] and
-comp_level[] to SND_US16X08_MAX_CHANNELS, and guard master_level[]
-updates with ARRAY_SIZE(master_level).
+Found by code review.
 
-Fixes: d2bb390a2081 ("ALSA: usb-audio: Tascam US-16x08 DSP mixer quirk")
-Reported-by: DARKNAVY (@DarkNavyOrg) <vr@darknavy.com>
-Closes: https://lore.kernel.org/tencent_21C112743C44C1A2517FF219@qq.com
-Signed-off-by: Shipei Qu <qu@darknavy.com>
-Link: https://patch.msgid.link/20251217024630.59576-1-qu@darknavy.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable <stable@kernel.org>
+Fixes: 24a28e428351 ("USB: gadget driver for LPC32xx")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Link: https://patch.msgid.link/20251215020931.15324-1-make24@iscas.ac.cn
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/mixer_us16x08.c | 20 ++++++++++++++------
- 1 file changed, 14 insertions(+), 6 deletions(-)
+ drivers/usb/gadget/udc/lpc32xx_udc.c |   21 +++++++++++++++------
+ 1 file changed, 15 insertions(+), 6 deletions(-)
 
-diff --git a/sound/usb/mixer_us16x08.c b/sound/usb/mixer_us16x08.c
-index 20ac32635f1f..d05cb54de788 100644
---- a/sound/usb/mixer_us16x08.c
-+++ b/sound/usb/mixer_us16x08.c
-@@ -656,17 +656,25 @@ static void get_meter_levels_from_urb(int s,
- 	u8 *meter_urb)
- {
- 	int val = MUC2(meter_urb, s) + (MUC3(meter_urb, s) << 8);
-+	int ch = MUB2(meter_urb, s) - 1;
-+
-+	if (ch < 0)
-+		return;
+--- a/drivers/usb/gadget/udc/lpc32xx_udc.c
++++ b/drivers/usb/gadget/udc/lpc32xx_udc.c
+@@ -3027,7 +3027,7 @@ static int lpc32xx_udc_probe(struct plat
+ 	pdev->dev.dma_mask = &lpc32xx_usbd_dmamask;
+ 	retval = dma_set_coherent_mask(&pdev->dev, DMA_BIT_MASK(32));
+ 	if (retval)
+-		return retval;
++		goto i2c_fail;
  
- 	if (MUA0(meter_urb, s) == 0x61 && MUA1(meter_urb, s) == 0x02 &&
- 		MUA2(meter_urb, s) == 0x04 && MUB0(meter_urb, s) == 0x62) {
--		if (MUC0(meter_urb, s) == 0x72)
--			store->meter_level[MUB2(meter_urb, s) - 1] = val;
--		if (MUC0(meter_urb, s) == 0xb2)
--			store->comp_level[MUB2(meter_urb, s) - 1] = val;
-+		if (ch < SND_US16X08_MAX_CHANNELS) {
-+			if (MUC0(meter_urb, s) == 0x72)
-+				store->meter_level[ch] = val;
-+			if (MUC0(meter_urb, s) == 0xb2)
-+				store->comp_level[ch] = val;
+ 	udc->board = &lpc32xx_usbddata;
+ 
+@@ -3045,28 +3045,32 @@ static int lpc32xx_udc_probe(struct plat
+ 	/* Get IRQs */
+ 	for (i = 0; i < 4; i++) {
+ 		udc->udp_irq[i] = platform_get_irq(pdev, i);
+-		if (udc->udp_irq[i] < 0)
+-			return udc->udp_irq[i];
++		if (udc->udp_irq[i] < 0) {
++			retval = udc->udp_irq[i];
++			goto i2c_fail;
 +		}
  	}
- 	if (MUA0(meter_urb, s) == 0x61 && MUA1(meter_urb, s) == 0x02 &&
--		MUA2(meter_urb, s) == 0x02 && MUB0(meter_urb, s) == 0x62)
--		store->master_level[MUB2(meter_urb, s) - 1] = val;
-+		MUA2(meter_urb, s) == 0x02 && MUB0(meter_urb, s) == 0x62) {
-+		if (ch < ARRAY_SIZE(store->master_level))
-+			store->master_level[ch] = val;
-+	}
- }
  
- /* Function to retrieve current meter values from the device.
--- 
-2.51.0
-
+ 	udc->udp_baseaddr = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(udc->udp_baseaddr)) {
+ 		dev_err(udc->dev, "IO map failure\n");
+-		return PTR_ERR(udc->udp_baseaddr);
++		retval = PTR_ERR(udc->udp_baseaddr);
++		goto i2c_fail;
+ 	}
+ 
+ 	/* Get USB device clock */
+ 	udc->usb_slv_clk = devm_clk_get(&pdev->dev, NULL);
+ 	if (IS_ERR(udc->usb_slv_clk)) {
+ 		dev_err(udc->dev, "failed to acquire USB device clock\n");
+-		return PTR_ERR(udc->usb_slv_clk);
++		retval = PTR_ERR(udc->usb_slv_clk);
++		goto i2c_fail;
+ 	}
+ 
+ 	/* Enable USB device clock */
+ 	retval = clk_prepare_enable(udc->usb_slv_clk);
+ 	if (retval < 0) {
+ 		dev_err(udc->dev, "failed to start USB device clock\n");
+-		return retval;
++		goto i2c_fail;
+ 	}
+ 
+ 	/* Setup deferred workqueue data */
+@@ -3168,6 +3172,8 @@ dma_alloc_fail:
+ 	dma_free_coherent(&pdev->dev, UDCA_BUFF_SIZE,
+ 			  udc->udca_v_base, udc->udca_p_base);
+ i2c_fail:
++	if (udc->isp1301_i2c_client)
++		put_device(&udc->isp1301_i2c_client->dev);
+ 	clk_disable_unprepare(udc->usb_slv_clk);
+ 	dev_err(udc->dev, "%s probe failed, %d\n", driver_name, retval);
+ 
+@@ -3193,6 +3199,9 @@ static int lpc32xx_udc_remove(struct pla
+ 	dma_free_coherent(&pdev->dev, UDCA_BUFF_SIZE,
+ 			  udc->udca_v_base, udc->udca_p_base);
+ 
++	if (udc->isp1301_i2c_client)
++		put_device(&udc->isp1301_i2c_client->dev);
++
+ 	clk_disable_unprepare(udc->usb_slv_clk);
+ 
+ 	return 0;
 
 
 
