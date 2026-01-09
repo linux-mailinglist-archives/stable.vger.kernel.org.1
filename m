@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-207264-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206637-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 999A0D09CDF
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:38:46 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7434ED09186
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 12:56:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 93EDE30A9028
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:26:02 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B89B3301DE9E
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:56:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89E643590DC;
-	Fri,  9 Jan 2026 12:26:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2DE6350A12;
+	Fri,  9 Jan 2026 11:56:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BSNyF793"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BGyIHnMM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E0721A01C6;
-	Fri,  9 Jan 2026 12:26:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95B8233C511;
+	Fri,  9 Jan 2026 11:56:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961561; cv=none; b=GXgfzck+0+q+Yh4y7zsyG7U3jq9mzOpO2POUS9g8Q48fMQiqZcIkJkSNSL8rUt3RFznNXf0xRdhVdLJ1ynuyb6RLplLWxszeMI2ouSmNxdn2rvvRj1BNaLuf0B30tG6KGHreUuW7h8Q6PXXBXwMLrXYWSNP1lzEwQE0ZF2RPeeA=
+	t=1767959771; cv=none; b=D6EWs8PURq331ZyGOLVLFKKvvydNPLHPjDImlVtUWVUiyXS2kqmJ5ffMN+Kh6UGwJIMPfSmk1b8c2WlbbFg5e3wS4miDlN2nBmGxO+UG2lpH/ahp4sfE3HK8JWKzvFTehNsFwoJIIgY2cwwzZtr3bUNGptTjSFWenVQaD9FTqsE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961561; c=relaxed/simple;
-	bh=eihSOdOBBxi0rwg8AZ+M1aIXzdmVN/HxGTZjkxbdbUM=;
+	s=arc-20240116; t=1767959771; c=relaxed/simple;
+	bh=STlpYeKKSgO9/dA+iDhYjeNhR1u9SA0wtgqwSF97v2o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VOGlsr/q3++wdR0b7Bx4DKLIlGkHqKbCcrk2wu6Fmlv30OaVmF0JPaTseBoUOJhouZjaGNI6fVhyoQbcV+T8GzB+Jj024bzJkbbgGnm9lTMijnR+BndhfillT7UGtlJGmCIrVhjLjzYLRnip5CIIw4dnXqR7B+CfAWysSRbTsTE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BSNyF793; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C275BC4CEF1;
-	Fri,  9 Jan 2026 12:26:00 +0000 (UTC)
+	 MIME-Version; b=JIAzErNT+GeSc5lj0X1x9yHymuUDm9aSbyE9PKe5Js5ksUNSFpTq464H1MiKXdxkgh9j0KApxdZKQkm7NdjJ7YXUqbiq44GAyoe++xeP3WedaJxS5xXgFLq1NCE4ifIdJIHDEcSQws31LaG++62M6P4IVP5Klon4OXHcZVQRrTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BGyIHnMM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 239B6C4CEF1;
+	Fri,  9 Jan 2026 11:56:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961561;
-	bh=eihSOdOBBxi0rwg8AZ+M1aIXzdmVN/HxGTZjkxbdbUM=;
+	s=korg; t=1767959771;
+	bh=STlpYeKKSgO9/dA+iDhYjeNhR1u9SA0wtgqwSF97v2o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BSNyF793aAX9J5Hlos7jkKVekvKfr2XijGHcL4aTkJqfvQJbZadNV0NL1M/JVyTLb
-	 Nkt1ANNc+K130pxRt5qRnjgCr6oKeI4kCGdR4qpJS21WDb6iJwSPzlRqzHetCIDFJj
-	 fSNeRGuTd2vSslKm7S9E+jXbXixx6ZXi9GzptoF0=
+	b=BGyIHnMM9V+Grx/hzPSbzpAwECEsTts2Zo7O3Fxvd12dfz2PRw2AJfgSuhjsaWLJL
+	 wsJiF/JIL1VFtzqeu/VTlDEOuY9zr4WjmqLCsThAZpn3FdOidsedrRsKjQbeXt53TV
+	 LGMAfWJP8dMWMq8b88WURFbSfNAewXL/55aFW+os=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	April Grimoire <april@aprilg.moe>,
-	Jiri Kosina <jkosina@suse.com>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 030/634] HID: apple: Add SONiX AK870 PRO to non_apple_keyboards quirk list
+Subject: [PATCH 6.6 169/737] powerpc/64s/hash: Restrict stress_hpt_struct memblock region to within RMA limit
 Date: Fri,  9 Jan 2026 12:35:08 +0100
-Message-ID: <20260109112118.581697905@linuxfoundation.org>
+Message-ID: <20260109112140.350886836@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,37 +60,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: April Grimoire <april@aprilg.moe>
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 
-[ Upstream commit 743c81cdc98fd4fef62a89eb70efff994112c2d9 ]
+[ Upstream commit 17b45ccf09882e0c808ad2cf62acdc90ad968746 ]
 
-SONiX AK870 PRO keyboard pretends to be an apple keyboard by VID:PID,
-rendering function keys not treated properly. Despite being a
-SONiX USB DEVICE, it uses a different name, so adding it to the list.
+When HV=0 & IR/DR=0, the Hash MMU is said to be in Virtual Real
+Addressing Mode during early boot. During this, we should ensure that
+memory region allocations for stress_hpt_struct should happen from
+within RMA region as otherwise the boot might get stuck while doing
+memset of this region.
 
-Signed-off-by: April Grimoire <april@aprilg.moe>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+History behind why do we have RMA region limitation is better explained
+in these 2 patches [1] & [2]. This patch ensures that memset to
+stress_hpt_struct during early boot does not cross ppc64_rma_size
+boundary.
+
+[1]: https://lore.kernel.org/all/20190710052018.14628-1-sjitindarsingh@gmail.com/
+[2]: https://lore.kernel.org/all/87wp54usvj.fsf@linux.vnet.ibm.com/
+
+Fixes: 6b34a099faa12 ("powerpc/64s/hash: add stress_hpt kernel boot option to increase hash faults")
+Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/ada1173933ea7617a994d6ee3e54ced8797339fc.1761834163.git.ritesh.list@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-apple.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/powerpc/mm/book3s64/hash_utils.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/hid/hid-apple.c b/drivers/hid/hid-apple.c
-index 76b76b67fa860..2de1a97eafc14 100644
---- a/drivers/hid/hid-apple.c
-+++ b/drivers/hid/hid-apple.c
-@@ -320,6 +320,7 @@ static const struct apple_key_translation swapped_fn_leftctrl_keys[] = {
+diff --git a/arch/powerpc/mm/book3s64/hash_utils.c b/arch/powerpc/mm/book3s64/hash_utils.c
+index ad2afa08e62ed..4f09d295e5188 100644
+--- a/arch/powerpc/mm/book3s64/hash_utils.c
++++ b/arch/powerpc/mm/book3s64/hash_utils.c
+@@ -1032,11 +1032,14 @@ static void __init htab_initialize(void)
+ 	unsigned long table;
+ 	unsigned long pteg_count;
+ 	unsigned long prot;
+-	phys_addr_t base = 0, size = 0, end;
++	phys_addr_t base = 0, size = 0, end, limit = MEMBLOCK_ALLOC_ANYWHERE;
+ 	u64 i;
  
- static const struct apple_non_apple_keyboard non_apple_keyboards[] = {
- 	{ "SONiX USB DEVICE" },
-+	{ "SONiX AK870 PRO" },
- 	{ "Keychron" },
- 	{ "AONE" },
- 	{ "GANSS" }
+ 	DBG(" -> htab_initialize()\n");
+ 
++	if (firmware_has_feature(FW_FEATURE_LPAR))
++		limit = ppc64_rma_size;
++
+ 	if (mmu_has_feature(MMU_FTR_1T_SEGMENT)) {
+ 		mmu_kernel_ssize = MMU_SEGSIZE_1T;
+ 		mmu_highuser_ssize = MMU_SEGSIZE_1T;
+@@ -1052,7 +1055,7 @@ static void __init htab_initialize(void)
+ 		// Too early to use nr_cpu_ids, so use NR_CPUS
+ 		tmp = memblock_phys_alloc_range(sizeof(struct stress_hpt_struct) * NR_CPUS,
+ 						__alignof__(struct stress_hpt_struct),
+-						0, MEMBLOCK_ALLOC_ANYWHERE);
++						MEMBLOCK_LOW_LIMIT, limit);
+ 		memset((void *)tmp, 0xff, sizeof(struct stress_hpt_struct) * NR_CPUS);
+ 		stress_hpt_struct = __va(tmp);
+ 
+@@ -1086,7 +1089,6 @@ static void __init htab_initialize(void)
+ 			mmu_hash_ops.hpte_clear_all();
+ #endif
+ 	} else {
+-		unsigned long limit = MEMBLOCK_ALLOC_ANYWHERE;
+ 
+ #ifdef CONFIG_PPC_CELL
+ 		/*
+@@ -1102,7 +1104,7 @@ static void __init htab_initialize(void)
+ 
+ 		table = memblock_phys_alloc_range(htab_size_bytes,
+ 						  htab_size_bytes,
+-						  0, limit);
++						  MEMBLOCK_LOW_LIMIT, limit);
+ 		if (!table)
+ 			panic("ERROR: Failed to allocate %pa bytes below %pa\n",
+ 			      &htab_size_bytes, &limit);
 -- 
 2.51.0
 
