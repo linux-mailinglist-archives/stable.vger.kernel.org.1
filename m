@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-207767-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207134-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99272D0A292
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:03:45 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5F00D09934
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:25:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id BD772302BD20
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:50:36 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 51A7530584DC
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:19:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C519D328B5F;
-	Fri,  9 Jan 2026 12:49:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91F83334C24;
+	Fri,  9 Jan 2026 12:19:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rh20LS04"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zcmU7CtX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8830C32BF21;
-	Fri,  9 Jan 2026 12:49:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 558FB26ED41;
+	Fri,  9 Jan 2026 12:19:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962989; cv=none; b=AIrFYDBFTLe+k91gyrG8sfItSpkNOeqGcOznIYAJio53HWKXj9nIsd4e2NOTrzP769TT5XFUsOGsOGfqGwpURoZQEZx8MyQLaL48ueVKz3LGz1s1axhfFj8KJ7BpLiFs3X+9gP2V5PyWruSIEZf+2oRTdm7p7DfHhstjV6WG9f0=
+	t=1767961188; cv=none; b=Lhf1B8+7mWVeyfSQrR8fz0IDVL4qZXhytcdR4XjbdZjic9ViAgia1/gVqBOdvCv65gFdeP41s6iIL2nkyuKiP3ovK6s7pBPfjztru7XoDkfqPDz917Bbp+MFDC8RSiuMLZ9nb5QcPe+yfcL6ug7XF9enGREAHmAVlGCRb29iaD8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962989; c=relaxed/simple;
-	bh=H8OZdNwHh/NEh5jEd4e2JHrDDManRnXLZVwbKSpJ2FA=;
+	s=arc-20240116; t=1767961188; c=relaxed/simple;
+	bh=2qgrfd0B6OSVhi/eMr29fmZwpTj1M+BhopQyMqX3g6U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LcwxXhWMPVkCf9aY3k54M83n5geug0YyBneSHGNk0DNaniyxI6y131m6sZUnoN9sMZ1VaKwEQRWycHOOIT/d/SBNpc09ewJGFgVEe0fE66gBAid+IYjxYTZwS0ssQi4aecQllkAQvDrJhC8EKZRMB8kx+g09kLlF6qmMl0W6ZIc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rh20LS04; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 149F4C4CEF1;
-	Fri,  9 Jan 2026 12:49:48 +0000 (UTC)
+	 MIME-Version; b=IQspnnOeRaykb07d1N5B4cF0tUjo21TgSIRPq0d1tIYqmtggd7vxXEuEjxjvFZjCEU9w0Rj51sScE1yFEqMusKR/h+tFU+fDswSmrbZCuGP4hVXvah0XrCHvRTRMwbXl3jEOFZr6xbcZU+92wj78vlIr9eQosfeNH8v6u6XO7RY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zcmU7CtX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3A1DC4CEF1;
+	Fri,  9 Jan 2026 12:19:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962989;
-	bh=H8OZdNwHh/NEh5jEd4e2JHrDDManRnXLZVwbKSpJ2FA=;
+	s=korg; t=1767961188;
+	bh=2qgrfd0B6OSVhi/eMr29fmZwpTj1M+BhopQyMqX3g6U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rh20LS04LDo6ZZd2tYQSgzpJj5JrO3IjvS75+3l6CnzLNMqf0yhJSq5E2xYQv1Eaa
-	 lXhOPLoCjdScPnEr+HsfZ6znOgqXbgeHCHny2v47iPbg40H2WGujACI7q6m3tdTZ3r
-	 jYVI3OdkQxiT1DUyq52gARFFshq4wBJAPKP2SSn4=
+	b=zcmU7CtXfyqI2uyvptTEO2HzDtvTMpr4iPNAXLGpgOJLo84IUcjdkckv47cfPgNi2
+	 e/6Vs3fPQwx9Xuef/omkznwl+EzObw7GYWuSEc9bkJ27zqi/wz8q0iFfalVGULygo3
+	 55hitgQN2GcA+VaQKx0uDQliKXzPypw46MrHx4SM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martin Nybo Andersen <tweek@tweek.dk>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Christoph Biedl <linux-kernel.bfrz@manchmal.in-ulm.de>
-Subject: [PATCH 6.1 526/634] kbuild: Use CRC32 and a 1MiB dictionary for XZ compressed modules
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Philipp Stanner <pstanner@redhat.com>,
+	Jyri Sarha <jyri.sarha@iki.fi>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 665/737] drm/tilcdc: request and mapp iomem with devres
 Date: Fri,  9 Jan 2026 12:43:24 +0100
-Message-ID: <20260109112137.359395171@linuxfoundation.org>
+Message-ID: <20260109112159.058152341@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,43 +61,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Nybo Andersen <tweek@tweek.dk>
+From: Philipp Stanner <pstanner@redhat.com>
 
-commit fbf5892df21a8ccfcb2fda0fd65bc3169c89ed28 upstream.
+[ Upstream commit a196a5166e0812db267281c32fa0724fc5be6582 ]
 
-Kmod is now (since kmod commit 09c9f8c5df04 ("libkmod: Use kernel
-decompression when available")) using the kernel decompressor, when
-loading compressed modules.
+tilcdc currently just ioremaps its iomem, without doing the (a bit more
+robust) request on the memory first. The devm_ functions provide a handy
+way to both request and ioremap the memory with automatic cleanup.
 
-However, the kernel XZ decompressor is XZ Embedded, which doesn't
-handle CRC64 and dictionaries larger than 1MiB.
+Replace the manual ioremap with the devm_ version.
 
-Use CRC32 and 1MiB dictionary when XZ compressing and installing
-kernel modules.
-
-Link: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1050582
-Signed-off-by: Martin Nybo Andersen <tweek@tweek.dk>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Christoph Biedl <linux-kernel.bfrz@manchmal.in-ulm.de>
+Suggested-by: Thomas Zimmermann <tzimmermann@suse.de>
+Signed-off-by: Philipp Stanner <pstanner@redhat.com>
+Reviewed-by: Jyri Sarha <jyri.sarha@iki.fi>
+Tested-by: Jyri Sarha <jyri.sarha@iki.fi>
+Signed-off-by: Jyri Sarha <jyri.sarha@iki.fi>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231222115216.19218-2-pstanner@redhat.com
+Stable-dep-of: a585c7ef9cab ("drm/tilcdc: Fix removal actions in case of failed probe")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/Makefile.modinst |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/tilcdc/tilcdc_drv.c |   19 ++++---------------
+ 1 file changed, 4 insertions(+), 15 deletions(-)
 
---- a/scripts/Makefile.modinst
-+++ b/scripts/Makefile.modinst
-@@ -99,7 +99,7 @@ endif
- quiet_cmd_gzip = GZIP    $@
-       cmd_gzip = $(KGZIP) -n -f $<
- quiet_cmd_xz = XZ      $@
--      cmd_xz = $(XZ) --lzma2=dict=2MiB -f $<
-+      cmd_xz = $(XZ) --check=crc32 --lzma2=dict=1MiB -f $<
- quiet_cmd_zstd = ZSTD    $@
-       cmd_zstd = $(ZSTD) -T0 --rm -f -q $<
+--- a/drivers/gpu/drm/tilcdc/tilcdc_drv.c
++++ b/drivers/gpu/drm/tilcdc/tilcdc_drv.c
+@@ -182,9 +182,6 @@ static void tilcdc_fini(struct drm_devic
+ 	if (priv->clk)
+ 		clk_put(priv->clk);
+ 
+-	if (priv->mmio)
+-		iounmap(priv->mmio);
+-
+ 	if (priv->wq)
+ 		destroy_workqueue(priv->wq);
+ 
+@@ -201,7 +198,6 @@ static int tilcdc_init(const struct drm_
+ 	struct platform_device *pdev = to_platform_device(dev);
+ 	struct device_node *node = dev->of_node;
+ 	struct tilcdc_drm_private *priv;
+-	struct resource *res;
+ 	u32 bpp = 0;
+ 	int ret;
+ 
+@@ -226,17 +222,10 @@ static int tilcdc_init(const struct drm_
+ 		goto init_failed;
+ 	}
+ 
+-	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+-	if (!res) {
+-		dev_err(dev, "failed to get memory resource\n");
+-		ret = -EINVAL;
+-		goto init_failed;
+-	}
+-
+-	priv->mmio = ioremap(res->start, resource_size(res));
+-	if (!priv->mmio) {
+-		dev_err(dev, "failed to ioremap\n");
+-		ret = -ENOMEM;
++	priv->mmio = devm_platform_ioremap_resource(pdev, 0);
++	if (IS_ERR(priv->mmio)) {
++		dev_err(dev, "failed to request / ioremap\n");
++		ret = PTR_ERR(priv->mmio);
+ 		goto init_failed;
+ 	}
  
 
 
