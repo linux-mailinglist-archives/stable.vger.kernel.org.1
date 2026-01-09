@@ -1,57 +1,53 @@
-Return-Path: <stable+bounces-207637-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207064-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E544D0A045
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:51:29 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FBF3D0983C
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:22:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D0C24303D6A1
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:43:39 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B63FB307F22B
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:16:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C08835971B;
-	Fri,  9 Jan 2026 12:43:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A11D2737EE;
+	Fri,  9 Jan 2026 12:16:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MNQBjquU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qq8VX4vl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0601933C53A;
-	Fri,  9 Jan 2026 12:43:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CF1D32936C;
+	Fri,  9 Jan 2026 12:16:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962618; cv=none; b=Q6wwR+ioi5W+Bn/0MjsWPVAi5c/QQEgo4dUsL91bnZ1IuNXLU3l75TAqdX/MEAl9eoXSxzD9IONZ+K4h5rd5YUeM/BpWbTW/bB+e1Ers9irDpRWdQjF4a3uVAsCqWaWvvUhMB3bKf3FVvDZDesaPOww/hSIogxfNQXYDc1kDogY=
+	t=1767960988; cv=none; b=tsYnGz0i6DtazrXqJJpiaw8fiwQHhuAnht+amfpXv6a57xbm48fnUbU77/Kl0TvBMRhtc+pGf8kpjgQQyPS8FhcN6rkMBV/UchIIGu8X5Y3U4TtdaHEr0ujJ2955E03iFpTz8emWI4H7/un0dmVo4qUrbm7AolbxY5Ff0d2dl4w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962618; c=relaxed/simple;
-	bh=j1cVmS1Nq2YKQYCFwkebXLaur0AgeFYONQ9y/MvD+6w=;
+	s=arc-20240116; t=1767960988; c=relaxed/simple;
+	bh=OdRadCVV3RpkMdSWJXriX6I95uCM0H82mCyoSGwHsDw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ESAqBJpih5POBuk+apwkmIzkIeFgi0V6TSiXWEWwDfu0uTY21MCrWRWU4IzphoncgI1f4uj/5eKN0XqMbqeCg2ykFgNStVnwE8hrWGuULojk6OhsaL17xveTohgyVQW4dU/Ah7rcfaFBTnCNOsHfQq8jhzAa3KQ5d/vug+WT/mw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MNQBjquU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43D5DC4CEF1;
-	Fri,  9 Jan 2026 12:43:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=k5m8FkJAS4cPXCXzDb5loow+n0fRp3N1JlAdg8nai9eNLIvMk8jBSrrYIaRxND/8yK1eEfZkxdE76BwfEFzcCHJ1yNFzEuZE8OItkb5nFRXpsbqE8g0w1NMrIeFf5eejxQomIS9oMetEo6f0qmc2H8hafoTVNLj1pzCxwnDCLnY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qq8VX4vl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0DBDC4CEF1;
+	Fri,  9 Jan 2026 12:16:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962617;
-	bh=j1cVmS1Nq2YKQYCFwkebXLaur0AgeFYONQ9y/MvD+6w=;
+	s=korg; t=1767960988;
+	bh=OdRadCVV3RpkMdSWJXriX6I95uCM0H82mCyoSGwHsDw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MNQBjquUzC7dEb+9TamCQGvwplTxjtFMBD6YNjpHtPO/5k++uv0m8+9tM9A59Ky4a
-	 ozpX91C2Ii4G0YDpeoA2FsTEFUfDIIrRwkhRA9ITwcNPkTC2/xUzgb7d1iQcAgmpLz
-	 /5ILu4x00NyEpfOOKWm8B/jR0lv2DJayNp/3sJn8=
+	b=Qq8VX4vlpcO6Yluk/U4rqQMmFiZSmMZN1zZC2Gn2le2S0aXkWFbF1NAOiFSjaiBBP
+	 pFA/NGcsswVFjR33sqx21/PdjmCm5mlt6dd7YJ8id87zg8pkTUN53HsDwC9KIZ/eM0
+	 hVWE129hfTz0efDh06ySq1tW7hAG4uzC/Lx79pMM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-	syzbot+881d65229ca4f9ae8c84@syzkaller.appspotmail.com,
-	Ido Schimmel <idosch@nvidia.com>,
-	David Ahern <dsahern@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 429/634] ipv4: Fix reference count leak when using error routes with nexthop objects
+	Christian Hitz <christian.hitz@bbv.ch>,
+	Lee Jones <lee@kernel.org>
+Subject: [PATCH 6.6 568/737] leds: leds-lp50xx: Enable chip before any communication
 Date: Fri,  9 Jan 2026 12:41:47 +0100
-Message-ID: <20260109112133.687359973@linuxfoundation.org>
+Message-ID: <20260109112155.368485179@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,79 +57,155 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Christian Hitz <christian.hitz@bbv.ch>
 
-[ Upstream commit ac782f4e3bfcde145b8a7f8af31d9422d94d172a ]
+commit 434959618c47efe9e5f2e20f4a850caac4f6b823 upstream.
 
-When a nexthop object is deleted, it is marked as dead and then
-fib_table_flush() is called to flush all the routes that are using the
-dead nexthop.
+If a GPIO is used to control the chip's enable pin, it needs to be pulled
+high before any i2c communication is attempted.
 
-The current logic in fib_table_flush() is to only flush error routes
-(e.g., blackhole) when it is called as part of network namespace
-dismantle (i.e., with flush_all=true). Therefore, error routes are not
-flushed when their nexthop object is deleted:
+Currently, the enable GPIO handling is not correct.
 
- # ip link add name dummy1 up type dummy
- # ip nexthop add id 1 dev dummy1
- # ip route add 198.51.100.1/32 nhid 1
- # ip route add blackhole 198.51.100.2/32 nhid 1
- # ip nexthop del id 1
- # ip route show
- blackhole 198.51.100.2 nhid 1 dev dummy1
+Assume the enable GPIO is low when the probe function is entered. In this
+case the device is in SHUTDOWN mode and does not react to i2c commands.
 
-As such, they keep holding a reference on the nexthop object which in
-turn holds a reference on the nexthop device, resulting in a reference
-count leak:
+During probe the following sequence happens:
+ 1. The call to lp50xx_reset() on line 548 has no effect as i2c is not
+    possible yet.
+ 2. Then - on line 552 - lp50xx_enable_disable() is called. As
+    "priv->enable_gpio“ has not yet been initialized, setting the GPIO has
+    no effect. Also the i2c enable command is not executed as the device
+    is still in SHUTDOWN.
+ 3. On line 556 the call to lp50xx_probe_dt() finally parses the rest of
+    the DT and the configured priv->enable_gpio is set up.
 
- # ip link del dev dummy1
- [   70.516258] unregister_netdevice: waiting for dummy1 to become free. Usage count = 2
+As a result the device is still in SHUTDOWN mode and not ready for
+operation.
 
-Fix by flushing error routes when their nexthop is marked as dead.
+Split lp50xx_enable_disable() into distinct enable and disable functions
+to enforce correct ordering between enable_gpio manipulations and i2c
+commands.
+Read enable_gpio configuration from DT before attempting to manipulate
+enable_gpio.
+Add delays to observe correct wait timing after manipulating enable_gpio
+and before any i2c communication.
 
-IPv6 does not suffer from this problem.
-
-Fixes: 493ced1ac47c ("ipv4: Allow routes to use nexthop objects")
-Reported-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Closes: https://lore.kernel.org/netdev/d943f806-4da6-4970-ac28-b9373b0e63ac@I-love.SAKURA.ne.jp/
-Reported-by: syzbot+881d65229ca4f9ae8c84@syzkaller.appspotmail.com
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://patch.msgid.link/20251221144829.197694-1-idosch@nvidia.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 242b81170fb8 ("leds: lp50xx: Add the LP50XX family of the RGB LED driver")
+Signed-off-by: Christian Hitz <christian.hitz@bbv.ch>
+Link: https://patch.msgid.link/20251028155141.1603193-1-christian@klarinett.li
+Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/fib_trie.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/leds/leds-lp50xx.c |   55 ++++++++++++++++++++++++++++++++-------------
+ 1 file changed, 40 insertions(+), 15 deletions(-)
 
-diff --git a/net/ipv4/fib_trie.c b/net/ipv4/fib_trie.c
-index fa54b36b241a..4d148d089232 100644
---- a/net/ipv4/fib_trie.c
-+++ b/net/ipv4/fib_trie.c
-@@ -2059,10 +2059,11 @@ int fib_table_flush(struct net *net, struct fib_table *tb, bool flush_all)
- 				continue;
- 			}
+--- a/drivers/leds/leds-lp50xx.c
++++ b/drivers/leds/leds-lp50xx.c
+@@ -52,6 +52,12 @@
  
--			/* Do not flush error routes if network namespace is
--			 * not being dismantled
-+			/* When not flushing the entire table, skip error
-+			 * routes that are not marked for deletion.
- 			 */
--			if (!flush_all && fib_props[fa->fa_type].error) {
-+			if (!flush_all && fib_props[fa->fa_type].error &&
-+			    !(fi->fib_flags & RTNH_F_DEAD)) {
- 				slen = fa->fa_slen;
- 				continue;
- 			}
--- 
-2.51.0
-
+ #define LP50XX_SW_RESET		0xff
+ #define LP50XX_CHIP_EN		BIT(6)
++#define LP50XX_CHIP_DISABLE	0x00
++#define LP50XX_START_TIME_US	500
++#define LP50XX_RESET_TIME_US	3
++
++#define LP50XX_EN_GPIO_LOW	0
++#define LP50XX_EN_GPIO_HIGH	1
+ 
+ /* There are 3 LED outputs per bank */
+ #define LP50XX_LEDS_PER_MODULE	3
+@@ -374,19 +380,42 @@ static int lp50xx_reset(struct lp50xx *p
+ 	return regmap_write(priv->regmap, priv->chip_info->reset_reg, LP50XX_SW_RESET);
+ }
+ 
+-static int lp50xx_enable_disable(struct lp50xx *priv, int enable_disable)
++static int lp50xx_enable(struct lp50xx *priv)
+ {
+ 	int ret;
+ 
+-	ret = gpiod_direction_output(priv->enable_gpio, enable_disable);
++	if (priv->enable_gpio) {
++		ret = gpiod_direction_output(priv->enable_gpio, LP50XX_EN_GPIO_HIGH);
++		if (ret)
++			return ret;
++
++		udelay(LP50XX_START_TIME_US);
++	}
++
++	ret = lp50xx_reset(priv);
+ 	if (ret)
+ 		return ret;
+ 
+-	if (enable_disable)
+-		return regmap_write(priv->regmap, LP50XX_DEV_CFG0, LP50XX_CHIP_EN);
+-	else
+-		return regmap_write(priv->regmap, LP50XX_DEV_CFG0, 0);
++	return regmap_write(priv->regmap, LP50XX_DEV_CFG0, LP50XX_CHIP_EN);
++}
+ 
++static int lp50xx_disable(struct lp50xx *priv)
++{
++	int ret;
++
++	ret = regmap_write(priv->regmap, LP50XX_DEV_CFG0, LP50XX_CHIP_DISABLE);
++	if (ret)
++		return ret;
++
++	if (priv->enable_gpio) {
++		ret = gpiod_direction_output(priv->enable_gpio, LP50XX_EN_GPIO_LOW);
++		if (ret)
++			return ret;
++
++		udelay(LP50XX_RESET_TIME_US);
++	}
++
++	return 0;
+ }
+ 
+ static int lp50xx_probe_leds(struct fwnode_handle *child, struct lp50xx *priv,
+@@ -453,6 +482,10 @@ static int lp50xx_probe_dt(struct lp50xx
+ 		return dev_err_probe(priv->dev, PTR_ERR(priv->enable_gpio),
+ 				     "Failed to get enable GPIO\n");
+ 
++	ret = lp50xx_enable(priv);
++	if (ret)
++		return ret;
++
+ 	priv->regulator = devm_regulator_get(priv->dev, "vled");
+ 	if (IS_ERR(priv->regulator))
+ 		priv->regulator = NULL;
+@@ -559,14 +592,6 @@ static int lp50xx_probe(struct i2c_clien
+ 		return ret;
+ 	}
+ 
+-	ret = lp50xx_reset(led);
+-	if (ret)
+-		return ret;
+-
+-	ret = lp50xx_enable_disable(led, 1);
+-	if (ret)
+-		return ret;
+-
+ 	return lp50xx_probe_dt(led);
+ }
+ 
+@@ -575,7 +600,7 @@ static void lp50xx_remove(struct i2c_cli
+ 	struct lp50xx *led = i2c_get_clientdata(client);
+ 	int ret;
+ 
+-	ret = lp50xx_enable_disable(led, 0);
++	ret = lp50xx_disable(led);
+ 	if (ret)
+ 		dev_err(led->dev, "Failed to disable chip\n");
+ 
 
 
 
