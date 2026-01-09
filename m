@@ -1,59 +1,85 @@
-Return-Path: <stable+bounces-207818-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207820-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 793CCD0A51B
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:16:02 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97A1ED0A497
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:13:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7AD9730D1FEA
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:53:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4AEC931F675A
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:53:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86B4F35B15F;
-	Fri,  9 Jan 2026 12:52:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1529D32BF21;
+	Fri,  9 Jan 2026 12:52:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yesU2q/+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZkFnXM0a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49D5333372B;
-	Fri,  9 Jan 2026 12:52:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD0BB227EA8;
+	Fri,  9 Jan 2026 12:52:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767963136; cv=none; b=V1CuyFUn+3qI64JtT4Ag5FGwGyC9iqCD5jBAAzliIKRyYmMkgYTRmdZPN3PJBLV8P5LhtOOkTDgL1TLkO7+GuFPo1CkUm1Pi5Gkj6S2yyEXxxbYvNjHz3USB9W5ffhqYqnq3xVlAklq9WO6NhLr+A7AZa4mYFn70RJSGKlPJB8A=
+	t=1767963141; cv=none; b=JW/PeA/vpCIhw8VIeU9Bj0rJcp8pK13d6RHF7iq1hxU6gZIBnke8dCwrOFKiuiOxjM3qEMhFl1HORonr1Sg2iNIYPfpcB0lFFMvs+k8IX/PftD9tXIhZv8PUDNWmyEOc1z8B/q2IDwMdwOBc3ovf9QnQPxZhFLq/4F4aTCo8EDE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767963136; c=relaxed/simple;
-	bh=9o0gqq+yfliWMDmic0cJIQdFpmSQ7gfqSqB2evzuKJk=;
+	s=arc-20240116; t=1767963141; c=relaxed/simple;
+	bh=oxoZizLKCHncxPKI2VuJI6MNsgpCiwOJjTSvVo567jg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eNYUyao2P42Ng9GTCJBumtkKWORm1EXHik+xd/EKL8d82OTtj7bKZrqQ1XYM/t5jGY9A38fMjxlp42sSO8bajg/0F2aM3ctOJeYxefHd+qUo5BSdVx46vLWduorye+o0HzL/IUbwIoaHFfXYULHHY35Qhp0M7LxEywf0j/XzGzU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yesU2q/+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97648C4CEF1;
-	Fri,  9 Jan 2026 12:52:15 +0000 (UTC)
+	 MIME-Version:Content-Type; b=fX0fU6A+ocDbzABoZM3RyKaS6Rhc5+m/hmQKqRUrC4nyQO29RKba7ASz1Coms4xqoCytESiORjFBLlblB+SuhAS9sV2LhAI6j1rKPS53giFjzGcaRKNZt/Rvnz77ZseVOygPLW0zHCEKMO1RhCjV8mTELyGkS4LEEPunUOvqgOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZkFnXM0a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32509C16AAE;
+	Fri,  9 Jan 2026 12:52:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767963136;
-	bh=9o0gqq+yfliWMDmic0cJIQdFpmSQ7gfqSqB2evzuKJk=;
+	s=korg; t=1767963141;
+	bh=oxoZizLKCHncxPKI2VuJI6MNsgpCiwOJjTSvVo567jg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yesU2q/+6Sfxd6kmYSB/EM7FJL6nbXiBrwxC57sLAMr1wFy5wYnVC+zbUcGPf5v55
-	 H0dkQiumaZgOvSx0CJT6pFDjCLYAnchDq3JSKujzRMinbsNkqsQqa7DrSprpZYFgTK
-	 sY5KlMi3QMXYjCzrAFcz6qbXdcMqNTAk8YzCU8cQ=
+	b=ZkFnXM0aeJe1zNxhXXvmQPRh17rr/pvRlWedfVnzCyVSYYWxGNtaS5inCixkM+7ir
+	 PgTdj/faaUpzxPwwd6m9/I94F4ErKyowfgyablDQfYA+51DdDOzyLQmnVDZNnWedQw
+	 mgiCFMv5FgPQMPMZ9/D16vCBmHHbHo7o+XRvZm9k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Xu <peterx@redhat.com>,
-	Mike Kravetz <mike.kravetz@oracle.com>,
-	James Houghton <jthoughton@google.com>,
-	Andrea Arcangeli <aarcange@redhat.com>,
+	Hugh Dickins <hughd@google.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
 	Axel Rasmussen <axelrasmussen@google.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Christoph Hellwig <hch@infradead.org>,
 	David Hildenbrand <david@redhat.com>,
-	Muchun Song <songmuchun@bytedance.com>,
-	Nadav Amit <nadav.amit@gmail.com>,
+	"Huang, Ying" <ying.huang@intel.com>,
+	Ira Weiny <ira.weiny@intel.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Lorenzo Stoakes <lstoakes@gmail.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Mel Gorman <mgorman@techsingularity.net>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Mike Kravetz <mike.kravetz@oracle.com>,
+	"Mike Rapoport (IBM)" <rppt@kernel.org>,
+	Minchan Kim <minchan@kernel.org>,
+	Naoya Horiguchi <naoya.horiguchi@nec.com>,
+	Pavel Tatashin <pasha.tatashin@soleen.com>,
+	Peter Xu <peterx@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Qi Zheng <zhengqi.arch@bytedance.com>,
+	Ralph Campbell <rcampbell@nvidia.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	SeongJae Park <sj@kernel.org>,
+	Song Liu <song@kernel.org>,
+	Steven Price <steven.price@arm.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Will Deacon <will@kernel.org>,
+	Yang Shi <shy828301@gmail.com>,
+	Yu Zhao <yuzhao@google.com>,
+	Zack Rusin <zackr@vmware.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Harry Yoo <harry.yoo@oracle.com>,
 	"David Hildenbrand (Red Hat)" <david@kernel.org>
-Subject: [PATCH 6.1 610/634] mm/mprotect: use long for page accountings and retval
-Date: Fri,  9 Jan 2026 12:44:48 +0100
-Message-ID: <20260109112140.584949761@linuxfoundation.org>
+Subject: [PATCH 6.1 611/634] mm/mprotect: delete pmd_none_or_clear_bad_unless_trans_huge()
+Date: Fri,  9 Jan 2026 12:44:49 +0100
+Message-ID: <20260109112140.623492982@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
 References: <20260109112117.407257400@linuxfoundation.org>
@@ -66,227 +92,288 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Xu <peterx@redhat.com>
+From: Hugh Dickins <hughd@google.com>
 
-commit a79390f5d6a78647fd70856bd42b22d994de0ba2 upstream.
+commit 670ddd8cdcbd1d07a4571266ae3517f821728c3a upstream.
 
-Switch to use type "long" for page accountings and retval across the whole
-procedure of change_protection().
+change_pmd_range() had special pmd_none_or_clear_bad_unless_trans_huge(),
+required to avoid "bad" choices when setting automatic NUMA hinting under
+mmap_read_lock(); but most of that is already covered in pte_offset_map()
+now.  change_pmd_range() just wants a pmd_none() check before wasting time
+on MMU notifiers, then checks on the read-once _pmd value to work out
+what's needed for huge cases.  If change_pte_range() returns -EAGAIN to
+retry if pte_offset_map_lock() fails, nothing more special is needed.
 
-The change should have shrinked the possible maximum page number to be
-half comparing to previous (ULONG_MAX / 2), but it shouldn't overflow on
-any system either because the maximum possible pages touched by change
-protection should be ULONG_MAX / PAGE_SIZE.
-
-Two reasons to switch from "unsigned long" to "long":
-
-  1. It suites better on count_vm_numa_events(), whose 2nd parameter takes
-     a long type.
-
-  2. It paves way for returning negative (error) values in the future.
-
-Currently the only caller that consumes this retval is change_prot_numa(),
-where the unsigned long was converted to an int.  Since at it, touching up
-the numa code to also take a long, so it'll avoid any possible overflow
-too during the int-size convertion.
-
-Link: https://lkml.kernel.org/r/20230104225207.1066932-3-peterx@redhat.com
-Signed-off-by: Peter Xu <peterx@redhat.com>
-Acked-by: Mike Kravetz <mike.kravetz@oracle.com>
-Acked-by: James Houghton <jthoughton@google.com>
-Cc: Andrea Arcangeli <aarcange@redhat.com>
+Link: https://lkml.kernel.org/r/725a42a9-91e9-c868-925-e3a5fd40bb4f@google.com
+Signed-off-by: Hugh Dickins <hughd@google.com>
+Cc: Alistair Popple <apopple@nvidia.com>
+Cc: Anshuman Khandual <anshuman.khandual@arm.com>
 Cc: Axel Rasmussen <axelrasmussen@google.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Christoph Hellwig <hch@infradead.org>
 Cc: David Hildenbrand <david@redhat.com>
-Cc: Muchun Song <songmuchun@bytedance.com>
-Cc: Nadav Amit <nadav.amit@gmail.com>
+Cc: "Huang, Ying" <ying.huang@intel.com>
+Cc: Ira Weiny <ira.weiny@intel.com>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Cc: Lorenzo Stoakes <lstoakes@gmail.com>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: Mel Gorman <mgorman@techsingularity.net>
+Cc: Miaohe Lin <linmiaohe@huawei.com>
+Cc: Mike Kravetz <mike.kravetz@oracle.com>
+Cc: Mike Rapoport (IBM) <rppt@kernel.org>
+Cc: Minchan Kim <minchan@kernel.org>
+Cc: Naoya Horiguchi <naoya.horiguchi@nec.com>
+Cc: Pavel Tatashin <pasha.tatashin@soleen.com>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Qi Zheng <zhengqi.arch@bytedance.com>
+Cc: Ralph Campbell <rcampbell@nvidia.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: SeongJae Park <sj@kernel.org>
+Cc: Song Liu <song@kernel.org>
+Cc: Steven Price <steven.price@arm.com>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Yang Shi <shy828301@gmail.com>
+Cc: Yu Zhao <yuzhao@google.com>
+Cc: Zack Rusin <zackr@vmware.com>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-[ Adjust context ]
+[ Background: It was reported that a bad pmd is seen when automatic NUMA
+  balancing is marking page table entries as prot_numa:
+
+      [2437548.196018] mm/pgtable-generic.c:50: bad pmd 00000000af22fc02(dffffffe71fbfe02)
+      [2437548.235022] Call Trace:
+      [2437548.238234]  <TASK>
+      [2437548.241060]  dump_stack_lvl+0x46/0x61
+      [2437548.245689]  panic+0x106/0x2e5
+      [2437548.249497]  pmd_clear_bad+0x3c/0x3c
+      [2437548.253967]  change_pmd_range.isra.0+0x34d/0x3a7
+      [2437548.259537]  change_p4d_range+0x156/0x20e
+      [2437548.264392]  change_protection_range+0x116/0x1a9
+      [2437548.269976]  change_prot_numa+0x15/0x37
+      [2437548.274774]  task_numa_work+0x1b8/0x302
+      [2437548.279512]  task_work_run+0x62/0x95
+      [2437548.283882]  exit_to_user_mode_loop+0x1a4/0x1a9
+      [2437548.289277]  exit_to_user_mode_prepare+0xf4/0xfc
+      [2437548.294751]  ? sysvec_apic_timer_interrupt+0x34/0x81
+      [2437548.300677]  irqentry_exit_to_user_mode+0x5/0x25
+      [2437548.306153]  asm_sysvec_apic_timer_interrupt+0x16/0x1b
+
+    This is due to a race condition between change_prot_numa() and
+    THP migration because the kernel doesn't check is_swap_pmd() and
+    pmd_trans_huge() atomically:
+
+    change_prot_numa()                      THP migration
+    ======================================================================
+    - change_pmd_range()
+    -> is_swap_pmd() returns false,
+    meaning it's not a PMD migration
+    entry.
+                                      - do_huge_pmd_numa_page()
+                                      -> migrate_misplaced_page() sets
+                                         migration entries for the THP.
+    - change_pmd_range()
+    -> pmd_none_or_clear_bad_unless_trans_huge()
+    -> pmd_none() and pmd_trans_huge() returns false
+    - pmd_none_or_clear_bad_unless_trans_huge()
+    -> pmd_bad() returns true for the migration entry!
+
+  The upstream commit 670ddd8cdcbd ("mm/mprotect: delete
+  pmd_none_or_clear_bad_unless_trans_huge()") closes this race condition
+  by checking is_swap_pmd() and pmd_trans_huge() atomically.
+
+  Backporting note:
+    Unlike the mainline, pte_offset_map_lock() does not check if the pmd
+    entry is a migration entry or a hugepage; acquires PTL unconditionally
+    instead of returning failure. Therefore, it is necessary to keep the
+    !is_swap_pmd() && !pmd_trans_huge() && !pmd_devmap() check before
+    acquiring the PTL.
+
+    After acquiring the lock, open-code the semantics of
+    pte_offset_map_lock() in the mainline kernel; change_pte_range() fails
+    if the pmd value has changed. This requires adding pmd_old parameter
+    (pmd_t value that is read before calling the function) to
+    change_pte_range(). ]
+
 Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
 Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/hugetlb.h |    4 ++--
- include/linux/mm.h      |    2 +-
- mm/hugetlb.c            |    4 ++--
- mm/mempolicy.c          |    2 +-
- mm/mprotect.c           |   26 +++++++++++++-------------
- 5 files changed, 19 insertions(+), 19 deletions(-)
+ mm/mprotect.c |  101 ++++++++++++++++++++++++----------------------------------
+ 1 file changed, 43 insertions(+), 58 deletions(-)
 
---- a/include/linux/hugetlb.h
-+++ b/include/linux/hugetlb.h
-@@ -233,7 +233,7 @@ void hugetlb_vma_lock_release(struct kre
- 
- int pmd_huge(pmd_t pmd);
- int pud_huge(pud_t pud);
--unsigned long hugetlb_change_protection(struct vm_area_struct *vma,
-+long hugetlb_change_protection(struct vm_area_struct *vma,
- 		unsigned long address, unsigned long end, pgprot_t newprot,
- 		unsigned long cp_flags);
- 
-@@ -447,7 +447,7 @@ static inline void move_hugetlb_state(st
- {
- }
- 
--static inline unsigned long hugetlb_change_protection(
-+static inline long hugetlb_change_protection(
- 			struct vm_area_struct *vma, unsigned long address,
- 			unsigned long end, pgprot_t newprot,
- 			unsigned long cp_flags)
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -2148,7 +2148,7 @@ extern unsigned long move_page_tables(st
- #define  MM_CP_UFFD_WP_ALL                 (MM_CP_UFFD_WP | \
- 					    MM_CP_UFFD_WP_RESOLVE)
- 
--extern unsigned long change_protection(struct mmu_gather *tlb,
-+extern long change_protection(struct mmu_gather *tlb,
- 			      struct vm_area_struct *vma, unsigned long start,
- 			      unsigned long end, pgprot_t newprot,
- 			      unsigned long cp_flags);
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -6668,7 +6668,7 @@ long follow_hugetlb_page(struct mm_struc
- 	return i ? i : err;
- }
- 
--unsigned long hugetlb_change_protection(struct vm_area_struct *vma,
-+long hugetlb_change_protection(struct vm_area_struct *vma,
- 		unsigned long address, unsigned long end,
- 		pgprot_t newprot, unsigned long cp_flags)
- {
-@@ -6677,7 +6677,7 @@ unsigned long hugetlb_change_protection(
- 	pte_t *ptep;
- 	pte_t pte;
- 	struct hstate *h = hstate_vma(vma);
--	unsigned long pages = 0, psize = huge_page_size(h);
-+	long pages = 0, psize = huge_page_size(h);
- 	bool shared_pmd = false;
- 	struct mmu_notifier_range range;
- 	unsigned long last_addr_mask;
---- a/mm/mempolicy.c
-+++ b/mm/mempolicy.c
-@@ -628,7 +628,7 @@ unsigned long change_prot_numa(struct vm
- 			unsigned long addr, unsigned long end)
- {
- 	struct mmu_gather tlb;
--	int nr_updated;
-+	long nr_updated;
- 
- 	tlb_gather_mmu(&tlb, vma->vm_mm);
- 
 --- a/mm/mprotect.c
 +++ b/mm/mprotect.c
-@@ -72,13 +72,13 @@ static inline bool can_change_pte_writab
- 	return true;
+@@ -73,10 +73,12 @@ static inline bool can_change_pte_writab
  }
  
--static unsigned long change_pte_range(struct mmu_gather *tlb,
-+static long change_pte_range(struct mmu_gather *tlb,
- 		struct vm_area_struct *vma, pmd_t *pmd, unsigned long addr,
- 		unsigned long end, pgprot_t newprot, unsigned long cp_flags)
+ static long change_pte_range(struct mmu_gather *tlb,
+-		struct vm_area_struct *vma, pmd_t *pmd, unsigned long addr,
+-		unsigned long end, pgprot_t newprot, unsigned long cp_flags)
++		struct vm_area_struct *vma, pmd_t *pmd, pmd_t pmd_old,
++		unsigned long addr, unsigned long end, pgprot_t newprot,
++		unsigned long cp_flags)
  {
  	pte_t *pte, oldpte;
++	pmd_t _pmd;
  	spinlock_t *ptl;
--	unsigned long pages = 0;
-+	long pages = 0;
+ 	long pages = 0;
  	int target_node = NUMA_NO_NODE;
- 	bool prot_numa = cp_flags & MM_CP_PROT_NUMA;
- 	bool uffd_wp = cp_flags & MM_CP_UFFD_WP;
-@@ -346,13 +346,13 @@ uffd_wp_protect_file(struct vm_area_stru
- 		}							\
- 	} while (0)
+@@ -86,21 +88,15 @@ static long change_pte_range(struct mmu_
  
--static inline unsigned long change_pmd_range(struct mmu_gather *tlb,
-+static inline long change_pmd_range(struct mmu_gather *tlb,
- 		struct vm_area_struct *vma, pud_t *pud, unsigned long addr,
- 		unsigned long end, pgprot_t newprot, unsigned long cp_flags)
- {
- 	pmd_t *pmd;
- 	unsigned long next;
--	unsigned long pages = 0;
-+	long pages = 0;
- 	unsigned long nr_huge_updates = 0;
- 	struct mmu_notifier_range range;
+ 	tlb_change_page_size(tlb, PAGE_SIZE);
  
-@@ -360,7 +360,7 @@ static inline unsigned long change_pmd_r
+-	/*
+-	 * Can be called with only the mmap_lock for reading by
+-	 * prot_numa so we must check the pmd isn't constantly
+-	 * changing from under us from pmd_none to pmd_trans_huge
+-	 * and/or the other way around.
+-	 */
+-	if (pmd_trans_unstable(pmd))
+-		return 0;
+-
+-	/*
+-	 * The pmd points to a regular pte so the pmd can't change
+-	 * from under us even if the mmap_lock is only hold for
+-	 * reading.
+-	 */
+ 	pte = pte_offset_map_lock(vma->vm_mm, pmd, addr, &ptl);
++	/* Make sure pmd didn't change after acquiring ptl */
++	_pmd = pmd_read_atomic(pmd);
++	/* See pmd_none_or_trans_huge_or_clear_bad for info on barrier */
++	barrier();
++	if (!pmd_same(pmd_old, _pmd)) {
++		pte_unmap_unlock(pte, ptl);
++		return -EAGAIN;
++	}
+ 
+ 	/* Get target node for single threaded private VMAs */
+ 	if (prot_numa && !(vma->vm_flags & VM_SHARED) &&
+@@ -288,31 +284,6 @@ static long change_pte_range(struct mmu_
+ 	return pages;
+ }
+ 
+-/*
+- * Used when setting automatic NUMA hinting protection where it is
+- * critical that a numa hinting PMD is not confused with a bad PMD.
+- */
+-static inline int pmd_none_or_clear_bad_unless_trans_huge(pmd_t *pmd)
+-{
+-	pmd_t pmdval = pmd_read_atomic(pmd);
+-
+-	/* See pmd_none_or_trans_huge_or_clear_bad for info on barrier */
+-#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+-	barrier();
+-#endif
+-
+-	if (pmd_none(pmdval))
+-		return 1;
+-	if (pmd_trans_huge(pmdval))
+-		return 0;
+-	if (unlikely(pmd_bad(pmdval))) {
+-		pmd_clear_bad(pmd);
+-		return 1;
+-	}
+-
+-	return 0;
+-}
+-
+ /* Return true if we're uffd wr-protecting file-backed memory, or false */
+ static inline bool
+ uffd_wp_protect_file(struct vm_area_struct *vma, unsigned long cp_flags)
+@@ -360,22 +331,34 @@ static inline long change_pmd_range(stru
  
  	pmd = pmd_offset(pud, addr);
  	do {
--		unsigned long this_pages;
-+		long this_pages;
- 
+-		long this_pages;
+-
++		long ret;
++		pmd_t _pmd;
++again:
  		next = pmd_addr_end(addr, end);
++		_pmd = pmd_read_atomic(pmd);
++		/* See pmd_none_or_trans_huge_or_clear_bad for info on barrier */
++#ifdef CONFIG_TRANSPARENT_HUGEPAGE
++		barrier();
++#endif
  
-@@ -430,13 +430,13 @@ next:
- 	return pages;
- }
+ 		change_pmd_prepare(vma, pmd, cp_flags);
+ 		/*
+ 		 * Automatic NUMA balancing walks the tables with mmap_lock
+ 		 * held for read. It's possible a parallel update to occur
+-		 * between pmd_trans_huge() and a pmd_none_or_clear_bad()
+-		 * check leading to a false positive and clearing.
+-		 * Hence, it's necessary to atomically read the PMD value
+-		 * for all the checks.
++		 * between pmd_trans_huge(), is_swap_pmd(), and
++		 * a pmd_none_or_clear_bad() check leading to a false positive
++		 * and clearing. Hence, it's necessary to atomically read
++		 * the PMD value for all the checks.
+ 		 */
+-		if (!is_swap_pmd(*pmd) && !pmd_devmap(*pmd) &&
+-		     pmd_none_or_clear_bad_unless_trans_huge(pmd))
+-			goto next;
++		if (!is_swap_pmd(_pmd) && !pmd_devmap(_pmd) && !pmd_trans_huge(_pmd)) {
++			if (pmd_none(_pmd))
++				goto next;
++
++			if (pmd_bad(_pmd)) {
++				pmd_clear_bad(pmd);
++				goto next;
++			}
++		}
  
--static inline unsigned long change_pud_range(struct mmu_gather *tlb,
-+static inline long change_pud_range(struct mmu_gather *tlb,
- 		struct vm_area_struct *vma, p4d_t *p4d, unsigned long addr,
- 		unsigned long end, pgprot_t newprot, unsigned long cp_flags)
- {
- 	pud_t *pud;
- 	unsigned long next;
--	unsigned long pages = 0;
-+	long pages = 0;
+ 		/* invoke the mmu notifier if the pmd is populated */
+ 		if (!range.start) {
+@@ -385,7 +368,7 @@ static inline long change_pmd_range(stru
+ 			mmu_notifier_invalidate_range_start(&range);
+ 		}
  
- 	pud = pud_offset(p4d, addr);
- 	do {
-@@ -451,13 +451,13 @@ static inline unsigned long change_pud_r
- 	return pages;
- }
+-		if (is_swap_pmd(*pmd) || pmd_trans_huge(*pmd) || pmd_devmap(*pmd)) {
++		if (is_swap_pmd(_pmd) || pmd_trans_huge(_pmd) || pmd_devmap(_pmd)) {
+ 			if ((next - addr != HPAGE_PMD_SIZE) ||
+ 			    uffd_wp_protect_file(vma, cp_flags)) {
+ 				__split_huge_pmd(vma, pmd, addr, false, NULL);
+@@ -400,11 +383,11 @@ static inline long change_pmd_range(stru
+ 				 * change_huge_pmd() does not defer TLB flushes,
+ 				 * so no need to propagate the tlb argument.
+ 				 */
+-				int nr_ptes = change_huge_pmd(tlb, vma, pmd,
+-						addr, newprot, cp_flags);
++				ret = change_huge_pmd(tlb, vma, pmd,
++						      addr, newprot, cp_flags);
  
--static inline unsigned long change_p4d_range(struct mmu_gather *tlb,
-+static inline long change_p4d_range(struct mmu_gather *tlb,
- 		struct vm_area_struct *vma, pgd_t *pgd, unsigned long addr,
- 		unsigned long end, pgprot_t newprot, unsigned long cp_flags)
- {
- 	p4d_t *p4d;
- 	unsigned long next;
--	unsigned long pages = 0;
-+	long pages = 0;
- 
- 	p4d = p4d_offset(pgd, addr);
- 	do {
-@@ -472,14 +472,14 @@ static inline unsigned long change_p4d_r
- 	return pages;
- }
- 
--static unsigned long change_protection_range(struct mmu_gather *tlb,
-+static long change_protection_range(struct mmu_gather *tlb,
- 		struct vm_area_struct *vma, unsigned long addr,
- 		unsigned long end, pgprot_t newprot, unsigned long cp_flags)
- {
- 	struct mm_struct *mm = vma->vm_mm;
- 	pgd_t *pgd;
- 	unsigned long next;
--	unsigned long pages = 0;
-+	long pages = 0;
- 
- 	BUG_ON(addr >= end);
- 	pgd = pgd_offset(mm, addr);
-@@ -498,12 +498,12 @@ static unsigned long change_protection_r
- 	return pages;
- }
- 
--unsigned long change_protection(struct mmu_gather *tlb,
-+long change_protection(struct mmu_gather *tlb,
- 		       struct vm_area_struct *vma, unsigned long start,
- 		       unsigned long end, pgprot_t newprot,
- 		       unsigned long cp_flags)
- {
--	unsigned long pages;
-+	long pages;
- 
- 	BUG_ON((cp_flags & MM_CP_UFFD_WP_ALL) == MM_CP_UFFD_WP_ALL);
- 
+-				if (nr_ptes) {
+-					if (nr_ptes == HPAGE_PMD_NR) {
++				if (ret) {
++					if (ret == HPAGE_PMD_NR) {
+ 						pages += HPAGE_PMD_NR;
+ 						nr_huge_updates++;
+ 					}
+@@ -415,9 +398,11 @@ static inline long change_pmd_range(stru
+ 			}
+ 			/* fall through, the trans huge pmd just split */
+ 		}
+-		this_pages = change_pte_range(tlb, vma, pmd, addr, next,
+-					      newprot, cp_flags);
+-		pages += this_pages;
++		ret = change_pte_range(tlb, vma, pmd, _pmd, addr, next,
++				       newprot, cp_flags);
++		if (ret < 0)
++			goto again;
++		pages += ret;
+ next:
+ 		cond_resched();
+ 	} while (pmd++, addr = next, addr != end);
 
 
 
