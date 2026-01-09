@@ -1,52 +1,54 @@
-Return-Path: <stable+bounces-206945-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207528-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CCAFD09653
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:15:06 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 584D5D0A205
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:00:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 736A8303C7FB
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:11:04 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 809833084D5E
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:38:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 945F2334C24;
-	Fri,  9 Jan 2026 12:10:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6230359701;
+	Fri,  9 Jan 2026 12:38:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1JhfjY43"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S+dRU4YH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5774ECA6B;
-	Fri,  9 Jan 2026 12:10:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6940C35B158;
+	Fri,  9 Jan 2026 12:38:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960652; cv=none; b=Ng4wY9grBlAj0oiHJQJTiZmUyVWVFsVQHgaDt8gHirY1hgkOMb17PgOWNnl56sjE9BUY5UDq+DIKiSNkX7YsPqYbdkkomX4SSGem6gMpTYM4lWfuyWpiyftx97IAdcQeb//I1n/BB8YPojz/BPFVpeS4PIozf7mVtKT1L2yvwxA=
+	t=1767962310; cv=none; b=NWMCPP6PX/xk1x3KfJTHTHml5AAwMLr6WyG4Z69O/WJxyb1U7w743ioD9qPZBrzc7+W4afcfOLD5HpPU6kg4UxENy3FJy0JY4t9Cv1MFzIz2yZrLyvQf47gQX4zRA49nQ3dkc5X/sIq27r00sjsENv9Xrm3AsrNkWAfWOhMqOrw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960652; c=relaxed/simple;
-	bh=6IS9XMxsHHSMAtMOj3F41n1+AFmFuLB09k1NPPsGRW0=;
+	s=arc-20240116; t=1767962310; c=relaxed/simple;
+	bh=8vg8PERlXZNB2xW/UvHFknRJTPxjbY/4abkNR7NsWN0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZPfcev+QMeaYZdEi6C3b30tavPcAA2S2swi/43n7WtvRadKuVDC7ZcUILxK7PBYr//CWVpm60RzhbYPMeoc30szeNwDP7Xc37WqgEnSTHSjDVT0TTirndkJI7Eo2jFsL7CVGJujCd3IAY0b4/RE3fVR5LUx1BzJuzX6WUURpZuM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1JhfjY43; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89DFEC4CEF1;
-	Fri,  9 Jan 2026 12:10:51 +0000 (UTC)
+	 MIME-Version; b=MeXgfaI6SvyD/lfYzvkCNf3SkCc9TsVTyR+KFaCwzUvpaxHoj80QRWgC/OjFo2Rb/wV2uUsIzwVckR1cljbb8+DDHo75MOsHr2coHwy4hL7PmVs0ljFXBl0LXm2+2mWv9UI2gWE6yX34p802LluX6iTGXOUFzrJsxQUy307Hamo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S+dRU4YH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9209C4CEF1;
+	Fri,  9 Jan 2026 12:38:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960651;
-	bh=6IS9XMxsHHSMAtMOj3F41n1+AFmFuLB09k1NPPsGRW0=;
+	s=korg; t=1767962310;
+	bh=8vg8PERlXZNB2xW/UvHFknRJTPxjbY/4abkNR7NsWN0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1JhfjY43Obuom21sZwXIw8LDHLD0WMBz4+uhu4QtrFSvdDuAVMcTuYGG/1ql6PBtm
-	 +gXOLWgvo2sB3kIBOOWkbdRjzgtXfctWHNnFK2R2QFAYbp2zOqTnbEa4kkSwdI1f5e
-	 JAiqL0Y+LKfMfM/sl1wwFD553/a+B1YDJnv00gnk=
+	b=S+dRU4YH+nR/WH/T4DYs30NBPxO94POaaqiGGSyha4rwt1uXu3/ls5/5mIEvh3T/j
+	 tit+G8LceETj54xQcfumAyR+qWCHT6LSajOD/Cg/uqnppHMfVWuDFgSIsNAOMMxNKW
+	 W1WXy0evW+lupxEHisFDlgO5yVt2zhe0d0QOFb84=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.6 460/737] parisc: Do not reprogram affinitiy on ASP chip
+	Jan Hoeppner <hoeppner@linux.ibm.com>,
+	Stefan Haberland <sth@linux.ibm.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.1 321/634] s390/dasd: Fix gendisk parent after copy pair swap
 Date: Fri,  9 Jan 2026 12:39:59 +0100
-Message-ID: <20260109112151.295338248@linuxfoundation.org>
+Message-ID: <20260109112129.608989469@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,41 +60,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@gmx.de>
+From: Stefan Haberland <sth@linux.ibm.com>
 
-commit dca7da244349eef4d78527cafc0bf80816b261f5 upstream.
+commit c943bfc6afb8d0e781b9b7406f36caa8bbf95cb9 upstream.
 
-The ASP chip is a very old variant of the GSP chip and is used e.g. in
-HP 730 workstations. When trying to reprogram the affinity it will crash
-with a HPMC as the relevant registers don't seem to be at the usual
-location.  Let's avoid the crash by checking the sversion. Also note,
-that reprogramming isn't necessary either, as the HP730 is a just a
-single-CPU machine.
+After a copy pair swap the block device's "device" symlink points to
+the secondary CCW device, but the gendisk's parent remained the
+primary, leaving /sys/block/<dasdx> under the wrong parent.
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: stable@vger.kernel.org
+Move the gendisk to the secondary's device with device_move(), keeping
+the sysfs topology consistent after the swap.
+
+Fixes: 413862caad6f ("s390/dasd: add copy pair swap capability")
+Cc: stable@vger.kernel.org #6.1
+Reviewed-by: Jan Hoeppner <hoeppner@linux.ibm.com>
+Signed-off-by: Stefan Haberland <sth@linux.ibm.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/parisc/gsc.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/s390/block/dasd_eckd.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/parisc/gsc.c
-+++ b/drivers/parisc/gsc.c
-@@ -154,7 +154,9 @@ static int gsc_set_affinity_irq(struct i
- 	gsc_dev->eim = ((u32) gsc_dev->gsc_irq.txn_addr) | gsc_dev->gsc_irq.txn_data;
+--- a/drivers/s390/block/dasd_eckd.c
++++ b/drivers/s390/block/dasd_eckd.c
+@@ -6190,6 +6190,7 @@ static int dasd_eckd_copy_pair_swap(stru
+ 	struct dasd_copy_relation *copy;
+ 	struct dasd_block *block;
+ 	struct gendisk *gdp;
++	int rc;
  
- 	/* switch IRQ's for devices below LASI/WAX to other CPU */
--	gsc_writel(gsc_dev->eim, gsc_dev->hpa + OFFSET_IAR);
-+	/* ASP chip (svers 0x70) does not support reprogramming */
-+	if (gsc_dev->gsc->id.sversion != 0x70)
-+		gsc_writel(gsc_dev->eim, gsc_dev->hpa + OFFSET_IAR);
+ 	copy = device->copy;
+ 	if (!copy)
+@@ -6224,6 +6225,13 @@ static int dasd_eckd_copy_pair_swap(stru
+ 	/* swap blocklayer device link */
+ 	gdp = block->gdp;
+ 	dasd_add_link_to_gendisk(gdp, secondary);
++	rc = device_move(disk_to_dev(gdp), &secondary->cdev->dev, DPM_ORDER_NONE);
++	if (rc) {
++		dev_err(&primary->cdev->dev,
++			"copy_pair_swap: moving blockdevice parent %s->%s failed (%d)\n",
++			dev_name(&primary->cdev->dev),
++			dev_name(&secondary->cdev->dev), rc);
++	}
  
- 	irq_data_update_effective_affinity(d, &tmask);
- 
+ 	/* re-enable device */
+ 	dasd_device_remove_stop_bits(primary, DASD_STOPPED_PPRC);
 
 
 
