@@ -1,115 +1,147 @@
-Return-Path: <stable+bounces-207279-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207589-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AD60D09B0E
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:33:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DA26D09F52
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:48:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8E10A30AE117
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:27:02 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7CC8E302BF96
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:41:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5211F2EC54D;
-	Fri,  9 Jan 2026 12:26:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7FAA35C188;
+	Fri,  9 Jan 2026 12:41:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sGEkuf8R"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qceN1F1h"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A3C035B12F
-	for <stable@vger.kernel.org>; Fri,  9 Jan 2026 12:26:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 209691DF72C
+	for <stable@vger.kernel.org>; Fri,  9 Jan 2026 12:41:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961603; cv=none; b=QEQAFJzLK6sqTzLU44l5yf1HpzxudHXBIRLUvAvKInQlQthfk5oTiineyr6Mdh7F7GZXHchKCsHgmZfi878VaYSnxW01LNtyfiEbsR3G39p+WMOEJhDKqHhsserYXfhiBmbMU14de7ROKeoR+VnMHV+W8tsJJG6fpao7I10NcZA=
+	t=1767962482; cv=none; b=KNxtrhllicgFJ7fKaE97+i8B9frMRo3tXEnQydYWt9dGkVAQ2P8oJF2i6HJpFfkvoO3JSz3al2e0WgiVsvijAkYya9cwCGGlBYGvAIX0/d2TINSD2AeNzKT8I632aWtvkuC0vPLPwXJYFLS+dURLyt8jEtPrajoKevTZGS6CSlk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961603; c=relaxed/simple;
-	bh=iMRVrJzSE+GyLgmViTq/putV9uCGa4LPKqf3e9Nfrj8=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=SsveHaUGbJkcXLwznpoe2ULDX+qGj7sNhjUZJ6pvscKVIdp8fLrLokXDE466ZsgM5tKXv5pw3FeA0HLeQbdgH8WsRijrDJIBF7Ia3N5HhO6SfQ2AoCc9ZYZJBKaB4Bp2116vtje9rkcHnLizNkNLC3Re3Oyy83qIvFafHQgE9sE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--gnoack.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sGEkuf8R; arc=none smtp.client-ip=209.85.128.74
+	s=arc-20240116; t=1767962482; c=relaxed/simple;
+	bh=eVOmJOpJ2g+nWNAxnyfdx6FM/mb3Dw1vCRyIVPH1Rag=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=egr6jnywY8D0zBE3q/vge3y82IRwBZqKlBzKjY8nA8iaPCnrEEUyqemXNZuSTYZklsyc9GW2ydtxCRc6E1CBH93COI4b6UwLakp250TJTvMssjvZ+0opqnCUJST4V3sjoNEfSN0gEFyfBds5ByH5xjHNZkuiZYQC49r5IXvFtiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qceN1F1h; arc=none smtp.client-ip=209.85.128.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--gnoack.bounces.google.com
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4792bd2c290so44610485e9.1
-        for <stable@vger.kernel.org>; Fri, 09 Jan 2026 04:26:41 -0800 (PST)
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-47d63594f7eso25799065e9.0
+        for <stable@vger.kernel.org>; Fri, 09 Jan 2026 04:41:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1767961600; x=1768566400; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id
-         :mime-version:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=jj7OuZji+8vObLTTIbsOyz5P9pzf1c3nnJrd5t8yFgc=;
-        b=sGEkuf8RMzqahIfSRzEfWZqlbKgr5kHoC6e5sE3gzIyvALXA6LWO0wjxAIIcvWJfgw
-         8yGSNz4vPObOWD2V0a4fqGTPWB/y4KP8GXkiBmxguSJjDLJByuFjp2wUp51dUOoO95iQ
-         fqnKf8PbtIi1tqoYR6pmGERAsUDMhRnzjjPawP4mUNIRsdeUM8NKmvXpkfZwKvTZ59nq
-         1fHnGzNiP2ANCJIG/m4spqwqbK6mdkayDvlGyJe/36G+BCIGxDk6Vg/NZly907V3DDID
-         Qf/N37eWWmeGDzu4f51eyuf/hxQm30wULEsAsGW1ZUk1usoeHnDr4RxipRcySLD724pU
-         0Z5Q==
+        d=google.com; s=20230601; t=1767962479; x=1768567279; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=OS8jAYKJTxd436S6Hg/z7BMXyNGFTQawvHyOajW7Mkc=;
+        b=qceN1F1hDJPqJY5F4gHMRVmzOfN1y/WpGRpK6mEmPASh3hwTbM0Rc/HDpEHpuXV8Ce
+         Sk4JjfTw9uAavOrlTNDhYr/OI7NG1QjaAUK6o5oC4P1dsAZYidhFXpFEOS8dxTOdxFph
+         LSV7m/jXVZLHKSk8Rd9TQXGw1bWcZZ494gBpWIL1CT5Jp9NcDjIQUNKCc9MSD9TzK5ue
+         BE+yGaT4mMa/B+kEEyhgmVRWi/weAoghJWqDqIsJaVTCFK8pgBbF0rx+eX0CBgG5Rbyq
+         ZPhehTfc7tYvK70bXzP6K0WjVOuqP/8yLrviqIotqX9pKoZ5i+U51i6gwgSgqm75oF/Z
+         /S8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767961600; x=1768566400;
-        h=content-transfer-encoding:cc:to:from:subject:message-id
-         :mime-version:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jj7OuZji+8vObLTTIbsOyz5P9pzf1c3nnJrd5t8yFgc=;
-        b=Lp1BPYlsJhwzv1g7yaIYp/wRWA3k1ju/A3q5aBkPJrdoxAz9cylf4oxhF0XgYxmD99
-         R/Uh0w/2KV0giLPnf35xwobSpKgsazslrkuUqncnMW0Wz9lkrWhJojAoDLn7ePcEQ+Gk
-         SR+dl9L3qMXG8Vt1bWO0GY39s2nimgeyTTA0KXgLTIdFddSNodP1P7u/3n4d5QV8ggJ+
-         YfBq9pVV8P/eTrBDuYqpS4UKWrEw2cKQ04AGblcDpEbb6Dwu33h0ASrdtkLqAO0wKMio
-         F/qASYLIOwVs8BI63wPCxDY/iUQWty3M/OrT2qCaFthH2z5hiH1trQEHv1CSmrb7lfmg
-         UG+A==
-X-Forwarded-Encrypted: i=1; AJvYcCWp+swJZQbE7uYOSWKM1xm/Vw7SerjkJZQqquvQgqf8ABHmZRImaKXKk4HqfRDYZWmNxIyjpG4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwWsLc3HxmI2XA1H6vPjM0dU4sTTKGvHkk4P9QSOSPcehwO8+xb
-	4USgccBsu5Qnm9gIk00UbSiE5KuGasq0swB9yJOdXjuEJv5Iq3kegbVjGx70xRnvDgdQ8D6IboC
-	GEkul2Q==
-X-Google-Smtp-Source: AGHT+IH+c7sUtySN/EBQ7cXCwSIA7jTKknmKEuEpqnF/ahCj4VsN237crbe4BLsLvj1hSLAz3LFMItFqX0U=
-X-Received: from wmbdv6.prod.google.com ([2002:a05:600c:6206:b0:46f:b32b:55f])
- (user=gnoack job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:1994:b0:47a:80f8:82ac
- with SMTP id 5b1f17b1804b1-47d84b39efcmr101569275e9.26.1767961600085; Fri, 09
- Jan 2026 04:26:40 -0800 (PST)
-Date: Fri,  9 Jan 2026 13:25:58 +0100
+        d=1e100.net; s=20230601; t=1767962479; x=1768567279;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=OS8jAYKJTxd436S6Hg/z7BMXyNGFTQawvHyOajW7Mkc=;
+        b=dAgP7k6PQECBmywwxspe18Hy409xyYoEreC23hYULfUePx7/+sIIGmZxJrIjI/umaI
+         mdJvzgVyPSTJTQT+7teFpXX044Pfkq++cUPKj5eTLeMkyqyz5YqCSfASxz0xbpaZMuSu
+         4jU5tNYWCPd0C0KTbvURwGcsAbn09I+zJM55fFXHc/EBUATwPxruF+csuu4mObN7OwpW
+         8IJIkxdxIMx6e0vX6dc3x6r8Yt3GgHBfyuX7snQZ0M82IefvVvmCwD5N9PiLICIEb8Jx
+         Uwc9oE8yeVPJftYJOFukEYcO/JSxUjGcvL5DWYbrYJUm2h/jVM4TsHMD0MihL5F9U9SU
+         FCHw==
+X-Forwarded-Encrypted: i=1; AJvYcCUqEyYHVkCo9IkdXg+JXihliTS6Z9Z0mDP6wv+QS/XxsOXUsZYx3bLD/S3RPiK0vrPj2unvuCM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxMieVZe2BIT5Wsb5PVkn3abTdttsx9IIa1CI11sCj0RKuuFP6Y
+	N+qZFyil3rWC4QdcsWliIw6RCLdfgiDt8qNtZJWVdHlWAfxwIDJKq666L1/RNtqQIg==
+X-Gm-Gg: AY/fxX7N3l8rc9bcArI4xYBm+Y+RDMa8bUlG457lIxQ+uPbwXt2l/1llcGxeAXX3EKE
+	b/T2pDjCxg9V3tgefmteHI65HkuhXVSV0FtRKX7HyTOv08V+h9DeVwGwcgYQaBvq+oIvRCZx+eC
+	32f6h0xZfyHoSnXg40zRscg/fKAWDROT/PI2wtf0mCZp9FJnW8H4UHaj6yxF4T9pZnfojVfY/4I
+	rRceKBFISLvH/b/nfkeShrQOXely5jnIvZdn4STtimhrltMtVzT3v5RJKfbBlPXSbeMlIiW6fXF
+	ztBX+PDb57/CWQTs/Z16s8SmvFciZ7tnkJWlVSJEhjkneiT2hUlt6MkGXgAihobn/u0e1P3PAa2
+	GaN2LhN2E59oscROzSZZ8R9V0f1IHKNE9dg97HPH/X0HQeyreAqp1nHzvlwMhQfmGADTMdI1rlF
+	2o8ZO28iVmo1JSprfxcRv7YBeZ5iqjzDEFyL7UcKEGKw==
+X-Google-Smtp-Source: AGHT+IEs1pOpkW+f39F/DRqpNCXzF0cymX5J81DrZywu+onED4ZE4gRGm1Y2kkOMoDNFz55txwy6qg==
+X-Received: by 2002:a05:600c:b86:b0:479:3a86:dc1e with SMTP id 5b1f17b1804b1-47d84b41007mr111442295e9.36.1767962479268;
+        Fri, 09 Jan 2026 04:41:19 -0800 (PST)
+Received: from google.com ([2a00:79e0:288a:8:b844:1270:724f:f3aa])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47d7f418538sm205252975e9.5.2026.01.09.04.41.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 09 Jan 2026 04:41:18 -0800 (PST)
+Date: Fri, 9 Jan 2026 13:41:13 +0100
+From: =?utf-8?Q?G=C3=BCnther?= Noack <gnoack@google.com>
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: Filipe =?utf-8?B?TGHDrW5z?= <lains@riseup.net>,
+	Bastien Nocera <hadess@hadess.net>, Jiri Kosina <jikos@kernel.org>,
+	Benjamin Tissoires <bentiss@kernel.org>, stable@vger.kernel.org,
+	linux-input@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] HID: logitech-hidpp: Check maxfield in
+ hidpp_get_report_length()
+Message-ID: <aWD3aXy9OzH_u73S@google.com>
+References: <20260109105912.3141960-2-gnoack@google.com>
+ <2026010956-anteater-pungent-d5b6@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.52.0.457.g6b5491de43-goog
-Message-ID: <20260109122557.3166556-3-gnoack@google.com>
-Subject: [PATCH v2] HID: logitech-hidpp: Check maxfield in hidpp_get_report_length()
-From: "=?UTF-8?q?G=C3=BCnther=20Noack?=" <gnoack@google.com>
-To: "=?UTF-8?q?Filipe=20La=C3=ADns?=" <lains@riseup.net>, Bastien Nocera <hadess@hadess.net>, Jiri Kosina <jikos@kernel.org>, 
-	Benjamin Tissoires <bentiss@kernel.org>
-Cc: Greg KH <gregkh@linuxfoundation.org>, 
-	"=?UTF-8?q?G=C3=BCnther=20Noack?=" <gnoack@google.com>, stable@vger.kernel.org, linux-input@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <2026010956-anteater-pungent-d5b6@gregkh>
 
-Do not crash when a report has no fields.
+On Fri, Jan 09, 2026 at 12:14:43PM +0100, Greg KH wrote:
+> On Fri, Jan 09, 2026 at 11:59:12AM +0100, Günther Noack wrote:
+> > Do not crash when a report has no fields.
+> > 
+> > Fake USB gadgets can send their own HID report descriptors and can define report
+> > structures without valid fields.  This can be used to crash the kernel over USB.
+> > 
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Günther Noack <gnoack@google.com>
+> > ---
+> >  drivers/hid/hid-logitech-hidpp.c | 3 +++
+> >  1 file changed, 3 insertions(+)
+> > 
+> > diff --git a/drivers/hid/hid-logitech-hidpp.c b/drivers/hid/hid-logitech-hidpp.c
+> > index 9ced0e4d46ae..919ba9f50292 100644
+> > --- a/drivers/hid/hid-logitech-hidpp.c
+> > +++ b/drivers/hid/hid-logitech-hidpp.c
+> > @@ -4316,6 +4316,9 @@ static int hidpp_get_report_length(struct hid_device *hdev, int id)
+> >  	if (!report)
+> >  		return 0;
+> >  
+> > +	if (!report->maxfield)
+> > +		return 0;
+> 
+> Combine this with the if() above this?
 
-Fake USB gadgets can send their own HID report descriptors and can define r=
-eport
-structures without valid fields.  This can be used to crash the kernel over=
- USB.
+OK, done. I sent a V2:
+https://lore.kernel.org/all/20260109122557.3166556-3-gnoack@google.com/
 
-Cc: stable@vger.kernel.org
-Signed-off-by: G=C3=BCnther Noack <gnoack@google.com>
----
- drivers/hid/hid-logitech-hidpp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/hid/hid-logitech-hidpp.c b/drivers/hid/hid-logitech-hi=
-dpp.c
-index 9ced0e4d46ae..c5e132a6c085 100644
---- a/drivers/hid/hid-logitech-hidpp.c
-+++ b/drivers/hid/hid-logitech-hidpp.c
-@@ -4313,7 +4313,7 @@ static int hidpp_get_report_length(struct hid_device =
-*hdev, int id)
-=20
- 	re =3D &(hdev->report_enum[HID_OUTPUT_REPORT]);
- 	report =3D re->report_id_hash[id];
--	if (!report)
-+	if (!report || !report->maxfield)
- 		return 0;
-=20
- 	return report->field[0]->report_count + 1;
---=20
-2.52.0.457.g6b5491de43-goog
+> And if we are going to be handling "malicious" USB devices, be careful,
+> you are just moving the target lower down, you also need to audit ALL
+> data coming from the device, not just the descriptors.  I'm all for
+> this, just realize that this is a change in how Linux treats devices
+> (and all other operating systems as well.)
 
+Thanks.  Yes, I realize that the later communication with the device is also a
+potential way to trigger bugs.
+
+
+> For now, we strongly recommend not allowing "untrusted" devices to bind
+> to your system if this is a threat model you care about.
+> 
+> Not to reject this, or your other patch like this, just letting you
+> know.
+
+Acknowledged, thanks.
+
+-Günther
 
