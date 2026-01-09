@@ -1,51 +1,85 @@
-Return-Path: <stable+bounces-206603-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206609-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08E02D0925A
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:00:13 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77D09D092E4
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:02:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 49E4D30F0C72
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:54:36 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id F16973047420
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:54:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C94433C511;
-	Fri,  9 Jan 2026 11:54:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2453435970B;
+	Fri,  9 Jan 2026 11:54:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FKBJWPUs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N3dFTH/Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFD7533A712;
-	Fri,  9 Jan 2026 11:54:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D61F83590C6;
+	Fri,  9 Jan 2026 11:54:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767959675; cv=none; b=Fl1lkxOyc/vS2+fMhHCpZ9bhsLNeQAWJAPv4j6XBJ2uvbS9LWcpa5sDC968pvfoYmh/MyQCAKzpt1R3lQzftfyesLjIXvioHNZ6SAeHAYT7R/dgWqZ/5defOWQ/ou9crPF4AKjt84pj/hOa6vOMNqolspiZP4O9SSrNwdBAozEw=
+	t=1767959692; cv=none; b=eea1L0QTbbbwSCuYW/i3zhTtjoRnOTMwkG7si/h7uOUWhb4YBMNJzZEQ8Le54R4hYJ9USpIa4LaJgAcN52QKjFC4VaEBOgQ4AwiaHR7fR1j4gak5HsuHalTrP/w/6UO/K3WMQX5gcPj2xrWJLcYYDi0wiaPylr8BHw65x/QwIGY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767959675; c=relaxed/simple;
-	bh=X/GsknKRNjbOxO0w3nd1RcywI72ypQZhlrm8ZWFw3IU=;
+	s=arc-20240116; t=1767959692; c=relaxed/simple;
+	bh=BG4A6O3F3h9GPzKALFWDo+rwL54nDKPmcf20D2AO8MQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QwRAAF6MF95L2hKLrFemC/nRUe9oX1FO2Ec9Hi7gEnfmMaqE3VOGBvlRXTluc90fvijnknSwOTqNXDow4EC7S1wDtkYNNcQBYYWcnfiA0Vo0fmCRqLASueqc74z9gF9XYxhZuzcfBSK2vSdZxDQhP3RF9pOwTX1QAZAmkR5N2/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FKBJWPUs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A6E3C4CEF1;
-	Fri,  9 Jan 2026 11:54:35 +0000 (UTC)
+	 MIME-Version; b=Hwd+XgDNfxzinMlYsduQa/qzpe7FyDlAjRUd13kD0jKXbknutrmE7VuefSOtbbPG9zI461d0iAKTlHKixJb5zugMHvm+g2zRDlT/qMVACJ2fqxaRCzTvBz0TcQTusl2yFE5eAv+TxCPLinGeFgKCqSkj52ek98DFeqmfhziCm1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N3dFTH/Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25725C4CEF1;
+	Fri,  9 Jan 2026 11:54:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767959675;
-	bh=X/GsknKRNjbOxO0w3nd1RcywI72ypQZhlrm8ZWFw3IU=;
+	s=korg; t=1767959692;
+	bh=BG4A6O3F3h9GPzKALFWDo+rwL54nDKPmcf20D2AO8MQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FKBJWPUsu/E9zY6tnjIsn3HoBNN1K0hs3fEMYyHC1RJGoUzmOPtdqrGb65A2JVwEI
-	 LU2kC0ycatsYNgU0PHwZ8oAbHTG5TOnwBkHrA/wjfBVUkBgHDMTF2uzAYaHsUvT3GD
-	 Clec4eYROFufM/eVfWDG08784pRYH2PTpjpvA4mQ=
+	b=N3dFTH/Y3XVY2QJ0zMhvfEJWMVSynVw+HnC2yAlCZI9UgrRom0wpBT1GkyL2cLEgi
+	 NgR1rY6kY6pJt4KPJLuJ9U3o3w5xO10Y44Ah6LaP2F7s/0BsKS1F7i5GC1uNlKucQS
+	 Jm72kmofx6b5B76uHXaIOXsckQpXOJrRgBSf/VY4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuan-Wei Chiu <visitorckw@gmail.com>,
-	Georgi Djakov <djakov@kernel.org>,
+	Ian Rogers <irogers@google.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Andi Kleen <ak@linux.intel.com>,
+	Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
+	Changbin Du <changbin.du@huawei.com>,
+	Colin Ian King <colin.i.king@gmail.com>,
+	Dmitrii Dolgov <9erthalion6@gmail.com>,
+	German Gomez <german.gomez@arm.com>,
+	Guilherme Amadio <amadio@gentoo.org>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	James Clark <james.clark@arm.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	Kajol Jain <kjain@linux.ibm.com>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Leo Yan <leo.yan@linaro.org>,
+	Li Dong <lidong@vivo.com>,
+	Liam Howlett <liam.howlett@oracle.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Ming Wang <wangming01@loongson.cn>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Nick Terrell <terrelln@fb.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ravi Bangoria <ravi.bangoria@amd.com>,
+	Sandipan Das <sandipan.das@amd.com>,
+	Sean Christopherson <seanjc@google.com>,
+	"Steinar H. Gunderson" <sesse@google.com>,
+	Vincent Whitchurch <vincent.whitchurch@axis.com>,
+	Wenyu Liu <liuwenyu7@huawei.com>,
+	Yang Jihong <yangjihong1@huawei.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 108/737] interconnect: debugfs: Fix incorrect error handling for NULL path
-Date: Fri,  9 Jan 2026 12:34:07 +0100
-Message-ID: <20260109112138.065648985@linuxfoundation.org>
+Subject: [PATCH 6.6 109/737] perf maps: Add maps__load_first()
+Date: Fri,  9 Jan 2026 12:34:08 +0100
+Message-ID: <20260109112138.104073876@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
 References: <20260109112133.973195406@linuxfoundation.org>
@@ -64,51 +98,104 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Kuan-Wei Chiu <visitorckw@gmail.com>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit 6bfe104fd0f94d0248af22c256ce725ee087157b ]
+[ Upstream commit e77b0236cd0cd1572c6a9b25097b207eab799e74 ]
 
-The icc_commit_set() function, used by the debugfs interface, checks
-the validity of the global cur_path pointer using IS_ERR_OR_NULL().
-However, in the specific case where cur_path is NULL, while
-IS_ERR_OR_NULL(NULL) correctly evaluates to true, the subsequent call
-to PTR_ERR(NULL) returns 0.
+Avoid bpf_lock_contention_read touching the internal maps data structure
+by adding a helper function. As access is done directly on the map in
+maps, hold the read lock to stop it being removed.
 
-This causes the function to return a success code (0) instead of an
-error, misleading the user into believing their bandwidth request was
-successfully committed when, in fact, no operation was performed.
-
-Fix this by adding an explicit check to return -EINVAL if cur_path is
-NULL. This prevents silent failures and ensures that an invalid
-operational sequence is immediately and clearly reported as an error.
-
-Fixes: 770c69f037c1 ("interconnect: Add debugfs test client")
-Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
-Link: https://lore.kernel.org/r/20251010151447.2289779-1-visitorckw@gmail.com
-Signed-off-by: Georgi Djakov <djakov@kernel.org>
+Signed-off-by: Ian Rogers <irogers@google.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Andi Kleen <ak@linux.intel.com>
+Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Cc: Changbin Du <changbin.du@huawei.com>
+Cc: Colin Ian King <colin.i.king@gmail.com>
+Cc: Dmitrii Dolgov <9erthalion6@gmail.com>
+Cc: German Gomez <german.gomez@arm.com>
+Cc: Guilherme Amadio <amadio@gentoo.org>
+Cc: Huacai Chen <chenhuacai@kernel.org>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: James Clark <james.clark@arm.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: K Prateek Nayak <kprateek.nayak@amd.com>
+Cc: Kajol Jain <kjain@linux.ibm.com>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Leo Yan <leo.yan@linaro.org>
+Cc: Li Dong <lidong@vivo.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>
+Cc: Ming Wang <wangming01@loongson.cn>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Nick Terrell <terrelln@fb.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Ravi Bangoria <ravi.bangoria@amd.com>
+Cc: Sandipan Das <sandipan.das@amd.com>
+Cc: Sean Christopherson <seanjc@google.com>
+Cc: Steinar H. Gunderson <sesse@google.com>
+Cc: Vincent Whitchurch <vincent.whitchurch@axis.com>
+Cc: Wenyu Liu <liuwenyu7@huawei.com>
+Cc: Yang Jihong <yangjihong1@huawei.com>
+Link: https://lore.kernel.org/r/20231207011722.1220634-20-irogers@google.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Stable-dep-of: 553d18c98a89 ("perf lock contention: Load kernel map before lookup")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/interconnect/debugfs-client.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ tools/perf/util/bpf_lock_contention.c |  2 +-
+ tools/perf/util/maps.c                | 13 +++++++++++++
+ tools/perf/util/maps.h                |  2 ++
+ 3 files changed, 16 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/interconnect/debugfs-client.c b/drivers/interconnect/debugfs-client.c
-index bc3fd8a7b9eb4..778deeb4a7e8a 100644
---- a/drivers/interconnect/debugfs-client.c
-+++ b/drivers/interconnect/debugfs-client.c
-@@ -117,7 +117,12 @@ static int icc_commit_set(void *data, u64 val)
- 
- 	mutex_lock(&debugfs_lock);
- 
--	if (IS_ERR_OR_NULL(cur_path)) {
-+	if (!cur_path) {
-+		ret = -EINVAL;
-+		goto out;
-+	}
-+
-+	if (IS_ERR(cur_path)) {
- 		ret = PTR_ERR(cur_path);
- 		goto out;
+diff --git a/tools/perf/util/bpf_lock_contention.c b/tools/perf/util/bpf_lock_contention.c
+index e7dddf0127bce..a73f39540a3d4 100644
+--- a/tools/perf/util/bpf_lock_contention.c
++++ b/tools/perf/util/bpf_lock_contention.c
+@@ -285,7 +285,7 @@ int lock_contention_read(struct lock_contention *con)
  	}
+ 
+ 	/* make sure it loads the kernel map */
+-	map__load(maps__first(machine->kmaps)->map);
++	maps__load_first(machine->kmaps);
+ 
+ 	prev_key = NULL;
+ 	while (!bpf_map_get_next_key(fd, prev_key, &key)) {
+diff --git a/tools/perf/util/maps.c b/tools/perf/util/maps.c
+index 9a011aed4b754..9c7618b7d5e92 100644
+--- a/tools/perf/util/maps.c
++++ b/tools/perf/util/maps.c
+@@ -713,3 +713,16 @@ int maps__merge_in(struct maps *kmaps, struct map *new_map)
+ 	}
+ 	return err;
+ }
++
++void maps__load_first(struct maps *maps)
++{
++	struct map_rb_node *first;
++
++	down_read(maps__lock(maps));
++
++	first = maps__first(maps);
++	if (first)
++		map__load(first->map);
++
++	up_read(maps__lock(maps));
++}
+diff --git a/tools/perf/util/maps.h b/tools/perf/util/maps.h
+index a689149be8c43..d9f65f9e6d092 100644
+--- a/tools/perf/util/maps.h
++++ b/tools/perf/util/maps.h
+@@ -145,4 +145,6 @@ void __maps__sort_by_name(struct maps *maps);
+ 
+ void maps__fixup_end(struct maps *maps);
+ 
++void maps__load_first(struct maps *maps);
++
+ #endif // __PERF_MAPS_H
 -- 
 2.51.0
 
