@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-206897-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207466-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFFB0D09638
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:14:38 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1263D09FE8
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:49:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 37F0830325CB
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:08:35 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id EB09B30E2BBA
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:35:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4675835A922;
-	Fri,  9 Jan 2026 12:08:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9282235B133;
+	Fri,  9 Jan 2026 12:35:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s4Q7OJE7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TtzMJtcu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A5D633B6F1;
-	Fri,  9 Jan 2026 12:08:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4043335B12B;
+	Fri,  9 Jan 2026 12:35:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960511; cv=none; b=adi1F1BqAUzzR25Jirj144DCW1zI5eYyz2zmON1Oj7h/j1KykbX+yJyR1LMS/fWm5MeAn6h74xh7xL/XxAeET58b4/mOrj2Ox7TI57235DGnKcLn01QoRufz3y/OyBlC8Vxedi+/wGJDYzmaOz5P+1T0UJpTPfAAiLFwkWa9lM8=
+	t=1767962135; cv=none; b=IW0jusgjitvsycHrYqVidk4jbJBkJ8l+fXadEl8lz0uP+oq1v5+3k236cp4OKkcVy7SFV9xmyKkZryc27VagvwWsNorB2qiJjYWjuDzgDanKqy3egnaULJdHbs592dIqc151MGfQcPkrVrFMq/2iJmzJ3z3df5+/1geGeRfMq00=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960511; c=relaxed/simple;
-	bh=+YaKkBfovf0IrNKU7DrDwcyjzc2Bh2e8fmTg6aForvQ=;
+	s=arc-20240116; t=1767962135; c=relaxed/simple;
+	bh=Yts/9m779TfRRQF2NWtm8A8r/BdZx+R4BWLwEWFGzX0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lRPCsTWb6uTaI8kHSdv6H7c4Z5CuG9WAIF5rog4TfvLztra6KYRzdisvxAlBPc8z8oN1YG+HVViLNrHzIKxnOKPBpSLju2wrteIs2XCrXjsiQR7GSTC44QehMiB0/+BoNQGctMb2zWcaCGWbLpcY3m/tWT8fC1WYTnpRRoTZowo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s4Q7OJE7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FE4CC16AAE;
-	Fri,  9 Jan 2026 12:08:30 +0000 (UTC)
+	 MIME-Version; b=OSM5Y0MpzD2rzIiNoz2fLkUuwIIwQq1KifuBvvXH6lDZ5FHu3WagdW9aHhussBFqlGbPXpm2Z6ti7GgMJ1CXqTlnU58MAhmsSa3/969HHzTuNPau0EpQly9poTDJjFyC9YMx2i6Zp6ER/TtQFFKuEjorwrz558KXkLiz+umSjuo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TtzMJtcu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5B6DC4CEF1;
+	Fri,  9 Jan 2026 12:35:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960510;
-	bh=+YaKkBfovf0IrNKU7DrDwcyjzc2Bh2e8fmTg6aForvQ=;
+	s=korg; t=1767962135;
+	bh=Yts/9m779TfRRQF2NWtm8A8r/BdZx+R4BWLwEWFGzX0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s4Q7OJE7i5Dpz5QbK0unn2NXEJQjtcrev73N4GHuyDJ8uphs7us4EgX+8STPVXPkg
-	 /a2YXOc3LAMTKaN6OwkdfHciB8k/6oL1zYoA2q2Aele7tFkZIn6awV0VZFxQPX880U
-	 JuOoYBU1vsxgvNwl0KR0QWdGQNljZ/p1w3c95jCk=
+	b=TtzMJtcuKBrkFfY9miXW2fxRYMhstxuyt6MkmlTRB0GF2lXmo99pq8brDUN9Y6S9O
+	 y79wEBZV+qujo1BTenRH8FK8Awsl2Rvc01sk1LGdbZh5v5sSUpiw862zkVth4vraik
+	 QmB5kf9kXDaySK7Oc7cXg1WLajPkk4VrdJSu+ZW8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Troy Mitchell <troy.mitchell@linux.dev>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Encrow Thorne <jyc0019@gmail.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 397/737] reset: fix BIT macro reference
-Date: Fri,  9 Jan 2026 12:38:56 +0100
-Message-ID: <20260109112148.936082475@linuxfoundation.org>
+Subject: [PATCH 6.1 259/634] nfc: pn533: Fix error code in pn533_acr122_poweron_rdr()
+Date: Fri,  9 Jan 2026 12:38:57 +0100
+Message-ID: <20260109112127.283699562@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +60,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Encrow Thorne <jyc0019@gmail.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit f3d8b64ee46c9b4b0b82b1a4642027728bac95b8 ]
+[ Upstream commit 885bebac9909994050bbbeed0829c727e42bd1b7 ]
 
-RESET_CONTROL_FLAGS_BIT_* macros use BIT(), but reset.h does not
-include bits.h. This causes compilation errors when including
-reset.h standalone.
+Set the error code if "transferred != sizeof(cmd)" instead of
+returning success.
 
-Include bits.h to make reset.h self-contained.
-
-Suggested-by: Troy Mitchell <troy.mitchell@linux.dev>
-Reviewed-by: Troy Mitchell <troy.mitchell@linux.dev>
-Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
-Signed-off-by: Encrow Thorne <jyc0019@gmail.com>
-Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
+Fixes: dbafc28955fa ("NFC: pn533: don't send USB data off of the stack")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://patch.msgid.link/aTfIJ9tZPmeUF4W1@stanley.mountain
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/reset.h | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/nfc/pn533/usb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/reset.h b/include/linux/reset.h
-index 514ddf003efc..4b31d683776e 100644
---- a/include/linux/reset.h
-+++ b/include/linux/reset.h
-@@ -2,6 +2,7 @@
- #ifndef _LINUX_RESET_H_
- #define _LINUX_RESET_H_
+diff --git a/drivers/nfc/pn533/usb.c b/drivers/nfc/pn533/usb.c
+index a187f0e0b0f7d..9e079be43583e 100644
+--- a/drivers/nfc/pn533/usb.c
++++ b/drivers/nfc/pn533/usb.c
+@@ -407,7 +407,7 @@ static int pn533_acr122_poweron_rdr(struct pn533_usb_phy *phy)
+ 	if (rc || (transferred != sizeof(cmd))) {
+ 		nfc_err(&phy->udev->dev,
+ 			"Reader power on cmd error %d\n", rc);
+-		return rc;
++		return rc ?: -EINVAL;
+ 	}
  
-+#include <linux/bits.h>
- #include <linux/err.h>
- #include <linux/errno.h>
- #include <linux/types.h>
+ 	rc =  usb_submit_urb(phy->in_urb, GFP_KERNEL);
 -- 
 2.51.0
 
