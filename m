@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-207609-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207007-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D4AAD09FB5
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:49:17 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01FCBD09750
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:19:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 69940303CA87
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:42:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EDE04306F26C
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:13:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16EC635B135;
-	Fri,  9 Jan 2026 12:42:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6072A32F748;
+	Fri,  9 Jan 2026 12:13:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MDemYlP1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1akivpG8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDCB63590C4;
-	Fri,  9 Jan 2026 12:42:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21BEB33B6F1;
+	Fri,  9 Jan 2026 12:13:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962538; cv=none; b=sutChdmvtalIJV/hsV7tdncUo2AWw7QjFFFRGtgmYC987eKRKD1IxZzvKD/FSFUROGwywustZeDyWIDww4UXT1iWk/0ORv3d+nizr4ifASxpOjNbxUNK22BNIimQMMqjwqRHa3848B346ljQjv9ikt5DKJYARnnbKzQ1M8J9ans=
+	t=1767960828; cv=none; b=j78DxSElQWwtrj+8LbXKuJxguB3f7li4NILtpzo/MAXy/EV0/KTxitkYM7Hdy4J2fejobNtpK02VHYAsgSS/0v2q7R9UeeQqXgULYDiwQy7oRJPZKxvZ5ov4aa0wgBZQzEf4kt46T27KeCysBXHH8r2JGYUc2ZQAm9QQyyvWQ88=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962538; c=relaxed/simple;
-	bh=9LlgN9qqz6Mp7cax2GsX8TK5nKYpBIP8Wp2ePmhiT/4=;
+	s=arc-20240116; t=1767960828; c=relaxed/simple;
+	bh=b3pCPvGBfKnP028ynxW6PsM6f/93vJ8xsSMWMNK+hhM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T7SzirC7exESocOwxvWwfXizi6FhEUDHDvm135BbdcoSMgg6bco/p8WQlyAyaabQugUafWf9pp4OfURC1yGV0Sr0sVgSFKCG4V4mWId8eabgkfj4nblua1//x2+t5UNSTJZlnq4BxxwYA4p/uVRbtSJQC5bR0HLiENbQnoGXGJE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MDemYlP1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 585B6C4CEF1;
-	Fri,  9 Jan 2026 12:42:18 +0000 (UTC)
+	 MIME-Version; b=jfAaClECdMh5UqO53OLA6FK4YA/TDWlHzv995VlO+8KQyXaGmQPVFNG9y54+OFs5ap0ow27iP8kv+1x1FdtSGekRlebTTYQNYYCnZKGt4qvx/VFFJs5rKPI/nM1HeVt3r9selj9wr9HrUArMq8irjWHwuaYCVKw5KVG4F9dHTUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1akivpG8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AFB8C4CEF1;
+	Fri,  9 Jan 2026 12:13:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962538;
-	bh=9LlgN9qqz6Mp7cax2GsX8TK5nKYpBIP8Wp2ePmhiT/4=;
+	s=korg; t=1767960828;
+	bh=b3pCPvGBfKnP028ynxW6PsM6f/93vJ8xsSMWMNK+hhM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MDemYlP1lVdUa5rJ9WG0eUFy64DT8lJmvh060IatS5UNUjiY04r+LrpLAQx3cJTS9
-	 AdZ6Gfl3TVkaZrpOKmuGCeSwKOPWPenETBxwBsB5mViCXcGs0lUyupvtKE+BI+FQfR
-	 1jNC2o885/mRc0tCZSGYHvld/A2LmHLqSJUKQUzw=
+	b=1akivpG8qfvfwbNPm/ADnjk+GRXH0Hw/saMqj4x46hviyjx3HKG+PEUNyw+CppEvY
+	 02Mr61kiWmmY/1v02X4n+Sn0WYiMYWg9JzWkc1jnpZzDl0ICay0RwD5eJlrKOL1qL/
+	 Tc0ZCyqaVbmaHghmEE3KLR5O4ydmM+sFAKQn+Bqg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gregory Herrero <gregory.herrero@oracle.com>,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Yipeng Zou <zouyipeng@huawei.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 401/634] i40e: validate ring_len parameter against hardware-specific values
+Subject: [PATCH 6.6 540/737] selftests/ftrace: traceonoff_triggers: strip off names
 Date: Fri,  9 Jan 2026 12:41:19 +0100
-Message-ID: <20260109112132.618003134@linuxfoundation.org>
+Message-ID: <20260109112154.308968767@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,102 +62,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gregory Herrero <gregory.herrero@oracle.com>
+From: Yipeng Zou <zouyipeng@huawei.com>
 
-[ Upstream commit 69942834215323cd9131db557091b4dec43f19c5 ]
+[ Upstream commit b889b4fb4cbea3ca7eb9814075d6a51936394bd9 ]
 
-The maximum number of descriptors supported by the hardware is
-hardware-dependent and can be retrieved using
-i40e_get_max_num_descriptors(). Move this function to a shared header
-and use it when checking for valid ring_len parameter rather than using
-hardcoded value.
+The func_traceonoff_triggers.tc sometimes goes to fail
+on my board, Kunpeng-920.
 
-By fixing an over-acceptance issue, behavior change could be seen where
-ring_len could now be rejected while configuring rx and tx queues if its
-size is larger than the hardware-dependent maximum number of
-descriptors.
+[root@localhost]# ./ftracetest ./test.d/ftrace/func_traceonoff_triggers.tc -l fail.log
+=== Ftrace unit tests ===
+[1] ftrace - test for function traceon/off triggers     [FAIL]
+[2] (instance)  ftrace - test for function traceon/off triggers [UNSUPPORTED]
 
-Fixes: 55d225670def ("i40e: add validation for ring_len param")
-Signed-off-by: Gregory Herrero <gregory.herrero@oracle.com>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+I look up the log, and it shows that the md5sum is different between csum1 and csum2.
+
+++ cnt=611
+++ sleep .1
++++ cnt_trace
++++ grep -v '^#' trace
++++ wc -l
+++ cnt2=611
+++ '[' 611 -ne 611 ']'
++++ cat tracing_on
+++ on=0
+++ '[' 0 '!=' 0 ']'
++++ md5sum trace
+++ csum1='76896aa74362fff66a6a5f3cf8a8a500  trace'
+++ sleep .1
++++ md5sum trace
+++ csum2='ee8625a21c058818fc26e45c1ed3f6de  trace'
+++ '[' '76896aa74362fff66a6a5f3cf8a8a500  trace' '!=' 'ee8625a21c058818fc26e45c1ed3f6de  trace' ']'
+++ fail 'Tracing file is still changing'
+++ echo Tracing file is still changing
+Tracing file is still changing
+++ exit_fail
+++ exit 1
+
+So I directly dump the trace file before md5sum, the diff shows that:
+
+[root@localhost]# diff trace_1.log trace_2.log -y --suppress-common-lines
+dockerd-12285   [036] d.... 18385.510290: sched_stat | <...>-12285   [036] d.... 18385.510290: sched_stat
+dockerd-12285   [036] d.... 18385.510291: sched_swit | <...>-12285   [036] d.... 18385.510291: sched_swit
+<...>-740       [044] d.... 18385.602859: sched_stat | kworker/44:1-740 [044] d.... 18385.602859: sched_stat
+<...>-740       [044] d.... 18385.602860: sched_swit | kworker/44:1-740 [044] d.... 18385.602860: sched_swit
+
+And we can see that <...> filed be filled with names.
+
+We can strip off the names there to fix that.
+
+After strip off the names:
+
+kworker/u257:0-12 [019] d..2.  2528.758910: sched_stat | -12 [019] d..2.  2528.758910: sched_stat_runtime: comm=k
+kworker/u257:0-12 [019] d..2.  2528.758912: sched_swit | -12 [019] d..2.  2528.758912: sched_switch: prev_comm=kw
+<idle>-0          [000] d.s5.  2528.762318: sched_waki | -0  [000] d.s5.  2528.762318: sched_waking: comm=sshd pi
+<idle>-0          [037] dNh2.  2528.762326: sched_wake | -0  [037] dNh2.  2528.762326: sched_wakeup: comm=sshd pi
+<idle>-0          [037] d..2.  2528.762334: sched_swit | -0  [037] d..2.  2528.762334: sched_switch: prev_comm=sw
+
+Link: https://lore.kernel.org/r/20230818013226.2182299-1-zouyipeng@huawei.com
+Fixes: d87b29179aa0 ("selftests: ftrace: Use md5sum to take less time of checking logs")
+Suggested-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Yipeng Zou <zouyipeng@huawei.com>
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e.h             | 11 +++++++++++
- drivers/net/ethernet/intel/i40e/i40e_ethtool.c     | 12 ------------
- drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c |  4 ++--
- 3 files changed, 13 insertions(+), 14 deletions(-)
+ .../ftrace/test.d/ftrace/func_traceonoff_triggers.tc         | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e.h b/drivers/net/ethernet/intel/i40e/i40e.h
-index bc2ccb77dbe0..af60be8626aa 100644
---- a/drivers/net/ethernet/intel/i40e/i40e.h
-+++ b/drivers/net/ethernet/intel/i40e/i40e.h
-@@ -1325,4 +1325,15 @@ static inline u32 i40e_is_tc_mqprio_enabled(struct i40e_pf *pf)
- 	return pf->flags & I40E_FLAG_TC_MQPRIO;
- }
+diff --git a/tools/testing/selftests/ftrace/test.d/ftrace/func_traceonoff_triggers.tc b/tools/testing/selftests/ftrace/test.d/ftrace/func_traceonoff_triggers.tc
+index aee22289536b..1b57771dbfdf 100644
+--- a/tools/testing/selftests/ftrace/test.d/ftrace/func_traceonoff_triggers.tc
++++ b/tools/testing/selftests/ftrace/test.d/ftrace/func_traceonoff_triggers.tc
+@@ -90,9 +90,10 @@ if [ $on != "0" ]; then
+     fail "Tracing is not off"
+ fi
  
-+static inline u32 i40e_get_max_num_descriptors(const struct i40e_pf *pf)
-+{
-+	const struct i40e_hw *hw = &pf->hw;
-+
-+	switch (hw->mac.type) {
-+	case I40E_MAC_XL710:
-+		return I40E_MAX_NUM_DESCRIPTORS_XL710;
-+	default:
-+		return I40E_MAX_NUM_DESCRIPTORS;
-+	}
-+}
- #endif /* _I40E_H_ */
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_ethtool.c b/drivers/net/ethernet/intel/i40e/i40e_ethtool.c
-index c3378106946c..1aed31bc2e8a 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_ethtool.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_ethtool.c
-@@ -2012,18 +2012,6 @@ static void i40e_get_drvinfo(struct net_device *netdev,
- 		drvinfo->n_priv_flags += I40E_GL_PRIV_FLAGS_STR_LEN;
- }
+-csum1=`md5sum trace`
++# Cannot rely on names being around as they are only cached, strip them
++csum1=`cat trace | sed -e 's/^ *[^ ]*\(-[0-9][0-9]*\)/\1/' | md5sum`
+ sleep $SLEEP_TIME
+-csum2=`md5sum trace`
++csum2=`cat trace | sed -e 's/^ *[^ ]*\(-[0-9][0-9]*\)/\1/' | md5sum`
  
--static u32 i40e_get_max_num_descriptors(struct i40e_pf *pf)
--{
--	struct i40e_hw *hw = &pf->hw;
--
--	switch (hw->mac.type) {
--	case I40E_MAC_XL710:
--		return I40E_MAX_NUM_DESCRIPTORS_XL710;
--	default:
--		return I40E_MAX_NUM_DESCRIPTORS;
--	}
--}
--
- static void i40e_get_ringparam(struct net_device *netdev,
- 			       struct ethtool_ringparam *ring,
- 			       struct kernel_ethtool_ringparam *kernel_ring,
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-index 2b2f9bb755b6..1bba77347efb 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-@@ -656,7 +656,7 @@ static int i40e_config_vsi_tx_queue(struct i40e_vf *vf, u16 vsi_id,
- 
- 	/* ring_len has to be multiple of 8 */
- 	if (!IS_ALIGNED(info->ring_len, 8) ||
--	    info->ring_len > I40E_MAX_NUM_DESCRIPTORS_XL710) {
-+	    info->ring_len > i40e_get_max_num_descriptors(pf)) {
- 		ret = -EINVAL;
- 		goto error_context;
- 	}
-@@ -728,7 +728,7 @@ static int i40e_config_vsi_rx_queue(struct i40e_vf *vf, u16 vsi_id,
- 
- 	/* ring_len has to be multiple of 32 */
- 	if (!IS_ALIGNED(info->ring_len, 32) ||
--	    info->ring_len > I40E_MAX_NUM_DESCRIPTORS_XL710) {
-+	    info->ring_len > i40e_get_max_num_descriptors(pf)) {
- 		ret = -EINVAL;
- 		goto error_param;
- 	}
+ if [ "$csum1" != "$csum2" ]; then
+     fail "Tracing file is still changing"
 -- 
 2.51.0
 
