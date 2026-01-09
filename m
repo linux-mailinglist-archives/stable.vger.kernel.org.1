@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-206632-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207233-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 025A2D09392
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:04:28 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E64ED09A45
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:29:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 309ED30BF430
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:56:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EE53230E044C
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:24:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0587359F8A;
-	Fri,  9 Jan 2026 11:55:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2199332AAB5;
+	Fri,  9 Jan 2026 12:24:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cVTKxwrk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ij4b7OcM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 622A0359718;
-	Fri,  9 Jan 2026 11:55:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA01E15ADB4;
+	Fri,  9 Jan 2026 12:24:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767959757; cv=none; b=D3alf/YYw8H2Zgljw0Io08S9Q8cUePaBSy57OpacWVJrLX73SBlCj4UfDIDwnfI/7FM9d43TYkTuspO6DHur8fvuEb9oGbKqjQ41o4r7pR2VjfIjjQ9cLSTz/+Hj2qV2U2ntuXvb4X762TDx3hSx8a7cMCLx3GuA5zPx7DfduUo=
+	t=1767961471; cv=none; b=eNg+ISy39P5jYiG4aBfopbMxS+X0dlDGoXQKEaHhSi60Ec2ddY6shqfrtpCTsfsyMQzL0vmp+Kcmo7QbLVO+p0/eP85BjtMfy/oPjDGuvzNbcXNN+mnFuJPhMyuY50fO2bJfXImwJM0gBldPxvG6BYv3Cb4IyAnUCv/n0BOmp3M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767959757; c=relaxed/simple;
-	bh=0MCFXCAaW7dgB2Hbk44In9phtDxvt2dhUUaKjt5XpQs=;
+	s=arc-20240116; t=1767961471; c=relaxed/simple;
+	bh=6btbjLg5aRHWvAQcOsgI1xa37tPJGZeWP5vYeQR54Og=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NubFKKR7dRoOQ5rHbXdjC3hI/s9EnnVh8rNG8Dzv4a8fhQ29C5oe5+ILOoQBFjOIzdXoF7YE7a8WSKXnA2Mpt5SaMEEZ7tnXhGoPOKxQiWXChohovQXPs6T7XGrUEniRtR5j9zfIjE676gGsW03r0slh1KkPeOFkBIOeJ71YyhM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cVTKxwrk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1568C19421;
-	Fri,  9 Jan 2026 11:55:56 +0000 (UTC)
+	 MIME-Version; b=ndOFvgRqwekD1q84oCO6j5OD6ITyBKRpDmZCQo7CVG6RYivMAx1lyx+Jqb2dd8CoJCfFSL0yVplLLratvXj54R7Ii5w7jS+RY6Q21W5lLbRAF2FNFSykXvCb/L8/OMyhZFgORpTgY7buzFNQ1mT0PQ0l5opCAhvxp42++wjObsA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ij4b7OcM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 644BEC4CEF1;
+	Fri,  9 Jan 2026 12:24:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767959757;
-	bh=0MCFXCAaW7dgB2Hbk44In9phtDxvt2dhUUaKjt5XpQs=;
+	s=korg; t=1767961471;
+	bh=6btbjLg5aRHWvAQcOsgI1xa37tPJGZeWP5vYeQR54Og=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cVTKxwrkx9W13nCzOWZlmGBCgWijp8xIJxiWuRh11Mww3hNE8q9DUar41LrBG6RMC
-	 SGvW3zXR63h6d5Qgh0r2Vo9+73KLXb45/AZKagG1NJ8suZTgnTS3h4tcE5AWwG3Owa
-	 mBEu9rGNN8Lws1F1Pi+K8DZxpCHsiDZlUfRnnmP0=
+	b=ij4b7OcMB+5ninDHnCOlLsZrDuYIpsOD3C+fTJ+16AXuH1R+gkor8s+g98nWHZapx
+	 S2wlZWoUmB5C+i5r74DNPK7++fBEa+bv+gJJkEmaWtbau7O4son3EV5lQIev/yhNJh
+	 ZMYHiSQp1l6PEcIj53VYWUToizfqnuQe/OejlE0g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergey Bashirov <sergeybashirov@gmail.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Chuck Lever <chuck.lever@oracle.com>,
+	Lushih Hsieh <bruce@mail.kh.edu.tw>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 164/737] NFSD/blocklayout: Fix minlength check in proc_layoutget
-Date: Fri,  9 Jan 2026 12:35:03 +0100
-Message-ID: <20260109112140.163166371@linuxfoundation.org>
+Subject: [PATCH 6.1 026/634] ALSA: usb-audio: Add native DSD quirks for PureAudio DAC series
+Date: Fri,  9 Jan 2026 12:35:04 +0100
+Message-ID: <20260109112118.430840886@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +60,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sergey Bashirov <sergeybashirov@gmail.com>
+From: Lushih Hsieh <bruce@mail.kh.edu.tw>
 
-[ Upstream commit 3524b021b0ec620a76c89aee78e9d4b4130fb711 ]
+[ Upstream commit 21a9ab5b90b3716a631d559e62818029b4e7f5b7 ]
 
-The extent returned by the file system may have a smaller offset than
-the segment offset requested by the client. In this case, the minimum
-segment length must be checked against the requested range. Otherwise,
-the client may not be able to continue the read/write operation.
+The PureAudio APA DAC and Lotus DAC5 series are USB Audio
+2.0 Class devices that support native Direct Stream Digital (DSD)
+playback via specific vendor protocols.
 
-Fixes: 8650b8a05850 ("nfsd: pNFS block layout driver")
-Signed-off-by: Sergey Bashirov <sergeybashirov@gmail.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Without these quirks, the devices may only function in standard
+PCM mode, or fail to correctly report their DSD format capabilities
+to the ALSA framework, preventing native DSD playback under Linux.
+
+This commit adds new quirk entries for the mentioned DAC models
+based on their respective Vendor/Product IDs (VID:PID), for example:
+0x16d0:0x0ab1 (APA DAC), 0x16d0:0xeca1 (DAC5 series), etc.
+
+The quirk ensures correct DSD format handling by setting the required
+SNDRV_PCM_FMTBIT_DSD_U32_BE format bit and defining the DSD-specific
+Audio Class 2.0 (AC2.0) endpoint configurations. This allows the ALSA
+DSD API to correctly address the device for high-bitrate DSD streams,
+bypassing the need for DoP (DSD over PCM).
+
+Test on APA DAC and Lotus DAC5 SE under Arch Linux.
+
+Tested-by: Lushih Hsieh <bruce@mail.kh.edu.tw>
+Signed-off-by: Lushih Hsieh <bruce@mail.kh.edu.tw>
+Link: https://patch.msgid.link/20251114052053.54989-1-bruce@mail.kh.edu.tw
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/blocklayout.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ sound/usb/quirks.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/fs/nfsd/blocklayout.c b/fs/nfsd/blocklayout.c
-index 59f119cce3dc6..3a9415fd77546 100644
---- a/fs/nfsd/blocklayout.c
-+++ b/fs/nfsd/blocklayout.c
-@@ -23,6 +23,7 @@ nfsd4_block_proc_layoutget(struct inode *inode, const struct svc_fh *fhp,
- {
- 	struct nfsd4_layout_seg *seg = &args->lg_seg;
- 	struct super_block *sb = inode->i_sb;
-+	u64 length;
- 	u32 block_size = i_blocksize(inode);
- 	struct pnfs_block_extent *bex;
- 	struct iomap iomap;
-@@ -53,7 +54,8 @@ nfsd4_block_proc_layoutget(struct inode *inode, const struct svc_fh *fhp,
- 		goto out_error;
- 	}
- 
--	if (iomap.length < args->lg_minlength) {
-+	length = iomap.offset + iomap.length - seg->offset;
-+	if (length < args->lg_minlength) {
- 		dprintk("pnfsd: extent smaller than minlength\n");
- 		goto out_layoutunavailable;
- 	}
+diff --git a/sound/usb/quirks.c b/sound/usb/quirks.c
+index aa5623e104c71..286ec4580718c 100644
+--- a/sound/usb/quirks.c
++++ b/sound/usb/quirks.c
+@@ -1920,6 +1920,8 @@ u64 snd_usb_interface_dsd_format_quirks(struct snd_usb_audio *chip,
+ 	case USB_ID(0x16d0, 0x09d8): /* NuPrime IDA-8 */
+ 	case USB_ID(0x16d0, 0x09db): /* NuPrime Audio DAC-9 */
+ 	case USB_ID(0x16d0, 0x09dd): /* Encore mDSD */
++	case USB_ID(0x16d0, 0x0ab1): /* PureAudio APA DAC */
++	case USB_ID(0x16d0, 0xeca1): /* PureAudio Lotus DAC5, DAC5 SE, DAC5 Pro */
+ 	case USB_ID(0x1db5, 0x0003): /* Bryston BDA3 */
+ 	case USB_ID(0x20a0, 0x4143): /* WaveIO USB Audio 2.0 */
+ 	case USB_ID(0x22e1, 0xca01): /* HDTA Serenade DSD */
+@@ -2187,6 +2189,10 @@ static const struct usb_audio_quirk_flags_table quirk_flags_table[] = {
+ 		   QUIRK_FLAG_IGNORE_CLOCK_SOURCE),
+ 	DEVICE_FLG(0x1686, 0x00dd, /* Zoom R16/24 */
+ 		   QUIRK_FLAG_TX_LENGTH | QUIRK_FLAG_CTL_MSG_DELAY_1M),
++	DEVICE_FLG(0x16d0, 0x0ab1, /* PureAudio APA DAC */
++		   QUIRK_FLAG_DSD_RAW),
++	DEVICE_FLG(0x16d0, 0xeca1, /* PureAudio Lotus DAC5, DAC5 SE and DAC5 Pro */
++		   QUIRK_FLAG_DSD_RAW),
+ 	DEVICE_FLG(0x17aa, 0x1046, /* Lenovo ThinkStation P620 Rear Line-in, Line-out and Microphone */
+ 		   QUIRK_FLAG_DISABLE_AUTOSUSPEND),
+ 	DEVICE_FLG(0x17aa, 0x104d, /* Lenovo ThinkStation P620 Internal Speaker + Front Headset */
 -- 
 2.51.0
 
