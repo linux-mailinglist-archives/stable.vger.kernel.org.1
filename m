@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-207454-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206828-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4A6CD09E14
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:43:15 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0281D09599
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:11:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2292C3150192
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:35:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F2ED830FC841
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:05:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72FE035B14E;
-	Fri,  9 Jan 2026 12:35:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A013D35A92E;
+	Fri,  9 Jan 2026 12:05:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CSQpv+8r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YYf5A0rB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33D7835B137;
-	Fri,  9 Jan 2026 12:35:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 604C8359F99;
+	Fri,  9 Jan 2026 12:05:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962101; cv=none; b=gJBwSRcINCD6/pUVk/eTGw8m5OY+B5Xovk6Qrau0In9O2iyYpuUHmc+acDreVZ3DU01Y3v1EN0r43+5Yl9If5+KXqoDVT7PnjHpmfH66rH0kRcdEesSZMYXLiAkMDOgLUo988d5I5bWgnNRGKMGDRTtm8uOUKjzvJjIBu/iZZqU=
+	t=1767960314; cv=none; b=NrajJILJiSVHUHAhKCIeuhQ4Bj98EPUe7why7AMm7EJ6VF286sECW92WpG7mhF9YVb6ozNfot3LMIz82vEf+4hzIKPyoCzJqO2Oxu9+llxWfQ8IBLMybDRDt/CWMSqB2T5YwT3NhbF2q9Veco1TeQbeTo/tRpBsi6tf1k4Gpl6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962101; c=relaxed/simple;
-	bh=qcsIcUACrdiUAKk3fBaNk4PTB+Bhur8l2IL8ul2bUks=;
+	s=arc-20240116; t=1767960314; c=relaxed/simple;
+	bh=v8gqTsdVCNj5bWLnpFPU3Lti4n0zQ/X+JKXaux1ev1M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u89V9KmZ+S8vYRdeaS3W2zooBboJTwtVOmqTFljHqAo/spqpONGe9aztxAg0ZPO6HkLlj3khG3sFAcbsps8OpCID8WsiuRpxJZuoeXbg2P3q+DcCCtUNsH1XbuhmU0MeJQkrzYX+hVSI910OtiDqZg98Hz67oZOxDR2emM0KGiE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CSQpv+8r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEB49C4CEF1;
-	Fri,  9 Jan 2026 12:35:00 +0000 (UTC)
+	 MIME-Version; b=ZxUpF28WgpVSewCK4Bdy0aJXuxjve/KnqwR1QjrraLkL5E/xdnM/Ez3M3XN+rX2QFVYw2jKuTm3blS16x5joWnEOCSeoxG+Y9DgbFwpMXnO1Eewlg4IRNur9UZleZO53VgOdmU4BGzEsVsSonat6YzcmZNuVMihoeoPTcngkJPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YYf5A0rB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFC23C4CEF1;
+	Fri,  9 Jan 2026 12:05:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962101;
-	bh=qcsIcUACrdiUAKk3fBaNk4PTB+Bhur8l2IL8ul2bUks=;
+	s=korg; t=1767960314;
+	bh=v8gqTsdVCNj5bWLnpFPU3Lti4n0zQ/X+JKXaux1ev1M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CSQpv+8rS6cQVKfyNnX9SnNp2yRp+OkrCg1B2jBI9DHhZ/D1vyGNMpSQ4MBA1spJi
-	 gk6xfvDaY9yeZu0xTVvpKZPTK/nWERWznNMaYiRzTC23CmeHqQdAwCflK+AqkQQwfB
-	 QvVII3VskD1m0nV7TCV/wpPJqvR04OG3vPrHbBL8=
+	b=YYf5A0rBF1yFB7krBxE+br/KajuTIFbfBGMrwQ+OmsU9WUPAAHcujvhMAUrVqla89
+	 VLeqy652EUApCvV/cMo6I5E6UDxU41lZDqGCWk+VyvJhixDoedeQrUP8IVCz+hFf8J
+	 0MqX1P0tzWtYCqOdKBDwveBR0ZMpfGslp4aJgHag=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Ard Biesheuvel <ardb@kernel.org>,
+	Shay Drory <shayd@nvidia.com>,
+	Breno Leitao <leitao@debian.org>,
+	Moshe Shemesh <moshe@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 214/634] efi/cper: Add a new helper function to print bitmasks
+Subject: [PATCH 6.6 353/737] net/mlx5: fw_tracer, Handle escaped percent properly
 Date: Fri,  9 Jan 2026 12:38:12 +0100
-Message-ID: <20260109112125.488010608@linuxfoundation.org>
+Message-ID: <20260109112147.274754083@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,135 +63,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+From: Shay Drory <shayd@nvidia.com>
 
-[ Upstream commit a976d790f49499ccaa0f991788ad8ebf92e7fd5c ]
+[ Upstream commit c0289f67f7d6a0dfba0e92cfe661a5c70c8c6e92 ]
 
-Add a helper function to print a string with names associated
-to each bit field.
+The firmware tracer's format string validation and parameter counting
+did not properly handle escaped percent signs (%%). This caused
+fw_tracer to count more parameters when trace format strings contained
+literal percent characters.
 
-A typical example is:
+To fix it, allow %% to pass string validation and skip %% sequences when
+counting parameters since they represent literal percent signs rather
+than format specifiers.
 
-	const char * const bits[] = {
-		"bit 3 name",
-		"bit 4 name",
-		"bit 5 name",
-	};
-	char str[120];
-        unsigned int bitmask = BIT(3) | BIT(5);
-
-	#define MASK  GENMASK(5,3)
-
-	cper_bits_to_str(str, sizeof(str), FIELD_GET(MASK, bitmask),
-			 bits, ARRAY_SIZE(bits));
-
-The above code fills string "str" with "bit 3 name|bit 5 name".
-
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Fixes: 70dd6fdb8987 ("net/mlx5: FW tracer, parse traces and kernel tracing support")
+Signed-off-by: Shay Drory <shayd@nvidia.com>
+Reported-by: Breno Leitao <leitao@debian.org>
+Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
+Closes: https://lore.kernel.org/netdev/hanz6rzrb2bqbplryjrakvkbmv4y5jlmtthnvi3thg5slqvelp@t3s3erottr6s/
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/1765284977-1363052-5-git-send-email-tariqt@nvidia.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/efi/cper.c | 60 +++++++++++++++++++++++++++++++++++++
- include/linux/cper.h        |  2 ++
- 2 files changed, 62 insertions(+)
+ .../mellanox/mlx5/core/diag/fw_tracer.c       | 20 +++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/firmware/efi/cper.c b/drivers/firmware/efi/cper.c
-index e4e5ea7ce910a..eb5e67af69273 100644
---- a/drivers/firmware/efi/cper.c
-+++ b/drivers/firmware/efi/cper.c
-@@ -12,6 +12,7 @@
-  * Specification version 2.4.
-  */
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c b/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c
+index 197c306d350bf..0a33ab5f53fd3 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c
+@@ -368,11 +368,11 @@ static bool mlx5_is_valid_spec(const char *str)
+ 	while (isdigit(*str) || *str == '#' || *str == '.' || *str == 'l')
+ 		str++;
  
-+#include <linux/bitmap.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
- #include <linux/time.h>
-@@ -105,6 +106,65 @@ void cper_print_bits(const char *pfx, unsigned int bits,
- 		printk("%s\n", buf);
- }
+-	/* Check if it's a valid integer/hex specifier:
++	/* Check if it's a valid integer/hex specifier or %%:
+ 	 * Valid formats: %x, %d, %i, %u, etc.
+ 	 */
+ 	if (*str != 'x' && *str != 'X' && *str != 'd' && *str != 'i' &&
+-	    *str != 'u' && *str != 'c')
++	    *str != 'u' && *str != 'c' && *str != '%')
+ 		return false;
  
-+/**
-+ * cper_bits_to_str - return a string for set bits
-+ * @buf: buffer to store the output string
-+ * @buf_size: size of the output string buffer
-+ * @bits: bit mask
-+ * @strs: string array, indexed by bit position
-+ * @strs_size: size of the string array: @strs
-+ *
-+ * Add to @buf the bitmask in hexadecimal. Then, for each set bit in @bits,
-+ * add the corresponding string describing the bit in @strs to @buf.
-+ *
-+ * A typical example is::
-+ *
-+ *	const char * const bits[] = {
-+ *		"bit 3 name",
-+ *		"bit 4 name",
-+ *		"bit 5 name",
-+ *	};
-+ *	char str[120];
-+ *	unsigned int bitmask = BIT(3) | BIT(5);
-+ *	#define MASK GENMASK(5,3)
-+ *
-+ *	cper_bits_to_str(str, sizeof(str), FIELD_GET(MASK, bitmask),
-+ *			 bits, ARRAY_SIZE(bits));
-+ *
-+ * The above code fills the string ``str`` with ``bit 3 name|bit 5 name``.
-+ *
-+ * Return: number of bytes stored or an error code if lower than zero.
-+ */
-+int cper_bits_to_str(char *buf, int buf_size, unsigned long bits,
-+		     const char * const strs[], unsigned int strs_size)
-+{
-+	int len = buf_size;
-+	char *str = buf;
-+	int i, size;
+ 	return true;
+@@ -390,7 +390,11 @@ static bool mlx5_tracer_validate_params(const char *str)
+ 		if (!mlx5_is_valid_spec(substr + 1))
+ 			return false;
+ 
+-		substr = strstr(substr + 1, PARAM_CHAR);
++		if (*(substr + 1) == '%')
++			substr = strstr(substr + 2, PARAM_CHAR);
++		else
++			substr = strstr(substr + 1, PARAM_CHAR);
 +
-+	*buf = '\0';
-+
-+	for_each_set_bit(i, &bits, strs_size) {
-+		if (!(bits & BIT_ULL(i)))
-+			continue;
-+
-+		if (*buf && len > 0) {
-+			*str = '|';
-+			len--;
-+			str++;
+ 	}
+ 
+ 	return true;
+@@ -469,11 +473,15 @@ static int mlx5_tracer_get_num_of_params(char *str)
+ 		substr = strstr(pstr, VAL_PARM);
+ 	}
+ 
+-	/* count all the % characters */
++	/* count all the % characters, but skip %% (escaped percent) */
+ 	substr = strstr(str, PARAM_CHAR);
+ 	while (substr) {
+-		num_of_params += 1;
+-		str = substr + 1;
++		if (*(substr + 1) != '%') {
++			num_of_params += 1;
++			str = substr + 1;
++		} else {
++			str = substr + 2;
 +		}
-+
-+		size = strscpy(str, strs[i], len);
-+		if (size < 0)
-+			return size;
-+
-+		len -= size;
-+		str += size;
-+	}
-+	return len - buf_size;
-+}
-+EXPORT_SYMBOL_GPL(cper_bits_to_str);
-+
- static const char * const proc_type_strs[] = {
- 	"IA32/X64",
- 	"IA64",
-diff --git a/include/linux/cper.h b/include/linux/cper.h
-index eacb7dd7b3af3..a15b7b9740344 100644
---- a/include/linux/cper.h
-+++ b/include/linux/cper.h
-@@ -561,6 +561,8 @@ const char *cper_mem_err_type_str(unsigned int);
- const char *cper_mem_err_status_str(u64 status);
- void cper_print_bits(const char *prefix, unsigned int bits,
- 		     const char * const strs[], unsigned int strs_size);
-+int cper_bits_to_str(char *buf, int buf_size, unsigned long bits,
-+		     const char * const strs[], unsigned int strs_size);
- void cper_mem_err_pack(const struct cper_sec_mem_err *,
- 		       struct cper_mem_err_compact *);
- const char *cper_mem_err_unpack(struct trace_seq *,
+ 		substr = strstr(str, PARAM_CHAR);
+ 	}
+ 
 -- 
 2.51.0
 
