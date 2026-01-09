@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-207260-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206660-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A113D09A9F
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:31:25 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95A4BD093E9
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:06:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 25890302C11C
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:25:52 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AF0983099BFC
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:57:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 344BD33ADB8;
-	Fri,  9 Jan 2026 12:25:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E42D732FA3D;
+	Fri,  9 Jan 2026 11:57:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b5cVU/hW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vLrog/Yw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBA781531E8;
-	Fri,  9 Jan 2026 12:25:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A801A31A7EA;
+	Fri,  9 Jan 2026 11:57:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961550; cv=none; b=auy6JwvdSOZzxoEnNfk/MW/ABKd84PPmJtnozlO8V+Dbrddf+Vv5tvzx4dzse2gSkwVi0+Y7c1iwRoUV7VpOHOHimHsMUdSMoqp0U+Cge8ffPj1KabACjlNRG6Qr6LOC1I0bYYeupDxiKs/CsnzndgbvBdYm5PDyfa06ln+ljXw=
+	t=1767959837; cv=none; b=mDhj8Fkp+owvz6hJv0cXaTyPgz9I3sYNXca5ucwG0cWcIh3DMmf6eafpszlN2pXEkTyyJIFLERvp1QqB4VrtXHwH4V4yUr2ItUPI4C752s+yCdClr3wSZrP0xcg6g6v6xE+OGhHRDE09wlpeRBa1ooi0png9FgMy9NgBWJfMsUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961550; c=relaxed/simple;
-	bh=BC4Y2J58BV5CXtc1k5/139ENZBuF85j7EzStTiK/Y0c=;
+	s=arc-20240116; t=1767959837; c=relaxed/simple;
+	bh=LTz7hWdukFt34VwUURAZERuygmUPmG7Tq5CiRP5aLyo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ORr2XN69RCulxwDt/GFwn9OVUHE3CDGwsKmHYgz5/a0gsEInRx8WloqyLoOoEokqAZDzSnMCtiYwv3aIv2PL7UY3amfnE9uUy/aYRG2j9bNirl6SaFGX3jTMDR1kEkeLyEE+M5tCHuB/iQZ5n1g5zjHndsltaEMlkmVqk3c3d7Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b5cVU/hW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77D93C4CEF1;
-	Fri,  9 Jan 2026 12:25:49 +0000 (UTC)
+	 MIME-Version; b=ck6ySWcDow1ZEW58n2Z3H9pYrl59T6ssuwxrZuNpp6E+4ItKKXAAW5tXn+zWc58sKH596mahwqG2lawr6zodtD6wz2lF6fYr8KhMKjZ2nrKSY71TbN6xSW7YWE0dKKXx4Pc46Qv/5kAyL8gP5eUNUyHym1wyMYKS3dC2RLySeV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vLrog/Yw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 377E3C16AAE;
+	Fri,  9 Jan 2026 11:57:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961549;
-	bh=BC4Y2J58BV5CXtc1k5/139ENZBuF85j7EzStTiK/Y0c=;
+	s=korg; t=1767959837;
+	bh=LTz7hWdukFt34VwUURAZERuygmUPmG7Tq5CiRP5aLyo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b5cVU/hWzA7a6hrsPWNw9nNV5Weuel3LlMtvqqBm9E3QrjN2IVHT0h+HmAvtHNbNg
-	 cO/E6PA6RLKsH71QEYMIyxAcF5ieOetGwOW+vuDuNjpprgbApuBeauTLr6X9kJFOZF
-	 TILsQEyLk6XnWgWpz8ZCZZsDzpq3ghUFLSMK75CE=
+	b=vLrog/YwDmiSEtz3HmIllmumM7OBQ4Lty5qXO7ktdMfxUeVm8IXEZKcQLZ9nLm/im
+	 +vu2Nb79dHToQhmIgiry5yjvrksm8qDlTaOXYVfqecLFPEsd8+cWohmAOfxLs2fumK
+	 nnDzOH2I5vjlk/p+vGwK8j6YXZ0ntluJNvw/O2/k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
+	syzbot+d8fd35fa6177afa8c92b@syzkaller.appspotmail.com,
+	Gopi Krishna Menon <krishnagopi487@gmail.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 053/634] irqchip/qcom-irq-combiner: Fix section mismatch
-Date: Fri,  9 Jan 2026 12:35:31 +0100
-Message-ID: <20260109112119.440844306@linuxfoundation.org>
+Subject: [PATCH 6.6 193/737] usb: raw-gadget: cap raw_io transfer length to KMALLOC_MAX_SIZE
+Date: Fri,  9 Jan 2026 12:35:32 +0100
+Message-ID: <20260109112141.255543367@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,38 +61,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Gopi Krishna Menon <krishnagopi487@gmail.com>
 
-[ Upstream commit 9b685058ca936752285c5520d351b828312ac965 ]
+[ Upstream commit a5160af78be7fcf3ade6caab0a14e349560c96d7 ]
 
-Platform drivers can be probed after their init sections have been
-discarded so the probe callback must not live in init.
+The previous commit removed the PAGE_SIZE limit on transfer length of
+raw_io buffer in order to avoid any problems with emulating USB devices
+whose full configuration descriptor exceeds PAGE_SIZE in length. However
+this also removes the upperbound on user supplied length, allowing very
+large values to be passed to the allocator.
 
-Fixes: f20cc9b00c7b ("irqchip/qcom: Add IRQ combiner driver")
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+syzbot on fuzzing the transfer length with very large value (1.81GB)
+results in kmalloc() to fall back to the page allocator, which triggers
+a kernel warning as the page allocator cannot handle allocations more
+than MAX_PAGE_ORDER/KMALLOC_MAX_SIZE.
+
+Since there is no limit imposed on the size of buffer for both control
+and non control transfers, cap the raw_io transfer length to
+KMALLOC_MAX_SIZE and return -EINVAL for larger transfer length to
+prevent any warnings from the page allocator.
+
+Fixes: 37b9dd0d114a ("usb: raw-gadget: do not limit transfer length")
+Tested-by: syzbot+d8fd35fa6177afa8c92b@syzkaller.appspotmail.com
+Reported-by: syzbot+d8fd35fa6177afa8c92b@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/68fc07a0.a70a0220.3bf6c6.01ab.GAE@google.com/
+Signed-off-by: Gopi Krishna Menon <krishnagopi487@gmail.com>
+Reviewed-by: Andrey Konovalov <andreyknvl@gmail.com>
+Link: https://patch.msgid.link/20251028165659.50962-1-krishnagopi487@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/qcom-irq-combiner.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/gadget/legacy/raw_gadget.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/irqchip/qcom-irq-combiner.c b/drivers/irqchip/qcom-irq-combiner.c
-index 18e696dc7f4d6..9308088773be7 100644
---- a/drivers/irqchip/qcom-irq-combiner.c
-+++ b/drivers/irqchip/qcom-irq-combiner.c
-@@ -222,7 +222,7 @@ static int get_registers(struct platform_device *pdev, struct combiner *comb)
- 	return 0;
- }
+diff --git a/drivers/usb/gadget/legacy/raw_gadget.c b/drivers/usb/gadget/legacy/raw_gadget.c
+index 2deab4a6030d7..8aa1a8408ae33 100644
+--- a/drivers/usb/gadget/legacy/raw_gadget.c
++++ b/drivers/usb/gadget/legacy/raw_gadget.c
+@@ -39,6 +39,7 @@ MODULE_LICENSE("GPL");
  
--static int __init combiner_probe(struct platform_device *pdev)
-+static int combiner_probe(struct platform_device *pdev)
- {
- 	struct combiner *combiner;
- 	int nregs;
+ static DEFINE_IDA(driver_id_numbers);
+ #define DRIVER_DRIVER_NAME_LENGTH_MAX	32
++#define USB_RAW_IO_LENGTH_MAX KMALLOC_MAX_SIZE
+ 
+ #define RAW_EVENT_QUEUE_SIZE	16
+ 
+@@ -620,6 +621,8 @@ static void *raw_alloc_io_data(struct usb_raw_ep_io *io, void __user *ptr,
+ 		return ERR_PTR(-EINVAL);
+ 	if (!usb_raw_io_flags_valid(io->flags))
+ 		return ERR_PTR(-EINVAL);
++	if (io->length > USB_RAW_IO_LENGTH_MAX)
++		return ERR_PTR(-EINVAL);
+ 	if (get_from_user)
+ 		data = memdup_user(ptr + sizeof(*io), io->length);
+ 	else {
 -- 
 2.51.0
 
