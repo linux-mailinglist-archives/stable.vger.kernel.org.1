@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-207212-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207782-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A41DCD099A9
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:27:39 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AA56D0A186
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:58:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 369D430A4ED1
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:23:33 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6D6A33305F19
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:51:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B63FF303C87;
-	Fri,  9 Jan 2026 12:23:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0C1B35BDB2;
+	Fri,  9 Jan 2026 12:50:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z+uLsera"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iwQM0yn/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79A6215ADB4;
-	Fri,  9 Jan 2026 12:23:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 943E2326D51;
+	Fri,  9 Jan 2026 12:50:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961412; cv=none; b=OfiY0UkZS6reOzkopBX+wmJwiluIaZrGHQgGWaPN7tsAxi8dOnprFl1/Kyv8hg0HgwNJ/JDdgOhzJL+iTiMXNDtzdGIUj7adEr2SvM6wK6P7Peb45XnIE85L7IJ4O0Mks47k1HGQQLA1+QLMK4J5ESUCx0gqpBnZ1cMkQKhz7RI=
+	t=1767963032; cv=none; b=Qa4p4/J+9mQiHHekZQoqMzqbNtKzwbikLFCoSSYQHGmZTgAGKaKfqJf9iNtuRZlCEmthl9jb8HQAZ4BIYtlRN58z2Up9rjdQsey2XBANv7AWwrPBZmHArF6i7K/p3XK4iBqIPJVAb4d0Yb6XuVfoE65nocSCVkGuPDEGzB8HAZ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961412; c=relaxed/simple;
-	bh=vIFinzTFR+L9kNezMIT90amYDnGDtoUtx2AalIUjp7U=;
+	s=arc-20240116; t=1767963032; c=relaxed/simple;
+	bh=ELL54DuV3ICW6j6QC7Km3mG74DY+WZg28whYIzFX4SU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sRGXfSi4j9FqY9cpIuVFTyFFaYYXaaNCpwPtnJB5nuPuqpdAlH0HebGxcej9LdsI/g3/xk1yi6VvZAMP/qcX8NSBt+FoO2p14gmjz4O+4BE4c66sCrbcfgJSPWbbUyBuA/UkquBW7PP8aaSdl1QYkN/cqUMPUtqD1PXTAOnWyYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z+uLsera; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8712C4CEF1;
-	Fri,  9 Jan 2026 12:23:31 +0000 (UTC)
+	 MIME-Version; b=D1J1kia6eJGT0r6YasuEMDrW20xZ3sT3Hr8OciYNmn7miDuxLEjfL2FirXJ5J0G7ReU1vzJYfZ9lXRvf4c1fBWAAEPhZvW+wCIOawHIdJKtf+ZEL8m1gk/xcvcd11JrJu0Q9IDHTvmvKKSVj8cyk+k0oYh9a/65+CB6DNHCFU44=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iwQM0yn/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2327FC4CEF1;
+	Fri,  9 Jan 2026 12:50:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961412;
-	bh=vIFinzTFR+L9kNezMIT90amYDnGDtoUtx2AalIUjp7U=;
+	s=korg; t=1767963032;
+	bh=ELL54DuV3ICW6j6QC7Km3mG74DY+WZg28whYIzFX4SU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z+uLseraH8BcTuVjWIu8wKSuLeRVz9Fq3W0GqXcNuThCZLb4733VPO1sbbz0DyKau
-	 U23aS7gqxkxfKFLXAT58ttVjlxymMFq+nwm3NaO7CJ1pyCP++qe9vbUITfTN9Mzpiu
-	 XvCunNq2CQf91kkUIpIqXwbVrq057QxqiyjGFvI4=
+	b=iwQM0yn/Gw4vuUgP1ipu1Php5L0nBd/jsZ1w8yodbIyBfbCnFaAwArx5msjtuUtXL
+	 ealDwGHFvpRhjm6EIbdY8Fs+ecX4VDUemzUOSsn9rARdbSijYxCDaue51ihdkUfKVW
+	 m09qYAqYDg53OiVywQvE3t1KzJVcSQiwkb574f5o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Wen Yang <wen.yang@linux.dev>
-Subject: [PATCH 6.6 713/737] net: Allow to use SMP threads for backlog NAPI.
+	Benjamin Gaignard <benjamin.gaignard@collabora.com>,
+	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 574/634] media: verisilicon: Fix CPU stalls on G2 bus error
 Date: Fri,  9 Jan 2026 12:44:12 +0100
-Message-ID: <20260109112200.898415351@linuxfoundation.org>
+Message-ID: <20260109112139.206576613@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,341 +61,238 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+From: Nicolas Dufresne <nicolas.dufresne@collabora.com>
 
-commit dad6b97702639fba27a2bd3e986982ad6f0db3a7 upstream.
+[ Upstream commit 19c286b755072a22a063052f530a6b1fac8a1f63 ]
 
-Backlog NAPI is a per-CPU NAPI struct only (with no device behind it)
-used by drivers which don't do NAPI them self, RPS and parts of the
-stack which need to avoid recursive deadlocks while processing a packet.
+In some seek stress tests, we are getting IRQ from the G2 decoder where
+the dec_bus_int and the dec_e bits are high, meaning the decoder is
+still running despite the error.
 
-The non-NAPI driver use the CPU local backlog NAPI. If RPS is enabled
-then a flow for the skb is computed and based on the flow the skb can be
-enqueued on a remote CPU. Scheduling/ raising the softirq (for backlog's
-NAPI) on the remote CPU isn't trivial because the softirq is only
-scheduled on the local CPU and performed after the hardirq is done.
-In order to schedule a softirq on the remote CPU, an IPI is sent to the
-remote CPU which schedules the backlog-NAPI on the then local CPU.
+Fix this by reworking the IRQ handler to only finish the job once we
+have reached completion and move the software reset to when our software
+watchdog triggers.
 
-On PREEMPT_RT interrupts are force-threaded. The soft interrupts are
-raised within the interrupt thread and processed after the interrupt
-handler completed still within the context of the interrupt thread. The
-softirq is handled in the context where it originated.
+This way, we let the hardware continue on errors when it did not self
+reset and in worse case scenario the hardware timeout will
+automatically stop it. The actual error will be fixed in a follow up
+patch.
 
-With force-threaded interrupts enabled, ksoftirqd is woken up if a
-softirq is raised from hardirq context. This is the case if it is raised
-from an IPI. Additionally there is a warning on PREEMPT_RT if the
-softirq is raised from the idle thread.
-This was done for two reasons:
-- With threaded interrupts the processing should happen in thread
-  context (where it originated) and ksoftirqd is the only thread for
-  this context if raised from hardirq. Using the currently running task
-  instead would "punish" a random task.
-- Once ksoftirqd is active it consumes all further softirqs until it
-  stops running. This changed recently and is no longer the case.
-
-Instead of keeping the backlog NAPI in ksoftirqd (in force-threaded/
-PREEMPT_RT setups) I am proposing NAPI-threads for backlog.
-The "proper" setup with threaded-NAPI is not doable because the threads
-are not pinned to an individual CPU and can be modified by the user.
-Additionally a dummy network device would have to be assigned. Also
-CPU-hotplug has to be considered if additional CPUs show up.
-All this can be probably done/ solved but the smpboot-threads already
-provide this infrastructure.
-
-Sending UDP packets over loopback expects that the packet is processed
-within the call. Delaying it by handing it over to the thread hurts
-performance. It is not beneficial to the outcome if the context switch
-happens immediately after enqueue or after a while to process a few
-packets in a batch.
-There is no need to always use the thread if the backlog NAPI is
-requested on the local CPU. This restores the loopback throuput. The
-performance drops mostly to the same value after enabling RPS on the
-loopback comparing the IPI and the tread result.
-
-Create NAPI-threads for backlog if request during boot. The thread runs
-the inner loop from napi_threaded_poll(), the wait part is different. It
-checks for NAPI_STATE_SCHED (the backlog NAPI can not be disabled).
-
-The NAPI threads for backlog are optional, it has to be enabled via the boot
-argument "thread_backlog_napi". It is mandatory for PREEMPT_RT to avoid the
-wakeup of ksoftirqd from the IPI.
-
-Acked-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Wen Yang <wen.yang@linux.dev>
+Fixes: 3385c514ecc5a ("media: hantro: Convert imx8m_vpu_g2_irq to helper")
+Cc: stable@vger.kernel.org
+Reviewed-by: Benjamin Gaignard <benjamin.gaignard@collabora.com>
+Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/dev.c |  152 +++++++++++++++++++++++++++++++++++++++++++--------------
- 1 file changed, 115 insertions(+), 37 deletions(-)
+ drivers/media/platform/verisilicon/hantro_g2.c          |   84 ++++++++++++----
+ drivers/media/platform/verisilicon/hantro_g2_hevc_dec.c |    2 
+ drivers/media/platform/verisilicon/hantro_g2_regs.h     |   13 ++
+ drivers/media/platform/verisilicon/hantro_g2_vp9_dec.c  |    2 
+ drivers/media/platform/verisilicon/hantro_hw.h          |    1 
+ drivers/media/platform/verisilicon/imx8m_vpu_hw.c       |    2 
+ 6 files changed, 83 insertions(+), 21 deletions(-)
 
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -78,6 +78,7 @@
- #include <linux/slab.h>
- #include <linux/sched.h>
- #include <linux/sched/mm.h>
-+#include <linux/smpboot.h>
- #include <linux/mutex.h>
- #include <linux/rwsem.h>
- #include <linux/string.h>
-@@ -217,6 +218,31 @@ static inline struct hlist_head *dev_ind
- 	return &net->dev_index_head[ifindex & (NETDEV_HASHENTRIES - 1)];
- }
- 
-+#ifndef CONFIG_PREEMPT_RT
-+
-+static DEFINE_STATIC_KEY_FALSE(use_backlog_threads_key);
-+
-+static int __init setup_backlog_napi_threads(char *arg)
-+{
-+	static_branch_enable(&use_backlog_threads_key);
-+	return 0;
-+}
-+early_param("thread_backlog_napi", setup_backlog_napi_threads);
-+
-+static bool use_backlog_threads(void)
-+{
-+	return static_branch_unlikely(&use_backlog_threads_key);
-+}
-+
-+#else
-+
-+static bool use_backlog_threads(void)
-+{
-+	return true;
-+}
-+
-+#endif
-+
- static inline void rps_lock_irqsave(struct softnet_data *sd,
- 				    unsigned long *flags)
- {
-@@ -4494,6 +4520,7 @@ EXPORT_SYMBOL(__dev_direct_xmit);
- /*************************************************************************
-  *			Receiver routines
-  *************************************************************************/
-+static DEFINE_PER_CPU(struct task_struct *, backlog_napi);
- 
- int netdev_max_backlog __read_mostly = 1000;
- EXPORT_SYMBOL(netdev_max_backlog);
-@@ -4526,12 +4553,16 @@ static inline void ____napi_schedule(str
- 		 */
- 		thread = READ_ONCE(napi->thread);
- 		if (thread) {
-+			if (use_backlog_threads() && thread == raw_cpu_read(backlog_napi))
-+				goto use_local_napi;
-+
- 			set_bit(NAPI_STATE_SCHED_THREADED, &napi->state);
- 			wake_up_process(thread);
- 			return;
- 		}
- 	}
- 
-+use_local_napi:
- 	list_add_tail(&napi->poll_list, &sd->poll_list);
- 	WRITE_ONCE(napi->list_owner, smp_processor_id());
- 	/* If not called from net_rx_action()
-@@ -4777,6 +4808,11 @@ static void napi_schedule_rps(struct sof
- 
- #ifdef CONFIG_RPS
- 	if (sd != mysd) {
-+		if (use_backlog_threads()) {
-+			__napi_schedule_irqoff(&sd->backlog);
-+			return;
-+		}
-+
- 		sd->rps_ipi_next = mysd->rps_ipi_list;
- 		mysd->rps_ipi_list = sd;
- 
-@@ -6000,7 +6036,7 @@ static void net_rps_action_and_irq_enabl
- #ifdef CONFIG_RPS
- 	struct softnet_data *remsd = sd->rps_ipi_list;
- 
--	if (remsd) {
-+	if (!use_backlog_threads() && remsd) {
- 		sd->rps_ipi_list = NULL;
- 
- 		local_irq_enable();
-@@ -6015,7 +6051,7 @@ static void net_rps_action_and_irq_enabl
- static bool sd_has_rps_ipi_waiting(struct softnet_data *sd)
- {
- #ifdef CONFIG_RPS
--	return sd->rps_ipi_list != NULL;
-+	return !use_backlog_threads() && sd->rps_ipi_list;
- #else
- 	return false;
- #endif
-@@ -6059,7 +6095,7 @@ static int process_backlog(struct napi_s
- 			 * We can use a plain write instead of clear_bit(),
- 			 * and we dont need an smp_mb() memory barrier.
- 			 */
--			napi->state = 0;
-+			napi->state &= NAPIF_STATE_THREADED;
- 			again = false;
- 		} else {
- 			skb_queue_splice_tail_init(&sd->input_pkt_queue,
-@@ -6725,43 +6761,48 @@ static void skb_defer_free_flush(struct
- 	}
- }
- 
--static int napi_threaded_poll(void *data)
-+static void napi_threaded_poll_loop(struct napi_struct *napi)
- {
--	struct napi_struct *napi = data;
- 	struct softnet_data *sd;
--	void *have;
-+	unsigned long last_qs = jiffies;
- 
--	while (!napi_thread_wait(napi)) {
--		unsigned long last_qs = jiffies;
-+	for (;;) {
-+		bool repoll = false;
-+		void *have;
- 
--		for (;;) {
--			bool repoll = false;
-+		local_bh_disable();
-+		sd = this_cpu_ptr(&softnet_data);
-+		sd->in_napi_threaded_poll = true;
- 
--			local_bh_disable();
--			sd = this_cpu_ptr(&softnet_data);
--			sd->in_napi_threaded_poll = true;
--
--			have = netpoll_poll_lock(napi);
--			__napi_poll(napi, &repoll);
--			netpoll_poll_unlock(have);
--
--			sd->in_napi_threaded_poll = false;
--			barrier();
--
--			if (sd_has_rps_ipi_waiting(sd)) {
--				local_irq_disable();
--				net_rps_action_and_irq_enable(sd);
--			}
--			skb_defer_free_flush(sd);
--			local_bh_enable();
-+		have = netpoll_poll_lock(napi);
-+		__napi_poll(napi, &repoll);
-+		netpoll_poll_unlock(have);
-+
-+		sd->in_napi_threaded_poll = false;
-+		barrier();
-+
-+		if (sd_has_rps_ipi_waiting(sd)) {
-+			local_irq_disable();
-+			net_rps_action_and_irq_enable(sd);
-+		}
-+		skb_defer_free_flush(sd);
-+		local_bh_enable();
- 
--			if (!repoll)
--				break;
-+		if (!repoll)
-+			break;
- 
--			rcu_softirq_qs_periodic(last_qs);
--			cond_resched();
--		}
-+		rcu_softirq_qs_periodic(last_qs);
-+		cond_resched();
- 	}
-+}
-+
-+static int napi_threaded_poll(void *data)
-+{
-+	struct napi_struct *napi = data;
-+
-+	while (!napi_thread_wait(napi))
-+		napi_threaded_poll_loop(napi);
-+
- 	return 0;
- }
- 
-@@ -11346,7 +11387,7 @@ static int dev_cpu_dead(unsigned int old
- 
- 		list_del_init(&napi->poll_list);
- 		if (napi->poll == process_backlog)
--			napi->state = 0;
-+			napi->state &= NAPIF_STATE_THREADED;
- 		else
- 			____napi_schedule(sd, napi);
- 	}
-@@ -11354,12 +11395,14 @@ static int dev_cpu_dead(unsigned int old
- 	raise_softirq_irqoff(NET_TX_SOFTIRQ);
- 	local_irq_enable();
- 
-+	if (!use_backlog_threads()) {
- #ifdef CONFIG_RPS
--	remsd = oldsd->rps_ipi_list;
--	oldsd->rps_ipi_list = NULL;
-+		remsd = oldsd->rps_ipi_list;
-+		oldsd->rps_ipi_list = NULL;
- #endif
--	/* send out pending IPI's on offline CPU */
--	net_rps_send_ipi(remsd);
-+		/* send out pending IPI's on offline CPU */
-+		net_rps_send_ipi(remsd);
-+	}
- 
- 	/* Process offline CPU's input_pkt_queue */
- 	while ((skb = __skb_dequeue(&oldsd->process_queue))) {
-@@ -11622,6 +11665,38 @@ static struct pernet_operations __net_in
-  *
+--- a/drivers/media/platform/verisilicon/hantro_g2.c
++++ b/drivers/media/platform/verisilicon/hantro_g2.c
+@@ -5,40 +5,90 @@
+  * Copyright (C) 2021 Collabora Ltd, Andrzej Pietrasiewicz <andrzej.p@collabora.com>
   */
  
-+static int backlog_napi_should_run(unsigned int cpu)
-+{
-+	struct softnet_data *sd = per_cpu_ptr(&softnet_data, cpu);
-+	struct napi_struct *napi = &sd->backlog;
++#include <linux/delay.h>
+ #include "hantro_hw.h"
+ #include "hantro_g2_regs.h"
+ 
+-void hantro_g2_check_idle(struct hantro_dev *vpu)
++static bool hantro_g2_active(struct hantro_ctx *ctx)
+ {
+-	int i;
++	struct hantro_dev *vpu = ctx->dev;
++	u32 status;
 +
-+	return test_bit(NAPI_STATE_SCHED_THREADED, &napi->state);
++	status = vdpu_read(vpu, G2_REG_INTERRUPT);
++
++	return (status & G2_REG_INTERRUPT_DEC_E);
 +}
-+
-+static void run_backlog_napi(unsigned int cpu)
+ 
+-	for (i = 0; i < 3; i++) {
+-		u32 status;
++/**
++ * hantro_g2_reset:
++ * @ctx: the hantro context
++ *
++ * Emulates a reset using Hantro abort function. Failing this procedure would
++ * results in programming a running IP which leads to CPU hang.
++ *
++ * Using a hard reset procedure instead is prefferred.
++ */
++void hantro_g2_reset(struct hantro_ctx *ctx)
 +{
-+	struct softnet_data *sd = per_cpu_ptr(&softnet_data, cpu);
++	struct hantro_dev *vpu = ctx->dev;
++	u32 status;
+ 
+-		/* Make sure the VPU is idle */
+-		status = vdpu_read(vpu, G2_REG_INTERRUPT);
+-		if (status & G2_REG_INTERRUPT_DEC_E) {
+-			dev_warn(vpu->dev, "device still running, aborting");
+-			status |= G2_REG_INTERRUPT_DEC_ABORT_E | G2_REG_INTERRUPT_DEC_IRQ_DIS;
+-			vdpu_write(vpu, status, G2_REG_INTERRUPT);
+-		}
++	status = vdpu_read(vpu, G2_REG_INTERRUPT);
++	if (status & G2_REG_INTERRUPT_DEC_E) {
++		dev_warn_ratelimited(vpu->dev, "device still running, aborting");
++		status |= G2_REG_INTERRUPT_DEC_ABORT_E | G2_REG_INTERRUPT_DEC_IRQ_DIS;
++		vdpu_write(vpu, status, G2_REG_INTERRUPT);
 +
-+	napi_threaded_poll_loop(&sd->backlog);
-+}
-+
-+static void backlog_napi_setup(unsigned int cpu)
-+{
-+	struct softnet_data *sd = per_cpu_ptr(&softnet_data, cpu);
-+	struct napi_struct *napi = &sd->backlog;
-+
-+	napi->thread = this_cpu_read(backlog_napi);
-+	set_bit(NAPI_STATE_THREADED, &napi->state);
-+}
-+
-+static struct smp_hotplug_thread backlog_threads = {
-+	.store			= &backlog_napi,
-+	.thread_should_run	= backlog_napi_should_run,
-+	.thread_fn		= run_backlog_napi,
-+	.thread_comm		= "backlog_napi/%u",
-+	.setup			= backlog_napi_setup,
-+};
-+
- /*
-  *       This is called single threaded during boot, so no need
-  *       to take the rtnl semaphore.
-@@ -11672,7 +11747,10 @@ static int __init net_dev_init(void)
- 		init_gro_hash(&sd->backlog);
- 		sd->backlog.poll = process_backlog;
- 		sd->backlog.weight = weight_p;
-+		INIT_LIST_HEAD(&sd->backlog.poll_list);
++		do {
++			mdelay(1);
++		} while (hantro_g2_active(ctx));
  	}
-+	if (use_backlog_threads())
-+		smpboot_register_percpu_thread(&backlog_threads);
+ }
  
- 	dev_boot_phase = 0;
+ irqreturn_t hantro_g2_irq(int irq, void *dev_id)
+ {
+ 	struct hantro_dev *vpu = dev_id;
+-	enum vb2_buffer_state state;
+ 	u32 status;
  
+ 	status = vdpu_read(vpu, G2_REG_INTERRUPT);
+-	state = (status & G2_REG_INTERRUPT_DEC_RDY_INT) ?
+-		 VB2_BUF_STATE_DONE : VB2_BUF_STATE_ERROR;
+ 
+-	vdpu_write(vpu, 0, G2_REG_INTERRUPT);
+-	vdpu_write(vpu, G2_REG_CONFIG_DEC_CLK_GATE_E, G2_REG_CONFIG);
++	if (!(status & G2_REG_INTERRUPT_DEC_IRQ))
++		return IRQ_NONE;
++
++	hantro_reg_write(vpu, &g2_dec_irq, 0);
++	hantro_reg_write(vpu, &g2_dec_int_stat, 0);
++	hantro_reg_write(vpu, &g2_clk_gate_e, 1);
++
++	if (status & G2_REG_INTERRUPT_DEC_RDY_INT) {
++		hantro_irq_done(vpu, VB2_BUF_STATE_DONE);
++		return IRQ_HANDLED;
++	}
++
++	if (status & G2_REG_INTERRUPT_DEC_ABORT_INT) {
++		/* disabled on abort, though lets be safe and handle it */
++		dev_warn_ratelimited(vpu->dev, "decode operation aborted.");
++		return IRQ_HANDLED;
++	}
++
++	if (status & G2_REG_INTERRUPT_DEC_LAST_SLICE_INT)
++		dev_warn_ratelimited(vpu->dev, "not all macroblocks were decoded.");
++
++	if (status & G2_REG_INTERRUPT_DEC_BUS_INT)
++		dev_warn_ratelimited(vpu->dev, "bus error detected.");
++
++	if (status & G2_REG_INTERRUPT_DEC_ERROR_INT)
++		dev_warn_ratelimited(vpu->dev, "decode error detected.");
+ 
+-	hantro_irq_done(vpu, state);
++	if (status & G2_REG_INTERRUPT_DEC_TIMEOUT)
++		dev_warn_ratelimited(vpu->dev, "frame decode timed out.");
++
++	/**
++	 * If the decoding haven't stopped, let it continue. The hardware timeout
++	 * will trigger if it is trully stuck.
++	 */
++	if (status & G2_REG_INTERRUPT_DEC_E)
++		return IRQ_HANDLED;
+ 
++	hantro_irq_done(vpu, VB2_BUF_STATE_ERROR);
+ 	return IRQ_HANDLED;
+ }
+--- a/drivers/media/platform/verisilicon/hantro_g2_hevc_dec.c
++++ b/drivers/media/platform/verisilicon/hantro_g2_hevc_dec.c
+@@ -592,8 +592,6 @@ int hantro_g2_hevc_dec_run(struct hantro
+ 	struct hantro_dev *vpu = ctx->dev;
+ 	int ret;
+ 
+-	hantro_g2_check_idle(vpu);
+-
+ 	/* Prepare HEVC decoder context. */
+ 	ret = hantro_hevc_dec_prepare_run(ctx);
+ 	if (ret)
+--- a/drivers/media/platform/verisilicon/hantro_g2_regs.h
++++ b/drivers/media/platform/verisilicon/hantro_g2_regs.h
+@@ -22,7 +22,14 @@
+ #define G2_REG_VERSION			G2_SWREG(0)
+ 
+ #define G2_REG_INTERRUPT		G2_SWREG(1)
++#define G2_REG_INTERRUPT_DEC_LAST_SLICE_INT	BIT(19)
++#define G2_REG_INTERRUPT_DEC_TIMEOUT	BIT(18)
++#define G2_REG_INTERRUPT_DEC_ERROR_INT	BIT(16)
++#define G2_REG_INTERRUPT_DEC_BUF_INT	BIT(14)
++#define G2_REG_INTERRUPT_DEC_BUS_INT	BIT(13)
+ #define G2_REG_INTERRUPT_DEC_RDY_INT	BIT(12)
++#define G2_REG_INTERRUPT_DEC_ABORT_INT	BIT(11)
++#define G2_REG_INTERRUPT_DEC_IRQ	BIT(8)
+ #define G2_REG_INTERRUPT_DEC_ABORT_E	BIT(5)
+ #define G2_REG_INTERRUPT_DEC_IRQ_DIS	BIT(4)
+ #define G2_REG_INTERRUPT_DEC_E		BIT(0)
+@@ -35,6 +42,9 @@
+ #define BUS_WIDTH_128			2
+ #define BUS_WIDTH_256			3
+ 
++#define g2_dec_int_stat		G2_DEC_REG(1, 11, 0xf)
++#define g2_dec_irq		G2_DEC_REG(1, 8, 0x1)
++
+ #define g2_strm_swap		G2_DEC_REG(2, 28, 0xf)
+ #define g2_strm_swap_old	G2_DEC_REG(2, 27, 0x1f)
+ #define g2_pic_swap		G2_DEC_REG(2, 22, 0x1f)
+@@ -225,6 +235,9 @@
+ #define vp9_filt_level_seg5	G2_DEC_REG(19,  8, 0x3f)
+ #define vp9_quant_seg5		G2_DEC_REG(19,  0, 0xff)
+ 
++#define g2_timemout_override_e	G2_DEC_REG(45, 31, 0x1)
++#define g2_timemout_cycles	G2_DEC_REG(45, 0, 0x7fffffff)
++
+ #define hevc_cur_poc_00		G2_DEC_REG(46, 24, 0xff)
+ #define hevc_cur_poc_01		G2_DEC_REG(46, 16, 0xff)
+ #define hevc_cur_poc_02		G2_DEC_REG(46, 8,  0xff)
+--- a/drivers/media/platform/verisilicon/hantro_g2_vp9_dec.c
++++ b/drivers/media/platform/verisilicon/hantro_g2_vp9_dec.c
+@@ -909,8 +909,6 @@ int hantro_g2_vp9_dec_run(struct hantro_
+ 	struct vb2_v4l2_buffer *dst;
+ 	int ret;
+ 
+-	hantro_g2_check_idle(ctx->dev);
+-
+ 	ret = start_prepare_run(ctx, &decode_params);
+ 	if (ret) {
+ 		hantro_end_prepare_run(ctx);
+--- a/drivers/media/platform/verisilicon/hantro_hw.h
++++ b/drivers/media/platform/verisilicon/hantro_hw.h
+@@ -436,6 +436,7 @@ void hantro_g2_vp9_dec_done(struct hantr
+ int hantro_vp9_dec_init(struct hantro_ctx *ctx);
+ void hantro_vp9_dec_exit(struct hantro_ctx *ctx);
+ void hantro_g2_check_idle(struct hantro_dev *vpu);
++void hantro_g2_reset(struct hantro_ctx *ctx);
+ irqreturn_t hantro_g2_irq(int irq, void *dev_id);
+ 
+ #endif /* HANTRO_HW_H_ */
+--- a/drivers/media/platform/verisilicon/imx8m_vpu_hw.c
++++ b/drivers/media/platform/verisilicon/imx8m_vpu_hw.c
+@@ -310,11 +310,13 @@ static const struct hantro_codec_ops imx
+ static const struct hantro_codec_ops imx8mq_vpu_g2_codec_ops[] = {
+ 	[HANTRO_MODE_HEVC_DEC] = {
+ 		.run = hantro_g2_hevc_dec_run,
++		.reset = hantro_g2_reset,
+ 		.init = hantro_hevc_dec_init,
+ 		.exit = hantro_hevc_dec_exit,
+ 	},
+ 	[HANTRO_MODE_VP9_DEC] = {
+ 		.run = hantro_g2_vp9_dec_run,
++		.reset = hantro_g2_reset,
+ 		.done = hantro_g2_vp9_dec_done,
+ 		.init = hantro_vp9_dec_init,
+ 		.exit = hantro_vp9_dec_exit,
 
 
 
