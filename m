@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-207035-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207603-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 545E7D0995E
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:26:37 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDD59D0A2A7
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:04:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 0523830334D3
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:15:10 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9B38A30D0236
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:42:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 048E2359F92;
-	Fri,  9 Jan 2026 12:15:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C88D359FAC;
+	Fri,  9 Jan 2026 12:42:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mw9PFT+K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mc10lDw9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBEBB35A93D;
-	Fri,  9 Jan 2026 12:15:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3AEE310636;
+	Fri,  9 Jan 2026 12:42:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960908; cv=none; b=AwXU8Gw8p8sMuPSu+/xLuDAKEF5kKghAfBcixKwF/QV6iBp6mkb9skIZkzAxEPeWB5CyDJ6y6dt7Kuhlhz8yHp4fCd9tDKtORRxRPEErHTy2N4Aeuzo1TFgrndRln7gLLvriPRWlNXCYhNT3++8/cX7+P3F44Q4zxwtBtavuSnY=
+	t=1767962521; cv=none; b=uklZFcMi+gpIixrCNwH7Jo5TdkYsIdOcm5YEAFriItvAW3XLHdNqVUp47vdv1fmr9aw0NzO9IiiHcTgWyxx42TAvQ713ZgwiYcx+5knjbA/BRsfgL3ujSFPU2eJrTiWGhMvT8tTu+SowsE+/GhAhZ1hIllkY4erRzg5anDVPgNQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960908; c=relaxed/simple;
-	bh=C2Xlm8nBaL7WUIFNPmy53+qNLoNi8z1DzIsJ95sONLY=;
+	s=arc-20240116; t=1767962521; c=relaxed/simple;
+	bh=n5bRgbjuRT0coxBjXu9HBDpyZUDjcbAl0eIu1dzat00=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A8ozkF6oBbt8SRnO/FhrHAMJdbXlJXYbTekW1QZyyx4zdn+wnOf30ULzTzA0tnjYFYiO2YmN32XqHlMuBwHLg9Oc1Oy4CbI4NtoYQVHrf5JahCaCLoapA2jLI/xZ3ajKtT5W41UkPiJ+TvpTbdEKx+fIqTZe37pOPPOYGpeOplM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mw9PFT+K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 480B6C16AAE;
-	Fri,  9 Jan 2026 12:15:08 +0000 (UTC)
+	 MIME-Version; b=AkCYYE4kyd0PhNJ7CHNrBJZvdBRs2yoUTVR70tlz4CBEV37QMUj6OGicTFUHIJGWyIeWPEGXhXcVSyFH22QJ5b/z+bFlCpmHMVu88FdI/iVTAUHRLk1bUtk0iiFUK4szjZWFVxp+ht9XXBcwQjx3S81fhodLRo+g8hB7FhV/GAc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mc10lDw9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66167C19422;
+	Fri,  9 Jan 2026 12:42:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960908;
-	bh=C2Xlm8nBaL7WUIFNPmy53+qNLoNi8z1DzIsJ95sONLY=;
+	s=korg; t=1767962521;
+	bh=n5bRgbjuRT0coxBjXu9HBDpyZUDjcbAl0eIu1dzat00=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Mw9PFT+KAOM59ViSztAmMOdZLFw2O5ZQ94QVazvpMNe4SZxSygpGWoQMRxeKZv63o
-	 u8kcQat3nu9fGAHWc7zwehCWgQk83zGnDQESV373sL9ZtFoOKUgoq0vocOkLrlS/h6
-	 z+8ZpPDwXhRR32TXJdqPvoW6xy9n2jMKB4Tl7fGw=
+	b=mc10lDw9W+YgBIrhBaS5YRX6PSNzCEU9iNUiuyrCmoeJx4ksDgGiaTl3SbQKhUc74
+	 fgYbZmW0jgnvlHUqNWddTtRlCfuiql8caAA8xOXnHiDwMC8lJRn9HxbXZ7hl/2xoi2
+	 ta9tslcRyoeuiangeys4H49VlAnT5GT2eoW8g/6w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damodharam Ammepalli <damodharam.ammepalli@broadcom.com>,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Selvin Xavier <selvin.xavier@broadcom.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Aloka Dixit <quic_alokad@quicinc.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 534/737] RDMA/bnxt_re: Fix to use correct page size for PDE table
+Subject: [PATCH 6.1 395/634] cfg80211: support RNR for EMA AP
 Date: Fri,  9 Jan 2026 12:41:13 +0100
-Message-ID: <20260109112154.083593602@linuxfoundation.org>
+Message-ID: <20260109112132.393478368@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +60,305 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+From: Aloka Dixit <quic_alokad@quicinc.com>
 
-[ Upstream commit 3d70e0fb0f289b0c778041c5bb04d099e1aa7c1c ]
+[ Upstream commit dbbb27e183b1568d5a907ace1cd144b0709ea52a ]
 
-In bnxt_qplib_alloc_init_hwq(), while allocating memory for PDE table
-driver incorrectly is using the "pg_size" value passed to the function.
-Fixed to use the right value 4K. Also, fixed the allocation size for
-PBL table.
+As per IEEE Std 802.11ax-2021, 11.1.3.8.3 Discovery of a nontransmitted
+BSSID profile, an EMA AP that transmits a Beacon frame carrying a partial
+list of nontransmitted BSSID profiles should include in the frame
+a Reduced Neighbor Report element carrying information for at least the
+nontransmitted BSSIDs that are not present in the Multiple BSSID element
+carried in that frame.
+Add new nested attribute NL80211_ATTR_EMA_RNR_ELEMS to support the above.
+Number of RNR elements must be more than or equal to the number of
+MBSSID elements. This attribute can be used only when EMA is enabled.
+Userspace is responsible for splitting the RNR into multiple elements such
+that each element excludes the non-transmitting profiles already included
+in the MBSSID element (%NL80211_ATTR_MBSSID_ELEMS) at the same index.
+Each EMA beacon will be generated by adding MBSSID and RNR elements
+at the same index. If the userspace provides more RNR elements than the
+number of MBSSID elements then these will be added in every EMA beacon.
 
-Fixes: 0c4dcd602817 ("RDMA/bnxt_re: Refactor hardware queue memory allocation")
-Signed-off-by: Damodharam Ammepalli <damodharam.ammepalli@broadcom.com>
-Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Link: https://patch.msgid.link/20251223131855.145955-1-kalesh-anakkur.purayil@broadcom.com
-Reviewed-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Aloka Dixit <quic_alokad@quicinc.com>
+Link: https://lore.kernel.org/r/20230323113801.6903-2-quic_alokad@quicinc.com
+[Johannes: validate elements]
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Stable-dep-of: a519be2f5d95 ("wifi: mac80211: do not use old MBSSID elements")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/bnxt_re/qplib_res.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/net/cfg80211.h       | 19 +++++++++
+ include/uapi/linux/nl80211.h | 13 ++++++
+ net/wireless/nl80211.c       | 79 ++++++++++++++++++++++++++++++++----
+ 3 files changed, 104 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/qplib_res.c b/drivers/infiniband/hw/bnxt_re/qplib_res.c
-index 77da7cf34427..1c56a0107d1e 100644
---- a/drivers/infiniband/hw/bnxt_re/qplib_res.c
-+++ b/drivers/infiniband/hw/bnxt_re/qplib_res.c
-@@ -243,7 +243,7 @@ int bnxt_qplib_alloc_init_hwq(struct bnxt_qplib_hwq *hwq,
- 			if (npbl % BIT(MAX_PDL_LVL_SHIFT))
- 				npde++;
- 			/* Alloc PDE pages */
--			sginfo.pgsize = npde * pg_size;
-+			sginfo.pgsize = npde * ROCE_PG_SIZE_4K;
- 			sginfo.npages = 1;
- 			rc = __alloc_pbl(res, &hwq->pbl[PBL_LVL_0], &sginfo);
- 			if (rc)
-@@ -251,7 +251,7 @@ int bnxt_qplib_alloc_init_hwq(struct bnxt_qplib_hwq *hwq,
+diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+index 34709bd733ed..f39a60475c24 100644
+--- a/include/net/cfg80211.h
++++ b/include/net/cfg80211.h
+@@ -1187,6 +1187,23 @@ struct cfg80211_mbssid_elems {
+ 	} elem[];
+ };
  
- 			/* Alloc PBL pages */
- 			sginfo.npages = npbl;
--			sginfo.pgsize = PAGE_SIZE;
-+			sginfo.pgsize = ROCE_PG_SIZE_4K;
- 			rc = __alloc_pbl(res, &hwq->pbl[PBL_LVL_1], &sginfo);
- 			if (rc)
- 				goto fail;
++/**
++ * struct cfg80211_rnr_elems - Reduced neighbor report (RNR) elements
++ *
++ * @cnt: Number of elements in array %elems.
++ *
++ * @elem: Array of RNR element(s) to be added into Beacon frames.
++ * @elem.data: Data for RNR elements.
++ * @elem.len: Length of data.
++ */
++struct cfg80211_rnr_elems {
++	u8 cnt;
++	struct {
++		const u8 *data;
++		size_t len;
++	} elem[];
++};
++
+ /**
+  * struct cfg80211_beacon_data - beacon data
+  * @link_id: the link ID for the AP MLD link sending this beacon
+@@ -1207,6 +1224,7 @@ struct cfg80211_mbssid_elems {
+  * @probe_resp_len: length of probe response template (@probe_resp)
+  * @probe_resp: probe response template (AP mode only)
+  * @mbssid_ies: multiple BSSID elements
++ * @rnr_ies: reduced neighbor report elements
+  * @ftm_responder: enable FTM responder functionality; -1 for no change
+  *	(which also implies no change in LCI/civic location data)
+  * @lci: Measurement Report element content, starting with Measurement Token
+@@ -1230,6 +1248,7 @@ struct cfg80211_beacon_data {
+ 	const u8 *lci;
+ 	const u8 *civicloc;
+ 	struct cfg80211_mbssid_elems *mbssid_ies;
++	struct cfg80211_rnr_elems *rnr_ies;
+ 	s8 ftm_responder;
+ 
+ 	size_t head_len, tail_len;
+diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
+index 274d1b34c954..63d7241edd49 100644
+--- a/include/uapi/linux/nl80211.h
++++ b/include/uapi/linux/nl80211.h
+@@ -2776,6 +2776,17 @@ enum nl80211_commands {
+  * @NL80211_ATTR_HW_TIMESTAMP_ENABLED: Indicates whether HW timestamping should
+  *	be enabled or not (flag attribute).
+  *
++ * @NL80211_ATTR_EMA_RNR_ELEMS: Optional nested attribute for
++ *	reduced neighbor report (RNR) elements. This attribute can be used
++ *	only when NL80211_MBSSID_CONFIG_ATTR_EMA is enabled.
++ *	Userspace is responsible for splitting the RNR into multiple
++ *	elements such that each element excludes the non-transmitting
++ *	profiles already included in the MBSSID element
++ *	(%NL80211_ATTR_MBSSID_ELEMS) at the same index. Each EMA beacon
++ *	will be generated by adding MBSSID and RNR elements at the same
++ *	index. If the userspace includes more RNR elements than number of
++ *	MBSSID elements then these will be added in every EMA beacon.
++ *
+  * @NUM_NL80211_ATTR: total number of nl80211_attrs available
+  * @NL80211_ATTR_MAX: highest attribute number currently defined
+  * @__NL80211_ATTR_AFTER_LAST: internal use
+@@ -3310,6 +3321,8 @@ enum nl80211_attrs {
+ 	NL80211_ATTR_MAX_HW_TIMESTAMP_PEERS,
+ 	NL80211_ATTR_HW_TIMESTAMP_ENABLED,
+ 
++	NL80211_ATTR_EMA_RNR_ELEMS,
++
+ 	/* add attributes here, update the policy in nl80211.c */
+ 
+ 	__NL80211_ATTR_AFTER_LAST,
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 5e2b676f5ce0..7a976bd1641f 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -814,6 +814,7 @@ static const struct nla_policy nl80211_policy[NUM_NL80211_ATTR] = {
+ 
+ 	[NL80211_ATTR_MAX_HW_TIMESTAMP_PEERS] = { .type = NLA_U16 },
+ 	[NL80211_ATTR_HW_TIMESTAMP_ENABLED] = { .type = NLA_FLAG },
++	[NL80211_ATTR_EMA_RNR_ELEMS] = { .type = NLA_NESTED },
+ };
+ 
+ /* policy for the key attributes */
+@@ -5455,6 +5456,38 @@ nl80211_parse_mbssid_elems(struct wiphy *wiphy, struct nlattr *attrs)
+ 	return elems;
+ }
+ 
++static struct cfg80211_rnr_elems *
++nl80211_parse_rnr_elems(struct wiphy *wiphy, struct nlattr *attrs,
++			struct netlink_ext_ack *extack)
++{
++	struct nlattr *nl_elems;
++	struct cfg80211_rnr_elems *elems;
++	int rem_elems;
++	u8 i = 0, num_elems = 0;
++
++	nla_for_each_nested(nl_elems, attrs, rem_elems) {
++		int ret;
++
++		ret = validate_ie_attr(nl_elems, extack);
++		if (ret)
++			return ERR_PTR(ret);
++
++		num_elems++;
++	}
++
++	elems = kzalloc(struct_size(elems, elem, num_elems), GFP_KERNEL);
++	if (!elems)
++		return ERR_PTR(-ENOMEM);
++
++	nla_for_each_nested(nl_elems, attrs, rem_elems) {
++		elems->elem[i].data = nla_data(nl_elems);
++		elems->elem[i].len = nla_len(nl_elems);
++		i++;
++	}
++	elems->cnt = num_elems;
++	return elems;
++}
++
+ static int nl80211_parse_he_bss_color(struct nlattr *attrs,
+ 				      struct cfg80211_he_bss_color *he_bss_color)
+ {
+@@ -5481,7 +5514,8 @@ static int nl80211_parse_he_bss_color(struct nlattr *attrs,
+ 
+ static int nl80211_parse_beacon(struct cfg80211_registered_device *rdev,
+ 				struct nlattr *attrs[],
+-				struct cfg80211_beacon_data *bcn)
++				struct cfg80211_beacon_data *bcn,
++				struct netlink_ext_ack *extack)
+ {
+ 	bool haveinfo = false;
+ 	int err;
+@@ -5578,6 +5612,21 @@ static int nl80211_parse_beacon(struct cfg80211_registered_device *rdev,
+ 			return PTR_ERR(mbssid);
+ 
+ 		bcn->mbssid_ies = mbssid;
++
++		if (bcn->mbssid_ies && attrs[NL80211_ATTR_EMA_RNR_ELEMS]) {
++			struct cfg80211_rnr_elems *rnr =
++				nl80211_parse_rnr_elems(&rdev->wiphy,
++							attrs[NL80211_ATTR_EMA_RNR_ELEMS],
++							extack);
++
++			if (IS_ERR(rnr))
++				return PTR_ERR(rnr);
++
++			if (rnr && rnr->cnt < bcn->mbssid_ies->cnt)
++				return -EINVAL;
++
++			bcn->rnr_ies = rnr;
++		}
+ 	}
+ 
+ 	return 0;
+@@ -5860,7 +5909,8 @@ static int nl80211_start_ap(struct sk_buff *skb, struct genl_info *info)
+ 	if (!params)
+ 		return -ENOMEM;
+ 
+-	err = nl80211_parse_beacon(rdev, info->attrs, &params->beacon);
++	err = nl80211_parse_beacon(rdev, info->attrs, &params->beacon,
++				   info->extack);
+ 	if (err)
+ 		goto out;
+ 
+@@ -6090,6 +6140,11 @@ static int nl80211_start_ap(struct sk_buff *skb, struct genl_info *info)
+ 			goto out_unlock;
+ 	}
+ 
++	if (!params->mbssid_config.ema && params->beacon.rnr_ies) {
++		err = -EINVAL;
++		goto out_unlock;
++	}
++
+ 	err = nl80211_calculate_ap_params(params);
+ 	if (err)
+ 		goto out_unlock;
+@@ -6129,6 +6184,7 @@ static int nl80211_start_ap(struct sk_buff *skb, struct genl_info *info)
+ 	    params->mbssid_config.tx_wdev->netdev &&
+ 	    params->mbssid_config.tx_wdev->netdev != dev)
+ 		dev_put(params->mbssid_config.tx_wdev->netdev);
++	kfree(params->beacon.rnr_ies);
+ 	kfree(params);
+ 
+ 	return err;
+@@ -6153,7 +6209,7 @@ static int nl80211_set_beacon(struct sk_buff *skb, struct genl_info *info)
+ 	if (!wdev->links[link_id].ap.beacon_interval)
+ 		return -EINVAL;
+ 
+-	err = nl80211_parse_beacon(rdev, info->attrs, &params);
++	err = nl80211_parse_beacon(rdev, info->attrs, &params, info->extack);
+ 	if (err)
+ 		goto out;
+ 
+@@ -6163,6 +6219,7 @@ static int nl80211_set_beacon(struct sk_buff *skb, struct genl_info *info)
+ 
+ out:
+ 	kfree(params.mbssid_ies);
++	kfree(params.rnr_ies);
+ 	return err;
+ }
+ 
+@@ -10017,7 +10074,8 @@ static int nl80211_channel_switch(struct sk_buff *skb, struct genl_info *info)
+ 	if (!need_new_beacon)
+ 		goto skip_beacons;
+ 
+-	err = nl80211_parse_beacon(rdev, info->attrs, &params.beacon_after);
++	err = nl80211_parse_beacon(rdev, info->attrs, &params.beacon_after,
++				   info->extack);
+ 	if (err)
+ 		goto free;
+ 
+@@ -10034,7 +10092,8 @@ static int nl80211_channel_switch(struct sk_buff *skb, struct genl_info *info)
+ 	if (err)
+ 		goto free;
+ 
+-	err = nl80211_parse_beacon(rdev, csa_attrs, &params.beacon_csa);
++	err = nl80211_parse_beacon(rdev, csa_attrs, &params.beacon_csa,
++				   info->extack);
+ 	if (err)
+ 		goto free;
+ 
+@@ -10154,6 +10213,8 @@ static int nl80211_channel_switch(struct sk_buff *skb, struct genl_info *info)
+ free:
+ 	kfree(params.beacon_after.mbssid_ies);
+ 	kfree(params.beacon_csa.mbssid_ies);
++	kfree(params.beacon_after.rnr_ies);
++	kfree(params.beacon_csa.rnr_ies);
+ 	kfree(csa_attrs);
+ 	return err;
+ }
+@@ -15880,7 +15941,8 @@ static int nl80211_color_change(struct sk_buff *skb, struct genl_info *info)
+ 	params.count = nla_get_u8(info->attrs[NL80211_ATTR_COLOR_CHANGE_COUNT]);
+ 	params.color = nla_get_u8(info->attrs[NL80211_ATTR_COLOR_CHANGE_COLOR]);
+ 
+-	err = nl80211_parse_beacon(rdev, info->attrs, &params.beacon_next);
++	err = nl80211_parse_beacon(rdev, info->attrs, &params.beacon_next,
++				   info->extack);
+ 	if (err)
+ 		return err;
+ 
+@@ -15894,7 +15956,8 @@ static int nl80211_color_change(struct sk_buff *skb, struct genl_info *info)
+ 	if (err)
+ 		goto out;
+ 
+-	err = nl80211_parse_beacon(rdev, tb, &params.beacon_color_change);
++	err = nl80211_parse_beacon(rdev, tb, &params.beacon_color_change,
++				   info->extack);
+ 	if (err)
+ 		goto out;
+ 
+@@ -15950,6 +16013,8 @@ static int nl80211_color_change(struct sk_buff *skb, struct genl_info *info)
+ out:
+ 	kfree(params.beacon_next.mbssid_ies);
+ 	kfree(params.beacon_color_change.mbssid_ies);
++	kfree(params.beacon_next.rnr_ies);
++	kfree(params.beacon_color_change.rnr_ies);
+ 	kfree(tb);
+ 	return err;
+ }
 -- 
 2.51.0
 
