@@ -1,53 +1,57 @@
-Return-Path: <stable+bounces-207550-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206948-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10DB6D0A10B
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:55:45 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3F15D0985F
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:22:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id BCD68309B344
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:39:42 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 87FFC307F239
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:11:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E4DA2EBBB2;
-	Fri,  9 Jan 2026 12:39:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24A7035B12D;
+	Fri,  9 Jan 2026 12:11:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i7qtlWMo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AcM//fsv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E615133372B;
-	Fri,  9 Jan 2026 12:39:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCD0635A945;
+	Fri,  9 Jan 2026 12:11:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962374; cv=none; b=vEGzHBjqCTSWK6TJOMZat1KhYyEQ/p6mDAXeDXCgBDObXmc7H95dBpTosANhMtpbkJliHdkTCesIxJTt4Sp0NpCN6rqN+uNWr0YsS3XcLd/0XdKfLEXSCb6bjMFm3J0A2i4TY+nLeaDT2r3AOZs1+OZxdElAn0evanPdkziKr4g=
+	t=1767960660; cv=none; b=S6+9w+t5j3Z/DTn9gYhCn2B3YgP/cc/aXRVULUClVcDqtBo4IwMZEnGLjk5mEjYVweoOHa7lwg0dT10mevLxAZEcDTUmIgWwVAxA8tB4Lpd4L7Q9m3WkwcZQyw54Qd09OwWCqfV7RqWCcknEVSwii8RJ6VZEJ1mi9SZlJYgpmwM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962374; c=relaxed/simple;
-	bh=0UeakuCLLBMCkkHGD291YES4ey8NKfNp+sR8fFIgJMA=;
+	s=arc-20240116; t=1767960660; c=relaxed/simple;
+	bh=sEqsc98JqXSh+fwC0lcoldW9AL6/TajEpbXu/hZYwX4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JTQx/FNG+o2NtTnlCxsUvBO16PH+mrf2V7A4lkVPbPKKmIPpAGIugtVHTdApv+hldpaBihAdvkjLUep1giqTsgnRoB7tkWA6HrpLFP4UlIgj8P6Tx1Dp5czVSYx/EpJlxECHGM9qqq23I0Pyz7ESGPRvwfZN7N7ixgqObTwJ6s4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i7qtlWMo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25C6BC4CEF1;
-	Fri,  9 Jan 2026 12:39:32 +0000 (UTC)
+	 MIME-Version; b=Yosxudtyuitj9UAZBs8T3n9zIAgcifSQ0xVVjGQKdkTVhUA2/32y2ip1xpwJGc3wb8vIxkQwRP3Jd+EL1Ii4qPAJF5tzx2oEEC9/ad4NAKtg5dqvgSj1VZTpHIBIgU7p+P6ZNfXQvUzf6ImZNITsAXkghMl0XyeqEH4YcRtjpQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AcM//fsv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3037EC19422;
+	Fri,  9 Jan 2026 12:11:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962373;
-	bh=0UeakuCLLBMCkkHGD291YES4ey8NKfNp+sR8fFIgJMA=;
+	s=korg; t=1767960660;
+	bh=sEqsc98JqXSh+fwC0lcoldW9AL6/TajEpbXu/hZYwX4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i7qtlWMooGIehi6p2UCiYlrzcAF6KeUiMuH5k4ID/y/66PaShReYXvI0rjx5XqjCJ
-	 3ZaBTgXitvWrrdcoV6HkCfCZk7oi1hiqzAAHqORzV8Iy5E2ZZd7lrwTcEDR6AnWruv
-	 lgDWoRAoQ3ZWM7HTWNM/Ab4qq6ce2lqeXVbqYEmc=
+	b=AcM//fsvRWyyU+wAQp8Q6jz367+76N2tDKdEKPlgij84f08GxSCCJrvwfGCy1eRx9
+	 XMu7mI0DoR2QTHNyr5x3B38HZW86rohR46uKx7ntHUZfPcLL7SfjrQQjJUL99eSTLQ
+	 HThGHI7nWw+5+JWd/jt3I3SBtkm3y/tDimz/sDQw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Haoxiang Li <haoxiang_li2024@163.com>
-Subject: [PATCH 6.1 341/634] usb: renesas_usbhs: Fix a resource leak in usbhs_pipe_malloc()
+	Sachin P Bappalige <sachinpb@linux.ibm.com>,
+	Srikar Dronamraju <srikar@linux.ibm.com>,
+	"Nysal Jan K.A." <nysal@linux.ibm.com>,
+	Samir M <samir@linux.ibm.com>,
+	Sourabh Jain <sourabhjain@linux.ibm.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>
+Subject: [PATCH 6.6 480/737] powerpc/kexec: Enable SMT before waking offline CPUs
 Date: Fri,  9 Jan 2026 12:40:19 +0100
-Message-ID: <20260109112130.355597242@linuxfoundation.org>
+Message-ID: <20260109112152.041327436@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,43 +63,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haoxiang Li <haoxiang_li2024@163.com>
+From: Nysal Jan K.A. <nysal@linux.ibm.com>
 
-commit 36cc7e09df9e43db21b46519b740145410dd9f4a upstream.
+commit c2296a1e42418556efbeb5636c4fa6aa6106713a upstream.
 
-usbhsp_get_pipe() set pipe's flags to IS_USED. In error paths,
-usbhsp_put_pipe() is required to clear pipe's flags to prevent
-pipe exhaustion.
+If SMT is disabled or a partial SMT state is enabled, when a new kernel
+image is loaded for kexec, on reboot the following warning is observed:
 
-Fixes: f1407d5c6624 ("usb: renesas_usbhs: Add Renesas USBHS common code")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
-Link: https://patch.msgid.link/20251204132129.109234-1-haoxiang_li2024@163.com
+kexec: Waking offline cpu 228.
+WARNING: CPU: 0 PID: 9062 at arch/powerpc/kexec/core_64.c:223 kexec_prepare_cpus+0x1b0/0x1bc
+[snip]
+ NIP kexec_prepare_cpus+0x1b0/0x1bc
+ LR  kexec_prepare_cpus+0x1a0/0x1bc
+ Call Trace:
+  kexec_prepare_cpus+0x1a0/0x1bc (unreliable)
+  default_machine_kexec+0x160/0x19c
+  machine_kexec+0x80/0x88
+  kernel_kexec+0xd0/0x118
+  __do_sys_reboot+0x210/0x2c4
+  system_call_exception+0x124/0x320
+  system_call_vectored_common+0x15c/0x2ec
+
+This occurs as add_cpu() fails due to cpu_bootable() returning false for
+CPUs that fail the cpu_smt_thread_allowed() check or non primary
+threads if SMT is disabled.
+
+Fix the issue by enabling SMT and resetting the number of SMT threads to
+the number of threads per core, before attempting to wake up all present
+CPUs.
+
+Fixes: 38253464bc82 ("cpu/SMT: Create topology_smt_thread_allowed()")
+Reported-by: Sachin P Bappalige <sachinpb@linux.ibm.com>
+Cc: stable@vger.kernel.org # v6.6+
+Reviewed-by: Srikar Dronamraju <srikar@linux.ibm.com>
+Signed-off-by: Nysal Jan K.A. <nysal@linux.ibm.com>
+Tested-by: Samir M <samir@linux.ibm.com>
+Reviewed-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/20251028105516.26258-1-nysal@linux.ibm.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/renesas_usbhs/pipe.c |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/powerpc/kexec/core_64.c |   19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
---- a/drivers/usb/renesas_usbhs/pipe.c
-+++ b/drivers/usb/renesas_usbhs/pipe.c
-@@ -713,11 +713,13 @@ struct usbhs_pipe *usbhs_pipe_malloc(str
- 	/* make sure pipe is not busy */
- 	ret = usbhsp_pipe_barrier(pipe);
- 	if (ret < 0) {
-+		usbhsp_put_pipe(pipe);
- 		dev_err(dev, "pipe setup failed %d\n", usbhs_pipe_number(pipe));
- 		return NULL;
- 	}
+--- a/arch/powerpc/kexec/core_64.c
++++ b/arch/powerpc/kexec/core_64.c
+@@ -200,6 +200,23 @@ static void kexec_prepare_cpus_wait(int
+ 	mb();
+ }
  
- 	if (usbhsp_setup_pipecfg(pipe, is_host, dir_in, &pipecfg)) {
-+		usbhsp_put_pipe(pipe);
- 		dev_err(dev, "can't setup pipe\n");
- 		return NULL;
- 	}
++
++/*
++ * The add_cpu() call in wake_offline_cpus() can fail as cpu_bootable()
++ * returns false for CPUs that fail the cpu_smt_thread_allowed() check
++ * or non primary threads if SMT is disabled. Re-enable SMT and set the
++ * number of SMT threads to threads per core.
++ */
++static void kexec_smt_reenable(void)
++{
++#if defined(CONFIG_SMP) && defined(CONFIG_HOTPLUG_SMT)
++	lock_device_hotplug();
++	cpu_smt_num_threads = threads_per_core;
++	cpu_smt_control = CPU_SMT_ENABLED;
++	unlock_device_hotplug();
++#endif
++}
++
+ /*
+  * We need to make sure each present CPU is online.  The next kernel will scan
+  * the device tree and assume primary threads are online and query secondary
+@@ -214,6 +231,8 @@ static void wake_offline_cpus(void)
+ {
+ 	int cpu = 0;
+ 
++	kexec_smt_reenable();
++
+ 	for_each_present_cpu(cpu) {
+ 		if (!cpu_online(cpu)) {
+ 			printk(KERN_INFO "kexec: Waking offline cpu %d.\n",
 
 
 
