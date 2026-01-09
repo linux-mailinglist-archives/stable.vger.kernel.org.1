@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-206659-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207260-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD62AD092CF
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:01:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A113D09A9F
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:31:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9E97B3060276
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:57:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 25890302C11C
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:25:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B80033290A;
-	Fri,  9 Jan 2026 11:57:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 344BD33ADB8;
+	Fri,  9 Jan 2026 12:25:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dSljjIEw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b5cVU/hW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2EBC2F12D4;
-	Fri,  9 Jan 2026 11:57:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBA781531E8;
+	Fri,  9 Jan 2026 12:25:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767959835; cv=none; b=qltkyJtbG3GXOJXL2IHdC8vphuufZ2JKdBCUtGL9dQsDT2B48wJhjh21qUx2OAMqdhmhUfi1zgyTm0a/ptjvOJu4U6YXiEio/eCWASunSO0RZz/SV9U2VmqOdbUp/pR0kmku/jd8bVfUPsj6yVd7cR5uVx4S72gasAnfAJKHKKw=
+	t=1767961550; cv=none; b=auy6JwvdSOZzxoEnNfk/MW/ABKd84PPmJtnozlO8V+Dbrddf+Vv5tvzx4dzse2gSkwVi0+Y7c1iwRoUV7VpOHOHimHsMUdSMoqp0U+Cge8ffPj1KabACjlNRG6Qr6LOC1I0bYYeupDxiKs/CsnzndgbvBdYm5PDyfa06ln+ljXw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767959835; c=relaxed/simple;
-	bh=khSI0OuWDNKttkgCKA2un8Kb/OgMpXVSK1eCJktWbqs=;
+	s=arc-20240116; t=1767961550; c=relaxed/simple;
+	bh=BC4Y2J58BV5CXtc1k5/139ENZBuF85j7EzStTiK/Y0c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XFjq9zFXI1Vp5kVanA3VmD3FPa57WumFMx0lLY501Rt2Eh041EP6u58BT2cAXreOP9RgEOrVQqMyI8Fpju0hUGLAQyftpBjoMvOmwWtiJ8SbbAvZtTjvs/ackKDfbbCZSM4P9XZVgsXTCI/2JsoInih4Lqjh6i4Xyjq3cyKlmY8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dSljjIEw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7428EC4CEF1;
-	Fri,  9 Jan 2026 11:57:14 +0000 (UTC)
+	 MIME-Version; b=ORr2XN69RCulxwDt/GFwn9OVUHE3CDGwsKmHYgz5/a0gsEInRx8WloqyLoOoEokqAZDzSnMCtiYwv3aIv2PL7UY3amfnE9uUy/aYRG2j9bNirl6SaFGX3jTMDR1kEkeLyEE+M5tCHuB/iQZ5n1g5zjHndsltaEMlkmVqk3c3d7Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b5cVU/hW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77D93C4CEF1;
+	Fri,  9 Jan 2026 12:25:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767959834;
-	bh=khSI0OuWDNKttkgCKA2un8Kb/OgMpXVSK1eCJktWbqs=;
+	s=korg; t=1767961549;
+	bh=BC4Y2J58BV5CXtc1k5/139ENZBuF85j7EzStTiK/Y0c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dSljjIEwJfkIB2r/rjs7ZDXCbwK5AWM+K6L9z4kvewE3mact/GZPJRs01sN8mvU+U
-	 5OfBAAMYEY0HPSYSC7TtEwD5ynAiJkHpgmDmYtCL7a6xkTCOzsj6PD0NOt5vA0bMs9
-	 KAUqQ3hWffa8GqwQ+nPDmynTcztYJKoxPbbXiNdc=
+	b=b5cVU/hWzA7a6hrsPWNw9nNV5Weuel3LlMtvqqBm9E3QrjN2IVHT0h+HmAvtHNbNg
+	 cO/E6PA6RLKsH71QEYMIyxAcF5ieOetGwOW+vuDuNjpprgbApuBeauTLr6X9kJFOZF
+	 TILsQEyLk6XnWgWpz8ZCZZsDzpq3ghUFLSMK75CE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jisheng Zhang <jszhang@kernel.org>,
+	Johan Hovold <johan@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 192/737] usb: dwc2: fix hang during suspend if set as peripheral
+Subject: [PATCH 6.1 053/634] irqchip/qcom-irq-combiner: Fix section mismatch
 Date: Fri,  9 Jan 2026 12:35:31 +0100
-Message-ID: <20260109112141.218194328@linuxfoundation.org>
+Message-ID: <20260109112119.440844306@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,68 +60,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jisheng Zhang <jszhang@kernel.org>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 2b94b054ac4974ad2f89f7f7461840c851933adb ]
+[ Upstream commit 9b685058ca936752285c5520d351b828312ac965 ]
 
-dwc2 on most platforms needs phy controller, clock and power supply.
-All of them must be enabled/activated to properly operate. If dwc2
-is configured as peripheral mode, then all the above three hardware
-resources are disabled at the end of the probe:
+Platform drivers can be probed after their init sections have been
+discarded so the probe callback must not live in init.
 
-	/* Gadget code manages lowlevel hw on its own */
-	if (hsotg->dr_mode == USB_DR_MODE_PERIPHERAL)
-		dwc2_lowlevel_hw_disable(hsotg);
-
-But the dwc2_suspend() tries to read the dwc2's reg to check whether
-is_device_mode or not, this would result in hang during suspend if dwc2
-is configured as peripheral mode.
-
-Fix this hang by bypassing suspend/resume if lowlevel hw isn't
-enabled.
-
-Fixes: 09a75e857790 ("usb: dwc2: refactor common low-level hw code to platform.c")
-Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
-Link: https://patch.msgid.link/20251104002503.17158-3-jszhang@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f20cc9b00c7b ("irqchip/qcom: Add IRQ combiner driver")
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc2/platform.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/irqchip/qcom-irq-combiner.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/usb/dwc2/platform.c b/drivers/usb/dwc2/platform.c
-index fad6f68f86bd6..e80982c817d7d 100644
---- a/drivers/usb/dwc2/platform.c
-+++ b/drivers/usb/dwc2/platform.c
-@@ -649,9 +649,13 @@ static int dwc2_driver_probe(struct platform_device *dev)
- static int __maybe_unused dwc2_suspend(struct device *dev)
+diff --git a/drivers/irqchip/qcom-irq-combiner.c b/drivers/irqchip/qcom-irq-combiner.c
+index 18e696dc7f4d6..9308088773be7 100644
+--- a/drivers/irqchip/qcom-irq-combiner.c
++++ b/drivers/irqchip/qcom-irq-combiner.c
+@@ -222,7 +222,7 @@ static int get_registers(struct platform_device *pdev, struct combiner *comb)
+ 	return 0;
+ }
+ 
+-static int __init combiner_probe(struct platform_device *pdev)
++static int combiner_probe(struct platform_device *pdev)
  {
- 	struct dwc2_hsotg *dwc2 = dev_get_drvdata(dev);
--	bool is_device_mode = dwc2_is_device_mode(dwc2);
-+	bool is_device_mode;
- 	int ret = 0;
- 
-+	if (!dwc2->ll_hw_enabled)
-+		return 0;
-+
-+	is_device_mode = dwc2_is_device_mode(dwc2);
- 	if (is_device_mode)
- 		dwc2_hsotg_suspend(dwc2);
- 
-@@ -702,6 +706,9 @@ static int __maybe_unused dwc2_resume(struct device *dev)
- 	struct dwc2_hsotg *dwc2 = dev_get_drvdata(dev);
- 	int ret = 0;
- 
-+	if (!dwc2->ll_hw_enabled)
-+		return 0;
-+
- 	if (dwc2->phy_off_for_suspend && dwc2->ll_hw_enabled) {
- 		ret = __dwc2_lowlevel_hw_enable(dwc2);
- 		if (ret)
+ 	struct combiner *combiner;
+ 	int nregs;
 -- 
 2.51.0
 
