@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-207376-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206775-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FFEAD09ED1
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:46:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA452D095AB
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:12:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F1232311D685
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:31:21 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6BC8030A8C07
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:02:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0111535A95B;
-	Fri,  9 Jan 2026 12:31:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 154EB359F99;
+	Fri,  9 Jan 2026 12:02:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HUwHudcd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PIROp9xZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B624433C53C;
-	Fri,  9 Jan 2026 12:31:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC25833375D;
+	Fri,  9 Jan 2026 12:02:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961879; cv=none; b=One4yyb6NYqyMaYc7+GYsZKKJSltVpVyLLP711oNI+HShelPBMn3dKP3Q63zWmHsku84LNBT/l4rRZjIAAludj2Ok3+hoTxUQqnqQvfI4C75tvKlQ3tTN69+nwhoqlFbQtQAbpgvYg13FHcAqbQ/eRz6MrX2+ggL+aS5x4wbI2g=
+	t=1767960163; cv=none; b=sWzu/zbUWJa5c3at5GsmcdsosFFl9zawjf839vOo4pPPXUgQmRGElD3lobIWa01lBkHFZt94J/VV5lSkriqhxuBD0QmFf7kV+nZL11wooeKUzICxEgWcLa56EcXssi0oitp/R8KbNqPXrVnKJqUxGY1LyK0VvnU1ALYdFQtImqo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961879; c=relaxed/simple;
-	bh=0DDIUwFawcqgmKOyalBvMWmKDJ+W/lzRuyDZAUbylY4=;
+	s=arc-20240116; t=1767960163; c=relaxed/simple;
+	bh=RV3+lQoKzSlP8VT3jCVcPpkMkouZHdKpKoYS2oNxEGw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JMCE+vdbuq2bZryIfBQI4P2drN25PRZm5kcBTCM/G2UwjTVHzxjl541eHFGK2ZytqY1vTjkZg300YMquv2rvO9Wb9R4wNfykcWtZhe/ohLrSuvwS3v6nieJJqJc8OrTz/A2tmfW4kBL7I0TIIBTZTfG/bN4CH+vnrHV81lRpfsE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HUwHudcd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4142FC4CEF1;
-	Fri,  9 Jan 2026 12:31:19 +0000 (UTC)
+	 MIME-Version; b=YFqka8UUUCaiGrnKKQJaPzGLHuhWMPiLn4P8Kcuu7bLkWQq6Nw4z4peaOF6kLinOdBvwj1OSMqPMRTYySqui8m4S407lKq/egAQKzGqxvqc71g1aisdaz8Qmd4YAkBLYPVLl5BBRqDe/EJxbiYz8/tWcObvjNPGTSVInswrX5Ls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PIROp9xZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5214CC4CEF1;
+	Fri,  9 Jan 2026 12:02:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961879;
-	bh=0DDIUwFawcqgmKOyalBvMWmKDJ+W/lzRuyDZAUbylY4=;
+	s=korg; t=1767960163;
+	bh=RV3+lQoKzSlP8VT3jCVcPpkMkouZHdKpKoYS2oNxEGw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HUwHudcdiYwjJJ8h3A9ZirJa/hZUtbKqBWEU/6McWnljG38K1LSxnPJakkUQqe5aa
-	 3QENW99kJhrLRW8dE5wZhgpx60VP8V3ADP9CGfcFs3UXnZFH1ZR3uJmTIHridTTWes
-	 F32ue+Fyxss8vu5horR34ZWyFUYg6fXYpsP/SFDU=
+	b=PIROp9xZSo0sY+/RoWd9HaEkXCK1T8jLQMnU0XW+9+fRIHAN6eZGS3h/7MLJXNI3C
+	 6iLBsCPu9oQheoh/Yv8T6zWrTT/7r5PnuU32oVQJzak24IX9BzSijGDwock0V0b91t
+	 vNuVxXC3zZW502jVQ4ZYeXsld8n6AuOR2LHdNJZA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	sparkhuang <huangshaobo3@xiaomi.com>,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
+	Joseph Salisbury <joseph.salisbury@oracle.com>,
+	Adam Li <adamli@os.amperecomputing.com>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Hazem Mohamed Abuelfotoh <abuehaze@amazon.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Chris Mason <clm@meta.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 167/634] regulator: core: Protect regulator_supply_alias_list with regulator_list_mutex
-Date: Fri,  9 Jan 2026 12:37:25 +0100
-Message-ID: <20260109112123.731667993@linuxfoundation.org>
+Subject: [PATCH 6.6 307/737] sched/fair: Revert max_newidle_lb_cost bump
+Date: Fri,  9 Jan 2026 12:37:26 +0100
+Message-ID: <20260109112145.554848375@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,109 +64,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: sparkhuang <huangshaobo3@xiaomi.com>
+From: Peter Zijlstra <peterz@infradead.org>
 
-[ Upstream commit 0cc15a10c3b4ab14cd71b779fd5c9ca0cb2bc30d ]
+[ Upstream commit d206fbad9328ddb68ebabd7cf7413392acd38081 ]
 
-regulator_supply_alias_list was accessed without any locking in
-regulator_supply_alias(), regulator_register_supply_alias(), and
-regulator_unregister_supply_alias(). Concurrent registration,
-unregistration and lookups can race, leading to:
+Many people reported regressions on their database workloads due to:
 
-1 use-after-free if an alias entry is removed while being read,
-2 duplicate entries when two threads register the same alias,
-3 inconsistent alias mappings observed by consumers.
+  155213a2aed4 ("sched/fair: Bump sd->max_newidle_lb_cost when newidle balance fails")
 
-Protect all traversals, insertions and deletions on
-regulator_supply_alias_list with the existing regulator_list_mutex.
+For instance Adam Li reported a 6% regression on SpecJBB.
 
-Fixes: a06ccd9c3785f ("regulator: core: Add ability to create a lookup alias for supply")
-Signed-off-by: sparkhuang <huangshaobo3@xiaomi.com>
-Reviewed-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Link: https://patch.msgid.link/20251127025716.5440-1-huangshaobo3@xiaomi.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Conversely this will regress schbench again; on my machine from 2.22
+Mrps/s down to 2.04 Mrps/s.
+
+Reported-by: Joseph Salisbury <joseph.salisbury@oracle.com>
+Reported-by: Adam Li <adamli@os.amperecomputing.com>
+Reported-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
+Reported-by: Hazem Mohamed Abuelfotoh <abuehaze@amazon.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
+Tested-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
+Tested-by: Chris Mason <clm@meta.com>
+Link: https://lkml.kernel.org/r/20250626144017.1510594-2-clm@fb.com
+Link: https://lkml.kernel.org/r/006c9df2-b691-47f1-82e6-e233c3f91faf@oracle.com
+Link: https://patch.msgid.link/20251107161739.406147760@infradead.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/regulator/core.c | 32 ++++++++++++++++++++------------
- 1 file changed, 20 insertions(+), 12 deletions(-)
+ kernel/sched/fair.c | 19 +++----------------
+ 1 file changed, 3 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/regulator/core.c b/drivers/regulator/core.c
-index 436764329f63b..7b1d60628a001 100644
---- a/drivers/regulator/core.c
-+++ b/drivers/regulator/core.c
-@@ -1977,6 +1977,7 @@ static void regulator_supply_alias(struct device **dev, const char **supply)
- {
- 	struct regulator_supply_alias *map;
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index cf3a51f323e32..38cc72d203c07 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -11722,14 +11722,8 @@ static inline bool update_newidle_cost(struct sched_domain *sd, u64 cost)
+ 		/*
+ 		 * Track max cost of a domain to make sure to not delay the
+ 		 * next wakeup on the CPU.
+-		 *
+-		 * sched_balance_newidle() bumps the cost whenever newidle
+-		 * balance fails, and we don't want things to grow out of
+-		 * control.  Use the sysctl_sched_migration_cost as the upper
+-		 * limit, plus a litle extra to avoid off by ones.
+ 		 */
+-		sd->max_newidle_lb_cost =
+-			min(cost, sysctl_sched_migration_cost + 200);
++		sd->max_newidle_lb_cost = cost;
+ 		sd->last_decay_max_lb_cost = jiffies;
+ 	} else if (time_after(jiffies, sd->last_decay_max_lb_cost + HZ)) {
+ 		/*
+@@ -12415,17 +12409,10 @@ static int sched_balance_newidle(struct rq *this_rq, struct rq_flags *rf)
  
-+	mutex_lock(&regulator_list_mutex);
- 	map = regulator_find_supply_alias(*dev, *supply);
- 	if (map) {
- 		dev_dbg(*dev, "Mapping supply %s to %s,%s\n",
-@@ -1985,6 +1986,7 @@ static void regulator_supply_alias(struct device **dev, const char **supply)
- 		*dev = map->alias_dev;
- 		*supply = map->alias_supply;
- 	}
-+	mutex_unlock(&regulator_list_mutex);
- }
- 
- static int regulator_match(struct device *dev, const void *data)
-@@ -2463,22 +2465,26 @@ int regulator_register_supply_alias(struct device *dev, const char *id,
- 				    const char *alias_id)
- {
- 	struct regulator_supply_alias *map;
-+	struct regulator_supply_alias *new_map;
- 
--	map = regulator_find_supply_alias(dev, id);
--	if (map)
--		return -EEXIST;
+ 			t1 = sched_clock_cpu(this_cpu);
+ 			domain_cost = t1 - t0;
++			update_newidle_cost(sd, domain_cost);
++
+ 			curr_cost += domain_cost;
+ 			t0 = t1;
 -
--	map = kzalloc(sizeof(struct regulator_supply_alias), GFP_KERNEL);
--	if (!map)
-+	new_map = kzalloc(sizeof(struct regulator_supply_alias), GFP_KERNEL);
-+	if (!new_map)
- 		return -ENOMEM;
- 
--	map->src_dev = dev;
--	map->src_supply = id;
--	map->alias_dev = alias_dev;
--	map->alias_supply = alias_id;
+-			/*
+-			 * Failing newidle means it is not effective;
+-			 * bump the cost so we end up doing less of it.
+-			 */
+-			if (!pulled_task)
+-				domain_cost = (3 * sd->max_newidle_lb_cost) / 2;
 -
--	list_add(&map->list, &regulator_supply_alias_list);
-+	mutex_lock(&regulator_list_mutex);
-+	map = regulator_find_supply_alias(dev, id);
-+	if (map) {
-+		mutex_unlock(&regulator_list_mutex);
-+		kfree(new_map);
-+		return -EEXIST;
-+	}
+-			update_newidle_cost(sd, domain_cost);
+ 		}
  
-+	new_map->src_dev = dev;
-+	new_map->src_supply = id;
-+	new_map->alias_dev = alias_dev;
-+	new_map->alias_supply = alias_id;
-+	list_add(&new_map->list, &regulator_supply_alias_list);
-+	mutex_unlock(&regulator_list_mutex);
- 	pr_info("Adding alias for supply %s,%s -> %s,%s\n",
- 		id, dev_name(dev), alias_id, dev_name(alias_dev));
- 
-@@ -2498,11 +2504,13 @@ void regulator_unregister_supply_alias(struct device *dev, const char *id)
- {
- 	struct regulator_supply_alias *map;
- 
-+	mutex_lock(&regulator_list_mutex);
- 	map = regulator_find_supply_alias(dev, id);
- 	if (map) {
- 		list_del(&map->list);
- 		kfree(map);
- 	}
-+	mutex_unlock(&regulator_list_mutex);
- }
- EXPORT_SYMBOL_GPL(regulator_unregister_supply_alias);
- 
+ 		/*
 -- 
 2.51.0
 
