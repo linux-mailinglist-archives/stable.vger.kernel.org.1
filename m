@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-207244-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206663-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B23D2D09A72
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:30:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE808D092E7
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:02:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8D61A30EA2FF
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:25:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 63FE3308D04A
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:57:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F0EF35A933;
-	Fri,  9 Jan 2026 12:25:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36EE433290A;
+	Fri,  9 Jan 2026 11:57:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P/Oyn3t2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tgavJRZA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E0BA1531E8;
-	Fri,  9 Jan 2026 12:25:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE6A82DEA6F;
+	Fri,  9 Jan 2026 11:57:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961504; cv=none; b=YodR19ewlol654/Wn9mDFRFrLwT7f5QzNE1s617+Oz+nR9/MTzBBubBt40LEV+Ct6OZmC72lPpFkBD5xAq3ASIduewvp3a6RChKlPOduifLMt2nF5lDCmWqeIrlgJ7QNKMfgQj2st1cKYt3UZnOETqrBKlC6cbfTEjc8bZZ1t9A=
+	t=1767959846; cv=none; b=O/BTYgkjrHkE8LuxdL58iCM3tbuu+CAK+Gx0VJvL7cwh1nV/a1WqalY/938BOvVVY5XN1HloAPr4KZX9JH8grZ5gj6RZNcz/zKFVL723xINfhE1+TX0V1PBzI1Iguj0WqBQUQjMFH0tMpJ2JxN/YEsO6IywA0peC+trK8+Vr2pE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961504; c=relaxed/simple;
-	bh=UV35zs1fZVvJEBGx3Ghf2ll63yNdzr103/Nq8QaqSsQ=;
+	s=arc-20240116; t=1767959846; c=relaxed/simple;
+	bh=yuIDU1nWS66lbnrxKw/cNdXC40n9mtj4vM/d8NXD3GE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cedr0FhZA/qBf47e9AdaSejIwdA3M4xSxSV/dBvqmSn117Qk7wFuxFllTAnpakbG1pei49iwK7XWGHeMmsTq77c488d3uZ1u7ZGUqydzeFqX94NwLiGGGAxL/kK9nu3avSlw6QsLOY/2oqsIXs620dmCm8/TCc5NGHr10HI+Iic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P/Oyn3t2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC66BC4CEF1;
-	Fri,  9 Jan 2026 12:25:03 +0000 (UTC)
+	 MIME-Version:Content-Type; b=SsQO28c71ebBXo0be0FofegWaeD5sBKTaqsLS9EMOgrIQi39Cdl/atIBe94yITJWOs70f4N0JFgP1uIa6rePVIv/pvl5txtfYkDcapeDReW5MDUfo704uQDIOj+bq5TJPlGt+nBSzwv8hDezDHNaSd1cZ32JXnMpw0EKEOKC+5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tgavJRZA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B45FC4CEF1;
+	Fri,  9 Jan 2026 11:57:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961504;
-	bh=UV35zs1fZVvJEBGx3Ghf2ll63yNdzr103/Nq8QaqSsQ=;
+	s=korg; t=1767959845;
+	bh=yuIDU1nWS66lbnrxKw/cNdXC40n9mtj4vM/d8NXD3GE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P/Oyn3t27+BDDcSgyHOY1hdMQ8ML+xen6PvcErWZIWbjAKGVvcEltxAW2gIOhVAQB
-	 2oScn2Bbma3VoHG0aMURKE5NaV++OsjA5S0SnHgXJX0tt6mFWGMcSXgOmmohYYVT1b
-	 NVbhrUyXw1HsaAOYBCkCch9y/GOcPYnFzGiGSPNk=
+	b=tgavJRZApz96ruxRmgJoDivZXu/WnjG90HwndJPkPeg1r3RslTZWIinjtXK+YoUI0
+	 8b7iAdv9KYizHjWn3TC5SeMeYxP9/iGRX58fvPp4xanYfd/Hzk3ND8VXmemt/KRDDP
+	 G1Jdd5RI4+yjILrwuWBDljhp9Ykht5BbprJqgf70=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Navaneeth K <knavaneeth786@gmail.com>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.1 038/634] staging: rtl8723bs: fix out-of-bounds read in rtw_get_ie() parser
-Date: Fri,  9 Jan 2026 12:35:16 +0100
-Message-ID: <20260109112118.881648966@linuxfoundation.org>
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 178/737] pwm: bcm2835: Make sure the channel is enabled after pwm_request()
+Date: Fri,  9 Jan 2026 12:35:17 +0100
+Message-ID: <20260109112140.687455910@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,69 +59,92 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Navaneeth K <knavaneeth786@gmail.com>
+From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 
-commit 154828bf9559b9c8421fc2f0d7f7f76b3683aaed upstream.
+[ Upstream commit cda323dbda76600bf9761970d58517648f0de67d ]
 
-The Information Element (IE) parser rtw_get_ie() trusted the length
-byte of each IE without validating that the IE body (len bytes after
-the 2-byte header) fits inside the remaining frame buffer. A malformed
-frame can advertise an IE length larger than the available data, causing
-the parser to increment its pointer beyond the buffer end. This results
-in out-of-bounds reads or, depending on the pattern, an infinite loop.
+The .free callback cleared among others the enable bit PWENx in the
+control register. When the PWM is requested later again this bit isn't
+restored but the core assumes the PWM is enabled and thus skips a
+request to configure the same state as before.
 
-Fix by validating that (offset + 2 + len) does not exceed the limit
-before accepting the IE or advancing to the next element.
+To fix that don't touch the hardware configuration in .free(). For
+symmetry also drop .request() and configure the mode completely in
+.apply().
 
-This prevents OOB reads and ensures the parser terminates safely on
-malformed frames.
-
-Signed-off-by: Navaneeth K <knavaneeth786@gmail.com>
-Cc: stable <stable@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e5a06dc5ac1f ("pwm: Add BCM2835 PWM driver")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://patch.msgid.link/20251118174303.1761577-2-u.kleine-koenig@baylibre.com
+Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/rtl8723bs/core/rtw_ieee80211.c |   14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ drivers/pwm/pwm-bcm2835.c | 28 +++-------------------------
+ 1 file changed, 3 insertions(+), 25 deletions(-)
 
---- a/drivers/staging/rtl8723bs/core/rtw_ieee80211.c
-+++ b/drivers/staging/rtl8723bs/core/rtw_ieee80211.c
-@@ -139,22 +139,24 @@ u8 *rtw_get_ie(u8 *pbuf, signed int inde
- 	signed int tmp, i;
- 	u8 *p;
- 
--	if (limit < 1)
-+	if (limit < 2)
- 		return NULL;
- 
- 	p = pbuf;
- 	i = 0;
- 	*len = 0;
--	while (1) {
-+	while (i + 2 <= limit) {
-+		tmp = *(p + 1);
-+		if (i + 2 + tmp > limit)
-+			break;
-+
- 		if (*p == index) {
--			*len = *(p + 1);
-+			*len = tmp;
- 			return p;
- 		}
--		tmp = *(p + 1);
-+
- 		p += (tmp + 2);
- 		i += (tmp + 2);
--		if (i >= limit)
--			break;
- 	}
- 	return NULL;
+diff --git a/drivers/pwm/pwm-bcm2835.c b/drivers/pwm/pwm-bcm2835.c
+index bdfc2a5ec0d69..5a51ba9b26d92 100644
+--- a/drivers/pwm/pwm-bcm2835.c
++++ b/drivers/pwm/pwm-bcm2835.c
+@@ -35,29 +35,6 @@ static inline struct bcm2835_pwm *to_bcm2835_pwm(struct pwm_chip *chip)
+ 	return container_of(chip, struct bcm2835_pwm, chip);
  }
+ 
+-static int bcm2835_pwm_request(struct pwm_chip *chip, struct pwm_device *pwm)
+-{
+-	struct bcm2835_pwm *pc = to_bcm2835_pwm(chip);
+-	u32 value;
+-
+-	value = readl(pc->base + PWM_CONTROL);
+-	value &= ~(PWM_CONTROL_MASK << PWM_CONTROL_SHIFT(pwm->hwpwm));
+-	value |= (PWM_MODE << PWM_CONTROL_SHIFT(pwm->hwpwm));
+-	writel(value, pc->base + PWM_CONTROL);
+-
+-	return 0;
+-}
+-
+-static void bcm2835_pwm_free(struct pwm_chip *chip, struct pwm_device *pwm)
+-{
+-	struct bcm2835_pwm *pc = to_bcm2835_pwm(chip);
+-	u32 value;
+-
+-	value = readl(pc->base + PWM_CONTROL);
+-	value &= ~(PWM_CONTROL_MASK << PWM_CONTROL_SHIFT(pwm->hwpwm));
+-	writel(value, pc->base + PWM_CONTROL);
+-}
+-
+ static int bcm2835_pwm_apply(struct pwm_chip *chip, struct pwm_device *pwm,
+ 			     const struct pwm_state *state)
+ {
+@@ -109,6 +86,9 @@ static int bcm2835_pwm_apply(struct pwm_chip *chip, struct pwm_device *pwm,
+ 	/* set polarity */
+ 	val = readl(pc->base + PWM_CONTROL);
+ 
++	val &= ~(PWM_CONTROL_MASK << PWM_CONTROL_SHIFT(pwm->hwpwm));
++	val |= PWM_MODE << PWM_CONTROL_SHIFT(pwm->hwpwm);
++
+ 	if (state->polarity == PWM_POLARITY_NORMAL)
+ 		val &= ~(PWM_POLARITY << PWM_CONTROL_SHIFT(pwm->hwpwm));
+ 	else
+@@ -126,8 +106,6 @@ static int bcm2835_pwm_apply(struct pwm_chip *chip, struct pwm_device *pwm,
+ }
+ 
+ static const struct pwm_ops bcm2835_pwm_ops = {
+-	.request = bcm2835_pwm_request,
+-	.free = bcm2835_pwm_free,
+ 	.apply = bcm2835_pwm_apply,
+ 	.owner = THIS_MODULE,
+ };
+-- 
+2.51.0
+
 
 
 
