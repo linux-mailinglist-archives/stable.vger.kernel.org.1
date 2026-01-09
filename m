@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-206711-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207344-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2427D09266
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:00:27 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D662D09E5F
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:44:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 3819D3002500
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:59:47 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 53630306EED4
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:29:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31E52359F8E;
-	Fri,  9 Jan 2026 11:59:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F19F359701;
+	Fri,  9 Jan 2026 12:29:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="buh6rAM9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OIDG9fFn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1141350A12;
-	Fri,  9 Jan 2026 11:59:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62D6B3191D2;
+	Fri,  9 Jan 2026 12:29:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767959981; cv=none; b=bkCxCmoqCuybjaIOBmV3WcMUybkvsNH0YWlK55ZipWJzXZzpxDirZufwKwNB2huz7JbWqX7RpEbDwDuZX8bCqeBODDsjeZyy2CzzGJtUy+nYOtzeatNFkkDEQbzHF175AdHZ3HfiIROhIi7XdCN89z3SK90Ve6EPNHwGjmCslpU=
+	t=1767961788; cv=none; b=ni+HFxy4KXyBFx3z3VKIqz67PbL6JA7s4sWV6ZFisqjsXoDwMruI960TjapFyXibvjU779ERJrn5OJEWbMighibBlGhvSmgsDB/JisevC5ROinu5RDJ/2Om7OizxOmO9R0tX545pGtB4lXhBPU+79F33YWYdwZ2NBsAsYc0bq0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767959981; c=relaxed/simple;
-	bh=UUBGnLnDXcWlNspmaB4sIS0yr38fxEaUaHhxbysPPbQ=;
+	s=arc-20240116; t=1767961788; c=relaxed/simple;
+	bh=RwcYMYUJ/u6DcDvpyrkO+h7I8ppD13fEShLCzuGXwMg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J6FSnaRuNvkQnxdBu9gCGi6dmjTZPW8t0jwIVzBBqoEJyLZ3zXCHOBIERy+6n1D+JmRysQKlb4z5TPq+zI8vqozMmSer3n+J1opPkN8TRPJicVBqZriTzKZS6t8S8hX3s4BqGrvhXtFUkrQXPlH9gtFOEWODmFZXvvfPAIxEvWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=buh6rAM9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2013DC4CEF1;
-	Fri,  9 Jan 2026 11:59:40 +0000 (UTC)
+	 MIME-Version; b=ug7acXAs1+iO2CpzRU6nKNjkX/VNnluyLnOcXaJGq6NIVSr7NaKfWavJWxuy0IPZmgXlKO1cd0L9YKha9qNBJspu0suR/KmoX221iViGXxpIsfAzOUThpPlYwi8NxgaggbXKJqmcJurPPJXvGJEY9qzUQJKwjv+mO9L0syAEmXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OIDG9fFn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E38C6C4CEF1;
+	Fri,  9 Jan 2026 12:29:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767959981;
-	bh=UUBGnLnDXcWlNspmaB4sIS0yr38fxEaUaHhxbysPPbQ=;
+	s=korg; t=1767961788;
+	bh=RwcYMYUJ/u6DcDvpyrkO+h7I8ppD13fEShLCzuGXwMg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=buh6rAM9IRiFDJJXrn20ek6LyrSrUiZoJTkG5XPF4DmyLFNdvB++/z1xUQUaJNUuK
-	 Ocp6e6t7KqeRTj6Jz3D3ZlEGP2h+SmCc6PP3tWwomOV4w3MnFVwq813LsKCur/vg2b
-	 8XNZ46k+rgdkAY3TlaCKIQjTOOpq0oCgkZrruH3I=
+	b=OIDG9fFnW79R5fsLjPzKjMY25yO0RcYcOKrZ1BVDXXWCd87FUzjiC2d1JrLY2wV7U
+	 v9LcgPQO2mE1EzXm+3EurVUaHUV3GKJkMC47wBVnahHgc2iHfeelTzRsAoVNs7u9iL
+	 Vl4qN94j9aSIBTU/UdYewCJDDINQEOqvMPKwGDsc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Zheng Qixing <zhengqixing@huawei.com>,
+	Yu Kuai <yukuai@fnnas.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 242/737] netfilter: nft_connlimit: update the count if add was skipped
+Subject: [PATCH 6.1 103/634] nbd: defer config unlock in nbd_genl_connect
 Date: Fri,  9 Jan 2026 12:36:21 +0100
-Message-ID: <20260109112143.100791642@linuxfoundation.org>
+Message-ID: <20260109112121.308489611@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,107 +61,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fernando Fernandez Mancera <fmancera@suse.de>
+From: Zheng Qixing <zhengqixing@huawei.com>
 
-[ Upstream commit 69894e5b4c5e28cda5f32af33d4a92b7a4b93b0e ]
+[ Upstream commit 1649714b930f9ea6233ce0810ba885999da3b5d4 ]
 
-Connlimit expression can be used for all kind of packets and not only
-for packets with connection state new. See this ruleset as example:
+There is one use-after-free warning when running NBD_CMD_CONNECT and
+NBD_CLEAR_SOCK:
 
-table ip filter {
-        chain input {
-                type filter hook input priority filter; policy accept;
-                tcp dport 22 ct count over 4 counter
+nbd_genl_connect
+  nbd_alloc_and_init_config // config_refs=1
+  nbd_start_device // config_refs=2
+  set NBD_RT_HAS_CONFIG_REF			open nbd // config_refs=3
+  recv_work done // config_refs=2
+						NBD_CLEAR_SOCK // config_refs=1
+						close nbd // config_refs=0
+  refcount_inc -> uaf
+
+------------[ cut here ]------------
+refcount_t: addition on 0; use-after-free.
+WARNING: CPU: 24 PID: 1014 at lib/refcount.c:25 refcount_warn_saturate+0x12e/0x290
+ nbd_genl_connect+0x16d0/0x1ab0
+ genl_family_rcv_msg_doit+0x1f3/0x310
+ genl_rcv_msg+0x44a/0x790
+
+The issue can be easily reproduced by adding a small delay before
+refcount_inc(&nbd->config_refs) in nbd_genl_connect():
+
+        mutex_unlock(&nbd->config_lock);
+        if (!ret) {
+                set_bit(NBD_RT_HAS_CONFIG_REF, &config->runtime_flags);
++               printk("before sleep\n");
++               mdelay(5 * 1000);
++               printk("after sleep\n");
+                refcount_inc(&nbd->config_refs);
+                nbd_connect_reply(info, nbd->index);
         }
-}
 
-Currently, if the connection count goes over the limit the counter will
-count the packets. When a connection is closed, the connection count
-won't decrement as it should because it is only updated for new
-connections due to an optimization on __nf_conncount_add() that prevents
-updating the list if the connection is duplicated.
-
-To solve this problem, check whether the connection was skipped and if
-so, update the list. Adjust count_tree() too so the same fix is applied
-for xt_connlimit.
-
-Fixes: 976afca1ceba ("netfilter: nf_conncount: Early exit in nf_conncount_lookup() and cleanup")
-Closes: https://lore.kernel.org/netfilter/trinity-85c72a88-d762-46c3-be97-36f10e5d9796-1761173693813@3c-app-mailcom-bs12/
-Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: e46c7287b1c2 ("nbd: add a basic netlink interface")
+Signed-off-by: Zheng Qixing <zhengqixing@huawei.com>
+Reviewed-by: Yu Kuai <yukuai@fnnas.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_conncount.c  | 12 ++++++++----
- net/netfilter/nft_connlimit.c | 13 +++++++++++--
- 2 files changed, 19 insertions(+), 6 deletions(-)
+ drivers/block/nbd.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nf_conncount.c b/net/netfilter/nf_conncount.c
-index 7a8a6f72ff198..97b631a81484d 100644
---- a/net/netfilter/nf_conncount.c
-+++ b/net/netfilter/nf_conncount.c
-@@ -179,7 +179,7 @@ static int __nf_conncount_add(struct net *net,
- 	if (ct && nf_ct_is_confirmed(ct)) {
- 		if (refcounted)
- 			nf_ct_put(ct);
--		return 0;
-+		return -EEXIST;
+diff --git a/drivers/block/nbd.c b/drivers/block/nbd.c
+index 80a2d346a51cc..008534aad0a18 100644
+--- a/drivers/block/nbd.c
++++ b/drivers/block/nbd.c
+@@ -2116,12 +2116,13 @@ static int nbd_genl_connect(struct sk_buff *skb, struct genl_info *info)
+ 
+ 	ret = nbd_start_device(nbd);
+ out:
+-	mutex_unlock(&nbd->config_lock);
+ 	if (!ret) {
+ 		set_bit(NBD_RT_HAS_CONFIG_REF, &config->runtime_flags);
+ 		refcount_inc(&nbd->config_refs);
+ 		nbd_connect_reply(info, nbd->index);
  	}
- 
- 	if ((u32)jiffies == list->last_gc)
-@@ -398,7 +398,7 @@ insert_tree(struct net *net,
- 			int ret;
- 
- 			ret = nf_conncount_add_skb(net, skb, l3num, &rbconn->list);
--			if (ret)
-+			if (ret && ret != -EEXIST)
- 				count = 0; /* hotdrop */
- 			else
- 				count = rbconn->list.count;
-@@ -501,10 +501,14 @@ count_tree(struct net *net,
- 			/* same source network -> be counted! */
- 			ret = __nf_conncount_add(net, skb, l3num, &rbconn->list);
- 			spin_unlock_bh(&rbconn->list.list_lock);
--			if (ret)
-+			if (ret && ret != -EEXIST) {
- 				return 0; /* hotdrop */
--			else
-+			} else {
-+				/* -EEXIST means add was skipped, update the list */
-+				if (ret == -EEXIST)
-+					nf_conncount_gc_list(net, &rbconn->list);
- 				return rbconn->list.count;
-+			}
- 		}
- 	}
- 
-diff --git a/net/netfilter/nft_connlimit.c b/net/netfilter/nft_connlimit.c
-index d998e27713ac7..83a7d5769396c 100644
---- a/net/netfilter/nft_connlimit.c
-+++ b/net/netfilter/nft_connlimit.c
-@@ -29,8 +29,17 @@ static inline void nft_connlimit_do_eval(struct nft_connlimit *priv,
- 
- 	err = nf_conncount_add_skb(nft_net(pkt), pkt->skb, nft_pf(pkt), priv->list);
- 	if (err) {
--		regs->verdict.code = NF_DROP;
--		return;
-+		if (err == -EEXIST) {
-+			/* Call gc to update the list count if any connection has
-+			 * been closed already. This is useful for softlimit
-+			 * connections like limiting bandwidth based on a number
-+			 * of open connections.
-+			 */
-+			nf_conncount_gc_list(nft_net(pkt), priv->list);
-+		} else {
-+			regs->verdict.code = NF_DROP;
-+			return;
-+		}
- 	}
- 
- 	count = priv->list->count;
++	mutex_unlock(&nbd->config_lock);
++
+ 	nbd_config_put(nbd);
+ 	if (put_dev)
+ 		nbd_put(nbd);
 -- 
 2.51.0
 
