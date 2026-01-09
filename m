@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-207077-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207670-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 494D6D09871
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:23:05 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7D24D0A2FB
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:05:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A283E3018824
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:17:06 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DDA0130C8935
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:45:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2C8332936C;
-	Fri,  9 Jan 2026 12:17:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7439D35C1AF;
+	Fri,  9 Jan 2026 12:45:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mvvngouk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kVkTcqYx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66DBF2737EE;
-	Fri,  9 Jan 2026 12:17:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3808035B135;
+	Fri,  9 Jan 2026 12:45:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961025; cv=none; b=tYj7synRFXrat0am8C2L/H0xK5V5pVqwge5Wf91Inh+DjIvAvFt/T8U0Ilsr5LfTfQJeZ5UNg3AuasRJCbp7LG2OerHK/u/CSSWfANCZlaCARjmBtHenFV7vO8HxBn4kzYKIOksu4o7nMOKVvcDzek5d9c2wvGBSdFLZ/C/mHiA=
+	t=1767962713; cv=none; b=UbBNXolz68bL68aD6arN90qg4GML/MP8qvYU2JMDyAj2fwNhDYtww12+aa50BL9peLR+dAOV4Xz2LR0ulYiSiIuuM24P14cYEbbB4Y0Ot7UP9CmrHbq6Ok6eLhVhoNM9PBb5/9gbyAdMbXVAc/grA1g1jPBR8vZI6XpbLwTK3AQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961025; c=relaxed/simple;
-	bh=ZSFtCeLlBgnGlI8yWV/UiQMDWnTle2dK3RiLGDnlucY=;
+	s=arc-20240116; t=1767962713; c=relaxed/simple;
+	bh=f97klc0p/MmeFW4ibPTFyXWyXctxPMmMT4HdQumLLI0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BTKAkmgWkitsq9xj2cSWzIuojpIxswE0P3ZwfFB/6XUemR1KNoLTjfsJcAeECtiewKoGqEz/VOZh5LIhyof4nCQ5Oq88lJQ9pDgU46GeDP4n0TY+fw7Gg/dvbUztRyF+HhFfjxoeH5uWLik/AK8uQgO0oUKny8St7migsMDCPa8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mvvngouk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 990ABC4CEF1;
-	Fri,  9 Jan 2026 12:17:04 +0000 (UTC)
+	 MIME-Version; b=W/30y4gjp6yhpejlaEq96+DuTVIqiQUOlOsAsjtNIgtgx5e0BaHfZeXpSVf9ilSNT0o324oQGkAa2XQkBQDWXRn1pCGr2Olo+Xi0/iyyK5KVQ612ctcChIX8jEKCCm8d3q4m7kpadoeXT8vI/6pISxP+WPQGyJkYgSFurrt3rEg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kVkTcqYx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC15EC4CEF1;
+	Fri,  9 Jan 2026 12:45:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961025;
-	bh=ZSFtCeLlBgnGlI8yWV/UiQMDWnTle2dK3RiLGDnlucY=;
+	s=korg; t=1767962713;
+	bh=f97klc0p/MmeFW4ibPTFyXWyXctxPMmMT4HdQumLLI0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MvvngoukcbcXOEK8Ca1U/NAGAMdcgRuV31n3qLLh+yrVEA5xXftW/vDZtWFzoLfqd
-	 e2c2XDuNQQLLVr53k5TJo3x3U+fUY8fZXBNeCFn7DKXac8MUKLgx3H3crx7JLSyVSQ
-	 XQGmkIYnKYOhMerLHyWoZLaKcz76tALqV15Rfr6U=
+	b=kVkTcqYxfeT625nVgpuiVPJtVk8AjFB3HaDGKUifiVbpmLqRTKkfpMmmm2k8izLzn
+	 dXMvmFt+zTc05kHsBQ02gkj8jWpFoageitX/mDQGgTdi0WDFagKz6lEmWdCi7PPXjx
+	 QyS6GqXqBBfiDt8a1KWh8DNO5wQvV6i4PzCavBfs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"H. Peter Anvin (Intel)" <hpa@zytor.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	stable@kernel.org
-Subject: [PATCH 6.6 601/737] compiler_types.h: add "auto" as a macro for "__auto_type"
+	Christian Hitz <christian.hitz@bbv.ch>,
+	Jacek Anaszewski <jacek.anaszewski@gmail.com>,
+	Lee Jones <lee@kernel.org>
+Subject: [PATCH 6.1 462/634] leds: leds-lp50xx: Allow LED 0 to be added to module bank
 Date: Fri,  9 Jan 2026 12:42:20 +0100
-Message-ID: <20260109112156.616784203@linuxfoundation.org>
+Message-ID: <20260109112134.935224188@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,63 +60,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: H. Peter Anvin <hpa@zytor.com>
+From: Christian Hitz <christian.hitz@bbv.ch>
 
-commit 2fb6915fa22dc5524d704afba58a13305dd9f533 upstream.
+commit 26fe74d598c32e7bc6f150edfc4aa43e1bee55db upstream.
 
-"auto" was defined as a keyword back in the K&R days, but as a storage
-type specifier.  No one ever used it, since it was and is the default
-storage type for local variables.
+led_banks contains LED module number(s) that should be grouped into the
+module bank. led_banks is 0-initialized.
+By checking the led_banks entries for 0, un-set entries are detected.
+But a 0-entry also indicates that LED module 0 should be grouped into the
+module bank.
 
-C++11 recycled the keyword to allow a type to be declared based on the
-type of an initializer.  This was finally adopted into standard C in
-C23.
+By only iterating over the available entries no check for unused entries
+is required and LED module 0 can be added to bank.
 
-gcc and clang provide the "__auto_type" alias keyword as an extension
-for pre-C23, however, there is no reason to pollute the bulk of the
-source base with this temporary keyword; instead define "auto" as a
-macro unless the compiler is running in C23+ mode.
-
-This macro is added in <linux/compiler_types.h> because that header is
-included in some of the tools headers, wheres <linux/compiler.h> is
-not as it has a bunch of very kernel-specific things in it.
-
-[ Cc: stable to reduce potential backporting burden. ]
-
-Signed-off-by: H. Peter Anvin (Intel) <hpa@zytor.com>
-Acked-by: Miguel Ojeda <ojeda@kernel.org>
-Cc: <stable@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 242b81170fb8 ("leds: lp50xx: Add the LP50XX family of the RGB LED driver")
+Signed-off-by: Christian Hitz <christian.hitz@bbv.ch>
+Reviewed-by: Jacek Anaszewski <jacek.anaszewski@gmail.com>
+Link: https://patch.msgid.link/20251008123222.1117331-1-christian@klarinett.li
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/compiler_types.h |   13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ drivers/leds/leds-lp50xx.c |   10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
---- a/include/linux/compiler_types.h
-+++ b/include/linux/compiler_types.h
-@@ -5,6 +5,19 @@
- #ifndef __ASSEMBLY__
+--- a/drivers/leds/leds-lp50xx.c
++++ b/drivers/leds/leds-lp50xx.c
+@@ -346,17 +346,15 @@ out:
+ 	return ret;
+ }
  
- /*
-+ * C23 introduces "auto" as a standard way to define type-inferred
-+ * variables, but "auto" has been a (useless) keyword even since K&R C,
-+ * so it has always been "namespace reserved."
-+ *
-+ * Until at some future time we require C23 support, we need the gcc
-+ * extension __auto_type, but there is no reason to put that elsewhere
-+ * in the source code.
-+ */
-+#if __STDC_VERSION__ < 202311L
-+# define auto __auto_type
-+#endif
-+
-+/*
-  * Skipped when running bindgen due to a libclang issue;
-  * see https://github.com/rust-lang/rust-bindgen/issues/2244.
-  */
+-static int lp50xx_set_banks(struct lp50xx *priv, u32 led_banks[])
++static int lp50xx_set_banks(struct lp50xx *priv, u32 led_banks[], int num_leds)
+ {
+ 	u8 led_config_lo, led_config_hi;
+ 	u32 bank_enable_mask = 0;
+ 	int ret;
+ 	int i;
+ 
+-	for (i = 0; i < priv->chip_info->max_modules; i++) {
+-		if (led_banks[i])
+-			bank_enable_mask |= (1 << led_banks[i]);
+-	}
++	for (i = 0; i < num_leds; i++)
++		bank_enable_mask |= (1 << led_banks[i]);
+ 
+ 	led_config_lo = bank_enable_mask;
+ 	led_config_hi = bank_enable_mask >> 8;
+@@ -412,7 +410,7 @@ static int lp50xx_probe_leds(struct fwno
+ 			return ret;
+ 		}
+ 
+-		ret = lp50xx_set_banks(priv, led_banks);
++		ret = lp50xx_set_banks(priv, led_banks, num_leds);
+ 		if (ret) {
+ 			dev_err(priv->dev, "Cannot setup banked LEDs\n");
+ 			return ret;
 
 
 
