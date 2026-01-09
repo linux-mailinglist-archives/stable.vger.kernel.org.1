@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-207626-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207023-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6865D0A0E7
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:54:30 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7531D0978C
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:20:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id EF72A31A475A
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:43:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 08FA630AB4AE
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:14:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0944E35971E;
-	Fri,  9 Jan 2026 12:43:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B44EF33C52E;
+	Fri,  9 Jan 2026 12:14:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IxtR9wxU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2buZNcJK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9DA5335BCD;
-	Fri,  9 Jan 2026 12:43:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77554338911;
+	Fri,  9 Jan 2026 12:14:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962586; cv=none; b=jYZbreye2LwAWUCqOYj20olOOFalABiTzUduYMr59bJ9D4V5np52OaCS+P5ZiXeJxz/qVs6sR1WlhjD/Hmphvu34t9qMaGGKct/5lWpB7vr7N1lbo6PXtR+u+9i/vBCQUVXeLBL5feBFcAdZA2QSNEHYi9Jln+X6Ms+Epz4KLCk=
+	t=1767960874; cv=none; b=EivOK/h4P5h+HkAlGAew6p6gFEdIWz0tVWnkHt760RMU9DUuhzNAUDNhxScVYq5rIdMtS4oNjzTShWc+SxXSb2+a4ngaQiDU9uKS+WgUQNWVJ3Cvd4JrgQpsbq31ImD9UgmZxYIyuALmz3SlOPCYTr0rRb1bBp1BCA/Z4w38bb0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962586; c=relaxed/simple;
-	bh=Grk4mJYg/W3PCOjkZPGV8GHx1nX6RFIG/SurwoSukJc=;
+	s=arc-20240116; t=1767960874; c=relaxed/simple;
+	bh=n4M0drP9I7T18KfB0KSKMcL8jZNl5yUAzT/qbw5T9mg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rUD8vWbfEbduUm0iyge3i8dEsbCQM9eAosdSAQu7+XTqFR756QiuvJqSmcHdEuEPyqDL6jbBm4XRvdZRQZJL+yZ45snPa64GO4tsyRRr3KGEU/ntGbEX70mukEBnUsZ8C4RxDp8zqHUG58eGPrqY7Es88DusRbGFRx0JX4vBmg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IxtR9wxU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C342C4CEF1;
-	Fri,  9 Jan 2026 12:43:06 +0000 (UTC)
+	 MIME-Version; b=a1kCsarsn4CJER3/N+Jm43qEh+YfMcfi7sOgc5Mc0nqJVRag2y1o814z2pK5o0y7TxHlF/FZpAIsQroXEinovFZbAKT2Uy1xIv1v8kvWBEzLQGhB4OZVBvsCLgH10z1ZVFQtLjbJOjIu0YF9vXlbnpwrQMfclZNywWs7I8fzObk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2buZNcJK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE3DAC4CEF1;
+	Fri,  9 Jan 2026 12:14:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962586;
-	bh=Grk4mJYg/W3PCOjkZPGV8GHx1nX6RFIG/SurwoSukJc=;
+	s=korg; t=1767960874;
+	bh=n4M0drP9I7T18KfB0KSKMcL8jZNl5yUAzT/qbw5T9mg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IxtR9wxUh68jdCD066R9ImFTmNwGHF+iJWq5zbjgu4VpJHAy0bCfCjtIxOEi+BUp6
-	 T3D5dBt4Xdk2y+8wh3ZcgfQU+Q9mcUPoD9RZSe0q24BP+bjVnzi8nOJd932LSoXuT6
-	 aNqbtCSpPCo8Y1MS/7DuusgI+ubhke6u2hTRA4sU=
+	b=2buZNcJKeoteBKErXV6vqp+BiBqnCRLxEWI6iLzIfJahasac/OSKVn/D+Lr/yEgd9
+	 la4K4/eNGY7FOAbTpuEUUUye0akZjdaLMvyT/wSWOD3AXEg/V6Y0RxD8ZBqeFtS4Xc
+	 IiyDo8uAsCzKK7nLmElmvwkkx299qxqgKKVy4SZA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonas Gorski <jonas.gorski@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 416/634] net: dsa: b53: skip multicast entries for fdb_dump()
+	Robin Murphy <robin.murphy@arm.com>,
+	Yong Wu <yong.wu@mediatek.com>,
+	Johan Hovold <johan@kernel.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Joerg Roedel <joerg.roedel@amd.com>
+Subject: [PATCH 6.6 555/737] iommu/mediatek: fix device leak on of_xlate()
 Date: Fri,  9 Jan 2026 12:41:34 +0100
-Message-ID: <20260109112133.189742148@linuxfoundation.org>
+Message-ID: <20260109112154.877301392@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Gorski <jonas.gorski@gmail.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit d42bce414d1c5c0b536758466a1f63ac358e613c ]
+commit b3f1ee18280363ef17f82b564fc379ceba9ec86f upstream.
 
-port_fdb_dump() is supposed to only add fdb entries, but we iterate over
-the full ARL table, which also includes multicast entries.
+Make sure to drop the reference taken to the iommu platform device when
+looking up its driver data during of_xlate().
 
-So check if the entry is a multicast entry before passing it on to the
-callback().
-
-Additionally, the port of those entries is a bitmask, not a port number,
-so any included entries would have even be for the wrong port.
-
-Fixes: 1da6df85c6fb ("net: dsa: b53: Implement ARL add/del/dump operations")
-Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20251217205756.172123-1-jonas.gorski@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 0df4fabe208d ("iommu/mediatek: Add mt8173 IOMMU driver")
+Cc: stable@vger.kernel.org	# 4.6
+Acked-by: Robin Murphy <robin.murphy@arm.com>
+Reviewed-by: Yong Wu <yong.wu@mediatek.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/b53/b53_common.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/iommu/mtk_iommu.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
-index bdbb873fe6eb..49fb610db484 100644
---- a/drivers/net/dsa/b53/b53_common.c
-+++ b/drivers/net/dsa/b53/b53_common.c
-@@ -1815,6 +1815,9 @@ static int b53_fdb_copy(int port, const struct b53_arl_entry *ent,
- 	if (!ent->is_valid)
- 		return 0;
+--- a/drivers/iommu/mtk_iommu.c
++++ b/drivers/iommu/mtk_iommu.c
+@@ -959,6 +959,8 @@ static int mtk_iommu_of_xlate(struct dev
+ 			return -EINVAL;
  
-+	if (is_multicast_ether_addr(ent->mac))
-+		return 0;
+ 		dev_iommu_priv_set(dev, platform_get_drvdata(m4updev));
 +
- 	if (port != ent->port)
- 		return 0;
++		put_device(&m4updev->dev);
+ 	}
  
--- 
-2.51.0
-
+ 	return iommu_fwspec_add_ids(dev, args->args, 1);
 
 
 
