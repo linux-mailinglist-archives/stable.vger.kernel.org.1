@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-207012-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207616-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73CEAD097DA
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:20:55 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4739AD09FCD
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:49:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 10189308434E
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:14:03 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7A3D2308B6CB
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:42:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDE30338911;
-	Fri,  9 Jan 2026 12:14:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5DE93590C4;
+	Fri,  9 Jan 2026 12:42:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EeUIr+Q7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w2IgDuSU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 816672F0C7F;
-	Fri,  9 Jan 2026 12:14:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 992D042AA6;
+	Fri,  9 Jan 2026 12:42:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960842; cv=none; b=vET4LeYPoS96b+NWxEIOCTH5Rbk9ZZsP0MyFj91JK1HbmcJexN3NNNNG0rtkEBmHnKhrB5bFDnm/4ZlvZN5WMokzmVvTFN3Pj1Oa0Up5iKt35rBpvJoO7X7YSzBz9Fm8lOVtbB+YHWhzbX2oR7MPj0FYvve6TeAtaaZpKRmWdt0=
+	t=1767962558; cv=none; b=fcHEBA85NFnzftLFtB2kpOEJ3CD4CEZW83eBw5Mk4qKk1AIc9sBRRRlWX5oGBUCX+MgDjhOc1kJVeNR9D+rH0PXl4Zdk/5gIA2CLfeDw+6Zjt4b0NA7hvrN1gkWtwBLHDDFO/RA49mXCIdukFJ5DJr0TBbBBXRShlo4jloTUAdg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960842; c=relaxed/simple;
-	bh=f3/CIEGQKgJz2u7q8epQI82PDpATFLoYyX1LR3YAMrA=;
+	s=arc-20240116; t=1767962558; c=relaxed/simple;
+	bh=Tq50qmVUqI1Y8xpbvv1Lr8583uaa4yMHzCzQVoO58jM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TqpREe/swGNZgcYEJekkvVW4ALrnveX6DsFMe3dFopG9dH6+hNUyP8obswNxXD1UaeZiZOhgYo++dpgec3en1St1BOLo5pl2DqE5QhXzF9PYuz1pT1IDkTvzzH/f++bNUHa/dy5tsLb7ymx4t9z6x2yJaz/s0X1E/USFoo4/Pwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EeUIr+Q7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EFDDC4CEF1;
-	Fri,  9 Jan 2026 12:14:01 +0000 (UTC)
+	 MIME-Version; b=KgvO7uv0D88oWB8d8rv3g19WR3brWTqN5VD26trdtc20Y7K2fSF73gI7sdqe7gX7d3tklXjNLJ8uEJ1M9jS7TiI9vuqvi69k5v5yLp2q5cAK3ozmALg2Upwa9r/XFnlVBy6+y4uyP6nvzyvmRi7jp5la1KiNuFxq24esC6SVaNI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w2IgDuSU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26C53C4CEF1;
+	Fri,  9 Jan 2026 12:42:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960842;
-	bh=f3/CIEGQKgJz2u7q8epQI82PDpATFLoYyX1LR3YAMrA=;
+	s=korg; t=1767962558;
+	bh=Tq50qmVUqI1Y8xpbvv1Lr8583uaa4yMHzCzQVoO58jM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EeUIr+Q7mLh3FZQxH5MfEJbqMraOJUVGQlBjMmzYoHhHi2G9Rk7qqgd0NUX/m5t/C
-	 RQt4Kx3j/F6lki7ellYpfb7NpkYoCSd15SL/oBSeIWDYCeb7xatYObKP6yHiCBLG9y
-	 +j+sSRN0SQUXv3HvLrgnOBhvCTvuYS7kx/rsUa/s=
+	b=w2IgDuSUjO23ZDERsFOzDVAHT/ZvTHX7nN3zM4Kcuxffv07fo2gtp3tbR91NEcEd9
+	 7M0QJUHWgc1ymqbfIpap58AoQMLVHb36D3mTXOrQVuDSoNawAVKmfSDTSrDE1i5GQs
+	 3XDTkBb9Rp176ELW4DGE3DVB+qRH/SkX/s7q36iE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stable@vger.kernel.org,
-	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
-	Mark Brown <broonie@kernel.org>,
-	Alexey Klimov <alexey.klimov@linaro.org>
-Subject: [PATCH 6.6 545/737] ASoC: qcom: q6apm-dai: set flags to reflect correct operation of appl_ptr
-Date: Fri,  9 Jan 2026 12:41:24 +0100
-Message-ID: <20260109112154.497517319@linuxfoundation.org>
+	syzbot+43a2ebcf2a64b1102d64@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 407/634] ip6_gre: make ip6gre_header() robust
+Date: Fri,  9 Jan 2026 12:41:25 +0100
+Message-ID: <20260109112132.845608275@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +61,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 950a4e5788fc7dc6e8e93614a7d4d0449c39fb8d upstream.
+[ Upstream commit db5b4e39c4e63700c68a7e65fc4e1f1375273476 ]
 
-Driver does not expect the appl_ptr to move backward and requires
-explict sync. Make sure that the userspace does not do appl_ptr rewinds
-by specifying the correct flags in pcm_info.
+Over the years, syzbot found many ways to crash the kernel
+in ip6gre_header() [1].
 
-Without this patch, the result could be a forever loop as current logic assumes
-that appl_ptr can only move forward.
+This involves team or bonding drivers ability to dynamically
+change their dev->needed_headroom and/or dev->hard_header_len
 
-Fixes: 3d4a4411aa8b ("ASoC: q6apm-dai: schedule all available frames to avoid dsp under-runs")
-Cc: Stable@vger.kernel.org
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
-Tested-by: Alexey Klimov <alexey.klimov@linaro.org> # RB5, RB3
-Link: https://patch.msgid.link/20251023102444.88158-2-srinivas.kandagatla@oss.qualcomm.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+In this particular crash mld_newpack() allocated an skb
+with a too small reserve/headroom, and by the time mld_sendpack()
+was called, syzbot managed to attach an ip6gre device.
+
+[1]
+skbuff: skb_under_panic: text:ffffffff8a1d69a8 len:136 put:40 head:ffff888059bc7000 data:ffff888059bc6fe8 tail:0x70 end:0x6c0 dev:team0
+------------[ cut here ]------------
+ kernel BUG at net/core/skbuff.c:213 !
+ <TASK>
+  skb_under_panic net/core/skbuff.c:223 [inline]
+  skb_push+0xc3/0xe0 net/core/skbuff.c:2641
+  ip6gre_header+0xc8/0x790 net/ipv6/ip6_gre.c:1371
+  dev_hard_header include/linux/netdevice.h:3436 [inline]
+  neigh_connected_output+0x286/0x460 net/core/neighbour.c:1618
+  neigh_output include/net/neighbour.h:556 [inline]
+  ip6_finish_output2+0xfb3/0x1480 net/ipv6/ip6_output.c:136
+ __ip6_finish_output net/ipv6/ip6_output.c:-1 [inline]
+  ip6_finish_output+0x234/0x7d0 net/ipv6/ip6_output.c:220
+  NF_HOOK_COND include/linux/netfilter.h:307 [inline]
+  ip6_output+0x340/0x550 net/ipv6/ip6_output.c:247
+  NF_HOOK+0x9e/0x380 include/linux/netfilter.h:318
+  mld_sendpack+0x8d4/0xe60 net/ipv6/mcast.c:1855
+  mld_send_cr net/ipv6/mcast.c:2154 [inline]
+  mld_ifc_work+0x83e/0xd60 net/ipv6/mcast.c:2693
+
+Fixes: c12b395a4664 ("gre: Support GRE over IPv6")
+Reported-by: syzbot+43a2ebcf2a64b1102d64@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/693b002c.a70a0220.33cd7b.0033.GAE@google.com/T/#u
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20251211173550.2032674-1-edumazet@google.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/qcom/qdsp6/q6apm-dai.c |    2 ++
- 1 file changed, 2 insertions(+)
+ net/ipv6/ip6_gre.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
---- a/sound/soc/qcom/qdsp6/q6apm-dai.c
-+++ b/sound/soc/qcom/qdsp6/q6apm-dai.c
-@@ -85,6 +85,7 @@ static struct snd_pcm_hardware q6apm_dai
- 	.info =                 (SNDRV_PCM_INFO_MMAP | SNDRV_PCM_INFO_BLOCK_TRANSFER |
- 				 SNDRV_PCM_INFO_MMAP_VALID | SNDRV_PCM_INFO_INTERLEAVED |
- 				 SNDRV_PCM_INFO_PAUSE | SNDRV_PCM_INFO_RESUME |
-+				 SNDRV_PCM_INFO_NO_REWINDS | SNDRV_PCM_INFO_SYNC_APPLPTR |
- 				 SNDRV_PCM_INFO_BATCH),
- 	.formats =              (SNDRV_PCM_FMTBIT_S16_LE | SNDRV_PCM_FMTBIT_S24_LE),
- 	.rates =                SNDRV_PCM_RATE_8000_48000,
-@@ -104,6 +105,7 @@ static struct snd_pcm_hardware q6apm_dai
- 	.info =                 (SNDRV_PCM_INFO_MMAP | SNDRV_PCM_INFO_BLOCK_TRANSFER |
- 				 SNDRV_PCM_INFO_MMAP_VALID | SNDRV_PCM_INFO_INTERLEAVED |
- 				 SNDRV_PCM_INFO_PAUSE | SNDRV_PCM_INFO_RESUME |
-+				 SNDRV_PCM_INFO_NO_REWINDS | SNDRV_PCM_INFO_SYNC_APPLPTR |
- 				 SNDRV_PCM_INFO_BATCH),
- 	.formats =              (SNDRV_PCM_FMTBIT_S16_LE | SNDRV_PCM_FMTBIT_S24_LE),
- 	.rates =                SNDRV_PCM_RATE_8000_192000,
+diff --git a/net/ipv6/ip6_gre.c b/net/ipv6/ip6_gre.c
+index 718fcad69cf1..249c613a9280 100644
+--- a/net/ipv6/ip6_gre.c
++++ b/net/ipv6/ip6_gre.c
+@@ -1405,9 +1405,16 @@ static int ip6gre_header(struct sk_buff *skb, struct net_device *dev,
+ {
+ 	struct ip6_tnl *t = netdev_priv(dev);
+ 	struct ipv6hdr *ipv6h;
++	int needed;
+ 	__be16 *p;
+ 
+-	ipv6h = skb_push(skb, t->hlen + sizeof(*ipv6h));
++	needed = t->hlen + sizeof(*ipv6h);
++	if (skb_headroom(skb) < needed &&
++	    pskb_expand_head(skb, HH_DATA_ALIGN(needed - skb_headroom(skb)),
++			     0, GFP_ATOMIC))
++		return -needed;
++
++	ipv6h = skb_push(skb, needed);
+ 	ip6_flow_hdr(ipv6h, 0, ip6_make_flowlabel(dev_net(dev), skb,
+ 						  t->fl.u.ip6.flowlabel,
+ 						  true, &t->fl.u.ip6));
+-- 
+2.51.0
+
 
 
 
