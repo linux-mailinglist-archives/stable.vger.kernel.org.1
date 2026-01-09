@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-207182-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206472-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3409D09C37
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:36:51 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81DABD08FB1
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 12:45:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0369D30D9D43
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:22:09 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0ABAC301D49C
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:45:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F509334C24;
-	Fri,  9 Jan 2026 12:22:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BA58359FB6;
+	Fri,  9 Jan 2026 11:45:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="otTCANO8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SQVJjlv5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE8C32737EE;
-	Fri,  9 Jan 2026 12:22:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 446A3359FB5;
+	Fri,  9 Jan 2026 11:45:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961325; cv=none; b=QmYvdn1hRhHUs1bLNdUy2NFy71IbPY7IPirAN8Kw8EQYZNnG5CWNAxpkoA2KfPrH2hM5i5cC7tjp79jBNVKs6C5BH0z6DUcsE/2geWAmUol0TYsg6BuLh7/mXDn2GpqMgexNqhWkeScCNjb8ePs521unwJurjmaCzA8ucspQItc=
+	t=1767959114; cv=none; b=n+0aNB1l9yBXQUHggWzYEAZvePU8gA5PwwOqQpysDGXRjc6Dm5Tvc8cccK5cDNvvrzipZ2HlOV2BJiJ9LtA2RTq7Tt4dRinCC4y6WysEUB4oyn8mbu5LbuwEIGgDOvbFIYuRPRhwkYjqtxXqMi/o3xvpcxKqIIANBVr3mnGMw0E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961325; c=relaxed/simple;
-	bh=4wl4/xANb/4tRKX/vkdAerueqJr36wYqyob6yz5Gi/8=;
+	s=arc-20240116; t=1767959114; c=relaxed/simple;
+	bh=wi07Mr0yh9S+hUsxli6RFtuu/4x5RVC3gVHHeVOwG/8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KKsYy2V9dB8PbxGODEbdbwVfs07LOdYpZPZ7JB42F0UxpXmbJ5bcI970PG7576hlmYF8IXIMKOVBRJ4FLRzLRLYoUyC8zSSJ84dxjuGifMXK/WsGFdSxN04I7Nexpu4wdEiiBpMhw6MR7fjjNqk+0gE7kmNRgGFZavbUPj/WNyE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=otTCANO8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CF92C19421;
-	Fri,  9 Jan 2026 12:22:05 +0000 (UTC)
+	 MIME-Version; b=WZupJg8a+Kuwkq9+m6qD/20pvWu8MRX9KhvOLwjFhvlCz7mJ0tceGNG6sCuBCOUx4wzK/UMSSq71mAB2sZGCBNKsLZRi4HaoP+wSUOrY0xy+vsW1/dih/qjsPEJCGrya6IlZJZQ+X2t/7uWD6X42uZQphJPOcD2MZUxc4IGagOg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SQVJjlv5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 742EDC4CEF1;
+	Fri,  9 Jan 2026 11:45:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961325;
-	bh=4wl4/xANb/4tRKX/vkdAerueqJr36wYqyob6yz5Gi/8=;
+	s=korg; t=1767959113;
+	bh=wi07Mr0yh9S+hUsxli6RFtuu/4x5RVC3gVHHeVOwG/8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=otTCANO8bICT4XFqULXmD57w96n2BHxnGhF2g4Xj+GYwFTn3n+56xRV0aE0++Xmwc
-	 4zbq7yaQZvkpG+n2JldirYSETDytAJ5vV+A/55BDsXvYSeyLdHtSe1m/j0uaefHCcD
-	 QhHnfRJ3nwKkyjbRi7L3fkSRrQnyH4gG2Vu9c8mw=
+	b=SQVJjlv5TJzAQq16buZt3qmO4Mo3zJSPNAEobVGBcSexypFda6aVzLDk9Un+eeQKh
+	 1acfIhtJHQu2lCiadbsJ9lCet6JGZlySZ6rLbJ3E8ZAGojxbjr5rogIMGqjSjxkwut
+	 Lr2Q65W7eIdWao1i9ODWKBge70DrDnn+NMei8thg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@google.com>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 706/737] mm/damon/tests/vaddr-kunit: handle alloc failures in damon_test_split_evenly_fail()
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Chris Mason <clm@meta.com>
+Subject: [PATCH 6.18 3/5] sched/fair: Small cleanup to update_newidle_cost()
 Date: Fri,  9 Jan 2026 12:44:05 +0100
-Message-ID: <20260109112200.630246247@linuxfoundation.org>
+Message-ID: <20260109111950.476102220@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109111950.344681501@linuxfoundation.org>
+References: <20260109111950.344681501@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +60,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SeongJae Park <sj@kernel.org>
+From: Peter Zijlstra <peterz@infradead.org>
 
-commit 7890e5b5bb6e386155c6e755fe70e0cdcc77f18e upstream.
+commit 08d473dd8718e4a4d698b1113a14a40ad64a909b upstream.
 
-damon_test_split_evenly_fail() is assuming all dynamic memory allocation
-in it will succeed.  Those are indeed likely in the real use cases since
-those allocations are too small to fail, but theoretically those could
-fail.  In the case, inappropriate memory access can happen.  Fix it by
-appropriately cleanup pre-allocated memory and skip the execution of the
-remaining tests in the failure cases.
+Simplify code by adding a few variables.
 
-Link: https://lkml.kernel.org/r/20251101182021.74868-19-sj@kernel.org
-Fixes: 17ccae8bb5c9 ("mm/damon: add kunit tests")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: Brendan Higgins <brendan.higgins@linux.dev>
-Cc: David Gow <davidgow@google.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: <stable@vger.kernel.org>	[5.15+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
+Tested-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
+Tested-by: Chris Mason <clm@meta.com>
+Link: https://patch.msgid.link/20251107161739.655208666@infradead.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/damon/vaddr-test.h |   11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ kernel/sched/fair.c |   11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
---- a/mm/damon/vaddr-test.h
-+++ b/mm/damon/vaddr-test.h
-@@ -250,7 +250,16 @@ static void damon_test_split_evenly_fail
- 		unsigned long start, unsigned long end, unsigned int nr_pieces)
- {
- 	struct damon_target *t = damon_new_target();
--	struct damon_region *r = damon_new_region(start, end);
-+	struct damon_region *r;
-+
-+	if (!t)
-+		kunit_skip(test, "target alloc fail");
-+
-+	r = damon_new_region(start, end);
-+	if (!r) {
-+		damon_free_target(t);
-+		kunit_skip(test, "region alloc fail");
-+	}
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -12124,22 +12124,25 @@ void update_max_interval(void)
  
- 	damon_add_region(r, t);
- 	KUNIT_EXPECT_EQ(test,
+ static inline bool update_newidle_cost(struct sched_domain *sd, u64 cost)
+ {
++	unsigned long next_decay = sd->last_decay_max_lb_cost + HZ;
++	unsigned long now = jiffies;
++
+ 	if (cost > sd->max_newidle_lb_cost) {
+ 		/*
+ 		 * Track max cost of a domain to make sure to not delay the
+ 		 * next wakeup on the CPU.
+ 		 */
+ 		sd->max_newidle_lb_cost = cost;
+-		sd->last_decay_max_lb_cost = jiffies;
+-	} else if (time_after(jiffies, sd->last_decay_max_lb_cost + HZ)) {
++		sd->last_decay_max_lb_cost = now;
++
++	} else if (time_after(now, next_decay)) {
+ 		/*
+ 		 * Decay the newidle max times by ~1% per second to ensure that
+ 		 * it is not outdated and the current max cost is actually
+ 		 * shorter.
+ 		 */
+ 		sd->max_newidle_lb_cost = (sd->max_newidle_lb_cost * 253) / 256;
+-		sd->last_decay_max_lb_cost = jiffies;
+-
++		sd->last_decay_max_lb_cost = now;
+ 		return true;
+ 	}
+ 
 
 
 
