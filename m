@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-207036-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207604-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45602D09838
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:22:18 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BA70D0A0C6
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:53:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E05A430CD3B4
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:15:11 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E333E318B732
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:42:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAF64359F9C;
-	Fri,  9 Jan 2026 12:15:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 177C335B15D;
+	Fri,  9 Jan 2026 12:42:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q523LtGT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vNojd3p+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DBA833C1B6;
-	Fri,  9 Jan 2026 12:15:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE38735B151;
+	Fri,  9 Jan 2026 12:42:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960911; cv=none; b=qDk3QGW/HQ5d3Fgz66ZvZpAm/UbFYf+eq+cspCmzfpVWzPLQqT6z76n7u3D8YboCoqtYhj/WTMhB9c+xg7jUPDJhC9C8fVAGF9TFSNZ5s2JICS/lECbBTRlMrpjkt9t2/c1z78YWnumwPipQiN3kFrMBqIGjjCCqEy4aV+jUqxU=
+	t=1767962524; cv=none; b=rVpCWmQ7IiN36Z1VAJiNv6pQar/WmFZ3gd/PWpjQR/sWBulDelseyfIVeF8o6nJCh0wRRgy0xE4hetoP16rb7dLO9GLx7M7KQkzzuXOg1Un7BNtWFn1ot4Cb5GwqQ7xRxcueRy+UVYhxf05eFc8UmoxG1Vm0zacvCJUO2Oldtq8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960911; c=relaxed/simple;
-	bh=A5awVj2CMJ9suDOlpH5vsr9+HG/GTcK2CGdzvtlRelU=;
+	s=arc-20240116; t=1767962524; c=relaxed/simple;
+	bh=XBY5n6rzc9mb2w42ZA4+A/vFwzKkykDNvupR1jISmDE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vDB80H0D8KEcNinmAcJEdySoFa8a3UZnyH/Pasg7TE9Wx29FY56JpHcSlOuc1YQjn4hMCERHmqNXoYeNa+KWeFfA5bLGiqWrqRGSE3M75YE/puRFJYSRIyGaL4Gy4Mru8Fhrzhp+z1jgEPegsnajBvaoUWjLzm9M2/giW+HhHXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q523LtGT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D993C4CEF1;
-	Fri,  9 Jan 2026 12:15:10 +0000 (UTC)
+	 MIME-Version; b=kuBqGXMdOXl/f1PzPguaI3vnI1lk1MNEGzaO/gn+iw4HOCOBI0Kdn4EEC/BhWZJSvOiFUkEQaUvAUOVqVhOCJes400kuQIAIS0eoBID7s7UwbsLq2Wh6h3eCQ/6IHDbOd3YY4wFAiBVyIlWK+jeVZn+yP5DlxtZwd3uFNZhyQq0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vNojd3p+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F43FC4CEF1;
+	Fri,  9 Jan 2026 12:42:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960911;
-	bh=A5awVj2CMJ9suDOlpH5vsr9+HG/GTcK2CGdzvtlRelU=;
+	s=korg; t=1767962524;
+	bh=XBY5n6rzc9mb2w42ZA4+A/vFwzKkykDNvupR1jISmDE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q523LtGT5ovkKT9uZ6DOOj1FD0KA3HdG3W6YtOH063jzD/nfY64LK/7FA3uza9/XM
-	 xetS1OtqG9/VVC7PkQnIIFepcUs2VOV6HrOjIsS3NZlkvgCky/zDCtD0GIuXn3SmIS
-	 sk1K+4b6YeyfmwSk6D/Ln7hCvgkRh6vsNw5SzE4s=
+	b=vNojd3p+VeZiUi0fF3XM21nCZtaRz/KSoMqWXmacQD0wuT7YGowPuG/dG7CviaLk1
+	 9b6cdbGAZXUQNrblpAvpbyaKyl7ncqa2s/OcK/+cP2wWnlZJE1jMeVlWJnTmB+WoHR
+	 suCQzuqSJ+mL9R1hGD7Hh8E4KUy/AQKyyHyEo8o4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zilin Guan <zilin@seu.edu.cn>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Aloka Dixit <quic_alokad@quicinc.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 535/737] ksmbd: Fix memory leak in get_file_all_info()
+Subject: [PATCH 6.1 396/634] mac80211: support RNR for EMA AP
 Date: Fri,  9 Jan 2026 12:41:14 +0100
-Message-ID: <20260109112154.121369458@linuxfoundation.org>
+Message-ID: <20260109112132.430658027@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +60,243 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zilin Guan <zilin@seu.edu.cn>
+From: Aloka Dixit <quic_alokad@quicinc.com>
 
-[ Upstream commit 0c56693b06a68476ba113db6347e7897475f9e4c ]
+[ Upstream commit 68b9bea267bfc1259e195dcac1bf69db0c0c28da ]
 
-In get_file_all_info(), if vfs_getattr() fails, the function returns
-immediately without freeing the allocated filename, leading to a memory
-leak.
+Generate EMA beacons, each including MBSSID and RNR elements at a given
+index. If number of stored RNR elements is more than the number of
+MBSSID elements then add those in every EMA beacon.
 
-Fix this by freeing the filename before returning in this error case.
-
-Fixes: 5614c8c487f6a ("ksmbd: replace generic_fillattr with vfs_getattr")
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Aloka Dixit <quic_alokad@quicinc.com>
+Link: https://lore.kernel.org/r/20230323113801.6903-3-quic_alokad@quicinc.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Stable-dep-of: a519be2f5d95 ("wifi: mac80211: do not use old MBSSID elements")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/smb2pdu.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/mac80211/cfg.c         | 63 +++++++++++++++++++++++++++++++++++---
+ net/mac80211/ieee80211_i.h | 21 +++++++++++--
+ net/mac80211/tx.c          | 10 ++++++
+ 3 files changed, 86 insertions(+), 8 deletions(-)
 
-diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
-index 3ed78decdca4..f4b3798279d9 100644
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -4912,8 +4912,10 @@ static int get_file_all_info(struct ksmbd_work *work,
+diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+index 72dd534492bf..a25d647c1c4b 100644
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -1087,6 +1087,23 @@ ieee80211_copy_mbssid_beacon(u8 *pos, struct cfg80211_mbssid_elems *dst,
+ 	return offset;
+ }
  
- 	ret = vfs_getattr(&fp->filp->f_path, &stat, STATX_BASIC_STATS,
- 			  AT_STATX_SYNC_AS_STAT);
--	if (ret)
-+	if (ret) {
-+		kfree(filename);
- 		return ret;
++static int
++ieee80211_copy_rnr_beacon(u8 *pos, struct cfg80211_rnr_elems *dst,
++			  struct cfg80211_rnr_elems *src)
++{
++	int i, offset = 0;
++
++	for (i = 0; i < src->cnt; i++) {
++		memcpy(pos + offset, src->elem[i].data, src->elem[i].len);
++		dst->elem[i].len = src->elem[i].len;
++		dst->elem[i].data = pos + offset;
++		offset += dst->elem[i].len;
++	}
++	dst->cnt = src->cnt;
++
++	return offset;
++}
++
+ static int ieee80211_assign_beacon(struct ieee80211_sub_if_data *sdata,
+ 				   struct ieee80211_link_data *link,
+ 				   struct cfg80211_beacon_data *params,
+@@ -1094,6 +1111,7 @@ static int ieee80211_assign_beacon(struct ieee80211_sub_if_data *sdata,
+ 				   const struct ieee80211_color_change_settings *cca)
+ {
+ 	struct cfg80211_mbssid_elems *mbssid = NULL;
++	struct cfg80211_rnr_elems *rnr = NULL;
+ 	struct beacon_data *new, *old;
+ 	int new_head_len, new_tail_len;
+ 	int size, err;
+@@ -1125,11 +1143,21 @@ static int ieee80211_assign_beacon(struct ieee80211_sub_if_data *sdata,
+ 	if (params->mbssid_ies) {
+ 		mbssid = params->mbssid_ies;
+ 		size += struct_size(new->mbssid_ies, elem, mbssid->cnt);
+-		size += ieee80211_get_mbssid_beacon_len(mbssid, mbssid->cnt);
++		if (params->rnr_ies) {
++			rnr = params->rnr_ies;
++			size += struct_size(new->rnr_ies, elem, rnr->cnt);
++		}
++		size += ieee80211_get_mbssid_beacon_len(mbssid, rnr,
++							mbssid->cnt);
+ 	} else if (old && old->mbssid_ies) {
+ 		mbssid = old->mbssid_ies;
+ 		size += struct_size(new->mbssid_ies, elem, mbssid->cnt);
+-		size += ieee80211_get_mbssid_beacon_len(mbssid, mbssid->cnt);
++		if (old && old->rnr_ies) {
++			rnr = old->rnr_ies;
++			size += struct_size(new->rnr_ies, elem, rnr->cnt);
++		}
++		size += ieee80211_get_mbssid_beacon_len(mbssid, rnr,
++							mbssid->cnt);
+ 	}
+ 
+ 	new = kzalloc(size, GFP_KERNEL);
+@@ -1140,7 +1168,7 @@ static int ieee80211_assign_beacon(struct ieee80211_sub_if_data *sdata,
+ 
+ 	/*
+ 	 * pointers go into the block we allocated,
+-	 * memory is | beacon_data | head | tail | mbssid_ies
++	 * memory is | beacon_data | head | tail | mbssid_ies | rnr_ies
+ 	 */
+ 	new->head = ((u8 *) new) + sizeof(*new);
+ 	new->tail = new->head + new_head_len;
+@@ -1152,7 +1180,13 @@ static int ieee80211_assign_beacon(struct ieee80211_sub_if_data *sdata,
+ 
+ 		new->mbssid_ies = (void *)pos;
+ 		pos += struct_size(new->mbssid_ies, elem, mbssid->cnt);
+-		ieee80211_copy_mbssid_beacon(pos, new->mbssid_ies, mbssid);
++		pos += ieee80211_copy_mbssid_beacon(pos, new->mbssid_ies,
++						    mbssid);
++		if (rnr) {
++			new->rnr_ies = (void *)pos;
++			pos += struct_size(new->rnr_ies, elem, rnr->cnt);
++			ieee80211_copy_rnr_beacon(pos, new->rnr_ies, rnr);
++		}
+ 		/* update bssid_indicator */
+ 		link_conf->bssid_indicator =
+ 			ilog2(__roundup_pow_of_two(mbssid->cnt + 1));
+@@ -1448,6 +1482,7 @@ static void ieee80211_free_next_beacon(struct ieee80211_link_data *link)
+ 		return;
+ 
+ 	kfree(link->u.ap.next_beacon->mbssid_ies);
++	kfree(link->u.ap.next_beacon->rnr_ies);
+ 	kfree(link->u.ap.next_beacon);
+ 	link->u.ap.next_beacon = NULL;
+ }
+@@ -3360,6 +3395,7 @@ cfg80211_beacon_dup(struct cfg80211_beacon_data *beacon)
+ 
+ 	if (beacon->mbssid_ies)
+ 		len += ieee80211_get_mbssid_beacon_len(beacon->mbssid_ies,
++						       beacon->rnr_ies,
+ 						       beacon->mbssid_ies->cnt);
+ 
+ 	new_beacon = kzalloc(sizeof(*new_beacon) + len, GFP_KERNEL);
+@@ -3375,6 +3411,18 @@ cfg80211_beacon_dup(struct cfg80211_beacon_data *beacon)
+ 			kfree(new_beacon);
+ 			return NULL;
+ 		}
++
++		if (beacon->rnr_ies && beacon->rnr_ies->cnt) {
++			new_beacon->rnr_ies =
++				kzalloc(struct_size(new_beacon->rnr_ies,
++						    elem, beacon->rnr_ies->cnt),
++					GFP_KERNEL);
++			if (!new_beacon->rnr_ies) {
++				kfree(new_beacon->mbssid_ies);
++				kfree(new_beacon);
++				return NULL;
++			}
++		}
+ 	}
+ 
+ 	pos = (u8 *)(new_beacon + 1);
+@@ -3414,10 +3462,15 @@ cfg80211_beacon_dup(struct cfg80211_beacon_data *beacon)
+ 		memcpy(pos, beacon->probe_resp, beacon->probe_resp_len);
+ 		pos += beacon->probe_resp_len;
+ 	}
+-	if (beacon->mbssid_ies && beacon->mbssid_ies->cnt)
++	if (beacon->mbssid_ies && beacon->mbssid_ies->cnt) {
+ 		pos += ieee80211_copy_mbssid_beacon(pos,
+ 						    new_beacon->mbssid_ies,
+ 						    beacon->mbssid_ies);
++		if (beacon->rnr_ies && beacon->rnr_ies->cnt)
++			pos += ieee80211_copy_rnr_beacon(pos,
++							 new_beacon->rnr_ies,
++							 beacon->rnr_ies);
 +	}
  
- 	ksmbd_debug(SMB, "filename = %s\n", filename);
- 	delete_pending = ksmbd_inode_pending_delete(fp);
+ 	/* might copy -1, meaning no changes requested */
+ 	new_beacon->ftm_responder = beacon->ftm_responder;
+diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
+index d08aa09002df..64f8d8f2b799 100644
+--- a/net/mac80211/ieee80211_i.h
++++ b/net/mac80211/ieee80211_i.h
+@@ -269,6 +269,7 @@ struct beacon_data {
+ 	u16 cntdwn_counter_offsets[IEEE80211_MAX_CNTDWN_COUNTERS_NUM];
+ 	u8 cntdwn_current_counter;
+ 	struct cfg80211_mbssid_elems *mbssid_ies;
++	struct cfg80211_rnr_elems *rnr_ies;
+ 	struct rcu_head rcu_head;
+ };
+ 
+@@ -1165,20 +1166,34 @@ ieee80211_vif_get_shift(struct ieee80211_vif *vif)
+ }
+ 
+ static inline int
+-ieee80211_get_mbssid_beacon_len(struct cfg80211_mbssid_elems *elems, u8 i)
++ieee80211_get_mbssid_beacon_len(struct cfg80211_mbssid_elems *elems,
++				struct cfg80211_rnr_elems *rnr_elems,
++				u8 i)
+ {
+ 	int len = 0;
+ 
+ 	if (!elems || !elems->cnt || i > elems->cnt)
+ 		return 0;
+ 
+-	if (i < elems->cnt)
+-		return elems->elem[i].len;
++	if (i < elems->cnt) {
++		len = elems->elem[i].len;
++		if (rnr_elems) {
++			len += rnr_elems->elem[i].len;
++			for (i = elems->cnt; i < rnr_elems->cnt; i++)
++				len += rnr_elems->elem[i].len;
++		}
++		return len;
++	}
+ 
+ 	/* i == elems->cnt, calculate total length of all MBSSID elements */
+ 	for (i = 0; i < elems->cnt; i++)
+ 		len += elems->elem[i].len;
+ 
++	if (rnr_elems) {
++		for (i = 0; i < rnr_elems->cnt; i++)
++			len += rnr_elems->elem[i].len;
++	}
++
+ 	return len;
+ }
+ 
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index 854bad6fbe19..5b7587cda883 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -5149,6 +5149,15 @@ ieee80211_beacon_add_mbssid(struct sk_buff *skb, struct beacon_data *beacon,
+ 	if (i < beacon->mbssid_ies->cnt) {
+ 		skb_put_data(skb, beacon->mbssid_ies->elem[i].data,
+ 			     beacon->mbssid_ies->elem[i].len);
++
++		if (beacon->rnr_ies && beacon->rnr_ies->cnt) {
++			skb_put_data(skb, beacon->rnr_ies->elem[i].data,
++				     beacon->rnr_ies->elem[i].len);
++
++			for (i = beacon->mbssid_ies->cnt; i < beacon->rnr_ies->cnt; i++)
++				skb_put_data(skb, beacon->rnr_ies->elem[i].data,
++					     beacon->rnr_ies->elem[i].len);
++		}
+ 		return;
+ 	}
+ 
+@@ -5186,6 +5195,7 @@ ieee80211_beacon_get_ap(struct ieee80211_hw *hw,
+ 	 * tail length, maximum TIM length and multiple BSSID length
+ 	 */
+ 	mbssid_len = ieee80211_get_mbssid_beacon_len(beacon->mbssid_ies,
++						     beacon->rnr_ies,
+ 						     ema_index);
+ 
+ 	skb = dev_alloc_skb(local->tx_headroom + beacon->head_len +
 -- 
 2.51.0
 
