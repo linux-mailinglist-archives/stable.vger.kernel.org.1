@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-207750-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207132-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62014D0A20B
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:01:02 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9350CD09AEB
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:32:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 13DC6301E15B
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:50:06 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 4902D3061F6E
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:19:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6394535BDC9;
-	Fri,  9 Jan 2026 12:49:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA04635A94A;
+	Fri,  9 Jan 2026 12:19:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CdEZhVyP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rmH+dPcE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2643935BDA8;
-	Fri,  9 Jan 2026 12:49:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D5FE35A948;
+	Fri,  9 Jan 2026 12:19:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962941; cv=none; b=loc9iTe49k2n/3yCaswdtk8yHe4fto2W8+F0U1OLQ3YORBrWDaUkoLTNEMpJ/YgxJaX3mP9Dt/Jm6UMWAtLWIfY5Qtr6a8Eodofc/r6zeTJ0Y2g6fTOvMePL39Q8g45rqJwuXn6eKjZQREx/+9g5I3uyxEaGHCnug6cjQ/hmQD8=
+	t=1767961182; cv=none; b=Fngeg7JyA/2fkQrr1pJrh5DiROaWnfGysveN+Wt3tHRH4kbO+XA3gmH1W87fSfXvP1CHfQU8JQ+qHDDHt3nZvQDDH1s81wJVDvr4ov6Kdkiro9pT8zRVk524emnx2FfFZ/llqQ0PkZcC+OvE4RVOj4+A/ZueA1RVtQ/EPvxTV38=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962941; c=relaxed/simple;
-	bh=fL3iR2AnJA+w1z/X7AcoF4C1+kxCsc+ZhaOVNVG+/pc=;
+	s=arc-20240116; t=1767961182; c=relaxed/simple;
+	bh=mhxTAE/fWqAYULPT6DYLJI4Paw7c2DuW59jpofXHV/w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lmIFM5hpABQsTJgZDD4tYpX7iqgCuE8EpURjGv5Z3WA3PaKoVOBK004ZAOhBx7zeMjYX5mYuYc3bEEEicaTwQh9DVA+KktObC5/EydFBtTBukdgN0m5l9RNrx9hX/Eyvhj63yFNykFEBiKTR0/4NwtctclsOGIBeZEsb5NFx8Bo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CdEZhVyP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4186C16AAE;
-	Fri,  9 Jan 2026 12:49:00 +0000 (UTC)
+	 MIME-Version; b=uyaS8bRVVyA2BDQgpMEHiU8lYcwhQlSezPDZ+AJ0AHOGAt0EjzS/TmT7NTXyAAtBAF7YA2MHrcv51jkh1Jia570plKcyR5OYBAZyJZ3LfThkWAhvHPDTDsmZzQ64D9sB+YRd3vF2l5Vdc77PntU/FqMWyi1uxtysKOAY2UFSOQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rmH+dPcE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 187BDC4CEF1;
+	Fri,  9 Jan 2026 12:19:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962941;
-	bh=fL3iR2AnJA+w1z/X7AcoF4C1+kxCsc+ZhaOVNVG+/pc=;
+	s=korg; t=1767961182;
+	bh=mhxTAE/fWqAYULPT6DYLJI4Paw7c2DuW59jpofXHV/w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CdEZhVyP5wI0ge0bpH2NN/Zt7RAgEaHckGWsbXQDwqT02MDKt0o0RmFuqt5tU0SHJ
-	 seadCybJPnXavDQ2ENOYYjzI/OevM5BfWtXLgKeNdKVHq62R7UeEdA5uXdEyxGaX+t
-	 e9egeixXJkjZioGvU4tminuOocG6yQol2UpXME8I=
+	b=rmH+dPcE4iB8w/m3p7oEjGf5nbTuHBml6iisUhunLXOWeGCDRedyvCPIUkFe+pDca
+	 eWX0FIk2R0D32YkWIHqu1AafcgZN3g3YRhqquGKqyGY+N8sAH6QFB6PhJLh96QHVsV
+	 Dy7oKOOTDHq98v7lBi0YIewUbiIw8q4fS3uYGo/8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@google.com>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 524/634] mm/damon/tests/core-kunit: handle memory alloc failure from damon_test_aggregate()
+	CK Hu <ck.hu@mediatek.com>,
+	Johan Hovold <johan@kernel.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 663/737] drm/mediatek: Fix probe memory leak
 Date: Fri,  9 Jan 2026 12:43:22 +0100
-Message-ID: <20260109112137.282107724@linuxfoundation.org>
+Message-ID: <20260109112158.981670085@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SeongJae Park <sj@kernel.org>
+From: Johan Hovold <johan@kernel.org>
 
-commit f79f2fc44ebd0ed655239046be3e80e8804b5545 upstream.
+[ Upstream commit 5e49200593f331cd0629b5376fab9192f698e8ef ]
 
-damon_test_aggregate() is assuming all dynamic memory allocation in it
-will succeed.  Those are indeed likely in the real use cases since those
-allocations are too small to fail, but theoretically those could fail.  In
-the case, inappropriate memory access can happen.  Fix it by appropriately
-cleanup pre-allocated memory and skip the execution of the remaining tests
-in the failure cases.
+The Mediatek DRM driver allocates private data for components without a
+platform driver but as the lifetime is tied to each component device,
+the memory is never freed.
 
-Link: https://lkml.kernel.org/r/20251101182021.74868-5-sj@kernel.org
-Fixes: 17ccae8bb5c9 ("mm/damon: add kunit tests")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: Brendan Higgins <brendan.higgins@linux.dev>
-Cc: David Gow <davidgow@google.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: <stable@vger.kernel.org>	[5.15+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Tie the allocation lifetime to the DRM platform device so that the
+memory is released on probe failure (e.g. probe deferral) and when the
+driver is unbound.
+
+Fixes: c0d36de868a6 ("drm/mediatek: Move clk info from struct mtk_ddp_comp to sub driver private data")
+Cc: stable@vger.kernel.org	# 5.12
+Cc: CK Hu <ck.hu@mediatek.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://patchwork.kernel.org/project/dri-devel/patch/20250923152340.18234-3-johan@kernel.org/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/damon/core-test.h |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/gpu/drm/mediatek/mtk_drm_ddp_comp.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/mm/damon/core-test.h
-+++ b/mm/damon/core-test.h
-@@ -97,8 +97,15 @@ static void damon_test_aggregate(struct
- 	struct damon_region *r;
- 	int it, ir;
+--- a/drivers/gpu/drm/mediatek/mtk_drm_ddp_comp.c
++++ b/drivers/gpu/drm/mediatek/mtk_drm_ddp_comp.c
+@@ -588,7 +588,7 @@ int mtk_ddp_comp_init(struct device_node
+ 	    type == MTK_DSI)
+ 		return 0;
  
-+	if (!ctx)
-+		kunit_skip(test, "ctx alloc fail");
-+
- 	for (it = 0; it < 3; it++) {
- 		t = damon_new_target();
-+		if (!t) {
-+			damon_destroy_ctx(ctx);
-+			kunit_skip(test, "target alloc fail");
-+		}
- 		damon_add_target(ctx, t);
- 	}
+-	priv = devm_kzalloc(comp->dev, sizeof(*priv), GFP_KERNEL);
++	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
+ 	if (!priv)
+ 		return -ENOMEM;
  
-@@ -106,6 +113,10 @@ static void damon_test_aggregate(struct
- 	damon_for_each_target(t, ctx) {
- 		for (ir = 0; ir < 3; ir++) {
- 			r = damon_new_region(saddr[it][ir], eaddr[it][ir]);
-+			if (!r) {
-+				damon_destroy_ctx(ctx);
-+				kunit_skip(test, "region alloc fail");
-+			}
- 			r->nr_accesses = accesses[it][ir];
- 			damon_add_region(r, t);
- 		}
 
 
 
