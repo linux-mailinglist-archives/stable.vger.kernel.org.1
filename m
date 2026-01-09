@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-207313-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206670-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 709A8D09CF1
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:39:08 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC9CDD0940D
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:06:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 36BBC300766E
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:28:21 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 324E03033B93
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:57:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A9F32EC54D;
-	Fri,  9 Jan 2026 12:28:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF6732DEA6F;
+	Fri,  9 Jan 2026 11:57:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O4BALS87"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f3Vixbeb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E41ED23F417;
-	Fri,  9 Jan 2026 12:28:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82045335561;
+	Fri,  9 Jan 2026 11:57:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961700; cv=none; b=b42cbiMQqZ0Uu1iVp7jEM5tQXfSeZ2af5flvL7pQVZ2yKeepsTeLg2HkRDgAOntl7FpoXjTAxAwIfKqfP0pqc/znMDlpNO3AsEDxmQ3ZYP12J6En7c9JtYOS3dGCg79ASfD13iA78C5CsCVbD9Ncj08u/yglSM4BG0BhsJX2SV0=
+	t=1767959865; cv=none; b=h470fw+f7rk9rGYZaw/GceXeb+6VQE+qdC2l1wTtoTGS4+lpDmaNvXClqNqyHmGuxpwMONAmojTBzCKcdjiTmss3Sxh/PHdtBWeIGzTj9Q5Xdm2MBhs7AeJPvNsfl8bb3xlIIoaj63asWWmCbQGg+c/ndtfS4LCDTBIdGu+Z3+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961700; c=relaxed/simple;
-	bh=Aa3cYXA+8jsVU/9YQneXAtrbSNCzaz1BE8bEV/Cqjk8=;
+	s=arc-20240116; t=1767959865; c=relaxed/simple;
+	bh=fVVY7XCk2dHwANiNigyRFg9djbl9qj+D8S3ECYKGDdA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZJHQpdq/ieuxKXIMpBYdHTv6s/l31F3KynTov1qNUGYOO8qdz66wE8oUd+K1t9y1NiUeYYXbh0xMm0qIXSncesJ0EVq7TNcaSqYKkKSRbHkifMyBUPurA1u50YKN7Us/H3nYev6hlHYTiOLlmwjohXerouW8qZdwmxVPeNdCiF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O4BALS87; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7079EC4CEF1;
-	Fri,  9 Jan 2026 12:28:19 +0000 (UTC)
+	 MIME-Version; b=O8mSMjsS2RS9OBKGXXx/6Ue2l6UZyYVzBSd1ISf9ceU24u0hyWzSgjBFeV8HvnB98BYg9jsyO8OF8PLvjcdkHwKrqQPoaxtZQJo6faKp91JOTrizsrgpqIJDjG7SizCWXqcJqu8zQb2P0sjK06BBhsS29YV7Jd/u+16Tdt7R1Yc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f3Vixbeb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D7D4C4CEF1;
+	Fri,  9 Jan 2026 11:57:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961699;
-	bh=Aa3cYXA+8jsVU/9YQneXAtrbSNCzaz1BE8bEV/Cqjk8=;
+	s=korg; t=1767959865;
+	bh=fVVY7XCk2dHwANiNigyRFg9djbl9qj+D8S3ECYKGDdA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O4BALS87pLvd3cW/aak+kTk/HKGnNXEmiwPU+KJrAd8PL1/E5Ya+/uPqRtMnLs3hD
-	 qTyIB/l6Xc5hNDTJSvwavqiDt16sOx+T7+eLtacDkIYmAn3NwupfCai7ehUEc+FJyx
-	 YVvcpWfoOt4mZETG9g5YnRC0xbZi+87/IgZEba0Q=
+	b=f3VixbebT7TacsxPfqbA7rbip+ELM5mQ9o6+rPyLVoyrAHXsEgwT8vxIgCKAxncoD
+	 l5OcR3nEtfOoEL1Zrj3xI5EvJs+/e/BF0JtU42bj+5hA7oPoBBx8B7glFaaEuQhDuq
+	 1Rh0GH9po1ipnO0Ethz6xIL7qXtMdQ8N4vlknI1M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Egorenkov <egorenar@linux.ibm.com>,
-	Mete Durlu <meted@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
+	Jianglei Nie <niejianglei2021@163.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Abdun Nihaal <abdun.nihaal@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 063/634] s390/smp: Fix fallback CPU detection
+Subject: [PATCH 6.6 202/737] staging: fbtft: core: fix potential memory leak in fbtft_probe_common()
 Date: Fri,  9 Jan 2026 12:35:41 +0100
-Message-ID: <20260109112119.817365938@linuxfoundation.org>
+Message-ID: <20260109112141.600985524@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: Jianglei Nie <niejianglei2021@163.com>
 
-[ Upstream commit 07a75d08cfa1b883a6e1256666e5f0617ee99231 ]
+[ Upstream commit 47d3949a9b04cbcb0e10abae30c2b53e98706e11 ]
 
-In case SCLP CPU detection does not work a fallback mechanism using SIGP is
-in place. Since a cleanup this does not work correctly anymore: new CPUs
-are only considered if their type matches the boot CPU.
+fbtft_probe_common() allocates a memory chunk for "info" with
+fbtft_framebuffer_alloc(). When "display->buswidth == 0" is true, the
+function returns without releasing the "info", which will lead to a
+memory leak.
 
-Before the cleanup the information if a CPU type should be considered was
-also part of a structure generated by the fallback mechanism and indicated
-that a CPU type should not be considered when adding CPUs.
+Fix it by calling fbtft_framebuffer_release() when "display->buswidth
+== 0" is true.
 
-Since the rework a global SCLP state is used instead. If the global SCLP
-state indicates that the CPU type should be considered and the fallback
-mechanism is used, there may be a mismatch with CPU types if CPUs are
-added. This can lead to a system with only a single CPU even tough there
-are many more CPUs.
-
-Address this by simply copying the boot cpu type into the generated data
-structure from the fallback mechanism.
-
-Reported-by: Alexander Egorenkov <egorenar@linux.ibm.com>
-Fixes: d08d94306e90 ("s390/smp: cleanup core vs. cpu in the SCLP interface")
-Reviewed-by: Mete Durlu <meted@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Fixes: c296d5f9957c ("staging: fbtft: core support")
+Signed-off-by: Jianglei Nie <niejianglei2021@163.com>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Acked-by: Abdun Nihaal <abdun.nihaal@gmail.com>
+Link: https://patch.msgid.link/20251112192235.2088654-1-andriy.shevchenko@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/kernel/smp.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/staging/fbtft/fbtft-core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/s390/kernel/smp.c b/arch/s390/kernel/smp.c
-index 436dbf4d743d8..8346cb75643ca 100644
---- a/arch/s390/kernel/smp.c
-+++ b/arch/s390/kernel/smp.c
-@@ -758,6 +758,7 @@ static void __ref smp_get_core_info(struct sclp_core_info *info, int early)
- 				continue;
- 			info->core[info->configured].core_id =
- 				address >> smp_cpu_mt_shift;
-+			info->core[info->configured].type = boot_core_type;
- 			info->configured++;
- 		}
- 		info->combined = info->configured;
+diff --git a/drivers/staging/fbtft/fbtft-core.c b/drivers/staging/fbtft/fbtft-core.c
+index dce721f440c5e..5dfe2d7a73e37 100644
+--- a/drivers/staging/fbtft/fbtft-core.c
++++ b/drivers/staging/fbtft/fbtft-core.c
+@@ -1225,8 +1225,8 @@ int fbtft_probe_common(struct fbtft_display *display,
+ 	par->pdev = pdev;
+ 
+ 	if (display->buswidth == 0) {
+-		dev_err(dev, "buswidth is not set\n");
+-		return -EINVAL;
++		ret = dev_err_probe(dev, -EINVAL, "buswidth is not set\n");
++		goto out_release;
+ 	}
+ 
+ 	/* write register functions */
 -- 
 2.51.0
 
