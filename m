@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-207461-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206894-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9DEBD09FD6
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:49:47 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA36AD094D0
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:09:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A291A30E16E2
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:35:22 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4CD67301EF11
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:08:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEAC3359701;
-	Fri,  9 Jan 2026 12:35:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E26CC338911;
+	Fri,  9 Jan 2026 12:08:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K/AUyDKA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UULlKkJc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92E0C352952;
-	Fri,  9 Jan 2026 12:35:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A41F5334C24;
+	Fri,  9 Jan 2026 12:08:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962121; cv=none; b=Cqa+JLqHyoPYWg1mJJ2vioBYfEsjpOWBf5HvPi8mLsYLoOWbOQqVyaqvWrGhD3tB1G6zyJXtle/3hKiKD2r1iRSNmMsAomXZZo5X9bU01SCa5detPhSHjmcZLrCEDGSp3BryXniSbk/Cfhl2TifTUbP0dxAdoEroGKwErXPQq4I=
+	t=1767960502; cv=none; b=BdyLfxIxv/gEvCkExGi8esrCNPY1pnRuBxe/KqsRIzPFv/hABwIbWOb/AqUMRaZR3qYCj/1g+RaJbvCqFWVYPtdC3Rtyo8U2CYydd2o+dKi5koub1+6Eglch97yLqXAp+a7W/xYfGJwmsc9kzN3ReAXj7cw4LVQDVzmP+2JrAjI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962121; c=relaxed/simple;
-	bh=45Yfmpz2FigljUsNYGDIM4dtwyB+bCk01hme1RsLviw=;
+	s=arc-20240116; t=1767960502; c=relaxed/simple;
+	bh=fz8g8w8DQYURkMjCsnrH0eGKdzGlupbaYonBMhlZLFg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ya4/accdmVPwpiDcEeRF3QM5hyMBefJhEILtC4IxGfP4YbiuB898+pZMIa4xhvlBjbslARN/s6zVxB6/2+YJHdcJC428vSI3Owqcx0FJXfBd+pNHooyJsclBqJpJfEGFAUH2PpOORDbWv2/moFtHSQLJxhrIn9Zq3elJQTZcO+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K/AUyDKA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0B14C4CEF1;
-	Fri,  9 Jan 2026 12:35:20 +0000 (UTC)
+	 MIME-Version; b=cOm1RHNE/zcD7mbaADbuyiTRILZH7kp8YF7hHnBr07MvYXSwF2pNgURdcmUTulO5UUNMtz3ExskVNmp/F03cJnvcW65rM9T+a5EQL+vGmUjOF8+lWD5KpATy7yFbKY0kCEWzJN7S095BI2RmJODvouheM8a//6w8WHdAax2qGtw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UULlKkJc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E4C3C16AAE;
+	Fri,  9 Jan 2026 12:08:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962121;
-	bh=45Yfmpz2FigljUsNYGDIM4dtwyB+bCk01hme1RsLviw=;
+	s=korg; t=1767960502;
+	bh=fz8g8w8DQYURkMjCsnrH0eGKdzGlupbaYonBMhlZLFg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K/AUyDKAXNkl1I1eMBEqSRhEKWKDJ/iVq7cXapkjprjPe6052OydYQYX71PpTpj4w
-	 MdQkDjUUHYua5vzrc4m3fid65Li25yb1GMseOPYg9Mn7vrpHHvvfRHgy8b5u+yRUeb
-	 BXwyQQ+XwpSKQYDkdlzqgZc9sKwSoOiUqB4G7VP4=
+	b=UULlKkJcEmE37OuKjRJ+r7qiMRFfeFZzsmuNxu16n8FAB7/dgqteGgxTg6CXsBoXh
+	 ZRCeo8T4x+dewd73HCl4PEnpQy1eCtI7mWvOo6qOqSlBIfTdhqS28lTQzQGFr2iNHV
+	 sVQgkmG6FAMBpgjCsXThZE/hz56MRnf9Vk7s4VkI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonas Gorski <jonas.gorski@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Alexey Simakov <bigalex934@gmail.com>,
-	Michael Chan <michael.chan@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Bernd Schubert <bschubert@ddn.com>,
+	Miklos Szeredi <mszeredi@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 254/634] broadcom: b44: prevent uninitialized value usage
-Date: Fri,  9 Jan 2026 12:38:52 +0100
-Message-ID: <20260109112127.097555187@linuxfoundation.org>
+Subject: [PATCH 6.6 394/737] fuse: Always flush the page cache before FOPEN_DIRECT_IO write
+Date: Fri,  9 Jan 2026 12:38:53 +0100
+Message-ID: <20260109112148.821499648@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +60,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexey Simakov <bigalex934@gmail.com>
+From: Bernd Schubert <bschubert@ddn.com>
 
-[ Upstream commit 50b3db3e11864cb4e18ff099cfb38e11e7f87a68 ]
+[ Upstream commit 1ce120dcefc056ce8af2486cebbb77a458aad4c3 ]
 
-On execution path with raised B44_FLAG_EXTERNAL_PHY, b44_readphy()
-leaves bmcr value uninitialized and it is used later in the code.
+This was done as condition on direct_io_allow_mmap, but I believe
+this is not right, as a file might be open two times - once with
+write-back enabled another time with FOPEN_DIRECT_IO.
 
-Add check of this flag at the beginning of the b44_nway_reset() and
-exit early of the function with restarting autonegotiation if an
-external PHY is used.
-
-Fixes: 753f492093da ("[B44]: port to native ssb support")
-Reviewed-by: Jonas Gorski <jonas.gorski@gmail.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Alexey Simakov <bigalex934@gmail.com>
-Reviewed-by: Michael Chan <michael.chan@broadcom.com>
-Link: https://patch.msgid.link/20251205155815.4348-1-bigalex934@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Bernd Schubert <bschubert@ddn.com>
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/b44.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/fuse/file.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/broadcom/b44.c b/drivers/net/ethernet/broadcom/b44.c
-index 5b6209f5a8017..b3e3e869c4379 100644
---- a/drivers/net/ethernet/broadcom/b44.c
-+++ b/drivers/net/ethernet/broadcom/b44.c
-@@ -1811,6 +1811,9 @@ static int b44_nway_reset(struct net_device *dev)
- 	u32 bmcr;
- 	int r;
+diff --git a/fs/fuse/file.c b/fs/fuse/file.c
+index 2055af1ffaf3..1dd9ef5398d7 100644
+--- a/fs/fuse/file.c
++++ b/fs/fuse/file.c
+@@ -1463,7 +1463,7 @@ ssize_t fuse_direct_io(struct fuse_io_priv *io, struct iov_iter *iter,
+ 	if (!ia)
+ 		return -ENOMEM;
  
-+	if (bp->flags & B44_FLAG_EXTERNAL_PHY)
-+		return phy_ethtool_nway_reset(dev);
-+
- 	spin_lock_irq(&bp->lock);
- 	b44_readphy(bp, MII_BMCR, &bmcr);
- 	b44_readphy(bp, MII_BMCR, &bmcr);
+-	if (fopen_direct_io && fc->direct_io_allow_mmap) {
++	if (fopen_direct_io) {
+ 		res = filemap_write_and_wait_range(mapping, pos, pos + count - 1);
+ 		if (res) {
+ 			fuse_io_free(ia);
 -- 
 2.51.0
 
