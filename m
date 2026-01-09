@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-206869-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207471-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFE3CD0967A
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:15:42 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 673A9D09F2B
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:47:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CD3B330EF8EC
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:07:15 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 26CE7306D71F
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:35:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D486335A92E;
-	Fri,  9 Jan 2026 12:07:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B56E035B155;
+	Fri,  9 Jan 2026 12:35:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tc738+i+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KhCLBkFF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90FD333BBBD;
-	Fri,  9 Jan 2026 12:07:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7895935B137;
+	Fri,  9 Jan 2026 12:35:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960431; cv=none; b=aTkaByWakG7FCw1byT/IZCPsaw9DVNMFL77HSDr4UEwtT8uK4uktCXV51wgrrHtr6c22xJLzJw3D3PEEOIFn9leQs4I00Hp3HrkUIgHAQrnUbhBfM4ahrE+PMjgR9u7jPLpKMMXMJUG+J4w+6p3AoGfPeD4g01592nDeNW4acdE=
+	t=1767962149; cv=none; b=h64JxY9/ZXEfwVFgrmNzVmA6g0MChoU33hOWb96oXs+OD67TpDvEXMwLtmM9xeREOu4KR9ayEhZL5xl2njM9RRM+rhUdwyHkaROvdykCjGT7ggGSHMRwli3TgYUhpPydq3UunguMOW1XwPH6h5/evrVYWO1uC7+j3BHVtIEFouI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960431; c=relaxed/simple;
-	bh=+jhtF2w5o39ujaWBZPlppcombXM0SqcL6p65ZQUF6XQ=;
+	s=arc-20240116; t=1767962149; c=relaxed/simple;
+	bh=eIP2TFBITNFk3J4yy4aglw/crnNTpdrGpxkfo0k/5kk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nr6O+Dz7mJdopKGF2SB+HdQT3AKjFgRt9v4EnIWX3vEWWFnxLYBVzGEyrYyIW6FrMxC7S17i83tZGV1bRhmUzQkQdQcMthT6daEPc2Sh35ZeIVDUILEUO2VkD4K+zdhd1HGYMahftA92WHCOSMfX/o0vDeW+rHBpUlS6ZCwGIyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tc738+i+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21F6AC4CEF1;
-	Fri,  9 Jan 2026 12:07:10 +0000 (UTC)
+	 MIME-Version; b=i5o/N1Bui+gErjR/iIXzT54Mro2rdbZzE0wSmsz2PoW012rc/ufmrk3OIb8XdP4tZzhbN7N1+9xICQ4h+3Zx8ZfmzS2WGpwCZ8Kd3laHZYLGQICid0rBPjYtCIqtayXu2xilimvzIQ09HELwCBcmwT1Fobk1VzKFVNHbTUYqtho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KhCLBkFF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2884C4CEF1;
+	Fri,  9 Jan 2026 12:35:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960431;
-	bh=+jhtF2w5o39ujaWBZPlppcombXM0SqcL6p65ZQUF6XQ=;
+	s=korg; t=1767962149;
+	bh=eIP2TFBITNFk3J4yy4aglw/crnNTpdrGpxkfo0k/5kk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tc738+i+NgiNL/hTjkrgz5FKfqDPVVPpSr7u2DgEyubzwBP+hqNlM8QT/cf02GS2/
-	 6gNI+zi75JssPs1IGjH5FKCIV3VWYGtOAnCcLhyd/VAe1MJ+xHoCcCHS6DWfGJhbjX
-	 uzeue49lcDnnZADiLQYy8n5QriaNiib2hh0Z8PY0=
+	b=KhCLBkFFY691gLotJbmL0XqESy/fpZ0f9iUQJBzWhR74coUQkVZFw1Ity4X2sEp1j
+	 K8Eh7TVpBSBWO+ts+G0iy+ZvwKuSV8NOdm/5iTy8Tm2N2iYx8uqZM5mjaIeULP0Mwm
+	 LSeoCMM9qWtBHlrFitoFVSWbXwTCDxXoGZUifU9M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hongyu Xie <xiehongyu1@kylinos.cn>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>,
+	Moshe Shemesh <moshe@nvidia.com>,
+	Shay Drori <shayd@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 402/737] usb: xhci: limit run_graceperiod for only usb 3.0 devices
+Subject: [PATCH 6.1 263/634] net/mlx5: fw reset, clear reset requested on drain_fw_reset
 Date: Fri,  9 Jan 2026 12:39:01 +0100
-Message-ID: <20260109112149.122663140@linuxfoundation.org>
+Message-ID: <20260109112127.433870577@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,84 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hongyu Xie <xiehongyu1@kylinos.cn>
+From: Moshe Shemesh <moshe@nvidia.com>
 
-[ Upstream commit 8d34983720155b8f05de765f0183d9b0e1345cc0 ]
+[ Upstream commit 89a898d63f6f588acf5c104c65c94a38b68c69a6 ]
 
-run_graceperiod blocks usb 2.0 devices from auto suspending after
-xhci_start for 500ms.
+drain_fw_reset() waits for ongoing firmware reset events and blocks new
+event handling, but does not clear the reset requested flag, and may
+keep sync reset polling.
 
-Log shows:
-[   13.387170] xhci_hub_control:1271: xhci-hcd PNP0D10:03: Get port status 7-1 read: 0x2a0, return 0x100
-[   13.387177] hub_event:5779: hub 7-0:1.0: state 7 ports 1 chg 0000 evt 0000
-[   13.387182] hub_suspend:3903: hub 7-0:1.0: hub_suspend
-[   13.387188] hcd_bus_suspend:2250: usb usb7: bus auto-suspend, wakeup 1
-[   13.387191] hcd_bus_suspend:2279: usb usb7: suspend raced with wakeup event
-[   13.387193] hcd_bus_resume:2303: usb usb7: usb auto-resume
-[   13.387296] hub_event:5779: hub 3-0:1.0: state 7 ports 1 chg 0000 evt 0000
-[   13.393343] handle_port_status:2034: xhci-hcd PNP0D10:02: handle_port_status: starting usb5 port polling.
-[   13.393353] xhci_hub_control:1271: xhci-hcd PNP0D10:02: Get port status 5-1 read: 0x206e1, return 0x10101
-[   13.400047] hub_suspend:3903: hub 3-0:1.0: hub_suspend
-[   13.403077] hub_resume:3948: hub 7-0:1.0: hub_resume
-[   13.403080] xhci_hub_control:1271: xhci-hcd PNP0D10:03: Get port status 7-1 read: 0x2a0, return 0x100
-[   13.403085] hub_event:5779: hub 7-0:1.0: state 7 ports 1 chg 0000 evt 0000
-[   13.403087] hub_suspend:3903: hub 7-0:1.0: hub_suspend
-[   13.403090] hcd_bus_suspend:2250: usb usb7: bus auto-suspend, wakeup 1
-[   13.403093] hcd_bus_suspend:2279: usb usb7: suspend raced with wakeup event
-[   13.403095] hcd_bus_resume:2303: usb usb7: usb auto-resume
-[   13.405002] handle_port_status:1913: xhci-hcd PNP0D10:04: Port change event, 9-1, id 1, portsc: 0x6e1
-[   13.405016] hub_activate:1169: usb usb5-port1: status 0101 change 0001
-[   13.405026] xhci_clear_port_change_bit:658: xhci-hcd PNP0D10:02: clear port1 connect change, portsc: 0x6e1
-[   13.413275] hcd_bus_suspend:2250: usb usb3: bus auto-suspend, wakeup 1
-[   13.419081] hub_resume:3948: hub 7-0:1.0: hub_resume
-[   13.419086] xhci_hub_control:1271: xhci-hcd PNP0D10:03: Get port status 7-1 read: 0x2a0, return 0x100
-[   13.419095] hub_event:5779: hub 7-0:1.0: state 7 ports 1 chg 0000 evt 0000
-[   13.419100] hub_suspend:3903: hub 7-0:1.0: hub_suspend
-[   13.419106] hcd_bus_suspend:2250: usb usb7: bus auto-suspend, wakeup 1
-[   13.419110] hcd_bus_suspend:2279: usb usb7: suspend raced with wakeup event
-[   13.419112] hcd_bus_resume:2303: usb usb7: usb auto-resume
-[   13.420455] handle_port_status:2034: xhci-hcd PNP0D10:04: handle_port_status: starting usb9 port polling.
-[   13.420493] handle_port_status:1913: xhci-hcd PNP0D10:05: Port change event, 10-1, id 1, portsc: 0x6e1
-[   13.425332] hcd_bus_suspend:2279: usb usb3: suspend raced with wakeup event
-[   13.431931] handle_port_status:2034: xhci-hcd PNP0D10:05: handle_port_status: starting usb10 port polling.
-[   13.435080] hub_resume:3948: hub 7-0:1.0: hub_resume
-[   13.435084] xhci_hub_control:1271: xhci-hcd PNP0D10:03: Get port status 7-1 read: 0x2a0, return 0x100
-[   13.435092] hub_event:5779: hub 7-0:1.0: state 7 ports 1 chg 0000 evt 0000
-[   13.435096] hub_suspend:3903: hub 7-0:1.0: hub_suspend
-[   13.435102] hcd_bus_suspend:2250: usb usb7: bus auto-suspend, wakeup 1
-[   13.435106] hcd_bus_suspend:2279: usb usb7: suspend raced with wakeup event
+To fix it, call mlx5_sync_reset_clear_reset_requested() to clear the
+flag, stop sync reset polling, and resume health polling, ensuring
+health issues are still detected after the firmware reset drain.
 
-usb7 and other usb 2.0 root hub were rapidly toggling between suspend
-and resume states. More, "suspend raced with wakeup event" confuses people.
-
-So, limit run_graceperiod for only usb 3.0 devices
-
-Signed-off-by: Hongyu Xie <xiehongyu1@kylinos.cn>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://patch.msgid.link/20251119142417.2820519-2-mathias.nyman@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 16d42d313350 ("net/mlx5: Drain fw_reset when removing device")
+Signed-off-by: Moshe Shemesh <moshe@nvidia.com>
+Reviewed-by: Shay Drori <shayd@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/1765284977-1363052-2-git-send-email-tariqt@nvidia.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-hub.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/usb/host/xhci-hub.c b/drivers/usb/host/xhci-hub.c
-index d3d535ed00b5..61642c8d529f 100644
---- a/drivers/usb/host/xhci-hub.c
-+++ b/drivers/usb/host/xhci-hub.c
-@@ -1669,7 +1669,7 @@ int xhci_hub_status_data(struct usb_hcd *hcd, char *buf)
- 	 * SS devices are only visible to roothub after link training completes.
- 	 * Keep polling roothubs for a grace period after xHC start
- 	 */
--	if (xhci->run_graceperiod) {
-+	if (hcd->speed >= HCD_USB3 && xhci->run_graceperiod) {
- 		if (time_before(jiffies, xhci->run_graceperiod))
- 			status = 1;
- 		else
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c b/drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c
+index de130c75de64e..bb62dad48b306 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c
+@@ -534,7 +534,8 @@ void mlx5_drain_fw_reset(struct mlx5_core_dev *dev)
+ 	cancel_work_sync(&fw_reset->reset_reload_work);
+ 	cancel_work_sync(&fw_reset->reset_now_work);
+ 	cancel_work_sync(&fw_reset->reset_abort_work);
+-	cancel_delayed_work(&fw_reset->reset_timeout_work);
++	if (test_bit(MLX5_FW_RESET_FLAGS_RESET_REQUESTED, &fw_reset->reset_flags))
++		mlx5_sync_reset_clear_reset_requested(dev, true);
+ }
+ 
+ int mlx5_fw_reset_init(struct mlx5_core_dev *dev)
 -- 
 2.51.0
 
