@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-207180-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207149-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2731D09BE0
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:35:53 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11E66D09B77
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:34:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 431F43078E94
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:22:04 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 72B11310C44C
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:20:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAFBA35A926;
-	Fri,  9 Jan 2026 12:22:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E39335A92E;
+	Fri,  9 Jan 2026 12:20:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DSNDcVwn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yqeaWEJY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59EAF334C24;
-	Fri,  9 Jan 2026 12:21:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0214A32AAB5;
+	Fri,  9 Jan 2026 12:20:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961320; cv=none; b=Wbj4admpqLYYQtReGQUMkCyiVF+YDbJmC/MY2rYC12PBg9w1ioLgBnS4A2dRCFcjNYgHR3x6qJld98WshYk3zz82iHg/tj7GK3xSK3ePAgGNwvX4M2L3GbhyVntnd9E8g4oh2Vpe9Dy+ngt5LEQCPcCLa2COpftsxnEVDp09Y84=
+	t=1767961231; cv=none; b=C+1wImDZjz7Ve4lNm74ivZGr/ppUtkESkBPvjVtdpyjmXTjF4008DnVXaaLcihQt5CF9yoQijF9yunaFGlJSaNAPHHIdcvDTy/H7lY/B13f9q8jYJsV3Rm8/k+tXLYMFQDdXg8MtYUyLlzaMF+DSeZh9UkPw2Eb/W6AuBuycknY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961320; c=relaxed/simple;
-	bh=VpnLxVkVCzeUQFDTXmg+DBwWpnAumuAnbGTSprzYak8=;
+	s=arc-20240116; t=1767961231; c=relaxed/simple;
+	bh=wouDCOrxsWLOgQjLWg0n19PCQ7Uye3Y6aqEdWm8EcL0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lLTcKV8n6BIxJwJrH130WhtHoS9ZCs/U5nzoF24wQQ/w9pFwEb2z8OIBmf+aejkLnMbDSr5sNnFmEXPED3D+s/XucKv1suI5K3Lcq7F+WV87R6//2/DmWLjtoKQCz4W47oZKc75wjVwaSg6M6g4kXyKsXdPZSKlXicnMpC3ikWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DSNDcVwn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B387C4CEF1;
-	Fri,  9 Jan 2026 12:21:59 +0000 (UTC)
+	 MIME-Version; b=MTQweIJXZBboS7W+zNLXzg7EhskollZXf/3ibv0X4eUn1kU8AmfBd99GFCqTijYau+kQuIC711PAETaW+9yidfJ6lQZssaSJ8KGWmFkQxzSUCkr1Zqt9Q3eJFRrdYqaePTJoQFrvhNTHUNMZf0EGd+pVD7LIuQ0V6eNRHGvHAwc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yqeaWEJY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7923CC4CEF1;
+	Fri,  9 Jan 2026 12:20:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961319;
-	bh=VpnLxVkVCzeUQFDTXmg+DBwWpnAumuAnbGTSprzYak8=;
+	s=korg; t=1767961230;
+	bh=wouDCOrxsWLOgQjLWg0n19PCQ7Uye3Y6aqEdWm8EcL0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DSNDcVwn5ssHMIbaubgcXqwUZZzePER6OshciEp5yBORJejgHUw69WaGJSHzc+mi5
-	 QqUwOPeXcEudgS/Wq2t0tos292C5NIxzDCCDsK1hGylrVD7aSDNk1lkrmWpv1U9NZv
-	 zkxiUFbu0jLRoW18OJfqUERIM/8iO8W6Fuww7kF8=
+	b=yqeaWEJY3uirT2vOU1EAxFgziwV9+0wDvyGxNhw/JovnmQtCUGD3Qe45x5GbWkYAc
+	 x5fx8o5yIwIiJIo1yM6/lR0HdQF2FIRQTEkB/01QRVAUXUhO+JbFvKH2qPDUxasixL
+	 bhz1tkDeG03JyOrNillvoEaTikO456Q70zQlarbs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Chen Yu <xnguchen@sina.cn>
-Subject: [PATCH 6.6 680/737] net: dsa: sja1105: fix kasan out-of-bounds warning in sja1105_table_delete_entry()
-Date: Fri,  9 Jan 2026 12:43:39 +0100
-Message-ID: <20260109112159.635576291@linuxfoundation.org>
+	jefflexu@linux.alibaba.com,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Stefan Roesch <shr@devkernel.io>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 681/737] mm: fix arithmetic for bdi min_ratio
+Date: Fri,  9 Jan 2026 12:43:40 +0100
+Message-ID: <20260109112159.673905192@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
 References: <20260109112133.973195406@linuxfoundation.org>
@@ -65,47 +66,44 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Jingbo Xu <jefflexu@linux.alibaba.com>
 
-[ Upstream commit 5f2b28b79d2d1946ee36ad8b3dc0066f73c90481 ]
+commit e0646b7590084a5bf3b056d3ad871d9379d2c25a upstream.
 
-There are actually 2 problems:
-- deleting the last element doesn't require the memmove of elements
-  [i + 1, end) over it. Actually, element i+1 is out of bounds.
-- The memmove itself should move size - i - 1 elements, because the last
-  element is out of bounds.
+Since now bdi->min_ratio is part per million, fix the wrong arithmetic.
+Otherwise it will fail with -EINVAL when setting a reasonable min_ratio,
+as it tries to set min_ratio to (min_ratio * BDI_RATIO_SCALE) in
+percentage unit, which exceeds 100% anyway.
 
-The out-of-bounds element still remains out of bounds after being
-accessed, so the problem is only that we touch it, not that it becomes
-in active use. But I suppose it can lead to issues if the out-of-bounds
-element is part of an unmapped page.
+    # cat /sys/class/bdi/253\:0/min_ratio
+    0
+    # cat /sys/class/bdi/253\:0/max_ratio
+    100
+    # echo 1 > /sys/class/bdi/253\:0/min_ratio
+    -bash: echo: write error: Invalid argument
 
-Fixes: 6666cebc5e30 ("net: dsa: sja1105: Add support for VLAN operations")
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250318115716.2124395-4-vladimir.oltean@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Chen Yu <xnguchen@sina.cn>
+Link: https://lkml.kernel.org/r/20231219142508.86265-2-jefflexu@linux.alibaba.com
+Fixes: 8021fb3232f2 ("mm: split off __bdi_set_min_ratio() function")
+Signed-off-by: Jingbo Xu <jefflexu@linux.alibaba.com>
+Reported-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Stefan Roesch <shr@devkernel.io>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/sja1105/sja1105_static_config.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ mm/page-writeback.c |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/drivers/net/dsa/sja1105/sja1105_static_config.c
-+++ b/drivers/net/dsa/sja1105/sja1105_static_config.c
-@@ -1921,8 +1921,10 @@ int sja1105_table_delete_entry(struct sj
- 	if (i > table->entry_count)
- 		return -ERANGE;
+--- a/mm/page-writeback.c
++++ b/mm/page-writeback.c
+@@ -714,7 +714,6 @@ static int __bdi_set_min_ratio(struct ba
  
--	memmove(entries + i * entry_size, entries + (i + 1) * entry_size,
--		(table->entry_count - i) * entry_size);
-+	if (i + 1 < table->entry_count) {
-+		memmove(entries + i * entry_size, entries + (i + 1) * entry_size,
-+			(table->entry_count - i - 1) * entry_size);
-+	}
+ 	if (min_ratio > 100 * BDI_RATIO_SCALE)
+ 		return -EINVAL;
+-	min_ratio *= BDI_RATIO_SCALE;
  
- 	table->entry_count--;
- 
+ 	spin_lock_bh(&bdi_lock);
+ 	if (min_ratio > bdi->max_ratio) {
 
 
 
