@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-207527-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206919-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12F7BD09D7E
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:41:29 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E84E8D0973E
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:19:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 045D23024F53
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:38:31 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 6D7933063E6A
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:10:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 362C4335BCD;
-	Fri,  9 Jan 2026 12:38:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B8E035B143;
+	Fri,  9 Jan 2026 12:09:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WPMutUQ0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gGidwzfl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D67FC35B135;
-	Fri,  9 Jan 2026 12:38:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DFCD35A95D;
+	Fri,  9 Jan 2026 12:09:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962307; cv=none; b=IaZomq38kZTfOaQ+4hYMp4PHf4lrM4zZS7+FN2Rj8r+xkeq+VMPOuiu0iFhAgynoPhi8rU+WyHk8yEAYzOTSz5Vb0ONqgU3RXbhLSJp9tYFp9cpuBhN/TggsBoj5sxlSQgv/clcTEpc3oh97jwEAJOB4XPHHv4Jpe/x7UvfOWgU=
+	t=1767960573; cv=none; b=kGcCgb/hksg1zmsyIc7PwHEAOpyHd4ud1GaYNZIvjc/NixXtDQpfqKrPNje0P1ZvN1EDvYtklsnxpACrhVZx1F9UxD+4gdXnHxMctWx1j7VLlnYZWX4hnTUTM2NDDewuFt6tGUi0daq82j78TX+AqqHM+MJdIXp3wkwsTmodtM0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962307; c=relaxed/simple;
-	bh=mrSjzw9Oh/BWN4SWoeLe2J6tzEFh5nI1z3vPUJKylzg=;
+	s=arc-20240116; t=1767960573; c=relaxed/simple;
+	bh=iQXku+aYhhz5DiDjUO+hJFzTtM9bINVRvcHJ5Pk4p34=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=icO5DzMR5oljxZc5vY2fmUUmyJbIDXErNwWUA0o7Zo7zXCEHrr/SSgTNvWjhp2L2OeqH0ccGlb5pL2yjd0j+GIWy8QXKsA3o4KroiH09saMImYEqeSGxNwzFwSLxB/+jhcHs5UAdVIMO0IZlE51XNKQcrjd8zfdkcMVqoOuB+KU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WPMutUQ0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E96FC4CEF1;
-	Fri,  9 Jan 2026 12:38:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=dS2+MkEc91p/dCRMY0KfHdzOuRlNNx6exGGc2DaiUpuuAHP2YaSFOLycTd8GLkKxBes2lqBcdkPXUjuMcAOteqrm8GjoV2XNI2rgoDYcldwnkxPLFHoGTej4+jtoq/YhzKYqW9DRjvcJKJ4fWUU8QHDjW4UAoHmcO9u6qLDmfTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gGidwzfl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC5E3C16AAE;
+	Fri,  9 Jan 2026 12:09:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962307;
-	bh=mrSjzw9Oh/BWN4SWoeLe2J6tzEFh5nI1z3vPUJKylzg=;
+	s=korg; t=1767960573;
+	bh=iQXku+aYhhz5DiDjUO+hJFzTtM9bINVRvcHJ5Pk4p34=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WPMutUQ0ygR2dyOfJaxzgdWHs3CD2xLiDYCKByWtqZL62Afg7m5CUES1hmrZyU8Pg
-	 F8TJpXZGMNuZFXzHukxjogfYaCZyZsXiYc1BXiHVW4LjBk9PQRo+sQ5CUsxzYiF569
-	 ifkmeK5wHDlZzV0TAzdgI41VGYyTlFkNG/WN44dE=
+	b=gGidwzflY3PC5a8oVW5JfYuqUUqg8y7ziDgTkZ8Qw3tJOHVGF1bfyVbbWocJVd2OK
+	 uicGsNbr3DFXcIeAVEiuQEexTu90Nwq9u9ybU9BQNI5GowvWl4qMWeok54nPbFo7So
+	 hQ79WP5GRJ6pYUOCV0O+AQwG1cTH4Py/SIj7k2SI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Changcheng <chenchangcheng@kylinos.cn>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 312/634] usb: usb-storage: No additional quirks need to be added to the EL-R12 optical drive.
+	syzbot+632cf32276a9a564188d@syzkaller.appspotmail.com,
+	Chao Yu <chao@kernel.org>,
+	Deepanshu Kartikey <kartikey406@gmail.com>,
+	Jaegeuk Kim <jaegeuk@kernel.org>
+Subject: [PATCH 6.6 451/737] f2fs: invalidate dentry cache on failed whiteout creation
 Date: Fri,  9 Jan 2026 12:39:50 +0100
-Message-ID: <20260109112129.272403772@linuxfoundation.org>
+Message-ID: <20260109112150.960867916@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,71 +59,96 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Changcheng <chenchangcheng@kylinos.cn>
+From: Deepanshu Kartikey <kartikey406@gmail.com>
 
-[ Upstream commit 955a48a5353f4fe009704a9a4272a3adf627cd35 ]
+commit d33f89b34aa313f50f9a512d58dd288999f246b0 upstream.
 
-The optical drive of EL-R12 has the same vid and pid as INIC-3069,
-as follows:
-T:  Bus=02 Lev=02 Prnt=02 Port=01 Cnt=01 Dev#=  3 Spd=5000 MxCh= 0
-D:  Ver= 3.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
-P:  Vendor=13fd ProdID=3940 Rev= 3.10
-S:  Manufacturer=HL-DT-ST
-S:  Product= DVD+-RW GT80N
-S:  SerialNumber=423349524E4E38303338323439202020
-C:* #Ifs= 1 Cfg#= 1 Atr=80 MxPwr=144mA
-I:* If#= 0 Alt= 0 #EPs= 2 Cls=08(stor.) Sub=02 Prot=50 Driver=usb-storage
-E:  Ad=83(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=0a(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+F2FS can mount filesystems with corrupted directory depth values that
+get runtime-clamped to MAX_DIR_HASH_DEPTH. When RENAME_WHITEOUT
+operations are performed on such directories, f2fs_rename performs
+directory modifications (updating target entry and deleting source
+entry) before attempting to add the whiteout entry via f2fs_add_link.
 
-This will result in the optical drive device also adding
-the quirks of US_FL_NO_ATA_1X. When performing an erase operation,
-it will fail, and the reason for the failure is as follows:
-[  388.967742] sr 5:0:0:0: [sr0] tag#0 Send: scmd 0x00000000d20c33a7
-[  388.967742] sr 5:0:0:0: [sr0] tag#0 CDB: ATA command pass through(12)/Blank a1 11 00 00 00 00 00 00 00 00 00 00
-[  388.967773] sr 5:0:0:0: [sr0] tag#0 Done: SUCCESS Result: hostbyte=DID_TARGET_FAILURE driverbyte=DRIVER_OK cmd_age=0s
-[  388.967773] sr 5:0:0:0: [sr0] tag#0 CDB: ATA command pass through(12)/Blank a1 11 00 00 00 00 00 00 00 00 00 00
-[  388.967803] sr 5:0:0:0: [sr0] tag#0 Sense Key : Illegal Request [current]
-[  388.967803] sr 5:0:0:0: [sr0] tag#0 Add. Sense: Invalid field in cdb
-[  388.967803] sr 5:0:0:0: [sr0] tag#0 scsi host busy 1 failed 0
-[  388.967803] sr 5:0:0:0: Notifying upper driver of completion (result 8100002)
-[  388.967834] sr 5:0:0:0: [sr0] tag#0 0 sectors total, 0 bytes done.
+If f2fs_add_link fails due to the corrupted directory structure, the
+function returns an error to VFS, but the partial directory
+modifications have already been committed to disk. VFS assumes the
+entire rename operation failed and does not update the dentry cache,
+leaving stale mappings.
 
-For the EL-R12 standard optical drive, all operational commands
-and usage scenarios were tested without adding the IGNORE_RESIDUE quirks,
-and no issues were encountered. It can be reasonably concluded
-that removing the IGNORE_RESIDUE quirks has no impact.
+In the error path, VFS does not call d_move() to update the dentry
+cache. This results in new_dentry still pointing to the old inode
+(new_inode) which has already had its i_nlink decremented to zero.
+The stale cache causes subsequent operations to incorrectly reference
+the freed inode.
 
-Signed-off-by: Chen Changcheng <chenchangcheng@kylinos.cn>
-Link: https://patch.msgid.link/20251121064020.29332-1-chenchangcheng@kylinos.cn
+This causes subsequent operations to use cached dentry information that
+no longer matches the on-disk state. When a second rename targets the
+same entry, VFS attempts to decrement i_nlink on the stale inode, which
+may already have i_nlink=0, triggering a WARNING in drop_nlink().
+
+Example sequence:
+1. First rename (RENAME_WHITEOUT): file2 → file1
+   - f2fs updates file1 entry on disk (points to inode 8)
+   - f2fs deletes file2 entry on disk
+   - f2fs_add_link(whiteout) fails (corrupted directory)
+   - Returns error to VFS
+   - VFS does not call d_move() due to error
+   - VFS cache still has: file1 → inode 7 (stale!)
+   - inode 7 has i_nlink=0 (already decremented)
+
+2. Second rename: file3 → file1
+   - VFS uses stale cache: file1 → inode 7
+   - Tries to drop_nlink on inode 7 (i_nlink already 0)
+   - WARNING in drop_nlink()
+
+Fix this by explicitly invalidating old_dentry and new_dentry when
+f2fs_add_link fails during whiteout creation. This forces VFS to
+refresh from disk on subsequent operations, ensuring cache consistency
+even when the rename partially succeeds.
+
+Reproducer:
+1. Mount F2FS image with corrupted i_current_depth
+2. renameat2(file2, file1, RENAME_WHITEOUT)
+3. renameat2(file3, file1, 0)
+4. System triggers WARNING in drop_nlink()
+
+Fixes: 7e01e7ad746b ("f2fs: support RENAME_WHITEOUT")
+Reported-by: syzbot+632cf32276a9a564188d@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=632cf32276a9a564188d
+Suggested-by: Chao Yu <chao@kernel.org>
+Link: https://lore.kernel.org/all/20251022233349.102728-1-kartikey406@gmail.com/ [v1]
+Cc: stable@vger.kernel.org
+Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/storage/unusual_uas.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/f2fs/namei.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/usb/storage/unusual_uas.h b/drivers/usb/storage/unusual_uas.h
-index 1477e31d7763..b695f5ba9a40 100644
---- a/drivers/usb/storage/unusual_uas.h
-+++ b/drivers/usb/storage/unusual_uas.h
-@@ -98,7 +98,7 @@ UNUSUAL_DEV(0x125f, 0xa94a, 0x0160, 0x0160,
- 		US_FL_NO_ATA_1X),
- 
- /* Reported-by: Benjamin Tissoires <benjamin.tissoires@redhat.com> */
--UNUSUAL_DEV(0x13fd, 0x3940, 0x0000, 0x9999,
-+UNUSUAL_DEV(0x13fd, 0x3940, 0x0309, 0x0309,
- 		"Initio Corporation",
- 		"INIC-3069",
- 		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
--- 
-2.51.0
-
+--- a/fs/f2fs/namei.c
++++ b/fs/f2fs/namei.c
+@@ -1044,9 +1044,11 @@ static int f2fs_rename(struct mnt_idmap
+ 	if (whiteout) {
+ 		set_inode_flag(whiteout, FI_INC_LINK);
+ 		err = f2fs_add_link(old_dentry, whiteout);
+-		if (err)
++		if (err) {
++			d_invalidate(old_dentry);
++			d_invalidate(new_dentry);
+ 			goto put_out_dir;
+-
++		}
+ 		spin_lock(&whiteout->i_lock);
+ 		whiteout->i_state &= ~I_LINKABLE;
+ 		spin_unlock(&whiteout->i_lock);
 
 
 
