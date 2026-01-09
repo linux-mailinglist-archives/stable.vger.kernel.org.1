@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-206708-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207343-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBE22D093F5
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:06:21 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94391D09E5C
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:44:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B7E3230E4693
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:59:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 75E6C306D738
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:29:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B64833C53C;
-	Fri,  9 Jan 2026 11:59:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA1C535A952;
+	Fri,  9 Jan 2026 12:29:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qWRnF3Vd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hnq53MJj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E41A432BF21;
-	Fri,  9 Jan 2026 11:59:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BAF9324B2B;
+	Fri,  9 Jan 2026 12:29:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767959973; cv=none; b=FXumWTlUN9GvP3usJ2q9xanIFPL6KJSwa6JYUmynGWTyttw/IVOFg4zASwzcbYIr3kgzXjzwKZZcL4JisZOIpTKMDDZq4cORP4rHCiEzOyQL9DYJWZkvW2guq++oaV2bxdLNmEmSxa/pmfoSNVE9sSWAdE9rez/byZPRAww/gmw=
+	t=1767961785; cv=none; b=H+8rGAc+Hl5tmJSryyhocgMm0eIBgD1j9M1BE66uxR3QBZ4mhQTppPDDJhm4qRpVsugcu8DFKi3JGiJheryQrsepwicdKf6nfda17iUuqT1RUQXiAK+zwlgg0BAGlm7ienRNrL5crnC9Z8c+Aah2vX49t2RnDSimGHOhTNzkdBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767959973; c=relaxed/simple;
-	bh=zmk407QINqb/S4qQpQe/7IAVIjnJOUg7AM6rxz8mMHA=;
+	s=arc-20240116; t=1767961785; c=relaxed/simple;
+	bh=5zzYtTehdbnUZzZezNDwpX1mRGz8NLVKX/NxcUS8O3I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cNwZPEuB4T84UoqDxjdjBTdtkYOnQL7g22BFZphMMTrQtyAzqceHmuJUZT8tU9BFYpKcEi659wOj/2pWYeMfxeVbggSeFK5NsZ4V4ISD+DRDw939vx1zyjE05GpHp/vjfGULx+2pFtiJQgMG4Es1jC5mU039cs++cIoBZVx5+DQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qWRnF3Vd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 728AAC4CEF1;
-	Fri,  9 Jan 2026 11:59:32 +0000 (UTC)
+	 MIME-Version; b=nr6rEK64vCZvR/HpHI6FvJGXPEoOv5R9oJMtZ4Shxxq/V1BV8xm0zs8fgha1TeYYhJZnrMgnudQgeB9ZGsuV5lsEDdJGguP4hKhjIR/Xk/LXiGmUC7pLhB1Okx5pAGg5T46KBUPXvahw2mtQrNVIIx8G/6IZJAcTJsJZmgOFi4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hnq53MJj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17AFAC4CEF1;
+	Fri,  9 Jan 2026 12:29:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767959972;
-	bh=zmk407QINqb/S4qQpQe/7IAVIjnJOUg7AM6rxz8mMHA=;
+	s=korg; t=1767961785;
+	bh=5zzYtTehdbnUZzZezNDwpX1mRGz8NLVKX/NxcUS8O3I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qWRnF3VdN7Wbskv9v6VpVvXdSSMpxHgbllSdpdTliv+I1xmS+hJRWQt2u8aH3LExp
-	 C89LadtgZnui51L2P6imwahfS2R1JbPehZAY6AZosRd5pCyW4MC8HprrbSqFE0n3T5
-	 C9j4zhFkHly5EMKxOWJUFITLMcSEZnNivih28C1w=
+	b=Hnq53MJjgMUNizWJixjgdNoY7d4bmsbL/PymeItwvfsW02FJodMErx9ARCzae+WW8
+	 Xm+V17mBxFyfFB8v4ZeGXU46nzam/Jc3BLmePRcvAGwUv+OD2M8XTM/CjVj9iCQRst
+	 GR0rmF7BIP1EEYHokKS8F5JwO0ACscj5gWLAOnOU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Abdun Nihaal <nihaal@cse.iitm.ac.in>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 240/737] netfilter: flowtable: check for maximum number of encapsulations in bridge vlan
-Date: Fri,  9 Jan 2026 12:36:19 +0100
-Message-ID: <20260109112143.025523459@linuxfoundation.org>
+Subject: [PATCH 6.1 102/634] wifi: cw1200: Fix potential memory leak in cw1200_bh_rx_helper()
+Date: Fri,  9 Jan 2026 12:36:20 +0100
+Message-ID: <20260109112121.271215974@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,49 +60,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Abdun Nihaal <nihaal@cse.iitm.ac.in>
 
-[ Upstream commit 634f3853cc98d73bdec8918010ee29b06981583e ]
+[ Upstream commit 5e88e864118c20e63a1571d0ff0a152e5d684959 ]
 
-Add a sanity check to skip path discovery if the maximum number of
-encapsulation is reached. While at it, check for underflow too.
+In one of the error paths, the memory allocated for skb_rx is not freed.
+Fix that by freeing it before returning.
 
-Fixes: 26267bf9bb57 ("netfilter: flowtable: bridge vlan hardware offload and switchdev")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: a910e4a94f69 ("cw1200: add driver for the ST-E CW1100 & CW1200 WLAN chipsets")
+Signed-off-by: Abdun Nihaal <nihaal@cse.iitm.ac.in>
+Link: https://patch.msgid.link/20251110175316.106591-1-nihaal@cse.iitm.ac.in
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_flow_offload.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/net/wireless/st/cw1200/bh.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/net/netfilter/nft_flow_offload.c b/net/netfilter/nft_flow_offload.c
-index 1894032a7971c..75dddcaa9aa37 100644
---- a/net/netfilter/nft_flow_offload.c
-+++ b/net/netfilter/nft_flow_offload.c
-@@ -140,12 +140,19 @@ static void nft_dev_path_info(const struct net_device_path_stack *stack,
- 				info->ingress_vlans |= BIT(info->num_encaps - 1);
- 				break;
- 			case DEV_PATH_BR_VLAN_TAG:
-+				if (info->num_encaps >= NF_FLOW_TABLE_ENCAP_MAX) {
-+					info->indev = NULL;
-+					break;
-+				}
- 				info->encap[info->num_encaps].id = path->bridge.vlan_id;
- 				info->encap[info->num_encaps].proto = path->bridge.vlan_proto;
- 				info->num_encaps++;
- 				break;
- 			case DEV_PATH_BR_VLAN_UNTAG:
--				info->num_encaps--;
-+				if (WARN_ON_ONCE(info->num_encaps-- == 0)) {
-+					info->indev = NULL;
-+					break;
-+				}
- 				break;
- 			case DEV_PATH_BR_VLAN_KEEP:
- 				break;
+diff --git a/drivers/net/wireless/st/cw1200/bh.c b/drivers/net/wireless/st/cw1200/bh.c
+index 3b4ded2ac801c..37232ee220375 100644
+--- a/drivers/net/wireless/st/cw1200/bh.c
++++ b/drivers/net/wireless/st/cw1200/bh.c
+@@ -317,10 +317,12 @@ static int cw1200_bh_rx_helper(struct cw1200_common *priv,
+ 
+ 	if (wsm_id & 0x0400) {
+ 		int rc = wsm_release_tx_buffer(priv, 1);
+-		if (WARN_ON(rc < 0))
++		if (WARN_ON(rc < 0)) {
++			dev_kfree_skb(skb_rx);
+ 			return rc;
+-		else if (rc > 0)
++		} else if (rc > 0) {
+ 			*tx = 1;
++		}
+ 	}
+ 
+ 	/* cw1200_wsm_rx takes care on SKB livetime */
 -- 
 2.51.0
 
