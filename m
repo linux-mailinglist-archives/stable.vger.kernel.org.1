@@ -1,52 +1,50 @@
-Return-Path: <stable+bounces-207697-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207699-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93D4FD0A3D1
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:10:24 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3444D0A43D
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:11:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 495AB32512CB
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:48:59 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 4DB3231B62EF
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:49:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2808A35C194;
-	Fri,  9 Jan 2026 12:46:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB64B35C191;
+	Fri,  9 Jan 2026 12:46:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a3avrs8L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qakj0bcI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFA3235C188;
-	Fri,  9 Jan 2026 12:46:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C64935CB63;
+	Fri,  9 Jan 2026 12:46:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962789; cv=none; b=VzUMcYzoGOVij7wx+pqPZo7CJzJKE3mvp0N+NX1MEaqH9lg0PjMZs3QH0yo2AYTbN6LG1B3E/sGMTm1VNOaxX3xFcft77E366Tc7ecEoLn92BPoCMFfq04ST04tmyBQ95tVMVZS16QiMqDNukN4/xA3DVedXNA1wWsg0Ph/jl9c=
+	t=1767962795; cv=none; b=OqTRMvedpgOgSS+IYTH/a2dYgZLEFgGC3yLtnYz7hTuiu2FOBVcKmaj4XtLm6K0zaSqtb9fKp9tyNTR5tKtqDK2GukN27PuG8CSdvFLQjU5bvMFFgqi7lrLUPv2h7qva5RsECEQwkDKQVPO46fAbGyKeif+zJYjkWRmlchgjTLs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962789; c=relaxed/simple;
-	bh=91/0aviGNe8jhfWVkcK2mnNIDCW8Wj0t8et7mDvPVo8=;
+	s=arc-20240116; t=1767962795; c=relaxed/simple;
+	bh=QNcMjhOWRsjdO+c0T6jfdz3Q6MWF82oLmrGGv0LhAmA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sYvxieYCQl8qWCyn34TBKaAadRtWe/mpHbaPFwMNRVyqvGujiokM8m/BKdV/qAiD1FSQCPTw7i9ZCu3Q4mklp6m5LHyo/vPYs5gC72VV8JHiAHCduY1nQcBZekSQWqJGINwU9g80/28KPXMDT4uEeVFypsQOycfwQ5EkbfP3sqA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a3avrs8L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BE24C4CEF1;
-	Fri,  9 Jan 2026 12:46:29 +0000 (UTC)
+	 MIME-Version; b=djEVm+Ii7eqJblPg0+0uHuUzroD5pLxpfUCh+F2Xdf4U6I7i8ql8J/fvq//Ker3mtiX+SjtMuYuljNQd4PhU2dqUFy4ydDMP43ipmZoj4GtgopnP+noHpdelrreTtuHkiilgwOTxrTKMWikcVOb+TPGQo9RdlFsJeWsIsyAfxFg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qakj0bcI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28F2AC4CEF1;
+	Fri,  9 Jan 2026 12:46:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962789;
-	bh=91/0aviGNe8jhfWVkcK2mnNIDCW8Wj0t8et7mDvPVo8=;
+	s=korg; t=1767962795;
+	bh=QNcMjhOWRsjdO+c0T6jfdz3Q6MWF82oLmrGGv0LhAmA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a3avrs8LDpuWBHT3SIsM6hJgbnxEsLVHgHgpbAb/4qTQhSHg2tBiUqh9xDt2DdzRl
-	 heijig4WcxI1sru7a9MKcSaAY0PwLcc9f+InmaXNaUmNAr0u7dDiB41Cn9LEYzHCQK
-	 zInuuRyJuEbj9dIohCpnOAAvSdevDOqhgv3AGUKc=
+	b=qakj0bcIbIp2C7jrNwsAuH+rlxgkFd5izAfHzD8IHDtAb3mNa66mL64rwtrO+U7Yd
+	 GPYu/c5wwOTFfxPhcfGAZVI/3zJkvYYn0QjL6h6i0yT1qfSfFRVRmZGdzwB3ILfi8B
+	 SQyCqvzw2Kkv0x0Poz7tELAXFGg3eoVQ3LIIJAB4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxime Ripard <mripard@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Johan Hovold <johan@kernel.org>,
-	Joerg Roedel <joerg.roedel@amd.com>
-Subject: [PATCH 6.1 456/634] iommu/sun50i: fix device leak on of_xlate()
-Date: Fri,  9 Jan 2026 12:42:14 +0100
-Message-ID: <20260109112134.703761994@linuxfoundation.org>
+	Hans de Goede <johannes.goede@oss.qualcomm.com>,
+	Jiri Kosina <jkosina@suse.com>
+Subject: [PATCH 6.1 458/634] HID: logitech-dj: Remove duplicate error logging
+Date: Fri,  9 Jan 2026 12:42:16 +0100
+Message-ID: <20260109112134.781941114@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
 References: <20260109112117.407257400@linuxfoundation.org>
@@ -65,35 +63,164 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Hans de Goede <johannes.goede@oss.qualcomm.com>
 
-commit f916109bf53864605d10bf6f4215afa023a80406 upstream.
+commit ca389a55d8b2d86a817433bf82e0602b68c4d541 upstream.
 
-Make sure to drop the reference taken to the iommu platform device when
-looking up its driver data during of_xlate().
+logi_dj_recv_query_paired_devices() and logi_dj_recv_switch_to_dj_mode()
+both have 2 callers which all log an error if the function fails. Move
+the error logging to inside these 2 functions to remove the duplicated
+error logging in the callers.
 
-Fixes: 4100b8c229b3 ("iommu: Add Allwinner H6 IOMMU driver")
-Cc: stable@vger.kernel.org	# 5.8
-Cc: Maxime Ripard <mripard@kernel.org>
-Acked-by: Robin Murphy <robin.murphy@arm.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
+While at it also move the logi_dj_recv_send_report() call error handling
+in logi_dj_recv_switch_to_dj_mode() to directly after the call. That call
+only fails if the report cannot be found and in that case it does nothing,
+so the msleep() is not necessary on failures.
+
+Fixes: 6f20d3261265 ("HID: logitech-dj: Fix error handling in logi_dj_recv_switch_to_dj_mode()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/sun50i-iommu.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/hid/hid-logitech-dj.c |   56 +++++++++++++++++-------------------------
+ 1 file changed, 23 insertions(+), 33 deletions(-)
 
---- a/drivers/iommu/sun50i-iommu.c
-+++ b/drivers/iommu/sun50i-iommu.c
-@@ -824,6 +824,8 @@ static int sun50i_iommu_of_xlate(struct
+--- a/drivers/hid/hid-logitech-dj.c
++++ b/drivers/hid/hid-logitech-dj.c
+@@ -805,7 +805,6 @@ static void delayedwork_callback(struct
+ 	struct dj_workitem workitem;
+ 	unsigned long flags;
+ 	int count;
+-	int retval;
  
- 	dev_iommu_priv_set(dev, platform_get_drvdata(iommu_pdev));
+ 	dbg_hid("%s\n", __func__);
  
-+	put_device(&iommu_pdev->dev);
+@@ -842,11 +841,7 @@ static void delayedwork_callback(struct
+ 		logi_dj_recv_destroy_djhid_device(djrcv_dev, &workitem);
+ 		break;
+ 	case WORKITEM_TYPE_UNKNOWN:
+-		retval = logi_dj_recv_query_paired_devices(djrcv_dev);
+-		if (retval) {
+-			hid_err(djrcv_dev->hidpp, "%s: logi_dj_recv_query_paired_devices error: %d\n",
+-				__func__, retval);
+-		}
++		logi_dj_recv_query_paired_devices(djrcv_dev);
+ 		break;
+ 	case WORKITEM_TYPE_EMPTY:
+ 		dbg_hid("%s: device list is empty\n", __func__);
+@@ -1239,8 +1234,10 @@ static int logi_dj_recv_query_paired_dev
+ 
+ 	djrcv_dev->last_query = jiffies;
+ 
+-	if (djrcv_dev->type != recvr_type_dj)
+-		return logi_dj_recv_query_hidpp_devices(djrcv_dev);
++	if (djrcv_dev->type != recvr_type_dj) {
++		retval = logi_dj_recv_query_hidpp_devices(djrcv_dev);
++		goto out;
++	}
+ 
+ 	dj_report = kzalloc(sizeof(struct dj_report), GFP_KERNEL);
+ 	if (!dj_report)
+@@ -1250,6 +1247,10 @@ static int logi_dj_recv_query_paired_dev
+ 	dj_report->report_type = REPORT_TYPE_CMD_GET_PAIRED_DEVICES;
+ 	retval = logi_dj_recv_send_report(djrcv_dev, dj_report);
+ 	kfree(dj_report);
++out:
++	if (retval < 0)
++		hid_err(djrcv_dev->hidpp, "%s error:%d\n", __func__, retval);
 +
- 	return iommu_fwspec_add_ids(dev, &id, 1);
+ 	return retval;
  }
  
+@@ -1275,6 +1276,8 @@ static int logi_dj_recv_switch_to_dj_mod
+ 								(u8)timeout;
+ 
+ 		retval = logi_dj_recv_send_report(djrcv_dev, dj_report);
++		if (retval)
++			goto out;
+ 
+ 		/*
+ 		 * Ugly sleep to work around a USB 3.0 bug when the receiver is
+@@ -1283,11 +1286,6 @@ static int logi_dj_recv_switch_to_dj_mod
+ 		 * 50 msec should gives enough time to the receiver to be ready.
+ 		 */
+ 		msleep(50);
+-
+-		if (retval) {
+-			kfree(dj_report);
+-			return retval;
+-		}
+ 	}
+ 
+ 	/*
+@@ -1313,7 +1311,12 @@ static int logi_dj_recv_switch_to_dj_mod
+ 			HIDPP_REPORT_SHORT_LENGTH, HID_OUTPUT_REPORT,
+ 			HID_REQ_SET_REPORT);
+ 
++out:
+ 	kfree(dj_report);
++
++	if (retval < 0)
++		hid_err(hdev, "%s error:%d\n", __func__, retval);
++
+ 	return retval;
+ }
+ 
+@@ -1835,11 +1838,8 @@ static int logi_dj_probe(struct hid_devi
+ 
+ 	if (has_hidpp) {
+ 		retval = logi_dj_recv_switch_to_dj_mode(djrcv_dev, 0);
+-		if (retval < 0) {
+-			hid_err(hdev, "%s: logi_dj_recv_switch_to_dj_mode returned error:%d\n",
+-				__func__, retval);
++		if (retval < 0)
+ 			goto switch_to_dj_mode_fail;
+-		}
+ 	}
+ 
+ 	/* This is enabling the polling urb on the IN endpoint */
+@@ -1857,15 +1857,11 @@ static int logi_dj_probe(struct hid_devi
+ 		spin_lock_irqsave(&djrcv_dev->lock, flags);
+ 		djrcv_dev->ready = true;
+ 		spin_unlock_irqrestore(&djrcv_dev->lock, flags);
+-		retval = logi_dj_recv_query_paired_devices(djrcv_dev);
+-		if (retval < 0) {
+-			hid_err(hdev, "%s: logi_dj_recv_query_paired_devices error:%d\n",
+-				__func__, retval);
+-			/*
+-			 * This can happen with a KVM, let the probe succeed,
+-			 * logi_dj_recv_queue_unknown_work will retry later.
+-			 */
+-		}
++		/*
++		 * This can fail with a KVM. Ignore errors to let the probe
++		 * succeed, logi_dj_recv_queue_unknown_work will retry later.
++		 */
++		logi_dj_recv_query_paired_devices(djrcv_dev);
+ 	}
+ 
+ 	return 0;
+@@ -1882,18 +1878,12 @@ hid_hw_start_fail:
+ #ifdef CONFIG_PM
+ static int logi_dj_reset_resume(struct hid_device *hdev)
+ {
+-	int retval;
+ 	struct dj_receiver_dev *djrcv_dev = hid_get_drvdata(hdev);
+ 
+ 	if (!djrcv_dev || djrcv_dev->hidpp != hdev)
+ 		return 0;
+ 
+-	retval = logi_dj_recv_switch_to_dj_mode(djrcv_dev, 0);
+-	if (retval < 0) {
+-		hid_err(hdev, "%s: logi_dj_recv_switch_to_dj_mode returned error:%d\n",
+-			__func__, retval);
+-	}
+-
++	logi_dj_recv_switch_to_dj_mode(djrcv_dev, 0);
+ 	return 0;
+ }
+ #endif
 
 
 
