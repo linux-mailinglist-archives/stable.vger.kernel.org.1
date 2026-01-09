@@ -1,50 +1,50 @@
-Return-Path: <stable+bounces-207715-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207726-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F783D0A3E6
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:10:53 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DB42D0A401
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:11:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CD6CF307FAAE
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:49:17 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 152F132D5AB3
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:49:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E05C35CBAA;
-	Fri,  9 Jan 2026 12:47:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7138235E530;
+	Fri,  9 Jan 2026 12:47:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GJuaWicb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xFh7tjeD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C75815ADB4;
-	Fri,  9 Jan 2026 12:47:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3525135C1AE;
+	Fri,  9 Jan 2026 12:47:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962841; cv=none; b=OHJVP2PwYp8CZUGMEVqRLyoCtsNE38r/R2ejaCiHk71M8rrmv41D1sHpotJuzGOwnrYNc6Dh0A3bciNS53U/Lkfa6r9nv9TFJDZZA5y+2z5gui94E3WFiwUWRY2dd6sInQJhXkdigc8htQnV7W9gD0s+S6JgLf2lRbrUiegGgL8=
+	t=1767962872; cv=none; b=tKnvgWpNHYzkUpHuWCRdUYeMG/8WhWw5btyfSPt33/bwLA5IUaKPguyJ8D0TuV/pzJ/+Pw9IEltGtVfi47AKV0cGwiGoeTWmPQd2BkN8TMvHdfvbqHOvrClmDBqhdgHo1R1dUed/hHR6YTqpSYjMpm1coG7ha73bXqR1oVJ2haA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962841; c=relaxed/simple;
-	bh=urb5GoPVSel5Vzn8AqHco8THmyRjEjWIWFSZjkA/dx8=;
+	s=arc-20240116; t=1767962872; c=relaxed/simple;
+	bh=egZuM2v6wiEpdMBciC3CMAEzSR8dv8RFXSwBsj9dTaA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Va/ILFanRYinoMaNjo0d3zt2j9c5NgkysTNYy5TjpJdCfQks0BnTdVy4S/9hkgWVjUlZZOo22XDf5DRsWjGwKvU2LC/5eBF+2FWkR+1o6yOiwEg8Tg8e+P0+pEQGlHeUlOeGFBSYIfvLFoowDfFnXpNy1iR2/CwEc3x5PQHa0DU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GJuaWicb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BD9BC4CEF1;
-	Fri,  9 Jan 2026 12:47:20 +0000 (UTC)
+	 MIME-Version; b=mPFSvJOC3i+UQ3R1qcMsUqbwe3D9SJq/F5XmkpzEHzoFpUrKgHahgwPJftJcutdtp/7aVOQ2MmtC8vlqzG1K9BiJhQZYbuXCAUi2K4oP5ayYLyGgSPrpCsbzsEnp4ykhZrbK3RROiHyRQFQM8lsPq9ywcsVVAkRkFYio8iCgXmc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xFh7tjeD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B55A8C4CEF1;
+	Fri,  9 Jan 2026 12:47:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962841;
-	bh=urb5GoPVSel5Vzn8AqHco8THmyRjEjWIWFSZjkA/dx8=;
+	s=korg; t=1767962872;
+	bh=egZuM2v6wiEpdMBciC3CMAEzSR8dv8RFXSwBsj9dTaA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GJuaWicb5eSBk216bAfqCGukvPYZryXmTnJ+dsb229a0jBKgAvzfzdAki0omAynyz
-	 P1e39pK0B284o7McOzi6yxDbhCm5TvgLfhhPvq0r0SdfAeBRF2YatheGiqm/4AKka0
-	 yeZOf/ATjSh3b+ms90/lind+girCg3ygGwlGLtFk=
+	b=xFh7tjeDuZ0479xbZhP+T1jn4D2XuxjXSSRbRRcrcTwhCa59VlSbYWrP5xJkeahMq
+	 RgyPuU4ejdlQYmAKl9238RQlxtja6XwofV7N4G20U978lnAGohJVfkIJYNNHroadGn
+	 Yh9i/pJ+gvHCtbx+Pu9KKqhft+Tu2/IXHgWJ1WJs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Duoming Zhou <duoming@zju.edu.cn>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 6.1 489/634] media: i2c: adv7842: Remove redundant cancel_delayed_work in probe
-Date: Fri,  9 Jan 2026 12:42:47 +0100
-Message-ID: <20260109112135.946137241@linuxfoundation.org>
+	Tianrui Zhao <zhaotianrui@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.1 490/634] LoongArch: Add new PCI ID for pci_fixup_vgadev()
+Date: Fri,  9 Jan 2026 12:42:48 +0100
+Message-ID: <20260109112135.983157152@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
 References: <20260109112117.407257400@linuxfoundation.org>
@@ -63,51 +63,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Duoming Zhou <duoming@zju.edu.cn>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-commit e66a5cc606c58e72f18f9cdd868a3672e918f9f8 upstream.
+commit bf3fa8f232a1eec8d7b88dcd9e925e60f04f018d upstream.
 
-The delayed_work delayed_work_enable_hotplug is initialized with
-INIT_DELAYED_WORK() in adv7842_probe(), but it is never scheduled
-anywhere in the probe function.
+Loongson-2K3000 has a new PCI ID (0x7a46) for its display controller,
+Add it for pci_fixup_vgadev() since we prefer a discrete graphics card
+as default boot device if present.
 
-Calling cancel_delayed_work() on a work that has never been
-scheduled is redundant and unnecessary, as there is no pending
-work to cancel.
-
-Remove the redundant cancel_delayed_work() from error handling
-path and adjust the goto label accordingly to simplify the code
-and avoid potential confusion.
-
-Fixes: a89bcd4c6c20 ("[media] adv7842: add new video decoder driver")
 Cc: stable@vger.kernel.org
-Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Signed-off-by: Tianrui Zhao <zhaotianrui@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/i2c/adv7842.c |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ arch/loongarch/pci/pci.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/media/i2c/adv7842.c
-+++ b/drivers/media/i2c/adv7842.c
-@@ -3565,7 +3565,7 @@ static int adv7842_probe(struct i2c_clie
- 	err = media_entity_pads_init(&sd->entity, ADV7842_PAD_SOURCE + 1,
- 				     state->pads);
- 	if (err)
--		goto err_work_queues;
-+		goto err_i2c;
+--- a/arch/loongarch/pci/pci.c
++++ b/arch/loongarch/pci/pci.c
+@@ -15,6 +15,7 @@
+ #define PCI_DEVICE_ID_LOONGSON_HOST     0x7a00
+ #define PCI_DEVICE_ID_LOONGSON_DC1      0x7a06
+ #define PCI_DEVICE_ID_LOONGSON_DC2      0x7a36
++#define PCI_DEVICE_ID_LOONGSON_DC3      0x7a46
  
- 	err = adv7842_core_init(sd);
- 	if (err)
-@@ -3586,8 +3586,6 @@ static int adv7842_probe(struct i2c_clie
- 
- err_entity:
- 	media_entity_cleanup(&sd->entity);
--err_work_queues:
--	cancel_delayed_work(&state->delayed_work_enable_hotplug);
- err_i2c:
- 	adv7842_unregister_clients(sd);
- err_hdl:
+ int raw_pci_read(unsigned int domain, unsigned int bus, unsigned int devfn,
+ 						int reg, int len, u32 *val)
+@@ -98,3 +99,4 @@ static void pci_fixup_vgadev(struct pci_
+ }
+ DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_LOONGSON, PCI_DEVICE_ID_LOONGSON_DC1, pci_fixup_vgadev);
+ DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_LOONGSON, PCI_DEVICE_ID_LOONGSON_DC2, pci_fixup_vgadev);
++DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_LOONGSON, PCI_DEVICE_ID_LOONGSON_DC3, pci_fixup_vgadev);
 
 
 
