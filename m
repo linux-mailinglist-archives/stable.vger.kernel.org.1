@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-207232-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206632-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C74AD09A3F
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:29:56 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 025A2D09392
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:04:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6960430124DA
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:24:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 309ED30BF430
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:56:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 450642EC54D;
-	Fri,  9 Jan 2026 12:24:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0587359F8A;
+	Fri,  9 Jan 2026 11:55:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xdmzXAhQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cVTKxwrk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0812032AAB5;
-	Fri,  9 Jan 2026 12:24:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 622A0359718;
+	Fri,  9 Jan 2026 11:55:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961469; cv=none; b=ARq+x1P4TNvBDvPyjZwWrgbn7vt27do8ZgBdeT+vvxpAvkk55WZfoIiM3eQAXtoe6xHCMpjDA8Vt0BQlqgwv4V6ftOR2QgU+ie+sm1avmtjKerx94ME3TwVdkN7RSqIoSY01JYb1bLIysA7zDA2N/5/S6MDcJOwe5AxiEk2pO2s=
+	t=1767959757; cv=none; b=D3alf/YYw8H2Zgljw0Io08S9Q8cUePaBSy57OpacWVJrLX73SBlCj4UfDIDwnfI/7FM9d43TYkTuspO6DHur8fvuEb9oGbKqjQ41o4r7pR2VjfIjjQ9cLSTz/+Hj2qV2U2ntuXvb4X762TDx3hSx8a7cMCLx3GuA5zPx7DfduUo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961469; c=relaxed/simple;
-	bh=TOHvDTH/YlgLz2IdVq2d/soJM6ucsydALq26dU7u3xs=;
+	s=arc-20240116; t=1767959757; c=relaxed/simple;
+	bh=0MCFXCAaW7dgB2Hbk44In9phtDxvt2dhUUaKjt5XpQs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kAhHNA9zdkHZnXFRKgDSoT6mfXQl3mvX8vwMpb2bwdELD998kz9qD75ZMxAn/wdmvTR6BVRVvWXlBCHCnoaQN+3w+BirVV15g8xdSWXXKHqjPY/1FXlcVMjYWdqIawE0NhcTU4ugm3Cd04ZPrO4geeBykmGfX7Z601ti/LYgdDk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xdmzXAhQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 856B2C4CEF1;
-	Fri,  9 Jan 2026 12:24:28 +0000 (UTC)
+	 MIME-Version; b=NubFKKR7dRoOQ5rHbXdjC3hI/s9EnnVh8rNG8Dzv4a8fhQ29C5oe5+ILOoQBFjOIzdXoF7YE7a8WSKXnA2Mpt5SaMEEZ7tnXhGoPOKxQiWXChohovQXPs6T7XGrUEniRtR5j9zfIjE676gGsW03r0slh1KkPeOFkBIOeJ71YyhM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cVTKxwrk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1568C19421;
+	Fri,  9 Jan 2026 11:55:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961468;
-	bh=TOHvDTH/YlgLz2IdVq2d/soJM6ucsydALq26dU7u3xs=;
+	s=korg; t=1767959757;
+	bh=0MCFXCAaW7dgB2Hbk44In9phtDxvt2dhUUaKjt5XpQs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xdmzXAhQeN/d+v5TzpnI7enDmVplszKvKbHA/VHyR/hNnWkZ7dNBR5FYI98imWKZ4
-	 agPLAfnJ/Pfc26b6wMos3Iw0a3XpEvVtXbuXcbJJmjuKTbUxwQZShZRWrGiyRX0ncX
-	 HKzrNtap34vqxspidOpqnkPP6b1R8ppRIGxztQaM=
+	b=cVTKxwrkx9W13nCzOWZlmGBCgWijp8xIJxiWuRh11Mww3hNE8q9DUar41LrBG6RMC
+	 SGvW3zXR63h6d5Qgh0r2Vo9+73KLXb45/AZKagG1NJ8suZTgnTS3h4tcE5AWwG3Owa
+	 mBEu9rGNN8Lws1F1Pi+K8DZxpCHsiDZlUfRnnmP0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yiqi Sun <sunyiqixm@gmail.com>,
-	Steve French <stfrench@microsoft.com>,
+	Sergey Bashirov <sergeybashirov@gmail.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 025/634] smb: fix invalid username check in smb3_fs_context_parse_param()
+Subject: [PATCH 6.6 164/737] NFSD/blocklayout: Fix minlength check in proc_layoutget
 Date: Fri,  9 Jan 2026 12:35:03 +0100
-Message-ID: <20260109112118.393525489@linuxfoundation.org>
+Message-ID: <20260109112140.163166371@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,40 +61,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yiqi Sun <sunyiqixm@gmail.com>
+From: Sergey Bashirov <sergeybashirov@gmail.com>
 
-[ Upstream commit ed6612165b74f09db00ef0abaf9831895ab28b7f ]
+[ Upstream commit 3524b021b0ec620a76c89aee78e9d4b4130fb711 ]
 
-Since the maximum return value of strnlen(..., CIFS_MAX_USERNAME_LEN)
-is CIFS_MAX_USERNAME_LEN, length check in smb3_fs_context_parse_param()
-is always FALSE and invalid.
+The extent returned by the file system may have a smaller offset than
+the segment offset requested by the client. In this case, the minimum
+segment length must be checked against the requested range. Otherwise,
+the client may not be able to continue the read/write operation.
 
-Fix the comparison in if statement.
-
-Signed-off-by: Yiqi Sun <sunyiqixm@gmail.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: 8650b8a05850 ("nfsd: pNFS block layout driver")
+Signed-off-by: Sergey Bashirov <sergeybashirov@gmail.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/fs_context.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nfsd/blocklayout.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/fs/smb/client/fs_context.c b/fs/smb/client/fs_context.c
-index e6d2e4162b081..9000299e98cb4 100644
---- a/fs/smb/client/fs_context.c
-+++ b/fs/smb/client/fs_context.c
-@@ -1183,7 +1183,7 @@ static int smb3_fs_context_parse_param(struct fs_context *fc,
- 			break;
- 		}
+diff --git a/fs/nfsd/blocklayout.c b/fs/nfsd/blocklayout.c
+index 59f119cce3dc6..3a9415fd77546 100644
+--- a/fs/nfsd/blocklayout.c
++++ b/fs/nfsd/blocklayout.c
+@@ -23,6 +23,7 @@ nfsd4_block_proc_layoutget(struct inode *inode, const struct svc_fh *fhp,
+ {
+ 	struct nfsd4_layout_seg *seg = &args->lg_seg;
+ 	struct super_block *sb = inode->i_sb;
++	u64 length;
+ 	u32 block_size = i_blocksize(inode);
+ 	struct pnfs_block_extent *bex;
+ 	struct iomap iomap;
+@@ -53,7 +54,8 @@ nfsd4_block_proc_layoutget(struct inode *inode, const struct svc_fh *fhp,
+ 		goto out_error;
+ 	}
  
--		if (strnlen(param->string, CIFS_MAX_USERNAME_LEN) >
-+		if (strnlen(param->string, CIFS_MAX_USERNAME_LEN) ==
- 		    CIFS_MAX_USERNAME_LEN) {
- 			pr_warn("username too long\n");
- 			goto cifs_parse_mount_err;
+-	if (iomap.length < args->lg_minlength) {
++	length = iomap.offset + iomap.length - seg->offset;
++	if (length < args->lg_minlength) {
+ 		dprintk("pnfsd: extent smaller than minlength\n");
+ 		goto out_layoutunavailable;
+ 	}
 -- 
 2.51.0
 
