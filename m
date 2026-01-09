@@ -1,50 +1,50 @@
-Return-Path: <stable+bounces-207726-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207733-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DB42D0A401
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:11:23 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9857FD0A413
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:11:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 152F132D5AB3
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:49:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 980CD31A2A20
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:49:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7138235E530;
-	Fri,  9 Jan 2026 12:47:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50925328B5F;
+	Fri,  9 Jan 2026 12:48:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xFh7tjeD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q7vIcFgl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3525135C1AE;
-	Fri,  9 Jan 2026 12:47:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1383833C53B;
+	Fri,  9 Jan 2026 12:48:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962872; cv=none; b=tKnvgWpNHYzkUpHuWCRdUYeMG/8WhWw5btyfSPt33/bwLA5IUaKPguyJ8D0TuV/pzJ/+Pw9IEltGtVfi47AKV0cGwiGoeTWmPQd2BkN8TMvHdfvbqHOvrClmDBqhdgHo1R1dUed/hHR6YTqpSYjMpm1coG7ha73bXqR1oVJ2haA=
+	t=1767962892; cv=none; b=ipTPo5Hk8Vr8ISzwFAw0EDVUvmj8wwk3UINd0tFbQ7PnAkqnTRltcUnHSIIJjDrFDJSEItEYp86qS4SFQU0kRnMJ+et/6IerhfJJUSWuDDoP62fot7xECNef7BN9lyVzHKG0AwOnHa6I3GxMdbDfoywcTPcWOr33U3egNrRl/XE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962872; c=relaxed/simple;
-	bh=egZuM2v6wiEpdMBciC3CMAEzSR8dv8RFXSwBsj9dTaA=;
+	s=arc-20240116; t=1767962892; c=relaxed/simple;
+	bh=N5yjovutXHHlmEEZwsrzoEagaQx+4Z0pL8tSeSB7XqU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mPFSvJOC3i+UQ3R1qcMsUqbwe3D9SJq/F5XmkpzEHzoFpUrKgHahgwPJftJcutdtp/7aVOQ2MmtC8vlqzG1K9BiJhQZYbuXCAUi2K4oP5ayYLyGgSPrpCsbzsEnp4ykhZrbK3RROiHyRQFQM8lsPq9ywcsVVAkRkFYio8iCgXmc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xFh7tjeD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B55A8C4CEF1;
-	Fri,  9 Jan 2026 12:47:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=RTDgbkQj7vLgGIjygIcnUQZx6bqOt2RF4RN3C7syNQjt275wIp1fJokRQL5ZhAX9u6KXLebpeiLiY5+OuaMAAmKRsX3CIshbbWejzb1xDdwJBoZUSeszRuDJJwZv/4GQI7F9fXlGnXlbpGuZPZzv3Leu+v77tGBG0+aHVD9nlmY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q7vIcFgl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94DAAC4CEF1;
+	Fri,  9 Jan 2026 12:48:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962872;
-	bh=egZuM2v6wiEpdMBciC3CMAEzSR8dv8RFXSwBsj9dTaA=;
+	s=korg; t=1767962892;
+	bh=N5yjovutXHHlmEEZwsrzoEagaQx+4Z0pL8tSeSB7XqU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xFh7tjeDuZ0479xbZhP+T1jn4D2XuxjXSSRbRRcrcTwhCa59VlSbYWrP5xJkeahMq
-	 RgyPuU4ejdlQYmAKl9238RQlxtja6XwofV7N4G20U978lnAGohJVfkIJYNNHroadGn
-	 Yh9i/pJ+gvHCtbx+Pu9KKqhft+Tu2/IXHgWJ1WJs=
+	b=q7vIcFglAolai7lYBJifrhQIk1bdnDljRgxA/M0d+8CnwcZLsfpjY1WyADN7qOCXd
+	 8CTE4mx/YMGnJsUQQoWUTsEOFltL1IFYDL8YBAEgvVI4Jx2UX98nUysbq6z79yj5rn
+	 zfYJlO1tXDhvYOoK9GnFQu/bUhTdoMl93IdlUFiU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tianrui Zhao <zhaotianrui@loongson.cn>,
+	Yuli Wang <wangyl5933@chinaunicom.cn>,
 	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.1 490/634] LoongArch: Add new PCI ID for pci_fixup_vgadev()
-Date: Fri,  9 Jan 2026 12:42:48 +0100
-Message-ID: <20260109112135.983157152@linuxfoundation.org>
+Subject: [PATCH 6.1 492/634] LoongArch: Use __pmd()/__pte() for swap entry conversions
+Date: Fri,  9 Jan 2026 12:42:50 +0100
+Message-ID: <20260109112136.057096214@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
 References: <20260109112117.407257400@linuxfoundation.org>
@@ -57,43 +57,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: WangYuli <wangyl5933@chinaunicom.cn>
 
-commit bf3fa8f232a1eec8d7b88dcd9e925e60f04f018d upstream.
+commit 4a71df151e703b5e7e85b33369cee59ef2665e61 upstream.
 
-Loongson-2K3000 has a new PCI ID (0x7a46) for its display controller,
-Add it for pci_fixup_vgadev() since we prefer a discrete graphics card
-as default boot device if present.
+The __pmd() and __pte() helper macros provide the correct initialization
+syntax and abstraction for the pmd_t and pte_t types.
+
+Use __pmd() to fix follow warning about __swp_entry_to_pmd() with gcc-15
+under specific configs [1] :
+
+  In file included from ./include/linux/pgtable.h:6,
+                   from ./include/linux/mm.h:31,
+                   from ./include/linux/pagemap.h:8,
+                   from arch/loongarch/mm/init.c:14:
+  ./include/linux/swapops.h: In function ‘swp_entry_to_pmd’:
+  ./arch/loongarch/include/asm/pgtable.h:302:34: error: missing braces around initializer [-Werror=missing-braces]
+    302 | #define __swp_entry_to_pmd(x)   ((pmd_t) { (x).val | _PAGE_HUGE })
+        |                                  ^
+  ./include/linux/swapops.h:559:16: note: in expansion of macro ‘__swp_entry_to_pmd’
+    559 |         return __swp_entry_to_pmd(arch_entry);
+        |                ^~~~~~~~~~~~~~~~~~
+  cc1: all warnings being treated as errors
+
+Also update __swp_entry_to_pte() to use __pte() for consistency.
+
+[1]. https://download.01.org/0day-ci/archive/20251119/202511190316.luI90kAo-lkp@intel.com/config
 
 Cc: stable@vger.kernel.org
-Signed-off-by: Tianrui Zhao <zhaotianrui@loongson.cn>
+Signed-off-by: Yuli Wang <wangyl5933@chinaunicom.cn>
 Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/pci/pci.c |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/loongarch/include/asm/pgtable.h |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/loongarch/pci/pci.c
-+++ b/arch/loongarch/pci/pci.c
-@@ -15,6 +15,7 @@
- #define PCI_DEVICE_ID_LOONGSON_HOST     0x7a00
- #define PCI_DEVICE_ID_LOONGSON_DC1      0x7a06
- #define PCI_DEVICE_ID_LOONGSON_DC2      0x7a36
-+#define PCI_DEVICE_ID_LOONGSON_DC3      0x7a46
+--- a/arch/loongarch/include/asm/pgtable.h
++++ b/arch/loongarch/include/asm/pgtable.h
+@@ -254,9 +254,9 @@ static inline pte_t mk_swap_pte(unsigned
+ #define __swp_offset(x)		((x).val >> 24)
+ #define __swp_entry(type, offset) ((swp_entry_t) { pte_val(mk_swap_pte((type), (offset))) })
+ #define __pte_to_swp_entry(pte) ((swp_entry_t) { pte_val(pte) })
+-#define __swp_entry_to_pte(x)	((pte_t) { (x).val })
++#define __swp_entry_to_pte(x)	__pte((x).val)
+ #define __pmd_to_swp_entry(pmd) ((swp_entry_t) { pmd_val(pmd) })
+-#define __swp_entry_to_pmd(x)	((pmd_t) { (x).val | _PAGE_HUGE })
++#define __swp_entry_to_pmd(x)	__pmd((x).val | _PAGE_HUGE)
  
- int raw_pci_read(unsigned int domain, unsigned int bus, unsigned int devfn,
- 						int reg, int len, u32 *val)
-@@ -98,3 +99,4 @@ static void pci_fixup_vgadev(struct pci_
- }
- DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_LOONGSON, PCI_DEVICE_ID_LOONGSON_DC1, pci_fixup_vgadev);
- DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_LOONGSON, PCI_DEVICE_ID_LOONGSON_DC2, pci_fixup_vgadev);
-+DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_LOONGSON, PCI_DEVICE_ID_LOONGSON_DC3, pci_fixup_vgadev);
+ extern void paging_init(void);
+ 
 
 
 
