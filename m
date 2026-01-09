@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-207581-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206979-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C43CCD0A28C
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:03:36 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CFDFD096F0
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:17:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F422231608CF
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:41:45 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 80F88304773C
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:12:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8600A358D30;
-	Fri,  9 Jan 2026 12:41:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16FD2359F8C;
+	Fri,  9 Jan 2026 12:12:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y+RIjt8F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D02nH8ZK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46AF6359FAC;
-	Fri,  9 Jan 2026 12:41:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD8C723ED5B;
+	Fri,  9 Jan 2026 12:12:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962462; cv=none; b=uXXx10g6QGLgyzmUTm7vEjuy3fdkcHSBcKyTst38+L24MrxbV0ljWQmtYIrWYokw24eqSq7vFf2BoEa4CvK2wkTtSRBESBvEJq/Ig+/RJKLbBIAbjhzAL8ZsBhA3CJgSUY1JJbb4hB/ZyXZWOy0AOJes3u/6iUcKPqk7VQHQIHQ=
+	t=1767960748; cv=none; b=FAZAIbvWzP3kGSsQLkS4Z5Cujtwf/mneh38LJLeKbauDCeswULG+7Ek8wbjds8un+NOj7FrjseJ6E3yKj+LekTLHC/8rJxJ+1Th9csTLRukaNG+ZSGXGF7w769sMCeI6iBivkITXMbX/mLOr3B0iq9ap/8xlNJtOgw70I5bxtxQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962462; c=relaxed/simple;
-	bh=O93RQKU81Zvy35s8pK7pu3JwN3u7ilrZwJV4HU3f1Po=;
+	s=arc-20240116; t=1767960748; c=relaxed/simple;
+	bh=zfCKV9TPRfBrgNpqLHojvmC5p/824mVaD1bXaHdN8Bs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a9cHd+/l56YhzUnV6YSdI1eVr4tkJuLpYt4Y53hnfplGE6/+InwmCKBZjLPPnGr5xlTbwkGSBXv1gaIVl1PCJi3EZ/DKF0FjFexMTdLoK3C4pL4xuOnhP9YA1jT9HpibBNxZlE4LtktSqyARFa0zdYvQjtyHxBYNdx52vz3gQfs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y+RIjt8F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C840BC16AAE;
-	Fri,  9 Jan 2026 12:41:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Wnl3WGwq9+VqOdXFFwG1z3XAcXY7jUSuaBINKpUCWkYUj9A8bOqDNPaWZPzsH4ZD/Wi+rslTDxSsmRjwyhif/ZgWc8h7x5A80NMVHBdXmfyoDLKQvkTRdBdgf+11Uzak5tYD12SExP/nh/EQ+XYWfcdauIELvvH24GZfRfzhbZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D02nH8ZK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58F05C4CEF1;
+	Fri,  9 Jan 2026 12:12:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962462;
-	bh=O93RQKU81Zvy35s8pK7pu3JwN3u7ilrZwJV4HU3f1Po=;
+	s=korg; t=1767960748;
+	bh=zfCKV9TPRfBrgNpqLHojvmC5p/824mVaD1bXaHdN8Bs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y+RIjt8F9NBtUTHwPaEGIPyDaS0xY/BqkKE16HVqBt2eh+432JSbfJqL1yLX68B17
-	 YYdsRMym2j64O4XFT7GnCHPsNwkM61xFy+qADbroke8zNl5TSBsoJx9btMwFbB5/YD
-	 wFQQkpNFCBgYh4fLG9SEW+BGl4H4oPe/nI9IRdp0=
+	b=D02nH8ZK2+Fu/lvDLHc3SSj77SGmnfajNUAzaXUGCUCzie32s4Iou7md8A3arKIWS
+	 bFTD5WRkKK3e+xHTxqEAa0QFTQywSqlrIypJl4BlcTAsprZvOeI13zfIEIIBRQYHTC
+	 DzfuFriYudEzfo4V6zJkRkWzoYDGXMtBGszQ01h0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.1 373/634] nfsd: Mark variable __maybe_unused to avoid W=1 build break
+	Yuhao Jiang <danisjiang@gmail.com>,
+	Junrui Luo <moonafterrain@outlook.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 512/737] platform/x86: ibm_rtl: fix EBDA signature search pointer arithmetic
 Date: Fri,  9 Jan 2026 12:40:51 +0100
-Message-ID: <20260109112131.565896035@linuxfoundation.org>
+Message-ID: <20260109112153.258668017@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,48 +59,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Junrui Luo <moonafterrain@outlook.com>
 
-commit ebae102897e760e9e6bc625f701dd666b2163bd1 upstream.
+[ Upstream commit 15dd100349b8526cbdf2de0ce3e72e700eb6c208 ]
 
-Clang is not happy about set but (in some cases) unused variable:
+The ibm_rtl_init() function searches for the signature but has a pointer
+arithmetic error. The loop counter suggests searching at 4-byte intervals
+but the implementation only advances by 1 byte per iteration.
 
-fs/nfsd/export.c:1027:17: error: variable 'inode' set but not used [-Werror,-Wunused-but-set-variable]
+Fix by properly advancing the pointer by sizeof(unsigned int) bytes
+each iteration.
 
-since it's used as a parameter to dprintk() which might be configured
-a no-op. To avoid uglifying code with the specific ifdeffery just mark
-the variable __maybe_unused.
-
-The commit [1], which introduced this behaviour, is quite old and hence
-the Fixes tag points to the first of the Git era.
-
-Link: https://git.kernel.org/pub/scm/linux/kernel/git/history/history.git/commit/?id=0431923fb7a1 [1]
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Yuhao Jiang <danisjiang@gmail.com>
+Reported-by: Junrui Luo <moonafterrain@outlook.com>
+Fixes: 35f0ce032b0f ("IBM Real-Time "SMI Free" mode driver -v7")
+Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
+Link: https://patch.msgid.link/SYBPR01MB78812D887A92DE3802D0D06EAFA9A@SYBPR01MB7881.ausprd01.prod.outlook.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/export.c |    2 +-
+ drivers/platform/x86/ibm_rtl.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/nfsd/export.c
-+++ b/fs/nfsd/export.c
-@@ -990,7 +990,7 @@ exp_rootfh(struct net *net, struct auth_
- {
- 	struct svc_export	*exp;
- 	struct path		path;
--	struct inode		*inode;
-+	struct inode		*inode __maybe_unused;
- 	struct svc_fh		fh;
- 	int			err;
- 	struct nfsd_net		*nn = net_generic(net, nfsd_net_id);
+diff --git a/drivers/platform/x86/ibm_rtl.c b/drivers/platform/x86/ibm_rtl.c
+index 2ab7d9ac542d..5fb25a602533 100644
+--- a/drivers/platform/x86/ibm_rtl.c
++++ b/drivers/platform/x86/ibm_rtl.c
+@@ -272,7 +272,7 @@ static int __init ibm_rtl_init(void) {
+ 	/* search for the _RTL_ signature at the start of the table */
+ 	for (i = 0 ; i < ebda_size/sizeof(unsigned int); i++) {
+ 		struct ibm_rtl_table __iomem * tmp;
+-		tmp = (struct ibm_rtl_table __iomem *) (ebda_map+i);
++		tmp = (struct ibm_rtl_table __iomem *) (ebda_map + i*sizeof(unsigned int));
+ 		if ((readq(&tmp->signature) & RTL_MASK) == RTL_SIGNATURE) {
+ 			phys_addr_t addr;
+ 			unsigned int plen;
+-- 
+2.51.0
+
 
 
 
