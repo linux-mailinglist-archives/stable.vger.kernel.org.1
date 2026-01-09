@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-207754-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207757-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B802D0A446
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:12:12 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8CB5D0A44C
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:12:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9125B30EA60D
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:50:22 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DC1FA32F5784
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:50:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1A78358D30;
-	Fri,  9 Jan 2026 12:49:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F1DE35C19C;
+	Fri,  9 Jan 2026 12:49:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z45wNmEL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rANM5kRY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B594635B135;
-	Fri,  9 Jan 2026 12:49:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D791933032C;
+	Fri,  9 Jan 2026 12:49:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962952; cv=none; b=B8Cw5Ak07BC25gyAF41skyEujM/8qJ0rplRBg2IqkxSdljhS1dGsSfJpSTVRsyaeWttRkB9LVzgjx7zvBTbr8/j5ECL3HgJI4g1YTv2jB1O/hW1tPCHnMnzqwq6K/YEQScTcJ5oaHrYTGallMiz/c3hS8gg1uiawd2LPNaXsDo4=
+	t=1767962960; cv=none; b=MbBvK+koQajR/ekS29aJ7RLcqlW1nqtnIXOYNDPywhJOTaytv5iUm/o/KcJ78sGcG7FN14pw+M3vJ/uH6oi3Mb6d0MAgDuuQa9ZP7pYjauBoX6Ptjrk/pSh8yrlqDUwNgDLk4Tl/D+9WOuVjBnu4LA9PMyw5+iiCw0qiQSFmYgA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962952; c=relaxed/simple;
-	bh=47FlF+7bIkFMKSoVGy4iAD9RyDp+1UcgBgBPulhT7SY=;
+	s=arc-20240116; t=1767962960; c=relaxed/simple;
+	bh=x6qQIB93cZgq9ZcqImbPIuN5JCFirZeAb4lazCO2Gdg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kwRF7fJAUuL9pbQvESKxIKiMziXLqhvUm5ohfaIKkkSVkE1i1dXp018bNJQtaWQ8G7NQgoa51PZ6XD6BEBHkOqV2vyvwou24WT3qDSCVWwdSesZsFwHxCB0vD1rKb8BvkCOrQnm4fwlga+GqshzO8L78KqOmhbCcdKXZilNPFMU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z45wNmEL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E03C4C4CEF1;
-	Fri,  9 Jan 2026 12:49:11 +0000 (UTC)
+	 MIME-Version; b=UCUI69UQHTcOLslqK7XDEDn1zFtdIsku5TeVGo8GTDHRxM/VLv/8Zsx3govpY8VMXU7frDR18UoryE2LF1qL+y0GVh7dGpohQ6NluUUFuQv9/jAVfd6G19PkAJkD6KjMpL/qzreQOebz4O67KCyAsTYGZFuL1VHOSNzaBKjnuqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rANM5kRY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63A06C16AAE;
+	Fri,  9 Jan 2026 12:49:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962952;
-	bh=47FlF+7bIkFMKSoVGy4iAD9RyDp+1UcgBgBPulhT7SY=;
+	s=korg; t=1767962960;
+	bh=x6qQIB93cZgq9ZcqImbPIuN5JCFirZeAb4lazCO2Gdg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z45wNmELfd6AqHhY6f9BlynIt4Kr5cpAX8cw+80kTEsHWBfRYu29aaNih1bN/UD1s
-	 sykTcL/+Kq3N9IBGRJJ7mfvB8ZVrh/J17RFCVpqTo73vq0xXUDx43U73P5Mb350Op7
-	 g9ACzW28vv1PynWP8yJX3TEeHlRzJc/VjxTszyVM=
+	b=rANM5kRYkKpn6hFKWfo+3b8r1fHbTpHjaG86Df3jiP0cMd81DXfP8xz7UawDMlrXP
+	 LoUJVj2w9LsJz9kRdI/OYM++RZUYo4OqRkY+viwKEUqnCGYHPApWqTFbth8N5SPRHr
+	 nsfuVCSQEyDA7IAXbJV/iiTk+ClONVmNSVXtY6W0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Mat Martineau <martineau@kernel.org>,
 	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 545/634] mptcp: avoid deadlock on fallback while reinjecting
-Date: Fri,  9 Jan 2026 12:43:43 +0100
-Message-ID: <20260109112138.097514214@linuxfoundation.org>
+Subject: [PATCH 6.1 548/634] mptcp: pm: ignore unknown endpoint flags
+Date: Fri,  9 Jan 2026 12:43:46 +0100
+Message-ID: <20260109112138.211676374@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
 References: <20260109112117.407257400@linuxfoundation.org>
@@ -65,115 +65,66 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 
-[ Upstream commit ffb8c27b0539dd90262d1021488e7817fae57c42 ]
+[ Upstream commit 0ace3297a7301911e52d8195cb1006414897c859 ]
 
-Jakub reported an MPTCP deadlock at fallback time:
+Before this patch, the kernel was saving any flags set by the userspace,
+even unknown ones. This doesn't cause critical issues because the kernel
+is only looking at specific ones. But on the other hand, endpoints dumps
+could tell the userspace some recent flags seem to be supported on older
+kernel versions.
 
- WARNING: possible recursive locking detected
- 6.18.0-rc7-virtme #1 Not tainted
- --------------------------------------------
- mptcp_connect/20858 is trying to acquire lock:
- ff1100001da18b60 (&msk->fallback_lock){+.-.}-{3:3}, at: __mptcp_try_fallback+0xd8/0x280
+Instead, ignore all unknown flags when parsing them. By doing that, the
+userspace can continue to set unsupported flags, but it has a way to
+verify what is supported by the kernel.
 
- but task is already holding lock:
- ff1100001da18b60 (&msk->fallback_lock){+.-.}-{3:3}, at: __mptcp_retrans+0x352/0xaa0
+Note that it sounds better to continue accepting unsupported flags not
+to change the behaviour, but also that eases things on the userspace
+side by adding "optional" endpoint types only supported by newer kernel
+versions without having to deal with the different kernel versions.
 
- other info that might help us debug this:
-  Possible unsafe locking scenario:
+A note for the backports: there will be conflicts in mptcp.h on older
+versions not having the mentioned flags, the new line should still be
+added last, and the '5' needs to be adapted to have the same value as
+the last entry.
 
-        CPU0
-        ----
-   lock(&msk->fallback_lock);
-   lock(&msk->fallback_lock);
-
-  *** DEADLOCK ***
-
-  May be due to missing lock nesting notation
-
- 3 locks held by mptcp_connect/20858:
-  #0: ff1100001da18290 (sk_lock-AF_INET){+.+.}-{0:0}, at: mptcp_sendmsg+0x114/0x1bc0
-  #1: ff1100001db40fd0 (k-sk_lock-AF_INET#2){+.+.}-{0:0}, at: __mptcp_retrans+0x2cb/0xaa0
-  #2: ff1100001da18b60 (&msk->fallback_lock){+.-.}-{3:3}, at: __mptcp_retrans+0x352/0xaa0
-
- stack backtrace:
- CPU: 0 UID: 0 PID: 20858 Comm: mptcp_connect Not tainted 6.18.0-rc7-virtme #1 PREEMPT(full)
- Hardware name: Bochs, BIOS Bochs 01/01/2011
- Call Trace:
-  <TASK>
-  dump_stack_lvl+0x6f/0xa0
-  print_deadlock_bug.cold+0xc0/0xcd
-  validate_chain+0x2ff/0x5f0
-  __lock_acquire+0x34c/0x740
-  lock_acquire.part.0+0xbc/0x260
-  _raw_spin_lock_bh+0x38/0x50
-  __mptcp_try_fallback+0xd8/0x280
-  mptcp_sendmsg_frag+0x16c2/0x3050
-  __mptcp_retrans+0x421/0xaa0
-  mptcp_release_cb+0x5aa/0xa70
-  release_sock+0xab/0x1d0
-  mptcp_sendmsg+0xd5b/0x1bc0
-  sock_write_iter+0x281/0x4d0
-  new_sync_write+0x3c5/0x6f0
-  vfs_write+0x65e/0xbb0
-  ksys_write+0x17e/0x200
-  do_syscall_64+0xbb/0xfd0
-  entry_SYSCALL_64_after_hwframe+0x4b/0x53
- RIP: 0033:0x7fa5627cbc5e
- Code: 4d 89 d8 e8 14 bd 00 00 4c 8b 5d f8 41 8b 93 08 03 00 00 59 5e 48 83 f8 fc 74 11 c9 c3 0f 1f 80 00 00 00 00 48 8b 45 10 0f 05 <c9> c3 83 e2 39 83 fa 08 75 e7 e8 13 ff ff ff 0f 1f 00 f3 0f 1e fa
- RSP: 002b:00007fff1fe14700 EFLAGS: 00000202 ORIG_RAX: 0000000000000001
- RAX: ffffffffffffffda RBX: 0000000000000005 RCX: 00007fa5627cbc5e
- RDX: 0000000000001f9c RSI: 00007fff1fe16984 RDI: 0000000000000005
- RBP: 00007fff1fe14710 R08: 0000000000000000 R09: 0000000000000000
- R10: 0000000000000000 R11: 0000000000000202 R12: 00007fff1fe16920
- R13: 0000000000002000 R14: 0000000000001f9c R15: 0000000000001f9c
-
-The packet scheduler could attempt a reinjection after receiving an
-MP_FAIL and before the infinite map has been transmitted, causing a
-deadlock since MPTCP needs to do the reinjection atomically from WRT
-fallback.
-
-Address the issue explicitly avoiding the reinjection in the critical
-scenario. Note that this is the only fallback critical section that
-could potentially send packets and hit the double-lock.
-
-Reported-by: Jakub Kicinski <kuba@kernel.org>
-Closes: https://netdev-ctrl.bots.linux.dev/logs/vmksft/mptcp-dbg/results/412720/1-mptcp-join-sh/stderr
-Fixes: f8a1d9b18c5e ("mptcp: make fallback action and fallback decision atomic")
+Fixes: 01cacb00b35c ("mptcp: add netlink-based PM")
 Cc: stable@vger.kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
 Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20251205-net-mptcp-misc-fixes-6-19-rc1-v1-4-9e4781a6c1b8@kernel.org
+Link: https://patch.msgid.link/20251205-net-mptcp-misc-fixes-6-19-rc1-v1-1-9e4781a6c1b8@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Adjust context ]
+[ GENMASK(5, 0) => GENMASK(4, 0) + context ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/protocol.c |   10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ include/uapi/linux/mptcp.h |    1 +
+ net/mptcp/pm_netlink.c     |    3 ++-
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -2715,9 +2715,15 @@ static void __mptcp_retrans(struct sock
- 	info.sent = 0;
- 	info.limit = READ_ONCE(msk->csum_enabled) ? dfrag->data_len : dfrag->already_sent;
+--- a/include/uapi/linux/mptcp.h
++++ b/include/uapi/linux/mptcp.h
+@@ -88,6 +88,7 @@ enum {
+ #define MPTCP_PM_ADDR_FLAG_BACKUP			(1 << 2)
+ #define MPTCP_PM_ADDR_FLAG_FULLMESH			(1 << 3)
+ #define MPTCP_PM_ADDR_FLAG_IMPLICIT			(1 << 4)
++#define MPTCP_PM_ADDR_FLAGS_MASK			GENMASK(4, 0)
  
--	/* make the whole retrans decision, xmit, disallow fallback atomic */
-+	/*
-+	 * make the whole retrans decision, xmit, disallow
-+	 * fallback atomic, note that we can't retrans even
-+	 * when an infinite fallback is in progress, i.e. new
-+	 * subflows are disallowed.
-+	 */
- 	spin_lock_bh(&msk->fallback_lock);
--	if (__mptcp_check_fallback(msk)) {
-+	if (__mptcp_check_fallback(msk) ||
-+	    !msk->allow_subflows) {
- 		spin_unlock_bh(&msk->fallback_lock);
- 		release_sock(ssk);
- 		return;
+ enum {
+ 	MPTCP_PM_CMD_UNSPEC,
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -1424,7 +1424,8 @@ int mptcp_pm_parse_entry(struct nlattr *
+ 	}
+ 
+ 	if (tb[MPTCP_PM_ADDR_ATTR_FLAGS])
+-		entry->flags = nla_get_u32(tb[MPTCP_PM_ADDR_ATTR_FLAGS]);
++		entry->flags = nla_get_u32(tb[MPTCP_PM_ADDR_ATTR_FLAGS]) &
++			       MPTCP_PM_ADDR_FLAGS_MASK;
+ 
+ 	if (tb[MPTCP_PM_ADDR_ATTR_PORT])
+ 		entry->addr.port = htons(nla_get_u16(tb[MPTCP_PM_ADDR_ATTR_PORT]));
 
 
 
