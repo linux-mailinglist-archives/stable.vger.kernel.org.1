@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-206817-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207449-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 425DED095FC
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:13:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BB4BD09DF9
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:43:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E22DB30D59D7
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:04:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2319F314D421
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:34:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B020F359FBA;
-	Fri,  9 Jan 2026 12:04:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB7F9358D38;
+	Fri,  9 Jan 2026 12:34:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="viAPAXuv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W72Ua7wl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74047359F99;
-	Fri,  9 Jan 2026 12:04:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90017336EDA;
+	Fri,  9 Jan 2026 12:34:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960283; cv=none; b=iyFEGbVpTlwLlrVeTVAjV7q68Lr9l4rHnqNe0ed3Sf1CGIWMFfP1wRxry9/8nowvXT2yaUaOwrf8BFEWncNPdpdh10yOYfoqH/rIr+REo4FPztiHLP4bdZrLqAfrl/SJIOT45O+T+pbaFR+NFp3/Vbi6rLIfMVeLZnKaYE8sslY=
+	t=1767962086; cv=none; b=Sz4+ZwFQvSVTiGRfJFe5B3+CnfPHMyDO2yDgnqmOEBC0euXK/916AsqvZwdRlLNYK7/2Vwphr3/2PH64Xtoir1ePoI+upE/GH/TS7PwjKMc4zCwqIY9EzR25SoyQAanQGfUY/W030PdCsDer24JqmWxldy0JHztYd3yF6UXjoRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960283; c=relaxed/simple;
-	bh=Hi7ahjfBYpHeag6nOrn28N/WfMHWkOxOey2xjzLiUoA=;
+	s=arc-20240116; t=1767962086; c=relaxed/simple;
+	bh=mkArNErPYcxliYQWcTgjVWbtu3FtIv26u7zIidEAv6U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NaQX08UwbseS+KONEnDAOsuowqADmyMn/YOh/gfkpRv6sJxK/B15S2pKFDV3zKtZZ9N90y57DZdqIfocC/6zdeCAvs8pJBvTLlbnACc2fv3A6vtGWK60UQesCuCYI3Bfgk+M8VeUMMO42+QLxwUrlca8RkRn1VlT0hSi71T7kik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=viAPAXuv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4EFAC4CEF1;
-	Fri,  9 Jan 2026 12:04:42 +0000 (UTC)
+	 MIME-Version; b=Gtr1aCnvzFG99wlJsZKrsTPhbEFpe+xkaE1zGPxu5odzUa7u6K/Fr06QnFir2pOWs2FQzKxK2lfya0O8qVmUccPAt/5zynApjGG0qb+5+qZTuqol8es2J6IUks01pCBDO2/FqYnrIQKxkCmw9KnzRmSP4o3Tgba9zHgzzwdnTVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W72Ua7wl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 177A0C4CEF1;
+	Fri,  9 Jan 2026 12:34:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960283;
-	bh=Hi7ahjfBYpHeag6nOrn28N/WfMHWkOxOey2xjzLiUoA=;
+	s=korg; t=1767962086;
+	bh=mkArNErPYcxliYQWcTgjVWbtu3FtIv26u7zIidEAv6U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=viAPAXuvemkTheOjOByip8ajmLlp8AingVf8DjqVvZ6B/KIPp811jkQjy0H3mzRRj
-	 FV32042NMs5U7qDq4wK4PBn2YEfcR0pwx+S93Lo/eJof+6RK/LARzwVVneFdYjC7gr
-	 bP8cAwp5dHh83LvW+TSAqmztAGqooyCAEULHjaqI=
+	b=W72Ua7wlgk/IfhXOiD2+7850iMZw5sGvgFoOd49S0BTS0Pid6ZGFyDeO3RnJb5BSI
+	 x6++elrcAZt/NlXhTVxlB+MBvWiHjSo76V3UWK2vv03ttsoI2AVtFabpkSnO9XX992
+	 gsLBlpSfbEYuEs87aO/S0SrssTPdLK0Dj7Jz+eSI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Samiullah Khawaja <skhawaja@google.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Yi Liu <yi.l.liu@intel.com>,
-	syzbot+57fdb0cf6a0c5d1f15a2@syzkaller.appspotmail.com,
-	Jason Gunthorpe <jgg@nvidia.com>,
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Link Mauve <kernel@linkmauve.fr>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 348/737] iommufd/selftest: Check for overflow in IOMMU_TEST_OP_ADD_RESERVED
+Subject: [PATCH 6.1 209/634] rtc: gamecube: Check the return value of ioremap()
 Date: Fri,  9 Jan 2026 12:38:07 +0100
-Message-ID: <20260109112147.076819523@linuxfoundation.org>
+Message-ID: <20260109112125.302246992@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Gunthorpe <jgg@nvidia.com>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-[ Upstream commit e6a973af11135439de32ece3b9cbe3bfc043bea8 ]
+[ Upstream commit d1220e47e4bd2be8b84bc158f4dea44f2f88b226 ]
 
-syzkaller found it could overflow math in the test infrastructure and
-cause a WARN_ON by corrupting the reserved interval tree. This only
-effects test kernels with CONFIG_IOMMUFD_TEST.
+The function ioremap() in gamecube_rtc_read_offset_from_sram() can fail
+and return NULL, which is dereferenced without checking, leading to a
+NULL pointer dereference.
 
-Validate the user input length in the test ioctl.
+Add a check for the return value of ioremap() and return -ENOMEM on
+failure.
 
-Fixes: f4b20bb34c83 ("iommufd: Add kernel support for testing iommufd")
-Link: https://patch.msgid.link/r/0-v1-cd99f6049ba5+51-iommufd_syz_add_resv_jgg@nvidia.com
-Reviewed-by: Samiullah Khawaja <skhawaja@google.com>
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Tested-by: Yi Liu <yi.l.liu@intel.com>
-Reported-by: syzbot+57fdb0cf6a0c5d1f15a2@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/69368129.a70a0220.38f243.008f.GAE@google.com
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Fixes: 86559400b3ef ("rtc: gamecube: Add a RTC driver for the GameCube, Wii and Wii U")
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Reviewed-by: Link Mauve <kernel@linkmauve.fr>
+Link: https://patch.msgid.link/20251126080625.1752-1-vulab@iscas.ac.cn
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/iommufd/selftest.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/rtc/rtc-gamecube.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/iommu/iommufd/selftest.c b/drivers/iommu/iommufd/selftest.c
-index 00b794d74e03b..8025ff65ed4de 100644
---- a/drivers/iommu/iommufd/selftest.c
-+++ b/drivers/iommu/iommufd/selftest.c
-@@ -512,14 +512,20 @@ static int iommufd_test_add_reserved(struct iommufd_ucmd *ucmd,
- 				     unsigned int mockpt_id,
- 				     unsigned long start, size_t length)
- {
-+	unsigned long last;
- 	struct iommufd_ioas *ioas;
- 	int rc;
+diff --git a/drivers/rtc/rtc-gamecube.c b/drivers/rtc/rtc-gamecube.c
+index c828bc8e05b9c..045d5d45ab4b0 100644
+--- a/drivers/rtc/rtc-gamecube.c
++++ b/drivers/rtc/rtc-gamecube.c
+@@ -242,6 +242,10 @@ static int gamecube_rtc_read_offset_from_sram(struct priv *d)
+ 	}
  
-+	if (!length)
-+		return -EINVAL;
-+	if (check_add_overflow(start, length - 1, &last))
-+		return -EOVERFLOW;
-+
- 	ioas = iommufd_get_ioas(ucmd->ictx, mockpt_id);
- 	if (IS_ERR(ioas))
- 		return PTR_ERR(ioas);
- 	down_write(&ioas->iopt.iova_rwsem);
--	rc = iopt_reserve_iova(&ioas->iopt, start, start + length - 1, NULL);
-+	rc = iopt_reserve_iova(&ioas->iopt, start, last, NULL);
- 	up_write(&ioas->iopt.iova_rwsem);
- 	iommufd_put_object(&ioas->obj);
- 	return rc;
+ 	hw_srnprot = ioremap(res.start, resource_size(&res));
++	if (!hw_srnprot) {
++		pr_err("failed to ioremap hw_srnprot\n");
++		return -ENOMEM;
++	}
+ 	old = ioread32be(hw_srnprot);
+ 
+ 	/* TODO: figure out why we use this magic constant.  I obtained it by
 -- 
 2.51.0
 
