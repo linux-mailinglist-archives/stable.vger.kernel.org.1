@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-207002-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207570-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48407D09731
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:18:46 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4E64D0A13B
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:56:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 679913061149
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:13:41 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id AF71630D3872
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:41:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F04E2359F89;
-	Fri,  9 Jan 2026 12:13:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 141B4335BCD;
+	Fri,  9 Jan 2026 12:40:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yAahT+hS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c3RjKVRo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B370F320CB6;
-	Fri,  9 Jan 2026 12:13:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22AF735BDC4;
+	Fri,  9 Jan 2026 12:40:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960813; cv=none; b=oBvqVbWE14CvMBWa3oFmN5/2FWdn3rX0JV+o41KjvhfIDa86rwf5GKw/41XVJTIFmmrZbpS1FrmWU2vIUL/1BIeLlFTg8jYqCTUGxQZv4SklpJj5lPqWH2IZCPtmYBkmnJM2qAyVcBfK19Aysc7fi5ec5lVbUDQzTLQYlfLUpWA=
+	t=1767962431; cv=none; b=NZmHl78b1bOmkewipeP1ps22wxFQ1xgJp55vSqNI8yUN9S3dnfUU7LjAlQ/sZ6sCiabWpMAcBw5Nv+K0NV3shOCSlFNG2bVEN4emQZ9aV9qGUSBz03tjft8FUgS/gv30ha1VfSNjzhiaFaVAvSFrhH1RXnVHNPdQdHqG5oA4XKI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960813; c=relaxed/simple;
-	bh=U8LLIUzwl1XnwijGxpqpZ05S+00mBXMGo1ZVaTfmS1A=;
+	s=arc-20240116; t=1767962431; c=relaxed/simple;
+	bh=z1dsYQwmeiAR9xEca2eEeIwKBzxPUonGgczO/ugVba4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NoMG+5xXSFFKEl/HyP+QfI3EUrE+kjsPAR1LdLQw0HpDRBgITmJgaI6KAvqIn2YhSIN20KPjIwginU8rW+x8yj2lPbdBcIjgvsKNZNZAGQL/YlA81IS0wFV70yPr0Q+I5CuV3V5Mxcqee/J8DPnGToFuv6Ge0yTsjkkTzVRBglw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yAahT+hS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4254EC4CEF1;
-	Fri,  9 Jan 2026 12:13:33 +0000 (UTC)
+	 MIME-Version; b=NWqtwwRl/lGtTG3QFOJMPnorQydbZcb4ClsJ4edg6+x7iUllfq5zeiaSlcjO4uA0e340GsTqsg/+NYQBhshpeSpiCAGBHdFJZHt7n9OA5LRCo0HCUPr0urO2y2sWj2Ey+3y1SK9OlQj5vdCTNre6AZOjYix7+csmNk93/58EN2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c3RjKVRo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C59CC4CEF1;
+	Fri,  9 Jan 2026 12:40:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960813;
-	bh=U8LLIUzwl1XnwijGxpqpZ05S+00mBXMGo1ZVaTfmS1A=;
+	s=korg; t=1767962430;
+	bh=z1dsYQwmeiAR9xEca2eEeIwKBzxPUonGgczO/ugVba4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yAahT+hS+MxaAfhcmVmN2WuvEhz5A1++aexfenmmtPCzx7MEU8/5/3N3jPXSTL3R6
-	 eFd+oCfEMWxvhIKLFlQgwcK9Au/numq6kQU9t377JNBZk8PRFgd9lizDMMBMqD5yCJ
-	 XmwA9nIi4j4gnF/4fk9QIn/u+z9oUZIBTrvi05kI=
+	b=c3RjKVRozekHii7FEva9CqW7PowdX29ZJuE+VyjcFlAbD/cTp50dbrkq96lmJJJCI
+	 BLm1Ec2hPLHxqhxTxwaolLrtUdDw0Z6m7NbTlbcJIy7dtqMno1xlNJr+FcnLPssN+4
+	 eo9imkxA96xkQ/8EmaUfZdJGdalqUfpC+tv5EXHM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 502/737] wifi: cfg80211: sme: store capped length in __cfg80211_connect_result()
+	Jim Mattson <jmattson@google.com>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.1 363/634] KVM: SVM: Mark VMCB_NPT as dirty on nested VMRUN
 Date: Fri,  9 Jan 2026 12:40:41 +0100
-Message-ID: <20260109112152.878171109@linuxfoundation.org>
+Message-ID: <20260109112131.182843146@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,42 +59,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Jim Mattson <jmattson@google.com>
 
-[ Upstream commit 2b77b9551d1184cb5af8271ff350e6e2c1b3db0d ]
+commit 7c8b465a1c91f674655ea9cec5083744ec5f796a upstream.
 
-The QGenie AI code review tool says we should store the capped length to
-wdev->u.client.ssid_len.  The AI is correct.
+Mark the VMCB_NPT bit as dirty in nested_vmcb02_prepare_save()
+on every nested VMRUN.
 
-Fixes: 62b635dcd69c ("wifi: cfg80211: sme: cap SSID length in __cfg80211_connect_result()")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://patch.msgid.link/aTAbp5RleyH_lnZE@stanley.mountain
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+If L1 changes the PAT MSR between two VMRUN instructions on the same
+L1 vCPU, the g_pat field in the associated vmcb02 will change, and the
+VMCB_NPT clean bit should be cleared.
+
+Fixes: 4bb170a5430b ("KVM: nSVM: do not mark all VMCB02 fields dirty on nested vmexit")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jim Mattson <jmattson@google.com>
+Link: https://lore.kernel.org/r/20250922162935.621409-3-jmattson@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/wireless/sme.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kvm/svm/nested.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/wireless/sme.c b/net/wireless/sme.c
-index 5904c869085c..6f116ae5442b 100644
---- a/net/wireless/sme.c
-+++ b/net/wireless/sme.c
-@@ -925,7 +925,7 @@ void __cfg80211_connect_result(struct net_device *dev,
+--- a/arch/x86/kvm/svm/nested.c
++++ b/arch/x86/kvm/svm/nested.c
+@@ -520,6 +520,7 @@ static void nested_vmcb02_prepare_save(s
+ 	struct vmcb *vmcb02 = svm->nested.vmcb02.ptr;
  
- 			ssid_len = min(ssid->datalen, IEEE80211_MAX_SSID_LEN);
- 			memcpy(wdev->u.client.ssid, ssid->data, ssid_len);
--			wdev->u.client.ssid_len = ssid->datalen;
-+			wdev->u.client.ssid_len = ssid_len;
- 			break;
- 		}
- 		rcu_read_unlock();
--- 
-2.51.0
-
+ 	nested_vmcb02_compute_g_pat(svm);
++	vmcb_mark_dirty(vmcb02, VMCB_NPT);
+ 
+ 	/* Load the nested guest state */
+ 	if (svm->nested.vmcb12_gpa != svm->nested.last_vmcb12_gpa) {
 
 
 
