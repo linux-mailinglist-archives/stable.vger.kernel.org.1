@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-206805-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207406-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id D10C4D09386
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:04:19 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EB3AD09D72
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:41:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 693603020595
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:04:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CCFBC30FDBB8
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:32:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A12535A933;
-	Fri,  9 Jan 2026 12:04:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6613358D30;
+	Fri,  9 Jan 2026 12:32:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SMMyj+3p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jCG+L9Vc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D069A35A92E;
-	Fri,  9 Jan 2026 12:04:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A17931E107;
+	Fri,  9 Jan 2026 12:32:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960248; cv=none; b=ZHBO5cpQ5H/znOa8ip8JY3dXD/4m6Y3+tc3Uah/L6uwQRbtJoqkpF2bnCEbjEE5ntLfui6LzN9CxwmvVf7JRi5Wo0bEzMPDwsPyP0xMihbZJ6obKftO4kns4Frk4sUOkidDBbClaeRC5FB6Zk7DUC+NB3wFSG6Ir6DYgyz8Gqqc=
+	t=1767961964; cv=none; b=X9jdgKdCP6O89v4I8dzDYOesGFGdbrWxjOxRa6y1MASsexEhx4fbrs2xpBXka/Bi4YvA73V3KUt58qrSu4Mt5Uav3pQ86yoDY6MKkgfuFxoL+jPjfm/yL9hIiq4oHMPYoKEaXnNepaUxW7QIjSG7hNMeiyIlHlYttz474Ut2Ngk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960248; c=relaxed/simple;
-	bh=utSeAN/aTbKCkiDh1Pk8dhYnfYhVlsFcJdEMTnQ6IhE=;
+	s=arc-20240116; t=1767961964; c=relaxed/simple;
+	bh=EAhSv5kY/znuFvDz/FA/lU12XNWi6T5XOU5XwlzmKuk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CuFc4DQeYn57NfKypx0tJbyg2eAOAt3nkoRBS0TyEPLfTXor319rFG6X1bV7jh+L5BHfFnQkoLVW1NdV+/nLGZN7UN6txKWN+NTkzTA2XbrvPBd1Os+u9okgLJ5tcpXkpQtUTX/iLqh9vZbaN9HtCGF+ZiuLKDCcMiGWMCOEj4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SMMyj+3p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A220C4CEF1;
-	Fri,  9 Jan 2026 12:04:08 +0000 (UTC)
+	 MIME-Version; b=squqXYMuJ+3mlccX3vLX/wjrQQ7IKroFt4PR4Q6N/O2cQcbOrDvVxg4PQpANvRQhQ3X069n545ubBJBZurdepEV5VCvzRsGvd/OcsheLPLqL9kTYzfIg2UJ4vFu0+G5ew6Pj+JRjt8JQHR8WR2SJMiiOQRLfQaVWlIiRBsDJBJ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jCG+L9Vc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E85CBC4CEF1;
+	Fri,  9 Jan 2026 12:32:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960248;
-	bh=utSeAN/aTbKCkiDh1Pk8dhYnfYhVlsFcJdEMTnQ6IhE=;
+	s=korg; t=1767961964;
+	bh=EAhSv5kY/znuFvDz/FA/lU12XNWi6T5XOU5XwlzmKuk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SMMyj+3pBTfgcw9aiNpqUq+779AwnDhFTIoa8C6cI1uIdbCkcFbo1L7kpqZkWYpIO
-	 xakiUMQbrqnfChkFAN/UV7VWUBp1CQrAO8TQe9373954YBIfCPgs/VrTAcWE4SGyk4
-	 I6tgsi3cYau4BWrK+dDkj0G/dsuKodkQDZxEOx9A=
+	b=jCG+L9Vc1NfPscrs97uweAgKPOcO0Mcq/JEFJb+O4CzzfZjNYYjXvHrcCgjTBRJbe
+	 duqEpGfkudSyEEgzD4ZK7oSu97yIQc8w/ETPxL2HSfwMIGiVPTgWG2RnOy4rKYvPbJ
+	 EGJvnyebm0UxD7w9HKoEQLvisgStsp+nXFPqYO2g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ido Schimmel <idosch@nvidia.com>,
-	Petr Machata <petrm@nvidia.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 337/737] mlxsw: spectrum_mr: Fix use-after-free when updating multicast route stats
+Subject: [PATCH 6.1 198/634] NFS: Fix inheritance of the block sizes when automounting
 Date: Fri,  9 Jan 2026 12:37:56 +0100
-Message-ID: <20260109112146.668026672@linuxfoundation.org>
+Message-ID: <20260109112124.885711650@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,97 +59,180 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit 8ac1dacec458f55f871f7153242ed6ab60373b90 ]
+[ Upstream commit 2b092175f5e301cdaa935093edfef2be9defb6df ]
 
-Cited commit added a dedicated mutex (instead of RTNL) to protect the
-multicast route list, so that it will not change while the driver
-periodically traverses it in order to update the kernel about multicast
-route stats that were queried from the device.
+Only inherit the block sizes that were actually specified as mount
+parameters for the parent mount.
 
-One instance of list entry deletion (during route replace) was missed
-and it can result in a use-after-free [1].
-
-Fix by acquiring the mutex before deleting the entry from the list and
-releasing it afterwards.
-
-[1]
-BUG: KASAN: slab-use-after-free in mlxsw_sp_mr_stats_update+0x4a5/0x540 drivers/net/ethernet/mellanox/mlxsw/spectrum_mr.c:1006 [mlxsw_spectrum]
-Read of size 8 at addr ffff8881523c2fa8 by task kworker/2:5/22043
-
-CPU: 2 UID: 0 PID: 22043 Comm: kworker/2:5 Not tainted 6.18.0-rc1-custom-g1a3d6d7cd014 #1 PREEMPT(full)
-Hardware name: Mellanox Technologies Ltd. MSN2010/SA002610, BIOS 5.6.5 08/24/2017
-Workqueue: mlxsw_core mlxsw_sp_mr_stats_update [mlxsw_spectrum]
-Call Trace:
- <TASK>
- dump_stack_lvl+0xba/0x110
- print_report+0x174/0x4f5
- kasan_report+0xdf/0x110
- mlxsw_sp_mr_stats_update+0x4a5/0x540 drivers/net/ethernet/mellanox/mlxsw/spectrum_mr.c:1006 [mlxsw_spectrum]
- process_one_work+0x9cc/0x18e0
- worker_thread+0x5df/0xe40
- kthread+0x3b8/0x730
- ret_from_fork+0x3e9/0x560
- ret_from_fork_asm+0x1a/0x30
- </TASK>
-
-Allocated by task 29933:
- kasan_save_stack+0x30/0x50
- kasan_save_track+0x14/0x30
- __kasan_kmalloc+0x8f/0xa0
- mlxsw_sp_mr_route_add+0xd8/0x4770 [mlxsw_spectrum]
- mlxsw_sp_router_fibmr_event_work+0x371/0xad0 drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c:7965 [mlxsw_spectrum]
- process_one_work+0x9cc/0x18e0
- worker_thread+0x5df/0xe40
- kthread+0x3b8/0x730
- ret_from_fork+0x3e9/0x560
- ret_from_fork_asm+0x1a/0x30
-
-Freed by task 29933:
- kasan_save_stack+0x30/0x50
- kasan_save_track+0x14/0x30
- __kasan_save_free_info+0x3b/0x70
- __kasan_slab_free+0x43/0x70
- kfree+0x14e/0x700
- mlxsw_sp_mr_route_add+0x2dea/0x4770 drivers/net/ethernet/mellanox/mlxsw/spectrum_mr.c:444 [mlxsw_spectrum]
- mlxsw_sp_router_fibmr_event_work+0x371/0xad0 drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c:7965 [mlxsw_spectrum]
- process_one_work+0x9cc/0x18e0
- worker_thread+0x5df/0xe40
- kthread+0x3b8/0x730
- ret_from_fork+0x3e9/0x560
- ret_from_fork_asm+0x1a/0x30
-
-Fixes: f38656d06725 ("mlxsw: spectrum_mr: Protect multicast route list with a lock")
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/f996feecfd59fde297964bfc85040b6d83ec6089.1764695650.git.petrm@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 62a55d088cd8 ("NFS: Additional refactoring for fs_context conversion")
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlxsw/spectrum_mr.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/nfs/client.c           | 21 +++++++++++++++++----
+ fs/nfs/internal.h         |  1 -
+ fs/nfs/namespace.c        |  5 ++++-
+ fs/nfs/nfs4client.c       | 18 ++++++++++++++----
+ fs/nfs/super.c            | 10 +++-------
+ include/linux/nfs_fs_sb.h |  5 +++++
+ 6 files changed, 43 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_mr.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_mr.c
-index 5afe6b155ef0d..81935f87bfcd7 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_mr.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_mr.c
-@@ -440,7 +440,9 @@ int mlxsw_sp_mr_route_add(struct mlxsw_sp_mr_table *mr_table,
- 		rhashtable_remove_fast(&mr_table->route_ht,
- 				       &mr_orig_route->ht_node,
- 				       mlxsw_sp_mr_route_ht_params);
-+		mutex_lock(&mr_table->route_list_lock);
- 		list_del(&mr_orig_route->node);
-+		mutex_unlock(&mr_table->route_list_lock);
- 		mlxsw_sp_mr_route_destroy(mr_table, mr_orig_route);
+diff --git a/fs/nfs/client.c b/fs/nfs/client.c
+index 2ca04dcb192aa..948bf8d7aed00 100644
+--- a/fs/nfs/client.c
++++ b/fs/nfs/client.c
+@@ -745,10 +745,18 @@ static int nfs_init_server(struct nfs_server *server,
+ 		server->fattr_valid = NFS_ATTR_FATTR_V4;
  	}
  
+-	if (ctx->rsize)
++	if (ctx->bsize) {
++		server->bsize = ctx->bsize;
++		server->automount_inherit |= NFS_AUTOMOUNT_INHERIT_BSIZE;
++	}
++	if (ctx->rsize) {
+ 		server->rsize = nfs_io_size(ctx->rsize, clp->cl_proto);
+-	if (ctx->wsize)
++		server->automount_inherit |= NFS_AUTOMOUNT_INHERIT_RSIZE;
++	}
++	if (ctx->wsize) {
+ 		server->wsize = nfs_io_size(ctx->wsize, clp->cl_proto);
++		server->automount_inherit |= NFS_AUTOMOUNT_INHERIT_WSIZE;
++	}
+ 
+ 	server->acregmin = ctx->acregmin * HZ;
+ 	server->acregmax = ctx->acregmax * HZ;
+@@ -940,8 +948,13 @@ EXPORT_SYMBOL_GPL(nfs_probe_server);
+ void nfs_server_copy_userdata(struct nfs_server *target, struct nfs_server *source)
+ {
+ 	target->flags = source->flags;
+-	target->rsize = source->rsize;
+-	target->wsize = source->wsize;
++	target->automount_inherit = source->automount_inherit;
++	if (source->automount_inherit & NFS_AUTOMOUNT_INHERIT_BSIZE)
++		target->bsize = source->bsize;
++	if (source->automount_inherit & NFS_AUTOMOUNT_INHERIT_RSIZE)
++		target->rsize = source->rsize;
++	if (source->automount_inherit & NFS_AUTOMOUNT_INHERIT_WSIZE)
++		target->wsize = source->wsize;
+ 	target->acregmin = source->acregmin;
+ 	target->acregmax = source->acregmax;
+ 	target->acdirmin = source->acdirmin;
+diff --git a/fs/nfs/internal.h b/fs/nfs/internal.h
+index 323f50962a786..ec2e0d7ed7e36 100644
+--- a/fs/nfs/internal.h
++++ b/fs/nfs/internal.h
+@@ -145,7 +145,6 @@ struct nfs_fs_context {
+ 		struct super_block	*sb;
+ 		struct dentry		*dentry;
+ 		struct nfs_fattr	*fattr;
+-		unsigned int		inherited_bsize;
+ 	} clone_data;
+ };
+ 
+diff --git a/fs/nfs/namespace.c b/fs/nfs/namespace.c
+index 789baa1cf768c..663f1a3f7cc3e 100644
+--- a/fs/nfs/namespace.c
++++ b/fs/nfs/namespace.c
+@@ -190,6 +190,10 @@ struct vfsmount *nfs_d_automount(struct path *path)
+ 	ctx->nfs_mod		= client->cl_nfs_mod;
+ 	__module_get(ctx->nfs_mod->owner);
+ 
++	/* Inherit block sizes if they were specified as mount parameters */
++	if (server->automount_inherit & NFS_AUTOMOUNT_INHERIT_BSIZE)
++		ctx->bsize = server->bsize;
++
+ 	ret = client->rpc_ops->submount(fc, server);
+ 	if (ret < 0) {
+ 		mnt = ERR_PTR(ret);
+@@ -289,7 +293,6 @@ int nfs_do_submount(struct fs_context *fc)
+ 		return -ENOMEM;
+ 
+ 	ctx->internal		= true;
+-	ctx->clone_data.inherited_bsize = ctx->clone_data.sb->s_blocksize_bits;
+ 
+ 	p = nfs_devname(dentry, buffer, 4096);
+ 	if (IS_ERR(p)) {
+diff --git a/fs/nfs/nfs4client.c b/fs/nfs/nfs4client.c
+index 4cb405e343b83..f8a50f6453dd1 100644
+--- a/fs/nfs/nfs4client.c
++++ b/fs/nfs/nfs4client.c
+@@ -1149,10 +1149,20 @@ static int nfs4_init_server(struct nfs_server *server, struct fs_context *fc)
+ 	if (error < 0)
+ 		return error;
+ 
+-	if (ctx->rsize)
+-		server->rsize = nfs_io_size(ctx->rsize, server->nfs_client->cl_proto);
+-	if (ctx->wsize)
+-		server->wsize = nfs_io_size(ctx->wsize, server->nfs_client->cl_proto);
++	if (ctx->bsize) {
++		server->bsize = ctx->bsize;
++		server->automount_inherit |= NFS_AUTOMOUNT_INHERIT_BSIZE;
++	}
++	if (ctx->rsize) {
++		server->rsize =
++			nfs_io_size(ctx->rsize, server->nfs_client->cl_proto);
++		server->automount_inherit |= NFS_AUTOMOUNT_INHERIT_RSIZE;
++	}
++	if (ctx->wsize) {
++		server->wsize =
++			nfs_io_size(ctx->wsize, server->nfs_client->cl_proto);
++		server->automount_inherit |= NFS_AUTOMOUNT_INHERIT_WSIZE;
++	}
+ 
+ 	server->acregmin = ctx->acregmin * HZ;
+ 	server->acregmax = ctx->acregmax * HZ;
+diff --git a/fs/nfs/super.c b/fs/nfs/super.c
+index 3a002bc75d22a..9a81f34362930 100644
+--- a/fs/nfs/super.c
++++ b/fs/nfs/super.c
+@@ -1057,8 +1057,9 @@ static void nfs_fill_super(struct super_block *sb, struct nfs_fs_context *ctx)
+ 	sb->s_blocksize = 0;
+ 	sb->s_xattr = server->nfs_client->cl_nfs_mod->xattr;
+ 	sb->s_op = server->nfs_client->cl_nfs_mod->sops;
+-	if (ctx->bsize)
+-		sb->s_blocksize = nfs_block_size(ctx->bsize, &sb->s_blocksize_bits);
++	if (server->bsize)
++		sb->s_blocksize =
++			nfs_block_size(server->bsize, &sb->s_blocksize_bits);
+ 
+ 	switch (server->nfs_client->rpc_ops->version) {
+ 	case 2:
+@@ -1303,13 +1304,8 @@ int nfs_get_tree_common(struct fs_context *fc)
+ 	}
+ 
+ 	if (!s->s_root) {
+-		unsigned bsize = ctx->clone_data.inherited_bsize;
+ 		/* initial superblock/root creation */
+ 		nfs_fill_super(s, ctx);
+-		if (bsize) {
+-			s->s_blocksize_bits = bsize;
+-			s->s_blocksize = 1U << bsize;
+-		}
+ 		error = nfs_get_cache_cookie(s, ctx);
+ 		if (error < 0)
+ 			goto error_splat_super;
+diff --git a/include/linux/nfs_fs_sb.h b/include/linux/nfs_fs_sb.h
+index eb1d41d87be30..877d5523239cf 100644
+--- a/include/linux/nfs_fs_sb.h
++++ b/include/linux/nfs_fs_sb.h
+@@ -155,6 +155,11 @@ struct nfs_server {
+ #define NFS_MOUNT_WRITE_WAIT		0x02000000
+ #define NFS_MOUNT_TRUNK_DISCOVERY	0x04000000
+ 
++	unsigned int		automount_inherit; /* Properties inherited by automount */
++#define NFS_AUTOMOUNT_INHERIT_BSIZE	0x0001
++#define NFS_AUTOMOUNT_INHERIT_RSIZE	0x0002
++#define NFS_AUTOMOUNT_INHERIT_WSIZE	0x0004
++
+ 	unsigned int		caps;		/* server capabilities */
+ 	__u64			fattr_valid;	/* Valid attributes */
+ 	unsigned int		rsize;		/* read size */
 -- 
 2.51.0
 
