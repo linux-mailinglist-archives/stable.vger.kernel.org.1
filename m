@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-206794-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207395-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 606CBD0941C
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:06:48 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16852D09F1C
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:47:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C274B3026D8D
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:03:42 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 65C9E3110E79
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:32:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD80F359FBB;
-	Fri,  9 Jan 2026 12:03:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80D4035BDA9;
+	Fri,  9 Jan 2026 12:32:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uZAys8iR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JohJDYbg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A05E9359F98;
-	Fri,  9 Jan 2026 12:03:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44B9033B6E8;
+	Fri,  9 Jan 2026 12:32:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960217; cv=none; b=AtmigT00nDGGI/p7DkFkWx7gqKek9w5McKalHW25qpspLVMfR9o5bN+Ha8QXdZetCvDnIiz6CL5P7IE17Vty5Ns2FG37Gv/ALmjyGFi9T0xAUFPdAs8mosKsCGwvhmoghWH6Fx65+X+3pm440VpI3xgmOjlSG1Yqa33BDJ2+8X4=
+	t=1767961933; cv=none; b=K+5B1mgzLIpsh3BItZKmysBPpcJ/magFFlOuYt3FogEPztLtHMhe6Zf/9PBY3s2oJMzwfkXCwran5tn8t+2HFihQD9tyTX0gKp0rYthzYkO3c73SCmlzPFzZmRcBB1wgIcx0/wRK+CNpO1Z6e0h6bkLyTlmq3c2h8NjxOfvOnlU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960217; c=relaxed/simple;
-	bh=iE9S9qVbsZUlYUSx4JFCrq7HQ9x/VTVsiCWyliRD1nM=;
+	s=arc-20240116; t=1767961933; c=relaxed/simple;
+	bh=dzWQaHpDyqw9dfVZUdxWLUObdsF0dK7uYwrIyUOhat0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i3vCx5PPxmilbMKKnNz8RZgVr8Sal5VbOqy9DliEazN9qUrT4OLuEwKb6qA01Jz5D9lXonG+lIKPtYinBZoBDZUS8SffkFYkMJs0IS+FGfnG4W+bR5sQVStQOO0/TKwwPCDtqgY149B4jp14SPPyYNu3g6MODOg8GjVpFPyW5LQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uZAys8iR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E381C16AAE;
-	Fri,  9 Jan 2026 12:03:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=W2d3RoV0hqsipymkK/DwUTWwjG5zLtQuPKQn0QrirkVxlb/ToNWMZAt4tuI4bz3qsglYzJS8uQPZtnCu/K9kfepVURblo0jWq65kHh4GkITMOdL3tenwUaqI24jpzuhn5nZmBGQPm0vpeJeZPJp/sRHaOS3VQQPXNEYnjZX+x5E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JohJDYbg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C676DC4CEF1;
+	Fri,  9 Jan 2026 12:32:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960217;
-	bh=iE9S9qVbsZUlYUSx4JFCrq7HQ9x/VTVsiCWyliRD1nM=;
+	s=korg; t=1767961933;
+	bh=dzWQaHpDyqw9dfVZUdxWLUObdsF0dK7uYwrIyUOhat0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uZAys8iReQ32z19n1P2m10m0gTWzl7nRql/585mTyxduks/NjK4YZzYvZKClfe2NR
-	 82GlU9OkwCp2GecwRmohwlbS18W4dXXSQdihmdOEe0Ynpbn8LqHuOUPDElgmUaIHj0
-	 8IG1EIe7mhphkEd8C0jG3iyFgU1nKnTJeRnh7icc=
+	b=JohJDYbgKkckFiYfn7z4GFDBTd6NybX62kzyU9FBcjFCMR7dnLPa/rJyyRBEbkYqc
+	 /YaIY+PkxGndVik5Yh+QFmueLZVEH39QLxZMHO2OgMW8GiphssPUPau2JlfM2wL6Aj
+	 wtTXZb362cCFk0TiYtZ3cNG0fPu2hCBPE9dzWc8U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qianchang Zhao <pioooooooooip@gmail.com>,
-	Zhitong Liu <liuzhitong1993@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Armin Wolf <W_Armin@gmx.de>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 327/737] ksmbd: vfs: fix race on m_flags in vfs_cache
+Subject: [PATCH 6.1 188/634] fs/nls: Fix utf16 to utf8 conversion
 Date: Fri,  9 Jan 2026 12:37:46 +0100
-Message-ID: <20260109112146.297154575@linuxfoundation.org>
+Message-ID: <20260109112124.513668831@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,194 +58,83 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qianchang Zhao <pioooooooooip@gmail.com>
+From: Armin Wolf <W_Armin@gmx.de>
 
-[ Upstream commit 991f8a79db99b14c48d20d2052c82d65b9186cad ]
+[ Upstream commit 25524b6190295577e4918c689644451365e6466d ]
 
-ksmbd maintains delete-on-close and pending-delete state in
-ksmbd_inode->m_flags. In vfs_cache.c this field is accessed under
-inconsistent locking: some paths read and modify m_flags under
-ci->m_lock while others do so without taking the lock at all.
+Currently the function responsible for converting between utf16 and
+utf8 strings will ignore any characters that cannot be converted. This
+however also includes multi-byte characters that do not fit into the
+provided string buffer.
 
-Examples:
+This can cause problems if such a multi-byte character is followed by
+a single-byte character. In such a case the multi-byte character might
+be ignored when the provided string buffer is too small, but the
+single-byte character might fit and is thus still copied into the
+resulting string.
 
- - ksmbd_query_inode_status() and __ksmbd_inode_close() use
-   ci->m_lock when checking or updating m_flags.
- - ksmbd_inode_pending_delete(), ksmbd_set_inode_pending_delete(),
-   ksmbd_clear_inode_pending_delete() and ksmbd_fd_set_delete_on_close()
-   used to read and modify m_flags without ci->m_lock.
+Fix this by stop filling the provided string buffer once a character
+does not fit. In order to be able to do this extend utf32_to_utf8()
+to return useful errno codes instead of -1.
 
-This creates a potential data race on m_flags when multiple threads
-open, close and delete the same file concurrently. In the worst case
-delete-on-close and pending-delete bits can be lost or observed in an
-inconsistent state, leading to confusing delete semantics (files that
-stay on disk after delete-on-close, or files that disappear while still
-in use).
-
-Fix it by:
-
- - Making ksmbd_query_inode_status() look at m_flags under ci->m_lock
-   after dropping inode_hash_lock.
- - Adding ci->m_lock protection to all helpers that read or modify
-   m_flags (ksmbd_inode_pending_delete(), ksmbd_set_inode_pending_delete(),
-   ksmbd_clear_inode_pending_delete(), ksmbd_fd_set_delete_on_close()).
- - Keeping the existing ci->m_lock protection in __ksmbd_inode_close(),
-   and moving the actual unlink/xattr removal outside the lock.
-
-This unifies the locking around m_flags and removes the data race while
-preserving the existing delete-on-close behaviour.
-
-Reported-by: Qianchang Zhao <pioooooooooip@gmail.com>
-Reported-by: Zhitong Liu <liuzhitong1993@gmail.com>
-Signed-off-by: Qianchang Zhao <pioooooooooip@gmail.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: 74675a58507e ("NLS: update handling of Unicode")
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+Link: https://patch.msgid.link/20251111131125.3379-2-W_Armin@gmx.de
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/vfs_cache.c | 88 +++++++++++++++++++++++++++------------
- 1 file changed, 62 insertions(+), 26 deletions(-)
+ fs/nls/nls_base.c | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
-diff --git a/fs/smb/server/vfs_cache.c b/fs/smb/server/vfs_cache.c
-index 002f0864abee6..2fcb7ca33a63c 100644
---- a/fs/smb/server/vfs_cache.c
-+++ b/fs/smb/server/vfs_cache.c
-@@ -105,40 +105,62 @@ int ksmbd_query_inode_status(struct dentry *dentry)
+diff --git a/fs/nls/nls_base.c b/fs/nls/nls_base.c
+index a026dbd3593f6..7eacded3c17d1 100644
+--- a/fs/nls/nls_base.c
++++ b/fs/nls/nls_base.c
+@@ -94,7 +94,7 @@ int utf32_to_utf8(unicode_t u, u8 *s, int maxout)
  
- 	read_lock(&inode_hash_lock);
- 	ci = __ksmbd_inode_lookup(dentry);
--	if (ci) {
--		ret = KSMBD_INODE_STATUS_OK;
--		if (ci->m_flags & (S_DEL_PENDING | S_DEL_ON_CLS))
--			ret = KSMBD_INODE_STATUS_PENDING_DELETE;
--		atomic_dec(&ci->m_count);
--	}
- 	read_unlock(&inode_hash_lock);
-+	if (!ci)
-+		return ret;
-+
-+	down_read(&ci->m_lock);
-+	if (ci->m_flags & (S_DEL_PENDING | S_DEL_ON_CLS))
-+		ret = KSMBD_INODE_STATUS_PENDING_DELETE;
-+	else
-+		ret = KSMBD_INODE_STATUS_OK;
-+	up_read(&ci->m_lock);
-+
-+	atomic_dec(&ci->m_count);
- 	return ret;
- }
+ 	l = u;
+ 	if (l > UNICODE_MAX || (l & SURROGATE_MASK) == SURROGATE_PAIR)
+-		return -1;
++		return -EILSEQ;
  
- bool ksmbd_inode_pending_delete(struct ksmbd_file *fp)
- {
--	return (fp->f_ci->m_flags & (S_DEL_PENDING | S_DEL_ON_CLS));
-+	struct ksmbd_inode *ci = fp->f_ci;
-+	int ret;
-+
-+	down_read(&ci->m_lock);
-+	ret = (ci->m_flags & (S_DEL_PENDING | S_DEL_ON_CLS));
-+	up_read(&ci->m_lock);
-+
-+	return ret;
- }
- 
- void ksmbd_set_inode_pending_delete(struct ksmbd_file *fp)
- {
--	fp->f_ci->m_flags |= S_DEL_PENDING;
-+	struct ksmbd_inode *ci = fp->f_ci;
-+
-+	down_write(&ci->m_lock);
-+	ci->m_flags |= S_DEL_PENDING;
-+	up_write(&ci->m_lock);
- }
- 
- void ksmbd_clear_inode_pending_delete(struct ksmbd_file *fp)
- {
--	fp->f_ci->m_flags &= ~S_DEL_PENDING;
-+	struct ksmbd_inode *ci = fp->f_ci;
-+
-+	down_write(&ci->m_lock);
-+	ci->m_flags &= ~S_DEL_PENDING;
-+	up_write(&ci->m_lock);
- }
- 
- void ksmbd_fd_set_delete_on_close(struct ksmbd_file *fp,
- 				  int file_info)
- {
--	if (ksmbd_stream_fd(fp)) {
--		fp->f_ci->m_flags |= S_DEL_ON_CLS_STREAM;
--		return;
--	}
-+	struct ksmbd_inode *ci = fp->f_ci;
- 
--	fp->f_ci->m_flags |= S_DEL_ON_CLS;
-+	down_write(&ci->m_lock);
-+	if (ksmbd_stream_fd(fp))
-+		ci->m_flags |= S_DEL_ON_CLS_STREAM;
-+	else
-+		ci->m_flags |= S_DEL_ON_CLS;
-+	up_write(&ci->m_lock);
- }
- 
- static void ksmbd_inode_hash(struct ksmbd_inode *ci)
-@@ -250,27 +272,41 @@ static void __ksmbd_inode_close(struct ksmbd_file *fp)
- 	struct file *filp;
- 
- 	filp = fp->filp;
--	if (ksmbd_stream_fd(fp) && (ci->m_flags & S_DEL_ON_CLS_STREAM)) {
--		ci->m_flags &= ~S_DEL_ON_CLS_STREAM;
--		err = ksmbd_vfs_remove_xattr(file_mnt_idmap(filp),
--					     &filp->f_path,
--					     fp->stream.name,
--					     true);
--		if (err)
--			pr_err("remove xattr failed : %s\n",
--			       fp->stream.name);
-+
-+	if (ksmbd_stream_fd(fp)) {
-+		bool remove_stream_xattr = false;
-+
-+		down_write(&ci->m_lock);
-+		if (ci->m_flags & S_DEL_ON_CLS_STREAM) {
-+			ci->m_flags &= ~S_DEL_ON_CLS_STREAM;
-+			remove_stream_xattr = true;
-+		}
-+		up_write(&ci->m_lock);
-+
-+		if (remove_stream_xattr) {
-+			err = ksmbd_vfs_remove_xattr(file_mnt_idmap(filp),
-+						     &filp->f_path,
-+						     fp->stream.name,
-+						     true);
-+			if (err)
-+				pr_err("remove xattr failed : %s\n",
-+				       fp->stream.name);
-+		}
- 	}
- 
- 	if (atomic_dec_and_test(&ci->m_count)) {
-+		bool do_unlink = false;
-+
- 		down_write(&ci->m_lock);
- 		if (ci->m_flags & (S_DEL_ON_CLS | S_DEL_PENDING)) {
- 			ci->m_flags &= ~(S_DEL_ON_CLS | S_DEL_PENDING);
--			up_write(&ci->m_lock);
--			ksmbd_vfs_unlink(filp);
--			down_write(&ci->m_lock);
-+			do_unlink = true;
+ 	nc = 0;
+ 	for (t = utf8_table; t->cmask && maxout; t++, maxout--) {
+@@ -110,7 +110,7 @@ int utf32_to_utf8(unicode_t u, u8 *s, int maxout)
+ 			return nc;
  		}
- 		up_write(&ci->m_lock);
- 
-+		if (do_unlink)
-+			ksmbd_vfs_unlink(filp);
-+
- 		ksmbd_inode_free(ci);
  	}
+-	return -1;
++	return -EOVERFLOW;
  }
+ EXPORT_SYMBOL(utf32_to_utf8);
+ 
+@@ -217,8 +217,16 @@ int utf16s_to_utf8s(const wchar_t *pwcs, int inlen, enum utf16_endian endian,
+ 				inlen--;
+ 			}
+ 			size = utf32_to_utf8(u, op, maxout);
+-			if (size == -1) {
+-				/* Ignore character and move on */
++			if (size < 0) {
++				if (size == -EILSEQ) {
++					/* Ignore character and move on */
++					continue;
++				}
++				/*
++				 * Stop filling the buffer with data once a character
++				 * does not fit anymore.
++				 */
++				break;
+ 			} else {
+ 				op += size;
+ 				maxout -= size;
 -- 
 2.51.0
 
