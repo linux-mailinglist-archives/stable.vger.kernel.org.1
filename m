@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-206466-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207158-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E46CAD08FE4
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 12:47:29 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1630DD09B72
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:34:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8778A3098DC7
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:45:00 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 04265306F30B
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:20:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59C60359702;
-	Fri,  9 Jan 2026 11:45:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8221335A92E;
+	Fri,  9 Jan 2026 12:20:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iQVHEzKc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cj2T5f3e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EF7C339B30;
-	Fri,  9 Jan 2026 11:44:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44B6326ED41;
+	Fri,  9 Jan 2026 12:20:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767959098; cv=none; b=C5namkJOkwZhy1k/d6C/maAoZu/m+E/rkPg2vsbtIdiGlL4PMHS9K74riJ6pHwS5U1iNTaYfALXRoMNZBl9rtAMzUCLJaMzQqFh3ow1gKPegK5ck/FgXaN/5msKgmYtYNoBMZwrfZI66IwSXRvFrYWGbJJPN0Y1S/rM0J2DwuzQ=
+	t=1767961256; cv=none; b=M1l2TrrsP/sNnmX+E69h77dZkVtF1YpAYCM7CgqoB9ViXsxs4eHL0SO6X6lddChyBzhq/MKnVtb2imO9RvEWLqIQOln5ftMS9ub1OoBZICFGu+2z1MXXH9qy9ttqVVj8pANHYprPGHved7x05MhVqtP3HoW1Slp5IF8gGpNftes=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767959098; c=relaxed/simple;
-	bh=4IrgLY7HDkQy6WZ4fXdjLmoN2q8Nr18LVclOopC/eA4=;
+	s=arc-20240116; t=1767961256; c=relaxed/simple;
+	bh=WpXZxt6A2KBPwLTishpDLQAI0z9WWf9TV0lHWJF8AHE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UfQTUVdxgidAyQDKtdXzv8k2NqHAOa4GriXKG3smrL1An8Yx0hhatcLO9uNGFhPSZQpIJzjLQTC89AQe+FgjC1RrjIr1MoiMI+1vV6dYXWIl+qWMuBgbicxsg5XUwJb3C2AWfhroFsphaFlZwzrzmbWsFNwbhmY/alAbvNQ1y9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iQVHEzKc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DA62C4CEF1;
-	Fri,  9 Jan 2026 11:44:55 +0000 (UTC)
+	 MIME-Version; b=JdRuf8+sCXJuWkM67K/kdCx1xPDT92wAUhDshA/GAeVhQYQPuuOjIdJ40POEntrY5ElY2Mhz5ZGi++zp5SXwKy1rXHpeG4qsUavrYccBUM2wDLFd3PYbMzUsn4REl094ZHa2LdZ+DbC2WfAAZ/2SCXUAPDo9FzbgR+oqrGC2JgE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cj2T5f3e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5417C4CEF1;
+	Fri,  9 Jan 2026 12:20:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767959096;
-	bh=4IrgLY7HDkQy6WZ4fXdjLmoN2q8Nr18LVclOopC/eA4=;
+	s=korg; t=1767961256;
+	bh=WpXZxt6A2KBPwLTishpDLQAI0z9WWf9TV0lHWJF8AHE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iQVHEzKcifwuMK71DRYTKwPf36bdoH/kL/u+85V4N67gKwTeH3pRHLMhHYPrSK1xN
-	 6GxWqlc4JPP0YXHWLibCjmqLByPZs0+zlYqWJ5CNfM7lkvK0yAoy1n0Tqq/uisEy7b
-	 9E2rgfcu4fJKOIpW0q4QgI/gG9Hg4LWO2tR+mDS4=
+	b=Cj2T5f3eFdhqZ6YnT6Eo8l1q3Mpf5S39sPTlU0jhyfo1X8enD3PbR2L3v/S17L7l1
+	 gsWfynMTDeHIzimBpG9yUfiEN9N7UIeTAs/RWkKYSk3vF0uVu0OSLMGrfJmTE6Oe65
+	 EKBLeU6iiR7L2gNE5GXYJEKekSiWe3uim4nFI7tA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miaoqian Lin <linmq006@gmail.com>,
-	Daniel Golle <daniel@makrotopia.org>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Paolo Abeni <pabeni@redhat.com>,
+	stable@kernel.org,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 07/16] net: phy: mediatek: fix nvmem cell reference leak in mt798x_phy_calibration
-Date: Fri,  9 Jan 2026 12:43:48 +0100
-Message-ID: <20260109111951.699301528@linuxfoundation.org>
+Subject: [PATCH 6.6 690/737] f2fs: fix to detect recoverable inode during dryrun of find_fsync_dnodes()
+Date: Fri,  9 Jan 2026 12:43:49 +0100
+Message-ID: <20260109112200.018592033@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109111951.415522519@linuxfoundation.org>
-References: <20260109111951.415522519@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +61,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miaoqian Lin <linmq006@gmail.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit 1e5a541420b8c6d87d88eb50b6b978cdeafee1c9 ]
+[ Upstream commit 68d05693f8c031257a0822464366e1c2a239a512 ]
 
-When nvmem_cell_read() fails in mt798x_phy_calibration(), the function
-returns without calling nvmem_cell_put(), leaking the cell reference.
+mkfs.f2fs -f /dev/vdd
+mount /dev/vdd /mnt/f2fs
+touch /mnt/f2fs/foo
+sync		# avoid CP_UMOUNT_FLAG in last f2fs_checkpoint.ckpt_flags
+touch /mnt/f2fs/bar
+f2fs_io fsync /mnt/f2fs/bar
+f2fs_io shutdown 2 /mnt/f2fs
+umount /mnt/f2fs
+blockdev --setro /dev/vdd
+mount /dev/vdd /mnt/f2fs
+mount: /mnt/f2fs: WARNING: source write-protected, mounted read-only.
 
-Move nvmem_cell_put() right after nvmem_cell_read() to ensure the cell
-reference is always released regardless of the read result.
+For the case if we create and fsync a new inode before sudden power-cut,
+without norecovery or disable_roll_forward mount option, the following
+mount will succeed w/o recovering last fsynced inode.
 
-Found via static analysis and code review.
+The problem here is that we only check inode_list list after
+find_fsync_dnodes() in f2fs_recover_fsync_data() to find out whether
+there is recoverable data in the iamge, but there is a missed case, if
+last fsynced inode is not existing in last checkpoint, then, we will
+fail to get its inode due to nat of inode node is not existing in last
+checkpoint, so the inode won't be linked in inode_list.
 
-Fixes: 98c485eaf509 ("net: phy: add driver for MediaTek SoC built-in GE PHYs")
-Cc: stable@vger.kernel.org
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-Reviewed-by: Daniel Golle <daniel@makrotopia.org>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20251211081313.2368460-1-linmq006@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Let's detect such case in dyrun mode to fix this issue.
+
+After this change, mount will fail as expected below:
+mount: /mnt/f2fs: cannot mount /dev/vdd read-only.
+       dmesg(1) may have more information after failed mount system call.
+demsg:
+F2FS-fs (vdd): Need to recover fsync data, but write access unavailable, please try mount w/ disable_roll_forward or norecovery
+
+Cc: stable@kernel.org
+Fixes: 6781eabba1bd ("f2fs: give -EINVAL for norecovery and rw mount")
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+[ folio => page ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/phy/mediatek-ge-soc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/f2fs/recovery.c |   20 ++++++++++++--------
+ 1 file changed, 12 insertions(+), 8 deletions(-)
 
---- a/drivers/net/phy/mediatek-ge-soc.c
-+++ b/drivers/net/phy/mediatek-ge-soc.c
-@@ -1082,9 +1082,9 @@ static int mt798x_phy_calibration(struct
- 	}
+--- a/fs/f2fs/recovery.c
++++ b/fs/f2fs/recovery.c
+@@ -404,7 +404,7 @@ static int sanity_check_node_chain(struc
+ }
  
- 	buf = (u32 *)nvmem_cell_read(cell, &len);
-+	nvmem_cell_put(cell);
- 	if (IS_ERR(buf))
- 		return PTR_ERR(buf);
--	nvmem_cell_put(cell);
+ static int find_fsync_dnodes(struct f2fs_sb_info *sbi, struct list_head *head,
+-				bool check_only)
++				bool check_only, bool *new_inode)
+ {
+ 	struct curseg_info *curseg;
+ 	struct page *page = NULL;
+@@ -451,16 +451,19 @@ static int find_fsync_dnodes(struct f2fs
+ 				quota_inode = true;
+ 			}
  
- 	if (!buf[0] || !buf[1] || !buf[2] || !buf[3] || len < 4 * sizeof(u32)) {
- 		phydev_err(phydev, "invalid efuse data\n");
+-			/*
+-			 * CP | dnode(F) | inode(DF)
+-			 * For this case, we should not give up now.
+-			 */
+ 			entry = add_fsync_inode(sbi, head, ino_of_node(page),
+ 								quota_inode);
+ 			if (IS_ERR(entry)) {
+ 				err = PTR_ERR(entry);
+-				if (err == -ENOENT)
++				/*
++				 * CP | dnode(F) | inode(DF)
++				 * For this case, we should not give up now.
++				 */
++				if (err == -ENOENT) {
++					if (check_only)
++						*new_inode = true;
+ 					goto next;
++				}
+ 				f2fs_put_page(page, 1);
+ 				break;
+ 			}
+@@ -863,6 +866,7 @@ int f2fs_recover_fsync_data(struct f2fs_
+ 	unsigned long s_flags = sbi->sb->s_flags;
+ 	bool need_writecp = false;
+ 	bool fix_curseg_write_pointer = false;
++	bool new_inode = false;
+ 
+ 	if (is_sbi_flag_set(sbi, SBI_IS_WRITABLE))
+ 		f2fs_info(sbi, "recover fsync data on readonly fs");
+@@ -875,8 +879,8 @@ int f2fs_recover_fsync_data(struct f2fs_
+ 	f2fs_down_write(&sbi->cp_global_sem);
+ 
+ 	/* step #1: find fsynced inode numbers */
+-	err = find_fsync_dnodes(sbi, &inode_list, check_only);
+-	if (err || list_empty(&inode_list))
++	err = find_fsync_dnodes(sbi, &inode_list, check_only, &new_inode);
++	if (err < 0 || (list_empty(&inode_list) && (!check_only || !new_inode)))
+ 		goto skip;
+ 
+ 	if (check_only) {
 
 
 
