@@ -1,147 +1,121 @@
-Return-Path: <stable+bounces-206431-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206432-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6E81D0833B
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 10:30:50 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD228D0837A
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 10:33:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 464B8300AC8B
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 09:30:50 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id CD19D30082CC
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 09:31:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4773233343B;
-	Fri,  9 Jan 2026 09:30:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C49A53563D5;
+	Fri,  9 Jan 2026 09:31:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hu7+oOeN"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="E2LN2Okl"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 041B4332ECB
-	for <stable@vger.kernel.org>; Fri,  9 Jan 2026 09:30:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9DD133343C
+	for <stable@vger.kernel.org>; Fri,  9 Jan 2026 09:31:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767951048; cv=none; b=A9Byun3O6n4/wF6AIfNkUg4bpkX2nugQM/qdrXTVu9sBwY2/1iBUDjhRDhRWDXSxaI/AeEFlELRXv3g+uMdGIrj95kHE9nyodtkXKU0ePUdKE1v+mysGdK8a+EfITG4izTbHjdcGXX4eO3qrMw0Sc3M8jC5JjaY9L4qFF49L0rI=
+	t=1767951087; cv=none; b=X1o2KhQu0GWxkszyNZvEzDdG/0KmK7yP4wp9bTezXvNx9Do5G9jDL3O/B7NMbK4cVz8n3tJ9IM/F+s5HSRTlZgFU/dSDzocKQV0DH5GFwlym49s9KNeVLcWPQzcC6OXda5+v1XD4yg1JRgX203XK1NZeMqg7nETaZ/FVssj4+28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767951048; c=relaxed/simple;
-	bh=6LNdm3fUgjKNrloN/NydUJPrfwSNFkztsLyEogcqh/g=;
+	s=arc-20240116; t=1767951087; c=relaxed/simple;
+	bh=HOUvCNWeC/QU/EutK4DSQdm70DXyuV5GqGuLIHtLRCs=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=iyY9/V3r5yn+wJ60L34IAMZ8yUAJe4oSscEkWjrRZxg8DpQNKsF7QliIWznZuu/JDfvrej9j7KEIN4JlHQSHMbk9yD4YUyoxz8TBRvjxRL56QcgCYTVLuxGeR8rAzvuSXevcC6x118Wy5YRzR6EusPL5c7v3XtcCDWXIq/HPrHY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hu7+oOeN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDA8DC19425
-	for <stable@vger.kernel.org>; Fri,  9 Jan 2026 09:30:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767951047;
-	bh=6LNdm3fUgjKNrloN/NydUJPrfwSNFkztsLyEogcqh/g=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=hu7+oOeN1CG6qA4cqOd65h7eTJRVtcKJ3o8a7JrrBjmyiyeyd8g3/uch0eUalhG/d
-	 EMWtRORiXIOoxHNQgaHvM6xf5UirHxHmfnPLE34i54UfeYOG8uD+O72ewmJOhQvrOX
-	 Fb+82va25549OQTLb7sFjXJ/XnqKbDc8HRPdT94nLHFFMIUfIelVV1nbyR62IEBdWh
-	 F7JvWPg5FoncdSX9Xa5XAbsWXyBDqD525oTOU20B3c6Ij+jiwfWqFVbIgJbGJvYG4t
-	 YHSiWA4FzOKY/R+qjWIUt/kKXq1X5sjLS6SkjXfvNy/nFnZ4iDiHVqdcShysGAnU/v
-	 IlWna3lwVNzVA==
-Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-790b7b3e594so26978227b3.3
-        for <stable@vger.kernel.org>; Fri, 09 Jan 2026 01:30:47 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCWDC+MHSkEV05jWB7W0mSFm0avOcQAWP5rmBNZNnbUPlqxeOUkvvmtCbQA5UAj7XLTRSPzyb4g=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw2hVUDRuzd3BxPpN19Fde5k9jPa883AijAYGZRSWhJOtWCr62K
-	AX7HHeZ/2pbuk/Q/vgl69wUeWkinFNLv/NmYTCCd3/nTok0xFhTYkuurXAd1CZ1keZftYZLnIUh
-	zVD6uPA955d7Nqf6uVm3ba7hbWbu+ENc=
-X-Google-Smtp-Source: AGHT+IHW9AloGVPNneim+o5wu5kst869KHt4MS2BcIEWf1BhFWXSHQH3d/MN0P4Js6T3JHk+sgUFV5uMx0nD8b2J3Z0=
-X-Received: by 2002:a05:690c:6c08:b0:788:14a2:8bda with SMTP id
- 00721157ae682-790b580708bmr83145167b3.38.1767951047030; Fri, 09 Jan 2026
- 01:30:47 -0800 (PST)
+	 To:Cc:Content-Type; b=OSg2wPCg4AvgA+M9YnYoDf5+lmy5CARkYrpdDDOXZT+4vQxtKOzPEYJRAlJn2vcEuZOKCZzamD3h6zSpOzAJn/ZFuoADPNC/qohHJYqRQyzEjk9IwcWMrpo2KNeZEuzCS+g7JAIlOPmcwtnDjANoslCpTJFLtFge/0qvf1qgIcM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=E2LN2Okl; arc=none smtp.client-ip=209.85.219.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-8888a16d243so36998256d6.1
+        for <stable@vger.kernel.org>; Fri, 09 Jan 2026 01:31:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1767951085; x=1768555885; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=mHnWhSbgGLtJHz6aBPfGHzXRQNyBXUT1iG+fdLJ00Bc=;
+        b=E2LN2OklxhUTYxe+6j9IomTwaGFt4u6zrIA6Aa+MdSMWAEyj5b3BtJ0pjpb29hz85G
+         kGz6Y8bJwA8+q/DK5FDo58IQd1gMpHuXQRbuI1Zre3YG3UpuLWwVjCe7YgQDhhFbbcq6
+         Vj6VUNLBp/UFH5wCwhYQebaLqARoMRB70J6C7o+ubU/goqs6V6/M2b0NvHsrFAKh4lZf
+         A4dMJ2TyszaH0Cy3HFLs9cuvDpUwMplU7cKZQVkr7Nfxe1r9QeqQrKlS0BNsEtjv6Is7
+         C09rJyxDqvOrJ4ahdfxq3topIkRUzbKy3n8kZCp8YR8lGE/uUiEqYmcY+sdzJB+5H+i6
+         GRIA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767951085; x=1768555885;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=mHnWhSbgGLtJHz6aBPfGHzXRQNyBXUT1iG+fdLJ00Bc=;
+        b=oFQhZpg5Qvt1FnJUtMn5wK2KPgKFbCzDMfxOZ+StifeiD9tnzpCFRH7DAoI956Eb5u
+         lM1GQR/qXzaccQNPUqFSgGeMgQU2yOJJ178FL4T8uFn20sUMAzVFrB39CYOTT7L2085v
+         79CLmY7dwYklKjzKCHIO+pBd+ACxBSeyKYotUjPCsUKnoWK2nca8iEi8OffqLvBYDlhW
+         j59SKY6ZOdmdrL1OyssQEbM/8pCQJ6jn30sB3hOgniDgX5VM94z7t32dFZJWNYO+CVtx
+         Rb5K7PQ01rFzOGN2WzsDfV/zUGNr6iYcRP9tjP9lK6HAYRrToU2CEpiiornl7iD4bEc4
+         kk0w==
+X-Forwarded-Encrypted: i=1; AJvYcCXs5k/19yh65vUgocC5T/3ce7zrbWz8lw9ab215l8T0I567+ovQIj666YFMeHnJJ7lgTlCAD9s=@vger.kernel.org
+X-Gm-Message-State: AOJu0YztUjTMYQSaMtXcjcGCQfEnORnFyniLFPPh0XI8q4jz30QKmzzg
+	u6nS7ZrdyieUyfL+7lh9Corz5FGJNZdh1LSyR9lF7faA2TaWREEBwwhG+5HrIXOMvAsNmskqNgL
+	k/pwzjOQDaiVx4dRRei+EgC084syJfebQMdLr1Z2z
+X-Gm-Gg: AY/fxX6/EU/5MoBzKVmZt7EWPA32OiLdbu2pyD6GwgZB8AssuDEGPPnGGwppTxBNwKY
+	ZGVHgDBXdlFQoToFqjueyWksYkhx/VOtKLxeSt1TtzPtu175hSYJE/54LlWjzZ1FZwXDt6z5lcj
+	glbVKjVGPULEfYVYs0s8wnDiN8zG3551XNFUZ2GfEQd8kvgG1o6Rt6LIuE70zvH2T2vkYUqYgZ7
+	ojOQHLNnNI52fJt0sKcE5L+PUrdEIB5TOBONmxP7tKxKiZ2XNPcxSewVqBY5dnX1rqq1oc=
+X-Google-Smtp-Source: AGHT+IFuFRZsFV/d44doIWgLvsMS/CZDqe4Cye+eagGw1hb+ysMh9BDNkivJ6fQHv4v5oqRYdhbNmI5coNvj7Pn6Sz0=
+X-Received: by 2002:a05:6214:485:b0:888:8088:209e with SMTP id
+ 6a1803df08f44-890841a3ab6mr123084486d6.16.1767951084728; Fri, 09 Jan 2026
+ 01:31:24 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260105150509.56537-1-bartosz.golaszewski@oss.qualcomm.com>
-In-Reply-To: <20260105150509.56537-1-bartosz.golaszewski@oss.qualcomm.com>
-From: Linus Walleij <linusw@kernel.org>
-Date: Fri, 9 Jan 2026 10:30:36 +0100
-X-Gmail-Original-Message-ID: <CAD++jLkHTX-bJ6Fi7n2kGX3VvEk4eaBfTDc+vpd-2QWQvKWfSQ@mail.gmail.com>
-X-Gm-Features: AZwV_QifJwM8PVt6EB8CPnUaPiq8Laa3KkCYXyF0XiD2OsUIzet-cnQ9j7hifFk
-Message-ID: <CAD++jLkHTX-bJ6Fi7n2kGX3VvEk4eaBfTDc+vpd-2QWQvKWfSQ@mail.gmail.com>
-Subject: Re: [PATCH] pinctrl: meson: mark the GPIO controller as sleeping
-To: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Cc: Neil Armstrong <neil.armstrong@linaro.org>, Kevin Hilman <khilman@baylibre.com>, 
-	Jerome Brunet <jbrunet@baylibre.com>, 
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>, Bartosz Golaszewski <brgl@kernel.org>, 
-	linux-gpio@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org, Marek Szyprowski <m.szyprowski@samsung.com>
+References: <20260105080230.13171-1-harry.yoo@oracle.com> <20260105080230.13171-2-harry.yoo@oracle.com>
+ <CAG_fn=XCx9-uYOhRQXTde7ud=H9kwM_Sf3ZjHQd9hfYDspzeOA@mail.gmail.com> <aWBfZ4ga9HQ8L8KM@hyeyoo>
+In-Reply-To: <aWBfZ4ga9HQ8L8KM@hyeyoo>
+From: Alexander Potapenko <glider@google.com>
+Date: Fri, 9 Jan 2026 10:30:47 +0100
+X-Gm-Features: AZwV_Qj86V__IEzdz2ouZQE2ozn-rnAWTPpJPtDCUGLbUdOgH8MfcTAHgVsMofI
+Message-ID: <CAG_fn=Wyw-fGGQ802A1cUpkHHTnZi5gN7wZzRaF1s31SPOpC9g@mail.gmail.com>
+Subject: Re: [PATCH V5 1/8] mm/slab: use unsigned long for orig_size to ensure
+ proper metadata align
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: akpm@linux-foundation.org, vbabka@suse.cz, andreyknvl@gmail.com, 
+	cl@gentwo.org, dvyukov@google.com, hannes@cmpxchg.org, linux-mm@kvack.org, 
+	mhocko@kernel.org, muchun.song@linux.dev, rientjes@google.com, 
+	roman.gushchin@linux.dev, ryabinin.a.a@gmail.com, shakeel.butt@linux.dev, 
+	surenb@google.com, vincenzo.frascino@arm.com, yeoreum.yun@arm.com, 
+	tytso@mit.edu, adilger.kernel@dilger.ca, linux-ext4@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, hao.li@linux.dev, 
+	stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jan 5, 2026 at 4:05=E2=80=AFPM Bartosz Golaszewski
-<bartosz.golaszewski@oss.qualcomm.com> wrote:
-
-> The GPIO controller is configured as non-sleeping but it uses generic
-> pinctrl helpers which use a mutex for synchronization.
+> > Instead of calculating the offset of the original size in several
+> > places, should we maybe introduce a function that returns a pointer to
+> > it?
 >
-> This can cause the following lockdep splat with shared GPIOs enabled on
-> boards which have multiple devices using the same GPIO:
+> Good point.
 >
-> BUG: sleeping function called from invalid context at
-> kernel/locking/mutex.c:591
-> in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 142, name:
-> kworker/u25:3
-> preempt_count: 1, expected: 0
-> RCU nest depth: 0, expected: 0
-> INFO: lockdep is turned off.
-> irq event stamp: 46379
-> hardirqs last  enabled at (46379): [<ffff8000813acb24>]
-> _raw_spin_unlock_irqrestore+0x74/0x78
-> hardirqs last disabled at (46378): [<ffff8000813abf38>]
-> _raw_spin_lock_irqsave+0x84/0x88
-> softirqs last  enabled at (46330): [<ffff8000800c71b4>]
-> handle_softirqs+0x4c4/0x4dc
-> softirqs last disabled at (46295): [<ffff800080010674>]
-> __do_softirq+0x14/0x20
-> CPU: 1 UID: 0 PID: 142 Comm: kworker/u25:3 Tainted: G C
-> 6.19.0-rc4-next-20260105+ #11963 PREEMPT
-> Tainted: [C]=3DCRAP
-> Hardware name: Khadas VIM3 (DT)
-> Workqueue: events_unbound deferred_probe_work_func
-> Call trace:
->   show_stack+0x18/0x24 (C)
->   dump_stack_lvl+0x90/0xd0
->   dump_stack+0x18/0x24
->   __might_resched+0x144/0x248
->   __might_sleep+0x48/0x98
->   __mutex_lock+0x5c/0x894
->   mutex_lock_nested+0x24/0x30
->   pinctrl_get_device_gpio_range+0x44/0x128
->   pinctrl_gpio_set_config+0x40/0xdc
->   gpiochip_generic_config+0x28/0x3c
->   gpio_do_set_config+0xa8/0x194
->   gpiod_set_config+0x34/0xfc
->   gpio_shared_proxy_set_config+0x6c/0xfc [gpio_shared_proxy]
->   gpio_do_set_config+0xa8/0x194
->   gpiod_set_transitory+0x4c/0xf0
->   gpiod_configure_flags+0xa4/0x480
->   gpiod_find_and_request+0x1a0/0x574
->   gpiod_get_index+0x58/0x84
->   devm_gpiod_get_index+0x20/0xb4
->   devm_gpiod_get+0x18/0x24
->   mmc_pwrseq_emmc_probe+0x40/0xb8
->   platform_probe+0x5c/0xac
->   really_probe+0xbc/0x298
->   __driver_probe_device+0x78/0x12c
->   driver_probe_device+0xdc/0x164
->   __device_attach_driver+0xb8/0x138
->   bus_for_each_drv+0x80/0xdc
->   __device_attach+0xa8/0x1b0
+> The calculation of various metadata offset (including the original size)
+> is repeated in several places, and perhaps it's worth cleaning up,
+> something like this:
 >
-> Fixes: 6ac730951104 ("pinctrl: add driver for Amlogic Meson SoCs")
-> Cc: stable@vger.kernel.org
-> Reported-by: Marek Szyprowski <m.szyprowski@samsung.com>
-> Closes: https://lore.kernel.org/all/00107523-7737-4b92-a785-14ce4e93b8cb@=
-samsung.com/
-> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+> enum {
+>   FREE_POINTER_OFFSET,
+>   ALLOC_TRACK_OFFSET,
+>   FREE_TRACK_OFFSET,
+>   ORIG_SIZE_OFFSET,
+>   KASAN_ALLOC_META_OFFSET,
+>   OBJ_EXT_OFFSET,
+>   FINAL_ALIGNMENT_PADDING_OFFSET,
+>   ...
+> };
+>
+> orig_size = *(unsigned long *)get_metadata_ptr(p, ORIG_SIZE_OFFSET);
 
-Patch applied for fixes!
-
-Yours,
-Linus Walleij
+An alternative would be to declare a struct containing all the
+metadata fields and use offsetof() (or simply do a cast and access the
+fields via the struct pointer)
 
