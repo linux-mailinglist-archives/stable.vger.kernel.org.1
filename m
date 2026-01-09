@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-206941-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207544-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD969D09820
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:21:57 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD3BAD0A105
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:55:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D91DD3079A3F
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:11:00 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 119213013154
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:39:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1499835A95C;
-	Fri,  9 Jan 2026 12:10:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B35735B15C;
+	Fri,  9 Jan 2026 12:39:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WwTnvrDb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oK+A37w1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC2EC3346AF;
-	Fri,  9 Jan 2026 12:10:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E61733372B;
+	Fri,  9 Jan 2026 12:39:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960640; cv=none; b=Fb3dNDjSnBFjXAt3D21+LDzJ/3pv53HjMnHgxPPi3dG1kJ/HhP55GpjD8Inc5eTSOxfhOm7LomObAzIuIlt28j/LqnCS6EALBOvJ8YA1fTSeDDfWkarU20xDOuY/wBT4VDOACe7D2GgoaIjLyXAF8MSiGjUHJijGzN/dz87wgsU=
+	t=1767962356; cv=none; b=HXkq2IlwwdCGqIcsY7OKo0RHymwRX9l7vMD7IE2gqRP0b6NBiR4dq1D6ix9bWwVcN1Frp0CTwhiHBeJI+jOmYLfZUoXTvShffIPqk7x6ULQgHqbhEetPT/9VfFF3+jRf0wNZyEIZSUfvw+v3/7Baa8dos5T1K1Oyi8b7O2p+QNU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960640; c=relaxed/simple;
-	bh=bnRFepEBO2WP0OmhYO+MXFyoY/NNa67tLLwjgGC/mek=;
+	s=arc-20240116; t=1767962356; c=relaxed/simple;
+	bh=wGHnIja0yTVBvHqPCethj5g5ld7t07NLW2/vj5njKG4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dvC594Wm/VKFREaqbf4Aaahw9LUfGDl8lZpAcCxohxH6lw9T8xwgmNOncINl4c/emgtOt8Y4JmrzaMUU3f0Jei8AIhH8oECxJ++RwkVreun3CMLIu8HiAgKdXmr+vjfklHKydNFXiiutPOXivg+lMNiwy63hfF/JS2lLOg+9IEg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WwTnvrDb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C170C4CEF1;
-	Fri,  9 Jan 2026 12:10:40 +0000 (UTC)
+	 MIME-Version:Content-Type; b=QIRH1U8JhX2uyJ+6RoPuGQ6QC9rCdceGDdkfLbE5E5Y0F8atBEOSqA+qqluXQoWlbKbr+KXtwbBkZXM2C8/EzEgDpB3DxnhORkbPvk5JC+9y9CJmulXArQSlroNKtlkq3NWxaE3IT+K8YDF05A3l1aeefWJ+vSDTUFh5umM0KHU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oK+A37w1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D81EC4CEF1;
+	Fri,  9 Jan 2026 12:39:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960640;
-	bh=bnRFepEBO2WP0OmhYO+MXFyoY/NNa67tLLwjgGC/mek=;
+	s=korg; t=1767962356;
+	bh=wGHnIja0yTVBvHqPCethj5g5ld7t07NLW2/vj5njKG4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WwTnvrDbDMgsHMSW2vvOB9x/H4pVZwdZw5PxU2+tJMbKoRsg4DfPuWo4KvWzFZqcQ
-	 6OH77Xd/0dZDmQI1N0+e/cMgmelY6WUOcV3zyFhFpdIfu/WXbdvwX4ChT9ijgnksU2
-	 NKBaqhnDCue84+iIA3C8SLSB0/XDw2N9DgOxaRVc=
+	b=oK+A37w1jMGTR3hlJCiGUD7ZYKk2bkBhNTca41BpA21VEZ/fX8026ICuIcLXGWxOl
+	 dDERC7wtDacYeRdRqAouHX33AruruCgfYiQqC81WyCjMlhUJtb4anTaTVTLkQOClNw
+	 dT+ncXdhtDXTIefz305i/bnOQCrOajWy2swxwBnk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ren=C3=A9=20Rebe?= <rene@exactco.de>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 474/737] r8169: fix RTL8117 Wake-on-Lan in DASH mode
-Date: Fri,  9 Jan 2026 12:40:13 +0100
-Message-ID: <20260109112151.818194324@linuxfoundation.org>
+	=?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= <noltari@gmail.com>,
+	Johan Hovold <johan@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.1 336/634] phy: broadcom: bcm63xx-usbh: fix section mismatches
+Date: Fri,  9 Jan 2026 12:40:14 +0100
+Message-ID: <20260109112130.168872772@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +62,59 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: René Rebe <rene@exactco.de>
+From: Johan Hovold <johan@kernel.org>
 
-commit dd75c723ef566f7f009c047f47e0eee95fe348ab upstream.
+commit 356d1924b9a6bc2164ce2bf1fad147b0c37ae085 upstream.
 
-Wake-on-Lan does currently not work for r8169 in DASH mode, e.g. the
-ASUS Pro WS X570-ACE with RTL8168fp/RTL8117.
+Platform drivers can be probed after their init sections have been
+discarded (e.g. on probe deferral or manual rebind through sysfs) so the
+probe function and match table must not live in init.
 
-Fix by not returning early in rtl_prepare_power_down when dash_enabled.
-While this fixes WoL, it still kills the OOB RTL8117 remote management
-BMC connection. Fix by not calling rtl8168_driver_stop if WoL is enabled.
-
-Fixes: 065c27c184d6 ("r8169: phy power ops")
-Signed-off-by: René Rebe <rene@exactco.de>
-Cc: stable@vger.kernel.org
-Reviewed-by: Heiner Kallweit <hkallweit1@gmail.com>
-Link: https://patch.msgid.link/20251202.194137.1647877804487085954.rene@exactco.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 783f6d3dcf35 ("phy: bcm63xx-usbh: Add BCM63xx USBH driver")
+Cc: stable@vger.kernel.org	# 5.9
+Cc: Álvaro Fernández Rojas <noltari@gmail.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patch.msgid.link/20251017054537.6884-1-johan@kernel.org
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/realtek/r8169_main.c |    5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/phy/broadcom/phy-bcm63xx-usbh.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/net/ethernet/realtek/r8169_main.c
-+++ b/drivers/net/ethernet/realtek/r8169_main.c
-@@ -2581,9 +2581,6 @@ static void rtl_wol_enable_rx(struct rtl
- 
- static void rtl_prepare_power_down(struct rtl8169_private *tp)
- {
--	if (tp->dash_enabled)
--		return;
--
- 	if (tp->mac_version == RTL_GIGA_MAC_VER_32 ||
- 	    tp->mac_version == RTL_GIGA_MAC_VER_33)
- 		rtl_ephy_write(tp, 0x19, 0xff64);
-@@ -4721,7 +4718,7 @@ static void rtl8169_down(struct rtl8169_
- 	rtl_disable_exit_l1(tp);
- 	rtl_prepare_power_down(tp);
- 
--	if (tp->dash_type != RTL_DASH_NONE)
-+	if (tp->dash_type != RTL_DASH_NONE && !tp->saved_wolopts)
- 		rtl8168_driver_stop(tp);
+--- a/drivers/phy/broadcom/phy-bcm63xx-usbh.c
++++ b/drivers/phy/broadcom/phy-bcm63xx-usbh.c
+@@ -374,7 +374,7 @@ static struct phy *bcm63xx_usbh_phy_xlat
+ 	return of_phy_simple_xlate(dev, args);
  }
  
+-static int __init bcm63xx_usbh_phy_probe(struct platform_device *pdev)
++static int bcm63xx_usbh_phy_probe(struct platform_device *pdev)
+ {
+ 	struct device *dev = &pdev->dev;
+ 	struct bcm63xx_usbh_phy	*usbh;
+@@ -431,7 +431,7 @@ static int __init bcm63xx_usbh_phy_probe
+ 	return 0;
+ }
+ 
+-static const struct of_device_id bcm63xx_usbh_phy_ids[] __initconst = {
++static const struct of_device_id bcm63xx_usbh_phy_ids[] = {
+ 	{ .compatible = "brcm,bcm6318-usbh-phy", .data = &usbh_bcm6318 },
+ 	{ .compatible = "brcm,bcm6328-usbh-phy", .data = &usbh_bcm6328 },
+ 	{ .compatible = "brcm,bcm6358-usbh-phy", .data = &usbh_bcm6358 },
+@@ -442,7 +442,7 @@ static const struct of_device_id bcm63xx
+ };
+ MODULE_DEVICE_TABLE(of, bcm63xx_usbh_phy_ids);
+ 
+-static struct platform_driver bcm63xx_usbh_phy_driver __refdata = {
++static struct platform_driver bcm63xx_usbh_phy_driver = {
+ 	.driver	= {
+ 		.name = "bcm63xx-usbh-phy",
+ 		.of_match_table = bcm63xx_usbh_phy_ids,
 
 
 
