@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-206874-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206876-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F3CDD09692
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:16:10 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0EA8D09695
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:16:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6061930AC06A
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:07:26 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 23D7030AD4D3
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:07:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05C7333BBBD;
-	Fri,  9 Jan 2026 12:07:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C19AF359708;
+	Fri,  9 Jan 2026 12:07:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YR2ZcLU1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YGuQzmsc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC34C359708;
-	Fri,  9 Jan 2026 12:07:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85A9450094F;
+	Fri,  9 Jan 2026 12:07:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960445; cv=none; b=o1wx1wbFGqJ7X0VxYX1HSe/NnzrfLc5C22zD9mawUD5ZYxHIsS5B0oTWFI+/VZgespCxeS6H2EeZpWfIRjiKg6/YmkYrnaIejifFoU38sR9bEo9khyRMyBCznxdJ22lpr+MF7yl/V57TMjtxnVfiT1zGSDUWNrVujQcV1MYbVoQ=
+	t=1767960451; cv=none; b=QRASi3LuTsEmRXTaHXQTaqUU0Eupn2NgmxeiPk5XNtbvpkBwvCj/eBY8Hq2bKEhNoQsidTmAjb3CTXJgUG+Gr8YKRzcRIXdRXOZ6IbbBcj0/bw8yLPz/tZL9nM9WhUVa+OaHvBKaw1ObbxvIo0QJ9fbWsZ0BG3ySPSV8oL4CgeA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960445; c=relaxed/simple;
-	bh=EY0xjmUJMVqgi5RwXjUsWNnvdoOVI4z6owUlaQrKfkU=;
+	s=arc-20240116; t=1767960451; c=relaxed/simple;
+	bh=ku9NIsnUDQcgjtmrnQ2INZKbB0LQbbYz35pF2sV6Sak=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T3DeU6L3vXJ2FCcvIWNvTBkZgOU++Po6G87vEMmyWibs5fcu7P4JLBywUckcRl5oY6AdUqC2WsUKQke1hoqLv1+jZJsU88aMJQh5rCUsJPYP/7aRIR86X8K3CHfMiFvLturMdSIpx3FBs7ow0dT2gLS7OTbkcr65JF12i3HWMIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YR2ZcLU1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47CACC4CEF1;
-	Fri,  9 Jan 2026 12:07:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=fD7bMXW2aqiTU/8Yd4ilK+oGe7RGhrRGsSrMfTbfyOOZwWjPbDYuuYg++/7W56gdrbGIpct06eRg0put8M7AamRjiHCjm68Jo3xOGhraYeODB8UAiz5+CZIkcc9hkYWpxiSLan52toOEnu8StfjPu7vHHZJnZoR82XPrle3BCnQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YGuQzmsc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11B6DC4CEF1;
+	Fri,  9 Jan 2026 12:07:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960445;
-	bh=EY0xjmUJMVqgi5RwXjUsWNnvdoOVI4z6owUlaQrKfkU=;
+	s=korg; t=1767960451;
+	bh=ku9NIsnUDQcgjtmrnQ2INZKbB0LQbbYz35pF2sV6Sak=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YR2ZcLU1OlYST/5iGtv8OGKx8hmUMY3jLt3f5WfVRdtBunC9MLxP5MdjEarfn2pp6
-	 fJlms4q23FOcULHEuJZFDHY/5F4msleMb9x0Sss+6UlxD8O1mD0+LK6Oarrh9Md809
-	 Ohajb6bwZ+9p+DRHTA0ommYXvHj7rq7mn5Ug3Y9I=
+	b=YGuQzmscbBnskOGWiBF0hXRe9ePWy3sRu+ZBKwyAWHJFnp0la6RXilAY/72AI9Jc0
+	 6pLQbesxDEUdqhyXlcFTKcQ3nCsQ8/+tCaBDcD3yr8Tjx9jy9fdi2keo9Gi5DFovgI
+	 qBLaWCk5EYgRcS9Wepzmor979BwEJvJgHh9jznwM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Tee <justin.tee@broadcom.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Daniel Wagner <wagi@kernel.org>,
-	Keith Busch <kbusch@kernel.org>,
+	"Chia-Lin Kao (AceLan)" <acelan.kao@canonical.com>,
+	Hans de Goede <johannes.goede@oss.qualcomm.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 407/737] nvme-fc: dont hold rport lock when putting ctrl
-Date: Fri,  9 Jan 2026 12:39:06 +0100
-Message-ID: <20260109112149.309203167@linuxfoundation.org>
+Subject: [PATCH 6.6 408/737] platform/x86/intel/hid: Add Dell Pro Rugged 10/12 tablet to VGBS DMI quirks
+Date: Fri,  9 Jan 2026 12:39:07 +0100
+Message-ID: <20260109112149.346478946@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
 References: <20260109112133.973195406@linuxfoundation.org>
@@ -60,68 +59,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Wagner <wagi@kernel.org>
+From: Chia-Lin Kao (AceLan) <acelan.kao@canonical.com>
 
-[ Upstream commit b71cbcf7d170e51148d5467820ae8a72febcb651 ]
+[ Upstream commit b169e1733cadb614e87f69d7a5ae1b186c50d313 ]
 
-nvme_fc_ctrl_put can acquire the rport lock when freeing the
-ctrl object:
+Dell Pro Rugged 10/12 tablets has a reliable VGBS method.
+If VGBS is not called on boot, the on-screen keyboard won't appear if the
+device is booted without a keyboard.
 
-nvme_fc_ctrl_put
-  nvme_fc_ctrl_free
-    spin_lock_irqsave(rport->lock)
+Call VGBS on boot on thess devices to get the initial state of
+SW_TABLET_MODE in a reliable way.
 
-Thus we can't hold the rport lock when calling nvme_fc_ctrl_put.
-
-Justin suggested use the safe list iterator variant because
-nvme_fc_ctrl_put will also modify the rport->list.
-
-Cc: Justin Tee <justin.tee@broadcom.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Daniel Wagner <wagi@kernel.org>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Chia-Lin Kao (AceLan) <acelan.kao@canonical.com>
+Reviewed-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
+Link: https://patch.msgid.link/20251127070407.656463-1-acelan.kao@canonical.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/fc.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/platform/x86/intel/hid.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/drivers/nvme/host/fc.c b/drivers/nvme/host/fc.c
-index 37fede155b92..2954f0a27474 100644
---- a/drivers/nvme/host/fc.c
-+++ b/drivers/nvme/host/fc.c
-@@ -1462,14 +1462,14 @@ nvme_fc_match_disconn_ls(struct nvme_fc_rport *rport,
- {
- 	struct fcnvme_ls_disconnect_assoc_rqst *rqst =
- 					&lsop->rqstbuf->rq_dis_assoc;
--	struct nvme_fc_ctrl *ctrl, *ret = NULL;
-+	struct nvme_fc_ctrl *ctrl, *tmp, *ret = NULL;
- 	struct nvmefc_ls_rcv_op *oldls = NULL;
- 	u64 association_id = be64_to_cpu(rqst->associd.association_id);
- 	unsigned long flags;
+diff --git a/drivers/platform/x86/intel/hid.c b/drivers/platform/x86/intel/hid.c
+index 36209997ba98..ac88119a73b8 100644
+--- a/drivers/platform/x86/intel/hid.c
++++ b/drivers/platform/x86/intel/hid.c
+@@ -163,6 +163,18 @@ static const struct dmi_system_id dmi_vgbs_allow_list[] = {
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "HP Elite Dragonfly G2 Notebook PC"),
+ 		},
+ 	},
++	{
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
++			DMI_MATCH(DMI_PRODUCT_NAME, "Dell Pro Rugged 10 Tablet RA00260"),
++		},
++	},
++	{
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
++			DMI_MATCH(DMI_PRODUCT_NAME, "Dell Pro Rugged 12 Tablet RA02260"),
++		},
++	},
+ 	{ }
+ };
  
- 	spin_lock_irqsave(&rport->lock, flags);
- 
--	list_for_each_entry(ctrl, &rport->ctrl_list, ctrl_list) {
-+	list_for_each_entry_safe(ctrl, tmp, &rport->ctrl_list, ctrl_list) {
- 		if (!nvme_fc_ctrl_get(ctrl))
- 			continue;
- 		spin_lock(&ctrl->lock);
-@@ -1482,7 +1482,9 @@ nvme_fc_match_disconn_ls(struct nvme_fc_rport *rport,
- 		if (ret)
- 			/* leave the ctrl get reference */
- 			break;
-+		spin_unlock_irqrestore(&rport->lock, flags);
- 		nvme_fc_ctrl_put(ctrl);
-+		spin_lock_irqsave(&rport->lock, flags);
- 	}
- 
- 	spin_unlock_irqrestore(&rport->lock, flags);
 -- 
 2.51.0
 
