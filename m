@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-207123-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207725-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CCF1D09904
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:25:21 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id C307ED0A13C
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:56:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3BF3C3037BEA
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:19:22 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 24D0732A2D7E
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:49:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7811435971B;
-	Fri,  9 Jan 2026 12:19:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2F8735E526;
+	Fri,  9 Jan 2026 12:47:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zpI6FIhc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Shjmufeo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BAB832AAB5;
-	Fri,  9 Jan 2026 12:19:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 611B535CBD5;
+	Fri,  9 Jan 2026 12:47:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961156; cv=none; b=g+uP6Ui9jpVamCxfYlQdNJCE7uCwA5UuYIkrhjhTTm/P0I4RY94S6E+YdES/ATlQKtZi79dq28taVbLeJzNwAZyPJyk1eoISST+0D54N5PIHzfFNJ6wk2OEjxA6pwN6la0h3vi1ngXUviiB8T/MTKE8hQbD0aZvcCwyEVsiUF40=
+	t=1767962869; cv=none; b=IxPo5AV+kNUjihOwKDFc7oUq11PlDop8A4sffYvMEdyVnVDmzZhZMbxlth1ZyqYKV1Jmvz+OpgfL5sC9aP7CD9K7NWz2XRfyxJGwRYRe0TPP3yjcSnwxh8J5OVJfmUILmjnZNcXqOdlPeAVfOuSJXxRRPtifMVEyxCjZd9dFfNE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961156; c=relaxed/simple;
-	bh=HV9leL2PqK/rIsl6w30qKhflwPrLupHIJg5HQvdoX1I=;
+	s=arc-20240116; t=1767962869; c=relaxed/simple;
+	bh=aAtAdb6jwz7Fvmt4sXZwQtpJVj4xZ0/Be/UA/4zhQN0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a8n440VbB7OzMTiV9Dti348OgPUWA+meSZEzsPxuhnmEQ6/F8di1lWoUujvOlF7JqfJKYSpgT1iituR4jfdd+a8kpF23K/la+NTa+iWFohkpuCBy5+9OFVQcTmOo1zXZHm7tcjxK2n+4dGewDZrvOamzwncAOf9OHedFIbgowwk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zpI6FIhc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA444C16AAE;
-	Fri,  9 Jan 2026 12:19:15 +0000 (UTC)
+	 MIME-Version; b=RjSbXQQ9s8nfe0y5Y1W4CbVNDhePj7Jea7evUf2AWuaJ0JgT6SOlgHzIxlFZkTG7r4LPATfVugKnqk8DodaDrIPGrWG3HaaHwPxSgBIoGHUcoZdg23k7d74k2Rg+/TIpY7BhX0e/rFxJNqpGWPnoeOZpKgvvgUjxJUYV3OCMT4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Shjmufeo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEE00C4CEF1;
+	Fri,  9 Jan 2026 12:47:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961156;
-	bh=HV9leL2PqK/rIsl6w30qKhflwPrLupHIJg5HQvdoX1I=;
+	s=korg; t=1767962869;
+	bh=aAtAdb6jwz7Fvmt4sXZwQtpJVj4xZ0/Be/UA/4zhQN0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zpI6FIhco9v+KF1svvLSYZlo7orOTEbeqoY11tmO0zeajkVsJy5v2E1qdonRdw1y+
-	 ajTUjsF3z9HcqQpU6Prtjw76F2FvnEVIQxPSl3bcjQiYWojFPRg5ZmvWRkR4laaQxM
-	 EHBtGny21q87bsBO+dBHAS45jPWuONu5oe4fGtLw=
+	b=ShjmufeoZfi5q7YxqeWTRlebm1lMemOfUahWq+fi5eIwJPgEMM9X0nx7vaRHD9PNJ
+	 0jzam+w21eQf/6wK1oo4llDpMse3h2o4sWHQQZsW6FDwE1vL7JZ1mklHyeIDYMOmDQ
+	 r3kNgZf//CXg1+JF9qPuj0J0MtgBDLedLLUwudd4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jouni Malinen <jouni.malinen@oss.qualcomm.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 655/737] wifi: mac80211: Discard Beacon frames to non-broadcast address
+	syzbot+e2ce9e275ecc70a30b72@syzkaller.appspotmail.com,
+	Zhu Yanjun <yanjun.zhu@linux.dev>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Ajay Kaher <ajay.kaher@broadcom.com>,
+	Shivani Agarwal <shivani.agarwal@broadcom.com>
+Subject: [PATCH 6.1 516/634] RDMA/core: Fix "KASAN: slab-use-after-free Read in ib_register_device" problem
 Date: Fri,  9 Jan 2026 12:43:14 +0100
-Message-ID: <20260109112158.664129332@linuxfoundation.org>
+Message-ID: <20260109112136.971935634@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,64 +63,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jouni Malinen <jouni.malinen@oss.qualcomm.com>
+From: Zhu Yanjun <yanjun.zhu@linux.dev>
 
-[ Upstream commit 193d18f60588e95d62e0f82b6a53893e5f2f19f8 ]
+commit d0706bfd3ee40923c001c6827b786a309e2a8713 upstream.
 
-Beacon frames are required to be sent to the broadcast address, see IEEE
-Std 802.11-2020, 11.1.3.1 ("The Address 1 field of the Beacon .. frame
-shall be set to the broadcast address"). A unicast Beacon frame might be
-used as a targeted attack to get one of the associated STAs to do
-something (e.g., using CSA to move it to another channel). As such, it
-is better have strict filtering for this on the received side and
-discard all Beacon frames that are sent to an unexpected address.
+Call Trace:
 
-This is even more important for cases where beacon protection is used.
-The current implementation in mac80211 is correctly discarding unicast
-Beacon frames if the Protected Frame bit in the Frame Control field is
-set to 0. However, if that bit is set to 1, the logic used for checking
-for configured BIGTK(s) does not actually work. If the driver does not
-have logic for dropping unicast Beacon frames with Protected Frame bit
-1, these frames would be accepted in mac80211 processing as valid Beacon
-frames even though they are not protected. This would allow beacon
-protection to be bypassed. While the logic for checking beacon
-protection could be extended to cover this corner case, a more generic
-check for discard all Beacon frames based on A1=unicast address covers
-this without needing additional changes.
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:408 [inline]
+ print_report+0xc3/0x670 mm/kasan/report.c:521
+ kasan_report+0xe0/0x110 mm/kasan/report.c:634
+ strlen+0x93/0xa0 lib/string.c:420
+ __fortify_strlen include/linux/fortify-string.h:268 [inline]
+ get_kobj_path_length lib/kobject.c:118 [inline]
+ kobject_get_path+0x3f/0x2a0 lib/kobject.c:158
+ kobject_uevent_env+0x289/0x1870 lib/kobject_uevent.c:545
+ ib_register_device drivers/infiniband/core/device.c:1472 [inline]
+ ib_register_device+0x8cf/0xe00 drivers/infiniband/core/device.c:1393
+ rxe_register_device+0x275/0x320 drivers/infiniband/sw/rxe/rxe_verbs.c:1552
+ rxe_net_add+0x8e/0xe0 drivers/infiniband/sw/rxe/rxe_net.c:550
+ rxe_newlink+0x70/0x190 drivers/infiniband/sw/rxe/rxe.c:225
+ nldev_newlink+0x3a3/0x680 drivers/infiniband/core/nldev.c:1796
+ rdma_nl_rcv_msg+0x387/0x6e0 drivers/infiniband/core/netlink.c:195
+ rdma_nl_rcv_skb.constprop.0.isra.0+0x2e5/0x450
+ netlink_unicast_kernel net/netlink/af_netlink.c:1313 [inline]
+ netlink_unicast+0x53a/0x7f0 net/netlink/af_netlink.c:1339
+ netlink_sendmsg+0x8d1/0xdd0 net/netlink/af_netlink.c:1883
+ sock_sendmsg_nosec net/socket.c:712 [inline]
+ __sock_sendmsg net/socket.c:727 [inline]
+ ____sys_sendmsg+0xa95/0xc70 net/socket.c:2566
+ ___sys_sendmsg+0x134/0x1d0 net/socket.c:2620
+ __sys_sendmsg+0x16d/0x220 net/socket.c:2652
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xcd/0x260 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-Address all these issues by dropping received Beacon frames if they are
-sent to a non-broadcast address.
+This problem is similar to the problem that the
+commit 1d6a9e7449e2 ("RDMA/core: Fix use-after-free when rename device name")
+fixes.
 
-Cc: stable@vger.kernel.org
-Fixes: af2d14b01c32 ("mac80211: Beacon protection using the new BIGTK (STA)")
-Signed-off-by: Jouni Malinen <jouni.malinen@oss.qualcomm.com>
-Link: https://patch.msgid.link/20251215151134.104501-1-jouni.malinen@oss.qualcomm.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-[ changed RX_DROP to RX_DROP_MONITOR ]
+The root cause is: the function ib_device_rename() renames the name with
+lock. But in the function kobject_uevent(), this name is accessed without
+lock protection at the same time.
+
+The solution is to add the lock protection when this name is accessed in
+the function kobject_uevent().
+
+Fixes: 779e0bf47632 ("RDMA/core: Do not indicate device ready when device enablement fails")
+Link: https://patch.msgid.link/r/20250506151008.75701-1-yanjun.zhu@linux.dev
+Reported-by: syzbot+e2ce9e275ecc70a30b72@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=e2ce9e275ecc70a30b72
+Signed-off-by: Zhu Yanjun <yanjun.zhu@linux.dev>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+[ Ajay: Modified to apply on v5.10.y-v6.6.y
+        ib_device_notify_register() not present in v5.10.y-v6.6.y,
+        so directly added lock for kobject_uevent() ]
+Signed-off-by: Ajay Kaher <ajay.kaher@broadcom.com>
+Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mac80211/rx.c |    5 +++++
+ drivers/infiniband/core/device.c |    5 +++++
  1 file changed, 5 insertions(+)
 
---- a/net/mac80211/rx.c
-+++ b/net/mac80211/rx.c
-@@ -3388,6 +3388,11 @@ ieee80211_rx_h_mgmt_check(struct ieee802
- 	    rx->skb->len < IEEE80211_MIN_ACTION_SIZE)
- 		return RX_DROP_U_RUNT_ACTION;
- 
-+	/* Drop non-broadcast Beacon frames */
-+	if (ieee80211_is_beacon(mgmt->frame_control) &&
-+	    !is_broadcast_ether_addr(mgmt->da))
-+		return RX_DROP_MONITOR;
+--- a/drivers/infiniband/core/device.c
++++ b/drivers/infiniband/core/device.c
+@@ -1450,8 +1450,13 @@ int ib_register_device(struct ib_device
+ 		return ret;
+ 	}
+ 	dev_set_uevent_suppress(&device->dev, false);
 +
- 	if (rx->sdata->vif.type == NL80211_IFTYPE_AP &&
- 	    ieee80211_is_beacon(mgmt->frame_control) &&
- 	    !(rx->flags & IEEE80211_RX_BEACON_REPORTED)) {
++	down_read(&devices_rwsem);
++
+ 	/* Mark for userspace that device is ready */
+ 	kobject_uevent(&device->dev.kobj, KOBJ_ADD);
++
++	up_read(&devices_rwsem);
+ 	ib_device_put(device);
+ 
+ 	return 0;
 
 
 
