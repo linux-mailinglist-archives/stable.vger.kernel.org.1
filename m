@@ -1,54 +1,52 @@
-Return-Path: <stable+bounces-207482-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206880-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF688D09F55
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:48:09 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14F1AD09702
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:18:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E94BD315AC9E
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:36:20 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 865B430B36DE
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:07:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2778359701;
-	Fri,  9 Jan 2026 12:36:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01670CA6B;
+	Fri,  9 Jan 2026 12:07:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lzpJ7mFS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KzRMBxJS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6730533C53A;
-	Fri,  9 Jan 2026 12:36:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8CE61DE885;
+	Fri,  9 Jan 2026 12:07:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962180; cv=none; b=GjgxYyzlTLRa97NPF8Rn5F71uYRR+bDc9+CZOVHSDMXy38VsjaZ9XNQ2dfKL1syYUVGZZ41fW94v/uVAxvhJ1757bMszl4XCdHQUA5q+dDIN6m5EaicpRWLgBbvFGyeptjT/vzEaxxfT+eGQI2kAjx3ysuXDwHjED+797kMb/rc=
+	t=1767960462; cv=none; b=Fo4nvrtL66ZAZkb0+sCHvhdQ3m591fddPghGn1Rv2UiHXTlLsYzZbVQdQqR/3bZVYPEHduWpsVcCkGsJ9lcd9//L1u3DUaAE4/e//OPHAJcGnSwSe840iqW1M482vnoArJvrhqTOLArheVZWbTcOKud0HOe0Y2uYGQdhmu5tIMY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962180; c=relaxed/simple;
-	bh=tQOfWtl+8INNjLE/tTzeUVibP+UHjC/ghiNhYGWIO4c=;
+	s=arc-20240116; t=1767960462; c=relaxed/simple;
+	bh=JBfQUKgKGEewf3nLVuVPN1JydGDdSfkdXejIaHzrbZA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AkktsqPmUApOa3KvxNIMYWCHNYwQtzJJYMz63RSEihilwoolCeHEtPKmncWin93F9oyGFqDR61wrJ1pvhEsWsm2g0ehTKdniPmG+CefB9ipxfdFT46cur3f5UgG0FMTn8aOMNerzO9eQ/Xd57Al8jS7ux06H5XPemxSGNGbJ0VE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lzpJ7mFS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6C19C19423;
-	Fri,  9 Jan 2026 12:36:19 +0000 (UTC)
+	 MIME-Version; b=O9czE+XMa5J3/UZ4be/H3s4hWQQXzjoCtkwhfrXNDv9wwzT6wnj1iSjAg4LbMrW55CcaVbt6KVNVRhW0zCWh48JFDtUya4PGpdADjc2pzh/q+3HAwFN7dE0a98fxf+xtgvv1w1SEW19Ae0sjHWMkhn1Bnp12RLiQKujI+ahPMH4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KzRMBxJS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A177C4CEF1;
+	Fri,  9 Jan 2026 12:07:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962180;
-	bh=tQOfWtl+8INNjLE/tTzeUVibP+UHjC/ghiNhYGWIO4c=;
+	s=korg; t=1767960462;
+	bh=JBfQUKgKGEewf3nLVuVPN1JydGDdSfkdXejIaHzrbZA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lzpJ7mFSXgzG2CyBC1k39YuI2Lrdo5XFkfbTdWq5zfjurfwjPyInT2+uSMpc3MQAJ
-	 ol55mE88Tbiyj5mL4pmBuhezxDo7kKxLxqmZcfllP3dabRAQX7V7JLWQOIrv6rYtGV
-	 WbJi/WTRiJjlDciU3Tw21vom/GknrIHKinbZvqT4=
+	b=KzRMBxJS6cwdW7IxIz6UmWOsRj6cWUXMSf+6ZylP5NaGCVbOx1d/YSmT/ZmtJZe2E
+	 zEN94/JHRXSH9mOJao2K4mKfCui9bYFxrQRZGcLejfOAKebdDQ14GKb8ms+AVxY9MJ
+	 oQrm03lds9BZVrcx+LGvwuUA2zfwPbnuX69g++Ks=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexey Simakov <bigalex934@gmail.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 273/634] hwmon: (tmp401) fix overflow caused by default conversion rate value
+	Jarkko Sakkinen <jarkko@kernel.org>
+Subject: [PATCH 6.6 412/737] KEYS: trusted: Fix a memory leak in tpm2_load_cmd
 Date: Fri,  9 Jan 2026 12:39:11 +0100
-Message-ID: <20260109112127.806845290@linuxfoundation.org>
+Message-ID: <20260109112149.494457462@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,62 +58,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexey Simakov <bigalex934@gmail.com>
+From: Jarkko Sakkinen <jarkko@kernel.org>
 
-[ Upstream commit 82f2aab35a1ab2e1460de06ef04c726460aed51c ]
+commit 62cd5d480b9762ce70d720a81fa5b373052ae05f upstream.
 
-The driver computes conversion intervals using the formula:
+'tpm2_load_cmd' allocates a tempoary blob indirectly via 'tpm2_key_decode'
+but it is not freed in the failure paths. Address this by wrapping the blob
+into with a cleanup helper.
 
-    interval = (1 << (7 - rate)) * 125ms
-
-where 'rate' is the sensor's conversion rate register value. According to
-the datasheet, the power-on reset value of this register is 0x8, which
-could be assigned to the register, after handling i2c general call.
-Using this default value causes a result greater than the bit width of
-left operand and an undefined behaviour in the calculation above, since
-shifting by values larger than the bit width is undefined behaviour as
-per C language standard.
-
-Limit the maximum usable 'rate' value to 7 to prevent undefined
-behaviour in calculations.
-
-Found by Linux Verification Center (linuxtesting.org) with Svace.
-
-Note (groeck):
-    This does not matter in practice unless someone overwrites the chip
-    configuration from outside the driver while the driver is loaded.
-    The conversion time register is initialized with a value of 5 (500ms)
-    when the driver is loaded, and the driver never writes a bad value.
-
-Fixes: ca53e7640de7 ("hwmon: (tmp401) Convert to _info API")
-Signed-off-by: Alexey Simakov <bigalex934@gmail.com>
-Link: https://lore.kernel.org/r/20251211164342.6291-1-bigalex934@gmail.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org # v5.13+
+Fixes: f2219745250f ("security: keys: trusted: use ASN.1 TPM2 key format for the blobs")
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/tmp401.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ security/keys/trusted-keys/trusted_tpm2.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hwmon/tmp401.c b/drivers/hwmon/tmp401.c
-index f358ba679626..f869d585c345 100644
---- a/drivers/hwmon/tmp401.c
-+++ b/drivers/hwmon/tmp401.c
-@@ -408,7 +408,7 @@ static int tmp401_chip_read(struct device *dev, u32 attr, int channel, long *val
- 		ret = regmap_read(data->regmap, TMP401_CONVERSION_RATE, &regval);
- 		if (ret < 0)
- 			return ret;
--		*val = (1 << (7 - regval)) * 125;
-+		*val = (1 << (7 - min(regval, 7))) * 125;
- 		break;
- 	case hwmon_chip_temp_reset_history:
- 		*val = 0;
--- 
-2.51.0
-
+--- a/security/keys/trusted-keys/trusted_tpm2.c
++++ b/security/keys/trusted-keys/trusted_tpm2.c
+@@ -375,6 +375,7 @@ static int tpm2_load_cmd(struct tpm_chip
+ 			 struct trusted_key_options *options,
+ 			 u32 *blob_handle)
+ {
++	u8 *blob_ref __free(kfree) = NULL;
+ 	struct tpm_buf buf;
+ 	unsigned int private_len;
+ 	unsigned int public_len;
+@@ -388,6 +389,9 @@ static int tpm2_load_cmd(struct tpm_chip
+ 		/* old form */
+ 		blob = payload->blob;
+ 		payload->old_format = 1;
++	} else {
++		/* Bind for cleanup: */
++		blob_ref = blob;
+ 	}
+ 
+ 	/* new format carries keyhandle but old format doesn't */
+@@ -446,8 +450,6 @@ static int tpm2_load_cmd(struct tpm_chip
+ 			(__be32 *) &buf.data[TPM_HEADER_SIZE]);
+ 
+ out:
+-	if (blob != payload->blob)
+-		kfree(blob);
+ 	tpm_buf_destroy(&buf);
+ 
+ 	if (rc > 0)
 
 
 
