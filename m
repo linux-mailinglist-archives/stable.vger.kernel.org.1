@@ -1,171 +1,192 @@
-Return-Path: <stable+bounces-207890-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207891-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D0FED0B4ED
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 17:40:43 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DC35D0B694
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 17:55:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6130C30164EA
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 16:40:20 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 11EEE307E810
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 16:44:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19899316904;
-	Fri,  9 Jan 2026 16:40:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D53A364EA6;
+	Fri,  9 Jan 2026 16:43:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="NxN7+j0U"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uCMKfyYf"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.web.de (mout.web.de [217.72.192.78])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2EB63644BD;
-	Fri,  9 Jan 2026 16:40:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.72.192.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03E6D3644DA;
+	Fri,  9 Jan 2026 16:43:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767976815; cv=none; b=F/Asmw+eipHmaROrkMQk9Gie9I/InfppsmrTH6lRID2pCMf8GQz8cTHKyjpmXbXxOF1KjNtFstM+F7cic8uZqJVY8mVIV7FgT4rLe4+HoWLFOsC8MK58JLmuRuAJ1p3T/kfnr5Vb/VeBwYuJqrJH0ZaBm7sNosjup4MzDOiCSpI=
+	t=1767977031; cv=none; b=Y6gkhgcVYusBcXPxAMxoOOd68wawTblf531E7VPziKb0suSQzwCJchj+kVr2cDZkJdBPZP/DVO4nxTwF4DTTM2HYrsAGrIjdj5LwyLIHsaHlbFMR4hoTImCr4SqEI9kjiT18F/hgXIk9azJbzzAhAS36W869Yn3RYTO8/FJKBOQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767976815; c=relaxed/simple;
-	bh=mSbNNhePSb2XvDjYMmzGZwnMrvA7Vk7DhmoOYWDxNdc=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
-	 In-Reply-To:Content-Type; b=XD2bPlWal7VP/SdlmXTIBku4tdJb60gpZ93K1mBxZAMZpe6fAkukIrvt7p9ZbG17mhPl+CmYcp2hbCOgYsF8ZJpGjCSaHUdR9uczs8MmJGxguQWcCOcxrwFTToXTqMjY2nuVttMImUn0kNrX7DIPtUyROfM+7n1CbjfJ41o/954=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=NxN7+j0U; arc=none smtp.client-ip=217.72.192.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1767976809; x=1768581609; i=markus.elfring@web.de;
-	bh=kGTy2vclztsb08eZ/Mx65TVH3n6FkY3SE18DkLcR9ZQ=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
-	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 cc:content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=NxN7+j0U4Kh44ipeCzDwVilKuBB7tRcwzdJu0+LGkMyNoadP9L6jHud9wTWo1E/t
-	 uevwU4N8JSoACjDzqIkuQOWlnYtnDv+JWX6BjKdIWbPLkNbGk2PB3/D/H7z1Rirms
-	 Nv1BG7Oja6IpJ5SMTfm9DoxmfFNJvWL+WJAzv6LzMIf5+yMQh6sHFx5qhWGXGKp/H
-	 GSnVMwC6CWJq8onvBU71SACsE8kksNktnjehClOEJxsGo1uWwmQuirMMK94qL6f2z
-	 TfSjZY/tVTjJoje/IDkTWmTMw4mOtPf7f1mv47XVQmnPCw5dfAPLxDZHE3noUGsB5
-	 hNPoPV3jpxhWSIZtFw==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.29] ([94.31.69.182]) by smtp.web.de (mrweb106
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1MnpKq-1wBuJn1c8w-00hMyo; Fri, 09
- Jan 2026 17:40:09 +0100
-Message-ID: <2819dc88-51a5-44f5-bedb-6759e7786fb2@web.de>
-Date: Fri, 9 Jan 2026 17:40:06 +0100
+	s=arc-20240116; t=1767977031; c=relaxed/simple;
+	bh=+RnyNDAFYZmy9UXiV2xcpvmL7grvkNRrzz2vsXKxrpM=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Hs+I4/+J6+hlrTCn+z86p3AjjgYacaGejj1yXJJnYuN3iFbeNJ5MVcYZLVyw4IzTDyAqiSBul2KrxnjCrnDUccA9tWa7IuYl6ooSIwSWeEhx1260tF2l5NlFToR8xlJtPrNvU3n4ukcB0dES/uuGHUKlzeH7FW9xATFdLzIauHQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uCMKfyYf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C776C4CEF7;
+	Fri,  9 Jan 2026 16:43:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767977030;
+	bh=+RnyNDAFYZmy9UXiV2xcpvmL7grvkNRrzz2vsXKxrpM=;
+	h=From:Date:Subject:To:Cc:From;
+	b=uCMKfyYfKXY9HxJ66OR3+1hNu7gwaPm2opxFTnTBcd7SU248Vr0oA7SC2QWVg4gu8
+	 3V+kM8VpSwTRe9comxh/3xNQnGsacnM1ZdI5Q8ko8zG7ldx28RsjtdZzjNVw7nV7ox
+	 C/cZ6u7co3oMSoXvzv+FehvSvx34/SweSzOpuIUaPnImP3/G19IjPP062bmhKh2Dyy
+	 8jDOqWXesy+VTBRoO07EpfyloSBvdtztcztUuIdWnHwAKJewRhtM7xh33BLEuaOjJB
+	 AH1eFub1Fsb6wV1Lq2dfDriN5A9bgg3+NpEM41Q2OQ57ZZYr+ZramWRaLCvElvR+EV
+	 5j1x6d7jj66mg==
+From: Sven Peter <sven@kernel.org>
+Date: Fri, 09 Jan 2026 17:43:34 +0100
+Subject: [PATCH v2] usb: dwc3: apple: Set USB2 PHY mode before dwc3 init
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: vulab@iscas.ac.cn, linux-arm-kernel@lists.infradead.org,
- Nishanth Menon <nm@ti.com>, Santosh Shilimkar <ssantosh@kernel.org>
-Cc: stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>
-References: <20260109152016.2449253-1-vulab@iscas.ac.cn>
-Subject: Re: [PATCH v2] soc: ti: pruss: fix double free in
- pruss_clk_mux_setup()
-Content-Language: en-GB, de-DE
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <20260109152016.2449253-1-vulab@iscas.ac.cn>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:Kpdgxq+G7zmryzJXfdUcm+HtPSAFZfWQua3uu3HjgXwLUmSAoHh
- l/5jtZ7mZg95ZLpek7+dfy4ly8yDB8T9kScw2rsNPMLk1UMYs3RcoYEs/fgjJv5Pjw03MSB
- /ply0IrQK5iH/u2q16WlJez9/TXZt434jYjNDbUTdOzJh5jFEYgmSwp9h7RRKayXSeSuCSA
- MBKfeFH6P68hVtLD3ByiA==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:XWkbCrlBA5k=;Z8eYmzYOWNHYt5WhlZUvMvRXKhB
- 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
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260109-dwc3-apple-usb2phy-fix-v2-1-ab6b041e3b26@kernel.org>
+X-B4-Tracking: v=1; b=H4sIADUwYWkC/4WNTQ6CMBBGr0Jm7Zi2IhJX3MOwgM5AGwk0rVYJ6
+ d0tXMDle/l+NgjsLQe4Fxt4jjbYZc6gTgVo080jo6XMoISqhBQ10kdfsHNuYnyHXjmz4mC/qAd
+ Je6ImEpDLznPWx/CjzWxseC1+PX6i3O3fyShR4pXo1uuqVKIUzZP9zNN58SO0KaUfsOiour0AA
+ AA=
+X-Change-ID: 20260108-dwc3-apple-usb2phy-fix-cf1d26018dd0
+To: Janne Grunau <j@jannau.net>, Neal Gompa <neal@gompa.dev>, 
+ Thinh Nguyen <Thinh.Nguyen@synopsys.com>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: asahi@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+ linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ James Calligeros <jcalligeros99@gmail.com>, stable@vger.kernel.org, 
+ Sven Peter <sven@kernel.org>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5121; i=sven@kernel.org;
+ h=from:subject:message-id; bh=+RnyNDAFYZmy9UXiV2xcpvmL7grvkNRrzz2vsXKxrpM=;
+ b=owGbwMvMwCXmIlirolUq95LxtFoSQ2aigeUndpGO6asUCg27Qieb/eu0U5rkcv+Pv0jppRk2j
+ NOc3+R1lLIwiHExyIopsmzfb2/65OEbwaWbLr2HmcPKBDKEgYtTACaSv5nhf5aWNc/9SW33nwfq
+ 20+5JJLzeG3LvuAj34pmhRiX1B1LMmJkOBNlHnvc/5j/La9jGp2t+SePcSqUmZTNfiriILo/vHs
+ xKwA=
+X-Developer-Key: i=sven@kernel.org; a=openpgp;
+ fpr=A1E3E34A2B3C820DBC4955E5993B08092F131F93
 
-=E2=80=A6
-> +++ b/drivers/soc/ti/pruss.c
-> @@ -368,10 +368,9 @@ static int pruss_clk_mux_setup(struct pruss *pruss,=
- struct clk *clk_mux,
->  				       clk_mux_np);
->  	if (ret) {
->  		dev_err(dev, "failed to add clkmux free action %d", ret);
-> -		goto put_clk_mux_np;
->  	}
+Now that the upstream code has been getting broader test coverage by our
+users we occasionally see issues with USB2 devices plugged in during boot.
+Before Linux is running, the USB2 PHY has usually been running in device
+mode and it turns out that sometimes host->device or device->host
+transitions don't work.
+The root cause: If the role inside the USB2 PHY is re-configured when it
+has already been powered on or when dwc3 has already enabled the ULPI
+interface the new configuration sometimes doesn't take affect until dwc3
+is reset again. Fix this rare issue by configuring the role much earlier.
+Note that the USB3 PHY does not suffer from this issue and actually
+requires dwc3 to be up before the correct role can be configured there.
 
-You may omit curly brackets here.
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
-cumentation/process/coding-style.rst?h=3Dv6.19-rc4#n197
+Reported-by: James Calligeros <jcalligeros99@gmail.com>
+Reported-by: Janne Grunau <j@jannau.net>
+Fixes: 0ec946d32ef7 ("usb: dwc3: Add Apple Silicon DWC3 glue layer driver")
+Cc: stable@vger.kernel.org
+Tested-by: Janne Grunau <j@jannau.net>
+Reviewed-by: Janne Grunau <j@jannau.net>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Signed-off-by: Sven Peter <sven@kernel.org>
+---
+Changes in v2:
+- Picked up tags, thanks!
+- Fixed a typo in the commit messages (dwc2 -> dwc3)
+- Link to v1: https://patch.msgid.link/20260108-dwc3-apple-usb2phy-fix-v1-1-5dd7bc642040@kernel.org
+---
+ drivers/usb/dwc3/dwc3-apple.c | 48 +++++++++++++++++++++++++++++--------------
+ 1 file changed, 33 insertions(+), 15 deletions(-)
 
+diff --git a/drivers/usb/dwc3/dwc3-apple.c b/drivers/usb/dwc3/dwc3-apple.c
+index cc47cad232e397ac4498b09165dfdb5bd215ded7..c2ae8eb21d514e5e493d2927bc12908c308dfe19 100644
+--- a/drivers/usb/dwc3/dwc3-apple.c
++++ b/drivers/usb/dwc3/dwc3-apple.c
+@@ -218,25 +218,31 @@ static int dwc3_apple_core_init(struct dwc3_apple *appledwc)
+ 	return ret;
+ }
+ 
+-static void dwc3_apple_phy_set_mode(struct dwc3_apple *appledwc, enum phy_mode mode)
+-{
+-	lockdep_assert_held(&appledwc->lock);
+-
+-	/*
+-	 * This platform requires SUSPHY to be enabled here already in order to properly configure
+-	 * the PHY and switch dwc3's PIPE interface to USB3 PHY.
+-	 */
+-	dwc3_enable_susphy(&appledwc->dwc, true);
+-	phy_set_mode(appledwc->dwc.usb2_generic_phy[0], mode);
+-	phy_set_mode(appledwc->dwc.usb3_generic_phy[0], mode);
+-}
+-
+ static int dwc3_apple_init(struct dwc3_apple *appledwc, enum dwc3_apple_state state)
+ {
+ 	int ret, ret_reset;
+ 
+ 	lockdep_assert_held(&appledwc->lock);
+ 
++	/*
++	 * The USB2 PHY on this platform must be configured for host or device mode while it is
++	 * still powered off and before dwc3 tries to access it. Otherwise, the new configuration
++	 * will sometimes only take affect after the *next* time dwc3 is brought up which causes
++	 * the connected device to just not work.
++	 * The USB3 PHY must be configured later after dwc3 has already been initialized.
++	 */
++	switch (state) {
++	case DWC3_APPLE_HOST:
++		phy_set_mode(appledwc->dwc.usb2_generic_phy[0], PHY_MODE_USB_HOST);
++		break;
++	case DWC3_APPLE_DEVICE:
++		phy_set_mode(appledwc->dwc.usb2_generic_phy[0], PHY_MODE_USB_DEVICE);
++		break;
++	default:
++		/* Unreachable unless there's a bug in this driver */
++		return -EINVAL;
++	}
++
+ 	ret = reset_control_deassert(appledwc->reset);
+ 	if (ret) {
+ 		dev_err(appledwc->dev, "Failed to deassert reset, err=%d\n", ret);
+@@ -257,7 +263,13 @@ static int dwc3_apple_init(struct dwc3_apple *appledwc, enum dwc3_apple_state st
+ 	case DWC3_APPLE_HOST:
+ 		appledwc->dwc.dr_mode = USB_DR_MODE_HOST;
+ 		dwc3_apple_set_ptrcap(appledwc, DWC3_GCTL_PRTCAP_HOST);
+-		dwc3_apple_phy_set_mode(appledwc, PHY_MODE_USB_HOST);
++		/*
++		 * This platform requires SUSPHY to be enabled here already in order to properly
++		 * configure the PHY and switch dwc3's PIPE interface to USB3 PHY. The USB2 PHY
++		 * has already been configured to the correct mode earlier.
++		 */
++		dwc3_enable_susphy(&appledwc->dwc, true);
++		phy_set_mode(appledwc->dwc.usb3_generic_phy[0], PHY_MODE_USB_HOST);
+ 		ret = dwc3_host_init(&appledwc->dwc);
+ 		if (ret) {
+ 			dev_err(appledwc->dev, "Failed to initialize host, ret=%d\n", ret);
+@@ -268,7 +280,13 @@ static int dwc3_apple_init(struct dwc3_apple *appledwc, enum dwc3_apple_state st
+ 	case DWC3_APPLE_DEVICE:
+ 		appledwc->dwc.dr_mode = USB_DR_MODE_PERIPHERAL;
+ 		dwc3_apple_set_ptrcap(appledwc, DWC3_GCTL_PRTCAP_DEVICE);
+-		dwc3_apple_phy_set_mode(appledwc, PHY_MODE_USB_DEVICE);
++		/*
++		 * This platform requires SUSPHY to be enabled here already in order to properly
++		 * configure the PHY and switch dwc3's PIPE interface to USB3 PHY. The USB2 PHY
++		 * has already been configured to the correct mode earlier.
++		 */
++		dwc3_enable_susphy(&appledwc->dwc, true);
++		phy_set_mode(appledwc->dwc.usb3_generic_phy[0], PHY_MODE_USB_DEVICE);
+ 		ret = dwc3_gadget_init(&appledwc->dwc);
+ 		if (ret) {
+ 			dev_err(appledwc->dev, "Failed to initialize gadget, ret=%d\n", ret);
 
-> =20
-> -	return 0;
-> +	return ret;
-=E2=80=A6
+---
+base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
+change-id: 20260108-dwc3-apple-usb2phy-fix-cf1d26018dd0
 
-Regards,
-Markus
+Best regards,
+-- 
+Sven Peter <sven@kernel.org>
+
 
