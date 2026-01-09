@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-207021-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207624-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25226D09756
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:19:31 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AE58D0A2C8
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:04:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id F1A48301D6A5
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:14:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DC3EF31A260D
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:43:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB85333B6E1;
-	Fri,  9 Jan 2026 12:14:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AFA33596F1;
+	Fri,  9 Jan 2026 12:43:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KUUPRNMw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QyWrcGg8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AD3233B6F1;
-	Fri,  9 Jan 2026 12:14:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D6A8335BCD;
+	Fri,  9 Jan 2026 12:43:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960868; cv=none; b=NAZRYtzFDMqfSQcZ7y24mV5GzfM1/Vrp7e+LStrEt+phjW6vFGpwEha9p3v/m5eWicBGWZQhq3Lt2oor2Bqeoug1mDyl87Xqo8XWIweBYrSgLegI7RcN79mFnZ2Zl5s6160tQrGOErGn4MgDYd/FginndWaPW73WgXmPwwuB470=
+	t=1767962581; cv=none; b=ZlSV4I0mYCJRUlw/p1F2ghnbacPC/tVJADdhFkaPH/RrpVaHpTiqFj5UfCx+XmdKbn325MQImz+s+Tr0LRt58I6g9DcxtDXA0pJT8EGr1b7HYF7WocsxsJUyS/sJ5GE5CoWZ+YomLwr+rvApbbXQNXvl8oWPAbF1MXrkzGyEhUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960868; c=relaxed/simple;
-	bh=yE0b7ftW4og9QxxNVKrqrg1KDr0PUPa6wzUy4ifpJic=;
+	s=arc-20240116; t=1767962581; c=relaxed/simple;
+	bh=fNobD8/AtjEEt2xECuxh987BTiC9gzQ/E5oslr5GyN8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M5aZp+ZJakWtsglBwPwP8ww2iIl/QLgz5p6herdnFVQ8oQFNKyq8Ot6iq3EmkWv3hUW9vuaz2iolMD4tPvQiwI31rDovn0ugs8Wq1BwGqbuocx1G2jL0l+AFyHR7b2J9AxD38qIk/lGPiPFPQxMiV6ymUmTabZ4p+U6yOpn1dRU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KUUPRNMw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 111EAC4CEF1;
-	Fri,  9 Jan 2026 12:14:27 +0000 (UTC)
+	 MIME-Version; b=AJXgFXznFLEkiNtd8nIYejy5a/SwcPD4vvszNjHl4p11MTGP8JNJI7ESWtiCLLW0fTVz6crxB/HB7BRivbqoEnq2wJ3CRn6Rmr1JRB31Si8BZfLRqxMStM7pgG4fbwO98FQwDZaJiBkTYrRJE+/8jHH/8l/WCCH3s1CxnqcRe+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QyWrcGg8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EB5EC4CEF1;
+	Fri,  9 Jan 2026 12:43:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960868;
-	bh=yE0b7ftW4og9QxxNVKrqrg1KDr0PUPa6wzUy4ifpJic=;
+	s=korg; t=1767962581;
+	bh=fNobD8/AtjEEt2xECuxh987BTiC9gzQ/E5oslr5GyN8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KUUPRNMwFOTM6gTlUmTGId/mTu/1nxKBzcnEcdIq5CYoFhVT3hXMkSSOatod7N7R4
-	 WgBydCf4vO5HwGcu7At2tfQ5IrTYZCM5I8v1hRp8YDIcjv2FNBHFAijNDit/7XIYj5
-	 72sYhW9C3fnqN3XJmPmNciAKDwHkXEpugcDOikkw=
+	b=QyWrcGg8omBJ6s+ILBfplkSuom8dFykvTPkpLwvxix+FNb81p6z8oNm7sukoD++xp
+	 kzwIKUJmxX68282Fo5wH71LMHiwdTUFQOEIywvfYNkhEWHWar5ajgS6vbHP9Wo6Hum
+	 DMTA0nHaeutRWDAhUyYF756xUu0ikhIrRR63ruQc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Honghui Zhang <honghui.zhang@mediatek.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Yong Wu <yong.wu@mediatek.com>,
-	Johan Hovold <johan@kernel.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Joerg Roedel <joerg.roedel@amd.com>
-Subject: [PATCH 6.6 553/737] iommu/mediatek-v1: fix device leak on probe_device()
+	Stephen Rothwell <sfr@canb.auug.org.au>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Alexey Skidanov <alexey.skidanov@intel.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 414/634] genalloc.h: fix htmldocs warning
 Date: Fri,  9 Jan 2026 12:41:32 +0100
-Message-ID: <20260109112154.800887157@linuxfoundation.org>
+Message-ID: <20260109112133.113944770@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Andrew Morton <akpm@linux-foundation.org>
 
-commit c77ad28bfee0df9cbc719eb5adc9864462cfb65b upstream.
+[ Upstream commit 5393802c94e0ab1295c04c94c57bcb00222d4674 ]
 
-Make sure to drop the reference taken to the iommu platform device when
-looking up its driver data during probe_device().
+WARNING: include/linux/genalloc.h:52 function parameter 'start_addr' not described in 'genpool_algo_t'
 
-Fixes: b17336c55d89 ("iommu/mediatek: add support for mtk iommu generation one HW")
-Cc: stable@vger.kernel.org	# 4.8
-Cc: Honghui Zhang <honghui.zhang@mediatek.com>
-Acked-by: Robin Murphy <robin.murphy@arm.com>
-Reviewed-by: Yong Wu <yong.wu@mediatek.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 52fbf1134d47 ("lib/genalloc.c: fix allocation of aligned buffer from non-aligned chunk")
+Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
+Closes: https://lkml.kernel.org/r/20251127130624.563597e3@canb.auug.org.au
+Acked-by: Randy Dunlap <rdunlap@infradead.org>
+Tested-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: Alexey Skidanov <alexey.skidanov@intel.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/mtk_iommu_v1.c |    2 ++
- 1 file changed, 2 insertions(+)
+ include/linux/genalloc.h | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/iommu/mtk_iommu_v1.c
-+++ b/drivers/iommu/mtk_iommu_v1.c
-@@ -420,6 +420,8 @@ static int mtk_iommu_v1_create_mapping(s
- 			return -EINVAL;
- 
- 		dev_iommu_priv_set(dev, platform_get_drvdata(m4updev));
-+
-+		put_device(&m4updev->dev);
- 	}
- 
- 	ret = iommu_fwspec_add_ids(dev, args->args, 1);
+diff --git a/include/linux/genalloc.h b/include/linux/genalloc.h
+index 0bd581003cd5..60de63e46b33 100644
+--- a/include/linux/genalloc.h
++++ b/include/linux/genalloc.h
+@@ -44,6 +44,7 @@ struct gen_pool;
+  * @nr: The number of zeroed bits we're looking for
+  * @data: optional additional data used by the callback
+  * @pool: the pool being allocated from
++ * @start_addr: start address of memory chunk
+  */
+ typedef unsigned long (*genpool_algo_t)(unsigned long *map,
+ 			unsigned long size,
+-- 
+2.51.0
+
 
 
 
