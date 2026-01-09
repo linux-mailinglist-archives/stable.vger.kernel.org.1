@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-206473-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207204-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0114BD09008
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 12:48:50 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04584D09979
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:27:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9F1AE30B6B6A
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:45:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CEFF03087910
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:23:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2CCC2F12D4;
-	Fri,  9 Jan 2026 11:45:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99B5E2737EE;
+	Fri,  9 Jan 2026 12:23:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zi+IY9In"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vZRP/+wY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C2E733B943;
-	Fri,  9 Jan 2026 11:45:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CDE432AAB5;
+	Fri,  9 Jan 2026 12:23:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767959119; cv=none; b=m9g2HqC6iET5EnZftel/bsOIEiNSFifjDqCQdXMajRrK/axJ8bZ+RI6o7R8bc4d3ip4Ig9gE5dUXKcU+OonI+3YQbk2cLahinS5oHmbFHuks+QAbhvi7DFJZH78bGnp6nHsRYPKDRs6NN2x07y1Ymi3DIVCzvBoEv0KxJUhXtCA=
+	t=1767961389; cv=none; b=j1vF9XRmpEa+tdloGTcjmpwbsrpYyLRM4lLj0FXACgLPv56NZZV82dOokz33mFlV17q4HpBaPgyJCYKLZMC9EVaQ0LHLGR2EIgaUiY4f9M/iHNnn9j4P663dPAH/lrgZmHykS+/x6IysiU18Na247AR/XNnN37IK2+tfdqN3FHw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767959119; c=relaxed/simple;
-	bh=abskf/h/km/SnBS4/avYvRuXzxTNt5Gzi3CIoF8SPl4=;
+	s=arc-20240116; t=1767961389; c=relaxed/simple;
+	bh=i1kgx993EoJ5tsrKj+xvRm/JHluPmRw/z3fQsQulwVQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Sral2gXo2y9HTG2SQCqu3fQ5P1Ftr9xA/jG+q06+Z413a08MLtmrCouj2F7kNrWeqNZ3YhrbOpyDrqQkEQD3pttVrfiyPxlc5GKXshpLIXehFLMlDaUkSAMzvyQgAkhfXsEoI0NjVKc46vaQHb5iNBU0uzU9OBgwVqsvlLo8VAk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zi+IY9In; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E815C16AAE;
-	Fri,  9 Jan 2026 11:45:16 +0000 (UTC)
+	 MIME-Version; b=Wfz2zP/R41SCLnWPrdM2rUDK4k/7pKldmDp+Tn1FF/9SuUOVS9NS2kPgnmk/gXCBBC3mK/kWgP0C83WZI0RmrfPJ+u4tJsW0KuVtIRwQ9rhqhkJVQOjqf1xZFoXp6pV3HrQ7qdVJblkPxJO7em2B2WMJuC3pDeZksTA3E3mBNlQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vZRP/+wY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCA7CC4CEF1;
+	Fri,  9 Jan 2026 12:23:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767959116;
-	bh=abskf/h/km/SnBS4/avYvRuXzxTNt5Gzi3CIoF8SPl4=;
+	s=korg; t=1767961389;
+	bh=i1kgx993EoJ5tsrKj+xvRm/JHluPmRw/z3fQsQulwVQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zi+IY9In005iERCeux5Qu4AlAJ1Af1/x2VWEWtkELop3tR+/Zm+gBwOM4xezkl8z6
-	 5FM04CGevuJB1I8F/4sayd6IDu+VN2clX+hNIvFYpjEylS2xCWNan+V0wp5VwMJwou
-	 n2FJqiTo6SnnbVdmFtyYRBbEpCz9DMfvczbsJYEQ=
+	b=vZRP/+wYUJv2lZzoX8rELb05ci8M29O7wLrcfJIY7zAMfVrfxa7w9QAJPLVAKNyFm
+	 Yai+JanAvKcN3jeYn4oHAwm49uLlGMt7RYMCAwNvigLf3p2YQDg7GPOQrluc8JHx+r
+	 jIwQ6CSrNPq7y3x2vwGUTCN8bXJmwROltpzNTG/Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Chris Mason <clm@meta.com>
-Subject: [PATCH 6.18 4/5] sched/fair: Proportional newidle balance
-Date: Fri,  9 Jan 2026 12:44:06 +0100
-Message-ID: <20260109111950.513989719@linuxfoundation.org>
+	syzbot+e2ce9e275ecc70a30b72@syzkaller.appspotmail.com,
+	Zhu Yanjun <yanjun.zhu@linux.dev>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Ajay Kaher <ajay.kaher@broadcom.com>,
+	Shivani Agarwal <shivani.agarwal@broadcom.com>
+Subject: [PATCH 6.6 708/737] RDMA/core: Fix "KASAN: slab-use-after-free Read in ib_register_device" problem
+Date: Fri,  9 Jan 2026 12:44:07 +0100
+Message-ID: <20260109112200.706709012@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109111950.344681501@linuxfoundation.org>
-References: <20260109111950.344681501@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,205 +63,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Zhu Yanjun <yanjun.zhu@linux.dev>
 
-commit 33cf66d88306663d16e4759e9d24766b0aaa2e17 upstream.
+commit d0706bfd3ee40923c001c6827b786a309e2a8713 upstream.
 
-Add a randomized algorithm that runs newidle balancing proportional to
-its success rate.
+Call Trace:
 
-This improves schbench significantly:
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:408 [inline]
+ print_report+0xc3/0x670 mm/kasan/report.c:521
+ kasan_report+0xe0/0x110 mm/kasan/report.c:634
+ strlen+0x93/0xa0 lib/string.c:420
+ __fortify_strlen include/linux/fortify-string.h:268 [inline]
+ get_kobj_path_length lib/kobject.c:118 [inline]
+ kobject_get_path+0x3f/0x2a0 lib/kobject.c:158
+ kobject_uevent_env+0x289/0x1870 lib/kobject_uevent.c:545
+ ib_register_device drivers/infiniband/core/device.c:1472 [inline]
+ ib_register_device+0x8cf/0xe00 drivers/infiniband/core/device.c:1393
+ rxe_register_device+0x275/0x320 drivers/infiniband/sw/rxe/rxe_verbs.c:1552
+ rxe_net_add+0x8e/0xe0 drivers/infiniband/sw/rxe/rxe_net.c:550
+ rxe_newlink+0x70/0x190 drivers/infiniband/sw/rxe/rxe.c:225
+ nldev_newlink+0x3a3/0x680 drivers/infiniband/core/nldev.c:1796
+ rdma_nl_rcv_msg+0x387/0x6e0 drivers/infiniband/core/netlink.c:195
+ rdma_nl_rcv_skb.constprop.0.isra.0+0x2e5/0x450
+ netlink_unicast_kernel net/netlink/af_netlink.c:1313 [inline]
+ netlink_unicast+0x53a/0x7f0 net/netlink/af_netlink.c:1339
+ netlink_sendmsg+0x8d1/0xdd0 net/netlink/af_netlink.c:1883
+ sock_sendmsg_nosec net/socket.c:712 [inline]
+ __sock_sendmsg net/socket.c:727 [inline]
+ ____sys_sendmsg+0xa95/0xc70 net/socket.c:2566
+ ___sys_sendmsg+0x134/0x1d0 net/socket.c:2620
+ __sys_sendmsg+0x16d/0x220 net/socket.c:2652
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xcd/0x260 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
- 6.18-rc4:			2.22 Mrps/s
- 6.18-rc4+revert:		2.04 Mrps/s
- 6.18-rc4+revert+random:	2.18 Mrps/S
+This problem is similar to the problem that the
+commit 1d6a9e7449e2 ("RDMA/core: Fix use-after-free when rename device name")
+fixes.
 
-Conversely, per Adam Li this affects SpecJBB slightly, reducing it by 1%:
+The root cause is: the function ib_device_rename() renames the name with
+lock. But in the function kobject_uevent(), this name is accessed without
+lock protection at the same time.
 
- 6.17:			-6%
- 6.17+revert:		 0%
- 6.17+revert+random:	-1%
+The solution is to add the lock protection when this name is accessed in
+the function kobject_uevent().
 
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
-Tested-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
-Tested-by: Chris Mason <clm@meta.com>
-Link: https://lkml.kernel.org/r/6825c50d-7fa7-45d8-9b81-c6e7e25738e2@meta.com
-Link: https://patch.msgid.link/20251107161739.770122091@infradead.org
+Fixes: 779e0bf47632 ("RDMA/core: Do not indicate device ready when device enablement fails")
+Link: https://patch.msgid.link/r/20250506151008.75701-1-yanjun.zhu@linux.dev
+Reported-by: syzbot+e2ce9e275ecc70a30b72@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=e2ce9e275ecc70a30b72
+Signed-off-by: Zhu Yanjun <yanjun.zhu@linux.dev>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+[ Ajay: Modified to apply on v5.10.y-v6.6.y
+        ib_device_notify_register() not present in v5.10.y-v6.6.y,
+        so directly added lock for kobject_uevent() ]
+Signed-off-by: Ajay Kaher <ajay.kaher@broadcom.com>
+Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/sched/topology.h |    3 ++
- kernel/sched/core.c            |    3 ++
- kernel/sched/fair.c            |   44 +++++++++++++++++++++++++++++++++++++----
- kernel/sched/features.h        |    5 ++++
- kernel/sched/sched.h           |    7 ++++++
- kernel/sched/topology.c        |    6 +++++
- 6 files changed, 64 insertions(+), 4 deletions(-)
+ drivers/infiniband/core/device.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/include/linux/sched/topology.h
-+++ b/include/linux/sched/topology.h
-@@ -92,6 +92,9 @@ struct sched_domain {
- 	unsigned int nr_balance_failed; /* initialise to 0 */
- 
- 	/* idle_balance() stats */
-+	unsigned int newidle_call;
-+	unsigned int newidle_success;
-+	unsigned int newidle_ratio;
- 	u64 max_newidle_lb_cost;
- 	unsigned long last_decay_max_lb_cost;
- 
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -121,6 +121,7 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(sched_updat
- EXPORT_TRACEPOINT_SYMBOL_GPL(sched_compute_energy_tp);
- 
- DEFINE_PER_CPU_SHARED_ALIGNED(struct rq, runqueues);
-+DEFINE_PER_CPU(struct rnd_state, sched_rnd_state);
- 
- #ifdef CONFIG_SCHED_PROXY_EXEC
- DEFINE_STATIC_KEY_TRUE(__sched_proxy_exec);
-@@ -8591,6 +8592,8 @@ void __init sched_init_smp(void)
- {
- 	sched_init_numa(NUMA_NO_NODE);
- 
-+	prandom_init_once(&sched_rnd_state);
+--- a/drivers/infiniband/core/device.c
++++ b/drivers/infiniband/core/device.c
+@@ -1450,8 +1450,13 @@ int ib_register_device(struct ib_device
+ 		return ret;
+ 	}
+ 	dev_set_uevent_suppress(&device->dev, false);
 +
- 	/*
- 	 * There's no userspace yet to cause hotplug operations; hence all the
- 	 * CPU masks are stable and all blatant races in the below code cannot
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -12122,11 +12122,27 @@ void update_max_interval(void)
- 	max_load_balance_interval = HZ*num_online_cpus()/10;
- }
- 
--static inline bool update_newidle_cost(struct sched_domain *sd, u64 cost)
-+static inline void update_newidle_stats(struct sched_domain *sd, unsigned int success)
-+{
-+	sd->newidle_call++;
-+	sd->newidle_success += success;
++	down_read(&devices_rwsem);
 +
-+	if (sd->newidle_call >= 1024) {
-+		sd->newidle_ratio = sd->newidle_success;
-+		sd->newidle_call /= 2;
-+		sd->newidle_success /= 2;
-+	}
-+}
+ 	/* Mark for userspace that device is ready */
+ 	kobject_uevent(&device->dev.kobj, KOBJ_ADD);
 +
-+static inline bool
-+update_newidle_cost(struct sched_domain *sd, u64 cost, unsigned int success)
- {
- 	unsigned long next_decay = sd->last_decay_max_lb_cost + HZ;
- 	unsigned long now = jiffies;
++	up_read(&devices_rwsem);
+ 	ib_device_put(device);
  
-+	if (cost)
-+		update_newidle_stats(sd, success);
-+
- 	if (cost > sd->max_newidle_lb_cost) {
- 		/*
- 		 * Track max cost of a domain to make sure to not delay the
-@@ -12174,7 +12190,7 @@ static void sched_balance_domains(struct
- 		 * Decay the newidle max times here because this is a regular
- 		 * visit to all the domains.
- 		 */
--		need_decay = update_newidle_cost(sd, 0);
-+		need_decay = update_newidle_cost(sd, 0, 0);
- 		max_cost += sd->max_newidle_lb_cost;
- 
- 		/*
-@@ -12819,6 +12835,22 @@ static int sched_balance_newidle(struct
- 			break;
- 
- 		if (sd->flags & SD_BALANCE_NEWIDLE) {
-+			unsigned int weight = 1;
-+
-+			if (sched_feat(NI_RANDOM)) {
-+				/*
-+				 * Throw a 1k sided dice; and only run
-+				 * newidle_balance according to the success
-+				 * rate.
-+				 */
-+				u32 d1k = sched_rng() % 1024;
-+				weight = 1 + sd->newidle_ratio;
-+				if (d1k > weight) {
-+					update_newidle_stats(sd, 0);
-+					continue;
-+				}
-+				weight = (1024 + weight/2) / weight;
-+			}
- 
- 			pulled_task = sched_balance_rq(this_cpu, this_rq,
- 						   sd, CPU_NEWLY_IDLE,
-@@ -12826,10 +12858,14 @@ static int sched_balance_newidle(struct
- 
- 			t1 = sched_clock_cpu(this_cpu);
- 			domain_cost = t1 - t0;
--			update_newidle_cost(sd, domain_cost);
--
- 			curr_cost += domain_cost;
- 			t0 = t1;
-+
-+			/*
-+			 * Track max cost of a domain to make sure to not delay the
-+			 * next wakeup on the CPU.
-+			 */
-+			update_newidle_cost(sd, domain_cost, weight * !!pulled_task);
- 		}
- 
- 		/*
---- a/kernel/sched/features.h
-+++ b/kernel/sched/features.h
-@@ -121,3 +121,8 @@ SCHED_FEAT(WA_BIAS, true)
- SCHED_FEAT(UTIL_EST, true)
- 
- SCHED_FEAT(LATENCY_WARN, false)
-+
-+/*
-+ * Do newidle balancing proportional to its success rate using randomization.
-+ */
-+SCHED_FEAT(NI_RANDOM, true)
---- a/kernel/sched/sched.h
-+++ b/kernel/sched/sched.h
-@@ -5,6 +5,7 @@
- #ifndef _KERNEL_SCHED_SCHED_H
- #define _KERNEL_SCHED_SCHED_H
- 
-+#include <linux/prandom.h>
- #include <linux/sched/affinity.h>
- #include <linux/sched/autogroup.h>
- #include <linux/sched/cpufreq.h>
-@@ -1349,6 +1350,12 @@ static inline bool is_migration_disabled
- }
- 
- DECLARE_PER_CPU_SHARED_ALIGNED(struct rq, runqueues);
-+DECLARE_PER_CPU(struct rnd_state, sched_rnd_state);
-+
-+static inline u32 sched_rng(void)
-+{
-+	return prandom_u32_state(this_cpu_ptr(&sched_rnd_state));
-+}
- 
- #define cpu_rq(cpu)		(&per_cpu(runqueues, (cpu)))
- #define this_rq()		this_cpu_ptr(&runqueues)
---- a/kernel/sched/topology.c
-+++ b/kernel/sched/topology.c
-@@ -1662,6 +1662,12 @@ sd_init(struct sched_domain_topology_lev
- 
- 		.last_balance		= jiffies,
- 		.balance_interval	= sd_weight,
-+
-+		/* 50% success rate */
-+		.newidle_call		= 512,
-+		.newidle_success	= 256,
-+		.newidle_ratio		= 512,
-+
- 		.max_newidle_lb_cost	= 0,
- 		.last_decay_max_lb_cost	= jiffies,
- 		.child			= child,
+ 	return 0;
 
 
 
