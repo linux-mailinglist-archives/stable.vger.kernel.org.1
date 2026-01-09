@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-206938-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207540-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15C0CD097E0
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:21:01 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E83A1D09E26
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:43:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D36143088342
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:10:49 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D3492302B038
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:39:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67069359708;
-	Fri,  9 Jan 2026 12:10:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3EA935B14E;
+	Fri,  9 Jan 2026 12:39:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i+B+bFW2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EmemeV7j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29924320CB6;
-	Fri,  9 Jan 2026 12:10:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A756133C53A;
+	Fri,  9 Jan 2026 12:39:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960632; cv=none; b=m+Sm3f5olni4+frMRfBoEnSC4UOaXWJRrMvevA/O/7WXWZpdhzmHstafyj42nw9NcW+lPj1fg4uaQRtS8r3NL+iuOvDgeRgp/yu+LgulRntIQoqzmZaj8Sun/Lwtn8ijf1XtWPZz0/avlAdRTZSpp53JzvB6zoMiRtKU4wzdu0w=
+	t=1767962344; cv=none; b=QACP6SqC0icXPapkr4XwAbaDu7KZDKE8tmDCUjtMGeKGoYUTdtVCsy7BKHViNbgybNQlBLG2mRMCxI7n4EU1IfQcy71il0BY9RwILPvumRHltZfexZ1K6YHC9hqR/rA77q0C6WwsLmgbLSG2aZWgjHm6bcQPuVCW8kQUu9K2Wyo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960632; c=relaxed/simple;
-	bh=LKla7+glKh9Z3oiK6f2CGXEQ6Nx/zj7F8JQPW5dWgkw=;
+	s=arc-20240116; t=1767962344; c=relaxed/simple;
+	bh=mx9yDoWBi5L1i/CvSw8jiXzn5yAhGWolkP70/9zdEDA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tb2aCtEiZQLy31T4eeLHTUF6MQjf4Dsd60Pv0kM4XMsexnYuQRawgYsaD++DJicQ/xL8NSOw7Gnz4GLNbd/VPaymKQnOZKUinDViM3/33LWG9OhTbVOVGA/jBA/FYcOwz6HCDdBwzFAjGIUl0/RFyfoFOFwE09ZpEilPIi6TY9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i+B+bFW2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABD75C19425;
-	Fri,  9 Jan 2026 12:10:31 +0000 (UTC)
+	 MIME-Version; b=opGGUAl0C3mLM4Rw/zjJ9BQlkviT9yAPfUZmpKBrdDsmqN2Ri0VNsob34dq/4qfFO2l1US//CDj3GcvIAFPS1uoJ0AKKCNxgTTHHpMvA+CG4bflQSiFZsggzz6l6BJXxmjjuPAfpTW9OIhbDphmVy6Eoo1BET9/bEL2o6PHjcUQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EmemeV7j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 329E9C4CEF1;
+	Fri,  9 Jan 2026 12:39:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960632;
-	bh=LKla7+glKh9Z3oiK6f2CGXEQ6Nx/zj7F8JQPW5dWgkw=;
+	s=korg; t=1767962344;
+	bh=mx9yDoWBi5L1i/CvSw8jiXzn5yAhGWolkP70/9zdEDA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i+B+bFW2kgE4JhXMRRjMKaPfVOgL9G3G7Xq+s1+CCDDAf/nHuS3MaonCekQXGMv/M
-	 t9O2Swup6VeLCSKczhI+rqX4VJdWwGm2YTgusMm5hXAWhocFf8mBRFI6/NY1A3T06k
-	 FnxybSvch1S7cwuSOH2KoZITFo1hEk6neWckopRs=
+	b=EmemeV7jgqM7zIXqx0n5bj4JT7HAI8w/qW12wNVdGmllbaqVIYMHH9UentSnvlf9Z
+	 XOyslwPXjRAINqiWSv3DHOwNm2b/RILdRdyL+BEShQF7tOoPrnJQZsjTXRQ3agnHH9
+	 11eyVRCPKAhNWHtrRD5pc0Os/TYP8fYkdJqEvCwE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
-	Christoph Hellwig <hch@lst.de>,
-	Carlos Maiolino <cmaiolino@redhat.com>,
-	Carlos Maiolino <cem@kernel.org>
-Subject: [PATCH 6.6 471/737] xfs: fix a memory leak in xfs_buf_item_init()
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 6.1 332/634] media: v4l2-mem2mem: Fix outdated documentation
 Date: Fri,  9 Jan 2026 12:40:10 +0100
-Message-ID: <20260109112151.705509082@linuxfoundation.org>
+Message-ID: <20260109112130.018679476@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +59,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 
-commit fc40459de82543b565ebc839dca8f7987f16f62e upstream.
+commit 082b86919b7a94de01d849021b4da820a6cb89dc upstream.
 
-xfs_buf_item_get_format() may allocate memory for bip->bli_formats,
-free the memory in the error path.
+Commit cbd9463da1b1 ("media: v4l2-mem2mem: Avoid calling .device_run in
+v4l2_m2m_job_finish") deferred calls to .device_run() to a work queue to
+avoid recursive calls when a job is finished right away from
+.device_run(). It failed to update the v4l2_m2m_job_finish()
+documentation that still states the function must not be called from
+.device_run(). Fix it.
 
-Fixes: c3d5f0c2fb85 ("xfs: complain if anyone tries to create a too-large buffer log item")
+Fixes: cbd9463da1b1 ("media: v4l2-mem2mem: Avoid calling .device_run in v4l2_m2m_job_finish")
 Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Carlos Maiolino <cmaiolino@redhat.com>
-Signed-off-by: Carlos Maiolino <cem@kernel.org>
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/xfs_buf_item.c |    1 +
- 1 file changed, 1 insertion(+)
+ include/media/v4l2-mem2mem.h |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/fs/xfs/xfs_buf_item.c
-+++ b/fs/xfs/xfs_buf_item.c
-@@ -900,6 +900,7 @@ xfs_buf_item_init(
- 		map_size = DIV_ROUND_UP(chunks, NBWORD);
- 
- 		if (map_size > XFS_BLF_DATAMAP_SIZE) {
-+			xfs_buf_item_free_format(bip);
- 			kmem_cache_free(xfs_buf_item_cache, bip);
- 			xfs_err(mp,
- 	"buffer item dirty bitmap (%u uints) too small to reflect %u bytes!",
+--- a/include/media/v4l2-mem2mem.h
++++ b/include/media/v4l2-mem2mem.h
+@@ -185,8 +185,7 @@ void v4l2_m2m_try_schedule(struct v4l2_m
+  * other instances to take control of the device.
+  *
+  * This function has to be called only after &v4l2_m2m_ops->device_run
+- * callback has been called on the driver. To prevent recursion, it should
+- * not be called directly from the &v4l2_m2m_ops->device_run callback though.
++ * callback has been called on the driver.
+  */
+ void v4l2_m2m_job_finish(struct v4l2_m2m_dev *m2m_dev,
+ 			 struct v4l2_m2m_ctx *m2m_ctx);
 
 
 
