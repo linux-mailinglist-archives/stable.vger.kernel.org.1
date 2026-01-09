@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-207275-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206644-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84864D09CFD
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:39:14 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACCCFD09278
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:00:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C9EB030EE622
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:26:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 998863019B8D
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:56:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E329735B15A;
-	Fri,  9 Jan 2026 12:26:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8747D31A7EA;
+	Fri,  9 Jan 2026 11:56:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TPbyMdSJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CNNf3T5E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3A9635BDC2;
-	Fri,  9 Jan 2026 12:26:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48671335561;
+	Fri,  9 Jan 2026 11:56:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961592; cv=none; b=TI4uQxWxbkZqQY0rhsp5dhQkY18eNwhXKC9O4HuhE6mRyDJ0DfnCdOFmGZeNl+eEyTb7lhhlPFifPvQ0swzTwNpJIZTfO3XSTX4aSY5PyXSpptpoXXwva35eLie22DZVts/a5AHu1LBtyCqxGXSXiOZ8mHyNDUE2wkOpBtN/AR0=
+	t=1767959791; cv=none; b=nn1cAml2AGzf+GSIAaBQwerRxKpjUfqDz0mlnK60DkpXTSQ2HjCz0a2DHnRCafWhH5i8nxSHybjauuHITd5u5pGh0F/0UblNDDjSEOGApw984tk6ey2ge94vllZnShha13o5r38Zo+NuGn5EcI9Ufbzhb46QHm/kJ3/7dQ2VuEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961592; c=relaxed/simple;
-	bh=NY7wVtRSjwO11FlU4136VXkw1vqJtHSkj0mtrAgFJs8=;
+	s=arc-20240116; t=1767959791; c=relaxed/simple;
+	bh=4NYoMnBG2lHhaOYipHZBAPteiswGp7z/lvPOy4ocaMM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YNqsXp7zN8C36rd2L9xxqKKy+CMZGAZuLlIhRlxlh12UDN+uzT8E4xMsO64D62RG6alVDu42gLRUERHVtXKKAnzFUEDUCQT7kJhJ1xiep7fj+1l2iga9D9pVoZDIY/kY/+iL6z3C4fnz1HfUQWrUfaeZ85j0Nkb80SMD5gyrD80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TPbyMdSJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31D2CC4CEF1;
-	Fri,  9 Jan 2026 12:26:32 +0000 (UTC)
+	 MIME-Version; b=HRH4dzN2p8nH2218sBHCt6toYVZQGXuRM3ee7WjCrM4Hw5ZYlscjJ7QNMfbBPKDS6OjoLADcs9p1fl8yUxgNEZX3ZGmJe/RU6mKj22Zbv0IF/BveYYoTNYxH6JLYOaK7FnisQfHkLI3TD/86u0K4GwONh0ZQrXkbHs5ojBQ8xE8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CNNf3T5E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7D3AC4CEF1;
+	Fri,  9 Jan 2026 11:56:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961592;
-	bh=NY7wVtRSjwO11FlU4136VXkw1vqJtHSkj0mtrAgFJs8=;
+	s=korg; t=1767959791;
+	bh=4NYoMnBG2lHhaOYipHZBAPteiswGp7z/lvPOy4ocaMM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TPbyMdSJO3HFVj3RCDgv5nlcsnWinqbsiwqZx8aYWo5u2zMdOENxyKgMDiY+uPKDG
-	 9TIYvRorKFqeCfM00xTdaZAXYx3zu7AIus6f5JmK1PGk2p+dLYVrjVJetv5eKs6OQK
-	 39aLdLN08rfp1hZBOPe/OU3TXn9cRKP6M0b8akec=
+	b=CNNf3T5E+VLrNxn/P9rTEmklpZaDi6aF3N4bK7pwf2bC571dnaeDAC6mZs9Wo271Q
+	 iPrXou0ZCfzizM0nJl2K2MkKBRalTS6VEsfkEy4ZpAR3KImWcLigzEf/WeHnB8Ji8N
+	 Hj80Mlbch/uPB5S8HRuf0Z6dHwk84SUhkm+79meY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+6616bba359cec7a1def1@syzkaller.appspotmail.com,
-	stable <stable@kernel.org>,
-	Ian Abbott <abbotti@mev.co.uk>
-Subject: [PATCH 6.1 035/634] comedi: c6xdigio: Fix invalid PNP driver unregistration
-Date: Fri,  9 Jan 2026 12:35:13 +0100
-Message-ID: <20260109112118.768581951@linuxfoundation.org>
+	Garri Djavadyan <g.djavadyan@gmail.com>,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 175/737] ipv6: clear RA flags when adding a static route
+Date: Fri,  9 Jan 2026 12:35:14 +0100
+Message-ID: <20260109112140.574945818@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,171 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Abbott <abbotti@mev.co.uk>
+From: Fernando Fernandez Mancera <fmancera@suse.de>
 
-commit 72262330f7b3ad2130e800cecf02adcce3c32c77 upstream.
+[ Upstream commit f72514b3c5698e4b900b25345e09f9ed33123de6 ]
 
-The Comedi low-level driver "c6xdigio" seems to be for a parallel port
-connected device.  When the Comedi core calls the driver's Comedi
-"attach" handler `c6xdigio_attach()` to configure a Comedi to use this
-driver, it tries to enable the parallel port PNP resources by
-registering a PNP driver with `pnp_register_driver()`, but ignores the
-return value.  (The `struct pnp_driver` it uses has only the `name` and
-`id_table` members filled in.)  The driver's Comedi "detach" handler
-`c6xdigio_detach()` unconditionally unregisters the PNP driver with
-`pnp_unregister_driver()`.
+When an IPv6 Router Advertisement (RA) is received for a prefix, the
+kernel creates the corresponding on-link route with flags RTF_ADDRCONF
+and RTF_PREFIX_RT configured and RTF_EXPIRES if lifetime is set.
 
-It is possible for `c6xdigio_attach()` to return an error before it
-calls `pnp_register_driver()` and it is possible for the call to
-`pnp_register_driver()` to return an error (that is ignored).  In both
-cases, the driver should not be calling `pnp_unregister_driver()` as it
-does in `c6xdigio_detach()`.  (Note that `c6xdigio_detach()` will be
-called by the Comedi core if `c6xdigio_attach()` returns an error, or if
-the Comedi core decides to detach the Comedi device from the driver for
-some other reason.)
+If later a user configures a static IPv6 address on the same prefix the
+kernel clears the RTF_EXPIRES flag but it doesn't clear the RTF_ADDRCONF
+and RTF_PREFIX_RT. When the next RA for that prefix is received, the
+kernel sees the route as RA-learned and wrongly configures back the
+lifetime. This is problematic because if the route expires, the static
+address won't have the corresponding on-link route.
 
-The unconditional call to `pnp_unregister_driver()` without a previous
-successful call to `pnp_register_driver()` will cause
-`driver_unregister()` to issue a warning "Unexpected driver
-unregister!".  This was detected by Syzbot [1].
+This fix clears the RTF_ADDRCONF and RTF_PREFIX_RT flags preventing that
+the lifetime is configured when the next RA arrives. If the static
+address is deleted, the route becomes RA-learned again.
 
-Also, the PNP driver registration and unregistration should be done at
-module init and exit time, respectively, not when attaching or detaching
-Comedi devices to the driver.  (There might be more than one Comedi
-device being attached to the driver, although that is unlikely.)
-
-Change the driver to do the PNP driver registration at module init time,
-and the unregistration at module exit time.  Since `c6xdigio_detach()`
-now only calls `comedi_legacy_detach()`, remove the function and change
-the Comedi driver "detach" handler to `comedi_legacy_detach`.
-
--------------------------------------------
-[1] Syzbot sample crash report:
-Unexpected driver unregister!
-WARNING: CPU: 0 PID: 5970 at drivers/base/driver.c:273 driver_unregister drivers/base/driver.c:273 [inline]
-WARNING: CPU: 0 PID: 5970 at drivers/base/driver.c:273 driver_unregister+0x90/0xb0 drivers/base/driver.c:270
-Modules linked in:
-CPU: 0 UID: 0 PID: 5970 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full)
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/02/2025
-RIP: 0010:driver_unregister drivers/base/driver.c:273 [inline]
-RIP: 0010:driver_unregister+0x90/0xb0 drivers/base/driver.c:270
-Code: 48 89 ef e8 c2 e6 82 fc 48 89 df e8 3a 93 ff ff 5b 5d e9 c3 6d d9 fb e8 be 6d d9 fb 90 48 c7 c7 e0 f8 1f 8c e8 51 a2 97 fb 90 <0f> 0b 90 90 5b 5d e9 a5 6d d9 fb e8 e0 f4 41 fc eb 94 e8 d9 f4 41
-RSP: 0018:ffffc9000373f9a0 EFLAGS: 00010282
-RAX: 0000000000000000 RBX: ffffffff8ff24720 RCX: ffffffff817b6ee8
-RDX: ffff88807c932480 RSI: ffffffff817b6ef5 RDI: 0000000000000001
-RBP: 0000000000000000 R08: 0000000000000001 R09: 0000000000000000
-R10: 0000000000000001 R11: 0000000000000001 R12: ffffffff8ff24660
-R13: dffffc0000000000 R14: 0000000000000000 R15: ffff88814cca0000
-FS:  000055556dab1500(0000) GS:ffff8881249d9000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 000055f77f285cd0 CR3: 000000007d871000 CR4: 00000000003526f0
-Call Trace:
- <TASK>
- comedi_device_detach_locked+0x12f/0xa50 drivers/comedi/drivers.c:207
- comedi_device_detach+0x67/0xb0 drivers/comedi/drivers.c:215
- comedi_device_attach+0x43d/0x900 drivers/comedi/drivers.c:1011
- do_devconfig_ioctl+0x1b1/0x710 drivers/comedi/comedi_fops.c:872
- comedi_unlocked_ioctl+0x165d/0x2f00 drivers/comedi/comedi_fops.c:2178
- vfs_ioctl fs/ioctl.c:51 [inline]
- __do_sys_ioctl fs/ioctl.c:597 [inline]
- __se_sys_ioctl fs/ioctl.c:583 [inline]
- __x64_sys_ioctl+0x18e/0x210 fs/ioctl.c:583
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xcd/0xfa0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fc05798eec9
-Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007ffcf8184238 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-RAX: ffffffffffffffda RBX: 00007fc057be5fa0 RCX: 00007fc05798eec9
-RDX: 0000200000000080 RSI: 0000000040946400 RDI: 0000000000000003
-RBP: 00007fc057a11f91 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007fc057be5fa0 R14: 00007fc057be5fa0 R15: 0000000000000003
- </TASK>
--------------------------------------------
-
-Reported-by: syzbot+6616bba359cec7a1def1@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=6616bba359cec7a1def1
-Fixes: 2c89e159cd2f ("Staging: comedi: add c6xdigio driver")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
-Link: https://patch.msgid.link/20251023123141.6537-1-abbotti@mev.co.uk
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 14ef37b6d00e ("ipv6: fix route lookup in addrconf_prefix_rcv()")
+Reported-by: Garri Djavadyan <g.djavadyan@gmail.com>
+Closes: https://lore.kernel.org/netdev/ba807d39aca5b4dcf395cc11dca61a130a52cfd3.camel@gmail.com/
+Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/20251115095939.6967-1-fmancera@suse.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/comedi/drivers/c6xdigio.c |   46 ++++++++++++++++++++++++++++----------
- 1 file changed, 35 insertions(+), 11 deletions(-)
+ net/ipv6/ip6_fib.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/comedi/drivers/c6xdigio.c
-+++ b/drivers/comedi/drivers/c6xdigio.c
-@@ -249,9 +249,6 @@ static int c6xdigio_attach(struct comedi
- 	if (ret)
- 		return ret;
+diff --git a/net/ipv6/ip6_fib.c b/net/ipv6/ip6_fib.c
+index ab84e2dd682f8..646ff1276aff2 100644
+--- a/net/ipv6/ip6_fib.c
++++ b/net/ipv6/ip6_fib.c
+@@ -1136,6 +1136,10 @@ static int fib6_add_rt2node(struct fib6_node *fn, struct fib6_info *rt,
+ 					fib6_set_expires(iter, rt->expires);
+ 					fib6_add_gc_list(iter);
+ 				}
++				if (!(rt->fib6_flags & (RTF_ADDRCONF | RTF_PREFIX_RT))) {
++					iter->fib6_flags &= ~RTF_ADDRCONF;
++					iter->fib6_flags &= ~RTF_PREFIX_RT;
++				}
  
--	/*  Make sure that PnP ports get activated */
--	pnp_register_driver(&c6xdigio_pnp_driver);
--
- 	s = &dev->subdevices[0];
- 	/* pwm output subdevice */
- 	s->type		= COMEDI_SUBD_PWM;
-@@ -278,19 +275,46 @@ static int c6xdigio_attach(struct comedi
- 	return 0;
- }
- 
--static void c6xdigio_detach(struct comedi_device *dev)
--{
--	comedi_legacy_detach(dev);
--	pnp_unregister_driver(&c6xdigio_pnp_driver);
--}
--
- static struct comedi_driver c6xdigio_driver = {
- 	.driver_name	= "c6xdigio",
- 	.module		= THIS_MODULE,
- 	.attach		= c6xdigio_attach,
--	.detach		= c6xdigio_detach,
-+	.detach		= comedi_legacy_detach,
- };
--module_comedi_driver(c6xdigio_driver);
-+
-+static bool c6xdigio_pnp_registered = false;
-+
-+static int __init c6xdigio_module_init(void)
-+{
-+	int ret;
-+
-+	ret = comedi_driver_register(&c6xdigio_driver);
-+	if (ret)
-+		return ret;
-+
-+	if (IS_ENABLED(CONFIG_PNP)) {
-+		/*  Try to activate the PnP ports */
-+		ret = pnp_register_driver(&c6xdigio_pnp_driver);
-+		if (ret) {
-+			pr_warn("failed to register pnp driver - err %d\n",
-+				ret);
-+			ret = 0;	/* ignore the error. */
-+		} else {
-+			c6xdigio_pnp_registered = true;
-+		}
-+	}
-+
-+	return 0;
-+}
-+module_init(c6xdigio_module_init);
-+
-+static void __exit c6xdigio_module_exit(void)
-+{
-+	if (c6xdigio_pnp_registered)
-+		pnp_unregister_driver(&c6xdigio_pnp_driver);
-+	comedi_driver_unregister(&c6xdigio_driver);
-+}
-+module_exit(c6xdigio_module_exit);
- 
- MODULE_AUTHOR("Comedi https://www.comedi.org");
- MODULE_DESCRIPTION("Comedi driver for the C6x_DIGIO DSP daughter card");
+ 				if (rt->fib6_pmtu)
+ 					fib6_metric_set(iter, RTAX_MTU,
+-- 
+2.51.0
+
 
 
 
