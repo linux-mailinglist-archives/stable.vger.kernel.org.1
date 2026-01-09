@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-207445-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206844-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E261D09EC8
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:46:12 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD267D09635
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:14:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BCF6D31313DD
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:34:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C1027311C014
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:06:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71408359701;
-	Fri,  9 Jan 2026 12:34:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 949FC359FBE;
+	Fri,  9 Jan 2026 12:06:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fJSHaFea"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KLWRxMPG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35E6B33C53A;
-	Fri,  9 Jan 2026 12:34:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57E6F359FBA;
+	Fri,  9 Jan 2026 12:06:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962075; cv=none; b=eG0nYiK8LwXb9e7N9QGjk35fpHsJJ1C48VvkS9VddprcwJ6hz6f4OQwIrFhNt3i0DZi3QUP748kIcazug+P/aMMTq7sg/Yuygew3PtDbWGuAsxZgfv1LLSFj8zON/9XICMTqwvh0xud+LL7HxW2D/Yc0iLGaWR8RLgcpwpz95eI=
+	t=1767960360; cv=none; b=kpV2cM0Z4pxlAwKg7Sj0T54Lhy65HC4BfCAvyaHvt/uRILHV8WIdq0uM6mN1bPNEzqz9/0BBFYLpZzu2zhPHUHyiXc3tpOmgQAGXKvCohJE9pfydufWkkuJWMQL2KQ+xDXAUArylHO86FgOwVyXqQ0SmyjwzQ5X8m5t4tb7nzUo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962075; c=relaxed/simple;
-	bh=wIrwfX4mV3KebnyHD694pxaRlxPFC9BcDT2FY0XYgro=;
+	s=arc-20240116; t=1767960360; c=relaxed/simple;
+	bh=PUrCsLkGrQ1XRdXY6Wv9V5C6nUpbkz1KmkaVx/jKSbc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ftUcgjC4SRpey/hdISxYW8XEnP5z8LUNLSPpVQ/stUCSkl7RYQsS3BxszHFclZZiQvbdPNzQLE5NxPLag3WOnjGRR3ndxbqZNu6LFWzVc5OT/UvPKwNnHYN2xZZyBYRxmXHqFIJSFNTmnbtL/Mj1h9NJYg+SjFfYW+pORqG6aXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fJSHaFea; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B810AC4CEF1;
-	Fri,  9 Jan 2026 12:34:34 +0000 (UTC)
+	 MIME-Version; b=Wt51RWZrTUoltvG06HKbTXaRf8y8wGLSLu/EphPWKND2Q4Xg6EIcqBaC6aR6alESmhLFjvHREGwpxL0rJOhOjABFx2e238pLFNRCZRWLLa45SSgQO87ZNRMN+x6w4X5G/p6zsSznnWTRsuKsZQSnVaSp98hJatSj6Iki5P9rsb0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KLWRxMPG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8987C4CEF1;
+	Fri,  9 Jan 2026 12:05:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962075;
-	bh=wIrwfX4mV3KebnyHD694pxaRlxPFC9BcDT2FY0XYgro=;
+	s=korg; t=1767960360;
+	bh=PUrCsLkGrQ1XRdXY6Wv9V5C6nUpbkz1KmkaVx/jKSbc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fJSHaFeafDHz8SHzIGHt+E9urJ4PWF60CL6hkbht5UQ0T7PdVrJHFcQZbsKDzthz2
-	 uSuQicImNNMn77XhLzf6fcHt9Qsi/CwiFJdBubL8pSCddOK3pvmEC46uTy7t6n/LSm
-	 SOTkrxBgMF0EeyfSolSC81D1fp2xxKmytDmjND4s=
+	b=KLWRxMPGdHQJmFWR6LVNTBcwAoalHdZ3ai7IKgf3zMecvqj4aX9jrjGoAj95rpW/+
+	 5IPQc0lskwAM2s/IlostOwyifGNpjodJBJfSstsK2L0LoO44h6DC6fdMWyBraaASAO
+	 d63CCaFab2dnLYY694iaGc912KSm7YTbNwZjWsZU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 236/634] fs/ntfs3: Support timestamps prior to epoch
-Date: Fri,  9 Jan 2026 12:38:34 +0100
-Message-ID: <20260109112126.423256392@linuxfoundation.org>
+	Pengjie Zhang <zhangpengjie2@huawei.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	lihuisong@huawei.com,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.6 376/737] ACPI: PCC: Fix race condition by removing static qualifier
+Date: Fri,  9 Jan 2026 12:38:35 +0100
+Message-ID: <20260109112148.138922246@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,48 +61,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+From: Pengjie Zhang <zhangpengjie2@huawei.com>
 
-[ Upstream commit 5180138604323895b5c291eca6aa7c20be494ade ]
+commit f103fa127c93016bcd89b05d8e11dc1a84f6990d upstream.
 
-Before it used an unsigned 64-bit type, which prevented proper handling
-of timestamps earlier than 1970-01-01. Switch to a signed 64-bit type to
-support pre-epoch timestamps. The issue was caught by xfstests.
+Local variable 'ret' in acpi_pcc_address_space_setup() is currently
+declared as 'static'. This can lead to race conditions in a
+multithreaded environment.
 
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Remove the 'static' qualifier to ensure that 'ret' will be allocated
+directly on the stack as a local variable.
+
+Fixes: a10b1c99e2dc ("ACPI: PCC: Setup PCC Opregion handler only if platform interrupt is available")
+Signed-off-by: Pengjie Zhang <zhangpengjie2@huawei.com>
+Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
+Acked-by: lihuisong@huawei.com
+Cc: 6.2+ <stable@vger.kernel.org> # 6.2+
+[ rjw: Changelog edits ]
+Link: https://patch.msgid.link/20251210132634.2050033-1-zhangpengjie2@huawei.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ntfs3/ntfs_fs.h | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/acpi/acpi_pcc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/ntfs3/ntfs_fs.h b/fs/ntfs3/ntfs_fs.h
-index f2f32e304b3d3..c93217ed3f6c1 100644
---- a/fs/ntfs3/ntfs_fs.h
-+++ b/fs/ntfs3/ntfs_fs.h
-@@ -978,11 +978,12 @@ static inline __le64 kernel2nt(const struct timespec64 *ts)
-  */
- static inline void nt2kernel(const __le64 tm, struct timespec64 *ts)
- {
--	u64 t = le64_to_cpu(tm) - _100ns2seconds * SecondsToStartOf1970;
-+	s32 t32;
-+	/* use signed 64 bit to support timestamps prior to epoch. xfstest 258. */
-+	s64 t = le64_to_cpu(tm) - _100ns2seconds * SecondsToStartOf1970;
+--- a/drivers/acpi/acpi_pcc.c
++++ b/drivers/acpi/acpi_pcc.c
+@@ -53,7 +53,7 @@ acpi_pcc_address_space_setup(acpi_handle
+ 	struct pcc_data *data;
+ 	struct acpi_pcc_info *ctx = handler_context;
+ 	struct pcc_mbox_chan *pcc_chan;
+-	static acpi_status ret;
++	acpi_status ret;
  
--	// WARNING: do_div changes its first argument(!)
--	ts->tv_nsec = do_div(t, _100ns2seconds) * 100;
--	ts->tv_sec = t;
-+	ts->tv_sec = div_s64_rem(t, _100ns2seconds, &t32);
-+	ts->tv_nsec = t32 * 100;
- }
- 
- static inline struct ntfs_sb_info *ntfs_sb(struct super_block *sb)
--- 
-2.51.0
-
+ 	data = kzalloc(sizeof(*data), GFP_KERNEL);
+ 	if (!data)
 
 
 
